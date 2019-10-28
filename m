@@ -2,185 +2,89 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9BD9AE69C2
-	for <lists+linux-wireless@lfdr.de>; Sun, 27 Oct 2019 22:40:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A2F44E6B4B
+	for <lists+linux-wireless@lfdr.de>; Mon, 28 Oct 2019 04:13:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727480AbfJ0Vkd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 27 Oct 2019 17:40:33 -0400
-Received: from vulcan.natalenko.name ([104.207.131.136]:39636 "EHLO
-        vulcan.natalenko.name" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727314AbfJ0Vkd (ORCPT
+        id S1729415AbfJ1DNK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 27 Oct 2019 23:13:10 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:52351 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727851AbfJ1DNK (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 27 Oct 2019 17:40:33 -0400
-Received: from mail.natalenko.name (vulcan.natalenko.name [IPv6:fe80::5400:ff:fe0c:dfa0])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by vulcan.natalenko.name (Postfix) with ESMTPSA id A267860ED9E;
-        Sun, 27 Oct 2019 22:40:30 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=natalenko.name;
-        s=dkim-20170712; t=1572212430;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=bZP0mft83BfuXGY/KXrwzMMUx2sl7QD4/f6jdUdhc4g=;
-        b=NxOkaGRwbowyz4jbGpUv6h4T8YUZ43SIP8+ZHTgx5Q9zSKPAaigmo25wxpyAYQ1TOdlu3N
-        EwPUzXDyeJML0MUyr/4jQLKEnI0d4tJ2mIvoFZYn31qku9+N3SLyGvtREb06wg0OHf4MWj
-        ubcuX1jxSgryRmQA+M0uRbhK7NOEGL4=
+        Sun, 27 Oct 2019 23:13:10 -0400
+Authenticated-By: 
+X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID x9S3Cvm0028398, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (RTITCAS12.realtek.com.tw[172.21.6.16])
+        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id x9S3Cvm0028398
+        (version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 28 Oct 2019 11:12:57 +0800
+Received: from RTITMBSVM04.realtek.com.tw ([fe80::e404:880:2ef1:1aa1]) by
+ RTITCAS12.realtek.com.tw ([::1]) with mapi id 14.03.0468.000; Mon, 28 Oct
+ 2019 11:12:57 +0800
+From:   Tony Chuang <yhchuang@realtek.com>
+To:     Chris Chiu <chiu@endlessm.com>
+CC:     Kalle Valo <kvalo@codeaurora.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Brian Norris <briannorris@chromium.org>,
+        "g.schlmm@googlemail.com" <g.schlmm@googlemail.com>
+Subject: RE: [PATCH 3/6] rtw88: use a module parameter to control LPS enter
+Thread-Topic: [PATCH 3/6] rtw88: use a module parameter to control LPS enter
+Thread-Index: AQHVixdU7Df1/OOTokC0rqDmBUERUKdqqAoAgAS8baA=
+Date:   Mon, 28 Oct 2019 03:12:55 +0000
+Message-ID: <F7CD281DE3E379468C6D07993EA72F84D1911E08@RTITMBSVM04.realtek.com.tw>
+References: <20191025093345.22643-1-yhchuang@realtek.com>
+ <20191025093345.22643-4-yhchuang@realtek.com>
+ <CAB4CAwf_Y0tMG37nZDtsU9FmACaOB=eALCNCazVk1kbAvOE26Q@mail.gmail.com>
+In-Reply-To: <CAB4CAwf_Y0tMG37nZDtsU9FmACaOB=eALCNCazVk1kbAvOE26Q@mail.gmail.com>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.68.183]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Sun, 27 Oct 2019 22:40:30 +0100
-From:   Oleksandr Natalenko <oleksandr@natalenko.name>
-To:     Lorenzo Bianconi <lorenzo@kernel.org>
-Cc:     kvalo@codeaurora.org, linux-wireless@vger.kernel.org, nbd@nbd.name,
-        hkallweit1@gmail.com, sgruszka@redhat.com,
-        lorenzo.bianconi@redhat.com, netdev@vger.kernel.org
-Subject: Re: [PATCH v3 wireless-drivers 1/2] mt76: mt76x2e: disable pcie_aspm
- by default
-In-Reply-To: <cbd541284b80a966e2050ac809a495c55cfb591e.1572204430.git.lorenzo@kernel.org>
-References: <cover.1572204430.git.lorenzo@kernel.org>
- <cbd541284b80a966e2050ac809a495c55cfb591e.1572204430.git.lorenzo@kernel.org>
-Message-ID: <3e11e1da564178e43ab745c780094098@natalenko.name>
-X-Sender: oleksandr@natalenko.name
-User-Agent: Roundcube Webmail/1.3.10
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi.
-
-On 27.10.2019 20:53, Lorenzo Bianconi wrote:
-> On same device (e.g. U7612E-H1) PCIE_ASPM causes continuous mcu hangs 
-> and
-> instability. Since mt76x2 series does not manage PCIE PS states, first 
-> we
-> try to disable ASPM using pci_disable_link_state. If it fails, we will
-> disable PCIE PS configuring PCI registers.
-> This patch has been successfully tested on U7612E-H1 mini-pice card
-> 
-> Tested-by: Oleksandr Natalenko <oleksandr@natalenko.name>
-
-For this revision, not yet ;) (see below).
-
-> Signed-off-by: Felix Fietkau <nbd@nbd.name>
-> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-> ---
->  drivers/net/wireless/mediatek/mt76/Makefile   |  2 +
->  drivers/net/wireless/mediatek/mt76/mt76.h     |  1 +
->  .../net/wireless/mediatek/mt76/mt76x2/pci.c   |  2 +
->  drivers/net/wireless/mediatek/mt76/pci.c      | 46 +++++++++++++++++++
->  4 files changed, 51 insertions(+)
->  create mode 100644 drivers/net/wireless/mediatek/mt76/pci.c
-> 
-> diff --git a/drivers/net/wireless/mediatek/mt76/Makefile
-> b/drivers/net/wireless/mediatek/mt76/Makefile
-> index 4d03596e891f..d7a1ddc9e407 100644
-> --- a/drivers/net/wireless/mediatek/mt76/Makefile
-> +++ b/drivers/net/wireless/mediatek/mt76/Makefile
-> @@ -8,6 +8,8 @@ mt76-y := \
->  	mmio.o util.o trace.o dma.o mac80211.o debugfs.o eeprom.o \
->  	tx.o agg-rx.o mcu.o
-> 
-> +mt76-$(CONFIG_PCI) += pci.o
-> +
->  mt76-usb-y := usb.o usb_trace.o
-> 
->  CFLAGS_trace.o := -I$(src)
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h
-> b/drivers/net/wireless/mediatek/mt76/mt76.h
-> index 570c159515a0..dc468ed9434a 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt76.h
-> +++ b/drivers/net/wireless/mediatek/mt76/mt76.h
-> @@ -578,6 +578,7 @@ bool __mt76_poll_msec(struct mt76_dev *dev, u32
-> offset, u32 mask, u32 val,
->  #define mt76_poll_msec(dev, ...) __mt76_poll_msec(&((dev)->mt76), 
-> __VA_ARGS__)
-> 
->  void mt76_mmio_init(struct mt76_dev *dev, void __iomem *regs);
-> +void mt76_pci_disable_aspm(struct pci_dev *pdev);
-> 
->  static inline u16 mt76_chip(struct mt76_dev *dev)
->  {
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/pci.c
-> b/drivers/net/wireless/mediatek/mt76/mt76x2/pci.c
-> index 73c3104f8858..cf611d1b817c 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt76x2/pci.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt76x2/pci.c
-> @@ -81,6 +81,8 @@ mt76pci_probe(struct pci_dev *pdev, const struct
-> pci_device_id *id)
->  	/* RG_SSUSB_CDR_BR_PE1D = 0x3 */
->  	mt76_rmw_field(dev, 0x15c58, 0x3 << 6, 0x3);
-> 
-> +	mt76_pci_disable_aspm(pdev);
-> +
->  	return 0;
-> 
->  error:
-> diff --git a/drivers/net/wireless/mediatek/mt76/pci.c
-> b/drivers/net/wireless/mediatek/mt76/pci.c
-> new file mode 100644
-> index 000000000000..04c5a692bc85
-> --- /dev/null
-> +++ b/drivers/net/wireless/mediatek/mt76/pci.c
-> @@ -0,0 +1,46 @@
-> +// SPDX-License-Identifier: ISC
-> +/*
-> + * Copyright (C) 2019 Lorenzo Bianconi <lorenzo@kernel.org>
-> + */
-> +
-> +#include <linux/pci.h>
-
-FYI, I had to #include <linux/pci-aspm.h> on 5.3 kernel because this is 
-where pci_disable_link_state() is defined. It is not needed on 5.4+ 
-since the declaration got moved to pci.h; this is just a note for those 
-who are going to test these changes on 5.3.
-
-I'm still building the kernel, though. Will get back with the results 
-later.
-
-> +
-> +void mt76_pci_disable_aspm(struct pci_dev *pdev)
-> +{
-> +	struct pci_dev *parent = pdev->bus->self;
-> +	u16 aspm_conf, parent_aspm_conf = 0;
-> +
-> +	pcie_capability_read_word(pdev, PCI_EXP_LNKCTL, &aspm_conf);
-> +	aspm_conf &= PCI_EXP_LNKCTL_ASPMC;
-> +	if (parent) {
-> +		pcie_capability_read_word(parent, PCI_EXP_LNKCTL,
-> +					  &parent_aspm_conf);
-> +		parent_aspm_conf &= PCI_EXP_LNKCTL_ASPMC;
-> +	}
-> +
-> +	if (!aspm_conf && (!parent || !parent_aspm_conf)) {
-> +		/* aspm already disabled */
-> +		return;
-> +	}
-> +
-> +	dev_info(&pdev->dev, "disabling ASPM %s %s\n",
-> +		 (aspm_conf & PCI_EXP_LNKCTL_ASPM_L0S) ? "L0s" : "",
-> +		 (aspm_conf & PCI_EXP_LNKCTL_ASPM_L1) ? "L1" : "");
-> +
-> +	if (IS_ENABLED(CONFIG_PCIEASPM)) {
-> +		int err;
-> +
-> +		err = pci_disable_link_state(pdev, aspm_conf);
-> +		if (!err)
-> +			return;
-> +	}
-> +
-> +	/* both device and parent should have the same ASPM setting.
-> +	 * disable ASPM in downstream component first and then upstream.
-> +	 */
-> +	pcie_capability_clear_word(pdev, PCI_EXP_LNKCTL, aspm_conf);
-> +	if (parent)
-> +		pcie_capability_clear_word(parent, PCI_EXP_LNKCTL,
-> +					   aspm_conf);
-> +}
-> +EXPORT_SYMBOL_GPL(mt76_pci_disable_aspm);
-
--- 
-   Oleksandr Natalenko (post-factum)
+PiBPbiBGcmksIE9jdCAyNSwgMjAxOSBhdCA1OjMzIFBNIDx5aGNodWFuZ0ByZWFsdGVrLmNvbT4g
+d3JvdGU6DQo+ID4NCj4gPiBGcm9tOiBZYW4tSHN1YW4gQ2h1YW5nIDx5aGNodWFuZ0ByZWFsdGVr
+LmNvbT4NCj4gPg0KPiA+IElmIHRoZSBudW1iZXIgb2YgcGFja2V0cyBpcyBsZXNzIHRoYW4gdGhl
+IExQUyB0aHJlc2hvbGQsIGRyaXZlcg0KPiA+IGNhbiB0aGVuIGVudGVyIExQUyBtb2RlLg0KPiA+
+IEFuZCBkcml2ZXIgdXNlZCB0byB0YWtlIFJUV19MUFNfVEhSRVNIT0xEIGFzIHRoZSB0aHJlc2hv
+bGQuIEFzDQo+ID4gdGhlIG1hY3JvIGNhbiBub3QgYmUgY2hhbmdlZCBhZnRlciBjb21waWxlZCwg
+dXNlIGEgcGFyYW1ldGVyDQo+ID4gaW5zdGVhZC4NCj4gPg0KPiA+IFRoZSBsYXJnZXIgb2YgdGhl
+IHRocmVzaG9sZCwgdGhlIG1vcmUgdHJhZmZpYyByZXF1aXJlZCB0byBsZWF2ZQ0KPiA+IHBvd2Vy
+IHNhdmUgbW9kZSwgcmVzcG9uc2l2ZSB0aW1lIGNvdWxkIGJlIGxvbmdlciwgYnV0IGFsc28gdGhl
+DQo+ID4gcG93ZXIgY29uc3VtcHRpb24gY291bGQgYmUgbG93ZXIuDQo+ID4NCj4gPiBTaWduZWQt
+b2ZmLWJ5OiBZYW4tSHN1YW4gQ2h1YW5nIDx5aGNodWFuZ0ByZWFsdGVrLmNvbT4NCj4gPiAtLS0N
+Cj4gPiAgZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9tYWluLmMgfCA3ICsrKysr
+LS0NCj4gPiAgZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9wcy5oICAgfCAyIC0t
+DQo+ID4gIDIgZmlsZXMgY2hhbmdlZCwgNSBpbnNlcnRpb25zKCspLCA0IGRlbGV0aW9ucygtKQ0K
+PiA+DQo+ID4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgv
+bWFpbi5jDQo+IGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9tYWluLmMNCj4g
+PiBpbmRleCA3YzFiODljNGZiNmMuLmJmZjhhMGIxMjlkOSAxMDA2NDQNCj4gPiAtLS0gYS9kcml2
+ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L21haW4uYw0KPiA+ICsrKyBiL2RyaXZlcnMv
+bmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgvbWFpbi5jDQo+IA0KPiA+IEBAIC0xOTksOCArMjAy
+LDggQEAgc3RhdGljIHZvaWQgcnR3X3dhdGNoX2RvZ193b3JrKHN0cnVjdA0KPiB3b3JrX3N0cnVj
+dCAqd29yaykNCj4gPiAgICAgICAgIGlmIChidXN5X3RyYWZmaWMgIT0gdGVzdF9iaXQoUlRXX0ZM
+QUdfQlVTWV9UUkFGRklDLA0KPiBydHdkZXYtPmZsYWdzKSkNCj4gPiAgICAgICAgICAgICAgICAg
+cnR3X2NvZXhfd2xfc3RhdHVzX2NoYW5nZV9ub3RpZnkocnR3ZGV2KTsNCj4gPg0KPiA+IC0gICAg
+ICAgaWYgKHN0YXRzLT50eF9jbnQgPiBSVFdfTFBTX1RIUkVTSE9MRCB8fA0KPiA+IC0gICAgICAg
+ICAgIHN0YXRzLT5yeF9jbnQgPiBSVFdfTFBTX1RIUkVTSE9MRCkNCj4gPiArICAgICAgIGlmIChz
+dGF0cy0+dHhfY250ID4gcnR3X2xwc190aHJlc2hvbGQgfHwNCj4gPiArICAgICAgICAgICBzdGF0
+cy0+cnhfY250ID4gcnR3X2xwc190aHJlc2hvbGQpDQo+ID4gICAgICAgICAgICAgICAgIHBzX2Fj
+dGl2ZSA9IHRydWU7DQo+ID4gICAgICAgICBlbHNlDQo+ID4gICAgICAgICAgICAgICAgIHBzX2Fj
+dGl2ZSA9IGZhbHNlOw0KPiANCj4gVGhlIG5hbWluZyBvZiAncHNfYWN0aXZlJyBpcyBhIGJpdCBj
+b25mdXNpbmcuIFBlciB0aGUgY29tbWl0IG1lc3NhZ2UsDQo+IGl0IHdpbGwgbGVhdmUgTFBTDQo+
+IGl0IHR4L3J4IGNvdW50ID4gdGhyZXNob2xkLiBCdXQgSSdsbCBiZSBtaXNsZWQgYnkgdGhlIG5h
+bWUgcHNfYWN0aXZlLg0KPiBEb2VzIGl0IG1lYW4gdGhlDQo+IGN1cnJlbnQgY29uZGl0aW9uIGlz
+IFBTIGFjdGl2ZSBhbmQgcmVhZHkgdG8gcG93ZXIgc2xlZXA/IEknZCBsaWtlIHRvDQo+IHJlbmFt
+ZSBpdCB0byBvbGQtZmFzaGlvbmVkDQo+ICdscHNfZW50ZXInIHRvIHJlcHJlc2VudCB0aGUgYWN0
+aW9uIHRoYXQgd291bGQgYmUgdGFrZW4uIEl0IHdvdWxkIGJlDQo+IGVhc2llciBmb3IgbWUgdG8g
+dW5kZXJzdGFuZC4NCj4gDQo+IENocmlzDQo+IA0KDQpJIHRoaW5rIGFjY29yZGluZyB0byB0aGUg
+Y29udGV4dCwgcHNfYWN0aXZlIGlzIGdvb2QgZm9yIG1lLg0KQnV0IEkgY2FuIHN0aWxsIHNlbmQg
+YSBzZXBhcmF0ZSBwYXRjaCB0byByZW5hbWUgaXQuDQpPciB5b3UgY2FuIDopDQoNCllhbi1Ic3Vh
+bg0K
