@@ -2,37 +2,29 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C5F5E862F
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Oct 2019 11:57:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 01073E8796
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Oct 2019 12:56:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730810AbfJ2K5a (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 29 Oct 2019 06:57:30 -0400
-Received: from s3.sipsolutions.net ([144.76.43.62]:33916 "EHLO
-        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726175AbfJ2K5a (ORCPT
+        id S1730377AbfJ2L4Q (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 29 Oct 2019 07:56:16 -0400
+Received: from smail.rz.tu-ilmenau.de ([141.24.186.67]:44169 "EHLO
+        smail.rz.tu-ilmenau.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728432AbfJ2L4Q (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 29 Oct 2019 06:57:30 -0400
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.92.2)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1iPPBm-00079g-HF; Tue, 29 Oct 2019 11:57:26 +0100
-Message-ID: <9086eeae04476adbd957b8d4df0e1a3ba0e7af93.camel@sipsolutions.net>
-Subject: Re: [PATCH v2] 802.11n IBSS: wlan0 stops receiving packets due to
- aggregation after sender reboot
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Krzysztof =?UTF-8?Q?Ha=C5=82asa?= <khalasa@piap.pl>
-Cc:     "David S. Miller" <davem@davemloft.net>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Date:   Tue, 29 Oct 2019 11:57:24 +0100
-In-Reply-To: <m336fbsu2r.fsf@t19.piap.pl>
-References: <m34l02mh71.fsf@t19.piap.pl> <m37e4tjfbu.fsf@t19.piap.pl>
-         <e5b07b4ce51f806ce79b1ae06ff3cbabbaa4873d.camel@sipsolutions.net>
-         <m37e4orkxr.fsf@t19.piap.pl>
-         <4725dcbd6297c74bf949671e7ad48eeeb0ceb0d0.camel@sipsolutions.net>
-         <m336fbsu2r.fsf@t19.piap.pl>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
+        Tue, 29 Oct 2019 07:56:16 -0400
+Received: from localhost.localdomain (unknown [141.24.212.108])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by smail.rz.tu-ilmenau.de (Postfix) with ESMTPSA id DD3D8580063;
+        Tue, 29 Oct 2019 12:56:14 +0100 (CET)
+From:   Markus Theil <markus.theil@tu-ilmenau.de>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless@vger.kernel.org,
+        Markus Theil <markus.theil@tu-ilmenau.de>
+Subject: [PATCH] nl80211: allow more operations for mesh and ad-hoc interfaces
+Date:   Tue, 29 Oct 2019 12:56:02 +0100
+Message-Id: <20191029115602.78990-1-markus.theil@tu-ilmenau.de>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
@@ -40,51 +32,42 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 2019-10-29 at 11:51 +0100, Krzysztof Hałasa wrote:
-> Johannes Berg <johannes@sipsolutions.net> writes:
-> 
-> > > The problem I can see is that the dialog_tokens are 8-bit, way too small
-> > > to eliminate conflicts.
-> > 
-> > Well, they're also per station, we could just randomize the start and
-> > then we'd delete the old session and start a new one, on the receiver.
-> > 
-> > So that would improve robustness somewhat (down to a 1/256 chance to hit
-> > this problem).
-> 
-> That was what I meant. Still, 1/256 seems hardly acceptable to me -
-> unless there is some work around (a short timeout or something similar).
-> Remember that when it doesn't work, it doesn't work - it won't recover
-> until the sequence catches up, which may mean basically forever.
+This change allows mesh and ad-hoc interfaces to change beacons and
+tx queue settings. The direct change of these settings should be ok
+for these kind of interfaces and should maybe only forbidden for
+station-like interface types.
 
-Agree, it just helps in "most" cases to do this. Perhaps we shouldn't do
-this then so that we find the problem more easily...
+Signed-off-by: Markus Theil <markus.theil@tu-ilmenau.de>
+---
+ net/wireless/nl80211.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-> Or, maybe the remote station can request de-aggregation first, so the
-> subsequent aggregation request is always treated as new?
-
-> Alternatively, perhaps the remote can signal that it's a new request and
-> not merely an existing session?
-
-I think we should just implement authentication and reset of the station
-properly, instead of fudging around with aggregation. This is just one
-possible problematic scenario ... what if the station was reconfigured
-with a different number of antennas in the meantime, for example, or
-whatnot. There's a lot of state we keep for each station.
-
-> > That's the situation though - the local station needs to know that it
-> > has in fact *not* seen the same instance of the station, but that the
-> > station has reset and needs to be removed & re-added.
-> 
-> Precisely. And it seems to me that the first time the local station
-> learns of this is when a new, regular, non-aggregated packet arrives.
-> Or, when a new aggregation request arrives.
-
-Well, it should learn about the station when there's a beacon from it,
-or if not ... we have a patch to force a probe request/response cycle so
-we have all the capabilities properly. We should upstream that patch,
-but need to do something to avoid being able to use this for traffic
-amplification attacks.
-
-johannes
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index d1451e731bb8..c4ff8c2033af 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -2923,7 +2923,9 @@ static int nl80211_set_wiphy(struct sk_buff *skb, struct genl_info *info)
+ 			return -EINVAL;
+ 
+ 		if (netdev->ieee80211_ptr->iftype != NL80211_IFTYPE_AP &&
+-		    netdev->ieee80211_ptr->iftype != NL80211_IFTYPE_P2P_GO)
++		    netdev->ieee80211_ptr->iftype != NL80211_IFTYPE_P2P_GO &&
++		    netdev->ieee80211_ptr->iftype != NL80211_IFTYPE_MESH_POINT &&
++		    netdev->ieee80211_ptr->iftype != NL80211_IFTYPE_ADHOC)
+ 			return -EINVAL;
+ 
+ 		if (!netif_running(netdev))
+@@ -4831,7 +4833,9 @@ static int nl80211_set_beacon(struct sk_buff *skb, struct genl_info *info)
+ 	int err;
+ 
+ 	if (dev->ieee80211_ptr->iftype != NL80211_IFTYPE_AP &&
+-	    dev->ieee80211_ptr->iftype != NL80211_IFTYPE_P2P_GO)
++	    dev->ieee80211_ptr->iftype != NL80211_IFTYPE_P2P_GO &&
++	    dev->ieee80211_ptr->iftype != NL80211_IFTYPE_MESH_POINT &&
++	    dev->ieee80211_ptr->iftype != NL80211_IFTYPE_ADHOC)
+ 		return -EOPNOTSUPP;
+ 
+ 	if (!rdev->ops->change_beacon)
+-- 
+2.23.0
 
