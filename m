@@ -2,104 +2,87 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BA640E84AD
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Oct 2019 10:47:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 112A1E84B9
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Oct 2019 10:52:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728704AbfJ2JrL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 29 Oct 2019 05:47:11 -0400
-Received: from mail-wr1-f66.google.com ([209.85.221.66]:41937 "EHLO
-        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728053AbfJ2JrK (ORCPT
+        id S1729140AbfJ2JwI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 29 Oct 2019 05:52:08 -0400
+Received: from mail-io1-f70.google.com ([209.85.166.70]:53039 "EHLO
+        mail-io1-f70.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728425AbfJ2JwH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 29 Oct 2019 05:47:10 -0400
-Received: by mail-wr1-f66.google.com with SMTP id p4so12851007wrm.8
-        for <linux-wireless@vger.kernel.org>; Tue, 29 Oct 2019 02:47:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ncentric-com.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding:content-language;
-        bh=89r1rNHEMVi51X8QptG2oJ8PZcM46Qw8VvMwF8b1wgo=;
-        b=wiEzjzXZjxbDnTURVXFofslvFJq1OnqyzLxdVOYTiEK4BkKtV9oSdFm/F24JGKSKqH
-         sJ3VU9bJai0Nd261G++OtTT/wZhXe9FuJ8SofZb0B8j7NngXjv6qFTH9tEImIwGHKg0/
-         opCMiE1lfo6WxkMYwfiiEsAN4QwZAW+TQuus/EtEwd5tXjEgSmRdWs4ixZtIJyktgOOt
-         zuBzBT34xzcKnKe1CK5OVdeUze3ktefiP7LhxMbKcNN4dUmRBYHYDmEcCp47ykpm4zNH
-         y7jpULJazBd3Mq6DftIH/r7aUsS3Nsx0ryO+8ttaIN5ZlnokpEE4MAjYzPuRE1NPnTKk
-         3uuw==
+        Tue, 29 Oct 2019 05:52:07 -0400
+Received: by mail-io1-f70.google.com with SMTP id b2so10684039iod.19
+        for <linux-wireless@vger.kernel.org>; Tue, 29 Oct 2019 02:52:05 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding
-         :content-language;
-        bh=89r1rNHEMVi51X8QptG2oJ8PZcM46Qw8VvMwF8b1wgo=;
-        b=ksFrJzql2aQyN815lU7oilxKjtKNox0O1/yUIGA6CVHvLIIhB+4e6/8J4bqY6QxSIM
-         5xT4zYNZsNLJrBpGNBNX6chD05oj2W8RsXDDN5D6kz8R6XqWzJdn/0qoCrcPs8dgq2r/
-         hNdolWHpgkASMnbWrLmyTd+WuLDCrK0ab8viT2TgkTa3Mi2CUp2pswYEljxYYgcKLlYl
-         rVZYEgU7TqQb9JNQR5juN8RMkNxrjFS/37FKogaccgvoKP+6PjXmbAcIwpRy70M4LsP+
-         8oRW87H5jpNV27tLYMCfsZOO+NjMHOsrTCJ87+YMpyJk4cDBTffyTywGSHNYf0E+6klm
-         9j5Q==
-X-Gm-Message-State: APjAAAVSCrWMf+PAXGJzM9o8BL/R9UVvb7f+0VCIF4Pbf8b4LZ+Bzud7
-        pSdBK2XCzCq/g3FgjJOL9sj0SA==
-X-Google-Smtp-Source: APXvYqyr6dueVY98vyKdLQa7Cf+zesIqhhu9E22W8jO6/0960zTgfomp23nR4r174U6ZncxgF8OO4g==
-X-Received: by 2002:adf:e850:: with SMTP id d16mr18218775wrn.251.1572342428276;
-        Tue, 29 Oct 2019 02:47:08 -0700 (PDT)
-Received: from [192.168.3.176] (d515300d8.static.telenet.be. [81.83.0.216])
-        by smtp.gmail.com with ESMTPSA id v6sm15209634wru.72.2019.10.29.02.47.07
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 29 Oct 2019 02:47:07 -0700 (PDT)
-Subject: Re: [PATCH v2] 802.11n IBSS: wlan0 stops receiving packets due to
- aggregation after sender reboot
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        =?UTF-8?Q?Krzysztof_Ha=c5=82asa?= <khalasa@piap.pl>
-Cc:     "David S. Miller" <davem@davemloft.net>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <m34l02mh71.fsf@t19.piap.pl> <m37e4tjfbu.fsf@t19.piap.pl>
- <e5b07b4ce51f806ce79b1ae06ff3cbabbaa4873d.camel@sipsolutions.net>
- <30465e05-3465-f496-d57f-5e115551f5cb@ncentric.com>
- <dbbc8c3e898ec499f30a6ac1f262666ced6905fb.camel@sipsolutions.net>
-From:   Koen Vandeputte <koen.vandeputte@ncentric.com>
-Message-ID: <6967a862-c040-565a-3644-c804b188d13e@ncentric.com>
-Date:   Tue, 29 Oct 2019 10:47:07 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+        h=x-gm-message-state:mime-version:date:in-reply-to:message-id:subject
+         :from:to;
+        bh=KhTni5i4fWNYOrXXdKRZL7n4/+Q2oXySWZR+SGDk+1M=;
+        b=ry8isDi5M+8YBfhvYxmVqbwVacxArSY4w+8yTpjavj2/pjbvwp2vXms5LvCyHSStGx
+         VHRfywrbZbC1MH12z/Xce0ZeNvVriiL7MEQIkqh8P08PZn4aoNRkctg6TpTfgTqPmd2Z
+         qBKmGFZ1gIp7LYCvoefeymNx31CYdXhxWgLn/+6AOBgAlQHH0Q7c7JOox/EDFA8Bda93
+         PjcJvajSle++v+Qbb22wKt5Vt5kLx78QGRNvIHmPyk7PVHMS/4FKkn/Mqv4LlVJIEOvo
+         wX/CPxr2lTEvK8IZ0MGDXCEpjJYfcaZYgpDN4kaqcRikpyJRbjx7UOOyj6UYA/ZGYrbm
+         g3Ow==
+X-Gm-Message-State: APjAAAVLEIvu/pGZ/bbx5Zw8+MMZV7ne8MUZ8Su+b0rVHR+tbfwxjFgE
+        oBIb9CO0SLuPTxY7wMu1UadoAixTnAA8Ui8m+se0bbWcTo8I
+X-Google-Smtp-Source: APXvYqxJ9xrCQYDM3zjASN2O14TUYOL1Vq099EpzYllPSctTMS5wHjd4pXl9VmehlTUaytj82L6S0Af4Z1CPJkWAD5Rc60MY47Nk
 MIME-Version: 1.0
-In-Reply-To: <dbbc8c3e898ec499f30a6ac1f262666ced6905fb.camel@sipsolutions.net>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+X-Received: by 2002:a92:8dd9:: with SMTP id w86mr25132844ill.93.1572342721346;
+ Tue, 29 Oct 2019 02:52:01 -0700 (PDT)
+Date:   Tue, 29 Oct 2019 02:52:00 -0700
+In-Reply-To: <000000000000044a7f0595fbaf2c@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <0000000000006db1370596099128@google.com>
+Subject: Re: INFO: trying to register non-static key in bond_3ad_update_ad_actor_settings
+From:   syzbot <syzbot+8da67f407bcba2c72e6e@syzkaller.appspotmail.com>
+To:     a@unstable.cc, alex.aring@gmail.com, allison@lohutok.net,
+        andrew@lunn.ch, andy@greyhouse.net, ap420073@gmail.com,
+        aroulin@cumulusnetworks.com, ast@domdv.de,
+        b.a.t.m.a.n@lists.open-mesh.org, bridge@lists.linux-foundation.org,
+        cleech@redhat.com, daniel@iogearbox.net, davem@davemloft.net,
+        dcaratti@redhat.com, dsa@cumulusnetworks.com, edumazet@google.com,
+        f.fainelli@gmail.com, fw@strlen.de, gbastien@versatic.net,
+        gregkh@linuxfoundation.org, gustavo@embeddedor.com,
+        haiyangz@microsoft.com, idosch@mellanox.com, info@metux.net,
+        ivan.khoronzhuk@linaro.org, j.vosburgh@gmail.com, j@w1.fi,
+        jakub.kicinski@netronome.com, jhs@mojatatu.com, jiri@mellanox.com,
+        jiri@resnulli.us, johan.hedberg@gmail.com, johannes.berg@intel.com,
+        john.hurley@netronome.com, jwi@linux.ibm.com,
+        kstewart@linuxfoundation.org, kvalo@codeaurora.org,
+        kys@microsoft.com, linmiaohe@huawei.com,
+        linux-bluetooth@vger.kernel.org, linux-hams@vger.kernel.org,
+        linux-hyperv@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-ppp@vger.kernel.org, linux-wireless@vger.kernel.org,
+        linux-wpan@vger.kernel.org, liuhangbin@gmail.com,
+        marcel@holtmann.org, mareklindner@neomailbox.ch, mcroce@redhat.com
+Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+syzbot has bisected this bug to:
 
-On 29.10.19 10:03, Johannes Berg wrote:
-> On Tue, 2019-10-29 at 09:41 +0100, Koen Vandeputte wrote:
->
->> I can confirm the issue as I'm also seeing this sometimes in the field here.
->>
->> Sometimes when a devices goes out of range and then re-enters,
->> the link refuses to "come up", as in rx looks to be "stuck" without any
->> reports in system log or locking issues (lockdep enabled)
-> Right. I've recently debugged this due to issues in distributed
-> beaconing (rather than moving in/out of range), but I guess it would be
-> relatively simple to reproduce this with wmediumd, if that can be
-> controlled dynamically?
->
-> What kernel are you running? You could check if you have
->
-> 95697f9907bf ("mac80211: accept deauth frames in IBSS mode")
-> 4b08d1b6a994 ("mac80211: IBSS: send deauth when expiring inactive STAs")
->
-> which might help somewhat, but don't fully cover the case of moving out
-> of range.
->
-> johannes
->
-I'm running OpenWrt (kernel 4.14.150 with 4.19.79 mac80211)
-I noticed these fixes last week and made a build 2 days ago with them 
-backported to it.
-Running in the field on roughly 4 devices since a day.
+commit ab92d68fc22f9afab480153bd82a20f6e2533769
+Author: Taehee Yoo <ap420073@gmail.com>
+Date:   Mon Oct 21 18:47:51 2019 +0000
 
-Koen
+     net: core: add generic lockdep keys
 
+bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=12b54d70e00000
+start commit:   60c1769a Add linux-next specific files for 20191028
+git tree:       linux-next
+final crash:    https://syzkaller.appspot.com/x/report.txt?x=11b54d70e00000
+console output: https://syzkaller.appspot.com/x/log.txt?x=16b54d70e00000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=cb86688f30db053d
+dashboard link: https://syzkaller.appspot.com/bug?extid=8da67f407bcba2c72e6e
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=14d43a04e00000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=16be3b9ce00000
+
+Reported-by: syzbot+8da67f407bcba2c72e6e@syzkaller.appspotmail.com
+Fixes: ab92d68fc22f ("net: core: add generic lockdep keys")
+
+For information about bisection process see: https://goo.gl/tpsmEJ#bisection
