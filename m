@@ -2,54 +2,53 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 15864E8491
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Oct 2019 10:40:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BA640E84AD
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Oct 2019 10:47:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729994AbfJ2JkN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 29 Oct 2019 05:40:13 -0400
-Received: from mail-wm1-f66.google.com ([209.85.128.66]:55810 "EHLO
-        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728686AbfJ2JkM (ORCPT
+        id S1728704AbfJ2JrL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 29 Oct 2019 05:47:11 -0400
+Received: from mail-wr1-f66.google.com ([209.85.221.66]:41937 "EHLO
+        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728053AbfJ2JrK (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 29 Oct 2019 05:40:12 -0400
-Received: by mail-wm1-f66.google.com with SMTP id g24so1743926wmh.5
-        for <linux-wireless@vger.kernel.org>; Tue, 29 Oct 2019 02:40:08 -0700 (PDT)
+        Tue, 29 Oct 2019 05:47:10 -0400
+Received: by mail-wr1-f66.google.com with SMTP id p4so12851007wrm.8
+        for <linux-wireless@vger.kernel.org>; Tue, 29 Oct 2019 02:47:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=ncentric-com.20150623.gappssmtp.com; s=20150623;
         h=subject:to:cc:references:from:message-id:date:user-agent
          :mime-version:in-reply-to:content-transfer-encoding:content-language;
-        bh=2Aa5j2eV/0WKF03bDFsIwtghRGSKb/OqNGsEyVUDvWw=;
-        b=b7Wvn9TYfGj9kmhJZFlMf0XSxya4fT2WHQUdC9GD4TP99uxK3aR55urIElBfE0YGRc
-         SrdjJ0UtTiQhsA0a5PXzKo1xDTLywFg8w4FbuhuEdWJvVkYXmR3mPL47gc8cGG1HL/So
-         zZhhMnoQai5MOJnRY3CV0itPx0qrD53DBC0gujZ6bJYV2l4xbhLjimkVKFYU0Fem2Bv8
-         I4XmrSFAFDF+K2VlY2I0OglJQKSjNP/Dag6k9dWCMctxRdXdaXRp+OvaGWlfILAkocwT
-         3uCbPr5qTQcw4MYPyH5Yhgd3VreRJptew48RprMLz1kRyL6CvMA5+hm7GL1q+8UEVrVj
-         F+sw==
+        bh=89r1rNHEMVi51X8QptG2oJ8PZcM46Qw8VvMwF8b1wgo=;
+        b=wiEzjzXZjxbDnTURVXFofslvFJq1OnqyzLxdVOYTiEK4BkKtV9oSdFm/F24JGKSKqH
+         sJ3VU9bJai0Nd261G++OtTT/wZhXe9FuJ8SofZb0B8j7NngXjv6qFTH9tEImIwGHKg0/
+         opCMiE1lfo6WxkMYwfiiEsAN4QwZAW+TQuus/EtEwd5tXjEgSmRdWs4ixZtIJyktgOOt
+         zuBzBT34xzcKnKe1CK5OVdeUze3ktefiP7LhxMbKcNN4dUmRBYHYDmEcCp47ykpm4zNH
+         y7jpULJazBd3Mq6DftIH/r7aUsS3Nsx0ryO+8ttaIN5ZlnokpEE4MAjYzPuRE1NPnTKk
+         3uuw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:subject:to:cc:references:from:message-id:date
          :user-agent:mime-version:in-reply-to:content-transfer-encoding
          :content-language;
-        bh=2Aa5j2eV/0WKF03bDFsIwtghRGSKb/OqNGsEyVUDvWw=;
-        b=s/D4f9dcWmv46OaaeRDUMIj1wRFeP/U6VyEYdZHPERL2Ujs26V7Qjae4nMHIznSTYg
-         CWcjOwJW7HqMJqkYk/f/QVatYv/OIUb0PJYvLEf9Hd72TJEVpLDksv9rynyQCuVm+T2K
-         zesVL/UMgqax2XwB5FZYLMXNnS2jCZMjgVyYE0tmxkIyrT73FuDxiCYggHneewXhzmiT
-         IdbGCkmvbovG+WVb3wzO0Cr954Lz2qZzzSwG+GGdfUbFWLSdyv0jECWrckeBVWE6n6Bs
-         xnyi70ehn2acnZ4kclNO3Z5DD4fc5lr3zqD53GCBvVn62kvwXIw+a4/p1qFe3jCmSgeA
-         IHIg==
-X-Gm-Message-State: APjAAAWqKjmZC0E+oAfbZhc3VOaM2D5dxhSas17kVxqdU1gyCZCBvCsa
-        3UjQnY6XB6l49SXH8aEPcuVqv9eniBk=
-X-Google-Smtp-Source: APXvYqybfJwsbSSLUwelX1MCkNxRbHTiindnv/Z3xFpqXx2ui62l5VksJqY5AC/XaTjKFMQQK0R9OA==
-X-Received: by 2002:a1c:ed0e:: with SMTP id l14mr3125989wmh.102.1572342008103;
-        Tue, 29 Oct 2019 02:40:08 -0700 (PDT)
+        bh=89r1rNHEMVi51X8QptG2oJ8PZcM46Qw8VvMwF8b1wgo=;
+        b=ksFrJzql2aQyN815lU7oilxKjtKNox0O1/yUIGA6CVHvLIIhB+4e6/8J4bqY6QxSIM
+         5xT4zYNZsNLJrBpGNBNX6chD05oj2W8RsXDDN5D6kz8R6XqWzJdn/0qoCrcPs8dgq2r/
+         hNdolWHpgkASMnbWrLmyTd+WuLDCrK0ab8viT2TgkTa3Mi2CUp2pswYEljxYYgcKLlYl
+         rVZYEgU7TqQb9JNQR5juN8RMkNxrjFS/37FKogaccgvoKP+6PjXmbAcIwpRy70M4LsP+
+         8oRW87H5jpNV27tLYMCfsZOO+NjMHOsrTCJ87+YMpyJk4cDBTffyTywGSHNYf0E+6klm
+         9j5Q==
+X-Gm-Message-State: APjAAAVSCrWMf+PAXGJzM9o8BL/R9UVvb7f+0VCIF4Pbf8b4LZ+Bzud7
+        pSdBK2XCzCq/g3FgjJOL9sj0SA==
+X-Google-Smtp-Source: APXvYqyr6dueVY98vyKdLQa7Cf+zesIqhhu9E22W8jO6/0960zTgfomp23nR4r174U6ZncxgF8OO4g==
+X-Received: by 2002:adf:e850:: with SMTP id d16mr18218775wrn.251.1572342428276;
+        Tue, 29 Oct 2019 02:47:08 -0700 (PDT)
 Received: from [192.168.3.176] (d515300d8.static.telenet.be. [81.83.0.216])
-        by smtp.gmail.com with ESMTPSA id v8sm16115329wra.79.2019.10.29.02.40.07
+        by smtp.gmail.com with ESMTPSA id v6sm15209634wru.72.2019.10.29.02.47.07
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 29 Oct 2019 02:40:07 -0700 (PDT)
+        Tue, 29 Oct 2019 02:47:07 -0700 (PDT)
 Subject: Re: [PATCH v2] 802.11n IBSS: wlan0 stops receiving packets due to
  aggregation after sender reboot
-To:     Sebastian Gottschall <s.gottschall@newmedia-net.de>,
-        Johannes Berg <johannes@sipsolutions.net>,
+To:     Johannes Berg <johannes@sipsolutions.net>,
         =?UTF-8?Q?Krzysztof_Ha=c5=82asa?= <khalasa@piap.pl>
 Cc:     "David S. Miller" <davem@davemloft.net>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
@@ -57,16 +56,16 @@ Cc:     "David S. Miller" <davem@davemloft.net>,
 References: <m34l02mh71.fsf@t19.piap.pl> <m37e4tjfbu.fsf@t19.piap.pl>
  <e5b07b4ce51f806ce79b1ae06ff3cbabbaa4873d.camel@sipsolutions.net>
  <30465e05-3465-f496-d57f-5e115551f5cb@ncentric.com>
- <b51030e8-7c56-0e24-4454-ff70f83d5ae8@newmedia-net.de>
+ <dbbc8c3e898ec499f30a6ac1f262666ced6905fb.camel@sipsolutions.net>
 From:   Koen Vandeputte <koen.vandeputte@ncentric.com>
-Message-ID: <8c4325e2-6ec6-59f1-89df-36392f674530@ncentric.com>
-Date:   Tue, 29 Oct 2019 10:40:07 +0100
+Message-ID: <6967a862-c040-565a-3644-c804b188d13e@ncentric.com>
+Date:   Tue, 29 Oct 2019 10:47:07 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.9.0
 MIME-Version: 1.0
-In-Reply-To: <b51030e8-7c56-0e24-4454-ff70f83d5ae8@newmedia-net.de>
+In-Reply-To: <dbbc8c3e898ec499f30a6ac1f262666ced6905fb.camel@sipsolutions.net>
 Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Content-Language: en-US
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
@@ -74,87 +73,33 @@ List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 
-On 29.10.19 09:58, Sebastian Gottschall wrote:
-> 35 km? for 802.11n with ht40 this is out of the ack timing range the 
-> chipset supports. so this should be considered at any troubles with 
-> connections
+On 29.10.19 10:03, Johannes Berg wrote:
+> On Tue, 2019-10-29 at 09:41 +0100, Koen Vandeputte wrote:
 >
-(Please don't top-post)
-
-When we know a link can exceed ~ 21km, it's set to HT20 for this reason.
+>> I can confirm the issue as I'm also seeing this sometimes in the field here.
+>>
+>> Sometimes when a devices goes out of range and then re-enters,
+>> the link refuses to "come up", as in rx looks to be "stuck" without any
+>> reports in system log or locking issues (lockdep enabled)
+> Right. I've recently debugged this due to issues in distributed
+> beaconing (rather than moving in/out of range), but I guess it would be
+> relatively simple to reproduce this with wmediumd, if that can be
+> controlled dynamically?
+>
+> What kernel are you running? You could check if you have
+>
+> 95697f9907bf ("mac80211: accept deauth frames in IBSS mode")
+> 4b08d1b6a994 ("mac80211: IBSS: send deauth when expiring inactive STAs")
+>
+> which might help somewhat, but don't fully cover the case of moving out
+> of range.
+>
+> johannes
+>
+I'm running OpenWrt (kernel 4.14.150 with 4.19.79 mac80211)
+I noticed these fixes last week and made a build 2 days ago with them 
+backported to it.
+Running in the field on roughly 4 devices since a day.
 
 Koen
 
-> Am 29.10.2019 um 09:41 schrieb Koen Vandeputte:
->>
->> On 28.10.19 13:21, Johannes Berg wrote:
->>> On Fri, 2019-10-25 at 12:21 +0200, Krzysztof Hałasa wrote:
->>>> Fix a bug where the mac80211 RX aggregation code sets a new 
->>>> aggregation
->>>> "session" at the remote station's request, but the head_seq_num
->>>> (the sequence number the receiver expects to receive) isn't reset.
->>>>
->>>> Spotted on a pair of AR9580 in IBSS mode.
->>>>
->>>> Signed-off-by: Krzysztof Halasa <khalasa@piap.pl>
->>>>
->>>> diff --git a/net/mac80211/agg-rx.c b/net/mac80211/agg-rx.c
->>>> index 4d1c335e06e5..67733bd61297 100644
->>>> --- a/net/mac80211/agg-rx.c
->>>> +++ b/net/mac80211/agg-rx.c
->>>> @@ -354,10 +354,13 @@ void ___ieee80211_start_rx_ba_session(struct 
->>>> sta_info *sta,
->>>>                */
->>>>               rcu_read_lock();
->>>>               tid_rx = rcu_dereference(sta->ampdu_mlme.tid_rx[tid]);
->>>> -            if (tid_rx && tid_rx->timeout == timeout)
->>>> +            if (tid_rx && tid_rx->timeout == timeout) {
->>>> +                tid_rx->ssn = start_seq_num;
->>>> +                tid_rx->head_seq_num = start_seq_num;
->>>>                   status = WLAN_STATUS_SUCCESS;
->>> This is wrong, this is the case of *updating an existing session*, we
->>> must not reset the head SN then.
->>>
->>> I think you just got very lucky (or unlucky) to have the same dialog
->>> token, because we start from 0 - maybe we should initialize it to a
->>> random value to flush out such issues.
->>>
->>> Really what I think probably happened is that one of your stations lost
->>> the connection to the other, and didn't tell it about it in any way 
->>> - so
->>> the other kept all the status alive.
->>>
->>> I suspect to make all this work well we need to not only have the fixes
->>> I made recently to actually send and parse deauth frames, but also to
->>> even send an auth and reset the state when we receive that, so if we
->>> move out of range and even the deauth frame is lost, we can still reset
->>> properly.
->>>
->>> In any case, this is not the right approach - we need to handle the
->>> "lost connection" case better I suspect, but since you don't say what
->>> really happened I don't really know that that's what you're seeing.
->>>
->>> johannes
->>
->> Hi all,
->>
->> I can confirm the issue as I'm also seeing this sometimes in the 
->> field here.
->>
->> Sometimes when a devices goes out of range and then re-enters,
->> the link refuses to "come up", as in rx looks to be "stuck" without 
->> any reports in system log or locking issues (lockdep enabled)
->>
->> I have dozens of devices installed offshore (802.11n based), both on 
->> static and moving assets,
->> which cover from short (250m) up to very long distances (~35km)
->>
->> So .. while there is some momentum for this issue,
->> I'm more than happy to provide extensive testing should fixes be 
->> posted regarding IBSS in general.
->>
->> Regards,
->>
->> Koen
->>
->>
