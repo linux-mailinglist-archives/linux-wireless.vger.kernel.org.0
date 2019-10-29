@@ -2,27 +2,30 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 75BCFE8460
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Oct 2019 10:25:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3825BE848E
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Oct 2019 10:38:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731938AbfJ2JZe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 29 Oct 2019 05:25:34 -0400
-Received: from s3.sipsolutions.net ([144.76.43.62]:60850 "EHLO
-        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731810AbfJ2JZe (ORCPT
+        id S1728609AbfJ2JiN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 29 Oct 2019 05:38:13 -0400
+Received: from smail.rz.tu-ilmenau.de ([141.24.186.67]:43490 "EHLO
+        smail.rz.tu-ilmenau.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726025AbfJ2JiM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 29 Oct 2019 05:25:34 -0400
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.92.2)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1iPNkq-0004yD-Du; Tue, 29 Oct 2019 10:25:32 +0100
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     linux-wireless@vger.kernel.org
-Cc:     Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH] mac80211: sta: randomize BA session dialog token allocator
-Date:   Tue, 29 Oct 2019 10:25:25 +0100
-Message-Id: <20191029102515.0f0bf4af8f8c.Ia9fe90e75977caa1b6960c3f1438c9e3b4ee7e3f@changeid>
-X-Mailer: git-send-email 2.20.1
+        Tue, 29 Oct 2019 05:38:12 -0400
+X-Greylist: delayed 460 seconds by postgrey-1.27 at vger.kernel.org; Tue, 29 Oct 2019 05:38:12 EDT
+Received: from localhost.localdomain (unknown [141.24.212.108])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by smail.rz.tu-ilmenau.de (Postfix) with ESMTPSA id E1CA058006C;
+        Tue, 29 Oct 2019 10:30:30 +0100 (CET)
+From:   Markus Theil <markus.theil@tu-ilmenau.de>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless@vger.kernel.org,
+        Markus Theil <markus.theil@tu-ilmenau.de>
+Subject: [PATCH] nl80211: fix validation of mesh path nexthop
+Date:   Tue, 29 Oct 2019 10:30:03 +0100
+Message-Id: <20191029093003.10355-1-markus.theil@tu-ilmenau.de>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
@@ -30,43 +33,28 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+Mesh path nexthop should be a ethernet address, but current validation
+checks against 4 byte integers.
 
-We currently always start the dialog token generator at zero,
-so the first dialog token we use is always 1. This would be
-OK if we had a perfect guarantee that we always do a proper
-deauth/re-auth handshake, but in IBSS mode this doesn't always
-happen properly.
-
-To make problems with block ack (aggregation) sessions getting
-stuck less likely, randomize the dialog token so if we start a
-new session but the peer still has old state for us, it can
-better detect this.
-
-This is really just a workaround to make things a bit more
-robust than they are now - a better fix would be to do a full
-authentication handshake in IBSS mode upon having discovered a
-new station, and on the receiver resetting the state (removing
-and re-adding the station) on receiving the authentication
-packet.
-
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 2ec600d672e74 ("nl80211/cfg80211: support for mesh, sta dumping")
+Signed-off-by: Markus Theil <markus.theil@tu-ilmenau.de>
 ---
- net/mac80211/sta_info.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/wireless/nl80211.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
-index bd11fef2139f..b6c8e6291920 100644
---- a/net/mac80211/sta_info.c
-+++ b/net/mac80211/sta_info.c
-@@ -324,6 +324,7 @@ struct sta_info *sta_info_alloc(struct ieee80211_sub_if_data *sdata,
- 	INIT_WORK(&sta->drv_deliver_wk, sta_deliver_ps_frames);
- 	INIT_WORK(&sta->ampdu_mlme.work, ieee80211_ba_session_work);
- 	mutex_init(&sta->ampdu_mlme.mtx);
-+	sta->ampdu_mlme.dialog_token_allocator = prandom_u32_max(U8_MAX);
- #ifdef CONFIG_MAC80211_MESH
- 	if (ieee80211_vif_is_mesh(&sdata->vif)) {
- 		sta->mesh = kzalloc(sizeof(*sta->mesh), gfp);
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index d1451e731bb8..7186cb653c75 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -393,7 +393,7 @@ const struct nla_policy nl80211_policy[NUM_NL80211_ATTR] = {
+ 	[NL80211_ATTR_MNTR_FLAGS] = { /* NLA_NESTED can't be empty */ },
+ 	[NL80211_ATTR_MESH_ID] = { .type = NLA_BINARY,
+ 				   .len = IEEE80211_MAX_MESH_ID_LEN },
+-	[NL80211_ATTR_MPATH_NEXT_HOP] = { .type = NLA_U32 },
++	[NL80211_ATTR_MPATH_NEXT_HOP] = NLA_POLICY_ETH_ADDR_COMPAT,
+ 
+ 	[NL80211_ATTR_REG_ALPHA2] = { .type = NLA_STRING, .len = 2 },
+ 	[NL80211_ATTR_REG_RULES] = { .type = NLA_NESTED },
 -- 
-2.20.1
+2.23.0
 
