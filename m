@@ -2,175 +2,208 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 00CE7E896A
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Oct 2019 14:25:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E82F0E899C
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Oct 2019 14:35:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732037AbfJ2NZj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 29 Oct 2019 09:25:39 -0400
-Received: from mail-il1-f195.google.com ([209.85.166.195]:34649 "EHLO
-        mail-il1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725776AbfJ2NZj (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 29 Oct 2019 09:25:39 -0400
-Received: by mail-il1-f195.google.com with SMTP id a13so11332954ilp.1
-        for <linux-wireless@vger.kernel.org>; Tue, 29 Oct 2019 06:25:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=EViMv99KOuHMGIzwksDwnv00hlPPpsoHFS8tDyvIgps=;
-        b=hD2fvgDSJnc+gK6+VYkRh57zejntRFszKw9TudI1cDEsVM47YB3y/fs+0N3k0OF10H
-         X7fm9fAdlS0wMLN/eR4hUdTJO+ns0hNqGHF+WaPUoJ90GgtlWFyR+cHKRcWgJXEOR73C
-         pVlNybs6m4WRfoZwYyX7M3GIcrmfoDlN35YTMu+Dfl6jC4Fb9JrSNvC2Ib66GI+gevIU
-         gqaXnzwASnZmEO3VK9HGThzccU41Pavj204Qm+9fNcUPIVpFOLliFzqDTfrTntUrxqal
-         4cc6xCT7PXNvUEifrDma6DU0QkVzylNtBmU/S9m+i8vfMSiUbfw9mK/XmjezFBD8Kbp3
-         3KpA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=EViMv99KOuHMGIzwksDwnv00hlPPpsoHFS8tDyvIgps=;
-        b=JDOZ9Tk0KMcSV8Fj/hlc+SGYbYsZmIE29fKtJIIfk9DzZndPpZz8lt4nAGo7tzfy35
-         ubGbSI+b2uOb7vWC6BJbQ7ovpmvZPeSE/KOO83t6QqG2iUOXirryM7tC0UfFjUXDHlKY
-         gwnBSIjS6XEtN+7YUxnDBwC/5ebNMPv+ONRFT44fYLLvgVscKTNv8WAxkxEUtS62obtS
-         /P2acQZx2QNMR4E/K+QZ3KxNe6Fet7PrcESNANtRVuyH01U0uvXsLD8NZ0SL8bqvjj60
-         pSORseumPBr6QPhfjUg9C/nBw8bKLR5zrkZ9TJXlAoUapHVoHul4/uPy3cP6o856ciM/
-         vtZA==
-X-Gm-Message-State: APjAAAXV+cAZJk7gZkE4ou3HroFojd75K71x5iw5Ea/aPOv2ruEJQS7Y
-        PzWVVwCxVUvAerxzK+5MveBjuYtCwBNh+5bz89c=
-X-Google-Smtp-Source: APXvYqwzDAiT48/1hcZqor2HGPiGoK57G7m6JT/eAJeHv7iWx1iJB6dCkFtFxP50i5tNBtgaO1pFKj8dkebn8cIIC+s=
-X-Received: by 2002:a92:405a:: with SMTP id n87mr8700278ila.16.1572355538093;
- Tue, 29 Oct 2019 06:25:38 -0700 (PDT)
+        id S2388660AbfJ2NfL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 29 Oct 2019 09:35:11 -0400
+Received: from mail.kernel.org ([198.145.29.99]:33350 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2388325AbfJ2NfK (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 29 Oct 2019 09:35:10 -0400
+Received: from localhost.localdomain.com (unknown [176.229.194.15])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 4688420874;
+        Tue, 29 Oct 2019 13:35:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1572356109;
+        bh=4OfIOKhwnpG0sc/SXINhWpaClpb0H1A5gZiNBXuLI3A=;
+        h=From:To:Cc:Subject:Date:From;
+        b=AP3jNrgIuwGr5Adp/7ZNv9cnZwGX0UnByf32rZG1sySElZ6R1wvJVl9NH6J0sWUa3
+         WmGHlErqoqCGN10da5gz/trg2rRGdSsJlE+Z3eQK8PgFPsKVtCq0ZwFXlxqbEcSsJy
+         NvxHY6667emOEsgUWVp9S9kKlkDAdTxD+CjS6N10=
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
+        sgruszka@redhat.com
+Subject: [PATCH] mt76: use mt76_dev in mt76_is_{mmio,usb}
+Date:   Tue, 29 Oct 2019 14:34:44 +0100
+Message-Id: <dc879af3f22e3cdc34eb205145d48ad060c04b04.1572354715.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-References: <0851d8f413ed0086a2734c06e6e4c203b63cd017.1572275706.git.lorenzo@kernel.org>
-In-Reply-To: <0851d8f413ed0086a2734c06e6e4c203b63cd017.1572275706.git.lorenzo@kernel.org>
-From:   Sid Hayn <sidhayn@gmail.com>
-Date:   Tue, 29 Oct 2019 09:24:36 -0400
-Message-ID: <CAM0KTbB8QUJBbbQ-uU_3uh8y3CJ7=W+d7nPxJhrN=6_J09R=zw@mail.gmail.com>
-Subject: Re: [PATCH] mt76: mt76u: rely on usb_interface instead of usb_dev
-To:     Lorenzo Bianconi <lorenzo@kernel.org>
-Cc:     Felix Fietkau <nbd@nbd.name>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
-        Stanislaw Gruszka <sgruszka@redhat.com>, ZeroBeat@gmx.de
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Tested-By: Zero_Chaos <sidhayn@gmail.com>
+Convert mt76_is_mmio and mt76_is_usb to rely on mt76_dev instead of
+mt76x02_dev since this is a property not strictly related to hw chipset
+and it will be more reusable
 
-Works wonderfully, thanks Lorenzo!
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+ drivers/net/wireless/mediatek/mt76/mt76.h          |  4 ++--
+ drivers/net/wireless/mediatek/mt76/mt76x0/main.c   |  4 ++--
+ drivers/net/wireless/mediatek/mt76/mt76x0/mt76x0.h |  2 +-
+ drivers/net/wireless/mediatek/mt76/mt76x0/phy.c    | 12 ++++++------
+ drivers/net/wireless/mediatek/mt76/mt76x02_mcu.c   |  2 +-
+ drivers/net/wireless/mediatek/mt76/mt76x02_util.c  |  6 +++---
+ 6 files changed, 15 insertions(+), 15 deletions(-)
 
--Zero_Chaos
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
+index 5644df793450..d22d673e3c5d 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76.h
+@@ -49,8 +49,8 @@ struct mt76_bus_ops {
+ 	enum mt76_bus_type type;
+ };
+ 
+-#define mt76_is_usb(dev) ((dev)->mt76.bus->type == MT76_BUS_USB)
+-#define mt76_is_mmio(dev) ((dev)->mt76.bus->type == MT76_BUS_MMIO)
++#define mt76_is_usb(dev) ((dev)->bus->type == MT76_BUS_USB)
++#define mt76_is_mmio(dev) ((dev)->bus->type == MT76_BUS_MMIO)
+ 
+ enum mt76_txq_id {
+ 	MT_TXQ_VO = IEEE80211_AC_VO,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x0/main.c b/drivers/net/wireless/mediatek/mt76/mt76x0/main.c
+index f7682bd2e5a8..b2ccf50512dc 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x0/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x0/main.c
+@@ -13,7 +13,7 @@ mt76x0_set_channel(struct mt76x02_dev *dev, struct cfg80211_chan_def *chandef)
+ {
+ 	cancel_delayed_work_sync(&dev->cal_work);
+ 	mt76x02_pre_tbtt_enable(dev, false);
+-	if (mt76_is_mmio(dev))
++	if (mt76_is_mmio(&dev->mt76))
+ 		tasklet_disable(&dev->dfs_pd.dfs_tasklet);
+ 
+ 	mt76_set_channel(&dev->mt76);
+@@ -22,7 +22,7 @@ mt76x0_set_channel(struct mt76x02_dev *dev, struct cfg80211_chan_def *chandef)
+ 	mt76x02_mac_cc_reset(dev);
+ 	mt76x02_edcca_init(dev);
+ 
+-	if (mt76_is_mmio(dev)) {
++	if (mt76_is_mmio(&dev->mt76)) {
+ 		mt76x02_dfs_init_params(dev);
+ 		tasklet_enable(&dev->dfs_pd.dfs_tasklet);
+ 	}
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x0/mt76x0.h b/drivers/net/wireless/mediatek/mt76/mt76x0/mt76x0.h
+index 82f5b481b723..6953f253a28a 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x0/mt76x0.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76x0/mt76x0.h
+@@ -30,7 +30,7 @@
+ 
+ static inline bool is_mt7610e(struct mt76x02_dev *dev)
+ {
+-	if (!mt76_is_mmio(dev))
++	if (!mt76_is_mmio(&dev->mt76))
+ 		return false;
+ 
+ 	return mt76_chip(&dev->mt76) == 0x7610;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x0/phy.c b/drivers/net/wireless/mediatek/mt76/mt76x0/phy.c
+index 61e1a086f3cb..2ecd45f8af90 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x0/phy.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x0/phy.c
+@@ -102,7 +102,7 @@ static int mt76x0_rf_csr_rr(struct mt76x02_dev *dev, u32 offset)
+ static int
+ mt76x0_rf_wr(struct mt76x02_dev *dev, u32 offset, u8 val)
+ {
+-	if (mt76_is_usb(dev)) {
++	if (mt76_is_usb(&dev->mt76)) {
+ 		struct mt76_reg_pair pair = {
+ 			.reg = offset,
+ 			.value = val,
+@@ -121,7 +121,7 @@ static int mt76x0_rf_rr(struct mt76x02_dev *dev, u32 offset)
+ 	int ret;
+ 	u32 val;
+ 
+-	if (mt76_is_usb(dev)) {
++	if (mt76_is_usb(&dev->mt76)) {
+ 		struct mt76_reg_pair pair = {
+ 			.reg = offset,
+ 		};
+@@ -176,7 +176,7 @@ mt76x0_phy_rf_csr_wr_rp(struct mt76x02_dev *dev,
+ }
+ 
+ #define RF_RANDOM_WRITE(dev, tab) do {					\
+-	if (mt76_is_mmio(dev))						\
++	if (mt76_is_mmio(&dev->mt76))					\
+ 		mt76x0_phy_rf_csr_wr_rp(dev, tab, ARRAY_SIZE(tab));	\
+ 	else								\
+ 		mt76_wr_rp(dev, MT_MCU_MEMMAP_RF, tab, ARRAY_SIZE(tab));\
+@@ -744,7 +744,7 @@ mt76x0_phy_get_delta_power(struct mt76x02_dev *dev, u8 tx_mode,
+ 
+ 	if (!tx_mode) {
+ 		data = mt76_rr(dev, MT_BBP(CORE, 1));
+-		if (is_mt7630(dev) && mt76_is_mmio(dev)) {
++		if (is_mt7630(dev) && mt76_is_mmio(&dev->mt76)) {
+ 			int offset;
+ 
+ 			/* 2.3 * 8192 or 1.5 * 8192 */
+@@ -966,7 +966,7 @@ void mt76x0_phy_set_channel(struct mt76x02_dev *dev,
+ 		break;
+ 	}
+ 
+-	if (mt76_is_usb(dev)) {
++	if (mt76_is_usb(&dev->mt76)) {
+ 		mt76x0_phy_bbp_set_bw(dev, chandef->width);
+ 	} else {
+ 		if (chandef->width == NL80211_CHAN_WIDTH_80 ||
+@@ -1122,7 +1122,7 @@ static void mt76x0_rf_patch_reg_array(struct mt76x02_dev *dev,
+ 
+ 		switch (reg) {
+ 		case MT_RF(0, 3):
+-			if (mt76_is_mmio(dev)) {
++			if (mt76_is_mmio(&dev->mt76)) {
+ 				if (is_mt7630(dev))
+ 					val = 0x70;
+ 				else
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76x02_mcu.c
+index 4be7a24097cc..6274b6a24b07 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x02_mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x02_mcu.c
+@@ -114,7 +114,7 @@ int mt76x02_mcu_calibrate(struct mt76x02_dev *dev, int type, u32 param)
+ 		.id = cpu_to_le32(type),
+ 		.value = cpu_to_le32(param),
+ 	};
+-	bool is_mt76x2e = mt76_is_mmio(dev) && is_mt76x2(dev);
++	bool is_mt76x2e = mt76_is_mmio(&dev->mt76) && is_mt76x2(dev);
+ 	int ret;
+ 
+ 	if (is_mt76x2e)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_util.c b/drivers/net/wireless/mediatek/mt76/mt76x02_util.c
+index bb7edf288597..c57a93fa2557 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x02_util.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x02_util.c
+@@ -161,7 +161,7 @@ void mt76x02_init_device(struct mt76x02_dev *dev)
+ #endif
+ 		BIT(NL80211_IFTYPE_ADHOC);
+ 
+-	if (mt76_is_usb(dev)) {
++	if (mt76_is_usb(&dev->mt76)) {
+ 		hw->extra_tx_headroom += sizeof(struct mt76x02_txwi) +
+ 					 MT_DMA_HDR_LEN;
+ 		wiphy->iface_combinations = mt76x02u_if_comb;
+@@ -446,7 +446,7 @@ int mt76x02_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
+ 	 * data registers and sent via HW beacons engine, they require to
+ 	 * be already encrypted.
+ 	 */
+-	if (mt76_is_usb(dev) &&
++	if (mt76_is_usb(&dev->mt76) &&
+ 	    vif->type == NL80211_IFTYPE_AP &&
+ 	    !(key->flags & IEEE80211_KEY_FLAG_PAIRWISE))
+ 		return -EOPNOTSUPP;
+@@ -627,7 +627,7 @@ void mt76x02_sta_ps(struct mt76_dev *mdev, struct ieee80211_sta *sta,
+ 	int idx = msta->wcid.idx;
+ 
+ 	mt76_stop_tx_queues(&dev->mt76, sta, true);
+-	if (mt76_is_mmio(dev))
++	if (mt76_is_mmio(mdev))
+ 		mt76x02_mac_wcid_set_drop(dev, idx, ps);
+ }
+ EXPORT_SYMBOL_GPL(mt76x02_sta_ps);
+-- 
+2.21.0
 
-On Mon, Oct 28, 2019 at 11:21 AM Lorenzo Bianconi <lorenzo@kernel.org> wrote:
->
-> usb drivers are supposed to communicate using usb_interface instead
-> mt76x{0,2}u is now registering through usb_device. Fix it by passing
-> usb_intf device to mt76_alloc_device routine.
->
-> Fixes: 112f980ac8926 ("mt76usb: use usb_dev private data")
-> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-> ---
->  drivers/net/wireless/mediatek/mt76/mt76.h       |  3 ++-
->  drivers/net/wireless/mediatek/mt76/mt76x0/usb.c |  2 +-
->  drivers/net/wireless/mediatek/mt76/mt76x2/usb.c |  2 +-
->  drivers/net/wireless/mediatek/mt76/usb.c        | 12 +++++++++---
->  4 files changed, 13 insertions(+), 6 deletions(-)
->
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
-> index 8bcc7f21e83c..ccbc05d8e96d 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt76.h
-> +++ b/drivers/net/wireless/mediatek/mt76/mt76.h
-> @@ -806,7 +806,8 @@ static inline int
->  mt76u_bulk_msg(struct mt76_dev *dev, void *data, int len, int *actual_len,
->                int timeout)
->  {
-> -       struct usb_device *udev = to_usb_device(dev->dev);
-> +       struct usb_interface *uintf = to_usb_interface(dev->dev);
-> +       struct usb_device *udev = interface_to_usbdev(uintf);
->         struct mt76_usb *usb = &dev->usb;
->         unsigned int pipe;
->
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt76x0/usb.c b/drivers/net/wireless/mediatek/mt76/mt76x0/usb.c
-> index ade6312c7367..b9fd41433106 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt76x0/usb.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt76x0/usb.c
-> @@ -221,7 +221,7 @@ static int mt76x0u_probe(struct usb_interface *usb_intf,
->         u32 mac_rev;
->         int ret;
->
-> -       mdev = mt76_alloc_device(&usb_dev->dev, sizeof(*dev), &mt76x0u_ops,
-> +       mdev = mt76_alloc_device(&usb_intf->dev, sizeof(*dev), &mt76x0u_ops,
->                                  &drv_ops);
->         if (!mdev)
->                 return -ENOMEM;
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c b/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
-> index e6d778456e5e..48b9017813b5 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
-> @@ -41,7 +41,7 @@ static int mt76x2u_probe(struct usb_interface *intf,
->         struct mt76_dev *mdev;
->         int err;
->
-> -       mdev = mt76_alloc_device(&udev->dev, sizeof(*dev), &mt76x2u_ops,
-> +       mdev = mt76_alloc_device(&intf->dev, sizeof(*dev), &mt76x2u_ops,
->                                  &drv_ops);
->         if (!mdev)
->                 return -ENOMEM;
-> diff --git a/drivers/net/wireless/mediatek/mt76/usb.c b/drivers/net/wireless/mediatek/mt76/usb.c
-> index cac058fc41ef..be19038ea7dd 100644
-> --- a/drivers/net/wireless/mediatek/mt76/usb.c
-> +++ b/drivers/net/wireless/mediatek/mt76/usb.c
-> @@ -19,7 +19,8 @@ static int __mt76u_vendor_request(struct mt76_dev *dev, u8 req,
->                                   u8 req_type, u16 val, u16 offset,
->                                   void *buf, size_t len)
->  {
-> -       struct usb_device *udev = to_usb_device(dev->dev);
-> +       struct usb_interface *uintf = to_usb_interface(dev->dev);
-> +       struct usb_device *udev = interface_to_usbdev(uintf);
->         unsigned int pipe;
->         int i, ret;
->
-> @@ -234,7 +235,8 @@ mt76u_rd_rp(struct mt76_dev *dev, u32 base,
->
->  static bool mt76u_check_sg(struct mt76_dev *dev)
->  {
-> -       struct usb_device *udev = to_usb_device(dev->dev);
-> +       struct usb_interface *uintf = to_usb_interface(dev->dev);
-> +       struct usb_device *udev = interface_to_usbdev(uintf);
->
->         return (!disable_usb_sg && udev->bus->sg_tablesize > 0 &&
->                 (udev->bus->no_sg_constraint ||
-> @@ -369,7 +371,8 @@ mt76u_fill_bulk_urb(struct mt76_dev *dev, int dir, int index,
->                     struct urb *urb, usb_complete_t complete_fn,
->                     void *context)
->  {
-> -       struct usb_device *udev = to_usb_device(dev->dev);
-> +       struct usb_interface *uintf = to_usb_interface(dev->dev);
-> +       struct usb_device *udev = interface_to_usbdev(uintf);
->         unsigned int pipe;
->
->         if (dir == USB_DIR_IN)
-> @@ -951,6 +954,7 @@ int mt76u_init(struct mt76_dev *dev,
->                 .rd_rp = mt76u_rd_rp,
->                 .type = MT76_BUS_USB,
->         };
-> +       struct usb_device *udev = interface_to_usbdev(intf);
->         struct mt76_usb *usb = &dev->usb;
->
->         tasklet_init(&usb->rx_tasklet, mt76u_rx_tasklet, (unsigned long)dev);
-> @@ -964,6 +968,8 @@ int mt76u_init(struct mt76_dev *dev,
->         dev->bus = &mt76u_ops;
->         dev->queue_ops = &usb_queue_ops;
->
-> +       dev_set_drvdata(&udev->dev, dev);
-> +
->         usb->sg_en = mt76u_check_sg(dev);
->
->         return mt76u_set_endpoints(intf, usb);
-> --
-> 2.21.0
->
