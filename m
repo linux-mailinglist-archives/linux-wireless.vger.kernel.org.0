@@ -2,222 +2,135 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 03668E8A53
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Oct 2019 15:10:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 46979E8B2D
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Oct 2019 15:48:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388989AbfJ2OKV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 29 Oct 2019 10:10:21 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:53210 "EHLO
-        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1727255AbfJ2OKV (ORCPT
+        id S2389730AbfJ2OsV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 29 Oct 2019 10:48:21 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:43052 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2389444AbfJ2OsU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 29 Oct 2019 10:10:21 -0400
-Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa.ger.corp.intel.com)
-        by farmhouse.coelho.fi with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.92)
-        (envelope-from <luca@coelho.fi>)
-        id 1iPSCQ-0002q5-Tk; Tue, 29 Oct 2019 16:10:19 +0200
-From:   Luca Coelho <luca@coelho.fi>
-To:     kvalo@codeaurora.org
-Cc:     linux-wireless@vger.kernel.org
-Date:   Tue, 29 Oct 2019 16:10:11 +0200
-Message-Id: <20191029141011.23299-1-luca@coelho.fi>
-X-Mailer: git-send-email 2.23.0
+        Tue, 29 Oct 2019 10:48:20 -0400
+Received: from mail-yb1-f197.google.com ([209.85.219.197])
+        by youngberry.canonical.com with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <seth.forshee@canonical.com>)
+        id 1iPSnD-0006vo-A2
+        for linux-wireless@vger.kernel.org; Tue, 29 Oct 2019 14:48:19 +0000
+Received: by mail-yb1-f197.google.com with SMTP id 6so10761453ybu.4
+        for <linux-wireless@vger.kernel.org>; Tue, 29 Oct 2019 07:48:19 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=8VcU8xUmaPVpH6yRKfIHrTiU2Q4D+jfyrJSSLOYWAR8=;
+        b=YVyAE5tNO/VUZHBAZau08lEGOGYvKKBGRZQWTiFKyaf/o57YPKB9Gk4Q9ULvDIxu+D
+         x1577AxZKbqwBSkvRkop/jkCEzEPK92NDLUg2s/wfREub1hBJ4YeFPxk6pDCqbZ3BApZ
+         kiOYQ2jGJA4+5N6wxi7bCtclts6tDycRPnCDF/NSZsX5Qz3zLRX3dOu7G/FaKwA0HKL9
+         KDWuCvgVHqYZwgsQANr4ItMlDYXXeFakbKm4WdumoLz1Yyw4QdoUI3d+mbJdkVO3bIRR
+         jKHLD06ImI68R1vMFeGAEH3OA/a/kxaE6TW8BYvxsit4sfn6L2Ps/TSpQOyvWf7eNPAQ
+         fV4A==
+X-Gm-Message-State: APjAAAViORsuM8W0d1RJ5/knjQzHFpHa83Qjw53f3d5U/aVYwEEa6/kf
+        4ooS9f2rltcxVx1g2Lh8RVphZHu3s0ZYKbGK/AdBQdSiArlZaK328yAbQ5i/2vovK8J1VsIbGQu
+        R0RBCJ1lJu7ISmuTm4xOFF4UHvyRa13W/+aKni1TtdTxD
+X-Received: by 2002:a81:2a46:: with SMTP id q67mr18290614ywq.384.1572360498337;
+        Tue, 29 Oct 2019 07:48:18 -0700 (PDT)
+X-Google-Smtp-Source: APXvYqyG2Co/AdrPLTC/kADGrb/7HDi/6I+6bT/BPr39uZR0wi99pi5tDH1HuUAIaUz8vaxsB5ZJ/Q==
+X-Received: by 2002:a81:2a46:: with SMTP id q67mr18290581ywq.384.1572360497919;
+        Tue, 29 Oct 2019 07:48:17 -0700 (PDT)
+Received: from localhost ([2605:a601:ac3:9720:f461:b9b9:429:65bd])
+        by smtp.gmail.com with ESMTPSA id z196sm20753066ywz.30.2019.10.29.07.48.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 29 Oct 2019 07:48:16 -0700 (PDT)
+Date:   Tue, 29 Oct 2019 09:48:15 -0500
+From:   Seth Forshee <seth.forshee@canonical.com>
+To:     Dmitry Tunin <hanipouspilot@gmail.com>
+Cc:     wireless-regdb@lists.infradead.org, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH v2] wireless-regdb: update regulatory rules for
+ Kazakhstan (KZ)
+Message-ID: <20191029144815.GR30813@ubuntu-xps13>
+References: <1567189484-27536-1-git-send-email-hanipouspilot@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on farmhouse.coelho.fi
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
-        TVD_RCVD_IP,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.2
-Subject: [PATCH v5.4] iwlwifi: fw api: support new  API for scan config cmd
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1567189484-27536-1-git-send-email-hanipouspilot@gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Ayala Beker <ayala.beker@intel.com>
+On Fri, Aug 30, 2019 at 09:24:44PM +0300, Dmitry Tunin wrote:
+> Update according to the regulatory rule of January 21, 2015
+> 
+> http://egov.kz/cms/ru/law/list/V1500010730
+> https://tengrinews.kz/zakon/pravitelstvo_respubliki_kazahstan_premer_ministr_rk/svyaz/id-V1500010730/
+> 
+> No DFS or TPC is mentioned in the document. Neither is 80 MHz channel width.
+> 
+> Signed-off-by: Dmitry Tunin <hanipouspilot@gmail.com>
 
-The API was reduced to include only knowledge currently needed by the
-FW scan logic, the rest is legacy.  Support the new, reduced version.
+Thanks for the patch. I don't agree with all of your changes though,
+please see details below.
 
-This solves a problem with newer firmwares, starting from
-iwlwifi-*-50.ucode, which implements and requires the new API version.
+> ---
+>  db.txt | 14 +++++++-------
+>  1 file changed, 7 insertions(+), 7 deletions(-)
+> 
+> diff --git a/db.txt b/db.txt
+> index 37393e6..491598e 100644
+> --- a/db.txt
+> +++ b/db.txt
+> @@ -717,13 +717,13 @@ country KY: DFS-FCC
+>  	(5735 - 5835 @ 80), (30)
+>  
+>  # Source:
+> -# http://mic.gov.kz/sites/default/files/pages/pravila_prisvoeniya_polos_chastot_no34.pdf
+> -# http://adilet.zan.kz/rus/docs/P000001379_
+> -country KZ: DFS-ETSI
+> -	(2402 - 2482 @ 40), (20)
+> -	(5150 - 5250 @ 80), (20), NO-OUTDOOR, AUTO-BW
+> -	(5250 - 5350 @ 80), (20), NO-OUTDOOR, DFS, AUTO-BW
+> -	(5470 - 5725 @ 80), (20), NO-OUTDOOR, DFS
+> +# http://egov.kz/cms/ru/law/list/V1500010730
+> +# https://tengrinews.kz/zakon/pravitelstvo_respubliki_kazahstan_premer_ministr_rk/svyaz/id-V1500010730/
+> +country KZ:
+> +	(2400 - 2483.5 @ 40), (20)
+> +	(5150 - 5350 @ 160), (23), NO-OUTDOOR
+> +	(5470 - 5850 @ 160), (20), NO-OUTDOOR
 
-Signed-off-by: Ayala Beker <ayala.beker@intel.com>
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
----
- .../net/wireless/intel/iwlwifi/fw/api/scan.h  | 22 +++++++++-
- drivers/net/wireless/intel/iwlwifi/fw/file.h  |  3 ++
- drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  |  6 +++
- drivers/net/wireless/intel/iwlwifi/mvm/scan.c | 40 +++++++++++++++----
- 4 files changed, 61 insertions(+), 10 deletions(-)
+The documents you provided reference this document:
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/scan.h b/drivers/net/wireless/intel/iwlwifi/fw/api/scan.h
-index 39c64850cb6f..c0750ced5ac2 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/api/scan.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/api/scan.h
-@@ -520,7 +520,7 @@ struct iwl_scan_dwell {
- } __packed;
- 
- /**
-- * struct iwl_scan_config
-+ * struct iwl_scan_config_v1
-  * @flags:			enum scan_config_flags
-  * @tx_chains:			valid_tx antenna - ANT_* definitions
-  * @rx_chains:			valid_rx antenna - ANT_* definitions
-@@ -552,7 +552,7 @@ struct iwl_scan_config_v1 {
- #define SCAN_LB_LMAC_IDX 0
- #define SCAN_HB_LMAC_IDX 1
- 
--struct iwl_scan_config {
-+struct iwl_scan_config_v2 {
- 	__le32 flags;
- 	__le32 tx_chains;
- 	__le32 rx_chains;
-@@ -564,6 +564,24 @@ struct iwl_scan_config {
- 	u8 bcast_sta_id;
- 	u8 channel_flags;
- 	u8 channel_array[];
-+} __packed; /* SCAN_CONFIG_DB_CMD_API_S_2 */
-+
-+/**
-+ * struct iwl_scan_config
-+ * @enable_cam_mode: whether to enable CAM mode.
-+ * @enable_promiscouos_mode: whether to enable promiscouos mode
-+ * @bcast_sta_id: the index of the station in the fw
-+ * @reserved: reserved
-+ * @tx_chains: valid_tx antenna - ANT_* definitions
-+ * @rx_chains: valid_rx antenna - ANT_* definitions
-+ */
-+struct iwl_scan_config {
-+	u8 enable_cam_mode;
-+	u8 enable_promiscouos_mode;
-+	u8 bcast_sta_id;
-+	u8 reserved;
-+	__le32 tx_chains;
-+	__le32 rx_chains;
- } __packed; /* SCAN_CONFIG_DB_CMD_API_S_3 */
- 
- /**
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/file.h b/drivers/net/wireless/intel/iwlwifi/fw/file.h
-index 423cc0cf8e78..0d5bc4ce5c07 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/file.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/file.h
-@@ -288,6 +288,8 @@ typedef unsigned int __bitwise iwl_ucode_tlv_api_t;
-  *	STA_CONTEXT_DOT11AX_API_S
-  * @IWL_UCODE_TLV_CAPA_SAR_TABLE_VER: This ucode supports different sar
-  *	version tables.
-+ * @IWL_UCODE_TLV_API_REDUCED_SCAN_CONFIG: This ucode supports v3 of
-+ *  SCAN_CONFIG_DB_CMD_API_S.
-  *
-  * @NUM_IWL_UCODE_TLV_API: number of bits used
-  */
-@@ -321,6 +323,7 @@ enum iwl_ucode_tlv_api {
- 	IWL_UCODE_TLV_API_WOWLAN_TCP_SYN_WAKE	= (__force iwl_ucode_tlv_api_t)53,
- 	IWL_UCODE_TLV_API_FTM_RTT_ACCURACY      = (__force iwl_ucode_tlv_api_t)54,
- 	IWL_UCODE_TLV_API_SAR_TABLE_VER         = (__force iwl_ucode_tlv_api_t)55,
-+	IWL_UCODE_TLV_API_REDUCED_SCAN_CONFIG   = (__force iwl_ucode_tlv_api_t)56,
- 	IWL_UCODE_TLV_API_ADWELL_HB_DEF_N_AP	= (__force iwl_ucode_tlv_api_t)57,
- 	IWL_UCODE_TLV_API_SCAN_EXT_CHAN_VER	= (__force iwl_ucode_tlv_api_t)58,
- 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-index 843d00bf2bd5..5ca50f39a023 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-@@ -1405,6 +1405,12 @@ static inline bool iwl_mvm_is_scan_ext_chan_supported(struct iwl_mvm *mvm)
- 			  IWL_UCODE_TLV_API_SCAN_EXT_CHAN_VER);
- }
- 
-+static inline bool iwl_mvm_is_reduced_config_scan_supported(struct iwl_mvm *mvm)
-+{
-+	return fw_has_api(&mvm->fw->ucode_capa,
-+			  IWL_UCODE_TLV_API_REDUCED_SCAN_CONFIG);
-+}
-+
- static inline bool iwl_mvm_has_new_rx_stats_api(struct iwl_mvm *mvm)
- {
- 	return fw_has_api(&mvm->fw->ucode_capa,
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-index f6b3045badbd..fcafa22ec6ce 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-@@ -1137,11 +1137,11 @@ static void iwl_mvm_fill_scan_config_v1(struct iwl_mvm *mvm, void *config,
- 	iwl_mvm_fill_channels(mvm, cfg->channel_array, max_channels);
- }
- 
--static void iwl_mvm_fill_scan_config(struct iwl_mvm *mvm, void *config,
--				     u32 flags, u8 channel_flags,
--				     u32 max_channels)
-+static void iwl_mvm_fill_scan_config_v2(struct iwl_mvm *mvm, void *config,
-+					u32 flags, u8 channel_flags,
-+					u32 max_channels)
- {
--	struct iwl_scan_config *cfg = config;
-+	struct iwl_scan_config_v2 *cfg = config;
- 
- 	cfg->flags = cpu_to_le32(flags);
- 	cfg->tx_chains = cpu_to_le32(iwl_mvm_get_valid_tx_ant(mvm));
-@@ -1185,7 +1185,7 @@ static void iwl_mvm_fill_scan_config(struct iwl_mvm *mvm, void *config,
- 	iwl_mvm_fill_channels(mvm, cfg->channel_array, max_channels);
- }
- 
--int iwl_mvm_config_scan(struct iwl_mvm *mvm)
-+static int iwl_mvm_legacy_config_scan(struct iwl_mvm *mvm)
- {
- 	void *cfg;
- 	int ret, cmd_size;
-@@ -1217,7 +1217,7 @@ int iwl_mvm_config_scan(struct iwl_mvm *mvm)
- 	}
- 
- 	if (iwl_mvm_cdb_scan_api(mvm))
--		cmd_size = sizeof(struct iwl_scan_config);
-+		cmd_size = sizeof(struct iwl_scan_config_v2);
- 	else
- 		cmd_size = sizeof(struct iwl_scan_config_v1);
- 	cmd_size += num_channels;
-@@ -1254,8 +1254,8 @@ int iwl_mvm_config_scan(struct iwl_mvm *mvm)
- 			flags |= (iwl_mvm_is_scan_fragmented(hb_type)) ?
- 				 SCAN_CONFIG_FLAG_SET_LMAC2_FRAGMENTED :
- 				 SCAN_CONFIG_FLAG_CLEAR_LMAC2_FRAGMENTED;
--		iwl_mvm_fill_scan_config(mvm, cfg, flags, channel_flags,
--					 num_channels);
-+		iwl_mvm_fill_scan_config_v2(mvm, cfg, flags, channel_flags,
-+					    num_channels);
- 	} else {
- 		iwl_mvm_fill_scan_config_v1(mvm, cfg, flags, channel_flags,
- 					    num_channels);
-@@ -1277,6 +1277,30 @@ int iwl_mvm_config_scan(struct iwl_mvm *mvm)
- 	return ret;
- }
- 
-+int iwl_mvm_config_scan(struct iwl_mvm *mvm)
-+{
-+	struct iwl_scan_config cfg;
-+	struct iwl_host_cmd cmd = {
-+		.id = iwl_cmd_id(SCAN_CFG_CMD, IWL_ALWAYS_LONG_GROUP, 0),
-+		.len[0] = sizeof(cfg),
-+		.data[0] = &cfg,
-+		.dataflags[0] = IWL_HCMD_DFL_NOCOPY,
-+	};
-+
-+	if (!iwl_mvm_is_reduced_config_scan_supported(mvm))
-+		return iwl_mvm_legacy_config_scan(mvm);
-+
-+	memset(&cfg, 0, sizeof(cfg));
-+
-+	cfg.bcast_sta_id = mvm->aux_sta.sta_id;
-+	cfg.tx_chains = cpu_to_le32(iwl_mvm_get_valid_tx_ant(mvm));
-+	cfg.rx_chains = cpu_to_le32(iwl_mvm_scan_rx_ant(mvm));
-+
-+	IWL_DEBUG_SCAN(mvm, "Sending UMAC scan config\n");
-+
-+	return iwl_mvm_send_cmd(mvm, &cmd);
-+}
-+
- static int iwl_mvm_scan_uid_by_status(struct iwl_mvm *mvm, int status)
- {
- 	int i;
--- 
-2.23.0
+https://egov.kz/wps/poc?uri=mjnpa:document&language=ru&documentId=V1500010375#z7
 
+Which says that bands 5150-5350 MHz and 5470-5725 MHz should conform to
+WRC-12 resolution 229:
+
+https://www.itu.int/dms_pub/itu-r/opb/act/R-ACT-WRC.9-2012-PDF-E.pdf
+
+This indicates that 5250-5350 MHz and 5470-5725 MHz must either have TPC
+or reduce the maximum EIRP by 3 dBm, which for this database means
+reducing the maximum power by 3 dBm for these bands. It also states that
+these bands must implement the mitigation measures from ITU-R M.1652-1
+in these bands, i.e. DFS.
+
+So it appears to me that the existing DFS requirements are correct.
+I think 5150-5250 MHz can be raised to 23 dBm, and 5250-5350 MHz needs
+to remain at 20 dBm due to the TPC requirement. WRC-12 does mandate TCP
+for 5470-5725 MHz, but also a maximum EIRP of 1W, so since 100 mW is far
+less than half of that I suspect we can leave that at 20 dBm.
+
+> +	(57000 - 66000 @ 2160), (40), NO-OUTDOOR
+
+This addition looks fine to me.
+
+Thanks,
+Seth
+
+>  
+>  country LB: DFS-FCC
+>  	(2402 - 2482 @ 40), (20)
+> -- 
+> 2.7.4
+> 
