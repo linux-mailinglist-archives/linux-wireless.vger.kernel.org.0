@@ -2,87 +2,122 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 112A1E84B9
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Oct 2019 10:52:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C08BEE850A
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Oct 2019 11:05:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729140AbfJ2JwI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 29 Oct 2019 05:52:08 -0400
-Received: from mail-io1-f70.google.com ([209.85.166.70]:53039 "EHLO
-        mail-io1-f70.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728425AbfJ2JwH (ORCPT
+        id S1727370AbfJ2KFh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 29 Oct 2019 06:05:37 -0400
+Received: from fudo.makrotopia.org ([185.142.180.71]:59010 "EHLO
+        fudo.makrotopia.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727351AbfJ2KFh (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 29 Oct 2019 05:52:07 -0400
-Received: by mail-io1-f70.google.com with SMTP id b2so10684039iod.19
-        for <linux-wireless@vger.kernel.org>; Tue, 29 Oct 2019 02:52:05 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:date:in-reply-to:message-id:subject
-         :from:to;
-        bh=KhTni5i4fWNYOrXXdKRZL7n4/+Q2oXySWZR+SGDk+1M=;
-        b=ry8isDi5M+8YBfhvYxmVqbwVacxArSY4w+8yTpjavj2/pjbvwp2vXms5LvCyHSStGx
-         VHRfywrbZbC1MH12z/Xce0ZeNvVriiL7MEQIkqh8P08PZn4aoNRkctg6TpTfgTqPmd2Z
-         qBKmGFZ1gIp7LYCvoefeymNx31CYdXhxWgLn/+6AOBgAlQHH0Q7c7JOox/EDFA8Bda93
-         PjcJvajSle++v+Qbb22wKt5Vt5kLx78QGRNvIHmPyk7PVHMS/4FKkn/Mqv4LlVJIEOvo
-         wX/CPxr2lTEvK8IZ0MGDXCEpjJYfcaZYgpDN4kaqcRikpyJRbjx7UOOyj6UYA/ZGYrbm
-         g3Ow==
-X-Gm-Message-State: APjAAAVLEIvu/pGZ/bbx5Zw8+MMZV7ne8MUZ8Su+b0rVHR+tbfwxjFgE
-        oBIb9CO0SLuPTxY7wMu1UadoAixTnAA8Ui8m+se0bbWcTo8I
-X-Google-Smtp-Source: APXvYqxJ9xrCQYDM3zjASN2O14TUYOL1Vq099EpzYllPSctTMS5wHjd4pXl9VmehlTUaytj82L6S0Af4Z1CPJkWAD5Rc60MY47Nk
+        Tue, 29 Oct 2019 06:05:37 -0400
+Received: from local
+        by fudo.makrotopia.org with esmtpsa (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
+         (Exim 4.92.2)
+        (envelope-from <daniel@makrotopia.org>)
+        id 1iPONW-00017r-Ci; Tue, 29 Oct 2019 11:05:33 +0100
+Date:   Tue, 29 Oct 2019 11:05:03 +0100
+From:   Daniel Golle <daniel@makrotopia.org>
+To:     Stanislaw Gruszka <sgruszka@redhat.com>
+Cc:     linux-wireless@vger.kernel.org, Roman Yeryomin <roman@advem.lv>,
+        wbob <wbob@jify.de>
+Subject: Re: [PATCH] rt2800: remove erroneous duplicate condition
+Message-ID: <20191029100503.GA1228@makrotopia.org>
+References: <20191028212244.GA2590@makrotopia.org>
+ <20191029091857.GB3571@redhat.com>
 MIME-Version: 1.0
-X-Received: by 2002:a92:8dd9:: with SMTP id w86mr25132844ill.93.1572342721346;
- Tue, 29 Oct 2019 02:52:01 -0700 (PDT)
-Date:   Tue, 29 Oct 2019 02:52:00 -0700
-In-Reply-To: <000000000000044a7f0595fbaf2c@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <0000000000006db1370596099128@google.com>
-Subject: Re: INFO: trying to register non-static key in bond_3ad_update_ad_actor_settings
-From:   syzbot <syzbot+8da67f407bcba2c72e6e@syzkaller.appspotmail.com>
-To:     a@unstable.cc, alex.aring@gmail.com, allison@lohutok.net,
-        andrew@lunn.ch, andy@greyhouse.net, ap420073@gmail.com,
-        aroulin@cumulusnetworks.com, ast@domdv.de,
-        b.a.t.m.a.n@lists.open-mesh.org, bridge@lists.linux-foundation.org,
-        cleech@redhat.com, daniel@iogearbox.net, davem@davemloft.net,
-        dcaratti@redhat.com, dsa@cumulusnetworks.com, edumazet@google.com,
-        f.fainelli@gmail.com, fw@strlen.de, gbastien@versatic.net,
-        gregkh@linuxfoundation.org, gustavo@embeddedor.com,
-        haiyangz@microsoft.com, idosch@mellanox.com, info@metux.net,
-        ivan.khoronzhuk@linaro.org, j.vosburgh@gmail.com, j@w1.fi,
-        jakub.kicinski@netronome.com, jhs@mojatatu.com, jiri@mellanox.com,
-        jiri@resnulli.us, johan.hedberg@gmail.com, johannes.berg@intel.com,
-        john.hurley@netronome.com, jwi@linux.ibm.com,
-        kstewart@linuxfoundation.org, kvalo@codeaurora.org,
-        kys@microsoft.com, linmiaohe@huawei.com,
-        linux-bluetooth@vger.kernel.org, linux-hams@vger.kernel.org,
-        linux-hyperv@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-ppp@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux-wpan@vger.kernel.org, liuhangbin@gmail.com,
-        marcel@holtmann.org, mareklindner@neomailbox.ch, mcroce@redhat.com
-Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191029091857.GB3571@redhat.com>
+User-Agent: Mutt/1.12.2 (2019-09-21)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-syzbot has bisected this bug to:
+Hi Stanislaw,
 
-commit ab92d68fc22f9afab480153bd82a20f6e2533769
-Author: Taehee Yoo <ap420073@gmail.com>
-Date:   Mon Oct 21 18:47:51 2019 +0000
+On Tue, Oct 29, 2019 at 10:18:57AM +0100, Stanislaw Gruszka wrote:
+> On Mon, Oct 28, 2019 at 10:22:44PM +0100, Daniel Golle wrote:
+> > On 2019-10-28 06:07, wbob wrote:
+> > > Hello Roman,
+> > >
+> > > while reading around drivers/net/wireless/ralink/rt2x00/rt2800lib.c
+> > > I stumbled on what I think is an edit of yours made in error in march
+> > > 2017:
+> > >
+> > > https://github.com/torvalds/linux/commit/41977e86#diff-dae5dc10da180f3b055809a48118e18aR5281
+> > >
+> > > RT6352 in line 5281 should not have been introduced as the "else if"
+> > > below line 5291 can then not take effect for a RT6352 device. Another
+> > > possibility is for line 5291 to be not for RT6352, but this seems
+> > > very unlikely. Are you able to clarify still after this substantial time?
+> > >
+> > > 5277: static int rt2800_init_registers(struct rt2x00_dev *rt2x00dev)
+> > > ...
+> > > 5279:  } else if (rt2x00_rt(rt2x00dev, RT5390) ||
+> > > 5280:         rt2x00_rt(rt2x00dev, RT5392) ||
+> > > 5281:         rt2x00_rt(rt2x00dev, RT6352)) {
+> > > ...
+> > > 5291:  } else if (rt2x00_rt(rt2x00dev, RT6352)) {
+> > > ...
+> > 
+> > Hence remove erroneous line 5281 to make the driver actually
+> > execute the correct initialization routine for MT7620 chips.
+> > 
+> > Fixes: 41977e86c984 ("rt2x00: add support for MT7620")
+> > Reported-by: wbob <wbob@jify.de>
+> > Reported-by: Roman Yeryomin <roman@advem.lv>
+> > Signed-off-by: Daniel Golle <daniel@makrotopia.org>
+> > ---
+> >  drivers/net/wireless/ralink/rt2x00/rt2800lib.c | 3 +--
+> >  1 file changed, 1 insertion(+), 2 deletions(-)
+> > 
+> > diff --git a/drivers/net/wireless/ralink/rt2x00/rt2800lib.c b/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
+> > index f1cdcd61c54a..c85456c8c193 100644
+> > --- a/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
+> > +++ b/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
+> > @@ -5839,8 +5839,7 @@ static int rt2800_init_registers(struct rt2x00_dev *rt2x00dev)
+> >  		rt2800_register_write(rt2x00dev, TX_TXBF_CFG_0, 0x8000fc21);
+> >  		rt2800_register_write(rt2x00dev, TX_TXBF_CFG_3, 0x00009c40);
+> >  	} else if (rt2x00_rt(rt2x00dev, RT5390) ||
+> > -		   rt2x00_rt(rt2x00dev, RT5392) ||
+> > -		   rt2x00_rt(rt2x00dev, RT6352)) {
+> > +		   rt2x00_rt(rt2x00dev, RT5392)) {
+> >  		rt2800_register_write(rt2x00dev, TX_SW_CFG0, 0x00000404);
+> >  		rt2800_register_write(rt2x00dev, TX_SW_CFG1, 0x00080606);
+> >  		rt2800_register_write(rt2x00dev, TX_SW_CFG2, 0x00000000);
+> 
+> I'm not sure if initialization on different path, is proper for all
+> variants of RT6352 chipset. Particularly I noticed that configuring
+> MIMO_PS_CFG can cause problems on wt3020.
 
-     net: core: add generic lockdep keys
+That's pretty odd, as this register is also written unconditionally
+by the vendor driver, see:
+https://github.com/wuqiong/rt2860v2-for-openwrt-mt7620/blob/master/rt2860v2/chips/rt6352.c#L529
+https://github.com/wuqiong/rt2860v2-for-openwrt-mt7620/blob/master/rt2860v2/chips/rt6352.c#L696
 
-bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=12b54d70e00000
-start commit:   60c1769a Add linux-next specific files for 20191028
-git tree:       linux-next
-final crash:    https://syzkaller.appspot.com/x/report.txt?x=11b54d70e00000
-console output: https://syzkaller.appspot.com/x/log.txt?x=16b54d70e00000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=cb86688f30db053d
-dashboard link: https://syzkaller.appspot.com/bug?extid=8da67f407bcba2c72e6e
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=14d43a04e00000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=16be3b9ce00000
+As only ChipVer >= 2 has been seen in the wild apparently, it seems
+Roman implemented support for MT7620 along that codepath in the
+original driver:
+https://github.com/wuqiong/rt2860v2-for-openwrt-mt7620/blob/master/rt2860v2/chips/rt6352.c#L713
 
-Reported-by: syzbot+8da67f407bcba2c72e6e@syzkaller.appspotmail.com
-Fixes: ab92d68fc22f ("net: core: add generic lockdep keys")
+However, now looking at this more, also
+rt2800_register_write(rt2x00dev, TX_ALC_VGA3, 0x00000000);
+doesn't match that codepath in the vendor driver which sets 0x06060606.
 
-For information about bisection process see: https://goo.gl/tpsmEJ#bisection
+Now we could really implement all the codepaths for all pkg, ver, eco
+variants of MT7620 using the accessors like I patched here:
+https://github.com/openwrt/openwrt/blob/master/target/linux/ramips/patches-4.14/300-mt7620-export-chip-version-and-pkg.patch
+(accessor for mt7620_get_eco was already in place as it is used also
+by MMC/SD driver afair)
+
+Which MT7620 chip package, version and eco is found inside the wt3020?
+(printed early on dmesg)
+
+
+Cheers
+
+
+Daniel
