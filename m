@@ -2,96 +2,89 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B14DE890E
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Oct 2019 14:08:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AECB4E8931
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Oct 2019 14:16:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732534AbfJ2NI6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 29 Oct 2019 09:08:58 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:39312 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728735AbfJ2NI6 (ORCPT
+        id S2388278AbfJ2NQh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 29 Oct 2019 09:16:37 -0400
+Received: from mail-pl1-f196.google.com ([209.85.214.196]:43153 "EHLO
+        mail-pl1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732534AbfJ2NQg (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 29 Oct 2019 09:08:58 -0400
-Received: from mail-yb1-f197.google.com ([209.85.219.197])
-        by youngberry.canonical.com with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <seth.forshee@canonical.com>)
-        id 1iPRF2-0000ZG-6r
-        for linux-wireless@vger.kernel.org; Tue, 29 Oct 2019 13:08:56 +0000
-Received: by mail-yb1-f197.google.com with SMTP id w69so10492710ybe.18
-        for <linux-wireless@vger.kernel.org>; Tue, 29 Oct 2019 06:08:56 -0700 (PDT)
+        Tue, 29 Oct 2019 09:16:36 -0400
+Received: by mail-pl1-f196.google.com with SMTP id v5so7594694ply.10;
+        Tue, 29 Oct 2019 06:16:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
+         :user-agent;
+        bh=BEANdppUHS19syOQxQ2Hfj8cvgSVpvTUi8gyof+Qqo8=;
+        b=VamG53xBXpapSScc5HR+I6K8ptJmRyAQimPXJHkC7gB7XU7UC9x0V5eP9ypKgtJ9g5
+         76kprNY4fS4mGiM+5DiseUgOOSmP/AO91DADvgVgeu6fpJupwrq1FRDnYZiHI58yBQ34
+         2ssE1Rr4Yx/4mTQksP9UHyud+2gikHGI1F2bg/iBgUkkAL3UlkR9hwsax6NxpOV/ttr8
+         rM32vbFd7MqsqzbSCvaWc60z+QzX0p31duSwWIqWCKNHVVbQb8obSBluTtkIBKq2ky8n
+         SXUQzue93516YOo5f+OkTu3TDfEQa7SYpLk3nTloFzAbYruiZ/VGoP9a5buiWv0f/mYm
+         X3Bg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to:user-agent;
-        bh=ynxqVtdsqhywDBe6wAHrwjnabrfK53FCpzKt+2e+JE4=;
-        b=auV95qD+7vghphQj3lP1dR3EY4YeGO5JdtW7Ubv//y8HHXFgR+Lv33dzGULQmkr+61
-         LoVYXjyaM1EzRfH2iBqT0B88VczbFqEn1+hztc9/1yJeUQmGz/Zb9XXCWMmXOaV5mQf8
-         mfCfc9WhF7GKCJqEXkpQTjr2mLY1sozwK0gJbVgMhyzraVFEtnG8Uls6p6uclIxchEqj
-         prO2KT2bw3PqCc3a2VD2KxEFzzWl3cX0f+29a4V4qgHga2WDK18GDP6AKW1ZAA9UYreO
-         9qQ3tH7Q9bpvjmHG4OCoAmLzFd0RaiHyChU2VBbkpxDSx4XIRI8zyEc7R4Z4st0ye90j
-         wUig==
-X-Gm-Message-State: APjAAAWLJvbExH9Io9Ge+3D27iGRZ8sg+xwfGfW/qRCl+1zjOz7axGnQ
-        Q5Dl+FfIrDqm7K03Abpe+yOgEBnPvVYYlkBX92QCmb1NiVB7LRZivGocSlQ8yReLIF8bD57lKri
-        vvYx7y89myPghcASWZG82jibg9ayUEGoxaL2AJgltUdFW
-X-Received: by 2002:a81:ab42:: with SMTP id d2mr16395655ywk.370.1572354535253;
-        Tue, 29 Oct 2019 06:08:55 -0700 (PDT)
-X-Google-Smtp-Source: APXvYqx/F6r/epETralitde1F17o8erCsCTrVKtZRQHYbBFii8Dmenid/q3z3w3fNP6k1RKrBnLH8A==
-X-Received: by 2002:a81:ab42:: with SMTP id d2mr16395627ywk.370.1572354534920;
-        Tue, 29 Oct 2019 06:08:54 -0700 (PDT)
-Received: from localhost ([2605:a601:ac3:9720:f461:b9b9:429:65bd])
-        by smtp.gmail.com with ESMTPSA id k67sm635653ywa.71.2019.10.29.06.08.54
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition:user-agent;
+        bh=BEANdppUHS19syOQxQ2Hfj8cvgSVpvTUi8gyof+Qqo8=;
+        b=rrTBrswn33y+YdpDJSW5eSWt40sU1fJ8sSer3lA87mxCKLgQn2it/uW1zOXAbo0QyN
+         3Wi4JqQoifq/XCZRUDdcbrh74QOVm+1dRfADHw/KBilTU2zTTNCYX8iFyjY5fMTEONvw
+         Vuc4+KA6wyqczsk3vbRhVIEcQBOSLdfxlkJ46LcPoosHxaiiyRvqXzKeyOaVRVi4ubLp
+         Rxy4thOEMeIs9QXTL8zE/hgsQ0SkTkC7X1OS+rouUSp/a6MkYJ4Hgde/8zYBoS+P1obB
+         ewrMcXzLNG5V3Pht94yaqhfPUofNpmAJPEN6WY7Mb+NHMThossRx77+46NdJBa1QGXPi
+         R8tQ==
+X-Gm-Message-State: APjAAAXZ4sq8pohyqKuhIdDnfwfXB26yDKGwUV0hFzXqIT2bKcNcfGCa
+        cm1axZax970KT0Wd/0cRVnw=
+X-Google-Smtp-Source: APXvYqyGdtI9aT7NHPIrtgeELQCTNYPrYunUngeQGfBD572sIpTERqlxBFzSTfT5A+AS5FTcfGGOiQ==
+X-Received: by 2002:a17:902:7c81:: with SMTP id y1mr202631pll.308.1572354995952;
+        Tue, 29 Oct 2019 06:16:35 -0700 (PDT)
+Received: from saurav ([117.232.226.35])
+        by smtp.gmail.com with ESMTPSA id d17sm14176388pfd.118.2019.10.29.06.16.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Oct 2019 06:08:54 -0700 (PDT)
-Date:   Tue, 29 Oct 2019 08:08:53 -0500
-From:   Seth Forshee <seth.forshee@canonical.com>
-To:     Emil Petersky <emil.petersky@streamunlimited.com>
-Cc:     linux-wireless@vger.kernel.org, wireless-regdb@lists.infradead.org
-Subject: Re: [PATCH] wireless-regdb: Create entry for united European region
-Message-ID: <20191029130853.GN30813@ubuntu-xps13>
-References: <bf327181-521b-e1ce-c5c8-81b828fc65b6@streamunlimited.com>
- <20190907235636.GA8256@ubuntu-xps13>
- <a5bdfce7-e974-37bb-c1d1-956d4572703c@streamunlimited.com>
- <39933518-6a65-fab3-4a66-8f44fc319d57@streamunlimited.com>
- <76f464e9-8806-ecbf-2dc8-67bb4190ecc7@streamunlimited.com>
+        Tue, 29 Oct 2019 06:16:34 -0700 (PDT)
+Date:   Tue, 29 Oct 2019 18:46:24 +0530
+From:   Saurav Girepunje <saurav.girepunje@gmail.com>
+To:     pkshih@realtek.com, kvalo@codeaurora.org, davem@davemloft.net,
+        Larry.Finger@lwfinger.net, gustavo@embeddedor.com,
+        colin.king@canonical.com, saurav.girepunje@gmail.com,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     saurav.girepunje@hotmail.com
+Subject: [PATCH] rtlwifi: rtl8821ae: phy.c: Drop condition with no effect
+Message-ID: <20191029131624.GA17391@saurav>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <76f464e9-8806-ecbf-2dc8-67bb4190ecc7@streamunlimited.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Sep 17, 2019 at 11:55:07AM +0200, Emil Petersky wrote:
-> Create entry for united European region, as usage of frequency bands
-> is harmonized over EU and almost all CEPT countries as well.
-> 
-> All EU countries and almost all CEPT countries accepted decisions
-> 2005/513/EC (5GHz RLAN, EN 301 893)
-> and 2006/771/EC (amended by 2008/432/EC, Short-Range Devices, EN 300 440)
->  EU decision 2005/513/EC:
-> https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02005D0513-20070213
->  EU decision 2006/771/EC:
-> https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02008D0432-20080611
-> Harmonized CEPT countries:
-> https://www.ecodocdb.dk/download/25c41779-cd6e/Rec7003e.pdf
-> Such decision make sense to create united European region (EU) in regdb
-> 
-> United region for EU in regdb will enable much easier handling of proper
-> wlan parameters on embedded devices sold across the Europe.
+As the "else if" and "else" branch body are identical the condition
+has no effect. So drop the "else if" condition.
 
-I'm a little curious about this one. I do agree that it would simplify
-things, but is an EU contry code something standard that wireless APs
-generally will advertise, or that clients will understand?
+Signed-off-by: Saurav Girepunje <saurav.girepunje@gmail.com>
+---
+ drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-And we do still have all the individual countries to maintain. Maybe it
-would make sense to define an EU region as rules that countries could
-inherit, and then have rules for any deviations from the common EU
-rules. Thoughts?
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c
+index 979e434a4e73..cad560aeb7dd 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c
+@@ -3553,8 +3553,6 @@ void rtl8821ae_phy_sw_chnl_callback(struct ieee80211_hw *hw)
+ 			if (rtlhal->hw_type == HARDWARE_TYPE_RTL8821AE) {
+ 				if (36 <= channel && channel <= 64)
+ 					data = 0x114E9;
+-				else if (100 <= channel && channel <= 140)
+-					data = 0x110E9;
+ 				else
+ 					data = 0x110E9;
+ 				rtl8821ae_phy_set_rf_reg(hw, path, RF_APK,
+-- 
+2.20.1
 
-Thanks,
-Seth
