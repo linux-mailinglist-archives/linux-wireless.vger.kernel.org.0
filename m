@@ -2,88 +2,91 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 20E9EE7FEB
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Oct 2019 06:53:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A7695E8019
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Oct 2019 07:12:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731664AbfJ2FxX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 29 Oct 2019 01:53:23 -0400
-Received: from smtp3-1.goneo.de ([85.220.129.38]:49373 "EHLO smtp3-1.goneo.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726034AbfJ2FxX (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 29 Oct 2019 01:53:23 -0400
-X-Greylist: delayed 629 seconds by postgrey-1.27 at vger.kernel.org; Tue, 29 Oct 2019 01:53:20 EDT
-Received: from localhost (localhost [127.0.0.1])
-        by smtp3.goneo.de (Postfix) with ESMTP id 1EC9B24007F;
-        Tue, 29 Oct 2019 06:42:49 +0100 (CET)
-X-Virus-Scanned: by goneo
-X-Spam-Flag: NO
-X-Spam-Score: -2.747
+        id S1732060AbfJ2GM0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 29 Oct 2019 02:12:26 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:35770 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727462AbfJ2GM0 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 29 Oct 2019 02:12:26 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id F3B4660D7C; Tue, 29 Oct 2019 06:12:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1572329546;
+        bh=2ORAqQGNkhzSfKv/lvYtprmI8CrPEWdo6MCV7KCcFHY=;
+        h=From:To:Cc:Subject:Date:From;
+        b=WmBINUH59ym91m0NB7HBM80ibk39UGQqpvwCi7MKjk/bO8XkJ+FbwiUyW87x6yDif
+         pF09h6rOYbLQo5IeIS2ilWsJIB01bYG9q8vpqkTIpCSjqQAJFnUulD+j3BYlfSllIr
+         wvZ8FQdMg5kC5QhifDhJ3lHeyo+9Bh4t4wNR2zFo=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.747 tagged_above=-999 tests=[ALL_TRUSTED=-1,
-        AWL=0.153, BAYES_00=-1.9] autolearn=ham
-Received: from smtp3.goneo.de ([127.0.0.1])
-        by localhost (smtp3.goneo.de [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id qZjqyjNzm7GN; Tue, 29 Oct 2019 06:42:47 +0100 (CET)
-Received: from [192.168.1.103] (dyndsl-037-138-239-146.ewe-ip-backbone.de [37.138.239.146])
-        by smtp3.goneo.de (Postfix) with ESMTPSA id 024AA23F854;
-        Tue, 29 Oct 2019 06:42:46 +0100 (CET)
-Subject: Re: [PATCH v2] kernel-doc: rename the kernel-doc directive
- 'functions' to 'identifiers'
-To:     Changbin Du <changbin.du@gmail.com>,
-        Jani Nikula <jani.nikula@linux.intel.com>
-Cc:     Jonathan Corbet <corbet@lwn.net>, linux-pci@vger.kernel.org,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mm@kvack.org, linux-crypto@vger.kernel.org,
-        linux-kselftest@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux-fpga@vger.kernel.org, linux-usb@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
-        Matthew Wilcox <willy@infradead.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>
-References: <20191020131717.28990-1-changbin.du@gmail.com>
- <20191024121940.1d6a64df@lwn.net> <87woctb9cj.fsf@intel.com>
- <20191025144802.uixg2crhw6h7gghq@mail.google.com> <87v9s99q9l.fsf@intel.com>
- <20191029003120.llve32crfw63ovpw@mail.google.com>
-From:   Markus Heiser <markus.heiser@darmarit.de>
-Message-ID: <36c4dcfb-5425-b4bc-a5e9-4fd1458c8385@darmarit.de>
-Date:   Tue, 29 Oct 2019 06:42:46 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
-MIME-Version: 1.0
-In-Reply-To: <20191029003120.llve32crfw63ovpw@mail.google.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: de-DE
-Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from smtp.codeaurora.org (unknown [180.166.53.21])
+        (using TLSv1 with cipher AES128-SHA (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: miaoqing@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 4695C607C3;
+        Tue, 29 Oct 2019 06:12:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1572329545;
+        bh=2ORAqQGNkhzSfKv/lvYtprmI8CrPEWdo6MCV7KCcFHY=;
+        h=From:To:Cc:Subject:Date:From;
+        b=OiEOL4UJZtHt0pmTX5Ub99vakOwObI1HMmEN1CLLApgKuBLvbZGWfGQ/hTf0u6Agq
+         +TIgOdLXzwwnxOJ+viOX2U8Xp3m43irsp3tjyemarS+1w9k6tzCOjWRCjAMnOeg4kA
+         a+myYcO31RAJH497MTnGpSEbJAVKvJYpk7/lOzbw=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 4695C607C3
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=miaoqing@codeaurora.org
+Received: by smtp.codeaurora.org (sSMTP sendmail emulation); Tue, 29 Oct 2019 14:12:19 +0800
+From:   Miaoqing Pan <miaoqing@codeaurora.org>
+To:     ath10k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org,
+        Miaoqing Pan <miaoqing@codeaurora.org>,
+        Hou Bao Hou <houbao@codeaurora.org>,
+        Anilkumar Kolli <akolli@codeaurora.org>
+Subject: [PATCH] ath10k: fix get invalid tx rate for Mesh metric
+Date:   Tue, 29 Oct 2019 14:12:17 +0800
+Message-Id: <1572329537-27728-1-git-send-email-miaoqing@codeaurora.org>
+X-Mailer: git-send-email 1.9.1
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Am 29.10.19 um 01:31 schrieb Changbin Du:
->> But is it, really? I agree with Jon about the distinction between None
->> and '' being confusing.
->>
-> Here python is different from C. Both empty string and None are False in python.
-> Note such condition is common in python.
+ath10k does not provide transmit rate info per MSDU
+in tx completion, mark that as -1 so mac80211
+will ignore the rates. This fixes mac80211 update Mesh
+link metric with invalid transmit rate info.
 
-The one is a empty string str(''), its bool('') value is False.
+Tested HW: QCA9984
+Tested FW: 10.4-3.9.0.2-00035
 
-| >>> type(''), bool('')
-| (<class 'str'>, False)
+Signed-off-by: Hou Bao Hou <houbao@codeaurora.org>
+Signed-off-by: Anilkumar Kolli <akolli@codeaurora.org>
+Signed-off-by: Miaoqing Pan <miaoqing@codeaurora.org>
+---
+ drivers/net/wireless/ath/ath10k/txrx.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-The other is a NoneType, its bool(None) value is False.
-
-| >>> type(None), bool(None)
-| (<class 'NoneType'>, False)
-
-None often used like NULL (pointer). E.g if a function does not give an explicit 
-return value, the returned value is None.
-
-| >>> def foo():
-| ...     pass
-| ...
-| >>> print(foo())
-| None
-
-
--- Markus --
+diff --git a/drivers/net/wireless/ath/ath10k/txrx.c b/drivers/net/wireless/ath/ath10k/txrx.c
+index 4102df0..39abf8b 100644
+--- a/drivers/net/wireless/ath/ath10k/txrx.c
++++ b/drivers/net/wireless/ath/ath10k/txrx.c
+@@ -95,6 +95,8 @@ int ath10k_txrx_tx_unref(struct ath10k_htt *htt,
+ 
+ 	info = IEEE80211_SKB_CB(msdu);
+ 	memset(&info->status, 0, sizeof(info->status));
++	info->status.rates[0].idx = -1;
++
+ 	trace_ath10k_txrx_tx_unref(ar, tx_done->msdu_id);
+ 
+ 	if (!(info->flags & IEEE80211_TX_CTL_NO_ACK))
+-- 
+1.9.1
 
