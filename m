@@ -2,88 +2,93 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EE2D6E8374
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Oct 2019 09:44:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 39676E8391
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Oct 2019 09:54:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729992AbfJ2Ins (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 29 Oct 2019 04:43:48 -0400
-Received: from mail-wr1-f65.google.com ([209.85.221.65]:40441 "EHLO
-        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729971AbfJ2Inr (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 29 Oct 2019 04:43:47 -0400
-Received: by mail-wr1-f65.google.com with SMTP id o28so12637684wro.7
-        for <linux-wireless@vger.kernel.org>; Tue, 29 Oct 2019 01:43:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=netronome-com.20150623.gappssmtp.com; s=20150623;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=U88yheObN+4ggJffRHrczNdJdHrli+5k282weA3zmys=;
-        b=UWxTNpUj0SpmspSoeCVT8jWoJw3f34L0dLvZYLStfybqEFBCPn2e2AlgHmO0xhvKGm
-         grjbzGyIrKbP7lal6JDVcB+aInE+hHfT06WpRjlM7fFAlIF2Hjh+x4p92KBB66jvpE04
-         +QZSbvcAXfUbscunom8hd1nr1oMy9rEwVVEZaa4wTytbntlAryf+Yw+XNmBWbVIDLVzC
-         /oCHObbo6+47ZgaTp7NhAQMTxqfzgpt2lC6UqRUX7Sm23lwPVXJ9VMs/mbtKCxIH3cGk
-         XUI/fK+UDK79JK6ztv22QRiRQOMI6Gwa1snOn8g5PAIH4B1k00fs+fo4MSZ6ZK7/G+T7
-         v2hw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=U88yheObN+4ggJffRHrczNdJdHrli+5k282weA3zmys=;
-        b=lxs9UdNkR7FC74ZJRVPjXogX9FaisxFFrOtNqgGtI8w48yDpYX7HrU0/E8zjZ8mX4z
-         cIWL6CebnpvyeppKe8zmyR7bOod/6ZHJ1DGTxneirU9qysAIYL8Sw35SJMlRZzlekDy2
-         pXOkiGS8sWu3mD/cGuyZuJBlzlHh1QipJXC3SJuuXK9AvQt3QwO0OacqEDsX5szF0+Vy
-         Ev8FJuqA51Uo8A1M3nC8rslDebqTlpnL7MgJ0gwb1OlC3Gh9QRMVnZJgec1pcRuUAVr5
-         7s8aB2Yyd0aBE9s6abV0oiXQdfabbVOpkFnKgVS41BG1YRaykFtjkg4gINpCJMnUJSqi
-         q6MA==
-X-Gm-Message-State: APjAAAWU60Bizj60X50ALCd4Iyyrl4WU/i7drbgaNWB5sT9j39CSnIWz
-        bhR66nOnqY3zxxytC2ouCLGSng==
-X-Google-Smtp-Source: APXvYqxRRsQAmnunlnuxpBCGvAUEzg9Kx7yBGFf0A1pBDmvOd/v+CXTq3tGGCyX6dcNLA0ezvj2JBw==
-X-Received: by 2002:a05:6000:1c9:: with SMTP id t9mr19959327wrx.171.1572338626088;
-        Tue, 29 Oct 2019 01:43:46 -0700 (PDT)
-Received: from netronome.com (fred-musen.rivierenbuurt.horms.nl. [2001:470:7eb3:404:a2a4:c5ff:fe4c:9ce9])
-        by smtp.gmail.com with ESMTPSA id u10sm2793363wmj.0.2019.10.29.01.43.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Oct 2019 01:43:46 -0700 (PDT)
-Date:   Tue, 29 Oct 2019 09:43:44 +0100
-From:   Simon Horman <simon.horman@netronome.com>
-To:     Joe Perches <joe@perches.com>
-Cc:     Saurav Girepunje <saurav.girepunje@gmail.com>,
-        kvalo@codeaurora.org, davem@davemloft.net, swinslow@gmail.com,
-        will@kernel.org, opensource@jilayne.com, baijiaju1990@gmail.com,
-        tglx@linutronix.de, linux-wireless@vger.kernel.org,
-        b43-dev@lists.infradead.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, saurav.girepunje@hotmail.com
-Subject: Re: [PATCH] b43: Fix use true/false for bool type
-Message-ID: <20191029084344.GD23615@netronome.com>
-References: <20191028190204.GA27248@saurav>
- <20191029082427.GB23615@netronome.com>
- <055503c8dce7546a8253de1d795ad71870eeb362.camel@perches.com>
+        id S1730007AbfJ2Iya (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 29 Oct 2019 04:54:30 -0400
+Received: from ni.piap.pl ([195.187.100.5]:58338 "EHLO ni.piap.pl"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729992AbfJ2Iya (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 29 Oct 2019 04:54:30 -0400
+Received: from t19.piap.pl (OSB1819.piap.pl [10.0.9.19])
+        (using TLSv1.2 with cipher AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ni.piap.pl (Postfix) with ESMTPSA id 6DA7D442258;
+        Tue, 29 Oct 2019 09:54:24 +0100 (CET)
+DKIM-Filter: OpenDKIM Filter v2.11.0 ni.piap.pl 6DA7D442258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=piap.pl; s=mail;
+        t=1572339264; bh=TU9ebFgfanQ7Z4iTqUkUU2jipaToSz+RUzToxJpmr6s=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=KQJnu8OO87rgTKcwqeO2VfIMekcbwGawgFrZFaEjV2fRRy55gzo2McuRNLzH92jr5
+         jK1sCYGsI7f3ncJ42fAuSZAdgoEeRQ7Sqm9C4xMXPSWOZ6rbEYBoSp8KVCCYz+yedZ
+         x4M+UFyvwnBQQfMDU0wgJLEMSIiTg3ruAlYb9p2g=
+From:   khalasa@piap.pl (Krzysztof =?utf-8?Q?Ha=C5=82asa?=)
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     "David S. Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] 802.11n IBSS: wlan0 stops receiving packets due to aggregation after sender reboot
+References: <m34l02mh71.fsf@t19.piap.pl> <m37e4tjfbu.fsf@t19.piap.pl>
+        <e5b07b4ce51f806ce79b1ae06ff3cbabbaa4873d.camel@sipsolutions.net>
+Date:   Tue, 29 Oct 2019 09:54:24 +0100
+In-Reply-To: <e5b07b4ce51f806ce79b1ae06ff3cbabbaa4873d.camel@sipsolutions.net>
+        (Johannes Berg's message of "Mon, 28 Oct 2019 13:21:15 +0100")
+Message-ID: <m37e4orkxr.fsf@t19.piap.pl>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <055503c8dce7546a8253de1d795ad71870eeb362.camel@perches.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-KLMS-Rule-ID: 4
+X-KLMS-Message-Action: skipped
+X-KLMS-AntiSpam-Status: not scanned, whitelist
+X-KLMS-AntiPhishing: not scanned, whitelist
+X-KLMS-AntiVirus: Kaspersky Security 8.0 for Linux Mail Server, version 8.0.1.721, not scanned, whitelist
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Oct 29, 2019 at 01:30:34AM -0700, Joe Perches wrote:
-> On Tue, 2019-10-29 at 09:24 +0100, Simon Horman wrote:
-> > I wonder why bools rather than a bitmask was chosen
-> > for this field, it seems rather space intensive in its current form.
-> 
-> 4 bools is not intensive.
+Johannes Berg <johannes@sipsolutions.net> writes:
 
-Thanks, point taken.
+> I think you just got very lucky (or unlucky) to have the same dialog
+> token, because we start from 0
 
-> 
-> > > diff --git a/drivers/net/wireless/broadcom/b43/main.c b/drivers/net/wireless/broadcom/b43/main.c
-> []
-> > > @@ -3600,7 +3600,7 @@ static void b43_tx_work(struct work_struct *work)
-> []
-> > > -				wl->tx_queue_stopped[queue_num] = 1;
-> > > +				wl->tx_queue_stopped[queue_num] = true;
-> 
-> 
+Right, it seems to be the case.
+
+> - maybe we should initialize it to a
+> random value to flush out such issues.
+
+The problem I can see is that the dialog_tokens are 8-bit, way too small
+to eliminate conflicts.
+
+> Really what I think probably happened is that one of your stations lost
+> the connection to the other, and didn't tell it about it in any way - so
+> the other kept all the status alive.
+
+You must have missed my previous mail - I simply rebooted that station,
+and alternatively rmmoded/modprobed ath9k. But the problem originated in
+a station going out of and back in range, in fact.
+
+> I suspect to make all this work well we need to not only have the fixes
+> I made recently to actually send and parse deauth frames, but also to
+> even send an auth and reset the state when we receive that, so if we
+> move out of range and even the deauth frame is lost, we can still reset
+> properly.
+
+That's one thing. The other is a station trying ADDBA for the first time
+after boot (while the local station has seen it before that reboot).
+
+> In any case, this is not the right approach - we need to handle the
+> "lost connection" case better I suspect, but since you don't say what
+> really happened I don't really know that that's what you're seeing.
+
+I guess we need to identify "new connection" reliably. Otherwise,
+the new connections are treated as old ones and it doesn't work.
+
+Now how can it be fixed?
+--=20
+Krzysztof Halasa
+
+=C5=81UKASIEWICZ Research Network
+Industrial Research Institute for Automation and Measurements PIAP
+Al. Jerozolimskie 202, 02-486 Warsaw, Poland
