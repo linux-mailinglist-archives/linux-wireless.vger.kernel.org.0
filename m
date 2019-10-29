@@ -2,61 +2,138 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BE8B1E8334
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Oct 2019 09:30:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 67F87E835C
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Oct 2019 09:41:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729211AbfJ2Iap (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 29 Oct 2019 04:30:45 -0400
-Received: from smtprelay0115.hostedemail.com ([216.40.44.115]:39389 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1728757AbfJ2Iap (ORCPT
+        id S1729232AbfJ2Ilj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 29 Oct 2019 04:41:39 -0400
+Received: from mail-wm1-f67.google.com ([209.85.128.67]:38382 "EHLO
+        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727139AbfJ2Ilj (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 29 Oct 2019 04:30:45 -0400
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay07.hostedemail.com (Postfix) with ESMTP id DEBF1181D3042;
-        Tue, 29 Oct 2019 08:30:43 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,:::::::::::::::::::::::::::,RULES_HIT:41:355:379:599:973:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1538:1567:1593:1594:1711:1714:1730:1747:1777:1792:2393:2559:2562:2828:3138:3139:3140:3141:3142:3622:3870:3871:3872:3876:4321:5007:6119:6742:7903:10004:10400:10450:10455:11026:11232:11657:11658:11914:12043:12296:12297:12740:12760:12895:13069:13138:13231:13311:13357:13439:13548:14659:14721:19904:19999:21080:21627:21740:30054:30070:30091,0,RBL:47.151.135.224:@perches.com:.lbl8.mailshell.net-62.8.0.100 64.201.201.201,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:fn,MSBL:0,DNSBL:neutral,Custom_rules:0:0:0,LFtime:24,LUA_SUMMARY:none
-X-HE-Tag: idea97_7a7d88050d930
-X-Filterd-Recvd-Size: 1582
-Received: from XPS-9350.home (unknown [47.151.135.224])
-        (Authenticated sender: joe@perches.com)
-        by omf03.hostedemail.com (Postfix) with ESMTPA;
-        Tue, 29 Oct 2019 08:30:41 +0000 (UTC)
-Message-ID: <055503c8dce7546a8253de1d795ad71870eeb362.camel@perches.com>
-Subject: Re: [PATCH] b43: Fix use true/false for bool type
-From:   Joe Perches <joe@perches.com>
-To:     Simon Horman <simon.horman@netronome.com>,
-        Saurav Girepunje <saurav.girepunje@gmail.com>
-Cc:     kvalo@codeaurora.org, davem@davemloft.net, swinslow@gmail.com,
-        will@kernel.org, opensource@jilayne.com, baijiaju1990@gmail.com,
-        tglx@linutronix.de, linux-wireless@vger.kernel.org,
-        b43-dev@lists.infradead.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, saurav.girepunje@hotmail.com
-Date:   Tue, 29 Oct 2019 01:30:34 -0700
-In-Reply-To: <20191029082427.GB23615@netronome.com>
-References: <20191028190204.GA27248@saurav>
-         <20191029082427.GB23615@netronome.com>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.34.1-2 
+        Tue, 29 Oct 2019 04:41:39 -0400
+Received: by mail-wm1-f67.google.com with SMTP id 22so1435813wms.3
+        for <linux-wireless@vger.kernel.org>; Tue, 29 Oct 2019 01:41:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ncentric-com.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding:content-language;
+        bh=DUE+XOir+sEq8Jjt6ZqFoZP8jxttvHmbtNjKbTObY9Y=;
+        b=pPHnC2jzOsNQtFwKWKM84eQfcMIczrZRRakDJasaSgNDYqEpq5bkSkEmSQokHT5Ic7
+         TRSTsQEjnG5bXDRhJwN6zbp6rsw+ArB8T4EtOiOcOm+FLZcBXvf/mOhOEDupb0/h79/2
+         poyjiibNRB2bUGgklHNODDYzLXaLXEHJlmgyQgv7uWTBAE9SPXY9QfUbhN8hAWurOdOA
+         2IQgVfDF1Ep1VFPJ/UuLp4xFEBXmOI7/OemGOj7GR8w2XjcHS1V9Q30wADyPsF9qP9hz
+         HO1g0lEOtJPqfjsd5amgxY+Ff1OAs2aF2+t0sb2auBJJ7qKfq4gT+RdxkUC4rQOgEz65
+         2EYw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding
+         :content-language;
+        bh=DUE+XOir+sEq8Jjt6ZqFoZP8jxttvHmbtNjKbTObY9Y=;
+        b=Ots+vXDPQAGLvJnL0kfSnrbVlX/c0qhucIFTcpQmeLFsDQNAgUWXgdV1tIj2KaQ4xi
+         AXUYxXaN4K+qYwHALPnGFdkqI8eZV6R2SQXha1tFBNOwvxsYFi15mqLnMzD3lW/8nZAW
+         aJ/mS9bAPDYZ9PCjk+iYMhitkpv9WaC9sz70dikMth6u5xU5vtyeLhCFqaQ8fnRaFSd5
+         hK3D+ejuc106AVxqXzKJr+y1ToCTUfw6sI/x3QLPjuHfCSCPFVpJuaczUFQ3gX/qC+X7
+         7cSHCjzEGWK5Ce6zBHSp6HbBzfqoN/Jq6Sbnd6yzAvdTDp5ZSibrvYVgB7A+jM/Odbbk
+         L52g==
+X-Gm-Message-State: APjAAAWpC1Ux8U5iHmkj8hOUVepSfTe6qjU2EN7yMQOh4qV4Dux71ic6
+        uL54TVm2qFFdwYFEji8cslK+yA==
+X-Google-Smtp-Source: APXvYqyftOvlRJ9dg8wL3C+zw81qRJgiCNNRVg6nEmYDGwPHS05minYwSNVy0ezRwvY2ORWwUG3b8g==
+X-Received: by 2002:a1c:a4c5:: with SMTP id n188mr2887218wme.30.1572338496714;
+        Tue, 29 Oct 2019 01:41:36 -0700 (PDT)
+Received: from [192.168.3.176] (d515300d8.static.telenet.be. [81.83.0.216])
+        by smtp.gmail.com with ESMTPSA id u21sm2275041wmu.27.2019.10.29.01.41.35
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 29 Oct 2019 01:41:36 -0700 (PDT)
+Subject: Re: [PATCH v2] 802.11n IBSS: wlan0 stops receiving packets due to
+ aggregation after sender reboot
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        =?UTF-8?Q?Krzysztof_Ha=c5=82asa?= <khalasa@piap.pl>
+Cc:     "David S. Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <m34l02mh71.fsf@t19.piap.pl> <m37e4tjfbu.fsf@t19.piap.pl>
+ <e5b07b4ce51f806ce79b1ae06ff3cbabbaa4873d.camel@sipsolutions.net>
+From:   Koen Vandeputte <koen.vandeputte@ncentric.com>
+Message-ID: <30465e05-3465-f496-d57f-5e115551f5cb@ncentric.com>
+Date:   Tue, 29 Oct 2019 09:41:35 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <e5b07b4ce51f806ce79b1ae06ff3cbabbaa4873d.camel@sipsolutions.net>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 2019-10-29 at 09:24 +0100, Simon Horman wrote:
-> I wonder why bools rather than a bitmask was chosen
-> for this field, it seems rather space intensive in its current form.
 
-4 bools is not intensive.
+On 28.10.19 13:21, Johannes Berg wrote:
+> On Fri, 2019-10-25 at 12:21 +0200, Krzysztof Hałasa wrote:
+>> Fix a bug where the mac80211 RX aggregation code sets a new aggregation
+>> "session" at the remote station's request, but the head_seq_num
+>> (the sequence number the receiver expects to receive) isn't reset.
+>>
+>> Spotted on a pair of AR9580 in IBSS mode.
+>>
+>> Signed-off-by: Krzysztof Halasa <khalasa@piap.pl>
+>>
+>> diff --git a/net/mac80211/agg-rx.c b/net/mac80211/agg-rx.c
+>> index 4d1c335e06e5..67733bd61297 100644
+>> --- a/net/mac80211/agg-rx.c
+>> +++ b/net/mac80211/agg-rx.c
+>> @@ -354,10 +354,13 @@ void ___ieee80211_start_rx_ba_session(struct sta_info *sta,
+>>   			 */
+>>   			rcu_read_lock();
+>>   			tid_rx = rcu_dereference(sta->ampdu_mlme.tid_rx[tid]);
+>> -			if (tid_rx && tid_rx->timeout == timeout)
+>> +			if (tid_rx && tid_rx->timeout == timeout) {
+>> +				tid_rx->ssn = start_seq_num;
+>> +				tid_rx->head_seq_num = start_seq_num;
+>>   				status = WLAN_STATUS_SUCCESS;
+> This is wrong, this is the case of *updating an existing session*, we
+> must not reset the head SN then.
+>
+> I think you just got very lucky (or unlucky) to have the same dialog
+> token, because we start from 0 - maybe we should initialize it to a
+> random value to flush out such issues.
+>
+> Really what I think probably happened is that one of your stations lost
+> the connection to the other, and didn't tell it about it in any way - so
+> the other kept all the status alive.
+>
+> I suspect to make all this work well we need to not only have the fixes
+> I made recently to actually send and parse deauth frames, but also to
+> even send an auth and reset the state when we receive that, so if we
+> move out of range and even the deauth frame is lost, we can still reset
+> properly.
+>
+> In any case, this is not the right approach - we need to handle the
+> "lost connection" case better I suspect, but since you don't say what
+> really happened I don't really know that that's what you're seeing.
+>
+> johannes
 
-> > diff --git a/drivers/net/wireless/broadcom/b43/main.c b/drivers/net/wireless/broadcom/b43/main.c
-[]
-> > @@ -3600,7 +3600,7 @@ static void b43_tx_work(struct work_struct *work)
-[]
-> > -				wl->tx_queue_stopped[queue_num] = 1;
-> > +				wl->tx_queue_stopped[queue_num] = true;
+Hi all,
 
+I can confirm the issue as I'm also seeing this sometimes in the field here.
+
+Sometimes when a devices goes out of range and then re-enters,
+the link refuses to "come up", as in rx looks to be "stuck" without any 
+reports in system log or locking issues (lockdep enabled)
+
+I have dozens of devices installed offshore (802.11n based), both on 
+static and moving assets,
+which cover from short (250m) up to very long distances (~35km)
+
+So .. while there is some momentum for this issue,
+I'm more than happy to provide extensive testing should fixes be posted 
+regarding IBSS in general.
+
+Regards,
+
+Koen
 
