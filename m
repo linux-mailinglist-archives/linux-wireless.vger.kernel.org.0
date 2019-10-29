@@ -2,35 +2,27 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 859D6E83D7
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Oct 2019 10:07:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CD497E83EB
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Oct 2019 10:13:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730075AbfJ2JHk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 29 Oct 2019 05:07:40 -0400
-Received: from s3.sipsolutions.net ([144.76.43.62]:60514 "EHLO
-        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727082AbfJ2JHk (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 29 Oct 2019 05:07:40 -0400
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.92.2)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1iPNTP-0004OR-Op; Tue, 29 Oct 2019 10:07:31 +0100
-Message-ID: <4725dcbd6297c74bf949671e7ad48eeeb0ceb0d0.camel@sipsolutions.net>
-Subject: Re: [PATCH v2] 802.11n IBSS: wlan0 stops receiving packets due to
- aggregation after sender reboot
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Krzysztof =?UTF-8?Q?Ha=C5=82asa?= <khalasa@piap.pl>
-Cc:     "David S. Miller" <davem@davemloft.net>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Date:   Tue, 29 Oct 2019 10:07:30 +0100
-In-Reply-To: <m37e4orkxr.fsf@t19.piap.pl>
-References: <m34l02mh71.fsf@t19.piap.pl> <m37e4tjfbu.fsf@t19.piap.pl>
-         <e5b07b4ce51f806ce79b1ae06ff3cbabbaa4873d.camel@sipsolutions.net>
-         <m37e4orkxr.fsf@t19.piap.pl>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
+        id S1730249AbfJ2JNO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 29 Oct 2019 05:13:14 -0400
+Received: from nbd.name ([46.4.11.11]:53976 "EHLO nbd.name"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726104AbfJ2JNN (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 29 Oct 2019 05:13:13 -0400
+Received: from p5dcfbe82.dip0.t-ipconnect.de ([93.207.190.130] helo=bertha.lan)
+        by ds12 with esmtpa (Exim 4.89)
+        (envelope-from <john@phrozen.org>)
+        id 1iPNYs-0005ZW-Q4; Tue, 29 Oct 2019 10:13:10 +0100
+From:   John Crispin <john@phrozen.org>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless@vger.kernel.org, ath10k@lists.infradead.org,
+        John Crispin <john@phrozen.org>
+Subject: [PATCH V9 0/3] mac80211: add 802.11 encapsulation offloading
+Date:   Tue, 29 Oct 2019 10:13:01 +0100
+Message-Id: <20191029091304.7330-1-john@phrozen.org>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
@@ -38,52 +30,61 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 2019-10-29 at 09:54 +0100, Krzysztof Hałasa wrote:
+This series picks up prior work from QCA. The patch is currently shipped
+inside QSDK as part of the wlan-open package.
 
-> The problem I can see is that the dialog_tokens are 8-bit, way too small
-> to eliminate conflicts.
+Changes in V9
+* implement comments from Johannes
+* add tx status reporting
+* let the driver decide if tx frag will break encap mode
+* use true/false for bool values
+* move use_4addr check to driver
 
-Well, they're also per station, we could just randomize the start and
-then we'd delete the old session and start a new one, on the receiver.
+Changes in V8
+* fix double locking when setting frag threshold
 
-So that would improve robustness somewhat (down to a 1/256 chance to hit
-this problem).
+Changes in V7
+* dont mask out monitor support when encap is available. Instead turn encap
+  of if a monitor device is brought up or already present
 
-> > Really what I think probably happened is that one of your stations lost
-> > the connection to the other, and didn't tell it about it in any way - so
-> > the other kept all the status alive.
-> 
-> You must have missed my previous mail - I simply rebooted that station,
-> and alternatively rmmoded/modprobed ath9k. But the problem originated in
-> a station going out of and back in range, in fact.
+Changes in V6
+* the conditional masking out monitor support was inverse
 
-I was on vacation, so yeah, quite possible I missed it.
+Changes in V5
+* implement comments from Johannes
 
-Sounds like we need not just
-4b08d1b6a994 ("mac80211: IBSS: send deauth when expiring inactive STAs")
+Changes in V4
+* disable encap when TKIP is used instead of refusing TKIP
+* use a flag inside tx_info instead of an extra element
+* move 4addr detection into ieee80211_set_hw_80211_encap()
+* ieee80211_tx_dequeue() was dropping out to early
 
-but also send a deauth when we disconnect. Surprising we don't do that,
-actually.
+Changes in V3
+* rebase on latest kernel
+* various code style clean ups
+* give some of the variables and functions more obvious names
+* move the code that disables support for non-linear frames to the core
+* disable monitor and tkip support
 
-> > I suspect to make all this work well we need to not only have the fixes
-> > I made recently to actually send and parse deauth frames, but also to
-> > even send an auth and reset the state when we receive that, so if we
-> > move out of range and even the deauth frame is lost, we can still reset
-> > properly.
-> 
-> That's one thing. The other is a station trying ADDBA for the first time
-> after boot (while the local station has seen it before that reboot).
+John Crispin (3):
+  mac80211: move store skb ack code to its own function
+  mac80211: add hw 80211 encapsulation offloading support
+  ath10k: add tx hw 802.11 encapusaltion offloading support
 
-That's the situation though - the local station needs to know that it
-has in fact *not* seen the same instance of the station, but that the
-station has reset and needs to be removed & re-added.
+ drivers/net/wireless/ath/ath10k/core.c   |  11 ++
+ drivers/net/wireless/ath/ath10k/core.h   |   3 +
+ drivers/net/wireless/ath/ath10k/htt_tx.c |  24 ++-
+ drivers/net/wireless/ath/ath10k/mac.c    |  76 ++++++--
+ drivers/net/wireless/ath/ath10k/txrx.c   |  11 +-
+ include/net/mac80211.h                   |  39 ++++
+ net/mac80211/debugfs.c                   |   1 +
+ net/mac80211/ieee80211_i.h               |   9 +
+ net/mac80211/iface.c                     |  68 +++++++
+ net/mac80211/key.c                       |   7 +
+ net/mac80211/status.c                    |  74 +++++++
+ net/mac80211/tx.c                        | 233 ++++++++++++++++++++---
+ 12 files changed, 506 insertions(+), 50 deletions(-)
 
-> I guess we need to identify "new connection" reliably. Otherwise,
-> the new connections are treated as old ones and it doesn't work.
-
-Right. But we can implement the (optional) authentication (which you
-actually already get when you implement [encrypted] IBSS with wpa_s),
-and reset the station state when we get an authentication frame.
-
-johannes
+-- 
+2.20.1
 
