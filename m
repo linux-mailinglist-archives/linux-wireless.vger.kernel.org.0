@@ -2,27 +2,27 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5FBC9E83EE
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Oct 2019 10:13:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A4AD4E83ED
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Oct 2019 10:13:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731254AbfJ2JNQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        id S1731248AbfJ2JNQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
         Tue, 29 Oct 2019 05:13:16 -0400
-Received: from nbd.name ([46.4.11.11]:53994 "EHLO nbd.name"
+Received: from nbd.name ([46.4.11.11]:53998 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726104AbfJ2JNP (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        id S1731200AbfJ2JNP (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
         Tue, 29 Oct 2019 05:13:15 -0400
 Received: from p5dcfbe82.dip0.t-ipconnect.de ([93.207.190.130] helo=bertha.lan)
         by ds12 with esmtpa (Exim 4.89)
         (envelope-from <john@phrozen.org>)
-        id 1iPNYt-0005ZW-LY; Tue, 29 Oct 2019 10:13:11 +0100
+        id 1iPNYu-0005ZW-3Z; Tue, 29 Oct 2019 10:13:12 +0100
 From:   John Crispin <john@phrozen.org>
 To:     Johannes Berg <johannes@sipsolutions.net>
 Cc:     linux-wireless@vger.kernel.org, ath10k@lists.infradead.org,
         John Crispin <john@phrozen.org>,
         Vasanthakumar Thiagarajan <vthiagar@qti.qualcomm.com>
-Subject: [PATCH V9 2/3] mac80211: add hw 80211 encapsulation offloading support
-Date:   Tue, 29 Oct 2019 10:13:03 +0100
-Message-Id: <20191029091304.7330-3-john@phrozen.org>
+Subject: [PATCH V9 3/3] ath10k: add tx hw 802.11 encapusaltion offloading support
+Date:   Tue, 29 Oct 2019 10:13:04 +0100
+Message-Id: <20191029091304.7330-4-john@phrozen.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20191029091304.7330-1-john@phrozen.org>
 References: <20191029091304.7330-1-john@phrozen.org>
@@ -33,585 +33,339 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This patch adds a new transmit path for hardware that supports 802.11
-encapsulation offloading. In those cases 802.3 frames get passed
-directly to the driver allowing the hardware to handle the encapsulation.
-Some features such as monitor mode and TKIP would break when encapsulation
-offloading is enabled. If any of these get enabled, the code will alwyas
-fallback to the normal sw encapsulation data path.
+This patch adds support for ethernet rxtx mode to the driver. The feature
+is enabled via a new module parameter. If enabled to driver will enable
+the feature on a per vif basis if all other requirements were met.
 
-The patch defines a secondary netdev_ops struct that the device gets
-assigned if 802.11 encap support is available and enabled. The driver
-needs to enable the support on a per vif basis if it finds that all
-pre-reqs are meet.
+Testing on a IPQ4019 based hardware shows a increase in TCP throughput
+of ~20% when the feature is enabled.
 
 Signed-off-by: Vasanthakumar Thiagarajan <vthiagar@qti.qualcomm.com>
 Signed-off-by: John Crispin <john@phrozen.org>
 ---
- include/net/mac80211.h     |  39 ++++++++
- net/mac80211/debugfs.c     |   1 +
- net/mac80211/ieee80211_i.h |   9 ++
- net/mac80211/iface.c       |  68 ++++++++++++++
- net/mac80211/key.c         |   7 ++
- net/mac80211/status.c      |  74 +++++++++++++++
- net/mac80211/tx.c          | 184 ++++++++++++++++++++++++++++++++++++-
- 7 files changed, 377 insertions(+), 5 deletions(-)
+ drivers/net/wireless/ath/ath10k/core.c   | 11 ++++
+ drivers/net/wireless/ath/ath10k/core.h   |  3 +
+ drivers/net/wireless/ath/ath10k/htt_tx.c | 24 +++++---
+ drivers/net/wireless/ath/ath10k/mac.c    | 76 +++++++++++++++++++-----
+ drivers/net/wireless/ath/ath10k/txrx.c   | 11 +++-
+ 5 files changed, 100 insertions(+), 25 deletions(-)
 
-diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index 6781d4637557..bf42543f67a9 100644
---- a/include/net/mac80211.h
-+++ b/include/net/mac80211.h
-@@ -826,6 +826,7 @@ enum mac80211_tx_control_flags {
- 	IEEE80211_TX_CTRL_AMSDU			= BIT(3),
- 	IEEE80211_TX_CTRL_FAST_XMIT		= BIT(4),
- 	IEEE80211_TX_CTRL_SKIP_MPATH_LOOKUP	= BIT(5),
-+	IEEE80211_TX_CTRL_HW_80211_ENCAP	= BIT(6),
- };
+diff --git a/drivers/net/wireless/ath/ath10k/core.c b/drivers/net/wireless/ath/ath10k/core.c
+index dc45d16e8d21..6fc637c73e26 100644
+--- a/drivers/net/wireless/ath/ath10k/core.c
++++ b/drivers/net/wireless/ath/ath10k/core.c
+@@ -33,6 +33,7 @@ static bool uart_print;
+ static bool skip_otp;
+ static bool rawmode;
+ static bool fw_diag_log;
++static bool ethernetmode;
  
- /*
-@@ -2284,6 +2285,9 @@ struct ieee80211_txq {
-  *	aggregating MPDUs with the same keyid, allowing mac80211 to keep Tx
-  *	A-MPDU sessions active while rekeying with Extended Key ID.
-  *
-+ * @IEEE80211_HW_SUPPORTS_80211_ENCAP: Hardware/driver supports 802.11
-+ *	encap for data frames.
-+ *
-  * @NUM_IEEE80211_HW_FLAGS: number of hardware flags, used for sizing arrays
-  */
- enum ieee80211_hw_flags {
-@@ -2336,6 +2340,7 @@ enum ieee80211_hw_flags {
- 	IEEE80211_HW_SUPPORTS_MULTI_BSSID,
- 	IEEE80211_HW_SUPPORTS_ONLY_HE_MULTI_BSSID,
- 	IEEE80211_HW_AMPDU_KEYBORDER_SUPPORT,
-+	IEEE80211_HW_SUPPORTS_80211_ENCAP,
+ unsigned long ath10k_coredump_mask = BIT(ATH10K_FW_CRASH_DUMP_REGISTERS) |
+ 				     BIT(ATH10K_FW_CRASH_DUMP_CE_DATA);
+@@ -45,6 +46,7 @@ module_param(skip_otp, bool, 0644);
+ module_param(rawmode, bool, 0644);
+ module_param(fw_diag_log, bool, 0644);
+ module_param_named(coredump_mask, ath10k_coredump_mask, ulong, 0444);
++module_param(ethernetmode, bool, 0644);
  
- 	/* keep last, obviously */
- 	NUM_IEEE80211_HW_FLAGS
-@@ -4632,6 +4637,26 @@ static inline void ieee80211_tx_status_ni(struct ieee80211_hw *hw,
- void ieee80211_tx_status_irqsafe(struct ieee80211_hw *hw,
- 				 struct sk_buff *skb);
+ MODULE_PARM_DESC(debug_mask, "Debugging mask");
+ MODULE_PARM_DESC(uart_print, "Uart target debugging");
+@@ -53,6 +55,7 @@ MODULE_PARM_DESC(cryptmode, "Crypto mode: 0-hardware, 1-software");
+ MODULE_PARM_DESC(rawmode, "Use raw 802.11 frame datapath");
+ MODULE_PARM_DESC(coredump_mask, "Bitfield of what to include in firmware crash file");
+ MODULE_PARM_DESC(fw_diag_log, "Diag based fw log debugging");
++MODULE_PARM_DESC(ethernetmode, "Use ethernet frame datapath");
  
-+/**
-+ * ieee80211_tx_status_8023 - transmit status callback for 802.3 frame format
-+ *
-+ * Call this function for all transmitted data frames after their transmit
-+ * completion. This callback should only be called for data frames which
-+ * are are using driver's (or hardware's) offload capability of encap/decap
-+ * 802.11 frames.
-+ *
-+ * This function may not be called in IRQ context. Calls to this function
-+ * for a single hardware must be synchronized against each other and all
-+ * calls in the same tx status family.
-+ *
-+ * @hw: the hardware the frame was transmitted by
-+ * @vif: the interface for which the frame was transmitted
-+ * @skb: the frame that was transmitted, owned by mac80211 after this call
-+ */
-+void ieee80211_tx_status_8023(struct ieee80211_hw *hw,
-+			       struct ieee80211_vif *vif,
-+			       struct sk_buff *skb);
-+
- /**
-  * ieee80211_report_low_ack - report non-responding station
-  *
-@@ -6412,4 +6437,18 @@ void ieee80211_nan_func_match(struct ieee80211_vif *vif,
- 			      struct cfg80211_nan_match_params *match,
- 			      gfp_t gfp);
+ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
+ 	{
+@@ -3007,6 +3010,14 @@ static void ath10k_core_register_work(struct work_struct *work)
+ 	/* peer stats are enabled by default */
+ 	set_bit(ATH10K_FLAG_PEER_STATS, &ar->dev_flags);
  
-+/**
-+ * ieee80211_set_hw_80211_encap - enable hardware encapsulation offloading.
-+ *
-+ * This function is used to notify mac80211 that a vif can be passed raw 802.3.
-+ * The driver needs to then handle the 802.11 encapsulation inside the hardware
-+ * or firmware.
-+ *
-+ * The driver should call this function during the creation of the vif instance.
-+ *
-+ * @vif: &struct ieee80211_vif pointer from the add_interface callback.
-+ * @enable: indicate if the feature should be turned on or off
-+ */
-+bool ieee80211_set_hw_80211_encap(struct ieee80211_vif *vif, bool enable);
-+
- #endif /* MAC80211_H */
-diff --git a/net/mac80211/debugfs.c b/net/mac80211/debugfs.c
-index 568b3b276931..87ece0640a43 100644
---- a/net/mac80211/debugfs.c
-+++ b/net/mac80211/debugfs.c
-@@ -272,6 +272,7 @@ static const char *hw_flag_names[] = {
- 	FLAG(SUPPORTS_MULTI_BSSID),
- 	FLAG(SUPPORTS_ONLY_HE_MULTI_BSSID),
- 	FLAG(AMPDU_KEYBORDER_SUPPORT),
-+	FLAG(SUPPORTS_80211_ENCAP),
- #undef FLAG
- };
- 
-diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
-index 791ce58d0f09..196bab776a8f 100644
---- a/net/mac80211/ieee80211_i.h
-+++ b/net/mac80211/ieee80211_i.h
-@@ -984,6 +984,8 @@ struct ieee80211_sub_if_data {
- 	} debugfs;
- #endif
- 
-+	bool hw_80211_encap;
-+
- 	/* must be last, dynamically sized area in this! */
- 	struct ieee80211_vif vif;
- };
-@@ -1758,6 +1760,8 @@ netdev_tx_t ieee80211_monitor_start_xmit(struct sk_buff *skb,
- 					 struct net_device *dev);
- netdev_tx_t ieee80211_subif_start_xmit(struct sk_buff *skb,
- 				       struct net_device *dev);
-+netdev_tx_t ieee80211_subif_start_xmit_8023(struct sk_buff *skb,
-+					    struct net_device *dev);
- void __ieee80211_subif_start_xmit(struct sk_buff *skb,
- 				  struct net_device *dev,
- 				  u32 info_flags,
-@@ -1944,6 +1948,11 @@ void __ieee80211_tx_skb_tid_band(struct ieee80211_sub_if_data *sdata,
- 				 struct sk_buff *skb, int tid,
- 				 enum nl80211_band band, u32 txdata_flags);
- 
-+/* sta_out needs to be checked for ERR_PTR() before using */
-+int ieee80211_lookup_ra_sta(struct ieee80211_sub_if_data *sdata,
-+			    struct sk_buff *skb,
-+			    struct sta_info **sta_out);
-+
- static inline void
- ieee80211_tx_skb_tid_band(struct ieee80211_sub_if_data *sdata,
- 			  struct sk_buff *skb, int tid,
-diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
-index 06aac0aaae64..c9f206ae8e42 100644
---- a/net/mac80211/iface.c
-+++ b/net/mac80211/iface.c
-@@ -1205,6 +1205,73 @@ static const struct net_device_ops ieee80211_monitorif_ops = {
- 	.ndo_get_stats64	= ieee80211_get_stats64,
- };
- 
-+static const struct net_device_ops ieee80211_dataif_8023_ops = {
-+	.ndo_open		= ieee80211_open,
-+	.ndo_stop		= ieee80211_stop,
-+	.ndo_uninit		= ieee80211_uninit,
-+	.ndo_start_xmit		= ieee80211_subif_start_xmit_8023,
-+	.ndo_set_rx_mode	= ieee80211_set_multicast_list,
-+	.ndo_set_mac_address	= ieee80211_change_mac,
-+	.ndo_select_queue	= ieee80211_netdev_select_queue,
-+	.ndo_get_stats64	= ieee80211_get_stats64,
-+};
-+
-+static void __ieee80211_set_hw_80211_encap(struct ieee80211_sub_if_data *sdata,
-+					   bool enable)
-+{
-+	if (enable) {
-+		sdata->dev->netdev_ops = &ieee80211_dataif_8023_ops;
-+		sdata->hw_80211_encap = true;
-+	} else {
-+		sdata->dev->netdev_ops = &ieee80211_dataif_ops;
-+		sdata->hw_80211_encap = false;
++	if (ethernetmode && rawmode) {
++		ath10k_err(ar, "ethernet and raw mode cannot co-exist\n");
++		status = -EINVAL;
++		goto err;
 +	}
-+}
 +
-+bool ieee80211_set_hw_80211_encap(struct ieee80211_vif *vif, bool enable)
-+{
-+	struct ieee80211_sub_if_data *sdata = vif_to_sdata(vif);
-+	struct ieee80211_local *local = sdata->local;
-+	struct ieee80211_sub_if_data *iter;
-+	struct ieee80211_key *key;
++	ar->ethernetmode = ethernetmode;
 +
-+	sdata_assert_lock(sdata);
+ 	status = ath10k_core_probe_fw(ar);
+ 	if (status) {
+ 		ath10k_err(ar, "could not probe fw (%d)\n", status);
+diff --git a/drivers/net/wireless/ath/ath10k/core.h b/drivers/net/wireless/ath/ath10k/core.h
+index 4d7db07db6ba..89f2d2982f37 100644
+--- a/drivers/net/wireless/ath/ath10k/core.h
++++ b/drivers/net/wireless/ath/ath10k/core.h
+@@ -109,6 +109,7 @@ enum ath10k_skb_flags {
+ 	ATH10K_SKB_F_MGMT = BIT(3),
+ 	ATH10K_SKB_F_QOS = BIT(4),
+ 	ATH10K_SKB_F_RAW_TX = BIT(5),
++	ATH10K_SKB_F_HW_80211_ENCAP = BIT(6),
+ };
+ 
+ struct ath10k_skb_cb {
+@@ -1211,6 +1212,8 @@ struct ath10k {
+ 	struct ath10k_bus_params bus_param;
+ 	struct completion peer_delete_done;
+ 
++	bool ethernetmode;
 +
-+	mutex_lock(&local->iflist_mtx);
-+	list_for_each_entry(iter, &local->interfaces, list) {
-+		if (vif->type == NL80211_IFTYPE_MONITOR)
-+			__ieee80211_set_hw_80211_encap(iter, false);
-+		else if (iter->vif.type == NL80211_IFTYPE_MONITOR)
-+			enable = false;
-+	}
-+	mutex_unlock(&local->iflist_mtx);
+ 	/* must be last */
+ 	u8 drv_priv[0] __aligned(sizeof(void *));
+ };
+diff --git a/drivers/net/wireless/ath/ath10k/htt_tx.c b/drivers/net/wireless/ath/ath10k/htt_tx.c
+index 2ef717f18795..403b6843da9e 100644
+--- a/drivers/net/wireless/ath/ath10k/htt_tx.c
++++ b/drivers/net/wireless/ath/ath10k/htt_tx.c
+@@ -1144,6 +1144,10 @@ static u8 ath10k_htt_tx_get_tid(struct sk_buff *skb, bool is_eth)
+ 	struct ieee80211_hdr *hdr = (void *)skb->data;
+ 	struct ath10k_skb_cb *cb = ATH10K_SKB_CB(skb);
+ 
++	/* Firmware takes care of tid classification for ethernet format */
++	if (cb->flags & ATH10K_SKB_F_HW_80211_ENCAP)
++		return skb->priority % IEEE80211_QOS_CTL_TID_MASK;
 +
-+	if (enable == sdata->hw_80211_encap)
-+		return enable;
-+
-+	if (!sdata->dev)
-+		return false;
-+
-+	if (!ieee80211_hw_check(&local->hw, SUPPORTS_80211_ENCAP))
-+		enable = false;
-+
-+	if (!ieee80211_hw_check(&local->hw, SUPPORTS_TX_FRAG) &&
-+	    (local->hw.wiphy->frag_threshold != (u32)-1))
-+		enable = false;
-+
-+	mutex_lock(&sdata->local->key_mtx);
-+	list_for_each_entry(key, &sdata->key_list, list) {
-+		if (key->conf.cipher == WLAN_CIPHER_SUITE_TKIP)
-+			enable = false;
-+	}
-+	mutex_unlock(&sdata->local->key_mtx);
-+
-+	__ieee80211_set_hw_80211_encap(sdata, enable);
-+
-+	return enable;
-+}
-+EXPORT_SYMBOL(ieee80211_set_hw_80211_encap);
-+
- static void ieee80211_if_free(struct net_device *dev)
+ 	if (!is_eth && ieee80211_is_mgmt(hdr->frame_control))
+ 		return HTT_DATA_TX_EXT_TID_MGMT;
+ 	else if (cb->flags & ATH10K_SKB_F_QOS)
+@@ -1370,15 +1374,17 @@ static int ath10k_htt_tx_32(struct ath10k_htt *htt,
+ 	txbuf_paddr = htt->txbuf.paddr +
+ 		      (sizeof(struct ath10k_htt_txbuf_32) * msdu_id);
+ 
+-	if ((ieee80211_is_action(hdr->frame_control) ||
+-	     ieee80211_is_deauth(hdr->frame_control) ||
+-	     ieee80211_is_disassoc(hdr->frame_control)) &&
+-	     ieee80211_has_protected(hdr->frame_control)) {
+-		skb_put(msdu, IEEE80211_CCMP_MIC_LEN);
+-	} else if (!(skb_cb->flags & ATH10K_SKB_F_NO_HWCRYPT) &&
+-		   txmode == ATH10K_HW_TXRX_RAW &&
+-		   ieee80211_has_protected(hdr->frame_control)) {
+-		skb_put(msdu, IEEE80211_CCMP_MIC_LEN);
++	if (!(info->control.flags & IEEE80211_TX_CTRL_HW_80211_ENCAP)) {
++		if ((ieee80211_is_action(hdr->frame_control) ||
++		     ieee80211_is_deauth(hdr->frame_control) ||
++		     ieee80211_is_disassoc(hdr->frame_control)) &&
++		    ieee80211_has_protected(hdr->frame_control)) {
++			skb_put(msdu, IEEE80211_CCMP_MIC_LEN);
++		} else if (!(skb_cb->flags & ATH10K_SKB_F_NO_HWCRYPT) &&
++			   txmode == ATH10K_HW_TXRX_RAW &&
++			   ieee80211_has_protected(hdr->frame_control)) {
++			skb_put(msdu, IEEE80211_CCMP_MIC_LEN);
++		}
+ 	}
+ 
+ 	skb_cb->paddr = dma_map_single(dev, msdu->data, msdu->len,
+diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
+index 12dad659bf68..4b4abf27182c 100644
+--- a/drivers/net/wireless/ath/ath10k/mac.c
++++ b/drivers/net/wireless/ath/ath10k/mac.c
+@@ -3426,12 +3426,16 @@ ath10k_mac_tx_h_get_txmode(struct ath10k *ar,
+ 			   struct sk_buff *skb)
  {
- 	free_percpu(dev->tstats);
-@@ -1405,6 +1472,7 @@ static void ieee80211_setup_sdata(struct ieee80211_sub_if_data *sdata,
- 	sdata->vif.bss_conf.idle = true;
+ 	const struct ieee80211_hdr *hdr = (void *)skb->data;
++	struct ieee80211_tx_info *tx_info = IEEE80211_SKB_CB(skb);
+ 	const struct ath10k_skb_cb *skb_cb = ATH10K_SKB_CB(skb);
+ 	__le16 fc = hdr->frame_control;
  
- 	sdata->noack_map = 0;
-+	sdata->hw_80211_encap = false;
+ 	if (!vif || vif->type == NL80211_IFTYPE_MONITOR)
+ 		return ATH10K_HW_TXRX_RAW;
  
- 	/* only monitor/p2p-device differ */
- 	if (sdata->dev) {
-diff --git a/net/mac80211/key.c b/net/mac80211/key.c
-index 7dfee848abac..9eb0e8f4ebb7 100644
---- a/net/mac80211/key.c
-+++ b/net/mac80211/key.c
-@@ -176,6 +176,10 @@ static int ieee80211_key_enable_hw_accel(struct ieee80211_key *key)
++	if (tx_info->control.flags & IEEE80211_TX_CTRL_HW_80211_ENCAP)
++		return ATH10K_HW_TXRX_ETHERNET;
++
+ 	if (ieee80211_is_mgmt(fc))
+ 		return ATH10K_HW_TXRX_MGMT;
+ 
+@@ -3584,6 +3588,15 @@ static void ath10k_mac_tx_h_fill_cb(struct ath10k *ar,
+ 			ieee80211_is_data_qos(hdr->frame_control);
+ 
+ 	cb->flags = 0;
++	cb->vif = vif;
++	cb->txq = txq;
++	cb->airtime_est = airtime;
++
++	if (info->control.flags & IEEE80211_TX_CTRL_HW_80211_ENCAP) {
++		cb->flags |= ATH10K_SKB_F_HW_80211_ENCAP;
++		return;
++	}
++
+ 	if (!ath10k_tx_h_use_hwcrypto(vif, skb))
+ 		cb->flags |= ATH10K_SKB_F_NO_HWCRYPT;
+ 
+@@ -3602,10 +3615,6 @@ static void ath10k_mac_tx_h_fill_cb(struct ath10k *ar,
+ 		cb->flags |= ATH10K_SKB_F_NO_HWCRYPT;
+ 		cb->flags |= ATH10K_SKB_F_RAW_TX;
+ 	}
+-
+-	cb->vif = vif;
+-	cb->txq = txq;
+-	cb->airtime_est = airtime;
+ }
+ 
+ bool ath10k_mac_tx_frm_has_freq(struct ath10k *ar)
+@@ -3715,6 +3724,9 @@ static int ath10k_mac_tx(struct ath10k *ar,
+ 	const struct ath10k_skb_cb *skb_cb = ATH10K_SKB_CB(skb);
+ 	int ret;
+ 
++	if (info->control.flags & IEEE80211_TX_CTRL_HW_80211_ENCAP)
++		goto skip_encap;
++
+ 	/* We should disable CCK RATE due to P2P */
+ 	if (info->flags & IEEE80211_TX_CTL_NO_CCK_RATE)
+ 		ath10k_dbg(ar, ATH10K_DBG_MAC, "IEEE80211_TX_CTL_NO_CCK_RATE\n");
+@@ -3738,6 +3750,7 @@ static int ath10k_mac_tx(struct ath10k *ar,
  		}
  	}
  
-+	/* TKIP countermeasures don't work in encap offload mode */
-+	if (key->conf.cipher == WLAN_CIPHER_SUITE_TKIP)
-+		ieee80211_set_hw_80211_encap(&sdata->vif, false);
-+
- 	ret = drv_set_key(key->local, SET_KEY, sdata,
- 			  sta ? &sta->sta : NULL, &key->conf);
++skip_encap:
+ 	if (info->flags & IEEE80211_TX_CTL_TX_OFFCHAN) {
+ 		if (!ath10k_mac_tx_frm_has_freq(ar)) {
+ 			ath10k_dbg(ar, ATH10K_DBG_MAC, "queued offchannel skb %pK\n",
+@@ -3787,6 +3800,7 @@ void ath10k_offchan_tx_work(struct work_struct *work)
+ 	int ret;
+ 	unsigned long time_left;
+ 	bool tmp_peer_created = false;
++	struct ieee80211_tx_info *info;
  
-@@ -202,6 +206,9 @@ static int ieee80211_key_enable_hw_accel(struct ieee80211_key *key)
- 			  key->conf.keyidx,
- 			  sta ? sta->sta.addr : bcast_addr, ret);
+ 	/* FW requirement: We must create a peer before FW will send out
+ 	 * an offchannel frame. Otherwise the frame will be stuck and
+@@ -3806,8 +3820,14 @@ void ath10k_offchan_tx_work(struct work_struct *work)
+ 		ath10k_dbg(ar, ATH10K_DBG_MAC, "mac offchannel skb %pK\n",
+ 			   skb);
  
-+	if (sdata->hw_80211_encap)
-+		return -EINVAL;
+-		hdr = (struct ieee80211_hdr *)skb->data;
+-		peer_addr = ieee80211_get_DA(hdr);
++		info = IEEE80211_SKB_CB(skb);
 +
-  out_unsupported:
- 	switch (key->conf.cipher) {
- 	case WLAN_CIPHER_SUITE_WEP40:
-diff --git a/net/mac80211/status.c b/net/mac80211/status.c
-index b036bf0269c2..f6525c8cd4d4 100644
---- a/net/mac80211/status.c
-+++ b/net/mac80211/status.c
-@@ -1169,6 +1169,80 @@ void ieee80211_tx_rate_update(struct ieee80211_hw *hw,
- }
- EXPORT_SYMBOL(ieee80211_tx_rate_update);
- 
-+void ieee80211_tx_status_8023(struct ieee80211_hw *hw,
-+			      struct ieee80211_vif *vif,
-+			      struct sk_buff *skb)
-+{
-+	struct ieee80211_local *local = hw_to_local(hw);
-+	struct ieee80211_sub_if_data *sdata;
-+	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
-+	struct sta_info *sta;
-+	int retry_count;
-+	int rates_idx;
-+	bool acked;
-+
-+	if (WARN_ON(!ieee80211_hw_check(hw, SUPPORTS_80211_ENCAP)))
-+		goto skip_stats_update;
-+
-+	sdata = vif_to_sdata(vif);
-+
-+	acked = info->flags & IEEE80211_TX_STAT_ACK;
-+	rates_idx = ieee80211_tx_get_rates(hw, info, &retry_count);
-+
-+	rcu_read_lock();
-+
-+	if (ieee80211_lookup_ra_sta(sdata, skb, &sta))
-+		goto counters_update;
-+
-+	if (IS_ERR(sta))
-+		goto counters_update;
-+
-+	if (!acked)
-+		sta->status_stats.retry_failed++;
-+
-+	if (rates_idx != -1)
-+		sta->tx_stats.last_rate = info->status.rates[rates_idx];
-+
-+	sta->status_stats.retry_count += retry_count;
-+
-+	if (ieee80211_hw_check(hw, REPORTS_TX_ACK_STATUS)) {
-+		if (acked && vif->type == NL80211_IFTYPE_STATION)
-+			ieee80211_sta_reset_conn_monitor(sdata);
-+
-+		sta->status_stats.last_ack = jiffies;
-+		if (info->flags & IEEE80211_TX_STAT_ACK) {
-+			if (sta->status_stats.lost_packets)
-+				sta->status_stats.lost_packets = 0;
-+
-+			if (test_sta_flag(sta, WLAN_STA_TDLS_PEER_AUTH))
-+				sta->status_stats.last_tdls_pkt_time = jiffies;
++		if (info->control.flags & IEEE80211_TX_CTRL_HW_80211_ENCAP) {
++			peer_addr = skb->data;
 +		} else {
-+			ieee80211_lost_packet(sta, info);
++			hdr = (struct ieee80211_hdr *)skb->data;
++			peer_addr = ieee80211_get_DA(hdr);
 +		}
-+	}
+ 
+ 		spin_lock_bh(&ar->data_lock);
+ 		vdev_id = ar->scan.vdev_id;
+@@ -4335,7 +4355,7 @@ static void ath10k_mac_op_tx(struct ieee80211_hw *hw,
+ 	struct ieee80211_vif *vif = info->control.vif;
+ 	struct ieee80211_sta *sta = control->sta;
+ 	struct ieee80211_txq *txq = NULL;
+-	struct ieee80211_hdr *hdr = (void *)skb->data;
++	struct ieee80211_hdr *hdr;
+ 	enum ath10k_hw_txrx_mode txmode;
+ 	enum ath10k_mac_tx_path txpath;
+ 	bool is_htt;
+@@ -4366,14 +4386,20 @@ static void ath10k_mac_op_tx(struct ieee80211_hw *hw,
+ 			return;
+ 		}
+ 
+-		ret = ath10k_htt_tx_mgmt_inc_pending(htt, is_mgmt, is_presp);
+-		if (ret) {
+-			ath10k_dbg(ar, ATH10K_DBG_MAC, "failed to increase tx mgmt pending count: %d, dropping\n",
+-				   ret);
+-			ath10k_htt_tx_dec_pending(htt);
+-			spin_unlock_bh(&ar->htt.tx_lock);
+-			ieee80211_free_txskb(ar->hw, skb);
+-			return;
++		if (is_mgmt) {
++			hdr = (struct ieee80211_hdr *)skb->data;
++			is_presp = ieee80211_is_probe_resp(hdr->frame_control);
 +
-+counters_update:
-+	rcu_read_unlock();
-+	ieee80211_led_tx(local);
-+
-+	if (!(info->flags & IEEE80211_TX_STAT_ACK) &&
-+	    !(info->flags & IEEE80211_TX_STAT_NOACK_TRANSMITTED))
-+		goto skip_stats_update;
-+
-+	I802_DEBUG_INC(local->dot11TransmittedFrameCount);
-+	if (is_multicast_ether_addr(skb->data))
-+		I802_DEBUG_INC(local->dot11MulticastTransmittedFrameCount);
-+	if (retry_count > 0)
-+		I802_DEBUG_INC(local->dot11RetryCount);
-+	if (retry_count > 1)
-+		I802_DEBUG_INC(local->dot11MultipleRetryCount);
-+
-+skip_stats_update:
-+	ieee80211_report_used_skb(local, skb, false);
-+	dev_kfree_skb(skb);
-+}
-+EXPORT_SYMBOL(ieee80211_tx_status_8023);
-+
- void ieee80211_report_low_ack(struct ieee80211_sta *pubsta, u32 num_packets)
++			ret = ath10k_htt_tx_mgmt_inc_pending(htt, is_mgmt,
++							     is_presp);
++			if (ret) {
++				ath10k_dbg(ar, ATH10K_DBG_MAC, "failed to increase tx mgmt pending count: %d, dropping\n",
++					   ret);
++				ath10k_htt_tx_dec_pending(htt);
++				spin_unlock_bh(&ar->htt.tx_lock);
++				ieee80211_free_txskb(ar->hw, skb);
++				return;
++			}
+ 		}
+ 		spin_unlock_bh(&ar->htt.tx_lock);
+ 	}
+@@ -5130,10 +5156,12 @@ static int ath10k_mac_set_txbf_conf(struct ath10k_vif *arvif)
+ static int ath10k_add_interface(struct ieee80211_hw *hw,
+ 				struct ieee80211_vif *vif)
  {
- 	struct sta_info *sta = container_of(pubsta, struct sta_info, sta);
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index be3ce5e5a1c3..560ec276663e 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -1249,7 +1249,8 @@ static struct txq_info *ieee80211_get_txq(struct ieee80211_local *local,
- 	    (info->control.flags & IEEE80211_TX_CTRL_PS_RESPONSE))
- 		return NULL;
- 
--	if (unlikely(!ieee80211_is_data_present(hdr->frame_control))) {
-+	if (!(info->control.flags & IEEE80211_TX_CTRL_HW_80211_ENCAP) &&
-+	    unlikely(!ieee80211_is_data_present(hdr->frame_control))) {
- 		if ((!ieee80211_is_mgmt(hdr->frame_control) ||
- 		     ieee80211_is_bufferable_mmpdu(hdr->frame_control) ||
- 		     vif->type == NL80211_IFTYPE_STATION) &&
-@@ -2354,9 +2355,9 @@ static inline bool ieee80211_is_tdls_setup(struct sk_buff *skb)
- 	       skb->data[14] == WLAN_TDLS_SNAP_RFTYPE;
- }
- 
--static int ieee80211_lookup_ra_sta(struct ieee80211_sub_if_data *sdata,
--				   struct sk_buff *skb,
--				   struct sta_info **sta_out)
-+int ieee80211_lookup_ra_sta(struct ieee80211_sub_if_data *sdata,
-+			    struct sk_buff *skb,
-+			    struct sta_info **sta_out)
- {
- 	struct sta_info *sta;
- 
-@@ -2875,7 +2876,8 @@ void ieee80211_check_fast_xmit(struct sta_info *sta)
- 	struct ieee80211_chanctx_conf *chanctx_conf;
- 	__le16 fc;
- 
--	if (!ieee80211_hw_check(&local->hw, SUPPORT_FAST_XMIT))
-+	if (!ieee80211_hw_check(&local->hw, SUPPORT_FAST_XMIT) ||
-+	    sdata->hw_80211_encap)
- 		return;
- 
- 	/* Locking here protects both the pointer itself, and against concurrent
-@@ -3607,6 +3609,9 @@ struct sk_buff *ieee80211_tx_dequeue(struct ieee80211_hw *hw,
- 	else
- 		info->flags &= ~IEEE80211_TX_CTL_AMPDU;
- 
-+	if (info->control.flags & IEEE80211_TX_CTRL_HW_80211_ENCAP)
-+		goto encap_out;
-+
- 	if (info->control.flags & IEEE80211_TX_CTRL_FAST_XMIT) {
- 		struct sta_info *sta = container_of(txq->sta, struct sta_info,
- 						    sta);
-@@ -3666,6 +3671,7 @@ struct sk_buff *ieee80211_tx_dequeue(struct ieee80211_hw *hw,
++	struct wireless_dev *wdev = ieee80211_vif_to_wdev(vif);
+ 	struct ath10k *ar = hw->priv;
+ 	struct ath10k_vif *arvif = (void *)vif->drv_priv;
+ 	struct ath10k_peer *peer;
+ 	enum wmi_sta_powersave_param param;
++	int hw_encap = 0;
+ 	int ret = 0;
+ 	u32 value;
+ 	int bit;
+@@ -5225,6 +5253,22 @@ static int ath10k_add_interface(struct ieee80211_hw *hw,
  		break;
  	}
  
-+encap_out:
- 	IEEE80211_SKB_CB(skb)->control.vif = vif;
- 	return skb;
++
++	switch (vif->type) {
++	case NL80211_IFTYPE_STATION:
++	case NL80211_IFTYPE_AP_VLAN:
++		if (wdev->netdev->ieee80211_ptr->use_4addr)
++			break;
++	/* fall through */
++	case NL80211_IFTYPE_AP:
++		hw_encap = 1;
++		break;
++	default:
++		break;
++	}
++
++	ieee80211_set_hw_80211_encap(vif, ar->ethernetmode & hw_encap);
++
+ 	/* Using vdev_id as queue number will make it very easy to do per-vif
+ 	 * tx queue locking. This shouldn't wrap due to interface combinations
+ 	 * but do a modulo for correctness sake and prevent using offchannel tx
+@@ -8789,6 +8833,8 @@ int ath10k_mac_register(struct ath10k *ar)
+ 	ieee80211_hw_set(ar->hw, QUEUE_CONTROL);
+ 	ieee80211_hw_set(ar->hw, SUPPORTS_TX_FRAG);
+ 	ieee80211_hw_set(ar->hw, REPORTS_LOW_ACK);
++	if (ar->ethernetmode)
++		ieee80211_hw_set(ar->hw, SUPPORTS_80211_ENCAP);
  
-@@ -4037,6 +4043,164 @@ netdev_tx_t ieee80211_subif_start_xmit(struct sk_buff *skb,
- 	return NETDEV_TX_OK;
- }
+ 	if (!test_bit(ATH10K_FLAG_RAW_MODE, &ar->dev_flags))
+ 		ieee80211_hw_set(ar->hw, SW_CRYPTO_CONTROL);
+diff --git a/drivers/net/wireless/ath/ath10k/txrx.c b/drivers/net/wireless/ath/ath10k/txrx.c
+index 4102df016931..608d6d6967fa 100644
+--- a/drivers/net/wireless/ath/ath10k/txrx.c
++++ b/drivers/net/wireless/ath/ath10k/txrx.c
+@@ -50,6 +50,8 @@ int ath10k_txrx_tx_unref(struct ath10k_htt *htt,
+ 	struct ath10k_skb_cb *skb_cb;
+ 	struct ath10k_txq *artxq;
+ 	struct sk_buff *msdu;
++	struct ieee80211_vif *vif;
++	u8 flags;
  
-+static bool ieee80211_tx_8023(struct ieee80211_sub_if_data *sdata,
-+			      struct sk_buff *skb, int led_len,
-+			      struct sta_info *sta,
-+			      bool txpending)
-+{
-+	struct ieee80211_local *local = sdata->local;
-+	struct ieee80211_tx_control control = {};
-+	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
-+	struct ieee80211_sta *pubsta = NULL;
-+	unsigned long flags;
-+	int q = info->hw_queue;
-+
-+	if (ieee80211_queue_skb(local, sdata, sta, skb))
-+		return true;
-+
-+	spin_lock_irqsave(&local->queue_stop_reason_lock, flags);
-+
-+	if (local->queue_stop_reasons[q] ||
-+	    (!txpending && !skb_queue_empty(&local->pending[q]))) {
-+		if (txpending)
-+			skb_queue_head(&local->pending[q], skb);
-+		else
-+			skb_queue_tail(&local->pending[q], skb);
-+
-+		spin_unlock_irqrestore(&local->queue_stop_reason_lock, flags);
-+
-+		return false;
-+	}
-+
-+	spin_unlock_irqrestore(&local->queue_stop_reason_lock, flags);
-+
-+	if (sta && sta->uploaded)
-+		pubsta = &sta->sta;
-+
-+	control.sta = pubsta;
-+
-+	drv_tx(local, &control, skb);
-+
-+	return true;
-+}
-+
-+static void ieee80211_8023_xmit(struct ieee80211_sub_if_data *sdata,
-+				struct net_device *dev, struct sta_info *sta,
-+				struct sk_buff *skb)
-+{
-+	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
-+	struct ethhdr *ehdr = (struct ethhdr *)skb->data;
-+	struct ieee80211_local *local = sdata->local;
-+	bool authorized = false;
-+	bool multicast;
-+	bool tdls_peer;
-+	unsigned char *ra = NULL;
-+
-+	if (IS_ERR(sta) || (sta && !sta->uploaded))
-+		sta = NULL;
-+
-+	if (sdata->vif.type == NL80211_IFTYPE_STATION) {
-+		tdls_peer = test_sta_flag(sta, WLAN_STA_TDLS_PEER);
-+		if (tdls_peer)
-+			ra = skb->data;
-+		else
-+			ra = sdata->u.mgd.bssid;
-+	} else {
-+		ra = ehdr->h_dest;
-+	}
-+
-+	if (!ra)
-+		goto out_free;
-+	multicast = is_multicast_ether_addr(ra);
-+
-+	if (sta)
-+		authorized = test_sta_flag(sta, WLAN_STA_AUTHORIZED);
-+
-+	if (!multicast && !authorized &&
-+	    (ehdr->h_proto != sdata->control_port_protocol ||
-+	     !ether_addr_equal(sdata->vif.addr, ehdr->h_source)))
-+		goto out_free;
-+
-+	if (multicast && sdata->vif.type == NL80211_IFTYPE_AP &&
-+	    !atomic_read(&sdata->u.ap.num_mcast_sta))
-+		goto out_free;
-+
-+	if (unlikely(test_bit(SCAN_SW_SCANNING, &local->scanning)) &&
-+	    test_bit(SDATA_STATE_OFFCHANNEL, &sdata->state))
-+		goto out_free;
-+
-+	if (unlikely(!multicast && skb->sk &&
-+		     skb_shinfo(skb)->tx_flags & SKBTX_WIFI_STATUS))
-+		ieee80211_store_ack_skb(local, skb, &info->flags);
-+
-+	memset(info, 0, sizeof(*info));
-+
-+	if (unlikely(sdata->control_port_protocol == ehdr->h_proto)) {
-+		if (sdata->control_port_no_encrypt)
-+			info->flags |= IEEE80211_TX_INTFL_DONT_ENCRYPT;
-+		info->control.flags |= IEEE80211_TX_CTRL_PORT_CTRL_PROTO;
-+	}
-+
-+	if (multicast)
-+		info->flags |= IEEE80211_TX_CTL_NO_ACK;
-+
-+	info->hw_queue = sdata->vif.hw_queue[skb_get_queue_mapping(skb)];
-+
-+	ieee80211_tx_stats(dev, skb->len);
-+
-+	if (sta) {
-+		sta->tx_stats.bytes[skb_get_queue_mapping(skb)] += skb->len;
-+		sta->tx_stats.packets[skb_get_queue_mapping(skb)]++;
-+	}
-+
-+	if (sdata->vif.type == NL80211_IFTYPE_AP_VLAN)
-+		sdata = container_of(sdata->bss,
-+				     struct ieee80211_sub_if_data, u.ap);
-+
-+	info->control.flags |= IEEE80211_TX_CTRL_HW_80211_ENCAP;
-+	info->control.vif = &sdata->vif;
-+
-+	ieee80211_tx_8023(sdata, skb, skb->len, sta, false);
-+
-+	return;
-+
-+out_free:
-+	kfree_skb(skb);
-+}
-+
-+netdev_tx_t ieee80211_subif_start_xmit_8023(struct sk_buff *skb,
-+					    struct net_device *dev)
-+{
-+	struct ieee80211_sub_if_data *sdata = IEEE80211_DEV_TO_SUB_IF(dev);
-+	struct sta_info *sta;
-+
-+	if (WARN_ON(!sdata->hw_80211_encap)) {
-+		kfree_skb(skb);
-+		return NETDEV_TX_OK;
-+	}
-+
-+	if (unlikely(skb->len < ETH_HLEN)) {
-+		kfree_skb(skb);
-+		return NETDEV_TX_OK;
-+	}
-+
-+	rcu_read_lock();
-+
-+	if (ieee80211_lookup_ra_sta(sdata, skb, &sta))
-+		goto out_free;
-+
-+	ieee80211_8023_xmit(sdata, dev, sta, skb);
-+
-+	goto out;
-+
-+out_free:
-+	kfree_skb(skb);
-+out:
-+	rcu_read_unlock();
-+
-+	return NETDEV_TX_OK;
-+}
-+
- struct sk_buff *
- ieee80211_build_data_template(struct ieee80211_sub_if_data *sdata,
- 			      struct sk_buff *skb, u32 info_flags)
-@@ -4115,6 +4279,16 @@ static bool ieee80211_tx_pending_skb(struct ieee80211_local *local,
- 		}
- 		info->band = chanctx_conf->def.chan->band;
- 		result = ieee80211_tx(sdata, NULL, skb, true, 0);
-+	} else if (info->control.flags & IEEE80211_TX_CTRL_HW_80211_ENCAP) {
-+		if (ieee80211_lookup_ra_sta(sdata, skb, &sta)) {
-+			dev_kfree_skb(skb);
-+			return true;
-+		}
-+
-+		if (IS_ERR(sta) || (sta && !sta->uploaded))
-+			sta = NULL;
-+
-+		result = ieee80211_tx_8023(sdata, skb, skb->len, sta, true);
- 	} else {
- 		struct sk_buff_head skbs;
+ 	ath10k_dbg(ar, ATH10K_DBG_HTT,
+ 		   "htt tx completion msdu_id %u status %d\n",
+@@ -78,6 +80,9 @@ int ath10k_txrx_tx_unref(struct ath10k_htt *htt,
+ 		artxq->num_fw_queued--;
+ 	}
  
++	flags = skb_cb->flags;
++	vif = skb_cb->vif;
++
+ 	ath10k_htt_tx_free_msdu_id(htt, tx_done->msdu_id);
+ 	ath10k_htt_tx_dec_pending(htt);
+ 	if (htt->num_pending_tx == 0)
+@@ -121,7 +126,11 @@ int ath10k_txrx_tx_unref(struct ath10k_htt *htt,
+ 		info->status.is_valid_ack_signal = true;
+ 	}
+ 
+-	ieee80211_tx_status(htt->ar->hw, msdu);
++	if (flags & ATH10K_SKB_F_HW_80211_ENCAP)
++		ieee80211_tx_status_8023(htt->ar->hw, vif, msdu);
++	else
++		ieee80211_tx_status(htt->ar->hw, msdu);
++
+ 	/* we do not own the msdu anymore */
+ 
+ 	return 0;
 -- 
 2.20.1
 
