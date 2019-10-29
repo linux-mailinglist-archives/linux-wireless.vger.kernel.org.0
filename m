@@ -2,138 +2,125 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 67F87E835C
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Oct 2019 09:41:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C390E836C
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Oct 2019 09:43:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729232AbfJ2Ilj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 29 Oct 2019 04:41:39 -0400
-Received: from mail-wm1-f67.google.com ([209.85.128.67]:38382 "EHLO
-        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727139AbfJ2Ilj (ORCPT
+        id S1729802AbfJ2In0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 29 Oct 2019 04:43:26 -0400
+Received: from mail-wr1-f67.google.com ([209.85.221.67]:37340 "EHLO
+        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729101AbfJ2In0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 29 Oct 2019 04:41:39 -0400
-Received: by mail-wm1-f67.google.com with SMTP id 22so1435813wms.3
-        for <linux-wireless@vger.kernel.org>; Tue, 29 Oct 2019 01:41:37 -0700 (PDT)
+        Tue, 29 Oct 2019 04:43:26 -0400
+Received: by mail-wr1-f67.google.com with SMTP id e11so12644764wrv.4
+        for <linux-wireless@vger.kernel.org>; Tue, 29 Oct 2019 01:43:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ncentric-com.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding:content-language;
-        bh=DUE+XOir+sEq8Jjt6ZqFoZP8jxttvHmbtNjKbTObY9Y=;
-        b=pPHnC2jzOsNQtFwKWKM84eQfcMIczrZRRakDJasaSgNDYqEpq5bkSkEmSQokHT5Ic7
-         TRSTsQEjnG5bXDRhJwN6zbp6rsw+ArB8T4EtOiOcOm+FLZcBXvf/mOhOEDupb0/h79/2
-         poyjiibNRB2bUGgklHNODDYzLXaLXEHJlmgyQgv7uWTBAE9SPXY9QfUbhN8hAWurOdOA
-         2IQgVfDF1Ep1VFPJ/UuLp4xFEBXmOI7/OemGOj7GR8w2XjcHS1V9Q30wADyPsF9qP9hz
-         HO1g0lEOtJPqfjsd5amgxY+Ff1OAs2aF2+t0sb2auBJJ7qKfq4gT+RdxkUC4rQOgEz65
-         2EYw==
+        d=netronome-com.20150623.gappssmtp.com; s=20150623;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=2Y1e6eXMXynj3RVm6A/v7p+Rx7z46GaGYsW4oOsjovc=;
+        b=wavt2/1wTjV79EJap7JbgnE2Twi+9BnBLl1BHzBNl3vIs2ZXYZ5HrrxkfM3CKwswgj
+         sw6aeOhyfWasmAuDA08IFOYHsMO5LIBf5pt7y/wA3OVWD1tdoJBDyMNGJDcZHed3K0hQ
+         TGIps6ZZGwOZNPavurYTlkGlU30hmfoZIJOEcYN97v5MIS0O24fHR+K8ChWaH2zKHIsh
+         ICO8D+vwppTHPxR+5+JldQ3zx6FnSsFOXwCb8M9bkBt88WuwnipSdlRin1MJUpzqVmXp
+         EVrEom4gkCv75CNw3zuLBldoeXeMrrVQ1LiZ6DAEtqXZf6rd2VdeislzDMV+Bh1GEfnV
+         poIg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding
-         :content-language;
-        bh=DUE+XOir+sEq8Jjt6ZqFoZP8jxttvHmbtNjKbTObY9Y=;
-        b=Ots+vXDPQAGLvJnL0kfSnrbVlX/c0qhucIFTcpQmeLFsDQNAgUWXgdV1tIj2KaQ4xi
-         AXUYxXaN4K+qYwHALPnGFdkqI8eZV6R2SQXha1tFBNOwvxsYFi15mqLnMzD3lW/8nZAW
-         aJ/mS9bAPDYZ9PCjk+iYMhitkpv9WaC9sz70dikMth6u5xU5vtyeLhCFqaQ8fnRaFSd5
-         hK3D+ejuc106AVxqXzKJr+y1ToCTUfw6sI/x3QLPjuHfCSCPFVpJuaczUFQ3gX/qC+X7
-         7cSHCjzEGWK5Ce6zBHSp6HbBzfqoN/Jq6Sbnd6yzAvdTDp5ZSibrvYVgB7A+jM/Odbbk
-         L52g==
-X-Gm-Message-State: APjAAAWpC1Ux8U5iHmkj8hOUVepSfTe6qjU2EN7yMQOh4qV4Dux71ic6
-        uL54TVm2qFFdwYFEji8cslK+yA==
-X-Google-Smtp-Source: APXvYqyftOvlRJ9dg8wL3C+zw81qRJgiCNNRVg6nEmYDGwPHS05minYwSNVy0ezRwvY2ORWwUG3b8g==
-X-Received: by 2002:a1c:a4c5:: with SMTP id n188mr2887218wme.30.1572338496714;
-        Tue, 29 Oct 2019 01:41:36 -0700 (PDT)
-Received: from [192.168.3.176] (d515300d8.static.telenet.be. [81.83.0.216])
-        by smtp.gmail.com with ESMTPSA id u21sm2275041wmu.27.2019.10.29.01.41.35
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 29 Oct 2019 01:41:36 -0700 (PDT)
-Subject: Re: [PATCH v2] 802.11n IBSS: wlan0 stops receiving packets due to
- aggregation after sender reboot
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        =?UTF-8?Q?Krzysztof_Ha=c5=82asa?= <khalasa@piap.pl>
-Cc:     "David S. Miller" <davem@davemloft.net>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <m34l02mh71.fsf@t19.piap.pl> <m37e4tjfbu.fsf@t19.piap.pl>
- <e5b07b4ce51f806ce79b1ae06ff3cbabbaa4873d.camel@sipsolutions.net>
-From:   Koen Vandeputte <koen.vandeputte@ncentric.com>
-Message-ID: <30465e05-3465-f496-d57f-5e115551f5cb@ncentric.com>
-Date:   Tue, 29 Oct 2019 09:41:35 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=2Y1e6eXMXynj3RVm6A/v7p+Rx7z46GaGYsW4oOsjovc=;
+        b=t1/IXLWFkJRu5z/NVSPr1mXK5f9eLRUD8nwJbpTCYGNzR4xrhXIosuAaLRyWZdNHZy
+         XW4zMwunLU8XhW72Bycs6RGdok+3sFB+18YoO5PSAl9UKlYNoBya/tk8tUw26WjO3BhM
+         +TEib4voQfuN1h2g8YSrTwcHivrOnfGeCd3za2S81p4K94zuKY5dx5LNE3pIRG/AUwO5
+         VRpWjUPigCNU8tzV+7aJLWGErHoANb38BM2IAR6kvsweDlLFekj7Z6jk1rnbmnwAjROg
+         /XqPjqhF/Gb8bR+KUdoIInv3eWV2Vwmhi8L65NgCuldkdpt/KXSD1cd233Vsk+6U7q5r
+         5riw==
+X-Gm-Message-State: APjAAAXW6bLXLntGMYXQ4CqO5L6XhP+MxG83SkWi9Sgk0j6PIf25POIz
+        3YhesrLBo3nIR68lp0PalhwB3A==
+X-Google-Smtp-Source: APXvYqx+LFWSW8vxJhxbdOsjx1jGLoXPJPKXrqqM25niggkWBSCsM/ioC7zlbwA136enGM6e3I1O9g==
+X-Received: by 2002:adf:f152:: with SMTP id y18mr19562113wro.285.1572338603282;
+        Tue, 29 Oct 2019 01:43:23 -0700 (PDT)
+Received: from netronome.com (fred-musen.rivierenbuurt.horms.nl. [2001:470:7eb3:404:a2a4:c5ff:fe4c:9ce9])
+        by smtp.gmail.com with ESMTPSA id p10sm15381693wrx.2.2019.10.29.01.43.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 29 Oct 2019 01:43:22 -0700 (PDT)
+Date:   Tue, 29 Oct 2019 09:43:21 +0100
+From:   Simon Horman <simon.horman@netronome.com>
+To:     Saurav Girepunje <saurav.girepunje@gmail.com>
+Cc:     kvalo@codeaurora.org, davem@davemloft.net, swinslow@gmail.com,
+        will@kernel.org, opensource@jilayne.com, baijiaju1990@gmail.com,
+        tglx@linutronix.de, linux-wireless@vger.kernel.org,
+        b43-dev@lists.infradead.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, saurav.girepunje@hotmail.com
+Subject: Re: [PATCH] b43: Fix use true/false for bool type
+Message-ID: <20191029084320.GC23615@netronome.com>
+References: <20191028190204.GA27248@saurav>
+ <20191029082427.GB23615@netronome.com>
 MIME-Version: 1.0
-In-Reply-To: <e5b07b4ce51f806ce79b1ae06ff3cbabbaa4873d.camel@sipsolutions.net>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191029082427.GB23615@netronome.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On Tue, Oct 29, 2019 at 09:24:27AM +0100, Simon Horman wrote:
+> Hi Saurav,
+> 
+> thanks for your patch.
+> 
+> On Tue, Oct 29, 2019 at 12:32:04AM +0530, Saurav Girepunje wrote:
+> > use true/false on bool type variable assignment.
+> > 
+> > Signed-off-by: Saurav Girepunje <saurav.girepunje@gmail.com>
+> 
+> This does not seem to cover the case in dma.c,
+> which seems to want fixing for the sake of consistency.
 
-On 28.10.19 13:21, Johannes Berg wrote:
-> On Fri, 2019-10-25 at 12:21 +0200, Krzysztof Hałasa wrote:
->> Fix a bug where the mac80211 RX aggregation code sets a new aggregation
->> "session" at the remote station's request, but the head_seq_num
->> (the sequence number the receiver expects to receive) isn't reset.
->>
->> Spotted on a pair of AR9580 in IBSS mode.
->>
->> Signed-off-by: Krzysztof Halasa <khalasa@piap.pl>
->>
->> diff --git a/net/mac80211/agg-rx.c b/net/mac80211/agg-rx.c
->> index 4d1c335e06e5..67733bd61297 100644
->> --- a/net/mac80211/agg-rx.c
->> +++ b/net/mac80211/agg-rx.c
->> @@ -354,10 +354,13 @@ void ___ieee80211_start_rx_ba_session(struct sta_info *sta,
->>   			 */
->>   			rcu_read_lock();
->>   			tid_rx = rcu_dereference(sta->ampdu_mlme.tid_rx[tid]);
->> -			if (tid_rx && tid_rx->timeout == timeout)
->> +			if (tid_rx && tid_rx->timeout == timeout) {
->> +				tid_rx->ssn = start_seq_num;
->> +				tid_rx->head_seq_num = start_seq_num;
->>   				status = WLAN_STATUS_SUCCESS;
-> This is wrong, this is the case of *updating an existing session*, we
-> must not reset the head SN then.
->
-> I think you just got very lucky (or unlucky) to have the same dialog
-> token, because we start from 0 - maybe we should initialize it to a
-> random value to flush out such issues.
->
-> Really what I think probably happened is that one of your stations lost
-> the connection to the other, and didn't tell it about it in any way - so
-> the other kept all the status alive.
->
-> I suspect to make all this work well we need to not only have the fixes
-> I made recently to actually send and parse deauth frames, but also to
-> even send an auth and reset the state when we receive that, so if we
-> move out of range and even the deauth frame is lost, we can still reset
-> properly.
->
-> In any case, this is not the right approach - we need to handle the
-> "lost connection" case better I suspect, but since you don't say what
-> really happened I don't really know that that's what you're seeing.
->
-> johannes
+I now see this handled in a separate patch, sorry for the noise.
 
-Hi all,
-
-I can confirm the issue as I'm also seeing this sometimes in the field here.
-
-Sometimes when a devices goes out of range and then re-enters,
-the link refuses to "come up", as in rx looks to be "stuck" without any 
-reports in system log or locking issues (lockdep enabled)
-
-I have dozens of devices installed offshore (802.11n based), both on 
-static and moving assets,
-which cover from short (250m) up to very long distances (~35km)
-
-So .. while there is some momentum for this issue,
-I'm more than happy to provide extensive testing should fixes be posted 
-regarding IBSS in general.
-
-Regards,
-
-Koen
-
+> Also, I wonder why bools rather than a bitmask was chosen
+> for this field, it seems rather space intensive in its current form.
+> 
+> > ---
+> >  drivers/net/wireless/broadcom/b43/main.c | 6 +++---
+> >  1 file changed, 3 insertions(+), 3 deletions(-)
+> > 
+> > diff --git a/drivers/net/wireless/broadcom/b43/main.c b/drivers/net/wireless/broadcom/b43/main.c
+> > index b85603e91c7a..39da1a4c30ac 100644
+> > --- a/drivers/net/wireless/broadcom/b43/main.c
+> > +++ b/drivers/net/wireless/broadcom/b43/main.c
+> > @@ -3600,7 +3600,7 @@ static void b43_tx_work(struct work_struct *work)
+> >  			else
+> >  				err = b43_dma_tx(dev, skb);
+> >  			if (err == -ENOSPC) {
+> > -				wl->tx_queue_stopped[queue_num] = 1;
+> > +				wl->tx_queue_stopped[queue_num] = true;
+> >  				ieee80211_stop_queue(wl->hw, queue_num);
+> >  				skb_queue_head(&wl->tx_queue[queue_num], skb);
+> >  				break;
+> > @@ -3611,7 +3611,7 @@ static void b43_tx_work(struct work_struct *work)
+> >  		}
+> >  
+> >  		if (!err)
+> > -			wl->tx_queue_stopped[queue_num] = 0;
+> > +			wl->tx_queue_stopped[queue_num] = false;
+> >  	}
+> >  
+> >  #if B43_DEBUG
+> > @@ -5603,7 +5603,7 @@ static struct b43_wl *b43_wireless_init(struct b43_bus_dev *dev)
+> >  	/* Initialize queues and flags. */
+> >  	for (queue_num = 0; queue_num < B43_QOS_QUEUE_NUM; queue_num++) {
+> >  		skb_queue_head_init(&wl->tx_queue[queue_num]);
+> > -		wl->tx_queue_stopped[queue_num] = 0;
+> > +		wl->tx_queue_stopped[queue_num] = false;
+> >  	}
+> >  
+> >  	snprintf(chip_name, ARRAY_SIZE(chip_name),
+> > -- 
+> > 2.20.1
+> > 
+> 
