@@ -2,122 +2,86 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C08BEE850A
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Oct 2019 11:05:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C0A36E861F
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Oct 2019 11:51:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727370AbfJ2KFh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 29 Oct 2019 06:05:37 -0400
-Received: from fudo.makrotopia.org ([185.142.180.71]:59010 "EHLO
-        fudo.makrotopia.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727351AbfJ2KFh (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 29 Oct 2019 06:05:37 -0400
-Received: from local
-        by fudo.makrotopia.org with esmtpsa (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
-         (Exim 4.92.2)
-        (envelope-from <daniel@makrotopia.org>)
-        id 1iPONW-00017r-Ci; Tue, 29 Oct 2019 11:05:33 +0100
-Date:   Tue, 29 Oct 2019 11:05:03 +0100
-From:   Daniel Golle <daniel@makrotopia.org>
-To:     Stanislaw Gruszka <sgruszka@redhat.com>
-Cc:     linux-wireless@vger.kernel.org, Roman Yeryomin <roman@advem.lv>,
-        wbob <wbob@jify.de>
-Subject: Re: [PATCH] rt2800: remove erroneous duplicate condition
-Message-ID: <20191029100503.GA1228@makrotopia.org>
-References: <20191028212244.GA2590@makrotopia.org>
- <20191029091857.GB3571@redhat.com>
+        id S1730952AbfJ2Kvn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 29 Oct 2019 06:51:43 -0400
+Received: from ni.piap.pl ([195.187.100.5]:47280 "EHLO ni.piap.pl"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726175AbfJ2Kvn (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 29 Oct 2019 06:51:43 -0400
+Received: from t19.piap.pl (OSB1819.piap.pl [10.0.9.19])
+        (using TLSv1.2 with cipher AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ni.piap.pl (Postfix) with ESMTPSA id CA06E4435C4;
+        Tue, 29 Oct 2019 11:51:40 +0100 (CET)
+DKIM-Filter: OpenDKIM Filter v2.11.0 ni.piap.pl CA06E4435C4
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=piap.pl; s=mail;
+        t=1572346301; bh=k5T289OuUG6VXWcIiryuoMqmX23h/XJduJPMuCqgoOg=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=KZ14oEaCQzQoroOWAQHrUaDc1v7cetvPs+6k+L+Z5bv3NE0kS334kY5zO01YjYgvf
+         L+nOcLqWocanrPNwzJp2x8D4mHfWLJ/8AdV/n0P3U1Y7XPk0x+kUucW2E0jIgN4A8C
+         llNJLqB9f4pJF1nEgII9vfQMtQo4a4Yl98Op4rP8=
+From:   khalasa@piap.pl (Krzysztof =?utf-8?Q?Ha=C5=82asa?=)
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     "David S. Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] 802.11n IBSS: wlan0 stops receiving packets due to aggregation after sender reboot
+References: <m34l02mh71.fsf@t19.piap.pl> <m37e4tjfbu.fsf@t19.piap.pl>
+        <e5b07b4ce51f806ce79b1ae06ff3cbabbaa4873d.camel@sipsolutions.net>
+        <m37e4orkxr.fsf@t19.piap.pl>
+        <4725dcbd6297c74bf949671e7ad48eeeb0ceb0d0.camel@sipsolutions.net>
+Date:   Tue, 29 Oct 2019 11:51:40 +0100
+In-Reply-To: <4725dcbd6297c74bf949671e7ad48eeeb0ceb0d0.camel@sipsolutions.net>
+        (Johannes Berg's message of "Tue, 29 Oct 2019 10:07:30 +0100")
+Message-ID: <m336fbsu2r.fsf@t19.piap.pl>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191029091857.GB3571@redhat.com>
-User-Agent: Mutt/1.12.2 (2019-09-21)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-KLMS-Rule-ID: 4
+X-KLMS-Message-Action: skipped
+X-KLMS-AntiSpam-Status: not scanned, whitelist
+X-KLMS-AntiPhishing: not scanned, whitelist
+X-KLMS-AntiVirus: Kaspersky Security 8.0 for Linux Mail Server, version 8.0.1.721, not scanned, whitelist
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Stanislaw,
+Johannes Berg <johannes@sipsolutions.net> writes:
 
-On Tue, Oct 29, 2019 at 10:18:57AM +0100, Stanislaw Gruszka wrote:
-> On Mon, Oct 28, 2019 at 10:22:44PM +0100, Daniel Golle wrote:
-> > On 2019-10-28 06:07, wbob wrote:
-> > > Hello Roman,
-> > >
-> > > while reading around drivers/net/wireless/ralink/rt2x00/rt2800lib.c
-> > > I stumbled on what I think is an edit of yours made in error in march
-> > > 2017:
-> > >
-> > > https://github.com/torvalds/linux/commit/41977e86#diff-dae5dc10da180f3b055809a48118e18aR5281
-> > >
-> > > RT6352 in line 5281 should not have been introduced as the "else if"
-> > > below line 5291 can then not take effect for a RT6352 device. Another
-> > > possibility is for line 5291 to be not for RT6352, but this seems
-> > > very unlikely. Are you able to clarify still after this substantial time?
-> > >
-> > > 5277: static int rt2800_init_registers(struct rt2x00_dev *rt2x00dev)
-> > > ...
-> > > 5279:  } else if (rt2x00_rt(rt2x00dev, RT5390) ||
-> > > 5280:         rt2x00_rt(rt2x00dev, RT5392) ||
-> > > 5281:         rt2x00_rt(rt2x00dev, RT6352)) {
-> > > ...
-> > > 5291:  } else if (rt2x00_rt(rt2x00dev, RT6352)) {
-> > > ...
-> > 
-> > Hence remove erroneous line 5281 to make the driver actually
-> > execute the correct initialization routine for MT7620 chips.
-> > 
-> > Fixes: 41977e86c984 ("rt2x00: add support for MT7620")
-> > Reported-by: wbob <wbob@jify.de>
-> > Reported-by: Roman Yeryomin <roman@advem.lv>
-> > Signed-off-by: Daniel Golle <daniel@makrotopia.org>
-> > ---
-> >  drivers/net/wireless/ralink/rt2x00/rt2800lib.c | 3 +--
-> >  1 file changed, 1 insertion(+), 2 deletions(-)
-> > 
-> > diff --git a/drivers/net/wireless/ralink/rt2x00/rt2800lib.c b/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
-> > index f1cdcd61c54a..c85456c8c193 100644
-> > --- a/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
-> > +++ b/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
-> > @@ -5839,8 +5839,7 @@ static int rt2800_init_registers(struct rt2x00_dev *rt2x00dev)
-> >  		rt2800_register_write(rt2x00dev, TX_TXBF_CFG_0, 0x8000fc21);
-> >  		rt2800_register_write(rt2x00dev, TX_TXBF_CFG_3, 0x00009c40);
-> >  	} else if (rt2x00_rt(rt2x00dev, RT5390) ||
-> > -		   rt2x00_rt(rt2x00dev, RT5392) ||
-> > -		   rt2x00_rt(rt2x00dev, RT6352)) {
-> > +		   rt2x00_rt(rt2x00dev, RT5392)) {
-> >  		rt2800_register_write(rt2x00dev, TX_SW_CFG0, 0x00000404);
-> >  		rt2800_register_write(rt2x00dev, TX_SW_CFG1, 0x00080606);
-> >  		rt2800_register_write(rt2x00dev, TX_SW_CFG2, 0x00000000);
-> 
-> I'm not sure if initialization on different path, is proper for all
-> variants of RT6352 chipset. Particularly I noticed that configuring
-> MIMO_PS_CFG can cause problems on wt3020.
+>> The problem I can see is that the dialog_tokens are 8-bit, way too small
+>> to eliminate conflicts.
+>
+> Well, they're also per station, we could just randomize the start and
+> then we'd delete the old session and start a new one, on the receiver.
+>
+> So that would improve robustness somewhat (down to a 1/256 chance to hit
+> this problem).
 
-That's pretty odd, as this register is also written unconditionally
-by the vendor driver, see:
-https://github.com/wuqiong/rt2860v2-for-openwrt-mt7620/blob/master/rt2860v2/chips/rt6352.c#L529
-https://github.com/wuqiong/rt2860v2-for-openwrt-mt7620/blob/master/rt2860v2/chips/rt6352.c#L696
+That was what I meant. Still, 1/256 seems hardly acceptable to me -
+unless there is some work around (a short timeout or something similar).
+Remember that when it doesn't work, it doesn't work - it won't recover
+until the sequence catches up, which may mean basically forever.
 
-As only ChipVer >= 2 has been seen in the wild apparently, it seems
-Roman implemented support for MT7620 along that codepath in the
-original driver:
-https://github.com/wuqiong/rt2860v2-for-openwrt-mt7620/blob/master/rt2860v2/chips/rt6352.c#L713
+Or, maybe the remote station can request de-aggregation first, so the
+subsequent aggregation request is always treated as new?
 
-However, now looking at this more, also
-rt2800_register_write(rt2x00dev, TX_ALC_VGA3, 0x00000000);
-doesn't match that codepath in the vendor driver which sets 0x06060606.
+Alternatively, perhaps the remote can signal that it's a new request and
+not merely an existing session?
 
-Now we could really implement all the codepaths for all pkg, ver, eco
-variants of MT7620 using the accessors like I patched here:
-https://github.com/openwrt/openwrt/blob/master/target/linux/ramips/patches-4.14/300-mt7620-export-chip-version-and-pkg.patch
-(accessor for mt7620_get_eco was already in place as it is used also
-by MMC/SD driver afair)
+> That's the situation though - the local station needs to know that it
+> has in fact *not* seen the same instance of the station, but that the
+> station has reset and needs to be removed & re-added.
 
-Which MT7620 chip package, version and eco is found inside the wt3020?
-(printed early on dmesg)
+Precisely. And it seems to me that the first time the local station
+learns of this is when a new, regular, non-aggregated packet arrives.
+Or, when a new aggregation request arrives.
+--=20
+Krzysztof Halasa
 
-
-Cheers
-
-
-Daniel
+=C5=81UKASIEWICZ Research Network
+Industrial Research Institute for Automation and Measurements PIAP
+Al. Jerozolimskie 202, 02-486 Warsaw, Poland
