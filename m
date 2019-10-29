@@ -2,80 +2,109 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 636F9E8B75
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Oct 2019 16:08:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 43DECE8B79
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Oct 2019 16:08:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389836AbfJ2PHx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 29 Oct 2019 11:07:53 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:52158 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389520AbfJ2PHx (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 29 Oct 2019 11:07:53 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 4F6D56079D; Tue, 29 Oct 2019 15:07:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1572361672;
-        bh=PUi0TnV0ZUkx5WjneOzdJHo4q0wVk5Vjn1TlfRNP7xY=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=G4v6Q6M6pvohiM+NtPkxsIGBmW8SdQK+nPdbMxQgAWDeBG8tqD4xjjhaQGqPlnQrL
-         1sWccxuqVKD57kF/TmEs/M/tZt/7Z00XmF7SJmpONnziyitHLGhKhBvGE3W+d7tUO/
-         Lt1NiwS4MtWHRBhKolKQ8EK0li8Eqyl2H5r6evy4=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id ABD376079D;
-        Tue, 29 Oct 2019 15:07:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1572361671;
-        bh=PUi0TnV0ZUkx5WjneOzdJHo4q0wVk5Vjn1TlfRNP7xY=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=V2NRj/uuLkM2g2ITLisZUZafcQj6Z+43LrN1bFwopuqy/VEoY4HQPSkCxIznzFFbZ
-         5JHdQ0B6EaKlZFvD5FSPAm8/Ggzm2Ulaj5hPGR2IEIYMD60KxKubO+7KMcmafFKhaE
-         Ywd1T/uvS8iNfD+AD7f+V84kqxfjbr00dZLAekM0=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org ABD376079D
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Saurav Girepunje <saurav.girepunje@gmail.com>
-Cc:     pkshih@realtek.com, davem@davemloft.net, Larry.Finger@lwfinger.net,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, saurav.girepunje@hotmail.com
-Subject: Re: [PATCH] net: wireless: rtlwifi: rtl8192c:Drop condition with no effect
-References: <20191028184654.GA26755@saurav>
-Date:   Tue, 29 Oct 2019 17:07:46 +0200
-In-Reply-To: <20191028184654.GA26755@saurav> (Saurav Girepunje's message of
-        "Tue, 29 Oct 2019 00:16:54 +0530")
-Message-ID: <874kzr4mkd.fsf@kamboji.qca.qualcomm.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        id S2389855AbfJ2PI1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 29 Oct 2019 11:08:27 -0400
+Received: from bsmtp2.bon.at ([213.33.87.16]:15383 "EHLO bsmtp2.bon.at"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2389730AbfJ2PI1 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 29 Oct 2019 11:08:27 -0400
+X-Greylist: delayed 671 seconds by postgrey-1.27 at vger.kernel.org; Tue, 29 Oct 2019 11:08:26 EDT
+Received: from [10.1.14.125] (vpn.streamunlimited.com [91.114.0.140])
+        by bsmtp2.bon.at (Postfix) with ESMTPSA id 472Zj46xyQz5tl9;
+        Tue, 29 Oct 2019 16:08:24 +0100 (CET)
+Subject: Re: [PATCH] wireless-regdb: Create entry for united European region
+To:     Seth Forshee <seth.forshee@canonical.com>
+Cc:     linux-wireless@vger.kernel.org, wireless-regdb@lists.infradead.org
+References: <bf327181-521b-e1ce-c5c8-81b828fc65b6@streamunlimited.com>
+ <20190907235636.GA8256@ubuntu-xps13>
+ <a5bdfce7-e974-37bb-c1d1-956d4572703c@streamunlimited.com>
+ <39933518-6a65-fab3-4a66-8f44fc319d57@streamunlimited.com>
+ <76f464e9-8806-ecbf-2dc8-67bb4190ecc7@streamunlimited.com>
+ <20191029130853.GN30813@ubuntu-xps13>
+From:   Emil Petersky <emil.petersky@streamunlimited.com>
+Openpgp: preference=signencrypt
+Message-ID: <31a00c5d-bb58-d423-d625-9ba4ebd177cc@streamunlimited.com>
+Date:   Tue, 29 Oct 2019 16:08:24 +0100
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <20191029130853.GN30813@ubuntu-xps13>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Saurav Girepunje <saurav.girepunje@gmail.com> writes:
+Hi Seth,
 
-> As the "else if" and "else" branch body are identical the condition
-> has no effect. So drop the "else if" condition.
+it seems, that EU domain is advertised by APs/Routers here in Europe.
+I know, that many clients use EU domain (at least internally in firmware) as well.
+I would like to add it and use it along with setting for individual EU members.
+
+I've made statistic of one WiFi scan in an apartment house in Vienna (Austria).
+Results are:
+35 x EU (Mostly UPC/Ralink Access points)
+30 x no region info
+ 7 x AT
+ 3 x DE
+ 2 x NL
+
+Thanks and best regards,
+
+Emil
+
+
+
+
+
+On 29/10/2019 14:08, Seth Forshee wrote:
+> On Tue, Sep 17, 2019 at 11:55:07AM +0200, Emil Petersky wrote:
+>> Create entry for united European region, as usage of frequency bands
+>> is harmonized over EU and almost all CEPT countries as well.
+>>
+>> All EU countries and almost all CEPT countries accepted decisions
+>> 2005/513/EC (5GHz RLAN, EN 301 893)
+>> and 2006/771/EC (amended by 2008/432/EC, Short-Range Devices, EN 300 440)
+>>  EU decision 2005/513/EC:
+>> https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02005D0513-20070213
+>>  EU decision 2006/771/EC:
+>> https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02008D0432-20080611
+>> Harmonized CEPT countries:
+>> https://www.ecodocdb.dk/download/25c41779-cd6e/Rec7003e.pdf
+>> Such decision make sense to create united European region (EU) in regdb
+>>
+>> United region for EU in regdb will enable much easier handling of proper
+>> wlan parameters on embedded devices sold across the Europe.
+> I'm a little curious about this one. I do agree that it would simplify
+> things, but is an EU contry code something standard that wireless APs
+> generally will advertise, or that clients will understand?
 >
-> Signed-off-by: Saurav Girepunje <saurav.girepunje@gmail.com>
+> And we do still have all the individual countries to maintain. Maybe it
+> would make sense to define an EU region as rules that countries could
+> inherit, and then have rules for any deviations from the common EU
+> rules. Thoughts?
+>
+> Thanks,
+> Seth
 
-Thanks, I see these patches in patchwork now.
-
-But then you submit a new version of a patch, please mark it as "[PATCH v2]":
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches#patch_version_missing
-
-This is for future submissions, no need to resend because of this.
 
 -- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Emil Petersky
+
+________________________________________________________________________
+
+StreamUnlimited Engineering GmbH
+High Tech Campus Vienna, Gutheil-Schoder-Gasse 10, 1100 Vienna, Austria
+Office: +43 1 667 2002 4679 Fax: +43 1 667 2002 4401
+Mail to: emil.petersky@streamunlimited.com
+Visit us: www.streamunlimited.com
+
+Meet us at:
+CES - Las Vegas, 7 - 10 January, Westgate Hotel
+ISE - Amsterdam, 11 - 14 February
+
