@@ -2,58 +2,57 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 02249E9D6A
-	for <lists+linux-wireless@lfdr.de>; Wed, 30 Oct 2019 15:26:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 59F68E9DC0
+	for <lists+linux-wireless@lfdr.de>; Wed, 30 Oct 2019 15:41:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726501AbfJ3OZ4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 30 Oct 2019 10:25:56 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:35802 "EHLO
+        id S1726206AbfJ3OlR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 30 Oct 2019 10:41:17 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:42424 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726137AbfJ3OZz (ORCPT
+        with ESMTP id S1726137AbfJ3OlR (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 30 Oct 2019 10:25:55 -0400
+        Wed, 30 Oct 2019 10:41:17 -0400
 Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id F208060B6E; Wed, 30 Oct 2019 14:25:54 +0000 (UTC)
+        id 9F22460F7A; Wed, 30 Oct 2019 14:41:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1572445555;
-        bh=sk6wzxiMvVRKpjDGRWKQ2yuiHkwjsWywpXOwNnQW9Gg=;
+        s=default; t=1572446476;
+        bh=P8MYYQytn2vSJ2+zEKhFEfL52NqDsCg8n9kpdRcrf10=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=K2vsSc1gpF5zrjF2e6l9mJGpZZdhgqO4zoO6HV9sF1YU7FgLQaEV7yWB4OQdIfJJ7
-         qiAMu8TCjWyU4Ty6yBCe4QFwRuZ2LV1vRcGn3dyrsJGSmKemXyUVnLf4t2/Yy1OXh4
-         ckAo9sTShaJZINbwtLI4lmymCdn4hBzBRLY4mYXQ=
+        b=O8mbkVODr+gJi/YRxx/yahzmr6QM5SDSd/YQSDGfGeaYr7Rs0O3NJ5J0RccZaAIzU
+         isLGORQATpz3hnF+02h4axMNbng2uQ2WmZYfo4gmCF2UWNuSLt6sDMP3uY2ONY8HF/
+         ddV689rwSBvcZoj3kUBnDJdVJ8jNJWwX6xy+xd9I=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
 X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
         DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
         version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from tynnyri.adurom.net (tynnyri.adurom.net [51.15.11.48])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 3BDA16081E;
-        Wed, 30 Oct 2019 14:25:53 +0000 (UTC)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id ACCE860B7F;
+        Wed, 30 Oct 2019 14:41:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1572445554;
-        bh=sk6wzxiMvVRKpjDGRWKQ2yuiHkwjsWywpXOwNnQW9Gg=;
+        s=default; t=1572446476;
+        bh=P8MYYQytn2vSJ2+zEKhFEfL52NqDsCg8n9kpdRcrf10=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=Fr3Z19TvyHPLK9kLCfXd7mndKZj32sJrii/bwC9oNViH7BM5NOe+/iqUSirZkHXN3
-         eWql8R7NZFAJ3Gl9LS6EB+h+Xz0KaJUI+78F+6pMPYMZ9arNJXh/eZr5MDo6HPqACb
-         Ro4UQwL1syYVqrs+U7PkEBQ5x7J+/6WN5yHEYGGY=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 3BDA16081E
+        b=O8mbkVODr+gJi/YRxx/yahzmr6QM5SDSd/YQSDGfGeaYr7Rs0O3NJ5J0RccZaAIzU
+         isLGORQATpz3hnF+02h4axMNbng2uQ2WmZYfo4gmCF2UWNuSLt6sDMP3uY2ONY8HF/
+         ddV689rwSBvcZoj3kUBnDJdVJ8jNJWwX6xy+xd9I=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org ACCE860B7F
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 From:   Kalle Valo <kvalo@codeaurora.org>
-To:     liupold <rohn.ch@gmail.com>
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, ath10k@lists.infradead.org
-Subject: Re: [PATCH] ath10k: Fixed "Failed to wake target" QCA6174
-References: <20191030125035.31848-1-rohn.ch@gmail.com>
-Date:   Wed, 30 Oct 2019 16:25:50 +0200
-In-Reply-To: <20191030125035.31848-1-rohn.ch@gmail.com> (liupold's message of
-        "Wed, 30 Oct 2019 18:20:35 +0530")
-Message-ID: <87eeyu2tu9.fsf@kamboji.qca.qualcomm.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+To:     Bassem Fahmy <bassem@morsemicro.com>
+Cc:     linux-wireless@vger.kernel.org
+Subject: Re: Chip debug tool
+References: <CAEirPfz4FEtuRH8VST0ehtQtttPpFJFrZLDb9v7heUAb8EA2tw@mail.gmail.com>
+Date:   Wed, 30 Oct 2019 16:41:13 +0200
+In-Reply-To: <CAEirPfz4FEtuRH8VST0ehtQtttPpFJFrZLDb9v7heUAb8EA2tw@mail.gmail.com>
+        (Bassem Fahmy's message of "Wed, 30 Oct 2019 06:48:39 +1100")
+Message-ID: <8736fae1o6.fsf@tynnyri.adurom.net>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
@@ -61,42 +60,35 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-+ ath10k list
+Bassem Fahmy <bassem@morsemicro.com> writes:
 
-liupold <rohn.ch@gmail.com> writes:
-
-> There is a issue with card about waking up during boot and from suspend
-> the only way to prevent it (is seems) by making pci_ps = false,
-> on Acer Swift 3 (ryzen 2500u).
-
-Can you provide dmesg output when this problem happens? Was QCA6174
-installed to Swift 3 by default at the factory or did you install it
-afterwards on your own?
-
-> Signed-off-by: liupold <rohn.ch@gmail.com>
-
-Is 'liupold' your full legal name?
-
-> ---
->  drivers/net/wireless/ath/ath10k/pci.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> Hi
+> Our systems team is asking to develop a chip debug tool to be able to
+> test, calibrate and tweak every bit of the chip from user space
+> (something similar to Broadcom's WL tool). The tool would later be
+> stripped out and passed to customers to help them tweak specific
+> features.
 >
-> diff --git a/drivers/net/wireless/ath/ath10k/pci.c b/drivers/net/wireless/ath/ath10k/pci.c
-> index a0b4d265c6eb..653590342619 100644
-> --- a/drivers/net/wireless/ath/ath10k/pci.c
-> +++ b/drivers/net/wireless/ath/ath10k/pci.c
-> @@ -3514,7 +3514,7 @@ static int ath10k_pci_probe(struct pci_dev *pdev,
->  	case QCA6164_2_1_DEVICE_ID:
->  	case QCA6174_2_1_DEVICE_ID:
->  		hw_rev = ATH10K_HW_QCA6174;
-> -		pci_ps = true;
-> +		pci_ps = false;
->  		pci_soft_reset = ath10k_pci_warm_reset;
->  		pci_hard_reset = ath10k_pci_qca6174_chip_reset;
->  		targ_cpu_to_ce_addr = ath10k_pci_qca6174_targ_cpu_to_ce_addr;
+> The tool needs to be easy for the firmware and RF team to add extra
+> command, by adding some definitions in the user space tool and a
+> matching response in the firmware (no driver recompilation).
+>
+> Based on this, I can think of few of options
+> - nl80211: to overload NL80211_CMD_TESTMODE or NL80211_CMD_VENDOR or
+> - nl80211: to create a new set of commands. These options don't seem
+> to have a chance to go back upstream though.
+>
+> Another option is to use debugfs. In this case however, all the
+> commands would go to a single node, and the driver which would blindly
+> pass data to/from the chip. This is to avoid recompiling the driver
+> every time a new command is added.
+>
+> Just wondering what is the proper (recommended way) for this. Any
+> ideas, directions?
 
-This increases power consumption for all QCA6174 devices so I'm not
-eager to do this.
+NL80211_CMD_TESTMODE was added exactly for this kind of use in mind
+(used by RF/HW engineers and not by regular users), I recommend using
+it.
 
 -- 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
