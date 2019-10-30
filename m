@@ -2,66 +2,88 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DD174E950D
-	for <lists+linux-wireless@lfdr.de>; Wed, 30 Oct 2019 03:44:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A6157E9531
+	for <lists+linux-wireless@lfdr.de>; Wed, 30 Oct 2019 04:05:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726990AbfJ3CoG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 29 Oct 2019 22:44:06 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:39418 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726495AbfJ3CoG (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 29 Oct 2019 22:44:06 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id F044260FB4; Wed, 30 Oct 2019 02:44:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1572403446;
-        bh=BHAxwq4hd0GNKQQn1DJMboluBUSn58IkgDvXlYOUIes=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=mLaudV2JNIS+CfuMGCAAG80UV2zSctCwaiYZua5SVvca/ZqczC3jkS3Gwt+zMbwWN
-         zgHaCTthcoD3BWzhSvM/Zhqw/4IbAe3JEERwr6D5M+z0qSvgikpGmuPq5R1iQEDhWg
-         GOMqTnYCrlZQncdLLhm6iFGlJ/rVBe87oSvQDZNc=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED autolearn=no autolearn_force=no version=3.4.0
-Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by smtp.codeaurora.org (Postfix) with ESMTP id 8DEA960DD3;
-        Wed, 30 Oct 2019 02:44:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1572403445;
-        bh=BHAxwq4hd0GNKQQn1DJMboluBUSn58IkgDvXlYOUIes=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=ovjdYRZydX5U8JWJh3Xd+BQxwUYdjmDAhQPFoz49C/anhLU9tLMbNQJ3bs+ZV7DZF
-         Baf47mbvdl++Zf7humLlL1ZRAi1mw/q/5JCS07dzdBfTat1mXnZnhbiHnsckEMOnc2
-         37kYGXsSyaJvVL3jd6DijrA6bzIe7DunKVeWM8ms=
+        id S1726983AbfJ3DFC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 29 Oct 2019 23:05:02 -0400
+Received: from szxga06-in.huawei.com ([45.249.212.32]:44354 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726714AbfJ3DFC (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 29 Oct 2019 23:05:02 -0400
+Received: from DGGEMS409-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id 7DE2C491F63B277F3E84;
+        Wed, 30 Oct 2019 11:05:00 +0800 (CST)
+Received: from linux-ibm.site (10.175.102.37) by
+ DGGEMS409-HUB.china.huawei.com (10.3.19.209) with Microsoft SMTP Server id
+ 14.3.439.0; Wed, 30 Oct 2019 11:04:53 +0800
+From:   zhong jiang <zhongjiang@huawei.com>
+To:     <kvalo@codeaurora.org>
+CC:     <davem@davemloft.net>, <johannes@sipsolutions.net>,
+        <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <zhongjiang@huawei.com>
+Subject: [PATCH] mac80211_hwsim: use DEFINE_DEBUGFS_ATTRIBUTE to define debugfs fops
+Date:   Wed, 30 Oct 2019 11:01:02 +0800
+Message-ID: <1572404462-45462-1-git-send-email-zhongjiang@huawei.com>
+X-Mailer: git-send-email 1.7.12.4
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Wed, 30 Oct 2019 10:44:05 +0800
-From:   zhichen@codeaurora.org
-To:     Tom Psyborg <pozega.tomislav@gmail.com>
-Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH RFC] Revert "ath10k: fix DMA related firmware crashes on
- multiple devices"
-In-Reply-To: <CAKR_QVLDFBVMDDP4mPYVNdpT9TA3podNeQMpVJQwE7A5eG=0kA@mail.gmail.com>
-References: <1571734629-18028-1-git-send-email-zhichen@codeaurora.org>
- <CAKR_QVLDFBVMDDP4mPYVNdpT9TA3podNeQMpVJQwE7A5eG=0kA@mail.gmail.com>
-Message-ID: <9bb484b94c43f7c9aa08345ad89d7b2c@codeaurora.org>
-X-Sender: zhichen@codeaurora.org
-User-Agent: Roundcube Webmail/1.2.5
+Content-Type: text/plain
+X-Originating-IP: [10.175.102.37]
+X-CFilter-Loop: Reflected
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2019-10-22 18:07, Tom Psyborg wrote:
+It is more clear to use DEFINE_DEBUGFS_ATTRIBUTE to define debugfs file
+operation rather than DEFINE_SIMPLE_ATTRIBUTE.
 
-> What about main and 10x firmware branch?
+It is detected with the help of coccinelle.
 
-There is no code changes in firmware. It's a configuration change of 
-host memory access.
+Signed-off-by: zhong jiang <zhongjiang@huawei.com>
+---
+ drivers/net/wireless/mac80211_hwsim.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-Zhi
+diff --git a/drivers/net/wireless/mac80211_hwsim.c b/drivers/net/wireless/mac80211_hwsim.c
+index 31ae6c4..0373810 100644
+--- a/drivers/net/wireless/mac80211_hwsim.c
++++ b/drivers/net/wireless/mac80211_hwsim.c
+@@ -769,8 +769,8 @@ static int hwsim_fops_ps_write(void *dat, u64 val)
+ 	return 0;
+ }
+ 
+-DEFINE_SIMPLE_ATTRIBUTE(hwsim_fops_ps, hwsim_fops_ps_read, hwsim_fops_ps_write,
+-			"%llu\n");
++DEFINE_DEBUGFS_ATTRIBUTE(hwsim_fops_ps, hwsim_fops_ps_read, hwsim_fops_ps_write,
++			 "%llu\n");
+ 
+ static int hwsim_write_simulate_radar(void *dat, u64 val)
+ {
+@@ -781,8 +781,8 @@ static int hwsim_write_simulate_radar(void *dat, u64 val)
+ 	return 0;
+ }
+ 
+-DEFINE_SIMPLE_ATTRIBUTE(hwsim_simulate_radar, NULL,
+-			hwsim_write_simulate_radar, "%llu\n");
++DEFINE_DEBUGFS_ATTRIBUTE(hwsim_simulate_radar, NULL,
++			 hwsim_write_simulate_radar, "%llu\n");
+ 
+ static int hwsim_fops_group_read(void *dat, u64 *val)
+ {
+@@ -798,9 +798,9 @@ static int hwsim_fops_group_write(void *dat, u64 val)
+ 	return 0;
+ }
+ 
+-DEFINE_SIMPLE_ATTRIBUTE(hwsim_fops_group,
+-			hwsim_fops_group_read, hwsim_fops_group_write,
+-			"%llx\n");
++DEFINE_DEBUGFS_ATTRIBUTE(hwsim_fops_group,
++			 hwsim_fops_group_read, hwsim_fops_group_write,
++			 "%llx\n");
+ 
+ static netdev_tx_t hwsim_mon_xmit(struct sk_buff *skb,
+ 					struct net_device *dev)
+-- 
+1.7.12.4
+
