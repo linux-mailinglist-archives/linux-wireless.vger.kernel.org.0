@@ -2,77 +2,66 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F3172E9050
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Oct 2019 20:48:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DD174E950D
+	for <lists+linux-wireless@lfdr.de>; Wed, 30 Oct 2019 03:44:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725959AbfJ2Tsz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 29 Oct 2019 15:48:55 -0400
-Received: from mail-oi1-f182.google.com ([209.85.167.182]:35474 "EHLO
-        mail-oi1-f182.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725870AbfJ2Tsy (ORCPT
+        id S1726990AbfJ3CoG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 29 Oct 2019 22:44:06 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:39418 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726495AbfJ3CoG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 29 Oct 2019 15:48:54 -0400
-Received: by mail-oi1-f182.google.com with SMTP id n16so7758197oig.2
-        for <linux-wireless@vger.kernel.org>; Tue, 29 Oct 2019 12:48:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=morsemicro-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=693fUo1ysNssslShZbY83OFM2Y+KV6wMnMqE93xCHIY=;
-        b=K4MOVcdhCM2rd5TifDwdU+jJjXfYrGreCS8OX8wfemC4fdsMCVNjUovEZirnDRXgYm
-         XyJ3LMQkld+XO0/k9vW2aDJKyBV8wf5Nn9AApjIEB9bYCtWXCfrdA1MCbZokn9aaaPkW
-         CBA5KOecJ+zxhoCgLShCIcYPCyMNZnAd0PkmpGAwydHG1KgalgQChlMEAlc5Px1gSYNG
-         iRDgXmIN/xcTX6nUvFTV6bb87EfnWHrw2sWavhSpF2LkPtoqADmbwDOWWF/RG71Cgnhd
-         dj00R+/RHeTCmz3sUA1Ghecep9/J/TO6p6MhYI/JMcsrV5kCiv8LUM8Z3wx0rMmC1ebq
-         qJSQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=693fUo1ysNssslShZbY83OFM2Y+KV6wMnMqE93xCHIY=;
-        b=BGVlan5Fi9W9Xqj9LVN6+d3gYjXyrrjVqM7qx4heCg9pae6m/7V1kKNBv814fMAEmk
-         Hs5FA1z2Qkr1DtSecXkU5oGyjgqYNvNN+q2L4/HHXRmGpEwlBfVjP09N2SiffObTQJvL
-         4+cbrJMrwrioAy1J6pjCCWSr2F+k3iQUjM1KnES4fLs3QNf142DcR6nlNcTBdWKBDqX3
-         BcFlUuNpMGt6noGZyRtZXF+kcqbxGd8QTPAC0VQNRoDH4G81QdscsLB0Z/CdFkJEgA4j
-         See+7bNNPaZNP28jFIq0zcy1gabxaBYSgxuSVRGBaXktFLft6jcxC5MWMvMJ2x66ScgI
-         Wttw==
-X-Gm-Message-State: APjAAAXlaJHlu3lZXWQu2vtigpHraMFDe0YT7RRcXhdkbDgcQ/WlLV3Y
-        udOIggqEbiuiqfF03IHbBsfE4XZdu44q52bc0WkwCuyzXavD3Q==
-X-Google-Smtp-Source: APXvYqyA7TvlEzR3F6fRt17RfdBVo5MD1OW9pfuHKxvvA9EzeS7TYRkY/B1A+bxYTRJLzyYM8WvFDvOCDbnuvydiEZw=
-X-Received: by 2002:a54:4f87:: with SMTP id g7mr5691570oiy.100.1572378532033;
- Tue, 29 Oct 2019 12:48:52 -0700 (PDT)
+        Tue, 29 Oct 2019 22:44:06 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id F044260FB4; Wed, 30 Oct 2019 02:44:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1572403446;
+        bh=BHAxwq4hd0GNKQQn1DJMboluBUSn58IkgDvXlYOUIes=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=mLaudV2JNIS+CfuMGCAAG80UV2zSctCwaiYZua5SVvca/ZqczC3jkS3Gwt+zMbwWN
+         zgHaCTthcoD3BWzhSvM/Zhqw/4IbAe3JEERwr6D5M+z0qSvgikpGmuPq5R1iQEDhWg
+         GOMqTnYCrlZQncdLLhm6iFGlJ/rVBe87oSvQDZNc=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED autolearn=no autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by smtp.codeaurora.org (Postfix) with ESMTP id 8DEA960DD3;
+        Wed, 30 Oct 2019 02:44:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1572403445;
+        bh=BHAxwq4hd0GNKQQn1DJMboluBUSn58IkgDvXlYOUIes=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=ovjdYRZydX5U8JWJh3Xd+BQxwUYdjmDAhQPFoz49C/anhLU9tLMbNQJ3bs+ZV7DZF
+         Baf47mbvdl++Zf7humLlL1ZRAi1mw/q/5JCS07dzdBfTat1mXnZnhbiHnsckEMOnc2
+         37kYGXsSyaJvVL3jd6DijrA6bzIe7DunKVeWM8ms=
 MIME-Version: 1.0
-From:   Bassem Fahmy <bassem@morsemicro.com>
-Date:   Wed, 30 Oct 2019 06:48:39 +1100
-Message-ID: <CAEirPfz4FEtuRH8VST0ehtQtttPpFJFrZLDb9v7heUAb8EA2tw@mail.gmail.com>
-Subject: Chip debug tool
-To:     linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Wed, 30 Oct 2019 10:44:05 +0800
+From:   zhichen@codeaurora.org
+To:     Tom Psyborg <pozega.tomislav@gmail.com>
+Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH RFC] Revert "ath10k: fix DMA related firmware crashes on
+ multiple devices"
+In-Reply-To: <CAKR_QVLDFBVMDDP4mPYVNdpT9TA3podNeQMpVJQwE7A5eG=0kA@mail.gmail.com>
+References: <1571734629-18028-1-git-send-email-zhichen@codeaurora.org>
+ <CAKR_QVLDFBVMDDP4mPYVNdpT9TA3podNeQMpVJQwE7A5eG=0kA@mail.gmail.com>
+Message-ID: <9bb484b94c43f7c9aa08345ad89d7b2c@codeaurora.org>
+X-Sender: zhichen@codeaurora.org
+User-Agent: Roundcube Webmail/1.2.5
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi
-Our systems team is asking to develop a chip debug tool to be able to
-test, calibrate and tweak every bit of the chip from user space
-(something similar to Broadcom's WL tool). The tool would later be
-stripped out and passed to customers to help them tweak specific
-features.
+On 2019-10-22 18:07, Tom Psyborg wrote:
 
-The tool needs to be easy for the firmware and RF team to add extra
-command, by adding some definitions in the user space tool and a
-matching response in the firmware (no driver recompilation).
+> What about main and 10x firmware branch?
 
-Based on this, I can think of few of options
-- nl80211: to overload NL80211_CMD_TESTMODE or NL80211_CMD_VENDOR or
-- nl80211: to create a new set of commands. These options don't seem
-to have a chance to go back upstream though.
+There is no code changes in firmware. It's a configuration change of 
+host memory access.
 
-Another option is to use debugfs. In this case however, all the
-commands would go to a single node, and the driver which would blindly
-pass data to/from the chip. This is to avoid recompiling the driver
-every time a new command is added.
-
-Just wondering what is the proper (recommended way) for this. Any
-ideas, directions?
-
-Thanks, Bassem
+Zhi
