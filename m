@@ -2,25 +2,25 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 69C2DE9E95
-	for <lists+linux-wireless@lfdr.de>; Wed, 30 Oct 2019 16:13:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CE746E9EBE
+	for <lists+linux-wireless@lfdr.de>; Wed, 30 Oct 2019 16:19:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726759AbfJ3PNY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 30 Oct 2019 11:13:24 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:34210 "EHLO
+        id S1727158AbfJ3PS7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 30 Oct 2019 11:18:59 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:37624 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726461AbfJ3PNY (ORCPT
+        with ESMTP id S1726589AbfJ3PS7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 30 Oct 2019 11:13:24 -0400
+        Wed, 30 Oct 2019 11:18:59 -0400
 Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 677E561066; Wed, 30 Oct 2019 15:13:22 +0000 (UTC)
+        id 63E3360913; Wed, 30 Oct 2019 15:18:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1572448403;
-        bh=bTFoXXHtT54AZpimf/1etutVoG+HS1pIqnZSpiLck8U=;
+        s=default; t=1572448737;
+        bh=knA8Ic2tqj9JF9EG2DEMqJxtA5w9Djz+7CUfs/V50Aw=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=md6Aj/hxoFY78diGitDe17wdXQhatEzBNAdak5BWSAqd2PmX8TsMCkNr0tRqjSH8U
-         YIK+IxVQciTJsXTyEhc5YqardH39hVN0KOzo5NXeRCxCEFTcje/WakZRFaOVl3BRNN
-         RSb+oiTBRDm+bICfosBT5abIx+/FpcoQhdo9+4xg=
+        b=bGtl+H+XrUoY03ZZr3HSatChd6MxvbSQMsB1RfH0TokgE4gYSCkGBWh6OuSe9oKHp
+         6G+xK01An6Q4mXjr8v3Z9hMyHmOm4Fvnhji/ip6MG1nfQbSmg+n44e1Gv5SoklOskS
+         BKXL29/yhutMB7giM5Cx/5gSv8iyNij5McL2acOc=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
@@ -31,54 +31,71 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id B868661139;
-        Wed, 30 Oct 2019 15:13:19 +0000 (UTC)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 9563E60F7A;
+        Wed, 30 Oct 2019 15:18:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1572448401;
-        bh=bTFoXXHtT54AZpimf/1etutVoG+HS1pIqnZSpiLck8U=;
+        s=default; t=1572448736;
+        bh=knA8Ic2tqj9JF9EG2DEMqJxtA5w9Djz+7CUfs/V50Aw=;
         h=Subject:From:In-Reply-To:References:To:Cc:From;
-        b=olb191fxF1NVukR+GnoM31O3YmwI8GVCLdF03JPkaVIlfLEmVtfqzI+J20Ph0jKzZ
-         fXNrtoKd06qnf4mVCprvmy4ckAWgFDeMBSuckh11R5pu7sePWBgNK+Jzh3tM5OIjcH
-         zb8NcN9/mwEcydtWqy+steITpOUTNjwXIHiJ5jLc=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org B868661139
+        b=mvj20y4BOibzuXc0Nbz+dRAhmVfmZV2VG0hn093YqWfpdd17xIpxEPhNxp22dhI+L
+         AMwNA/iuiW+hTlspeyanWyQzY1VBqbGozmVCrXl/kgeKX1iW+V9pju6HkEA6xCETO9
+         P7pNnp65bgfH81aU+gmE5Od0zG60rJSoM+NLJEdE=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 9563E60F7A
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] wil6210: add SPDX license identifiers
+Subject: Re: [PATCH] ath: ath9k: Remove unneeded variable
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <1572283361-22874-1-git-send-email-merez@codeaurora.org>
-References: <1572283361-22874-1-git-send-email-merez@codeaurora.org>
-To:     Maya Erez <merez@codeaurora.org>
-Cc:     Lior David <liord@codeaurora.org>, linux-wireless@vger.kernel.org,
-        wil6210@qti.qualcomm.com, Maya Erez <merez@codeaurora.org>
+In-Reply-To: <20191028204317.GA29468@saurav>
+References: <20191028204317.GA29468@saurav>
+To:     Saurav Girepunje <saurav.girepunje@gmail.com>
+Cc:     ath9k-devel@qca.qualcomm.com, davem@davemloft.net,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, saurav.girepunje@hotmail.com
 User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20191030151323.677E561066@smtp.codeaurora.org>
-Date:   Wed, 30 Oct 2019 15:13:22 +0000 (UTC)
+Message-Id: <20191030151857.63E3360913@smtp.codeaurora.org>
+Date:   Wed, 30 Oct 2019 15:18:57 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Maya Erez <merez@codeaurora.org> wrote:
+Saurav Girepunje <saurav.girepunje@gmail.com> wrote:
 
-> From: Lior David <liord@codeaurora.org>
+> Remove "len" variable which is not used in ath9k_dump_legacy_btcoex.
 > 
-> Change all files to add SPDX license identifiers and
-> remove license text.
-> This is only an administrative change, there is no change
-> in actual license or copyright for any file.
-> 
-> Signed-off-by: Lior David <liord@codeaurora.org>
-> Signed-off-by: Maya Erez <merez@codeaurora.org>
+> Signed-off-by: Saurav Girepunje <saurav.girepunje@gmail.com>
 
-I assume this was supposed to be v2, so dropping.
+Fails to build, always compile test your patches.
 
-Patch set to Superseded.
+In file included from drivers/net/wireless/ath/ath9k/gpio.c:17:
+drivers/net/wireless/ath/ath9k/gpio.c: In function 'ath9k_dump_legacy_btcoex':
+drivers/net/wireless/ath/ath9k/ath9k.h:763:3: error: 'len' undeclared (first use in this function); did you mean '_end'?
+   len += scnprintf(buf + len, size - len,  \
+   ^~~
+drivers/net/wireless/ath/ath9k/gpio.c:502:2: note: in expansion of macro 'ATH_DUMP_BTCOEX'
+  ATH_DUMP_BTCOEX("Stomp Type", btcoex->bt_stomp_type);
+  ^~~~~~~~~~~~~~~
+drivers/net/wireless/ath/ath9k/ath9k.h:763:3: note: each undeclared identifier is reported only once for each function it appears in
+   len += scnprintf(buf + len, size - len,  \
+   ^~~
+drivers/net/wireless/ath/ath9k/gpio.c:502:2: note: in expansion of macro 'ATH_DUMP_BTCOEX'
+  ATH_DUMP_BTCOEX("Stomp Type", btcoex->bt_stomp_type);
+  ^~~~~~~~~~~~~~~
+make[5]: *** [drivers/net/wireless/ath/ath9k/gpio.o] Error 1
+make[4]: *** [drivers/net/wireless/ath/ath9k] Error 2
+make[3]: *** [drivers/net/wireless/ath] Error 2
+make[2]: *** [drivers/net/wireless] Error 2
+make[1]: *** [drivers/net] Error 2
+make[1]: *** Waiting for unfinished jobs....
+make: *** [drivers] Error 2
+
+Patch set to Rejected.
 
 -- 
-https://patchwork.kernel.org/patch/11216171/
+https://patchwork.kernel.org/patch/11216495/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
