@@ -2,55 +2,42 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 42748EA1FC
-	for <lists+linux-wireless@lfdr.de>; Wed, 30 Oct 2019 17:45:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 21886EA274
+	for <lists+linux-wireless@lfdr.de>; Wed, 30 Oct 2019 18:25:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727024AbfJ3Qo7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 30 Oct 2019 12:44:59 -0400
-Received: from mail-ua1-f67.google.com ([209.85.222.67]:40230 "EHLO
-        mail-ua1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726983AbfJ3Qo7 (ORCPT
+        id S1727305AbfJ3RZA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 30 Oct 2019 13:25:00 -0400
+Received: from mo4-p02-ob.smtp.rzone.de ([85.215.255.81]:20940 "EHLO
+        mo4-p02-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726488AbfJ3RZA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 30 Oct 2019 12:44:59 -0400
-Received: by mail-ua1-f67.google.com with SMTP id i13so908375uaq.7
-        for <linux-wireless@vger.kernel.org>; Wed, 30 Oct 2019 09:44:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=p3/pbvedwS4IhZb4B6nbOhbMOZh2AXw7ndulwhv3TfM=;
-        b=uKbzD6z3ZGjc1fWALJKpEEB/bbWW4HPabd5njl25crREYFACWhI8l1Kir807xOxFpf
-         uaLa/jYOBB4myt492ky0Bm4YMaUYwzK/94ra2AKsk/hjtGfxyIUNsYZMw3k03FhB7aa+
-         D2OMDUrVDFG4lh3JnM9JNhFiNrQATzIWHgWWrsFo/gfWlZcp7D/KPuimOVmXF9dmZDOE
-         kqpQKHr+JjnMM9ArF0cPmyy5HSVupmLBQmTJ2rUO9BmpLiphAUI7CTD1n8sVbxM3f7P+
-         y4tJ9cXCf+NQfuudxvOK6UYmowPV5Kf2WNvQcUvzZdfMJCJXPEp22cQ//ywxY1dvTRRP
-         vp1Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=p3/pbvedwS4IhZb4B6nbOhbMOZh2AXw7ndulwhv3TfM=;
-        b=M7QYmxlBzx1id1nZ15rUiHnOgp/FIUk7AeCSv8ROGJLOYsGIsWGTrk+LzrP21RnVp3
-         UDnfcN8Rpcc6rNdYwcAQzRTzcDGZagbopyWZjMmFWQSlc6N2p7AgIse1JG9x61AJW/In
-         VsWWVGk3LfqegAxenHiJbeZPXQutlyzqZBzdvej5LFJa/3SDvagCoTy4U1VKyeRvQU/p
-         5VlQyULXb8HHdWD4Q/hwDn+FV8/pBDasBHBvdyCz1tBJiU75UynNvvc+N/Q7Y74ZbKtC
-         v4MG2LVLmH8KY6nhJSPAzKMS9GZAqV45Nfvri2HQDfGfPZUdMt2p0XizJk9skzURhz62
-         0fRw==
-X-Gm-Message-State: APjAAAUiNvszNVnM39EY/Dm2fD4Av73/UqoAzU8/z9Zo5fl7Qq9Q/51i
-        +42Z8Ok9+l41IaBjk/5XkVz5UfSsREIuFe3u5qEXKw==
-X-Google-Smtp-Source: APXvYqxJtN6SyNTtxvr9eHmowjOiNggxSentSJ3MZnyqcgsnfmMgt0WjJPDMGJJ+lnTYhFM/TEriRkTW1hDBpWXDXFc=
-X-Received: by 2002:ab0:2258:: with SMTP id z24mr367974uan.100.1572453897721;
- Wed, 30 Oct 2019 09:44:57 -0700 (PDT)
-MIME-Version: 1.0
-References: <cover.1571510481.git.hns@goldelico.com> <bec9d76e6da03d734649b9bdf76e9d575c57631a.1571510481.git.hns@goldelico.com>
-In-Reply-To: <bec9d76e6da03d734649b9bdf76e9d575c57631a.1571510481.git.hns@goldelico.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Wed, 30 Oct 2019 17:44:21 +0100
-Message-ID: <CAPDyKFrMQ3fBaeeAYVJfUdL8m=PDRU9Xt_9oGw6D1XOY68qDuQ@mail.gmail.com>
-Subject: Re: [PATCH v2 03/11] DTS: ARM: pandora-common: define wl1251 as child
- node of mmc3
-To:     "H. Nikolaus Schaller" <hns@goldelico.com>
-Cc:     =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
+        Wed, 30 Oct 2019 13:25:00 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1572456294;
+        s=strato-dkim-0002; d=goldelico.com;
+        h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:
+        X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
+        bh=HxQ8LImbajVfHnvi6HR4za1A89vyuEJ5woLuz6S6thE=;
+        b=gYaUiUSt8IILSOrV92GEBt6jbFcW0ZGIZoq/GfwNowX2XiDmxuQf1sL+e1636Druyt
+        ZV8DEnogRIAb4S15M6u97keyiJq0GXXSzEaBgsROvaTrFcfMT2tmo/xD2ad4/nXARhYC
+        QBEgwXvzXlUV4rISnRJbnaq6E38VERWJBJlhNVFx4eNCt7WqEq/LluEFJzh//Uc1n9hd
+        4YHgqYEW7aNB5DbglAf8kgBoMKFQ3FnMcbbuDgNlGfXjsi8xLrEC4REbHtZKcMpHww0q
+        VK/7egLMbf0ufKPBnoiYG1VbkUpoZ3t2A6T5uaizyBxKf2qQqfbXMbwnEhzUzSMPDkxN
+        F6XQ==
+X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj7wpz8NMGHPrpwDvG"
+X-RZG-CLASS-ID: mo00
+Received: from mbp-13-nikolaus.fritz.box
+        by smtp.strato.de (RZmta 44.29.0 DYNA|AUTH)
+        with ESMTPSA id L09db3v9UHOT5oz
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (curve secp521r1 with 521 ECDH bits, eq. 15360 bits RSA))
+        (Client did not present a certificate);
+        Wed, 30 Oct 2019 18:24:29 +0100 (CET)
+Content-Type: text/plain; charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+Subject: Re: [PATCH v2 04/11] mmc: host: omap_hsmmc: add code for special init of wl1251 to get rid of pandora_wl1251_init_card
+From:   "H. Nikolaus Schaller" <hns@goldelico.com>
+In-Reply-To: <CAPDyKFp3EjTuCTj+HXhxf+Ssti0hW8eMDR-NrGYWDWSDmQz6Lw@mail.gmail.com>
+Date:   Wed, 30 Oct 2019 18:24:28 +0100
+Cc:     =?utf-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
         Tony Lindgren <tony@atomide.com>,
         Rob Herring <robh+dt@kernel.org>,
         Mark Rutland <mark.rutland@arm.com>,
@@ -79,97 +66,100 @@ Cc:     =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
         Discussions about the Letux Kernel 
         <letux-kernel@openphoenux.org>, kernel@pyra-handheld.com,
         "# 4.0+" <stable@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <607E3AE4-65BF-4003-86BE-C70646D53D09@goldelico.com>
+References: <cover.1571510481.git.hns@goldelico.com> <0887d84402f796d1e7361261b88ec6057fbb0065.1571510481.git.hns@goldelico.com> <CAPDyKFp3EjTuCTj+HXhxf+Ssti0hW8eMDR-NrGYWDWSDmQz6Lw@mail.gmail.com>
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+X-Mailer: Apple Mail (2.3124)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sat, 19 Oct 2019 at 20:42, H. Nikolaus Schaller <hns@goldelico.com> wrote:
->
-> Since v4.7 the dma initialization requires that there is a
-> device tree property for "rx" and "tx" channels which is
-> not provided by the pdata-quirks initialization.
->
-> By conversion of the mmc3 setup to device tree this will
-> finally allows to remove the OpenPandora wlan specific omap3
-> data-quirks.
->
-> Fixes: 81eef6ca9201 ("mmc: omap_hsmmc: Use dma_request_chan() for requesting DMA channel")
->
-> Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
-> Cc: <stable@vger.kernel.org> # 4.7.0
-> ---
->  arch/arm/boot/dts/omap3-pandora-common.dtsi | 37 +++++++++++++++++++--
->  1 file changed, 35 insertions(+), 2 deletions(-)
->
-> diff --git a/arch/arm/boot/dts/omap3-pandora-common.dtsi b/arch/arm/boot/dts/omap3-pandora-common.dtsi
-> index ec5891718ae6..c595b3eb314d 100644
-> --- a/arch/arm/boot/dts/omap3-pandora-common.dtsi
-> +++ b/arch/arm/boot/dts/omap3-pandora-common.dtsi
-> @@ -226,6 +226,18 @@
->                 gpio = <&gpio6 4 GPIO_ACTIVE_HIGH>;     /* GPIO_164 */
->         };
->
-> +       /* wl1251 wifi+bt module */
-> +       wlan_en: fixed-regulator-wg7210_en {
-> +               compatible = "regulator-fixed";
-> +               regulator-name = "vwlan";
-> +               regulator-min-microvolt = <1800000>;
-> +               regulator-max-microvolt = <1800000>;
+Hi Ulf,
 
-I doubt these are correct.
+> Am 30.10.2019 um 16:51 schrieb Ulf Hansson <ulf.hansson@linaro.org>:
+>=20
+>> +
+>> +               np =3D of_get_compatible_child(np, "ti,wl1251");
+>> +               if (np) {
+>> +                       /*
+>> +                        * We have TI wl1251 attached to MMC3. Pass =
+this information to
+>> +                        * SDIO core because it can't be probed by =
+normal methods.
+>> +                        */
+>> +
+>> +                       dev_info(host->dev, "found wl1251\n");
+>> +                       card->quirks |=3D MMC_QUIRK_NONSTD_SDIO;
+>> +                       card->cccr.wide_bus =3D 1;
+>> +                       card->cis.vendor =3D 0x104c;
+>> +                       card->cis.device =3D 0x9066;
+>> +                       card->cis.blksize =3D 512;
+>> +                       card->cis.max_dtr =3D 24000000;
+>> +                       card->ocr =3D 0x80;
+>=20
+> These things should really be figured out by the mmc core during SDIO
+> card initialization itself, not via the host ops ->init_card()
+> callback. That is just poor hack, which in the long run should go
+> away.
 
-I guess this should be in the range of 2.7V-3.6V.
+Yes, I agree.
 
-> +               startup-delay-us = <50000>;
-> +               regulator-always-on;
+But I am just the poor guy who is trying to fix really broken code with
+as low effort as possible.
 
-Always on?
+I don't even have a significant clue what this code is exactly doing and =
+what
+the magic values mean. They were setup by pandora_wl1251_init_card() in =
+the
+same way so that I have just moved the code here and make it called in =
+(almost)
+the same situation.
 
-> +               enable-active-high;
-> +               gpio = <&gpio1 23 GPIO_ACTIVE_HIGH>;
-> +       };
-> +
->         /* wg7210 (wifi+bt module) 32k clock buffer */
->         wg7210_32k: fixed-regulator-wg7210_32k {
->                 compatible = "regulator-fixed";
-> @@ -522,9 +534,30 @@
->         /*wp-gpios = <&gpio4 31 GPIO_ACTIVE_HIGH>;*/    /* GPIO_127 */
->  };
->
-> -/* mmc3 is probed using pdata-quirks to pass wl1251 card data */
->  &mmc3 {
-> -       status = "disabled";
-> +       vmmc-supply = <&wlan_en>;
-> +
-> +       bus-width = <4>;
-> +       non-removable;
-> +       ti,non-removable;
-> +       cap-power-off-card;
-> +
-> +       pinctrl-names = "default";
-> +       pinctrl-0 = <&mmc3_pins>;
-> +
-> +       #address-cells = <1>;
-> +       #size-cells = <0>;
-> +
-> +       wlan: wl1251@1 {
-> +               compatible = "ti,wl1251";
-> +
-> +               reg = <1>;
-> +
-> +               interrupt-parent = <&gpio1>;
-> +               interrupts = <21 IRQ_TYPE_LEVEL_HIGH>;  /* GPIO_21 */
-> +
-> +               ti,wl1251-has-eeprom;
-> +       };
->  };
->
->  /* bluetooth*/
-> --
-> 2.19.1
->
+> Moreover, I think we should add a subnode to the host node in the DT,
+> to describe the embedded SDIO card, rather than parsing the subnode
+> for the SDIO func - as that seems wrong to me.
 
-Kind regards
-Uffe
+You mean a second subnode?
+
+The wl1251 is the child node of the mmc node and describes the SDIO =
+card.
+We just check if it is a wl1251 or e.g. wl1837 or something else or even
+no child.
+
+> To add a subnode for the SDIO card, we already have a binding that I
+> think we should extend. Please have a look at
+> Documentation/devicetree/bindings/mmc/mmc-card.txt.
+>=20
+> If you want an example of how to implement this for your case, do a
+> git grep "broken-hpi" in the driver/mmc/core/, I think it will tell
+> you more of what I have in mind.
+
+So while I agree that it should be improved in the long run, we should
+IMHO fix the hack first (broken since v4.9!), even if it remains a hack
+for now. Improving this part seems to be quite independent and focussed
+on the mmc subsystem, while the other patches involve other subsystems.
+
+Maybe should we make a REVISIT note in the code? Or add something to
+the commit message about the idea how it should be done right?
+
+>=20
+>> +                       of_node_put(np);
+>> +               }
+>> +       }
+>> }
+>>=20
+>> static void omap_hsmmc_enable_sdio_irq(struct mmc_host *mmc, int =
+enable)
+>> --
+>> 2.19.1
+>>=20
+>=20
+> Kind regards
+> Uffe
+
+
+BR and thanks,
+Nikolaus
+
