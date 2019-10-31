@@ -2,103 +2,99 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 63FCDEB18C
-	for <lists+linux-wireless@lfdr.de>; Thu, 31 Oct 2019 14:50:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 93DFBEB19A
+	for <lists+linux-wireless@lfdr.de>; Thu, 31 Oct 2019 14:51:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727697AbfJaNuY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 31 Oct 2019 09:50:24 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:59582 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727446AbfJaNuX (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 31 Oct 2019 09:50:23 -0400
-Received: from DGGEMS412-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id 2429DFDC543B33AF97BC;
-        Thu, 31 Oct 2019 21:50:21 +0800 (CST)
-Received: from linux-ibm.site (10.175.102.37) by
- DGGEMS412-HUB.china.huawei.com (10.3.19.212) with Microsoft SMTP Server id
- 14.3.439.0; Thu, 31 Oct 2019 21:50:14 +0800
-From:   zhong jiang <zhongjiang@huawei.com>
-To:     <kvalo@codeaurora.org>, <stas.yakovlev@gmail.com>
-CC:     <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <zhongjiang@huawei.com>
-Subject: [PATCH 3/3] b43legacy: ASoC: ux500: Remove redundant variable "count"
-Date:   Thu, 31 Oct 2019 21:46:20 +0800
-Message-ID: <1572529580-26594-4-git-send-email-zhongjiang@huawei.com>
-X-Mailer: git-send-email 1.7.12.4
-In-Reply-To: <1572529580-26594-1-git-send-email-zhongjiang@huawei.com>
-References: <1572529580-26594-1-git-send-email-zhongjiang@huawei.com>
+        id S1727735AbfJaNvL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 31 Oct 2019 09:51:11 -0400
+Received: from mail-wm1-f66.google.com ([209.85.128.66]:52904 "EHLO
+        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727511AbfJaNvK (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 31 Oct 2019 09:51:10 -0400
+Received: by mail-wm1-f66.google.com with SMTP id p21so6021550wmg.2;
+        Thu, 31 Oct 2019 06:51:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=gAclQFwXxT+EpCdR+7raEwTaxKHzgavsPREsM1zGn+U=;
+        b=idnQhtYQ3TBs6KRPEkfaDxAhsWnSbcQiblhWd/rUqCaholJb+Y6Q4/pGjTG3wgXy1P
+         40455Viwd3gxYt+PaByLrYdbujjRrwE6wSqw6ib1JZnsIJGSovtnxPn+I4tiL+vxp6ru
+         aCdFGQpzKNpKMx6C4EPSylCqtT2fhgJ4FH2TNd4AP6XuSpXi3YKYPH946q3VOhrO5XhI
+         KxSALsOS8wHCNu42BPwgvyYl1+Ju72i7yPUNb1V7wUce/jqdOtN0BFgyKHwRik2dFsGz
+         n9e3eC840rv8hyhOlyIBR1W4IPf4ghXMi/9D/PSA4o51ERYxrDKAwDCk5ZfPR5Es1dku
+         GbKQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=gAclQFwXxT+EpCdR+7raEwTaxKHzgavsPREsM1zGn+U=;
+        b=G5m4MW6w7cHfWpsOH8OzL5RYlFoLTXWnjOqsXAxTG6u/9ZQnV0xYQoa024G2JQYqGC
+         caI+ENAMl1Sze1UGQW6pT7AIBVaweJkrwMFrQeqzuNPlG5U/nNALIxaGnNMWlhw1RNHF
+         K5MJz0/LxezFF7iQLbxLcpAu3zGP46zXyK2fvnXbk7nyuk1I6g6oWZfoO/CAmxuszYiN
+         blxWqY0l1T037unm2IPMbzOXmgMvsLVuhvZ1U68guZXNx6EJSEeiOrnhayuxhgGWe/lN
+         I7DbwkwoFpmLPipts+2Q+cji9r06bjS8mp22FiQNkZrASM0Jf7jL2iaSei9zfAWjELZf
+         ahqg==
+X-Gm-Message-State: APjAAAX6//v0FQj3ZcEN+/5vhD7QjniplT/oeIp82u/zRAM8a4t5oGHl
+        GN48E/IWvZweAgWkRx2E/5BigO3nmtQ=
+X-Google-Smtp-Source: APXvYqznGvYQ+XQnAoy7o1i04CIKW2qqDDwcXhCWnjOonccojJ1bEGmlN+Ww8nI8BXSRkwxeB+pFOg==
+X-Received: by 2002:a1c:41c1:: with SMTP id o184mr5185694wma.57.1572529866293;
+        Thu, 31 Oct 2019 06:51:06 -0700 (PDT)
+Received: from mail.google.com ([104.238.174.53])
+        by smtp.gmail.com with ESMTPSA id b62sm3541546wmc.13.2019.10.31.06.50.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 31 Oct 2019 06:51:05 -0700 (PDT)
+Date:   Thu, 31 Oct 2019 21:50:54 +0800
+From:   Changbin Du <changbin.du@gmail.com>
+To:     Jonathan Corbet <corbet@lwn.net>
+Cc:     Changbin Du <changbin.du@gmail.com>,
+        Jani Nikula <jani.nikula@linux.intel.com>,
+        linux-pci@vger.kernel.org, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+        linux-crypto@vger.kernel.org, linux-kselftest@vger.kernel.org,
+        linux-wireless@vger.kernel.org, linux-fpga@vger.kernel.org,
+        linux-usb@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        intel-gfx@lists.freedesktop.org,
+        Matthew Wilcox <willy@infradead.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>
+Subject: Re: [PATCH v2] kernel-doc: rename the kernel-doc directive
+ 'functions' to 'identifiers'
+Message-ID: <20191031135052.tl63uzhdgcpcqwj5@mail.google.com>
+References: <20191020131717.28990-1-changbin.du@gmail.com>
+ <20191024121940.1d6a64df@lwn.net>
+ <87woctb9cj.fsf@intel.com>
+ <20191025144802.uixg2crhw6h7gghq@mail.google.com>
+ <87v9s99q9l.fsf@intel.com>
+ <20191029003120.llve32crfw63ovpw@mail.google.com>
+ <20191029020027.516a6bce@lwn.net>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.175.102.37]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191029020027.516a6bce@lwn.net>
+User-Agent: NeoMutt/20180716
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-local variable "count" is not used. hence it is safe to remove and
-just return 0.
+On Tue, Oct 29, 2019 at 02:00:27AM -0600, Jonathan Corbet wrote:
+> On Tue, 29 Oct 2019 08:31:22 +0800
+> Changbin Du <changbin.du@gmail.com> wrote:
+> 
+> > Here python is different from C. Both empty string and None are False in python.
+> > Note such condition is common in python.
+> 
+> Treating both as a False value is reasonably common.  Treating them
+> elsewhere in the same code block as separate values is less
+> so; that's the part I would prefer to avoid.
+>
+ok, please check update in v3.
 
-Signed-off-by: zhong jiang <zhongjiang@huawei.com>
----
- drivers/net/wireless/broadcom/b43legacy/debugfs.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+> Thanks,
+> 
+> jon
 
-diff --git a/drivers/net/wireless/broadcom/b43legacy/debugfs.c b/drivers/net/wireless/broadcom/b43legacy/debugfs.c
-index 082aab8..de766c7 100644
---- a/drivers/net/wireless/broadcom/b43legacy/debugfs.c
-+++ b/drivers/net/wireless/broadcom/b43legacy/debugfs.c
-@@ -65,7 +65,6 @@ struct b43legacy_dfs_file * fops_to_dfs_file(struct b43legacy_wldev *dev,
- /* wl->irq_lock is locked */
- static ssize_t tsf_read_file(struct b43legacy_wldev *dev, char *buf, size_t bufsize)
- {
--	ssize_t count = 0;
- 	u64 tsf;
- 
- 	b43legacy_tsf_read(dev, &tsf);
-@@ -73,7 +72,7 @@ static ssize_t tsf_read_file(struct b43legacy_wldev *dev, char *buf, size_t bufs
- 		(unsigned int)((tsf & 0xFFFFFFFF00000000ULL) >> 32),
- 		(unsigned int)(tsf & 0xFFFFFFFFULL));
- 
--	return count;
-+	return 0;
- }
- 
- /* wl->irq_lock is locked */
-@@ -91,7 +90,6 @@ static int tsf_write_file(struct b43legacy_wldev *dev, const char *buf, size_t c
- /* wl->irq_lock is locked */
- static ssize_t ucode_regs_read_file(struct b43legacy_wldev *dev, char *buf, size_t bufsize)
- {
--	ssize_t count = 0;
- 	int i;
- 
- 	for (i = 0; i < 64; i++) {
-@@ -99,7 +97,7 @@ static ssize_t ucode_regs_read_file(struct b43legacy_wldev *dev, char *buf, size
- 			b43legacy_shm_read16(dev, B43legacy_SHM_WIRELESS, i));
- 	}
- 
--	return count;
-+	return 0;
- }
- 
- /* wl->irq_lock is locked */
-@@ -125,7 +123,6 @@ static ssize_t shm_read_file(struct b43legacy_wldev *dev, char *buf, size_t bufs
- static ssize_t txstat_read_file(struct b43legacy_wldev *dev, char *buf, size_t bufsize)
- {
- 	struct b43legacy_txstatus_log *log = &dev->dfsentry->txstatlog;
--	ssize_t count = 0;
- 	unsigned long flags;
- 	int i, idx;
- 	struct b43legacy_txstatus *stat;
-@@ -166,7 +163,7 @@ static ssize_t txstat_read_file(struct b43legacy_wldev *dev, char *buf, size_t b
- out_unlock:
- 	spin_unlock_irqrestore(&log->lock, flags);
- 
--	return count;
-+	return 0;
- }
- 
- /* wl->irq_lock is locked */
 -- 
-1.7.12.4
-
+Cheers,
+Changbin Du
