@@ -2,25 +2,25 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E0C9EB037
-	for <lists+linux-wireless@lfdr.de>; Thu, 31 Oct 2019 13:28:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5561EEB038
+	for <lists+linux-wireless@lfdr.de>; Thu, 31 Oct 2019 13:28:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726765AbfJaM2Q (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 31 Oct 2019 08:28:16 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:41160 "EHLO
+        id S1726785AbfJaM2S (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 31 Oct 2019 08:28:18 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:41400 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726462AbfJaM2P (ORCPT
+        with ESMTP id S1726462AbfJaM2S (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 31 Oct 2019 08:28:15 -0400
+        Thu, 31 Oct 2019 08:28:18 -0400
 Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 3FDAB60913; Thu, 31 Oct 2019 12:28:14 +0000 (UTC)
+        id 81D0A60A71; Thu, 31 Oct 2019 12:28:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1572524894;
-        bh=O8dzojXX/pGh9ECofSzQBhTtetBTtJgnafjsAHTeuIY=;
+        s=default; t=1572524896;
+        bh=cXuJ9e5wftAJSQP+049qKsJZUlWgpUYplzMsiva7KqA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=a3+hLPe+b/PIytNsEPqxUt0wIxwerSP5o50bSg6vVHwIqjSfVOPtr77yoXazHgL3S
-         0B9rcie4ZH6e6dBpkxWy+d/F6xnj3t3vzLFnocA4h5JMIJ+4AzFFytr4f+3Jf08r5i
-         +9cTmyaeOYn3tmVAS0Lnbm6ZfFggaBUkZtNjgWdg=
+        b=UbD/sj94XK/hTgtkHUR4NBAt+Qr0P806QMPiZPKiQRMuYFDBVF6MhuHKQQrO3LMxL
+         Pxj8m7IbPa8VMo11+gYT4jHi3q2sjlA7ZGX4uugY0E5p2ttuJTtqPaIM1jFVP5ZIwD
+         Rk2KZxO0rUswOBdDaS/EiB+eoE83VoD8yNwcLF80=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
@@ -31,24 +31,24 @@ Received: from murugana-linux.qualcomm.com (blr-c-bdr-fw-01_globalnat_allzones-o
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: murugana@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id E66D3603A3;
-        Thu, 31 Oct 2019 12:28:11 +0000 (UTC)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id E62ED6083E;
+        Thu, 31 Oct 2019 12:28:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1572524893;
-        bh=O8dzojXX/pGh9ECofSzQBhTtetBTtJgnafjsAHTeuIY=;
+        s=default; t=1572524895;
+        bh=cXuJ9e5wftAJSQP+049qKsJZUlWgpUYplzMsiva7KqA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LKtf3lLkxchrv2k+2TKD6LGDgQOEVxyCI5Fn9MDZo+6/p8hOhsx7Wh6GZZeEAdyII
-         U5pwJF8vTthAfByc4Iu+lbM3yarDx8baHUe54JhcRZo0rxEO3oxVHEeao0W+xiNM/4
-         NwmcX53nnHaxF1fLmmKOebjA8Zs6ERcKXhBFIid0=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org E66D3603A3
+        b=CD4q2ef5ZJ7+KEKukugZCBf4/Jgg7xCzpB2tgQC4bZTLBzdK4bMCguew/RVBfm1XY
+         adcnn3Afy0iGawCg/sHRajIGHVpkpVSjKFgfzIn9AaMcWRRMf+hGZOZe1sK+hArIf0
+         G6h8k6K2rzF7DHawsKt85VNy47uYKjAqN52U7WcU=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org E62ED6083E
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=murugana@codeaurora.org
 From:   Sathishkumar Muruganandam <murugana@codeaurora.org>
 To:     johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org, ath11k@lists.infradead.org
-Subject: [PATCH 1/2] nl80211: add Wide Band Scan support
-Date:   Thu, 31 Oct 2019 17:57:46 +0530
-Message-Id: <1572524867-26703-2-git-send-email-murugana@codeaurora.org>
+Subject: [PATCH 2/2] ath11k: add Wide Band Scan support
+Date:   Thu, 31 Oct 2019 17:57:47 +0530
+Message-Id: <1572524867-26703-3-git-send-email-murugana@codeaurora.org>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1572524867-26703-1-git-send-email-murugana@codeaurora.org>
 References: <1572524867-26703-1-git-send-email-murugana@codeaurora.org>
@@ -57,227 +57,378 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-New nl80211 ext_feature and scan_flag added to support wide band scan which
-allows driver to scan on requested channel with corresponding
-phy mode/bandwidth (40Mhz, 80Mhz).
+Doing wide band scan instead of normal 20Mhz scan before spectral dump,
+allows to fetch FFT reports for the complete requested bandwidth
+(40Mhz, 80Mhz).
 
-To handle center frequency of 80Mhz channel, struct cfg80211_chan_def is
-included in cfg80211_scan_request.
+Below are the FW expectations and configs from host to request
+Wide Band Scan,
+
+1. SCAN_PHYMODE_SUPPORT WMI service bit advertised from FW.
+
+2. SCAN_CHAN_LIST_CMD updated with the phymode and other channel params
+   of the requested channel to do wide band scan.
+
+3. START_SCAN_CMD updated with all the seven supported TLVs and PHYMODE TLV
+   being the last. PHYMODE TLV holds the (wmi_phy_mode + 1) value
+   corresponding to wide band scan channel. Scan flags scan_f_wide_band and
+   scan_f_passive need to be set for wide band scan request from host.
+
+In case of supporting NL80211_EXT_FEATURE_WIDE_BAND_SCAN,
+cfg80211_scan_request holds the cfg80211_chan_def of the requested channel
+from which we update the center frequencies and phymode params needed for
+SCAN_CHAN_LIST_CMD and START_SCAN_CMD to FW.
 
 Signed-off-by: Sathishkumar Muruganandam <murugana@codeaurora.org>
 ---
- include/net/cfg80211.h       |  2 ++
- include/uapi/linux/nl80211.h |  7 +++++
- net/mac80211/scan.c          |  2 ++
- net/wireless/nl80211.c       | 68 ++++++++++++++++++++++++++++----------------
- 4 files changed, 55 insertions(+), 24 deletions(-)
+ drivers/net/wireless/ath/ath11k/mac.c |  41 ++++++++++--
+ drivers/net/wireless/ath/ath11k/wmi.c | 115 +++++++++++++++++++++++++++++++---
+ drivers/net/wireless/ath/ath11k/wmi.h |  34 +++++++++-
+ 3 files changed, 175 insertions(+), 15 deletions(-)
 
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index 4ab2c49423dc..c303344e5832 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -1906,6 +1906,7 @@ struct cfg80211_scan_info {
-  * @channels: channels to scan on.
-  * @n_channels: total number of channels to scan
-  * @scan_width: channel width for scanning
-+ * @chandef: defines the channel to do wide band scan
-  * @ie: optional information element(s) to add into Probe Request or %NULL
-  * @ie_len: length of ie in octets
-  * @duration: how long to listen on each channel, in TUs. If
-@@ -1932,6 +1933,7 @@ struct cfg80211_scan_request {
- 	int n_ssids;
- 	u32 n_channels;
- 	enum nl80211_bss_scan_width scan_width;
-+	struct cfg80211_chan_def *chandef;
- 	const u8 *ie;
- 	size_t ie_len;
- 	u16 duration;
-diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-index 64135ab3a7ac..7b87e9a06d1f 100644
---- a/include/uapi/linux/nl80211.h
-+++ b/include/uapi/linux/nl80211.h
-@@ -5492,6 +5492,9 @@ enum nl80211_feature_flags {
-  * @NL80211_EXT_FEATURE_SAE_OFFLOAD: Device wants to do SAE authentication in
-  *	station mode (SAE password is passed as part of the connect command).
-  *
-+ * @NL80211_EXT_FEATURE_WIDE_BAND_SCAN: Driver/device supports wide band scan
-+ *	on a frequency along with its corresponding phymode (40Mhz, 80Mhz)
-+ *
-  * @NUM_NL80211_EXT_FEATURES: number of extended features.
-  * @MAX_NL80211_EXT_FEATURES: highest extended feature index.
-  */
-@@ -5537,6 +5540,7 @@ enum nl80211_ext_feature_index {
- 	NL80211_EXT_FEATURE_EXT_KEY_ID,
- 	NL80211_EXT_FEATURE_STA_TX_PWR,
- 	NL80211_EXT_FEATURE_SAE_OFFLOAD,
-+	NL80211_EXT_FEATURE_WIDE_BAND_SCAN,
+diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
+index 6f82fdbbd358..56cd6f5d8ced 100644
+--- a/drivers/net/wireless/ath/ath11k/mac.c
++++ b/drivers/net/wireless/ath/ath11k/mac.c
+@@ -2088,6 +2088,28 @@ static int ath11k_start_scan(struct ath11k *ar,
+ 	return 0;
+ }
  
- 	/* add new features before the definition below */
- 	NUM_NL80211_EXT_FEATURES,
-@@ -5648,6 +5652,8 @@ enum nl80211_timeout_reason {
-  * @NL80211_SCAN_FLAG_MIN_PREQ_CONTENT: minimize probe request content to
-  *	only have supported rates and no additional capabilities (unless
-  *	added by userspace explicitly.)
-+ * @NL80211_SCAN_FLAG_WIDE_BAND_SCAN: This flag intends the driver to perform
-+ *	wide band scan only if the driver supports it.
-  */
- enum nl80211_scan_flags {
- 	NL80211_SCAN_FLAG_LOW_PRIORITY				= 1<<0,
-@@ -5663,6 +5669,7 @@ enum nl80211_scan_flags {
- 	NL80211_SCAN_FLAG_HIGH_ACCURACY				= 1<<10,
- 	NL80211_SCAN_FLAG_RANDOM_SN				= 1<<11,
- 	NL80211_SCAN_FLAG_MIN_PREQ_CONTENT			= 1<<12,
-+	NL80211_SCAN_FLAG_WIDE_BAND_SCAN			= 1<<13,
- };
- 
- /**
-diff --git a/net/mac80211/scan.c b/net/mac80211/scan.c
-index 4d31d9688dc2..343c0c6e2ecb 100644
---- a/net/mac80211/scan.c
-+++ b/net/mac80211/scan.c
-@@ -688,11 +688,13 @@ static int __ieee80211_start_scan(struct ieee80211_sub_if_data *sdata,
- 
- 		local->hw_scan_req = kmalloc(
- 				sizeof(*local->hw_scan_req) +
-+				sizeof(*req->chandef) +
- 				req->n_channels * sizeof(req->channels[0]) +
- 				local->hw_scan_ies_bufsize, GFP_KERNEL);
- 		if (!local->hw_scan_req)
- 			return -ENOMEM;
- 
-+		local->hw_scan_req->req.chandef = req->chandef;
- 		local->hw_scan_req->req.ssids = req->ssids;
- 		local->hw_scan_req->req.n_ssids = req->n_ssids;
- 		ies = (u8 *)local->hw_scan_req +
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index d1451e731bb8..67d29a309eb6 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -7476,7 +7476,10 @@ nl80211_check_scan_flags(struct wiphy *wiphy, struct wireless_dev *wdev,
- 				     NL80211_EXT_FEATURE_SCAN_RANDOM_SN) ||
- 	    !nl80211_check_scan_feat(wiphy, *flags,
- 				     NL80211_SCAN_FLAG_MIN_PREQ_CONTENT,
--				     NL80211_EXT_FEATURE_SCAN_MIN_PREQ_CONTENT))
-+				     NL80211_EXT_FEATURE_SCAN_MIN_PREQ_CONTENT) ||
-+	    !nl80211_check_scan_feat(wiphy, *flags,
-+				     NL80211_SCAN_FLAG_WIDE_BAND_SCAN,
-+				     NL80211_EXT_FEATURE_WIDE_BAND_SCAN))
- 		return -EOPNOTSUPP;
- 
- 	if (*flags & NL80211_SCAN_FLAG_RANDOM_ADDR) {
-@@ -7499,10 +7502,12 @@ static int nl80211_trigger_scan(struct sk_buff *skb, struct genl_info *info)
- 	struct cfg80211_registered_device *rdev = info->user_ptr[0];
- 	struct wireless_dev *wdev = info->user_ptr[1];
- 	struct cfg80211_scan_request *request;
-+	struct cfg80211_chan_def chandef;
- 	struct nlattr *attr;
- 	struct wiphy *wiphy;
--	int err, tmp, n_ssids = 0, n_channels, i;
-+	int err, tmp, n_ssids = 0, n_channels = 0, i;
- 	size_t ie_len;
-+	bool chandef_found = false;
- 
- 	wiphy = &rdev->wiphy;
- 
-@@ -7517,7 +7522,14 @@ static int nl80211_trigger_scan(struct sk_buff *skb, struct genl_info *info)
- 		goto unlock;
- 	}
- 
--	if (info->attrs[NL80211_ATTR_SCAN_FREQUENCIES]) {
-+	if (info->attrs[NL80211_ATTR_WIPHY_FREQ]) {
-+		n_channels = 1;
-+		if (nl80211_parse_chandef(rdev, info, &chandef)) {
-+			err = -EINVAL;
-+			goto unlock;
-+		}
-+		chandef_found = true;
-+	} else if (info->attrs[NL80211_ATTR_SCAN_FREQUENCIES]) {
- 		n_channels = validate_scan_freqs(
- 				info->attrs[NL80211_ATTR_SCAN_FREQUENCIES]);
- 		if (!n_channels) {
-@@ -7548,6 +7560,7 @@ static int nl80211_trigger_scan(struct sk_buff *skb, struct genl_info *info)
- 	}
- 
- 	request = kzalloc(sizeof(*request)
-+			+ sizeof(*request->chandef)
- 			+ sizeof(*request->ssids) * n_ssids
- 			+ sizeof(*request->channels) * n_channels
- 			+ ie_len, GFP_KERNEL);
-@@ -7556,6 +7569,12 @@ static int nl80211_trigger_scan(struct sk_buff *skb, struct genl_info *info)
- 		goto unlock;
- 	}
- 
-+	if (chandef_found) {
-+		request->chandef = &chandef;
-+		request->channels[0] = chandef.chan;
-+		request->n_channels = n_channels;
++static void ath11k_mac_update_scan_params(struct cfg80211_scan_request *req,
++					  struct scan_req_params *arg)
++{
++	int i;
++	struct wmi_chan_info *chan = &arg->chan_list.chan[0];
++	enum nl80211_band band;
++	enum nl80211_chan_width width;
++
++	if (req->chandef) {
++		band = req->chandef->chan->band;
++		width = req->chandef->width;
 +	}
 +
- 	if (n_ssids)
- 		request->ssids = (void *)&request->channels[n_channels];
- 	request->n_ssids = n_ssids;
-@@ -7586,7 +7605,7 @@ static int nl80211_trigger_scan(struct sk_buff *skb, struct genl_info *info)
- 			request->channels[i] = chan;
- 			i++;
- 		}
--	} else {
-+	} else if (!chandef_found) {
- 		enum nl80211_band band;
- 
- 		/* all channels */
-@@ -7609,31 +7628,32 @@ static int nl80211_trigger_scan(struct sk_buff *skb, struct genl_info *info)
- 		}
++	arg->chan_list.num_chan = req->n_channels;
++	for (i = 0; i < arg->chan_list.num_chan; i++) {
++		if (req->channels)
++			chan[i].freq = req->channels[i]->center_freq;
++		if (req->chandef)
++			chan[i].phymode = ath11k_phymodes[band][width];
++	}
++}
++
+ static int ath11k_mac_op_hw_scan(struct ieee80211_hw *hw,
+ 				 struct ieee80211_vif *vif,
+ 				 struct ieee80211_scan_request *hw_req)
+@@ -2144,10 +2166,16 @@ static int ath11k_mac_op_hw_scan(struct ieee80211_hw *hw,
+ 		arg.scan_flags |= WMI_SCAN_FLAG_PASSIVE;
  	}
  
--	if (!i) {
--		err = -EINVAL;
--		goto out_free;
--	}
--
--	request->n_channels = i;
--
--	wdev_lock(wdev);
--	if (!cfg80211_off_channel_oper_allowed(wdev)) {
--		struct ieee80211_channel *chan;
--
--		if (request->n_channels != 1) {
--			wdev_unlock(wdev);
--			err = -EBUSY;
-+	if (!chandef_found) {
-+		if (!i) {
-+			err = -EINVAL;
- 			goto out_free;
- 		}
-+		request->n_channels = i;
- 
--		chan = request->channels[0];
--		if (chan->center_freq != wdev->chandef.chan->center_freq) {
--			wdev_unlock(wdev);
--			err = -EBUSY;
--			goto out_free;
-+		wdev_lock(wdev);
-+		if (!cfg80211_off_channel_oper_allowed(wdev)) {
-+			struct ieee80211_channel *chan;
+-	if (req->n_channels) {
+-		arg.num_chan = req->n_channels;
+-		for (i = 0; i < arg.num_chan; i++)
+-			arg.chan_list[i] = req->channels[i]->center_freq;
++	if (req->n_channels)
++		ath11k_mac_update_scan_params(req, &arg);
 +
-+			if (request->n_channels != 1) {
-+				wdev_unlock(wdev);
-+				err = -EBUSY;
-+				goto out_free;
-+			}
-+
-+			chan = request->channels[0];
-+			if (chan->center_freq != wdev->chandef.chan->center_freq) {
-+				wdev_unlock(wdev);
-+				err = -EBUSY;
-+				goto out_free;
-+			}
- 		}
-+		wdev_unlock(wdev);
++	if (req->chandef) {
++		arg.scan_f_wide_band = true;
++		arg.scan_f_passive = true;
++		arg.chandef = req->chandef;
++		ret = ath11k_wmi_append_scan_chan_list(ar, &arg);
++		if (ret)
++			goto exit;
  	}
--	wdev_unlock(wdev);
  
- 	i = 0;
- 	if (n_ssids) {
+ 	ret = ath11k_start_scan(ar, &arg);
+@@ -5577,6 +5605,11 @@ static int ath11k_mac_register(struct ath11k *ar)
+ 
+ 	wiphy_ext_feature_set(ar->hw->wiphy, NL80211_EXT_FEATURE_CQM_RSSI_LIST);
+ 
++	if (test_bit(WMI_TLV_SERVICE_SCAN_PHYMODE_SUPPORT,
++		     ar->ab->wmi_sc.svc_map))
++		wiphy_ext_feature_set(ar->hw->wiphy,
++				      NL80211_EXT_FEATURE_WIDE_BAND_SCAN);
++
+ 	ar->hw->wiphy->cipher_suites = cipher_suites;
+ 	ar->hw->wiphy->n_cipher_suites = ARRAY_SIZE(cipher_suites);
+ 
+diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
+index ccebf7ce420a..3950c0f94a9e 100644
+--- a/drivers/net/wireless/ath/ath11k/wmi.c
++++ b/drivers/net/wireless/ath/ath11k/wmi.c
+@@ -1810,6 +1810,57 @@ int ath11k_wmi_send_peer_assoc_cmd(struct ath11k *ar,
+ 	return ret;
+ }
+ 
++int ath11k_wmi_append_scan_chan_list(struct ath11k *ar,
++				     struct scan_req_params *arg)
++{
++	struct scan_chan_list_params *params;
++	struct channel_param *ch;
++	struct cfg80211_chan_def *chandef;
++	struct ieee80211_channel *channel;
++	int params_len;
++	int ret;
++
++	params_len = sizeof(struct scan_chan_list_params) +
++			arg->chan_list.num_chan * sizeof(struct channel_param);
++	params = kzalloc(params_len, GFP_KERNEL);
++
++	if (!params)
++		return -ENOMEM;
++
++	params->pdev_id = ar->pdev->pdev_id;
++	params->nallchans = arg->chan_list.num_chan;
++	params->append_chan_list = true;
++
++	ch = params->ch_param;
++	chandef = arg->chandef;
++	channel = chandef->chan;
++
++	ch->mhz = arg->chan_list.chan[0].freq;
++	ch->cfreq1 = chandef->center_freq1;
++	ch->cfreq2 = chandef->center_freq2;
++	ch->phy_mode = arg->chan_list.chan[0].phymode;
++
++	ch->dfs_set =
++		!!(channel->flags & IEEE80211_CHAN_RADAR);
++	ch->is_chan_passive = !!(channel->flags &
++				IEEE80211_CHAN_NO_IR);
++	ch->is_chan_passive |= ch->dfs_set;
++	ch->minpower = 0;
++	ch->maxpower = channel->max_power * 2;
++	ch->maxregpower = channel->max_reg_power * 2;
++	ch->antennamax = channel->max_antenna_gain * 2;
++
++	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
++		   "scan chan list %d freq %d cfreq1 %d phymode %d is_dfs_ch %u is_chan_passive %u\n",
++		   params->nallchans, ch->mhz, ch->cfreq1, ch->phy_mode,
++		   ch->dfs_set, ch->is_chan_passive);
++
++	ret = ath11k_wmi_send_scan_chan_list_cmd(ar, params);
++	kfree(params);
++
++	return ret;
++}
++
+ void ath11k_wmi_start_scan_init(struct ath11k *ar,
+ 				struct scan_req_params *arg)
+ {
+@@ -1922,13 +1973,15 @@ int ath11k_wmi_send_scan_start_cmd(struct ath11k *ar,
+ 	void *ptr;
+ 	int i, ret, len;
+ 	u32 *tmp_ptr;
++	u8 *phy_ptr;
+ 	u8 extraie_len_with_pad = 0;
++	u8 phymode_roundup = 0;
+ 
+ 	len = sizeof(*cmd);
+ 
+ 	len += TLV_HDR_SIZE;
+-	if (params->num_chan)
+-		len += params->num_chan * sizeof(u32);
++	if (params->chan_list.num_chan)
++		len += params->chan_list.num_chan * sizeof(u32);
+ 
+ 	len += TLV_HDR_SIZE;
+ 	if (params->num_ssids)
+@@ -1944,6 +1997,19 @@ int ath11k_wmi_send_scan_start_cmd(struct ath11k *ar,
+ 			roundup(params->extraie.len, sizeof(u32));
+ 	len += extraie_len_with_pad;
+ 
++	len += TLV_HDR_SIZE;
++	if (params->scan_f_en_ie_whitelist_in_probe)
++		len += params->ie_whitelist.num_vendor_oui *
++				sizeof(struct wmi_vendor_oui);
++
++	len += TLV_HDR_SIZE;
++	if (params->scan_f_wide_band)
++		phymode_roundup =
++			roundup(params->chan_list.num_chan * sizeof(u8),
++				sizeof(u32));
++
++	len += phymode_roundup;
++
+ 	skb = ath11k_wmi_alloc_skb(wmi->wmi_sc, len);
+ 	if (!skb)
+ 		return -ENOMEM;
+@@ -1973,7 +2039,7 @@ int ath11k_wmi_send_scan_start_cmd(struct ath11k *ar,
+ 	cmd->max_scan_time = params->max_scan_time;
+ 	cmd->probe_delay = params->probe_delay;
+ 	cmd->burst_duration = params->burst_duration;
+-	cmd->num_chan = params->num_chan;
++	cmd->num_chan = params->chan_list.num_chan;
+ 	cmd->num_bssid = params->num_bssid;
+ 	cmd->num_ssids = params->num_ssids;
+ 	cmd->ie_len = params->extraie.len;
+@@ -1981,7 +2047,7 @@ int ath11k_wmi_send_scan_start_cmd(struct ath11k *ar,
+ 
+ 	ptr += sizeof(*cmd);
+ 
+-	len = params->num_chan * sizeof(u32);
++	len = params->chan_list.num_chan * sizeof(u32);
+ 
+ 	tlv = ptr;
+ 	tlv->header = FIELD_PREP(WMI_TLV_TAG, WMI_TAG_ARRAY_UINT32) |
+@@ -1989,8 +2055,8 @@ int ath11k_wmi_send_scan_start_cmd(struct ath11k *ar,
+ 	ptr += TLV_HDR_SIZE;
+ 	tmp_ptr = (u32 *)ptr;
+ 
+-	for (i = 0; i < params->num_chan; ++i)
+-		tmp_ptr[i] = params->chan_list[i];
++	for (i = 0; i < params->chan_list.num_chan; ++i)
++		tmp_ptr[i] = params->chan_list.chan[i].freq;
+ 
+ 	ptr += len;
+ 
+@@ -2042,6 +2108,36 @@ int ath11k_wmi_send_scan_start_cmd(struct ath11k *ar,
+ 
+ 	ptr += extraie_len_with_pad;
+ 
++	len = params->ie_whitelist.num_vendor_oui * sizeof(struct wmi_vendor_oui);
++	tlv = ptr;
++	tlv->header = FIELD_PREP(WMI_TLV_TAG, WMI_TAG_ARRAY_STRUCT) |
++		      FIELD_PREP(WMI_TLV_LEN, len);
++	ptr += TLV_HDR_SIZE;
++
++	if (params->scan_f_en_ie_whitelist_in_probe) {
++		/* TODO: fill vendor OUIs for probe req ie whitelisting */
++		/* currently added for FW TLV validation */
++	}
++
++	ptr += cmd->num_vendor_oui * sizeof(struct wmi_vendor_oui);
++
++	len = phymode_roundup;
++	tlv = ptr;
++	tlv->header = FIELD_PREP(WMI_TLV_TAG, WMI_TAG_ARRAY_BYTE) |
++		      FIELD_PREP(WMI_TLV_LEN, len);
++	ptr += TLV_HDR_SIZE;
++
++	/* Wide Band Scan */
++	if (params->scan_f_wide_band) {
++		phy_ptr = (u8 *)ptr;
++		/* Add PHY mode TLV for wide band scan with phymode + 1 value
++		 * so that phymode '0' is ignored by FW as default value.
++		 */
++		for (i = 0; i < params->chan_list.num_chan; ++i)
++			phy_ptr[i] = params->chan_list.chan[i].phymode + 1;
++	}
++	ptr += phymode_roundup;
++
+ 	ret = ath11k_wmi_cmd_send(wmi, skb,
+ 				  WMI_START_SCAN_CMDID);
+ 	if (ret) {
+@@ -2129,6 +2225,9 @@ int ath11k_wmi_send_scan_chan_list_cmd(struct ath11k *ar,
+ 	cmd->pdev_id = chan_list->pdev_id;
+ 	cmd->num_scan_chans = chan_list->nallchans;
+ 
++	if (chan_list->append_chan_list)
++		cmd->flags |= WMI_APPEND_TO_EXISTING_CHAN_LIST_FLAG;
++
+ 	ptr = skb->data + sizeof(*cmd);
+ 
+ 	len = sizeof(*chan_info) * chan_list->nallchans;
+@@ -2181,8 +2280,8 @@ int ath11k_wmi_send_scan_chan_list_cmd(struct ath11k *ar,
+ 				    tchan_info->antennamax);
+ 
+ 		ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
+-			   "WMI chan scan list chan[%d] = %u\n",
+-			   i, chan_info->mhz);
++			   "WMI chan scan list chan[%d] = %u, chan_info->info %8x\n",
++			   i, chan_info->mhz, chan_info->info);
+ 
+ 		ptr += sizeof(*chan_info);
+ 
+diff --git a/drivers/net/wireless/ath/ath11k/wmi.h b/drivers/net/wireless/ath/ath11k/wmi.h
+index 4a518d406bc5..989b461394dc 100644
+--- a/drivers/net/wireless/ath/ath11k/wmi.h
++++ b/drivers/net/wireless/ath/ath11k/wmi.h
+@@ -2930,6 +2930,12 @@ struct wlan_ssid {
+ };
+ 
+ #define WMI_IE_BITMAP_SIZE             8
++#define PROBE_REQ_MAX_OUIS	       16
++
++struct wmi_vendor_oui {
++	u32 tlv_header;
++	u32 oui_type_subtype; /* vendor OUI type and subtype */
++};
+ 
+ #define WMI_SCAN_MAX_NUM_SSID                0x0A
+ /* prefix used by scan requestor ids on the host */
+@@ -3051,6 +3057,22 @@ enum {
+ 	((flag) |= (((mode) << WMI_SCAN_DWELL_MODE_SHIFT) & \
+ 		    WMI_SCAN_DWELL_MODE_MASK))
+ 
++struct wmi_chan_info {
++	u32 freq;
++	u32 phymode;
++};
++
++struct wmi_chan_list {
++	u32 num_chan;
++	struct wmi_chan_info chan[WLAN_SCAN_MAX_NUM_CHANNELS];
++};
++
++struct wmi_probe_req_whitelist {
++	u32 ie_bitmap[WMI_IE_BITMAP_SIZE];
++	u32 num_vendor_oui;
++	u32 voui[PROBE_REQ_MAX_OUIS];
++};
++
+ struct scan_req_params {
+ 	u32 scan_id;
+ 	u32 scan_req_id;
+@@ -3111,23 +3133,24 @@ struct scan_req_params {
+ 			    scan_f_forced:1,
+ 			    scan_f_2ghz:1,
+ 			    scan_f_5ghz:1,
+-			    scan_f_80mhz:1;
++			    scan_f_wide_band:1;
+ 		};
+ 		u32 scan_flags;
+ 	};
+ 	enum scan_dwelltime_adaptive_mode adaptive_dwell_time_mode;
+ 	u32 burst_duration;
+-	u32 num_chan;
+ 	u32 num_bssid;
+ 	u32 num_ssids;
+ 	u32 n_probes;
+-	u32 chan_list[WLAN_SCAN_MAX_NUM_CHANNELS];
++	struct wmi_chan_list chan_list;
++	struct cfg80211_chan_def *chandef;
+ 	u32 notify_scan_events;
+ 	struct wlan_ssid ssid[WLAN_SCAN_MAX_NUM_SSID];
+ 	struct wmi_mac_addr bssid_list[WLAN_SCAN_MAX_NUM_BSSID];
+ 	struct element_info extraie;
+ 	struct element_info htcap;
+ 	struct element_info vhtcap;
++	struct wmi_probe_req_whitelist ie_whitelist;
+ };
+ 
+ struct wmi_ssid_arg {
+@@ -3470,9 +3493,12 @@ struct wmi_stop_scan_cmd {
+ struct scan_chan_list_params {
+ 	u32 pdev_id;
+ 	u16 nallchans;
++	bool append_chan_list;
+ 	struct channel_param ch_param[1];
+ };
+ 
++#define WMI_APPEND_TO_EXISTING_CHAN_LIST_FLAG BIT(0)
++
+ struct wmi_scan_chan_list_cmd {
+ 	u32 tlv_header;
+ 	u32 num_scan_chans;
+@@ -4710,6 +4736,8 @@ int ath11k_wmi_vdev_delete(struct ath11k *ar, u8 vdev_id);
+ void ath11k_wmi_start_scan_init(struct ath11k *ar, struct scan_req_params *arg);
+ int ath11k_wmi_send_scan_start_cmd(struct ath11k *ar,
+ 				   struct scan_req_params *params);
++int ath11k_wmi_append_scan_chan_list(struct ath11k *ar,
++				     struct scan_req_params *params);
+ int ath11k_wmi_send_scan_stop_cmd(struct ath11k *ar,
+ 				  struct scan_cancel_param *param);
+ int ath11k_wmi_send_wmm_update_cmd_tlv(struct ath11k *ar, u32 vdev_id,
 -- 
 2.7.4
 
