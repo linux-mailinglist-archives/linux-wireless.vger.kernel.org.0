@@ -2,99 +2,109 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 93DFBEB19A
-	for <lists+linux-wireless@lfdr.de>; Thu, 31 Oct 2019 14:51:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0BBAAEB1B0
+	for <lists+linux-wireless@lfdr.de>; Thu, 31 Oct 2019 14:56:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727735AbfJaNvL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 31 Oct 2019 09:51:11 -0400
-Received: from mail-wm1-f66.google.com ([209.85.128.66]:52904 "EHLO
-        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727511AbfJaNvK (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 31 Oct 2019 09:51:10 -0400
-Received: by mail-wm1-f66.google.com with SMTP id p21so6021550wmg.2;
-        Thu, 31 Oct 2019 06:51:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=gAclQFwXxT+EpCdR+7raEwTaxKHzgavsPREsM1zGn+U=;
-        b=idnQhtYQ3TBs6KRPEkfaDxAhsWnSbcQiblhWd/rUqCaholJb+Y6Q4/pGjTG3wgXy1P
-         40455Viwd3gxYt+PaByLrYdbujjRrwE6wSqw6ib1JZnsIJGSovtnxPn+I4tiL+vxp6ru
-         aCdFGQpzKNpKMx6C4EPSylCqtT2fhgJ4FH2TNd4AP6XuSpXi3YKYPH946q3VOhrO5XhI
-         KxSALsOS8wHCNu42BPwgvyYl1+Ju72i7yPUNb1V7wUce/jqdOtN0BFgyKHwRik2dFsGz
-         n9e3eC840rv8hyhOlyIBR1W4IPf4ghXMi/9D/PSA4o51ERYxrDKAwDCk5ZfPR5Es1dku
-         GbKQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=gAclQFwXxT+EpCdR+7raEwTaxKHzgavsPREsM1zGn+U=;
-        b=G5m4MW6w7cHfWpsOH8OzL5RYlFoLTXWnjOqsXAxTG6u/9ZQnV0xYQoa024G2JQYqGC
-         caI+ENAMl1Sze1UGQW6pT7AIBVaweJkrwMFrQeqzuNPlG5U/nNALIxaGnNMWlhw1RNHF
-         K5MJz0/LxezFF7iQLbxLcpAu3zGP46zXyK2fvnXbk7nyuk1I6g6oWZfoO/CAmxuszYiN
-         blxWqY0l1T037unm2IPMbzOXmgMvsLVuhvZ1U68guZXNx6EJSEeiOrnhayuxhgGWe/lN
-         I7DbwkwoFpmLPipts+2Q+cji9r06bjS8mp22FiQNkZrASM0Jf7jL2iaSei9zfAWjELZf
-         ahqg==
-X-Gm-Message-State: APjAAAX6//v0FQj3ZcEN+/5vhD7QjniplT/oeIp82u/zRAM8a4t5oGHl
-        GN48E/IWvZweAgWkRx2E/5BigO3nmtQ=
-X-Google-Smtp-Source: APXvYqznGvYQ+XQnAoy7o1i04CIKW2qqDDwcXhCWnjOonccojJ1bEGmlN+Ww8nI8BXSRkwxeB+pFOg==
-X-Received: by 2002:a1c:41c1:: with SMTP id o184mr5185694wma.57.1572529866293;
-        Thu, 31 Oct 2019 06:51:06 -0700 (PDT)
-Received: from mail.google.com ([104.238.174.53])
-        by smtp.gmail.com with ESMTPSA id b62sm3541546wmc.13.2019.10.31.06.50.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 31 Oct 2019 06:51:05 -0700 (PDT)
-Date:   Thu, 31 Oct 2019 21:50:54 +0800
-From:   Changbin Du <changbin.du@gmail.com>
-To:     Jonathan Corbet <corbet@lwn.net>
-Cc:     Changbin Du <changbin.du@gmail.com>,
-        Jani Nikula <jani.nikula@linux.intel.com>,
-        linux-pci@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        linux-crypto@vger.kernel.org, linux-kselftest@vger.kernel.org,
-        linux-wireless@vger.kernel.org, linux-fpga@vger.kernel.org,
-        linux-usb@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        intel-gfx@lists.freedesktop.org,
-        Matthew Wilcox <willy@infradead.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>
-Subject: Re: [PATCH v2] kernel-doc: rename the kernel-doc directive
- 'functions' to 'identifiers'
-Message-ID: <20191031135052.tl63uzhdgcpcqwj5@mail.google.com>
-References: <20191020131717.28990-1-changbin.du@gmail.com>
- <20191024121940.1d6a64df@lwn.net>
- <87woctb9cj.fsf@intel.com>
- <20191025144802.uixg2crhw6h7gghq@mail.google.com>
- <87v9s99q9l.fsf@intel.com>
- <20191029003120.llve32crfw63ovpw@mail.google.com>
- <20191029020027.516a6bce@lwn.net>
+        id S1727624AbfJaN4z (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 31 Oct 2019 09:56:55 -0400
+Received: from mout.gmx.net ([212.227.17.21]:44913 "EHLO mout.gmx.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727567AbfJaN4y (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 31 Oct 2019 09:56:54 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1572530198;
+        bh=1eB0tnDg7p9fMqbMwcIbZVE0spFXCYkJlm2XDYJ3n80=;
+        h=X-UI-Sender-Class:To:From:Subject:Cc:Date;
+        b=ELxzZmQ2/TsgBp/PTYqQvfCTM2Jw2DEei8tPXmtx1zYt21F6fjnLhsb6cJ9PMcIxy
+         Jw5Ki+pTsz0hiXs72xbWW+uG9odWfdnCHwke0O4zmo+eLvFxdL/RZyQyUjO4cY4Akr
+         CyLnz2D2edw3XDtvD2D3h7zQFGzj00uxB95Q6+I4=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from [192.168.1.162] ([37.4.249.112]) by mail.gmx.com (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1N5G9t-1i0uxf1qbd-011Bxd; Thu, 31
+ Oct 2019 14:56:38 +0100
+To:     Ping-Ke Shih <pkshih@realtek.com>,
+        Larry Finger <Larry.Finger@lwfinger.net>
+From:   Stefan Wahren <wahrenst@gmx.net>
+Subject: rtlwifi: Memory leak in rtl92c_set_fw_rsvdpagepkt()
+Cc:     colin.king@canonical.com, kvalo@codeaurora.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Message-ID: <989debc9-8602-0ce3-71a7-2bf783b2c22b@gmx.net>
+Date:   Thu, 31 Oct 2019 14:56:36 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191029020027.516a6bce@lwn.net>
-User-Agent: NeoMutt/20180716
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Content-Language: en-US
+X-Provags-ID: V03:K1:3nPeYzINqeklWw6e+6B8MzpTZEm7wf9QcxoNYa1V+LSGpYtgaex
+ OttoTDReZFvDq6P+xKHsVGA7f9OTPOUTwUNhBG4nBDR5VBhuyNENXjKGdhlgBwjlANDEwgG
+ GiyxW8vT3BWz/ZnyNoKGUWgKcRwVIjuqvQIRHwRvTS857UbwlhaihgHUvo0wGKh7KqL8gWh
+ Z4i86mJhvkYU/CjXveZlA==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:SRxjHm0ZT8I=:z8ds7SBU6lnbw4loGVvPRc
+ l/UZYIdQxv0UQh33TU/9+LV58OUW2HihrY62nptYFAnpdQ6tBLxeMByTLjUSi4oRjL/57AxyG
+ 25pK89Fns4BoGXRthb8OONKah9G7c/WvM7rqH+1TjO9BfdlOcixRZFeOlrtSEdqRonU+KhR8I
+ rrUUrPJXoRJ++iK3ExxASPsGyXtVwWQ1KMU1evEj5Q5uVnX7MAjzWmRMIBow+VbgH6c+QIvYa
+ SaQ5Ypt5y9gNEYwwR98BBa5wqZ+KQ+iwXJSUjsinn39UHg/USxAiJqtcR+OH/L+zNqY0QCdb/
+ Si0Bkj3OLcAkS3qyfx+MVO8TamPfl6FU+XN/PyUbMp1J6t5Cm8N5lueTYp4t8+kK/trucuPlT
+ lvvo64IjRlfsnxZ3oPDSsCm76ti4YTp+h+N92ozCQ5ASkBoZNFHk0js4ppEbfF5b5cK2ic/5D
+ nbf29OgysPjPpC1yRhezk/7xgOPeWPPbx6LV9DycQs7QneNsKgK4KlAhCTIMDrQCZ9psTa+bT
+ S7Nk4DwVRDhKZwewie6wmML60w4hcC0jAotoGUCHhTNxENZ8QzrhEg1EU6O38n7pNkFFF/C0L
+ MDI8Qx1mysxyBwdgJq3RUhJq/ZW7uq/Hu7TmYLleVLeiFZRlnjpjrYm5VSv8CAPTEuGZnyNOt
+ wWPtr1tIVTf9sWfXNHzYqnSRN8jEFpKo4s0fS7OcODXo+OaxSNIIvMWiic3Bsa8/1CwaHKbI1
+ c2mVnrD6Ht37kWArv1p432IkyuMuqUtJeTojleeQI7C4wkw8zB0AXc6ftVPhMPWrHKc0sp6Mr
+ PzM9WIQoU0n+wvW+4/zxq6kbhe7/eCBo/g1O4zmXS0eYjKbDIpylhJMk6NPB732Xll09thTtB
+ 7FkMCJSmxOavLX4nedgOxhMQ29vC+z4NUofh3klSDJ2YIe7wHnAzsCYpYf5ku81JtBw+XgicB
+ +oBi3HYU7SOKVu75c1bl3aUdlfF+FhN8O3aPwy+BZAeb0ALdx0OmXTiJFqzWlgSLpYUTmAv8k
+ P4o9zuP5koVoGwMbthO1agFTWZVUf7Jc2aKQzHqLgWcP1VL9OCskdp7pxv6NK6qrA3dDhys2F
+ O+tE6prePK7r9i6YdOyTfqEV+5PzlKnGs00AxvtoE9xtGNQbeAuytPjOoYXBg/UDAp23jH05z
+ lcBhyO6+5i1pAEiH+8ksWB7NszeER/gnYxNGLqPuKoXIVf2fq2l5XnrRHKvWqW/28G+kjcCyu
+ 0ZE7sFUUNSbJ4POsJQ2waRuuTysx4M8uNd9gpP8VzQzvtDgqbcdBq2r3n1tQ=
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Oct 29, 2019 at 02:00:27AM -0600, Jonathan Corbet wrote:
-> On Tue, 29 Oct 2019 08:31:22 +0800
-> Changbin Du <changbin.du@gmail.com> wrote:
-> 
-> > Here python is different from C. Both empty string and None are False in python.
-> > Note such condition is common in python.
-> 
-> Treating both as a False value is reasonably common.  Treating them
-> elsewhere in the same code block as separate values is less
-> so; that's the part I would prefer to avoid.
->
-ok, please check update in v3.
+Hi,
 
-> Thanks,
-> 
-> jon
+i tested the EDIMAX EW-7612 on Raspberry Pi 3B+ with Linux 5.4-rc5
+(multi_v7_defconfig + rtlwifi + kmemleak) and noticed a single memory
+leak during probe:
 
--- 
-Cheers,
-Changbin Du
+unreferenced object 0xec13ee40 (size 176):
+=C2=A0 comm "kworker/u8:1", pid 36, jiffies 4294939321 (age 5580.790s)
+=C2=A0 hex dump (first 32 bytes):
+=C2=A0=C2=A0=C2=A0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00=C2=A0 .=
+...............
+=C2=A0=C2=A0=C2=A0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00=C2=A0 .=
+...............
+=C2=A0 backtrace:
+=C2=A0=C2=A0=C2=A0 [<fc1bbb3e>] __netdev_alloc_skb+0x9c/0x164
+=C2=A0=C2=A0=C2=A0 [<863dfa6e>] rtl92c_set_fw_rsvdpagepkt+0x254/0x340 [rtl=
+8192c_common]
+=C2=A0=C2=A0=C2=A0 [<9572be0d>] rtl92cu_set_hw_reg+0xf48/0xfa4 [rtl8192cu]
+=C2=A0=C2=A0=C2=A0 [<116df4d8>] rtl_op_bss_info_changed+0x234/0x96c [rtlwi=
+fi]
+=C2=A0=C2=A0=C2=A0 [<8933575f>] ieee80211_bss_info_change_notify+0xb8/0x26=
+4 [mac80211]
+=C2=A0=C2=A0=C2=A0 [<d4061e86>] ieee80211_assoc_success+0x934/0x1798 [mac8=
+0211]
+=C2=A0=C2=A0=C2=A0 [<e55adb56>] ieee80211_rx_mgmt_assoc_resp+0x174/0x314 [=
+mac80211]
+=C2=A0=C2=A0=C2=A0 [<5974629e>] ieee80211_sta_rx_queued_mgmt+0x3f4/0x7f0 [=
+mac80211]
+=C2=A0=C2=A0=C2=A0 [<d91091c6>] ieee80211_iface_work+0x208/0x318 [mac80211=
+]
+=C2=A0=C2=A0=C2=A0 [<ac5fcae4>] process_one_work+0x22c/0x564
+=C2=A0=C2=A0=C2=A0 [<f5e6d3b6>] worker_thread+0x44/0x5d8
+=C2=A0=C2=A0=C2=A0 [<82c7b073>] kthread+0x150/0x154
+=C2=A0=C2=A0=C2=A0 [<b43e1b7d>] ret_from_fork+0x14/0x2c
+=C2=A0=C2=A0=C2=A0 [<794dff30>] 0x0
+
+It looks like the allocated skd is never freed.
+
+Would be nice to get this fixed.
+
+Regards
+Stefan
+
