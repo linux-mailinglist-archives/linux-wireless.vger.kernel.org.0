@@ -2,130 +2,116 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 250F1EAD08
-	for <lists+linux-wireless@lfdr.de>; Thu, 31 Oct 2019 11:03:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 950F1EADC7
+	for <lists+linux-wireless@lfdr.de>; Thu, 31 Oct 2019 11:47:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726913AbfJaKDb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 31 Oct 2019 06:03:31 -0400
-Received: from mail.kernel.org ([198.145.29.99]:51926 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726884AbfJaKDa (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 31 Oct 2019 06:03:30 -0400
-Received: from localhost.localdomain.com (unknown [176.229.194.15])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 36E1620862;
-        Thu, 31 Oct 2019 10:03:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1572516209;
-        bh=pzit5unwoaiIN6E5PyZAEM/n4wlr/kcb2JmVVdV6kNU=;
-        h=From:To:Cc:Subject:Date:From;
-        b=LHuwJ6KtCcCjCvrRJWa70ayqZoCYofqhzHKi5I77pxtNGeBC1a10Ms7mPfLtL2YxO
-         mqcnM0q4K+bg4d1ap+c42zsykBJkxsxumgVYwoxvK2JwMY91g7rYCzZdgbDMLdhkTQ
-         +lYuAXaRWYOjZJ8gy6b2fnfPOO69Ei2YrhIQ8BC4=
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
-        sgruszka@redhat.com
-Subject: [PATCH] mt76: move interface_modes definition in mt76_core module
-Date:   Thu, 31 Oct 2019 11:03:12 +0100
-Message-Id: <551855c98d4c09fff460e2e3c9239a0ac8ee82fc.1572516107.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.21.0
+        id S1726949AbfJaKrI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 31 Oct 2019 06:47:08 -0400
+Received: from www74.your-server.de ([213.133.104.74]:50536 "EHLO
+        www74.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726932AbfJaKrI (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 31 Oct 2019 06:47:08 -0400
+X-Greylist: delayed 1020 seconds by postgrey-1.27 at vger.kernel.org; Thu, 31 Oct 2019 06:47:06 EDT
+Received: from sslproxy01.your-server.de ([88.198.220.130])
+        by www74.your-server.de with esmtpsa (TLSv1.2:DHE-RSA-AES256-GCM-SHA384:256)
+        (Exim 4.89_1)
+        (envelope-from <klaus.kusche@computerix.info>)
+        id 1iQ7iP-000089-5u; Thu, 31 Oct 2019 11:30:05 +0100
+Received: from [95.91.84.106] (helo=[192.168.178.28])
+        by sslproxy01.your-server.de with esmtpsa (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
+        (Exim 4.89)
+        (envelope-from <klaus.kusche@computerix.info>)
+        id 1iQ7iO-0003RW-Lt; Thu, 31 Oct 2019 11:30:04 +0100
+Subject: PATCH: Change log level of "iwlwifi 0000:6f:00.0: BIOS contains WGDS
+ but no WRDS" to "info"
+From:   Klaus Kusche <klaus.kusche@computerix.info>
+To:     linuxwifi@intel.com, johannes.berg@intel.com,
+        emmanuel.grumbach@intel.com, linux-wireless@vger.kernel.org
+References: <dcd58b9b-43d0-a05c-68fe-2f787457f2a4@computerix.info>
+Message-ID: <30e95fb1-96df-b96a-c79e-e35a945ec889@computerix.info>
+Date:   Thu, 31 Oct 2019 11:30:04 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <dcd58b9b-43d0-a05c-68fe-2f787457f2a4@computerix.info>
+Content-Type: text/plain; charset=windows-1252
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Authenticated-Sender: klaus.kusche@computerix.info
+X-Virus-Scanned: Clear (ClamAV 0.101.4/25619/Thu Oct 31 09:55:29 2019)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Move interface modes declaration in common code since now mt76
-chipsets support all modes (NL80211_IFTYPE_STATION, NL80211_IFTYPE_AP,
-NL80211_IFTYPE_MESH_POINT and NL80211_IFTYPE_ADHOC)
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- drivers/net/wireless/mediatek/mt76/mac80211.c     | 7 +++++++
- drivers/net/wireless/mediatek/mt76/mt7603/init.c  | 9 ---------
- drivers/net/wireless/mediatek/mt76/mt7615/init.c  | 7 -------
- drivers/net/wireless/mediatek/mt76/mt76x02_util.c | 8 --------
- 4 files changed, 7 insertions(+), 24 deletions(-)
+Hello again,
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/wireless/mediatek/mt76/mac80211.c
-index 17d04ebff996..2003223ff329 100644
---- a/drivers/net/wireless/mediatek/mt76/mac80211.c
-+++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
-@@ -340,6 +340,13 @@ int mt76_register_device(struct mt76_dev *dev, bool vht,
- 	ieee80211_hw_set(hw, SUPPORTS_REORDERING_BUFFER);
+On 22/10/2019 20:39, Klaus Kusche wrote:
+> Hello,
+> 
+> every time I boot my dell notebook (with Wi-Fi 6 AX200), I get the error message 
+> "iwlwifi 0000:6f:00.0: BIOS contains WGDS but no WRDS".
+> 
+> This is the only message which such a high log level I get while booting,
+> it is the only message which is displayed on all text consoles on boot,
+> and it is the only message which makes my automated logchecker nervous each time.
+> 
+> However, iwlwifi works perfectly fine for wifi in spite of the message
+> (and bluetooth has deliberately been disabled in the bios settings
+> for security reasons),
+> and there is absolutely nothing I could do about the message
+> (I have no influence what dell does in their bios and what they don't).
+> Internet wisdom also says that the message is just annoying and
+> can be safely ignored.
+> 
+> Hence, the message is not an error at all ("error" being defined as
+> "something definitely failed, manual intervention required for correct operation").
+> It does not even qualify as a warning ("warning" being defined as
+> "something is likely to fail, manual checking recommended").
+> 
+> So please set the log level of that message down to "info"
+> (besides, the message text is completely cryptic and uninformative,
+> I still don't know what this message wants to tell me,
+> although I searched the internet).
+
+Discussed this with Mario.Limonciello@dell.com.
+He also wants this to be patched:
+
+On 29/10/2019 22:43, Mario.Limonciello@dell.com wrote:
+> Dell Customer Communication - Confidential
+> 
+>> -----Original Message-----
+>> From: Klaus Kusche <klaus.kusche@computerix.info>
+>>...
+>> When booting, there is a single kernel message of loglevel error
+>> which stands out in red in journalctl
+>> and which gets displayed on all text consoles (very annoying):
+>>
+>> kernel: iwlwifi 0000:6f:00.0: BIOS contains WGDS but no WRDS
+> 
+> If possible, you should probably submit a patch to iwlwifi driver to downgrade this message to
+> debug.  It really isn't useful to many people typically.
+
+So here comes a patch:
+
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c       2019-10-19 09:21:14.541422680 +0200
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c       2019-10-27 14:43:43.990623338 +0100
+@@ -1345,7 +1345,7 @@
+                 * available, issue an error, because we can't use SAR
+                 * Geo without basic SAR.
+                 */
+-               IWL_ERR(mvm, "BIOS contains WGDS but no WRDS\n");
++               IWL_INFO(mvm, "BIOS contains WGDS but no WRDS\n");
+        }
  
- 	wiphy->flags |= WIPHY_FLAG_IBSS_RSN;
-+	wiphy->interface_modes =
-+		BIT(NL80211_IFTYPE_STATION) |
-+		BIT(NL80211_IFTYPE_AP) |
-+#ifdef CONFIG_MAC80211_MESH
-+		BIT(NL80211_IFTYPE_MESH_POINT) |
-+#endif
-+		BIT(NL80211_IFTYPE_ADHOC);
- 
- 	if (dev->cap.has_2ghz) {
- 		ret = mt76_init_sband_2g(dev, rates, n_rates);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/init.c b/drivers/net/wireless/mediatek/mt76/mt7603/init.c
-index 50c6a2828c18..0696dbf28c5b 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7603/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7603/init.c
-@@ -564,16 +564,7 @@ int mt7603_register_device(struct mt7603_dev *dev)
- 		dev->mt76.led_cdev.blink_set = mt7603_led_set_blink;
- 	}
- 
--	wiphy->interface_modes =
--		BIT(NL80211_IFTYPE_STATION) |
--		BIT(NL80211_IFTYPE_AP) |
--#ifdef CONFIG_MAC80211_MESH
--		BIT(NL80211_IFTYPE_MESH_POINT) |
--#endif
--		BIT(NL80211_IFTYPE_ADHOC);
--
- 	wiphy->flags |= WIPHY_FLAG_HAS_CHANNEL_SWITCH;
--
- 	wiphy->reg_notifier = mt7603_regd_notifier;
- 
- 	ret = mt76_register_device(&dev->mt76, true, mt7603_rates,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/init.c b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
-index 888ca8bbdef0..128a6ee1fa6d 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
-@@ -307,13 +307,6 @@ int mt7615_register_device(struct mt7615_dev *dev)
- 	dev->mt76.antenna_mask = 0xf;
- 	dev->dfs_state = -1;
- 
--	wiphy->interface_modes = BIT(NL80211_IFTYPE_STATION) |
--				 BIT(NL80211_IFTYPE_ADHOC) |
--#ifdef CONFIG_MAC80211_MESH
--				 BIT(NL80211_IFTYPE_MESH_POINT) |
--#endif
--				 BIT(NL80211_IFTYPE_AP);
--
- 	ret = mt76_register_device(&dev->mt76, true, mt7615_rates,
- 				   ARRAY_SIZE(mt7615_rates));
- 	if (ret)
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_util.c b/drivers/net/wireless/mediatek/mt76/mt76x02_util.c
-index 2ce852caf247..c0500d8f9a67 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x02_util.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x02_util.c
-@@ -153,14 +153,6 @@ void mt76x02_init_device(struct mt76x02_dev *dev)
- 	hw->max_rate_tries = 1;
- 	hw->extra_tx_headroom = 2;
- 
--	wiphy->interface_modes =
--		BIT(NL80211_IFTYPE_STATION) |
--		BIT(NL80211_IFTYPE_AP) |
--#ifdef CONFIG_MAC80211_MESH
--		BIT(NL80211_IFTYPE_MESH_POINT) |
--#endif
--		BIT(NL80211_IFTYPE_ADHOC);
--
- 	if (mt76_is_usb(&dev->mt76)) {
- 		hw->extra_tx_headroom += sizeof(struct mt76x02_txwi) +
- 					 MT_DMA_HDR_LEN;
+        if (ret < 0)
+
+
 -- 
-2.21.0
-
+Prof. Dr. Klaus Kusche
+Private address: Rosenberg 41, 07546 Gera, Germany
++49 365 20413058 klaus.kusche@computerix.info https://www.computerix.info
+Office address: DHGE Gera, Weg der Freundschaft 4, 07546 Gera, Germany
++49 365 4341 306 klaus.kusche@dhge.de https://www.dhge.de
