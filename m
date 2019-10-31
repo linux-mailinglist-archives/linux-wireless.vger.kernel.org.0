@@ -2,88 +2,130 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DDAA2EAC98
-	for <lists+linux-wireless@lfdr.de>; Thu, 31 Oct 2019 10:36:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 250F1EAD08
+	for <lists+linux-wireless@lfdr.de>; Thu, 31 Oct 2019 11:03:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727209AbfJaJgS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 31 Oct 2019 05:36:18 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:59296 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726937AbfJaJgS (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 31 Oct 2019 05:36:18 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 1310160A23; Thu, 31 Oct 2019 09:36:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1572514577;
-        bh=ElpHY+Pw9KljO9ycv8UWQZ6MM4ZLSnXJZHKG7Oz0lVs=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=TG0m/7QFITD5tQmmFINnrMt39Ms/2qp3n+WRleDnZ3dhUU9Fpnn6c/OPY/IMhOlIy
-         +zSPTzlTHxKvx0EUTuRwZljCNCVPGdwsMlN8KQR4a6YmZ4ZThApbSCUJY9hMqvDzHJ
-         CDyWR9SJaaWNBzwll7dFOUxX7j/AbIklya+Vh6IY=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        id S1726913AbfJaKDb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 31 Oct 2019 06:03:31 -0400
+Received: from mail.kernel.org ([198.145.29.99]:51926 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726884AbfJaKDa (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 31 Oct 2019 06:03:30 -0400
+Received: from localhost.localdomain.com (unknown [176.229.194.15])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 2149B60927;
-        Thu, 31 Oct 2019 09:36:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1572514575;
-        bh=ElpHY+Pw9KljO9ycv8UWQZ6MM4ZLSnXJZHKG7Oz0lVs=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=YH39skNbBlQgpF9XkRtvBYpar+AanvXexmbH5KRKfmYX3g1YNovInYEV8g+nAm+E5
-         MpjxqYf/gcvUXgqQ0K2Uw3ZdyRT8zgnGhmTltm7pBNJwGFNg64UV/nVqIpEmdvuXwA
-         0rt45R9DlXh9tcQ0DhTPG6xmgzzPZXSjI1SVuekU=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 2149B60927
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Stephen Rothwell <sfr@canb.auug.org.au>
-Cc:     Wireless <linux-wireless@vger.kernel.org>,
-        Linux Next Mailing List <linux-next@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Ayala Beker <ayala.beker@intel.com>,
-        Tova Mussai <tova.mussai@intel.com>
-Subject: Re: linux-next: manual merge of the wireless-drivers-next tree with the wireless-drivers tree
-References: <20191031111242.50ab1eca@canb.auug.org.au>
-Date:   Thu, 31 Oct 2019 11:36:11 +0200
-In-Reply-To: <20191031111242.50ab1eca@canb.auug.org.au> (Stephen Rothwell's
-        message of "Thu, 31 Oct 2019 11:13:03 +1100")
-Message-ID: <87pnid1cl0.fsf@kamboji.qca.qualcomm.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        by mail.kernel.org (Postfix) with ESMTPSA id 36E1620862;
+        Thu, 31 Oct 2019 10:03:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1572516209;
+        bh=pzit5unwoaiIN6E5PyZAEM/n4wlr/kcb2JmVVdV6kNU=;
+        h=From:To:Cc:Subject:Date:From;
+        b=LHuwJ6KtCcCjCvrRJWa70ayqZoCYofqhzHKi5I77pxtNGeBC1a10Ms7mPfLtL2YxO
+         mqcnM0q4K+bg4d1ap+c42zsykBJkxsxumgVYwoxvK2JwMY91g7rYCzZdgbDMLdhkTQ
+         +lYuAXaRWYOjZJ8gy6b2fnfPOO69Ei2YrhIQ8BC4=
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
+        sgruszka@redhat.com
+Subject: [PATCH] mt76: move interface_modes definition in mt76_core module
+Date:   Thu, 31 Oct 2019 11:03:12 +0100
+Message-Id: <551855c98d4c09fff460e2e3c9239a0ac8ee82fc.1572516107.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Stephen Rothwell <sfr@canb.auug.org.au> writes:
+Move interface modes declaration in common code since now mt76
+chipsets support all modes (NL80211_IFTYPE_STATION, NL80211_IFTYPE_AP,
+NL80211_IFTYPE_MESH_POINT and NL80211_IFTYPE_ADHOC)
 
-> Today's linux-next merge of the wireless-drivers-next tree got a
-> conflict in:
->
->   drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
->
-> between commit:
->
->   3d206e6899a0 ("iwlwifi: fw api: support new API for scan config cmd")
->
-> from the wireless-drivers tree and commit:
->
->   65b9425ce9aa ("iwlwifi: rx: use new api to get band from rx mpdu")
->
-> from the wireless-drivers-next tree.
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+ drivers/net/wireless/mediatek/mt76/mac80211.c     | 7 +++++++
+ drivers/net/wireless/mediatek/mt76/mt7603/init.c  | 9 ---------
+ drivers/net/wireless/mediatek/mt76/mt7615/init.c  | 7 -------
+ drivers/net/wireless/mediatek/mt76/mt76x02_util.c | 8 --------
+ 4 files changed, 7 insertions(+), 24 deletions(-)
 
-Thanks, the resolution looked simple enough so I'm not taking any extra
-actions because of this (for example merging wireless-drivers to
-wireless-drivers-next etc).
-
+diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/wireless/mediatek/mt76/mac80211.c
+index 17d04ebff996..2003223ff329 100644
+--- a/drivers/net/wireless/mediatek/mt76/mac80211.c
++++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
+@@ -340,6 +340,13 @@ int mt76_register_device(struct mt76_dev *dev, bool vht,
+ 	ieee80211_hw_set(hw, SUPPORTS_REORDERING_BUFFER);
+ 
+ 	wiphy->flags |= WIPHY_FLAG_IBSS_RSN;
++	wiphy->interface_modes =
++		BIT(NL80211_IFTYPE_STATION) |
++		BIT(NL80211_IFTYPE_AP) |
++#ifdef CONFIG_MAC80211_MESH
++		BIT(NL80211_IFTYPE_MESH_POINT) |
++#endif
++		BIT(NL80211_IFTYPE_ADHOC);
+ 
+ 	if (dev->cap.has_2ghz) {
+ 		ret = mt76_init_sband_2g(dev, rates, n_rates);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/init.c b/drivers/net/wireless/mediatek/mt76/mt7603/init.c
+index 50c6a2828c18..0696dbf28c5b 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7603/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7603/init.c
+@@ -564,16 +564,7 @@ int mt7603_register_device(struct mt7603_dev *dev)
+ 		dev->mt76.led_cdev.blink_set = mt7603_led_set_blink;
+ 	}
+ 
+-	wiphy->interface_modes =
+-		BIT(NL80211_IFTYPE_STATION) |
+-		BIT(NL80211_IFTYPE_AP) |
+-#ifdef CONFIG_MAC80211_MESH
+-		BIT(NL80211_IFTYPE_MESH_POINT) |
+-#endif
+-		BIT(NL80211_IFTYPE_ADHOC);
+-
+ 	wiphy->flags |= WIPHY_FLAG_HAS_CHANNEL_SWITCH;
+-
+ 	wiphy->reg_notifier = mt7603_regd_notifier;
+ 
+ 	ret = mt76_register_device(&dev->mt76, true, mt7603_rates,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/init.c b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
+index 888ca8bbdef0..128a6ee1fa6d 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
+@@ -307,13 +307,6 @@ int mt7615_register_device(struct mt7615_dev *dev)
+ 	dev->mt76.antenna_mask = 0xf;
+ 	dev->dfs_state = -1;
+ 
+-	wiphy->interface_modes = BIT(NL80211_IFTYPE_STATION) |
+-				 BIT(NL80211_IFTYPE_ADHOC) |
+-#ifdef CONFIG_MAC80211_MESH
+-				 BIT(NL80211_IFTYPE_MESH_POINT) |
+-#endif
+-				 BIT(NL80211_IFTYPE_AP);
+-
+ 	ret = mt76_register_device(&dev->mt76, true, mt7615_rates,
+ 				   ARRAY_SIZE(mt7615_rates));
+ 	if (ret)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_util.c b/drivers/net/wireless/mediatek/mt76/mt76x02_util.c
+index 2ce852caf247..c0500d8f9a67 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x02_util.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x02_util.c
+@@ -153,14 +153,6 @@ void mt76x02_init_device(struct mt76x02_dev *dev)
+ 	hw->max_rate_tries = 1;
+ 	hw->extra_tx_headroom = 2;
+ 
+-	wiphy->interface_modes =
+-		BIT(NL80211_IFTYPE_STATION) |
+-		BIT(NL80211_IFTYPE_AP) |
+-#ifdef CONFIG_MAC80211_MESH
+-		BIT(NL80211_IFTYPE_MESH_POINT) |
+-#endif
+-		BIT(NL80211_IFTYPE_ADHOC);
+-
+ 	if (mt76_is_usb(&dev->mt76)) {
+ 		hw->extra_tx_headroom += sizeof(struct mt76x02_txwi) +
+ 					 MT_DMA_HDR_LEN;
 -- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+2.21.0
+
