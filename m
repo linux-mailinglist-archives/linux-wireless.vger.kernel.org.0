@@ -2,65 +2,78 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BBBC7EB02B
-	for <lists+linux-wireless@lfdr.de>; Thu, 31 Oct 2019 13:23:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9397FEB036
+	for <lists+linux-wireless@lfdr.de>; Thu, 31 Oct 2019 13:28:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726812AbfJaMXv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 31 Oct 2019 08:23:51 -0400
-Received: from s3.sipsolutions.net ([144.76.43.62]:53482 "EHLO
-        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726793AbfJaMXv (ORCPT
+        id S1726735AbfJaM2M (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 31 Oct 2019 08:28:12 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:41092 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726462AbfJaM2M (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 31 Oct 2019 08:23:51 -0400
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.92.2)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1iQ9UT-00027K-Fd; Thu, 31 Oct 2019 13:23:49 +0100
-Message-ID: <e18ba5a1e71561223677243efb19561be55d0f30.camel@sipsolutions.net>
-Subject: Re: [PATCH v2] mac80211: fix insane values that sometimes appear in
- inactive_time
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Ahmed Zaki <anzaki@gmail.com>
-Cc:     linux-wireless@vger.kernel.org
-Date:   Thu, 31 Oct 2019 13:23:48 +0100
-In-Reply-To: <20191031121243.27694-1-anzaki@gmail.com> (sfid-20191031_131303_213675_40076E91)
-References: <20191031121243.27694-1-anzaki@gmail.com>
-         (sfid-20191031_131303_213675_40076E91)
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+        Thu, 31 Oct 2019 08:28:12 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 8D62660927; Thu, 31 Oct 2019 12:28:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1572524891;
+        bh=6jNqu0rAezg/IEuvybwazr+r7OXDnEff/mnxC2917JQ=;
+        h=From:To:Cc:Subject:Date:From;
+        b=WJYsR6O3O3hqfFjZotWtOjthyGvoP3AfChBTuZPGXJ4IU2JN7AARcx+mQIr9OE9i/
+         r0LcSQtlIDnM7Wt4DVAdPIHVToDZeSwx5qnExwNHWBuTUWuto0WHjtCeb424oTyXA0
+         gyin/6QaTDtFCxQjENLXuVUa2P64CGAFYpNlduMc=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from murugana-linux.qualcomm.com (blr-c-bdr-fw-01_globalnat_allzones-outside.qualcomm.com [103.229.19.19])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: murugana@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id E9F846083E;
+        Thu, 31 Oct 2019 12:28:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1572524891;
+        bh=6jNqu0rAezg/IEuvybwazr+r7OXDnEff/mnxC2917JQ=;
+        h=From:To:Cc:Subject:Date:From;
+        b=WJYsR6O3O3hqfFjZotWtOjthyGvoP3AfChBTuZPGXJ4IU2JN7AARcx+mQIr9OE9i/
+         r0LcSQtlIDnM7Wt4DVAdPIHVToDZeSwx5qnExwNHWBuTUWuto0WHjtCeb424oTyXA0
+         gyin/6QaTDtFCxQjENLXuVUa2P64CGAFYpNlduMc=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org E9F846083E
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=murugana@codeaurora.org
+From:   Sathishkumar Muruganandam <murugana@codeaurora.org>
+To:     johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org, ath11k@lists.infradead.org
+Subject: [PATCH 0/2] add Wide Band Scan support
+Date:   Thu, 31 Oct 2019 17:57:45 +0530
+Message-Id: <1572524867-26703-1-git-send-email-murugana@codeaurora.org>
+X-Mailer: git-send-email 2.7.4
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, 2019-10-31 at 06:12 -0600, Ahmed Zaki wrote:
-> In the first 5 minutes after boot (time of INITIAL_JIFFIES),
-> ieee80211_sta_last_active() returns zero if last_ack is zero. This
-> leads to "inactive time" showing jiffies_to_msecs(jiffies).
-> 
->  # iw wlan0 station get fc:ec:da:64:a6:dd
->  Station fc:ec:da:64:a6:dd (on wlan0)
-> 	inactive time:	4294894049 ms
-> 	.
-> 	.
-> 	connected time:	70 seconds
-> 
-> Fix by returning last_rx if last_ack == 0.
-> 
-> Signed-off-by: Ahmed Zaki <anzaki@gmail.com>
+Wide Band Scan allows to perform off-channel scan on requested channel/
+frequency along with corresponding phy mode/bandwidth (40Mhz, 80Mhz).
 
-Thanks for the updates :)
- 
-> -	if (time_after(stats->last_rx, sta->status_stats.last_ack))
-> +	if (!sta->status_stats.last_ack ||
-> +		time_after(stats->last_rx, sta->status_stats.last_ack))
->  		return stats->last_rx;
+Sathishkumar Muruganandam (2):
+  nl80211: add Wide Band Scan support
 
-The indentation is still wrong :)
+ include/net/cfg80211.h       |  2 ++
+ include/uapi/linux/nl80211.h |  7 +++++
+ net/mac80211/scan.c          |  2 ++
+ net/wireless/nl80211.c       | 68 ++++++++++++++++++++++++++++----------------
+ 4 files changed, 55 insertions(+), 24 deletions(-)
 
-I guess I could fix that too.
+  ath11k: add Wide Band Scan support
 
-johannes
+ drivers/net/wireless/ath/ath11k/mac.c |  41 ++++++++++--
+ drivers/net/wireless/ath/ath11k/wmi.c | 115 +++++++++++++++++++++++++++++++---
+ drivers/net/wireless/ath/ath11k/wmi.h |  34 +++++++++-
+ 3 files changed, 175 insertions(+), 15 deletions(-)
+
+-- 
+2.7.4
 
