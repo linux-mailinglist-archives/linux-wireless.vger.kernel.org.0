@@ -2,92 +2,121 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C487EA772
-	for <lists+linux-wireless@lfdr.de>; Thu, 31 Oct 2019 00:01:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D7A7CEA81A
+	for <lists+linux-wireless@lfdr.de>; Thu, 31 Oct 2019 01:13:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727372AbfJ3XBr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 30 Oct 2019 19:01:47 -0400
-Received: from mail-pg1-f196.google.com ([209.85.215.196]:33670 "EHLO
-        mail-pg1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727208AbfJ3XBr (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 30 Oct 2019 19:01:47 -0400
-Received: by mail-pg1-f196.google.com with SMTP id u23so2576927pgo.0
-        for <linux-wireless@vger.kernel.org>; Wed, 30 Oct 2019 16:01:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=eero.com; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding:content-language;
-        bh=8Lz1NNvigcKa6eRoeOWl2YolOALtlfrxF/EmT63uI+Y=;
-        b=uB3dyAzVlNxnwlYOYXWGhK20MKllXL+uJTuMZvZmsbLUF1gCbFXi9F5YLP8hC5fnNS
-         8n6XmP1sYzPDz7ZDkFYyOWGjrUyZQlaZCaKyizbMv4rsKBxkjBZuh+UZjgvUurCfRIso
-         NLw4dAaATcnd39sEP3itAjI5dS4f/G0ZQIUWA=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding
-         :content-language;
-        bh=8Lz1NNvigcKa6eRoeOWl2YolOALtlfrxF/EmT63uI+Y=;
-        b=PVHz19HezB/MNDvgpCL+y9GavcdvBwHnuqaRohmIrsvbNBiOPRvw5PWRhamnL4nrp8
-         6w7ELeV/F30qB7vU023IewhY9CrNEAq9BftvTxddT/t8oAHyjTrZI/4nwIn5aa+5eNPG
-         83oYP0+D1q+3nGI8wjnDqVimblaDIU3xQelRyPI5/+zF2Qi5YDsmYebFxfiu9MY5VBxM
-         /N+lepeerHaCOlR1Tcxj0NM04+bboGPQZOedb0Z2U6nj39uVDl5Przdk9t10snRjXuFg
-         IktMTKRRqxSBHBZqQxUuF4IwH3qOY3IEr++BTLB1Yp32Ot/rREEpZ04WR78tdyNRlppl
-         i7Hw==
-X-Gm-Message-State: APjAAAV4fIizxRtCcalvTh2bMCIr4zQO9+JX7CQSfwFzczEcPV7WfEwo
-        TkTERfxfZmziyhymJiUfAll9u2NpbOlqHw==
-X-Google-Smtp-Source: APXvYqwuydGy/fwcla17q99240a+6A7gF6qG3YHcI8hCejGE9jNRoVUcp9RAlNVwFfQWkWyiNjrwNA==
-X-Received: by 2002:a63:ed4a:: with SMTP id m10mr2076498pgk.255.1572476506100;
-        Wed, 30 Oct 2019 16:01:46 -0700 (PDT)
-Received: from [10.0.2.15] (eero.static.monkeybrains.net. [199.116.72.162])
-        by smtp.gmail.com with ESMTPSA id c12sm1028271pfp.178.2019.10.30.16.01.44
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 30 Oct 2019 16:01:45 -0700 (PDT)
-Subject: Re: [PATCH RFC] Revert "ath10k: fix DMA related firmware crashes on
- multiple devices"
-To:     zhichen@codeaurora.org
-Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org
-References: <1571734629-18028-1-git-send-email-zhichen@codeaurora.org>
- <d6cfd945-7bab-a01d-0157-e0e1802f66e3@eero.com>
- <8c6d531f6474faf4df55f90185466774@codeaurora.org>
-From:   Peter Oh <peter.oh@eero.com>
-Message-ID: <3f108a96-3ea5-79c0-54d5-b2f26a3e0a9a@eero.com>
-Date:   Wed, 30 Oct 2019 16:01:42 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        id S1726755AbfJaANZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 30 Oct 2019 20:13:25 -0400
+Received: from bilbo.ozlabs.org ([203.11.71.1]:47887 "EHLO ozlabs.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726683AbfJaANZ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 30 Oct 2019 20:13:25 -0400
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mail.ozlabs.org (Postfix) with ESMTPSA id 473QlQ0XW3z9sPj;
+        Thu, 31 Oct 2019 11:13:22 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
+        s=201702; t=1572480802;
+        bh=j2atfhGE6NXcq9SsnucOtdA7E+v4LMToTw1N5o0kYFc=;
+        h=Date:From:To:Cc:Subject:From;
+        b=U+o6y/sWnw3QXAj6lJxJeJOr85tZ3DbGK9PzvjHzQvWQNVE6rQJG2PKsBofyfz96j
+         m4ZO0wH5C7kojPUJu5z98mXAwggN2Pv/s+KQBmH7ZtMUG6GesNzsNYYPCjcqpyxqsE
+         8B91ZSQ3VYXuN0GRe7Rr00R5ji56SuBPqFBHiY/ToPRqnGIIIbxH9MkVo9lI5sjBFr
+         ynOfRe4y+kbe7o3zV+ahIiu+9rSFW5oitCN+LA8aTQkYd7GTTKJasSVAKwEU8H5lC7
+         kQ/9cBsMD2S9xRI411Eh4M6w7dG9s58T9mxWCDR29Tsp4uDSSxZoS5trqj4/JvNiLR
+         r8paC7YEqUdpg==
+Date:   Thu, 31 Oct 2019 11:13:03 +1100
+From:   Stephen Rothwell <sfr@canb.auug.org.au>
+To:     Kalle Valo <kvalo@codeaurora.org>,
+        Wireless <linux-wireless@vger.kernel.org>
+Cc:     Linux Next Mailing List <linux-next@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Ayala Beker <ayala.beker@intel.com>,
+        Tova Mussai <tova.mussai@intel.com>
+Subject: linux-next: manual merge of the wireless-drivers-next tree with the
+ wireless-drivers tree
+Message-ID: <20191031111242.50ab1eca@canb.auug.org.au>
 MIME-Version: 1.0
-In-Reply-To: <8c6d531f6474faf4df55f90185466774@codeaurora.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
+Content-Type: multipart/signed; boundary="Sig_/o6YZWLscK0mtaqIJjxT09ev";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+--Sig_/o6YZWLscK0mtaqIJjxT09ev
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-On 10/29/19 11:16 PM, zhichen@codeaurora.org wrote:
-> On 2019-10-23 01:16, Peter Oh wrote:
->>
->> How can you say value 0 (I believe it's 64 bytes) DMA burst size
->> causes the symptom and 1 fixes it?
->>
->> Peter
->
-> Confirmed from HW team that the configuration controls AXI burst size 
-> of the RD/WR access to the HOST MEM.
-> 0-    No split , RAW read/write transfer size from MAC is put out on 
-> bus as burst length.
-> 1-    Split at 256 byte boundary
-> 2,3- Reserved
->
-I would ACK to this change. Although QCA4019 host mem max AXI read/write 
-registers have different descriptions from above, they say 1 (256-byte) 
-is default and the values, 0, 2, and 3 are reserved. So changing it back 
-to 1 is reasonable to me.
+Hi all,
 
+Today's linux-next merge of the wireless-drivers-next tree got a
+conflict in:
 
-Thanks,
+  drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
 
-Peter
+between commit:
 
+  3d206e6899a0 ("iwlwifi: fw api: support new API for scan config cmd")
+
+from the wireless-drivers tree and commit:
+
+  65b9425ce9aa ("iwlwifi: rx: use new api to get band from rx mpdu")
+
+from the wireless-drivers-next tree.
+
+I fixed it up (see below) and can carry the fix as necessary. This
+is now fixed as far as linux-next is concerned, but any non trivial
+conflicts should be mentioned to your upstream maintainer when your tree
+is submitted for merging.  You may also want to consider cooperating
+with the maintainer of the conflicting tree to minimise any particularly
+complex conflicts.
+
+--=20
+Cheers,
+Stephen Rothwell
+
+diff --cc drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
+index 5ca50f39a023,a25712cce4ab..000000000000
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
+@@@ -1405,12 -1409,12 +1409,18 @@@ static inline bool iwl_mvm_is_scan_ext_
+  			  IWL_UCODE_TLV_API_SCAN_EXT_CHAN_VER);
+  }
+ =20
+ +static inline bool iwl_mvm_is_reduced_config_scan_supported(struct iwl_mv=
+m *mvm)
+ +{
+ +	return fw_has_api(&mvm->fw->ucode_capa,
+ +			  IWL_UCODE_TLV_API_REDUCED_SCAN_CONFIG);
+ +}
+ +
++ static inline bool iwl_mvm_is_band_in_rx_supported(struct iwl_mvm *mvm)
++ {
++ 	return fw_has_api(&mvm->fw->ucode_capa,
++ 			   IWL_UCODE_TLV_API_BAND_IN_RX_DATA);
++ }
++=20
+  static inline bool iwl_mvm_has_new_rx_stats_api(struct iwl_mvm *mvm)
+  {
+  	return fw_has_api(&mvm->fw->ucode_capa,
+
+--Sig_/o6YZWLscK0mtaqIJjxT09ev
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAl26Jw8ACgkQAVBC80lX
+0Gzangf+PVr7ZAapuPg08fLs9Ey4KAD9IZj69wOiWkwcAgzfmNfMOU2fZEhehMSn
+acO+G7BoN3n/2NnlxcASOz+Vq3r86yyidVXQASvYDnLsC7/l7LGgL+L/HcpyfC3a
+CHxdZyFPf/GtzQSRtwkpBllqr9LhkyzqCZwPswDHj6u8KN4F1kcJlVj3JyspALxY
+pfOCE0bSMaXCNCGuYkGiyjUCksNq5lOUCbW5e3dHk2H8aTqVbySDM0lA/shcduBX
+TW8awsQ/PwHloI9Hu6eJeF2yZ7kP234C4bmuCP1bP0v4qw831DrL3MsNvIGUO2oh
+MW9Hd/RHZVwkkvxKGnJnuu9NUcVvkQ==
+=Idae
+-----END PGP SIGNATURE-----
+
+--Sig_/o6YZWLscK0mtaqIJjxT09ev--
