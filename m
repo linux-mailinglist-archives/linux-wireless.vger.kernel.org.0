@@ -2,75 +2,64 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 098E8EC621
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 Nov 2019 16:56:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 29CC6EC730
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Nov 2019 18:03:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729144AbfKAP4O (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 1 Nov 2019 11:56:14 -0400
-Received: from mail-il1-f194.google.com ([209.85.166.194]:41083 "EHLO
-        mail-il1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729313AbfKAP4L (ORCPT
+        id S1729302AbfKARDi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 1 Nov 2019 13:03:38 -0400
+Received: from mail-oi1-f176.google.com ([209.85.167.176]:45854 "EHLO
+        mail-oi1-f176.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729187AbfKARDi (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 1 Nov 2019 11:56:11 -0400
-Received: by mail-il1-f194.google.com with SMTP id z10so9063613ilo.8
-        for <linux-wireless@vger.kernel.org>; Fri, 01 Nov 2019 08:56:11 -0700 (PDT)
+        Fri, 1 Nov 2019 13:03:38 -0400
+Received: by mail-oi1-f176.google.com with SMTP id k2so8697842oij.12
+        for <linux-wireless@vger.kernel.org>; Fri, 01 Nov 2019 10:03:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=KqYLJklOErTzrVm5Bzbb6HQh9gI4PrbbORQE30GcC5Y=;
-        b=jkikiuxKNQxBjumG32R/xAOzBpTQzIQOGlQ9PlZMzROUxuROhIRW7LOTcmmKqgHbY3
-         GOAi1JnMWEnE/cHrGKrepuphWKFno/pbedjX9XbUWfuIb71+aWSjlL5ZBdl2tkqhPPKE
-         upGJ5iT/1C19qe7FISRldhXG8lpP7RchXgCPpOby1LewLJ9oB1SrBH33yMLjEi7ivjNF
-         o703S5ww1Ql1WeM1aVK41ldtWwBkirNy1eGYI9RnsPVvXaYfqhEH77U0dn8RQUxe2Nnp
-         f+7QOSjXXt7VdhDDkepSvRzDGCUBO3iHq8K6k3uKK4gkq+wr+4nHyD89dMwGRy4pl6Pa
-         lYoA==
+        h=mime-version:from:date:message-id:subject:to:cc;
+        bh=nbSFtak1O3UwnxaQBm0ucn+fe7UGXwhE5nnddEBZqow=;
+        b=r7O0Yy+VgEy6hVKre4HYjx+85FRbDNOEWAlZSR08Ks/9lhBzd0R9pPYZdG5gInjNOO
+         diKWMdxGQpMLVG+2sTYFMZ+uGm1LJfyR7WroDFaPgUNNLDrZv0+dUy73B6QpthaI56Ms
+         FSj1DGT/kPYMUo4cpQnALnnB2gSajwINozpP0jW0cEmd6d9PUahgUTT/1pak+o4eKLpJ
+         C0TugoH7lz/G/dd0hGVbBSlFRPNp232lB986xDsEudvtn+w59UfQcyhSWoBQ8w0I93dK
+         xLIMKGPnFF/VBp6shCrR8x6ewf9Yed6UkD/RK2iG7MQB++4/yLnI8eughHJMx7TycUXr
+         KtWw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=KqYLJklOErTzrVm5Bzbb6HQh9gI4PrbbORQE30GcC5Y=;
-        b=p/T2m93Zcm3N/JTbZUy1zn9QfhafNJy2it3ETrcrUPbJnc3bIbCjCOFZSFhb/RTgOP
-         yog2Yf54E2frYWtqeTSkpeZwW7Bv2ZsDEKIZMNRk2Brf2b23ugza0f2YRDToAx+f/2ZQ
-         Fi27PAc+OMrkmMDZcwYNNtsYzC4xhXUdaaM2JbldxZyiKRb3pMsVR25bhbLqqNfSm8vM
-         NGMEyOII9m4W17kAa9j+K0pqQ86AKDf/STHxZvLNyrn44Cuzzx8k3TpgKr7KTATUYxMM
-         0mLlLYqtKKKwzP+021kUCQaoiuFqGrJ06BDcrz2hschRzxtyFynLOLudBe10v6JIQoqs
-         8Dqw==
-X-Gm-Message-State: APjAAAVMycShWG939ORBv54VPcpiQctNPXzbpnXIHpbMw4DIYepzwTe2
-        AJzx5y+XlEqBZU2d4Z6mpJhDlHM2HvtiQocRtQ==
-X-Google-Smtp-Source: APXvYqykJV+0/JwFtVH+nsMp7ykNvWlhcV0rRy9Az9oSoBx/tmbFcQXrrs+n9sPNEOpMU4VQknLk5nY+7hLQNduMfzM=
-X-Received: by 2002:a92:9ac2:: with SMTP id c63mr13404416ill.8.1572623769676;
- Fri, 01 Nov 2019 08:56:09 -0700 (PDT)
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
+        bh=nbSFtak1O3UwnxaQBm0ucn+fe7UGXwhE5nnddEBZqow=;
+        b=j8Cx5aQb9m2jeNf6x4SPeKVsmtkRT2yESnsk91ucNst4j6yGleycR8QZ82F0BEL4CG
+         fU7+RpinpftVT8raQPTbOqHmF46gwynJxrKoamiGL3ie+STOUcXHGB33xgeOYL+d3Kcc
+         7NnU5MlSqtAIrOj8aPZWbVNqNtLV6P70oThi+mish/A6fiS709YlamJszkn45iYdCr5L
+         nH746WqD5jgSy+4X1u8F5atxTzb7nO+UFyn7uG5Ta6mSsQyhrrTBab/98tmz9Q+ZvYpL
+         TPN/wOzZiCFn4VFawtxkFOSUfnEernw6PDGe2dTdY5utfhylTOBqWjoEUIF1d6TICe4+
+         8eiw==
+X-Gm-Message-State: APjAAAViyIny6tXEqY2iyncTdxe3ZVwj9mKH4Rjqxn9BE5qaGR7YSM5S
+        NQTWWb8SHAUQt9RirK71nxKBD/cCHJgIhWHU1Jc=
+X-Google-Smtp-Source: APXvYqwhy7pq2vWx+VYPLaYlpEadZ5guse7bAZE+zzN+Zm7Elv6Ty+NGak7Koaz+IHjmCj9GjUYFwdd4WYKVhR5Xs1Q=
+X-Received: by 2002:a54:448b:: with SMTP id v11mr3944220oiv.155.1572627817258;
+ Fri, 01 Nov 2019 10:03:37 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:a02:7749:0:0:0:0:0 with HTTP; Fri, 1 Nov 2019 08:56:08 -0700 (PDT)
-Reply-To: moneygram.1820@outlook.fr
-From:   "Mary Coster, I.M.F director-Benin" 
-        <info.zennitbankplcnigerian@gmail.com>
-Date:   Fri, 1 Nov 2019 16:56:08 +0100
-Message-ID: <CABHzvrmbRd3tt-E2+9AO2XvrMQFKQcn+kao_7DN4rb=grxZAcA@mail.gmail.com>
-Subject: Contact Money Gram international service-Benin to receive your
- payment funds US$2.500,000 Million
-To:     undisclosed-recipients:;
+Received: by 2002:a9d:7511:0:0:0:0:0 with HTTP; Fri, 1 Nov 2019 10:03:36 -0700 (PDT)
+From:   Tom Psyborg <pozega.tomislav@gmail.com>
+Date:   Fri, 1 Nov 2019 18:03:36 +0100
+Message-ID: <CAKR_QVJ2eHrESLOEqiKxbjr0SoZh3oJydtgcebBOXSpspbquWA@mail.gmail.com>
+Subject: [RFC] ath10k: interface combination with monitor
+To:     ath10k <ath10k@lists.infradead.org>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Attn Dear,Funds Beneficiary.
-Contact Money Gram international service-Benin to receive your payment
-funds US$2.500,000 Million approved this morning through the UN
-payment settlement organization.
-Contact Person, Mr. John Dave.
-Official Director.Money Gram-Benin
-Email: moneygram.1820@outlook.fr
-Telephone +229 62619517
-Once you get intouch with Mr. John Dave, Money Gram Director, send to
-him your address including your phone numbers. He will be sending the
-transfer to you  $5000.00 USD daily until you received your complete
-payment $2.5m from the office.
-Note,I have paid the whole service fees for you but only small money
-you been required to send to this office is $23.00 only via Money Gram
-transfer.
-God bless
-Mary Coster, I.M.F director-Benin
-m.coster@aol.com
+Hi
+
+Is there a way to run monitor mode interface independent on STA/AP
+interface presence or their state?
+I am using airodump-ng/airmon-ng and I've noticed that while mon
+interface is brought up airodump-ng is unable to find any beacons
+unless sta interface is brought down. That is with QCA9880 devices,
+while with QCA9377 airodump-ng only finds beacons if the sta interface
+is associated to an AP.
+Does this need firmware change to work or driver changes are sufficient?
