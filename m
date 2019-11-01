@@ -2,68 +2,76 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 04D93EBC45
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 Nov 2019 04:13:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2BEEDEBD06
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Nov 2019 06:19:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728793AbfKADNw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 31 Oct 2019 23:13:52 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:55997 "EHLO
+        id S1727491AbfKAFTw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 1 Nov 2019 01:19:52 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:35495 "EHLO
         rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727332AbfKADNw (ORCPT
+        with ESMTP id S1727332AbfKAFTw (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 31 Oct 2019 23:13:52 -0400
+        Fri, 1 Nov 2019 01:19:52 -0400
 Authenticated-By: 
-X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID xA13Dge8006142, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (RTITCAS12.realtek.com.tw[172.21.6.16])
-        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id xA13Dge8006142
-        (version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 1 Nov 2019 11:13:43 +0800
-Received: from RTITMBSVM04.realtek.com.tw ([fe80::e404:880:2ef1:1aa1]) by
- RTITCAS12.realtek.com.tw ([::1]) with mapi id 14.03.0468.000; Fri, 1 Nov 2019
- 11:13:42 +0800
-From:   Tony Chuang <yhchuang@realtek.com>
-To:     Brian Norris <briannorris@chromium.org>
-CC:     Kalle Valo <kvalo@codeaurora.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "g.schlmm@googlemail.com" <g.schlmm@googlemail.com>
-Subject: RE: [PATCH 3/6] rtw88: use a module parameter to control LPS enter
-Thread-Topic: [PATCH 3/6] rtw88: use a module parameter to control LPS enter
-Thread-Index: AQHVixdU7Df1/OOTokC0rqDmBUERUKdz5d2AgACHtpCAAEH+AIAA/jhQ
-Date:   Fri, 1 Nov 2019 03:13:41 +0000
-Message-ID: <F7CD281DE3E379468C6D07993EA72F84D19159DA@RTITMBSVM04.realtek.com.tw>
-References: <20191025093345.22643-4-yhchuang@realtek.com>
- <20191031075911.3CCB86079C@smtp.codeaurora.org>
- <F7CD281DE3E379468C6D07993EA72F84D1914F4C@RTITMBSVM04.realtek.com.tw>
- <CA+ASDXPzLJ0OkuN0-BHqxGSBuVqQg6=eyg+PizLTCj+5bJ_5kw@mail.gmail.com>
-In-Reply-To: <CA+ASDXPzLJ0OkuN0-BHqxGSBuVqQg6=eyg+PizLTCj+5bJ_5kw@mail.gmail.com>
-Accept-Language: zh-TW, en-US
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.68.183]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID xA15Ji48015123, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (RTITCASV01.realtek.com.tw[172.21.6.18])
+        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id xA15Ji48015123
+        (version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+        Fri, 1 Nov 2019 13:19:44 +0800
+Received: from localhost.localdomain (172.21.68.126) by
+ RTITCASV01.realtek.com.tw (172.21.6.18) with Microsoft SMTP Server id
+ 14.3.468.0; Fri, 1 Nov 2019 13:19:44 +0800
+From:   <yhchuang@realtek.com>
+To:     <kvalo@codeaurora.org>
+CC:     <linux-wireless@vger.kernel.org>, <briannorris@chromium.org>
+Subject: [PATCH v2] rtw88: raise LPS threshold to 50, for less power consumption
+Date:   Fri, 1 Nov 2019 13:19:42 +0800
+Message-ID: <20191101051942.18730-1-yhchuang@realtek.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
+Content-Type: text/plain
+X-Originating-IP: [172.21.68.126]
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-PiANCj4gT24gVGh1LCBPY3QgMzEsIDIwMTkgYXQgMToxNyBBTSBUb255IENodWFuZyA8eWhjaHVh
-bmdAcmVhbHRlay5jb20+DQo+IHdyb3RlOg0KPiA+IE9yIEkgc2hvdWxkIGp1c3QgY2hhbmdlIHRo
-ZQ0KPiA+IHZhbHVlIHRvIGEgYmV0dGVyIG9uZS4gQnkgb3VyIGV4cGVyaWVuY2UsIHNldCB0aGlz
-IHRvIDUwIGlzIGEgbW9yZSByZWFzb25hYmxlDQo+ID4gdmFsdWUsIHN1Y2ggdGhhdCBzb21lIHdl
-YiBzdXJmaW5nIG9yIGJhY2tncm91bmQgdHJhZmZpYyB3b3VsZG4ndCBtYWtlIHRoZQ0KPiA+IGRy
-aXZlciB0byBsZWF2ZSBQUyBtb2RlLg0KPiANCj4gRldJVywgSSB0aGluayBjaG9vc2luZyBhIG1v
-cmUgcmVhc29uYWJsZSBkZWZhdWx0IGlzIGRlZmluaXRlbHkgYSBnb29kDQo+IHN0YXJ0LCBhcyBs
-b25nIGFzIHRoaXMgY2hvaWNlIGRvZXNuJ3QgaGF2ZSBodWdlIGRvd25zaWRlcy4NCj4gDQo+IEBL
-YWxsZTogRllJLCB0aGlzIChzZXQgdG8gNTApIGlzIGV4YWN0bHkgdGhlIGNoYW5nZSB0aGF0IFRv
-bnkgaXMNCj4gcmVjb21tZW5kaW5nIHRvIG1lIGZvciBteSBkaXN0cm8sIGFuZCBJIGhhdmUgdGhl
-IHNhbWUgcXVhbG1zIGFib3V0DQo+IHN1cHBvcnRpbmcgYSBncm93aW5nIG51bWJlciBvZiBtb2R1
-bGUgcGFyYW1ldGVyIHR3ZWFrcyBsaWtlIHRoaXMuIFNvLA0KPiB0aGFua3MgZm9yIHB1c2hpbmcg
-YmFjayA6KQ0KPiANCj4gQnJpYW4NCj4gDQoNCkkgd2FzIGFmcmFpZCBvZiB5b3UgdGhpbmtpbmcg
-dGhhdCBzZXR0aW5nIHRoaXMgdG8gNTAgaXMgYSBzdHJhbmdlIHRoaW5nLg0KQnV0IGl0IHNlZW1z
-IGxpa2UgeW91J2QgcHJlZmVyIHRvIGNoYW5nZSB0aGUgZGVmYXVsdCB2YWx1ZSBpbnN0ZWFkIG9m
-IGFkZGluZyBhDQptb2R1bGUgcGFyYW1ldGVyIHRvIGNvbnRyb2wgaXQuIEkgdGhpbmsgd2UgY2Fu
-IGRyb3AgdGhpcyBvbmUgYW5kIEkgd2lsbCBzZW5kDQphIHBhdGNoIHRvIGNoYW5nZSB0aGUgZGVm
-YXVsdCB2YWx1ZSB0byA1MC4NCg0KWWFuLUhzdWFuDQo=
+From: Yan-Hsuan Chuang <yhchuang@realtek.com>
+
+The LPS threshold was set to 2, means driver will leave LPS
+mode if there is more than 2 frames TX/RX for every 2 seconds.
+This makes driver enter/leave LPS frequently even if we just
+"ping -i1" to the others.
+
+Apparently we do not want to leave LPS mode if there is only
+some background traffics or web surfing. By experiment, set
+this to 50 is a more reasonable value to lower the over all
+power consumption.
+
+Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
+---
+
+v1 -> v2
+  * this was originally ("https://patchwork.kernel.org/patch/11211881/")
+  * but seems module parameter is not a good idea here, just change
+    the default value to 50 for a general solution
+
+ drivers/net/wireless/realtek/rtw88/ps.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/realtek/rtw88/ps.h b/drivers/net/wireless/realtek/rtw88/ps.h
+index 25925eedbad4..19afceca7d0e 100644
+--- a/drivers/net/wireless/realtek/rtw88/ps.h
++++ b/drivers/net/wireless/realtek/rtw88/ps.h
+@@ -5,7 +5,7 @@
+ #ifndef __RTW_PS_H_
+ #define __RTW_PS_H_
+ 
+-#define RTW_LPS_THRESHOLD	2
++#define RTW_LPS_THRESHOLD	50
+ 
+ #define POWER_MODE_ACK		BIT(6)
+ #define POWER_MODE_PG		BIT(4)
+-- 
+2.17.1
+
