@@ -2,90 +2,67 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C065EC879
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 Nov 2019 19:29:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 25527ECB4F
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Nov 2019 23:21:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726871AbfKAS3Y (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 1 Nov 2019 14:29:24 -0400
-Received: from mail-oi1-f179.google.com ([209.85.167.179]:41847 "EHLO
-        mail-oi1-f179.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726532AbfKAS3Y (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 1 Nov 2019 14:29:24 -0400
-Received: by mail-oi1-f179.google.com with SMTP id e9so5059749oif.8
-        for <linux-wireless@vger.kernel.org>; Fri, 01 Nov 2019 11:29:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc;
-        bh=Xawj13KIKFKMerCJ+/cuGELNxxmya+EW4C9ud6IbweM=;
-        b=FbQ0+fsMYYOuU6Z0a6kYxOwupY4wfSD9mavR3x5+5OCAGBLYKrWKLVPEVSyw8qiHq0
-         jHl/AqHp/MptvV9Rckx5Jo8+/iSqq9g3pL1c1Zip3VqvyGULzRR/s8Hh8PjhNUvNBrBN
-         gyFFVhNHlcwvvOfJ1m+anZw7eRb8LCzCnyMSkb9DmCWpz0WLgnMwbTZ2WB7F2bKkDIV/
-         m7p6grqMSVJokE5R1Yui9wbe/rcHB8xFopvo04MIOW49TSuoZhRSlKWTGpUjtOemIo3n
-         bwfF+v7Q+D2g0Ws5PcIRkqCWlPA7ApSWGBNY2Lz4dhMSCj1YEi7pBTMkLNfz1BZkSRaB
-         jxyg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc;
-        bh=Xawj13KIKFKMerCJ+/cuGELNxxmya+EW4C9ud6IbweM=;
-        b=hxXAQth1mmyBCCTXPzdn4DhIIOwoK5MF579JGzGSExKToSznRXn1aFhBvBPWpZhpaH
-         eHcmAGtcaPLNSIyVLOdWzVoVUOuegC1Ui5vpi7YsaKHV9MnSk4v5lxlwxgRVw+vQpjzG
-         7/gPiXTLtjA4FtR70PmHg+cRt/SU852t0auNLvEr3FF/lXi98iDYkFX+Wl7tNG7o42uq
-         LBnpmgBgfliSdYgCxRfRvsxZ8uL24OPlEMw1paY41Wr8YAXWSLBWRX9EuyEpKkh+jx4B
-         E6j3Xctzk7LaG12PDLHoIggNkbUz3s+1JzvMhuad/lEdNPM88ngfmXczY1gjQ+ZBbfFx
-         cX1w==
-X-Gm-Message-State: APjAAAWdOoYgZ4LE6OPdDcSNKVNi5oHysD5GMzplHkKqRdXfpLpaJCjE
-        p8diIkuTFJKwiiLz/AAlGad3Yu53J5of0PjYDiU=
-X-Google-Smtp-Source: APXvYqygsTOoW7wosXBWxbhW/hMcqRBkVD+eqZQPjkUxYDPJ0drFAw5j6H3vPmjHvmgc3pEnCMFntiJYO5pVYwQBjjo=
-X-Received: by 2002:aca:39d5:: with SMTP id g204mr2016146oia.50.1572632962144;
- Fri, 01 Nov 2019 11:29:22 -0700 (PDT)
+        id S1726229AbfKAWVX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 1 Nov 2019 18:21:23 -0400
+Received: from mail.kernel.org ([198.145.29.99]:50920 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725989AbfKAWVX (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 1 Nov 2019 18:21:23 -0400
+Received: from localhost.localdomain.com (unknown [176.229.194.15])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 9ECFF20659;
+        Fri,  1 Nov 2019 22:21:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1572646883;
+        bh=HUPGtTZLVpAWY+8RTZpAQ/hxyNw2qEjJR81px40iEak=;
+        h=From:To:Cc:Subject:Date:From;
+        b=y2AoqM5LnI7PfDmOKtF9VSu+8eN1BZNvToT8R9Uke7xCH8aSYAdvR5yIhZPB5sBRT
+         LWIm8G77I2Ru79F/ceNMjylR4DTTdx8TCvZwOhBgL4wZZ4IM7HMZqn+VCwFTvJwD8u
+         +bGlOha68K7gEDnDAKASclAv+J3Zd6rs3efGTPyk=
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
+        ryder.lee@mediatek.com, royluo@google.com
+Subject: [PATCH] mt76: mt7615: disable radar pattern detector during scanning
+Date:   Fri,  1 Nov 2019 23:21:07 +0100
+Message-Id: <8fa2b0b7fbdbb333274e7d7e650210b1a99461ec.1572645752.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-Received: by 2002:a9d:7511:0:0:0:0:0 with HTTP; Fri, 1 Nov 2019 11:29:21 -0700 (PDT)
-In-Reply-To: <bb62015e-d097-f54c-56ce-000d0b18a5ac@candelatech.com>
-References: <CAKR_QVJ2eHrESLOEqiKxbjr0SoZh3oJydtgcebBOXSpspbquWA@mail.gmail.com>
- <bb62015e-d097-f54c-56ce-000d0b18a5ac@candelatech.com>
-From:   Tom Psyborg <pozega.tomislav@gmail.com>
-Date:   Fri, 1 Nov 2019 19:29:21 +0100
-Message-ID: <CAKR_QVK8EUnL-dUt9K-1H6Ah7=ZTxs=Eq=gwvk5R_zeEQX0eeQ@mail.gmail.com>
-Subject: Re: [RFC] ath10k: interface combination with monitor
-To:     Ben Greear <greearb@candelatech.com>
-Cc:     ath10k <ath10k@lists.infradead.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Tried this fw: https://www.candelatech.com/downloads/firmware-2-ct-full-community-21.bin
-Used ath10k driver as there is no ct driver for 5.4 yet.
+Set switch_reason to CH_SWITCH_SCAN_BYPASS_DPD during frequency scanning
+in order to disable radar pattern detector
 
-Same as with QCA firmware
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+ drivers/net/wireless/mediatek/mt76/mt7615/mcu.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-On 01/11/2019, Ben Greear <greearb@candelatech.com> wrote:
-> On 11/1/19 10:03 AM, Tom Psyborg wrote:
->> Hi
->>
->> Is there a way to run monitor mode interface independent on STA/AP
->> interface presence or their state?
->> I am using airodump-ng/airmon-ng and I've noticed that while mon
->> interface is brought up airodump-ng is unable to find any beacons
->> unless sta interface is brought down. That is with QCA9880 devices,
->> while with QCA9377 airodump-ng only finds beacons if the sta interface
->> is associated to an AP.
->> Does this need firmware change to work or driver changes are sufficient?
->>
->
-> I would expect it to work.  Have you tried -ct firmware on 9880 in this
-> manner?
->
-> Thanks,
-> Ben
->
-> --
-> Ben Greear <greearb@candelatech.com>
-> Candela Technologies Inc  http://www.candelatech.com
->
->
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+index 3d960871dbbe..46f4f15fe0e8 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+@@ -1333,8 +1333,10 @@ int mt7615_mcu_set_channel(struct mt7615_dev *dev)
+ 	};
+ 	int ret;
+ 
+-	if ((chandef->chan->flags & IEEE80211_CHAN_RADAR) &&
+-	    chandef->chan->dfs_state != NL80211_DFS_AVAILABLE)
++	if (dev->mt76.hw->conf.flags & IEEE80211_CONF_OFFCHANNEL)
++		req.switch_reason = CH_SWITCH_SCAN_BYPASS_DPD;
++	else if ((chandef->chan->flags & IEEE80211_CHAN_RADAR) &&
++		 chandef->chan->dfs_state != NL80211_DFS_AVAILABLE)
+ 		req.switch_reason = CH_SWITCH_DFS;
+ 	else
+ 		req.switch_reason = CH_SWITCH_NORMAL;
+-- 
+2.21.0
+
