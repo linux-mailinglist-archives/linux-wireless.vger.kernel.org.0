@@ -2,98 +2,81 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CDCF5EBF3F
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 Nov 2019 09:35:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 26F1CEC0CC
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Nov 2019 10:52:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726634AbfKAIf6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 1 Nov 2019 04:35:58 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:58634 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726532AbfKAIf6 (ORCPT
+        id S1727645AbfKAJwM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 1 Nov 2019 05:52:12 -0400
+Received: from mail-wm1-f68.google.com ([209.85.128.68]:54700 "EHLO
+        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726771AbfKAJwM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 1 Nov 2019 04:35:58 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id CABC6601C4; Fri,  1 Nov 2019 08:35:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1572597357;
-        bh=upIu9a/mPVwbxBiLOKNTleJfHH9HHGM9/Cj5AE/4yxQ=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=eoaQa8o7ciDUgfpbc7eD6f/JeKt7owpigT4sRgiihjYg9CPRx4Xmk/ovjxROk/cVY
-         BF+hWoZS+W4E/9nOwcS1CXFV0WGmOGL/+oaAZJYi5imrgYRsw5XOXXZqySXxs2IhO9
-         TLw/u18iZqrKCeUSntVy3PM/IFlPogDbIpJwkQiU=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from x230.qca.qualcomm.com (176-93-46-192.bb.dnainternet.fi [176.93.46.192])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id F3E6D60A19;
-        Fri,  1 Nov 2019 08:35:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1572597357;
-        bh=upIu9a/mPVwbxBiLOKNTleJfHH9HHGM9/Cj5AE/4yxQ=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=eoaQa8o7ciDUgfpbc7eD6f/JeKt7owpigT4sRgiihjYg9CPRx4Xmk/ovjxROk/cVY
-         BF+hWoZS+W4E/9nOwcS1CXFV0WGmOGL/+oaAZJYi5imrgYRsw5XOXXZqySXxs2IhO9
-         TLw/u18iZqrKCeUSntVy3PM/IFlPogDbIpJwkQiU=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org F3E6D60A19
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Tony Chuang <yhchuang@realtek.com>
-Cc:     Brian Norris <briannorris@chromium.org>,
-        "linux-wireless\@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "g.schlmm\@googlemail.com" <g.schlmm@googlemail.com>
-Subject: Re: [PATCH 3/6] rtw88: use a module parameter to control LPS enter
-References: <20191025093345.22643-4-yhchuang@realtek.com>
-        <20191031075911.3CCB86079C@smtp.codeaurora.org>
-        <F7CD281DE3E379468C6D07993EA72F84D1914F4C@RTITMBSVM04.realtek.com.tw>
-        <CA+ASDXPzLJ0OkuN0-BHqxGSBuVqQg6=eyg+PizLTCj+5bJ_5kw@mail.gmail.com>
-        <F7CD281DE3E379468C6D07993EA72F84D19159DA@RTITMBSVM04.realtek.com.tw>
-Date:   Fri, 01 Nov 2019 10:35:53 +0200
-In-Reply-To: <F7CD281DE3E379468C6D07993EA72F84D19159DA@RTITMBSVM04.realtek.com.tw>
-        (Tony Chuang's message of "Fri, 1 Nov 2019 03:13:41 +0000")
-Message-ID: <87a79g0z9y.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        Fri, 1 Nov 2019 05:52:12 -0400
+Received: by mail-wm1-f68.google.com with SMTP id c12so4189943wml.4
+        for <linux-wireless@vger.kernel.org>; Fri, 01 Nov 2019 02:52:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=HDqPCJfj1s6nsEUqhxYgJ7ih3q1mkKOIT1oAmB3fYFg=;
+        b=plEtak1x98PIsdWlcaNgdh6ZFJWiX9xboeW0f4qEa/sOqSVOauHEyhZSilio6mjr/J
+         vwRJExwGRdgAdY7tisQ5Iaqzhu10b0DlbRNTExcEzLXGo4G3A8568vR53suv10sf+Wbg
+         G0j+f/bpixlEidMi1JzCV3EcqJbkDgldqU9ot+j8BnK/6Uu0a329KHBFRlBnovc6Ut36
+         SL14D8gx1ZE13uIgLnGSH0HvjAsRcfARzhz4H/AZYwBrASTU5dYHIpjwELdlgcW8BNrW
+         oKUvPCLK+0TZ1vZjDAahTMPn6XKEBaP3APqkne3G2ChHW2D9+baBHm+uyJs31iT4HP7C
+         eo3A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=HDqPCJfj1s6nsEUqhxYgJ7ih3q1mkKOIT1oAmB3fYFg=;
+        b=P5Mt5XUvUE3RiNkhCGcB0QRuEPXzigTYrR5mKAtWb/DE20KzJpWig9S8CDlwIrHT9l
+         age7+2qo/WTG4Ov4QeVK3yDK88pWLtb0eQxzI5Gv8xY4Z5rrl+iLwU/auNtqXD2yBcS0
+         CO0QhQXVpntHG0loqIxHcU271WBC9tOGt4qsWJAb4fIgFjaVkR/avMNmRoTQj/Q2Eg2t
+         KloWUrIRV7tL0pBbsjN+1V3Hr3jHQ2Tume/X0BZCsGgcvSehf1t+JkB2Hascw4t8O150
+         WvCcqxgMvv8GacYvQTip1FFkhhkbTnsOyXfzRIkw2w5iIOlaIfRHp+HRSjSFq9uHCtKu
+         kw4w==
+X-Gm-Message-State: APjAAAXI1j7h5ZK6EZmtn5rmI7A/R12F++Lkm4oGNXDVv54jMbM+zjUg
+        XkbBVSb0Fa/qp7v/sheNNOM=
+X-Google-Smtp-Source: APXvYqxFY5X4nWP6nNqNxTkm3iph+ThBCuFpEaOTMOwIJa4bqZWGTnmRC1CBSv2RFHy+PtqTixb8VA==
+X-Received: by 2002:a1c:38c3:: with SMTP id f186mr9600128wma.58.1572601928994;
+        Fri, 01 Nov 2019 02:52:08 -0700 (PDT)
+Received: from localhost.localdomain ([2a01:c22:721d:b401:2d93:6353:7708:66e1])
+        by smtp.gmail.com with ESMTPSA id l15sm5786121wmh.18.2019.11.01.02.52.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 01 Nov 2019 02:52:07 -0700 (PDT)
+From:   Eduardo Abinader <eduardoabinader@gmail.com>
+To:     wcn36xx@lists.infradead.org
+Cc:     Eduardo Abinader <eduardoabinader@gmail.com>,
+        linux-wireless@vger.kernel.org, kvalo@codeaurora.org
+Subject: [PATCH] wcn36xx: fix typo
+Date:   Fri,  1 Nov 2019 10:52:00 +0100
+Message-Id: <20191101095200.5778-1-eduardoabinader@gmail.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Tony Chuang <yhchuang@realtek.com> writes:
+---
+ drivers/net/wireless/ath/wcn36xx/hal.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
->> On Thu, Oct 31, 2019 at 1:17 AM Tony Chuang <yhchuang@realtek.com>
->> wrote:
->> > Or I should just change the
->> > value to a better one. By our experience, set this to 50 is a more reasonable
->> > value, such that some web surfing or background traffic wouldn't make the
->> > driver to leave PS mode.
->> 
->> FWIW, I think choosing a more reasonable default is definitely a good
->> start, as long as this choice doesn't have huge downsides.
->> 
->> @Kalle: FYI, this (set to 50) is exactly the change that Tony is
->> recommending to me for my distro, and I have the same qualms about
->> supporting a growing number of module parameter tweaks like this. So,
->> thanks for pushing back :)
->> 
->> Brian
->> 
->
-> I was afraid of you thinking that setting this to 50 is a strange thing.
-> But it seems like you'd prefer to change the default value instead of adding a
-> module parameter to control it. I think we can drop this one and I will send
-> a patch to change the default value to 50.
-
-Yeah, as the first step changing to 50 sounds good to me. Later, if
-needed, we can extend it to make it configurable from user space, either
-via the QoS framework or something else.
-
+diff --git a/drivers/net/wireless/ath/wcn36xx/hal.h b/drivers/net/wireless/ath/wcn36xx/hal.h
+index 8abda2760e04..6ba0fd57c951 100644
+--- a/drivers/net/wireless/ath/wcn36xx/hal.h
++++ b/drivers/net/wireless/ath/wcn36xx/hal.h
+@@ -2091,7 +2091,7 @@ struct wcn36xx_hal_set_bss_key_rsp_msg {
+ /*
+  * This is used  configure the key information on a given station.
+  * When the sec_type is WEP40 or WEP104, the def_wep_idx is used to locate
+- * a preconfigured key from a BSS the station assoicated with; otherwise
++ * a preconfigured key from a BSS the station associated with; otherwise
+  * a new key descriptor is created based on the key field.
+  */
+ struct wcn36xx_hal_set_sta_key_req_msg {
 -- 
-Kalle Valo
+2.20.1
+
