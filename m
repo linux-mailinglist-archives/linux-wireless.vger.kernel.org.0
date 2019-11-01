@@ -2,240 +2,96 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D5B7EB932
-	for <lists+linux-wireless@lfdr.de>; Thu, 31 Oct 2019 22:47:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 48777EBBA3
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Nov 2019 02:18:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728791AbfJaVrJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 31 Oct 2019 17:47:09 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:39120 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728598AbfJaVrI (ORCPT
+        id S1729112AbfKABSl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 31 Oct 2019 21:18:41 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:40749 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726772AbfKABSk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 31 Oct 2019 17:47:08 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 1912660D62; Thu, 31 Oct 2019 21:47:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1572558427;
-        bh=PIXLFj2NVr14L2LDqQdMjNrSZaPvUmGRQ5pNW2FeDdI=;
-        h=From:To:Cc:Subject:Date:From;
-        b=GHw1beaVTmQB8g9MaB6dHEYp8OVT9jqAmsaWuk8zbt4rUEgfpyhGstbqhRE0IJMjZ
-         w20yh2Hn9rRSbQ44irTRD8IfDuBvI2s+kyK/ymVQq8FODFSyS0gDWyPdqvlI0p5NUB
-         gShFx2lpjltytymPmQ1cJV3y1FX0hn1nsL66b23Y=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from jouni.codeaurora.org (213-216-231-214.co.dnainternet.fi [213.216.231.214])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: jouni@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id BF64560B72;
-        Thu, 31 Oct 2019 21:46:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1572558415;
-        bh=PIXLFj2NVr14L2LDqQdMjNrSZaPvUmGRQ5pNW2FeDdI=;
-        h=From:To:Cc:Subject:Date:From;
-        b=AtAJ0SaQKEfJo6eI5m30Cin88zWVO0sDdAbXgKOiNmat2tPVJoAnFlUvy8FYQuSo2
-         whwcmOD5NuYuKqvTybA3dWystv40LOLMxb9sAK6u+TtDTaAeBokReRyo1AB3t445AO
-         BrHljXf1HhE3pQO0fdSXXILHFOqxmt63aM/ucaWc=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org BF64560B72
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=jouni@codeaurora.org
-From:   Jouni Malinen <jouni@codeaurora.org>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org,
-        Gurumoorthi Gnanasambandhan <gguru@codeaurora.org>,
-        Jouni Malinen <jouni@codeaurora.org>
-Subject: [PATCH v2] cfg80211: VLAN offload support for set_key and set_sta_vlan
-Date:   Thu, 31 Oct 2019 23:46:40 +0200
-Message-Id: <20191031214640.5012-1-jouni@codeaurora.org>
-X-Mailer: git-send-email 2.20.1
+        Thu, 31 Oct 2019 21:18:40 -0400
+Authenticated-By: 
+X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID xA11IGQS014947, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (RTITCAS11.realtek.com.tw[172.21.6.12])
+        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id xA11IGQS014947
+        (version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 1 Nov 2019 09:18:17 +0800
+Received: from RTITMBSVM04.realtek.com.tw ([fe80::e404:880:2ef1:1aa1]) by
+ RTITCAS11.realtek.com.tw ([fe80::7c6d:ced5:c4ff:8297%15]) with mapi id
+ 14.03.0468.000; Fri, 1 Nov 2019 09:18:16 +0800
+From:   Pkshih <pkshih@realtek.com>
+To:     Stefan Wahren <wahrenst@gmx.net>,
+        Larry Finger <Larry.Finger@lwfinger.net>
+CC:     "colin.king@canonical.com" <colin.king@canonical.com>,
+        "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+Subject: RE: rtlwifi: Memory leak in rtl92c_set_fw_rsvdpagepkt()
+Thread-Topic: rtlwifi: Memory leak in rtl92c_set_fw_rsvdpagepkt()
+Thread-Index: AQHVj/MKeJQWm1dmOEa/SZ8Z/gwmHKd1gfzA
+Date:   Fri, 1 Nov 2019 01:18:15 +0000
+Message-ID: <5B2DA6FDDF928F4E855344EE0A5C39D1D5C90CAD@RTITMBSVM04.realtek.com.tw>
+References: <989debc9-8602-0ce3-71a7-2bf783b2c22b@gmx.net>
+In-Reply-To: <989debc9-8602-0ce3-71a7-2bf783b2c22b@gmx.net>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.95]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Gurumoorthi Gnanasambandhan <gguru@codeaurora.org>
-
-This provides an alternative mechanism for AP VLAN support where a
-single netdev is used with VLAN tagged frames instead of separate
-netdevs for each VLAN without tagged frames from the WLAN driver.
-
-By setting NL80211_EXT_FEATURE_VLAN_OFFLOAD flag the driver indicates
-support for a single netdev with VLAN tagged frames. Separate
-VLAN-specific netdevs can be added using RTM_NEWLINK/IFLA_VLAN_ID
-similarly to Ethernet. NL80211_CMD_NEW_KEY (for group keys),
-NL80211_CMD_NEW_STATION, and NL80211_CMD_SET_STATION will optionally
-specify vlan_id using NL80211_ATTR_VLAN_ID.
-
-Signed-off-by: Gurumoorthi Gnanasambandhan <gguru@codeaurora.org>
-Signed-off-by: Jouni Malinen <jouni@codeaurora.org>
----
- include/net/cfg80211.h       |  4 ++++
- include/uapi/linux/nl80211.h | 26 ++++++++++++++++++++++++++
- net/wireless/nl80211.c       | 11 +++++++++++
- 3 files changed, 41 insertions(+)
-
-v2:
-- enforce allowed range for NL80211_ATTR_VLAN_ID in nl80211_policy
-- allow VLAN ID for a key to be specified only for group keys
-- allow VLAN ID to be specified when adding a new STA, not just when
-  updating an existing STA entry
-  * note that it is indeed allowed to change VLAN binding during an
-    association and that happens in many use cases in practice as well
-    since the VLAN ID is received from a RADIUS server only after
-    completing EAP authentication
-- updated nl80211.h documentation based on received comments
-
-
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index 4ab2c49423dc..e309cc826b40 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -565,6 +565,7 @@ struct vif_params {
-  *	with the get_key() callback, must be in little endian,
-  *	length given by @seq_len.
-  * @seq_len: length of @seq.
-+ * @vlan_id: vlan_id for VLAN group key (if nonzero)
-  * @mode: key install mode (RX_TX, NO_TX or SET_TX)
-  */
- struct key_params {
-@@ -572,6 +573,7 @@ struct key_params {
- 	const u8 *seq;
- 	int key_len;
- 	int seq_len;
-+	u16 vlan_id;
- 	u32 cipher;
- 	enum nl80211_key_mode mode;
- };
-@@ -1124,6 +1126,7 @@ struct sta_txpwr {
-  *	(bitmask of BIT(%NL80211_STA_FLAG_...))
-  * @listen_interval: listen interval or -1 for no change
-  * @aid: AID or zero for no change
-+ * @vlan_id: VLAN ID for station (if nonzero)
-  * @peer_aid: mesh peer AID or zero for no change
-  * @plink_action: plink action to take
-  * @plink_state: set the peer link state for a station
-@@ -1159,6 +1162,7 @@ struct station_parameters {
- 	u32 sta_modify_mask;
- 	int listen_interval;
- 	u16 aid;
-+	u16 vlan_id;
- 	u16 peer_aid;
- 	u8 supported_rates_len;
- 	u8 plink_action;
-diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-index 64135ab3a7ac..341e0e8cae46 100644
---- a/include/uapi/linux/nl80211.h
-+++ b/include/uapi/linux/nl80211.h
-@@ -248,6 +248,22 @@
-  * %NL80211_ATTR_SAE_PASSWORD.
-  */
- 
-+/**
-+ * DOC: VLAN offload support for setting group keys and binding STAs to VLANs
-+ *
-+ * By setting @NL80211_EXT_FEATURE_VLAN_OFFLOAD flag drivers can indicate they
-+ * support offloading VLAN functionality in a manner where the driver exposes a
-+ * single netdev that uses VLAN tagged frames and separate VLAN-specific netdevs
-+ * can then be added using RTM_NEWLINK/IFLA_VLAN_ID similarly to the Ethernet
-+ * case. Frames received from stations that are not assigned to any VLAN are
-+ * delivered on the main netdev and frames to such stations can be sent through
-+ * that main netdev.
-+ *
-+ * %NL80211_CMD_NEW_KEY (for group keys), %NL80211_CMD_NEW_STATION, and
-+ * %NL80211_CMD_SET_STATION will optionally specify vlan_id using
-+ * %NL80211_ATTR_VLAN_ID.
-+ */
-+
- /**
-  * enum nl80211_commands - supported nl80211 commands
-  *
-@@ -2381,6 +2397,9 @@ enum nl80211_commands {
-  *	the allowed channel bandwidth configurations. (u8 attribute)
-  *	Defined by IEEE P802.11ay/D4.0 section 9.4.2.251, Table 13.
-  *
-+ * @NL80211_ATTR_VLAN_ID: VLAN ID (1..4094) for the station and VLAN group key
-+ *	(u16).
-+ *
-  * @NUM_NL80211_ATTR: total number of nl80211_attrs available
-  * @NL80211_ATTR_MAX: highest attribute number currently defined
-  * @__NL80211_ATTR_AFTER_LAST: internal use
-@@ -2843,6 +2862,8 @@ enum nl80211_attrs {
- 	NL80211_ATTR_WIPHY_EDMG_CHANNELS,
- 	NL80211_ATTR_WIPHY_EDMG_BW_CONFIG,
- 
-+	NL80211_ATTR_VLAN_ID,
-+
- 	/* add attributes here, update the policy in nl80211.c */
- 
- 	__NL80211_ATTR_AFTER_LAST,
-@@ -5492,6 +5513,10 @@ enum nl80211_feature_flags {
-  * @NL80211_EXT_FEATURE_SAE_OFFLOAD: Device wants to do SAE authentication in
-  *	station mode (SAE password is passed as part of the connect command).
-  *
-+ * @NL80211_EXT_FEATURE_VLAN_OFFLOAD: The driver supports a single netdev
-+ *	with VLAN tagged frames and separate VLAN-specific netdevs added using
-+ *	vconfig similarly to the Ethernet case.
-+ *
-  * @NUM_NL80211_EXT_FEATURES: number of extended features.
-  * @MAX_NL80211_EXT_FEATURES: highest extended feature index.
-  */
-@@ -5537,6 +5562,7 @@ enum nl80211_ext_feature_index {
- 	NL80211_EXT_FEATURE_EXT_KEY_ID,
- 	NL80211_EXT_FEATURE_STA_TX_PWR,
- 	NL80211_EXT_FEATURE_SAE_OFFLOAD,
-+	NL80211_EXT_FEATURE_VLAN_OFFLOAD,
- 
- 	/* add new features before the definition below */
- 	NUM_NL80211_EXT_FEATURES,
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index d1451e731bb8..50761a4102bd 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -624,6 +624,7 @@ const struct nla_policy nl80211_policy[NUM_NL80211_ATTR] = {
- 					.len = SAE_PASSWORD_MAX_LEN },
- 	[NL80211_ATTR_TWT_RESPONDER] = { .type = NLA_FLAG },
- 	[NL80211_ATTR_HE_OBSS_PD] = NLA_POLICY_NESTED(he_obss_pd_policy),
-+	[NL80211_ATTR_VLAN_ID] = NLA_POLICY_RANGE(NLA_U16, 1, VLAN_N_VID - 2),
- };
- 
- /* policy for the key attributes */
-@@ -3940,6 +3941,10 @@ static int nl80211_new_key(struct sk_buff *skb, struct genl_info *info)
- 	    key.type != NL80211_KEYTYPE_GROUP)
- 		return -EINVAL;
- 
-+	if (key.type == NL80211_KEYTYPE_GROUP &&
-+	    info->attrs[NL80211_ATTR_VLAN_ID])
-+		key.p.vlan_id = nla_get_u16(info->attrs[NL80211_ATTR_VLAN_ID]);
-+
- 	if (!rdev->ops->add_key)
- 		return -EOPNOTSUPP;
- 
-@@ -5711,6 +5716,9 @@ static int nl80211_set_station(struct sk_buff *skb, struct genl_info *info)
- 	if (info->attrs[NL80211_ATTR_STA_AID])
- 		params.aid = nla_get_u16(info->attrs[NL80211_ATTR_STA_AID]);
- 
-+	if (info->attrs[NL80211_ATTR_VLAN_ID])
-+		params.vlan_id = nla_get_u16(info->attrs[NL80211_ATTR_VLAN_ID]);
-+
- 	if (info->attrs[NL80211_ATTR_STA_LISTEN_INTERVAL])
- 		params.listen_interval =
- 		     nla_get_u16(info->attrs[NL80211_ATTR_STA_LISTEN_INTERVAL]);
-@@ -5856,6 +5864,9 @@ static int nl80211_new_station(struct sk_buff *skb, struct genl_info *info)
- 	params.listen_interval =
- 		nla_get_u16(info->attrs[NL80211_ATTR_STA_LISTEN_INTERVAL]);
- 
-+	if (info->attrs[NL80211_ATTR_VLAN_ID])
-+		params.vlan_id = nla_get_u16(info->attrs[NL80211_ATTR_VLAN_ID]);
-+
- 	if (info->attrs[NL80211_ATTR_STA_SUPPORT_P2P_PS]) {
- 		params.support_p2p_ps =
- 			nla_get_u8(info->attrs[NL80211_ATTR_STA_SUPPORT_P2P_PS]);
--- 
-2.20.1
-
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogU3RlZmFuIFdhaHJlbiBb
+bWFpbHRvOndhaHJlbnN0QGdteC5uZXRdDQo+IFNlbnQ6IFRodXJzZGF5LCBPY3RvYmVyIDMxLCAy
+MDE5IDk6NTcgUE0NCj4gVG86IFBrc2hpaDsgTGFycnkgRmluZ2VyDQo+IENjOiBjb2xpbi5raW5n
+QGNhbm9uaWNhbC5jb207IGt2YWxvQGNvZGVhdXJvcmEub3JnOyBsaW51eC13aXJlbGVzc0B2Z2Vy
+Lmtlcm5lbC5vcmc7DQo+IG5ldGRldkB2Z2VyLmtlcm5lbC5vcmcNCj4gU3ViamVjdDogcnRsd2lm
+aTogTWVtb3J5IGxlYWsgaW4gcnRsOTJjX3NldF9md19yc3ZkcGFnZXBrdCgpDQo+IA0KPiBIaSwN
+Cj4gDQo+IGkgdGVzdGVkIHRoZSBFRElNQVggRVctNzYxMiBvbiBSYXNwYmVycnkgUGkgM0IrIHdp
+dGggTGludXggNS40LXJjNQ0KPiAobXVsdGlfdjdfZGVmY29uZmlnICsgcnRsd2lmaSArIGttZW1s
+ZWFrKSBhbmQgbm90aWNlZCBhIHNpbmdsZSBtZW1vcnkNCj4gbGVhayBkdXJpbmcgcHJvYmU6DQo+
+IA0KPiB1bnJlZmVyZW5jZWQgb2JqZWN0IDB4ZWMxM2VlNDAgKHNpemUgMTc2KToNCj4gwqAgY29t
+bSAia3dvcmtlci91ODoxIiwgcGlkIDM2LCBqaWZmaWVzIDQyOTQ5MzkzMjEgKGFnZSA1NTgwLjc5
+MHMpDQo+IMKgIGhleCBkdW1wIChmaXJzdCAzMiBieXRlcyk6DQo+IMKgwqDCoCAwMCAwMCAwMCAw
+MCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMMKgIC4uLi4uLi4uLi4uLi4uLi4N
+Cj4gwqDCoMKgIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAw
+wqAgLi4uLi4uLi4uLi4uLi4uLg0KPiDCoCBiYWNrdHJhY2U6DQo+IMKgwqDCoCBbPGZjMWJiYjNl
+Pl0gX19uZXRkZXZfYWxsb2Nfc2tiKzB4OWMvMHgxNjQNCj4gwqDCoMKgIFs8ODYzZGZhNmU+XSBy
+dGw5MmNfc2V0X2Z3X3JzdmRwYWdlcGt0KzB4MjU0LzB4MzQwIFtydGw4MTkyY19jb21tb25dDQo+
+IMKgwqDCoCBbPDk1NzJiZTBkPl0gcnRsOTJjdV9zZXRfaHdfcmVnKzB4ZjQ4LzB4ZmE0IFtydGw4
+MTkyY3VdDQo+IMKgwqDCoCBbPDExNmRmNGQ4Pl0gcnRsX29wX2Jzc19pbmZvX2NoYW5nZWQrMHgy
+MzQvMHg5NmMgW3J0bHdpZmldDQo+IMKgwqDCoCBbPDg5MzM1NzVmPl0gaWVlZTgwMjExX2Jzc19p
+bmZvX2NoYW5nZV9ub3RpZnkrMHhiOC8weDI2NCBbbWFjODAyMTFdDQo+IMKgwqDCoCBbPGQ0MDYx
+ZTg2Pl0gaWVlZTgwMjExX2Fzc29jX3N1Y2Nlc3MrMHg5MzQvMHgxNzk4IFttYWM4MDIxMV0NCj4g
+wqDCoMKgIFs8ZTU1YWRiNTY+XSBpZWVlODAyMTFfcnhfbWdtdF9hc3NvY19yZXNwKzB4MTc0LzB4
+MzE0IFttYWM4MDIxMV0NCj4gwqDCoMKgIFs8NTk3NDYyOWU+XSBpZWVlODAyMTFfc3RhX3J4X3F1
+ZXVlZF9tZ210KzB4M2Y0LzB4N2YwIFttYWM4MDIxMV0NCj4gwqDCoMKgIFs8ZDkxMDkxYzY+XSBp
+ZWVlODAyMTFfaWZhY2Vfd29yaysweDIwOC8weDMxOCBbbWFjODAyMTFdDQo+IMKgwqDCoCBbPGFj
+NWZjYWU0Pl0gcHJvY2Vzc19vbmVfd29yaysweDIyYy8weDU2NA0KPiDCoMKgwqAgWzxmNWU2ZDNi
+Nj5dIHdvcmtlcl90aHJlYWQrMHg0NC8weDVkOA0KPiDCoMKgwqAgWzw4MmM3YjA3Mz5dIGt0aHJl
+YWQrMHgxNTAvMHgxNTQNCj4gwqDCoMKgIFs8YjQzZTFiN2Q+XSByZXRfZnJvbV9mb3JrKzB4MTQv
+MHgyYw0KPiDCoMKgwqAgWzw3OTRkZmYzMD5dIDB4MA0KPiANCj4gSXQgbG9va3MgbGlrZSB0aGUg
+YWxsb2NhdGVkIHNrZCBpcyBuZXZlciBmcmVlZC4NCj4gDQo+IFdvdWxkIGJlIG5pY2UgdG8gZ2V0
+IHRoaXMgZml4ZWQuDQo+IA0KDQpIaSwNCg0KVGhpcyBpcyBkdWUgdG8gODE5MmN1IGRvZXNuJ3Qg
+aW1wbGVtZW50IHVzYl9jbWRfc2VuZF9wYWNrZXQoKS4gQ291bGQgeW91IGhlbHANCmZvbGxvd2lu
+ZyBwYXRjaD8NCg0KZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnRs
+d2lmaS9ydGw4MTkyY3UvaHcuYyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnRsd2lm
+aS9ydGw4MTkyY3UvaHcuYw0KaW5kZXggNTZjYzNiYzMwODYwLi5mMDcwZjI1YmI3MzUgMTAwNjQ0
+DQotLS0gYS9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0bHdpZmkvcnRsODE5MmN1L2h3
+LmMNCisrKyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnRsd2lmaS9ydGw4MTkyY3Uv
+aHcuYw0KQEAgLTE1NDAsNiArMTU0MCw4IEBAIHN0YXRpYyBib29sIHVzYl9jbWRfc2VuZF9wYWNr
+ZXQoc3RydWN0IGllZWU4MDIxMV9odyAqaHcsIHN0cnVjdCBza19idWZmICpza2IpDQogICAgKiBU
+aGlzIGlzIG1heWJlIG5lY2Vzc2FyeToNCiAgICAqIHJ0bHByaXYtPmNmZy0+b3BzLT5maWxsX3R4
+X2NtZGRlc2MoaHcsIGJ1ZmZlciwgMSwgMSwgc2tiKTsNCiAgICAqLw0KKyAgICAgICBkZXZfa2Zy
+ZWVfc2tiKHNrYik7DQorDQogICAgICAgIHJldHVybiB0cnVlOw0KIH0NCg0KVGhpcyBwYXRjaCBq
+dXN0IGZyZWVzIHRoZSBza2IgdG8gcmVzb2x2ZSBtZW1sZWFrIHByb2JsZW0uIFNpbmNlIDgxOTJj
+dSBkb2Vzbid0DQp0dXJuIG9uIGZ3Y3RybF9scHMgdGhhdCBuZWVkcyB0byBkb3dubG9hZCBjb21t
+YW5kIHBhY2tldCB0byBmaXJtd2FyZSwgYXBwbHkNCnRoaXMgcGF0Y2ggaXNuJ3Qgd29yc2UgdGhh
+biBiZWZvcmUuDQoNCi0tLQ0KUEsNCg0K
