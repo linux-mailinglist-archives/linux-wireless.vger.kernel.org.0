@@ -2,108 +2,129 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 07774EBED2
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 Nov 2019 09:00:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F3A8EBF37
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Nov 2019 09:31:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729754AbfKAIAe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 1 Nov 2019 04:00:34 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:38676 "EHLO
+        id S1730258AbfKAIbE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 1 Nov 2019 04:31:04 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:57020 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726921AbfKAIAe (ORCPT
+        with ESMTP id S1730178AbfKAIbD (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 1 Nov 2019 04:00:34 -0400
+        Fri, 1 Nov 2019 04:31:03 -0400
 Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 4FD3560DA5; Fri,  1 Nov 2019 08:00:33 +0000 (UTC)
+        id 8B70B60A96; Fri,  1 Nov 2019 08:31:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1572595233;
-        bh=o5FfWkhParaDzFTMG7QMjzfSFztCVis7qeCkhTGKqic=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=X2S9Mhl92qm5ymULDuqRb5dTuBoBTCO4RIBApTMYfssD2QcLKmMtE1MFywtyY9GIu
-         NmugzKiv1aVafcpJUwb4LN/I9ZRMbs8dQgVstsYO9rklf2W2ONxszp9SMMDyV+1DNS
-         Lgofw+/bcX2Tzfguyq1Hys62yQD0AfS6Hi7S8IK8=
+        s=default; t=1572597062;
+        bh=ams945pLxCO9gEGCVF/wRln1a+5KrlGC+3FRBJlFWX0=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=X/eRvxpJux1xr1fgNclInEmnWEKYVViQU3GppFN9vVjbJutX9x7CeJTlstcBDteZp
+         GsykKgbV1Go91Oji9AblJFxrL38uh48hh+76nO3eVFy/zfs2Sq9bmW1oKmQdTLxxew
+         zDXpOMk9jA0CeHvpa/vfYFlNI0/3t6O3Ix/u95C0=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
 X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED autolearn=no autolearn_force=no version=3.4.0
-Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by smtp.codeaurora.org (Postfix) with ESMTP id 762B960D83;
-        Fri,  1 Nov 2019 08:00:31 +0000 (UTC)
+        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from x230.qca.qualcomm.com (176-93-46-192.bb.dnainternet.fi [176.93.46.192])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id E9E866049C;
+        Fri,  1 Nov 2019 08:30:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1572595231;
-        bh=o5FfWkhParaDzFTMG7QMjzfSFztCVis7qeCkhTGKqic=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=Jv0JiUirv6+1j3ad47BfG0V343JayrH0Kzh+naJ6DTs3tDDXjlMcsg5Ypv3T2LLFn
-         o8lMroLDHqhHYq+/5cIMyrgl1vcnXNORPLpzNVx1pOBMZNP8AwbsGUv0qp/jnXddkw
-         ts093ZisGzJL7F4f+5VmRTYtrUKz2DPXvdV8hSr0=
+        s=default; t=1572597061;
+        bh=ams945pLxCO9gEGCVF/wRln1a+5KrlGC+3FRBJlFWX0=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=dGeyYvJ2f+KHJmro82HBaekytQXJ8q0t9tivF+QBxrUau08D4/fycMD0P7hXWswq9
+         H8uDgbvDNcKlTjXj5NYYtDDx0X80OPUx1BQYz99CzNUw6SKNrLufgQiu+mjjgB94oW
+         pFy6ImUMplUm0+cEgP59mq9z4JggtuWGmb90x4NU=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org E9E866049C
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Tony Chuang <yhchuang@realtek.com>
+Cc:     "linux-wireless\@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "briannorris\@chromium.org" <briannorris@chromium.org>,
+        "g.schlmm\@googlemail.com" <g.schlmm@googlemail.com>
+Subject: Re: [PATCH 3/6] rtw88: use a module parameter to control LPS enter
+References: <20191025093345.22643-4-yhchuang@realtek.com>
+        <20191031075911.3CCB86079C@smtp.codeaurora.org>
+        <F7CD281DE3E379468C6D07993EA72F84D1914F4C@RTITMBSVM04.realtek.com.tw>
+Date:   Fri, 01 Nov 2019 10:30:57 +0200
+In-Reply-To: <F7CD281DE3E379468C6D07993EA72F84D1914F4C@RTITMBSVM04.realtek.com.tw>
+        (Tony Chuang's message of "Thu, 31 Oct 2019 08:17:37 +0000")
+Message-ID: <87imo40zi6.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Fri, 01 Nov 2019 16:00:31 +0800
-From:   Wen Gong <wgong@codeaurora.org>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH v6] ath10k: enable napi on RX path for sdio
-In-Reply-To: <87tv7p1cz1.fsf@kamboji.qca.qualcomm.com>
-References: <20191014114753.7459-1-wgong@codeaurora.org>
- <87tv7p1cz1.fsf@kamboji.qca.qualcomm.com>
-Message-ID: <e9db35228a09ccc14ac0ec31e9a10552@codeaurora.org>
-X-Sender: wgong@codeaurora.org
-User-Agent: Roundcube Webmail/1.2.5
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2019-10-31 17:27, Kalle Valo wrote:
-> Wen Gong <wgong@codeaurora.org> writes:
-> 
->> For tcp RX, the quantity of tcp acks to remote is 1/2 of the quantity
->> of tcp data from remote, then it will have many small length packets
->> on TX path of sdio bus, then it reduce the RX packets's bandwidth of
->> tcp.
+Tony Chuang <yhchuang@realtek.com> writes:
+
+> From: Kalle Valo
+>> <yhchuang@realtek.com> wrote:
 >> 
->> This patch enable napi on RX path, then the RX packet of tcp will not
->> feed to tcp stack immeditely from mac80211 since GRO is enabled by
->> default, it will feed to tcp stack after napi complete, if rx bundle
->> is enabled, then it will feed to tcp stack one time for each bundle
->> of RX. For example, RX bundle size is 32, then tcp stack will receive
->> one large length packet, its length is neary 1500*32, then tcp stack
->> will send a tcp ack for this large packet, this will reduce the tcp
->> acks ratio from 1/2 to 1/32. This results in significant performance
->> improvement for tcp RX.
+>> > From: Yan-Hsuan Chuang <yhchuang@realtek.com>
+>> >
+>> > If the number of packets is less than the LPS threshold, driver
+>> > can then enter LPS mode.
+>> > And driver used to take RTW_LPS_THRESHOLD as the threshold. As
+>> > the macro can not be changed after compiled, use a parameter
+>> > instead.
+>> >
+>> > The larger of the threshold, the more traffic required to leave
+>> > power save mode, responsive time could be longer, but also the
+>> > power consumption could be lower.
+>> >
+>> > Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
+>> > Reviewed-by: Chris Chiu <chiu@endlessm.com>
 >> 
->> Tcp rx throughout is 240Mbps without this patch, and it arrive 390Mbps
->> with this patch. The cpu usage has no obvious difference with and
->> without NAPI.
-> 
-> I have not done thorough review yet, but few quick questions:
-> 
-> This adds a new skb queue ar->htt.rx_indication_head to RX path, but on
-> one of your earlier patches you also add another skb queue
-> ar_sdio->rx_head. Is it really necessary to have two separate queues in
-> RX path? Sounds like extra complexity to me.
-it is because the ar_sdio->rx_head is for all rx of sdio bus, include 
-wmi event, fw log event,
-pkt log event, htt event... and ar_sdio->rx_head is a lower layer of 
-stack,
-but the NAPI it to improve htt rx data's performance, it is only for htt 
-rx, also pcie has the same
-queue in ath10k_htt for napi, but it only used for low latency.
-> 
-> The way I have understood that NAPI is used as a mechanism to disable
-> interrupts on the device and gain throughput from that. But in your
-> patch the poll function ath10k_sdio_napi_poll() doesn't touch the
-> hardware at all, it just processes packets from
-> ar->htt.rx_indication_head queue until budget runs out. I'm no NAPI
-> expert so I can't claim it's wrong, but at least it feels odd to me.
-The difference of this sdio NAPI and pcie NAPI is PCIE's napi_schedule 
-is called in isr,
-and sdio is called in indication_work of sdio rx, because ath10k's isr 
-is not a real isr, it is
-owned by sdio host, and actually it is a thread.
-When napi_schedule called, it will raise a soft irq in the same context, 
-it will block current thread
-but not block current isr, in order not to block sdio host thread, so 
-called napi_schedule in indication_work of sdio rx is the best choise.
+>> I don't think a module parameter should be used to control power save
+>> level, instead there should be a generic interface for that. Also the commit
+>> log does not give any explanation why this needs to be a module parameter.
+>> 
+>> Tony, there's a high barrier for adding new module parameters. It's a
+>> common
+>> phrase for me to say "module parameters are not windows .ini files". And to
+>> make it
+>> easier for everyone always submit controversial patches separately, do not
+>> hide
+>> within a bigger patchset.
+>> 
+>
+> Alright, I was thinking module parameters as a convenient tool for driver to
+> control the behavior for debugging or out-of-band adjusting. But it seems like
+> you treat it more carefully.
+>
+> Actually this is just going to allow us to set different default values for different
+> use cases. So is there a better way to control it. Or I should just change the
+> value to a better one. By our experience, set this to 50 is a more reasonable
+> value, such that some web surfing or background traffic wouldn't make the
+> driver to leave PS mode.
+
+I recall having a similar discussion something like 10 years ago. (Yes,
+I have been here for way too long). I think at the time recommendation
+was to use latency value from the QoS framework to make it possible for
+user space to change wireless power save aggressiveness. But I don't
+know if anyone really used that.
+
+I was feeling nostalgic and decided to find some pointers:
+
+https://lore.kernel.org/linux-wireless/1271850458-32437-2-git-send-email-juuso.oikarinen@nokia.com/
+
+And it seems the patch was even applied:
+
+195e294d21e8 mac80211: Determine dynamic PS timeout based on ps-qos network latency
+
+This is for mac80211 dynamic ps feature, but I imagine we could somehow
+extend it to driver settings like the LPS threshold here. Something like
+this would be much more acceptable than having custom module parameters
+for each driver.
+
+-- 
+Kalle Valo
