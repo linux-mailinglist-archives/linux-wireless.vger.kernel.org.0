@@ -2,76 +2,112 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2BEEDEBD06
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 Nov 2019 06:19:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 09B05EBD4A
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Nov 2019 06:41:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727491AbfKAFTw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 1 Nov 2019 01:19:52 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:35495 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727332AbfKAFTw (ORCPT
+        id S1729809AbfKAFko (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 1 Nov 2019 01:40:44 -0400
+Received: from mail-pf1-f194.google.com ([209.85.210.194]:43961 "EHLO
+        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727332AbfKAFko (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 1 Nov 2019 01:19:52 -0400
-Authenticated-By: 
-X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID xA15Ji48015123, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (RTITCASV01.realtek.com.tw[172.21.6.18])
-        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id xA15Ji48015123
-        (version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-        Fri, 1 Nov 2019 13:19:44 +0800
-Received: from localhost.localdomain (172.21.68.126) by
- RTITCASV01.realtek.com.tw (172.21.6.18) with Microsoft SMTP Server id
- 14.3.468.0; Fri, 1 Nov 2019 13:19:44 +0800
-From:   <yhchuang@realtek.com>
-To:     <kvalo@codeaurora.org>
-CC:     <linux-wireless@vger.kernel.org>, <briannorris@chromium.org>
-Subject: [PATCH v2] rtw88: raise LPS threshold to 50, for less power consumption
-Date:   Fri, 1 Nov 2019 13:19:42 +0800
-Message-ID: <20191101051942.18730-1-yhchuang@realtek.com>
-X-Mailer: git-send-email 2.17.1
+        Fri, 1 Nov 2019 01:40:44 -0400
+Received: by mail-pf1-f194.google.com with SMTP id 3so6258102pfb.10
+        for <linux-wireless@vger.kernel.org>; Thu, 31 Oct 2019 22:40:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=87LDioEh9QArbtKje2Ha+R3GcGCadSMWQHWuBYLzjuI=;
+        b=EWImVPA87TD2kh6PA559dlNc+n4rQqoHwyEpsEAWLcv5GBJZG6m5C6ugqPSn+4jVS7
+         wlgTmQIF2i5QkMRaxTYWAZ44so4xHKaU9s0gLO7c48BCOT9UFR5U9tC+F2+oEm0yqILh
+         YvfTaygs0sSX6ocutJPJcbV5MbGqVkr9yS7+c=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=87LDioEh9QArbtKje2Ha+R3GcGCadSMWQHWuBYLzjuI=;
+        b=dEpzAzQimZF6cyb9UVfaqS2Vd9hkbZ5nvLVZCXesrLWikRaq++bbtdPhI3k7jlnwsE
+         3BVtPAtxcnDT8CZiis9+FchL8igawbbk9YUqCnEvxCpZo8JB4bas8VQEEZt+4+NBU2Ha
+         Iw0SUVLycCWEf0xiBcAN0ODVpDyLQjiU6P0WJBflz9ymMF+nGNWbR/TI2NgzRE2aRy/U
+         w/QEGtBRnUVS+GiJAmVGx62Agnnhi9d6Q4DpOnu7caQtu+BOVNwcRPUTH6raQwbA7n7c
+         UO6r3u2m5D+iG+QZH7FJxRQnrXK4SkSoaxhzQmA85wGGjcaE4xlhxQ3cH+lz1sLjVcfa
+         zNGw==
+X-Gm-Message-State: APjAAAUbTPxJaYxUW6SOAFztXWuQw1hqJenlSSg2M1jkpMFDl+8B+Q8H
+        k1UljzKVW4rtKmugDhkmnujQFA==
+X-Google-Smtp-Source: APXvYqzmEFT6XObk/Pkzshp1rgxcYK0KGZjMpS1zkQ0VFL6rDsk3N+SH1c2LjWcJS3JUYdRAMO5HHA==
+X-Received: by 2002:a63:2057:: with SMTP id r23mr11730719pgm.274.1572586843673;
+        Thu, 31 Oct 2019 22:40:43 -0700 (PDT)
+Received: from ikjn-p920.tpe.corp.google.com ([2401:fa00:1:10:254e:2b40:ef8:ee17])
+        by smtp.gmail.com with ESMTPSA id 16sm7460747pgd.0.2019.10.31.22.40.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 31 Oct 2019 22:40:43 -0700 (PDT)
+From:   Ikjoon Jang <ikjn@chromium.org>
+To:     ath10k@lists.infradead.org
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Ikjoon Jang <ikjn@chromium.org>
+Subject: [PATCH] ath10k: disable cpuidle during downloading firmware.
+Date:   Fri,  1 Nov 2019 13:40:35 +0800
+Message-Id: <20191101054035.42101-1-ikjn@chromium.org>
+X-Mailer: git-send-email 2.24.0.rc1.363.gb1bccd3e3d-goog
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [172.21.68.126]
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Yan-Hsuan Chuang <yhchuang@realtek.com>
+Downloading ath10k firmware needs a large number of IOs and
+cpuidle's miss predictions make it worse. In the worst case,
+resume time can be three times longer than the average on sdio.
 
-The LPS threshold was set to 2, means driver will leave LPS
-mode if there is more than 2 frames TX/RX for every 2 seconds.
-This makes driver enter/leave LPS frequently even if we just
-"ping -i1" to the others.
+This patch disables cpuidle during firmware downloading by
+applying PM_QOS_CPU_DMA_LATENCY in ath10k_download_fw().
 
-Apparently we do not want to leave LPS mode if there is only
-some background traffics or web surfing. By experiment, set
-this to 50 is a more reasonable value to lower the over all
-power consumption.
-
-Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
+Signed-off-by: Ikjoon Jang <ikjn@chromium.org>
 ---
+ drivers/net/wireless/ath/ath10k/core.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-v1 -> v2
-  * this was originally ("https://patchwork.kernel.org/patch/11211881/")
-  * but seems module parameter is not a good idea here, just change
-    the default value to 50 for a general solution
-
- drivers/net/wireless/realtek/rtw88/ps.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/realtek/rtw88/ps.h b/drivers/net/wireless/realtek/rtw88/ps.h
-index 25925eedbad4..19afceca7d0e 100644
---- a/drivers/net/wireless/realtek/rtw88/ps.h
-+++ b/drivers/net/wireless/realtek/rtw88/ps.h
-@@ -5,7 +5,7 @@
- #ifndef __RTW_PS_H_
- #define __RTW_PS_H_
+diff --git a/drivers/net/wireless/ath/ath10k/core.c b/drivers/net/wireless/ath/ath10k/core.c
+index 36c62d66c19e..4f76ba5d78a9 100644
+--- a/drivers/net/wireless/ath/ath10k/core.c
++++ b/drivers/net/wireless/ath/ath10k/core.c
+@@ -11,6 +11,7 @@
+ #include <linux/property.h>
+ #include <linux/dmi.h>
+ #include <linux/ctype.h>
++#include <linux/pm_qos.h>
+ #include <asm/byteorder.h>
  
--#define RTW_LPS_THRESHOLD	2
-+#define RTW_LPS_THRESHOLD	50
+ #include "core.h"
+@@ -1027,6 +1028,7 @@ static int ath10k_download_fw(struct ath10k *ar)
+ 	u32 address, data_len;
+ 	const void *data;
+ 	int ret;
++	struct pm_qos_request latency_qos;
  
- #define POWER_MODE_ACK		BIT(6)
- #define POWER_MODE_PG		BIT(4)
+ 	address = ar->hw_params.patch_load_addr;
+ 
+@@ -1060,8 +1062,14 @@ static int ath10k_download_fw(struct ath10k *ar)
+ 			    ret);
+ 	}
+ 
+-	return ath10k_bmi_fast_download(ar, address,
+-					data, data_len);
++	memset(&latency_qos, 0, sizeof(latency_qos));
++	pm_qos_add_request(&latency_qos, PM_QOS_CPU_DMA_LATENCY, 0);
++
++	ret = ath10k_bmi_fast_download(ar, address, data, data_len);
++
++	pm_qos_remove_request(&latency_qos);
++
++	return ret;
+ }
+ 
+ void ath10k_core_free_board_files(struct ath10k *ar)
 -- 
-2.17.1
+2.24.0.rc1.363.gb1bccd3e3d-goog
 
