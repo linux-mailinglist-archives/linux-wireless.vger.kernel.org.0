@@ -2,54 +2,53 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 30496EBE8B
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 Nov 2019 08:42:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 07774EBED2
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Nov 2019 09:00:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729843AbfKAHmu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 1 Nov 2019 03:42:50 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:50212 "EHLO
+        id S1729754AbfKAIAe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 1 Nov 2019 04:00:34 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:38676 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728506AbfKAHmt (ORCPT
+        with ESMTP id S1726921AbfKAIAe (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 1 Nov 2019 03:42:49 -0400
+        Fri, 1 Nov 2019 04:00:34 -0400
 Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 8794660A19; Fri,  1 Nov 2019 07:42:48 +0000 (UTC)
+        id 4FD3560DA5; Fri,  1 Nov 2019 08:00:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1572594168;
-        bh=8L181n29D2wv/Vu1RML6oHrvstHDa8RPAf92NzGwY0I=;
+        s=default; t=1572595233;
+        bh=o5FfWkhParaDzFTMG7QMjzfSFztCVis7qeCkhTGKqic=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=E2s/h6tm7Umoq2m7Sjao9Sn3G+pSX3Zg1ZClKPNhkPfk5vdmlhoDGw5U/9Acvaq6D
-         0lhhTPrHdjbYTGqYZipTIT4XB52RmAuTZXOHxJvkq81r2e2U3yBf/ho4L2/r4YvnU6
-         RpiklyyO2pfkmV4fqjZmWuidXMR3Rp9hD9iR2EA0=
+        b=X2S9Mhl92qm5ymULDuqRb5dTuBoBTCO4RIBApTMYfssD2QcLKmMtE1MFywtyY9GIu
+         NmugzKiv1aVafcpJUwb4LN/I9ZRMbs8dQgVstsYO9rklf2W2ONxszp9SMMDyV+1DNS
+         Lgofw+/bcX2Tzfguyq1Hys62yQD0AfS6Hi7S8IK8=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
 X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
         DKIM_INVALID,DKIM_SIGNED autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by smtp.codeaurora.org (Postfix) with ESMTP id E1E6C602F0;
-        Fri,  1 Nov 2019 07:42:47 +0000 (UTC)
+        by smtp.codeaurora.org (Postfix) with ESMTP id 762B960D83;
+        Fri,  1 Nov 2019 08:00:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1572594167;
-        bh=8L181n29D2wv/Vu1RML6oHrvstHDa8RPAf92NzGwY0I=;
+        s=default; t=1572595231;
+        bh=o5FfWkhParaDzFTMG7QMjzfSFztCVis7qeCkhTGKqic=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=jgYQzoPJ6IDZz0ctM3DJL0mt4WM9OWVFepHrpNEdtDFcoC9a6HakEnm+ipyMvKFt1
-         2AyegcQGmDGSoFKpyGeztfnm9irC3fdEjTY/tj0b0jRydVBIIDxlU4tu+gYOvl3KJu
-         O5Ae5IbO7HLGa9kK5Rj64SKKolXszRxNkCCJFoJE=
+        b=Jv0JiUirv6+1j3ad47BfG0V343JayrH0Kzh+naJ6DTs3tDDXjlMcsg5Ypv3T2LLFn
+         o8lMroLDHqhHYq+/5cIMyrgl1vcnXNORPLpzNVx1pOBMZNP8AwbsGUv0qp/jnXddkw
+         ts093ZisGzJL7F4f+5VmRTYtrUKz2DPXvdV8hSr0=
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8;
+Content-Type: text/plain; charset=US-ASCII;
  format=flowed
-Content-Transfer-Encoding: 8bit
-Date:   Fri, 01 Nov 2019 15:42:47 +0800
+Content-Transfer-Encoding: 7bit
+Date:   Fri, 01 Nov 2019 16:00:31 +0800
 From:   Wen Gong <wgong@codeaurora.org>
 To:     Kalle Valo <kvalo@codeaurora.org>
 Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH v6 3/3] ath10k: add workqueue for RX path of sdio
-In-Reply-To: <8736f92sfx.fsf@kamboji.qca.qualcomm.com>
-References: <1569402639-31720-1-git-send-email-wgong@codeaurora.org>
- <1569402639-31720-4-git-send-email-wgong@codeaurora.org>
- <8736f92sfx.fsf@kamboji.qca.qualcomm.com>
-Message-ID: <3f3641ad49a2664d346558760e38b404@codeaurora.org>
+Subject: Re: [PATCH v6] ath10k: enable napi on RX path for sdio
+In-Reply-To: <87tv7p1cz1.fsf@kamboji.qca.qualcomm.com>
+References: <20191014114753.7459-1-wgong@codeaurora.org>
+ <87tv7p1cz1.fsf@kamboji.qca.qualcomm.com>
+Message-ID: <e9db35228a09ccc14ac0ec31e9a10552@codeaurora.org>
 X-Sender: wgong@codeaurora.org
 User-Agent: Roundcube Webmail/1.2.5
 Sender: linux-wireless-owner@vger.kernel.org
@@ -57,67 +56,54 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2019-10-31 17:08, Kalle Valo wrote:
-、> I just realised that this is RX path so we should use 
-ATH10K_SKB_RXCB()
-> instead. I made the change below to this commit in pending branch:
+On 2019-10-31 17:27, Kalle Valo wrote:
+> Wen Gong <wgong@codeaurora.org> writes:
 > 
-I will test with the new patch together with other performance patches.
-> https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=28da1fe7a3ffa5c55c52328c21165d9efdf2e94c
+>> For tcp RX, the quantity of tcp acks to remote is 1/2 of the quantity
+>> of tcp data from remote, then it will have many small length packets
+>> on TX path of sdio bus, then it reduce the RX packets's bandwidth of
+>> tcp.
+>> 
+>> This patch enable napi on RX path, then the RX packet of tcp will not
+>> feed to tcp stack immeditely from mac80211 since GRO is enabled by
+>> default, it will feed to tcp stack after napi complete, if rx bundle
+>> is enabled, then it will feed to tcp stack one time for each bundle
+>> of RX. For example, RX bundle size is 32, then tcp stack will receive
+>> one large length packet, its length is neary 1500*32, then tcp stack
+>> will send a tcp ack for this large packet, this will reduce the tcp
+>> acks ratio from 1/2 to 1/32. This results in significant performance
+>> improvement for tcp RX.
+>> 
+>> Tcp rx throughout is 240Mbps without this patch, and it arrive 390Mbps
+>> with this patch. The cpu usage has no obvious difference with and
+>> without NAPI.
 > 
-> diff --git a/drivers/net/wireless/ath/ath10k/core.h
-> b/drivers/net/wireless/ath/ath10k/core.h
-> index af68eb5d0776..c5407f5080b2 100644
-> --- a/drivers/net/wireless/ath/ath10k/core.h
-> +++ b/drivers/net/wireless/ath/ath10k/core.h
-> @@ -124,6 +124,7 @@ struct ath10k_skb_cb {
->  struct ath10k_skb_rxcb {
->  	dma_addr_t paddr;
->  	struct hlist_node hlist;
-> +	u8 eid;
->  };
+> I have not done thorough review yet, but few quick questions:
 > 
->  static inline struct ath10k_skb_cb *ATH10K_SKB_CB(struct sk_buff *skb)
-> diff --git a/drivers/net/wireless/ath/ath10k/sdio.c
-> b/drivers/net/wireless/ath/ath10k/sdio.c
-> index c34637881219..c7d09b07a382 100644
-> --- a/drivers/net/wireless/ath/ath10k/sdio.c
-> +++ b/drivers/net/wireless/ath/ath10k/sdio.c
-> @@ -419,7 +419,7 @@ static int
-> ath10k_sdio_mbox_rx_process_packets(struct ath10k *ar,
->  	struct ath10k_htc *htc = &ar->htc;
->  	struct ath10k_sdio_rx_data *pkt;
->  	struct ath10k_htc_ep *ep;
-> -	struct ath10k_skb_cb *cb;
-> +	struct ath10k_skb_rxcb *cb;
->  	enum ath10k_htc_ep_id id;
->  	int ret, i, *n_lookahead_local;
->  	u32 *lookaheads_local;
-> @@ -466,7 +466,7 @@ static int
-> ath10k_sdio_mbox_rx_process_packets(struct ath10k *ar,
->  			goto out;
+> This adds a new skb queue ar->htt.rx_indication_head to RX path, but on
+> one of your earlier patches you also add another skb queue
+> ar_sdio->rx_head. Is it really necessary to have two separate queues in
+> RX path? Sounds like extra complexity to me.
+it is because the ar_sdio->rx_head is for all rx of sdio bus, include 
+wmi event, fw log event,
+pkt log event, htt event... and ar_sdio->rx_head is a lower layer of 
+stack,
+but the NAPI it to improve htt rx data's performance, it is only for htt 
+rx, also pcie has the same
+queue in ath10k_htt for napi, but it only used for low latency.
 > 
->  		if (!pkt->trailer_only) {
-> -			cb = ATH10K_SKB_CB(pkt->skb);
-> +			cb = ATH10K_SKB_RXCB(pkt->skb);
->  			cb->eid = id;
-> 
->  			skb_queue_tail(&ar_sdio->rx_head, pkt->skb);
-> @@ -1333,14 +1333,14 @@ static void
-> ath10k_rx_indication_async_work(struct work_struct *work)
->  						   async_work_rx);
->  	struct ath10k *ar = ar_sdio->ar;
->  	struct ath10k_htc_ep *ep;
-> -	struct ath10k_skb_cb *cb;
-> +	struct ath10k_skb_rxcb *cb;
->  	struct sk_buff *skb;
-> 
->  	while (true) {
->  		skb = skb_dequeue(&ar_sdio->rx_head);
->  		if (!skb)
->  			break;
-> -		cb = ATH10K_SKB_CB(skb);
-> +		cb = ATH10K_SKB_RXCB(skb);
->  		ep = &ar->htc.endpoint[cb->eid];
->  		ep->ep_ops.ep_rx_complete(ar, skb);
->  	}
+> The way I have understood that NAPI is used as a mechanism to disable
+> interrupts on the device and gain throughput from that. But in your
+> patch the poll function ath10k_sdio_napi_poll() doesn't touch the
+> hardware at all, it just processes packets from
+> ar->htt.rx_indication_head queue until budget runs out. I'm no NAPI
+> expert so I can't claim it's wrong, but at least it feels odd to me.
+The difference of this sdio NAPI and pcie NAPI is PCIE's napi_schedule 
+is called in isr,
+and sdio is called in indication_work of sdio rx, because ath10k's isr 
+is not a real isr, it is
+owned by sdio host, and actually it is a thread.
+When napi_schedule called, it will raise a soft irq in the same context, 
+it will block current thread
+but not block current isr, in order not to block sdio host thread, so 
+called napi_schedule in indication_work of sdio rx is the best choise.
