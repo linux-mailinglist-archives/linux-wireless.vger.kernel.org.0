@@ -2,86 +2,116 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 75C40ECD90
-	for <lists+linux-wireless@lfdr.de>; Sat,  2 Nov 2019 07:15:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 94885ECDB0
+	for <lists+linux-wireless@lfdr.de>; Sat,  2 Nov 2019 08:52:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726293AbfKBGPt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 2 Nov 2019 02:15:49 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:39836 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725842AbfKBGPt (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 2 Nov 2019 02:15:49 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 5ED3661491; Sat,  2 Nov 2019 06:15:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1572675348;
-        bh=VSiu+SKKR/LfB4YYkM/KMfac6Q2L11t3g5xh8LmBJhY=;
-        h=From:To:Cc:Subject:Date:From;
-        b=gxjxRxbg2quh2wsHiNFvsl0OdxXiSwqzKpL0WFHA7OMsPoKCaZKvIxAaRHTcOzzMC
-         7Qn006NdcZMSJ9L0U5pRECM2TeM6nz6hKdV+PXFWuQZZAZuNkqiiyZ5MTPJBsYLIj4
-         Utwz0yQUS+7A5qHvteYV7C/xDrUfDlBT59C/322c=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from akolli-ThinkPad-L560.qca.qualcomm.com (blr-c-bdr-fw-01_globalnat_allzones-outside.qualcomm.com [103.229.19.19])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: tamizhr@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 7F612612E6;
-        Sat,  2 Nov 2019 06:15:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1572675347;
-        bh=VSiu+SKKR/LfB4YYkM/KMfac6Q2L11t3g5xh8LmBJhY=;
-        h=From:To:Cc:Subject:Date:From;
-        b=WfOWs2jOR6jzDGtNoJU3FsW9i02qTo9hU0yV6zUsVG5TTHYDshe5nd7NUo+FFrdCq
-         +7Cf3awfoaNBlcZkrytZ+ELT7bq62QMkEBjBD3yjF0pHq+tjfTfXWuq+DrR5WA3P5f
-         3LBkwZP7pUjGk7wCHM0KWr7S1el/G+VcpB7WBQ0U=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 7F612612E6
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=tamizhr@codeaurora.org
-From:   Tamizh chelvam <tamizhr@codeaurora.org>
-To:     johannes@sipsolutions.net
-Cc:     linux-wireless@vger.kernel.org,
-        Tamizh chelvam <tamizhr@codeaurora.org>
-Subject: [PATCH] nl80211: Add proper NL type for NL80211_ATTR_MPATH_NEXT_HOP
-Date:   Sat,  2 Nov 2019 11:45:49 +0530
-Message-Id: <1572675349-31733-1-git-send-email-tamizhr@codeaurora.org>
-X-Mailer: git-send-email 1.9.1
+        id S1726586AbfKBHw2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 2 Nov 2019 03:52:28 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:5692 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726014AbfKBHw1 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 2 Nov 2019 03:52:27 -0400
+Received: from DGGEMS411-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id B6E8D821B3C96911183C;
+        Sat,  2 Nov 2019 15:52:19 +0800 (CST)
+Received: from localhost (10.133.213.239) by DGGEMS411-HUB.china.huawei.com
+ (10.3.19.211) with Microsoft SMTP Server id 14.3.439.0; Sat, 2 Nov 2019
+ 15:52:09 +0800
+From:   YueHaibing <yuehaibing@huawei.com>
+To:     <kvalo@codeaurora.org>, <davem@davemloft.net>,
+        <allison@lohutok.net>, <gregkh@linuxfoundation.org>,
+        <kstewart@linuxfoundation.org>, <info@metux.net>,
+        <tglx@linutronix.de>, <yuehaibing@huawei.com>
+CC:     <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: [PATCH] rtlwifi: rtl8225se: remove some unused const variables
+Date:   Sat, 2 Nov 2019 15:46:03 +0800
+Message-ID: <20191102074603.38516-1-yuehaibing@huawei.com>
+X-Mailer: git-send-email 2.10.2.windows.1
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Originating-IP: [10.133.213.239]
+X-CFilter-Loop: Reflected
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Assign NL type as NLA_EXACT_LEN_WARN and len as ETH_AELN
-for NL80211_ATTR_MPATH_NEXT_HOP attribute to avoid
-NL warning message like below during mpath set command.
+drivers/net/wireless//realtek/rtl818x/rtl8180/rtl8225se.c:83:17: warning: 'rtl8225sez2_tx_power_cck' defined but not used [-Wunused-const-variable=]
+drivers/net/wireless//realtek/rtl818x/rtl8180/rtl8225se.c:79:17: warning: 'rtl8225sez2_tx_power_cck_A' defined but not used [-Wunused-const-variable=]
+drivers/net/wireless//realtek/rtl818x/rtl8180/rtl8225se.c:75:17: warning: 'rtl8225sez2_tx_power_cck_B' defined but not used [-Wunused-const-variable=]
+drivers/net/wireless//realtek/rtl818x/rtl8180/rtl8225se.c:71:17: warning: 'rtl8225sez2_tx_power_cck_ch14' defined but not used [-Wunused-const-variable=]
+drivers/net/wireless//realtek/rtl818x/rtl8180/rtl8225se.c:62:17: warning: 'rtl8225se_tx_power_ofdm' defined but not used [-Wunused-const-variable=]
+drivers/net/wireless//realtek/rtl818x/rtl8180/rtl8225se.c:53:17: warning: 'rtl8225se_tx_power_cck_ch14' defined but not used [-Wunused-const-variable=]
+drivers/net/wireless//realtek/rtl818x/rtl8180/rtl8225se.c:44:17: warning: 'rtl8225se_tx_power_cck' defined but not used [-Wunused-const-variable=]
+drivers/net/wireless//realtek/rtl818x/rtl8180/rtl8225se.c:40:17: warning: 'rtl8225se_tx_gain_cck_ofdm' defined but not used [-Wunused-const-variable=]
 
-"netlink: 'iw': attribute type 26 has an invalid length."
+They are never used, so can be removed.
 
-There is no functionality issue due to this warning message.
-
-Signed-off-by: Tamizh chelvam <tamizhr@codeaurora.org>
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 ---
- net/wireless/nl80211.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../wireless/realtek/rtl818x/rtl8180/rtl8225se.c   | 42 ----------------------
+ 1 file changed, 42 deletions(-)
 
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index d1451e7..1b51b59 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -393,7 +393,7 @@ static int validate_ie_attr(const struct nlattr *attr,
- 	[NL80211_ATTR_MNTR_FLAGS] = { /* NLA_NESTED can't be empty */ },
- 	[NL80211_ATTR_MESH_ID] = { .type = NLA_BINARY,
- 				   .len = IEEE80211_MAX_MESH_ID_LEN },
--	[NL80211_ATTR_MPATH_NEXT_HOP] = { .type = NLA_U32 },
-+	[NL80211_ATTR_MPATH_NEXT_HOP] = NLA_POLICY_ETH_ADDR,
+diff --git a/drivers/net/wireless/realtek/rtl818x/rtl8180/rtl8225se.c b/drivers/net/wireless/realtek/rtl818x/rtl8180/rtl8225se.c
+index 23cd4ff..e1bf41c 100644
+--- a/drivers/net/wireless/realtek/rtl818x/rtl8180/rtl8225se.c
++++ b/drivers/net/wireless/realtek/rtl818x/rtl8180/rtl8225se.c
+@@ -37,53 +37,11 @@ static const u8 cck_ofdm_gain_settings[] = {
+ 	0x1e, 0x1f, 0x20, 0x21, 0x22, 0x23,
+ };
  
- 	[NL80211_ATTR_REG_ALPHA2] = { .type = NLA_STRING, .len = 2 },
- 	[NL80211_ATTR_REG_RULES] = { .type = NLA_NESTED },
+-static const u8 rtl8225se_tx_gain_cck_ofdm[] = {
+-	0x02, 0x06, 0x0e, 0x1e, 0x3e, 0x7e
+-};
+-
+-static const u8 rtl8225se_tx_power_cck[] = {
+-	0x18, 0x17, 0x15, 0x11, 0x0c, 0x08, 0x04, 0x02,
+-	0x1b, 0x1a, 0x17, 0x13, 0x0e, 0x09, 0x04, 0x02,
+-	0x1f, 0x1e, 0x1a, 0x15, 0x10, 0x0a, 0x05, 0x02,
+-	0x22, 0x21, 0x1d, 0x18, 0x11, 0x0b, 0x06, 0x02,
+-	0x26, 0x25, 0x21, 0x1b, 0x14, 0x0d, 0x06, 0x03,
+-	0x2b, 0x2a, 0x25, 0x1e, 0x16, 0x0e, 0x07, 0x03
+-};
+-
+-static const u8 rtl8225se_tx_power_cck_ch14[] = {
+-	0x18, 0x17, 0x15, 0x0c, 0x00, 0x00, 0x00, 0x00,
+-	0x1b, 0x1a, 0x17, 0x0e, 0x00, 0x00, 0x00, 0x00,
+-	0x1f, 0x1e, 0x1a, 0x0f, 0x00, 0x00, 0x00, 0x00,
+-	0x22, 0x21, 0x1d, 0x11, 0x00, 0x00, 0x00, 0x00,
+-	0x26, 0x25, 0x21, 0x13, 0x00, 0x00, 0x00, 0x00,
+-	0x2b, 0x2a, 0x25, 0x15, 0x00, 0x00, 0x00, 0x00
+-};
+-
+-static const u8 rtl8225se_tx_power_ofdm[] = {
+-	0x80, 0x90, 0xa2, 0xb5, 0xcb, 0xe4
+-};
+-
+ static const u32 rtl8225se_chan[] = {
+ 	0x0080, 0x0100, 0x0180, 0x0200, 0x0280, 0x0300, 0x0380,
+ 	0x0400, 0x0480, 0x0500, 0x0580, 0x0600, 0x0680, 0x074A,
+ };
+ 
+-static const u8 rtl8225sez2_tx_power_cck_ch14[] = {
+-	0x36, 0x35, 0x2e, 0x1b, 0x00, 0x00, 0x00, 0x00
+-};
+-
+-static const u8 rtl8225sez2_tx_power_cck_B[] = {
+-	0x30, 0x2f, 0x29, 0x21, 0x19, 0x10, 0x08, 0x04
+-};
+-
+-static const u8 rtl8225sez2_tx_power_cck_A[] = {
+-	0x33, 0x32, 0x2b, 0x23, 0x1a, 0x11, 0x08, 0x04
+-};
+-
+-static const u8 rtl8225sez2_tx_power_cck[] = {
+-	0x36, 0x35, 0x2e, 0x25, 0x1c, 0x12, 0x09, 0x04
+-};
+-
+ static const u8 ZEBRA_AGC[] = {
+ 	0x7E, 0x7E, 0x7E, 0x7E, 0x7D, 0x7C, 0x7B, 0x7A,
+ 	0x79, 0x78, 0x77, 0x76, 0x75, 0x74, 0x73, 0x72,
 -- 
-1.7.9.5
+2.7.4
+
 
