@@ -2,116 +2,56 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 94885ECDB0
-	for <lists+linux-wireless@lfdr.de>; Sat,  2 Nov 2019 08:52:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DB539ECDCE
+	for <lists+linux-wireless@lfdr.de>; Sat,  2 Nov 2019 09:59:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726586AbfKBHw2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 2 Nov 2019 03:52:28 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:5692 "EHLO huawei.com"
+        id S1727179AbfKBI7a (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 2 Nov 2019 04:59:30 -0400
+Received: from szxga06-in.huawei.com ([45.249.212.32]:39558 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726014AbfKBHw1 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 2 Nov 2019 03:52:27 -0400
-Received: from DGGEMS411-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id B6E8D821B3C96911183C;
-        Sat,  2 Nov 2019 15:52:19 +0800 (CST)
-Received: from localhost (10.133.213.239) by DGGEMS411-HUB.china.huawei.com
- (10.3.19.211) with Microsoft SMTP Server id 14.3.439.0; Sat, 2 Nov 2019
- 15:52:09 +0800
-From:   YueHaibing <yuehaibing@huawei.com>
-To:     <kvalo@codeaurora.org>, <davem@davemloft.net>,
-        <allison@lohutok.net>, <gregkh@linuxfoundation.org>,
-        <kstewart@linuxfoundation.org>, <info@metux.net>,
-        <tglx@linutronix.de>, <yuehaibing@huawei.com>
+        id S1726529AbfKBI7a (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 2 Nov 2019 04:59:30 -0400
+Received: from DGGEMS410-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id 7C1F2DBEDB2D07A25113;
+        Sat,  2 Nov 2019 16:59:27 +0800 (CST)
+Received: from linux-ibm.site (10.175.102.37) by
+ DGGEMS410-HUB.china.huawei.com (10.3.19.210) with Microsoft SMTP Server id
+ 14.3.439.0; Sat, 2 Nov 2019 16:59:17 +0800
+From:   zhong jiang <zhongjiang@huawei.com>
+To:     <kvalo@codeaurora.org>, <stas.yakovlev@gmail.com>,
+        <simon.horman@netronome.com>
 CC:     <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: [PATCH] rtlwifi: rtl8225se: remove some unused const variables
-Date:   Sat, 2 Nov 2019 15:46:03 +0800
-Message-ID: <20191102074603.38516-1-yuehaibing@huawei.com>
-X-Mailer: git-send-email 2.10.2.windows.1
+        <zhongjiang@huawei.com>
+Subject: [PATCH v3 0/2] wireless: remove unneeded variable and return 0
+Date:   Sat, 2 Nov 2019 16:55:20 +0800
+Message-ID: <1572684922-61805-1-git-send-email-zhongjiang@huawei.com>
+X-Mailer: git-send-email 1.7.12.4
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Originating-IP: [10.133.213.239]
+X-Originating-IP: [10.175.102.37]
 X-CFilter-Loop: Reflected
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-drivers/net/wireless//realtek/rtl818x/rtl8180/rtl8225se.c:83:17: warning: 'rtl8225sez2_tx_power_cck' defined but not used [-Wunused-const-variable=]
-drivers/net/wireless//realtek/rtl818x/rtl8180/rtl8225se.c:79:17: warning: 'rtl8225sez2_tx_power_cck_A' defined but not used [-Wunused-const-variable=]
-drivers/net/wireless//realtek/rtl818x/rtl8180/rtl8225se.c:75:17: warning: 'rtl8225sez2_tx_power_cck_B' defined but not used [-Wunused-const-variable=]
-drivers/net/wireless//realtek/rtl818x/rtl8180/rtl8225se.c:71:17: warning: 'rtl8225sez2_tx_power_cck_ch14' defined but not used [-Wunused-const-variable=]
-drivers/net/wireless//realtek/rtl818x/rtl8180/rtl8225se.c:62:17: warning: 'rtl8225se_tx_power_ofdm' defined but not used [-Wunused-const-variable=]
-drivers/net/wireless//realtek/rtl818x/rtl8180/rtl8225se.c:53:17: warning: 'rtl8225se_tx_power_cck_ch14' defined but not used [-Wunused-const-variable=]
-drivers/net/wireless//realtek/rtl818x/rtl8180/rtl8225se.c:44:17: warning: 'rtl8225se_tx_power_cck' defined but not used [-Wunused-const-variable=]
-drivers/net/wireless//realtek/rtl818x/rtl8180/rtl8225se.c:40:17: warning: 'rtl8225se_tx_gain_cck_ofdm' defined but not used [-Wunused-const-variable=]
+The issue is detected with help of coccinelle.
 
-They are never used, so can be removed.
+v2 -> v3:
+    Remove [PATCH 3/3] of series. Because fappend will use the
+    local variable.  
 
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
----
- .../wireless/realtek/rtl818x/rtl8180/rtl8225se.c   | 42 ----------------------
- 1 file changed, 42 deletions(-)
+v1 -> v2:
+    libipw_qos_convert_ac_to_parameters() make it void.
 
-diff --git a/drivers/net/wireless/realtek/rtl818x/rtl8180/rtl8225se.c b/drivers/net/wireless/realtek/rtl818x/rtl8180/rtl8225se.c
-index 23cd4ff..e1bf41c 100644
---- a/drivers/net/wireless/realtek/rtl818x/rtl8180/rtl8225se.c
-+++ b/drivers/net/wireless/realtek/rtl818x/rtl8180/rtl8225se.c
-@@ -37,53 +37,11 @@ static const u8 cck_ofdm_gain_settings[] = {
- 	0x1e, 0x1f, 0x20, 0x21, 0x22, 0x23,
- };
- 
--static const u8 rtl8225se_tx_gain_cck_ofdm[] = {
--	0x02, 0x06, 0x0e, 0x1e, 0x3e, 0x7e
--};
--
--static const u8 rtl8225se_tx_power_cck[] = {
--	0x18, 0x17, 0x15, 0x11, 0x0c, 0x08, 0x04, 0x02,
--	0x1b, 0x1a, 0x17, 0x13, 0x0e, 0x09, 0x04, 0x02,
--	0x1f, 0x1e, 0x1a, 0x15, 0x10, 0x0a, 0x05, 0x02,
--	0x22, 0x21, 0x1d, 0x18, 0x11, 0x0b, 0x06, 0x02,
--	0x26, 0x25, 0x21, 0x1b, 0x14, 0x0d, 0x06, 0x03,
--	0x2b, 0x2a, 0x25, 0x1e, 0x16, 0x0e, 0x07, 0x03
--};
--
--static const u8 rtl8225se_tx_power_cck_ch14[] = {
--	0x18, 0x17, 0x15, 0x0c, 0x00, 0x00, 0x00, 0x00,
--	0x1b, 0x1a, 0x17, 0x0e, 0x00, 0x00, 0x00, 0x00,
--	0x1f, 0x1e, 0x1a, 0x0f, 0x00, 0x00, 0x00, 0x00,
--	0x22, 0x21, 0x1d, 0x11, 0x00, 0x00, 0x00, 0x00,
--	0x26, 0x25, 0x21, 0x13, 0x00, 0x00, 0x00, 0x00,
--	0x2b, 0x2a, 0x25, 0x15, 0x00, 0x00, 0x00, 0x00
--};
--
--static const u8 rtl8225se_tx_power_ofdm[] = {
--	0x80, 0x90, 0xa2, 0xb5, 0xcb, 0xe4
--};
--
- static const u32 rtl8225se_chan[] = {
- 	0x0080, 0x0100, 0x0180, 0x0200, 0x0280, 0x0300, 0x0380,
- 	0x0400, 0x0480, 0x0500, 0x0580, 0x0600, 0x0680, 0x074A,
- };
- 
--static const u8 rtl8225sez2_tx_power_cck_ch14[] = {
--	0x36, 0x35, 0x2e, 0x1b, 0x00, 0x00, 0x00, 0x00
--};
--
--static const u8 rtl8225sez2_tx_power_cck_B[] = {
--	0x30, 0x2f, 0x29, 0x21, 0x19, 0x10, 0x08, 0x04
--};
--
--static const u8 rtl8225sez2_tx_power_cck_A[] = {
--	0x33, 0x32, 0x2b, 0x23, 0x1a, 0x11, 0x08, 0x04
--};
--
--static const u8 rtl8225sez2_tx_power_cck[] = {
--	0x36, 0x35, 0x2e, 0x25, 0x1c, 0x12, 0x09, 0x04
--};
--
- static const u8 ZEBRA_AGC[] = {
- 	0x7E, 0x7E, 0x7E, 0x7E, 0x7D, 0x7C, 0x7B, 0x7A,
- 	0x79, 0x78, 0x77, 0x76, 0x75, 0x74, 0x73, 0x72,
+zhong jiang (2):
+  ipw2x00: Remove redundant variable "rc"
+  iwlegacy: Remove redundant variable "ret"
+
+ drivers/net/wireless/intel/ipw2x00/libipw_rx.c | 4 +---
+ drivers/net/wireless/intel/iwlegacy/4965-mac.c | 3 +--
+ 2 files changed, 2 insertions(+), 5 deletions(-)
+
 -- 
-2.7.4
-
+1.7.12.4
 
