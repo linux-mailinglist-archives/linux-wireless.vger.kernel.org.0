@@ -2,25 +2,25 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5CF23ECD8C
-	for <lists+linux-wireless@lfdr.de>; Sat,  2 Nov 2019 07:08:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 38C46ECD8D
+	for <lists+linux-wireless@lfdr.de>; Sat,  2 Nov 2019 07:08:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727188AbfKBGIJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 2 Nov 2019 02:08:09 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:37548 "EHLO
+        id S1726593AbfKBGIL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 2 Nov 2019 02:08:11 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:37618 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725820AbfKBGII (ORCPT
+        with ESMTP id S1725820AbfKBGIK (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 2 Nov 2019 02:08:08 -0400
+        Sat, 2 Nov 2019 02:08:10 -0400
 Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 47802615B5; Sat,  2 Nov 2019 06:08:07 +0000 (UTC)
+        id 73672615CB; Sat,  2 Nov 2019 06:08:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1572674887;
-        bh=HyE66F+gwzce2D7r7TYBgc/MJ62ZBGuIU/fpUWrg3qU=;
+        s=default; t=1572674889;
+        bh=htR+KJ6Zg79a6Ej6jVaiaPN3PLb10i3E86p881GBMAY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VX/ddcGRQyUmKhRFMrDArQXgat1dkwk+9QEdZ2shWJ9EXB5tes7YBQ89nKkMn7yCQ
-         esuRCcR3XZZbYFhOrQvP6y3fZ7iCrnBpH1+rblyjyGyyZ+87GgLMghrB0x+FOVTBc3
-         83S4UzbuHGITjBgpoXaln4rSa1Fg24Rs5vE90Fnw=
+        b=HxhQgAFrQaBnP/KGqhpx7mQpTM/Nq2er09J6eSjGkEudUsETUtRFP0E6rf8YAG6sS
+         i6mqHMgw6AnbQ1udDqqTzDgcDNKctEyNM+T3tMY+70JS/zq4etUJsWpazcYm2J9ySw
+         CXeQenfLQudfJDtauvxgGus/XYRuugaTZXktZY8U=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
@@ -31,25 +31,25 @@ Received: from akolli-ThinkPad-L560.qca.qualcomm.com (blr-c-bdr-fw-01_globalnat_
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: tamizhr@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 2CAB861475;
-        Sat,  2 Nov 2019 06:08:04 +0000 (UTC)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 30B7F614E7;
+        Sat,  2 Nov 2019 06:08:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1572674886;
-        bh=HyE66F+gwzce2D7r7TYBgc/MJ62ZBGuIU/fpUWrg3qU=;
+        s=default; t=1572674888;
+        bh=htR+KJ6Zg79a6Ej6jVaiaPN3PLb10i3E86p881GBMAY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XoWp/KXiL6GFNeeZozh2J1dWY2QSI+sp3XoAhsUICw8LKAoZBkCEO1+LYsInhQiL7
-         mP7PSAKfWMq8/xugUYGK3/yj4h/pNR9nequyElFU7aWQ+WMNQoU7B8T2PeqJq4Q1pP
-         RPnZCbvgRLt/j41NWFjvb6JzmPw/avUfITihSN+8=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 2CAB861475
+        b=Qi0nclIltYIgN935BytkEGPnEmLulHvKZ0Kdlgy3zOW510oCPYOby2c0xqf2poSWN
+         WKB6c6b5q+DZfbCayOXuyTltCnVYAk3dcSJm/cO11E8IDwYSuBqHbcdn5b7nwhCyTh
+         dtyh3TjUfd8zrtkY2E0VEE/n92sR4lwdUpEnn8io=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 30B7F614E7
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=tamizhr@codeaurora.org
 From:   Tamizh chelvam <tamizhr@codeaurora.org>
 To:     johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org,
         Tamizh chelvam <tamizhr@codeaurora.org>
-Subject: [PATCHv7 5/6] nl80211: Add netlink attribute to configure TID specific tx rate
-Date:   Sat,  2 Nov 2019 11:37:49 +0530
-Message-Id: <1572674870-23517-6-git-send-email-tamizhr@codeaurora.org>
+Subject: [PATCHv7 6/6] mac80211: Add api to support configuring TID specific configuration
+Date:   Sat,  2 Nov 2019 11:37:50 +0530
+Message-Id: <1572674870-23517-7-git-send-email-tamizhr@codeaurora.org>
 X-Mailer: git-send-email 1.9.1
 In-Reply-To: <1572674870-23517-1-git-send-email-tamizhr@codeaurora.org>
 References: <1572674870-23517-1-git-send-email-tamizhr@codeaurora.org>
@@ -58,284 +58,111 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Introduce NL80211_TID_CONFIG_ATTR_TX_RATES in nl80211_tid_attr_config
-to accept data TID specific TX bitrate configuration
-through NL80211_CMD_SET_TID_CONFIG command. TID for which the
-this configuration is to be applied is passed in
-NL80211_TID_CONFIG_ATTR_TID attribute. TX bitrate mask values passed
-in NL80211_ATTR_TX_RATES attribute and NL80211_TID_CONFIG_ATTR_TX_RATES
-attribute will have types of the TX rate should be applied. This uses
-nl80211_parse_tx_bitrate_mask to validate and calculate the bitrate
-mask. When the user-space wants this configuration peer specific
-rather than being applied for all the connected stations,
-MAC address of the peer can be passed in NL80211_ATTR_MAC attribute.
-
-Driver supporting this feature should advertise
-NL80211_EXT_FEATURE_PER_TID_TX_BITRATE_MASK and supporting per-STA data TID
-TX bitrate configuration should advertise
-NL80211_EXT_FEATURE_PER_STA_TX_BITRATE_MASK.
+Implement drv_set_tid_config api to allow TID specific
+configuration. This per-TID configuration
+will be applied for all the connected stations when MAC is NULL.
 
 Signed-off-by: Tamizh chelvam <tamizhr@codeaurora.org>
 ---
- include/net/cfg80211.h       |    5 +++
- include/uapi/linux/nl80211.h |   39 +++++++++++++++++++++
- net/wireless/nl80211.c       |   79 +++++++++++++++++++++++++++++++++---------
- 3 files changed, 106 insertions(+), 17 deletions(-)
+ include/net/mac80211.h    |    8 ++++++++
+ net/mac80211/cfg.c        |   28 ++++++++++++++++++++++++++++
+ net/mac80211/driver-ops.h |   15 +++++++++++++++
+ 3 files changed, 51 insertions(+)
 
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index deeb1c1..69f4769 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -601,6 +601,7 @@ enum ieee80211_tid_conf_mask {
- 	IEEE80211_TID_CONF_RETRY	= BIT(1),
- 	IEEE80211_TID_CONF_AMPDU	= BIT(2),
- 	IEEE80211_TID_CONF_RTSCTS	= BIT(3),
-+	IEEE80211_TID_CONF_TX_BITRATE	= BIT(4),
- };
- 
- /**
-@@ -613,6 +614,8 @@ enum ieee80211_tid_conf_mask {
-  * @retry_short: retry count value
-  * @ampdu: Enable/Disable aggregation
-  * @rtscts: Enable/Disable RTS/CTS
-+ * @txrate_type: TX bitrate mask type
-+ * @mask: bitrate to be applied for the TID
-  */
- struct ieee80211_tid_cfg {
- 	u8 tid;
-@@ -622,6 +625,8 @@ struct ieee80211_tid_cfg {
- 	int retry_short;
- 	u8 ampdu;
- 	u8 rtscts;
-+	enum nl80211_tx_rate_setting txrate_type;
-+	struct cfg80211_bitrate_mask *mask;
- };
- 
- /**
-diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-index f75f243..034d8ff 100644
---- a/include/uapi/linux/nl80211.h
-+++ b/include/uapi/linux/nl80211.h
-@@ -4696,6 +4696,18 @@ enum nl80211_tx_power_setting {
- };
- 
- /**
-+ * enum nl80211_tx_rate_setting - TX rate configuration type
-+ * @NL80211_TX_RATE_AUTOMATIC: automatically determine TX rate
-+ * @NL80211_TX_RATE_LIMITED: limit the TX rate by the TX rate parameter
-+ * @NL80211_TX_RATE_FIXED: fix TX rate to the TX rate parameter
-+ */
-+enum nl80211_tx_rate_setting {
-+	NL80211_TX_RATE_AUTOMATIC,
-+	NL80211_TX_RATE_LIMITED,
-+	NL80211_TX_RATE_FIXED,
-+};
-+
-+/**
-  * enum nl80211_tid_config - TID config state
-  * @NL80211_TID_CONFIG_DEFAULT: Default config for the TID. This is to
-  *	notify driver to reset the previous config and use vif specific
-@@ -4791,6 +4803,25 @@ enum nl80211_tid_config {
-  *	NL80211_EXT_FEATURE_PER_TID_RTSCTS_CTRL and supporting per station
-  *	RTS_CTS configuration should advertise
-  *	NL80211_EXT_FEATURE_PER_STA_RTSCTS_CTRL.
-+ * @NL80211_TID_CONFIG_ATTR_TX_RATES: Data frame TX rate mask should be applied
-+ *	with the parameters passed through %NL80211_ATTR_TX_RATES. This
-+ *	configuration is per TID, TID is specified with
-+ *	%NL80211_TID_CONFIG_ATTR_TID.
-+ *	If the peer MAC address is passed in %NL80211_ATTR_MAC, then this
-+ *	configuration is applied to the data frame for the tid to that connected
-+ *	station. This attribute will be useful to notfiy the driver that what
-+ *	type of txrate should be applied(%enum enum nl80211_tx_rate_setting)
-+ *	for the connected station (%NL80211_ATTR_MAC),
-+ *	Station specific retry configuration is valid only for STA's
-+ *	current connection. i.e. the configuration will be reset to default when
-+ *	the station connects back after disconnection/roaming.
-+ *	when user-space does not include %NL80211_ATTR_MAC, this configuration
-+ *	should be treated as per-netdev configuration. This configuration will
-+ *	be cleared when the interface goes down and on the disconnection from a
-+ *	BSS. Driver supporting this feature should advertise
-+ *	NL80211_EXT_FEATURE_PER_TID_TX_BITRATE_MASK and supporting per station
-+ *	TX bitrate configuration should advertise
-+ *	NL80211_EXT_FEATURE_PER_STA_TX_BITRATE_MASK.
-  */
- enum nl80211_tid_config_attr {
- 	__NL80211_TID_CONFIG_ATTR_INVALID,
-@@ -4801,6 +4832,8 @@ enum nl80211_tid_config_attr {
- 	NL80211_TID_CONFIG_ATTR_RETRY_LONG,
- 	NL80211_TID_CONFIG_ATTR_AMPDU_CTRL,
- 	NL80211_TID_CONFIG_ATTR_RTSCTS_CTRL,
-+	NL80211_TID_CONFIG_ATTR_TX_RATES_TYPE,
-+	NL80211_TID_CONFIG_ATTR_TX_RATES,
- 
- 	/* keep last */
- 	__NL80211_TID_CONFIG_ATTR_AFTER_LAST,
-@@ -5634,6 +5667,10 @@ enum nl80211_feature_flags {
-  *	RTS_CTS control(enable/disable).
-  * @NL80211_EXT_FEATURE_PER_STA_RTSCTS_CTRL: Driver supports STA specific
-  *	RTS_CTS control(enable/disable).
-+ * @NL80211_EXT_FEATURE_PER_TID_TX_BITRATE_MASK: Driver supports TID specific
-+ *	TX bitrate configuration.
-+ * @NL80211_EXT_FEATURE_PER_STA_TX_BITRATE_MASK: Driver supports STA specific
-+ *	TX bitrate configuration.
+diff --git a/include/net/mac80211.h b/include/net/mac80211.h
+index f599696..017bd44 100644
+--- a/include/net/mac80211.h
++++ b/include/net/mac80211.h
+@@ -3756,6 +3756,10 @@ enum ieee80211_reconfig_type {
   *
-  * @NUM_NL80211_EXT_FEATURES: number of extended features.
-  * @MAX_NL80211_EXT_FEATURES: highest extended feature index.
-@@ -5688,6 +5725,8 @@ enum nl80211_ext_feature_index {
- 	NL80211_EXT_FEATURE_PER_STA_AMPDU_CTRL,
- 	NL80211_EXT_FEATURE_PER_TID_RTSCTS_CTRL,
- 	NL80211_EXT_FEATURE_PER_STA_RTSCTS_CTRL,
-+	NL80211_EXT_FEATURE_PER_TID_TX_BITRATE_MASK,
-+	NL80211_EXT_FEATURE_PER_STA_TX_BITRATE_MASK,
- 
- 	/* add new features before the definition below */
- 	NUM_NL80211_EXT_FEATURES,
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index abce915..cb1f231 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -321,6 +321,18 @@ static int validate_ie_attr(const struct nlattr *attr,
- 		NLA_POLICY_RANGE(NLA_U8, 1, 20),
+  * @start_pmsr: start peer measurement (e.g. FTM) (this call can sleep)
+  * @abort_pmsr: abort peer measurement (this call can sleep)
++ * @set_tid_config: TID specific configurations will be applied for a particular
++ *	station when @sta is non-NULL. When @sta is %NULL, then the
++ *	configuration will be for all the connected clients in the vif.
++ *	This callback may sleep.
+  */
+ struct ieee80211_ops {
+ 	void (*tx)(struct ieee80211_hw *hw,
+@@ -4060,6 +4064,10 @@ struct ieee80211_ops {
+ 			  struct cfg80211_pmsr_request *request);
+ 	void (*abort_pmsr)(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 			   struct cfg80211_pmsr_request *request);
++	int (*set_tid_config)(struct ieee80211_hw *hw,
++			      struct ieee80211_vif *vif,
++			      struct ieee80211_sta *sta,
++			      struct ieee80211_tid_config *tid_conf);
  };
  
-+static const struct nla_policy nl80211_txattr_policy[NL80211_TXRATE_MAX + 1] = {
-+	[NL80211_TXRATE_LEGACY] = { .type = NLA_BINARY,
-+				    .len = NL80211_MAX_SUPP_RATES },
-+	[NL80211_TXRATE_HT] = { .type = NLA_BINARY,
-+				.len = NL80211_MAX_SUPP_HT_RATES },
-+	[NL80211_TXRATE_VHT] = {
-+		.type = NLA_EXACT_LEN_WARN,
-+		.len = sizeof(struct nl80211_txrate_vht),
-+	},
-+	[NL80211_TXRATE_GI] = { .type = NLA_U8 },
-+};
-+
- static const struct nla_policy
- nl80211_tid_config_attr_policy[NL80211_TID_CONFIG_ATTR_MAX + 1] = {
- 	[NL80211_TID_CONFIG_ATTR_TID] = { .type = NLA_U8 },
-@@ -333,6 +345,10 @@ static int validate_ie_attr(const struct nlattr *attr,
- 			NLA_POLICY_MAX(NLA_U8, NL80211_TID_CONFIG_DISABLE),
- 	[NL80211_TID_CONFIG_ATTR_RTSCTS_CTRL] =
- 			NLA_POLICY_MAX(NLA_U8, NL80211_TID_CONFIG_DISABLE),
-+	[NL80211_TID_CONFIG_ATTR_TX_RATES_TYPE] =
-+			NLA_POLICY_MAX(NLA_U8, NL80211_TX_RATE_FIXED),
-+	[NL80211_TID_CONFIG_ATTR_TX_RATES] =
-+			NLA_POLICY_NESTED(nl80211_txattr_policy),
- };
- 
- const struct nla_policy nl80211_policy[NUM_NL80211_ATTR] = {
-@@ -4240,19 +4256,9 @@ static bool vht_set_mcs_mask(struct ieee80211_supported_band *sband,
- 	return true;
+ /**
+diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+index 70739e7..22aa640 100644
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -3942,6 +3942,33 @@ static int ieee80211_get_txq_stats(struct wiphy *wiphy,
+ 	return drv_abort_pmsr(local, sdata, request);
  }
  
--static const struct nla_policy nl80211_txattr_policy[NL80211_TXRATE_MAX + 1] = {
--	[NL80211_TXRATE_LEGACY] = { .type = NLA_BINARY,
--				    .len = NL80211_MAX_SUPP_RATES },
--	[NL80211_TXRATE_HT] = { .type = NLA_BINARY,
--				.len = NL80211_MAX_SUPP_HT_RATES },
--	[NL80211_TXRATE_VHT] = {
--		.type = NLA_EXACT_LEN_WARN,
--		.len = sizeof(struct nl80211_txrate_vht),
--	},
--	[NL80211_TXRATE_GI] = { .type = NLA_U8 },
--};
--
- static int nl80211_parse_tx_bitrate_mask(struct genl_info *info,
-+					 struct nlattr *attrs[],
-+					 enum nl80211_attrs attr,
- 					 struct cfg80211_bitrate_mask *mask)
- {
- 	struct nlattr *tb[NL80211_TXRATE_MAX + 1];
-@@ -4283,14 +4289,14 @@ static int nl80211_parse_tx_bitrate_mask(struct genl_info *info,
- 	}
- 
- 	/* if no rates are given set it back to the defaults */
--	if (!info->attrs[NL80211_ATTR_TX_RATES])
-+	if (!attrs[attr])
- 		goto out;
- 
- 	/* The nested attribute uses enum nl80211_band as the index. This maps
- 	 * directly to the enum nl80211_band values used in cfg80211.
- 	 */
- 	BUILD_BUG_ON(NL80211_MAX_SUPP_HT_RATES > IEEE80211_HT_MCS_MASK_LEN * 8);
--	nla_for_each_nested(tx_rates, info->attrs[NL80211_ATTR_TX_RATES], rem) {
-+	nla_for_each_nested(tx_rates, attrs[attr], rem) {
- 		enum nl80211_band band = nla_type(tx_rates);
- 		int err;
- 
-@@ -4766,7 +4772,9 @@ static int nl80211_start_ap(struct sk_buff *skb, struct genl_info *info)
- 		return -EINVAL;
- 
- 	if (info->attrs[NL80211_ATTR_TX_RATES]) {
--		err = nl80211_parse_tx_bitrate_mask(info, &params.beacon_rate);
-+		err = nl80211_parse_tx_bitrate_mask(info, info->attrs,
-+						    NL80211_ATTR_TX_RATES,
-+						    &params.beacon_rate);
- 		if (err)
- 			return err;
- 
-@@ -10510,7 +10518,8 @@ static int nl80211_set_tx_bitrate_mask(struct sk_buff *skb,
- 	if (!rdev->ops->set_bitrate_mask)
- 		return -EOPNOTSUPP;
- 
--	err = nl80211_parse_tx_bitrate_mask(info, &mask);
-+	err = nl80211_parse_tx_bitrate_mask(info, info->attrs,
-+					    NL80211_ATTR_TX_RATES, &mask);
- 	if (err)
- 		return err;
- 
-@@ -11105,7 +11114,9 @@ static int nl80211_join_mesh(struct sk_buff *skb, struct genl_info *info)
- 	}
- 
- 	if (info->attrs[NL80211_ATTR_TX_RATES]) {
--		err = nl80211_parse_tx_bitrate_mask(info, &setup.beacon_rate);
-+		err = nl80211_parse_tx_bitrate_mask(info, info->attrs,
-+						    NL80211_ATTR_TX_RATES,
-+						    &setup.beacon_rate);
- 		if (err)
- 			return err;
- 
-@@ -13914,6 +13925,40 @@ static int parse_tid_conf(struct cfg80211_registered_device *rdev,
- 			nla_get_u8(attrs[NL80211_TID_CONFIG_ATTR_RTSCTS_CTRL]);
- 	}
- 
-+	if (attrs[NL80211_TID_CONFIG_ATTR_TX_RATES_TYPE]) {
-+		int idx;
-+		enum nl80211_attrs attr;
++static int ieee80211_set_tid_config(struct wiphy *wiphy,
++				    struct net_device *dev,
++				    struct ieee80211_tid_config *tid_conf)
++{
++	struct ieee80211_sub_if_data *sdata = IEEE80211_DEV_TO_SUB_IF(dev);
++	struct sta_info *sta;
++	int ret;
 +
-+		err = nl80211_check_tid_config_support(rdev, extack, peer,
-+				attrs[NL80211_TID_CONFIG_ATTR_TX_RATES_TYPE],
-+				NL80211_EXT_FEATURE_PER_TID_TX_BITRATE_MASK,
-+				NL80211_EXT_FEATURE_PER_STA_TX_BITRATE_MASK);
-+		if (err)
-+			return err;
++	if (!sdata->local->ops->set_tid_config)
++		return -EOPNOTSUPP;
 +
-+		idx = NL80211_TID_CONFIG_ATTR_TX_RATES_TYPE;
-+		tid_conf->txrate_type = nla_get_u8(attrs[idx]);
++	if (!tid_conf->peer)
++		return drv_set_tid_config(sdata->local, sdata, NULL, tid_conf);
 +
-+		tid_conf->tid_conf_mask |= IEEE80211_TID_CONF_TX_BITRATE;
-+		if (tid_conf->txrate_type != NL80211_TX_RATE_AUTOMATIC) {
-+			tid_conf->mask =
-+				kzalloc(sizeof(struct cfg80211_bitrate_mask),
-+					GFP_KERNEL);
-+			if (!tid_conf->mask)
-+				return -ENOMEM;
++	mutex_lock(&sdata->local->sta_mtx);
 +
-+			attr = NL80211_TID_CONFIG_ATTR_TX_RATES;
-+			err = nl80211_parse_tx_bitrate_mask(info, attrs, attr,
-+							    tid_conf->mask);
-+			if (err) {
-+				kfree(tid_conf->mask);
-+				return err;
-+			}
-+		} else {
-+			tid_conf->mask = NULL;
-+		}
++	sta = sta_info_get_bss(sdata, tid_conf->peer);
++	if (!sta) {
++		mutex_unlock(&sdata->local->sta_mtx);
++		return -ENOENT;
 +	}
 +
- 	return 0;
++	ret = drv_set_tid_config(sdata->local, sdata, &sta->sta, tid_conf);
++	mutex_unlock(&sdata->local->sta_mtx);
++	return ret;
++}
++
+ const struct cfg80211_ops mac80211_config_ops = {
+ 	.add_virtual_intf = ieee80211_add_iface,
+ 	.del_virtual_intf = ieee80211_del_iface,
+@@ -4040,4 +4067,5 @@ static int ieee80211_get_txq_stats(struct wiphy *wiphy,
+ 	.start_pmsr = ieee80211_start_pmsr,
+ 	.abort_pmsr = ieee80211_abort_pmsr,
+ 	.probe_mesh_link = ieee80211_probe_mesh_link,
++	.set_tid_config = ieee80211_set_tid_config,
+ };
+diff --git a/net/mac80211/driver-ops.h b/net/mac80211/driver-ops.h
+index 2c9b3eb8..c4954c7 100644
+--- a/net/mac80211/driver-ops.h
++++ b/net/mac80211/driver-ops.h
+@@ -1358,4 +1358,19 @@ static inline void drv_del_nan_func(struct ieee80211_local *local,
+ 	trace_drv_return_void(local);
  }
  
++static inline int drv_set_tid_config(struct ieee80211_local *local,
++				     struct ieee80211_sub_if_data *sdata,
++				     struct ieee80211_sta *sta,
++				     struct ieee80211_tid_config *tid_conf)
++{
++	int ret;
++
++	might_sleep();
++	ret = local->ops->set_tid_config(&local->hw, &sdata->vif, sta,
++					 tid_conf);
++	trace_drv_return_int(local, ret);
++
++	return ret;
++}
++
+ #endif /* __MAC80211_DRIVER_OPS */
 -- 
 1.7.9.5
 
