@@ -2,100 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B27A8ED39F
-	for <lists+linux-wireless@lfdr.de>; Sun,  3 Nov 2019 15:48:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E02CED3B5
+	for <lists+linux-wireless@lfdr.de>; Sun,  3 Nov 2019 16:36:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727708AbfKCOsw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 3 Nov 2019 09:48:52 -0500
-Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:32789 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1727541AbfKCOsw (ORCPT
+        id S1727682AbfKCPgH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 3 Nov 2019 10:36:07 -0500
+Received: from mail-oi1-f196.google.com ([209.85.167.196]:38678 "EHLO
+        mail-oi1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727541AbfKCPgH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 3 Nov 2019 09:48:52 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1572792531;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=dEApro5sP5wB+MyTac09JJfTVmTjYAsOlPQfu4eNumc=;
-        b=HoLsCEPAwnogDTmGijk8vOqQQ3Wgbf5aAYcmVkbKRbr5DM9fuYZ03ptoMvCXBHRdCKIwvt
-        zEhiPfM61babYBI5SBuWDJe2EtQHFhXTM6noXri8d6CZb5mQqupWcg1eZU2UAdiuQ+WJdj
-        3FisWXHeL2mSkZDvv2VBSjHAHsL6wOU=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-71-eS1J5Sj6PBW3hQQQSPBA6A-1; Sun, 03 Nov 2019 09:48:48 -0500
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id E83561005500;
-        Sun,  3 Nov 2019 14:48:46 +0000 (UTC)
-Received: from localhost (ovpn-204-57.brq.redhat.com [10.40.204.57])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 7C9C35D6BE;
-        Sun,  3 Nov 2019 14:48:46 +0000 (UTC)
-Date:   Sun, 3 Nov 2019 15:48:45 +0100
-From:   Stanislaw Gruszka <sgruszka@redhat.com>
-To:     Daniel Golle <daniel@makrotopia.org>
-Cc:     linux-wireless@vger.kernel.org, Roman Yeryomin <roman@advem.lv>,
-        wbob <wbob@jify.de>
-Subject: Re: [PATCH v2] rt2800: remove errornous duplicate condition
-Message-ID: <20191103144844.GB8889@redhat.com>
-References: <20191102154639.GA4589@redhat.com>
- <20191102174701.GA1489@makrotopia.org>
+        Sun, 3 Nov 2019 10:36:07 -0500
+Received: by mail-oi1-f196.google.com with SMTP id v186so12053305oie.5
+        for <linux-wireless@vger.kernel.org>; Sun, 03 Nov 2019 07:36:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc;
+        bh=orWvojcokT0GElJ+Jy5svBGq0U6iJmEd1nn+wFy1Qm4=;
+        b=gzmg8ZplSKhdnNMMMEa4Ry5XC6Fg/RqZo57eP7NLbZXeNXXq34JCO/1StMS/XE0qpn
+         M+xKzgImWOS3mDZ8YWnDPQW+Yu+wDu1H5ayCA7OYSjfbbHb6M4PcHQO1Voy8c8eW8eMt
+         jbY5cJbRmsJ6PPbFAiIgmjZNTckX59wDa9DHQ6S1sqvlxUE0vby8XQsOLckdHzWGvx7L
+         SKT1nZGzU57wSkvB6BHLWNB/Ym3Ybd7OKmGWUC1UCnVgIN6f/NtXHU95cNBfgsNhpbPk
+         grwVP1fqbHANBAfV/HgP0+ZqBuwxpXv/imMCqoLLXv0oX+Jnlf0lxMwKfClI7Ick0qhn
+         vl4Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc;
+        bh=orWvojcokT0GElJ+Jy5svBGq0U6iJmEd1nn+wFy1Qm4=;
+        b=CczG5asYXYfd+87d9HzPeL9ize032iKCV1WxfmNFBBptNc84CuAbJaBj6KcikP3l0K
+         HjTaPH9hdW+bIHz6RkA94+OyoGdvMVELC3vin7wNoA6OmQ16+BjwBQYLFes65uYAcekj
+         TnvbFtPCTYCx/VM1yskSdFXIBli+NVn22c9xZPZbhZN4KlkgA96vF00KfmGwiPHMBOkt
+         RjnECds3qdivyyKBBPFHvEQU9sPBYqPFA/u1KAzizjlZNgxEu/3W5TnBVeeKRnjBz30o
+         djP2649OZmrXMHwxeWF9SaSSwfa1C8f8K9oKSfWzVe5gWTk6D8kFz8SIjIA+DzOfzi31
+         8S0w==
+X-Gm-Message-State: APjAAAVi7pOB1cUZ6WQoes2FxUXSti7qbzPqP8lh1zxxXipFynlUuxhh
+        fnanY2sNSPn829R7ilTGNvT7H4x3GCZ0gPGuN0I=
+X-Google-Smtp-Source: APXvYqyzCjS3eSbQS7p5mE1O0SYjXYtqs7nxGU+tFT8CGvMUUGQQTi26psof/asLi2c6bBtYG4HImkcIf9Jf0Au5CBU=
+X-Received: by 2002:a54:448b:: with SMTP id v11mr11164112oiv.155.1572795365033;
+ Sun, 03 Nov 2019 07:36:05 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <20191102174701.GA1489@makrotopia.org>
-User-Agent: Mutt/1.11.3 (2019-02-01)
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
-X-MC-Unique: eS1J5Sj6PBW3hQQQSPBA6A-1
-X-Mimecast-Spam-Score: 0
-Content-Type: text/plain; charset=WINDOWS-1252
-Content-Transfer-Encoding: quoted-printable
-Content-Disposition: inline
+Received: by 2002:a9d:384:0:0:0:0:0 with HTTP; Sun, 3 Nov 2019 07:36:03 -0800 (PST)
+In-Reply-To: <8c6d531f6474faf4df55f90185466774@codeaurora.org>
+References: <1571734629-18028-1-git-send-email-zhichen@codeaurora.org>
+ <d6cfd945-7bab-a01d-0157-e0e1802f66e3@eero.com> <8c6d531f6474faf4df55f90185466774@codeaurora.org>
+From:   Tom Psyborg <pozega.tomislav@gmail.com>
+Date:   Sun, 3 Nov 2019 16:36:03 +0100
+Message-ID: <CAKR_QV+Qh_ErYduYoD8=u_i-y=cbKSJkkajtKxsJ5ML8-Z79EQ@mail.gmail.com>
+Subject: Re: [PATCH RFC] Revert "ath10k: fix DMA related firmware crashes on
+ multiple devices"
+To:     zhichen@codeaurora.org
+Cc:     Peter Oh <peter.oh@eero.com>, linux-wireless@vger.kernel.org,
+        ath10k@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sat, Nov 02, 2019 at 06:47:01PM +0100, Daniel Golle wrote:
-> On 2019-10-28 06:07, wbob wrote:
-> > Hello Roman,
-> >
-> > while reading around drivers/net/wireless/ralink/rt2x00/rt2800lib.c
-> > I stumbled on what I think is an edit of yours made in error in march
-> > 2017:
-> >
-> > https://github.com/torvalds/linux/commit/41977e86#diff-dae5dc10da180f3b=
-055809a48118e18aR5281
-> >
-> > RT6352 in line 5281 should not have been introduced as the "else if"
-> > below line 5291 can then not take effect for a RT6352 device. Another
-> > possibility is for line 5291 to be not for RT6352, but this seems
-> > very unlikely. Are you able to clarify still after this substantial tim=
-e?
-> >
-> > 5277: static int rt2800_init_registers(struct rt2x00_dev *rt2x00dev)
-> > ...
-> > 5279:  } else if (rt2x00_rt(rt2x00dev, RT5390) ||
-> > 5280:         rt2x00_rt(rt2x00dev, RT5392) ||
-> > 5281:         rt2x00_rt(rt2x00dev, RT6352)) {
-> > ...
-> > 5291:  } else if (rt2x00_rt(rt2x00dev, RT6352)) {
-> > ...
->=20
-> Hence remove errornous line 5281 to make the driver actually
-> execute the correct initialization routine for MT7620 chips.
->=20
-> As it was requested by Stanislaw Gruszka remove setting values of
-> MIMO_PS_CFG and TX_PIN_CFG. MIMO_PS_CFG is responsible for MIMO
-> power-safe mode (which is disabled), hence we can drop setting it.
-> TX_PIN_CFG is set correctly in other functions, and as setting this
-> value breaks some devices, rather don't set it here during init, but
-> only modify it later on.
->=20
-> Fixes: 41977e86c984 ("rt2x00: add support for MT7620")
-> Reported-by: wbob <wbob@jify.de>
-> Reported-by: Roman Yeryomin <roman@advem.lv>
-> Signed-off-by: Daniel Golle <daniel@makrotopia.org>
+On 30/10/2019, zhichen@codeaurora.org <zhichen@codeaurora.org> wrote:
+> On 2019-10-23 01:16, Peter Oh wrote:
+>>
+>> How can you say value 0 (I believe it's 64 bytes) DMA burst size
+>> causes the symptom and 1 fixes it?
+>>
+>> Peter
+>
+> Confirmed from HW team that the configuration controls AXI burst size of
+> the RD/WR access to the HOST MEM.
+> 0-	No split , RAW read/write transfer size from MAC is put out on bus as
+> burst length.
+> 1-	Split at 256 byte boundary
+> 2,3- Reserved
+>
+> That's why we see issue with value 0.
+>
+> Zhi
+>
+> _______________________________________________
+> ath10k mailing list
+> ath10k@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/ath10k
+>
 
-Acked-by: Stanislaw Gruszka <sgruszka@redhat.com>
+is this true for both wave1 and wave2 ? at least per this commit
+message: ath10k: Fix DMA burst size
+it's suppose to be:
 
+0 - 128B max (not sure if this means 128B static, or any size between 0 and 128)
+1 - 256B
