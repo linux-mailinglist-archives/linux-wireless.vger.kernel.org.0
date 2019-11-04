@@ -2,75 +2,87 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 63DBFEDDF0
-	for <lists+linux-wireless@lfdr.de>; Mon,  4 Nov 2019 12:48:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C97C1EDFBC
+	for <lists+linux-wireless@lfdr.de>; Mon,  4 Nov 2019 13:09:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728554AbfKDLsM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 4 Nov 2019 06:48:12 -0500
-Received: from mail-oi1-f193.google.com ([209.85.167.193]:38827 "EHLO
-        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727236AbfKDLsM (ORCPT
+        id S1728138AbfKDMJq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 4 Nov 2019 07:09:46 -0500
+Received: from smtp.codeaurora.org ([198.145.29.96]:41876 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726100AbfKDMJq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 4 Nov 2019 06:48:12 -0500
-Received: by mail-oi1-f193.google.com with SMTP id v186so13809398oie.5
-        for <linux-wireless@vger.kernel.org>; Mon, 04 Nov 2019 03:48:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc;
-        bh=Dr7oAL69aankbuJ24G/tUcey4nEuOKiFOYmzHHjEyQ0=;
-        b=OXTECYhtoBcNOyTAy5gxO/nqmzYXjz96+YkyvTsFIsEevPZYFi1Gg/vGmzL015xQ21
-         6I7aYfI0Qz40nso9wdDZYMhIXmdjYo92JyVhI70+gZomZmTYkC7cNy+iaD0uG9qG0hoQ
-         ejRYS4dhkPPS386oWRDGdzEpxCL6ojXGo3z7Pc2ldDs/4Q2FbvtQY5CjRTy54ZQcTaKd
-         HyeaoZWRMJCRAlOm6ZgP0WLt65vYSH/mYEY5EaG435g57Ik+I6T8e8B05NNHpTVZ2S6o
-         fYuMcL2AubwA1Zx174bXpn1mqB3mHhrrL6ggEnH5TuN13uFetM/igUbKQIVk5/lOQ83I
-         /yjg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc;
-        bh=Dr7oAL69aankbuJ24G/tUcey4nEuOKiFOYmzHHjEyQ0=;
-        b=Qt0BkX0ub+8QhUs6ylDbQVlMpqweEhmAnipDgT2rr8epK1G7ogTRC27b/bqG/ZeAXD
-         rX9opOa4NCIB2cjUc6lLdA2GUS37scGyjhbbF1f3X6OFuJr5gnRnN9V8/9mEjIH5tOnj
-         a4D2o3vOV67oFwtdnr6UBPJ9PzZh64RzhERwzuhCQmcYXceI5Q6IVieNY65+UaXTjtgc
-         IkHgVyXzmB48Ku7FqItOyWb7tSck4tSEYWT+YfZRR/jM/SxpDbeT1FW8JrwTX39iah6q
-         KYhyMM7WslLPFsLpbvLI+7wcg2B7Y72jUB2OcwKN6fdh/nMQB4F/m2ZfdJcU1WHR/0U/
-         G8PA==
-X-Gm-Message-State: APjAAAVtgKAjtIxYKrwS9lAfxW3T0y5NQd9LsnKnGPaGwdPM9k15Ygho
-        RGaZ0l+FQDTrXfYcqOTDs0PNryolTm9AxCgHjhU=
-X-Google-Smtp-Source: APXvYqzMgMOxU/HtT9DxZZGB0qBsSUSFE7dBpzrhTy/1bFhaZ+l6VaOFDGEOOwJ3EYNx1u9LQ2vLbQ6Gab8KYL4WkxI=
-X-Received: by 2002:a54:448b:: with SMTP id v11mr28402oiv.155.1572868090051;
- Mon, 04 Nov 2019 03:48:10 -0800 (PST)
-MIME-Version: 1.0
-Received: by 2002:a9d:384:0:0:0:0:0 with HTTP; Mon, 4 Nov 2019 03:48:08 -0800 (PST)
-In-Reply-To: <20191104090058.GA1258@makrotopia.org>
-References: <20191028212244.GA2590@makrotopia.org> <20191029091857.GB3571@redhat.com>
- <20191029100503.GA1228@makrotopia.org> <20191102154639.GA4589@redhat.com>
- <20191102174227.GA1250@makrotopia.org> <20191103144749.GA8889@redhat.com>
- <CAKR_QV+LkUU2+G7z8um7RpSbi0ANfRGe_TeoGky+U9ff=8sOZA@mail.gmail.com>
- <20191104084823.GA2306@redhat.com> <20191104090058.GA1258@makrotopia.org>
-From:   Tom Psyborg <pozega.tomislav@gmail.com>
-Date:   Mon, 4 Nov 2019 12:48:08 +0100
-Message-ID: <CAKR_QV+8+E78UXkmL7+ZwitBXPww5aje2u+vVXpnVFxFJb7ydA@mail.gmail.com>
-Subject: Re: [PATCH] rt2800: remove erroneous duplicate condition
-To:     Daniel Golle <daniel@makrotopia.org>
-Cc:     Stanislaw Gruszka <sgruszka@redhat.com>,
-        linux-wireless@vger.kernel.org, Roman Yeryomin <roman@advem.lv>,
-        wbob <wbob@jify.de>
-Content-Type: text/plain; charset="UTF-8"
+        Mon, 4 Nov 2019 07:09:46 -0500
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 1694E60AD0; Mon,  4 Nov 2019 12:09:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1572869385;
+        bh=TB4qTSppkKqHCkkwbgsFfBaUYqjEXor2+8Hu0Nhn5YQ=;
+        h=From:To:Cc:Subject:Date:From;
+        b=EfrvT4HZLPUUEj3h/Bpw57Q4HCwg8BGlKgAAMsRe0uvXyk/Z79AtmkjnWVjXx+Z4Z
+         TfjBHrnFjN0JdvkRnvQmx0098oHwCHVUXJCJXVTXkE4SfUX3zzhLlZCMDowfhROoiH
+         Lbip6+MUpH6Epp9MvrQuY+WwahCbd/EV1AZtnR+s=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from murugana-linux.qualcomm.com (blr-c-bdr-fw-01_globalnat_allzones-outside.qualcomm.com [103.229.19.19])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: murugana@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 177C7603A3;
+        Mon,  4 Nov 2019 12:09:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1572869384;
+        bh=TB4qTSppkKqHCkkwbgsFfBaUYqjEXor2+8Hu0Nhn5YQ=;
+        h=From:To:Cc:Subject:Date:From;
+        b=j2xzjm0ZO/IYimHOE4/n8veF8wolfiPWEZE8fwj3S+BRsv1cB5Q0fQcAA3M0Vo2Wq
+         jIB+Z4YSmQgHrCLtGB9ycgyxeumA6TBpg2mAFONCbhuPtx1Lto2FwZf5FIBpWoqSeN
+         R1iXu/rhMHSip1LYyA61j3dyJ5D0V58V9qf+PcOA=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 177C7603A3
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=murugana@codeaurora.org
+From:   Sathishkumar Muruganandam <murugana@codeaurora.org>
+To:     johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org, ath11k@lists.infradead.org
+Subject: [PATCH v2 0/2] add Wide Band Scan support
+Date:   Mon,  4 Nov 2019 17:39:32 +0530
+Message-Id: <1572869374-9635-1-git-send-email-murugana@codeaurora.org>
+X-Mailer: git-send-email 2.7.4
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 04/11/2019, Daniel Golle <daniel@makrotopia.org> wrote:
->
-> ePA/eLNA is available mostly in markets which allow higher TX power.
-> ePA/iLNA haven't seen it yet, but theoretically possible.
->
+Wide Band Scan allows to perform off-channel scan on requested channel/
+frequency along with corresponding phy mode/bandwidth (40Mhz, 80Mhz).
 
-ePA/eLNA design can be done in different ways:
-1. using separate chips for TX path (PA), RX path (LNA) and switch
-2. using combo chip for all functions. in this case you can configure
-chip's LNA setting to bypass mode, effectively switching it to
-ePA/iLNA mode
+Below are use cases of Wide Band Scan,
+
+1. In case of phy running both AP and monitor vifs, wide band scan on
+   a different channel along with phymode (40Mhz, 80Mhz) captures
+   those off-channel data frames to monitor vif.
+
+2. Doing wide band scan instead of normal 20Mhz scan before spectral
+   dump, allows to fetch FFT reports for the complete requested
+   bandwidth (40Mhz, 80Mhz).
+
+Sathishkumar Muruganandam (2):
+  nl80211: add Wide Band Scan support
+
+ include/net/cfg80211.h       |  2 ++
+ include/uapi/linux/nl80211.h |  7 +++++
+ net/mac80211/scan.c          |  2 ++
+ net/wireless/nl80211.c       | 68 ++++++++++++++++++++++++++++----------------
+ 4 files changed, 55 insertions(+), 24 deletions(-)
+
+  ath11k: add Wide Band Scan support
+
+ drivers/net/wireless/ath/ath11k/mac.c |  41 ++++++++++--
+ drivers/net/wireless/ath/ath11k/wmi.c | 115 +++++++++++++++++++++++++++++++---
+ drivers/net/wireless/ath/ath11k/wmi.h |  34 +++++++++-
+ 3 files changed, 175 insertions(+), 15 deletions(-)
+
+-- 
+2.7.4
