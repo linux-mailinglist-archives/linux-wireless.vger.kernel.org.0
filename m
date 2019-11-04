@@ -2,73 +2,58 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 80DFBEE17A
-	for <lists+linux-wireless@lfdr.de>; Mon,  4 Nov 2019 14:46:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B91DEE187
+	for <lists+linux-wireless@lfdr.de>; Mon,  4 Nov 2019 14:51:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727998AbfKDNqG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 4 Nov 2019 08:46:06 -0500
-Received: from smail.rz.tu-ilmenau.de ([141.24.186.67]:35871 "EHLO
-        smail.rz.tu-ilmenau.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727663AbfKDNqG (ORCPT
+        id S1728965AbfKDNv0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 4 Nov 2019 08:51:26 -0500
+Received: from fudo.makrotopia.org ([185.142.180.71]:52379 "EHLO
+        fudo.makrotopia.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727663AbfKDNv0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 4 Nov 2019 08:46:06 -0500
-Received: from thunderstorm.prakinf.tu-ilmenau.de (thunderstorm.prakinf.tu-ilmenau.de [141.24.212.108])
-        by smail.rz.tu-ilmenau.de (Postfix) with ESMTPA id E88A058006E;
-        Mon,  4 Nov 2019 14:46:04 +0100 (CET)
-From:   Markus Theil <markus.theil@tu-ilmenau.de>
-To:     nbd@nbd.name
-Cc:     lorenzo.bianconi@redhat.com, sgruszka@redhat.com,
-        linux-wireless@vger.kernel.org,
-        Markus Theil <markus.theil@tu-ilmenau.de>
-Subject: [PATCH] mt76: disable softirqs while calling ieee80211_rx_napi
-Date:   Mon,  4 Nov 2019 14:45:40 +0100
-Message-Id: <20191104134540.19199-1-markus.theil@tu-ilmenau.de>
-X-Mailer: git-send-email 2.17.1
+        Mon, 4 Nov 2019 08:51:26 -0500
+Received: from local
+        by fudo.makrotopia.org with esmtpsa (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
+         (Exim 4.92.2)
+        (envelope-from <daniel@makrotopia.org>)
+        id 1iRclN-0004YY-41; Mon, 04 Nov 2019 14:51:21 +0100
+Date:   Mon, 4 Nov 2019 14:48:18 +0100
+From:   Daniel Golle <daniel@makrotopia.org>
+To:     Stanislaw Gruszka <sgruszka@redhat.com>
+Cc:     Tom Psyborg <pozega.tomislav@gmail.com>,
+        linux-wireless@vger.kernel.org, Roman Yeryomin <roman@advem.lv>,
+        wbob <wbob@jify.de>
+Subject: Re: [PATCH] rt2800: remove erroneous duplicate condition
+Message-ID: <20191104134818.GA4107@makrotopia.org>
+References: <20191028212244.GA2590@makrotopia.org>
+ <20191029091857.GB3571@redhat.com>
+ <20191029100503.GA1228@makrotopia.org>
+ <20191102154639.GA4589@redhat.com>
+ <20191102174227.GA1250@makrotopia.org>
+ <20191103144749.GA8889@redhat.com>
+ <CAKR_QV+LkUU2+G7z8um7RpSbi0ANfRGe_TeoGky+U9ff=8sOZA@mail.gmail.com>
+ <20191104084823.GA2306@redhat.com>
+ <20191104090058.GA1258@makrotopia.org>
+ <20191104091525.GB2306@redhat.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191104091525.GB2306@redhat.com>
+User-Agent: Mutt/1.12.2 (2019-09-21)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-mac80211 assumes ieee80211_rx_napi to be called with disabled softirqs.
+On Mon, Nov 04, 2019 at 10:15:26AM +0100, Stanislaw Gruszka wrote:
+> > See:
+> > https://apps.fcc.gov/eas/GetApplicationAttachment.html?id=2241504
+> 
+> I get 'You are not authorized to access this page.' :-/
 
-ieee80211_rx_napi in mac80211.c can be called from aggregation reordering work queue
-or from mt76_rx_poll_complete. mt76_rx_poll_complete does currently not disable softirq
-processing.
+Sorry for that. Seems like FCC doesn't like their content to be linked
+by 3rd parties...
 
-This patch fixes this by disabling softirqs before calling ieee80211_rx_napi.
-It should be no problem to disable them twice, if mt76_aggr_reorder_work calls ieee80211_rx_napi
-and has already called local_bh_disable, as local_bh_disable/local_bh_enable are reentrant.
-
-I became aware of this issue by the following dmesg output:
-  NOHZ: local_softirq_pending 08
-
-Signed-off-by: Markus Theil <markus.theil@tu-ilmenau.de>
----
- drivers/net/wireless/mediatek/mt76/mac80211.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/wireless/mediatek/mt76/mac80211.c
-index 1a2c143b34d0..43c050660fc7 100644
---- a/drivers/net/wireless/mediatek/mt76/mac80211.c
-+++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
-@@ -628,7 +628,7 @@ void mt76_rx_complete(struct mt76_dev *dev, struct sk_buff_head *frames,
- 	struct ieee80211_sta *sta;
- 	struct sk_buff *skb;
-
--	spin_lock(&dev->rx_lock);
-+	spin_lock_bh(&dev->rx_lock);
- 	while ((skb = __skb_dequeue(frames)) != NULL) {
- 		if (mt76_check_ccmp_pn(skb)) {
- 			dev_kfree_skb(skb);
-@@ -638,7 +638,7 @@ void mt76_rx_complete(struct mt76_dev *dev, struct sk_buff_head *frames,
- 		sta = mt76_rx_convert(skb);
- 		ieee80211_rx_napi(dev->hw, sta, skb, napi);
- 	}
--	spin_unlock(&dev->rx_lock);
-+	spin_unlock_bh(&dev->rx_lock);
- }
-
- void mt76_rx_poll_complete(struct mt76_dev *dev, enum mt76_rxq_id q,
---
-2.20.1
+Try this and use links to internal photos:
+https://fcc.io/N28/WT3020H
 
