@@ -2,167 +2,105 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 43BF1EFD68
-	for <lists+linux-wireless@lfdr.de>; Tue,  5 Nov 2019 13:42:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5455CEFF6B
+	for <lists+linux-wireless@lfdr.de>; Tue,  5 Nov 2019 15:07:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388659AbfKEMmE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 5 Nov 2019 07:42:04 -0500
-Received: from smtp.codeaurora.org ([198.145.29.96]:34858 "EHLO
+        id S2389475AbfKEOHD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 5 Nov 2019 09:07:03 -0500
+Received: from smtp.codeaurora.org ([198.145.29.96]:55822 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388649AbfKEMmE (ORCPT
+        with ESMTP id S2389464AbfKEOHD (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 5 Nov 2019 07:42:04 -0500
+        Tue, 5 Nov 2019 09:07:03 -0500
 Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 0095161491; Tue,  5 Nov 2019 12:42:03 +0000 (UTC)
+        id E8E8261820; Tue,  5 Nov 2019 14:07:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1572957724;
-        bh=htR+KJ6Zg79a6Ej6jVaiaPN3PLb10i3E86p881GBMAY=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OVMyPmdYO5kaymcJEqiY00cLhF1MftMPXbDEs/oDMVtXw5c/xs7rVW0JBv/fEkzxy
-         Kd6Ocp/sdLA5tGmXk3xNldKPcLgS36RemK0MpAiiXLxmA7nIm/73b7Qkx3OenpkPs8
-         aIgYKdrRSRscHx7i8Fdtj5x0N1uMqmjrzxuZvfEc=
+        s=default; t=1572962822;
+        bh=5eK7eD8/aVzx8DFNzSBXyfMRRhc9q3D7JteLV+ayqgw=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=Jd0lb1oCgUlnGCpyWErcRKLjfWWSPqJ9fOWXLq1BEt4F9TYkpf8D/S84Omhnecn/X
+         o3N9X9omMfTy4LNZxiZd15NqD2q2P8NhI2WBVsnWbArBDRSX3dsyrrkib8NN4+JLCL
+         3bn3BtdpBfR+/0GiRm5pPJGx7a4LcuAR8dDGDeLs=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
 X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
         DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
         version=3.4.0
-Received: from akolli-ThinkPad-L560.qca.qualcomm.com (blr-c-bdr-fw-01_globalnat_allzones-outside.qualcomm.com [103.229.19.19])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        (Authenticated sender: tamizhr@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 14BFF6148C;
-        Tue,  5 Nov 2019 12:42:01 +0000 (UTC)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 5A10C61817;
+        Tue,  5 Nov 2019 14:06:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1572957723;
-        bh=htR+KJ6Zg79a6Ej6jVaiaPN3PLb10i3E86p881GBMAY=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Uob5cGi/WryQ6R7sB2JFrWelfsgS3gxGkuTJnIXhX4j9zw/BXHaAYWuOgtyRF7/jJ
-         r8GDJIM6wV39ZTJNO9ToPZxUPihZVCMRWOZCZ02YazxinLPcB+yaKm5/6Ne4Zd5Uo5
-         NT7KJyHZ0fih/SKOBozYcupPBhJZd1YSgU9TL+8Y=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 14BFF6148C
+        s=default; t=1572962819;
+        bh=5eK7eD8/aVzx8DFNzSBXyfMRRhc9q3D7JteLV+ayqgw=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=OqLTZIHPCqtMPeBQrZIYpRJRwbLUPzL1Cm0klIUcmyLUmMobyDmtzYlfNRyVLOyvL
+         SefqPWiCfx4ogxXOek+LJs7GIITriRcEFjM4tEI2C7J8siItEF58233xFw6OkGdnTd
+         TIPK5baOlRjnA+hgSeW3knla/K0KuPIwkG1jW73A=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 5A10C61817
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=tamizhr@codeaurora.org
-From:   Tamizh chelvam <tamizhr@codeaurora.org>
-To:     johannes@sipsolutions.net
-Cc:     linux-wireless@vger.kernel.org,
-        Tamizh chelvam <tamizhr@codeaurora.org>
-Subject: [PATCHv8 6/6] mac80211: Add api to support configuring TID specific configuration
-Date:   Tue,  5 Nov 2019 18:11:54 +0530
-Message-Id: <1572957714-16085-7-git-send-email-tamizhr@codeaurora.org>
-X-Mailer: git-send-email 1.9.1
-In-Reply-To: <1572957714-16085-1-git-send-email-tamizhr@codeaurora.org>
-References: <1572957714-16085-1-git-send-email-tamizhr@codeaurora.org>
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Stanislaw Gruszka <sgruszka@redhat.com>
+Cc:     Petr =?utf-8?Q?=C5=A0tetiar?= <ynezz@true.cz>,
+        linux-wireless@vger.kernel.org, Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
+        Ryder Lee <ryder.lee@mediatek.com>, Roy Luo <royluo@google.com>
+Subject: Re: [PATCH] Revert "mt76: mt76x0e: don't use hw encryption for MT7630E"
+References: <1572860780-2403-1-git-send-email-sgruszka@redhat.com>
+        <87eeymd98m.fsf@tynnyri.adurom.net> <20191105090043.GB4422@redhat.com>
+        <20191105090845.GP22393@meh.true.cz>
+        <20191105095226.GC4422@redhat.com>
+Date:   Tue, 05 Nov 2019 16:06:54 +0200
+In-Reply-To: <20191105095226.GC4422@redhat.com> (Stanislaw Gruszka's message
+        of "Tue, 5 Nov 2019 10:52:27 +0100")
+Message-ID: <875zjy76yp.fsf@kamboji.qca.qualcomm.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Implement drv_set_tid_config api to allow TID specific
-configuration. This per-TID configuration
-will be applied for all the connected stations when MAC is NULL.
+Stanislaw Gruszka <sgruszka@redhat.com> writes:
 
-Signed-off-by: Tamizh chelvam <tamizhr@codeaurora.org>
----
- include/net/mac80211.h    |    8 ++++++++
- net/mac80211/cfg.c        |   28 ++++++++++++++++++++++++++++
- net/mac80211/driver-ops.h |   15 +++++++++++++++
- 3 files changed, 51 insertions(+)
+> On Tue, Nov 05, 2019 at 10:08:45AM +0100, Petr =C5=A0tetiar wrote:
+>> Stanislaw Gruszka <sgruszka@redhat.com> [2019-11-05 10:00:44]:
+>>=20
+>> Hi,
+>>=20
+>> > I provided the topic in the first reference of the commit at the top.
+>> > Should I do this anytime in the chenglog when a commit is referenced,
+>> > even if it's done already ?
+>>=20
+>>  ./scripts/checkpatch.pl
+>> 0001-Revert-mt76-mt76x0e-don-t-use-hw-encryption-for-MT76.patch
+>>  ERROR: Please use git commit description style 'commit <12+ chars
+>> of sha1> ("<title line>")' - ie: 'commit 7bd0650be63c ("mt76: dma:
+>> fix buffer unmap with non-linear skbs")'
+>>  #8:=20
+>>  Since 7bd0650be63c ("mt76: dma: fix buffer unmap with non-linear skbs")
+>
+> Okay, so I should add word 'commit' before HASH.
+>
+>>  ERROR: Please use git commit description style 'commit <12+ chars
+>> of sha1> ("<title line>")' - ie: 'commit 7bd0650be63c ("mt76: dma:
+>> fix buffer unmap with non-linear skbs")'
+>>  #14:=20
+>>  fixed by 7bd0650be63c , we can enable HW encryption back.
+>
+> It's not clear if topic is need, but I can change it on the way.
+> BTW I hate checkpath.pl .
 
-diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index f599696..017bd44 100644
---- a/include/net/mac80211.h
-+++ b/include/net/mac80211.h
-@@ -3756,6 +3756,10 @@ enum ieee80211_reconfig_type {
-  *
-  * @start_pmsr: start peer measurement (e.g. FTM) (this call can sleep)
-  * @abort_pmsr: abort peer measurement (this call can sleep)
-+ * @set_tid_config: TID specific configurations will be applied for a particular
-+ *	station when @sta is non-NULL. When @sta is %NULL, then the
-+ *	configuration will be for all the connected clients in the vif.
-+ *	This callback may sleep.
-  */
- struct ieee80211_ops {
- 	void (*tx)(struct ieee80211_hw *hw,
-@@ -4060,6 +4064,10 @@ struct ieee80211_ops {
- 			  struct cfg80211_pmsr_request *request);
- 	void (*abort_pmsr)(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 			   struct cfg80211_pmsr_request *request);
-+	int (*set_tid_config)(struct ieee80211_hw *hw,
-+			      struct ieee80211_vif *vif,
-+			      struct ieee80211_sta *sta,
-+			      struct ieee80211_tid_config *tid_conf);
- };
- 
- /**
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index 70739e7..22aa640 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -3942,6 +3942,33 @@ static int ieee80211_get_txq_stats(struct wiphy *wiphy,
- 	return drv_abort_pmsr(local, sdata, request);
- }
- 
-+static int ieee80211_set_tid_config(struct wiphy *wiphy,
-+				    struct net_device *dev,
-+				    struct ieee80211_tid_config *tid_conf)
-+{
-+	struct ieee80211_sub_if_data *sdata = IEEE80211_DEV_TO_SUB_IF(dev);
-+	struct sta_info *sta;
-+	int ret;
-+
-+	if (!sdata->local->ops->set_tid_config)
-+		return -EOPNOTSUPP;
-+
-+	if (!tid_conf->peer)
-+		return drv_set_tid_config(sdata->local, sdata, NULL, tid_conf);
-+
-+	mutex_lock(&sdata->local->sta_mtx);
-+
-+	sta = sta_info_get_bss(sdata, tid_conf->peer);
-+	if (!sta) {
-+		mutex_unlock(&sdata->local->sta_mtx);
-+		return -ENOENT;
-+	}
-+
-+	ret = drv_set_tid_config(sdata->local, sdata, &sta->sta, tid_conf);
-+	mutex_unlock(&sdata->local->sta_mtx);
-+	return ret;
-+}
-+
- const struct cfg80211_ops mac80211_config_ops = {
- 	.add_virtual_intf = ieee80211_add_iface,
- 	.del_virtual_intf = ieee80211_del_iface,
-@@ -4040,4 +4067,5 @@ static int ieee80211_get_txq_stats(struct wiphy *wiphy,
- 	.start_pmsr = ieee80211_start_pmsr,
- 	.abort_pmsr = ieee80211_abort_pmsr,
- 	.probe_mesh_link = ieee80211_probe_mesh_link,
-+	.set_tid_config = ieee80211_set_tid_config,
- };
-diff --git a/net/mac80211/driver-ops.h b/net/mac80211/driver-ops.h
-index 2c9b3eb8..c4954c7 100644
---- a/net/mac80211/driver-ops.h
-+++ b/net/mac80211/driver-ops.h
-@@ -1358,4 +1358,19 @@ static inline void drv_del_nan_func(struct ieee80211_local *local,
- 	trace_drv_return_void(local);
- }
- 
-+static inline int drv_set_tid_config(struct ieee80211_local *local,
-+				     struct ieee80211_sub_if_data *sdata,
-+				     struct ieee80211_sta *sta,
-+				     struct ieee80211_tid_config *tid_conf)
-+{
-+	int ret;
-+
-+	might_sleep();
-+	ret = local->ops->set_tid_config(&local->hw, &sdata->vif, sta,
-+					 tid_conf);
-+	trace_drv_return_int(local, ret);
-+
-+	return ret;
-+}
-+
- #endif /* __MAC80211_DRIVER_OPS */
--- 
-1.7.9.5
+checkpatch gives only hints, it's perfectly ok to ignore warnings which
+don't make sense. So no need to change anything in this case as you have
+provided the title already earlier in the commit log.
 
+--=20
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
+hes
