@@ -2,73 +2,102 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3DD1BF040B
-	for <lists+linux-wireless@lfdr.de>; Tue,  5 Nov 2019 18:26:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A3BBF057A
+	for <lists+linux-wireless@lfdr.de>; Tue,  5 Nov 2019 19:56:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388790AbfKERZv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 5 Nov 2019 12:25:51 -0500
-Received: from mail.kernel.org ([198.145.29.99]:50852 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730895AbfKERZv (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 5 Nov 2019 12:25:51 -0500
-Received: from localhost (unknown [62.119.166.9])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 94142214B2;
-        Tue,  5 Nov 2019 17:25:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1572974750;
-        bh=N7w8Age/S1L622Rz8RbBU6vyXF/UF4h5r5mKG0dYiRw=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=mmaPqWoH4jiRDUyASGcNfkVGttSk8WUcOyPKfY7xVkHVe5IAH+7tS/bqC5do51a8X
-         ZZ1XKVaauQ085Uh/kEDH88NpgJxEQiRPV+D44L/IWDc11U6kwQbxsrNcEDerfn4Awj
-         dJRm04jMaKluVkZ5IW9+mtbEQtTCSo5h0qj7+L6k=
-Date:   Tue, 5 Nov 2019 18:25:25 +0100
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Marcel Holtmann <marcel@holtmann.org>
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        "David S. Miller" <davem@davemloft.net>,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org
-Subject: Re: [PATCH] rfkill: allocate static minor
-Message-ID: <20191105172525.GA2851576@kroah.com>
-References: <20191024174042.19851-1-marcel@holtmann.org>
- <20191024184408.GA260560@kroah.com>
- <B457050C-18F5-4171-A8A1-4CE95D908FAA@holtmann.org>
+        id S2390783AbfKES4E (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 5 Nov 2019 13:56:04 -0500
+Received: from mail-il1-f195.google.com ([209.85.166.195]:46796 "EHLO
+        mail-il1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2390651AbfKES4E (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 5 Nov 2019 13:56:04 -0500
+Received: by mail-il1-f195.google.com with SMTP id m16so19167735iln.13;
+        Tue, 05 Nov 2019 10:56:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=Q4QMP1XKSjtkVM9T6Z5fSOGqwrDB5TCfhLz+dELwQ+M=;
+        b=ECg4WObD2x2JVp7Q91KmRUxmu26g5kseXwPnkE4USkqv5SUYIjOtTfYRO1rGdmH+XX
+         6rwKUe2tZe0eobzgVNVKhHztwi0zXxE/nrHcEPWinEyLwNPGPGCJznGUIxsRItZ4tL4f
+         r/GZps/9xCOznJoYQ7W1UlR45+8NrtZvpSxboQ4ZRIWXq9CRmdIgGouhUlsDo1Jb5DS5
+         XuH7/zrwE/CFoW9//Wd6q+dfuE42/iPjU0vfzm/OySXDxLmFMKKCSCIL+IEJOZIHBmgs
+         PuffsEZZAmswbvqCpLUq5TU+2rxfXRqH9e8aCt9xViO3AELEqO+XlHKLdYINhvOGrQrf
+         UbIw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:content-transfer-encoding;
+        bh=Q4QMP1XKSjtkVM9T6Z5fSOGqwrDB5TCfhLz+dELwQ+M=;
+        b=GF2joOmxA+uODKhQ8SGBA+NNw6iSqq/JSFWinLajp8zwKG1ie6E3SQoKaRUMzUJipV
+         +jYticGYld0WNcbHCONU+f5QYvJCEy89eHIPT2T5K4LoViW3/EZTy68UXtLF9Noe/w8n
+         E8uBIAueTT6ZqnVFHDG8/LmPuLOC41gGWr51j22VboYCcjkYsn51/y7O7L0xqe2BhjL2
+         RiEegsmxsAg4AuXnQ0Fm0xg6r765V1g7BZ33QvHB45LqPiR2EnfV9hPTG7UBHkHA/P8e
+         10/ocMiljKJrD92uQ3nZpo6DfgIoYF9o4Vn8zL59cC0VMGfQc2H22uaEiCKrbUGSoN5Z
+         Os3Q==
+X-Gm-Message-State: APjAAAVbC9YuUl+O5hE4GTIlCpqsFLQR6w1nv+ye/NYMbC6o7/9zN3fk
+        JOi2M0hZx2CO390y1lzGzsdmpiji8h+2sK3fVKdiJA==
+X-Google-Smtp-Source: APXvYqwQF6NW94QxUEE3/jn49LPRcb14vjzeddmSTd9hwdvv8wms+Aj2diAx+RQ622y8YYEClNbbgdw/dGTgJUhfEwM=
+X-Received: by 2002:a92:7e18:: with SMTP id z24mr15707410ilc.276.1572980162440;
+ Tue, 05 Nov 2019 10:56:02 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <B457050C-18F5-4171-A8A1-4CE95D908FAA@holtmann.org>
-User-Agent: Mutt/1.12.2 (2019-09-21)
+References: <CAHCN7xJiJKBgkiRm-MF9NpgQqfV4=zSVRShc5Sb5Lya2TAxU0g@mail.gmail.com>
+In-Reply-To: <CAHCN7xJiJKBgkiRm-MF9NpgQqfV4=zSVRShc5Sb5Lya2TAxU0g@mail.gmail.com>
+From:   Adam Ford <aford173@gmail.com>
+Date:   Tue, 5 Nov 2019 12:55:51 -0600
+Message-ID: <CAHCN7xK0Y7=Wr9Kq02CWCbQjWVOocU02LLEB=QsVB22yNNoQPw@mail.gmail.com>
+Subject: Re: Long Delay on startup of wl18xx Wireless chip
+To:     Linux-OMAP <linux-omap@vger.kernel.org>, kvalo@codeaurora.org,
+        "David S . Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org, netdev <netdev@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Oct 24, 2019 at 10:23:57PM +0200, Marcel Holtmann wrote:
-> Hi Greg,
-> 
-> >> udev has a feature of creating /dev/<node> device-nodes if it finds
-> >> a devnode:<node> modalias. This allows for auto-loading of modules that
-> >> provide the node. This requires to use a statically allocated minor
-> >> number for misc character devices.
-> >> 
-> >> However, rfkill uses dynamic minor numbers and prevents auto-loading
-> >> of the module. So allocate the next static misc minor number and use
-> >> it for rfkill.
-> > 
-> > As rfkill has been around for a long time, what new use case is needing
-> > to auto-load this based on a major number?
-> 
-> we have bug reports from iwd users where it fails opening /dev/rfkill. Since iwd can be actually started before the WiFi hardware is fully probed and all its drivers are loaded, we have a race-condition here if rfkill is not capable of auto-loading.
-> 
-> The difference is really that iwd is a fully self-contained WiFi daemon compared to wpa_supplicant which is just some sort of helper. iwd is fully hot plug capable as well compared to wpa_supplicant. It looks like this is exposing the race condition for our users. Frankly, we should have fixed rfkill a long time ago when we fixed uinput, uhid etc, but seems we forgot it. I assume mainly because it magically got loaded in time by some module dependencies.
+On Tue, Nov 5, 2019 at 12:25 PM Adam Ford <aford173@gmail.com> wrote:
+>
+> I am seeing a really long delay at startup of the wl18xx using the 5.4 ke=
+rnel.
+>
 
-You need a better email client, one with \n characters...
+Sorry I had to resend.  I forgot to do plaintext.  Google switched
+settings on me and neglected to inform me.
 
-Anyway, this sounds reasonable, I'll go queue this up for 5.5.
 
-thanks,
-
-greg k-h
+> [    7.895551] wl18xx_driver wl18xx.2.auto: Direct firmware load for ti-c=
+onnectivity/wl18xx-conf.bin failed with error -2
+> [    7.906416] wl18xx_driver wl18xx.2.auto: Falling back to sysfs fallbac=
+k for: ti-connectivity/wl18xx-conf.bin
+>
+> At this point in the sequence, I can login to Linux, but the WL18xx is un=
+available.
+>
+> [   35.032382] vwl1837: disabling
+> [   69.594874] wlcore: ERROR could not get configuration binary ti-connec=
+tivity/wl18xx-conf.bin: -11
+> [   69.604013] wlcore: WARNING falling back to default config
+> [   70.174821] wlcore: wl18xx HW: 183x or 180x, PG 2.2 (ROM 0x11)
+> [   70.189003] wlcore: WARNING Detected unconfigured mac address in nvs, =
+derive from fuse instead.
+> [   70.197851] wlcore: WARNING This default nvs file can be removed from =
+the file system
+> [   70.218816] wlcore: loaded
+>
+> It is now at this point when the wl18xx is available.
+>
+> I have the wl18xx and wlcore setup as a module so it should load after th=
+e filesystem is mounted.  I am not using a wl18xx-conf.bin, but I never nee=
+ded to use this before.
+>
+> It seems to me unreasonable to wait 60+ seconds after everything is mount=
+ed for the wireless chip to become available.  Before I attempt to bisect t=
+his, I was hoping someone might have seen this.  I am also trying to avoid =
+duplicating someone else's efforts.
+>
+> I know the 4.19 doesn't behave like this.
+>
+> adam
