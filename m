@@ -2,82 +2,119 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C00E0EF71E
-	for <lists+linux-wireless@lfdr.de>; Tue,  5 Nov 2019 09:21:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 48BDDEF789
+	for <lists+linux-wireless@lfdr.de>; Tue,  5 Nov 2019 09:53:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387717AbfKEIVU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 5 Nov 2019 03:21:20 -0500
-Received: from smtp.codeaurora.org ([198.145.29.96]:44954 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387484AbfKEIVU (ORCPT
+        id S1729765AbfKEIxS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 5 Nov 2019 03:53:18 -0500
+Received: from us-smtp-1.mimecast.com ([205.139.110.61]:29689 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1729171AbfKEIxS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 5 Nov 2019 03:21:20 -0500
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 750706090F; Tue,  5 Nov 2019 08:21:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1572942079;
-        bh=nAwjlRAFrDcHiDhUYKUDdNV1rAmHzr+VDZqV5W/gC34=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=h3OE6/f3S+RriteokA3Gsl8C4qXVA4BeR25QEk/V1pWZEUsCc1jdruOv+qsnSdvmk
-         3EpqPhpaamhXmSTtoUjToBDX+4acQY2Av2jz+9loBj1nd74B3msHTD/5UADTbdMELC
-         ZGIPreG0DTq2gLdV3kbEUVkFhu0xMJBQfMXBhm2o=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from tynnyri.adurom.net (tynnyri.adurom.net [51.15.11.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        Tue, 5 Nov 2019 03:53:18 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1572943996;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=YVPc0+mqquR3l7zUD0Sc0a1/wfluhM4tfIW9rRnKpZk=;
+        b=XisHm7F+bV4vHt79PgEzGe2tDIqw+m1Ps92CqcL4SJb494SB+Q37e65udd3bUryfg1hU7W
+        gamlZgnpSoYrgKkmFSB5aa/ZC35deto2p088+zOeVRvSQcj0pDCCbrs1JkrHZrr0CKtqol
+        g2EDQFujaa0ThEfPFtpev5Du1muBt2Y=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-304-XUojAqkKNSezxNrM1BE4jQ-1; Tue, 05 Nov 2019 03:53:13 -0500
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 97E396090F;
-        Tue,  5 Nov 2019 08:21:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1572942078;
-        bh=nAwjlRAFrDcHiDhUYKUDdNV1rAmHzr+VDZqV5W/gC34=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=dprY15UfLbDXdzkIw9yLVg4si8vP681VlRogtyiVbBu6/P7v4s2NkfHk2Pc8IurNC
-         QoXIuNsMwGppdloPnPss9K/22sBoJpGbG0vtq2azTQP9ctAGD7N7iI7Wy5Cj5E45RV
-         Pqjlt+yL2ssAA3KYFofCtiwuSVVklFFEsmBhaYIU=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 97E396090F
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Stanislaw Gruszka <sgruszka@redhat.com>
-Cc:     linux-wireless@vger.kernel.org, Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
-        Ryder Lee <ryder.lee@mediatek.com>, Roy Luo <royluo@google.com>
-Subject: Re: [PATCH] Revert "mt76: mt76x0e: don't use hw encryption for MT7630E"
-References: <1572860780-2403-1-git-send-email-sgruszka@redhat.com>
-Date:   Tue, 05 Nov 2019 10:21:13 +0200
-In-Reply-To: <1572860780-2403-1-git-send-email-sgruszka@redhat.com> (Stanislaw
-        Gruszka's message of "Mon, 4 Nov 2019 10:46:20 +0100")
-Message-ID: <87eeymd98m.fsf@tynnyri.adurom.net>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 0F64D107ACC2;
+        Tue,  5 Nov 2019 08:53:12 +0000 (UTC)
+Received: from localhost (unknown [10.40.205.63])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 0C57D600C4;
+        Tue,  5 Nov 2019 08:53:06 +0000 (UTC)
+Date:   Tue, 5 Nov 2019 09:53:05 +0100
+From:   Stanislaw Gruszka <sgruszka@redhat.com>
+To:     Markus Theil <markus.theil@tu-ilmenau.de>
+Cc:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>, nbd@nbd.name,
+        linux-wireless@vger.kernel.org
+Subject: Re: [PATCH] mt76: mt76x02: fix num slots in beacon config init
+Message-ID: <20191105085305.GA21352@redhat.com>
+References: <20191104150341.13896-1-markus.theil@tu-ilmenau.de>
+ <20191104154537.GE3935@localhost.localdomain>
+ <a6238611-45d6-ffbc-1db2-2b3203c987f8@tu-ilmenau.de>
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <a6238611-45d6-ffbc-1db2-2b3203c987f8@tu-ilmenau.de>
+User-Agent: Mutt/1.11.3 (2019-02-01)
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
+X-MC-Unique: XUojAqkKNSezxNrM1BE4jQ-1
+X-Mimecast-Spam-Score: 0
+Content-Type: text/plain; charset=WINDOWS-1252
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Stanislaw Gruszka <sgruszka@redhat.com> writes:
+On Mon, Nov 04, 2019 at 05:07:16PM +0100, Markus Theil wrote:
+> On 04.11.19 16:45, Lorenzo Bianconi wrote:
+> >> mt76x02 mmio and usb devices use a different number of beacon slots (8
+> >> vs. 5). Consider this in mt76x02_init_beacon_config.
+> >>
+> >> Signed-off-by: Markus Theil <markus.theil@tu-ilmenau.de>
+> >> ---
+> >>  drivers/net/wireless/mediatek/mt76/mt76x02_beacon.c | 2 +-
+> >>  1 file changed, 1 insertion(+), 1 deletion(-)
+> >>
+> >> diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_beacon.c b/dri=
+vers/net/wireless/mediatek/mt76/mt76x02_beacon.c
+> >> index 4209209ac940..b7412953ff26 100644
+> >> --- a/drivers/net/wireless/mediatek/mt76/mt76x02_beacon.c
+> >> +++ b/drivers/net/wireless/mediatek/mt76/mt76x02_beacon.c
+> >> @@ -249,7 +249,7 @@ void mt76x02_init_beacon_config(struct mt76x02_dev=
+ *dev)
+> >>  =09mt76_set(dev, MT_BEACON_TIME_CFG, MT_BEACON_TIME_CFG_SYNC_MODE);
+> >>  =09mt76_wr(dev, MT_BCN_BYPASS_MASK, 0xffff);
+> >> =20
+> >> -=09for (i =3D 0; i < 8; i++)
+> >> +=09for (i =3D 0; i < dev->beacon_ops->nslots; i++)
+> >>  =09=09mt76x02_mac_set_beacon(dev, i, NULL);
+> >> =20
+> >>  =09mt76x02_set_beacon_offsets(dev);
+> > Hi Markus,
+> >
+> > mt76x02_init_beacon_config is run just at bootstrap and it is used to c=
+lean all
+> > beacon RAM memory. It can't see any issue with the current code.
+> >
+> > Regards,
+> > Lorenzo
+> >
+> >> --=20
+> >> 2.17.1
+> >>
+> Hi Lorenzo,
+>=20
+> I just thought this function should overwrite all 8192 byte beacon RAM
+> memory. If the loop count is set to 8 it would overwrite 8 x 1024 =3D 819=
+2
+> byte in the mmio case and 8 x 1638 =3D 13104 byte in the USB case. 1638 i=
+s
+> 8192 / N_BCN_SLOTS. N_BCN_SLOTS is currently 5 for USB. mt76x02_beacon.c
+> has no further checks for beacon_ops->nslots in the case of setting a
+> beacon.
 
-> This reverts commit 34b0e9b767bfa09ae233ca0d6ceb299bf2e24600.
->
-> Since 7bd0650be63c ("mt76: dma: fix buffer unmap with non-linear skbs")
-> is no longer necessary to disable HW encryption for MT7630E.
->
-> Disabling HW encryption helped previously because somehow fragmented
-> skb's are not created if mac80211 encrypt frames, so buffer unmap bug
-> of non-linear skbs was not triggered. Now since this bug if properly
-> fixed by 7bd0650be63c , we can enable HW encryption back.
+We do not override beacon SRAM memory in mt76x02_init_beacon_config()
+as bcn_idx increase only if !!dev->beacons[i], so we 8 times nullify
+beacon 0 .
 
-This should be:
+Patch is fine though, but things can be optimized more ...
 
-... fixed by commit 7bd0650be63c ("mt76: dma: fix buffer unmap with
-non-linear skbs"), we can enable ...
+We possibly can skip beacon SRAM nullification at all (even if there is
+garbage in the memory, beacon will not be sent if blocked by
+MT_BCN_BYPASS_MASK =3D 0xffff). Or nullify SRAM at once. And just set
+proper MT_MAC_BSSID_DW1_MBEACON_N value.
 
--- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Stanislaw
+
