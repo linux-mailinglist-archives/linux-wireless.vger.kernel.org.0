@@ -2,99 +2,94 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4CB93EE784
-	for <lists+linux-wireless@lfdr.de>; Mon,  4 Nov 2019 19:42:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 44C0CEF350
+	for <lists+linux-wireless@lfdr.de>; Tue,  5 Nov 2019 03:19:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729607AbfKDSmD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 4 Nov 2019 13:42:03 -0500
-Received: from mail-pl1-f193.google.com ([209.85.214.193]:39690 "EHLO
-        mail-pl1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728322AbfKDSmC (ORCPT
+        id S1729827AbfKECTC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 4 Nov 2019 21:19:02 -0500
+Received: from rtits2.realtek.com ([211.75.126.72]:34592 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729526AbfKECTB (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 4 Nov 2019 13:42:02 -0500
-Received: by mail-pl1-f193.google.com with SMTP id o9so1313894plk.6
-        for <linux-wireless@vger.kernel.org>; Mon, 04 Nov 2019 10:42:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=eero.com; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding:content-language;
-        bh=nT1u9EQrXODKur5odFwwtyLmwUgE0+RfIth/A09d2R8=;
-        b=WoFLNN5tuCCp5Kto7GDa7Zfc2f+aR4xJRPljt5Yu/Y8F6SV7/4Fke+FUfuLjoMwVml
-         GBbeGbfUdi62P3CvZIdn3o5CTXZcPSqRNCVboLZ21YBajslkUKqmsqP4g7n/ojekav4X
-         gI8E+icmh5DkeLTPQyU6QCQXUoGKl0ys7fAjI=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding
-         :content-language;
-        bh=nT1u9EQrXODKur5odFwwtyLmwUgE0+RfIth/A09d2R8=;
-        b=uGlqBE3xg3HI+rGruKYZ8jjMVCZhs+DSVf0dPmy7BShzwFxeCw23OFx84Z/FWvUBa6
-         kh1tiBwtouhk4kLow9eKBsTKCeYQyguzJonGyS26yfhsw5XnSiegNq02nrHINhRaVU0O
-         yVZ1/2MHYZAxO4BMs0U3KcZGEE3iL75tgTGLhlsidDOWIdA55mHkUZfDhPmZ7x5Hnf9u
-         fUL3WnbPN1JAPjwGlqfcd/yRQi7NBb1F3SAM+xP/MNO6Ax2BNyThJVy28FCIiI/uRK2r
-         jsSVd5XQZFVo/SL2H7hFEXCWVbJ+oKFxmhryPc2jVcVE8ewCWIyGLCzv485mCRhRn37y
-         pdMw==
-X-Gm-Message-State: APjAAAXC/GtCT9REg9Kx4tjxA/Atw5bRsW389+IOxoFQkEKzPBemYR0O
-        e13nKuPCAI7XagkzmpalLJg07g==
-X-Google-Smtp-Source: APXvYqx06VbV+n2SyPHyycKi9+nLaUzlgRkD9ESoNTpcTEqFErpUN1XFsYra7EGKEP9CSGc5vpnkdg==
-X-Received: by 2002:a17:902:a988:: with SMTP id bh8mr29337765plb.303.1572892921528;
-        Mon, 04 Nov 2019 10:42:01 -0800 (PST)
-Received: from [10.0.2.15] (eero.static.monkeybrains.net. [199.116.72.162])
-        by smtp.gmail.com with ESMTPSA id b6sm18195396pga.12.2019.11.04.10.42.00
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 04 Nov 2019 10:42:00 -0800 (PST)
-Subject: Re: [PATCH RFC] Revert "ath10k: fix DMA related firmware crashes on
- multiple devices"
-To:     Tom Psyborg <pozega.tomislav@gmail.com>, zhichen@codeaurora.org
-Cc:     linux-wireless@vger.kernel.org, ath10k@lists.infradead.org
-References: <1571734629-18028-1-git-send-email-zhichen@codeaurora.org>
- <d6cfd945-7bab-a01d-0157-e0e1802f66e3@eero.com>
- <8c6d531f6474faf4df55f90185466774@codeaurora.org>
- <CAKR_QV+Qh_ErYduYoD8=u_i-y=cbKSJkkajtKxsJ5ML8-Z79EQ@mail.gmail.com>
-From:   Peter Oh <peter.oh@eero.com>
-Message-ID: <3f3b683f-789a-9b7f-a854-0fdcc20819d1@eero.com>
-Date:   Mon, 4 Nov 2019 10:41:58 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        Mon, 4 Nov 2019 21:19:01 -0500
+Authenticated-By: 
+X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID xA52IfSP024659, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (RTITCASV01.realtek.com.tw[172.21.6.18])
+        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id xA52IfSP024659
+        (version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+        Tue, 5 Nov 2019 10:18:42 +0800
+Received: from localhost.localdomain (172.21.69.95) by
+ RTITCASV01.realtek.com.tw (172.21.6.18) with Microsoft SMTP Server id
+ 14.3.468.0; Tue, 5 Nov 2019 10:18:41 +0800
+From:   <pkshih@realtek.com>
+To:     <kvalo@codeaurora.org>
+CC:     <Larry.Finger@lwfinger.net>, <linux-wireless@vger.kernel.org>,
+        <wahrenst@gmx.net>
+Subject: [PATCH] rtlwifi: fix memory leak in rtl92c_set_fw_rsvdpagepkt()
+Date:   Tue, 5 Nov 2019 10:18:38 +0800
+Message-ID: <20191105021838.4302-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-In-Reply-To: <CAKR_QV+Qh_ErYduYoD8=u_i-y=cbKSJkkajtKxsJ5ML8-Z79EQ@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [172.21.69.95]
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+From: Ping-Ke Shih <pkshih@realtek.com>
 
-On 11/3/19 7:36 AM, Tom Psyborg wrote:
-> On 30/10/2019, zhichen@codeaurora.org <zhichen@codeaurora.org> wrote:
->> On 2019-10-23 01:16, Peter Oh wrote:
->>> How can you say value 0 (I believe it's 64 bytes) DMA burst size
->>> causes the symptom and 1 fixes it?
->>>
->>> Peter
->> Confirmed from HW team that the configuration controls AXI burst size of
->> the RD/WR access to the HOST MEM.
->> 0-	No split , RAW read/write transfer size from MAC is put out on bus as
->> burst length.
->> 1-	Split at 256 byte boundary
->> 2,3- Reserved
->>
->> That's why we see issue with value 0.
->>
->> Zhi
->>
->> _______________________________________________
->> ath10k mailing list
->> ath10k@lists.infradead.org
->> http://lists.infradead.org/mailman/listinfo/ath10k
->>
-> is this true for both wave1 and wave2 ? at least per this commit
-> message: ath10k: Fix DMA burst size
-> it's suppose to be:
->
-> 0 - 128B max (not sure if this means 128B static, or any size between 0 and 128)
-> 1 - 256B
-I didn't check other chipsets, but QCA4019 registers say AXI read/write 
-burst size is 64 bytes for 0.
+This leak was found by testing the EDIMAX EW-7612 on Raspberry Pi 3B+ with
+Linux 5.4-rc5 (multi_v7_defconfig + rtlwifi + kmemleak) and noticed a
+single memory leak during probe:
+
+unreferenced object 0xec13ee40 (size 176):
+  comm "kworker/u8:1", pid 36, jiffies 4294939321 (age 5580.790s)
+  hex dump (first 32 bytes):
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+  backtrace:
+    [<fc1bbb3e>] __netdev_alloc_skb+0x9c/0x164
+    [<863dfa6e>] rtl92c_set_fw_rsvdpagepkt+0x254/0x340 [rtl8192c_common]
+    [<9572be0d>] rtl92cu_set_hw_reg+0xf48/0xfa4 [rtl8192cu]
+    [<116df4d8>] rtl_op_bss_info_changed+0x234/0x96c [rtlwifi]
+    [<8933575f>] ieee80211_bss_info_change_notify+0xb8/0x264 [mac80211]
+    [<d4061e86>] ieee80211_assoc_success+0x934/0x1798 [mac80211]
+    [<e55adb56>] ieee80211_rx_mgmt_assoc_resp+0x174/0x314 [mac80211]
+    [<5974629e>] ieee80211_sta_rx_queued_mgmt+0x3f4/0x7f0 [mac80211]
+    [<d91091c6>] ieee80211_iface_work+0x208/0x318 [mac80211]
+    [<ac5fcae4>] process_one_work+0x22c/0x564
+    [<f5e6d3b6>] worker_thread+0x44/0x5d8
+    [<82c7b073>] kthread+0x150/0x154
+    [<b43e1b7d>] ret_from_fork+0x14/0x2c
+    [<794dff30>] 0x0
+
+It is because 8192cu doesn't implement usb_cmd_send_packet(), and this
+patch just frees the skb within the function to resolve memleak problem
+by now. Since 8192cu doesn't turn on fwctrl_lps that needs to download
+command packet for firmware via the function, applying this patch doesn't
+affect driver behavior.
+
+Reported-by: Stefan Wahren <wahrenst@gmx.net>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+---
+ drivers/net/wireless/realtek/rtlwifi/rtl8192cu/hw.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/hw.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/hw.c
+index 56cc3bc30860..f070f25bb735 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/hw.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/hw.c
+@@ -1540,6 +1540,8 @@ static bool usb_cmd_send_packet(struct ieee80211_hw *hw, struct sk_buff *skb)
+    * This is maybe necessary:
+    * rtlpriv->cfg->ops->fill_tx_cmddesc(hw, buffer, 1, 1, skb);
+    */
++	dev_kfree_skb(skb);
++
+ 	return true;
+ }
+ 
+-- 
+2.21.0
+
