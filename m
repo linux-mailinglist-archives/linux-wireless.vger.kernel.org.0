@@ -2,109 +2,243 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 84679EFA51
-	for <lists+linux-wireless@lfdr.de>; Tue,  5 Nov 2019 11:00:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BC628EFA9A
+	for <lists+linux-wireless@lfdr.de>; Tue,  5 Nov 2019 11:14:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387773AbfKEKAk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 5 Nov 2019 05:00:40 -0500
-Received: from us-smtp-1.mimecast.com ([207.211.31.81]:22122 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S2387690AbfKEKAk (ORCPT
+        id S2387773AbfKEKO3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 5 Nov 2019 05:14:29 -0500
+Received: from smtp.codeaurora.org ([198.145.29.96]:46508 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730699AbfKEKO3 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 5 Nov 2019 05:00:40 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1572948039;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=gRmTVkC/EATQcgpsiF+EOL29OKGjoVjlrTnOdAXcDsA=;
-        b=FiDB77c2buPeL8yNx+c2u0iPSwF1gjrtnqGC6XWyWHvm4d8QqCl+rkBSGsbvRO6wlbl4QP
-        CvY5AOxbj8GdvAsBk/rtzgtN62yb4e2WBy+DmSL9+OnqrlV00iH/MT6vZkLcuUvnlKd717
-        z5Nent2rM0Ggi/Pnkfa8+WwIUtLMz3Y=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-71-DybqqlN2MFmLwsGpywghnQ-1; Tue, 05 Nov 2019 05:00:35 -0500
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        Tue, 5 Nov 2019 05:14:29 -0500
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 57758611F4; Tue,  5 Nov 2019 10:14:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1572948868;
+        bh=N0QTVZ+dZLkODl3pWyGNVL/EZFLw93DGEbdfWinZjJM=;
+        h=From:To:Cc:Subject:Date:From;
+        b=VgDsC4s2Z3y7b0yvA7pV8SCIZ5Rx+83/MCUT5Mlf/LJGxF5+lWDSC7tRgKxSnvxad
+         ePleOf+Bn3rmQgXRsUCi5k/dOvf/qWfwXCSnW4hDv6Md40MEo5x5+PDoBGgQKlFqyA
+         ht73Ed7LIT1Su466oynEWVWIFPBLzcyHUoy5IYn0=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from murugana-linux.qualcomm.com (blr-c-bdr-fw-01_globalnat_allzones-outside.qualcomm.com [103.229.19.19])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 23FBF800C73;
-        Tue,  5 Nov 2019 10:00:34 +0000 (UTC)
-Received: from localhost (unknown [10.40.205.63])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id A89961001B00;
-        Tue,  5 Nov 2019 10:00:33 +0000 (UTC)
-From:   Stanislaw Gruszka <sgruszka@redhat.com>
-To:     linux-wireless@vger.kernel.org
-Cc:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
-        Ryder Lee <ryder.lee@mediatek.com>, Roy Luo <royluo@google.com>
-Subject: [PATCH v2] Revert "mt76: mt76x0e: don't use hw encryption for MT7630E"
-Date:   Tue,  5 Nov 2019 11:00:32 +0100
-Message-Id: <20191105100032.28556-1-sgruszka@redhat.com>
-MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
-X-MC-Unique: DybqqlN2MFmLwsGpywghnQ-1
-X-Mimecast-Spam-Score: 0
-Content-Type: text/plain; charset=WINDOWS-1252
-Content-Transfer-Encoding: quoted-printable
+        (Authenticated sender: murugana@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 2A6CE607EF;
+        Tue,  5 Nov 2019 10:14:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1572948867;
+        bh=N0QTVZ+dZLkODl3pWyGNVL/EZFLw93DGEbdfWinZjJM=;
+        h=From:To:Cc:Subject:Date:From;
+        b=J7GN/PZQ/J49QJUrExVb2CoaJgcpkrPbHhWkCFyxvrrTU+6iqDzprvWOukRgFHSEt
+         0z5fsw6szmWy1KHj1/ZIOL7xyN499eAAqUFUG29dD+9IM/ViUgc2vhIdmQWD4i1+dw
+         GG08obHNRS70E60Vu6Co0xgQTZz4htBKchs5NnAI=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 2A6CE607EF
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=murugana@codeaurora.org
+From:   Sathishkumar Muruganandam <murugana@codeaurora.org>
+To:     johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org
+Subject: [PATCH] iw: Add phymode parameters to scan command for Wide Band Scan support
+Date:   Tue,  5 Nov 2019 15:44:17 +0530
+Message-Id: <1572948857-20702-1-git-send-email-murugana@codeaurora.org>
+X-Mailer: git-send-email 2.7.4
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This reverts commit 34b0e9b767bfa09ae233ca0d6ceb299bf2e24600.
+chandef is parsed and updated based on user phymode [HT40+|HT40-|80MHz]
+config. Scan flag NL80211_SCAN_FLAG_WIDE_BAND_SCAN is set to indicate
+the presence of chandef in nl_msg.
 
-Since commit 7bd0650be63c ("mt76: dma: fix buffer unmap with non-linear skb=
-s")
-is no longer necessary to disable HW encryption for MT7630E.
+Added print in extended features dump.
 
-Disabling HW encryption helped previously because somehow fragmented
-skb's are not created if mac80211 encrypt frames, so buffer unmap bug
-of non-linear skbs was not triggered. Now since this bug is properly
-fixed by commit 7bd0650be63c ("mt76: dma: fix buffer unmap with
-non-linear skbs") , we can enable HW encryption back.
+Supported extended features:
+                * [ WIDE_BAND_SCAN ]: wide band scan (40Mhz, 80Mhz)
 
-Signed-off-by: Stanislaw Gruszka <sgruszka@redhat.com>
-Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Wide Band Scan Commands:
+-----------------------
+
+dev <devname> scan freq <freq> [HT40+|HT40-|80MHz] [ap-force]
+
+dev <devname> scan trigger freq <freq> [HT40+|HT40-|80MHz] [ap-force]
+
+Examples:
+---------
+
+iw wlan0 scan freq 5180 HT40+
+
+iw wlan0 scan trigger freq 5260 80Mhz ap-force
+
+Signed-off-by: Sathishkumar Muruganandam <murugana@codeaurora.org>
 ---
-v2: fix commit references
+ info.c |  2 ++
+ scan.c | 53 +++++++++++++++++++++++++++++++++++++++++------------
+ util.c |  5 +++--
+ 3 files changed, 46 insertions(+), 14 deletions(-)
 
- drivers/net/wireless/mediatek/mt76/mt76x0/pci.c | 15 +--------------
- 1 file changed, 1 insertion(+), 14 deletions(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x0/pci.c b/drivers/net/=
-wireless/mediatek/mt76/mt76x0/pci.c
-index 7705e55aa3d1..f84a7df296ea 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x0/pci.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x0/pci.c
-@@ -51,19 +51,6 @@ static void mt76x0e_stop(struct ieee80211_hw *hw)
- =09mt76x0e_stop_hw(dev);
+diff --git a/info.c b/info.c
+index 38362d8744b7..14b397d34f79 100644
+--- a/info.c
++++ b/info.c
+@@ -686,6 +686,8 @@ broken_combination:
+ 		ext_feat_print(tb, EXT_KEY_ID, "extended key ID support");
+ 		ext_feat_print(tb, STA_TX_PWR, "TX power control per station");
+ 		ext_feat_print(tb, SAE_OFFLOAD, "SAE offload support");
++		ext_feat_print(tb, NL80211_EXT_FEATURE_WIDE_BAND_SCAN,
++			       "WIDE_BAND_SCAN", "wide band scan (40Mhz, 80Mhz)");
+ 	}
+ 
+ 	if (tb_msg[NL80211_ATTR_COALESCE_RULE]) {
+diff --git a/scan.c b/scan.c
+index 1418da73a624..b8a00f26b85a 100644
+--- a/scan.c
++++ b/scan.c
+@@ -378,19 +378,23 @@ static int handle_scan(struct nl80211_state *state,
+ 	enum {
+ 		NONE,
+ 		FREQ,
++		MODE,
++		CHECK_SCAN_FLAG_AP,
+ 		IES,
+ 		SSID,
+ 		MESHID,
+ 		DURATION,
+ 		DONE,
+ 	} parse = NONE;
+-	int freq;
++	int freq = 0;
+ 	unsigned int duration = 0;
+ 	bool passive = false, have_ssids = false, have_freqs = false;
++	bool have_chandef = false;
+ 	bool duration_mandatory = false;
+ 	size_t ies_len = 0, meshid_len = 0;
+ 	unsigned char *ies = NULL, *meshid = NULL, *tmpies = NULL;
+ 	unsigned int flags = 0;
++	struct chandef chandef;
+ 
+ 	ssids = nlmsg_alloc();
+ 	if (!ssids)
+@@ -407,7 +411,6 @@ static int handle_scan(struct nl80211_state *state,
+ 		case NONE:
+ 			if (strcmp(argv[i], "freq") == 0) {
+ 				parse = FREQ;
+-				have_freqs = true;
+ 				break;
+ 			} else if (strcmp(argv[i], "ies") == 0) {
+ 				parse = IES;
+@@ -453,14 +456,33 @@ static int handle_scan(struct nl80211_state *state,
+ 			err = 1;
+ 			goto nla_put_failure;
+ 		case FREQ:
+-			freq = strtoul(argv[i], &eptr, 10);
+-			if (eptr != argv[i] + strlen(argv[i])) {
+-				/* failed to parse as number -- maybe a tag? */
+-				i--;
+-				parse = NONE;
+-				continue;
++			parse_freqchan(&chandef, false, argc - i, argv + i, NULL);
++			if (!chandef.control_freq || have_freqs) {
++				freq = strtoul(argv[i], &eptr, 10);
++				if (eptr != argv[i] + strlen(argv[i])) {
++					/* failed to parse as number -- maybe a tag? */
++					i--;
++					parse = NONE;
++					continue;
++				}
++				NLA_PUT_U32(freqs, i, freq);
++			} else {
++				if (chandef.width == NL80211_CHAN_WIDTH_20_NOHT) {
++					have_freqs = true;
++					NLA_PUT_U32(freqs, i, chandef.control_freq);
++				} else {
++					parse = MODE;
++				}
+ 			}
+-			NLA_PUT_U32(freqs, i, freq);
++			break;
++		case MODE:
++			have_chandef = true;
++			flags |= NL80211_SCAN_FLAG_WIDE_BAND_SCAN;
++			parse = CHECK_SCAN_FLAG_AP;
++			break;
++		case CHECK_SCAN_FLAG_AP:
++			if (strcmp(argv[i], "ap-force") == 0)
++				flags |= NL80211_SCAN_FLAG_AP;
+ 			break;
+ 		case IES:
+ 			if (ies)
+@@ -508,8 +530,11 @@ static int handle_scan(struct nl80211_state *state,
+ 	if (!passive)
+ 		nla_put_nested(msg, NL80211_ATTR_SCAN_SSIDS, ssids);
+ 
+-	if (have_freqs)
++	if (have_chandef)
++		put_chandef(msg, &chandef);
++	else if (have_freqs)
+ 		nla_put_nested(msg, NL80211_ATTR_SCAN_FREQUENCIES, freqs);
++
+ 	if (flags)
+ 		NLA_PUT_U32(msg, NL80211_ATTR_SCAN_FLAGS, flags);
+ 	if (duration)
+@@ -2337,20 +2362,24 @@ static int handle_scan_combined(struct nl80211_state *state,
+ 	dump_argv[0] = argv[0];
+ 	return handle_cmd(state, id, dump_argc, dump_argv);
  }
-=20
--static int
--mt76x0e_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
--=09=09struct ieee80211_vif *vif, struct ieee80211_sta *sta,
--=09=09struct ieee80211_key_conf *key)
--{
--=09struct mt76x02_dev *dev =3D hw->priv;
+-TOPLEVEL(scan, "[-u] [freq <freq>*] [duration <dur>] [ies <hex as 00:11:..>] [meshid <meshid>] [lowpri,flush,ap-force,duration-mandatory] [randomise[=<addr>/<mask>]] [ssid <ssid>*|passive]", 0, 0,
++TOPLEVEL(scan, "[-u] [freq <freq>*] [HT40+|HT40-|80MHz] [duration <dur>] [ies <hex as 00:11:..>] [meshid <meshid>] [lowpri,flush,ap-force,duration-mandatory] [randomise[=<addr>/<mask>]] [ssid <ssid>*|passive]", 0, 0,
+ 	 CIB_NETDEV, handle_scan_combined,
+ 	 "Scan on the given frequencies and probe for the given SSIDs\n"
+ 	 "(or wildcard if not given) unless passive scanning is requested.\n"
++	 "If channel mode/width is provided along with frequency, wide band\n"
++	 "scan results on primary frequency of channel mode/width is printed.\n"
+ 	 "If -u is specified print unknown data in the scan results.\n"
+ 	 "Specified (vendor) IEs must be well-formed.");
+ COMMAND(scan, dump, "[-u]",
+ 	NL80211_CMD_GET_SCAN, NLM_F_DUMP, CIB_NETDEV, handle_scan_dump,
+ 	"Dump the current scan results. If -u is specified, print unknown\n"
+ 	"data in scan results.");
+-COMMAND(scan, trigger, "[freq <freq>*] [duration <dur>] [ies <hex as 00:11:..>] [meshid <meshid>] [lowpri,flush,ap-force,duration-mandatory] [randomise[=<addr>/<mask>]] [ssid <ssid>*|passive]",
++COMMAND(scan, trigger, "[freq <freq>*] [HT40+|HT40-|80MHz] [duration <dur>] [ies <hex as 00:11:..>] [meshid <meshid>] [lowpri,flush,ap-force,duration-mandatory] [randomise[=<addr>/<mask>]] [ssid <ssid>*|passive]",
+ 	NL80211_CMD_TRIGGER_SCAN, 0, CIB_NETDEV, handle_scan,
+ 	 "Trigger a scan on the given frequencies with probing for the given\n"
+ 	 "SSIDs (or wildcard if not given) unless passive scanning is requested.\n"
++	 "If channel mode/width is provided along with frequency, wide band\n"
++	 "scan on primary frequency of channel mode/width is requested.\n"
+ 	 "Duration(in TUs), if specified, will be used to set dwell times.\n");
+ 
+ 
+diff --git a/util.c b/util.c
+index cbac5ad46b7d..82a55d116719 100644
+--- a/util.c
++++ b/util.c
+@@ -749,6 +749,9 @@ int parse_freqchan(struct chandef *chandef, bool chan, int argc, char **argv,
+ 
+ 	if (!argv[0])
+ 		goto out;
++
++	memset(chandef, 0, sizeof(struct chandef));
++
+ 	freq = strtoul(argv[0], &end, 10);
+ 	if (*end) {
+ 		res = 1;
+@@ -757,8 +760,6 @@ int parse_freqchan(struct chandef *chandef, bool chan, int argc, char **argv,
+ 
+ 	_parsed += 1;
+ 
+-	memset(chandef, 0, sizeof(struct chandef));
 -
--=09if (is_mt7630(dev))
--=09=09return -EOPNOTSUPP;
--
--=09return mt76x02_set_key(hw, cmd, vif, sta, key);
--}
--
- static void
- mt76x0e_flush(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- =09      u32 queues, bool drop)
-@@ -80,7 +67,7 @@ static const struct ieee80211_ops mt76x0e_ops =3D {
- =09.configure_filter =3D mt76x02_configure_filter,
- =09.bss_info_changed =3D mt76x02_bss_info_changed,
- =09.sta_state =3D mt76_sta_state,
--=09.set_key =3D mt76x0e_set_key,
-+=09.set_key =3D mt76x02_set_key,
- =09.conf_tx =3D mt76x02_conf_tx,
- =09.sw_scan_start =3D mt76_sw_scan,
- =09.sw_scan_complete =3D mt76x02_sw_scan_complete,
---=20
-2.20.1
+ 	if (chan) {
+ 		enum nl80211_band band;
+ 
+-- 
+2.7.4
 
