@@ -2,90 +2,84 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A75FF20DE
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Nov 2019 22:33:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3FE56F2243
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Nov 2019 00:02:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732606AbfKFVdS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 6 Nov 2019 16:33:18 -0500
-Received: from mail-qt1-f196.google.com ([209.85.160.196]:33596 "EHLO
-        mail-qt1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726798AbfKFVdR (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 6 Nov 2019 16:33:17 -0500
-Received: by mail-qt1-f196.google.com with SMTP id y39so13601qty.0
-        for <linux-wireless@vger.kernel.org>; Wed, 06 Nov 2019 13:33:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=hsQZSOuPgDEYpkRIrusPrGiXr3Pj9L1UQOuSWwbS3J4=;
-        b=TDhc43FGHx5coIphtrOFLFpgoH8tAyZKogKDj9fn+mGb/xbXUDffMPQ+MUrEKY+d6G
-         W1U2CG+X336Euat8UBzHaBzYhTDGyG7yMo3Xwy9/gH9U0R4eZrvAD2W4Qv6C3Zus6jHb
-         qTyHRJgk71ewf1NdL52vKUZjkJwcwW6AWO9tM=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=hsQZSOuPgDEYpkRIrusPrGiXr3Pj9L1UQOuSWwbS3J4=;
-        b=T6Mw7wv2T3LzybUC+m47ExqCmWCUZe5RY+zhFu60M6iZoQrbYbVo/tXpJ4nnl/00N5
-         qPeXNoBK+YWu+GL7WxuSHLnuCBcjarwoThi+xEPGWUqUwT9Ywdv7ffitNVh2oE1vZfea
-         FrLQPqoELXFqyiSXauTrsBmTgeJyxs/c9YuKF3vkzZfkMDPt6YWv95ZhyT1cEAKCAtik
-         PxcYFOQhfPP7i1PpNYEWaV7p0TCWZnqaRVr4OXDNQgmuxgznnjHczOO7wQgbgtZyDcKw
-         alYqBNTlljB8AA82S0OyChao1tK1uzO3OxxM6B4dA72iBQMRRuNI4qOuDa48Kt0r+2h2
-         Q+1Q==
-X-Gm-Message-State: APjAAAUORW6IWyIaORVsswuaHZNyRYJcbW16yxwDlUECU7NjND+oeelr
-        KsUxMxPCoaEm6VGmMMQQXI93x34kRzk=
-X-Google-Smtp-Source: APXvYqzhd3EF/5tgTPL/6kEI1cNccPHCXf5XXNrDeMxA2oIsF9iFkOFby0gtm3yc0vaMvFJE20KUvg==
-X-Received: by 2002:aed:20e5:: with SMTP id 92mr114177qtb.294.1573075995979;
-        Wed, 06 Nov 2019 13:33:15 -0800 (PST)
-Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com. [209.85.222.178])
-        by smtp.gmail.com with ESMTPSA id o3sm33740qkf.97.2019.11.06.13.33.14
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 06 Nov 2019 13:33:15 -0800 (PST)
-Received: by mail-qk1-f178.google.com with SMTP id 205so131536qkk.1
-        for <linux-wireless@vger.kernel.org>; Wed, 06 Nov 2019 13:33:14 -0800 (PST)
-X-Received: by 2002:a37:9cc2:: with SMTP id f185mr4314085qke.2.1573075994285;
- Wed, 06 Nov 2019 13:33:14 -0800 (PST)
+        id S1727177AbfKFXCL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 6 Nov 2019 18:02:11 -0500
+Received: from mail.kernel.org ([198.145.29.99]:59518 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726004AbfKFXCK (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 6 Nov 2019 18:02:10 -0500
+Received: from localhost.localdomain.com (unknown [176.229.194.15])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id B5D1D2084C;
+        Wed,  6 Nov 2019 23:02:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1573081330;
+        bh=LVPkkD29tDtXLsFtHtKN4gf9S/YAsYPK0cpOo8c2ED0=;
+        h=From:To:Cc:Subject:Date:From;
+        b=jZGFITUsM9+NJQrsaG7kxEvBSAX7X79ammwqJ4v0T156IyXzsZ4fDJft5WD9yVtwk
+         rpDfQ3LfGL9I5YeiUbS2Z+hJpVphhs1Pp+PWH6PvBIRbdtiX6wfewWkBRRd38ywW4t
+         PA0BEwfu0Po1QE8AZhHVRvKFUzy/mxy+3+Sb8gho=
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com
+Subject: [PATCH] mt76: fix possible out-of-buond access in mt7615_fill_txs/mt7603_fill_txs
+Date:   Thu,  7 Nov 2019 01:01:58 +0200
+Message-Id: <e7c2b8b903ed344dd3103edbd57269cb1cdac8bb.1573080592.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-References: <20191105090442.8378-1-yhchuang@realtek.com>
-In-Reply-To: <20191105090442.8378-1-yhchuang@realtek.com>
-From:   Brian Norris <briannorris@chromium.org>
-Date:   Wed, 6 Nov 2019 13:33:02 -0800
-X-Gmail-Original-Message-ID: <CA+ASDXNrsoqQ2wAg3L5S7yW2-5bVFY_Z06_0vqjz184HzQunGg@mail.gmail.com>
-Message-ID: <CA+ASDXNrsoqQ2wAg3L5S7yW2-5bVFY_Z06_0vqjz184HzQunGg@mail.gmail.com>
-Subject: Re: [PATCH] rtw88: fix potential NULL pointer access for firmware
-To:     Tony Chuang <yhchuang@realtek.com>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Nov 5, 2019 at 1:06 AM <yhchuang@realtek.com> wrote:
-...
-> Fixes: 5195b90426409 ("rtw88: avoid FW info flood")
-...
-> --- a/drivers/net/wireless/realtek/rtw88/main.c
-> +++ b/drivers/net/wireless/realtek/rtw88/main.c
-> @@ -1024,8 +1024,10 @@ static void rtw_load_firmware_cb(const struct firmware *firmware, void *context)
->         struct rtw_fw_state *fw = &rtwdev->fw;
->         const struct rtw_fw_hdr *fw_hdr;
->
-> -       if (!firmware)
-> +       if (!firmware || !firmware->data) {
->                 rtw_err(rtwdev, "failed to request firmware\n");
+Fix possible out-of-buond access of status rates array in
+mt7615_fill_txs/mt7603_fill_txs routines
 
-I think you still wanted 'complete_all()' here, otherwise your waiters
-will hang forever. (They correctly check whether the firmware is NULL,
-so that's not a problem there.)
+Fixes: c5211e997eca ("mt76: mt7603: rework and fix tx status reporting")
+Fixes: 4af81f02b49c ("mt76: mt7615: sync with mt7603 rate control changes")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+ drivers/net/wireless/mediatek/mt76/mt7603/mac.c | 4 +++-
+ drivers/net/wireless/mediatek/mt76/mt7615/mac.c | 4 +++-
+ 2 files changed, 6 insertions(+), 2 deletions(-)
 
-I'll send a follow-up to the follow-up :)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/mac.c b/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
+index 1497d5ec649e..812d081ad943 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
+@@ -1136,8 +1136,10 @@ mt7603_fill_txs(struct mt7603_dev *dev, struct mt7603_sta *sta,
+ 		if (idx && (cur_rate->idx != info->status.rates[i].idx ||
+ 			    cur_rate->flags != info->status.rates[i].flags)) {
+ 			i++;
+-			if (i == ARRAY_SIZE(info->status.rates))
++			if (i == ARRAY_SIZE(info->status.rates)) {
++				i--;
+ 				break;
++			}
+ 
+ 			info->status.rates[i] = *cur_rate;
+ 			info->status.rates[i].count = 0;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
+index 2b810ba359ae..c77adc5d2552 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
+@@ -1039,8 +1039,10 @@ static bool mt7615_fill_txs(struct mt7615_dev *dev, struct mt7615_sta *sta,
+ 		if (idx && (cur_rate->idx != info->status.rates[i].idx ||
+ 			    cur_rate->flags != info->status.rates[i].flags)) {
+ 			i++;
+-			if (i == ARRAY_SIZE(info->status.rates))
++			if (i == ARRAY_SIZE(info->status.rates)) {
++				i--;
+ 				break;
++			}
+ 
+ 			info->status.rates[i] = *cur_rate;
+ 			info->status.rates[i].count = 0;
+-- 
+2.21.0
 
-Brian
-
-> +               return;
-> +       }
