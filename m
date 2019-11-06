@@ -2,82 +2,81 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 02748F1B6D
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Nov 2019 17:38:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4073DF1CD8
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Nov 2019 18:53:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728462AbfKFQis (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 6 Nov 2019 11:38:48 -0500
-Received: from mail-qk1-f196.google.com ([209.85.222.196]:37665 "EHLO
-        mail-qk1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727894AbfKFQis (ORCPT
+        id S1732176AbfKFRxG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 6 Nov 2019 12:53:06 -0500
+Received: from smtp.codeaurora.org ([198.145.29.96]:33636 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726963AbfKFRxG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 6 Nov 2019 11:38:48 -0500
-Received: by mail-qk1-f196.google.com with SMTP id e187so12435437qkf.4
-        for <linux-wireless@vger.kernel.org>; Wed, 06 Nov 2019 08:38:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=J9gTkX/4CQRTxBR1vF+UZ78ZA2VnY+QyLggs9SIvFiI=;
-        b=iKMbR4395fRYHXpOOZpYS3KcDAZcZlrRY7RMmHbtwHg5rnaarwfRTz2mcutjbIiPB/
-         SeKYMaNY8boTtT4ZmT9yX5pqO9+zpnPJAGzR2G4yGoUk8NZ1+V3W5qpW6rrq9BqrqfTv
-         jkYC3+3GewhiJwzuQI1Jqv6Oq3E2UTxaY+JnE=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=J9gTkX/4CQRTxBR1vF+UZ78ZA2VnY+QyLggs9SIvFiI=;
-        b=kYzKtDcaN9XImjt3g9cILkboTBF+61aUGcRlrukygRIBg+zVrKJNpEw6QKtPkAEqkC
-         cuRKGyudhxFcZ8a1zhnS/mr6pkJth0q69VOTBqG1S/5LwWvOfm3+XwKTjBTTIOAAvonG
-         Y060/IV8Wq0DaU45W2BILrfCokXkdbDBAU0n1wjEf22fp8ALRAGBc71p0vK9Z8wo3SwF
-         AlPbRd2yRCn0fMuUxbmkk2tUEhsINoiyJZN51TlFxM3wNI+IC7iupUuO+RRmh+g8gtbv
-         QAvBGMYY5T7bz75sx0giiYHBIIwxSff9MsmUOcUM9ecK2NSqLxp+wCFN66R53kn85Ww3
-         Iouw==
-X-Gm-Message-State: APjAAAVRSuctHp/mx5nTbVWikk9/U03KP+XJByRU/pSKEBnqTjtVMH3k
-        YsVQXDJKs+JEfcI3+TbV+SiouvvyoAY=
-X-Google-Smtp-Source: APXvYqzsHK7T9nUavz6YwCmPgibotT12rKV4puB9cXTYoyTM1cF9VSIeR/b2YrHDwWBZUK3bzf83UQ==
-X-Received: by 2002:a37:c44c:: with SMTP id h12mr2820039qkm.218.1573058326002;
-        Wed, 06 Nov 2019 08:38:46 -0800 (PST)
-Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com. [209.85.160.179])
-        by smtp.gmail.com with ESMTPSA id v186sm11886398qkb.42.2019.11.06.08.38.44
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 06 Nov 2019 08:38:45 -0800 (PST)
-Received: by mail-qt1-f179.google.com with SMTP id p20so16086482qtq.5
-        for <linux-wireless@vger.kernel.org>; Wed, 06 Nov 2019 08:38:44 -0800 (PST)
-X-Received: by 2002:aed:2be2:: with SMTP id e89mr3215840qtd.161.1573058324338;
- Wed, 06 Nov 2019 08:38:44 -0800 (PST)
+        Wed, 6 Nov 2019 12:53:06 -0500
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 9444760A50; Wed,  6 Nov 2019 17:53:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1573062784;
+        bh=FBAsM4UfKbF/1hIsSiGDVdA7NGJpS4niuM43oKzw4ro=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=H0i959ZT7rH3cLBqeSKBNY46+MGS5vFlWMiLHtDbuXT2q2dxl/NvR9G1S4aXsKs0T
+         Tb1hhMW9OnAjN7S16ZS0GB/qttw/5N+ElZQ/E/RisRpnJTxFIk/eQME2EvUDNmh/bi
+         BgHzUadts1k7nkzbyo6ZOG4p8iJDct6loIvuZq18=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-0.8 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,MISSING_DATE,MISSING_MID,SPF_NONE autolearn=no
+        autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 6869C6087D;
+        Wed,  6 Nov 2019 17:53:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1573062783;
+        bh=FBAsM4UfKbF/1hIsSiGDVdA7NGJpS4niuM43oKzw4ro=;
+        h=Subject:From:In-Reply-To:References:To:Cc:From;
+        b=UxGOxDobUkVusZ6wyY2xLGZrU0IDCcbaBAdCQqzmKH23lnk/a/s2N+pvxpnxKHEc/
+         0Z9ZhJjoZaYb47Sx2zAci364IRCxZXb5a+34qGnroxjlXciZfOBhytnqutOsBu/AxM
+         5ThkCUOJZYqwH/nbTwlgxDUHjoMAI35tGbLSsNwM=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 6869C6087D
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-References: <20191105225751.1233-1-briannorris@chromium.org>
- <CA+ASDXM_5Q3LNyv_mbrG8d8Qo1iZZz2A2CFfvQqj9_Ta-q-wMA@mail.gmail.com> <786f623306ad462e3776236c94e83b5f2e0648ab.camel@sipsolutions.net>
-In-Reply-To: <786f623306ad462e3776236c94e83b5f2e0648ab.camel@sipsolutions.net>
-From:   Brian Norris <briannorris@chromium.org>
-Date:   Wed, 6 Nov 2019 08:38:33 -0800
-X-Gmail-Original-Message-ID: <CA+ASDXMVJg0QSPzSiWFjoDH67yJ-NfYX4MQZUT3gaivx1SJ2aA@mail.gmail.com>
-Message-ID: <CA+ASDXMVJg0QSPzSiWFjoDH67yJ-NfYX4MQZUT3gaivx1SJ2aA@mail.gmail.com>
-Subject: Re: [PATCH] crda: Makefile: fix .so compilation line with some compilers
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
-        wireless-regdb@lists.infradead.org, mcgrof@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v3 1/2] ipw2x00: Remove redundant variable "rc"
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <1572684922-61805-2-git-send-email-zhongjiang@huawei.com>
+References: <1572684922-61805-2-git-send-email-zhongjiang@huawei.com>
+To:     zhong jiang <zhongjiang@huawei.com>
+Cc:     <stas.yakovlev@gmail.com>, <simon.horman@netronome.com>,
+        <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <zhongjiang@huawei.com>
+User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
+Message-Id: <20191106175304.9444760A50@smtp.codeaurora.org>
+Date:   Wed,  6 Nov 2019 17:53:04 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Nov 6, 2019 at 12:12 AM Johannes Berg <johannes@sipsolutions.net> wrote:
-> On Tue, 2019-11-05 at 15:02 -0800, Brian Norris wrote:
-> > Apparently wireless-regdb@ is subscribers only. I have since joined,
-> > but I guess my patch bounced from that list... if I don't hear back in
-> > a while, I may resend.
->
-> The bigger question is who actually maintains crda now, if anyone ... :)
+zhong jiang <zhongjiang@huawei.com> wrote:
 
-My mailbox tells me that as of about a year ago, Luis was still
-merging patches. And his latest commit even claims it's "still
-maintained":
+> local variable "rc" is not used. It is safe to remove and
+> There is only one caller of libipw_qos_convert_ac_to_parameters().
+> hence make it void
+> 
+> Signed-off-by: zhong jiang <zhongjiang@huawei.com>
 
-    As if kernel v4.15 CRDA is no longer needed. Annotate this. The
-    code will still be maintained to help older kernels.
+2 patches applied to wireless-drivers-next.git, thanks.
 
-Brian
+e310813279b7 ipw2x00: Remove redundant variable "rc"
+ea7ad5f12ca2 iwlegacy: Remove redundant variable "ret"
+
+-- 
+https://patchwork.kernel.org/patch/11224069/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
