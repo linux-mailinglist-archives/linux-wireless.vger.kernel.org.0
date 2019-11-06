@@ -2,25 +2,25 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 41CD4F1CF9
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Nov 2019 18:57:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 58B23F1CFC
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Nov 2019 18:57:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732469AbfKFR4w (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 6 Nov 2019 12:56:52 -0500
-Received: from smtp.codeaurora.org ([198.145.29.96]:35934 "EHLO
+        id S1729435AbfKFR52 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 6 Nov 2019 12:57:28 -0500
+Received: from smtp.codeaurora.org ([198.145.29.96]:37022 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729435AbfKFR4w (ORCPT
+        with ESMTP id S1729288AbfKFR52 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 6 Nov 2019 12:56:52 -0500
+        Wed, 6 Nov 2019 12:57:28 -0500
 Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id E537660134; Wed,  6 Nov 2019 17:56:50 +0000 (UTC)
+        id 088AA60134; Wed,  6 Nov 2019 17:57:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1573063010;
-        bh=nQ+P7pXx778DX1/XphSgc5IhHKuslBvN8ajv5VvEmxU=;
+        s=default; t=1573063046;
+        bh=c1XEG8EEgt1gzkA+1hGzc4wkwAen/kvfB1Azr15+2GI=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=FNbKbf+hcv2URueWbVdvZ0S25w8iTl82Q6TiJ8Yk0Mpix9jlzrDpVNtlNuT80Qf7M
-         RvyuBy/NgDx5nE9F8DPudiaeV9c1/8iwLVE2nlXod0TDdDlFknITylabKkgIJjaYaw
-         ZTMQO1Gr2ikGmFCboS2JZYjl0XIMiSAlHhKElqMg=
+        b=fS9kyTKUp6nCFQAWdh3kunX9uY6Fjqadjdt6eJSgdnVhCG+EiZHSpqhFQeM4i4Iun
+         fkq8bU08xHpyMn3l+AB9HxLQ1ceiSwmBdqL9GSA+oPmxD5J2YHCLa0FTGe3r75Eo11
+         rZwsbBEnDN6VcK/6gDtFQNZYnk9/WcUnF4u5QJuA=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
@@ -31,60 +31,84 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id AB0C8601D4;
-        Wed,  6 Nov 2019 17:56:47 +0000 (UTC)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 8A24360134;
+        Wed,  6 Nov 2019 17:57:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1573063010;
-        bh=nQ+P7pXx778DX1/XphSgc5IhHKuslBvN8ajv5VvEmxU=;
+        s=default; t=1573063043;
+        bh=c1XEG8EEgt1gzkA+1hGzc4wkwAen/kvfB1Azr15+2GI=;
         h=Subject:From:In-Reply-To:References:To:Cc:From;
-        b=VKc9x2sQgEtMEFTKscLB6q8EVrIiHCkAaiUiJ/yxXSNjPJgZmsRMbQUahC+xu3ehg
-         D9ZMEAEGyxcxW5CTmN5+HwgoMeBQnKgAd6PyJB8LiVqt7A+FYUK7PapoxUwXUOocRi
-         60oQXgkxN0SZPdh+xLMywBe841nkAEOCDeleqOnA=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org AB0C8601D4
+        b=MZAnB6x9Q2va3DxF9/tNhFvRwUbf1swSKkreB2J8Yx4NpI+QBh/AeW2hRh2x24jvq
+         SKEO04C7oMqLDrZ5JMGykFVD6IUP6z7zcgedOJrCwBN5FYv1bmmP86bxLhe37CCEkA
+         t6VuH+3kszfm6z0QGZh3q+wEPNzy2rhSCOFWvKiQ=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 8A24360134
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] rtlwifi: rtl8225se: remove some unused const variables
+Subject: Re: [PATCH v2] rt2800: remove errornous duplicate condition
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20191102074603.38516-1-yuehaibing@huawei.com>
-References: <20191102074603.38516-1-yuehaibing@huawei.com>
-To:     YueHaibing <yuehaibing@huawei.com>
-Cc:     <davem@davemloft.net>, <allison@lohutok.net>,
-        <gregkh@linuxfoundation.org>, <kstewart@linuxfoundation.org>,
-        <info@metux.net>, <tglx@linutronix.de>, <yuehaibing@huawei.com>,
-        <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
+In-Reply-To: <20191102174701.GA1489@makrotopia.org>
+References: <20191102174701.GA1489@makrotopia.org>
+To:     Daniel Golle <daniel@makrotopia.org>
+Cc:     Stanislaw Gruszka <sgruszka@redhat.com>,
+        linux-wireless@vger.kernel.org, Roman Yeryomin <roman@advem.lv>,
+        wbob <wbob@jify.de>
 User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20191106175650.E537660134@smtp.codeaurora.org>
-Date:   Wed,  6 Nov 2019 17:56:50 +0000 (UTC)
+Message-Id: <20191106175726.088AA60134@smtp.codeaurora.org>
+Date:   Wed,  6 Nov 2019 17:57:25 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-YueHaibing <yuehaibing@huawei.com> wrote:
+Daniel Golle <daniel@makrotopia.org> wrote:
 
-> drivers/net/wireless//realtek/rtl818x/rtl8180/rtl8225se.c:83:17: warning: 'rtl8225sez2_tx_power_cck' defined but not used [-Wunused-const-variable=]
-> drivers/net/wireless//realtek/rtl818x/rtl8180/rtl8225se.c:79:17: warning: 'rtl8225sez2_tx_power_cck_A' defined but not used [-Wunused-const-variable=]
-> drivers/net/wireless//realtek/rtl818x/rtl8180/rtl8225se.c:75:17: warning: 'rtl8225sez2_tx_power_cck_B' defined but not used [-Wunused-const-variable=]
-> drivers/net/wireless//realtek/rtl818x/rtl8180/rtl8225se.c:71:17: warning: 'rtl8225sez2_tx_power_cck_ch14' defined but not used [-Wunused-const-variable=]
-> drivers/net/wireless//realtek/rtl818x/rtl8180/rtl8225se.c:62:17: warning: 'rtl8225se_tx_power_ofdm' defined but not used [-Wunused-const-variable=]
-> drivers/net/wireless//realtek/rtl818x/rtl8180/rtl8225se.c:53:17: warning: 'rtl8225se_tx_power_cck_ch14' defined but not used [-Wunused-const-variable=]
-> drivers/net/wireless//realtek/rtl818x/rtl8180/rtl8225se.c:44:17: warning: 'rtl8225se_tx_power_cck' defined but not used [-Wunused-const-variable=]
-> drivers/net/wireless//realtek/rtl818x/rtl8180/rtl8225se.c:40:17: warning: 'rtl8225se_tx_gain_cck_ofdm' defined but not used [-Wunused-const-variable=]
+> On 2019-10-28 06:07, wbob wrote:
+> > Hello Roman,
+> >
+> > while reading around drivers/net/wireless/ralink/rt2x00/rt2800lib.c
+> > I stumbled on what I think is an edit of yours made in error in march
+> > 2017:
+> >
+> > https://github.com/torvalds/linux/commit/41977e86#diff-dae5dc10da180f3b055809a48118e18aR5281
+> >
+> > RT6352 in line 5281 should not have been introduced as the "else if"
+> > below line 5291 can then not take effect for a RT6352 device. Another
+> > possibility is for line 5291 to be not for RT6352, but this seems
+> > very unlikely. Are you able to clarify still after this substantial time?
+> >
+> > 5277: static int rt2800_init_registers(struct rt2x00_dev *rt2x00dev)
+> > ...
+> > 5279:  } else if (rt2x00_rt(rt2x00dev, RT5390) ||
+> > 5280:         rt2x00_rt(rt2x00dev, RT5392) ||
+> > 5281:         rt2x00_rt(rt2x00dev, RT6352)) {
+> > ...
+> > 5291:  } else if (rt2x00_rt(rt2x00dev, RT6352)) {
+> > ...
 > 
-> They are never used, so can be removed.
+> Hence remove errornous line 5281 to make the driver actually
+> execute the correct initialization routine for MT7620 chips.
 > 
-> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+> As it was requested by Stanislaw Gruszka remove setting values of
+> MIMO_PS_CFG and TX_PIN_CFG. MIMO_PS_CFG is responsible for MIMO
+> power-safe mode (which is disabled), hence we can drop setting it.
+> TX_PIN_CFG is set correctly in other functions, and as setting this
+> value breaks some devices, rather don't set it here during init, but
+> only modify it later on.
+> 
+> Fixes: 41977e86c984 ("rt2x00: add support for MT7620")
+> Reported-by: wbob <wbob@jify.de>
+> Reported-by: Roman Yeryomin <roman@advem.lv>
+> Signed-off-by: Daniel Golle <daniel@makrotopia.org>
+> Acked-by: Stanislaw Gruszka <sgruszka@redhat.com>
 
 Patch applied to wireless-drivers-next.git, thanks.
 
-a3a03716196f rtlwifi: rtl8225se: remove some unused const variables
+a1f7c2cabf70 rt2800: remove errornous duplicate condition
 
 -- 
-https://patchwork.kernel.org/patch/11224057/
+https://patchwork.kernel.org/patch/11224189/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
