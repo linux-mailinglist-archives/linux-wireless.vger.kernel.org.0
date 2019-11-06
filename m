@@ -2,111 +2,84 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 31B81F201E
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Nov 2019 21:54:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AF687F20DD
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Nov 2019 22:33:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727684AbfKFUyC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 6 Nov 2019 15:54:02 -0500
-Received: from mail-qk1-f195.google.com ([209.85.222.195]:36009 "EHLO
-        mail-qk1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727351AbfKFUyC (ORCPT
+        id S1727033AbfKFVdQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 6 Nov 2019 16:33:16 -0500
+Received: from mail-pf1-f193.google.com ([209.85.210.193]:36130 "EHLO
+        mail-pf1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726798AbfKFVdQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 6 Nov 2019 15:54:02 -0500
-Received: by mail-qk1-f195.google.com with SMTP id d13so10220qko.3
-        for <linux-wireless@vger.kernel.org>; Wed, 06 Nov 2019 12:54:01 -0800 (PST)
+        Wed, 6 Nov 2019 16:33:16 -0500
+Received: by mail-pf1-f193.google.com with SMTP id v19so29901pfm.3
+        for <linux-wireless@vger.kernel.org>; Wed, 06 Nov 2019 13:33:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=VAXTXx+y7I3ABYm6s1rIW7RNlcFe9UpszDevKDlT4/k=;
-        b=e2+YoGwNlA+e5m4thOFQWvvUz7P9TCxVRqlaGPD78OiFXg7dAB33VGQVlPHiqqIEq3
-         yF3k5xfClE888/6GEz0359ZQ8UHIVo49+NeGiudIurC64Ma93yLGI6o5UNkMkO7BW+aL
-         UpFsjVGBxsNx958W+6Ka7dlfYDFCSsGm0hugk=
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=63TQi9wjRsP9B7olazjIeMk+BpYZQm1gAxXkqYIXD5g=;
+        b=D6Bull3RYJaTOJbI8OL+yktXxz064s3kjiWnXaVqXiWMAa35qY+ce6w2nQf4G0NYeZ
+         G/HzyrSZB9UkbI4lR8QedCA9CsA4GwfvyhYTTjQwGIMXN2LgpGHQV6LTfU90iaSp1Y6P
+         3M+kB4VgdoLRLnW3bvmQIhjzHVodk3k3/uSrM=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=VAXTXx+y7I3ABYm6s1rIW7RNlcFe9UpszDevKDlT4/k=;
-        b=rp+F2aqzDw77LMOS9+BiXKonHOqmV1R5+hNPGwJKAjOVEHDKJCXtBpb258C2iNX/FA
-         SUumuV7P7QuKdJajFsceQfZT1sfhlYJZKvQ0h97J2nhWZHkVKaeSVy5X23JzxsHoKc7R
-         qgWUDY6BKW3ZUYk5tD+VfpcDLanyiTpcWVy3PDENjFR8a3xQOvngAjV9v/jL6Yt+qE8v
-         NAfuud3khKhl3+CK2Jv85Rr31gRQw2uM711uQOdMQcLzLkhy/I0YTTo0eBA5/AMws/L2
-         Y920GOOPxJ822fTTlOXrN8EwOosh5db4v0GMRAKdjRmdWcVOaOd66gt68uTfaPACf/6z
-         wOAQ==
-X-Gm-Message-State: APjAAAUVauM3qx6GKXoSopG7JtiaJX92mJ26pkMSthtge+Dcz49wAOJc
-        Em3Vax8nmxOm4oqHOKzbOHT6Tf2PFrM=
-X-Google-Smtp-Source: APXvYqyyy1FZSDXNNZjnru4xndITT7HAfNS+zpl4v7Wqb0w9suMY9L0C08E9ZOeLnPca9e9I8FF/Gg==
-X-Received: by 2002:a37:7b83:: with SMTP id w125mr3796021qkc.343.1573073640870;
-        Wed, 06 Nov 2019 12:54:00 -0800 (PST)
-Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com. [209.85.219.54])
-        by smtp.gmail.com with ESMTPSA id b13sm20957qtj.64.2019.11.06.12.53.59
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 06 Nov 2019 12:54:00 -0800 (PST)
-Received: by mail-qv1-f54.google.com with SMTP id w11so2033326qvu.13
-        for <linux-wireless@vger.kernel.org>; Wed, 06 Nov 2019 12:53:59 -0800 (PST)
-X-Received: by 2002:ad4:5550:: with SMTP id v16mr1177231qvy.18.1573073639225;
- Wed, 06 Nov 2019 12:53:59 -0800 (PST)
-MIME-Version: 1.0
-References: <20191016123301.2649-1-yhchuang@realtek.com> <20191016123301.2649-2-yhchuang@realtek.com>
- <CA+ASDXNmMiW_FaqCKowzZW6fnBhA+JXcGBJOEToBA47EShu35A@mail.gmail.com> <F7CD281DE3E379468C6D07993EA72F84D1900C92@RTITMBSVM04.realtek.com.tw>
-In-Reply-To: <F7CD281DE3E379468C6D07993EA72F84D1900C92@RTITMBSVM04.realtek.com.tw>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=63TQi9wjRsP9B7olazjIeMk+BpYZQm1gAxXkqYIXD5g=;
+        b=tVJWyp5QDgKt55yS1mXC0/i1su+DCe1A+0VvJwHsa0rHtbNsiWZQPfs/cVW1lD4SNQ
+         RUsCxagA3n8l082IIi+AY7P7axZ0l5jVrquojVLgBXyECcXeYINE4uzTYFJoLgkX5rC6
+         1HrxYrNkF60ZbEf0KihV6Aug2ppi6STzKTPqBJRWtUAgSXUC8BcwDSqzxV7hvj35dtKF
+         k7U5Bis7zAZXVYk7XJh/GzEeMwyBCInKJ2OVAWy8seeE+x4MvHfkoTT/09NkAcTI0YE9
+         G9WWP5Ipvy92jjAK2tFbIErWPbkeBEHFZywKinposDGfRsVvjAHYRQsQ0BnBAMmx7a4+
+         1rYg==
+X-Gm-Message-State: APjAAAVZ4ARbN33E5Pe7ptbM4PfJfDgj7MvTLRGeSw8DWuUOzUGgl7oW
+        FtOjoEjLBNTuv9ZF9S9uiaf4RXaSDyQ=
+X-Google-Smtp-Source: APXvYqyFlUEM4jPnNevwfG+aT+9aGfM4U7Yb7YBooImBgaTarAywLYkNzmT6rmvCCOOKXx1TZ0+c4w==
+X-Received: by 2002:a17:90a:b292:: with SMTP id c18mr34785pjr.4.1573075995269;
+        Wed, 06 Nov 2019 13:33:15 -0800 (PST)
+Received: from smtp.gmail.com ([2620:15c:202:1:534:b7c0:a63c:460c])
+        by smtp.gmail.com with ESMTPSA id w11sm15710pgp.28.2019.11.06.13.33.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 06 Nov 2019 13:33:14 -0800 (PST)
 From:   Brian Norris <briannorris@chromium.org>
-Date:   Wed, 6 Nov 2019 12:53:48 -0800
-X-Gmail-Original-Message-ID: <CA+ASDXMg5hKuXUxsdAuig0_t0TNJL10ZcaZ-iQ79tVKPNjzMXg@mail.gmail.com>
-Message-ID: <CA+ASDXMg5hKuXUxsdAuig0_t0TNJL10ZcaZ-iQ79tVKPNjzMXg@mail.gmail.com>
-Subject: Re: [PATCH v2 1/6] rtw88: use macro to check the current band
-To:     Tony Chuang <yhchuang@realtek.com>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+To:     <linux-wireless@vger.kernel.org>
+Cc:     Yan-Hsuan Chuang <yhchuang@realtek.com>,
+        Brian Norris <briannorris@chromium.org>,
+        Dan Carpenter <dan.carpenter@oracle.com>
+Subject: [PATCH] rtw88: signal completion even on firmware-request failure
+Date:   Wed,  6 Nov 2019 13:30:55 -0800
+Message-Id: <20191106213055.133424-1-briannorris@chromium.org>
+X-Mailer: git-send-email 2.24.0.rc1.363.gb1bccd3e3d-goog
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-A little late on this...
+Otherwise, the waiters (e.g., "modprobe rtwpci") will block forever.
 
-On Wed, Oct 16, 2019 at 7:39 PM Tony Chuang <yhchuang@realtek.com> wrote:
-> From: Brian Norris
-> > On Wed, Oct 16, 2019 at 5:33 AM <yhchuang@realtek.com> wrote:
-> > > index 4759d6a0ca6e..492a2bfc0d5a 100644
-> > > --- a/drivers/net/wireless/realtek/rtw88/main.h
-> > > +++ b/drivers/net/wireless/realtek/rtw88/main.h
-> > > @@ -58,6 +58,19 @@ struct rtw_hci {
-> > >         u8 bulkout_num;
-> > >  };
-> > >
-> > > +#define IS_CH_5G_BAND_1(channel) ((channel) >= 36 && (channel <= 48))
-> > > +#define IS_CH_5G_BAND_2(channel) ((channel) >= 52 && (channel <= 64))
-> > > +#define IS_CH_5G_BAND_3(channel) ((channel) >= 100 && (channel <=
-> > 144))
-> > > +#define IS_CH_5G_BAND_4(channel) ((channel) >= 149 && (channel <=
-> > 177))
-> >
-> > There are channels between 48 and 52, 64 and 100, and 144 and 149.
-> > What are you doing with those?
->
-> These devices are not supporting those channels you mentioned.
-> So I hope if some unsupported channels are used, they should hit the
-> "else" case, or throw such a warn.
+Fixes: f530c1961af2 ("rtw88: fix potential NULL pointer access for firmware")
+Cc: Dan Carpenter <dan.carpenter@oracle.com>
+Cc: Yan-Hsuan Chuang <yhchuang@realtek.com>
+Signed-off-by: Brian Norris <briannorris@chromium.org>
+---
+ drivers/net/wireless/realtek/rtw88/main.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Maybe that argument makes sense on its own, but see below:
+diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
+index de82d08ea29e..ae61415e1665 100644
+--- a/drivers/net/wireless/realtek/rtw88/main.c
++++ b/drivers/net/wireless/realtek/rtw88/main.c
+@@ -1026,6 +1026,7 @@ static void rtw_load_firmware_cb(const struct firmware *firmware, void *context)
+ 
+ 	if (!firmware || !firmware->data) {
+ 		rtw_err(rtwdev, "failed to request firmware\n");
++		complete_all(&fw->completion);
+ 		return;
+ 	}
+ 
+-- 
+2.24.0.rc1.363.gb1bccd3e3d-goog
 
-> > > +#define IS_CH_5G_BAND_MID(channel) \
-> > > +       (IS_CH_5G_BAND_2(channel) || IS_CH_5G_BAND_3(channel))
-> > > +
-> > > +#define IS_CH_2G_BAND(channel) ((channel) <= 14)
-> > > +#define IS_CH_5G_BAND(channel) \
-> > > +       (IS_CH_5G_BAND_1(channel) || IS_CH_5G_BAND_2(channel) || \
-> > > +        IS_CH_5G_BAND_3(channel) || IS_CH_5G_BAND_4(channel))
-> >
-> > Given the above (you have major holes in 5G_BAND{1,2,3,4}), this macro
-> > seems like a regression.
-
-I still think it's a terrible idea to write an intentionally
-misleading macro named "IS 5G BAND" that returns false for 5G
-channels. It just gives you a nice way to stub your toe if you ever
-have chips that do support these channels.
-
-Brian
