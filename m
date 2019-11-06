@@ -2,73 +2,111 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B4702F132B
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Nov 2019 11:01:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 66E27F13FA
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Nov 2019 11:32:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728271AbfKFKBk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 6 Nov 2019 05:01:40 -0500
-Received: from mail-oi1-f194.google.com ([209.85.167.194]:35004 "EHLO
-        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726143AbfKFKBk (ORCPT
+        id S1727961AbfKFKcI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 6 Nov 2019 05:32:08 -0500
+Received: from smtp.codeaurora.org ([198.145.29.96]:44584 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725890AbfKFKcI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 6 Nov 2019 05:01:40 -0500
-Received: by mail-oi1-f194.google.com with SMTP id n16so20437806oig.2
-        for <linux-wireless@vger.kernel.org>; Wed, 06 Nov 2019 02:01:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc;
-        bh=6EGX28wEFZgUP2ViykHhowm1UZd+iCJ5kGWB7RqLO4I=;
-        b=cze9xOjKjae6ndO91v7yCelIYgKCcUEG1jKrdVfJN8rrivk0/ztpPnRmgRs19lBHbd
-         Xc6YUjknUdd2ur0TXgHntHW5k2tjqBUmLhzhKYLqqnNUX196/W2uqARpFio6wMKaMAE3
-         ++pKayavbRONNUo0L/ccOK7bzUrXRoUIg56BkPn0JYGWqFxX0FHoopOVWuwlXFfTGX6K
-         594+bJ/KWPUsmKCZ3HKoTVc5R2b+PQmEpeoNxmTvwxCjhIgv62Uro/5/r70SSWgJp1GZ
-         K80ynAh0nOfz2ZOebvtY7mCh4BASNe5PX6eSjJksreCpvQc8FrF/jFgAXLEqv1e8tacV
-         QsAg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc;
-        bh=6EGX28wEFZgUP2ViykHhowm1UZd+iCJ5kGWB7RqLO4I=;
-        b=s7RQgXB15Yd0XHaLmR6+l22B+q3IYPg5QVIkLjbSqMhyg254K/pFezNOWuJcN4g4bX
-         J7uVQn/UsjVO2Xpwg2aXy9wl51omYUFIxIWc9K8R7vdhasLzQxVeA6AA/FdcNEH8a7On
-         dtLCktv7qet5qIr3l09wzG4ozfWdDZ1D9x+WM76RTNlsbPtaaTL6hk59Yh36nhb/pcS1
-         os/PTSJp6XCsGPP488zr1xkzPR8t+cGvuXFOa8fR2IuHayDBodpg2ZqWUrNSwxGi8Mn6
-         VsXSNaYzzDwIgKwOf+N7LybznYmQ3zpacfk5fRVlHts8mnJqt0r8D8riq/3Jpows5YRp
-         zz5w==
-X-Gm-Message-State: APjAAAV/+h2HWBtjv7biDy5WcAobKHXkJR1YeCndDowyrX4Z6iNY/lzs
-        NY4hV1GT56if8/HJyPna1jhVOJK6s0wQmszDZ30FeUqC
-X-Google-Smtp-Source: APXvYqyApwUy7IhVKtaGYyAk/3krLYde4B27R95zSTjANWbyG7AVqhn4RAL+NtjCz+xBqBUAZHjFIXvCQ+FLiF0wW5k=
-X-Received: by 2002:a54:4f83:: with SMTP id g3mr1523053oiy.24.1573034499461;
- Wed, 06 Nov 2019 02:01:39 -0800 (PST)
+        Wed, 6 Nov 2019 05:32:08 -0500
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 5278F612C6; Wed,  6 Nov 2019 10:32:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1573036326;
+        bh=BFkZ4M/2nzCiB5XacbVjL4KWPYi7IRQjbmDKTBM1gHE=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=nRuBtDbbpbDDSZaOIq1iTtHGfQxnnyrwyVPrNxmGXEeP3OJcaAMB5wl2XlfSUOWZJ
+         yDSm4MtUfhTQ9HvHkYh6JewbGo2NcWAvFMNLHCn9kJajxUpOKdWCAIACo8/ugWOVha
+         9k+0tTHbYPd2ngWDBU2POW1Ed7z4jwjXInWEgnQ8=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from x230.qca.qualcomm.com (85-76-103-221-nat.elisa-mobile.fi [85.76.103.221])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 585DF612D8;
+        Wed,  6 Nov 2019 10:32:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1573036325;
+        bh=BFkZ4M/2nzCiB5XacbVjL4KWPYi7IRQjbmDKTBM1gHE=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=bwclr+SD2H59YdMPGZbofsxziLmbzGKeqGG6OUaSA0iNeYIaH15Fu4ePYacK/ZPeb
+         D2m2MIoVgRej964eha4+KY/Kn1kLt0Zkj5qTAUmAGqkQGjj4gtDbZGAb2mgledK+D8
+         o1WIqk0B4BGxReICRzc7WiXlkyudqJFcl6fCV1wk=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 585DF612D8
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Adam Ford <aford173@gmail.com>
+Cc:     Linux-OMAP <linux-omap@vger.kernel.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org, netdev <netdev@vger.kernel.org>
+Subject: Re: Long Delay on startup of wl18xx Wireless chip
+References: <CAHCN7xJiJKBgkiRm-MF9NpgQqfV4=zSVRShc5Sb5Lya2TAxU0g@mail.gmail.com>
+        <CAHCN7xK0Y7=Wr9Kq02CWCbQjWVOocU02LLEB=QsVB22yNNoQPw@mail.gmail.com>
+Date:   Wed, 06 Nov 2019 12:32:00 +0200
+In-Reply-To: <CAHCN7xK0Y7=Wr9Kq02CWCbQjWVOocU02LLEB=QsVB22yNNoQPw@mail.gmail.com>
+        (Adam Ford's message of "Tue, 5 Nov 2019 12:55:51 -0600")
+Message-ID: <87sgn1z467.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-Received: by 2002:a9d:384:0:0:0:0:0 with HTTP; Wed, 6 Nov 2019 02:01:38 -0800 (PST)
-In-Reply-To: <9bb484b94c43f7c9aa08345ad89d7b2c@codeaurora.org>
-References: <1571734629-18028-1-git-send-email-zhichen@codeaurora.org>
- <CAKR_QVLDFBVMDDP4mPYVNdpT9TA3podNeQMpVJQwE7A5eG=0kA@mail.gmail.com> <9bb484b94c43f7c9aa08345ad89d7b2c@codeaurora.org>
-From:   Tom Psyborg <pozega.tomislav@gmail.com>
-Date:   Wed, 6 Nov 2019 11:01:38 +0100
-Message-ID: <CAKR_QVL9QLE72y0HBD_miLYAD4qx73u3FK33=oNCHp_S8H6JOw@mail.gmail.com>
-Subject: Re: [PATCH RFC] Revert "ath10k: fix DMA related firmware crashes on
- multiple devices"
-To:     zhichen@codeaurora.org
-Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 30/10/2019, zhichen@codeaurora.org <zhichen@codeaurora.org> wrote:
-> On 2019-10-22 18:07, Tom Psyborg wrote:
->
->> What about main and 10x firmware branch?
->
-> There is no code changes in firmware. It's a configuration change of
-> host memory access.
->
-> Zhi
->
+Adam Ford <aford173@gmail.com> writes:
 
-Please change it for main and 10x branch too. Dumping hw1.0 regs with
-QCA driver shows DMA burst value set to 1
+> On Tue, Nov 5, 2019 at 12:25 PM Adam Ford <aford173@gmail.com> wrote:
+>>
+>> I am seeing a really long delay at startup of the wl18xx using the 5.4 kernel.
+>>
+>
+> Sorry I had to resend.  I forgot to do plaintext.  Google switched
+> settings on me and neglected to inform me.
+>
+>
+>> [ 7.895551] wl18xx_driver wl18xx.2.auto: Direct firmware load for
+>> ti-connectivity/wl18xx-conf.bin failed with error -2
+>> [ 7.906416] wl18xx_driver wl18xx.2.auto: Falling back to sysfs
+>> fallback for: ti-connectivity/wl18xx-conf.bin
+>>
+>> At this point in the sequence, I can login to Linux, but the WL18xx is unavailable.
+>>
+>> [   35.032382] vwl1837: disabling
+>> [ 69.594874] wlcore: ERROR could not get configuration binary
+>> ti-connectivity/wl18xx-conf.bin: -11
+>> [   69.604013] wlcore: WARNING falling back to default config
+>> [   70.174821] wlcore: wl18xx HW: 183x or 180x, PG 2.2 (ROM 0x11)
+>> [ 70.189003] wlcore: WARNING Detected unconfigured mac address in
+>> nvs, derive from fuse instead.
+>> [   70.197851] wlcore: WARNING This default nvs file can be removed from the file system
+>> [   70.218816] wlcore: loaded
+>>
+>> It is now at this point when the wl18xx is available.
+>>
+>> I have the wl18xx and wlcore setup as a module so it should load
+>> after the filesystem is mounted. I am not using a wl18xx-conf.bin,
+>> but I never needed to use this before.
+>>
+>> It seems to me unreasonable to wait 60+ seconds after everything is
+>> mounted for the wireless chip to become available. Before I attempt
+>> to bisect this, I was hoping someone might have seen this. I am also
+>> trying to avoid duplicating someone else's efforts.
+>>
+>> I know the 4.19 doesn't behave like this.
+
+Try disabling CONFIG_FW_LOADER_USER_HELPER, that usually causes a 60
+second delay if the user space is not setup to handle the request. (Or
+something like that.)
+
+-- 
+Kalle Valo
