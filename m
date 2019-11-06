@@ -2,89 +2,98 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E0ACF22A6
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Nov 2019 00:31:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A0DA8F22D3
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Nov 2019 00:47:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728412AbfKFXbf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 6 Nov 2019 18:31:35 -0500
-Received: from mail-pl1-f195.google.com ([209.85.214.195]:36612 "EHLO
-        mail-pl1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727296AbfKFXbf (ORCPT
+        id S1727654AbfKFXra (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 6 Nov 2019 18:47:30 -0500
+Received: from mail-pf1-f194.google.com ([209.85.210.194]:43160 "EHLO
+        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725937AbfKFXr3 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 6 Nov 2019 18:31:35 -0500
-Received: by mail-pl1-f195.google.com with SMTP id g9so12306638plp.3;
-        Wed, 06 Nov 2019 15:31:34 -0800 (PST)
+        Wed, 6 Nov 2019 18:47:29 -0500
+Received: by mail-pf1-f194.google.com with SMTP id 3so458141pfb.10;
+        Wed, 06 Nov 2019 15:47:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id;
-        bh=XQlBjJQQjlLiOw6f2ULlsVGlJrKy32umFggc4zmnopc=;
-        b=gwQTp+0U9NUDWWwM66Vo43vKr5F6kMz6YnYStCt7FNFJHX+scw5dGwfAbuEShRbc8v
-         XcmX1D+eSJZYvdO0k9WgO/00JGvL5kjTxBS3D/FLPLBDgT2lLsa6Gho9KRe04ezZreU7
-         ttLGuXono0x8uy6S0YxD0shypeQWo1wKv5Z08VuRXS0KnWBtOCZwzJPgnDzTEWTuq18j
-         azzWsYkZWIWokwnvKfvCfdBwDww9XJV8XRquLpogRYv8WMBwwo5SUBM1XZNZVmzI/Tez
-         1OSlIqNp3kGEIeR9fRxGBHKxWT9pIGy2pEzMpOU+X5UCTFQrjf/QBMNRR9EsM0929Ccd
-         z4zw==
+        bh=IITHycz/tKeCtcoGS9oSqQaaGm3H0ejbd50X22z8NiA=;
+        b=QBM+UW+9MI+uREWzRjPCDMTdRcJ1Qg9A1mV9chE5KjhqRQK8ZTlnzavCFuKjvmApo0
+         dLMC9dCKtbzlyt2F0etYRl9F6hMMAl2ZWhnqk+1qjKTziWxKwfA9tYuxgHLUtNXUaQFY
+         OAtGyQlApB2naKonvaurwkRT8u5RsF2+hJd6dXgnsZvq4NSYZPju1+8F+8zPDs9+pZ+J
+         S2gwQtppNc/DtmGJz6rSAq4SJ5J4LjD/1ZNAluTfXjvV++shwxekEoJIQcMKzFiTHlL7
+         BPRzlUZ8gf1gO6+TvpexhzXi4VNnhOwwrCMQwpY24IymcCjHxGV2MjWegPyqB5uBNd1g
+         xyIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=XQlBjJQQjlLiOw6f2ULlsVGlJrKy32umFggc4zmnopc=;
-        b=Jppb/Fql/riqbrEgE6d4nwJIl4nGCWf2ZeFzm8BYZOEvis3Hf+EKsjeueruN/JR7ef
-         d0OTOaRd/pjPrD9Cc5L0Oo3N9VPBQywmnkY9l4oNzoMvq17WUBASb+3nawMiC6Vc3IR2
-         PyTBrX7oTs06M1CZbyUC4fzmKqbYMFKS+jSsoafKGVC+ModB7HdYVxvWSOlzLojt96BT
-         WQ1Jwksh7wRoCtoct79YwkOoLvuS6eI3xqlU7ZtwAne93OhYM1083EXSJ9YG0be9LxHg
-         fXZ86TxdEWMoZfOLnekRp4dsQCnY96Pb4sZGPVZKqpzpj03v6gi9BBTLhV3GYfpVHqE9
-         uzhw==
-X-Gm-Message-State: APjAAAXJ+pUDmwJ19HPKQz1tSui3khv3dvkXvUjfQ+mHpa5ErkUb9DJ/
-        0aPTA/my6MlKwlriCOADO5mH3rVb
-X-Google-Smtp-Source: APXvYqyxj6AvcxSxTZ1uXkDQ4TdMBL4b+00frqdfXS3bHWC4a2N3B+rJNl7uiZQ1SRrjJzBidWs0oQ==
-X-Received: by 2002:a17:902:b10c:: with SMTP id q12mr239799plr.97.1573083094431;
-        Wed, 06 Nov 2019 15:31:34 -0800 (PST)
+        bh=IITHycz/tKeCtcoGS9oSqQaaGm3H0ejbd50X22z8NiA=;
+        b=Ke9gYUfGogLpJdxKDkjkDe8Tix2vovfNghwn58tkOhQ39XH8H81gg5EdAUcl1i/aI/
+         bOMLDCDTTEBSAjGyRfVOYPR+SfBCAaBQvrWVZ/PIQcph+ulvAxQAP1vllYkx3D+nqU4q
+         z/NpP7FfBC3HpjZ9ddFj5OmchDJl+j348GHDQJYOhetorqGqixCH/ra+vU1DnnSFOrmi
+         9jrR9UidkNrrCkQIeXWFspp15s7fc2R7dXQiaVolVXxm0z9Nw7UyNTZNeXT5lTgKZIJy
+         KQNU1kqmUPInBdovxNhC8SyNx3PUYnESY7Ta+lG/UinU8MiB79OyFQfhHgoIp1fY0RDr
+         +rdA==
+X-Gm-Message-State: APjAAAXaEO+vQu/K7QHizu35e+gP9JZY+dPnibjQNUsIPbBrNeTx0Ml0
+        +QcA5Bt+qMWR4IRN9eJDFsZ76g2d
+X-Google-Smtp-Source: APXvYqxUKtpDTnctikFB0dQsxG/rxh3cI4BqhqNcmERqcbnbqreW4bT2lTMAT4Iu/13iDxCfITTTBQ==
+X-Received: by 2002:a63:ed17:: with SMTP id d23mr620290pgi.125.1573084049060;
+        Wed, 06 Nov 2019 15:47:29 -0800 (PST)
 Received: from aw-bldr-10.qualcomm.com (i-global254.qualcomm.com. [199.106.103.254])
-        by smtp.gmail.com with ESMTPSA id f7sm70667pfa.150.2019.11.06.15.31.33
+        by smtp.gmail.com with ESMTPSA id y26sm104198pfo.76.2019.11.06.15.47.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 06 Nov 2019 15:31:34 -0800 (PST)
+        Wed, 06 Nov 2019 15:47:28 -0800 (PST)
 From:   Jeffrey Hugo <jeffrey.l.hugo@gmail.com>
 To:     kvalo@codeaurora.org, davem@davemloft.net
 Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
         netdev@vger.kernel.org, linux-arm-msm@vger.kernel.org,
         linux-kernel@vger.kernel.org,
         Jeffrey Hugo <jeffrey.l.hugo@gmail.com>
-Subject: [PATCH] ath10k: Handle when FW doesn't support QMI_WLFW_HOST_CAP_REQ_V01
-Date:   Wed,  6 Nov 2019 15:31:30 -0800
-Message-Id: <20191106233130.2169-1-jeffrey.l.hugo@gmail.com>
+Subject: [PATCH] ath10k: Handle "invalid" BDFs for msm8998 devices
+Date:   Wed,  6 Nov 2019 15:47:12 -0800
+Message-Id: <20191106234712.2380-1-jeffrey.l.hugo@gmail.com>
 X-Mailer: git-send-email 2.17.1
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Firmware with the build id QC_IMAGE_VERSION_STRING=WLAN.HL.1.0.2-XXXX does
-not support the QMI_WLFW_HOST_CAP_REQ_V01 message and will return the
-QMI not supported error to the ath10k driver.  Since not supporting this
-message is not fatal to the firmware nor the ath10k driver, lets catch
-this particular scenario and ignore it so that we can still bring up
-wifi services successfully.
+When the BDF download QMI message has the end field set to 1, it signals
+the end of the transfer, and triggers the firmware to do a CRC check.  The
+BDFs for msm8998 devices fail this check, yet the firmware is happy to
+still use the BDF.  It appears that this error is not caught by the
+downstream drive by concidence, therefore there are production devices
+in the field where this issue needs to be handled otherwise we cannot
+support wifi on them.  So, attempt to detect this scenario as best we can
+and treat it as non-fatal.
 
 Signed-off-by: Jeffrey Hugo <jeffrey.l.hugo@gmail.com>
 ---
- drivers/net/wireless/ath/ath10k/qmi.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath10k/qmi.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/net/wireless/ath/ath10k/qmi.c b/drivers/net/wireless/ath/ath10k/qmi.c
-index 545ac1f06997..eb618a2652db 100644
+index eb618a2652db..5ff8cfc93778 100644
 --- a/drivers/net/wireless/ath/ath10k/qmi.c
 +++ b/drivers/net/wireless/ath/ath10k/qmi.c
-@@ -614,7 +614,9 @@ static int ath10k_qmi_host_cap_send_sync(struct ath10k_qmi *qmi)
- 	if (ret < 0)
- 		goto out;
+@@ -265,10 +265,13 @@ static int ath10k_qmi_bdf_dnld_send_sync(struct ath10k_qmi *qmi)
+ 			goto out;
  
--	if (resp.resp.result != QMI_RESULT_SUCCESS_V01) {
-+	/* older FW didn't support this request, which is not fatal */
-+	if (resp.resp.result != QMI_RESULT_SUCCESS_V01 &&
-+	    resp.resp.error != QMI_ERR_NOT_SUPPORTED_V01) {
- 		ath10k_err(ar, "host capability request rejected: %d\n", resp.resp.error);
- 		ret = -EINVAL;
- 		goto out;
+ 		if (resp.resp.result != QMI_RESULT_SUCCESS_V01) {
+-			ath10k_err(ar, "failed to download board data file: %d\n",
+-				   resp.resp.error);
+-			ret = -EINVAL;
+-			goto out;
++			if (!(req->end == 1 &&
++			      resp.resp.result == QMI_ERR_MALFORMED_MSG_V01)) {
++				ath10k_err(ar, "failed to download board data file: %d\n",
++					   resp.resp.error);
++				ret = -EINVAL;
++				goto out;
++			}
+ 		}
+ 
+ 		remaining -= req->data_len;
 -- 
 2.17.1
 
