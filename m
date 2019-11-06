@@ -2,85 +2,79 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 51F47F226E
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Nov 2019 00:17:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 66093F2271
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Nov 2019 00:17:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728065AbfKFXQ5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 6 Nov 2019 18:16:57 -0500
-Received: from mail-pg1-f193.google.com ([209.85.215.193]:45825 "EHLO
-        mail-pg1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727080AbfKFXQ5 (ORCPT
+        id S1727228AbfKFXRx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 6 Nov 2019 18:17:53 -0500
+Received: from mail-pf1-f196.google.com ([209.85.210.196]:39136 "EHLO
+        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727080AbfKFXRx (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 6 Nov 2019 18:16:57 -0500
-Received: by mail-pg1-f193.google.com with SMTP id w11so144161pga.12;
-        Wed, 06 Nov 2019 15:16:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=PEEwQUwm/mtCk8pRNL9DiIeL71bqH+DtmpEDVuEb4+U=;
-        b=neaEdK/p5ar2I/xlFi4UuC6GILTW3Ks2guXTHYrzRYhhB5GJHWuYAmHteeS9QtXB38
-         vpLKCrRcrgDtne+sUmpqEZdWMZsLWa5Ssry3hRvPt+l5AUgBe8AMaGUA2siXrzL8Tt84
-         1eEY/yBnhOu6s1Y2lrffcUanSuXEiTYu3WyAp+so6Q1eXsx3jz708LQ6Mdq1uvSN8Vo7
-         JJGPN6spp11oAjv6GnrPV+rZqhqQj9G6EdHNJEhFT0mtH6Yql9JJ7SVvWG6TjRr7Umk6
-         c3P7nc+lnjR33OrTvZC29nfkOE2IsU3Xy0BVcshSmyKnj79HzS1hNJh1d56jWAFEUuZj
-         ixbQ==
+        Wed, 6 Nov 2019 18:17:53 -0500
+Received: by mail-pf1-f196.google.com with SMTP id x28so369150pfo.6
+        for <linux-wireless@vger.kernel.org>; Wed, 06 Nov 2019 15:17:52 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=PEEwQUwm/mtCk8pRNL9DiIeL71bqH+DtmpEDVuEb4+U=;
-        b=RtgEvvQzJx/qMUL7ErGFfiO/PdxyuxaAuUBzXCZ5IplwODu5OCiLXB0h5/OPQjT/ZF
-         uygXFgUMycmZDBBcjgY9TxY0RDtgwdiOIMSVLaLF4cbOdXQnBlLZMP5Vz3ysFIs13ckw
-         3bJkqsZ4xQl1pYfGqq1G06bkbgRRD6uVp/u7tFx3Ib7zmMgFO8ZXWQr4w5+wXDpUHOtS
-         WbundO8wIkqSYqx+5NiaXzkKLZZNk/IUhD5ypkLnIurQpynz6FHyVaxXjrPqFP9wsz4R
-         MpzLQ9fMgNM9u83liXKkkDFQd5bS4MlKeAJn8kTRY0Aq2FOG0YKpmnyDb8onOtWDp+RW
-         x1LQ==
-X-Gm-Message-State: APjAAAXLc6ZlaGD5CX85kVpYmOCkdRSZQ3by+r2lLh4QJpIYtuEmaaGz
-        5k09WM3WoKBnx2OQb9Zf8Lo=
-X-Google-Smtp-Source: APXvYqy2/Y5pxVKOfsNfYmz4miHXZKCw3E8Ru4bwJEpq+vIruTB5jjvQyXI8vZKkp+EORx5jL/IDYA==
-X-Received: by 2002:a17:90a:cd03:: with SMTP id d3mr506186pju.137.1573082214787;
-        Wed, 06 Nov 2019 15:16:54 -0800 (PST)
-Received: from aw-bldr-10.qualcomm.com (i-global254.qualcomm.com. [199.106.103.254])
-        by smtp.gmail.com with ESMTPSA id d139sm49075pfd.162.2019.11.06.15.16.53
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=jluuUPJMyJ9UrJ/y1hzGUViE0ppwGEMpYzoRViVVG5o=;
+        b=GnngB3SJkbYXTZyPpNlh/kndYWgMeKcWX5xywPz0ghvqmcaaBI9nylo5rWlb0M99ej
+         zYU1TV4PgX609RJCxwcT0gAoo6PkFs/DT4moVDTf1McDHlDX3Xi8mwNt2S7sIehVibNB
+         d27vVqYQNj/9S5yuRdx6jX6D9xm4I2XQME7xMnGYV1Ypv/vvF8eKCr5uwat+kAUW34z+
+         BJ9TaenCUS7cQM3pI5TAjhS+GBlEpFspqHeoCUsh3YUDlEVDN50263xyXPLq9tTP/E3N
+         8yvTrjGRofn3bxADd7GDgrYFT6QNjGJZrXMO0SkYYJTcVuzMOHIA30E7G/b5Q/3Loch2
+         vQFQ==
+X-Gm-Message-State: APjAAAWkAZxDNIB3YEqEXFzy6NkcjQoLCzCOONxZ0ZkCn6BZ8/yY+q6D
+        37rdaeWSevEWrR2AtXmgF70=
+X-Google-Smtp-Source: APXvYqwG58PoA7lQYc4Csgh7zpQZznvbLnjXz9YBrn4PjkB5kX1WUnmIPLGXnrtlSiTPqWx2smz/lA==
+X-Received: by 2002:aa7:8421:: with SMTP id q1mr6763149pfn.174.1573082272373;
+        Wed, 06 Nov 2019 15:17:52 -0800 (PST)
+Received: from 42.do-not-panic.com (42.do-not-panic.com. [157.230.128.187])
+        by smtp.gmail.com with ESMTPSA id b17sm72157pfr.17.2019.11.06.15.17.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 06 Nov 2019 15:16:54 -0800 (PST)
-From:   Jeffrey Hugo <jeffrey.l.hugo@gmail.com>
-To:     kvalo@codeaurora.org, davem@davemloft.net
-Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Jeffrey Hugo <jeffrey.l.hugo@gmail.com>
-Subject: [PATCH] ath10k: Fix qmi init error handling
-Date:   Wed,  6 Nov 2019 15:16:50 -0800
-Message-Id: <20191106231650.1580-1-jeffrey.l.hugo@gmail.com>
-X-Mailer: git-send-email 2.17.1
+        Wed, 06 Nov 2019 15:17:50 -0800 (PST)
+Received: by 42.do-not-panic.com (Postfix, from userid 1000)
+        id 9963440297; Wed,  6 Nov 2019 23:17:49 +0000 (UTC)
+Date:   Wed, 6 Nov 2019 23:17:49 +0000
+From:   Luis Chamberlain <mcgrof@kernel.org>
+To:     Brian Norris <briannorris@chromium.org>
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        wireless-regdb@lists.infradead.org
+Subject: Re: [PATCH] crda: Makefile: fix .so compilation line with some
+ compilers
+Message-ID: <20191106231749.GM11244@42.do-not-panic.com>
+References: <20191105225751.1233-1-briannorris@chromium.org>
+ <CA+ASDXM_5Q3LNyv_mbrG8d8Qo1iZZz2A2CFfvQqj9_Ta-q-wMA@mail.gmail.com>
+ <786f623306ad462e3776236c94e83b5f2e0648ab.camel@sipsolutions.net>
+ <CA+ASDXMVJg0QSPzSiWFjoDH67yJ-NfYX4MQZUT3gaivx1SJ2aA@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CA+ASDXMVJg0QSPzSiWFjoDH67yJ-NfYX4MQZUT3gaivx1SJ2aA@mail.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-When ath10k_qmi_init() fails, the error handling does not free the irq
-resources, which causes an issue if we EPROBE_DEFER as we'll attempt to
-(re-)register irqs which are already registered.
+On Wed, Nov 06, 2019 at 08:38:33AM -0800, Brian Norris wrote:
+> On Wed, Nov 6, 2019 at 12:12 AM Johannes Berg <johannes@sipsolutions.net> wrote:
+> > On Tue, 2019-11-05 at 15:02 -0800, Brian Norris wrote:
+> > > Apparently wireless-regdb@ is subscribers only. I have since joined,
+> > > but I guess my patch bounced from that list... if I don't hear back in
+> > > a while, I may resend.
+> >
+> > The bigger question is who actually maintains crda now, if anyone ... :)
+> 
+> My mailbox tells me that as of about a year ago, Luis was still
+> merging patches. And his latest commit even claims it's "still
+> maintained":
+> 
+>     As if kernel v4.15 CRDA is no longer needed. Annotate this. The
+>     code will still be maintained to help older kernels.
 
-Fixes: ba94c753ccb4 ("ath10k: add QMI message handshake for wcn3990 client")
-Signed-off-by: Jeffrey Hugo <jeffrey.l.hugo@gmail.com>
----
- drivers/net/wireless/ath/ath10k/snoc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Sure, send me patches. Its just not needed on older systems.
 
-diff --git a/drivers/net/wireless/ath/ath10k/snoc.c b/drivers/net/wireless/ath/ath10k/snoc.c
-index fc15a0037f0e..f2a0b7aaad3b 100644
---- a/drivers/net/wireless/ath/ath10k/snoc.c
-+++ b/drivers/net/wireless/ath/ath10k/snoc.c
-@@ -1729,7 +1729,7 @@ static int ath10k_snoc_probe(struct platform_device *pdev)
- 	ret = ath10k_qmi_init(ar, msa_size);
- 	if (ret) {
- 		ath10k_warn(ar, "failed to register wlfw qmi client: %d\n", ret);
--		goto err_core_destroy;
-+		goto err_free_irq;
- 	}
- 
- 	ath10k_dbg(ar, ATH10K_DBG_SNOC, "snoc probe\n");
--- 
-2.17.1
-
+  Luis
