@@ -2,72 +2,141 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BB205F3777
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Nov 2019 19:45:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 09CD1F3A8E
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Nov 2019 22:31:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727531AbfKGSpf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 7 Nov 2019 13:45:35 -0500
-Received: from mail-qk1-f181.google.com ([209.85.222.181]:38708 "EHLO
-        mail-qk1-f181.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726859AbfKGSpf (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 7 Nov 2019 13:45:35 -0500
-Received: by mail-qk1-f181.google.com with SMTP id e2so2933834qkn.5
-        for <linux-wireless@vger.kernel.org>; Thu, 07 Nov 2019 10:45:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to:cc;
-        bh=3YdIQEG3U8jQurl2x19OKOKrjxp4OCgzS5thF6ciVas=;
-        b=LAMgJYihdZSiDAga8kcyBZKJXznBMmZ/3xlyXIJ3ROdRUwuWyuXhhm3TSlZKPq4VKU
-         DW5jwgBWD0zYdEbdfWlaODNFArdx2rK/efdfLGM8UCg1c3EyOngoY36kdKqYAdVS9wFt
-         LWkz7OTzlvzDsaj3ocRyUJQSW1Z51OlU+rM2lROF/CT+j7h0phkzEw2nY18m942I2k8U
-         bLgqpdGH07AVEAZDC3NUH52TXwrn15Q3vXVymgIjwD921STzHuhpp4t++mD1objoiC0x
-         hRctNvneozdiYnzIxl8zwFXR7J+DLobcMeFoRGTM2Zl2tiaQy2HaPWx+iYxAmv+7plaz
-         S8kg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
-        bh=3YdIQEG3U8jQurl2x19OKOKrjxp4OCgzS5thF6ciVas=;
-        b=ZIbp4+RzR4CNWZjtqjQ8/5fw50YQn9igON9ZEBYBo5u8RWucRLI/2rPPr3oHJEBX04
-         5HQPMGzymjnYfgQrNkxW7+nJRAc7l/sheTKPBvoHHZvSdi7AshnZ9wF7QUzklAy8X3aZ
-         SyqZGe6siNK/Jcz0WIbfwuvVXsLEbVK7NFcaiS52xv0+gsxdTh+YkQGX9STGskKCij49
-         mdwFUX+onYutVb09wg3Ope1jUVA9hlWt/JDDYfMjxHWAsc378tjEcV+85jb9/vqfnihr
-         kq1NlzI0ak+2MnWT8I+H/JhfTqSOX9ltuL72himuficcEBuck3q8fz6EeRti3/2mK0xZ
-         Rm3w==
-X-Gm-Message-State: APjAAAVrho7gmFcc6kGCssIUFrD9UrEMhtWPsZI9m1TYi/Zt3ZTyfOfr
-        39rs4M1RTq+qCkObYxOm5dN88n1MAIzfkIF/8rgRewTZstU=
-X-Google-Smtp-Source: APXvYqwIMS4XUvGrNwPYl033e9GAxMH3LYIUAEX1rQdv9PpEhY2T4J7Q5rLPwWKJojogOGyoTZ5LoaeFrFyg/GTZHR8=
-X-Received: by 2002:a37:4912:: with SMTP id w18mr1524385qka.206.1573152333658;
- Thu, 07 Nov 2019 10:45:33 -0800 (PST)
+        id S1726143AbfKGVbH convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 7 Nov 2019 16:31:07 -0500
+Received: from mail.taht.net ([176.58.107.8]:56466 "EHLO mail.taht.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725870AbfKGVbH (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 7 Nov 2019 16:31:07 -0500
+X-Greylist: delayed 398 seconds by postgrey-1.27 at vger.kernel.org; Thu, 07 Nov 2019 16:31:05 EST
+Received: from dancer.taht.net (unknown [IPv6:2603:3024:1536:86f0:eea8:6bff:fefe:9a2])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.taht.net (Postfix) with ESMTPSA id ACA642296C;
+        Thu,  7 Nov 2019 21:24:24 +0000 (UTC)
+From:   Dave Taht <dave@taht.net>
+To:     Kan Yan <kyan@google.com>
+Cc:     Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+        Rajkumar Manoharan <rmanohar@codeaurora.org>,
+        Kevin Hayes <kevinhayes@google.com>,
+        Make-Wifi-fast <make-wifi-fast@lists.bufferbloat.net>,
+        linux-wireless@vger.kernel.org, ath10k@lists.infradead.org,
+        John Crispin <john@phrozen.org>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Felix Fietkau <nbd@nbd.name>
+Subject: Re: [Make-wifi-fast] [PATCH v6 0/4] Add Airtime Queue Limits (AQL) to mac80211
+References: <157182473951.150713.7978051149956899705.stgit@toke.dk>
+        <CA+iem5s6jDNR+yA21UB_zJiZeVxix_QaO6RYw6sN69j2859zFw@mail.gmail.com>
+Date:   Thu, 07 Nov 2019 13:24:12 -0800
+In-Reply-To: <CA+iem5s6jDNR+yA21UB_zJiZeVxix_QaO6RYw6sN69j2859zFw@mail.gmail.com>
+        (Kan Yan's message of "Wed, 6 Nov 2019 22:14:20 -0800")
+Message-ID: <87pni3fkhv.fsf@taht.net>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-From:   Brian Norris <briannorris@google.com>
-Date:   Thu, 7 Nov 2019 10:45:22 -0800
-Message-ID: <CA+ASDXM=wh7TqO55BSV-Z12iJz08uVonJScCUDCRA+_h8JGe0Q@mail.gmail.com>
-Subject: [FOR STABLE] wireless: Skip directory when generating certificates
-To:     stable <stable@vger.kernel.org>
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
-        Maxim Mikityanskiy <maxtram95@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8BIT
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello stable!
+Kan Yan <kyan@google.com> writes:
 
-I'd like to see the following commit included in -stable trees:
+> Patchset v6 works for me with ath10k driver.  AQL does its job as
+> expected and tests show very significant reduction in latency in
+> congested environment. The txq stuck issue in patchset v4 got fixed.
+>
+> However, the device's total pending airtime count still underflows
+> sometimes. Even though it doesn't cause apparent side effect, there is
+> some issue with the pending airtime update and needs further
+> debugging.
+>
+> Regards,
+> Kan
 
-commit 32b5a2c9950b9284000059d752f7afa164deb15e
-Author: Maxim Mikityanskiy <maxtram95@gmail.com>
-Date:   Tue May 7 20:28:15 2019 +0300
+That's great to hear! I have been trying to clear some time to get on
+this too (I have a HUGE number of fq_codel related updates on top of
+this worth testing) but it's still looking a few weeks out.
 
-    wireless: Skip directory when generating certificates
-
-As it is, CONFIG_CFG80211_EXTRA_REGDB_KEYDIR is broken between v4.15 and v5.2.
-
-Thanks,
-Brian
-
-P.S. I've take the "Option 2" in
-Documentation/process/stable-kernel-rules.rst. Let me know if I should
-do differently.
+>
+>
+> On Wed, Oct 23, 2019 at 2:59 AM Toke Høiland-Jørgensen <toke@redhat.com> wrote:
+>>
+>> This series is a first attempt at porting the Airtime Queue Limits concept from
+>> the out-of-tree ath10k implementation[0] to mac80211. This version takes Kan's
+>> patch to do the throttling in mac80211, and replaces the driver API with the
+>> mechanism from the previous version of my series, which instead calculated the
+>> expected airtime at dequeue time inside mac80211, storing it in the SKB cb
+>> field.
+>>
+>> This series also imports Felix' airtime calculation code from mt76 into
+>> mac80211, adjusting the API so it can be used from TX dequeue, by extracting the
+>> latest TX rate from the tx_stats structure kept for each station.
+>>
+>> As before, I've only compile tested this (lacking the proper hardware to do more
+>> testing). So I'm hoping someone with a proper testing setup can take the whole
+>> thing for a spin... :)
+>>
+>> The series is also available in my git repo here:
+>> https://git.kernel.org/pub/scm/linux/kernel/git/toke/linux.git/log/?h=mac80211-aql-06
+>>
+>> Changelog:
+>>
+>> v6:
+>>   - Fix sta lookup in ieee80211_report_used_skb().
+>>   - Move call to ieee80211_sta_update_pending_airtime() to a bit later in
+>>     __ieee80211_tx_status()
+>> v5:
+>>   - Add missing export of ieee80211_calc_rx_airtime() and make
+>>     ieee80211_calc_tx_airtime_rate() static (kbuildbot).
+>>   - Use skb_get_queue_mapping() to get the AC from the skb.
+>>   - Take basic rate configuration for the BSS into account when calculating
+>>     multicast rate.
+>> v4:
+>>   - Fix calculation that clamps the maximum airtime to fit into 10 bits
+>>   - Incorporate Rich Brown's nits for the commit message in Kan's patch
+>>   - Add fewer local variables to ieee80211_tx_dequeue()
+>> v3:
+>>   - Move the tx_time_est field so it's shared with ack_frame_id, and use units
+>>     of 4us for the value stored in it.
+>>   - Move the addition of the Ethernet header size into ieee80211_calc_expected_tx_airtime()
+>> v2:
+>>   - Integrate Kan's approach to airtime throttling.
+>>   - Hopefully fix the cb struct alignment on big-endian architectures.
+>>
+>> ---
+>>
+>> Kan Yan (1):
+>>       mac80211: Implement Airtime-based Queue Limit (AQL)
+>>
+>> Toke Høiland-Jørgensen (3):
+>>       mac80211: Shrink the size of ack_frame_id to make room for tx_time_est
+>>       mac80211: Import airtime calculation code from mt76
+>>       mac80211: Use Airtime-based Queue Limits (AQL) on packet dequeue
+>>
+>>
+>>  include/net/cfg80211.h     |    7 +
+>>  include/net/mac80211.h     |   45 +++++
+>>  net/mac80211/Makefile      |    3
+>>  net/mac80211/airtime.c     |  390 ++++++++++++++++++++++++++++++++++++++++++++
+>>  net/mac80211/cfg.c         |    2
+>>  net/mac80211/debugfs.c     |   78 +++++++++
+>>  net/mac80211/debugfs_sta.c |   43 ++++-
+>>  net/mac80211/ieee80211_i.h |    8 +
+>>  net/mac80211/main.c        |    9 +
+>>  net/mac80211/sta_info.c    |   32 ++++
+>>  net/mac80211/sta_info.h    |    8 +
+>>  net/mac80211/status.c      |   33 ++++
+>>  net/mac80211/tx.c          |   69 +++++++-
+>>  13 files changed, 709 insertions(+), 18 deletions(-)
+>>  create mode 100644 net/mac80211/airtime.c
+>>
+> _______________________________________________
+> Make-wifi-fast mailing list
+> Make-wifi-fast@lists.bufferbloat.net
+> https://lists.bufferbloat.net/listinfo/make-wifi-fast
