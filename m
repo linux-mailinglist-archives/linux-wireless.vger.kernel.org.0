@@ -2,82 +2,101 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 178E7F3427
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Nov 2019 17:08:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0BDA2F35CB
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Nov 2019 18:37:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387470AbfKGQI0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 7 Nov 2019 11:08:26 -0500
-Received: from mail-wr1-f66.google.com ([209.85.221.66]:35088 "EHLO
-        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730416AbfKGQI0 (ORCPT
+        id S1730274AbfKGRh2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 7 Nov 2019 12:37:28 -0500
+Received: from mail-pf1-f194.google.com ([209.85.210.194]:33050 "EHLO
+        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728847AbfKGRh2 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 7 Nov 2019 11:08:26 -0500
-Received: by mail-wr1-f66.google.com with SMTP id p2so3698539wro.2
-        for <linux-wireless@vger.kernel.org>; Thu, 07 Nov 2019 08:08:25 -0800 (PST)
+        Thu, 7 Nov 2019 12:37:28 -0500
+Received: by mail-pf1-f194.google.com with SMTP id c184so3069535pfb.0
+        for <linux-wireless@vger.kernel.org>; Thu, 07 Nov 2019 09:37:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=oE0/WWfY7OLPoAEouNbHTld+kPDPP1D0YZTxpVrn6jU=;
-        b=D1K+gvAMelrcEN4XZn8sSB74OjpRUNRO+FMZVQ8FD8ksk/XLt6zw9E1NHTRH0K5W15
-         jWbSaiZaI3O/NPuHf2ee/HJG3L2Aumckv36N5b5mQXYG6JZwDMySuZPCMcX/APTfiaFJ
-         v9TdmelyyzTdbc/uq+v4VEj5xMv6ij8BpnCGD8dyvO+waVpLdGsmfgz7JAefrmjlY6ju
-         UutwjAldnaWVDRgmQ013SzIM6T2WxtecBUwjDEWKwA4GREvKnuUcbkIMCkqSsvrvBqre
-         NlVz7+shcPtW0pQsAtbvQpe8BeWAUX3nBqNIhwdbEIu1HqOnpkY5Vowp97LlbxlaN1df
-         FruQ==
+        d=chromium.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=G8y85XrJTCjTVadT+VZjZfgtkbdkpE4HwtZrB/hkkbU=;
+        b=E8E2iPw49phef3jOqYci51VI6Kd1TiJ171mkNuSMJ6qGk+x0btUN+/7B51r86qcCcr
+         rlrjfSLHlXKF7FKZiOB2p2MRdtvsZJnsxiGyGfoB3JQQFJoU/fUpKYGDnu4VoWZZYTD3
+         HiLxoJ0WovdVVQ3s28Uz2h42m39ZQ5iOeUOFE=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=oE0/WWfY7OLPoAEouNbHTld+kPDPP1D0YZTxpVrn6jU=;
-        b=Ce4ThwklBQkMjSPHtbjHGCrlMuv6e/1+4O7WVAg6wP+Se51yyf4yL9O6uUoZhEjZPY
-         t0c6fjGXQbPxbz2qoJllEBwg76vt5sz2cCDTd7Ra8VQ3x10k0PAgsxLvdX0dmicaZYrR
-         labp59IKI4PpuoVg4Xww0AXN1yP0jadS7t0I6ia+HkmiqB6b2OmVLlWEsIez7avDBUJw
-         xCUYn9rwzXGgTlk8nYn90OLEUHCO7z5wwbHcHvpH1w9JdnS5gRXRwmqUdjG0yCsZghe1
-         YB+KRwJSnSo9NNtUzZBVp6anSD/wxUH4USyje2btm5wSXApWXMC/TtiL2w8mtiUwOxEH
-         XtUA==
-X-Gm-Message-State: APjAAAVLTINmKjaDNrpk7ijDcSxq8gYsPdV3ulxIQ8ENtDi02YlxLkoZ
-        29Tv84jbZT9IYK//dAUgpMThKftr3vE=
-X-Google-Smtp-Source: APXvYqyUw4t4J8QfMtXMTx1cdiNWKulVWQKdmmOvv/Wurj7GWRywU7rA0BQr16CiyNVgPQAI2s80gg==
-X-Received: by 2002:adf:db41:: with SMTP id f1mr3480105wrj.351.1573142903953;
-        Thu, 07 Nov 2019 08:08:23 -0800 (PST)
-Received: from localhost.localdomain (x4d075f9d.dyn.telefonica.de. [77.7.95.157])
-        by smtp.gmail.com with ESMTPSA id w10sm2248890wmd.26.2019.11.07.08.08.18
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=G8y85XrJTCjTVadT+VZjZfgtkbdkpE4HwtZrB/hkkbU=;
+        b=giMsoUvlesu3xh7A1xo9hKpmQHJp+2s0sQ6scw+88r5FDVYczrUwazsGDaRV5NdlPY
+         i085Wr2hhmYpeB4o01f6/kgNydh8vOJFX0W4PoxKdravMNHSyuDo8KyxpuplcwNtKiMA
+         dLgZKAX3wo/1CtrCUgL0PdU9KP9s0bVY3nPKEv3AiZFuty2eTiF4eIbiO2wQob4xWGB3
+         3SSY3AhS20hSp49VNBYfL3gNTN/RKhI1ZPQtBEBpocKw4VZ/uRc2v6ICxoMLiR8Bcnv6
+         0JiEI1WTt7sSWCvZIcsZKo+VPDNF5DGF4cZZzcwzlFkOogH8LqNZeor2+VN8MSLLACch
+         SAqw==
+X-Gm-Message-State: APjAAAXUDqOKWbb4j0YVdwmNs+fJSTDRVr1z+6s34d5a7GHe3Z1S3MRe
+        jkpcN2wbe34bCGzF4AHUD1ylqA==
+X-Google-Smtp-Source: APXvYqwM54coTod1ECsQmgYl3gKe919AcyfnE1PVZ3nTQPO87kfGAijyExBU9k+VYiJjUrow4pUr4A==
+X-Received: by 2002:a63:3d41:: with SMTP id k62mr5691676pga.129.1573148247589;
+        Thu, 07 Nov 2019 09:37:27 -0800 (PST)
+Received: from google.com ([2620:15c:202:1:534:b7c0:a63c:460c])
+        by smtp.gmail.com with ESMTPSA id q8sm2489035pjp.10.2019.11.07.09.37.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 Nov 2019 08:08:22 -0800 (PST)
-From:   Eduardo Abinader <eduardoabinader@gmail.com>
-To:     linux-wireless@vger.kernel.org
-Cc:     Eduardo Abinader <eduardoabinader@gmail.com>, kvalo@codeaurora.org
-Subject: [PATCH] brcmsmac: remove unnecessary return
-Date:   Thu,  7 Nov 2019 17:07:46 +0100
-Message-Id: <20191107160746.1535-1-eduardoabinader@gmail.com>
-X-Mailer: git-send-email 2.20.1
+        Thu, 07 Nov 2019 09:37:26 -0800 (PST)
+Date:   Thu, 7 Nov 2019 09:37:24 -0800
+From:   Brian Norris <briannorris@chromium.org>
+To:     Luis Chamberlain <mcgrof@kernel.org>
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        wireless-regdb@lists.infradead.org
+Subject: [RESEND PATCH] crda: Makefile: fix .so compilation line with some
+ compilers
+Message-ID: <20191107173723.GA157096@google.com>
+References: <20191105225751.1233-1-briannorris@chromium.org>
+ <CA+ASDXM_5Q3LNyv_mbrG8d8Qo1iZZz2A2CFfvQqj9_Ta-q-wMA@mail.gmail.com>
+ <786f623306ad462e3776236c94e83b5f2e0648ab.camel@sipsolutions.net>
+ <CA+ASDXMVJg0QSPzSiWFjoDH67yJ-NfYX4MQZUT3gaivx1SJ2aA@mail.gmail.com>
+ <20191106231749.GM11244@42.do-not-panic.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191106231749.GM11244@42.do-not-panic.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Signed-off-by: Eduardo Abinader <eduardoabinader@gmail.com>
----
- drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c | 2 --
- 1 file changed, 2 deletions(-)
+Write the CC rule such that it only tries to produce a single output
+file (the .so). When including the .h files in the compiler invocation,
+this suggests we should be producing pre-compiled headers too, which
+doesn't make sense in this context, and Clang happens not to like.
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c
-index 6bb34a12a94b..b9ff28aede9c 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c
-@@ -7383,9 +7383,7 @@ static void brcms_c_update_beacon_hw(struct brcms_c_info *wlc,
- 				     false, true);
- 		/* mark beacon0 valid */
- 		bcma_set32(core, D11REGOFFS(maccommand), MCMD_BCN1VLD);
--		return;
- 	}
--	return;
- }
+Signed-off-by: Brian Norris <briannorris@chromium.org>
+---
+On Wed, Nov 06, 2019 at 11:17:49PM +0000, Luis Chamberlain wrote:
+> Sure, send me patches.
+
+Done.
+
+ Makefile | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index 6169b1f307da..6ca26f341dfa 100644
+--- a/Makefile
++++ b/Makefile
+@@ -114,9 +114,9 @@ keys-%.c: utils/key2pub.py $(wildcard $(PUBKEY_DIR)/*.pem)
+ 	$(NQ) '  Trusted pubkeys:' $(wildcard $(PUBKEY_DIR)/*.pem)
+ 	$(Q)./utils/key2pub.py --$* $(wildcard $(PUBKEY_DIR)/*.pem) $@
  
- /*
+-$(LIBREG): regdb.h reglib.h reglib.c
++$(LIBREG): reglib.c regdb.h reglib.h
+ 	$(NQ) '  CC  ' $@
+-	$(Q)$(CC) $(CFLAGS) $(CPPFLAGS) -o $@ -shared -Wl,-soname,$(LIBREG) $^
++	$(Q)$(CC) $(CFLAGS) $(CPPFLAGS) -o $@ -shared -Wl,-soname,$(LIBREG) $<
+ 
+ install-libreg-headers:
+ 	$(NQ) '  INSTALL  libreg-headers'
 -- 
-2.20.1
+2.24.0.rc1.363.gb1bccd3e3d-goog
 
