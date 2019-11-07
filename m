@@ -2,101 +2,72 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0BDA2F35CB
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Nov 2019 18:37:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BB205F3777
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Nov 2019 19:45:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730274AbfKGRh2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 7 Nov 2019 12:37:28 -0500
-Received: from mail-pf1-f194.google.com ([209.85.210.194]:33050 "EHLO
-        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728847AbfKGRh2 (ORCPT
+        id S1727531AbfKGSpf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 7 Nov 2019 13:45:35 -0500
+Received: from mail-qk1-f181.google.com ([209.85.222.181]:38708 "EHLO
+        mail-qk1-f181.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726859AbfKGSpf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 7 Nov 2019 12:37:28 -0500
-Received: by mail-pf1-f194.google.com with SMTP id c184so3069535pfb.0
-        for <linux-wireless@vger.kernel.org>; Thu, 07 Nov 2019 09:37:28 -0800 (PST)
+        Thu, 7 Nov 2019 13:45:35 -0500
+Received: by mail-qk1-f181.google.com with SMTP id e2so2933834qkn.5
+        for <linux-wireless@vger.kernel.org>; Thu, 07 Nov 2019 10:45:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=G8y85XrJTCjTVadT+VZjZfgtkbdkpE4HwtZrB/hkkbU=;
-        b=E8E2iPw49phef3jOqYci51VI6Kd1TiJ171mkNuSMJ6qGk+x0btUN+/7B51r86qcCcr
-         rlrjfSLHlXKF7FKZiOB2p2MRdtvsZJnsxiGyGfoB3JQQFJoU/fUpKYGDnu4VoWZZYTD3
-         HiLxoJ0WovdVVQ3s28Uz2h42m39ZQ5iOeUOFE=
+        d=google.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to:cc;
+        bh=3YdIQEG3U8jQurl2x19OKOKrjxp4OCgzS5thF6ciVas=;
+        b=LAMgJYihdZSiDAga8kcyBZKJXznBMmZ/3xlyXIJ3ROdRUwuWyuXhhm3TSlZKPq4VKU
+         DW5jwgBWD0zYdEbdfWlaODNFArdx2rK/efdfLGM8UCg1c3EyOngoY36kdKqYAdVS9wFt
+         LWkz7OTzlvzDsaj3ocRyUJQSW1Z51OlU+rM2lROF/CT+j7h0phkzEw2nY18m942I2k8U
+         bLgqpdGH07AVEAZDC3NUH52TXwrn15Q3vXVymgIjwD921STzHuhpp4t++mD1objoiC0x
+         hRctNvneozdiYnzIxl8zwFXR7J+DLobcMeFoRGTM2Zl2tiaQy2HaPWx+iYxAmv+7plaz
+         S8kg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=G8y85XrJTCjTVadT+VZjZfgtkbdkpE4HwtZrB/hkkbU=;
-        b=giMsoUvlesu3xh7A1xo9hKpmQHJp+2s0sQ6scw+88r5FDVYczrUwazsGDaRV5NdlPY
-         i085Wr2hhmYpeB4o01f6/kgNydh8vOJFX0W4PoxKdravMNHSyuDo8KyxpuplcwNtKiMA
-         dLgZKAX3wo/1CtrCUgL0PdU9KP9s0bVY3nPKEv3AiZFuty2eTiF4eIbiO2wQob4xWGB3
-         3SSY3AhS20hSp49VNBYfL3gNTN/RKhI1ZPQtBEBpocKw4VZ/uRc2v6ICxoMLiR8Bcnv6
-         0JiEI1WTt7sSWCvZIcsZKo+VPDNF5DGF4cZZzcwzlFkOogH8LqNZeor2+VN8MSLLACch
-         SAqw==
-X-Gm-Message-State: APjAAAXUDqOKWbb4j0YVdwmNs+fJSTDRVr1z+6s34d5a7GHe3Z1S3MRe
-        jkpcN2wbe34bCGzF4AHUD1ylqA==
-X-Google-Smtp-Source: APXvYqwM54coTod1ECsQmgYl3gKe919AcyfnE1PVZ3nTQPO87kfGAijyExBU9k+VYiJjUrow4pUr4A==
-X-Received: by 2002:a63:3d41:: with SMTP id k62mr5691676pga.129.1573148247589;
-        Thu, 07 Nov 2019 09:37:27 -0800 (PST)
-Received: from google.com ([2620:15c:202:1:534:b7c0:a63c:460c])
-        by smtp.gmail.com with ESMTPSA id q8sm2489035pjp.10.2019.11.07.09.37.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 Nov 2019 09:37:26 -0800 (PST)
-Date:   Thu, 7 Nov 2019 09:37:24 -0800
-From:   Brian Norris <briannorris@chromium.org>
-To:     Luis Chamberlain <mcgrof@kernel.org>
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        wireless-regdb@lists.infradead.org
-Subject: [RESEND PATCH] crda: Makefile: fix .so compilation line with some
- compilers
-Message-ID: <20191107173723.GA157096@google.com>
-References: <20191105225751.1233-1-briannorris@chromium.org>
- <CA+ASDXM_5Q3LNyv_mbrG8d8Qo1iZZz2A2CFfvQqj9_Ta-q-wMA@mail.gmail.com>
- <786f623306ad462e3776236c94e83b5f2e0648ab.camel@sipsolutions.net>
- <CA+ASDXMVJg0QSPzSiWFjoDH67yJ-NfYX4MQZUT3gaivx1SJ2aA@mail.gmail.com>
- <20191106231749.GM11244@42.do-not-panic.com>
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
+        bh=3YdIQEG3U8jQurl2x19OKOKrjxp4OCgzS5thF6ciVas=;
+        b=ZIbp4+RzR4CNWZjtqjQ8/5fw50YQn9igON9ZEBYBo5u8RWucRLI/2rPPr3oHJEBX04
+         5HQPMGzymjnYfgQrNkxW7+nJRAc7l/sheTKPBvoHHZvSdi7AshnZ9wF7QUzklAy8X3aZ
+         SyqZGe6siNK/Jcz0WIbfwuvVXsLEbVK7NFcaiS52xv0+gsxdTh+YkQGX9STGskKCij49
+         mdwFUX+onYutVb09wg3Ope1jUVA9hlWt/JDDYfMjxHWAsc378tjEcV+85jb9/vqfnihr
+         kq1NlzI0ak+2MnWT8I+H/JhfTqSOX9ltuL72himuficcEBuck3q8fz6EeRti3/2mK0xZ
+         Rm3w==
+X-Gm-Message-State: APjAAAVrho7gmFcc6kGCssIUFrD9UrEMhtWPsZI9m1TYi/Zt3ZTyfOfr
+        39rs4M1RTq+qCkObYxOm5dN88n1MAIzfkIF/8rgRewTZstU=
+X-Google-Smtp-Source: APXvYqwIMS4XUvGrNwPYl033e9GAxMH3LYIUAEX1rQdv9PpEhY2T4J7Q5rLPwWKJojogOGyoTZ5LoaeFrFyg/GTZHR8=
+X-Received: by 2002:a37:4912:: with SMTP id w18mr1524385qka.206.1573152333658;
+ Thu, 07 Nov 2019 10:45:33 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191106231749.GM11244@42.do-not-panic.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+From:   Brian Norris <briannorris@google.com>
+Date:   Thu, 7 Nov 2019 10:45:22 -0800
+Message-ID: <CA+ASDXM=wh7TqO55BSV-Z12iJz08uVonJScCUDCRA+_h8JGe0Q@mail.gmail.com>
+Subject: [FOR STABLE] wireless: Skip directory when generating certificates
+To:     stable <stable@vger.kernel.org>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
+        Maxim Mikityanskiy <maxtram95@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Write the CC rule such that it only tries to produce a single output
-file (the .so). When including the .h files in the compiler invocation,
-this suggests we should be producing pre-compiled headers too, which
-doesn't make sense in this context, and Clang happens not to like.
+Hello stable!
 
-Signed-off-by: Brian Norris <briannorris@chromium.org>
----
-On Wed, Nov 06, 2019 at 11:17:49PM +0000, Luis Chamberlain wrote:
-> Sure, send me patches.
+I'd like to see the following commit included in -stable trees:
 
-Done.
+commit 32b5a2c9950b9284000059d752f7afa164deb15e
+Author: Maxim Mikityanskiy <maxtram95@gmail.com>
+Date:   Tue May 7 20:28:15 2019 +0300
 
- Makefile | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+    wireless: Skip directory when generating certificates
 
-diff --git a/Makefile b/Makefile
-index 6169b1f307da..6ca26f341dfa 100644
---- a/Makefile
-+++ b/Makefile
-@@ -114,9 +114,9 @@ keys-%.c: utils/key2pub.py $(wildcard $(PUBKEY_DIR)/*.pem)
- 	$(NQ) '  Trusted pubkeys:' $(wildcard $(PUBKEY_DIR)/*.pem)
- 	$(Q)./utils/key2pub.py --$* $(wildcard $(PUBKEY_DIR)/*.pem) $@
- 
--$(LIBREG): regdb.h reglib.h reglib.c
-+$(LIBREG): reglib.c regdb.h reglib.h
- 	$(NQ) '  CC  ' $@
--	$(Q)$(CC) $(CFLAGS) $(CPPFLAGS) -o $@ -shared -Wl,-soname,$(LIBREG) $^
-+	$(Q)$(CC) $(CFLAGS) $(CPPFLAGS) -o $@ -shared -Wl,-soname,$(LIBREG) $<
- 
- install-libreg-headers:
- 	$(NQ) '  INSTALL  libreg-headers'
--- 
-2.24.0.rc1.363.gb1bccd3e3d-goog
+As it is, CONFIG_CFG80211_EXTRA_REGDB_KEYDIR is broken between v4.15 and v5.2.
 
+Thanks,
+Brian
+
+P.S. I've take the "Option 2" in
+Documentation/process/stable-kernel-rules.rst. Let me know if I should
+do differently.
