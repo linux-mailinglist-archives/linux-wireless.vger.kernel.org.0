@@ -2,84 +2,82 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D154CF3409
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Nov 2019 17:04:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 178E7F3427
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Nov 2019 17:08:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729967AbfKGQER (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 7 Nov 2019 11:04:17 -0500
-Received: from smtp.codeaurora.org ([198.145.29.96]:36802 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727401AbfKGQER (ORCPT
+        id S2387470AbfKGQI0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 7 Nov 2019 11:08:26 -0500
+Received: from mail-wr1-f66.google.com ([209.85.221.66]:35088 "EHLO
+        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730416AbfKGQI0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 7 Nov 2019 11:04:17 -0500
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id C12C46085F; Thu,  7 Nov 2019 16:04:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1573142656;
-        bh=DJ2xMknYMaZ94hSWkYmWf6xlTs5TXO/5IILLZm6y32E=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=dBcH3HJpzddI2r8jnEYxLSe0FRpnQt8Z3Y9tlnteseUFo34PNUkrJeikc84IYWEl1
-         0Y22q92O/+AOV0eJMVmB2xyWyry0iGnlvyId2C6WwsJjtblrxw74OoW3zu23BgW07Y
-         mc/N16+EnVpQ1dx4lxeZMX9u+OawzkhQf8V61GlU=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 306C8602F0;
-        Thu,  7 Nov 2019 16:04:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1573142656;
-        bh=DJ2xMknYMaZ94hSWkYmWf6xlTs5TXO/5IILLZm6y32E=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=dBcH3HJpzddI2r8jnEYxLSe0FRpnQt8Z3Y9tlnteseUFo34PNUkrJeikc84IYWEl1
-         0Y22q92O/+AOV0eJMVmB2xyWyry0iGnlvyId2C6WwsJjtblrxw74OoW3zu23BgW07Y
-         mc/N16+EnVpQ1dx4lxeZMX9u+OawzkhQf8V61GlU=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 306C8602F0
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Jeff Johnson <jjohnson@codeaurora.org>
-Cc:     devicetree@vger.kernel.org, linux-wireless@vger.kernel.org,
-        ath11k@lists.infradead.org
-Subject: Re: [PATCH v2 02/49] ath11k: add Kconfig
-References: <1571565847-10338-1-git-send-email-kvalo@codeaurora.org>
-        <1571565847-10338-3-git-send-email-kvalo@codeaurora.org>
-        <6ffc215251b54d562496d978bdbbcead@codeaurora.org>
-Date:   Thu, 07 Nov 2019 18:04:13 +0200
-In-Reply-To: <6ffc215251b54d562496d978bdbbcead@codeaurora.org> (Jeff Johnson's
-        message of "Mon, 21 Oct 2019 13:53:51 -0700")
-Message-ID: <87ftizy8oy.fsf@kamboji.qca.qualcomm.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        Thu, 7 Nov 2019 11:08:26 -0500
+Received: by mail-wr1-f66.google.com with SMTP id p2so3698539wro.2
+        for <linux-wireless@vger.kernel.org>; Thu, 07 Nov 2019 08:08:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=oE0/WWfY7OLPoAEouNbHTld+kPDPP1D0YZTxpVrn6jU=;
+        b=D1K+gvAMelrcEN4XZn8sSB74OjpRUNRO+FMZVQ8FD8ksk/XLt6zw9E1NHTRH0K5W15
+         jWbSaiZaI3O/NPuHf2ee/HJG3L2Aumckv36N5b5mQXYG6JZwDMySuZPCMcX/APTfiaFJ
+         v9TdmelyyzTdbc/uq+v4VEj5xMv6ij8BpnCGD8dyvO+waVpLdGsmfgz7JAefrmjlY6ju
+         UutwjAldnaWVDRgmQ013SzIM6T2WxtecBUwjDEWKwA4GREvKnuUcbkIMCkqSsvrvBqre
+         NlVz7+shcPtW0pQsAtbvQpe8BeWAUX3nBqNIhwdbEIu1HqOnpkY5Vowp97LlbxlaN1df
+         FruQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=oE0/WWfY7OLPoAEouNbHTld+kPDPP1D0YZTxpVrn6jU=;
+        b=Ce4ThwklBQkMjSPHtbjHGCrlMuv6e/1+4O7WVAg6wP+Se51yyf4yL9O6uUoZhEjZPY
+         t0c6fjGXQbPxbz2qoJllEBwg76vt5sz2cCDTd7Ra8VQ3x10k0PAgsxLvdX0dmicaZYrR
+         labp59IKI4PpuoVg4Xww0AXN1yP0jadS7t0I6ia+HkmiqB6b2OmVLlWEsIez7avDBUJw
+         xCUYn9rwzXGgTlk8nYn90OLEUHCO7z5wwbHcHvpH1w9JdnS5gRXRwmqUdjG0yCsZghe1
+         YB+KRwJSnSo9NNtUzZBVp6anSD/wxUH4USyje2btm5wSXApWXMC/TtiL2w8mtiUwOxEH
+         XtUA==
+X-Gm-Message-State: APjAAAVLTINmKjaDNrpk7ijDcSxq8gYsPdV3ulxIQ8ENtDi02YlxLkoZ
+        29Tv84jbZT9IYK//dAUgpMThKftr3vE=
+X-Google-Smtp-Source: APXvYqyUw4t4J8QfMtXMTx1cdiNWKulVWQKdmmOvv/Wurj7GWRywU7rA0BQr16CiyNVgPQAI2s80gg==
+X-Received: by 2002:adf:db41:: with SMTP id f1mr3480105wrj.351.1573142903953;
+        Thu, 07 Nov 2019 08:08:23 -0800 (PST)
+Received: from localhost.localdomain (x4d075f9d.dyn.telefonica.de. [77.7.95.157])
+        by smtp.gmail.com with ESMTPSA id w10sm2248890wmd.26.2019.11.07.08.08.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 07 Nov 2019 08:08:22 -0800 (PST)
+From:   Eduardo Abinader <eduardoabinader@gmail.com>
+To:     linux-wireless@vger.kernel.org
+Cc:     Eduardo Abinader <eduardoabinader@gmail.com>, kvalo@codeaurora.org
+Subject: [PATCH] brcmsmac: remove unnecessary return
+Date:   Thu,  7 Nov 2019 17:07:46 +0100
+Message-Id: <20191107160746.1535-1-eduardoabinader@gmail.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Jeff Johnson <jjohnson@codeaurora.org> writes:
+Signed-off-by: Eduardo Abinader <eduardoabinader@gmail.com>
+---
+ drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-> On 2019-10-20 03:03, Kalle Valo wrote:
->> [...snip...]
->> +config ATH11K_TRACING
->> +	bool "ath11k tracing support"
->> +	depends on ATH11K && EVENT_TRACING
->> +	---help---
->> +	  Select this to ath11k use tracing infrastructure.
->
-> Help text does not parse
-
-Will be fixed in v3:
-
-https://patchwork.kernel.org/patch/11233257/
-
-Thanks for the review.
-
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c
+index 6bb34a12a94b..b9ff28aede9c 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c
+@@ -7383,9 +7383,7 @@ static void brcms_c_update_beacon_hw(struct brcms_c_info *wlc,
+ 				     false, true);
+ 		/* mark beacon0 valid */
+ 		bcma_set32(core, D11REGOFFS(maccommand), MCMD_BCN1VLD);
+-		return;
+ 	}
+-	return;
+ }
+ 
+ /*
 -- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+2.20.1
+
