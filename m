@@ -2,217 +2,150 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6704BF2BDA
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Nov 2019 11:09:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 50B1BF2C3B
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Nov 2019 11:31:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733267AbfKGKJE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 7 Nov 2019 05:09:04 -0500
-Received: from smtp.codeaurora.org ([198.145.29.96]:54250 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727562AbfKGKJE (ORCPT
+        id S2388178AbfKGKbZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 7 Nov 2019 05:31:25 -0500
+Received: from mo4-p02-ob.smtp.rzone.de ([81.169.146.169]:11902 "EHLO
+        mo4-p02-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387786AbfKGKbX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 7 Nov 2019 05:09:04 -0500
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 5B5D660B6C; Thu,  7 Nov 2019 10:09:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1573121342;
-        bh=ckL6maps5nNQq2y5YQRotAySGsBjpVGC9gYT5RpaPCk=;
-        h=From:To:Cc:Subject:Date:From;
-        b=Yw9iOu/vyBbHI7FUzYepOOnuL8w8kL4tAnZxF4TKRC/GOO9MuAK6T/Q2qpMlfPFpF
-         Gfp7lsIXjNo2ZGvM+bSas/8fs6lFPjlULfttrB5c2eyy3JBpfJDEFBBbFtI9qP1KjU
-         YRzMW/IHNycyzXue/VYA4tkLd7C1pCVNuhNnP9LA=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from wgong-HP-Z240-SFF-Workstation.qca.qualcomm.com (unknown [180.166.53.21])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: wgong@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 1EEEA606FB;
-        Thu,  7 Nov 2019 10:08:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1573121340;
-        bh=ckL6maps5nNQq2y5YQRotAySGsBjpVGC9gYT5RpaPCk=;
-        h=From:To:Cc:Subject:Date:From;
-        b=CdvMKGjG09WhQaQ4TTegj8X3/YT5Jz28KMIbrOrxdrtVsMcEaalO8EzxmyNHh5kb5
-         X4VLrBigVm8ueeXowAIiIZ9Nsrj71gPvrZfxwN0IWe7x9+vfp4c4d/TB71uBUoZJGW
-         wYGqZ+ZAHdgGiCCqcnW9jqt+4LMRKHzsDU0K29is=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 1EEEA606FB
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=wgong@codeaurora.org
-From:   Wen Gong <wgong@codeaurora.org>
-To:     ath10k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org
-Subject: [PATCH] ath10k: add large size for BMI download data for SDIO
-Date:   Thu,  7 Nov 2019 18:08:09 +0800
-Message-Id: <20191107100809.17982-1-wgong@codeaurora.org>
+        Thu, 7 Nov 2019 05:31:23 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1573122680;
+        s=strato-dkim-0002; d=goldelico.com;
+        h=Message-Id:Date:Subject:Cc:To:From:X-RZG-CLASS-ID:X-RZG-AUTH:From:
+        Subject:Sender;
+        bh=BCezxGBczgwx6WnpD9WpD6BoeSXRFmawJLv4RTWC5Kk=;
+        b=bX8lrfk41i9zVWPVLPx26QwbijsnMzPO2mz0LXhDyxi4CZiytBKWShXsVwCzrPpVbP
+        khBPJhaspbcFWKRueUQ4jG2PwaUIpAEcuRCBZyUg+TdGt1LR1Z3fzQ1LHoEuxNjKG2BE
+        EvdwYDeMWC/Buz6vFEBgnTG7G1Cn9us3pqRBnD7F6KL8Hi80Iiof1oRCgVIH1+KF+qsb
+        Bn+ZZtp1ucXH5wEUqZTanMlM61kedE3hl73Y6gkkc0Dqxh/0mAuINj0iaKA2tENmJNDa
+        fXBbpmzACem4HbrpzWLU+g3mVeWabyhOCJgEKAVhhv5o/SLVzhuq6IeTc4t+LY5VSK+P
+        UFeA==
+X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMhflhwDubTJ9o1OAA2UNf2M7PR5/L9P0"
+X-RZG-CLASS-ID: mo00
+Received: from iMac.fritz.box
+        by smtp.strato.de (RZmta 44.29.0 DYNA|AUTH)
+        with ESMTPSA id L09db3vA7AUkdRo
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve secp521r1 with 521 ECDH bits, eq. 15360 bits RSA))
+        (Client did not present a certificate);
+        Thu, 7 Nov 2019 11:30:46 +0100 (CET)
+From:   "H. Nikolaus Schaller" <hns@goldelico.com>
+To:     =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Mike Rapoport <rppt@linux.ibm.com>,
+        David Sterba <dsterba@suse.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Petr Mladek <pmladek@suse.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        "H. Nikolaus Schaller" <hns@goldelico.com>,
+        Kefeng Wang <wangkefeng.wang@huawei.com>,
+        Yangtao Li <tiny.windzz@gmail.com>,
+        Alexios Zavras <alexios.zavras@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Allison Randal <allison@lohutok.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        John Stultz <john.stultz@linaro.org>,
+        Bjorn Helgaas <bhelgaas@google.com>
+Cc:     linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-mmc@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, letux-kernel@openphoenux.org,
+        kernel@pyra-handheld.com
+Subject: [PATCH v3 00/12] OpenPandora: make wl1251 connected to mmc3 sdio port of OpenPandora work again
+Date:   Thu,  7 Nov 2019 11:30:33 +0100
+Message-Id: <cover.1573122644.git.hns@goldelico.com>
 X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
+DT:     Pandora: fixes and extensions
 Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Download firmware time cost of SDIO is too long, it is about 480ms,
-add large size 2048 bytes for BMI download for SDIO chip, its time
-cost will reduced to 240ms.
 
-This will optimize the download firmware time cost.
+* add a revisit note for special wl1251 handling code because it should
+  be solved more generic in mmc core - suggested by Ulf Hansson <ulf.hansson@linaro.org>
+* remove init_card callback from platform_data/hsmmc-omap.h - suggested by Ulf Hansson <ulf.hansson@linaro.org>
+* remove obstructive always-on for vwlan regulator - suggested by Ulf Hansson <ulf.hansson@linaro.org>
+* rename DT node - suggested by Rob Herring <robh@kernel.org>
+* fix ARM: dts: subject prefix - suggested by Tony Lindgren <tony@atomide.com>
+* also remove omap2_hsmmc_info and obc-y line in Makefile - suggested by Tony Lindgren <tony@atomide.com>
 
-Tested with QCA6174 SDIO with firmware
-WLAN.RMH.4.4.1-00017-QCARMSWP-1.
+PATCH V2 2019-10-19 20:41:47:
+* added acked-by for wl1251 patches - Kalle Valo <kvalo@codeaurora.org>
+* really removed old pdata-quirks code (not through #if 0)
+* splited out a partial revert of
+	efdfeb079cc3b ("regulator: fixed: Convert to use GPIO descriptor only")
+  because that was introduced after v4.19 and stops the removal of
+  the pdata-quirks patch from cleanly applying to v4.9, v4.14, v4.19
+  - reported by Sasha Levin <sashal@kernel.org>
+* added a new patch to remove old omap hsmmc since pdata quirks
+  were last user - suggested by Tony Lindgren <tony@atomide.com>
 
-Signed-off-by: Wen Gong <wgong@codeaurora.org>
----
- drivers/net/wireless/ath/ath10k/bmi.c  | 52 +++++++++++++++++++++++++-
- drivers/net/wireless/ath/ath10k/bmi.h  | 11 ++++++
- drivers/net/wireless/ath/ath10k/core.c |  1 +
- drivers/net/wireless/ath/ath10k/hw.h   |  3 ++
- drivers/net/wireless/ath/ath10k/sdio.c |  2 +-
- 5 files changed, 67 insertions(+), 2 deletions(-)
+PATCH V1 2019-10-18 22:25:39:
+Here we have a set of scattered patches to make the OpenPandora WiFi work again.
 
-diff --git a/drivers/net/wireless/ath/ath10k/bmi.c b/drivers/net/wireless/ath/ath10k/bmi.c
-index 95dc4be82e5c..fb8a4f1cfaa8 100644
---- a/drivers/net/wireless/ath/ath10k/bmi.c
-+++ b/drivers/net/wireless/ath/ath10k/bmi.c
-@@ -346,6 +346,52 @@ int ath10k_bmi_execute(struct ath10k *ar, u32 address, u32 param, u32 *result)
- 	return 0;
- }
- 
-+int ath10k_bmi_large_size_lz_data(struct ath10k *ar, const void *buffer, u32 length)
-+{
-+	struct bmi_cmd *cmd;
-+	u32 hdrlen = sizeof(cmd->id) + sizeof(cmd->lz_data);
-+	u32 txlen;
-+	int ret;
-+	size_t buf_len;
-+
-+	ath10k_dbg(ar, ATH10K_DBG_BMI, "large bmi lz data buffer 0x%pK length %d\n",
-+		   buffer, length);
-+
-+	if (ar->bmi.done_sent) {
-+		ath10k_warn(ar, "command disallowed\n");
-+		return -EBUSY;
-+	}
-+
-+	buf_len = sizeof(*cmd) + BMI_MAX_LARGE_DATA_SIZE - BMI_MAX_DATA_SIZE;
-+	cmd = kzalloc(buf_len, GFP_KERNEL);
-+	if (!cmd)
-+		return -ENOMEM;
-+
-+	while (length) {
-+		txlen = min(length, BMI_MAX_LARGE_DATA_SIZE - hdrlen);
-+
-+		WARN_ON_ONCE(txlen & 3);
-+
-+		cmd->id          = __cpu_to_le32(BMI_LZ_DATA);
-+		cmd->lz_data.len = __cpu_to_le32(txlen);
-+		memcpy(cmd->lz_data.payload, buffer, txlen);
-+
-+		ret = ath10k_hif_exchange_bmi_msg(ar, cmd, hdrlen + txlen,
-+						  NULL, NULL);
-+		if (ret) {
-+			ath10k_warn(ar, "unable to write to the device\n");
-+			return ret;
-+		}
-+
-+		buffer += txlen;
-+		length -= txlen;
-+	}
-+
-+	kfree(cmd);
-+
-+	return 0;
-+}
-+
- int ath10k_bmi_lz_data(struct ath10k *ar, const void *buffer, u32 length)
- {
- 	struct bmi_cmd cmd;
-@@ -430,7 +476,11 @@ int ath10k_bmi_fast_download(struct ath10k *ar,
- 	if (trailer_len > 0)
- 		memcpy(trailer, buffer + head_len, trailer_len);
- 
--	ret = ath10k_bmi_lz_data(ar, buffer, head_len);
-+	if (ar->hw_params.bmi_large_size_download)
-+		ret = ath10k_bmi_large_size_lz_data(ar, buffer, head_len);
-+	else
-+		ret = ath10k_bmi_lz_data(ar, buffer, head_len);
-+
- 	if (ret)
- 		return ret;
- 
-diff --git a/drivers/net/wireless/ath/ath10k/bmi.h b/drivers/net/wireless/ath/ath10k/bmi.h
-index ef3bdba43bed..f16655501bf2 100644
---- a/drivers/net/wireless/ath/ath10k/bmi.h
-+++ b/drivers/net/wireless/ath/ath10k/bmi.h
-@@ -45,6 +45,15 @@
- 			sizeof(u32) + \
- 			sizeof(u32))
- 
-+/* Maximum data size used for large BMI transfers */
-+#define BMI_MAX_LARGE_DATA_SIZE	2048
-+
-+/* len = cmd + addr + length */
-+#define BMI_MAX_LARGE_CMDBUF_SIZE (BMI_MAX_LARGE_DATA_SIZE + \
-+			sizeof(u32) + \
-+			sizeof(u32) + \
-+			sizeof(u32))
-+
- /* BMI Commands */
- 
- enum bmi_cmd_id {
-@@ -258,6 +267,8 @@ int ath10k_bmi_write_memory(struct ath10k *ar, u32 address,
- int ath10k_bmi_execute(struct ath10k *ar, u32 address, u32 param, u32 *result);
- int ath10k_bmi_lz_stream_start(struct ath10k *ar, u32 address);
- int ath10k_bmi_lz_data(struct ath10k *ar, const void *buffer, u32 length);
-+int ath10k_bmi_large_size_lz_data(struct ath10k *ar, const void *buffer, u32 length);
-+
- int ath10k_bmi_fast_download(struct ath10k *ar, u32 address,
- 			     const void *buffer, u32 length);
- int ath10k_bmi_read_soc_reg(struct ath10k *ar, u32 address, u32 *reg_val);
-diff --git a/drivers/net/wireless/ath/ath10k/core.c b/drivers/net/wireless/ath/ath10k/core.c
-index 36c62d66c19e..5e33de24febf 100644
---- a/drivers/net/wireless/ath/ath10k/core.c
-+++ b/drivers/net/wireless/ath/ath10k/core.c
-@@ -188,6 +188,7 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
- 		.num_wds_entries = 0x20,
- 		.uart_pin_workaround = true,
- 		.tx_stats_over_pktlog = false,
-+		.bmi_large_size_download = true,
- 	},
- 	{
- 		.id = QCA6174_HW_2_1_VERSION,
-diff --git a/drivers/net/wireless/ath/ath10k/hw.h b/drivers/net/wireless/ath/ath10k/hw.h
-index 35a362329a4f..21b7a2a873b0 100644
---- a/drivers/net/wireless/ath/ath10k/hw.h
-+++ b/drivers/net/wireless/ath/ath10k/hw.h
-@@ -613,6 +613,9 @@ struct ath10k_hw_params {
- 	/* target supporting fw download via diag ce */
- 	bool fw_diag_ce_download;
- 
-+	/* target supporting fw download via large size BMI */
-+	bool bmi_large_size_download;
-+
- 	/* need to set uart pin if disable uart print, workaround for a
- 	 * firmware bug
- 	 */
-diff --git a/drivers/net/wireless/ath/ath10k/sdio.c b/drivers/net/wireless/ath/ath10k/sdio.c
-index 120200a93bcc..0e19df85821a 100644
---- a/drivers/net/wireless/ath/ath10k/sdio.c
-+++ b/drivers/net/wireless/ath/ath10k/sdio.c
-@@ -2028,7 +2028,7 @@ static int ath10k_sdio_probe(struct sdio_func *func,
- 		goto err_core_destroy;
- 	}
- 
--	ar_sdio->bmi_buf = devm_kzalloc(ar->dev, BMI_MAX_CMDBUF_SIZE, GFP_KERNEL);
-+	ar_sdio->bmi_buf = devm_kzalloc(ar->dev, BMI_MAX_LARGE_CMDBUF_SIZE, GFP_KERNEL);
- 	if (!ar_sdio->bmi_buf) {
- 		ret = -ENOMEM;
- 		goto err_core_destroy;
+v4.7 did break the pdata-quirks which made the mmc3 interface
+fail completely, because some code now assumes device tree
+based instantiation.
+
+Fixes: 81eef6ca9201 ("mmc: omap_hsmmc: Use dma_request_chan() for requesting DMA channel")
+
+v4.11 did break the sdio qirks for wl1251 which made the driver no longer
+load, although the device was found as an sdio client.
+
+Fixes: 884f38607897 ("mmc: core: move some sdio IDs out of quirks file")
+
+To solve these issues:
+* we convert mmc3 and wl1251 initialization from pdata-quirks
+  to device tree
+* we make the wl1251 driver read properties from device tree
+* we fix the mmc core vendor ids and quirks
+* we fix the wl1251 (and wl1271) driver to use only vendor ids
+  from header file instead of (potentially conflicting) local
+  definitions
+
+
+H. Nikolaus Schaller (12):
+  Documentation: dt: wireless: update wl1251 for sdio
+  net: wireless: ti: wl1251 add device tree support
+  ARM: dts: pandora-common: define wl1251 as child node of mmc3
+  mmc: host: omap_hsmmc: add code for special init of wl1251 to get rid
+    of pandora_wl1251_init_card
+  omap: pdata-quirks: revert pandora specific gpiod additions
+  omap: pdata-quirks: remove openpandora quirks for mmc3 and wl1251
+  omap: remove omap2_hsmmc_info in old hsmmc.[ch] and update Makefile
+  mmc: host: omap-hsmmc: remove init_card pdata callback from pdata
+  mmc: sdio: fix wl1251 vendor id
+  mmc: core: fix wl1251 sdio quirks
+  net: wireless: ti: wl1251 use new SDIO_VENDOR_ID_TI_WL1251 definition
+  net: wireless: ti: remove local VENDOR_ID and DEVICE_ID definitions
+
+ .../bindings/net/wireless/ti,wl1251.txt       |  26 +++
+ arch/arm/boot/dts/omap3-pandora-common.dtsi   |  36 +++-
+ arch/arm/mach-omap2/Makefile                  |   3 -
+ arch/arm/mach-omap2/common.h                  |   1 -
+ arch/arm/mach-omap2/hsmmc.c                   | 171 ------------------
+ arch/arm/mach-omap2/hsmmc.h                   |  32 ----
+ arch/arm/mach-omap2/pdata-quirks.c            | 105 -----------
+ drivers/mmc/core/quirks.h                     |   7 +
+ drivers/mmc/host/omap_hsmmc.c                 |  30 ++-
+ drivers/net/wireless/ti/wl1251/sdio.c         |  23 ++-
+ drivers/net/wireless/ti/wlcore/sdio.c         |   8 -
+ include/linux/mmc/sdio_ids.h                  |   2 +
+ include/linux/platform_data/hsmmc-omap.h      |   3 -
+ 13 files changed, 111 insertions(+), 336 deletions(-)
+ delete mode 100644 arch/arm/mach-omap2/hsmmc.c
+ delete mode 100644 arch/arm/mach-omap2/hsmmc.h
+
 -- 
 2.23.0
 
