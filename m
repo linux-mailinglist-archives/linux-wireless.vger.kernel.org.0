@@ -2,35 +2,36 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 81D02F4834
-	for <lists+linux-wireless@lfdr.de>; Fri,  8 Nov 2019 12:55:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 850B8F4824
+	for <lists+linux-wireless@lfdr.de>; Fri,  8 Nov 2019 12:55:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391495AbfKHLzW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 8 Nov 2019 06:55:22 -0500
-Received: from mail.kernel.org ([198.145.29.99]:33438 "EHLO mail.kernel.org"
+        id S2389602AbfKHLyr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 8 Nov 2019 06:54:47 -0500
+Received: from mail.kernel.org ([198.145.29.99]:33840 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2391228AbfKHLqA (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 8 Nov 2019 06:46:00 -0500
+        id S2391277AbfKHLqM (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 8 Nov 2019 06:46:12 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C05322084D;
-        Fri,  8 Nov 2019 11:45:58 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 6023D20656;
+        Fri,  8 Nov 2019 11:46:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1573213559;
-        bh=51B5i7ZSZGGTkvJ7fYCTtynCDM1daTOX1raD80Vc/BU=;
+        s=default; t=1573213572;
+        bh=lZXxMuWIybLFtXGs8v1ZWRWHg9eTWJ+Zb4KyQrFSfR0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UV+/iMU291xBx1fh4yaWwIsFY0fYPd7Y3S9gPccuX6NRqMxc/GcFi8g6pCgVq2cCK
-         nNgNODhDbq7XkIQL30yaWhlkZG7US7Bv4zmPSVhDL7+02E/SWNoAGqstHsysZxlvwj
-         kLK/lEmFFgVHBqr245zZPaVgJ5HVa8D3XrXEUk7o=
+        b=EqCqO7Y0bJeLwaI1IoAcVrKiR2axvDv4ex+7ZhP1fYE0tB8ZZhELnZb4OXcb1qn48
+         KFTjA19qrDohzkUYc93VjGRGSnu5kC5b8+kQNY+JAltRDXL0ELQLYWzpYabjKAMH8T
+         IZ1rK38F/tOE7LkzJ8UqleLlBfzJ+yL8k9b2VsbI=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Felix Fietkau <nbd@nbd.name>, Kalle Valo <kvalo@codeaurora.org>,
+Cc:     Sara Sharon <sara.sharon@intel.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
         Sasha Levin <sashal@kernel.org>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.9 08/64] ath9k: fix tx99 with monitor mode interface
-Date:   Fri,  8 Nov 2019 06:44:49 -0500
-Message-Id: <20191108114545.15351-8-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.9 18/64] iwlwifi: mvm: avoid sending too many BARs
+Date:   Fri,  8 Nov 2019 06:44:59 -0500
+Message-Id: <20191108114545.15351-18-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20191108114545.15351-1-sashal@kernel.org>
 References: <20191108114545.15351-1-sashal@kernel.org>
@@ -43,114 +44,48 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Sara Sharon <sara.sharon@intel.com>
 
-[ Upstream commit d9c52fd17cb483bd8a470398afcb79f86c1b77c8 ]
+[ Upstream commit 1a19c139be18ed4d6d681049cc48586fae070120 ]
 
-Tx99 is typically configured via a monitor mode interface, which does
-not get added to the driver as a vif. Since the code currently expects
-a configured virtual interface for tx99, enabling tx99 via debugfs fails.
-Since the vif is not needed anyway, remove all checks for it.
+When we receive TX response, we may release a few packets
+due to a hole that was closed in the transmission window.
 
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-[kvalo@codeaurora.org: s/CPTCFG/CONFIG/]
-Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+However, if that frame failed, we will mark all the released
+frames as failed and will send multiple BARs.
+
+This affects statistics badly, and cause unnecessary frames
+transmission.
+
+Instead, mark all the following packets as success, with the
+desired result of sending a bar for the failed frame only.
+
+Signed-off-by: Sara Sharon <sara.sharon@intel.com>
+Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath9k/ath9k.h |  1 -
- drivers/net/wireless/ath/ath9k/main.c  | 12 +++---------
- drivers/net/wireless/ath/ath9k/tx99.c  |  9 ---------
- drivers/net/wireless/ath/ath9k/xmit.c  |  2 +-
- 4 files changed, 4 insertions(+), 20 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/tx.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath9k/ath9k.h b/drivers/net/wireless/ath/ath9k/ath9k.h
-index 7bda18c61eb6e..51e878a9d5211 100644
---- a/drivers/net/wireless/ath/ath9k/ath9k.h
-+++ b/drivers/net/wireless/ath/ath9k/ath9k.h
-@@ -1033,7 +1033,6 @@ struct ath_softc {
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
+index 1aa74b87599ff..63dcea640d076 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
+@@ -1303,6 +1303,14 @@ static void iwl_mvm_rx_tx_cmd_single(struct iwl_mvm *mvm,
+ 			break;
+ 		}
  
- 	struct ath_spec_scan_priv spec_priv;
++		/*
++		 * If we are freeing multiple frames, mark all the frames
++		 * but the first one as acked, since they were acknowledged
++		 * before
++		 * */
++		if (skb_freed > 1)
++			info->flags |= IEEE80211_TX_STAT_ACK;
++
+ 		iwl_mvm_tx_status_check_trigger(mvm, status);
  
--	struct ieee80211_vif *tx99_vif;
- 	struct sk_buff *tx99_skb;
- 	bool tx99_state;
- 	s16 tx99_power;
-diff --git a/drivers/net/wireless/ath/ath9k/main.c b/drivers/net/wireless/ath/ath9k/main.c
-index b868f02ced893..fbc34beee1580 100644
---- a/drivers/net/wireless/ath/ath9k/main.c
-+++ b/drivers/net/wireless/ath/ath9k/main.c
-@@ -1249,15 +1249,10 @@ static int ath9k_add_interface(struct ieee80211_hw *hw,
- 	struct ath_vif *avp = (void *)vif->drv_priv;
- 	struct ath_node *an = &avp->mcast_node;
- 
--	mutex_lock(&sc->mutex);
-+	if (IS_ENABLED(CONFIG_ATH9K_TX99))
-+		return -EOPNOTSUPP;
- 
--	if (IS_ENABLED(CONFIG_ATH9K_TX99)) {
--		if (sc->cur_chan->nvifs >= 1) {
--			mutex_unlock(&sc->mutex);
--			return -EOPNOTSUPP;
--		}
--		sc->tx99_vif = vif;
--	}
-+	mutex_lock(&sc->mutex);
- 
- 	ath_dbg(common, CONFIG, "Attach a VIF of type: %d\n", vif->type);
- 	sc->cur_chan->nvifs++;
-@@ -1340,7 +1335,6 @@ static void ath9k_remove_interface(struct ieee80211_hw *hw,
- 	ath9k_p2p_remove_vif(sc, vif);
- 
- 	sc->cur_chan->nvifs--;
--	sc->tx99_vif = NULL;
- 	if (!ath9k_is_chanctx_enabled())
- 		list_del(&avp->list);
- 
-diff --git a/drivers/net/wireless/ath/ath9k/tx99.c b/drivers/net/wireless/ath/ath9k/tx99.c
-index 8e9480cc33e15..0cb5b2a873be8 100644
---- a/drivers/net/wireless/ath/ath9k/tx99.c
-+++ b/drivers/net/wireless/ath/ath9k/tx99.c
-@@ -54,12 +54,6 @@ static struct sk_buff *ath9k_build_tx99_skb(struct ath_softc *sc)
- 	struct ieee80211_hdr *hdr;
- 	struct ieee80211_tx_info *tx_info;
- 	struct sk_buff *skb;
--	struct ath_vif *avp;
--
--	if (!sc->tx99_vif)
--		return NULL;
--
--	avp = (struct ath_vif *)sc->tx99_vif->drv_priv;
- 
- 	skb = alloc_skb(len, GFP_KERNEL);
- 	if (!skb)
-@@ -77,14 +71,11 @@ static struct sk_buff *ath9k_build_tx99_skb(struct ath_softc *sc)
- 	memcpy(hdr->addr2, hw->wiphy->perm_addr, ETH_ALEN);
- 	memcpy(hdr->addr3, hw->wiphy->perm_addr, ETH_ALEN);
- 
--	hdr->seq_ctrl |= cpu_to_le16(avp->seq_no);
--
- 	tx_info = IEEE80211_SKB_CB(skb);
- 	memset(tx_info, 0, sizeof(*tx_info));
- 	rate = &tx_info->control.rates[0];
- 	tx_info->band = sc->cur_chan->chandef.chan->band;
- 	tx_info->flags = IEEE80211_TX_CTL_NO_ACK;
--	tx_info->control.vif = sc->tx99_vif;
- 	rate->count = 1;
- 	if (ah->curchan && IS_CHAN_HT(ah->curchan)) {
- 		rate->flags |= IEEE80211_TX_RC_MCS;
-diff --git a/drivers/net/wireless/ath/ath9k/xmit.c b/drivers/net/wireless/ath/ath9k/xmit.c
-index 0ef27d99bef33..2c35819f65426 100644
---- a/drivers/net/wireless/ath/ath9k/xmit.c
-+++ b/drivers/net/wireless/ath/ath9k/xmit.c
-@@ -2970,7 +2970,7 @@ int ath9k_tx99_send(struct ath_softc *sc, struct sk_buff *skb,
- 		return -EINVAL;
- 	}
- 
--	ath_set_rates(sc->tx99_vif, NULL, bf);
-+	ath_set_rates(NULL, NULL, bf);
- 
- 	ath9k_hw_set_desc_link(sc->sc_ah, bf->bf_desc, bf->bf_daddr);
- 	ath9k_hw_tx99_start(sc->sc_ah, txctl->txq->axq_qnum);
+ 		info->status.rates[0].count = tx_resp->failure_frame + 1;
 -- 
 2.20.1
 
