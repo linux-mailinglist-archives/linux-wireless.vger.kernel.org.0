@@ -2,72 +2,164 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F9EAF4584
-	for <lists+linux-wireless@lfdr.de>; Fri,  8 Nov 2019 12:17:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E6708F461E
+	for <lists+linux-wireless@lfdr.de>; Fri,  8 Nov 2019 12:40:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730622AbfKHLR0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 8 Nov 2019 06:17:26 -0500
-Received: from s3.sipsolutions.net ([144.76.43.62]:56026 "EHLO
-        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729896AbfKHLR0 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 8 Nov 2019 06:17:26 -0500
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.92.3)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1iT2Ga-0000cW-Cz; Fri, 08 Nov 2019 12:17:24 +0100
-Message-ID: <300bf0146db6c0d5890699b3911d35174d28c9c0.camel@sipsolutions.net>
-Subject: Re: [PATCH v6 3/4] mac80211: Implement Airtime-based Queue Limit
- (AQL)
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Toke =?ISO-8859-1?Q?H=F8iland-J=F8rgensen?= <toke@redhat.com>
-Cc:     linux-wireless@vger.kernel.org,
-        make-wifi-fast@lists.bufferbloat.net, ath10k@lists.infradead.org,
-        John Crispin <john@phrozen.org>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Felix Fietkau <nbd@nbd.name>, Kan Yan <kyan@google.com>,
-        Rajkumar Manoharan <rmanohar@codeaurora.org>,
-        Kevin Hayes <kevinhayes@google.com>
-Date:   Fri, 08 Nov 2019 12:17:22 +0100
-In-Reply-To: <874kzefwt3.fsf@toke.dk>
-References: <157182473951.150713.7978051149956899705.stgit@toke.dk>
-         <157182474287.150713.12867638269538730397.stgit@toke.dk>
-         <1a2eb096119c9029e67caf797564d6511c8803a7.camel@sipsolutions.net>
-         <87a796fxgd.fsf@toke.dk>
-         <f395a9a971ca1a0d0438fca10dfb160c421caa7a.camel@sipsolutions.net>
-         <874kzefwt3.fsf@toke.dk>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
+        id S2388388AbfKHLkG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 8 Nov 2019 06:40:06 -0500
+Received: from mail.kernel.org ([198.145.29.99]:52968 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2388340AbfKHLkF (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 8 Nov 2019 06:40:05 -0500
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id AF32E222C6;
+        Fri,  8 Nov 2019 11:40:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1573213204;
+        bh=UBcwiqcs+4h2OQNhYlEoP/ApOIVZSmpdBOgLMo93mcE=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=PnWLnaNw/NUcfuDGG2fH8PnRDxp5+Ch3F9ItyUtCO1Kj6+tfPJqqQi2hyNlwTUIyJ
+         DmZUrlBhAz4O24jZxNYqvlZJmOipLftpO/xR2MD0aodfaJnSKZVxAbXhYE3J8p9R/W
+         dKq52rsgBxCSIQlv11N0R86jqlNJs6eNJX8Sn5F0=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Stanislaw Gruszka <sgruszka@redhat.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Sasha Levin <sashal@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.19 087/205] cfg80211: validate wmm rule when setting
+Date:   Fri,  8 Nov 2019 06:35:54 -0500
+Message-Id: <20191108113752.12502-87-sashal@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20191108113752.12502-1-sashal@kernel.org>
+References: <20191108113752.12502-1-sashal@kernel.org>
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 2019-11-08 at 12:10 +0100, Toke Høiland-Jørgensen wrote:
+From: Stanislaw Gruszka <sgruszka@redhat.com>
 
-> Right, bugger. I was thinking maybe there's a case where skbs can be
-> cloned (and retain the tx_time_est field) and then released twice? 
+[ Upstream commit 014f5a250fc49fa8c6cd50093e725e71f3ae52da ]
 
-They could be cloned, but I don't see how that'd be while *inside* the
-stack and then they get reported twice - unless the driver did something
-like that?
+Add validation check for wmm rule when copy rules from fwdb and print
+error when rule is invalid.
 
-I mean, TCP surely does that for example, but it's before we even get to
-mac80211.
+Signed-off-by: Stanislaw Gruszka <sgruszka@redhat.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ net/wireless/reg.c | 64 +++++++++++++++++++++++++---------------------
+ 1 file changed, 35 insertions(+), 29 deletions(-)
 
-> Or
-> maybe somewhere that steps on the skb->cb field in some other way?
-> Couldn't find anything obvious on a first perusal of the TX path code,
-> but maybe you could think of something?
-
-No, sorry. But I also didn't actually look at the driver at all.
-
-> Otherwise I guess we'll be forced to go and do some actual,
-> old-fashioned debugging ;)
-
-:)
-
-johannes
+diff --git a/net/wireless/reg.c b/net/wireless/reg.c
+index 68ae97ef8bf0b..64841238df855 100644
+--- a/net/wireless/reg.c
++++ b/net/wireless/reg.c
+@@ -847,22 +847,36 @@ static bool valid_regdb(const u8 *data, unsigned int size)
+ 	return true;
+ }
+ 
+-static void set_wmm_rule(struct ieee80211_reg_rule *rrule,
+-			 struct fwdb_wmm_rule *wmm)
+-{
+-	struct ieee80211_wmm_rule *rule = &rrule->wmm_rule;
+-	unsigned int i;
++static void set_wmm_rule(const struct fwdb_header *db,
++			 const struct fwdb_country *country,
++			 const struct fwdb_rule *rule,
++			 struct ieee80211_reg_rule *rrule)
++{
++	struct ieee80211_wmm_rule *wmm_rule = &rrule->wmm_rule;
++	struct fwdb_wmm_rule *wmm;
++	unsigned int i, wmm_ptr;
++
++	wmm_ptr = be16_to_cpu(rule->wmm_ptr) << 2;
++	wmm = (void *)((u8 *)db + wmm_ptr);
++
++	if (!valid_wmm(wmm)) {
++		pr_err("Invalid regulatory WMM rule %u-%u in domain %c%c\n",
++		       be32_to_cpu(rule->start), be32_to_cpu(rule->end),
++		       country->alpha2[0], country->alpha2[1]);
++		return;
++	}
+ 
+ 	for (i = 0; i < IEEE80211_NUM_ACS; i++) {
+-		rule->client[i].cw_min =
++		wmm_rule->client[i].cw_min =
+ 			ecw2cw((wmm->client[i].ecw & 0xf0) >> 4);
+-		rule->client[i].cw_max = ecw2cw(wmm->client[i].ecw & 0x0f);
+-		rule->client[i].aifsn =  wmm->client[i].aifsn;
+-		rule->client[i].cot = 1000 * be16_to_cpu(wmm->client[i].cot);
+-		rule->ap[i].cw_min = ecw2cw((wmm->ap[i].ecw & 0xf0) >> 4);
+-		rule->ap[i].cw_max = ecw2cw(wmm->ap[i].ecw & 0x0f);
+-		rule->ap[i].aifsn = wmm->ap[i].aifsn;
+-		rule->ap[i].cot = 1000 * be16_to_cpu(wmm->ap[i].cot);
++		wmm_rule->client[i].cw_max = ecw2cw(wmm->client[i].ecw & 0x0f);
++		wmm_rule->client[i].aifsn =  wmm->client[i].aifsn;
++		wmm_rule->client[i].cot =
++			1000 * be16_to_cpu(wmm->client[i].cot);
++		wmm_rule->ap[i].cw_min = ecw2cw((wmm->ap[i].ecw & 0xf0) >> 4);
++		wmm_rule->ap[i].cw_max = ecw2cw(wmm->ap[i].ecw & 0x0f);
++		wmm_rule->ap[i].aifsn = wmm->ap[i].aifsn;
++		wmm_rule->ap[i].cot = 1000 * be16_to_cpu(wmm->ap[i].cot);
+ 	}
+ 
+ 	rrule->has_wmm = true;
+@@ -870,7 +884,7 @@ static void set_wmm_rule(struct ieee80211_reg_rule *rrule,
+ 
+ static int __regdb_query_wmm(const struct fwdb_header *db,
+ 			     const struct fwdb_country *country, int freq,
+-			     struct ieee80211_reg_rule *rule)
++			     struct ieee80211_reg_rule *rrule)
+ {
+ 	unsigned int ptr = be16_to_cpu(country->coll_ptr) << 2;
+ 	struct fwdb_collection *coll = (void *)((u8 *)db + ptr);
+@@ -879,18 +893,14 @@ static int __regdb_query_wmm(const struct fwdb_header *db,
+ 	for (i = 0; i < coll->n_rules; i++) {
+ 		__be16 *rules_ptr = (void *)((u8 *)coll + ALIGN(coll->len, 2));
+ 		unsigned int rule_ptr = be16_to_cpu(rules_ptr[i]) << 2;
+-		struct fwdb_rule *rrule = (void *)((u8 *)db + rule_ptr);
+-		struct fwdb_wmm_rule *wmm;
+-		unsigned int wmm_ptr;
++		struct fwdb_rule *rule = (void *)((u8 *)db + rule_ptr);
+ 
+-		if (rrule->len < offsetofend(struct fwdb_rule, wmm_ptr))
++		if (rule->len < offsetofend(struct fwdb_rule, wmm_ptr))
+ 			continue;
+ 
+-		if (freq >= KHZ_TO_MHZ(be32_to_cpu(rrule->start)) &&
+-		    freq <= KHZ_TO_MHZ(be32_to_cpu(rrule->end))) {
+-			wmm_ptr = be16_to_cpu(rrule->wmm_ptr) << 2;
+-			wmm = (void *)((u8 *)db + wmm_ptr);
+-			set_wmm_rule(rule, wmm);
++		if (freq >= KHZ_TO_MHZ(be32_to_cpu(rule->start)) &&
++		    freq <= KHZ_TO_MHZ(be32_to_cpu(rule->end))) {
++			set_wmm_rule(db, country, rule, rrule);
+ 			return 0;
+ 		}
+ 	}
+@@ -972,12 +982,8 @@ static int regdb_query_country(const struct fwdb_header *db,
+ 		if (rule->len >= offsetofend(struct fwdb_rule, cac_timeout))
+ 			rrule->dfs_cac_ms =
+ 				1000 * be16_to_cpu(rule->cac_timeout);
+-		if (rule->len >= offsetofend(struct fwdb_rule, wmm_ptr)) {
+-			u32 wmm_ptr = be16_to_cpu(rule->wmm_ptr) << 2;
+-			struct fwdb_wmm_rule *wmm = (void *)((u8 *)db + wmm_ptr);
+-
+-			set_wmm_rule(rrule, wmm);
+-		}
++		if (rule->len >= offsetofend(struct fwdb_rule, wmm_ptr))
++			set_wmm_rule(db, country, rule, rrule);
+ 	}
+ 
+ 	return reg_schedule_apply(regdom);
+-- 
+2.20.1
 
