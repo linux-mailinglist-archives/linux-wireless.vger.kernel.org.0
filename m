@@ -2,84 +2,75 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D8F5F57BD
-	for <lists+linux-wireless@lfdr.de>; Fri,  8 Nov 2019 21:06:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E630CF57D1
+	for <lists+linux-wireless@lfdr.de>; Fri,  8 Nov 2019 21:06:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388157AbfKHTh2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 8 Nov 2019 14:37:28 -0500
-Received: from smtp.codeaurora.org ([198.145.29.96]:56856 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387561AbfKHTh2 (ORCPT
+        id S1731097AbfKHTm0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 8 Nov 2019 14:42:26 -0500
+Received: from mail2.candelatech.com ([208.74.158.173]:46154 "EHLO
+        mail3.candelatech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730092AbfKHTmZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 8 Nov 2019 14:37:28 -0500
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 6906F61282; Fri,  8 Nov 2019 19:37:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1573241847;
-        bh=Z3j0Gz/vD7Z3P0IwT9HGD7SHVyARaBMIuWDN4vqQy/c=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=D8G7xJ2a2l2NVikZ4c4hcW5sfWh6Aw+8s9znPFLbAw8CIqC+5U+oXtRilZbhuejQJ
-         S3suPJjQL5+3Uwrh8xesyDN1OE0d/mf4JnQs2h0t9DL1X0OZOcmd4yhF7SYZ7ggHGw
-         7g5JPlpCjlxi7LN1FtNCKF65M8oAtNnlgWbvy/jI=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-0.8 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,MISSING_DATE,MISSING_MID,SPF_NONE autolearn=no
-        autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 8C8A060247;
-        Fri,  8 Nov 2019 19:37:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1573241846;
-        bh=Z3j0Gz/vD7Z3P0IwT9HGD7SHVyARaBMIuWDN4vqQy/c=;
-        h=Subject:From:In-Reply-To:References:To:Cc:From;
-        b=PuqdhLSNQDSMLBYbgf4QjgorUe8CvvN7btOUMqHcjb6M7xm8GepHHN7JrU7qlb3RP
-         71i/qJg50P2sNRPDAFpSMqPvkFoiAIBxcTc5AEHWL87CsDapqhOj54yKmPIMNh0xGu
-         4jDu2oEwnHNw7TYEvcnYzSjJ7322y8JcwlYPvzZc=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 8C8A060247
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        Fri, 8 Nov 2019 14:42:25 -0500
+Received: from ben-dt4.candelatech.com (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
+        by mail3.candelatech.com (Postfix) with ESMTP id 12A1F13C283;
+        Fri,  8 Nov 2019 11:42:25 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 12A1F13C283
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+        s=default; t=1573242145;
+        bh=BJb4vVZjGrUl9yDgrxCFDoWZAcBHhkUyLSCkxbGjPIo=;
+        h=From:To:Cc:Subject:Date:From;
+        b=MLW9C7G9ifeZxNBTU/irnyeQr0x+cfy3aWa9hrc6iPIvR0xjBWu95TRdZOchJv+UI
+         gjbbFboGl6YdRruPjHqlVKyUt4w+8gfdB6difWSOcJ1rlxb06wc/pJm12Z5993jBAD
+         LbwLtmfD3x2vOKNQ2GzIsnLoI+4S0TDtbB9j98JI=
+From:   greearb@candelatech.com
+To:     linux-wireless@vger.kernel.org
+Cc:     johannes@sipsolutions.net, Ben Greear <greearb@candelatech.com>
+Subject: [PATCH 00/10] Ben's grab bag of mac80211 patches
+Date:   Fri,  8 Nov 2019 11:42:01 -0800
+Message-Id: <20191108194210.23618-1-greearb@candelatech.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v5.4 1/3] iwlwifi: pcie: don't consider IV len in A-MSDU
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20191107115149.10709-1-luca@coelho.fi>
-References: <20191107115149.10709-1-luca@coelho.fi>
-To:     Luca Coelho <luca@coelho.fi>
-Cc:     linux-wireless@vger.kernel.org
-User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20191108193727.6906F61282@smtp.codeaurora.org>
-Date:   Fri,  8 Nov 2019 19:37:27 +0000 (UTC)
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Luca Coelho <luca@coelho.fi> wrote:
+From: Ben Greear <greearb@candelatech.com>
 
-> From: Mordechay Goodstein <mordechay.goodstein@intel.com>
-> 
-> From gen2 PN is totally offloaded to hardware (also the space for the
-> IV isn't part of the skb).  As you can see in mvm/mac80211.c:3545, the
-> MAC for cipher types CCMP/GCMP doesn't set
-> IEEE80211_KEY_FLAG_PUT_IV_SPACE for gen2 NICs.
-> 
-> This causes all the AMSDU data to be corrupted with cipher enabled.
-> 
-> Signed-off-by: Mordechay Goodstein <mordechay.goodstein@intel.com>
-> Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+Here are some patches from my tree, freshly applied and compile tested on top of
+upstream 5.4.0-rc6.  One incorporates a fix suggested back in 2013 :)
 
-Patch applied to wireless-drivers.git, thanks.
+There should not be much dependencies between these, so just
+skip any you don't want.
 
-cb1a4badf592 iwlwifi: pcie: don't consider IV len in A-MSDU
+Ben Greear (10):
+  mac80211: Add comment about tx on monitor devs.
+  mac80211: Change warn-on to warn-on-once
+  mac80211: Don't spam kernel with sdata-in-driver failures.
+  mac80211: Don't spam so loud about warned-sdata-in-driver.
+  mac80211: Improve connection-loss probing.
+  mac80211: Make max-auth-tries configurable as module option
+  mac80211: Revert some of e8e4f5, fixes setting single rate in ath10k.
+  mac80211: Support decrypting action frames for reinsertion into the
+    driver.
+  mac80211: Use warn-on-once for queue mis-configuration.
+  mlme: Don't unlink bss on assoc timeout and similar.
+
+ include/net/mac80211.h     | 10 +++++
+ net/mac80211/cfg.c         |  6 ++-
+ net/mac80211/debug.h       |  3 ++
+ net/mac80211/driver-ops.c  |  9 ++++
+ net/mac80211/driver-ops.h  | 36 ++++++++++++++--
+ net/mac80211/ieee80211_i.h |  3 +-
+ net/mac80211/iface.c       |  7 ++++
+ net/mac80211/mlme.c        | 84 +++++++++++++++++---------------------
+ net/mac80211/rx.c          |  2 +-
+ net/mac80211/tx.c          |  6 +++
+ net/mac80211/util.c        |  5 ++-
+ 11 files changed, 115 insertions(+), 56 deletions(-)
 
 -- 
-https://patchwork.kernel.org/patch/11232699/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+2.20.1
 
