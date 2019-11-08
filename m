@@ -2,37 +2,36 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8FC75F4A7D
-	for <lists+linux-wireless@lfdr.de>; Fri,  8 Nov 2019 13:09:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 122A8F4A6E
+	for <lists+linux-wireless@lfdr.de>; Fri,  8 Nov 2019 13:09:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389749AbfKHMJe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 8 Nov 2019 07:09:34 -0500
-Received: from mail.kernel.org ([198.145.29.99]:52950 "EHLO mail.kernel.org"
+        id S2390637AbfKHMJI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 8 Nov 2019 07:09:08 -0500
+Received: from mail.kernel.org ([198.145.29.99]:53180 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2388327AbfKHLkE (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 8 Nov 2019 06:40:04 -0500
+        id S2388519AbfKHLkM (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 8 Nov 2019 06:40:12 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 7D08220869;
-        Fri,  8 Nov 2019 11:40:02 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id B91D321D7F;
+        Fri,  8 Nov 2019 11:40:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1573213203;
-        bh=S4hGAQcWq3BmNUikVDjThFlx+Q15Rqc902O6gvM3WAA=;
+        s=default; t=1573213211;
+        bh=e6m2D9GsLTb/2SC3kjO+2tBWWWAaE8pBWyaHznMx5kw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Qq88hRicGKqQOitO6zQ/IJuQ/JIEtFMuzR9gVvlhgZWD5dbCPxJXjuQDnxprADI11
-         ncdFnuUeeoziRrmoQacQxClKZGuI3eWCfxYP1oCM/9lGu7dNBbhQveEP5bPOJVcurM
-         kZtIH+VmiTTs3RNkBVkXlo4qT8XYQsVDnci3WYhk=
+        b=HNVFxTDeFTQayrAGyXVaoWCYBium5U7HCQaNG9QUvvKhicK0+QWXlAKTiSFLI/P/d
+         0R571ACA0kFLRVltjBe2eoys3XCZ2CgAQiZRnHhNJeZJM97K9oNEBH52R3V775sutb
+         sPfWCiy9aG+iB/sdEVEs+PWsB6+Mxwlz2eFtLU4w=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Naftali Goldstein <naftali.goldstein@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Sasha Levin <sashal@kernel.org>,
+Cc:     "K.T.VIJAYAKUMAAR" <vijay.bvb@samsung.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Sasha Levin <sashal@kernel.org>, ath10k@lists.infradead.org,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 086/205] mac80211: fix saving a few HE values
-Date:   Fri,  8 Nov 2019 06:35:53 -0500
-Message-Id: <20191108113752.12502-86-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 092/205] ath10k: avoid possible memory access violation
+Date:   Fri,  8 Nov 2019 06:35:59 -0500
+Message-Id: <20191108113752.12502-92-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20191108113752.12502-1-sashal@kernel.org>
 References: <20191108113752.12502-1-sashal@kernel.org>
@@ -45,55 +44,48 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Naftali Goldstein <naftali.goldstein@intel.com>
+From: "K.T.VIJAYAKUMAAR" <vijay.bvb@samsung.com>
 
-[ Upstream commit 77cbbc35a49b75969d98edce9400beb21720aa39 ]
+[ Upstream commit 97c69a70dc2cecb2c3b96a66529e0082dabc2d2c ]
 
-After masking the he_oper_params, to get the requested values as
-integers one must rshift and not lshift.  Fix that by using the
-le32_get_bits() macro.
+array "ctl_power_table" access index "pream" is initialized with -1 and
+is raised as a static analysis tool issue.
+[drivers\net\wireless\ath\ath10k\wmi.c:4719] ->
+[drivers\net\wireless\ath\ath10k\wmi.c:4730]: (error) Array index -1 is
+out of bounds.
 
-Fixes: 41cbb0f5a295 ("mac80211: add support for HE")
-Signed-off-by: Naftali Goldstein <naftali.goldstein@intel.com>
-[converted to use le32_get_bits()]
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Since the "pream" index for accessing ctl_power_table array is initialized
+with -1, there is a chance of memory access violation for the cases below.
+1) wmi_pdev_tpc_final_table_event change frequency is between 2483 and 5180
+2) pream_idx is out of the enumeration ranges of wmi_tpc_pream_2ghz,
+wmi_tpc_pream_5ghz
+
+Signed-off-by: K.T.VIJAYAKUMAAR <vijay.bvb@samsung.com>
+[kvalo@codeaurora.org: clean up the warning message]
+Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/mlme.c | 17 +++++++----------
- 1 file changed, 7 insertions(+), 10 deletions(-)
+ drivers/net/wireless/ath/ath10k/wmi.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index 5c9dcafbc3424..b0667467337d4 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -3255,19 +3255,16 @@ static bool ieee80211_assoc_success(struct ieee80211_sub_if_data *sdata,
+diff --git a/drivers/net/wireless/ath/ath10k/wmi.c b/drivers/net/wireless/ath/ath10k/wmi.c
+index 9f31b9a108507..583147f00fa4e 100644
+--- a/drivers/net/wireless/ath/ath10k/wmi.c
++++ b/drivers/net/wireless/ath/ath10k/wmi.c
+@@ -4785,6 +4785,13 @@ ath10k_wmi_tpc_final_get_rate(struct ath10k *ar,
+ 		}
  	}
  
- 	if (bss_conf->he_support) {
--		u32 he_oper_params =
--			le32_to_cpu(elems.he_operation->he_oper_params);
-+		bss_conf->bss_color =
-+			le32_get_bits(elems.he_operation->he_oper_params,
-+				      IEEE80211_HE_OPERATION_BSS_COLOR_MASK);
- 
--		bss_conf->bss_color = he_oper_params &
--				      IEEE80211_HE_OPERATION_BSS_COLOR_MASK;
- 		bss_conf->htc_trig_based_pkt_ext =
--			(he_oper_params &
--			 IEEE80211_HE_OPERATION_DFLT_PE_DURATION_MASK) <<
--			IEEE80211_HE_OPERATION_DFLT_PE_DURATION_OFFSET;
-+			le32_get_bits(elems.he_operation->he_oper_params,
-+			      IEEE80211_HE_OPERATION_DFLT_PE_DURATION_MASK);
- 		bss_conf->frame_time_rts_th =
--			(he_oper_params &
--			 IEEE80211_HE_OPERATION_RTS_THRESHOLD_MASK) <<
--			IEEE80211_HE_OPERATION_RTS_THRESHOLD_OFFSET;
-+			le32_get_bits(elems.he_operation->he_oper_params,
-+			      IEEE80211_HE_OPERATION_RTS_THRESHOLD_MASK);
- 
- 		bss_conf->multi_sta_back_32bit =
- 			sta->sta.he_cap.he_cap_elem.mac_cap_info[2] &
++	if (pream == -1) {
++		ath10k_warn(ar, "unknown wmi tpc final index and frequency: %u, %u\n",
++			    pream_idx, __le32_to_cpu(ev->chan_freq));
++		tpc = 0;
++		goto out;
++	}
++
+ 	if (pream == 4)
+ 		tpc = min_t(u8, ev->rates_array[rate_idx],
+ 			    ev->max_reg_allow_pow[ch]);
 -- 
 2.20.1
 
