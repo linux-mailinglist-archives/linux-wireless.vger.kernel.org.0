@@ -2,36 +2,36 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E6708F461E
-	for <lists+linux-wireless@lfdr.de>; Fri,  8 Nov 2019 12:40:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F62CF4687
+	for <lists+linux-wireless@lfdr.de>; Fri,  8 Nov 2019 12:43:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388388AbfKHLkG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 8 Nov 2019 06:40:06 -0500
-Received: from mail.kernel.org ([198.145.29.99]:52968 "EHLO mail.kernel.org"
+        id S2390320AbfKHLnD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 8 Nov 2019 06:43:03 -0500
+Received: from mail.kernel.org ([198.145.29.99]:57340 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2388340AbfKHLkF (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 8 Nov 2019 06:40:05 -0500
+        id S2390304AbfKHLnC (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 8 Nov 2019 06:43:02 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id AF32E222C6;
-        Fri,  8 Nov 2019 11:40:03 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 7291C222C4;
+        Fri,  8 Nov 2019 11:43:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1573213204;
-        bh=UBcwiqcs+4h2OQNhYlEoP/ApOIVZSmpdBOgLMo93mcE=;
+        s=default; t=1573213382;
+        bh=mreQAMbZ+CpRVpcttSNGFJi8T0eMst7r9ESpUc40GFM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PnWLnaNw/NUcfuDGG2fH8PnRDxp5+Ch3F9ItyUtCO1Kj6+tfPJqqQi2hyNlwTUIyJ
-         DmZUrlBhAz4O24jZxNYqvlZJmOipLftpO/xR2MD0aodfaJnSKZVxAbXhYE3J8p9R/W
-         dKq52rsgBxCSIQlv11N0R86jqlNJs6eNJX8Sn5F0=
+        b=ImhFU1t4pptf21yrOE8oX5int5JugckN4gBTiOb5fjQFwxIIUHVTsqRHPGWd7Cdgx
+         HYUAkqAYal8+IgWmHHl1lv/LX/RcME9hEmcaUAdjQwhc8uqIG1ItNt5AfbPsC1dtKD
+         pyNRIYJsKPzBjJd5IKcLhsXe4ghjwXufeAW1KAnY=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Stanislaw Gruszka <sgruszka@redhat.com>,
-        Johannes Berg <johannes.berg@intel.com>,
+Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
         Sasha Levin <sashal@kernel.org>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 087/205] cfg80211: validate wmm rule when setting
-Date:   Fri,  8 Nov 2019 06:35:54 -0500
-Message-Id: <20191108113752.12502-87-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 205/205] ath9k: Fix a locking bug in ath9k_add_interface()
+Date:   Fri,  8 Nov 2019 06:37:52 -0500
+Message-Id: <20191108113752.12502-205-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20191108113752.12502-1-sashal@kernel.org>
 References: <20191108113752.12502-1-sashal@kernel.org>
@@ -44,122 +44,46 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Stanislaw Gruszka <sgruszka@redhat.com>
+From: Dan Carpenter <dan.carpenter@oracle.com>
 
-[ Upstream commit 014f5a250fc49fa8c6cd50093e725e71f3ae52da ]
+[ Upstream commit 461cf036057477805a8a391e5fd0f5264a5e56a8 ]
 
-Add validation check for wmm rule when copy rules from fwdb and print
-error when rule is invalid.
+We tried to revert commit d9c52fd17cb4 ("ath9k: fix tx99 with monitor
+mode interface") but accidentally missed part of the locking change.
 
-Signed-off-by: Stanislaw Gruszka <sgruszka@redhat.com>
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+The lock has to be held earlier so that we're holding it when we do
+"sc->tx99_vif = vif;" and also there in the current code there is a
+stray unlock before we have taken the lock.
+
+Fixes: 6df0580be8bc ("ath9k: add back support for using active monitor interfaces for tx99")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/reg.c | 64 +++++++++++++++++++++++++---------------------
- 1 file changed, 35 insertions(+), 29 deletions(-)
+ drivers/net/wireless/ath/ath9k/main.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/net/wireless/reg.c b/net/wireless/reg.c
-index 68ae97ef8bf0b..64841238df855 100644
---- a/net/wireless/reg.c
-+++ b/net/wireless/reg.c
-@@ -847,22 +847,36 @@ static bool valid_regdb(const u8 *data, unsigned int size)
- 	return true;
- }
+diff --git a/drivers/net/wireless/ath/ath9k/main.c b/drivers/net/wireless/ath/ath9k/main.c
+index c85f613e8ceb5..74f98bbaea889 100644
+--- a/drivers/net/wireless/ath/ath9k/main.c
++++ b/drivers/net/wireless/ath/ath9k/main.c
+@@ -1251,6 +1251,7 @@ static int ath9k_add_interface(struct ieee80211_hw *hw,
+ 	struct ath_vif *avp = (void *)vif->drv_priv;
+ 	struct ath_node *an = &avp->mcast_node;
  
--static void set_wmm_rule(struct ieee80211_reg_rule *rrule,
--			 struct fwdb_wmm_rule *wmm)
--{
--	struct ieee80211_wmm_rule *rule = &rrule->wmm_rule;
--	unsigned int i;
-+static void set_wmm_rule(const struct fwdb_header *db,
-+			 const struct fwdb_country *country,
-+			 const struct fwdb_rule *rule,
-+			 struct ieee80211_reg_rule *rrule)
-+{
-+	struct ieee80211_wmm_rule *wmm_rule = &rrule->wmm_rule;
-+	struct fwdb_wmm_rule *wmm;
-+	unsigned int i, wmm_ptr;
-+
-+	wmm_ptr = be16_to_cpu(rule->wmm_ptr) << 2;
-+	wmm = (void *)((u8 *)db + wmm_ptr);
-+
-+	if (!valid_wmm(wmm)) {
-+		pr_err("Invalid regulatory WMM rule %u-%u in domain %c%c\n",
-+		       be32_to_cpu(rule->start), be32_to_cpu(rule->end),
-+		       country->alpha2[0], country->alpha2[1]);
-+		return;
-+	}
- 
- 	for (i = 0; i < IEEE80211_NUM_ACS; i++) {
--		rule->client[i].cw_min =
-+		wmm_rule->client[i].cw_min =
- 			ecw2cw((wmm->client[i].ecw & 0xf0) >> 4);
--		rule->client[i].cw_max = ecw2cw(wmm->client[i].ecw & 0x0f);
--		rule->client[i].aifsn =  wmm->client[i].aifsn;
--		rule->client[i].cot = 1000 * be16_to_cpu(wmm->client[i].cot);
--		rule->ap[i].cw_min = ecw2cw((wmm->ap[i].ecw & 0xf0) >> 4);
--		rule->ap[i].cw_max = ecw2cw(wmm->ap[i].ecw & 0x0f);
--		rule->ap[i].aifsn = wmm->ap[i].aifsn;
--		rule->ap[i].cot = 1000 * be16_to_cpu(wmm->ap[i].cot);
-+		wmm_rule->client[i].cw_max = ecw2cw(wmm->client[i].ecw & 0x0f);
-+		wmm_rule->client[i].aifsn =  wmm->client[i].aifsn;
-+		wmm_rule->client[i].cot =
-+			1000 * be16_to_cpu(wmm->client[i].cot);
-+		wmm_rule->ap[i].cw_min = ecw2cw((wmm->ap[i].ecw & 0xf0) >> 4);
-+		wmm_rule->ap[i].cw_max = ecw2cw(wmm->ap[i].ecw & 0x0f);
-+		wmm_rule->ap[i].aifsn = wmm->ap[i].aifsn;
-+		wmm_rule->ap[i].cot = 1000 * be16_to_cpu(wmm->ap[i].cot);
++	mutex_lock(&sc->mutex);
+ 	if (IS_ENABLED(CONFIG_ATH9K_TX99)) {
+ 		if (sc->cur_chan->nvifs >= 1) {
+ 			mutex_unlock(&sc->mutex);
+@@ -1259,8 +1260,6 @@ static int ath9k_add_interface(struct ieee80211_hw *hw,
+ 		sc->tx99_vif = vif;
  	}
  
- 	rrule->has_wmm = true;
-@@ -870,7 +884,7 @@ static void set_wmm_rule(struct ieee80211_reg_rule *rrule,
- 
- static int __regdb_query_wmm(const struct fwdb_header *db,
- 			     const struct fwdb_country *country, int freq,
--			     struct ieee80211_reg_rule *rule)
-+			     struct ieee80211_reg_rule *rrule)
- {
- 	unsigned int ptr = be16_to_cpu(country->coll_ptr) << 2;
- 	struct fwdb_collection *coll = (void *)((u8 *)db + ptr);
-@@ -879,18 +893,14 @@ static int __regdb_query_wmm(const struct fwdb_header *db,
- 	for (i = 0; i < coll->n_rules; i++) {
- 		__be16 *rules_ptr = (void *)((u8 *)coll + ALIGN(coll->len, 2));
- 		unsigned int rule_ptr = be16_to_cpu(rules_ptr[i]) << 2;
--		struct fwdb_rule *rrule = (void *)((u8 *)db + rule_ptr);
--		struct fwdb_wmm_rule *wmm;
--		unsigned int wmm_ptr;
-+		struct fwdb_rule *rule = (void *)((u8 *)db + rule_ptr);
- 
--		if (rrule->len < offsetofend(struct fwdb_rule, wmm_ptr))
-+		if (rule->len < offsetofend(struct fwdb_rule, wmm_ptr))
- 			continue;
- 
--		if (freq >= KHZ_TO_MHZ(be32_to_cpu(rrule->start)) &&
--		    freq <= KHZ_TO_MHZ(be32_to_cpu(rrule->end))) {
--			wmm_ptr = be16_to_cpu(rrule->wmm_ptr) << 2;
--			wmm = (void *)((u8 *)db + wmm_ptr);
--			set_wmm_rule(rule, wmm);
-+		if (freq >= KHZ_TO_MHZ(be32_to_cpu(rule->start)) &&
-+		    freq <= KHZ_TO_MHZ(be32_to_cpu(rule->end))) {
-+			set_wmm_rule(db, country, rule, rrule);
- 			return 0;
- 		}
- 	}
-@@ -972,12 +982,8 @@ static int regdb_query_country(const struct fwdb_header *db,
- 		if (rule->len >= offsetofend(struct fwdb_rule, cac_timeout))
- 			rrule->dfs_cac_ms =
- 				1000 * be16_to_cpu(rule->cac_timeout);
--		if (rule->len >= offsetofend(struct fwdb_rule, wmm_ptr)) {
--			u32 wmm_ptr = be16_to_cpu(rule->wmm_ptr) << 2;
--			struct fwdb_wmm_rule *wmm = (void *)((u8 *)db + wmm_ptr);
+-	mutex_lock(&sc->mutex);
 -
--			set_wmm_rule(rrule, wmm);
--		}
-+		if (rule->len >= offsetofend(struct fwdb_rule, wmm_ptr))
-+			set_wmm_rule(db, country, rule, rrule);
- 	}
+ 	ath_dbg(common, CONFIG, "Attach a VIF of type: %d\n", vif->type);
+ 	sc->cur_chan->nvifs++;
  
- 	return reg_schedule_apply(regdom);
 -- 
 2.20.1
 
