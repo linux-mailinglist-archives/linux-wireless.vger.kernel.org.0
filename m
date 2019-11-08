@@ -2,34 +2,36 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E630CF57D1
-	for <lists+linux-wireless@lfdr.de>; Fri,  8 Nov 2019 21:06:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B953F57D2
+	for <lists+linux-wireless@lfdr.de>; Fri,  8 Nov 2019 21:06:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731097AbfKHTm0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        id S1731195AbfKHTm0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
         Fri, 8 Nov 2019 14:42:26 -0500
-Received: from mail2.candelatech.com ([208.74.158.173]:46154 "EHLO
+Received: from mail2.candelatech.com ([208.74.158.173]:46156 "EHLO
         mail3.candelatech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730092AbfKHTmZ (ORCPT
+        with ESMTP id S1730685AbfKHTmZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Fri, 8 Nov 2019 14:42:25 -0500
 Received: from ben-dt4.candelatech.com (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
-        by mail3.candelatech.com (Postfix) with ESMTP id 12A1F13C283;
+        by mail3.candelatech.com (Postfix) with ESMTP id 4396213C2B0;
         Fri,  8 Nov 2019 11:42:25 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 12A1F13C283
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 4396213C2B0
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
         s=default; t=1573242145;
-        bh=BJb4vVZjGrUl9yDgrxCFDoWZAcBHhkUyLSCkxbGjPIo=;
-        h=From:To:Cc:Subject:Date:From;
-        b=MLW9C7G9ifeZxNBTU/irnyeQr0x+cfy3aWa9hrc6iPIvR0xjBWu95TRdZOchJv+UI
-         gjbbFboGl6YdRruPjHqlVKyUt4w+8gfdB6difWSOcJ1rlxb06wc/pJm12Z5993jBAD
-         LbwLtmfD3x2vOKNQ2GzIsnLoI+4S0TDtbB9j98JI=
+        bh=CWOFwbroLrpeV7aUmHEyw2QuTFO/ZM9C25Nk3YNcBdI=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=U9t4Mnim31OuJPesUuIITcEkj8iTgVnBmak7n7yIahtF7XYRsF1GbE43OiItBKPWt
+         L4Gj8CWQFKPANMPv6pe2uKzujDucZTCwDYH5XaOXsMUG8dSSQ9q5DOpPxOnCE31oA7
+         Bta/+SZPFKOeN+HIJEoY9zBs/7VBDy/ff5WMM44o=
 From:   greearb@candelatech.com
 To:     linux-wireless@vger.kernel.org
 Cc:     johannes@sipsolutions.net, Ben Greear <greearb@candelatech.com>
-Subject: [PATCH 00/10] Ben's grab bag of mac80211 patches
-Date:   Fri,  8 Nov 2019 11:42:01 -0800
-Message-Id: <20191108194210.23618-1-greearb@candelatech.com>
+Subject: [PATCH 01/10] mac80211: Add comment about tx on monitor devs.
+Date:   Fri,  8 Nov 2019 11:42:02 -0800
+Message-Id: <20191108194210.23618-2-greearb@candelatech.com>
 X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20191108194210.23618-1-greearb@candelatech.com>
+References: <20191108194210.23618-1-greearb@candelatech.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
@@ -39,38 +41,31 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Ben Greear <greearb@candelatech.com>
 
-Here are some patches from my tree, freshly applied and compile tested on top of
-upstream 5.4.0-rc6.  One incorporates a fix suggested back in 2013 :)
+This tries to encapsulate email conversation with Johannes on
+this topic for posterity's sake.
 
-There should not be much dependencies between these, so just
-skip any you don't want.
+Signed-off-by: Ben Greear <greearb@candelatech.com>
+---
+ net/mac80211/tx.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-Ben Greear (10):
-  mac80211: Add comment about tx on monitor devs.
-  mac80211: Change warn-on to warn-on-once
-  mac80211: Don't spam kernel with sdata-in-driver failures.
-  mac80211: Don't spam so loud about warned-sdata-in-driver.
-  mac80211: Improve connection-loss probing.
-  mac80211: Make max-auth-tries configurable as module option
-  mac80211: Revert some of e8e4f5, fixes setting single rate in ath10k.
-  mac80211: Support decrypting action frames for reinsertion into the
-    driver.
-  mac80211: Use warn-on-once for queue mis-configuration.
-  mlme: Don't unlink bss on assoc timeout and similar.
-
- include/net/mac80211.h     | 10 +++++
- net/mac80211/cfg.c         |  6 ++-
- net/mac80211/debug.h       |  3 ++
- net/mac80211/driver-ops.c  |  9 ++++
- net/mac80211/driver-ops.h  | 36 ++++++++++++++--
- net/mac80211/ieee80211_i.h |  3 +-
- net/mac80211/iface.c       |  7 ++++
- net/mac80211/mlme.c        | 84 +++++++++++++++++---------------------
- net/mac80211/rx.c          |  2 +-
- net/mac80211/tx.c          |  6 +++
- net/mac80211/util.c        |  5 ++-
- 11 files changed, 115 insertions(+), 56 deletions(-)
-
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index 1fa422782905..05982538c3cf 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -2277,6 +2277,12 @@ netdev_tx_t ieee80211_monitor_start_xmit(struct sk_buff *skb,
+ 	 * isn't always enough to find the interface to use; for proper
+ 	 * VLAN/WDS support we will need a different mechanism (which
+ 	 * likely isn't going to be monitor interfaces).
++	 *
++	 * I had a question about why we need to do this, and the answer
++	 * is that old hostap used this API and expects it to work like this,
++	 * and also monitor vdevs are not directly mapped into the driver
++	 * (and have no chantx in my case, at least), so you cannot directly
++	 * transmit on a monitor port anyway.
+ 	 */
+ 	sdata = IEEE80211_DEV_TO_SUB_IF(dev);
+ 
 -- 
 2.20.1
 
