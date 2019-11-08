@@ -2,73 +2,71 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A060F5239
-	for <lists+linux-wireless@lfdr.de>; Fri,  8 Nov 2019 18:07:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F6A5F5242
+	for <lists+linux-wireless@lfdr.de>; Fri,  8 Nov 2019 18:10:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727412AbfKHRHo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 8 Nov 2019 12:07:44 -0500
-Received: from s3.sipsolutions.net ([144.76.43.62]:36312 "EHLO
-        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726095AbfKHRHn (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 8 Nov 2019 12:07:43 -0500
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.92.3)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1iT7jW-0007xb-J0; Fri, 08 Nov 2019 18:07:38 +0100
-Message-ID: <c95e9e9f5539150459f97f811b784a6e9af163cf.camel@sipsolutions.net>
-Subject: Re: [PATCHv8 0/6] cfg80211/mac80211: Add support for TID specific
- configuration
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Sergey Matyukevich <sergey.matyukevich.os@quantenna.com>
-Cc:     Tamizh chelvam <tamizhr@codeaurora.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Date:   Fri, 08 Nov 2019 18:07:34 +0100
-In-Reply-To: <20191108160121.tbatmqwx64aoqqai@bars>
-References: <1572957714-16085-1-git-send-email-tamizhr@codeaurora.org>
-         <20191108093207.uv4j44xpm2qvtsv5@bars>
-         <84ca3a8b61757360ab9898afcdd3f2f63c770f86.camel@sipsolutions.net>
-         <20191108120504.ptl25hacxcftb7tw@bars>
-         <1c553c457024b295c7d0a6b118c3848eec28bcbd.camel@sipsolutions.net>
-         <20191108160121.tbatmqwx64aoqqai@bars>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
+        id S1726900AbfKHRKP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 8 Nov 2019 12:10:15 -0500
+Received: from muru.com ([72.249.23.125]:40970 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725970AbfKHRKP (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 8 Nov 2019 12:10:15 -0500
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 012E380D4;
+        Fri,  8 Nov 2019 17:10:47 +0000 (UTC)
+Date:   Fri, 8 Nov 2019 09:10:08 -0800
+From:   Tony Lindgren <tony@atomide.com>
+To:     "H. Nikolaus Schaller" <hns@goldelico.com>
+Cc:     =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Mike Rapoport <rppt@linux.ibm.com>,
+        David Sterba <dsterba@suse.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Petr Mladek <pmladek@suse.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Kefeng Wang <wangkefeng.wang@huawei.com>,
+        Yangtao Li <tiny.windzz@gmail.com>,
+        Alexios Zavras <alexios.zavras@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Allison Randal <allison@lohutok.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        John Stultz <john.stultz@linaro.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        devicetree@vger.kernel.org, letux-kernel@openphoenux.org,
+        linux-mmc@vger.kernel.org, kernel@pyra-handheld.com,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org, netdev@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v3 03/12] ARM: dts: pandora-common: define wl1251 as
+ child node of mmc3
+Message-ID: <20191108171008.GJ5610@atomide.com>
+References: <cover.1573122644.git.hns@goldelico.com>
+ <bd14b481105b21a0c1882a1ea34281893233db31.1573122644.git.hns@goldelico.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <bd14b481105b21a0c1882a1ea34281893233db31.1573122644.git.hns@goldelico.com>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 2019-11-08 at 16:01 +0000, Sergey Matyukevich wrote:
-
-> > I think we still need NL80211_TID_CONFIG_ATTR_OVERRIDE in some way
-> > (maybe only as a flag attribute), since you could have
-> > 
-> >  * change all stations (some subset of TIDs) *including* already
-> >    configured stations
-> >  * or *excluding* already configured stations
+* H. Nikolaus Schaller <hns@goldelico.com> [191107 10:33]:
+> Since v4.7 the dma initialization requires that there is a
+> device tree property for "rx" and "tx" channels which is
+> not provided by the pdata-quirks initialization.
 > 
-> Hmmm... Logic is straightforwad without this flag:
-> - settings are applied to bitmasked TIDs of a single peer if address is specifed
-> - settings are applied to bitmasked TIDs of all the peers if no address is specified
+> By conversion of the mmc3 setup to device tree this will
+> finally allows to remove the OpenPandora wlan specific omap3
+> data-quirks.
+> 
+> Fixes: 81eef6ca9201 ("mmc: omap_hsmmc: Use dma_request_chan() for requesting DMA channel")
 
-Sure, this is obvious, but what exactly does "all the peers" mean?
+Probably best to queue this all via the mmc tree when no more comments:
 
-Say I do
-
-set_tid_config(tids=0x1, peer=02:11:22:33:44:55, noack=yes)
-set_tid_config(tids=0x1, peer=NULL, noack=no)
-
-Does that reset peer 02:11:22:33:44:55, or not? This is not documented
-right now, and one could argue both ways - the override for that
-particular peer should stick, or should be removed. Which one is it?
-
-> It looks like you want to infer too much from a single flag. Why keep this logic in
-> cfg80211/mac80211/driver ?
-
-I just want to disambiguate what "all the peers" means. Not sure what
-you mean by keeping the logic?
-
-johannes
-
+Acked-by: Tony Lindgren <tony@atomide.com>
