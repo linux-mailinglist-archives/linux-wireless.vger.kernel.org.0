@@ -2,123 +2,100 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A7A6DF5CAF
-	for <lists+linux-wireless@lfdr.de>; Sat,  9 Nov 2019 02:22:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 798C5F5E6F
+	for <lists+linux-wireless@lfdr.de>; Sat,  9 Nov 2019 11:30:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726061AbfKIBWx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 8 Nov 2019 20:22:53 -0500
-Received: from mail-lf1-f67.google.com ([209.85.167.67]:44627 "EHLO
-        mail-lf1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725972AbfKIBWx (ORCPT
+        id S1726281AbfKIKa6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 9 Nov 2019 05:30:58 -0500
+Received: from mail-lf1-f68.google.com ([209.85.167.68]:39724 "EHLO
+        mail-lf1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726143AbfKIKa6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 8 Nov 2019 20:22:53 -0500
-Received: by mail-lf1-f67.google.com with SMTP id v4so5832346lfd.11
-        for <linux-wireless@vger.kernel.org>; Fri, 08 Nov 2019 17:22:50 -0800 (PST)
+        Sat, 9 Nov 2019 05:30:58 -0500
+Received: by mail-lf1-f68.google.com with SMTP id z24so3443016lfh.6
+        for <linux-wireless@vger.kernel.org>; Sat, 09 Nov 2019 02:30:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=wPXyqZBACPt2T8JabE4s0igf2vH/Qf9iXz5fOc/g31A=;
-        b=KaCfKXPf9tclQGg3xbw0RP8zIY19/2N7+HspE9hY+ndU+h4disr4tT5Bf0aNZolhSQ
-         /mkmKrGdP45uwLYAo7glcfUp5zsMVCkXcwzx3Jdqt10N4Cvw7tyFA8ogAB9j7MnlTSZb
-         MyajoVYU6YLhXDNS38lDuVj2l6W0TCRRFvJfXmAJEiM+qMpcov7zMPMRQFRXof1Z3kHH
-         FbI9yoL0lCtsztv2jCASaiyumAdWzv3p1LwNo3t+zbFfwyOqx/dzVdwWYJdANEnkQIba
-         kj0Ga/10Bl9C62V8e9LwreSMqBg90IH55OGLfaxJYXPqvrNRvJl31RH4+pN+yV3jFFQo
-         w+dg==
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id;
+        bh=giXQo2xxDTnIsnD5g+rmFtpQvGPhSmjYXWzjIJmpNQE=;
+        b=HxXCyAb4ByowVJPfX56XTHtLM4YkZP0pqMlRGsNsQCZAGPgSKUXyu4veTJEvTNMOxR
+         TD5EDlvVqDv3D5roDQ2NH4ZP59nV+XH/UlwZ2ttMdp2zxz5o+X5vDTUbG+Iizg2HdHEF
+         tLK5yzRpiBLmTkxvomQPh9mmYfh/VyHwBqC0RFWse5NSQLNPNPdqcChHhxrFY16EaAPg
+         jaKvW7S+Ydy+sj5ro1juHSrT7IgQuCg2e19arZWp8viP1yRa3hXdlZNDIIoIklKagOP9
+         KFp+515CpIbGpXSf4aslSGHi9didLOO5v1lWd2Es2+LWGEIVlQe5etuIy45UNdp0e+wd
+         g/Tw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=wPXyqZBACPt2T8JabE4s0igf2vH/Qf9iXz5fOc/g31A=;
-        b=krnDyjWJaEVAfx9wUMJwU44S/HAULgOa41MpfNy/RNGoR7rtnKmfKL/8NBImHvmgfz
-         91XvRiN9qVXb2gFNN8RCXKbt3r6zM/AHppWMqZ8Y6Dtde8JYD7Ma/ZifbZth/PMb8ID6
-         GrQAvJFcA/0bnvWBCe2fOEL4AFbD24VDh2OWVWE3ikiZxE92U14B9I61w5CnkOzlhtj4
-         4Xv1OaUM9DxzCit66UFr28ncxqscEMXxOZABbWtVFz5Z75+3+hbcmEYZDLkZwYwCB8JJ
-         mzsqOTxppEj7BwbCn7189lBTga27HVBO6igfAi7HXsUZcW1Jzp80bLSPX5DYeG73YsGJ
-         qsWA==
-X-Gm-Message-State: APjAAAVGbCkKC5zyVN1d8Rsumc2I9g6p5mTYDHLP9MPLKUmE92t5gMN5
-        IpAYQamp6n2bw42hpzeXi3BMSlAfKVtvw4BOnJ6xlg==
-X-Google-Smtp-Source: APXvYqzcFLo69QaprJxtW7QMFzk0LEtt8oG4AUIf8h9IGzZQ4qgLpbLfpusrfQ5D8khH8QL1egEqTvs1kOD48rXrM1Q=
-X-Received: by 2002:a19:5010:: with SMTP id e16mr2851614lfb.49.1573262569148;
- Fri, 08 Nov 2019 17:22:49 -0800 (PST)
-MIME-Version: 1.0
-References: <157182473951.150713.7978051149956899705.stgit@toke.dk>
- <157182474287.150713.12867638269538730397.stgit@toke.dk> <1a2eb096119c9029e67caf797564d6511c8803a7.camel@sipsolutions.net>
- <87a796fxgd.fsf@toke.dk> <f395a9a971ca1a0d0438fca10dfb160c421caa7a.camel@sipsolutions.net>
- <874kzefwt3.fsf@toke.dk> <300bf0146db6c0d5890699b3911d35174d28c9c0.camel@sipsolutions.net>
-In-Reply-To: <300bf0146db6c0d5890699b3911d35174d28c9c0.camel@sipsolutions.net>
-From:   Kan Yan <kyan@google.com>
-Date:   Fri, 8 Nov 2019 17:22:38 -0800
-Message-ID: <CA+iem5saT0ntxnSV1ZatFuRRcaBzivkQ_MU66ZdV1kfb1dC6Qg@mail.gmail.com>
-Subject: Re: [PATCH v6 3/4] mac80211: Implement Airtime-based Queue Limit (AQL)
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@redhat.com>,
-        linux-wireless@vger.kernel.org,
-        Make-Wifi-fast <make-wifi-fast@lists.bufferbloat.net>,
-        ath10k@lists.infradead.org, John Crispin <john@phrozen.org>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Felix Fietkau <nbd@nbd.name>,
-        Rajkumar Manoharan <rmanohar@codeaurora.org>,
-        Kevin Hayes <kevinhayes@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=giXQo2xxDTnIsnD5g+rmFtpQvGPhSmjYXWzjIJmpNQE=;
+        b=aD4lTwdlFM/7DZcTox+MAoJEmz7PBaQD5pEYHzzRaS6UMpY9q+Ycp10CWqSl/C8+1i
+         JyQn3yaz1HSAVwmkSBfLSO3rMWe2Kpp+mWB3snC9hyd2FzdIka8HmvdkHsM5tXweIfTk
+         50SGVnexa4/9XTDVObB1klM9DryKO/i4cTTmG+bCliQ9SvKLNWT6+SI/DuBcC4w4t2B+
+         g9TpwcCTTeP4aE03IxoGDvk2lNovUo6rsMa6tSWrfTG1Lr5AeeKhUpHDrRUOEsvyo6LC
+         tgbE9TLp3x0eAh1pdmIC+OHPbsGO9V2sc5kAQFCWEuSloYBdshu9hLVleuwz10OuNQE2
+         aebw==
+X-Gm-Message-State: APjAAAXD/bbm7sBgcA9G0WRM6wV6od05ndWhIEkmbIaBlAy6Rg9h6Ggb
+        g7af/PgHGd7uLJ/kzWOvwo4q7g==
+X-Google-Smtp-Source: APXvYqyX/UqZ3rhY81QQSQcYGqC1oNmY3h3hWkpLY9DIINrq+fNE8trFZ1avM4N5eH0qDYLmgowhIQ==
+X-Received: by 2002:a19:848a:: with SMTP id g132mr1272484lfd.62.1573295456040;
+        Sat, 09 Nov 2019 02:30:56 -0800 (PST)
+Received: from localhost.localdomain (h-158-174-22-210.NA.cust.bahnhof.se. [158.174.22.210])
+        by smtp.gmail.com with ESMTPSA id z3sm343927lji.36.2019.11.09.02.30.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 09 Nov 2019 02:30:54 -0800 (PST)
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+To:     linux-mmc@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Douglas Anderson <dianders@chromium.org>,
+        Matthias Kaehlcke <mka@chromium.org>
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        Tony Lindgren <tony@atomide.com>,
+        Wen Gong <wgong@codeaurora.org>,
+        Erik Stromdahl <erik.stromdahl@gmail.com>,
+        Eyal Reizer <eyalreizer@gmail.com>,
+        linux-wireless@vger.kernel.org
+Subject: [PATCH v2 0/3] mmc: Fixup HW reset for SDIO cards
+Date:   Sat,  9 Nov 2019 11:30:43 +0100
+Message-Id: <20191109103046.26445-1-ulf.hansson@linaro.org>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-It is most likely just insufficient locking. active_txq_lock is per
-AC, can't protect local->aql_total_pending_airtime against racing
-conditions:
-void ieee80211_sta_update_pending_airtime(...)
-{
-        spin_lock_bh(&local->active_txq_lock[ac]);
-        ...
-        local->aql_total_pending_airtime -=3D tx_airtime;
-        ...
-        spin_unlock_bh(&local->active_txq_lock[ac]);
-}
+Changes in v2:
+	- Add adaptations to the mwifiex driver.
+	- Keep existing syncronous reset behaviour if the SDIO card has a single
+	func driver.
 
-After changing it to atomic_t, no more aql_total_pending_airtime
-underflow so far :). Using atomic operation should also help reduce
-CPU overhead due to lock contention, as
-ieee80211_sta_update_pending_airtime() is often called from the tx
-completion routine triggered by interrupts, often in a different core
-than where __ieee80211_schedule_txq() is running.
+It has turned out that it's not a good idea to try to power cycle and to
+re-initialize the SDIO card, as currently done through mmc_hw_reset(). This
+because there may be multiple SDIO funcs attached to the same SDIO card and
+some of the others that didn't execute the call to mmc_hw_reset(), may then
+simply experience an undefined behaviour.
 
-I will post a new version a bit later if the test goes well.
+The following patches in this series attempts to address this problem, by
+reworking the mmc_hw_reset() behaviour for SDIO and by adopting the Marvel
+mwifiex driver to these changes.
 
-Regards,
-Kan
+Note that, I don't have the HW at hand so the the code has only compile tested.
+Test on HW is greatly appreciated!
 
+Ulf Hansson (3):
+  mwifiex: Re-work support for SDIO HW reset
+  mmc: core: Drop check for mmc_card_is_removable() in mmc_rescan()
+  mmc: core: Re-work HW reset for SDIO cards
 
-On Fri, Nov 8, 2019 at 3:17 AM Johannes Berg <johannes@sipsolutions.net> wr=
-ote:
->
-> On Fri, 2019-11-08 at 12:10 +0100, Toke H=C3=B8iland-J=C3=B8rgensen wrote=
-:
->
-> > Right, bugger. I was thinking maybe there's a case where skbs can be
-> > cloned (and retain the tx_time_est field) and then released twice?
->
-> They could be cloned, but I don't see how that'd be while *inside* the
-> stack and then they get reported twice - unless the driver did something
-> like that?
->
-> I mean, TCP surely does that for example, but it's before we even get to
-> mac80211.
->
-> > Or
-> > maybe somewhere that steps on the skb->cb field in some other way?
-> > Couldn't find anything obvious on a first perusal of the TX path code,
-> > but maybe you could think of something?
->
-> No, sorry. But I also didn't actually look at the driver at all.
->
-> > Otherwise I guess we'll be forced to go and do some actual,
-> > old-fashioned debugging ;)
->
-> :)
->
-> johannes
->
+ drivers/mmc/core/core.c                     | 12 +++-----
+ drivers/mmc/core/core.h                     |  2 ++
+ drivers/mmc/core/sdio.c                     | 28 ++++++++++++++++-
+ drivers/mmc/core/sdio_bus.c                 |  9 +++++-
+ drivers/net/wireless/marvell/mwifiex/main.c |  6 +++-
+ drivers/net/wireless/marvell/mwifiex/main.h |  1 +
+ drivers/net/wireless/marvell/mwifiex/sdio.c | 33 ++++++++++++++-------
+ include/linux/mmc/card.h                    |  1 +
+ 8 files changed, 70 insertions(+), 22 deletions(-)
+
+-- 
+2.17.1
+
