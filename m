@@ -2,78 +2,74 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 16BF2F6493
-	for <lists+linux-wireless@lfdr.de>; Sun, 10 Nov 2019 04:01:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 62797F689A
+	for <lists+linux-wireless@lfdr.de>; Sun, 10 Nov 2019 11:51:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729853AbfKJDAx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 9 Nov 2019 22:00:53 -0500
-Received: from mail.kernel.org ([198.145.29.99]:47200 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729206AbfKJC4q (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 9 Nov 2019 21:56:46 -0500
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 3621E224D3;
-        Sun, 10 Nov 2019 02:48:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1573354099;
-        bh=qX0frf5V4JFJGYGpyYcZ1RuX4317DQq5x9AahDUvJEM=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cU8e3hl8kaCUzfJ1j/+0oVHea2Ht55HA0Q7z5Pxl5PLFOErMzce12xiAlV3QPhr8b
-         Wf2QiGh6DLH4UyDwFLx79n/sTI03BD+2CcMfTy3ZgoZogh0eXOI1KPgtnp27jmc2eA
-         2D1X0Kuma24+e6VtO5SUb8089AUZrR7TYmUWGxI0=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Ilan Peer <ilan.peer@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Sasha Levin <sashal@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 090/109] iwlwifi: mvm: Allow TKIP for AP mode
-Date:   Sat,  9 Nov 2019 21:45:22 -0500
-Message-Id: <20191110024541.31567-90-sashal@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191110024541.31567-1-sashal@kernel.org>
-References: <20191110024541.31567-1-sashal@kernel.org>
+        id S1726731AbfKJKvN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 10 Nov 2019 05:51:13 -0500
+Received: from szxga06-in.huawei.com ([45.249.212.32]:54404 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726609AbfKJKvN (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 10 Nov 2019 05:51:13 -0500
+Received: from DGGEMS407-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id 9DBEA7F856F93392CD29;
+        Sun, 10 Nov 2019 18:51:10 +0800 (CST)
+Received: from localhost.localdomain (10.175.104.82) by
+ DGGEMS407-HUB.china.huawei.com (10.3.19.207) with Microsoft SMTP Server id
+ 14.3.439.0; Sun, 10 Nov 2019 18:51:03 +0800
+From:   Zheng Yongjun <zhengyongjun3@huawei.com>
+To:     <Jes.Sorensen@gmail.com>, <kvalo@codeaurora.org>,
+        <davem@davemloft.net>, <linux-wireless@vger.kernel.org>
+CC:     <linux-kernel@vger.kernel.org>, <zhengyongjun3@huawei.com>,
+        Hulk Robot <hulkci@huawei.com>
+Subject: [PATCH] rtl8xxxu: Remove set but not used variable 'rsr'
+Date:   Sun, 10 Nov 2019 18:49:55 +0800
+Message-ID: <20191110104955.131246-1-zhengyongjun3@huawei.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.104.82]
+X-CFilter-Loop: Reflected
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Ilan Peer <ilan.peer@intel.com>
+Fixes gcc '-Wunused-but-set-variable' warning:
 
-[ Upstream commit 6f3df8c1192c873a6ad9a76328920f6f85af90a8 ]
+drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c: In function rtl8xxxu_gen2_config_channel:
+drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c:1266:13: warning: variable rsr set but not used [-Wunused-but-set-variable]
 
-Support for setting keys for TKIP cipher suite was mistakenly removed
-for AP mode. Fix this.
+rsr is never used, so remove it.
 
-Fixes: 85aeb58cec1a ("iwlwifi: mvm: Enable security on new TX API")
-Signed-off-by: Ilan Peer <ilan.peer@intel.com>
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: Zheng Yongjun <zhengyongjun3@huawei.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/sta.c | 4 ----
- 1 file changed, 4 deletions(-)
+ drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/sta.c b/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
-index d31d84eebc5d0..d16e2ed4419fe 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
-@@ -3067,10 +3067,6 @@ static int __iwl_mvm_set_sta_key(struct iwl_mvm *mvm,
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+index c6c41fb962ff..2c1ca4bc4e56 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+@@ -1255,7 +1255,7 @@ void rtl8xxxu_gen1_config_channel(struct ieee80211_hw *hw)
+ void rtl8xxxu_gen2_config_channel(struct ieee80211_hw *hw)
+ {
+ 	struct rtl8xxxu_priv *priv = hw->priv;
+-	u32 val32, rsr;
++	u32 val32;
+ 	u8 val8, subchannel;
+ 	u16 rf_mode_bw;
+ 	bool ht = true;
+@@ -1264,7 +1264,6 @@ void rtl8xxxu_gen2_config_channel(struct ieee80211_hw *hw)
  
- 	switch (keyconf->cipher) {
- 	case WLAN_CIPHER_SUITE_TKIP:
--		if (vif->type == NL80211_IFTYPE_AP) {
--			ret = -EINVAL;
--			break;
--		}
- 		addr = iwl_mvm_get_mac_addr(mvm, vif, sta);
- 		/* get phase 1 key from mac80211 */
- 		ieee80211_get_key_rx_seq(keyconf, 0, &seq);
+ 	rf_mode_bw = rtl8xxxu_read16(priv, REG_WMAC_TRXPTCL_CTL);
+ 	rf_mode_bw &= ~WMAC_TRXPTCL_CTL_BW_MASK;
+-	rsr = rtl8xxxu_read32(priv, REG_RESPONSE_RATE_SET);
+ 	channel = hw->conf.chandef.chan->hw_value;
+ 
+ /* Hack */
 -- 
-2.20.1
+2.23.0
 
