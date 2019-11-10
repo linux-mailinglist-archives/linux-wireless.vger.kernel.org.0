@@ -2,39 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 46281F62B1
-	for <lists+linux-wireless@lfdr.de>; Sun, 10 Nov 2019 03:44:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DA8B9F6437
+	for <lists+linux-wireless@lfdr.de>; Sun, 10 Nov 2019 03:58:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728680AbfKJCov (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 9 Nov 2019 21:44:51 -0500
-Received: from mail.kernel.org ([198.145.29.99]:44740 "EHLO mail.kernel.org"
+        id S1727420AbfKJC6P (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 9 Nov 2019 21:58:15 -0500
+Received: from mail.kernel.org ([198.145.29.99]:47208 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728656AbfKJCos (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 9 Nov 2019 21:44:48 -0500
+        id S1729449AbfKJC4s (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 9 Nov 2019 21:56:48 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A7ACF215EA;
-        Sun, 10 Nov 2019 02:44:46 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id D1495224D5;
+        Sun, 10 Nov 2019 02:48:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1573353887;
-        bh=YUdWJefQqbJCfgysInUFfykhGjVrzLCnQMM6zBJYnkE=;
+        s=default; t=1573354094;
+        bh=+n7iVh86RQOyMDJvHXT6SEMYYRji/+S9KG4f4GoUtnU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Vxhm1GP9BfqhIBPvV1WvFlw0B4k5wW2RadfUv2SIIKmBmUCwKMQERhAqdbTpuI4k1
-         0xHgC3Ik8FKG/jkNBaWjJ6k9MG0lXXetLjz2m5XZY+Clmqylgld5A/6aKveu0lRLpK
-         w6GDzp7Qu+99AP2acQoZrZ4UILbWzYpBOokHikAA=
+        b=NRbsaftyHu5+cXCQwxZQlp1YdLrvCUJbvog8Jt3VX7fKIu11Xaae6uGxwBB27ER8P
+         K+N68k9ngCWfn4nbT6ldnKwBl2wupAZPoNwKG/fJfaHVCgW8mQlO75ZLK4ykrUX+r6
+         RiQkD8XGKgQWmnHMh3WTvew6iidphtY8YYdIFmso=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Erel Geron <erelx.geron@intel.com>,
+Cc:     Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
         Luca Coelho <luciano.coelho@intel.com>,
         Sasha Levin <sashal@kernel.org>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 161/191] iwlwifi: fix non_shared_ant for 22000 devices
-Date:   Sat,  9 Nov 2019 21:39:43 -0500
-Message-Id: <20191110024013.29782-161-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 088/109] iwlwifi: dbg: don't crash if the firmware crashes in the middle of a debug dump
+Date:   Sat,  9 Nov 2019 21:45:20 -0500
+Message-Id: <20191110024541.31567-88-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191110024013.29782-1-sashal@kernel.org>
-References: <20191110024013.29782-1-sashal@kernel.org>
+In-Reply-To: <20191110024541.31567-1-sashal@kernel.org>
+References: <20191110024541.31567-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -44,34 +44,56 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Erel Geron <erelx.geron@intel.com>
+From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 
-[ Upstream commit a40287727d9b737e183959fd31a4e0c55f312853 ]
+[ Upstream commit 79f25b10c9da3dbc953e47033d0494e51580ac3b ]
 
-The non-shared antenna was wrong for 22000 device series.
-Fix it to ANT_B for correct antenna preference by coex in MVM driver.
+We can dump data from the firmware either when it crashes,
+or when the firmware is alive.
+Not all the data is available if the firmware is running
+(like the Tx / Rx FIFOs which are available only when the
+firmware is halted), so we first check that the firmware
+is alive to compute the required size for the dump and then
+fill the buffer with the data.
 
-Fixes: e34d975e40ff ("iwlwifi: Add a000 HW family support")
-Signed-off-by: Erel Geron <erelx.geron@intel.com>
+When we allocate the buffer, we test the STATUS_FW_ERROR
+bit to check if the firmware is alive or not. This bit
+can be changed during the course of the dump since it is
+modified in the interrupt handler.
+
+We hit a case where we allocate the buffer while the
+firmware is sill working, and while we start to fill the
+buffer, the firmware crashes. Then we test STATUS_FW_ERROR
+again and decide to fill the buffer with data like the
+FIFOs even if no room was allocated for this data in the
+buffer. This means that we overflow the buffer that was
+allocated leading to memory corruption.
+
+To fix this, test the STATUS_FW_ERROR bit only once and
+rely on local variables to check if we should dump fifos
+or other firmware components.
+
+Fixes: 04fd2c28226f ("iwlwifi: mvm: add rxf and txf to dump data")
+Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/cfg/22000.c | 2 +-
+ drivers/net/wireless/intel/iwlwifi/fw/dbg.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/22000.c b/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
-index b4347806a59ed..a0de61aa0feff 100644
---- a/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
-+++ b/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
-@@ -143,7 +143,7 @@ static const struct iwl_ht_params iwl_22000_ht_params = {
- 	.ucode_api_min = IWL_22000_UCODE_API_MIN,			\
- 	.led_mode = IWL_LED_RF_STATE,					\
- 	.nvm_hw_section_num = NVM_HW_SECTION_NUM_FAMILY_22000,		\
--	.non_shared_ant = ANT_A,					\
-+	.non_shared_ant = ANT_B,					\
- 	.dccm_offset = IWL_22000_DCCM_OFFSET,				\
- 	.dccm_len = IWL_22000_DCCM_LEN,					\
- 	.dccm2_offset = IWL_22000_DCCM2_OFFSET,				\
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
+index 8390104172410..414dc34f3f3bd 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
+@@ -775,7 +775,7 @@ void iwl_fw_error_dump(struct iwl_fw_runtime *fwrt)
+ 	dump_data = iwl_fw_error_next_data(dump_data);
+ 
+ 	/* We only dump the FIFOs if the FW is in error state */
+-	if (test_bit(STATUS_FW_ERROR, &fwrt->trans->status)) {
++	if (fifo_data_len) {
+ 		iwl_fw_dump_fifos(fwrt, &dump_data);
+ 		if (radio_len)
+ 			iwl_read_radio_regs(fwrt, &dump_data);
 -- 
 2.20.1
 
