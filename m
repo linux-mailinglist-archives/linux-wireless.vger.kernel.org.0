@@ -2,86 +2,95 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 05A65F7339
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 Nov 2019 12:38:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E5E2BF73C8
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 Nov 2019 13:23:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726946AbfKKLiy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 11 Nov 2019 06:38:54 -0500
-Received: from us-smtp-2.mimecast.com ([205.139.110.61]:36177 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726843AbfKKLix (ORCPT
+        id S1726832AbfKKMXw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 11 Nov 2019 07:23:52 -0500
+Received: from smtp.codeaurora.org ([198.145.29.96]:47300 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726811AbfKKMXw (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 11 Nov 2019 06:38:53 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1573472332;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=H+Di3Kl/jO6R1/yj5/OK39qxfLJcA5U247p2Yowc9hI=;
-        b=Muh5Q/WhXDuRTsTsaJasg4WFgBw1RBV3Tv59K3UZN0469Mm18SoDJQpF5o6OtkZbHfq6J6
-        e3NJNZv/9arsB6NMWcgv1AlbOLdxVl1o8mALhsKOqxe2LSZfqrJXuoqnCZxy/fs3L7p7l0
-        QvHPAwl/HZS+UgEfAo+K2r1JcQmekJM=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-322-8pWTqUvPOjWFJDZgpVej_A-1; Mon, 11 Nov 2019 06:38:51 -0500
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        Mon, 11 Nov 2019 07:23:52 -0500
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id BD63760611; Mon, 11 Nov 2019 12:23:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1573475031;
+        bh=+U/zNmU7ZFRJPfXrBaeI836hI1qD6Bufi05gKUoZShw=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=kdw2nlnQbniq1SVWU7Ci3V4I+7aTSrs1tp2VO8QLPgK4VXnmeS/xPnq92jXesRUE9
+         2NyjD7tbl1Nz09U8i3c7BK3c5B8cBjz35X1zzSwrU19VwZlpSFoovxzaxWm77C1Lq3
+         wEF7vbrRrsKQzbI23PagtwSY9jn95MH21RAwIVg0=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from x230.qca.qualcomm.com (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 9D646800D49;
-        Mon, 11 Nov 2019 11:38:50 +0000 (UTC)
-Received: from shalem.localdomain.com (ovpn-117-121.ams2.redhat.com [10.36.117.121])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id AC82119C4F;
-        Mon, 11 Nov 2019 11:38:49 +0000 (UTC)
-From:   Hans de Goede <hdegoede@redhat.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Hans de Goede <hdegoede@redhat.com>,
-        linux-wireless@vger.kernel.org, devel@driverdev.osuosl.org
-Subject: [PATCH 2/2] staging: rtl8723bs: Drop ACPI device ids
-Date:   Mon, 11 Nov 2019 12:38:46 +0100
-Message-Id: <20191111113846.24940-2-hdegoede@redhat.com>
-In-Reply-To: <20191111113846.24940-1-hdegoede@redhat.com>
-References: <20191111113846.24940-1-hdegoede@redhat.com>
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id B8C196055C;
+        Mon, 11 Nov 2019 12:23:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1573475030;
+        bh=+U/zNmU7ZFRJPfXrBaeI836hI1qD6Bufi05gKUoZShw=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=NKSm+lKOZf34cY+2mSplW94+1JqETyLzgba+2mf6fbbu+kjt5ihz9obGkIMatlWaX
+         BUM1+Z9onLrwCcyaoNH/I0iKG80ZZNzhldG2EW8EVgkaLKJjGXJqYR2+Xq3h4gZEky
+         sxvvgdG6DWts77utlT2j+3g/qrJolqqKQwYK7QBU=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org B8C196055C
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Wen Gong <wgong@codeaurora.org>
+Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH v6 3/3] ath10k: add workqueue for RX path of sdio
+References: <1569402639-31720-1-git-send-email-wgong@codeaurora.org>
+        <1569402639-31720-4-git-send-email-wgong@codeaurora.org>
+        <8736f92sfx.fsf@kamboji.qca.qualcomm.com>
+        <3f3641ad49a2664d346558760e38b404@codeaurora.org>
+        <70f8f208f631a2a2c7337f45b873a16e@codeaurora.org>
+Date:   Mon, 11 Nov 2019 14:23:45 +0200
+In-Reply-To: <70f8f208f631a2a2c7337f45b873a16e@codeaurora.org> (Wen Gong's
+        message of "Mon, 11 Nov 2019 18:47:32 +0800")
+Message-ID: <87r22ewqi6.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
-X-MC-Unique: 8pWTqUvPOjWFJDZgpVej_A-1
-X-Mimecast-Spam-Score: 0
-Content-Type: text/plain; charset=WINDOWS-1252
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The driver only binds by SDIO device-ids, all the ACPI device-id does
-is causing the driver to load unnecessarily on devices where the DSDT
-contains a bogus OBDA8723 device.
+Wen Gong <wgong@codeaurora.org> writes:
 
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
----
- drivers/staging/rtl8723bs/os_dep/sdio_intf.c | 6 ------
- 1 file changed, 6 deletions(-)
+> On 2019-11-01 15:42, Wen Gong wrote:
+>> On 2019-10-31 17:08, Kalle Valo wrote:
+>> =E3=80=81> I just realised that this is RX path so we should use
+>> ATH10K_SKB_RXCB()
+>>> instead. I made the change below to this commit in pending branch:
+>>>
+>> I will test with the new patch together with other performance patches.
+> Hi Kalle, I have tested with the patches of pending branch, it is
+> success.
+> result is same with the public review which I tested before.
+>
+> the patches I tested on pending branch:
+>
+> ath10k: enable alt data of TX path for sdio
+> ath10k: add htt TX bundle for sdio
+> ath10k: disable TX complete indication of htt for sdio
+> ath10k: enable napi on RX path for sdio
+> ath10k: sdio: remove struct ath10k_sdio_rx_data::status
+> ath10k: sdio: cosmetic cleanup
+> ath10k: add workqueue for RX path of sdio
+> ath10k: change max RX bundle size from 8 to 32 for sdio
+> ath10k: enable RX bundle receive for sdio
 
-diff --git a/drivers/staging/rtl8723bs/os_dep/sdio_intf.c b/drivers/staging=
-/rtl8723bs/os_dep/sdio_intf.c
-index c48d2df97285..859f4a0afb95 100644
---- a/drivers/staging/rtl8723bs/os_dep/sdio_intf.c
-+++ b/drivers/staging/rtl8723bs/os_dep/sdio_intf.c
-@@ -24,13 +24,7 @@ static const struct sdio_device_id sdio_ids[] =3D
- =09{ SDIO_DEVICE(0x024c, 0xb723), },
- =09{ /* end: all zeroes */=09=09=09=09},
- };
--static const struct acpi_device_id acpi_ids[] =3D {
--=09{"OBDA8723", 0x0000},
--=09{}
--};
--
- MODULE_DEVICE_TABLE(sdio, sdio_ids);
--MODULE_DEVICE_TABLE(acpi, acpi_ids);
-=20
- static int rtw_drv_init(struct sdio_func *func, const struct sdio_device_i=
-d *id);
- static void rtw_dev_remove(struct sdio_func *func);
+Very good, thanks for testing.
+
 --=20
-2.23.0
-
+Kalle Valo
