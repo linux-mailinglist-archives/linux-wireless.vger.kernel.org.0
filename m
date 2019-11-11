@@ -2,83 +2,90 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F4AFF6F44
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 Nov 2019 08:57:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 65B5BF6FB7
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 Nov 2019 09:30:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726811AbfKKH5K (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 11 Nov 2019 02:57:10 -0500
-Received: from smtp.codeaurora.org ([198.145.29.96]:35014 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726808AbfKKH5K (ORCPT
+        id S1726793AbfKKIau (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 11 Nov 2019 03:30:50 -0500
+Received: from mail-wr1-f65.google.com ([209.85.221.65]:40588 "EHLO
+        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726768AbfKKIau (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 11 Nov 2019 02:57:10 -0500
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id D06B4608CC; Mon, 11 Nov 2019 07:57:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1573459029;
-        bh=S7KBTQ03krYSdg5c3dcqLbjEuC0Jp7OQePSlRrVO7p4=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=HYFWrgGmClU1T9ySkNYxE0bE3Rx/rZSd86HBP3xCFJ1Lra4vd0rYwdc+eWda3c+aL
-         jY+Qh9i0WKSqgnHPHsOoSd5gBWvQspmLrSEK5GNBtLOHUpMrjpfTplEBlWyTUAjUjK
-         ZE3L07JrWh1iU7VFZDiEMQAkRdX2Xr7Ex88dX70o=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED autolearn=no autolearn_force=no version=3.4.0
-Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by smtp.codeaurora.org (Postfix) with ESMTP id 634D66087D;
-        Mon, 11 Nov 2019 07:57:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1573459029;
-        bh=S7KBTQ03krYSdg5c3dcqLbjEuC0Jp7OQePSlRrVO7p4=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=HYFWrgGmClU1T9ySkNYxE0bE3Rx/rZSd86HBP3xCFJ1Lra4vd0rYwdc+eWda3c+aL
-         jY+Qh9i0WKSqgnHPHsOoSd5gBWvQspmLrSEK5GNBtLOHUpMrjpfTplEBlWyTUAjUjK
-         ZE3L07JrWh1iU7VFZDiEMQAkRdX2Xr7Ex88dX70o=
+        Mon, 11 Nov 2019 03:30:50 -0500
+Received: by mail-wr1-f65.google.com with SMTP id i10so13570769wrs.7
+        for <linux-wireless@vger.kernel.org>; Mon, 11 Nov 2019 00:30:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=vfYbEgAY+sR3WMegjSQALh1Z+ZR76lirPNOK7ye15WI=;
+        b=gjzRX6FElRGF2YiXqGnW+70KStai+MSuuEbnT/GlxVjUBZuTVA9LKPg6tWbrGNg651
+         dWWXPy9d8C43yvFZfkXGzxaa/hbVAYfI4j8c1VbvjlErhs1J8NUE9SKGGEB4g9E+va2G
+         jPaJPzsFcO/Kmy5YR60JYR5qwqGawaCxj/+VtGy+G4uWyrvdxL/8AleBLVuZpwAdVTMx
+         LYA+sK+bNaoxVmO5inDnR7pf8J8vZRWVZMI/8v32X/fIFkADtu7Ct+7b7zNBDkOODb0Q
+         php0LQdre0UTPokV0wsHkCMTQRmE9l2jcY5Zaq6gz1W9ebZ2grrPqzPbGAn7xKIj/dj0
+         J2CA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=vfYbEgAY+sR3WMegjSQALh1Z+ZR76lirPNOK7ye15WI=;
+        b=C506BxWLWso9pLp30fmcDxGsH0QK8CiV5ChZP+SPqUgMHFSEsXbJSYj/QSb1+WeGf3
+         kOtCO7VInUvE5MthQ/7kao7vt92utQUbf2l3sZzHCEzsDM/SeU2vTQb7dg4803iZHX+W
+         Ic4i0oWxR24NAM93kBxi855RFUw70+PqGm4yn/wvhocUO3H4mBZQUOE/r9IvPrHPqUKg
+         PnXSBN9iCwdWWADx8rZChGzKyGRldkbcGFmosoI2dC97eJ0VExinKkJZMTiG4H/GfIQQ
+         unjbcFZ7euMIBa+ebj7740ni0ZfNSxuA7nVSbenKyNq0o+MohsSHg4IFauEZpzE3JOIM
+         abeA==
+X-Gm-Message-State: APjAAAWxqOCRKADgZ0dXD1kEXuHey4FtgNcC4oCW7WIYhd+PYCIiMJ9k
+        Xz37fBKDjsuLA2Tfo2AuERDfHjtz
+X-Google-Smtp-Source: APXvYqz9QuOoHzXr9dxaAs1TYOGl6ilw72R4moECg96uYMmSQezS69Nck4LCtXSgFstLqvbSLuwoGg==
+X-Received: by 2002:adf:e5c5:: with SMTP id a5mr20580552wrn.103.1573461047691;
+        Mon, 11 Nov 2019 00:30:47 -0800 (PST)
+Received: from localhost.localdomain ([193.27.220.66])
+        by smtp.gmail.com with ESMTPSA id r2sm4146713wrp.64.2019.11.11.00.30.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 11 Nov 2019 00:30:46 -0800 (PST)
+From:   Eduardo Abinader <eduardoabinader@gmail.com>
+To:     linux-wireless@vger.kernel.org
+Cc:     Eduardo Abinader <eduardoabinader@gmail.com>, kvalo@codeaurora.org,
+        ath10k@lists.infradead.org
+Subject: [PATCH] ath10k:mac: disassoc dbg msg after return check
+Date:   Mon, 11 Nov 2019 09:30:40 +0100
+Message-Id: <20191111083040.16824-1-eduardoabinader@gmail.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Mon, 11 Nov 2019 13:27:09 +0530
-From:   Sathishkumar Muruganandam <murugana@codeaurora.org>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org, ath11k@lists.infradead.org
-Subject: Re: [EXT] Re: [PATCH v2 0/2] add Wide Band Scan support
-In-Reply-To: <867302d58d3183ce7e2c7afa846027a787579b87.camel@sipsolutions.net>
-References: <1572869374-9635-1-git-send-email-murugana@codeaurora.org>
- <53d45563803b3f96be0d53731408cc3af028c510.camel@sipsolutions.net>
- <00d301d593c2$bd37d8f0$37a78ad0$@codeaurora.org>
- <867302d58d3183ce7e2c7afa846027a787579b87.camel@sipsolutions.net>
-Message-ID: <6ea305b2ac09c340181623a23cf4180b@codeaurora.org>
-X-Sender: murugana@codeaurora.org
-User-Agent: Roundcube Webmail/1.2.5
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2019-11-05 15:52, Johannes Berg wrote:
-> On Tue, 2019-11-05 at 15:51 +0530, Sathishkumar Muruganandam wrote:
->> > Neither of these are scan use cases (at least not that are covered by
->> > nl80211 scan APIs), so that doesn't make sense.
->> >
->> 
->> Actually we had extended the existing 'iw scan' command to do Wide
->> Band Scan using nl80211 scan APIs.
-> 
-> Yes ... but ... that doesn't address my question.
-> 
-> How is this related to scanning? It sounds to me like you're just
-> (ab)using scan as a somewhat convenient "do some channel hopping" API
-> ...
-> 
+Signed-off-by: Eduardo Abinader <eduardoabinader@gmail.com>
+---
+ drivers/net/wireless/ath/ath10k/mac.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-Whether this can be used under "iw offchannel" with 
-NL80211_CMD_REMAIN_ON_CHANNEL?
-
-Please provide your comments.
-
+diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
+index 5e3450cfb07b..038d5c27bed7 100644
+--- a/drivers/net/wireless/ath/ath10k/mac.c
++++ b/drivers/net/wireless/ath/ath10k/mac.c
+@@ -6786,13 +6786,13 @@ static int ath10k_sta_state(struct ieee80211_hw *hw,
+ 		/*
+ 		 * Disassociation.
+ 		 */
+-		ath10k_dbg(ar, ATH10K_DBG_MAC, "mac sta %pM disassociated\n",
+-			   sta->addr);
+-
+ 		ret = ath10k_station_disassoc(ar, vif, sta);
+ 		if (ret)
+ 			ath10k_warn(ar, "failed to disassociate station: %pM vdev %i: %i\n",
+ 				    sta->addr, arvif->vdev_id, ret);
++		else
++			ath10k_dbg(ar, ATH10K_DBG_MAC, "mac sta %pM disassociated\n",
++			   sta->addr);
+ 	}
+ exit:
+ 	mutex_unlock(&ar->conf_mutex);
 -- 
-Thanks,
-Sathishkumar
+2.20.1
+
