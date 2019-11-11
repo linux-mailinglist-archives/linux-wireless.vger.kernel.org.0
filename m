@@ -2,95 +2,73 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E5E2BF73C8
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 Nov 2019 13:23:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6733FF782E
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 Nov 2019 16:58:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726832AbfKKMXw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 11 Nov 2019 07:23:52 -0500
-Received: from smtp.codeaurora.org ([198.145.29.96]:47300 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726811AbfKKMXw (ORCPT
+        id S1726897AbfKKP6P (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 11 Nov 2019 10:58:15 -0500
+Received: from mail-wr1-f65.google.com ([209.85.221.65]:41078 "EHLO
+        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726857AbfKKP6O (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 11 Nov 2019 07:23:52 -0500
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id BD63760611; Mon, 11 Nov 2019 12:23:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1573475031;
-        bh=+U/zNmU7ZFRJPfXrBaeI836hI1qD6Bufi05gKUoZShw=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=kdw2nlnQbniq1SVWU7Ci3V4I+7aTSrs1tp2VO8QLPgK4VXnmeS/xPnq92jXesRUE9
-         2NyjD7tbl1Nz09U8i3c7BK3c5B8cBjz35X1zzSwrU19VwZlpSFoovxzaxWm77C1Lq3
-         wEF7vbrRrsKQzbI23PagtwSY9jn95MH21RAwIVg0=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from x230.qca.qualcomm.com (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id B8C196055C;
-        Mon, 11 Nov 2019 12:23:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1573475030;
-        bh=+U/zNmU7ZFRJPfXrBaeI836hI1qD6Bufi05gKUoZShw=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=NKSm+lKOZf34cY+2mSplW94+1JqETyLzgba+2mf6fbbu+kjt5ihz9obGkIMatlWaX
-         BUM1+Z9onLrwCcyaoNH/I0iKG80ZZNzhldG2EW8EVgkaLKJjGXJqYR2+Xq3h4gZEky
-         sxvvgdG6DWts77utlT2j+3g/qrJolqqKQwYK7QBU=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org B8C196055C
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Wen Gong <wgong@codeaurora.org>
-Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH v6 3/3] ath10k: add workqueue for RX path of sdio
-References: <1569402639-31720-1-git-send-email-wgong@codeaurora.org>
-        <1569402639-31720-4-git-send-email-wgong@codeaurora.org>
-        <8736f92sfx.fsf@kamboji.qca.qualcomm.com>
-        <3f3641ad49a2664d346558760e38b404@codeaurora.org>
-        <70f8f208f631a2a2c7337f45b873a16e@codeaurora.org>
-Date:   Mon, 11 Nov 2019 14:23:45 +0200
-In-Reply-To: <70f8f208f631a2a2c7337f45b873a16e@codeaurora.org> (Wen Gong's
-        message of "Mon, 11 Nov 2019 18:47:32 +0800")
-Message-ID: <87r22ewqi6.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        Mon, 11 Nov 2019 10:58:14 -0500
+Received: by mail-wr1-f65.google.com with SMTP id p4so15193893wrm.8
+        for <linux-wireless@vger.kernel.org>; Mon, 11 Nov 2019 07:58:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=netronome-com.20150623.gappssmtp.com; s=20150623;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=nL1rheNUN9lEuzzFdb2XL3FRoWR7EojL9bAG+X/nUzQ=;
+        b=VmT5fzoAyecLK4EH6hOG9xRKy7oVzN+kb9xbXeMDufKYxOLufv6VieVcQ0keJSzU+a
+         gXjOM4j0gdbw1tkbagN7pYhF5iz6tLJYTk+29fOiUhV4FyFRvNkROCP5JkeRwTKxebDD
+         6+6gR0NkMT6xRpa0NWw0QUwmaVvzK3SOJVJJ4gwDdCYiZormPY0Lnfrc5rHAJu+ffKEr
+         JdzxxG5HVoS87uM8Z5KHAnQyYQZgf3c8uH7ZTF7nOwbiV/Vyj7RsZt1Jli3sW+Qb7tID
+         cDY/WOzgWC/86z755064fZXYlaXHSWRRiNr1DC3T2TN1toGhk8XpiPT1GrAhDgbS+0Uh
+         dncA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=nL1rheNUN9lEuzzFdb2XL3FRoWR7EojL9bAG+X/nUzQ=;
+        b=Adjsipxi//74zp0BU9aDXJ4bY3KNXDhrx4Iu/hqH+3Vpio2o1LodmwF+W+DIQBM9Ul
+         JA8+ty9v29pDSAURpLrZ/vlBvl10Q9AEgHAf2DIbbDQ4H5DDa+t93F0xPP7xEsGGyzF6
+         FohGS36PF665Sv1kLhTRmf2RboH8DDo7wYzsfP4ADAWXgI2Fhipe6oUS5tWQSs8LaXY2
+         M4fbailU/STcFHer281Edcxp3euUe4+Pr9nz85O2YwioQaDrCq2tUUeYvfZxHkju4pah
+         VTTHUGSaF6uYAM5HSWRkJUAh24UtpaZqIdWjygdVk2xY3K7nv9xK3MD8+w41F8oNFaRE
+         oCcQ==
+X-Gm-Message-State: APjAAAUZAiI+VH7DxL7y1RVJ2cFhprYi71yGXw60i16R4D+Eo6CbtVdZ
+        RFV6OUoMMHfQQDK0vWpPVBNy/g==
+X-Google-Smtp-Source: APXvYqz23q0Ee6ynwb1+HB2nx2vWKkBUthxwxwYMRVQO2/o/w1xHoSBPCzqRWrRnGenqJWgZ7d4qkA==
+X-Received: by 2002:a05:6000:104c:: with SMTP id c12mr14209726wrx.212.1573487891043;
+        Mon, 11 Nov 2019 07:58:11 -0800 (PST)
+Received: from netronome.com (fred-musen.rivierenbuurt.horms.nl. [2001:470:7eb3:404:a2a4:c5ff:fe4c:9ce9])
+        by smtp.gmail.com with ESMTPSA id 36sm21256930wrj.42.2019.11.11.07.58.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 11 Nov 2019 07:58:10 -0800 (PST)
+Date:   Mon, 11 Nov 2019 16:58:09 +0100
+From:   Simon Horman <simon.horman@netronome.com>
+To:     YueHaibing <yuehaibing@huawei.com>
+Cc:     Yan-Hsuan Chuang <yhchuang@realtek.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] rtw88: remove duplicated include from ps.c
+Message-ID: <20191111155808.GB29052@netronome.com>
+References: <20191111033427.122443-1-yuehaibing@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191111033427.122443-1-yuehaibing@huawei.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Wen Gong <wgong@codeaurora.org> writes:
+On Mon, Nov 11, 2019 at 03:34:27AM +0000, YueHaibing wrote:
+> Remove duplicated include.
+> 
+> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 
-> On 2019-11-01 15:42, Wen Gong wrote:
->> On 2019-10-31 17:08, Kalle Valo wrote:
->> =E3=80=81> I just realised that this is RX path so we should use
->> ATH10K_SKB_RXCB()
->>> instead. I made the change below to this commit in pending branch:
->>>
->> I will test with the new patch together with other performance patches.
-> Hi Kalle, I have tested with the patches of pending branch, it is
-> success.
-> result is same with the public review which I tested before.
->
-> the patches I tested on pending branch:
->
-> ath10k: enable alt data of TX path for sdio
-> ath10k: add htt TX bundle for sdio
-> ath10k: disable TX complete indication of htt for sdio
-> ath10k: enable napi on RX path for sdio
-> ath10k: sdio: remove struct ath10k_sdio_rx_data::status
-> ath10k: sdio: cosmetic cleanup
-> ath10k: add workqueue for RX path of sdio
-> ath10k: change max RX bundle size from 8 to 32 for sdio
-> ath10k: enable RX bundle receive for sdio
+Reviewed-by: Simon Horman <simon.horman@netronome.com>
 
-Very good, thanks for testing.
-
---=20
-Kalle Valo
