@@ -2,88 +2,82 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3CE0BF6FEB
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 Nov 2019 09:50:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C391F7274
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 Nov 2019 11:47:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726811AbfKKIuq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 11 Nov 2019 03:50:46 -0500
-Received: from smtp.codeaurora.org ([198.145.29.96]:56894 "EHLO
+        id S1726843AbfKKKrd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 11 Nov 2019 05:47:33 -0500
+Received: from smtp.codeaurora.org ([198.145.29.96]:59380 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726770AbfKKIup (ORCPT
+        with ESMTP id S1726823AbfKKKrd (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 11 Nov 2019 03:50:45 -0500
+        Mon, 11 Nov 2019 05:47:33 -0500
 Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 647A260A0B; Mon, 11 Nov 2019 08:50:45 +0000 (UTC)
+        id E133D6090E; Mon, 11 Nov 2019 10:47:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1573462245;
-        bh=GvOlQX+57Rq7/CbOJpGdatAOu9E/Itm4nXOE7A7fMOc=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=ftjqvakIJ5LUqtcbge0wBalpTQyUiXyQSk9ZPfG5XVvzokDYWrqAKzzHaKTOk595q
-         EUTXCNBCNEj9baX8/rQ9B7yRBcUV2n5WiDf8AjwDkWeRQnTzU8+21uTCHEwXb/wdlp
-         pLrMbi9aeQ8Sz2UcRRh7gaztUzPJR1Pdc6SExJUk=
+        s=default; t=1573469252;
+        bh=b/nwPztZBKNlDkwNmJw1aM7FU3Q5/+p+Y9WObfBkYBQ=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=JBxEiM6VY2Z0rsO1wJ7pLHRWnpPccMFSHCCLS8bhOj9id4TZj5R/2e57LYJh20yjI
+         X9/kt+O/+K3f/F6m4WGe5wkLrju95YnasiryxZL0yeXvyoVv6IACtX5KW+m+ZnIXK9
+         gt02a8bWC6Yp5BKX+YMljyKvpxpXHLaNDxSVoY40=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
 X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id EA89460117;
-        Mon, 11 Nov 2019 08:50:43 +0000 (UTC)
+        DKIM_INVALID,DKIM_SIGNED autolearn=no autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by smtp.codeaurora.org (Postfix) with ESMTP id 8ACCA6083E;
+        Mon, 11 Nov 2019 10:47:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1573462244;
-        bh=GvOlQX+57Rq7/CbOJpGdatAOu9E/Itm4nXOE7A7fMOc=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=jZBmFJshHVlV95Hh4FvUF1Zf1mCGE5NcW5JwKtk3zDo9FukBy0qV/Tsyi04ETOW6b
-         Dy4tTJZ1E8himjpUNfRTNKvR8Nzhxzqw9+KeaFQvK4sbH0a0zAVGCZjuSnRco3plN/
-         Wesb7xysSWkqROuzY4qmd8zvS6GzacatxKZH25fw=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org EA89460117
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Eduardo Abinader <eduardoabinader@gmail.com>
-Cc:     linux-wireless@vger.kernel.org, ath10k@lists.infradead.org
-Subject: Re: [PATCH] ath10k:mac: disassoc dbg msg after return check
-References: <20191111083040.16824-1-eduardoabinader@gmail.com>
-Date:   Mon, 11 Nov 2019 10:50:41 +0200
-In-Reply-To: <20191111083040.16824-1-eduardoabinader@gmail.com> (Eduardo
-        Abinader's message of "Mon, 11 Nov 2019 09:30:40 +0100")
-Message-ID: <87lfsmssny.fsf@kamboji.qca.qualcomm.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        s=default; t=1573469252;
+        bh=b/nwPztZBKNlDkwNmJw1aM7FU3Q5/+p+Y9WObfBkYBQ=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=JBxEiM6VY2Z0rsO1wJ7pLHRWnpPccMFSHCCLS8bhOj9id4TZj5R/2e57LYJh20yjI
+         X9/kt+O/+K3f/F6m4WGe5wkLrju95YnasiryxZL0yeXvyoVv6IACtX5KW+m+ZnIXK9
+         gt02a8bWC6Yp5BKX+YMljyKvpxpXHLaNDxSVoY40=
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 8bit
+Date:   Mon, 11 Nov 2019 18:47:32 +0800
+From:   Wen Gong <wgong@codeaurora.org>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH v6 3/3] ath10k: add workqueue for RX path of sdio
+In-Reply-To: <3f3641ad49a2664d346558760e38b404@codeaurora.org>
+References: <1569402639-31720-1-git-send-email-wgong@codeaurora.org>
+ <1569402639-31720-4-git-send-email-wgong@codeaurora.org>
+ <8736f92sfx.fsf@kamboji.qca.qualcomm.com>
+ <3f3641ad49a2664d346558760e38b404@codeaurora.org>
+Message-ID: <70f8f208f631a2a2c7337f45b873a16e@codeaurora.org>
+X-Sender: wgong@codeaurora.org
+User-Agent: Roundcube Webmail/1.2.5
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Eduardo Abinader <eduardoabinader@gmail.com> writes:
+On 2019-11-01 15:42, Wen Gong wrote:
+> On 2019-10-31 17:08, Kalle Valo wrote:
+> 、> I just realised that this is RX path so we should use 
+> ATH10K_SKB_RXCB()
+>> instead. I made the change below to this commit in pending branch:
+>> 
+> I will test with the new patch together with other performance patches.
+Hi Kalle, I have tested with the patches of pending branch, it is 
+success.
+result is same with the public review which I tested before.
 
-> Signed-off-by: Eduardo Abinader <eduardoabinader@gmail.com>
+the patches I tested on pending branch:
 
-No empty commit logs, please.
+ath10k: enable alt data of TX path for sdio
+ath10k: add htt TX bundle for sdio
+ath10k: disable TX complete indication of htt for sdio
+ath10k: enable napi on RX path for sdio
+ath10k: sdio: remove struct ath10k_sdio_rx_data::status
+ath10k: sdio: cosmetic cleanup
+ath10k: add workqueue for RX path of sdio
+ath10k: change max RX bundle size from 8 to 32 for sdio
+ath10k: enable RX bundle receive for sdio
 
-> --- a/drivers/net/wireless/ath/ath10k/mac.c
-> +++ b/drivers/net/wireless/ath/ath10k/mac.c
-> @@ -6786,13 +6786,13 @@ static int ath10k_sta_state(struct ieee80211_hw *hw,
->  		/*
->  		 * Disassociation.
->  		 */
-> -		ath10k_dbg(ar, ATH10K_DBG_MAC, "mac sta %pM disassociated\n",
-> -			   sta->addr);
-> -
->  		ret = ath10k_station_disassoc(ar, vif, sta);
->  		if (ret)
->  			ath10k_warn(ar, "failed to disassociate station: %pM vdev %i: %i\n",
->  				    sta->addr, arvif->vdev_id, ret);
-> +		else
-> +			ath10k_dbg(ar, ATH10K_DBG_MAC, "mac sta %pM disassociated\n",
-> +			   sta->addr);
-
-I don't understand, how is this better?
-
--- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
