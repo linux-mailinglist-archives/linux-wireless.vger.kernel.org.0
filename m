@@ -2,60 +2,78 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A9D41F6D5A
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 Nov 2019 04:35:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 47B84F6D8B
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 Nov 2019 05:25:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726877AbfKKDfl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 10 Nov 2019 22:35:41 -0500
-Received: from szxga04-in.huawei.com ([45.249.212.190]:6183 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726764AbfKKDfk (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 10 Nov 2019 22:35:40 -0500
-Received: from DGGEMS414-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id EBA2BD9CB650CF18F603;
-        Mon, 11 Nov 2019 11:35:37 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS414-HUB.china.huawei.com (10.3.19.214) with Microsoft SMTP Server id
- 14.3.439.0; Mon, 11 Nov 2019 11:35:28 +0800
-From:   YueHaibing <yuehaibing@huawei.com>
-To:     Yan-Hsuan Chuang <yhchuang@realtek.com>,
-        Kalle Valo <kvalo@codeaurora.org>
-CC:     YueHaibing <yuehaibing@huawei.com>,
-        <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
-Subject: [PATCH] rtw88: remove duplicated include from ps.c
-Date:   Mon, 11 Nov 2019 03:34:27 +0000
-Message-ID: <20191111033427.122443-1-yuehaibing@huawei.com>
-X-Mailer: git-send-email 2.20.1
+        id S1726793AbfKKEZP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 10 Nov 2019 23:25:15 -0500
+Received: from smtp.codeaurora.org ([198.145.29.96]:36118 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726754AbfKKEZP (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 10 Nov 2019 23:25:15 -0500
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 9FD6460AD9; Mon, 11 Nov 2019 04:25:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1573446314;
+        bh=MYBm030xYLHdaohaJ+WmfgpEIwca6uZOPoCaZqvBAHk=;
+        h=From:To:Cc:Subject:Date:From;
+        b=dtJf4f1wmTWIOYiN/Vk52fGByFwFA8VBCikk0bjejGM/p3kHGgyFE9v8N95TeRs+J
+         kjLTV80N+h1OsFbc3Atv4LnUw+PR8gve6PhPYL2xlkyECzUbImO4ibRRVNJWscpsVw
+         i4Wh/QaTn+hHbvBfdHZg7NCKV+d6MBcR7ZDVc9FI=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from govinds-linux.qualcomm.com (blr-c-bdr-fw-01_globalnat_allzones-outside.qualcomm.com [103.229.19.19])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: govinds@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id AC1A66083E;
+        Mon, 11 Nov 2019 04:25:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1573446314;
+        bh=MYBm030xYLHdaohaJ+WmfgpEIwca6uZOPoCaZqvBAHk=;
+        h=From:To:Cc:Subject:Date:From;
+        b=dtJf4f1wmTWIOYiN/Vk52fGByFwFA8VBCikk0bjejGM/p3kHGgyFE9v8N95TeRs+J
+         kjLTV80N+h1OsFbc3Atv4LnUw+PR8gve6PhPYL2xlkyECzUbImO4ibRRVNJWscpsVw
+         i4Wh/QaTn+hHbvBfdHZg7NCKV+d6MBcR7ZDVc9FI=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org AC1A66083E
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=govinds@codeaurora.org
+From:   Govind Singh <govinds@codeaurora.org>
+To:     ath10k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org, devicetree@vger.kernel.org,
+        Govind Singh <govinds@codeaurora.org>
+Subject: [PATCH v2 0/2] Don't call SCM interface for statically mapped msa region
+Date:   Mon, 11 Nov 2019 09:55:06 +0530
+Message-Id: <20191111042508.12628-1-govinds@codeaurora.org>
+X-Mailer: git-send-email 2.22.0
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Remove duplicated include.
+For some targets ex: SC7180/QCS404, SCM permissions for MSA region is
+statically configured in TrustZone fw. Add SCM call disable option
+for such targets to avoid duplicate permissions.
 
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
----
- drivers/net/wireless/realtek/rtw88/ps.c | 1 -
- 1 file changed, 1 deletion(-)
+Change since v1:
+    Added devicetree list for review.
 
-diff --git a/drivers/net/wireless/realtek/rtw88/ps.c b/drivers/net/wireless/realtek/rtw88/ps.c
-index 820e0a3a141c..2226e3e7d7f8 100644
---- a/drivers/net/wireless/realtek/rtw88/ps.c
-+++ b/drivers/net/wireless/realtek/rtw88/ps.c
-@@ -9,7 +9,6 @@
- #include "mac.h"
- #include "coex.h"
- #include "debug.h"
--#include "reg.h"
- 
- static int rtw_ips_pwr_up(struct rtw_dev *rtwdev)
- {
+Govind Singh (2):
+  dt: bindings: add dt entry flag to skip SCM call for msa region
+  ath10k: Don't call SCM interface for statically mapped msa region
 
+ .../devicetree/bindings/net/wireless/qcom,ath10k.txt     | 4 ++++
+ drivers/net/wireless/ath/ath10k/qmi.c                    | 9 +++++++++
+ drivers/net/wireless/ath/ath10k/qmi.h                    | 1 +
+ 3 files changed, 14 insertions(+)
 
+-- 
+2.22.0
 
