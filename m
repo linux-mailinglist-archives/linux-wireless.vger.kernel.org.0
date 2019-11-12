@@ -2,133 +2,107 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C1125F8FBC
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 Nov 2019 13:36:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 378E3F8FC3
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 Nov 2019 13:40:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726212AbfKLMgW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 12 Nov 2019 07:36:22 -0500
-Received: from fd.dlink.ru ([178.170.168.18]:51284 "EHLO fd.dlink.ru"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725847AbfKLMgW (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 12 Nov 2019 07:36:22 -0500
-X-Greylist: delayed 375 seconds by postgrey-1.27 at vger.kernel.org; Tue, 12 Nov 2019 07:36:20 EST
-Received: by fd.dlink.ru (Postfix, from userid 5000)
-        id E0DDC1B2040B; Tue, 12 Nov 2019 15:30:02 +0300 (MSK)
-DKIM-Filter: OpenDKIM Filter v2.11.0 fd.dlink.ru E0DDC1B2040B
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dlink.ru; s=mail;
-        t=1573561802; bh=y+poxO2Ldk6JRTijn6d4ySFca2Q5uu2iel3YyP+n0u4=;
-        h=From:To:Cc:Subject:Date;
-        b=fMX9kSxsirhfC5mud2Vt6+rqynMkHeHMmXMb+34I3dVkNKNIpkzQdL6jlgV2eyc/x
-         zNp7kC44ndULICgJtgaSO0DYAB46RbuUMOe1BgvL0DwTEfidYroGpRRDrxKxvqMjmr
-         TyvlgOI4621cRDRGJf3O84KKHzUZsOj+6rGv3kw4=
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on mail.dlink.ru
-X-Spam-Level: 
-X-Spam-Status: No, score=-99.2 required=7.5 tests=BAYES_50,URIBL_BLOCKED,
-        USER_IN_WHITELIST autolearn=disabled version=3.4.2
-Received: from mail.rzn.dlink.ru (mail.rzn.dlink.ru [178.170.168.13])
-        by fd.dlink.ru (Postfix) with ESMTP id A7EF21B2031C;
-        Tue, 12 Nov 2019 15:29:52 +0300 (MSK)
-DKIM-Filter: OpenDKIM Filter v2.11.0 fd.dlink.ru A7EF21B2031C
-Received: from mail.rzn.dlink.ru (localhost [127.0.0.1])
-        by mail.rzn.dlink.ru (Postfix) with ESMTP id 6B2B41B2265B;
-        Tue, 12 Nov 2019 15:29:51 +0300 (MSK)
-Received: from localhost.localdomain (unknown [196.196.203.126])
-        by mail.rzn.dlink.ru (Postfix) with ESMTPA;
-        Tue, 12 Nov 2019 15:29:51 +0300 (MSK)
-From:   Alexander Lobakin <alobakin@dlink.ru>
-To:     "David S. Miller" <davem@davemloft.net>
-Cc:     Edward Cree <ecree@solarflare.com>, Jiri Pirko <jiri@mellanox.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Ido Schimmel <idosch@mellanox.com>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Petr Machata <petrm@mellanox.com>,
-        Sabrina Dubroca <sd@queasysnail.net>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Jassi Brar <jaswinder.singh@linaro.org>,
-        Manish Chopra <manishc@marvell.com>,
-        GR-Linux-NIC-Dev@marvell.com,
-        Johannes Berg <johannes.berg@intel.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Intel Linux Wireless <linuxwifi@intel.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Alexander Lobakin <alobakin@dlink.ru>, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH net-next] net: core: allow fast GRO for skbs with Ethernet header in head
-Date:   Tue, 12 Nov 2019 15:28:43 +0300
-Message-Id: <20191112122843.30636-1-alobakin@dlink.ru>
-X-Mailer: git-send-email 2.24.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        id S1727027AbfKLMkc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 12 Nov 2019 07:40:32 -0500
+Received: from mail-lf1-f65.google.com ([209.85.167.65]:43069 "EHLO
+        mail-lf1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726212AbfKLMkc (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 12 Nov 2019 07:40:32 -0500
+Received: by mail-lf1-f65.google.com with SMTP id q5so6689471lfo.10
+        for <linux-wireless@vger.kernel.org>; Tue, 12 Nov 2019 04:40:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id;
+        bh=GS74KcWU6LWfn4W3TTm7UzKnqVQyh8jB+ckoaJ1dMgM=;
+        b=pCOe7wyRI/cR0JLpoqCR+095ml9V6ywoOeHVPRa1ZDghsbWHo0zBTUpMsX2y2U2i0i
+         p5jNnnuB6ts0WVHbeepcEjiFL0gsecloM0vep7uc/fg+9d1ICkMZND+dZiQvx2q9CxW4
+         zWTYcOdARgEZsW/QWt2rNBBCYKFJjEQVOZCKVzi5uSV3DpUB8t1vKpIpFXPGjW1ilo24
+         uo3S7UjB+Lm3CwzSyLQZi32HRTJCPRqzgSLSQfvL5nSNRlp2XyyagtaBYWOPQ4j90Z1J
+         Guj7x3T1E9yh7cDiirksjwEU3vtD7CXVwZSFG9kFH2l33n1TwKMsRMhTwKRUxWfuJieQ
+         q1gA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=GS74KcWU6LWfn4W3TTm7UzKnqVQyh8jB+ckoaJ1dMgM=;
+        b=YA+bqcqv/QWMjaZcY1Jbd+qJWTx6AUE1ruSCt6Y4Dhx9mxT2kdFxCIrGpMXbXo7HmU
+         28Wgagvoixyb7FfNPgSM4V0eH11MfrZ5qbqAdHRDGtXe6oa6UjsgtsDL2hEzAbs2Sj0v
+         2FZMe7uUWEgybVom11gsGFoR6at3LYjX6BLAqz4a1K6kgl9ai/I0mwi3vpMRvfh7qTBk
+         Pei+264ln6+HFDHpSVwREV4SAP1n3DUDaoehO26qF9edEBPkJoAfC27PHfI285vVbODm
+         +CXb+Q6hrbsURp6RJAJTcyc9bcO+mEXayKOEyuGgaGMbk2B/6BLn16HesvWwfQT1rRoq
+         i3ew==
+X-Gm-Message-State: APjAAAXbGw9rUtSGGtvXwoTmV1rttwYq9UVwVcoFCTSZxsd7oj5EHswD
+        jmzC2Q6hUkZ9BgZNo5HE43x9fQ==
+X-Google-Smtp-Source: APXvYqxt8y7KHTJHTbtSdRPhj/I1Xijzm+O8qoMM4G4ojNcZ23cLClakaiP/lnCeI2YGcQI2kY+eKQ==
+X-Received: by 2002:a19:ad43:: with SMTP id s3mr19445105lfd.34.1573562428229;
+        Tue, 12 Nov 2019 04:40:28 -0800 (PST)
+Received: from uffe-XPS-13-9360.ideon.se ([85.235.10.227])
+        by smtp.gmail.com with ESMTPSA id z19sm8375096ljk.66.2019.11.12.04.40.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 12 Nov 2019 04:40:27 -0800 (PST)
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+To:     linux-mmc@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Douglas Anderson <dianders@chromium.org>,
+        Matthias Kaehlcke <mka@chromium.org>
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        Tony Lindgren <tony@atomide.com>,
+        Wen Gong <wgong@codeaurora.org>,
+        Erik Stromdahl <erik.stromdahl@gmail.com>,
+        Eyal Reizer <eyalreizer@gmail.com>,
+        linux-wireless@vger.kernel.org
+Subject: [PATCH v3 0/3] mmc: Fixup HW reset for SDIO cards
+Date:   Tue, 12 Nov 2019 13:40:18 +0100
+Message-Id: <20191112124021.8718-1-ulf.hansson@linaro.org>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Commit 78d3fd0b7de8 ("gro: Only use skb_gro_header for completely
-non-linear packets") back in May'09 (2.6.31-rc1) has changed the
-original condition '!skb_headlen(skb)' to the current
-'skb_mac_header(skb) == skb_tail_pointer(skb)' in gro_reset_offset()
-saying: "Since the drivers that need this optimisation all provide
-completely non-linear packets".
+Changes in v3:
+	- Added tags.
+	- Drop unnecessary initialization of variable.
+	- Rename adapter->is_adapter_up to adapter->is_up in the mwifiex driver.
 
-For now, we have the following rough statistics for 5.4-rc7:
-1) napi_gro_frags: 14
-2) napi_gro_receive with skb->head containing (most of) payload: 83
-3) napi_gro_receive with skb->head containing all the headers: 20
-4) napi_gro_receive with skb->head containing only Ethernet header: 2
+Changes in v2:
+	- Add adaptations to the mwifiex driver.
+	- Keep existing synchronous reset behaviour if the SDIO card has a
+	single func driver.
 
-With the current condition, fast GRO with the usage of
-NAPI_GRO_CB(skb)->frag0 is available only in the [1] case.
-Packets pushed by [2] and [3] go through the 'slow' path, but
-it's not a problem for them as they already contains all the needed
-headers in skb->head, so pskb_may_pull() only moves skb->data.
+The cover-letter from v2:
 
-The layout of skbs in the fourth [4] case at the moment of
-dev_gro_receive() is identical to skbs that have come through [1],
-as napi_frags_skb() pulls Ethernet header to skb->head. The only
-difference is that the mentioned condition is always false for them,
-because skb_put() and friends irreversibly alter the tail pointer.
-They also go though the 'slow' path, but now every single
-pskb_may_pull() in every single .gro_receive() will call the *really*
-slow __pskb_pull_tail() to pull headers to head. This significantly
-decreases the overall performance for no visible reasons.
+It has turned out that it's not a good idea to try to power cycle and to
+re-initialize the SDIO card, as currently done through mmc_hw_reset(). This
+because there may be multiple SDIO funcs attached to the same SDIO card and
+some of the others that didn't execute the call to mmc_hw_reset(), may then
+simply experience an undefined behaviour.
 
-The only two users of method [4] is:
-* drivers/staging/qlge
-* drivers/net/wireless/iwlwifi (all three variants: dvm, mvm, mvm-mq)
+The following patches in this series attempts to address this problem, by
+reworking the mmc_hw_reset() behaviour for SDIO and by adopting the Marvel
+mwifiex driver to these changes.
 
-Note that in case with wireless drivers we can't use [1]
-(napi_gro_frags()) at least for now and mac80211 stack always
-performs pushes and pulls anyways, so performance hit is inavoidable.
+Note that, I don't have the HW at hand so the the code has only compile tested.
+Test on HW is greatly appreciated!
 
-We can simply change the condition in gro_reset_offset() to allow
-skbs from [4] go through 'fast' path just like in case [1].
 
-This was tested on a custom driver and this patch gave boosts up to
-40 Mbps to method [4] in both directions comparing to net-next, which
-made overall performance relatively close to [1] (without it, [4] is
-the slowest).
+Ulf Hansson (3):
+  mwifiex: Re-work support for SDIO HW reset
+  mmc: core: Drop check for mmc_card_is_removable() in mmc_rescan()
+  mmc: core: Re-work HW reset for SDIO cards
 
-Signed-off-by: Alexander Lobakin <alobakin@dlink.ru>
----
- net/core/dev.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/mmc/core/core.c                     | 12 +++-----
+ drivers/mmc/core/core.h                     |  2 ++
+ drivers/mmc/core/sdio.c                     | 28 ++++++++++++++++-
+ drivers/mmc/core/sdio_bus.c                 |  9 +++++-
+ drivers/net/wireless/marvell/mwifiex/main.c |  5 +++-
+ drivers/net/wireless/marvell/mwifiex/main.h |  1 +
+ drivers/net/wireless/marvell/mwifiex/sdio.c | 33 ++++++++++++++-------
+ include/linux/mmc/card.h                    |  1 +
+ 8 files changed, 69 insertions(+), 22 deletions(-)
 
-diff --git a/net/core/dev.c b/net/core/dev.c
-index 1c799d486623..da78a433c10c 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -5611,8 +5611,7 @@ static void skb_gro_reset_offset(struct sk_buff *skb)
- 	NAPI_GRO_CB(skb)->frag0 = NULL;
- 	NAPI_GRO_CB(skb)->frag0_len = 0;
- 
--	if (skb_mac_header(skb) == skb_tail_pointer(skb) &&
--	    pinfo->nr_frags &&
-+	if (!skb_headlen(skb) && pinfo->nr_frags &&
- 	    !PageHighMem(skb_frag_page(frag0))) {
- 		NAPI_GRO_CB(skb)->frag0 = skb_frag_address(frag0);
- 		NAPI_GRO_CB(skb)->frag0_len = min_t(unsigned int,
 -- 
-2.24.0
-
+2.17.1
