@@ -2,92 +2,97 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AA6EFF884E
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 Nov 2019 06:57:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 165EEF8AD3
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 Nov 2019 09:42:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725783AbfKLF5m (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 12 Nov 2019 00:57:42 -0500
-Received: from smtp.codeaurora.org ([198.145.29.96]:40564 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725298AbfKLF5m (ORCPT
+        id S1727065AbfKLIm2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 12 Nov 2019 03:42:28 -0500
+Received: from mail-wr1-f65.google.com ([209.85.221.65]:42394 "EHLO
+        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725834AbfKLIm2 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 12 Nov 2019 00:57:42 -0500
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 6503860B6E; Tue, 12 Nov 2019 05:57:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1573538261;
-        bh=mzx3N3lG/Lol6wL/LRDhTGjC7TPVERY5qOz0pGET1OU=;
-        h=From:To:Cc:Subject:Date:From;
-        b=itahC21ABcqmxIGW5W3fbeBqhryQTyVzfqvhVRn2W+RmNxGWVjF19PEe0E6Pgfqwa
-         SZdcWL2IbB+6U6dd7b4n62282HC4yl5lllW9UZyBtPjBjsEn18cw3yBjjPM5s5Gm3H
-         s9eiV0EIQfiGR2wmN9Ie4QxhvmLSqj4XfZFPLHQc=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from wgong-HP-Z240-SFF-Workstation.qca.qualcomm.com (unknown [180.166.53.21])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: wgong@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 36B7460CED;
-        Tue, 12 Nov 2019 05:57:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1573538261;
-        bh=mzx3N3lG/Lol6wL/LRDhTGjC7TPVERY5qOz0pGET1OU=;
-        h=From:To:Cc:Subject:Date:From;
-        b=itahC21ABcqmxIGW5W3fbeBqhryQTyVzfqvhVRn2W+RmNxGWVjF19PEe0E6Pgfqwa
-         SZdcWL2IbB+6U6dd7b4n62282HC4yl5lllW9UZyBtPjBjsEn18cw3yBjjPM5s5Gm3H
-         s9eiV0EIQfiGR2wmN9Ie4QxhvmLSqj4XfZFPLHQc=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 36B7460CED
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=wgong@codeaurora.org
-From:   Wen Gong <wgong@codeaurora.org>
-To:     ath10k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org
-Subject: [PATCH] ath10k: remove the max_sched_scan_reqs value
-Date:   Tue, 12 Nov 2019 13:57:28 +0800
-Message-Id: <20191112055728.28847-1-wgong@codeaurora.org>
-X-Mailer: git-send-email 2.23.0
+        Tue, 12 Nov 2019 03:42:28 -0500
+Received: by mail-wr1-f65.google.com with SMTP id a15so17468237wrf.9
+        for <linux-wireless@vger.kernel.org>; Tue, 12 Nov 2019 00:42:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=netronome-com.20150623.gappssmtp.com; s=20150623;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=HzvYoikEhzEV6lsuLR4at0JgoNFuCTedoPfyEqd82fk=;
+        b=BmHOPmBMRfv3GGPBxmR72PUMl/3ZWPI+1+BNAVyBkqC5Tpc+2sZUdn6AzT8M4A3ova
+         Nkyeg/Q7B6tdMFpe8A3fOI5TKQXKrmh6xfCfIuprnDVAbYfnsnPORunYnT50ETPK/MnC
+         5hkYWMXyrYmi/d0hS1MqKwbkaKpVwxTYOW+9Sn5xher1rZzd48Na9dG2XwqLRK2OD1iw
+         M+ih+ZUi+q9V6kXktF3bZadGi2GMRMuH7dWEOUjqGtGZ0+s2tUq/ojfMMmD08wSJ4UdY
+         zyyUp86Z/19Y8gb9WXH8RUP29WbdUDbWxfrP7na8Wtwf+upPBLFGsLZtAnLShEzy/34X
+         KznQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=HzvYoikEhzEV6lsuLR4at0JgoNFuCTedoPfyEqd82fk=;
+        b=Kx9xlHRyRgVJuSkmlYF8MAJ4acnrG8L3aD3nEFncjpOzj+Oiz6XxdXPzWSiDeOTGQ/
+         D3wNOMqeuGRtn58yDN5lryrGrjg7iB0GU516Ve76A6A1DIRc/xDfrboJcIN00Fh+hiUy
+         Z38gc/unVhxOGGhE2o+3ldTUABQmMUi5TmviEB8RDJm2wAQWQfufq6HdhCOfvvqhMaBV
+         5fxhw1QUu4TBS9yos7XUiDTJWtbAw6FiGXWowQ5jvvL4OBDeKpdRYJWaJH4VAzKqW2te
+         +V0PSsCaaip5eiYKdxfhU3ixEfB5Xwq4a/qOuEIQgoiU1/tHeFJWB8AtfIe1uELld0+h
+         UoHg==
+X-Gm-Message-State: APjAAAWi3iKwsqiCb+xx03KnOfkRAnAgOOlZeq1lCE7aOgjSmz0otypa
+        1MIh8icrho+sLRICdJifnqw74g==
+X-Google-Smtp-Source: APXvYqzO1tf7n21rpRAYsuA0hCRyRuoIczMjkpOTlOH4itbZj239HUwQUPygk/Y8AFRAdhyysyqD3Q==
+X-Received: by 2002:a5d:67c2:: with SMTP id n2mr16349306wrw.222.1573548146216;
+        Tue, 12 Nov 2019 00:42:26 -0800 (PST)
+Received: from netronome.com ([2001:982:756:703:d63d:7eff:fe99:ac9d])
+        by smtp.gmail.com with ESMTPSA id 189sm3583144wmc.7.2019.11.12.00.42.25
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Tue, 12 Nov 2019 00:42:26 -0800 (PST)
+Date:   Tue, 12 Nov 2019 09:42:25 +0100
+From:   Simon Horman <simon.horman@netronome.com>
+To:     Jeffrey Hugo <jeffrey.l.hugo@gmail.com>
+Cc:     kvalo@codeaurora.org, davem@davemloft.net,
+        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] ath10k: Fix qmi init error handling
+Message-ID: <20191112084225.casuncbo7z54vu4g@netronome.com>
+References: <20191106231650.1580-1-jeffrey.l.hugo@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191106231650.1580-1-jeffrey.l.hugo@gmail.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-ath10k do not support NL80211_FEATURE_SCHED_SCAN_RANDOM_MAC_ADDR, if
-set max_sched_scan_reqs to a non zero value, then nl80211_add_commands_unsplit
-will set a SCHED_SCAN attribute, some application tool will use this attribute
-to check mac random support, when it check SCHED_SCAN has set and not
-set NL80211_FEATURE_SCHED_SCAN_RANDOM_MAC_ADDR, it will report mac random
-not support.
+On Wed, Nov 06, 2019 at 03:16:50PM -0800, Jeffrey Hugo wrote:
+> When ath10k_qmi_init() fails, the error handling does not free the irq
+> resources, which causes an issue if we EPROBE_DEFER as we'll attempt to
+> (re-)register irqs which are already registered.
+> 
+> Fixes: ba94c753ccb4 ("ath10k: add QMI message handshake for wcn3990 client")
+> Signed-off-by: Jeffrey Hugo <jeffrey.l.hugo@gmail.com>
+> ---
+>  drivers/net/wireless/ath/ath10k/snoc.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/wireless/ath/ath10k/snoc.c b/drivers/net/wireless/ath/ath10k/snoc.c
+> index fc15a0037f0e..f2a0b7aaad3b 100644
+> --- a/drivers/net/wireless/ath/ath10k/snoc.c
+> +++ b/drivers/net/wireless/ath/ath10k/snoc.c
+> @@ -1729,7 +1729,7 @@ static int ath10k_snoc_probe(struct platform_device *pdev)
+>  	ret = ath10k_qmi_init(ar, msa_size);
+>  	if (ret) {
+>  		ath10k_warn(ar, "failed to register wlfw qmi client: %d\n", ret);
+> -		goto err_core_destroy;
+> +		goto err_free_irq;
+>  	}
 
-Remove the max_sched_scan_reqs value will pass the application tool's
-check and pass test case of random mac address.
+From a casual examination of the code this seems like a step in the right
+direction. But does this error path also need to call ath10k_hw_power_off() ?
 
-testd with QCA6174 SDIO with firmware
-WLAN.RMH.4.4.1-00017-QCARMSWP-1.
-
-Fixes: ce834e280f2f875 ("ath10k: support NET_DETECT WoWLAN feature")
-Signed-off-by: Wen Gong <wgong@codeaurora.org>
----
- drivers/net/wireless/ath/ath10k/mac.c | 1 -
- 1 file changed, 1 deletion(-)
-
-diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
-index e8bdb2ba9b18..9aa499b0527e 100644
---- a/drivers/net/wireless/ath/ath10k/mac.c
-+++ b/drivers/net/wireless/ath/ath10k/mac.c
-@@ -8902,7 +8902,6 @@ int ath10k_mac_register(struct ath10k *ar)
- 	ar->hw->wiphy->max_scan_ie_len = WLAN_SCAN_PARAMS_MAX_IE_LEN;
- 
- 	if (test_bit(WMI_SERVICE_NLO, ar->wmi.svc_map)) {
--		ar->hw->wiphy->max_sched_scan_reqs = 1;
- 		ar->hw->wiphy->max_sched_scan_ssids = WMI_PNO_MAX_SUPP_NETWORKS;
- 		ar->hw->wiphy->max_match_sets = WMI_PNO_MAX_SUPP_NETWORKS;
- 		ar->hw->wiphy->max_sched_scan_ie_len = WMI_PNO_MAX_IE_LENGTH;
--- 
-2.23.0
-
+>  
+>  	ath10k_dbg(ar, ATH10K_DBG_SNOC, "snoc probe\n");
+> -- 
+> 2.17.1
+> 
