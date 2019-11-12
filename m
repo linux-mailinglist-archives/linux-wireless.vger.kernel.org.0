@@ -2,93 +2,53 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EB876F9AA5
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 Nov 2019 21:28:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 802DAF9B91
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 Nov 2019 22:11:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726936AbfKLU25 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 12 Nov 2019 15:28:57 -0500
-Received: from mail-qv1-f65.google.com ([209.85.219.65]:39319 "EHLO
-        mail-qv1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726388AbfKLU25 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 12 Nov 2019 15:28:57 -0500
-Received: by mail-qv1-f65.google.com with SMTP id v16so6957060qvq.6
-        for <linux-wireless@vger.kernel.org>; Tue, 12 Nov 2019 12:28:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=yTI0ONFOXQ2oCePDvomAjLQd/y1rIidUrIGAr+qJApw=;
-        b=T8+mZNZ02TXm865XP/k6GiTW9YFrYvvrMdNZ2RLj9wlULAvkqVnnC3NfeppbnU68t7
-         jrDqPcMNBoii9AKwNFm0KhtuyGiQFsPHag5qAfpVUxxmyq0hldwQ/MwOME7L9srurnpu
-         v18F+Dfi1PcxI99QA1Do0FG0+yUdMhYqGtv7fhp/oGVbR3xO1CvyPOpRMu0wRgaIR3jW
-         C2IyKVOvF9kasKXNCvsBSMTAC+KanLBbd56Dm52yBOyvLXniXfM2+N+03QU1hRT269Iu
-         8ELEi2p9z6QY3P53abb2fhnznRZdT6w0udguN26op93KMnX13Bsn2BqcAf2Mb1GFB9C1
-         RPVg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=yTI0ONFOXQ2oCePDvomAjLQd/y1rIidUrIGAr+qJApw=;
-        b=XRoLp8CQqC3VfOGCGKXzhKnGk5qh9f+UdWN9GNVSic2W1JsIYRnxwNpdzw5+0amLyS
-         dnW6DMf/sdTm5VVaBvo967KkKE/NMIt/Zl2/Xwsvkb+e/+s4Yl2zjYJfDXLhTSNve4KP
-         Hv02w1q/X8L6Y1Iba1AvwGeFN55cpfWzy5Ui+nEao7tSSPGqmHnYAjbmMXi+8a6GgNEu
-         9J19UfiWP2n+SMMXBPiFQpQjxqyujg0x4Z7TsIVi4YmR6jJUewdfedAjviYlHDKEwUMW
-         mJ8LghOkAWW1K/TM7iljrGqSCcEzZ/2Qm4hIpDVYQjaaz1l+EVgFuhzcUZRRB3k4Dg9B
-         zbFg==
-X-Gm-Message-State: APjAAAXa2Tstyi6fyToWq1trdjWwiHwDMENKfs2rUJ9Gj6oLYBoLpROC
-        JJA9HMo07DlvATQQ+UAHu81rIhr2
-X-Google-Smtp-Source: APXvYqxhUezmpXvHA0bwnVD+a0qrAANP2RPgfdG4dujQqdhN7syR7bCqCyqII2aMvYDdZ1lO9HZrvQ==
-X-Received: by 2002:ad4:57d4:: with SMTP id y20mr31033711qvx.63.1573590534552;
-        Tue, 12 Nov 2019 12:28:54 -0800 (PST)
-Received: from localhost ([2620:10d:c091:500::fa23])
-        by smtp.gmail.com with ESMTPSA id n21sm13511690qtn.33.2019.11.12.12.28.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 Nov 2019 12:28:53 -0800 (PST)
-From:   Jes Sorensen <jes.sorensen@gmail.com>
-X-Google-Original-From: Jes Sorensen <Jes.Sorensen@gmail.com>
-To:     linux-wireless@vger.kernel.org
-Cc:     kvalo@codeaurora.org
-Subject: [PATCH] rtl8xxxu: Add support for Edimax EW-7611ULB
-Date:   Tue, 12 Nov 2019 15:28:50 -0500
-Message-Id: <20191112202850.32041-1-Jes.Sorensen@gmail.com>
-X-Mailer: git-send-email 2.21.0
+        id S1727239AbfKLVL3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 12 Nov 2019 16:11:29 -0500
+Received: from ns.lynxeye.de ([87.118.118.114]:49874 "EHLO lynxeye.de"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1727205AbfKLVL3 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 12 Nov 2019 16:11:29 -0500
+X-Greylist: delayed 540 seconds by postgrey-1.27 at vger.kernel.org; Tue, 12 Nov 2019 16:11:28 EST
+Received: by lynxeye.de (Postfix, from userid 501)
+        id 15243E74222; Tue, 12 Nov 2019 22:02:27 +0100 (CET)
+X-Spam-Checker-Version: SpamAssassin 3.3.1 (2010-03-16) on lynxeye.de
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=3.0 tests=ALL_TRUSTED,BAYES_00
+        autolearn=ham version=3.3.1
+Received: from radon.fritz.box (a89-183-40-51.net-htp.de [89.183.40.51])
+        by lynxeye.de (Postfix) with ESMTPSA id 3CE9CE74217;
+        Tue, 12 Nov 2019 22:02:26 +0100 (CET)
+Message-ID: <5de65447f1d115f436f764a7ec811c478afbe2e0.camel@lynxeye.de>
+Subject: long delays in rtl8723 drivers in irq disabled sections
+From:   Lucas Stach <dev@lynxeye.de>
+To:     wlanfae@realtek.com, Ping-Ke Shih <pkshih@realtek.com>
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Date:   Tue, 12 Nov 2019 22:02:25 +0100
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.34.1 (3.34.1-1.fc31) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-A number of people have reported the Edimax EW-7611ULB works fine.
+Hi all,
 
-Signed-off-by: Jes Sorensen <Jes.Sorensen@gmail.com>
----
- drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+while investigating some latency issues on my laptop I stumbled across
+quite large delays in the rtl8723 PHY code, which are done in IRQ
+disabled atomic sections, which is blocking IRQ servicing for all
+devices in the system.
 
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-index c6c41fb962ff..e74b204440cd 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-@@ -6001,7 +6001,7 @@ static int rtl8xxxu_probe(struct usb_interface *interface,
- 		}
- 		break;
- 	case 0x7392:
--		if (id->idProduct == 0x7811)
-+		if (id->idProduct == 0x7811 || id->idProduct == 0xa611)
- 			untested = 0;
- 		break;
- 	case 0x050d:
-@@ -6205,6 +6205,8 @@ static const struct usb_device_id dev_table[] = {
- 	.driver_info = (unsigned long)&rtl8192eu_fops},
- {USB_DEVICE_AND_INTERFACE_INFO(USB_VENDOR_ID_REALTEK, 0xb720, 0xff, 0xff, 0xff),
- 	.driver_info = (unsigned long)&rtl8723bu_fops},
-+{USB_DEVICE_AND_INTERFACE_INFO(0x7392, 0xa611, 0xff, 0xff, 0xff),
-+	.driver_info = (unsigned long)&rtl8723bu_fops},
- #ifdef CONFIG_RTL8XXXU_UNTESTED
- /* Still supported by rtlwifi */
- {USB_DEVICE_AND_INTERFACE_INFO(USB_VENDOR_ID_REALTEK, 0x8176, 0xff, 0xff, 0xff),
--- 
-2.21.0
+Specifically there are 3 consecutive 1ms delays in
+rtl8723_phy_rf_serial_read(), which is used in an IRQ disabled call
+path. Sadly those delays don't have any comment in the code explaining
+why they are needed. I hope that anyone can tell if those delays are
+strictly neccessary and if so if they really need to be this long.
+
+Regards,
+Lucas
 
