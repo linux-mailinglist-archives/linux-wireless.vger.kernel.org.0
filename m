@@ -2,145 +2,116 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C0CEBF9853
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 Nov 2019 19:14:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C976F995D
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 Nov 2019 20:08:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726959AbfKLSOi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 12 Nov 2019 13:14:38 -0500
-Received: from mail-pf1-f194.google.com ([209.85.210.194]:45431 "EHLO
-        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726906AbfKLSOi (ORCPT
+        id S1727002AbfKLTI1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 12 Nov 2019 14:08:27 -0500
+Received: from mail-pf1-f195.google.com ([209.85.210.195]:45524 "EHLO
+        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726952AbfKLTI0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 12 Nov 2019 13:14:38 -0500
-Received: by mail-pf1-f194.google.com with SMTP id z4so13886483pfn.12
-        for <linux-wireless@vger.kernel.org>; Tue, 12 Nov 2019 10:14:38 -0800 (PST)
+        Tue, 12 Nov 2019 14:08:26 -0500
+Received: by mail-pf1-f195.google.com with SMTP id z4so13982026pfn.12
+        for <linux-wireless@vger.kernel.org>; Tue, 12 Nov 2019 11:08:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=eero.com; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding:content-language;
-        bh=CDVh9KmZPeXWfFbHu3hiOOuFGhqbuWMc9hlCyeNXCRI=;
-        b=ufWOLfZwBgUe1/vDKpoBg3JpMwnSE4lPtYSaDnWKBXawOrVNSGUhJx5FROHinHV6JR
-         RoVNjtkfDa+eniECxvRVuuS/tDNYDtaVkLneKgzFFz9fUZXJcwsPJU9SinFrBiHP+gf3
-         j7ffG3dlVbKaJ7OqLUac5ViE2DddFUdFpwmFo=
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=BR4ymyy2vKO2uYqxjB3mPPNwSRoqEyTEGiX+v5/Slpg=;
+        b=mVOnRN1VFG1LQezT4n1aeleww9wgfdVf1EnGVEdr7UvuTM41Q68FBfeDADhsOrzeUb
+         33AfMamI/TexG3RQ1sGCIRtweUATCVoVgdDOudYh19VgpC+W0BMmg1E1Hhh7JlWEUPqt
+         NOQ8EeVvFx9SV2WtjU/Zq0Ap+MrWcohYDikzh/vOYlIInFOuGeBl7loPQf+vdGmPumcE
+         HhARyUvSUx+DMBqIoGzFSnU7e5845u+9IsgGBw+LIvCc6P48vcNHEAeDVPIXLQYdFhq7
+         QkK7D8It9DTCBrHT3JlEuz7J6vP775/VOpRRj1uonqBcFgj7pZnk0fGnalzeaFIi73n5
+         ht8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding
-         :content-language;
-        bh=CDVh9KmZPeXWfFbHu3hiOOuFGhqbuWMc9hlCyeNXCRI=;
-        b=kk9H+xinl382kuo6sLFwhwaymDySfQxxuFaOjhm5LMsys8D6oXRiDUnd8DlyDqe2Ru
-         H+gtSNhdQEmIn7QOK9kNuRdhzUOnVxJ8XWkCvz4ScoVpFlJ1HU90cIpb6jD6Js2jOrED
-         UZ6/n2LbQh4udRiJlimqnj4r1CG702IdCMaMuae/XPdVs2oXwu+pprlsUku/93sIVnSm
-         jUQHIrxwsiDo8KTGCC06AtUU/HjF36xRSE+POssRBA6J1kNWVEMVCFyxjJwWg67mFC/q
-         fNPjmxidOb/GBMLukpj0P7Hr7zFJ/xRi27JKKaEoAQyQuDDs4i/M0oP5SzgpmEnirFw0
-         xEAQ==
-X-Gm-Message-State: APjAAAXbgST6wDz9SWzLrA9Xc4LmvCot3r6StAblP8UwdRBMuvvlCJdu
-        /Zw/ggoAzCQDlfpBMG5Tj1we0TEfPT0cgA==
-X-Google-Smtp-Source: APXvYqyX8/JpbsxXQZtsbS9l6qINuj546ceSuShmwfxShp+BhQscpMPzSET4Tq7rVV9ddNMFRfnjnQ==
-X-Received: by 2002:a62:b504:: with SMTP id y4mr4639013pfe.251.1573582477537;
-        Tue, 12 Nov 2019 10:14:37 -0800 (PST)
-Received: from [10.0.2.15] (eero.static.monkeybrains.net. [199.116.72.162])
-        by smtp.gmail.com with ESMTPSA id y12sm4763593pjy.0.2019.11.12.10.14.36
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 12 Nov 2019 10:14:36 -0800 (PST)
-Subject: Re: [PATCH 2/2] ath10k: correct legacy rate in tx stats
-To:     Yu Wang <yyuwang@codeaurora.org>, ath10k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org
-References: <1573559148-4844-1-git-send-email-yyuwang@codeaurora.org>
- <1573559148-4844-3-git-send-email-yyuwang@codeaurora.org>
-From:   Peter Oh <peter.oh@eero.com>
-Message-ID: <8c633afa-085d-9cf1-549e-afcfee89c96a@eero.com>
-Date:   Tue, 12 Nov 2019 10:14:34 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=BR4ymyy2vKO2uYqxjB3mPPNwSRoqEyTEGiX+v5/Slpg=;
+        b=t6DF9ETsWHXjWWT0VdGxexd2VrGmghbaiSuIQ4abUqgPZzzHmtBkk935PqYRnNuOZU
+         LVGQyLTxCFSQjq5G2tzzRD/O9HKjqkBBjYJMZBPdh5GO2TiIitmHlmnEvpQum/t4gtdB
+         pzl30+iMkiFZICoVzL/px20uFBfRITKC/1ICj3XQzCE+mGqErKdkfNN+Gd2tXgE09olu
+         tBm5JuUmXJVh+XbP7Ija5c6AuhyKpFlvoMpnBiotGSq5gXfNJve1ies0c5OlQa3gNpsC
+         LcOAB9L4JBKoK3Wiavr19IacD5PzyKl2pw30ccGA0j7pq9yG88effOBuDVwDg85/c3m8
+         tqGg==
+X-Gm-Message-State: APjAAAXderDVq9LChOAI14VOD2+p6Z5NYxBoocHWDiZFRj5HFl/8/Qcu
+        /13CiMsABHWmQs6HsEm8m2kdDA==
+X-Google-Smtp-Source: APXvYqy1gKPPrXY8YX4+sqitVZiIIJE+0IYMmTNjOu0a56hMa0jbdBrV/YRB4iYlDOv4vA7eF5VOuQ==
+X-Received: by 2002:aa7:80d2:: with SMTP id a18mr14758511pfn.29.1573585705571;
+        Tue, 12 Nov 2019 11:08:25 -0800 (PST)
+Received: from builder (104-188-17-28.lightspeed.sndgca.sbcglobal.net. [104.188.17.28])
+        by smtp.gmail.com with ESMTPSA id u8sm8351425pga.47.2019.11.12.11.08.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 12 Nov 2019 11:08:24 -0800 (PST)
+Date:   Tue, 12 Nov 2019 11:08:22 -0800
+From:   Bjorn Andersson <bjorn.andersson@linaro.org>
+To:     Jeffrey Hugo <jeffrey.l.hugo@gmail.com>
+Cc:     kvalo@codeaurora.org, davem@davemloft.net,
+        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] ath10k: Handle "invalid" BDFs for msm8998 devices
+Message-ID: <20191112190822.GA3140946@builder>
+References: <20191106234712.2380-1-jeffrey.l.hugo@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <1573559148-4844-3-git-send-email-yyuwang@codeaurora.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191106234712.2380-1-jeffrey.l.hugo@gmail.com>
+User-Agent: Mutt/1.12.2 (2019-09-21)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On Wed 06 Nov 15:47 PST 2019, Jeffrey Hugo wrote:
 
-On 11/12/19 3:45 AM, Yu Wang wrote:
-> When working in station mode, after connected to a legacy
-> AP, 11g only, for example, the tx bitrate is incorrect in
-> output of command 'iw wlan0 link'.
->
-> That's because the legacy tx bitrate value reported by
-> firmware is not well handled:
-> For QCA6174, the value represents rate index, but treated
-> as a real rate;
-> For QCA9888, the value is real rate, with unit 'Mbps', but
-> treated as '100kbps'.
->
-> To fix this issue:
-> 1. Translate the rate index to real rate for QCA6174;
-> 2. Translate the rate from 'Mbps' to 'kbps' for QCA9888.
->
-> Tested with:
-> QCA6174 PCIe with firmware WLAN.RM.4.4.1.c3-00031.
-> QCA6174 SDIO with firmware WLAN.RMH.4.4.1-00029.
-> QCA9888 PCIe with firmware 10.4-3.9.0.2-00040.
->
-> Signed-off-by: Yu Wang <yyuwang@codeaurora.org>
+> When the BDF download QMI message has the end field set to 1, it signals
+> the end of the transfer, and triggers the firmware to do a CRC check.  The
+> BDFs for msm8998 devices fail this check, yet the firmware is happy to
+> still use the BDF.  It appears that this error is not caught by the
+> downstream drive by concidence, therefore there are production devices
+> in the field where this issue needs to be handled otherwise we cannot
+> support wifi on them.  So, attempt to detect this scenario as best we can
+> and treat it as non-fatal.
+> 
+> Signed-off-by: Jeffrey Hugo <jeffrey.l.hugo@gmail.com>
 > ---
->
-> diff --git a/drivers/net/wireless/ath/ath10k/htt_rx.c b/drivers/net/wireless/ath/ath10k/htt_rx.c
-> @@ -3454,10 +3440,12 @@ ath10k_update_per_peer_tx_stats(struct ath10k *ar,
->   {
->   	struct ath10k_sta *arsta = (struct ath10k_sta *)sta->drv_priv;
->   	struct ieee80211_chanctx_conf *conf = NULL;
-> -	u8 rate = 0, sgi;
-> -	s8 rate_idx = 0;
-> +	u8 sgi;
-> +	s8 rate_idx = -1;
->   	bool skip_auto_rate;
->   	struct rate_info txrate;
-> +	enum nl80211_band band;
-> +	struct ieee80211_supported_band *sband;
->   
->   	lockdep_assert_held(&ar->data_lock);
->   
-> @@ -3475,7 +3463,7 @@ ath10k_update_per_peer_tx_stats(struct ath10k *ar,
->   		return;
->   
->   	if (txrate.flags == WMI_RATE_PREAMBLE_VHT && txrate.mcs > 9) {
-> -		ath10k_warn(ar, "Invalid VHT mcs %hhd peer stats",  txrate.mcs);
-> +		ath10k_warn(ar, "Invalid VHT mcs %hhd peer stats", txrate.mcs);
->   		return;
->   	}
->   
-> @@ -3490,14 +3478,19 @@ ath10k_update_per_peer_tx_stats(struct ath10k *ar,
->   	memset(&arsta->tx_info.status, 0, sizeof(arsta->tx_info.status));
->   	if (txrate.flags == WMI_RATE_PREAMBLE_CCK ||
->   	    txrate.flags == WMI_RATE_PREAMBLE_OFDM) {
-> -		rate = ATH10K_HW_LEGACY_RATE(peer_stats->ratecode);
-> -		/* This is hacky, FW sends CCK rate 5.5Mbps as 6 */
-> -		if (rate == 6 && txrate.flags == WMI_RATE_PREAMBLE_CCK)
-> -			rate = 5;
-> -		rate_idx = ath10k_get_legacy_rate_idx(ar, rate);
-> -		if (rate_idx < 0)
-> +		if (!arsta->arvif || !arsta->arvif->vif)
-> +			return;
-> +
-> +		conf = rcu_dereference(arsta->arvif->vif->chanctx_conf);
-> +		if (!conf)
-> +			return;
-> +
-> +		band = conf->def.chan->band;
-> +		sband = &ar->mac.sbands[band];
-> +		if (ath10k_wmi_get_legacy_rate(ar, sband, peer_stats->ratecode,
-> +					       &arsta->txrate.legacy,
-> +					       &rate_idx))
+>  drivers/net/wireless/ath/ath10k/qmi.c | 11 +++++++----
+>  1 file changed, 7 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/ath/ath10k/qmi.c b/drivers/net/wireless/ath/ath10k/qmi.c
+> index eb618a2652db..5ff8cfc93778 100644
+> --- a/drivers/net/wireless/ath/ath10k/qmi.c
+> +++ b/drivers/net/wireless/ath/ath10k/qmi.c
+> @@ -265,10 +265,13 @@ static int ath10k_qmi_bdf_dnld_send_sync(struct ath10k_qmi *qmi)
+>  			goto out;
+>  
+>  		if (resp.resp.result != QMI_RESULT_SUCCESS_V01) {
+> -			ath10k_err(ar, "failed to download board data file: %d\n",
+> -				   resp.resp.error);
+> -			ret = -EINVAL;
+> -			goto out;
+> +			if (!(req->end == 1 &&
+> +			      resp.resp.result == QMI_ERR_MALFORMED_MSG_V01)) {
 
-Using wmi ops to parse rate info breaks ath10k driver architecture, 
-since the rate info comes from htt layer and nothing related to wmi.
+Perhaps worth adding a comment in the code as well, to describe what
+scenario this relates to?
 
+Reviewed-by: Bjorn Andersson <bjorn.andersson@linaro.org>
 
-Thanks,
+Regards,
+Bjorn
 
-Peter
-
+> +				ath10k_err(ar, "failed to download board data file: %d\n",
+> +					   resp.resp.error);
+> +				ret = -EINVAL;
+> +				goto out;
+> +			}
+>  		}
+>  
+>  		remaining -= req->data_len;
+> -- 
+> 2.17.1
+> 
