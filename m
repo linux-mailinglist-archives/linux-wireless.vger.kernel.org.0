@@ -2,157 +2,133 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C6DDF8FA7
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 Nov 2019 13:28:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C1125F8FBC
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 Nov 2019 13:36:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725997AbfKLM2J (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 12 Nov 2019 07:28:09 -0500
-Received: from mail-ua1-f68.google.com ([209.85.222.68]:37098 "EHLO
-        mail-ua1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725865AbfKLM2J (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 12 Nov 2019 07:28:09 -0500
-Received: by mail-ua1-f68.google.com with SMTP id l38so4637165uad.4
-        for <linux-wireless@vger.kernel.org>; Tue, 12 Nov 2019 04:28:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=+NYg2sxdqAsdXos9vvX1IK6xw/RmjO17Tz1dB+pQ0DM=;
-        b=Fs6NY4Ad3ARsyWYAWHaERSV0iC1+Y5MCFDdQ1P0uXBdvnf7i+8/I+T2cLEGs2VpyC1
-         Najxtan+b2r+o+Ma7jyTRFamJxKf0jHwXDwQ+kOv2QMgEEzbJpEPfvMDNrraVjV98nFw
-         uqbTKbl+BUkyNEwlWakssLwACBJZeC8xkl8+f9bt2gxN5Uck71m6TGonP6D7Z3S3oYEy
-         BHsKVhxOtAC9fInN1fcpLlug79dPEenlEoaD7SSu3pv/XEyNO3YDoHgNdb+sHZXbLti0
-         6La01K+3EJTmFTiK+U14M/PS/usd8NoEMzdpLdj3XqpW5tUnjyAwuFQyPZU+dF7NjA5u
-         a5TA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=+NYg2sxdqAsdXos9vvX1IK6xw/RmjO17Tz1dB+pQ0DM=;
-        b=MWmDehZST4kpchCWG4kZWUBz4kk5TneoZFnoYSWk4/20DFjKd+Ihm2JlBpOoCkeVeR
-         n0A0Rj3NLpdgLiMcqyt3SmmFxLkoZI+UUqwzx3+Esfyt0WrsAViN9grt8guYqbPtf9A9
-         HQVq3xgKtMF0pIs2G1EPEOyguwjh9ZxeUQlZ83/8mE7QgNCnn2gfCmqsO3q0tcfatF8p
-         r6viJ1rgLe6B2zO2Ii6a5m5fqb1mdiz9Pt0fOTFkZHcqm3MEF7AjI9dyPH6Q4yzKT3EY
-         vcmwd7vcvj09c7w+/xz8eBlhwpUSP8vqjFmWrx0DTOMBRENvmg/5Ars0kisUOxgSCTKW
-         BsKA==
-X-Gm-Message-State: APjAAAWNbuaDQInMALXn+HGwSy1xUekEQX0m0oW3J54iPhFh5ZctfDFq
-        8lyPB8zlcTA/L/ofBypfjczwlmRHhMLpnPOfLWelbg==
-X-Google-Smtp-Source: APXvYqwda2bfTq3yanw3EPvprThtje6SP+M80JO7LvZx61psZkCnhHJrveEBqopM0g05IZvpSa0yX25nTGENItz7vdI=
-X-Received: by 2002:ab0:3399:: with SMTP id y25mr3120372uap.100.1573561685196;
- Tue, 12 Nov 2019 04:28:05 -0800 (PST)
-MIME-Version: 1.0
-References: <20191109103046.26445-1-ulf.hansson@linaro.org> <CAD=FV=Wv9DgzQZZE8YvB+qjBzPsKdJvafSnFy8YAN_dN6UJbtQ@mail.gmail.com>
-In-Reply-To: <CAD=FV=Wv9DgzQZZE8YvB+qjBzPsKdJvafSnFy8YAN_dN6UJbtQ@mail.gmail.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Tue, 12 Nov 2019 13:27:29 +0100
-Message-ID: <CAPDyKFq5=B8u=9awGaXuhTmYK6Sbbe6EmF9EMhBQQyyrD1bKRw@mail.gmail.com>
-Subject: Re: [PATCH v2 0/3] mmc: Fixup HW reset for SDIO cards
-To:     Doug Anderson <dianders@chromium.org>
-Cc:     Linux MMC List <linux-mmc@vger.kernel.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Matthias Kaehlcke <mka@chromium.org>,
+        id S1726212AbfKLMgW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 12 Nov 2019 07:36:22 -0500
+Received: from fd.dlink.ru ([178.170.168.18]:51284 "EHLO fd.dlink.ru"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725847AbfKLMgW (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 12 Nov 2019 07:36:22 -0500
+X-Greylist: delayed 375 seconds by postgrey-1.27 at vger.kernel.org; Tue, 12 Nov 2019 07:36:20 EST
+Received: by fd.dlink.ru (Postfix, from userid 5000)
+        id E0DDC1B2040B; Tue, 12 Nov 2019 15:30:02 +0300 (MSK)
+DKIM-Filter: OpenDKIM Filter v2.11.0 fd.dlink.ru E0DDC1B2040B
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dlink.ru; s=mail;
+        t=1573561802; bh=y+poxO2Ldk6JRTijn6d4ySFca2Q5uu2iel3YyP+n0u4=;
+        h=From:To:Cc:Subject:Date;
+        b=fMX9kSxsirhfC5mud2Vt6+rqynMkHeHMmXMb+34I3dVkNKNIpkzQdL6jlgV2eyc/x
+         zNp7kC44ndULICgJtgaSO0DYAB46RbuUMOe1BgvL0DwTEfidYroGpRRDrxKxvqMjmr
+         TyvlgOI4621cRDRGJf3O84KKHzUZsOj+6rGv3kw4=
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on mail.dlink.ru
+X-Spam-Level: 
+X-Spam-Status: No, score=-99.2 required=7.5 tests=BAYES_50,URIBL_BLOCKED,
+        USER_IN_WHITELIST autolearn=disabled version=3.4.2
+Received: from mail.rzn.dlink.ru (mail.rzn.dlink.ru [178.170.168.13])
+        by fd.dlink.ru (Postfix) with ESMTP id A7EF21B2031C;
+        Tue, 12 Nov 2019 15:29:52 +0300 (MSK)
+DKIM-Filter: OpenDKIM Filter v2.11.0 fd.dlink.ru A7EF21B2031C
+Received: from mail.rzn.dlink.ru (localhost [127.0.0.1])
+        by mail.rzn.dlink.ru (Postfix) with ESMTP id 6B2B41B2265B;
+        Tue, 12 Nov 2019 15:29:51 +0300 (MSK)
+Received: from localhost.localdomain (unknown [196.196.203.126])
+        by mail.rzn.dlink.ru (Postfix) with ESMTPA;
+        Tue, 12 Nov 2019 15:29:51 +0300 (MSK)
+From:   Alexander Lobakin <alobakin@dlink.ru>
+To:     "David S. Miller" <davem@davemloft.net>
+Cc:     Edward Cree <ecree@solarflare.com>, Jiri Pirko <jiri@mellanox.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Ido Schimmel <idosch@mellanox.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Petr Machata <petrm@mellanox.com>,
+        Sabrina Dubroca <sd@queasysnail.net>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Jassi Brar <jaswinder.singh@linaro.org>,
+        Manish Chopra <manishc@marvell.com>,
+        GR-Linux-NIC-Dev@marvell.com,
+        Johannes Berg <johannes.berg@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        Intel Linux Wireless <linuxwifi@intel.com>,
         Kalle Valo <kvalo@codeaurora.org>,
-        Tony Lindgren <tony@atomide.com>,
-        Wen Gong <wgong@codeaurora.org>,
-        Erik Stromdahl <erik.stromdahl@gmail.com>,
-        Eyal Reizer <eyalreizer@gmail.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Brian Norris <briannorris@chromium.org>
-Content-Type: text/plain; charset="UTF-8"
+        Alexander Lobakin <alobakin@dlink.ru>, netdev@vger.kernel.org,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH net-next] net: core: allow fast GRO for skbs with Ethernet header in head
+Date:   Tue, 12 Nov 2019 15:28:43 +0300
+Message-Id: <20191112122843.30636-1-alobakin@dlink.ru>
+X-Mailer: git-send-email 2.24.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 12 Nov 2019 at 01:51, Doug Anderson <dianders@chromium.org> wrote:
->
-> Hi,
->
-> On Sat, Nov 9, 2019 at 2:31 AM Ulf Hansson <ulf.hansson@linaro.org> wrote:
-> >
-> > Changes in v2:
-> >         - Add adaptations to the mwifiex driver.
-> >         - Keep existing syncronous reset behaviour if the SDIO card has a single
-> >         func driver.
-> >
-> > It has turned out that it's not a good idea to try to power cycle and to
-> > re-initialize the SDIO card, as currently done through mmc_hw_reset(). This
-> > because there may be multiple SDIO funcs attached to the same SDIO card and
-> > some of the others that didn't execute the call to mmc_hw_reset(), may then
-> > simply experience an undefined behaviour.
-> >
-> > The following patches in this series attempts to address this problem, by
-> > reworking the mmc_hw_reset() behaviour for SDIO and by adopting the Marvel
-> > mwifiex driver to these changes.
-> >
-> > Note that, I don't have the HW at hand so the the code has only compile tested.
-> > Test on HW is greatly appreciated!
-> >
-> > Ulf Hansson (3):
-> >   mwifiex: Re-work support for SDIO HW reset
-> >   mmc: core: Drop check for mmc_card_is_removable() in mmc_rescan()
-> >   mmc: core: Re-work HW reset for SDIO cards
-> >
-> >  drivers/mmc/core/core.c                     | 12 +++-----
-> >  drivers/mmc/core/core.h                     |  2 ++
-> >  drivers/mmc/core/sdio.c                     | 28 ++++++++++++++++-
-> >  drivers/mmc/core/sdio_bus.c                 |  9 +++++-
-> >  drivers/net/wireless/marvell/mwifiex/main.c |  6 +++-
-> >  drivers/net/wireless/marvell/mwifiex/main.h |  1 +
-> >  drivers/net/wireless/marvell/mwifiex/sdio.c | 33 ++++++++++++++-------
-> >  include/linux/mmc/card.h                    |  1 +
-> >  8 files changed, 70 insertions(+), 22 deletions(-)
->
-> I put this on rk3288-veyron-jerry atop v5.4-rc7 and I could run my
-> test case for a while, AKA I got over 50 cycles of:
->
-> ---
->
-> for i in $(seq 1000); do
->   echo "LOOP $i --------"
->   echo 1 > /sys/kernel/debug/mwifiex/mlan0/reset
->
->   while true; do
->     if ! ping6 -w15 -c1 "${GW}" >/dev/null 2>&1; then
->       fail=$(( fail + 1 ))
->       echo "Fail WiFi ${fail}"
->       if [[ ${fail} == 3 ]]; then
->         exit 1
->       fi
->     else
->       fail=0
->       break
->     fi
->   done
->
->   hciconfig hci0 down
->   sleep 1
->   if ! hciconfig hci0 up; then
->     echo "Fail BT"
->     exit 1
->   fi
->
-> done
->
-> ---
->
-> NOTE: with no patches I couldn't even get my test case to pass w/out
-> the BT bits and I swear that used to work before.  ...but I didn't
-> debug since the end result (with full card hotplug) is happy-working
-> for me.  I'll still use it as further argument that (IMO) full unplug
-> / plug of the card is better it uses more standard code paths and is
-> less likely to break.  ;-)
->
-> Tested-by: Douglas Anderson <dianders@chromium.org>
+Commit 78d3fd0b7de8 ("gro: Only use skb_gro_header for completely
+non-linear packets") back in May'09 (2.6.31-rc1) has changed the
+original condition '!skb_headlen(skb)' to the current
+'skb_mac_header(skb) == skb_tail_pointer(skb)' in gro_reset_offset()
+saying: "Since the drivers that need this optimisation all provide
+completely non-linear packets".
 
-Thanks, I add this to the series and make a re-spin.
+For now, we have the following rough statistics for 5.4-rc7:
+1) napi_gro_frags: 14
+2) napi_gro_receive with skb->head containing (most of) payload: 83
+3) napi_gro_receive with skb->head containing all the headers: 20
+4) napi_gro_receive with skb->head containing only Ethernet header: 2
 
-What do you think about tagging the patches for stable?
+With the current condition, fast GRO with the usage of
+NAPI_GRO_CB(skb)->frag0 is available only in the [1] case.
+Packets pushed by [2] and [3] go through the 'slow' path, but
+it's not a problem for them as they already contains all the needed
+headers in skb->head, so pskb_may_pull() only moves skb->data.
 
-I guess there is a risk that we may "break" the other two users of
-mmc_hw_reset(). But, as I said, in that case those needs to be fixed
-anyways.
+The layout of skbs in the fourth [4] case at the moment of
+dev_gro_receive() is identical to skbs that have come through [1],
+as napi_frags_skb() pulls Ethernet header to skb->head. The only
+difference is that the mentioned condition is always false for them,
+because skb_put() and friends irreversibly alter the tail pointer.
+They also go though the 'slow' path, but now every single
+pskb_may_pull() in every single .gro_receive() will call the *really*
+slow __pskb_pull_tail() to pull headers to head. This significantly
+decreases the overall performance for no visible reasons.
 
-Kind regards
-Uffe
+The only two users of method [4] is:
+* drivers/staging/qlge
+* drivers/net/wireless/iwlwifi (all three variants: dvm, mvm, mvm-mq)
+
+Note that in case with wireless drivers we can't use [1]
+(napi_gro_frags()) at least for now and mac80211 stack always
+performs pushes and pulls anyways, so performance hit is inavoidable.
+
+We can simply change the condition in gro_reset_offset() to allow
+skbs from [4] go through 'fast' path just like in case [1].
+
+This was tested on a custom driver and this patch gave boosts up to
+40 Mbps to method [4] in both directions comparing to net-next, which
+made overall performance relatively close to [1] (without it, [4] is
+the slowest).
+
+Signed-off-by: Alexander Lobakin <alobakin@dlink.ru>
+---
+ net/core/dev.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/net/core/dev.c b/net/core/dev.c
+index 1c799d486623..da78a433c10c 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -5611,8 +5611,7 @@ static void skb_gro_reset_offset(struct sk_buff *skb)
+ 	NAPI_GRO_CB(skb)->frag0 = NULL;
+ 	NAPI_GRO_CB(skb)->frag0_len = 0;
+ 
+-	if (skb_mac_header(skb) == skb_tail_pointer(skb) &&
+-	    pinfo->nr_frags &&
++	if (!skb_headlen(skb) && pinfo->nr_frags &&
+ 	    !PageHighMem(skb_frag_page(frag0))) {
+ 		NAPI_GRO_CB(skb)->frag0 = skb_frag_address(frag0);
+ 		NAPI_GRO_CB(skb)->frag0_len = min_t(unsigned int,
+-- 
+2.24.0
+
