@@ -2,188 +2,101 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F48AFB34C
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Nov 2019 16:12:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 87383FB3E2
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Nov 2019 16:40:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727833AbfKMPMb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 13 Nov 2019 10:12:31 -0500
-Received: from mail-vs1-f65.google.com ([209.85.217.65]:33711 "EHLO
-        mail-vs1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727698AbfKMPMa (ORCPT
+        id S1728021AbfKMPkW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 13 Nov 2019 10:40:22 -0500
+Received: from mail-pg1-f196.google.com ([209.85.215.196]:46193 "EHLO
+        mail-pg1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726957AbfKMPkV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 13 Nov 2019 10:12:30 -0500
-Received: by mail-vs1-f65.google.com with SMTP id c25so1575271vsp.0
-        for <linux-wireless@vger.kernel.org>; Wed, 13 Nov 2019 07:12:30 -0800 (PST)
+        Wed, 13 Nov 2019 10:40:21 -0500
+Received: by mail-pg1-f196.google.com with SMTP id r18so1583346pgu.13;
+        Wed, 13 Nov 2019 07:40:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Jc0YUAFMk4ruUPrZrPfLYvKwQ1pbJ28MVupI62fOxz8=;
-        b=h9/LboM8UhK5Ev4Xcp4HH6Yqtjg0UwOzKYDdco8KYCsIFkLRpA/f6AjR7LodwHM3rk
-         SR70nQg/8+1utiysrcHU+c4xEobAiqJLA1L/S8kLs4zsJC2NirISFbgiL2lfVZgncG4y
-         fMEV3sdC/KUu/yJtiaFtgBs+ZFW4jhpLydhonyTlaPfh8gJqGHzufReqq4md7VLlpko2
-         ZBm7Fb5gTbb7B0sKqVKP2FmOivMCSrPPqvcpybAzqmogL68RsBqZ0oCYg1/tm1CbvYxU
-         ADi7mJE3FrWeIe+BuYMDgE9DWr0UoVBDlRAQFAVNbtDQ+3fB069gzMW5skyMskegyuqK
-         wNMw==
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=Ki1SPD44lh1SNybw/5rgBcA9dSnsxmRipdKWolsiTPQ=;
+        b=ldo4ffH/lXYIRRC9tzF8JwFZccS5LE1eNAXXtU1VS/5IB4wnVJb7htBqIKuKI8178C
+         tO9TJGxlsknv5aUpJySM+Wem8RH82ICkpo3nAenXYrfA3W6c9rUby7YKTlE6RJAC+fef
+         +Vqi2ABeS++Z6YTbuqfZ4XBVt1uRMel9RyjDYlCAOnzEFPh4ikQRyJ7ZtDPm2XzKbLCk
+         0XvxdQphfr5HEwRpCp95eJ8HHjMwXFOB83ep+96dGDqMu6lwB1BQp90HYfRnqAoTFsMu
+         70ciVkQJS00t2lYlajUIKEOc2C6gWu0mrj8z/hQMDmoUShmuHCGmicWJLKfFgkuaAiVp
+         pCYw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Jc0YUAFMk4ruUPrZrPfLYvKwQ1pbJ28MVupI62fOxz8=;
-        b=VaOC8q6bfhlU2aEcmTMq3sVST3h2ITR1Fp9Fp6M030JrcWBBo7H8tHph8yPD/91vAQ
-         7qSn3bUtcZOfuuXOYm8Gwh5LqQzn3Nv3lF1A7GGjficbDYYU3U+Cv2n4pkEDG9/SQ++r
-         sWe7wjmY0vnhTjHPtJbwE1+4kCbzUUQCAyDWJSF5gfcRaYRxJAQWa4qxegrzOUr/7Ib6
-         0MNpycJlNHwq5Il7ODuQzW+lWfXTDYdumfWYf5j2wz6MUfKY2ta0KJELhu7Dbc7iv4EZ
-         nISMjjv5XiOB8+C7P+ZGlYzIaDMo5pQ4yYr1y8MFYgVyzh5vVOUqml+FeQm369vl4xnG
-         kG3Q==
-X-Gm-Message-State: APjAAAWD82RilBvYc7X9nuJAFeRTh8UaDR5wHKMIXwWJ/dOzkI/wyEkT
-        y6ftrGa4saHjRHdiFXmfBC8iyR41FfBYa0tFDFKyFw==
-X-Google-Smtp-Source: APXvYqxxvUhyMjvqn8HC9cwUZmrGGk0V6VDNHo03lx3pKaBu2GoDkotm2dpL7tOn0d/vPwn5pymZiVlR4UeESfkN48k=
-X-Received: by 2002:a67:5ec1:: with SMTP id s184mr2064193vsb.200.1573657949541;
- Wed, 13 Nov 2019 07:12:29 -0800 (PST)
-MIME-Version: 1.0
-References: <20191109103046.26445-1-ulf.hansson@linaro.org>
- <CAD=FV=Wv9DgzQZZE8YvB+qjBzPsKdJvafSnFy8YAN_dN6UJbtQ@mail.gmail.com>
- <CAPDyKFq5=B8u=9awGaXuhTmYK6Sbbe6EmF9EMhBQQyyrD1bKRw@mail.gmail.com> <CAD=FV=Xf5O_ew+hG9BLSZUM7bKAZvEvqaK4Cy1xUWgKdTGUMwA@mail.gmail.com>
-In-Reply-To: <CAD=FV=Xf5O_ew+hG9BLSZUM7bKAZvEvqaK4Cy1xUWgKdTGUMwA@mail.gmail.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Wed, 13 Nov 2019 16:11:53 +0100
-Message-ID: <CAPDyKFo6=WTONuXkyWsYMy9MS8Zs0HrZue7mzPbN9WUYRWmfAQ@mail.gmail.com>
-Subject: Re: [PATCH v2 0/3] mmc: Fixup HW reset for SDIO cards
-To:     Doug Anderson <dianders@chromium.org>
-Cc:     Linux MMC List <linux-mmc@vger.kernel.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Matthias Kaehlcke <mka@chromium.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Tony Lindgren <tony@atomide.com>,
-        Wen Gong <wgong@codeaurora.org>,
-        Erik Stromdahl <erik.stromdahl@gmail.com>,
-        Eyal Reizer <eyalreizer@gmail.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Brian Norris <briannorris@chromium.org>
-Content-Type: text/plain; charset="UTF-8"
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=Ki1SPD44lh1SNybw/5rgBcA9dSnsxmRipdKWolsiTPQ=;
+        b=hpCavwQvju1slM1Zk9QHnyCZJSpZ7szvMbuUmRbiVSno4LsbFmk0B7gxk5cz8r+Hoy
+         ommMV9UC4l218md/RdtMi0rO5rVnwy2CvWtm4y+QDlftdk/norRc9GhNWFzCpFfU39NK
+         poy3I0tm84VJUHE1pqJPw1M9fENGqxp1fUBtngziarQuyM0n0TqQ2ylBk269tRWlh8kk
+         cTNw8neXYw3gufuHbfp3nGUSihC1jUglvFRTrfPcRy1POTfPWFJkXcY36mBNfum8T79w
+         2Hx/ycBhJdsBM5ZVIbtEvfH+5IsV5Jfa0baTeuIfhEo4bMuZJbLjqFf7hOMiz919Yhw1
+         wTvQ==
+X-Gm-Message-State: APjAAAX2Loj6wkaFuSLVw/PPoc+BHRK1++FY9tom/W3xlblnYEJRX1Yp
+        FdRM7UwwX44HC8DKIG56VLE=
+X-Google-Smtp-Source: APXvYqzV4a9iYr/kLopHbCKtDwEFBpFCvcaVBZZ4KkPQvS54XiRuxUSsvQNuQJEpJnmCLUzjZnLo6w==
+X-Received: by 2002:a63:db15:: with SMTP id e21mr4399962pgg.21.1573659620998;
+        Wed, 13 Nov 2019 07:40:20 -0800 (PST)
+Received: from aw-bldr-10.qualcomm.com (i-global254.qualcomm.com. [199.106.103.254])
+        by smtp.gmail.com with ESMTPSA id q8sm2911407pgg.15.2019.11.13.07.40.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 13 Nov 2019 07:40:20 -0800 (PST)
+From:   Jeffrey Hugo <jeffrey.l.hugo@gmail.com>
+To:     kvalo@codeaurora.org, davem@davemloft.net
+Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Jeffrey Hugo <jeffrey.l.hugo@gmail.com>
+Subject: [PATCH v2] ath10k: Fix qmi init error handling
+Date:   Wed, 13 Nov 2019 07:40:16 -0800
+Message-Id: <20191113154016.42836-1-jeffrey.l.hugo@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 12 Nov 2019 at 18:43, Doug Anderson <dianders@chromium.org> wrote:
->
-> Hi,
->
-> On Tue, Nov 12, 2019 at 4:28 AM Ulf Hansson <ulf.hansson@linaro.org> wrote:
-> >
-> > On Tue, 12 Nov 2019 at 01:51, Doug Anderson <dianders@chromium.org> wrote:
-> > >
-> > > Hi,
-> > >
-> > > On Sat, Nov 9, 2019 at 2:31 AM Ulf Hansson <ulf.hansson@linaro.org> wrote:
-> > > >
-> > > > Changes in v2:
-> > > >         - Add adaptations to the mwifiex driver.
-> > > >         - Keep existing syncronous reset behaviour if the SDIO card has a single
-> > > >         func driver.
-> > > >
-> > > > It has turned out that it's not a good idea to try to power cycle and to
-> > > > re-initialize the SDIO card, as currently done through mmc_hw_reset(). This
-> > > > because there may be multiple SDIO funcs attached to the same SDIO card and
-> > > > some of the others that didn't execute the call to mmc_hw_reset(), may then
-> > > > simply experience an undefined behaviour.
-> > > >
-> > > > The following patches in this series attempts to address this problem, by
-> > > > reworking the mmc_hw_reset() behaviour for SDIO and by adopting the Marvel
-> > > > mwifiex driver to these changes.
-> > > >
-> > > > Note that, I don't have the HW at hand so the the code has only compile tested.
-> > > > Test on HW is greatly appreciated!
-> > > >
-> > > > Ulf Hansson (3):
-> > > >   mwifiex: Re-work support for SDIO HW reset
-> > > >   mmc: core: Drop check for mmc_card_is_removable() in mmc_rescan()
-> > > >   mmc: core: Re-work HW reset for SDIO cards
-> > > >
-> > > >  drivers/mmc/core/core.c                     | 12 +++-----
-> > > >  drivers/mmc/core/core.h                     |  2 ++
-> > > >  drivers/mmc/core/sdio.c                     | 28 ++++++++++++++++-
-> > > >  drivers/mmc/core/sdio_bus.c                 |  9 +++++-
-> > > >  drivers/net/wireless/marvell/mwifiex/main.c |  6 +++-
-> > > >  drivers/net/wireless/marvell/mwifiex/main.h |  1 +
-> > > >  drivers/net/wireless/marvell/mwifiex/sdio.c | 33 ++++++++++++++-------
-> > > >  include/linux/mmc/card.h                    |  1 +
-> > > >  8 files changed, 70 insertions(+), 22 deletions(-)
-> > >
-> > > I put this on rk3288-veyron-jerry atop v5.4-rc7 and I could run my
-> > > test case for a while, AKA I got over 50 cycles of:
-> > >
-> > > ---
-> > >
-> > > for i in $(seq 1000); do
-> > >   echo "LOOP $i --------"
-> > >   echo 1 > /sys/kernel/debug/mwifiex/mlan0/reset
-> > >
-> > >   while true; do
-> > >     if ! ping6 -w15 -c1 "${GW}" >/dev/null 2>&1; then
-> > >       fail=$(( fail + 1 ))
-> > >       echo "Fail WiFi ${fail}"
-> > >       if [[ ${fail} == 3 ]]; then
-> > >         exit 1
-> > >       fi
-> > >     else
-> > >       fail=0
-> > >       break
-> > >     fi
-> > >   done
-> > >
-> > >   hciconfig hci0 down
-> > >   sleep 1
-> > >   if ! hciconfig hci0 up; then
-> > >     echo "Fail BT"
-> > >     exit 1
-> > >   fi
-> > >
-> > > done
-> > >
-> > > ---
-> > >
-> > > NOTE: with no patches I couldn't even get my test case to pass w/out
-> > > the BT bits and I swear that used to work before.  ...but I didn't
-> > > debug since the end result (with full card hotplug) is happy-working
-> > > for me.  I'll still use it as further argument that (IMO) full unplug
-> > > / plug of the card is better it uses more standard code paths and is
-> > > less likely to break.  ;-)
-> > >
-> > > Tested-by: Douglas Anderson <dianders@chromium.org>
-> >
-> > Thanks, I add this to the series and make a re-spin.
-> >
-> > What do you think about tagging the patches for stable?
-> >
-> > I guess there is a risk that we may "break" the other two users of
-> > mmc_hw_reset(). But, as I said, in that case those needs to be fixed
-> > anyways.
->
-> I'm not sure how to make that judgement call.  Certainly it would help
-> anyone using the Marvell case and the Marvell case was pretty broken
-> before.
->
-> How about this: if you can get a Tested-by from the other users then
-> I'd be good with a general CC: stable.  Otherwise, I'd be OK with a CC
-> to stable for 5.4, but I'd be a little hesitant to send it back to
-> older kernels (even though it certainly applies and fixes problems).
+When ath10k_qmi_init() fails, the error handling does not free the irq
+resources, which causes an issue if we EPROBE_DEFER as we'll attempt to
+(re-)register irqs which are already registered.
 
-This makes sense, let's go with this!
+Fix this by doing a power off since we just powered on the hardware, and
+freeing the irqs as error handling.
 
-> At least in the case of Chrome OS we already have a workable solution
-> for our 4.19 tree (my previous patches), and I'd guess anyone testing
-> on real hardware is either not seeing problems or has their own
-> private patches already.  If things have been sitting stable on 5.4
-> for a while and no problems were reported, then we could consider
-> going back further?
+Fixes: ba94c753ccb4 ("ath10k: add QMI message handshake for wcn3990 client")
+Signed-off-by: Jeffrey Hugo <jeffrey.l.hugo@gmail.com>
+---
 
-Yep!
+v2:
+-Call power_off() as well
 
-That said, the v3 series is queued up for next and by adding a stable
-tag for 5.4+.
+ drivers/net/wireless/ath/ath10k/snoc.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-Kind regards
-Uffe
+diff --git a/drivers/net/wireless/ath/ath10k/snoc.c b/drivers/net/wireless/ath/ath10k/snoc.c
+index cd22c8654aa9..50b3d443ad37 100644
+--- a/drivers/net/wireless/ath/ath10k/snoc.c
++++ b/drivers/net/wireless/ath/ath10k/snoc.c
+@@ -1563,13 +1563,16 @@ static int ath10k_snoc_probe(struct platform_device *pdev)
+ 	ret = ath10k_qmi_init(ar, msa_size);
+ 	if (ret) {
+ 		ath10k_warn(ar, "failed to register wlfw qmi client: %d\n", ret);
+-		goto err_core_destroy;
++		goto err_power_off;
+ 	}
+ 
+ 	ath10k_dbg(ar, ATH10K_DBG_SNOC, "snoc probe\n");
+ 
+ 	return 0;
+ 
++err_power_off:
++	ath10k_hw_power_off(ar);
++
+ err_free_irq:
+ 	ath10k_snoc_free_irq(ar);
+ 
+-- 
+2.17.1
+
