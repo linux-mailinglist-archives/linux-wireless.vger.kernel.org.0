@@ -2,39 +2,38 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 06DA8FA18F
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Nov 2019 02:58:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EA7F2FA63B
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Nov 2019 03:28:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729948AbfKMB6I (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 12 Nov 2019 20:58:08 -0500
-Received: from mail.kernel.org ([198.145.29.99]:51636 "EHLO mail.kernel.org"
+        id S1729344AbfKMC1o (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 12 Nov 2019 21:27:44 -0500
+Received: from mail.kernel.org ([198.145.29.99]:37746 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729940AbfKMB6F (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 12 Nov 2019 20:58:05 -0500
+        id S1727508AbfKMBur (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 12 Nov 2019 20:50:47 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 74200222D3;
-        Wed, 13 Nov 2019 01:58:04 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 1D54B222CE;
+        Wed, 13 Nov 2019 01:50:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1573610285;
-        bh=xd9MmByD4kgF02UVppLESgoSj9OQHcqjVex2lFwXvoI=;
+        s=default; t=1573609846;
+        bh=WatvhTlnTrUeKgE4vGEfMfvYTXMAw5MLRYU+EHcOmmA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DT2CaiDuuKNuxXx7s62+FakCPZMprTPX7bWJgYNitiQAqSBv1+L+mWyC/zPCBsOJ7
-         zSSQkReJ5k5CMqsGZv13Sf5YY12ZuHxX1nQcv7njSynLPWfcJE2zr35XcDKUASbsOH
-         ov3b+vr9Q9pH5ZI6HscEnhe/uk3q894ocnyCMCeg=
+        b=DLPpSQMue8YGB9dBP1N6Er52/66wIf2qQ/6uw5JzrNrbJZxuWiww/+yO9BaMeJYr1
+         pmc3ehZfNLkpSJx/1rJgT2/2W8eOexDfD+PT8cfuTqQpfVbL1CienxDN+NqlFjq91a
+         Jpjn1KBaAayicGysk/zGTWrYdlius+KTxqzZe0hc=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Sergey Matyukevich <sergey.matyukevich.os@quantenna.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Sasha Levin <sashal@kernel.org>,
+Cc:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Felix Fietkau <nbd@nbd.name>, Sasha Levin <sashal@kernel.org>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 062/115] qtnfmac: drop error reports for out-of-bounds key indexes
-Date:   Tue, 12 Nov 2019 20:55:29 -0500
-Message-Id: <20191113015622.11592-62-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 018/209] mt76x2: fix tx power configuration for VHT mcs 9
+Date:   Tue, 12 Nov 2019 20:47:14 -0500
+Message-Id: <20191113015025.9685-18-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191113015622.11592-1-sashal@kernel.org>
-References: <20191113015622.11592-1-sashal@kernel.org>
+In-Reply-To: <20191113015025.9685-1-sashal@kernel.org>
+References: <20191113015025.9685-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -44,46 +43,38 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Sergey Matyukevich <sergey.matyukevich.os@quantenna.com>
+From: Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
 
-[ Upstream commit 35da3fe63b8647ce3cc52fccdf186a60710815fb ]
+[ Upstream commit 60b6645ef1a9239a02c70adeae136298395d145a ]
 
-On disconnect wireless core attempts to remove all the supported keys.
-Following cfg80211_ops conventions, firmware returns -ENOENT code
-for the out-of-bound key indexes. This is a normal behavior,
-so no need to report errors for this case.
+Fix tx power configuration for VHT 1SS/STBC mcs 9 since
+in MT_TX_PWR_CFG_{8,9} mcs 8,9 bits are GENMASK(21,16) and
+GENMASK(29,24) while GENMASK(15,6) are marked as reserved
 
-Signed-off-by: Sergey Matyukevich <sergey.matyukevich.os@quantenna.com>
-Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+Fixes: 7bc04215a66b ("mt76: add driver code for MT76x2e")
+Signed-off-by: Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/quantenna/qtnfmac/cfg80211.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt76x2_phy_common.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/quantenna/qtnfmac/cfg80211.c b/drivers/net/wireless/quantenna/qtnfmac/cfg80211.c
-index a450bc6bc7745..d02f68792ce41 100644
---- a/drivers/net/wireless/quantenna/qtnfmac/cfg80211.c
-+++ b/drivers/net/wireless/quantenna/qtnfmac/cfg80211.c
-@@ -509,9 +509,16 @@ static int qtnf_del_key(struct wiphy *wiphy, struct net_device *dev,
- 	int ret;
- 
- 	ret = qtnf_cmd_send_del_key(vif, key_index, pairwise, mac_addr);
--	if (ret)
--		pr_err("VIF%u.%u: failed to delete key: idx=%u pw=%u\n",
--		       vif->mac->macid, vif->vifid, key_index, pairwise);
-+	if (ret) {
-+		if (ret == -ENOENT) {
-+			pr_debug("VIF%u.%u: key index %d out of bounds\n",
-+				 vif->mac->macid, vif->vifid, key_index);
-+		} else {
-+			pr_err("VIF%u.%u: failed to delete key: idx=%u pw=%u\n",
-+			       vif->mac->macid, vif->vifid,
-+			       key_index, pairwise);
-+		}
-+	}
- 
- 	return ret;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2_phy_common.c b/drivers/net/wireless/mediatek/mt76/mt76x2_phy_common.c
+index 9fd6ab4cbb949..ca68dd184489b 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x2_phy_common.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x2_phy_common.c
+@@ -232,9 +232,9 @@ void mt76x2_phy_set_txpower(struct mt76x2_dev *dev)
+ 	mt76_wr(dev, MT_TX_PWR_CFG_7,
+ 		mt76x2_tx_power_mask(t.ofdm[6], t.vht[8], t.ht[6], t.vht[8]));
+ 	mt76_wr(dev, MT_TX_PWR_CFG_8,
+-		mt76x2_tx_power_mask(t.ht[14], t.vht[8], t.vht[8], 0));
++		mt76x2_tx_power_mask(t.ht[14], 0, t.vht[8], t.vht[8]));
+ 	mt76_wr(dev, MT_TX_PWR_CFG_9,
+-		mt76x2_tx_power_mask(t.ht[6], t.vht[8], t.vht[8], 0));
++		mt76x2_tx_power_mask(t.ht[6], 0, t.vht[8], t.vht[8]));
  }
+ EXPORT_SYMBOL_GPL(mt76x2_phy_set_txpower);
+ 
 -- 
 2.20.1
 
