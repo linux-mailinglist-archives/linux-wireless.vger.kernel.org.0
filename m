@@ -2,112 +2,91 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C448CFB155
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Nov 2019 14:32:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 16002FB15F
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Nov 2019 14:33:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727339AbfKMNcC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 13 Nov 2019 08:32:02 -0500
-Received: from smtp.codeaurora.org ([198.145.29.96]:52344 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726978AbfKMNcC (ORCPT
+        id S1727361AbfKMNdl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 13 Nov 2019 08:33:41 -0500
+Received: from mail-ot1-f68.google.com ([209.85.210.68]:35848 "EHLO
+        mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726190AbfKMNdl (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 13 Nov 2019 08:32:02 -0500
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 6A4A9601A3; Wed, 13 Nov 2019 13:32:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1573651921;
-        bh=qwJ2Oo0KqZdd1YXe+mjqkWJ1BrXqxUI5ngVUOeKPA1I=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=LDRY7wOYa7nSAYqHs8pzeCjK6LvMjjLz91GZt9dr8epdfKYXgY0eVR3Hp4PfElwO9
-         eImBccq0v4f+Yrk3oq7HvYuKO9SODZRXdKwjaoS/8MiT5tgZwzLRFlp0Isx3GQUHR1
-         gtisuP8219LFpasovMBCo4eNr6QkbK9/VHSK7UDo=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from x230.qca.qualcomm.com (85-76-109-196-nat.elisa-mobile.fi [85.76.109.196])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 6DB3C60134;
-        Wed, 13 Nov 2019 13:31:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1573651920;
-        bh=qwJ2Oo0KqZdd1YXe+mjqkWJ1BrXqxUI5ngVUOeKPA1I=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=jixMM2UUz84RN1UdsXQkjBCVCp8K2hveVW3eyGz7m+VagqdvAouV/LiZ1F3yrbmXa
-         4IGuLmH0tg6E99srUM7D/JfoVlA4mLNq0YyBTECabA9l1sKDWUnmFub6f20qmnlADd
-         C9ad05e9eyGxuG0JhA3GFZTA6nWbDRQzpnjg63SA=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 6DB3C60134
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Luca Coelho <luca@coelho.fi>
-Cc:     linux-wireless@vger.kernel.org, linuxwifi@intel.com,
-        david.e.box@intel.com, joe.konno@intel.com
-Subject: Re: pull-request: iwlwifi-next 2019-11-13
-References: <3bb7b4be7b9011f4f043b84f26657260f7c4ab02.camel@coelho.fi>
-Date:   Wed, 13 Nov 2019 15:31:56 +0200
-In-Reply-To: <3bb7b4be7b9011f4f043b84f26657260f7c4ab02.camel@coelho.fi> (Luca
-        Coelho's message of "Wed, 13 Nov 2019 11:30:30 +0200")
-Message-ID: <87imnnx5pv.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        Wed, 13 Nov 2019 08:33:41 -0500
+Received: by mail-ot1-f68.google.com with SMTP id f10so1607630oto.3;
+        Wed, 13 Nov 2019 05:33:39 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=JMGlC8/pif+jB1W9f7yADN5pub681PWuOZ+nengKGCU=;
+        b=Qr0ycIfWrnd1ks/W+lyYxxeqoxdTAsyK0QGm91lIBqgDFIbGyxBQUKLkJokB7kqv2i
+         74KkIUk5XJzWE0oYa3zhXx7HsFwVnimXSfJOsWUWTqx4naxfqSh20v9giThqoPXIazPx
+         nHSYi00nQ5/xRc15KUxC3BgGbrM/vDZuCXf0uwTk3tTCU9bA1lLjlFRWZWOBpD4g75cR
+         JYMegTN1CcOc8euP4zINJtxhM9TpJae+HG3FU/dyqR4Wxx5fbBkRjfmLV2wsV3+E0NUp
+         ZOcQiRizXOU17R+97u9QOMAv1Tk8IceLGCbCfc/FPTHrMfeU2CyM2Xqi1b3g3NRRlel/
+         K0XQ==
+X-Gm-Message-State: APjAAAXTnC4iCD++3kzuOt7FlHZQN6fVf5SgHzUS5KzWjT8RwJBcyHrL
+        K4LKe7Puokel2bTljoTxtg==
+X-Google-Smtp-Source: APXvYqxD6IWsewO9TdJ3bFTU+gY51WG3vNByXca8SVZxroh1OIj61piRW22xnKzAJ5FMxoSywmWh5A==
+X-Received: by 2002:a05:6830:1f4b:: with SMTP id u11mr2802561oth.60.1573652018588;
+        Wed, 13 Nov 2019 05:33:38 -0800 (PST)
+Received: from localhost (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id u204sm685118oig.35.2019.11.13.05.33.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 13 Nov 2019 05:33:37 -0800 (PST)
+Date:   Wed, 13 Nov 2019 07:33:37 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     "H. Nikolaus Schaller" <hns@goldelico.com>
+Cc:     =?iso-8859-1?Q?Beno=EEt?= Cousson <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Mike Rapoport <rppt@linux.ibm.com>,
+        David Sterba <dsterba@suse.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Petr Mladek <pmladek@suse.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        "H. Nikolaus Schaller" <hns@goldelico.com>,
+        Kefeng Wang <wangkefeng.wang@huawei.com>,
+        Yangtao Li <tiny.windzz@gmail.com>,
+        Alexios Zavras <alexios.zavras@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Allison Randal <allison@lohutok.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        John Stultz <john.stultz@linaro.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        devicetree@vger.kernel.org, letux-kernel@openphoenux.org,
+        linux-mmc@vger.kernel.org, kernel@pyra-handheld.com,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        netdev@vger.kernel.org, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v3 01/12] Documentation: dt: wireless: update wl1251 for
+ sdio
+Message-ID: <20191113133337.GA3987@bogus>
+References: <cover.1573122644.git.hns@goldelico.com>
+ <17b12e91c878dcb74160e3df5f88bc8a9e3f7fce.1573122644.git.hns@goldelico.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <17b12e91c878dcb74160e3df5f88bc8a9e3f7fce.1573122644.git.hns@goldelico.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Luca Coelho <luca@coelho.fi> writes:
+On Thu,  7 Nov 2019 11:30:34 +0100, "H. Nikolaus Schaller" wrote:
+> The standard method for sdio devices connected to
+> an sdio interface is to define them as a child node
+> like we can see with wlcore.
+> 
+> Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
+> Acked-by: Kalle Valo <kvalo@codeaurora.org>
+> ---
+>  .../bindings/net/wireless/ti,wl1251.txt       | 26 +++++++++++++++++++
+>  1 file changed, 26 insertions(+)
+> 
 
-> Here's the second batch of patches intended for v5.4.  This includes the
-> last patchset 2 patchsets I sent.  Usual development work.  More
-> details about the contents in the tag description.
->
-> I pushed these patches to my pending branch when I sent them out and
-> kbuildbot reported success.
->
-> Please let me know if there are any issues.
-
-I did a test pull and it fails to build for me, error below. I had
-'CONFIG_ACPI=y' in the config, in case that makes a difference.
-
-drivers/net/wireless/intel/iwlwifi/mvm/fw.c:683:15: warning: 'struct iwl_mvm_sar_profile' declared inside parameter list will not be visible outside of this definition or declaration
-        struct iwl_mvm_sar_profile *profile,
-               ^~~~~~~~~~~~~~~~~~~
-drivers/net/wireless/intel/iwlwifi/mvm/fw.c: In function 'iwl_mvm_sar_set_profile':
-drivers/net/wireless/intel/iwlwifi/mvm/fw.c:688:9: error: dereferencing pointer to incomplete type 'struct iwl_mvm_sar_profile'
-  profile->enabled = enabled;
-         ^~
-drivers/net/wireless/intel/iwlwifi/mvm/fw.c: In function 'iwl_mvm_sar_get_wrds_table':
-drivers/net/wireless/intel/iwlwifi/mvm/fw.c:732:48: error: 'struct iwl_mvm' has no member named 'sar_profiles'
-  ret = iwl_mvm_sar_set_profile(mvm, table, &mvm->sar_profiles[0],
-                                                ^~
-drivers/net/wireless/intel/iwlwifi/mvm/fw.c: In function 'iwl_mvm_sar_get_ewrd_table':
-drivers/net/wireless/intel/iwlwifi/mvm/fw.c:786:16: error: 'struct iwl_mvm' has no member named 'sar_profiles'
-            &mvm->sar_profiles[i + 1],
-                ^~
-drivers/net/wireless/intel/iwlwifi/mvm/fw.c: In function 'iwl_mvm_sar_get_wgds_table':
-drivers/net/wireless/intel/iwlwifi/mvm/fw.c:822:5: error: 'struct iwl_mvm' has no member named 'geo_rev'
-  mvm->geo_rev = tbl_rev;
-     ^~
-drivers/net/wireless/intel/iwlwifi/mvm/fw.c:834:7: error: 'struct iwl_mvm' has no member named 'geo_profiles'
-    mvm->geo_profiles[i].values[j] = entry->integer.value;
-       ^~
-At top level:
-drivers/net/wireless/intel/iwlwifi/mvm/fw.c:800:12: warning: 'iwl_mvm_sar_get_wgds_table' defined but not used [-Wunused-function]
- static int iwl_mvm_sar_get_wgds_table(struct iwl_mvm *mvm)
-            ^~~~~~~~~~~~~~~~~~~~~~~~~~
-drivers/net/wireless/intel/iwlwifi/mvm/fw.c:739:12: warning: 'iwl_mvm_sar_get_ewrd_table' defined but not used [-Wunused-function]
- static int iwl_mvm_sar_get_ewrd_table(struct iwl_mvm *mvm)
-            ^~~~~~~~~~~~~~~~~~~~~~~~~~
-drivers/net/wireless/intel/iwlwifi/mvm/fw.c:701:12: warning: 'iwl_mvm_sar_get_wrds_table' defined but not used [-Wunused-function]
- static int iwl_mvm_sar_get_wrds_table(struct iwl_mvm *mvm)
-            ^~~~~~~~~~~~~~~~~~~~~~~~~~
-scripts/Makefile.build:265: recipe for target 'drivers/net/wireless/intel/iwlwifi/mvm/fw.o' failed
-
--- 
-Kalle Valo
+Reviewed-by: Rob Herring <robh@kernel.org>
