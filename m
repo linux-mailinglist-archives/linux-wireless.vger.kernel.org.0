@@ -2,96 +2,70 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B33F1FA757
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Nov 2019 04:38:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 20BA0FA777
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Nov 2019 04:43:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727338AbfKMDh7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 12 Nov 2019 22:37:59 -0500
-Received: from smtp.codeaurora.org ([198.145.29.96]:55336 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726994AbfKMDh7 (ORCPT
+        id S1727567AbfKMDnz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 12 Nov 2019 22:43:55 -0500
+Received: from rtits2.realtek.com ([211.75.126.72]:55040 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726994AbfKMDny (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 12 Nov 2019 22:37:59 -0500
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 6DFD160591; Wed, 13 Nov 2019 03:37:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1573616278;
-        bh=GEBgaE4DdNY7qFa24EInCgdSI0JAGHtKkaCNGSQWEpo=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=NRtfCdPdoaUfDngdFCmj2RtA5t6p/IyYO/860f6GKn0H4VYasYcGLyBnlX9NrtYhX
-         f00+dwv4A0N5jfw9/8JU2uCcRrq1ZhnYSg+/5/zQ2F27hESX681yG1Ch3YyC+I1kTa
-         p3fb3Z+3bnNvA2BCMgMFqmGDfC2gLz1lWA+BFBMY=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED autolearn=no autolearn_force=no version=3.4.0
-Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by smtp.codeaurora.org (Postfix) with ESMTP id BCA8C601E7;
-        Wed, 13 Nov 2019 03:37:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1573616277;
-        bh=GEBgaE4DdNY7qFa24EInCgdSI0JAGHtKkaCNGSQWEpo=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=E8PM8j6AtSy5jbglHF8pcJqGCJ9WhpxRqFw9ZnhJth3HeXGTWPjibTFXg4K1AN6K/
-         cpSTv50vWcg2JTU7RAQhCyN/7VBz5KKGSTECycbILk5aUyRTEqojDC6YK5WZwPk9Zp
-         qeJ+Bd3+VFET4NdbTgq6jrq5WcRNRjE6URZo28G0=
+        Tue, 12 Nov 2019 22:43:54 -0500
+Authenticated-By: 
+X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID xAD3hk9N032480, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (RTITCASV02.realtek.com.tw[172.21.6.19])
+        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id xAD3hk9N032480
+        (version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+        Wed, 13 Nov 2019 11:43:47 +0800
+Received: from RTITMBSVM04.realtek.com.tw ([fe80::e404:880:2ef1:1aa1]) by
+ RTITCASV02.realtek.com.tw ([::1]) with mapi id 14.03.0468.000; Wed, 13 Nov
+ 2019 11:43:46 +0800
+From:   Pkshih <pkshih@realtek.com>
+To:     Lucas Stach <dev@lynxeye.de>, wlanfae <wlanfae@realtek.com>
+CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+Subject: RE: long delays in rtl8723 drivers in irq disabled sections
+Thread-Topic: long delays in rtl8723 drivers in irq disabled sections
+Thread-Index: AQHVmZ3DU4qY/o9NJ0yDyHj2LmPNT6eIcdBQ
+Date:   Wed, 13 Nov 2019 03:43:45 +0000
+Message-ID: <5B2DA6FDDF928F4E855344EE0A5C39D1D5C9CE47@RTITMBSVM04.realtek.com.tw>
+References: <5de65447f1d115f436f764a7ec811c478afbe2e0.camel@lynxeye.de>
+In-Reply-To: <5de65447f1d115f436f764a7ec811c478afbe2e0.camel@lynxeye.de>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.95]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-Date:   Wed, 13 Nov 2019 11:37:57 +0800
-From:   Wen Gong <wgong@codeaurora.org>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH v6 3/3] ath10k: add workqueue for RX path of sdio
-In-Reply-To: <87r22ewqi6.fsf@codeaurora.org>
-References: <1569402639-31720-1-git-send-email-wgong@codeaurora.org>
- <1569402639-31720-4-git-send-email-wgong@codeaurora.org>
- <8736f92sfx.fsf@kamboji.qca.qualcomm.com>
- <3f3641ad49a2664d346558760e38b404@codeaurora.org>
- <70f8f208f631a2a2c7337f45b873a16e@codeaurora.org>
- <87r22ewqi6.fsf@codeaurora.org>
-Message-ID: <ee6539c50cff626968984df3b511a5a8@codeaurora.org>
-X-Sender: wgong@codeaurora.org
-User-Agent: Roundcube Webmail/1.2.5
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2019-11-11 20:23, Kalle Valo wrote:
-> Wen Gong <wgong@codeaurora.org> writes:
-> 
->> On 2019-11-01 15:42, Wen Gong wrote:
->>> On 2019-10-31 17:08, Kalle Valo wrote:
->>> 、> I just realised that this is RX path so we should use
->>> ATH10K_SKB_RXCB()
->>>> instead. I made the change below to this commit in pending branch:
->>>> 
->>> I will test with the new patch together with other performance 
->>> patches.
->> Hi Kalle, I have tested with the patches of pending branch, it is
->> success.
->> result is same with the public review which I tested before.
->> 
->> the patches I tested on pending branch:
->> 
->> ath10k: enable alt data of TX path for sdio
->> ath10k: add htt TX bundle for sdio
->> ath10k: disable TX complete indication of htt for sdio
->> ath10k: enable napi on RX path for sdio
->> ath10k: sdio: remove struct ath10k_sdio_rx_data::status
->> ath10k: sdio: cosmetic cleanup
->> ath10k: add workqueue for RX path of sdio
->> ath10k: change max RX bundle size from 8 to 32 for sdio
->> ath10k: enable RX bundle receive for sdio
-> 
-> Very good, thanks for testing.
-Hi Kalle,
-
-this patch will trigger connect fail for PSK mode AP:
-ath10k: add workqueue for RX path of sdio
-
-I have sent patch to fix it:
-ath10k: clear ieee80211_rx_status for sdio
+DQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IGxpbnV4LXdpcmVsZXNzLW93
+bmVyQHZnZXIua2VybmVsLm9yZyBbbWFpbHRvOmxpbnV4LXdpcmVsZXNzLW93bmVyQHZnZXIua2Vy
+bmVsLm9yZ10gT24gQmVoYWxmDQo+IE9mIEx1Y2FzIFN0YWNoDQo+IFNlbnQ6IFdlZG5lc2RheSwg
+Tm92ZW1iZXIgMTMsIDIwMTkgNTowMiBBTQ0KPiBUbzogd2xhbmZhZTsgUGtzaGloDQo+IENjOiBs
+aW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmc7IG5ldGRldkB2Z2VyLmtlcm5lbC5vcmcNCj4g
+U3ViamVjdDogbG9uZyBkZWxheXMgaW4gcnRsODcyMyBkcml2ZXJzIGluIGlycSBkaXNhYmxlZCBz
+ZWN0aW9ucw0KPiANCj4gSGkgYWxsLA0KPiANCj4gd2hpbGUgaW52ZXN0aWdhdGluZyBzb21lIGxh
+dGVuY3kgaXNzdWVzIG9uIG15IGxhcHRvcCBJIHN0dW1ibGVkIGFjcm9zcw0KPiBxdWl0ZSBsYXJn
+ZSBkZWxheXMgaW4gdGhlIHJ0bDg3MjMgUEhZIGNvZGUsIHdoaWNoIGFyZSBkb25lIGluIElSUQ0K
+PiBkaXNhYmxlZCBhdG9taWMgc2VjdGlvbnMsIHdoaWNoIGlzIGJsb2NraW5nIElSUSBzZXJ2aWNp
+bmcgZm9yIGFsbA0KPiBkZXZpY2VzIGluIHRoZSBzeXN0ZW0uDQo+IA0KPiBTcGVjaWZpY2FsbHkg
+dGhlcmUgYXJlIDMgY29uc2VjdXRpdmUgMW1zIGRlbGF5cyBpbg0KPiBydGw4NzIzX3BoeV9yZl9z
+ZXJpYWxfcmVhZCgpLCB3aGljaCBpcyB1c2VkIGluIGFuIElSUSBkaXNhYmxlZCBjYWxsDQo+IHBh
+dGguIFNhZGx5IHRob3NlIGRlbGF5cyBkb24ndCBoYXZlIGFueSBjb21tZW50IGluIHRoZSBjb2Rl
+IGV4cGxhaW5pbmcNCj4gd2h5IHRoZXkgYXJlIG5lZWRlZC4gSSBob3BlIHRoYXQgYW55b25lIGNh
+biB0ZWxsIGlmIHRob3NlIGRlbGF5cyBhcmUNCj4gc3RyaWN0bHkgbmVjY2Vzc2FyeSBhbmQgaWYg
+c28gaWYgdGhleSByZWFsbHkgbmVlZCB0byBiZSB0aGlzIGxvbmcuDQo+IA0KDQpUaGVzZSBkZWxh
+eXMgYXJlIGJlY2F1c2UgcmVhZCBSRiByZWdpc3RlciBpcyBhbiBpbmRpcmVjdCBhY2Nlc3MgdGhh
+dCBoYXJkd2FyZQ0KbmVlZHMgdGltZSB0byBhY2NvbXBsaXNoIHJlYWQgYWN0aW9uLCBidXQgdGhl
+cmUncyBubyByZWFkeSBiaXQsIHNvIGRlbGF5DQppcyByZXF1aXJlZCB0byBndWFyYW50ZWUgdGhl
+IHJlYWQgdmFsdWUgaXMgY29ycmVjdC4gSXQgaXMgcG9zc2libGUgdG8NCnVzZSBzbWFsbGVyIGRl
+bGF5LCBidXQgaXQncyBleGFjdGx5IHJlcXVpcmVkLg0KDQpBbiBhbHRlcm5hdGl2ZSB3YXkgaXMg
+dG8gcHJldmVudCBjYWxsaW5nIHRoaXMgZnVuY3Rpb24gaW4gSVJRIGRpc2FibGVkIGZsb3cuDQpD
+b3VsZCB5b3Ugc2hhcmUgdGhlIGNhbGxpbmcgdHJhY2U/DQoNClRoYW5rcw0KUEsNCg0K
