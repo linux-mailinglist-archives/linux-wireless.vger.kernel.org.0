@@ -2,104 +2,158 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A053FAAB7
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Nov 2019 08:16:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A916FAB2F
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Nov 2019 08:46:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726066AbfKMHQ6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 13 Nov 2019 02:16:58 -0500
-Received: from rtits2.realtek.com ([211.75.126.72]:39176 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725966AbfKMHQ5 (ORCPT
+        id S1726107AbfKMHqp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 13 Nov 2019 02:46:45 -0500
+Received: from mail-pf1-f196.google.com ([209.85.210.196]:36299 "EHLO
+        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726074AbfKMHqp (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 13 Nov 2019 02:16:57 -0500
-Authenticated-By: 
-X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID xAD7Gl0a011488, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (RTITCAS11.realtek.com.tw[172.21.6.12])
-        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id xAD7Gl0a011488
-        (version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 13 Nov 2019 15:16:47 +0800
-Received: from RTITMBSVM04.realtek.com.tw ([fe80::e404:880:2ef1:1aa1]) by
- RTITCAS11.realtek.com.tw ([fe80::7c6d:ced5:c4ff:8297%15]) with mapi id
- 14.03.0468.000; Wed, 13 Nov 2019 15:16:47 +0800
-From:   Tony Chuang <yhchuang@realtek.com>
-To:     Chris Chiu <chiu@endlessm.com>
-CC:     Kalle Valo <kvalo@codeaurora.org>,
+        Wed, 13 Nov 2019 02:46:45 -0500
+Received: by mail-pf1-f196.google.com with SMTP id b19so1081982pfd.3
+        for <linux-wireless@vger.kernel.org>; Tue, 12 Nov 2019 23:46:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=endlessm-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:subject:from:in-reply-to:date:cc
+         :content-transfer-encoding:message-id:references:to;
+        bh=B5UaMl8b4UFCWhCr451ZpAWkPQoBej5IKxFSCate++4=;
+        b=D2hwmaqLY4aU+GURmRbWzY07JcsDByj4w85U4ZNJVqJRFl0mghgW1AKlR5J+qcQA2y
+         L2aPEl7Ry+oUBObPOjNWDG3Otu9e2yBwFhFMDcKyYGcWQTT01O69GzrAdYgn+ezqCZi4
+         D7ZDnMjkd50a1XSdLDnkAlgxT/74GqaOGGom1dcUAcV022NKPDbuCxhBexWnCrzowaXz
+         Aw0Vc0SKqQGOuKAyOdZS8ZkXnutjL7/3yj49YHVgWqmrPH/mNB+KURzy+1qeCVenm+b4
+         2qFJMsnvpOc46nqXZ/X4MRWfnCZ2TPJ5I74MOENJGWI9AKQ2tcGoMWulfNdWkitoRVyN
+         q6CQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:subject:from:in-reply-to:date:cc
+         :content-transfer-encoding:message-id:references:to;
+        bh=B5UaMl8b4UFCWhCr451ZpAWkPQoBej5IKxFSCate++4=;
+        b=Ia4zrCpxCAvKV3kaWqc9SMUCC+LznRWpkyVRRvYw5V3ZW0jOA79cafJd0XcliXGtfV
+         ixFEkF96clzNxUMEgBlp7VdQTgKamKHT4lCgKGQzXnXPvRsgSXEOS9wc41f8plrW+HJf
+         hgxiSaT4WVd/9Fvf4l7dRIxTr+ugwb4ABQggEF/idqmq8QUdaWmmejqTq17Me8jXE7g5
+         gIMhugVVXBAv/9qMeiqbASU+mR5WijIpBUanVfafuLtTeIHMie9HSG+ldERwSfock2WP
+         B1e2LDppjX14jGoih9b0wiwEe4Sd/Vf+FVD76nvdYH2WUPnjkYMMK6YAYKQZ33KV/4QG
+         EaNA==
+X-Gm-Message-State: APjAAAXaWOcYELCyQTk643dBNA/C6rjXTMMotdomlMUjlEN/jV2PflbP
+        g1rpfXIJReTTLYOWFfjOa3dV/Q==
+X-Google-Smtp-Source: APXvYqxhlnqX5tSD2kPewGDqmlAsyOeOS6Up7XatpmettnnP4lpikxssTRmeFcoDGe40MkCYGVgfIw==
+X-Received: by 2002:aa7:8d8b:: with SMTP id i11mr2686390pfr.45.1573631204022;
+        Tue, 12 Nov 2019 23:46:44 -0800 (PST)
+Received: from [10.158.21.189] ([101.9.161.91])
+        by smtp.gmail.com with ESMTPSA id n72sm1417301pjc.4.2019.11.12.23.46.43
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 12 Nov 2019 23:46:43 -0800 (PST)
+Content-Type: text/plain;
+        charset=utf-8
+Mime-Version: 1.0 (1.0)
+Subject: Re: [PATCH 3/4] rtw88: pci: enable CLKREQ function if host supports it
+From:   Chris Chiu <chiu@endlessm.com>
+X-Mailer: iPhone Mail (16F203)
+In-Reply-To: <F7CD281DE3E379468C6D07993EA72F84D1927EEB@RTITMBSVM04.realtek.com.tw>
+Date:   Wed, 13 Nov 2019 15:46:41 +0800
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
         linux-wireless <linux-wireless@vger.kernel.org>,
         Brian Norris <briannorris@chromium.org>
-Subject: RE: [PATCH 3/4] rtw88: pci: enable CLKREQ function if host supports it
-Thread-Topic: [PATCH 3/4] rtw88: pci: enable CLKREQ function if host
- supports it
-Thread-Index: AQHVlVzGDP6XmjIWP0CNsTeAQy9ElaeIIiEAgACWhrA=
-Date:   Wed, 13 Nov 2019 07:16:46 +0000
-Message-ID: <F7CD281DE3E379468C6D07993EA72F84D1927EEB@RTITMBSVM04.realtek.com.tw>
-References: <20191107111603.12317-1-yhchuang@realtek.com>
- <20191107111603.12317-4-yhchuang@realtek.com>
- <CAB4CAwd6MDSyPTVGr-3T6nNTpJiJy1jEfNWtyriqoMJyV83jdw@mail.gmail.com>
-In-Reply-To: <CAB4CAwd6MDSyPTVGr-3T6nNTpJiJy1jEfNWtyriqoMJyV83jdw@mail.gmail.com>
-Accept-Language: zh-TW, en-US
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.68.183]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <A25CD5DF-9227-46DB-BBFF-0153F37723E9@endlessm.com>
+References: <20191107111603.12317-1-yhchuang@realtek.com> <20191107111603.12317-4-yhchuang@realtek.com> <CAB4CAwd6MDSyPTVGr-3T6nNTpJiJy1jEfNWtyriqoMJyV83jdw@mail.gmail.com> <F7CD281DE3E379468C6D07993EA72F84D1927EEB@RTITMBSVM04.realtek.com.tw>
+To:     Tony Chuang <yhchuang@realtek.com>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-PiBPbiBUaHUsIE5vdiA3LCAyMDE5IGF0IDc6MTYgUE0gPHloY2h1YW5nQHJlYWx0ZWsuY29tPiB3
-cm90ZToNCj4gPg0KPiA+IEZyb206IFlhbi1Ic3VhbiBDaHVhbmcgPHloY2h1YW5nQHJlYWx0ZWsu
-Y29tPg0KPiA+DQo+ID4gQnkgUmVhbHRlaydzIGRlc2lnbiwgdGhlcmUgYXJlIHR3byBIVyBtb2R1
-bGVzIGFzc29jaWF0ZWQgZm9yIENMS1JFUSwNCj4gPiBvbmUgaXMgcmVzcG9uc2libGUgdG8gZm9s
-bG93IHRoZSBQQ0lFIGhvc3Qgc2V0dGluZ3MsIGFuZCBhbm90aGVyDQo+ID4gaXMgdG8gYWN0dWFs
-bHkgd29ya2luZyBvbiBpdC4gQnV0IHRoZSBtb2R1bGUgdGhhdCBpcyBhY3R1YWxseSB3b3JraW5n
-DQo+ID4gb24gaXQgaXMgZGVmYXVsdCBkaXNhYmxlZCwgYW5kIGRyaXZlciBzaG91bGQgZW5hYmxl
-IHRoYXQgbW9kdWxlIGlmDQo+ID4gaG9zdCBhbmQgZGV2aWNlIGhhdmUgc3VjY2Vzc2Z1bGx5IHN5
-bmMnZWQgd2l0aCBlYWNoIG90aGVyLg0KPiA+DQo+ID4gVGhlIG1vZHVsZSBpcyBkZWZhdWx0IGRp
-c2FibGVkIGJlY2F1c2Ugc29tZXRpbWVzIHRoZSBob3N0IGRvZXMgbm90DQo+ID4gc3VwcG9ydCBp
-dCwgYW5kIGlmIHRoZXJlIGlzIGFueSBpbmNvcnJlY3Qgc2V0dGluZ3MgKGV4LiBDTEtSRVEjIGlz
-DQo+ID4gbm90IEJpLURpcmVjdGlvbiksIGRldmljZSBjYW4gYmUgbG9zdCBhbmQgZGlzY29ubmVj
-dGVkIHRvIHRoZSBob3N0Lg0KPiA+DQo+ID4gU28gZHJpdmVyIHNob3VsZCBmaXJzdCBjaGVjayBh
-ZnRlciBob3N0IGFuZCBkZXZpY2UgYXJlIHN5bmMnZWQsIGFuZA0KPiA+IHRoZSBob3N0IGRvZXMg
-c3VwcG9ydCB0aGUgZnVuY3Rpb24gYW5kIHNldCBpdCBpbiBjb25maWd1cmF0aW9uDQo+ID4gc3Bh
-Y2UsIHRoZW4gZHJpdmVyIGNhbiB0dXJuIG9uIHRoZSBIVyBtb2R1bGUgdG8gd29ya2luZyBvbiBp
-dC4NCj4gPg0KPiA+IFNpZ25lZC1vZmYtYnk6IFlhbi1Ic3VhbiBDaHVhbmcgPHloY2h1YW5nQHJl
-YWx0ZWsuY29tPg0KPiA+IC0tLQ0KPiA+ICBkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0
-dzg4L3BjaS5jIHwgODMNCj4gKysrKysrKysrKysrKysrKysrKysrKysrDQo+ID4gIGRyaXZlcnMv
-bmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgvcGNpLmggfCAgNSArKw0KPiA+ICAyIGZpbGVzIGNo
-YW5nZWQsIDg4IGluc2VydGlvbnMoKykNCj4gPg0KPiA+IGRpZmYgLS1naXQgYS9kcml2ZXJzL25l
-dC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L3BjaS5jDQo+IGIvZHJpdmVycy9uZXQvd2lyZWxlc3Mv
-cmVhbHRlay9ydHc4OC9wY2kuYw0KPiA+IGluZGV4IDZkMWFhNmY0MWU4NC4uNGZjZWY4YTZmYzQy
-IDEwMDY0NA0KPiA+IC0tLSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgvcGNp
-LmMNCj4gPiArKysgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L3BjaS5jDQo+
-ID4gQEAgLTEwODEsNiArMTA4MSwzMyBAQCBzdGF0aWMgdm9pZCBydHdfZGJpX3dyaXRlOChzdHJ1
-Y3QgcnR3X2Rldg0KPiAqcnR3ZGV2LCB1MTYgYWRkciwgdTggZGF0YSkNCj4gPiAgICAgICAgIFdB
-Uk4oZmxhZywgImZhaWxlZCB0byB3cml0ZSB0byBEQkkgcmVnaXN0ZXIsIGFkZHI9MHglMDR4XG4i
-LA0KPiBhZGRyKTsNCj4gPiAgfQ0KPiA+DQo+ID4gK3N0YXRpYyBpbnQgcnR3X2RiaV9yZWFkOChz
-dHJ1Y3QgcnR3X2RldiAqcnR3ZGV2LCB1MTYgYWRkciwgdTggKnZhbHVlKQ0KPiA+ICt7DQo+ID4g
-KyAgICAgICB1MTYgcmVhZF9hZGRyID0gYWRkciAmIEJJVFNfREJJX0FERFJfTUFTSzsNCj4gPiAr
-ICAgICAgIHU4IGZsYWc7DQo+ID4gKyAgICAgICB1OCBjbnQ7DQo+ID4gKw0KPiA+ICsgICAgICAg
-cnR3X3dyaXRlMTYocnR3ZGV2LCBSRUdfREJJX0ZMQUdfVjEsIHJlYWRfYWRkcik7DQo+ID4gKyAg
-ICAgICBydHdfd3JpdGU4KHJ0d2RldiwgUkVHX0RCSV9GTEFHX1YxICsgMiwgQklUX0RCSV9SRkxB
-RyA+Pg0KPiAxNik7DQo+ID4gKw0KPiA+ICsgICAgICAgZm9yIChjbnQgPSAwOyBjbnQgPCBSVFdf
-UENJX1dSX1JFVFJZX0NOVDsgY250KyspIHsNCj4gPiArICAgICAgICAgICAgICAgZmxhZyA9IHJ0
-d19yZWFkOChydHdkZXYsIFJFR19EQklfRkxBR19WMSArIDIpOw0KPiA+ICsgICAgICAgICAgICAg
-ICBpZiAoZmxhZyA9PSAwKQ0KPiA+ICsgICAgICAgICAgICAgICAgICAgICAgIGJyZWFrOw0KPiBX
-aHkgbm90IGp1c3QgZG9pbmcgJyBydHdfcmVhZDgocnR3ZGV2LCByZWFkX2FkZHIpOycgYW5kIHJl
-dHVybiBoZXJlPw0KPiBUaGVuIHlvdSBkb24ndCBuZWVkIHRvIGNoZWNrIHRoZSBmbGFnICE9IDAg
-YXQgdGhlIGZvbGxvd2luZy4gSXQgd291bGQNCj4gbWFrZSB0aGUgY29kZSBjbGVhbmVyIGFuZCBz
-YW1lIGV4cHJlc3NpdmUuDQoNCk1heWJlIGl0IHdvdWxkIGxvb2sgY2xlYW5lciwgYnV0IHlvdSBu
-ZWVkIHRvIGFkZCBzdGF0ZW1lbnRzIHdoZW4NCidpZiAoZmxhZyA9PSAwKScsIHRoZW4gdGhlIGlu
-ZGVudHMgd2lsbCBiZSBkZWVwZXIuDQpBbHNvIHlvdSB3aWxsIG5lZWQgdG8gcmV0dXJuIDAgYXQg
-dGhlIGVuZCBpZiAnZmxhZyA9PSAwJy4NCg0KU28geW91IHN0aWxsIHRoaW5rIGl0J3MgY2xlYW5l
-ciB0byB3cml0ZSBpdCB0aGF0IHdheT8gSWYgc28sIEkgY2FuIHRyeSB0byBzZW5kDQp2MiBmb3Ig
-aXQuDQoNCj4gDQo+ID4gKw0KPiA+ICsgICAgICAgICAgICAgICB1ZGVsYXkoMTApOw0KPiA+ICsg
-ICAgICAgfQ0KPiA+ICsNCj4gPiArICAgICAgIGlmIChmbGFnICE9IDApIHsNCj4gPiArICAgICAg
-ICAgICAgICAgV0FSTigxLCAiZmFpbGVkIHRvIHJlYWQgREJJIHJlZ2lzdGVyLCBhZGRyPTB4JTA0
-eFxuIiwNCj4gYWRkcik7DQo+ID4gKyAgICAgICAgICAgICAgIHJldHVybiAtRUlPOw0KPiA+ICsg
-ICAgICAgfQ0KPiA+ICsNCj4gPiArICAgICAgIHJlYWRfYWRkciA9IFJFR19EQklfUkRBVEFfVjEg
-KyAoYWRkciAmIDMpOw0KPiA+ICsgICAgICAgKnZhbHVlID0gcnR3X3JlYWQ4KHJ0d2RldiwgcmVh
-ZF9hZGRyKTsNCj4gPiArICAgICAgIHJldHVybiAwOw0KPiA+ICt9DQo+ID4gKw0KPiA+IC0tDQo+
-ID4gMi4xNy4xDQo+ID4NCj4gDQoNCllhbi1Ic3Vhbg0K
+
+
+Tony Chuang <yhchuang@realtek.com> =E6=96=BC 2019=E5=B9=B411=E6=9C=8813=E6=97=
+=A5 =E4=B8=8B=E5=8D=883:16 =E5=AF=AB=E9=81=93=EF=BC=9A
+
+>>> On Thu, Nov 7, 2019 at 7:16 PM <yhchuang@realtek.com> wrote:
+>>>=20
+>>> From: Yan-Hsuan Chuang <yhchuang@realtek.com>
+>>>=20
+>>> By Realtek's design, there are two HW modules associated for CLKREQ,
+>>> one is responsible to follow the PCIE host settings, and another
+>>> is to actually working on it. But the module that is actually working
+>>> on it is default disabled, and driver should enable that module if
+>>> host and device have successfully sync'ed with each other.
+>>>=20
+>>> The module is default disabled because sometimes the host does not
+>>> support it, and if there is any incorrect settings (ex. CLKREQ# is
+>>> not Bi-Direction), device can be lost and disconnected to the host.
+>>>=20
+>>> So driver should first check after host and device are sync'ed, and
+>>> the host does support the function and set it in configuration
+>>> space, then driver can turn on the HW module to working on it.
+>>>=20
+>>> Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
+>>> ---
+>>> drivers/net/wireless/realtek/rtw88/pci.c | 83
+>> ++++++++++++++++++++++++
+>>> drivers/net/wireless/realtek/rtw88/pci.h |  5 ++
+>>> 2 files changed, 88 insertions(+)
+>>>=20
+>>> diff --git a/drivers/net/wireless/realtek/rtw88/pci.c
+>> b/drivers/net/wireless/realtek/rtw88/pci.c
+>>> index 6d1aa6f41e84..4fcef8a6fc42 100644
+>>> --- a/drivers/net/wireless/realtek/rtw88/pci.c
+>>> +++ b/drivers/net/wireless/realtek/rtw88/pci.c
+>>> @@ -1081,6 +1081,33 @@ static void rtw_dbi_write8(struct rtw_dev
+>> *rtwdev, u16 addr, u8 data)
+>>>        WARN(flag, "failed to write to DBI register, addr=3D0x%04x\n",
+>> addr);
+>>> }
+>>>=20
+>>> +static int rtw_dbi_read8(struct rtw_dev *rtwdev, u16 addr, u8 *value)
+>>> +{
+>>> +       u16 read_addr =3D addr & BITS_DBI_ADDR_MASK;
+>>> +       u8 flag;
+>>> +       u8 cnt;
+>>> +
+>>> +       rtw_write16(rtwdev, REG_DBI_FLAG_V1, read_addr);
+>>> +       rtw_write8(rtwdev, REG_DBI_FLAG_V1 + 2, BIT_DBI_RFLAG >>
+>> 16);
+>>> +
+>>> +       for (cnt =3D 0; cnt < RTW_PCI_WR_RETRY_CNT; cnt++) {
+>>> +               flag =3D rtw_read8(rtwdev, REG_DBI_FLAG_V1 + 2);
+>>> +               if (flag =3D=3D 0)
+>>> +                       break;
+>> Why not just doing ' rtw_read8(rtwdev, read_addr);' and return here?
+>> Then you don't need to check the flag !=3D 0 at the following. It would
+>> make the code cleaner and same expressive.
+>=20
+> Maybe it would look cleaner, but you need to add statements when
+> 'if (flag =3D=3D 0)', then the indents will be deeper.
+> Also you will need to return 0 at the end if 'flag =3D=3D 0'.
+>=20
+
+Yup. And I believe it=E2=80=99s still under 80 characters so I think I=E2=80=
+=99m cool with it.
+
+> So you still think it's cleaner to write it that way? If so, I can try to s=
+end
+> v2 for it.
+>>=20
+>>> +
+>>> +               udelay(10);
+>>> +       }
+>>> +
+>>> +       if (flag !=3D 0) {
+>>> +               WARN(1, "failed to read DBI register, addr=3D0x%04x\n",
+>> addr);
+>>> +               return -EIO;
+>>> +       }
+>>> +
+>>> +       read_addr =3D REG_DBI_RDATA_V1 + (addr & 3);
+>>> +       *value =3D rtw_read8(rtwdev, read_addr);
+>>> +       return 0;
+>>> +}
+>>> +
+>>> --
+>>> 2.17.1
+>>>=20
+>>=20
+>=20
+> Yan-Hsuan
