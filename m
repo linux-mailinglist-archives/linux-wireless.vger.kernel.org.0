@@ -2,125 +2,104 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 37A8BFAA90
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Nov 2019 08:00:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A053FAAB7
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Nov 2019 08:16:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726449AbfKMHAg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 13 Nov 2019 02:00:36 -0500
-Received: from mail-wr1-f65.google.com ([209.85.221.65]:35287 "EHLO
-        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726190AbfKMHAg (ORCPT
+        id S1726066AbfKMHQ6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 13 Nov 2019 02:16:58 -0500
+Received: from rtits2.realtek.com ([211.75.126.72]:39176 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725966AbfKMHQ5 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 13 Nov 2019 02:00:36 -0500
-Received: by mail-wr1-f65.google.com with SMTP id s5so1012876wrw.2
-        for <linux-wireless@vger.kernel.org>; Tue, 12 Nov 2019 23:00:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=netronome-com.20150623.gappssmtp.com; s=20150623;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=rugrYaxZCiP2gM4hsS0PmTY/T9FiVMFS6xWRRwp7Uks=;
-        b=iLRBNzKe3Ty81HmbP7CV1b8+p7WvR524FmbkGbeQglx6vlgdPRIEtlT5aQ667wL1tT
-         fa5Jk+lPWh5Aba5vbf7Qv0SxdNsfarPP+m89qaVpdBD6q1y1SSlKcVdKojOZpKOD6o6d
-         jEoXGrwvFyn1VDH2BV6jkMVVKdGisEZ2TLc3U1/71aFYAsETXJS68fekfL7x/wRPQzTg
-         d/pWhoDmZkQTwAmliusnRed7o+iNesnwRFxbNsvtQbpgkOmFNOCfJIHBwFSiHBHwIe+b
-         t9EiLrDZ3+fQ7fkIi/BH3hCQgdP8zNfLg+akdBk7LMt23LTHtzUqpviZYkD8Uxx8o59Z
-         8yWQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=rugrYaxZCiP2gM4hsS0PmTY/T9FiVMFS6xWRRwp7Uks=;
-        b=oolpwm0H2/LSadjUjibkljnxDCyalJgHprV2ZJPioR1T6h3p6FqZz09rALVLF9oml/
-         q7WCl6GibpTwq1STEQ7sEfTAdSR1+UHxiol32aTFZDD3frZLDSnk1HLNSo8CUhiFqYLJ
-         ZIiLnSJHffAlyZ+7Hz0KPovz7cjrVEULnWGRb4pbylhQ/i043xKLIoRw15H/Zetf8ITf
-         lyS4T/GsdgApg59d52LrdInvZJWzWjKu+X6hMBy6RuS286nzO3kmWAEben+zDgo9rkwS
-         Ud5QtkcJrAfD6z9QjXOnHDuU1VtLBHQr/UqjBLWmjJdTyjfPa+3FtJ7xtvNkVSki6Phw
-         zAFA==
-X-Gm-Message-State: APjAAAWSlhVvqNGh+80SUn0f/O7fICGWvmrfHGCZXgtr2hXY79XHKLGr
-        2Qcn+t3otu0Z6wVoGmRcJZfFdY9DoBk=
-X-Google-Smtp-Source: APXvYqzxXo5+THKRrJBHRbmsw/q0KRwfVf5UnS3F6vDui9Ylkubka0wc+vrYEI1WSLZkHjvVSA2Odw==
-X-Received: by 2002:adf:e8ce:: with SMTP id k14mr1149133wrn.393.1573628432175;
-        Tue, 12 Nov 2019 23:00:32 -0800 (PST)
-Received: from netronome.com ([2001:982:756:703:d63d:7eff:fe99:ac9d])
-        by smtp.gmail.com with ESMTPSA id 4sm1292022wmd.33.2019.11.12.23.00.31
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 12 Nov 2019 23:00:32 -0800 (PST)
-Date:   Wed, 13 Nov 2019 08:00:31 +0100
-From:   Simon Horman <simon.horman@netronome.com>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     Jeffrey Hugo <jeffrey.l.hugo@gmail.com>, davem@davemloft.net,
-        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, MSM <linux-arm-msm@vger.kernel.org>,
-        lkml <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] ath10k: Handle "invalid" BDFs for msm8998 devices
-Message-ID: <20191113070031.qlikjctfnoxtald5@netronome.com>
-References: <20191106234712.2380-1-jeffrey.l.hugo@gmail.com>
- <20191112090444.ak2xu67eawfgpdgb@netronome.com>
- <CAOCk7NoXv2-8GO=VYS8dNPJF6sj=S3RbkfqQGW0kvvVmR8V1kw@mail.gmail.com>
- <878soks77y.fsf@kamboji.qca.qualcomm.com>
+        Wed, 13 Nov 2019 02:16:57 -0500
+Authenticated-By: 
+X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID xAD7Gl0a011488, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (RTITCAS11.realtek.com.tw[172.21.6.12])
+        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id xAD7Gl0a011488
+        (version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 13 Nov 2019 15:16:47 +0800
+Received: from RTITMBSVM04.realtek.com.tw ([fe80::e404:880:2ef1:1aa1]) by
+ RTITCAS11.realtek.com.tw ([fe80::7c6d:ced5:c4ff:8297%15]) with mapi id
+ 14.03.0468.000; Wed, 13 Nov 2019 15:16:47 +0800
+From:   Tony Chuang <yhchuang@realtek.com>
+To:     Chris Chiu <chiu@endlessm.com>
+CC:     Kalle Valo <kvalo@codeaurora.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Brian Norris <briannorris@chromium.org>
+Subject: RE: [PATCH 3/4] rtw88: pci: enable CLKREQ function if host supports it
+Thread-Topic: [PATCH 3/4] rtw88: pci: enable CLKREQ function if host
+ supports it
+Thread-Index: AQHVlVzGDP6XmjIWP0CNsTeAQy9ElaeIIiEAgACWhrA=
+Date:   Wed, 13 Nov 2019 07:16:46 +0000
+Message-ID: <F7CD281DE3E379468C6D07993EA72F84D1927EEB@RTITMBSVM04.realtek.com.tw>
+References: <20191107111603.12317-1-yhchuang@realtek.com>
+ <20191107111603.12317-4-yhchuang@realtek.com>
+ <CAB4CAwd6MDSyPTVGr-3T6nNTpJiJy1jEfNWtyriqoMJyV83jdw@mail.gmail.com>
+In-Reply-To: <CAB4CAwd6MDSyPTVGr-3T6nNTpJiJy1jEfNWtyriqoMJyV83jdw@mail.gmail.com>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.68.183]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <878soks77y.fsf@kamboji.qca.qualcomm.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Nov 13, 2019 at 06:58:25AM +0200, Kalle Valo wrote:
-> Jeffrey Hugo <jeffrey.l.hugo@gmail.com> writes:
-> 
-> > On Tue, Nov 12, 2019 at 2:04 AM Simon Horman <simon.horman@netronome.com> wrote:
-> >>
-> >> On Wed, Nov 06, 2019 at 03:47:12PM -0800, Jeffrey Hugo wrote:
-> >> > When the BDF download QMI message has the end field set to 1, it signals
-> >> > the end of the transfer, and triggers the firmware to do a CRC check.  The
-> >> > BDFs for msm8998 devices fail this check, yet the firmware is happy to
-> >> > still use the BDF.  It appears that this error is not caught by the
-> >> > downstream drive by concidence, therefore there are production devices
-> >> > in the field where this issue needs to be handled otherwise we cannot
-> >> > support wifi on them.  So, attempt to detect this scenario as best we can
-> >> > and treat it as non-fatal.
-> >> >
-> >> > Signed-off-by: Jeffrey Hugo <jeffrey.l.hugo@gmail.com>
-> >> > ---
-> >> >  drivers/net/wireless/ath/ath10k/qmi.c | 11 +++++++----
-> >> >  1 file changed, 7 insertions(+), 4 deletions(-)
-> >> >
-> >> > diff --git a/drivers/net/wireless/ath/ath10k/qmi.c b/drivers/net/wireless/ath/ath10k/qmi.c
-> >> > index eb618a2652db..5ff8cfc93778 100644
-> >> > --- a/drivers/net/wireless/ath/ath10k/qmi.c
-> >> > +++ b/drivers/net/wireless/ath/ath10k/qmi.c
-> >> > @@ -265,10 +265,13 @@ static int ath10k_qmi_bdf_dnld_send_sync(struct ath10k_qmi *qmi)
-> >> >                       goto out;
-> >> >
-> >> >               if (resp.resp.result != QMI_RESULT_SUCCESS_V01) {
-> >> > -                     ath10k_err(ar, "failed to download board data file: %d\n",
-> >> > -                                resp.resp.error);
-> >> > -                     ret = -EINVAL;
-> >> > -                     goto out;
-> >> > +                     if (!(req->end == 1 &&
-> >> > +                           resp.resp.result == QMI_ERR_MALFORMED_MSG_V01)) {
-> >>
-> >> Would it make sense to combine the inner and outer condition,
-> >> something like this (completely untested) ?
-> >
-> > I guess, make sense from what perspective?  Looks like the assembly
-> > ends up being the same, so it would be down to "readability" which is
-> > subjective - I personally don't see a major advantage to one way or
-> > the other.  It does look like Kalle already picked up this patch, so
-> > I'm guessing that if folks feel your suggestion is superior, then it
-> > would need to be a follow on.
-
-My feeling is that it would reduce the churn in the patch making the
-patch more readable and likewise improving the readability of the code.
-But I do agree this does not affect run-time and I am ambivalent about
-updating the patch if it has already been (semi-)accepted.
-
-> 
-> Same here, it's only on the pending branch so changes are still
-> possible.
-> 
-> -- 
-> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+PiBPbiBUaHUsIE5vdiA3LCAyMDE5IGF0IDc6MTYgUE0gPHloY2h1YW5nQHJlYWx0ZWsuY29tPiB3
+cm90ZToNCj4gPg0KPiA+IEZyb206IFlhbi1Ic3VhbiBDaHVhbmcgPHloY2h1YW5nQHJlYWx0ZWsu
+Y29tPg0KPiA+DQo+ID4gQnkgUmVhbHRlaydzIGRlc2lnbiwgdGhlcmUgYXJlIHR3byBIVyBtb2R1
+bGVzIGFzc29jaWF0ZWQgZm9yIENMS1JFUSwNCj4gPiBvbmUgaXMgcmVzcG9uc2libGUgdG8gZm9s
+bG93IHRoZSBQQ0lFIGhvc3Qgc2V0dGluZ3MsIGFuZCBhbm90aGVyDQo+ID4gaXMgdG8gYWN0dWFs
+bHkgd29ya2luZyBvbiBpdC4gQnV0IHRoZSBtb2R1bGUgdGhhdCBpcyBhY3R1YWxseSB3b3JraW5n
+DQo+ID4gb24gaXQgaXMgZGVmYXVsdCBkaXNhYmxlZCwgYW5kIGRyaXZlciBzaG91bGQgZW5hYmxl
+IHRoYXQgbW9kdWxlIGlmDQo+ID4gaG9zdCBhbmQgZGV2aWNlIGhhdmUgc3VjY2Vzc2Z1bGx5IHN5
+bmMnZWQgd2l0aCBlYWNoIG90aGVyLg0KPiA+DQo+ID4gVGhlIG1vZHVsZSBpcyBkZWZhdWx0IGRp
+c2FibGVkIGJlY2F1c2Ugc29tZXRpbWVzIHRoZSBob3N0IGRvZXMgbm90DQo+ID4gc3VwcG9ydCBp
+dCwgYW5kIGlmIHRoZXJlIGlzIGFueSBpbmNvcnJlY3Qgc2V0dGluZ3MgKGV4LiBDTEtSRVEjIGlz
+DQo+ID4gbm90IEJpLURpcmVjdGlvbiksIGRldmljZSBjYW4gYmUgbG9zdCBhbmQgZGlzY29ubmVj
+dGVkIHRvIHRoZSBob3N0Lg0KPiA+DQo+ID4gU28gZHJpdmVyIHNob3VsZCBmaXJzdCBjaGVjayBh
+ZnRlciBob3N0IGFuZCBkZXZpY2UgYXJlIHN5bmMnZWQsIGFuZA0KPiA+IHRoZSBob3N0IGRvZXMg
+c3VwcG9ydCB0aGUgZnVuY3Rpb24gYW5kIHNldCBpdCBpbiBjb25maWd1cmF0aW9uDQo+ID4gc3Bh
+Y2UsIHRoZW4gZHJpdmVyIGNhbiB0dXJuIG9uIHRoZSBIVyBtb2R1bGUgdG8gd29ya2luZyBvbiBp
+dC4NCj4gPg0KPiA+IFNpZ25lZC1vZmYtYnk6IFlhbi1Ic3VhbiBDaHVhbmcgPHloY2h1YW5nQHJl
+YWx0ZWsuY29tPg0KPiA+IC0tLQ0KPiA+ICBkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0
+dzg4L3BjaS5jIHwgODMNCj4gKysrKysrKysrKysrKysrKysrKysrKysrDQo+ID4gIGRyaXZlcnMv
+bmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgvcGNpLmggfCAgNSArKw0KPiA+ICAyIGZpbGVzIGNo
+YW5nZWQsIDg4IGluc2VydGlvbnMoKykNCj4gPg0KPiA+IGRpZmYgLS1naXQgYS9kcml2ZXJzL25l
+dC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L3BjaS5jDQo+IGIvZHJpdmVycy9uZXQvd2lyZWxlc3Mv
+cmVhbHRlay9ydHc4OC9wY2kuYw0KPiA+IGluZGV4IDZkMWFhNmY0MWU4NC4uNGZjZWY4YTZmYzQy
+IDEwMDY0NA0KPiA+IC0tLSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgvcGNp
+LmMNCj4gPiArKysgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L3BjaS5jDQo+
+ID4gQEAgLTEwODEsNiArMTA4MSwzMyBAQCBzdGF0aWMgdm9pZCBydHdfZGJpX3dyaXRlOChzdHJ1
+Y3QgcnR3X2Rldg0KPiAqcnR3ZGV2LCB1MTYgYWRkciwgdTggZGF0YSkNCj4gPiAgICAgICAgIFdB
+Uk4oZmxhZywgImZhaWxlZCB0byB3cml0ZSB0byBEQkkgcmVnaXN0ZXIsIGFkZHI9MHglMDR4XG4i
+LA0KPiBhZGRyKTsNCj4gPiAgfQ0KPiA+DQo+ID4gK3N0YXRpYyBpbnQgcnR3X2RiaV9yZWFkOChz
+dHJ1Y3QgcnR3X2RldiAqcnR3ZGV2LCB1MTYgYWRkciwgdTggKnZhbHVlKQ0KPiA+ICt7DQo+ID4g
+KyAgICAgICB1MTYgcmVhZF9hZGRyID0gYWRkciAmIEJJVFNfREJJX0FERFJfTUFTSzsNCj4gPiAr
+ICAgICAgIHU4IGZsYWc7DQo+ID4gKyAgICAgICB1OCBjbnQ7DQo+ID4gKw0KPiA+ICsgICAgICAg
+cnR3X3dyaXRlMTYocnR3ZGV2LCBSRUdfREJJX0ZMQUdfVjEsIHJlYWRfYWRkcik7DQo+ID4gKyAg
+ICAgICBydHdfd3JpdGU4KHJ0d2RldiwgUkVHX0RCSV9GTEFHX1YxICsgMiwgQklUX0RCSV9SRkxB
+RyA+Pg0KPiAxNik7DQo+ID4gKw0KPiA+ICsgICAgICAgZm9yIChjbnQgPSAwOyBjbnQgPCBSVFdf
+UENJX1dSX1JFVFJZX0NOVDsgY250KyspIHsNCj4gPiArICAgICAgICAgICAgICAgZmxhZyA9IHJ0
+d19yZWFkOChydHdkZXYsIFJFR19EQklfRkxBR19WMSArIDIpOw0KPiA+ICsgICAgICAgICAgICAg
+ICBpZiAoZmxhZyA9PSAwKQ0KPiA+ICsgICAgICAgICAgICAgICAgICAgICAgIGJyZWFrOw0KPiBX
+aHkgbm90IGp1c3QgZG9pbmcgJyBydHdfcmVhZDgocnR3ZGV2LCByZWFkX2FkZHIpOycgYW5kIHJl
+dHVybiBoZXJlPw0KPiBUaGVuIHlvdSBkb24ndCBuZWVkIHRvIGNoZWNrIHRoZSBmbGFnICE9IDAg
+YXQgdGhlIGZvbGxvd2luZy4gSXQgd291bGQNCj4gbWFrZSB0aGUgY29kZSBjbGVhbmVyIGFuZCBz
+YW1lIGV4cHJlc3NpdmUuDQoNCk1heWJlIGl0IHdvdWxkIGxvb2sgY2xlYW5lciwgYnV0IHlvdSBu
+ZWVkIHRvIGFkZCBzdGF0ZW1lbnRzIHdoZW4NCidpZiAoZmxhZyA9PSAwKScsIHRoZW4gdGhlIGlu
+ZGVudHMgd2lsbCBiZSBkZWVwZXIuDQpBbHNvIHlvdSB3aWxsIG5lZWQgdG8gcmV0dXJuIDAgYXQg
+dGhlIGVuZCBpZiAnZmxhZyA9PSAwJy4NCg0KU28geW91IHN0aWxsIHRoaW5rIGl0J3MgY2xlYW5l
+ciB0byB3cml0ZSBpdCB0aGF0IHdheT8gSWYgc28sIEkgY2FuIHRyeSB0byBzZW5kDQp2MiBmb3Ig
+aXQuDQoNCj4gDQo+ID4gKw0KPiA+ICsgICAgICAgICAgICAgICB1ZGVsYXkoMTApOw0KPiA+ICsg
+ICAgICAgfQ0KPiA+ICsNCj4gPiArICAgICAgIGlmIChmbGFnICE9IDApIHsNCj4gPiArICAgICAg
+ICAgICAgICAgV0FSTigxLCAiZmFpbGVkIHRvIHJlYWQgREJJIHJlZ2lzdGVyLCBhZGRyPTB4JTA0
+eFxuIiwNCj4gYWRkcik7DQo+ID4gKyAgICAgICAgICAgICAgIHJldHVybiAtRUlPOw0KPiA+ICsg
+ICAgICAgfQ0KPiA+ICsNCj4gPiArICAgICAgIHJlYWRfYWRkciA9IFJFR19EQklfUkRBVEFfVjEg
+KyAoYWRkciAmIDMpOw0KPiA+ICsgICAgICAgKnZhbHVlID0gcnR3X3JlYWQ4KHJ0d2RldiwgcmVh
+ZF9hZGRyKTsNCj4gPiArICAgICAgIHJldHVybiAwOw0KPiA+ICt9DQo+ID4gKw0KPiA+IC0tDQo+
+ID4gMi4xNy4xDQo+ID4NCj4gDQoNCllhbi1Ic3Vhbg0K
