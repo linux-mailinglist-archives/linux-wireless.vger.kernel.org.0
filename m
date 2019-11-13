@@ -2,133 +2,118 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D5FEFB313
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Nov 2019 16:00:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B936FFB33F
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Nov 2019 16:11:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727959AbfKMPA6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 13 Nov 2019 10:00:58 -0500
-Received: from mail-vs1-f68.google.com ([209.85.217.68]:34884 "EHLO
-        mail-vs1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727954AbfKMPA5 (ORCPT
+        id S1727827AbfKMPLy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 13 Nov 2019 10:11:54 -0500
+Received: from mail-il1-f195.google.com ([209.85.166.195]:46147 "EHLO
+        mail-il1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727550AbfKMPLy (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 13 Nov 2019 10:00:57 -0500
-Received: by mail-vs1-f68.google.com with SMTP id k15so1545776vsp.2
-        for <linux-wireless@vger.kernel.org>; Wed, 13 Nov 2019 07:00:57 -0800 (PST)
+        Wed, 13 Nov 2019 10:11:54 -0500
+Received: by mail-il1-f195.google.com with SMTP id q1so2072361ile.13;
+        Wed, 13 Nov 2019 07:11:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
+        d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=18QPHmOseXT+yzsFwAer/TbjlpYB5o9UBaAP9/d9pUE=;
-        b=GLJS4YyNw1JPNotlqgFZOM8VcQAD3ZVZLhiii8V0hbXP94GlRKCJ469G3NMKdY7Pfr
-         004DqpiT8ITxKKZLi/ucgwFHVeKqzTqlFZOGkvmbMONa/06MaWEUwGgNfWVJGvrzyAAO
-         wctEGsJhuN2Lc2nam60lMoCYAgT1qRuRlrd7e3/kHV25RDeHAuy4TrHHQAwz8taGxYPQ
-         2LVD/KhvvzufAex4I3xjLV07+LS+fbBxDPl+Oetc6ufjv0VmEkiMnR8+uDk6iIgdPm6/
-         431d5rOvc5vMPSPCwawPYuJ6Oj07QdltIa2vu9X9Ckc6+OGAIDZ9opO+sJXFoor4joU2
-         UV6A==
+        bh=Oet7iN8luRIwm2cG0enPN1WO0bfm28VO//v3gW2hBng=;
+        b=GQ3XKwp2AaghEayclfUYMtj06s+kNJ3pPo2qy6o3BVVu+8If5uf39XUbSZkODmmU33
+         WDeAJ8hMYpRvi0cUuO/9lrc5XrrtCMRY0onKyQX+VhaWxmTI+Lz9TJj1GRzi3MxLdt04
+         tekoOYGqFXTHSJzb8/GuwS7hRrbPZtwG2eVfgxdjpZDVr/iJ7aDlFDftc6szgU1vzaZZ
+         WeINd1UMXpiaoHmo3QdKl8f0o0Ow/3SUmeyIp8xIT1lRCsIZfWVSQ879lYWJ+YbUDZFI
+         II3F90tO59YT4Nw3DJh9VTEt4ev51KZP3sH1tQ8GQslbwz1aAb4/uPva7x6OjUoSOp5j
+         K0/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=18QPHmOseXT+yzsFwAer/TbjlpYB5o9UBaAP9/d9pUE=;
-        b=KT+AM9zSH11Ep6bnzTPHN84D5JWhw5XLP3rhwCexJ8UaeY5iZQMuB8W7zMX1t++vsF
-         waN4YK5pO/PejXwKhcUxHlK+9MMzVE0eFZy3JXuIkQFu/D+M+SDy5eFBr3MTFXT9aqNX
-         YYlVK8gm6sfgDfh0KgQmXsd+pgQtNWYpxsgGjsjsNmlUGoFwn2vUZVp1uuQyVgvkzztz
-         mbT7INStdc0IziuSOAFFHZaN8yNahXj2rFPZosdnzh0Y1s+O8X527VOth1RrE/gDNvTh
-         SlteeOsqEdEAFuhHxFSWbUv4oPHmrEqEBkno7Y3Ee1P9TRlFWQ6/BXWDnWYqpJ1b5hZ1
-         bzqw==
-X-Gm-Message-State: APjAAAU9RLohm6U1SqWg+fW8iZDuLO4xYnu2mMPXxTkztzRij37QCIiN
-        93g3Ps7UqN310qcIicAFBddxebI22aKjHnaswqjwfQ==
-X-Google-Smtp-Source: APXvYqyuVsKw1hxxOrfbrro4rOldCyXuIdYgmON1Ze1BYkf6ZoLctTL/jjZGyEOVIodkjH/epFXAKbozJM7fdv7uNJ8=
-X-Received: by 2002:a05:6102:36d:: with SMTP id f13mr2230043vsa.34.1573657256572;
- Wed, 13 Nov 2019 07:00:56 -0800 (PST)
+        bh=Oet7iN8luRIwm2cG0enPN1WO0bfm28VO//v3gW2hBng=;
+        b=Em66xhI7iZmT7T/LPeWqOybGO8xX7y921lsnGQIplIt7UXDqLcwhSWXWW3A2PFTdDp
+         NdI07XtacRO9E02E1F671F71fgkCBB4QY4MPOgrMNPttUqk0+YcSKRU7o6zHKI11lEKQ
+         0Y/2wERkDV137dSeG1E6PylhdAo+gx1HWHE2KkKJUlpGwa8kVZXTWvrCiuYdLE7Ohq+d
+         Q7UDdGk88mjfNQAf0s+iSemnK3E9kF4Qh8UlO3pSIupl52kDkYgDjWoMaT5hXOFjQa5N
+         bTP547L7khkGVIUqu1guJ+eMTjQ1qoYsX6pz5c+RV4iCrHpVCnm/MjYgkTt6Y8vjCaGW
+         Itmg==
+X-Gm-Message-State: APjAAAUwwKznI1dOHVP9MtBLPCI29yxtfKU9x8i4EDTN7qdEFeRJ69gN
+        fW+pAlV0H4DH0Bp/pSySPEkt8KcwS0s1I0a28NaNIA==
+X-Google-Smtp-Source: APXvYqzJ6RcpW1AKYY64DcFg31Q3abj110+k7vsmWtJerlFCp+aLmBxLTxWeV9e9dqahFbq36N/70b0ruDZgONRDz9Y=
+X-Received: by 2002:a92:831d:: with SMTP id f29mr4564735ild.263.1573657912726;
+ Wed, 13 Nov 2019 07:11:52 -0800 (PST)
 MIME-Version: 1.0
-References: <20191109103046.26445-1-ulf.hansson@linaro.org>
- <20191109103046.26445-2-ulf.hansson@linaro.org> <CAD=FV=WccuUCnQXHq-HuojCRAKVA02D7HBS9PgqSqq3+b2v4CA@mail.gmail.com>
- <CAPDyKFq-djJFyYu6Wzg9t9hLOQMuqff9KVhbx5Zp5i=Fsynsdw@mail.gmail.com> <CAD=FV=VWdzqGY778SXZnC1YDyxc6EHPgRjkJ_2sOHrxHTams-w@mail.gmail.com>
-In-Reply-To: <CAD=FV=VWdzqGY778SXZnC1YDyxc6EHPgRjkJ_2sOHrxHTams-w@mail.gmail.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Wed, 13 Nov 2019 16:00:20 +0100
-Message-ID: <CAPDyKFoz_RTC=PLbsGgOZi15uwqBT618zEjBzRZgvd3HFQPEWg@mail.gmail.com>
-Subject: Re: [PATCH v2 1/3] mwifiex: Re-work support for SDIO HW reset
-To:     Doug Anderson <dianders@chromium.org>
-Cc:     Linux MMC List <linux-mmc@vger.kernel.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Matthias Kaehlcke <mka@chromium.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Tony Lindgren <tony@atomide.com>,
-        Wen Gong <wgong@codeaurora.org>,
-        Erik Stromdahl <erik.stromdahl@gmail.com>,
-        Eyal Reizer <eyalreizer@gmail.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Brian Norris <briannorris@chromium.org>
+References: <20191106231650.1580-1-jeffrey.l.hugo@gmail.com>
+ <20191112084225.casuncbo7z54vu4g@netronome.com> <CAOCk7NpNgtTSus2KtBMe=jGLFyBumVfRVxKxtHoEDUEt2-6tqQ@mail.gmail.com>
+ <87d0dws79m.fsf@kamboji.qca.qualcomm.com>
+In-Reply-To: <87d0dws79m.fsf@kamboji.qca.qualcomm.com>
+From:   Jeffrey Hugo <jeffrey.l.hugo@gmail.com>
+Date:   Wed, 13 Nov 2019 08:11:41 -0700
+Message-ID: <CAOCk7NpGm7jLH-z9CdJaYAGkg_WuiBxtxgwby+BJef=asFbavw@mail.gmail.com>
+Subject: Re: [PATCH] ath10k: Fix qmi init error handling
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Simon Horman <simon.horman@netronome.com>, davem@davemloft.net,
+        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, MSM <linux-arm-msm@vger.kernel.org>,
+        lkml <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 12 Nov 2019 at 19:05, Doug Anderson <dianders@chromium.org> wrote:
+On Tue, Nov 12, 2019 at 9:57 PM Kalle Valo <kvalo@codeaurora.org> wrote:
 >
-> Hi,
+> Jeffrey Hugo <jeffrey.l.hugo@gmail.com> writes:
 >
-> On Tue, Nov 12, 2019 at 4:14 AM Ulf Hansson <ulf.hansson@linaro.org> wrote:
+> > On Tue, Nov 12, 2019 at 1:42 AM Simon Horman <simon.horman@netronome.com> wrote:
+> >>
+> >> On Wed, Nov 06, 2019 at 03:16:50PM -0800, Jeffrey Hugo wrote:
+> >> > When ath10k_qmi_init() fails, the error handling does not free the irq
+> >> > resources, which causes an issue if we EPROBE_DEFER as we'll attempt to
+> >> > (re-)register irqs which are already registered.
+> >> >
+> >> > Fixes: ba94c753ccb4 ("ath10k: add QMI message handshake for wcn3990 client")
+> >> > Signed-off-by: Jeffrey Hugo <jeffrey.l.hugo@gmail.com>
+> >> > ---
+> >> >  drivers/net/wireless/ath/ath10k/snoc.c | 2 +-
+> >> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >> >
+> >> > diff --git a/drivers/net/wireless/ath/ath10k/snoc.c b/drivers/net/wireless/ath/ath10k/snoc.c
+> >> > index fc15a0037f0e..f2a0b7aaad3b 100644
+> >> > --- a/drivers/net/wireless/ath/ath10k/snoc.c
+> >> > +++ b/drivers/net/wireless/ath/ath10k/snoc.c
+> >> > @@ -1729,7 +1729,7 @@ static int ath10k_snoc_probe(struct platform_device *pdev)
+> >> >       ret = ath10k_qmi_init(ar, msa_size);
+> >> >       if (ret) {
+> >> >               ath10k_warn(ar, "failed to register wlfw qmi client: %d\n", ret);
+> >> > -             goto err_core_destroy;
+> >> > +             goto err_free_irq;
+> >> >       }
+> >>
+> >> From a casual examination of the code this seems like a step in the right
+> >> direction. But does this error path also need to call ath10k_hw_power_off() ?
 > >
-> > > > diff --git a/drivers/net/wireless/marvell/mwifiex/sdio.c b/drivers/net/wireless/marvell/mwifiex/sdio.c
-> > > > index 24c041dad9f6..2417c94c29c0 100644
-> > > > --- a/drivers/net/wireless/marvell/mwifiex/sdio.c
-> > > > +++ b/drivers/net/wireless/marvell/mwifiex/sdio.c
-> > > > @@ -444,6 +444,9 @@ static int mwifiex_sdio_suspend(struct device *dev)
-> > > >                 return 0;
-> > > >         }
-> > > >
-> > > > +       if (!adapter->is_adapter_up)
-> > > > +               return -EBUSY;
-> > >
-> > > I'm moderately concerned that there might be cases where firmware
-> > > never got loaded but we could suspend/resume OK.  ...and now we never
-> > > will?  I'm not familiar enough with the code to know if this is a real
-> > > concern, so I guess we can do this and then see...
-> >
-> > There is a completion variable that is used to make sure the firmware
-> > is loaded, before the mwifiex driver runs ->suspend|remove(). This is
-> > needed, because during ->probe() the FW will be loaded asynchronously,
-> > hence both mwifiex_sdio_remove() and mwifiex_sdio_suspend(), may be
-> > called while waiting for the FW to be loaded.
-> >
-> > If a HW reset has been scheduled but not completed, which would be the
-> > case if mmc_hw_reset() gets called after mmc_pm_notify() with a
-> > PM_SUSPEND_PREPARE. This is because mmc_pm_notify() then disables the
-> > rescan work, but then re-kicks/enables it at PM_POST_SUSPEND (after
-> > the system has resumed).
-> >
-> > Returning -EBUSY, should allow the mmc rescan work to be completed
-> > when the system have resumed.
-> >
-> > Of course, one could also considering using pm_wakeup_event(), in case
-> > mmc_hw_reset() needed to schedule the reset, as to prevent the system
-> > for suspending for a small amount of time. As to make sure the rescan
-> > work, gets to run. But I am not sure that's needed here.
+> > It probably should.  I don't see any fatal errors from the step being
+> > skipped, although it might silence some regulator warnings about being
+> > left on.  Unlikely to be observed by most folks as I was initing the
+> > driver pretty early to debug some things.  Looks like Kalle already
+> > picked up this patch though, so I guess your suggestion would need to
+> > be a follow up.
 >
-> I was more worried that we could get into a state where we'd return
-> EBUSY forever, but I think I've convinced myself that this isn't
-> possible.  If we fail to load things then the adapter variable will be
-> freed anyway.
->
->
-> > Finally, if you want to verify that the above system suspend path
-> > works fine, you could change the call to "_mmc_detect_change(host, 0,
-> > false)" in mmc_sdio_hw_reset(), into "_mmc_detect_change(host,
-> > msecs_to_jiffies(30000), false)", in patch3.
-> >
-> > This should leave you a 30s window of where you can try to system
-> > suspend the platform, while also waiting for the scheduled reset to be
-> > completed.
->
-> It worked.
->
-> https://pastebin.com/NdsvAdE8
+> Actually it's only in the pending branch, which means that the patch can
+> be changed or a new version can be submitted:
 
-Great, thanks for confirming!
+Thats an interesting flow.  Ok.
 
-Kind regards
-Uffe
+>
+> https://wireless.wiki.kernel.org/en/users/drivers/ath10k/submittingpatches#patch_flow
+>
+> The easiest way to check the state of a wireless patch is from
+> patchwork:
+>
+> https://patchwork.kernel.org/patch/11231325/
+>
+> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches#checking_state_of_patches_from_patchwork
+>
+> --
+> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
