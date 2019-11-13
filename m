@@ -2,125 +2,125 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 66568FAA11
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Nov 2019 07:13:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 37A8BFAA90
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Nov 2019 08:00:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725939AbfKMGNu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 13 Nov 2019 01:13:50 -0500
-Received: from mail-qt1-f196.google.com ([209.85.160.196]:35687 "EHLO
-        mail-qt1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725866AbfKMGNu (ORCPT
+        id S1726449AbfKMHAg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 13 Nov 2019 02:00:36 -0500
+Received: from mail-wr1-f65.google.com ([209.85.221.65]:35287 "EHLO
+        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726190AbfKMHAg (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 13 Nov 2019 01:13:50 -0500
-Received: by mail-qt1-f196.google.com with SMTP id n4so1402070qte.2
-        for <linux-wireless@vger.kernel.org>; Tue, 12 Nov 2019 22:13:48 -0800 (PST)
+        Wed, 13 Nov 2019 02:00:36 -0500
+Received: by mail-wr1-f65.google.com with SMTP id s5so1012876wrw.2
+        for <linux-wireless@vger.kernel.org>; Tue, 12 Nov 2019 23:00:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=endlessm-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=H8egHlGJMjuuAuvMnmcFtMV/J2mUbLVKD3E2DqthPlU=;
-        b=OwJXuc73jTzk14sdBN824SNS4sKvOibNrgXrqSYHFmtvOFRFxSl8LFar5L1fjLWdUU
-         fCYafm0aA9vw4up+xsWDZEDhJ55EoePEsrGdaaIPUv86KYZocWKhrwuB3gJg+BFz2lBc
-         +4PwpeKbk0VouC+Qv0WgwYEdgwFCy4ZCkok1LWErdxvFODZxra6vpf9Nh9xnXFYUxL82
-         mYXgVBj42BOiGZQPgczYtZ44HArYpbFzk2vp6vld1J8ehO4t3tg6aaSbJrySNsrGSISp
-         tF3+jbUx5Hdk5wlu1wspJxXXZhut7gTAFrZ/BbwxBufpYqVPaqKFB5FqBkdcVMdF/8El
-         JiOg==
+        d=netronome-com.20150623.gappssmtp.com; s=20150623;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=rugrYaxZCiP2gM4hsS0PmTY/T9FiVMFS6xWRRwp7Uks=;
+        b=iLRBNzKe3Ty81HmbP7CV1b8+p7WvR524FmbkGbeQglx6vlgdPRIEtlT5aQ667wL1tT
+         fa5Jk+lPWh5Aba5vbf7Qv0SxdNsfarPP+m89qaVpdBD6q1y1SSlKcVdKojOZpKOD6o6d
+         jEoXGrwvFyn1VDH2BV6jkMVVKdGisEZ2TLc3U1/71aFYAsETXJS68fekfL7x/wRPQzTg
+         d/pWhoDmZkQTwAmliusnRed7o+iNesnwRFxbNsvtQbpgkOmFNOCfJIHBwFSiHBHwIe+b
+         t9EiLrDZ3+fQ7fkIi/BH3hCQgdP8zNfLg+akdBk7LMt23LTHtzUqpviZYkD8Uxx8o59Z
+         8yWQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=H8egHlGJMjuuAuvMnmcFtMV/J2mUbLVKD3E2DqthPlU=;
-        b=NIdPIpz8ja79sEGgtnkNs3A73+F44+8tCcGsqqGiWrcsdtltIXayIns3MdntyRpMVd
-         Zp5c5B5PFvOKmr4MlBPZK9Npc127x7eACuhzGcxZO5DLoC+2s3K1DSte7RfAwKpRKgkk
-         6lUZ4TVpaiQzSeT0kYE6ZkRHfQzKUigRZ3GpfW+lhuyVvM1FYVkw5TCB7X8jPjKTT2vB
-         +3j7NTDKKC3AFdUvKCDI/Hr797FIji04yHi5PiUKgACJOQFrNDpimqMJRcaUqiEfcX7p
-         qX+EY5Y6b1VTX9HgFvgTYXiXFZBfVrcIA18AlxlzVYg+myu3ADdIqMQ98b3iMEWGkfxk
-         pr6g==
-X-Gm-Message-State: APjAAAWh3LtU1ShtyfOKI5R6pvgnO5FfUOPJwB+98IV6BqD9z73HoM5z
-        8hPArfdJNYl7st+wFmWVYF0Rd6GzHs8BSlGkwGiQkw==
-X-Google-Smtp-Source: APXvYqw7ChBqvENqLqiVyQ4WVXX6Qz8Zw3Xv7qBNH7BmCaNdO7fUpjeOWwENm7ct/bunA8HL0YNwWPtuWCPLaEvf3C4=
-X-Received: by 2002:ac8:3968:: with SMTP id t37mr1134372qtb.37.1573625627541;
- Tue, 12 Nov 2019 22:13:47 -0800 (PST)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=rugrYaxZCiP2gM4hsS0PmTY/T9FiVMFS6xWRRwp7Uks=;
+        b=oolpwm0H2/LSadjUjibkljnxDCyalJgHprV2ZJPioR1T6h3p6FqZz09rALVLF9oml/
+         q7WCl6GibpTwq1STEQ7sEfTAdSR1+UHxiol32aTFZDD3frZLDSnk1HLNSo8CUhiFqYLJ
+         ZIiLnSJHffAlyZ+7Hz0KPovz7cjrVEULnWGRb4pbylhQ/i043xKLIoRw15H/Zetf8ITf
+         lyS4T/GsdgApg59d52LrdInvZJWzWjKu+X6hMBy6RuS286nzO3kmWAEben+zDgo9rkwS
+         Ud5QtkcJrAfD6z9QjXOnHDuU1VtLBHQr/UqjBLWmjJdTyjfPa+3FtJ7xtvNkVSki6Phw
+         zAFA==
+X-Gm-Message-State: APjAAAWSlhVvqNGh+80SUn0f/O7fICGWvmrfHGCZXgtr2hXY79XHKLGr
+        2Qcn+t3otu0Z6wVoGmRcJZfFdY9DoBk=
+X-Google-Smtp-Source: APXvYqzxXo5+THKRrJBHRbmsw/q0KRwfVf5UnS3F6vDui9Ylkubka0wc+vrYEI1WSLZkHjvVSA2Odw==
+X-Received: by 2002:adf:e8ce:: with SMTP id k14mr1149133wrn.393.1573628432175;
+        Tue, 12 Nov 2019 23:00:32 -0800 (PST)
+Received: from netronome.com ([2001:982:756:703:d63d:7eff:fe99:ac9d])
+        by smtp.gmail.com with ESMTPSA id 4sm1292022wmd.33.2019.11.12.23.00.31
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Tue, 12 Nov 2019 23:00:32 -0800 (PST)
+Date:   Wed, 13 Nov 2019 08:00:31 +0100
+From:   Simon Horman <simon.horman@netronome.com>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Jeffrey Hugo <jeffrey.l.hugo@gmail.com>, davem@davemloft.net,
+        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, MSM <linux-arm-msm@vger.kernel.org>,
+        lkml <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] ath10k: Handle "invalid" BDFs for msm8998 devices
+Message-ID: <20191113070031.qlikjctfnoxtald5@netronome.com>
+References: <20191106234712.2380-1-jeffrey.l.hugo@gmail.com>
+ <20191112090444.ak2xu67eawfgpdgb@netronome.com>
+ <CAOCk7NoXv2-8GO=VYS8dNPJF6sj=S3RbkfqQGW0kvvVmR8V1kw@mail.gmail.com>
+ <878soks77y.fsf@kamboji.qca.qualcomm.com>
 MIME-Version: 1.0
-References: <20191107111603.12317-1-yhchuang@realtek.com> <20191107111603.12317-4-yhchuang@realtek.com>
-In-Reply-To: <20191107111603.12317-4-yhchuang@realtek.com>
-From:   Chris Chiu <chiu@endlessm.com>
-Date:   Wed, 13 Nov 2019 14:13:36 +0800
-Message-ID: <CAB4CAwd6MDSyPTVGr-3T6nNTpJiJy1jEfNWtyriqoMJyV83jdw@mail.gmail.com>
-Subject: Re: [PATCH 3/4] rtw88: pci: enable CLKREQ function if host supports it
-To:     Tony Chuang <yhchuang@realtek.com>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Brian Norris <briannorris@chromium.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <878soks77y.fsf@kamboji.qca.qualcomm.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Nov 7, 2019 at 7:16 PM <yhchuang@realtek.com> wrote:
->
-> From: Yan-Hsuan Chuang <yhchuang@realtek.com>
->
-> By Realtek's design, there are two HW modules associated for CLKREQ,
-> one is responsible to follow the PCIE host settings, and another
-> is to actually working on it. But the module that is actually working
-> on it is default disabled, and driver should enable that module if
-> host and device have successfully sync'ed with each other.
->
-> The module is default disabled because sometimes the host does not
-> support it, and if there is any incorrect settings (ex. CLKREQ# is
-> not Bi-Direction), device can be lost and disconnected to the host.
->
-> So driver should first check after host and device are sync'ed, and
-> the host does support the function and set it in configuration
-> space, then driver can turn on the HW module to working on it.
->
-> Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
-> ---
->  drivers/net/wireless/realtek/rtw88/pci.c | 83 ++++++++++++++++++++++++
->  drivers/net/wireless/realtek/rtw88/pci.h |  5 ++
->  2 files changed, 88 insertions(+)
->
-> diff --git a/drivers/net/wireless/realtek/rtw88/pci.c b/drivers/net/wireless/realtek/rtw88/pci.c
-> index 6d1aa6f41e84..4fcef8a6fc42 100644
-> --- a/drivers/net/wireless/realtek/rtw88/pci.c
-> +++ b/drivers/net/wireless/realtek/rtw88/pci.c
-> @@ -1081,6 +1081,33 @@ static void rtw_dbi_write8(struct rtw_dev *rtwdev, u16 addr, u8 data)
->         WARN(flag, "failed to write to DBI register, addr=0x%04x\n", addr);
->  }
->
-> +static int rtw_dbi_read8(struct rtw_dev *rtwdev, u16 addr, u8 *value)
-> +{
-> +       u16 read_addr = addr & BITS_DBI_ADDR_MASK;
-> +       u8 flag;
-> +       u8 cnt;
-> +
-> +       rtw_write16(rtwdev, REG_DBI_FLAG_V1, read_addr);
-> +       rtw_write8(rtwdev, REG_DBI_FLAG_V1 + 2, BIT_DBI_RFLAG >> 16);
-> +
-> +       for (cnt = 0; cnt < RTW_PCI_WR_RETRY_CNT; cnt++) {
-> +               flag = rtw_read8(rtwdev, REG_DBI_FLAG_V1 + 2);
-> +               if (flag == 0)
-> +                       break;
-Why not just doing ' rtw_read8(rtwdev, read_addr);' and return here?
-Then you don't need to check the flag != 0 at the following. It would
-make the code cleaner and same expressive.
+On Wed, Nov 13, 2019 at 06:58:25AM +0200, Kalle Valo wrote:
+> Jeffrey Hugo <jeffrey.l.hugo@gmail.com> writes:
+> 
+> > On Tue, Nov 12, 2019 at 2:04 AM Simon Horman <simon.horman@netronome.com> wrote:
+> >>
+> >> On Wed, Nov 06, 2019 at 03:47:12PM -0800, Jeffrey Hugo wrote:
+> >> > When the BDF download QMI message has the end field set to 1, it signals
+> >> > the end of the transfer, and triggers the firmware to do a CRC check.  The
+> >> > BDFs for msm8998 devices fail this check, yet the firmware is happy to
+> >> > still use the BDF.  It appears that this error is not caught by the
+> >> > downstream drive by concidence, therefore there are production devices
+> >> > in the field where this issue needs to be handled otherwise we cannot
+> >> > support wifi on them.  So, attempt to detect this scenario as best we can
+> >> > and treat it as non-fatal.
+> >> >
+> >> > Signed-off-by: Jeffrey Hugo <jeffrey.l.hugo@gmail.com>
+> >> > ---
+> >> >  drivers/net/wireless/ath/ath10k/qmi.c | 11 +++++++----
+> >> >  1 file changed, 7 insertions(+), 4 deletions(-)
+> >> >
+> >> > diff --git a/drivers/net/wireless/ath/ath10k/qmi.c b/drivers/net/wireless/ath/ath10k/qmi.c
+> >> > index eb618a2652db..5ff8cfc93778 100644
+> >> > --- a/drivers/net/wireless/ath/ath10k/qmi.c
+> >> > +++ b/drivers/net/wireless/ath/ath10k/qmi.c
+> >> > @@ -265,10 +265,13 @@ static int ath10k_qmi_bdf_dnld_send_sync(struct ath10k_qmi *qmi)
+> >> >                       goto out;
+> >> >
+> >> >               if (resp.resp.result != QMI_RESULT_SUCCESS_V01) {
+> >> > -                     ath10k_err(ar, "failed to download board data file: %d\n",
+> >> > -                                resp.resp.error);
+> >> > -                     ret = -EINVAL;
+> >> > -                     goto out;
+> >> > +                     if (!(req->end == 1 &&
+> >> > +                           resp.resp.result == QMI_ERR_MALFORMED_MSG_V01)) {
+> >>
+> >> Would it make sense to combine the inner and outer condition,
+> >> something like this (completely untested) ?
+> >
+> > I guess, make sense from what perspective?  Looks like the assembly
+> > ends up being the same, so it would be down to "readability" which is
+> > subjective - I personally don't see a major advantage to one way or
+> > the other.  It does look like Kalle already picked up this patch, so
+> > I'm guessing that if folks feel your suggestion is superior, then it
+> > would need to be a follow on.
 
-> +
-> +               udelay(10);
-> +       }
-> +
-> +       if (flag != 0) {
-> +               WARN(1, "failed to read DBI register, addr=0x%04x\n", addr);
-> +               return -EIO;
-> +       }
-> +
-> +       read_addr = REG_DBI_RDATA_V1 + (addr & 3);
-> +       *value = rtw_read8(rtwdev, read_addr);
-> +       return 0;
-> +}
-> +
-> --
-> 2.17.1
->
+My feeling is that it would reduce the churn in the patch making the
+patch more readable and likewise improving the readability of the code.
+But I do agree this does not affect run-time and I am ambivalent about
+updating the patch if it has already been (semi-)accepted.
+
+> 
+> Same here, it's only on the pending branch so changes are still
+> possible.
+> 
+> -- 
+> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
