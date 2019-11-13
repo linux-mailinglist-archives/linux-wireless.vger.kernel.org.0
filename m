@@ -2,100 +2,102 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F32EFBB68
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Nov 2019 23:11:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5373DFBC05
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Nov 2019 23:59:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726409AbfKMWLO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 13 Nov 2019 17:11:14 -0500
-Received: from ns.lynxeye.de ([87.118.118.114]:51621 "EHLO lynxeye.de"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726189AbfKMWLO (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 13 Nov 2019 17:11:14 -0500
-Received: by lynxeye.de (Postfix, from userid 501)
-        id 9D655E74222; Wed, 13 Nov 2019 23:11:12 +0100 (CET)
-X-Spam-Checker-Version: SpamAssassin 3.3.1 (2010-03-16) on lynxeye.de
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=3.0 tests=ALL_TRUSTED,BAYES_00
-        autolearn=ham version=3.3.1
-Received: from radon.fritz.box (a89-183-58-16.net-htp.de [89.183.58.16])
-        by lynxeye.de (Postfix) with ESMTPSA id 44667E7414D;
-        Wed, 13 Nov 2019 23:11:11 +0100 (CET)
-Message-ID: <e83f5b699c5652cbe2350ac3576215d24b748e03.camel@lynxeye.de>
-Subject: Re: long delays in rtl8723 drivers in irq disabled sections
-From:   Lucas Stach <dev@lynxeye.de>
-To:     Pkshih <pkshih@realtek.com>, wlanfae <wlanfae@realtek.com>
-Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Date:   Wed, 13 Nov 2019 23:11:10 +0100
-In-Reply-To: <5B2DA6FDDF928F4E855344EE0A5C39D1D5C9CE47@RTITMBSVM04.realtek.com.tw>
-References: <5de65447f1d115f436f764a7ec811c478afbe2e0.camel@lynxeye.de>
-         <5B2DA6FDDF928F4E855344EE0A5C39D1D5C9CE47@RTITMBSVM04.realtek.com.tw>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.1 (3.34.1-1.fc31) 
+        id S1726952AbfKMW7o (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 13 Nov 2019 17:59:44 -0500
+Received: from mail-pg1-f193.google.com ([209.85.215.193]:38478 "EHLO
+        mail-pg1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726605AbfKMW7o (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 13 Nov 2019 17:59:44 -0500
+Received: by mail-pg1-f193.google.com with SMTP id 15so2329761pgh.5
+        for <linux-wireless@vger.kernel.org>; Wed, 13 Nov 2019 14:59:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=x0ZnUt6kpEl8U4BFQc25DnqaMomOkgg87tNLp5MJobU=;
+        b=R0eY7mrKlGW/OVdYhbPMbOVBf7QxU9dLQqSt3WiiDoDKS8ojUQSuj1cJ5zzMazX1hb
+         JTqeimnK15zfrigBOGnw0Bq7/sqQhFU7tOw6X+B5iKTiTR7mMr7rGAtEACGGrXe9fPkb
+         NkZK+FmDj/EJuSRG5oerEwQbu/cKivtP2hZ5jDuw0hXdKcfw/7q15elq09GfpcEcv4K8
+         nOafiv1azzgJ4A5F06hFgXH+xgleCBpIXU0JUe3AqkqfY8rTXWJc/yCQJ3i0pkFvBJ0R
+         kTH0JQ6jMtGy9iIKtMI6NdCt3sBNByqTV1Ht2VTohQOqc9LKt4pbZXkupbvBxiGoVq7T
+         tRLg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=x0ZnUt6kpEl8U4BFQc25DnqaMomOkgg87tNLp5MJobU=;
+        b=N6PSc2DBpX7SNQnDpwT9WtslJS1pfuUxa+fnBHhYeP1NXrf194TTWNvn51PB0u1187
+         T52lCCGiizJz9A1PpQ4z5U2iA8V1NYQltRX3yxoZSyMWl9C3CKgJ0C10qN1fYSXyVn7g
+         mT/48veoaUquZfIYvbI4OMDbDZhKJEZJo2jv9fUzSOcgX0MKje6fS5nQo+82k9hlT1G5
+         Nn13qaKLsknzVhqvw5UJbqmLA0uZZWW3Gm3HZCH6ZJPtknic04syAEh+b0i232rrNStW
+         uRkMlhEbO2TZ/PwINl+4ygeVK6jKAU4munySQVG1vy0j+zHlqLOtzX2qrTlGmajlpXLW
+         qVgg==
+X-Gm-Message-State: APjAAAU7hzHjxwLzpRoiRCzrWHUulXM0jgfJlZU4p21HOph7HazGGe44
+        a0zqFTjPBViHsepgirNdTvJUQw==
+X-Google-Smtp-Source: APXvYqxB6VnLMk6EwZYMzfe4Eo4jDzf5CFGuPJT1iqW0GcmV//9bJ9nx8dCxRAqDYoD6u/PuzXc5Nw==
+X-Received: by 2002:a17:90a:3264:: with SMTP id k91mr8088584pjb.23.1573685981680;
+        Wed, 13 Nov 2019 14:59:41 -0800 (PST)
+Received: from builder (104-188-17-28.lightspeed.sndgca.sbcglobal.net. [104.188.17.28])
+        by smtp.gmail.com with ESMTPSA id h13sm4557008pfr.98.2019.11.13.14.59.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 13 Nov 2019 14:59:41 -0800 (PST)
+Date:   Wed, 13 Nov 2019 14:59:38 -0800
+From:   Bjorn Andersson <bjorn.andersson@linaro.org>
+To:     Jeffrey Hugo <jeffrey.l.hugo@gmail.com>
+Cc:     kvalo@codeaurora.org, davem@davemloft.net,
+        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] ath10k: Handle when FW doesn't support
+ QMI_WLFW_HOST_CAP_REQ_V01
+Message-ID: <20191113225938.GA3727453@builder>
+References: <20191106233130.2169-1-jeffrey.l.hugo@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191106233130.2169-1-jeffrey.l.hugo@gmail.com>
+User-Agent: Mutt/1.12.2 (2019-09-21)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi PK,
+On Wed 06 Nov 15:31 PST 2019, Jeffrey Hugo wrote:
 
-Am Mittwoch, den 13.11.2019, 03:43 +0000 schrieb Pkshih:
-> > -----Original Message-----
-> > From: linux-wireless-owner@vger.kernel.org [mailto:linux-wireless-owner@vger.kernel.org] On Behalf
-> > Of Lucas Stach
-> > Sent: Wednesday, November 13, 2019 5:02 AM
-> > To: wlanfae; Pkshih
-> > Cc: linux-wireless@vger.kernel.org; netdev@vger.kernel.org
-> > Subject: long delays in rtl8723 drivers in irq disabled sections
-> > 
-> > Hi all,
-> > 
-> > while investigating some latency issues on my laptop I stumbled across
-> > quite large delays in the rtl8723 PHY code, which are done in IRQ
-> > disabled atomic sections, which is blocking IRQ servicing for all
-> > devices in the system.
-> > 
-> > Specifically there are 3 consecutive 1ms delays in
-> > rtl8723_phy_rf_serial_read(), which is used in an IRQ disabled call
-> > path. Sadly those delays don't have any comment in the code explaining
-> > why they are needed. I hope that anyone can tell if those delays are
-> > strictly neccessary and if so if they really need to be this long.
-> > 
+> Firmware with the build id QC_IMAGE_VERSION_STRING=WLAN.HL.1.0.2-XXXX does
+> not support the QMI_WLFW_HOST_CAP_REQ_V01 message and will return the
+> QMI not supported error to the ath10k driver.  Since not supporting this
+> message is not fatal to the firmware nor the ath10k driver, lets catch
+> this particular scenario and ignore it so that we can still bring up
+> wifi services successfully.
 > 
-> These delays are because read RF register is an indirect access that hardware
-> needs time to accomplish read action, but there's no ready bit, so delay
-> is required to guarantee the read value is correct. 
 
-Thanks for the confirmation, I suspected something like this.
+Reviewed-by: Bjorn Andersson <bjorn.andersson@linaro.org>
 
-> It is possible to use smaller delay, but it's exactly required.
-
-1ms seems like an eternity on modern hardware, even for an indirect
-read.
-
+> Signed-off-by: Jeffrey Hugo <jeffrey.l.hugo@gmail.com>
+> ---
+>  drivers/net/wireless/ath/ath10k/qmi.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
 > 
-> An alternative way is to prevent calling this function in IRQ disabled flow.
-> Could you share the calling trace?
-
-Sure, trimmed callstack below. As you can see the IRQ disabled section
-is started via a spin_lock_irqsave(). The trace is from a 8723de
-module, which is still out of tree, but the same code is present in
-mainline and used by the other 8723 variants.
-I don't know if this function needs to guard against something running
-in the IRQ handler, so depending on the answer to that the solution
-might be as simple as not disabling IRQs when taking the spinlock.
-
-kworker/-276     4d...    0us : _raw_spin_lock_irqsave
-kworker/-276     4d...    0us : rtl8723_phy_rf_serial_read <-rtl8723de_phy_set_rf_reg
-kworker/-276     4d...    1us : rtl8723_phy_query_bb_reg <-rtl8723_phy_rf_serial_read
-kworker/-276     4d...    3us : rtl8723_phy_set_bb_reg <-rtl8723_phy_rf_serial_read
-kworker/-276     4d...    4us : __const_udelay <-rtl8723_phy_rf_serial_read
-kworker/-276     4d...    4us!: delay_mwaitx <-rtl8723_phy_rf_serial_read
-kworker/-276     4d... 1004us : rtl8723_phy_set_bb_reg <-rtl8723_phy_rf_serial_read
-[...]
-
-Regards,
-Lucas
-
+> diff --git a/drivers/net/wireless/ath/ath10k/qmi.c b/drivers/net/wireless/ath/ath10k/qmi.c
+> index 545ac1f06997..eb618a2652db 100644
+> --- a/drivers/net/wireless/ath/ath10k/qmi.c
+> +++ b/drivers/net/wireless/ath/ath10k/qmi.c
+> @@ -614,7 +614,9 @@ static int ath10k_qmi_host_cap_send_sync(struct ath10k_qmi *qmi)
+>  	if (ret < 0)
+>  		goto out;
+>  
+> -	if (resp.resp.result != QMI_RESULT_SUCCESS_V01) {
+> +	/* older FW didn't support this request, which is not fatal */
+> +	if (resp.resp.result != QMI_RESULT_SUCCESS_V01 &&
+> +	    resp.resp.error != QMI_ERR_NOT_SUPPORTED_V01) {
+>  		ath10k_err(ar, "host capability request rejected: %d\n", resp.resp.error);
+>  		ret = -EINVAL;
+>  		goto out;
+> -- 
+> 2.17.1
+> 
