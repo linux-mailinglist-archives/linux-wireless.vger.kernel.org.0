@@ -2,61 +2,71 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 537E8FAC60
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Nov 2019 09:55:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 276CFFACF4
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Nov 2019 10:29:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726165AbfKMIxb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 13 Nov 2019 03:53:31 -0500
-Received: from paleale.coelho.fi ([176.9.41.70]:56656 "EHLO
+        id S1727113AbfKMJ3s (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 13 Nov 2019 04:29:48 -0500
+Received: from paleale.coelho.fi ([176.9.41.70]:56670 "EHLO
         farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1725993AbfKMIxb (ORCPT
+        with ESMTP id S1726613AbfKMJ3r (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 13 Nov 2019 03:53:31 -0500
-Received: from [134.191.232.92] (helo=dubbel)
-        by farmhouse.coelho.fi with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        Wed, 13 Nov 2019 04:29:47 -0500
+Received: from [134.191.232.92] (helo=dubbel.ger.corp.intel.com)
+        by farmhouse.coelho.fi with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.92)
         (envelope-from <luca@coelho.fi>)
-        id 1iUoP2-0005pW-CR; Wed, 13 Nov 2019 10:53:29 +0200
-Message-ID: <ee020a76f296a2d083eb203d1b96ee6d4900c4e9.camel@coelho.fi>
+        id 1iUoy9-0005qK-Az; Wed, 13 Nov 2019 11:29:46 +0200
 From:   Luca Coelho <luca@coelho.fi>
-To:     Kalle Valo <kvalo@codeaurora.org>
+To:     kvalo@codeaurora.org
 Cc:     linux-wireless@vger.kernel.org
-Date:   Wed, 13 Nov 2019 10:53:26 +0200
-In-Reply-To: <87v9sdp8rz.fsf@kamboji.qca.qualcomm.com>
-References: <20191019093902.29823-1-luca@coelho.fi>
-         <20191019093902.29823-2-luca@coelho.fi>
-         <87v9sdp8rz.fsf@kamboji.qca.qualcomm.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.1-2+b1 
+Date:   Wed, 13 Nov 2019 11:29:38 +0200
+Message-Id: <20191113092938.13921-1-luca@coelho.fi>
+X-Mailer: git-send-email 2.24.0.rc1
+In-Reply-To: <20191019093902.29823-2-luca@coelho.fi>
+References: <20191019093902.29823-2-luca@coelho.fi>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on farmhouse.coelho.fi
 X-Spam-Level: 
 X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
         URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 03/12] iwlwifi: nvm: update iwl_uhb_nvm_channels
+Subject: [PATCH v2] iwlwifi: nvm: update iwl_uhb_nvm_channels
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 2019-10-25 at 10:46 +0300, Kalle Valo wrote:
-> Luca Coelho <luca@coelho.fi> writes:
-> 
-> > From: Tova Mussai <tova.mussai@intel.com>
-> > 
-> > Update uhb channels numbers to start from 1
-> > 
-> > Signed-off-by: Tova Mussai <tova.mussai@intel.com>
-> > Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
-> 
-> Why?
+From: Tova Mussai <tova.mussai@intel.com>
 
-Hi,
+Change the UHB channels to start from 1 to match the specs (11ax Draft 5.0).
 
-Just coming back to this now, sorry.  I'll rephrase this and send v2.
+Signed-off-by: Tova Mussai <tova.mussai@intel.com>
+Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+---
+ drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
---
-Cheers,
-Luca.
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
+index b0a0901ce0f3..1e240a2a8329 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
+@@ -156,11 +156,10 @@ static const u16 iwl_uhb_nvm_channels[] = {
+ 	96, 100, 104, 108, 112, 116, 120, 124, 128, 132, 136, 140, 144,
+ 	149, 153, 157, 161, 165, 169, 173, 177, 181,
+ 	/* 6-7 GHz */
+-	189, 193, 197, 201, 205, 209, 213, 217, 221, 225, 229, 233, 237, 241,
+-	245, 249, 253, 257, 261, 265, 269, 273, 277, 281, 285, 289, 293, 297,
+-	301, 305, 309, 313, 317, 321, 325, 329, 333, 337, 341, 345, 349, 353,
+-	357, 361, 365, 369, 373, 377, 381, 385, 389, 393, 397, 401, 405, 409,
+-	413, 417, 421
++	1, 5, 9, 13, 17, 21, 25, 29, 33, 37, 41, 45, 49, 53, 57, 61, 65, 69,
++	73, 77, 81, 85, 89, 93, 97, 101, 105, 109, 113, 117, 121, 125, 129,
++	133, 137, 141, 145, 149, 153, 157, 161, 165, 169, 173, 177, 181, 185,
++	189, 193, 197, 201, 205, 209, 213, 217, 221, 225, 229, 233
+ };
+ 
+ #define IWL_NVM_NUM_CHANNELS		ARRAY_SIZE(iwl_nvm_channels)
+-- 
+2.24.0.rc1
 
