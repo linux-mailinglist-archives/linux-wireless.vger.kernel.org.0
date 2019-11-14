@@ -2,106 +2,76 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 825D2FC9C6
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 Nov 2019 16:21:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EB0D7FC9EB
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 Nov 2019 16:28:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726482AbfKNPVW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 14 Nov 2019 10:21:22 -0500
-Received: from mail-vs1-f66.google.com ([209.85.217.66]:45717 "EHLO
-        mail-vs1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726318AbfKNPVW (ORCPT
+        id S1726318AbfKNP2b (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 14 Nov 2019 10:28:31 -0500
+Received: from smtp.codeaurora.org ([198.145.29.96]:33310 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726251AbfKNP2b (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 14 Nov 2019 10:21:22 -0500
-Received: by mail-vs1-f66.google.com with SMTP id n9so4082813vsa.12
-        for <linux-wireless@vger.kernel.org>; Thu, 14 Nov 2019 07:21:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=CTj31BsHt77pizQHfqTXcG4Y8Xqz7vH9lp04XnwoX3Y=;
-        b=kMF2SGDqPqEyc4bWjv3jPz9VdcJgEbLrQpHazCmkk0/sHjASd7K28ntsBujBJlG2vR
-         pEFdJGa4JYiI8L23DcMG7UpifvZr9Id3qyiD4Es6ZeyRlVPMPZvL+/6mcBcBCCUYf4Gh
-         BU3X6ZKlpDAmTmJaMUguZ35VD9ExfS8kLBjn4crjaDHAxoYMylGIRnhj3pxQR69tflNX
-         hjz4j9p70Po8DwuJbe7yWQt5YjQlH8GTLRPtz3Z1dm/amd8LKk/b8EFw4CO/W2LB9nhP
-         DaagLnoD6IeMhck5J8S02M193rYvKzgz51GAL5e7FxAbjGbJxTnsDb6okXXOHGkPCQTe
-         BHQA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=CTj31BsHt77pizQHfqTXcG4Y8Xqz7vH9lp04XnwoX3Y=;
-        b=eSA2FFB+Y6bzBHr/9C7Be9VWyGaYoBHUy7vCH0ezEq6ZebVfGbwygy/z/3nGX5rkI1
-         nM6wio11qIoEeQG422gk5MrCViCEnyYNW8szg9sDjCBcnsnKAZmb9f0TRuHO3A4YNDgk
-         D1gAQNgtsaZ/WWYqSwEj+fXTekc48Hf7cKmAILFPS6jlBqtThALaHd6Ziy8qphN+LEvs
-         9b1sJ/ZTuAyBWHaXPjxCvA+PYd5fxObsNxOskv2kTyWmFDokOzthPyrDDgAoT6ThrptJ
-         IekYrJyvkt/RUjl4N7IxmoEEluDKaqig07dAeNlcB3sWsObTMN6oppNwdBk8YB2LXMet
-         k5Lg==
-X-Gm-Message-State: APjAAAXk5rYGnUBmLs+rBJlcjUqK+Gaan5lPE/Mb+pOzenmwvFS+V/Vr
-        6s68fdMhXiHCLgaeM1Vhf9u7aVJxk6UDkuCBaNmTdQ==
-X-Google-Smtp-Source: APXvYqxiuvpRYMsGYY6NuJLDwUZLkTNqUqEcN0OQx17Yoi7RMRREZpQQticclmMj8odDs6Qd3B1VL7irV7+oTA8d4+g=
-X-Received: by 2002:a05:6102:36d:: with SMTP id f13mr6254116vsa.34.1573744880931;
- Thu, 14 Nov 2019 07:21:20 -0800 (PST)
+        Thu, 14 Nov 2019 10:28:31 -0500
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 4859B607EB; Thu, 14 Nov 2019 15:28:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1573745310;
+        bh=XFhXWtzpMffal4UZF55c6GYPwnvZsz59RD3HO61R2a0=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=QUQZIXkUxIXB+wqH+oALtOAgZ0nOukElxc6fBGmLgVUJREBcG0zitwMHvh+BrNLSo
+         H5eD4bEdfJLuWtnMMfhi+vTSOwpbZmKuAnuv872htdnD+DzsXlIYYZlEuVNWNO1G6w
+         RUggbZ5jsfpI20n5wVlRxPQILaGcWVXmY/sgNL8c=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-0.8 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,MISSING_DATE,MISSING_MID,SPF_NONE autolearn=no
+        autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 4812860112;
+        Thu, 14 Nov 2019 15:28:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1573745309;
+        bh=XFhXWtzpMffal4UZF55c6GYPwnvZsz59RD3HO61R2a0=;
+        h=Subject:From:In-Reply-To:References:To:Cc:From;
+        b=cDvbh5pSXdPDspPUBaomI/zw6sZ9FPAYf3DoRsrqPD3KNlxEjsPxlqunaI1V0PzQH
+         xJIVJfecNWUkV7lEeEcTB34M++bhAqtzF2Tz5QDhF8Z491EzMsBorV5sCFyjcDt0bt
+         luKWM831yat6gdd6IGqJs6XfbFFNu8mRIg38u5RQ=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 4812860112
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-References: <20191112124021.8718-1-ulf.hansson@linaro.org> <20191112124021.8718-2-ulf.hansson@linaro.org>
- <87zhgybids.fsf@tynnyri.adurom.net>
-In-Reply-To: <87zhgybids.fsf@tynnyri.adurom.net>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Thu, 14 Nov 2019 16:20:44 +0100
-Message-ID: <CAPDyKFrjEcsGKOwtRtns4a3dWExTvpbe2_16Gp9rwwxGbxynAg@mail.gmail.com>
-Subject: Re: [PATCH v3 1/3] mwifiex: Re-work support for SDIO HW reset
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Douglas Anderson <dianders@chromium.org>,
-        Matthias Kaehlcke <mka@chromium.org>,
-        Tony Lindgren <tony@atomide.com>,
-        Wen Gong <wgong@codeaurora.org>,
-        Erik Stromdahl <erik.stromdahl@gmail.com>,
-        Eyal Reizer <eyalreizer@gmail.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] rtl8xxxu: Add support for Edimax EW-7611ULB
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20191112202850.32041-1-Jes.Sorensen@gmail.com>
+References: <20191112202850.32041-1-Jes.Sorensen@gmail.com>
+To:     Jes Sorensen <jes.sorensen@gmail.com>
+Cc:     linux-wireless@vger.kernel.org
+User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
+Message-Id: <20191114152830.4859B607EB@smtp.codeaurora.org>
+Date:   Thu, 14 Nov 2019 15:28:30 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, 14 Nov 2019 at 16:13, Kalle Valo <kvalo@codeaurora.org> wrote:
->
-> Ulf Hansson <ulf.hansson@linaro.org> writes:
->
-> > The SDIO HW reset procedure in mwifiex_sdio_card_reset_work() is broken,
-> > when the SDIO card is shared with another SDIO func driver. This is the
-> > case when the Bluetooth btmrvl driver is being used in combination with
-> > mwifiex. More precisely, when mwifiex_sdio_card_reset_work() runs to resets
-> > the SDIO card, the btmrvl driver doesn't get notified about it. Beyond that
-> > point, the btmrvl driver will fail to communicate with the SDIO card.
-> >
-> > This is a generic problem for SDIO func drivers sharing an SDIO card, which
-> > are about to be addressed in subsequent changes to the mmc core and the
-> > mmc_hw_reset() interface. In principle, these changes means the
-> > mmc_hw_reset() interface starts to return 1 if the are multiple drivers for
-> > the SDIO card, as to indicate to the caller that the reset needed to be
-> > scheduled asynchronously through a hotplug mechanism of the SDIO card.
-> >
-> > Let's prepare the mwifiex driver to support the upcoming new behaviour of
-> > mmc_hw_reset(), which means extending the mwifiex_sdio_card_reset_work() to
-> > support the asynchronous SDIO HW reset path. This also means, we need to
-> > allow the ->remove() callback to run, without waiting for the FW to be
-> > loaded. Additionally, during system suspend, mwifiex_sdio_suspend() may be
-> > called when a reset has been scheduled, but waiting to be executed. In this
-> > scenario let's simply return -EBUSY to abort the suspend process, as to
-> > allow the reset to be completed first.
-> >
-> > Reviewed-by: Douglas Anderson <dianders@chromium.org>
-> > Tested-by: Douglas Anderson <dianders@chromium.org>
-> > Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
->
-> Look good to me. Ulf, I assume you are going to take this so here's my
-> ack:
->
-> Acked-by: Kalle Valo <kvalo@codeaurora.org>
+Jes Sorensen <jes.sorensen@gmail.com> wrote:
 
-Thanks, I have queued it via my tree this time.
+> A number of people have reported the Edimax EW-7611ULB works fine.
+> 
+> Signed-off-by: Jes Sorensen <Jes.Sorensen@gmail.com>
 
-Kind regards
-Uffe
+Patch applied to wireless-drivers-next.git, thanks.
+
+408f122a1f92 rtl8xxxu: Add support for Edimax EW-7611ULB
+
+-- 
+https://patchwork.kernel.org/patch/11240113/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
