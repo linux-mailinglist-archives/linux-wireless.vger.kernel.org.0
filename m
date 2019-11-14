@@ -2,109 +2,202 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E81C1FC99D
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 Nov 2019 16:13:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 26955FC9A9
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 Nov 2019 16:16:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726339AbfKNPN6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 14 Nov 2019 10:13:58 -0500
-Received: from smtp.codeaurora.org ([198.145.29.96]:53962 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726179AbfKNPN6 (ORCPT
+        id S1726977AbfKNPQW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 14 Nov 2019 10:16:22 -0500
+Received: from mo4-p02-ob.smtp.rzone.de ([85.215.255.84]:23193 "EHLO
+        mo4-p02-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726339AbfKNPQW (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 14 Nov 2019 10:13:58 -0500
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 8C8BA60D96; Thu, 14 Nov 2019 15:13:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1573744437;
-        bh=7Cxj4ZTAH1IfirrIq9+4WeGOEgM8w1vic/fFeGDxF20=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=SAeiH3otYpNjT+RQI3uT29hlk2eNyZabfDl3BsXQkLvDBQvjswq2avIaOYDNqKUBV
-         Y6B/8MvrO45jQ6gCYM3B9sWTI/RPEuA0twLUulqfi1k2MzM6alG19JCa9KNVJ5vEVZ
-         ApaYCZdTOH2Pzd95AIBK9IIsbb6t6KLpUg1cy754=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from tynnyri.adurom.net (tynnyri.adurom.net [51.15.11.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 5E88360736;
-        Thu, 14 Nov 2019 15:13:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1573744436;
-        bh=7Cxj4ZTAH1IfirrIq9+4WeGOEgM8w1vic/fFeGDxF20=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=D5PKJTieVxhZppGfFPzHC2/QZs2aoNP3+Vjg50pzDDSmqxGZbAyVNN7tD34Ga4m+C
-         h56wt5TjeEqzzCSr6rzc13qb7OXSMsUkw5yC/dTaKE8y0sy6pbcymPjofeqwRJ41ps
-         A5eJq9lqb9TCuArrpRYvw0RNHlyYbD+3+nsxcPyQ=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 5E88360736
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     linux-mmc@vger.kernel.org, Adrian Hunter <adrian.hunter@intel.com>,
-        Douglas Anderson <dianders@chromium.org>,
-        Matthias Kaehlcke <mka@chromium.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
+        Thu, 14 Nov 2019 10:16:22 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1573744577;
+        s=strato-dkim-0002; d=goldelico.com;
+        h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:
+        X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
+        bh=dIdO6+wWmfeQm+EP9ocIN+ER7iLsR+gearCu29RvDj8=;
+        b=pSyCIHS8/1KAKUVF1Jiyz1A47gb8fTEjSqtwUEo7ExOs/5Fojli+GIOemZfPtJshkm
+        NOPgUius99rQk5SvaDJFOSAeKVpeNISEZYsWGgLew78IjpfNtNhgJta6uw1Q2j0zZZaz
+        +deiCAxzmTmP/A7bBXPAjs5Zy00FqK1IaG2dQ1R4xcsAruzTb/IfQoBEI4DlInxUKwBZ
+        bcjxIFs9mF1odJdj9gKUV7Vf/HNfWZFoknnySx/ggnevKH2P2bQqzEpR5PK2sigsCcVG
+        lBpIuhJ33KrsSvZKyfDXzormoy4NTJE9m8g+oGP7+zXALJ2qPaMHytpV5dSgk3PbVIPZ
+        XbIg==
+X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj5Qpw97WFDVCbXA4F8vU="
+X-RZG-CLASS-ID: mo00
+Received: from imac.fritz.box
+        by smtp.strato.de (RZmta 44.29.0 DYNA|AUTH)
+        with ESMTPSA id L09db3vAEFFiEyY
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (curve secp521r1 with 521 ECDH bits, eq. 15360 bits RSA))
+        (Client did not present a certificate);
+        Thu, 14 Nov 2019 16:15:44 +0100 (CET)
+Content-Type: text/plain; charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+Subject: Re: [PATCH v3 00/12] OpenPandora: make wl1251 connected to mmc3 sdio port of OpenPandora work again
+From:   "H. Nikolaus Schaller" <hns@goldelico.com>
+In-Reply-To: <CAPDyKFrntf2Kd9Zf7uxRCUk_OrKD8B3xOKmvPaf04X21L5HwWA@mail.gmail.com>
+Date:   Thu, 14 Nov 2019 16:15:44 +0100
+Cc:     =?utf-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
         Tony Lindgren <tony@atomide.com>,
-        Wen Gong <wgong@codeaurora.org>,
-        Erik Stromdahl <erik.stromdahl@gmail.com>,
-        Eyal Reizer <eyalreizer@gmail.com>,
-        linux-wireless@vger.kernel.org
-Subject: Re: [PATCH v3 1/3] mwifiex: Re-work support for SDIO HW reset
-References: <20191112124021.8718-1-ulf.hansson@linaro.org>
-        <20191112124021.8718-2-ulf.hansson@linaro.org>
-Date:   Thu, 14 Nov 2019 17:13:51 +0200
-In-Reply-To: <20191112124021.8718-2-ulf.hansson@linaro.org> (Ulf Hansson's
-        message of "Tue, 12 Nov 2019 13:40:19 +0100")
-Message-ID: <87zhgybids.fsf@tynnyri.adurom.net>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
-MIME-Version: 1.0
-Content-Type: text/plain
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Mike Rapoport <rppt@linux.ibm.com>,
+        David Sterba <dsterba@suse.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Petr Mladek <pmladek@suse.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Kefeng Wang <wangkefeng.wang@huawei.com>,
+        Yangtao Li <tiny.windzz@gmail.com>,
+        Alexios Zavras <alexios.zavras@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Allison Randal <allison@lohutok.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        John Stultz <john.stultz@linaro.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        DTML <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>,
+        Discussions about the Letux Kernel 
+        <letux-kernel@openphoenux.org>, kernel@pyra-handheld.com
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <5F5A5FC0-8F91-4D5B-9EF6-AF36FE38B588@goldelico.com>
+References: <cover.1573122644.git.hns@goldelico.com> <CAPDyKFrntf2Kd9Zf7uxRCUk_OrKD8B3xOKmvPaf04X21L5HwWA@mail.gmail.com>
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+X-Mailer: Apple Mail (2.3124)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Ulf Hansson <ulf.hansson@linaro.org> writes:
+Hi Ulf,
 
-> The SDIO HW reset procedure in mwifiex_sdio_card_reset_work() is broken,
-> when the SDIO card is shared with another SDIO func driver. This is the
-> case when the Bluetooth btmrvl driver is being used in combination with
-> mwifiex. More precisely, when mwifiex_sdio_card_reset_work() runs to resets
-> the SDIO card, the btmrvl driver doesn't get notified about it. Beyond that
-> point, the btmrvl driver will fail to communicate with the SDIO card.
->
-> This is a generic problem for SDIO func drivers sharing an SDIO card, which
-> are about to be addressed in subsequent changes to the mmc core and the
-> mmc_hw_reset() interface. In principle, these changes means the
-> mmc_hw_reset() interface starts to return 1 if the are multiple drivers for
-> the SDIO card, as to indicate to the caller that the reset needed to be
-> scheduled asynchronously through a hotplug mechanism of the SDIO card.
->
-> Let's prepare the mwifiex driver to support the upcoming new behaviour of
-> mmc_hw_reset(), which means extending the mwifiex_sdio_card_reset_work() to
-> support the asynchronous SDIO HW reset path. This also means, we need to
-> allow the ->remove() callback to run, without waiting for the FW to be
-> loaded. Additionally, during system suspend, mwifiex_sdio_suspend() may be
-> called when a reset has been scheduled, but waiting to be executed. In this
-> scenario let's simply return -EBUSY to abort the suspend process, as to
-> allow the reset to be completed first.
->
-> Reviewed-by: Douglas Anderson <dianders@chromium.org>
-> Tested-by: Douglas Anderson <dianders@chromium.org>
-> Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+> Am 14.11.2019 um 15:18 schrieb Ulf Hansson <ulf.hansson@linaro.org>:
+>=20
+> On Thu, 7 Nov 2019 at 11:31, H. Nikolaus Schaller <hns@goldelico.com> =
+wrote:
+>>=20
+>>=20
+>> * add a revisit note for special wl1251 handling code because it =
+should
+>>  be solved more generic in mmc core - suggested by Ulf Hansson =
+<ulf.hansson@linaro.org>
+>> * remove init_card callback from platform_data/hsmmc-omap.h - =
+suggested by Ulf Hansson <ulf.hansson@linaro.org>
+>> * remove obstructive always-on for vwlan regulator - suggested by Ulf =
+Hansson <ulf.hansson@linaro.org>
+>> * rename DT node - suggested by Rob Herring <robh@kernel.org>
+>> * fix ARM: dts: subject prefix - suggested by Tony Lindgren =
+<tony@atomide.com>
+>> * also remove omap2_hsmmc_info and obc-y line in Makefile - suggested =
+by Tony Lindgren <tony@atomide.com>
+>=20
+> No further comments from my side. Let's just agree on how to deal with
+> the ti,power-gpio, then I can apply this.
 
-Look good to me. Ulf, I assume you are going to take this so here's my
-ack:
+I'd say it can be a separate patch since it does not fix the Pandora
+issues, but is a new and independent optimization.
 
-Acked-by: Kalle Valo <kvalo@codeaurora.org>
+And in case someone complains and uses it for some out-of tree purpose
+it can be discussed or even be reverted easier if it is a separate =
+patch.
 
-But let me know if I should take it instead, whatever works the best for
-you.
+I can do it in the next days.
 
--- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+> Thanks a lot for fixing all this mess!
+
+I hope the users also appreciate our work.
+
+Best regards,
+Nikolaus
+
+>=20
+> Kind regards
+> Uffe
+>=20
+>>=20
+>> PATCH V2 2019-10-19 20:41:47:
+>> * added acked-by for wl1251 patches - Kalle Valo =
+<kvalo@codeaurora.org>
+>> * really removed old pdata-quirks code (not through #if 0)
+>> * splited out a partial revert of
+>>        efdfeb079cc3b ("regulator: fixed: Convert to use GPIO =
+descriptor only")
+>>  because that was introduced after v4.19 and stops the removal of
+>>  the pdata-quirks patch from cleanly applying to v4.9, v4.14, v4.19
+>>  - reported by Sasha Levin <sashal@kernel.org>
+>> * added a new patch to remove old omap hsmmc since pdata quirks
+>>  were last user - suggested by Tony Lindgren <tony@atomide.com>
+>>=20
+>> PATCH V1 2019-10-18 22:25:39:
+>> Here we have a set of scattered patches to make the OpenPandora WiFi =
+work again.
+>>=20
+>> v4.7 did break the pdata-quirks which made the mmc3 interface
+>> fail completely, because some code now assumes device tree
+>> based instantiation.
+>>=20
+>> Fixes: 81eef6ca9201 ("mmc: omap_hsmmc: Use dma_request_chan() for =
+requesting DMA channel")
+>>=20
+>> v4.11 did break the sdio qirks for wl1251 which made the driver no =
+longer
+>> load, although the device was found as an sdio client.
+>>=20
+>> Fixes: 884f38607897 ("mmc: core: move some sdio IDs out of quirks =
+file")
+>>=20
+>> To solve these issues:
+>> * we convert mmc3 and wl1251 initialization from pdata-quirks
+>>  to device tree
+>> * we make the wl1251 driver read properties from device tree
+>> * we fix the mmc core vendor ids and quirks
+>> * we fix the wl1251 (and wl1271) driver to use only vendor ids
+>>  from header file instead of (potentially conflicting) local
+>>  definitions
+>>=20
+>>=20
+>> H. Nikolaus Schaller (12):
+>>  Documentation: dt: wireless: update wl1251 for sdio
+>>  net: wireless: ti: wl1251 add device tree support
+>>  ARM: dts: pandora-common: define wl1251 as child node of mmc3
+>>  mmc: host: omap_hsmmc: add code for special init of wl1251 to get =
+rid
+>>    of pandora_wl1251_init_card
+>>  omap: pdata-quirks: revert pandora specific gpiod additions
+>>  omap: pdata-quirks: remove openpandora quirks for mmc3 and wl1251
+>>  omap: remove omap2_hsmmc_info in old hsmmc.[ch] and update Makefile
+>>  mmc: host: omap-hsmmc: remove init_card pdata callback from pdata
+>>  mmc: sdio: fix wl1251 vendor id
+>>  mmc: core: fix wl1251 sdio quirks
+>>  net: wireless: ti: wl1251 use new SDIO_VENDOR_ID_TI_WL1251 =
+definition
+>>  net: wireless: ti: remove local VENDOR_ID and DEVICE_ID definitions
+>>=20
+>> .../bindings/net/wireless/ti,wl1251.txt       |  26 +++
+>> arch/arm/boot/dts/omap3-pandora-common.dtsi   |  36 +++-
+>> arch/arm/mach-omap2/Makefile                  |   3 -
+>> arch/arm/mach-omap2/common.h                  |   1 -
+>> arch/arm/mach-omap2/hsmmc.c                   | 171 =
+------------------
+>> arch/arm/mach-omap2/hsmmc.h                   |  32 ----
+>> arch/arm/mach-omap2/pdata-quirks.c            | 105 -----------
+>> drivers/mmc/core/quirks.h                     |   7 +
+>> drivers/mmc/host/omap_hsmmc.c                 |  30 ++-
+>> drivers/net/wireless/ti/wl1251/sdio.c         |  23 ++-
+>> drivers/net/wireless/ti/wlcore/sdio.c         |   8 -
+>> include/linux/mmc/sdio_ids.h                  |   2 +
+>> include/linux/platform_data/hsmmc-omap.h      |   3 -
+>> 13 files changed, 111 insertions(+), 336 deletions(-)
+>> delete mode 100644 arch/arm/mach-omap2/hsmmc.c
+>> delete mode 100644 arch/arm/mach-omap2/hsmmc.h
+>>=20
+>> --
+>> 2.23.0
+>>=20
+
