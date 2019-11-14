@@ -2,179 +2,109 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 00161FC998
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 Nov 2019 16:12:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E81C1FC99D
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 Nov 2019 16:13:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726528AbfKNPMW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 14 Nov 2019 10:12:22 -0500
-Received: from mail.kernel.org ([198.145.29.99]:50006 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726444AbfKNPMW (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 14 Nov 2019 10:12:22 -0500
-Received: from localhost.localdomain.com (unknown [77.139.212.74])
+        id S1726339AbfKNPN6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 14 Nov 2019 10:13:58 -0500
+Received: from smtp.codeaurora.org ([198.145.29.96]:53962 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726179AbfKNPN6 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 14 Nov 2019 10:13:58 -0500
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 8C8BA60D96; Thu, 14 Nov 2019 15:13:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1573744437;
+        bh=7Cxj4ZTAH1IfirrIq9+4WeGOEgM8w1vic/fFeGDxF20=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=SAeiH3otYpNjT+RQI3uT29hlk2eNyZabfDl3BsXQkLvDBQvjswq2avIaOYDNqKUBV
+         Y6B/8MvrO45jQ6gCYM3B9sWTI/RPEuA0twLUulqfi1k2MzM6alG19JCa9KNVJ5vEVZ
+         ApaYCZdTOH2Pzd95AIBK9IIsbb6t6KLpUg1cy754=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from tynnyri.adurom.net (tynnyri.adurom.net [51.15.11.48])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id CF51C206DC;
-        Thu, 14 Nov 2019 15:12:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1573744341;
-        bh=3Hc/8pRTRQ5zFvjaF9cSqGQlvRs9ChJ45uCvan7bnOY=;
-        h=From:To:Cc:Subject:Date:From;
-        b=U+ie80mlXuCG2MoQ2PlJ3pTDa8PQexCwxsn5C3PDeyI/OMIsCmn5kKEmKrN4uqUzV
-         XVFaPuXo9PmhZyCdh+IFyTKEJXmWj06ZD/q4CNFz1VII4pajtv8R03Dq+93adrNhSn
-         fSCgdancjh0AhP2W6h5XIfcWeApRZ9qZ437DatgI=
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com
-Subject: [PATCH] mt76: move mt76_get_antenna in mt76_core module
-Date:   Thu, 14 Nov 2019 17:12:07 +0200
-Message-Id: <af30d94a66ebadec557b2d148f6468918cea4a04.1573742879.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.21.0
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 5E88360736;
+        Thu, 14 Nov 2019 15:13:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1573744436;
+        bh=7Cxj4ZTAH1IfirrIq9+4WeGOEgM8w1vic/fFeGDxF20=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=D5PKJTieVxhZppGfFPzHC2/QZs2aoNP3+Vjg50pzDDSmqxGZbAyVNN7tD34Ga4m+C
+         h56wt5TjeEqzzCSr6rzc13qb7OXSMsUkw5yC/dTaKE8y0sy6pbcymPjofeqwRJ41ps
+         A5eJq9lqb9TCuArrpRYvw0RNHlyYbD+3+nsxcPyQ=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 5E88360736
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     linux-mmc@vger.kernel.org, Adrian Hunter <adrian.hunter@intel.com>,
+        Douglas Anderson <dianders@chromium.org>,
+        Matthias Kaehlcke <mka@chromium.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Tony Lindgren <tony@atomide.com>,
+        Wen Gong <wgong@codeaurora.org>,
+        Erik Stromdahl <erik.stromdahl@gmail.com>,
+        Eyal Reizer <eyalreizer@gmail.com>,
+        linux-wireless@vger.kernel.org
+Subject: Re: [PATCH v3 1/3] mwifiex: Re-work support for SDIO HW reset
+References: <20191112124021.8718-1-ulf.hansson@linaro.org>
+        <20191112124021.8718-2-ulf.hansson@linaro.org>
+Date:   Thu, 14 Nov 2019 17:13:51 +0200
+In-Reply-To: <20191112124021.8718-2-ulf.hansson@linaro.org> (Ulf Hansson's
+        message of "Tue, 12 Nov 2019 13:40:19 +0100")
+Message-ID: <87zhgybids.fsf@tynnyri.adurom.net>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Move mt76_get_antenna in mac80211.c in order to be reused by all
-drivers. Initialize .get_antenna function pointer for mt76x0, mt7603,
-mt7615 and mt76x2u drivers
+Ulf Hansson <ulf.hansson@linaro.org> writes:
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- drivers/net/wireless/mediatek/mt76/mac80211.c     | 13 +++++++++++++
- drivers/net/wireless/mediatek/mt76/mt76.h         |  1 +
- drivers/net/wireless/mediatek/mt76/mt7603/main.c  |  1 +
- drivers/net/wireless/mediatek/mt76/mt7615/main.c  |  1 +
- drivers/net/wireless/mediatek/mt76/mt76x0/pci.c   |  1 +
- drivers/net/wireless/mediatek/mt76/mt76x0/usb.c   |  1 +
- .../net/wireless/mediatek/mt76/mt76x2/pci_main.c  | 15 +--------------
- .../net/wireless/mediatek/mt76/mt76x2/usb_main.c  |  1 +
- 8 files changed, 20 insertions(+), 14 deletions(-)
+> The SDIO HW reset procedure in mwifiex_sdio_card_reset_work() is broken,
+> when the SDIO card is shared with another SDIO func driver. This is the
+> case when the Bluetooth btmrvl driver is being used in combination with
+> mwifiex. More precisely, when mwifiex_sdio_card_reset_work() runs to resets
+> the SDIO card, the btmrvl driver doesn't get notified about it. Beyond that
+> point, the btmrvl driver will fail to communicate with the SDIO card.
+>
+> This is a generic problem for SDIO func drivers sharing an SDIO card, which
+> are about to be addressed in subsequent changes to the mmc core and the
+> mmc_hw_reset() interface. In principle, these changes means the
+> mmc_hw_reset() interface starts to return 1 if the are multiple drivers for
+> the SDIO card, as to indicate to the caller that the reset needed to be
+> scheduled asynchronously through a hotplug mechanism of the SDIO card.
+>
+> Let's prepare the mwifiex driver to support the upcoming new behaviour of
+> mmc_hw_reset(), which means extending the mwifiex_sdio_card_reset_work() to
+> support the asynchronous SDIO HW reset path. This also means, we need to
+> allow the ->remove() callback to run, without waiting for the FW to be
+> loaded. Additionally, during system suspend, mwifiex_sdio_suspend() may be
+> called when a reset has been scheduled, but waiting to be executed. In this
+> scenario let's simply return -EBUSY to abort the suspend process, as to
+> allow the reset to be completed first.
+>
+> Reviewed-by: Douglas Anderson <dianders@chromium.org>
+> Tested-by: Douglas Anderson <dianders@chromium.org>
+> Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/wireless/mediatek/mt76/mac80211.c
-index 2003223ff329..61049ce5c996 100644
---- a/drivers/net/wireless/mediatek/mt76/mac80211.c
-+++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
-@@ -1036,3 +1036,16 @@ void mt76_sw_scan_complete(struct ieee80211_hw *hw, struct ieee80211_vif *vif)
- 	clear_bit(MT76_SCANNING, &dev->state);
- }
- EXPORT_SYMBOL_GPL(mt76_sw_scan_complete);
-+
-+int mt76_get_antenna(struct ieee80211_hw *hw, u32 *tx_ant, u32 *rx_ant)
-+{
-+	struct mt76_dev *dev = hw->priv;
-+
-+	mutex_lock(&dev->mutex);
-+	*tx_ant = dev->antenna_mask;
-+	*rx_ant = dev->antenna_mask;
-+	mutex_unlock(&dev->mutex);
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(mt76_get_antenna);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
-index d22d673e3c5d..4116ad7928da 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76.h
-@@ -763,6 +763,7 @@ int mt76_get_txpower(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- void mt76_csa_check(struct mt76_dev *dev);
- void mt76_csa_finish(struct mt76_dev *dev);
- 
-+int mt76_get_antenna(struct ieee80211_hw *hw, u32 *tx_ant, u32 *rx_ant);
- int mt76_set_tim(struct ieee80211_hw *hw, struct ieee80211_sta *sta, bool set);
- void mt76_insert_ccmp_hdr(struct sk_buff *skb, u8 key_id);
- int mt76_get_rate(struct mt76_dev *dev,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/main.c b/drivers/net/wireless/mediatek/mt76/mt7603/main.c
-index a68bfbccd83f..6a6bc37b898f 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7603/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7603/main.c
-@@ -686,6 +686,7 @@ const struct ieee80211_ops mt7603_ops = {
- 	.set_coverage_class = mt7603_set_coverage_class,
- 	.set_tim = mt76_set_tim,
- 	.get_survey = mt76_get_survey,
-+	.get_antenna = mt76_get_antenna,
- };
- 
- MODULE_LICENSE("Dual BSD/GPL");
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/main.c b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-index 0a3cdc7ae5c4..78bbed7a4645 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-@@ -542,4 +542,5 @@ const struct ieee80211_ops mt7615_ops = {
- 	.get_txpower = mt76_get_txpower,
- 	.channel_switch_beacon = mt7615_channel_switch_beacon,
- 	.get_survey = mt76_get_survey,
-+	.get_antenna = mt76_get_antenna,
- };
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x0/pci.c b/drivers/net/wireless/mediatek/mt76/mt76x0/pci.c
-index 9621e7b16eaf..dd562e37994f 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x0/pci.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x0/pci.c
-@@ -94,6 +94,7 @@ static const struct ieee80211_ops mt76x0e_ops = {
- 	.release_buffered_frames = mt76_release_buffered_frames,
- 	.set_coverage_class = mt76x02_set_coverage_class,
- 	.set_rts_threshold = mt76x02_set_rts_threshold,
-+	.get_antenna = mt76_get_antenna,
- };
- 
- static int mt76x0e_register_device(struct mt76x02_dev *dev)
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x0/usb.c b/drivers/net/wireless/mediatek/mt76/mt76x0/usb.c
-index a8ab8df075c3..65ba9fc6ea0b 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x0/usb.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x0/usb.c
-@@ -138,6 +138,7 @@ static const struct ieee80211_ops mt76x0u_ops = {
- 	.get_survey = mt76_get_survey,
- 	.set_tim = mt76_set_tim,
- 	.release_buffered_frames = mt76_release_buffered_frames,
-+	.get_antenna = mt76_get_antenna,
- };
- 
- static int mt76x0u_init_hardware(struct mt76x02_dev *dev, bool reset)
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/pci_main.c b/drivers/net/wireless/mediatek/mt76/mt76x2/pci_main.c
-index 1387f3172d7f..cfe8905ce73f 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x2/pci_main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x2/pci_main.c
-@@ -135,19 +135,6 @@ static int mt76x2_set_antenna(struct ieee80211_hw *hw, u32 tx_ant,
- 	return 0;
- }
- 
--static int mt76x2_get_antenna(struct ieee80211_hw *hw, u32 *tx_ant,
--			      u32 *rx_ant)
--{
--	struct mt76x02_dev *dev = hw->priv;
--
--	mutex_lock(&dev->mt76.mutex);
--	*tx_ant = dev->mt76.antenna_mask;
--	*rx_ant = dev->mt76.antenna_mask;
--	mutex_unlock(&dev->mt76.mutex);
--
--	return 0;
--}
--
- const struct ieee80211_ops mt76x2_ops = {
- 	.tx = mt76x02_tx,
- 	.start = mt76x2_start,
-@@ -172,7 +159,7 @@ const struct ieee80211_ops mt76x2_ops = {
- 	.get_survey = mt76_get_survey,
- 	.set_tim = mt76_set_tim,
- 	.set_antenna = mt76x2_set_antenna,
--	.get_antenna = mt76x2_get_antenna,
-+	.get_antenna = mt76_get_antenna,
- 	.set_rts_threshold = mt76x02_set_rts_threshold,
- };
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/usb_main.c b/drivers/net/wireless/mediatek/mt76/mt76x2/usb_main.c
-index a76a40dcd261..9e97204841f5 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x2/usb_main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x2/usb_main.c
-@@ -119,4 +119,5 @@ const struct ieee80211_ops mt76x2u_ops = {
- 	.get_survey = mt76_get_survey,
- 	.set_tim = mt76_set_tim,
- 	.release_buffered_frames = mt76_release_buffered_frames,
-+	.get_antenna = mt76_get_antenna,
- };
+Look good to me. Ulf, I assume you are going to take this so here's my
+ack:
+
+Acked-by: Kalle Valo <kvalo@codeaurora.org>
+
+But let me know if I should take it instead, whatever works the best for
+you.
+
 -- 
-2.21.0
-
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
