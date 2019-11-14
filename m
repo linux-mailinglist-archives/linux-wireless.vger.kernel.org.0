@@ -2,66 +2,59 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B4AFFC0F6
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 Nov 2019 08:43:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 556CFFC207
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 Nov 2019 10:02:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726428AbfKNHnB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 14 Nov 2019 02:43:01 -0500
-Received: from smtp.codeaurora.org ([198.145.29.96]:51574 "EHLO
+        id S1726202AbfKNJCI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 14 Nov 2019 04:02:08 -0500
+Received: from smtp.codeaurora.org ([198.145.29.96]:57972 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726002AbfKNHnB (ORCPT
+        with ESMTP id S1725920AbfKNJCH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 14 Nov 2019 02:43:01 -0500
+        Thu, 14 Nov 2019 04:02:07 -0500
 Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 91D0860DAB; Thu, 14 Nov 2019 07:43:00 +0000 (UTC)
+        id 068A560B6E; Thu, 14 Nov 2019 09:02:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1573717380;
-        bh=dZvmqQ58GRtsL8g5e4gnM7IbfR3M6/bfC460IXbV33s=;
+        s=default; t=1573722127;
+        bh=M9b6tWWRlv/nIgD8aV0jdiAlB4CPupsLqn0ahdsi6T8=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=oTPq9uMlVAOEP/8x0SynOQFI46f9Me6X2Y6HXonDXs5ua7dIU3goJx2KZB3dEbOZF
-         2HzLxUQsqFsGIMltEAfCAhaeE1CyNTwvHbKwkDWQO/D1JNWjiqKL3/s/inQ45Tl/no
-         2jSbIhiB0Le5GuLecUd/Q10jJKPbHJyuFa/kSKhY=
+        b=HZxlLjbdCnikXWixno/p9VEazlGEOZAkRIGrvkZGBhw1faDQOnAxwXPIu5gGpmFGM
+         JrJkkBJ8u1ROYyNEViY0zQh0gi2TEBAiITm4xafmPd70eEQN8oNVBhX+jE6wOWSuqN
+         oBpXNxVZp+uI1GymA0UV3DoUHeSg+KVT39p6VUEM=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
 X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
         DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
         version=3.4.0
-Received: from x230.qca.qualcomm.com (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from tynnyri.adurom.net (tynnyri.adurom.net [51.15.11.48])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id EE56260CA5;
-        Thu, 14 Nov 2019 07:42:55 +0000 (UTC)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 8D55A60B14;
+        Thu, 14 Nov 2019 09:02:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1573717378;
-        bh=dZvmqQ58GRtsL8g5e4gnM7IbfR3M6/bfC460IXbV33s=;
+        s=default; t=1573722126;
+        bh=M9b6tWWRlv/nIgD8aV0jdiAlB4CPupsLqn0ahdsi6T8=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=oL4QulW1wnrKdj2s3Mo7QbKJq4Z5Mw7tqigcO4UYBwQ5wOPcRHKqesyLgmvhJ7acG
-         OH9aLYnCZ19B5kmJlt3VE5D8EX+dypApdfmZ2w+fisaaaTQX8JfNoYSb+r5ono2abD
-         yNFSdwNfSeRqiwWm0DoQ/25oFQDSwV8wZyMMhEdE=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org EE56260CA5
+        b=CzrhYIqDY0feJZ/svA4pv5LiHbCqgjky4ET2HIPi0vvnoTHIKdmBuSrDArFhCKgor
+         4Gb4voVMY+3AyB4nPIy0bmxEOb+eVDTobKPJ5jX6s9ZX1B1v27A/26uRBZXKXzjcF5
+         5GgvY2uXSdkGBUchCrHuyF5ER6Ght2EfFtrWk/E0=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 8D55A60B14
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Bjorn Andersson <bjorn.andersson@linaro.org>
-Cc:     Wenwen Wang <wenwen@cs.uga.edu>,
-        "David S. Miller" <davem@davemloft.net>,
-        "open list\:QUALCOMM ATHEROS ATH10K WIRELESS DRIVER" 
-        <ath10k@lists.infradead.org>,
-        "open list\:NETWORKING DRIVERS \(WIRELESS\)" 
-        <linux-wireless@vger.kernel.org>,
-        "open list\:NETWORKING DRIVERS" <netdev@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        jeffrey.l.hugo@gmail.com, govinds@codeaurora.org
-Subject: Re: [PATCH] ath10k: add cleanup in ath10k_sta_state()
-References: <1565903072-3948-1-git-send-email-wenwen@cs.uga.edu>
-        <20191113192821.GA3441686@builder>
-Date:   Thu, 14 Nov 2019 09:42:52 +0200
-In-Reply-To: <20191113192821.GA3441686@builder> (Bjorn Andersson's message of
-        "Wed, 13 Nov 2019 11:28:21 -0800")
-Message-ID: <87eeyax5s3.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+To:     Ming Chen <ming032217@gmail.com>
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless@vger.kernel.org,
+        Ming Chen <ming.chen@watchguard.com>
+Subject: Re: [PATCH] mac80211: Drop the packets whose source or destination mac address is empty
+References: <20191114001230.71469-1-ming.chen@watchguard.com>
+Date:   Thu, 14 Nov 2019 11:02:00 +0200
+In-Reply-To: <20191114001230.71469-1-ming.chen@watchguard.com> (Ming Chen's
+        message of "Wed, 13 Nov 2019 16:12:30 -0800")
+Message-ID: <874kz6de5z.fsf@tynnyri.adurom.net>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
@@ -69,33 +62,48 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Bjorn Andersson <bjorn.andersson@linaro.org> writes:
+Ming Chen <ming032217@gmail.com> writes:
 
-> On Thu 15 Aug 14:04 PDT 2019, Wenwen Wang wrote:
+> We occasionally found ath9k could receive some packets from Linux IP stack
+> with empty source and destination mac address,which will result in the
+> driver cannot find the station node in TX complete. And thus, the driver
+> will complete this buffer but without updating the block ack window.
 >
->> If 'sta->tdls' is false, no cleanup is executed, leading to memory/resource
->> leaks, e.g., 'arsta->tx_stats'. To fix this issue, perform cleanup before
->> go to the 'exit' label.
->> 
->
-> Unfortunately this patch consistently crashes all my msm8998, sdm845 and
-> qcs404 devices (running ath10k_snoc).  Upon trying to join a network the
-> WiFi firmware crashes with the following:
->
-> [  124.315286] wlan0: authenticate with 70:3a:cb:4d:34:f3
-> [  124.334051] wlan0: send auth to 70:3a:cb:4d:34:f3 (try 1/3)
-> [  124.338828] wlan0: authenticated
-> [  124.342470] wlan0: associate with 70:3a:cb:4d:34:f3 (try 1/3)
-> [  124.347223] wlan0: RX AssocResp from 70:3a:cb:4d:34:f3 (capab=0x1011 status=0 aid=2)
-> [ 124.402535] qcom-q6v5-mss 4080000.remoteproc: fatal error received:
-> err_qdi.c:456:EF:wlan_process:1:cmnos_thread.c:3900:Asserted in
-> wlan_vdev.c:_wlan_vdev_up:3219
->
-> Can we please revert it for v5.5?
+> To fix this issue, we should drop this kind of error packet before it
+> goes into the driver.
 
-Yes, let's revert it. And thanks for sending the patch to do that:
+s-o-b missing, please read:
 
-https://patchwork.kernel.org/patch/11242743/
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches#signed-off-by_missing
+
+> ---
+>  net/mac80211/tx.c | 15 +++++++++++++++
+>  1 file changed, 15 insertions(+)
+>
+> diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+> index db38be1b75fa..0668123e8e85 100644
+> --- a/net/mac80211/tx.c
+> +++ b/net/mac80211/tx.c
+> @@ -2481,6 +2481,7 @@ static struct sk_buff *ieee80211_build_hdr(struct ieee80211_sub_if_data *sdata,
+>  	bool tdls_peer;
+>  	bool multicast;
+>  	u16 info_id = 0;
+> +	const int empty_mac[ETH_ALEN] = {0};
+>  	struct ieee80211_chanctx_conf *chanctx_conf;
+>  	struct ieee80211_sub_if_data *ap_sdata;
+>  	enum nl80211_band band;
+> @@ -2489,6 +2490,13 @@ static struct sk_buff *ieee80211_build_hdr(struct ieee80211_sub_if_data *sdata,
+>  	if (IS_ERR(sta))
+>  		sta = NULL;
+>  
+> +	/* drop this skb when source mac or destination mac is empty */
+> +	if (!memcmp(skb->data, empty_mac, ETH_ALEN) ||
+> +	    !memcmp(skb->data + ETH_ALEN, empty_mac, ETH_ALEN)) {
+> +		ret = -ENOTCONN;
+> +		goto free;
+> +	}
+
+Can you use is_zero_ether_addr()?
 
 -- 
-Kalle Valo
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
