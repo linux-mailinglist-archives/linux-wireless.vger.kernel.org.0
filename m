@@ -2,93 +2,108 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 89188FCE93
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 Nov 2019 20:16:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D4A23FCF02
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 Nov 2019 20:57:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726613AbfKNTQn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 14 Nov 2019 14:16:43 -0500
-Received: from mail-oi1-f193.google.com ([209.85.167.193]:46022 "EHLO
-        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726098AbfKNTQn (ORCPT
+        id S1726533AbfKNT5o (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 14 Nov 2019 14:57:44 -0500
+Received: from mail-qt1-f193.google.com ([209.85.160.193]:41332 "EHLO
+        mail-qt1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726491AbfKNT5o (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 14 Nov 2019 14:16:43 -0500
-Received: by mail-oi1-f193.google.com with SMTP id 14so6299059oir.12;
-        Thu, 14 Nov 2019 11:16:42 -0800 (PST)
+        Thu, 14 Nov 2019 14:57:44 -0500
+Received: by mail-qt1-f193.google.com with SMTP id o3so8155171qtj.8
+        for <linux-wireless@vger.kernel.org>; Thu, 14 Nov 2019 11:57:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=rMcK0vfklBoc6jwJF8I3LX4UqIxKfyFKfTWU5PL1/kQ=;
+        b=ZMNvrFUCCj2a/rX8ay5atF5ewlQZuBbwovERCmYFMDubfn9AIH1Xw+g7WbJx8L0DkY
+         RjE/eTernivgOmmX4fikkwocwn1ntxtf2A/UwIfeAoiuXjlGgPcWqMf5aDQvS79Ov4qM
+         E0C6ZI4cN0tdh3IMHvxmWQ7Po/3dC+gmEfZz9r43HK75Ucpqxr9HN1sus9yqeb/HxAYS
+         iQdJkQiMeARWDlqUye91Jark3YaBKF/gvSkuBLtVKG4esR4jc95jFH69RVgVMddB8ugJ
+         8LGXFiMBF5Rk2wFtw2GgstcDlx58jkciexU5nHUy73GsyRGLRtToKKwvzf0/VOnAwUZt
+         MAsw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=JupwLIMCy0kD1DylEYdUBcHFa8QvARGaEvLmmurxdDo=;
-        b=FLXWvS0B1iwLJsPpf6vD5tUIJ06B+YGhlGqkgzsgtCACVa8amI16rG4aaaNyKKlGic
-         V/aYOKvsW6NmngqTxZCX9LpjdPpe5ct5CWBlnIPv5OTuZoYwvAEB3VoRO1fk4Kr3uoqd
-         tRaQBCrZ0wZFI9C87s1rsdNmzDJr5EO4DLw0DYOQeFegWX5hm5qe11FKceoW7lTC2ZPv
-         a0zPmYcFZcD6nNsD6t245UDRABaNzImxmu8ddGbQ6fwg51HS6s3QErFRPQdxcd7B+n2w
-         L0FV4ucvGGaUZKp0z7nMrcBal74LWWTu/p2pQBpuI/l9yhStkc4VfzhjOS0gtQiXH6vZ
-         5RBA==
-X-Gm-Message-State: APjAAAXXuXQT97iuQbkOMXkwLOnrSvTPcn2j0ekM7ALS07lTBVhUtmDw
-        c3udKRFCxHJpv3jZd+mE8g==
-X-Google-Smtp-Source: APXvYqx216qmRtLD8fvRbb7HfVk7gUkrflyOyJZGhawNK0RcsBGErmtzyzCcTrZdLV6OxprI+8YFKQ==
-X-Received: by 2002:aca:cdd6:: with SMTP id d205mr4981354oig.9.1573759001815;
-        Thu, 14 Nov 2019 11:16:41 -0800 (PST)
-Received: from localhost (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.gmail.com with ESMTPSA id u1sm2044899oie.37.2019.11.14.11.16.41
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=rMcK0vfklBoc6jwJF8I3LX4UqIxKfyFKfTWU5PL1/kQ=;
+        b=sQ+Cj3t6b7vAmIZVIeUFnUtZeRC+cw7xQS38M5KdFQ89ios0ffcnOJWeTaFFbS29+P
+         CL2i/vBhWeQm/zophYLkN23EaFcWrkXh57GyMD9OoKqmjMzyhD56ZbzxEvNmhWRxCkJ4
+         eiFRQcHs6NKUBgn4e/hD4FOyVOJ5gSpsMSBpwkoK3+cnGwMPLdX40TK79c8qnBaCwbZR
+         TpeaYtA+EQ5C0od7hOLC404Burv+CvKQTR06zaW4zo364uN7t9KGpT5Lp5K5/RAsaP0h
+         HsGlAIrHTX9loag23gQffwPReKhuPLC/TT8NL+WpgY7B/DJNQH+VL9Nk37iwrZPBaWb4
+         4Bmg==
+X-Gm-Message-State: APjAAAVGyvZqBK9ZybaFrxPyqZEW6yY+2xWvHLI+ycShmfROlGH7bO2q
+        PPMo+SNLeqR7eS8u2U0L/B5JM9E8opo=
+X-Google-Smtp-Source: APXvYqyXaCdSCaSBEFPa6fRGH2eTvtM89Jp3qsw0/BcJ+gZBymrMuu+5knZtDEhXeAve/DmKE6O4WA==
+X-Received: by 2002:ac8:342b:: with SMTP id u40mr9915509qtb.87.1573761463527;
+        Thu, 14 Nov 2019 11:57:43 -0800 (PST)
+Received: from ubuntu.wgti.net ([64.94.121.131])
+        by smtp.gmail.com with ESMTPSA id r36sm3924852qta.27.2019.11.14.11.57.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 Nov 2019 11:16:41 -0800 (PST)
-Date:   Thu, 14 Nov 2019 13:16:40 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Govind Singh <govinds@codeaurora.org>
-Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        devicetree@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] dt: bindings: add dt entry flag to skip SCM call
- for msa region
-Message-ID: <20191114191640.GA8426@bogus>
-References: <20191111042508.12628-1-govinds@codeaurora.org>
- <20191111042508.12628-2-govinds@codeaurora.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191111042508.12628-2-govinds@codeaurora.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+        Thu, 14 Nov 2019 11:57:42 -0800 (PST)
+From:   Ming Chen <ming032217@gmail.com>
+X-Google-Original-From: Ming Chen <ming.chen@watchguard.com>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless@vger.kernel.org,
+        Ming Chen <ming.chen@watchguard.com>
+Subject: [PATCH v2] mac80211: Drop the packets whose source or destination mac address is empty
+Date:   Thu, 14 Nov 2019 11:57:12 -0800
+Message-Id: <20191114195712.101568-1-ming.chen@watchguard.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Nov 11, 2019 at 09:55:07AM +0530, Govind Singh wrote:
-> Add boolean context flag to disable SCM call for statically
-> mapped msa region.
+We occasionally found ath9k could receive some packets from Linux IP stack
+with empty source and destination mac address,which will result in the
+driver cannot find the station node in TX complete. And thus, the driver
+will complete this buffer but without updating the block ack window.
 
-Can't this be implied by the compatible string?
+To fix this issue, we should drop this kind of error packet before it
+goes into the driver.
+---
 
-> 
-> Signed-off-by: Govind Singh <govinds@codeaurora.org>
-> ---
->  .../devicetree/bindings/net/wireless/qcom,ath10k.txt          | 4 ++++
->  1 file changed, 4 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/net/wireless/qcom,ath10k.txt b/Documentation/devicetree/bindings/net/wireless/qcom,ath10k.txt
-> index 017128394a3e..7ba22918bab7 100644
-> --- a/Documentation/devicetree/bindings/net/wireless/qcom,ath10k.txt
-> +++ b/Documentation/devicetree/bindings/net/wireless/qcom,ath10k.txt
-> @@ -88,6 +88,9 @@ Optional properties:
->  		    of the host capability QMI request
->  - qcom,xo-cal-data: xo cal offset to be configured in xo trim register.
->  
-> +- qcom,msa_fixed_perm: Boolean context flag to disable SCM call for statically
-> +		       mapped msa region.
-> +
+According to review feedback, use the is_zero_ether_addr to check if the
+mac address is empty.
 
-s/_/-/
+Signed-off-by: Ming Chen <ming.chen@watchguard.com>
+---
+ net/mac80211/tx.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
->  Example (to supply PCI based wifi block details):
->  
->  In this example, the node is defined as child node of the PCI controller.
-> @@ -185,4 +188,5 @@ wifi@18000000 {
->  		vdd-3.3-ch0-supply = <&vreg_l25a_3p3>;
->  		memory-region = <&wifi_msa_mem>;
->  		iommus = <&apps_smmu 0x0040 0x1>;
-> +		qcom,msa_fixed_perm;
->  };
-> -- 
-> 2.22.0
-> 
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index db38be1b75fa..b18745a3f6b0 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -2489,6 +2489,13 @@ static struct sk_buff *ieee80211_build_hdr(struct ieee80211_sub_if_data *sdata,
+ 	if (IS_ERR(sta))
+ 		sta = NULL;
+ 
++	/* drop this skb when source mac or destination mac is empty */
++	if (is_zero_ether_addr(skb->data) ||
++	    is_zero_ether_addr(skb->data + ETH_ALEN)) {
++		ret = -ENOTCONN;
++		goto free;
++	}
++
+ #ifdef CONFIG_MAC80211_DEBUGFS
+ 	if (local->force_tx_status)
+ 		info_flags |= IEEE80211_TX_CTL_REQ_TX_STATUS;
+@@ -3435,6 +3442,11 @@ static bool ieee80211_xmit_fast(struct ieee80211_sub_if_data *sdata,
+ 	if (skb->sk && skb_shinfo(skb)->tx_flags & SKBTX_WIFI_STATUS)
+ 		return false;
+ 
++	/* drop this skb when source mac or destination mac is empty */
++	if (is_zero_ether_addr(skb->data) ||
++	    is_zero_ether_addr(skb->data + ETH_ALEN))
++		return false;
++
+ 	if (hdr->frame_control & cpu_to_le16(IEEE80211_STYPE_QOS_DATA)) {
+ 		tid = skb->priority & IEEE80211_QOS_CTL_TAG1D_MASK;
+ 		tid_tx = rcu_dereference(sta->ampdu_mlme.tid_tx[tid]);
+-- 
+2.17.1
+
