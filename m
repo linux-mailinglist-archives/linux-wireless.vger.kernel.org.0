@@ -2,91 +2,139 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D202EFC663
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 Nov 2019 13:34:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1AAFCFC87B
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 Nov 2019 15:12:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726202AbfKNMef (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 14 Nov 2019 07:34:35 -0500
-Received: from smtp.codeaurora.org ([198.145.29.96]:49468 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726142AbfKNMef (ORCPT
+        id S1727192AbfKNOLu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 14 Nov 2019 09:11:50 -0500
+Received: from mail-vk1-f193.google.com ([209.85.221.193]:36858 "EHLO
+        mail-vk1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727178AbfKNOLt (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 14 Nov 2019 07:34:35 -0500
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id A53F260A74; Thu, 14 Nov 2019 12:34:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1573734874;
-        bh=dwYCGAKBSoFqxbMRFaDIWTlRC6an4vrFsFQjVt+pXWk=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=Qu5MRpMzrSKnIA3koJrLhR4VunthFjKQyLn3sbftv8cUIKO6R5EB1qs/yb2k8Lc2y
-         EwfQKRFhMjuSHXTDLOv77etnG1sMYzUc88BAjB0iGQ4EEA/KyF25/fPKdKAqG2FQSx
-         p4TUpeBMV5OxY7P15VzJa9GM4j6DbmHTWzvm/FG8=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED autolearn=no autolearn_force=no version=3.4.0
-Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by smtp.codeaurora.org (Postfix) with ESMTP id BF798601C4;
-        Thu, 14 Nov 2019 12:33:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1573734840;
-        bh=dwYCGAKBSoFqxbMRFaDIWTlRC6an4vrFsFQjVt+pXWk=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=PZEh8FFdOFcz8cQ1cIQiyf4EmwRGrHw+sYkGjPdtff/Di/7vVbO61OktpQYQX5tkI
-         qYn4S3Ldlk+PBPgkQ3CBaq23noyUwFhFI0zbB8BeDa1R3ICWyIilACAlNuCv+1I++p
-         zGJcpqImK1dTGqJS5iQIJghUW1A44QCghbRKP5Tc=
+        Thu, 14 Nov 2019 09:11:49 -0500
+Received: by mail-vk1-f193.google.com with SMTP id d10so1502367vke.3
+        for <linux-wireless@vger.kernel.org>; Thu, 14 Nov 2019 06:11:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=XSmwLWNo5Rh6fe+p8Uu7DFNnAFhXmFiTvhxWz1V+B8w=;
+        b=Zxy9Va/g5HeujT0G/Yr81ssNa+Mrn59GATo64imHO5v4yPYwyPPGs095S9yLGHZZct
+         1hxeTUWiuBZWvi+O1vf0npeqW5PjS6EDcNVV/BuKq+FHtrEOxZldeFAkfves+9/Zc/nA
+         Jfl+7lufr0kMeZAOu4jE2erwkVZzPMxG8lpE6MQdIaqDuXXS5sdJm3+y9FiWm52EK2l3
+         WwyGBsnQjzhGRAggZDE4omJqyKpHbyv37Af0YKrpFhQbUSYZTgpsAw3qsoRhd/fdwACE
+         5iSUjaPDvT/GCI+c4fijdDcGkjUJFX9Fldn0zizjgcTiajuBoo8z8CbjC/JqAxv7Pnw6
+         eStg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=XSmwLWNo5Rh6fe+p8Uu7DFNnAFhXmFiTvhxWz1V+B8w=;
+        b=kM7nYfgcw+vVU98/uTELPjtzKNwUHtnZ1NkNNgxbUZNlWEscvDp7nk3T1kDda4hJfz
+         1O3K9b6WRthWH8Pq2JL2KmOh0ficbg2niQhth9helj1bDUVwcdqMNeqtaga/Q2y3AJQd
+         IMeAS0XsnkKu4Xc2OXevT1FcZToVG8KL+GwBt1ppg1sHgkKV1qXuJ2hywv/7lG/SUJCb
+         ZZCut4c6UVrkaecabL9H/9ToOv4mkhAdY1/vOGktwwHGa6aVtgIkQ8yIVTRdh+q/HH0J
+         c7xD1DV1/SJ7arxVpGGnEspXcrzmvWqljSHdUJGVSMn1kKWKjrYOEKm8CUOhs4Z3p9iA
+         UcxA==
+X-Gm-Message-State: APjAAAUWJAYb2T1WEtFqcheNZYcfxwEfv6bNfMLEZ+JzQ0faMgDNCmq8
+        awofy7JfICVb96gtXqvlrmcLm5SMBOkdBkKjh8OZ6g==
+X-Google-Smtp-Source: APXvYqxNH6tQ6y7J3OfkNA5oBwmBY5VTe296JKBsrF2xLv130hd/N0da6UeuSUpnmtRg4fw9qbywtQvMfesNLW0c7dc=
+X-Received: by 2002:a1f:2f51:: with SMTP id v78mr5258686vkv.101.1573740707355;
+ Thu, 14 Nov 2019 06:11:47 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Thu, 14 Nov 2019 18:03:59 +0530
-From:   Sathishkumar Muruganandam <murugana@codeaurora.org>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org, ath11k@lists.infradead.org
-Subject: Re: [EXT] Re: [PATCH v2 0/2] add Wide Band Scan support
-In-Reply-To: <aa0257b408dc7ad6d5f457ac611e76059549737b.camel@sipsolutions.net>
-References: <1572869374-9635-1-git-send-email-murugana@codeaurora.org>
- <53d45563803b3f96be0d53731408cc3af028c510.camel@sipsolutions.net>
- <00d301d593c2$bd37d8f0$37a78ad0$@codeaurora.org>
- <867302d58d3183ce7e2c7afa846027a787579b87.camel@sipsolutions.net>
- <6ea305b2ac09c340181623a23cf4180b@codeaurora.org>
- <aa0257b408dc7ad6d5f457ac611e76059549737b.camel@sipsolutions.net>
-Message-ID: <2354c9e9f86b2207d6828b45e4055191@codeaurora.org>
-X-Sender: murugana@codeaurora.org
-User-Agent: Roundcube Webmail/1.2.5
+References: <cover.1573122644.git.hns@goldelico.com> <17b12e91c878dcb74160e3df5f88bc8a9e3f7fce.1573122644.git.hns@goldelico.com>
+In-Reply-To: <17b12e91c878dcb74160e3df5f88bc8a9e3f7fce.1573122644.git.hns@goldelico.com>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Thu, 14 Nov 2019 15:11:11 +0100
+Message-ID: <CAPDyKFpGU+tXC8thz52BQfKHNerzYSUroSihh6GpZELFm-1gRQ@mail.gmail.com>
+Subject: Re: [PATCH v3 01/12] Documentation: dt: wireless: update wl1251 for sdio
+To:     "H. Nikolaus Schaller" <hns@goldelico.com>
+Cc:     =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Mike Rapoport <rppt@linux.ibm.com>,
+        David Sterba <dsterba@suse.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Petr Mladek <pmladek@suse.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Kefeng Wang <wangkefeng.wang@huawei.com>,
+        Yangtao Li <tiny.windzz@gmail.com>,
+        Alexios Zavras <alexios.zavras@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Allison Randal <allison@lohutok.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        John Stultz <john.stultz@linaro.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        DTML <devicetree@vger.kernel.org>,
+        Discussions about the Letux Kernel 
+        <letux-kernel@openphoenux.org>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        kernel@pyra-handheld.com,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>,
+        linux-omap <linux-omap@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2019-11-14 12:08, Johannes Berg wrote:
-> On Mon, 2019-11-11 at 13:27 +0530, Sathishkumar Muruganandam wrote:
->> 
->> > How is this related to scanning? It sounds to me like you're just
->> > (ab)using scan as a somewhat convenient "do some channel hopping" API
->> > ...
->> >
->> 
->> Whether this can be used under "iw offchannel" with
->> NL80211_CMD_REMAIN_ON_CHANNEL?
-> 
-> Are you asking if I would accept wide
-> channel extensions to R-O-C?
+On Thu, 7 Nov 2019 at 11:32, H. Nikolaus Schaller <hns@goldelico.com> wrote:
+>
+> The standard method for sdio devices connected to
+> an sdio interface is to define them as a child node
+> like we can see with wlcore.
+>
+> Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
+> Acked-by: Kalle Valo <kvalo@codeaurora.org>
+> ---
+>  .../bindings/net/wireless/ti,wl1251.txt       | 26 +++++++++++++++++++
+>  1 file changed, 26 insertions(+)
+>
+> diff --git a/Documentation/devicetree/bindings/net/wireless/ti,wl1251.txt b/Documentation/devicetree/bindings/net/wireless/ti,wl1251.txt
+> index bb2fcde6f7ff..f38950560982 100644
+> --- a/Documentation/devicetree/bindings/net/wireless/ti,wl1251.txt
+> +++ b/Documentation/devicetree/bindings/net/wireless/ti,wl1251.txt
+> @@ -35,3 +35,29 @@ Examples:
+>                 ti,power-gpio = <&gpio3 23 GPIO_ACTIVE_HIGH>; /* 87 */
+>         };
+>  };
+> +
+> +&mmc3 {
+> +       vmmc-supply = <&wlan_en>;
+> +
+> +       bus-width = <4>;
+> +       non-removable;
+> +       ti,non-removable;
+> +       cap-power-off-card;
+> +
+> +       pinctrl-names = "default";
+> +       pinctrl-0 = <&mmc3_pins>;
+> +
+> +       #address-cells = <1>;
+> +       #size-cells = <0>;
+> +
+> +       wlan: wifi@1 {
+> +               compatible = "ti,wl1251";
+> +
+> +               reg = <1>;
+> +
+> +               interrupt-parent = <&gpio1>;
+> +               interrupts = <21 IRQ_TYPE_LEVEL_HIGH>;  /* GPIO_21 */
+> +
+> +               ti,wl1251-has-eeprom;
+> +       };
+> +};
 
-Yes, adding bandwidth config to existing command.
+One minor thing, the "ti,power-gpio" is not required anymore, as it's
+not needed for the SDIO case for pandora.
 
-Something like this,
+Please move it to an option section.
 
-iw offchannel <freq> [HT40+|HT40-|80MHz] <duration>
-
-> Still I guess I'd like to see an actual reason for it.
-
-Wide band scan is actually moving to a off-channel for a
-specified duration to capture 40, 80Mhz data frames.
-
-So, I hope offchannel would accommodate this extension.
-
--- 
-Thanks,
-Sathishkumar
+Kind regards
+Uffe
