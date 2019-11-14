@@ -2,88 +2,78 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B4C38FD085
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 Nov 2019 22:45:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AF9F4FD129
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 Nov 2019 23:51:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726995AbfKNVpU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 14 Nov 2019 16:45:20 -0500
-Received: from ns.lynxeye.de ([87.118.118.114]:55733 "EHLO lynxeye.de"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726953AbfKNVpU (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 14 Nov 2019 16:45:20 -0500
-Received: by lynxeye.de (Postfix, from userid 501)
-        id D2B85E74222; Thu, 14 Nov 2019 22:45:18 +0100 (CET)
-X-Spam-Checker-Version: SpamAssassin 3.3.1 (2010-03-16) on lynxeye.de
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=3.0 tests=ALL_TRUSTED,BAYES_00
-        autolearn=ham version=3.3.1
-Received: from radon.fritz.box (a89-183-75-168.net-htp.de [89.183.75.168])
-        by lynxeye.de (Postfix) with ESMTPSA id BFF50E74217;
-        Thu, 14 Nov 2019 22:45:17 +0100 (CET)
-Message-ID: <fa7c3b9b24a0d140847f1390fb09bae21477ebd1.camel@lynxeye.de>
-Subject: Re: long delays in rtl8723 drivers in irq disabled sections
-From:   Lucas Stach <dev@lynxeye.de>
-To:     Larry Finger <Larry.Finger@lwfinger.net>,
-        Pkshih <pkshih@realtek.com>, wlanfae <wlanfae@realtek.com>
-Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Date:   Thu, 14 Nov 2019 22:45:17 +0100
-In-Reply-To: <a6d55cfc-9de9-ce6e-1dcf-814372772327@lwfinger.net>
-References: <5de65447f1d115f436f764a7ec811c478afbe2e0.camel@lynxeye.de>
-         <5B2DA6FDDF928F4E855344EE0A5C39D1D5C9CE47@RTITMBSVM04.realtek.com.tw>
-         <e83f5b699c5652cbe2350ac3576215d24b748e03.camel@lynxeye.de>
-         <5B2DA6FDDF928F4E855344EE0A5C39D1D5C9D5F6@RTITMBSVM04.realtek.com.tw>
-         <a6d55cfc-9de9-ce6e-1dcf-814372772327@lwfinger.net>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.1 (3.34.1-1.fc31) 
+        id S1727170AbfKNWvo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 14 Nov 2019 17:51:44 -0500
+Received: from mail-ot1-f54.google.com ([209.85.210.54]:35166 "EHLO
+        mail-ot1-f54.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726319AbfKNWvo (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 14 Nov 2019 17:51:44 -0500
+Received: by mail-ot1-f54.google.com with SMTP id n19so2591089otk.2
+        for <linux-wireless@vger.kernel.org>; Thu, 14 Nov 2019 14:51:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to:cc;
+        bh=TPgz0rUKVntORJhLPj9xR8L0iEI2kaJ+YyJ/86/30+g=;
+        b=BhHQz63KkM1O5peMOee7i1hdDiaxgUINFALCt6oUZjfcFlgX2hDR6+ZqTOkd3P25DQ
+         zUCDaiGEr6K/paa0poxmvcR0N37kGpD9+8d8fUNjJdPmM81hsUnHvsP3HcN4cZWlLnxi
+         jVxUZW351PpO7GIakKU9JscyiQB8xmuO3AvrXT36v4fKTE9vjryGaSCRyW8u5ThXcBrK
+         6piXdWyF2zuxruoyK1WATSDX6U9xsIEVwCNorby5/eEe0e9NciF+F1PFP2S0F0EZvtMP
+         jmj15rHqMEtjFH3uQMNxrdZRokFeI4pKaO0wp6v6vihNESIzVQcEiIoFTnS7S0moXzRp
+         9IZg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
+        bh=TPgz0rUKVntORJhLPj9xR8L0iEI2kaJ+YyJ/86/30+g=;
+        b=tq2eOMaupbymQT/tEVyvEXaUraeMO1OBet2OW9DChhvcjzXkA+3CiW3vBuTKCrTzii
+         a2KoGv2WX6+1Kp3LH7R4yP4fTpyyBMkHSPJJmgZxRaBz6xNl6rsjiDYm+w7hjt4iLxOh
+         9tUvEzOOH8qPEFo7sX8gxF/bmCsv3xMysqKZQhC3dyfqC7jUM7BSX+5DF514worEhU3q
+         t53ufo+Z7K9s6sHnR5cW2t3vIHw2NAi2SN6N3qCMvJM7r3+Ph9hRqlm0DcbI9yXtw7+8
+         ShRuuYjy2zLbM/64HpIiR3vYrVZYwiUjeuFZrdY3alGb1efz83B01iQAROBwqURiFg2J
+         Kc7w==
+X-Gm-Message-State: APjAAAXfUBPeLRUCHAZBkTE1hY6z88GLA2XzOF3J27fR9qmRRNOZGuwt
+        u/PjwK5gT43HfcrXkchX4K3ZxxALurZSplc5rB+w6mqJ
+X-Google-Smtp-Source: APXvYqyUf/J5GFd0uKAH5+8Z7iDnWI7ZQpfLRL07Voy8JpEWeRw/6jSumTqHl7jeZ+JlNshIhIlSlFUeKtWejWeCowY=
+X-Received: by 2002:a9d:68c9:: with SMTP id i9mr3162445oto.265.1573771901939;
+ Thu, 14 Nov 2019 14:51:41 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Received: by 2002:a9d:384:0:0:0:0:0 with HTTP; Thu, 14 Nov 2019 14:51:41 -0800 (PST)
+From:   Tom Psyborg <pozega.tomislav@gmail.com>
+Date:   Thu, 14 Nov 2019 23:51:41 +0100
+Message-ID: <CAKR_QVLaRKOc0OapvhppCZzYYO+w8h8t+B1amiWGGEiH6FmnjQ@mail.gmail.com>
+Subject: [BUG] ath10k: CPU scaling related performance issue
+To:     ath10k <ath10k@lists.infradead.org>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Larry,
+network topology:
+80211g uplink - 30Mbps is brought into litebeam-5AC that is running AP
+(WDS) mode on 5GHz radio. client device is a laptop (dualcore 2.4GHz)
+running QCA9880 card on ubuntu 10.04 with kernel 4.9.
 
-Am Donnerstag, den 14.11.2019, 15:25 -0600 schrieb Larry Finger:
-[...]
-> > > I don't know if this function needs to guard against something running
-> > > in the IRQ handler, so depending on the answer to that the solution
-> > > might be as simple as not disabling IRQs when taking the spinlock.
-> > > 
-> > > kworker/-276     4d...    0us : _raw_spin_lock_irqsave
-> > > kworker/-276     4d...    0us : rtl8723_phy_rf_serial_read <-rtl8723de_phy_set_rf_reg
-> > > kworker/-276     4d...    1us : rtl8723_phy_query_bb_reg <-rtl8723_phy_rf_serial_read
-> > > kworker/-276     4d...    3us : rtl8723_phy_set_bb_reg <-rtl8723_phy_rf_serial_read
-> > > kworker/-276     4d...    4us : __const_udelay <-rtl8723_phy_rf_serial_read
-> > > kworker/-276     4d...    4us!: delay_mwaitx <-rtl8723_phy_rf_serial_read
-> > > kworker/-276     4d... 1004us : rtl8723_phy_set_bb_reg <-rtl8723_phy_rf_serial_read
-> > > [...]
-> > > 
-> > 
-> > I check TX/RX interrupt handlers, and I don't find one calls RF read function
-> > by now. I suspect that old code controls RF to do PS in interrupt context, so
-> > _irqsave version is used to ensure read RF isn't interrupted or deadlock.
-> > So, I change spin_lock to non-irqsave version, and do some tests on 8723BE
-> > that works well.
-> > 
-> > What do you think about two fixes mentioned above? If they're ok, I can send
-> > two patches to resolve this long delays.
-> 
-> Lucas,
-> 
-> If the above patch fixes the problem with the 8723de, I will modify the GitHub 
-> driver. Although 8723de will be added to rtw88, I will keep the driver in 
-> rtlwifi_new.
+description:
+booting ubuntu defaults to performance governor (personal
+modification), opening speedtest.net upon boot and measuring
+throughput gets me about 25Mbps download speed.
+setting lowest CPU scaling freq of both cores (600MHz) and repeating
+the speedtest gets about 29-30Mbps in download. i have verified these
+speed differences while downloading several iso files.
 
-I'm currently running the rtlwifi_new based modules, modified with the
-reduced waits as suggested by PK, as well as removing the IRQ disable
-from the spinlocks in both rtl8723de_phy_query_rf_reg() and
-rtl8723de_phy_set_rf_reg().
+confirmation:
+identical results have been observed on a live booted ubuntu 19.10
+identical results have been observed on ubuntu 10.04, but using
+ethernet connection from archer c7 that was connected in client mode
+to litebeam5
 
-I can confirm that with those changes rtl8723de no longer shows up my
-latency traces.
-
-Regards,
-Lucas
-
+ruled out so far:
+-using regular AP-STA instead of APWDS-STAWDS interfaces does not change a thing
+-switching to Ben's CT driver and firmware had no impact, the bug is
+present with it too
+-using different card QCA9862/QCA9880 behavior is the same
