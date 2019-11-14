@@ -2,125 +2,156 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4AC06FBD93
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 Nov 2019 02:41:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A582AFBDE1
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 Nov 2019 03:26:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726335AbfKNBlk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 13 Nov 2019 20:41:40 -0500
-Received: from rtits2.realtek.com ([211.75.126.72]:38891 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726098AbfKNBlk (ORCPT
+        id S1726489AbfKNC0i (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 13 Nov 2019 21:26:38 -0500
+Received: from mail-lf1-f65.google.com ([209.85.167.65]:43481 "EHLO
+        mail-lf1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726434AbfKNC0i (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 13 Nov 2019 20:41:40 -0500
-Authenticated-By: 
-X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID xAE1fWAc024458, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (RTITCASV01.realtek.com.tw[172.21.6.18])
-        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id xAE1fWAc024458
-        (version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-        Thu, 14 Nov 2019 09:41:32 +0800
-Received: from RTITMBSVM04.realtek.com.tw ([fe80::e404:880:2ef1:1aa1]) by
- RTITCASV01.realtek.com.tw ([::1]) with mapi id 14.03.0468.000; Thu, 14 Nov
- 2019 09:41:30 +0800
-From:   Pkshih <pkshih@realtek.com>
-To:     Lucas Stach <dev@lynxeye.de>, wlanfae <wlanfae@realtek.com>
-CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Subject: RE: long delays in rtl8723 drivers in irq disabled sections
-Thread-Topic: long delays in rtl8723 drivers in irq disabled sections
-Thread-Index: AQHVmZ3DU4qY/o9NJ0yDyHj2LmPNT6eIcdBQgACzWgCAALqLsA==
-Date:   Thu, 14 Nov 2019 01:41:29 +0000
-Message-ID: <5B2DA6FDDF928F4E855344EE0A5C39D1D5C9D5F6@RTITMBSVM04.realtek.com.tw>
-References: <5de65447f1d115f436f764a7ec811c478afbe2e0.camel@lynxeye.de>
-         <5B2DA6FDDF928F4E855344EE0A5C39D1D5C9CE47@RTITMBSVM04.realtek.com.tw>
- <e83f5b699c5652cbe2350ac3576215d24b748e03.camel@lynxeye.de>
-In-Reply-To: <e83f5b699c5652cbe2350ac3576215d24b748e03.camel@lynxeye.de>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.95]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        Wed, 13 Nov 2019 21:26:38 -0500
+Received: by mail-lf1-f65.google.com with SMTP id q5so3656290lfo.10
+        for <linux-wireless@vger.kernel.org>; Wed, 13 Nov 2019 18:26:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=2AzPip2wNlHnWQBu5Yn46ogrlZeHHT/hT0CNfhYHRdE=;
+        b=CeYJyehBP064i+rJ2JRTBFaQm7jQqublCEC0plurkBbx2dEukQK+b8lYiyXwEC36xI
+         gANqyP6fuhp48UQg+PpyqMIdqcrFFaVfqhC1xEsui9NBUdF1+pwlpTGxI6hdV/t4tQXL
+         Ri/OYdYph58hCswOS9dBQ1mGXVCDJTCCqDUu8u3hlPZ5917noALrhhxzxRW9B1PmhLev
+         bcccEAMNiW4BlpV58liOLZ6CVKgZVWZZeat2TElF4IlB+1CUb9r66LhAVGUlIUm7T0an
+         /r+NGHg0DHwukM5w1ci8LDO2Hizp5q9l48aTsoPIXitp14spDJqnjiAjyS69qfSWgoRM
+         0pmA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=2AzPip2wNlHnWQBu5Yn46ogrlZeHHT/hT0CNfhYHRdE=;
+        b=n5v4FNBAeTjtn0Ru+Vzx9HweTqxXYhMgVOaCX6pO3n8F0Hgs2Jps7pX2m+CWqBc13T
+         BXlkivYUJkm4YyEdpIDxOtOEDJ5G4actYMf+evwPqnKSdTxBcTiD0s0ACfLZRW5ZeSaI
+         J2J6bEsNLKD4O+ff1IwmpZcSrAIolJ7uWVFcaYLJkjmpCdKimW/E2C2tDwswHVOsr0Nv
+         ymtYGOsmLTzAdyFdOL17iaC+NkhJBeGyFbu8KP/0bZmZvh4atyIuUhmv8iAME0jfnrd/
+         IzGSCsHiKuIQSBZCJtfbm7tctgy3D4WCdv0g3CemHt3Z5uRizZIdXF/w9K8eg5aNJMPp
+         vh0Q==
+X-Gm-Message-State: APjAAAXnZ4idojD4s6ccdO39KUzVEQ1J9joI7Y0PjI0+w3r5OAo5vVtF
+        Ffr3Sz58k1C+zYABxXF2CRI0B6HlwEPo63yLl1Glww==
+X-Google-Smtp-Source: APXvYqyCWIxaniuIj6s5m5kPF1/oNo8q8ob4E8fvTlr4eMlYacxrAxBw18FBbRuXb4JeaE/cP56tFuev1W1FpStr7qU=
+X-Received: by 2002:a19:22d3:: with SMTP id i202mr4659966lfi.69.1573698394962;
+ Wed, 13 Nov 2019 18:26:34 -0800 (PST)
 MIME-Version: 1.0
+References: <20191112021136.42918-1-kyan@google.com> <20191112021136.42918-2-kyan@google.com>
+ <871rudqpsg.fsf@toke.dk> <CA+iem5vrM0iF+yvS9m==UWnhp=DFV924ir-0nHcn6cwarEjZNA@mail.gmail.com>
+ <87woc3oowq.fsf@toke.dk>
+In-Reply-To: <87woc3oowq.fsf@toke.dk>
+From:   Kan Yan <kyan@google.com>
+Date:   Wed, 13 Nov 2019 18:26:23 -0800
+Message-ID: <CA+iem5sp+52tT3u+uzCgv0fvfP1WX85-U31wzQ6wNKyt34RFpQ@mail.gmail.com>
+Subject: Re: [PATCH v7 1/2] mac80211: Implement Airtime-based Queue Limit (AQL)
+To:     =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@redhat.com>
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless@vger.kernel.org,
+        Make-Wifi-fast <make-wifi-fast@lists.bufferbloat.net>,
+        Felix Fietkau <nbd@nbd.name>, Yibo Zhao <yiboz@codeaurora.org>,
+        John Crispin <john@phrozen.org>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Rajkumar Manoharan <rmanohar@codeaurora.org>,
+        Kevin Hayes <kevinhayes@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogTHVjYXMgU3RhY2ggW21h
-aWx0bzpkZXZAbHlueGV5ZS5kZV0NCj4gU2VudDogVGh1cnNkYXksIE5vdmVtYmVyIDE0LCAyMDE5
-IDY6MTEgQU0NCj4gVG86IFBrc2hpaDsgd2xhbmZhZQ0KPiBDYzogbGludXgtd2lyZWxlc3NAdmdl
-ci5rZXJuZWwub3JnOyBuZXRkZXZAdmdlci5rZXJuZWwub3JnDQo+IFN1YmplY3Q6IFJlOiBsb25n
-IGRlbGF5cyBpbiBydGw4NzIzIGRyaXZlcnMgaW4gaXJxIGRpc2FibGVkIHNlY3Rpb25zDQo+IA0K
-PiBIaSBQSywNCj4gDQo+IEFtIE1pdHR3b2NoLCBkZW4gMTMuMTEuMjAxOSwgMDM6NDMgKzAwMDAg
-c2NocmllYiBQa3NoaWg6DQo+ID4gPiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiA+ID4g
-RnJvbTogbGludXgtd2lyZWxlc3Mtb3duZXJAdmdlci5rZXJuZWwub3JnIFttYWlsdG86bGludXgt
-d2lyZWxlc3Mtb3duZXJAdmdlci5rZXJuZWwub3JnXSBPbg0KPiBCZWhhbGYNCj4gPiA+IE9mIEx1
-Y2FzIFN0YWNoDQo+ID4gPiBTZW50OiBXZWRuZXNkYXksIE5vdmVtYmVyIDEzLCAyMDE5IDU6MDIg
-QU0NCj4gPiA+IFRvOiB3bGFuZmFlOyBQa3NoaWgNCj4gPiA+IENjOiBsaW51eC13aXJlbGVzc0B2
-Z2VyLmtlcm5lbC5vcmc7IG5ldGRldkB2Z2VyLmtlcm5lbC5vcmcNCj4gPiA+IFN1YmplY3Q6IGxv
-bmcgZGVsYXlzIGluIHJ0bDg3MjMgZHJpdmVycyBpbiBpcnEgZGlzYWJsZWQgc2VjdGlvbnMNCj4g
-PiA+DQo+ID4gPiBIaSBhbGwsDQo+ID4gPg0KPiA+ID4gd2hpbGUgaW52ZXN0aWdhdGluZyBzb21l
-IGxhdGVuY3kgaXNzdWVzIG9uIG15IGxhcHRvcCBJIHN0dW1ibGVkIGFjcm9zcw0KPiA+ID4gcXVp
-dGUgbGFyZ2UgZGVsYXlzIGluIHRoZSBydGw4NzIzIFBIWSBjb2RlLCB3aGljaCBhcmUgZG9uZSBp
-biBJUlENCj4gPiA+IGRpc2FibGVkIGF0b21pYyBzZWN0aW9ucywgd2hpY2ggaXMgYmxvY2tpbmcg
-SVJRIHNlcnZpY2luZyBmb3IgYWxsDQo+ID4gPiBkZXZpY2VzIGluIHRoZSBzeXN0ZW0uDQo+ID4g
-Pg0KPiA+ID4gU3BlY2lmaWNhbGx5IHRoZXJlIGFyZSAzIGNvbnNlY3V0aXZlIDFtcyBkZWxheXMg
-aW4NCj4gPiA+IHJ0bDg3MjNfcGh5X3JmX3NlcmlhbF9yZWFkKCksIHdoaWNoIGlzIHVzZWQgaW4g
-YW4gSVJRIGRpc2FibGVkIGNhbGwNCj4gPiA+IHBhdGguIFNhZGx5IHRob3NlIGRlbGF5cyBkb24n
-dCBoYXZlIGFueSBjb21tZW50IGluIHRoZSBjb2RlIGV4cGxhaW5pbmcNCj4gPiA+IHdoeSB0aGV5
-IGFyZSBuZWVkZWQuIEkgaG9wZSB0aGF0IGFueW9uZSBjYW4gdGVsbCBpZiB0aG9zZSBkZWxheXMg
-YXJlDQo+ID4gPiBzdHJpY3RseSBuZWNjZXNzYXJ5IGFuZCBpZiBzbyBpZiB0aGV5IHJlYWxseSBu
-ZWVkIHRvIGJlIHRoaXMgbG9uZy4NCj4gPiA+DQo+ID4NCj4gPiBUaGVzZSBkZWxheXMgYXJlIGJl
-Y2F1c2UgcmVhZCBSRiByZWdpc3RlciBpcyBhbiBpbmRpcmVjdCBhY2Nlc3MgdGhhdCBoYXJkd2Fy
-ZQ0KPiA+IG5lZWRzIHRpbWUgdG8gYWNjb21wbGlzaCByZWFkIGFjdGlvbiwgYnV0IHRoZXJlJ3Mg
-bm8gcmVhZHkgYml0LCBzbyBkZWxheQ0KPiA+IGlzIHJlcXVpcmVkIHRvIGd1YXJhbnRlZSB0aGUg
-cmVhZCB2YWx1ZSBpcyBjb3JyZWN0Lg0KPiANCj4gVGhhbmtzIGZvciB0aGUgY29uZmlybWF0aW9u
-LCBJIHN1c3BlY3RlZCBzb21ldGhpbmcgbGlrZSB0aGlzLg0KPiANCj4gPiBJdCBpcyBwb3NzaWJs
-ZSB0byB1c2Ugc21hbGxlciBkZWxheSwgYnV0IGl0J3MgZXhhY3RseSByZXF1aXJlZC4NCj4gDQo+
-IDFtcyBzZWVtcyBsaWtlIGFuIGV0ZXJuaXR5IG9uIG1vZGVybiBoYXJkd2FyZSwgZXZlbiBmb3Ig
-YW4gaW5kaXJlY3QNCj4gcmVhZC4NCj4gDQoNCkZvciA4NzIzYmUsIHRocmVlIDFtcyBkZWxheXMg
-Y2FuIGJlIHJlcGxhY2VkIGJ5IG9uZSAxMjB1cyBkZWxheSwgbGlrZXMNCg0KQEAgLTg5LDEyICs4
-OSwxMCBAQCB1MzIgcnRsODcyM19waHlfcmZfc2VyaWFsX3JlYWQoc3RydWN0IGllZWU4MDIxMV9o
-dyAqaHcsDQogICAgICAgICAgICAobmV3b2Zmc2V0IDw8IDIzKSB8IEJMU1NJUkVBREVER0U7DQog
-ICAgICAgIHJ0bF9zZXRfYmJyZWcoaHcsIFJGUEdBMF9YQV9IU1NJUEFSQU1FVEVSMiwgTUFTS0RX
-T1JELA0KICAgICAgICAgICAgICAgICAgICAgIHRtcGxvbmcgJiAofkJMU1NJUkVBREVER0UpKTsN
-Ci0gICAgICAgbWRlbGF5KDEpOw0KICAgICAgICBydGxfc2V0X2JicmVnKGh3LCBwcGh5cmVnLT5y
-Zmhzc2lfcGFyYTIsIE1BU0tEV09SRCwgdG1wbG9uZzIpOw0KLSAgICAgICBtZGVsYXkoMSk7DQog
-ICAgICAgIHJ0bF9zZXRfYmJyZWcoaHcsIFJGUEdBMF9YQV9IU1NJUEFSQU1FVEVSMiwgTUFTS0RX
-T1JELA0KICAgICAgICAgICAgICAgICAgICAgIHRtcGxvbmcgfCBCTFNTSVJFQURFREdFKTsNCi0g
-ICAgICAgbWRlbGF5KDEpOw0KKyAgICAgICB1ZGVsYXkoMTIwKTsNCiAgICAgICAgaWYgKHJmcGF0
-aCA9PSBSRjkwX1BBVEhfQSkNCiAgICAgICAgICAgICAgICByZnBpX2VuYWJsZSA9ICh1OCkgcnRs
-X2dldF9iYnJlZyhodywgUkZQR0EwX1hBX0hTU0lQQVJBTUVURVIxLA0KICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIEJJVCg4KSk7DQoNCkkgdGhpbmsgaXQn
-ZCBiZSBiZXR0ZXIuDQoNCj4gPg0KPiA+IEFuIGFsdGVybmF0aXZlIHdheSBpcyB0byBwcmV2ZW50
-IGNhbGxpbmcgdGhpcyBmdW5jdGlvbiBpbiBJUlEgZGlzYWJsZWQgZmxvdy4NCj4gPiBDb3VsZCB5
-b3Ugc2hhcmUgdGhlIGNhbGxpbmcgdHJhY2U/DQo+IA0KPiBTdXJlLCB0cmltbWVkIGNhbGxzdGFj
-ayBiZWxvdy4gQXMgeW91IGNhbiBzZWUgdGhlIElSUSBkaXNhYmxlZCBzZWN0aW9uDQo+IGlzIHN0
-YXJ0ZWQgdmlhIGEgc3Bpbl9sb2NrX2lycXNhdmUoKS4gVGhlIHRyYWNlIGlzIGZyb20gYSA4NzIz
-ZGUNCj4gbW9kdWxlLCB3aGljaCBpcyBzdGlsbCBvdXQgb2YgdHJlZSwgYnV0IHRoZSBzYW1lIGNv
-ZGUgaXMgcHJlc2VudCBpbg0KPiBtYWlubGluZSBhbmQgdXNlZCBieSB0aGUgb3RoZXIgODcyMyB2
-YXJpYW50cy4NCg0KQnkgbm93LCA4NzIzREUgd2lsbCBiZSB1cHN0cmVhbSB0aHJvdWdoIHJ0dzg4
-IGluc3RlYWQgb2YgcnRsd2lmaS4NCg0KPiBJIGRvbid0IGtub3cgaWYgdGhpcyBmdW5jdGlvbiBu
-ZWVkcyB0byBndWFyZCBhZ2FpbnN0IHNvbWV0aGluZyBydW5uaW5nDQo+IGluIHRoZSBJUlEgaGFu
-ZGxlciwgc28gZGVwZW5kaW5nIG9uIHRoZSBhbnN3ZXIgdG8gdGhhdCB0aGUgc29sdXRpb24NCj4g
-bWlnaHQgYmUgYXMgc2ltcGxlIGFzIG5vdCBkaXNhYmxpbmcgSVJRcyB3aGVuIHRha2luZyB0aGUg
-c3BpbmxvY2suDQo+IA0KPiBrd29ya2VyLy0yNzYgICAgIDRkLi4uICAgIDB1cyA6IF9yYXdfc3Bp
-bl9sb2NrX2lycXNhdmUNCj4ga3dvcmtlci8tMjc2ICAgICA0ZC4uLiAgICAwdXMgOiBydGw4NzIz
-X3BoeV9yZl9zZXJpYWxfcmVhZCA8LXJ0bDg3MjNkZV9waHlfc2V0X3JmX3JlZw0KPiBrd29ya2Vy
-Ly0yNzYgICAgIDRkLi4uICAgIDF1cyA6IHJ0bDg3MjNfcGh5X3F1ZXJ5X2JiX3JlZyA8LXJ0bDg3
-MjNfcGh5X3JmX3NlcmlhbF9yZWFkDQo+IGt3b3JrZXIvLTI3NiAgICAgNGQuLi4gICAgM3VzIDog
-cnRsODcyM19waHlfc2V0X2JiX3JlZyA8LXJ0bDg3MjNfcGh5X3JmX3NlcmlhbF9yZWFkDQo+IGt3
-b3JrZXIvLTI3NiAgICAgNGQuLi4gICAgNHVzIDogX19jb25zdF91ZGVsYXkgPC1ydGw4NzIzX3Bo
-eV9yZl9zZXJpYWxfcmVhZA0KPiBrd29ya2VyLy0yNzYgICAgIDRkLi4uICAgIDR1cyE6IGRlbGF5
-X213YWl0eCA8LXJ0bDg3MjNfcGh5X3JmX3NlcmlhbF9yZWFkDQo+IGt3b3JrZXIvLTI3NiAgICAg
-NGQuLi4gMTAwNHVzIDogcnRsODcyM19waHlfc2V0X2JiX3JlZyA8LXJ0bDg3MjNfcGh5X3JmX3Nl
-cmlhbF9yZWFkDQo+IFsuLi5dDQo+IA0KDQpJIGNoZWNrIFRYL1JYIGludGVycnVwdCBoYW5kbGVy
-cywgYW5kIEkgZG9uJ3QgZmluZCBvbmUgY2FsbHMgUkYgcmVhZCBmdW5jdGlvbg0KYnkgbm93LiBJ
-IHN1c3BlY3QgdGhhdCBvbGQgY29kZSBjb250cm9scyBSRiB0byBkbyBQUyBpbiBpbnRlcnJ1cHQg
-Y29udGV4dCwgc28NCl9pcnFzYXZlIHZlcnNpb24gaXMgdXNlZCB0byBlbnN1cmUgcmVhZCBSRiBp
-c24ndCBpbnRlcnJ1cHRlZCBvciBkZWFkbG9jay4NClNvLCBJIGNoYW5nZSBzcGluX2xvY2sgdG8g
-bm9uLWlycXNhdmUgdmVyc2lvbiwgYW5kIGRvIHNvbWUgdGVzdHMgb24gODcyM0JFDQp0aGF0IHdv
-cmtzIHdlbGwuIA0KDQpXaGF0IGRvIHlvdSB0aGluayBhYm91dCB0d28gZml4ZXMgbWVudGlvbmVk
-IGFib3ZlPyBJZiB0aGV5J3JlIG9rLCBJIGNhbiBzZW5kDQp0d28gcGF0Y2hlcyB0byByZXNvbHZl
-IHRoaXMgbG9uZyBkZWxheXMuDQoNClRoYW5rcw0KUEsNCg0KDQo=
+> Oh, right, I see. But in that case, should writing the default really
+> stomp on all the per-station values? If I set the value of a station, I
+> wouldn't expect it to change just because I changed the default value
+> afterwards?
+
+Will persevere the value for stations with customized queue limit in
+the next version.
+
+> > That's indeed not right. However, if a potential aql_tx_pending
+> > underflow case is detected here (It should never happen), reset it to
+> > 0 maybe not the best remedy anyway. I think it is better  just
+> > WARN_ONCE() and skip updating aql_tx_pending all together, so the
+> > retry or loop can be avoided here. What do you think?
+> If we don't reset the value to zero may end up with a device that is
+> unable to transmit. Better to reset it I think, even if this is never
+> supposed to happen...
+
+I mean not updating the pending airtime to prevent it from going
+negative when the tx_airtime is larger than aql_tx_pending.
+Will reset it to 0 in next version, which is simpler and cleaner.
+
+
+
+On Wed, Nov 13, 2019 at 6:02 AM Toke H=C3=B8iland-J=C3=B8rgensen <toke@redh=
+at.com> wrote:
+>
+> Kan Yan <kyan@google.com> writes:
+>
+> > Thanks for the review. I will pick up your new patches and give it a
+> > try tomorrow.
+> >
+> >> Why is this setting sta and device limits to the same value?
+> >
+> > local->aql_txq_limit_low is not the per device limit, but the default
+> > txq_limit for all STAs. Individual stations can be configured with
+> > non-default value via debugfs entry
+> > "netdev:interface_name_x/stations/mac_addr_x/airtime". "aql_threshold"
+> > is the device limit for switching between the lower and higher per
+> > station queue limit.
+>
+> Oh, right, I see. But in that case, should writing the default really
+> stomp on all the per-station values? If I set the value of a station, I
+> wouldn't expect it to change just because I changed the default value
+> afterwards?
+>
+> >> Also, are you sure we won't risk write tearing when writing 32-bit
+> >> values without locking on some architectures?
+> >
+> > Does mac80211 ever runs in any 16-bit architectures? Even in an
+> > architecture that write to 32-bit value is not atomic, I don't think
+> > there is any side-effect for queue limit get wrong transiently in rare
+> > occasions. Besides, the practical value of those queue limits should
+> > always fit into 16 bits.
+>
+> I'm not sure about the platform characteristics of all the weird tiny
+> MIPS boxes that run OpenWrt; which is why I'm vary of making any
+> assumptions that it is safe :)
+>
+> But yeah, I suppose you're right that since we're just setting the
+> limit, it is not going to be a huge concern here...
+>
+> >> I don't think this is right; another thread could do atomic_inc()
+> >> between the atomic_read() and atomic_set() here, in which case this
+> >> would clobber the other value.
+> >> I think to get this right the logic would need to be something like
+> >> this:
+> >> retry:
+> >>   old =3D atomic_read(&sta->airtime[ac].aql_tx_pending);
+> >>   if (warn_once(tx_airtime > old))
+> >>      new =3D 0;
+> >>   else
+> >>      new =3D old - tx_airtime;
+> >>   if (atomic_cmpxchg(&sta->airtime[ac].aql_tx_pending, old, new) !=3D =
+old)
+> >>      goto retry;
+> >> (or use an equivalent do/while).
+> >
+> > That's indeed not right. However, if a potential aql_tx_pending
+> > underflow case is detected here (It should never happen), reset it to
+> > 0 maybe not the best remedy anyway. I think it is better  just
+> > WARN_ONCE() and skip updating aql_tx_pending all together, so the
+> > retry or loop can be avoided here. What do you think?
+>
+> If we don't reset the value to zero may end up with a device that is
+> unable to transmit. Better to reset it I think, even if this is never
+> supposed to happen...
+>
+> -Toke
+>
