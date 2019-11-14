@@ -2,175 +2,87 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D792FC8AA
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 Nov 2019 15:19:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 567F5FC992
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 Nov 2019 16:10:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726678AbfKNOTH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 14 Nov 2019 09:19:07 -0500
-Received: from mail-vs1-f65.google.com ([209.85.217.65]:42780 "EHLO
-        mail-vs1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726516AbfKNOTG (ORCPT
+        id S1726986AbfKNPKh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 14 Nov 2019 10:10:37 -0500
+Received: from smtp.codeaurora.org ([198.145.29.96]:52984 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726505AbfKNPKh (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 14 Nov 2019 09:19:06 -0500
-Received: by mail-vs1-f65.google.com with SMTP id a143so3931491vsd.9
-        for <linux-wireless@vger.kernel.org>; Thu, 14 Nov 2019 06:19:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=mF9QJkIN8Qk+EGkxO+jVoBbFR7FMIpRA3CjmA8m3d7Y=;
-        b=Ml/cOiBysl9RO47an1PTBHLBV9w/7hUJ5RTzC9SA1Mtzt+/DhPojZxalupt6UqYxdQ
-         Z6JVbt31LezzDArBbJjiKL2Y5fmaM9zvJ7unZ4BgDdfgF9mW0AXrx+BoEeZrvPk8v4Na
-         vFp/6s+uvZ+tazuT9dOHmkygy3CCIjNpWHbDS4RdoO1Ax+9gtplcOkQGyvu+xkTNpwvf
-         BQOZDKA6W1skAgd0wkcQQjy4KYmerLP5JSisRTka6/XXrK6yecbJSVLJ+KeRGxhACdKH
-         8qTLgfs22vZ7hOJ8kyH9jH6x5yGzqyYsrJoASTpX+UbbwnAEwMt16yGMLqfSMGWl0VET
-         jivg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=mF9QJkIN8Qk+EGkxO+jVoBbFR7FMIpRA3CjmA8m3d7Y=;
-        b=SLajurkRXi8tyBjevy/1FLNc2POG7BYd/4qcGXlnRvkyBSfJCmpqySMWy+8kXbyUIA
-         UM9dsWIpdT5BAJRHlSEDtlrfMarcXIsth4fiHjynx6945lGoeN1OO43S6KS8JKqiXU1x
-         1nwc+UsGVa8OQ06zF0pqZmfu9fWfMWh5KiJkC5kPmhbF/DpwnjTD0p30+ihlk/uDjenx
-         seyrN0T6qGeLaMN4aPYr4EACRxckMjiKB6u9Fg8cZqCi2E8KizzVDIh+hPes9XjbVx+j
-         3lwStJ23gOvxSD8dUHaqSsyZxSVSKHFWtKkrdh5yIa4RB7ij9mUweg4uOubenlR/JHEa
-         chCQ==
-X-Gm-Message-State: APjAAAWKt15XH5rpNv64sspNqHskBVIyk2a3jYlha6ZIRKKH83I4EVk+
-        blLCh2yiFZ3tBYcfeXq9iMgwASfYneE4wo+P5ZXXIQ==
-X-Google-Smtp-Source: APXvYqwgCmwHYSDSJ68Em4upupN+YGH3wrjpaM8fSyc24xbueo9viz0GrcVPQXBkKEvWLAXn8LtIFd6tV6myvBaAjVM=
-X-Received: by 2002:a05:6102:36d:: with SMTP id f13mr6019578vsa.34.1573741145328;
- Thu, 14 Nov 2019 06:19:05 -0800 (PST)
+        Thu, 14 Nov 2019 10:10:37 -0500
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id A2CF760D98; Thu, 14 Nov 2019 15:10:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1573744236;
+        bh=YVUbrLMtVvtrGTOTLrUczWAJTot2SFhAPI3K9N9nIsA=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=U+nFSuPiWqmtUuMy4oVrxvGXqOiWJcJae6rAqqfyAhIMXP7ZuhJv/LIB7Md/0uD7d
+         FO0i+KFhNyzKAjSnRvA6QN+GbcXQA71y92wfOCVFhKgUrh8cjzha+Io2QPde6FDErm
+         lghsIkTs1yzAY5dgQDS3xHaCE2DHDp3s7JsnQwJI=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-0.8 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,MISSING_DATE,MISSING_MID,SPF_NONE autolearn=no
+        autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id B5B3660D95;
+        Thu, 14 Nov 2019 15:10:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1573744236;
+        bh=YVUbrLMtVvtrGTOTLrUczWAJTot2SFhAPI3K9N9nIsA=;
+        h=Subject:From:In-Reply-To:References:To:Cc:From;
+        b=LL2wZvUeWu6Ut5lQnecJLsTXylQOiINfPF3uf1JHTqinwC4tYcr7w1csUpivXwDdc
+         f6orWQKvKQu/3M/kwjJWtoEuGO49Q0GObWfrvUUaSRRoZVx1LeXBY5NyOdn2JVAKrJ
+         50TX028i3jGTuvZczy5BmqHh+3gYIlyluVc1CWEE=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org B5B3660D95
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-References: <cover.1573122644.git.hns@goldelico.com>
-In-Reply-To: <cover.1573122644.git.hns@goldelico.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Thu, 14 Nov 2019 15:18:29 +0100
-Message-ID: <CAPDyKFrntf2Kd9Zf7uxRCUk_OrKD8B3xOKmvPaf04X21L5HwWA@mail.gmail.com>
-Subject: Re: [PATCH v3 00/12] OpenPandora: make wl1251 connected to mmc3 sdio
- port of OpenPandora work again
-To:     "H. Nikolaus Schaller" <hns@goldelico.com>
-Cc:     =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Mike Rapoport <rppt@linux.ibm.com>,
-        David Sterba <dsterba@suse.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Petr Mladek <pmladek@suse.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Kefeng Wang <wangkefeng.wang@huawei.com>,
-        Yangtao Li <tiny.windzz@gmail.com>,
-        Alexios Zavras <alexios.zavras@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Allison Randal <allison@lohutok.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        John Stultz <john.stultz@linaro.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        linux-omap <linux-omap@vger.kernel.org>,
-        DTML <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>,
-        Discussions about the Letux Kernel 
-        <letux-kernel@openphoenux.org>, kernel@pyra-handheld.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH 1/3] rtlwifi: rtl8192de: Fix missing code to retrieve RX
+ buffer address
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20191111194046.26908-2-Larry.Finger@lwfinger.net>
+References: <20191111194046.26908-2-Larry.Finger@lwfinger.net>
+To:     Larry Finger <Larry.Finger@lwfinger.net>
+Cc:     linux-wireless@vger.kernel.org, pkshih@realtek.com,
+        Larry Finger <Larry.Finger@lwfinger.net>,
+        Stable <stable@vger.kernel.org>
+User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
+Message-Id: <20191114151036.A2CF760D98@smtp.codeaurora.org>
+Date:   Thu, 14 Nov 2019 15:10:36 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, 7 Nov 2019 at 11:31, H. Nikolaus Schaller <hns@goldelico.com> wrote:
->
->
-> * add a revisit note for special wl1251 handling code because it should
->   be solved more generic in mmc core - suggested by Ulf Hansson <ulf.hansson@linaro.org>
-> * remove init_card callback from platform_data/hsmmc-omap.h - suggested by Ulf Hansson <ulf.hansson@linaro.org>
-> * remove obstructive always-on for vwlan regulator - suggested by Ulf Hansson <ulf.hansson@linaro.org>
-> * rename DT node - suggested by Rob Herring <robh@kernel.org>
-> * fix ARM: dts: subject prefix - suggested by Tony Lindgren <tony@atomide.com>
-> * also remove omap2_hsmmc_info and obc-y line in Makefile - suggested by Tony Lindgren <tony@atomide.com>
+Larry Finger <Larry.Finger@lwfinger.net> wrote:
 
-No further comments from my side. Let's just agree on how to deal with
-the ti,power-gpio, then I can apply this.
+> In commit 38506ecefab9 ("rtlwifi: rtl_pci: Start modification for
+> new drivers"), a callback to get the RX buffer address was added to
+> the PCI driver. Unfortunately, driver rtl8192de was not modified
+> appropriately and the code runs into a WARN_ONCE() call. The use
+> of an incorrect array is also fixed.
+> 
+> Fixes: 38506ecefab9 ("rtlwifi: rtl_pci: Start modification for new drivers")
+> Cc: Stable <stable@vger.kernel.org> # 3.18+
+> Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
 
-Thanks a lot for fixing all this mess!
+3 patches applied to wireless-drivers-next.git, thanks.
 
-Kind regards
-Uffe
+0e531cc575c4 rtlwifi: rtl8192de: Fix missing code to retrieve RX buffer address
+3155db7613ed rtlwifi: rtl8192de: Fix missing callback that tests for hw release of buffer
+330bb7117101 rtlwifi: rtl8192de: Fix missing enable interrupt flag
 
->
-> PATCH V2 2019-10-19 20:41:47:
-> * added acked-by for wl1251 patches - Kalle Valo <kvalo@codeaurora.org>
-> * really removed old pdata-quirks code (not through #if 0)
-> * splited out a partial revert of
->         efdfeb079cc3b ("regulator: fixed: Convert to use GPIO descriptor only")
->   because that was introduced after v4.19 and stops the removal of
->   the pdata-quirks patch from cleanly applying to v4.9, v4.14, v4.19
->   - reported by Sasha Levin <sashal@kernel.org>
-> * added a new patch to remove old omap hsmmc since pdata quirks
->   were last user - suggested by Tony Lindgren <tony@atomide.com>
->
-> PATCH V1 2019-10-18 22:25:39:
-> Here we have a set of scattered patches to make the OpenPandora WiFi work again.
->
-> v4.7 did break the pdata-quirks which made the mmc3 interface
-> fail completely, because some code now assumes device tree
-> based instantiation.
->
-> Fixes: 81eef6ca9201 ("mmc: omap_hsmmc: Use dma_request_chan() for requesting DMA channel")
->
-> v4.11 did break the sdio qirks for wl1251 which made the driver no longer
-> load, although the device was found as an sdio client.
->
-> Fixes: 884f38607897 ("mmc: core: move some sdio IDs out of quirks file")
->
-> To solve these issues:
-> * we convert mmc3 and wl1251 initialization from pdata-quirks
->   to device tree
-> * we make the wl1251 driver read properties from device tree
-> * we fix the mmc core vendor ids and quirks
-> * we fix the wl1251 (and wl1271) driver to use only vendor ids
->   from header file instead of (potentially conflicting) local
->   definitions
->
->
-> H. Nikolaus Schaller (12):
->   Documentation: dt: wireless: update wl1251 for sdio
->   net: wireless: ti: wl1251 add device tree support
->   ARM: dts: pandora-common: define wl1251 as child node of mmc3
->   mmc: host: omap_hsmmc: add code for special init of wl1251 to get rid
->     of pandora_wl1251_init_card
->   omap: pdata-quirks: revert pandora specific gpiod additions
->   omap: pdata-quirks: remove openpandora quirks for mmc3 and wl1251
->   omap: remove omap2_hsmmc_info in old hsmmc.[ch] and update Makefile
->   mmc: host: omap-hsmmc: remove init_card pdata callback from pdata
->   mmc: sdio: fix wl1251 vendor id
->   mmc: core: fix wl1251 sdio quirks
->   net: wireless: ti: wl1251 use new SDIO_VENDOR_ID_TI_WL1251 definition
->   net: wireless: ti: remove local VENDOR_ID and DEVICE_ID definitions
->
->  .../bindings/net/wireless/ti,wl1251.txt       |  26 +++
->  arch/arm/boot/dts/omap3-pandora-common.dtsi   |  36 +++-
->  arch/arm/mach-omap2/Makefile                  |   3 -
->  arch/arm/mach-omap2/common.h                  |   1 -
->  arch/arm/mach-omap2/hsmmc.c                   | 171 ------------------
->  arch/arm/mach-omap2/hsmmc.h                   |  32 ----
->  arch/arm/mach-omap2/pdata-quirks.c            | 105 -----------
->  drivers/mmc/core/quirks.h                     |   7 +
->  drivers/mmc/host/omap_hsmmc.c                 |  30 ++-
->  drivers/net/wireless/ti/wl1251/sdio.c         |  23 ++-
->  drivers/net/wireless/ti/wlcore/sdio.c         |   8 -
->  include/linux/mmc/sdio_ids.h                  |   2 +
->  include/linux/platform_data/hsmmc-omap.h      |   3 -
->  13 files changed, 111 insertions(+), 336 deletions(-)
->  delete mode 100644 arch/arm/mach-omap2/hsmmc.c
->  delete mode 100644 arch/arm/mach-omap2/hsmmc.h
->
-> --
-> 2.23.0
->
+-- 
+https://patchwork.kernel.org/patch/11237573/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
