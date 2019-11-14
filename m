@@ -2,116 +2,67 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C2858FC386
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 Nov 2019 11:03:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D03BFC518
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 Nov 2019 12:09:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726254AbfKNKDV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 14 Nov 2019 05:03:21 -0500
-Received: from smtp.codeaurora.org ([198.145.29.96]:34780 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726202AbfKNKDV (ORCPT
+        id S1726115AbfKNLJE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 14 Nov 2019 06:09:04 -0500
+Received: from mail-io1-f67.google.com ([209.85.166.67]:37874 "EHLO
+        mail-io1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725977AbfKNLJD (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 14 Nov 2019 05:03:21 -0500
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 2390860D95; Thu, 14 Nov 2019 10:03:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1573725800;
-        bh=xERxXGD/z5LwRZl7JWScEXmWLYGLz6DMaOBdKFeqAhg=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=aVTLzoUeDQo4IKhbFPmdYJA7//FJT8w4GLSEjoC3aA77idAKWP1M/Lwa227wlBmaw
-         dV5EqqMyotA3GM0E/TClQQDFA4y5lAjVLsas1pZ4YiXf8UtJgUB7pG6PhKn4IbvV9P
-         OLN4vRTVfGJFicxzDsq3hCAkweC7W0OKTD+l0plg=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 9E32960B10;
-        Thu, 14 Nov 2019 10:03:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1573725798;
-        bh=xERxXGD/z5LwRZl7JWScEXmWLYGLz6DMaOBdKFeqAhg=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=n/q11UGQNr5Tnk8J2Rpit1XgsOofaF4Q4lNzYLXtCA+pVK52QYK14vBTKxES+A0cJ
-         fB0hG7nGUUiuRH1eIsV79EyzI2FU8DcxBo5DcOo917dWm89XOxsbgrxyPKIPPo1KiI
-         43lxNW1T4DoNKgh87N6Yso8WgrqX1n43ybwM3kCQ=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 9E32960B10
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Luca Coelho <luca@coelho.fi>
-Cc:     linux-wireless@vger.kernel.org, linuxwifi@intel.com,
-        david.e.box@intel.com, joe.konno@intel.com
-Subject: Re: pull-request: iwlwifi-next 2019-11-13-2
-References: <f2bc269efbb712d36adf8feff274102d12b1629e.camel@coelho.fi>
-Date:   Thu, 14 Nov 2019 12:03:14 +0200
-In-Reply-To: <f2bc269efbb712d36adf8feff274102d12b1629e.camel@coelho.fi> (Luca
-        Coelho's message of "Thu, 14 Nov 2019 11:03:21 +0200")
-Message-ID: <87tv76ojvh.fsf@kamboji.qca.qualcomm.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        Thu, 14 Nov 2019 06:09:03 -0500
+Received: by mail-io1-f67.google.com with SMTP id 1so6351706iou.4
+        for <linux-wireless@vger.kernel.org>; Thu, 14 Nov 2019 03:09:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=d8Xt4D5CjORA2CxH9kzBJPkwX0qBIC6B9cRMi2hsqv4=;
+        b=c0sDvoGroMQkvTT/2Z7bx8RE+2Dk7MexQAR7ycFCWvpnOMpKQqRBSLvnA2eHoRbDy3
+         1n/CHDza9KsAf0121qZtlYWMvavqKrGhq+QnLKDze/juNJZrybtl3BQimlDenzKR6I9K
+         /kcUNCA1jVt+uVdSKXwTn5eXV+tXrniRgbr9qXfju0IUP/tKEVxAYBYoSUkhM/FyxM+I
+         lb6+InQQ5ZwY/0vxHqqhXaDdFluzCJXa97D6BWPgLNWSGdSlqPdr7MA/wFtIOEWFGHwl
+         BXnQpWF/bgbFGa2UZpeCC5u4GZzUs8Ta0ODOqPGiKUc2ZNbvJ7KkB2//R9nas0SribY1
+         f3RA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=d8Xt4D5CjORA2CxH9kzBJPkwX0qBIC6B9cRMi2hsqv4=;
+        b=LQJsUNeq2JgHUBOq81FHXF7lUzNyj6INkR1aJvy7EzU1FH9+UezQVINqc65jiY1dhB
+         DY7mLErEtaRpC91IB6FgXr/Y64JCx0VVbBZ6KfdE8++Lt5HXF2V36UiWNgbA2VpAkMHa
+         TCAGn0Kc5X0AGRUfYMgfoz9l5ziDRyMVSGD2Q/1skAmQEkCYWYESIsm0cTkWBYEBKz+V
+         yxzIm6yPtAqC+xhTeRxUDzlLo39GVGp9WWlyHvC57eJk8D2QTeYDMbSP+hf6XIV/F9YN
+         ou8ot1m+ZSg+iHny+rqXiE0jwAr4/NuM9C56qp5U2nUS1fXZkR8pUmJc+7m8Awlc5jx2
+         06rw==
+X-Gm-Message-State: APjAAAXeMllGs2FrhU7c9VamLlWfH0SnJs2l96DB1oCsSUwJljwaMjM3
+        Rn6kTNMIOdOPckXGIX6JdT4iCNKCe7OW5AS7GkA=
+X-Google-Smtp-Source: APXvYqzqxb79cXjmGU3sGiJ1cGWlbov59WeQxT/oACxFLE/qSz+V5AfN8jHMz9FjPeYPY5dmP8QwWy3V0Rk/tK2YDYU=
+X-Received: by 2002:a5e:9741:: with SMTP id h1mr7727036ioq.143.1573729743039;
+ Thu, 14 Nov 2019 03:09:03 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain
+Received: by 2002:ac0:e305:0:0:0:0:0 with HTTP; Thu, 14 Nov 2019 03:09:01
+ -0800 (PST)
+From:   sabit main <sabitma4@gmail.com>
+Date:   Thu, 14 Nov 2019 11:09:01 +0000
+Message-ID: <CAE-=EF_aBfHg27NbDRg9yVE+V+25U2Bvk=69DtRuBxFqAvhoVw@mail.gmail.com>
+Subject: hope
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Luca Coelho <luca@coelho.fi> writes:
+Good day , i write to inform you as auditor onbehalf of ORABANK.
 
-> Hi Kalle,
->
-> Here's the updated pull request with the second batch of patches
-> intended for v5.4.  This includes the last patchset 2 patchsets I sent. 
-> Usual development work.  More details about the contents in the tag
-> description.
->
-> In this update I have fixed a merge damage in one of the patches.  Since
-> I'm using a different machine at the moment, I had the wrong config when
-> I tested this tag.  Sorry about that.
->
-> I pushed these patches to my pending branch when I sent them out and
-> kbuildbot reported success.
->
-> Please let me know if there are any issues.
+Transaction number 000399577OBK have been approved for release
+through VISA ELECTRON ATM Card.
 
-Really sorry but I didn't have time yesterday to do detailed review and
-I just noticed that the commit below have Change-Id tags. Can you remove
-those and respin, please?
+Note that you are required to reconfirm your complete mailing address
+for delivery.
 
-commit 29157a88d13ff980df5d5c68bc619ed22f2f9ba7
-Author:     Shahar S Matityahu <shahar.s.matityahu@intel.com>
-AuthorDate: Mon Aug 19 16:19:14 2019 +0300
-Commit:     Luca Coelho <luciano.coelho@intel.com>
-CommitDate: Wed Nov 13 11:12:12 2019 +0200
+Reconfirm code 000399577OBK to the Director Mr. Patrick Masrellet on ( (
+atm.orabank@iname.com )) for further action.
 
-    iwlwifi: scan: support scan req cmd ver 12
-    
-    Implement scan request command version 12.
-    
-    Change-Id: Idc3c9d5d9b4bd2d1738bf8836c27f569b4649a05
-    Signed-off-by: Shahar S Matityahu <shahar.s.matityahu@intel.com>
-    Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
-
-commit cc5e99f8063fd120564d4a27a9e0058bdc910d0e
-Author:     Shahar S Matityahu <shahar.s.matityahu@intel.com>
-AuthorDate: Mon Aug 19 15:35:10 2019 +0300
-Commit:     Luca Coelho <luciano.coelho@intel.com>
-CommitDate: Wed Nov 13 11:12:12 2019 +0200
-
-    iwlwifi: scan: make new scan req versioning flow
-    
-    Implement a new versioning handling flow supported from version 11
-    onwards.
-    
-    Change-Id: Ie10a661317ca2a150122e2ad2a8d4f062a41754e
-    Signed-off-by: Shahar S Matityahu <shahar.s.matityahu@intel.com>
-    Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
-
-
--- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Regards.
+Sabit Main( Esq)
