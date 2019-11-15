@@ -2,34 +2,34 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E2F27FE0D2
-	for <lists+linux-wireless@lfdr.de>; Fri, 15 Nov 2019 16:05:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B292FE0D3
+	for <lists+linux-wireless@lfdr.de>; Fri, 15 Nov 2019 16:06:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727534AbfKOPF5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 15 Nov 2019 10:05:57 -0500
-Received: from mail.kernel.org ([198.145.29.99]:59204 "EHLO mail.kernel.org"
+        id S1727546AbfKOPGA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 15 Nov 2019 10:06:00 -0500
+Received: from mail.kernel.org ([198.145.29.99]:59218 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727406AbfKOPF5 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 15 Nov 2019 10:05:57 -0500
+        id S1727406AbfKOPGA (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 15 Nov 2019 10:06:00 -0500
 Received: from localhost.localdomain.com (unknown [77.139.212.74])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id DF64420674;
-        Fri, 15 Nov 2019 15:05:54 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 711B620732;
+        Fri, 15 Nov 2019 15:05:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1573830356;
-        bh=/Sh5Z4U89H6O811BxFoKb26ULZhwlB/3CNdQqzXE27Q=;
+        s=default; t=1573830359;
+        bh=ldONIwximE4K8HSR9mwXAPode5FvRkA0i6JABWkAUs4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=w6BqiIegfImT5pFcDYjO3aRiqcBUTHQyOREi3e16npVUgottVU+XV5HA/VdiV036t
-         begHAfNAcUmewdE0kLPVKKVwgF1gYLOeuu5r10Cte+PwwdargZV2zw+rCCzT0/ch2e
-         P0tLCTJgzbutAGX9YikVN9M317EtZ4g5b+d3qc1E=
+        b=czggBMDHIC1ggBXqqi4fVqChWcjsbc4u+Y2oQCW75lvZ9pMPRk1Mqs3g7C+J105E7
+         bg3xVQslAaof5/ePlGhfJGZb3hwS7mGkX5duy8lFllQE/dYTziv/CVXLDNWnXDbx33
+         YfqubvkH6oTQvIHjv+gCW0FG4Xe08V0cnLhGFtME=
 From:   Lorenzo Bianconi <lorenzo@kernel.org>
 To:     nbd@nbd.name
 Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
         ryder.lee@mediatek.com, royluo@google.com
-Subject: [PATCH 2/3] mt76: move coverage_class and slottime in mt76_dev
-Date:   Fri, 15 Nov 2019 17:05:25 +0200
-Message-Id: <b9f6f1ff8428ba9b76244ff99b22d9949b6fabf7.1573828743.git.lorenzo@kernel.org>
+Subject: [PATCH 3/3] mt76: mt7615: add set_coverage class support
+Date:   Fri, 15 Nov 2019 17:05:26 +0200
+Message-Id: <70a7bf227313579d1d967c9a4c322e21bc673895.1573828743.git.lorenzo@kernel.org>
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <cover.1573828743.git.lorenzo@kernel.org>
 References: <cover.1573828743.git.lorenzo@kernel.org>
@@ -40,168 +40,194 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Move coverage_class and slottime fields from driver specific data
-structure to mt76_dev since they are used by all drivers
+Add the capability to configure the acktimeout for mt7615 driver. Moreover
+configure slottime according to the value provided by mac80211
 
 Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt76.h          |  3 +++
- drivers/net/wireless/mediatek/mt76/mt7603/init.c   |  2 +-
- drivers/net/wireless/mediatek/mt76/mt7603/mac.c    |  6 +++---
- drivers/net/wireless/mediatek/mt76/mt7603/main.c   |  6 +++---
- drivers/net/wireless/mediatek/mt76/mt7603/mt7603.h |  3 ---
- drivers/net/wireless/mediatek/mt76/mt76x02.h       |  3 ---
- drivers/net/wireless/mediatek/mt76/mt76x02_util.c  | 10 +++++-----
- 7 files changed, 15 insertions(+), 18 deletions(-)
+ .../net/wireless/mediatek/mt76/mt7615/init.c  |  1 +
+ .../net/wireless/mediatek/mt76/mt7615/mac.c   | 41 +++++++++++++++++++
+ .../net/wireless/mediatek/mt76/mt7615/main.c  | 20 +++++++++
+ .../wireless/mediatek/mt76/mt7615/mt7615.h    |  4 ++
+ .../net/wireless/mediatek/mt76/mt7615/regs.h  | 21 ++++++++++
+ 5 files changed, 87 insertions(+)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
-index 4116ad7928da..07a1b808a142 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76.h
-@@ -507,6 +507,9 @@ struct mt76_dev {
- 	u8 antenna_mask;
- 	u16 chainmask;
- 
-+	s16 coverage_class;
-+	u8 slottime;
-+
- 	struct tasklet_struct pre_tbtt_tasklet;
- 	int beacon_int;
- 	u8 beacon_mask;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/init.c b/drivers/net/wireless/mediatek/mt76/mt7603/init.c
-index 0696dbf28c5b..26eaf03baa08 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7603/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7603/init.c
-@@ -539,7 +539,7 @@ int mt7603_register_device(struct mt7603_dev *dev)
- 	if (mt76_rr(dev, MT_EFUSE_BASE + 0x64) & BIT(4))
- 		dev->mt76.antenna_mask = 1;
- 
--	dev->slottime = 9;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/init.c b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
+index 553bd4d988f7..54108fbaf1c4 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
+@@ -304,6 +304,7 @@ int mt7615_register_device(struct mt7615_dev *dev)
+ 			IEEE80211_VHT_CAP_MAX_A_MPDU_LENGTH_EXPONENT_MASK |
+ 			IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160_80PLUS80MHZ;
+ 	dev->dfs_state = -1;
 +	dev->mt76.slottime = 9;
  
- 	ret = mt7603_init_hardware(dev);
- 	if (ret)
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/mac.c b/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
-index 812d081ad943..2c7c69106a20 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
-@@ -47,7 +47,7 @@ void mt7603_mac_set_timing(struct mt7603_dev *dev)
- 		  FIELD_PREP(MT_TIMEOUT_VAL_CCA, 48);
- 	u32 ofdm = FIELD_PREP(MT_TIMEOUT_VAL_PLCP, 60) |
- 		   FIELD_PREP(MT_TIMEOUT_VAL_CCA, 24);
--	int offset = 3 * dev->coverage_class;
+ 	ret = mt76_register_device(&dev->mt76, true, mt7615_rates,
+ 				   ARRAY_SIZE(mt7615_rates));
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
+index c77adc5d2552..809ebe70d196 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
+@@ -60,6 +60,47 @@ void mt7615_mac_reset_counters(struct mt7615_dev *dev)
+ 	mt76_set(dev, MT_WF_RMAC_MIB_AIRTIME0, MT_WF_RMAC_MIB_RXTIME_CLR);
+ }
+ 
++/* XXX: DBDC support */
++void mt7615_mac_set_timing(struct mt7615_dev *dev)
++{
++	u32 cck = FIELD_PREP(MT_TIMEOUT_VAL_PLCP, 231) |
++		  FIELD_PREP(MT_TIMEOUT_VAL_CCA, 48);
++	u32 ofdm = FIELD_PREP(MT_TIMEOUT_VAL_PLCP, 60) |
++		   FIELD_PREP(MT_TIMEOUT_VAL_CCA, 24);
 +	int offset = 3 * dev->mt76.coverage_class;
- 	u32 reg_offset = FIELD_PREP(MT_TIMEOUT_VAL_PLCP, offset) |
- 			 FIELD_PREP(MT_TIMEOUT_VAL_CCA, offset);
- 	int sifs;
-@@ -68,9 +68,9 @@ void mt7603_mac_set_timing(struct mt7603_dev *dev)
- 		FIELD_PREP(MT_IFS_EIFS, 360) |
- 		FIELD_PREP(MT_IFS_RIFS, 2) |
- 		FIELD_PREP(MT_IFS_SIFS, sifs) |
--		FIELD_PREP(MT_IFS_SLOT, dev->slottime));
++	u32 reg_offset = FIELD_PREP(MT_TIMEOUT_VAL_PLCP, offset) |
++			 FIELD_PREP(MT_TIMEOUT_VAL_CCA, offset);
++	int sifs;
++	u32 val;
++
++	if (dev->mt76.chandef.chan->band == NL80211_BAND_5GHZ)
++		sifs = 16;
++	else
++		sifs = 10;
++
++	mt76_set(dev, MT_ARB_SCR,
++		 MT_ARB_SCR_TX0_DISABLE | MT_ARB_SCR_RX0_DISABLE);
++	udelay(1);
++
++	mt76_wr(dev, MT_TMAC_CDTR, cck + reg_offset);
++	mt76_wr(dev, MT_TMAC_ODTR, ofdm + reg_offset);
++	mt76_wr(dev, MT_TMAC_ICR0,
++		FIELD_PREP(MT_IFS_EIFS, 360) |
++		FIELD_PREP(MT_IFS_RIFS, 2) |
++		FIELD_PREP(MT_IFS_SIFS, sifs) |
 +		FIELD_PREP(MT_IFS_SLOT, dev->mt76.slottime));
- 
--	if (dev->slottime < 20)
++
 +	if (dev->mt76.slottime < 20)
- 		val = MT7603_CFEND_RATE_DEFAULT;
- 	else
- 		val = MT7603_CFEND_RATE_11B;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/main.c b/drivers/net/wireless/mediatek/mt76/mt7603/main.c
-index 6a6bc37b898f..031526bb23a7 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7603/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7603/main.c
-@@ -295,8 +295,8 @@ mt7603_bss_info_changed(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 	if (changed & BSS_CHANGED_ERP_SLOT) {
- 		int slottime = info->use_short_slot ? 9 : 20;
++		val = MT7615_CFEND_RATE_DEFAULT;
++	else
++		val = MT7615_CFEND_RATE_11B;
++
++	mt76_rmw_field(dev, MT_AGG_ACR0, MT_AGG_ACR_CFEND_RATE, val);
++
++	mt76_clear(dev, MT_ARB_SCR,
++		   MT_ARB_SCR_TX0_DISABLE | MT_ARB_SCR_RX0_DISABLE);
++}
++
+ int mt7615_mac_fill_rx(struct mt7615_dev *dev, struct sk_buff *skb)
+ {
+ 	struct mt76_rx_status *status = (struct mt76_rx_status *)skb->cb;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/main.c b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
+index 78bbed7a4645..61df5d1da6c6 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
+@@ -155,6 +155,7 @@ static int mt7615_set_channel(struct mt7615_dev *dev)
+ 	if (ret)
+ 		goto out;
  
--		if (slottime != dev->slottime) {
--			dev->slottime = slottime;
++	mt7615_mac_set_timing(dev);
+ 	ret = mt7615_dfs_init_radar_detector(dev);
+ 	mt7615_mac_cca_stats_reset(dev);
+ 	dev->mt76.survey_time = ktime_get_boottime();
+@@ -327,6 +328,15 @@ static void mt7615_bss_info_changed(struct ieee80211_hw *hw,
+ 	if (changed & BSS_CHANGED_ASSOC)
+ 		mt7615_mcu_set_bss_info(dev, vif, info->assoc);
+ 
++	if (changed & BSS_CHANGED_ERP_SLOT) {
++		int slottime = info->use_short_slot ? 9 : 20;
++
 +		if (slottime != dev->mt76.slottime) {
 +			dev->mt76.slottime = slottime;
- 			mt7603_mac_set_timing(dev);
- 		}
- 	}
-@@ -635,7 +635,7 @@ mt7603_set_coverage_class(struct ieee80211_hw *hw, s16 coverage_class)
- {
- 	struct mt7603_dev *dev = hw->priv;
- 
--	dev->coverage_class = coverage_class;
-+	dev->mt76.coverage_class = coverage_class;
- 	mt7603_mac_set_timing(dev);
++			mt7615_mac_set_timing(dev);
++		}
++	}
++
+ 	/* TODO: update beacon content
+ 	 * BSS_CHANGED_BEACON
+ 	 */
+@@ -520,6 +530,15 @@ mt7615_ampdu_action(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 	return 0;
  }
  
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/mt7603.h b/drivers/net/wireless/mediatek/mt76/mt7603/mt7603.h
-index ab54b0612e98..930a1bcab0ef 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7603/mt7603.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7603/mt7603.h
-@@ -118,9 +118,6 @@ struct mt7603_dev {
- 	__le32 rx_ampdu_ts;
- 	u8 rssi_offset[3];
- 
--	u8 slottime;
--	s16 coverage_class;
--
- 	s8 tx_power_limit;
- 
- 	ktime_t ed_time;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02.h b/drivers/net/wireless/mediatek/mt76/mt76x02.h
-index cdc1cbd1d392..d24c44725b1c 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x02.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x02.h
-@@ -110,9 +110,6 @@ struct mt76x02_dev {
- 
- 	bool no_2ghz;
- 
--	s16 coverage_class;
--	u8 slottime;
--
- 	struct mt76x02_dfs_pattern_detector dfs_pd;
- 
- 	/* edcca monitor */
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_util.c b/drivers/net/wireless/mediatek/mt76/mt76x02_util.c
-index c0500d8f9a67..74c6552a9874 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x02_util.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x02_util.c
-@@ -185,7 +185,7 @@ void mt76x02_init_device(struct mt76x02_dev *dev)
- 
- 	dev->mt76.global_wcid.idx = 255;
- 	dev->mt76.global_wcid.hw_key_idx = -1;
--	dev->slottime = 9;
-+	dev->mt76.slottime = 9;
- 
- 	if (is_mt76x2(dev)) {
- 		dev->mt76.sband_2g.sband.ht_cap.cap |=
-@@ -522,10 +522,10 @@ EXPORT_SYMBOL_GPL(mt76x02_conf_tx);
- 
- void mt76x02_set_tx_ackto(struct mt76x02_dev *dev)
- {
--	u8 ackto, sifs, slottime = dev->slottime;
-+	u8 ackto, sifs, slottime = dev->mt76.slottime;
- 
- 	/* As defined by IEEE 802.11-2007 17.3.8.6 */
--	slottime += 3 * dev->coverage_class;
-+	slottime += 3 * dev->mt76.coverage_class;
- 	mt76_rmw_field(dev, MT_BKOFF_SLOT_CFG,
- 		       MT_BKOFF_SLOT_CFG_SLOTTIME, slottime);
- 
-@@ -544,7 +544,7 @@ void mt76x02_set_coverage_class(struct ieee80211_hw *hw,
- 	struct mt76x02_dev *dev = hw->priv;
- 
- 	mutex_lock(&dev->mt76.mutex);
--	dev->coverage_class = coverage_class;
++static void
++mt7615_set_coverage_class(struct ieee80211_hw *hw, s16 coverage_class)
++{
++	struct mt7615_dev *dev = hw->priv;
++
 +	dev->mt76.coverage_class = coverage_class;
- 	mt76x02_set_tx_ackto(dev);
- 	mutex_unlock(&dev->mt76.mutex);
- }
-@@ -656,7 +656,7 @@ void mt76x02_bss_info_changed(struct ieee80211_hw *hw,
- 	if (changed & BSS_CHANGED_ERP_SLOT) {
- 		int slottime = info->use_short_slot ? 9 : 20;
++	mt7615_mac_set_timing(dev);
++}
++
+ const struct ieee80211_ops mt7615_ops = {
+ 	.tx = mt7615_tx,
+ 	.start = mt7615_start,
+@@ -543,4 +562,5 @@ const struct ieee80211_ops mt7615_ops = {
+ 	.channel_switch_beacon = mt7615_channel_switch_beacon,
+ 	.get_survey = mt76_get_survey,
+ 	.get_antenna = mt76_get_antenna,
++	.set_coverage_class = mt7615_set_coverage_class,
+ };
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
+index d537f68c5531..3c4a4b3e45d5 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
+@@ -36,6 +36,9 @@
+ #define MT_FRAC_SCALE		12
+ #define MT_FRAC(val, div)	(((val) << MT_FRAC_SCALE) / (div))
  
--		dev->slottime = slottime;
-+		dev->mt76.slottime = slottime;
- 		mt76x02_set_tx_ackto(dev);
- 	}
++#define MT7615_CFEND_RATE_DEFAULT	0x69 /* chip default (24M) */
++#define MT7615_CFEND_RATE_11B		0x03 /* 11B LP, 11M */
++
+ struct mt7615_vif;
+ struct mt7615_sta;
  
+@@ -246,6 +249,7 @@ int mt7615_mac_write_txwi(struct mt7615_dev *dev, __le32 *txwi,
+ 			  struct sk_buff *skb, struct mt76_wcid *wcid,
+ 			  struct ieee80211_sta *sta, int pid,
+ 			  struct ieee80211_key_conf *key);
++void mt7615_mac_set_timing(struct mt7615_dev *dev);
+ int mt7615_mac_fill_rx(struct mt7615_dev *dev, struct sk_buff *skb);
+ void mt7615_mac_add_txs(struct mt7615_dev *dev, void *data);
+ void mt7615_mac_tx_free(struct mt7615_dev *dev, struct sk_buff *skb);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/regs.h b/drivers/net/wireless/mediatek/mt76/mt7615/regs.h
+index 61a4aa9ac6e6..5ac52758d7b1 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/regs.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/regs.h
+@@ -153,14 +153,35 @@
+ #define MT_AGG_SCR			MT_WF_AGG(0x0fc)
+ #define MT_AGG_SCR_NLNAV_MID_PTEC_DIS	BIT(3)
+ 
++#define MT_WF_ARB_BASE			0x20c00
++#define MT_WF_ARB(ofs)			(MT_WF_ARB_BASE + (ofs))
++
++#define MT_ARB_SCR			MT_WF_ARB(0x080)
++#define MT_ARB_SCR_TX0_DISABLE		BIT(8)
++#define MT_ARB_SCR_RX0_DISABLE		BIT(9)
++#define MT_ARB_SCR_TX1_DISABLE		BIT(10)
++#define MT_ARB_SCR_RX1_DISABLE		BIT(11)
++
+ #define MT_WF_TMAC_BASE			0x21000
+ #define MT_WF_TMAC(ofs)			(MT_WF_TMAC_BASE + (ofs))
+ 
++#define MT_TMAC_CDTR			MT_WF_TMAC(0x090)
++#define MT_TMAC_ODTR			MT_WF_TMAC(0x094)
++#define MT_TIMEOUT_VAL_PLCP		GENMASK(15, 0)
++#define MT_TIMEOUT_VAL_CCA		GENMASK(31, 16)
++
+ #define MT_TMAC_TRCR0			MT_WF_TMAC(0x09c)
+ #define MT_TMAC_TRCR1			MT_WF_TMAC(0x070)
+ #define MT_TMAC_TRCR_CCA_SEL		GENMASK(31, 30)
+ #define MT_TMAC_TRCR_SEC_CCA_SEL	GENMASK(29, 28)
+ 
++#define MT_TMAC_ICR0			MT_WF_TMAC(0x0a4)
++#define MT_TMAC_ICR1			MT_WF_TMAC(0x074)
++#define MT_IFS_EIFS			GENMASK(8, 0)
++#define MT_IFS_RIFS			GENMASK(14, 10)
++#define MT_IFS_SIFS			GENMASK(22, 16)
++#define MT_IFS_SLOT			GENMASK(30, 24)
++
+ #define MT_TMAC_CTCR0			MT_WF_TMAC(0x0f4)
+ #define MT_TMAC_CTCR0_INS_DDLMT_REFTIME	GENMASK(5, 0)
+ #define MT_TMAC_CTCR0_INS_DDLMT_DENSITY	GENMASK(15, 12)
 -- 
 2.21.0
 
