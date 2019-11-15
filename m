@@ -2,78 +2,157 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AF9F4FD129
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 Nov 2019 23:51:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B78DFD202
+	for <lists+linux-wireless@lfdr.de>; Fri, 15 Nov 2019 01:31:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727170AbfKNWvo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 14 Nov 2019 17:51:44 -0500
-Received: from mail-ot1-f54.google.com ([209.85.210.54]:35166 "EHLO
-        mail-ot1-f54.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726319AbfKNWvo (ORCPT
+        id S1727080AbfKOAbk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 14 Nov 2019 19:31:40 -0500
+Received: from rtits2.realtek.com ([211.75.126.72]:44449 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726852AbfKOAbk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 14 Nov 2019 17:51:44 -0500
-Received: by mail-ot1-f54.google.com with SMTP id n19so2591089otk.2
-        for <linux-wireless@vger.kernel.org>; Thu, 14 Nov 2019 14:51:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to:cc;
-        bh=TPgz0rUKVntORJhLPj9xR8L0iEI2kaJ+YyJ/86/30+g=;
-        b=BhHQz63KkM1O5peMOee7i1hdDiaxgUINFALCt6oUZjfcFlgX2hDR6+ZqTOkd3P25DQ
-         zUCDaiGEr6K/paa0poxmvcR0N37kGpD9+8d8fUNjJdPmM81hsUnHvsP3HcN4cZWlLnxi
-         jVxUZW351PpO7GIakKU9JscyiQB8xmuO3AvrXT36v4fKTE9vjryGaSCRyW8u5ThXcBrK
-         6piXdWyF2zuxruoyK1WATSDX6U9xsIEVwCNorby5/eEe0e9NciF+F1PFP2S0F0EZvtMP
-         jmj15rHqMEtjFH3uQMNxrdZRokFeI4pKaO0wp6v6vihNESIzVQcEiIoFTnS7S0moXzRp
-         9IZg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
-        bh=TPgz0rUKVntORJhLPj9xR8L0iEI2kaJ+YyJ/86/30+g=;
-        b=tq2eOMaupbymQT/tEVyvEXaUraeMO1OBet2OW9DChhvcjzXkA+3CiW3vBuTKCrTzii
-         a2KoGv2WX6+1Kp3LH7R4yP4fTpyyBMkHSPJJmgZxRaBz6xNl6rsjiDYm+w7hjt4iLxOh
-         9tUvEzOOH8qPEFo7sX8gxF/bmCsv3xMysqKZQhC3dyfqC7jUM7BSX+5DF514worEhU3q
-         t53ufo+Z7K9s6sHnR5cW2t3vIHw2NAi2SN6N3qCMvJM7r3+Ph9hRqlm0DcbI9yXtw7+8
-         ShRuuYjy2zLbM/64HpIiR3vYrVZYwiUjeuFZrdY3alGb1efz83B01iQAROBwqURiFg2J
-         Kc7w==
-X-Gm-Message-State: APjAAAXfUBPeLRUCHAZBkTE1hY6z88GLA2XzOF3J27fR9qmRRNOZGuwt
-        u/PjwK5gT43HfcrXkchX4K3ZxxALurZSplc5rB+w6mqJ
-X-Google-Smtp-Source: APXvYqyUf/J5GFd0uKAH5+8Z7iDnWI7ZQpfLRL07Voy8JpEWeRw/6jSumTqHl7jeZ+JlNshIhIlSlFUeKtWejWeCowY=
-X-Received: by 2002:a9d:68c9:: with SMTP id i9mr3162445oto.265.1573771901939;
- Thu, 14 Nov 2019 14:51:41 -0800 (PST)
+        Thu, 14 Nov 2019 19:31:40 -0500
+Authenticated-By: 
+X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID xAF0VTc7031639, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (RTITCAS11.realtek.com.tw[172.21.6.12])
+        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id xAF0VTc7031639
+        (version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 15 Nov 2019 08:31:30 +0800
+Received: from RTITMBSVM04.realtek.com.tw ([fe80::e404:880:2ef1:1aa1]) by
+ RTITCAS11.realtek.com.tw ([fe80::7c6d:ced5:c4ff:8297%15]) with mapi id
+ 14.03.0468.000; Fri, 15 Nov 2019 08:31:28 +0800
+From:   Pkshih <pkshih@realtek.com>
+To:     Lucas Stach <dev@lynxeye.de>, wlanfae <wlanfae@realtek.com>
+CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+Subject: RE: long delays in rtl8723 drivers in irq disabled sections
+Thread-Topic: long delays in rtl8723 drivers in irq disabled sections
+Thread-Index: AQHVmZ3DU4qY/o9NJ0yDyHj2LmPNT6eIcdBQgACzWgCAALqLsIAAytAAgAC2sWA=
+Date:   Fri, 15 Nov 2019 00:31:28 +0000
+Message-ID: <5B2DA6FDDF928F4E855344EE0A5C39D1D5C9E04E@RTITMBSVM04.realtek.com.tw>
+References: <5de65447f1d115f436f764a7ec811c478afbe2e0.camel@lynxeye.de>
+         <5B2DA6FDDF928F4E855344EE0A5C39D1D5C9CE47@RTITMBSVM04.realtek.com.tw>
+         <e83f5b699c5652cbe2350ac3576215d24b748e03.camel@lynxeye.de>
+         <5B2DA6FDDF928F4E855344EE0A5C39D1D5C9D5F6@RTITMBSVM04.realtek.com.tw>
+ <b82d44f4f9aba24b649f85b3196955ad31124477.camel@lynxeye.de>
+In-Reply-To: <b82d44f4f9aba24b649f85b3196955ad31124477.camel@lynxeye.de>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.95]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Received: by 2002:a9d:384:0:0:0:0:0 with HTTP; Thu, 14 Nov 2019 14:51:41 -0800 (PST)
-From:   Tom Psyborg <pozega.tomislav@gmail.com>
-Date:   Thu, 14 Nov 2019 23:51:41 +0100
-Message-ID: <CAKR_QVLaRKOc0OapvhppCZzYYO+w8h8t+B1amiWGGEiH6FmnjQ@mail.gmail.com>
-Subject: [BUG] ath10k: CPU scaling related performance issue
-To:     ath10k <ath10k@lists.infradead.org>
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-network topology:
-80211g uplink - 30Mbps is brought into litebeam-5AC that is running AP
-(WDS) mode on 5GHz radio. client device is a laptop (dualcore 2.4GHz)
-running QCA9880 card on ubuntu 10.04 with kernel 4.9.
-
-description:
-booting ubuntu defaults to performance governor (personal
-modification), opening speedtest.net upon boot and measuring
-throughput gets me about 25Mbps download speed.
-setting lowest CPU scaling freq of both cores (600MHz) and repeating
-the speedtest gets about 29-30Mbps in download. i have verified these
-speed differences while downloading several iso files.
-
-confirmation:
-identical results have been observed on a live booted ubuntu 19.10
-identical results have been observed on ubuntu 10.04, but using
-ethernet connection from archer c7 that was connected in client mode
-to litebeam5
-
-ruled out so far:
--using regular AP-STA instead of APWDS-STAWDS interfaces does not change a thing
--switching to Ben's CT driver and firmware had no impact, the bug is
-present with it too
--using different card QCA9862/QCA9880 behavior is the same
+DQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IEx1Y2FzIFN0YWNoIFttYWls
+dG86ZGV2QGx5bnhleWUuZGVdDQo+IFNlbnQ6IEZyaWRheSwgTm92ZW1iZXIgMTUsIDIwMTkgNToy
+NSBBTQ0KPiBUbzogUGtzaGloOyB3bGFuZmFlDQo+IENjOiBsaW51eC13aXJlbGVzc0B2Z2VyLmtl
+cm5lbC5vcmc7IG5ldGRldkB2Z2VyLmtlcm5lbC5vcmcNCj4gU3ViamVjdDogUmU6IGxvbmcgZGVs
+YXlzIGluIHJ0bDg3MjMgZHJpdmVycyBpbiBpcnEgZGlzYWJsZWQgc2VjdGlvbnMNCj4gDQo+IEFt
+IERvbm5lcnN0YWcsIGRlbiAxNC4xMS4yMDE5LCAwMTo0MSArMDAwMCBzY2hyaWViIFBrc2hpaDoN
+Cj4gPiA+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+ID4gPiBGcm9tOiBMdWNhcyBTdGFj
+aCBbbWFpbHRvOmRldkBseW54ZXllLmRlXQ0KPiA+ID4gU2VudDogVGh1cnNkYXksIE5vdmVtYmVy
+IDE0LCAyMDE5IDY6MTEgQU0NCj4gPiA+IFRvOiBQa3NoaWg7IHdsYW5mYWUNCj4gPiA+IENjOiBs
+aW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmc7IG5ldGRldkB2Z2VyLmtlcm5lbC5vcmcNCj4g
+PiA+IFN1YmplY3Q6IFJlOiBsb25nIGRlbGF5cyBpbiBydGw4NzIzIGRyaXZlcnMgaW4gaXJxIGRp
+c2FibGVkIHNlY3Rpb25zDQo+ID4gPg0KPiA+ID4gSGkgUEssDQo+ID4gPg0KPiA+ID4gQW0gTWl0
+dHdvY2gsIGRlbiAxMy4xMS4yMDE5LCAwMzo0MyArMDAwMCBzY2hyaWViIFBrc2hpaDoNCj4gPiA+
+ID4gPiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiA+ID4gPiA+IEZyb206IGxpbnV4LXdp
+cmVsZXNzLW93bmVyQHZnZXIua2VybmVsLm9yZyBbbWFpbHRvOmxpbnV4LXdpcmVsZXNzLW93bmVy
+QHZnZXIua2VybmVsLm9yZ10gT24NCj4gPiA+IEJlaGFsZg0KPiA+ID4gPiA+IE9mIEx1Y2FzIFN0
+YWNoDQo+ID4gPiA+ID4gU2VudDogV2VkbmVzZGF5LCBOb3ZlbWJlciAxMywgMjAxOSA1OjAyIEFN
+DQo+ID4gPiA+ID4gVG86IHdsYW5mYWU7IFBrc2hpaA0KPiA+ID4gPiA+IENjOiBsaW51eC13aXJl
+bGVzc0B2Z2VyLmtlcm5lbC5vcmc7IG5ldGRldkB2Z2VyLmtlcm5lbC5vcmcNCj4gPiA+ID4gPiBT
+dWJqZWN0OiBsb25nIGRlbGF5cyBpbiBydGw4NzIzIGRyaXZlcnMgaW4gaXJxIGRpc2FibGVkIHNl
+Y3Rpb25zDQo+ID4gPiA+ID4NCj4gPiA+ID4gPiBIaSBhbGwsDQo+ID4gPiA+ID4NCj4gPiA+ID4g
+PiB3aGlsZSBpbnZlc3RpZ2F0aW5nIHNvbWUgbGF0ZW5jeSBpc3N1ZXMgb24gbXkgbGFwdG9wIEkg
+c3R1bWJsZWQgYWNyb3NzDQo+ID4gPiA+ID4gcXVpdGUgbGFyZ2UgZGVsYXlzIGluIHRoZSBydGw4
+NzIzIFBIWSBjb2RlLCB3aGljaCBhcmUgZG9uZSBpbiBJUlENCj4gPiA+ID4gPiBkaXNhYmxlZCBh
+dG9taWMgc2VjdGlvbnMsIHdoaWNoIGlzIGJsb2NraW5nIElSUSBzZXJ2aWNpbmcgZm9yIGFsbA0K
+PiA+ID4gPiA+IGRldmljZXMgaW4gdGhlIHN5c3RlbS4NCj4gPiA+ID4gPg0KPiA+ID4gPiA+IFNw
+ZWNpZmljYWxseSB0aGVyZSBhcmUgMyBjb25zZWN1dGl2ZSAxbXMgZGVsYXlzIGluDQo+ID4gPiA+
+ID4gcnRsODcyM19waHlfcmZfc2VyaWFsX3JlYWQoKSwgd2hpY2ggaXMgdXNlZCBpbiBhbiBJUlEg
+ZGlzYWJsZWQgY2FsbA0KPiA+ID4gPiA+IHBhdGguIFNhZGx5IHRob3NlIGRlbGF5cyBkb24ndCBo
+YXZlIGFueSBjb21tZW50IGluIHRoZSBjb2RlIGV4cGxhaW5pbmcNCj4gPiA+ID4gPiB3aHkgdGhl
+eSBhcmUgbmVlZGVkLiBJIGhvcGUgdGhhdCBhbnlvbmUgY2FuIHRlbGwgaWYgdGhvc2UgZGVsYXlz
+IGFyZQ0KPiA+ID4gPiA+IHN0cmljdGx5IG5lY2Nlc3NhcnkgYW5kIGlmIHNvIGlmIHRoZXkgcmVh
+bGx5IG5lZWQgdG8gYmUgdGhpcyBsb25nLg0KPiA+ID4gPiA+DQo+ID4gPiA+DQo+ID4gPiA+IFRo
+ZXNlIGRlbGF5cyBhcmUgYmVjYXVzZSByZWFkIFJGIHJlZ2lzdGVyIGlzIGFuIGluZGlyZWN0IGFj
+Y2VzcyB0aGF0IGhhcmR3YXJlDQo+ID4gPiA+IG5lZWRzIHRpbWUgdG8gYWNjb21wbGlzaCByZWFk
+IGFjdGlvbiwgYnV0IHRoZXJlJ3Mgbm8gcmVhZHkgYml0LCBzbyBkZWxheQ0KPiA+ID4gPiBpcyBy
+ZXF1aXJlZCB0byBndWFyYW50ZWUgdGhlIHJlYWQgdmFsdWUgaXMgY29ycmVjdC4NCj4gPiA+DQo+
+ID4gPiBUaGFua3MgZm9yIHRoZSBjb25maXJtYXRpb24sIEkgc3VzcGVjdGVkIHNvbWV0aGluZyBs
+aWtlIHRoaXMuDQo+ID4gPg0KPiA+ID4gPiBJdCBpcyBwb3NzaWJsZSB0byB1c2Ugc21hbGxlciBk
+ZWxheSwgYnV0IGl0J3MgZXhhY3RseSByZXF1aXJlZC4NCj4gPiA+DQo+ID4gPiAxbXMgc2VlbXMg
+bGlrZSBhbiBldGVybml0eSBvbiBtb2Rlcm4gaGFyZHdhcmUsIGV2ZW4gZm9yIGFuIGluZGlyZWN0
+DQo+ID4gPiByZWFkLg0KPiA+ID4NCj4gPg0KPiA+IEZvciA4NzIzYmUsIHRocmVlIDFtcyBkZWxh
+eXMgY2FuIGJlIHJlcGxhY2VkIGJ5IG9uZSAxMjB1cyBkZWxheSwgbGlrZXMNCj4gPg0KPiA+IEBA
+IC04OSwxMiArODksMTAgQEAgdTMyIHJ0bDg3MjNfcGh5X3JmX3NlcmlhbF9yZWFkKHN0cnVjdCBp
+ZWVlODAyMTFfaHcgKmh3LA0KPiA+ICAgICAgICAgICAgIChuZXdvZmZzZXQgPDwgMjMpIHwgQkxT
+U0lSRUFERURHRTsNCj4gPiAgICAgICAgIHJ0bF9zZXRfYmJyZWcoaHcsIFJGUEdBMF9YQV9IU1NJ
+UEFSQU1FVEVSMiwgTUFTS0RXT1JELA0KPiA+ICAgICAgICAgICAgICAgICAgICAgICB0bXBsb25n
+ICYgKH5CTFNTSVJFQURFREdFKSk7DQo+ID4gLSAgICAgICBtZGVsYXkoMSk7DQo+ID4gICAgICAg
+ICBydGxfc2V0X2JicmVnKGh3LCBwcGh5cmVnLT5yZmhzc2lfcGFyYTIsIE1BU0tEV09SRCwgdG1w
+bG9uZzIpOw0KPiA+IC0gICAgICAgbWRlbGF5KDEpOw0KPiA+ICAgICAgICAgcnRsX3NldF9iYnJl
+ZyhodywgUkZQR0EwX1hBX0hTU0lQQVJBTUVURVIyLCBNQVNLRFdPUkQsDQo+ID4gICAgICAgICAg
+ICAgICAgICAgICAgIHRtcGxvbmcgfCBCTFNTSVJFQURFREdFKTsNCj4gPiAtICAgICAgIG1kZWxh
+eSgxKTsNCj4gPiArICAgICAgIHVkZWxheSgxMjApOw0KPiA+ICAgICAgICAgaWYgKHJmcGF0aCA9
+PSBSRjkwX1BBVEhfQSkNCj4gPiAgICAgICAgICAgICAgICAgcmZwaV9lbmFibGUgPSAodTgpIHJ0
+bF9nZXRfYmJyZWcoaHcsIFJGUEdBMF9YQV9IU1NJUEFSQU1FVEVSMSwNCj4gPiAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgQklUKDgpKTsNCj4gPg0KPiA+
+IEkgdGhpbmsgaXQnZCBiZSBiZXR0ZXIuDQo+IA0KPiBZZXMsIHRoYXQgbG9va3MgbXVjaCBiZXR0
+ZXIuIEV2ZW4gYmV0dGVyIHdvdWxkIGJlIGEgc21hbGwgY29tbWVudCBvbg0KPiBob3cgeW91IGFy
+cml2ZWQgYXQgMTIwdXMuIFNvbWUgaW50ZXJuYWwgZG9jdW1lbnRhdGlvbiwgb3IgaXMgdGhpcw0K
+PiBtb3N0bHkgZW1waXJpY2FsPw0KPiANCg0KMTIwdXMgaXMgbWF4aW11bSBzdGFsbCB0aW1lIHdp
+dGggbGl0dGxlIHRvbGVyYW5jZSBzdWdnZXN0ZWQgYnkgb3VyIGRlc2lnbmVyLg0KTm90IG9ubHkg
+ODcyM2JlLzg3MjNkZSwgSSdsbCB0YWtlIGEgd2hpbGUgdG8gY2hlY2sgb3RoZXIgY2hpcHMuDQoN
+Cj4gPiA+ID4gQW4gYWx0ZXJuYXRpdmUgd2F5IGlzIHRvIHByZXZlbnQgY2FsbGluZyB0aGlzIGZ1
+bmN0aW9uIGluIElSUSBkaXNhYmxlZCBmbG93Lg0KPiA+ID4gPiBDb3VsZCB5b3Ugc2hhcmUgdGhl
+IGNhbGxpbmcgdHJhY2U/DQo+ID4gPg0KPiA+ID4gU3VyZSwgdHJpbW1lZCBjYWxsc3RhY2sgYmVs
+b3cuIEFzIHlvdSBjYW4gc2VlIHRoZSBJUlEgZGlzYWJsZWQgc2VjdGlvbg0KPiA+ID4gaXMgc3Rh
+cnRlZCB2aWEgYSBzcGluX2xvY2tfaXJxc2F2ZSgpLiBUaGUgdHJhY2UgaXMgZnJvbSBhIDg3MjNk
+ZQ0KPiA+ID4gbW9kdWxlLCB3aGljaCBpcyBzdGlsbCBvdXQgb2YgdHJlZSwgYnV0IHRoZSBzYW1l
+IGNvZGUgaXMgcHJlc2VudCBpbg0KPiA+ID4gbWFpbmxpbmUgYW5kIHVzZWQgYnkgdGhlIG90aGVy
+IDg3MjMgdmFyaWFudHMuDQo+ID4NCj4gPiBCeSBub3csIDg3MjNERSB3aWxsIGJlIHVwc3RyZWFt
+IHRocm91Z2ggcnR3ODggaW5zdGVhZCBvZiBydGx3aWZpLg0KPiANCj4gSSBoYXZlbid0IHNlZW4g
+YW55IHBhdGNoZXMgZm9yIHRoaXMgcGFydGljdWxhciBjaGlwIHlldC4gSXMgdGhlcmUgYW55DQo+
+IHJvYWRtYXAgb24gd2hlbiB3ZSBjYW4gZXhwZWN0IHRoaXMgc3VwcG9ydCB0byBiZSBhZGRlZCB0
+byB0aGUgdXBzdHJlYW0NCj4gcnR3ODggZHJpdmVyPw0KPiANCg0KODcyM0RFIGlzIHVuZGVyIHJl
+dmlldyBpbnRlcm5hbGx5LCBhbmQgaXQgd2lsbCBzdGFydCB0byBiZSB1cHN0cmVhbSBhdCA1LjUg
+b3IgNS42Lg0KDQo+ID4gPiBJIGRvbid0IGtub3cgaWYgdGhpcyBmdW5jdGlvbiBuZWVkcyB0byBn
+dWFyZCBhZ2FpbnN0IHNvbWV0aGluZyBydW5uaW5nDQo+ID4gPiBpbiB0aGUgSVJRIGhhbmRsZXIs
+IHNvIGRlcGVuZGluZyBvbiB0aGUgYW5zd2VyIHRvIHRoYXQgdGhlIHNvbHV0aW9uDQo+ID4gPiBt
+aWdodCBiZSBhcyBzaW1wbGUgYXMgbm90IGRpc2FibGluZyBJUlFzIHdoZW4gdGFraW5nIHRoZSBz
+cGlubG9jay4NCj4gPiA+DQo+ID4gPiBrd29ya2VyLy0yNzYgICAgIDRkLi4uICAgIDB1cyA6IF9y
+YXdfc3Bpbl9sb2NrX2lycXNhdmUNCj4gPiA+IGt3b3JrZXIvLTI3NiAgICAgNGQuLi4gICAgMHVz
+IDogcnRsODcyM19waHlfcmZfc2VyaWFsX3JlYWQgPC1ydGw4NzIzZGVfcGh5X3NldF9yZl9yZWcN
+Cj4gPiA+IGt3b3JrZXIvLTI3NiAgICAgNGQuLi4gICAgMXVzIDogcnRsODcyM19waHlfcXVlcnlf
+YmJfcmVnIDwtcnRsODcyM19waHlfcmZfc2VyaWFsX3JlYWQNCj4gPiA+IGt3b3JrZXIvLTI3NiAg
+ICAgNGQuLi4gICAgM3VzIDogcnRsODcyM19waHlfc2V0X2JiX3JlZyA8LXJ0bDg3MjNfcGh5X3Jm
+X3NlcmlhbF9yZWFkDQo+ID4gPiBrd29ya2VyLy0yNzYgICAgIDRkLi4uICAgIDR1cyA6IF9fY29u
+c3RfdWRlbGF5IDwtcnRsODcyM19waHlfcmZfc2VyaWFsX3JlYWQNCj4gPiA+IGt3b3JrZXIvLTI3
+NiAgICAgNGQuLi4gICAgNHVzITogZGVsYXlfbXdhaXR4IDwtcnRsODcyM19waHlfcmZfc2VyaWFs
+X3JlYWQNCj4gPiA+IGt3b3JrZXIvLTI3NiAgICAgNGQuLi4gMTAwNHVzIDogcnRsODcyM19waHlf
+c2V0X2JiX3JlZyA8LXJ0bDg3MjNfcGh5X3JmX3NlcmlhbF9yZWFkDQo+ID4gPiBbLi4uXQ0KPiA+
+ID4NCj4gPg0KPiA+IEkgY2hlY2sgVFgvUlggaW50ZXJydXB0IGhhbmRsZXJzLCBhbmQgSSBkb24n
+dCBmaW5kIG9uZSBjYWxscyBSRiByZWFkIGZ1bmN0aW9uDQo+ID4gYnkgbm93LiBJIHN1c3BlY3Qg
+dGhhdCBvbGQgY29kZSBjb250cm9scyBSRiB0byBkbyBQUyBpbiBpbnRlcnJ1cHQgY29udGV4dCwg
+c28NCj4gPiBfaXJxc2F2ZSB2ZXJzaW9uIGlzIHVzZWQgdG8gZW5zdXJlIHJlYWQgUkYgaXNuJ3Qg
+aW50ZXJydXB0ZWQgb3IgZGVhZGxvY2suDQo+ID4gU28sIEkgY2hhbmdlIHNwaW5fbG9jayB0byBu
+b24taXJxc2F2ZSB2ZXJzaW9uLCBhbmQgZG8gc29tZSB0ZXN0cyBvbiA4NzIzQkUNCj4gPiB0aGF0
+IHdvcmtzIHdlbGwuDQo+ID4NCj4gPiBXaGF0IGRvIHlvdSB0aGluayBhYm91dCB0d28gZml4ZXMg
+bWVudGlvbmVkIGFib3ZlPyBJZiB0aGV5J3JlIG9rLCBJIGNhbiBzZW5kDQo+ID4gdHdvIHBhdGNo
+ZXMgdG8gcmVzb2x2ZSB0aGlzIGxvbmcgZGVsYXlzLg0KPiANCj4gWWVzLCBib3RoIGNoYW5nZXMg
+ZG8gbWFrZSBzZW5zZSB0byBtZS4gSWYgd2UgY2FuIGF2b2lkIGFuIHVubmVjZXNzYXJ5DQo+IElS
+USBkaXNhYmxlIHdlIHNob3VsZCBkbyBzby4gRXZlbiB0aGVuIHNocmlua2luZyB0aGUgd2FpdHMg
+dG8gYmFyZQ0KPiBtaW5pbXVtIGFzIHJlcXVpcmVkIGJ5IHRoZSBoYXJkd2FyZSBzZWVtcyB0byBi
+ZSBhIGdvb2QgdGhpbmcsDQo+IGVzcGVjaWFsbHkgc2luY2UgdGhlIHdhaXQgaXMgc3RpbGwgZG9u
+ZSB1bmRlciBhIHNwaW5sb2NrLCBzbyBjYW4gbm90DQo+IHVzZSBhIHNsZWVwaW5nIHdhaXQuDQo+
+IA0KDQpTb21lIGNhbGxlcnMgYXJlIHN0aWxsIGluIHRhc2tsZXQgY29udGV4dC4gSSdsbCBjaGVj
+ayBpZiBpdCdzIHBvc3NpYmxlIHRvIG1vdmUNCnRoZW0gdG8gd29yayBxdWV1ZSwgYnV0IEkgdGhp
+bmsgdGhpcyBpc24ndCBhIHNob3J0IHRlcm0gdGFzay4NCg0KUEsNCg0KDQo=
