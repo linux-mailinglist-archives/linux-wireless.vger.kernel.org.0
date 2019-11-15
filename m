@@ -2,144 +2,170 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 397BFFD88C
-	for <lists+linux-wireless@lfdr.de>; Fri, 15 Nov 2019 10:12:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A80A3FD8E6
+	for <lists+linux-wireless@lfdr.de>; Fri, 15 Nov 2019 10:29:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727059AbfKOJMQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 15 Nov 2019 04:12:16 -0500
-Received: from mail.dlink.ru ([178.170.168.18]:33776 "EHLO fd.dlink.ru"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726996AbfKOJMQ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 15 Nov 2019 04:12:16 -0500
-Received: by fd.dlink.ru (Postfix, from userid 5000)
-        id 69EB41B21157; Fri, 15 Nov 2019 12:12:12 +0300 (MSK)
-DKIM-Filter: OpenDKIM Filter v2.11.0 fd.dlink.ru 69EB41B21157
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dlink.ru; s=mail;
-        t=1573809132; bh=CtxYuY+GbtGqv5wTXxa7arIIy/o1DNl/HAFZOiotkTU=;
-        h=From:To:Cc:Subject:Date;
-        b=V8uZqTp7MX2P/2kNdeX0wta4JIxkank0K0AVppscD0C9XbbHY17EAnzP3ZanbOIAP
-         fMFiB5bR6qvBMctPGnVBTmvUmMkBzoqjd/+1RDNgaxwd6OSG8byt3kgQJdNsBUCF0A
-         fTZbK4JUm+IIavyNjXYWRDZkfvKBOCSsBqYIQ+fo=
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on mail.dlink.ru
+        id S1727145AbfKOJ3T (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 15 Nov 2019 04:29:19 -0500
+Received: from smtp.codeaurora.org ([198.145.29.96]:50040 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726196AbfKOJ3T (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 15 Nov 2019 04:29:19 -0500
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 752DF611A0; Fri, 15 Nov 2019 09:29:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1573810158;
+        bh=X7R7K3nn8a1h8zFooYO+s283VI3WWKxDBVpp6C8kBaQ=;
+        h=From:To:Cc:Subject:Date:From;
+        b=X7MpvLcST/uT7XwxqmjRdfOog6AKiZEfDxJkktqY2yyGBGrmQJ43nCPXGRzCjViHj
+         hgreDP72BebeHQx+7nPtfg5tOUzKYj+qvivYPKpFIWnFj/7eI3zqCHHEFsykTrbNeq
+         dlmUdKZnGJGWoJm3UJgjFFwQTHrXzsQ0YR/wfwrE=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-99.2 required=7.5 tests=BAYES_50,URIBL_BLOCKED,
-        USER_IN_WHITELIST autolearn=disabled version=3.4.2
-Received: from mail.rzn.dlink.ru (mail.rzn.dlink.ru [178.170.168.13])
-        by fd.dlink.ru (Postfix) with ESMTP id B5FE21B20B5F;
-        Fri, 15 Nov 2019 12:12:02 +0300 (MSK)
-DKIM-Filter: OpenDKIM Filter v2.11.0 fd.dlink.ru B5FE21B20B5F
-Received: from mail.rzn.dlink.ru (localhost [127.0.0.1])
-        by mail.rzn.dlink.ru (Postfix) with ESMTP id 6EF761B21209;
-        Fri, 15 Nov 2019 12:12:01 +0300 (MSK)
-Received: from localhost.localdomain (unknown [196.196.203.126])
-        by mail.rzn.dlink.ru (Postfix) with ESMTPA;
-        Fri, 15 Nov 2019 12:12:01 +0300 (MSK)
-From:   Alexander Lobakin <alobakin@dlink.ru>
-To:     "David S. Miller" <davem@davemloft.net>
-Cc:     Edward Cree <ecree@solarflare.com>, Jiri Pirko <jiri@mellanox.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Ido Schimmel <idosch@mellanox.com>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Petr Machata <petrm@mellanox.com>,
-        Sabrina Dubroca <sd@queasysnail.net>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Jassi Brar <jaswinder.singh@linaro.org>,
-        Manish Chopra <manishc@marvell.com>,
-        GR-Linux-NIC-Dev@marvell.com,
-        Johannes Berg <johannes.berg@intel.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Intel Linux Wireless <linuxwifi@intel.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Alexander Lobakin <alobakin@dlink.ru>, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v2 net-next] net: core: allow fast GRO for skbs with Ethernet header in head
-Date:   Fri, 15 Nov 2019 12:11:35 +0300
-Message-Id: <20191115091135.13487-1-alobakin@dlink.ru>
-X-Mailer: git-send-email 2.24.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id A48EE6119B;
+        Fri, 15 Nov 2019 09:29:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1573810157;
+        bh=X7R7K3nn8a1h8zFooYO+s283VI3WWKxDBVpp6C8kBaQ=;
+        h=From:To:Cc:Subject:Date:From;
+        b=S2YHC3tM8niwG4aXS52NAzg3ODbg5mgVtgsmtrXpI2AakkVg66NPjmPuwq/IAB361
+         Bwkw/SfRajBBmnwS1+BH8DuTQ1tR47B4eRH8843EVj06gUrpef7Fa1Jx9ryZsPLDuu
+         60wPLXeM6haIms4LFSn6km0eW2PD8yDyEhgoM3h0=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org A48EE6119B
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     linux-wireless@vger.kernel.org
+Cc:     ath11k@lists.infradead.org, devicetree@vger.kernel.org
+Subject: [PATCH v3 00/49] ath11k: driver for Qualcomm IEEE 802.11ax devices
+Date:   Fri, 15 Nov 2019 11:28:24 +0200
+Message-Id: <1573810153-29623-1-git-send-email-kvalo@codeaurora.org>
+X-Mailer: git-send-email 2.7.4
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Commit 78d3fd0b7de8 ("gro: Only use skb_gro_header for completely
-non-linear packets") back in May'09 (v2.6.31-rc1) has changed the
-original condition '!skb_headlen(skb)' to
-'skb->mac_header == skb->tail' in gro_reset_offset() saying: "Since
-the drivers that need this optimisation all provide completely
-non-linear packets" (note that this condition has become the current
-'skb_mac_header(skb) == skb_tail_pointer(skb)' later with commmit
-ced14f6804a9 ("net: Correct comparisons and calculations using
-skb->tail and skb-transport_header") without any functional changes).
+ath11k is a new driver for Qualcomm IEEE 802.11ax devices, first
+supporting only IPQ8074 SoC using the shared memory AHB bus. ath11k
+uses mac80211 and supports AP, Station and Mesh modes.
 
-For now, we have the following rough statistics for v5.4-rc7:
-1) napi_gro_frags: 14
-2) napi_gro_receive with skb->head containing (most of) payload: 83
-3) napi_gro_receive with skb->head containing all the headers: 20
-4) napi_gro_receive with skb->head containing only Ethernet header: 2
+Even though ath11k has some similar code as with ath10k (especially
+the WMI layer) it was concluded to be simpler to have a "clean start"
+for ath11k code base and not try to share the code with ath10k. This
+makes maintenance easier and avoids major changes in ath10k, which
+would have significantly increased the risk of regressions in existing
+setups.
 
-With the current condition, fast GRO with the usage of
-NAPI_GRO_CB(skb)->frag0 is available only in the [1] case.
-Packets pushed by [2] and [3] go through the 'slow' path, but
-it's not a problem for them as they already contain all the needed
-headers in skb->head, so pskb_may_pull() only moves skb->data.
+Even though the driver is very similar with ath10k but there are major
+differences as well. The datapath is completely different. ath11k
+supports multiple MACs, called "soc" in the firmware interface. And
+there's only one WMI interface to support.
 
-The layout of skbs in the fourth [4] case at the moment of
-dev_gro_receive() is identical to skbs that have come through [1],
-as napi_frags_skb() pulls Ethernet header to skb->head. The only
-difference is that the mentioned condition is always false for them,
-because skb_put() and friends irreversibly alter the tail pointer.
-They also go through the 'slow' path, but now every single
-pskb_may_pull() in every single .gro_receive() will call the *really*
-slow __pskb_pull_tail() to pull headers to head. This significantly
-decreases the overall performance for no visible reasons.
+Currently ath11k supports only IEEE 802.11ac mode, but patches for
+802.11ax are available and they will be submitted after ath11k is
+accepted to upstream.
 
-The only two users of method [4] is:
-* drivers/staging/qlge
-* drivers/net/wireless/iwlwifi (all three variants: dvm, mvm, mvm-mq)
+The firmware images are available from ath11k-firmware repository but
+they will be also submitted to linux-firmware:
 
-Note that in case with wireless drivers we can't use [1]
-(napi_gro_frags()) at least for now and mac80211 stack always
-performs pushes and pulls anyways, so performance hit is inavoidable.
+https://github.com/kvalo/ath11k-firmware
 
-At the moment of v2.6.31 the mentioned change was necessary (that's
-why I don't add the "Fixes:" tag), but it became obsolete since
-skb_gro_mac_header() has gone in commit a50e233c50db ("net-gro:
-restore frag0 optimization"), so we can simply revert the condition
-in gro_reset_offset() to allow skbs from [4] go through the 'fast'
-path just like in case [1].
+The driver has had multiple authors who are listed in alphabetical
+order below.
 
-This was tested on a 600 MHz MIPS CPU and a custom driver and this
-patch gave boosts up to 40 Mbps to method [4] in both directions
-comparing to net-next, which made overall performance relatively
-close to [1] (without it, [4] is the slowest).
+Signed-off-by: Anilkumar Kolli <akolli@codeaurora.org>
+Signed-off-by: Bhagavathi Perumal S <bperumal@codeaurora.org>
+Signed-off-by: Ganesh Sesetti <gseset@codeaurora.org>
+Signed-off-by: Govindaraj Saminathan <gsamin@codeaurora.org>
+Signed-off-by: John Crispin <john@phrozen.org>
+Signed-off-by: Julia Lawall <julia.lawall@lip6.fr>
+Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+Signed-off-by: Karthikeyan Periyasamy <periyasa@codeaurora.org>
+Signed-off-by: kbuild test robot <lkp@intel.com>
+Signed-off-by: Maharaja Kennadyrajan <mkenna@codeaurora.org>
+Signed-off-by: Manikanta Pubbisetty <mpubbise@codeaurora.org>
+Signed-off-by: Miles Hu <milehu@codeaurora.org>
+Signed-off-by: Muna Sinada <msinada@codeaurora.org>
+Signed-off-by: Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>
+Signed-off-by: Rajkumar Manoharan <rmanohar@codeaurora.org>
+Signed-off-by: Sathishkumar Muruganandam <murugana@codeaurora.org>
+Signed-off-by: Shashidhar Lakkavalli <slakkavalli@datto.com>
+Signed-off-by: Sriram R <srirrama@codeaurora.org>
+Signed-off-by: Sven Eckelmann <seckelmann@datto.com>
+Signed-off-by: Vasanthakumar Thiagarajan <vthiagar@codeaurora.org>
+Signed-off-by: Venkateswara Naralasetty <vnaralas@codeaurora.org>
+
+--------------[cut]-------------------[cut]-----------------
+
+I have split the driver into multiple patches for easier review, but
+the final version will be split into three commits:
+
+1. adding Documentatio/devicetree/bindings/net/wireless/qcom,ath11k.yaml
+
+2. adding drivers/net/wireless/ath/ath11k/ with the commit log being the
+   text before the cut line above.
+
+3. adding ath11k entry to MAINTAINERS file
+
+This version is based on commit ad10d2ff619f0797cb102b2ff488429d3f8e4a8a
+from ath11k-bringup branch on my ath.git tree:
+
+https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/log/?h=ath11k-bringup
+
+This patchset applies to wireless-drivers-next but needs
+CONFIG_COMPILE_TEST, CONFIG_REMOTEPROC AND CONFIG_QCOM_QMI_HELPERS to
+be able to compile on x86.
+
+Please review and comment.
+
+Kalle
+
+v3:
+
+* Fixes and license change to Device Tree bindings document
+
+* git log --oneline --reverse ath11k-review-v2..ath11k-review-v3:
+
+51dcdfd7a2bf ath11k: fix ATH11K_TRACING kconfig help text
+b6b50cbae8a1 dt: bindings: net: ath11k: fix whitespace
+2120332777dd dt: bindings: net: ath11k: fixes from review
+93804d04c6d6 dt: bindings: net: ath11k: change license
 
 v2:
-- Add more references and explanations to commit message
-- Fix some typos ibid
-- No functional changes
 
-Signed-off-by: Alexander Lobakin <alobakin@dlink.ru>
----
- net/core/dev.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+* There are three final patches to commit, not just one.
 
-diff --git a/net/core/dev.c b/net/core/dev.c
-index 1c799d486623..da78a433c10c 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -5611,8 +5611,7 @@ static void skb_gro_reset_offset(struct sk_buff *skb)
- 	NAPI_GRO_CB(skb)->frag0 = NULL;
- 	NAPI_GRO_CB(skb)->frag0_len = 0;
- 
--	if (skb_mac_header(skb) == skb_tail_pointer(skb) &&
--	    pinfo->nr_frags &&
-+	if (!skb_headlen(skb) && pinfo->nr_frags &&
- 	    !PageHighMem(skb_frag_page(frag0))) {
- 		NAPI_GRO_CB(skb)->frag0 = skb_frag_address(frag0);
- 		NAPI_GRO_CB(skb)->frag0_len = min_t(unsigned int,
--- 
-2.24.0
+* Write commit log for the device tree bindings patch.
+
+* License changed to BSD 3-clause "Clear".
+
+* git log --oneline --reverse ath11k-review-v1..ath11k-review-v2:
+
+f6153fa78616 ath11k: fix Kconfig, replace spaces with tabs
+b6b140aa1739 ath11k: Use C99 structure initialization for target_service_to_ce_map_wlan[]
+d054355585aa ath11k: Remove ring mask macros defined for 0
+4c980dcca60a ath11k: Move ath11k_ahb_read32() and ath11k_ahb_write32() to ahb.h
+be7eb8bbca02 ath11k: Avoid code duplication in set/clear of a register bit values
+11978c109885 ath11k: Few clean ups in comments
+8cc72b480777 ath11k: Clean ups in ath11k_ce_rx_buf_enqueue_pipe() error path
+9f55e5658237 ath11k: Clean up parameter list in ath11k_ce_completed_send_next()
+3dcb3e76a260 ath11k: Use struct_size() to get the structure size with trailing array
+a1329c05a4e0 ath11k: change license to BSD 3-clause "Clear"
+bcd3f5043856 ath11k: fix multicast rate parameter size
+e4386fb86f51 ath11k: assigning values to enum
+78b6da0fb67c ath11k: Add debugfs per chip
+e44597a02dad ath11k: fix tkip mic error reporting to cfg80211
+ea1107a93b4a dt-bindings: net: add qcom,ath11k.yaml
+ab4d2bd0f217 ath11k: whitespace cleanup in core.c
+
 
