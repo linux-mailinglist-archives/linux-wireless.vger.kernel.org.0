@@ -2,82 +2,111 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DBEF4FD761
-	for <lists+linux-wireless@lfdr.de>; Fri, 15 Nov 2019 08:53:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 74DADFD77A
+	for <lists+linux-wireless@lfdr.de>; Fri, 15 Nov 2019 09:00:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726444AbfKOHxK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 15 Nov 2019 02:53:10 -0500
-Received: from mail.dlink.ru ([178.170.168.18]:48360 "EHLO fd.dlink.ru"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725829AbfKOHxK (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 15 Nov 2019 02:53:10 -0500
-Received: by fd.dlink.ru (Postfix, from userid 5000)
-        id E7B311B2040B; Fri, 15 Nov 2019 10:53:07 +0300 (MSK)
-DKIM-Filter: OpenDKIM Filter v2.11.0 fd.dlink.ru E7B311B2040B
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dlink.ru; s=mail;
-        t=1573804387; bh=8Ehrj23PMw/h0WcE7C1DeuA9hvHqsayqXUUFF8u9gEM=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References;
-        b=jJh5himROQYvaXrqmY9SbrNIc2jqMifGFam4qqbx2Tcq9Zf46JguwD2uABxXilSWz
-         6jj77L9eW5WDfMr8rvjRhh+OADuBEEPlDOrhxCh2gXu6in+jEL/6pMB6VDOhmrLn9l
-         V5Sial4/eZWn7TTjiV1av0m7W3ZwyvPdMvgBUFyM=
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on mail.dlink.ru
-X-Spam-Level: 
-X-Spam-Status: No, score=-99.2 required=7.5 tests=BAYES_50,URIBL_BLOCKED,
-        USER_IN_WHITELIST autolearn=disabled version=3.4.2
-Received: from mail.rzn.dlink.ru (mail.rzn.dlink.ru [178.170.168.13])
-        by fd.dlink.ru (Postfix) with ESMTP id 80FF51B2040B;
-        Fri, 15 Nov 2019 10:52:59 +0300 (MSK)
-DKIM-Filter: OpenDKIM Filter v2.11.0 fd.dlink.ru 80FF51B2040B
-Received: from mail.rzn.dlink.ru (localhost [127.0.0.1])
-        by mail.rzn.dlink.ru (Postfix) with ESMTP id 3ECB51B21209;
-        Fri, 15 Nov 2019 10:52:59 +0300 (MSK)
-Received: from mail.rzn.dlink.ru (localhost [127.0.0.1])
-        by mail.rzn.dlink.ru (Postfix) with ESMTPA;
-        Fri, 15 Nov 2019 10:52:59 +0300 (MSK)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-Date:   Fri, 15 Nov 2019 10:52:59 +0300
-From:   Alexander Lobakin <alobakin@dlink.ru>
-To:     David Miller <davem@davemloft.net>
-Cc:     ecree@solarflare.com, jiri@mellanox.com, edumazet@google.com,
-        idosch@mellanox.com, pabeni@redhat.com, petrm@mellanox.com,
-        sd@queasysnail.net, f.fainelli@gmail.com,
-        jaswinder.singh@linaro.org, manishc@marvell.com,
-        GR-Linux-NIC-Dev@marvell.com, johannes.berg@intel.com,
-        emmanuel.grumbach@intel.com, luciano.coelho@intel.com,
-        linuxwifi@intel.com, kvalo@codeaurora.org, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next] net: core: allow fast GRO for skbs with Ethernet
- header in head
-In-Reply-To: <20191114.234958.1198680245198023054.davem@davemloft.net>
-References: <20191112122843.30636-1-alobakin@dlink.ru>
- <20191114.172508.1027995193093100862.davem@davemloft.net>
- <097eb720466a7c429c8fd91c792e7cd5@dlink.ru>
- <20191114.234958.1198680245198023054.davem@davemloft.net>
-User-Agent: Roundcube Webmail/1.4.0
-Message-ID: <4cff3016dcc4fc63e23d5c0de6f81bd8@dlink.ru>
-X-Sender: alobakin@dlink.ru
+        id S1726605AbfKOIAD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 15 Nov 2019 03:00:03 -0500
+Received: from mail-qt1-f196.google.com ([209.85.160.196]:38654 "EHLO
+        mail-qt1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725829AbfKOIAD (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 15 Nov 2019 03:00:03 -0500
+Received: by mail-qt1-f196.google.com with SMTP id p20so9938810qtq.5
+        for <linux-wireless@vger.kernel.org>; Fri, 15 Nov 2019 00:00:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=rUk2UFLWwTbCedOCxT8lGDtJxih2bllQMzQrq34KHmQ=;
+        b=iCXSHc+He7qMtyxsj8AZYIpId42eipyXOIR3HQp9mJPlsDhQjerLvHXNq+4y1D1s/K
+         yN2IWsHo2eIo/svDUqvUFDjVZqbp4KNjxmf+Sc9ZT7FTU+bDJmf1Woh3HA7zUj4Wj4U3
+         k54eAvEZBZl4HVEw3Js0ASAXBIUkKxZeGIubh9zFiayUOiNnmdwJ8LYKC1hU+pHxgw22
+         gpH7riNz4qwAqTcT5GU9TaSVxS3m2Eehdi9SMek3zfAZBgbg9MT6HFAq8LXcYjmXrdu6
+         rDp58f0qUDuV8jK/cNc0WcUK/m1ttFpkp4dT/T/Z3RMGiBoX3jHeKHqAdxDEpRLXAJq+
+         TNJw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=rUk2UFLWwTbCedOCxT8lGDtJxih2bllQMzQrq34KHmQ=;
+        b=aT+oCF7geLCxTg5tuc0ptc3JZ+/5UuU5DtDnC573Par3maOk3Ihx91LLhenenY079+
+         BSMeiNOUiLl8/jmwk28nOdqP449mmi9Dh3Ea1mLRI9QPSwz4vAotMedFcs/N/UZnjKsF
+         yy1E3ls+rjtVWyfVmS5gc0UYPbGx+4amRB8OOoUQEDwjSw60YabYHLqS79L8WEI2vzeV
+         g1Dvks3H4X2bFKPQGoUgiYMqUothjLwKhXRS6LgG6FjacDxUH40W+TQDTPuyk/9Y2ZpF
+         0W6OtDdL9r04Hl19NdHtahypW61u+/UvwInI0AySY4GUQwjg5/nN6Eb9vIqJ/w+ep8Ol
+         v4Kg==
+X-Gm-Message-State: APjAAAUu2ZgArBnpC/iwfW81FGxxrMdaj2x8vv0LQxxeMtZBev271J0O
+        yfUPr7dOsIeLohoYqnVisICdVIYA50M=
+X-Google-Smtp-Source: APXvYqwGxzx1ziyou/DMIXWeYYuePiWX8ozXUQYKJL+pHrSicaomgxZDzpid+zFch+TMfA7ukWF5BA==
+X-Received: by 2002:ac8:7216:: with SMTP id a22mr12431767qtp.187.1573804800744;
+        Fri, 15 Nov 2019 00:00:00 -0800 (PST)
+Received: from ubuntu.wgti.net ([64.94.121.131])
+        by smtp.gmail.com with ESMTPSA id n56sm4554656qtb.73.2019.11.14.23.59.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 14 Nov 2019 23:59:59 -0800 (PST)
+From:   Ming Chen <ming032217@gmail.com>
+X-Google-Original-From: Ming Chen <ming.chen@watchguard.com>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless@vger.kernel.org,
+        Ming Chen <ming.chen@watchguard.com>
+Subject: [PATCH v3] mac80211: Drop the packets whose source or destination mac address is empty
+Date:   Thu, 14 Nov 2019 23:59:42 -0800
+Message-Id: <20191115075942.120943-1-ming.chen@watchguard.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-David Miller wrote 15.11.2019 10:49:
+We occasionally found ath9k could receive some packets from Linux IP stack
+with empty source and destination mac address,which will result in the
+driver cannot find the station node in TX complete. And thus, the driver
+will complete this buffer but without updating the block ack window.
 
-> From: Alexander Lobakin <alobakin@dlink.ru>
-> Date: Fri, 15 Nov 2019 10:36:08 +0300
-> 
->> Please let me know if I must send v2 of this patch with corrected
->> description before getting any further reviews.
-> 
-> I would say that you do, thanks for asking.
-> 
-> The more details and information in the commit message, the better.
+To fix this issue, we should drop this kind of error packet before it
+goes into the driver.
 
-Thank you, I'll publish v2 soon to clarify all the possible
-misunderstandings.
+Signed-off-by: Ming Chen <ming.chen@watchguard.com>
+---
 
-Regards,
-ᚷ ᛖ ᚢ ᚦ ᚠ ᚱ
+v3:
+  -Fix s-o-b location
+
+v2:
+  -According to review feedback, use the is_zero_ether_addr to check if the mac address is empty.
+---
+ net/mac80211/tx.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index db38be1b75fa..b18745a3f6b0 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -2489,6 +2489,13 @@ static struct sk_buff *ieee80211_build_hdr(struct ieee80211_sub_if_data *sdata,
+ 	if (IS_ERR(sta))
+ 		sta = NULL;
+ 
++	/* drop this skb when source mac or destination mac is empty */
++	if (is_zero_ether_addr(skb->data) ||
++	    is_zero_ether_addr(skb->data + ETH_ALEN)) {
++		ret = -ENOTCONN;
++		goto free;
++	}
++
+ #ifdef CONFIG_MAC80211_DEBUGFS
+ 	if (local->force_tx_status)
+ 		info_flags |= IEEE80211_TX_CTL_REQ_TX_STATUS;
+@@ -3435,6 +3442,11 @@ static bool ieee80211_xmit_fast(struct ieee80211_sub_if_data *sdata,
+ 	if (skb->sk && skb_shinfo(skb)->tx_flags & SKBTX_WIFI_STATUS)
+ 		return false;
+ 
++	/* drop this skb when source mac or destination mac is empty */
++	if (is_zero_ether_addr(skb->data) ||
++	    is_zero_ether_addr(skb->data + ETH_ALEN))
++		return false;
++
+ 	if (hdr->frame_control & cpu_to_le16(IEEE80211_STYPE_QOS_DATA)) {
+ 		tid = skb->priority & IEEE80211_QOS_CTL_TAG1D_MASK;
+ 		tid_tx = rcu_dereference(sta->ampdu_mlme.tid_tx[tid]);
+-- 
+2.17.1
+
