@@ -2,25 +2,25 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 89839FD8FD
-	for <lists+linux-wireless@lfdr.de>; Fri, 15 Nov 2019 10:30:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CD752FD8FF
+	for <lists+linux-wireless@lfdr.de>; Fri, 15 Nov 2019 10:30:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727254AbfKOJaK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 15 Nov 2019 04:30:10 -0500
-Received: from smtp.codeaurora.org ([198.145.29.96]:53628 "EHLO
+        id S1727279AbfKOJaS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 15 Nov 2019 04:30:18 -0500
+Received: from smtp.codeaurora.org ([198.145.29.96]:53846 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727031AbfKOJaK (ORCPT
+        with ESMTP id S1727031AbfKOJaS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 15 Nov 2019 04:30:10 -0500
+        Fri, 15 Nov 2019 04:30:18 -0500
 Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 37D156138E; Fri, 15 Nov 2019 09:29:42 +0000 (UTC)
+        id 0969061139; Fri, 15 Nov 2019 09:30:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1573810208;
-        bh=NMYlOAkjhSvlNcRgcChlgAvROaggBCm5Lc4jv7cN04o=;
+        s=default; t=1573810217;
+        bh=0EMYFctPcFVwlejoMa6dEfJWqn5trTXRa5AkVNLhZL0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=l1IWUSRICGDpCFThi0xWWvXBbpeP1BWVw52ulcqYij0aQHzRCAN7aHYdi/nsZZp81
-         nCYOtAWMGue6SmQCzuZ+/gfl5KSIL/gX27CpuNqe1cNBnrGhOpg4IEqytiKCZs4SZL
-         VYgbe4GQLvgzLXAaWUmJWmSOXSPnCrnX4fsaQuDY=
+        b=Frz8O3thlKCDGiUhBd3ha1pRJJkM1Xo9dVmGTj7cgoAVqRe9PP4gNslAlVIbKhoia
+         677L0tNoOrnBHLDxJsLaZE32unYOdLYc+nMrb18u0aU+H6tw9gC/Ml4L85+q7ON32Q
+         DceJ1ecMoAJsehS++MPLmB0+zo9KO067VhooX9rk=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
@@ -31,24 +31,24 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 4E52F612DF;
-        Fri, 15 Nov 2019 09:29:38 +0000 (UTC)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id D537C61495;
+        Fri, 15 Nov 2019 09:30:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1573810179;
-        bh=NMYlOAkjhSvlNcRgcChlgAvROaggBCm5Lc4jv7cN04o=;
+        s=default; t=1573810209;
+        bh=0EMYFctPcFVwlejoMa6dEfJWqn5trTXRa5AkVNLhZL0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HzjPAO4NVPVmrgMcGThA9Q3nQ/JTWutUiT5/NDFiAGJ5KWvvpfy5sYqoTm3BGarZr
-         ubpvzxkKgwL7L6RQbEWs60Ny/Lsa9RmqI48pA8DlSGhKJHpnw/sF8NalNckj6dOPNG
-         OrC2g1UqZ/vgSwu/a85vunkUcYY8o9gFwu6m26ss=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 4E52F612DF
+        b=IkrgtEzUrv9XGKyzXsfkJBRlNYET+GWU2vdOw2laeIHt7YNkPmQFwDiCmX4lyvZ+6
+         cg+tJNhscKRyhT/dkg/4kQAu0p6HS5zaPGIBwdomz+b8lrTOmhnAhFK3clIXGS3nkD
+         9YVPf/2jHQ8BVBzjZRrH8fiSrYckFG5+iqPIPEq8=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org D537C61495
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 From:   Kalle Valo <kvalo@codeaurora.org>
 To:     linux-wireless@vger.kernel.org
 Cc:     ath11k@lists.infradead.org, devicetree@vger.kernel.org
-Subject: [PATCH v3 11/49] ath11k: add debug.h
-Date:   Fri, 15 Nov 2019 11:28:35 +0200
-Message-Id: <1573810153-29623-12-git-send-email-kvalo@codeaurora.org>
+Subject: [PATCH v3 20/49] ath11k: add dp_tx.h
+Date:   Fri, 15 Nov 2019 11:28:44 +0200
+Message-Id: <1573810153-29623-21-git-send-email-kvalo@codeaurora.org>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1573810153-29623-1-git-send-email-kvalo@codeaurora.org>
 References: <1573810153-29623-1-git-send-email-kvalo@codeaurora.org>
@@ -61,291 +61,53 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 ---
- drivers/net/wireless/ath/ath11k/debug.h | 278 ++++++++++++++++++++++++++++++++
- 1 file changed, 278 insertions(+)
+ drivers/net/wireless/ath/ath11k/dp_tx.h | 40 +++++++++++++++++++++++++++++++++
+ 1 file changed, 40 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath11k/debug.h b/drivers/net/wireless/ath/ath11k/debug.h
+diff --git a/drivers/net/wireless/ath/ath11k/dp_tx.h b/drivers/net/wireless/ath/ath11k/dp_tx.h
 new file mode 100644
-index 000000000000..aef33f83c9b1
+index 000000000000..f8a9f9c8e444
 --- /dev/null
-+++ b/drivers/net/wireless/ath/ath11k/debug.h
-@@ -0,0 +1,278 @@
++++ b/drivers/net/wireless/ath/ath11k/dp_tx.h
+@@ -0,0 +1,40 @@
 +/* SPDX-License-Identifier: BSD-3-Clause-Clear */
 +/*
 + * Copyright (c) 2018-2019 The Linux Foundation. All rights reserved.
 + */
 +
-+#ifndef _ATH11K_DEBUG_H_
-+#define _ATH11K_DEBUG_H_
++#ifndef ATH11K_DP_TX_H
++#define ATH11K_DP_TX_H
 +
++#include "core.h"
 +#include "hal_tx.h"
-+#include "trace.h"
 +
-+enum ath11k_debug_mask {
-+	ATH11K_DBG_AHB		= 0x00000001,
-+	ATH11K_DBG_WMI		= 0x00000002,
-+	ATH11K_DBG_HTC		= 0x00000004,
-+	ATH11K_DBG_DP_HTT	= 0x00000008,
-+	ATH11K_DBG_MAC		= 0x00000010,
-+	ATH11K_DBG_BOOT		= 0x00000020,
-+	ATH11K_DBG_QMI		= 0x00000040,
-+	ATH11K_DBG_DATA		= 0x00000080,
-+	ATH11K_DBG_MGMT		= 0x00000100,
-+	ATH11K_DBG_REG		= 0x00000200,
-+	ATH11K_DBG_TESTMODE	= 0x00000400,
-+	ATH11k_DBG_HAL		= 0x00000800,
-+	ATH11K_DBG_ANY		= 0xffffffff,
++struct ath11k_dp_htt_wbm_tx_status {
++	u32 msdu_id;
++	bool acked;
++	int ack_rssi;
 +};
 +
-+/* htt_dbg_ext_stats_type */
-+enum ath11k_dbg_htt_ext_stats_type {
-+	ATH11K_DBG_HTT_EXT_STATS_RESET                      =  0,
-+	ATH11K_DBG_HTT_EXT_STATS_PDEV_TX                    =  1,
-+	ATH11K_DBG_HTT_EXT_STATS_PDEV_RX                    =  2,
-+	ATH11K_DBG_HTT_EXT_STATS_PDEV_TX_HWQ                =  3,
-+	ATH11K_DBG_HTT_EXT_STATS_PDEV_TX_SCHED              =  4,
-+	ATH11K_DBG_HTT_EXT_STATS_PDEV_ERROR                 =  5,
-+	ATH11K_DBG_HTT_EXT_STATS_PDEV_TQM                   =  6,
-+	ATH11K_DBG_HTT_EXT_STATS_TQM_CMDQ                   =  7,
-+	ATH11K_DBG_HTT_EXT_STATS_TX_DE_INFO                 =  8,
-+	ATH11K_DBG_HTT_EXT_STATS_PDEV_TX_RATE               =  9,
-+	ATH11K_DBG_HTT_EXT_STATS_PDEV_RX_RATE               =  10,
-+	ATH11K_DBG_HTT_EXT_STATS_PEER_INFO                  =  11,
-+	ATH11K_DBG_HTT_EXT_STATS_TX_SELFGEN_INFO            =  12,
-+	ATH11K_DBG_HTT_EXT_STATS_TX_MU_HWQ                  =  13,
-+	ATH11K_DBG_HTT_EXT_STATS_RING_IF_INFO               =  14,
-+	ATH11K_DBG_HTT_EXT_STATS_SRNG_INFO                  =  15,
-+	ATH11K_DBG_HTT_EXT_STATS_SFM_INFO                   =  16,
-+	ATH11K_DBG_HTT_EXT_STATS_PDEV_TX_MU                 =  17,
-+	ATH11K_DBG_HTT_EXT_STATS_ACTIVE_PEERS_LIST          =  18,
-+	ATH11K_DBG_HTT_EXT_STATS_PDEV_CCA_STATS             =  19,
-+	ATH11K_DBG_HTT_EXT_STATS_TWT_SESSIONS               =  20,
-+	ATH11K_DBG_HTT_EXT_STATS_REO_RESOURCE_STATS         =  21,
-+	ATH11K_DBG_HTT_EXT_STATS_TX_SOUNDING_INFO           =  22,
++int ath11k_dp_tx_htt_h2t_ver_req_msg(struct ath11k_base *ab);
++int ath11k_dp_tx(struct ath11k *ar, struct ath11k_vif *arvif,
++		 struct sk_buff *skb);
++void ath11k_dp_tx_completion_handler(struct ath11k_base *ab, int ring_id);
++int ath11k_dp_tx_send_reo_cmd(struct ath11k_base *ab, struct dp_rx_tid *rx_tid,
++			      enum hal_reo_cmd_type type,
++			      struct ath11k_hal_reo_cmd *cmd,
++			      void (*func)(struct ath11k_dp *, void *,
++					   enum hal_reo_cmd_status));
 +
-+	/* keep this last */
-+	ATH11K_DBG_HTT_NUM_EXT_STATS,
-+};
++int ath11k_dp_tx_htt_h2t_ppdu_stats_req(struct ath11k *ar, u32 mask);
++int
++ath11k_dp_tx_htt_h2t_ext_stats_req(struct ath11k *ar, u8 type,
++				   struct htt_ext_stats_cfg_params *cfg_params,
++				   u64 cookie);
++int ath11k_dp_tx_htt_monitor_mode_ring_config(struct ath11k *ar, bool reset);
 +
-+struct debug_htt_stats_req {
-+	bool done;
-+	u8 pdev_id;
-+	u8 type;
-+	u8 peer_addr[ETH_ALEN];
-+	struct completion cmpln;
-+	u32 buf_len;
-+	u8 buf[0];
-+};
++int ath11k_dp_tx_htt_rx_filter_setup(struct ath11k_base *ab, u32 ring_id,
++				     int mac_id, enum hal_ring_type ring_type,
++				     int rx_buf_size,
++				     struct htt_rx_ring_tlv_filter *tlv_filter);
 +
-+#define ATH11K_HTT_STATS_BUF_SIZE (1024 * 512)
-+
-+#define ATH11K_FW_STATS_BUF_SIZE (1024 * 1024)
-+
-+#define ATH11K_HTT_PKTLOG_MAX_SIZE 2048
-+
-+enum ath11k_pktlog_filter {
-+	ATH11K_PKTLOG_RX		= 0x000000001,
-+	ATH11K_PKTLOG_TX		= 0x000000002,
-+	ATH11K_PKTLOG_RCFIND		= 0x000000004,
-+	ATH11K_PKTLOG_RCUPDATE		= 0x000000008,
-+	ATH11K_PKTLOG_EVENT_SMART_ANT	= 0x000000020,
-+	ATH11K_PKTLOG_EVENT_SW		= 0x000000040,
-+	ATH11K_PKTLOG_ANY		= 0x00000006f,
-+};
-+
-+enum ath11k_pktlog_mode {
-+	ATH11K_PKTLOG_MODE_LITE = 1,
-+	ATH11K_PKTLOG_MODE_FULL = 2,
-+};
-+
-+enum ath11k_pktlog_enum {
-+	ATH11K_PKTLOG_TYPE_TX_CTRL      = 1,
-+	ATH11K_PKTLOG_TYPE_TX_STAT      = 2,
-+	ATH11K_PKTLOG_TYPE_TX_MSDU_ID   = 3,
-+	ATH11K_PKTLOG_TYPE_RX_STAT      = 5,
-+	ATH11K_PKTLOG_TYPE_RC_FIND      = 6,
-+	ATH11K_PKTLOG_TYPE_RC_UPDATE    = 7,
-+	ATH11K_PKTLOG_TYPE_TX_VIRT_ADDR = 8,
-+	ATH11K_PKTLOG_TYPE_RX_CBF       = 10,
-+	ATH11K_PKTLOG_TYPE_RX_STATBUF   = 22,
-+	ATH11K_PKTLOG_TYPE_PPDU_STATS   = 23,
-+	ATH11K_PKTLOG_TYPE_LITE_RX      = 24,
-+};
-+
-+__printf(2, 3) void ath11k_info(struct ath11k_base *ab, const char *fmt, ...);
-+__printf(2, 3) void ath11k_err(struct ath11k_base *ab, const char *fmt, ...);
-+__printf(2, 3) void ath11k_warn(struct ath11k_base *ab, const char *fmt, ...);
-+
-+extern unsigned int ath11k_debug_mask;
-+
-+#ifdef CONFIG_ATH11K_DEBUG
-+__printf(3, 4) void __ath11k_dbg(struct ath11k_base *ab,
-+				 enum ath11k_debug_mask mask,
-+				 const char *fmt, ...);
-+void ath11k_dbg_dump(struct ath11k_base *ab,
-+		     enum ath11k_debug_mask mask,
-+		     const char *msg, const char *prefix,
-+		     const void *buf, size_t len);
-+#else /* CONFIG_ATH11K_DEBUG */
-+static inline int __ath11k_dbg(struct ath11k_base *ab,
-+			       enum ath11k_debug_mask dbg_mask,
-+			       const char *fmt, ...)
-+{
-+	return 0;
-+}
-+
-+static inline void ath11k_dbg_dump(struct ath11k_base *ab,
-+				   enum ath11k_debug_mask mask,
-+				   const char *msg, const char *prefix,
-+				   const void *buf, size_t len)
-+{
-+}
-+#endif /* CONFIG_ATH11K_DEBUG */
-+
-+#ifdef CONFIG_ATH11K_DEBUGFS
-+int ath11k_debug_soc_create(struct ath11k_base *ab);
-+void ath11k_debug_soc_destroy(struct ath11k_base *ab);
-+int ath11k_debug_pdev_create(struct ath11k_base *ab);
-+void ath11k_debug_pdev_destroy(struct ath11k_base *ab);
-+int ath11k_debug_register(struct ath11k *ar);
-+void ath11k_debug_unregister(struct ath11k *ar);
-+void ath11k_dbg_htt_ext_stats_handler(struct ath11k_base *ab,
-+				      struct sk_buff *skb);
-+void ath11k_debug_fw_stats_process(struct ath11k_base *ab, struct sk_buff *skb);
-+
-+void ath11k_debug_fw_stats_init(struct ath11k *ar);
-+int ath11k_dbg_htt_stats_req(struct ath11k *ar);
-+
-+static inline bool ath11k_debug_is_pktlog_lite_mode_enabled(struct ath11k *ar)
-+{
-+	return (ar->debug.pktlog_mode == ATH11K_PKTLOG_MODE_LITE);
-+}
-+
-+static inline bool ath11k_debug_is_pktlog_rx_stats_enabled(struct ath11k *ar)
-+{
-+	return (!ar->debug.pktlog_peer_valid && ar->debug.pktlog_mode);
-+}
-+
-+static inline bool ath11k_debug_is_pktlog_peer_valid(struct ath11k *ar, u8 *addr)
-+{
-+	return (ar->debug.pktlog_peer_valid && ar->debug.pktlog_mode &&
-+		ether_addr_equal(addr, ar->debug.pktlog_peer_addr));
-+}
-+
-+static inline int ath11k_debug_is_extd_tx_stats_enabled(struct ath11k *ar)
-+{
-+	return ar->debug.extd_tx_stats;
-+}
-+
-+static inline int ath11k_debug_is_extd_rx_stats_enabled(struct ath11k *ar)
-+{
-+	return ar->debug.extd_rx_stats;
-+}
-+#else
-+static inline int ath11k_debug_soc_create(struct ath11k_base *ab)
-+{
-+	return 0;
-+}
-+
-+static inline void ath11k_debug_soc_destroy(struct ath11k_base *ab)
-+{
-+}
-+
-+static inline int ath11k_debug_pdev_create(struct ath11k_base *ab)
-+{
-+	return 0;
-+}
-+
-+static inline void ath11k_debug_pdev_destroy(struct ath11k_base *ab)
-+{
-+}
-+
-+static inline int ath11k_debug_register(struct ath11k *ar)
-+{
-+	return 0;
-+}
-+
-+static inline void ath11k_debug_unregister(struct ath11k *ar)
-+{
-+}
-+
-+static inline void ath11k_dbg_htt_ext_stats_handler(struct ath11k_base *ab,
-+						    struct sk_buff *skb)
-+{
-+}
-+
-+static inline void ath11k_debug_fw_stats_process(struct ath11k_base *ab,
-+						 struct sk_buff *skb)
-+{
-+}
-+
-+static inline void ath11k_debug_fw_stats_init(struct ath11k *ar)
-+{
-+}
-+
-+static inline int ath11k_debug_is_extd_tx_stats_enabled(struct ath11k *ar)
-+{
-+	return 0;
-+}
-+
-+static inline int ath11k_debug_is_extd_rx_stats_enabled(struct ath11k *ar)
-+{
-+	return 0;
-+}
-+
-+static inline int ath11k_dbg_htt_stats_req(struct ath11k *ar)
-+{
-+	return 0;
-+}
-+
-+static inline bool ath11k_debug_is_pktlog_lite_mode_enabled(struct ath11k *ar)
-+{
-+	return false;
-+}
-+
-+static inline bool ath11k_debug_is_pktlog_rx_stats_enabled(struct ath11k *ar)
-+{
-+	return false;
-+}
-+
-+static inline bool ath11k_debug_is_pktlog_peer_valid(struct ath11k *ar, u8 *addr)
-+{
-+	return false;
-+}
-+#endif /* CONFIG_ATH11K_DEBUGFS */
-+
-+#ifdef CONFIG_MAC80211_DEBUGFS
-+void ath11k_sta_add_debugfs(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
-+			    struct ieee80211_sta *sta, struct dentry *dir);
-+void
-+ath11k_accumulate_per_peer_tx_stats(struct ath11k_sta *arsta,
-+				    struct ath11k_per_peer_tx_stats *peer_stats,
-+				    u8 legacy_rate_idx);
-+void ath11k_update_per_peer_stats_from_txcompl(struct ath11k *ar,
-+					       struct sk_buff *msdu,
-+					       struct hal_tx_status *ts);
-+#else /* !CONFIG_MAC80211_DEBUGFS */
-+static inline void
-+ath11k_accumulate_per_peer_tx_stats(struct ath11k_sta *arsta,
-+				    struct ath11k_per_peer_tx_stats *peer_stats,
-+				    u8 legacy_rate_idx)
-+{
-+}
-+
-+static inline void
-+ath11k_update_per_peer_stats_from_txcompl(struct ath11k *ar,
-+					  struct sk_buff *msdu,
-+					  struct hal_tx_status *ts)
-+{
-+}
-+
-+#endif /* CONFIG_MAC80211_DEBUGFS*/
-+
-+#define ath11k_dbg(ar, dbg_mask, fmt, ...)			\
-+do {								\
-+	if (ath11k_debug_mask & dbg_mask)			\
-+		__ath11k_dbg(ar, dbg_mask, fmt, ##__VA_ARGS__);	\
-+} while (0)
-+
-+#endif /* _ATH11K_DEBUG_H_ */
++#endif
 
