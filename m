@@ -2,216 +2,157 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 31A84FD90B
-	for <lists+linux-wireless@lfdr.de>; Fri, 15 Nov 2019 10:30:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E4747FDBCF
+	for <lists+linux-wireless@lfdr.de>; Fri, 15 Nov 2019 11:56:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727290AbfKOJa1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 15 Nov 2019 04:30:27 -0500
-Received: from mail-ua1-f65.google.com ([209.85.222.65]:35709 "EHLO
-        mail-ua1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727357AbfKOJa0 (ORCPT
+        id S1727192AbfKOK4f (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 15 Nov 2019 05:56:35 -0500
+Received: from mail.aperture-lab.de ([138.201.29.205]:33618 "EHLO
+        mail.aperture-lab.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727112AbfKOK4f (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 15 Nov 2019 04:30:26 -0500
-Received: by mail-ua1-f65.google.com with SMTP id s14so2818347uad.2
-        for <linux-wireless@vger.kernel.org>; Fri, 15 Nov 2019 01:30:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=U0K8GRiXqSgIpN48tBNHcV+jI/oiDgvDhl7ShZIVOhE=;
-        b=dms2AT6yjYIujdBp5vLXzT3QSWBUJdp+Ja/bHoPGCKS84bKo37q9DYAWmQ+OhvnX47
-         wQESQqhFjyBsKxLBW14sJM6Kkxy/Yvicy1Vttr/bmnfFi1qkmbGWwvZC6/I2T2hc0dc4
-         E6e4jsZ8R7HPGQj7VhbAeZXMKd4W+mV9z0NBs1wYV93Cw7drye59WzshJHguKEkNXCPt
-         fHF0ouNrAUlgmAVwGBwpW7V1N92+w5PRrvnambZTbfMnbWUBMJIPHZCBuMz5iDZ3km48
-         QxwxVl+99j/KVNaPgNldx2y1f+snHTdbPP0IYzr0FUgyc31xgzkXkCrLt9Puderh1g1W
-         O9fQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=U0K8GRiXqSgIpN48tBNHcV+jI/oiDgvDhl7ShZIVOhE=;
-        b=Sgcrdw2NpqnxXBDyBckCjtL98NRt4Dhn9K1WwPUqJ1fMKgs4GOJICL8ELtLqhXgPPD
-         xFV+FMFgsPH1YH2IW/gtS9drJkWRnugmlwCdI798WewLB4FJoQn8kmlbS28Hb8OZKpWl
-         8teJpKcKn7fQ8+efZLSReiTAEFJdQ5dAneW4p5AlAqON2NYCVwM4tNb3+EsSx+CCxQuT
-         U4hcUwyHCsi7N3gu36f1P5ByGry/SWL0QdPQ5zKAC18wVTCaaa7kHpctSDk0CQ1GdeSY
-         FohvSdQe7tQZJVHdK2VMlA9FuXLQWAsaba9XGxUXXmhOdH/E51Y1P3d4dpKNM2Ij66hu
-         JaXg==
-X-Gm-Message-State: APjAAAV75NQ4S5KGQFAKV923mvIsfJTBsdyR5Wg77rMW9RQZ74O3Ypjl
-        mfqXsoamYDRUwDrjwAezFrkjN7kg1b5Ji5HPiB9euQ==
-X-Google-Smtp-Source: APXvYqzU6WJnGjb2iLphku/+v8QsaQ8unugsql39hfm0KRqoySp6l08BYKltD9R0v8e99ePYA9xvGwkzshWggfN0FEM=
-X-Received: by 2002:ab0:74cd:: with SMTP id f13mr8348393uaq.104.1573810223324;
- Fri, 15 Nov 2019 01:30:23 -0800 (PST)
+        Fri, 15 Nov 2019 05:56:35 -0500
+From:   =?UTF-8?q?Linus=20L=C3=BCssing?= <linus.luessing@c0d3.blue>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c0d3.blue; s=2018;
+        t=1573815392;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=uBJc7hcajP8FEHgdeBWBaFOQbOLebSdyenmlOi0uYxA=;
+        b=O8JtRdntbEJURgpdD6MrUYkKYQYwyHbUNpMTSGs9rE8JbGfernDCI6mD8fKb2qukSC1FV+
+        ZBXt7Q/srnvMlQgQjZJgpve874drG5Y+k+G4+PVDhmURl/Jo+jaSTMbMrD0KjtuUDHEYHh
+        ZKetoahkmkKWGOetJK43EZreuRZdLVY11wn4wRwkDOllSrY9PB1JiuwiqcSNLiiOUskzQX
+        rMLmWk488ReuJm3Pd94UBJO6jGQxQU+IPi/pZvXUcujJHMd975fmw/U8JCBCyFsOZTta1S
+        s4AqP3D9GqvllPahTJ5SjYTu8+2trJeD+SfM4rbfGhKFPwgy6uqwDqLIhUZAiw==
+To:     ath10k@lists.infradead.org
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Ben Greear <greearb@candelatech.com>,
+        Simon Wunderlich <sw@simonwunderlich.de>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        =?UTF-8?q?Linus=20L=C3=BCssing?= <ll@simonwunderlich.de>
+Subject: [PATCH net-next v2] ath10k: fix RX of frames with broken FCS in monitor mode
+Date:   Fri, 15 Nov 2019 11:56:12 +0100
+Message-Id: <20191115105612.8531-1-linus.luessing@c0d3.blue>
 MIME-Version: 1.0
-References: <cover.1573122644.git.hns@goldelico.com> <CAPDyKFrntf2Kd9Zf7uxRCUk_OrKD8B3xOKmvPaf04X21L5HwWA@mail.gmail.com>
- <5F5A5FC0-8F91-4D5B-9EF6-AF36FE38B588@goldelico.com>
-In-Reply-To: <5F5A5FC0-8F91-4D5B-9EF6-AF36FE38B588@goldelico.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Fri, 15 Nov 2019 10:29:46 +0100
-Message-ID: <CAPDyKFr=Uk1i0c=3WvuOYCQ__Skpr-9mjVM2Yqst-hd8zY6OeQ@mail.gmail.com>
-Subject: Re: [PATCH v3 00/12] OpenPandora: make wl1251 connected to mmc3 sdio
- port of OpenPandora work again
-To:     "H. Nikolaus Schaller" <hns@goldelico.com>
-Cc:     Mark Rutland <mark.rutland@arm.com>,
-        Kefeng Wang <wangkefeng.wang@huawei.com>,
-        DTML <devicetree@vger.kernel.org>,
-        Tony Lindgren <tony@atomide.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Discussions about the Letux Kernel 
-        <letux-kernel@openphoenux.org>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Mike Rapoport <rppt@linux.ibm.com>,
-        Yangtao Li <tiny.windzz@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Petr Mladek <pmladek@suse.com>,
-        =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
-        kernel@pyra-handheld.com,
-        Alexios Zavras <alexios.zavras@intel.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        John Stultz <john.stultz@linaro.org>,
-        David Sterba <dsterba@suse.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-omap <linux-omap@vger.kernel.org>,
-        Allison Randal <allison@lohutok.net>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        netdev <netdev@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=c0d3.blue;
+        s=2018; t=1573815392;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=uBJc7hcajP8FEHgdeBWBaFOQbOLebSdyenmlOi0uYxA=;
+        b=MMfU0F89mh6EF+HRdjK7Qm9SsszXQXVQH8OEu8xiT+nDw+d9FYqeftHJDPdGVEAMmGhtXn
+        DYZYpjaQBlvZQOq2ue58DttUqGzKqsRIzNVf/lhFFxwBO3OCfbJQ2MgyCPeS+OqRLEvINB
+        q6b9N+hiNtFCKSZBAeMZDqgwkskCfB818bY/9SpdlaWg7m3CEmOXde+8CPyGqgGv5Alfwh
+        2kxFDq4STya73izPJ4XvnJTDwvpE8X/dTpQgYT9EmlGbwWknIJHDg3NATzVGwI6KdVnt1C
+        ImvCic5cn0NWp9LGRtcwkGcOt9QwEmR7dCPqu/ciBtlxnU3q8enPdY7NliXA6Q==
+ARC-Seal: i=1; s=2018; d=c0d3.blue; t=1573815392; a=rsa-sha256; cv=none;
+        b=KUUWM6vRn3AtzkRE3UM7xMjLNEdf9BrkiLXVJ5fDdPnyYR20R+KkU3mtbapdbMrLqKNQ+A
+        rrKNIglcXVdWorWhmSnuQExegzNsHXPerTiTBPPkBxgvieE5NtfSCVRwMua7qRYMf2iapg
+        M2xPM2k46UdQvoNDdSpT6DOLj+d7RD7wRlwrRGKjbaglBmUiGKwGfHrtLPsnK07nPvY/BI
+        ChcGcHcCDTRAawEBP1Y1hl5I2CI0K3dj0m3xwFsmAKyocvesfLDAwROkvcozB0I0KYVLsS
+        qxp6SrGcWbPYl1J1jpTveKCJ6wkVR9D4tmtvghVtEw69M8HxfE4rLzpenq5GHQ==
+ARC-Authentication-Results: i=1;
+        ORIGINATING;
+        auth=pass smtp.auth=linus.luessing@c0d3.blue smtp.mailfrom=linus.luessing@c0d3.blue
+Authentication-Results: ORIGINATING;
+        auth=pass smtp.auth=linus.luessing@c0d3.blue smtp.mailfrom=linus.luessing@c0d3.blue
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, 14 Nov 2019 at 16:16, H. Nikolaus Schaller <hns@goldelico.com> wrote:
->
-> Hi Ulf,
->
-> > Am 14.11.2019 um 15:18 schrieb Ulf Hansson <ulf.hansson@linaro.org>:
-> >
-> > On Thu, 7 Nov 2019 at 11:31, H. Nikolaus Schaller <hns@goldelico.com> wrote:
-> >>
-> >>
-> >> * add a revisit note for special wl1251 handling code because it should
-> >>  be solved more generic in mmc core - suggested by Ulf Hansson <ulf.hansson@linaro.org>
-> >> * remove init_card callback from platform_data/hsmmc-omap.h - suggested by Ulf Hansson <ulf.hansson@linaro.org>
-> >> * remove obstructive always-on for vwlan regulator - suggested by Ulf Hansson <ulf.hansson@linaro.org>
-> >> * rename DT node - suggested by Rob Herring <robh@kernel.org>
-> >> * fix ARM: dts: subject prefix - suggested by Tony Lindgren <tony@atomide.com>
-> >> * also remove omap2_hsmmc_info and obc-y line in Makefile - suggested by Tony Lindgren <tony@atomide.com>
-> >
-> > No further comments from my side. Let's just agree on how to deal with
-> > the ti,power-gpio, then I can apply this.
->
-> I'd say it can be a separate patch since it does not fix the Pandora
-> issues, but is a new and independent optimization.
->
-> And in case someone complains and uses it for some out-of tree purpose
-> it can be discussed or even be reverted easier if it is a separate patch.
->
-> I can do it in the next days.
+From: Linus Lüssing <ll@simonwunderlich.de>
 
-Okay, that sounds reasonable.
+So far, frames were forwarded regardless of the FCS correctness leading
+to userspace applications listening on the monitor mode interface to
+receive potentially broken frames, even with the "fcsfail" flag unset.
 
-In the meantime, I have queued up the series on my next branch (for v5.5).
+By default, with the "fcsfail" flag of a monitor mode interface
+unset, frames with FCS errors should be dropped. With this patch, the
+fcsfail flag is taken into account correctly.
 
-I fixed up a couple of complaints from checkpatch, and also added
-stable tags for the first two patches in the series, as that what
-missing.
+Cc: Simon Wunderlich <sw@simonwunderlich.de>
+Signed-off-by: Linus Lüssing <ll@simonwunderlich.de>
+---
+This was tested on an Open Mesh A41 device, featuring a QCA4019. And
+with this firmware:
 
-Kind regards
-Uffe
+https://www.candelatech.com/downloads/ath10k-4019-10-4b/firmware-5-ct-full-community-12.bin-lede.011
 
+But from looking at the code it seems that the vanilla ath10k has the
+same issue, therefore submitting it here.
 
->
-> > Thanks a lot for fixing all this mess!
->
-> I hope the users also appreciate our work.
->
-> Best regards,
-> Nikolaus
->
-> >
-> > Kind regards
-> > Uffe
-> >
-> >>
-> >> PATCH V2 2019-10-19 20:41:47:
-> >> * added acked-by for wl1251 patches - Kalle Valo <kvalo@codeaurora.org>
-> >> * really removed old pdata-quirks code (not through #if 0)
-> >> * splited out a partial revert of
-> >>        efdfeb079cc3b ("regulator: fixed: Convert to use GPIO descriptor only")
-> >>  because that was introduced after v4.19 and stops the removal of
-> >>  the pdata-quirks patch from cleanly applying to v4.9, v4.14, v4.19
-> >>  - reported by Sasha Levin <sashal@kernel.org>
-> >> * added a new patch to remove old omap hsmmc since pdata quirks
-> >>  were last user - suggested by Tony Lindgren <tony@atomide.com>
-> >>
-> >> PATCH V1 2019-10-18 22:25:39:
-> >> Here we have a set of scattered patches to make the OpenPandora WiFi work again.
-> >>
-> >> v4.7 did break the pdata-quirks which made the mmc3 interface
-> >> fail completely, because some code now assumes device tree
-> >> based instantiation.
-> >>
-> >> Fixes: 81eef6ca9201 ("mmc: omap_hsmmc: Use dma_request_chan() for requesting DMA channel")
-> >>
-> >> v4.11 did break the sdio qirks for wl1251 which made the driver no longer
-> >> load, although the device was found as an sdio client.
-> >>
-> >> Fixes: 884f38607897 ("mmc: core: move some sdio IDs out of quirks file")
-> >>
-> >> To solve these issues:
-> >> * we convert mmc3 and wl1251 initialization from pdata-quirks
-> >>  to device tree
-> >> * we make the wl1251 driver read properties from device tree
-> >> * we fix the mmc core vendor ids and quirks
-> >> * we fix the wl1251 (and wl1271) driver to use only vendor ids
-> >>  from header file instead of (potentially conflicting) local
-> >>  definitions
-> >>
-> >>
-> >> H. Nikolaus Schaller (12):
-> >>  Documentation: dt: wireless: update wl1251 for sdio
-> >>  net: wireless: ti: wl1251 add device tree support
-> >>  ARM: dts: pandora-common: define wl1251 as child node of mmc3
-> >>  mmc: host: omap_hsmmc: add code for special init of wl1251 to get rid
-> >>    of pandora_wl1251_init_card
-> >>  omap: pdata-quirks: revert pandora specific gpiod additions
-> >>  omap: pdata-quirks: remove openpandora quirks for mmc3 and wl1251
-> >>  omap: remove omap2_hsmmc_info in old hsmmc.[ch] and update Makefile
-> >>  mmc: host: omap-hsmmc: remove init_card pdata callback from pdata
-> >>  mmc: sdio: fix wl1251 vendor id
-> >>  mmc: core: fix wl1251 sdio quirks
-> >>  net: wireless: ti: wl1251 use new SDIO_VENDOR_ID_TI_WL1251 definition
-> >>  net: wireless: ti: remove local VENDOR_ID and DEVICE_ID definitions
-> >>
-> >> .../bindings/net/wireless/ti,wl1251.txt       |  26 +++
-> >> arch/arm/boot/dts/omap3-pandora-common.dtsi   |  36 +++-
-> >> arch/arm/mach-omap2/Makefile                  |   3 -
-> >> arch/arm/mach-omap2/common.h                  |   1 -
-> >> arch/arm/mach-omap2/hsmmc.c                   | 171 ------------------
-> >> arch/arm/mach-omap2/hsmmc.h                   |  32 ----
-> >> arch/arm/mach-omap2/pdata-quirks.c            | 105 -----------
-> >> drivers/mmc/core/quirks.h                     |   7 +
-> >> drivers/mmc/host/omap_hsmmc.c                 |  30 ++-
-> >> drivers/net/wireless/ti/wl1251/sdio.c         |  23 ++-
-> >> drivers/net/wireless/ti/wlcore/sdio.c         |   8 -
-> >> include/linux/mmc/sdio_ids.h                  |   2 +
-> >> include/linux/platform_data/hsmmc-omap.h      |   3 -
-> >> 13 files changed, 111 insertions(+), 336 deletions(-)
-> >> delete mode 100644 arch/arm/mach-omap2/hsmmc.c
-> >> delete mode 100644 arch/arm/mach-omap2/hsmmc.h
-> >>
-> >> --
-> >> 2.23.0
-> >>
->
->
-> _______________________________________________
-> linux-arm-kernel mailing list
-> linux-arm-kernel@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+Changelog v2:
+
+* removed the spinlock as only a 32 bit statistics counter is
+  incremented
+
+Changelog RFC->v1:
+
+* removed "ar->monitor" check
+* added a debug counter
+
+---
+
+ drivers/net/wireless/ath/ath10k/core.h   | 1 +
+ drivers/net/wireless/ath/ath10k/debug.c  | 2 ++
+ drivers/net/wireless/ath/ath10k/htt_rx.c | 7 +++++++
+ 3 files changed, 10 insertions(+)
+
+diff --git a/drivers/net/wireless/ath/ath10k/core.h b/drivers/net/wireless/ath/ath10k/core.h
+index af68eb5d0776..d445482fa945 100644
+--- a/drivers/net/wireless/ath/ath10k/core.h
++++ b/drivers/net/wireless/ath/ath10k/core.h
+@@ -1180,6 +1180,7 @@ struct ath10k {
+ 
+ 	struct {
+ 		/* protected by data_lock */
++		u32 rx_crc_err_drop;
+ 		u32 fw_crash_counter;
+ 		u32 fw_warm_reset_counter;
+ 		u32 fw_cold_reset_counter;
+diff --git a/drivers/net/wireless/ath/ath10k/debug.c b/drivers/net/wireless/ath/ath10k/debug.c
+index bd2b5628f850..5e4cd2966e6f 100644
+--- a/drivers/net/wireless/ath/ath10k/debug.c
++++ b/drivers/net/wireless/ath/ath10k/debug.c
+@@ -1094,6 +1094,7 @@ static const char ath10k_gstrings_stats[][ETH_GSTRING_LEN] = {
+ 	"d_rts_good",
+ 	"d_tx_power", /* in .5 dbM I think */
+ 	"d_rx_crc_err", /* fcs_bad */
++	"d_rx_crc_err_drop", /* frame with FCS error, dropped late in kernel */
+ 	"d_no_beacon",
+ 	"d_tx_mpdus_queued",
+ 	"d_tx_msdu_queued",
+@@ -1193,6 +1194,7 @@ void ath10k_debug_get_et_stats(struct ieee80211_hw *hw,
+ 	data[i++] = pdev_stats->rts_good;
+ 	data[i++] = pdev_stats->chan_tx_power;
+ 	data[i++] = pdev_stats->fcs_bad;
++	data[i++] = ar->stats.rx_crc_err_drop;
+ 	data[i++] = pdev_stats->no_beacons;
+ 	data[i++] = pdev_stats->mpdu_enqued;
+ 	data[i++] = pdev_stats->msdu_enqued;
+diff --git a/drivers/net/wireless/ath/ath10k/htt_rx.c b/drivers/net/wireless/ath/ath10k/htt_rx.c
+index 9f0e7b4943ec..8139c9cea1d8 100644
+--- a/drivers/net/wireless/ath/ath10k/htt_rx.c
++++ b/drivers/net/wireless/ath/ath10k/htt_rx.c
+@@ -1285,6 +1285,13 @@ static void ath10k_process_rx(struct ath10k *ar, struct sk_buff *skb)
+ 
+ 	status = IEEE80211_SKB_RXCB(skb);
+ 
++	if (!(ar->filter_flags & FIF_FCSFAIL) &&
++	    status->flag & RX_FLAG_FAILED_FCS_CRC) {
++		ar->stats.rx_crc_err_drop++;
++		dev_kfree_skb_any(skb);
++		return;
++	}
++
+ 	ath10k_dbg(ar, ATH10K_DBG_DATA,
+ 		   "rx skb %pK len %u peer %pM %s %s sn %u %s%s%s%s%s%s %srate_idx %u vht_nss %u freq %u band %u flag 0x%x fcs-err %i mic-err %i amsdu-more %i\n",
+ 		   skb,
+-- 
+2.24.0.rc2
+
