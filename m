@@ -2,157 +2,91 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E4747FDBCF
-	for <lists+linux-wireless@lfdr.de>; Fri, 15 Nov 2019 11:56:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 28947FDBF4
+	for <lists+linux-wireless@lfdr.de>; Fri, 15 Nov 2019 12:07:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727192AbfKOK4f (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 15 Nov 2019 05:56:35 -0500
-Received: from mail.aperture-lab.de ([138.201.29.205]:33618 "EHLO
-        mail.aperture-lab.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727112AbfKOK4f (ORCPT
+        id S1726986AbfKOLHu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 15 Nov 2019 06:07:50 -0500
+Received: from us-smtp-1.mimecast.com ([207.211.31.81]:49730 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726521AbfKOLHt (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 15 Nov 2019 05:56:35 -0500
-From:   =?UTF-8?q?Linus=20L=C3=BCssing?= <linus.luessing@c0d3.blue>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c0d3.blue; s=2018;
-        t=1573815392;
+        Fri, 15 Nov 2019 06:07:49 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1573816069;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=uBJc7hcajP8FEHgdeBWBaFOQbOLebSdyenmlOi0uYxA=;
-        b=O8JtRdntbEJURgpdD6MrUYkKYQYwyHbUNpMTSGs9rE8JbGfernDCI6mD8fKb2qukSC1FV+
-        ZBXt7Q/srnvMlQgQjZJgpve874drG5Y+k+G4+PVDhmURl/Jo+jaSTMbMrD0KjtuUDHEYHh
-        ZKetoahkmkKWGOetJK43EZreuRZdLVY11wn4wRwkDOllSrY9PB1JiuwiqcSNLiiOUskzQX
-        rMLmWk488ReuJm3Pd94UBJO6jGQxQU+IPi/pZvXUcujJHMd975fmw/U8JCBCyFsOZTta1S
-        s4AqP3D9GqvllPahTJ5SjYTu8+2trJeD+SfM4rbfGhKFPwgy6uqwDqLIhUZAiw==
-To:     ath10k@lists.infradead.org
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Ben Greear <greearb@candelatech.com>,
-        Simon Wunderlich <sw@simonwunderlich.de>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        =?UTF-8?q?Linus=20L=C3=BCssing?= <ll@simonwunderlich.de>
-Subject: [PATCH net-next v2] ath10k: fix RX of frames with broken FCS in monitor mode
-Date:   Fri, 15 Nov 2019 11:56:12 +0100
-Message-Id: <20191115105612.8531-1-linus.luessing@c0d3.blue>
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=aSh6xGrYNC0/3FtXsYmWbhof0Fm7YlOyF8JB+VTCQa0=;
+        b=DMkkXB3Ds9s/o/tPDp914OumuT2G4m+AsEfAbDYNymufqzs1CXm9lKvmuEBdw/dK2HTKgE
+        s9aIww4iPkzaSJl+Y/qmOXxKoQxNn1WewXTRKlU3wlJrM9RVWKV/8+XZsrxvLQEADhjmfX
+        qOT1ldgIOwSgnNIFRe3PAQYGT133DXI=
+Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
+ [209.85.208.200]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-387-vF0dCEOJNrCkIOYuAFawLA-1; Fri, 15 Nov 2019 06:07:48 -0500
+Received: by mail-lj1-f200.google.com with SMTP id z26so1451200ljn.5
+        for <linux-wireless@vger.kernel.org>; Fri, 15 Nov 2019 03:07:47 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
+         :message-id:mime-version;
+        bh=bJ1QOydp+nS0bezP5EPO9Xpjocdb3Kh3rbJOybJW9Zc=;
+        b=sQAxw18vCLbfOxC6T3wK0yQREjcygnrkedsI21y3I5z4esY9bKGC4mOO2rlm0bM8cI
+         rScQN/6hrXfVkwhyA05lMZoX+nCAe6bSV1pOGek+im5TOC8buVATFCD/nTVY09Il3fe4
+         HpdSMOKAAUIlKn7vCMJHSfVXIZQTzrVIaMP7o6WLKHueUqEMPXtNNMDJ0v+Tj7605Qy0
+         LAVOU9LBybWeMgbPqQovSVSCQW591gtG5VZQhtpcN4yL0FE7nDdSID4TgI71roVqVwnj
+         yMLpf/qCZMPjtA1YXNA60kv97fxyOTeyo5oiYyHk89AoLvx7OL2cAITBCzyAtwCVY0bP
+         NbSA==
+X-Gm-Message-State: APjAAAVRgdfb99Vavzewm8TjXtV+mz/tPj/9foZV8HFMrNfFgCHTYEVX
+        +Lzu71ifSgXeMtlf61azVdndNMDZ3Elt/GMYM8vFtK+EMv/bwWWU7XDwcqKeuYcXCtTIfTxR2nS
+        bg4QlYac3RC3FTfO8TlI1+DIwSvY=
+X-Received: by 2002:a2e:89c2:: with SMTP id c2mr10609188ljk.161.1573816066386;
+        Fri, 15 Nov 2019 03:07:46 -0800 (PST)
+X-Google-Smtp-Source: APXvYqxg5RAKCOdAhFzMwbeYLFF5AfXi9x1nWgK3JmMqEnqKHSYO91LyNnB1M+uAQUl9QHL/kS9P+A==
+X-Received: by 2002:a2e:89c2:: with SMTP id c2mr10609175ljk.161.1573816066235;
+        Fri, 15 Nov 2019 03:07:46 -0800 (PST)
+Received: from alrua-x1.borgediget.toke.dk (borgediget.toke.dk. [85.204.121.218])
+        by smtp.gmail.com with ESMTPSA id 68sm3997726ljf.26.2019.11.15.03.07.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 15 Nov 2019 03:07:45 -0800 (PST)
+Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
+        id 264601818C5; Fri, 15 Nov 2019 12:07:44 +0100 (CET)
+From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
+To:     Ming Chen <ming032217@gmail.com>,
+        Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless@vger.kernel.org,
+        Ming Chen <ming.chen@watchguard.com>
+Subject: Re: [PATCH v3] mac80211: Drop the packets whose source or destination mac address is empty
+In-Reply-To: <20191115075942.120943-1-ming.chen@watchguard.com>
+References: <20191115075942.120943-1-ming.chen@watchguard.com>
+X-Clacks-Overhead: GNU Terry Pratchett
+Date:   Fri, 15 Nov 2019 12:07:44 +0100
+Message-ID: <87sgmpmm7z.fsf@toke.dk>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=c0d3.blue;
-        s=2018; t=1573815392;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=uBJc7hcajP8FEHgdeBWBaFOQbOLebSdyenmlOi0uYxA=;
-        b=MMfU0F89mh6EF+HRdjK7Qm9SsszXQXVQH8OEu8xiT+nDw+d9FYqeftHJDPdGVEAMmGhtXn
-        DYZYpjaQBlvZQOq2ue58DttUqGzKqsRIzNVf/lhFFxwBO3OCfbJQ2MgyCPeS+OqRLEvINB
-        q6b9N+hiNtFCKSZBAeMZDqgwkskCfB818bY/9SpdlaWg7m3CEmOXde+8CPyGqgGv5Alfwh
-        2kxFDq4STya73izPJ4XvnJTDwvpE8X/dTpQgYT9EmlGbwWknIJHDg3NATzVGwI6KdVnt1C
-        ImvCic5cn0NWp9LGRtcwkGcOt9QwEmR7dCPqu/ciBtlxnU3q8enPdY7NliXA6Q==
-ARC-Seal: i=1; s=2018; d=c0d3.blue; t=1573815392; a=rsa-sha256; cv=none;
-        b=KUUWM6vRn3AtzkRE3UM7xMjLNEdf9BrkiLXVJ5fDdPnyYR20R+KkU3mtbapdbMrLqKNQ+A
-        rrKNIglcXVdWorWhmSnuQExegzNsHXPerTiTBPPkBxgvieE5NtfSCVRwMua7qRYMf2iapg
-        M2xPM2k46UdQvoNDdSpT6DOLj+d7RD7wRlwrRGKjbaglBmUiGKwGfHrtLPsnK07nPvY/BI
-        ChcGcHcCDTRAawEBP1Y1hl5I2CI0K3dj0m3xwFsmAKyocvesfLDAwROkvcozB0I0KYVLsS
-        qxp6SrGcWbPYl1J1jpTveKCJ6wkVR9D4tmtvghVtEw69M8HxfE4rLzpenq5GHQ==
-ARC-Authentication-Results: i=1;
-        ORIGINATING;
-        auth=pass smtp.auth=linus.luessing@c0d3.blue smtp.mailfrom=linus.luessing@c0d3.blue
-Authentication-Results: ORIGINATING;
-        auth=pass smtp.auth=linus.luessing@c0d3.blue smtp.mailfrom=linus.luessing@c0d3.blue
+X-MC-Unique: vF0dCEOJNrCkIOYuAFawLA-1
+X-Mimecast-Spam-Score: 0
+Content-Type: text/plain; charset=WINDOWS-1252
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Linus Lüssing <ll@simonwunderlich.de>
+Ming Chen <ming032217@gmail.com> writes:
 
-So far, frames were forwarded regardless of the FCS correctness leading
-to userspace applications listening on the monitor mode interface to
-receive potentially broken frames, even with the "fcsfail" flag unset.
+> We occasionally found ath9k could receive some packets from Linux IP stac=
+k
+> with empty source and destination mac address,
 
-By default, with the "fcsfail" flag of a monitor mode interface
-unset, frames with FCS errors should be dropped. With this patch, the
-fcsfail flag is taken into account correctly.
+How does that happen?
 
-Cc: Simon Wunderlich <sw@simonwunderlich.de>
-Signed-off-by: Linus Lüssing <ll@simonwunderlich.de>
----
-This was tested on an Open Mesh A41 device, featuring a QCA4019. And
-with this firmware:
+> which will result in the driver cannot find the station node in TX
+> complete. And thus, the driver will complete this buffer but without
+> updating the block ack window.
 
-https://www.candelatech.com/downloads/ath10k-4019-10-4b/firmware-5-ct-full-community-12.bin-lede.011
+If it can't find the station, how is the packet transmitted (and
+affecting the BA window) in the first place?
 
-But from looking at the code it seems that the vanilla ath10k has the
-same issue, therefore submitting it here.
-
-Changelog v2:
-
-* removed the spinlock as only a 32 bit statistics counter is
-  incremented
-
-Changelog RFC->v1:
-
-* removed "ar->monitor" check
-* added a debug counter
-
----
-
- drivers/net/wireless/ath/ath10k/core.h   | 1 +
- drivers/net/wireless/ath/ath10k/debug.c  | 2 ++
- drivers/net/wireless/ath/ath10k/htt_rx.c | 7 +++++++
- 3 files changed, 10 insertions(+)
-
-diff --git a/drivers/net/wireless/ath/ath10k/core.h b/drivers/net/wireless/ath/ath10k/core.h
-index af68eb5d0776..d445482fa945 100644
---- a/drivers/net/wireless/ath/ath10k/core.h
-+++ b/drivers/net/wireless/ath/ath10k/core.h
-@@ -1180,6 +1180,7 @@ struct ath10k {
- 
- 	struct {
- 		/* protected by data_lock */
-+		u32 rx_crc_err_drop;
- 		u32 fw_crash_counter;
- 		u32 fw_warm_reset_counter;
- 		u32 fw_cold_reset_counter;
-diff --git a/drivers/net/wireless/ath/ath10k/debug.c b/drivers/net/wireless/ath/ath10k/debug.c
-index bd2b5628f850..5e4cd2966e6f 100644
---- a/drivers/net/wireless/ath/ath10k/debug.c
-+++ b/drivers/net/wireless/ath/ath10k/debug.c
-@@ -1094,6 +1094,7 @@ static const char ath10k_gstrings_stats[][ETH_GSTRING_LEN] = {
- 	"d_rts_good",
- 	"d_tx_power", /* in .5 dbM I think */
- 	"d_rx_crc_err", /* fcs_bad */
-+	"d_rx_crc_err_drop", /* frame with FCS error, dropped late in kernel */
- 	"d_no_beacon",
- 	"d_tx_mpdus_queued",
- 	"d_tx_msdu_queued",
-@@ -1193,6 +1194,7 @@ void ath10k_debug_get_et_stats(struct ieee80211_hw *hw,
- 	data[i++] = pdev_stats->rts_good;
- 	data[i++] = pdev_stats->chan_tx_power;
- 	data[i++] = pdev_stats->fcs_bad;
-+	data[i++] = ar->stats.rx_crc_err_drop;
- 	data[i++] = pdev_stats->no_beacons;
- 	data[i++] = pdev_stats->mpdu_enqued;
- 	data[i++] = pdev_stats->msdu_enqued;
-diff --git a/drivers/net/wireless/ath/ath10k/htt_rx.c b/drivers/net/wireless/ath/ath10k/htt_rx.c
-index 9f0e7b4943ec..8139c9cea1d8 100644
---- a/drivers/net/wireless/ath/ath10k/htt_rx.c
-+++ b/drivers/net/wireless/ath/ath10k/htt_rx.c
-@@ -1285,6 +1285,13 @@ static void ath10k_process_rx(struct ath10k *ar, struct sk_buff *skb)
- 
- 	status = IEEE80211_SKB_RXCB(skb);
- 
-+	if (!(ar->filter_flags & FIF_FCSFAIL) &&
-+	    status->flag & RX_FLAG_FAILED_FCS_CRC) {
-+		ar->stats.rx_crc_err_drop++;
-+		dev_kfree_skb_any(skb);
-+		return;
-+	}
-+
- 	ath10k_dbg(ar, ATH10K_DBG_DATA,
- 		   "rx skb %pK len %u peer %pM %s %s sn %u %s%s%s%s%s%s %srate_idx %u vht_nss %u freq %u band %u flag 0x%x fcs-err %i mic-err %i amsdu-more %i\n",
- 		   skb,
--- 
-2.24.0.rc2
+-Toke
 
