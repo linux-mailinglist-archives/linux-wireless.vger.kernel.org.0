@@ -2,25 +2,25 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F6BFFDD6D
-	for <lists+linux-wireless@lfdr.de>; Fri, 15 Nov 2019 13:24:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 43819FDD72
+	for <lists+linux-wireless@lfdr.de>; Fri, 15 Nov 2019 13:25:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727429AbfKOMY2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 15 Nov 2019 07:24:28 -0500
-Received: from smtp.codeaurora.org ([198.145.29.96]:50544 "EHLO
+        id S1727578AbfKOMZA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 15 Nov 2019 07:25:00 -0500
+Received: from smtp.codeaurora.org ([198.145.29.96]:50842 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727196AbfKOMY2 (ORCPT
+        with ESMTP id S1727200AbfKOMY7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 15 Nov 2019 07:24:28 -0500
+        Fri, 15 Nov 2019 07:24:59 -0500
 Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id E453960E0D; Fri, 15 Nov 2019 12:24:27 +0000 (UTC)
+        id D5F0760EE7; Fri, 15 Nov 2019 12:24:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1573820667;
-        bh=g6xe7iyjtAnHZF/FM9T/0U/255aCYUNGehEIvHnXysE=;
+        s=default; t=1573820698;
+        bh=xJRbHFZXwBSUUf48p/Joe8hCtHadnvSE5DFVfhVnXkg=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=oTFgDV4DeIM92tYbqSStBkLgQH3dZTTzXMFPivt65UlK/hcux/7U2NYCm75r89HG2
-         u+MKUbQN2cN3m19Lzxx6khYOXDeBxtXtjoJoAsUdpS3oGAxJqWvadGP/hzAj+0K1EZ
-         LKDZQGkghfbWfLG6JuvTLmvIB6EXMyJxrplD/oiE=
+        b=GqAtFON+l4HaYUOQchRISBBIqFSp8VyyhBKqQr3sXzS+qV7edThZDM7ySD1hpoZKu
+         GKgD5BGtq6u1W0kq8HK3eNXLIHSuuHm3QuEOAq7TKAh3m8KGnka78PTkx9o34SO8qC
+         DhyveU6FNevpq9//t+LXL5UjwWZyc4yGGIU06w70=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
@@ -31,56 +31,51 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 786696030B;
-        Fri, 15 Nov 2019 12:24:25 +0000 (UTC)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id F1AC760DEA;
+        Fri, 15 Nov 2019 12:24:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1573820667;
-        bh=g6xe7iyjtAnHZF/FM9T/0U/255aCYUNGehEIvHnXysE=;
+        s=default; t=1573820698;
+        bh=xJRbHFZXwBSUUf48p/Joe8hCtHadnvSE5DFVfhVnXkg=;
         h=Subject:From:In-Reply-To:References:To:Cc:From;
-        b=j916EAZu8O9hSzKISFJmirQge+Bw4idgBpZ6LdqSUfl1QxM7TebvhMHBButeml3wd
-         YnbyTIEQ67h1sKQjHq63WuY/6e28y2rLuNyW1H+AWWubIBIERmlfEIJyEJIvWZDGyJ
-         h4t77hz7ebmaHeUxxvALqqHolR7w10ho1OjJTxAI=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 786696030B
+        b=XHrFVz1Se8cpZYA7cONZtTqVV/VPNW3Yph/aYduuPwdJoQVeXM/ahQ0sapQedNL5e
+         trwJlLnPHLefdG3cRMSmC4jQVmfL98nrVjfcYqws8Jgh9Td5UHydcK90M22aMONJ3G
+         Mc3+YEX06DzhAJSZDvlWdkwhBpk03gu+4UqKer8w=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org F1AC760DEA
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] rtl8xxxu: Remove set but not used variable 'rsr'
+Subject: Re: [PATCH] rtw88: remove duplicated include from ps.c
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20191110104955.131246-1-zhengyongjun3@huawei.com>
-References: <20191110104955.131246-1-zhengyongjun3@huawei.com>
-To:     Zheng Yongjun <zhengyongjun3@huawei.com>
-Cc:     <Jes.Sorensen@gmail.com>, <davem@davemloft.net>,
-        <linux-wireless@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <zhengyongjun3@huawei.com>, Hulk Robot <hulkci@huawei.com>
+In-Reply-To: <20191111033427.122443-1-yuehaibing@huawei.com>
+References: <20191111033427.122443-1-yuehaibing@huawei.com>
+To:     YueHaibing <yuehaibing@huawei.com>
+Cc:     Yan-Hsuan Chuang <yhchuang@realtek.com>,
+        YueHaibing <yuehaibing@huawei.com>,
+        <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
 User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20191115122427.E453960E0D@smtp.codeaurora.org>
-Date:   Fri, 15 Nov 2019 12:24:27 +0000 (UTC)
+Message-Id: <20191115122458.D5F0760EE7@smtp.codeaurora.org>
+Date:   Fri, 15 Nov 2019 12:24:58 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Zheng Yongjun <zhengyongjun3@huawei.com> wrote:
+YueHaibing <yuehaibing@huawei.com> wrote:
 
-> Fixes gcc '-Wunused-but-set-variable' warning:
+> Remove duplicated include.
 > 
-> drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c: In function rtl8xxxu_gen2_config_channel:
-> drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c:1266:13: warning: variable rsr set but not used [-Wunused-but-set-variable]
-> 
-> rsr is never used, so remove it.
-> 
-> Reported-by: Hulk Robot <hulkci@huawei.com>
-> Signed-off-by: Zheng Yongjun <zhengyongjun3@huawei.com>
-> Reviewed-by: Chris Chiu <chiu@endlessm.com>
+> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+> Reviewed-by: Simon Horman <simon.horman@netronome.com>
 
 Patch applied to wireless-drivers-next.git, thanks.
 
-38860bdf28b7 rtl8xxxu: Remove set but not used variable 'rsr'
+4f5969c36a45 rtw88: remove duplicated include from ps.c
 
 -- 
-https://patchwork.kernel.org/patch/11236191/
+https://patchwork.kernel.org/patch/11236527/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
