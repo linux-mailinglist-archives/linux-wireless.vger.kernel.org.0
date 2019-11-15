@@ -2,96 +2,108 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C852FD6CC
-	for <lists+linux-wireless@lfdr.de>; Fri, 15 Nov 2019 08:15:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A93EFD705
+	for <lists+linux-wireless@lfdr.de>; Fri, 15 Nov 2019 08:36:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726974AbfKOHPx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 15 Nov 2019 02:15:53 -0500
-Received: from smtp.codeaurora.org ([198.145.29.96]:33680 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725774AbfKOHPx (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 15 Nov 2019 02:15:53 -0500
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id DF61A61069; Fri, 15 Nov 2019 07:15:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1573802152;
-        bh=Zwj2PlJGaJYZ2Cm+3gCzcnXOYiESlNN+0oBNClYl2cg=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=lFXoXJxLiHMdR8fqrddOkGXx82uAJUBK8P5ghQCDmCn8Y0mi3Siuk9X7rL3lTSMCl
-         A+ZnCRpMeknVVPylpmJBIESzhTA7UJRWYvCeEd1r9O+xL1sQ0NXyxVJOQNcYoE24zd
-         3DX96m0kaAaI/qKcZjhomNlVlPc85MJrj5uncFMI=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
+        id S1726997AbfKOHgZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 15 Nov 2019 02:36:25 -0500
+Received: from fd.dlink.ru ([178.170.168.18]:45614 "EHLO fd.dlink.ru"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725829AbfKOHgZ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 15 Nov 2019 02:36:25 -0500
+Received: by fd.dlink.ru (Postfix, from userid 5000)
+        id 5F79F1B21219; Fri, 15 Nov 2019 10:36:19 +0300 (MSK)
+DKIM-Filter: OpenDKIM Filter v2.11.0 fd.dlink.ru 5F79F1B21219
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dlink.ru; s=mail;
+        t=1573803379; bh=auYJSdX39uan+gvUCsaNo2NaaQLgfRyrUszL7DhJUb4=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References;
+        b=SfuWrd47XdQioLUmZkIhQ3OMs+HeaDWSatiVwQEdzY6ZWJg2pT1l1h5EpRzPJOv1V
+         iwF6IOh6Wr3/0/ynRcejg8zch7KZVc5GEmUbQMUJVgrUDcjeky25QHC4/jtsEcdxeX
+         QQyOIe6XZqOm2o6R0+fxyLS063xmDUIB+DB8uGYo=
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on mail.dlink.ru
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from tynnyri.adurom.net (tynnyri.adurom.net [51.15.11.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 748AE61014;
-        Fri, 15 Nov 2019 07:15:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1573802152;
-        bh=Zwj2PlJGaJYZ2Cm+3gCzcnXOYiESlNN+0oBNClYl2cg=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=lFXoXJxLiHMdR8fqrddOkGXx82uAJUBK8P5ghQCDmCn8Y0mi3Siuk9X7rL3lTSMCl
-         A+ZnCRpMeknVVPylpmJBIESzhTA7UJRWYvCeEd1r9O+xL1sQ0NXyxVJOQNcYoE24zd
-         3DX96m0kaAaI/qKcZjhomNlVlPc85MJrj5uncFMI=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 748AE61014
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Ming Chen <ming032217@gmail.com>
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless@vger.kernel.org,
-        Ming Chen <ming.chen@watchguard.com>
-Subject: Re: [PATCH v2] mac80211: Drop the packets whose source or destination mac address is empty
-References: <20191114195712.101568-1-ming.chen@watchguard.com>
-Date:   Fri, 15 Nov 2019 09:15:49 +0200
-In-Reply-To: <20191114195712.101568-1-ming.chen@watchguard.com> (Ming Chen's
-        message of "Thu, 14 Nov 2019 11:57:12 -0800")
-Message-ID: <87r229boey.fsf@tynnyri.adurom.net>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+X-Spam-Status: No, score=-99.2 required=7.5 tests=BAYES_50,URIBL_BLOCKED,
+        USER_IN_WHITELIST autolearn=disabled version=3.4.2
+Received: from mail.rzn.dlink.ru (mail.rzn.dlink.ru [178.170.168.13])
+        by fd.dlink.ru (Postfix) with ESMTP id D61961B203C6;
+        Fri, 15 Nov 2019 10:36:08 +0300 (MSK)
+DKIM-Filter: OpenDKIM Filter v2.11.0 fd.dlink.ru D61961B203C6
+Received: from mail.rzn.dlink.ru (localhost [127.0.0.1])
+        by mail.rzn.dlink.ru (Postfix) with ESMTP id 9C6611B21209;
+        Fri, 15 Nov 2019 10:36:08 +0300 (MSK)
+Received: from mail.rzn.dlink.ru (localhost [127.0.0.1])
+        by mail.rzn.dlink.ru (Postfix) with ESMTPA;
+        Fri, 15 Nov 2019 10:36:08 +0300 (MSK)
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 8bit
+Date:   Fri, 15 Nov 2019 10:36:08 +0300
+From:   Alexander Lobakin <alobakin@dlink.ru>
+To:     David Miller <davem@davemloft.net>
+Cc:     ecree@solarflare.com, jiri@mellanox.com, edumazet@google.com,
+        idosch@mellanox.com, pabeni@redhat.com, petrm@mellanox.com,
+        sd@queasysnail.net, f.fainelli@gmail.com,
+        jaswinder.singh@linaro.org, manishc@marvell.com,
+        GR-Linux-NIC-Dev@marvell.com, johannes.berg@intel.com,
+        emmanuel.grumbach@intel.com, luciano.coelho@intel.com,
+        linuxwifi@intel.com, kvalo@codeaurora.org, netdev@vger.kernel.org,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next] net: core: allow fast GRO for skbs with Ethernet
+ header in head
+In-Reply-To: <20191114.172508.1027995193093100862.davem@davemloft.net>
+References: <20191112122843.30636-1-alobakin@dlink.ru>
+ <20191114.172508.1027995193093100862.davem@davemloft.net>
+User-Agent: Roundcube Webmail/1.4.0
+Message-ID: <097eb720466a7c429c8fd91c792e7cd5@dlink.ru>
+X-Sender: alobakin@dlink.ru
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Ming Chen <ming032217@gmail.com> writes:
+Hi Dave,
 
-> We occasionally found ath9k could receive some packets from Linux IP stack
-> with empty source and destination mac address,which will result in the
-> driver cannot find the station node in TX complete. And thus, the driver
-> will complete this buffer but without updating the block ack window.
->
-> To fix this issue, we should drop this kind of error packet before it
-> goes into the driver.
+David Miller wrote 15.11.2019 04:25:
 
-The s-o-b line should be here, before the "---" line.
+> From: Alexander Lobakin <alobakin@dlink.ru>
+> Date: Tue, 12 Nov 2019 15:28:43 +0300
+> 
+>> Commit 78d3fd0b7de8 ("gro: Only use skb_gro_header for completely
+>> non-linear packets") back in May'09 (2.6.31-rc1) has changed the
+>> original condition '!skb_headlen(skb)' to the current
+>> 'skb_mac_header(skb) == skb_tail_pointer(skb)' in gro_reset_offset()
+>> saying: "Since the drivers that need this optimisation all provide
+>> completely non-linear packets".
+> 
+> Please reference the appropriate SHA1-ID both here in this paragraph 
+> and
+> also in an appropriate Fixes: tag.
 
-> ---
->
-> According to review feedback, use the is_zero_ether_addr to check if the
-> mac address is empty.
+Sorry for confusing. The SHA1-ID from commit message is correct
+actually. At the moment of 2.6.31 we used skb->mac_header and skb->tail
+pointers directly, so the original condition was
+'skb->mac_header == skb->tail'.
+Commit ced14f6804a9 ("net: Correct comparisons and calculations using
+skb->tail and skb-transport_header") has changed this condition to
+the referred 'skb_mac_header(skb) == skb_tail_pointer(skb)' without
+any functional changes.
+I didn't add the "Fixes:" tag because at the moment of 2.6.31 it was
+a needed change, but it became obsolete later, so now we can revert
+it back to speed up skbs with only Ethernet header in head.
+Please let me know if I must send v2 of this patch with corrected
+description before getting any further reviews.
 
-Very good that you added the changelog, but to make it more obvious you
-could, for example, mark the changelog like this:
+Thanks.
 
----
+> If this goes so far back that it is before GIT, then you need to 
+> provide
+> a reference to the patch posting via lore.kernel.org or similar because
+> it is absolutely essentialy for people reviewing this patch to be able
+> to do some digging into why the condition is code the way that it is
+> currently.
+> 
+> Thank you.
 
-v3:
-
-Fix s-o-b location
-
-v2:
-
-According to review feedback, use the is_zero_ether_addr to check if the
-mac address is empty.
-
--- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Regards,
+ᚷ ᛖ ᚢ ᚦ ᚠ ᚱ
