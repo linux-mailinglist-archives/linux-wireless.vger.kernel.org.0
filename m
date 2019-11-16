@@ -2,81 +2,60 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 61BD7FEFB2
-	for <lists+linux-wireless@lfdr.de>; Sat, 16 Nov 2019 17:02:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AF9D4FF4A8
+	for <lists+linux-wireless@lfdr.de>; Sat, 16 Nov 2019 19:21:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731188AbfKPPxR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 16 Nov 2019 10:53:17 -0500
-Received: from mail.kernel.org ([198.145.29.99]:34284 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731179AbfKPPxQ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 16 Nov 2019 10:53:16 -0500
-Received: from sasha-vm.mshome.net (unknown [50.234.116.4])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        id S1727675AbfKPSVn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 16 Nov 2019 13:21:43 -0500
+Received: from mail.adapt-ip.com ([173.164.178.19]:33180 "EHLO
+        mail.adapt-ip.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727658AbfKPSVn (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 16 Nov 2019 13:21:43 -0500
+Received: from localhost (unknown [127.0.0.1])
+        by mail.adapt-ip.com (Postfix) with ESMTP id E75502F0324;
+        Sat, 16 Nov 2019 18:12:35 +0000 (UTC)
+X-Virus-Scanned: amavisd-new at web.adapt-ip.com
+Received: from mail.adapt-ip.com ([127.0.0.1])
+        by localhost (web.adapt-ip.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id pMudHY2Vge_i; Sat, 16 Nov 2019 10:12:34 -0800 (PST)
+Received: from tractor.ibsgaard.io (c-73-202-5-52.hsd1.ca.comcast.net [73.202.5.52])
+        (using TLSv1.2 with cipher DHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8F91120859;
-        Sat, 16 Nov 2019 15:53:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1573919596;
-        bh=rLp7gb1j2MHmariftPs6XDQuELo3II+Ei2W7HIyJeeM=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nPSPrErRO/PQu8Z6C2XUc5gavNos5x2VRKYfDcD0sdiBqJSbvvX0n3XUk7SeDFduR
-         M35xo/oFUXH2miXIR3DHTKRIVRqfZB+uUZB1cd372K3FvrVZtbVFDX2trYWYc6OzUT
-         VIslCKdk5ffC0tW9eom9iUZoGQ7ir/3bBZ0IQmWg=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Shaokun Zhang <zhangshaokun@hisilicon.com>,
-        Ping-Ke Shih <pkshih@realtek.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Sasha Levin <sashal@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.9 82/99] rtlwifi: rtl8192de: Fix misleading REG_MCUFWDL information
-Date:   Sat, 16 Nov 2019 10:50:45 -0500
-Message-Id: <20191116155103.10971-82-sashal@kernel.org>
+        (Authenticated sender: thomas@adapt-ip.com)
+        by mail.adapt-ip.com (Postfix) with ESMTPSA id 318662F02D0;
+        Sat, 16 Nov 2019 10:12:34 -0800 (PST)
+From:   Thomas Pedersen <thomas@adapt-ip.com>
+To:     Johannes Berg <johannes.berg@intel.com>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
+        Thomas Pedersen <thomas@adapt-ip.com>
+Subject: [PATCH 0/3] fix a STA PS bug and add PS support to mac80211_hwsim
+Date:   Sat, 16 Nov 2019 10:12:29 -0800
+Message-Id: <20191116181233.1037-1-thomas@adapt-ip.com>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191116155103.10971-1-sashal@kernel.org>
-References: <20191116155103.10971-1-sashal@kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Shaokun Zhang <zhangshaokun@hisilicon.com>
+This patchset tries to make mac80211 power save testable with the hostap
+hwsim tests, and fixes a bug in STA power save.
 
-[ Upstream commit 7d129adff3afbd3a449bc3593f2064ac546d58d3 ]
+Basic tests for AP and STA power save will be submitted to hostap
+separately.
 
-RT_TRACE shows REG_MCUFWDL value as a decimal value with a '0x'
-prefix, which is somewhat misleading.
+Thomas Pedersen (3):
+  mac80211_hwsim: add power save support
+  mac80211: expose HW conf flags through debugfs
+  mac80211: consider QoS Null frames for STA_NULLFUNC_ACKED
 
-Fix it to print hexadecimal, as was intended.
+ drivers/net/wireless/mac80211_hwsim.c | 8 ++++++++
+ net/mac80211/debugfs.c                | 3 +++
+ net/mac80211/status.c                 | 3 ++-
+ 3 files changed, 13 insertions(+), 1 deletion(-)
 
-Cc: Ping-Ke Shih <pkshih@realtek.com>
-Cc: Kalle Valo <kvalo@codeaurora.org>
-Signed-off-by: Shaokun Zhang <zhangshaokun@hisilicon.com>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/net/wireless/realtek/rtlwifi/rtl8192de/fw.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/fw.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/fw.c
-index 8de29cc3ced07..a24644f34e650 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/fw.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/fw.c
-@@ -234,7 +234,7 @@ static int _rtl92d_fw_init(struct ieee80211_hw *hw)
- 			 rtl_read_byte(rtlpriv, FW_MAC1_READY));
- 	}
- 	RT_TRACE(rtlpriv, COMP_FW, DBG_DMESG,
--		 "Polling FW ready fail!! REG_MCUFWDL:0x%08ul\n",
-+		 "Polling FW ready fail!! REG_MCUFWDL:0x%08x\n",
- 		 rtl_read_dword(rtlpriv, REG_MCUFWDL));
- 	return -1;
- }
 -- 
 2.20.1
 
