@@ -2,142 +2,138 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 059FEFEAE4
-	for <lists+linux-wireless@lfdr.de>; Sat, 16 Nov 2019 07:08:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 58C8DFEAEB
+	for <lists+linux-wireless@lfdr.de>; Sat, 16 Nov 2019 07:23:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725879AbfKPGIn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 16 Nov 2019 01:08:43 -0500
-Received: from mail-qt1-f196.google.com ([209.85.160.196]:43845 "EHLO
-        mail-qt1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725830AbfKPGIn (ORCPT
+        id S1726178AbfKPGXX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 16 Nov 2019 01:23:23 -0500
+Received: from mx3.watchguard.com ([63.251.166.21]:39300 "EHLO
+        mx3.watchguard.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725776AbfKPGXW (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 16 Nov 2019 01:08:43 -0500
-Received: by mail-qt1-f196.google.com with SMTP id j5so11961534qtn.10
-        for <linux-wireless@vger.kernel.org>; Fri, 15 Nov 2019 22:08:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=TyEerrqUTsjwpthty/7roB5RvM/byURHtg9ZSFitcNg=;
-        b=s9o+37Wzr8SdzPET2kPeTr6tKk7HBlFTfMyjtSV4ErGS66RS9wx4DfEr8r1dRBxHaO
-         nzyWla7JFL8VGeZbRtM9qN2sxLXMQ/YcCu9ENIU/RYadsIrgyRaniAahIpK+20hJVee1
-         rjeFW05LdJM6PpLon4W9hVG39eKQPsxlcMUaAZmGZzYG0/IIfB+l4GQUF9ZMqBWlmxx9
-         HsT1ADN2NPqW4qEar4TDHhcTy4hwnOHJjRXVs9al+HqvlzOiAEDcxg381gAcRLPinEpR
-         AorvQ/HjQ0gQECR30tTEjrgyi1zHBxFQt04912DvaTgB8ZhzMRL573FDgaPJWVaYKIxq
-         K3Ig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=TyEerrqUTsjwpthty/7roB5RvM/byURHtg9ZSFitcNg=;
-        b=L/OqP74uimA+JAGzJM1SdHI7lr01ai5YXW9Aqwp0PUtawX85Vylzk+ZqSshv04C/ci
-         Hnymq0ULQzrYgQzkp7Rvjp915D6tZlwmdULj3Y+/BqzckIeBGlrr+fVrjSoejPV5YgHC
-         XbFRk9v/5IP/bqS2ME1Zgi5NhcHc7na/1tmeQnKQ8pcwdAmjtsotKrUqyRb1v2bX6mNu
-         kYouKRJZS8ZAhCEzqGKdfgHK+eT2eKrc0ZiruhInuhp0ISVz05K+S4bIKgcGkN5Mwfro
-         9nOWrlMEcyYJKT1UIUbPbmZ2UZtmnIdLGwe6cuIS7qXrJ7J7KDbVx2ZItgk3eFh2mwuF
-         RqTg==
-X-Gm-Message-State: APjAAAUr25+2nGCUUOBqugcVYqeEKQAxiDGaBz5xZajgaWt/EsAsC9Qw
-        Pf2hLVSMDk68XTujY5F94oGUq/uIjXY=
-X-Google-Smtp-Source: APXvYqzVVEaapMmdZMlOd3lqJWJB4jNJROuMB7OenOEQ1lI1JD9tZnddYDX7WFAk4zwIlF3zDFlvVg==
-X-Received: by 2002:ac8:2dc9:: with SMTP id q9mr18239840qta.219.1573884522539;
-        Fri, 15 Nov 2019 22:08:42 -0800 (PST)
-Received: from ubuntu.wgti.net ([64.94.121.131])
-        by smtp.gmail.com with ESMTPSA id g7sm5270505qkl.20.2019.11.15.22.08.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 Nov 2019 22:08:41 -0800 (PST)
-From:   Ming Chen <ming032217@gmail.com>
-X-Google-Original-From: Ming Chen <ming.chen@watchguard.com>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org,
-        Ming Chen <ming.chen@watchguard.com>
-Subject: [PATCH v4] mac80211: Drop the packets whose source or destination mac address is empty
-Date:   Fri, 15 Nov 2019 22:08:33 -0800
-Message-Id: <20191116060833.45752-1-ming.chen@watchguard.com>
-X-Mailer: git-send-email 2.17.1
+        Sat, 16 Nov 2019 01:23:22 -0500
+Received: from PRDITOMBX02.wgti.net (172.24.2.22) by PRDITOMBX01.wgti.net
+ (172.24.2.21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1531.3; Fri, 15 Nov
+ 2019 22:23:20 -0800
+Received: from NAM02-CY1-obe.outbound.protection.outlook.com (172.24.2.15) by
+ owa.watchguard.com (172.24.2.22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1531.3 via Frontend
+ Transport; Fri, 15 Nov 2019 22:23:20 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=U6/pa6mqY4HqhXtg8qFc4OunVZfxp6rAChn+icQeFc1E7kjoTLdkcntAFs9zH+FHFQaXVriF7kWrbDD3+ORpHUQKAuVfSuTB3wvid8+uJoYkTjd+5HQMT0ybX7CRU0v8sYZeVYKlL3c/JtBAVj99gqbb2BfZ1q3NubtmjPpPAQRXpih4Fxzz73f8+bRPRxvID6E71aQK/INOyQPpuQPddPrcPIEiccv4AB1DAmAok05A+aKuqEJ+n8AZ16Yu8nHzIan0ldIkqCTT/zekgyhHFOYl2gXjdELCTJ2+nucpTXP/ON9xa8C+ZRKbHFlikBKARklRxtdp1+TfSri2GgG+rQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=9L8QWZPqS4uIDjzHwWKELVh/jzSOyYJczsOLnskxJIU=;
+ b=M4Ue8/MI2hm8eTR7mYZ7TrMyrHR2WAm+N3YGSJ+2MCT4YbmwakLq/5BkbJUqr1kNqZNrjDRoVSFxzNNLptRHLUT+EdNlQ0FB4NUFldQD0eD+ZXuVRtxC83HAn/NGcxRuLDD9rKyemK5/KnlKQjWxj2+iJgfmOulxFz2FQbFvQksW07/awM/uARmx3QUspWX4xk5zGE8fUwYH9NoDdF8R08ne+QKSgPa1os3Le/9OW84NPTSEIDu6+KALvlvF39E5IkzSFPuQ2ODl1BprpTKqZAlIrnDN9qBUoSzWPVZL/KY2cG5awkaa1OfOWMEGShyFIA6tICaYlzL+jh0kpNVPlA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=watchguard.com; dmarc=pass action=none
+ header.from=watchguard.com; dkim=pass header.d=watchguard.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wgt.onmicrosoft.com;
+ s=selector2-wgt-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=9L8QWZPqS4uIDjzHwWKELVh/jzSOyYJczsOLnskxJIU=;
+ b=YML5ss53i4H7oKPs+EvTm/HiAzx0RcYY/mPHvg+SG3N/3hHZl9lIBNebZfFDr+0JkAwxIWNX3IDq1e7KmdRmZpkocktSziCe8sMRXAR3kwt611Hf0T+bhnDtQru5+GdwwCARq7NGwuYTYB87FMHvOnAs0IWMHJ9LufrBdNenCzE=
+Received: from DM6PR10MB2873.namprd10.prod.outlook.com (20.177.216.210) by
+ DM6PR10MB3529.namprd10.prod.outlook.com (20.179.68.94) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2451.23; Sat, 16 Nov 2019 06:23:19 +0000
+Received: from DM6PR10MB2873.namprd10.prod.outlook.com
+ ([fe80::481a:55d7:e282:c326]) by DM6PR10MB2873.namprd10.prod.outlook.com
+ ([fe80::481a:55d7:e282:c326%7]) with mapi id 15.20.2451.029; Sat, 16 Nov 2019
+ 06:23:18 +0000
+From:   Ming Chen <Ming.Chen@watchguard.com>
+To:     =?iso-8859-1?Q?Toke_H=F8iland-J=F8rgensen?= <toke@redhat.com>,
+        Ming Chen <ming032217@gmail.com>,
+        Johannes Berg <johannes@sipsolutions.net>
+CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: RE: [PATCH v3] mac80211: Drop the packets whose source or destination
+ mac address is empty
+Thread-Topic: [PATCH v3] mac80211: Drop the packets whose source or
+ destination mac address is empty
+Thread-Index: AQHVm4qy2IvYpqnIhkal+43ocTkSQaeMErkAgAE/H2A=
+Date:   Sat, 16 Nov 2019 06:23:18 +0000
+Message-ID: <DM6PR10MB287371E29EA6E72C8EC4B7A79A730@DM6PR10MB2873.namprd10.prod.outlook.com>
+References: <20191115075942.120943-1-ming.chen@watchguard.com>
+ <87sgmpmm7z.fsf@toke.dk>
+In-Reply-To: <87sgmpmm7z.fsf@toke.dk>
+Accept-Language: zh-CN, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=Ming.Chen@watchguard.com; 
+x-originating-ip: [64.94.121.131]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: cfc754f8-75b2-4640-dca2-08d76a5d78f5
+x-ms-traffictypediagnostic: DM6PR10MB3529:
+x-microsoft-antispam-prvs: <DM6PR10MB3529DDE2DC4D2D7095E280819A730@DM6PR10MB3529.namprd10.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:8273;
+x-forefront-prvs: 02234DBFF6
+x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(39850400004)(136003)(396003)(366004)(346002)(376002)(189003)(199004)(51914003)(54534003)(13464003)(110136005)(316002)(102836004)(6436002)(99286004)(66066001)(52536014)(26005)(2906002)(3846002)(66946007)(6506007)(53546011)(66476007)(64756008)(66446008)(6116002)(8936002)(66556008)(55016002)(76116006)(9686003)(25786009)(86362001)(6246003)(74316002)(76176011)(486006)(71200400001)(4326008)(33656002)(476003)(71190400001)(5660300002)(229853002)(186003)(7696005)(478600001)(256004)(7736002)(14454004)(305945005)(11346002)(81156014)(8676002)(81166006)(446003);DIR:OUT;SFP:1101;SCL:1;SRVR:DM6PR10MB3529;H:DM6PR10MB2873.namprd10.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+received-spf: None (protection.outlook.com: watchguard.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: 5FM1cS0fM2VtqGyn+wQbn5K7CDvThtXO8xCnGO/dQKB87AYKkk94vrFSbAx4jkVSEF7g5Uy6AMFica3tmxbE9n295vDiE2TqPIRpvuPay3u/0uBHPfZRZlHFv17VqY5qufvDa7X38VQlniGcFJ95iSsiNE7chMqPjmlY9qnDIsGWHSx70QzlrXpmijSY+iQqnmistn9D3cDolJKNHCRjBlk2XWOaUDDYCrSnOp+o/9/+sRjP2kxFTyv8YuRUQXQHNA4plGQD6sq+cfMZvgyGU6m8k+KsYGE//x6jmGw/zgG8pDGjum7L7vUuNoVSnbro89/xhD7dcWC+rvo3utKbn4UWNDOdEsk7yVz3okGTbOi5cfF51WNxim2RfnVYQPJhvR2VQ5wsl2r8zUEUvy3bB1eV0kuK+xmGAvsc2WIGGQo0xYPk51OxBIWNUyTi+qjS
+x-ms-exchange-transport-forked: True
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-MS-Exchange-CrossTenant-Network-Message-Id: cfc754f8-75b2-4640-dca2-08d76a5d78f5
+X-MS-Exchange-CrossTenant-originalarrivaltime: 16 Nov 2019 06:23:18.8237
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 2563c132-88f5-466f-bbb2-e83153b3c808
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: UaMR3r1gkRfDfqnrWNp7JfdHPhTR8l0JnH6wILyE9haIVIZwvgfWs19X8Z/S6HxU3PvoNss8sbNc0ZISnbaSZKD3Flc692cyxOMporyvU9w=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR10MB3529
+X-OriginatorOrg: watchguard.com
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-We found ath9k could occasionally receive some frames from Linux IP stack with empty source
-and destination mac address, especially when the radio mode works as a wireless client and
-configure a static IP. If the ADDBA has been negotiated, this kind of error packets will cause
-the driver failed to find the opposite node (VAP) while in the function of processing these frame's TX
-complete interrupt.
+Hello Toke,
 
-The above failure happens inside the TX complete processing
-function ath_tx_process_buffer while calling ieee80211_find_sta_by_ifaddr.
-Inside the function ieee80211_find_sta_by_ifaddr,
-the condition of ether_addr_equal(sta->sdata->vif.addr, localaddr) will return false
-since localaddr(hdr->addr2, 802.3 source mac) is an empty mac address.
+Thanks for the review.=20
 
-Finally, this function will return NULL to ath_tx_process_buffer.
-And then ath_tx_process_buffer will call ath_tx_complete_aggr to complete the frame(s),
-However, the sta is NULL at this moment, so it could complete this kind
-of the frame(s) but doesn't (and cannot) update the BA window.
-Please see the below snippet of ath_tx_complete_aggr
-if (!sta) {
-        INIT_LIST_HEAD(&bf_head);
-        while (bf) {
-                bf_next = bf->bf_next;
+Please see my inline comments.
 
-                if (!bf->bf_state.stale || bf_next != NULL)
-                        list_move_tail(&bf->list, &bf_head);
 
-                ath_tx_complete_buf(sc, bf, txq, &bf_head, NULL, ts, 0);
+Ming
 
-                bf = bf_next;
-        }
-        return;
-}
-
-To fix this issue, we could remove the comparison of localaddr of ieee80211_find_sta_by_ifaddr
-when works as a wireless client - it won't have more than one sta (VAP) found, but I don't think
-it is the best solution. Dropping this kind of error packet before it
-goes into the driver, should be the right direction.
-
-Signed-off-by: Ming Chen <ming.chen@watchguard.com>
----
-v4:
-  -Add more details for the changelog
-
-v3:
-  -Fix s-o-b location
-
-v2:
-  -According to review feedback, use the is_zero_ether_addr to check if the mac address is empty.
----
- net/mac80211/tx.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
-
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index db38be1b75fa..b18745a3f6b0 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -2489,6 +2489,13 @@ static struct sk_buff *ieee80211_build_hdr(struct ieee80211_sub_if_data *sdata,
- 	if (IS_ERR(sta))
- 		sta = NULL;
- 
-+	/* drop this skb when source mac or destination mac is empty */
-+	if (is_zero_ether_addr(skb->data) ||
-+	    is_zero_ether_addr(skb->data + ETH_ALEN)) {
-+		ret = -ENOTCONN;
-+		goto free;
-+	}
-+
- #ifdef CONFIG_MAC80211_DEBUGFS
- 	if (local->force_tx_status)
- 		info_flags |= IEEE80211_TX_CTL_REQ_TX_STATUS;
-@@ -3435,6 +3442,11 @@ static bool ieee80211_xmit_fast(struct ieee80211_sub_if_data *sdata,
- 	if (skb->sk && skb_shinfo(skb)->tx_flags & SKBTX_WIFI_STATUS)
- 		return false;
- 
-+	/* drop this skb when source mac or destination mac is empty */
-+	if (is_zero_ether_addr(skb->data) ||
-+	    is_zero_ether_addr(skb->data + ETH_ALEN))
-+		return false;
-+
- 	if (hdr->frame_control & cpu_to_le16(IEEE80211_STYPE_QOS_DATA)) {
- 		tid = skb->priority & IEEE80211_QOS_CTL_TAG1D_MASK;
- 		tid_tx = rcu_dereference(sta->ampdu_mlme.tid_tx[tid]);
--- 
-2.17.1
+> -----Original Message-----
+> From: Toke H=F8iland-J=F8rgensen <toke@redhat.com>
+> Sent: Friday, November 15, 2019 3:08 AM
+> To: Ming Chen <ming032217@gmail.com>; Johannes Berg
+> <johannes@sipsolutions.net>
+> Cc: linux-wireless@vger.kernel.org; Ming Chen
+> <Ming.Chen@watchguard.com>
+> Subject: Re: [PATCH v3] mac80211: Drop the packets whose source or
+> destination mac address is empty
+>=20
+> Ming Chen <ming032217@gmail.com> writes:
+>=20
+> > We occasionally found ath9k could receive some packets from Linux IP
+> > stack with empty source and destination mac address,
+>=20
+> How does that happen?
+[Ming Chen] To be honest, I not quite sure how it happen. When the radio wo=
+rks as a wireless client,=20
+I cloud occasionally reproduce this issue by disabling DHCP and configure a=
+ static IP for wireless client, and also try to ping to its gateway without=
+ break. My kernel version is 4.14.
+>=20
+> > which will result in the driver cannot find the station node in TX
+> > complete. And thus, the driver will complete this buffer but without
+> > updating the block ack window.
+>=20
+> If it can't find the station, how is the packet transmitted (and affectin=
+g the BA
+> window) in the first place?
+[Ming Chen] Please see the new changelog of version 4.
+>=20
+> -Toke
 
