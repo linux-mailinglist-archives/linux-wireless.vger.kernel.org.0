@@ -2,234 +2,204 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B04C8FEC26
-	for <lists+linux-wireless@lfdr.de>; Sat, 16 Nov 2019 12:57:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 07A42FEC3B
+	for <lists+linux-wireless@lfdr.de>; Sat, 16 Nov 2019 13:13:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727527AbfKPL5b (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 16 Nov 2019 06:57:31 -0500
-Received: from us-smtp-1.mimecast.com ([205.139.110.61]:42460 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1727440AbfKPL5a (ORCPT
+        id S1727496AbfKPMNc convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 16 Nov 2019 07:13:32 -0500
+Received: from smail.rz.tu-ilmenau.de ([141.24.186.67]:59244 "EHLO
+        smail.rz.tu-ilmenau.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727471AbfKPMNc (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 16 Nov 2019 06:57:30 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1573905448;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=ilLVPFyCpQyNKBk2EUG5/jj7bM3HS/7e/LF0ODvZAgk=;
-        b=V1eQKYVbTSoa5V60bxKCf+nw+1Ts2HISWGzYyhhZKzpMc/LtVKaNUr6gGL8za16xUmzm4S
-        pCKUDJ4p0WSV67l1ujhQIeZ5A3AxVhpu1IaQyEc4swcM0IZKYXndZBnJpEiVtxmH4hQ6/f
-        NDYQMyGynGCXjU62oQTlgiXvDCdh2jM=
-Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
- [209.85.167.72]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-356-gPDAFj4XOlisPtSZzj4gcQ-1; Sat, 16 Nov 2019 06:57:25 -0500
-Received: by mail-lf1-f72.google.com with SMTP id g143so3980229lfd.22
-        for <linux-wireless@vger.kernel.org>; Sat, 16 Nov 2019 03:57:25 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:from:to:cc:date:message-id:in-reply-to
-         :references:user-agent:mime-version:content-transfer-encoding;
-        bh=oxn6hk/e7p0C1hhW6DxtPJarksX3rwfaNgc1kLL7sWQ=;
-        b=DRWdf6nIVIKXx9u/VtWtOowuBaAnYE4uBSrY4CQZZms+IM8SVNDKFvOx1ZMjHs1i8J
-         gtZGO93og3FZ0vdIgFlNswvtvWRYWRrbTXxjjGj3R75jgj53Mz2lH2qAWx4LnRzn0tJV
-         3PE8W1xKgVP22TR5qu7y90pPvQjCLSr/+7hhHlXWCs236s9thWsEABYGoSKhhwuWTfuM
-         PULi2tEUIhlTP5UtjqGg5drmmJgT23gcxZbsL5wRwlS31lmB5Bd2SbMaBTIvBAyXK5SW
-         E35N0yJ/N1m3qGI7vIs1NVJ+RrQ0FPcECWHZAj7K3kqrBrLPvxS3go1FZcgdtyeEPxLI
-         KJzA==
-X-Gm-Message-State: APjAAAVJRgE1Thj94Q1o4c15VQYC908F3skiTE3nhvES7nzWQH3EOH9p
-        H0zYxZQAKD5a0HyOP/+i0NQAGsy4epWLg/sShgC05Nztag1qauWAFs70eLoR5hZDRzRpVRWjwa9
-        LgdVRnWK4ElXfy1y79BoMOaEPHpQ=
-X-Received: by 2002:a2e:9590:: with SMTP id w16mr13840390ljh.234.1573905443979;
-        Sat, 16 Nov 2019 03:57:23 -0800 (PST)
-X-Google-Smtp-Source: APXvYqyP22WR0NlepWHXAp3bvMncxdf9rNBg9M37I4i1Hsk5sTldlqTbJHbyJANcRzpTzmN521ic1w==
-X-Received: by 2002:a2e:9590:: with SMTP id w16mr13840380ljh.234.1573905443776;
-        Sat, 16 Nov 2019 03:57:23 -0800 (PST)
-Received: from alrua-x1.borgediget.toke.dk (borgediget.toke.dk. [85.204.121.218])
-        by smtp.gmail.com with ESMTPSA id 12sm5430059lju.55.2019.11.16.03.57.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 16 Nov 2019 03:57:22 -0800 (PST)
-Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-        id 5DFF6181918; Sat, 16 Nov 2019 12:57:21 +0100 (CET)
-Subject: [PATCH v10 4/4] mac80211: Use Airtime-based Queue Limits (AQL) on
- packet dequeue
-From:   =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org,
-        make-wifi-fast@lists.bufferbloat.net, ath10k@lists.infradead.org,
-        John Crispin <john@phrozen.org>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Felix Fietkau <nbd@nbd.name>, Kan Yan <kyan@google.com>,
-        Rajkumar Manoharan <rmanohar@codeaurora.org>,
-        Kevin Hayes <kevinhayes@google.com>
-Date:   Sat, 16 Nov 2019 12:57:21 +0100
-Message-ID: <157390544128.662247.18090629768427352084.stgit@toke.dk>
-In-Reply-To: <157390543688.662247.3735146484299260207.stgit@toke.dk>
-References: <157390543688.662247.3735146484299260207.stgit@toke.dk>
-User-Agent: StGit/0.21
+        Sat, 16 Nov 2019 07:13:32 -0500
+Received: from [192.168.178.23] (unknown [87.147.48.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by smail.rz.tu-ilmenau.de (Postfix) with ESMTPSA id DFE3A58007B;
+        Sat, 16 Nov 2019 13:13:27 +0100 (CET)
+Subject: Re: [PATCH 4/4] mt76: mt76x02: add channel switch support for usb
+ interfaces
+To:     Lorenzo Bianconi <lorenzo@kernel.org>
+Cc:     nbd@nbd.name, linux-wireless@vger.kernel.org,
+        lorenzo.bianconi@redhat.com,
+        Stanislaw Gruszka <sgruszka@redhat.com>
+References: <20191116111709.4686-1-markus.theil@tu-ilmenau.de>
+ <20191116111709.4686-5-markus.theil@tu-ilmenau.de>
+ <20191116114517.GD20820@localhost.localdomain>
+From:   Markus Theil <markus.theil@tu-ilmenau.de>
+Autocrypt: addr=markus.theil@tu-ilmenau.de; keydata=
+ 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
+ sGZPq8zmOtvOyZtafA==
+Message-ID: <5dffcc2f-e722-395a-0077-1286f1c786b8@tu-ilmenau.de>
+Date:   Sat, 16 Nov 2019 13:13:27 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.2
 MIME-Version: 1.0
-X-MC-Unique: gPDAFj4XOlisPtSZzj4gcQ-1
-X-Mimecast-Spam-Score: 0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20191116114517.GD20820@localhost.localdomain>
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 8BIT
+Content-Language: en-US
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
+On 11/16/19 12:45 PM, Lorenzo Bianconi wrote:
+>> This patch enables channel switch support on mt76 usb interfaces.
+>>
+> Hi Markus,
+>
+> I was thinking about it, but since usb does not support DFS what is the purpose
+> of CSA in this case?
+>
+> Regards,
+> Lorenzo
 
-The previous commit added the ability to throttle stations when they queue
-too much airtime in the hardware. This commit enables the functionality by
-calculating the expected airtime usage of each packet that is dequeued from
-the TXQs in mac80211, and accounting that as pending airtime.
+Hi Lorenzo,
 
-The estimated airtime for each skb is stored in the tx_info, so we can
-subtract the same amount from the running total when the skb is freed or
-recycled. The throttling mechanism relies on this accounting to be
-accurate (i.e., that we are not freeing skbs without subtracting any
-airtime they were accounted for), so we put the subtraction into
-ieee80211_report_used_skb(). As an optimisation, we also subtract the
-airtime on regular TX completion, zeroing out the value stored in the
-packet afterwards, to avoid having to do an expensive lookup of the station
-from the packet data on every packet.
+for research purposes I'm currently trying out some dynamic channel
+allocation strategies with multiple indoor APs. I use a dedicated
+interface to perform surveys and monitoring the environment. These
+survey results are then correlated between different with traffic
+patterns to find out interferers. Afterwards I let the AP interfaces
+change their channel to a less congested one if necessary and notice the
+STAs via CSAs.
 
-This patch does *not* include any mechanism to wake a throttled TXQ again,
-on the assumption that this will happen anyway as a side effect of whatever
-freed the skb (most commonly a TX completion).
+I use mt76 based USB devices for my tests as they are quite versatile
+and useful for debugging with a notebook (I can just attach multiple
+ones). Therefore I thought, having the possibility to dynamically switch
+channels on this devices would maybe useful to other researchers and
+submitted my patches.
 
-Signed-off-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
----
- include/net/mac80211.h |   16 ++++++++++++++++
- net/mac80211/status.c  |   26 ++++++++++++++++++++++++++
- net/mac80211/tx.c      |   18 ++++++++++++++++++
- 3 files changed, 60 insertions(+)
+Regards,
+Markus
 
-diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index ba3f33cc41ea..aa145808e57a 100644
---- a/include/net/mac80211.h
-+++ b/include/net/mac80211.h
-@@ -1060,6 +1060,22 @@ struct ieee80211_tx_info {
- =09};
- };
-=20
-+static inline u16
-+ieee80211_info_set_tx_time_est(struct ieee80211_tx_info *info, u16 tx_time=
-_est)
-+{
-+=09/* We only have 10 bits in tx_time_est, so store airtime
-+=09 * in increments of 4us and clamp the maximum to 2**12-1
-+=09 */
-+=09info->tx_time_est =3D min_t(u16, tx_time_est, 4095) >> 2;
-+=09return info->tx_time_est << 2;
-+}
-+
-+static inline u16
-+ieee80211_info_get_tx_time_est(struct ieee80211_tx_info *info)
-+{
-+=09return info->tx_time_est << 2;
-+}
-+
- /**
-  * struct ieee80211_tx_status - extended tx status info for rate control
-  *
-diff --git a/net/mac80211/status.c b/net/mac80211/status.c
-index 0e51def35b8a..39da82b35be9 100644
---- a/net/mac80211/status.c
-+++ b/net/mac80211/status.c
-@@ -670,12 +670,26 @@ static void ieee80211_report_used_skb(struct ieee8021=
-1_local *local,
- =09=09=09=09      struct sk_buff *skb, bool dropped)
- {
- =09struct ieee80211_tx_info *info =3D IEEE80211_SKB_CB(skb);
-+=09u16 tx_time_est =3D ieee80211_info_get_tx_time_est(info);
- =09struct ieee80211_hdr *hdr =3D (void *)skb->data;
- =09bool acked =3D info->flags & IEEE80211_TX_STAT_ACK;
-=20
- =09if (dropped)
- =09=09acked =3D false;
-=20
-+=09if (tx_time_est) {
-+=09=09struct sta_info *sta;
-+
-+=09=09rcu_read_lock();
-+
-+=09=09sta =3D sta_info_get_by_addrs(local, hdr->addr1, hdr->addr2);
-+=09=09ieee80211_sta_update_pending_airtime(local, sta,
-+=09=09=09=09=09=09     skb_get_queue_mapping(skb),
-+=09=09=09=09=09=09     tx_time_est,
-+=09=09=09=09=09=09     true);
-+=09=09rcu_read_unlock();
-+=09}
-+
- =09if (info->flags & IEEE80211_TX_INTFL_MLME_CONN_TX) {
- =09=09struct ieee80211_sub_if_data *sdata;
-=20
-@@ -877,6 +891,7 @@ static void __ieee80211_tx_status(struct ieee80211_hw *=
-hw,
- =09struct ieee80211_bar *bar;
- =09int shift =3D 0;
- =09int tid =3D IEEE80211_NUM_TIDS;
-+=09u16 tx_time_est;
-=20
- =09rates_idx =3D ieee80211_tx_get_rates(hw, info, &retry_count);
-=20
-@@ -986,6 +1001,17 @@ static void __ieee80211_tx_status(struct ieee80211_hw=
- *hw,
- =09=09=09ieee80211_sta_register_airtime(&sta->sta, tid,
- =09=09=09=09=09=09       info->status.tx_time, 0);
-=20
-+=09=09if ((tx_time_est =3D ieee80211_info_get_tx_time_est(info)) > 0) {
-+=09=09=09/* Do this here to avoid the expensive lookup of the sta
-+=09=09=09 * in ieee80211_report_used_skb().
-+=09=09=09 */
-+=09=09=09ieee80211_sta_update_pending_airtime(local, sta,
-+=09=09=09=09=09=09=09     skb_get_queue_mapping(skb),
-+=09=09=09=09=09=09=09     tx_time_est,
-+=09=09=09=09=09=09=09     true);
-+=09=09=09ieee80211_info_set_tx_time_est(info, 0);
-+=09=09}
-+
- =09=09if (ieee80211_hw_check(&local->hw, REPORTS_TX_ACK_STATUS)) {
- =09=09=09if (info->flags & IEEE80211_TX_STAT_ACK) {
- =09=09=09=09if (sta->status_stats.lost_packets)
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index aafc67b562eb..2fb6571453e7 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -3551,6 +3551,9 @@ struct sk_buff *ieee80211_tx_dequeue(struct ieee80211=
-_hw *hw,
-=20
- =09WARN_ON_ONCE(softirq_count() =3D=3D 0);
-=20
-+=09if (!ieee80211_txq_airtime_check(hw, txq))
-+=09=09return NULL;
-+
- begin:
- =09spin_lock_bh(&fq->lock);
-=20
-@@ -3661,6 +3664,21 @@ struct sk_buff *ieee80211_tx_dequeue(struct ieee8021=
-1_hw *hw,
- =09}
-=20
- =09IEEE80211_SKB_CB(skb)->control.vif =3D vif;
-+
-+=09if (local->airtime_flags & AIRTIME_USE_AQL) {
-+=09=09u32 airtime;
-+
-+=09=09airtime =3D ieee80211_calc_expected_tx_airtime(hw, vif, txq->sta,
-+=09=09=09=09=09=09=09     skb->len);
-+=09=09if (airtime) {
-+=09=09=09airtime =3D ieee80211_info_set_tx_time_est(info, airtime);
-+=09=09=09ieee80211_sta_update_pending_airtime(local, tx.sta,
-+=09=09=09=09=09=09=09     txq->ac,
-+=09=09=09=09=09=09=09     airtime,
-+=09=09=09=09=09=09=09     false);
-+=09=09}
-+=09}
-+
- =09return skb;
-=20
- out:
+>> Signed-off-by: Markus Theil <markus.theil@tu-ilmenau.de>
+>> ---
+>>  drivers/net/wireless/mediatek/mt76/mt76x02_usb_core.c | 7 +++++++
+>>  drivers/net/wireless/mediatek/mt76/mt76x02_util.c     | 2 +-
+>>  drivers/net/wireless/mediatek/mt76/mt76x2/usb_main.c  | 5 +++++
+>>  3 files changed, 13 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_usb_core.c b/drivers/net/wireless/mediatek/mt76/mt76x02_usb_core.c
+>> index aedab4cc8d40..32e6c37aa80d 100644
+>> --- a/drivers/net/wireless/mediatek/mt76/mt76x02_usb_core.c
+>> +++ b/drivers/net/wireless/mediatek/mt76/mt76x02_usb_core.c
+>> @@ -179,6 +179,12 @@ static void mt76x02u_pre_tbtt_work(struct work_struct *work)
+>>  
+>>  	mt76x02_resync_beacon_timer(dev);
+>>  
+>> +	mt76_csa_check(&dev->mt76);
+>> +	if (dev->mt76.csa_complete) {
+>> +		mt76_csa_finish(&dev->mt76);
+>> +		goto out;
+>> +	}
+>> +
+>>  	mt76x02_mac_set_beacon_prepare(dev);
+>>  
+>>  	ieee80211_iterate_active_interfaces(mt76_hw(dev),
+>> @@ -195,6 +201,7 @@ static void mt76x02u_pre_tbtt_work(struct work_struct *work)
+>>  
+>>  	mt76x02_mac_set_beacon_finish(dev);
+>>  
+>> +out:
+>>  	mt76x02u_restart_pre_tbtt_timer(dev);
+>>  }
+>>  
+>> diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_util.c b/drivers/net/wireless/mediatek/mt76/mt76x02_util.c
+>> index 414b22399d93..3f95e5b24e1d 100644
+>> --- a/drivers/net/wireless/mediatek/mt76/mt76x02_util.c
+>> +++ b/drivers/net/wireless/mediatek/mt76/mt76x02_util.c
+>> @@ -174,7 +174,6 @@ void mt76x02_init_device(struct mt76x02_dev *dev)
+>>  		wiphy->reg_notifier = mt76x02_regd_notifier;
+>>  		wiphy->iface_combinations = mt76x02_if_comb;
+>>  		wiphy->n_iface_combinations = ARRAY_SIZE(mt76x02_if_comb);
+>> -		wiphy->flags |= WIPHY_FLAG_HAS_CHANNEL_SWITCH;
+>>  
+>>  		/* init led callbacks */
+>>  		if (IS_ENABLED(CONFIG_MT76_LEDS)) {
+>> @@ -184,6 +183,7 @@ void mt76x02_init_device(struct mt76x02_dev *dev)
+>>  		}
+>>  	}
+>>  
+>> +	wiphy->flags |= WIPHY_FLAG_HAS_CHANNEL_SWITCH;
+>>  	wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_VHT_IBSS);
+>>  
+>>  	hw->sta_data_size = sizeof(struct mt76x02_sta);
+>> diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/usb_main.c b/drivers/net/wireless/mediatek/mt76/mt76x2/usb_main.c
+>> index eb73cb856c81..2f2c39a6a9e6 100644
+>> --- a/drivers/net/wireless/mediatek/mt76/mt76x2/usb_main.c
+>> +++ b/drivers/net/wireless/mediatek/mt76/mt76x2/usb_main.c
+>> @@ -100,6 +100,10 @@ mt76x2u_config(struct ieee80211_hw *hw, u32 changed)
+>>  	return err;
+>>  }
+>>  
+>> +void mt76x2u_channel_switch_beacon(struct ieee80211_hw *hw,
+>> +				   struct ieee80211_vif *vif,
+>> +				   struct cfg80211_chan_def *chandef) {}
+>> +
+>>  const struct ieee80211_ops mt76x2u_ops = {
+>>  	.tx = mt76x02_tx,
+>>  	.start = mt76x2u_start,
+>> @@ -121,4 +125,5 @@ const struct ieee80211_ops mt76x2u_ops = {
+>>  	.get_survey = mt76_get_survey,
+>>  	.set_tim = mt76_set_tim,
+>>  	.release_buffered_frames = mt76_release_buffered_frames,
+>> +	.channel_switch_beacon = mt76x2u_channel_switch_beacon,
+>>  };
+>> -- 
+>> 2.24.0
+>>
+-- 
+Markus Theil
+
+Technische Universität Ilmenau, Fachgebiet Telematik/Rechnernetze
+Postfach 100565
+98684 Ilmenau, Germany
+
+Phone: +49 3677 69-4582
+Email: markus[dot]theil[at]tu-ilmenau[dot]de
+Web: http://www.tu-ilmenau.de/telematik
+
 
