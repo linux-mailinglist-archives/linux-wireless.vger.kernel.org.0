@@ -2,36 +2,35 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7599BFF1FF
-	for <lists+linux-wireless@lfdr.de>; Sat, 16 Nov 2019 17:16:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 60130FF1E9
+	for <lists+linux-wireless@lfdr.de>; Sat, 16 Nov 2019 17:16:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730653AbfKPQQY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 16 Nov 2019 11:16:24 -0500
-Received: from mail.kernel.org ([198.145.29.99]:53676 "EHLO mail.kernel.org"
+        id S1729662AbfKPPrN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 16 Nov 2019 10:47:13 -0500
+Received: from mail.kernel.org ([198.145.29.99]:53866 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729597AbfKPPrD (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 16 Nov 2019 10:47:03 -0500
+        id S1729654AbfKPPrM (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 16 Nov 2019 10:47:12 -0500
 Received: from sasha-vm.mshome.net (unknown [50.234.116.4])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 62F8D2133F;
-        Sat, 16 Nov 2019 15:47:02 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 5D97C2088F;
+        Sat, 16 Nov 2019 15:47:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1573919222;
-        bh=kZ8zWA2dW+43AmUKUBWUQPRKVQv73HqDZw+2W139/QY=;
+        s=default; t=1573919231;
+        bh=5Pdak+JPJzVEhoD/8rcgc5m8LdWqf4v8nm3VoE3IvzQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=b4ggr0lHaemtpOzYvpM3QVjjjyV1n/ND5yHRmN/6bcVbn4sen8rcAKOEebXCc+ju7
-         Yd47gmL43zIPUfUYaLjlsP1w32tWFXDYbIx3pENgVodIhVoDQDYjoNJNR1rcx6WJv1
-         xwPlw1r4b3pMnbLru0uRHfASeZGvmHDSZhx8wGCI=
+        b=XxTUeGBtQno2/GyHBn/Q5+d4Y6ybRImKJB3WlcSUQVR3LOdrzuctuuiEgRYe2KVpX
+         2r/gI0OplJpSdeyqWWj2sO4E6oD5ruQrER8rAatQOJVU+/USDMFzo3d1apkI99MPC5
+         350/jI+CT4W8xzBsREcPT0LGECVZq7hrFnnDBrnY=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Sriram R <srirrama@codeaurora.org>,
-        Johannes Berg <johannes.berg@intel.com>,
+Cc:     Johannes Berg <johannes.berg@intel.com>,
         Sasha Levin <sashal@kernel.org>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 226/237] cfg80211: Prevent regulatory restore during STA disconnect in concurrent interfaces
-Date:   Sat, 16 Nov 2019 10:41:01 -0500
-Message-Id: <20191116154113.7417-226-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 237/237] cfg80211: call disconnect_wk when AP stops
+Date:   Sat, 16 Nov 2019 10:41:12 -0500
+Message-Id: <20191116154113.7417-237-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20191116154113.7417-1-sashal@kernel.org>
 References: <20191116154113.7417-1-sashal@kernel.org>
@@ -44,50 +43,66 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Sriram R <srirrama@codeaurora.org>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 113f3aaa81bd56aba02659786ed65cbd9cb9a6fc ]
+[ Upstream commit e005bd7ddea06784c1eb91ac5bb6b171a94f3b05 ]
 
-Currently when an AP and STA interfaces are active in the same or different
-radios, regulatory settings are restored whenever the STA disconnects. This
-restores all channel information including dfs states in all radios.
-For example, if an AP interface is active in one radio and STA in another,
-when radar is detected on the AP interface, the dfs state of the channel
-will be changed to UNAVAILABLE. But when the STA interface disconnects,
-this issues a regulatory disconnect hint which restores all regulatory
-settings in all the radios attached and thereby losing the stored dfs
-state on the other radio where the channel was marked as unavailable
-earlier. Hence prevent such regulatory restore whenever another active
-beaconing interface is present in the same or other radios.
+Since we now prevent regulatory restore during STA disconnect
+if concurrent AP interfaces are active, we need to reschedule
+this check when the AP state changes. This fixes never doing
+a restore when an AP is the last interface to stop. Or to put
+it another way: we need to re-check after anything we check
+here changes.
 
-Signed-off-by: Sriram R <srirrama@codeaurora.org>
+Cc: stable@vger.kernel.org
+Fixes: 113f3aaa81bd ("cfg80211: Prevent regulatory restore during STA disconnect in concurrent interfaces")
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/sme.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ net/wireless/ap.c   | 2 ++
+ net/wireless/core.h | 2 ++
+ net/wireless/sme.c  | 2 +-
+ 3 files changed, 5 insertions(+), 1 deletion(-)
 
+diff --git a/net/wireless/ap.c b/net/wireless/ap.c
+index 882d97bdc6bfd..550ac9d827fe7 100644
+--- a/net/wireless/ap.c
++++ b/net/wireless/ap.c
+@@ -41,6 +41,8 @@ int __cfg80211_stop_ap(struct cfg80211_registered_device *rdev,
+ 		cfg80211_sched_dfs_chan_update(rdev);
+ 	}
+ 
++	schedule_work(&cfg80211_disconnect_work);
++
+ 	return err;
+ }
+ 
+diff --git a/net/wireless/core.h b/net/wireless/core.h
+index 7f52ef5693203..f5d58652108dd 100644
+--- a/net/wireless/core.h
++++ b/net/wireless/core.h
+@@ -430,6 +430,8 @@ void cfg80211_process_wdev_events(struct wireless_dev *wdev);
+ bool cfg80211_does_bw_fit_range(const struct ieee80211_freq_range *freq_range,
+ 				u32 center_freq_khz, u32 bw_khz);
+ 
++extern struct work_struct cfg80211_disconnect_work;
++
+ /**
+  * cfg80211_chandef_dfs_usable - checks if chandef is DFS usable
+  * @wiphy: the wiphy to validate against
 diff --git a/net/wireless/sme.c b/net/wireless/sme.c
-index d536b07582f8c..c7047c7b4e80f 100644
+index c7047c7b4e80f..07c2196e9d573 100644
 --- a/net/wireless/sme.c
 +++ b/net/wireless/sme.c
-@@ -642,11 +642,15 @@ static bool cfg80211_is_all_idle(void)
- 	 * All devices must be idle as otherwise if you are actively
- 	 * scanning some new beacon hints could be learned and would
- 	 * count as new regulatory hints.
-+	 * Also if there is any other active beaconing interface we
-+	 * need not issue a disconnect hint and reset any info such
-+	 * as chan dfs state, etc.
- 	 */
- 	list_for_each_entry(rdev, &cfg80211_rdev_list, list) {
- 		list_for_each_entry(wdev, &rdev->wiphy.wdev_list, list) {
- 			wdev_lock(wdev);
--			if (wdev->conn || wdev->current_bss)
-+			if (wdev->conn || wdev->current_bss ||
-+			    cfg80211_beaconing_iface_active(wdev))
- 				is_all_idle = false;
- 			wdev_unlock(wdev);
- 		}
+@@ -667,7 +667,7 @@ static void disconnect_work(struct work_struct *work)
+ 	rtnl_unlock();
+ }
+ 
+-static DECLARE_WORK(cfg80211_disconnect_work, disconnect_work);
++DECLARE_WORK(cfg80211_disconnect_work, disconnect_work);
+ 
+ 
+ /*
 -- 
 2.20.1
 
