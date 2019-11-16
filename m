@@ -2,56 +2,57 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 16B44FEC21
-	for <lists+linux-wireless@lfdr.de>; Sat, 16 Nov 2019 12:57:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8BBD9FEC22
+	for <lists+linux-wireless@lfdr.de>; Sat, 16 Nov 2019 12:57:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727436AbfKPL5X (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 16 Nov 2019 06:57:23 -0500
-Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:41124 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726794AbfKPL5W (ORCPT
+        id S1727471AbfKPL5Y (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 16 Nov 2019 06:57:24 -0500
+Received: from us-smtp-1.mimecast.com ([207.211.31.81]:42413 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726794AbfKPL5Y (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 16 Nov 2019 06:57:22 -0500
+        Sat, 16 Nov 2019 06:57:24 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1573905441;
+        s=mimecast20190719; t=1573905443;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=4HWnUEWPK5gwkihfyRUsMpaxZslmtaOtUE3W9X1WMoY=;
-        b=JgLRXqv5hxAIeWN1U1sW1luDR7XWZWhDrdikWFjO5gQeikU6rZOPlT8IXGsaVHCYprS0wF
-        uNarg0wew7elvkLzT9lbkJSvjYxxhSV9WFDw27XcOlrIf3O01lAHoRqhxZkqEBYULVkiTD
-        B2K52j19X9zB/KQpfMSsxrJSMBy/pVU=
-Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
- [209.85.208.199]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-157-x970k7k5MA-RgPOxuhEZWA-1; Sat, 16 Nov 2019 06:57:20 -0500
-Received: by mail-lj1-f199.google.com with SMTP id o20so2124313ljg.0
-        for <linux-wireless@vger.kernel.org>; Sat, 16 Nov 2019 03:57:20 -0800 (PST)
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=YXoS2W5BbZsp09HQfFBXWaQ8N7PlWsSs7THfUeKuQyo=;
+        b=Rk/Ofw01ilidAHxDEbF3CVU5u1j47aBhV9BPoWiB/TuUDJpToPSeH+r8JL4r5OS/orRu4r
+        3+y1nDwm0C1rbTB7O9TMeIzKHOrkJmc112sXUkMdpXbJLkhmWhsm8A8MDCQCvyjYcfjq40
+        uNBvcn/j599rKWosYV2HdsmOZ5l3PZk=
+Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
+ [209.85.167.69]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-5-RKWHDo-eN4WZzo496X8XSg-1; Sat, 16 Nov 2019 06:57:22 -0500
+Received: by mail-lf1-f69.google.com with SMTP id k30so3979149lfj.5
+        for <linux-wireless@vger.kernel.org>; Sat, 16 Nov 2019 03:57:22 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:from:to:cc:date:message-id:user-agent
-         :mime-version:content-transfer-encoding;
-        bh=xGmfCpzNCWtkinDzNO/MRj1kwSQ0zFMoREQi5LCL/+0=;
-        b=ALuirGqwQMGEkdrVzsYT4pxzGBRfVH6aWPGIiz6D0cEsQWVglkBl3dyxNfv4e5IKkb
-         i/P+Q+6a2t6lVK6U13MMGZKUNBVHkNuLrbZk3VSWMxMLnOUd0mLrVSoYttglHuR4klz8
-         HFRiHMBEl1IJyuq8HqQ/iH8LA3PkoawbGADarRJZvnuxuSavExJODvMJMqKWWqwYQRhH
-         ObWm+ZgADpHBYtGCtXRExbFXfOQvxRWlz9glM/9AiELqHcGbyTGxLxXTRvu4jNp1Fxkp
-         xyGA4zTr8psRoiEND+8aMM2UtKU7a7IQOikYQ6z7A/YD9NV8Iajmx595gzlDenQ+fWH4
-         MQtA==
-X-Gm-Message-State: APjAAAXaKiOlvog0furvD6LHotoPIHVkIFYfGX79RJ1emy9W7Oalz+8D
-        d2AH6xK0aRrn4oUuUoQHPrmzT8p4QQumQaUwAcyKmJKEZLVvyrz6tJiRB3cf7Z7QDW2jaiByx+A
-        9cugqY8a+qWbQtdz7F0wlUU2TM7c=
-X-Received: by 2002:ac2:5685:: with SMTP id 5mr2991270lfr.32.1573905439014;
-        Sat, 16 Nov 2019 03:57:19 -0800 (PST)
-X-Google-Smtp-Source: APXvYqzzRBzAMxYEZHZsVAtvcDEJQdEDJ3P0ayzDpX+t+c91Igqa6iN1JaFun4iF1Kzjh2WJ+O8B4A==
-X-Received: by 2002:ac2:5685:: with SMTP id 5mr2991257lfr.32.1573905438787;
-        Sat, 16 Nov 2019 03:57:18 -0800 (PST)
-Received: from alrua-x1.borgediget.toke.dk (borgediget.toke.dk. [85.204.121.218])
-        by smtp.gmail.com with ESMTPSA id 12sm5429980lju.55.2019.11.16.03.57.17
+        h=x-gm-message-state:subject:from:to:cc:date:message-id:in-reply-to
+         :references:user-agent:mime-version:content-transfer-encoding;
+        bh=x+t/BOQM8F7dbfpj4lBhXe72lJwS1NOF599JEwP8bYk=;
+        b=RIrbk8qt/rUfbPI0Kt9mPe0FftkWljsrwfGoBWi4UxxaQ+tMnhhsxiPXdgjyWEd9iZ
+         rlZrYJCc+HF5tJtm+T92BXPg4N5QlOAVHfRgLYy6vnwnXJRYuJnpH+3puaxbXvCsl8bS
+         yagrbfZggOVkv73kcU5JUxru2PmKs+9l3RZAHesL0ECr6CeyQAicvRUlo4MXIwxTb/sk
+         OR5Qs41HNE7pBtsuMMWhHrNEA6qdAOu+iPZIIJYDWg+S8UImCD7x9rH+/6Unzoyfaxtz
+         yL9+RF+goj24CyD9V3ris+SfuA3KH/ve1BWDb9TUhtd+Q6QoHi9JRQJaGJYMliLH3UN1
+         39hQ==
+X-Gm-Message-State: APjAAAXs9P1oBoFSxNMqvi+bXg/xhSTfY79lN0/dZo8FNSv5r8uhTTX5
+        +p/Qs8JrHbFh/TAylrSUlsigPO2pgrTYEuQoCppVDo/DBorSyBsgD1GQ3iGVhs63rWRQ4GhRhqk
+        LoaEmUUB2lWauaia/jlcx6Z8Iuzg=
+X-Received: by 2002:a2e:9156:: with SMTP id q22mr10462785ljg.166.1573905440929;
+        Sat, 16 Nov 2019 03:57:20 -0800 (PST)
+X-Google-Smtp-Source: APXvYqz0L+POcRH+ZCGceuYnd9tkUS+fm0ri2a2QHKWHz6GQdx5Ehz43kLACA3daj8P4f0JD6MpnUA==
+X-Received: by 2002:a2e:9156:: with SMTP id q22mr10462771ljg.166.1573905440761;
+        Sat, 16 Nov 2019 03:57:20 -0800 (PST)
+Received: from alrua-x1.borgediget.toke.dk ([2a00:7660:6da:443::2])
+        by smtp.gmail.com with ESMTPSA id s28sm6071884lfp.92.2019.11.16.03.57.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 16 Nov 2019 03:57:17 -0800 (PST)
+        Sat, 16 Nov 2019 03:57:18 -0800 (PST)
 Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-        id 01170181910; Sat, 16 Nov 2019 12:57:16 +0100 (CET)
-Subject: [PATCH v10 0/4] Add Airtime Queue Limits (AQL) to mac80211
+        id 1483C181911; Sat, 16 Nov 2019 12:57:18 +0100 (CET)
+Subject: [PATCH v10 1/4] mac80211: Add new sta_info getter by sta/vif addrs
 From:   =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
 To:     Johannes Berg <johannes@sipsolutions.net>
 Cc:     linux-wireless@vger.kernel.org,
@@ -61,117 +62,107 @@ Cc:     linux-wireless@vger.kernel.org,
         Felix Fietkau <nbd@nbd.name>, Kan Yan <kyan@google.com>,
         Rajkumar Manoharan <rmanohar@codeaurora.org>,
         Kevin Hayes <kevinhayes@google.com>
-Date:   Sat, 16 Nov 2019 12:57:16 +0100
-Message-ID: <157390543688.662247.3735146484299260207.stgit@toke.dk>
+Date:   Sat, 16 Nov 2019 12:57:18 +0100
+Message-ID: <157390543799.662247.14225450732789555896.stgit@toke.dk>
+In-Reply-To: <157390543688.662247.3735146484299260207.stgit@toke.dk>
+References: <157390543688.662247.3735146484299260207.stgit@toke.dk>
 User-Agent: StGit/0.21
 MIME-Version: 1.0
-X-MC-Unique: x970k7k5MA-RgPOxuhEZWA-1
+X-MC-Unique: RKWHDo-eN4WZzo496X8XSg-1
 X-Mimecast-Spam-Score: 0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This series is a first attempt at porting the Airtime Queue Limits concept =
-from
-the out-of-tree ath10k implementation[0] to mac80211. This version takes Ka=
-n's
-patch to do the throttling in mac80211, and replaces the driver API with th=
-e
-mechanism from the previous version of my series, which instead calculated =
-the
-expected airtime at dequeue time inside mac80211, storing it in the SKB cb
-field.
+From: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
 
-This series also imports Felix' airtime calculation code from mt76 into
-mac80211, adjusting the API so it can be used from TX dequeue, by extractin=
-g the
-latest TX rate from the tx_stats structure kept for each station.
+In ieee80211_tx_status() we don't have an sdata struct when looking up the
+destination sta. Instead, we just do a lookup by the vif addr that is the
+source of the packet being completed. Factor this out into a new sta_info
+getter helper, since we need to use it for accounting AQL as well.
 
-As before, I've only compile tested this (lacking the proper hardware to do=
- more
-testing), but Kan has tested in on the QCA9984 platform.
-
-The series is also available in my git repo here:
-https://git.kernel.org/pub/scm/linux/kernel/git/toke/linux.git/log/?h=3Dmac=
-80211-aql-10
-
-[0] https://chromium-review.googlesource.com/c/chromiumos/third_party/kerne=
-l/+/1703105/7
-
-Changelog:
-
-v10:
-  - Fix return value from ieee80211_info_set_tx_time_est()
-
-v9:
-  - Use atomic_sub_return() instead of separate atomic_sub() and atomic_rea=
-d()
-  - Add getter/setter for tx_time_est
-  - Use get_sta_info_by_addrs() to find the station in
-    ieee80211_report_used_skb()
-  - Integrate everything back into one series
-
-v8:
-  - Includes Toke's v7 version of "mac80211: Import airtime calculation cod=
-e from mt76"
-  - Don't clobber sta's customized queue limit when configuring the default=
- via debugfs
-  - Fix a racing condition when reset aql_tx_pending.
-
-v7:
-  - Fix aql_total_pending_airtime underflow due to insufficient locking.
-
-v6:
-  - Fix sta lookup in ieee80211_report_used_skb().
-  - Move call to ieee80211_sta_update_pending_airtime() to a bit later in
-    __ieee80211_tx_status()=20
-v5:
-  - Add missing export of ieee80211_calc_rx_airtime() and make
-    ieee80211_calc_tx_airtime_rate() static (kbuildbot).
-  - Use skb_get_queue_mapping() to get the AC from the skb.
-  - Take basic rate configuration for the BSS into account when calculating
-    multicast rate.
-v4:
-  - Fix calculation that clamps the maximum airtime to fit into 10 bits
-  - Incorporate Rich Brown's nits for the commit message in Kan's patch
-  - Add fewer local variables to ieee80211_tx_dequeue()
-v3:
-  - Move the tx_time_est field so it's shared with ack_frame_id, and use un=
-its
-    of 4us for the value stored in it.
-  - Move the addition of the Ethernet header size into ieee80211_calc_expec=
-ted_tx_airtime()
-v2:
-  - Integrate Kan's approach to airtime throttling.
-  - Hopefully fix the cb struct alignment on big-endian architectures.
-
+Signed-off-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
 ---
+ net/mac80211/sta_info.c |   20 ++++++++++++++++++++
+ net/mac80211/sta_info.h |    3 +++
+ net/mac80211/status.c   |   10 ++--------
+ 3 files changed, 25 insertions(+), 8 deletions(-)
 
-Kan Yan (1):
-      mac80211: Implement Airtime-based Queue Limit (AQL)
-
-Toke H=C3=B8iland-J=C3=B8rgensen (3):
-      mac80211: Add new sta_info getter by sta/vif addrs
-      mac80211: Import airtime calculation code from mt76
-      mac80211: Use Airtime-based Queue Limits (AQL) on packet dequeue
-
-
- include/net/cfg80211.h     |    7 +
- include/net/mac80211.h     |   57 ++++
- net/mac80211/Makefile      |    3=20
- net/mac80211/airtime.c     |  597 ++++++++++++++++++++++++++++++++++++++++=
-++++
- net/mac80211/debugfs.c     |   85 ++++++
- net/mac80211/debugfs_sta.c |   43 ++-
- net/mac80211/ieee80211_i.h |    8 +
- net/mac80211/main.c        |   10 +
- net/mac80211/sta_info.c    |   58 ++++
- net/mac80211/sta_info.h    |   11 +
- net/mac80211/status.c      |   36 ++-
- net/mac80211/tx.c          |   65 +++++
- 12 files changed, 957 insertions(+), 23 deletions(-)
- create mode 100644 net/mac80211/airtime.c
+diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
+index bd11fef2139f..465d83b13582 100644
+--- a/net/mac80211/sta_info.c
++++ b/net/mac80211/sta_info.c
+@@ -210,6 +210,26 @@ struct sta_info *sta_info_get_bss(struct ieee80211_sub=
+_if_data *sdata,
+ =09return NULL;
+ }
+=20
++struct sta_info *sta_info_get_by_addrs(struct ieee80211_local *local,
++=09=09=09=09       const u8 *sta_addr, const u8 *vif_addr)
++{
++=09struct rhlist_head *tmp;
++=09struct sta_info *sta;
++
++=09rcu_read_lock();
++=09for_each_sta_info(local, sta_addr, sta, tmp) {
++=09=09if (ether_addr_equal(vif_addr, sta->sdata->vif.addr)) {
++=09=09=09rcu_read_unlock();
++=09=09=09/* this is safe as the caller must already hold
++=09=09=09 * another rcu read section or the mutex
++=09=09=09 */
++=09=09=09return sta;
++=09=09}
++=09}
++=09rcu_read_unlock();
++=09return NULL;
++}
++
+ struct sta_info *sta_info_get_by_idx(struct ieee80211_sub_if_data *sdata,
+ =09=09=09=09     int idx)
+ {
+diff --git a/net/mac80211/sta_info.h b/net/mac80211/sta_info.h
+index 369c2dddce52..80e76569144e 100644
+--- a/net/mac80211/sta_info.h
++++ b/net/mac80211/sta_info.h
+@@ -725,6 +725,9 @@ struct sta_info *sta_info_get(struct ieee80211_sub_if_d=
+ata *sdata,
+ struct sta_info *sta_info_get_bss(struct ieee80211_sub_if_data *sdata,
+ =09=09=09=09  const u8 *addr);
+=20
++struct sta_info *sta_info_get_by_addrs(struct ieee80211_local *local,
++=09=09=09=09       const u8 *sta_addr, const u8 *vif_addr);
++
+ #define for_each_sta_info(local, _addr, _sta, _tmp)=09=09=09\
+ =09rhl_for_each_entry_rcu(_sta, _tmp,=09=09=09=09\
+ =09=09=09       sta_info_hash_lookup(local, _addr), hash_node)
+diff --git a/net/mac80211/status.c b/net/mac80211/status.c
+index ab8ba5835ca0..0e51def35b8a 100644
+--- a/net/mac80211/status.c
++++ b/net/mac80211/status.c
+@@ -1073,19 +1073,13 @@ void ieee80211_tx_status(struct ieee80211_hw *hw, s=
+truct sk_buff *skb)
+ =09=09.skb =3D skb,
+ =09=09.info =3D IEEE80211_SKB_CB(skb),
+ =09};
+-=09struct rhlist_head *tmp;
+ =09struct sta_info *sta;
+=20
+ =09rcu_read_lock();
+=20
+-=09for_each_sta_info(local, hdr->addr1, sta, tmp) {
+-=09=09/* skip wrong virtual interface */
+-=09=09if (!ether_addr_equal(hdr->addr2, sta->sdata->vif.addr))
+-=09=09=09continue;
+-
++=09sta =3D sta_info_get_by_addrs(local, hdr->addr1, hdr->addr2);
++=09if (sta)
+ =09=09status.sta =3D &sta->sta;
+-=09=09break;
+-=09}
+=20
+ =09__ieee80211_tx_status(hw, &status);
+ =09rcu_read_unlock();
 
