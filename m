@@ -2,60 +2,60 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 11909FEA3D
-	for <lists+linux-wireless@lfdr.de>; Sat, 16 Nov 2019 03:22:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 747F9FEA4C
+	for <lists+linux-wireless@lfdr.de>; Sat, 16 Nov 2019 03:51:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727306AbfKPCWL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 15 Nov 2019 21:22:11 -0500
-Received: from mail-lj1-f195.google.com ([209.85.208.195]:38617 "EHLO
-        mail-lj1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727275AbfKPCWK (ORCPT
+        id S1727422AbfKPCvi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 15 Nov 2019 21:51:38 -0500
+Received: from mail-lj1-f194.google.com ([209.85.208.194]:37268 "EHLO
+        mail-lj1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727276AbfKPCvi (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 15 Nov 2019 21:22:10 -0500
-Received: by mail-lj1-f195.google.com with SMTP id v8so12662636ljh.5
-        for <linux-wireless@vger.kernel.org>; Fri, 15 Nov 2019 18:22:08 -0800 (PST)
+        Fri, 15 Nov 2019 21:51:38 -0500
+Received: by mail-lj1-f194.google.com with SMTP id d5so12690798ljl.4
+        for <linux-wireless@vger.kernel.org>; Fri, 15 Nov 2019 18:51:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc:content-transfer-encoding;
-        bh=hGU8vg18c8rykU4X+f/twEM1FcyACBPR6hxaYpz2ycI=;
-        b=haU6P4NnkHLAULTq1MlP4/cQUVT8uZPmA02AsE89LVyEYZDnUKZnYO17kKmq5kJY3i
-         sk+tw06YePIuTVqNwKnzeD/dAy3N9hk4P/cDAcMfWMfKhDYzb7quzmq37y83lGbKOjvp
-         fAXxW2mynCyAP+qtdJw5ayq2EnbHMtct8WIKpfkhSzuljHzoiQ+1PDeEGmgWz+WN2uV1
-         7BfC7omO3BB8lTX2rqB9HeFaeBhOVObsQn8UdJLkFA2xl57mMb9L/hvNeDtUHp3p2euF
-         ov/N3Jk6mdhaHmhiYNx8sREayhl+xNhrDe9Ar++nnSS6QA9AaAGNvaUMMd8sN+erd2n5
-         5e+w==
+        bh=sdKzXv63ut5ycRGBDasjRVtrIZ7lx7BKgWbHQ31JIUs=;
+        b=Y85KjM8pLwk8II2O1yNOR9uNu2jlGzWakcj38h+Qzph8yKwYwXWEDZbf8xKhC6gdnm
+         11Gw1cX9jeV2/BtDa22RaGxjWZ0pliCeFfQuZKH9Hi8FMvBUJa99lRKpFHiL06DgyGKw
+         HXQzQo0U4BprYVtPjNJvyxa9hRRKamgQ84lixPAAOeqhDebCuXmzg/GHgS9AwC03uwXt
+         40OpTCGn6WwSoPCLuw0qmtH4drUOe+qMkaZHlKZJi60NZewYvOKElfQk6qSsv0PJJ40q
+         4wNo+ubMFnHKX8DYixRgW2w2pxelzvvJT33m4CjM6rctuyQCvZCGBKuzwtKMKpTlQBH1
+         fgLA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc:content-transfer-encoding;
-        bh=hGU8vg18c8rykU4X+f/twEM1FcyACBPR6hxaYpz2ycI=;
-        b=YCgiV87/6Jp16RmPQlrRYvIjh16c+RHUEBgS2FZZZf37Q1emHFQESFwHn5r7chR+hc
-         Sze/lTLof2y8x/cjYiqk0CnvL6nUGcTKXAtRVecpaOWj+eRuHjhmTQNojF05MpWRdpOw
-         kNY/mll25WKU7ukdACPv0Jz251ma/tmrymqrBbrao+eYg44N0+O44xlgBd5Jeb+PnVyx
-         Pfq7dbrE9vqtnU/oLeNy/LkIJeAFt5CaB6WqUhLOBpPjqrkoGbBYU7xLZAX3mCb+ppSb
-         BaYNAOpVkeFDk4fvKexkfwn3MfvrmXByewQCs0RHH8DMtidUFMeUvoUARhxzuWxnzo5N
-         3Qew==
-X-Gm-Message-State: APjAAAWtocFYnst2dztdqa9vp9Cc99mQ79WhQKo1XS+7xTZMoOWSMduq
-        q/ciwwf6tmhrVzn+6g5wdkGNRmqhpx/5JJODERCi+w==
-X-Google-Smtp-Source: APXvYqx8G4+RGf76UqHpeCtjAp76KchAOEGDtObnaGI+4ErQc6JS5aHwHZtSHWi0I0LQV+1FHzxm8UsJqKits+jEKzs=
-X-Received: by 2002:a2e:9ad8:: with SMTP id p24mr1808659ljj.114.1573870927439;
- Fri, 15 Nov 2019 18:22:07 -0800 (PST)
+        bh=sdKzXv63ut5ycRGBDasjRVtrIZ7lx7BKgWbHQ31JIUs=;
+        b=VSFpNPSdyCVwVD8siGTuJqPpoIXQfF9ZONMHBN/WsnfuIcl6T/AKegpz/T/1WdlhIv
+         D9qBq3QX9qcmI0GpZbfQyvdk7Np9wg2OhZGQzgYbzT0wK/nncdNGpn5NbEay+0awvqar
+         v1e/PN8gz7JJTDJEZiesEdy3ZsMwx22WSa45C1MvtbKCrIPrBAh/s2YU7Mv69gx1/J03
+         wVIKrC3953hPJXLGgymZMXtm9Gd4KZKNTz6j/cEh/xTagycEoiMwv8X72+aXZ6VEdfMm
+         aAyO8LTn4aHZ0hiZ4VWRLl6zeIUTr8cVElaIaUT0D7Mr+FRkKK4+YXdcEhIapLudEne7
+         8FtA==
+X-Gm-Message-State: APjAAAUxL4yCr0vr7RYLvDEzlr8jghkGVIfwz2G2724DS5QDpTxISNrU
+        gstaLY/6eUvnoJa06lo5nVyty5glP14rvmWF2ikK3g==
+X-Google-Smtp-Source: APXvYqwjluY++F6OSaQv00r/ChhGimpTe8y6dBoea0XPVWP0l6+6ziAqfoXDD9c5KgYidFnDRA4I0wr5o6ncAKvaDFA=
+X-Received: by 2002:a05:651c:326:: with SMTP id b6mr10220733ljp.119.1573872694638;
+ Fri, 15 Nov 2019 18:51:34 -0800 (PST)
 MIME-Version: 1.0
-References: <20191115014846.126007-1-kyan@google.com> <20191115014846.126007-3-kyan@google.com>
- <87k181mh7f.fsf@toke.dk>
-In-Reply-To: <87k181mh7f.fsf@toke.dk>
+References: <157382403672.580235.12525941420808058808.stgit@toke.dk> <157382404118.580235.14216392299709793599.stgit@toke.dk>
+In-Reply-To: <157382404118.580235.14216392299709793599.stgit@toke.dk>
 From:   Kan Yan <kyan@google.com>
-Date:   Fri, 15 Nov 2019 18:21:55 -0800
-Message-ID: <CA+iem5vnp7Sd6jUqhbBiijCDFygSt+g=fh5y43pN9Rp+gegCeA@mail.gmail.com>
-Subject: Re: [v8 PATCH 2/2] mac80211: Implement Airtime-based Queue Limit (AQL)
+Date:   Fri, 15 Nov 2019 18:51:23 -0800
+Message-ID: <CA+iem5tF+TN-osfGxu=EU5Xt1Uq+PcKgBVaoAmZY3a3JzS5JzQ@mail.gmail.com>
+Subject: Re: [PATCH v9 4/4] mac80211: Use Airtime-based Queue Limits (AQL) on
+ packet dequeue
 To:     =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@redhat.com>
 Cc:     Johannes Berg <johannes@sipsolutions.net>,
         linux-wireless <linux-wireless@vger.kernel.org>,
         Make-Wifi-fast <make-wifi-fast@lists.bufferbloat.net>,
-        Felix Fietkau <nbd@nbd.name>, Yibo Zhao <yiboz@codeaurora.org>,
-        John Crispin <john@phrozen.org>,
+        ath10k@lists.infradead.org, John Crispin <john@phrozen.org>,
         Lorenzo Bianconi <lorenzo@kernel.org>,
+        Felix Fietkau <nbd@nbd.name>,
         Rajkumar Manoharan <rmanohar@codeaurora.org>,
         Kevin Hayes <kevinhayes@google.com>
 Content-Type: text/plain; charset="UTF-8"
@@ -65,120 +65,211 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-> > +     if (sta) {
-> > +             atomic_sub(tx_airtime, &sta->airtime[ac].aql_tx_pending);
-> > +             tx_pending =3D atomic_read(&sta->airtime[ac].aql_tx_pendi=
-ng);
-> This is still racy, since you're splitting it over two calls; you'll
-> need to use atomic_sub_return() instead.
-> I figure we've converged now to the point where it actually makes sense
-> to collect everything back into a single series; so I can just fix this
-> and re-send the full series.
+> +static inline u16
+> +ieee80211_info_set_tx_time_est(struct ieee80211_tx_info *info, u16 tx_ti=
+me_est)
+> +{
+> +       /* We only have 10 bits in tx_time_est, so store airtime
+> +        * in increments of 4us and clamp the maximum to 2**12-1
+> +        */
+> +       info->tx_time_est =3D min_t(u16, tx_time_est, 4095) >> 2;
+> +       return info->tx_time_est;
+> +}
+> +
+> +static inline u16
+> +ieee80211_info_get_tx_time_est(struct ieee80211_tx_info *info)
+> +{
+> +       return info->tx_time_est << 2;
+> +}
+> +
 
-Thanks for help fixing this. Yes, atomic_sub_return() is better.
+set_tx_time_est() returns airtime in different units (4us) than
+get_tx_time_est(), this will cause the pending_airtime out of whack.
 
->
->
-> > +             if (WARN_ONCE(tx_pending < 0,
-> > +                           "STA %pM AC %d txq pending airtime underflo=
-w: %u, %u",
-> > +                           sta->addr, ac, tx_pending, tx_airtime))
-> > +                     atomic_cmpxchg(&sta->airtime[ac].aql_tx_pending,
-> > +                                    tx_pending, 0);
-> This could still fail if there's a concurrent modification (and you're
-> not checking the return of the cmpxchg). But at least it won't clobber
-> any updated value, so I guess that is acceptable since we're in "should
-> never happen" territory here :)
+Given the fact that AQL is only tested in very limited platforms,
+should we set the default to disabled by removing this change in the
+next update?
 
-I did this on purpose since I really don't like adding a loop to retry
-here. If aql_tx_pending indeed goes negative (should never happens and
-we got WARN_ONCE() to catch it) and the subsequent atomic_cmpxchg()
-failed (rare racing occasions), it is still ok. In this case,
-aql_tx_pending carries a negative offset and will be reset in one of
-the calls to ieee80211_sta_update_pending_airtime() later.
-aql_tx_pending being negative doesn't have much side-effects, such as
-causing txq stuck.
+-       local->airtime_flags =3D AIRTIME_USE_TX | AIRTIME_USE_RX;
++
++       local->airtime_flags =3D AIRTIME_USE_TX |
++                              AIRTIME_USE_RX |
++                              AIRTIME_USE_AQL;
++       local->aql_threshold =3D IEEE80211_AQL_THRESHOLD;
++       atomic_set(&local->aql_total_pending_airtime, 0);
 
-On Fri, Nov 15, 2019 at 4:56 AM Toke H=C3=B8iland-J=C3=B8rgensen <toke@redh=
+
+On Fri, Nov 15, 2019 at 5:20 AM Toke H=C3=B8iland-J=C3=B8rgensen <toke@redh=
 at.com> wrote:
 >
-> Kan Yan <kyan@google.com> writes:
+> From: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
 >
-> > In order for the Fq_CoDel algorithm integrated in mac80211 layer to ope=
-rate
-> > effectively to control excessive queueing latency, the CoDel algorithm
-> > requires an accurate measure of how long packets stays in the queue, AK=
-A
-> > sojourn time. The sojourn time measured at the mac80211 layer doesn't
-> > include queueing latency in the lower layer (firmware/hardware) and CoD=
-el
-> > expects lower layer to have a short queue. However, most 802.11ac chips=
-ets
-> > offload tasks such TX aggregation to firmware or hardware, thus have a =
-deep
-> > lower layer queue.
-> >
-> > Without a mechanism to control the lower layer queue size, packets only
-> > stay in mac80211 layer transiently before being sent to firmware queue.
-> > As a result, the sojourn time measured by CoDel in the mac80211 layer i=
-s
-> > almost always lower than the CoDel latency target, hence CoDel does lit=
-tle
-> > to control the latency, even when the lower layer queue causes excessiv=
+> The previous commit added the ability to throttle stations when they queu=
 e
-> > latency.
-> >
-> > The Byte Queue Limits (BQL) mechanism is commonly used to address the
-> > similar issue with wired network interface. However, this method cannot=
- be
-> > applied directly to the wireless network interface. "Bytes" is not a
-> > suitable measure of queue depth in the wireless network, as the data ra=
-te
-> > can vary dramatically from station to station in the same network, from=
- a
-> > few Mbps to over Gbps.
-> >
-> > This patch implements an Airtime-based Queue Limit (AQL) to make CoDel =
-work
-> > effectively with wireless drivers that utilized firmware/hardware
-> > offloading. AQL allows each txq to release just enough packets to the l=
-ower
-> > layer to form 1-2 large aggregations to keep hardware fully utilized an=
-d
-> > retains the rest of the frames in mac80211 layer to be controlled by th=
-e
-> > CoDel algorithm.
-> >
-> > Signed-off-by: Kan Yan <kyan@google.com>
-> > [ Toke: Keep API to set pending airtime internal, fix nits in commit ms=
-g ]
-> > Signed-off-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
-> > ---
-> [...]
+> too much airtime in the hardware. This commit enables the functionality b=
+y
+> calculating the expected airtime usage of each packet that is dequeued fr=
+om
+> the TXQs in mac80211, and accounting that as pending airtime.
 >
-> > +     if (sta) {
-> > +             atomic_sub(tx_airtime, &sta->airtime[ac].aql_tx_pending);
-> > +             tx_pending =3D atomic_read(&sta->airtime[ac].aql_tx_pendi=
-ng);
+> The estimated airtime for each skb is stored in the tx_info, so we can
+> subtract the same amount from the running total when the skb is freed or
+> recycled. The throttling mechanism relies on this accounting to be
+> accurate (i.e., that we are not freeing skbs without subtracting any
+> airtime they were accounted for), so we put the subtraction into
+> ieee80211_report_used_skb(). As an optimisation, we also subtract the
+> airtime on regular TX completion, zeroing out the value stored in the
+> packet afterwards, to avoid having to do an expensive lookup of the stati=
+on
+> from the packet data on every packet.
 >
-> This is still racy, since you're splitting it over two calls; you'll
-> need to use atomic_sub_return() instead.
+> This patch does *not* include any mechanism to wake a throttled TXQ again=
+,
+> on the assumption that this will happen anyway as a side effect of whatev=
+er
+> freed the skb (most commonly a TX completion).
 >
-> I figure we've converged now to the point where it actually makes sense
-> to collect everything back into a single series; so I can just fix this
-> and re-send the full series.
+> Signed-off-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
+> ---
+>  include/net/mac80211.h |   16 ++++++++++++++++
+>  net/mac80211/status.c  |   26 ++++++++++++++++++++++++++
+>  net/mac80211/tx.c      |   18 ++++++++++++++++++
+>  3 files changed, 60 insertions(+)
 >
-> > +             if (WARN_ONCE(tx_pending < 0,
-> > +                           "STA %pM AC %d txq pending airtime underflo=
-w: %u, %u",
-> > +                           sta->addr, ac, tx_pending, tx_airtime))
-> > +                     atomic_cmpxchg(&sta->airtime[ac].aql_tx_pending,
-> > +                                    tx_pending, 0);
+> diff --git a/include/net/mac80211.h b/include/net/mac80211.h
+> index ba3f33cc41ea..dcb4a1f19829 100644
+> --- a/include/net/mac80211.h
+> +++ b/include/net/mac80211.h
+> @@ -1060,6 +1060,22 @@ struct ieee80211_tx_info {
+>         };
+>  };
 >
-> This could still fail if there's a concurrent modification (and you're
-> not checking the return of the cmpxchg). But at least it won't clobber
-> any updated value, so I guess that is acceptable since we're in "should
-> never happen" territory here :)
+> +static inline u16
+> +ieee80211_info_set_tx_time_est(struct ieee80211_tx_info *info, u16 tx_ti=
+me_est)
+> +{
+> +       /* We only have 10 bits in tx_time_est, so store airtime
+> +        * in increments of 4us and clamp the maximum to 2**12-1
+> +        */
+> +       info->tx_time_est =3D min_t(u16, tx_time_est, 4095) >> 2;
+> +       return info->tx_time_est;
+> +}
+> +
+> +static inline u16
+> +ieee80211_info_get_tx_time_est(struct ieee80211_tx_info *info)
+> +{
+> +       return info->tx_time_est << 2;
+> +}
+> +
+>  /**
+>   * struct ieee80211_tx_status - extended tx status info for rate control
+>   *
+> diff --git a/net/mac80211/status.c b/net/mac80211/status.c
+> index 0e51def35b8a..39da82b35be9 100644
+> --- a/net/mac80211/status.c
+> +++ b/net/mac80211/status.c
+> @@ -670,12 +670,26 @@ static void ieee80211_report_used_skb(struct ieee80=
+211_local *local,
+>                                       struct sk_buff *skb, bool dropped)
+>  {
+>         struct ieee80211_tx_info *info =3D IEEE80211_SKB_CB(skb);
+> +       u16 tx_time_est =3D ieee80211_info_get_tx_time_est(info);
+>         struct ieee80211_hdr *hdr =3D (void *)skb->data;
+>         bool acked =3D info->flags & IEEE80211_TX_STAT_ACK;
 >
-> -Toke
+>         if (dropped)
+>                 acked =3D false;
+>
+> +       if (tx_time_est) {
+> +               struct sta_info *sta;
+> +
+> +               rcu_read_lock();
+> +
+> +               sta =3D sta_info_get_by_addrs(local, hdr->addr1, hdr->add=
+r2);
+> +               ieee80211_sta_update_pending_airtime(local, sta,
+> +                                                    skb_get_queue_mappin=
+g(skb),
+> +                                                    tx_time_est,
+> +                                                    true);
+> +               rcu_read_unlock();
+> +       }
+> +
+>         if (info->flags & IEEE80211_TX_INTFL_MLME_CONN_TX) {
+>                 struct ieee80211_sub_if_data *sdata;
+>
+> @@ -877,6 +891,7 @@ static void __ieee80211_tx_status(struct ieee80211_hw=
+ *hw,
+>         struct ieee80211_bar *bar;
+>         int shift =3D 0;
+>         int tid =3D IEEE80211_NUM_TIDS;
+> +       u16 tx_time_est;
+>
+>         rates_idx =3D ieee80211_tx_get_rates(hw, info, &retry_count);
+>
+> @@ -986,6 +1001,17 @@ static void __ieee80211_tx_status(struct ieee80211_=
+hw *hw,
+>                         ieee80211_sta_register_airtime(&sta->sta, tid,
+>                                                        info->status.tx_ti=
+me, 0);
+>
+> +               if ((tx_time_est =3D ieee80211_info_get_tx_time_est(info)=
+) > 0) {
+> +                       /* Do this here to avoid the expensive lookup of =
+the sta
+> +                        * in ieee80211_report_used_skb().
+> +                        */
+> +                       ieee80211_sta_update_pending_airtime(local, sta,
+> +                                                            skb_get_queu=
+e_mapping(skb),
+> +                                                            tx_time_est,
+> +                                                            true);
+> +                       ieee80211_info_set_tx_time_est(info, 0);
+> +               }
+> +
+>                 if (ieee80211_hw_check(&local->hw, REPORTS_TX_ACK_STATUS)=
+) {
+>                         if (info->flags & IEEE80211_TX_STAT_ACK) {
+>                                 if (sta->status_stats.lost_packets)
+> diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+> index aafc67b562eb..2fb6571453e7 100644
+> --- a/net/mac80211/tx.c
+> +++ b/net/mac80211/tx.c
+> @@ -3551,6 +3551,9 @@ struct sk_buff *ieee80211_tx_dequeue(struct ieee802=
+11_hw *hw,
+>
+>         WARN_ON_ONCE(softirq_count() =3D=3D 0);
+>
+> +       if (!ieee80211_txq_airtime_check(hw, txq))
+> +               return NULL;
+> +
+>  begin:
+>         spin_lock_bh(&fq->lock);
+>
+> @@ -3661,6 +3664,21 @@ struct sk_buff *ieee80211_tx_dequeue(struct ieee80=
+211_hw *hw,
+>         }
+>
+>         IEEE80211_SKB_CB(skb)->control.vif =3D vif;
+> +
+> +       if (local->airtime_flags & AIRTIME_USE_AQL) {
+> +               u32 airtime;
+> +
+> +               airtime =3D ieee80211_calc_expected_tx_airtime(hw, vif, t=
+xq->sta,
+> +                                                            skb->len);
+> +               if (airtime) {
+> +                       airtime =3D ieee80211_info_set_tx_time_est(info, =
+airtime);
+> +                       ieee80211_sta_update_pending_airtime(local, tx.st=
+a,
+> +                                                            txq->ac,
+> +                                                            airtime,
+> +                                                            false);
+> +               }
+> +       }
+> +
+>         return skb;
+>
+>  out:
 >
