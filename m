@@ -2,81 +2,83 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B2BCFF4A9
-	for <lists+linux-wireless@lfdr.de>; Sat, 16 Nov 2019 19:21:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4FCA7FF5AC
+	for <lists+linux-wireless@lfdr.de>; Sat, 16 Nov 2019 22:01:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727685AbfKPSVo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 16 Nov 2019 13:21:44 -0500
-Received: from mail.adapt-ip.com ([173.164.178.19]:33181 "EHLO
-        mail.adapt-ip.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727666AbfKPSVn (ORCPT
+        id S1727645AbfKPVBD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 16 Nov 2019 16:01:03 -0500
+Received: from shards.monkeyblade.net ([23.128.96.9]:53748 "EHLO
+        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727485AbfKPVBD (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 16 Nov 2019 13:21:43 -0500
-Received: from localhost (unknown [127.0.0.1])
-        by mail.adapt-ip.com (Postfix) with ESMTP id 7A32A2F031C;
-        Sat, 16 Nov 2019 18:12:40 +0000 (UTC)
-X-Virus-Scanned: amavisd-new at web.adapt-ip.com
-Received: from mail.adapt-ip.com ([127.0.0.1])
-        by localhost (web.adapt-ip.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id gIm4S85i_uU5; Sat, 16 Nov 2019 10:12:37 -0800 (PST)
-Received: from tractor.ibsgaard.io (c-73-202-5-52.hsd1.ca.comcast.net [73.202.5.52])
-        (using TLSv1.2 with cipher DHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: thomas@adapt-ip.com)
-        by mail.adapt-ip.com (Postfix) with ESMTPSA id 4FBFA2F0322;
-        Sat, 16 Nov 2019 10:12:35 -0800 (PST)
-From:   Thomas Pedersen <thomas@adapt-ip.com>
-To:     Johannes Berg <johannes.berg@intel.com>
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
-        Thomas Pedersen <thomas@adapt-ip.com>
-Subject: [PATCH 3/3] mac80211: consider QoS Null frames for STA_NULLFUNC_ACKED
-Date:   Sat, 16 Nov 2019 10:12:33 -0800
-Message-Id: <20191116181233.1037-5-thomas@adapt-ip.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191116181233.1037-1-thomas@adapt-ip.com>
-References: <20191116181233.1037-1-thomas@adapt-ip.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        Sat, 16 Nov 2019 16:01:03 -0500
+Received: from localhost (unknown [IPv6:2601:601:9f00:1e2::3d5])
+        (using TLSv1 with cipher AES256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id A1578151A15F1;
+        Sat, 16 Nov 2019 13:01:01 -0800 (PST)
+Date:   Sat, 16 Nov 2019 13:01:01 -0800 (PST)
+Message-Id: <20191116.130101.268806870571558138.davem@davemloft.net>
+To:     alobakin@dlink.ru
+Cc:     ecree@solarflare.com, jiri@mellanox.com, edumazet@google.com,
+        idosch@mellanox.com, pabeni@redhat.com, petrm@mellanox.com,
+        sd@queasysnail.net, f.fainelli@gmail.com,
+        jaswinder.singh@linaro.org, manishc@marvell.com,
+        GR-Linux-NIC-Dev@marvell.com, johannes.berg@intel.com,
+        emmanuel.grumbach@intel.com, luciano.coelho@intel.com,
+        linuxwifi@intel.com, kvalo@codeaurora.org, netdev@vger.kernel.org,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 net-next] net: core: allow fast GRO for skbs with
+ Ethernet header in head
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <20191115091135.13487-1-alobakin@dlink.ru>
+References: <20191115091135.13487-1-alobakin@dlink.ru>
+X-Mailer: Mew version 6.8 on Emacs 26.1
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Sat, 16 Nov 2019 13:01:02 -0800 (PST)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Commit 7b6ddeaf27ec ("mac80211: use QoS NDP for AP probing")
-let STAs send QoS Null frames as PS triggers if the AP was
-a QoS STA.  However, the mac80211 PS stack relies on an
-interface flag IEEE80211_STA_NULLFUNC_ACKED for
-determining trigger frame ACK, which was not being set for
-acked non-QoS Null frames. The effect is an inability to
-trigger hardware sleep via IEEE80211_CONF_PS since the QoS
-Null frame was seemingly never acked.
+From: Alexander Lobakin <alobakin@dlink.ru>
+Date: Fri, 15 Nov 2019 12:11:35 +0300
 
-This bug only applies to drivers which set both
-IEEE80211_HW_REPORTS_TX_ACK_STATUS and
-IEEE80211_HW_PS_NULLFUNC_STACK.
+> Commit 78d3fd0b7de8 ("gro: Only use skb_gro_header for completely
+> non-linear packets") back in May'09 (v2.6.31-rc1) has changed the
+> original condition '!skb_headlen(skb)' to
+> 'skb->mac_header == skb->tail' in gro_reset_offset() saying: "Since
+> the drivers that need this optimisation all provide completely
+> non-linear packets" (note that this condition has become the current
+> 'skb_mac_header(skb) == skb_tail_pointer(skb)' later with commmit
+> ced14f6804a9 ("net: Correct comparisons and calculations using
+> skb->tail and skb-transport_header") without any functional changes).
+> 
+> For now, we have the following rough statistics for v5.4-rc7:
+> 1) napi_gro_frags: 14
+> 2) napi_gro_receive with skb->head containing (most of) payload: 83
+> 3) napi_gro_receive with skb->head containing all the headers: 20
+> 4) napi_gro_receive with skb->head containing only Ethernet header: 2
+> 
+> With the current condition, fast GRO with the usage of
+> NAPI_GRO_CB(skb)->frag0 is available only in the [1] case.
+> Packets pushed by [2] and [3] go through the 'slow' path, but
+> it's not a problem for them as they already contain all the needed
+> headers in skb->head, so pskb_may_pull() only moves skb->data.
+> 
+> The layout of skbs in the fourth [4] case at the moment of
+> dev_gro_receive() is identical to skbs that have come through [1],
+> as napi_frags_skb() pulls Ethernet header to skb->head. The only
+> difference is that the mentioned condition is always false for them,
+> because skb_put() and friends irreversibly alter the tail pointer.
+> They also go through the 'slow' path, but now every single
+> pskb_may_pull() in every single .gro_receive() will call the *really*
+> slow __pskb_pull_tail() to pull headers to head. This significantly
+> decreases the overall performance for no visible reasons.
+ ...
+> Signed-off-by: Alexander Lobakin <alobakin@dlink.ru>
 
-Detect the acked QoS Null frame to restore STA power save.
-
-Fixes: 7b6ddeaf27ec ("mac80211: use QoS NDP for AP probing")
-Signed-off-by: Thomas Pedersen <thomas@adapt-ip.com>
----
- net/mac80211/status.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/net/mac80211/status.c b/net/mac80211/status.c
-index a88e3bf17e9d..17ed4d915707 100644
---- a/net/mac80211/status.c
-+++ b/net/mac80211/status.c
-@@ -870,7 +870,8 @@ static void __ieee80211_tx_status(struct ieee80211_hw *hw,
- 			I802_DEBUG_INC(local->dot11FailedCount);
- 	}
- 
--	if (ieee80211_is_nullfunc(fc) && ieee80211_has_pm(fc) &&
-+	if ((ieee80211_is_nullfunc(fc) || ieee80211_is_qos_nullfunc(fc)) &&
-+	    ieee80211_has_pm(fc) &&
- 	    ieee80211_hw_check(&local->hw, REPORTS_TX_ACK_STATUS) &&
- 	    !(info->flags & IEEE80211_TX_CTL_INJECTED) &&
- 	    local->ps_sdata && !(local->scanning)) {
--- 
-2.20.1
-
+Applied to net-next, thanks.
