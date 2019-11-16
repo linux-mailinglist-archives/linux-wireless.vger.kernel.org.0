@@ -2,72 +2,141 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F1D8FEC9B
-	for <lists+linux-wireless@lfdr.de>; Sat, 16 Nov 2019 15:12:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 68620FED04
+	for <lists+linux-wireless@lfdr.de>; Sat, 16 Nov 2019 16:41:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727612AbfKPOMo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 16 Nov 2019 09:12:44 -0500
-Received: from mail-ed1-f67.google.com ([209.85.208.67]:46499 "EHLO
-        mail-ed1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727589AbfKPOMn (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 16 Nov 2019 09:12:43 -0500
-Received: by mail-ed1-f67.google.com with SMTP id t11so3821684eds.13
-        for <linux-wireless@vger.kernel.org>; Sat, 16 Nov 2019 06:12:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=csjo9y8XW84CW+SeZi9M8GqQdJ46ydt1zcA+PcboBZs=;
-        b=C7SuzcwSa3QR8T6fqWOcMxv7zDjJcgRcoNzgWFkPJ/u8mUFNLeUXt9kQg61c42Ce1N
-         YXjxKTyr0wGKmMGy10u5lDIqubWiqqlmXcnJiKekcFzmhRXCgC2yFgJcxoQ9oLV5y0k/
-         KQU0HVXNjc1wDxy2Qk/wpGzPvIMVB2J7pV7YG9e33gj1Q50kgjqg0XKzwqs/mY+oBl7R
-         oTFJi+fL4fOniRNcvFNyQufyCz6UZgbR3ZI4h03VyrVHhhkAo7HE+wYFn4z6Oa5gc/sF
-         YzrDI0qJia2xyX873pmTnnlpvbJbvemPtOYHnuAHdOAVexTJOY2tDoCqFL2tZawO6+h4
-         Fscw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=csjo9y8XW84CW+SeZi9M8GqQdJ46ydt1zcA+PcboBZs=;
-        b=g+EN8wV91XdDR3OvnD7QWF9B7TYJM16ZG6UVAU8KHSRdkKKICOR/pK+Dlp3TJBqKme
-         UzWX5m+Ua8HB3oq3GHCxVcC/kMxidskTXoWstfWs164SiP5dFSoBIhwQie0D9noSfpQY
-         rnLEcFQofWaFFqEZABVx569LXLszWBDoJH3kr60WA/HbZ7kY/7wt5DJK4e5QKb4HJOWc
-         5TuYdJl28R5vbSJafq5RkpgZb0XqsDzFJUZg6R3bjAZ4cKkaW6IyLGAXx6qQ2zrw3MWl
-         Yuy5GzSXQgwc7WiqDo8PqJzTWQYHmApqdTIL9cV3laykwl/CRho9lz0c1oGI7dZO6qt7
-         nWQw==
-X-Gm-Message-State: APjAAAXYp1JqVVQHb0bH+hw3XOji51GG32frXAuIHkvOXb7jCLPEwMRo
-        vDnJYaM1qkYqYkwWvgR19Lhbi8g8+APxoR7bzBM=
-X-Google-Smtp-Source: APXvYqzxsRevL/Yd3Jd8uPGoWdTLVJaPY5f3xYtNwxVeTtKbiWcnq1pqKcMwMDTobNR1UGjT9YBbiYHORC0j6OjSA2U=
-X-Received: by 2002:a17:906:b246:: with SMTP id ce6mr9718926ejb.298.1573913562175;
- Sat, 16 Nov 2019 06:12:42 -0800 (PST)
+        id S1727939AbfKPPlg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 16 Nov 2019 10:41:36 -0500
+Received: from mail.kernel.org ([198.145.29.99]:44670 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727866AbfKPPle (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 16 Nov 2019 10:41:34 -0500
+Received: from sasha-vm.mshome.net (unknown [50.234.116.4])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 8E57220718;
+        Sat, 16 Nov 2019 15:41:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1573918894;
+        bh=AyTUmJ/PdREZeE/3RwDvKntTI3oiK+VLMX9m0h1ozyc=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=Q740NAToJcLN0mEN6M6ivGVDmBB2DsnzbcgSSMLd3ijuUScA4ZDwr9vQef4vbPPWt
+         7ib/XlKhfoTEEWNxjzmMsO4mGYzo7VP+pW53QWR2ON7CH1t5XunklyMMCdxbgmc2rG
+         zXUG4PdCZBNVPefH/eNyf8JgGqFKzcdQKgcGyg6Q=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Ali MJ Al-Nasrawy <alimjalnasrawy@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Sasha Levin <sashal@kernel.org>,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        brcm80211-dev-list@cypress.com, netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.19 018/237] brcmsmac: AP mode: update beacon when TIM changes
+Date:   Sat, 16 Nov 2019 10:37:33 -0500
+Message-Id: <20191116154113.7417-18-sashal@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20191116154113.7417-1-sashal@kernel.org>
+References: <20191116154113.7417-1-sashal@kernel.org>
 MIME-Version: 1.0
-Received: by 2002:a17:906:ce2b:0:0:0:0 with HTTP; Sat, 16 Nov 2019 06:12:41
- -0800 (PST)
-Reply-To: kamararose90@gmail.com
-From:   Rose Kamara <rosekamara018@gmail.com>
-Date:   Sat, 16 Nov 2019 14:12:41 +0000
-Message-ID: <CAKanjQVHSdX_zx9bMErBibfd2fxkVOADctBH25FwMxzST+RXKw@mail.gmail.com>
-Subject: 
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Caro Sr / Sra,
-Meu nome =C3=A9 Miss Rose Kamara, me deparei com seu e-mail. Este =C3=A9 um
-e-mail confidencial, fui diagnosticado com c=C3=A2ncer de es=C3=B4fago, des=
-afiou
-todas as formas de tratamento m=C3=A9dico e No momento, tenho apenas alguns
-meses de vida e quero que voc=C3=AA use esse dinheiro Onze milh=C3=B5es e
-quinhentos mil d=C3=B3lares (11,5 milh=C3=B5es de d=C3=B3lares) para instit=
-ui=C3=A7=C3=B5es de
-caridade como minha promessa para Deus. Recebo 25% para voc=C3=AA e sua
-fam=C3=ADlia. Vou lhe dar mais detalhes sobre como receba o dinheiro. Volte
-para mim o mais urgente poss=C3=ADvel atrav=C3=A9s do meu email particular:
-kamararose90@gmail.com, espero sua resposta.
-Sinceramente
-Miss Rose
+From: Ali MJ Al-Nasrawy <alimjalnasrawy@gmail.com>
+
+[ Upstream commit 2258ee58baa554609a3cc3996276e4276f537b6d ]
+
+Beacons are not updated to reflect TIM changes. This is not compliant with
+power-saving client stations as the beacons do not have valid TIM and can
+cause the network to stall at random occasions and to have highly variable
+latencies.
+Fix it by updating beacon templates on mac80211 set_tim callback.
+
+Addresses an issue described in:
+https://marc.info/?i=20180911163534.21312d08%20()%20manjaro
+
+Signed-off-by: Ali MJ Al-Nasrawy <alimjalnasrawy@gmail.com>
+Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ .../broadcom/brcm80211/brcmsmac/mac80211_if.c | 26 +++++++++++++++++++
+ .../broadcom/brcm80211/brcmsmac/main.h        |  1 +
+ 2 files changed, 27 insertions(+)
+
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c
+index ecc89e718b9c1..23118207b661e 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c
+@@ -502,6 +502,7 @@ brcms_ops_add_interface(struct ieee80211_hw *hw, struct ieee80211_vif *vif)
+ 	}
+ 
+ 	spin_lock_bh(&wl->lock);
++	wl->wlc->vif = vif;
+ 	wl->mute_tx = false;
+ 	brcms_c_mute(wl->wlc, false);
+ 	if (vif->type == NL80211_IFTYPE_STATION)
+@@ -519,6 +520,11 @@ brcms_ops_add_interface(struct ieee80211_hw *hw, struct ieee80211_vif *vif)
+ static void
+ brcms_ops_remove_interface(struct ieee80211_hw *hw, struct ieee80211_vif *vif)
+ {
++	struct brcms_info *wl = hw->priv;
++
++	spin_lock_bh(&wl->lock);
++	wl->wlc->vif = NULL;
++	spin_unlock_bh(&wl->lock);
+ }
+ 
+ static int brcms_ops_config(struct ieee80211_hw *hw, u32 changed)
+@@ -937,6 +943,25 @@ static void brcms_ops_set_tsf(struct ieee80211_hw *hw,
+ 	spin_unlock_bh(&wl->lock);
+ }
+ 
++static int brcms_ops_beacon_set_tim(struct ieee80211_hw *hw,
++				 struct ieee80211_sta *sta, bool set)
++{
++	struct brcms_info *wl = hw->priv;
++	struct sk_buff *beacon = NULL;
++	u16 tim_offset = 0;
++
++	spin_lock_bh(&wl->lock);
++	if (wl->wlc->vif)
++		beacon = ieee80211_beacon_get_tim(hw, wl->wlc->vif,
++						  &tim_offset, NULL);
++	if (beacon)
++		brcms_c_set_new_beacon(wl->wlc, beacon, tim_offset,
++				       wl->wlc->vif->bss_conf.dtim_period);
++	spin_unlock_bh(&wl->lock);
++
++	return 0;
++}
++
+ static const struct ieee80211_ops brcms_ops = {
+ 	.tx = brcms_ops_tx,
+ 	.start = brcms_ops_start,
+@@ -955,6 +980,7 @@ static const struct ieee80211_ops brcms_ops = {
+ 	.flush = brcms_ops_flush,
+ 	.get_tsf = brcms_ops_get_tsf,
+ 	.set_tsf = brcms_ops_set_tsf,
++	.set_tim = brcms_ops_beacon_set_tim,
+ };
+ 
+ void brcms_dpc(unsigned long data)
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.h b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.h
+index c4d135cff04ad..9f76b880814e8 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.h
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.h
+@@ -563,6 +563,7 @@ struct brcms_c_info {
+ 
+ 	struct wiphy *wiphy;
+ 	struct scb pri_scb;
++	struct ieee80211_vif *vif;
+ 
+ 	struct sk_buff *beacon;
+ 	u16 beacon_tim_offset;
+-- 
+2.20.1
+
