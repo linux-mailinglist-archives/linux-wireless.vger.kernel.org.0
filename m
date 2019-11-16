@@ -2,39 +2,41 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B010FEE40
-	for <lists+linux-wireless@lfdr.de>; Sat, 16 Nov 2019 16:50:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F1747FEEA7
+	for <lists+linux-wireless@lfdr.de>; Sat, 16 Nov 2019 16:53:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730501AbfKPPuX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 16 Nov 2019 10:50:23 -0500
-Received: from mail.kernel.org ([198.145.29.99]:58380 "EHLO mail.kernel.org"
+        id S1731154AbfKPPxM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 16 Nov 2019 10:53:12 -0500
+Received: from mail.kernel.org ([198.145.29.99]:34192 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730492AbfKPPuW (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 16 Nov 2019 10:50:22 -0500
+        id S1728295AbfKPPxL (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 16 Nov 2019 10:53:11 -0500
 Received: from sasha-vm.mshome.net (unknown [50.234.116.4])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 9172E20855;
-        Sat, 16 Nov 2019 15:50:21 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id DE44920728;
+        Sat, 16 Nov 2019 15:53:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1573919421;
-        bh=w+q6BL0CoPHRaEY79kEP5MAZuqvdmh1WzmsnEEQrdhw=;
+        s=default; t=1573919591;
+        bh=huLGE5ggeIgXKytVG3OtvdU6vFNW9/hzsvZZSdna6ZU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FWF5ZH78viL2eZsjspaUY7vW9PcOte73p3xNF3+wKlU05I6ZSKfb+lZEhKXkQNlsa
-         BI3KKmTgg4G30/CQ9NXqCji06jisLJBVH9Bs2RNB/yTd/1/EcK7TArnBUjEWolEqsq
-         q8PGxa2YQGY8ZLh+AZDngHJBtLiUIabnZMINO/84=
+        b=kUr0huZgIg9x2fhnXNIBApUVAIK51Yzn+c8vOxTTCEZt9msdgCClbTR0Uyzvcuy9Y
+         ltixpAF/zXpYRjpRthoCh+f3lzRv3LsZ4ZyMKDPhTthmBjHvaAGId+JUeFutgPd7iu
+         2lknMJ28TaP/1iCvGUEAIzlqBVIVHqlqMzsFlA3Q=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+Cc:     Ali MJ Al-Nasrawy <alimjalnasrawy@gmail.com>,
         Kalle Valo <kvalo@codeaurora.org>,
         Sasha Levin <sashal@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 121/150] wlcore: Fix the return value in case of error in 'wlcore_vendor_cmd_smart_config_start()'
-Date:   Sat, 16 Nov 2019 10:46:59 -0500
-Message-Id: <20191116154729.9573-121-sashal@kernel.org>
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        brcm80211-dev-list@cypress.com, netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.9 80/99] brcmsmac: never log "tid x is not agg'able" by default
+Date:   Sat, 16 Nov 2019 10:50:43 -0500
+Message-Id: <20191116155103.10971-80-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191116154729.9573-1-sashal@kernel.org>
-References: <20191116154729.9573-1-sashal@kernel.org>
+In-Reply-To: <20191116155103.10971-1-sashal@kernel.org>
+References: <20191116155103.10971-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -44,38 +46,37 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Ali MJ Al-Nasrawy <alimjalnasrawy@gmail.com>
 
-[ Upstream commit 3419348a97bcc256238101129d69b600ceb5cc70 ]
+[ Upstream commit 96fca788e5788b7ea3b0050eb35a343637e0a465 ]
 
-We return 0 unconditionally at the end of
-'wlcore_vendor_cmd_smart_config_start()'.
-However, 'ret' is set to some error codes in several error handling paths
-and we already return some error codes at the beginning of the function.
+This message greatly spams the log under heavy Tx of frames with BK access
+class which is especially true when operating as AP. It is also not informative
+as the "agg'ablity" of TIDs are set once and never change.
+Fix this by logging only in debug mode.
 
-Return 'ret' instead to propagate the error code.
-
-Fixes: 80ff8063e87c ("wlcore: handle smart config vendor commands")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: Ali MJ Al-Nasrawy <alimjalnasrawy@gmail.com>
 Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ti/wlcore/vendor_cmd.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c    | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/ti/wlcore/vendor_cmd.c b/drivers/net/wireless/ti/wlcore/vendor_cmd.c
-index 5c0bcb1fe1a1f..e75c3cee0252f 100644
---- a/drivers/net/wireless/ti/wlcore/vendor_cmd.c
-+++ b/drivers/net/wireless/ti/wlcore/vendor_cmd.c
-@@ -66,7 +66,7 @@ wlcore_vendor_cmd_smart_config_start(struct wiphy *wiphy,
- out:
- 	mutex_unlock(&wl->mutex);
- 
--	return 0;
-+	return ret;
- }
- 
- static int
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c
+index a620b2f6c7c4c..b820e80d4b4c2 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c
+@@ -846,8 +846,8 @@ brcms_ops_ampdu_action(struct ieee80211_hw *hw,
+ 		status = brcms_c_aggregatable(wl->wlc, tid);
+ 		spin_unlock_bh(&wl->lock);
+ 		if (!status) {
+-			brcms_err(wl->wlc->hw->d11core,
+-				  "START: tid %d is not agg\'able\n", tid);
++			brcms_dbg_ht(wl->wlc->hw->d11core,
++				     "START: tid %d is not agg\'able\n", tid);
+ 			return -EINVAL;
+ 		}
+ 		ieee80211_start_tx_ba_cb_irqsafe(vif, sta->addr, tid);
 -- 
 2.20.1
 
