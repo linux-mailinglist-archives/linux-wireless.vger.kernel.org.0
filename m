@@ -2,64 +2,64 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 03A8B100051
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 Nov 2019 09:27:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D1DF1100053
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 Nov 2019 09:27:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726740AbfKRI07 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 18 Nov 2019 03:26:59 -0500
-Received: from mx0b-00183b01.pphosted.com ([67.231.157.42]:10636 "EHLO
+        id S1726774AbfKRI1K (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 18 Nov 2019 03:27:10 -0500
+Received: from mx0b-00183b01.pphosted.com ([67.231.157.42]:43296 "EHLO
         mx0a-00183b01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726371AbfKRI06 (ORCPT
+        by vger.kernel.org with ESMTP id S1726748AbfKRI1J (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 18 Nov 2019 03:26:58 -0500
-Received: from pps.filterd (m0048104.ppops.net [127.0.0.1])
-        by mx0b-00183b01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id xAI8NxTe015074
-        for <linux-wireless@vger.kernel.org>; Mon, 18 Nov 2019 01:26:56 -0700
-Received: from nam05-co1-obe.outbound.protection.outlook.com (mail-co1nam05lp2052.outbound.protection.outlook.com [104.47.48.52])
-        by mx0b-00183b01.pphosted.com with ESMTP id 2wad7bc1rc-1
+        Mon, 18 Nov 2019 03:27:09 -0500
+Received: from pps.filterd (m0059811.ppops.net [127.0.0.1])
+        by mx0b-00183b01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id xAI8Ku74011085
+        for <linux-wireless@vger.kernel.org>; Mon, 18 Nov 2019 01:27:07 -0700
+Received: from nam01-bn3-obe.outbound.protection.outlook.com (mail-bn3nam01lp2055.outbound.protection.outlook.com [104.47.33.55])
+        by mx0b-00183b01.pphosted.com with ESMTP id 2wacguuxqx-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <linux-wireless@vger.kernel.org>; Mon, 18 Nov 2019 01:26:56 -0700
+        for <linux-wireless@vger.kernel.org>; Mon, 18 Nov 2019 01:27:07 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=A7uJWuqebZd80X91kWSflonD3B+T8Q1i8lRDLOKGHV9DxhSopgAzXpcDsIHVg6dNuzWWnhjXPKRfvUtUDILGBKk9FcJhKJ0Gojwpv/p4pSTuhLDL59BTUjuoctHiJmBtYd/6Dg04xAYa9JWP5cxqZEWENR5iZwRUpckia15P5wXtJKDJ4VFiV0BlsNKFRwOGRBhlqWbf4UiRBf40NoG8274CCDDs8Q/3io0wAJ4dBlb5BKVUGw0PrwpFwfN97Kjd1Qilk1+Yc1SjIQgNeISULnpOqOBNRiPJU2W+fKXYjLvlIyxUhOpQimKCHHlzTnKpp6uDNSeIdLh1rDbXaMKUFQ==
+ b=crY7DZEiSCuRYFWjBsb/LLOblr0wizB+g9S3E1swtios+eO7EhBewJUmtvy91Y+P2LmUOHWMtyx/hMbTw+A4C8cEH7yxTsiLe0oFE4hIZz3fugU6HqJV+wWPZnPa0K7CGpHYkIfjydWmUC0JIrcTNRLCInEaspX9mYQ8FXsyGcidM1+1eG84DWO7+NqN4sgSDhTpv9YeZtidLnQzWDPdLqt/+L3oALR0rtuNbZALoIUBUpM8T6tHuKMc61Wvvldy/3AXVR7667mgED0hpcmaK5cUlfy9rkXFJfk1pG0/cyr4voNZHOz4dfUf5of5RqtBDweVBGxVkZS9RVMqFg7h5A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=DdvrTNHhKKMnUidpFvPhzQn9hXJVCe3h6fBbTrVZdVI=;
- b=YHAYT57YhQUFembzDaApdjKJKkM3tmEaGysrIM1C7ZD6VcwjZ//eEdy4hTf9t7KFhhsOkGp6liZrIvnbQDlrzlyzQNsMa+5Iugus+8ZiUPxab7QNCEEoyINs4h2fgF+0gUP0Bn7Pw6GmGcT7sN1CJfzIB/Z5Q+IFiYVS9ALWvJoXRTbPw4g42oddBLU9VfFNYnybNBMphX7F/ZXes+BRLkcpjoTC5AgPglZWzD+GugOnxojSQ4UTsNEQ9L7W4TGr6kdmomoHiSgJ5jvcV9sP2Wq4GUqXJ1VSqurJ9IHM3CrutXN1zLAGHFJdGo4Rv1LdA8ATiYLBDGXgvpd1RAmySg==
+ bh=MV0/t9xiXFPzko9FTw8FhJ3Hx0pphJPfN99MKIP52zs=;
+ b=PTY8NYSMZKNLpr4KKh/YBBy8YpXUZ4k5MWZoOY8sYloxADysrNV7R1UGOO+wZ1t42zpMAEIe4IdSYStOZBlQRaqmdrOtz/GH1M7avnIqKHJKePktYH+p9OZSyScaagRINF5R0nVWtKwgHZUQo4xOQgGtD1SwCWJ8H9ZnWJK3EF06HId9g1+x7qmLh4YqA0sHZsnjNV/Od3D1uVT2e8h2YVmgf7jlRI5svm+h7xFcnAFbsq0fNvjmNwQT71kEWPep4EM4Ifk3VI5FVx4O4owBNhSr3+a0jIwkChW48UhaAU/S3zqu8r52sLnHsnlZYGkpAS5WHcksMpvxj02zAgGm0w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=quantenna.com; dmarc=pass action=none
  header.from=quantenna.com; dkim=pass header.d=quantenna.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quantenna.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=DdvrTNHhKKMnUidpFvPhzQn9hXJVCe3h6fBbTrVZdVI=;
- b=aj8tntAqCKIvs0uGQrrf5YI8Gs7hXRfwrAI1PPELIccTqPIFw+V78coMiervBJ4yhTHehXS/8zpgk3AayImqrq4qEONsoSW4UQwNMIud2qNSyJ49GIOKGGE+Odd5xTsy7aA+Sv4dZnHuzhy2NfCXuQF+dbgD9hhobdy9Pereip8=
-Received: from CY4PR0501MB3763.namprd05.prod.outlook.com (52.132.102.159) by
- CY4PR0501MB3730.namprd05.prod.outlook.com (52.132.99.148) with Microsoft SMTP
+ bh=MV0/t9xiXFPzko9FTw8FhJ3Hx0pphJPfN99MKIP52zs=;
+ b=m+B/DjZlV0oQ/j1Iu2IYVbeqQKADXEGnxyYDlSCSq6kQ70qRMJUTzGFYzd+1ng5Q3TcKUgiiK9T+D9LmvXBBsrSHrUWlju9C4IkXK8O4JDKQFvLdlSdprl4+5ru8LMT/GWL2G4HyruMxdXcvWEjhzd0Ih84F2udhNoTGqsI9fTA=
+Received: from BYAPR05MB5624.namprd05.prod.outlook.com (20.177.186.205) by
+ BYAPR05MB4408.namprd05.prod.outlook.com (20.176.250.154) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2474.7; Mon, 18 Nov 2019 08:26:53 +0000
-Received: from CY4PR0501MB3763.namprd05.prod.outlook.com
- ([fe80::8c7a:969e:4ab7:ffc5]) by CY4PR0501MB3763.namprd05.prod.outlook.com
- ([fe80::8c7a:969e:4ab7:ffc5%4]) with mapi id 15.20.2474.012; Mon, 18 Nov 2019
- 08:26:53 +0000
+ 15.20.2474.7; Mon, 18 Nov 2019 08:27:05 +0000
+Received: from BYAPR05MB5624.namprd05.prod.outlook.com
+ ([fe80::7904:4402:567b:e628]) by BYAPR05MB5624.namprd05.prod.outlook.com
+ ([fe80::7904:4402:567b:e628%6]) with mapi id 15.20.2474.012; Mon, 18 Nov 2019
+ 08:27:05 +0000
 Received: from SN6PR05MB4928.namprd05.prod.outlook.com (52.135.117.74) by
  SN6PR05MB6320.namprd05.prod.outlook.com (20.177.254.217) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2474.13; Mon, 18 Nov 2019 08:23:06 +0000
+ 15.20.2474.13; Mon, 18 Nov 2019 08:23:09 +0000
 Received: from SN6PR05MB4928.namprd05.prod.outlook.com
  ([fe80::61a0:dd3d:3477:29c9]) by SN6PR05MB4928.namprd05.prod.outlook.com
  ([fe80::61a0:dd3d:3477:29c9%5]) with mapi id 15.20.2474.012; Mon, 18 Nov 2019
- 08:23:06 +0000
+ 08:23:08 +0000
 From:   Sergey Matyukevich <sergey.matyukevich.os@quantenna.com>
 To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
 CC:     Igor Mitsyanko <igor.mitsyanko.os@quantenna.com>,
         Mikhail Karpenko <mkarpenko@quantenna.com>,
         Sergey Matyukevich <sergey.matyukevich.os@quantenna.com>
-Subject: [PATCH 2/7] qtnfmac: track broadcast domain of each interface
-Thread-Topic: [PATCH 2/7] qtnfmac: track broadcast domain of each interface
-Thread-Index: AQHVnelnRWZLzXsMUkGxyb/eIIRpag==
-Date:   Mon, 18 Nov 2019 08:23:06 +0000
-Message-ID: <20191118082255.6032-3-sergey.matyukevich.os@quantenna.com>
+Subject: [PATCH 3/7] qtnfmac: add interface ID to each packet
+Thread-Topic: [PATCH 3/7] qtnfmac: add interface ID to each packet
+Thread-Index: AQHVneloCPLSMiIVkUO4dYO7a4s6EQ==
+Date:   Mon, 18 Nov 2019 08:23:08 +0000
+Message-ID: <20191118082255.6032-4-sergey.matyukevich.os@quantenna.com>
 References: <20191118082255.6032-1-sergey.matyukevich.os@quantenna.com>
 In-Reply-To: <20191118082255.6032-1-sergey.matyukevich.os@quantenna.com>
 Accept-Language: en-US
@@ -73,36 +73,36 @@ x-ms-exchange-messagesentrepresentingtype: 1
 x-mailer: git-send-email 2.11.0
 x-originating-ip: [195.182.157.78]
 x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 683cef50-8d3d-4d13-2ae7-08d76c0089b2
-x-ms-traffictypediagnostic: SN6PR05MB6320:|CY4PR0501MB3730:
+x-ms-office365-filtering-correlation-id: 0b8b1669-5235-4076-fe8f-08d76c008afd
+x-ms-traffictypediagnostic: SN6PR05MB6320:|BYAPR05MB4408:
 x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <SN6PR05MB6320142AB7589C1559BE2D25A34D0@SN6PR05MB6320.namprd05.prod.outlook.com>
-x-moderation-data: 11/18/2019 8:26:50 AM
-x-ms-oob-tlc-oobclassifiers: OLM:317;
+x-microsoft-antispam-prvs: <SN6PR05MB63209D42B3CF7DF6CD6BAD39A34D0@SN6PR05MB6320.namprd05.prod.outlook.com>
+x-moderation-data: 11/18/2019 8:27:02 AM
+x-ms-oob-tlc-oobclassifiers: OLM:201;
 x-forefront-prvs: 0225B0D5BC
-x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(366004)(376002)(136003)(346002)(396003)(39840400004)(199004)(189003)(478600001)(6116002)(476003)(2616005)(50226002)(25786009)(11346002)(3846002)(436003)(71200400001)(446003)(2501003)(71190400001)(102836004)(2351001)(6506007)(386003)(6512007)(8676002)(5640700003)(6436002)(316002)(486006)(103116003)(6486002)(36756003)(76176011)(99286004)(54906003)(1076003)(66066001)(2906002)(5660300002)(107886003)(86362001)(256004)(14444005)(8936002)(4326008)(52116002)(186003)(66946007)(66476007)(81156014)(81166006)(66446008)(66556008)(64756008)(5024004)(7736002)(14454004)(6916009)(305945005)(26005);DIR:OUT;SFP:1101;SCL:1;SRVR:CY4PR0501MB3730;H:CY4PR0501MB3763.namprd05.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(396003)(376002)(346002)(136003)(366004)(39840400004)(189003)(199004)(478600001)(76176011)(6436002)(6512007)(5640700003)(52116002)(66946007)(102836004)(107886003)(386003)(14444005)(5024004)(6506007)(256004)(4326008)(50226002)(71190400001)(71200400001)(66066001)(2906002)(3846002)(103116003)(6116002)(2501003)(6486002)(86362001)(81166006)(81156014)(8936002)(8676002)(36756003)(66476007)(436003)(305945005)(11346002)(446003)(2616005)(486006)(2351001)(54906003)(476003)(6916009)(7736002)(1076003)(316002)(5660300002)(26005)(25786009)(186003)(14454004)(64756008)(66446008)(66556008)(99286004);DIR:OUT;SFP:1101;SCL:1;SRVR:BYAPR05MB4408;H:BYAPR05MB5624.namprd05.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
 received-spf: None (protection.outlook.com: quantenna.com does not designate
  permitted sender hosts)
 x-ms-exchange-senderadcheck: 1
 x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: Y1z1Kv1WrKH1Igs14ea1nnnzw2A3BLP4F45nTnBfq0uIn5PAfXa4dYJwOAtaoOBpX2TpkPIRp4/OyfcVd4xEPo0+zaT6gCYDkSIQuDKPn2ZP6+zLPwJsCF5Rfv+uzm5hqOOspRzrAe91rDNxcQoHk7T5BXE8RHxJE0XfJ/impdU5+Bc1T1SdG5ZF2DY1dhyKGGtg5R/XeB2pqAZYUQPExrPEAtiaNoeNDnv45MJ/A9f/1Oy3QxMC//omvbSZo4TvorYdJrgKpwWaN4/wXwQlgXw8IYVpt5LbJbk2N9LOcRDM8M4u7M3XUb/eIL8iuzOb+wOUuiYf6TXV8pPe+NmVIrFPhTiRZ311dg2YZloicIkVYECOPuEWrZZmbJGxeCbEAQEqffG2ekXHWlJOlDzLY9pRfduW8Fpr6RELim2KMpeDbxtFQN3HYS+1Qs9ojSuI
+x-microsoft-antispam-message-info: CCF3kJHT+ppOv4oqEheCFN/JdkXOAvUlWbKIzIisNrKilGVVWuFDHQDFCrqAB1Km2WDslFjKXl3qHCE08qknnlAp2p5PSHOcrxcmQDphmq27UR473IH1eGW0Q6AuxGt7vmylX6jhefqzDMMU1Yk0sFg2MswZDeju0QSUan6k5XEAgKhOvMROahACSxxtT/KwsSyhVNBToqdQrEkupHFkc22ILwsp9s4BJvieUm8tNdW0CN02sHETOQPadzyEbuj3O1lNpFGe2rCnvDf8CwSMyLE8YLK/pSU6GAvKgQXxr5Tg0riLgOWf7CUMMyyZAO03iBRFOYIwNWx6j7t8IuANexUiNznLrPL/EBIdXg3WysW4zNrIhwc0mWTG66n++J7QZLRO4hfQbiNlb5d9oN0FQyakEhox0BlQ3gLDBHtWebiEzyibhLhioM1GarSElfbK
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-OriginatorOrg: quantenna.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 683cef50-8d3d-4d13-2ae7-08d76c0089b2
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0b8b1669-5235-4076-fe8f-08d76c008afd
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: a355dbce-62b4-4789-9446-c1d5582180ff
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: YvX0Q4Djmh9euxTe3fF3TRZltKU++AWfn7aMBeme6GK0C71AlPA6D98TaPPJiSutsuJP0iRbOCFUjnfTy8nZSRIP6iiDndTyUpdE4v6+Dte5xs5cX8XRtWYQCmlJc5jN7xybcENgQnZ/J7AdExF4OlVgWI6q5sVAEGcRF+eYrE1HlHwlydApodiTbfOdlVKKq3EsyyHc4CXumPNelVv+2/OMI8IiB52K7PXTGjehqNQ=
-X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Nov 2019 08:26:53.5410
+X-MS-Exchange-CrossTenant-userprincipalname: bN1h3zAQIxzv9CKrdvsy1/Mq16hz03sRmh+PhY6uP4d6yf4p9qHj3G587oQQ8D6YBwVNgvSA9plHU98oTLnffYsQyXU10imwlQ8UHsiITxn6QZvHwk7Wd7/Uxy5axZ9OrUSBh17P7jDn5X6/xJ7Mw1YTARoaczF838Sondzdgy6JG/rmAsLDdSGcnvBY3RLdIFGEc2oISUHf7MSLVSa6SHki4gpzMmSY+u8Xye4HLg8=
+X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Nov 2019 08:27:05.7620
  (UTC)
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY4PR0501MB3730
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR05MB4408
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
  definitions=2019-11-18_01:2019-11-15,2019-11-17 signatures=0
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 impostorscore=0 spamscore=0 mlxscore=0
- adultscore=0 mlxlogscore=999 priorityscore=1501 bulkscore=0 malwarescore=0
- suspectscore=0 phishscore=0 lowpriorityscore=0 clxscore=1015
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 malwarescore=0 clxscore=1015
+ impostorscore=0 phishscore=0 bulkscore=0 adultscore=0 priorityscore=1501
+ spamscore=0 mlxlogscore=999 suspectscore=0 lowpriorityscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-1910280000
  definitions=main-1911180075
 Sender: linux-wireless-owner@vger.kernel.org
@@ -112,321 +112,258 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Igor Mitsyanko <igor.mitsyanko.os@quantenna.com>
 
-If firmware reports that it supports hardware switch capabilities,
-driver needs to track and notify device whenever broadcast domain
-of a particular network device changes (ie. whenever it's upper
-master device changes).
-
-Firmware needs a unique ID to tell broadcast domains from each other
-which is an opaque number otherwise. For that purpose we can use
-netspace:ifidx pair to uniquely identify each broadcast domain:
- - if netdev is not part of a bridge, then use it's own ifidx
-   as a broadcast domain ID
- - if netdev is part of a bridge, then use bridge netdev ifidx
-   as broadcast domain ID
-
-Firmware makes sure that packets are only forwarded between
-interfaces marked with the same broadcast domain ID.
+Add interface ID information to the tail of each transmitted packet
+so that firmware can know to which interface the packet belongs to.
+This is only needed if device supports HW switch capability.
 
 Signed-off-by: Igor Mitsyanko <igor.mitsyanko.os@quantenna.com>
 ---
- drivers/net/wireless/quantenna/qtnfmac/bus.h      |  1 +
- drivers/net/wireless/quantenna/qtnfmac/cfg80211.c |  9 ++++
- drivers/net/wireless/quantenna/qtnfmac/commands.c | 32 ++++++++++++
- drivers/net/wireless/quantenna/qtnfmac/commands.h |  1 +
- drivers/net/wireless/quantenna/qtnfmac/core.c     | 64 +++++++++++++++++++=
-++++
- drivers/net/wireless/quantenna/qtnfmac/core.h     |  1 +
- drivers/net/wireless/quantenna/qtnfmac/qlink.h    | 41 +++++++++++++++
- 7 files changed, 149 insertions(+)
+ drivers/net/wireless/quantenna/qtnfmac/bus.h       | 21 ++++++++--
+ drivers/net/wireless/quantenna/qtnfmac/core.c      | 19 ++++-----
+ .../wireless/quantenna/qtnfmac/pcie/pearl_pcie.c   | 47 ++++++++++++++++++=
+++--
+ .../wireless/quantenna/qtnfmac/pcie/topaz_pcie.c   |  5 ++-
+ 4 files changed, 74 insertions(+), 18 deletions(-)
 
 diff --git a/drivers/net/wireless/quantenna/qtnfmac/bus.h b/drivers/net/wir=
 eless/quantenna/qtnfmac/bus.h
-index 7cea08f71838..4c6eca344a09 100644
+index 4c6eca344a09..49372d42e471 100644
 --- a/drivers/net/wireless/quantenna/qtnfmac/bus.h
 +++ b/drivers/net/wireless/quantenna/qtnfmac/bus.h
-@@ -54,6 +54,7 @@ struct qtnf_bus {
- 	struct work_struct event_work;
- 	struct mutex bus_lock; /* lock during command/event processing */
- 	struct dentry *dbg_dir;
-+	struct notifier_block netdev_nb;
- 	/* bus private data */
- 	char bus_priv[0] __aligned(sizeof(void *));
+@@ -12,6 +12,16 @@
+=20
+ #define QTNF_MAX_MAC		3
+=20
++#define HBM_FRAME_META_MAGIC_PATTERN_S	0xAB
++#define HBM_FRAME_META_MAGIC_PATTERN_E	0xBA
++
++struct qtnf_frame_meta_info {
++	u8 magic_s;
++	u8 ifidx;
++	u8 macid;
++	u8 magic_e;
++} __packed;
++
+ enum qtnf_fw_state {
+ 	QTNF_FW_STATE_DETACHED,
+ 	QTNF_FW_STATE_BOOT_DONE,
+@@ -31,8 +41,10 @@ struct qtnf_bus_ops {
+ 	int (*control_tx)(struct qtnf_bus *, struct sk_buff *);
+=20
+ 	/* data xfer methods */
+-	int (*data_tx)(struct qtnf_bus *, struct sk_buff *);
++	int (*data_tx)(struct qtnf_bus *bus, struct sk_buff *skb,
++		       unsigned int macid, unsigned int vifid);
+ 	void (*data_tx_timeout)(struct qtnf_bus *, struct net_device *);
++	void (*data_tx_use_meta_set)(struct qtnf_bus *bus, bool use_meta);
+ 	void (*data_rx_start)(struct qtnf_bus *);
+ 	void (*data_rx_stop)(struct qtnf_bus *);
  };
-diff --git a/drivers/net/wireless/quantenna/qtnfmac/cfg80211.c b/drivers/ne=
-t/wireless/quantenna/qtnfmac/cfg80211.c
-index 4f02159a69db..59d089e092f9 100644
---- a/drivers/net/wireless/quantenna/qtnfmac/cfg80211.c
-+++ b/drivers/net/wireless/quantenna/qtnfmac/cfg80211.c
-@@ -248,6 +248,15 @@ static struct wireless_dev *qtnf_add_virtual_intf(stru=
-ct wiphy *wiphy,
- 		goto error_del_vif;
+@@ -42,7 +54,7 @@ struct qtnf_bus {
+ 	enum qtnf_fw_state fw_state;
+ 	u32 chip;
+ 	u32 chiprev;
+-	const struct qtnf_bus_ops *bus_ops;
++	struct qtnf_bus_ops *bus_ops;
+ 	struct qtnf_wmac *mac[QTNF_MAX_MAC];
+ 	struct qtnf_qlink_transport trans;
+ 	struct qtnf_hw_info hw_info;
+@@ -100,9 +112,10 @@ static inline void qtnf_bus_stop(struct qtnf_bus *bus)
+ 	bus->bus_ops->stop(bus);
+ }
+=20
+-static inline int qtnf_bus_data_tx(struct qtnf_bus *bus, struct sk_buff *s=
+kb)
++static inline int qtnf_bus_data_tx(struct qtnf_bus *bus, struct sk_buff *s=
+kb,
++				   unsigned int macid, unsigned int vifid)
+ {
+-	return bus->bus_ops->data_tx(bus, skb);
++	return bus->bus_ops->data_tx(bus, skb, macid, vifid);
+ }
+=20
+ static inline void
+diff --git a/drivers/net/wireless/quantenna/qtnfmac/core.c b/drivers/net/wi=
+reless/quantenna/qtnfmac/core.c
+index 3ba19a966c7f..7300ab407cd6 100644
+--- a/drivers/net/wireless/quantenna/qtnfmac/core.c
++++ b/drivers/net/wireless/quantenna/qtnfmac/core.c
+@@ -22,13 +22,6 @@ MODULE_PARM_DESC(slave_radar, "set 0 to disable radar de=
+tection in slave mode");
+=20
+ static struct dentry *qtnf_debugfs_dir;
+=20
+-struct qtnf_frame_meta_info {
+-	u8 magic_s;
+-	u8 ifidx;
+-	u8 macid;
+-	u8 magic_e;
+-} __packed;
+-
+ struct qtnf_wmac *qtnf_core_get_mac(const struct qtnf_bus *bus, u8 macid)
+ {
+ 	struct qtnf_wmac *mac =3D NULL;
+@@ -121,7 +114,7 @@ qtnf_netdev_hard_start_xmit(struct sk_buff *skb, struct=
+ net_device *ndev)
+ 		return NETDEV_TX_OK;
  	}
 =20
-+	if (mac->bus->hw_info.hw_capab & QLINK_HW_CAPAB_HW_BRIDGE) {
-+		ret =3D qtnf_cmd_netdev_changeupper(vif, vif->netdev->ifindex);
-+		if (ret) {
-+			unregister_netdevice(vif->netdev);
-+			vif->netdev =3D NULL;
-+			goto error_del_vif;
-+		}
-+	}
-+
- 	vif->wdev.netdev =3D vif->netdev;
- 	return &vif->wdev;
-=20
-diff --git a/drivers/net/wireless/quantenna/qtnfmac/commands.c b/drivers/ne=
-t/wireless/quantenna/qtnfmac/commands.c
-index 61bda34e2ac2..cbc56464220e 100644
---- a/drivers/net/wireless/quantenna/qtnfmac/commands.c
-+++ b/drivers/net/wireless/quantenna/qtnfmac/commands.c
-@@ -2756,3 +2756,35 @@ int qtnf_cmd_send_wowlan_set(const struct qtnf_vif *=
-vif,
- 	qtnf_bus_unlock(bus);
- 	return ret;
+-	return qtnf_bus_data_tx(mac->bus, skb);
++	return qtnf_bus_data_tx(mac->bus, skb, mac->macid, vif->vifid);
  }
+=20
+ /* Netdev handler for getting stats.
+@@ -481,6 +474,9 @@ int qtnf_core_net_attach(struct qtnf_wmac *mac, struct =
+qtnf_vif *vif,
+ 	dev->tx_queue_len =3D 100;
+ 	dev->ethtool_ops =3D &qtnf_ethtool_ops;
+=20
++	if (mac->bus->hw_info.hw_capab & QLINK_HW_CAPAB_HW_BRIDGE)
++		dev->needed_tailroom =3D sizeof(struct qtnf_frame_meta_info);
 +
-+int qtnf_cmd_netdev_changeupper(const struct qtnf_vif *vif, int br_domain)
+ 	qdev_vif =3D netdev_priv(dev);
+ 	*((void **)qdev_vif) =3D vif;
+=20
+@@ -723,6 +719,10 @@ int qtnf_core_attach(struct qtnf_bus *bus)
+ 		goto error;
+ 	}
+=20
++	if ((bus->hw_info.hw_capab & QLINK_HW_CAPAB_HW_BRIDGE) &&
++	    bus->bus_ops->data_tx_use_meta_set)
++		bus->bus_ops->data_tx_use_meta_set(bus, true);
++
+ 	if (bus->hw_info.num_mac > QTNF_MAX_MAC) {
+ 		pr_err("no support for number of MACs=3D%u\n",
+ 		       bus->hw_info.num_mac);
+@@ -790,7 +790,8 @@ EXPORT_SYMBOL_GPL(qtnf_core_detach);
+=20
+ static inline int qtnf_is_frame_meta_magic_valid(struct qtnf_frame_meta_in=
+fo *m)
+ {
+-	return m->magic_s =3D=3D 0xAB && m->magic_e =3D=3D 0xBA;
++	return m->magic_s =3D=3D HBM_FRAME_META_MAGIC_PATTERN_S &&
++		m->magic_e =3D=3D HBM_FRAME_META_MAGIC_PATTERN_E;
+ }
+=20
+ struct net_device *qtnf_classify_skb(struct qtnf_bus *bus, struct sk_buff =
+*skb)
+diff --git a/drivers/net/wireless/quantenna/qtnfmac/pcie/pearl_pcie.c b/dri=
+vers/net/wireless/quantenna/qtnfmac/pcie/pearl_pcie.c
+index a501a1fd5332..8e0d8018208a 100644
+--- a/drivers/net/wireless/quantenna/qtnfmac/pcie/pearl_pcie.c
++++ b/drivers/net/wireless/quantenna/qtnfmac/pcie/pearl_pcie.c
+@@ -532,7 +532,7 @@ static int qtnf_tx_queue_ready(struct qtnf_pcie_pearl_s=
+tate *ps)
+ 	return 1;
+ }
+=20
+-static int qtnf_pcie_data_tx(struct qtnf_bus *bus, struct sk_buff *skb)
++static int qtnf_pcie_skb_send(struct qtnf_bus *bus, struct sk_buff *skb)
+ {
+ 	struct qtnf_pcie_pearl_state *ps =3D get_bus_priv(bus);
+ 	struct qtnf_pcie_bus_priv *priv =3D &ps->base;
+@@ -608,6 +608,38 @@ static int qtnf_pcie_data_tx(struct qtnf_bus *bus, str=
+uct sk_buff *skb)
+ 	return NETDEV_TX_OK;
+ }
+=20
++static int qtnf_pcie_data_tx(struct qtnf_bus *bus, struct sk_buff *skb,
++			     unsigned int macid, unsigned int vifid)
 +{
-+	struct qtnf_bus *bus =3D vif->mac->bus;
-+	struct sk_buff *cmd_skb;
-+	struct qlink_cmd_ndev_changeupper *cmd;
++	return qtnf_pcie_skb_send(bus, skb);
++}
++
++static int qtnf_pcie_data_tx_meta(struct qtnf_bus *bus, struct sk_buff *sk=
+b,
++				  unsigned int macid, unsigned int vifid)
++{
++	struct qtnf_frame_meta_info *meta;
++	int tail_need =3D sizeof(*meta) - skb_tailroom(skb);
 +	int ret;
 +
-+	cmd_skb =3D qtnf_cmd_alloc_new_cmdskb(vif->mac->macid, vif->vifid,
-+					    QLINK_CMD_NDEV_EVENT,
-+					    sizeof(*cmd));
-+	if (!cmd_skb)
-+		return -ENOMEM;
++	if (tail_need > 0 && pskb_expand_head(skb, 0, tail_need, GFP_ATOMIC)) {
++		skb->dev->stats.tx_dropped++;
++		dev_kfree_skb_any(skb);
++		return NETDEV_TX_OK;
++	}
 +
-+	pr_debug("[VIF%u.%u] set broadcast domain to %d\n",
-+		 vif->mac->macid, vif->vifid, br_domain);
++	meta =3D skb_put(skb, sizeof(*meta));
++	meta->magic_s =3D HBM_FRAME_META_MAGIC_PATTERN_S;
++	meta->magic_e =3D HBM_FRAME_META_MAGIC_PATTERN_E;
++	meta->macid =3D macid;
++	meta->ifidx =3D vifid;
 +
-+	cmd =3D (struct qlink_cmd_ndev_changeupper *)cmd_skb->data;
-+	cmd->nehdr.event =3D cpu_to_le16(QLINK_NDEV_EVENT_CHANGEUPPER);
-+	cmd->upper_type =3D QLINK_NDEV_UPPER_TYPE_BRIDGE;
-+	cmd->br_domain =3D cpu_to_le32(br_domain);
-+
-+	qtnf_bus_lock(bus);
-+	ret =3D qtnf_cmd_send(bus, cmd_skb);
-+	qtnf_bus_unlock(bus);
-+
-+	if (ret)
-+		pr_err("[VIF%u.%u] failed to set broadcast domain\n",
-+		       vif->mac->macid, vif->vifid);
++	ret =3D qtnf_pcie_skb_send(bus, skb);
++	if (unlikely(ret =3D=3D NETDEV_TX_BUSY))
++		__skb_trim(skb, skb->len - sizeof(*meta));
 +
 +	return ret;
 +}
-diff --git a/drivers/net/wireless/quantenna/qtnfmac/commands.h b/drivers/ne=
-t/wireless/quantenna/qtnfmac/commands.h
-index e0de65261213..761755bf9ede 100644
---- a/drivers/net/wireless/quantenna/qtnfmac/commands.h
-+++ b/drivers/net/wireless/quantenna/qtnfmac/commands.h
-@@ -75,5 +75,6 @@ int qtnf_cmd_set_tx_power(const struct qtnf_vif *vif,
- 			  enum nl80211_tx_power_setting type, int mbm);
- int qtnf_cmd_send_wowlan_set(const struct qtnf_vif *vif,
- 			     const struct cfg80211_wowlan *wowl);
-+int qtnf_cmd_netdev_changeupper(const struct qtnf_vif *vif, int br_domain)=
-;
-=20
- #endif /* QLINK_COMMANDS_H_ */
-diff --git a/drivers/net/wireless/quantenna/qtnfmac/core.c b/drivers/net/wi=
-reless/quantenna/qtnfmac/core.c
-index 9ccc17ad1176..3ba19a966c7f 100644
---- a/drivers/net/wireless/quantenna/qtnfmac/core.c
-+++ b/drivers/net/wireless/quantenna/qtnfmac/core.c
-@@ -613,6 +613,12 @@ static int qtnf_core_mac_attach(struct qtnf_bus *bus, =
-unsigned int macid)
- 		goto error_del_vif;
- 	}
-=20
-+	if (bus->hw_info.hw_capab & QLINK_HW_CAPAB_HW_BRIDGE) {
-+		ret =3D qtnf_cmd_netdev_changeupper(vif, vif->netdev->ifindex);
-+		if (ret)
-+			goto error;
-+	}
 +
- 	pr_debug("MAC%u initialized\n", macid);
-=20
- 	return 0;
-@@ -625,6 +631,54 @@ static int qtnf_core_mac_attach(struct qtnf_bus *bus, =
-unsigned int macid)
- 	return ret;
+ static irqreturn_t qtnf_pcie_pearl_interrupt(int irq, void *data)
+ {
+ 	struct qtnf_bus *bus =3D (struct qtnf_bus *)data;
+@@ -796,13 +828,22 @@ static void qtnf_pcie_data_rx_stop(struct qtnf_bus *b=
+us)
+ 	qtnf_disable_hdp_irqs(ps);
  }
 =20
-+bool qtnf_netdev_is_qtn(const struct net_device *ndev)
+-static const struct qtnf_bus_ops qtnf_pcie_pearl_bus_ops =3D {
++static void qtnf_pearl_tx_use_meta_info_set(struct qtnf_bus *bus, bool use=
+_meta)
 +{
-+	return ndev->netdev_ops =3D=3D &qtnf_netdev_ops;
++	if (use_meta)
++		bus->bus_ops->data_tx =3D qtnf_pcie_data_tx_meta;
++	else
++		bus->bus_ops->data_tx =3D qtnf_pcie_data_tx;
 +}
 +
-+static int qtnf_core_netdevice_event(struct notifier_block *nb,
-+				     unsigned long event, void *ptr)
-+{
-+	struct net_device *ndev =3D netdev_notifier_info_to_dev(ptr);
-+	const struct netdev_notifier_changeupper_info *info;
-+	struct qtnf_vif *vif;
-+	int br_domain;
-+	int ret =3D 0;
-+
-+	if (!qtnf_netdev_is_qtn(ndev))
-+		return NOTIFY_DONE;
-+
-+	if (!net_eq(dev_net(ndev), &init_net))
-+		return NOTIFY_OK;
-+
-+	vif =3D qtnf_netdev_get_priv(ndev);
-+
-+	switch (event) {
-+	case NETDEV_CHANGEUPPER:
-+		info =3D ptr;
-+
-+		if (!netif_is_bridge_master(info->upper_dev))
-+			break;
-+
-+		pr_debug("[VIF%u.%u] change bridge: %s %s\n",
-+			 vif->mac->macid, vif->vifid,
-+			 netdev_name(info->upper_dev),
-+			 info->linking ? "add" : "del");
-+
-+		if (info->linking)
-+			br_domain =3D info->upper_dev->ifindex;
-+		else
-+			br_domain =3D ndev->ifindex;
-+
-+		ret =3D qtnf_cmd_netdev_changeupper(vif, br_domain);
-+		break;
-+	default:
-+		break;
-+	}
-+
-+	return notifier_from_errno(ret);
-+}
-+
- int qtnf_core_attach(struct qtnf_bus *bus)
- {
- 	unsigned int i;
-@@ -685,6 +739,15 @@ int qtnf_core_attach(struct qtnf_bus *bus)
- 		}
- 	}
++static struct qtnf_bus_ops qtnf_pcie_pearl_bus_ops =3D {
+ 	/* control path methods */
+ 	.control_tx	=3D qtnf_pcie_control_tx,
 =20
-+	if (bus->hw_info.hw_capab & QLINK_HW_CAPAB_HW_BRIDGE) {
-+		bus->netdev_nb.notifier_call =3D qtnf_core_netdevice_event;
-+		ret =3D register_netdevice_notifier(&bus->netdev_nb);
-+		if (ret) {
-+			pr_err("failed to register netdev notifier: %d\n", ret);
-+			goto error;
-+		}
-+	}
-+
- 	bus->fw_state =3D QTNF_FW_STATE_RUNNING;
- 	return 0;
-=20
-@@ -698,6 +761,7 @@ void qtnf_core_detach(struct qtnf_bus *bus)
- {
- 	unsigned int macid;
-=20
-+	unregister_netdevice_notifier(&bus->netdev_nb);
- 	qtnf_bus_data_rx_stop(bus);
-=20
- 	for (macid =3D 0; macid < QTNF_MAX_MAC; macid++)
-diff --git a/drivers/net/wireless/quantenna/qtnfmac/core.h b/drivers/net/wi=
-reless/quantenna/qtnfmac/core.h
-index e3feea31191e..75b70f0c2b8e 100644
---- a/drivers/net/wireless/quantenna/qtnfmac/core.h
-+++ b/drivers/net/wireless/quantenna/qtnfmac/core.h
-@@ -153,6 +153,7 @@ void qtnf_virtual_intf_cleanup(struct net_device *ndev)=
-;
- void qtnf_netdev_updown(struct net_device *ndev, bool up);
- void qtnf_scan_done(struct qtnf_wmac *mac, bool aborted);
- struct dentry *qtnf_get_debugfs_dir(void);
-+bool qtnf_netdev_is_qtn(const struct net_device *ndev);
-=20
- static inline struct qtnf_vif *qtnf_netdev_get_priv(struct net_device *dev=
-)
- {
-diff --git a/drivers/net/wireless/quantenna/qtnfmac/qlink.h b/drivers/net/w=
-ireless/quantenna/qtnfmac/qlink.h
-index 59c69c0a6e06..18b2ddf39ef8 100644
---- a/drivers/net/wireless/quantenna/qtnfmac/qlink.h
-+++ b/drivers/net/wireless/quantenna/qtnfmac/qlink.h
-@@ -59,6 +59,7 @@ struct qlink_msg_header {
-  * @QLINK_HW_CAPAB_SCAN_RANDOM_MAC_ADDR: device supports MAC Address
-  *	Randomization in probe requests.
-  * @QLINK_HW_CAPAB_OBSS_SCAN: device can perform OBSS scanning.
-+ * @QLINK_HW_CAPAB_HW_BRIDGE: device has hardware switch capabilities.
-  */
- enum qlink_hw_capab {
- 	QLINK_HW_CAPAB_REG_UPDATE		=3D BIT(0),
-@@ -69,6 +70,7 @@ enum qlink_hw_capab {
- 	QLINK_HW_CAPAB_OBSS_SCAN		=3D BIT(5),
- 	QLINK_HW_CAPAB_SCAN_DWELL		=3D BIT(6),
- 	QLINK_HW_CAPAB_SAE			=3D BIT(8),
-+	QLINK_HW_CAPAB_HW_BRIDGE		=3D BIT(9),
+ 	/* data path methods */
+ 	.data_tx		=3D qtnf_pcie_data_tx,
+ 	.data_tx_timeout	=3D qtnf_pcie_data_tx_timeout,
++	.data_tx_use_meta_set	=3D qtnf_pearl_tx_use_meta_info_set,
+ 	.data_rx_start		=3D qtnf_pcie_data_rx_start,
+ 	.data_rx_stop		=3D qtnf_pcie_data_rx_stop,
  };
+@@ -905,7 +946,7 @@ static int qtnf_ep_fw_send(struct pci_dev *pdev, uint32=
+_t size,
+ 	memcpy(pdata, pblk, len);
+ 	hdr->crc =3D cpu_to_le32(~crc32(0, pdata, len));
 =20
- enum qlink_iface_type {
-@@ -219,6 +221,8 @@ struct qlink_sta_info_state {
-  * @QLINK_CMD_START_CAC: start radar detection procedure on a specified ch=
-annel.
-  * @QLINK_CMD_TXPWR: get or set current channel transmit power for
-  *	the specified MAC.
-+ * @QLINK_CMD_NDEV_EVENT: signalizes changes made with a corresponding net=
-work
-+ *	device.
-  */
- enum qlink_cmd_type {
- 	QLINK_CMD_FW_INIT		=3D 0x0001,
-@@ -251,6 +255,7 @@ enum qlink_cmd_type {
- 	QLINK_CMD_DEL_STA		=3D 0x0052,
- 	QLINK_CMD_SCAN			=3D 0x0053,
- 	QLINK_CMD_CHAN_STATS		=3D 0x0054,
-+	QLINK_CMD_NDEV_EVENT		=3D 0x0055,
- 	QLINK_CMD_CONNECT		=3D 0x0060,
- 	QLINK_CMD_DISCONNECT		=3D 0x0061,
- 	QLINK_CMD_PM_SET		=3D 0x0062,
-@@ -771,6 +776,42 @@ struct qlink_cmd_wowlan_set {
- 	u8 data[0];
- } __packed;
+-	ret =3D qtnf_pcie_data_tx(bus, skb);
++	ret =3D qtnf_pcie_skb_send(bus, skb);
 =20
-+enum qlink_ndev_event_type {
-+	QLINK_NDEV_EVENT_CHANGEUPPER,
-+};
-+
-+/**
-+ * struct qlink_cmd_ndev_event - data for QLINK_CMD_NDEV_EVENT command
-+ *
-+ * @event: type of event, one of &enum qlink_ndev_event_type
-+ */
-+struct qlink_cmd_ndev_event {
-+	struct qlink_cmd chdr;
-+	__le16 event;
-+	u8 rsvd[2];
-+} __packed;
-+
-+enum qlink_ndev_upper_type {
-+	QLINK_NDEV_UPPER_TYPE_NONE,
-+	QLINK_NDEV_UPPER_TYPE_BRIDGE,
-+};
-+
-+/**
-+ * struct qlink_cmd_ndev_changeupper - data for QLINK_NDEV_EVENT_CHANGEUPP=
-ER
-+ *
-+ * @br_domain: layer 2 broadcast domain ID that ndev is a member of
-+ * @upper_type: type of upper device, one of &enum qlink_ndev_upper_type
-+ */
-+struct qlink_cmd_ndev_changeupper {
-+	struct qlink_cmd_ndev_event nehdr;
-+	__le64 flags;
-+	__le32 br_domain;
-+	__le32 netspace_id;
-+	__le16 vlanid;
-+	u8 upper_type;
-+	u8 rsvd[1];
-+} __packed;
-+
- /* QLINK Command Responses messages related definitions
-  */
+ 	return (ret =3D=3D NETDEV_TX_OK) ? len : 0;
+ }
+diff --git a/drivers/net/wireless/quantenna/qtnfmac/pcie/topaz_pcie.c b/dri=
+vers/net/wireless/quantenna/qtnfmac/pcie/topaz_pcie.c
+index a0587472736f..dbf3c5fd751f 100644
+--- a/drivers/net/wireless/quantenna/qtnfmac/pcie/topaz_pcie.c
++++ b/drivers/net/wireless/quantenna/qtnfmac/pcie/topaz_pcie.c
+@@ -497,7 +497,8 @@ static int qtnf_tx_queue_ready(struct qtnf_pcie_topaz_s=
+tate *ts)
+ 	return 1;
+ }
+=20
+-static int qtnf_pcie_data_tx(struct qtnf_bus *bus, struct sk_buff *skb)
++static int qtnf_pcie_data_tx(struct qtnf_bus *bus, struct sk_buff *skb,
++			     unsigned int macid, unsigned int vifid)
+ {
+ 	struct qtnf_pcie_topaz_state *ts =3D (void *)get_bus_priv(bus);
+ 	struct qtnf_pcie_bus_priv *priv =3D &ts->base;
+@@ -740,7 +741,7 @@ static void qtnf_pcie_data_rx_stop(struct qtnf_bus *bus=
+)
+ 	napi_disable(&bus->mux_napi);
+ }
+=20
+-static const struct qtnf_bus_ops qtnf_pcie_topaz_bus_ops =3D {
++static struct qtnf_bus_ops qtnf_pcie_topaz_bus_ops =3D {
+ 	/* control path methods */
+ 	.control_tx	=3D qtnf_pcie_control_tx,
 =20
 --=20
 2.11.0
