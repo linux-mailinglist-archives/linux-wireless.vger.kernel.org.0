@@ -2,160 +2,104 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E5E6D100582
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 Nov 2019 13:23:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0ED9A1005BD
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 Nov 2019 13:39:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726775AbfKRMX0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 18 Nov 2019 07:23:26 -0500
-Received: from mail.kernel.org ([198.145.29.99]:48574 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726464AbfKRMXZ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 18 Nov 2019 07:23:25 -0500
-Received: from localhost.localdomain (unknown [77.139.212.74])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 9B35020862;
-        Mon, 18 Nov 2019 12:23:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1574079804;
-        bh=gxwTlq64h7VhmZoGB5MQmNhf+CwMtpyFwiLg1wuM8CE=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Am7tpu4VUeq73di8nuaa7zbs91U3B5QAx+kyw/wIurSEhJkET7kRVqNKYda44HL3+
-         +DASar8WBLmd0ruSg/uwJdWRbWua1MOC0HpwVPQZl+dEJ5F5M8pBkv2nXyul4MMQx7
-         oMtcIWteLP+Ut9JZdPbDmL1xZiApNW+RdlHOLmDQ=
-Date:   Mon, 18 Nov 2019 14:23:18 +0200
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     Markus Theil <markus.theil@tu-ilmenau.de>
-Cc:     nbd@nbd.name, linux-wireless@vger.kernel.org,
-        lorenzo.bianconi@redhat.com,
-        Stanislaw Gruszka <sgruszka@redhat.com>
-Subject: Re: [PATCH v2 4/4] mt76: mt76x02: add channel switch support for usb
- interfaces
-Message-ID: <20191118122318.GB19790@localhost.localdomain>
-References: <20191118113907.9862-1-markus.theil@tu-ilmenau.de>
- <20191118113907.9862-5-markus.theil@tu-ilmenau.de>
+        id S1726562AbfKRMjH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 18 Nov 2019 07:39:07 -0500
+Received: from mail-lj1-f193.google.com ([209.85.208.193]:38767 "EHLO
+        mail-lj1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726506AbfKRMjH (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 18 Nov 2019 07:39:07 -0500
+Received: by mail-lj1-f193.google.com with SMTP id v8so18754182ljh.5
+        for <linux-wireless@vger.kernel.org>; Mon, 18 Nov 2019 04:39:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=9Obwar3Frv5I5Lb9Y60rWjIuAOoBlmDPKvdqZOjbYHQ=;
+        b=qI2i8wyXLefxEerYFE7aHUx3bDs84hlX3zE9EePmZ7fE9MHnFFdHaSwJDSq15teqlw
+         QX1p6I0su5Qa7juuON4rWaAxC9l05SaKliBVfAisVtgJeWJpcCjxv5SFdMuGKdLRouE5
+         xxHIRMbLszwqcBffTAy81gx97RBVLTckGQfguOLvlD1pXooRfO7rm+NrV0BNfx01k3z8
+         Va75wHlv4y0ENx+cnPqTKYn1LgLAl8laOTTI8PqdwMxEVAkTvYMCrleqivS2VHYsWSxb
+         YKQ4YAYa845GvIhcNfQESdTgsIBW4X5eSNqCPShaISxZbHjjQhREXzguvTSQGpUv3urO
+         s+Ew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=9Obwar3Frv5I5Lb9Y60rWjIuAOoBlmDPKvdqZOjbYHQ=;
+        b=kZrZoqJW7vA9fJ+79sATkybfwlEGyRAJ5xG0USrYC+m9GwH/LROSDR99rlA3qOokjO
+         2nd/07XYiEa12xmmLBjOytW77Eelz4UQOcoooytP14/DfLBozEPkopMytEC7URJdBe8O
+         CqrYKRQnj/jpNd+U5NmBLMmFuOGV4Hb6BBh+hpsvGvZOyJVyFyStOzsJgPlRwSVT7yn5
+         TqXBZRHdVM6g1rZO17xE++64Pj1v8ZCkHse3hKIpTTVGVe7ORWQyDahVwUBek5w0du3a
+         UPtQMoxro5fOjnh1ntHHEZgJNJfDVvXb9Kew7i7fbu8/cdlpezGQ35ceqlBDoKYXZxwb
+         ECRA==
+X-Gm-Message-State: APjAAAWLgkwNJPXzWBHVoDBpNWj10AD1PxlE1gobQPWmM4mx7+fccJPA
+        zQDk7K/0e6IDD6w35j00ysUbOyAz
+X-Google-Smtp-Source: APXvYqwChOmhZHDulhLGWrE+MUPlTFn+0c8XrB6nAQV4CD4xH1SJ1X6UwcWoc5rHSSTCiApEihk0Wg==
+X-Received: by 2002:a2e:9016:: with SMTP id h22mr21213302ljg.137.1574080743725;
+        Mon, 18 Nov 2019 04:39:03 -0800 (PST)
+Received: from localhost.localdomain (ip-194-187-74-233.konfederacka.maverick.com.pl. [194.187.74.233])
+        by smtp.gmail.com with ESMTPSA id k19sm9712289ljg.18.2019.11.18.04.39.02
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 18 Nov 2019 04:39:03 -0800 (PST)
+From:   =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Arend van Spriel <arend.vanspriel@broadcom.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
+        Wright Feng <wright.feng@cypress.com>,
+        Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
+        Winnie Chang <winnie.chang@cypress.com>,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        brcm80211-dev-list@cypress.com,
+        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>
+Subject: [PATCH 5.5] brcmfmac: remove monitor interface when detaching
+Date:   Mon, 18 Nov 2019 13:38:55 +0100
+Message-Id: <20191118123855.31696-1-zajec5@gmail.com>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="7ZAtKRhVyVSsbBD2"
-Content-Disposition: inline
-In-Reply-To: <20191118113907.9862-5-markus.theil@tu-ilmenau.de>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+From: Rafał Miłecki <rafal@milecki.pl>
 
---7ZAtKRhVyVSsbBD2
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+This fixes a minor WARNING in the cfg80211:
+[  130.658034] ------------[ cut here ]------------
+[  130.662805] WARNING: CPU: 1 PID: 610 at net/wireless/core.c:954 wiphy_unregister+0xb4/0x198 [cfg80211]
 
-> This patch enables channel switch support on mt76 usb interfaces.
->=20
-> Signed-off-by: Markus Theil <markus.theil@tu-ilmenau.de>
-> ---
->  drivers/net/wireless/mediatek/mt76/mt76x02_usb_core.c | 7 +++++++
->  drivers/net/wireless/mediatek/mt76/mt76x02_util.c     | 2 +-
->  drivers/net/wireless/mediatek/mt76/mt76x2/usb_main.c  | 5 +++++
->  3 files changed, 13 insertions(+), 1 deletion(-)
+Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
+---
+Kalle: it doesn't seem critical enough for stable but would be nice to
+       have for 5.5.
+---
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-could you please fix following checkpatch error?
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c
+index 406b367c284c..85cf96461dde 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c
+@@ -1350,6 +1350,11 @@ void brcmf_detach(struct device *dev)
+ 	brcmf_fweh_detach(drvr);
+ 	brcmf_proto_detach(drvr);
+ 
++	if (drvr->mon_if) {
++		brcmf_net_detach(drvr->mon_if->ndev, false);
++		drvr->mon_if = NULL;
++	}
++
+ 	/* make sure primary interface removed last */
+ 	for (i = BRCMF_MAX_IFS - 1; i > -1; i--) {
+ 		if (drvr->iflist[i])
+-- 
+2.21.0
 
-Regards,
-Lorenzo
-
-ROR: open brace '{' following function definitions go on the next line
-#73: FILE: drivers/net/wireless/mediatek/mt76/mt76x2/usb_main.c:103:
-+static void mt76x2u_channel_switch_beacon(struct ieee80211_hw *hw,
-+                                         struct ieee80211_vif *vif,
-+                                         struct cfg80211_chan_def *chandef=
-) {}
-
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_usb_core.c b/driv=
-ers/net/wireless/mediatek/mt76/mt76x02_usb_core.c
-> index 8a2a90fb5663..891825043117 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt76x02_usb_core.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt76x02_usb_core.c
-> @@ -182,6 +182,12 @@ static void mt76x02u_pre_tbtt_work(struct work_struc=
-t *work)
->  	/* Prevent corrupt transmissions during update */
->  	mt76_set(dev, MT_BCN_BYPASS_MASK, 0xffff);
-> =20
-> +	mt76_csa_check(&dev->mt76);
-> +	if (dev->mt76.csa_complete) {
-> +		mt76_csa_finish(&dev->mt76);
-> +		goto out;
-> +	}
-> +
->  	ieee80211_iterate_active_interfaces(mt76_hw(dev),
->  		IEEE80211_IFACE_ITER_RESUME_ALL,
->  		mt76x02_update_beacon_iter, dev);
-> @@ -196,6 +202,7 @@ static void mt76x02u_pre_tbtt_work(struct work_struct=
- *work)
-> =20
->  	mt76x02_mac_set_beacon_finish(dev);
-> =20
-> +out:
->  	mt76x02u_restart_pre_tbtt_timer(dev);
->  }
-> =20
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_util.c b/drivers/=
-net/wireless/mediatek/mt76/mt76x02_util.c
-> index 414b22399d93..3f95e5b24e1d 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt76x02_util.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt76x02_util.c
-> @@ -174,7 +174,6 @@ void mt76x02_init_device(struct mt76x02_dev *dev)
->  		wiphy->reg_notifier =3D mt76x02_regd_notifier;
->  		wiphy->iface_combinations =3D mt76x02_if_comb;
->  		wiphy->n_iface_combinations =3D ARRAY_SIZE(mt76x02_if_comb);
-> -		wiphy->flags |=3D WIPHY_FLAG_HAS_CHANNEL_SWITCH;
-> =20
->  		/* init led callbacks */
->  		if (IS_ENABLED(CONFIG_MT76_LEDS)) {
-> @@ -184,6 +183,7 @@ void mt76x02_init_device(struct mt76x02_dev *dev)
->  		}
->  	}
-> =20
-> +	wiphy->flags |=3D WIPHY_FLAG_HAS_CHANNEL_SWITCH;
->  	wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_VHT_IBSS);
-> =20
->  	hw->sta_data_size =3D sizeof(struct mt76x02_sta);
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/usb_main.c b/drive=
-rs/net/wireless/mediatek/mt76/mt76x2/usb_main.c
-> index eb73cb856c81..ae576b29c9ac 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt76x2/usb_main.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt76x2/usb_main.c
-> @@ -100,6 +100,10 @@ mt76x2u_config(struct ieee80211_hw *hw, u32 changed)
->  	return err;
->  }
-> =20
-> +static void mt76x2u_channel_switch_beacon(struct ieee80211_hw *hw,
-> +					  struct ieee80211_vif *vif,
-> +					  struct cfg80211_chan_def *chandef) {}
-> +
->  const struct ieee80211_ops mt76x2u_ops =3D {
->  	.tx =3D mt76x02_tx,
->  	.start =3D mt76x2u_start,
-> @@ -121,4 +125,5 @@ const struct ieee80211_ops mt76x2u_ops =3D {
->  	.get_survey =3D mt76_get_survey,
->  	.set_tim =3D mt76_set_tim,
->  	.release_buffered_frames =3D mt76_release_buffered_frames,
-> +	.channel_switch_beacon =3D mt76x2u_channel_switch_beacon,
->  };
-> --=20
-> 2.24.0
->=20
-
---7ZAtKRhVyVSsbBD2
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCXdKNMwAKCRA6cBh0uS2t
-rF0XAP9wlFnXvUBvGoa5AugwLZ5v1bURO/2DFO1NGUaCHOvgcQD/Z3mLrFTL98+3
-Mh+/3FsfDU2sx0U4JZD07j2RSstFpAo=
-=4aEL
------END PGP SIGNATURE-----
-
---7ZAtKRhVyVSsbBD2--
