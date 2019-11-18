@@ -2,74 +2,69 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 17762100223
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 Nov 2019 11:10:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AC505100438
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 Nov 2019 12:32:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726539AbfKRKKh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 18 Nov 2019 05:10:37 -0500
-Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:59996 "EHLO
+        id S1726769AbfKRLct (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 18 Nov 2019 06:32:49 -0500
+Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:20735 "EHLO
         us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726488AbfKRKKh (ORCPT
+        with ESMTP id S1726464AbfKRLct (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 18 Nov 2019 05:10:37 -0500
+        Mon, 18 Nov 2019 06:32:49 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1574071835;
+        s=mimecast20190719; t=1574076767;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=G45mRJb2R55hTpqWOgmQqio32gnIzC1eCmtGv4EySOk=;
-        b=T4005Zk9b5okSvR7UIrqB8OMKUGFatc+7TMaFuYy4yGfP4rqv/N4cXmpe021/jcbi4UUqS
-        0YGRQy/JodIgBYjeZaEBjytMBFROtLUlYzbmiQJ6XsYSwI1PcT+pJa0S5un/8GXrwB20CQ
-        d5+hvIsnbzRvlOLvH8md6lXC/SBt8QA=
+        bh=lrXtzxd8mglGLRdGfil/BT3CpqfjW0pQ6XkstoEJu1A=;
+        b=gYiDj7ik2Z+gxHqX5hSBaFwmj/kU5AycGeCkXziPBMp+cMUMjmpypgdRoXpqD4J/DB2Vj2
+        9WWzCuX6apjx6gcazUBfDJPhH4lmg9GW2eqnyGBTvJoO84mA/m54og4rVfGUFKT1rLD54l
+        8MLm+4WoW/NkCjYVjKyBWh6VhSCIpZ0=
 Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
  [209.85.208.199]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-288-O5AGdHMWMGGmG_KY2qyv8A-1; Mon, 18 Nov 2019 05:10:32 -0500
-Received: by mail-lj1-f199.google.com with SMTP id l12so3134609ljg.21
-        for <linux-wireless@vger.kernel.org>; Mon, 18 Nov 2019 02:10:32 -0800 (PST)
+ us-mta-246-UfHNObznNzGtkeB9VU5nQg-1; Mon, 18 Nov 2019 06:32:44 -0500
+Received: by mail-lj1-f199.google.com with SMTP id 70so3203501ljf.13
+        for <linux-wireless@vger.kernel.org>; Mon, 18 Nov 2019 03:32:43 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
          :message-id:mime-version;
-        bh=OIQCTBj1ZZClWzpd5quqOflGEWiO+R0tbK558qeMbh4=;
-        b=BD5V0q5hANewYJZ/8Q46hyTVIvFoFg1zPRPac478yOzrlVHJ9OzNPDp4ZTP2DrsE+8
-         XHSExIN35nKPX3nd1k6XKCFaTO7u/lap3qa28qfU+HAlhcF5gXbNhzN3ayPvyQPxqTiA
-         d1u7VdWcSnUrXWFzsskOTd+VotbgUEJ73XNVyXOz4shqWBafzTFpxRw4yaJlVF5A8wK3
-         Fpq862I+KQcsRSSA7AN70L09zKC5b1C0Io7Ta7K64dz0Ra2/0vvXpmcoSob7WCZBpQU7
-         L3KAoQaoo6vzxeYM7vx74w9jxEapGirXdSSkYbw3q3aWbtoRFI5WDsK4uchs1WtTHbvf
-         rwJQ==
-X-Gm-Message-State: APjAAAVRkF6R202HtZhauTwKCIeR5WD8e9DOOsptJj4cnW2icy0Ch4O8
-        rHgCp+PI4NmMAUhNz4I6LZWBNaoQkV2s1oP5K94/tG/rgyahZWNF+nl5o62ssdwanrTHsQ4Ndsq
-        PaHdKDbyn+zlal7La+QOwcruKKXk=
-X-Received: by 2002:a05:651c:1109:: with SMTP id d9mr20056936ljo.192.1574071831434;
-        Mon, 18 Nov 2019 02:10:31 -0800 (PST)
-X-Google-Smtp-Source: APXvYqyx34G0PV/fe8D53a+QUqfm/vO0wSGhLgSfIKtC5qf0UKXzF5h1YYJhlKi/PARk15AMZvmAJA==
-X-Received: by 2002:a05:651c:1109:: with SMTP id d9mr20056921ljo.192.1574071831296;
-        Mon, 18 Nov 2019 02:10:31 -0800 (PST)
-Received: from alrua-x1.borgediget.toke.dk (borgediget.toke.dk. [85.204.121.218])
-        by smtp.gmail.com with ESMTPSA id o196sm8775203lff.59.2019.11.18.02.10.30
+        bh=IAgBjcqZliVGAeskhCUE1TpV4MaPXe7hf936RNbjg4A=;
+        b=td87qG1Irpn4n9iikJ1ELCzSiFyDlxSLURwY6Gi2/TOatTgjQKEJYxh9iTQS8wCOkp
+         C+dBDJBq8x+sIBEGUfz9eyVaBcnIya3su6towXVyjKIq2G2RYA7c/nP3dlOKfpP2ygdS
+         4S5nRXV5gUlbz2JSRlzPOTvyN4pI0g+2UQJhkRXwx8wwF6Vd3ZjVg94TKjlzDlU5VnMU
+         uTMzNVJcrQhtNRyjvhlCR+qPorCDJg9njsQ3wGH1GnR+QhFD6QGYkiuTiMfs/sCPfPgM
+         gxBORBbZd1EmuqtcEZRzKjTwUbhfHY+kP1KA3ex/tLPNOBx/oR5tpKWRdN0yHr+pYKvI
+         1b3w==
+X-Gm-Message-State: APjAAAWoKzDhBViGcCaZIQaO3L1i5hJPTZXWgnfjHVDttynRMzOWMxXR
+        OWJPaRkzc0doMt1yyfSfVsJWiDVIgcKNY974fs8JFsaXnawa45fCv0+qTwzRJylzox3MZGKoBeV
+        Y9SUNXkyK0Fel0qS3sKa+Cccw80g=
+X-Received: by 2002:ac2:4102:: with SMTP id b2mr2552981lfi.16.1574076762590;
+        Mon, 18 Nov 2019 03:32:42 -0800 (PST)
+X-Google-Smtp-Source: APXvYqyl7xVVcmWbCfSn3JtIVYgSFqaE/CLSsQcb5uL2caD5OFZjeWgfoqKJUfLiKx2k3AsWooXbkA==
+X-Received: by 2002:ac2:4102:: with SMTP id b2mr2552960lfi.16.1574076762359;
+        Mon, 18 Nov 2019 03:32:42 -0800 (PST)
+Received: from alrua-x1.borgediget.toke.dk ([2a00:7660:6da:443::2])
+        by smtp.gmail.com with ESMTPSA id h16sm8361399ljb.10.2019.11.18.03.32.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 Nov 2019 02:10:30 -0800 (PST)
+        Mon, 18 Nov 2019 03:32:41 -0800 (PST)
 Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-        id DF6B118190D; Mon, 18 Nov 2019 11:10:29 +0100 (CET)
+        id 9A15D18190D; Mon, 18 Nov 2019 12:32:39 +0100 (CET)
 From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-To:     Kan Yan <kyan@google.com>
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Make-Wifi-fast <make-wifi-fast@lists.bufferbloat.net>,
-        ath10k@lists.infradead.org, John Crispin <john@phrozen.org>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Felix Fietkau <nbd@nbd.name>,
-        Rajkumar Manoharan <rmanohar@codeaurora.org>,
-        Kevin Hayes <kevinhayes@google.com>
-Subject: Re: [PATCH v9 4/4] mac80211: Use Airtime-based Queue Limits (AQL) on packet dequeue
-In-Reply-To: <CA+iem5vVhwTsTvAgnC_HF0utMDSfgyLCe2M=gfUOFU2VjjCB8Q@mail.gmail.com>
-References: <157382403672.580235.12525941420808058808.stgit@toke.dk> <157382404118.580235.14216392299709793599.stgit@toke.dk> <CA+iem5tF+TN-osfGxu=EU5Xt1Uq+PcKgBVaoAmZY3a3JzS5JzQ@mail.gmail.com> <87y2wgjas4.fsf@toke.dk> <CA+iem5vVhwTsTvAgnC_HF0utMDSfgyLCe2M=gfUOFU2VjjCB8Q@mail.gmail.com>
+To:     Ming Chen <ming032217@gmail.com>,
+        Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless@vger.kernel.org,
+        Ming Chen <ming.chen@watchguard.com>
+Subject: Re: [PATCH v4] mac80211: Drop the packets whose source or destination mac address is empty
+In-Reply-To: <20191116060833.45752-1-ming.chen@watchguard.com>
+References: <20191116060833.45752-1-ming.chen@watchguard.com>
 X-Clacks-Overhead: GNU Terry Pratchett
-Date:   Mon, 18 Nov 2019 11:10:29 +0100
-Message-ID: <87muctcx62.fsf@toke.dk>
+Date:   Mon, 18 Nov 2019 12:32:39 +0100
+Message-ID: <87blt9ctd4.fsf@toke.dk>
 MIME-Version: 1.0
-X-MC-Unique: O5AGdHMWMGGmG_KY2qyv8A-1
+X-MC-Unique: UfHNObznNzGtkeB9VU5nQg-1
 X-Mimecast-Spam-Score: 0
 Content-Type: text/plain; charset=WINDOWS-1252
 Content-Transfer-Encoding: quoted-printable
@@ -78,37 +73,67 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Kan Yan <kyan@google.com> writes:
+Ming Chen <ming032217@gmail.com> writes:
 
->> > Given the fact that AQL is only tested in very limited platforms,
->> > should we set the default to disabled by removing this change in the
->> > next update?
->> >
->> > -       local->airtime_flags =3D AIRTIME_USE_TX | AIRTIME_USE_RX;
->> > +
->> > +       local->airtime_flags =3D AIRTIME_USE_TX |
->> > +                              AIRTIME_USE_RX |
->> > +                              AIRTIME_USE_AQL;
->> > +       local->aql_threshold =3D IEEE80211_AQL_THRESHOLD;
->> > +       atomic_set(&local->aql_total_pending_airtime, 0);
->> Well, we have the whole -rc series to get more testing in if we merge it
->> as-is. It's up to the maintainers, of course, but I would be in favour
->> of merging as-is, then optionally backing out the default before the
->> final release if problems do turn up. But I would hope that the limits
->> are sufficiently conservative that it would not result in any problems :=
-)
+> We found ath9k could occasionally receive some frames from Linux IP stack=
+ with empty source
+> and destination mac address, especially when the radio mode works as a wi=
+reless client and
+> configure a static IP. If the ADDBA has been negotiated, this kind of err=
+or packets will cause
+> the driver failed to find the opposite node (VAP) while in the function o=
+f processing these frame's TX
+> complete interrupt.
 >
-> Sounds good. The current default limits are reasonably conservative
-> and are tunable via debugfs.
+> The above failure happens inside the TX complete processing
+> function ath_tx_process_buffer while calling ieee80211_find_sta_by_ifaddr=
+.
+> Inside the function ieee80211_find_sta_by_ifaddr,
+> the condition of ether_addr_equal(sta->sdata->vif.addr, localaddr) will r=
+eturn false
+> since localaddr(hdr->addr2, 802.3 source mac) is an empty mac address.
 >
-> I will give the v10 version of this patch serial a quick test and
-> hopefully we can wrap it up soon.
+> Finally, this function will return NULL to ath_tx_process_buffer.
+> And then ath_tx_process_buffer will call ath_tx_complete_aggr to complete=
+ the frame(s),
+> However, the sta is NULL at this moment, so it could complete this kind
+> of the frame(s) but doesn't (and cannot) update the BA window.
+> Please see the below snippet of ath_tx_complete_aggr
+> if (!sta) {
+>         INIT_LIST_HEAD(&bf_head);
+>         while (bf) {
+>                 bf_next =3D bf->bf_next;
+>
+>                 if (!bf->bf_state.stale || bf_next !=3D NULL)
+>                         list_move_tail(&bf->list, &bf_head);
+>
+>                 ath_tx_complete_buf(sc, bf, txq, &bf_head, NULL, ts, 0);
+>
+>                 bf =3D bf_next;
+>         }
+>         return;
+> }
+>
+> To fix this issue, we could remove the comparison of localaddr of ieee802=
+11_find_sta_by_ifaddr
+> when works as a wireless client - it won't have more than one sta (VAP) f=
+ound, but I don't think
+> it is the best solution.
 
-Sounds good, thanks! Also, seems we got a 5.4-rc8 yesterday, so we have
-another week before the merge window.
+Ah, so the TX path doesn't do any lookups when the device is a sta, but
+the TX completion path does? This was the information I was looking for;
+please explain this in the commit message, you don't need to paste in
+the code :)
 
-Johannes, any chance you'll get a chance to take a look at this sometime
-this week? :)
+> Dropping this kind of error packet before it goes into the driver,
+> should be the right direction.
+
+So I still wonder why this happens from higher up in the stack. If
+there's a legitimate reason, maybe dropping the packet is not the right
+thing? And if there is *no* legitimate reason, maybe the packet should
+be dropped higher up in the stack instead?
+
+What kind of packets does this happen with?
 
 -Toke
 
