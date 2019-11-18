@@ -2,30 +2,32 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C994110078A
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 Nov 2019 15:40:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 47BB210078B
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 Nov 2019 15:40:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727105AbfKROky (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        id S1727118AbfKROky (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
         Mon, 18 Nov 2019 09:40:54 -0500
-Received: from smail.rz.tu-ilmenau.de ([141.24.186.67]:38360 "EHLO
+Received: from smail.rz.tu-ilmenau.de ([141.24.186.67]:38363 "EHLO
         smail.rz.tu-ilmenau.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726748AbfKROky (ORCPT
+        with ESMTP id S1726761AbfKROky (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Mon, 18 Nov 2019 09:40:54 -0500
 Received: from localhost.localdomain (unknown [141.24.212.108])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by smail.rz.tu-ilmenau.de (Postfix) with ESMTPSA id 6CD98580065;
+        by smail.rz.tu-ilmenau.de (Postfix) with ESMTPSA id 7BEFB58006C;
         Mon, 18 Nov 2019 15:40:52 +0100 (CET)
 From:   Markus Theil <markus.theil@tu-ilmenau.de>
 To:     nbd@nbd.name
 Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
         Stanislaw Gruszka <sgruszka@redhat.com>,
         Markus Theil <markus.theil@tu-ilmenau.de>
-Subject: [PATCH v3 0/4] mt76: channel switch support for USB devices
-Date:   Mon, 18 Nov 2019 15:40:36 +0100
-Message-Id: <20191118144040.15639-1-markus.theil@tu-ilmenau.de>
+Subject: [PATCH v3 1/4] mt76: mt76x02: ommit beacon slot clearing
+Date:   Mon, 18 Nov 2019 15:40:37 +0100
+Message-Id: <20191118144040.15639-2-markus.theil@tu-ilmenau.de>
 X-Mailer: git-send-email 2.24.0
+In-Reply-To: <20191118144040.15639-1-markus.theil@tu-ilmenau.de>
+References: <20191118144040.15639-1-markus.theil@tu-ilmenau.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
@@ -33,39 +35,48 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This patch series adds channel switch support for mt76 usb interfaces.
-When testing, I noticed that between 5 or 7 consecutive beacons had the
-identical channel switch count set. After some debugging I found out,
-that beacon copying over usb took far too long (up to 700ms for one call
-of mt76x02u_pre_tbtt_work).
+mt76 hw does not send beacons from beacon slots, if the corresponding
+bitmask is set accordingly. Therefore we can ommit clearing the beacon
+memory. Clearing uses many usb calls, if usb drivers are used. These
+calls unnecessarily slow down the beacon tasklet. Thanks to Stanislaw
+Gruzska for pointing this out.
 
-Therefore the first three patches speed up beacon copying and the last
-patch enables channel switch support also for usb interfaces.
+Signed-off-by: Markus Theil <markus.theil@tu-ilmenau.de>
+---
+ drivers/net/wireless/mediatek/mt76/mt76x02_beacon.c | 8 --------
+ 1 file changed, 8 deletions(-)
 
-v3:
-* fixed checkpatch errors
-
-v2 (thanks for the comments Lorenzo):
-* correctly track beacon data mask
-* clean-ups
-* make channel switch fn static (reported by kbuild test robot)
-
-Markus Theil (4):
-  mt76: mt76x02: ommit beacon slot clearing
-  mt76: mt76x02: split beaconing
-  mt76: speed up usb bulk copy
-  mt76: mt76x02: add channel switch support for usb interfaces
-
- drivers/net/wireless/mediatek/mt76/mt76.h     |  2 +-
- .../wireless/mediatek/mt76/mt76x02_beacon.c   | 52 ++++++-------------
- .../net/wireless/mediatek/mt76/mt76x02_mac.h  |  1 +
- .../net/wireless/mediatek/mt76/mt76x02_mmio.c |  5 ++
- .../wireless/mediatek/mt76/mt76x02_usb_core.c | 12 +++++
- .../net/wireless/mediatek/mt76/mt76x02_util.c |  2 +-
- .../wireless/mediatek/mt76/mt76x2/usb_main.c  |  7 +++
- drivers/net/wireless/mediatek/mt76/usb.c      | 17 +++---
- 8 files changed, 53 insertions(+), 45 deletions(-)
-
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_beacon.c b/drivers/net/wireless/mediatek/mt76/mt76x02_beacon.c
+index 4209209ac940..403866496640 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x02_beacon.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x02_beacon.c
+@@ -58,8 +58,6 @@ __mt76x02_mac_set_beacon(struct mt76x02_dev *dev, u8 bcn_idx,
+ 			dev->beacon_data_mask |= BIT(bcn_idx);
+ 	} else {
+ 		dev->beacon_data_mask &= ~BIT(bcn_idx);
+-		for (i = 0; i < beacon_len; i += 4)
+-			mt76_wr(dev, beacon_addr + i, 0);
+ 	}
+ 
+ 	mt76_wr(dev, MT_BCN_BYPASS_MASK, 0xff00 | ~dev->beacon_data_mask);
+@@ -241,17 +239,11 @@ EXPORT_SYMBOL_GPL(mt76x02_enqueue_buffered_bc);
+ 
+ void mt76x02_init_beacon_config(struct mt76x02_dev *dev)
+ {
+-	int i;
+-
+ 	mt76_clear(dev, MT_BEACON_TIME_CFG, (MT_BEACON_TIME_CFG_TIMER_EN |
+ 					     MT_BEACON_TIME_CFG_TBTT_EN |
+ 					     MT_BEACON_TIME_CFG_BEACON_TX));
+ 	mt76_set(dev, MT_BEACON_TIME_CFG, MT_BEACON_TIME_CFG_SYNC_MODE);
+ 	mt76_wr(dev, MT_BCN_BYPASS_MASK, 0xffff);
+-
+-	for (i = 0; i < 8; i++)
+-		mt76x02_mac_set_beacon(dev, i, NULL);
+-
+ 	mt76x02_set_beacon_offsets(dev);
+ }
+ EXPORT_SYMBOL_GPL(mt76x02_init_beacon_config);
 -- 
 2.24.0
 
