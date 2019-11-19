@@ -2,92 +2,99 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8AE0F10289A
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Nov 2019 16:48:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C1C73102906
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Nov 2019 17:12:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728562AbfKSPsF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 19 Nov 2019 10:48:05 -0500
-Received: from smail.rz.tu-ilmenau.de ([141.24.186.67]:43702 "EHLO
-        smail.rz.tu-ilmenau.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728171AbfKSPsE (ORCPT
+        id S1727949AbfKSQMg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 19 Nov 2019 11:12:36 -0500
+Received: from mail-wr1-f67.google.com ([209.85.221.67]:39696 "EHLO
+        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728470AbfKSQMg (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 19 Nov 2019 10:48:04 -0500
-Received: from localhost.localdomain (unknown [141.24.207.101])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by smail.rz.tu-ilmenau.de (Postfix) with ESMTPSA id 117CB580080;
-        Tue, 19 Nov 2019 16:48:01 +0100 (CET)
-From:   Markus Theil <markus.theil@tu-ilmenau.de>
-To:     nbd@nbd.name
-Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
-        Stanislaw Gruszka <sgruszka@redhat.com>,
-        Markus Theil <markus.theil@tu-ilmenau.de>
-Subject: [PATCH v6 5/5] mt76: mt76x02: add channel switch support for usb interfaces
-Date:   Tue, 19 Nov 2019 16:47:46 +0100
-Message-Id: <20191119154746.20821-6-markus.theil@tu-ilmenau.de>
-X-Mailer: git-send-email 2.24.0
-In-Reply-To: <20191119154746.20821-1-markus.theil@tu-ilmenau.de>
-References: <20191119154746.20821-1-markus.theil@tu-ilmenau.de>
+        Tue, 19 Nov 2019 11:12:36 -0500
+Received: by mail-wr1-f67.google.com with SMTP id l7so24534814wrp.6
+        for <linux-wireless@vger.kernel.org>; Tue, 19 Nov 2019 08:12:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=0DSGIFE0ujniakGQvFQIVw/X3ubRy0aNj1a2BA5/1wk=;
+        b=XE5w0LhmIXsobMZiaQwTpmv09VVlKigNPVHIcUl+cnWeNb8d+w6v7e1hobF7sk35XT
+         23qGMJJByxaDk3dVpsMDAEpMDpFRmcpmZjXNeq1f1xamCXhI6B+maQmYt18FxlZtBSvU
+         sbVUFVOg9yqP6tocYUP3e7Ub8uGjzplqltoW/l/HYvxwtbIVTrGgN6ENSKWZkbFEDhWy
+         b4b6MvydLWeojLz70cmzFv2C7s6Lx83tZsmOXHtwtqhgCjFTK/l8DoenpnQyQ8kXlRcL
+         O91tVTwzE/zFNTpwk+eF9HuCSx2sYMcu41Hb33DJmSgu3aMZHPX4VF/fJmv3B6Mrj107
+         vnzQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=0DSGIFE0ujniakGQvFQIVw/X3ubRy0aNj1a2BA5/1wk=;
+        b=lj+t3TCOHIeHUZ3u+7YFsgtYSFQq/wAvy7oTZQmZU4rKQDIKzxZddjleypaTmJSJ2X
+         RcnAxzmldoPjtkMtQwkbdPnttTDN3jgiHiSe95hSTNYP+xK5RxyAZQd9Oy3vTj/4M2gU
+         6OpGnVi52Mqc++c7NCm8QVE92mxA1q0SR+uyJGE1IoDSdLkD6xw0qSKFkHccjgCpmJ5t
+         YjmICkK0+I01MsmK9Kw1DApo4wy4rGTOhhHnOjwBLLs3VbYUuoXzr57Gq3bb9fgdP4id
+         7hA5Nl+VRtR1dojj4FwbUKMN/jaQ9j/Mql5jofZ4LURM9vZ7LQtscHYpnYF19eWqqIz7
+         UwzQ==
+X-Gm-Message-State: APjAAAVRENVuOnhQk7ckKz+SxQABKgJCGMlhve05g1o+bfdgpIig9+23
+        luLYaItl4zb6+/97a7KG1aBdIaeAhto1n/Rb0FOJnw==
+X-Google-Smtp-Source: APXvYqz0CQ12QwOXXJzZzcB1xKrdL8OlBS8QrQEeG8BPNfG9xJucYKvQqLhBI6ma74rQjlcJQQ78wmXGmC9QVej3Kbg=
+X-Received: by 2002:adf:ea92:: with SMTP id s18mr23199690wrm.327.1574179954623;
+ Tue, 19 Nov 2019 08:12:34 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20181016102349.26544-1-sergey.matyukevich.os@quantenna.com>
+ <20181016102349.26544-3-sergey.matyukevich.os@quantenna.com>
+ <CAOiHx=nBWr4GNh61WV+SAY-++Z6es-HX3_pd70DB_N33bVK1tw@mail.gmail.com> <41b4f41f-37ae-ef5f-476c-eb616d6a3da1@quantenna.com>
+In-Reply-To: <41b4f41f-37ae-ef5f-476c-eb616d6a3da1@quantenna.com>
+From:   Jonas Gorski <jonas.gorski@gmail.com>
+Date:   Tue, 19 Nov 2019 17:12:14 +0100
+Message-ID: <CAOiHx=myYOAYPm0KwS3wP+sPLaQH9obUv0wbdteCx6REJPKQgw@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] qtnfmac: add support for Topaz chipsets
+To:     Igor Mitsyanko <igor.mitsyanko.os@quantenna.com>
+Cc:     Sergey Matyukevich <sergey.matyukevich.os@quantenna.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        Andrey Shevchenko <ashevchenko@quantenna.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This patch enables channel switch support on mt76 usb interfaces.
+Hi Igor,
 
-Signed-off-by: Markus Theil <markus.theil@tu-ilmenau.de>
----
- drivers/net/wireless/mediatek/mt76/mt76x02_usb_core.c | 7 +++++++
- drivers/net/wireless/mediatek/mt76/mt76x02_util.c     | 2 +-
- 2 files changed, 8 insertions(+), 1 deletion(-)
+On Thu, 23 May 2019 at 21:39, Igor Mitsyanko
+<igor.mitsyanko.os@quantenna.com> wrote:
+>
+>
+> >
+> > A bit late of a review/question, but how does one obtain one of these
+> > files? There's nothing in linux-firmware, and I see only one aborted
+> > attempt for adding fmac_qsr10g.img from 2016, but none for the others.
+> > Searching for these filenames also didn't reveal any external
+> > locations.
+> >
+> >
+> > Regards
+> > Jonas
+> >
+>
+> Hi Jonas, we're working towards a second attempt to get those accepted
+> to linux-firmware (fmac_qsr1000.img binary first) admittedly it takes us
+> a long time to do that. The main obstacle for us as developers is that
+> the binary contains 3-d party GPL code so we have to work with other
+> departments to satisfy all submission requirements (provide sources,
+> proper licensing/attribution etc). From a failed fmac_qsr10g.img attempt
+> it was clear that simply providing an contact email is not enough.
+>
+> We're planning a second attempt to submit firmware binary patch
+> relatively soon, for now we expect device will boot from flash.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_usb_core.c b/drivers/net/wireless/mediatek/mt76/mt76x02_usb_core.c
-index 8a2a90fb5663..891825043117 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x02_usb_core.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x02_usb_core.c
-@@ -182,6 +182,12 @@ static void mt76x02u_pre_tbtt_work(struct work_struct *work)
- 	/* Prevent corrupt transmissions during update */
- 	mt76_set(dev, MT_BCN_BYPASS_MASK, 0xffff);
- 
-+	mt76_csa_check(&dev->mt76);
-+	if (dev->mt76.csa_complete) {
-+		mt76_csa_finish(&dev->mt76);
-+		goto out;
-+	}
-+
- 	ieee80211_iterate_active_interfaces(mt76_hw(dev),
- 		IEEE80211_IFACE_ITER_RESUME_ALL,
- 		mt76x02_update_beacon_iter, dev);
-@@ -196,6 +202,7 @@ static void mt76x02u_pre_tbtt_work(struct work_struct *work)
- 
- 	mt76x02_mac_set_beacon_finish(dev);
- 
-+out:
- 	mt76x02u_restart_pre_tbtt_timer(dev);
- }
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_util.c b/drivers/net/wireless/mediatek/mt76/mt76x02_util.c
-index 414b22399d93..3f95e5b24e1d 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x02_util.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x02_util.c
-@@ -174,7 +174,6 @@ void mt76x02_init_device(struct mt76x02_dev *dev)
- 		wiphy->reg_notifier = mt76x02_regd_notifier;
- 		wiphy->iface_combinations = mt76x02_if_comb;
- 		wiphy->n_iface_combinations = ARRAY_SIZE(mt76x02_if_comb);
--		wiphy->flags |= WIPHY_FLAG_HAS_CHANNEL_SWITCH;
- 
- 		/* init led callbacks */
- 		if (IS_ENABLED(CONFIG_MT76_LEDS)) {
-@@ -184,6 +183,7 @@ void mt76x02_init_device(struct mt76x02_dev *dev)
- 		}
- 	}
- 
-+	wiphy->flags |= WIPHY_FLAG_HAS_CHANNEL_SWITCH;
- 	wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_VHT_IBSS);
- 
- 	hw->sta_data_size = sizeof(struct mt76x02_sta);
--- 
-2.24.0
+Any update on this? The support now had its first anniversary, and
+still no firmware available for it.
 
+Maybe you could put it up in a (temporary) download location at
+Quantenna until you get around to the second attempt?
+
+
+Regards
+Jonas
