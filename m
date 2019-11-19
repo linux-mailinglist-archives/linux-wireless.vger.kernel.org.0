@@ -2,101 +2,87 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B152410257E
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Nov 2019 14:35:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3BB48102587
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Nov 2019 14:36:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727912AbfKSNfa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 19 Nov 2019 08:35:30 -0500
-Received: from mail-lj1-f196.google.com ([209.85.208.196]:40798 "EHLO
-        mail-lj1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726590AbfKSNf3 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 19 Nov 2019 08:35:29 -0500
-Received: by mail-lj1-f196.google.com with SMTP id q2so23384916ljg.7
-        for <linux-wireless@vger.kernel.org>; Tue, 19 Nov 2019 05:35:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=anyfinetworks-com.20150623.gappssmtp.com; s=20150623;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=ov3ggha6f3Zyc/mh8Jv2das5WxPoHh5lH06ygDEIJcY=;
-        b=tnrsShSWVsYcPnxlvsVmmpk7DZ3Oyj12g8s3x8SIgNqnXMgLjKkbcsAZ7KoVSPIQh2
-         Eix9eWRkI37wKOp4DMLSjzj9CfeXDP1Mk6Hdvprs43PI+gtyyxq/2kocIy9tlffsNlL8
-         2xrr+zZ3ZkOLHIh+9sJffGJYzm2dnbKBOMf1ERSSl8D+6i9sU1sGrQGW+RGqwyCA+qVb
-         4J4BltDlQhbwjj0/fqDUXjoXjEOmFc3rYo/trX418DC0aPsPUc4qZLH1gkbMbqN0MeVS
-         Fp21qsYmMxBSwAeuoKJlbe1SbfsSY8sKB4wB7AWV5YUWPRa60dZnPAfMvuNAsHbsdNwX
-         YkFA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=ov3ggha6f3Zyc/mh8Jv2das5WxPoHh5lH06ygDEIJcY=;
-        b=fF9QYCFqnSTgkvS9+JJ5T8Sjk7/bG4WgNy2jQrmUN8cklsF809niok+kHzJzYseEPb
-         p1qu+kk699Ru4QaQn4mxri1OcPw0qVP3v9K0QDVgxSHnpaSAMzyMjqE/3NaMMApkw0Pt
-         Q+0V2iL4itsY9GDqmD8JLhY8rmjADacA8i7V4Qo/Hsi3RDE3eT7s2MmciTWMpW1duOgb
-         TAx+DR96oXHfB17U+wC1cQ7UlRCeU02MywhfWdcj0FPGO0aduxWQQb8eukiXS5EUHtYs
-         l2B8UhPIptL2t0udR30e90zNMplu6uOcqxg9EFB2vr9hsUd2QIjtsfadewftQVDjy0xH
-         X7og==
-X-Gm-Message-State: APjAAAWdM6tBUFuJR1md7hTgqHRUdfpsGrcld8Wfbwa8nneFteVfdeo/
-        34MZlu9d1Muhzt1K6qXr75s/iw==
-X-Google-Smtp-Source: APXvYqxfoOAvfOZ992vNCLa7Tjp9irnytl8SAhtGEPjZVdFkVYvAmHojBk3kluNdr8M5+ag8X3EWkw==
-X-Received: by 2002:a2e:505e:: with SMTP id v30mr3984712ljd.244.1574170524109;
-        Tue, 19 Nov 2019 05:35:24 -0800 (PST)
-Received: from anpc3.lan (static-213-115-136-2.sme.telenor.se. [213.115.136.2])
-        by smtp.gmail.com with ESMTPSA id z3sm11401560lji.36.2019.11.19.05.35.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 Nov 2019 05:35:23 -0800 (PST)
-From:   Fredrik Olofsson <fredrik.olofsson@anyfinetworks.com>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org,
-        Fredrik Olofsson <fredrik.olofsson@anyfinetworks.com>
-Subject: [PATCH] mac80211: fix overwriting of qos_ctrl.tid field
-Date:   Tue, 19 Nov 2019 14:34:51 +0100
-Message-Id: <20191119133451.14711-1-fredrik.olofsson@anyfinetworks.com>
-X-Mailer: git-send-email 2.20.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        id S1727955AbfKSNf7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 19 Nov 2019 08:35:59 -0500
+Received: from mx2.suse.de ([195.135.220.15]:47754 "EHLO mx1.suse.de"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725798AbfKSNf7 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 19 Nov 2019 08:35:59 -0500
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx1.suse.de (Postfix) with ESMTP id 35F11B1D3;
+        Tue, 19 Nov 2019 13:35:57 +0000 (UTC)
+Message-ID: <1574170553.28617.10.camel@suse.com>
+Subject: Re: WARNING in ath6kl_htc_pipe_rx_complete
+From:   Oliver Neukum <oneukum@suse.com>
+To:     syzbot <syzbot+555908813b2ea35dae9a@syzkaller.appspotmail.com>,
+        andreyknvl@google.com, davem@davemloft.net, kvalo@codeaurora.org,
+        linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        syzkaller-bugs@googlegroups.com
+Date:   Tue, 19 Nov 2019 14:35:53 +0100
+In-Reply-To: <0000000000008123610596c36579@google.com>
+References: <0000000000008123610596c36579@google.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.26.6 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fixes overwriting of qos_ctrl.tid field for encrypted frames injected on
-monitor interface. qos_ctrl.tid is protected by the encryption, and
-cannot be modified after encryption. For injected frames, the encryption
-key may not be available.
+Am Donnerstag, den 07.11.2019, 07:34 -0800 schrieb syzbot:
+> Hello,
+> 
+> syzbot found the following crash on:
+> 
+> HEAD commit:    d60bbfea usb: raw: add raw-gadget interface
+> git tree:       https://github.com/google/kasan.git usb-fuzzer
+> console output: https://syzkaller.appspot.com/x/log.txt?x=1029829ae00000
+> kernel config:  https://syzkaller.appspot.com/x/.config?x=79de80330003b5f7
+> dashboard link: https://syzkaller.appspot.com/bug?extid=555908813b2ea35dae9a
+> compiler:       gcc (GCC) 9.0.0 20181231 (experimental)
+> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=1388a2aae00000
+> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=13aa35dce00000
+> 
+> IMPORTANT: if you fix the bug, please add the following tag to the commit:
+> Reported-by: syzbot+555908813b2ea35dae9a@syzkaller.appspotmail.com
 
-Before passing the frame to the driver, the qos_ctrl.tid field is
-updated from skb->priority. Prior to dbd50a851c50 skb->priority was
-updated in ieee80211_select_queue_80211(), but this function is no longer
-always called. This patch tries to mimmic the previous behaviour by
-updating skb->priority in ieee80211_monitor_start_xmit().
+#syz test: https://github.com/google/kasan.git d60bbfea
 
-Fixes: dbd50a851c50 ("mac80211: only allocate one queue when using iTXQs")
-Signed-off-by: Fredrik Olofsson <fredrik.olofsson@anyfinetworks.com>
+From d289a4973b869117a5a7f70297b0cecffceb8289 Mon Sep 17 00:00:00 2001
+From: Oliver Neukum <oneukum@suse.com>
+Date: Mon, 18 Nov 2019 19:23:25 +0100
+Subject: [PATCH] ath6kl: reduce WARN to dev_dbg() in callback
+
+The warn is triggered on a known race condition
+that is correctly handled. Using WARN() hinders automated
+testing. Reducing severity.
+
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
 ---
- net/mac80211/tx.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/net/wireless/ath/ath6kl/htc_pipe.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index 1fa422782905..cbd273c0b275 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -2263,6 +2263,15 @@ netdev_tx_t ieee80211_monitor_start_xmit(struct sk_buff *skb,
- 						    payload[7]);
+diff --git a/drivers/net/wireless/ath/ath6kl/htc_pipe.c b/drivers/net/wireless/ath/ath6kl/htc_pipe.c
+index c68848819a52..9b88d96bfe96 100644
+--- a/drivers/net/wireless/ath/ath6kl/htc_pipe.c
++++ b/drivers/net/wireless/ath/ath6kl/htc_pipe.c
+@@ -960,8 +960,8 @@ static int ath6kl_htc_pipe_rx_complete(struct ath6kl *ar, struct sk_buff *skb,
+ 	 * Thus the possibility of ar->htc_target being NULL
+ 	 * via ath6kl_recv_complete -> ath6kl_usb_io_comp_work.
+ 	 */
+-	if (WARN_ON_ONCE(!target)) {
+-		ath6kl_err("Target not yet initialized\n");
++	if (!target) {
++		ath6kl_dbg(ATH6KL_DBG_HTC, "Target not yet initialized\n");
+ 		status = -EINVAL;
+ 		goto free_skb;
  	}
- 
-+	/*
-+	 * Initialize skb->priority for QoS frames. This is put in the TID field
-+	 * of the frame before passing it to the driver.
-+	 */
-+	if (ieee80211_is_data_qos(hdr->frame_control)) {
-+		u8 *p = ieee80211_get_qos_ctl(hdr);
-+		skb->priority = *p & IEEE80211_QOS_CTL_TAG1D_MASK;
-+	}
-+
- 	memset(info, 0, sizeof(*info));
- 
- 	info->flags = IEEE80211_TX_CTL_REQ_TX_STATUS |
 -- 
-2.20.1
+2.16.4
 
