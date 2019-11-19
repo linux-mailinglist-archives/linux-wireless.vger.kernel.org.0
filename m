@@ -2,235 +2,187 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 47419101A40
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Nov 2019 08:20:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B979101ACF
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Nov 2019 09:03:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726783AbfKSHT6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 19 Nov 2019 02:19:58 -0500
-Received: from a27-185.smtp-out.us-west-2.amazonses.com ([54.240.27.185]:48952
-        "EHLO a27-185.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726620AbfKSHT6 (ORCPT
+        id S1726921AbfKSID3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 19 Nov 2019 03:03:29 -0500
+Received: from mx3.watchguard.com ([63.251.166.21]:12062 "EHLO
+        mx3.watchguard.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725784AbfKSID3 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 19 Nov 2019 02:19:58 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1574147997;
-        h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References;
-        bh=KYloWsTPGdQLD0Tf+q0SDm58ZbipgjaBsKqgn8JKwD0=;
-        b=dWsBbbFzWrL/ESmoMZGhS2HwdS5bKDQRo3t2DBKL8h+QeycBiAEo5NuUFAKhTOI9
-        2mKiGqlXaAUkxfaT3GzAa1GnI9iBbDH7Jj2MbwSisPUVYoG6oWLrj3fGviTR8lLDJiM
-        3IF6BrxLXMdsL6vjX128mRMiNYvKu4UdRtSbJBrE=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=gdwg2y3kokkkj5a55z2ilkup5wp5hhxx; d=amazonses.com; t=1574147997;
-        h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:Feedback-ID;
-        bh=KYloWsTPGdQLD0Tf+q0SDm58ZbipgjaBsKqgn8JKwD0=;
-        b=Eo0Ts+EdRBub/prAg/QLhBsfrqVBBHaXejAoE7K7JkDAuAV7Dmpofp4i1xScvQFV
-        apPdnm6DinpvDUhfVYBFyDTH6h+W3WggxDjG/zumc2pADPmBUvzNS+9PnZkW1F6qqrS
-        1OEXX14hCtlioOkU7X6ISWe8YU8U4B0XBjXZShLw=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE,
-        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org BC321C447A6
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=yyuwang@codeaurora.org
-From:   Yu Wang <yyuwang@codeaurora.org>
-To:     ath10k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org
-Subject: [PATCH v2 2/2] ath10k: correct legacy rate in tx stats
-Date:   Tue, 19 Nov 2019 07:19:57 +0000
-Message-ID: <0101016e82883ded-63f88383-cd90-4cb0-b9bb-3dd6a1e9f4e9-000000@us-west-2.amazonses.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1574147982-3956-1-git-send-email-yyuwang@codeaurora.org>
-References: <1574147982-3956-1-git-send-email-yyuwang@codeaurora.org>
-X-SES-Outgoing: 2019.11.19-54.240.27.185
-Feedback-ID: 1.us-west-2.CZuq2qbDmUIuT3qdvXlRHZZCpfZqZ4GtG9v3VKgRyF0=:AmazonSES
+        Tue, 19 Nov 2019 03:03:29 -0500
+Received: from PRDITOMBX01.wgti.net (172.24.2.21) by PRDITOMBX01.wgti.net
+ (172.24.2.21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1531.3; Tue, 19 Nov
+ 2019 00:03:26 -0800
+Received: from NAM02-BL2-obe.outbound.protection.outlook.com (172.24.2.15) by
+ owa.watchguard.com (172.24.2.21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1531.3 via Frontend
+ Transport; Tue, 19 Nov 2019 00:03:26 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=KmKX2WIz9DI/rkfAYerzdMgzEPhNpQ4ju8JClrS/dyv4j4LUxl2a25axeWB41lz+6Gp+N8OpX4miRJFUUrK9TSCUZ4vxVDiSm7JD5Jj8ouxelcQ5t4ca61MQIIvDc5hi5CapaxSrdY0We3Dpr5HDOBjF4iPIQst43th8fFlfRtsHicRto2Yai/Cd058crByxYpQvg8eTY661qt47fw/8GRaYzY1hiY0ruWzarAD8XufKp4aACHxAjzNoo+o9vdl8MV7y8GqpozMa+bW83ekx5Pa/Nmke2HxeT/35kjPAHr41FIH5iCS/huW96dd4pYoqCOz2/+GiWmTghgmj8dhdZA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=HKL6m0dIJCLNnoKAENXq+8D7IgD0SWuS2pS8Sw012xg=;
+ b=IEdBUivqqfFH9Pf1VP0ZC0pVbmk5kXmuraC/q6Uze1QWJKqH4I+b3ANnwQuZPWFLp6zfaVAqFm0wiQWGoFrLSiuSTb9iV14XWIeF+tK+DL5R8FEd9WA3oHc6jucynDLkpMJxN9Hk0DIVKbaxoksEbu18Dycj8Hfnn0e45fcK5zJT9VJj8oIyZFB///dihjb4xmhz8gpGKrJOP/tHJ9Mm1GbJt7xsSB7XG2g04S/Z+4isAqRjnUw9pFYoNjQrfy5ehUNKpQ70wBKpPr3KOKF2Fcezv8Yk0vJlr/jb2kCzadRb9Tfv1gEe2BZIIbvil/m8oxuA7wscI15tgjAqbYfFDw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=watchguard.com; dmarc=pass action=none
+ header.from=watchguard.com; dkim=pass header.d=watchguard.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wgt.onmicrosoft.com;
+ s=selector2-wgt-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=HKL6m0dIJCLNnoKAENXq+8D7IgD0SWuS2pS8Sw012xg=;
+ b=TgAL8y+CYCvurmFor9ORyBEzy1GiwPrO6Kjapr/PDzu8cZQTi48rpvdo6hD73OQfGX5c4ln76LFp33j2P4Iy06xzqYf66TIu+ADLr3NDbEeC/0DjLiDteHjnOh7Z8O7FiaN3xx03MX2XII4Ss0EA721gz76/8LwzGi7V9GXz2Cw=
+Received: from DM6PR10MB2873.namprd10.prod.outlook.com (20.177.216.210) by
+ DM6PR10MB4233.namprd10.prod.outlook.com (10.141.184.208) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2474.16; Tue, 19 Nov 2019 08:03:24 +0000
+Received: from DM6PR10MB2873.namprd10.prod.outlook.com
+ ([fe80::481a:55d7:e282:c326]) by DM6PR10MB2873.namprd10.prod.outlook.com
+ ([fe80::481a:55d7:e282:c326%7]) with mapi id 15.20.2451.029; Tue, 19 Nov 2019
+ 08:03:24 +0000
+From:   Ming Chen <Ming.Chen@watchguard.com>
+To:     =?iso-8859-1?Q?Toke_H=F8iland-J=F8rgensen?= <toke@redhat.com>,
+        Ming Chen <ming032217@gmail.com>,
+        Johannes Berg <johannes@sipsolutions.net>
+CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: RE: [PATCH v4] mac80211: Drop the packets whose source or destination
+ mac address is empty
+Thread-Topic: [PATCH v4] mac80211: Drop the packets whose source or
+ destination mac address is empty
+Thread-Index: AQHVnEROQmNFleZyvEa38z2h3bxkd6eQzzuAgAFCJbA=
+Date:   Tue, 19 Nov 2019 08:03:24 +0000
+Message-ID: <DM6PR10MB2873E994ABFB1798B36CE49B9A4C0@DM6PR10MB2873.namprd10.prod.outlook.com>
+References: <20191116060833.45752-1-ming.chen@watchguard.com>
+ <87blt9ctd4.fsf@toke.dk>
+In-Reply-To: <87blt9ctd4.fsf@toke.dk>
+Accept-Language: zh-CN, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=Ming.Chen@watchguard.com; 
+x-originating-ip: [64.94.121.131]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 70f4a2ba-ec8e-4d71-11f6-08d76cc6f3db
+x-ms-traffictypediagnostic: DM6PR10MB4233:
+x-microsoft-antispam-prvs: <DM6PR10MB42339D75A6FDF2B4D444765C9A4C0@DM6PR10MB4233.namprd10.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:6790;
+x-forefront-prvs: 022649CC2C
+x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(376002)(136003)(396003)(39850400004)(346002)(366004)(13464003)(189003)(199004)(81166006)(486006)(478600001)(11346002)(66946007)(99286004)(9686003)(14444005)(476003)(256004)(446003)(76176011)(52536014)(7696005)(66066001)(64756008)(71190400001)(71200400001)(2906002)(66446008)(66556008)(66476007)(76116006)(55016002)(74316002)(33656002)(229853002)(81156014)(5660300002)(6436002)(102836004)(7736002)(6506007)(6246003)(4326008)(186003)(26005)(8676002)(53546011)(14454004)(86362001)(6116002)(8936002)(25786009)(110136005)(66574012)(316002)(305945005)(3846002);DIR:OUT;SFP:1101;SCL:1;SRVR:DM6PR10MB4233;H:DM6PR10MB2873.namprd10.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+received-spf: None (protection.outlook.com: watchguard.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: 1hx3gnPgZf7mJ04gsMFk+2UBaryMdHGaIgg68kidVdOYZhfpfaiReDc4ZBO1M4oqYcId3823xCMgl92CmPj3u70v3MrluVNo1EkI9DY84SABfLbEocBiUxROCsZmfnTRSpO1IRX2+JTcYgnfKbMcbOs/suS8/d7OqO8afUL06V6K1uwMmQue+sC9x+ScUD9Z7I/dsx4J0uH0aXNzuC1Zy2EFg2JCLMnEL6jQKskEfJoZfueZyyiUHWWGHYBqS0ISWKXYJaJCglm5DvWfI2R0T8f2kPD30kbT5NXyGRLqySw3Rrvdet9UEcsiT88Sv1dugn4pJW+fpBDXa2/jJuzEqHfD7N7SE7CJ4c8fBrhUxzjRE14Xhjz3hDNEW3wrl3mAmtS2JG3D18necn0aCrFH0/kDJsEzGdzRwv2KaWMK/HO58VNzqcBwoZm7OAw/r55o
+x-ms-exchange-transport-forked: True
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-MS-Exchange-CrossTenant-Network-Message-Id: 70f4a2ba-ec8e-4d71-11f6-08d76cc6f3db
+X-MS-Exchange-CrossTenant-originalarrivaltime: 19 Nov 2019 08:03:24.4900
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 2563c132-88f5-466f-bbb2-e83153b3c808
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: Q+Njs//Z54b+dMVJHSHardRyScUmLp5TmBErhRwNmSl5ZVGo6Mf40DCuWfNbNfYcK0KfeaOEuTalgduUDeWzX/oDQBTfa1LX9Xu78Lr+XNs=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR10MB4233
+X-OriginatorOrg: watchguard.com
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-When working in station mode, after connected to a legacy
-AP, 11g only, for example, the tx bitrate is incorrect in
-output of command 'iw wlan0 link'.
+Thanks. Please see the inline reply.
 
-That's because the legacy tx bitrate value reported by
-firmware is not well handled:
-For QCA6174, the value represents rate index, but treated
-as a real rate;
-For QCA9888, the value is real rate, with unit 'Mbps', but
-treated as '100kbps'.
 
-To fix this issue:
-1. Translate the rate index to real rate for QCA6174;
-2. Translate the rate from 'Mbps' to 'kbps' for QCA9888.
+Ming
 
-Tested with:
-QCA6174 PCIe with firmware WLAN.RM.4.4.1.c3-00031.
-QCA6174 SDIO with firmware WLAN.RMH.4.4.1-00029.
-QCA9888 PCIe with firmware 10.4-3.9.0.2-00040.
+> -----Original Message-----
+> From: Toke H=F8iland-J=F8rgensen <toke@redhat.com>
+> Sent: Monday, November 18, 2019 3:33 AM
+> To: Ming Chen <ming032217@gmail.com>; Johannes Berg
+> <johannes@sipsolutions.net>
+> Cc: linux-wireless@vger.kernel.org; Ming Chen
+> <Ming.Chen@watchguard.com>
+> Subject: Re: [PATCH v4] mac80211: Drop the packets whose source or
+> destination mac address is empty
+>=20
+> Ming Chen <ming032217@gmail.com> writes:
+>=20
+> > We found ath9k could occasionally receive some frames from Linux IP
+> > stack with empty source and destination mac address, especially when
+> > the radio mode works as a wireless client and configure a static IP.
+> > If the ADDBA has been negotiated, this kind of error packets will
+> > cause the driver failed to find the opposite node (VAP) while in the
+> function of processing these frame's TX complete interrupt.
+> >
+> > The above failure happens inside the TX complete processing function
+> > ath_tx_process_buffer while calling ieee80211_find_sta_by_ifaddr.
+> > Inside the function ieee80211_find_sta_by_ifaddr, the condition of
+> > ether_addr_equal(sta->sdata->vif.addr, localaddr) will return false
+> > since localaddr(hdr->addr2, 802.3 source mac) is an empty mac address.
+> >
+> > Finally, this function will return NULL to ath_tx_process_buffer.
+> > And then ath_tx_process_buffer will call ath_tx_complete_aggr to
+> > complete the frame(s), However, the sta is NULL at this moment, so it
+> > could complete this kind of the frame(s) but doesn't (and cannot) updat=
+e
+> the BA window.
+> > Please see the below snippet of ath_tx_complete_aggr if (!sta) {
+> >         INIT_LIST_HEAD(&bf_head);
+> >         while (bf) {
+> >                 bf_next =3D bf->bf_next;
+> >
+> >                 if (!bf->bf_state.stale || bf_next !=3D NULL)
+> >                         list_move_tail(&bf->list, &bf_head);
+> >
+> >                 ath_tx_complete_buf(sc, bf, txq, &bf_head, NULL, ts,
+> > 0);
+> >
+> >                 bf =3D bf_next;
+> >         }
+> >         return;
+> > }
+> >
+> > To fix this issue, we could remove the comparison of localaddr of
+> > ieee80211_find_sta_by_ifaddr when works as a wireless client - it
+> > won't have more than one sta (VAP) found, but I don't think it is the b=
+est
+> solution.
+>=20
+> Ah, so the TX path doesn't do any lookups when the device is a sta, but t=
+he
+> TX completion path does? This was the information I was looking for; plea=
+se
+> explain this in the commit message, you don't need to paste in the code :=
+)
+>=20
+[Ming Chen] As I said previously, this issue can be exposed when the radio =
+works as a wireless client. The TX path will look up the sta(vap) by BSSID =
+instead of mac address in SKB (see ieee80211_lookup_ra_sta). The BSSID woul=
+d have been stored when the client is connected, so it could succeed to get=
+ the sta(vap). However, in the TX completion path, it will also compare the=
+ source mac in SKB and the one of the interface, after it retrieves the sta=
+(vap) from hash_node table (see ieee80211_find_sta_by_ifaddr).
 
-Signed-off-by: Yu Wang <yyuwang@codeaurora.org>
----
- drivers/net/wireless/ath/ath10k/htt_rx.c | 83 +++++++++++++++++++++++++++++++-
- drivers/net/wireless/ath/ath10k/mac.c    |  2 +-
- drivers/net/wireless/ath/ath10k/mac.h    |  1 +
- 3 files changed, 83 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath10k/htt_rx.c b/drivers/net/wireless/ath/ath10k/htt_rx.c
-index cde2d9b..796c8c0 100644
---- a/drivers/net/wireless/ath/ath10k/htt_rx.c
-+++ b/drivers/net/wireless/ath/ath10k/htt_rx.c
-@@ -3455,7 +3455,7 @@ ath10k_update_per_peer_tx_stats(struct ath10k *ar,
- 	struct ath10k_sta *arsta = (struct ath10k_sta *)sta->drv_priv;
- 	struct ieee80211_chanctx_conf *conf = NULL;
- 	u8 rate = 0, sgi;
--	s8 rate_idx = 0;
-+	s8 rate_idx = -1;
- 	bool skip_auto_rate;
- 	struct rate_info txrate;
- 
-@@ -3497,6 +3497,12 @@ ath10k_update_per_peer_tx_stats(struct ath10k *ar,
- 		rate_idx = ath10k_get_legacy_rate_idx(ar, rate);
- 		if (rate_idx < 0)
- 			return;
-+
-+		/* from 1Mbps to 100Kbps */
-+		rate = rate * 10;
-+		if (rate == 50)
-+			rate = 55;
-+
- 		arsta->txrate.legacy = rate;
- 	} else if (txrate.flags == WMI_RATE_PREAMBLE_HT) {
- 		arsta->txrate.flags = RATE_INFO_FLAGS_MCS;
-@@ -3723,6 +3729,74 @@ static void ath10k_htt_rx_sec_ind_handler(struct ath10k *ar,
- 	spin_unlock_bh(&ar->data_lock);
- }
- 
-+static int
-+ath10k_htt_update_ratecode(struct ath10k *ar, struct ath10k_sta *arsta,
-+			   u8 *ratecode)
-+{
-+	u8 hw_rate, preamble;
-+	u16 bitrate;
-+	int i;
-+	const struct ieee80211_rate *bitrates;
-+	bool cck;
-+	struct ieee80211_chanctx_conf *conf = NULL;
-+	enum nl80211_band band;
-+	struct ieee80211_supported_band *sband;
-+
-+	if (!ratecode)
-+		return -EINVAL;
-+
-+	/* only for legacy ratecode */
-+	preamble = ATH10K_HW_PREAMBLE(*ratecode);
-+	if (preamble != WMI_RATE_PREAMBLE_CCK &&
-+	    preamble != WMI_RATE_PREAMBLE_OFDM)
-+		return 0;
-+
-+	if (!arsta->arvif || !arsta->arvif->vif)
-+		return -EINVAL;
-+
-+	WARN_ON(!rcu_read_lock_held());
-+	conf = rcu_dereference(arsta->arvif->vif->chanctx_conf);
-+	if (!conf)
-+		return -EINVAL;
-+
-+	band = conf->def.chan->band;
-+	sband = &ar->mac.sbands[band];
-+	if (!sband->bitrates)
-+		return -EINVAL;
-+
-+	if (WARN_ON_ONCE(sband->n_bitrates > S8_MAX))
-+		return -EINVAL;
-+
-+	cck = (preamble == WMI_RATE_PREAMBLE_CCK);
-+	hw_rate = ATH10K_HW_LEGACY_RATE(*ratecode);
-+	for (i = 0; i < sband->n_bitrates; i++) {
-+		bitrates = &sband->bitrates[i];
-+		if (ath10k_mac_bitrate_is_cck(bitrates->bitrate) != cck)
-+			continue;
-+
-+		if (bitrates->hw_value == hw_rate ||
-+		    (bitrates->flags & IEEE80211_RATE_SHORT_PREAMBLE &&
-+		     bitrates->hw_value_short == hw_rate)) {
-+			bitrate = bitrates->bitrate;
-+
-+			/* The bitrate will be recovered in
-+			 * ath10k_update_per_peer_tx_stats().
-+			 */
-+			if (bitrate == 55)
-+				bitrate = 60;
-+
-+			bitrate = bitrate / 10;
-+
-+			/* replace hw_value with bitrate in ratecode */
-+			*ratecode = ATH10K_HW_RATECODE(bitrate, 0, preamble);
-+			return 0;
-+		}
-+	}
-+
-+	ath10k_warn(ar, "Invalid legacy ratecode %hhd ppdu stats", *ratecode);
-+	return -EINVAL;
-+}
-+
- static void
- ath10k_htt_process_ppdu_stats(struct ath10k *ar, struct sk_buff *skb)
- {
-@@ -3734,6 +3808,7 @@ ath10k_htt_process_ppdu_stats(struct ath10k *ar, struct sk_buff *skb)
- 	struct ath10k_peer *peer;
- 	u32 peer_id, i;
- 	u8 num_ppdu;
-+	u8 ratecode;
- 
- 	num_ppdu = resp->ppdu_stats.num_ppdu;
- 	tx_stats = &resp->ppdu_stats.tx_ppdu_stats[0];
-@@ -3753,6 +3828,10 @@ ath10k_htt_process_ppdu_stats(struct ath10k *ar, struct sk_buff *skb)
- 	for (i = 0; i < num_ppdu; i++) {
- 		tx_stats = &resp->ppdu_stats.tx_ppdu_stats[i];
- 		arsta = (struct ath10k_sta *)sta->drv_priv;
-+		ratecode = tx_stats->tx_ratecode;
-+
-+		if (ath10k_htt_update_ratecode(ar, arsta, &ratecode))
-+			goto err;
- 
- 		p_tx_stats->succ_bytes =
- 			__le32_to_cpu(tx_stats->tx_success_bytes);
-@@ -3760,7 +3839,7 @@ ath10k_htt_process_ppdu_stats(struct ath10k *ar, struct sk_buff *skb)
- 			__le32_to_cpu(tx_stats->tx_retry_bytes);
- 		p_tx_stats->failed_bytes =
- 			__le32_to_cpu(tx_stats->tx_failed_bytes);
--		p_tx_stats->ratecode = tx_stats->tx_ratecode;
-+		p_tx_stats->ratecode = ratecode;
- 		p_tx_stats->flags = tx_stats->flags;
- 		p_tx_stats->succ_pkts =
- 			__le16_to_cpu(tx_stats->tx_success_msdus);
-diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
-index 83cc877..95a5069 100644
---- a/drivers/net/wireless/ath/ath10k/mac.c
-+++ b/drivers/net/wireless/ath/ath10k/mac.c
-@@ -94,7 +94,7 @@ static struct ieee80211_rate ath10k_rates_rev2[] = {
- 
- #define ath10k_wmi_legacy_rates ath10k_rates
- 
--static bool ath10k_mac_bitrate_is_cck(int bitrate)
-+bool ath10k_mac_bitrate_is_cck(int bitrate)
- {
- 	switch (bitrate) {
- 	case 10:
-diff --git a/drivers/net/wireless/ath/ath10k/mac.h b/drivers/net/wireless/ath/ath10k/mac.h
-index 98d83a2..cc245b1 100644
---- a/drivers/net/wireless/ath/ath10k/mac.h
-+++ b/drivers/net/wireless/ath/ath10k/mac.h
-@@ -28,6 +28,7 @@ struct rfc1042_hdr {
- 	__be16 snap_type;
- } __packed;
- 
-+bool ath10k_mac_bitrate_is_cck(int bitrate);
- struct ath10k *ath10k_mac_create(size_t priv_size);
- void ath10k_mac_destroy(struct ath10k *ar);
- int ath10k_mac_register(struct ath10k *ar);
--- 
-2.7.4
+> > Dropping this kind of error packet before it goes into the driver,
+> > should be the right direction.
+>=20
+> So I still wonder why this happens from higher up in the stack. If there'=
+s a
+> legitimate reason, maybe dropping the packet is not the right thing? And =
+if
+> there is *no* legitimate reason, maybe the packet should be dropped highe=
+r
+> up in the stack instead?
+>=20
+> What kind of packets does this happen with?
+[Ming Chen] It should an ARP packet. I can see this kind of packet before A=
+RP table is complete. If so, how about dropping it in the function of ieee8=
+0211_subif_start_xmit?
+>=20
+> -Toke
 
