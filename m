@@ -2,29 +2,29 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 15FA7101121
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Nov 2019 03:10:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AFF30101130
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Nov 2019 03:18:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727114AbfKSCKj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 18 Nov 2019 21:10:39 -0500
-Received: from szxga07-in.huawei.com ([45.249.212.35]:43920 "EHLO huawei.com"
+        id S1727050AbfKSCSA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 18 Nov 2019 21:18:00 -0500
+Received: from szxga04-in.huawei.com ([45.249.212.190]:7139 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726761AbfKSCKi (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 18 Nov 2019 21:10:38 -0500
-Received: from DGGEMS410-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id 205AC7CEF21CBFBB844E;
-        Tue, 19 Nov 2019 10:10:36 +0800 (CST)
-Received: from huawei.com (10.90.53.225) by DGGEMS410-HUB.china.huawei.com
- (10.3.19.210) with Microsoft SMTP Server id 14.3.439.0; Tue, 19 Nov 2019
- 10:10:25 +0800
+        id S1726761AbfKSCSA (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 18 Nov 2019 21:18:00 -0500
+Received: from DGGEMS402-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id 101431AC88401CD54E2F;
+        Tue, 19 Nov 2019 10:17:58 +0800 (CST)
+Received: from huawei.com (10.90.53.225) by DGGEMS402-HUB.china.huawei.com
+ (10.3.19.202) with Microsoft SMTP Server id 14.3.439.0; Tue, 19 Nov 2019
+ 10:17:50 +0800
 From:   zhengbin <zhengbin13@huawei.com>
 To:     <Jes.Sorensen@gmail.com>, <kvalo@codeaurora.org>,
         <davem@davemloft.net>, <linux-wireless@vger.kernel.org>,
         <netdev@vger.kernel.org>
 CC:     <zhengbin13@huawei.com>
-Subject: [PATCH -next] rtl8xxxu: Remove set but not used variable 'vif','dev','len'
-Date:   Tue, 19 Nov 2019 10:17:43 +0800
-Message-ID: <1574129863-121223-1-git-send-email-zhengbin13@huawei.com>
+Subject: [PATCH -next v2] rtl8xxxu: Remove set but not used variable 'vif','dev','len'
+Date:   Tue, 19 Nov 2019 10:25:14 +0800
+Message-ID: <1574130314-25626-1-git-send-email-zhengbin13@huawei.com>
 X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -44,13 +44,14 @@ drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c:5397:17: warning: variable
 drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c: In function rtl8xxxu_c2hcmd_callback:
 drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c:5400:6: warning: variable len set but not used [-Wunused-but-set-variable]
 
-It is introduced by commit e542e66b7c2e ("rtl8xxxu:
+They are introduced by commit e542e66b7c2e ("rtl8xxxu:
 add bluetooth co-existence support for single antenna"), but never used,
-so remove it.
+so remove them.
 
 Reported-by: Hulk Robot <hulkci@huawei.com>
 Signed-off-by: zhengbin <zhengbin13@huawei.com>
 ---
+v1->v2: modify comment, it --> they
  drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 6 ------
  1 file changed, 6 deletions(-)
 
