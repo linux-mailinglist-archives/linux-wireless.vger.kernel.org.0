@@ -2,58 +2,59 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F94610182C
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Nov 2019 07:06:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D2B710182E
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Nov 2019 07:06:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729131AbfKSGG1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 19 Nov 2019 01:06:27 -0500
-Received: from mail-yw1-f73.google.com ([209.85.161.73]:41671 "EHLO
-        mail-yw1-f73.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727919AbfKSGG0 (ORCPT
+        id S1729181AbfKSGG3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 19 Nov 2019 01:06:29 -0500
+Received: from mail-vs1-f74.google.com ([209.85.217.74]:34665 "EHLO
+        mail-vs1-f74.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728017AbfKSGG1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 19 Nov 2019 01:06:26 -0500
-Received: by mail-yw1-f73.google.com with SMTP id b184so10298062ywc.8
-        for <linux-wireless@vger.kernel.org>; Mon, 18 Nov 2019 22:06:24 -0800 (PST)
+        Tue, 19 Nov 2019 01:06:27 -0500
+Received: by mail-vs1-f74.google.com with SMTP id z20so2882214vsf.1
+        for <linux-wireless@vger.kernel.org>; Mon, 18 Nov 2019 22:06:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20161025;
         h=date:in-reply-to:message-id:mime-version:references:subject:from:to
          :cc:content-transfer-encoding;
-        bh=egaWC7CsrqhnLtYCliWrLag50KGwX7qP2BMqFzdlV88=;
-        b=BElRiZRAiiZcjHabvedXjtH184syCdVbDai/tHHn8NKgcTqV3+cuMBeMEiP7QGMQIr
-         znlcj3NpvKx1kQQDyuZORMBveruTUlQoL/XcnqXvGxRO0uRFrlXiFIpPPrlUyEheoU6p
-         LJBVPxqaHOpHEtMfr1VZDPLoT1OS+drWNTSUrUtQTvPGgHi7N92GSfSMci+iNEDwFnqQ
-         gAELxDmG0GH/IspKUVA16QzhGE83LBnJLxq4oOwYtS8qU0C9eAw2eStDg7WVTjRsHX5T
-         23xGirzluXjRw0GdWtCW2uW5wAztP69Zoatmz5tjqFp8M5T9vzsHNCJ1HccGTQu51ydY
-         ePog==
+        bh=1CVlSmDuduVOrM20/48U3R5JhWdrRTuz9nt0rP9WlAM=;
+        b=U9I47APvslJ6BrpaiTrwJULFAtQM8tFaZe624ENzLvMLLV/vdu5keZ39YQ2BO1MAw6
+         6wWNebzJ4Zl6NxSabybQao/2Vu+XYamGghsUkZG+SoAzUAPbrf4igz3yFwdszy1SVA2U
+         lDoDKT5XQ9DcJU1METL9NdoGR5Jy7nIKYnjRZkcPUm3CGdizuOS4f5girYABnSY/Ccxk
+         wZRwpYxGoomZaCdv9TJS5HntZfRrTdZ0F84kfSE0mDdL0OyxgpskNXpddM7U38rs99kG
+         qgq/x8fUoCbdeQ5vQAJ/QhZmTe7BAS//qIn/dVZnU6LMNBMlq8AXdh7Nhe1d2DDKQ29g
+         eMxA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:in-reply-to:message-id:mime-version
          :references:subject:from:to:cc:content-transfer-encoding;
-        bh=egaWC7CsrqhnLtYCliWrLag50KGwX7qP2BMqFzdlV88=;
-        b=oJCfa0M6FhrvsEEq4cagYan6NrGYqUunSEV3BKvhSds4LPYQqEHsj4EHt+tW43a53p
-         WGx7/Mcvb27SSzZLETKvO6WLhDDxXlhNXCAqxuMGkxeTE5SGikzlauv5WW24bh94bfWY
-         JiyRnhq1h8GM2vKwweRUSLziT7TrbsZBKTTMwNhE1ZxfbrbvNoR/LDthg+FtPEEBawhU
-         Mb4yVqrNkYZykEqyfaak4op2zCHeDh3GpeJNRHAHmHh7pe003aNLBKDkyzYKt4ZhY6/0
-         W/WBE5SKBdOiYE3Z441c/PXbo4SOPzCDSarRiJrLSKb0dbxALoIVX1dtDsvl918wPWUZ
-         vPQw==
-X-Gm-Message-State: APjAAAXgM47c+XsHBpKcma3ymL7AIAx1N5W368bB1JKGMjQUOW9HvfeT
-        wS5AGITlOK7IvJ6laOhQc6Sn3njy
-X-Google-Smtp-Source: APXvYqzgZwgdem5W3CdybQiaF4b9Cwua5lwpW6z+EHcDBIB9lbZsQjEtli2DbPJZmYOrTjqv39esNQlH
-X-Received: by 2002:a81:c254:: with SMTP id t20mr22112162ywg.157.1574143583290;
- Mon, 18 Nov 2019 22:06:23 -0800 (PST)
-Date:   Mon, 18 Nov 2019 22:06:08 -0800
+        bh=1CVlSmDuduVOrM20/48U3R5JhWdrRTuz9nt0rP9WlAM=;
+        b=DecjpaGZQ5yToktcZMqI/BgZczO2mrrYgwHLZLeEAVbJiAKIo80Zy2Z8obaFCHHtc/
+         5Rgw2l/h0GjFlRqSzfaVlzAaonS8q+dEV+DJKFmUFr/+vEo5YFT6M3Zw2l+SKvA4fBYX
+         XWK+DrzI86416uhkmS2/BUErkcmcbavGNhOZZnrqfCXnUnAKn49eLXtqK0JKTzrV6c+/
+         TlOUFfaFQuonGHQ9AKFIZAIaBFHhDxLTN2X2jqOr4V8bj9uSnIbMhS5N2dq3zFfjPKjy
+         S6Lg1OUeVNO4MTU/schq6p/cCI3CGOiwKGwH4PTEe6nFvlx9e4TyJZPsAoDm5ighkLJK
+         mNdA==
+X-Gm-Message-State: APjAAAU9RXYh0iZ1/+j8vcW8CVM8q04tBzFGLlcuIWRZX/bvFOwwpJn4
+        tEKMZu8RevB4Y2/RkpxQdUx8RkYQ
+X-Google-Smtp-Source: APXvYqxdsGqBaw7jIDHywpUl3e7ZTcYxgZnJKcO2ptxWdgfPhfW/VKKRiOeGy4Bp3rMWXTa24nYyOjLZ
+X-Received: by 2002:ac5:ce8c:: with SMTP id 12mr18190120vke.34.1574143586253;
+ Mon, 18 Nov 2019 22:06:26 -0800 (PST)
+Date:   Mon, 18 Nov 2019 22:06:09 -0800
 In-Reply-To: <20191119060610.76681-1-kyan@google.com>
-Message-Id: <20191119060610.76681-3-kyan@google.com>
+Message-Id: <20191119060610.76681-4-kyan@google.com>
 Mime-Version: 1.0
 References: <20191119060610.76681-1-kyan@google.com>
 X-Mailer: git-send-email 2.24.0.432.g9d3f5f5b63-goog
-Subject: [PATCH v11 2/4] mac80211: Import airtime calculation code from mt76
+Subject: [PATCH v11 3/4] mac80211: Implement Airtime-based Queue Limit (AQL)
 From:   Kan Yan <kyan@google.com>
 To:     johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org,
         make-wifi-fast@lists.bufferbloat.net, toke@redhat.com,
         nbd@nbd.name, yiboz@codeaurora.org, john@phrozen.org,
-        lorenzo@kernel.org, rmanohar@codeaurora.org, kevinhayes@google.com
+        lorenzo@kernel.org, rmanohar@codeaurora.org, kevinhayes@google.com,
+        Kan Yan <kyan@google.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
@@ -61,714 +62,483 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
+In order for the Fq_CoDel algorithm integrated in mac80211 layer to operate
+effectively to control excessive queueing latency, the CoDel algorithm
+requires an accurate measure of how long packets stays in the queue, AKA
+sojourn time. The sojourn time measured at the mac80211 layer doesn't
+include queueing latency in the lower layer (firmware/hardware) and CoDel
+expects lower layer to have a short queue. However, most 802.11ac chipsets
+offload tasks such TX aggregation to firmware or hardware, thus have a deep
+lower layer queue.
 
-Felix recently added code to calculate airtime of packets to the mt76
-driver. Import this into mac80211 so we can use it for airtime queue limit
-calculations.
+Without a mechanism to control the lower layer queue size, packets only
+stay in mac80211 layer transiently before being sent to firmware queue.
+As a result, the sojourn time measured by CoDel in the mac80211 layer is
+almost always lower than the CoDel latency target, hence CoDel does little
+to control the latency, even when the lower layer queue causes excessive
+latency.
 
-The airtime.c file is copied verbatim from the mt76 driver, and adjusted to
-be usable in mac80211. This involves:
+The Byte Queue Limits (BQL) mechanism is commonly used to address the
+similar issue with wired network interface. However, this method cannot be
+applied directly to the wireless network interface. "Bytes" is not a
+suitable measure of queue depth in the wireless network, as the data rate
+can vary dramatically from station to station in the same network, from a
+few Mbps to over Gbps.
 
-- Switching to mac80211 data structures.
-- Adding support for 160 MHz channels and HE mode.
-- Moving the symbol and duration calculations around a bit to avoid
-  rounding with the higher rates and longer symbol times used for HE rates.
+This patch implements an Airtime-based Queue Limit (AQL) to make CoDel work
+effectively with wireless drivers that utilized firmware/hardware
+offloading. AQL allows each txq to release just enough packets to the lower
+layer to form 1-2 large aggregations to keep hardware fully utilized and
+retains the rest of the frames in mac80211 layer to be controlled by the
+CoDel algorithm.
 
-The per-rate TX rate calculation is also split out to its own function so
-it can be used directly for the AQL calculations later.
-
+Signed-off-by: Kan Yan <kyan@google.com>
+[ Toke: Keep API to set pending airtime internal, fix nits in commit msg ]
 Signed-off-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
 ---
- include/net/mac80211.h     |  29 ++
- net/mac80211/Makefile      |   3 +-
- net/mac80211/airtime.c     | 597 +++++++++++++++++++++++++++++++++++++
- net/mac80211/ieee80211_i.h |   4 +
- 4 files changed, 632 insertions(+), 1 deletion(-)
- create mode 100644 net/mac80211/airtime.c
+ include/net/cfg80211.h     |  7 ++++
+ include/net/mac80211.h     | 12 ++++++
+ net/mac80211/debugfs.c     | 85 ++++++++++++++++++++++++++++++++++++++
+ net/mac80211/debugfs_sta.c | 43 ++++++++++++++-----
+ net/mac80211/ieee80211_i.h |  4 ++
+ net/mac80211/main.c        | 10 ++++-
+ net/mac80211/sta_info.c    | 38 +++++++++++++++++
+ net/mac80211/sta_info.h    |  8 ++++
+ net/mac80211/tx.c          | 51 +++++++++++++++++++++--
+ 9 files changed, 244 insertions(+), 14 deletions(-)
 
+diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+index e309cc826b40..b0f440857aeb 100644
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -2606,6 +2606,13 @@ enum wiphy_params_flags {
+=20
+ #define IEEE80211_DEFAULT_AIRTIME_WEIGHT	256
+=20
++/* The per TXQ device queue limit in airtime */
++#define IEEE80211_DEFAULT_AQL_TXQ_LIMIT_L	5000
++#define IEEE80211_DEFAULT_AQL_TXQ_LIMIT_H	12000
++
++/* The per interface airtime threshold to switch to lower queue limit */
++#define IEEE80211_AQL_THRESHOLD			24000
++
+ /**
+  * struct cfg80211_pmksa - PMK Security Association
+  *
 diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index c643a19dce96..6fc26a051ba0 100644
+index 6fc26a051ba0..ba3f33cc41ea 100644
 --- a/include/net/mac80211.h
 +++ b/include/net/mac80211.h
-@@ -6424,4 +6424,33 @@ void ieee80211_nan_func_match(struct ieee80211_vif *=
-vif,
- 			      struct cfg80211_nan_match_params *match,
- 			      gfp_t gfp);
+@@ -5565,6 +5565,18 @@ void ieee80211_send_eosp_nullfunc(struct ieee80211_s=
+ta *pubsta, int tid);
+ void ieee80211_sta_register_airtime(struct ieee80211_sta *pubsta, u8 tid,
+ 				    u32 tx_airtime, u32 rx_airtime);
 =20
 +/**
-+ * ieee80211_calc_rx_airtime - calculate estimated transmission airtime fo=
-r RX.
++ * ieee80211_txq_airtime_check - check if a txq can send frame to device
 + *
-+ * This function calculates the estimated airtime usage of a frame based o=
-n the
-+ * rate information in the RX status struct and the frame length.
++ * @hw: pointer obtained from ieee80211_alloc_hw()
++ * @txq: pointer obtained from station or virtual interface
 + *
-+ * @hw: pointer as obtained from ieee80211_alloc_hw()
-+ * @status: &struct ieee80211_rx_status containing the transmission rate
-+ *          information.
-+ * @len: frame length in bytes
++ * Return true if the AQL's airtime limit has not been reached and the txq=
+ can
++ * continue to send more packets to the device. Otherwise return false.
 + */
-+u32 ieee80211_calc_rx_airtime(struct ieee80211_hw *hw,
-+			      struct ieee80211_rx_status *status,
-+			      int len);
++bool
++ieee80211_txq_airtime_check(struct ieee80211_hw *hw, struct ieee80211_txq =
+*txq);
 +
-+/**
-+ * ieee80211_calc_tx_airtime - calculate estimated transmission airtime fo=
-r TX.
-+ *
-+ * This function calculates the estimated airtime usage of a frame based o=
-n the
-+ * rate information in the TX info struct and the frame length.
-+ *
-+ * @hw: pointer as obtained from ieee80211_alloc_hw()
-+ * @info: &struct ieee80211_tx_info of the frame.
-+ * @len: frame length in bytes
-+ */
-+u32 ieee80211_calc_tx_airtime(struct ieee80211_hw *hw,
-+			      struct ieee80211_tx_info *info,
-+			      int len);
-+
- #endif /* MAC80211_H */
-diff --git a/net/mac80211/Makefile b/net/mac80211/Makefile
-index 4f03ebe732fa..6cbb1286d6c0 100644
---- a/net/mac80211/Makefile
-+++ b/net/mac80211/Makefile
-@@ -32,7 +32,8 @@ mac80211-y :=3D \
- 	chan.o \
- 	trace.o mlme.o \
- 	tdls.o \
--	ocb.o
-+	ocb.o \
-+	airtime.o
+ /**
+  * ieee80211_iter_keys - iterate keys programmed into the device
+  * @hw: pointer obtained from ieee80211_alloc_hw()
+diff --git a/net/mac80211/debugfs.c b/net/mac80211/debugfs.c
+index 568b3b276931..399d4e8b8546 100644
+--- a/net/mac80211/debugfs.c
++++ b/net/mac80211/debugfs.c
+@@ -148,6 +148,87 @@ static const struct file_operations aqm_ops =3D {
+ 	.llseek =3D default_llseek,
+ };
 =20
- mac80211-$(CONFIG_MAC80211_LEDS) +=3D led.o
- mac80211-$(CONFIG_MAC80211_DEBUGFS) +=3D \
-diff --git a/net/mac80211/airtime.c b/net/mac80211/airtime.c
-new file mode 100644
-index 000000000000..0c2a0bb94727
---- /dev/null
-+++ b/net/mac80211/airtime.c
-@@ -0,0 +1,597 @@
-+// SPDX-License-Identifier: ISC
-+/*
-+ * Copyright (C) 2019 Felix Fietkau <nbd@nbd.name>
-+ */
++static ssize_t aql_txq_limit_read(struct file *file,
++				  char __user *user_buf,
++				  size_t count,
++				  loff_t *ppos)
++{
++	struct ieee80211_local *local =3D file->private_data;
++	char buf[400];
++	int len =3D 0;
 +
-+#include <net/mac80211.h>
-+#include "ieee80211_i.h"
-+#include "sta_info.h"
-+
-+#define AVG_PKT_SIZE	1024
-+
-+/* Number of bits for an average sized packet */
-+#define MCS_NBITS (AVG_PKT_SIZE << 3)
-+
-+/* Number of kilo-symbols (symbols * 1024) for a packet with (bps) bits pe=
-r
-+ * symbol. We use k-symbols to avoid rounding in the _TIME macros below.
-+ */
-+#define MCS_N_KSYMS(bps) DIV_ROUND_UP(MCS_NBITS << 10, (bps))
-+
-+/* Transmission time (in 1024 * usec) for a packet containing (ksyms) * 10=
-24
-+ * symbols.
-+ */
-+#define MCS_SYMBOL_TIME(sgi, ksyms)					\
-+	(sgi ?								\
-+	  ((ksyms) * 4 * 18) / 20 :		/* 3.6 us per sym */	\
-+	  ((ksyms) * 4)			/* 4.0 us per sym */	\
-+	)
-+
-+/* Transmit duration for the raw data part of an average sized packet */
-+#define MCS_DURATION(streams, sgi, bps) \
-+	((u32)MCS_SYMBOL_TIME(sgi, MCS_N_KSYMS((streams) * (bps))))
-+
-+#define MCS_DURATION_S(shift, streams, sgi, bps)		\
-+	((u16)((MCS_DURATION(streams, sgi, bps) >> shift)))
-+
-+/* These should match the values in enum nl80211_he_gi */
-+#define HE_GI_08 0
-+#define HE_GI_16 1
-+#define HE_GI_32 2
-+
-+/* Transmission time (1024 usec) for a packet containing (ksyms) * k-symbo=
-ls */
-+#define HE_SYMBOL_TIME(gi, ksyms)					\
-+	(gi =3D=3D HE_GI_08 ?						\
-+	 ((ksyms) * 16 * 17) / 20 :		/* 13.6 us per sym */	\
-+	 (gi =3D=3D HE_GI_16 ?						\
-+	  ((ksyms) * 16 * 18) / 20 :		/* 14.4 us per sym */	\
-+	  ((ksyms) * 16)			/* 16.0 us per sym */	\
-+	 ))
-+
-+/* Transmit duration for the raw data part of an average sized packet */
-+#define HE_DURATION(streams, gi, bps) \
-+	((u32)HE_SYMBOL_TIME(gi, MCS_N_KSYMS((streams) * (bps))))
-+
-+#define HE_DURATION_S(shift, streams, gi, bps)		\
-+	(HE_DURATION(streams, gi, bps) >> shift)
-+
-+#define BW_20			0
-+#define BW_40			1
-+#define BW_80			2
-+#define BW_160			3
-+
-+/*
-+ * Define group sort order: HT40 -> SGI -> #streams
-+ */
-+#define IEEE80211_MAX_STREAMS		4
-+#define IEEE80211_HT_STREAM_GROUPS	4 /* BW(=3D2) * SGI(=3D2) */
-+#define IEEE80211_VHT_STREAM_GROUPS	8 /* BW(=3D4) * SGI(=3D2) */
-+
-+#define IEEE80211_HE_MAX_STREAMS	8
-+#define IEEE80211_HE_STREAM_GROUPS	12 /* BW(=3D4) * GI(=3D3) */
-+
-+#define IEEE80211_HT_GROUPS_NB	(IEEE80211_MAX_STREAMS *	\
-+				 IEEE80211_HT_STREAM_GROUPS)
-+#define IEEE80211_VHT_GROUPS_NB	(IEEE80211_MAX_STREAMS *	\
-+					 IEEE80211_VHT_STREAM_GROUPS)
-+#define IEEE80211_HE_GROUPS_NB	(IEEE80211_HE_MAX_STREAMS *	\
-+				 IEEE80211_HE_STREAM_GROUPS)
-+#define IEEE80211_GROUPS_NB	(IEEE80211_HT_GROUPS_NB +	\
-+				 IEEE80211_VHT_GROUPS_NB +	\
-+				 IEEE80211_HE_GROUPS_NB)
-+
-+#define IEEE80211_HT_GROUP_0	0
-+#define IEEE80211_VHT_GROUP_0	(IEEE80211_HT_GROUP_0 + IEEE80211_HT_GROUPS_=
-NB)
-+#define IEEE80211_HE_GROUP_0	(IEEE80211_VHT_GROUP_0 + IEEE80211_VHT_GROUPS=
-_NB)
-+
-+#define MCS_GROUP_RATES		12
-+
-+#define HT_GROUP_IDX(_streams, _sgi, _ht40)	\
-+	IEEE80211_HT_GROUP_0 +			\
-+	IEEE80211_MAX_STREAMS * 2 * _ht40 +	\
-+	IEEE80211_MAX_STREAMS * _sgi +		\
-+	_streams - 1
-+
-+#define _MAX(a, b) (((a)>(b))?(a):(b))
-+
-+#define GROUP_SHIFT(duration)						\
-+	_MAX(0, 16 - __builtin_clz(duration))
-+
-+/* MCS rate information for an MCS group */
-+#define __MCS_GROUP(_streams, _sgi, _ht40, _s)				\
-+	[HT_GROUP_IDX(_streams, _sgi, _ht40)] =3D {			\
-+	.shift =3D _s,							\
-+	.duration =3D {							\
-+		MCS_DURATION_S(_s, _streams, _sgi, _ht40 ? 54 : 26),	\
-+		MCS_DURATION_S(_s, _streams, _sgi, _ht40 ? 108 : 52),	\
-+		MCS_DURATION_S(_s, _streams, _sgi, _ht40 ? 162 : 78),	\
-+		MCS_DURATION_S(_s, _streams, _sgi, _ht40 ? 216 : 104),	\
-+		MCS_DURATION_S(_s, _streams, _sgi, _ht40 ? 324 : 156),	\
-+		MCS_DURATION_S(_s, _streams, _sgi, _ht40 ? 432 : 208),	\
-+		MCS_DURATION_S(_s, _streams, _sgi, _ht40 ? 486 : 234),	\
-+		MCS_DURATION_S(_s, _streams, _sgi, _ht40 ? 540 : 260)	\
-+	}								\
++	len =3D scnprintf(buf, sizeof(buf),
++			"AC	AQL limit low	AQL limit high\n"
++			"VO	%u		%u\n"
++			"VI	%u		%u\n"
++			"BE	%u		%u\n"
++			"BK	%u		%u\n",
++			local->aql_txq_limit_low[IEEE80211_AC_VO],
++			local->aql_txq_limit_high[IEEE80211_AC_VO],
++			local->aql_txq_limit_low[IEEE80211_AC_VI],
++			local->aql_txq_limit_high[IEEE80211_AC_VI],
++			local->aql_txq_limit_low[IEEE80211_AC_BE],
++			local->aql_txq_limit_high[IEEE80211_AC_BE],
++			local->aql_txq_limit_low[IEEE80211_AC_BK],
++			local->aql_txq_limit_high[IEEE80211_AC_BK]);
++	return simple_read_from_buffer(user_buf, count, ppos,
++				       buf, len);
 +}
 +
-+#define MCS_GROUP_SHIFT(_streams, _sgi, _ht40)				\
-+	GROUP_SHIFT(MCS_DURATION(_streams, _sgi, _ht40 ? 54 : 26))
++static ssize_t aql_txq_limit_write(struct file *file,
++				   const char __user *user_buf,
++				   size_t count,
++				   loff_t *ppos)
++{
++	struct ieee80211_local *local =3D file->private_data;
++	char buf[100];
++	size_t len;
++	u32 ac, q_limit_low, q_limit_high, q_limit_low_old, q_limit_high_old;
++	struct sta_info *sta;
 +
-+#define MCS_GROUP(_streams, _sgi, _ht40)				\
-+	__MCS_GROUP(_streams, _sgi, _ht40,				\
-+		    MCS_GROUP_SHIFT(_streams, _sgi, _ht40))
++	if (count > sizeof(buf))
++		return -EINVAL;
 +
-+#define VHT_GROUP_IDX(_streams, _sgi, _bw)				\
-+	(IEEE80211_VHT_GROUP_0 +					\
-+	 IEEE80211_MAX_STREAMS * 2 * (_bw) +				\
-+	 IEEE80211_MAX_STREAMS * (_sgi) +				\
-+	 (_streams) - 1)
++	if (copy_from_user(buf, user_buf, count))
++		return -EFAULT;
 +
-+#define BW2VBPS(_bw, r4, r3, r2, r1)					\
-+	(_bw =3D=3D BW_160 ? r4 : _bw =3D=3D BW_80 ? r3 : _bw =3D=3D BW_40 ? r2 :=
- r1)
++	buf[sizeof(buf) - 1] =3D 0;
++	len =3D strlen(buf);
++	if (len > 0 && buf[len - 1] =3D=3D '\n')
++		buf[len - 1] =3D 0;
 +
-+#define __VHT_GROUP(_streams, _sgi, _bw, _s)				\
-+	[VHT_GROUP_IDX(_streams, _sgi, _bw)] =3D {			\
-+	.shift =3D _s,							\
-+	.duration =3D {							\
-+		MCS_DURATION_S(_s, _streams, _sgi,			\
-+			       BW2VBPS(_bw,  234,  117,  54,  26)),	\
-+		MCS_DURATION_S(_s, _streams, _sgi,			\
-+			       BW2VBPS(_bw,  468,  234, 108,  52)),	\
-+		MCS_DURATION_S(_s, _streams, _sgi,			\
-+			       BW2VBPS(_bw,  702,  351, 162,  78)),	\
-+		MCS_DURATION_S(_s, _streams, _sgi,			\
-+			       BW2VBPS(_bw,  936,  468, 216, 104)),	\
-+		MCS_DURATION_S(_s, _streams, _sgi,			\
-+			       BW2VBPS(_bw, 1404,  702, 324, 156)),	\
-+		MCS_DURATION_S(_s, _streams, _sgi,			\
-+			       BW2VBPS(_bw, 1872,  936, 432, 208)),	\
-+		MCS_DURATION_S(_s, _streams, _sgi,			\
-+			       BW2VBPS(_bw, 2106, 1053, 486, 234)),	\
-+		MCS_DURATION_S(_s, _streams, _sgi,			\
-+			       BW2VBPS(_bw, 2340, 1170, 540, 260)),	\
-+		MCS_DURATION_S(_s, _streams, _sgi,			\
-+			       BW2VBPS(_bw, 2808, 1404, 648, 312)),	\
-+		MCS_DURATION_S(_s, _streams, _sgi,			\
-+			       BW2VBPS(_bw, 3120, 1560, 720, 346))	\
-+        }								\
++	if (sscanf(buf, "%u %u %u", &ac, &q_limit_low, &q_limit_high) !=3D 3)
++		return -EINVAL;
++
++	if (ac >=3D IEEE80211_NUM_ACS)
++		return -EINVAL;
++
++	q_limit_low_old =3D local->aql_txq_limit_low[ac];
++	q_limit_high_old =3D local->aql_txq_limit_high[ac];
++
++	local->aql_txq_limit_low[ac] =3D q_limit_low;
++	local->aql_txq_limit_high[ac] =3D q_limit_high;
++
++	mutex_lock(&local->sta_mtx);
++	list_for_each_entry(sta, &local->sta_list, list) {
++		/* If a sta has customized queue limits, keep it */
++		if (sta->airtime[ac].aql_limit_low =3D=3D q_limit_low_old &&
++		    sta->airtime[ac].aql_limit_high =3D=3D q_limit_high_old) {
++			sta->airtime[ac].aql_limit_low =3D q_limit_low;
++			sta->airtime[ac].aql_limit_high =3D q_limit_high;
++		}
++	}
++	mutex_unlock(&local->sta_mtx);
++	return count;
 +}
 +
-+#define VHT_GROUP_SHIFT(_streams, _sgi, _bw)				\
-+	GROUP_SHIFT(MCS_DURATION(_streams, _sgi,			\
-+				 BW2VBPS(_bw, 243, 117,  54,  26)))
-+
-+#define VHT_GROUP(_streams, _sgi, _bw)					\
-+	__VHT_GROUP(_streams, _sgi, _bw,				\
-+		    VHT_GROUP_SHIFT(_streams, _sgi, _bw))
-+
-+
-+#define HE_GROUP_IDX(_streams, _gi, _bw)				\
-+	(IEEE80211_HE_GROUP_0 +					\
-+	 IEEE80211_HE_MAX_STREAMS * 2 * (_bw) +			\
-+	 IEEE80211_HE_MAX_STREAMS * (_gi) +				\
-+	 (_streams) - 1)
-+
-+#define __HE_GROUP(_streams, _gi, _bw, _s)				\
-+	[HE_GROUP_IDX(_streams, _gi, _bw)] =3D {			\
-+	.shift =3D _s,							\
-+	.duration =3D {							\
-+		HE_DURATION_S(_s, _streams, _gi,			\
-+			      BW2VBPS(_bw,   979,  489,  230,  115)),	\
-+		HE_DURATION_S(_s, _streams, _gi,			\
-+			      BW2VBPS(_bw,  1958,  979,  475,  230)),	\
-+		HE_DURATION_S(_s, _streams, _gi,			\
-+			      BW2VBPS(_bw,  2937, 1468,  705,  345)),	\
-+		HE_DURATION_S(_s, _streams, _gi,			\
-+			      BW2VBPS(_bw,  3916, 1958,  936,  475)),	\
-+		HE_DURATION_S(_s, _streams, _gi,			\
-+			      BW2VBPS(_bw,  5875, 2937, 1411,  705)),	\
-+		HE_DURATION_S(_s, _streams, _gi,			\
-+			      BW2VBPS(_bw,  7833, 3916, 1872,  936)),	\
-+		HE_DURATION_S(_s, _streams, _gi,			\
-+			      BW2VBPS(_bw,  8827, 4406, 2102, 1051)),	\
-+		HE_DURATION_S(_s, _streams, _gi,			\
-+			      BW2VBPS(_bw,  9806, 4896, 2347, 1166)),	\
-+		HE_DURATION_S(_s, _streams, _gi,			\
-+			      BW2VBPS(_bw, 11764, 5875, 2808, 1411)),	\
-+		HE_DURATION_S(_s, _streams, _gi,			\
-+			      BW2VBPS(_bw, 13060, 6523, 3124, 1555)),	\
-+		HE_DURATION_S(_s, _streams, _gi,			\
-+			      BW2VBPS(_bw, 14702, 7344, 3513, 1756)),	\
-+		HE_DURATION_S(_s, _streams, _gi,			\
-+			      BW2VBPS(_bw, 16329, 8164, 3902, 1944))	\
-+        }								\
-+}
-+
-+#define HE_GROUP_SHIFT(_streams, _gi, _bw)				\
-+	GROUP_SHIFT(HE_DURATION(_streams, _gi,			\
-+				BW2VBPS(_bw,   979,  489,  230,  115)))
-+
-+#define HE_GROUP(_streams, _gi, _bw)					\
-+	__HE_GROUP(_streams, _gi, _bw,				\
-+		   HE_GROUP_SHIFT(_streams, _gi, _bw))
-+struct mcs_group {
-+	u8 shift;
-+	u16 duration[MCS_GROUP_RATES];
++static const struct file_operations aql_txq_limit_ops =3D {
++	.write =3D aql_txq_limit_write,
++	.read =3D aql_txq_limit_read,
++	.open =3D simple_open,
++	.llseek =3D default_llseek,
 +};
 +
-+static const struct mcs_group airtime_mcs_groups[] =3D {
-+	MCS_GROUP(1, 0, BW_20),
-+	MCS_GROUP(2, 0, BW_20),
-+	MCS_GROUP(3, 0, BW_20),
-+	MCS_GROUP(4, 0, BW_20),
+ static ssize_t force_tx_status_read(struct file *file,
+ 				    char __user *user_buf,
+ 				    size_t count,
+@@ -441,6 +522,10 @@ void debugfs_hw_add(struct ieee80211_local *local)
+ 	debugfs_create_u16("airtime_flags", 0600,
+ 			   phyd, &local->airtime_flags);
+=20
++	DEBUGFS_ADD(aql_txq_limit);
++	debugfs_create_u32("aql_threshold", 0600,
++			   phyd, &local->aql_threshold);
 +
-+	MCS_GROUP(1, 1, BW_20),
-+	MCS_GROUP(2, 1, BW_20),
-+	MCS_GROUP(3, 1, BW_20),
-+	MCS_GROUP(4, 1, BW_20),
+ 	statsd =3D debugfs_create_dir("statistics", phyd);
+=20
+ 	/* if the dir failed, don't put all the other things into the root! */
+diff --git a/net/mac80211/debugfs_sta.c b/net/mac80211/debugfs_sta.c
+index c8ad20c28c43..0185e6e5e5d1 100644
+--- a/net/mac80211/debugfs_sta.c
++++ b/net/mac80211/debugfs_sta.c
+@@ -197,10 +197,12 @@ static ssize_t sta_airtime_read(struct file *file, ch=
+ar __user *userbuf,
+ {
+ 	struct sta_info *sta =3D file->private_data;
+ 	struct ieee80211_local *local =3D sta->sdata->local;
+-	size_t bufsz =3D 200;
++	size_t bufsz =3D 400;
+ 	char *buf =3D kzalloc(bufsz, GFP_KERNEL), *p =3D buf;
+ 	u64 rx_airtime =3D 0, tx_airtime =3D 0;
+ 	s64 deficit[IEEE80211_NUM_ACS];
++	u32 q_depth[IEEE80211_NUM_ACS];
++	u32 q_limit_l[IEEE80211_NUM_ACS], q_limit_h[IEEE80211_NUM_ACS];
+ 	ssize_t rv;
+ 	int ac;
+=20
+@@ -212,19 +214,22 @@ static ssize_t sta_airtime_read(struct file *file, ch=
+ar __user *userbuf,
+ 		rx_airtime +=3D sta->airtime[ac].rx_airtime;
+ 		tx_airtime +=3D sta->airtime[ac].tx_airtime;
+ 		deficit[ac] =3D sta->airtime[ac].deficit;
++		q_limit_l[ac] =3D sta->airtime[ac].aql_limit_low;
++		q_limit_h[ac] =3D sta->airtime[ac].aql_limit_high;
+ 		spin_unlock_bh(&local->active_txq_lock[ac]);
++		q_depth[ac] =3D atomic_read(&sta->airtime[ac].aql_tx_pending);
+ 	}
+=20
+ 	p +=3D scnprintf(p, bufsz + buf - p,
+ 		"RX: %llu us\nTX: %llu us\nWeight: %u\n"
+-		"Deficit: VO: %lld us VI: %lld us BE: %lld us BK: %lld us\n",
+-		rx_airtime,
+-		tx_airtime,
+-		sta->airtime_weight,
+-		deficit[0],
+-		deficit[1],
+-		deficit[2],
+-		deficit[3]);
++		"Deficit: VO: %lld us VI: %lld us BE: %lld us BK: %lld us\n"
++		"Q depth: VO: %u us VI: %u us BE: %u us BK: %u us\n"
++		"Q limit[low/high]: VO: %u/%u VI: %u/%u BE: %u/%u BK: %u/%u\n",
++		rx_airtime, tx_airtime, sta->airtime_weight,
++		deficit[0], deficit[1], deficit[2], deficit[3],
++		q_depth[0], q_depth[1], q_depth[2], q_depth[3],
++		q_limit_l[0], q_limit_h[0], q_limit_l[1], q_limit_h[1],
++		q_limit_l[2], q_limit_h[2], q_limit_l[3], q_limit_h[3]),
+=20
+ 	rv =3D simple_read_from_buffer(userbuf, count, ppos, buf, p - buf);
+ 	kfree(buf);
+@@ -236,7 +241,25 @@ static ssize_t sta_airtime_write(struct file *file, co=
+nst char __user *userbuf,
+ {
+ 	struct sta_info *sta =3D file->private_data;
+ 	struct ieee80211_local *local =3D sta->sdata->local;
+-	int ac;
++	u32 ac, q_limit_l, q_limit_h;
++	char _buf[100] =3D {}, *buf =3D _buf;
 +
-+	MCS_GROUP(1, 0, BW_40),
-+	MCS_GROUP(2, 0, BW_40),
-+	MCS_GROUP(3, 0, BW_40),
-+	MCS_GROUP(4, 0, BW_40),
++	if (count > sizeof(_buf))
++		return -EINVAL;
 +
-+	MCS_GROUP(1, 1, BW_40),
-+	MCS_GROUP(2, 1, BW_40),
-+	MCS_GROUP(3, 1, BW_40),
-+	MCS_GROUP(4, 1, BW_40),
++	if (copy_from_user(buf, userbuf, count))
++		return -EFAULT;
 +
-+	VHT_GROUP(1, 0, BW_20),
-+	VHT_GROUP(2, 0, BW_20),
-+	VHT_GROUP(3, 0, BW_20),
-+	VHT_GROUP(4, 0, BW_20),
++	buf[sizeof(_buf) - 1] =3D '\0';
++	if (sscanf(buf, "queue limit %u %u %u", &ac, &q_limit_l, &q_limit_h)
++	    !=3D 3)
++		return -EINVAL;
 +
-+	VHT_GROUP(1, 1, BW_20),
-+	VHT_GROUP(2, 1, BW_20),
-+	VHT_GROUP(3, 1, BW_20),
-+	VHT_GROUP(4, 1, BW_20),
++	if (ac >=3D IEEE80211_NUM_ACS)
++		return -EINVAL;
 +
-+	VHT_GROUP(1, 0, BW_40),
-+	VHT_GROUP(2, 0, BW_40),
-+	VHT_GROUP(3, 0, BW_40),
-+	VHT_GROUP(4, 0, BW_40),
-+
-+	VHT_GROUP(1, 1, BW_40),
-+	VHT_GROUP(2, 1, BW_40),
-+	VHT_GROUP(3, 1, BW_40),
-+	VHT_GROUP(4, 1, BW_40),
-+
-+	VHT_GROUP(1, 0, BW_80),
-+	VHT_GROUP(2, 0, BW_80),
-+	VHT_GROUP(3, 0, BW_80),
-+	VHT_GROUP(4, 0, BW_80),
-+
-+	VHT_GROUP(1, 1, BW_80),
-+	VHT_GROUP(2, 1, BW_80),
-+	VHT_GROUP(3, 1, BW_80),
-+	VHT_GROUP(4, 1, BW_80),
-+
-+	VHT_GROUP(1, 0, BW_160),
-+	VHT_GROUP(2, 0, BW_160),
-+	VHT_GROUP(3, 0, BW_160),
-+	VHT_GROUP(4, 0, BW_160),
-+
-+	VHT_GROUP(1, 1, BW_160),
-+	VHT_GROUP(2, 1, BW_160),
-+	VHT_GROUP(3, 1, BW_160),
-+	VHT_GROUP(4, 1, BW_160),
-+
-+	HE_GROUP(1, HE_GI_08, BW_20),
-+	HE_GROUP(2, HE_GI_08, BW_20),
-+	HE_GROUP(3, HE_GI_08, BW_20),
-+	HE_GROUP(4, HE_GI_08, BW_20),
-+	HE_GROUP(5, HE_GI_08, BW_20),
-+	HE_GROUP(6, HE_GI_08, BW_20),
-+	HE_GROUP(7, HE_GI_08, BW_20),
-+	HE_GROUP(8, HE_GI_08, BW_20),
-+
-+	HE_GROUP(1, HE_GI_16, BW_20),
-+	HE_GROUP(2, HE_GI_16, BW_20),
-+	HE_GROUP(3, HE_GI_16, BW_20),
-+	HE_GROUP(4, HE_GI_16, BW_20),
-+	HE_GROUP(5, HE_GI_16, BW_20),
-+	HE_GROUP(6, HE_GI_16, BW_20),
-+	HE_GROUP(7, HE_GI_16, BW_20),
-+	HE_GROUP(8, HE_GI_16, BW_20),
-+
-+	HE_GROUP(1, HE_GI_32, BW_20),
-+	HE_GROUP(2, HE_GI_32, BW_20),
-+	HE_GROUP(3, HE_GI_32, BW_20),
-+	HE_GROUP(4, HE_GI_32, BW_20),
-+	HE_GROUP(5, HE_GI_32, BW_20),
-+	HE_GROUP(6, HE_GI_32, BW_20),
-+	HE_GROUP(7, HE_GI_32, BW_20),
-+	HE_GROUP(8, HE_GI_32, BW_20),
-+
-+	HE_GROUP(1, HE_GI_08, BW_40),
-+	HE_GROUP(2, HE_GI_08, BW_40),
-+	HE_GROUP(3, HE_GI_08, BW_40),
-+	HE_GROUP(4, HE_GI_08, BW_40),
-+	HE_GROUP(5, HE_GI_08, BW_40),
-+	HE_GROUP(6, HE_GI_08, BW_40),
-+	HE_GROUP(7, HE_GI_08, BW_40),
-+	HE_GROUP(8, HE_GI_08, BW_40),
-+
-+	HE_GROUP(1, HE_GI_16, BW_40),
-+	HE_GROUP(2, HE_GI_16, BW_40),
-+	HE_GROUP(3, HE_GI_16, BW_40),
-+	HE_GROUP(4, HE_GI_16, BW_40),
-+	HE_GROUP(5, HE_GI_16, BW_40),
-+	HE_GROUP(6, HE_GI_16, BW_40),
-+	HE_GROUP(7, HE_GI_16, BW_40),
-+	HE_GROUP(8, HE_GI_16, BW_40),
-+
-+	HE_GROUP(1, HE_GI_32, BW_40),
-+	HE_GROUP(2, HE_GI_32, BW_40),
-+	HE_GROUP(3, HE_GI_32, BW_40),
-+	HE_GROUP(4, HE_GI_32, BW_40),
-+	HE_GROUP(5, HE_GI_32, BW_40),
-+	HE_GROUP(6, HE_GI_32, BW_40),
-+	HE_GROUP(7, HE_GI_32, BW_40),
-+	HE_GROUP(8, HE_GI_32, BW_40),
-+
-+	HE_GROUP(1, HE_GI_08, BW_80),
-+	HE_GROUP(2, HE_GI_08, BW_80),
-+	HE_GROUP(3, HE_GI_08, BW_80),
-+	HE_GROUP(4, HE_GI_08, BW_80),
-+	HE_GROUP(5, HE_GI_08, BW_80),
-+	HE_GROUP(6, HE_GI_08, BW_80),
-+	HE_GROUP(7, HE_GI_08, BW_80),
-+	HE_GROUP(8, HE_GI_08, BW_80),
-+
-+	HE_GROUP(1, HE_GI_16, BW_80),
-+	HE_GROUP(2, HE_GI_16, BW_80),
-+	HE_GROUP(3, HE_GI_16, BW_80),
-+	HE_GROUP(4, HE_GI_16, BW_80),
-+	HE_GROUP(5, HE_GI_16, BW_80),
-+	HE_GROUP(6, HE_GI_16, BW_80),
-+	HE_GROUP(7, HE_GI_16, BW_80),
-+	HE_GROUP(8, HE_GI_16, BW_80),
-+
-+	HE_GROUP(1, HE_GI_32, BW_80),
-+	HE_GROUP(2, HE_GI_32, BW_80),
-+	HE_GROUP(3, HE_GI_32, BW_80),
-+	HE_GROUP(4, HE_GI_32, BW_80),
-+	HE_GROUP(5, HE_GI_32, BW_80),
-+	HE_GROUP(6, HE_GI_32, BW_80),
-+	HE_GROUP(7, HE_GI_32, BW_80),
-+	HE_GROUP(8, HE_GI_32, BW_80),
-+
-+	HE_GROUP(1, HE_GI_08, BW_160),
-+	HE_GROUP(2, HE_GI_08, BW_160),
-+	HE_GROUP(3, HE_GI_08, BW_160),
-+	HE_GROUP(4, HE_GI_08, BW_160),
-+	HE_GROUP(5, HE_GI_08, BW_160),
-+	HE_GROUP(6, HE_GI_08, BW_160),
-+	HE_GROUP(7, HE_GI_08, BW_160),
-+	HE_GROUP(8, HE_GI_08, BW_160),
-+
-+	HE_GROUP(1, HE_GI_16, BW_160),
-+	HE_GROUP(2, HE_GI_16, BW_160),
-+	HE_GROUP(3, HE_GI_16, BW_160),
-+	HE_GROUP(4, HE_GI_16, BW_160),
-+	HE_GROUP(5, HE_GI_16, BW_160),
-+	HE_GROUP(6, HE_GI_16, BW_160),
-+	HE_GROUP(7, HE_GI_16, BW_160),
-+	HE_GROUP(8, HE_GI_16, BW_160),
-+
-+	HE_GROUP(1, HE_GI_32, BW_160),
-+	HE_GROUP(2, HE_GI_32, BW_160),
-+	HE_GROUP(3, HE_GI_32, BW_160),
-+	HE_GROUP(4, HE_GI_32, BW_160),
-+	HE_GROUP(5, HE_GI_32, BW_160),
-+	HE_GROUP(6, HE_GI_32, BW_160),
-+	HE_GROUP(7, HE_GI_32, BW_160),
-+	HE_GROUP(8, HE_GI_32, BW_160),
-+};
-+
-+static u32
-+ieee80211_calc_legacy_rate_duration(u16 bitrate, bool short_pre,
-+				    bool cck, int len)
-+{
-+	u32 duration;
-+
-+	if (cck) {
-+		duration =3D 144 + 48; /* preamble + PLCP */
-+		if (short_pre)
-+			duration >>=3D 1;
-+
-+		duration +=3D 10; /* SIFS */
-+	} else {
-+		duration =3D 20 + 16; /* premable + SIFS */
-+	}
-+
-+	len <<=3D 3;
-+	duration +=3D (len * 10) / bitrate;
-+
-+	return duration;
-+}
-+
-+u32 ieee80211_calc_rx_airtime(struct ieee80211_hw *hw,
-+			      struct ieee80211_rx_status *status,
-+			      int len)
-+{
-+	struct ieee80211_supported_band *sband;
-+	const struct ieee80211_rate *rate;
-+	bool sgi =3D status->enc_flags & RX_ENC_FLAG_SHORT_GI;
-+	bool sp =3D status->enc_flags & RX_ENC_FLAG_SHORTPRE;
-+	int bw, streams;
-+	int group, idx;
-+	u32 duration;
-+	bool cck;
-+
-+	switch (status->bw) {
-+	case RATE_INFO_BW_20:
-+		bw =3D BW_20;
-+		break;
-+	case RATE_INFO_BW_40:
-+		bw =3D BW_40;
-+		break;
-+	case RATE_INFO_BW_80:
-+		bw =3D BW_80;
-+		break;
-+	case RATE_INFO_BW_160:
-+		bw =3D BW_160;
-+		break;
-+	default:
-+		WARN_ON_ONCE(1);
-+		return 0;
-+	}
-+
-+	switch (status->encoding) {
-+	case RX_ENC_LEGACY:
-+		if (WARN_ON_ONCE(status->band > NL80211_BAND_5GHZ))
-+			return 0;
-+
-+		sband =3D hw->wiphy->bands[status->band];
-+		if (!sband || status->rate_idx > sband->n_bitrates)
-+			return 0;
-+
-+		rate =3D &sband->bitrates[status->rate_idx];
-+		cck =3D rate->flags & IEEE80211_RATE_MANDATORY_B;
-+
-+		return ieee80211_calc_legacy_rate_duration(rate->bitrate, sp,
-+							   cck, len);
-+
-+	case RX_ENC_VHT:
-+		streams =3D status->nss;
-+		idx =3D status->rate_idx;
-+		group =3D VHT_GROUP_IDX(streams, sgi, bw);
-+		break;
-+	case RX_ENC_HT:
-+		streams =3D ((status->rate_idx >> 3) & 3) + 1;
-+		idx =3D status->rate_idx & 7;
-+		group =3D HT_GROUP_IDX(streams, sgi, bw);
-+		break;
-+	case RX_ENC_HE:
-+		streams =3D status->nss;
-+		idx =3D status->rate_idx;
-+		group =3D HE_GROUP_IDX(streams, status->he_gi, bw);
-+		break;
-+	default:
-+		WARN_ON_ONCE(1);
-+		return 0;
-+	}
-+
-+	if (WARN_ON_ONCE((status->encoding !=3D RX_ENC_HE && streams > 4) ||
-+			 (status->encoding =3D=3D RX_ENC_HE && streams > 8)))
-+		return 0;
-+
-+	duration =3D airtime_mcs_groups[group].duration[idx];
-+	duration <<=3D airtime_mcs_groups[group].shift;
-+	duration *=3D len;
-+	duration /=3D AVG_PKT_SIZE;
-+	duration /=3D 1024;
-+
-+	duration +=3D 36 + (streams << 2);
-+
-+	return duration;
-+}
-+EXPORT_SYMBOL_GPL(ieee80211_calc_rx_airtime);
-+
-+static u32 ieee80211_calc_tx_airtime_rate(struct ieee80211_hw *hw,
-+					  struct ieee80211_tx_rate *rate,
-+					  u8 band, int len)
-+{
-+	struct ieee80211_rx_status stat =3D {
-+		.band =3D band,
-+	};
-+
-+	if (rate->idx < 0 || !rate->count)
-+		return 0;
-+
-+	if (rate->flags & IEEE80211_TX_RC_80_MHZ_WIDTH)
-+		stat.bw =3D RATE_INFO_BW_80;
-+	else if (rate->flags & IEEE80211_TX_RC_40_MHZ_WIDTH)
-+		stat.bw =3D RATE_INFO_BW_40;
-+	else
-+		stat.bw =3D RATE_INFO_BW_20;
-+
-+	stat.enc_flags =3D 0;
-+	if (rate->flags & IEEE80211_TX_RC_USE_SHORT_PREAMBLE)
-+		stat.enc_flags |=3D RX_ENC_FLAG_SHORTPRE;
-+	if (rate->flags & IEEE80211_TX_RC_SHORT_GI)
-+		stat.enc_flags |=3D RX_ENC_FLAG_SHORT_GI;
-+
-+	stat.rate_idx =3D rate->idx;
-+	if (rate->flags & IEEE80211_TX_RC_VHT_MCS) {
-+		stat.encoding =3D RX_ENC_VHT;
-+		stat.rate_idx =3D ieee80211_rate_get_vht_mcs(rate);
-+		stat.nss =3D ieee80211_rate_get_vht_nss(rate);
-+	} else if (rate->flags & IEEE80211_TX_RC_MCS) {
-+		stat.encoding =3D RX_ENC_HT;
-+	} else {
-+		stat.encoding =3D RX_ENC_LEGACY;
-+	}
-+
-+	return ieee80211_calc_rx_airtime(hw, &stat, len);
-+}
-+
-+u32 ieee80211_calc_tx_airtime(struct ieee80211_hw *hw,
-+			      struct ieee80211_tx_info *info,
-+			      int len)
-+{
-+	u32 duration =3D 0;
-+	int i;
-+
-+	for (i =3D 0; i < ARRAY_SIZE(info->status.rates); i++) {
-+		struct ieee80211_tx_rate *rate =3D &info->status.rates[i];
-+		u32 cur_duration;
-+
-+		cur_duration =3D ieee80211_calc_tx_airtime_rate(hw, rate,
-+							      info->band, len);
-+		if (!cur_duration)
-+			break;
-+
-+		duration +=3D cur_duration * rate->count;
-+	}
-+
-+	return duration;
-+}
-+EXPORT_SYMBOL_GPL(ieee80211_calc_tx_airtime);
-+
-+u32 ieee80211_calc_expected_tx_airtime(struct ieee80211_hw *hw,
-+				       struct ieee80211_vif *vif,
-+				       struct ieee80211_sta *pubsta,
-+				       int len)
-+{
-+	struct ieee80211_supported_band *sband;
-+	struct ieee80211_chanctx_conf *conf;
-+	int rateidx, shift =3D 0;
-+	bool cck, short_pream;
-+	u32 basic_rates;
-+	u8 band =3D 0;
-+	u16 rate;
-+
-+	len +=3D 38; /* Ethernet header length */
-+
-+	conf =3D rcu_dereference(vif->chanctx_conf);
-+	if (conf) {
-+		band =3D conf->def.chan->band;
-+		shift =3D ieee80211_chandef_get_shift(&conf->def);
-+	}
-+
-+	if (pubsta) {
-+		struct sta_info *sta =3D container_of(pubsta, struct sta_info,
-+						    sta);
-+
-+		return ieee80211_calc_tx_airtime_rate(hw,
-+						      &sta->tx_stats.last_rate,
-+						      band, len);
-+	}
-+
-+	if (!conf)
-+		return 0;
-+
-+	/* No station to get latest rate from, so calculate the worst-case
-+	 * duration using the lowest configured basic rate.
-+	 */
-+	sband =3D hw->wiphy->bands[band];
-+
-+	basic_rates =3D vif->bss_conf.basic_rates;
-+	short_pream =3D vif->bss_conf.use_short_preamble;
-+
-+	rateidx =3D basic_rates ? ffs(basic_rates) - 1 : 0;
-+	rate =3D sband->bitrates[rateidx].bitrate << shift;
-+	cck =3D sband->bitrates[rateidx].flags & IEEE80211_RATE_MANDATORY_B;
-+
-+	return ieee80211_calc_legacy_rate_duration(rate, short_pream, cck, len);
-+}
++	sta->airtime[ac].aql_limit_low =3D q_limit_l;
++	sta->airtime[ac].aql_limit_high =3D q_limit_h;
+=20
+ 	for (ac =3D 0; ac < IEEE80211_NUM_ACS; ac++) {
+ 		spin_lock_bh(&local->active_txq_lock[ac]);
 diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
-index 05406e9c05b3..225ea4e3cd76 100644
+index 225ea4e3cd76..ad15b3be8bb3 100644
 --- a/net/mac80211/ieee80211_i.h
 +++ b/net/mac80211/ieee80211_i.h
-@@ -2249,6 +2249,10 @@ const char *ieee80211_get_reason_code_string(u16 rea=
-son_code);
+@@ -1142,6 +1142,10 @@ struct ieee80211_local {
+ 	u16 schedule_round[IEEE80211_NUM_ACS];
 =20
- extern const struct ethtool_ops ieee80211_ethtool_ops;
+ 	u16 airtime_flags;
++	u32 aql_txq_limit_low[IEEE80211_NUM_ACS];
++	u32 aql_txq_limit_high[IEEE80211_NUM_ACS];
++	u32 aql_threshold;
++	atomic_t aql_total_pending_airtime;
 =20
-+u32 ieee80211_calc_expected_tx_airtime(struct ieee80211_hw *hw,
-+				       struct ieee80211_vif *vif,
-+				       struct ieee80211_sta *pubsta,
-+				       int len);
- #ifdef CONFIG_MAC80211_NOINLINE
- #define debug_noinline noinline
- #else
+ 	const struct ieee80211_ops *ops;
+=20
+diff --git a/net/mac80211/main.c b/net/mac80211/main.c
+index aba094b4ccfc..071ea92a3748 100644
+--- a/net/mac80211/main.c
++++ b/net/mac80211/main.c
+@@ -667,8 +667,16 @@ struct ieee80211_hw *ieee80211_alloc_hw_nm(size_t priv=
+_data_len,
+ 	for (i =3D 0; i < IEEE80211_NUM_ACS; i++) {
+ 		INIT_LIST_HEAD(&local->active_txqs[i]);
+ 		spin_lock_init(&local->active_txq_lock[i]);
++		local->aql_txq_limit_low[i] =3D IEEE80211_DEFAULT_AQL_TXQ_LIMIT_L;
++		local->aql_txq_limit_high[i] =3D
++			IEEE80211_DEFAULT_AQL_TXQ_LIMIT_H;
+ 	}
+-	local->airtime_flags =3D AIRTIME_USE_TX | AIRTIME_USE_RX;
++
++	local->airtime_flags =3D AIRTIME_USE_TX |
++			       AIRTIME_USE_RX |
++			       AIRTIME_USE_AQL;
++	local->aql_threshold =3D IEEE80211_AQL_THRESHOLD;
++	atomic_set(&local->aql_total_pending_airtime, 0);
+=20
+ 	INIT_LIST_HEAD(&local->chanctx_list);
+ 	mutex_init(&local->chanctx_mtx);
+diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
+index 465d83b13582..1fe02022a31a 100644
+--- a/net/mac80211/sta_info.c
++++ b/net/mac80211/sta_info.c
+@@ -416,6 +416,9 @@ struct sta_info *sta_info_alloc(struct ieee80211_sub_if=
+_data *sdata,
+ 		skb_queue_head_init(&sta->ps_tx_buf[i]);
+ 		skb_queue_head_init(&sta->tx_filtered[i]);
+ 		sta->airtime[i].deficit =3D sta->airtime_weight;
++		atomic_set(&sta->airtime[i].aql_tx_pending, 0);
++		sta->airtime[i].aql_limit_low =3D local->aql_txq_limit_low[i];
++		sta->airtime[i].aql_limit_high =3D local->aql_txq_limit_high[i];
+ 	}
+=20
+ 	for (i =3D 0; i < IEEE80211_NUM_TIDS; i++)
+@@ -1913,6 +1916,41 @@ void ieee80211_sta_register_airtime(struct ieee80211=
+_sta *pubsta, u8 tid,
+ }
+ EXPORT_SYMBOL(ieee80211_sta_register_airtime);
+=20
++void ieee80211_sta_update_pending_airtime(struct ieee80211_local *local,
++					  struct sta_info *sta, u8 ac,
++					  u16 tx_airtime, bool tx_completed)
++{
++	int tx_pending;
++
++	if (!tx_completed) {
++		if (sta)
++			atomic_add(tx_airtime,
++				   &sta->airtime[ac].aql_tx_pending);
++
++		atomic_add(tx_airtime, &local->aql_total_pending_airtime);
++		return;
++	}
++
++	if (sta) {
++		tx_pending =3D atomic_sub_return(tx_airtime,
++					       &sta->airtime[ac].aql_tx_pending);
++		if (WARN_ONCE(tx_pending < 0,
++			      "STA %pM AC %d txq pending airtime underflow: %u, %u",
++			      sta->addr, ac, tx_pending, tx_airtime))
++			atomic_cmpxchg(&sta->airtime[ac].aql_tx_pending,
++				       tx_pending, 0);
++	}
++
++	tx_pending =3D atomic_sub_return(tx_airtime,
++				       &local->aql_total_pending_airtime);
++	if (WARN_ONCE(tx_pending < 0,
++		      "Device %s AC %d pending airtime underflow: %u, %u",
++		      wiphy_name(local->hw.wiphy), ac, tx_pending,
++		      tx_airtime))
++		atomic_cmpxchg(&local->aql_total_pending_airtime,
++			       tx_pending, 0);
++}
++
+ int sta_info_move_state(struct sta_info *sta,
+ 			enum ieee80211_sta_state new_state)
+ {
+diff --git a/net/mac80211/sta_info.h b/net/mac80211/sta_info.h
+index 80e76569144e..0608d49b3826 100644
+--- a/net/mac80211/sta_info.h
++++ b/net/mac80211/sta_info.h
+@@ -127,13 +127,21 @@ enum ieee80211_agg_stop_reason {
+ /* Debugfs flags to enable/disable use of RX/TX airtime in scheduler */
+ #define AIRTIME_USE_TX		BIT(0)
+ #define AIRTIME_USE_RX		BIT(1)
++#define AIRTIME_USE_AQL		BIT(2)
+=20
+ struct airtime_info {
+ 	u64 rx_airtime;
+ 	u64 tx_airtime;
+ 	s64 deficit;
++	atomic_t aql_tx_pending; /* Estimated airtime for frames pending */
++	u32 aql_limit_low;
++	u32 aql_limit_high;
+ };
+=20
++void ieee80211_sta_update_pending_airtime(struct ieee80211_local *local,
++					  struct sta_info *sta, u8 ac,
++					  u16 tx_airtime, bool tx_completed);
++
+ struct sta_info;
+=20
+ /**
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index db38be1b75fa..59db921d1086 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -3674,7 +3674,8 @@ struct ieee80211_txq *ieee80211_next_txq(struct ieee8=
+0211_hw *hw, u8 ac)
+ {
+ 	struct ieee80211_local *local =3D hw_to_local(hw);
+ 	struct ieee80211_txq *ret =3D NULL;
+-	struct txq_info *txqi =3D NULL;
++	struct txq_info *txqi =3D NULL, *head =3D NULL;
++	bool found_eligible_txq =3D false;
+=20
+ 	spin_lock_bh(&local->active_txq_lock[ac]);
+=20
+@@ -3685,13 +3686,30 @@ struct ieee80211_txq *ieee80211_next_txq(struct iee=
+e80211_hw *hw, u8 ac)
+ 	if (!txqi)
+ 		goto out;
+=20
++	if (txqi =3D=3D head) {
++		if (!found_eligible_txq)
++			goto out;
++		else
++			found_eligible_txq =3D false;
++	}
++
++	if (!head)
++		head =3D txqi;
++
+ 	if (txqi->txq.sta) {
+ 		struct sta_info *sta =3D container_of(txqi->txq.sta,
+-						struct sta_info, sta);
++						    struct sta_info, sta);
++		bool aql_check =3D ieee80211_txq_airtime_check(hw, &txqi->txq);
++		s64 deficit =3D sta->airtime[txqi->txq.ac].deficit;
+=20
+-		if (sta->airtime[txqi->txq.ac].deficit < 0) {
++		if (aql_check)
++			found_eligible_txq =3D true;
++
++		if (deficit < 0)
+ 			sta->airtime[txqi->txq.ac].deficit +=3D
+ 				sta->airtime_weight;
++
++		if (deficit < 0 || !aql_check) {
+ 			list_move_tail(&txqi->schedule_order,
+ 				       &local->active_txqs[txqi->txq.ac]);
+ 			goto begin;
+@@ -3745,6 +3763,33 @@ void __ieee80211_schedule_txq(struct ieee80211_hw *h=
+w,
+ }
+ EXPORT_SYMBOL(__ieee80211_schedule_txq);
+=20
++bool ieee80211_txq_airtime_check(struct ieee80211_hw *hw,
++				 struct ieee80211_txq *txq)
++{
++	struct sta_info *sta;
++	struct ieee80211_local *local =3D hw_to_local(hw);
++
++	if (!(local->airtime_flags & AIRTIME_USE_AQL))
++		return true;
++
++	if (!txq->sta)
++		return true;
++
++	sta =3D container_of(txq->sta, struct sta_info, sta);
++	if (atomic_read(&sta->airtime[txq->ac].aql_tx_pending) <
++	    sta->airtime[txq->ac].aql_limit_low)
++		return true;
++
++	if (atomic_read(&local->aql_total_pending_airtime) <
++	    local->aql_threshold &&
++	    atomic_read(&sta->airtime[txq->ac].aql_tx_pending) <
++	    sta->airtime[txq->ac].aql_limit_high)
++		return true;
++
++	return false;
++}
++EXPORT_SYMBOL(ieee80211_txq_airtime_check);
++
+ bool ieee80211_txq_may_transmit(struct ieee80211_hw *hw,
+ 				struct ieee80211_txq *txq)
+ {
 --=20
 2.24.0.432.g9d3f5f5b63-goog
 
