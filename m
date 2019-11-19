@@ -2,81 +2,78 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B1BA10210C
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Nov 2019 10:42:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5BA74102270
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Nov 2019 11:58:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727846AbfKSJlp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 19 Nov 2019 04:41:45 -0500
-Received: from a27-11.smtp-out.us-west-2.amazonses.com ([54.240.27.11]:58486
-        "EHLO a27-11.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727450AbfKSJlh (ORCPT
+        id S1727677AbfKSK6t (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 19 Nov 2019 05:58:49 -0500
+Received: from us-smtp-1.mimecast.com ([207.211.31.81]:60881 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726170AbfKSK6s (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 19 Nov 2019 04:41:37 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1574156496;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:MIME-Version:Content-Type;
-        bh=CNLROcjX07GylV2Uwv0PmQ/A/ZgMtjrePxjyX+jgVCU=;
-        b=GbxxjNXFcXJeRZpoy/raSVMqJa4+W/emhFKVw0BVn9QvHeO+ClZZB6iCbaxE326d
-        dyqxJnZXO+hgiISrQWZiqXI35Fr1FQS64ely+TSQVcT5xl568hFbNZjNiiERRX5nlVJ
-        /GPYac7+79NJN6hKsQfYvdoU1p0j6tQnF2lra5Ls=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=gdwg2y3kokkkj5a55z2ilkup5wp5hhxx; d=amazonses.com; t=1574156496;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:MIME-Version:Content-Type:Feedback-ID;
-        bh=CNLROcjX07GylV2Uwv0PmQ/A/ZgMtjrePxjyX+jgVCU=;
-        b=CADi6CG6RpN+c/6KcCJm2rCFVV4R1vi9PaxrS/jAfp+fgvjMzwpeCx7YWhIbezZS
-        V6shTMEyETX485CIwH5bAp+AmQUM4M5NXydLppXy6tT6qkiyJEc+rslTR7hOh0WpXLh
-        EmGiOeIeu7feogQgMbZLZGvjmbQ35zw8wZLJzNmM=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.0
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org A1886C2BB5B
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Ming Chen <Ming.Chen@watchguard.com>
-Cc:     Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-        Ming Chen <ming032217@gmail.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        "linux-wireless\@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH v4] mac80211: Drop the packets whose source or destination mac address is empty
-References: <20191116060833.45752-1-ming.chen@watchguard.com>
-        <87blt9ctd4.fsf@toke.dk>
-        <DM6PR10MB2873E994ABFB1798B36CE49B9A4C0@DM6PR10MB2873.namprd10.prod.outlook.com>
-Date:   Tue, 19 Nov 2019 09:41:36 +0000
-In-Reply-To: <DM6PR10MB2873E994ABFB1798B36CE49B9A4C0@DM6PR10MB2873.namprd10.prod.outlook.com>
-        (Ming Chen's message of "Tue, 19 Nov 2019 08:03:24 +0000")
-Message-ID: <0101016e8309ed71-c2031187-906f-4d32-8ba0-e8420c76fe1e-000000@us-west-2.amazonses.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Tue, 19 Nov 2019 05:58:48 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1574161127;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=9RRQaqApybirBVwaqlV8LsiP6BMNbnhSNOvj3A37lSs=;
+        b=eBTmnV6B/FSYm9bGcJVjVnJCSOhq7zNCBOY61OLhO4ZzxIzNXMQtV0wMkaRTRIE/eZmBQw
+        4d4t6OUzstnavEysqjJ8hOAiBcZs0IswYcHZI0LaKuXoZGsP1HcaYvQgvczfAqYF/Jx30W
+        PuWQRlsojn8RQRNDPW7zNobsD8MXmf4=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-91-6XZef543MHmwSUPCuBUgsg-1; Tue, 19 Nov 2019 05:58:43 -0500
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 195841005514;
+        Tue, 19 Nov 2019 10:58:42 +0000 (UTC)
+Received: from localhost (ovpn-204-177.brq.redhat.com [10.40.204.177])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id AFC8A10002B8;
+        Tue, 19 Nov 2019 10:58:38 +0000 (UTC)
+Date:   Tue, 19 Nov 2019 11:58:37 +0100
+From:   Stanislaw Gruszka <sgruszka@redhat.com>
+To:     Lorenzo Bianconi <lorenzo@kernel.org>
+Cc:     Markus Theil <markus.theil@tu-ilmenau.de>, nbd@nbd.name,
+        linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com
+Subject: Re: [PATCH 3/4] mt76: speed up usb bulk copy
+Message-ID: <20191119105832.GA22415@redhat.com>
+References: <20191116111709.4686-1-markus.theil@tu-ilmenau.de>
+ <20191116111709.4686-4-markus.theil@tu-ilmenau.de>
+ <20191116114312.GC20820@localhost.localdomain>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-SES-Outgoing: 2019.11.19-54.240.27.11
-Feedback-ID: 1.us-west-2.CZuq2qbDmUIuT3qdvXlRHZZCpfZqZ4GtG9v3VKgRyF0=:AmazonSES
+In-Reply-To: <20191116114312.GC20820@localhost.localdomain>
+User-Agent: Mutt/1.8.3 (2017-05-23)
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
+X-MC-Unique: 6XZef543MHmwSUPCuBUgsg-1
+X-Mimecast-Spam-Score: 0
+Content-Type: text/plain; charset=WINDOWS-1252
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Ming Chen <Ming.Chen@watchguard.com> writes:
+On Sat, Nov 16, 2019 at 01:43:12PM +0200, Lorenzo Bianconi wrote:
+> > +=09=09memcpy(usb->data, val + i, current_batch_size);
+> >  =09=09ret =3D __mt76u_vendor_request(dev, MT_VEND_MULTI_WRITE,
+> >  =09=09=09=09=09     USB_DIR_OUT | USB_TYPE_VENDOR,
+> > -=09=09=09=09=09     0, offset + i * 4, usb->data,
+> > -=09=09=09=09=09     sizeof(u32));
+> > +=09=09=09=09=09     0, offset + i, usb->data,
+> > +=09=09=09=09=09     current_batch_size);
+>=20
+> @Stanislaw: I vaguely remember you reported some issues if the burst size=
+=20
+> is greater than 4B (but I can be wrong)
 
->> > Dropping this kind of error packet before it goes into the driver,
->> > should be the right direction.
->> 
->> So I still wonder why this happens from higher up in the stack. If there's a
->> legitimate reason, maybe dropping the packet is not the right thing? And if
->> there is *no* legitimate reason, maybe the packet should be dropped higher
->> up in the stack instead?
->> 
->> What kind of packets does this happen with?
->
-> [Ming Chen] It should an ARP packet. I can see this kind of packet
-> before ARP table is complete. If so, how about dropping it in the
-> function of ieee80211_subif_start_xmit?
+It didn't work as usb vendor requests which were not multiple of 4
+were not transferred to the device on some usb host. But this is
+properly handled by the latest version of this patch set.
+=20
+Stanislaw
 
-The question here is why are you seeing this but nobody else? Are you
-using some special protocol, do you have some changes in the kernel
-which cause this or what could explain this behaviour?
 
--- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
