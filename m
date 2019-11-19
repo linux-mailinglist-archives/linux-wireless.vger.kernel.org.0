@@ -2,115 +2,81 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5287910203D
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Nov 2019 10:26:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B1BA10210C
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Nov 2019 10:42:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727001AbfKSJ00 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 19 Nov 2019 04:26:26 -0500
-Received: from a27-55.smtp-out.us-west-2.amazonses.com ([54.240.27.55]:53238
-        "EHLO a27-55.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725280AbfKSJ0Z (ORCPT
+        id S1727846AbfKSJlp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 19 Nov 2019 04:41:45 -0500
+Received: from a27-11.smtp-out.us-west-2.amazonses.com ([54.240.27.11]:58486
+        "EHLO a27-11.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727450AbfKSJlh (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 19 Nov 2019 04:26:25 -0500
+        Tue, 19 Nov 2019 04:41:37 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1574155584;
-        h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding;
-        bh=04R5mjBFNb6yF5rldK/xnzdcVfFmrZckYZJnZOL4I8M=;
-        b=VFscHZrpNwIeGbpbsZKLBQTe0zGIQKk2Xiolfc/Y6I+av3WvqffYDuU/9unKQmu7
-        m/E8OyWb1XIOaKfUu21yy+iB77JoXLnYLB4x3rIEUdMSwDbgVDqm5eN+pDJ4L3fpZcc
-        ykxESjxJMLMtD/RHNzbh/KAt+lrH4qFtjtbvga9I=
+        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1574156496;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:MIME-Version:Content-Type;
+        bh=CNLROcjX07GylV2Uwv0PmQ/A/ZgMtjrePxjyX+jgVCU=;
+        b=GbxxjNXFcXJeRZpoy/raSVMqJa4+W/emhFKVw0BVn9QvHeO+ClZZB6iCbaxE326d
+        dyqxJnZXO+hgiISrQWZiqXI35Fr1FQS64ely+TSQVcT5xl568hFbNZjNiiERRX5nlVJ
+        /GPYac7+79NJN6hKsQfYvdoU1p0j6tQnF2lra5Ls=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=gdwg2y3kokkkj5a55z2ilkup5wp5hhxx; d=amazonses.com; t=1574155584;
-        h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Feedback-ID;
-        bh=04R5mjBFNb6yF5rldK/xnzdcVfFmrZckYZJnZOL4I8M=;
-        b=HArAs762PzXwUsah1KKvXDOE9OUFf6Fz7XfSXFEFgL/0uwIZjpKVeF6YnrB26rVX
-        Jd/a4Kbf/myr+DK96mD6KZq+RRB4NUJch0Ild6uDwPY2d9NBfN1JPUA2eaHX8urbEuS
-        giMr7Hb1Wi/NeoF1WRIrfFOzexqrEKoEIKFuSQCo=
+        s=gdwg2y3kokkkj5a55z2ilkup5wp5hhxx; d=amazonses.com; t=1574156496;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:MIME-Version:Content-Type:Feedback-ID;
+        bh=CNLROcjX07GylV2Uwv0PmQ/A/ZgMtjrePxjyX+jgVCU=;
+        b=CADi6CG6RpN+c/6KcCJm2rCFVV4R1vi9PaxrS/jAfp+fgvjMzwpeCx7YWhIbezZS
+        V6shTMEyETX485CIwH5bAp+AmQUM4M5NXydLppXy6tT6qkiyJEc+rslTR7hOh0WpXLh
+        EmGiOeIeu7feogQgMbZLZGvjmbQ35zw8wZLJzNmM=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE,
-        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 9D526C447A2
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.0
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org A1886C2BB5B
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 From:   Kalle Valo <kvalo@codeaurora.org>
-To:     =?utf-8?Q?Rafa=C5=82_Mi=C5=82ecki?= <zajec5@gmail.com>
-Cc:     Arend van Spriel <arend.vanspriel@broadcom.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
-        Wright Feng <wright.feng@cypress.com>,
-        Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
-        Winnie Chang <winnie.chang@cypress.com>,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        brcm80211-dev-list@cypress.com,
-        =?utf-8?Q?Rafa=C5=82_Mi=C5=82ecki?= <rafal@milecki.pl>,
-        stable@vger.kernel.org
-Subject: Re: [PATCH FIX] brcmfmac: disable PCIe interrupts before bus reset
-In-Reply-To: <20191118115308.21963-1-zajec5@gmail.com> (=?utf-8?Q?=22Rafa?=
- =?utf-8?Q?=C5=82_Mi=C5=82ecki=22's?=
-        message of "Mon, 18 Nov 2019 12:53:08 +0100")
-References: <20191118115308.21963-1-zajec5@gmail.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
-Date:   Tue, 19 Nov 2019 09:26:24 +0000
-Message-ID: <0101016e82fc042b-a255d0f0-84e9-4c33-8512-4a3da77d6520-000000@us-west-2.amazonses.com>
+To:     Ming Chen <Ming.Chen@watchguard.com>
+Cc:     Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+        Ming Chen <ming032217@gmail.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        "linux-wireless\@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH v4] mac80211: Drop the packets whose source or destination mac address is empty
+References: <20191116060833.45752-1-ming.chen@watchguard.com>
+        <87blt9ctd4.fsf@toke.dk>
+        <DM6PR10MB2873E994ABFB1798B36CE49B9A4C0@DM6PR10MB2873.namprd10.prod.outlook.com>
+Date:   Tue, 19 Nov 2019 09:41:36 +0000
+In-Reply-To: <DM6PR10MB2873E994ABFB1798B36CE49B9A4C0@DM6PR10MB2873.namprd10.prod.outlook.com>
+        (Ming Chen's message of "Tue, 19 Nov 2019 08:03:24 +0000")
+Message-ID: <0101016e8309ed71-c2031187-906f-4d32-8ba0-e8420c76fe1e-000000@us-west-2.amazonses.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-SES-Outgoing: 2019.11.19-54.240.27.55
+Content-Type: text/plain
+X-SES-Outgoing: 2019.11.19-54.240.27.11
 Feedback-ID: 1.us-west-2.CZuq2qbDmUIuT3qdvXlRHZZCpfZqZ4GtG9v3VKgRyF0=:AmazonSES
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Rafa=C5=82 Mi=C5=82ecki <zajec5@gmail.com> writes:
+Ming Chen <Ming.Chen@watchguard.com> writes:
 
-> From: Rafa=C5=82 Mi=C5=82ecki <rafal@milecki.pl>
+>> > Dropping this kind of error packet before it goes into the driver,
+>> > should be the right direction.
+>> 
+>> So I still wonder why this happens from higher up in the stack. If there's a
+>> legitimate reason, maybe dropping the packet is not the right thing? And if
+>> there is *no* legitimate reason, maybe the packet should be dropped higher
+>> up in the stack instead?
+>> 
+>> What kind of packets does this happen with?
 >
-> Keeping interrupts on could result in brcmfmac freeing some resources
-> and then IRQ handlers trying to use them. That was obviously a straight
-> path for crashing a kernel.
->
-> Example:
-> CPU0                           CPU1
-> ----                           ----
-> brcmf_pcie_reset
->   brcmf_pcie_bus_console_read
->   brcmf_detach
->     ...
->     brcmf_fweh_detach
->     brcmf_proto_detach
->                                brcmf_pcie_isr_thread
->                                  ...
->                                  brcmf_proto_msgbuf_rx_trigger
->                                    ...
->                                    drvr->proto->pd
->     brcmf_pcie_release_irq
->
-> [  363.789218] Unable to handle kernel NULL pointer dereference at virtua=
-l address 00000038
-> [  363.797339] pgd =3D c0004000
-> [  363.800050] [00000038] *pgd=3D00000000
-> [  363.803635] Internal error: Oops: 17 [#1] SMP ARM
-> (...)
-> [  364.029209] Backtrace:
-> [  364.031725] [<bf243838>] (brcmf_proto_msgbuf_rx_trigger [brcmfmac]) fr=
-om [<bf2471dc>] (brcmf_pcie_isr_thread+0x228/0x274 [brcmfmac])
-> [  364.043662]  r7:00000001 r6:c8ca0000 r5:00010000 r4:c7b4f800
->
-> Fixes: 4684997d9eea ("brcmfmac: reset PCIe bus on a firmware crash")
-> Cc: stable@vger.kernel.org # v5.2+
-> Signed-off-by: Rafa=C5=82 Mi=C5=82ecki <rafal@milecki.pl>
-> ---
-> Kalle: if you are planning another pull request for 5.4 you may push
->        this to the wireless-drivers. Otherwise make it
->        wireless-drivers-next and lets have stable maintainers pick it.
+> [Ming Chen] It should an ARP packet. I can see this kind of packet
+> before ARP table is complete. If so, how about dropping it in the
+> function of ieee80211_subif_start_xmit?
 
-Unless the sky falls down I'm not planning to submit anything for v5.4
-anymore. So this has to go to -next.
+The question here is why are you seeing this but nobody else? Are you
+using some special protocol, do you have some changes in the kernel
+which cause this or what could explain this behaviour?
 
---=20
-Kalle Valo
+-- 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
