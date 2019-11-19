@@ -2,106 +2,165 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 45FE91023F7
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Nov 2019 13:12:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BB2CC102410
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Nov 2019 13:16:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727557AbfKSMMG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 19 Nov 2019 07:12:06 -0500
-Received: from smail.rz.tu-ilmenau.de ([141.24.186.67]:42508 "EHLO
-        smail.rz.tu-ilmenau.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725798AbfKSMMG (ORCPT
+        id S1727820AbfKSMQG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 19 Nov 2019 07:16:06 -0500
+Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:55519 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1727584AbfKSMQF (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 19 Nov 2019 07:12:06 -0500
-Received: from [192.168.2.97] (unknown [141.24.207.101])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by smail.rz.tu-ilmenau.de (Postfix) with ESMTPSA id 28B1558007B;
-        Tue, 19 Nov 2019 13:12:03 +0100 (CET)
-Subject: Re: [PATCH v4 4/4] mt76: mt76x02: add channel switch support for usb
- interfaces
-To:     Stanislaw Gruszka <sgruszka@redhat.com>
+        Tue, 19 Nov 2019 07:16:05 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1574165765;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=/Gj53kqjgev8BshVuL8J75J52vbRfjviOqli+qa97sU=;
+        b=J2F7kxY7J7X8f01585CXDEJUI/gS6aTrkj3osEWSEywo6AFPk3O+DvBhUtwqfUUVwm9HQE
+        nWgrYA3pDqLSQnp2FX2dcTKKCrNPa+XSZ6IkUGZKUR+64Y+h5v0MPRWk/pKpFIvhsvZc4O
+        N+Z0gFYH2FJPS+9EeJeTf5e6pOUbAkU=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-171-JTl4K5k3NxyQMcnEHk40VQ-1; Tue, 19 Nov 2019 07:16:01 -0500
+X-MC-Unique: JTl4K5k3NxyQMcnEHk40VQ-1
+Received: by mail-wr1-f70.google.com with SMTP id q12so18222053wrr.3
+        for <linux-wireless@vger.kernel.org>; Tue, 19 Nov 2019 04:16:01 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=DJzqQbNYSiy/ma/rbwgC0jbDQY5TM7vhJ+eymGotkS8=;
+        b=IRJuwJj/DdpAsachGL2q9P8Pdq1uwVAzvJKfFzKjRv22LLNaijGNZfBN6fkqTTZvyK
+         ArVrit3b5CKdVjbg9kmf354gSWAwOtwWdJq8kaZK/uwdueI87LhEvExp7xvz7mq4Bn4V
+         1nNmlPyQzULfclIhwuLL94CvPlvmHJ454DTY9yD/1kHkY09GOcbY1aUDQFmY3Pq+i4C5
+         GFpndl02/HtDuZ8V42P86FbHeA8HgsGXeuyKo20P0Pv7z1W81dI1l16xXps3/iREk7P1
+         E3XTBfeDpmK/kD+spGmrhWXGGlQ/l4hPB8H1l4zAYYLSX/QFl9EDvwMR82ziNgWjFioN
+         p7+A==
+X-Gm-Message-State: APjAAAU2oNFe8W0EvNVDfC6nS7+25iO8wbpg3HOhDnhTae53HI2G0Epb
+        DZmWCMR8Q+/fqJil6zP1AcKv4VAQYhOZR7I5SRMsno1G4jrxZnMaBvcWG0l7dw8atu/G4BtEUxF
+        ZOkjiFP+Qkdx+pSN38fOzu42qv7Q=
+X-Received: by 2002:a05:600c:23ce:: with SMTP id p14mr5229975wmb.176.1574165760659;
+        Tue, 19 Nov 2019 04:16:00 -0800 (PST)
+X-Google-Smtp-Source: APXvYqy5eTZTGUaEsydiW55kC2ZUjesi2KcdTVc7fFQ+Sd182C4VocOcgoTcTSLolAOrE2jG5XoruA==
+X-Received: by 2002:a05:600c:23ce:: with SMTP id p14mr5229946wmb.176.1574165760371;
+        Tue, 19 Nov 2019 04:16:00 -0800 (PST)
+Received: from localhost.localdomain ([77.139.212.74])
+        by smtp.gmail.com with ESMTPSA id z8sm26357108wrp.49.2019.11.19.04.15.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 19 Nov 2019 04:15:59 -0800 (PST)
+Date:   Tue, 19 Nov 2019 14:15:56 +0200
+From:   Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+To:     Markus Theil <markus.theil@tu-ilmenau.de>
 Cc:     nbd@nbd.name, linux-wireless@vger.kernel.org,
-        lorenzo.bianconi@redhat.com
+        Stanislaw Gruszka <sgruszka@redhat.com>
+Subject: Re: [PATCH v4 3/4] mt76: speed up usb bulk copy
+Message-ID: <20191119121556.GB3449@localhost.localdomain>
 References: <20191118221540.14886-1-markus.theil@tu-ilmenau.de>
- <20191118221540.14886-5-markus.theil@tu-ilmenau.de>
- <20191119111927.GB22415@redhat.com>
-From:   Markus Theil <markus.theil@tu-ilmenau.de>
-Autocrypt: addr=markus.theil@tu-ilmenau.de; keydata=
- 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
- sGZPq8zmOtvOyZtafA==
-Message-ID: <886910ec-7ffa-1d1c-b422-bc942c8acd46@tu-ilmenau.de>
-Date:   Tue, 19 Nov 2019 13:12:03 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.2
+ <20191118221540.14886-4-markus.theil@tu-ilmenau.de>
 MIME-Version: 1.0
-In-Reply-To: <20191119111927.GB22415@redhat.com>
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+In-Reply-To: <20191118221540.14886-4-markus.theil@tu-ilmenau.de>
+User-Agent: Mutt/1.12.1 (2019-06-15)
+X-Mimecast-Spam-Score: 0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="QTprm0S8XgL7H0Dt"
+Content-Disposition: inline
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 11/19/19 12:19 PM, Stanislaw Gruszka wrote:
-> On Mon, Nov 18, 2019 at 11:15:40PM +0100, Markus Theil wrote:
->> +static void mt76x2u_channel_switch_beacon(struct ieee80211_hw *hw,
->> +					  struct ieee80211_vif *vif,
->> +					  struct cfg80211_chan_def *chandef)
->> +{
->> +}
->> +
->>  const struct ieee80211_ops mt76x2u_ops = {
->>  	.tx = mt76x02_tx,
->>  	.start = mt76x2u_start,
->> @@ -121,4 +127,5 @@ const struct ieee80211_ops mt76x2u_ops = {
->>  	.get_survey = mt76_get_survey,
->>  	.set_tim = mt76_set_tim,
->>  	.release_buffered_frames = mt76_release_buffered_frames,
->> +	.channel_switch_beacon = mt76x2u_channel_switch_beacon,
-> Is this needed ? Seems mac80211 check against this op being NULL
-> in drv_channel_switch_beacon() and it is not used otherwise.
->  
-> Stanislaw
-I checked if this call is really needed and you're right, it is not
-needed. I'll send v5 with this fix.
+--QTprm0S8XgL7H0Dt
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+> Use larger batches for usb copy to speed this operation up. Otherwise it
+> would be too slow for copying new beacons or broadcast frames over usb.
+> Assure, that always a multiple of 4 Bytes is copied, as outlined in
+> 850e8f6fbd "mt76: round up length on mt76_wr_copy" from Felix Fietkau.
+>=20
+> Signed-off-by: Markus Theil <markus.theil@tu-ilmenau.de>
+> ---
+>  drivers/net/wireless/mediatek/mt76/mt76.h |  2 +-
+>  drivers/net/wireless/mediatek/mt76/usb.c  | 24 +++++++++++++++++------
+>  2 files changed, 19 insertions(+), 7 deletions(-)
+>=20
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wire=
+less/mediatek/mt76/mt76.h
+> index 8aec7ccf2d79..7a6f5d097a3d 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt76.h
+> +++ b/drivers/net/wireless/mediatek/mt76/mt76.h
+> @@ -383,7 +383,7 @@ enum mt76u_out_ep {
+>  struct mt76_usb {
+>  =09struct mutex usb_ctrl_mtx;
+>  =09union {
+> -=09=09u8 data[32];
+> +=09=09u8 data[128];
+>  =09=09__le32 reg_val;
+>  =09};
+> =20
+> diff --git a/drivers/net/wireless/mediatek/mt76/usb.c b/drivers/net/wirel=
+ess/mediatek/mt76/usb.c
+> index 20c6fe510e9d..f1f67b0f8265 100644
+> --- a/drivers/net/wireless/mediatek/mt76/usb.c
+> +++ b/drivers/net/wireless/mediatek/mt76/usb.c
+> @@ -149,18 +149,30 @@ static void mt76u_copy(struct mt76_dev *dev, u32 of=
+fset,
+>  =09=09       const void *data, int len)
+>  {
+>  =09struct mt76_usb *usb =3D &dev->usb;
+> -=09const u32 *val =3D data;
+> -=09int i, ret;
+> +=09const u8 *val =3D data;
+> +=09int ret;
+> +=09int current_batch_size;
+> +=09int i =3D 0;
+> +
+> +=09/* Assure that always a multiple of 4 bytes are copied,
+> +=09 * otherwise beacons can be corrupted.
+> +=09 * See: "mt76: round up length on mt76_wr_copy"
+> +=09 * Commit 850e8f6fbd5d0003b0
+> +=09 */
+> +=09len =3D DIV_ROUND_UP(len, 4) * 4;
+> =20
+>  =09mutex_lock(&usb->usb_ctrl_mtx);
+> -=09for (i =3D 0; i < DIV_ROUND_UP(len, 4); i++) {
+> -=09=09put_unaligned(val[i], (u32 *)usb->data);
+> +=09while (i < len) {
+> +=09=09current_batch_size =3D min((int)sizeof(usb->data), len - i);
+
+What about using min_t() here?
+
+> +=09=09memcpy(usb->data, val + i, current_batch_size);
+>  =09=09ret =3D __mt76u_vendor_request(dev, MT_VEND_MULTI_WRITE,
+>  =09=09=09=09=09     USB_DIR_OUT | USB_TYPE_VENDOR,
+> -=09=09=09=09=09     0, offset + i * 4, usb->data,
+> -=09=09=09=09=09     sizeof(u32));
+> +=09=09=09=09=09     0, offset + i, usb->data,
+> +=09=09=09=09=09     current_batch_size);
+>  =09=09if (ret < 0)
+>  =09=09=09break;
+> +
+> +=09=09i +=3D current_batch_size;
+>  =09}
+>  =09mutex_unlock(&usb->usb_ctrl_mtx);
+>  }
+> --=20
+> 2.24.0
+>=20
+
+--QTprm0S8XgL7H0Dt
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCXdPc+gAKCRA6cBh0uS2t
+rOPPAQDFiNaE1LmwMZU+OatXaOQvc1g2xiG3Ai5Yoefg8zpasAD8DnT7FNDFUBO2
+OhZjQDx0qsQJvUmacNjWqXE8BmYLmAM=
+=yUQi
+-----END PGP SIGNATURE-----
+
+--QTprm0S8XgL7H0Dt--
+
