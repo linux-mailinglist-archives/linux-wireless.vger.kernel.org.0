@@ -2,151 +2,127 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A9F510399F
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Nov 2019 13:11:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 53E651039D5
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Nov 2019 13:15:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729212AbfKTMLU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 20 Nov 2019 07:11:20 -0500
-Received: from mail-vk1-f194.google.com ([209.85.221.194]:45159 "EHLO
-        mail-vk1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727975AbfKTMLT (ORCPT
+        id S1729644AbfKTMPn convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 20 Nov 2019 07:15:43 -0500
+Received: from smail.rz.tu-ilmenau.de ([141.24.186.67]:47449 "EHLO
+        smail.rz.tu-ilmenau.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728251AbfKTMPm (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 20 Nov 2019 07:11:19 -0500
-Received: by mail-vk1-f194.google.com with SMTP id s4so3810063vkk.12
-        for <linux-wireless@vger.kernel.org>; Wed, 20 Nov 2019 04:11:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=5TTQmUnxx/A5I0Bxrjss+V5U2UZVsS2bqEfobf0oldI=;
-        b=LkRSXf+ELb+h/vladC+QqVFmluR42y1NL2iY4BeJP3MohYqlUCaT0HwRUFtzJuhNph
-         dy9vAoWzKulW6iqBvsbbT2++OLQDpmk+MEP59p57QtKW+uHyvX7uqZLzaz73CdRvsuJi
-         5qAXSzywZmUj0D9w0LHoKgXV9WI+isr72MKXfDaPHDngF2gNcWULcFx2jzPBf8AOmBwq
-         Lkw7wiOctL9NKFuECXwjCPBkwCxSsSDFcMS5C3v9t4/8MY21LOcohl4sdDqQgM1IWaYP
-         insmHLPIJIUJ3k7nWEaOI3AIhotdkl8gciZnSXCkgmWKxGNuve0olbMxWab0kAVqPjXD
-         okzg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=5TTQmUnxx/A5I0Bxrjss+V5U2UZVsS2bqEfobf0oldI=;
-        b=si4/ZbYLcpl7DjvxneGF7OEQmId8tZh9X205a9qioKzjZfIe29DAe0NTb6JWp4lkHg
-         oV0m/szPYyJ3qojRtvF27lDDi8CfKJ2zvpb+GcxCUcdgFGsh18w3yrfaIfmejhdZ3CWa
-         FbR6U2XMh8Rl1w/bVeoLPSonDHOiSoTNx2RDLO//o0YOyuf1U+YUWqkWLhvv+4oaR38G
-         y5UQE8CNzeYc2jwiBkBWe/E5tRFlgpOKpetySUwJ2T4wL5/KZe3RgEMdNK1DY5TAjzXN
-         zef24rwAWgQnqGEs9Z5yhWTk9kiY6xO95BYt2QtNAuM7yzwlsjvDoII8WYLU9vwWbWpk
-         ah9Q==
-X-Gm-Message-State: APjAAAUycgLlk/4uUVW5MALG+fzEIPAxCQnJ28Gqc4JpFRVUnTE4lYd3
-        Hzhbbg226DTtJadP+vTezt+rh0Kf5sEBGDPjH1T5Tg==
-X-Google-Smtp-Source: APXvYqx1NvzsYFgHrpNCMAwcfciLmzVErw4FNgcN0Ycp3GE4yO5vawQgneqbBpXdQIy8aO9tIPcLZWf4/9kDJf0vkC0=
-X-Received: by 2002:ac5:cd47:: with SMTP id n7mr1215984vkm.101.1574251878287;
- Wed, 20 Nov 2019 04:11:18 -0800 (PST)
+        Wed, 20 Nov 2019 07:15:42 -0500
+Received: from [192.168.2.97] (unknown [141.24.207.101])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by smail.rz.tu-ilmenau.de (Postfix) with ESMTPSA id 8368F58007B;
+        Wed, 20 Nov 2019 13:15:39 +0100 (CET)
+Subject: Re: [PATCH] mt76: use rcu_read_lock_bh in mt76_dma_rx_poll
+To:     Felix Fietkau <nbd@nbd.name>, linux-wireless@vger.kernel.org
+References: <20191120114647.88967-1-nbd@nbd.name>
+ <00ba1886-188f-f8f8-07f1-61a89bbdd768@tu-ilmenau.de>
+ <ec3204cf-ad4a-aecf-fed9-720523d58ff8@nbd.name>
+From:   Markus Theil <markus.theil@tu-ilmenau.de>
+Autocrypt: addr=markus.theil@tu-ilmenau.de; keydata=
+ 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
+ sGZPq8zmOtvOyZtafA==
+Message-ID: <92a53651-d309-4dfe-b14f-1d6aa63cafe5@tu-ilmenau.de>
+Date:   Wed, 20 Nov 2019 13:15:39 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.2
 MIME-Version: 1.0
-References: <20191109103046.26445-1-ulf.hansson@linaro.org>
- <20191109103046.26445-4-ulf.hansson@linaro.org> <CAD=FV=VHReD5qnvcQLHvfgKHnHLbfDLZHwXtY-LV5uy_VCYpPA@mail.gmail.com>
- <CAPDyKFrCyJBz2=RzKPxqn0FSEq500=dEDsTUWYZeoFKWvSRAdA@mail.gmail.com>
- <87zhgr5af6.fsf@codeaurora.org> <6e6b53b28581a8f1a2944ca0bc65311e@codeaurora.org>
- <0101016e87aeb8b6-761ad812-5da7-4b0d-8cae-c69633d90de0-000000@us-west-2.amazonses.com>
-In-Reply-To: <0101016e87aeb8b6-761ad812-5da7-4b0d-8cae-c69633d90de0-000000@us-west-2.amazonses.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Wed, 20 Nov 2019 13:10:42 +0100
-Message-ID: <CAPDyKFoWxw9r=GZhvF=TxHxo=zRfKr0hknEeQNPdfwPx4ORxuQ@mail.gmail.com>
-Subject: Re: [PATCH v2 3/3] mmc: core: Re-work HW reset for SDIO cards
-To:     Kalle Valo <kvalo@codeaurora.org>, Wen Gong <wgong@codeaurora.org>
-Cc:     Doug Anderson <dianders@chromium.org>,
-        Linux MMC List <linux-mmc@vger.kernel.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Matthias Kaehlcke <mka@chromium.org>,
-        Tony Lindgren <tony@atomide.com>,
-        Erik Stromdahl <erik.stromdahl@gmail.com>,
-        Eyal Reizer <eyalreizer@gmail.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Brian Norris <briannorris@chromium.org>,
-        ath10k@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <ec3204cf-ad4a-aecf-fed9-720523d58ff8@nbd.name>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8BIT
+Content-Language: en-US
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 20 Nov 2019 at 08:20, Kalle Valo <kvalo@codeaurora.org> wrote:
+On 11/20/19 1:03 PM, Felix Fietkau wrote:
+> On 2019-11-20 12:59, Markus Theil wrote:
+>> On 11/20/19 12:46 PM, Felix Fietkau wrote:
+>>> Fixes potential RCU issues and avoids calling ieee80211_rx_napi with softirq
+>>> enabled.
+>>>
+>>> Reported-by: Markus Theil <markus.theil@tu-ilmenau.de>
+>>> Signed-off-by: Felix Fietkau <nbd@nbd.name>
+>>> ---
+>>>  drivers/net/wireless/mediatek/mt76/dma.c | 4 ++--
+>>>  1 file changed, 2 insertions(+), 2 deletions(-)
+>>>
+>>> diff --git a/drivers/net/wireless/mediatek/mt76/dma.c b/drivers/net/wireless/mediatek/mt76/dma.c
+>>> index 6173c80189ba..ed0ee2d4a452 100644
+>>> --- a/drivers/net/wireless/mediatek/mt76/dma.c
+>>> +++ b/drivers/net/wireless/mediatek/mt76/dma.c
+>>> @@ -528,7 +528,7 @@ mt76_dma_rx_poll(struct napi_struct *napi, int budget)
+>>>  	dev = container_of(napi->dev, struct mt76_dev, napi_dev);
+>>>  	qid = napi - dev->napi;
+>>>  
+>>> -	rcu_read_lock();
+>>> +	rcu_read_lock_bh();
+>>>  
+>>>  	do {
+>>>  		cur = mt76_dma_rx_process(dev, &dev->q_rx[qid], budget - done);
+>>> @@ -536,7 +536,7 @@ mt76_dma_rx_poll(struct napi_struct *napi, int budget)
+>>>  		done += cur;
+>>>  	} while (cur && done < budget);
+>>>  
+>>> -	rcu_read_unlock();
+>>> +	rcu_read_unlock_bh();
+>>>  
+>>>  	if (done < budget && napi_complete(napi))
+>>>  		dev->drv->rx_poll_complete(dev, qid);
+>> This patch is incomplete. The same problem exists for usb. I'll send a fix for that.
+> How so? On usb, it is called from a tasklet already.
 >
-> wgong@codeaurora.org writes:
->
-> > On 2019-11-20 14:28, Kalle Valo wrote:
-> >> + wen, ath10k
-> >>
-> >> Ulf Hansson <ulf.hansson@linaro.org> writes:
-> >>
-> >>> On Tue, 12 Nov 2019 at 01:33, Doug Anderson <dianders@chromium.org>
-> >>> wrote:
-> >>>>
-> >>>> Hi,
-> >>>>
-> >>>> On Sat, Nov 9, 2019 at 2:31 AM Ulf Hansson
-> >>>> <ulf.hansson@linaro.org> wrote:
-> >>>> >
-> >>>> > diff --git a/drivers/mmc/core/core.c b/drivers/mmc/core/core.c
-> >>>> > index 6f8342702c73..abf8f5eb0a1c 100644
-> >>>> > --- a/drivers/mmc/core/core.c
-> >>>> > +++ b/drivers/mmc/core/core.c
-> >>>> > @@ -1469,8 +1469,7 @@ void mmc_detach_bus(struct mmc_host *host)
-> >>>> >         mmc_bus_put(host);
-> >>>> >  }
-> >>>> >
-> >>>> > -static void _mmc_detect_change(struct mmc_host *host, unsigned long delay,
-> >>>> > -                               bool cd_irq)
-> >>>> > +void _mmc_detect_change(struct mmc_host *host, unsigned long delay, bool cd_irq)
-> >>>> >  {
-> >>>> >         /*
-> >>>> >          * If the device is configured as wakeup, we prevent a new sleep for
-> >>>> > @@ -2129,7 +2128,7 @@ int mmc_hw_reset(struct mmc_host *host)
-> >>>> >         ret = host->bus_ops->hw_reset(host);
-> >>>> >         mmc_bus_put(host);
-> >>>> >
-> >>>> > -       if (ret)
-> >>>> > +       if (ret < 0)
-> >>>> >                 pr_warn("%s: tried to HW reset card, got error %d\n",
-> >>>> >                         mmc_hostname(host), ret);
-> >>>>
-> >>>> Other callers besides marvell need to be updated?  In theory only
-> >>>> SDIO
-> >>>> should have positive return values so I guess we don't care about the
-> >>>> caller in drivers/mmc/core/block.c, right?
-> >>>
-> >>> Correct, but maybe I should add some more information about that in a
-> >>> function header of mmc_hw_reset(). Let me consider doing that as a
-> >>> change on top.
-> >>>
-> >>>>  What about:
-> >>>>
-> >>>> drivers/net/wireless/ath/ath10k/sdio.c
-> >>>>
-> >>>> ...I guess I don't know if there is more than one function probed
-> >>>> there.  Maybe there's not and thus we're fine here too?
-> >>>
-> >>> Well, honestly I don't know.
-> >>>
-> >>> In any case, that would mean the driver is broken anyways and needs to
-> >>> be fixed. At least that's my approach to doing this change.
-> >>
-> >> Wen, does QCA6174 or QCA9377 SDIO devices have other SDIO functions,
-> >> for
-> >> example bluetooth? I'm just wondering how should we handle this in
-> >> ath10k.
-> >
-> > it does not have other SDIO functions for QCA6174 or QCA9377.
->
-> Thanks, then I don't think we need to change anything in ath10k.
->
-> --
-> Kalle Valo
+> - Felix
 
-Kalle, Wen - thanks for looking into this and for the confirmation.
+I've noticed the bug I reported on USB devices. I've only seen that mt76_rx_aggr_reorder_work also accesses mt76_rx_complete.
+Maybe it only worked for me by accident. Of course, the tasklet should not run in parallel with multiple instances.
 
-One thing though, perhaps it's worth to add this as a comment in the
-code for ath10k, where mmc_hw_reset() is called. Just to make it
-clear.
+Markus
 
-Kind regards
-Uffe
+
