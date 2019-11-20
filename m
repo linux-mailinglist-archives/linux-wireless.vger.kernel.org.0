@@ -2,242 +2,80 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 216C0103A9C
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Nov 2019 14:02:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D7A0103B57
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Nov 2019 14:26:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728598AbfKTNCK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 20 Nov 2019 08:02:10 -0500
-Received: from mail.kernel.org ([198.145.29.99]:59970 "EHLO mail.kernel.org"
+        id S1729475AbfKTN0i (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 20 Nov 2019 08:26:38 -0500
+Received: from mga07.intel.com ([134.134.136.100]:43274 "EHLO mga07.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728584AbfKTNCK (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 20 Nov 2019 08:02:10 -0500
-Received: from localhost.localdomain.com (unknown [77.139.212.74])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 1736522520;
-        Wed, 20 Nov 2019 13:02:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1574254929;
-        bh=365jC57tnBz8HFxlJjNWl+RuCT+Q2VqK8U9qsB0ubEg=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=R3gdd8hIELSTuQQxoztIER2/HUPIL8F8Mqo6lSAvTD4cT3+gTvtlfulBAWyxDmEDT
-         9HaIoK56BdUkNslpwkIdCNn2TLBv+jm+6aH+b3pSY1tLgixlCLpCWKsrK6hqIADIix
-         Ypy9fcLcxbLj5OpmeztsV8eS10dRWuRQ6u5/RZBY=
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
-        ryder.lee@mediatek.com, royluo@google.com
-Subject: [PATCH v2 3/3] mt76: mt7615: add set_coverage class support
-Date:   Wed, 20 Nov 2019 15:01:45 +0200
-Message-Id: <7c9088415ce08fd8b71eda9b53a4a213865886aa.1574253996.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <cover.1574253996.git.lorenzo@kernel.org>
-References: <cover.1574253996.git.lorenzo@kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        id S1729457AbfKTN0i (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 20 Nov 2019 08:26:38 -0500
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 20 Nov 2019 05:26:37 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.69,222,1571727600"; 
+   d="scan'208";a="218627112"
+Received: from egrumbac-mobl1.jer.intel.com ([10.12.117.10])
+  by orsmga002.jf.intel.com with ESMTP; 20 Nov 2019 05:26:35 -0800
+From:   Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+To:     linux-wireless@vger.kernel.org
+Cc:     luciano.coelho@intel.com,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        stable@vger.kernel.org
+Subject: [PATCH] iwlwifi: mvm: don't send the IWL_MVM_RXQ_NSSN_SYNC notif to Rx queues
+Date:   Wed, 20 Nov 2019 15:26:28 +0200
+Message-Id: <20191120132628.30731-1-emmanuel.grumbach@intel.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Add the capability to configure actimeout for mt7615 driver. Moreover
-configure slottime according to the value provided by mac80211
+The purpose of this was to keep all the queues updated with
+the Rx sequence numbers because unlikely yet possible
+situations where queues can't understand if a specific
+packet needs to be dropped or not.
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Unfortunately, it was reported that this caused issues in
+our DMA engine. We don't fully understand how this is related,
+but this is being currently debugged. For now, just don't send
+this notification to the Rx queues. This de-facto reverts my
+commit 3c514bf831ac12356b695ff054bef641b9e99593:
+
+iwlwifi: mvm: add a loose synchronization of the NSSN across Rx queues
+
+This issue was reported here:
+https://bugzilla.kernel.org/show_bug.cgi?id=204873
+https://bugzilla.kernel.org/show_bug.cgi?id=205001
+and others maybe.
+
+Fixes: 3c514bf831ac ("iwlwifi: mvm: add a loose synchronization of the NSSN across Rx queues")
+CC: <stable@vger.kernel.org> # 5.3+
+Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 ---
- .../net/wireless/mediatek/mt76/mt7615/init.c  |  1 +
- .../net/wireless/mediatek/mt76/mt7615/mac.c   | 41 +++++++++++++++++++
- .../net/wireless/mediatek/mt76/mt7615/main.c  | 20 +++++++++
- .../wireless/mediatek/mt76/mt7615/mt7615.h    |  7 ++++
- .../net/wireless/mediatek/mt76/mt7615/regs.h  | 21 ++++++++++
- 5 files changed, 90 insertions(+)
+ drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/init.c b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
-index 553bd4d988f7..ed1cacd9a43d 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
-@@ -304,6 +304,7 @@ int mt7615_register_device(struct mt7615_dev *dev)
- 			IEEE80211_VHT_CAP_MAX_A_MPDU_LENGTH_EXPONENT_MASK |
- 			IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160_80PLUS80MHZ;
- 	dev->dfs_state = -1;
-+	dev->slottime = 9;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
+index 75a7af5ad7b2..8925fe5976cb 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
+@@ -521,7 +521,11 @@ static void iwl_mvm_sync_nssn(struct iwl_mvm *mvm, u8 baid, u16 nssn)
+ 		.nssn_sync.nssn = nssn,
+ 	};
  
- 	ret = mt76_register_device(&dev->mt76, true, mt7615_rates,
- 				   ARRAY_SIZE(mt7615_rates));
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-index c77adc5d2552..cead1bb1b578 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-@@ -60,6 +60,47 @@ void mt7615_mac_reset_counters(struct mt7615_dev *dev)
- 	mt76_set(dev, MT_WF_RMAC_MIB_AIRTIME0, MT_WF_RMAC_MIB_RXTIME_CLR);
+-	iwl_mvm_sync_rx_queues_internal(mvm, (void *)&notif, sizeof(notif));
++	/*
++	 * This allow to synchronize the queues, but it has been reported
++	 * to cause FH issues. Don't send the notification for now.
++	 * iwl_mvm_sync_rx_queues_internal(mvm, (void *)&notif, sizeof(notif));
++	 */
  }
  
-+/* XXX: DBDC support */
-+void mt7615_mac_set_timing(struct mt7615_dev *dev)
-+{
-+	u32 cck = FIELD_PREP(MT_TIMEOUT_VAL_PLCP, 231) |
-+		  FIELD_PREP(MT_TIMEOUT_VAL_CCA, 48);
-+	u32 ofdm = FIELD_PREP(MT_TIMEOUT_VAL_PLCP, 60) |
-+		   FIELD_PREP(MT_TIMEOUT_VAL_CCA, 24);
-+	int offset = 3 * dev->coverage_class;
-+	u32 reg_offset = FIELD_PREP(MT_TIMEOUT_VAL_PLCP, offset) |
-+			 FIELD_PREP(MT_TIMEOUT_VAL_CCA, offset);
-+	int sifs;
-+	u32 val;
-+
-+	if (dev->mt76.chandef.chan->band == NL80211_BAND_5GHZ)
-+		sifs = 16;
-+	else
-+		sifs = 10;
-+
-+	mt76_set(dev, MT_ARB_SCR,
-+		 MT_ARB_SCR_TX0_DISABLE | MT_ARB_SCR_RX0_DISABLE);
-+	udelay(1);
-+
-+	mt76_wr(dev, MT_TMAC_CDTR, cck + reg_offset);
-+	mt76_wr(dev, MT_TMAC_ODTR, ofdm + reg_offset);
-+	mt76_wr(dev, MT_TMAC_ICR0,
-+		FIELD_PREP(MT_IFS_EIFS, 360) |
-+		FIELD_PREP(MT_IFS_RIFS, 2) |
-+		FIELD_PREP(MT_IFS_SIFS, sifs) |
-+		FIELD_PREP(MT_IFS_SLOT, dev->slottime));
-+
-+	if (dev->slottime < 20)
-+		val = MT7615_CFEND_RATE_DEFAULT;
-+	else
-+		val = MT7615_CFEND_RATE_11B;
-+
-+	mt76_rmw_field(dev, MT_AGG_ACR0, MT_AGG_ACR_CFEND_RATE, val);
-+
-+	mt76_clear(dev, MT_ARB_SCR,
-+		   MT_ARB_SCR_TX0_DISABLE | MT_ARB_SCR_RX0_DISABLE);
-+}
-+
- int mt7615_mac_fill_rx(struct mt7615_dev *dev, struct sk_buff *skb)
- {
- 	struct mt76_rx_status *status = (struct mt76_rx_status *)skb->cb;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/main.c b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-index 78bbed7a4645..45dac03834d0 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-@@ -155,6 +155,7 @@ static int mt7615_set_channel(struct mt7615_dev *dev)
- 	if (ret)
- 		goto out;
- 
-+	mt7615_mac_set_timing(dev);
- 	ret = mt7615_dfs_init_radar_detector(dev);
- 	mt7615_mac_cca_stats_reset(dev);
- 	dev->mt76.survey_time = ktime_get_boottime();
-@@ -327,6 +328,15 @@ static void mt7615_bss_info_changed(struct ieee80211_hw *hw,
- 	if (changed & BSS_CHANGED_ASSOC)
- 		mt7615_mcu_set_bss_info(dev, vif, info->assoc);
- 
-+	if (changed & BSS_CHANGED_ERP_SLOT) {
-+		int slottime = info->use_short_slot ? 9 : 20;
-+
-+		if (slottime != dev->slottime) {
-+			dev->slottime = slottime;
-+			mt7615_mac_set_timing(dev);
-+		}
-+	}
-+
- 	/* TODO: update beacon content
- 	 * BSS_CHANGED_BEACON
- 	 */
-@@ -520,6 +530,15 @@ mt7615_ampdu_action(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 	return 0;
- }
- 
-+static void
-+mt7615_set_coverage_class(struct ieee80211_hw *hw, s16 coverage_class)
-+{
-+	struct mt7615_dev *dev = hw->priv;
-+
-+	dev->coverage_class = max_t(s16, coverage_class, 0);
-+	mt7615_mac_set_timing(dev);
-+}
-+
- const struct ieee80211_ops mt7615_ops = {
- 	.tx = mt7615_tx,
- 	.start = mt7615_start,
-@@ -543,4 +562,5 @@ const struct ieee80211_ops mt7615_ops = {
- 	.channel_switch_beacon = mt7615_channel_switch_beacon,
- 	.get_survey = mt76_get_survey,
- 	.get_antenna = mt76_get_antenna,
-+	.set_coverage_class = mt7615_set_coverage_class,
- };
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
-index d537f68c5531..1e29e4333335 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
-@@ -36,6 +36,9 @@
- #define MT_FRAC_SCALE		12
- #define MT_FRAC(val, div)	(((val) << MT_FRAC_SCALE) / (div))
- 
-+#define MT7615_CFEND_RATE_DEFAULT	0x69 /* chip default (24M) */
-+#define MT7615_CFEND_RATE_11B		0x03 /* 11B LP, 11M */
-+
- struct mt7615_vif;
- struct mt7615_sta;
- 
-@@ -105,6 +108,9 @@ struct mt7615_dev {
- 	s8 cck_sensitivity;
- 	bool scs_en;
- 
-+	s16 coverage_class;
-+	u8 slottime;
-+
- 	spinlock_t token_lock;
- 	struct idr token;
- };
-@@ -246,6 +252,7 @@ int mt7615_mac_write_txwi(struct mt7615_dev *dev, __le32 *txwi,
- 			  struct sk_buff *skb, struct mt76_wcid *wcid,
- 			  struct ieee80211_sta *sta, int pid,
- 			  struct ieee80211_key_conf *key);
-+void mt7615_mac_set_timing(struct mt7615_dev *dev);
- int mt7615_mac_fill_rx(struct mt7615_dev *dev, struct sk_buff *skb);
- void mt7615_mac_add_txs(struct mt7615_dev *dev, void *data);
- void mt7615_mac_tx_free(struct mt7615_dev *dev, struct sk_buff *skb);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/regs.h b/drivers/net/wireless/mediatek/mt76/mt7615/regs.h
-index 61a4aa9ac6e6..5ac52758d7b1 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/regs.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/regs.h
-@@ -153,14 +153,35 @@
- #define MT_AGG_SCR			MT_WF_AGG(0x0fc)
- #define MT_AGG_SCR_NLNAV_MID_PTEC_DIS	BIT(3)
- 
-+#define MT_WF_ARB_BASE			0x20c00
-+#define MT_WF_ARB(ofs)			(MT_WF_ARB_BASE + (ofs))
-+
-+#define MT_ARB_SCR			MT_WF_ARB(0x080)
-+#define MT_ARB_SCR_TX0_DISABLE		BIT(8)
-+#define MT_ARB_SCR_RX0_DISABLE		BIT(9)
-+#define MT_ARB_SCR_TX1_DISABLE		BIT(10)
-+#define MT_ARB_SCR_RX1_DISABLE		BIT(11)
-+
- #define MT_WF_TMAC_BASE			0x21000
- #define MT_WF_TMAC(ofs)			(MT_WF_TMAC_BASE + (ofs))
- 
-+#define MT_TMAC_CDTR			MT_WF_TMAC(0x090)
-+#define MT_TMAC_ODTR			MT_WF_TMAC(0x094)
-+#define MT_TIMEOUT_VAL_PLCP		GENMASK(15, 0)
-+#define MT_TIMEOUT_VAL_CCA		GENMASK(31, 16)
-+
- #define MT_TMAC_TRCR0			MT_WF_TMAC(0x09c)
- #define MT_TMAC_TRCR1			MT_WF_TMAC(0x070)
- #define MT_TMAC_TRCR_CCA_SEL		GENMASK(31, 30)
- #define MT_TMAC_TRCR_SEC_CCA_SEL	GENMASK(29, 28)
- 
-+#define MT_TMAC_ICR0			MT_WF_TMAC(0x0a4)
-+#define MT_TMAC_ICR1			MT_WF_TMAC(0x074)
-+#define MT_IFS_EIFS			GENMASK(8, 0)
-+#define MT_IFS_RIFS			GENMASK(14, 10)
-+#define MT_IFS_SIFS			GENMASK(22, 16)
-+#define MT_IFS_SLOT			GENMASK(30, 24)
-+
- #define MT_TMAC_CTCR0			MT_WF_TMAC(0x0f4)
- #define MT_TMAC_CTCR0_INS_DDLMT_REFTIME	GENMASK(5, 0)
- #define MT_TMAC_CTCR0_INS_DDLMT_DENSITY	GENMASK(15, 12)
+ #define RX_REORDER_BUF_TIMEOUT_MQ (HZ / 10)
 -- 
-2.21.0
+2.17.1
 
