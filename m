@@ -2,146 +2,82 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CD4461034D9
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Nov 2019 08:11:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A06371034E4
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Nov 2019 08:14:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727175AbfKTHLV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 20 Nov 2019 02:11:21 -0500
-Received: from mx3.watchguard.com ([63.251.166.21]:17095 "EHLO
-        mx3.watchguard.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726163AbfKTHLU (ORCPT
+        id S1727791AbfKTHOk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 20 Nov 2019 02:14:40 -0500
+Received: from a27-21.smtp-out.us-west-2.amazonses.com ([54.240.27.21]:39784
+        "EHLO a27-21.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727175AbfKTHOk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 20 Nov 2019 02:11:20 -0500
-Received: from PRDITOMBX02.wgti.net (172.24.2.22) by PRDITOMBX02.wgti.net
- (172.24.2.22) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1531.3; Tue, 19 Nov
- 2019 23:11:19 -0800
-Received: from NAM01-SN1-obe.outbound.protection.outlook.com (172.24.2.15) by
- owa.watchguard.com (172.24.2.22) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1531.3 via Frontend
- Transport; Tue, 19 Nov 2019 23:11:17 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ZgNc3w1k9na5O4xq4R3O3iiUeY5Ee+CT7vf74o1aLXPuz8gY9h7kN1gtYr58gW82AGjy/BqV5wft/m6o1aQDMzOFyBCeffyuAEEeWf3chREtI3MXzREpe2wjOSN12Epq8VheSpuf9yjV4kVIEVJdZj9+5rng332SrZ4QJzJzjZAs2ggVj8lo9kdQ7BOZO2TM/Bbv780tLWCLmWQ8RGnTrIKQ0XFeuF8QUnU+A35xx1KvaMd4V6vPWJfmgExK/daFU6mr7H9TiMdgiSqzpbsFpWnVPGcI1IHhC2rshnXzNUuBP0Xn9iRH4SdSJUVvm2WtW5UhM3OTDm7U4/9Nls7cow==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=oXaVEEf3wZXyIM8CDXTQY2nN/cwl2LjVYMw1Cw9P1jk=;
- b=AfLtaMKuyBoSD1ZhwpmyljEZB8jqZL4D+vbacg5sStremDRnZyhZOm49kVZRSL6BHvmQfC5qx1qcUUi7Gcy2JmcvIZJmsAvW3E1kiQ+LyHGmO7T61oomjXxILswq8dhg7g2d3yk6K6XYMO5ssMdo//18pWwBcRcwYc63NbgsLEhepCou9nDJRaK8Iff1konSlzGD85NPFuA07e/uxln8H/Yrh+E/yFu1jCANwRIYhVkLapzTHQUvca7Ns6OYmqtiX6590gf0OBTDq5s+10Vz1R3kOzdn1f4zt2DDVlosXFOvIAmL4fxXlLgqRBn+sS6zibFx4Szd6wGQmMxybhUV0Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=watchguard.com; dmarc=pass action=none
- header.from=watchguard.com; dkim=pass header.d=watchguard.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wgt.onmicrosoft.com;
- s=selector2-wgt-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=oXaVEEf3wZXyIM8CDXTQY2nN/cwl2LjVYMw1Cw9P1jk=;
- b=ghF4osj4wcbhDXcGnPqSaFnFBLLW7KOIRs+dRUIuG2M8Jh8IwQpTSwTftwmTYYe/SbZf8r5p/KdMc/nZYAk90pT4W6jNYQun4fWfk6S2MMtTbbfS1PTYEd3v0cfx84XVfmupBQLfGBYlAB6JX821agdIVhvRZaRUfshX5HFNrrk=
-Received: from DM6PR10MB2873.namprd10.prod.outlook.com (20.177.216.210) by
- DM6PR10MB3499.namprd10.prod.outlook.com (20.179.54.31) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2474.17; Wed, 20 Nov 2019 07:11:16 +0000
-Received: from DM6PR10MB2873.namprd10.prod.outlook.com
- ([fe80::481a:55d7:e282:c326]) by DM6PR10MB2873.namprd10.prod.outlook.com
- ([fe80::481a:55d7:e282:c326%7]) with mapi id 15.20.2451.029; Wed, 20 Nov 2019
- 07:11:15 +0000
-From:   Ming Chen <Ming.Chen@watchguard.com>
-To:     Kalle Valo <kvalo@codeaurora.org>
-CC:     =?iso-8859-1?Q?Toke_H=F8iland-J=F8rgensen?= <toke@redhat.com>,
-        Ming Chen <ming032217@gmail.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: RE: [PATCH v4] mac80211: Drop the packets whose source or destination
- mac address is empty
-Thread-Topic: [PATCH v4] mac80211: Drop the packets whose source or
- destination mac address is empty
-Thread-Index: AQHVnEROQmNFleZyvEa38z2h3bxkd6eQzzuAgAFCJbCAADEy/YABYXFA
-Date:   Wed, 20 Nov 2019 07:11:15 +0000
-Message-ID: <DM6PR10MB28737A877FC6425A3FE10CB69A4F0@DM6PR10MB2873.namprd10.prod.outlook.com>
-References: <20191116060833.45752-1-ming.chen@watchguard.com>
-        <87blt9ctd4.fsf@toke.dk>
-        <DM6PR10MB2873E994ABFB1798B36CE49B9A4C0@DM6PR10MB2873.namprd10.prod.outlook.com>
- <0101016e8309e9b1-7bb90226-11bb-4b89-8236-952999e578a8-000000@us-west-2.amazonses.com>
-In-Reply-To: <0101016e8309e9b1-7bb90226-11bb-4b89-8236-952999e578a8-000000@us-west-2.amazonses.com>
-Accept-Language: zh-CN, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=Ming.Chen@watchguard.com; 
-x-originating-ip: [76.14.72.208]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: d1bc2678-42f4-4fab-e7c0-08d76d88d561
-x-ms-traffictypediagnostic: DM6PR10MB3499:
-x-ms-exchange-purlcount: 1
-x-microsoft-antispam-prvs: <DM6PR10MB3499864607128320B4A0650B9A4F0@DM6PR10MB3499.namprd10.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:8882;
-x-forefront-prvs: 02272225C5
-x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(136003)(366004)(376002)(396003)(346002)(39850400004)(52314003)(13464003)(189003)(199004)(7736002)(6436002)(74316002)(229853002)(81166006)(81156014)(305945005)(6916009)(6116002)(8936002)(6246003)(4326008)(66446008)(64756008)(66556008)(76116006)(66946007)(9686003)(6306002)(55016002)(2906002)(66476007)(3846002)(54906003)(52536014)(86362001)(5660300002)(486006)(11346002)(476003)(7696005)(446003)(71200400001)(71190400001)(66066001)(8676002)(256004)(66574012)(76176011)(316002)(53546011)(6506007)(99286004)(478600001)(966005)(26005)(25786009)(33656002)(102836004)(14454004)(186003);DIR:OUT;SFP:1101;SCL:1;SRVR:DM6PR10MB3499;H:DM6PR10MB2873.namprd10.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-received-spf: None (protection.outlook.com: watchguard.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: or16H//+PtsgNtzCCtZclXwBmJf56d2QpVZI3rOQ+NZqO8aEbA1fWXMVMQGKHde7BivA2aa2DYI3loMFzkMpnZSVnr3LYfjNYgYQqvpGZ/qsAggtwKikGyHMT1Uke8++UUrDnfBHKzgXFwC04DWlWIl5L+zLKXIv10KSskCa5Xzi9kbMEkQELi84F+bkaLabnkJPvVxk3naC7hdZUAfDg/WE2WkI0mklo3xB91akidbgRy24HUqzBozx3mbfrAj/+swiiVQhdh/2TFoxXoB3MNxFBlTxB34bBVkDCKxB/E/p162OzKINfTABAFgouul6i2upe39qBH/EO+gimcxSfVsMyOpFBDmJeJdOYrf3M0nNPitl+UFAugmEcfLmd60unYEkkLU4qVUEjuz6d3lF+Oc441NwlrhOSl2ytHrjgN8vnTHx6N+/lHYaXVUl40fCfNoubaYWVfD8npWTfkY3KBQ8HJzCSBnplpYF9fTG6sQ=
-x-ms-exchange-transport-forked: True
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+        Wed, 20 Nov 2019 02:14:40 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1574234079;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:MIME-Version:Content-Type;
+        bh=jTDnJbAD+OmeeNay72pKKr25SQyviuZ8HJ985/FTvTo=;
+        b=CYgYg1d23p+M6KZP6LANHhnIAqafL9L7FQeUKAwPsYoFOA52/qChkuajKc8tARbE
+        qBSaDT0g7Bc6p2UYwuBStTDd2xLLeWTad/AxEa/pXRJnntxs+iaQTEjB3D7FKO0lqcp
+        jNAY57EiYFEGUrLxc/XuuYtEPDSZkdZ4faxrGD9Y=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+        s=gdwg2y3kokkkj5a55z2ilkup5wp5hhxx; d=amazonses.com; t=1574234079;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:MIME-Version:Content-Type:Feedback-ID;
+        bh=jTDnJbAD+OmeeNay72pKKr25SQyviuZ8HJ985/FTvTo=;
+        b=HitXlYIBzzUD+dI2jBlo9bjPl7kGbnb2C2bnqIjivKL3sbFJ3ddJx2xNEfZAI9vf
+        dldpcK3WZbwnvWocKY9hieg2fggfwCd9IODFcnJ7si5mxH7Pio2mfckP5pTdOWp60VR
+        5L4b3d/ng6pMeoC9ZqsQyAP2sJLAeWL85qFVOh/M=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE,
+        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 3834FC433A2
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     zhengbin <zhengbin13@huawei.com>
+Cc:     <arend.vanspriel@broadcom.com>, <franky.lin@broadcom.com>,
+        <kvalo@codeaurora.org>, <davem@davemloft.net>,
+        <linux-wireless@vger.kernel.org>,
+        <brcm80211-dev-list.pdl@broadcom.com>,
+        <brcm80211-dev-list@cypress.com>, <netdev@vger.kernel.org>
+Subject: Re: [PATCH -next] brcmfmac: remove set but not used variable 'mpnum','nsp','nmp'
+References: <1573888967-104078-1-git-send-email-zhengbin13@huawei.com>
+Date:   Wed, 20 Nov 2019 07:14:39 +0000
+In-Reply-To: <1573888967-104078-1-git-send-email-zhengbin13@huawei.com>
+        (zhengbin's message of "Sat, 16 Nov 2019 15:22:47 +0800")
+Message-ID: <0101016e87a9bfdf-2f0de3c7-8cd5-473e-b06b-3f6dab955c23-000000@us-west-2.amazonses.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-Network-Message-Id: d1bc2678-42f4-4fab-e7c0-08d76d88d561
-X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Nov 2019 07:11:15.7628
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 2563c132-88f5-466f-bbb2-e83153b3c808
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: L02OQmOoNSlZycMFxVq+4meFCtIlRZ9Yj9+anHkyJO6W1BMBwHbXB85uEdyt44M+rUcaatdQq3rqcRe8K7H4XkAQCvHPSKDAF1MHxuKs5rU=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR10MB3499
-X-OriginatorOrg: watchguard.com
+Content-Type: text/plain
+X-SES-Outgoing: 2019.11.20-54.240.27.21
+Feedback-ID: 1.us-west-2.CZuq2qbDmUIuT3qdvXlRHZZCpfZqZ4GtG9v3VKgRyF0=:AmazonSES
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+zhengbin <zhengbin13@huawei.com> writes:
 
+> Fixes gcc '-Wunused-but-set-variable' warning:
+>
+> drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c: In function brcmf_chip_dmp_get_regaddr:
+> drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c:790:5: warning: variable mpnum set but not used [-Wunused-but-set-variable]
+> drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c: In function brcmf_chip_dmp_erom_scan:
+> drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c:866:10: warning: variable nsp set but not used [-Wunused-but-set-variable]
+> drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c: In function brcmf_chip_dmp_erom_scan:
+> drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c:866:5: warning: variable nmp set but not used [-Wunused-but-set-variable]
+>
+> They are introduced by commit 05491d2ccf20 ("brcm80211:
+> move under broadcom vendor directory"), but never used,
+> so remove them.
+>
+> Reported-by: Hulk Robot <hulkci@huawei.com>
+> Signed-off-by: zhengbin <zhengbin13@huawei.com>
 
-> -----Original Message-----
-> From: Kalle Valo <kvalo@codeaurora.org>
-> Sent: Tuesday, November 19, 2019 1:42 AM
-> To: Ming Chen <Ming.Chen@watchguard.com>
-> Cc: Toke H=F8iland-J=F8rgensen <toke@redhat.com>; Ming Chen
-> <ming032217@gmail.com>; Johannes Berg <johannes@sipsolutions.net>;
-> linux-wireless@vger.kernel.org
-> Subject: Re: [PATCH v4] mac80211: Drop the packets whose source or
-> destination mac address is empty
->=20
-> Ming Chen <Ming.Chen@watchguard.com> writes:
->=20
-> >> > Dropping this kind of error packet before it goes into the driver,
-> >> > should be the right direction.
-> >>
-> >> So I still wonder why this happens from higher up in the stack. If
-> >> there's a legitimate reason, maybe dropping the packet is not the
-> >> right thing? And if there is *no* legitimate reason, maybe the packet
-> >> should be dropped higher up in the stack instead?
-> >>
-> >> What kind of packets does this happen with?
-> >
-> > [Ming Chen] It should an ARP packet. I can see this kind of packet
-> > before ARP table is complete. If so, how about dropping it in the
-> > function of ieee80211_subif_start_xmit?
->=20
-> The question here is why are you seeing this but nobody else? Are you usi=
-ng
-> some special protocol, do you have some changes in the kernel which cause
-> this or what could explain this behaviour?
->=20
-[Ming Chen] I am not very familiar with the ARP processing in Linux Kernel,=
- but I am sure I can see=20
-this kind of packets coming from the upper stack. I talked with the guys of=
- this area of my company today,=20
-and they told me we didn't make any change on the ARP relevant processing. =
-=20
-From my perspective, I think dropping this kind of packets is more or less =
-reasonable.=20
-Anyway, I will make more investigation on how this kind of packets come int=
-o the driver. Thanks
-> --
-> https://wireless.wiki.kernel.org/en/developers/documentation/submittingp
-> atches
+Applied, thanks.
+
+7af496b9eb04 brcmfmac: remove set but not used variable 'mpnum','nsp','nmp'
+
+-- 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
