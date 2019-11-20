@@ -2,156 +2,98 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4989B104107
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Nov 2019 17:42:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 74BDC104307
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Nov 2019 19:10:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732845AbfKTQlw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 20 Nov 2019 11:41:52 -0500
-Received: from a27-18.smtp-out.us-west-2.amazonses.com ([54.240.27.18]:50882
-        "EHLO a27-18.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728632AbfKTQlv (ORCPT
+        id S1728026AbfKTSKz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 20 Nov 2019 13:10:55 -0500
+Received: from a27-55.smtp-out.us-west-2.amazonses.com ([54.240.27.55]:59288
+        "EHLO a27-55.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726999AbfKTSKz (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 20 Nov 2019 11:41:51 -0500
+        Wed, 20 Nov 2019 13:10:55 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1574268110;
+        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1574273454;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:MIME-Version:Content-Type;
-        bh=NjjSVG5LUmH7QQy4Vqj8vI+LZUKs5boQ12w8VYjDuGk=;
-        b=GJTC5IFCmLTikEwWs0RHAJMrzQC9ZvGnwC9WSqbuFVB+7fd6txIL/YmpQXyZCJm4
-        MhNGEuOarThM2JrW9RmD6fIPZcHpxSw2lMRERQ/B3tlnH+ZRfn6Y2Zfpnm/IR9x+ClX
-        AsZd+h6HAG+cgW18akbv3iYTRaJGdpKyflUlVlWI=
+        bh=pnYVlPnFDXF0h5rThdR9f70VxXWvaZoJIvvgRT5NcC4=;
+        b=iae+5+swiqbKZVXsTJtmfrOHNFB+kyfPPf2QRjReYI9vHRxJOmedX6RvmtgztspM
+        56K1OxMglnqE2x413qZYmo6cb6IYeJw9pDfHDslse0hJrMUiXG8afkFn3pPSD9/0hgI
+        T8qOoN1TVLRO1VTq+nPcnhVeAcSfgra2YshWqYco=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=gdwg2y3kokkkj5a55z2ilkup5wp5hhxx; d=amazonses.com; t=1574268110;
+        s=gdwg2y3kokkkj5a55z2ilkup5wp5hhxx; d=amazonses.com; t=1574273454;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:MIME-Version:Content-Type:Feedback-ID;
-        bh=NjjSVG5LUmH7QQy4Vqj8vI+LZUKs5boQ12w8VYjDuGk=;
-        b=PDgvJ668pf0QQk8INciTMSKBBdQwQfNoLTMySPtaBsYBlKD592L6h5bIVsVKl/cd
-        hjdRZFAxwwoNpcv0Bx9ZAZ9n9SwMbCkII9vPB4Ujw8Og008j+lv5TUu+tJaZ3aji/Pb
-        wNJYpbO0x4eleSN25Vi9fyJeB+azjsh9agPEdRRY=
+        bh=pnYVlPnFDXF0h5rThdR9f70VxXWvaZoJIvvgRT5NcC4=;
+        b=EHWxxw4NwnHToqjadxi5Aji71FE9NWF+cL+cPPVoI8iLZkGwFIQ7zV2kw4nVzlVw
+        +5QwhPFevp5VLyl3M3/V19fDSkbk/lAWJxjTa6PAQ6oGq/JaYF6mqZLtb4tRIWOtHtm
+        2u3psRHOZTV3ooxX71hS2Sroci5ZmHgeDnlwkJ/o=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
 X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE,
-        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 6AB86C447AD
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.0
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org BD5ADC447A4
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     Wen Gong <wgong@codeaurora.org>,
-        Doug Anderson <dianders@chromium.org>,
-        Linux MMC List <linux-mmc@vger.kernel.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Matthias Kaehlcke <mka@chromium.org>,
-        Tony Lindgren <tony@atomide.com>,
-        Erik Stromdahl <erik.stromdahl@gmail.com>,
-        Eyal Reizer <eyalreizer@gmail.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Brian Norris <briannorris@chromium.org>,
-        ath10k@lists.infradead.org
-Subject: Re: [PATCH v2 3/3] mmc: core: Re-work HW reset for SDIO cards
-References: <20191109103046.26445-1-ulf.hansson@linaro.org>
-        <20191109103046.26445-4-ulf.hansson@linaro.org>
-        <CAD=FV=VHReD5qnvcQLHvfgKHnHLbfDLZHwXtY-LV5uy_VCYpPA@mail.gmail.com>
-        <CAPDyKFrCyJBz2=RzKPxqn0FSEq500=dEDsTUWYZeoFKWvSRAdA@mail.gmail.com>
-        <87zhgr5af6.fsf@codeaurora.org>
-        <6e6b53b28581a8f1a2944ca0bc65311e@codeaurora.org>
-        <0101016e87aeb8b6-761ad812-5da7-4b0d-8cae-c69633d90de0-000000@us-west-2.amazonses.com>
-        <CAPDyKFoWxw9r=GZhvF=TxHxo=zRfKr0hknEeQNPdfwPx4ORxuQ@mail.gmail.com>
-Date:   Wed, 20 Nov 2019 16:41:50 +0000
-In-Reply-To: <CAPDyKFoWxw9r=GZhvF=TxHxo=zRfKr0hknEeQNPdfwPx4ORxuQ@mail.gmail.com>
-        (Ulf Hansson's message of "Wed, 20 Nov 2019 13:10:42 +0100")
-Message-ID: <0101016e89b106d8-28f35aff-b772-4856-bc11-cccd5502d948-000000@us-west-2.amazonses.com>
+To:     Luca Coelho <luca@coelho.fi>
+Cc:     linux-wireless@vger.kernel.org, linuxwifi@intel.com,
+        david.e.box@intel.com, joe.konno@intel.com
+Subject: Re: pull-request: iwlwifi-next 2019-11-13
+References: <a9bd353c2e5f84e9144d3d843adeb03491053478.camel@coelho.fi>
+Date:   Wed, 20 Nov 2019 18:10:54 +0000
+In-Reply-To: <a9bd353c2e5f84e9144d3d843adeb03491053478.camel@coelho.fi> (Luca
+        Coelho's message of "Wed, 20 Nov 2019 12:40:59 +0200")
+Message-ID: <0101016e8a0291d2-0067e906-40d2-48d1-a310-4c9f88ddb199-000000@us-west-2.amazonses.com>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
-X-SES-Outgoing: 2019.11.20-54.240.27.18
+X-SES-Outgoing: 2019.11.20-54.240.27.55
 Feedback-ID: 1.us-west-2.CZuq2qbDmUIuT3qdvXlRHZZCpfZqZ4GtG9v3VKgRyF0=:AmazonSES
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Ulf Hansson <ulf.hansson@linaro.org> writes:
+Luca Coelho <luca@coelho.fi> writes:
 
-> On Wed, 20 Nov 2019 at 08:20, Kalle Valo <kvalo@codeaurora.org> wrote:
->>
->> wgong@codeaurora.org writes:
->>
->> > On 2019-11-20 14:28, Kalle Valo wrote:
->> >> + wen, ath10k
->> >>
->> >> Ulf Hansson <ulf.hansson@linaro.org> writes:
->> >>
->> >>> On Tue, 12 Nov 2019 at 01:33, Doug Anderson <dianders@chromium.org>
->> >>> wrote:
->> >>>>
->> >>>> Hi,
->> >>>>
->> >>>> On Sat, Nov 9, 2019 at 2:31 AM Ulf Hansson
->> >>>> <ulf.hansson@linaro.org> wrote:
->> >>>> >
->> >>>> > diff --git a/drivers/mmc/core/core.c b/drivers/mmc/core/core.c
->> >>>> > index 6f8342702c73..abf8f5eb0a1c 100644
->> >>>> > --- a/drivers/mmc/core/core.c
->> >>>> > +++ b/drivers/mmc/core/core.c
->> >>>> > @@ -1469,8 +1469,7 @@ void mmc_detach_bus(struct mmc_host *host)
->> >>>> >         mmc_bus_put(host);
->> >>>> >  }
->> >>>> >
->> >>>> > -static void _mmc_detect_change(struct mmc_host *host, unsigned long delay,
->> >>>> > -                               bool cd_irq)
->> >>>> > +void _mmc_detect_change(struct mmc_host *host, unsigned long delay, bool cd_irq)
->> >>>> >  {
->> >>>> >         /*
->> >>>> >          * If the device is configured as wakeup, we prevent a new sleep for
->> >>>> > @@ -2129,7 +2128,7 @@ int mmc_hw_reset(struct mmc_host *host)
->> >>>> >         ret = host->bus_ops->hw_reset(host);
->> >>>> >         mmc_bus_put(host);
->> >>>> >
->> >>>> > -       if (ret)
->> >>>> > +       if (ret < 0)
->> >>>> >                 pr_warn("%s: tried to HW reset card, got error %d\n",
->> >>>> >                         mmc_hostname(host), ret);
->> >>>>
->> >>>> Other callers besides marvell need to be updated?  In theory only
->> >>>> SDIO
->> >>>> should have positive return values so I guess we don't care about the
->> >>>> caller in drivers/mmc/core/block.c, right?
->> >>>
->> >>> Correct, but maybe I should add some more information about that in a
->> >>> function header of mmc_hw_reset(). Let me consider doing that as a
->> >>> change on top.
->> >>>
->> >>>>  What about:
->> >>>>
->> >>>> drivers/net/wireless/ath/ath10k/sdio.c
->> >>>>
->> >>>> ...I guess I don't know if there is more than one function probed
->> >>>> there.  Maybe there's not and thus we're fine here too?
->> >>>
->> >>> Well, honestly I don't know.
->> >>>
->> >>> In any case, that would mean the driver is broken anyways and needs to
->> >>> be fixed. At least that's my approach to doing this change.
->> >>
->> >> Wen, does QCA6174 or QCA9377 SDIO devices have other SDIO functions,
->> >> for
->> >> example bluetooth? I'm just wondering how should we handle this in
->> >> ath10k.
->> >
->> > it does not have other SDIO functions for QCA6174 or QCA9377.
->>
->> Thanks, then I don't think we need to change anything in ath10k.
->>
->> --
->> Kalle Valo
+> Here's the third batch of patches intended for v5.5.  This includes
+> the patchset I just sent out .  Usual development work.  More details
+> about the contents in the tag description.
 >
-> Kalle, Wen - thanks for looking into this and for the confirmation.
+> I pushed these patches to my pending branch, but it was just now, so I
+> didn't get the results from kbuildbot yet.
 >
-> One thing though, perhaps it's worth to add this as a comment in the
-> code for ath10k, where mmc_hw_reset() is called. Just to make it
-> clear.
+> Please let me know if there are any issues.
+>
+> Cheers,
+> Luca.
+>
+>
+> The following changes since commit eac08515d7bd665d306cefa2ae9f3de56e875d6d:
+>
+>   rtl8xxxu: Remove set but not used variable 'vif','dev','len' (2019-11-20 09:47:19 +0200)
+>
+> are available in the Git repository at:
+>
+>   git://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/iwlwifi-next.git tags/iwlwifi-next-for-kalle-2019-11-20
+>
+> for you to fetch changes up to 54fae6e31bed393a17512c1c8d2559bc737943c9:
+>
+>   iwlwifi: bump FW API to 52 for 22000 series (2019-11-20 12:28:56 +0200)
+>
+> ----------------------------------------------------------------
+> Patches intended for v5.5
+>
+> * Fix a merge damage that causes issues with high-throuput on AX200+;
+> * Support TX/RX antennas reporting;
+> * Small fix in DVM's BT link-quality code;
+> * Bump supported FW API version to 52;
+> * Yet another scan FW API update;
+> * Some clean-ups;
+>
+> ----------------------------------------------------------------
 
-Good point. Wen, can you send a patch, please?
+Pulled, thanks Luca.
 
 -- 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
