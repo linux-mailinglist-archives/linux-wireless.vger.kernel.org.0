@@ -2,139 +2,85 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 302B91044BE
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Nov 2019 21:05:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 254FF1044CE
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Nov 2019 21:14:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727367AbfKTUFo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 20 Nov 2019 15:05:44 -0500
-Received: from smail.rz.tu-ilmenau.de ([141.24.186.67]:49556 "EHLO
-        smail.rz.tu-ilmenau.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727085AbfKTUFn (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 20 Nov 2019 15:05:43 -0500
-Received: from localhost.localdomain (unknown [141.24.207.101])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by smail.rz.tu-ilmenau.de (Postfix) with ESMTPSA id 0A0BA58007C;
-        Wed, 20 Nov 2019 21:05:41 +0100 (CET)
-From:   Markus Theil <markus.theil@tu-ilmenau.de>
-To:     nbd@nbd.name
-Cc:     linux-wireless@vger.kernel.org,
-        Markus Theil <markus.theil@tu-ilmenau.de>
-Subject: [PATCH] mt76: fix fix ampdu locking
-Date:   Wed, 20 Nov 2019 21:05:31 +0100
-Message-Id: <20191120200531.11344-1-markus.theil@tu-ilmenau.de>
-X-Mailer: git-send-email 2.24.0
+        id S1726634AbfKTUOL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 20 Nov 2019 15:14:11 -0500
+Received: from nbd.name ([46.4.11.11]:55770 "EHLO nbd.name"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726623AbfKTUOK (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 20 Nov 2019 15:14:10 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
+        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=I+OKaIPjv9ZwGfZOgp48+Zu9rvSxnsLufxkUiBulweU=; b=EYyMV53NehyWt/9ODLjL0zhvmp
+        GU1RMChhOOQiz4gqOj0Pgsi3C8+RTPmTCWX4AF8uXKgx+zaWHelAfPhmfu3F+vVNblDZFdb8Sx+jD
+        S+3eI/EZuAYoKQHKwfwL0aQrkLeHByHLU7Dm9D2qKk1yNpatqpNswgFepwhEe7bDKDAA=;
+Received: from p4ff13fe7.dip0.t-ipconnect.de ([79.241.63.231] helo=nf.local)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1iXWMa-000653-Qu; Wed, 20 Nov 2019 21:14:08 +0100
+Subject: Re: [PATCH] mt76: fix fix ampdu locking
+To:     Markus Theil <markus.theil@tu-ilmenau.de>
+Cc:     linux-wireless@vger.kernel.org, Kalle Valo <kvalo@codeaurora.org>
+References: <20191120200531.11344-1-markus.theil@tu-ilmenau.de>
+From:   Felix Fietkau <nbd@nbd.name>
+Autocrypt: addr=nbd@nbd.name; prefer-encrypt=mutual; keydata=
+ xsDiBEah5CcRBADIY7pu4LIv3jBlyQ/2u87iIZGe6f0f8pyB4UjzfJNXhJb8JylYYRzIOSxh
+ ExKsdLCnJqsG1PY1mqTtoG8sONpwsHr2oJ4itjcGHfn5NJSUGTbtbbxLro13tHkGFCoCr4Z5
+ Pv+XRgiANSpYlIigiMbOkide6wbggQK32tC20QxUIwCg4k6dtV/4kwEeiOUfErq00TVqIiEE
+ AKcUi4taOuh/PQWx/Ujjl/P1LfJXqLKRPa8PwD4j2yjoc9l+7LptSxJThL9KSu6gtXQjcoR2
+ vCK0OeYJhgO4kYMI78h1TSaxmtImEAnjFPYJYVsxrhay92jisYc7z5R/76AaELfF6RCjjGeP
+ wdalulG+erWju710Bif7E1yjYVWeA/9Wd1lsOmx6uwwYgNqoFtcAunDaMKi9xVQW18FsUusM
+ TdRvTZLBpoUAy+MajAL+R73TwLq3LnKpIcCwftyQXK5pEDKq57OhxJVv1Q8XkA9Dn1SBOjNB
+ l25vJDFAT9ntp9THeDD2fv15yk4EKpWhu4H00/YX8KkhFsrtUs69+vZQwc0cRmVsaXggRmll
+ dGthdSA8bmJkQG5iZC5uYW1lPsJgBBMRAgAgBQJGoeQnAhsjBgsJCAcDAgQVAggDBBYCAwEC
+ HgECF4AACgkQ130UHQKnbvXsvgCgjsAIIOsY7xZ8VcSm7NABpi91yTMAniMMmH7FRenEAYMa
+ VrwYTIThkTlQzsFNBEah5FQQCACMIep/hTzgPZ9HbCTKm9xN4bZX0JjrqjFem1Nxf3MBM5vN
+ CYGBn8F4sGIzPmLhl4xFeq3k5irVg/YvxSDbQN6NJv8o+tP6zsMeWX2JjtV0P4aDIN1pK2/w
+ VxcicArw0VYdv2ZCarccFBgH2a6GjswqlCqVM3gNIMI8ikzenKcso8YErGGiKYeMEZLwHaxE
+ Y7mTPuOTrWL8uWWRL5mVjhZEVvDez6em/OYvzBwbkhImrryF29e3Po2cfY2n7EKjjr3/141K
+ DHBBdgXlPNfDwROnA5ugjjEBjwkwBQqPpDA7AYPvpHh5vLbZnVGu5CwG7NAsrb2isRmjYoqk
+ wu++3117AAMFB/9S0Sj7qFFQcD4laADVsabTpNNpaV4wAgVTRHKV/kC9luItzwDnUcsZUPdQ
+ f3MueRJ3jIHU0UmRBG3uQftqbZJj3ikhnfvyLmkCNe+/hXhPu9sGvXyi2D4vszICvc1KL4RD
+ aLSrOsROx22eZ26KqcW4ny7+va2FnvjsZgI8h4sDmaLzKczVRIiLITiMpLFEU/VoSv0m1F4B
+ FtRgoiyjFzigWG0MsTdAN6FJzGh4mWWGIlE7o5JraNhnTd+yTUIPtw3ym6l8P+gbvfoZida0
+ TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabwkkE
+ GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCfTKx80VvCR/PvsUlrvdOLsIgeRGAAn1ee
+ RjMaxwtSdaCKMw3j33ZbsWS4
+Message-ID: <9413ca21-94c3-857b-1156-e4a949acf390@nbd.name>
+Date:   Wed, 20 Nov 2019 21:14:07 +0100
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:68.0)
+ Gecko/20100101 Thunderbird/68.2.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20191120200531.11344-1-markus.theil@tu-ilmenau.de>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The current ampdu locking code does not unlock its mutex in the early
-return case. This patch fixes it.
+On 2019-11-20 21:05, Markus Theil wrote:
+> The current ampdu locking code does not unlock its mutex in the early
+> return case. This patch fixes it.
+> 
+> Signed-off-by: Markus Theil <markus.theil@tu-ilmenau.de>
+Acked-by: Felix Fietkau <nbd@nbd.name>
 
-Signed-off-by: Markus Theil <markus.theil@tu-ilmenau.de>
----
- drivers/net/wireless/mediatek/mt76/mt7603/main.c  | 6 ++++--
- drivers/net/wireless/mediatek/mt76/mt7615/main.c  | 6 ++++--
- drivers/net/wireless/mediatek/mt76/mt76x02_util.c | 6 ++++--
- 3 files changed, 12 insertions(+), 6 deletions(-)
+Kalle, I think this should go on top of my pull request quickly, since
+it fixes a regression in a commit from that pull request (introduced via
+rebase on top of Johannes' last change of that code).
+Do you want me to send another pull request with just this patch, or can
+you take it directly? In the latter case, feel free to also remove one
+of the two "fix" words in the subject :)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/main.c b/drivers/net/wireless/mediatek/mt76/mt7603/main.c
-index 281387c3f4f4..962e2822d19f 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7603/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7603/main.c
-@@ -569,6 +569,7 @@ mt7603_ampdu_action(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 	u16 ssn = params->ssn;
- 	u8 ba_size = params->buf_size;
- 	struct mt76_txq *mtxq;
-+	int ret = 0;
- 
- 	if (!txq)
- 		return -EINVAL;
-@@ -597,7 +598,8 @@ mt7603_ampdu_action(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 		break;
- 	case IEEE80211_AMPDU_TX_START:
- 		mtxq->agg_ssn = IEEE80211_SN_TO_SEQ(ssn);
--		return IEEE80211_AMPDU_TX_START_IMMEDIATE;
-+		ret = IEEE80211_AMPDU_TX_START_IMMEDIATE;
-+		break;
- 	case IEEE80211_AMPDU_TX_STOP_CONT:
- 		mtxq->aggr = false;
- 		mt7603_mac_tx_ba_reset(dev, msta->wcid.idx, tid, -1);
-@@ -606,7 +608,7 @@ mt7603_ampdu_action(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 	}
- 	mutex_unlock(&dev->mt76.mutex);
- 
--	return 0;
-+	return ret;
- }
- 
- static void
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/main.c b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-index 240dab919327..070b03403894 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-@@ -484,6 +484,7 @@ mt7615_ampdu_action(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 	u16 tid = params->tid;
- 	u16 ssn = params->ssn;
- 	struct mt76_txq *mtxq;
-+	int ret = 0;
- 
- 	if (!txq)
- 		return -EINVAL;
-@@ -513,7 +514,8 @@ mt7615_ampdu_action(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 		break;
- 	case IEEE80211_AMPDU_TX_START:
- 		mtxq->agg_ssn = IEEE80211_SN_TO_SEQ(ssn);
--		return IEEE80211_AMPDU_TX_START_IMMEDIATE;
-+		ret = IEEE80211_AMPDU_TX_START_IMMEDIATE;
-+		break;
- 	case IEEE80211_AMPDU_TX_STOP_CONT:
- 		mtxq->aggr = false;
- 		mt7615_mcu_set_tx_ba(dev, params, 0);
-@@ -522,7 +524,7 @@ mt7615_ampdu_action(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 	}
- 	mutex_unlock(&dev->mt76.mutex);
- 
--	return 0;
-+	return ret;
- }
- 
- const struct ieee80211_ops mt7615_ops = {
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_util.c b/drivers/net/wireless/mediatek/mt76/mt76x02_util.c
-index f58a3ebfa9d2..dac383ee8f4f 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x02_util.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x02_util.c
-@@ -356,6 +356,7 @@ int mt76x02_ampdu_action(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 	u16 tid = params->tid;
- 	u16 ssn = params->ssn;
- 	struct mt76_txq *mtxq;
-+	int ret = 0;
- 
- 	if (!txq)
- 		return -EINVAL;
-@@ -385,7 +386,8 @@ int mt76x02_ampdu_action(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 		break;
- 	case IEEE80211_AMPDU_TX_START:
- 		mtxq->agg_ssn = IEEE80211_SN_TO_SEQ(ssn);
--		return IEEE80211_AMPDU_TX_START_IMMEDIATE;
-+		ret = IEEE80211_AMPDU_TX_START_IMMEDIATE;
-+		break;
- 	case IEEE80211_AMPDU_TX_STOP_CONT:
- 		mtxq->aggr = false;
- 		ieee80211_stop_tx_ba_cb_irqsafe(vif, sta->addr, tid);
-@@ -393,7 +395,7 @@ int mt76x02_ampdu_action(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 	}
- 	mutex_unlock(&dev->mt76.mutex);
- 
--	return 0;
-+	return ret;
- }
- EXPORT_SYMBOL_GPL(mt76x02_ampdu_action);
- 
--- 
-2.24.0
+Thanks,
 
+- Felix
