@@ -2,118 +2,139 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id ACC9110437A
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Nov 2019 19:32:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 302B91044BE
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Nov 2019 21:05:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727656AbfKTScP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 20 Nov 2019 13:32:15 -0500
-Received: from mail-ot1-f48.google.com ([209.85.210.48]:36373 "EHLO
-        mail-ot1-f48.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726999AbfKTScP (ORCPT
+        id S1727367AbfKTUFo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 20 Nov 2019 15:05:44 -0500
+Received: from smail.rz.tu-ilmenau.de ([141.24.186.67]:49556 "EHLO
+        smail.rz.tu-ilmenau.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727085AbfKTUFn (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 20 Nov 2019 13:32:15 -0500
-Received: by mail-ot1-f48.google.com with SMTP id f10so493086oto.3
-        for <linux-wireless@vger.kernel.org>; Wed, 20 Nov 2019 10:32:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=JTIdHp6dlpMGaskgZiCPLXPinyi/0CX4k+rvt+5+ras=;
-        b=Npa6zD9injmFt65NPLxPIsU/qcKhWt8ZHNCM+deRJwYmvjWEuHrA7NL1mEybZn3v30
-         w/qo2/KWNPCcjAZ8Qc3GQXmz4X9nDsX1phJaM1Th2CvN4nvgYpocMtiVEzb0TChL0bFT
-         4oxnkw/A+q/hM9PlXrih1p6wBlhkd5yITfSrFUwo5wVrtK9nBBV3TCJ7UzxwH9SEfJOn
-         Ture662yDpkIJDrH66rPvpl+7EVD5/r4Qc7IzKp9DVJFN7ZF2MdxFb7bTzZ+LEcl8N4N
-         nrJFLnEaJTJsdPn8aN1PlXeBjxXGeIP7sRrlWsqO4KpBVNP/Uv64drRdRPTv3jxssTYc
-         n8RQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=JTIdHp6dlpMGaskgZiCPLXPinyi/0CX4k+rvt+5+ras=;
-        b=I51b/hVJFO7tyKr1YtDMljIvPyA9y5YYEZxdi6huzXBXVZME5kU01WXJyzMg7sr3e4
-         X2Qj53yzwbl9CAqwNIAK0LUcRhNRLawQotMv6U7DWdDofio+3v09aYC7k0LFkhBMWH2f
-         aUmZyrQmLS9/QWgAjyLhOqlWk5oGd58wxTljMKvxkmmntn/XxGWXzhVcVO8cEKOPDuVz
-         4eA0CkZrYsIsSwHGB/RYTs7u4kR6RRXVKNHxIDMuHS6Ai+SDJkH8V0acHYnCpL9bA0fv
-         kq8+DC6dJ6rU0I0pZB6RbiEvpfCWpB7qJtxtJ7xS0X1LM8mwCgidDEYd7JRxl8t7SwFB
-         TNxw==
-X-Gm-Message-State: APjAAAVQpEMyXvFzySnr05Bo0vNstp5/Yl4UIG1rsZ/UjMj0Jy+QPBHm
-        AieEiwHgWD1fgHk3Te6DzhxxvaQ1Rxg6h4ykJT4=
-X-Google-Smtp-Source: APXvYqzlktP+HjBnShL+vnfbfBe02VjccXWeo+i+NkojUlSCiasWakFDEfvC3klHLauKK6zIBUiq5EV9ucu9OMDEf1A=
-X-Received: by 2002:a9d:30d2:: with SMTP id r18mr3061388otg.6.1574274734064;
- Wed, 20 Nov 2019 10:32:14 -0800 (PST)
+        Wed, 20 Nov 2019 15:05:43 -0500
+Received: from localhost.localdomain (unknown [141.24.207.101])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by smail.rz.tu-ilmenau.de (Postfix) with ESMTPSA id 0A0BA58007C;
+        Wed, 20 Nov 2019 21:05:41 +0100 (CET)
+From:   Markus Theil <markus.theil@tu-ilmenau.de>
+To:     nbd@nbd.name
+Cc:     linux-wireless@vger.kernel.org,
+        Markus Theil <markus.theil@tu-ilmenau.de>
+Subject: [PATCH] mt76: fix fix ampdu locking
+Date:   Wed, 20 Nov 2019 21:05:31 +0100
+Message-Id: <20191120200531.11344-1-markus.theil@tu-ilmenau.de>
+X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
-References: <CAFBinCAbmvUJym2KD5Y4DcF_iGUwB6SrQSGd7qU6qmuctJ06Cg@mail.gmail.com>
- <CAFBinCD8TXZD6q662kFm_ZNe+kUi74q=SaEz_PHUev=AnWZSBw@mail.gmail.com>
- <CAFBinCCY=9Acen_YSkCxrwgx0txCGym_qVax9GfaVL7WC6MKWg@mail.gmail.com>
- <8c5c682c-da4b-0fb4-2173-8c3082614a56@broadcom.com> <f8351761-b5b4-734d-7fc8-aae37023d222@cypress.com>
-In-Reply-To: <f8351761-b5b4-734d-7fc8-aae37023d222@cypress.com>
-From:   Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Date:   Wed, 20 Nov 2019 19:32:03 +0100
-Message-ID: <CAFBinCAuEcWcHk3S-z9GgFpB7cxO81HXUjKxTCRDKWRBcYH+Vw@mail.gmail.com>
-Subject: Re: BCM4335 SDIO firmware crash/problem
-To:     Chi-Hsien Lin <Chi-Hsien.Lin@cypress.com>
-Cc:     Arend Van Spriel <arend.vanspriel@broadcom.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "franky.lin@broadcom.com" <franky.lin@broadcom.com>,
-        "hante.meuleman@broadcom.com" <hante.meuleman@broadcom.com>,
-        Wright Feng <Wright.Feng@cypress.com>,
-        "brcm80211-dev-list.pdl@broadcom.com" 
-        <brcm80211-dev-list.pdl@broadcom.com>,
-        brcm80211-dev-list <brcm80211-dev-list@cypress.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
+The current ampdu locking code does not unlock its mutex in the early
+return case. This patch fixes it.
 
-On Tue, Nov 19, 2019 at 3:35 PM Chi-Hsien Lin <Chi-Hsien.Lin@cypress.com> wrote:
->
->
->
-> On 11/19/2019 4:53, Arend Van Spriel wrote:
-> > On 11/18/2019 9:47 PM, Martin Blumenstingl wrote:
-> >> Hi Arend and linux-wireless supporters,
-> >>
-> >> On Sat, Nov 9, 2019 at 3:55 PM Martin Blumenstingl
-> >> <martin.blumenstingl@googlemail.com> wrote:
-> >>>
-> >>> On Sun, Nov 3, 2019 at 12:49 PM Martin Blumenstingl
-> >>> <martin.blumenstingl@googlemail.com> wrote:
-> >>> [...]
-> >>>> The Android installation that my device came with ships a newer
-> >>>> firmware version: "BCM4335/1 wl0: May 18 2014 16:56:54 version
-> >>>> 6.34.171.58.2". This is also available in CoreELEC's repository: [2].
-> >>>> I went ahead and used this newer on my Arch Linux ARM installation and
-> >>>> it seems to have fixed my problem
-> >>> I am now at 12 days of uptime and wifi is still working with that
-> >>> firmware
-> >> gentle ping on this
-> >> I can send a patch against linux-firmware if you want but I'm not sure
-> >> about the license or any internals of that firmware
-> >
-> > Hi Martin,
-> >
-> > Sorry I did not chime in earlier. I have not looked at the CoreELEC
-> > repository for license files. Without such info I am inclined to say you
-> > are not licensed to redistribute the firmware. The BCM4335 is
-> > end-of-life for us although maybe Cypress is still selling the device
-> > and may want to provide a firmware update.
->
-> Hi Martin/Arend,
->
-> 4335 is not in our supported chip list, either.
-thank you for the update!
+Signed-off-by: Markus Theil <markus.theil@tu-ilmenau.de>
+---
+ drivers/net/wireless/mediatek/mt76/mt7603/main.c  | 6 ++++--
+ drivers/net/wireless/mediatek/mt76/mt7615/main.c  | 6 ++++--
+ drivers/net/wireless/mediatek/mt76/mt76x02_util.c | 6 ++++--
+ 3 files changed, 12 insertions(+), 6 deletions(-)
 
-I am not familiar with the firmware details or your support process so
-I still have some questions.
-Can you still share the "last supported firmware" for BCM4335 so it
-can be included in the linux-firmware repo?
-"Last supported firmware" in my words is the latest binary that you
-shipped to the customers back when BCM4335 was still a "supported"
-product.
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/main.c b/drivers/net/wireless/mediatek/mt76/mt7603/main.c
+index 281387c3f4f4..962e2822d19f 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7603/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7603/main.c
+@@ -569,6 +569,7 @@ mt7603_ampdu_action(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 	u16 ssn = params->ssn;
+ 	u8 ba_size = params->buf_size;
+ 	struct mt76_txq *mtxq;
++	int ret = 0;
+ 
+ 	if (!txq)
+ 		return -EINVAL;
+@@ -597,7 +598,8 @@ mt7603_ampdu_action(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 		break;
+ 	case IEEE80211_AMPDU_TX_START:
+ 		mtxq->agg_ssn = IEEE80211_SN_TO_SEQ(ssn);
+-		return IEEE80211_AMPDU_TX_START_IMMEDIATE;
++		ret = IEEE80211_AMPDU_TX_START_IMMEDIATE;
++		break;
+ 	case IEEE80211_AMPDU_TX_STOP_CONT:
+ 		mtxq->aggr = false;
+ 		mt7603_mac_tx_ba_reset(dev, msta->wcid.idx, tid, -1);
+@@ -606,7 +608,7 @@ mt7603_ampdu_action(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 	}
+ 	mutex_unlock(&dev->mt76.mutex);
+ 
+-	return 0;
++	return ret;
+ }
+ 
+ static void
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/main.c b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
+index 240dab919327..070b03403894 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
+@@ -484,6 +484,7 @@ mt7615_ampdu_action(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 	u16 tid = params->tid;
+ 	u16 ssn = params->ssn;
+ 	struct mt76_txq *mtxq;
++	int ret = 0;
+ 
+ 	if (!txq)
+ 		return -EINVAL;
+@@ -513,7 +514,8 @@ mt7615_ampdu_action(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 		break;
+ 	case IEEE80211_AMPDU_TX_START:
+ 		mtxq->agg_ssn = IEEE80211_SN_TO_SEQ(ssn);
+-		return IEEE80211_AMPDU_TX_START_IMMEDIATE;
++		ret = IEEE80211_AMPDU_TX_START_IMMEDIATE;
++		break;
+ 	case IEEE80211_AMPDU_TX_STOP_CONT:
+ 		mtxq->aggr = false;
+ 		mt7615_mcu_set_tx_ba(dev, params, 0);
+@@ -522,7 +524,7 @@ mt7615_ampdu_action(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 	}
+ 	mutex_unlock(&dev->mt76.mutex);
+ 
+-	return 0;
++	return ret;
+ }
+ 
+ const struct ieee80211_ops mt7615_ops = {
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_util.c b/drivers/net/wireless/mediatek/mt76/mt76x02_util.c
+index f58a3ebfa9d2..dac383ee8f4f 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x02_util.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x02_util.c
+@@ -356,6 +356,7 @@ int mt76x02_ampdu_action(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 	u16 tid = params->tid;
+ 	u16 ssn = params->ssn;
+ 	struct mt76_txq *mtxq;
++	int ret = 0;
+ 
+ 	if (!txq)
+ 		return -EINVAL;
+@@ -385,7 +386,8 @@ int mt76x02_ampdu_action(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 		break;
+ 	case IEEE80211_AMPDU_TX_START:
+ 		mtxq->agg_ssn = IEEE80211_SN_TO_SEQ(ssn);
+-		return IEEE80211_AMPDU_TX_START_IMMEDIATE;
++		ret = IEEE80211_AMPDU_TX_START_IMMEDIATE;
++		break;
+ 	case IEEE80211_AMPDU_TX_STOP_CONT:
+ 		mtxq->aggr = false;
+ 		ieee80211_stop_tx_ba_cb_irqsafe(vif, sta->addr, tid);
+@@ -393,7 +395,7 @@ int mt76x02_ampdu_action(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 	}
+ 	mutex_unlock(&dev->mt76.mutex);
+ 
+-	return 0;
++	return ret;
+ }
+ EXPORT_SYMBOL_GPL(mt76x02_ampdu_action);
+ 
+-- 
+2.24.0
 
-
-Regards
-Martin
