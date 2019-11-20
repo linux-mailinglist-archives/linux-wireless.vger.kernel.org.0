@@ -2,165 +2,110 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E2C8F103697
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Nov 2019 10:28:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 84013103744
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Nov 2019 11:14:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728255AbfKTJ2O (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 20 Nov 2019 04:28:14 -0500
-Received: from us-smtp-1.mimecast.com ([207.211.31.81]:37994 "EHLO
+        id S1728584AbfKTKOQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 20 Nov 2019 05:14:16 -0500
+Received: from us-smtp-1.mimecast.com ([205.139.110.61]:55619 "EHLO
         us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726762AbfKTJ2O (ORCPT
+        by vger.kernel.org with ESMTP id S1728581AbfKTKOQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 20 Nov 2019 04:28:14 -0500
+        Wed, 20 Nov 2019 05:14:16 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1574242093;
+        s=mimecast20190719; t=1574244855;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=4P8AxkoeMgsJhci2AUBreMbcjF9DmmicMU49Qec3kgY=;
-        b=DVjdeVgbcsZa2NHWHKijNu8haZ6M4dTyIfRBAyrKyuXhe8+b8UEt/YsieCIwdilj/MwQ34
-        1aSqE2C0zdwK8rYJDEFCKAU3Fb1l3KNcHA4A+sFBSD/hz8bIcAE00Wr9lkJLCV986c/Gbw
-        1AUo8n5leAVSRcCEqKhLI4ZyI0CbNHs=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-125-IJa3Lri6M_C8ggSOWhcfwQ-1; Wed, 20 Nov 2019 04:28:10 -0500
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 4A244107ACC5;
-        Wed, 20 Nov 2019 09:28:09 +0000 (UTC)
-Received: from localhost (unknown [10.40.205.83])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 0869D60FFB;
-        Wed, 20 Nov 2019 09:28:05 +0000 (UTC)
-Date:   Wed, 20 Nov 2019 10:28:04 +0100
-From:   Stanislaw Gruszka <sgruszka@redhat.com>
-To:     Markus Theil <markus.theil@tu-ilmenau.de>
-Cc:     nbd@nbd.name, linux-wireless@vger.kernel.org,
-        lorenzo.bianconi@redhat.com
-Subject: Re: [PATCH v6 2/5] mt76: mt76x02: split beaconing
-Message-ID: <20191120092803.GA517@redhat.com>
-References: <20191119154746.20821-1-markus.theil@tu-ilmenau.de>
- <20191119154746.20821-3-markus.theil@tu-ilmenau.de>
+        bh=rEKvOxmr/7NLtoqif+lmbtJ5Ka/hKgAKqI6KOkdaNss=;
+        b=SLhxv7etBxUSKCeFKWjplR4RoH1gKThm7ppVoafVgJUGRGsM8/Ev9pv3zXjOcIZVStIhtF
+        s7kkzhaEKmQqMLeiVhoRVCVB8hMkTKw4h1q1NRRtkvTZ6eZa/IYHiFEL7N1R+kbdN/EL52
+        c8pi7sk8C+RTq3EForONwLhmYNDypqg=
+Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
+ [209.85.208.197]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-382-_y19TmpCPzil4uxMXHaOjg-1; Wed, 20 Nov 2019 05:14:12 -0500
+Received: by mail-lj1-f197.google.com with SMTP id 70so4712992ljf.13
+        for <linux-wireless@vger.kernel.org>; Wed, 20 Nov 2019 02:14:12 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
+         :message-id:mime-version;
+        bh=fKMBRKKpaoMlSII2moNkw+zJtmUVNSbZ+F1avrH659c=;
+        b=qeXNxEEGOIOLYMfElFXAaaH7XjCtUNd9HxW8eIQPuKNyFZSTwPGnjuIecauhlhN0AM
+         JP2got0rgmaC6td9pPRtC6qobFzZEzZOUCtc4ml42dVQnS3i0K0ylsQ/lH4b4Ex+DZMI
+         p9l2h+0oW9Dms1LRYXYNJ87xdnLTZuioIz8hnbRHGeuF/wJ+PPCKXo8jo6tIBOKYJemo
+         oPekxAPUenB5A9oazjESVkjfpijK99nSl1EGQ1dnxH72Y0VTuPKUvdRy8c/dDuUoJIoj
+         1Ig18+o8h9GGrO97S9Mr1Y755imeMJD92vOBDqR+pfUrz051HNiIoSev+2kvNMGUH/5T
+         NkMw==
+X-Gm-Message-State: APjAAAXj14acUSG4Q/nbOCBaKKQvboYt7MXCJkhH2sfiVkeFa+nE2B47
+        myH1ZIZQrpArZW/9vPrfRP6E8wuNKTlJZ4ffMD68saO7FWl2MFgNewSAe0xLyl1GwnNuNDldoQn
+        iVD54s1ocEJ08oG9HR/X3aMoDlH4=
+X-Received: by 2002:a2e:3009:: with SMTP id w9mr2069288ljw.74.1574244850944;
+        Wed, 20 Nov 2019 02:14:10 -0800 (PST)
+X-Google-Smtp-Source: APXvYqzz0j0GllypMuFTfk3eJAjjpWU8fCBRAYfRKxpQqC34cMGuViFXOmq9cdjSIMsSAsHugcf9LA==
+X-Received: by 2002:a2e:3009:: with SMTP id w9mr2069278ljw.74.1574244850800;
+        Wed, 20 Nov 2019 02:14:10 -0800 (PST)
+Received: from alrua-x1.borgediget.toke.dk ([2a00:7660:6da:443::2])
+        by smtp.gmail.com with ESMTPSA id u184sm12021852lja.86.2019.11.20.02.14.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 20 Nov 2019 02:14:09 -0800 (PST)
+Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
+        id E696918190F; Wed, 20 Nov 2019 11:14:08 +0100 (CET)
+From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
+To:     Kan Yan <kyan@google.com>, Dave Taht <dave.taht@gmail.com>
+Cc:     Rajkumar Manoharan <rmanohar@codeaurora.org>,
+        Kevin Hayes <kevinhayes@google.com>,
+        Make-Wifi-fast <make-wifi-fast@lists.bufferbloat.net>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Yibo Zhao <yiboz@codeaurora.org>,
+        John Crispin <john@phrozen.org>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Felix Fietkau <nbd@nbd.name>
+Subject: Re: [Make-wifi-fast] [PATCH v8 0/2] Implement Airtime-based Queue Limit (AQL)
+In-Reply-To: <CA+iem5uVJFcCYpJfhker-48XPrOf3a+NWr-nKnBtGmLX2yB_Lg@mail.gmail.com>
+References: <20191115014846.126007-1-kyan@google.com> <CA+iem5vaeLR6v_nZ1YUZhfj32wF0DrvC2nyp8nb8qYAZLQjLdw@mail.gmail.com> <CAA93jw5wTbFV51oFJ6tFHLUMo=bau8fbU65k57bQjOHGJoCkkQ@mail.gmail.com> <CA+iem5s4ZY239Q4=Gwy3WrmVhcdhesirXph6XQoOP5w-nuWcYw@mail.gmail.com> <CAA93jw5t0TwBVv7_DVkJ_-NsVn0ODNHwU0orp2-+LPB45iFVoQ@mail.gmail.com> <CA+iem5uVJFcCYpJfhker-48XPrOf3a+NWr-nKnBtGmLX2yB_Lg@mail.gmail.com>
+X-Clacks-Overhead: GNU Terry Pratchett
+Date:   Wed, 20 Nov 2019 11:14:08 +0100
+Message-ID: <8736eiam8f.fsf@toke.dk>
 MIME-Version: 1.0
-In-Reply-To: <20191119154746.20821-3-markus.theil@tu-ilmenau.de>
-User-Agent: Mutt/1.8.3 (2017-05-23)
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
-X-MC-Unique: IJa3Lri6M_C8ggSOWhcfwQ-1
+X-MC-Unique: _y19TmpCPzil4uxMXHaOjg-1
 X-Mimecast-Spam-Score: 0
 Content-Type: text/plain; charset=WINDOWS-1252
 Content-Transfer-Encoding: quoted-printable
-Content-Disposition: inline
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Nov 19, 2019 at 04:47:43PM +0100, Markus Theil wrote:
-> Sending beacons to the hardware always happens in batches. In order to
-> speed up beacon processing on usb devices, this patch splits out common
-> code an calls it only once (mt76x02_mac_set_beacon_prepare,
-> mt76x02_mac_set_beacon_finish). Making this split breaks beacon
-> enabling/disabling per vif. This is fixed by adding a call to set the
-> bypass mask, if beaconing should be disabled for a vif. Otherwise the
-> beacon is send after the next beacon interval.
->=20
-> The code is also adapted for the mmio part of the driver, but should not
-> have any performance implication there.
->=20
-> Signed-off-by: Markus Theil <markus.theil@tu-ilmenau.de>
-> ---
->  .../wireless/mediatek/mt76/mt76x02_beacon.c   | 44 +++++++------------
->  .../net/wireless/mediatek/mt76/mt76x02_mac.h  |  1 +
->  .../net/wireless/mediatek/mt76/mt76x02_mmio.c |  5 +++
->  .../wireless/mediatek/mt76/mt76x02_usb_core.c |  5 +++
->  4 files changed, 26 insertions(+), 29 deletions(-)
->=20
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_beacon.c b/driver=
-s/net/wireless/mediatek/mt76/mt76x02_beacon.c
-> index 403866496640..09013adae854 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt76x02_beacon.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt76x02_beacon.c
-> @@ -47,10 +47,6 @@ __mt76x02_mac_set_beacon(struct mt76x02_dev *dev, u8 b=
-cn_idx,
->  =09int beacon_len =3D dev->beacon_ops->slot_size;
->  =09int beacon_addr =3D MT_BEACON_BASE + (beacon_len * bcn_idx);
->  =09int ret =3D 0;
-> -=09int i;
-> -
-> -=09/* Prevent corrupt transmissions during update */
-> -=09mt76_set(dev, MT_BCN_BYPASS_MASK, BIT(bcn_idx));
-> =20
->  =09if (skb) {
->  =09=09ret =3D mt76x02_write_beacon(dev, beacon_addr, skb);
-> @@ -60,41 +56,30 @@ __mt76x02_mac_set_beacon(struct mt76x02_dev *dev, u8 =
-bcn_idx,
->  =09=09dev->beacon_data_mask &=3D ~BIT(bcn_idx);
->  =09}
-> =20
-> -=09mt76_wr(dev, MT_BCN_BYPASS_MASK, 0xff00 | ~dev->beacon_data_mask);
-> -
->  =09return ret;
->  }
-> =20
-> -int mt76x02_mac_set_beacon(struct mt76x02_dev *dev, u8 vif_idx,
-> -=09=09=09   struct sk_buff *skb)
-> +void mt76x02_mac_set_beacon_finish(struct mt76x02_dev *dev)
->  {
-> -=09bool force_update =3D false;
-> -=09int bcn_idx =3D 0;
->  =09int i;
-> +=09int bcn_idx =3D 0;
-> =20
-> -=09for (i =3D 0; i < ARRAY_SIZE(dev->beacons); i++) {
-> -=09=09if (vif_idx =3D=3D i) {
-> -=09=09=09force_update =3D !!dev->beacons[i] ^ !!skb;
-> -=09=09=09dev_kfree_skb(dev->beacons[i]);
-> -=09=09=09dev->beacons[i] =3D skb;
-> -=09=09=09__mt76x02_mac_set_beacon(dev, bcn_idx, skb);
-> -=09=09} else if (force_update && dev->beacons[i]) {
-> -=09=09=09__mt76x02_mac_set_beacon(dev, bcn_idx,
-> -=09=09=09=09=09=09 dev->beacons[i]);
-> -=09=09}
-> -
-> +=09for (i =3D 0; i < hweight8(dev->mt76.beacon_mask); ++i)
->  =09=09bcn_idx +=3D !!dev->beacons[i];
+Kan Yan <kyan@google.com> writes:
 
-This looks wrong since we do not calculate all beacons, only=20
-up to hweight8(dev->mt76.beacon_mask).
+>> Those were lovely, thanks!!!! Big win. Since you are on patch v10
+>> now.... Any chance you could turn ecn on and off and give it a go
+>> again in your next test run?
+>>
+>>
+>> Also:
+>>
+>> --step-size=3D.04 --socket-stats # the first is helpful to gain more
+>> detail, the second as to the behavior of the tcp stack.
+>
+> Thanks for the feedback! I will do more tests in a few days.
+>
+>
+>> Secondly - and AFTER this patchset stablizes, I'd like us to look into
+>> returning the codel default to 10ms or less
+>> from it's currently 20ms or worse setting. Tis another easy test
+>
+> Smaller CoDel "target" doesn't work well with wireless because the
+> dequeue behavior in wireless driver is very bursty. It is quite often
+> dequeues dozens of packets in one burst after one large aggregation is
+> completed, so smaller CoDel "target" can cause unnecessary packet
+> drop.
 
-But since we need to calculate number of all beacons we can just
-use hweight8(dev->mt76.beacon_mask) directly.
+It would be interesting to get some samples of the actual sojourn time
+as seen by CoDel in mac80211. Might be doable with bpftrace...
 
-> -=09}
-> -
-> -=09for (i =3D bcn_idx; i < ARRAY_SIZE(dev->beacons); i++) {
-> -=09=09if (!(dev->beacon_data_mask & BIT(i)))
-> -=09=09=09break;
-> -
-> -=09=09__mt76x02_mac_set_beacon(dev, i, NULL);
-> -=09}
-> =20
->  =09mt76_rmw_field(dev, MT_MAC_BSSID_DW1, MT_MAC_BSSID_DW1_MBEACON_N,
->  =09=09       bcn_idx - 1);
-> +
-> +=09mt76_wr(dev, MT_BCN_BYPASS_MASK, 0xff00 | ~dev->beacon_data_mask);
-
-I'm not sure if this is correct for multi bss.
-
-In MT7620 manual BCM_BAYPASS_MASK is described as below:
-
-"
-Directly bypasses the Tx Beacon frame with the  specified=20
-Beacon number. Bit0=3DNth Beacon, bit1=3D(N- 1)th Beacon,... etc.
-N is the number of  Beacons defined in the  MULTI_BCN_NUM field in the=20
-MAC_BSSID_DW1(offset: 0x1014) register.
-0: Disable
-1: Enable
-"
-
-Assuming manual is correct (it could be wrong) bypass mask should be
-calculated differently.
-
-Stanislaw
+-Toke
 
