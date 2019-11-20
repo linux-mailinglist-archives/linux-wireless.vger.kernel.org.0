@@ -2,84 +2,86 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 57BA3103586
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Nov 2019 08:46:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 87A72103592
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Nov 2019 08:48:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727777AbfKTHqy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 20 Nov 2019 02:46:54 -0500
-Received: from a27-18.smtp-out.us-west-2.amazonses.com ([54.240.27.18]:40420
-        "EHLO a27-18.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727374AbfKTHqy (ORCPT
+        id S1727508AbfKTHsd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 20 Nov 2019 02:48:33 -0500
+Received: from a27-186.smtp-out.us-west-2.amazonses.com ([54.240.27.186]:40898
+        "EHLO a27-186.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726406AbfKTHsd (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 20 Nov 2019 02:46:54 -0500
+        Wed, 20 Nov 2019 02:48:33 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1574236013;
+        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1574236112;
         h=Content-Type:MIME-Version:Content-Transfer-Encoding:Subject:From:In-Reply-To:References:To:Cc:Message-Id:Date;
-        bh=EGWrSP7PeZ1d+LSnnGzi3OKHkbcP3PQzsDjKex/ddBg=;
-        b=VBtvRUlBXYP3IL2edja0GALK+JhZEc5eNgVNNGpY04oCDRI2vnXnhAMuwqaYJTmE
-        LfZcW5DrUb+J7BUZi/1kZrx5dxvxrbbbYKM8pZnYD0vlUglsOCBu7tgnCYPFIbE9T+0
-        HxOww2ejaIGiXnK9WJ9+Ap80i2xhjf3orAVE/JII=
+        bh=Td9UoIh2oxTOly9i8kPl6hT3h1jyV40o2qD3doA/8oc=;
+        b=KnL6bNv9tXjTgxS0MjioLABLMiUPPMIYctVZz8mUmTdpEykLPgBXgHCUhgIKb4Te
+        57B4D+dk1NwMYI6jMsjU6+1+FV/CiUYWbWJknRp6pkMq3vyTJS4cp9NlOGIEIcHY7GQ
+        t0epU1ZZItu490FOKNH3dzXrmrnBWcDtBYJNMjJo=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=gdwg2y3kokkkj5a55z2ilkup5wp5hhxx; d=amazonses.com; t=1574236013;
+        s=gdwg2y3kokkkj5a55z2ilkup5wp5hhxx; d=amazonses.com; t=1574236112;
         h=Content-Type:MIME-Version:Content-Transfer-Encoding:Subject:From:In-Reply-To:References:To:Cc:Message-Id:Date:Feedback-ID;
-        bh=EGWrSP7PeZ1d+LSnnGzi3OKHkbcP3PQzsDjKex/ddBg=;
-        b=YWe8CYQ+3oC3tZSkKvZRVurpV8zP5Ov5g6u5Ud4WYLouUmu7ubkjjt3KrlIf2Cfl
-        mC998ewbEPtR0Jc0dcKO65NTkMDdiQIilv6nGE7iSUVuMUsApBQ0Qp8LqFm9XCZANv/
-        FMXTRW+kvukf+9EbxH7kSWZH0bnFzGBIMvnUkN+0=
+        bh=Td9UoIh2oxTOly9i8kPl6hT3h1jyV40o2qD3doA/8oc=;
+        b=NjwOIFCd6lPPLGX1owDgnTjiql/zakAEB0kECFxbvLbsgdJk13yHktpdyI36Aln/
+        jqMarJjoinl8SUQK9R87NDNx8R9UuVCEKhq4E/l0Q6Q1Jk/gM4Jlkza7GWRzAL7uO/C
+        VWwxKpYGlhwLmh3Smv256wdA+1nohnfbwAYeFvxo=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
 X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
         MISSING_MID,SPF_NONE,URIBL_BLOCKED autolearn=no autolearn_force=no
         version=3.4.0
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 1F5E0C447A5
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 8F9BBC43383
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH 5.5] brcmfmac: remove monitor interface when detaching
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH -next v2] rtl8xxxu: Remove set but not used variable 'vif', 'dev',
+ 'len'
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20191118123855.31696-1-zajec5@gmail.com>
-References: <20191118123855.31696-1-zajec5@gmail.com>
-To:     =?utf-8?b?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
-Cc:     Arend van Spriel <arend.vanspriel@broadcom.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
-        Wright Feng <wright.feng@cypress.com>,
-        Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
-        Winnie Chang <winnie.chang@cypress.com>,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        brcm80211-dev-list@cypress.com,
-        =?utf-8?b?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>
+In-Reply-To: <1574130314-25626-1-git-send-email-zhengbin13@huawei.com>
+References: <1574130314-25626-1-git-send-email-zhengbin13@huawei.com>
+To:     zhengbin <zhengbin13@huawei.com>
+Cc:     <Jes.Sorensen@gmail.com>, <davem@davemloft.net>,
+        <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <zhengbin13@huawei.com>
 User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-ID: <0101016e87c74264-07b063c6-e6f2-4dd2-8b51-386e45b637f9-000000@us-west-2.amazonses.com>
-Date:   Wed, 20 Nov 2019 07:46:53 +0000
-X-SES-Outgoing: 2019.11.20-54.240.27.18
+Message-ID: <0101016e87c8c611-98e24f38-e5d6-45ae-b904-5a1ca8e3de9a-000000@us-west-2.amazonses.com>
+Date:   Wed, 20 Nov 2019 07:48:32 +0000
+X-SES-Outgoing: 2019.11.20-54.240.27.186
 Feedback-ID: 1.us-west-2.CZuq2qbDmUIuT3qdvXlRHZZCpfZqZ4GtG9v3VKgRyF0=:AmazonSES
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Rafał Miłecki wrote:
+zhengbin <zhengbin13@huawei.com> wrote:
 
-> From: Rafał Miłecki <rafal@milecki.pl>
+> Fixes gcc '-Wunused-but-set-variable' warning:
 > 
-> This fixes a minor WARNING in the cfg80211:
-> [  130.658034] ------------[ cut here ]------------
-> [  130.662805] WARNING: CPU: 1 PID: 610 at net/wireless/core.c:954 wiphy_unregister+0xb4/0x198 [cfg80211]
+> drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c: In function rtl8xxxu_c2hcmd_callback:
+> drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c:5396:24: warning: variable vif set but not used [-Wunused-but-set-variable]
+> drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c: In function rtl8xxxu_c2hcmd_callback:
+> drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c:5397:17: warning: variable dev set but not used [-Wunused-but-set-variable]
+> drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c: In function rtl8xxxu_c2hcmd_callback:
+> drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c:5400:6: warning: variable len set but not used [-Wunused-but-set-variable]
 > 
-> Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
+> They are introduced by commit e542e66b7c2e ("rtl8xxxu:
+> add bluetooth co-existence support for single antenna"), but never used,
+> so remove them.
+> 
+> Reported-by: Hulk Robot <hulkci@huawei.com>
+> Signed-off-by: zhengbin <zhengbin13@huawei.com>
+> Reviewed-by: Chris Chiu <chiu@endlessm.com>
 
 Patch applied to wireless-drivers-next.git, thanks.
 
-4f61563da075 brcmfmac: remove monitor interface when detaching
+eac08515d7bd rtl8xxxu: Remove set but not used variable 'vif','dev','len'
 
 -- 
-https://patchwork.kernel.org/patch/11249727/
+https://patchwork.kernel.org/patch/11250639/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
