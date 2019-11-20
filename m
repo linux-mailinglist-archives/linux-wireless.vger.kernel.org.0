@@ -2,46 +2,46 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EB64710357A
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Nov 2019 08:45:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 57BA3103586
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Nov 2019 08:46:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727684AbfKTHpz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 20 Nov 2019 02:45:55 -0500
-Received: from a27-55.smtp-out.us-west-2.amazonses.com ([54.240.27.55]:60652
-        "EHLO a27-55.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727052AbfKTHpz (ORCPT
+        id S1727777AbfKTHqy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 20 Nov 2019 02:46:54 -0500
+Received: from a27-18.smtp-out.us-west-2.amazonses.com ([54.240.27.18]:40420
+        "EHLO a27-18.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727374AbfKTHqy (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 20 Nov 2019 02:45:55 -0500
+        Wed, 20 Nov 2019 02:46:54 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1574235955;
+        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1574236013;
         h=Content-Type:MIME-Version:Content-Transfer-Encoding:Subject:From:In-Reply-To:References:To:Cc:Message-Id:Date;
-        bh=p8K3o/lFoopCfjZ/JulFFvlJ/OXXANqrw/rnnKXfsCk=;
-        b=GkzC7HDxYFptORcQOJLXvvWVz6vFvvRzhjnWOgs8CH/PXtREz+tjhG9yuXhRkPc1
-        cQMtI6WxMR9NiETmzxJjk6eaUIzM6dbFE4eNzN0a0h/OoT3QafojepkXp+E2SOjVKTe
-        LIX/dLbTY5ecQw96sttL2UjBNRmpLNKrmgyCRYT0=
+        bh=EGWrSP7PeZ1d+LSnnGzi3OKHkbcP3PQzsDjKex/ddBg=;
+        b=VBtvRUlBXYP3IL2edja0GALK+JhZEc5eNgVNNGpY04oCDRI2vnXnhAMuwqaYJTmE
+        LfZcW5DrUb+J7BUZi/1kZrx5dxvxrbbbYKM8pZnYD0vlUglsOCBu7tgnCYPFIbE9T+0
+        HxOww2ejaIGiXnK9WJ9+Ap80i2xhjf3orAVE/JII=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=gdwg2y3kokkkj5a55z2ilkup5wp5hhxx; d=amazonses.com; t=1574235955;
+        s=gdwg2y3kokkkj5a55z2ilkup5wp5hhxx; d=amazonses.com; t=1574236013;
         h=Content-Type:MIME-Version:Content-Transfer-Encoding:Subject:From:In-Reply-To:References:To:Cc:Message-Id:Date:Feedback-ID;
-        bh=p8K3o/lFoopCfjZ/JulFFvlJ/OXXANqrw/rnnKXfsCk=;
-        b=XS++2RSdUelFAwjoZr61ZyYbhdtTShes3dNX44g6b+DgHZpSS/qc+Z/805/Fi3ph
-        2ol5gOfYvIpWrRIaQwkIt4g8b1NUQ9ez8qlYLhywrEpKeXrc/TEfDZkl1H8BVmJ5+Sn
-        1JwyAzD5UlZBG19/pNX3jSeh8/7BNXgFn/oIizXM=
+        bh=EGWrSP7PeZ1d+LSnnGzi3OKHkbcP3PQzsDjKex/ddBg=;
+        b=YWe8CYQ+3oC3tZSkKvZRVurpV8zP5Ov5g6u5Ud4WYLouUmu7ubkjjt3KrlIf2Cfl
+        mC998ewbEPtR0Jc0dcKO65NTkMDdiQIilv6nGE7iSUVuMUsApBQ0Qp8LqFm9XCZANv/
+        FMXTRW+kvukf+9EbxH7kSWZH0bnFzGBIMvnUkN+0=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
 X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
         MISSING_MID,SPF_NONE,URIBL_BLOCKED autolearn=no autolearn_force=no
         version=3.4.0
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 1CD61C433CB
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 1F5E0C447A5
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH FIX] brcmfmac: disable PCIe interrupts before bus reset
+Subject: Re: [PATCH 5.5] brcmfmac: remove monitor interface when detaching
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20191118115308.21963-1-zajec5@gmail.com>
-References: <20191118115308.21963-1-zajec5@gmail.com>
+In-Reply-To: <20191118123855.31696-1-zajec5@gmail.com>
+References: <20191118123855.31696-1-zajec5@gmail.com>
 To:     =?utf-8?b?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
 Cc:     Arend van Spriel <arend.vanspriel@broadcom.com>,
         Franky Lin <franky.lin@broadcom.com>,
@@ -53,12 +53,11 @@ Cc:     Arend van Spriel <arend.vanspriel@broadcom.com>,
         linux-wireless@vger.kernel.org,
         brcm80211-dev-list.pdl@broadcom.com,
         brcm80211-dev-list@cypress.com,
-        =?utf-8?b?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
-        stable@vger.kernel.org
+        =?utf-8?b?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>
 User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-ID: <0101016e87c65ed5-2079be01-c96f-4861-91cb-108117dbb861-000000@us-west-2.amazonses.com>
-Date:   Wed, 20 Nov 2019 07:45:54 +0000
-X-SES-Outgoing: 2019.11.20-54.240.27.55
+Message-ID: <0101016e87c74264-07b063c6-e6f2-4dd2-8b51-386e45b637f9-000000@us-west-2.amazonses.com>
+Date:   Wed, 20 Nov 2019 07:46:53 +0000
+X-SES-Outgoing: 2019.11.20-54.240.27.18
 Feedback-ID: 1.us-west-2.CZuq2qbDmUIuT3qdvXlRHZZCpfZqZ4GtG9v3VKgRyF0=:AmazonSES
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
@@ -69,45 +68,18 @@ Rafał Miłecki wrote:
 
 > From: Rafał Miłecki <rafal@milecki.pl>
 > 
-> Keeping interrupts on could result in brcmfmac freeing some resources
-> and then IRQ handlers trying to use them. That was obviously a straight
-> path for crashing a kernel.
+> This fixes a minor WARNING in the cfg80211:
+> [  130.658034] ------------[ cut here ]------------
+> [  130.662805] WARNING: CPU: 1 PID: 610 at net/wireless/core.c:954 wiphy_unregister+0xb4/0x198 [cfg80211]
 > 
-> Example:
-> CPU0                           CPU1
-> ----                           ----
-> brcmf_pcie_reset
->   brcmf_pcie_bus_console_read
->   brcmf_detach
->     ...
->     brcmf_fweh_detach
->     brcmf_proto_detach
->                                brcmf_pcie_isr_thread
->                                  ...
->                                  brcmf_proto_msgbuf_rx_trigger
->                                    ...
->                                    drvr->proto->pd
->     brcmf_pcie_release_irq
-> 
-> [  363.789218] Unable to handle kernel NULL pointer dereference at virtual address 00000038
-> [  363.797339] pgd = c0004000
-> [  363.800050] [00000038] *pgd=00000000
-> [  363.803635] Internal error: Oops: 17 [#1] SMP ARM
-> (...)
-> [  364.029209] Backtrace:
-> [  364.031725] [<bf243838>] (brcmf_proto_msgbuf_rx_trigger [brcmfmac]) from [<bf2471dc>] (brcmf_pcie_isr_thread+0x228/0x274 [brcmfmac])
-> [  364.043662]  r7:00000001 r6:c8ca0000 r5:00010000 r4:c7b4f800
-> 
-> Fixes: 4684997d9eea ("brcmfmac: reset PCIe bus on a firmware crash")
-> Cc: stable@vger.kernel.org # v5.2+
 > Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
 
 Patch applied to wireless-drivers-next.git, thanks.
 
-5d26a6a6150c brcmfmac: disable PCIe interrupts before bus reset
+4f61563da075 brcmfmac: remove monitor interface when detaching
 
 -- 
-https://patchwork.kernel.org/patch/11249683/
+https://patchwork.kernel.org/patch/11249727/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
