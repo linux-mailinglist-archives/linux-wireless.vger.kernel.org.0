@@ -2,83 +2,77 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6AAEE103568
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Nov 2019 08:43:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B987103577
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Nov 2019 08:45:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727946AbfKTHnu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 20 Nov 2019 02:43:50 -0500
-Received: from a27-55.smtp-out.us-west-2.amazonses.com ([54.240.27.55]:59890
-        "EHLO a27-55.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725268AbfKTHnu (ORCPT
+        id S1728019AbfKTHpT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 20 Nov 2019 02:45:19 -0500
+Received: from a27-186.smtp-out.us-west-2.amazonses.com ([54.240.27.186]:39894
+        "EHLO a27-186.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727304AbfKTHpT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 20 Nov 2019 02:43:50 -0500
+        Wed, 20 Nov 2019 02:45:19 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1574235829;
+        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1574235918;
         h=Content-Type:MIME-Version:Content-Transfer-Encoding:Subject:From:In-Reply-To:References:To:Cc:Message-Id:Date;
-        bh=nBf2jvI0j5u8v16i9vUkT4fbmDIvKVWf6Z4vUOF2TRs=;
-        b=TxD1W8qnNYkeAFtD3AKZiSvB1bmwhEf4MK9UKCSWqLoJE0Y53675FMZg3mt+l129
-        jttl0YEXbpVbhtzKzxsTn6AMmhXV4Eb4AEvq6t/ObfTcjGjcexeEvi6fSl1D9yw8z6/
-        EUiUTdXhRt8QxoLb3ot0y3ehi46KXnuIej4bDz7s=
+        bh=grJYUde4lqXi5RMnMI6fWRIbzpgWK1HnS217ne/8Xp8=;
+        b=om14ixHgxw9Oi/tVOVldwEbBIlkqHDRkb6Mqmvs3AWIwk3YKoFOCdPncXCkntlEl
+        Ke5AjIB4m+dw4FkvhV3W7IBwLRBM/uHIdp1WGo0Mh/HzYCK9QMtwqURiIYjKHYq0dY0
+        Tz8X9PKdoTjs2241DIaHIrikpfhJwyrHEg7bfmQ0=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=gdwg2y3kokkkj5a55z2ilkup5wp5hhxx; d=amazonses.com; t=1574235829;
+        s=gdwg2y3kokkkj5a55z2ilkup5wp5hhxx; d=amazonses.com; t=1574235918;
         h=Content-Type:MIME-Version:Content-Transfer-Encoding:Subject:From:In-Reply-To:References:To:Cc:Message-Id:Date:Feedback-ID;
-        bh=nBf2jvI0j5u8v16i9vUkT4fbmDIvKVWf6Z4vUOF2TRs=;
-        b=ZjM0WIViDdj2WS8VBDSU/P2WEAJkqaVTHMqJgKqpyEJlci1mYf5WAwjriENaqeNp
-        eDNl2tPnRUXl5mDX5PNwUTTBR4r/1lqICfLFu2jAqYrqwd7ucwqd71/mdB+sih6mfKD
-        LIaBCdRck81Y4SVgGquFyzrmtLFNRPdxJoJj7M/s=
+        bh=grJYUde4lqXi5RMnMI6fWRIbzpgWK1HnS217ne/8Xp8=;
+        b=cUmJtNCtXlFrqC5f/n8Wb5n4AqlZ719BP+s7c6BzdQEANph2hy3Nbz+Buz/LmpNF
+        Swuxp1AVMQjh3G9oVkZ2UrUufSKpz8s78MBJX2E6R5MTVxEaoulQpK0yQtWpe1WlLIb
+        P631KkcBaDS5kd5cr5keWVdnIVOE8P7Ebg2HMme8=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
 X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
         MISSING_MID,SPF_NONE,URIBL_BLOCKED autolearn=no autolearn_force=no
         version=3.4.0
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 692DEC447AA
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org AC6A3C4479F
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 1/7] qtnfmac: remove VIF in firmware in case of error
+Subject: Re: [PATCH v2 1/4] rtw88: pci: use macros to access PCI DBI/MDIO
+ registers
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20191118082255.6032-2-sergey.matyukevich.os@quantenna.com>
-References: <20191118082255.6032-2-sergey.matyukevich.os@quantenna.com>
-To:     Sergey Matyukevich <sergey.matyukevich.os@quantenna.com>
-Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        Igor Mitsyanko <igor.mitsyanko.os@quantenna.com>,
-        Mikhail Karpenko <mkarpenko@quantenna.com>,
-        Sergey Matyukevich <sergey.matyukevich.os@quantenna.com>
+In-Reply-To: <20191118095432.4507-2-yhchuang@realtek.com>
+References: <20191118095432.4507-2-yhchuang@realtek.com>
+To:     <yhchuang@realtek.com>
+Cc:     <linux-wireless@vger.kernel.org>, <briannorris@chromium.org>
 User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-ID: <0101016e87c473e9-014ef1ca-44e5-4cee-9cf7-b2020edca582-000000@us-west-2.amazonses.com>
-Date:   Wed, 20 Nov 2019 07:43:49 +0000
-X-SES-Outgoing: 2019.11.20-54.240.27.55
+Message-ID: <0101016e87c5d058-f887a693-65d0-4aeb-8af7-5b2115e66b73-000000@us-west-2.amazonses.com>
+Date:   Wed, 20 Nov 2019 07:45:18 +0000
+X-SES-Outgoing: 2019.11.20-54.240.27.186
 Feedback-ID: 1.us-west-2.CZuq2qbDmUIuT3qdvXlRHZZCpfZqZ4GtG9v3VKgRyF0=:AmazonSES
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Sergey Matyukevich <sergey.matyukevich.os@quantenna.com> wrote:
+<yhchuang@realtek.com> wrote:
 
-> From: Igor Mitsyanko <igor.mitsyanko.os@quantenna.com>
+> From: Yan-Hsuan Chuang <yhchuang@realtek.com>
 > 
-> Currently in case of error when registering network device with the
-> kernel, we won't properly cleanup VIF state in firmware due to DEL_VIF
-> command will not be send to wifi card. Make sure it does.
+> Add some register and bit macros to access DBI/MDIO register. This
+> should not change the logic.
 > 
-> Signed-off-by: Igor Mitsyanko <igor.mitsyanko.os@quantenna.com>
+> Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
 
-7 patches applied to wireless-drivers-next.git, thanks.
+4 patches applied to wireless-drivers-next.git, thanks.
 
-45028223425d qtnfmac: remove VIF in firmware in case of error
-decfc5c70d20 qtnfmac: track broadcast domain of each interface
-904628d3130b qtnfmac: add interface ID to each packet
-4e14e76cee38 qtnfmac: advertise netdev port parent ID
-1db359946bd1 qtnfmac: signal that all packets coming from device are already flooded
-be4f00cf1592 qtnfmac: add TLV for extension IEs
-df0af4c7bac4 qtnfmac: process HE capabilities requests
+83a5a2d76f99 rtw88: pci: use macros to access PCI DBI/MDIO registers
+ff3297f62fff rtw88: pci: use for loop instead of while loop for DBI/MDIO
+d2e2c47e65af rtw88: pci: enable CLKREQ function if host supports it
+3dff7c6e3749 rtw88: allows to enable/disable HCI link PS mechanism
 
 -- 
-https://patchwork.kernel.org/patch/11249063/
+https://patchwork.kernel.org/patch/11249239/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
