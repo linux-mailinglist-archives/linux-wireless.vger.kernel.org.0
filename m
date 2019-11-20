@@ -2,26 +2,28 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C5252104522
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Nov 2019 21:32:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 964E710468E
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Nov 2019 23:27:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726858AbfKTUcG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 20 Nov 2019 15:32:06 -0500
-Received: from smail.rz.tu-ilmenau.de ([141.24.186.67]:49636 "EHLO
+        id S1726540AbfKTW16 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 20 Nov 2019 17:27:58 -0500
+Received: from smail.rz.tu-ilmenau.de ([141.24.186.67]:49953 "EHLO
         smail.rz.tu-ilmenau.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725854AbfKTUcE (ORCPT
+        with ESMTP id S1726529AbfKTW16 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 20 Nov 2019 15:32:04 -0500
+        Wed, 20 Nov 2019 17:27:58 -0500
 Received: from [192.168.2.98] (unknown [141.24.207.101])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by smail.rz.tu-ilmenau.de (Postfix) with ESMTPSA id BA57258007D;
-        Wed, 20 Nov 2019 21:32:02 +0100 (CET)
-Subject: Re: [PATCH] mt76: fix fix ampdu locking
-To:     Felix Fietkau <nbd@nbd.name>
-Cc:     linux-wireless@vger.kernel.org, Kalle Valo <kvalo@codeaurora.org>
-References: <20191120200531.11344-1-markus.theil@tu-ilmenau.de>
- <9413ca21-94c3-857b-1156-e4a949acf390@nbd.name>
+        by smail.rz.tu-ilmenau.de (Postfix) with ESMTPSA id 78F2D580078;
+        Wed, 20 Nov 2019 23:27:55 +0100 (CET)
+Subject: Re: [PATCH v6 2/5] mt76: mt76x02: split beaconing
+To:     Stanislaw Gruszka <sgruszka@redhat.com>
+Cc:     nbd@nbd.name, linux-wireless@vger.kernel.org,
+        lorenzo.bianconi@redhat.com
+References: <20191119154746.20821-1-markus.theil@tu-ilmenau.de>
+ <20191119154746.20821-3-markus.theil@tu-ilmenau.de>
+ <20191120092803.GA517@redhat.com>
 From:   Markus Theil <markus.theil@tu-ilmenau.de>
 Autocrypt: addr=markus.theil@tu-ilmenau.de; keydata=
  mQINBFcopAYBEADBcwd5L8+T0zgqq4kYY4nQt6CYh5sOalHdI3zNE6fWbRbzQwViIlC9Q0q/
@@ -66,13 +68,13 @@ Autocrypt: addr=markus.theil@tu-ilmenau.de; keydata=
  q9141nbyLRYAhUXxiqajb+Zocp2Am4BF19rBUa1C78ooye9XShhuQvDTB6tZuiYWc24tiyqb
  IjR1hmG/zg8APhURAv/zUubaf4IA7v5YHVQqAbpUfb6ePlPVJBtVw2CwXFrGwnqDFh82La8D
  sGZPq8zmOtvOyZtafA==
-Message-ID: <7fe6926e-4419-019f-3d00-7f187430f29f@tu-ilmenau.de>
-Date:   Wed, 20 Nov 2019 21:32:02 +0100
+Message-ID: <91b706b5-68b4-9679-a209-872f326de937@tu-ilmenau.de>
+Date:   Wed, 20 Nov 2019 23:27:55 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.2.2
 MIME-Version: 1.0
-In-Reply-To: <9413ca21-94c3-857b-1156-e4a949acf390@nbd.name>
-Content-Type: text/plain; charset=utf-8
+In-Reply-To: <20191120092803.GA517@redhat.com>
+Content-Type: text/plain; charset=windows-1252
 Content-Transfer-Encoding: 7bit
 Content-Language: en-US
 Sender: linux-wireless-owner@vger.kernel.org
@@ -80,23 +82,119 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-
-On 11/20/19 9:14 PM, Felix Fietkau wrote:
-> On 2019-11-20 21:05, Markus Theil wrote:
->> The current ampdu locking code does not unlock its mutex in the early
->> return case. This patch fixes it.
+On 11/20/19 10:28 AM, Stanislaw Gruszka wrote:
+> On Tue, Nov 19, 2019 at 04:47:43PM +0100, Markus Theil wrote:
+>> Sending beacons to the hardware always happens in batches. In order to
+>> speed up beacon processing on usb devices, this patch splits out common
+>> code an calls it only once (mt76x02_mac_set_beacon_prepare,
+>> mt76x02_mac_set_beacon_finish). Making this split breaks beacon
+>> enabling/disabling per vif. This is fixed by adding a call to set the
+>> bypass mask, if beaconing should be disabled for a vif. Otherwise the
+>> beacon is send after the next beacon interval.
+>>
+>> The code is also adapted for the mmio part of the driver, but should not
+>> have any performance implication there.
 >>
 >> Signed-off-by: Markus Theil <markus.theil@tu-ilmenau.de>
-> Acked-by: Felix Fietkau <nbd@nbd.name>
+>> ---
+>>  .../wireless/mediatek/mt76/mt76x02_beacon.c   | 44 +++++++------------
+>>  .../net/wireless/mediatek/mt76/mt76x02_mac.h  |  1 +
+>>  .../net/wireless/mediatek/mt76/mt76x02_mmio.c |  5 +++
+>>  .../wireless/mediatek/mt76/mt76x02_usb_core.c |  5 +++
+>>  4 files changed, 26 insertions(+), 29 deletions(-)
+>>
+>> diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_beacon.c b/drivers/net/wireless/mediatek/mt76/mt76x02_beacon.c
+>> index 403866496640..09013adae854 100644
+>> --- a/drivers/net/wireless/mediatek/mt76/mt76x02_beacon.c
+>> +++ b/drivers/net/wireless/mediatek/mt76/mt76x02_beacon.c
+>> @@ -47,10 +47,6 @@ __mt76x02_mac_set_beacon(struct mt76x02_dev *dev, u8 bcn_idx,
+>>  	int beacon_len = dev->beacon_ops->slot_size;
+>>  	int beacon_addr = MT_BEACON_BASE + (beacon_len * bcn_idx);
+>>  	int ret = 0;
+>> -	int i;
+>> -
+>> -	/* Prevent corrupt transmissions during update */
+>> -	mt76_set(dev, MT_BCN_BYPASS_MASK, BIT(bcn_idx));
+>>  
+>>  	if (skb) {
+>>  		ret = mt76x02_write_beacon(dev, beacon_addr, skb);
+>> @@ -60,41 +56,30 @@ __mt76x02_mac_set_beacon(struct mt76x02_dev *dev, u8 bcn_idx,
+>>  		dev->beacon_data_mask &= ~BIT(bcn_idx);
+>>  	}
+>>  
+>> -	mt76_wr(dev, MT_BCN_BYPASS_MASK, 0xff00 | ~dev->beacon_data_mask);
+>> -
+>>  	return ret;
+>>  }
+>>  
+>> -int mt76x02_mac_set_beacon(struct mt76x02_dev *dev, u8 vif_idx,
+>> -			   struct sk_buff *skb)
+>> +void mt76x02_mac_set_beacon_finish(struct mt76x02_dev *dev)
+>>  {
+>> -	bool force_update = false;
+>> -	int bcn_idx = 0;
+>>  	int i;
+>> +	int bcn_idx = 0;
+>>  
+>> -	for (i = 0; i < ARRAY_SIZE(dev->beacons); i++) {
+>> -		if (vif_idx == i) {
+>> -			force_update = !!dev->beacons[i] ^ !!skb;
+>> -			dev_kfree_skb(dev->beacons[i]);
+>> -			dev->beacons[i] = skb;
+>> -			__mt76x02_mac_set_beacon(dev, bcn_idx, skb);
+>> -		} else if (force_update && dev->beacons[i]) {
+>> -			__mt76x02_mac_set_beacon(dev, bcn_idx,
+>> -						 dev->beacons[i]);
+>> -		}
+>> -
+>> +	for (i = 0; i < hweight8(dev->mt76.beacon_mask); ++i)
+>>  		bcn_idx += !!dev->beacons[i];
+> This looks wrong since we do not calculate all beacons, only 
+> up to hweight8(dev->mt76.beacon_mask).
 >
-> Kalle, I think this should go on top of my pull request quickly, since
-> it fixes a regression in a commit from that pull request (introduced via
-> rebase on top of Johannes' last change of that code).
-> Do you want me to send another pull request with just this patch, or can
-> you take it directly? In the latter case, feel free to also remove one
-> of the two "fix" words in the subject :)
-Sry, ;)
+> But since we need to calculate number of all beacons we can just
+> use hweight8(dev->mt76.beacon_mask) directly.
+
+You're right that I made a mistake here. Using
+hweight8(dev->mt76.beacon_mask) would be wrong
+for usb devices, which may setup buffered broadcast or multicast frames
+as additional beacons.
+My updated patch therefore uses hweight8(dev->mt76.beacon_data_mask)
+directly.
+
+>> -	}
+>> -
+>> -	for (i = bcn_idx; i < ARRAY_SIZE(dev->beacons); i++) {
+>> -		if (!(dev->beacon_data_mask & BIT(i)))
+>> -			break;
+>> -
+>> -		__mt76x02_mac_set_beacon(dev, i, NULL);
+>> -	}
+>>  
+>>  	mt76_rmw_field(dev, MT_MAC_BSSID_DW1, MT_MAC_BSSID_DW1_MBEACON_N,
+>>  		       bcn_idx - 1);
+>> +
+>> +	mt76_wr(dev, MT_BCN_BYPASS_MASK, 0xff00 | ~dev->beacon_data_mask);
+> I'm not sure if this is correct for multi bss.
 >
-> Thanks,
+> In MT7620 manual BCM_BAYPASS_MASK is described as below:
 >
-> - Felix
+> "
+> Directly bypasses the Tx Beacon frame with the  specified 
+> Beacon number. Bit0=Nth Beacon, bit1=(N- 1)th Beacon,... etc.
+> N is the number of  Beacons defined in the  MULTI_BCN_NUM field in the 
+> MAC_BSSID_DW1(offset: 0x1014) register.
+> 0: Disable
+> 1: Enable
+> "
+>
+> Assuming manual is correct (it could be wrong) bypass mask should be
+> calculated differently.
+>
+> Stanislaw
+>
+I tested the updated code with my usb nic and an mbss with 2 ap vifs.
+Both beacons were transmitted. Maybe the manual is wrong in this place.
+
+Markus  
+
