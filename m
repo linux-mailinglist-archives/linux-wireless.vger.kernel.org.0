@@ -2,52 +2,99 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6919E10571E
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Nov 2019 17:34:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 97CBE1058FA
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Nov 2019 19:00:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726961AbfKUQd5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 21 Nov 2019 11:33:57 -0500
-Received: from mail.kernel.org ([198.145.29.99]:40692 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726293AbfKUQd4 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 21 Nov 2019 11:33:56 -0500
-Received: from localhost (unknown [217.68.49.72])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        id S1726880AbfKUSA0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 21 Nov 2019 13:00:26 -0500
+Received: from smail.rz.tu-ilmenau.de ([141.24.186.67]:53950 "EHLO
+        smail.rz.tu-ilmenau.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726541AbfKUSAZ (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 21 Nov 2019 13:00:25 -0500
+Received: from localhost.localdomain (unknown [141.24.207.101])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8B51020692;
-        Thu, 21 Nov 2019 16:33:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1574354036;
-        bh=+1JSgoYETF8UVwlur21fixoQlxzQ3eee0TR+FEOllDc=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=UKlLcwjmz8wPlXIU6YrxZkefgMDyYU/WVSB2ySuTCjzGJZq5GQ7PusVwhHU+pAUxD
-         is7r6FZXEduoRnbzVZeZahETgtv1XemjUjFLXOUJ5POh9r9TlSQ1joJV11NS4SHWWk
-         8mcCNWlMxHeN6qVGYeTRYCiJ77vhSuvycdR0g0Dk=
-Date:   Thu, 21 Nov 2019 17:33:51 +0100
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     "Enrico Weigelt, metux IT consult" <info@metux.net>
-Cc:     linux-kernel@vger.kernel.org, jikos@kernel.org,
-        benjamin.tissoires@redhat.com, dmitry.torokhov@gmail.com,
-        Jes.Sorensen@gmail.com, kvalo@codeaurora.org, johan@kernel.org,
-        linux-input@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-usb@vger.kernel.org
-Subject: Re: [PATCH] drivers: usb: consolidate USB vendor IDs in one include
- file
-Message-ID: <20191121163351.GB651886@kroah.com>
-References: <20191121161742.31435-1-info@metux.net>
+        by smail.rz.tu-ilmenau.de (Postfix) with ESMTPSA id D6BD0580065;
+        Thu, 21 Nov 2019 19:00:23 +0100 (CET)
+From:   Markus Theil <markus.theil@tu-ilmenau.de>
+To:     nbd@nbd.name
+Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
+        Stanislaw Gruszka <sgruszka@redhat.com>,
+        Markus Theil <markus.theil@tu-ilmenau.de>
+Subject: [PATCH v8 0/6] mt76: channel switch support for USB devices
+Date:   Thu, 21 Nov 2019 18:59:55 +0100
+Message-Id: <20191121180001.22451-1-markus.theil@tu-ilmenau.de>
+X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191121161742.31435-1-info@metux.net>
-User-Agent: Mutt/1.12.2 (2019-09-21)
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Nov 21, 2019 at 05:17:42PM +0100, Enrico Weigelt, metux IT consult wrote:
-> Instead of redefining usb vendor IDs in several places, consolidate
-> into one include file: include/linux/usb/usb_ids.h
+This patch series adds channel switch support for mt76 usb interfaces.
+When testing, I noticed that between 5 or 7 consecutive beacons had the
+identical channel switch count set. After some debugging I found out,
+that beacon copying over usb took far too long (up to 700ms for one call
+of mt76x02u_pre_tbtt_work).
 
-Also, you somehow forgot to cc: the USB maintainer, meaning this patch
-probably wouldn't be accepted anyway :)
+Therefore the first five patches speed up beacon copying and provide beaconing
+fixes. The last patch enables channel switch support also for usb interfaces.
+
+Thanks to Stanislaw and Lorenzo for their help.
+
+v8:
+* fix mbss beaconing
+* fix adding vifs with idx 8
+* fix memory leaks by dropping beacon buffer
+* permanently enable 7 additional bss to save another usb call and make
+  beacon masking easier
+* added beacon_prepare call again, which now also clears beacon_data_mask
+
+v7:
+* fix mbss beacon settings (incorrect try)
+* fix compilation with latest upstream
+
+v6:
+* use min_t in mt76u_copy
+* use round_up in mt76u_copy
+* use additional copy for mmio beacon set again
+
+v5:
+* ommit empty mt76x2u_channel_switch_beacon
+* copy txwi into beacon skb
+
+v4:
+* use multiple of 4 len for usb copy again
+
+v3:
+* fixed checkpatch errors
+
+v2:
+* correctly track beacon data mask
+* clean-ups
+* make channel switch fn static (reported by kbuild test robot)
+
+Markus Theil (6):
+  mt76: mt76x02: ommit beacon slot clearing
+  mt76: mt76x02: split beaconing
+  mt76: mt76x02: add check for invalid vif idx
+  mt76: mt76x02: remove a copy call for usb speedup
+  mt76: speed up usb bulk copy
+  mt76: mt76x02: add channel switch support for usb interfaces
+
+ drivers/net/wireless/mediatek/mt76/mt76.h     |  2 +-
+ drivers/net/wireless/mediatek/mt76/mt76x02.h  |  1 -
+ .../wireless/mediatek/mt76/mt76x02_beacon.c   | 83 ++++++++-----------
+ .../net/wireless/mediatek/mt76/mt76x02_mac.c  |  2 +
+ .../net/wireless/mediatek/mt76/mt76x02_mac.h  |  5 +-
+ .../net/wireless/mediatek/mt76/mt76x02_mmio.c |  4 +
+ .../wireless/mediatek/mt76/mt76x02_usb_core.c | 21 +++--
+ .../net/wireless/mediatek/mt76/mt76x02_util.c |  6 +-
+ drivers/net/wireless/mediatek/mt76/usb.c      | 24 ++++--
+ 9 files changed, 79 insertions(+), 69 deletions(-)
+
+-- 
+2.24.0
+
