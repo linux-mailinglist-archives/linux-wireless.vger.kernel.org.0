@@ -2,51 +2,53 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A9DDE10524B
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Nov 2019 13:31:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F1AC9105287
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Nov 2019 13:58:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726613AbfKUMbg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 21 Nov 2019 07:31:36 -0500
-Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:26656 "EHLO
+        id S1726937AbfKUM6v (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 21 Nov 2019 07:58:51 -0500
+Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:42554 "EHLO
         us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726197AbfKUMbg (ORCPT
+        with ESMTP id S1726554AbfKUM6v (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 21 Nov 2019 07:31:36 -0500
+        Thu, 21 Nov 2019 07:58:51 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1574339495;
+        s=mimecast20190719; t=1574341130;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=dWFxmPPY+uhKB7xJ64QBT6KxC50RJ41crjdk7XdS3H8=;
-        b=foB/XgPJSOXv3ICpmI2g5Yri3usUDAfRL70EAHHl+DSBjPGVUymQOICBAfOMkKgY3cdVK/
-        epvdzmOMaT/MF6k2F89FfWSydjCkVXb+2gzwZVBy1LRd11phBatQX8VZ9zqrHjIWkJJ4hK
-        GIbMMaMs5sju6zCZ1ftGh+t4YYwCd1U=
+        bh=LlUSWR7i4MVMz++GpO9EMyzq8PClYFfOQBQsIzTVyUk=;
+        b=EqG9NXwBJdc6FnVQQ1z7WQnwgL1uTIHKHpg95Jl5TwRW7w5+8hR0fnNW4qn/iDFVImQYFj
+        ty1LMzTp53TaLwGZtARTy2Bj0onQr7jiFF2XDTE25IJsdhrFjGrYSfDS5C3TqhKu68MxwV
+        RCAYQLfEVhrH2epVYjT5lLw+gB877dQ=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-101-gze3rO8aPJyrlr-0fzgMxQ-1; Thu, 21 Nov 2019 07:31:31 -0500
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
+ us-mta-351-ijfBycWsOUmy0T_KsfdGtQ-1; Thu, 21 Nov 2019 07:58:49 -0500
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 87ECE477;
-        Thu, 21 Nov 2019 12:31:30 +0000 (UTC)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id D5BBA18557D0;
+        Thu, 21 Nov 2019 12:58:47 +0000 (UTC)
 Received: from localhost (unknown [10.40.206.21])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 2DB3B6A500;
-        Thu, 21 Nov 2019 12:31:26 +0000 (UTC)
-Date:   Thu, 21 Nov 2019 13:31:04 +0100
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 8ACC128DF8;
+        Thu, 21 Nov 2019 12:58:44 +0000 (UTC)
+Date:   Thu, 21 Nov 2019 13:58:43 +0100
 From:   Stanislaw Gruszka <sgruszka@redhat.com>
 To:     Markus Theil <markus.theil@tu-ilmenau.de>
 Cc:     nbd@nbd.name, linux-wireless@vger.kernel.org,
         lorenzo.bianconi@redhat.com
-Subject: Re: [PATCH v7 2/5] mt76: mt76x02: split beaconing
-Message-ID: <20191121123102.GA13833@redhat.com>
-References: <20191120222826.14871-1-markus.theil@tu-ilmenau.de>
- <20191120222826.14871-3-markus.theil@tu-ilmenau.de>
+Subject: Re: [PATCH v6 2/5] mt76: mt76x02: split beaconing
+Message-ID: <20191121125842.GB13833@redhat.com>
+References: <20191119154746.20821-1-markus.theil@tu-ilmenau.de>
+ <20191119154746.20821-3-markus.theil@tu-ilmenau.de>
+ <20191120092803.GA517@redhat.com>
+ <91b706b5-68b4-9679-a209-872f326de937@tu-ilmenau.de>
 MIME-Version: 1.0
-In-Reply-To: <20191120222826.14871-3-markus.theil@tu-ilmenau.de>
+In-Reply-To: <91b706b5-68b4-9679-a209-872f326de937@tu-ilmenau.de>
 User-Agent: Mutt/1.8.3 (2017-05-23)
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
-X-MC-Unique: gze3rO8aPJyrlr-0fzgMxQ-1
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
+X-MC-Unique: ijfBycWsOUmy0T_KsfdGtQ-1
 X-Mimecast-Spam-Score: 0
 Content-Type: text/plain; charset=WINDOWS-1252
 Content-Transfer-Encoding: quoted-printable
@@ -56,53 +58,68 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Nov 20, 2019 at 11:28:23PM +0100, Markus Theil wrote:
-> Sending beacons to the hardware always happens in batches. In order to
-> speed up beacon processing on usb devices, this patch splits out common
-> code an calls it only once (mt76x02_mac_set_beacon_prepare,
-> mt76x02_mac_set_beacon_finish). Making this split breaks beacon
-> enabling/disabling per vif. This is fixed by adding a call to set the
-> bypass mask, if beaconing should be disabled for a vif. Otherwise the
-> beacon is send after the next beacon interval.
->=20
-> The code is also adapted for the mmio part of the driver, but should not
-> have any performance implication there.
-<snip>
-> +=09 */
-> +=09if (mt76_is_usb(&dev->mt76)) {
-> +=09=09struct mt76x02_txwi *txwi;
-> +
-> +=09=09mt76_insert_hdr_pad(skb);
-> +=09=09txwi =3D (struct mt76x02_txwi *)(skb->data - sizeof(*txwi));
-> +=09=09mt76x02_mac_write_txwi(dev, txwi, skb, NULL, NULL, skb->len);
-> +=09=09skb_push(skb, sizeof(*txwi));
-> +=09} else {
-> +=09=09struct mt76x02_txwi txwi;
-> =20
-> -=09mt76_wr_copy(dev, offset, &txwi, sizeof(txwi));
-> -=09offset +=3D sizeof(txwi);
-> +=09=09mt76_wr_copy(dev, offset, &txwi, sizeof(txwi));
-> +=09=09offset +=3D sizeof(txwi);
-> +=09}
+On Wed, Nov 20, 2019 at 11:27:55PM +0100, Markus Theil wrote:
+> >> -=09}
+> >> -
+> >> -=09for (i =3D bcn_idx; i < ARRAY_SIZE(dev->beacons); i++) {
+> >> -=09=09if (!(dev->beacon_data_mask & BIT(i)))
+> >> -=09=09=09break;
+> >> -
+> >> -=09=09__mt76x02_mac_set_beacon(dev, i, NULL);
+> >> -=09}
+> >> =20
+> >>  =09mt76_rmw_field(dev, MT_MAC_BSSID_DW1, MT_MAC_BSSID_DW1_MBEACON_N,
+> >>  =09=09       bcn_idx - 1);
+> >> +
+> >> +=09mt76_wr(dev, MT_BCN_BYPASS_MASK, 0xff00 | ~dev->beacon_data_mask);
+> > I'm not sure if this is correct for multi bss.
+> >
+> > In MT7620 manual BCM_BAYPASS_MASK is described as below:
+> >
+> > "
+> > Directly bypasses the Tx Beacon frame with the  specified=20
+> > Beacon number. Bit0=3DNth Beacon, bit1=3D(N- 1)th Beacon,... etc.
+> > N is the number of  Beacons defined in the  MULTI_BCN_NUM field in the=
+=20
+> > MAC_BSSID_DW1(offset: 0x1014) register.
+> > 0: Disable
+> > 1: Enable
+> > "
+> >
+> > Assuming manual is correct (it could be wrong) bypass mask should be
+> > calculated differently.
+> >
+> > Stanislaw
+> >
+> I tested the updated code with my usb nic and an mbss with 2 ap vifs.
+> Both beacons were transmitted. Maybe the manual is wrong in this place.
 
-You merged another patch into this one. Please keep them separated.
+If MAC_BSSID_DW1_MBEACON_N is set to 1 (2 beacons) according to manual
+bit0 is for second beacon slot and bit1 is for first beacon slot.
+Those bits are both marked at once, so no problem will happen.
 
-> +void mt76x02_mac_set_beacon_finish(struct mt76x02_dev *dev)
-> +{
-> +=09mt76_rmw_field(dev, MT_MAC_BSSID_DW1, MT_MAC_BSSID_DW1_MBEACON_N,
-> +=09=09       hweight8(dev->beacon_data_mask) - 1);
-> +=09mt76_wr(dev, MT_BCN_BYPASS_MASK, 0xff00 | ~dev->beacon_data_mask);
-> +}
+Problem may happen when you remove first vif/beacon. Then you will
+have bit1 marked in ->beacon_data_mask . But bit0 will be expect
+in BCM_BAYPASS_MASK by hardware (when MAC_BSSID_DW1_MBEACON_N=3D0)
 
-Well, this code still does not look quite right. At least it is not
-compatible what the BCN_BYPASS_MASK description said in the manual.
+This scenarios can be extended to more vifs. So if you no longer=20
+use bcn_idx and use vif_idx directly to point beacon slot/address.
+(ie. before for vif_idx 0,4,6, bcn_idx were 0,1,2 now there
+will be 0,4,6). You need to specify 7 (8 beacons) in
+MT_MAC_BSSID_DW1_MBEACON_N, and set bypass mask accordingly.
+For example:
 
-I think the code need serious testing on multi-bss (USB support up
-to 2  AP bssids) and with broadcast/multicast with some PS stations
-on the network.
+=09mt76_rmw_field(dev, MT_MAC_BSSID_DW1, MT_MAC_BSSID_DW1_MBEACON_N, 7);
+=09mask =3D 0;
+=09for (i =3D 0; i < 8; i++)
+=09=09if (dev->beacons[i])
+=09=09=09mask |=3D BIT(7 - i);
 
-In particular adding second bssid and remove first one should
-be checked.
+=09mt76_wr(dev, MT_BCN_BYPASS_MASK, 0xff00 | ~mask);
+
+But again, this have to be tested. Ideally on mmio hardware which
+support more bssid's or on usb hardware with temporally increased
+num of bss limitation.
 
 Stanislaw
 
