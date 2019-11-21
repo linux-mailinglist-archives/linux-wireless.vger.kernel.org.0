@@ -2,73 +2,99 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 72D381059C8
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Nov 2019 19:43:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 94EE71059E2
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Nov 2019 19:45:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726762AbfKUSnO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 21 Nov 2019 13:43:14 -0500
-Received: from a27-187.smtp-out.us-west-2.amazonses.com ([54.240.27.187]:59168
-        "EHLO a27-187.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726379AbfKUSnO (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 21 Nov 2019 13:43:14 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1574361793;
-        h=Content-Type:MIME-Version:Content-Transfer-Encoding:Subject:From:In-Reply-To:References:To:Cc:Message-Id:Date;
-        bh=cULK308CBDKq5Mqjsc/LLFED/I2k26wcPew8a8nA5Fo=;
-        b=kPfBTylKIvL/oCMQ+gTZH1agP6K6JL19nnt2h9VptFWQomZ+R4dkjqQ7MIzoDaWg
-        y6Bz4GTQJsIZuptqDP7M1Zv200kup2pFU+ZmGCw3tM5YIPsCOwsivUtkwcs/Fm1Ayjw
-        xk0yNTgS9ZgwIqfNrda+ksqq5hvsdynHQpL+OmmE=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=gdwg2y3kokkkj5a55z2ilkup5wp5hhxx; d=amazonses.com; t=1574361793;
-        h=Content-Type:MIME-Version:Content-Transfer-Encoding:Subject:From:In-Reply-To:References:To:Cc:Message-Id:Date:Feedback-ID;
-        bh=cULK308CBDKq5Mqjsc/LLFED/I2k26wcPew8a8nA5Fo=;
-        b=WZ+2SilxojMiCQZghRivMXUqiL0cZBeZt9z9wAmwgI0bwWPXayEaxjnMDOa6RDmp
-        JySg8R0zfW+yfakMFHWY9Z/yuCVksPDa3SnSsA5hSpSuTykzZoHTqkYVJYtpbOYzzKa
-        a9gwQmm0r7M6iFnu4Uokd2lqEfA1kETlI2kWa6Og=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
-        MISSING_MID,SPF_NONE,URIBL_BLOCKED autolearn=no autolearn_force=no
-        version=3.4.0
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org E4741C43383
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] mt76: fix fix ampdu locking
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20191120200531.11344-1-markus.theil@tu-ilmenau.de>
-References: <20191120200531.11344-1-markus.theil@tu-ilmenau.de>
-To:     Markus Theil <markus.theil@tu-ilmenau.de>
-Cc:     nbd@nbd.name, linux-wireless@vger.kernel.org,
-        Markus Theil <markus.theil@tu-ilmenau.de>
-User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-ID: <0101016e8f4684a2-d2f5b066-166b-409d-a32d-f9ad5c3b931d-000000@us-west-2.amazonses.com>
-Date:   Thu, 21 Nov 2019 18:43:13 +0000
-X-SES-Outgoing: 2019.11.21-54.240.27.187
-Feedback-ID: 1.us-west-2.CZuq2qbDmUIuT3qdvXlRHZZCpfZqZ4GtG9v3VKgRyF0=:AmazonSES
+        id S1726689AbfKUSpg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 21 Nov 2019 13:45:36 -0500
+Received: from mga05.intel.com ([192.55.52.43]:19591 "EHLO mga05.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726541AbfKUSpf (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 21 Nov 2019 13:45:35 -0500
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 21 Nov 2019 10:45:35 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.69,226,1571727600"; 
+   d="scan'208";a="357885322"
+Received: from antonma-mobl.ger.corp.intel.com (HELO egrumbac-mobl1.ger.corp.intel.com) ([10.255.202.138])
+  by orsmga004.jf.intel.com with ESMTP; 21 Nov 2019 10:45:33 -0800
+From:   Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+To:     linux-wireless@vger.kernel.org
+Cc:     Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        stable@vger.kernel.org
+Subject: [PATCH v2] iwlwifi: mvm: don't send the IWL_MVM_RXQ_NSSN_SYNC notif to Rx queues
+Date:   Thu, 21 Nov 2019 20:45:30 +0200
+Message-Id: <20191121184530.5393-1-emmanuel.grumbach@intel.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20191120132628.30731-1-emmanuel.grumbach@intel.com>
+References: <20191120132628.30731-1-emmanuel.grumbach@intel.com>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Markus Theil <markus.theil@tu-ilmenau.de> wrote:
+The purpose of this was to keep all the queues updated with
+the Rx sequence numbers because unlikely yet possible
+situations where queues can't understand if a specific
+packet needs to be dropped or not.
 
-> The current ampdu locking code does not unlock its mutex in the early
-> return case. This patch fixes it.
-> 
-> Signed-off-by: Markus Theil <markus.theil@tu-ilmenau.de>
-> Acked-by: Felix Fietkau <nbd@nbd.name>
+Unfortunately, it was reported that this caused issues in
+our DMA engine. We don't fully understand how this is related,
+but this is being currently debugged. For now, just don't send
+this notification to the Rx queues. This de-facto reverts my
+commit 3c514bf831ac12356b695ff054bef641b9e99593:
 
-Patch applied to wireless-drivers-next.git, thanks.
+iwlwifi: mvm: add a loose synchronization of the NSSN across Rx queues
 
-05d6c8cfdbd6 mt76: fix fix ampdu locking
+This issue was reported here:
+https://bugzilla.kernel.org/show_bug.cgi?id=204873
+https://bugzilla.kernel.org/show_bug.cgi?id=205001
+and others maybe.
 
+Fixes: 3c514bf831ac ("iwlwifi: mvm: add a loose synchronization of the NSSN across Rx queues")
+CC: <stable@vger.kernel.org> # 5.3+
+Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+---
+v2: avoid the unused variable warning
+---
+ drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c | 22 ++++++++++++-------
+ 1 file changed, 14 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
+index 75a7af5ad7b2..392bfa4b496c 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
+@@ -514,14 +514,20 @@ static bool iwl_mvm_is_sn_less(u16 sn1, u16 sn2, u16 buffer_size)
+ 
+ static void iwl_mvm_sync_nssn(struct iwl_mvm *mvm, u8 baid, u16 nssn)
+ {
+-	struct iwl_mvm_rss_sync_notif notif = {
+-		.metadata.type = IWL_MVM_RXQ_NSSN_SYNC,
+-		.metadata.sync = 0,
+-		.nssn_sync.baid = baid,
+-		.nssn_sync.nssn = nssn,
+-	};
+-
+-	iwl_mvm_sync_rx_queues_internal(mvm, (void *)&notif, sizeof(notif));
++	/*
++	 * This allow to synchronize the queues, but it has been reported
++	 * to cause FH issues. Don't send the notification for now.
++	 *
++	 * struct iwl_mvm_rss_sync_notif notif = {
++	 *	.metadata.type = IWL_MVM_RXQ_NSSN_SYNC,
++	 *	.metadata.sync = 0,
++	 *	.nssn_sync.baid = baid,
++	 *	.nssn_sync.nssn = nssn,
++	 * };
++	 *
++	 *
++	 * iwl_mvm_sync_rx_queues_internal(mvm, (void *)&notif, sizeof(notif));
++	 */
+ }
+ 
+ #define RX_REORDER_BUF_TIMEOUT_MQ (HZ / 10)
 -- 
-https://patchwork.kernel.org/patch/11254757/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+2.17.1
 
