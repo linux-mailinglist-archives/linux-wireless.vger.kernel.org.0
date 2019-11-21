@@ -2,124 +2,554 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F1AC9105287
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Nov 2019 13:58:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0786D1052F6
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Nov 2019 14:28:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726937AbfKUM6v (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 21 Nov 2019 07:58:51 -0500
-Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:42554 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726554AbfKUM6v (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 21 Nov 2019 07:58:51 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1574341130;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=LlUSWR7i4MVMz++GpO9EMyzq8PClYFfOQBQsIzTVyUk=;
-        b=EqG9NXwBJdc6FnVQQ1z7WQnwgL1uTIHKHpg95Jl5TwRW7w5+8hR0fnNW4qn/iDFVImQYFj
-        ty1LMzTp53TaLwGZtARTy2Bj0onQr7jiFF2XDTE25IJsdhrFjGrYSfDS5C3TqhKu68MxwV
-        RCAYQLfEVhrH2epVYjT5lLw+gB877dQ=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-351-ijfBycWsOUmy0T_KsfdGtQ-1; Thu, 21 Nov 2019 07:58:49 -0500
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        id S1726961AbfKUN2g (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 21 Nov 2019 08:28:36 -0500
+Received: from mail.kernel.org ([198.145.29.99]:48072 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726293AbfKUN2g (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 21 Nov 2019 08:28:36 -0500
+Received: from localhost.localdomain (unknown [118.189.143.39])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id D5BBA18557D0;
-        Thu, 21 Nov 2019 12:58:47 +0000 (UTC)
-Received: from localhost (unknown [10.40.206.21])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 8ACC128DF8;
-        Thu, 21 Nov 2019 12:58:44 +0000 (UTC)
-Date:   Thu, 21 Nov 2019 13:58:43 +0100
-From:   Stanislaw Gruszka <sgruszka@redhat.com>
-To:     Markus Theil <markus.theil@tu-ilmenau.de>
-Cc:     nbd@nbd.name, linux-wireless@vger.kernel.org,
-        lorenzo.bianconi@redhat.com
-Subject: Re: [PATCH v6 2/5] mt76: mt76x02: split beaconing
-Message-ID: <20191121125842.GB13833@redhat.com>
-References: <20191119154746.20821-1-markus.theil@tu-ilmenau.de>
- <20191119154746.20821-3-markus.theil@tu-ilmenau.de>
- <20191120092803.GA517@redhat.com>
- <91b706b5-68b4-9679-a209-872f326de937@tu-ilmenau.de>
-MIME-Version: 1.0
-In-Reply-To: <91b706b5-68b4-9679-a209-872f326de937@tu-ilmenau.de>
-User-Agent: Mutt/1.8.3 (2017-05-23)
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
-X-MC-Unique: ijfBycWsOUmy0T_KsfdGtQ-1
-X-Mimecast-Spam-Score: 0
-Content-Type: text/plain; charset=WINDOWS-1252
-Content-Transfer-Encoding: quoted-printable
-Content-Disposition: inline
+        by mail.kernel.org (Postfix) with ESMTPSA id 18E7C2075E;
+        Thu, 21 Nov 2019 13:28:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1574342914;
+        bh=yk5GM0NXJKt/7nsN9WD0Rld5luQSmJfRULGuoUReOiQ=;
+        h=From:To:Cc:Subject:Date:From;
+        b=rb5+EQ/03KnGuIvUAOmcsQMzohHcFw2cgPIxWrQhfxF6rSDNKFbVzuba5Nz0hwPlN
+         m6TJZZWQzP/4IJqG3AfDs8xHzgZOLW6z0IvzHtAY8RwzFnQ3XkZSsOjzi8Uzpj8Gxe
+         mKBt/CWm0SbSmQs/fR9CYqzcwcLrThJyu0dCx9z8=
+From:   Krzysztof Kozlowski <krzk@kernel.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Krzysztof Kozlowski <krzk@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Pantelis Antoniou <pantelis.antoniou@gmail.com>,
+        Alexander Aring <alex.aring@gmail.com>,
+        Stefan Schmidt <stefan@datenfreihafen.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Pontus Fuchs <pontus.fuchs@gmail.com>,
+        QCA ath9k Development <ath9k-devel@qca.qualcomm.com>,
+        Stanislaw Gruszka <sgruszka@redhat.com>,
+        Helmut Schaa <helmut.schaa@googlemail.com>,
+        netdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-wpan@vger.kernel.org, linux-wireless@vger.kernel.org
+Subject: [PATCH] drivers: net: Fix Kconfig indentation, continued
+Date:   Thu, 21 Nov 2019 21:28:28 +0800
+Message-Id: <20191121132828.28828-1-krzk@kernel.org>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Nov 20, 2019 at 11:27:55PM +0100, Markus Theil wrote:
-> >> -=09}
-> >> -
-> >> -=09for (i =3D bcn_idx; i < ARRAY_SIZE(dev->beacons); i++) {
-> >> -=09=09if (!(dev->beacon_data_mask & BIT(i)))
-> >> -=09=09=09break;
-> >> -
-> >> -=09=09__mt76x02_mac_set_beacon(dev, i, NULL);
-> >> -=09}
-> >> =20
-> >>  =09mt76_rmw_field(dev, MT_MAC_BSSID_DW1, MT_MAC_BSSID_DW1_MBEACON_N,
-> >>  =09=09       bcn_idx - 1);
-> >> +
-> >> +=09mt76_wr(dev, MT_BCN_BYPASS_MASK, 0xff00 | ~dev->beacon_data_mask);
-> > I'm not sure if this is correct for multi bss.
-> >
-> > In MT7620 manual BCM_BAYPASS_MASK is described as below:
-> >
-> > "
-> > Directly bypasses the Tx Beacon frame with the  specified=20
-> > Beacon number. Bit0=3DNth Beacon, bit1=3D(N- 1)th Beacon,... etc.
-> > N is the number of  Beacons defined in the  MULTI_BCN_NUM field in the=
-=20
-> > MAC_BSSID_DW1(offset: 0x1014) register.
-> > 0: Disable
-> > 1: Enable
-> > "
-> >
-> > Assuming manual is correct (it could be wrong) bypass mask should be
-> > calculated differently.
-> >
-> > Stanislaw
-> >
-> I tested the updated code with my usb nic and an mbss with 2 ap vifs.
-> Both beacons were transmitted. Maybe the manual is wrong in this place.
+Adjust indentation from spaces to tab (+optional two spaces) as in
+coding style.  This fixes various indentation mixups (seven spaces,
+tab+one space, etc).
 
-If MAC_BSSID_DW1_MBEACON_N is set to 1 (2 beacons) according to manual
-bit0 is for second beacon slot and bit1 is for first beacon slot.
-Those bits are both marked at once, so no problem will happen.
+Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+---
+ drivers/net/Kconfig                           | 64 +++++++++----------
+ drivers/net/caif/Kconfig                      | 36 +++++------
+ .../net/ethernet/freescale/fs_enet/Kconfig    |  8 +--
+ drivers/net/ieee802154/Kconfig                | 12 ++--
+ drivers/net/wireless/ath/Kconfig              | 12 ++--
+ drivers/net/wireless/ath/ar5523/Kconfig       | 14 ++--
+ drivers/net/wireless/ath/ath9k/Kconfig        | 58 ++++++++---------
+ drivers/net/wireless/atmel/Kconfig            | 42 ++++++------
+ drivers/net/wireless/ralink/rt2x00/Kconfig    | 44 ++++++-------
+ drivers/net/wireless/ti/wl12xx/Kconfig        |  8 +--
+ 10 files changed, 149 insertions(+), 149 deletions(-)
 
-Problem may happen when you remove first vif/beacon. Then you will
-have bit1 marked in ->beacon_data_mask . But bit0 will be expect
-in BCM_BAYPASS_MASK by hardware (when MAC_BSSID_DW1_MBEACON_N=3D0)
-
-This scenarios can be extended to more vifs. So if you no longer=20
-use bcn_idx and use vif_idx directly to point beacon slot/address.
-(ie. before for vif_idx 0,4,6, bcn_idx were 0,1,2 now there
-will be 0,4,6). You need to specify 7 (8 beacons) in
-MT_MAC_BSSID_DW1_MBEACON_N, and set bypass mask accordingly.
-For example:
-
-=09mt76_rmw_field(dev, MT_MAC_BSSID_DW1, MT_MAC_BSSID_DW1_MBEACON_N, 7);
-=09mask =3D 0;
-=09for (i =3D 0; i < 8; i++)
-=09=09if (dev->beacons[i])
-=09=09=09mask |=3D BIT(7 - i);
-
-=09mt76_wr(dev, MT_BCN_BYPASS_MASK, 0xff00 | ~mask);
-
-But again, this have to be tested. Ideally on mmio hardware which
-support more bssid's or on usb hardware with temporally increased
-num of bss limitation.
-
-Stanislaw
+diff --git a/drivers/net/Kconfig b/drivers/net/Kconfig
+index df1c7989e13d..d02f12a5254e 100644
+--- a/drivers/net/Kconfig
++++ b/drivers/net/Kconfig
+@@ -153,22 +153,22 @@ config IPVLAN_L3S
+ 	select NET_L3_MASTER_DEV
+ 
+ config IPVLAN
+-    tristate "IP-VLAN support"
+-    depends on INET
+-    depends on IPV6 || !IPV6
+-    ---help---
+-      This allows one to create virtual devices off of a main interface
+-      and packets will be delivered based on the dest L3 (IPv6/IPv4 addr)
+-      on packets. All interfaces (including the main interface) share L2
+-      making it transparent to the connected L2 switch.
++	tristate "IP-VLAN support"
++	depends on INET
++	depends on IPV6 || !IPV6
++	---help---
++	  This allows one to create virtual devices off of a main interface
++	  and packets will be delivered based on the dest L3 (IPv6/IPv4 addr)
++	  on packets. All interfaces (including the main interface) share L2
++	  making it transparent to the connected L2 switch.
+ 
+-      Ipvlan devices can be added using the "ip" command from the
+-      iproute2 package starting with the iproute2-3.19 release:
++	  Ipvlan devices can be added using the "ip" command from the
++	  iproute2 package starting with the iproute2-3.19 release:
+ 
+-      "ip link add link <main-dev> [ NAME ] type ipvlan"
++	  "ip link add link <main-dev> [ NAME ] type ipvlan"
+ 
+-      To compile this driver as a module, choose M here: the module
+-      will be called ipvlan.
++	  To compile this driver as a module, choose M here: the module
++	  will be called ipvlan.
+ 
+ config IPVTAP
+ 	tristate "IP-VLAN based tap driver"
+@@ -185,11 +185,11 @@ config IPVTAP
+ 	  will be called ipvtap.
+ 
+ config VXLAN
+-       tristate "Virtual eXtensible Local Area Network (VXLAN)"
+-       depends on INET
+-       select NET_UDP_TUNNEL
+-       select GRO_CELLS
+-       ---help---
++	tristate "Virtual eXtensible Local Area Network (VXLAN)"
++	depends on INET
++	select NET_UDP_TUNNEL
++	select GRO_CELLS
++	---help---
+ 	  This allows one to create vxlan virtual interfaces that provide
+ 	  Layer 2 Networks over Layer 3 Networks. VXLAN is often used
+ 	  to tunnel virtual network infrastructure in virtualized environments.
+@@ -200,12 +200,12 @@ config VXLAN
+ 	  will be called vxlan.
+ 
+ config GENEVE
+-       tristate "Generic Network Virtualization Encapsulation"
+-       depends on INET
+-       depends on IPV6 || !IPV6
+-       select NET_UDP_TUNNEL
+-       select GRO_CELLS
+-       ---help---
++	tristate "Generic Network Virtualization Encapsulation"
++	depends on INET
++	depends on IPV6 || !IPV6
++	select NET_UDP_TUNNEL
++	select GRO_CELLS
++	---help---
+ 	  This allows one to create geneve virtual interfaces that provide
+ 	  Layer 2 Networks over Layer 3 Networks. GENEVE is often used
+ 	  to tunnel virtual network infrastructure in virtualized environments.
+@@ -244,8 +244,8 @@ config MACSEC
+ config NETCONSOLE
+ 	tristate "Network console logging support"
+ 	---help---
+-	If you want to log kernel messages over the network, enable this.
+-	See <file:Documentation/networking/netconsole.txt> for details.
++	  If you want to log kernel messages over the network, enable this.
++	  See <file:Documentation/networking/netconsole.txt> for details.
+ 
+ config NETCONSOLE_DYNAMIC
+ 	bool "Dynamic reconfiguration of logging targets"
+@@ -362,12 +362,12 @@ config NET_VRF
+ 	  support enables VRF devices.
+ 
+ config VSOCKMON
+-    tristate "Virtual vsock monitoring device"
+-    depends on VHOST_VSOCK
+-    ---help---
+-     This option enables a monitoring net device for vsock sockets. It is
+-     mostly intended for developers or support to debug vsock issues. If
+-     unsure, say N.
++	tristate "Virtual vsock monitoring device"
++	depends on VHOST_VSOCK
++	---help---
++	  This option enables a monitoring net device for vsock sockets. It is
++	  mostly intended for developers or support to debug vsock issues. If
++	  unsure, say N.
+ 
+ endif # NET_CORE
+ 
+diff --git a/drivers/net/caif/Kconfig b/drivers/net/caif/Kconfig
+index 96d7cef3289f..e74e2bb61236 100644
+--- a/drivers/net/caif/Kconfig
++++ b/drivers/net/caif/Kconfig
+@@ -16,37 +16,37 @@ config CAIF_TTY
+ 	depends on CAIF && TTY
+ 	default n
+ 	---help---
+-	The CAIF TTY transport driver is a Line Discipline (ldisc)
+-	identified as N_CAIF. When this ldisc is opened from user space
+-	it will redirect the TTY's traffic into the CAIF stack.
++	  The CAIF TTY transport driver is a Line Discipline (ldisc)
++	  identified as N_CAIF. When this ldisc is opened from user space
++	  it will redirect the TTY's traffic into the CAIF stack.
+ 
+ config CAIF_SPI_SLAVE
+ 	tristate "CAIF SPI transport driver for slave interface"
+ 	depends on CAIF && HAS_DMA
+ 	default n
+ 	---help---
+-	The CAIF Link layer SPI Protocol driver for Slave SPI interface.
+-	This driver implements a platform driver to accommodate for a
+-	platform specific SPI device. A sample CAIF SPI Platform device is
+-	provided in <file:Documentation/networking/caif/spi_porting.txt>.
++	  The CAIF Link layer SPI Protocol driver for Slave SPI interface.
++	  This driver implements a platform driver to accommodate for a
++	  platform specific SPI device. A sample CAIF SPI Platform device is
++	  provided in <file:Documentation/networking/caif/spi_porting.txt>.
+ 
+ config CAIF_SPI_SYNC
+ 	bool "Next command and length in start of frame"
+ 	depends on CAIF_SPI_SLAVE
+ 	default n
+ 	---help---
+-	Putting the next command and length in the start of the frame can
+-	help to synchronize to the next transfer in case of over or under-runs.
+-	This option also needs to be enabled on the modem.
++	  Putting the next command and length in the start of the frame can
++	  help to synchronize to the next transfer in case of over or under-runs.
++	  This option also needs to be enabled on the modem.
+ 
+ config CAIF_HSI
+-       tristate "CAIF HSI transport driver"
+-       depends on CAIF
+-       default n
+-       ---help---
+-       The CAIF low level driver for CAIF over HSI.
+-       Be aware that if you enable this then you also need to
+-       enable a low-level HSI driver.
++	tristate "CAIF HSI transport driver"
++	depends on CAIF
++	default n
++	---help---
++	  The CAIF low level driver for CAIF over HSI.
++	  Be aware that if you enable this then you also need to
++	  enable a low-level HSI driver.
+ 
+ config CAIF_VIRTIO
+ 	tristate "CAIF virtio transport driver"
+@@ -56,7 +56,7 @@ config CAIF_VIRTIO
+ 	select GENERIC_ALLOCATOR
+ 	default n
+ 	---help---
+-	The CAIF driver for CAIF over Virtio.
++	  The CAIF driver for CAIF over Virtio.
+ 
+ if CAIF_VIRTIO
+ source "drivers/vhost/Kconfig.vringh"
+diff --git a/drivers/net/ethernet/freescale/fs_enet/Kconfig b/drivers/net/ethernet/freescale/fs_enet/Kconfig
+index 245d9a68a71f..7f20840fde07 100644
+--- a/drivers/net/ethernet/freescale/fs_enet/Kconfig
++++ b/drivers/net/ethernet/freescale/fs_enet/Kconfig
+@@ -1,9 +1,9 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+ config FS_ENET
+-       tristate "Freescale Ethernet Driver"
+-       depends on NET_VENDOR_FREESCALE && (CPM1 || CPM2 || PPC_MPC512x)
+-       select MII
+-       select PHYLIB
++	tristate "Freescale Ethernet Driver"
++	depends on NET_VENDOR_FREESCALE && (CPM1 || CPM2 || PPC_MPC512x)
++	select MII
++	select PHYLIB
+ 
+ config FS_ENET_MPC5121_FEC
+ 	def_bool y if (FS_ENET && PPC_MPC512x)
+diff --git a/drivers/net/ieee802154/Kconfig b/drivers/net/ieee802154/Kconfig
+index 8af5b7e9f4ed..c92a62dbf398 100644
+--- a/drivers/net/ieee802154/Kconfig
++++ b/drivers/net/ieee802154/Kconfig
+@@ -74,9 +74,9 @@ config IEEE802154_ATUSB
+ 	  The module will be called 'atusb'.
+ 
+ config IEEE802154_ADF7242
+-       tristate "ADF7242 transceiver driver"
+-       depends on IEEE802154_DRIVERS && MAC802154
+-       depends on SPI
++	tristate "ADF7242 transceiver driver"
++	depends on IEEE802154_DRIVERS && MAC802154
++	depends on SPI
+ 	---help---
+ 	  Say Y here to enable the ADF7242 SPI 802.15.4 wireless
+ 	  controller.
+@@ -107,9 +107,9 @@ config IEEE802154_CA8210_DEBUGFS
+ 	  management entities.
+ 
+ config IEEE802154_MCR20A
+-       tristate "MCR20A transceiver driver"
+-       depends on IEEE802154_DRIVERS && MAC802154
+-       depends on SPI
++	tristate "MCR20A transceiver driver"
++	depends on IEEE802154_DRIVERS && MAC802154
++	depends on SPI
+ 	---help---
+ 	  Say Y here to enable the MCR20A SPI 802.15.4 wireless
+ 	  controller.
+diff --git a/drivers/net/wireless/ath/Kconfig b/drivers/net/wireless/ath/Kconfig
+index 56616d988c96..7b90b8546162 100644
+--- a/drivers/net/wireless/ath/Kconfig
++++ b/drivers/net/wireless/ath/Kconfig
+@@ -30,12 +30,12 @@ config ATH_DEBUG
+ 	  Right now only ath9k makes use of this.
+ 
+ config ATH_TRACEPOINTS
+-       bool "Atheros wireless tracing"
+-       depends on ATH_DEBUG
+-       depends on EVENT_TRACING
+-       ---help---
+-	 This option enables tracepoints for atheros wireless drivers.
+-	 Currently, ath9k makes use of this facility.
++	bool "Atheros wireless tracing"
++	depends on ATH_DEBUG
++	depends on EVENT_TRACING
++	---help---
++	  This option enables tracepoints for atheros wireless drivers.
++	  Currently, ath9k makes use of this facility.
+ 
+ config ATH_REG_DYNAMIC_USER_REG_HINTS
+ 	bool "Atheros dynamic user regulatory hints"
+diff --git a/drivers/net/wireless/ath/ar5523/Kconfig b/drivers/net/wireless/ath/ar5523/Kconfig
+index 65b39c7d035d..e82df5f1ea67 100644
+--- a/drivers/net/wireless/ath/ar5523/Kconfig
++++ b/drivers/net/wireless/ath/ar5523/Kconfig
+@@ -1,9 +1,9 @@
+ # SPDX-License-Identifier: ISC
+ config AR5523
+-       tristate "Atheros AR5523 wireless driver support"
+-       depends on MAC80211 && USB
+-       select ATH_COMMON
+-       select FW_LOADER
+-       ---help---
+-	 This module add support for AR5523 based USB dongles such as D-Link
+-	 DWL-G132, Netgear WPN111 and many more.
++	tristate "Atheros AR5523 wireless driver support"
++	depends on MAC80211 && USB
++	select ATH_COMMON
++	select FW_LOADER
++	---help---
++	  This module add support for AR5523 based USB dongles such as D-Link
++	  DWL-G132, Netgear WPN111 and many more.
+diff --git a/drivers/net/wireless/ath/ath9k/Kconfig b/drivers/net/wireless/ath/ath9k/Kconfig
+index c99f42284465..78620c6b64a2 100644
+--- a/drivers/net/wireless/ath/ath9k/Kconfig
++++ b/drivers/net/wireless/ath/ath9k/Kconfig
+@@ -144,13 +144,13 @@ config ATH9K_RFKILL
+ 	  a platform that can toggle the RF-Kill GPIO.
+ 
+ config ATH9K_CHANNEL_CONTEXT
+-       bool "Channel Context support"
+-       depends on ATH9K
+-       default n
+-       ---help---
+-	 This option enables channel context support in ath9k, which is needed
+-	 for multi-channel concurrency. Enable this if P2P PowerSave support
+-	 is required.
++	bool "Channel Context support"
++	depends on ATH9K
++	default n
++	---help---
++	  This option enables channel context support in ath9k, which is needed
++	  for multi-channel concurrency. Enable this if P2P PowerSave support
++	  is required.
+ 
+ config ATH9K_PCOEM
+ 	bool "Atheros ath9k support for PC OEM cards" if EXPERT
+@@ -162,32 +162,32 @@ config ATH9K_PCI_NO_EEPROM
+ 	depends on ATH9K_PCI
+ 	default n
+ 	help
+-	 This separate driver provides a loader in order to support the
+-	 AR500X to AR92XX-generation of ath9k PCI(e) WiFi chips, which have
+-	 their initialization data (which contains the real PCI Device ID
+-	 that ath9k will need) stored together with the calibration data out
+-	 of reach for the ath9k chip.
++	  This separate driver provides a loader in order to support the
++	  AR500X to AR92XX-generation of ath9k PCI(e) WiFi chips, which have
++	  their initialization data (which contains the real PCI Device ID
++	  that ath9k will need) stored together with the calibration data out
++	  of reach for the ath9k chip.
+ 
+-	 These devices are usually various network appliances, routers or
+-	 access Points and such.
++	  These devices are usually various network appliances, routers or
++	  access Points and such.
+ 
+-	 If unsure say N.
++	  If unsure say N.
+ 
+ config ATH9K_HTC
+-       tristate "Atheros HTC based wireless cards support"
+-       depends on USB && MAC80211
+-       select ATH9K_HW
+-       select MAC80211_LEDS
+-       select LEDS_CLASS
+-       select NEW_LEDS
+-       select ATH9K_COMMON
+-       ---help---
+-	 Support for Atheros HTC based cards.
+-	 Chipsets supported: AR9271
+-
+-	 For more information: http://wireless.kernel.org/en/users/Drivers/ath9k_htc
+-
+-	 The built module will be ath9k_htc.
++	tristate "Atheros HTC based wireless cards support"
++	depends on USB && MAC80211
++	select ATH9K_HW
++	select MAC80211_LEDS
++	select LEDS_CLASS
++	select NEW_LEDS
++	select ATH9K_COMMON
++	---help---
++	  Support for Atheros HTC based cards.
++	  Chipsets supported: AR9271
++
++	  For more information: http://wireless.kernel.org/en/users/Drivers/ath9k_htc
++
++	  The built module will be ath9k_htc.
+ 
+ config ATH9K_HTC_DEBUGFS
+ 	bool "Atheros ath9k_htc debugging"
+diff --git a/drivers/net/wireless/atmel/Kconfig b/drivers/net/wireless/atmel/Kconfig
+index 4c0556b3a5ba..c2142c70f25d 100644
+--- a/drivers/net/wireless/atmel/Kconfig
++++ b/drivers/net/wireless/atmel/Kconfig
+@@ -13,29 +13,29 @@ config WLAN_VENDOR_ATMEL
+ if WLAN_VENDOR_ATMEL
+ 
+ config ATMEL
+-      tristate "Atmel at76c50x chipset  802.11b support"
+-      depends on CFG80211 && (PCI || PCMCIA)
+-      select WIRELESS_EXT
+-      select WEXT_PRIV
+-      select FW_LOADER
+-      select CRC32
+-       ---help---
+-	A driver 802.11b wireless cards based on the Atmel fast-vnet
+-	chips. This driver supports standard Linux wireless extensions.
+-
+-	Many  cards based on this chipset do not have flash memory
+-	and need their firmware loaded at start-up. If yours is
+-	one of these, you will need to provide a firmware image
+-	to be loaded into the card by the driver. The Atmel
+-	firmware package can be downloaded from
+-	<http://www.thekelleys.org.uk/atmel>
++	tristate "Atmel at76c50x chipset  802.11b support"
++	depends on CFG80211 && (PCI || PCMCIA)
++	select WIRELESS_EXT
++	select WEXT_PRIV
++	select FW_LOADER
++	select CRC32
++	---help---
++	  A driver 802.11b wireless cards based on the Atmel fast-vnet
++	  chips. This driver supports standard Linux wireless extensions.
++
++	  Many  cards based on this chipset do not have flash memory
++	  and need their firmware loaded at start-up. If yours is
++	  one of these, you will need to provide a firmware image
++	  to be loaded into the card by the driver. The Atmel
++	  firmware package can be downloaded from
++	  <http://www.thekelleys.org.uk/atmel>
+ 
+ config PCI_ATMEL
+-      tristate "Atmel at76c506 PCI cards"
+-      depends on ATMEL && PCI
+-       ---help---
+-	Enable support for PCI and mini-PCI cards containing the
+-	Atmel at76c506 chip.
++	tristate "Atmel at76c506 PCI cards"
++	depends on ATMEL && PCI
++	---help---
++	  Enable support for PCI and mini-PCI cards containing the
++	  Atmel at76c506 chip.
+ 
+ config PCMCIA_ATMEL
+ 	tristate "Atmel at76c502/at76c504 PCMCIA cards"
+diff --git a/drivers/net/wireless/ralink/rt2x00/Kconfig b/drivers/net/wireless/ralink/rt2x00/Kconfig
+index f8a9244ce012..d4969d617822 100644
+--- a/drivers/net/wireless/ralink/rt2x00/Kconfig
++++ b/drivers/net/wireless/ralink/rt2x00/Kconfig
+@@ -95,20 +95,20 @@ config RT2800PCI_RT35XX
+ 
+ 
+ config RT2800PCI_RT53XX
+-       bool "rt2800pci - Include support for rt53xx devices (EXPERIMENTAL)"
+-       default y
+-       ---help---
+-	 This adds support for rt53xx wireless chipset family to the
+-	 rt2800pci driver.
+-	 Supported chips: RT5390
++	bool "rt2800pci - Include support for rt53xx devices (EXPERIMENTAL)"
++	default y
++	---help---
++	  This adds support for rt53xx wireless chipset family to the
++	  rt2800pci driver.
++	  Supported chips: RT5390
+ 
+ config RT2800PCI_RT3290
+-       bool "rt2800pci - Include support for rt3290 devices (EXPERIMENTAL)"
+-       default y
+-       ---help---
+-	 This adds support for rt3290 wireless chipset family to the
+-	 rt2800pci driver.
+-	 Supported chips: RT3290
++	bool "rt2800pci - Include support for rt3290 devices (EXPERIMENTAL)"
++	default y
++	---help---
++	  This adds support for rt3290 wireless chipset family to the
++	  rt2800pci driver.
++	  Supported chips: RT3290
+ endif
+ 
+ config RT2500USB
+@@ -174,18 +174,18 @@ config RT2800USB_RT3573
+ 	  in the rt2800usb driver.
+ 
+ config RT2800USB_RT53XX
+-       bool "rt2800usb - Include support for rt53xx devices (EXPERIMENTAL)"
+-       ---help---
+-	 This adds support for rt53xx wireless chipset family to the
+-	 rt2800usb driver.
+-	 Supported chips: RT5370
++	bool "rt2800usb - Include support for rt53xx devices (EXPERIMENTAL)"
++	---help---
++	  This adds support for rt53xx wireless chipset family to the
++	  rt2800usb driver.
++	  Supported chips: RT5370
+ 
+ config RT2800USB_RT55XX
+-       bool "rt2800usb - Include support for rt55xx devices (EXPERIMENTAL)"
+-       ---help---
+-	 This adds support for rt55xx wireless chipset family to the
+-	 rt2800usb driver.
+-	 Supported chips: RT5572
++	bool "rt2800usb - Include support for rt55xx devices (EXPERIMENTAL)"
++	---help---
++	  This adds support for rt55xx wireless chipset family to the
++	  rt2800usb driver.
++	  Supported chips: RT5572
+ 
+ config RT2800USB_UNKNOWN
+ 	bool "rt2800usb - Include support for unknown (USB) devices"
+diff --git a/drivers/net/wireless/ti/wl12xx/Kconfig b/drivers/net/wireless/ti/wl12xx/Kconfig
+index e409042ee9a0..9c4511604b67 100644
+--- a/drivers/net/wireless/ti/wl12xx/Kconfig
++++ b/drivers/net/wireless/ti/wl12xx/Kconfig
+@@ -1,10 +1,10 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+ config WL12XX
+-       tristate "TI wl12xx support"
++	tristate "TI wl12xx support"
+ 	depends on MAC80211
+-       select WLCORE
+-       ---help---
++	select WLCORE
++	---help---
+ 	  This module adds support for wireless adapters based on TI wl1271,
+ 	  wl1273, wl1281 and wl1283 chipsets. This module does *not* include
+ 	  support for wl1251.  For wl1251 support, use the separate homonymous
+-	   driver instead.
++	  driver instead.
+-- 
+2.17.1
 
