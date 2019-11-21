@@ -2,142 +2,107 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 71A78105240
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Nov 2019 13:26:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A9DDE10524B
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Nov 2019 13:31:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726342AbfKUM05 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 21 Nov 2019 07:26:57 -0500
-Received: from mail-pj1-f68.google.com ([209.85.216.68]:33704 "EHLO
-        mail-pj1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726197AbfKUM05 (ORCPT
+        id S1726613AbfKUMbg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 21 Nov 2019 07:31:36 -0500
+Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:26656 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726197AbfKUMbg (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 21 Nov 2019 07:26:57 -0500
-Received: by mail-pj1-f68.google.com with SMTP id o14so1414059pjr.0
-        for <linux-wireless@vger.kernel.org>; Thu, 21 Nov 2019 04:26:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=l4zxaX3dCTmnygo5S9CarIvrQkRw+UBri7v/F60fCec=;
-        b=hcl0q7x5X1qA35RxcWfoWFvLi9heSUGL+7alt8/6XjJVA6MdDthG8g2d4uPFSbikZA
-         7YVlbVpP3Z194jpdtJosDIYuDF714KvlkvE1bEWlWp5lKKZ1ZhXcY59LgjBETsXQ8tsW
-         IOTsMzktGlremmz4bWJP0z0ijz7V1bnbJ7Sav3bvRJuNep39iPjtLiEm/JYPBOWeuMk7
-         bWfMAnLbyEFRMS3MQN1Xcg1qw1T0ZP6i9EFDgJIRo4LbQKmuNkMqpbH0wfnQig8Rde85
-         jZFvhgXtGvb3rvqtxjR8Zwh0M+Em589eJPagPy0vC+4fpuyfDsp4fdhVnfXilmXCSOeG
-         ZGog==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=l4zxaX3dCTmnygo5S9CarIvrQkRw+UBri7v/F60fCec=;
-        b=sQhxNbrVWD8UKo6DaJl1DMJqZsBtRoFIDLE2ruzvnW5N3g1TtFrnJoNKG7JLEsPbjD
-         GQUCdrAXkDa2jE96brfRNFdwaPKyqD663nWAP2FVoil2hTVEr9EFX+scEqcLeltUmnZt
-         L5mWBX6Y6GoLBGGaEoSgvC4dPUJFQL/hWfI8ckQL5PK1DwxsjMDUFkkZ9rHvfoXYNsXY
-         UBAgOl8l0Kzvdo5nJ5ChUWTJM3Nz4c60+RP13w8V5z7AERIAxERySWK1tvmfReVe0/iH
-         j+bR83LzoORbs98iGGy5LxgmweRnlm7gzqBHTi0YxRj6ycBN9FvbI+L4/+sNqLFgjSgZ
-         FNpg==
-X-Gm-Message-State: APjAAAVrzW5BDK9kP7Ok1aA/uWf5IVPkW7PBg2sFxluW7n/mVSFPTxxT
-        ybVps/vmFQxNdpindaGg+KLM9fWM
-X-Google-Smtp-Source: APXvYqxPxvc9L5XrQQhaq7b9Ec5JwbrZ3RDz5fZ5xS9b+7FNeZv/ImlIHtvtRiVWsx9hR9tGDMiC3Q==
-X-Received: by 2002:a17:90a:aa8f:: with SMTP id l15mr11225847pjq.52.1574339216458;
-        Thu, 21 Nov 2019 04:26:56 -0800 (PST)
-Received: from localhost.localdomain ([110.35.161.54])
-        by smtp.gmail.com with ESMTPSA id t27sm3518671pfq.169.2019.11.21.04.26.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 Nov 2019 04:26:55 -0800 (PST)
-From:   Taehee Yoo <ap420073@gmail.com>
-To:     johannes@sipsolutions.net, kvalo@codeaurora.org,
-        linux-wireless@vger.kernel.org
-Cc:     ap420073@gmail.com
-Subject: [PATCH mac80211] virt_wifi: fix use-after-free in virt_wifi_newlink()
-Date:   Thu, 21 Nov 2019 12:26:45 +0000
-Message-Id: <20191121122645.9355-1-ap420073@gmail.com>
-X-Mailer: git-send-email 2.17.1
+        Thu, 21 Nov 2019 07:31:36 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1574339495;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=dWFxmPPY+uhKB7xJ64QBT6KxC50RJ41crjdk7XdS3H8=;
+        b=foB/XgPJSOXv3ICpmI2g5Yri3usUDAfRL70EAHHl+DSBjPGVUymQOICBAfOMkKgY3cdVK/
+        epvdzmOMaT/MF6k2F89FfWSydjCkVXb+2gzwZVBy1LRd11phBatQX8VZ9zqrHjIWkJJ4hK
+        GIbMMaMs5sju6zCZ1ftGh+t4YYwCd1U=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-101-gze3rO8aPJyrlr-0fzgMxQ-1; Thu, 21 Nov 2019 07:31:31 -0500
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 87ECE477;
+        Thu, 21 Nov 2019 12:31:30 +0000 (UTC)
+Received: from localhost (unknown [10.40.206.21])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 2DB3B6A500;
+        Thu, 21 Nov 2019 12:31:26 +0000 (UTC)
+Date:   Thu, 21 Nov 2019 13:31:04 +0100
+From:   Stanislaw Gruszka <sgruszka@redhat.com>
+To:     Markus Theil <markus.theil@tu-ilmenau.de>
+Cc:     nbd@nbd.name, linux-wireless@vger.kernel.org,
+        lorenzo.bianconi@redhat.com
+Subject: Re: [PATCH v7 2/5] mt76: mt76x02: split beaconing
+Message-ID: <20191121123102.GA13833@redhat.com>
+References: <20191120222826.14871-1-markus.theil@tu-ilmenau.de>
+ <20191120222826.14871-3-markus.theil@tu-ilmenau.de>
+MIME-Version: 1.0
+In-Reply-To: <20191120222826.14871-3-markus.theil@tu-ilmenau.de>
+User-Agent: Mutt/1.8.3 (2017-05-23)
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
+X-MC-Unique: gze3rO8aPJyrlr-0fzgMxQ-1
+X-Mimecast-Spam-Score: 0
+Content-Type: text/plain; charset=WINDOWS-1252
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-When virt_wifi interface is created, virt_wifi_newlink() is called and
-it calls register_netdevice().
-if register_netdevice() fails, it internally would call
-->priv_destructor(), which is virt_wifi_net_device_destructor() and
-it frees netdev. but virt_wifi_newlink() still use netdev.
-So, use-after-free would occur in virt_wifi_newlink().
+On Wed, Nov 20, 2019 at 11:28:23PM +0100, Markus Theil wrote:
+> Sending beacons to the hardware always happens in batches. In order to
+> speed up beacon processing on usb devices, this patch splits out common
+> code an calls it only once (mt76x02_mac_set_beacon_prepare,
+> mt76x02_mac_set_beacon_finish). Making this split breaks beacon
+> enabling/disabling per vif. This is fixed by adding a call to set the
+> bypass mask, if beaconing should be disabled for a vif. Otherwise the
+> beacon is send after the next beacon interval.
+>=20
+> The code is also adapted for the mmio part of the driver, but should not
+> have any performance implication there.
+<snip>
+> +=09 */
+> +=09if (mt76_is_usb(&dev->mt76)) {
+> +=09=09struct mt76x02_txwi *txwi;
+> +
+> +=09=09mt76_insert_hdr_pad(skb);
+> +=09=09txwi =3D (struct mt76x02_txwi *)(skb->data - sizeof(*txwi));
+> +=09=09mt76x02_mac_write_txwi(dev, txwi, skb, NULL, NULL, skb->len);
+> +=09=09skb_push(skb, sizeof(*txwi));
+> +=09} else {
+> +=09=09struct mt76x02_txwi txwi;
+> =20
+> -=09mt76_wr_copy(dev, offset, &txwi, sizeof(txwi));
+> -=09offset +=3D sizeof(txwi);
+> +=09=09mt76_wr_copy(dev, offset, &txwi, sizeof(txwi));
+> +=09=09offset +=3D sizeof(txwi);
+> +=09}
 
-Test commands:
-    ip link add dummy0 type dummy
-    modprobe bonding
-    ip link add bonding_masters link dummy0 type virt_wifi
+You merged another patch into this one. Please keep them separated.
 
-Splat looks like:
-[  202.220554] BUG: KASAN: use-after-free in virt_wifi_newlink+0x88b/0x9a0 [virt_wifi]
-[  202.221659] Read of size 8 at addr ffff888061629cb8 by task ip/852
+> +void mt76x02_mac_set_beacon_finish(struct mt76x02_dev *dev)
+> +{
+> +=09mt76_rmw_field(dev, MT_MAC_BSSID_DW1, MT_MAC_BSSID_DW1_MBEACON_N,
+> +=09=09       hweight8(dev->beacon_data_mask) - 1);
+> +=09mt76_wr(dev, MT_BCN_BYPASS_MASK, 0xff00 | ~dev->beacon_data_mask);
+> +}
 
-[  202.222896] CPU: 1 PID: 852 Comm: ip Not tainted 5.4.0-rc5 #3
-[  202.223765] Hardware name: innotek GmbH VirtualBox/VirtualBox, BIOS VirtualBox 12/01/2006
-[  202.225073] Call Trace:
-[  202.225532]  dump_stack+0x7c/0xbb
-[  202.226073]  ? virt_wifi_newlink+0x88b/0x9a0 [virt_wifi]
-[  202.226869]  print_address_description.constprop.5+0x1be/0x360
-[  202.227759]  ? virt_wifi_newlink+0x88b/0x9a0 [virt_wifi]
-[  202.228550]  ? virt_wifi_newlink+0x88b/0x9a0 [virt_wifi]
-[  202.229362]  __kasan_report+0x12a/0x16f
-[  202.229980]  ? virt_wifi_newlink+0x88b/0x9a0 [virt_wifi]
-[  202.230714]  kasan_report+0xe/0x20
-[  202.232595]  virt_wifi_newlink+0x88b/0x9a0 [virt_wifi]
-[  202.233370]  __rtnl_newlink+0xb9f/0x11b0
-[  202.233929]  ? rtnl_link_unregister+0x220/0x220
-[  202.234668]  ? lock_acquire+0x164/0x3b0
-[  202.235344]  ? rtnl_newlink+0x4c/0x90
-[  202.235923]  ? is_bpf_text_address+0x86/0xf0
-[  202.236588]  ? kernel_text_address+0x111/0x120
-[  202.237291]  ? __lock_acquire+0xdfe/0x3de0
-[  202.237834]  ? __kernel_text_address+0xe/0x30
-[  202.238414]  ? unwind_get_return_address+0x5f/0xa0
-[  202.239207]  ? create_prof_cpu_mask+0x20/0x20
-[  202.240163]  ? arch_stack_walk+0x83/0xb0
-[  202.240916]  ? stack_trace_save+0x82/0xb0
-[  202.241640]  ? stack_trace_consume_entry+0x160/0x160
-[  202.242595]  ? rtnl_newlink+0x4c/0x90
-[  202.243499]  ? kasan_unpoison_shadow+0x30/0x40
-[  202.244192]  ? kmem_cache_alloc_trace+0x12c/0x320
-[  202.244909]  rtnl_newlink+0x65/0x90
-[ ... ]
+Well, this code still does not look quite right. At least it is not
+compatible what the BCN_BYPASS_MASK description said in the manual.
 
-Fixes: c7cdba31ed8b ("mac80211-next: rtnetlink wifi simulation device")
-Signed-off-by: Taehee Yoo <ap420073@gmail.com>
----
- drivers/net/wireless/virt_wifi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+I think the code need serious testing on multi-bss (USB support up
+to 2  AP bssids) and with broadcast/multicast with some PS stations
+on the network.
 
-diff --git a/drivers/net/wireless/virt_wifi.c b/drivers/net/wireless/virt_wifi.c
-index 7997cc6de334..01305ba2d3aa 100644
---- a/drivers/net/wireless/virt_wifi.c
-+++ b/drivers/net/wireless/virt_wifi.c
-@@ -450,7 +450,6 @@ static void virt_wifi_net_device_destructor(struct net_device *dev)
- 	 */
- 	kfree(dev->ieee80211_ptr);
- 	dev->ieee80211_ptr = NULL;
--	free_netdev(dev);
- }
- 
- /* No lock interaction. */
-@@ -458,7 +457,7 @@ static void virt_wifi_setup(struct net_device *dev)
- {
- 	ether_setup(dev);
- 	dev->netdev_ops = &virt_wifi_ops;
--	dev->priv_destructor = virt_wifi_net_device_destructor;
-+	dev->needs_free_netdev  = true;
- }
- 
- /* Called in a RCU read critical section from netif_receive_skb */
-@@ -544,6 +543,7 @@ static int virt_wifi_newlink(struct net *src_net, struct net_device *dev,
- 		goto unregister_netdev;
- 	}
- 
-+	dev->priv_destructor = virt_wifi_net_device_destructor;
- 	priv->being_deleted = false;
- 	priv->is_connected = false;
- 	priv->is_up = false;
--- 
-2.17.1
+In particular adding second bssid and remove first one should
+be checked.
+
+Stanislaw
 
