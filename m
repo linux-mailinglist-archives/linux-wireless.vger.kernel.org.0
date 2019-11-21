@@ -2,80 +2,142 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3411D10521E
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Nov 2019 13:16:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 71A78105240
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Nov 2019 13:26:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726293AbfKUMQc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 21 Nov 2019 07:16:32 -0500
-Received: from a27-185.smtp-out.us-west-2.amazonses.com ([54.240.27.185]:50386
-        "EHLO a27-185.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726197AbfKUMQb (ORCPT
+        id S1726342AbfKUM05 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 21 Nov 2019 07:26:57 -0500
+Received: from mail-pj1-f68.google.com ([209.85.216.68]:33704 "EHLO
+        mail-pj1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726197AbfKUM05 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 21 Nov 2019 07:16:31 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1574338590;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:MIME-Version:Content-Type;
-        bh=JF7ooBmQ+MLBsMjxJ+MENB7mii+RnrKImvrzg0cWnoI=;
-        b=WflKaVRYhyE25gQO5neGD08BGacnGu3gpwDR97s8at3Il7JjhJy0fDA8ZJf+sH8c
-        FjMM3azpOmfIQI9HFE2VaPJqViPfq006T2wveeIRDOsQwTY8tUGhmQbw42XoRnQQtj0
-        hVNBBDUT8/s2UcL0HIgSXBXrlLVmSHTPLZPrzflo=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=gdwg2y3kokkkj5a55z2ilkup5wp5hhxx; d=amazonses.com; t=1574338590;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:MIME-Version:Content-Type:Feedback-ID;
-        bh=JF7ooBmQ+MLBsMjxJ+MENB7mii+RnrKImvrzg0cWnoI=;
-        b=Mv26eeJsCm0W/w9pFt82WEQAKFv4T0IQfQLyw4GY1lMarQWVa9Ne1UWov2u/yvs6
-        HQwXD80EzwBcj22GStNYSHDntORNZSywDs+VHEr219EzEksZwCSoVQUsTgBRWVRqHlg
-        YliM8KfDOKPN52N6cMXBBbBwGOgdW7TLA6l/IpUA=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE,
-        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 6AD58C433A2
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Igor Mitsyanko <igor.mitsyanko.os@quantenna.com>
-Cc:     Jonas Gorski <jonas.gorski@gmail.com>,
-        Sergey Matyukevich <sergey.matyukevich.os@quantenna.com>,
-        "linux-wireless\@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        Andrey Shevchenko <ashevchenko@quantenna.com>
-Subject: Re: [PATCH v2 2/2] qtnfmac: add support for Topaz chipsets
-References: <20181016102349.26544-1-sergey.matyukevich.os@quantenna.com>
-        <20181016102349.26544-3-sergey.matyukevich.os@quantenna.com>
-        <CAOiHx=nBWr4GNh61WV+SAY-++Z6es-HX3_pd70DB_N33bVK1tw@mail.gmail.com>
-        <41b4f41f-37ae-ef5f-476c-eb616d6a3da1@quantenna.com>
-        <CAOiHx=myYOAYPm0KwS3wP+sPLaQH9obUv0wbdteCx6REJPKQgw@mail.gmail.com>
-        <37ee7285-5856-6a77-3a29-92b86886c48c@quantenna.com>
-Date:   Thu, 21 Nov 2019 12:16:30 +0000
-In-Reply-To: <37ee7285-5856-6a77-3a29-92b86886c48c@quantenna.com> (Igor
-        Mitsyanko's message of "Thu, 21 Nov 2019 02:27:17 +0000")
-Message-ID: <0101016e8de4774f-c81ce2c1-f2c7-40d4-83b2-f8f8a49b1f8a-000000@us-west-2.amazonses.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
-MIME-Version: 1.0
-Content-Type: text/plain
-X-SES-Outgoing: 2019.11.21-54.240.27.185
-Feedback-ID: 1.us-west-2.CZuq2qbDmUIuT3qdvXlRHZZCpfZqZ4GtG9v3VKgRyF0=:AmazonSES
+        Thu, 21 Nov 2019 07:26:57 -0500
+Received: by mail-pj1-f68.google.com with SMTP id o14so1414059pjr.0
+        for <linux-wireless@vger.kernel.org>; Thu, 21 Nov 2019 04:26:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=l4zxaX3dCTmnygo5S9CarIvrQkRw+UBri7v/F60fCec=;
+        b=hcl0q7x5X1qA35RxcWfoWFvLi9heSUGL+7alt8/6XjJVA6MdDthG8g2d4uPFSbikZA
+         7YVlbVpP3Z194jpdtJosDIYuDF714KvlkvE1bEWlWp5lKKZ1ZhXcY59LgjBETsXQ8tsW
+         IOTsMzktGlremmz4bWJP0z0ijz7V1bnbJ7Sav3bvRJuNep39iPjtLiEm/JYPBOWeuMk7
+         bWfMAnLbyEFRMS3MQN1Xcg1qw1T0ZP6i9EFDgJIRo4LbQKmuNkMqpbH0wfnQig8Rde85
+         jZFvhgXtGvb3rvqtxjR8Zwh0M+Em589eJPagPy0vC+4fpuyfDsp4fdhVnfXilmXCSOeG
+         ZGog==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=l4zxaX3dCTmnygo5S9CarIvrQkRw+UBri7v/F60fCec=;
+        b=sQhxNbrVWD8UKo6DaJl1DMJqZsBtRoFIDLE2ruzvnW5N3g1TtFrnJoNKG7JLEsPbjD
+         GQUCdrAXkDa2jE96brfRNFdwaPKyqD663nWAP2FVoil2hTVEr9EFX+scEqcLeltUmnZt
+         L5mWBX6Y6GoLBGGaEoSgvC4dPUJFQL/hWfI8ckQL5PK1DwxsjMDUFkkZ9rHvfoXYNsXY
+         UBAgOl8l0Kzvdo5nJ5ChUWTJM3Nz4c60+RP13w8V5z7AERIAxERySWK1tvmfReVe0/iH
+         j+bR83LzoORbs98iGGy5LxgmweRnlm7gzqBHTi0YxRj6ycBN9FvbI+L4/+sNqLFgjSgZ
+         FNpg==
+X-Gm-Message-State: APjAAAVrzW5BDK9kP7Ok1aA/uWf5IVPkW7PBg2sFxluW7n/mVSFPTxxT
+        ybVps/vmFQxNdpindaGg+KLM9fWM
+X-Google-Smtp-Source: APXvYqxPxvc9L5XrQQhaq7b9Ec5JwbrZ3RDz5fZ5xS9b+7FNeZv/ImlIHtvtRiVWsx9hR9tGDMiC3Q==
+X-Received: by 2002:a17:90a:aa8f:: with SMTP id l15mr11225847pjq.52.1574339216458;
+        Thu, 21 Nov 2019 04:26:56 -0800 (PST)
+Received: from localhost.localdomain ([110.35.161.54])
+        by smtp.gmail.com with ESMTPSA id t27sm3518671pfq.169.2019.11.21.04.26.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 21 Nov 2019 04:26:55 -0800 (PST)
+From:   Taehee Yoo <ap420073@gmail.com>
+To:     johannes@sipsolutions.net, kvalo@codeaurora.org,
+        linux-wireless@vger.kernel.org
+Cc:     ap420073@gmail.com
+Subject: [PATCH mac80211] virt_wifi: fix use-after-free in virt_wifi_newlink()
+Date:   Thu, 21 Nov 2019 12:26:45 +0000
+Message-Id: <20191121122645.9355-1-ap420073@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Igor Mitsyanko <igor.mitsyanko.os@quantenna.com> writes:
+When virt_wifi interface is created, virt_wifi_newlink() is called and
+it calls register_netdevice().
+if register_netdevice() fails, it internally would call
+->priv_destructor(), which is virt_wifi_net_device_destructor() and
+it frees netdev. but virt_wifi_newlink() still use netdev.
+So, use-after-free would occur in virt_wifi_newlink().
 
-> On 11/19/19 8:12 AM, Jonas Gorski wrote:
->> Any update on this? The support now had its first anniversary, and
->> still no firmware available for it.
->> 
->> Maybe you could put it up in a (temporary) download location at
->> Quantenna until you get around to the second attempt?
->
-> Hi Jonas, Quantenna was recently acquired by ON Semiconductor and this 
-> was put on hold during the integration. I have gone back to our legal / 
-> IT department to work on this again.
+Test commands:
+    ip link add dummy0 type dummy
+    modprobe bonding
+    ip link add bonding_masters link dummy0 type virt_wifi
 
-Thanks, and please put priority on this. It's really bad that if there's
-an upstream driver but users can't use it because of lack of firmware.
+Splat looks like:
+[  202.220554] BUG: KASAN: use-after-free in virt_wifi_newlink+0x88b/0x9a0 [virt_wifi]
+[  202.221659] Read of size 8 at addr ffff888061629cb8 by task ip/852
 
+[  202.222896] CPU: 1 PID: 852 Comm: ip Not tainted 5.4.0-rc5 #3
+[  202.223765] Hardware name: innotek GmbH VirtualBox/VirtualBox, BIOS VirtualBox 12/01/2006
+[  202.225073] Call Trace:
+[  202.225532]  dump_stack+0x7c/0xbb
+[  202.226073]  ? virt_wifi_newlink+0x88b/0x9a0 [virt_wifi]
+[  202.226869]  print_address_description.constprop.5+0x1be/0x360
+[  202.227759]  ? virt_wifi_newlink+0x88b/0x9a0 [virt_wifi]
+[  202.228550]  ? virt_wifi_newlink+0x88b/0x9a0 [virt_wifi]
+[  202.229362]  __kasan_report+0x12a/0x16f
+[  202.229980]  ? virt_wifi_newlink+0x88b/0x9a0 [virt_wifi]
+[  202.230714]  kasan_report+0xe/0x20
+[  202.232595]  virt_wifi_newlink+0x88b/0x9a0 [virt_wifi]
+[  202.233370]  __rtnl_newlink+0xb9f/0x11b0
+[  202.233929]  ? rtnl_link_unregister+0x220/0x220
+[  202.234668]  ? lock_acquire+0x164/0x3b0
+[  202.235344]  ? rtnl_newlink+0x4c/0x90
+[  202.235923]  ? is_bpf_text_address+0x86/0xf0
+[  202.236588]  ? kernel_text_address+0x111/0x120
+[  202.237291]  ? __lock_acquire+0xdfe/0x3de0
+[  202.237834]  ? __kernel_text_address+0xe/0x30
+[  202.238414]  ? unwind_get_return_address+0x5f/0xa0
+[  202.239207]  ? create_prof_cpu_mask+0x20/0x20
+[  202.240163]  ? arch_stack_walk+0x83/0xb0
+[  202.240916]  ? stack_trace_save+0x82/0xb0
+[  202.241640]  ? stack_trace_consume_entry+0x160/0x160
+[  202.242595]  ? rtnl_newlink+0x4c/0x90
+[  202.243499]  ? kasan_unpoison_shadow+0x30/0x40
+[  202.244192]  ? kmem_cache_alloc_trace+0x12c/0x320
+[  202.244909]  rtnl_newlink+0x65/0x90
+[ ... ]
+
+Fixes: c7cdba31ed8b ("mac80211-next: rtnetlink wifi simulation device")
+Signed-off-by: Taehee Yoo <ap420073@gmail.com>
+---
+ drivers/net/wireless/virt_wifi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/wireless/virt_wifi.c b/drivers/net/wireless/virt_wifi.c
+index 7997cc6de334..01305ba2d3aa 100644
+--- a/drivers/net/wireless/virt_wifi.c
++++ b/drivers/net/wireless/virt_wifi.c
+@@ -450,7 +450,6 @@ static void virt_wifi_net_device_destructor(struct net_device *dev)
+ 	 */
+ 	kfree(dev->ieee80211_ptr);
+ 	dev->ieee80211_ptr = NULL;
+-	free_netdev(dev);
+ }
+ 
+ /* No lock interaction. */
+@@ -458,7 +457,7 @@ static void virt_wifi_setup(struct net_device *dev)
+ {
+ 	ether_setup(dev);
+ 	dev->netdev_ops = &virt_wifi_ops;
+-	dev->priv_destructor = virt_wifi_net_device_destructor;
++	dev->needs_free_netdev  = true;
+ }
+ 
+ /* Called in a RCU read critical section from netif_receive_skb */
+@@ -544,6 +543,7 @@ static int virt_wifi_newlink(struct net *src_net, struct net_device *dev,
+ 		goto unregister_netdev;
+ 	}
+ 
++	dev->priv_destructor = virt_wifi_net_device_destructor;
+ 	priv->being_deleted = false;
+ 	priv->is_connected = false;
+ 	priv->is_up = false;
 -- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+2.17.1
+
