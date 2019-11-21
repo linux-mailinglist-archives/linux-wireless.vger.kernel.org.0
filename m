@@ -2,56 +2,56 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 76744105C64
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Nov 2019 22:55:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6CE04105C67
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Nov 2019 22:55:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726729AbfKUVz1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 21 Nov 2019 16:55:27 -0500
-Received: from mail-oi1-f194.google.com ([209.85.167.194]:41273 "EHLO
-        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726735AbfKUVz0 (ORCPT
+        id S1726792AbfKUVz3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 21 Nov 2019 16:55:29 -0500
+Received: from mail-oi1-f195.google.com ([209.85.167.195]:37060 "EHLO
+        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726775AbfKUVz2 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 21 Nov 2019 16:55:26 -0500
-Received: by mail-oi1-f194.google.com with SMTP id e9so4651524oif.8
-        for <linux-wireless@vger.kernel.org>; Thu, 21 Nov 2019 13:55:25 -0800 (PST)
+        Thu, 21 Nov 2019 16:55:28 -0500
+Received: by mail-oi1-f195.google.com with SMTP id y194so4677969oie.4
+        for <linux-wireless@vger.kernel.org>; Thu, 21 Nov 2019 13:55:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=sender:from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=kZdBH+ZuiTxY/YOVmDlMrY4wEmt29/BFi8I978FZWDM=;
-        b=hw84xO2Kuhy5mgtrv0Y5ZgpeGic0ReIy2XlGUYEHFkAk/H50gYoPV30nVL8LUSV0sm
-         x0FSppyBluZN8DwxpuhiOVgFyQwGQsTNBmyBvl1xgsYEL8xGwYaovE2VaF9FwOYkUtGd
-         P6Sbgv0GL5Mr/K0zNCQTd3Z3luF9O9IKWef/OlQBjQvIYqffn0EjqbwzAvJkU6vo0DNN
-         0E6tz3HdGV4x+3/j58GJ/6TcwlTwzn9stNrnbcQOa/kBRkFpM5oavla0pS8/DiFKugMC
-         N2hXeYnAgqwVxCrmnAFJhmP9LRVL7n6oOl5fZuzAN7eNgJYvScFyKFsVYujdINmZ3p7h
-         pidQ==
+        bh=Yo8BxKN5HiE+QmtUj++/9ZBjQBCT+cBaSBsUig/9mb8=;
+        b=t9T08uwKajSgducG8fbWb4isAmL1B6//JsB3t2IdkhOAQWLEk/A5yFLJRlt6fNkXzd
+         gAC4Cycj29hiMuUvwZDBKB84+J6EnsNjgpz4aKn0mVUSroBYhSTZYnO2x2dTSDb3gRoI
+         utAikeMdMwsHcp+eKY3DpM9sejDZGv6MAPBnM6GBvBWaH2snv+vRY02iQa9+/Sn65bAK
+         JV8e7KHCGXoN4kK6XXnZ7dEQoq8EV9Hotoco9vImncUfu+ilqwTVcMQNMqur5h1P0O7l
+         1QEy+uso+/4nm3IAQSVoKWouaE2qFV2U/gCG8H8V5edNKpTw29u5eYNlBoYsEOu9Wnom
+         p31g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
          :in-reply-to:references:mime-version:content-transfer-encoding;
-        bh=kZdBH+ZuiTxY/YOVmDlMrY4wEmt29/BFi8I978FZWDM=;
-        b=coi9ojSkjK+Yn54DljpO0HIfM/4egdryHPpCqnwmkTIItqvqxSC9Bm/wkvXeFr1kAV
-         OR55IFnH1dOXYS/afANnVQE+1Jog54yhExOP/0TRYVoZQ75svN/KvPz5GOs631fVrsiL
-         5rIuku6rloEOifoq43CJD5HXXRhOBUVC6z6pwSRjP1Blk1dwg4bY+8fkrxJGC+Z8KfAc
-         7jnPzFAKdWM8QFJEUqSMcVPo5WXLJ7VLXnmKlZjPIRDtiF5C7U35Vcz11CbZYHD/8SiI
-         0uxpaBOWXtvV0CXtTsr64gsR0sgSxh5GMs4zuiLEu+63MDmozXfdhszOjfebwWxV1fsu
-         itdA==
-X-Gm-Message-State: APjAAAU9q8vdYr+R7P4KKDthDikq2EFzGMGYolhmmU4tz/SJkfef6SGp
-        zd+g08bpfinxSKsQXS/vbL8=
-X-Google-Smtp-Source: APXvYqw0v2yayIVJI9Jp5YMI81ZgbK+bbJkOTAVy2b/F7Nlogkvn8q6Ax1M1Lh7PSqd//7/hJI5kiw==
-X-Received: by 2002:aca:c4d3:: with SMTP id u202mr9679176oif.59.1574373325453;
-        Thu, 21 Nov 2019 13:55:25 -0800 (PST)
+        bh=Yo8BxKN5HiE+QmtUj++/9ZBjQBCT+cBaSBsUig/9mb8=;
+        b=ZGy8dtm1T9xPbSVq+3y10Vsfa+KJrYanRIOfqOmDuCQc1w2XneveFsXoAAjk+xpGPU
+         khqOlYX5i20RiP5Fz6WWisauzAK+jp0kg80azNFzdEUIViUR+CmIua/AOZfpsyFKyI6/
+         oe+4naK7RlprkCm2EvoOM3FeKtEG/acXpahTcYq5N8itK4YZfEtSpk6ICK7xt97w+TKB
+         B7oJaQefj5pgkUITMkNuMEZ/NWeRoNu3GubdC1Q8HgCnjy8IodbGyD0/qxO8JvVLA7tl
+         36oWICYDzxekvKJV2RlfUK/+gFbhXBynMFCQBa7U3vcToOutX2K8VVxbazumHQKr0g8H
+         fapQ==
+X-Gm-Message-State: APjAAAUGSLELZL5ej2WZMAOI3u4191sM4tFvdP461sqExilZJMLYYSW1
+        mBe6ouzGV81vnauEvNV52IU=
+X-Google-Smtp-Source: APXvYqzqFaLcNqZPkrcC+aeHII507FhPt2v5jGXj8ah6JCB54L4uALYcKWaDZ/IpkMED0NOSdGP+ZQ==
+X-Received: by 2002:a05:6808:5d9:: with SMTP id d25mr9587638oij.54.1574373326224;
+        Thu, 21 Nov 2019 13:55:26 -0800 (PST)
 Received: from localhost.localdomain (cpe-24-31-245-230.kc.res.rr.com. [24.31.245.230])
-        by smtp.gmail.com with ESMTPSA id t19sm1448387otr.5.2019.11.21.13.55.24
+        by smtp.gmail.com with ESMTPSA id t19sm1448387otr.5.2019.11.21.13.55.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Thu, 21 Nov 2019 13:55:25 -0800 (PST)
 From:   Larry Finger <Larry.Finger@lwfinger.net>
 To:     kvalo@codeaurora.org
 Cc:     linux-wireless@vger.kernel.org, pkshih@realtek.com,
         Larry Finger <Larry.Finger@lwfinger.net>
-Subject: [PATCH 8/9] rtlwifi: rtl8723be: Remove usage of private bit manipulation macros
-Date:   Thu, 21 Nov 2019 15:55:13 -0600
-Message-Id: <20191121215514.5509-9-Larry.Finger@lwfinger.net>
+Subject: [PATCH 9/9] rtlwifi: Remove last definitions of local bit manipulation macros
+Date:   Thu, 21 Nov 2019 15:55:14 -0600
+Message-Id: <20191121215514.5509-10-Larry.Finger@lwfinger.net>
 X-Mailer: git-send-email 2.24.0
 In-Reply-To: <20191121215514.5509-1-Larry.Finger@lwfinger.net>
 References: <20191121215514.5509-1-Larry.Finger@lwfinger.net>
@@ -62,71 +62,140 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Besides the previously changed macros for the RX and TX descriptors.
-the local macros are used in other places. These are replaced with
-standard bit manipulation macros.
+All usage of the local macros have been removed, thus the remaining
+definitions are deleted.
 
 Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
 ---
- .../wireless/realtek/rtlwifi/rtl8723be/fw.h   | 30 +++++++++----------
- 1 file changed, 14 insertions(+), 16 deletions(-)
+ drivers/net/wireless/realtek/rtlwifi/wifi.h | 115 --------------------
+ 1 file changed, 115 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8723be/fw.h b/drivers/net/wireless/realtek/rtlwifi/rtl8723be/fw.h
-index 97ea77464139..7c5e5e916274 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8723be/fw.h
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8723be/fw.h
-@@ -83,37 +83,35 @@ enum rtl8723b_h2c_cmd {
+diff --git a/drivers/net/wireless/realtek/rtlwifi/wifi.h b/drivers/net/wireless/realtek/rtlwifi/wifi.h
+index 3bdda1c98339..1cff9f07c9e9 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/wifi.h
++++ b/drivers/net/wireless/realtek/rtlwifi/wifi.h
+@@ -2898,121 +2898,6 @@ enum bt_radio_shared {
+  *	2. Before write integer to IO.
+  *	3. After read integer from IO.
+  ****************************************/
+-/* Convert little data endian to host ordering */
+-#define EF1BYTE(_val)		\
+-	((u8)(_val))
+-#define EF2BYTE(_val)		\
+-	(le16_to_cpu(_val))
+-#define EF4BYTE(_val)		\
+-	(le32_to_cpu(_val))
+-
+-/* Read data from memory */
+-#define READEF1BYTE(_ptr)      \
+-	EF1BYTE(*((u8 *)(_ptr)))
+-/* Read le16 data from memory and convert to host ordering */
+-#define READEF2BYTE(_ptr)      \
+-	EF2BYTE(*(_ptr))
+-#define READEF4BYTE(_ptr)      \
+-	EF4BYTE(*(_ptr))
+-
+-/* Create a bit mask
+- * Examples:
+- * BIT_LEN_MASK_32(0) => 0x00000000
+- * BIT_LEN_MASK_32(1) => 0x00000001
+- * BIT_LEN_MASK_32(2) => 0x00000003
+- * BIT_LEN_MASK_32(32) => 0xFFFFFFFF
+- */
+-#define BIT_LEN_MASK_32(__bitlen)	 \
+-	(0xFFFFFFFF >> (32 - (__bitlen)))
+-#define BIT_LEN_MASK_16(__bitlen)	 \
+-	(0xFFFF >> (16 - (__bitlen)))
+-#define BIT_LEN_MASK_8(__bitlen) \
+-	(0xFF >> (8 - (__bitlen)))
+-
+-/* Create an offset bit mask
+- * Examples:
+- * BIT_OFFSET_LEN_MASK_32(0, 2) => 0x00000003
+- * BIT_OFFSET_LEN_MASK_32(16, 2) => 0x00030000
+- */
+-#define BIT_OFFSET_LEN_MASK_32(__bitoffset, __bitlen) \
+-	(BIT_LEN_MASK_32(__bitlen) << (__bitoffset))
+-#define BIT_OFFSET_LEN_MASK_16(__bitoffset, __bitlen) \
+-	(BIT_LEN_MASK_16(__bitlen) << (__bitoffset))
+-#define BIT_OFFSET_LEN_MASK_8(__bitoffset, __bitlen) \
+-	(BIT_LEN_MASK_8(__bitlen) << (__bitoffset))
+-
+-/*Description:
+- * Return 4-byte value in host byte ordering from
+- * 4-byte pointer in little-endian system.
+- */
+-#define LE_P4BYTE_TO_HOST_4BYTE(__pstart) \
+-	(EF4BYTE(*((__le32 *)(__pstart))))
+-#define LE_P2BYTE_TO_HOST_2BYTE(__pstart) \
+-	(EF2BYTE(*((__le16 *)(__pstart))))
+-#define LE_P1BYTE_TO_HOST_1BYTE(__pstart) \
+-	(EF1BYTE(*((u8 *)(__pstart))))
+-
+-/*Description:
+- * Translate subfield (continuous bits in little-endian) of 4-byte
+- * value to host byte ordering.
+- */
+-#define LE_BITS_TO_4BYTE(__pstart, __bitoffset, __bitlen) \
+-	( \
+-		(LE_P4BYTE_TO_HOST_4BYTE(__pstart) >> (__bitoffset))  & \
+-		BIT_LEN_MASK_32(__bitlen) \
+-	)
+-#define LE_BITS_TO_2BYTE(__pstart, __bitoffset, __bitlen) \
+-	( \
+-		(LE_P2BYTE_TO_HOST_2BYTE(__pstart) >> (__bitoffset)) & \
+-		BIT_LEN_MASK_16(__bitlen) \
+-	)
+-#define LE_BITS_TO_1BYTE(__pstart, __bitoffset, __bitlen) \
+-	( \
+-		(LE_P1BYTE_TO_HOST_1BYTE(__pstart) >> (__bitoffset)) & \
+-		BIT_LEN_MASK_8(__bitlen) \
+-	)
+-
+-/* Description:
+- * Mask subfield (continuous bits in little-endian) of 4-byte value
+- * and return the result in 4-byte value in host byte ordering.
+- */
+-#define LE_BITS_CLEARED_TO_4BYTE(__pstart, __bitoffset, __bitlen) \
+-	( \
+-		LE_P4BYTE_TO_HOST_4BYTE(__pstart)  & \
+-		(~BIT_OFFSET_LEN_MASK_32(__bitoffset, __bitlen)) \
+-	)
+-#define LE_BITS_CLEARED_TO_2BYTE(__pstart, __bitoffset, __bitlen) \
+-	( \
+-		LE_P2BYTE_TO_HOST_2BYTE(__pstart) & \
+-		(~BIT_OFFSET_LEN_MASK_16(__bitoffset, __bitlen)) \
+-	)
+-#define LE_BITS_CLEARED_TO_1BYTE(__pstart, __bitoffset, __bitlen) \
+-	( \
+-		LE_P1BYTE_TO_HOST_1BYTE(__pstart) & \
+-		(~BIT_OFFSET_LEN_MASK_8(__bitoffset, __bitlen)) \
+-	)
+-
+-/* Description:
+- * Set subfield of little-endian 4-byte value to specified value.
+- */
+-#define SET_BITS_TO_LE_4BYTE(__pstart, __bitoffset, __bitlen, __val) \
+-	*((__le32 *)(__pstart)) = \
+-	cpu_to_le32( \
+-		LE_BITS_CLEARED_TO_4BYTE(__pstart, __bitoffset, __bitlen) | \
+-		((((u32)__val) & BIT_LEN_MASK_32(__bitlen)) << (__bitoffset)) \
+-	)
+-#define SET_BITS_TO_LE_2BYTE(__pstart, __bitoffset, __bitlen, __val) \
+-	*((__le16 *)(__pstart)) = \
+-	cpu_to_le16( \
+-		LE_BITS_CLEARED_TO_2BYTE(__pstart, __bitoffset, __bitlen) | \
+-		((((u16)__val) & BIT_LEN_MASK_16(__bitlen)) << (__bitoffset)) \
+-	)
+-#define SET_BITS_TO_LE_1BYTE(__pstart, __bitoffset, __bitlen, __val) \
+-	*((u8 *)(__pstart)) = EF1BYTE \
+-	( \
+-		LE_BITS_CLEARED_TO_1BYTE(__pstart, __bitoffset, __bitlen) | \
+-		((((u8)__val) & BIT_LEN_MASK_8(__bitlen)) << (__bitoffset)) \
+-	)
  
- 
- #define SET_H2CCMD_PWRMODE_PARM_MODE(__ph2ccmd, __val)			\
--	SET_BITS_TO_LE_1BYTE(__ph2ccmd, 0, 8, __val)
-+	*(u8 *)__ph2ccmd = __val
- #define SET_H2CCMD_PWRMODE_PARM_RLBM(__ph2ccmd, __val)			\
--	SET_BITS_TO_LE_1BYTE((__ph2ccmd)+1, 0, 4, __val)
-+	u8p_replace_bits(__ph2ccmd + 1, __val, GENMASK(3, 0))
- #define SET_H2CCMD_PWRMODE_PARM_SMART_PS(__ph2ccmd, __val)		\
--	SET_BITS_TO_LE_1BYTE((__ph2ccmd)+1, 4, 4, __val)
-+	u8p_replace_bits(__ph2ccmd + 1, __val, GENMASK(7, 4))
- #define SET_H2CCMD_PWRMODE_PARM_AWAKE_INTERVAL(__ph2ccmd, __val)	\
--	SET_BITS_TO_LE_1BYTE((__ph2ccmd)+2, 0, 8, __val)
-+	*(u8 *)(__ph2ccmd + 2) = __val
- #define SET_H2CCMD_PWRMODE_PARM_ALL_QUEUE_UAPSD(__ph2ccmd, __val)	\
--	SET_BITS_TO_LE_1BYTE((__ph2ccmd)+3, 0, 8, __val)
-+	*(u8 *)(__ph2ccmd + 3) = __val
- #define SET_H2CCMD_PWRMODE_PARM_PWR_STATE(__ph2ccmd, __val)		\
--	SET_BITS_TO_LE_1BYTE((__ph2ccmd)+4, 0, 8, __val)
-+	*(u8 *)(__ph2ccmd + 4) = __val
- #define SET_H2CCMD_PWRMODE_PARM_BYTE5(__ph2ccmd, __val)			\
--	SET_BITS_TO_LE_1BYTE((__ph2ccmd) + 5, 0, 8, __val)
--#define GET_88E_H2CCMD_PWRMODE_PARM_MODE(__ph2ccmd)			\
--	LE_BITS_TO_1BYTE(__ph2ccmd, 0, 8)
-+	*(u8 *)(__ph2ccmd + 5) = __val
- 
- #define SET_H2CCMD_MSRRPT_PARM_OPMODE(__ph2ccmd, __val)		\
--	SET_BITS_TO_LE_1BYTE(__ph2ccmd, 0, 1, __val)
-+	u8p_replace_bits(__ph2ccmd, __val, BIT(0))
- #define SET_H2CCMD_MSRRPT_PARM_MACID_IND(__ph2ccmd, __val)	\
--	SET_BITS_TO_LE_1BYTE(__ph2ccmd, 1, 1, __val)
-+	u8p_replace_bits(__ph2ccmd, __val, BIT(1))
- 
- #define SET_H2CCMD_RSVDPAGE_LOC_PROBE_RSP(__ph2ccmd, __val)		\
--	SET_BITS_TO_LE_1BYTE(__ph2ccmd, 0, 8, __val)
-+	*(u8 *)(__ph2ccmd) = __val
- #define SET_H2CCMD_RSVDPAGE_LOC_PSPOLL(__ph2ccmd, __val)		\
--	SET_BITS_TO_LE_1BYTE((__ph2ccmd)+1, 0, 8, __val)
-+	*(u8 *)(__ph2ccmd + 1) = __val
- #define SET_H2CCMD_RSVDPAGE_LOC_NULL_DATA(__ph2ccmd, __val)		\
--	SET_BITS_TO_LE_1BYTE((__ph2ccmd)+2, 0, 8, __val)
-+	*(u8 *)(__ph2ccmd + 2) = __val
- #define SET_H2CCMD_RSVDPAGE_LOC_QOS_NULL_DATA(__ph2ccmd, __val)	\
--	SET_BITS_TO_LE_1BYTE((__ph2ccmd) + 3, 0, 8, __val)
-+	*(u8 *)(__ph2ccmd + 3) = __val
- #define SET_H2CCMD_RSVDPAGE_LOC_BT_QOS_NULL_DATA(__ph2ccmd, __val)	\
--	SET_BITS_TO_LE_1BYTE((__ph2ccmd) + 4, 0, 8, __val)
-+	*(u8 *)(__ph2ccmd + 4) = __val
- 
- 
- void rtl8723be_fill_h2c_cmd(struct ieee80211_hw *hw, u8 element_id,
+ #define	N_BYTE_ALIGMENT(__value, __aligment) ((__aligment == 1) ? \
+ 	(__value) : (((__value + __aligment - 1) / __aligment) * __aligment))
 -- 
 2.24.0
 
