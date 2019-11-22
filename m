@@ -2,53 +2,101 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A9E0010721F
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 Nov 2019 13:28:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EEC72107243
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 Nov 2019 13:38:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727107AbfKVM2A (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 22 Nov 2019 07:28:00 -0500
-Received: from s3.sipsolutions.net ([144.76.43.62]:44652 "EHLO
-        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726546AbfKVM2A (ORCPT
+        id S1727317AbfKVMiQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 22 Nov 2019 07:38:16 -0500
+Received: from userp2130.oracle.com ([156.151.31.86]:57720 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726620AbfKVMiP (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 22 Nov 2019 07:28:00 -0500
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.92.3)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1iY82Y-00033L-FQ; Fri, 22 Nov 2019 13:27:58 +0100
-Message-ID: <c6f0bd8c87375824e55dc105a78c4479683139a6.camel@sipsolutions.net>
-Subject: Re: [PATCH v11 2/4] mac80211: Import airtime calculation code from
- mt76
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Kan Yan <kyan@google.com>
-Cc:     linux-wireless@vger.kernel.org,
-        make-wifi-fast@lists.bufferbloat.net, toke@redhat.com,
-        nbd@nbd.name, yiboz@codeaurora.org, john@phrozen.org,
-        lorenzo@kernel.org, rmanohar@codeaurora.org, kevinhayes@google.com
-Date:   Fri, 22 Nov 2019 13:27:55 +0100
-In-Reply-To: <20191119060610.76681-3-kyan@google.com> (sfid-20191119_070625_522904_ADC19544)
-References: <20191119060610.76681-1-kyan@google.com>
-         <20191119060610.76681-3-kyan@google.com>
-         (sfid-20191119_070625_522904_ADC19544)
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
+        Fri, 22 Nov 2019 07:38:15 -0500
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xAMCTgsP020019;
+        Fri, 22 Nov 2019 12:37:53 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2019-08-05;
+ bh=RXHpNXKeSFhWszqKE2zK8QQG9WChzlwgrOViGlZ02zc=;
+ b=CwtxpArJV+n9Fsk69XER5H9LDkFNVK9jh8cH5hb0LbLClW2clxVS/iclGrALrdPnhqdZ
+ gcWnzevPB3QNQKC/cqZEVRWWYr8xOYgte+Tl17DoNg3xru+QKKxQ/Z+Pjhm7JmkvHR0F
+ JD4ZIE0GhzybPnieBs2pROfMEqVFsKGym0w2S5gZPASA6WE9v0xqq2TgE13WwXKVdkMB
+ JZHbFKatpVSNjFaGYGjygVBMJRpg/cItJYiSTXg8KvyHZWY5miwGTOqGezHd8VAQ0mQi
+ 08VaBxMlGK2je9Va6Tltd3vtCcM2tPRFPrzEHyuXD/qxewcN2MqaIF3cvIfbt9obX0qo ww== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by userp2130.oracle.com with ESMTP id 2wa8huabcc-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 22 Nov 2019 12:37:53 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xAMCT6sB082276;
+        Fri, 22 Nov 2019 12:37:52 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by aserp3030.oracle.com with ESMTP id 2we8yftgwt-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 22 Nov 2019 12:37:52 +0000
+Received: from abhmp0018.oracle.com (abhmp0018.oracle.com [141.146.116.24])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id xAMCboEZ028482;
+        Fri, 22 Nov 2019 12:37:50 GMT
+Received: from kadam (/41.210.159.99)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Fri, 22 Nov 2019 04:37:49 -0800
+Date:   Fri, 22 Nov 2019 15:37:39 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Ganapathi Bhat <gbhat@marvell.com>
+Cc:     qize wang <wangqize888888888@gmail.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        amitkarwar <amitkarwar@gmail.com>,
+        nishants <nishants@marvell.com>,
+        huxinming820 <huxinming820@gmail.com>,
+        kvalo <kvalo@codeaurora.org>, Greg KH <greg@kroah.com>,
+        security <security@kernel.org>,
+        linux-distros <linux-distros@vs.openwall.org>,
+        Solar Designer <solar@openwall.com>
+Subject: Re: [EXT] Re: [PATCH] mwifiex: Fix heap overflow in
+ mmwifiex_process_tdls_action_frame()
+Message-ID: <20191122123739.GJ617@kadam>
+References: <E40E893E-D9B4-4C63-8139-1DD5E1C2CECB@gmail.com>
+ <20191122111339.GH617@kadam>
+ <MN2PR18MB26373BC0C0D63A7C3CE09FC4A0490@MN2PR18MB2637.namprd18.prod.outlook.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <MN2PR18MB26373BC0C0D63A7C3CE09FC4A0490@MN2PR18MB2637.namprd18.prod.outlook.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9448 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1911140001 definitions=main-1911220112
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9448 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
+ definitions=main-1911220112
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 2019-11-18 at 22:06 -0800, Kan Yan wrote:
+On Fri, Nov 22, 2019 at 11:40:40AM +0000, Ganapathi Bhat wrote:
+> Hi Dan,
 > 
-> +#define HE_GROUP_IDX(_streams, _gi, _bw)				\
-> +	(IEEE80211_HE_GROUP_0 +					\
-> +	 IEEE80211_HE_MAX_STREAMS * 2 * (_bw) +			\
-> +	 IEEE80211_HE_MAX_STREAMS * (_gi) +				\
-> +	 (_streams) - 1)
+> > > +			/* copy the ie's value into ht_capb*/
+> > > +			memcpy((u8 *)&sta_ptr->tdls_cap.ht_capb, pos + 2,
+> >                                                                  ^^^^^^^
+> > 
+> > I don't understand why we changed "pos" to "pos + 2".  Presumably there is
+> > a reason, but it needs to explained in the commit message.
+> 
+> I think, we were doing wrong in the original code. We are supposed to use 'pos + 2' itself, instead of just 'pos'. This is because, 'pos' is pointing to 'ieee_types_header', followed by the actual data and the destination do not start with (i.e. it do not contain) 'ieee_types_header'(ex: 'sta_ptr->tdls_cap.ht_oper').
+> 
+> Also, there are few places were the destination starts with 'ieee_types_header'(ex: 'sta_ptr->tdls_cap.extcap'), which need just 'pos'.
 
-I'll also fix that to be " * 3" instead of 2, since there are 3 possible
-_gi values.
+I assumed it was something like this but it needs to be explained in
+the commit message.
 
-johannes
+regards,
+dan carpenter
 
