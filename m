@@ -2,37 +2,36 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C56D910631C
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 Nov 2019 07:09:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C80E1062CA
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 Nov 2019 07:06:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729162AbfKVGBq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 22 Nov 2019 01:01:46 -0500
-Received: from mail.kernel.org ([198.145.29.99]:40038 "EHLO mail.kernel.org"
+        id S1728280AbfKVGG0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 22 Nov 2019 01:06:26 -0500
+Received: from mail.kernel.org ([198.145.29.99]:40874 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729119AbfKVGBp (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 22 Nov 2019 01:01:45 -0500
+        id S1729656AbfKVGCS (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 22 Nov 2019 01:02:18 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 99FE82068E;
-        Fri, 22 Nov 2019 06:01:43 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 995E72071B;
+        Fri, 22 Nov 2019 06:02:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1574402504;
-        bh=bj6XBP8ylTa1ul4GAmiTOHUvhP1gVcBdVe0nXVxbj4c=;
+        s=default; t=1574402538;
+        bh=u+OorGplPoo4KPqhEBpJTPq5149qy2NJwf/txWg4fFg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hmwZ6CSSZc4fyQujx401ytqLaMJklRvXk1TDo6mpMwiXo3aLLdSkp6+qIAVJC9GuV
-         D29wc0qMzuKpVKUIElHeKXtUWPIeYaGzf8vOJYpoPr7xMnECXlDzDMVckByjkayAbS
-         dSw/kj2frskpctdS88FJpfwlbgWch2NNbLgSyyeE=
+        b=WXgJjJ3ruAg+ZnWEG4nlZuu2VwZgRarF3io5WInLGNUH1hUQWk2YxUU0eYS5Bwg0n
+         0JRfy4gVHKwiNnoSjmpKCzfi1Eaw3ryOEKYDNYzj21p3voZW8dPQNWWsIUk9KCjOaL
+         yeE0vTupW9lJEJef2Kjw4nSRoepIH1WcZx/vz14s=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Pan Bian <bianpan2016@163.com>,
-        Larry Finger <Larry.Finger@lwfinger.net>,
+Cc:     Kyle Roeschley <kyle.roeschley@ni.com>,
         Kalle Valo <kvalo@codeaurora.org>,
         Sasha Levin <sashal@kernel.org>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.9 14/91] rtl818x: fix potential use after free
-Date:   Fri, 22 Nov 2019 01:00:12 -0500
-Message-Id: <20191122060129.4239-13-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.9 45/91] ath6kl: Only use match sets when firmware supports it
+Date:   Fri, 22 Nov 2019 01:00:43 -0500
+Message-Id: <20191122060129.4239-44-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20191122060129.4239-1-sashal@kernel.org>
 References: <20191122060129.4239-1-sashal@kernel.org>
@@ -45,40 +44,37 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Pan Bian <bianpan2016@163.com>
+From: Kyle Roeschley <kyle.roeschley@ni.com>
 
-[ Upstream commit afbb1947db94eacc5a13302eee88a9772fb78935 ]
+[ Upstream commit fb376a495fbdb886f38cfaf5a3805401b9e46f13 ]
 
-entry is released via usb_put_urb just after calling usb_submit_urb.
-However, entry is used if the submission fails, resulting in a use after
-free bug. The patch fixes this.
+Commit dd45b7598f1c ("ath6kl: Include match ssid list in scheduled scan")
+merged the probed and matched SSID lists before sending them to the
+firmware. In the process, it assumed match set support is always available
+in ath6kl_set_probed_ssids, which breaks scans for hidden SSIDs. Now, check
+that the firmware supports matching SSIDs in scheduled scans before setting
+MATCH_SSID_FLAG.
 
-Signed-off-by: Pan Bian <bianpan2016@163.com>
-ACKed-by: Larry Finger <Larry.Finger@lwfinger.net>
+Fixes: dd45b7598f1c ("ath6kl: Include match ssid list in scheduled scan")
+Signed-off-by: Kyle Roeschley <kyle.roeschley@ni.com>
 Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath6kl/cfg80211.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c b/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c
-index 6113624ccec39..17e3d5e830626 100644
---- a/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c
-+++ b/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c
-@@ -446,12 +446,13 @@ static int rtl8187_init_urbs(struct ieee80211_hw *dev)
- 		skb_queue_tail(&priv->rx_queue, skb);
- 		usb_anchor_urb(entry, &priv->anchored);
- 		ret = usb_submit_urb(entry, GFP_KERNEL);
--		usb_put_urb(entry);
- 		if (ret) {
- 			skb_unlink(skb, &priv->rx_queue);
- 			usb_unanchor_urb(entry);
-+			usb_put_urb(entry);
- 			goto err;
- 		}
-+		usb_put_urb(entry);
+diff --git a/drivers/net/wireless/ath/ath6kl/cfg80211.c b/drivers/net/wireless/ath/ath6kl/cfg80211.c
+index b7fe0af4cb240..0cce5a2bca161 100644
+--- a/drivers/net/wireless/ath/ath6kl/cfg80211.c
++++ b/drivers/net/wireless/ath/ath6kl/cfg80211.c
+@@ -934,7 +934,7 @@ static int ath6kl_set_probed_ssids(struct ath6kl *ar,
+ 		else
+ 			ssid_list[i].flag = ANY_SSID_FLAG;
+ 
+-		if (n_match_ssid == 0)
++		if (ar->wiphy->max_match_sets != 0 && n_match_ssid == 0)
+ 			ssid_list[i].flag |= MATCH_SSID_FLAG;
  	}
- 	return ret;
  
 -- 
 2.20.1
