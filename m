@@ -2,124 +2,192 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 18876107017
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 Nov 2019 12:20:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 669AA106F38
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 Nov 2019 12:14:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728780AbfKVLUU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 22 Nov 2019 06:20:20 -0500
-Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:32424 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1729575AbfKVKp5 (ORCPT
+        id S1729675AbfKVLOU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 22 Nov 2019 06:14:20 -0500
+Received: from userp2120.oracle.com ([156.151.31.85]:53030 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729061AbfKVLOU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 22 Nov 2019 05:45:57 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1574419556;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=Fk4U8YS7q9LLa/grnzbGdGnG0Qz10lovogQ8pGu2fqo=;
-        b=XSev2sTlBPMT1y9vX/qQoN7Fr8yOufdNdWx28kvqi/bO2lXwO/qM2NsbVmLL11srZ+I4Ev
-        CNdYP8wIJJQL7/pXLGlUJZHTQgSErcxR08EdQJC3c36HftZozJ0nKoYE63foDq51feQvMP
-        8j45P/RQEfVgJKLUJI9ysTuXAgS2IXQ=
-Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
- [209.85.208.200]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-365-xJ--dzD3Oqe1wTIWcSapGQ-1; Fri, 22 Nov 2019 05:45:53 -0500
-Received: by mail-lj1-f200.google.com with SMTP id p25so1211521lji.23
-        for <linux-wireless@vger.kernel.org>; Fri, 22 Nov 2019 02:45:53 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
-         :message-id:mime-version;
-        bh=3YUXrxz/9/yZd+6SITQARhpw627qctr8pyINzH15x7I=;
-        b=MvJyxhLjbe/T4TcxIMLUGblFVuBsjHhfC89YuXtam5Ax7Or6FvqpcTPQLKj+85psWV
-         Jn8ofd7fIoOwDN4DpAeUYVb1HE7bAgoaGx9BNq8iFujr0GClruaQm314YM5GmP2JhGiq
-         9mrY+65vBMTGiXSsuQY9T3C2DbK6Dh0NDC7afkot9Co7ognpUnHdOADmCHI8IPM5NPqo
-         vMAQWTbRukZ1GW9vk5B43c5EyYwzIE0u7RbCBxd5CYt9azBiCj593P0hHeR/rXTH46I/
-         nK899SH00rjQzRirQopBd9a8zM1pnaVK8/CTFIXrzQIMztCQGa6IO0AxDUP89ZbELExF
-         KosA==
-X-Gm-Message-State: APjAAAV5BgBRNDs1jnG9OCCb/8bAAu9g/wsohBbgzdZDWYENLR/Rx42A
-        5I+r4lT3QXiaUbk6CJq630P0GeoK9JZYQCV73xEuEUy967CKUj3lE1eDdSeOjLtyaDHoXKr8PYX
-        +Farv9P4txqWF1dV8hOu6ta8Mid4=
-X-Received: by 2002:a2e:b4eb:: with SMTP id s11mr11781013ljm.38.1574419552011;
-        Fri, 22 Nov 2019 02:45:52 -0800 (PST)
-X-Google-Smtp-Source: APXvYqwasaXDtX4MXmTufMchsNxvY8RgZ/y/8Wj+hpnVwKvzPvDpORYbjFKz7XUktpYMgpbvBTWFSw==
-X-Received: by 2002:a2e:b4eb:: with SMTP id s11mr11780993ljm.38.1574419551804;
-        Fri, 22 Nov 2019 02:45:51 -0800 (PST)
-Received: from alrua-x1.borgediget.toke.dk ([2a00:7660:6da:443::2])
-        by smtp.gmail.com with ESMTPSA id 129sm1015345lfj.86.2019.11.22.02.45.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 22 Nov 2019 02:45:50 -0800 (PST)
-Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-        id 159341800B3; Fri, 22 Nov 2019 11:45:50 +0100 (CET)
-From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-To:     Kan Yan <kyan@google.com>
-Cc:     Dave Taht <dave.taht@gmail.com>,
-        Rajkumar Manoharan <rmanohar@codeaurora.org>,
-        Kevin Hayes <kevinhayes@google.com>,
-        Make-Wifi-fast <make-wifi-fast@lists.bufferbloat.net>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Yibo Zhao <yiboz@codeaurora.org>,
-        John Crispin <john@phrozen.org>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Felix Fietkau <nbd@nbd.name>
-Subject: Re: [Make-wifi-fast] [PATCH v8 0/2] Implement Airtime-based Queue Limit (AQL)
-In-Reply-To: <CA+iem5tNz2jjEOVmbh3aPTXLLZfkRjZ60-+bon1vDEJ8D4hQJw@mail.gmail.com>
-References: <20191115014846.126007-1-kyan@google.com> <CA+iem5vaeLR6v_nZ1YUZhfj32wF0DrvC2nyp8nb8qYAZLQjLdw@mail.gmail.com> <CAA93jw5wTbFV51oFJ6tFHLUMo=bau8fbU65k57bQjOHGJoCkkQ@mail.gmail.com> <CA+iem5s4ZY239Q4=Gwy3WrmVhcdhesirXph6XQoOP5w-nuWcYw@mail.gmail.com> <CAA93jw5t0TwBVv7_DVkJ_-NsVn0ODNHwU0orp2-+LPB45iFVoQ@mail.gmail.com> <CA+iem5uVJFcCYpJfhker-48XPrOf3a+NWr-nKnBtGmLX2yB_Lg@mail.gmail.com> <8736eiam8f.fsf@toke.dk> <CA+iem5tpfEmaWJ5Mw7xF9fb=XLceZpC1LM4Avo89Mn1fL7YZVw@mail.gmail.com> <87a78p8rz7.fsf@toke.dk> <CA+iem5tNz2jjEOVmbh3aPTXLLZfkRjZ60-+bon1vDEJ8D4hQJw@mail.gmail.com>
-X-Clacks-Overhead: GNU Terry Pratchett
-Date:   Fri, 22 Nov 2019 11:45:50 +0100
-Message-ID: <87muco5gv5.fsf@toke.dk>
+        Fri, 22 Nov 2019 06:14:20 -0500
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xAMBDuZ6133216;
+        Fri, 22 Nov 2019 11:13:56 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2019-08-05;
+ bh=GIxifyYdtbmQt1tL7yec0fFzEwAr/ycRNTaVOVktwxo=;
+ b=i8+W8I7Dcowz2rZWQo/fHzHZmpTHkIEDXHjygLihGuslHKXSd5kV80JnuaPcK3bJO6qj
+ +lR0opwgvd6ZFPHqulpOGZnMfMpllu/ohI4KW3DDRB3ocFDQSB9s0Tl+Jq2333jSPWHT
+ P8ZQQjbofqBc9JIL4u02fgVRfO1vpL9X05ZgPbJ/u76wMXAga7KhWI8dN7dpuU6xyy46
+ CXFeC5DEJHloSVtA3sXpdKTt8diNQwUzTGMwkldz3G4X73nCLR4DHvw2JuupjJ7jh7Uj
+ vyj4+a9P3iWGHAqL1S9Nv7wSOEaSFYibgXJSws6jfuFOgbFze1eN7uUSEDXkBVOY1GWV hg== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by userp2120.oracle.com with ESMTP id 2wa9rr1wj2-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 22 Nov 2019 11:13:56 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xAMBDotW088000;
+        Fri, 22 Nov 2019 11:13:55 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by userp3030.oracle.com with ESMTP id 2wec28qea1-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 22 Nov 2019 11:13:55 +0000
+Received: from abhmp0001.oracle.com (abhmp0001.oracle.com [141.146.116.7])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id xAMBDrK8015571;
+        Fri, 22 Nov 2019 11:13:53 GMT
+Received: from kadam (/41.210.154.155)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Fri, 22 Nov 2019 03:13:51 -0800
+Date:   Fri, 22 Nov 2019 14:13:39 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     qize wang <wangqize888888888@gmail.com>
+Cc:     linux-wireless@vger.kernel.org, amitkarwar <amitkarwar@gmail.com>,
+        nishants <nishants@marvell.com>, gbhat <gbhat@marvell.com>,
+        huxinming820 <huxinming820@gmail.com>,
+        kvalo <kvalo@codeaurora.org>, Greg KH <greg@kroah.com>,
+        security <security@kernel.org>,
+        linux-distros <linux-distros@vs.openwall.org>,
+        Solar Designer <solar@openwall.com>
+Subject: Re: [PATCH] mwifiex: Fix heap overflow in
+ mmwifiex_process_tdls_action_frame()
+Message-ID: <20191122111339.GH617@kadam>
+References: <E40E893E-D9B4-4C63-8139-1DD5E1C2CECB@gmail.com>
 MIME-Version: 1.0
-X-MC-Unique: xJ--dzD3Oqe1wTIWcSapGQ-1
-X-Mimecast-Spam-Score: 0
-Content-Type: text/plain; charset=WINDOWS-1252
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <E40E893E-D9B4-4C63-8139-1DD5E1C2CECB@gmail.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9448 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1911140001 definitions=main-1911220101
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9448 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
+ definitions=main-1911220101
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Kan Yan <kyan@google.com> writes:
+On Fri, Nov 22, 2019 at 05:43:49PM +0800, qize wang wrote:
+> 		case WLAN_EID_HT_CAPABILITY:
+> -			memcpy((u8 *)&sta_ptr->tdls_cap.ht_capb, pos,
+                                                                ^^^^
+> +			if (pos > end - sizeof(struct ieee80211_ht_cap) - 2)
+> +				return;
+> +			if (pos[1] != sizeof(struct ieee80211_ht_cap))
+> +				return;
+> +			/* copy the ie's value into ht_capb*/
+> +			memcpy((u8 *)&sta_ptr->tdls_cap.ht_capb, pos + 2,
+                                                                 ^^^^^^^
 
->> In theory, this ought to produce a histogram of sojourn times (in
->> microseconds):
->> bpftrace -e 'kretprobe:codel_skb_time_func { @sojourn =3D lhist((nsecs -
-> (retval << 10))/1000, 0, 100000, 1000); }'
->
-> Thanks for the tips!
->
->> Can't get the CoDel drop mechanism to trigger on my system at all,
->> though (a laptop running on iwl). I guess because there's queue
->> backpressure to userspace first?
->
-> What's the tcp_congestion_control in your system? Maybe it is BBR that
-> prevents bufferbloat.
+I don't understand why we changed "pos" to "pos + 2".  Presumably there
+is a reason, but it needs to explained in the commit message.
 
-It's not BBR, just plain old CUBIC. I've seen the issue before that it's
-almost impossible to build a queue in the mac80211 layer when the TCP
-session is originated on the local machine, though...
 
->> It would be interesting to see if it works for you, assuming you can get
->> bpftrace to work on your test system :)
->
-> I can enable required kernel configuration easily, but cross-compile
-> bpftrace for an ARM64 platform may take some time and effort.
+> 			       sizeof(struct ieee80211_ht_cap));
+> 			sta_ptr->is_11n_enabled = 1;
+> 			break;
+> 		case WLAN_EID_HT_OPERATION:
+> -			memcpy(&sta_ptr->tdls_cap.ht_oper, pos,
+                                                           ^^^
+> +			if (pos > end -
+> +			    sizeof(struct ieee80211_ht_operation) - 2)
+> +				return;
+> +			if (pos[1] != sizeof(struct ieee80211_ht_operation))
+> +				return;
+> +			/* copy the ie's value into ht_oper*/
+> +			memcpy(&sta_ptr->tdls_cap.ht_oper, pos + 2,
+                                                           ^^^^^^^
 
-Yeah, bpftrace can be a bit of a pain to get running; but it may be
-worth the investment longer term as well. It really is quite useful! :)
+> 			       sizeof(struct ieee80211_ht_operation));
+> 			break;
+> 		case WLAN_EID_BSS_COEX_2040:
+> +			if (pos > end - 3)
+> +				return;
+> +			if (pos[1] != 1)
+> +				return;
+> 			sta_ptr->tdls_cap.coex_2040 = pos[2];
+> 			break;
+> 		case WLAN_EID_EXT_CAPABILITY:
+> +			if (pos > end - sizeof(struct ieee_types_header))
+> +				return;
+> +			if (pos[1] < sizeof(struct ieee_types_header))
+> +				return;
+> +			if (pos[1] > 8)
+> +				return;
+> 			memcpy((u8 *)&sta_ptr->tdls_cap.extcap, pos,
+> 			       sizeof(struct ieee_types_header) +
+> 			       min_t(u8, pos[1], 8));
+> 			break;
+> 		case WLAN_EID_RSN:
+> +			if (pos > end - sizeof(struct ieee_types_header))
+> +				return;
+> +			if (pos[1] < sizeof(struct ieee_types_header))
+> +				return;
+> +			if (pos[1] > IEEE_MAX_IE_SIZE -
+> +			    sizeof(struct ieee_types_header))
+> +				return;
+> 			memcpy((u8 *)&sta_ptr->tdls_cap.rsn_ie, pos,
+> 			       sizeof(struct ieee_types_header) +
+> 			       min_t(u8, pos[1], IEEE_MAX_IE_SIZE -
+> 				     sizeof(struct ieee_types_header)));
+> 			break;
+> 		case WLAN_EID_QOS_CAPA:
+> +			if (pos > end - 3)
+> +				return;
+> +			if (pos[1] != 1)
+> +				return;
+> 			sta_ptr->tdls_cap.qos_info = pos[2];
+> 			break;
+> 		case WLAN_EID_VHT_OPERATION:
+> -			if (priv->adapter->is_hw_11ac_capable)
+> -				memcpy(&sta_ptr->tdls_cap.vhtoper, pos,
+                                                                   ^^^
 
-Some links:
+> +			if (priv->adapter->is_hw_11ac_capable) {
+> +				if (pos > end -
+> +				    sizeof(struct ieee80211_vht_operation) - 2)
+> +					return;
+> +				if (pos[1] !=
+> +				    sizeof(struct ieee80211_vht_operation))
+> +					return;
+> +				/* copy the ie's value into vhtoper*/
+> +				memcpy(&sta_ptr->tdls_cap.vhtoper, pos + 2,
+                                                                   ^^^^^^^
+> 				       sizeof(struct ieee80211_vht_operation));
+> +			}
+> 			break;
+> 		case WLAN_EID_VHT_CAPABILITY:
+> 			if (priv->adapter->is_hw_11ac_capable) {
+> -				memcpy((u8 *)&sta_ptr->tdls_cap.vhtcap, pos,
+                                                                        ^^^
 
-Install guide:
-https://github.com/iovisor/bpftrace/blob/master/INSTALL.md
+> +				if (pos > end -
+> +				    sizeof(struct ieee80211_vht_cap) - 2)
+> +					return;
+> +				if (pos[1] != sizeof(struct ieee80211_vht_cap))
+> +					return;
+> +				/* copy the ie's value into vhtcap*/
+> +				memcpy((u8 *)&sta_ptr->tdls_cap.vhtcap, pos + 2,
+                                                                        ^^^^^^^
 
-Tutorial by one-liners:
-https://github.com/iovisor/bpftrace/blob/master/docs/tutorial_one_liners.md
+> 				       sizeof(struct ieee80211_vht_cap));
+> 				sta_ptr->is_11ac_enabled = 1;
+> 			}
+> 			break;
 
-Reference guide:
-https://github.com/iovisor/bpftrace/blob/master/docs/reference_guide.md#5-t=
-racepoint-static-tracing-kernel-level
+I was confused by the "- 2" as well in the earlier versions of this
+patch but Marvell approved it so I assumed it was correct.  It would be
+nice if this patch were tested.
 
--Toke
+regards,
+dan carpenter
 
