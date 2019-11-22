@@ -2,83 +2,74 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0FB72107271
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 Nov 2019 13:50:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A2837107277
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 Nov 2019 13:53:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726568AbfKVMuE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 22 Nov 2019 07:50:04 -0500
-Received: from s3.sipsolutions.net ([144.76.43.62]:45008 "EHLO
-        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726526AbfKVMuE (ORCPT
+        id S1726750AbfKVMxD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 22 Nov 2019 07:53:03 -0500
+Received: from mail-lf1-f66.google.com ([209.85.167.66]:40744 "EHLO
+        mail-lf1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726548AbfKVMxD (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 22 Nov 2019 07:50:04 -0500
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.92.3)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1iY8Ns-0003Xv-6J; Fri, 22 Nov 2019 13:50:00 +0100
-Message-ID: <bc0849dd83ae748acde1cebd025e5677ba6eced1.camel@sipsolutions.net>
-Subject: Re: [PATCHv8 0/6] cfg80211/mac80211: Add support for TID specific
- configuration
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Tamizh chelvam <tamizhr@codeaurora.org>
-Cc:     Sergey Matyukevich <sergey.matyukevich.os@quantenna.com>,
-        linux-wireless@vger.kernel.org
-Date:   Fri, 22 Nov 2019 13:49:59 +0100
-In-Reply-To: <b70dd0ab69f968366d7cb836d2b880bc@codeaurora.org>
-References: <1572957714-16085-1-git-send-email-tamizhr@codeaurora.org>
-         <20191108093207.uv4j44xpm2qvtsv5@bars>
-         <84ca3a8b61757360ab9898afcdd3f2f63c770f86.camel@sipsolutions.net>
-         <20191108120504.ptl25hacxcftb7tw@bars>
-         <1c553c457024b295c7d0a6b118c3848eec28bcbd.camel@sipsolutions.net>
-         <20191108160121.tbatmqwx64aoqqai@bars>
-         <c95e9e9f5539150459f97f811b784a6e9af163cf.camel@sipsolutions.net>
-         <b70dd0ab69f968366d7cb836d2b880bc@codeaurora.org>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
+        Fri, 22 Nov 2019 07:53:03 -0500
+Received: by mail-lf1-f66.google.com with SMTP id v24so5425404lfi.7;
+        Fri, 22 Nov 2019 04:53:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=fY9hY9/A77YRE8iRO3MEb0mODAHbWB5BA4+3OzYa+58=;
+        b=I4moCnbfLIK/FGGBTv1ITFNmnxyumB6muFPhLbyZeSPGEez0/xQ3wWjVPVe0+0L1OD
+         TnwJ6itLYO3MaIFmUfvY47ax74TbrfgcRFm+w54ncP8Dnc5NDjd52k6y0kdj25PmVkmo
+         PRmqVCkQiFo7+EFMbdzsem4zRg9l4xtJKGn4vHpz+HHuf3Abz0JNM5mseHHaFVZsr9gw
+         HixY/+i421fOhnDjEvRGmplvIJ6uUBg1cchYw7qfnj7QyY4WXNKx6qWdZzNdIhBTyDnM
+         yYfZo5G5yrcJh+CCQTIsbvNkc8A4NLCXLme9l94syxOy84rTy4pcKc5wpjtcSA7zwW62
+         xcHQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=fY9hY9/A77YRE8iRO3MEb0mODAHbWB5BA4+3OzYa+58=;
+        b=F8I8bkPU0PjYRXgZ+kq3XC/jVfuBXbuqPJ95BZQYmnKE5PpK0leT2ZdfCx5VO1G1Yt
+         VNaaG94z0iP0c0YwBTGJFV+f/J1eWKUv7KlVCrxcMvc27dH0PDHJgoOPqADzBDFWNY0o
+         1ijCgRnierWTCOHf6LAySzxruPTe5ZbTqyEIUGnpt+Lag3G7pS4y/2jdThX0IW+W9C/2
+         s2cBP6Uhs6jeFRcjuF0jq27NCz454xlVbAeUSVAqVd6jjStEQfVocayw5cXKFBt0r4XS
+         yQ4/xejH5a6c1ed/QJsHm49Z0++AHF8VB39igP3sO9Rdha0NMYmcGZqFZEYLtqzonHCV
+         jRdw==
+X-Gm-Message-State: APjAAAV1ub+JgywEAff7ZAsU9jAa6Cszf8Scx7CM9IWeOgqCTN81Zud8
+        +NpYtIuJe8mDPcHG1mZVT2AC/wPSmqrHPRPPsf/MtMkQLX0=
+X-Google-Smtp-Source: APXvYqxWD8dAPCY1GHpRE/7ed3l5OZ2IWo5VV9F02EO0Xqit0HgHe5Ermxto6xeWBId1m3JqVGIHRIcZ0qpFdHAOJ6g=
+X-Received: by 2002:a19:ed19:: with SMTP id y25mr2307040lfy.13.1574427180402;
+ Fri, 22 Nov 2019 04:53:00 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+References: <20191108152013.13418-1-ramonreisfontes@gmail.com> <fe198371577479c1e00a80e9cae6f577ab39ce8e.camel@sipsolutions.net>
+In-Reply-To: <fe198371577479c1e00a80e9cae6f577ab39ce8e.camel@sipsolutions.net>
+From:   Ramon Fontes <ramonreisfontes@gmail.com>
+Date:   Fri, 22 Nov 2019 09:52:49 -0300
+Message-ID: <CAK8U23amVqf-6YoiPoyk5_za3dhVb4FJmBDvmA2xv2sD43DhQA@mail.gmail.com>
+Subject: Re: [PATCH] mac80211_hwsim: set the maximum EIRP output power for 5GHz
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        kvalo@codeaurora.org, davem@davemloft.net
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, 2019-11-14 at 13:02 +0530, Tamizh chelvam wrote:
-> On 2019-11-08 22:37, Johannes Berg wrote:
-> > On Fri, 2019-11-08 at 16:01 +0000, Sergey Matyukevich wrote:
-> > 
-> > > > I think we still need NL80211_TID_CONFIG_ATTR_OVERRIDE in some way
-> > > > (maybe only as a flag attribute), since you could have
-> > > > 
-> > > >  * change all stations (some subset of TIDs) *including* already
-> > > >    configured stations
-> > > >  * or *excluding* already configured stations
-> > > 
-> > > Hmmm... Logic is straightforwad without this flag:
-> > > - settings are applied to bitmasked TIDs of a single peer if address 
-> > > is specifed
-> > > - settings are applied to bitmasked TIDs of all the peers if no 
-> > > address is specified
-> > 
-> > Sure, this is obvious, but what exactly does "all the peers" mean?
-> > 
-> > Say I do
-> > 
-> > set_tid_config(tids=0x1, peer=02:11:22:33:44:55, noack=yes)
-> > set_tid_config(tids=0x1, peer=NULL, noack=no)
-> > 
-> > Does that reset peer 02:11:22:33:44:55, or not? This is not documented
-> > right now, and one could argue both ways - the override for that
-> > particular peer should stick, or should be removed. Which one is it?
-> > 
-> Here, the second command won't reset the peer 02:11:22:33:44:55. Here we 
-> are giving more
-> preference to the peer specific configuration. We have to reset the peer 
-> 02:11:22:33:44:55 using the set_tid_config(tids=0x1, 
-> peer=02:11:22:33:44:55, DEFAULT). I will add these in the DOC section 
-> and send it in next patchset.
+> How is hwsim related to ETSI? What does it matter?
 
-OK, but maybe in some cases it _is_ desired to actually clear all peer-
-specific overrides (somehow)?
+It's well known that the frequency bands 2,4 GHz and 5 GHz are mainly
+used by Radio LANs and in many cases, the deployed technology is based
+on the IEEE 802.11 standards family. However, other technologies such
+as LTE-LAA are deployed in those frequency bands as well. That said,
+considering that hwsim is an excellent module that can be used in
+different network simulation scenarios; that it is not only used in
+North America; and also considering that some regulatory power limits
+are taken from the ETSI standards, why not set a maximum value
+supported by a renowned Institute? Without this new value, regdomain
+will not work as expected for some countries.
 
-johannes
-
+--
+Ramon Fontes
