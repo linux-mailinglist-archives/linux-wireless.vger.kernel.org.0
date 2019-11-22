@@ -2,128 +2,80 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 889E01075EA
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 Nov 2019 17:37:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B1C1510763A
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 Nov 2019 18:09:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726705AbfKVQhu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 22 Nov 2019 11:37:50 -0500
-Received: from mail2.candelatech.com ([208.74.158.173]:59978 "EHLO
-        mail3.candelatech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726638AbfKVQhu (ORCPT
+        id S1726686AbfKVRJN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 22 Nov 2019 12:09:13 -0500
+Received: from mail-pj1-f65.google.com ([209.85.216.65]:41161 "EHLO
+        mail-pj1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726046AbfKVRJN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 22 Nov 2019 11:37:50 -0500
-Received: from [192.168.1.47] (unknown [50.34.216.97])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail3.candelatech.com (Postfix) with ESMTPSA id 7BD9C13C359;
-        Fri, 22 Nov 2019 08:37:49 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 7BD9C13C359
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1574440669;
-        bh=a2STn3A1Nt1io1esmeNq6aGz0pxmqBwKk/W/Q0ZorvM=;
-        h=Subject:To:References:From:Date:In-Reply-To:From;
-        b=FG6N0PXRdp3H7tWmV86FEYKyF8KlsZQTGgTS/QQIzT7tdq4XiV1rEQciSzDpiAfPE
-         MAJ+yDRcTD9KR74UyEU2a8HTqFZSQNucYY7sEQh1Z7NVBJWGnoa3RI+t8pO5WT2E2b
-         k6a++bFV2ueibTxdc7s/LnmxR4bFpsDOKZmAh2J4=
-Subject: Re: [PATCH 00/10] Ben's grab bag of mac80211 patches
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless@vger.kernel.org
-References: <20191108194210.23618-1-greearb@candelatech.com>
- <40f85196f29bf0dc4bfbe57345a5db4d7aff7f89.camel@sipsolutions.net>
-From:   Ben Greear <greearb@candelatech.com>
-Message-ID: <99eeff65-80de-bb8d-00ba-1863e232476f@candelatech.com>
-Date:   Fri, 22 Nov 2019 08:37:48 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
- Thunderbird/45.8.0
-MIME-Version: 1.0
-In-Reply-To: <40f85196f29bf0dc4bfbe57345a5db4d7aff7f89.camel@sipsolutions.net>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
+        Fri, 22 Nov 2019 12:09:13 -0500
+Received: by mail-pj1-f65.google.com with SMTP id gc1so3285124pjb.8
+        for <linux-wireless@vger.kernel.org>; Fri, 22 Nov 2019 09:09:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=6+LL8qsLHJX2/gsW2qsgwafSTmgjosS9b/ig7Inn4hU=;
+        b=FSB9ixAD74wEJscfeuQGF2SI89/+bdBgZ/bNswr7AjGjIE1qDolwxuck1XIs7wf8vJ
+         ka0UApVgmwdjcxrPxnvm+x4l6fkhedHqYZJ6qZKQSfOJxjle97oL99guJXjmhY+4A0Sw
+         vteWXcOLKt51duo8bLktBPp9SEka/J0bHJqjXFjNczlLYZI2d/yZ4SX88shYSHI31QhM
+         HjEUqYY0+NiUd2pOhpxD/k1xDPa5X1B+tGJahV6rpbgjciVaz3KIwr1Q+XyTZ2X9TqPE
+         bPuZG8qvGKJskVjzHT89HM7ur9/n/WostnkeG9Rxnn6RBt6f2TvnvnsRMO8eq8qzJ9IS
+         SuLA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=6+LL8qsLHJX2/gsW2qsgwafSTmgjosS9b/ig7Inn4hU=;
+        b=AOOH+2zw1KIHnRUGD70BfqExcmsNQmOxpa2jA+FTBvnmj4jWmMbVVP6Y9OFsXJpsJ6
+         86DS5D0Zpu0KeVYqrmnP8fuzV/yhqWwdVo0kBY8unFSXuVBld+2WTyCbbuHY+y8oXoBr
+         fbjg/xLQ5tF6MNnzv1RSFRmSAUuUpQPtST3wYhyIWtGCsEUht4yQ8Y8Md07dH4yAhAzU
+         JVd7OeocXFpywnoS4Peb1FF1ks0CLClAtyv5j9yRkLrWnNZnCDipscfu6HG3DuUg2rdb
+         1Vk2nuQr8Wd+tt6iDNcSMpJRbzbddqGLNzaS9dv4kjq6u2Wf9eM4lfvtFi4O34pVNJHT
+         /Zsw==
+X-Gm-Message-State: APjAAAUXvzk88tUBAqdkXJOokCB20JSW4/VGMhwDur4F5jkeXuejRzvn
+        KiRMW6Ce+WxnHbC2OQB1M/T/R+SB
+X-Google-Smtp-Source: APXvYqwSl2kAOwhVgFwviFUELZX+XBMxnyUJUe6o1+ngl6RmjTtx5dhIc81BJ21ib7LuNJOSEqYHyw==
+X-Received: by 2002:a17:90a:1446:: with SMTP id j64mr20559449pja.142.1574442551843;
+        Fri, 22 Nov 2019 09:09:11 -0800 (PST)
+Received: from jprestwo-test.jf.intel.com ([134.134.139.76])
+        by smtp.gmail.com with ESMTPSA id c2sm7834386pfn.55.2019.11.22.09.09.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 22 Nov 2019 09:09:11 -0800 (PST)
+From:   James Prestwood <prestwoj@gmail.com>
+To:     linux-wireless@vger.kernel.org
+Cc:     James Prestwood <prestwoj@gmail.com>
+Subject: [PATCH v2 1/2] mac80211_hwsim: enable parent TSF feature
+Date:   Fri, 22 Nov 2019 09:06:11 -0800
+Message-Id: <20191122170612.8123-1-prestwoj@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Support for this is already in nl80211, and some code paths in
+mac80211_hwsim already set the rx_status to allow the parent TSF
+value to be sent to user space.
 
+Signed-off-by: James Prestwood <prestwoj@gmail.com>
+---
+ drivers/net/wireless/mac80211_hwsim.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-On 11/22/2019 03:49 AM, Johannes Berg wrote:
-> Hi Ben,
->
-> Well, for me to consider any of these, you really should come with
-> commit logs and reasons that actually make sense outside of your
-> environment :)
->
-> I committed a note that replaces patch 1.
-
-Well, 1 out of 10 ain't that bad!
-
-> I don't like 2-4, that just adds state and one should never hit it. If
-> you're hitting these you should investigate the root cause, not fix the
-> symptoms.
->
-> 5 seems like it might be reasonable, but it's hard to read and
-> understand, maybe revisit that?
-
-This is the patch you previously said you liked but it would not apply upstream.
-Now it applies.  That whole code mess is hard to understand, but I have been running
-a similar patch for a while and it has worked well.
-
-Instead of trying to understand the patch, try applying it and then read the resulting
-code.  It is a lot simpler to understand that way I think.
-
-You can also sniff air with current code w/out this patch and watch the crappy
-retry behaviour where the retries are clumped in a few ms of time instead of being
-spread out.
-
->
-> I tend to think the previous module options along the lines of patch 6
-> were a mistake, rather than add more ...
->
-> 7 is totally not understandable, but might be legitimate? Unlikely, but
-> hard to say.
-
-Ath10k will always use legacy rates for ctrl frames and such even if
-you otherwise restrict the rateset.  So, it is legit to set a single rate even if
-that would leave no legacy rates configured as far as mac80211 is concerned.
-
-Your patch broke the ability to set a single rate in ath10k, and my change will
-allow it to work again.
-
->
-> 8 I don't like at all. How about you do it in the driver somehow?
-
-I had low hopes for this one anyway.  mac80211 has the software decrypt logic, not the
-driver, so it seemed reasonable to have the mac80211 do a callback.  This patch is likely
-only useful for drivers that do block-ack in the firmware and support software decrypt,
-which may only be my modified ath10k-ct driver/firmware.
-
->
-> 9 is like 2-4 really, I guess maybe this one I could get behind if it
-> came with a commit log that actually explains why one is likely to hit
-> this multiple times or something?
-
-Basically, it is almost never useful to use WARN_ON instead of WARN_ON_ONCE.  If you ever
-do hit the bug, often the logs are full of WARN_ON spam and you cannot even find the real problem
-until you change it to WARN_ON_ONCE and reproduce the problem.
-
-I hit this problem due to some coding bug while poking at ath10k, and you get one splat
-per tx frame, so you can image the spam.
-
-
-> 10 we did to fix other behaviour, so ...
-
-This one is especially useful for roaming several virtual stations, but maybe that is only useful test
-case.  I included it more as an RFC, but it has worked well enough for us in case you see some worth in
-it (and obviously it should be changed to not use // comments in case the functionality is actually
-deemed useful).
-
-Thanks,
-Ben
-
->
-> johannes
->
-
+diff --git a/drivers/net/wireless/mac80211_hwsim.c b/drivers/net/wireless/mac80211_hwsim.c
+index 772e54f0696f..e9bc599481d4 100644
+--- a/drivers/net/wireless/mac80211_hwsim.c
++++ b/drivers/net/wireless/mac80211_hwsim.c
+@@ -2825,6 +2825,7 @@ static int mac80211_hwsim_new_radio(struct genl_info *info,
+ 			       NL80211_FEATURE_DYNAMIC_SMPS |
+ 			       NL80211_FEATURE_SCAN_RANDOM_MAC_ADDR;
+ 	wiphy_ext_feature_set(hw->wiphy, NL80211_EXT_FEATURE_VHT_IBSS);
++	wiphy_ext_feature_set(hw->wiphy, NL80211_EXT_FEATURE_BSS_PARENT_TSF);
+ 
+ 	hw->wiphy->interface_modes = param->iftypes;
+ 
 -- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
+2.17.1
+
