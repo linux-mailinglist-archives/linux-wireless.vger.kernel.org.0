@@ -2,50 +2,49 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 67657107647
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 Nov 2019 18:15:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C23B210767A
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 Nov 2019 18:34:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726633AbfKVRPd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 22 Nov 2019 12:15:33 -0500
-Received: from s3.sipsolutions.net ([144.76.43.62]:48258 "EHLO
-        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726046AbfKVRPd (ORCPT
+        id S1726676AbfKVReN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 22 Nov 2019 12:34:13 -0500
+Received: from mail.stusta.mhn.de ([141.84.69.5]:54714 "EHLO
+        mail.stusta.mhn.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726046AbfKVReN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 22 Nov 2019 12:15:33 -0500
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.92.3)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1iYCWq-0001EC-0J; Fri, 22 Nov 2019 18:15:32 +0100
-Message-ID: <ac6a65a46747b76a73b53a5807e9633601c7d473.camel@sipsolutions.net>
-Subject: Re: [PATCH v2 2/2] mac80211_hwsim: set rx_status mactime/flag for
- wmediumd path
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     James Prestwood <prestwoj@gmail.com>,
-        linux-wireless@vger.kernel.org
-Date:   Fri, 22 Nov 2019 18:15:28 +0100
-In-Reply-To: <20191122170612.8123-2-prestwoj@gmail.com> (sfid-20191122_180916_945714_8FE84206)
-References: <20191122170612.8123-1-prestwoj@gmail.com>
-         <20191122170612.8123-2-prestwoj@gmail.com>
-         (sfid-20191122_180916_945714_8FE84206)
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
+        Fri, 22 Nov 2019 12:34:13 -0500
+X-Greylist: delayed 575 seconds by postgrey-1.27 at vger.kernel.org; Fri, 22 Nov 2019 12:34:12 EST
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        by mail.stusta.mhn.de (Postfix) with ESMTPSA id 47KNb62SwHz4Y;
+        Fri, 22 Nov 2019 18:24:34 +0100 (CET)
+Date:   Fri, 22 Nov 2019 19:24:31 +0200
+From:   Adrian Bunk <bunk@kernel.org>
+To:     netdev@vger.kernel.org
+Cc:     Amitkumar Karwar <amitkarwar@gmail.com>,
+        Nishant Sarmukadam <nishants@marvell.com>,
+        Ganapathi Bhat <gbhat@marvell.com>,
+        Xinming Hu <huxinming820@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        linux-wireless@vger.kernel.org, stable@vger.kernel.org
+Subject: Please backport "mwifiex: Fix NL80211_TX_POWER_LIMITED" to stable
+ branches
+Message-ID: <20191122172431.GA24156@localhost>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 2019-11-22 at 09:06 -0800, James Prestwood wrote:
-> This patch sets the required rx_status mactime and flags in order for
-> the parent TSF value to be calculated and sent to userspace. This is
-> already done elsewhere, but this patch allows this to work for the
-> wmediumd code path.
-> 
+Please backport commit 65a576e27309120e0621f54d5c81eb9128bd56be
+"mwifiex: Fix NL80211_TX_POWER_LIMITED" to stable branches.
 
-:)
+It is a non-CVE kind of security issue when a wifi adapter
+exceeds the configured TX power limit.
 
-Now you just need a s-o-b.
+The commit applies and builds against all branches from 3.16 to 4.19, 
+confirmed working with 4.14. It is already included in kernel 5.3.
 
-johannes
-
+Thanks in advance
+Adrian
