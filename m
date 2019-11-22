@@ -2,76 +2,61 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0571D1076F4
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 Nov 2019 19:08:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 19E821076F8
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 Nov 2019 19:08:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726759AbfKVSID (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 22 Nov 2019 13:08:03 -0500
-Received: from mail-lf1-f66.google.com ([209.85.167.66]:44316 "EHLO
-        mail-lf1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726574AbfKVSID (ORCPT
+        id S1726947AbfKVSIw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 22 Nov 2019 13:08:52 -0500
+Received: from s3.sipsolutions.net ([144.76.43.62]:49088 "EHLO
+        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726944AbfKVSIw (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 22 Nov 2019 13:08:03 -0500
-Received: by mail-lf1-f66.google.com with SMTP id v201so5132049lfa.11;
-        Fri, 22 Nov 2019 10:08:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=T7/nfHWQBPlTCdPwZsbfc1JI4CJ6zRhYvBPNH/OaKDE=;
-        b=gpePcEhkMiv/zogb3LXutIPpvN7zhiJB5FK3KMarQP8hVubbFEJVoU5bUQQs1z8syN
-         ufFoOrdK04Ue5PlH4SSSnBwgMHJx9v+WC7pcEI3CmJu+nIj5MVt224kiCBVXLyRM/F24
-         H0J4ma17nKYpLcTMXEH07E4ueB2ANLesvdj7VkgQO3vnDAG5wQabqsYgNsVwHfwrlZ4j
-         fsgnyRQ/SkAeKRFLMDiWopZ2wxl2cEIkG752MMLcI10TgCaDTyHZFI0bgzZW0QQYLMiA
-         3p1V4SWy/I1BqKptS95IX/NlRKT4vR5iUFu4CFqPPkpVkRUQcwYkDorMQYxHDtR3l64V
-         JTYQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=T7/nfHWQBPlTCdPwZsbfc1JI4CJ6zRhYvBPNH/OaKDE=;
-        b=hoJ7TAzSvdZ81Z04QQtrwZpN490fd58IelId1qs9LunbJRUA72YYolOU+zPHFJdZBZ
-         kgADgbkvbMsc6whiPIFxwcVnF/rJ0FQ1cQ6TYa13Ltg8WYjG9nW6CdDXawCY8TEhsQ4r
-         yaB7lRsIxG/8tMUE1lNE9woAaNEpa86fwFfykaBHC67DdR5QCBX2zJJX1KGLPvengc/j
-         o2NtElxgevWUdbuv4iwCbfVpxlNbk/c6vvu6AAKmenATllgpiUNtsSMSL5te8MTLtJQQ
-         b8TuMt6plaDH0cPl6eu9rptZSHiaZexVIM4PatRsimb/cprnqrOGgfMqNRBnhR6Y7cbj
-         kj4A==
-X-Gm-Message-State: APjAAAXhRY0P+Y1fCd6CDddTzx03BpJeVjquJjwRe34Zlu4JZ1EZFUi6
-        nRY+stKLCUl1CuY697ybGDxXGztJRKuQWHJcF1s=
-X-Google-Smtp-Source: APXvYqz3ud5QamIZF2mlMJ/cfkLH57ksgQNb7htbHLw1W8fxPUPxWJPlANYEGFhW51mcnlE+P51wBk0UfKJfunfzBQs=
-X-Received: by 2002:ac2:424d:: with SMTP id m13mr668264lfl.13.1574446079536;
- Fri, 22 Nov 2019 10:07:59 -0800 (PST)
-MIME-Version: 1.0
-References: <20191108152013.13418-1-ramonreisfontes@gmail.com>
- <fe198371577479c1e00a80e9cae6f577ab39ce8e.camel@sipsolutions.net>
- <CAK8U23amVqf-6YoiPoyk5_za3dhVb4FJmBDvmA2xv2sD43DhQA@mail.gmail.com>
- <7d43bbc0dfeb040d3e0468155858c4cbe50c0de2.camel@sipsolutions.net>
- <CAK8U23aL7UDgko4Z2EkQ9r4muBTjNOCq-Erb9h2TFRnxdOmtWg@mail.gmail.com> <175edd72f0cd3bc4d2c0dbd42a4570c7fb47b8fd.camel@sipsolutions.net>
-In-Reply-To: <175edd72f0cd3bc4d2c0dbd42a4570c7fb47b8fd.camel@sipsolutions.net>
-From:   Ramon Fontes <ramonreisfontes@gmail.com>
-Date:   Fri, 22 Nov 2019 15:07:48 -0300
-Message-ID: <CAK8U23bLht3d9B==aZKOxhgP=nhCZqQ0zwcYRevgwof7+MsTdw@mail.gmail.com>
-Subject: Re: [PATCH] mac80211_hwsim: set the maximum EIRP output power for 5GHz
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        kvalo@codeaurora.org, davem@davemloft.net
+        Fri, 22 Nov 2019 13:08:52 -0500
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.92.3)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1iYDMQ-0003qm-NJ; Fri, 22 Nov 2019 19:08:50 +0100
+Message-ID: <43f4d446d7f8b9a08e091ab811fbf99bf00da2af.camel@sipsolutions.net>
+Subject: Re: [PATCH v2 0/3] fix a STA PS bug and add PS support to
+ mac80211_hwsim
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Thomas Pedersen <thomas@adapt-ip.com>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>
+Date:   Fri, 22 Nov 2019 19:08:49 +0100
+In-Reply-To: <d943f37db7a57dbc335cacfa5cbbd38c8ae8dea9.camel@sipsolutions.net>
+References: <20191119053538.25979-1-thomas@adapt-ip.com>
+         <85ed0881d0aeecd886b27bd482fa61fa86d96729.camel@sipsolutions.net>
+         <f0ae4c07-d3c3-768f-49c0-1f2a6c5a687d@adapt-ip.com>
+         <d943f37db7a57dbc335cacfa5cbbd38c8ae8dea9.camel@sipsolutions.net>
 Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-> If there's some other (physical?) restriction in the driver, sure, maybe
-> it should have one there, but for pure regulatory I'm not sure I see it.
-> That's why the pointer here to ETSI feels so strange to me.
+On Fri, 2019-11-22 at 19:04 +0100, Johannes Berg wrote:
+> 
+> Various. Jouni just said mostly concurrency ones, e.g.
+> 
+> p2p_cli_invite
+> ap_cipher_tkip_countermeasures_ap_mixed_mode
+> discovery_while_go_p2p_dev
+> radius_macacl_unreachable
 
-Ok. I see. You can change the commit msg then.
+Ah, still had my list open:
 
-> Note that I just sent my final pull request for the current kernel, so
-> this'll probably have to wait some time.
+discovery_while_go radius_macacl_unreachable
+discovery_while_go_p2p_dev bgscan_learn_beacon_loss
+wifi_display_parsing ap_vlan_iface_cleanup_multibss
+ap_vlan_iface_cleanup_multibss_per_sta_vif
+autogo_2cli
+bgscan_simple_beacon_loss
+rrm_lci_req_timeout
+rrm_ftm_range_req_timeout
+p2p_cli_invite
 
-Ok. No problem.
+johannes
 
---
-Ramon
