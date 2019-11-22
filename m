@@ -2,122 +2,100 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 55F5110740A
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 Nov 2019 15:27:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4EAF8107437
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 Nov 2019 15:48:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726546AbfKVO1T (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 22 Nov 2019 09:27:19 -0500
-Received: from mail-pj1-f66.google.com ([209.85.216.66]:34205 "EHLO
-        mail-pj1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726046AbfKVO1T (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 22 Nov 2019 09:27:19 -0500
-Received: by mail-pj1-f66.google.com with SMTP id bo14so3125697pjb.1
-        for <linux-wireless@vger.kernel.org>; Fri, 22 Nov 2019 06:27:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:subject:from:in-reply-to:date:cc
-         :content-transfer-encoding:message-id:references:to;
-        bh=KykVfamE1nBiFxriBu8p+Bbq3sL3up0WHQW26O7SCFc=;
-        b=lA7hS+sq8b5U/yn4U2uiI/Y6q0nlTm4N6kpVRKTWLYWIWJIIzM0jucq345Com7XCRy
-         qJXg3C942IMV/1ksFkgSCLjuc+Qgh5rRRi1I7wFKHIHP84vFSZhC1vY65+4TeArAeFtV
-         Axrd4DU9qtPgPzITmscHvkcRQMWE7NGXCgxa+Lx5LoFRPBL6SWjpxJq/n16/tN3xwzPR
-         5AZ5R2Ctrf8gSDDBTPrwALwZ700+kH6zO86AazQ3ZS/4hfn7KzGIoglAkpzqlxoSUN4Q
-         MQ33Vh9PzaKRp/bOzCSwJv3g6tbfEYegz1CwaZSvxl7bdBuodrWjdY3xyCKQ8a2ZKFOH
-         +ujA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:subject:from:in-reply-to:date:cc
-         :content-transfer-encoding:message-id:references:to;
-        bh=KykVfamE1nBiFxriBu8p+Bbq3sL3up0WHQW26O7SCFc=;
-        b=sjEDqXxZRkHBR2htLYGGNb5j+sAM8eXB4kKC07si78CoKVL2B7XLU+3zk/TCfi7ss4
-         1zq296o2okfpjjwzhdYhWyYrpmrbfex5pYwPA1ErzOzOEjQ9/QbYAIga1sJQUCuopg43
-         e4Nt3pcQdVmLUlICbVCYa9cZDHWJP1DzDH93lYoifhXKfp7OJJaAA6J26jNg9pkaX/av
-         hl88Es+IQsXYgdWrlXjbEvJMHzgRkNXCRo3lJtQ+nEHZVvM8P7i9KPmX7s/Qpcs5sixy
-         AdmWLGsJwdwF1cZxoLDA97qQRZlH2GZhEUl+CFZkOSQ8v8aKpCBkap/NBEaJ/srPJ4nS
-         WGWg==
-X-Gm-Message-State: APjAAAVGvBN3HmtUl8d3VyWRSxkcLLPht3I2SCC+jCLx4nbYx0C1GAwu
-        xOeM4qrzx2e0wkQ7dLjKM3A=
-X-Google-Smtp-Source: APXvYqwwYUtEB+inYC7bBzJwT7JUjYo8jISffBHc9CxeWoa28P/8zsXkixAEIAlCVeigzus3REcUnQ==
-X-Received: by 2002:a17:90a:4fe6:: with SMTP id q93mr19227052pjh.88.1574432838367;
-        Fri, 22 Nov 2019 06:27:18 -0800 (PST)
-Received: from [127.0.0.1] (187.220.92.34.bc.googleusercontent.com. [34.92.220.187])
-        by smtp.gmail.com with ESMTPSA id p123sm7718613pfg.30.2019.11.22.06.27.15
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 22 Nov 2019 06:27:17 -0800 (PST)
-Content-Type: text/plain;
-        charset=gb2312
-Mime-Version: 1.0 (Mac OS X Mail 11.3 \(3445.6.18\))
-Subject: Re: [EXT] Re: [PATCH] mwifiex: Fix heap overflow in
- mmwifiex_process_tdls_action_frame()
-From:   qize wang <wangqize888888888@gmail.com>
-In-Reply-To: <20191122123739.GJ617@kadam>
-Date:   Fri, 22 Nov 2019 22:27:13 +0800
-Cc:     Ganapathi Bhat <gbhat@marvell.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        amitkarwar <amitkarwar@gmail.com>,
-        nishants <nishants@marvell.com>,
-        huxinming820 <huxinming820@gmail.com>,
-        kvalo <kvalo@codeaurora.org>, Greg KH <greg@kroah.com>,
-        security <security@kernel.org>,
-        linux-distros <linux-distros@vs.openwall.org>,
-        Solar Designer <solar@openwall.com>
+        id S1726638AbfKVOsr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 22 Nov 2019 09:48:47 -0500
+Received: from canardo.mork.no ([148.122.252.1]:41259 "EHLO canardo.mork.no"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726100AbfKVOsr (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 22 Nov 2019 09:48:47 -0500
+X-Greylist: delayed 777 seconds by postgrey-1.27 at vger.kernel.org; Fri, 22 Nov 2019 09:48:46 EST
+Received: from miraculix.mork.no ([IPv6:2a02:2121:282:b3eb:68e2:39ff:fe1c:1a78])
+        (authenticated bits=0)
+        by canardo.mork.no (8.15.2/8.15.2) with ESMTPSA id xAMEZdID032622
+        (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
+        Fri, 22 Nov 2019 15:35:40 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mork.no; s=b;
+        t=1574433340; bh=2BpQFlpj3p3Pl/E0JLnP4XMiMR63AtMyntef50UKSuM=;
+        h=From:To:Cc:Subject:References:Date:Message-ID:From;
+        b=HibessQ4CjsRCwg4+6CeNmBbFHvp+xrwWKvY/UOe55DzVAAh5nWvR8Hx2OmNVS7xe
+         mvvgfV7pY9ao7X2HiDssVzJqOxCHaNlvUZmfLnLeR9nNEWlhzS876IMsYNguX83qsb
+         2BZ3GFiLxMGyPnjX9QKBgs4ykV709Xa48PLpLjxI=
+Received: from bjorn by miraculix.mork.no with local (Exim 4.92)
+        (envelope-from <bjorn@mork.no>)
+        id 1iYA21-0007MY-JP; Fri, 22 Nov 2019 15:35:33 +0100
+From:   =?utf-8?Q?Bj=C3=B8rn_Mork?= <bjorn@mork.no>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Igor Mitsyanko <igor.mitsyanko.os@quantenna.com>,
+        Jonas Gorski <jonas.gorski@gmail.com>,
+        Sergey Matyukevich <sergey.matyukevich.os@quantenna.com>,
+        "linux-wireless\@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        Andrey Shevchenko <ashevchenko@quantenna.com>
+Subject: Re: [PATCH v2 2/2] qtnfmac: add support for Topaz chipsets
+Organization: m
+References: <20181016102349.26544-1-sergey.matyukevich.os@quantenna.com>
+        <20181016102349.26544-3-sergey.matyukevich.os@quantenna.com>
+        <CAOiHx=nBWr4GNh61WV+SAY-++Z6es-HX3_pd70DB_N33bVK1tw@mail.gmail.com>
+        <41b4f41f-37ae-ef5f-476c-eb616d6a3da1@quantenna.com>
+        <CAOiHx=myYOAYPm0KwS3wP+sPLaQH9obUv0wbdteCx6REJPKQgw@mail.gmail.com>
+        <37ee7285-5856-6a77-3a29-92b86886c48c@quantenna.com>
+        <0101016e8de4774f-c81ce2c1-f2c7-40d4-83b2-f8f8a49b1f8a-000000@us-west-2.amazonses.com>
+Date:   Fri, 22 Nov 2019 15:35:33 +0100
+In-Reply-To: <0101016e8de4774f-c81ce2c1-f2c7-40d4-83b2-f8f8a49b1f8a-000000@us-west-2.amazonses.com>
+        (Kalle Valo's message of "Thu, 21 Nov 2019 12:16:30 +0000")
+Message-ID: <87k17s3rnu.fsf@miraculix.mork.no>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <1ED930FE-1360-4E0F-B770-244D02778411@gmail.com>
-References: <E40E893E-D9B4-4C63-8139-1DD5E1C2CECB@gmail.com>
- <20191122111339.GH617@kadam>
- <MN2PR18MB26373BC0C0D63A7C3CE09FC4A0490@MN2PR18MB2637.namprd18.prod.outlook.com>
- <20191122123739.GJ617@kadam>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-X-Mailer: Apple Mail (2.3445.6.18)
+X-Virus-Scanned: clamav-milter 0.101.4 at canardo
+X-Virus-Status: Clean
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi, dan
-
-I forget to explain  the reason of changing "pos" to "pos + 2=A1=B1 in =
-the commit message.
-Thank you for your suggestion.
-IE is TLV struct, but ht_cap and  ht_oper aren=A1=AFt TLV struct,the =
-origin marvell driver code is wrong.=20
-we fix the bug by changing pos(the address of IE) to  pos+2 ( the =
-address of IE=A1=AFs value ).
-
-regards,
-qize wang
-
-> =D4=DA 2019=C4=EA11=D4=C222=C8=D5=A3=AC=CF=C2=CE=E78:37=A3=ACDan =
-Carpenter <dan.carpenter@oracle.com> =D0=B4=B5=C0=A3=BA
->=20
-> On Fri, Nov 22, 2019 at 11:40:40AM +0000, Ganapathi Bhat wrote:
->> Hi Dan,
->>=20
->>>> +			/* copy the ie's value into ht_capb*/
->>>> +			memcpy((u8 *)&sta_ptr->tdls_cap.ht_capb, pos + =
-2,
->>>                                                                 =
-^^^^^^^
+Kalle Valo <kvalo@codeaurora.org> writes:
+> Igor Mitsyanko <igor.mitsyanko.os@quantenna.com> writes:
+>> On 11/19/19 8:12 AM, Jonas Gorski wrote:
+>>> Any update on this? The support now had its first anniversary, and
+>>> still no firmware available for it.
 >>>=20
->>> I don't understand why we changed "pos" to "pos + 2".  Presumably =
-there is
->>> a reason, but it needs to explained in the commit message.
->>=20
->> I think, we were doing wrong in the original code. We are supposed to =
-use 'pos + 2' itself, instead of just 'pos'. This is because, 'pos' is =
-pointing to 'ieee_types_header', followed by the actual data and the =
-destination do not start with (i.e. it do not contain) =
-'ieee_types_header'(ex: 'sta_ptr->tdls_cap.ht_oper').
->>=20
->> Also, there are few places were the destination starts with =
-'ieee_types_header'(ex: 'sta_ptr->tdls_cap.extcap'), which need just =
-'pos'.
->=20
-> I assumed it was something like this but it needs to be explained in
-> the commit message.
->=20
-> regards,
-> dan carpenter
->=20
+>>> Maybe you could put it up in a (temporary) download location at
+>>> Quantenna until you get around to the second attempt?
+>>
+>> Hi Jonas, Quantenna was recently acquired by ON Semiconductor and this=20
+>> was put on hold during the integration. I have gone back to our legal /=
+=20
+>> IT department to work on this again.
+>
+> Thanks, and please put priority on this. It's really bad that if there's
+> an upstream driver but users can't use it because of lack of firmware.
 
+And it's particularily meaningless since most of the firmware source is
+available for download from e.g
+https://kb.netgear.com/2649/NETGEAR-Open-Source-Code-for-Programmers-GPL
+, or other vendors using these modules.
+
+The "Netgear R7500" firmware archives include the GPL distribution of a
+few Quantenna Topaz firmware versions:
+
+  qtn sdk v36.6.0.23: 1.0.0.46,
+  qtn sdk v36.6.0.28: 1.0.0.52,
+  qtn sdk v36.6.0.30: 1.0.0.68, 1.0.0.70,
+  qtn sdk v36.7.3.23: 1.0.0.76, 1.0.0.82,
+  qtn sdk v37.3.1.25: 1.0.0.94, 1.0.0.108, 1.0.0.110 , 1.0.0.112, 1.0.0.116=
+, 1.0.0.122,
+  qtn sdk v37.3.2.44: 1.0.0.124
+
+These are pretty complete and directly buildable/usable.  Now I only
+have an RGMII connected Topaz module so I am unable to test these
+firmwares with the PCIe driver, but I assume they will work with it.
+
+Having some officially sanctioned image in linux-firmware would be nice.
+
+
+
+Bj=C3=B8rn
