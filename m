@@ -2,27 +2,27 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 00DED1078EB
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 Nov 2019 20:55:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4999A10783C
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 Nov 2019 20:49:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727128AbfKVTtF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 22 Nov 2019 14:49:05 -0500
-Received: from mail.kernel.org ([198.145.29.99]:48022 "EHLO mail.kernel.org"
+        id S1727508AbfKVTtj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 22 Nov 2019 14:49:39 -0500
+Received: from mail.kernel.org ([198.145.29.99]:49554 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726568AbfKVTtF (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 22 Nov 2019 14:49:05 -0500
+        id S1727484AbfKVTti (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 22 Nov 2019 14:49:38 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id ADC5720721;
-        Fri, 22 Nov 2019 19:49:03 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 34BCB2072D;
+        Fri, 22 Nov 2019 19:49:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1574452144;
-        bh=7flETJF+B606oiKWbY3Ix0amcBFn2mMkMWOh57m43BQ=;
+        s=default; t=1574452177;
+        bh=o+FcnjAr4l6b6GsIcdrroLJ1V8AgtiMh6PuIpSHnYUw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0uWQ+hgwMx2z8UN4tXL2QUaObAae46r5NGZa3CROzeVJHI9s5bfvD6bb+XDMv93t+
-         ziX+8/C7QOsxV5M+D13+MYHMBrY4k9zztOVSCSvF7NwdiLDJYoLsY2zRW4oqZ1CpoW
-         3I40zoABIVIq+OHq29VqMrWOUqNIE2ftQGYsL40M=
+        b=L8H8gX9PsKYFim98w7pgmrD1Ieoq6kGvSVZoC7mmCkullhqDbrrrgp1k4F8v5qBCu
+         HWsOZF2aV9GRf6kYW7eWr8+G8YIVYQn3b4mwKL8ocL5pJICkkTT/Ootsus9jL54ctB
+         p9njCZMDadiKRqH8+Exs6yp8qUEXUdfsbkwx/4SU=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Mordechay Goodstein <mordechay.goodstein@intel.com>,
@@ -30,12 +30,12 @@ Cc:     Mordechay Goodstein <mordechay.goodstein@intel.com>,
         Kalle Valo <kvalo@codeaurora.org>,
         Sasha Levin <sashal@kernel.org>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 04/25] iwlwifi: pcie: don't consider IV len in A-MSDU
-Date:   Fri, 22 Nov 2019 14:48:37 -0500
-Message-Id: <20191122194859.24508-4-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 04/21] iwlwifi: pcie: don't consider IV len in A-MSDU
+Date:   Fri, 22 Nov 2019 14:49:14 -0500
+Message-Id: <20191122194931.24732-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191122194859.24508-1-sashal@kernel.org>
-References: <20191122194859.24508-1-sashal@kernel.org>
+In-Reply-To: <20191122194931.24732-1-sashal@kernel.org>
+References: <20191122194931.24732-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -65,10 +65,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 7 insertions(+), 13 deletions(-)
 
 diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c b/drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c
-index b99f33ff91230..98f4507799be7 100644
+index 6f45c8148b279..bbb39d6ec2ee3 100644
 --- a/drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c
 +++ b/drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c
-@@ -242,27 +242,23 @@ static int iwl_pcie_gen2_build_amsdu(struct iwl_trans *trans,
+@@ -232,27 +232,23 @@ static int iwl_pcie_gen2_build_amsdu(struct iwl_trans *trans,
  	struct ieee80211_hdr *hdr = (void *)skb->data;
  	unsigned int snap_ip_tcp_hdrlen, ip_hdrlen, total_len, hdr_room;
  	unsigned int mss = skb_shinfo(skb)->gso_size;
@@ -99,7 +99,7 @@ index b99f33ff91230..98f4507799be7 100644
  
  	/* Our device supports 9 segments at most, it will fit in 1 page */
  	hdr_page = get_page_hdr(trans, hdr_room);
-@@ -273,14 +269,12 @@ static int iwl_pcie_gen2_build_amsdu(struct iwl_trans *trans,
+@@ -263,14 +259,12 @@ static int iwl_pcie_gen2_build_amsdu(struct iwl_trans *trans,
  	start_hdr = hdr_page->pos;
  	page_ptr = (void *)((u8 *)skb->cb + trans_pcie->page_offs);
  	*page_ptr = hdr_page->page;
@@ -116,7 +116,7 @@ index b99f33ff91230..98f4507799be7 100644
  
  	/*
  	 * Remove the length of all the headers that we don't actually
-@@ -355,8 +349,8 @@ static int iwl_pcie_gen2_build_amsdu(struct iwl_trans *trans,
+@@ -348,8 +342,8 @@ static int iwl_pcie_gen2_build_amsdu(struct iwl_trans *trans,
  		}
  	}
  
