@@ -2,124 +2,79 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 50A741076DD
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 Nov 2019 18:59:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1DC351076FC
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 Nov 2019 19:09:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726676AbfKVR7G (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 22 Nov 2019 12:59:06 -0500
-Received: from mail-oi1-f194.google.com ([209.85.167.194]:33201 "EHLO
-        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726046AbfKVR7F (ORCPT
+        id S1726994AbfKVSI4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 22 Nov 2019 13:08:56 -0500
+Received: from s3.sipsolutions.net ([144.76.43.62]:49088 "EHLO
+        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726975AbfKVSI4 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 22 Nov 2019 12:59:05 -0500
-Received: by mail-oi1-f194.google.com with SMTP id x21so163024oic.0;
-        Fri, 22 Nov 2019 09:59:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=Zt9/WbRpF+in66rAGR5FMaxTYD1kOM2Ez5yax9xrbjU=;
-        b=mwWDWXgM5LRjvON1p+hq4/FN8aeAV6T5zQIHssM3jAciT+GCLD+uWaJI5wq8w7D8En
-         65dzRnQJFNbLsb/cnZ7pqxSmKiNm7pkNIupWiL3WrFU1fc1ooWy/lWXUPW5jt7AU92ZL
-         Esmk6bfF0vDYmZh7z3/yYcrLCbSRRmFLPYpd10ix6zTv8YPkFNx1GVtuCJwUMkgj1BgS
-         OW9b2i1uSp1HJwLqqGYBnuo1YT83MjPl+d7XgdV5FXk5YSUUP6vMaBA04RlGc5GxZyxx
-         d2F/Ja15TSjVQRNQja/qdoqPfF4/z06HSUwDojRXGWhSOSbCFRu/UXCh29e5eWZ8Jj3K
-         EASA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
-         :date:user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=Zt9/WbRpF+in66rAGR5FMaxTYD1kOM2Ez5yax9xrbjU=;
-        b=tRQ8ZPLNTCR4UdMe4z6voXXbo7LQaZox95+xPqB/USvb/pB2W9qvPj+axMLT6/Nfvi
-         7AsuY+67IiXrtZb75EnHlaWjb49ey1YCvYUhnONAjChTptftN6Vr/3AhGujxKMuH6cpb
-         AlmyVRdfdy9j9MztWJ0Oa7YBpIR2YRtrMg4VE5VN970MDRQ2lAfrEFpbfO+dCkXIq1d4
-         qNjCxITbeSr1RtmYcExB5v6r9h8Nm9fYFttfkDcoRgOv+TeSwBIGURQN0Y4KOhCjlMFQ
-         kxGqPc1WDuMZ5BLlWen0qnkuJ4KwxrnRL//ZzBMElnwrESicfUZwShTno0TMLqQ3rqys
-         P1OQ==
-X-Gm-Message-State: APjAAAV19m9ERYoQnp9O5ATm/bX02BUQvU36P/IUxWnTLoIgJHbstrqc
-        0RbCoUEpzxdUJxZI3h8afKGFqmuX
-X-Google-Smtp-Source: APXvYqwac8KQFpUPDIstpS6f+I9wvIgst8DQs6V3Ro2aaBvH7gB7X9kb/mlsypjVVAxffPQzk1ww7A==
-X-Received: by 2002:aca:f141:: with SMTP id p62mr13059822oih.3.1574445543256;
-        Fri, 22 Nov 2019 09:59:03 -0800 (PST)
-Received: from [192.168.1.112] (cpe-24-31-245-230.kc.res.rr.com. [24.31.245.230])
-        by smtp.gmail.com with ESMTPSA id t10sm2408834otc.65.2019.11.22.09.59.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 22 Nov 2019 09:59:02 -0800 (PST)
-Subject: Re: [PATCH 2/3] rtlwifi: rtl8192de: Fix missing callback that tests
- for hw release of buffer
-To:     Sasha Levin <sashal@kernel.org>, kvalo@codeaurora.org
-Cc:     linux-wireless@vger.kernel.org, pkshih@realtek.com,
-        stable@vger.kernel.org
-References: <20191111194046.26908-3-Larry.Finger@lwfinger.net>
- <20191122070014.BA0492070A@mail.kernel.org>
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-Message-ID: <abb85c02-d7f2-7eb0-7522-7616d32de100@lwfinger.net>
-Date:   Fri, 22 Nov 2019 11:59:01 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.1
+        Fri, 22 Nov 2019 13:08:56 -0500
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.92.3)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1iYD6N-0002B1-Et; Fri, 22 Nov 2019 18:52:15 +0100
+Message-ID: <175edd72f0cd3bc4d2c0dbd42a4570c7fb47b8fd.camel@sipsolutions.net>
+Subject: Re: [PATCH] mac80211_hwsim: set the maximum EIRP output power for
+ 5GHz
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Ramon Fontes <ramonreisfontes@gmail.com>
+Cc:     linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        kvalo@codeaurora.org, davem@davemloft.net
+Date:   Fri, 22 Nov 2019 18:52:12 +0100
+In-Reply-To: <CAK8U23aL7UDgko4Z2EkQ9r4muBTjNOCq-Erb9h2TFRnxdOmtWg@mail.gmail.com> (sfid-20191122_151928_905345_8C817F08)
+References: <20191108152013.13418-1-ramonreisfontes@gmail.com>
+         <fe198371577479c1e00a80e9cae6f577ab39ce8e.camel@sipsolutions.net>
+         <CAK8U23amVqf-6YoiPoyk5_za3dhVb4FJmBDvmA2xv2sD43DhQA@mail.gmail.com>
+         <7d43bbc0dfeb040d3e0468155858c4cbe50c0de2.camel@sipsolutions.net>
+         <CAK8U23aL7UDgko4Z2EkQ9r4muBTjNOCq-Erb9h2TFRnxdOmtWg@mail.gmail.com>
+         (sfid-20191122_151928_905345_8C817F08)
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
 MIME-Version: 1.0
-In-Reply-To: <20191122070014.BA0492070A@mail.kernel.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 11/22/19 1:00 AM, Sasha Levin wrote:
-> Hi,
+On Fri, 2019-11-22 at 11:19 -0300, Ramon Fontes wrote:
+> > Right, so the commit log should say that it should be incremented to
+> > allow regdb to work, rather than worry about ETSI specifics?
+> > 
+> > Or maybe this limit should just be removed entirely?
 > 
-> [This is an automated email]
+> Hmm.. not sure. Perhaps we should add only one more information:
 > 
-> This commit has been processed because it contains a "Fixes:" tag,
-> fixing commit: 38506ecefab9 ("rtlwifi: rtl_pci: Start modification for new drivers").
+> ETSI has been set the maximum EIRP output power to 36 dBm (4000 mW)
+> Source: https://www.etsi.org/deliver/etsi_en/302500_302599/302502/01.02.01_60/en_302502v010201p.pdf
 > 
-> The bot has tested the following trees: v5.3.11, v4.19.84, v4.14.154, v4.9.201, v4.4.201.
+> + The new maximum EIRP output power also allows regdb to work
+> correctly when txpower is greater than 20 dBm.
 > 
-> v5.3.11: Build OK!
-> v4.19.84: Build OK!
-> v4.14.154: Failed to apply! Possible dependencies:
->      0c07bd745760 ("rtlwifi: rtl8192ee: Make driver support 64bits DMA.")
-> 
-> v4.9.201: Failed to apply! Possible dependencies:
->      004a1e167905 ("rtlwifi: rtl8821ae: Remove all instances of DBG_EMERG")
->      02527a73beb3 ("rtlwifi: rtl8188ee: Remove all instances of DBG_EMERG")
->      0c07bd745760 ("rtlwifi: rtl8192ee: Make driver support 64bits DMA.")
->      102e295ed5a4 ("rtlwifi: Redo debugging macros RTPRINT and RT_PRINT_DATA")
->      2d15acac2354 ("rtlwifi: rtl8192se: Remove all instances of DBG_EMERG")
->      4e2b4378f9d7 ("rtlwifi: rtl8723be: Remove all instances of DBG_EMERG")
->      a44f59d60365 ("rtlwifi: rtl8192ee: Remove all instances of DBG_EMERG")
->      a67005bc46d9 ("rtlwifi: rtl8723ae: Remove all instances of DBG_EMERG")
->      b8c79f454880 ("rtlwifi: rtl8192de: Remove all instances of DBG_EMERG")
->      c34df318ec9f ("rtlwifi: Convert COMP_XX entries into a proper debugging mask")
->      c38af3f06af4 ("rtlwifi: rtl8192cu: Remove all instances of DBG_EMERG")
->      e40a005652ad ("rtlwifi: rtl8192ce: Remove all instances of DBG_EMERG")
-> 
-> v4.4.201: Failed to apply! Possible dependencies:
->      02527a73beb3 ("rtlwifi: rtl8188ee: Remove all instances of DBG_EMERG")
->      0c07bd745760 ("rtlwifi: rtl8192ee: Make driver support 64bits DMA.")
->      102e295ed5a4 ("rtlwifi: Redo debugging macros RTPRINT and RT_PRINT_DATA")
->      4713bd1c7407 ("rtlwifi: Add missing newlines to RT_TRACE calls")
->      5345ea6a4bfb ("rtlwifi: fix error handling in *_read_adapter_info()")
->      9ce221915a94 ("rtlwifi: Create _rtl_dbg_trace function to reduce RT_TRACE code size")
->      ad5748893b27 ("rtlwifi: Add switch variable to 'switch case not processed' messages")
->      b8c79f454880 ("rtlwifi: rtl8192de: Remove all instances of DBG_EMERG")
->      c34df318ec9f ("rtlwifi: Convert COMP_XX entries into a proper debugging mask")
->      c38af3f06af4 ("rtlwifi: rtl8192cu: Remove all instances of DBG_EMERG")
->      e40a005652ad ("rtlwifi: rtl8192ce: Remove all instances of DBG_EMERG")
-> 
-> 
-> NOTE: The patch will not be queued to stable trees until it is upstream.
-> 
-> How should we proceed with this patch?
+> Since there is no standard defining greater txpower, in my opinion we
+> should keep the maximum value. What do you think?
 
-Sasha,
+It just feels to me like if the only restriction in the driver is
+regulatory, we shouldn't have it in the driver. That's what we have the
+regulatory database for.
 
-The underlying directories were moved from drivers/net/wireless/rtlwifi/ to 
-drivers/net/wireless/realtek/rtlwifi/. I can refactor the patches to account for 
-this change. How should I annotate them, and where should I send them?
+If there's some other (physical?) restriction in the driver, sure, maybe
+it should have one there, but for pure regulatory I'm not sure I see it.
 
-Larry
+That's why the pointer here to ETSI feels so strange to me.
+
+> Do I need to submit a new patch?
+
+I'll need to see if we can remove it, but if we can I'll do that, and
+otherwise I can just commit your patch but with a changed commit
+message.
+
+Note that I just sent my final pull request for the current kernel, so
+this'll probably have to wait some time.
+
+johannes
 
