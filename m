@@ -2,74 +2,93 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A9B98107DF3
-	for <lists+linux-wireless@lfdr.de>; Sat, 23 Nov 2019 10:55:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6EC5A10803F
+	for <lists+linux-wireless@lfdr.de>; Sat, 23 Nov 2019 21:12:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726487AbfKWJyU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 23 Nov 2019 04:54:20 -0500
-Received: from mail.kernel.org ([198.145.29.99]:34832 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726141AbfKWJyU (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 23 Nov 2019 04:54:20 -0500
-Received: from localhost.localdomain (unknown [77.139.212.74])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 5778220658;
-        Sat, 23 Nov 2019 09:54:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1574502859;
-        bh=71KvN8DCR94x7xslYbCNrCnuRBb8jesfxVzzsK1oeUg=;
-        h=From:To:Cc:Subject:Date:From;
-        b=gJyWY2hcvQg0ALxq6TSuGj7584eUr5rdbTGpXRGdwXfBe5j5n5S8RBQk3cU6s+sCx
-         eLLTmeXjW2QpIbI9kz8aRdQaNmqX8A1TtkzVcN8pH8Pqrb3oWKyy7WfA3vzQTHOb3Z
-         cmWTNksG1fDMzm787Efw/cB06i8+H5bwEd3btw1E=
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
-        kevin.patrick.schmidt@googlemail.com
-Subject: [PATCH] mt76: eeprom: add support for big endian eeprom partition
-Date:   Sat, 23 Nov 2019 11:54:01 +0200
-Message-Id: <61e89623446ed8914e5969114c7ae8c623f3e3ba.1574502651.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.21.0
+        id S1726690AbfKWUMA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 23 Nov 2019 15:12:00 -0500
+Received: from mail-pj1-f53.google.com ([209.85.216.53]:42376 "EHLO
+        mail-pj1-f53.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726620AbfKWUMA (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 23 Nov 2019 15:12:00 -0500
+Received: by mail-pj1-f53.google.com with SMTP id y21so4639826pjn.9
+        for <linux-wireless@vger.kernel.org>; Sat, 23 Nov 2019 12:12:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=netronome-com.20150623.gappssmtp.com; s=20150623;
+        h=date:from:to:cc:subject:message-id:in-reply-to:references
+         :organization:mime-version:content-transfer-encoding;
+        bh=2LwGmjdObMGCnA4E6/PwJpJ5df/udZNVgfH7GkGh/oc=;
+        b=Q0EmNISSInoOvhlmikNTjum3LlD9Bq/qK0AvznuuhFB4UyNQA0dPlGO7J86G07pie/
+         sIMJAFma09qhXr0aglmPxsxyg8tC6Ns3BywWGe1E43Vnd4GeSc7KL/RQw8DlpfV/HpeF
+         /od13j4QJtiJrfnvIs07RkcP/LO9h4FoZ52tb4FG7Xhj8QpJCTvIR2aEjniopWT0GS7C
+         Y3g39WvUYAu9w2uA7Gm1P5ILB87vHUAraiv4dQYRLOV+ArhXXrbP4GazOmmAIOaq4Pq7
+         IDXU11X2AbVE2P7cgm7+E9qMIC7hz7A4x566XYb+PHhZQsNCZz29C10rVZ3alFntjFK8
+         McyA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:in-reply-to
+         :references:organization:mime-version:content-transfer-encoding;
+        bh=2LwGmjdObMGCnA4E6/PwJpJ5df/udZNVgfH7GkGh/oc=;
+        b=fyCRM2PESlBpb5S/6k6kyCSngRYHcAqWVv8VEnWCZneEgoUNAH3ejEOWUQEzoyWeJ/
+         Qz4vfWEWnAMSztaHy4o+H/qOgGyyeoTJ3S/kohNyZwmkTQavILngRgX3LrrTwoz5VjlH
+         WI7L8JZW86+nFoxlyap3N9vXUUoqDePBOXf1u4MFKlrvbo3Ur0evwv5sXFU5hXMJtHr+
+         aqkNHAnKg9SujBvrRfr9p5JAz8B6giS/++nEwIy7YCFqC27TteeoMd+7Kirh34eantr9
+         RL6TXkuHk/FgKcF4f0GJkDOR3TD/I3JbWVGESPAnLwgiVKsfNsbVi9ZjhWMO55emwyVB
+         tggA==
+X-Gm-Message-State: APjAAAVhf69u2zrXI4mrAlgozIswt8C+IgYXm7lNLjSuFgCMMwz8e6cA
+        2dsRj4b5nTlWkLwDATw7e0EUTQ==
+X-Google-Smtp-Source: APXvYqxQY37u3OyU+rrvyD9DzJNHqrJwrpPwJ556Gw1Wf6vlpWctZBQ9v1e6FPtiVFL6DkvcDlKuow==
+X-Received: by 2002:a17:90a:fc91:: with SMTP id ci17mr27357513pjb.13.1574539919455;
+        Sat, 23 Nov 2019 12:11:59 -0800 (PST)
+Received: from cakuba.netronome.com (c-73-202-202-92.hsd1.ca.comcast.net. [73.202.202.92])
+        by smtp.gmail.com with ESMTPSA id s24sm2795197pgm.79.2019.11.23.12.11.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 23 Nov 2019 12:11:59 -0800 (PST)
+Date:   Sat, 23 Nov 2019 12:11:54 -0800
+From:   Jakub Kicinski <jakub.kicinski@netronome.com>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org
+Subject: Re: pull-request: wireless-drivers-next-2019-11-22
+Message-ID: <20191123121154.685d0f1b@cakuba.netronome.com>
+In-Reply-To: <0101016e9468c9df-b9fff56f-0e3f-48d1-bcff-e6586926e7b6-000000@us-west-2.amazonses.com>
+References: <0101016e9468c9df-b9fff56f-0e3f-48d1-bcff-e6586926e7b6-000000@us-west-2.amazonses.com>
+Organization: Netronome Systems, Ltd.
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-mt76x0e users reported some devices (e.g TP-Link Archer VR200v) have
-been flashed with big endian radio partition. Add the possibility to
-specify eeprom endianness using big-endian dts property and in case
-covert eeprom data in little endian
+On Fri, 22 Nov 2019 18:38:46 +0000, Kalle Valo wrote:
+> wireless-drivers-next patches for v5.5
+> 
+> Last set of patches for v5.5. Major features here 802.11ax support for
+> qtnfmac and airtime fairness support to mt76. And naturally smaller
+> fixes and improvements all over.
+> 
+> Major changes:
+> 
+> qtnfmac
+> 
+> * add 802.11ax support in AP mode
+> 
+> * enable offload bridging support
+> 
+> iwlwifi
+> 
+> * support TX/RX antennas reporting
+> 
+> mt76
+> 
+> * mt7615 smart carrier sense support
+> 
+> * aggregation statistics via debugfs
+> 
+> * airtime fairness (ATF) support
+> 
+> * mt76x0 OF mac address support
 
-Tested-by: Kevin Schmidt <kevin.patrick.schmidt@googlemail.com>
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- drivers/net/wireless/mediatek/mt76/eeprom.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/eeprom.c b/drivers/net/wireless/mediatek/mt76/eeprom.c
-index 804224e81103..33d992d5662a 100644
---- a/drivers/net/wireless/mediatek/mt76/eeprom.c
-+++ b/drivers/net/wireless/mediatek/mt76/eeprom.c
-@@ -64,6 +64,16 @@ mt76_get_of_eeprom(struct mt76_dev *dev, int len)
- 		goto out_put_node;
- 	}
- 
-+	if (of_property_read_bool(dev->dev->of_node, "big-endian")) {
-+		u8 *data = (u8 *)dev->eeprom.data;
-+		int i;
-+
-+		/* convert eeprom data in Little Endian */
-+		for (i = 0; i < round_down(len, 2); i += 2)
-+			put_unaligned_le16(get_unaligned_be16(&data[i]),
-+					   &data[i]);
-+	}
-+
- out_put_node:
- 	of_node_put(np);
- 	return ret;
--- 
-2.21.0
-
+Pulled, thanks!
