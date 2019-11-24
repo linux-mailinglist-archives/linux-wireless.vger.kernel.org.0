@@ -2,70 +2,80 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BA75A108482
-	for <lists+linux-wireless@lfdr.de>; Sun, 24 Nov 2019 19:37:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 316BD10855A
+	for <lists+linux-wireless@lfdr.de>; Sun, 24 Nov 2019 23:39:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726947AbfKXSg5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 24 Nov 2019 13:36:57 -0500
-Received: from mail-il1-f194.google.com ([209.85.166.194]:45700 "EHLO
-        mail-il1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726926AbfKXSg5 (ORCPT
+        id S1727026AbfKXWj1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 24 Nov 2019 17:39:27 -0500
+Received: from mail-pj1-f65.google.com ([209.85.216.65]:41612 "EHLO
+        mail-pj1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727008AbfKXWj1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 24 Nov 2019 13:36:57 -0500
-Received: by mail-il1-f194.google.com with SMTP id o18so12037367ils.12
-        for <linux-wireless@vger.kernel.org>; Sun, 24 Nov 2019 10:36:57 -0800 (PST)
+        Sun, 24 Nov 2019 17:39:27 -0500
+Received: by mail-pj1-f65.google.com with SMTP id gc1so5538272pjb.8
+        for <linux-wireless@vger.kernel.org>; Sun, 24 Nov 2019 14:39:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=LalpRjCzklUHb+d8yg6StCgBYUgFeAOrmf1VN5Ahg2g=;
-        b=Bp4XWue3FZRZ8aGEo8d7LdT+ghqC9zGj/gczb2hhniOkKHR9imldYvM6paLRGGMCZP
-         aagxdEqdhmQOxitfpZF015vfT575pHngcRE9/nYU8NB30e44G9k54QIDaqKuKFTYaZTb
-         qT8pHGFvT0joOqEt7drX+F12lrdGlCR3Ui1U1flh1kv0ot2I9zsz4MJMXGswOEmnBJpB
-         X8CNJBPKOrL2n6oRdIjZU8qLpd4+jd+BufoKLXCj/9+uqxWw0B8adpphlJ48VQLmyBcP
-         gyFTAfaqZvsvKvFKGEiQ+qx895kZQ7n2t9D7VHDxMIFEIF6f2shxfIX3TS1XoxXcKx7+
-         8+Pw==
+        d=netronome-com.20150623.gappssmtp.com; s=20150623;
+        h=date:from:to:cc:subject:message-id:in-reply-to:references
+         :organization:mime-version:content-transfer-encoding;
+        bh=mJ03a7hesWJNvR2m6hfpaM5qF0D6avZONNtvx1zsFJc=;
+        b=Gj7RiQOKmCUl7rlYZQVUi2mKCnOg5I0nw9OU8vIyXYd/0QJI7iGZFzb8A/gjk4E+JS
+         xOJdNEEuiSMhWnxlWAyzY3TDGJab6QkRA5Q+e9FeTPuhzQ/AEYUFZFzloPjD3PGACWym
+         SEtEro4s2JPqte8X2Pf+p3nxA+N3yyFlbPqGMcKI8aDGrB0AgcK8nlBEFgq8bE004dIh
+         ycirnv1uJfo4XBMc96OLuvYRyUlFwaYIcnglL6w3TuhledodxCYZZRFQooR3B5aUumvb
+         hEGV7k4M4T8W6jyExL6fLt9Cdlr+RPuD8Cuar7Te9Tl2EzW4Kqj/FvMFbWqiEPCIjWrv
+         +rWw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=LalpRjCzklUHb+d8yg6StCgBYUgFeAOrmf1VN5Ahg2g=;
-        b=NeY92BG2IOYqbYNs38d/okwJ039hcyb+obuciYHQ3trcNGkP6y61SG+V16u+47gaMr
-         yKaHuKDTUedQkyLlE+sb7pbEpWOSdbOdjhw0hVcwvcpzNZ7IyEvRzQXx72rgkazIJCVF
-         NcxFC/bzEshvSBIr4XOFfoj1YqI/C/dghxP8uMR89CeW1+3Jo1uph34yTgb40wGFRa9D
-         VhSstr1DqrU9Vvt8Ea+kKRduhTIwstwVp6qBdFovDCTMdqJX1hvwC5g2Uw/2v5gnCmOW
-         GPSGWH30ig7QtAEfSgJWIXeHJUts1xBtX1dC8gebQFMQaJvX/rGrPWPyFPH7m/Xypedx
-         acTA==
-X-Gm-Message-State: APjAAAUHXrwtTzFiJe+LslY/RQtIOtLU/OUPYIMOSQzI7SsvSZWv0gJ6
-        saFLHOp3BPbbTVqInEEIXWAipIvCVVwKQhwoPoE=
-X-Google-Smtp-Source: APXvYqy83bmVXYxVjQsg52rd/jx2GRUbsy4+DSLqa7hj3tlBq9gucxGNIkYG8R0eQEZYkrqfXhRlnJX7Y9FInfGzlRs=
-X-Received: by 2002:a92:5c5d:: with SMTP id q90mr30123888ilb.22.1574620616805;
- Sun, 24 Nov 2019 10:36:56 -0800 (PST)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:in-reply-to
+         :references:organization:mime-version:content-transfer-encoding;
+        bh=mJ03a7hesWJNvR2m6hfpaM5qF0D6avZONNtvx1zsFJc=;
+        b=c0U3MNzsb+yyahTdszJ4av5YZ1LqaA8itGCXIq0IwQzJ1312gMx3LhPIEN+8vxVHsQ
+         ssvXYjqkXTc129W6jDexYnynQW4AiCHUpfHgmhbeO+j8k7pAd+25ZjM/8VEDfSTUGXZz
+         DXJpOHhJHpMcSzo3cQVxrKJLydzPoDMfBe2ZWLY3GLC8RCAHOnaZ45SSVkDzm376QtoP
+         4ZBe1u9Tnr12EsdoaDCmbBHhkh+BdZOjBvAnp+67Dre2mPx9p4QhfDzjxAOyKeOBs/OA
+         QmnwgEH/0dvlbjz60Rrt0AQ1766m2MjeMbgHtq4dFX2Ob4ECT2e9lg7J680pMlWh8ojN
+         jCcg==
+X-Gm-Message-State: APjAAAVLo2OON7Qv7vtIp1aetbG4Vy5g72/48mzA2CjRgLj67vmSr9Sx
+        HDb8lMnRjITCH1rPVne1+RSC6DnOrLc=
+X-Google-Smtp-Source: APXvYqx50D+Wd5N5bU/VCxdp0oBYsPZSpIdT6ez+EmZyigA36yD5gxhbXBGUlO6FDAZGYYvd6plU4Q==
+X-Received: by 2002:a17:902:409:: with SMTP id 9mr26724818ple.25.1574635166883;
+        Sun, 24 Nov 2019 14:39:26 -0800 (PST)
+Received: from cakuba.netronome.com (c-73-202-202-92.hsd1.ca.comcast.net. [73.202.202.92])
+        by smtp.gmail.com with ESMTPSA id y12sm5619986pjy.0.2019.11.24.14.39.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 24 Nov 2019 14:39:26 -0800 (PST)
+Date:   Sun, 24 Nov 2019 14:39:19 -0800
+From:   Jakub Kicinski <jakub.kicinski@netronome.com>
+To:     Phong Tran <tranmanphong@gmail.com>
+Cc:     davem@davemloft.net, keescook@chromium.org, kvalo@codeaurora.org,
+        saeedm@mellanox.com, jeffrey.t.kirsher@intel.com,
+        luciano.coelho@intel.com, netdev@vger.kernel.org,
+        linux-wireless@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/5] Fix -Wcast-function-type net drivers
+Message-ID: <20191124143919.63711421@cakuba.netronome.com>
+In-Reply-To: <20191124094306.21297-1-tranmanphong@gmail.com>
+References: <20191124094306.21297-1-tranmanphong@gmail.com>
+Organization: Netronome Systems, Ltd.
 MIME-Version: 1.0
-Received: by 2002:a92:afd7:0:0:0:0:0 with HTTP; Sun, 24 Nov 2019 10:36:56
- -0800 (PST)
-From:   Ernest Groth <bpatrick799@gmail.com>
-Date:   Sun, 24 Nov 2019 10:36:56 -0800
-Message-ID: <CADUzNO=C+ay7+5syYnkQEe9rCrwbMBk7iT8JF=HxH=bveMFegw@mail.gmail.com>
-Subject: Good day Psyborg,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Good day Psyborg,
+On Sun, 24 Nov 2019 16:43:01 +0700, Phong Tran wrote:
+> This series is for fixing the compiler warning while enable
+> -Wcast-function-type.
+> 
+> Almost is incompatible callback prototype in using tasklet.
+> The void (*func)(unsigned long) instead of void (*func)(struct foo*).
+> 
+> Reported by: https://github.com/KSPP/linux/issues/20
 
-I am Mr. Ernest F.Groth from United States of America and a lawyer by
-profession.i want to use this opportunity to inform you about my late
-client whom have the same surname with you died in auto accident here
-in United States with his entire family dated 24th of June 2018 and
-this my client deposited the sum of Eighty Eight Million, Six Hundred
-Thousand Dollars (88,600,000.00 USD) in one of the bank in USA since
-his demise, none of his family members are come to claim this funds
-and i searched his relatives through CNN, VOA and other international
-media and no avail.
+Hi Tran, thanks for the patches. Could you split the series into two -
+the wireless changes and the USB changes?
 
-I will like you to claims this fund and will back you up with the
-documents. Contact me now for more details.
-
-Barrister Ernest.
+Those usually go via slightly different trees.
