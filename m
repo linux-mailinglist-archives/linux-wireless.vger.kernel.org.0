@@ -2,66 +2,82 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6627E10834D
-	for <lists+linux-wireless@lfdr.de>; Sun, 24 Nov 2019 13:39:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 754BA1083C7
+	for <lists+linux-wireless@lfdr.de>; Sun, 24 Nov 2019 15:15:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726740AbfKXMjn convert rfc822-to-8bit (ORCPT
+        id S1726992AbfKXOPv convert rfc822-to-8bit (ORCPT
         <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 24 Nov 2019 07:39:43 -0500
-Received: from LPZ-190-104-26-00114.tigo.bo ([190.104.26.114]:65081 "EHLO
-        asutec.jp" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726713AbfKXMjn (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 24 Nov 2019 07:39:43 -0500
-Reply-To: yuvalrose@free2312.com
-From:   "Rose" <info@asutec.jp>
-To:     linux-wireless@vger.kernel.org
-Subject: Business For You
-Date:   24 Nov 2019 08:38:11 -0400
-Message-ID: <20191124083811.C2900F63D5BD769D@asutec.jp>
+        Sun, 24 Nov 2019 09:15:51 -0500
+Received: from customer-187-141-72-141-sta.uninet-ide.com.mx ([187.141.72.141]:40802
+        "EHLO correo.opb.gob.mx" rhost-flags-OK-FAIL-OK-OK) by vger.kernel.org
+        with ESMTP id S1726779AbfKXOPv (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 24 Nov 2019 09:15:51 -0500
+X-Greylist: delayed 4888 seconds by postgrey-1.27 at vger.kernel.org; Sun, 24 Nov 2019 09:15:49 EST
+Received: from localhost (localhost [127.0.0.1])
+        by correo.opb.gob.mx (Postfix) with ESMTP id E583C1A322D;
+        Sun, 24 Nov 2019 06:57:37 -0500 (EST)
+Received: from correo.opb.gob.mx ([127.0.0.1])
+        by localhost (correo.opb.gob.mx [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id dNCeQ6LoFeWR; Sun, 24 Nov 2019 06:57:37 -0500 (EST)
+Received: from localhost (localhost [127.0.0.1])
+        by correo.opb.gob.mx (Postfix) with ESMTP id 1BCE41A3223;
+        Sun, 24 Nov 2019 06:57:35 -0500 (EST)
+X-Virus-Scanned: amavisd-new at opb.gob.mx
+Received: from correo.opb.gob.mx ([127.0.0.1])
+        by localhost (correo.opb.gob.mx [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id odZvaJKm3JFG; Sun, 24 Nov 2019 06:57:34 -0500 (EST)
+Received: from correo.opb.gob.mx (correo.opb.gob.mx [172.16.254.57])
+        by correo.opb.gob.mx (Postfix) with ESMTP id 476171A3205;
+        Sun, 24 Nov 2019 06:57:30 -0500 (EST)
+Date:   Sun, 24 Nov 2019 05:57:30 -0600 (CST)
+From:   "Mr.WEHNER DAVID M." <jesus.valencia@opb.gob.mx>
+Reply-To: "Mr.WEHNER DAVID M." <info@zbukgroupltd.info>
+Message-ID: <1105698182.24559.1574596650210.JavaMail.zimbra@opb.gob.mx>
+In-Reply-To: <1063337394.24307.1574596445839.JavaMail.zimbra@opb.gob.mx>
+Subject: =?utf-8?Q?Pengar_=C3=B6verf=C3=B6rs?=
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="utf-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8BIT
+X-Originating-IP: [198.199.76.158]
+X-Mailer: Zimbra 8.0.7_GA_6021 (ZimbraWebClient - GC75 (Win)/8.0.7_GA_6021)
+Thread-Topic: Pengar =?utf-8?B?w7Z2ZXJmw7Zycw==?=
+Thread-Index: Wlue1ObLHW28G6QK4CR7qvueCy2AHA==
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
- 
-My name is Yuval Rose, a Client Relations officer at one of 
-Canada’s foremost Crypto-currency exchange platforms. This is a 
-private and confidential message from me to you and I request 
-that it be treated as such.
- 
-I am contacting you with respect to an urgent issue regarding a 
-Bitcoin account belonging to a deceased account holder. The 
-Bitcoin (500 BTC) which was valued at over 4.6 Million United 
-States Dollars was sold and converted to cash at the request of 
-the late account holder for onward deposit to an account to be 
-advised by her. Upon liquidation, we waited for months for info 
-on the bank account for the deposit but never got a feedback. 
-Upon inquiry, it was confirmed that she passed away (died) after 
-a cancer related ailment.
- 
-At a meeting held 2 weeks ago by my Company’s Management on the 
-matter, it was resolved that unless a Next of Kin or any relative 
-of the late account Holder comes forward for claim of the funds 
-on or before 30th of December 2019 (which is practically 
-impossible) the whole funds would be converted back to Bitcoin 
-and becomes part of the Company's portfolio.
- 
-With the above in mind, I decided to quickly reach out to you so 
-that you can apply to my company for claim of this fund in the 
-capacity of a Next-of-Kin/Relative. Rest assured that this is a 
-straight forward process with no risks involved whatsoever. Start 
-to finish of the process with fund deposited in your nominated 
-bank account can be achieved within a space of 10 banking days or 
-less. All that I require from you is full cooperation and 
-sincerity.
-I will await your reply and indication of interest to give you 
-further/complete details including sharing ratio.
- 
-Best Regards
- 
-Yuval
+Office Of The Head
+Internationell överföring
+Operation Zenith Bank
+(UK) Ltd LONDON United
+Storbritannien och Irland
+Tel: +44 203 389 5674
+Fax: +44 704 307 1539
+
+Hälsning,
+
+Din e-postadress kom upp i ett slumpmässigt drag som genomfördes i Zenith Banks huvudkontor, International Transfer Operation i London, Storbritannien.
+
+Jag är Mr.WEHNER DAVID M.A personlig bokföring till avdöd Michael Blair som arbetade med Shell British Petroleum. Mr.Michael Blair, en välkänd filantropist, innan han dog, gjorde en testamente i ett advokatbyrå om att 12,5 miljoner US dollar (tolv miljoner femhundra tusen amerikanska dollar) bör doneras till någon lycklig individuell filantrop eller välgörenhetsorganisation utomlands.
+
+Zenith Bank Abp är en överenskommelse med sena Michael Blair om att donera fonden till alla lyckliga individer i Amerika, Europa, Asien och Afrika i andra för att förbättra liv och företag
+
+Vi har gjort vårt slumpmässiga drag och din e-postadress valdes för att ta emot denna fond som mottagare av hans testament. Vänligen snälla tillbaka till mig
+så snart du har fått vårt e-postmeddelande för att aktivera överföringen
+Operationen riktar dig till vad du ska göra för att få denna fond lagligen.
+
+Du rekommenderas att ta med följande nedan:
+
+FULLSTÄNDIGA NAMN:
+
+FULL KONTAKTADRESS:
+
+TELEFON- OCH FAXNUMMER:
+
+Med vänliga hälsningar,
+Mr.WEHNER DAVID M.
+Chef, internationell överföringsoperation
+Zenith Bank (UK) Abp
