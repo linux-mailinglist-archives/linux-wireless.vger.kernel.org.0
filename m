@@ -2,175 +2,94 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0ED77108D1F
-	for <lists+linux-wireless@lfdr.de>; Mon, 25 Nov 2019 12:42:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B67BF108D3B
+	for <lists+linux-wireless@lfdr.de>; Mon, 25 Nov 2019 12:49:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727236AbfKYLm4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 25 Nov 2019 06:42:56 -0500
-Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:36723 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1727188AbfKYLm4 (ORCPT
+        id S1727551AbfKYLtr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 25 Nov 2019 06:49:47 -0500
+Received: from a27-186.smtp-out.us-west-2.amazonses.com ([54.240.27.186]:44946
+        "EHLO a27-186.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727080AbfKYLtq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 25 Nov 2019 06:42:56 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1574682175;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=qrWxZXf+jF27pNmnMTmb8k2tBqD6ioouQVQFvYCmrvU=;
-        b=S8sTjWInWxIIB2/HVtVQiTuMwVmFhB1jsVwbi8Xlcye/pkPnYtS/dC1IjjlplB1Lg66g8M
-        ETOJ0G/stSuh5SgvGulZqcBqSdfcBjyLzVBhha2Vi0tV55PvPuyOWuLG2ptp/ROei39nWm
-        32hXMAgzB7UJjL+q/l0pFUtQC3QiAA8=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-59-24kVgaSQMbGs-bFIROJZNw-1; Mon, 25 Nov 2019 06:42:53 -0500
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id F4168593A5;
-        Mon, 25 Nov 2019 11:42:49 +0000 (UTC)
-Received: from ovpn-117-137.ams2.redhat.com (ovpn-117-137.ams2.redhat.com [10.36.117.137])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 45BA319C69;
-        Mon, 25 Nov 2019 11:42:45 +0000 (UTC)
-Message-ID: <b4b92c4d066007d9cb77e1645e667715c17834fb.camel@redhat.com>
-Subject: Re: [PATCH v2 net-next] net: core: use listified Rx for GRO_NORMAL
- in napi_gro_receive()
-From:   Paolo Abeni <pabeni@redhat.com>
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        Alexander Lobakin <alobakin@dlink.ru>,
-        Edward Cree <ecree@solarflare.com>
-Cc:     Nicholas Johnson <nicholas.johnson-opensource@outlook.com.au>,
-        David Miller <davem@davemloft.net>, jiri@mellanox.com,
-        edumazet@google.com, idosch@mellanox.com, petrm@mellanox.com,
-        sd@queasysnail.net, f.fainelli@gmail.com,
-        jaswinder.singh@linaro.org, ilias.apalodimas@linaro.org,
-        linux-kernel@vger.kernel.org, emmanuel.grumbach@intel.com,
-        luciano.coelho@intel.com, linuxwifi@intel.com,
-        kvalo@codeaurora.org, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org
-Date:   Mon, 25 Nov 2019 12:42:44 +0100
-In-Reply-To: <414288fcac2ba4fcee48a63bdbf28f7b9a5037c6.camel@sipsolutions.net>
-References: <20191014080033.12407-1-alobakin@dlink.ru>
-         <20191015.181649.949805234862708186.davem@davemloft.net>
-         <7e68da00d7c129a8ce290229743beb3d@dlink.ru>
-         <PSXP216MB04388962C411CD0B17A86F47804A0@PSXP216MB0438.KORP216.PROD.OUTLOOK.COM>
-         <c762f5eee08a8f2d0d6cb927d7fa3848@dlink.ru>
-         <746f768684f266e5a5db1faf8314cd77@dlink.ru>
-         <PSXP216MB0438267E8191486435445DA6804A0@PSXP216MB0438.KORP216.PROD.OUTLOOK.COM>
-         <cc08834c-ccb3-263a-2967-f72a9d72535a@solarflare.com>
-         <3147bff57d58fce651fe2d3ca53983be@dlink.ru>
-         (sfid-20191125_115913_640375_B340BE47) <414288fcac2ba4fcee48a63bdbf28f7b9a5037c6.camel@sipsolutions.net>
-User-Agent: Evolution 3.32.4 (3.32.4-1.fc30)
+        Mon, 25 Nov 2019 06:49:46 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1574682586;
+        h=Content-Type:MIME-Version:Content-Transfer-Encoding:Subject:From:In-Reply-To:References:To:Cc:Message-Id:Date;
+        bh=qRAPzMoq9zDnzg5lo80rTzCgJ3H+Ek6YWbnr4Fr6y7c=;
+        b=Pblrg6o0/GQsGmCaSaV8qaiH5H23ABMA1pW85aFWf1ACLcPja5eTggOaTa3eV4aA
+        0BMk2Q6boR0bZ0UsuLea2GM0fnS1kFGAWSKjbbJOfUCFip4nqi/pCqbVKvS6yigvBxn
+        23dNPufoFr/jmxUQAc4q1inOFq4BgNlfGF0Fbnp0=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+        s=gdwg2y3kokkkj5a55z2ilkup5wp5hhxx; d=amazonses.com; t=1574682586;
+        h=Content-Type:MIME-Version:Content-Transfer-Encoding:Subject:From:In-Reply-To:References:To:Cc:Message-Id:Date:Feedback-ID;
+        bh=qRAPzMoq9zDnzg5lo80rTzCgJ3H+Ek6YWbnr4Fr6y7c=;
+        b=Ehg0u2X+XSFnh5a8+TtS+8XBSRsQquRr7DzTNiVY0y0FpuN0OjJimqyqh6ZnHvWf
+        eDzr0Npdoco5NijIK1h6naDEwA0+cPDTeSwnNaJ2Nk8LD9+fOjB6n/8NaE+51/qg+08
+        dY0Sv8YPZ4AqgPfN7v7wvnXaiOP+crxAEZp1D+aM=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
+        MISSING_MID,SPF_NONE,URIBL_BLOCKED autolearn=no autolearn_force=no
+        version=3.4.0
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 1341FC433A2
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
-X-MC-Unique: 24kVgaSQMbGs-bFIROJZNw-1
-X-Mimecast-Spam-Score: 0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v6 1/3] ath10k: enable RX bundle receive for sdio
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <1569402639-31720-2-git-send-email-wgong@codeaurora.org>
+References: <1569402639-31720-2-git-send-email-wgong@codeaurora.org>
+To:     Wen Gong <wgong@codeaurora.org>
+Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org
+User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
+Message-ID: <0101016ea2656bea-fec594ce-191d-43ce-a06f-568a8c5df250-000000@us-west-2.amazonses.com>
+Date:   Mon, 25 Nov 2019 11:49:46 +0000
+X-SES-Outgoing: 2019.11.25-54.240.27.186
+Feedback-ID: 1.us-west-2.CZuq2qbDmUIuT3qdvXlRHZZCpfZqZ4GtG9v3VKgRyF0=:AmazonSES
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 2019-11-25 at 12:05 +0100, Johannes Berg wrote:
-> On Mon, 2019-11-25 at 13:58 +0300, Alexander Lobakin wrote:
-> > Edward Cree wrote 25.11.2019 13:31:
-> > > On 25/11/2019 09:09, Nicholas Johnson wrote:
-> > > > The default value of /proc/sys/net/core/gro_normal_batch was 8.
-> > > > Setting it to 1 allowed it to connect to Wi-Fi network.
-> > > >=20
-> > > > Setting it back to 8 did not kill the connection.
-> > > >=20
-> > > > But when I disconnected and tried to reconnect, it did not re-conne=
-ct.
-> > > >=20
-> > > > Hence, it appears that the problem only affects the initial handsha=
-ke
-> > > > when associating with a network, and not normal packet flow.
-> > > That sounds like the GRO batch isn't getting flushed at the endof the
-> > >  NAPI =E2=80=94 maybe the driver isn't calling napi_complete_done() a=
-t the
-> > >  appropriate time?
-> >=20
-> > Yes, this was the first reason I thought about, but didn't look at
-> > iwlwifi yet. I already knew this driver has some tricky parts, but
-> > this 'fake NAPI' solution seems rather strange to me.
->=20
-> Truth be told, we kinda just fudged it until we got GRO, since that's
-> what we really want on wifi (to reduce the costly TCP ACKs if possible).
->=20
-> Maybe we should call napi_complete_done() instead? But as Edward noted
-> (below), we don't actually really do NAPI polling, we just fake it for
-> each interrupt since we will often get a lot of frames in one interrupt
-> if there's high throughput (A-MPDUs are basically coming in all at the
-> same time). I've never really looked too much at what exactly happens
-> here, beyond seeing the difference from GRO.
->=20
->=20
-> > > Indeed, from digging through the layers of iwlwifi I eventually get t=
-o
-> > >  iwl_pcie_rx_handle() which doesn't really have a NAPI poll (the
-> > >  napi->poll function is iwl_pcie_dummy_napi_poll() { WARN_ON(1);
-> > >  return 0; }) and instead calls napi_gro_flush() at the end of its RX
-> > >  handling.  Unfortunately, napi_gro_flush() is no longer enough,
-> > >  because it doesn't call gro_normal_list() so the packets on the
-> > >  GRO_NORMAL list just sit there indefinitely.
-> > >=20
-> > > It was seeing drivers calling napi_gro_flush() directly that had me
-> > >  worried in the first place about whether listifying napi_gro_receive=
-()
-> > >  was safe and where the gro_normal_list() should go.
-> > > I wondered if other drivers that show up in [1] needed fixing with a
-> > >  gro_normal_list() next to their napi_gro_flush() call.  From a curso=
-ry
-> > >  check:
-> > > brocade/bna: has a real poller, calls napi_complete_done() so is OK.
-> > > cortina/gemini: calls napi_complete_done() straight after
-> > >  napi_gro_flush(), so is OK.
-> > > hisilicon/hns3: calls napi_complete(), so is _probably_ OK.
-> > > But it's far from clear to me why *any* of those drivers are calling
-> > >  napi_gro_flush() themselves...
-> >=20
-> > Agree. I mean, we _can_ handle this particular problem from networking
-> > core side, but from my point of view only rethinking driver's logic is
-> > the correct way to solve this and other issues that may potentionally
-> > appear in future.
->=20
-> Do tell what you think it should be doing :)
->=20
-> One additional wrinkle is that we have firmware notifications, command
-> completions and actual RX interleaved, so I think we do want to have
-> interrupts for the notifications and command completions?
+Wen Gong <wgong@codeaurora.org> wrote:
 
-I think it would be nice moving the iwlwifi driver to full/plain NAPI
-mode. The interrupt handler could keep processing extra work as it does
-now and queue real pkts on some internal queue, and than schedule the
-relevant napi, which in turn could process such queue in the napi poll
-method. Likely I missed tons of details and/or oversimplified it...
+> The existing implementation of initiating multiple sdio transfers for
+> receive bundling is slowing down the receive speed. Combining the
+> transfers using a bundle method would be ideal.
+> 
+> The transmission utilization ratio for sdio bus for small packet is
+> slow, because the space and time cost for sdio bus is same for large
+> length packet and small length packet. So the speed of data for large
+> length packet is higher than small length.
+> 
+> Test result of different length of data:
+> data packet(byte)   cost time(us)   calculated rate(Mbps)
+>       256               28                73
+>       512               33               124
+>      1024               35               234
+>      1792               45               318
+>     14336              168               682
+>     28672              333               688
+>     57344              660               695
+> 
+> Tested with QCA6174 SDIO with firmware
+> WLAN.RMH.4.4.1-00017-QCARMSWPZ-1
+> 
+> Signed-off-by: Alagu Sankar <alagusankar@silex-india.com>
+> Signed-off-by: Wen Gong <wgong@codeaurora.org>
+> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 
-For -net, I *think* something as dumb and hacky as the following could
-possibly work:
-----
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/rx.c b/drivers/net/wir=
-eless/intel/iwlwifi/pcie/rx.c
-index 4bba6b8a863c..df82fad96cbb 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
-@@ -1527,7 +1527,7 @@ static void iwl_pcie_rx_handle(struct iwl_trans *tran=
-s, int queue)
-                iwl_pcie_rxq_alloc_rbs(trans, GFP_ATOMIC, rxq);
-=20
-        if (rxq->napi.poll)
--               napi_gro_flush(&rxq->napi, false);
-+               napi_complete_done(&rxq->napi, 0);
-=20
-        iwl_pcie_rxq_restock(trans, rxq);
- }
----
+3 patches applied to ath-next branch of ath.git, thanks.
 
-Cheers,
+8d985555ddaa ath10k: enable RX bundle receive for sdio
+224776520ead ath10k: change max RX bundle size from 8 to 32 for sdio
+67654b26c903 ath10k: add workqueue for RX path of sdio
 
-Paolo
+-- 
+https://patchwork.kernel.org/patch/11160247/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
