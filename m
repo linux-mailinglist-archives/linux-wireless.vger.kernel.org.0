@@ -2,93 +2,99 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E47951092D9
-	for <lists+linux-wireless@lfdr.de>; Mon, 25 Nov 2019 18:30:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A5011092DB
+	for <lists+linux-wireless@lfdr.de>; Mon, 25 Nov 2019 18:32:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727431AbfKYRav (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 25 Nov 2019 12:30:51 -0500
-Received: from mail-ot1-f65.google.com ([209.85.210.65]:36504 "EHLO
-        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725868AbfKYRau (ORCPT
+        id S1727518AbfKYRcU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 25 Nov 2019 12:32:20 -0500
+Received: from us-smtp-2.mimecast.com ([205.139.110.61]:29185 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1725868AbfKYRcU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 25 Nov 2019 12:30:50 -0500
-Received: by mail-ot1-f65.google.com with SMTP id f10so13344421oto.3;
-        Mon, 25 Nov 2019 09:30:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=yx1H5O1mgv+pNnD+lwv4fd9CCd2JK4iu5sf9H+gz744=;
-        b=EHOE3NAQ7+En1anq7kD87m9onTHnR2WTW4cOYMiJZe3M2EiQqvqK7mF9gNV1oWxzSn
-         COFYzGUODG5jkkBEcbvmYE4YwVib3hXv7JdjyCcmpgUr7WG2/2uFj5JJwYDG7aBRoR26
-         HDFL0LXqs9fiZvLKPYpxO3RqoHZpMRH0E+IPzffjCMbNKYaXaeb5HDaUp7IB09rZ+GB8
-         T4QKa7q7aC2ZwcCJYUNACVeN5HgMooIDNIlG7gaUeNCPHT4C/IAdCG6SQR8zNIu6pNav
-         9VDje570hGAjj7plgHyBrJR603gqskIt8+nEBSJJ9fsjiw69QvjRnpNRqxWmRSuRNIwF
-         U1Pw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
-         :date:user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=yx1H5O1mgv+pNnD+lwv4fd9CCd2JK4iu5sf9H+gz744=;
-        b=iXbBFRJsYDejKzwJU6K83OMEE8BtmLR+GNX7tddtYIs6A3IpiLPwQaUNWJyEqCo9XG
-         c7MRUoXH7au7kENr29kW7+8bOyQTa7SnT4GBj72FGBKGaK3QtsFiqsA3J9anRDTrdb6R
-         TdcBXspCSuLLlTNQ78QZlswM2o+mgtfedqySrWiWjw92c1XvEsmLQeLBGNyqRm/sQWDO
-         8e/RYU933+n6TAAVVlh65RVzAzLCFoU4xStcVChgJnKxfFc+yAipKLVKQywHVLDlOai5
-         QbC2qrwyDcvVeXda8FYcZ9ee0gh7EZmnDidchvJHblMIx8Kg157nSQi+domQhBku3WEo
-         VEKw==
-X-Gm-Message-State: APjAAAUQQzWviNz82gnUpQSL5/Xy/G16ySNZoKdiGFjrV4quFkz+kJAQ
-        u3qT3Vca9rt58bGGjooSg15J8MXZ
-X-Google-Smtp-Source: APXvYqxo0ggMzR3raPo59g/b2tvq/c57ulTw0g6Bv6iVn8OPBoOEnRbz4s6f0wvTtRtsLhXkxPaS3A==
-X-Received: by 2002:a9d:7082:: with SMTP id l2mr20100098otj.213.1574703049717;
-        Mon, 25 Nov 2019 09:30:49 -0800 (PST)
-Received: from [192.168.1.112] (cpe-24-31-245-230.kc.res.rr.com. [24.31.245.230])
-        by smtp.gmail.com with ESMTPSA id e193sm2709732oib.53.2019.11.25.09.30.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 25 Nov 2019 09:30:49 -0800 (PST)
-Subject: Re: [PATCH 2/3] drivers: net: intel: Fix -Wcast-function-type
-To:     Phong Tran <tranmanphong@gmail.com>, jakub.kicinski@netronome.com,
-        kvalo@codeaurora.org, davem@davemloft.net,
-        luciano.coelho@intel.com, shahar.s.matityahu@intel.com,
-        johannes.berg@intel.com, emmanuel.grumbach@intel.com,
-        sara.sharon@intel.com, yhchuang@realtek.com, yuehaibing@huawei.com,
-        pkshih@realtek.com, arend.vanspriel@broadcom.com, rafal@milecki.pl,
-        franky.lin@broadcom.com, pieter-paul.giesberts@broadcom.com,
-        p.figiel@camlintechnologies.com, Wright.Feng@cypress.com,
-        keescook@chromium.org
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20191125150215.29263-1-tranmanphong@gmail.com>
- <20191125150215.29263-2-tranmanphong@gmail.com>
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-Message-ID: <61fa4ef5-e4fc-c20c-9e20-158bcdf61cbb@lwfinger.net>
-Date:   Mon, 25 Nov 2019 11:30:47 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.2
+        Mon, 25 Nov 2019 12:32:20 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1574703139;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=HuDRBPC56+3xBWkw3V6fbo/ygoJ85VXBh/ifc8c+60c=;
+        b=CuGSa/pHefoMTe3++ybtI+M9RJxcflEsV45z7MNDyWx+RmKSwqtZzAPK5X5JTivPRwjNOp
+        JQPIK+6n6TMyifmoSQs3HIT0IbezsekJZfEWz5BkRbaX54VHbqGYUXTtW36rFdLDkrOWqT
+        yAot8Qv+OfGV1xsqRc+hxFHFc7wCuII=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-424-FU5_n-INO_KXNuD17u2xAw-1; Mon, 25 Nov 2019 12:32:15 -0500
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id B756E89A08B;
+        Mon, 25 Nov 2019 17:32:14 +0000 (UTC)
+Received: from localhost (ovpn-204-116.brq.redhat.com [10.40.204.116])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 5322719C7F;
+        Mon, 25 Nov 2019 17:32:11 +0000 (UTC)
+Date:   Mon, 25 Nov 2019 18:32:10 +0100
+From:   Stanislaw Gruszka <sgruszka@redhat.com>
+To:     Felix Fietkau <nbd@nbd.name>
+Cc:     Markus Theil <markus.theil@tu-ilmenau.de>,
+        linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com
+Subject: Re: [PATCH v8 2/6] mt76: mt76x02: split beaconing
+Message-ID: <20191125173209.GA15755@redhat.com>
+References: <20191121180001.22451-1-markus.theil@tu-ilmenau.de>
+ <20191121180001.22451-3-markus.theil@tu-ilmenau.de>
+ <20191125130014.GB28102@redhat.com>
+ <ec1b9623-2aa1-27c7-abcd-2b39e0d25a0c@tu-ilmenau.de>
+ <20191125165932.GB14273@redhat.com>
+ <40c52ae5-85d8-8a65-2b4b-1a52bf1b73ab@nbd.name>
 MIME-Version: 1.0
-In-Reply-To: <20191125150215.29263-2-tranmanphong@gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <40c52ae5-85d8-8a65-2b4b-1a52bf1b73ab@nbd.name>
+User-Agent: Mutt/1.11.3 (2019-02-01)
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
+X-MC-Unique: FU5_n-INO_KXNuD17u2xAw-1
+X-Mimecast-Spam-Score: 0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 11/25/19 9:02 AM, Phong Tran wrote:
-> correct usage prototype of callback in tasklet_init().
-> Report by https://github.com/KSPP/linux/issues/20
-> 
-> Signed-off-by: Phong Tran <tranmanphong@gmail.com>
-> ---
->   drivers/net/wireless/intel/ipw2x00/ipw2100.c   | 7 ++++---
->   drivers/net/wireless/intel/ipw2x00/ipw2200.c   | 5 +++--
->   drivers/net/wireless/intel/iwlegacy/3945-mac.c | 5 +++--
->   drivers/net/wireless/intel/iwlegacy/4965-mac.c | 5 +++--
->   4 files changed, 13 insertions(+), 9 deletions(-)
+On Mon, Nov 25, 2019 at 06:12:56PM +0100, Felix Fietkau wrote:
+> On 2019-11-25 17:59, Stanislaw Gruszka wrote:
+> > On Mon, Nov 25, 2019 at 03:07:59PM +0100, Markus Theil wrote:
+> >> On 11/25/19 2:00 PM, Stanislaw Gruszka wrote:
+> >> > On Thu, Nov 21, 2019 at 06:59:57PM +0100, Markus Theil wrote:
+> >> >> +void mt76x02_mac_set_beacon_finish(struct mt76x02_dev *dev)
+> >> >> +{
+> >> >> +=09mt76_wr(dev, MT_BCN_BYPASS_MASK,
+> >> >> +=09=090xff00 | ~bitrev8(dev->beacon_data_mask));
+> >> > Since you arrange beacon slots continues starting from 0
+> >> > (i.e. 0,1,2 instead of "random" vif_idx values like 0,4,6),
+> >> > I think it would make sense to keep
+> >> > MT_MAC_BSSID_DW1_MBEACON_N =3D bcn_idx - 1 and set mask unchanged.
+> >> >
+> >> > But no strong opinion here, code with bitrev8 looks fine too.
+> >> I'd like to keep the bitrev8 code, as it saves a copy over usb for usb
+> >> devices, if MT_MAC_BSSID_DW_BEACON_N is kept constant.
+> >> bitrev8 should be a rather cheap operation compared to a copy over som=
+e
+> >> form of bus.
+> >=20
+> > This make sense. I tested the code on MT7630E and after adding missed
+> > write_txwi function, it works fine. So I think bitrev8 code is ok.
+> I find the use of bitrev8/ffz a bit convoluted. If I understand the code
+> right, wouldn't it be equivalent to keeping beacon_data_count instead of
+> beacon_data_mask and doing:
+> mt76_wr(dev, MT_BCN_BYPASS_MASK,
+> =090xffff & ~((1 << dev->beacon_data_count) - 1));
+> If so, I would strongly prefer the beacon_data_count variant. It's also
+> cheaper to calculate, though that probably doesn't matter, since it's
+> not really a hot path.
 
-This patch is "fixing" three different drivers and should be split into at least 
-two parts. To be consistent with previous practices, the subject for the two 
-should be "intel: ipw2100: ...." and "intel: iwlegacy: ...."
+Yes, with new code simple count can be used instead of mask. I did not
+pointed this, as it can be further optimization on top of Markus
+patches.
 
-Larry
+Stanislaw=20
+
