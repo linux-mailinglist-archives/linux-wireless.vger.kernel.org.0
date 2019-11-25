@@ -2,39 +2,46 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CF2E41095CF
-	for <lists+linux-wireless@lfdr.de>; Mon, 25 Nov 2019 23:50:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 75D9D109833
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Nov 2019 05:03:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727008AbfKYWuT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 25 Nov 2019 17:50:19 -0500
-Received: from mail2.candelatech.com ([208.74.158.173]:40672 "EHLO
-        mail3.candelatech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725946AbfKYWuT (ORCPT
+        id S1727230AbfKZEDk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 25 Nov 2019 23:03:40 -0500
+Received: from 9.mo7.mail-out.ovh.net ([46.105.60.248]:48980 "EHLO
+        9.mo7.mail-out.ovh.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726947AbfKZEDk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 25 Nov 2019 17:50:19 -0500
-Received: from [192.168.43.60] (unknown [172.58.46.212])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail3.candelatech.com (Postfix) with ESMTPSA id B099413C359
-        for <linux-wireless@vger.kernel.org>; Mon, 25 Nov 2019 14:50:18 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com B099413C359
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1574722218;
-        bh=TzOZlfKPdw9uoWQ5iCuYYswkj2CphrOF3TefTt99jWY=;
-        h=Date:From:To:Subject:From;
-        b=V9R34+RuwadmZJa0Eyr7FKlC40QCWz4HoHso6ITgKp+VIUepO7oLs7NplUZa9hYLX
-         fJ2cCGYTYwlYamGpyl1GcoKSe01YDwG1xIraDgFvUUL/uKlRAlqJJ6BAOtdL9P2GcN
-         te4jd/sKEvVhJyow4Im5YYS7wTKtO2uP2fbnMkfc=
-Message-ID: <5DDC5AB4.2010500@candelatech.com>
-Date:   Mon, 25 Nov 2019 14:50:28 -0800
-From:   Ben Greear <greearb@candelatech.com>
-Organization: Candela Technologies
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.3.0
+        Mon, 25 Nov 2019 23:03:40 -0500
+X-Greylist: delayed 16800 seconds by postgrey-1.27 at vger.kernel.org; Mon, 25 Nov 2019 23:03:40 EST
+Received: from player793.ha.ovh.net (unknown [10.108.54.94])
+        by mo7.mail-out.ovh.net (Postfix) with ESMTP id 0BC0A140809
+        for <linux-wireless@vger.kernel.org>; Mon, 25 Nov 2019 23:08:23 +0100 (CET)
+Received: from awhome.eu (p57B7E051.dip0.t-ipconnect.de [87.183.224.81])
+        (Authenticated sender: postmaster@awhome.eu)
+        by player793.ha.ovh.net (Postfix) with ESMTPSA id 6E01FC81FD09
+        for <linux-wireless@vger.kernel.org>; Mon, 25 Nov 2019 22:08:23 +0000 (UTC)
+From:   Alexander Wetzel <alexander@wetzel-home.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=wetzel-home.de;
+        s=wetzel-home; t=1574719702;
+        bh=CIEjwWIxYU4yQrgRZykyd/00SlotQiFNdp0k4W8qymU=;
+        h=From:Subject:To:Date;
+        b=JMOSYiKg2ElsCUCH60alog+xr4b6HVX3uzpOexaqrqLSVfCx6sIBfpyGgZQexZIKt
+         vyiMbzd9PApZi9F2yY92Ms9jnDgGauf5nGzQv3DF/BTAnyXxboeV0q/6yBj0fMrzP5
+         JBZe/mPD2npeYsguHnT0ZqiUgqFSDjFGVn3KIGsE=
+Subject: Intel Wireless Gigabit 11100 VR support or datasheet?
+To:     linux-wireless <linux-wireless@vger.kernel.org>
+Message-ID: <795f8f6d-b77d-f349-c687-a79607cc4e63@wetzel-home.de>
+Date:   Mon, 25 Nov 2019 23:08:20 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.2
 MIME-Version: 1.0
-To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: ax200 signal average is wrong sign in 5.2.21+ kernel
 Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
+X-Ovh-Tracer-Id: 5825124644220509380
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: 0
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedufedrudeiuddgudehkecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjqdffgfeufgfipdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecunecujfgurhephffuvffkffgfgggtgfesthejredttdefjeenucfhrhhomheptehlvgigrghnuggvrhcuhggvthiivghluceorghlvgigrghnuggvrhesfigvthiivghlqdhhohhmvgdruggvqeenucffohhmrghinhepihhnthgvlhdrtghomhenucfkpheptddrtddrtddrtddpkeejrddukeefrddvvdegrdekudenucfrrghrrghmpehmohguvgepshhmthhpqdhouhhtpdhhvghlohepphhlrgihvghrjeelfedrhhgrrdhovhhhrdhnvghtpdhinhgvtheptddrtddrtddrtddpmhgrihhlfhhrohhmpegrlhgvgigrnhguvghrseifvghtiigvlhdqhhhomhgvrdguvgdprhgtphhtthhopehlihhnuhigqdifihhrvghlvghsshesvhhgvghrrdhkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedt
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
@@ -42,29 +49,18 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 Hello,
 
-Looks like ax200 has wrong signal avg (positive instead of neg):
+Is anyone working on Linux WiGig support and/or has any data sheets for 
+any Intel WiGig card? I can find neither...
 
-[root@lf0350-9438 ~]# iw wlan1 station dump
-Station 0c:9d:92:02:42:e4 (on wlan1)
-	inactive time:	5388 ms
-	rx bytes:	1078599
-	rx packets:	16341
-	tx bytes:	21516
-	tx packets:	184
-	tx retries:	0
-	tx failed:	0
-	beacon loss:	0
-	beacon rx:	15580
-	rx drop misc:	0
-	signal:  	-28 [-28, -28] dBm
-	signal avg:	29 dBm
+I'm interested in any documentation about the Intel WiGig cards, but I 
+find only the marketing material and nothing really useful when you want 
+to write a driver for the card...
 
-Any idea if there is already a fix for this somewhere?
+I would like to get at least an impression how much effort it would be 
+to write a driver able to get at least the WiGig Serial Extension (WSB) 
+working and maybe try my hand at that.
 
-Thanks,
-Ben
+Here the card I have to play around with:
+https://www.intel.com/content/dam/www/public/us/en/documents/product-briefs/wireless-gigabit-11100-vr-antenna-m-10042r-product.pdf
 
--- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
-
+Alexander
