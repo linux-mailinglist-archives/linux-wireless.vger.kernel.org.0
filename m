@@ -2,78 +2,149 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 56DDE10891E
-	for <lists+linux-wireless@lfdr.de>; Mon, 25 Nov 2019 08:25:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 67CA0108A04
+	for <lists+linux-wireless@lfdr.de>; Mon, 25 Nov 2019 09:26:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725924AbfKYHZF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 25 Nov 2019 02:25:05 -0500
-Received: from mga03.intel.com ([134.134.136.65]:8498 "EHLO mga03.intel.com"
+        id S1725870AbfKYI0P (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 25 Nov 2019 03:26:15 -0500
+Received: from fd.dlink.ru ([178.170.168.18]:33460 "EHLO fd.dlink.ru"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725747AbfKYHZE (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 25 Nov 2019 02:25:04 -0500
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by orsmga103.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 24 Nov 2019 23:25:03 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.69,240,1571727600"; 
-   d="scan'208";a="206031621"
-Received: from slehanex-mobl1.ger.corp.intel.com ([10.252.10.177])
-  by fmsmga008.fm.intel.com with ESMTP; 24 Nov 2019 23:24:59 -0800
-Message-ID: <ea75c55485c0d893b15a67462728b45b775921b0.camel@intel.com>
-Subject: Re: iwlwifi: Checking a kmemdup() call in iwl_req_fw_callback()
-From:   Luciano Coelho <luciano.coelho@intel.com>
-To:     Markus Elfring <Markus.Elfring@web.de>,
-        linux-wireless@vger.kernel.org, linuxwifi@intel.com,
-        netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Kalle Valo <kvalo@codeaurora.org>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org, Aditya Pakki <pakki001@umn.edu>,
-        Kangjie Lu <kjlu@umn.edu>, Navid Emamdoost <emamd001@umn.edu>,
-        Stephen McCamant <smccaman@umn.edu>
-Date:   Mon, 25 Nov 2019 09:24:58 +0200
-In-Reply-To: <71774617-79f9-1365-4267-a15a47422d10@web.de>
-References: <71774617-79f9-1365-4267-a15a47422d10@web.de>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.1-2+b1 
+        id S1725792AbfKYI0P (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 25 Nov 2019 03:26:15 -0500
+Received: by fd.dlink.ru (Postfix, from userid 5000)
+        id 5A2C31B219EB; Mon, 25 Nov 2019 11:26:11 +0300 (MSK)
+DKIM-Filter: OpenDKIM Filter v2.11.0 fd.dlink.ru 5A2C31B219EB
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dlink.ru; s=mail;
+        t=1574670371; bh=CXf4d7mRTFtOxVP/C73Vp+WHBGtRlikKg6MINbfQcRI=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References;
+        b=qC76Ttwk9zWMoHh2BWJ1rZjI0dbWe/bLYUccZjXhFhZsLRHm+nRtbw5w5NJjhhvNb
+         TZ2z/5k51PBSt974CNErHbe8TSI7Q4FGSl4JY0wfwDgzviiqqEg95XKRbmtg5UC+rU
+         A0CL7nWVVYnpMhAaHVdmyI7ozHzIsp8nX1XQcBIg=
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on mail.dlink.ru
+X-Spam-Level: 
+X-Spam-Status: No, score=-99.2 required=7.5 tests=BAYES_50,URIBL_BLOCKED,
+        USER_IN_WHITELIST autolearn=disabled version=3.4.2
+Received: from mail.rzn.dlink.ru (mail.rzn.dlink.ru [178.170.168.13])
+        by fd.dlink.ru (Postfix) with ESMTP id F0DD01B21A00;
+        Mon, 25 Nov 2019 11:25:50 +0300 (MSK)
+DKIM-Filter: OpenDKIM Filter v2.11.0 fd.dlink.ru F0DD01B21A00
+Received: from mail.rzn.dlink.ru (localhost [127.0.0.1])
+        by mail.rzn.dlink.ru (Postfix) with ESMTP id 6A68F1B217D8;
+        Mon, 25 Nov 2019 11:25:50 +0300 (MSK)
+Received: from mail.rzn.dlink.ru (localhost [127.0.0.1])
+        by mail.rzn.dlink.ru (Postfix) with ESMTPA;
+        Mon, 25 Nov 2019 11:25:50 +0300 (MSK)
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
 Content-Transfer-Encoding: 8bit
+Date:   Mon, 25 Nov 2019 11:25:50 +0300
+From:   Alexander Lobakin <alobakin@dlink.ru>
+To:     Nicholas Johnson <nicholas.johnson-opensource@outlook.com.au>
+Cc:     David Miller <davem@davemloft.net>, ecree@solarflare.com,
+        jiri@mellanox.com, edumazet@google.com, idosch@mellanox.com,
+        pabeni@redhat.com, petrm@mellanox.com, sd@queasysnail.net,
+        f.fainelli@gmail.com, jaswinder.singh@linaro.org,
+        ilias.apalodimas@linaro.org, linux-kernel@vger.kernel.org,
+        johannes.berg@intel.com, emmanuel.grumbach@intel.com,
+        luciano.coelho@intel.com, linuxwifi@intel.com,
+        kvalo@codeaurora.org, netdev@vger.kernel.org,
+        linux-wireless@vger.kernel.org
+Subject: Re: [PATCH v2 net-next] net: core: use listified Rx for GRO_NORMAL in
+ napi_gro_receive()
+In-Reply-To: <c762f5eee08a8f2d0d6cb927d7fa3848@dlink.ru>
+References: <20191014080033.12407-1-alobakin@dlink.ru>
+ <20191015.181649.949805234862708186.davem@davemloft.net>
+ <7e68da00d7c129a8ce290229743beb3d@dlink.ru>
+ <PSXP216MB04388962C411CD0B17A86F47804A0@PSXP216MB0438.KORP216.PROD.OUTLOOK.COM>
+ <c762f5eee08a8f2d0d6cb927d7fa3848@dlink.ru>
+User-Agent: Roundcube Webmail/1.4.0
+Message-ID: <746f768684f266e5a5db1faf8314cd77@dlink.ru>
+X-Sender: alobakin@dlink.ru
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sat, 2019-10-12 at 19:26 +0200, Markus Elfring wrote:
-> Hello,
+Alexander Lobakin wrote 25.11.2019 10:54:
+> Nicholas Johnson wrote 25.11.2019 10:29:
+>> Hi,
+>> 
+>> On Wed, Oct 16, 2019 at 10:31:31AM +0300, Alexander Lobakin wrote:
+>>> David Miller wrote 16.10.2019 04:16:
+>>> > From: Alexander Lobakin <alobakin@dlink.ru>
+>>> > Date: Mon, 14 Oct 2019 11:00:33 +0300
+>>> >
+>>> > > Commit 323ebb61e32b4 ("net: use listified RX for handling GRO_NORMAL
+>>> > > skbs") made use of listified skb processing for the users of
+>>> > > napi_gro_frags().
+>>> > > The same technique can be used in a way more common napi_gro_receive()
+>>> > > to speed up non-merged (GRO_NORMAL) skbs for a wide range of drivers
+>>> > > including gro_cells and mac80211 users.
+>>> > > This slightly changes the return value in cases where skb is being
+>>> > > dropped by the core stack, but it seems to have no impact on related
+>>> > > drivers' functionality.
+>>> > > gro_normal_batch is left untouched as it's very individual for every
+>>> > > single system configuration and might be tuned in manual order to
+>>> > > achieve an optimal performance.
+>>> > >
+>>> > > Signed-off-by: Alexander Lobakin <alobakin@dlink.ru>
+>>> > > Acked-by: Edward Cree <ecree@solarflare.com>
+>>> >
+>>> > Applied, thank you.
+>>> 
+>>> David, Edward, Eric, Ilias,
+>>> thank you for your time.
+>>> 
+>>> Regards,
+>>> ᚷ ᛖ ᚢ ᚦ ᚠ ᚱ
+>> 
+>> I am very sorry to be the bearer of bad news. It appears that this
+>> commit is causing a regression in Linux 5.4.0-rc8-next-20191122,
+>> preventing me from connecting to Wi-Fi networks. I have a Dell XPS 
+>> 9370
+>> (Intel Core i7-8650U) with Intel Wireless 8265 [8086:24fd].
 > 
-> I tried another script for the semantic patch language out.
-> This source code analysis approach points out that the implementation
-> of the function “iwl_req_fw_callback” contains still an unchecked call
-> of the function “kmemdup”.
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/net/wireless/intel/iwlwifi/iwl-drv.c?id=1c0cc5f1ae5ee5a6913704c0d75a6e99604ee30a#n1454
-> https://elixir.bootlin.com/linux/v5.4-rc2/source/drivers/net/wireless/intel/iwlwifi/iwl-drv.c#L1454
+> Hi!
 > 
-> Can it be that just an other data structure member should be used
-> for the desired null pointer check at this place?
+> It's a bit strange as this commit doesn't directly affect the packet
+> flow. I don't have any iwlwifi hardware at the moment, so let's see if
+> anyone else will be able to reproduce this (for now, it is the first
+> report in a ~6 weeks after applying to net-next).
+> Anyway, I'll investigate iwlwifi's Rx processing -- maybe I could find
+> something driver-specific that might produce this.
+> 
+> Thank you for the report.
+> 
+>> I did a bisect, and this commit was named the culprit. I then applied
+>> the reverse patch on another clone of Linux next-20191122, and it
+>> started working.
+>> 
+>> 6570bc79c0dfff0f228b7afd2de720fb4e84d61d
+>> net: core: use listified Rx for GRO_NORMAL in napi_gro_receive()
+>> 
+>> You can see more at the bug report I filed at [0].
+>> 
+>> [0]
+>> https://bugzilla.kernel.org/show_bug.cgi?id=205647
+>> 
+>> I called on others at [0] to try to reproduce this - you should not 
+>> pull
+>> a patch because of a single reporter - as I could be wrong.
+>> 
+>> Please let me know if you want me to give more debugging information 
+>> or
+>> test any potential fixes. I am happy to help to fix this. :)
 
-Hi Markus,
+And you can also set /proc/sys/net/core/gro_normal_batch to the value
+of 1 and see if there are any changes. This value makes GRO stack to
+behave just like without the patch.
 
-Sorry for the delay in replying to this.
+>> Kind regards,
+>> Nicholas Johnson
+> 
+> Regards,
+> ᚷ ᛖ ᚢ ᚦ ᚠ ᚱ
 
-I've checked this now and you are right.  We are checking the element
-in the array that contains the length of the allocation we requested
-instead of checking the pointer returned by kmemdup().  This was
-probably a typo.
-
-I have fixed this in our internal tree and it will reach the mainline
-following our normal upstreaming process.
-
-Thanks for reporting!
-
---
-Cheers,
-Luca.
-
+Regards,
+ᚷ ᛖ ᚢ ᚦ ᚠ ᚱ
