@@ -2,118 +2,99 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DF6DA1090A0
-	for <lists+linux-wireless@lfdr.de>; Mon, 25 Nov 2019 16:02:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E0991090B1
+	for <lists+linux-wireless@lfdr.de>; Mon, 25 Nov 2019 16:07:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728447AbfKYPCn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 25 Nov 2019 10:02:43 -0500
-Received: from mail-pf1-f194.google.com ([209.85.210.194]:41409 "EHLO
-        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728071AbfKYPCm (ORCPT
+        id S1728486AbfKYPG7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 25 Nov 2019 10:06:59 -0500
+Received: from mail-pl1-f195.google.com ([209.85.214.195]:37287 "EHLO
+        mail-pl1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727758AbfKYPG7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 25 Nov 2019 10:02:42 -0500
-Received: by mail-pf1-f194.google.com with SMTP id p26so7490284pfq.8;
-        Mon, 25 Nov 2019 07:02:41 -0800 (PST)
+        Mon, 25 Nov 2019 10:06:59 -0500
+Received: by mail-pl1-f195.google.com with SMTP id bb5so6631069plb.4;
+        Mon, 25 Nov 2019 07:06:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=XX2U608hnsjlr3CObVhxW7h8IxFeUeweX4fxE0/OsVM=;
-        b=cB2EV1LTsKcc+xMfsZ/9lZItciPyRYwhdKwF4OJ34eh9MadXxnnjTCXk39VUy16I1R
-         PrwJSSFjkEkgkiIgaCfmK0oz5eHWszJShgBjmr+uI1TZGRCAp1v03cwx3a9+5BWc4rtI
-         f1NsPeaj5URc59v1/9yxmIIku00flIlHZNA0bHzJWTCpIWNBqRP1y8xJLn1Wb+bh0zqM
-         hOVIDgL8PCVfK/nJW6yMWMIVW3Go3Zg641fMzXLKaG0Yk6axTvf0f7YD5BINMExIKYML
-         mG7CGT0I5vy3T2BLvKNKF9XDwBvGaDVJTlwlfd4MYqIQU/BsitFh/mm+2O4EXO768ws7
-         G4ow==
+        h=cc:subject:to:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=glGDXbGDgHhWZX3MtlLpw45TRQKQ7EMUGSl8ozQC3S0=;
+        b=QidhwSitTMeoAuQ8tc0oRXaqJzucf8O9TgmzRhD3qpSzmtxZgUsmZ1MmXbcZFHo1EQ
+         hm9/lBPu6swSRXbTkorN2JhNllQ7r+LJ8MmzQqjdVDW/R1gQepDKNvSQ1d3dZ4vsxESH
+         OSWoZmN/UsRHdbyDWcW2l2Wl8D5Rp+QNXCU1dvgou8eMXBgHrcLWawghMOTj5CvhbiQi
+         ZLhovfuOkg14fTXOpd/KPim3UBMmzWafl9aNhePeVbQWmY2LmsmBPWNPK6y50WcvqNke
+         aSMG3+6xGondb7vb/CNnIaXF9vSAbcQJnSS3esC4liV4vFlnjtjv8EecdBpnNHVYO8Xg
+         E4ww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=XX2U608hnsjlr3CObVhxW7h8IxFeUeweX4fxE0/OsVM=;
-        b=Y562Lvd5xbg6/vXEQSRUe9yXjZh5A/XCo8rDimLQttLT+OKs8CW0Oo/HoJ4gVvLNyQ
-         qL8rU07VnAPW7VXJF82rSOoxeukcoafdHmMDdmEygdEaOBhHaLpxf+fgLi1Hi5fUtKjG
-         PBIhz/j5UNEIuWungVYvT/xUL7frVQigitkXhtjgIbgrcpKA3DlNSh8qic78ibmEKop6
-         BcMaIpPTsIXCskvgkhZarAn3FP3oJtjgJueDFUClqV1AyPo4jftbA24P+cjvfrN10Fc8
-         88z6Uc5C+/XD+VGOY9Douh60sf0WKHwcTxfwfj6Iuf5Gq6trB/iKMRyq5J+5bjzWh7xM
-         eYIQ==
-X-Gm-Message-State: APjAAAVKwRsBHSEMpKhaXBdcoC/u8RM4Kgq5Cql5JbIsilv3qPRlPExU
-        PKspSsqipPwoEXRnUM/6mNf9y8h7JPU=
-X-Google-Smtp-Source: APXvYqwsAMsGsUqN4Iz2GSvHnZHivnG1YKPfYwHXacXEfXmT5GdOdxiTU/AYMU8xkWCMaM2N9zJWjA==
-X-Received: by 2002:a63:4a50:: with SMTP id j16mr33687514pgl.308.1574694161158;
-        Mon, 25 Nov 2019 07:02:41 -0800 (PST)
-Received: from debian.net.fpt ([2405:4800:58f7:550c:6dad:1b5f:afc6:7758])
-        by smtp.gmail.com with ESMTPSA id x2sm8703129pfn.167.2019.11.25.07.02.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 25 Nov 2019 07:02:40 -0800 (PST)
+        h=x-gm-message-state:cc:subject:to:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=glGDXbGDgHhWZX3MtlLpw45TRQKQ7EMUGSl8ozQC3S0=;
+        b=ByWGtNK90u3Me6GH2uPqzheZf/X3IjhLUHnyfxZ5mKIMbdAPZHpcEooM9ZQYzunk9H
+         HDlVEBPflWN6TZowyNFKfeUdQo4NDjDA/w/TmtreIJsWUWkMogChtfDdNKWa2FbMRVBt
+         KmHceKgsw8JSUp5Xr/6rPbLxGHttG/3uDPf3GEiFuPTftfv3rsnRjE46xxwjy1bgA2wA
+         f52N2vN7ehSOoeaLhWB3JHmh2ZniEBIsIuRTaKSX6NqTUdP1fX96AP1KKyzHfrGZaJeB
+         fveb6OuTtQb4yWYdUcnnUioBzif5RHxhqYEFhqTB7WrEexScYQb2AEsQrdLBdq6XPljM
+         EeMQ==
+X-Gm-Message-State: APjAAAWFjCrb0M9jGyrQ+e3jRin70a0CcjqMpq0Clgo7MxMJw1dcMJw6
+        QDyJtvsORficA9u26TCDI2iOS5tOGhU=
+X-Google-Smtp-Source: APXvYqx5jR4poQirNWpRJvpZfL50FjIGfDVsw/0N/24MfivZzYxS0Xl4PrvMfdSoN0jb6nQa81ADCw==
+X-Received: by 2002:a17:90a:eb0f:: with SMTP id j15mr39985938pjz.97.1574694417718;
+        Mon, 25 Nov 2019 07:06:57 -0800 (PST)
+Received: from ?IPv6:2405:4800:58f7:550c:6dad:1b5f:afc6:7758? ([2405:4800:58f7:550c:6dad:1b5f:afc6:7758])
+        by smtp.gmail.com with ESMTPSA id x192sm9114889pfd.96.2019.11.25.07.06.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 25 Nov 2019 07:06:56 -0800 (PST)
+Cc:     tranmanphong@gmail.com, davem@davemloft.net, keescook@chromium.org,
+        kvalo@codeaurora.org, saeedm@mellanox.com,
+        jeffrey.t.kirsher@intel.com, luciano.coelho@intel.com,
+        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+        linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/5] Fix -Wcast-function-type net drivers
+To:     Jakub Kicinski <jakub.kicinski@netronome.com>
+References: <20191124094306.21297-1-tranmanphong@gmail.com>
+ <20191124143919.63711421@cakuba.netronome.com>
 From:   Phong Tran <tranmanphong@gmail.com>
-To:     jakub.kicinski@netronome.com, kvalo@codeaurora.org,
-        davem@davemloft.net, luciano.coelho@intel.com,
-        shahar.s.matityahu@intel.com, johannes.berg@intel.com,
-        emmanuel.grumbach@intel.com, sara.sharon@intel.com,
-        Larry.Finger@lwfinger.net, yhchuang@realtek.com,
-        yuehaibing@huawei.com, pkshih@realtek.com,
-        arend.vanspriel@broadcom.com, rafal@milecki.pl,
-        franky.lin@broadcom.com, pieter-paul.giesberts@broadcom.com,
-        p.figiel@camlintechnologies.com, Wright.Feng@cypress.com,
-        keescook@chromium.org
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Phong Tran <tranmanphong@gmail.com>
-Subject: [PATCH 3/3] drivers: net: realtek: Fix -Wcast-function-type
-Date:   Mon, 25 Nov 2019 22:02:15 +0700
-Message-Id: <20191125150215.29263-3-tranmanphong@gmail.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191125150215.29263-1-tranmanphong@gmail.com>
-References: <20191125150215.29263-1-tranmanphong@gmail.com>
+Message-ID: <252466a8-2cad-7e4a-2a87-ade95365fa75@gmail.com>
+Date:   Mon, 25 Nov 2019 22:06:49 +0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.2
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20191124143919.63711421@cakuba.netronome.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-correct usage prototype of callback in tasklet_init().
-Report by https://github.com/KSPP/linux/issues/20
 
-Signed-off-by: Phong Tran <tranmanphong@gmail.com>
----
- drivers/net/wireless/realtek/rtlwifi/pci.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/pci.c b/drivers/net/wireless/realtek/rtlwifi/pci.c
-index f88d26535978..25335bd2873b 100644
---- a/drivers/net/wireless/realtek/rtlwifi/pci.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/pci.c
-@@ -1061,13 +1061,15 @@ static irqreturn_t _rtl_pci_interrupt(int irq, void *dev_id)
- 	return ret;
- }
- 
--static void _rtl_pci_irq_tasklet(struct ieee80211_hw *hw)
-+static void _rtl_pci_irq_tasklet(unsigned long data)
- {
-+	struct ieee80211_hw *hw = (struct ieee80211_hw *)data;
- 	_rtl_pci_tx_chk_waitq(hw);
- }
- 
--static void _rtl_pci_prepare_bcn_tasklet(struct ieee80211_hw *hw)
-+static void _rtl_pci_prepare_bcn_tasklet(unsigned long data)
- {
-+	struct ieee80211_hw *hw = (struct ieee80211_hw *)data;
- 	struct rtl_priv *rtlpriv = rtl_priv(hw);
- 	struct rtl_pci *rtlpci = rtl_pcidev(rtl_pcipriv(hw));
- 	struct rtl_mac *mac = rtl_mac(rtl_priv(hw));
-@@ -1193,10 +1195,10 @@ static void _rtl_pci_init_struct(struct ieee80211_hw *hw,
- 
- 	/*task */
- 	tasklet_init(&rtlpriv->works.irq_tasklet,
--		     (void (*)(unsigned long))_rtl_pci_irq_tasklet,
-+		     _rtl_pci_irq_tasklet,
- 		     (unsigned long)hw);
- 	tasklet_init(&rtlpriv->works.irq_prepare_bcn_tasklet,
--		     (void (*)(unsigned long))_rtl_pci_prepare_bcn_tasklet,
-+		     _rtl_pci_prepare_bcn_tasklet,
- 		     (unsigned long)hw);
- 	INIT_WORK(&rtlpriv->works.lps_change_work,
- 		  rtl_lps_change_work_callback);
--- 
-2.20.1
+On 11/25/19 5:39 AM, Jakub Kicinski wrote:
+> On Sun, 24 Nov 2019 16:43:01 +0700, Phong Tran wrote:
+>> This series is for fixing the compiler warning while enable
+>> -Wcast-function-type.
+>>
+>> Almost is incompatible callback prototype in using tasklet.
+>> The void (*func)(unsigned long) instead of void (*func)(struct foo*).
+>>
+>> Reported by: https://github.com/KSPP/linux/issues/20
+> 
+> Hi Tran, thanks for the patches. Could you split the series into two -
+> the wireless changes and the USB changes?
+> 
+> Those usually go via slightly different trees.
+> 
 
+Sent in different series:
+
+[wireless]
+https://lore.kernel.org/lkml/20191125150215.29263-1-tranmanphong@gmail.com/
+
+[USB]
+https://lore.kernel.org/linux-usb/20191125145443.29052-1-tranmanphong@gmail.com/
+
+Regards,
+Phong.
