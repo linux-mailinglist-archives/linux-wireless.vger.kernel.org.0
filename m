@@ -2,78 +2,79 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A56F108D4E
-	for <lists+linux-wireless@lfdr.de>; Mon, 25 Nov 2019 12:54:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 53CE1108D57
+	for <lists+linux-wireless@lfdr.de>; Mon, 25 Nov 2019 12:56:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727124AbfKYLy3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 25 Nov 2019 06:54:29 -0500
-Received: from a27-186.smtp-out.us-west-2.amazonses.com ([54.240.27.186]:46280
-        "EHLO a27-186.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725828AbfKYLy3 (ORCPT
+        id S1726957AbfKYL4S (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 25 Nov 2019 06:56:18 -0500
+Received: from a27-56.smtp-out.us-west-2.amazonses.com ([54.240.27.56]:58124
+        "EHLO a27-56.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725828AbfKYL4S (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 25 Nov 2019 06:54:29 -0500
+        Mon, 25 Nov 2019 06:56:18 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1574682868;
+        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1574682977;
         h=Content-Type:MIME-Version:Content-Transfer-Encoding:Subject:From:In-Reply-To:References:To:Cc:Message-Id:Date;
-        bh=RPWz9nO9IZFXf6ojtnISMP4vkbdmgCzEn0pao2zsMrc=;
-        b=C5LJEJPLqPapmOffDLHTlzi/isqgWcTuwNu8aP34dry9HQ1Rd0i7Gn9hc1vGG7b6
-        rE3zF62Ruz5taWoAst/bHZ7vlVEVi6yxEIOOUViCbkC9jlYdVojKDqkSVmODUG+RhtJ
-        1DJIr329ZRzi6CN2/CV3k73Y/fFIzlKuYsCB5RL4=
+        bh=cTtwrlGNTkiAUYkuNC9OPAuoAAZBBpmDBW6s3hPB4Xw=;
+        b=TQgEbxnxfaaVpJyfKq/1UJLhvAiHYuIVctLugJHTOIsQMS0e7tIULhu1EGH3D6n8
+        OKQ2I0jQ8yAeK7cEgBojIaB51ipGu5eqH2srgQBXYqkkJp1JktzJ4nKtfvqez16oMnq
+        ma6wPbEKGqUpwyIJyg/5LS07sBg1nNeBjKVBrmg0=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=gdwg2y3kokkkj5a55z2ilkup5wp5hhxx; d=amazonses.com; t=1574682868;
+        s=gdwg2y3kokkkj5a55z2ilkup5wp5hhxx; d=amazonses.com; t=1574682977;
         h=Content-Type:MIME-Version:Content-Transfer-Encoding:Subject:From:In-Reply-To:References:To:Cc:Message-Id:Date:Feedback-ID;
-        bh=RPWz9nO9IZFXf6ojtnISMP4vkbdmgCzEn0pao2zsMrc=;
-        b=AInkClFXJaiXgtdTnMfhvWq9Z369bIcWE6k3X/W1YL8+lsUojfnFN+zi92XB4H12
-        94qFCQEHOR4CadzQEbG+JHe5BOldpAUszk2ZpDXIN9nXRjeTdZTVYho0Zn0s4ysjEb3
-        qbxOtOsvu7wArySYk3WYEXM8sRdcTDq2wt9ulkDY=
+        bh=cTtwrlGNTkiAUYkuNC9OPAuoAAZBBpmDBW6s3hPB4Xw=;
+        b=RDpZ1odtrzeBcvyiVgRueZAKUg8Ohpxppv4HOs4Me3dBv/hNzWmJIVZLtGCVSaAO
+        AQmr6yfNOvjSuknunWRk5u7NJpJ3BHtiuRYAKP8SGSp2McXHF9eqzAZtOlbf9bLWhg9
+        QZGQ+T1otQRCUtBJopRGW+H+o/ZZR124sjYeHaJM=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
 X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
-        MISSING_MID,SPF_NONE,URIBL_BLOCKED autolearn=no autolearn_force=no
-        version=3.4.0
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org EC002C447A2
+        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 958EEC43383
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] ath10k: add large size for BMI download data for SDIO
+Subject: Re: [PATCH] ath10k: Handle when FW doesn't support
+ QMI_WLFW_HOST_CAP_REQ_V01
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20191107100809.17982-1-wgong@codeaurora.org>
-References: <20191107100809.17982-1-wgong@codeaurora.org>
-To:     Wen Gong <wgong@codeaurora.org>
-Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org
+In-Reply-To: <20191106233130.2169-1-jeffrey.l.hugo@gmail.com>
+References: <20191106233130.2169-1-jeffrey.l.hugo@gmail.com>
+To:     Jeffrey Hugo <jeffrey.l.hugo@gmail.com>
+Cc:     davem@davemloft.net, ath10k@lists.infradead.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Jeffrey Hugo <jeffrey.l.hugo@gmail.com>
 User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-ID: <0101016ea269ba16-13158d2d-501c-4ac8-af8e-a2bd28333606-000000@us-west-2.amazonses.com>
-Date:   Mon, 25 Nov 2019 11:54:28 +0000
-X-SES-Outgoing: 2019.11.25-54.240.27.186
+Message-ID: <0101016ea26b635d-ed1f7406-4ae3-411f-8b1d-47a1a5cc2dd5-000000@us-west-2.amazonses.com>
+Date:   Mon, 25 Nov 2019 11:56:17 +0000
+X-SES-Outgoing: 2019.11.25-54.240.27.56
 Feedback-ID: 1.us-west-2.CZuq2qbDmUIuT3qdvXlRHZZCpfZqZ4GtG9v3VKgRyF0=:AmazonSES
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Wen Gong <wgong@codeaurora.org> wrote:
+Jeffrey Hugo <jeffrey.l.hugo@gmail.com> wrote:
 
-> Download firmware time cost of SDIO is too long, it is about 480ms,
-> add large size 2048 bytes for BMI download for SDIO chip, its time
-> cost will reduced to 240ms.
+> Firmware with the build id QC_IMAGE_VERSION_STRING=WLAN.HL.1.0.2-XXXX does
+> not support the QMI_WLFW_HOST_CAP_REQ_V01 message and will return the
+> QMI not supported error to the ath10k driver.  Since not supporting this
+> message is not fatal to the firmware nor the ath10k driver, lets catch
+> this particular scenario and ignore it so that we can still bring up
+> wifi services successfully.
 > 
-> This will optimize the download firmware time cost.
-> 
-> Tested with QCA6174 SDIO with firmware
-> WLAN.RMH.4.4.1-00017-QCARMSWP-1.
-> 
-> Signed-off-by: Wen Gong <wgong@codeaurora.org>
+> Signed-off-by: Jeffrey Hugo <jeffrey.l.hugo@gmail.com>
 > Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 
 Patch applied to ath-next branch of ath.git, thanks.
 
-d58f466a5dee ath10k: add large size for BMI download data for SDIO
+501d4152b018 ath10k: Handle when FW doesn't support QMI_WLFW_HOST_CAP_REQ_V01
 
 -- 
-https://patchwork.kernel.org/patch/11232449/
+https://patchwork.kernel.org/patch/11231343/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
