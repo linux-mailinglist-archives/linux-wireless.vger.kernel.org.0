@@ -2,99 +2,69 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E0991090B1
-	for <lists+linux-wireless@lfdr.de>; Mon, 25 Nov 2019 16:07:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6CFDE10910D
+	for <lists+linux-wireless@lfdr.de>; Mon, 25 Nov 2019 16:36:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728486AbfKYPG7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 25 Nov 2019 10:06:59 -0500
-Received: from mail-pl1-f195.google.com ([209.85.214.195]:37287 "EHLO
-        mail-pl1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727758AbfKYPG7 (ORCPT
+        id S1728512AbfKYPgL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 25 Nov 2019 10:36:11 -0500
+Received: from mta5.iomartcloud.com ([62.128.216.47]:53294 "EHLO
+        mta5.iomartcloud.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728036AbfKYPgL (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 25 Nov 2019 10:06:59 -0500
-Received: by mail-pl1-f195.google.com with SMTP id bb5so6631069plb.4;
-        Mon, 25 Nov 2019 07:06:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=cc:subject:to:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=glGDXbGDgHhWZX3MtlLpw45TRQKQ7EMUGSl8ozQC3S0=;
-        b=QidhwSitTMeoAuQ8tc0oRXaqJzucf8O9TgmzRhD3qpSzmtxZgUsmZ1MmXbcZFHo1EQ
-         hm9/lBPu6swSRXbTkorN2JhNllQ7r+LJ8MmzQqjdVDW/R1gQepDKNvSQ1d3dZ4vsxESH
-         OSWoZmN/UsRHdbyDWcW2l2Wl8D5Rp+QNXCU1dvgou8eMXBgHrcLWawghMOTj5CvhbiQi
-         ZLhovfuOkg14fTXOpd/KPim3UBMmzWafl9aNhePeVbQWmY2LmsmBPWNPK6y50WcvqNke
-         aSMG3+6xGondb7vb/CNnIaXF9vSAbcQJnSS3esC4liV4vFlnjtjv8EecdBpnNHVYO8Xg
-         E4ww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:cc:subject:to:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=glGDXbGDgHhWZX3MtlLpw45TRQKQ7EMUGSl8ozQC3S0=;
-        b=ByWGtNK90u3Me6GH2uPqzheZf/X3IjhLUHnyfxZ5mKIMbdAPZHpcEooM9ZQYzunk9H
-         HDlVEBPflWN6TZowyNFKfeUdQo4NDjDA/w/TmtreIJsWUWkMogChtfDdNKWa2FbMRVBt
-         KmHceKgsw8JSUp5Xr/6rPbLxGHttG/3uDPf3GEiFuPTftfv3rsnRjE46xxwjy1bgA2wA
-         f52N2vN7ehSOoeaLhWB3JHmh2ZniEBIsIuRTaKSX6NqTUdP1fX96AP1KKyzHfrGZaJeB
-         fveb6OuTtQb4yWYdUcnnUioBzif5RHxhqYEFhqTB7WrEexScYQb2AEsQrdLBdq6XPljM
-         EeMQ==
-X-Gm-Message-State: APjAAAWFjCrb0M9jGyrQ+e3jRin70a0CcjqMpq0Clgo7MxMJw1dcMJw6
-        QDyJtvsORficA9u26TCDI2iOS5tOGhU=
-X-Google-Smtp-Source: APXvYqx5jR4poQirNWpRJvpZfL50FjIGfDVsw/0N/24MfivZzYxS0Xl4PrvMfdSoN0jb6nQa81ADCw==
-X-Received: by 2002:a17:90a:eb0f:: with SMTP id j15mr39985938pjz.97.1574694417718;
-        Mon, 25 Nov 2019 07:06:57 -0800 (PST)
-Received: from ?IPv6:2405:4800:58f7:550c:6dad:1b5f:afc6:7758? ([2405:4800:58f7:550c:6dad:1b5f:afc6:7758])
-        by smtp.gmail.com with ESMTPSA id x192sm9114889pfd.96.2019.11.25.07.06.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 25 Nov 2019 07:06:56 -0800 (PST)
-Cc:     tranmanphong@gmail.com, davem@davemloft.net, keescook@chromium.org,
-        kvalo@codeaurora.org, saeedm@mellanox.com,
-        jeffrey.t.kirsher@intel.com, luciano.coelho@intel.com,
-        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/5] Fix -Wcast-function-type net drivers
-To:     Jakub Kicinski <jakub.kicinski@netronome.com>
-References: <20191124094306.21297-1-tranmanphong@gmail.com>
- <20191124143919.63711421@cakuba.netronome.com>
-From:   Phong Tran <tranmanphong@gmail.com>
-Message-ID: <252466a8-2cad-7e4a-2a87-ade95365fa75@gmail.com>
-Date:   Mon, 25 Nov 2019 22:06:49 +0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.2
+        Mon, 25 Nov 2019 10:36:11 -0500
+X-Greylist: delayed 2044 seconds by postgrey-1.27 at vger.kernel.org; Mon, 25 Nov 2019 10:36:10 EST
+Received: from mailfilter.iomart.com (vmf71.iomartcloud.net [10.52.2.37])
+        by mta5.iomartcloud.com (8.14.4/8.14.4) with SMTP id xAPF23x7009847
+        for <linux-wireless@vger.kernel.org>; Mon, 25 Nov 2019 15:02:03 GMT
+Received: from vs7.iomartcloud.net(localhost[127.0.0.1]) by mailfilter.iomart.com ; Mon, 25 Nov 2019 15:02:03 GMT
+Received: from vs7.iomartcloud.net (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 1D28522034
+        for <linux-wireless@vger.kernel.org>; Mon, 25 Nov 2019 15:02:03 +0000 (GMT)
+Received: from asmtp2.iomartcloud.net (unknown [10.52.1.41])
+        by vs7.iomartcloud.net (Postfix) with ESMTPS id 07DA422032
+        for <linux-wireless@vger.kernel.org>; Mon, 25 Nov 2019 15:02:03 +0000 (GMT)
+Received: from localhost (host-89-240-139-199.as13285.net [89.240.139.199])
+        (authenticated bits=0)
+        by asmtp2.iomartcloud.net (8.14.4/8.14.4) with ESMTP id xAPF221T001607
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO)
+        for <linux-wireless@vger.kernel.org>; Mon, 25 Nov 2019 15:02:02 GMT
+Date:   Mon, 25 Nov 2019 15:04:14 +0000
+From:   Tony Sumner <tony@whittycat.me.uk>
+To:     linux-wireless@vger.kernel.org
+Subject:  wireless firmware for Debian
+Message-ID: <20191125150414.GA1849@Debian>
 MIME-Version: 1.0
-In-Reply-To: <20191124143919.63711421@cakuba.netronome.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.23 (2014-03-12)
+X-Originating-IP: 89.240.139.199
+X-Thinkmail-Auth: tony123@phonecoop.coop
+X-TM-AS-GCONF: 11111111
+X-TM-AS-SMTP: 1.0 YXNtdHAyLmlvbWFydGNsb3VkLm5ldA== dG9ueUB3aGl0dHljYXQubWUudWs=
+X-TM-AS-ERS: 10.52.1.41-127.5.254.253
+X-TM-AS-Product-Ver: IMSVA-9.0.0.1623-8.2.0.1013-25064.007
+X-TM-AS-Result: No--3.967-7.0-31-10
+X-imss-scan-details: No--3.967-7.0-31-10;No--3.967-5.0-31-10;No--3.967-4.5-31-10
+X-TMASE-Version: IMSVA-9.0.0.1623-8.2.1013-25064.007
+X-TMASE-Result: 10--3.966600-10.000000
+X-TMASE-MatchedRID: Py9kSK+zk5Jx1XV+/0DNMPbta0OAYFzyHGCrN8swaFH0nlq8x3d7MO5t
+        Cu25FAyi3qMjIETpe1/+9bSXDmubJ1xxDx5qbkR9/sToY2qzpx6+seUCo3wg96YHWG1ypGma7a1
+        x925kg6/dB/CxWTRRu4as+d5/8j56oaJv4yj65Tiab+Y5YqyZ8YdjAwlGxiW+XUFe+PrW+7GzJw
+        yKuFrYB/4VjiSVHVocNJPQQd2DukpFLXqr4cdFW1qI+/4GzPDk
+X-TMASE-SNAP-Result: 1.821001.0001-0-1-12:0,22:0,33:0,34:0-0
+X-NIVirusScan: OK
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 
-
-On 11/25/19 5:39 AM, Jakub Kicinski wrote:
-> On Sun, 24 Nov 2019 16:43:01 +0700, Phong Tran wrote:
->> This series is for fixing the compiler warning while enable
->> -Wcast-function-type.
->>
->> Almost is incompatible callback prototype in using tasklet.
->> The void (*func)(unsigned long) instead of void (*func)(struct foo*).
->>
->> Reported by: https://github.com/KSPP/linux/issues/20
-> 
-> Hi Tran, thanks for the patches. Could you split the series into two -
-> the wireless changes and the USB changes?
-> 
-> Those usually go via slightly different trees.
-> 
-
-Sent in different series:
-
-[wireless]
-https://lore.kernel.org/lkml/20191125150215.29263-1-tranmanphong@gmail.com/
-
-[USB]
-https://lore.kernel.org/linux-usb/20191125145443.29052-1-tranmanphong@gmail.com/
+I am installing Debian Linux on a laptop and it says I need to get firmware
+ie thr file ipw2200-bss.fw to start the installation. Does sourceforge
+have this file available?
 
 Regards,
-Phong.
+
+Tony Sumner
+
+
