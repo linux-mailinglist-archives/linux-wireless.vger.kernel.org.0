@@ -2,42 +2,42 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7371E10868E
-	for <lists+linux-wireless@lfdr.de>; Mon, 25 Nov 2019 03:42:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 498551086BF
+	for <lists+linux-wireless@lfdr.de>; Mon, 25 Nov 2019 04:11:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727031AbfKYCmU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 24 Nov 2019 21:42:20 -0500
-Received: from mga17.intel.com ([192.55.52.151]:44077 "EHLO mga17.intel.com"
+        id S1726977AbfKYDLl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 24 Nov 2019 22:11:41 -0500
+Received: from mga11.intel.com ([192.55.52.93]:4925 "EHLO mga11.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726957AbfKYCmU (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 24 Nov 2019 21:42:20 -0500
+        id S1726910AbfKYDLl (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 24 Nov 2019 22:11:41 -0500
 X-Amp-Result: UNKNOWN
 X-Amp-Original-Verdict: FILE UNKNOWN
 X-Amp-File-Uploaded: False
 Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 24 Nov 2019 18:42:19 -0800
+  by fmsmga102.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 24 Nov 2019 19:11:40 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.69,239,1571727600"; 
-   d="scan'208";a="358699863"
+X-IronPort-AV: E=Sophos;i="5.69,240,1571727600"; 
+   d="scan'208";a="358704140"
 Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
-  by orsmga004.jf.intel.com with ESMTP; 24 Nov 2019 18:42:16 -0800
+  by orsmga004.jf.intel.com with ESMTP; 24 Nov 2019 19:11:38 -0800
 Received: from kbuild by lkp-server01 with local (Exim 4.89)
         (envelope-from <lkp@intel.com>)
-        id 1iZ4KN-000BNh-TW; Mon, 25 Nov 2019 10:42:15 +0800
-Date:   Mon, 25 Nov 2019 10:42:06 +0800
+        id 1iZ4mo-0003KN-Cg; Mon, 25 Nov 2019 11:11:38 +0800
+Date:   Mon, 25 Nov 2019 11:10:53 +0800
 From:   kbuild test robot <lkp@intel.com>
 To:     Larry Finger <Larry.Finger@lwfinger.net>
 Cc:     kbuild-all@lists.01.org, kvalo@codeaurora.org,
         linux-wireless@vger.kernel.org, pkshih@realtek.com,
         Larry Finger <Larry.Finger@lwfinger.net>
-Subject: Re: [PATCH 4/4] rtlwifi: rtl8192de: Convert inline routines to
- little-endian words
-Message-ID: <201911251054.NQcrqhia%lkp@intel.com>
-References: <20191121214417.29676-5-Larry.Finger@lwfinger.net>
+Subject: Re: [PATCH 4/9] rtlwifi: Remove dependence on special bit
+ manipulation macros for common driver
+Message-ID: <201911251026.5x4ZT5uH%lkp@intel.com>
+References: <20191121215514.5509-5-Larry.Finger@lwfinger.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20191121214417.29676-5-Larry.Finger@lwfinger.net>
+In-Reply-To: <20191121215514.5509-5-Larry.Finger@lwfinger.net>
 X-Patchwork-Hint: ignore
 User-Agent: NeoMutt/20170113 (1.7.2)
 Sender: linux-wireless-owner@vger.kernel.org
@@ -50,13 +50,12 @@ Hi Larry,
 I love your patch! Perhaps something to improve:
 
 [auto build test WARNING on wireless-drivers-next/master]
-[also build test WARNING on next-20191122]
-[cannot apply to v5.4-rc8]
+[also build test WARNING on v5.4-rc8 next-20191122]
 [if your patch is applied to the wrong git tree, please drop us a note to help
 improve the system. BTW, we also suggest to use '--base' option to specify the
 base tree in git format-patch, please see https://stackoverflow.com/a/37406982]
 
-url:    https://github.com/0day-ci/linux/commits/Larry-Finger/rtlwifi-rtl8192de-Replace-local-TX-and-RX-bit-manipulation-macro/20191124-122525
+url:    https://github.com/0day-ci/linux/commits/Larry-Finger/rtlwifi-Complete-removal-of-local-bit-manipulation-macros/20191124-123220
 base:   https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git master
 reproduce:
         # apt-get install sparse
@@ -70,379 +69,125 @@ Reported-by: kbuild test robot <lkp@intel.com>
 
 sparse warnings: (new ones prefixed by >>)
 
->> drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:445:43: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected unsigned int [usertype] *__pdesc @@    got restrunsigned int [usertype] *__pdesc @@
->> drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:445:43: sparse:    expected unsigned int [usertype] *__pdesc
->> drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:445:43: sparse:    got restricted __le32 [usertype] *pdesc
->> drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:256:30: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected restricted __le32 [usertype] v @@    got icted __le32 [usertype] v @@
->> drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:256:30: sparse:    expected restricted __le32 [usertype] v
->> drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:256:30: sparse:    got unsigned int [usertype]
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:447:50: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected unsigned int [usertype] *__pdesc @@    got restrunsigned int [usertype] *__pdesc @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:447:50: sparse:    expected unsigned int [usertype] *__pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:447:50: sparse:    got restricted __le32 [usertype] *pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:231:30: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected restricted __le32 [usertype] v @@    got icted __le32 [usertype] v @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:231:30: sparse:    expected restricted __le32 [usertype] v
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:231:30: sparse:    got unsigned int [usertype]
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:448:64: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected unsigned int [usertype] *__pdesc @@    got restrunsigned int [usertype] *__pdesc @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:448:64: sparse:    expected unsigned int [usertype] *__pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:448:64: sparse:    got restricted __le32 [usertype] *pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:246:30: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected restricted __le32 [usertype] v @@    got icted __le32 [usertype] v @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:246:30: sparse:    expected restricted __le32 [usertype] v
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:246:30: sparse:    got unsigned int [usertype]
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:450:53: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected unsigned int [usertype] *__pdesc @@    got restrunsigned int [usertype] *__pdesc @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:450:53: sparse:    expected unsigned int [usertype] *__pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:450:53: sparse:    got restricted __le32 [usertype] *pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:251:30: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected restricted __le32 [usertype] v @@    got icted __le32 [usertype] v @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:251:30: sparse:    expected restricted __le32 [usertype] v
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:251:30: sparse:    got unsigned int [usertype]
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:451:43: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected unsigned int [usertype] *__pdesc @@    got restrunsigned int [usertype] *__pdesc @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:451:43: sparse:    expected unsigned int [usertype] *__pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:451:43: sparse:    got restricted __le32 [usertype] *pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:241:30: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected restricted __le32 [usertype] v @@    got icted __le32 [usertype] v @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:241:30: sparse:    expected restricted __le32 [usertype] v
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:241:30: sparse:    got unsigned int [usertype]
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:452:45: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected unsigned int [usertype] *__pdesc @@    got restrunsigned int [usertype] *__pdesc @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:452:45: sparse:    expected unsigned int [usertype] *__pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:452:45: sparse:    got restricted __le32 [usertype] *pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:236:30: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected restricted __le32 [usertype] v @@    got icted __le32 [usertype] v @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:236:30: sparse:    expected restricted __le32 [usertype] v
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:236:30: sparse:    got unsigned int [usertype]
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:454:47: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected unsigned int [usertype] *__pdesc @@    got restrunsigned int [usertype] *__pdesc @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:454:47: sparse:    expected unsigned int [usertype] *__pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:454:47: sparse:    got restricted __le32 [usertype] *pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:261:30: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected restricted __le32 [usertype] v @@    got icted __le32 [usertype] v @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:261:30: sparse:    expected restricted __le32 [usertype] v
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:261:30: sparse:    got unsigned int [usertype]
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:455:45: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected unsigned int [usertype] *__pdesc @@    got restrunsigned int [usertype] *__pdesc @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:455:45: sparse:    expected unsigned int [usertype] *__pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:455:45: sparse:    got restricted __le32 [usertype] *pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:296:30: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected restricted __le32 [usertype] v @@    got icted __le32 [usertype] v @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:296:30: sparse:    expected restricted __le32 [usertype] v
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:296:30: sparse:    got unsigned int [usertype]
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:456:55: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected unsigned int [usertype] *__pdesc @@    got restrunsigned int [usertype] *__pdesc @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:456:55: sparse:    expected unsigned int [usertype] *__pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:456:55: sparse:    got restricted __le32 [usertype] *pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:306:30: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected restricted __le32 [usertype] v @@    got icted __le32 [usertype] v @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:306:30: sparse:    expected restricted __le32 [usertype] v
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:306:30: sparse:    got unsigned int [usertype]
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:457:51: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected unsigned int [usertype] *__pdesc @@    got restrunsigned int [usertype] *__pdesc @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:457:51: sparse:    expected unsigned int [usertype] *__pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:457:51: sparse:    got restricted __le32 [usertype] *pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:286:30: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected restricted __le32 [usertype] v @@    got icted __le32 [usertype] v @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:286:30: sparse:    expected restricted __le32 [usertype] v
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:286:30: sparse:    got unsigned int [usertype]
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:458:58: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected unsigned int [usertype] *__pdesc @@    got restrunsigned int [usertype] *__pdesc @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:458:58: sparse:    expected unsigned int [usertype] *__pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:458:58: sparse:    got restricted __le32 [usertype] *pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:286:30: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected restricted __le32 [usertype] v @@    got icted __le32 [usertype] v @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:286:30: sparse:    expected restricted __le32 [usertype] v
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:286:30: sparse:    got unsigned int [usertype]
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:459:58: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected unsigned int [usertype] *__pdesc @@    got restrunsigned int [usertype] *__pdesc @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:459:58: sparse:    expected unsigned int [usertype] *__pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:459:58: sparse:    got restricted __le32 [usertype] *pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:291:30: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected restricted __le32 [usertype] v @@    got icted __le32 [usertype] v @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:291:30: sparse:    expected restricted __le32 [usertype] v
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:291:30: sparse:    got unsigned int [usertype]
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:460:49: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected unsigned int [usertype] *__pdesc @@    got restrunsigned int [usertype] *__pdesc @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:460:49: sparse:    expected unsigned int [usertype] *__pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:460:49: sparse:    got restricted __le32 [usertype] *pdesc
->> drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:316:16: sparse: sparse: cast to restricted __le32
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:461:56: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected unsigned int [usertype] *__pdesc @@    got restrunsigned int [usertype] *__pdesc @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:461:56: sparse:    expected unsigned int [usertype] *__pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:461:56: sparse:    got restricted __le32 [usertype] *pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:311:30: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected restricted __le32 [usertype] v @@    got icted __le32 [usertype] v @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:311:30: sparse:    expected restricted __le32 [usertype] v
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:311:30: sparse:    got unsigned int [usertype]
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:462:47: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected unsigned int [usertype] *__pdesc @@    got restrunsigned int [usertype] *__pdesc @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:462:47: sparse:    expected unsigned int [usertype] *__pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:462:47: sparse:    got restricted __le32 [usertype] *pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:301:30: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected restricted __le32 [usertype] v @@    got icted __le32 [usertype] v @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:301:30: sparse:    expected restricted __le32 [usertype] v
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:301:30: sparse:    got unsigned int [usertype]
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:465:31: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected unsigned int [usertype] *__pdesc @@    got restrunsigned int [usertype] *__pdesc @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:465:31: sparse:    expected unsigned int [usertype] *__pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:465:31: sparse:    got restricted __le32 [usertype] *pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:236:30: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected restricted __le32 [usertype] v @@    got icted __le32 [usertype] v @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:236:30: sparse:    expected restricted __le32 [usertype] v
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:236:30: sparse:    got unsigned int [usertype]
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:467:32: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected unsigned int [usertype] *__pdesc @@    got restrunsigned int [usertype] *__pdesc @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:467:32: sparse:    expected unsigned int [usertype] *__pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:467:32: sparse:    got restricted __le32 [usertype] *pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:261:30: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected restricted __le32 [usertype] v @@    got icted __le32 [usertype] v @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:261:30: sparse:    expected restricted __le32 [usertype] v
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:261:30: sparse:    got unsigned int [usertype]
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:469:28: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected unsigned int [usertype] *__pdesc @@    got restrunsigned int [usertype] *__pdesc @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:469:28: sparse:    expected unsigned int [usertype] *__pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:469:28: sparse:    got restricted __le32 [usertype] *pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:311:30: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected restricted __le32 [usertype] v @@    got icted __le32 [usertype] v @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:311:30: sparse:    expected restricted __le32 [usertype] v
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:311:30: sparse:    got unsigned int [usertype]
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:471:30: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected unsigned int [usertype] *__pdesc @@    got restrunsigned int [usertype] *__pdesc @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:471:30: sparse:    expected unsigned int [usertype] *__pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:471:30: sparse:    got restricted __le32 [usertype] *pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:301:30: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected restricted __le32 [usertype] v @@    got icted __le32 [usertype] v @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:301:30: sparse:    expected restricted __le32 [usertype] v
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:301:30: sparse:    got unsigned int [usertype]
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:478:47: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected unsigned int [usertype] *__pdesc @@    got restrunsigned int [usertype] *__pdesc @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:478:47: sparse:    expected unsigned int [usertype] *__pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:478:47: sparse:    got restricted __le32 [usertype] *pdesc
->> drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:316:16: sparse: sparse: cast to restricted __le32
->> drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:499:30: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected unsigned int [usertype] *__paddr @@    got restrunsigned int [usertype] *__paddr @@
->> drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:499:30: sparse:    expected unsigned int [usertype] *__paddr
->> drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:499:30: sparse:    got restricted __le32 [usertype] *virtualaddress
->> drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:338:28: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected restricted __le32 [usertype] *p @@    got icted __le32 [usertype] *p @@
->> drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:338:28: sparse:    expected restricted __le32 [usertype] *p
->> drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:338:28: sparse:    got unsigned int [usertype] *__paddr
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:500:28: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected unsigned int [usertype] *__paddr @@    got restrunsigned int [usertype] *__paddr @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:500:28: sparse:    expected unsigned int [usertype] *__paddr
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:500:28: sparse:    got restricted __le32 [usertype] *virtualaddress
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:343:28: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected restricted __le32 [usertype] *p @@    got icted __le32 [usertype] *p @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:343:28: sparse:    expected restricted __le32 [usertype] *p
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:343:28: sparse:    got unsigned int [usertype] *__paddr
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:501:28: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected unsigned int [usertype] *__paddr @@    got restrunsigned int [usertype] *__paddr @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:501:28: sparse:    expected unsigned int [usertype] *__paddr
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:501:28: sparse:    got restricted __le32 [usertype] *virtualaddress
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:348:28: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected restricted __le32 [usertype] *p @@    got icted __le32 [usertype] *p @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:348:28: sparse:    expected restricted __le32 [usertype] *p
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:348:28: sparse:    got unsigned int [usertype] *__paddr
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:502:30: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected unsigned int [usertype] *__paddr @@    got restrunsigned int [usertype] *__paddr @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:502:30: sparse:    expected unsigned int [usertype] *__paddr
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:502:30: sparse:    got restricted __le32 [usertype] *virtualaddress
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:353:28: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected restricted __le32 [usertype] *p @@    got icted __le32 [usertype] *p @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:353:28: sparse:    expected restricted __le32 [usertype] *p
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:353:28: sparse:    got unsigned int [usertype] *__paddr
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:503:30: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected unsigned int [usertype] *__paddr @@    got restrunsigned int [usertype] *__paddr @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:503:30: sparse:    expected unsigned int [usertype] *__paddr
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:503:30: sparse:    got restricted __le32 [usertype] *virtualaddress
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:358:37: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected restricted __le32 [usertype] *p @@    got icted __le32 [usertype] *p @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:358:37: sparse:    expected restricted __le32 [usertype] *p
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:358:37: sparse:    got unsigned int [usertype] *
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:504:28: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected unsigned int [usertype] *__paddr @@    got restrunsigned int [usertype] *__paddr @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:504:28: sparse:    expected unsigned int [usertype] *__paddr
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:504:28: sparse:    got restricted __le32 [usertype] *virtualaddress
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:363:37: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected restricted __le32 [usertype] *p @@    got icted __le32 [usertype] *p @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:363:37: sparse:    expected restricted __le32 [usertype] *p
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:363:37: sparse:    got unsigned int [usertype] *
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:505:28: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected unsigned int [usertype] *__paddr @@    got restrunsigned int [usertype] *__paddr @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:505:28: sparse:    expected unsigned int [usertype] *__paddr
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:505:28: sparse:    got restricted __le32 [usertype] *virtualaddress
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:368:37: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected restricted __le32 [usertype] *p @@    got icted __le32 [usertype] *p @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:368:37: sparse:    expected restricted __le32 [usertype] *p
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:368:37: sparse:    got unsigned int [usertype] *
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:562:48: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected unsigned int [usertype] *__pdesc @@    got restrunsigned int [usertype] *__pdesc @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:562:48: sparse:    expected unsigned int [usertype] *__pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:562:48: sparse:    got restricted __le32 [usertype] *pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:91:37: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected restricted __le32 [usertype] *p @@    got icted __le32 [usertype] *p @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:91:37: sparse:    expected restricted __le32 [usertype] *p
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:91:37: sparse:    got unsigned int [usertype] *
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:563:44: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected unsigned int [usertype] *__pdesc @@    got restrunsigned int [usertype] *__pdesc @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:563:44: sparse:    expected unsigned int [usertype] *__pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:563:44: sparse:    got restricted __le32 [usertype] *pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:26:28: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected restricted __le32 [usertype] *p @@    got icted __le32 [usertype] *p @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:26:28: sparse:    expected restricted __le32 [usertype] *p
->> drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:26:28: sparse:    got unsigned int [usertype] *__pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:573:44: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected unsigned int [usertype] *__pdesc @@    got restrunsigned int [usertype] *__pdesc @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:573:44: sparse:    expected unsigned int [usertype] *__pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:573:44: sparse:    got restricted __le32 [usertype] *pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:26:28: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected restricted __le32 [usertype] *p @@    got icted __le32 [usertype] *p @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:26:28: sparse:    expected restricted __le32 [usertype] *p
->> drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:26:28: sparse:    got unsigned int [usertype] *__pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:579:37: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected unsigned int [usertype] *__pdesc @@    got restrunsigned int [usertype] *__pdesc @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:579:37: sparse:    expected unsigned int [usertype] *__pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:579:37: sparse:    got restricted __le32 [usertype] *pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:186:37: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected restricted __le32 [usertype] *p @@    got icted __le32 [usertype] *p @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:186:37: sparse:    expected restricted __le32 [usertype] *p
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:186:37: sparse:    got unsigned int [usertype] *
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:581:50: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected unsigned int [usertype] *__pdesc @@    got restrunsigned int [usertype] *__pdesc @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:581:50: sparse:    expected unsigned int [usertype] *__pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:581:50: sparse:    got restricted __le32 [usertype] *pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:191:37: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected restricted __le32 [usertype] *p @@    got icted __le32 [usertype] *p @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:191:37: sparse:    expected restricted __le32 [usertype] *p
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:191:37: sparse:    got unsigned int [usertype] *
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:585:50: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected unsigned int [usertype] *__pdesc @@    got restrunsigned int [usertype] *__pdesc @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:585:50: sparse:    expected unsigned int [usertype] *__pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:585:50: sparse:    got restricted __le32 [usertype] *pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:191:37: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected restricted __le32 [usertype] *p @@    got icted __le32 [usertype] *p @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:191:37: sparse:    expected restricted __le32 [usertype] *p
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:191:37: sparse:    got unsigned int [usertype] *
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:588:48: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected unsigned int [usertype] *__pdesc @@    got restrunsigned int [usertype] *__pdesc @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:588:48: sparse:    expected unsigned int [usertype] *__pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:588:48: sparse:    got restricted __le32 [usertype] *pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:66:37: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected restricted __le32 [usertype] *p @@    got icted __le32 [usertype] *p @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:66:37: sparse:    expected restricted __le32 [usertype] *p
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:66:37: sparse:    got unsigned int [usertype] *
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:589:49: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected unsigned int [usertype] *__pdesc @@    got restrunsigned int [usertype] *__pdesc @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:589:49: sparse:    expected unsigned int [usertype] *__pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:589:49: sparse:    got restricted __le32 [usertype] *pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:206:37: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected restricted __le32 [usertype] *p @@    got icted __le32 [usertype] *p @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:206:37: sparse:    expected restricted __le32 [usertype] *p
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:206:37: sparse:    got unsigned int [usertype] *
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:591:33: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected unsigned int [usertype] *__pdesc @@    got restrunsigned int [usertype] *__pdesc @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:591:33: sparse:    expected unsigned int [usertype] *__pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:591:33: sparse:    got restricted __le32 [usertype] *pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:106:37: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected restricted __le32 [usertype] *p @@    got icted __le32 [usertype] *p @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:106:37: sparse:    expected restricted __le32 [usertype] *p
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:106:37: sparse:    got unsigned int [usertype] *
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:592:40: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected unsigned int [usertype] *__pdesc @@    got restrunsigned int [usertype] *__pdesc @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:592:40: sparse:    expected unsigned int [usertype] *__pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:592:40: sparse:    got restricted __le32 [usertype] *pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:146:37: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected restricted __le32 [usertype] *p @@    got icted __le32 [usertype] *p @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:146:37: sparse:    expected restricted __le32 [usertype] *p
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:146:37: sparse:    got unsigned int [usertype] *
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:595:43: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected unsigned int [usertype] *__pdesc @@    got restrunsigned int [usertype] *__pdesc @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:595:43: sparse:    expected unsigned int [usertype] *__pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:595:43: sparse:    got restricted __le32 [usertype] *pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:151:37: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected restricted __le32 [usertype] *p @@    got icted __le32 [usertype] *p @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:151:37: sparse:    expected restricted __le32 [usertype] *p
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:151:37: sparse:    got unsigned int [usertype] *
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:597:38: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected unsigned int [usertype] *__pdesc @@    got restrunsigned int [usertype] *__pdesc @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:597:38: sparse:    expected unsigned int [usertype] *__pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:597:38: sparse:    got restricted __le32 [usertype] *pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:141:37: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected restricted __le32 [usertype] *p @@    got icted __le32 [usertype] *p @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:141:37: sparse:    expected restricted __le32 [usertype] *p
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:141:37: sparse:    got unsigned int [usertype] *
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:598:38: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected unsigned int [usertype] *__pdesc @@    got restrunsigned int [usertype] *__pdesc @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:598:38: sparse:    expected unsigned int [usertype] *__pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:598:38: sparse:    got restricted __le32 [usertype] *pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:181:37: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected restricted __le32 [usertype] *p @@    got icted __le32 [usertype] *p @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:181:37: sparse:    expected restricted __le32 [usertype] *p
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:181:37: sparse:    got unsigned int [usertype] *
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:603:38: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected unsigned int [usertype] *__pdesc @@    got restrunsigned int [usertype] *__pdesc @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:603:38: sparse:    expected unsigned int [usertype] *__pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:603:38: sparse:    got restricted __le32 [usertype] *pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:116:37: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected restricted __le32 [usertype] *p @@    got icted __le32 [usertype] *p @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:116:37: sparse:    expected restricted __le32 [usertype] *p
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:116:37: sparse:    got unsigned int [usertype] *
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:604:36: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected unsigned int [usertype] *__pdesc @@    got restrunsigned int [usertype] *__pdesc @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:604:36: sparse:    expected unsigned int [usertype] *__pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:604:36: sparse:    got restricted __le32 [usertype] *pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:171:37: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected restricted __le32 [usertype] *p @@    got icted __le32 [usertype] *p @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:171:37: sparse:    expected restricted __le32 [usertype] *p
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:171:37: sparse:    got unsigned int [usertype] *
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:605:36: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected unsigned int [usertype] *__pdesc @@    got restrunsigned int [usertype] *__pdesc @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:605:36: sparse:    expected unsigned int [usertype] *__pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:605:36: sparse:    got restricted __le32 [usertype] *pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:176:37: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected restricted __le32 [usertype] *p @@    got icted __le32 [usertype] *p @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:176:37: sparse:    expected restricted __le32 [usertype] *p
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:176:37: sparse:    got unsigned int [usertype] *
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:606:39: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected unsigned int [usertype] *__pdesc @@    got restrunsigned int [usertype] *__pdesc @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:606:39: sparse:    expected unsigned int [usertype] *__pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:606:39: sparse:    got restricted __le32 [usertype] *pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:166:37: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected restricted __le32 [usertype] *p @@    got icted __le32 [usertype] *p @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:166:37: sparse:    expected restricted __le32 [usertype] *p
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:166:37: sparse:    got unsigned int [usertype] *
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:612:53: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected unsigned int [usertype] *__pdesc @@    got restrunsigned int [usertype] *__pdesc @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:612:53: sparse:    expected unsigned int [usertype] *__pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:612:53: sparse:    got restricted __le32 [usertype] *pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:161:37: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected restricted __le32 [usertype] *p @@    got icted __le32 [usertype] *p @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:161:37: sparse:    expected restricted __le32 [usertype] *p
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:161:37: sparse:    got unsigned int [usertype] *
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:613:60: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected unsigned int [usertype] *__pdesc @@    got restrunsigned int [usertype] *__pdesc @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:613:60: sparse:    expected unsigned int [usertype] *__pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:613:60: sparse:    got restricted __le32 [usertype] *pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:156:37: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected restricted __le32 [usertype] *p @@    got icted __le32 [usertype] *p @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:156:37: sparse:    expected restricted __le32 [usertype] *p
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:156:37: sparse:    got unsigned int [usertype] *
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:615:53: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected unsigned int [usertype] *__pdesc @@    got restrunsigned int [usertype] *__pdesc @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:615:53: sparse:    expected unsigned int [usertype] *__pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:615:53: sparse:    got restricted __le32 [usertype] *pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:161:37: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected restricted __le32 [usertype] *p @@    got icted __le32 [usertype] *p @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:161:37: sparse:    expected restricted __le32 [usertype] *p
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:161:37: sparse:    got unsigned int [usertype] *
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:616:60: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected unsigned int [usertype] *__pdesc @@    got restrunsigned int [usertype] *__pdesc @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:616:60: sparse:    expected unsigned int [usertype] *__pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:616:60: sparse:    got restricted __le32 [usertype] *pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:156:37: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected restricted __le32 [usertype] *p @@    got icted __le32 [usertype] *p @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:156:37: sparse:    expected restricted __le32 [usertype] *p
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:156:37: sparse:    got unsigned int [usertype] *
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:620:45: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected unsigned int [usertype] *__pdesc @@    got restrunsigned int [usertype] *__pdesc @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:620:45: sparse:    expected unsigned int [usertype] *__pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:620:45: sparse:    got restricted __le32 [usertype] *pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:161:37: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected restricted __le32 [usertype] *p @@    got icted __le32 [usertype] *p @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:161:37: sparse:    expected restricted __le32 [usertype] *p
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:161:37: sparse:    got unsigned int [usertype] *
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:621:52: sparse: sparse: incorrect type in argument 1 (different base types) @@    expected unsigned int [usertype] *__pdesc @@    got restrunsigned int [usertype] *__pdesc @@
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:621:52: sparse:    expected unsigned int [usertype] *__pdesc
-   drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c:621:52: sparse:    got restricted __le32 [usertype] *pdesc
->> drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h:156:37: sparse: sparse: too many warnings
+>> drivers/net/wireless/realtek/rtlwifi/ps.c:772:42: sparse: sparse: restricted __le32 degrades to integer
+>> drivers/net/wireless/realtek/rtlwifi/ps.c:772:42: sparse: sparse: cast to restricted __le32
+   drivers/net/wireless/realtek/rtlwifi/ps.c:775:42: sparse: sparse: restricted __le32 degrades to integer
+   drivers/net/wireless/realtek/rtlwifi/ps.c:775:42: sparse: sparse: cast to restricted __le32
+   drivers/net/wireless/realtek/rtlwifi/ps.c:778:42: sparse: sparse: restricted __le32 degrades to integer
+   drivers/net/wireless/realtek/rtlwifi/ps.c:778:42: sparse: sparse: cast to restricted __le32
+   drivers/net/wireless/realtek/rtlwifi/ps.c:867:42: sparse: sparse: restricted __le32 degrades to integer
+   drivers/net/wireless/realtek/rtlwifi/ps.c:867:42: sparse: sparse: cast to restricted __le32
+   drivers/net/wireless/realtek/rtlwifi/ps.c:870:42: sparse: sparse: restricted __le32 degrades to integer
+   drivers/net/wireless/realtek/rtlwifi/ps.c:870:42: sparse: sparse: cast to restricted __le32
+   drivers/net/wireless/realtek/rtlwifi/ps.c:873:42: sparse: sparse: restricted __le32 degrades to integer
+   drivers/net/wireless/realtek/rtlwifi/ps.c:873:42: sparse: sparse: cast to restricted __le32
 
-vim +445 drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c
+vim +772 drivers/net/wireless/realtek/rtlwifi/ps.c
 
-674f0523ec07a7c drivers/net/wireless/rtlwifi/rtl8192de/trx.c         Chaoming Li     2011-06-10  438  
-674f0523ec07a7c drivers/net/wireless/rtlwifi/rtl8192de/trx.c         Chaoming Li     2011-06-10  439  bool rtl92de_rx_query_desc(struct ieee80211_hw *hw,	struct rtl_stats *stats,
-674f0523ec07a7c drivers/net/wireless/rtlwifi/rtl8192de/trx.c         Chaoming Li     2011-06-10  440  		struct ieee80211_rx_status *rx_status,
-8bfc1a8d624d66c drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c Larry Finger    2019-11-21  441  		u8 *pdesc8, struct sk_buff *skb)
-674f0523ec07a7c drivers/net/wireless/rtlwifi/rtl8192de/trx.c         Chaoming Li     2011-06-10  442  {
-8bfc1a8d624d66c drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c Larry Finger    2019-11-21  443  	__le32 *pdesc = (__le32 *)pdesc8;
-674f0523ec07a7c drivers/net/wireless/rtlwifi/rtl8192de/trx.c         Chaoming Li     2011-06-10  444  	struct rx_fwinfo_92d *p_drvinfo;
-eec368b98776a58 drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c Larry Finger    2019-11-21 @445  	u32 phystatus = get_rx_desc_physt(pdesc);
-674f0523ec07a7c drivers/net/wireless/rtlwifi/rtl8192de/trx.c         Chaoming Li     2011-06-10  446  
-eec368b98776a58 drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c Larry Finger    2019-11-21  447  	stats->length = (u16)get_rx_desc_pkt_len(pdesc);
-eec368b98776a58 drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c Larry Finger    2019-11-21  448  	stats->rx_drvinfo_size = (u8)get_rx_desc_drv_info_size(pdesc) *
-674f0523ec07a7c drivers/net/wireless/rtlwifi/rtl8192de/trx.c         Chaoming Li     2011-06-10  449  				 RX_DRV_INFO_SIZE_UNIT;
-eec368b98776a58 drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c Larry Finger    2019-11-21  450  	stats->rx_bufshift = (u8)(get_rx_desc_shift(pdesc) & 0x03);
-eec368b98776a58 drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c Larry Finger    2019-11-21  451  	stats->icv = (u16)get_rx_desc_icv(pdesc);
-eec368b98776a58 drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c Larry Finger    2019-11-21  452  	stats->crc = (u16)get_rx_desc_crc32(pdesc);
-674f0523ec07a7c drivers/net/wireless/rtlwifi/rtl8192de/trx.c         Chaoming Li     2011-06-10  453  	stats->hwerror = (stats->crc | stats->icv);
-eec368b98776a58 drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c Larry Finger    2019-11-21  454  	stats->decrypted = !get_rx_desc_swdec(pdesc);
-eec368b98776a58 drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c Larry Finger    2019-11-21  455  	stats->rate = (u8)get_rx_desc_rxmcs(pdesc);
-eec368b98776a58 drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c Larry Finger    2019-11-21  456  	stats->shortpreamble = (u16)get_rx_desc_splcp(pdesc);
-eec368b98776a58 drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c Larry Finger    2019-11-21  457  	stats->isampdu = (bool)(get_rx_desc_paggr(pdesc) == 1);
-eec368b98776a58 drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c Larry Finger    2019-11-21  458  	stats->isfirst_ampdu = (bool)((get_rx_desc_paggr(pdesc) == 1) &&
-eec368b98776a58 drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c Larry Finger    2019-11-21  459  				      (get_rx_desc_faggr(pdesc) == 1));
-eec368b98776a58 drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c Larry Finger    2019-11-21  460  	stats->timestamp_low = get_rx_desc_tsfl(pdesc);
-eec368b98776a58 drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c Larry Finger    2019-11-21  461  	stats->rx_is40mhzpacket = (bool)get_rx_desc_bw(pdesc);
-eec368b98776a58 drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c Larry Finger    2019-11-21  462  	stats->is_ht = (bool)get_rx_desc_rxht(pdesc);
-675a0b049abf6ed drivers/net/wireless/rtlwifi/rtl8192de/trx.c         Karl Beldan     2013-03-25  463  	rx_status->freq = hw->conf.chandef.chan->center_freq;
-675a0b049abf6ed drivers/net/wireless/rtlwifi/rtl8192de/trx.c         Karl Beldan     2013-03-25  464  	rx_status->band = hw->conf.chandef.chan->band;
-eec368b98776a58 drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c Larry Finger    2019-11-21  465  	if (get_rx_desc_crc32(pdesc))
-674f0523ec07a7c drivers/net/wireless/rtlwifi/rtl8192de/trx.c         Chaoming Li     2011-06-10  466  		rx_status->flag |= RX_FLAG_FAILED_FCS_CRC;
-eec368b98776a58 drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c Larry Finger    2019-11-21  467  	if (!get_rx_desc_swdec(pdesc))
-674f0523ec07a7c drivers/net/wireless/rtlwifi/rtl8192de/trx.c         Chaoming Li     2011-06-10  468  		rx_status->flag |= RX_FLAG_DECRYPTED;
-eec368b98776a58 drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c Larry Finger    2019-11-21  469  	if (get_rx_desc_bw(pdesc))
-da6a4352e7c867f drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c Johannes Berg   2017-04-26  470  		rx_status->bw = RATE_INFO_BW_40;
-eec368b98776a58 drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c Larry Finger    2019-11-21 @471  	if (get_rx_desc_rxht(pdesc))
-da6a4352e7c867f drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c Johannes Berg   2017-04-26  472  		rx_status->encoding = RX_ENC_HT;
-f4bda337bbb6e24 drivers/net/wireless/rtlwifi/rtl8192de/trx.c         Thomas Pedersen 2012-11-13  473  	rx_status->flag |= RX_FLAG_MACTIME_START;
-674f0523ec07a7c drivers/net/wireless/rtlwifi/rtl8192de/trx.c         Chaoming Li     2011-06-10  474  	if (stats->decrypted)
-674f0523ec07a7c drivers/net/wireless/rtlwifi/rtl8192de/trx.c         Chaoming Li     2011-06-10  475  		rx_status->flag |= RX_FLAG_DECRYPTED;
-a160ba06c1bde5e drivers/net/wireless/rtlwifi/rtl8192de/trx.c         Larry Finger    2014-12-18  476  	rx_status->rate_idx = rtlwifi_rate_mapping(hw, stats->is_ht,
-fd3cb22ad87fd53 drivers/net/wireless/rtlwifi/rtl8192de/trx.c         Larry Finger    2014-12-18  477  						   false, stats->rate);
-eec368b98776a58 drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c Larry Finger    2019-11-21 @478  	rx_status->mactime = get_rx_desc_tsfl(pdesc);
-9928c7d1b1c5e3d drivers/net/wireless/rtlwifi/rtl8192de/trx.c         Larry Finger    2011-06-30  479  	if (phystatus) {
-674f0523ec07a7c drivers/net/wireless/rtlwifi/rtl8192de/trx.c         Chaoming Li     2011-06-10  480  		p_drvinfo = (struct rx_fwinfo_92d *)(skb->data +
-674f0523ec07a7c drivers/net/wireless/rtlwifi/rtl8192de/trx.c         Chaoming Li     2011-06-10  481  						     stats->rx_bufshift);
-674f0523ec07a7c drivers/net/wireless/rtlwifi/rtl8192de/trx.c         Chaoming Li     2011-06-10  482  		_rtl92de_translate_rx_signal_stuff(hw,
-eec368b98776a58 drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c Larry Finger    2019-11-21  483  						   skb, stats,
-eec368b98776a58 drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c Larry Finger    2019-11-21  484  						   (struct rx_desc_92d *)pdesc,
-674f0523ec07a7c drivers/net/wireless/rtlwifi/rtl8192de/trx.c         Chaoming Li     2011-06-10  485  						   p_drvinfo);
-674f0523ec07a7c drivers/net/wireless/rtlwifi/rtl8192de/trx.c         Chaoming Li     2011-06-10  486  	}
-674f0523ec07a7c drivers/net/wireless/rtlwifi/rtl8192de/trx.c         Chaoming Li     2011-06-10  487  	/*rx_status->qual = stats->signal; */
-3545f3d5f4af715 drivers/net/wireless/rtlwifi/rtl8192de/trx.c         Larry Finger    2013-11-05  488  	rx_status->signal = stats->recvsignalpower + 10;
-674f0523ec07a7c drivers/net/wireless/rtlwifi/rtl8192de/trx.c         Chaoming Li     2011-06-10  489  	return true;
-674f0523ec07a7c drivers/net/wireless/rtlwifi/rtl8192de/trx.c         Chaoming Li     2011-06-10  490  }
-674f0523ec07a7c drivers/net/wireless/rtlwifi/rtl8192de/trx.c         Chaoming Li     2011-06-10  491  
-674f0523ec07a7c drivers/net/wireless/rtlwifi/rtl8192de/trx.c         Chaoming Li     2011-06-10  492  static void _rtl92de_insert_emcontent(struct rtl_tcb_desc *ptcb_desc,
-8bfc1a8d624d66c drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c Larry Finger    2019-11-21  493  				      u8 *virtualaddress8)
-674f0523ec07a7c drivers/net/wireless/rtlwifi/rtl8192de/trx.c         Chaoming Li     2011-06-10  494  {
-8bfc1a8d624d66c drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c Larry Finger    2019-11-21  495  	__le32 *virtualaddress = (__le32 *)virtualaddress8;
-8bfc1a8d624d66c drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c Larry Finger    2019-11-21  496  
-674f0523ec07a7c drivers/net/wireless/rtlwifi/rtl8192de/trx.c         Chaoming Li     2011-06-10  497  	memset(virtualaddress, 0, 8);
-674f0523ec07a7c drivers/net/wireless/rtlwifi/rtl8192de/trx.c         Chaoming Li     2011-06-10  498  
-eec368b98776a58 drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c Larry Finger    2019-11-21 @499  	set_earlymode_pktnum(virtualaddress, ptcb_desc->empkt_num);
-eec368b98776a58 drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c Larry Finger    2019-11-21  500  	set_earlymode_len0(virtualaddress, ptcb_desc->empkt_len[0]);
-eec368b98776a58 drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c Larry Finger    2019-11-21  501  	set_earlymode_len1(virtualaddress, ptcb_desc->empkt_len[1]);
-eec368b98776a58 drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c Larry Finger    2019-11-21  502  	set_earlymode_len2_1(virtualaddress, ptcb_desc->empkt_len[2] & 0xF);
-eec368b98776a58 drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c Larry Finger    2019-11-21  503  	set_earlymode_len2_2(virtualaddress, ptcb_desc->empkt_len[2] >> 4);
-eec368b98776a58 drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c Larry Finger    2019-11-21  504  	set_earlymode_len3(virtualaddress, ptcb_desc->empkt_len[3]);
-eec368b98776a58 drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c Larry Finger    2019-11-21  505  	set_earlymode_len4(virtualaddress, ptcb_desc->empkt_len[4]);
-674f0523ec07a7c drivers/net/wireless/rtlwifi/rtl8192de/trx.c         Chaoming Li     2011-06-10  506  }
-674f0523ec07a7c drivers/net/wireless/rtlwifi/rtl8192de/trx.c         Chaoming Li     2011-06-10  507  
-
-:::::: The code at line 445 was first introduced by commit
-:::::: eec368b98776a58d48990e086e77e52bc52aff52 rtlwifi: rtl8192de: Convert macros that set descriptor
-
-:::::: TO: Larry Finger <Larry.Finger@lwfinger.net>
-:::::: CC: 0day robot <lkp@intel.com>
+   705	
+   706	static void rtl_p2p_noa_ie(struct ieee80211_hw *hw, void *data,
+   707				   unsigned int len)
+   708	{
+   709		struct rtl_priv *rtlpriv = rtl_priv(hw);
+   710		struct ieee80211_mgmt *mgmt = data;
+   711		struct rtl_p2p_ps_info *p2pinfo = &(rtlpriv->psc.p2p_ps_info);
+   712		u8 *pos, *end, *ie;
+   713		u16 noa_len;
+   714		static u8 p2p_oui_ie_type[4] = {0x50, 0x6f, 0x9a, 0x09};
+   715		u8 noa_num, index , i, noa_index = 0;
+   716		bool find_p2p_ie = false , find_p2p_ps_ie = false;
+   717	
+   718		pos = (u8 *)mgmt->u.beacon.variable;
+   719		end = data + len;
+   720		ie = NULL;
+   721	
+   722		while (pos + 1 < end) {
+   723			if (pos + 2 + pos[1] > end)
+   724				return;
+   725	
+   726			if (pos[0] == 221 && pos[1] > 4) {
+   727				if (memcmp(&pos[2], p2p_oui_ie_type, 4) == 0) {
+   728					ie = pos + 2+4;
+   729					break;
+   730				}
+   731			}
+   732			pos += 2 + pos[1];
+   733		}
+   734	
+   735		if (ie == NULL)
+   736			return;
+   737		find_p2p_ie = true;
+   738		/*to find noa ie*/
+   739		while (ie + 1 < end) {
+   740			noa_len = le16_to_cpu(*((__le16 *)&ie[1]));
+   741			if (ie + 3 + ie[1] > end)
+   742				return;
+   743	
+   744			if (ie[0] == 12) {
+   745				find_p2p_ps_ie = true;
+   746				if ((noa_len - 2) % 13 != 0) {
+   747					RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD,
+   748						 "P2P notice of absence: invalid length.%d\n",
+   749						 noa_len);
+   750					return;
+   751				} else {
+   752					noa_num = (noa_len - 2) / 13;
+   753					if (noa_num > P2P_MAX_NOA_NUM)
+   754						noa_num = P2P_MAX_NOA_NUM;
+   755	
+   756				}
+   757				noa_index = ie[3];
+   758				if (rtlpriv->psc.p2p_ps_info.p2p_ps_mode ==
+   759				    P2P_PS_NONE || noa_index != p2pinfo->noa_index) {
+   760					RT_TRACE(rtlpriv, COMP_FW, DBG_LOUD,
+   761						 "update NOA ie.\n");
+   762					p2pinfo->noa_index = noa_index;
+   763					p2pinfo->opp_ps = (ie[4] >> 7);
+   764					p2pinfo->ctwindow = ie[4] & 0x7F;
+   765					p2pinfo->noa_num = noa_num;
+   766					index = 5;
+   767					for (i = 0; i < noa_num; i++) {
+   768						p2pinfo->noa_count_type[i] =
+   769						 *(u8 *)(ie + index);
+   770						index += 1;
+   771						p2pinfo->noa_duration[i] =
+ > 772						 le32_to_cpu(*(__le32 *)ie + index);
+   773						index += 4;
+   774						p2pinfo->noa_interval[i] =
+   775						 le32_to_cpu(*(__le32 *)ie + index);
+   776						index += 4;
+   777						p2pinfo->noa_start_time[i] =
+   778						 le32_to_cpu(*(__le32 *)ie + index);
+   779						index += 4;
+   780					}
+   781	
+   782					if (p2pinfo->opp_ps == 1) {
+   783						p2pinfo->p2p_ps_mode = P2P_PS_CTWINDOW;
+   784						/* Driver should wait LPS entering
+   785						 * CTWindow
+   786						 */
+   787						if (rtlpriv->psc.fw_current_inpsmode)
+   788							rtl_p2p_ps_cmd(hw,
+   789								       P2P_PS_ENABLE);
+   790					} else if (p2pinfo->noa_num > 0) {
+   791						p2pinfo->p2p_ps_mode = P2P_PS_NOA;
+   792						rtl_p2p_ps_cmd(hw, P2P_PS_ENABLE);
+   793					} else if (p2pinfo->p2p_ps_mode > P2P_PS_NONE) {
+   794						rtl_p2p_ps_cmd(hw, P2P_PS_DISABLE);
+   795					}
+   796				}
+   797				break;
+   798			}
+   799			ie += 3 + noa_len;
+   800		}
+   801	
+   802		if (find_p2p_ie == true) {
+   803			if ((p2pinfo->p2p_ps_mode > P2P_PS_NONE) &&
+   804			    (find_p2p_ps_ie == false))
+   805				rtl_p2p_ps_cmd(hw, P2P_PS_DISABLE);
+   806		}
+   807	}
+   808	
 
 ---
 0-DAY kernel test infrastructure                 Open Source Technology Center
