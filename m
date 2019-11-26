@@ -2,81 +2,72 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1646E10A18C
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Nov 2019 16:53:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D2A610A196
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Nov 2019 16:55:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728212AbfKZPxP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 26 Nov 2019 10:53:15 -0500
-Received: from a27-11.smtp-out.us-west-2.amazonses.com ([54.240.27.11]:44568
-        "EHLO a27-11.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727191AbfKZPxP (ORCPT
+        id S1728671AbfKZPzF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 26 Nov 2019 10:55:05 -0500
+Received: from a27-18.smtp-out.us-west-2.amazonses.com ([54.240.27.18]:59668
+        "EHLO a27-18.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728295AbfKZPzF (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 26 Nov 2019 10:53:15 -0500
+        Tue, 26 Nov 2019 10:55:05 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1574783594;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:MIME-Version:Content-Type;
-        bh=YoDxwdiX+/IIitr2cA1dXXofO95RcDisor5LI9W5Y+I=;
-        b=cEWGVoADnqlpmg65ZkFRYgxQ1oWSY6SNIlCzYCwQaHt4ITwuKENDlpea+romVKzg
-        ELrLRviKjNmHlLwi505+wgipnANfqmcfmB07MeewGBmba4jIg2a12G+FSPV/HadO60i
-        KXq8iBJ+KQ/2GXpmOxx4pEcpfBnYIUVBuQPOHPkY=
+        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1574783704;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding;
+        bh=QB5TQ9oDmYa9bXkzj5ib42eAk5p+sdsbeXrhhHE1o4I=;
+        b=XdBQHbZmU9/S9UPTkfS81KDCicSmfKfWrq896a7NVUs64qhuYqmg4tlVck4TwA37
+        lmXoJ+TVd6wv+oVJFHqZbnvc59H9G4UkR6/qVhMcx+ELnmwep6F80A3OlUMatlcBfAG
+        pWIg68/Q3cIW3VNpBqfHgKD3WbOLG5lElZQqPGpA=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=gdwg2y3kokkkj5a55z2ilkup5wp5hhxx; d=amazonses.com; t=1574783594;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:MIME-Version:Content-Type:Feedback-ID;
-        bh=YoDxwdiX+/IIitr2cA1dXXofO95RcDisor5LI9W5Y+I=;
-        b=Hsi/pdz5ePMVRy8dNn0FxMQNzxFIO5zqZChpu+abtXLgg26rOPRjxDQMct2SE5Xe
-        Mw8rJfQq2iK/AJ9t83G4v5B4EzyRjYJM778o7ydJxSA7lewhrqolexoDsnok5ob91tq
-        cskWkjTkcp3Ps5IPqanOxZxYcQWGnmTF34WUYFwg=
+        s=gdwg2y3kokkkj5a55z2ilkup5wp5hhxx; d=amazonses.com; t=1574783704;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Feedback-ID;
+        bh=QB5TQ9oDmYa9bXkzj5ib42eAk5p+sdsbeXrhhHE1o4I=;
+        b=FcRzjlwPJRR1w4VZVwQZ+sUzEAmW300J1wleBxCPqzGjlri878BLIjRTxQlODpeO
+        g6O6yhkekTYDEieVm8p5+UEdue/2GrgzmBq7SsmSB1USm5JCXx9IhStqxUjL5JO3/KL
+        vDDPZCkWfskkPxbiN9BlUqBLtiXb9UiJw/QTPYuw=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: *
-X-Spam-Status: No, score=1.3 required=2.0 tests=ALL_TRUSTED,SPF_NONE,
-        TVD_SUBJ_WIPE_DEBT,URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 365B2C433A2
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE,
+        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 88F26C4479F
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 From:   Kalle Valo <kvalo@codeaurora.org>
-To:     "H. Nikolaus Schaller" <hns@goldelico.com>
-Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Alexios Zavras <alexios.zavras@intel.com>,
+To:     =?utf-8?Q?Stefan_B=C3=BChler?= 
+        <stefan.buehler@tik.uni-stuttgart.de>
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        letux-kernel@openphoenux.org, kernel@pyra-handheld.com
-Subject: Re: [PATCH 2/2] net: wireless: ti: wl1251: sdio: remove ti,power-gpio
-References: <cover.1574591746.git.hns@goldelico.com>
-        <e1f18e0f1401a0d8b07ccb176732a2e3f3a5732a.1574591746.git.hns@goldelico.com>
-Date:   Tue, 26 Nov 2019 15:53:14 +0000
-In-Reply-To: <e1f18e0f1401a0d8b07ccb176732a2e3f3a5732a.1574591746.git.hns@goldelico.com>
-        (H. Nikolaus Schaller's message of "Sun, 24 Nov 2019 11:35:46 +0100")
-Message-ID: <0101016ea86aafc7-7f36235e-f486-4e71-bf28-87bffe60a179-000000@us-west-2.amazonses.com>
+        Stefan =?utf-8?Q?B=C3=BChler?= <source@stbuehler.de>
+Subject: Re: [PATCH] cfg80211: fix double-free after changing network namespace
+References: <20191126100543.782023-1-stefan.buehler@tik.uni-stuttgart.de>
+        <dfdb5abc-0565-f19d-bb74-df42c0e0224e@tik.uni-stuttgart.de>
+Date:   Tue, 26 Nov 2019 15:55:04 +0000
+In-Reply-To: <dfdb5abc-0565-f19d-bb74-df42c0e0224e@tik.uni-stuttgart.de>
+        ("Stefan \=\?utf-8\?Q\?B\=C3\=BChler\=22's\?\= message of "Tue, 26 Nov 2019 11:12:30
+ +0100")
+Message-ID: <0101016ea86c5dc7-acc41db5-21f0-4fdc-81a2-f3c500c506a7-000000@us-west-2.amazonses.com>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-SES-Outgoing: 2019.11.26-54.240.27.11
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-SES-Outgoing: 2019.11.26-54.240.27.18
 Feedback-ID: 1.us-west-2.CZuq2qbDmUIuT3qdvXlRHZZCpfZqZ4GtG9v3VKgRyF0=:AmazonSES
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-"H. Nikolaus Schaller" <hns@goldelico.com> writes:
+"Stefan B=C3=BChler" <stefan.buehler@tik.uni-stuttgart.de> writes:
 
-> Remove handling of this property from code.
-> Note that wl->power_gpio is still needed in
-> the header file for SPI mode (N900).
->
-> Suggested by: Ulf Hansson <ulf.hansson@linaro.org>
-> Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
-> ---
->  drivers/net/wireless/ti/wl1251/sdio.c | 30 ---------------------------
->  1 file changed, 30 deletions(-)
+> I'd also like to see this backported to stable, but
+> submitting-patches.rst says you don't like individual developers adding
+> the tag :)
 
-Please use "wl1251: " as title prefix, no need to have the full
-directory structure there.
+BTW, that rule only applies with net and net-next trees. With wireless
+trees we are happy to have the stable tag in the commit itself.
 
--- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+--=20
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
+hes
