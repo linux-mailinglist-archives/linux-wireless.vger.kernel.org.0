@@ -2,121 +2,122 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 86231109CBA
+	by mail.lfdr.de (Postfix) with ESMTP id EED6E109CBB
 	for <lists+linux-wireless@lfdr.de>; Tue, 26 Nov 2019 12:05:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727928AbfKZLE5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 26 Nov 2019 06:04:57 -0500
-Received: from a27-186.smtp-out.us-west-2.amazonses.com ([54.240.27.186]:49660
-        "EHLO a27-186.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727897AbfKZLE4 (ORCPT
+        id S1727936AbfKZLE6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 26 Nov 2019 06:04:58 -0500
+Received: from a27-187.smtp-out.us-west-2.amazonses.com ([54.240.27.187]:43416
+        "EHLO a27-187.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727897AbfKZLE5 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 26 Nov 2019 06:04:56 -0500
+        Tue, 26 Nov 2019 06:04:57 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1574766295;
+        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1574766297;
         h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References;
-        bh=jkynW/q2+cFWecq3LsTGopGApzaLezmtVoJv+R+3Zl8=;
-        b=eFZhEQr9XQe4EkJqZ8a8vv4MffFmheM/d9kF52/BTVqqa0MINX9wcy928OKisYIG
-        CpRzQjynRKAmJ21+PnAg1dIrFoDUtW2MoMm4ybm+CJi8f5JLvLuv6rLwaERC9/LDd1a
-        m8pLyQVrZjMSSOGxBLHbZmyEB8vXHcjMt44IlmYA=
+        bh=wBg1Ji6WBfKCb+qV9IDWZbp7IfN7TOLqYYCkbAlsn1E=;
+        b=KiZo/u1/vl+gJmyTUKPmrBWgsiaI5Q5n/+uD++/5htvWDAcDZl8/ufSl9Cqkmb7/
+        FUcDl9eZdLelFNkzSHSxsgBB+T83KQvHudjdpB6dCLmaoHHJA6eoj6JIQHoLez3IXEF
+        i4D/fnqiZZutBeVvMjGVsGTlPBCOlBYQ8QqngJ9E=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=gdwg2y3kokkkj5a55z2ilkup5wp5hhxx; d=amazonses.com; t=1574766295;
+        s=gdwg2y3kokkkj5a55z2ilkup5wp5hhxx; d=amazonses.com; t=1574766297;
         h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:Feedback-ID;
-        bh=jkynW/q2+cFWecq3LsTGopGApzaLezmtVoJv+R+3Zl8=;
-        b=BLTMFpRCjvJPmYcFvuqrFkOlclMHUhaw01PwNhMesjtF16mI8KursL0laYJoOnFh
-        VeDevESWrdW4ihebEH/KoK4ZUVUuFI04wDZmwRnnAZTsRwrNbxukg9opR+lE+Bf2ygf
-        1AriOyakswRGi08axN3F/y6yKMgOUrjdYjB04Aws=
+        bh=wBg1Ji6WBfKCb+qV9IDWZbp7IfN7TOLqYYCkbAlsn1E=;
+        b=IOcgm9F1Zg98I++3ytkvBtdbRIxr0S92FfPIUwyVrV9foNTKN0B0DRJwc8zoWAAk
+        qgZKLAp5++uwXlT5k5AxHqHZxMMZflcCKI3emJLYj86IFhe/mHzmRA1u5OAqVRHdN2r
+        1/XdPEeBfUurR4Vt3NI6zP3royyTuru+3I2nROyA=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
 X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE,
         URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org ABC89C48B03
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 20E7AC447BB
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 From:   Kalle Valo <kvalo@codeaurora.org>
 To:     linux-wireless@vger.kernel.org
 Cc:     ath11k@lists.infradead.org
-Subject: [PATCH 07/10] ath11k: remove unused tx ring counters
-Date:   Tue, 26 Nov 2019 11:04:55 +0000
-Message-ID: <0101016ea762b952-f1141b05-ce6b-4329-aa05-d3a4cd8ea911-000000@us-west-2.amazonses.com>
+Subject: [PATCH 08/10] ath11k: Fix skb_panic observed during msdu coalescing
+Date:   Tue, 26 Nov 2019 11:04:57 +0000
+Message-ID: <0101016ea762c08d-ddb7bea1-4346-4a6d-891a-7b2265e50606-000000@us-west-2.amazonses.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1574766279-13105-1-git-send-email-kvalo@codeaurora.org>
 References: <1574766279-13105-1-git-send-email-kvalo@codeaurora.org>
-X-SES-Outgoing: 2019.11.26-54.240.27.186
+X-SES-Outgoing: 2019.11.26-54.240.27.187
 Feedback-ID: 1.us-west-2.CZuq2qbDmUIuT3qdvXlRHZZCpfZqZ4GtG9v3VKgRyF0=:AmazonSES
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>
+From: Sriram R <srirrama@codeaurora.org>
 
-remove unused counter to avoid taking locks inorder to optimize
-cpu load.
+skb_panic is hit during msdu coalescing whenever
+enough tailroom is not allocated based on the remaining
+msdu length which is spread across in different rx buffers.
 
-Using Flamegraph, cpu usage of ath11k_dp_tx() observed to be decreased
-from 5.58% to 3.74% with iperf traffic running with 80MHz bandwidth ap
-mode.
+Compute the extra length for resizing the skb based on
+the total msdu length and the msdu length of the first buffer.
 
-Signed-off-by: Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>
+Signed-off-by: Sriram R <srirrama@codeaurora.org>
 Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 ---
- drivers/net/wireless/ath/ath11k/dp.h    | 1 -
- drivers/net/wireless/ath/ath11k/dp_tx.c | 7 -------
- 2 files changed, 8 deletions(-)
+ drivers/net/wireless/ath/ath11k/dp_rx.c | 22 ++++++++++++++--------
+ 1 file changed, 14 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/dp.h b/drivers/net/wireless/ath/ath11k/dp.h
-index eb0f3df131c5..db216f055c42 100644
---- a/drivers/net/wireless/ath/ath11k/dp.h
-+++ b/drivers/net/wireless/ath/ath11k/dp.h
-@@ -63,7 +63,6 @@ struct dp_tx_ring {
- 	struct dp_srng tcl_data_ring;
- 	struct dp_srng tcl_comp_ring;
- 	struct idr txbuf_idr;
--	u32 num_tx_pending;
- 	/* Protects txbuf_idr and num_pending */
- 	spinlock_t tx_idr_lock;
- 	DECLARE_KFIFO_PTR(tx_status_fifo, struct hal_wbm_release_ring);
-diff --git a/drivers/net/wireless/ath/ath11k/dp_tx.c b/drivers/net/wireless/ath/ath11k/dp_tx.c
-index 51a02b8e66cc..a8b9557c2346 100644
---- a/drivers/net/wireless/ath/ath11k/dp_tx.c
-+++ b/drivers/net/wireless/ath/ath11k/dp_tx.c
-@@ -196,10 +196,6 @@ int ath11k_dp_tx(struct ath11k *ar, struct ath11k_vif *arvif,
+diff --git a/drivers/net/wireless/ath/ath11k/dp_rx.c b/drivers/net/wireless/ath/ath11k/dp_rx.c
+index 321a2bb657e8..acad74658e64 100644
+--- a/drivers/net/wireless/ath/ath11k/dp_rx.c
++++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
+@@ -1344,15 +1344,22 @@ static int ath11k_dp_rx_msdu_coalesce(struct ath11k *ar,
+ {
+ 	struct sk_buff *skb;
+ 	struct ath11k_skb_rxcb *rxcb = ATH11K_SKB_RXCB(first);
++	int buf_first_hdr_len, buf_first_len;
+ 	struct hal_rx_desc *ldesc;
+ 	int space_extra;
+ 	int rem_len;
+ 	int buf_len;
  
- 	spin_unlock_bh(&tcl_ring->lock);
+-	if (WARN_ON_ONCE(msdu_len <= (DP_RX_BUFFER_SIZE -
+-			 (HAL_RX_DESC_SIZE + l3pad_bytes)))) {
+-		skb_put(first, HAL_RX_DESC_SIZE + l3pad_bytes + msdu_len);
+-		skb_pull(first, HAL_RX_DESC_SIZE + l3pad_bytes);
++	/* As the msdu is spread across multiple rx buffers,
++	 * find the offset to the start of msdu for computing
++	 * the length of the msdu in the first buffer.
++	 */
++	buf_first_hdr_len = HAL_RX_DESC_SIZE + l3pad_bytes;
++	buf_first_len = DP_RX_BUFFER_SIZE - buf_first_hdr_len;
++
++	if (WARN_ON_ONCE(msdu_len <= buf_first_len)) {
++		skb_put(first, buf_first_hdr_len + msdu_len);
++		skb_pull(first, buf_first_hdr_len);
+ 		return 0;
+ 	}
  
--	spin_lock_bh(&tx_ring->tx_idr_lock);
--	tx_ring->num_tx_pending++;
--	spin_unlock_bh(&tx_ring->tx_idr_lock);
--
- 	atomic_inc(&ar->dp.num_tx_pending);
+@@ -1365,9 +1372,9 @@ static int ath11k_dp_rx_msdu_coalesce(struct ath11k *ar,
+ 	 * in the first buf is of length DP_RX_BUFFER_SIZE - HAL_RX_DESC_SIZE.
+ 	 */
+ 	skb_put(first, DP_RX_BUFFER_SIZE);
+-	skb_pull(first, HAL_RX_DESC_SIZE + l3pad_bytes);
++	skb_pull(first, buf_first_hdr_len);
  
- 	return 0;
-@@ -236,7 +232,6 @@ static void ath11k_dp_tx_free_txbuf(struct ath11k_base *ab, u8 mac_id,
- 	skb_cb = ATH11K_SKB_CB(msdu);
+-	space_extra = msdu_len - (DP_RX_BUFFER_SIZE + skb_tailroom(first));
++	space_extra = msdu_len - (buf_first_len + skb_tailroom(first));
+ 	if (space_extra > 0 &&
+ 	    (pskb_expand_head(first, 0, space_extra, GFP_ATOMIC) < 0)) {
+ 		/* Free up all buffers of the MSDU */
+@@ -1387,8 +1394,7 @@ static int ath11k_dp_rx_msdu_coalesce(struct ath11k *ar,
+ 	 */
+ 	ath11k_dp_rx_desc_end_tlv_copy(rxcb->rx_desc, ldesc);
  
- 	idr_remove(&tx_ring->txbuf_idr, msdu_id);
--	tx_ring->num_tx_pending--;
- 	spin_unlock_bh(&tx_ring->tx_idr_lock);
- 
- 	dma_unmap_single(ab->dev, skb_cb->paddr, msdu->len, DMA_TO_DEVICE);
-@@ -272,7 +267,6 @@ ath11k_dp_tx_htt_tx_complete_buf(struct ath11k_base *ab,
- 	ar = skb_cb->ar;
- 
- 	idr_remove(&tx_ring->txbuf_idr, ts->msdu_id);
--	tx_ring->num_tx_pending--;
- 	spin_unlock_bh(&tx_ring->tx_idr_lock);
- 
- 	if (atomic_dec_and_test(&ar->dp.num_tx_pending))
-@@ -495,7 +489,6 @@ void ath11k_dp_tx_completion_handler(struct ath11k_base *ab, int ring_id)
- 			continue;
- 		}
- 		idr_remove(&tx_ring->txbuf_idr, msdu_id);
--		tx_ring->num_tx_pending--;
- 		spin_unlock_bh(&tx_ring->tx_idr_lock);
- 
- 		ar = ab->pdevs[mac_id].ar;
+-	rem_len = msdu_len -
+-		  (DP_RX_BUFFER_SIZE - HAL_RX_DESC_SIZE - l3pad_bytes);
++	rem_len = msdu_len - buf_first_len;
+ 	while ((skb = __skb_dequeue(msdu_list)) != NULL && rem_len > 0) {
+ 		rxcb = ATH11K_SKB_RXCB(skb);
+ 		if (rxcb->is_continuation)
 -- 
 2.7.4
 
