@@ -2,73 +2,93 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6415910A62F
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Nov 2019 22:48:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2EFF010A748
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Nov 2019 00:57:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726101AbfKZVr7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 26 Nov 2019 16:47:59 -0500
-Received: from mail2.candelatech.com ([208.74.158.173]:44002 "EHLO
-        mail3.candelatech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726036AbfKZVr7 (ORCPT
+        id S1726926AbfKZX5s (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 26 Nov 2019 18:57:48 -0500
+Received: from shards.monkeyblade.net ([23.128.96.9]:44282 "EHLO
+        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726380AbfKZX5s (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 26 Nov 2019 16:47:59 -0500
-Received: from ben-dt4.candelatech.com (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
-        by mail3.candelatech.com (Postfix) with ESMTP id 1271513C35A;
-        Tue, 26 Nov 2019 13:47:47 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 1271513C35A
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1574804867;
-        bh=ExurkfaMQ5hfSBPOhbXi2weT1swS9LXEQjXdQHSp890=;
-        h=From:To:Cc:Subject:Date:From;
-        b=G2yrSlFKidWr4TUXSLDGUaT8Wb/+Kh6oYcn/8rGh9/9g0elhH90pTLczURyfwd0JT
-         JiVtsyoEeuFQrTxwSgsdQ8ue2slaEwzrOQIg9cxiE/dWIRYR0YwaVmTGKU4xfYU1Dw
-         F3hBEW5+PE+mKJ8FohmutUs+6UOkCfFXEJU1/1HI=
-From:   greearb@candelatech.com
-To:     linux-wireless@vger.kernel.org
-Cc:     Ben Greear <greearb@candelatech.com>
-Subject: [PATCH] ax200:  Fix avg-power report.
-Date:   Tue, 26 Nov 2019 13:47:44 -0800
-Message-Id: <20191126214744.1283-1-greearb@candelatech.com>
-X-Mailer: git-send-email 2.20.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        Tue, 26 Nov 2019 18:57:48 -0500
+Received: from localhost (c-73-35-209-67.hsd1.wa.comcast.net [73.35.209.67])
+        (using TLSv1 with cipher AES256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id 7F33914DDDEC8;
+        Tue, 26 Nov 2019 15:57:46 -0800 (PST)
+Date:   Tue, 26 Nov 2019 15:57:46 -0800 (PST)
+Message-Id: <20191126.155746.627765091618337419.davem@davemloft.net>
+To:     alobakin@dlink.ru
+Cc:     pabeni@redhat.com, johannes@sipsolutions.net, ecree@solarflare.com,
+        nicholas.johnson-opensource@outlook.com.au, jiri@mellanox.com,
+        edumazet@google.com, idosch@mellanox.com, petrm@mellanox.com,
+        sd@queasysnail.net, f.fainelli@gmail.com,
+        jaswinder.singh@linaro.org, ilias.apalodimas@linaro.org,
+        linux-kernel@vger.kernel.org, emmanuel.grumbach@intel.com,
+        luciano.coelho@intel.com, linuxwifi@intel.com,
+        kvalo@codeaurora.org, netdev@vger.kernel.org,
+        linux-wireless@vger.kernel.org
+Subject: Re: [PATCH v2 net-next] net: core: use listified Rx for GRO_NORMAL
+ in napi_gro_receive()
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <d535d5142e42b8c550f0220200e3779d@dlink.ru>
+References: <414288fcac2ba4fcee48a63bdbf28f7b9a5037c6.camel@sipsolutions.net>
+        <b4b92c4d066007d9cb77e1645e667715c17834fb.camel@redhat.com>
+        <d535d5142e42b8c550f0220200e3779d@dlink.ru>
+X-Mailer: Mew version 6.8 on Emacs 26.1
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Tue, 26 Nov 2019 15:57:47 -0800 (PST)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Ben Greear <greearb@candelatech.com>
+From: Alexander Lobakin <alobakin@dlink.ru>
+Date: Mon, 25 Nov 2019 15:02:24 +0300
 
-On AX200, the average power was showing possitive instead of negative, but
-otherwise matched the expected RSSI.  I think that we just need to flip
-the value to negative before giving to mac80211.
+> Paolo Abeni wrote 25.11.2019 14:42:
+>> For -net, I *think* something as dumb and hacky as the following could
+>> possibly work:
+>> ----
+>> diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
+>> b/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
+>> index 4bba6b8a863c..df82fad96cbb 100644
+>> --- a/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
+>> +++ b/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
+>> @@ -1527,7 +1527,7 @@ static void iwl_pcie_rx_handle(struct iwl_trans
+>> *trans, int queue)
+>>                 iwl_pcie_rxq_alloc_rbs(trans, GFP_ATOMIC, rxq);
+>>         if (rxq->napi.poll)
+>> -               napi_gro_flush(&rxq->napi, false);
+>> +               napi_complete_done(&rxq->napi, 0);
+>>         iwl_pcie_rxq_restock(trans, rxq);
+>>  }
+>> ---
+> 
+> napi_complete_done(napi, 0) has an equivalent static inline
+> napi_complete(napi). I'm not sure it will work without any issues
+> as iwlwifi doesn't _really_ turn NAPI into scheduling state.
+> 
+> I'm not very familiar with iwlwifi, but as a work around manual
+> napi_gro_flush() you can also manually flush napi->rx_list to
+> prevent packets from stalling:
+> 
+> diff -Naur a/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
+> b/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
+> --- a/drivers/net/wireless/intel/iwlwifi/pcie/rx.c 2019-11-25
+> --- 14:55:03.610355230 +0300
+> +++ b/drivers/net/wireless/intel/iwlwifi/pcie/rx.c 2019-11-25
+> 14:57:29.399556868 +0300
+ ...
 
-Signed-off-by: Ben Greear <greearb@candelatech.com>
----
- drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+Thanks to everyone for looking into this.
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-index 1bff94c3dd72..2876db1b1d17 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-@@ -4948,7 +4948,15 @@ static void iwl_mvm_mac_sta_statistics(struct ieee80211_hw *hw,
- 	struct iwl_mvm_sta *mvmsta = iwl_mvm_sta_from_mac80211(sta);
- 
- 	if (mvmsta->avg_energy) {
--		sinfo->signal_avg = mvmsta->avg_energy;
-+		/* signal_avg is s8, mvsta->avg_energy is u8.  At least on AX200,
-+		 * avg_energy is RSSI but missing the minus sign.
-+		 */
-+		if (mvmsta->avg_energy & 0x80) {
-+			sinfo->signal_avg = mvmsta->avg_energy;
-+		}
-+		else {
-+			sinfo->signal_avg = -((s8)(mvmsta->avg_energy));
-+		}
- 		sinfo->filled |= BIT_ULL(NL80211_STA_INFO_SIGNAL_AVG);
- 	}
- 
--- 
-2.20.1
+Can I get some kind of fix in the next 24 hours?  I want to send a quick
+follow-on pull request to Linus to deal with all of the fallout, and in
+particular fix this regression.
 
+Thanks!
