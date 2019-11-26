@@ -2,78 +2,105 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 637D3109CBC
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Nov 2019 12:05:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B80C109D9B
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Nov 2019 13:12:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727945AbfKZLE7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 26 Nov 2019 06:04:59 -0500
-Received: from a27-21.smtp-out.us-west-2.amazonses.com ([54.240.27.21]:51680
-        "EHLO a27-21.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727942AbfKZLE6 (ORCPT
+        id S1727633AbfKZMMS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 26 Nov 2019 07:12:18 -0500
+Received: from userp2130.oracle.com ([156.151.31.86]:49126 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727400AbfKZMMS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 26 Nov 2019 06:04:58 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1574766298;
-        h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References;
-        bh=+zPUWAW8TqcLVPNAwwfq0f5YT8e5SBbgec/XOTI4xPU=;
-        b=X2PQCRR8M89LliQKp7VwPPqFjyFMDV50g1PDaeuOLi6GXBHzx93q5aG9a0lgscT3
-        +UgJjCQEwZwthT9Lo8FP4KJfq4YspT9uDNM8E1+ouNsxry7/HnT7HO598y6d1FPaBMf
-        jyRStdrgP+8d0M0zDGDiQRMI/SBLz5wJAMaIO7ig=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=gdwg2y3kokkkj5a55z2ilkup5wp5hhxx; d=amazonses.com; t=1574766298;
-        h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:Feedback-ID;
-        bh=+zPUWAW8TqcLVPNAwwfq0f5YT8e5SBbgec/XOTI4xPU=;
-        b=WC15bSDLi4dTQdqJw0Iv8doGhHkgsxUK6LsGmL6pdZeenMMsg/9wKqMSIg07YWST
-        bbo2UqhGwDJd88zzcVV6+d4c3YFF0r1yZPDNIfVlj7jFniVk+gTZUByTxY2hueW/Tya
-        aIziv8nSmEOemEjioKQFbMNSORasi8jgKxRyp0JM=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.0
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 8F39FC48B39
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     linux-wireless@vger.kernel.org
-Cc:     ath11k@lists.infradead.org
-Subject: [PATCH 09/10] ath11k: Fixing TLV length issue in peer pktlog WMI command
-Date:   Tue, 26 Nov 2019 11:04:58 +0000
-Message-ID: <0101016ea762c38b-7904f80e-329c-4243-91cd-36e6f821dcd4-000000@us-west-2.amazonses.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1574766279-13105-1-git-send-email-kvalo@codeaurora.org>
-References: <1574766279-13105-1-git-send-email-kvalo@codeaurora.org>
-X-SES-Outgoing: 2019.11.26-54.240.27.21
-Feedback-ID: 1.us-west-2.CZuq2qbDmUIuT3qdvXlRHZZCpfZqZ4GtG9v3VKgRyF0=:AmazonSES
+        Tue, 26 Nov 2019 07:12:18 -0500
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xAQC8pDw116272;
+        Tue, 26 Nov 2019 12:11:53 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type :
+ content-transfer-encoding : in-reply-to; s=corp-2019-08-05;
+ bh=/mBMxIIlBQ+XFxgJu+74RNcnTy1AckJgoUjuyVpyT6M=;
+ b=UVaFVpmuP55to/4hV4BOtz3AZvc5zUuB3/8JIbNJ3e06RElBJFpqC+Tx1TL3KyhLoQ/k
+ u3zhfsAW/k12OWQV+IEYJ5JpEacsTWx5zZTSllioxe0ChSgcQMI9QcbRcMIC8DIvsQbi
+ upraQTttR8lYgFES0JQfCJ9468zZzLIJwYtrWzrk90D9PNKBuupuh11p5E/NtF8Jhks8
+ DC58PlwnmpFUGrYu+Fe6ujIIzOHsGlQhWHDDOr9pQVDZdGs9lgMSCaxccJnAMbLDcNPk
+ UZTOBbusz+/m5gcHzW7aYZS/RCLeKsz8lPg4yjiR0XGZ9He+Mvbe+ZpVSGWszAse1HON sg== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2130.oracle.com with ESMTP id 2wev6u6d8m-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 26 Nov 2019 12:11:53 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xAQC8Rtb089382;
+        Tue, 26 Nov 2019 12:09:53 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by userp3020.oracle.com with ESMTP id 2wgvfjddd7-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 26 Nov 2019 12:09:52 +0000
+Received: from abhmp0019.oracle.com (abhmp0019.oracle.com [141.146.116.25])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id xAQC9pAO018135;
+        Tue, 26 Nov 2019 12:09:51 GMT
+Received: from kili.mountain (/129.205.23.165)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 26 Nov 2019 04:09:49 -0800
+Date:   Tue, 26 Nov 2019 15:09:39 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        Toke H??iland-J??rgensen <toke@redhat.com>
+Cc:     linux-wireless@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Roy Luo <royluo@google.com>, Kalle Valo <kvalo@codeaurora.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        linux-mediatek@lists.infradead.org
+Subject: [PATCH] mac80211: airtime: Fix an off by one in
+ ieee80211_calc_rx_airtime()
+Message-ID: <20191126120910.ftr4t7me3by32aiz@kili.mountain>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=unknown-8bit
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <87v9r7ysg0.fsf@toke.dk>
+X-Mailer: git-send-email haha only kidding
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9452 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1911140001 definitions=main-1911260110
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9452 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
+ definitions=main-1911260110
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Vikas Patel <vikpatel@codeaurora.org>
+This code was copied from mt76 and inherited an off by one bug from
+there.  The > should be >= so that we don't read one element beyond
+the end of the array.
 
-TLV length was 0 for TLV tag 'WMI_TAG_ARRAY_STRUCT' causing
-Q6 to crash when trying to configure pktlog filter via debugfs.
-
-Signed-off-by: Vikas Patel <vikpatel@codeaurora.org>
-Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+Fixes: db3e1c40cf2f ("mac80211: Import airtime calculation code from mt76")
+Reported-by: Toke Høiland-Jørgensen <toke@redhat.com>
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- drivers/net/wireless/ath/ath11k/wmi.c | 2 +-
+ net/mac80211/airtime.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
-index ccebf7ce420a..aae6e76330da 100644
---- a/drivers/net/wireless/ath/ath11k/wmi.c
-+++ b/drivers/net/wireless/ath/ath11k/wmi.c
-@@ -2329,7 +2329,7 @@ int ath11k_wmi_pdev_peer_pktlog_filter(struct ath11k *ar, u8 *addr, u8 enable)
+diff --git a/net/mac80211/airtime.c b/net/mac80211/airtime.c
+index 63cb0028b02d..9fc2968856c0 100644
+--- a/net/mac80211/airtime.c
++++ b/net/mac80211/airtime.c
+@@ -442,7 +442,7 @@ u32 ieee80211_calc_rx_airtime(struct ieee80211_hw *hw,
+ 			return 0;
  
- 	tlv = ptr;
- 	tlv->header = FIELD_PREP(WMI_TLV_TAG, WMI_TAG_ARRAY_STRUCT) |
--		      FIELD_PREP(WMI_TLV_LEN, 0);
-+		      FIELD_PREP(WMI_TLV_LEN, sizeof(*info));
+ 		sband = hw->wiphy->bands[status->band];
+-		if (!sband || status->rate_idx > sband->n_bitrates)
++		if (!sband || status->rate_idx >= sband->n_bitrates)
+ 			return 0;
  
- 	ptr += TLV_HDR_SIZE;
- 	info = ptr;
+ 		rate = &sband->bitrates[status->rate_idx];
 -- 
-2.7.4
+2.11.0
 
