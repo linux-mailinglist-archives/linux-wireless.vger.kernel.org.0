@@ -2,32 +2,34 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 216EE10A62B
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Nov 2019 22:47:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6415910A62F
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Nov 2019 22:48:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727080AbfKZVrW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 26 Nov 2019 16:47:22 -0500
-Received: from smail.rz.tu-ilmenau.de ([141.24.186.67]:46406 "EHLO
-        smail.rz.tu-ilmenau.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727051AbfKZVrV (ORCPT
+        id S1726101AbfKZVr7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 26 Nov 2019 16:47:59 -0500
+Received: from mail2.candelatech.com ([208.74.158.173]:44002 "EHLO
+        mail3.candelatech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726036AbfKZVr7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 26 Nov 2019 16:47:21 -0500
-Received: from localhost.localdomain (unknown [141.24.207.101])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by smail.rz.tu-ilmenau.de (Postfix) with ESMTPSA id 2AE78580081;
-        Tue, 26 Nov 2019 22:47:17 +0100 (CET)
-From:   Markus Theil <markus.theil@tu-ilmenau.de>
-To:     nbd@nbd.name
-Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
-        Stanislaw Gruszka <sgruszka@redhat.com>,
-        Markus Theil <markus.theil@tu-ilmenau.de>
-Subject: [PATCH v9 6/6] mt76: mt76x02: add channel switch support for usb interfaces
-Date:   Tue, 26 Nov 2019 22:47:04 +0100
-Message-Id: <20191126214704.27297-7-markus.theil@tu-ilmenau.de>
-X-Mailer: git-send-email 2.24.0
-In-Reply-To: <20191126214704.27297-1-markus.theil@tu-ilmenau.de>
-References: <20191126214704.27297-1-markus.theil@tu-ilmenau.de>
+        Tue, 26 Nov 2019 16:47:59 -0500
+Received: from ben-dt4.candelatech.com (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
+        by mail3.candelatech.com (Postfix) with ESMTP id 1271513C35A;
+        Tue, 26 Nov 2019 13:47:47 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 1271513C35A
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+        s=default; t=1574804867;
+        bh=ExurkfaMQ5hfSBPOhbXi2weT1swS9LXEQjXdQHSp890=;
+        h=From:To:Cc:Subject:Date:From;
+        b=G2yrSlFKidWr4TUXSLDGUaT8Wb/+Kh6oYcn/8rGh9/9g0elhH90pTLczURyfwd0JT
+         JiVtsyoEeuFQrTxwSgsdQ8ue2slaEwzrOQIg9cxiE/dWIRYR0YwaVmTGKU4xfYU1Dw
+         F3hBEW5+PE+mKJ8FohmutUs+6UOkCfFXEJU1/1HI=
+From:   greearb@candelatech.com
+To:     linux-wireless@vger.kernel.org
+Cc:     Ben Greear <greearb@candelatech.com>
+Subject: [PATCH] ax200:  Fix avg-power report.
+Date:   Tue, 26 Nov 2019 13:47:44 -0800
+Message-Id: <20191126214744.1283-1-greearb@candelatech.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
@@ -35,60 +37,38 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This patch enables channel switch support on mt76 usb interfaces.
+From: Ben Greear <greearb@candelatech.com>
 
-Signed-off-by: Markus Theil <markus.theil@tu-ilmenau.de>
+On AX200, the average power was showing possitive instead of negative, but
+otherwise matched the expected RSSI.  I think that we just need to flip
+the value to negative before giving to mac80211.
+
+Signed-off-by: Ben Greear <greearb@candelatech.com>
 ---
- drivers/net/wireless/mediatek/mt76/mt76x02_usb_core.c | 8 ++++++++
- drivers/net/wireless/mediatek/mt76/mt76x02_util.c     | 2 +-
- 2 files changed, 9 insertions(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_usb_core.c b/drivers/net/wireless/mediatek/mt76/mt76x02_usb_core.c
-index fca861f10563..3dc3682d585a 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x02_usb_core.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x02_usb_core.c
-@@ -214,6 +214,13 @@ static void mt76x02u_pre_tbtt_work(struct work_struct *work)
- 		IEEE80211_IFACE_ITER_RESUME_ALL,
- 		mt76x02_update_beacon_iter, dev);
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+index 1bff94c3dd72..2876db1b1d17 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+@@ -4948,7 +4948,15 @@ static void iwl_mvm_mac_sta_statistics(struct ieee80211_hw *hw,
+ 	struct iwl_mvm_sta *mvmsta = iwl_mvm_sta_from_mac80211(sta);
  
-+	mt76_csa_check(&dev->mt76);
-+
-+	if (dev->mt76.csa_complete) {
-+		mt76_csa_finish(&dev->mt76);
-+		goto out;
-+	}
-+
- 	nbeacons = hweight8(dev->mt76.beacon_mask);
- 	mt76x02_enqueue_buffered_bc(dev, &data, N_BCN_SLOTS - nbeacons);
- 
-@@ -222,6 +229,7 @@ static void mt76x02u_pre_tbtt_work(struct work_struct *work)
- 		mt76x02_mac_set_beacon(dev, skb);
+ 	if (mvmsta->avg_energy) {
+-		sinfo->signal_avg = mvmsta->avg_energy;
++		/* signal_avg is s8, mvsta->avg_energy is u8.  At least on AX200,
++		 * avg_energy is RSSI but missing the minus sign.
++		 */
++		if (mvmsta->avg_energy & 0x80) {
++			sinfo->signal_avg = mvmsta->avg_energy;
++		}
++		else {
++			sinfo->signal_avg = -((s8)(mvmsta->avg_energy));
++		}
+ 		sinfo->filled |= BIT_ULL(NL80211_STA_INFO_SIGNAL_AVG);
  	}
  
-+out:
- 	mt76x02_mac_set_beacon_finish(dev);
- 
- 	mt76x02u_restart_pre_tbtt_timer(dev);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_util.c b/drivers/net/wireless/mediatek/mt76/mt76x02_util.c
-index 6073f8a4a8f6..dbda7fb6dab7 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x02_util.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x02_util.c
-@@ -166,7 +166,6 @@ void mt76x02_init_device(struct mt76x02_dev *dev)
- 		wiphy->reg_notifier = mt76x02_regd_notifier;
- 		wiphy->iface_combinations = mt76x02_if_comb;
- 		wiphy->n_iface_combinations = ARRAY_SIZE(mt76x02_if_comb);
--		wiphy->flags |= WIPHY_FLAG_HAS_CHANNEL_SWITCH;
- 
- 		/* init led callbacks */
- 		if (IS_ENABLED(CONFIG_MT76_LEDS)) {
-@@ -176,6 +175,7 @@ void mt76x02_init_device(struct mt76x02_dev *dev)
- 		}
- 	}
- 
-+	wiphy->flags |= WIPHY_FLAG_HAS_CHANNEL_SWITCH;
- 	wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_VHT_IBSS);
- 
- 	hw->sta_data_size = sizeof(struct mt76x02_sta);
 -- 
-2.24.0
+2.20.1
 
