@@ -2,139 +2,83 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E82F109AF1
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Nov 2019 10:16:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 47273109AFC
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Nov 2019 10:18:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727578AbfKZJQR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 26 Nov 2019 04:16:17 -0500
-Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:45667 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1727483AbfKZJQR (ORCPT
+        id S1727452AbfKZJSa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 26 Nov 2019 04:18:30 -0500
+Received: from a27-185.smtp-out.us-west-2.amazonses.com ([54.240.27.185]:50790
+        "EHLO a27-185.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727388AbfKZJSa (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 26 Nov 2019 04:16:17 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1574759775;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=vb+oxQxZRkNlkuBEQUYVCl/O5AvuVY4nZz95WVzmQq8=;
-        b=KPJacqge+BMAzmRYMzQQJftxDejx2BuTj31hl/rlzH5+X5s2pSvlL2dhZDfIihiWK9Fd9d
-        TrSvHqn6W5mk6j9kC9bcAXwK7SfhLeLSoh0NOTrI6FZMWNWuVTsKFdDS8SrMI3+7tez1Zl
-        YpG7dkiYU4WuEaLF4PfzjXPGEisdOz8=
-Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
- [209.85.167.71]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-348-1m40VoXRMT-kk4noMGX22g-1; Tue, 26 Nov 2019 04:16:14 -0500
-Received: by mail-lf1-f71.google.com with SMTP id x23so3745772lfc.5
-        for <linux-wireless@vger.kernel.org>; Tue, 26 Nov 2019 01:16:14 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
-         :message-id:mime-version:content-transfer-encoding;
-        bh=+GixzF/KaQHv0D6//vs+c5ZE/FXLP7KWC/hh8q0IT38=;
-        b=j6HV/1GEbrpfydmtK5ZFDXgbJVRg/qSMwpqugHP+vMIKrN3t8lI5JI1IG5rt1Ri9Cc
-         2qRfOqwbp4QQYe7MDmVaRkcOV112zQvaQ9aIDUK4yoelTqlrUnSMJe54aghyXmm7C36h
-         LgDgla8Iwzojao/wceXUti8NDlnO8cAZOXj3YnstKfTNJMFYSlHJKaOBRKsReLWMZZUw
-         XIBIYUOWvAURRL1BoR9JJ+lcWJqwgX4px2/wVdTyWikJmRK9FoYPcxNbjttZQgPYJC1V
-         Sd0+NeWjs/soJeT4C08Nzg1boweISTgDn6l4TPaNi3JkexNbGmx5NGBjcYh8u+88oE4Z
-         g4qQ==
-X-Gm-Message-State: APjAAAUCWN7AQyXplItnkTWTIV5pxkyCxp6b2e9IARTLztFr6loSj/fm
-        QKJKhgrLj0s7Sf4o1diNJlgixmUjiVbRMFytFsQ29QdFI3I+0WMTZKP265SSKd2sf32m1Y/5SDL
-        7/LuydgZceGLm/uwpTXKYj5weFn4=
-X-Received: by 2002:a19:f811:: with SMTP id a17mr23461977lff.132.1574759772744;
-        Tue, 26 Nov 2019 01:16:12 -0800 (PST)
-X-Google-Smtp-Source: APXvYqxi4cxslTGXaPEgklZisShtCL52V7ndFFVsbgvulKaJ2kiSJRyrQs7o0m+akem1uQZYddlS3g==
-X-Received: by 2002:a19:f811:: with SMTP id a17mr23461957lff.132.1574759772531;
-        Tue, 26 Nov 2019 01:16:12 -0800 (PST)
-Received: from alrua-x1.borgediget.toke.dk ([45.145.92.2])
-        by smtp.gmail.com with ESMTPSA id s27sm4937135lfc.31.2019.11.26.01.16.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 Nov 2019 01:16:11 -0800 (PST)
-Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-        id DC18D1818BF; Tue, 26 Nov 2019 10:16:10 +0100 (CET)
-From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Roy Luo <royluo@google.com>, Kalle Valo <kvalo@codeaurora.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] mt76: Off by one in mt76_calc_rx_airtime()
-In-Reply-To: <20191126091150.GA1759@kadam>
-References: <20191121213935.2cbgh3qmd4hv4v5a@kili.mountain> <87v9r7ysg0.fsf@toke.dk> <20191126091150.GA1759@kadam>
-X-Clacks-Overhead: GNU Terry Pratchett
-Date:   Tue, 26 Nov 2019 10:16:10 +0100
-Message-ID: <87h82ryp45.fsf@toke.dk>
+        Tue, 26 Nov 2019 04:18:30 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1574759909;
+        h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Transfer-Encoding;
+        bh=X5V8s0Eli1EcgJsp36WqwwwNfr8P8+kw3efGveKQfu0=;
+        b=IRFr+/iquEAK6YrAZOcW2OKgwRIdl5UDz5LiAdOM23Ip/aTkitM6BzZgFnr1qCl/
+        +oA3A/qS5ylAvVED0StIkJv5xD9NiP7Ly/iWxUsIttDPlEzZkUhXNUgahNsXFZPmhif
+        5E0QnoH4NRIcAIztJUB/gXvsj7qZOrkDnvV3dt1c=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+        s=gdwg2y3kokkkj5a55z2ilkup5wp5hhxx; d=amazonses.com; t=1574759909;
+        h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Transfer-Encoding:Feedback-ID;
+        bh=X5V8s0Eli1EcgJsp36WqwwwNfr8P8+kw3efGveKQfu0=;
+        b=FCAcI2qkidJgW01AnYA3Fo7lelAXn3+p0SH2D+F2zbiE5n+KneXJdhXRcm+kZ79O
+        mm7lwf9uFIPJV7Z0nRVdNiFF9GX7vycXSxjFGt7//e4qHBH0eQcImHW7psR4FslgzjA
+        7YUsK5hWo9vK5sXNkc4UOQcdz4iDEEp840fcPpnE=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE,
+        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 95B09C433CB
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=wgong@codeaurora.org
+From:   Wen Gong <wgong@codeaurora.org>
+To:     ath10k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org
+Subject: [PATCH] ath10k: drop the TX packet which size exceed credit size for sdio
+Date:   Tue, 26 Nov 2019 09:18:29 +0000
+Message-ID: <0101016ea7014696-55ae954e-6272-4899-bd03-d8012e217b9e-000000@us-west-2.amazonses.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-X-MC-Unique: 1m40VoXRMT-kk4noMGX22g-1
-X-Mimecast-Spam-Score: 0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-SES-Outgoing: 2019.11.26-54.240.27.185
+Feedback-ID: 1.us-west-2.CZuq2qbDmUIuT3qdvXlRHZZCpfZqZ4GtG9v3VKgRyF0=:AmazonSES
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Dan Carpenter <dan.carpenter@oracle.com> writes:
+sdio chip use DMA buffer to receive TX packet from ath10k, and it has
+limitation of each buffer, if the packet size exceed the credit size,
+it will trigger error in firmware.
 
-> On Tue, Nov 26, 2019 at 09:04:15AM +0100, Toke H=C3=B8iland-J=C3=B8rgense=
-n wrote:
->> Dan Carpenter <dan.carpenter@oracle.com> writes:
->>=20
->> > The sband->bitrates[] array has "sband->n_bitrates" elements so this
->> > check needs to be >=3D instead of > or we could read beyond the end of=
- the
->> > array.
->> >
->> > These values come from when we call mt76_register_device():
->> >
->> > =09ret =3D mt76_register_device(&dev->mt76, true, mt7603_rates,
->> > =09=09=09=09   ARRAY_SIZE(mt7603_rates));
->> >
->> > Here sband->bitrates[] is mt7603_rates[] and ->n_bitrates is the
->> > ARRAY_SIZE()
->> >
->> > Fixes: 5ce09c1a7907 ("mt76: track rx airtime for airtime fairness and =
-survey")
->> > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
->> > ---
->> >  drivers/net/wireless/mediatek/mt76/airtime.c | 2 +-
->> >  1 file changed, 1 insertion(+), 1 deletion(-)
->> >
->> > diff --git a/drivers/net/wireless/mediatek/mt76/airtime.c b/drivers/ne=
-t/wireless/mediatek/mt76/airtime.c
->> > index 55116f395f9a..a4a785467748 100644
->> > --- a/drivers/net/wireless/mediatek/mt76/airtime.c
->> > +++ b/drivers/net/wireless/mediatek/mt76/airtime.c
->> > @@ -242,7 +242,7 @@ u32 mt76_calc_rx_airtime(struct mt76_dev *dev, str=
-uct mt76_rx_status *status,
->> >  =09=09=09return 0;
->> > =20
->> >  =09=09sband =3D dev->hw->wiphy->bands[status->band];
->> > -=09=09if (!sband || status->rate_idx > sband->n_bitrates)
->> > +=09=09if (!sband || status->rate_idx >=3D sband->n_bitrates)
->> >  =09=09=09return 0;
->> > =20
->> >  =09=09rate =3D &sband->bitrates[status->rate_idx];
->>=20
->> This code has recently been ported to mac80211 (net/mac80211/airtime.c).
->> It seems that the bug is also present there; care to send a patch for
->> that as well? :)
->
-> Oh.  Thanks for pointing that out.  I actually saw the static checker
-> warning for that and ignored it thinking that it was the same code.
-> :P
+Tested with QCA6174 SDIO with firmware
+WLAN.RMH.4.4.1-00017-QCARMSWP-1.
 
-Well, it's copy-pasted from the same code ;)
+Signed-off-by: Wen Gong <wgong@codeaurora.org>
+---
+this patch depens on the patch "ath10k: add htt TX bundle for sdio"
+ drivers/net/wireless/ath/ath10k/htc.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-The plan is to get rid of the version inside mt76; was waiting for the
-trees to converge, though, so I guess after the merge window?
-
-> I will send a fix for it.
-
-Great, thanks!
-
--Toke
+diff --git a/drivers/net/wireless/ath/ath10k/htc.c b/drivers/net/wireless/ath/ath10k/htc.c
+index 03c358cd16d4..51addcc654a0 100644
+--- a/drivers/net/wireless/ath/ath10k/htc.c
++++ b/drivers/net/wireless/ath/ath10k/htc.c
+@@ -846,6 +846,11 @@ int ath10k_htc_send_hl(struct ath10k_htc *htc,
+ 	struct ath10k_htc_ep *ep = &htc->endpoint[eid];
+ 	struct ath10k *ar = htc->ar;
+ 
++	if (sizeof(struct ath10k_htc_hdr) + skb->len > ep->tx_credit_size) {
++		ath10k_dbg(ar, ATH10K_DBG_HTC, "tx exceed max len %d\n", skb->len);
++		return -ENOMEM;
++	}
++
+ 	ath10k_dbg(ar, ATH10K_DBG_HTC, "htc send hl: eid:%d, bundle:%d, tx count:%d, len:%d\n",
+ 		   eid, ep->bundle_tx, skb_queue_len(&ep->tx_req_head), skb->len);
+ 
+-- 
+2.23.0
 
