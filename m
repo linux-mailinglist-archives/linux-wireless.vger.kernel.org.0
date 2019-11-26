@@ -2,113 +2,101 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1ABF1109B01
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Nov 2019 10:19:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 10B53109B2E
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Nov 2019 10:23:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727517AbfKZJTw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 26 Nov 2019 04:19:52 -0500
-Received: from us-smtp-2.mimecast.com ([205.139.110.61]:57918 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1727150AbfKZJTv (ORCPT
+        id S1727446AbfKZJXF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 26 Nov 2019 04:23:05 -0500
+Received: from a27-56.smtp-out.us-west-2.amazonses.com ([54.240.27.56]:59502
+        "EHLO a27-56.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727426AbfKZJXE (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 26 Nov 2019 04:19:51 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1574759990;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=W+Jxe4wUa6taaXTyx/M9wM4rkK/IQNNd01d40LpvJBw=;
-        b=R+XgIg0PeWGa4WJRyccEG8FS1zq+6m4+DQ8CnrHckSqwO/JXbq+ieuRrsTi73yj7o7U+Ac
-        LZjuEKuJtbLrNKndsaebG+YGCX+jSsznfS7UK3QKWnUrdrZwv10Ty9dIwIoVukJbvPmm+/
-        dI9ALTKTaBwsvJvDfEyTlr3Qp6Ci1uE=
-Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
- [209.85.208.199]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-144-X8T1AE5GObaP-WDYSawojw-1; Tue, 26 Nov 2019 04:19:49 -0500
-Received: by mail-lj1-f199.google.com with SMTP id l10so2179058ljb.15
-        for <linux-wireless@vger.kernel.org>; Tue, 26 Nov 2019 01:19:48 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
-         :message-id:mime-version;
-        bh=OHk3QyZlc+rm4lFfxeoDeCGOk4m7yPb7g+ZsqulMHdw=;
-        b=F9CGAM+qgoPaF05+A3kCJCcMIxOeIDB8pP5ah3Rbyjzn7GoUij5YfZmv01tHQDWGOm
-         tHyx9iSzOi/ylH51bJK6w9CsdATx9f6JtoHhrsjBtvMFATXTgEirIsVC1udyApnJbJhC
-         Ad2mI86SQEquFm7e63Rce6O4qSwYbBvNj62H0REH7BBpV4LmliffVCvLBLRYvjDzPFbK
-         scI0khQ2l/oR685e8GBJpJgjuyY53u2KV4fXauYeHmDsYsiuqEjyJ+A8ETxKnVqIqDAf
-         q90H2PFh9J1Ro0t6kmC1N4VRXKsfKi6uSIG88OrIZvrZVSwV/T1rctGxWbX9SY2p3f3L
-         2cEw==
-X-Gm-Message-State: APjAAAWqxIYY8GxRNC2xaCJH8GWX+8OMR9qVl9npGddh+HrikUvznxs8
-        +LtXqzQVSxwV23Yuq4HFR/n1/8ho7pLWIDmaXXWZAHYSxwQypB9u9P95K8Y+Pl7/5kBLlPynXd8
-        MaUbW9sgC2aOEkn9Nw/pGeY+aj6c=
-X-Received: by 2002:ac2:5999:: with SMTP id w25mr23601714lfn.42.1574759985549;
-        Tue, 26 Nov 2019 01:19:45 -0800 (PST)
-X-Google-Smtp-Source: APXvYqwoLhXuBNTaChzNFc9fdd9sulEQ6j+4V7Nqx9wfEw69Kf7LMshjczbh40km3d6Hx8mRgN0jrQ==
-X-Received: by 2002:ac2:5999:: with SMTP id w25mr23601698lfn.42.1574759985192;
-        Tue, 26 Nov 2019 01:19:45 -0800 (PST)
-Received: from alrua-x1.borgediget.toke.dk ([2a0c:4d80:42:443::2])
-        by smtp.gmail.com with ESMTPSA id g5sm5180757ljn.101.2019.11.26.01.19.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 Nov 2019 01:19:44 -0800 (PST)
-Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-        id 64DFF1818BF; Tue, 26 Nov 2019 10:19:43 +0100 (CET)
-From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-To:     Kan Yan <kyan@google.com>
-Cc:     Dave Taht <dave.taht@gmail.com>,
-        Rajkumar Manoharan <rmanohar@codeaurora.org>,
-        Kevin Hayes <kevinhayes@google.com>,
-        Make-Wifi-fast <make-wifi-fast@lists.bufferbloat.net>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Yibo Zhao <yiboz@codeaurora.org>,
-        John Crispin <john@phrozen.org>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Felix Fietkau <nbd@nbd.name>
-Subject: Re: [Make-wifi-fast] [PATCH v8 0/2] Implement Airtime-based Queue Limit (AQL)
-In-Reply-To: <CA+iem5sBPq0mfz+Qx+uJqCZ6t-Cjru+GCBcYExdu6JueUbBXyw@mail.gmail.com>
-References: <20191115014846.126007-1-kyan@google.com> <CA+iem5vaeLR6v_nZ1YUZhfj32wF0DrvC2nyp8nb8qYAZLQjLdw@mail.gmail.com> <CAA93jw5wTbFV51oFJ6tFHLUMo=bau8fbU65k57bQjOHGJoCkkQ@mail.gmail.com> <CA+iem5s4ZY239Q4=Gwy3WrmVhcdhesirXph6XQoOP5w-nuWcYw@mail.gmail.com> <CAA93jw5t0TwBVv7_DVkJ_-NsVn0ODNHwU0orp2-+LPB45iFVoQ@mail.gmail.com> <CA+iem5uVJFcCYpJfhker-48XPrOf3a+NWr-nKnBtGmLX2yB_Lg@mail.gmail.com> <8736eiam8f.fsf@toke.dk> <CA+iem5tpfEmaWJ5Mw7xF9fb=XLceZpC1LM4Avo89Mn1fL7YZVw@mail.gmail.com> <87a78p8rz7.fsf@toke.dk> <CA+iem5tNz2jjEOVmbh3aPTXLLZfkRjZ60-+bon1vDEJ8D4hQJw@mail.gmail.com> <87muco5gv5.fsf@toke.dk> <CA+iem5sBPq0mfz+Qx+uJqCZ6t-Cjru+GCBcYExdu6JueUbBXyw@mail.gmail.com>
-X-Clacks-Overhead: GNU Terry Pratchett
-Date:   Tue, 26 Nov 2019 10:19:43 +0100
-Message-ID: <87eexvyoy8.fsf@toke.dk>
+        Tue, 26 Nov 2019 04:23:04 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1574760183;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding;
+        bh=7JpzEUgPOKikbM97IChytjtM3nmMVXbRuF7hhQqzTtk=;
+        b=YA/tyK82LHumSpEpCFWDLmOaetKqnkbnaoObQiDDyPIhPmZHbgvxVq1DMkIXnAE4
+        kEO/lJfbHF38htcLXE3krmVK1if+JNbWEHnIK/X/zoiggYu3518Vls3ZlVD5sVnEZNh
+        vZThe+S2zzGhqk6Pnsopfg0xZs/PEPnKvr3NOc2c=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+        s=gdwg2y3kokkkj5a55z2ilkup5wp5hhxx; d=amazonses.com; t=1574760183;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Feedback-ID;
+        bh=7JpzEUgPOKikbM97IChytjtM3nmMVXbRuF7hhQqzTtk=;
+        b=BjtA1MQ71QM0IztHwb5Cbc2NPlfve8mrpRE2TuhZlda6NxqcB2M9zWxfLGuvZQqY
+        GU8lLmbQ59QADwawv/S4Mh+eWq+bMkZ02Ps14wFWmb00QaDi3wVKekOMpqQCq+XhhJT
+        Z0XmlUg5uaUE6uH1BEp3hP8iWoYNDWHM3P8HfzM8=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.0
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 3D393C447BA
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
+Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Roy Luo <royluo@google.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] mt76: Off by one in mt76_calc_rx_airtime()
+References: <20191121213935.2cbgh3qmd4hv4v5a@kili.mountain>
+        <87v9r7ysg0.fsf@toke.dk> <20191126091150.GA1759@kadam>
+        <87h82ryp45.fsf@toke.dk>
+Date:   Tue, 26 Nov 2019 09:23:03 +0000
+In-Reply-To: <87h82ryp45.fsf@toke.dk> ("Toke \=\?utf-8\?Q\?H\=C3\=B8iland-J\?\=
+ \=\?utf-8\?Q\?\=C3\=B8rgensen\=22's\?\= message of
+        "Tue, 26 Nov 2019 10:16:10 +0100")
+Message-ID: <0101016ea705771d-08dd7963-f8f7-447a-a0fb-4ad9093ec24d-000000@us-west-2.amazonses.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-X-MC-Unique: X8T1AE5GObaP-WDYSawojw-1
-X-Mimecast-Spam-Score: 0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
+X-SES-Outgoing: 2019.11.26-54.240.27.56
+Feedback-ID: 1.us-west-2.CZuq2qbDmUIuT3qdvXlRHZZCpfZqZ4GtG9v3VKgRyF0=:AmazonSES
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Kan Yan <kyan@google.com> writes:
+Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com> writes:
 
->> Yeah, bpftrace can be a bit of a pain to get running; but it may be
->> worth the investment longer term as well. It really is quite useful! :)
+> Dan Carpenter <dan.carpenter@oracle.com> writes:
 >
-> My attempt to build bpftrace didn't work out, so I just got the
-> sojourn time using old fashioned trace event.
-> The raw trace, parsed data in csv format and plots can be found here:
-> https://drive.google.com/open?id=3D1Mg_wHu7elYAdkXz4u--42qGCVE1nrILV
+>> On Tue, Nov 26, 2019 at 09:04:15AM +0100, Toke H=C3=B8iland-J=C3=B8rgens=
+en wrote:
+>>> Dan Carpenter <dan.carpenter@oracle.com> writes:
+>>>=20
+>>> > @@ -242,7 +242,7 @@ u32 mt76_calc_rx_airtime(struct mt76_dev *dev, st=
+ruct mt76_rx_status *status,
+>>> >  			return 0;
+>>> >=20=20
+>>> >  		sband =3D dev->hw->wiphy->bands[status->band];
+>>> > -		if (!sband || status->rate_idx > sband->n_bitrates)
+>>> > +		if (!sband || status->rate_idx >=3D sband->n_bitrates)
+>>> >  			return 0;
+>>> >=20=20
+>>> >  		rate =3D &sband->bitrates[status->rate_idx];
+>>>=20
+>>> This code has recently been ported to mac80211 (net/mac80211/airtime.c).
+>>> It seems that the bug is also present there; care to send a patch for
+>>> that as well? :)
+>>
+>> Oh.  Thanks for pointing that out.  I actually saw the static checker
+>> warning for that and ignored it thinking that it was the same code.
+>> :P
 >
-> All tests are done with 2 TCP download sessions that oversubscribed
-> the link bandwidth.
-> With AQL on, the mean sojourn time about ~20000us, matches the default
-> codel "target".
+> Well, it's copy-pasted from the same code ;)
+>
+> The plan is to get rid of the version inside mt76; was waiting for the
+> trees to converge, though, so I guess after the merge window?
 
-Yeah, since CoDel is trying to control the latency to 20ms, it makes
-sense that the value is clustered around that. That means that the
-algorithm is working as they're supposed to :)
+Yup, as I'm not taking anything to w-d-next until -rc1 is released.
 
-While you're running tests, could you do one with the target changed to
-10ms, just to see what it looks like? Both sojourn time values and
-throughput would be interesting here, of course.
-
-> With AQL off, the mean sojourn time is less than 4us even the latency
-> is off the charts, just as we expected that fd_codel with mac80211
-> alone is not effective for drivers with deep firmware/hardware queues.
-
-Yup, also kinda expected; but another good way to visualise the impact.
-Nice!
-
--Toke
-
+--=20
+Kalle Valo
