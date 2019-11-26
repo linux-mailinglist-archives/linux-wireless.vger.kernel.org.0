@@ -2,149 +2,81 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 58050109870
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Nov 2019 06:04:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9BD90109877
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Nov 2019 06:21:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725817AbfKZFEi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 26 Nov 2019 00:04:38 -0500
-Received: from mail-lj1-f193.google.com ([209.85.208.193]:41589 "EHLO
-        mail-lj1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725372AbfKZFEi (ORCPT
+        id S1725884AbfKZFVg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 26 Nov 2019 00:21:36 -0500
+Received: from a27-187.smtp-out.us-west-2.amazonses.com ([54.240.27.187]:45928
+        "EHLO a27-187.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725372AbfKZFVf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 26 Nov 2019 00:04:38 -0500
-Received: by mail-lj1-f193.google.com with SMTP id m4so18569257ljj.8
-        for <linux-wireless@vger.kernel.org>; Mon, 25 Nov 2019 21:04:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=JQSdHWPAU2nitRvT0Di7Ib4QABBb5+QiA8tiP3X9DWM=;
-        b=lRned6cZi6/wDX1xJ1HLugPH2HIWLAYfrFFbV5Y5oAcFWELce6f+opZWj8td6z0XNB
-         k8QaFu+1RuA6mRb6k5xImAYyuEqIs/5RktUh92Mf1W/F9z/AaiEK+lGAUctcjdbJj4RR
-         7cIdRNW6MzmSYifH29aeislagfZslmXmofI5n55rTGY6AYHNYnAzXu/OQfLxhoOOzFP2
-         MMmVDBGqiuDpDvGwnDsqdMC3TlTl4xlDDzzyxZmRx9shgiXdB2xjfmG+wnXw9dqWE1ak
-         jU3JPtw85qRh/Wex4UWXpT6hECE89NXzNikKzqO9jc1HxjBzorcm53qyHJzNYjs/wG/W
-         99xg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=JQSdHWPAU2nitRvT0Di7Ib4QABBb5+QiA8tiP3X9DWM=;
-        b=bwZPBqOFULCXhm9V+WgZmFiR/GfYnq73k5GyYNeKUWOfHAsD/z5/Lj4EAeQysbr0aK
-         Uf+iztjVUg/UF8onQZRZQAjGBbywfrwWCZh08rgcNbtVXyJcncLcwobv/QxdmYX3YF9+
-         RUf5AUUi2cQ0BcwxXrGftJgXG9G5Xn1myPqKfQin9Sxv84y86qvasvQatgnJvCzaCv16
-         6rGEGOjL5Fj3mWh+/XYfSvKqfFSlM1p4puu0BJNaIbg+xySV3QHgdz7fptpn3Umdkle1
-         agvpIPKHjDJ5Bg03OSmzX3nWQKvXfu1uFfwJAokmbXSRck5fcVaNCFWIiIykGEoVG42T
-         jHZA==
-X-Gm-Message-State: APjAAAUYN0IbrV36QUpNHctHLLR+D9G2aze2/IN8jU2lR0R6jHFQkqyC
-        V/yxQOVK4cTkbhSsLJ23M6lV04bokDIB4mRw7GsayQ==
-X-Google-Smtp-Source: APXvYqyw6ShEcPeBSRIAOlL/m3Z6ruiZ+OtmTjgBZIE0N6S7H2FMAooQF4M3qp5TnHittIM67oemZRzavLd2PRI/zHI=
-X-Received: by 2002:a2e:574d:: with SMTP id r13mr24686240ljd.10.1574744675047;
- Mon, 25 Nov 2019 21:04:35 -0800 (PST)
+        Tue, 26 Nov 2019 00:21:35 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1574745695;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:MIME-Version:Content-Type;
+        bh=Q30J46XsTfdEK32DLeFx32uQEy6aKHBQkOg8LyiaJ/g=;
+        b=jMSromTT4wGbqvBiGV93nCwO+mEMc/kpNfK+oxlkEx/08v4q682z65gDD5nH/B+h
+        Z4ch9CCOMF2a689j2ycXc+Qu5A/4xll8f5G9XON8Mvq1U7lhxqooMrQtTLs9Vfuu03o
+        UfqSK3kfugjZIo9KXsAWZlVzScJjjceg0bj74P40=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+        s=gdwg2y3kokkkj5a55z2ilkup5wp5hhxx; d=amazonses.com; t=1574745695;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:MIME-Version:Content-Type:Feedback-ID;
+        bh=Q30J46XsTfdEK32DLeFx32uQEy6aKHBQkOg8LyiaJ/g=;
+        b=EIbQegTp2O8Hd3lnLMdaKslAzKw+hR8KmFAAGM74WfSmjJeK0AczEMBbj2quSchB
+        z86dssDXpivxLrUTyrfiZdyakR/gV/d5ZDUqRcAF/FzC3XXPBKQwBxRwzir9b7rqlDf
+        +V7TCDdI1OCsBwDjQPPHhexy6WZq11nUBSeR2+AI=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.0
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org BC332C447A6
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Roy Luo <royluo@google.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] mt76: Off by one in mt76_calc_rx_airtime()
+References: <20191121213935.2cbgh3qmd4hv4v5a@kili.mountain>
+Date:   Tue, 26 Nov 2019 05:21:35 +0000
+In-Reply-To: <20191121213935.2cbgh3qmd4hv4v5a@kili.mountain> (Dan Carpenter's
+        message of "Tue, 26 Nov 2019 07:49:56 +0300")
+Message-ID: <0101016ea6286267-0ecbbd3d-bc20-4e42-9f86-34f3d8fc41b6-000000@us-west-2.amazonses.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-References: <20191115014846.126007-1-kyan@google.com> <CA+iem5vaeLR6v_nZ1YUZhfj32wF0DrvC2nyp8nb8qYAZLQjLdw@mail.gmail.com>
- <CAA93jw5wTbFV51oFJ6tFHLUMo=bau8fbU65k57bQjOHGJoCkkQ@mail.gmail.com>
- <CA+iem5s4ZY239Q4=Gwy3WrmVhcdhesirXph6XQoOP5w-nuWcYw@mail.gmail.com>
- <CAA93jw5t0TwBVv7_DVkJ_-NsVn0ODNHwU0orp2-+LPB45iFVoQ@mail.gmail.com>
- <CA+iem5uVJFcCYpJfhker-48XPrOf3a+NWr-nKnBtGmLX2yB_Lg@mail.gmail.com>
- <8736eiam8f.fsf@toke.dk> <CA+iem5tpfEmaWJ5Mw7xF9fb=XLceZpC1LM4Avo89Mn1fL7YZVw@mail.gmail.com>
- <87a78p8rz7.fsf@toke.dk> <CA+iem5tNz2jjEOVmbh3aPTXLLZfkRjZ60-+bon1vDEJ8D4hQJw@mail.gmail.com>
- <87muco5gv5.fsf@toke.dk>
-In-Reply-To: <87muco5gv5.fsf@toke.dk>
-From:   Kan Yan <kyan@google.com>
-Date:   Mon, 25 Nov 2019 21:04:23 -0800
-Message-ID: <CA+iem5sBPq0mfz+Qx+uJqCZ6t-Cjru+GCBcYExdu6JueUbBXyw@mail.gmail.com>
-Subject: Re: [Make-wifi-fast] [PATCH v8 0/2] Implement Airtime-based Queue
- Limit (AQL)
-To:     =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@redhat.com>
-Cc:     Dave Taht <dave.taht@gmail.com>,
-        Rajkumar Manoharan <rmanohar@codeaurora.org>,
-        Kevin Hayes <kevinhayes@google.com>,
-        Make-Wifi-fast <make-wifi-fast@lists.bufferbloat.net>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Yibo Zhao <yiboz@codeaurora.org>,
-        John Crispin <john@phrozen.org>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Felix Fietkau <nbd@nbd.name>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-SES-Outgoing: 2019.11.26-54.240.27.187
+Feedback-ID: 1.us-west-2.CZuq2qbDmUIuT3qdvXlRHZZCpfZqZ4GtG9v3VKgRyF0=:AmazonSES
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-> Yeah, bpftrace can be a bit of a pain to get running; but it may be
-> worth the investment longer term as well. It really is quite useful! :)
+Dan Carpenter <dan.carpenter@oracle.com> writes:
 
-My attempt to build bpftrace didn't work out, so I just got the
-sojourn time using old fashioned trace event.
-The raw trace, parsed data in csv format and plots can be found here:
-https://drive.google.com/open?id=3D1Mg_wHu7elYAdkXz4u--42qGCVE1nrILV
+> The sband->bitrates[] array has "sband->n_bitrates" elements so this
+> check needs to be >= instead of > or we could read beyond the end of the
+> array.
+>
+> These values come from when we call mt76_register_device():
+>
+> 	ret = mt76_register_device(&dev->mt76, true, mt7603_rates,
+> 				   ARRAY_SIZE(mt7603_rates));
+>
+> Here sband->bitrates[] is mt7603_rates[] and ->n_bitrates is the
+> ARRAY_SIZE()
+>
+> Fixes: 5ce09c1a7907 ("mt76: track rx airtime for airtime fairness and survey")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 
-All tests are done with 2 TCP download sessions that oversubscribed
-the link bandwidth.
-With AQL on, the mean sojourn time about ~20000us, matches the default
-codel "target".
-With AQL off, the mean sojourn time is less than 4us even the latency
-is off the charts, just as we expected that fd_codel with mac80211
-alone is not effective for drivers with deep firmware/hardware queues.
+Should I queue this to v5.5?
 
-> Any chance you could turn ecn on and off and give it a go
-> again in your next test run?
-
-ECN on shows very similar results as with ECN off. "aqm" stats from
-debugfs shows it is doing ECN marking instead of dropping packets as
-expected. Flent test data also is in the same link.
-
-
-
-On Fri, Nov 22, 2019 at 2:45 AM Toke H=C3=B8iland-J=C3=B8rgensen <toke@redh=
-at.com> wrote:
->
-> Kan Yan <kyan@google.com> writes:
->
-> >> In theory, this ought to produce a histogram of sojourn times (in
-> >> microseconds):
-> >> bpftrace -e 'kretprobe:codel_skb_time_func { @sojourn =3D lhist((nsecs=
- -
-> > (retval << 10))/1000, 0, 100000, 1000); }'
-> >
-> > Thanks for the tips!
-> >
-> >> Can't get the CoDel drop mechanism to trigger on my system at all,
-> >> though (a laptop running on iwl). I guess because there's queue
-> >> backpressure to userspace first?
-> >
-> > What's the tcp_congestion_control in your system? Maybe it is BBR that
-> > prevents bufferbloat.
->
-> It's not BBR, just plain old CUBIC. I've seen the issue before that it's
-> almost impossible to build a queue in the mac80211 layer when the TCP
-> session is originated on the local machine, though...
->
-> >> It would be interesting to see if it works for you, assuming you can g=
-et
-> >> bpftrace to work on your test system :)
-> >
-> > I can enable required kernel configuration easily, but cross-compile
-> > bpftrace for an ARM64 platform may take some time and effort.
->
-> Yeah, bpftrace can be a bit of a pain to get running; but it may be
-> worth the investment longer term as well. It really is quite useful! :)
->
-> Some links:
->
-> Install guide:
-> https://github.com/iovisor/bpftrace/blob/master/INSTALL.md
->
-> Tutorial by one-liners:
-> https://github.com/iovisor/bpftrace/blob/master/docs/tutorial_one_liners.=
-md
->
-> Reference guide:
-> https://github.com/iovisor/bpftrace/blob/master/docs/reference_guide.md#5=
--tracepoint-static-tracing-kernel-level
->
-> -Toke
->
+-- 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
