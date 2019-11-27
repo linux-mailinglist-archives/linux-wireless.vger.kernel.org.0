@@ -2,80 +2,118 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 946B710A911
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Nov 2019 04:33:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 972D310A9C2
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Nov 2019 06:06:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726719AbfK0DdP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 26 Nov 2019 22:33:15 -0500
-Received: from a27-185.smtp-out.us-west-2.amazonses.com ([54.240.27.185]:38114
-        "EHLO a27-185.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726539AbfK0DdP (ORCPT
+        id S1726061AbfK0FFm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 27 Nov 2019 00:05:42 -0500
+Received: from mail-pj1-f66.google.com ([209.85.216.66]:45665 "EHLO
+        mail-pj1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725788AbfK0FFm (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 26 Nov 2019 22:33:15 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1574825594;
-        h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Transfer-Encoding;
-        bh=wruCPXhY6VQj0usJBvMxQ4PAP/jyoMAOrAQz3oD7BRY=;
-        b=aHTnPsteA73tQ3uy+MqCSmSPF/uoIOdeQqWpBXkm14NgwqNrCj8e/Bgl2H4UBzPV
-        ftQWlmuDazYRwVCk9gZZhHtwvvSZHSfPlHn48IFRtTQOV1/VBUQl17igI+Eg6zW4cDi
-        D+C93voMLKfjq345NOzJ6Nszir+7PWQI8aLeStoM=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=gdwg2y3kokkkj5a55z2ilkup5wp5hhxx; d=amazonses.com; t=1574825594;
-        h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Transfer-Encoding:Feedback-ID;
-        bh=wruCPXhY6VQj0usJBvMxQ4PAP/jyoMAOrAQz3oD7BRY=;
-        b=EFEjCKIK0LZhots5Woq+HEQYCX8YN2vfmmqED2qXMV5im+GhE75hrjcQz0ame0oQ
-        dKtLW89H9YIAJQI+rDlcHKpn/0NjvWfRKNesACnHJ7Oy4G53E7kDzZobzULLHie355g
-        lvmZSFSaM9uerBEN+z6rfNFkpp7vBS9ktOPrai4c=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE,
-        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 09B05C433CB
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=wgong@codeaurora.org
-From:   Wen Gong <wgong@codeaurora.org>
-To:     ath10k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org
-Subject: [PATCH] ath10k: change log level for mpdu status of sdio chip
-Date:   Wed, 27 Nov 2019 03:33:14 +0000
-Message-ID: <0101016eaaeb8dba-59b83dae-1133-48b3-8aab-a51f765322bf-000000@us-west-2.amazonses.com>
-X-Mailer: git-send-email 2.23.0
+        Wed, 27 Nov 2019 00:05:42 -0500
+Received: by mail-pj1-f66.google.com with SMTP id r11so1513899pjp.12
+        for <linux-wireless@vger.kernel.org>; Tue, 26 Nov 2019 21:05:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=xZ4O83bgDIw/8dIBhV4hXPyaX+XZAbVnynBzLd9+iLI=;
+        b=JLaTbp8IWD3cAfVShRjwwPtl0yRZr6oE7Ksf4+lSwE3sJZ6lsicMVJulQ6G1kM9Dus
+         OXHEYfdMsxCiR3NLCf+GjSURk4lk+VsPw08Zn8+s3EUJSvdinEWQWNBxF9btYJQPqnTC
+         4zqtp3YYKPt274JrfE7hL+cLC8Ebd0hEeP7+o=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=xZ4O83bgDIw/8dIBhV4hXPyaX+XZAbVnynBzLd9+iLI=;
+        b=fO2Ws1Wk8vwZOuN+Z11Zn6r89jzHUESi4L+dcvHcPApE5SpIk5xcj0D5iaqFOwc9Yc
+         g6V1Xhiu0xMDa7jK6wy7cqalFUKEJd2YtBvSsrpfuzZiRX2H3Z2kT+XOSF9y5soL9F0+
+         pgee89B+lGYxeZsRIyp0auurk8Ha7pWZrUWYuHRA0g7FLyvx9l1silYutzPq+HWX3KiP
+         wcjFr+6WhLiidsNGGHv+rb7kvNFfof4SUc1wc/6/fq3JzTr8hoQuPHNRYPio8gHSrYS3
+         vu0nGhsPo70h/ncXqPFERJjVz28RkKg79theHorb9iWZL6QKbKxhgTYTD0BcEdDrqLm2
+         HXFQ==
+X-Gm-Message-State: APjAAAUyXM/yWPKJF59/oCRS5FLhXo7B1vLQcMFr5ibwtKni8qZkjkdy
+        stWT/LEI2D8qIBjL7NRxS85vuw==
+X-Google-Smtp-Source: APXvYqzsYFZ3auba035H26fOpwRDetbWUh/33lew+U6cqe7LVIiXhT1QT5AwJLEUhwHRXSE9BpoINw==
+X-Received: by 2002:a17:90a:d353:: with SMTP id i19mr3658245pjx.43.1574831141772;
+        Tue, 26 Nov 2019 21:05:41 -0800 (PST)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id f10sm14155169pfd.28.2019.11.26.21.05.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 26 Nov 2019 21:05:40 -0800 (PST)
+Date:   Tue, 26 Nov 2019 21:05:39 -0800
+From:   Kees Cook <keescook@chromium.org>
+To:     Phong Tran <tranmanphong@gmail.com>
+Cc:     Larry.Finger@lwfinger.net, jakub.kicinski@netronome.com,
+        kvalo@codeaurora.org, Wright.Feng@cypress.com,
+        arend.vanspriel@broadcom.com, davem@davemloft.net,
+        emmanuel.grumbach@intel.com, franky.lin@broadcom.com,
+        johannes.berg@intel.com, linux-kernel@vger.kernel.org,
+        linux-wireless@vger.kernel.org, luciano.coelho@intel.com,
+        netdev@vger.kernel.org, p.figiel@camlintechnologies.com,
+        pieter-paul.giesberts@broadcom.com, pkshih@realtek.com,
+        rafal@milecki.pl, sara.sharon@intel.com,
+        shahar.s.matityahu@intel.com, yhchuang@realtek.com,
+        yuehaibing@huawei.com
+Subject: Re: [Patch v2 1/4] b43legacy: Fix -Wcast-function-type
+Message-ID: <201911262105.83DCA06@keescook>
+References: <20191125150215.29263-1-tranmanphong@gmail.com>
+ <20191126175529.10909-1-tranmanphong@gmail.com>
+ <20191126175529.10909-2-tranmanphong@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SES-Outgoing: 2019.11.27-54.240.27.185
-Feedback-ID: 1.us-west-2.CZuq2qbDmUIuT3qdvXlRHZZCpfZqZ4GtG9v3VKgRyF0=:AmazonSES
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191126175529.10909-2-tranmanphong@gmail.com>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Change log level from warn to dbg level of mpdu status
-of sdio chip.
+On Wed, Nov 27, 2019 at 12:55:26AM +0700, Phong Tran wrote:
+> correct usage prototype of callback in tasklet_init().
+> Report by https://github.com/KSPP/linux/issues/20
+> 
+> Tested-by: Larry Finger <Larry.Finger@lwfinger.net>
+> Signed-off-by: Phong Tran <tranmanphong@gmail.com>
 
-Tested with QCA6174 SDIO with firmware
-WLAN.RMH.4.4.1-00007-QCARMSWP-1.
+Thanks for sending these!
 
-Signed-off-by: Wen Gong <wgong@codeaurora.org>
----
- drivers/net/wireless/ath/ath10k/htt_rx.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Reviewed-by: Kees Cook <keescook@chromium.org>
 
-diff --git a/drivers/net/wireless/ath/ath10k/htt_rx.c b/drivers/net/wireless/ath/ath10k/htt_rx.c
-index 4490ffb53d24..283ffac56b1a 100644
---- a/drivers/net/wireless/ath/ath10k/htt_rx.c
-+++ b/drivers/net/wireless/ath/ath10k/htt_rx.c
-@@ -2203,8 +2203,8 @@ static bool ath10k_htt_rx_proc_rx_ind_hl(struct ath10k_htt *htt,
- 	    HTT_RX_IND_MPDU_STATUS_OK &&
- 	    mpdu_ranges->mpdu_range_status !=
- 	    HTT_RX_IND_MPDU_STATUS_TKIP_MIC_ERR) {
--		ath10k_warn(ar, "MPDU range status: %d\n",
--			    mpdu_ranges->mpdu_range_status);
-+		ath10k_dbg(ar, ATH10K_DBG_HTT, "htt mpdu_range_status %d\n",
-+			   mpdu_ranges->mpdu_range_status);
- 		goto err;
- 	}
- 
+-Kees
+
+> ---
+>  drivers/net/wireless/broadcom/b43legacy/main.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/broadcom/b43legacy/main.c b/drivers/net/wireless/broadcom/b43legacy/main.c
+> index 4325e91736eb..8b6b657c4b85 100644
+> --- a/drivers/net/wireless/broadcom/b43legacy/main.c
+> +++ b/drivers/net/wireless/broadcom/b43legacy/main.c
+> @@ -1275,8 +1275,9 @@ static void handle_irq_ucode_debug(struct b43legacy_wldev *dev)
+>  }
+>  
+>  /* Interrupt handler bottom-half */
+> -static void b43legacy_interrupt_tasklet(struct b43legacy_wldev *dev)
+> +static void b43legacy_interrupt_tasklet(unsigned long data)
+>  {
+> +	struct b43legacy_wldev *dev = (struct b43legacy_wldev *)data;
+>  	u32 reason;
+>  	u32 dma_reason[ARRAY_SIZE(dev->dma_reason)];
+>  	u32 merged_dma_reason = 0;
+> @@ -3741,7 +3742,7 @@ static int b43legacy_one_core_attach(struct ssb_device *dev,
+>  	b43legacy_set_status(wldev, B43legacy_STAT_UNINIT);
+>  	wldev->bad_frames_preempt = modparam_bad_frames_preempt;
+>  	tasklet_init(&wldev->isr_tasklet,
+> -		     (void (*)(unsigned long))b43legacy_interrupt_tasklet,
+> +		     b43legacy_interrupt_tasklet,
+>  		     (unsigned long)wldev);
+>  	if (modparam_pio)
+>  		wldev->__using_pio = true;
+> -- 
+> 2.20.1
+> 
+
 -- 
-2.23.0
-
+Kees Cook
