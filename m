@@ -2,124 +2,103 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id ED66B10ACCF
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Nov 2019 10:47:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 625B210AD04
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Nov 2019 10:58:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726240AbfK0Jra (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 27 Nov 2019 04:47:30 -0500
-Received: from mail.dlink.ru ([178.170.168.18]:45696 "EHLO fd.dlink.ru"
+        id S1726515AbfK0J6l (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 27 Nov 2019 04:58:41 -0500
+Received: from mga18.intel.com ([134.134.136.126]:44617 "EHLO mga18.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726133AbfK0Jra (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 27 Nov 2019 04:47:30 -0500
-Received: by fd.dlink.ru (Postfix, from userid 5000)
-        id 774D41B21308; Wed, 27 Nov 2019 12:47:27 +0300 (MSK)
-DKIM-Filter: OpenDKIM Filter v2.11.0 fd.dlink.ru 774D41B21308
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dlink.ru; s=mail;
-        t=1574848047; bh=jsmsLyZC85bwwRh9nTRZB17m6X2+Kg7Y8UTp79ZBK2g=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References;
-        b=Zbrl2dBP4M0S6FvqNY2EPIxsAPsEae+RA1ovQJo7lac7voVbmckMrCEeCE+sglKI1
-         0kyzHaGf/djEW3YkNmc7LB+itXdMgXAvchZ65e8/QkWp95nQ3XWbWhzAZndLuDThrA
-         cUDsKVAQer2jld+I72s+6oc0pePtLKoDExfvZUnk=
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on mail.dlink.ru
-X-Spam-Level: 
-X-Spam-Status: No, score=-99.2 required=7.5 tests=BAYES_50,URIBL_BLOCKED,
-        USER_IN_WHITELIST autolearn=disabled version=3.4.2
-Received: from mail.rzn.dlink.ru (mail.rzn.dlink.ru [178.170.168.13])
-        by fd.dlink.ru (Postfix) with ESMTP id 24BFF1B2089D;
-        Wed, 27 Nov 2019 12:47:17 +0300 (MSK)
-DKIM-Filter: OpenDKIM Filter v2.11.0 fd.dlink.ru 24BFF1B2089D
-Received: from mail.rzn.dlink.ru (localhost [127.0.0.1])
-        by mail.rzn.dlink.ru (Postfix) with ESMTP id A7E6F1B22678;
-        Wed, 27 Nov 2019 12:47:16 +0300 (MSK)
-Received: from mail.rzn.dlink.ru (localhost [127.0.0.1])
-        by mail.rzn.dlink.ru (Postfix) with ESMTPA;
-        Wed, 27 Nov 2019 12:47:16 +0300 (MSK)
+        id S1726227AbfK0J6k (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 27 Nov 2019 04:58:40 -0500
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by orsmga106.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 27 Nov 2019 01:58:39 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.69,249,1571727600"; 
+   d="scan'208";a="206849762"
+Received: from slehanex-mobl1.ger.corp.intel.com ([10.252.10.177])
+  by fmsmga007.fm.intel.com with ESMTP; 27 Nov 2019 01:58:34 -0800
+Message-ID: <7a9332bf645fbb8c9fff634a3640c092fb9b4b79.camel@intel.com>
+Subject: Re: [PATCH net] net: wireless: intel: iwlwifi: fix GRO_NORMAL
+ packet stalling
+From:   Luciano Coelho <luciano.coelho@intel.com>
+To:     Alexander Lobakin <alobakin@dlink.ru>,
+        "David S. Miller" <davem@davemloft.net>
+Cc:     Edward Cree <ecree@solarflare.com>, Jiri Pirko <jiri@mellanox.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Ido Schimmel <idosch@mellanox.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Petr Machata <petrm@mellanox.com>,
+        Sabrina Dubroca <sd@queasysnail.net>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Jassi Brar <jaswinder.singh@linaro.org>,
+        Manish Chopra <manishc@marvell.com>,
+        GR-Linux-NIC-Dev@marvell.com,
+        Johannes Berg <johannes.berg@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Intel Linux Wireless <linuxwifi@intel.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Nicholas Johnson <nicholas.johnson-opensource@outlook.com.au>,
+        "Kenneth R. Crudup" <kenny@panix.com>, netdev@vger.kernel.org,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+Date:   Wed, 27 Nov 2019 11:58:33 +0200
+In-Reply-To: <20191127094123.18161-1-alobakin@dlink.ru>
+References: <20191127094123.18161-1-alobakin@dlink.ru>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.34.1-2+b1 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-Date:   Wed, 27 Nov 2019 12:47:16 +0300
-From:   Alexander Lobakin <alobakin@dlink.ru>
-To:     David Miller <davem@davemloft.net>
-Cc:     pabeni@redhat.com, johannes@sipsolutions.net, ecree@solarflare.com,
-        nicholas.johnson-opensource@outlook.com.au, jiri@mellanox.com,
-        edumazet@google.com, idosch@mellanox.com, petrm@mellanox.com,
-        sd@queasysnail.net, f.fainelli@gmail.com,
-        jaswinder.singh@linaro.org, ilias.apalodimas@linaro.org,
-        linux-kernel@vger.kernel.org, emmanuel.grumbach@intel.com,
-        luciano.coelho@intel.com, linuxwifi@intel.com,
-        kvalo@codeaurora.org, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org
-Subject: Re: [PATCH v2 net-next] net: core: use listified Rx for GRO_NORMAL in
- napi_gro_receive()
-In-Reply-To: <20191126.155746.627765091618337419.davem@davemloft.net>
-References: <414288fcac2ba4fcee48a63bdbf28f7b9a5037c6.camel@sipsolutions.net>
- <b4b92c4d066007d9cb77e1645e667715c17834fb.camel@redhat.com>
- <d535d5142e42b8c550f0220200e3779d@dlink.ru>
- <20191126.155746.627765091618337419.davem@davemloft.net>
-User-Agent: Roundcube Webmail/1.4.0
-Message-ID: <eb1b40cb25eb9808bb54f33913f5fdb4@dlink.ru>
-X-Sender: alobakin@dlink.ru
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-David Miller wrote 27.11.2019 02:57:
-> From: Alexander Lobakin <alobakin@dlink.ru>
-> Date: Mon, 25 Nov 2019 15:02:24 +0300
+On Wed, 2019-11-27 at 12:41 +0300, Alexander Lobakin wrote:
+> Commit 6570bc79c0df ("net: core: use listified Rx for GRO_NORMAL in
+> napi_gro_receive()") has applied batched GRO_NORMAL packets processing
+> to all napi_gro_receive() users, including mac80211-based drivers.
 > 
->> Paolo Abeni wrote 25.11.2019 14:42:
->>> For -net, I *think* something as dumb and hacky as the following 
->>> could
->>> possibly work:
->>> ----
->>> diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
->>> b/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
->>> index 4bba6b8a863c..df82fad96cbb 100644
->>> --- a/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
->>> +++ b/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
->>> @@ -1527,7 +1527,7 @@ static void iwl_pcie_rx_handle(struct iwl_trans
->>> *trans, int queue)
->>>                 iwl_pcie_rxq_alloc_rbs(trans, GFP_ATOMIC, rxq);
->>>         if (rxq->napi.poll)
->>> -               napi_gro_flush(&rxq->napi, false);
->>> +               napi_complete_done(&rxq->napi, 0);
->>>         iwl_pcie_rxq_restock(trans, rxq);
->>>  }
->>> ---
->> 
->> napi_complete_done(napi, 0) has an equivalent static inline
->> napi_complete(napi). I'm not sure it will work without any issues
->> as iwlwifi doesn't _really_ turn NAPI into scheduling state.
->> 
->> I'm not very familiar with iwlwifi, but as a work around manual
->> napi_gro_flush() you can also manually flush napi->rx_list to
->> prevent packets from stalling:
->> 
->> diff -Naur a/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
->> b/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
->> --- a/drivers/net/wireless/intel/iwlwifi/pcie/rx.c 2019-11-25
->> --- 14:55:03.610355230 +0300
->> +++ b/drivers/net/wireless/intel/iwlwifi/pcie/rx.c 2019-11-25
->> 14:57:29.399556868 +0300
->  ...
+> However, this change has led to a regression in iwlwifi driver [1][2] as
+> it is required for NAPI users to call napi_complete_done() or
+> napi_complete() and the end of every polling iteration, whilst iwlwifi
+> doesn't use NAPI scheduling at all and just calls napi_gro_flush().
+> In that particular case, packets which have not been already flushed
+> from napi->rx_list stall in it until at least next Rx cycle.
 > 
-> Thanks to everyone for looking into this.
+> Fix this by adding a manual flushing of the list to iwlwifi driver right
+> before napi_gro_flush() call to mimic napi_complete() logics.
 > 
-> Can I get some kind of fix in the next 24 hours?  I want to send a 
-> quick
-> follow-on pull request to Linus to deal with all of the fallout, and in
-> particular fix this regression.
+> I prefer to open-code gro_normal_list() rather than exporting it for 2
+> reasons:
+> * to prevent from using it and napi_gro_flush() in any new drivers,
+>   as it is the *really* bad way to use NAPI that should be avoided;
+> * to keep gro_normal_list() static and don't lose any CC optimizations.
+> 
+> I also don't add the "Fixes:" tag as the mentioned commit was only a
+> trigger that only exposed an improper usage of NAPI in this particular
+> driver.
+> 
+> [1] https://lore.kernel.org/netdev/PSXP216MB04388962C411CD0B17A86F47804A0@PSXP216MB0438.KORP216.PROD.OUTLOOK.COM
+> [2] https://bugzilla.kernel.org/show_bug.cgi?id=205647
+> 
+> Signed-off-by: Alexander Lobakin <alobakin@dlink.ru>
+> ---
 
-The fix is here: [1]
-It's pretty straightforward, but needs a minimal testing anyways.
-If any changes are needed, please let me know.
+We don't usually use "net: wireless: intel:" in the commit message, we
+would use "iwlwifi: pcie:", but I don't care much.
 
-> Thanks!
+Otherwise:
 
-Regards,
-ᚷ ᛖ ᚢ ᚦ ᚠ ᚱ
+Acked-by: Luca Coelho <luciano.coelho@intel.com>
 
-[1] 
-https://lore.kernel.org/netdev/20191127094123.18161-1-alobakin@dlink.ru
+Thanks a lot for the fix!
+
+Dave, I'm assuming you'll take this directly into your tree, right?
+
+--
+Cheers,
+Luca.
+
