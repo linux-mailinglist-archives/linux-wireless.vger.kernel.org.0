@@ -2,102 +2,136 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AEBD210AE2B
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Nov 2019 11:48:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B2E5010AE8C
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Nov 2019 12:16:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727095AbfK0Ksd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 27 Nov 2019 05:48:33 -0500
-Received: from mail-lj1-f195.google.com ([209.85.208.195]:32961 "EHLO
-        mail-lj1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726383AbfK0Ksd (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 27 Nov 2019 05:48:33 -0500
-Received: by mail-lj1-f195.google.com with SMTP id t5so23943230ljk.0
-        for <linux-wireless@vger.kernel.org>; Wed, 27 Nov 2019 02:48:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cogentembedded-com.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=ejLcXZey/Bimb1BLRYgUHAXgcKifURx/dXUaSJ2JWiw=;
-        b=a1TbFcKej0/60ZlJ+iTHw3LjHE+g7zKcombg1hDjtVxzDtrLZ2iSzaDYH+3xz6z/D+
-         Jxy+pofRIMp9vnPO1qXXQgNXFTznsmLzSOSwDoxS/jhBRNQibmVED+rtoq3UXM4h5bmH
-         ELme4exDgCLbYC7jCq72c3RRwV937XhMEuH0B2WAhvaSzU+nHc+jS+3rIn0n6iK6uKe7
-         K+XQyB4cC5S4DElp0+Ki53VrudLLe0U8VO/45QHFHhWUpYw/kN5qu7NyYflkO8RJkiYD
-         IrRgAdd9Oixos3/bBYFWe+DAJaA2klytgo0IXj4gn/3EsXM6RYchxn9lnyGqzfdmTInh
-         asTg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=ejLcXZey/Bimb1BLRYgUHAXgcKifURx/dXUaSJ2JWiw=;
-        b=sRbN5LqCvuMGRfwxxeKkSr8a0BN6boepyNS7lp0Ge2uUDMMOdz5HDLziymDF2sGN7q
-         M7yOJy+aakxd66OJo+3sug8Nk6pNrwG5kM0R/I+amBJCZ7tWsZPezQnXVaa0U0G2suMP
-         BP4EINnVBzOhVF9TDMGCZL6f4Pyd5thR3akJ+CbsIch8Y8dIaFF/d0U1PUE9rggTAmS5
-         nv5PWDAzdwj4sxBCkL75WK3rKRgq/xJwmEM1kd+KtCNA0Mp1iSHvpp8O345TzWBd40WQ
-         krRqUbgVVZ8y4Xnkq7l7R+lOziHZyNi1X29Awe2gt4ZDa1VCPOPamWJb8SB0mIWUHfHG
-         wS3A==
-X-Gm-Message-State: APjAAAUxOfBz/YoCJ6fH1dC+nCWyKVV1JU5PdPIZy2lcXomrnUyH/y7+
-        nXX3GoJBe8HE5y5r0M0bgYTXdA==
-X-Google-Smtp-Source: APXvYqwxpxnwSAlnk2iJLxy0y26FLLAGQ9K0vqjWJGBYNC1Z20dZRBq+cekc04hlNg8TIHTT7rIcFg==
-X-Received: by 2002:a05:651c:1066:: with SMTP id y6mr31004234ljm.96.1574851709571;
-        Wed, 27 Nov 2019 02:48:29 -0800 (PST)
-Received: from ?IPv6:2a00:1fa0:4237:c73d:3077:a4da:e919:17fe? ([2a00:1fa0:4237:c73d:3077:a4da:e919:17fe])
-        by smtp.gmail.com with ESMTPSA id t16sm6839233ljc.106.2019.11.27.02.48.27
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 27 Nov 2019 02:48:28 -0800 (PST)
-Subject: Re: [PATCH] brcmsmac: Remove always false 'channel < 0' statement
-To:     Austin Kim <austindh.kim@gmail.com>, arend.vanspriel@broadcom.com,
-        franky.lin@broadcom.com, hante.meuleman@broadcom.com,
-        chi-hsien.lin@cypress.com, wright.feng@cypress.com,
-        kvalo@codeaurora.org, davem@davemloft.net
-Cc:     linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        brcm80211-dev-list@cypress.com, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20191127054358.GA59549@LGEARND20B15>
-From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Message-ID: <46dfe877-4f32-b763-429f-7af3a83828f0@cogentembedded.com>
-Date:   Wed, 27 Nov 2019 13:48:19 +0300
-User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.1
-MIME-Version: 1.0
-In-Reply-To: <20191127054358.GA59549@LGEARND20B15>
-Content-Type: text/plain; charset=utf-8; format=flowed
+        id S1726591AbfK0LQc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 27 Nov 2019 06:16:32 -0500
+Received: from mail-oln040092253052.outbound.protection.outlook.com ([40.92.253.52]:2337
+        "EHLO APC01-SG2-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726219AbfK0LQc (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 27 Nov 2019 06:16:32 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=KRVgAKDZPsZQFrRVeC16JGSdcxZ/jd2KyKqj9VlY6Xt8a4MB9HurrJxRiUgIqgGYx8kQiKtEAqeDEulbwzOMikYcGkOfJTKum+9WN2Ma8IckX4Ln17jbs9/sJ/Sj22WSAVoDN63ukO7DSqmc5+zvlv5YxqFF/REyXnTHRA28OKcULjOYcleO+o2E/uO6r1AELZIiCzs2ThCN+xRSivsrym4J54WbdOPfrlUQ1gyO/P9G10B8VCplw/aDUVyJcGgbLG79ubeqTRqXzdQQUK3M0Vt9m5Dd22rO2ZDGWSu4sAehh/4CmFM9e1XEEQvM0WmXehTmKDDcfL1jlv+pWixubA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=mUmLyO8fW8q87Xdw+pPKEFB6jsNUA0R6FJ00BeRcjD4=;
+ b=L6jLOXbjAe/tGX/6ax8PfWGp2icgZaqnD83PjvkRX2jV+uNPF6KAE3PhULqkVl7CvtCfcQ/lGmNNBH97LVh0rVPskRDIed0IUASl2H180gY9Li9yEbmZWFGaj5L6wDGsXA77VTSjtUU0lt5S55SPAz51CjmNnHgB2SGJLs+h4Qq262XCf+OeHQZ2N93j1Zt7DqxdLNpdVuB3tqmzcfUc8P8othlUt7SCdbvLC80cIsb1EsjLEbS4T6x/Jy/BQiUQXQtorzq9E3m42J0929V8IzbhltMhDX2F19SBDhWr7IcTlWZCgL6k7iiBhKwRc7CIK9HFPsg1lpOORaPkkFE4+Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+Received: from HK2APC01FT031.eop-APC01.prod.protection.outlook.com
+ (10.152.248.55) by HK2APC01HT190.eop-APC01.prod.protection.outlook.com
+ (10.152.249.134) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2474.17; Wed, 27 Nov
+ 2019 11:16:22 +0000
+Received: from PSXP216MB0438.KORP216.PROD.OUTLOOK.COM (10.152.248.58) by
+ HK2APC01FT031.mail.protection.outlook.com (10.152.248.189) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2474.17 via Frontend Transport; Wed, 27 Nov 2019 11:16:22 +0000
+Received: from PSXP216MB0438.KORP216.PROD.OUTLOOK.COM
+ ([fe80::b880:961e:dd88:8b5d]) by PSXP216MB0438.KORP216.PROD.OUTLOOK.COM
+ ([fe80::b880:961e:dd88:8b5d%12]) with mapi id 15.20.2474.023; Wed, 27 Nov
+ 2019 11:16:22 +0000
+From:   Nicholas Johnson <nicholas.johnson-opensource@outlook.com.au>
+To:     Alexander Lobakin <alobakin@dlink.ru>
+CC:     Luciano Coelho <luciano.coelho@intel.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Edward Cree <ecree@solarflare.com>,
+        Jiri Pirko <jiri@mellanox.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Ido Schimmel <idosch@mellanox.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Petr Machata <petrm@mellanox.com>,
+        Sabrina Dubroca <sd@queasysnail.net>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Jassi Brar <jaswinder.singh@linaro.org>,
+        Manish Chopra <manishc@marvell.com>,
+        "GR-Linux-NIC-Dev@marvell.com" <GR-Linux-NIC-Dev@marvell.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Intel Linux Wireless <linuxwifi@intel.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "Kenneth R. Crudup" <kenny@panix.com>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net] net: wireless: intel: iwlwifi: fix GRO_NORMAL packet
+ stalling
+Thread-Topic: [PATCH net] net: wireless: intel: iwlwifi: fix GRO_NORMAL packet
+ stalling
+Thread-Index: AQHVpQcZfcbrCchhyk2SRqQueNdPk6eeyGaAgAAD6wCAAAJz0IAAAiiAgAANJIA=
+Date:   Wed, 27 Nov 2019 11:16:21 +0000
+Message-ID: <PSXP216MB04382F0BA8CE3754439EA2CC80440@PSXP216MB0438.KORP216.PROD.OUTLOOK.COM>
+References: <20191127094123.18161-1-alobakin@dlink.ru>
+ <7a9332bf645fbb8c9fff634a3640c092fb9b4b79.camel@intel.com>
+ <c571a88c15c4a70a61cde6ca270af033@dlink.ru>
+ <PSXP216MB0438B2F163C635F8B8B4AD8AA4440@PSXP216MB0438.KORP216.PROD.OUTLOOK.COM>
+ <a638ab877999dbc4ded87bfaebe784f5@dlink.ru>
+In-Reply-To: <a638ab877999dbc4ded87bfaebe784f5@dlink.ru>
+Accept-Language: en-AU, en-US
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-clientproxiedby: SYXPR01CA0099.ausprd01.prod.outlook.com
+ (2603:10c6:0:2e::32) To PSXP216MB0438.KORP216.PROD.OUTLOOK.COM
+ (2603:1096:300:d::20)
+x-incomingtopheadermarker: OriginalChecksum:C6DB9A6317ACAA90F47D1BA94C9309EF3042EEC82E89F1E0D73BAC2A624EDDE7;UpperCasedChecksum:8C13DBEDCDA7354A564DD10DEB3CA43BE0488C8EA45E7959D60D41BFE68C128D;SizeAsReceived:8492;Count:49
+x-ms-exchange-messagesentrepresentingtype: 1
+x-tmn:  [rhOQRpFCjyfMcAzn5x47wPCdcvPO+Pa+rizpBaWwjc8=]
+x-microsoft-original-message-id: <20191127111559.GA3224@nicholas-usb>
+x-ms-publictraffictype: Email
+x-incomingheadercount: 49
+x-eopattributedmessage: 0
+x-ms-office365-filtering-correlation-id: af21f94b-fb61-40b0-e349-08d7732b3b63
+x-ms-traffictypediagnostic: HK2APC01HT190:
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: 9fw8QR1jF3m9gVRfAVPLoN92c1m0Mk5nIMhBV00wZofFDe66k+Mq8kRcDtpPkygGy6iOjXnl1PiTQddomAjF0t35qJDjz9DuzfY5fksJ5IvpbUJPzomalBVxHHEux7vNHq267tnoD5yt8fNAyVafUjQiGHD9wgMM9dtLEcC+H41s0etUMZM1dI5mZ9+P+ef6
+x-ms-exchange-transport-forked: True
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <AC2C6BF6C3B2AF4383C4140B9FBDE198@KORP216.PROD.OUTLOOK.COM>
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-Network-Message-Id: af21f94b-fb61-40b0-e349-08d7732b3b63
+X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Nov 2019 11:16:21.9281
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Internet
+X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: HK2APC01HT190
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 27.11.2019 8:43, Austin Kim wrote:
-
-> As 'channel' is declared as u16, the following statement is always false.
->     channel < 0
-> 
-> So we can remove unnecessary 'always false' statement.
-
-    It's an expression, not a statement.
-
-> Signed-off-by: Austin Kim <austindh.kim@gmail.com>
-> ---
->   drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c
-> index 3f09d89..7f2c15c 100644
-> --- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c
-> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c
-> @@ -5408,7 +5408,7 @@ int brcms_c_set_channel(struct brcms_c_info *wlc, u16 channel)
->   {
->   	u16 chspec = ch20mhz_chspec(channel);
->   
-> -	if (channel < 0 || channel > MAXCHANNEL)
-> +	if (channel > MAXCHANNEL)
->   		return -EINVAL;
->   
->   	if (!brcms_c_valid_chanspec_db(wlc->cmi, chspec))
-
-MBR, Sergei
-
+T24gV2VkLCBOb3YgMjcsIDIwMTkgYXQgMDE6Mjk6MDNQTSArMDMwMCwgQWxleGFuZGVyIExvYmFr
+aW4gd3JvdGU6DQo+IE5pY2hvbGFzIEpvaG5zb24gd3JvdGUgMjcuMTEuMjAxOSAxMzoyMzoNCj4g
+PiBIaSwNCj4gDQo+IEhpIE5pY2hvbGFzLA0KPiANCj4gPiAgU29ycnkgZm9yIHRvcCBkb3duIHJl
+cGx5LCBzdHVjayB3aXRoIG15IHBob25lLiBJZiBpdCByZXBsaWVzIEhUTUwNCj4gPiB0aGVuIEkg
+YW0gc28gZG9uZSB3aXRoIE91dGxvb2sgY2xpZW50Lg0KDQpJIGFtIHZlcnkgc29ycnkgdG8gZXZl
+cnlib2R5IGZvciB0aGUgaW1wcm9wZXIgcmVwbHkuIEl0IGxvb2tzIGxpa2UgaXQgDQp3YXMgSFRN
+TCBhcyB2Z2VyLmtlcm5lbC5vcmcgdG9sZCBtZSBJIHdhcyBzcGFtLiBJZiBhbnlib2R5IGtub3dz
+IGEgZ29vZCANCmVtYWlsIGNsaWVudCBmb3Iga2VybmVsIGRldmVsb3BtZW50IGZvciBBbmRyb2lk
+IHRoZW4gSSBhbSBhbGwgZWFycy4NCg0KSSB3ZW50IGhvbWUgZWFybHkgYW5kIEkgaGF2ZSBteSBj
+b21wdXRlcihzKSBub3cuDQoNCj4gPiANCj4gPiAgRG9lcyBteSBSZXBvcnRlZC1ieSB0YWcgYXBw
+bHkgaGVyZT8NCj4gPiANCj4gPiAgQXMgdGhlIHJlcG9ydGVyLCBzaG91bGQgSSBjaGVjayB0byBz
+ZWUgdGhhdCBpdCBpbmRlZWQgc29sdmVzIHRoZQ0KPiA+IGlzc3VlIG9uIHRoZSBvcmlnaW5hbCBo
+YXJkd2FyZSBzZXR1cD8gSSBjYW4gZG8gdGhpcyB3aXRoaW4gdHdvIGhvdXJzDQo+ID4gYW5kIGdp
+dmUgVGVzdGVkLWJ5IHRoZW4uDQo+IA0KPiBPb3BzLCBJJ20gc29ycnkgSSBmb3Jnb3QgdG8gbWVu
+dGlvbiB5b3UgaW4gdGhlIGNvbW1pdCBtZXNzYWdlLiBMZXQncw0KPiBzZWUgd2hhdCBEYXZlIHdp
+bGwgc2F5LCBJIGhhdmUgbm8gcHJvYmxlbXMgd2l0aCB3YWl0aW5nIGZvciB5b3VyIHRlc3QNCj4g
+cmVzdWx0cyBhbmQgcHVibGlzaGluZyB2Mi4NCg0KQWxsIGdvb2QuIDopDQoNCkkgdGVzdGVkIHRo
+ZSB0aGUgcGF0Y2ggYW5kIGl0IHdvcmtzIGZpbmUuIEdyZWF0IHdvcmssIHRoZSBmaXJzdCANCmh5
+cG90aGVzaXMgYXMgdG8gd2hhdCB0aGUgcHJvYmxlbSB3YXMgaXMgY29ycmVjdC4gSXQgbm93IGNv
+bm5lY3RzIHRvIA0Kd2lyZWxlc3MgbmV0d29ya3Mgd2l0aG91dCBhbnkgaGFzc2xlcy4NCg0KUmVw
+b3J0ZWQtYnk6IE5pY2hvbGFzIEpvaG5zb24gPG5pY2hvbGFzLmpvaG5zb24tb3BlbnNvdXJjZUBv
+dXRsb29rLmNvbS5hdT4NClRlc3RlZC1ieTogTmljaG9sYXMgSm9obnNvbiA8bmljaG9sYXMuam9o
+bnNvbi1vcGVuc291cmNlQG91dGxvb2suY29tLmF1Pg0KDQpJIGRvIG5vdCB1bmRlcnN0YW5kIHRo
+ZSBuZXR3b3JraW5nIHN1YnN5c3RlbSB3ZWxsIGVub3VnaCB0byBnaXZlIA0KUmV2aWV3ZWQtYnks
+IHlldC4gSG9wZWZ1bGx5IGluIHRpbWUuDQoNClRoYW5rcyB0byBldmVyeWJvZHkgZm9yIGhhbmRs
+aW5nIG15IHJlcG9ydC4NCg0KPiANCj4gPiAgVGhhbmtzDQo+ID4gDQo+ID4gIFJlZ2FyZHMsDQo+
+ID4gDQo+ID4gIE5pY2hvbGFzDQo+IA0KPiBSZWdhcmRzLA0KPiDhmrcg4ZuWIOGaoiDhmqYg4Zqg
+IOGasQ0KDQpSZWdhcmRzLA0KTmljaG9sYXMNCg==
