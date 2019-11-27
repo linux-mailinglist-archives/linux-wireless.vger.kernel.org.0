@@ -2,101 +2,99 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F015D10B066
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Nov 2019 14:38:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0990E10B0DB
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Nov 2019 15:08:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726881AbfK0NiS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 27 Nov 2019 08:38:18 -0500
-Received: from a27-188.smtp-out.us-west-2.amazonses.com ([54.240.27.188]:44674
-        "EHLO a27-188.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726603AbfK0NiR (ORCPT
+        id S1726593AbfK0OIq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 27 Nov 2019 09:08:46 -0500
+Received: from a27-21.smtp-out.us-west-2.amazonses.com ([54.240.27.21]:34200
+        "EHLO a27-21.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726320AbfK0OIq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 27 Nov 2019 08:38:17 -0500
+        Wed, 27 Nov 2019 09:08:46 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1574861896;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:MIME-Version:Content-Type;
-        bh=mgZ3qLyqFDIHRZs3m2gwVQuR1D8c5mwT+hdMMXCxQnM=;
-        b=GvXHQ3T3o9ZJWmGp42rf/EdehLEz0A8BaW0cVXXQ/FG2+3OrYvK5r8+QX4kQBA1B
-        35ETq0PEWu3ngMF/kUsC1qYujz0bOMAV7GxQKAot0IQfYakPWcdg5Zzb9xJpyZKj9qw
-        5rTcRU4Xx1RwtVQqEO2XvGtopYayKzZTqSb5xLlY=
+        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1574863725;
+        h=From:To:Cc:Subject:Date:Message-Id;
+        bh=aIj7nzLay9iEOLJMRq4RsRPW9XMEtdFOI6JAYVZMHAs=;
+        b=hgz5lKveQaiikRD7ksbtDAK1l5krrY9AXhJnXy5I9s0nUqbKmdevOW1k4rhjH+FW
+        f1P10Mfbknyi9ue6cT8hfT0Iei3gN5FKCdIhXXqvPFRXGW668WGao6tGRUwc4CekONm
+        MfxJojBz9nMLrK/hCgfsni+17zhX2ebHi3Jt2axo=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=gdwg2y3kokkkj5a55z2ilkup5wp5hhxx; d=amazonses.com; t=1574861896;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:MIME-Version:Content-Type:Feedback-ID;
-        bh=mgZ3qLyqFDIHRZs3m2gwVQuR1D8c5mwT+hdMMXCxQnM=;
-        b=Zqvmbscz5R552+gm0tLz2qBL+cPF8W5rvxn1LwrPATYke0asvYWcdaAPAvosnplQ
-        ta3ck1IRsEnTNIPxB1TcFA3HPsU5zrzpsyrVZyTObaVKWRiJkRcfrk3njb3tHIO0kSr
-        rQKUBzn2X7DSWXo4tB4lWEdyoUVMlDPiTQkIDs5g=
+        s=gdwg2y3kokkkj5a55z2ilkup5wp5hhxx; d=amazonses.com; t=1574863725;
+        h=From:To:Cc:Subject:Date:Message-Id:Feedback-ID;
+        bh=aIj7nzLay9iEOLJMRq4RsRPW9XMEtdFOI6JAYVZMHAs=;
+        b=FYK2p8GA6LDfTG+6rSKxD+yivz4gkgh2WErNnDmhGdhUjtkhrCoPvtMfq0z8OzEB
+        QNgel+YDjpUFFElq3hMrT6WfdKxQtLWQLVyHz6J9/bAeeZgktpl1swOUJHHvGgxg3xo
+        P3bRFTnueVnloXffYMF+D+vmFXKAqxhee5we7Lno=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE,
-        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 419B7C433CB
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.0
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 23AFBC433A2
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Nicholas Johnson <nicholas.johnson-opensource@outlook.com.au>
-Cc:     Alexander Lobakin <alobakin@dlink.ru>,
-        Luciano Coelho <luciano.coelho@intel.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Edward Cree <ecree@solarflare.com>,
-        Jiri Pirko <jiri@mellanox.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Ido Schimmel <idosch@mellanox.com>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Petr Machata <petrm@mellanox.com>,
-        Sabrina Dubroca <sd@queasysnail.net>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Jassi Brar <jaswinder.singh@linaro.org>,
-        Manish Chopra <manishc@marvell.com>,
-        "GR-Linux-NIC-Dev\@marvell.com" <GR-Linux-NIC-Dev@marvell.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Intel Linux Wireless <linuxwifi@intel.com>,
-        "Kenneth R. Crudup" <kenny@panix.com>,
-        "netdev\@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-wireless\@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "linux-kernel\@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net] net: wireless: intel: iwlwifi: fix GRO_NORMAL packet stalling
-References: <20191127094123.18161-1-alobakin@dlink.ru>
-        <7a9332bf645fbb8c9fff634a3640c092fb9b4b79.camel@intel.com>
-        <c571a88c15c4a70a61cde6ca270af033@dlink.ru>
-        <PSXP216MB0438B2F163C635F8B8B4AD8AA4440@PSXP216MB0438.KORP216.PROD.OUTLOOK.COM>
-        <a638ab877999dbc4ded87bfaebe784f5@dlink.ru>
-        <PSXP216MB04382F0BA8CE3754439EA2CC80440@PSXP216MB0438.KORP216.PROD.OUTLOOK.COM>
-Date:   Wed, 27 Nov 2019 13:38:16 +0000
-In-Reply-To: <PSXP216MB04382F0BA8CE3754439EA2CC80440@PSXP216MB0438.KORP216.PROD.OUTLOOK.COM>
-        (Nicholas Johnson's message of "Wed, 27 Nov 2019 11:16:21 +0000")
-Message-ID: <0101016ead157ba1-af7ef42c-fb93-4a85-97bd-576072a699fc-000000@us-west-2.amazonses.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
-MIME-Version: 1.0
-Content-Type: text/plain
-X-SES-Outgoing: 2019.11.27-54.240.27.188
+To:     linux-wireless@vger.kernel.org
+Cc:     ath11k@lists.infradead.org
+Subject: [PATCH 00/10] ath11k: third round of post-bringup patches
+Date:   Wed, 27 Nov 2019 14:08:45 +0000
+Message-ID: <0101016ead3161dc-8576af35-5fd2-4ac5-805e-4791a3f7b65d-000000@us-west-2.amazonses.com>
+X-Mailer: git-send-email 2.7.4
+X-SES-Outgoing: 2019.11.27-54.240.27.21
 Feedback-ID: 1.us-west-2.CZuq2qbDmUIuT3qdvXlRHZZCpfZqZ4GtG9v3VKgRyF0=:AmazonSES
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Nicholas Johnson <nicholas.johnson-opensource@outlook.com.au> writes:
+Here's third round of ath11k patches from ath11k-post-bringup
+branch[1] which got queued while ath11k was in review.
 
-> On Wed, Nov 27, 2019 at 01:29:03PM +0300, Alexander Lobakin wrote:
->> Nicholas Johnson wrote 27.11.2019 13:23:
->> > Hi,
->> 
->> Hi Nicholas,
->> 
->> >  Sorry for top down reply, stuck with my phone. If it replies HTML
->> > then I am so done with Outlook client.
->
-> I am very sorry to everybody for the improper reply. It looks like it 
-> was HTML as vger.kernel.org told me I was spam. If anybody knows a good 
-> email client for kernel development for Android then I am all ears.
+Major features here are support for controlling tx power per station
+and fixing tracing.
 
-I use K-9 Mail because Greg K-H used it :) TBH I use it mostly only for
-reading but seems to work quite well:
+Please review.
 
-https://k9mail.github.io
+Kalle
+
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/log/?h=ath11k-post-bringup
+
+
+Anilkumar Kolli (4):
+  ath11k: tracing: fix ath11k tracing
+  ath11k: qmi clean up ce and HTC service config update
+  ath11k: qmi clean up in ath11k_qmi_wlanfw_wlan_cfg_send()
+  ath11k: pktlog: fix sending/using the pdev id
+
+Govindaraj Saminathan (1):
+  ath11k: unlock mutex during failure in qmi fw ready
+
+Karthikeyan Periyasamy (2):
+  ath11k: avoid burst time conversion logic
+  ath11k: avoid use_after_free in ath11k_dp_rx_msdu_coalesce API
+
+Maharaja Kennadyrajan (1):
+  ath11k: add support for controlling tx power to a station
+
+Sriram R (1):
+  ath11k: add necessary peer assoc params in wmi dbg
+
+Venkateswara Naralasetty (1):
+  ath11k: update bawindow size in delba process
+
+ drivers/net/wireless/ath/ath11k/ahb.c   |  9 +++----
+ drivers/net/wireless/ath/ath11k/ce.h    |  9 +++++--
+ drivers/net/wireless/ath/ath11k/core.c  |  1 +
+ drivers/net/wireless/ath/ath11k/debug.h |  3 +++
+ drivers/net/wireless/ath/ath11k/dp_rx.c | 46 +++++++++++++++++++++------------
+ drivers/net/wireless/ath/ath11k/mac.c   | 44 ++++++++++++++++++++++++++-----
+ drivers/net/wireless/ath/ath11k/qmi.c   | 28 ++++++++++----------
+ drivers/net/wireless/ath/ath11k/qmi.h   |  4 +--
+ drivers/net/wireless/ath/ath11k/trace.h |  3 +++
+ drivers/net/wireless/ath/ath11k/wmi.c   | 19 ++++++++++----
+ 10 files changed, 114 insertions(+), 52 deletions(-)
 
 -- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+2.7.4
+
