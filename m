@@ -2,114 +2,132 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 75FA610C023
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Nov 2019 23:21:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1947E10C0B6
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Nov 2019 00:40:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727184AbfK0WVt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 27 Nov 2019 17:21:49 -0500
-Received: from mail-qt1-f193.google.com ([209.85.160.193]:46422 "EHLO
-        mail-qt1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727033AbfK0WVt (ORCPT
+        id S1727394AbfK0XkC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 27 Nov 2019 18:40:02 -0500
+Received: from mail-pf1-f193.google.com ([209.85.210.193]:44799 "EHLO
+        mail-pf1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727192AbfK0XkC (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 27 Nov 2019 17:21:49 -0500
-Received: by mail-qt1-f193.google.com with SMTP id r20so26951621qtp.13;
-        Wed, 27 Nov 2019 14:21:47 -0800 (PST)
+        Wed, 27 Nov 2019 18:40:02 -0500
+Received: by mail-pf1-f193.google.com with SMTP id d199so7385436pfd.11
+        for <linux-wireless@vger.kernel.org>; Wed, 27 Nov 2019 15:40:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=otxiMd0l6riNdSE7OSItmdvrSBc8N+W+v/4nkIlyazQ=;
-        b=RQP5pXqwzoUtskHrYAlwr97uAnCC7oisEf/vhz6/+mD8Anotr29Jmbcp1OsIe69Tuw
-         0A07pM9BToSi1HQ9CxaWvtHPrghDyMPuemOfZhM2321xX9KmeiVxgiSnjUQIBsLeRS4o
-         R9zvEDph33VWXPQAgQ4LGvSjFr4epgCXz2F2PJuCxiJnRYBb10J8fD2mPSzpKza4punW
-         KbLTS5b3XmLY2fhyyoBCxBSo0g3mhVqKolxzp1FUvnnCSMNNR99KoyiIv14Y9OINZM7S
-         89OBRM3zJh807xtlqHssY5KwD+AZu1k/hOks+ORgzTRPddjl7piKvJVo9wVFBsy2e3FC
-         pKHA==
+        d=chromium.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=raddepcS3XU/VKmJZp7vh07W9acc4obuzJakh7dtDEc=;
+        b=lMUaEIEF/K8o7ISuIzD701KA5iJfJ5QQN3kOxf7daHFO90oqdvjU4qDL035s5iaUAD
+         HJIO+RQjstGi9TvP3WvYABOU07+/BCQR89mGYmIH7ddA/VTBp/T8VKn2xcp5EdsMrJqg
+         HmJmg9meuWINbhZq9L8OXg6SYEMQuUOiDZjlQ=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=otxiMd0l6riNdSE7OSItmdvrSBc8N+W+v/4nkIlyazQ=;
-        b=VjQ/9UrivBSw+tUuaHjexuzNHGhWbAip6WKw5wuh7Q6hSLpFvoyIdPj7yOq1xbz9A7
-         bD+C/WdoxTD8hV2WmSeX+mlkc/HPQrSow9dgKnHmpFvOxu8MnNcL8JdY4bjPP2eI5sZD
-         srmXDsJ1DWAF2FEKqLwsFm3tatjf9mscsRO+RhW1ZHfoPzFYPT0GFt3V2HwP5OXQ4vKE
-         99g/6BhrvD+V6uSnANS86dSIjvcCFggM0ZP6jCsWTH9oLZVIkDFQXut0QIVwaKOE8WUz
-         FP0vT7GF9xDgJD0/UJZCVZ/Rb085AsX7tCxi+NH4/dpzmQVrLW1rJz40GZ3EKKB7M0MT
-         GjeQ==
-X-Gm-Message-State: APjAAAUrcWZdQhIgRkOLK1z6qDuc2wNVSetAo2fB9LfZ6wsvMeriP+wo
-        +OrYGY4AoJc/hxPuvbIAedNaZC39o0YOCXEHKsk=
-X-Google-Smtp-Source: APXvYqy0F9gnB7YBK+zsp8V0IkP9CmjbBRcRUX0suieWlH88wWb+/2l2kHHjCnezybi9Y5JCjvlUe8cugNRtcIy1mP0=
-X-Received: by 2002:ac8:2b86:: with SMTP id m6mr10619893qtm.190.1574893307208;
- Wed, 27 Nov 2019 14:21:47 -0800 (PST)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=raddepcS3XU/VKmJZp7vh07W9acc4obuzJakh7dtDEc=;
+        b=VayJlP+Jib+xFGLgNaDXkZaa7lLQHnUe/XWN48czjpFpCKaZ1UoUOqLvQnMbly+t5o
+         PjMTlAUEeRMBrD+r/shPH707kMvEWhW1ZEMEKw01GnWTGM3FQMOPRDPnOI+P6tLkfIsN
+         ris8MmRWmnGB04+wBrt8qiDPAE/oXGSU+KRwOuuPgI6xkAv6AEATcd60Vo+3I9Ck2MXB
+         Gfl4gi5gVML42OsC5AiwkRxkkXxXD3IX7cK5aI82BGpovLFHbYn2DU7IFr+RXv3xF1qt
+         wwlIYi9XU1A5aevibSBhhcdvvAzVmJyLyh28cbiAHvu1RgNKNE7OH/ql7BIE+OKBDkdj
+         X2Sw==
+X-Gm-Message-State: APjAAAVsBTu3sNkT6rhF443u84CjJbWRkLv2cWziJ2lr/YWVrLCHyl01
+        cGkdteH3YzazfY6edOlTU87eEQ==
+X-Google-Smtp-Source: APXvYqypr/l+jjqzsq81qEK0oqfxAiDdCm613PhZMl4MTaSlBPa6Q24tTOmN+mvg8FpR1scT/s6jDQ==
+X-Received: by 2002:aa7:9465:: with SMTP id t5mr6471353pfq.18.1574898001530;
+        Wed, 27 Nov 2019 15:40:01 -0800 (PST)
+Received: from google.com ([2620:15c:202:1:534:b7c0:a63c:460c])
+        by smtp.gmail.com with ESMTPSA id k13sm17737283pgl.69.2019.11.27.15.40.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 27 Nov 2019 15:40:00 -0800 (PST)
+Date:   Wed, 27 Nov 2019 15:39:58 -0800
+From:   Brian Norris <briannorris@chromium.org>
+To:     Nicolas Boichat <drinkcat@chromium.org>
+Cc:     Pi-Hsun Shih <pihsun@chromium.org>,
+        open list <linux-kernel@vger.kernel.org>,
+        linux-wireless@vger.kernel.org
+Subject: Re: [PATCH] wireless: Use offsetof instead of custom macro.
+Message-ID: <20191127233957.GA217817@google.com>
+References: <20190418075016.252988-1-pihsun@chromium.org>
+ <CANMq1KCwcVawg6L1hTKXBgBi66EKdHQrvxr_chR9Kv1ifFREnA@mail.gmail.com>
 MIME-Version: 1.0
-References: <20191127054358.GA59549@LGEARND20B15> <46dfe877-4f32-b763-429f-7af3a83828f0@cogentembedded.com>
- <CADLLry4jOr1S7YhdN5saRCXSnjTt_J=TB+sm=CjbcW9NJ4V7Pg@mail.gmail.com> <0101016ead12c253-18d4624e-98eb-4252-ba3a-fabf74d831f2-000000@us-west-2.amazonses.com>
-In-Reply-To: <0101016ead12c253-18d4624e-98eb-4252-ba3a-fabf74d831f2-000000@us-west-2.amazonses.com>
-From:   Austin Kim <austindh.kim@gmail.com>
-Date:   Thu, 28 Nov 2019 07:21:40 +0900
-Message-ID: <CADLLry7Dcdz9bcfK2BQY3UcYVEL7z+cYqMjab916B8fkfDqHFA@mail.gmail.com>
-Subject: Re: [PATCH] brcmsmac: Remove always false 'channel < 0' statement
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
-        arend.vanspriel@broadcom.com, franky.lin@broadcom.com,
-        hante.meuleman@broadcom.com, chi-hsien.lin@cypress.com,
-        wright.feng@cypress.com, davem@davemloft.net,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        brcm80211-dev-list@cypress.com, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CANMq1KCwcVawg6L1hTKXBgBi66EKdHQrvxr_chR9Kv1ifFREnA@mail.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-2019=EB=85=84 11=EC=9B=94 27=EC=9D=BC (=EC=88=98) =EC=98=A4=ED=9B=84 10:35,=
- Kalle Valo <kvalo@codeaurora.org>=EB=8B=98=EC=9D=B4 =EC=9E=91=EC=84=B1:
->
-> Austin Kim <austindh.kim@gmail.com> writes:
->
-> > 2019=EB=85=84 11=EC=9B=94 27=EC=9D=BC (=EC=88=98) =EC=98=A4=ED=9B=84 7:=
-48, Sergei Shtylyov
-> > <sergei.shtylyov@cogentembedded.com>=EB=8B=98=EC=9D=B4 =EC=9E=91=EC=84=
-=B1:
-> >>
-> >> On 27.11.2019 8:43, Austin Kim wrote:
-> >>
-> >> > As 'channel' is declared as u16, the following statement is always f=
-alse.
-> >> >     channel < 0
-> >> >
-> >> > So we can remove unnecessary 'always false' statement.
-> >>
-> >>     It's an expression, not a statement.
-> >>
++ linux-wireless
+
+[Top-posting because the important stuff is up here, and the rest is
+missing from linux-wireless]
+
+Hey Pi-Hsun, Nicolas: you failed to copy linux-wireless, so no one's
+going to pick this patch up. Please re-send if you care.
+
+Regards,
+Brian
+
+On Thu, May 02, 2019 at 03:56:33PM +0800, Nicolas Boichat wrote:
+> On Thu, Apr 18, 2019 at 3:50 PM Pi-Hsun Shih <pihsun@chromium.org> wrote:
 > >
-> > According to below link, it is okay to use 'statement' in above case.
-> > https://en.wikipedia.org/wiki/Statement_(computer_science)
->
-> I don't have time to start arguing about this, and I'm no C language
-> lawyer either, but all I say is that I agree with Sergei here.
-
-Thanks for your opinion.
-I will use 'expression' rather than 'statement' when I upstream
-similar patch later.
-
->
-> > Why don't you show your opition about patch rather than commit message?
->
-> But this comment is not ok. Patch review (including commit logs) is the
-> core principle of upstream development so you need to have an open mind
-> for all comments, even the ones you don't like.
-
-Oh! I Agreed.
-If I were you, I would leave similar comment.
-
-Thanks,
-Austin Kim
-
->
-> --
-> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpa=
-tches
+> > Use offsetof to calculate offset of a field to take advantage of
+> > compiler built-in version when possible, and avoid UBSAN warning when
+> > compiling with Clang:
+> >
+> > ==================================================================
+> > UBSAN: Undefined behaviour in net/wireless/wext-core.c:525:14
+> > member access within null pointer of type 'struct iw_point'
+> > CPU: 3 PID: 165 Comm: kworker/u16:3 Tainted: G S      W         4.19.23 #43
+> > Workqueue: cfg80211 __cfg80211_scan_done [cfg80211]
+> > Call trace:
+> >  dump_backtrace+0x0/0x194
+> >  show_stack+0x20/0x2c
+> >  __dump_stack+0x20/0x28
+> >  dump_stack+0x70/0x94
+> >  ubsan_epilogue+0x14/0x44
+> >  ubsan_type_mismatch_common+0xf4/0xfc
+> >  __ubsan_handle_type_mismatch_v1+0x34/0x54
+> >  wireless_send_event+0x3cc/0x470
+> >  ___cfg80211_scan_done+0x13c/0x220 [cfg80211]
+> >  __cfg80211_scan_done+0x28/0x34 [cfg80211]
+> >  process_one_work+0x170/0x35c
+> >  worker_thread+0x254/0x380
+> >  kthread+0x13c/0x158
+> >  ret_from_fork+0x10/0x18
+> > ===================================================================
+> >
+> > Signed-off-by: Pi-Hsun Shih <pihsun@chromium.org>
+> 
+> The warning from clang is spurious, but in another case, we felt that
+> the cleanup was worth it, nevertheless
+> (https://lore.kernel.org/patchwork/patch/1050040/).
+> 
+> Reviewed-By: Nicolas Boichat <drinkcat@chromium.org>
+> 
+> > ---
+> >  include/uapi/linux/wireless.h | 3 +--
+> >  1 file changed, 1 insertion(+), 2 deletions(-)
+> >
+> > diff --git a/include/uapi/linux/wireless.h b/include/uapi/linux/wireless.h
+> > index 86eca3208b6b..f259cca5cc2b 100644
+> > --- a/include/uapi/linux/wireless.h
+> > +++ b/include/uapi/linux/wireless.h
+> > @@ -1090,8 +1090,7 @@ struct iw_event {
+> >  /* iw_point events are special. First, the payload (extra data) come at
+> >   * the end of the event, so they are bigger than IW_EV_POINT_LEN. Second,
+> >   * we omit the pointer, so start at an offset. */
+> > -#define IW_EV_POINT_OFF (((char *) &(((struct iw_point *) NULL)->length)) - \
+> > -                         (char *) NULL)
+> > +#define IW_EV_POINT_OFF offsetof(struct iw_point, length)
+> >  #define IW_EV_POINT_LEN        (IW_EV_LCP_LEN + sizeof(struct iw_point) - \
+> >                          IW_EV_POINT_OFF)
+> >
+> > --
+> > 2.21.0.392.gf8f6787159e-goog
+> >
