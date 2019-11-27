@@ -2,108 +2,114 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B6AE10B6BE
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Nov 2019 20:29:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 75FA610C023
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Nov 2019 23:21:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727509AbfK0T3N (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 27 Nov 2019 14:29:13 -0500
-Received: from mail.dlink.ru ([178.170.168.18]:34872 "EHLO fd.dlink.ru"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727149AbfK0T3M (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 27 Nov 2019 14:29:12 -0500
-Received: by fd.dlink.ru (Postfix, from userid 5000)
-        id 00DDC1B214D2; Wed, 27 Nov 2019 22:29:08 +0300 (MSK)
-DKIM-Filter: OpenDKIM Filter v2.11.0 fd.dlink.ru 00DDC1B214D2
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dlink.ru; s=mail;
-        t=1574882949; bh=0Z3bAxM5sdGwK79DgqtcaPlxNZ3CH9/ldaQOwqZTrdo=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References;
-        b=JrpwsB9kB8X1X8RIWGCXDQtZZ/sPwQwhYdxDWWWFsG9dKQ13EJPqk7MaFSLZu+QXG
-         /0erLwnXv5md+DXpp2AWtUIDhId+VBVg4qMahrt9Xl/HjXd6qHBDSURHu7vjrAdTmL
-         yD2kwqm4FlQJ/g3E7iOMadKxNyL9Qsc4R4UmbV3o=
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on mail.dlink.ru
-X-Spam-Level: 
-X-Spam-Status: No, score=-99.2 required=7.5 tests=BAYES_50,URIBL_BLOCKED,
-        USER_IN_WHITELIST autolearn=disabled version=3.4.2
-Received: from mail.rzn.dlink.ru (mail.rzn.dlink.ru [178.170.168.13])
-        by fd.dlink.ru (Postfix) with ESMTP id 3547F1B201CA;
-        Wed, 27 Nov 2019 22:28:58 +0300 (MSK)
-DKIM-Filter: OpenDKIM Filter v2.11.0 fd.dlink.ru 3547F1B201CA
-Received: from mail.rzn.dlink.ru (localhost [127.0.0.1])
-        by mail.rzn.dlink.ru (Postfix) with ESMTP id CB4021B217D8;
-        Wed, 27 Nov 2019 22:28:57 +0300 (MSK)
-Received: from mail.rzn.dlink.ru (localhost [127.0.0.1])
-        by mail.rzn.dlink.ru (Postfix) with ESMTPA;
-        Wed, 27 Nov 2019 22:28:57 +0300 (MSK)
+        id S1727184AbfK0WVt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 27 Nov 2019 17:21:49 -0500
+Received: from mail-qt1-f193.google.com ([209.85.160.193]:46422 "EHLO
+        mail-qt1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727033AbfK0WVt (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 27 Nov 2019 17:21:49 -0500
+Received: by mail-qt1-f193.google.com with SMTP id r20so26951621qtp.13;
+        Wed, 27 Nov 2019 14:21:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=otxiMd0l6riNdSE7OSItmdvrSBc8N+W+v/4nkIlyazQ=;
+        b=RQP5pXqwzoUtskHrYAlwr97uAnCC7oisEf/vhz6/+mD8Anotr29Jmbcp1OsIe69Tuw
+         0A07pM9BToSi1HQ9CxaWvtHPrghDyMPuemOfZhM2321xX9KmeiVxgiSnjUQIBsLeRS4o
+         R9zvEDph33VWXPQAgQ4LGvSjFr4epgCXz2F2PJuCxiJnRYBb10J8fD2mPSzpKza4punW
+         KbLTS5b3XmLY2fhyyoBCxBSo0g3mhVqKolxzp1FUvnnCSMNNR99KoyiIv14Y9OINZM7S
+         89OBRM3zJh807xtlqHssY5KwD+AZu1k/hOks+ORgzTRPddjl7piKvJVo9wVFBsy2e3FC
+         pKHA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=otxiMd0l6riNdSE7OSItmdvrSBc8N+W+v/4nkIlyazQ=;
+        b=VjQ/9UrivBSw+tUuaHjexuzNHGhWbAip6WKw5wuh7Q6hSLpFvoyIdPj7yOq1xbz9A7
+         bD+C/WdoxTD8hV2WmSeX+mlkc/HPQrSow9dgKnHmpFvOxu8MnNcL8JdY4bjPP2eI5sZD
+         srmXDsJ1DWAF2FEKqLwsFm3tatjf9mscsRO+RhW1ZHfoPzFYPT0GFt3V2HwP5OXQ4vKE
+         99g/6BhrvD+V6uSnANS86dSIjvcCFggM0ZP6jCsWTH9oLZVIkDFQXut0QIVwaKOE8WUz
+         FP0vT7GF9xDgJD0/UJZCVZ/Rb085AsX7tCxi+NH4/dpzmQVrLW1rJz40GZ3EKKB7M0MT
+         GjeQ==
+X-Gm-Message-State: APjAAAUrcWZdQhIgRkOLK1z6qDuc2wNVSetAo2fB9LfZ6wsvMeriP+wo
+        +OrYGY4AoJc/hxPuvbIAedNaZC39o0YOCXEHKsk=
+X-Google-Smtp-Source: APXvYqy0F9gnB7YBK+zsp8V0IkP9CmjbBRcRUX0suieWlH88wWb+/2l2kHHjCnezybi9Y5JCjvlUe8cugNRtcIy1mP0=
+X-Received: by 2002:ac8:2b86:: with SMTP id m6mr10619893qtm.190.1574893307208;
+ Wed, 27 Nov 2019 14:21:47 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-Date:   Wed, 27 Nov 2019 22:28:57 +0300
-From:   Alexander Lobakin <alobakin@dlink.ru>
-To:     David Miller <davem@davemloft.net>
-Cc:     ecree@solarflare.com, jiri@mellanox.com, edumazet@google.com,
-        idosch@mellanox.com, pabeni@redhat.com, petrm@mellanox.com,
-        sd@queasysnail.net, f.fainelli@gmail.com,
-        jaswinder.singh@linaro.org, manishc@marvell.com,
-        GR-Linux-NIC-Dev@marvell.com, johannes.berg@intel.com,
-        emmanuel.grumbach@intel.com, luciano.coelho@intel.com,
-        linuxwifi@intel.com, kvalo@codeaurora.org,
-        nicholas.johnson-opensource@outlook.com.au, kenny@panix.com,
-        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+References: <20191127054358.GA59549@LGEARND20B15> <46dfe877-4f32-b763-429f-7af3a83828f0@cogentembedded.com>
+ <CADLLry4jOr1S7YhdN5saRCXSnjTt_J=TB+sm=CjbcW9NJ4V7Pg@mail.gmail.com> <0101016ead12c253-18d4624e-98eb-4252-ba3a-fabf74d831f2-000000@us-west-2.amazonses.com>
+In-Reply-To: <0101016ead12c253-18d4624e-98eb-4252-ba3a-fabf74d831f2-000000@us-west-2.amazonses.com>
+From:   Austin Kim <austindh.kim@gmail.com>
+Date:   Thu, 28 Nov 2019 07:21:40 +0900
+Message-ID: <CADLLry7Dcdz9bcfK2BQY3UcYVEL7z+cYqMjab916B8fkfDqHFA@mail.gmail.com>
+Subject: Re: [PATCH] brcmsmac: Remove always false 'channel < 0' statement
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
+        arend.vanspriel@broadcom.com, franky.lin@broadcom.com,
+        hante.meuleman@broadcom.com, chi-hsien.lin@cypress.com,
+        wright.feng@cypress.com, davem@davemloft.net,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        brcm80211-dev-list@cypress.com, netdev@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] net: wireless: intel: iwlwifi: fix GRO_NORMAL packet
- stalling
-In-Reply-To: <20191127.112310.1018809619618803508.davem@davemloft.net>
-References: <20191127094123.18161-1-alobakin@dlink.ru>
- <20191127.112310.1018809619618803508.davem@davemloft.net>
-User-Agent: Roundcube Webmail/1.4.0
-Message-ID: <717aa19f01da2bc36fd22343bbbc39f7@dlink.ru>
-X-Sender: alobakin@dlink.ru
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-David Miller wrote 27.11.2019 22:23:
-> From: Alexander Lobakin <alobakin@dlink.ru>
-> Date: Wed, 27 Nov 2019 12:41:23 +0300
-> 
->> Commit 6570bc79c0df ("net: core: use listified Rx for GRO_NORMAL in
->> napi_gro_receive()") has applied batched GRO_NORMAL packets processing
->> to all napi_gro_receive() users, including mac80211-based drivers.
->> 
->> However, this change has led to a regression in iwlwifi driver [1][2] 
->> as
->> it is required for NAPI users to call napi_complete_done() or
->> napi_complete() and the end of every polling iteration, whilst iwlwifi
->> doesn't use NAPI scheduling at all and just calls napi_gro_flush().
->> In that particular case, packets which have not been already flushed
->> from napi->rx_list stall in it until at least next Rx cycle.
->> 
->> Fix this by adding a manual flushing of the list to iwlwifi driver 
->> right
->> before napi_gro_flush() call to mimic napi_complete() logics.
->> 
->> I prefer to open-code gro_normal_list() rather than exporting it for 2
->> reasons:
->> * to prevent from using it and napi_gro_flush() in any new drivers,
->>   as it is the *really* bad way to use NAPI that should be avoided;
->> * to keep gro_normal_list() static and don't lose any CC 
->> optimizations.
->> 
->> I also don't add the "Fixes:" tag as the mentioned commit was only a
->> trigger that only exposed an improper usage of NAPI in this particular
->> driver.
->> 
->> [1] 
->> https://lore.kernel.org/netdev/PSXP216MB04388962C411CD0B17A86F47804A0@PSXP216MB0438.KORP216.PROD.OUTLOOK.COM
->> [2] https://bugzilla.kernel.org/show_bug.cgi?id=205647
->> 
->> Signed-off-by: Alexander Lobakin <alobakin@dlink.ru>
-> 
-> Applied, thanks for the quick turnaround.
+2019=EB=85=84 11=EC=9B=94 27=EC=9D=BC (=EC=88=98) =EC=98=A4=ED=9B=84 10:35,=
+ Kalle Valo <kvalo@codeaurora.org>=EB=8B=98=EC=9D=B4 =EC=9E=91=EC=84=B1:
+>
+> Austin Kim <austindh.kim@gmail.com> writes:
+>
+> > 2019=EB=85=84 11=EC=9B=94 27=EC=9D=BC (=EC=88=98) =EC=98=A4=ED=9B=84 7:=
+48, Sergei Shtylyov
+> > <sergei.shtylyov@cogentembedded.com>=EB=8B=98=EC=9D=B4 =EC=9E=91=EC=84=
+=B1:
+> >>
+> >> On 27.11.2019 8:43, Austin Kim wrote:
+> >>
+> >> > As 'channel' is declared as u16, the following statement is always f=
+alse.
+> >> >     channel < 0
+> >> >
+> >> > So we can remove unnecessary 'always false' statement.
+> >>
+> >>     It's an expression, not a statement.
+> >>
+> >
+> > According to below link, it is okay to use 'statement' in above case.
+> > https://en.wikipedia.org/wiki/Statement_(computer_science)
+>
+> I don't have time to start arguing about this, and I'm no C language
+> lawyer either, but all I say is that I agree with Sergei here.
 
-Thank you all folks!
+Thanks for your opinion.
+I will use 'expression' rather than 'statement' when I upstream
+similar patch later.
 
-Regards,
-ᚷ ᛖ ᚢ ᚦ ᚠ ᚱ
+>
+> > Why don't you show your opition about patch rather than commit message?
+>
+> But this comment is not ok. Patch review (including commit logs) is the
+> core principle of upstream development so you need to have an open mind
+> for all comments, even the ones you don't like.
+
+Oh! I Agreed.
+If I were you, I would leave similar comment.
+
+Thanks,
+Austin Kim
+
+>
+> --
+> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpa=
+tches
