@@ -2,101 +2,102 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0DA9F10ADA2
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Nov 2019 11:29:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AEBD210AE2B
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Nov 2019 11:48:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727031AbfK0K3S (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 27 Nov 2019 05:29:18 -0500
-Received: from fd.dlink.ru ([178.170.168.18]:53404 "EHLO fd.dlink.ru"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726149AbfK0K3R (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 27 Nov 2019 05:29:17 -0500
-Received: by fd.dlink.ru (Postfix, from userid 5000)
-        id BB5C21B2120E; Wed, 27 Nov 2019 13:29:13 +0300 (MSK)
-DKIM-Filter: OpenDKIM Filter v2.11.0 fd.dlink.ru BB5C21B2120E
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dlink.ru; s=mail;
-        t=1574850553; bh=EsvGsnpDTlUlkRudAZRaGscbrq1rpDXrPl2b4VXesCU=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References;
-        b=C8h4I5Jw3GU/gGodtmFJfokOxM+MnPrYiEZvOPpR71NzZllqQbJk9oc8NGhbVJr8Z
-         lcMdvh7BDkng/94rgxrdml69FW+P1g5E3QMiZ3SReLzFvfvGG3Gshrdkqps/s+IFNF
-         V0BcM5VO7ddfkkJ8v8opMOcHx1yMNStorUpx65nw=
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on mail.dlink.ru
-X-Spam-Level: 
-X-Spam-Status: No, score=-99.2 required=7.5 tests=BAYES_50,USER_IN_WHITELIST
-        autolearn=disabled version=3.4.2
-Received: from mail.rzn.dlink.ru (mail.rzn.dlink.ru [178.170.168.13])
-        by fd.dlink.ru (Postfix) with ESMTP id EE0721B2089D;
-        Wed, 27 Nov 2019 13:29:03 +0300 (MSK)
-DKIM-Filter: OpenDKIM Filter v2.11.0 fd.dlink.ru EE0721B2089D
-Received: from mail.rzn.dlink.ru (localhost [127.0.0.1])
-        by mail.rzn.dlink.ru (Postfix) with ESMTP id 9206C1B22678;
-        Wed, 27 Nov 2019 13:29:03 +0300 (MSK)
-Received: from mail.rzn.dlink.ru (localhost [127.0.0.1])
-        by mail.rzn.dlink.ru (Postfix) with ESMTPA;
-        Wed, 27 Nov 2019 13:29:03 +0300 (MSK)
+        id S1727095AbfK0Ksd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 27 Nov 2019 05:48:33 -0500
+Received: from mail-lj1-f195.google.com ([209.85.208.195]:32961 "EHLO
+        mail-lj1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726383AbfK0Ksd (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 27 Nov 2019 05:48:33 -0500
+Received: by mail-lj1-f195.google.com with SMTP id t5so23943230ljk.0
+        for <linux-wireless@vger.kernel.org>; Wed, 27 Nov 2019 02:48:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cogentembedded-com.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=ejLcXZey/Bimb1BLRYgUHAXgcKifURx/dXUaSJ2JWiw=;
+        b=a1TbFcKej0/60ZlJ+iTHw3LjHE+g7zKcombg1hDjtVxzDtrLZ2iSzaDYH+3xz6z/D+
+         Jxy+pofRIMp9vnPO1qXXQgNXFTznsmLzSOSwDoxS/jhBRNQibmVED+rtoq3UXM4h5bmH
+         ELme4exDgCLbYC7jCq72c3RRwV937XhMEuH0B2WAhvaSzU+nHc+jS+3rIn0n6iK6uKe7
+         K+XQyB4cC5S4DElp0+Ki53VrudLLe0U8VO/45QHFHhWUpYw/kN5qu7NyYflkO8RJkiYD
+         IrRgAdd9Oixos3/bBYFWe+DAJaA2klytgo0IXj4gn/3EsXM6RYchxn9lnyGqzfdmTInh
+         asTg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=ejLcXZey/Bimb1BLRYgUHAXgcKifURx/dXUaSJ2JWiw=;
+        b=sRbN5LqCvuMGRfwxxeKkSr8a0BN6boepyNS7lp0Ge2uUDMMOdz5HDLziymDF2sGN7q
+         M7yOJy+aakxd66OJo+3sug8Nk6pNrwG5kM0R/I+amBJCZ7tWsZPezQnXVaa0U0G2suMP
+         BP4EINnVBzOhVF9TDMGCZL6f4Pyd5thR3akJ+CbsIch8Y8dIaFF/d0U1PUE9rggTAmS5
+         nv5PWDAzdwj4sxBCkL75WK3rKRgq/xJwmEM1kd+KtCNA0Mp1iSHvpp8O345TzWBd40WQ
+         krRqUbgVVZ8y4Xnkq7l7R+lOziHZyNi1X29Awe2gt4ZDa1VCPOPamWJb8SB0mIWUHfHG
+         wS3A==
+X-Gm-Message-State: APjAAAUxOfBz/YoCJ6fH1dC+nCWyKVV1JU5PdPIZy2lcXomrnUyH/y7+
+        nXX3GoJBe8HE5y5r0M0bgYTXdA==
+X-Google-Smtp-Source: APXvYqwxpxnwSAlnk2iJLxy0y26FLLAGQ9K0vqjWJGBYNC1Z20dZRBq+cekc04hlNg8TIHTT7rIcFg==
+X-Received: by 2002:a05:651c:1066:: with SMTP id y6mr31004234ljm.96.1574851709571;
+        Wed, 27 Nov 2019 02:48:29 -0800 (PST)
+Received: from ?IPv6:2a00:1fa0:4237:c73d:3077:a4da:e919:17fe? ([2a00:1fa0:4237:c73d:3077:a4da:e919:17fe])
+        by smtp.gmail.com with ESMTPSA id t16sm6839233ljc.106.2019.11.27.02.48.27
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 27 Nov 2019 02:48:28 -0800 (PST)
+Subject: Re: [PATCH] brcmsmac: Remove always false 'channel < 0' statement
+To:     Austin Kim <austindh.kim@gmail.com>, arend.vanspriel@broadcom.com,
+        franky.lin@broadcom.com, hante.meuleman@broadcom.com,
+        chi-hsien.lin@cypress.com, wright.feng@cypress.com,
+        kvalo@codeaurora.org, davem@davemloft.net
+Cc:     linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        brcm80211-dev-list@cypress.com, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20191127054358.GA59549@LGEARND20B15>
+From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Message-ID: <46dfe877-4f32-b763-429f-7af3a83828f0@cogentembedded.com>
+Date:   Wed, 27 Nov 2019 13:48:19 +0300
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-Date:   Wed, 27 Nov 2019 13:29:03 +0300
-From:   Alexander Lobakin <alobakin@dlink.ru>
-To:     Nicholas Johnson <nicholas.johnson-opensource@outlook.com.au>
-Cc:     Luciano Coelho <luciano.coelho@intel.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Edward Cree <ecree@solarflare.com>,
-        Jiri Pirko <jiri@mellanox.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Ido Schimmel <idosch@mellanox.com>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Petr Machata <petrm@mellanox.com>,
-        Sabrina Dubroca <sd@queasysnail.net>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Jassi Brar <jaswinder.singh@linaro.org>,
-        Manish Chopra <manishc@marvell.com>,
-        GR-Linux-NIC-Dev@marvell.com,
-        Johannes Berg <johannes.berg@intel.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Intel Linux Wireless <linuxwifi@intel.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "Kenneth R. Crudup" <kenny@panix.com>, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] net: wireless: intel: iwlwifi: fix GRO_NORMAL packet
- stalling
-In-Reply-To: <PSXP216MB0438B2F163C635F8B8B4AD8AA4440@PSXP216MB0438.KORP216.PROD.OUTLOOK.COM>
-References: <20191127094123.18161-1-alobakin@dlink.ru>
- <7a9332bf645fbb8c9fff634a3640c092fb9b4b79.camel@intel.com>,<c571a88c15c4a70a61cde6ca270af033@dlink.ru>
- <PSXP216MB0438B2F163C635F8B8B4AD8AA4440@PSXP216MB0438.KORP216.PROD.OUTLOOK.COM>
-User-Agent: Roundcube Webmail/1.4.0
-Message-ID: <a638ab877999dbc4ded87bfaebe784f5@dlink.ru>
-X-Sender: alobakin@dlink.ru
+In-Reply-To: <20191127054358.GA59549@LGEARND20B15>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Nicholas Johnson wrote 27.11.2019 13:23:
-> Hi,
+On 27.11.2019 8:43, Austin Kim wrote:
 
-Hi Nicholas,
-
->  Sorry for top down reply, stuck with my phone. If it replies HTML
-> then I am so done with Outlook client.
+> As 'channel' is declared as u16, the following statement is always false.
+>     channel < 0
 > 
->  Does my Reported-by tag apply here?
-> 
->  As the reporter, should I check to see that it indeed solves the
-> issue on the original hardware setup? I can do this within two hours
-> and give Tested-by then.
+> So we can remove unnecessary 'always false' statement.
 
-Oops, I'm sorry I forgot to mention you in the commit message. Let's
-see what Dave will say, I have no problems with waiting for your test
-results and publishing v2.
+    It's an expression, not a statement.
 
->  Thanks
+> Signed-off-by: Austin Kim <austindh.kim@gmail.com>
+> ---
+>   drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
->  Regards,
-> 
->  Nicholas
+> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c
+> index 3f09d89..7f2c15c 100644
+> --- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c
+> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c
+> @@ -5408,7 +5408,7 @@ int brcms_c_set_channel(struct brcms_c_info *wlc, u16 channel)
+>   {
+>   	u16 chspec = ch20mhz_chspec(channel);
+>   
+> -	if (channel < 0 || channel > MAXCHANNEL)
+> +	if (channel > MAXCHANNEL)
+>   		return -EINVAL;
+>   
+>   	if (!brcms_c_valid_chanspec_db(wlc->cmi, chspec))
 
-Regards,
-ᚷ ᛖ ᚢ ᚦ ᚠ ᚱ
+MBR, Sergei
+
