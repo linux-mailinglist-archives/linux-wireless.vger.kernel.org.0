@@ -2,75 +2,85 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E309C10C83A
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Nov 2019 12:54:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6373E10C88E
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Nov 2019 13:19:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726446AbfK1LyN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 28 Nov 2019 06:54:13 -0500
-Received: from a27-21.smtp-out.us-west-2.amazonses.com ([54.240.27.21]:54426
-        "EHLO a27-21.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726191AbfK1LyN (ORCPT
+        id S1726881AbfK1MTW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 28 Nov 2019 07:19:22 -0500
+Received: from rtits2.realtek.com ([211.75.126.72]:59536 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726565AbfK1MTV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 28 Nov 2019 06:54:13 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1574942052;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:MIME-Version:Content-Type;
-        bh=6GEjRHiymZz2qpzisceFU6do1VPZDdWVVzA6Rg/sl3c=;
-        b=DneEo8zpCjBV50PSIpqjkEBp6Dn/OYjJqbVSpvE/qUdRHYeengZHKodXE2znQnd5
-        WlXZfOM8bIBhG6CtGvglBFhPOkVD2jvzTBfS1HF7nkzNbRRfc0vVO3qvJLwHiXG2COp
-        W44HLcRmlKrpVoZEkJTEvXL88A0iNIClxVk6H+Nk=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=gdwg2y3kokkkj5a55z2ilkup5wp5hhxx; d=amazonses.com; t=1574942052;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:MIME-Version:Content-Type:Feedback-ID;
-        bh=6GEjRHiymZz2qpzisceFU6do1VPZDdWVVzA6Rg/sl3c=;
-        b=hejAHu4DsD5bxBxAXRLLU45ttCuFLLdL9fv+97NWwbNU9dD/+n2W1yKUESF1EI9D
-        yEIkhzRBBo3S/Z5m/+9atuk6u9krFlCOiYiWD47ZJ3vutxRVoiNX6767C2BykhbtgwF
-        pGlhM55vZpslUix2zCx06k4PRxRR2tLYfL9TwZsU=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.0
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 5CD2CC447A0
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Wen Huang <huangwenabc@gmail.com>
-Cc:     linux-wireless@vger.kernel.org, libertas-dev@lists.infradead.org
-Subject: Re: [PATCH] libertas: Fix two buffer overflows at parsing bss descriptor
-References: <20191122052917.11309-1-huangwenabc@gmail.com>
-        <0101016eb106d678-62ccf480-a650-47f2-87b3-cb5a03deb013-000000@us-west-2.amazonses.com>
-        <CADt2dQfbnk5WgDk=oeWjE1tziCEem-3fhhA68Pmr_fo0pZ_V=g@mail.gmail.com>
-Date:   Thu, 28 Nov 2019 11:54:12 +0000
-In-Reply-To: <CADt2dQfbnk5WgDk=oeWjE1tziCEem-3fhhA68Pmr_fo0pZ_V=g@mail.gmail.com>
-        (Wen Huang's message of "Thu, 28 Nov 2019 19:03:27 +0800")
-Message-ID: <0101016eb1dc90c4-7d66fb28-a830-4ce7-97a4-cf38262aff44-000000@us-west-2.amazonses.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        Thu, 28 Nov 2019 07:19:21 -0500
+Authenticated-By: 
+X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID xASCJC7h004439, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (RTITCASV01.realtek.com.tw[172.21.6.18])
+        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id xASCJC7h004439
+        (version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+        Thu, 28 Nov 2019 20:19:12 +0800
+Received: from localhost.localdomain (172.21.68.126) by
+ RTITCASV01.realtek.com.tw (172.21.6.18) with Microsoft SMTP Server id
+ 14.3.468.0; Thu, 28 Nov 2019 20:19:11 +0800
+From:   <yhchuang@realtek.com>
+To:     <kvalo@codeaurora.org>
+CC:     <linux-wireless@vger.kernel.org>, <briannorris@chromium.org>
+Subject: [PATCH 0/6] rtw88: add wowlan support for 8822c
+Date:   Thu, 28 Nov 2019 20:19:01 +0800
+Message-ID: <20191128121907.6178-1-yhchuang@realtek.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
 Content-Type: text/plain
-X-SES-Outgoing: 2019.11.28-54.240.27.21
-Feedback-ID: 1.us-west-2.CZuq2qbDmUIuT3qdvXlRHZZCpfZqZ4GtG9v3VKgRyF0=:AmazonSES
+X-Originating-IP: [172.21.68.126]
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Wen Huang <huangwenabc@gmail.com> writes:
+From: Yan-Hsuan Chuang <yhchuang@realtek.com>
 
-> I have modified the patch and submmit:
-> https://patchwork.kernel.org/patch/11265751/ 
+Add wake on wireless LAN support for 8822c. When system enters
+suspend, wifi driver can enable wowlan mode, and waits for
+waking host up by receiving wireless LAN events. Events could
+be AP lost, deauthed, magic packets, rekey, or patterns. Also
+most of the functions can be shutdown to reduce power consumption.
 
-Thanks, but few tips for the future (no need to resend because of
-these):
+To enter wowlan mode, Realtek's devices need to swap to another
+firmware called wowlan firmware. It can monitor special events
+and generate wake up signals if necessary. To swap the firmware,
+driver needs to re-configure the HCI link, to make sure that
+the link is idle, reset the link for sending H2C commands to
+wowlan firmware, and then stop the link.
 
-* don't use HTML in email
+After wake up signals generated and sent to host, driver needs
+to swap back to normal firmware to get to the original state
+before suspend. So it should setup the link again and send
+H2C commands to firmware to restore the information.
 
-* use v2, v3 and so on to identify the version of the patch
+Chin-Yen Lee (6):
+  rtw88: pci: reset ring index when release skbs in tx ring
+  rtw88: pci: reset dma when reset pci trx ring
+  rtw88: load wowlan firmware if wowlan is supported
+  rtw88: support wowlan feature for 8822c
+  rtw88: Add wowlan pattern match support
+  rtw88: add wowlan net-detect support
 
-* do not top post
-
-More info in the link below, I suggest to carefully study that. Better
-chances of getting your patches accepted that way.
+ drivers/net/wireless/realtek/rtw88/Makefile   |   1 +
+ drivers/net/wireless/realtek/rtw88/debug.h    |   1 +
+ drivers/net/wireless/realtek/rtw88/fw.c       | 384 +++++++-
+ drivers/net/wireless/realtek/rtw88/fw.h       | 186 ++++
+ drivers/net/wireless/realtek/rtw88/mac80211.c |  44 +
+ drivers/net/wireless/realtek/rtw88/main.c     |  76 +-
+ drivers/net/wireless/realtek/rtw88/main.h     |  67 ++
+ drivers/net/wireless/realtek/rtw88/pci.c      |  36 +-
+ drivers/net/wireless/realtek/rtw88/reg.h      |  27 +
+ drivers/net/wireless/realtek/rtw88/rtw8822c.c |  18 +
+ drivers/net/wireless/realtek/rtw88/util.h     |   2 +
+ drivers/net/wireless/realtek/rtw88/wow.c      | 890 ++++++++++++++++++
+ drivers/net/wireless/realtek/rtw88/wow.h      |  58 ++
+ 13 files changed, 1759 insertions(+), 31 deletions(-)
+ create mode 100644 drivers/net/wireless/realtek/rtw88/wow.c
+ create mode 100644 drivers/net/wireless/realtek/rtw88/wow.h
 
 -- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+2.17.1
+
