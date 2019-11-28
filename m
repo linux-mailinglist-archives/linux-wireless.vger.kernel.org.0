@@ -2,48 +2,48 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A3FF10C4E5
+	by mail.lfdr.de (Postfix) with ESMTP id A865E10C4E6
 	for <lists+linux-wireless@lfdr.de>; Thu, 28 Nov 2019 09:22:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727525AbfK1IV7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        id S1727529AbfK1IV7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
         Thu, 28 Nov 2019 03:21:59 -0500
-Received: from a27-186.smtp-out.us-west-2.amazonses.com ([54.240.27.186]:54978
-        "EHLO a27-186.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727234AbfK1IV6 (ORCPT
+Received: from a27-188.smtp-out.us-west-2.amazonses.com ([54.240.27.188]:54782
+        "EHLO a27-188.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727522AbfK1IV7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 28 Nov 2019 03:21:58 -0500
+        Thu, 28 Nov 2019 03:21:59 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1574929317;
+        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1574929318;
         h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References;
-        bh=smkaAF+Q9BbyK1rh8+3dV5VqcBVn+APzGR/8SUK26Zc=;
-        b=cspRJXSHDfAHqDmIIKo/uxu12BCf7/5RK7MRnzfq+ERd4iHSCSMgt7U2ZhkOerg3
-        yhKPdaoxzd/jdgtYoYDcwy3PRBKgNsm52vWJ+BBgcNeLO48Cmjr9Gu5tho9zZIJ0+U0
-        8twuMyk4L3eyet8uOYSp5gAwYNJtZyYtwGIARdA8=
+        bh=fYh+h0OLmMSbGrKdOftWyma26CCH4Pw5VCOMKmEOevE=;
+        b=nAHENxwoIfys5OZTooOdwsjyhN2sfm8P4RWuNpwZkz+cVdCsaYR/DrdVNH9p5eGv
+        x+ClDH/5izf9Xe5THba2ckqlf7QNI+/vrVAF1f5iUfFry0IehvZigN0+mFE8DFThHAN
+        A4ZJ3eOriEVgz2RTL2Jwm50fARNyX7Vig5f3w9Lk=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=gdwg2y3kokkkj5a55z2ilkup5wp5hhxx; d=amazonses.com; t=1574929317;
+        s=gdwg2y3kokkkj5a55z2ilkup5wp5hhxx; d=amazonses.com; t=1574929318;
         h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:Feedback-ID;
-        bh=smkaAF+Q9BbyK1rh8+3dV5VqcBVn+APzGR/8SUK26Zc=;
-        b=AmMaTWkMfP4GRWfja37+FRpMhTzqMZ0cV+P8WacYv6xej/WBq8V8zPGq0EKq8rqK
-        eaCT9FE2J1teeVtXHbGJhPfCeTLPfx7KhYxzKwJO0hFf5E9dKBSDIG1Va39dpHKHaxa
-        cMT99Evz4U+PtmNdo5no8Z42fROIcYwhwOVTNSEQ=
+        bh=fYh+h0OLmMSbGrKdOftWyma26CCH4Pw5VCOMKmEOevE=;
+        b=ZUty63nsWIbZkNZLZNaRqHEr0eB7jsX7FL7BAQdCx1zYjudSz6pocq6du2a0dSzv
+        OqwuHYIu5HxJI4E80iaszbxbUU7mcPGlnfxUYFL0PgfM5vwiJrPe+ItqXALkrQDZz2K
+        EIsM1cF/vC0FFqqiflLhEcebbeFnxBYuMyTLATZk=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
 X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.0
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 8C332C44BE6
+        autolearn=ham autolearn_force=no version=3.4.0
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 3A945C48B38
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 From:   Kalle Valo <kvalo@codeaurora.org>
 To:     linux-wireless@vger.kernel.org
 Cc:     ath11k@lists.infradead.org
-Subject: [PATCH 7/9] ath11k: Move mac80211 hw allocation before wmi_init command
-Date:   Thu, 28 Nov 2019 08:21:57 +0000
-Message-ID: <0101016eb11a3f4b-7d13aad5-6bab-4dda-bbc3-07131f0937b1-000000@us-west-2.amazonses.com>
+Subject: [PATCH 8/9] ath11k: Setup REO destination ring before sending wmi_init command
+Date:   Thu, 28 Nov 2019 08:21:58 +0000
+Message-ID: <0101016eb11a409c-82b249a6-9f02-4f9e-bab1-c28e04c7bc1e-000000@us-west-2.amazonses.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1574929300-31782-1-git-send-email-kvalo@codeaurora.org>
 References: <1574929300-31782-1-git-send-email-kvalo@codeaurora.org>
-X-SES-Outgoing: 2019.11.28-54.240.27.186
+X-SES-Outgoing: 2019.11.28-54.240.27.188
 Feedback-ID: 1.us-west-2.CZuq2qbDmUIuT3qdvXlRHZZCpfZqZ4GtG9v3VKgRyF0=:AmazonSES
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
@@ -52,275 +52,218 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Vasanthakumar Thiagarajan <vthiagar@codeaurora.org>
 
-This is to prepare REO ring setup before sending wmi_init command.
-Firmware expects all the required REO rings to be setup while processing
-wmi_init command. But as per the current initialization sequence, REO ring
-configurations are done only after wmi_init command is sent.
-Also refactoring ath11k_mac_create() into ath11k_mac_alloc() and
-ath11k_mac_register() to it mac80211 hw structure available before sending
-wmi_init command.
+Firmware expects all the required REO destination rings setup
+while processing wmi_init command. Not doing this causes connected
+stations getting disconnected and not able to connect back.
 
 Signed-off-by: Vasanthakumar Thiagarajan <vthiagar@codeaurora.org>
 Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 ---
- drivers/net/wireless/ath/ath11k/core.c | 27 ++++++----
- drivers/net/wireless/ath/ath11k/mac.c  | 97 +++++++++++++++++++++-------------
- drivers/net/wireless/ath/ath11k/mac.h  |  3 +-
- 3 files changed, 81 insertions(+), 46 deletions(-)
+ drivers/net/wireless/ath/ath11k/core.c  | 19 +++++++++++--
+ drivers/net/wireless/ath/ath11k/dp.c    | 10 +++++--
+ drivers/net/wireless/ath/ath11k/dp.h    |  1 +
+ drivers/net/wireless/ath/ath11k/dp_rx.c | 49 +++++++++++++++++++++++++++------
+ drivers/net/wireless/ath/ath11k/dp_rx.h |  2 ++
+ 5 files changed, 67 insertions(+), 14 deletions(-)
 
 diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
-index 37d4ecb458db..c9c9e4b5ef6b 100644
+index c9c9e4b5ef6b..5cdc9b2aee51 100644
 --- a/drivers/net/wireless/ath/ath11k/core.c
 +++ b/drivers/net/wireless/ath/ath11k/core.c
-@@ -378,23 +378,22 @@ static int ath11k_core_pdev_create(struct ath11k_base *ab)
- 		return ret;
- 	}
+@@ -10,6 +10,7 @@
+ #include "ahb.h"
+ #include "core.h"
+ #include "dp_tx.h"
++#include "dp_rx.h"
+ #include "debug.h"
  
--	ret = ath11k_mac_create(ab);
-+	ret = ath11k_mac_register(ab);
- 	if (ret) {
--		ath11k_err(ab, "failed to create new hw device with mac80211 :%d\n",
--			   ret);
-+		ath11k_err(ab, "failed register the radio with mac80211: %d\n", ret);
- 		goto err_pdev_debug;
- 	}
+ unsigned int ath11k_debug_mask;
+@@ -325,6 +326,7 @@ static void ath11k_core_stop(struct ath11k_base *ab)
+ 		ath11k_qmi_firmware_stop(ab);
+ 	ath11k_ahb_stop(ab);
+ 	ath11k_wmi_detach(ab);
++	ath11k_dp_pdev_reo_cleanup(ab);
  
- 	ret = ath11k_dp_pdev_alloc(ab);
- 	if (ret) {
- 		ath11k_err(ab, "failed to attach DP pdev: %d\n", ret);
--		goto err_mac_destroy;
-+		goto err_mac_unregister;
- 	}
- 
- 	return 0;
- 
--err_mac_destroy:
--	ath11k_mac_destroy(ab);
-+err_mac_unregister:
-+	ath11k_mac_unregister(ab);
- 
- err_pdev_debug:
- 	ath11k_debug_pdev_destroy(ab);
-@@ -470,28 +469,37 @@ static int ath11k_core_start(struct ath11k_base *ab,
+ 	/* De-Init of components as needed */
+ }
+@@ -476,28 +478,38 @@ static int ath11k_core_start(struct ath11k_base *ab,
  		goto err_hif_stop;
  	}
  
-+	ret = ath11k_mac_allocate(ab);
++	ath11k_dp_pdev_pre_alloc(ab);
++
++	ret = ath11k_dp_pdev_reo_setup(ab);
 +	if (ret) {
-+		ath11k_err(ab, "failed to create new hw device with mac80211 :%d\n",
-+			   ret);
-+		goto err_hif_stop;
++		ath11k_err(ab, "failed to initialize reo destination rings: %d\n", ret);
++		goto err_mac_destroy;
 +	}
 +
  	ret = ath11k_wmi_cmd_init(ab);
  	if (ret) {
  		ath11k_err(ab, "failed to send wmi init cmd: %d\n", ret);
--		goto err_hif_stop;
-+		goto err_mac_destroy;
+-		goto err_mac_destroy;
++		goto err_reo_cleanup;
  	}
  
  	ret = ath11k_wmi_wait_for_unified_ready(ab);
  	if (ret) {
  		ath11k_err(ab, "failed to receive wmi unified ready event: %d\n",
  			   ret);
--		goto err_hif_stop;
-+		goto err_mac_destroy;
+-		goto err_mac_destroy;
++		goto err_reo_cleanup;
  	}
  
  	ret = ath11k_dp_tx_htt_h2t_ver_req_msg(ab);
  	if (ret) {
  		ath11k_err(ab, "failed to send htt version request message: %d\n",
  			   ret);
--		goto err_hif_stop;
-+		goto err_mac_destroy;
+-		goto err_mac_destroy;
++		goto err_reo_cleanup;
  	}
  
  	return 0;
  
-+err_mac_destroy:
-+	ath11k_mac_destroy(ab);
++err_reo_cleanup:
++	ath11k_dp_pdev_reo_cleanup(ab);
+ err_mac_destroy:
+ 	ath11k_mac_destroy(ab);
  err_hif_stop:
+@@ -561,6 +573,7 @@ static int ath11k_core_reconfigure_on_crash(struct ath11k_base *ab)
+ 	ath11k_dp_pdev_free(ab);
  	ath11k_ahb_stop(ab);
- err_wmi_detach:
-@@ -537,6 +545,7 @@ int ath11k_core_qmi_firmware_ready(struct ath11k_base *ab)
- 
- err_core_stop:
- 	ath11k_core_stop(ab);
-+	ath11k_mac_destroy(ab);
- err_dp_free:
- 	ath11k_dp_free(ab);
+ 	ath11k_wmi_detach(ab);
++	ath11k_dp_pdev_reo_cleanup(ab);
  	mutex_unlock(&ab->core_lock);
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index 624534d4c33a..e4dfce6b63f0 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -5513,7 +5513,38 @@ static const struct wiphy_iftype_ext_capab ath11k_iftypes_ext_capa[] = {
- 	},
- };
  
--static int ath11k_mac_register(struct ath11k *ar)
-+static void __ath11k_mac_unregister(struct ath11k *ar)
-+{
-+	cancel_work_sync(&ar->regd_update_work);
-+
-+	ieee80211_unregister_hw(ar->hw);
-+
-+	idr_for_each(&ar->txmgmt_idr, ath11k_mac_tx_mgmt_pending_free, ar);
-+	idr_destroy(&ar->txmgmt_idr);
-+
-+	kfree(ar->mac.sbands[NL80211_BAND_2GHZ].channels);
-+	kfree(ar->mac.sbands[NL80211_BAND_5GHZ].channels);
-+
-+	SET_IEEE80211_DEV(ar->hw, NULL);
+ 	ath11k_dp_free(ab);
+diff --git a/drivers/net/wireless/ath/ath11k/dp.c b/drivers/net/wireless/ath/ath11k/dp.c
+index 72c21cf6a352..b966a16a930f 100644
+--- a/drivers/net/wireless/ath/ath11k/dp.c
++++ b/drivers/net/wireless/ath/ath11k/dp.c
+@@ -684,11 +684,10 @@ void ath11k_dp_pdev_free(struct ath11k_base *ab)
+ 	}
+ }
+ 
+-int ath11k_dp_pdev_alloc(struct ath11k_base *ab)
++void ath11k_dp_pdev_pre_alloc(struct ath11k_base *ab)
+ {
+ 	struct ath11k *ar;
+ 	struct ath11k_pdev_dp *dp;
+-	int ret;
+ 	int i;
+ 
+ 	for (i = 0; i <  ab->num_radios; i++) {
+@@ -704,6 +703,13 @@ int ath11k_dp_pdev_alloc(struct ath11k_base *ab)
+ 		idr_init(&dp->rxdma_mon_buf_ring.bufs_idr);
+ 		spin_lock_init(&dp->rxdma_mon_buf_ring.idr_lock);
+ 	}
 +}
 +
-+void ath11k_mac_unregister(struct ath11k_base *ab)
++int ath11k_dp_pdev_alloc(struct ath11k_base *ab)
 +{
 +	struct ath11k *ar;
-+	struct ath11k_pdev *pdev;
++	int ret;
++	int i;
+ 
+ 	/* TODO:Per-pdev rx ring unlike tx ring which is mapped to different AC's */
+ 	for (i = 0; i < ab->num_radios; i++) {
+diff --git a/drivers/net/wireless/ath/ath11k/dp.h b/drivers/net/wireless/ath/ath11k/dp.h
+index 82ddd7017722..f7e53509ae07 100644
+--- a/drivers/net/wireless/ath/ath11k/dp.h
++++ b/drivers/net/wireless/ath/ath11k/dp.h
+@@ -1507,6 +1507,7 @@ void ath11k_dp_vdev_tx_attach(struct ath11k *ar, struct ath11k_vif *arvif);
+ void ath11k_dp_free(struct ath11k_base *ab);
+ int ath11k_dp_alloc(struct ath11k_base *ab);
+ int ath11k_dp_pdev_alloc(struct ath11k_base *ab);
++void ath11k_dp_pdev_pre_alloc(struct ath11k_base *ab);
+ void ath11k_dp_pdev_free(struct ath11k_base *ab);
+ int ath11k_dp_tx_htt_srng_setup(struct ath11k_base *ab, u32 ring_id,
+ 				int mac_id, enum hal_ring_type ring_type);
+diff --git a/drivers/net/wireless/ath/ath11k/dp_rx.c b/drivers/net/wireless/ath/ath11k/dp_rx.c
+index a380efb9caa6..1b3b65c0038c 100644
+--- a/drivers/net/wireless/ath/ath11k/dp_rx.c
++++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
+@@ -395,12 +395,51 @@ static void ath11k_dp_rx_pdev_srng_free(struct ath11k *ar)
+ 	struct ath11k_pdev_dp *dp = &ar->dp;
+ 
+ 	ath11k_dp_srng_cleanup(ar->ab, &dp->rx_refill_buf_ring.refill_buf_ring);
+-	ath11k_dp_srng_cleanup(ar->ab, &dp->reo_dst_ring);
+ 	ath11k_dp_srng_cleanup(ar->ab, &dp->rxdma_err_dst_ring);
+ 	ath11k_dp_srng_cleanup(ar->ab, &dp->rx_mon_status_refill_ring.refill_buf_ring);
+ 	ath11k_dp_srng_cleanup(ar->ab, &dp->rxdma_mon_buf_ring.refill_buf_ring);
+ }
+ 
++void ath11k_dp_pdev_reo_cleanup(struct ath11k_base *ab)
++{
++	struct ath11k_pdev_dp *dp;
++	struct ath11k *ar;
 +	int i;
 +
 +	for (i = 0; i < ab->num_radios; i++) {
-+		pdev = &ab->pdevs[i];
-+		ar = pdev->ar;
-+		if (!ar)
-+			continue;
-+
-+		__ath11k_mac_unregister(ar);
++		ar = ab->pdevs[i].ar;
++		dp = &ar->dp;
++		ath11k_dp_srng_cleanup(ab, &dp->reo_dst_ring);
 +	}
 +}
 +
-+static int __ath11k_mac_register(struct ath11k *ar)
- {
- 	struct ath11k_base *ab = ar->ab;
- 	struct ath11k_pdev_cap *cap = &ar->pdev->cap;
-@@ -5657,32 +5688,48 @@ static int ath11k_mac_register(struct ath11k *ar)
- 	return ret;
- }
- 
--void ath11k_mac_unregister(struct ath11k_base *ab)
-+int ath11k_mac_register(struct ath11k_base *ab)
- {
- 	struct ath11k *ar;
- 	struct ath11k_pdev *pdev;
- 	int i;
++int ath11k_dp_pdev_reo_setup(struct ath11k_base *ab)
++{
++	struct ath11k *ar;
++	struct ath11k_pdev_dp *dp;
 +	int ret;
- 
- 	for (i = 0; i < ab->num_radios; i++) {
- 		pdev = &ab->pdevs[i];
- 		ar = pdev->ar;
--		if (!ar)
--			continue;
--		cancel_work_sync(&ar->regd_update_work);
-+		if (ab->pdevs_macaddr_valid) {
-+			ether_addr_copy(ar->mac_addr, pdev->mac_addr);
-+		} else {
-+			ether_addr_copy(ar->mac_addr, ab->mac_addr);
-+			ar->mac_addr[4] += i;
++	int i;
++
++	for (i = 0; i < ab->num_radios; i++) {
++		ar = ab->pdevs[i].ar;
++		dp = &ar->dp;
++		ret = ath11k_dp_srng_setup(ab, &dp->reo_dst_ring, HAL_REO_DST,
++					   dp->mac_id, dp->mac_id,
++					   DP_REO_DST_RING_SIZE);
++		if (ret) {
++			ath11k_warn(ar->ab, "failed to setup reo_dst_ring\n");
++			goto err_reo_cleanup;
 +		}
- 
--		ieee80211_unregister_hw(ar->hw);
-+		ret = __ath11k_mac_register(ar);
-+		if (ret)
-+			goto err_cleanup;
- 
--		idr_for_each(&ar->txmgmt_idr, ath11k_mac_tx_mgmt_pending_free, ar);
--		idr_destroy(&ar->txmgmt_idr);
-+		idr_init(&ar->txmgmt_idr);
-+		spin_lock_init(&ar->txmgmt_idr_lock);
 +	}
- 
--		kfree(ar->mac.sbands[NL80211_BAND_2GHZ].channels);
--		kfree(ar->mac.sbands[NL80211_BAND_5GHZ].channels);
-+	/* Initialize channel counters frequency value in hertz */
-+	ab->cc_freq_hz = IPQ8074_CC_FREQ_HERTZ;
-+	ab->free_vdev_map = (1LL << (ab->num_radios * TARGET_NUM_VDEVS)) - 1;
 +
 +	return 0;
- 
--		SET_IEEE80211_DEV(ar->hw, NULL);
-+err_cleanup:
-+	for (i = i - 1; i >= 0; i--) {
-+		pdev = &ab->pdevs[i];
-+		ar = pdev->ar;
-+		__ath11k_mac_unregister(ar);
- 	}
++
++err_reo_cleanup:
++	ath11k_dp_pdev_reo_cleanup(ab);
 +
 +	return ret;
- }
- 
--int ath11k_mac_create(struct ath11k_base *ab)
-+int ath11k_mac_allocate(struct ath11k_base *ab)
++}
++
+ static int ath11k_dp_rx_pdev_srng_alloc(struct ath11k *ar)
  {
- 	struct ieee80211_hw *hw;
- 	struct ath11k *ar;
-@@ -5699,7 +5746,7 @@ int ath11k_mac_create(struct ath11k_base *ab)
- 		if (!hw) {
- 			ath11k_warn(ab, "failed to allocate mac80211 hw device\n");
- 			ret = -ENOMEM;
--			goto err_destroy_mac;
-+			goto err_free_mac;
- 		}
- 
- 		ar = hw->priv;
-@@ -5720,13 +5767,6 @@ int ath11k_mac_create(struct ath11k_base *ab)
- 		ar->num_tx_chains = get_num_chains(pdev->cap.tx_chain_mask);
- 		ar->num_rx_chains = get_num_chains(pdev->cap.rx_chain_mask);
- 
--		if (ab->pdevs_macaddr_valid) {
--			ether_addr_copy(ar->mac_addr, pdev->mac_addr);
--		} else {
--			ether_addr_copy(ar->mac_addr, ab->mac_addr);
--			ar->mac_addr[4] += i;
--		}
--
- 		pdev->ar = ar;
- 		spin_lock_init(&ar->data_lock);
- 		INIT_LIST_HEAD(&ar->arvifs);
-@@ -5744,26 +5784,11 @@ int ath11k_mac_create(struct ath11k_base *ab)
- 		INIT_WORK(&ar->wmi_mgmt_tx_work, ath11k_mgmt_over_wmi_tx_work);
- 		skb_queue_head_init(&ar->wmi_mgmt_tx_queue);
- 		clear_bit(ATH11K_FLAG_MONITOR_ENABLED, &ar->monitor_flags);
--
--		ret = ath11k_mac_register(ar);
--		if (ret) {
--			ath11k_warn(ab, "failed to register hw device\n");
--			pdev->ar = NULL;
--			ieee80211_free_hw(hw);
--			goto err_destroy_mac;
--		}
--
--		idr_init(&ar->txmgmt_idr);
--		spin_lock_init(&ar->txmgmt_idr_lock);
+ 	struct ath11k_pdev_dp *dp = &ar->dp;
+@@ -416,14 +455,6 @@ static int ath11k_dp_rx_pdev_srng_alloc(struct ath11k *ar)
+ 		return ret;
  	}
  
--	/* Initialize channel counters frequency value in hertz */
--	ab->cc_freq_hz = IPQ8074_CC_FREQ_HERTZ;
--	ab->free_vdev_map = (1LL << (ab->num_radios * TARGET_NUM_VDEVS)) - 1;
+-	ret = ath11k_dp_srng_setup(ar->ab, &dp->reo_dst_ring, HAL_REO_DST,
+-				   dp->mac_id, dp->mac_id,
+-				   DP_REO_DST_RING_SIZE);
+-	if (ret) {
+-		ath11k_warn(ar->ab, "failed to setup reo_dst_ring\n");
+-		return ret;
+-	}
 -
- 	return 0;
- 
--err_destroy_mac:
-+err_free_mac:
- 	ath11k_mac_destroy(ab);
- 
- 	return ret;
-diff --git a/drivers/net/wireless/ath/ath11k/mac.h b/drivers/net/wireless/ath/ath11k/mac.h
-index 8c37573ae5dc..f286531cdd78 100644
---- a/drivers/net/wireless/ath/ath11k/mac.h
-+++ b/drivers/net/wireless/ath/ath11k/mac.h
-@@ -118,9 +118,10 @@ struct ath11k_generic_iter {
- 
- extern const struct htt_rx_ring_tlv_filter ath11k_mac_mon_status_filter_default;
- 
--int ath11k_mac_create(struct ath11k_base *ab);
- void ath11k_mac_destroy(struct ath11k_base *ab);
- void ath11k_mac_unregister(struct ath11k_base *ab);
-+int ath11k_mac_register(struct ath11k_base *ab);
-+int ath11k_mac_allocate(struct ath11k_base *ab);
- int ath11k_mac_hw_ratecode_to_legacy_rate(u8 hw_rc, u8 preamble, u8 *rateidx,
- 					  u16 *rate);
- u8 ath11k_mac_bitrate_to_idx(const struct ieee80211_supported_band *sband,
+ 	ret = ath11k_dp_srng_setup(ar->ab, &dp->rxdma_err_dst_ring,
+ 				   HAL_RXDMA_DST, 0, dp->mac_id,
+ 				   DP_RXDMA_ERR_DST_RING_SIZE);
+diff --git a/drivers/net/wireless/ath/ath11k/dp_rx.h b/drivers/net/wireless/ath/ath11k/dp_rx.h
+index 026820fda568..eec5deaa59ad 100644
+--- a/drivers/net/wireless/ath/ath11k/dp_rx.h
++++ b/drivers/net/wireless/ath/ath11k/dp_rx.h
+@@ -48,6 +48,8 @@ int ath11k_peer_rx_tid_setup(struct ath11k *ar, const u8 *peer_mac, int vdev_id,
+ 			     u8 tid, u32 ba_win_sz, u16 ssn);
+ void ath11k_dp_htt_htc_t2h_msg_handler(struct ath11k_base *ab,
+ 				       struct sk_buff *skb);
++int ath11k_dp_pdev_reo_setup(struct ath11k_base *ab);
++void ath11k_dp_pdev_reo_cleanup(struct ath11k_base *ab);
+ int ath11k_dp_rx_pdev_alloc(struct ath11k_base *ab, int pdev_idx);
+ void ath11k_dp_rx_pdev_free(struct ath11k_base *ab, int pdev_idx);
+ void ath11k_dp_reo_cmd_list_cleanup(struct ath11k_base *ab);
 -- 
 2.7.4
 
