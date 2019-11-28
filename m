@@ -2,68 +2,81 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F07C810C319
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Nov 2019 04:54:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A741010C4A8
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Nov 2019 09:00:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727266AbfK1DyY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 27 Nov 2019 22:54:24 -0500
-Received: from smtprelay0023.hostedemail.com ([216.40.44.23]:45784 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726695AbfK1DyY (ORCPT
+        id S1727156AbfK1IAr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 28 Nov 2019 03:00:47 -0500
+Received: from a27-187.smtp-out.us-west-2.amazonses.com ([54.240.27.187]:39194
+        "EHLO a27-187.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726963AbfK1IAr (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 27 Nov 2019 22:54:24 -0500
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay04.hostedemail.com (Postfix) with ESMTP id D0883180A8128;
-        Thu, 28 Nov 2019 03:54:22 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,:::::::::,RULES_HIT:41:355:379:599:973:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1541:1593:1594:1711:1730:1747:1777:1792:2393:2559:2562:2828:3138:3139:3140:3141:3142:3352:3622:3865:3866:3867:3868:3870:3871:4250:4321:5007:10004:10400:10848:11026:11232:11473:11658:11914:12043:12296:12297:12740:12760:12895:13069:13138:13231:13311:13357:13439:14659:14819:21080:21451:21627:30054:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:1,LUA_SUMMARY:none
-X-HE-Tag: cord05_261e104f2dd33
-X-Filterd-Recvd-Size: 1920
-Received: from XPS-9350.home (unknown [47.151.135.224])
-        (Authenticated sender: joe@perches.com)
-        by omf09.hostedemail.com (Postfix) with ESMTPA;
-        Thu, 28 Nov 2019 03:54:21 +0000 (UTC)
-Message-ID: <d02f4eef9aa674cb36c1d90069a13e7bd02b7e40.camel@perches.com>
-Subject: Re: [PATCH RESEND] wireless: Use offsetof instead of custom macro.
-From:   Joe Perches <joe@perches.com>
-To:     Pi-Hsun Shih <pihsun@chromium.org>
-Cc:     linux-wireless@vger.kernel.org,
-        Johannes Berg <johannes@sipsolutions.net>,
-        open list <linux-kernel@vger.kernel.org>,
-        "open list:CLANG/LLVM BUILD SUPPORT" 
-        <clang-built-linux@googlegroups.com>
-Date:   Wed, 27 Nov 2019 19:53:55 -0800
-In-Reply-To: <20191128033959.87715-1-pihsun@chromium.org>
-References: <20191128033959.87715-1-pihsun@chromium.org>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.34.1-2 
+        Thu, 28 Nov 2019 03:00:47 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1574928046;
+        h=Content-Type:MIME-Version:Content-Transfer-Encoding:Subject:From:In-Reply-To:References:To:Cc:Message-Id:Date;
+        bh=R170+eucBgwGB7vYzNNsgn9IJoatW8gOmldds1sVyjg=;
+        b=mioruUJg94nm4wS2aZ0BcmWzr2bh2c8PFBTj5gNKGof7cZU2tA3/B5X1Lfn2/QNh
+        G2ok4qqjeK5mB3Rta9yytqNfGzlmWQYJstcWCYT2b8q7nToMy/BNC9834A/nWIoxx4+
+        +MiTZOkPWUiaO4foQGaW+2jahpkUfhp3/wg334qA=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+        s=gdwg2y3kokkkj5a55z2ilkup5wp5hhxx; d=amazonses.com; t=1574928046;
+        h=Content-Type:MIME-Version:Content-Transfer-Encoding:Subject:From:In-Reply-To:References:To:Cc:Message-Id:Date:Feedback-ID;
+        bh=R170+eucBgwGB7vYzNNsgn9IJoatW8gOmldds1sVyjg=;
+        b=dvNajh+Z41y4VWNFi+tKP1MB6sHOWP9ApvyEW6B+QdJTv92Ydx2tjJNhCTehrVBY
+        3VgLEN4Xbf64Iah+iafFUKx7F0ja6Rgw4gejBf7nf0GLmM18vK1Q8CsBkSGrQyR5jg9
+        aG/X5pfJWYbVB4B4kloPCx1NzihNpX0Ry6nS1yJs=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
+        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 9C5FEC43383
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] libertas: Fix two buffer overflows at parsing bss
+ descriptor
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20191122052917.11309-1-huangwenabc@gmail.com>
+References: <20191122052917.11309-1-huangwenabc@gmail.com>
+To:     huangwenabc@gmail.com
+Cc:     linux-wireless@vger.kernel.org, linux-distros@vs.openwall.org,
+        security@kernel.org, libertas-dev@lists.infradead.org
+User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
+Message-ID: <0101016eb106d929-1a3d21ee-77b1-4cc4-a3af-a2adeaafe048-000000@us-west-2.amazonses.com>
+Date:   Thu, 28 Nov 2019 08:00:46 +0000
+X-SES-Outgoing: 2019.11.28-54.240.27.187
+Feedback-ID: 1.us-west-2.CZuq2qbDmUIuT3qdvXlRHZZCpfZqZ4GtG9v3VKgRyF0=:AmazonSES
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, 2019-11-28 at 11:39 +0800, Pi-Hsun Shih wrote:
-> Use offsetof to calculate offset of a field to take advantage of
-> compiler built-in version when possible, and avoid UBSAN warning when
-> compiling with Clang:
-[]
-> diff --git a/include/uapi/linux/wireless.h b/include/uapi/linux/wireless.h
-[]
-> @@ -1090,8 +1090,7 @@ struct iw_event {
->  /* iw_point events are special. First, the payload (extra data) come at
->   * the end of the event, so they are bigger than IW_EV_POINT_LEN. Second,
->   * we omit the pointer, so start at an offset. */
-> -#define IW_EV_POINT_OFF (((char *) &(((struct iw_point *) NULL)->length)) - \
-> -			  (char *) NULL)
-> +#define IW_EV_POINT_OFF offsetof(struct iw_point, length)
->  #define IW_EV_POINT_LEN	(IW_EV_LCP_LEN + sizeof(struct iw_point) - \
->  			 IW_EV_POINT_OFF)
+huangwenabc@gmail.com wrote:
 
-This is uapi.  Is offsetof guaranteed to be available?
+> From: Wen Huang <huangwenabc@gmail.com>
+> 
+> add_ie_rates() copys rates without checking the length 
+> in bss descriptor from remote AP.when victim connects to 
+> remote attacker, this may trigger buffer overflow.
+> lbs_ibss_join_existing() copys rates without checking the length 
+> in bss descriptor from remote IBSS node.when victim connects to 
+> remote attacker, this may trigger buffer overflow.
+> Fix them by putting the length check before performing copy.
+> 
+> This fix addresses CVE-2019-14896 and CVE-2019-14897.
+> 
+> Signed-off-by: Wen Huang <huangwenabc@gmail.com>
 
-Perhaps this is better without using another macro
+Please fix the warning reported by kbuild bot.
 
-#define IW_EV_POINT_OFF	((size_t)&((struct iw_point *)NULL)->length)
+Patch set to Changes Requested.
+
+-- 
+https://patchwork.kernel.org/patch/11257187/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
