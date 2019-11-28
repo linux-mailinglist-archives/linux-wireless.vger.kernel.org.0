@@ -2,132 +2,136 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1947E10C0B6
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Nov 2019 00:40:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A80E910C1F9
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Nov 2019 02:54:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727394AbfK0XkC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 27 Nov 2019 18:40:02 -0500
-Received: from mail-pf1-f193.google.com ([209.85.210.193]:44799 "EHLO
-        mail-pf1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727192AbfK0XkC (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 27 Nov 2019 18:40:02 -0500
-Received: by mail-pf1-f193.google.com with SMTP id d199so7385436pfd.11
-        for <linux-wireless@vger.kernel.org>; Wed, 27 Nov 2019 15:40:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=raddepcS3XU/VKmJZp7vh07W9acc4obuzJakh7dtDEc=;
-        b=lMUaEIEF/K8o7ISuIzD701KA5iJfJ5QQN3kOxf7daHFO90oqdvjU4qDL035s5iaUAD
-         HJIO+RQjstGi9TvP3WvYABOU07+/BCQR89mGYmIH7ddA/VTBp/T8VKn2xcp5EdsMrJqg
-         HmJmg9meuWINbhZq9L8OXg6SYEMQuUOiDZjlQ=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=raddepcS3XU/VKmJZp7vh07W9acc4obuzJakh7dtDEc=;
-        b=VayJlP+Jib+xFGLgNaDXkZaa7lLQHnUe/XWN48czjpFpCKaZ1UoUOqLvQnMbly+t5o
-         PjMTlAUEeRMBrD+r/shPH707kMvEWhW1ZEMEKw01GnWTGM3FQMOPRDPnOI+P6tLkfIsN
-         ris8MmRWmnGB04+wBrt8qiDPAE/oXGSU+KRwOuuPgI6xkAv6AEATcd60Vo+3I9Ck2MXB
-         Gfl4gi5gVML42OsC5AiwkRxkkXxXD3IX7cK5aI82BGpovLFHbYn2DU7IFr+RXv3xF1qt
-         wwlIYi9XU1A5aevibSBhhcdvvAzVmJyLyh28cbiAHvu1RgNKNE7OH/ql7BIE+OKBDkdj
-         X2Sw==
-X-Gm-Message-State: APjAAAVsBTu3sNkT6rhF443u84CjJbWRkLv2cWziJ2lr/YWVrLCHyl01
-        cGkdteH3YzazfY6edOlTU87eEQ==
-X-Google-Smtp-Source: APXvYqypr/l+jjqzsq81qEK0oqfxAiDdCm613PhZMl4MTaSlBPa6Q24tTOmN+mvg8FpR1scT/s6jDQ==
-X-Received: by 2002:aa7:9465:: with SMTP id t5mr6471353pfq.18.1574898001530;
-        Wed, 27 Nov 2019 15:40:01 -0800 (PST)
-Received: from google.com ([2620:15c:202:1:534:b7c0:a63c:460c])
-        by smtp.gmail.com with ESMTPSA id k13sm17737283pgl.69.2019.11.27.15.40.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 Nov 2019 15:40:00 -0800 (PST)
-Date:   Wed, 27 Nov 2019 15:39:58 -0800
-From:   Brian Norris <briannorris@chromium.org>
-To:     Nicolas Boichat <drinkcat@chromium.org>
-Cc:     Pi-Hsun Shih <pihsun@chromium.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        linux-wireless@vger.kernel.org
-Subject: Re: [PATCH] wireless: Use offsetof instead of custom macro.
-Message-ID: <20191127233957.GA217817@google.com>
-References: <20190418075016.252988-1-pihsun@chromium.org>
- <CANMq1KCwcVawg6L1hTKXBgBi66EKdHQrvxr_chR9Kv1ifFREnA@mail.gmail.com>
+        id S1728110AbfK1Bxp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 27 Nov 2019 20:53:45 -0500
+Received: from mga06.intel.com ([134.134.136.31]:5361 "EHLO mga06.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728092AbfK1Bxp (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 27 Nov 2019 20:53:45 -0500
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by orsmga104.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 27 Nov 2019 17:53:44 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.69,251,1571727600"; 
+   d="scan'208";a="203276758"
+Received: from shao2-debian.sh.intel.com (HELO [10.239.13.6]) ([10.239.13.6])
+  by orsmga008.jf.intel.com with ESMTP; 27 Nov 2019 17:53:42 -0800
+Subject: Re: [kbuild-all] Re: [PATCH] libertas: Fix two buffer overflows at
+ parsing bss descriptor
+To:     Guenter Roeck <linux@roeck-us.net>,
+        Philip Li <philip.li@intel.com>,
+        Kalle Valo <kvalo@codeaurora.org>
+Cc:     kbuild test robot <lkp@intel.com>, huangwenabc@gmail.com,
+        kbuild-all@lists.01.org, linux-wireless@vger.kernel.org,
+        linux-distros@vs.openwall.org, security@kernel.org,
+        libertas-dev@lists.infradead.org
+References: <20191122052917.11309-1-huangwenabc@gmail.com>
+ <201911241536.lyRxx5Oc%lkp@intel.com>
+ <0101016ea290854e-f5721fd1-1ca7-49ab-9c10-85277bc46c64-000000@us-west-2.amazonses.com>
+ <20191125142952.GA4090@intel.com> <20191127182335.GA28398@roeck-us.net>
+From:   Rong Chen <rong.a.chen@intel.com>
+Message-ID: <8437d4ba-1d2b-eae7-28e3-5af9c9d7e572@intel.com>
+Date:   Thu, 28 Nov 2019 09:53:18 +0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CANMq1KCwcVawg6L1hTKXBgBi66EKdHQrvxr_chR9Kv1ifFREnA@mail.gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20191127182335.GA28398@roeck-us.net>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-+ linux-wireless
 
-[Top-posting because the important stuff is up here, and the rest is
-missing from linux-wireless]
 
-Hey Pi-Hsun, Nicolas: you failed to copy linux-wireless, so no one's
-going to pick this patch up. Please re-send if you care.
+On 11/28/19 2:23 AM, Guenter Roeck wrote:
+> On Mon, Nov 25, 2019 at 10:29:52PM +0800, Philip Li wrote:
+>> On Mon, Nov 25, 2019 at 12:36:50PM +0000, Kalle Valo wrote:
+>>> kbuild test robot <lkp@intel.com> writes:
+>>>
+>>>> Thank you for the patch! Perhaps something to improve:
+>>>>
+>>>> [auto build test WARNING on wireless-drivers-next/master]
+>>>> [also build test WARNING on v5.4-rc8 next-20191122]
+>>>> [if your patch is applied to the wrong git tree, please drop us a note to help
+>>>> improve the system. BTW, we also suggest to use '--base' option to specify the
+>>>> base tree in git format-patch, please see https://stackoverflow.com/a/37406982]
+>>>>
+>>>> url:    https://github.com/0day-ci/linux/commits/huangwenabc-gmail-com/libertas-Fix-two-buffer-overflows-at-parsing-bss-descriptor/20191124-142236
+>>>> base:   https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git master
+>>>> config: sh-allmodconfig (attached as .config)
+>>>> compiler: sh4-linux-gcc (GCC) 7.4.0
+>>>> reproduce:
+>>>>          wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+>>>>          chmod +x ~/bin/make.cross
+>>>>          # save the attached .config to linux build tree
+>>>>          GCC_VERSION=7.4.0 make.cross ARCH=sh
+>>>>
+>>>> If you fix the issue, kindly add following tag
+>>>> Reported-by: kbuild test robot <lkp@intel.com>
+>>>>
+>>>> All warnings (new ones prefixed by >>):
+>>>>
+>>>>     drivers/net/wireless/marvell/libertas/cfg.c: In function 'lbs_ibss_join_existing':
+>>>>>> drivers/net/wireless/marvell/libertas/cfg.c:1788:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+>>> I was wondering why I didn't see this mail in patchwork:
+>>>
+>>> https://patchwork.kernel.org/patch/11257187/
+>>>
+>>> And then I noticed this:
+>>>
+>>> X-Patchwork-Hint: ignore
+>>>
+>>> kbuild team, why are you adding that header? It's really bad for a
+>> thanks for the feedback, early on we received another feedback to suggest
+>> for adding this, refer to https://gitlab.freedesktop.org/patchwork-fdo/patchwork-fdo/issues/21
+>> for detail. Since there's no further input regarding this usage, we keep
+>> that flag. If this is not suitable, we can investigate other way to fullfill
+>> both requirements.
+>>
+> I second Kalle's comment; this is really bad.
+>
+> Note that the above referenced link suggested to add
+> 	X-Patchwork-Hint: comment
+> to e-mail headers. Instead, you added:
+> 	X-Patchwork-Hint: ignore
+> which is substantially different. Also, the problem was with a _patch_
+> sent by the robot, not with direct feedback. On top of that, the
+> suggestion was really to add "X-Patchwork-Hint: comment" to _patches_
+> sent by the robot, not to everything. It should be fine to add
+> "X-Patchwork-Hint: ignore" to patches only as long as other feedback
+> is still provided and added to patchwork. That should meet all
+> requirements.
+>
+> Thanks,
+> Guenter
 
-Regards,
-Brian
+Hi Kalle, Guenter
 
-On Thu, May 02, 2019 at 03:56:33PM +0800, Nicolas Boichat wrote:
-> On Thu, Apr 18, 2019 at 3:50 PM Pi-Hsun Shih <pihsun@chromium.org> wrote:
-> >
-> > Use offsetof to calculate offset of a field to take advantage of
-> > compiler built-in version when possible, and avoid UBSAN warning when
-> > compiling with Clang:
-> >
-> > ==================================================================
-> > UBSAN: Undefined behaviour in net/wireless/wext-core.c:525:14
-> > member access within null pointer of type 'struct iw_point'
-> > CPU: 3 PID: 165 Comm: kworker/u16:3 Tainted: G S      W         4.19.23 #43
-> > Workqueue: cfg80211 __cfg80211_scan_done [cfg80211]
-> > Call trace:
-> >  dump_backtrace+0x0/0x194
-> >  show_stack+0x20/0x2c
-> >  __dump_stack+0x20/0x28
-> >  dump_stack+0x70/0x94
-> >  ubsan_epilogue+0x14/0x44
-> >  ubsan_type_mismatch_common+0xf4/0xfc
-> >  __ubsan_handle_type_mismatch_v1+0x34/0x54
-> >  wireless_send_event+0x3cc/0x470
-> >  ___cfg80211_scan_done+0x13c/0x220 [cfg80211]
-> >  __cfg80211_scan_done+0x28/0x34 [cfg80211]
-> >  process_one_work+0x170/0x35c
-> >  worker_thread+0x254/0x380
-> >  kthread+0x13c/0x158
-> >  ret_from_fork+0x10/0x18
-> > ===================================================================
-> >
-> > Signed-off-by: Pi-Hsun Shih <pihsun@chromium.org>
-> 
-> The warning from clang is spurious, but in another case, we felt that
-> the cleanup was worth it, nevertheless
-> (https://lore.kernel.org/patchwork/patch/1050040/).
-> 
-> Reviewed-By: Nicolas Boichat <drinkcat@chromium.org>
-> 
-> > ---
-> >  include/uapi/linux/wireless.h | 3 +--
-> >  1 file changed, 1 insertion(+), 2 deletions(-)
-> >
-> > diff --git a/include/uapi/linux/wireless.h b/include/uapi/linux/wireless.h
-> > index 86eca3208b6b..f259cca5cc2b 100644
-> > --- a/include/uapi/linux/wireless.h
-> > +++ b/include/uapi/linux/wireless.h
-> > @@ -1090,8 +1090,7 @@ struct iw_event {
-> >  /* iw_point events are special. First, the payload (extra data) come at
-> >   * the end of the event, so they are bigger than IW_EV_POINT_LEN. Second,
-> >   * we omit the pointer, so start at an offset. */
-> > -#define IW_EV_POINT_OFF (((char *) &(((struct iw_point *) NULL)->length)) - \
-> > -                         (char *) NULL)
-> > +#define IW_EV_POINT_OFF offsetof(struct iw_point, length)
-> >  #define IW_EV_POINT_LEN        (IW_EV_LCP_LEN + sizeof(struct iw_point) - \
-> >                          IW_EV_POINT_OFF)
-> >
-> > --
-> > 2.21.0.392.gf8f6787159e-goog
-> >
+Thanks so much for your help, we have removed the hint header in build 
+report mails and
+still keep it in patch mails.
+
+Best Regards,
+Rong Chen
+
+>
+>>> maintainer like me who uses patchwork actively, it means that all these
+>>> important warnings are not visible in patchwork and can be easily missed
+>>> by the maintainers.
+>>>
+>>> -- 
+>>> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+>>> _______________________________________________
+>>> kbuild-all mailing list -- kbuild-all@lists.01.org
+>>> To unsubscribe send an email to kbuild-all-leave@lists.01.org
+> _______________________________________________
+> kbuild-all mailing list -- kbuild-all@lists.01.org
+> To unsubscribe send an email to kbuild-all-leave@lists.01.org
+
