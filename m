@@ -2,127 +2,217 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B09C310D3B2
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 Nov 2019 11:10:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E57DB10D3B4
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Nov 2019 11:12:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726608AbfK2KKT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 29 Nov 2019 05:10:19 -0500
-Received: from esa15.fujitsucc.c3s2.iphmx.com ([68.232.156.107]:53008 "EHLO
-        esa15.fujitsucc.c3s2.iphmx.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725892AbfK2KKT (ORCPT
+        id S1726741AbfK2KMd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 29 Nov 2019 05:12:33 -0500
+Received: from mail-pl1-f195.google.com ([209.85.214.195]:34664 "EHLO
+        mail-pl1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726608AbfK2KMd (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 29 Nov 2019 05:10:19 -0500
-X-Greylist: delayed 429 seconds by postgrey-1.27 at vger.kernel.org; Fri, 29 Nov 2019 05:10:18 EST
-IronPort-SDR: aeQQZLPlQJY4jiM4Q1CO58lwrQLK6G4AE/siLHUxzY0MlzG4hBQAGFlM+YxO8N8Bhz1E2181ZJ
- 3nPHvlKGvMWddBWedkwzF1IvoEelyB+yRfV5DsUMex+Vr00Fxe35+yoUewiftUdpgoS42gWeDD
- waQI5GhvD4RgGrv166Lj2VDgCXog7TfPrfvg5jIQplWPsDrvypet9VUC3+w5yNqWmKsoZnh4H2
- 1P9B9GH2r/Z1YVyIIdNG3b7BI0lm0gkbdgZZQX8DTaJMOaOsU6lSieel4vGFH2FljBJuIJv/B1
- AiM=
-X-IronPort-AV: E=McAfee;i="6000,8403,9455"; a="8064808"
-X-IronPort-AV: E=Sophos;i="5.69,257,1571670000"; 
-   d="scan'208";a="8064808"
-Received: from mail-ty1jpn01lp2059.outbound.protection.outlook.com (HELO JPN01-TY1-obe.outbound.protection.outlook.com) ([104.47.93.59])
-  by ob1.fujitsucc.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Nov 2019 19:03:07 +0900
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=L7s1+KxLGZV6tGgSIIWw+2nYBac8np2Q7ihwIINAPOaQcL2i4TnErYpmdb4L8yl4X+T8Cnxd6G9Jm6QHNXtDBXHZ+HApCrLHGxGI9lsrhS9YgwnE1IbXY147zlGzNSaZLx7+0hQOn1WF01SFWCoyfkRWaUxTzf9SiuwwLVijvlUnhIRmQn6fHK3Ugaq9AkqBP0WuC1MVby/Tqjoo2fZ41ZRnlvtW0Xb/NMgH0kbbYV0JEZtF0LCTxsndNLzXnlIN5aiaa/pr3fgnB6j9Z+7vxpc1YmGs0Z4qZHvW1cyULBPnId4xme/slJOS4hwLQO4tl/1g5nEO2lno9xrqaxc6TQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=KWgXRrfEEN9JQCzKreNWzDwrQm/R0dFS8BYOjsLKNuY=;
- b=DfX6RROjhqPW0iH+YQY1ltF9wlUA2lwdDZgEUxHTEcdOhYweb/2strMTBmqzfjOH15qP/8YGaFJyJDHnKA54vQVSTu9lLMp0DScLOrpRwZx/dibYutzulFy5NG9DCDjyHqcBcLryyLl0vWoZn017rGquASli/AJiLxAuhDovxRcDbxVcLf/UoswVMsGydTIQoTbBGCKdFxqXPB469ieIKvTI06l5PKBLKcnqik0TQE/o0NiZwZNyAK2q9wob5pIiCpjvCm5FbbiLbUtM+PmK/AMi5ZtqcosrTeub0iJaiR11c73trl3orTMe+jo8XPUmtrCssU1/f/WYhyssdTSA7Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=fujitsu.com; dmarc=pass action=none header.from=fujitsu.com;
- dkim=pass header.d=fujitsu.com; arc=none
+        Fri, 29 Nov 2019 05:12:33 -0500
+Received: by mail-pl1-f195.google.com with SMTP id h13so12735754plr.1
+        for <linux-wireless@vger.kernel.org>; Fri, 29 Nov 2019 02:12:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=fujitsu.onmicrosoft.com; s=selector2-fujitsu-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=KWgXRrfEEN9JQCzKreNWzDwrQm/R0dFS8BYOjsLKNuY=;
- b=ltaJzrMnTM403x4oWf5iU6Mo31driDVcRifB5YTX92RmHBFRwpcgIeXoUYTjPKY+suv+IH6DdARpROv+z0em8djwTvI6M5bg6oLdFF8RJUs23cCBpvnRPwSgC0dkxYZHLHTSWwssVsUFrmvx9mVtHPXSHqp7MQCl/TT2H0gzGSU=
-Received: from OSBPR01MB2168.jpnprd01.prod.outlook.com (52.134.242.11) by
- OSBPR01MB1606.jpnprd01.prod.outlook.com (52.134.227.140) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2474.21; Fri, 29 Nov 2019 10:03:05 +0000
-Received: from OSBPR01MB2168.jpnprd01.prod.outlook.com
- ([fe80::5410:46d5:c655:2775]) by OSBPR01MB2168.jpnprd01.prod.outlook.com
- ([fe80::5410:46d5:c655:2775%3]) with mapi id 15.20.2495.014; Fri, 29 Nov 2019
- 10:03:05 +0000
-From:   "ambai.masaki@fujitsu.com" <ambai.masaki@fujitsu.com>
-To:     "'linux-wireless@vger.kernel.org'" <linux-wireless@vger.kernel.org>
-CC:     "'brcm80211-dev-list.pdl@broadcom.com'" 
-        <brcm80211-dev-list.pdl@broadcom.com>,
-        "'brcm80211-dev-list@cypress.com'" <brcm80211-dev-list@cypress.com>
-Subject: What is the license for linux/lib/math/cordic.c?
-Thread-Topic: What is the license for linux/lib/math/cordic.c?
-Thread-Index: AdWmm5RtoddtbjEIQ/yLayvM+Qn80Q==
-Date:   Fri, 29 Nov 2019 10:03:05 +0000
-Message-ID: <OSBPR01MB21689E8028F2AFDBBA89076C83460@OSBPR01MB2168.jpnprd01.prod.outlook.com>
-Accept-Language: ja-JP, en-US
-Content-Language: ja-JP
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-shieldmailcheckerpolicyversion: FJ-ISEC-20140924-1
-x-shieldmailcheckermailid: 91eeb8209c6040bc9a85221f8aa1faf1
-x-securitypolicycheck: OK by SHieldMailChecker v2.3.2
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=ambai.masaki@fujitsu.com; 
-x-originating-ip: [114.160.9.180]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: b8d79a6d-aaa1-4dbb-972a-08d774b353fd
-x-ms-traffictypediagnostic: OSBPR01MB1606:
-x-microsoft-antispam-prvs: <OSBPR01MB160660829D3AFA859339CBEF83460@OSBPR01MB1606.jpnprd01.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:7219;
-x-forefront-prvs: 0236114672
-x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(4636009)(136003)(366004)(376002)(396003)(39860400002)(346002)(189003)(199004)(81166006)(66476007)(66446008)(256004)(478600001)(66066001)(76116006)(6916009)(85182001)(26005)(64756008)(71190400001)(14444005)(6506007)(66946007)(52536014)(8676002)(5660300002)(66556008)(81156014)(14454004)(3846002)(186003)(54906003)(316002)(6116002)(2906002)(74316002)(7696005)(7736002)(71200400001)(25786009)(4326008)(99286004)(102836004)(305945005)(6436002)(86362001)(8936002)(55016002)(9686003)(33656002)(777600001)(491001);DIR:OUT;SFP:1101;SCL:1;SRVR:OSBPR01MB1606;H:OSBPR01MB2168.jpnprd01.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: V9htUoKIBmZuXRz0C9sTV/FBlAlXUKMdqtkwDtzhpIDQDFi9Z72KhUKlwRuui7a2wfbOrzMUePVhsiA1c6irD1R9ts8EoenKVHb7O5ZpoYWVn5sPh3IzP04HWija3R+U2aqPVRQ8xruBHRcDZbzKbZybZi2D/Cjl1I5OgCHMfD7105U/x4StPXQ9lInUHd8i8maQQuKmm5pNyNFU18lIlFvAtOjAXyAY96/r95MZffH7llGbyPUQyPlUuDnyVx6nWensHxsGZ4AHpUVPrJYol89dzTOhnFMEpd9h8Hxgqy141KQCFr7UJayM2MQ4dL/UMsszaVQMQOHu84J9oX6qX8RimfiKMzi9Pxdrb3BpEydEmP9crnK2B83rJlxrHG7T1UjU4x+Ge1kric+fMlj4hrPDnRgaIsX8PS8PRl0AnkkNQTgR2Uiiv01NUTseWg9y
-x-ms-exchange-transport-forked: True
-Content-Type: text/plain; charset="iso-2022-jp"
-Content-Transfer-Encoding: quoted-printable
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=iIXAN0l14uxJr46wvhgDbAs2sD7O8ChcW98emte0Oe4=;
+        b=PEc7h88WdwkDeNwezNf3b1IFemZrj055k1nWUlmJhU3L5HPbizCcWoAOA585vnXYuv
+         J6tyYgqW7hclZT91V7mea9WijzR3/rDhLDx8sH4SosvW0dAietG63UkvByySB/+smE8R
+         g/UQBlbXvvS3KHjLjGIvCVUE9bupbmDLSYdBbpuenurd/NtAZo9wqox8rJk840HYySyD
+         0c9mjYtDzd4Qt+IiWXmhoemhCQPHA4OSK/ww/GKtRc4RCaZ9w2qZTmGknX9Z8b9q0PW3
+         JLXW32GR2Iehw9/aycVahZSc65OUpeGHRXyMscjpHYdCW8MGsAZ6mxIxwV91sCueE2YD
+         WiBg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=iIXAN0l14uxJr46wvhgDbAs2sD7O8ChcW98emte0Oe4=;
+        b=SQj+5pw2obP4tSrkusotBoQxcNw4awqZX134WJE6SPmND8NWzS79VgV5vIJe2yelh9
+         0o/eHQFyW53h3ACkbq180ekBUWJjks6Y/EsDSGZZmHIU2i4NWhQrfFp6HxNOoyxUvJcv
+         WdnTCTazff5Y60Bv0JD3o0TptKwdn6Vc0QhJgh+jDmPLTP2eO+BTGKPVh/Vz6Y2DxZt/
+         Q8CFromdpn72pfUoNQAJtCrrVkmVIb5KqQBovGKCiqska3NjmO5K8nNV7ZccEZXlytjH
+         gkXfO2TE08q19211cIOnP5kjRvX1EMieZeGiY0fke+rfGH2rgziJnzzSAn4lQ+erGf3u
+         Vulw==
+X-Gm-Message-State: APjAAAU4jIQYbBvwOQiyHMoO2jLWXB4/QMleOA9+B0TMMn5Grz+sKR0A
+        +358cASkJlk+3oNq7WcrmnfdBhchTkWD8MSz
+X-Google-Smtp-Source: APXvYqy/B4W1d9+t/azCYv0AvIuuh2e/6923jqmYM4Dv+sZwfXtOolaivVoHIP21N+RBY3c1KQBvjg==
+X-Received: by 2002:a17:90a:b109:: with SMTP id z9mr17374886pjq.108.1575022352267;
+        Fri, 29 Nov 2019 02:12:32 -0800 (PST)
+Received: from localhost.localdomain ([240e:82:f0a8:7d5b:124:6e01:5bc1:e947])
+        by smtp.gmail.com with ESMTPSA id u7sm23062775pfh.84.2019.11.29.02.12.18
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Fri, 29 Nov 2019 02:12:31 -0800 (PST)
+From:   qize wang <wangqize888888888@gmail.com>
+To:     linux-wireless@vger.kernel.org
+Cc:     amitkarwar@gmail.com, nishants@marvell.com, gbhat@marvell.com,
+        huxinming820@gmail.com, kvalo@codeaurora.org, greg@kroah.com,
+        dan.carpenter@oracle.com, solar@openwall.com,
+        wangqize888888888@gmail.com
+Subject: [PATCH v3] mwifiex: Fix heap overflow in mmwifiex_process_tdls_action_frame()
+Date:   Fri, 29 Nov 2019 18:10:54 +0800
+Message-Id: <20191129101054.2756-1-wangqize888888888@gmail.com>
+X-Mailer: git-send-email 2.14.3 (Apple Git-98)
 MIME-Version: 1.0
-X-OriginatorOrg: fujitsu.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b8d79a6d-aaa1-4dbb-972a-08d774b353fd
-X-MS-Exchange-CrossTenant-originalarrivaltime: 29 Nov 2019 10:03:05.2301
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: a19f121d-81e1-4858-a9d8-736e267fd4c7
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: PZYHNzdVu+tVPq94NHCR8Wnz9NAwda5MNEoaUGsgX52x3opVLDC3WwQ84XflFEIYoSdc1SYAZYCoRlMfXrT/fO7ANSK0IbW14lEqgv2f5C8=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: OSBPR01MB1606
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+mwifiex_process_tdls_action_frame() without checking
+the incoming tdls infomation element's vality before use it,
+this may cause multi heap buffer overflows.
 
-What is the license for linux/lib/math/cordic.c?
+Fix them by putting vality check before use it.
 
->  * Copyright (c) 2011 Broadcom Corporation
->  *
->  * Permission to use, copy, modify, and/or distribute this software for a=
-ny
->  * purpose with or without fee is hereby granted, provided that the above
->  * copyright notice and this permission notice appear in all copies.
->  *
->  * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTI=
-ES
->  * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
->  * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FO=
-R ANY
->  * SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
->  * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN =
-ACTION
->  * OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
->  * CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
-I think this license is an ISC license.
+IE is TLV struct, but ht_cap and  ht_oper aren’t TLV struct.
+the origin marvell driver code is wrong:
 
-> MODULE_LICENSE("Dual BSD/GPL");
-However, MODULE _ LICENSE declares a different license.
-I don't know which license is correct.
-What licenses are declared in this file?
+memcpy(&sta_ptr->tdls_cap.ht_oper, pos,....
+memcpy((u8 *)&sta_ptr->tdls_cap.ht_capb, pos,...
 
-Regards,
-Ambai
+Fix the bug by changing pos(the address of IE) to
+pos+2 ( the address of IE value ).
 
+v3: change commit log
+
+Signed-off-by: qize wang <wangqize888888888@gmail.com>
+---
+ drivers/net/wireless/marvell/mwifiex/tdls.c | 70 ++++++++++++++++++++++++++---
+ 1 file changed, 64 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/net/wireless/marvell/mwifiex/tdls.c b/drivers/net/wireless/marvell/mwifiex/tdls.c
+index 09313047beed..7caf1d26124a 100644
+--- a/drivers/net/wireless/marvell/mwifiex/tdls.c
++++ b/drivers/net/wireless/marvell/mwifiex/tdls.c
+@@ -953,59 +953,117 @@ void mwifiex_process_tdls_action_frame(struct mwifiex_private *priv,
+ 
+ 		switch (*pos) {
+ 		case WLAN_EID_SUPP_RATES:
++			if (pos[1] > 32)
++				return;
+ 			sta_ptr->tdls_cap.rates_len = pos[1];
+ 			for (i = 0; i < pos[1]; i++)
+ 				sta_ptr->tdls_cap.rates[i] = pos[i + 2];
+ 			break;
+ 
+ 		case WLAN_EID_EXT_SUPP_RATES:
++			if (pos[1] > 32)
++				return;
+ 			basic = sta_ptr->tdls_cap.rates_len;
++			if (pos[1] > 32 - basic)
++				return;
+ 			for (i = 0; i < pos[1]; i++)
+ 				sta_ptr->tdls_cap.rates[basic + i] = pos[i + 2];
+ 			sta_ptr->tdls_cap.rates_len += pos[1];
+ 			break;
+ 		case WLAN_EID_HT_CAPABILITY:
+-			memcpy((u8 *)&sta_ptr->tdls_cap.ht_capb, pos,
++			if (pos > end - sizeof(struct ieee80211_ht_cap) - 2)
++				return;
++			if (pos[1] != sizeof(struct ieee80211_ht_cap))
++				return;
++			/* copy the ie's value into ht_capb*/
++			memcpy((u8 *)&sta_ptr->tdls_cap.ht_capb, pos + 2,
+ 			       sizeof(struct ieee80211_ht_cap));
+ 			sta_ptr->is_11n_enabled = 1;
+ 			break;
+ 		case WLAN_EID_HT_OPERATION:
+-			memcpy(&sta_ptr->tdls_cap.ht_oper, pos,
++			if (pos > end -
++			    sizeof(struct ieee80211_ht_operation) - 2)
++				return;
++			if (pos[1] != sizeof(struct ieee80211_ht_operation))
++				return;
++			/* copy the ie's value into ht_oper*/
++			memcpy(&sta_ptr->tdls_cap.ht_oper, pos + 2,
+ 			       sizeof(struct ieee80211_ht_operation));
+ 			break;
+ 		case WLAN_EID_BSS_COEX_2040:
++			if (pos > end - 3)
++				return;
++			if (pos[1] != 1)
++				return;
+ 			sta_ptr->tdls_cap.coex_2040 = pos[2];
+ 			break;
+ 		case WLAN_EID_EXT_CAPABILITY:
++			if (pos > end - sizeof(struct ieee_types_header))
++				return;
++			if (pos[1] < sizeof(struct ieee_types_header))
++				return;
++			if (pos[1] > 8)
++				return;
+ 			memcpy((u8 *)&sta_ptr->tdls_cap.extcap, pos,
+ 			       sizeof(struct ieee_types_header) +
+ 			       min_t(u8, pos[1], 8));
+ 			break;
+ 		case WLAN_EID_RSN:
++			if (pos > end - sizeof(struct ieee_types_header))
++				return;
++			if (pos[1] < sizeof(struct ieee_types_header))
++				return;
++			if (pos[1] > IEEE_MAX_IE_SIZE -
++			    sizeof(struct ieee_types_header))
++				return;
+ 			memcpy((u8 *)&sta_ptr->tdls_cap.rsn_ie, pos,
+ 			       sizeof(struct ieee_types_header) +
+ 			       min_t(u8, pos[1], IEEE_MAX_IE_SIZE -
+ 				     sizeof(struct ieee_types_header)));
+ 			break;
+ 		case WLAN_EID_QOS_CAPA:
++			if (pos > end - 3)
++				return;
++			if (pos[1] != 1)
++				return;
+ 			sta_ptr->tdls_cap.qos_info = pos[2];
+ 			break;
+ 		case WLAN_EID_VHT_OPERATION:
+-			if (priv->adapter->is_hw_11ac_capable)
+-				memcpy(&sta_ptr->tdls_cap.vhtoper, pos,
++			if (priv->adapter->is_hw_11ac_capable) {
++				if (pos > end -
++				    sizeof(struct ieee80211_vht_operation) - 2)
++					return;
++				if (pos[1] !=
++				    sizeof(struct ieee80211_vht_operation))
++					return;
++				/* copy the ie's value into vhtoper*/
++				memcpy(&sta_ptr->tdls_cap.vhtoper, pos + 2,
+ 				       sizeof(struct ieee80211_vht_operation));
++			}
+ 			break;
+ 		case WLAN_EID_VHT_CAPABILITY:
+ 			if (priv->adapter->is_hw_11ac_capable) {
+-				memcpy((u8 *)&sta_ptr->tdls_cap.vhtcap, pos,
++				if (pos > end -
++				    sizeof(struct ieee80211_vht_cap) - 2)
++					return;
++				if (pos[1] != sizeof(struct ieee80211_vht_cap))
++					return;
++				/* copy the ie's value into vhtcap*/
++				memcpy((u8 *)&sta_ptr->tdls_cap.vhtcap, pos + 2,
+ 				       sizeof(struct ieee80211_vht_cap));
+ 				sta_ptr->is_11ac_enabled = 1;
+ 			}
+ 			break;
+ 		case WLAN_EID_AID:
+-			if (priv->adapter->is_hw_11ac_capable)
++			if (priv->adapter->is_hw_11ac_capable) {
++				if (pos > end - 4)
++					return;
++				if (pos[1] != 2)
++					return;
+ 				sta_ptr->tdls_cap.aid =
+ 					get_unaligned_le16((pos + 2));
++			}
++			break;
+ 		default:
+ 			break;
+ 		}
+-- 
+2.14.3 (Apple Git-98)
 
