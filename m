@@ -2,95 +2,80 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BF13E10D0B8
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 Nov 2019 05:05:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A171310D0D9
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Nov 2019 06:21:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726876AbfK2EFZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 28 Nov 2019 23:05:25 -0500
-Received: from mail-ed1-f65.google.com ([209.85.208.65]:37233 "EHLO
-        mail-ed1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726788AbfK2EFY (ORCPT
+        id S1726780AbfK2FVF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 29 Nov 2019 00:21:05 -0500
+Received: from a27-18.smtp-out.us-west-2.amazonses.com ([54.240.27.18]:38170
+        "EHLO a27-18.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725812AbfK2FVF (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 28 Nov 2019 23:05:24 -0500
-Received: by mail-ed1-f65.google.com with SMTP id cy15so17018237edb.4
-        for <linux-wireless@vger.kernel.org>; Thu, 28 Nov 2019 20:05:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=kSUVC3ggQB4xLQjsKBDHLkM4F4fy4M5PEtTRPWySnj4=;
-        b=Z8aADKxYdIrSSCBHE0WebFG2Y8sksQBDe+gJGDwWDNLDZLLWgUw0NbN/otBEPsWrCB
-         ksbD/tyyRmIBAgkLWB/wwjaPhT4CJ4PJdimwooAy6EAGK6ZSqrHsQRBG1+zHdrTLXX0l
-         Zo9jhdd2/cn0njSg1cj82rO5mz0+0Ujp8BCCM=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=kSUVC3ggQB4xLQjsKBDHLkM4F4fy4M5PEtTRPWySnj4=;
-        b=AJUVEqMNWQ1/m+0+GYEYSaRLzypYj0Gd7iTs7UMEwBvECK7wXy3MfEj7PbAvA5w6B8
-         /M/l3VTHOd8QX22cnhDDh4tpPuLDdD9oFn2pA7gPRCH82KbrcyzPJlFC1NRqfwkAOwXS
-         TmswHBdbhFVB75p8ekVvXh2cxPNTV/Ewz7VaUWuDmHqShT9kUfQuPuasbCiPladjhckN
-         D09KZUz3jk82HnyoyLIvBM6jJJkum1V/tDupxeTzJIlfdq1nJDty2C3r738ajb7pE5KE
-         UGu+s2UJvH1zsGdtNGoUr4nPkXUOzU3OAO0RYCbOb/5J0B61djvmUIgCM4rsn51qAoz8
-         QgDw==
-X-Gm-Message-State: APjAAAV1gi0ZmZ+IFGal5DJdTXnAzdkbS3uNiGfyZHmcFuPykdDdVZgH
-        +LGNxGlAfX8NYCY5gh5+ESca6qaS5awI+8GJMRgh4w==
-X-Google-Smtp-Source: APXvYqzJA0oarVNbcMx254Rxgm0ocDOJdIJTZOA0fppCRnNb/55GHaFez2T3pW6EU1cmssT3oMFxhwU7MDDuZHKDUmY=
-X-Received: by 2002:a17:906:57c3:: with SMTP id u3mr59264192ejr.254.1575000323169;
- Thu, 28 Nov 2019 20:05:23 -0800 (PST)
+        Fri, 29 Nov 2019 00:21:05 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1575004864;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:MIME-Version:Content-Type;
+        bh=2viHmJdfYcfYFMYSdfmf/HZfkSnX4p3XqkM1nDVHMIs=;
+        b=bF7KuFGfb5BzbGKtLu4jk02KNfHbJOBjLm92r8WMn8L/OVBfV4go/EYXCxkL/+Pt
+        gLqnERQrMaPsVvOlpvISNSkt+LT1IesGacVfc/woTh2eG2Z7WCLmTnwI5XXokGgHaYb
+        dNJG1Y3kP5EPSs+P0RPCRuj2elrow9YYVLeAa/4c=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+        s=gdwg2y3kokkkj5a55z2ilkup5wp5hhxx; d=amazonses.com; t=1575004864;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:MIME-Version:Content-Type:Feedback-ID;
+        bh=2viHmJdfYcfYFMYSdfmf/HZfkSnX4p3XqkM1nDVHMIs=;
+        b=Xac8idBw/csYpYJACT2A2hlYfm0pWXivZPOGSJjp8c2w/zZfbsFlaAD207pMSVV3
+        661u/cGMW7jedRF115OMCBZv1Hx4AlweyNyrhIKF/iqLjuV8wCHBiw+yiWX6EbWA+OD
+        UfBjJWhY1lj+WCORgHYbm/6GxTkGnVRBRchiz3Lc=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.0
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org E615FC43383
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     qize wang <wangqize888888888@gmail.com>
+Cc:     linux-wireless@vger.kernel.org
+Subject: Re: [PATCH] mwifiex: Fix heap overflow in mmwifiex_process_tdls_action_frame()
+References: <E40E893E-D9B4-4C63-8139-1DD5E1C2CECB@gmail.com>
+        <0101016eb10adf1b-06d87453-6fe9-414b-9114-23b8e50c5c3e-000000@us-west-2.amazonses.com>
+        <CAGftXBH+s3HaWzoX8hsBdukv0NJsXZc7XZCT=mH5ejeiV9gFrQ@mail.gmail.com>
+Date:   Fri, 29 Nov 2019 05:21:04 +0000
+In-Reply-To: <CAGftXBH+s3HaWzoX8hsBdukv0NJsXZc7XZCT=mH5ejeiV9gFrQ@mail.gmail.com>
+        (qize wang's message of "Fri, 29 Nov 2019 07:49:13 +0800")
+Message-ID: <0101016eb59afe7f-a99d9b1d-03b0-4d02-95a4-e9d0af74d4e6-000000@us-west-2.amazonses.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-References: <20191128033959.87715-1-pihsun@chromium.org> <d02f4eef9aa674cb36c1d90069a13e7bd02b7e40.camel@perches.com>
-In-Reply-To: <d02f4eef9aa674cb36c1d90069a13e7bd02b7e40.camel@perches.com>
-From:   Pi-Hsun Shih <pihsun@chromium.org>
-Date:   Fri, 29 Nov 2019 12:04:47 +0800
-Message-ID: <CANdKZ0eYSdPC2y5QxN1B7FshewXumrETQohbXrnvbovXMkSe9Q@mail.gmail.com>
-Subject: Re: [PATCH RESEND] wireless: Use offsetof instead of custom macro.
-To:     Joe Perches <joe@perches.com>
-Cc:     linux-wireless@vger.kernel.org,
-        Johannes Berg <johannes@sipsolutions.net>,
-        open list <linux-kernel@vger.kernel.org>,
-        "open list:CLANG/LLVM BUILD SUPPORT" 
-        <clang-built-linux@googlegroups.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
+X-SES-Outgoing: 2019.11.29-54.240.27.18
+Feedback-ID: 1.us-west-2.CZuq2qbDmUIuT3qdvXlRHZZCpfZqZ4GtG9v3VKgRyF0=:AmazonSES
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Nov 28, 2019 at 11:54 AM Joe Perches <joe@perches.com> wrote:
->
-> On Thu, 2019-11-28 at 11:39 +0800, Pi-Hsun Shih wrote:
-> > Use offsetof to calculate offset of a field to take advantage of
-> > compiler built-in version when possible, and avoid UBSAN warning when
-> > compiling with Clang:
-> []
-> > diff --git a/include/uapi/linux/wireless.h b/include/uapi/linux/wireless.h
-> []
-> > @@ -1090,8 +1090,7 @@ struct iw_event {
-> >  /* iw_point events are special. First, the payload (extra data) come at
-> >   * the end of the event, so they are bigger than IW_EV_POINT_LEN. Second,
-> >   * we omit the pointer, so start at an offset. */
-> > -#define IW_EV_POINT_OFF (((char *) &(((struct iw_point *) NULL)->length)) - \
-> > -                       (char *) NULL)
-> > +#define IW_EV_POINT_OFF offsetof(struct iw_point, length)
-> >  #define IW_EV_POINT_LEN      (IW_EV_LCP_LEN + sizeof(struct iw_point) - \
-> >                        IW_EV_POINT_OFF)
->
-> This is uapi.  Is offsetof guaranteed to be available?
+(adding back linux-wireless)
 
-offsetof is already used in other uapi headers
-(include/uapi/linux/fuse.h FUSE_NAME_OFFSET).
+Hi qize,
 
-Also offsetof is also defined back in C89 standard (in stddef.h), so
-it should be widely available and should be fine to use here?
-(Should I add a #ifndef __KERNEL__ #include <stddef.h> to the file?)
+qize wang <wangqize888888888@gmail.com> writes:
 
->
-> Perhaps this is better without using another macro
->
-> #define IW_EV_POINT_OFF ((size_t)&((struct iw_point *)NULL)->length)
+> sorry, I am a new guy.
 
-Clang UBSAN would still complain about this, since it's the same
-pattern as the original one.
+Welcome to the Linux community!
 
->
+But most important thing first: please don't send email privately,
+instead post any questions you have to the list. Normally I don't reply
+to private email (I get way too much mail), but making an exception this
+time as you are new.
+
+> I have some question: Should I need to submit a new version patch to
+> linux-wireless( like [patch v2]....) or reply a comment in the old
+> patch path. (https://patchwork.kernel.org/patch/11257535/) ?
+
+Yes, please submit v2 and include a change log what you changed. More
+info in the link below.
+
+-- 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
