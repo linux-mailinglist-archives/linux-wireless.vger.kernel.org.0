@@ -2,116 +2,173 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4BBEE10D5B7
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 Nov 2019 13:32:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 26A0D10D5D3
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Nov 2019 13:47:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726804AbfK2Mcp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 29 Nov 2019 07:32:45 -0500
-Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:50283 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726791AbfK2Mcp (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 29 Nov 2019 07:32:45 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1575030764;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=DGVrxcKeZmdVG6IhI5+njp7E8j7/1R+N6N+9xWzbHzk=;
-        b=WH2wU37IhGpx2yWdNNIdYLnVSpNtvMvki0mp5VEc6U7qhEJ6v8T1vBaGt1arVbI3wyZAgq
-        VUPNjfkfiycKxle0R8iQ8f8g7AOhXBG15lQTx7UoLpLmnJHNe0BRqT4g0DkgacBuvI8DsW
-        EWipkkwlEPYnxsIdwTxZTq0gm2mWZnQ=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-250-Tdnfg5KaPVygrTRYlJAapw-1; Fri, 29 Nov 2019 07:32:41 -0500
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        id S1726785AbfK2Mry (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 29 Nov 2019 07:47:54 -0500
+Received: from mail.kernel.org ([198.145.29.99]:60156 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726360AbfK2Mrx (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 29 Nov 2019 07:47:53 -0500
+Received: from localhost.localdomain (unknown [77.139.212.74])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id EF3F1100551B;
-        Fri, 29 Nov 2019 12:32:39 +0000 (UTC)
-Received: from localhost (unknown [10.43.2.71])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 99549600C8;
-        Fri, 29 Nov 2019 12:32:39 +0000 (UTC)
-From:   Stanislaw Gruszka <sgruszka@redhat.com>
-To:     linux-wireless@vger.kernel.org
-Cc:     Felix Fietkau <nbd@nbd.name>,
+        by mail.kernel.org (Postfix) with ESMTPSA id D686B20869;
+        Fri, 29 Nov 2019 12:47:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1575031673;
+        bh=8mpzu7dSpAW3zgsLY5HpFRbSi5uXYsx8cRW9lxPm208=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=wMyMmqXpyIUeftc/wN04bBCgUHyTfX1d4gxz02XkYEqEKgmnXME13Wnkjpfk16qVh
+         kV8008Q4B7zZAwySZbzlmTNeVHl5BWS3LxfOjiJibL0awC3SZIu9nUVa4pPbZiDAzW
+         YfYnghIgLDhpZnOGTMKWgjlrhgWWyAlJPtm0vpRk=
+Date:   Fri, 29 Nov 2019 14:47:44 +0200
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     Stanislaw Gruszka <sgruszka@redhat.com>
+Cc:     linux-wireless@vger.kernel.org, Felix Fietkau <nbd@nbd.name>,
         Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
         Ryder Lee <ryder.lee@mediatek.com>,
         Roy Luo <royluo@google.com>,
         Markus Theil <markus.theil@tu-ilmenau.de>
-Subject: [PATCH 3/3] mt76: mt76x02: minor mt76x02_mac_set_beacon optimization
-Date:   Fri, 29 Nov 2019 13:32:28 +0100
-Message-Id: <1575030748-2218-4-git-send-email-sgruszka@redhat.com>
-In-Reply-To: <1575030748-2218-1-git-send-email-sgruszka@redhat.com>
+Subject: Re: [PATCH 1/3] mt76: usb: use max packet length for m76u_copy
+Message-ID: <20191129124744.GE32696@localhost.localdomain>
 References: <1575030748-2218-1-git-send-email-sgruszka@redhat.com>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
-X-MC-Unique: Tdnfg5KaPVygrTRYlJAapw-1
-X-Mimecast-Spam-Score: 0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+ <1575030748-2218-2-git-send-email-sgruszka@redhat.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="so9zsI5B81VjUb/o"
+Content-Disposition: inline
+In-Reply-To: <1575030748-2218-2-git-send-email-sgruszka@redhat.com>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-We do not call mt76x02_mac_set_beacon() with NULL skb any longer and
-we do not need to return error value.
 
-Signed-off-by: Stanislaw Gruszka <sgruszka@redhat.com>
----
- drivers/net/wireless/mediatek/mt76/mt76x02_beacon.c | 14 ++++----------
- drivers/net/wireless/mediatek/mt76/mt76x02_mac.h    |  2 +-
- 2 files changed, 5 insertions(+), 11 deletions(-)
+--so9zsI5B81VjUb/o
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_beacon.c b/drivers/=
-net/wireless/mediatek/mt76/mt76x02_beacon.c
-index 68a4f512319e..3cc5226b05c1 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x02_beacon.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x02_beacon.c
-@@ -67,21 +67,15 @@ void mt76x02_mac_set_beacon_finish(struct mt76x02_dev *=
-dev)
- }
- EXPORT_SYMBOL_GPL(mt76x02_mac_set_beacon_finish);
-=20
--int mt76x02_mac_set_beacon(struct mt76x02_dev *dev,
--=09=09=09   struct sk_buff *skb)
-+void mt76x02_mac_set_beacon(struct mt76x02_dev *dev,
-+=09=09=09    struct sk_buff *skb)
- {
- =09int bcn_len =3D dev->beacon_ops->slot_size;
- =09int bcn_addr =3D MT_BEACON_BASE + (bcn_len * dev->beacon_data_count);
--=09int ret =3D 0;
--
--=09if (skb) {
--=09=09ret =3D mt76x02_write_beacon(dev, bcn_addr, skb);
--=09=09if (!ret)
--=09=09=09dev->beacon_data_count++;
--=09}
-=20
-+=09if (!mt76x02_write_beacon(dev, bcn_addr, skb))
-+=09=09dev->beacon_data_count++;
- =09dev_kfree_skb(skb);
--=09return ret;
- }
- EXPORT_SYMBOL_GPL(mt76x02_mac_set_beacon);
-=20
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_mac.h b/drivers/net=
-/wireless/mediatek/mt76/mt76x02_mac.h
-index f67f66f65ee0..5d6411ee44ce 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x02_mac.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x02_mac.h
-@@ -201,7 +201,7 @@ void mt76x02_tx_complete_skb(struct mt76_dev *mdev, enu=
-m mt76_txq_id qid,
-=20
- void mt76x02_mac_cc_reset(struct mt76x02_dev *dev);
- void mt76x02_mac_set_bssid(struct mt76x02_dev *dev, u8 idx, const u8 *addr=
-);
--int mt76x02_mac_set_beacon(struct mt76x02_dev *dev, struct sk_buff *skb);
-+void mt76x02_mac_set_beacon(struct mt76x02_dev *dev, struct sk_buff *skb);
- void mt76x02_mac_set_beacon_enable(struct mt76x02_dev *dev,
- =09=09=09=09   struct ieee80211_vif *vif, bool enable);
- void mt76x02_mac_set_beacon_prepare(struct mt76x02_dev *dev);
---=20
-1.9.3
+> For transferring data over USB the optimal size is endpoint maxpacket.
+> For my hardware maxpaket for control endpoint is 64 bytes and changing
+> to this value from 128 bytes further shorten TBTT work time from
+> 3ms to 1ms.
+>=20
+> Signed-off-by: Stanislaw Gruszka <sgruszka@redhat.com>
+> ---
+>  drivers/net/wireless/mediatek/mt76/mt76.h |  7 +++----
+>  drivers/net/wireless/mediatek/mt76/usb.c  | 29 +++++++++++++++++++------=
+----
+>  2 files changed, 22 insertions(+), 14 deletions(-)
+>=20
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wire=
+less/mediatek/mt76/mt76.h
+> index 1981912de1f9..c268c3d76b3d 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt76.h
+> +++ b/drivers/net/wireless/mediatek/mt76/mt76.h
+> @@ -381,10 +381,9 @@ enum mt76u_out_ep {
+>  #define MCU_RESP_URB_SIZE	1024
+>  struct mt76_usb {
+>  	struct mutex usb_ctrl_mtx;
+> -	union {
+> -		u8 data[128];
+> -		__le32 reg_val;
+> -	};
+> +	__le32 reg_val;
+> +	u8 *data;
+> +	u16 data_len;
+> =20
+>  	struct tasklet_struct rx_tasklet;
+>  	struct workqueue_struct *stat_wq;
+> diff --git a/drivers/net/wireless/mediatek/mt76/usb.c b/drivers/net/wirel=
+ess/mediatek/mt76/usb.c
+> index 97b263ce3872..a9ff2bd62fc9 100644
+> --- a/drivers/net/wireless/mediatek/mt76/usb.c
+> +++ b/drivers/net/wireless/mediatek/mt76/usb.c
+> @@ -163,7 +163,7 @@ static void mt76u_copy(struct mt76_dev *dev, u32 offs=
+et,
+> =20
+>  	mutex_lock(&usb->usb_ctrl_mtx);
+>  	while (i < len) {
+> -		current_batch_size =3D min_t(int, sizeof(usb->data), len - i);
+> +		current_batch_size =3D min_t(int, usb->data_len, len - i);
+>  		memcpy(usb->data, val + i, current_batch_size);
+>  		ret =3D __mt76u_vendor_request(dev, MT_VEND_MULTI_WRITE,
+>  					     USB_DIR_OUT | USB_TYPE_VENDOR,
+> @@ -950,6 +950,15 @@ int mt76u_alloc_queues(struct mt76_dev *dev)
+>  	.kick =3D mt76u_tx_kick,
+>  };
+> =20
+> +void mt76u_deinit(struct mt76_dev *dev)
+> +{
+> +	if (dev->usb.stat_wq) {
+> +		destroy_workqueue(dev->usb.stat_wq);
+> +		dev->usb.stat_wq =3D NULL;
+> +	}
+> +}
+> +EXPORT_SYMBOL_GPL(mt76u_deinit);
+> +
+>  int mt76u_init(struct mt76_dev *dev,
+>  	       struct usb_interface *intf)
+>  {
+> @@ -974,6 +983,15 @@ int mt76u_init(struct mt76_dev *dev,
+>  	if (!usb->stat_wq)
+>  		return -ENOMEM;
+> =20
+> +	usb->data_len =3D usb_maxpacket(udev, usb_sndctrlpipe(udev, 0), 1);
+> +	if (usb->data_len < 32)
+> +		usb->data_len =3D 32;
 
+Hi Stanislaw,
+
+	usb->data_len =3D max_t(u16, 32,
+			      usb_maxpacket(udev, usb_sndctrlpipe(udev, 0), 1));
+
+Moreover are you sure using ctrl endpoint 0 is fine for all devices?
+
+Regards,
+Lorenzo
+
+> +	usb->data =3D devm_kmalloc(dev->dev, usb->data_len, GFP_KERNEL);
+> +	if (!usb->data) {
+> +		mt76u_deinit(dev);
+> +		return -ENOMEM;
+> +	}
+> +
+>  	mutex_init(&usb->mcu.mutex);
+> =20
+>  	mutex_init(&usb->usb_ctrl_mtx);
+> @@ -988,14 +1006,5 @@ int mt76u_init(struct mt76_dev *dev,
+>  }
+>  EXPORT_SYMBOL_GPL(mt76u_init);
+> =20
+> -void mt76u_deinit(struct mt76_dev *dev)
+> -{
+> -	if (dev->usb.stat_wq) {
+> -		destroy_workqueue(dev->usb.stat_wq);
+> -		dev->usb.stat_wq =3D NULL;
+> -	}
+> -}
+> -EXPORT_SYMBOL_GPL(mt76u_deinit);
+> -
+>  MODULE_AUTHOR("Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>");
+>  MODULE_LICENSE("Dual BSD/GPL");
+> --=20
+> 1.9.3
+>=20
+
+--so9zsI5B81VjUb/o
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCXeETbgAKCRA6cBh0uS2t
+rBBOAQDNnArWFYTSEu65q/Zotlox8Wshke+eMwDAvZX4jyUo0wEA33SXpGwe0pn4
+Nyw6f2d8XhhewZTatTDC2U//vPDEYQw=
+=VGtx
+-----END PGP SIGNATURE-----
+
+--so9zsI5B81VjUb/o--
