@@ -2,123 +2,127 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DA12C10D287
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 Nov 2019 09:39:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B09C310D3B2
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Nov 2019 11:10:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726215AbfK2Ijl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 29 Nov 2019 03:39:41 -0500
-Received: from a27-188.smtp-out.us-west-2.amazonses.com ([54.240.27.188]:51654
-        "EHLO a27-188.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725886AbfK2Ijl (ORCPT
+        id S1726608AbfK2KKT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 29 Nov 2019 05:10:19 -0500
+Received: from esa15.fujitsucc.c3s2.iphmx.com ([68.232.156.107]:53008 "EHLO
+        esa15.fujitsucc.c3s2.iphmx.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725892AbfK2KKT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 29 Nov 2019 03:39:41 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1575016779;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding;
-        bh=cv6Zlax4vjaRvpqj7jwmwpJGIlLjYfuDPon/s1UN/h0=;
-        b=boeli0ZDccbZxvc2454Tqs/i4/vHuLM6LCr2+YqRJIYxfz3jOCgBZRUYcMR7cVbL
-        BesWDdCj0feaBsyEA7CJ8ZVMHcS70ivUYbqDJjGJA3oW5NwZUePSR35P7Af1rFrf+6N
-        xCmgjvyfzE/muUCaumF+3azcDgWVZpWU2LbVwhn0=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=gdwg2y3kokkkj5a55z2ilkup5wp5hhxx; d=amazonses.com; t=1575016779;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Feedback-ID;
-        bh=cv6Zlax4vjaRvpqj7jwmwpJGIlLjYfuDPon/s1UN/h0=;
-        b=B3mOz5hTyYHTrps7Wr1y/eOQTh3IGfuSDVuQ7k95RAIdWSu5HB5nv9tuBBGmgbBp
-        eUhvR05uIl0lGovKe5+Q3Rek6rgJjfQu+STwqDEiethxamzpTt6oZVeLDuvWjxYq4Ds
-        TytPJ6mn0zujixHUA3DLmWAIH+QI3Z1plE0oKG+4=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.0
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 73215C43383
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Greg KH <gregkh@linuxfoundation.org>
-Cc:     qize wang <wangqize888888888@gmail.com>,
-        linux-wireless@vger.kernel.org, amitkarwar <amitkarwar@gmail.com>,
-        nishants <nishants@marvell.com>, gbhat <gbhat@marvell.com>,
-        huxinming820 <huxinming820@gmail.com>,
-        "dan.carpenter" <dan.carpenter@oracle.com>,
-        Solar Designer <solar@openwall.com>
-Subject: Re: [PATCH v2] mwifiex: Fix heap overflow in mmwifiex_process_tdls_action_frame()
-References: <CAGftXBHnkYt2KR=kqJfDhEqEuW52ckbepCmTnQQcDyDcVG0WZg@mail.gmail.com>
-        <20191129083425.GA3579842@kroah.com>
-Date:   Fri, 29 Nov 2019 08:39:39 +0000
-In-Reply-To: <20191129083425.GA3579842@kroah.com> (Greg KH's message of "Fri,
-        29 Nov 2019 09:34:25 +0100")
-Message-ID: <0101016eb650cf37-aba39f4f-c826-412c-8e73-974459f94711-000000@us-west-2.amazonses.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+        Fri, 29 Nov 2019 05:10:19 -0500
+X-Greylist: delayed 429 seconds by postgrey-1.27 at vger.kernel.org; Fri, 29 Nov 2019 05:10:18 EST
+IronPort-SDR: aeQQZLPlQJY4jiM4Q1CO58lwrQLK6G4AE/siLHUxzY0MlzG4hBQAGFlM+YxO8N8Bhz1E2181ZJ
+ 3nPHvlKGvMWddBWedkwzF1IvoEelyB+yRfV5DsUMex+Vr00Fxe35+yoUewiftUdpgoS42gWeDD
+ waQI5GhvD4RgGrv166Lj2VDgCXog7TfPrfvg5jIQplWPsDrvypet9VUC3+w5yNqWmKsoZnh4H2
+ 1P9B9GH2r/Z1YVyIIdNG3b7BI0lm0gkbdgZZQX8DTaJMOaOsU6lSieel4vGFH2FljBJuIJv/B1
+ AiM=
+X-IronPort-AV: E=McAfee;i="6000,8403,9455"; a="8064808"
+X-IronPort-AV: E=Sophos;i="5.69,257,1571670000"; 
+   d="scan'208";a="8064808"
+Received: from mail-ty1jpn01lp2059.outbound.protection.outlook.com (HELO JPN01-TY1-obe.outbound.protection.outlook.com) ([104.47.93.59])
+  by ob1.fujitsucc.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Nov 2019 19:03:07 +0900
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=L7s1+KxLGZV6tGgSIIWw+2nYBac8np2Q7ihwIINAPOaQcL2i4TnErYpmdb4L8yl4X+T8Cnxd6G9Jm6QHNXtDBXHZ+HApCrLHGxGI9lsrhS9YgwnE1IbXY147zlGzNSaZLx7+0hQOn1WF01SFWCoyfkRWaUxTzf9SiuwwLVijvlUnhIRmQn6fHK3Ugaq9AkqBP0WuC1MVby/Tqjoo2fZ41ZRnlvtW0Xb/NMgH0kbbYV0JEZtF0LCTxsndNLzXnlIN5aiaa/pr3fgnB6j9Z+7vxpc1YmGs0Z4qZHvW1cyULBPnId4xme/slJOS4hwLQO4tl/1g5nEO2lno9xrqaxc6TQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=KWgXRrfEEN9JQCzKreNWzDwrQm/R0dFS8BYOjsLKNuY=;
+ b=DfX6RROjhqPW0iH+YQY1ltF9wlUA2lwdDZgEUxHTEcdOhYweb/2strMTBmqzfjOH15qP/8YGaFJyJDHnKA54vQVSTu9lLMp0DScLOrpRwZx/dibYutzulFy5NG9DCDjyHqcBcLryyLl0vWoZn017rGquASli/AJiLxAuhDovxRcDbxVcLf/UoswVMsGydTIQoTbBGCKdFxqXPB469ieIKvTI06l5PKBLKcnqik0TQE/o0NiZwZNyAK2q9wob5pIiCpjvCm5FbbiLbUtM+PmK/AMi5ZtqcosrTeub0iJaiR11c73trl3orTMe+jo8XPUmtrCssU1/f/WYhyssdTSA7Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=fujitsu.com; dmarc=pass action=none header.from=fujitsu.com;
+ dkim=pass header.d=fujitsu.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=fujitsu.onmicrosoft.com; s=selector2-fujitsu-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=KWgXRrfEEN9JQCzKreNWzDwrQm/R0dFS8BYOjsLKNuY=;
+ b=ltaJzrMnTM403x4oWf5iU6Mo31driDVcRifB5YTX92RmHBFRwpcgIeXoUYTjPKY+suv+IH6DdARpROv+z0em8djwTvI6M5bg6oLdFF8RJUs23cCBpvnRPwSgC0dkxYZHLHTSWwssVsUFrmvx9mVtHPXSHqp7MQCl/TT2H0gzGSU=
+Received: from OSBPR01MB2168.jpnprd01.prod.outlook.com (52.134.242.11) by
+ OSBPR01MB1606.jpnprd01.prod.outlook.com (52.134.227.140) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2474.21; Fri, 29 Nov 2019 10:03:05 +0000
+Received: from OSBPR01MB2168.jpnprd01.prod.outlook.com
+ ([fe80::5410:46d5:c655:2775]) by OSBPR01MB2168.jpnprd01.prod.outlook.com
+ ([fe80::5410:46d5:c655:2775%3]) with mapi id 15.20.2495.014; Fri, 29 Nov 2019
+ 10:03:05 +0000
+From:   "ambai.masaki@fujitsu.com" <ambai.masaki@fujitsu.com>
+To:     "'linux-wireless@vger.kernel.org'" <linux-wireless@vger.kernel.org>
+CC:     "'brcm80211-dev-list.pdl@broadcom.com'" 
+        <brcm80211-dev-list.pdl@broadcom.com>,
+        "'brcm80211-dev-list@cypress.com'" <brcm80211-dev-list@cypress.com>
+Subject: What is the license for linux/lib/math/cordic.c?
+Thread-Topic: What is the license for linux/lib/math/cordic.c?
+Thread-Index: AdWmm5RtoddtbjEIQ/yLayvM+Qn80Q==
+Date:   Fri, 29 Nov 2019 10:03:05 +0000
+Message-ID: <OSBPR01MB21689E8028F2AFDBBA89076C83460@OSBPR01MB2168.jpnprd01.prod.outlook.com>
+Accept-Language: ja-JP, en-US
+Content-Language: ja-JP
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-shieldmailcheckerpolicyversion: FJ-ISEC-20140924-1
+x-shieldmailcheckermailid: 91eeb8209c6040bc9a85221f8aa1faf1
+x-securitypolicycheck: OK by SHieldMailChecker v2.3.2
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=ambai.masaki@fujitsu.com; 
+x-originating-ip: [114.160.9.180]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: b8d79a6d-aaa1-4dbb-972a-08d774b353fd
+x-ms-traffictypediagnostic: OSBPR01MB1606:
+x-microsoft-antispam-prvs: <OSBPR01MB160660829D3AFA859339CBEF83460@OSBPR01MB1606.jpnprd01.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:7219;
+x-forefront-prvs: 0236114672
+x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(4636009)(136003)(366004)(376002)(396003)(39860400002)(346002)(189003)(199004)(81166006)(66476007)(66446008)(256004)(478600001)(66066001)(76116006)(6916009)(85182001)(26005)(64756008)(71190400001)(14444005)(6506007)(66946007)(52536014)(8676002)(5660300002)(66556008)(81156014)(14454004)(3846002)(186003)(54906003)(316002)(6116002)(2906002)(74316002)(7696005)(7736002)(71200400001)(25786009)(4326008)(99286004)(102836004)(305945005)(6436002)(86362001)(8936002)(55016002)(9686003)(33656002)(777600001)(491001);DIR:OUT;SFP:1101;SCL:1;SRVR:OSBPR01MB1606;H:OSBPR01MB2168.jpnprd01.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: V9htUoKIBmZuXRz0C9sTV/FBlAlXUKMdqtkwDtzhpIDQDFi9Z72KhUKlwRuui7a2wfbOrzMUePVhsiA1c6irD1R9ts8EoenKVHb7O5ZpoYWVn5sPh3IzP04HWija3R+U2aqPVRQ8xruBHRcDZbzKbZybZi2D/Cjl1I5OgCHMfD7105U/x4StPXQ9lInUHd8i8maQQuKmm5pNyNFU18lIlFvAtOjAXyAY96/r95MZffH7llGbyPUQyPlUuDnyVx6nWensHxsGZ4AHpUVPrJYol89dzTOhnFMEpd9h8Hxgqy141KQCFr7UJayM2MQ4dL/UMsszaVQMQOHu84J9oX6qX8RimfiKMzi9Pxdrb3BpEydEmP9crnK2B83rJlxrHG7T1UjU4x+Ge1kric+fMlj4hrPDnRgaIsX8PS8PRl0AnkkNQTgR2Uiiv01NUTseWg9y
+x-ms-exchange-transport-forked: True
+Content-Type: text/plain; charset="iso-2022-jp"
 Content-Transfer-Encoding: quoted-printable
-X-SES-Outgoing: 2019.11.29-54.240.27.188
-Feedback-ID: 1.us-west-2.CZuq2qbDmUIuT3qdvXlRHZZCpfZqZ4GtG9v3VKgRyF0=:AmazonSES
+MIME-Version: 1.0
+X-OriginatorOrg: fujitsu.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b8d79a6d-aaa1-4dbb-972a-08d774b353fd
+X-MS-Exchange-CrossTenant-originalarrivaltime: 29 Nov 2019 10:03:05.2301
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: a19f121d-81e1-4858-a9d8-736e267fd4c7
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: PZYHNzdVu+tVPq94NHCR8Wnz9NAwda5MNEoaUGsgX52x3opVLDC3WwQ84XflFEIYoSdc1SYAZYCoRlMfXrT/fO7ANSK0IbW14lEqgv2f5C8=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: OSBPR01MB1606
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-(dropping security lists)
+Hi,
 
-Greg KH <gregkh@linuxfoundation.org> writes:
+What is the license for linux/lib/math/cordic.c?
 
-> Some minor problems with your patch:
->
-> On Fri, Nov 29, 2019 at 04:18:21PM +0800, qize wang wrote:
->> mwifiex_process_tdls_action_frame() without checking
->> the incoming tdls infomation element's vality before use it,
->> this may cause multi heap buffer overflows.
->>=20
->> Fix them by putting vality check before use it.
->>=20
->> IE is TLV struct, but ht_cap and  ht_oper aren=E2=80=99t TLV struct.
->> the origin marvell driver code is wrong:
->>=20
->> memcpy(&sta_ptr->tdls_cap.ht_oper, pos,....
->> memcpy((u8 *)&sta_ptr->tdls_cap.ht_capb, pos,...
->>=20
->> Fix the bug by changing pos(the address of IE) to
->> pos+2 ( the address of IE=E2=80=99s value ).
->>=20
->> Signed-off-by: wangqize <540263207@qq.com>
->
-> This has to match the name on the From: line.
->
->> ---
->> v2: change commit log
->>  drivers/net/wireless/marvell/mwifiex/tdls.c | 70
->> ++++++++++++++++++++++++++---
->>  1 file changed, 64 insertions(+), 6 deletions(-)
->>=20
->> diff --git a/drivers/net/wireless/marvell/mwifiex/tdls.c
->> b/drivers/net/wireless/marvell/mwifiex/tdls.c
->> index 09313047beed..7caf1d26124a 100644
->> --- a/drivers/net/wireless/marvell/mwifiex/tdls.c
->> +++ b/drivers/net/wireless/marvell/mwifiex/tdls.c
->> @@ -953,59 +953,117 @@ void mwifiex_process_tdls_action_frame(struct
->> mwifiex_private *priv,
->>=20
->>   switch (*pos) {
->>   case WLAN_EID_SUPP_RATES:
->> + if (pos[1] > 32)
->> + return;
->
-> All of your whitespace is totally damaged here, making this patch
-> impossible to apply :(
+>  * Copyright (c) 2011 Broadcom Corporation
+>  *
+>  * Permission to use, copy, modify, and/or distribute this software for a=
+ny
+>  * purpose with or without fee is hereby granted, provided that the above
+>  * copyright notice and this permission notice appear in all copies.
+>  *
+>  * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTI=
+ES
+>  * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+>  * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FO=
+R ANY
+>  * SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+>  * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN =
+ACTION
+>  * OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
+>  * CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+I think this license is an ISC license.
 
-And even worse, it was using HTML :)
+> MODULE_LICENSE("Dual BSD/GPL");
+However, MODULE _ LICENSE declares a different license.
+I don't know which license is correct.
+What licenses are declared in this file?
 
-> Please fix up your email client to not do that (you can just use 'git
-> send-email' directly) and resend a v3.
+Regards,
+Ambai
 
-Yes, please. And even better if you try sending the patch to yourself
-and then applying with git-am. That way you should notice any problems
-with the mail settings.
 
-More info in the link below, read it very carefully.
-
---=20
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
-hes
