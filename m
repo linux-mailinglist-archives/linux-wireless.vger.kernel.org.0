@@ -2,81 +2,99 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C6B910D216
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 Nov 2019 08:51:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A63E10D280
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Nov 2019 09:34:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726741AbfK2Hvc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 29 Nov 2019 02:51:32 -0500
-Received: from a27-11.smtp-out.us-west-2.amazonses.com ([54.240.27.11]:44494
-        "EHLO a27-11.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726360AbfK2Hvc (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 29 Nov 2019 02:51:32 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1575013891;
-        h=Content-Type:MIME-Version:Content-Transfer-Encoding:Subject:From:In-Reply-To:References:To:Cc:Message-Id:Date;
-        bh=zbDRZKnzjriupggRUWMUcPV4MUfQd9en53bon+5ItNY=;
-        b=mzSEyiwO8tfCa089rpaMkJJi8Il3IQdsRve+IyOll2v+KGI1uFY05jHUwf8P09EB
-        ZCVcl+dm10WefxhKlPFvlrct7229c5F6fUKyiDijq5MPVNXwxlKnf/Fj4jKS/peVj+o
-        crdu+NVX9AdmW5igK2Yr9AzboAtpNW2ewyYmvqbk=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=gdwg2y3kokkkj5a55z2ilkup5wp5hhxx; d=amazonses.com; t=1575013891;
-        h=Content-Type:MIME-Version:Content-Transfer-Encoding:Subject:From:In-Reply-To:References:To:Cc:Message-Id:Date:Feedback-ID;
-        bh=zbDRZKnzjriupggRUWMUcPV4MUfQd9en53bon+5ItNY=;
-        b=XCkC1jQx5Vyb29xjRcYfr4osEVowoFXSlKm8Jhv6Ysqp7E0pKZx0tYz8sIeYZk9m
-        dtF8IrYmnL+R/C/28vCU4BnVXNiIKLdGPoC/D5hV7NdVon9gjvPcWIuJkuTGFWHX08q
-        KSbRteQxlbZy5Y7WOGrOLaAZNabCrrm4xKTsKGws=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
-        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 0FA93C43383
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        id S1726604AbfK2Ie2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 29 Nov 2019 03:34:28 -0500
+Received: from mail.kernel.org ([198.145.29.99]:52366 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725886AbfK2Ie2 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 29 Nov 2019 03:34:28 -0500
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 0BECA215F1;
+        Fri, 29 Nov 2019 08:34:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1575016467;
+        bh=9xfVeBMuoPsrT6tgf6LSYwQjTpkVaWFjePAm1wmIETc=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=oMU2axWG5p+KzObpNxeyNoYV6vPXkZggh61cs0Cx+K+cNLr7Aphi3X04/dTZ49enx
+         EdKUy8owgJLWgLHi1INvU66oxMOP1VseSnM5Rrr1ha+2+f9i3RNUaD+T2nbhLPfU8/
+         UT+9v/gJgDX9LbEzrTrEbu47y64UXn3ARjf4ygR4=
+Date:   Fri, 29 Nov 2019 09:34:25 +0100
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     qize wang <wangqize888888888@gmail.com>
+Cc:     linux-wireless@vger.kernel.org, amitkarwar <amitkarwar@gmail.com>,
+        nishants <nishants@marvell.com>, gbhat <gbhat@marvell.com>,
+        huxinming820 <huxinming820@gmail.com>,
+        kvalo <kvalo@codeaurora.org>, security <security@kernel.org>,
+        linux-distros <linux-distros@vs.openwall.org>,
+        "dan.carpenter" <dan.carpenter@oracle.com>,
+        Solar Designer <solar@openwall.com>
+Subject: Re: [PATCH v2] mwifiex: Fix heap overflow in
+ mmwifiex_process_tdls_action_frame()
+Message-ID: <20191129083425.GA3579842@kroah.com>
+References: <CAGftXBHnkYt2KR=kqJfDhEqEuW52ckbepCmTnQQcDyDcVG0WZg@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 1/9] ath11k: Update tx and rx chain count properly on
- drv_set_antenna
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <0101016eb11a10c9-dd904af5-539a-4c05-9ffc-3a1cc33b99f5-000000@us-west-2.amazonses.com>
-References: <0101016eb11a10c9-dd904af5-539a-4c05-9ffc-3a1cc33b99f5-000000@us-west-2.amazonses.com>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     linux-wireless@vger.kernel.org, ath11k@lists.infradead.org
-User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-ID: <0101016eb624be5e-239bf88d-ea4f-4d02-9c19-da771b861778-000000@us-west-2.amazonses.com>
-Date:   Fri, 29 Nov 2019 07:51:31 +0000
-X-SES-Outgoing: 2019.11.29-54.240.27.11
-Feedback-ID: 1.us-west-2.CZuq2qbDmUIuT3qdvXlRHZZCpfZqZ4GtG9v3VKgRyF0=:AmazonSES
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAGftXBHnkYt2KR=kqJfDhEqEuW52ckbepCmTnQQcDyDcVG0WZg@mail.gmail.com>
+User-Agent: Mutt/1.12.2 (2019-09-21)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Kalle Valo <kvalo@codeaurora.org> wrote:
+Some minor problems with your patch:
 
-> Set the number of tx and rx chains properly on drv_set_antenna().
-> This will ensure the related ht/vht/he caps are properly recalculated
-> based on the tx/rx chains set.
+On Fri, Nov 29, 2019 at 04:18:21PM +0800, qize wang wrote:
+> mwifiex_process_tdls_action_frame() without checking
+> the incoming tdls infomation element's vality before use it,
+> this may cause multi heap buffer overflows.
 > 
-> Signed-off-by: Sriram R <srirrama@codeaurora.org>
-> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+> Fix them by putting vality check before use it.
+> 
+> IE is TLV struct, but ht_cap and  ht_oper aren’t TLV struct.
+> the origin marvell driver code is wrong:
+> 
+> memcpy(&sta_ptr->tdls_cap.ht_oper, pos,....
+> memcpy((u8 *)&sta_ptr->tdls_cap.ht_capb, pos,...
+> 
+> Fix the bug by changing pos(the address of IE) to
+> pos+2 ( the address of IE’s value ).
+> 
+> Signed-off-by: wangqize <540263207@qq.com>
 
-9 patches applied to ath-next branch of ath.git, thanks.
+This has to match the name on the From: line.
 
-a3c5195a97af ath11k: Update tx and rx chain count properly on drv_set_antenna
-c000e56ee6b0 ath11k: Advertise MPDU start spacing as no restriction
-5e02bc7354e1 ath11k: fix memory leak in monitor mode
-28dee8ef7645 ath11k: fix vht guard interval mapping
-a9e945eadf17 ath11k: update tx duration in station info
-b9269a078ae6 ath11k: Skip update peer stats for management packets
-0366f42640a4 ath11k: Move mac80211 hw allocation before wmi_init command
-9c57d7e3b488 ath11k: Setup REO destination ring before sending wmi_init command
-fcaf49d0f2dc ath11k: fix indentation in ath11k_mac_prepare_he_mode()
+> ---
+> v2: change commit log
+>  drivers/net/wireless/marvell/mwifiex/tdls.c | 70
+> ++++++++++++++++++++++++++---
+>  1 file changed, 64 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/marvell/mwifiex/tdls.c
+> b/drivers/net/wireless/marvell/mwifiex/tdls.c
+> index 09313047beed..7caf1d26124a 100644
+> --- a/drivers/net/wireless/marvell/mwifiex/tdls.c
+> +++ b/drivers/net/wireless/marvell/mwifiex/tdls.c
+> @@ -953,59 +953,117 @@ void mwifiex_process_tdls_action_frame(struct
+> mwifiex_private *priv,
+> 
+>   switch (*pos) {
+>   case WLAN_EID_SUPP_RATES:
+> + if (pos[1] > 32)
+> + return;
 
--- 
-https://patchwork.kernel.org/patch/11265469/
+All of your whitespace is totally damaged here, making this patch
+impossible to apply :(
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Please fix up your email client to not do that (you can just use 'git
+send-email' directly) and resend a v3.
 
+thanks,
+
+greg k-h
