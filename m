@@ -2,51 +2,52 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CEE2710D20D
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 Nov 2019 08:48:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C6B910D216
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Nov 2019 08:51:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726810AbfK2Hsz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 29 Nov 2019 02:48:55 -0500
-Received: from a27-187.smtp-out.us-west-2.amazonses.com ([54.240.27.187]:52926
-        "EHLO a27-187.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726360AbfK2Hsz (ORCPT
+        id S1726741AbfK2Hvc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 29 Nov 2019 02:51:32 -0500
+Received: from a27-11.smtp-out.us-west-2.amazonses.com ([54.240.27.11]:44494
+        "EHLO a27-11.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726360AbfK2Hvc (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 29 Nov 2019 02:48:55 -0500
+        Fri, 29 Nov 2019 02:51:32 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1575013734;
+        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1575013891;
         h=Content-Type:MIME-Version:Content-Transfer-Encoding:Subject:From:In-Reply-To:References:To:Cc:Message-Id:Date;
-        bh=LJ776+Y1QXpvCW3pDrKuYQJOJASENSQYXUKS6yMqPAc=;
-        b=kIHBKkKJ4VqO8lJPgAWSUdtcxeXAzK9ihJUbSevRKZHDO6yXyOHXCHHuoWBzMhBg
-        zujnPdCd6M6CXAITqFSoJ5/QVBoH/Gq1D/dAdT8H45VebuXHqhyIq00lDi7rdjbfnYc
-        QYehlv7+sFn/jENPNUlFMqliIPxsxHLXZASAI2B0=
+        bh=zbDRZKnzjriupggRUWMUcPV4MUfQd9en53bon+5ItNY=;
+        b=mzSEyiwO8tfCa089rpaMkJJi8Il3IQdsRve+IyOll2v+KGI1uFY05jHUwf8P09EB
+        ZCVcl+dm10WefxhKlPFvlrct7229c5F6fUKyiDijq5MPVNXwxlKnf/Fj4jKS/peVj+o
+        crdu+NVX9AdmW5igK2Yr9AzboAtpNW2ewyYmvqbk=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=gdwg2y3kokkkj5a55z2ilkup5wp5hhxx; d=amazonses.com; t=1575013734;
+        s=gdwg2y3kokkkj5a55z2ilkup5wp5hhxx; d=amazonses.com; t=1575013891;
         h=Content-Type:MIME-Version:Content-Transfer-Encoding:Subject:From:In-Reply-To:References:To:Cc:Message-Id:Date:Feedback-ID;
-        bh=LJ776+Y1QXpvCW3pDrKuYQJOJASENSQYXUKS6yMqPAc=;
-        b=D+sVeIrfBjalnwlRS8Mbo4SVZ3Nnegckk1rY1wQraLsidYbVjAFdNEVwUNmIz0je
-        nnt7POVgkNRcOFj5b31Tzyh28C5z+tBOnCImCf6Qa+5hEeFoT0KBfpl933uV7Jyhv+r
-        1LrKe6jqvH/C/8aGBPqs40ctxsz9QDvC55wWlBjc=
+        bh=zbDRZKnzjriupggRUWMUcPV4MUfQd9en53bon+5ItNY=;
+        b=XCkC1jQx5Vyb29xjRcYfr4osEVowoFXSlKm8Jhv6Ysqp7E0pKZx0tYz8sIeYZk9m
+        dtF8IrYmnL+R/C/28vCU4BnVXNiIKLdGPoC/D5hV7NdVon9gjvPcWIuJkuTGFWHX08q
+        KSbRteQxlbZy5Y7WOGrOLaAZNabCrrm4xKTsKGws=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
 X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
         MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org AF4F2C43383
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 0FA93C43383
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 01/10] ath11k: tracing: fix ath11k tracing
+Subject: Re: [PATCH 1/9] ath11k: Update tx and rx chain count properly on
+ drv_set_antenna
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <0101016ead3164f5-3135488d-f71b-4fc9-834f-08a735724e15-000000@us-west-2.amazonses.com>
-References: <0101016ead3164f5-3135488d-f71b-4fc9-834f-08a735724e15-000000@us-west-2.amazonses.com>
+In-Reply-To: <0101016eb11a10c9-dd904af5-539a-4c05-9ffc-3a1cc33b99f5-000000@us-west-2.amazonses.com>
+References: <0101016eb11a10c9-dd904af5-539a-4c05-9ffc-3a1cc33b99f5-000000@us-west-2.amazonses.com>
 To:     Kalle Valo <kvalo@codeaurora.org>
 Cc:     linux-wireless@vger.kernel.org, ath11k@lists.infradead.org
 User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-ID: <0101016eb6225753-50268bf1-e1cd-45cc-8b65-7d678c5dce1f-000000@us-west-2.amazonses.com>
-Date:   Fri, 29 Nov 2019 07:48:54 +0000
-X-SES-Outgoing: 2019.11.29-54.240.27.187
+Message-ID: <0101016eb624be5e-239bf88d-ea4f-4d02-9c19-da771b861778-000000@us-west-2.amazonses.com>
+Date:   Fri, 29 Nov 2019 07:51:31 +0000
+X-SES-Outgoing: 2019.11.29-54.240.27.11
 Feedback-ID: 1.us-west-2.CZuq2qbDmUIuT3qdvXlRHZZCpfZqZ4GtG9v3VKgRyF0=:AmazonSES
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
@@ -55,26 +56,27 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 Kalle Valo <kvalo@codeaurora.org> wrote:
 
-> Add missing tracing subsystem define.
+> Set the number of tx and rx chains properly on drv_set_antenna().
+> This will ensure the related ht/vht/he caps are properly recalculated
+> based on the tx/rx chains set.
 > 
-> Signed-off-by: Anilkumar Kolli <akolli@codeaurora.org>
+> Signed-off-by: Sriram R <srirrama@codeaurora.org>
 > Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 
-10 patches applied to ath-next branch of ath.git, thanks.
+9 patches applied to ath-next branch of ath.git, thanks.
 
-e8da3986570e ath11k: tracing: fix ath11k tracing
-d6af906d8307 ath11k: qmi clean up ce and HTC service config update
-0c408515cd3b ath11k: qmi clean up in ath11k_qmi_wlanfw_wlan_cfg_send()
-d0f390eae072 ath11k: pktlog: fix sending/using the pdev id
-f425078b449f ath11k: avoid burst time conversion logic
-30679ec40918 ath11k: avoid use_after_free in ath11k_dp_rx_msdu_coalesce API
-fe201947f8bd ath11k: update bawindow size in delba process
-64f1d7e94daa ath11k: add support for controlling tx power to a station
-ba47923974fb ath11k: unlock mutex during failure in qmi fw ready
-1cb616a3b497 ath11k: add necessary peer assoc params in wmi dbg
+a3c5195a97af ath11k: Update tx and rx chain count properly on drv_set_antenna
+c000e56ee6b0 ath11k: Advertise MPDU start spacing as no restriction
+5e02bc7354e1 ath11k: fix memory leak in monitor mode
+28dee8ef7645 ath11k: fix vht guard interval mapping
+a9e945eadf17 ath11k: update tx duration in station info
+b9269a078ae6 ath11k: Skip update peer stats for management packets
+0366f42640a4 ath11k: Move mac80211 hw allocation before wmi_init command
+9c57d7e3b488 ath11k: Setup REO destination ring before sending wmi_init command
+fcaf49d0f2dc ath11k: fix indentation in ath11k_mac_prepare_he_mode()
 
 -- 
-https://patchwork.kernel.org/patch/11264127/
+https://patchwork.kernel.org/patch/11265469/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
