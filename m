@@ -2,217 +2,199 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E57DB10D3B4
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 Nov 2019 11:12:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 20F7E10D3CD
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Nov 2019 11:19:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726741AbfK2KMd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 29 Nov 2019 05:12:33 -0500
-Received: from mail-pl1-f195.google.com ([209.85.214.195]:34664 "EHLO
-        mail-pl1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726608AbfK2KMd (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 29 Nov 2019 05:12:33 -0500
-Received: by mail-pl1-f195.google.com with SMTP id h13so12735754plr.1
-        for <linux-wireless@vger.kernel.org>; Fri, 29 Nov 2019 02:12:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=iIXAN0l14uxJr46wvhgDbAs2sD7O8ChcW98emte0Oe4=;
-        b=PEc7h88WdwkDeNwezNf3b1IFemZrj055k1nWUlmJhU3L5HPbizCcWoAOA585vnXYuv
-         J6tyYgqW7hclZT91V7mea9WijzR3/rDhLDx8sH4SosvW0dAietG63UkvByySB/+smE8R
-         g/UQBlbXvvS3KHjLjGIvCVUE9bupbmDLSYdBbpuenurd/NtAZo9wqox8rJk840HYySyD
-         0c9mjYtDzd4Qt+IiWXmhoemhCQPHA4OSK/ww/GKtRc4RCaZ9w2qZTmGknX9Z8b9q0PW3
-         JLXW32GR2Iehw9/aycVahZSc65OUpeGHRXyMscjpHYdCW8MGsAZ6mxIxwV91sCueE2YD
-         WiBg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=iIXAN0l14uxJr46wvhgDbAs2sD7O8ChcW98emte0Oe4=;
-        b=SQj+5pw2obP4tSrkusotBoQxcNw4awqZX134WJE6SPmND8NWzS79VgV5vIJe2yelh9
-         0o/eHQFyW53h3ACkbq180ekBUWJjks6Y/EsDSGZZmHIU2i4NWhQrfFp6HxNOoyxUvJcv
-         WdnTCTazff5Y60Bv0JD3o0TptKwdn6Vc0QhJgh+jDmPLTP2eO+BTGKPVh/Vz6Y2DxZt/
-         Q8CFromdpn72pfUoNQAJtCrrVkmVIb5KqQBovGKCiqska3NjmO5K8nNV7ZccEZXlytjH
-         gkXfO2TE08q19211cIOnP5kjRvX1EMieZeGiY0fke+rfGH2rgziJnzzSAn4lQ+erGf3u
-         Vulw==
-X-Gm-Message-State: APjAAAU4jIQYbBvwOQiyHMoO2jLWXB4/QMleOA9+B0TMMn5Grz+sKR0A
-        +358cASkJlk+3oNq7WcrmnfdBhchTkWD8MSz
-X-Google-Smtp-Source: APXvYqy/B4W1d9+t/azCYv0AvIuuh2e/6923jqmYM4Dv+sZwfXtOolaivVoHIP21N+RBY3c1KQBvjg==
-X-Received: by 2002:a17:90a:b109:: with SMTP id z9mr17374886pjq.108.1575022352267;
-        Fri, 29 Nov 2019 02:12:32 -0800 (PST)
-Received: from localhost.localdomain ([240e:82:f0a8:7d5b:124:6e01:5bc1:e947])
-        by smtp.gmail.com with ESMTPSA id u7sm23062775pfh.84.2019.11.29.02.12.18
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Fri, 29 Nov 2019 02:12:31 -0800 (PST)
-From:   qize wang <wangqize888888888@gmail.com>
-To:     linux-wireless@vger.kernel.org
-Cc:     amitkarwar@gmail.com, nishants@marvell.com, gbhat@marvell.com,
-        huxinming820@gmail.com, kvalo@codeaurora.org, greg@kroah.com,
-        dan.carpenter@oracle.com, solar@openwall.com,
-        wangqize888888888@gmail.com
-Subject: [PATCH v3] mwifiex: Fix heap overflow in mmwifiex_process_tdls_action_frame()
-Date:   Fri, 29 Nov 2019 18:10:54 +0800
-Message-Id: <20191129101054.2756-1-wangqize888888888@gmail.com>
-X-Mailer: git-send-email 2.14.3 (Apple Git-98)
+        id S1726805AbfK2KTo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 29 Nov 2019 05:19:44 -0500
+Received: from mail.kernel.org ([198.145.29.99]:43526 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725892AbfK2KTo (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 29 Nov 2019 05:19:44 -0500
+Received: from localhost.localdomain (unknown [77.139.212.74])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 023AA217BA;
+        Fri, 29 Nov 2019 10:19:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1575022783;
+        bh=gTeJHCIyxpAz+L0NTqEziICyOohggz4wvCHxTrCVi6k=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=RJUXx34qUMYsVIz3ICO6a/NAaPWrxCaGYGEZ9z3mtkUfrmgRmq1qrC6qoXxmg1SY8
+         59fdYf9WNBEBd6q1k0Wt9yqavjPBQ97zBTqHEe/ccjnqyF6/rEUHZ43cBZzskmWXDY
+         Q48q3XxURW8xcHYSF/EQdTrQmyb7LeALByPU68ao=
+Date:   Fri, 29 Nov 2019 12:19:35 +0200
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     Vasa Shpatrov <vasily.shpatrov@queensu.ca>
+Cc:     "lorenzo.bianconi83@gmail.com" <lorenzo.bianconi83@gmail.com>,
+        "nbd@nbd.name" <nbd@nbd.name>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: Re: Linux bug report: mt76x0 driver for USB WiFi adapter does not
+ support channel > 140 on 5Ghz band
+Message-ID: <20191129101935.GC32696@localhost.localdomain>
+References: <YQXPR0101MB146201584E8F6325CEC4531999470@YQXPR0101MB1462.CANPRD01.PROD.OUTLOOK.COM>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="da4uJneut+ArUgXk"
+Content-Disposition: inline
+In-Reply-To: <YQXPR0101MB146201584E8F6325CEC4531999470@YQXPR0101MB1462.CANPRD01.PROD.OUTLOOK.COM>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-mwifiex_process_tdls_action_frame() without checking
-the incoming tdls infomation element's vality before use it,
-this may cause multi heap buffer overflows.
 
-Fix them by putting vality check before use it.
+--da4uJneut+ArUgXk
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-IE is TLV struct, but ht_cap and  ht_oper aren’t TLV struct.
-the origin marvell driver code is wrong:
+[...]
 
-memcpy(&sta_ptr->tdls_cap.ht_oper, pos,....
-memcpy((u8 *)&sta_ptr->tdls_cap.ht_capb, pos,...
+> [3.] Keywords (i.e., modules, networking, kernel):
+>     networking, wifi, driver, USB
+>=20
+> [4.] Kernel information
+> [4.1.] Kernel version (from /proc/version):
+>         Linux version 4.19.66-Re4son-v8+ (root@kali-pi-dev-v8) (gcc versi=
+on 8.2.0 (Debian 8.2.0-12)) #1 SMP PREEMPT Sun Aug 18 12:14:35 UTC 2019
 
-Fix the bug by changing pos(the address of IE) to
-pos+2 ( the address of IE value ).
+Hi Vasa,
 
-v3: change commit log
+IIUC you are running a pretty old version of the driver. According to the r=
+pi
+kernel tree, mt76x0u enables radio frequencies up to 5700MHz
 
-Signed-off-by: qize wang <wangqize888888888@gmail.com>
----
- drivers/net/wireless/marvell/mwifiex/tdls.c | 70 ++++++++++++++++++++++++++---
- 1 file changed, 64 insertions(+), 6 deletions(-)
+https://github.com/raspberrypi/linux/blob/rpi-4.19.y/drivers/net/wireless/m=
+ediatek/mt76/mt76x0/init.c#L565
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/tdls.c b/drivers/net/wireless/marvell/mwifiex/tdls.c
-index 09313047beed..7caf1d26124a 100644
---- a/drivers/net/wireless/marvell/mwifiex/tdls.c
-+++ b/drivers/net/wireless/marvell/mwifiex/tdls.c
-@@ -953,59 +953,117 @@ void mwifiex_process_tdls_action_frame(struct mwifiex_private *priv,
- 
- 		switch (*pos) {
- 		case WLAN_EID_SUPP_RATES:
-+			if (pos[1] > 32)
-+				return;
- 			sta_ptr->tdls_cap.rates_len = pos[1];
- 			for (i = 0; i < pos[1]; i++)
- 				sta_ptr->tdls_cap.rates[i] = pos[i + 2];
- 			break;
- 
- 		case WLAN_EID_EXT_SUPP_RATES:
-+			if (pos[1] > 32)
-+				return;
- 			basic = sta_ptr->tdls_cap.rates_len;
-+			if (pos[1] > 32 - basic)
-+				return;
- 			for (i = 0; i < pos[1]; i++)
- 				sta_ptr->tdls_cap.rates[basic + i] = pos[i + 2];
- 			sta_ptr->tdls_cap.rates_len += pos[1];
- 			break;
- 		case WLAN_EID_HT_CAPABILITY:
--			memcpy((u8 *)&sta_ptr->tdls_cap.ht_capb, pos,
-+			if (pos > end - sizeof(struct ieee80211_ht_cap) - 2)
-+				return;
-+			if (pos[1] != sizeof(struct ieee80211_ht_cap))
-+				return;
-+			/* copy the ie's value into ht_capb*/
-+			memcpy((u8 *)&sta_ptr->tdls_cap.ht_capb, pos + 2,
- 			       sizeof(struct ieee80211_ht_cap));
- 			sta_ptr->is_11n_enabled = 1;
- 			break;
- 		case WLAN_EID_HT_OPERATION:
--			memcpy(&sta_ptr->tdls_cap.ht_oper, pos,
-+			if (pos > end -
-+			    sizeof(struct ieee80211_ht_operation) - 2)
-+				return;
-+			if (pos[1] != sizeof(struct ieee80211_ht_operation))
-+				return;
-+			/* copy the ie's value into ht_oper*/
-+			memcpy(&sta_ptr->tdls_cap.ht_oper, pos + 2,
- 			       sizeof(struct ieee80211_ht_operation));
- 			break;
- 		case WLAN_EID_BSS_COEX_2040:
-+			if (pos > end - 3)
-+				return;
-+			if (pos[1] != 1)
-+				return;
- 			sta_ptr->tdls_cap.coex_2040 = pos[2];
- 			break;
- 		case WLAN_EID_EXT_CAPABILITY:
-+			if (pos > end - sizeof(struct ieee_types_header))
-+				return;
-+			if (pos[1] < sizeof(struct ieee_types_header))
-+				return;
-+			if (pos[1] > 8)
-+				return;
- 			memcpy((u8 *)&sta_ptr->tdls_cap.extcap, pos,
- 			       sizeof(struct ieee_types_header) +
- 			       min_t(u8, pos[1], 8));
- 			break;
- 		case WLAN_EID_RSN:
-+			if (pos > end - sizeof(struct ieee_types_header))
-+				return;
-+			if (pos[1] < sizeof(struct ieee_types_header))
-+				return;
-+			if (pos[1] > IEEE_MAX_IE_SIZE -
-+			    sizeof(struct ieee_types_header))
-+				return;
- 			memcpy((u8 *)&sta_ptr->tdls_cap.rsn_ie, pos,
- 			       sizeof(struct ieee_types_header) +
- 			       min_t(u8, pos[1], IEEE_MAX_IE_SIZE -
- 				     sizeof(struct ieee_types_header)));
- 			break;
- 		case WLAN_EID_QOS_CAPA:
-+			if (pos > end - 3)
-+				return;
-+			if (pos[1] != 1)
-+				return;
- 			sta_ptr->tdls_cap.qos_info = pos[2];
- 			break;
- 		case WLAN_EID_VHT_OPERATION:
--			if (priv->adapter->is_hw_11ac_capable)
--				memcpy(&sta_ptr->tdls_cap.vhtoper, pos,
-+			if (priv->adapter->is_hw_11ac_capable) {
-+				if (pos > end -
-+				    sizeof(struct ieee80211_vht_operation) - 2)
-+					return;
-+				if (pos[1] !=
-+				    sizeof(struct ieee80211_vht_operation))
-+					return;
-+				/* copy the ie's value into vhtoper*/
-+				memcpy(&sta_ptr->tdls_cap.vhtoper, pos + 2,
- 				       sizeof(struct ieee80211_vht_operation));
-+			}
- 			break;
- 		case WLAN_EID_VHT_CAPABILITY:
- 			if (priv->adapter->is_hw_11ac_capable) {
--				memcpy((u8 *)&sta_ptr->tdls_cap.vhtcap, pos,
-+				if (pos > end -
-+				    sizeof(struct ieee80211_vht_cap) - 2)
-+					return;
-+				if (pos[1] != sizeof(struct ieee80211_vht_cap))
-+					return;
-+				/* copy the ie's value into vhtcap*/
-+				memcpy((u8 *)&sta_ptr->tdls_cap.vhtcap, pos + 2,
- 				       sizeof(struct ieee80211_vht_cap));
- 				sta_ptr->is_11ac_enabled = 1;
- 			}
- 			break;
- 		case WLAN_EID_AID:
--			if (priv->adapter->is_hw_11ac_capable)
-+			if (priv->adapter->is_hw_11ac_capable) {
-+				if (pos > end - 4)
-+					return;
-+				if (pos[1] != 2)
-+					return;
- 				sta_ptr->tdls_cap.aid =
- 					get_unaligned_le16((pos + 2));
-+			}
-+			break;
- 		default:
- 			break;
- 		}
--- 
-2.14.3 (Apple Git-98)
+I guess you need to update the driver to latest stable one.
 
+Regards,
+Lorenzo
+
+>=20
+> [8.] Environment
+> [8.1.] Software (add the output of the ver_linux script here)
+>         Linux kali 4.19.66-Re4son-v8+ #1 SMP PREEMPT Sun Aug 18 12:14:35 =
+UTC 2019 aarch64 GNU/Linux
+>=20
+>         GNU Make                4.2.1
+>         Binutils                2.32.51.20190727
+>         Util-linux              2.34
+>         Mount                   2.34
+>         Module-init-tools       26
+>         E2fsprogs               1.45.3
+>         PPP                     2.4.7
+>         Linux C Library         2.29
+>         Dynamic linker (ldd)    2.29
+>         Linux C++ Library       6.0.27
+>         Procps                  3.3.15
+>         Net-tools               2.10
+>         Kbd                     2.0.4
+>         Console-tools           2.0.4
+>         Sh-utils                8.30
+>         Udev                    241
+>         Wireless-tools          30
+>         Modules Loaded          arc4 bcm2835_codec bcm2835_mmal_vchiq bcm=
+2835_v4l2 bluetooth
+>                                 brcmfmac brcmutil btbcm cfg80211 ecdh_gen=
+eric evdev gpio_keys hci_uart ip_tables
+>                                 ipv6 mac80211 media mt76 mt76x0 rfkill sd=
+hci_iproc serdev snd snd_bcm2835
+>                                 snd_pcm snd_timer uio uio_pdrv_genirq v4l=
+2_common v4l2_mem2mem vc_sm_cma vchiq
+>                                 videobuf2_common videobuf2_dma_contig vid=
+eobuf2_memops videobuf2_v4l2 videobuf2_v
+>                                 malloc videodev x_tables
+>=20
+> [8.2.] Processor information (from /proc/cpuinfo):
+>         processor       : 0
+>         BogoMIPS        : 38.40
+>         Features        : fp asimd evtstrm crc32 cpuid
+>         CPU implementer : 0x41
+>         CPU architecture: 8
+>         CPU variant     : 0x0
+>         CPU part        : 0xd03
+>         CPU revision    : 4
+>=20
+>         processor       : 1
+>         BogoMIPS        : 38.40
+>         Features        : fp asimd evtstrm crc32 cpuid
+>         CPU implementer : 0x41
+>         CPU architecture: 8
+>         CPU variant     : 0x0
+>         CPU part        : 0xd03
+>         CPU revision    : 4
+>=20
+>         processor       : 2
+>         BogoMIPS        : 38.40
+>         Features        : fp asimd evtstrm crc32 cpuid
+>         CPU implementer : 0x41
+>         CPU architecture: 8
+>         CPU variant     : 0x0
+>         CPU part        : 0xd03
+>         CPU revision    : 4
+>=20
+>         processor       : 3
+>         BogoMIPS        : 38.40
+>         Features        : fp asimd evtstrm crc32 cpuid
+>         CPU implementer : 0x41
+>         CPU architecture: 8
+>         CPU variant     : 0x0
+>         CPU part        : 0xd03
+>         CPU revision    : 4
+>=20
+> [8.3.] Module information (from /proc/modules):
+>         mt76x0 122880 0 - Live 0xffffffa3be4ab000
+>         mt76 49152 1 mt76x0, Live 0xffffffa3be3bc000
+>         mac80211 929792 2 mt76x0,mt76, Live 0xffffffa3be1b1000
+>         cfg80211 757760 4 mt76x0,mt76,brcmfmac,mac80211, Live 0xffffffa3b=
+dda1000
+>         rfkill 32768 6 bluetooth,cfg80211, Live 0xffffffa3bdd69000
+>=20
+> [8.4.] Loaded driver and hardware information (/proc/ioports, /proc/iomem)
+>         00000000-3b3fffff : System RAM
+>         00000000-00000fff : reserved
+>         00080000-00a8ffff : Kernel code
+>         00a90000-00d4ffff : reserved
+>         00d50000-00f28fff : Kernel data
+>         2eff9000-2effffff : reserved
+>         39800000-399fffff : reserved
+>         39b52000-3a9fffff : reserved
+>         3aa70000-3ab70fff : reserved
+>         3ab71000-3abd0fff : reserved
+>         3abd3000-3abd6fff : reserved
+>         3abd7000-3abfefff : reserved
+>         3abff000-3abfffff : reserved
+>         3ac00000-3b3fffff : reserved
+>         3f006000-3f006fff : dwc_otg
+>         3f007000-3f007eff : dma@7e007000
+>         3f00a000-3f00a023 : watchdog@7e100000
+>         3f00b840-3f00b87b : mailbox@7e00b840
+>         3f00b880-3f00b8bf : mailbox@7e00b880
+>         3f100000-3f100113 : watchdog@7e100000
+>         3f101000-3f102fff : cprman@7e101000
+>         3f104000-3f10400f : rng@7e104000
+>         3f200000-3f2000b3 : gpio@7e200000
+>         3f201000-3f2011ff : serial@7e201000
+>         3f201000-3f2011ff : serial@7e201000
+>         3f202000-3f2020ff : mmc@7e202000
+>         3f212000-3f212007 : thermal@7e212000
+>         3f215000-3f215007 : aux@7e215000
+>         3f300000-3f3000ff : mmcnr@7e300000
+>         3f980000-3f98ffff : dwc_otg
+
+--da4uJneut+ArUgXk
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCXeDwsQAKCRA6cBh0uS2t
+rPIRAQD6gwFlIvb8JyrVLtQk7DeRO/ivkiTlt56VJaC3FJ+XYQEApL79clu+qWWi
+GKiFyyxjwXsg23tfo1leNiIMtgAYKAc=
+=cYwU
+-----END PGP SIGNATURE-----
+
+--da4uJneut+ArUgXk--
