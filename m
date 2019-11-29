@@ -2,116 +2,95 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D1E1E10D0A7
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 Nov 2019 04:33:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BF13E10D0B8
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Nov 2019 05:05:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726835AbfK2Ddm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 28 Nov 2019 22:33:42 -0500
-Received: from mail-qk1-f193.google.com ([209.85.222.193]:36948 "EHLO
-        mail-qk1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726764AbfK2Ddm (ORCPT
+        id S1726876AbfK2EFZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 28 Nov 2019 23:05:25 -0500
+Received: from mail-ed1-f65.google.com ([209.85.208.65]:37233 "EHLO
+        mail-ed1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726788AbfK2EFY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 28 Nov 2019 22:33:42 -0500
-Received: by mail-qk1-f193.google.com with SMTP id e187so24417541qkf.4
-        for <linux-wireless@vger.kernel.org>; Thu, 28 Nov 2019 19:33:41 -0800 (PST)
+        Thu, 28 Nov 2019 23:05:24 -0500
+Received: by mail-ed1-f65.google.com with SMTP id cy15so17018237edb.4
+        for <linux-wireless@vger.kernel.org>; Thu, 28 Nov 2019 20:05:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=endlessm-com.20150623.gappssmtp.com; s=20150623;
+        d=chromium.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=adXcxNA7Td+R/yELM43Y8VQUIIxQWn12s4q7DlInxeM=;
-        b=Thl1P+NZ9XgjE8B4U58VUKEXT0CTd7cETlskO0AWwwdcKS/8vvg9y1cMHBRJI1fpbS
-         Py0NwOzPdn6u4MbGfyw2LnoLJEj+SartxzmURmhKIS/FbmVqT+b9oVQuDU2W0Cp1ZwEX
-         qpMwvzun1VauF15Ou16krDNGtfKWCi/MWMiiwiEdGijUrqeLgRCfNwt4PAnQCSsk/986
-         DqB13my8FGc9xFyNJrAHtEVa6wlC4hX+uTWee+A+J4AQgwdFD6OFHjTLIdFhfUWmuGeD
-         Tmge8La9ksvSN4qT0xKGfOWpakEbQT++U1NPjUFX9sSA2HAvNAHpbfXzLCIMybUqH9Rb
-         dXTQ==
+        bh=kSUVC3ggQB4xLQjsKBDHLkM4F4fy4M5PEtTRPWySnj4=;
+        b=Z8aADKxYdIrSSCBHE0WebFG2Y8sksQBDe+gJGDwWDNLDZLLWgUw0NbN/otBEPsWrCB
+         ksbD/tyyRmIBAgkLWB/wwjaPhT4CJ4PJdimwooAy6EAGK6ZSqrHsQRBG1+zHdrTLXX0l
+         Zo9jhdd2/cn0njSg1cj82rO5mz0+0Ujp8BCCM=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=adXcxNA7Td+R/yELM43Y8VQUIIxQWn12s4q7DlInxeM=;
-        b=kds12M/GKQ3cgLG7ONLnsIIZ6U3L4gcTLrEttcpdwq2ZtjBryYNZlSUy3RU0hOq6s/
-         h2oTMjp98HS3DYcBEdb/6LasxGMnQhgWMzd6jiU99t8OcNjYcllmP+jrpA+DZuSF8LxR
-         hxN54Pl/T/mXchDb1AVI73afuk4pOuDB6rp5rC9ziUXUvgw9HJAyQMD/cWp+rMagAkX3
-         ByNqDrlITT/K/mn/m9082UFAc7Ewsgtqyp/Acpd050/MzErIWuLD4VnWXz465+ActRu6
-         KXWnoKrgHkFKhkB5AYHEK/Dn6pWOlT7VMOFegGgnS6udtXiqQEs1KHkcwHXqJUpmnhVf
-         mTqg==
-X-Gm-Message-State: APjAAAWlX5lmPE+aJpabun/PxJvNnmifMhOZMYeg/JSbPtW3zn4zDbCM
-        h5nVpBMxGncvPnGJ+nLxSoWh2P+Z0XiE3DnxFfcSbA==
-X-Google-Smtp-Source: APXvYqx6WkCcek4QnCWeB+FRZMEcG/Gytk4o1HtHihMDYvYGv6ilT1KPUprR3FubYtn9KnotqEUQA2HKukH5GQz4O9g=
-X-Received: by 2002:a37:5256:: with SMTP id g83mr12597197qkb.366.1574998420488;
- Thu, 28 Nov 2019 19:33:40 -0800 (PST)
+        bh=kSUVC3ggQB4xLQjsKBDHLkM4F4fy4M5PEtTRPWySnj4=;
+        b=AJUVEqMNWQ1/m+0+GYEYSaRLzypYj0Gd7iTs7UMEwBvECK7wXy3MfEj7PbAvA5w6B8
+         /M/l3VTHOd8QX22cnhDDh4tpPuLDdD9oFn2pA7gPRCH82KbrcyzPJlFC1NRqfwkAOwXS
+         TmswHBdbhFVB75p8ekVvXh2cxPNTV/Ewz7VaUWuDmHqShT9kUfQuPuasbCiPladjhckN
+         D09KZUz3jk82HnyoyLIvBM6jJJkum1V/tDupxeTzJIlfdq1nJDty2C3r738ajb7pE5KE
+         UGu+s2UJvH1zsGdtNGoUr4nPkXUOzU3OAO0RYCbOb/5J0B61djvmUIgCM4rsn51qAoz8
+         QgDw==
+X-Gm-Message-State: APjAAAV1gi0ZmZ+IFGal5DJdTXnAzdkbS3uNiGfyZHmcFuPykdDdVZgH
+        +LGNxGlAfX8NYCY5gh5+ESca6qaS5awI+8GJMRgh4w==
+X-Google-Smtp-Source: APXvYqzJA0oarVNbcMx254Rxgm0ocDOJdIJTZOA0fppCRnNb/55GHaFez2T3pW6EU1cmssT3oMFxhwU7MDDuZHKDUmY=
+X-Received: by 2002:a17:906:57c3:: with SMTP id u3mr59264192ejr.254.1575000323169;
+ Thu, 28 Nov 2019 20:05:23 -0800 (PST)
 MIME-Version: 1.0
-References: <20191128121907.6178-1-yhchuang@realtek.com> <20191128121907.6178-3-yhchuang@realtek.com>
-In-Reply-To: <20191128121907.6178-3-yhchuang@realtek.com>
-From:   Chris Chiu <chiu@endlessm.com>
-Date:   Fri, 29 Nov 2019 11:33:29 +0800
-Message-ID: <CAB4CAwfoGxxZfuDJnbrxBNGXgxfsJzFNtqCXv4ZpEQx23eZRmQ@mail.gmail.com>
-Subject: Re: [PATCH 2/6] rtw88: pci: reset dma when reset pci trx ring
-To:     Tony Chuang <yhchuang@realtek.com>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Brian Norris <briannorris@chromium.org>
+References: <20191128033959.87715-1-pihsun@chromium.org> <d02f4eef9aa674cb36c1d90069a13e7bd02b7e40.camel@perches.com>
+In-Reply-To: <d02f4eef9aa674cb36c1d90069a13e7bd02b7e40.camel@perches.com>
+From:   Pi-Hsun Shih <pihsun@chromium.org>
+Date:   Fri, 29 Nov 2019 12:04:47 +0800
+Message-ID: <CANdKZ0eYSdPC2y5QxN1B7FshewXumrETQohbXrnvbovXMkSe9Q@mail.gmail.com>
+Subject: Re: [PATCH RESEND] wireless: Use offsetof instead of custom macro.
+To:     Joe Perches <joe@perches.com>
+Cc:     linux-wireless@vger.kernel.org,
+        Johannes Berg <johannes@sipsolutions.net>,
+        open list <linux-kernel@vger.kernel.org>,
+        "open list:CLANG/LLVM BUILD SUPPORT" 
+        <clang-built-linux@googlegroups.com>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Nov 28, 2019 at 8:19 PM <yhchuang@realtek.com> wrote:
+On Thu, Nov 28, 2019 at 11:54 AM Joe Perches <joe@perches.com> wrote:
 >
-> From: Chin-Yen Lee <timlee@realtek.com>
+> On Thu, 2019-11-28 at 11:39 +0800, Pi-Hsun Shih wrote:
+> > Use offsetof to calculate offset of a field to take advantage of
+> > compiler built-in version when possible, and avoid UBSAN warning when
+> > compiling with Clang:
+> []
+> > diff --git a/include/uapi/linux/wireless.h b/include/uapi/linux/wireless.h
+> []
+> > @@ -1090,8 +1090,7 @@ struct iw_event {
+> >  /* iw_point events are special. First, the payload (extra data) come at
+> >   * the end of the event, so they are bigger than IW_EV_POINT_LEN. Second,
+> >   * we omit the pointer, so start at an offset. */
+> > -#define IW_EV_POINT_OFF (((char *) &(((struct iw_point *) NULL)->length)) - \
+> > -                       (char *) NULL)
+> > +#define IW_EV_POINT_OFF offsetof(struct iw_point, length)
+> >  #define IW_EV_POINT_LEN      (IW_EV_LCP_LEN + sizeof(struct iw_point) - \
+> >                        IW_EV_POINT_OFF)
 >
-> When pci trx ring is reset, hw dma setting should be reset together.
-> Otherswise, the rx_tag of rx flow is not synchronous to hw.
->
-> Signed-off-by: Chin-Yen Lee <timlee@realtek.com>
-> Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
-> ---
->  drivers/net/wireless/realtek/rtw88/pci.c | 17 ++++++++++-------
->  1 file changed, 10 insertions(+), 7 deletions(-)
->
-> diff --git a/drivers/net/wireless/realtek/rtw88/pci.c b/drivers/net/wireless/realtek/rtw88/pci.c
-> index 068f1bec88e6..78971cefb948 100644
-> --- a/drivers/net/wireless/realtek/rtw88/pci.c
-> +++ b/drivers/net/wireless/realtek/rtw88/pci.c
-> @@ -486,13 +486,6 @@ static void rtw_pci_disable_interrupt(struct rtw_dev *rtwdev,
->         rtwpci->irq_enabled = false;
->  }
->
-> -static int rtw_pci_setup(struct rtw_dev *rtwdev)
-> -{
-> -       rtw_pci_reset_trx_ring(rtwdev);
-> -
-> -       return 0;
-> -}
-> -
->  static void rtw_pci_dma_reset(struct rtw_dev *rtwdev, struct rtw_pci *rtwpci)
->  {
->         /* reset dma and rx tag */
-> @@ -501,6 +494,16 @@ static void rtw_pci_dma_reset(struct rtw_dev *rtwdev, struct rtw_pci *rtwpci)
->         rtwpci->rx_tag = 0;
->  }
->
-> +static int rtw_pci_setup(struct rtw_dev *rtwdev)
-> +{
-> +       struct rtw_pci *rtwpci = (struct rtw_pci *)rtwdev->priv;
-> +
-> +       rtw_pci_reset_trx_ring(rtwdev);
-> +       rtw_pci_dma_reset(rtwdev, rtwpci);
-> +
-> +       return 0;
-> +}
-> +
-Just a little curious about that the rtw_pci_dma_reset() is already in
-rtw_pci_start(), then is it really necessary to do it in _setup? Or
-maybe the rtw_pci_dma_reset() in rtw_pci_start should be removed?
+> This is uapi.  Is offsetof guaranteed to be available?
 
-Chris
+offsetof is already used in other uapi headers
+(include/uapi/linux/fuse.h FUSE_NAME_OFFSET).
 
->  static void rtw_pci_dma_release(struct rtw_dev *rtwdev, struct rtw_pci *rtwpci)
->  {
->         struct rtw_pci_tx_ring *tx_ring;
-> --
-> 2.17.1
+Also offsetof is also defined back in C89 standard (in stddef.h), so
+it should be widely available and should be fine to use here?
+(Should I add a #ifndef __KERNEL__ #include <stddef.h> to the file?)
+
+>
+> Perhaps this is better without using another macro
+>
+> #define IW_EV_POINT_OFF ((size_t)&((struct iw_point *)NULL)->length)
+
+Clang UBSAN would still complain about this, since it's the same
+pattern as the original one.
+
 >
