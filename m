@@ -2,98 +2,84 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 13D2D10D1D5
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 Nov 2019 08:34:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B49CE10D1E5
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Nov 2019 08:39:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726829AbfK2HeL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 29 Nov 2019 02:34:11 -0500
-Received: from a27-186.smtp-out.us-west-2.amazonses.com ([54.240.27.186]:56712
-        "EHLO a27-186.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726360AbfK2HeK (ORCPT
+        id S1726877AbfK2HjG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 29 Nov 2019 02:39:06 -0500
+Received: from a27-10.smtp-out.us-west-2.amazonses.com ([54.240.27.10]:41548
+        "EHLO a27-10.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726360AbfK2HjF (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 29 Nov 2019 02:34:10 -0500
+        Fri, 29 Nov 2019 02:39:05 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1575012850;
-        h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Transfer-Encoding;
-        bh=rumz662KjdjNJ1SZfQvs+wG/DPl5sQDgKdfpuWgWoRM=;
-        b=mnXBBjtzOn5u4uxukLzwgTezf9B0hG7UmSakxRhue0LX6PBuVW5TJz/pp0Q4NoLI
-        5YAbRLZcHtS07he5WYDIga/lVXgRvxp9Ah8f5zSKyTD7fFPw01du9sq6T65aCOgOY6u
-        xj8v4Fmk04TVsDZfKHvT/kd4Oj2j5pI4cJK0xuQ4=
+        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1575013144;
+        h=Content-Type:MIME-Version:Content-Transfer-Encoding:Subject:From:In-Reply-To:References:To:Cc:Message-Id:Date;
+        bh=yoqfKJYFtB2wZZlk5yMP//J9SR/zR3LRyTDSp/Ss/mc=;
+        b=LZp0IYZ6lSo/lYzVvj+mCLPb9Pxmrof2hC8p0vghjNDgWPLty0/2yYhf8/oUfPJC
+        +ujSLsoTdeLh9jvcwnxsQHpcDw+5fPzfS+JLtrGi1QcyNbPSP/C7VTZllKqPYK0C3li
+        +q8NayD+MmKxVBw5cgjnCNsWtedwzJNBuOdFT/1Y=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=gdwg2y3kokkkj5a55z2ilkup5wp5hhxx; d=amazonses.com; t=1575012850;
-        h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Transfer-Encoding:Feedback-ID;
-        bh=rumz662KjdjNJ1SZfQvs+wG/DPl5sQDgKdfpuWgWoRM=;
-        b=PIRllKyrDVd9hJ/lg2tXJtuExmhgte93xQpMQeLSnMSnRIKiXPB8fWWDnIoyShJ0
-        ywgRVbKrPqOz+VOq3YlI3a40Fy8kIhv06/uzkkJQ8JJMGXnls4fodwHgRP1PQ/4Z7SV
-        QGHvF0jPAra8NMZkF3uDlhIjsao/PfDdGUNxxMMs=
+        s=gdwg2y3kokkkj5a55z2ilkup5wp5hhxx; d=amazonses.com; t=1575013144;
+        h=Content-Type:MIME-Version:Content-Transfer-Encoding:Subject:From:In-Reply-To:References:To:Cc:Message-Id:Date:Feedback-ID;
+        bh=yoqfKJYFtB2wZZlk5yMP//J9SR/zR3LRyTDSp/Ss/mc=;
+        b=hSGhzZKEFg83i6YChdEi9JqfuQK1HR6oQE2axRR+O164YbmJQ8WcRJTpTncDBMOC
+        cXQkDGjZdpxZR8W15AiCRQ18lTjciKOKQyWfsvxoBFeO1x/dsPfXIkpOV2GhXKzRIFc
+        xNByTjfmGEkphHTGC2cCPPEv69fl2iWlNRtOLnYg=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.0
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 6FED6C433CB
+X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
+        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 2C03AC433A2
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=wgong@codeaurora.org
-From:   Wen Gong <wgong@codeaurora.org>
-To:     ath10k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org
-Subject: [PATCH] ath: add support for special 0x0 regulatory domain
-Date:   Fri, 29 Nov 2019 07:34:09 +0000
-Message-ID: <0101016eb614d832-1f2459b1-1555-4ce7-8f90-5704d201bc10-000000@us-west-2.amazonses.com>
-X-Mailer: git-send-email 2.23.0
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SES-Outgoing: 2019.11.29-54.240.27.186
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH 01/10] ath11k: Fix htt stats sounding info and pdev cca
+ stats
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <0101016ea76291c1-5098ab8c-5e07-4a40-a582-6bd9ae513b74-000000@us-west-2.amazonses.com>
+References: <0101016ea76291c1-5098ab8c-5e07-4a40-a582-6bd9ae513b74-000000@us-west-2.amazonses.com>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     linux-wireless@vger.kernel.org, ath11k@lists.infradead.org
+User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
+Message-ID: <0101016eb6195852-b9f6933e-839e-4168-b559-8f43765c123d-000000@us-west-2.amazonses.com>
+Date:   Fri, 29 Nov 2019 07:39:04 +0000
+X-SES-Outgoing: 2019.11.29-54.240.27.10
 Feedback-ID: 1.us-west-2.CZuq2qbDmUIuT3qdvXlRHZZCpfZqZ4GtG9v3VKgRyF0=:AmazonSES
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Some sdio chips of rome QCA6174's regulatory domain code of EEPROM is
-empty, then ath_is_world_regd will return false for this case, and
-it will lead function __ath_reg_dyn_country not work, thus the regdomain
-will not update for NL80211_REGDOM_SET_BY_COUNTRY_IE type, it result
-ath10k set the same regdomain/reg_5ghz_ctl/reg_2ghz_ctl to firmware,
-then the tx power will not changed with different regdomain's AP. The
-regulatory domain code of EEPROM of some QCA6174 PCIE chip is 0x6c, it
-means world wide regdomain, for this chip, it does not have the issue.
+Kalle Valo <kvalo@codeaurora.org> wrote:
 
-For empty reulatory domain code chip, set it to world regulatory domain
-in functio ath_regd_sanitize, then it will fix the issue.
+> The Previous configuartion of htt stats sounding info and pdev cca stats
+> are invalid due to that getting time out error.
+> 
+> Changing htt stats sounding info value from 0xFF to 0x00 and htt pdev cca
+> stats from 0x10 to 0x00
+> 
+> Signed-off-by: Ganesh Sesetti <gseset@codeaurora.org>
+> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 
-Tested with QCA6174 SDIO with firmware
-WLAN.RMH.4.4.1-00029.
+10 patches applied to ath-next branch of ath.git, thanks.
 
-Signed-off-by: Wen Gong <wgong@codeaurora.org>
----
- drivers/net/wireless/ath/regd.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+86d4def890fd ath11k: Fix htt stats sounding info and pdev cca stats
+5e97128759b4 ath11k: fix resource leak in ath11k_mac_sta_state
+5b90fc760db5 ath11k: fix wmi service ready ext tlv parsing
+0f37fbf43c3f ath11k: update tcl cmd descriptor parameters for STA mode
+293cb5839729 ath11k: optimize RX path latency
+f1d34a01ed54 ath11k: avoid WMM param truncation
+d12ac6c47a32 ath11k: remove unused tx ring counters
+d2f510fa0103 ath11k: Fix skb_panic observed during msdu coalescing
+79c647a3c59d ath11k: Fixing TLV length issue in peer pktlog WMI command
+051cefa44667 ath11k: Fix target crash due to WBM_IDLE_LINK ring desc shortage
 
-diff --git a/drivers/net/wireless/ath/regd.c b/drivers/net/wireless/ath/regd.c
-index 20f4f8ea9f89..bee9110b91f3 100644
---- a/drivers/net/wireless/ath/regd.c
-+++ b/drivers/net/wireless/ath/regd.c
-@@ -666,14 +666,14 @@ ath_regd_init_wiphy(struct ath_regulatory *reg,
- 
- /*
-  * Some users have reported their EEPROM programmed with
-- * 0x8000 set, this is not a supported regulatory domain
-- * but since we have more than one user with it we need
-- * a solution for them. We default to 0x64, which is the
-- * default Atheros world regulatory domain.
-+ * 0x8000 or 0x0 set, this is not a supported regulatory
-+ * domain but since we have more than one user with it we
-+ * need a solution for them. We default to 0x64, which is
-+ * the default Atheros world regulatory domain.
-  */
- static void ath_regd_sanitize(struct ath_regulatory *reg)
- {
--	if (reg->current_rd != COUNTRY_ERD_FLAG)
-+	if (reg->current_rd != COUNTRY_ERD_FLAG && reg->current_rd != 0)
- 		return;
- 	printk(KERN_DEBUG "ath: EEPROM regdomain sanitized\n");
- 	reg->current_rd = 0x64;
 -- 
-2.23.0
+https://patchwork.kernel.org/patch/11261935/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
