@@ -2,87 +2,106 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D5FBF10EBE0
-	for <lists+linux-wireless@lfdr.de>; Mon,  2 Dec 2019 15:54:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 45FD310EE28
+	for <lists+linux-wireless@lfdr.de>; Mon,  2 Dec 2019 18:27:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727418AbfLBOyw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 2 Dec 2019 09:54:52 -0500
-Received: from a27-10.smtp-out.us-west-2.amazonses.com ([54.240.27.10]:40394
-        "EHLO a27-10.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727362AbfLBOyw (ORCPT
+        id S1727781AbfLBR1s (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 2 Dec 2019 12:27:48 -0500
+Received: from mail-pj1-f68.google.com ([209.85.216.68]:46115 "EHLO
+        mail-pj1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727460AbfLBR1r (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 2 Dec 2019 09:54:52 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1575298492;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding;
-        bh=1BQ4r9/xpX+9Yw4USyRxqrSypd0XnWFg2wq//swz0nw=;
-        b=etLMqc9UJ0zmDtuMIadWs8Sb1RChIeZgGej9WPbOKeF2Gufm5Gvss3DJPv6ydZOi
-        2oMkV+bf5r9UJ7O8xae3cmdmBM5abmugTMAWp+mUo1oNeridO2HvO2hCKaNFE45bm/3
-        3j9eNaZEJu6MsN9gSBv+dPSupyVLYWYP9Fp/ZJ8c=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=gdwg2y3kokkkj5a55z2ilkup5wp5hhxx; d=amazonses.com; t=1575298492;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Feedback-ID;
-        bh=1BQ4r9/xpX+9Yw4USyRxqrSypd0XnWFg2wq//swz0nw=;
-        b=PEg3mC3nuT24XICZbhLIEugfHq3s5Ry76eMNC3sJQgVwnaR9TsIp97Bcs+IYYkHy
-        RxMcOVyDuPY5kdAk1iwiFQadtmYvGDFa/xFMKkC4C/gyZTmvpeYqzWTLqsPwa8b2sbC
-        XgsrDMSyD/IbkJIdIcrbWgCAbPkk/+60zDsFcOlA=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.0
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org F1F2DC447A0
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     qize wang <wangqize888888888@gmail.com>
-Cc:     linux-wireless@vger.kernel.org, amitkarwar@gmail.com,
-        nishants@marvell.com, gbhat@marvell.com, huxinming820@gmail.com,
-        kvalo@codeaurora.org, greg@kroah.com, dan.carpenter@oracle.com,
-        solar@openwall.com
-Subject: Re: [PATCH v3] mwifiex: Fix heap overflow in mmwifiex_process_tdls_action_frame()
-References: <20191129101054.2756-1-wangqize888888888@gmail.com>
-Date:   Mon, 2 Dec 2019 14:54:52 +0000
-In-Reply-To: <20191129101054.2756-1-wangqize888888888@gmail.com> (qize wang's
-        message of "Fri, 29 Nov 2019 18:10:54 +0800")
-Message-ID: <0101016ec71b6643-65bb0c52-29a0-456e-aa6d-6a4649e28a03-000000@us-west-2.amazonses.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Mon, 2 Dec 2019 12:27:47 -0500
+Received: by mail-pj1-f68.google.com with SMTP id z21so5617870pjq.13
+        for <linux-wireless@vger.kernel.org>; Mon, 02 Dec 2019 09:27:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=orVQek45hbQSbuzOUHFucR+P4QAfww5RSJYpTiz6kMk=;
+        b=E1ZDHCEdlSiRs2pgt0MJ9z0hc0NMboqKJ6DAxfZKh3xlL0N+t0EaKMJXUj/mUCzz2g
+         GmK9qcWj11B1Z7c5zJmuLKI0cJjAFsuqBcW0d3RxcM1PJm1JRwfZEyUxJ+mmVjGyKEwh
+         pQvQ+fC84S/SL0QYkOX8HPS1JX4qDJoT+pkeGWwg0fDrfS1LHqyBMFb/OCo1Qxld1CXD
+         EJbeWQdrJqyq69KCpU4HwRBqXoT9roo3uRe0I2/zbVSGMZvjRRps3nrBqOJSWOQBRzqM
+         dan9oMXAEn29Kbgea+qTVrDcOl0olI/gJ5STJYPmDwjsonGIt5S1RrZrGEj5kgnkUjVs
+         0CcQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=orVQek45hbQSbuzOUHFucR+P4QAfww5RSJYpTiz6kMk=;
+        b=cXnjE1Lv32/iXwft8b4BVAvOuiPkMtw8RNgPyZBu8gGT7GxtJ/KFMfBYsbCxs5IrKX
+         d52QDZk4QQZtmxmFgolYdFOYT2PEDRlXZ5FeGKCnXntFvtzqokJj3/56dYKrb52Kd6D/
+         AhEJ8B+wn3a+nOlbSvDafbWy6RUl2gXHzb/4Hehznrh2Ty8ac1OiZh0mOZ28CQkUiBzk
+         pAfO8T8/QCESPQMSdtkWFiNOgAQ8tAx3f8GZrOFHombQzFHPGflqnZ9FyYBJIqzQRJw3
+         amOKCDQXL0OwoDhxJITA00Kqysav6m5iHE390ZxwkVAb387Un3d2gHo1C9W8+TWkhbaR
+         K45g==
+X-Gm-Message-State: APjAAAXivJcwMOd4OYVayIhkVsGnULN+pmGSGZs9Lw/AChQxIzESIMU9
+        BAKwz2/EVDO0tZgjbbXG+d8Bs67GT/YZOPQLbj37vD8MuPM=
+X-Google-Smtp-Source: APXvYqzaTKvhv+BQ331cpJ2A58psUjQ8mIb0ogedjAL9QEa7CqlVb1qtoPwOztva/oBIQC9ZAversWAN2WW/C5IN2g4=
+X-Received: by 2002:a17:90a:1505:: with SMTP id l5mr122297pja.73.1575307666825;
+ Mon, 02 Dec 2019 09:27:46 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-SES-Outgoing: 2019.12.02-54.240.27.10
-Feedback-ID: 1.us-west-2.CZuq2qbDmUIuT3qdvXlRHZZCpfZqZ4GtG9v3VKgRyF0=:AmazonSES
+References: <20191128033959.87715-1-pihsun@chromium.org> <d02f4eef9aa674cb36c1d90069a13e7bd02b7e40.camel@perches.com>
+ <CANdKZ0eYSdPC2y5QxN1B7FshewXumrETQohbXrnvbovXMkSe9Q@mail.gmail.com>
+In-Reply-To: <CANdKZ0eYSdPC2y5QxN1B7FshewXumrETQohbXrnvbovXMkSe9Q@mail.gmail.com>
+From:   Nick Desaulniers <ndesaulniers@google.com>
+Date:   Mon, 2 Dec 2019 09:27:35 -0800
+Message-ID: <CAKwvOd=g36hxdU-pspCf78JhLTtxTk2dvStR3SQLhTPeCrELVQ@mail.gmail.com>
+Subject: Re: [PATCH RESEND] wireless: Use offsetof instead of custom macro.
+To:     Pi-Hsun Shih <pihsun@chromium.org>
+Cc:     Joe Perches <joe@perches.com>, linux-wireless@vger.kernel.org,
+        Johannes Berg <johannes@sipsolutions.net>,
+        open list <linux-kernel@vger.kernel.org>,
+        "open list:CLANG/LLVM BUILD SUPPORT" 
+        <clang-built-linux@googlegroups.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-qize wang <wangqize888888888@gmail.com> writes:
+On Thu, Nov 28, 2019 at 8:05 PM Pi-Hsun Shih <pihsun@chromium.org> wrote:
+>
+> On Thu, Nov 28, 2019 at 11:54 AM Joe Perches <joe@perches.com> wrote:
+> >
+> > On Thu, 2019-11-28 at 11:39 +0800, Pi-Hsun Shih wrote:
+> > > Use offsetof to calculate offset of a field to take advantage of
+> > > compiler built-in version when possible, and avoid UBSAN warning when
+> > > compiling with Clang:
+> > []
+> > > diff --git a/include/uapi/linux/wireless.h b/include/uapi/linux/wireless.h
+> > []
+> > > @@ -1090,8 +1090,7 @@ struct iw_event {
+> > >  /* iw_point events are special. First, the payload (extra data) come at
+> > >   * the end of the event, so they are bigger than IW_EV_POINT_LEN. Second,
+> > >   * we omit the pointer, so start at an offset. */
+> > > -#define IW_EV_POINT_OFF (((char *) &(((struct iw_point *) NULL)->length)) - \
+> > > -                       (char *) NULL)
+> > > +#define IW_EV_POINT_OFF offsetof(struct iw_point, length)
+> > >  #define IW_EV_POINT_LEN      (IW_EV_LCP_LEN + sizeof(struct iw_point) - \
+> > >                        IW_EV_POINT_OFF)
+> >
+> > This is uapi.  Is offsetof guaranteed to be available?
+>
+> offsetof is already used in other uapi headers
+> (include/uapi/linux/fuse.h FUSE_NAME_OFFSET).
+>
+> Also offsetof is also defined back in C89 standard (in stddef.h), so
+> it should be widely available and should be fine to use here?
+> (Should I add a #ifndef __KERNEL__ #include <stddef.h> to the file?)
 
-> mwifiex_process_tdls_action_frame() without checking
-> the incoming tdls infomation element's vality before use it,
-> this may cause multi heap buffer overflows.
->
-> Fix them by putting vality check before use it.
->
-> IE is TLV struct, but ht_cap and  ht_oper aren=E2=80=99t TLV struct.
-> the origin marvell driver code is wrong:
->
-> memcpy(&sta_ptr->tdls_cap.ht_oper, pos,....
-> memcpy((u8 *)&sta_ptr->tdls_cap.ht_capb, pos,...
->
-> Fix the bug by changing pos(the address of IE) to
-> pos+2 ( the address of IE value ).
->
-> v3: change commit log
->
-> Signed-off-by: qize wang <wangqize888888888@gmail.com>
+Yes, please, otherwise userspace could have a
+-Wimplicit-function-definition warning from including this header,
+since it would look like a function call to a previously undeclared
+function.
 
-Applied manually (removed the changelog from commit), thanks.
+Actually, it looks like include/uapi/linux/posix_types.h includes it
+unconditionally, and many other headers under include/uapi/ include
+include/uapi/linux/posix_types.h (unconditionally).  So it may be ok
+to just include stddef.h unconditionally, but please do so in addition
+to the current diff you have.
 
-1e58252e334d mwifiex: Fix heap overflow in mmwifiex_process_tdls_action_fra=
-me()
-
---=20
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
-hes
+-- 
+Thanks,
+~Nick Desaulniers
