@@ -2,199 +2,73 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 786FE10E6AE
-	for <lists+linux-wireless@lfdr.de>; Mon,  2 Dec 2019 09:07:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A58210E71C
+	for <lists+linux-wireless@lfdr.de>; Mon,  2 Dec 2019 09:55:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726564AbfLBIHq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 2 Dec 2019 03:07:46 -0500
-Received: from dvalin.narfation.org ([213.160.73.56]:54016 "EHLO
-        dvalin.narfation.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726106AbfLBIHq (ORCPT
+        id S1726469AbfLBIzZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 2 Dec 2019 03:55:25 -0500
+Received: from alexa-out-tai-01.qualcomm.com ([103.229.16.226]:5737 "EHLO
+        alexa-out-tai-01.qualcomm.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726350AbfLBIzZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 2 Dec 2019 03:07:46 -0500
-X-Greylist: delayed 550 seconds by postgrey-1.27 at vger.kernel.org; Mon, 02 Dec 2019 03:07:45 EST
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-        s=20121; t=1575273513;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=Z+IfKs69GlzvzPxSUSClGfKItXK0H7cBQHFd/5JYlsE=;
-        b=LLhSfCnu4h+ck5dbgrYq8MXOT8Ekhfe1NBDHDukINsGcnFx9TJ6r0Q4efr2lUNHoAsNVXK
-        k5hEd1cFibaOjNrzr2OlSiV1RK+5gJcvkGGLo4TnE8tdqOrGNQfazWDCjIRundvEGnuYUc
-        IMBqeiYM/XitkVct9ZF92eA1IQOFKwc=
-From:   Sven Eckelmann <sven@narfation.org>
-To:     ath11k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org,
-        Sven Eckelmann <seckelmann@datto.com>
-Subject: [PATCH v7] ath11k: register HE mesh capabilities
-Date:   Mon,  2 Dec 2019 08:58:15 +0100
-Message-Id: <20191202075815.20409-1-sven@narfation.org>
-X-Mailer: git-send-email 2.20.1
+        Mon, 2 Dec 2019 03:55:25 -0500
+X-Greylist: delayed 364 seconds by postgrey-1.27 at vger.kernel.org; Mon, 02 Dec 2019 03:55:23 EST
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=qti.qualcomm.com; i=@qti.qualcomm.com; q=dns/txt;
+  s=qcdkim; t=1575276924; x=1606812924;
+  h=from:to:cc:date:message-id:references:in-reply-to:
+   content-transfer-encoding:mime-version:subject;
+  bh=mY4Mfzi4wHFg9TJbIm3FYqENG4Ux0hXcgw/UJCa3ao4=;
+  b=FUKYk137xnJT3fnn3McvBCr50gQYGCzlYzoRhvJt/ztPZLBeLi78JIVO
+   jyDmH2Fm+bqJhtuW5P0pHYh2FbWPSs1k10QHdAJ4t7GjZGnbUZFJ/lgvs
+   qaASd9ejzcnwj7goJxYAG9ObkICU6MK9Gcng67qhBXXZzEEAGdEDmze4i
+   U=;
+Subject: RE: [PATCH v7 0/3] ath10k: improve throughout of TX of sdio
+Thread-Topic: [PATCH v7 0/3] ath10k: improve throughout of TX of sdio
+Received: from ironmsg01-tai.qualcomm.com ([10.249.140.6])
+  by alexa-out-tai-01.qualcomm.com with ESMTP; 02 Dec 2019 16:49:10 +0800
+Received: from aptaiexm02e.ap.qualcomm.com ([10.249.150.15])
+  by ironmsg01-tai.qualcomm.com with ESMTP/TLS/AES256-SHA; 02 Dec 2019 16:49:06 +0800
+Received: from aptaiexm02f.ap.qualcomm.com (10.249.150.16) by
+ aptaiexm02e.ap.qualcomm.com (10.249.150.15) with Microsoft SMTP Server (TLS)
+ id 15.0.1473.3; Mon, 2 Dec 2019 16:49:04 +0800
+Received: from aptaiexm02f.ap.qualcomm.com ([fe80::4152:1436:e436:faa1]) by
+ aptaiexm02f.ap.qualcomm.com ([fe80::4152:1436:e436:faa1%19]) with mapi id
+ 15.00.1473.005; Mon, 2 Dec 2019 16:49:04 +0800
+From:   Wen Gong <wgong@qti.qualcomm.com>
+To:     Wen Gong <wgong@codeaurora.org>,
+        "ath10k@lists.infradead.org" <ath10k@lists.infradead.org>
+CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Thread-Index: AQHVhYWo2dAcydoA60KRzRcGJ7x5SKemz1QA
+Date:   Mon, 2 Dec 2019 08:49:04 +0000
+Message-ID: <5a0a6348feea46ae93c055189168d41f@aptaiexm02f.ap.qualcomm.com>
+References: <20191018072750.10372-1-wgong@codeaurora.org>
+In-Reply-To: <20191018072750.10372-1-wgong@codeaurora.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.249.136.10]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Sven Eckelmann <seckelmann@datto.com>
-
-The capabilities for the HE mesh are generated from the capabilities
-reported by the fw. But the firmware only reports the overall capabilities
-and not the one which are specific for mesh. Some of them (TWT, MU UL/DL,
-TB PPDU, ...) require an infrastructure setup with a main STA (AP)
-controlling the operations. This is not the case for mesh and thus these
-capabilities are removed from the list of capabilities.
-
-Signed-off-by: Sven Eckelmann <seckelmann@datto.com>
----
-* v7
-
-  - remove SU patch since the problems couldn't be reproduced (at the moment)
-    with firmware WLAN.HK.2.0.0.1-00043-QCAHKSWPL_SILICONZ-1
-
-* v6
-
-  - remove upstream merged mac80211 patch
-  - send only the ath11k relevant patches
-  - drop (internal DEP-3-like) "Forwarded:" tag
-  - switch from PATCH to RFC due to dropped HE support in ath11k
-
-* v5
-
-  - rebased patches
-  - moved ath11k meshpoint HE capabilities filter to avoid lines over 80
-    characters
-  - add patch to disable HE SU phy capabilities to work around problems
-    with WLAN.HK.2.1.0.1-00629-QCAHKSWPL_SILICONZ-1 firmware
-
-* v4
-
-  - switch order of the mac80211 HE mesh support and mac80211_hwsim support
-  - drop ie_len variable from ieee80211_ie_len_he_cap and
-    ieee80211_ie_build_he_oper
-  - switch to function ieee80211_get_he_iftype_cap instead of implementing new
-    function ieee80211_get_he_mesh_cap
-  - allow ieee80211_ie_len_he_cap to calculate length for non-mesh HE cap
-  - dropped he_support workaround in ath11k because now all phy_modes are
-    HE phy modes
-
-* v3
-
-  - force ath11k PHY mode for meshpoint vif to HE mode to avoid hang of
-    firmware when HE (or VHT on 2.4GHz) device tries to connect
-
-* v2:
-
-  - add of ath11k patch
-
-* v1:
-
-  - initial RFC
-
- drivers/net/wireless/ath/ath11k/mac.c | 75 +++++++++++++++++++++++++++
- 1 file changed, 75 insertions(+)
-
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index 978d8768d68a..65f6a2585577 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -3346,6 +3346,77 @@ static void ath11k_gen_ppe_thresh(struct ath11k_ppe_threshold *fw_ppet,
- 	}
- }
- 
-+static void
-+ath11k_mac_filter_he_cap_mesh(struct ieee80211_he_cap_elem *he_cap_elem)
-+{
-+	u8 m;
-+
-+	m = IEEE80211_HE_MAC_CAP0_TWT_RES |
-+	    IEEE80211_HE_MAC_CAP0_TWT_REQ;
-+	he_cap_elem->mac_cap_info[0] &= ~m;
-+
-+	m = IEEE80211_HE_MAC_CAP2_TRS |
-+	    IEEE80211_HE_MAC_CAP2_BCAST_TWT |
-+	    IEEE80211_HE_MAC_CAP2_MU_CASCADING;
-+	he_cap_elem->mac_cap_info[2] &= ~m;
-+
-+	m = IEEE80211_HE_MAC_CAP3_FLEX_TWT_SCHED |
-+	    IEEE80211_HE_MAC_CAP2_BCAST_TWT |
-+	    IEEE80211_HE_MAC_CAP2_MU_CASCADING;
-+	he_cap_elem->mac_cap_info[3] &= ~m;
-+
-+	m = IEEE80211_HE_MAC_CAP4_BSRP_BQRP_A_MPDU_AGG |
-+	    IEEE80211_HE_MAC_CAP4_BQR;
-+	he_cap_elem->mac_cap_info[4] &= ~m;
-+
-+	m = IEEE80211_HE_MAC_CAP5_SUBCHAN_SELECVITE_TRANSMISSION |
-+	    IEEE80211_HE_MAC_CAP5_UL_2x996_TONE_RU |
-+	    IEEE80211_HE_MAC_CAP5_PUNCTURED_SOUNDING |
-+	    IEEE80211_HE_MAC_CAP5_HT_VHT_TRIG_FRAME_RX;
-+	he_cap_elem->mac_cap_info[5] &= ~m;
-+
-+	m = IEEE80211_HE_PHY_CAP2_UL_MU_FULL_MU_MIMO |
-+	    IEEE80211_HE_PHY_CAP2_UL_MU_PARTIAL_MU_MIMO;
-+	he_cap_elem->phy_cap_info[2] &= ~m;
-+
-+	m = IEEE80211_HE_PHY_CAP3_RX_HE_MU_PPDU_FROM_NON_AP_STA |
-+	    IEEE80211_HE_PHY_CAP3_DCM_MAX_CONST_TX_MASK |
-+	    IEEE80211_HE_PHY_CAP3_DCM_MAX_CONST_RX_MASK;
-+	he_cap_elem->phy_cap_info[3] &= ~m;
-+
-+	m = IEEE80211_HE_PHY_CAP4_MU_BEAMFORMER;
-+	he_cap_elem->phy_cap_info[4] &= ~m;
-+
-+	m = IEEE80211_HE_PHY_CAP5_NG16_MU_FEEDBACK;
-+	he_cap_elem->phy_cap_info[5] &= ~m;
-+
-+	m = IEEE80211_HE_PHY_CAP6_CODEBOOK_SIZE_75_MU |
-+	    IEEE80211_HE_PHY_CAP6_TRIG_MU_BEAMFORMER_FB |
-+	    IEEE80211_HE_PHY_CAP6_TRIG_CQI_FB |
-+	    IEEE80211_HE_PHY_CAP6_PARTIAL_BANDWIDTH_DL_MUMIMO;
-+	he_cap_elem->phy_cap_info[6] &= ~m;
-+
-+	m = IEEE80211_HE_PHY_CAP7_SRP_BASED_SR |
-+	    IEEE80211_HE_PHY_CAP7_POWER_BOOST_FACTOR_AR |
-+	    IEEE80211_HE_PHY_CAP7_STBC_TX_ABOVE_80MHZ |
-+	    IEEE80211_HE_PHY_CAP7_STBC_RX_ABOVE_80MHZ;
-+	he_cap_elem->phy_cap_info[7] &= ~m;
-+
-+	m = IEEE80211_HE_PHY_CAP8_HE_ER_SU_PPDU_4XLTF_AND_08_US_GI |
-+	    IEEE80211_HE_PHY_CAP8_20MHZ_IN_40MHZ_HE_PPDU_IN_2G |
-+	    IEEE80211_HE_PHY_CAP8_20MHZ_IN_160MHZ_HE_PPDU |
-+	    IEEE80211_HE_PHY_CAP8_80MHZ_IN_160MHZ_HE_PPDU;
-+	he_cap_elem->phy_cap_info[8] &= ~m;
-+
-+	m = IEEE80211_HE_PHY_CAP9_LONGER_THAN_16_SIGB_OFDM_SYM |
-+	    IEEE80211_HE_PHY_CAP9_NON_TRIGGERED_CQI_FEEDBACK |
-+	    IEEE80211_HE_PHY_CAP9_RX_1024_QAM_LESS_THAN_242_TONE_RU |
-+	    IEEE80211_HE_PHY_CAP9_TX_1024_QAM_LESS_THAN_242_TONE_RU |
-+	    IEEE80211_HE_PHY_CAP9_RX_FULL_BW_SU_USING_MU_WITH_COMP_SIGB |
-+	    IEEE80211_HE_PHY_CAP9_RX_FULL_BW_SU_USING_MU_WITH_NON_COMP_SIGB;
-+	he_cap_elem->phy_cap_info[9] &= ~m;
-+}
-+
- static int ath11k_mac_copy_he_cap(struct ath11k *ar,
- 				  struct ath11k_pdev_cap *cap,
- 				  struct ieee80211_sband_iftype_data *data,
-@@ -3362,6 +3433,7 @@ static int ath11k_mac_copy_he_cap(struct ath11k *ar,
- 		switch (i) {
- 		case NL80211_IFTYPE_STATION:
- 		case NL80211_IFTYPE_AP:
-+		case NL80211_IFTYPE_MESH_POINT:
- 			break;
- 
- 		default:
-@@ -3402,6 +3474,9 @@ static int ath11k_mac_copy_he_cap(struct ath11k *ar,
- 			he_cap_elem->phy_cap_info[9] |=
- 				IEEE80211_HE_PHY_CAP9_TX_1024_QAM_LESS_THAN_242_TONE_RU;
- 			break;
-+		case NL80211_IFTYPE_MESH_POINT:
-+			ath11k_mac_filter_he_cap_mesh(he_cap_elem);
-+			break;
- 		}
- 
- 		he_cap->he_mcs_nss_supp.rx_mcs_80 =
--- 
-2.20.1
-
+> -----Original Message-----
+> From: ath10k <ath10k-bounces@lists.infradead.org> On Behalf Of Wen Gong
+> Sent: Friday, October 18, 2019 3:28 PM
+> To: ath10k@lists.infradead.org
+> Cc: linux-wireless@vger.kernel.org
+> Subject: [EXT] [PATCH v7 0/3] ath10k: improve throughout of TX of sdio
+>=20
+V8 sent:
+https://patchwork.kernel.org/cover/11265701/
+[v8,0/4] ath10k: improve throughout of TX of sdio=20
+[v8,1/4] ath10k: disable TX complete indication of htt for sdio =20
+[v8,2/4] ath10k: change ATH10K_SDIO_BUS_REQUEST_MAX_NUM from 64 to 1024 =20
+[v8,3/4] ath10k: add htt TX bundle for sdio =20
+[v8,4/4] ath10k: enable alt data of TX path for sdio
