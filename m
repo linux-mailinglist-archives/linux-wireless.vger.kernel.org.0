@@ -2,79 +2,103 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 03B7610E77D
-	for <lists+linux-wireless@lfdr.de>; Mon,  2 Dec 2019 10:16:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A3E9710E787
+	for <lists+linux-wireless@lfdr.de>; Mon,  2 Dec 2019 10:18:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726399AbfLBJQh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 2 Dec 2019 04:16:37 -0500
-Received: from a27-10.smtp-out.us-west-2.amazonses.com ([54.240.27.10]:45546
-        "EHLO a27-10.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725977AbfLBJQh (ORCPT
+        id S1726678AbfLBJSh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 2 Dec 2019 04:18:37 -0500
+Received: from mail-lj1-f196.google.com ([209.85.208.196]:45233 "EHLO
+        mail-lj1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726564AbfLBJSh (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 2 Dec 2019 04:16:37 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1575278196;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:MIME-Version:Content-Type;
-        bh=COnbxftEBWLk/YjBffS2u4ngrMnfsfjWsp0rQXcb4eg=;
-        b=Sal8jl5JMfVdbvza1QRNmonAhNrRKjrbuie7N6UwV0x1tQ7dACrYfIs6p/h9JFjV
-        LpfV4/Pyiwj9xaoxxEoCnDjSs81SZ1VWdPcsk1/fK+kMmfYNUUnNnCga/WYQZGjoXf/
-        pKiyCEbZe/q/S4UYBuqRQC92IEAcgQHlAE/SACN0=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=gdwg2y3kokkkj5a55z2ilkup5wp5hhxx; d=amazonses.com; t=1575278196;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:MIME-Version:Content-Type:Feedback-ID;
-        bh=COnbxftEBWLk/YjBffS2u4ngrMnfsfjWsp0rQXcb4eg=;
-        b=Jq48NeSTBBg1AnZf5vZjhmOBAqQCjbMUpWv4tJ+ybuJorvJnAH/AwDoNRZAfjwZW
-        xIdEHsereUGSyLUK8J/4k1NByz8gmUZUbRGbEy6YFJ8QXV1fjTOrWEk3ImpwbQhU6EC
-        HO7xGz0xLgAvosNDG6Aueil2A+HEmEfLU+ipNq4c=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE,
-        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 8759DC4479C
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Lorenzo Bianconi <lorenzo@kernel.org>
-Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
-        kevin.patrick.schmidt@googlemail.com, paweldembicki@gmail.com,
-        freifunk@adrianschmutzler.de, nbd@nbd.name
-Subject: Re: [PATCH] mt76: mt76x0: fix default mac address overwrite
-References: <567a7cda15f641acb6eab5970370c9bfac96793e.1574548832.git.lorenzo@kernel.org>
-        <20191201091439.GA5150@localhost.localdomain>
-Date:   Mon, 2 Dec 2019 09:16:35 +0000
-In-Reply-To: <20191201091439.GA5150@localhost.localdomain> (Lorenzo Bianconi's
-        message of "Sun, 1 Dec 2019 11:14:39 +0200")
-Message-ID: <0101016ec5e5b2cf-d96b3980-ed21-44e7-998f-05d3ff7bfc74-000000@us-west-2.amazonses.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        Mon, 2 Dec 2019 04:18:37 -0500
+Received: by mail-lj1-f196.google.com with SMTP id d20so9367004ljc.12
+        for <linux-wireless@vger.kernel.org>; Mon, 02 Dec 2019 01:18:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cogentembedded-com.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=6ja9ch4L0w7bAa4bcbmZySUMxjC9CzLUpvj1cQSMwa8=;
+        b=uTPBkofEFIQC1nYNeb3vu7LG+NQ2nRnifiuCq4czf9Xq9Sw6sSQloZymgl2qZ1CDFs
+         RPDy6rBjA9PIdmwDXFJtzsW4jQKHkCQCw8J8uQP3w3y54R7jgHpgAwV9hviCtrCphXxn
+         40MeEzGl4xX05vlCMNrLZ/Jzt6j6ZsX1PSPi2EOppkBQaGROJ8VzTtlWoikjZt8O1mms
+         UJ4BilLQ2Q01XGvwaRCLI3qZoEbSuUKzxZQPz/+7rggWsCiOJ+d8c4q2z7TY4GdL3iF1
+         pPagjRHFNmYnFeot7JpNyLGTEo280oearTe34ZzyVXuKchY2o7cICtf51vtpzqPqa2rA
+         M6cA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=6ja9ch4L0w7bAa4bcbmZySUMxjC9CzLUpvj1cQSMwa8=;
+        b=KTj2DnUFYiw/32kTW7RKtI4MZYqPfhD6f/cK+a0wMz0PRTV+V8wLKrq8bTc1rtEuH+
+         efyimS35jO6zASpe/ZuSwIU4NMh+tbxZ3pR3r0ayd80szF5kr5B6rDw8ynfdUF/jYELT
+         QY7P04bMZitf/2qxd4eEF8pvvNGGs7VYkU8hQyqwL88zCk98go0VO0k4YBJQTSXqTqUF
+         Uha25mI2bIFw1QXPRzUnnMdGMF/E28587O74DiAqn92D/GYxk7SlfTzpg0yswTzAePuI
+         Q9YwON+Vu73mbgDHq5oMINKVlV17Ai9Q8SKA1j6JjOt6ZmEHZ0y9B6hP/vIXAZLPRbsR
+         u1pA==
+X-Gm-Message-State: APjAAAVBjW4f1J4hoI5/HfO/EtfR6nGdcRbG5m5gS+aOc4OBSvnjQcwU
+        Xb2UF/iDiarKuSgk19c6tmE4Fg==
+X-Google-Smtp-Source: APXvYqxwpAVRrTt+ohqj3sU9ZfRrVqX02o1vwts4WBMtf4EDXl5MbSuF6EQGuhRhWwZFug6WCJYv4Q==
+X-Received: by 2002:a2e:b5ae:: with SMTP id f14mr13855009ljn.31.1575278314710;
+        Mon, 02 Dec 2019 01:18:34 -0800 (PST)
+Received: from ?IPv6:2a00:1fa0:61d:753e:cc38:6b74:7e0d:a1da? ([2a00:1fa0:61d:753e:cc38:6b74:7e0d:a1da])
+        by smtp.gmail.com with ESMTPSA id l8sm14769303ljj.96.2019.12.02.01.18.33
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 02 Dec 2019 01:18:34 -0800 (PST)
+Subject: Re: [PATCH v1] mt76: mt7615: Fix build with older compilers
+To:     Pablo Greco <pgreco@centosproject.org>
+Cc:     Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Roy Luo <royluo@google.com>, Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20191201181716.61892-1-pgreco@centosproject.org>
+From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Message-ID: <e18d798d-cdf3-da05-c139-403dfc80e8a3@cogentembedded.com>
+Date:   Mon, 2 Dec 2019 12:18:28 +0300
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-SES-Outgoing: 2019.12.02-54.240.27.10
-Feedback-ID: 1.us-west-2.CZuq2qbDmUIuT3qdvXlRHZZCpfZqZ4GtG9v3VKgRyF0=:AmazonSES
+In-Reply-To: <20191201181716.61892-1-pgreco@centosproject.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Lorenzo Bianconi <lorenzo@kernel.org> writes:
+Hello!
 
->> Current implementation always use default eeprom mac address to
->> configure device registers even if it is updated using
->> mt76_eeprom_override. Fix it initializing macaddr filed of mt76_dev data
->> structure with eeprom mac address and running mt76_eeprom_override
->> before mt76x02_mac_setaddr
->> 
->> Fixes: d1bc9bf2072c ("mt76: mt76x0: eeprom: add support for MAC address from OF")
->> Tested-by: Kevin Schmidt <kevin.patrick.schmidt@googlemail.com>
->> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
->
-> Hi Kalle,
->
-> since the commit d1bc9bf2072c is already in Linus's tree and multiple users
-> reported regression due this commit, could you please apply this patch in
-> wireless-drivers tree?
+On 01.12.2019 21:17, Pablo Greco wrote:
 
-Ok, I assigned this to me in patchwork and I'll queue this for v5.5.
+> Some compilers (tested with 4.8.5 from CentOS 7) fail properly process
 
--- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+    Fail to?
+
+> FIELD_GET inside an inline function, which ends up in a BUILD_BUG_ON.
+> Convert inline function to a macro.
+> 
+> Fixes commit bf92e7685100 ("mt76: mt7615: add support for per-chain
+> signal strength reporting")
+
+    Should be:
+
+Fixes: bf92e7685100 ("mt76: mt7615: add support for per-chain signal strength 
+reporting")
+
+    Do not ever break up the Fixes: line and don't insert empty lines between 
+it and other tags.
+
+> Reported in https://lkml.org/lkml/2019/9/21/146
+> 
+> Reported-by: kbuild test robot <lkp@intel.com>
+> Signed-off-by: Pablo Greco <pgreco@centosproject.org>
+[...]
+
+MBR, Sergei
