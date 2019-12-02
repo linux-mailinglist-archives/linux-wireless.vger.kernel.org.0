@@ -2,72 +2,60 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2908010E956
-	for <lists+linux-wireless@lfdr.de>; Mon,  2 Dec 2019 12:10:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C14F10EACA
+	for <lists+linux-wireless@lfdr.de>; Mon,  2 Dec 2019 14:26:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727428AbfLBLKZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 2 Dec 2019 06:10:25 -0500
-Received: from hostingweb31-40.netsons.net ([89.40.174.40]:43264 "EHLO
-        hostingweb31-40.netsons.net" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726330AbfLBLKY (ORCPT
+        id S1727418AbfLBN0q (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 2 Dec 2019 08:26:46 -0500
+Received: from mail-ot1-f65.google.com ([209.85.210.65]:37396 "EHLO
+        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727362AbfLBN0q (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 2 Dec 2019 06:10:24 -0500
-X-Greylist: delayed 3393 seconds by postgrey-1.27 at vger.kernel.org; Mon, 02 Dec 2019 06:10:23 EST
-Received: from [109.168.11.45] (port=52414 helo=pc-ceresoli.dev.aim)
-        by hostingweb31.netsons.net with esmtpa (Exim 4.92)
-        (envelope-from <luca@lucaceresoli.net>)
-        id 1ibiiB-0026XW-Su; Mon, 02 Dec 2019 11:13:47 +0100
-From:   Luca Ceresoli <luca@lucaceresoli.net>
-To:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Cc:     Luca Ceresoli <luca@lucaceresoli.net>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Intel Linux Wireless <linuxwifi@intel.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] iwlwifi: fix config variable name in comment
-Date:   Mon,  2 Dec 2019 11:13:39 +0100
-Message-Id: <20191202101339.24265-1-luca@lucaceresoli.net>
-X-Mailer: git-send-email 2.24.0
+        Mon, 2 Dec 2019 08:26:46 -0500
+Received: by mail-ot1-f65.google.com with SMTP id k14so15356954otn.4
+        for <linux-wireless@vger.kernel.org>; Mon, 02 Dec 2019 05:26:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=eLHcppuCKKt5ugCwGo+vnk4wfBLzbOa4UXM0v/yjwN8=;
+        b=p4v7twv1v7FCqFsewbN+ajf9rf9JK7Si5VkpdayO9KBr3/K3CYCJEZ1cfdz0II+pEr
+         zL1ugbUAXD+wmyCb5aEGQOZfKWlTdWiK1dyIdUE3XnidgqF3X4kJNUuQ+yucmz9lZOH3
+         bKc82XSZbDlroYH6IkimTSCep59bdGYdnfnnWvH2WU6qaxkqtFBXDE8rIV8RSUlqQNjF
+         ZdpdXUMPK+OvUGZfko7bod3pUjyXRlmRGFRjOYm/WSyLHsCnh7YlZ/zqa3SMTRv+SC5l
+         Kj5CCvP7TRI6F1kIOeva0UiSyR/2EdT2AgfzR4xhFIgbMTELHKxcIpuO8UNcrCeK/Kj1
+         EyCQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=eLHcppuCKKt5ugCwGo+vnk4wfBLzbOa4UXM0v/yjwN8=;
+        b=ExKwnIgHE7Uy3KS4B4R35WVtnfH1fWymAsw/L8z1Pnu2UF2WIgb515TlYCI/I7F9N1
+         tef+dz5rheKmQp4jrajB44KdteCsHjMneq9lyEmjqPvB73zjmgGMLaoeJ051szpzbzNa
+         bSstieREUSEFdsB8faAJLM2hSpPLViLUSIRKShvIhXaD39zbELit7FBr41YPwoCFUbDQ
+         9uTHobmX4SyqXFWjEWcVGpvqRh+akbpYNmNfFTSetlFmJiwiRoP5R5ASMxVybHcrXsu2
+         r4Gt54SxVxSuvdhu+edr6zu/2TrmnWgJar2DswtFPxU1BKiNnTu+tN8Ad68C54+U78ua
+         kJag==
+X-Gm-Message-State: APjAAAW7nwLrBPXaJ+ADIVWl/5SdWFUrCFDqh59lYeKJDPwoSd0Oa8nU
+        vOxtZ2ixYhQtOrw3Z/zpuWumMt4iXpb++MSlf/Q=
+X-Google-Smtp-Source: APXvYqyshpkVJ1WEeQ6WSyT0s17npLlzQ4aEwdQWAAqQGA7MXFwqPX1b7hCgoqj9qfnHt0zm3eXJZ/T7T6ayUpgDs/Y=
+X-Received: by 2002:a05:6830:2098:: with SMTP id y24mr1945954otq.312.1575293204688;
+ Mon, 02 Dec 2019 05:26:44 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - hostingweb31.netsons.net
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - lucaceresoli.net
-X-Get-Message-Sender-Via: hostingweb31.netsons.net: authenticated_id: luca+lucaceresoli.net/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: hostingweb31.netsons.net: luca@lucaceresoli.net
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Received: by 2002:ac9:7017:0:0:0:0:0 with HTTP; Mon, 2 Dec 2019 05:26:44 -0800 (PST)
+Reply-To: mrdavidkekeli01@gmail.com
+From:   "Mr.David Keller" <kojofofone@gmail.com>
+Date:   Mon, 2 Dec 2019 13:26:44 +0000
+Message-ID: <CAPFeOzqBfRQWcguG0PoKUVKRuEphXkMwrWAzy+O6hiy6Xsvwng@mail.gmail.com>
+Subject: GREETING
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The correct variable name was replaced here by mistake.
-
-Fixes: ab27926d9e4a ("iwlwifi: fix devices with PCI Device ID 0x34F0 and 11ac RF modules")
-Signed-off-by: Luca Ceresoli <luca@lucaceresoli.net>
----
- drivers/net/wireless/intel/iwlwifi/iwl-config.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-config.h b/drivers/net/wireless/intel/iwlwifi/iwl-config.h
-index 317eac066082..fb6838527e28 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-config.h
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-config.h
-@@ -636,6 +636,6 @@ extern const struct iwl_cfg iwlax210_2ax_cfg_so_hr_a0;
- extern const struct iwl_cfg iwlax211_2ax_cfg_so_gf_a0;
- extern const struct iwl_cfg iwlax210_2ax_cfg_ty_gf_a0;
- extern const struct iwl_cfg iwlax411_2ax_cfg_so_gf4_a0;
--#endif /* CPTCFG_IWLMVM || CPTCFG_IWLFMAC */
-+#endif /* CONFIG_IWLMVM */
- 
- #endif /* __IWL_CONFIG_H__ */
--- 
-2.24.0
-
+Hello God Bless You, did you receive my previous email? I sent you an
+urgent letter days ago without any response from you yet. Please
+answer me.
+Best Regard,
+Mr.David Keller.
