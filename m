@@ -2,168 +2,159 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DB42A110482
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Dec 2019 19:51:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E2CD71104B1
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Dec 2019 20:03:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726916AbfLCSvC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 3 Dec 2019 13:51:02 -0500
-Received: from mail-lj1-f194.google.com ([209.85.208.194]:42085 "EHLO
-        mail-lj1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726766AbfLCSvC (ORCPT
+        id S1727350AbfLCTC7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 3 Dec 2019 14:02:59 -0500
+Received: from mail-lf1-f65.google.com ([209.85.167.65]:36200 "EHLO
+        mail-lf1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727320AbfLCTC7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 3 Dec 2019 13:51:02 -0500
-Received: by mail-lj1-f194.google.com with SMTP id e28so5003587ljo.9
-        for <linux-wireless@vger.kernel.org>; Tue, 03 Dec 2019 10:50:59 -0800 (PST)
+        Tue, 3 Dec 2019 14:02:59 -0500
+Received: by mail-lf1-f65.google.com with SMTP id f16so3928070lfm.3
+        for <linux-wireless@vger.kernel.org>; Tue, 03 Dec 2019 11:02:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=exuvo-se.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding:content-language;
-        bh=UYPlN66v5ahPTXZiNDsjBLQKRwIqq+g+Z3gPWOZSC/g=;
-        b=FN2dVNseiHfq195zFy9LIyolnr2up5UXLvn3Q3FHJrQCKlcb1itNRoAhI5Wl2CjJA7
-         I+dMSG0z0EUAIb3L+sksnb1/m6IGvueMJCKF80RTOlB+RCzTHDkH9xbKfW2AzaD6Wr2Z
-         icq5fvmgORfldxZTqZZYVlx5PF5tN4+OiHI/PApEQeY8NEGbHUnZRJcRBkWubKWnOaSQ
-         t+6VMjmgGDLO/G0CTg2OwaLg5ImyRUeS4FJX/oOnFC0bZR3OQh43HJv/zlUCChvUf9oA
-         pXLd7ig+cCtIRGL+OeiTbAJrScduCqjWyUUb/5eECLX5zcjOHEFhXnX9rzH79ZgWs5NK
-         S0Kw==
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=WKfh6GWqcaSVgesRgdbFaj17CDDjaivkWCoA/zzVuzk=;
+        b=A6OMwBIPYhKqtUoc0aqT172eH5LSzXX/5Yj6kINNSYyyohieCqtm8KN9j84YPz3twY
+         NYJjl0S/O3YKRiTtOQZnMlm5u55uHlRnRVnynJ+1trJlHL6XAhvFqR45LIIpOGew51S5
+         LP/QchwQaGmpcNQv9r1ZTOWJaojXMcsySaFo0SF7RgKhn7IyZifuKPZFekTe+hes4TPf
+         zP9GY6RqiVCL/+LE6h1uD07DIzKWuWhBstKhFVnVbJWEzYQnjdyiYXtVJx2UDLxuxntu
+         KKvFWwDftVdkqChyV4pZHjHezUBTPsxMBKX/UICNrkycZv0MbZwrGZnkpccFYaDvlT6q
+         nIwQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding
-         :content-language;
-        bh=UYPlN66v5ahPTXZiNDsjBLQKRwIqq+g+Z3gPWOZSC/g=;
-        b=mZqMfX7vVI4hnYFMT0UYOTUBgKmaGAfkMsp2RmPBuq5VHzGGjXAD/zkWRoQMV9F/W6
-         3K/yBuGcVnCuzs3FfjgfD6m2lzcqhzWg2Hzta/Skuxdii51uiJUmk8QIJxsP5s6CKP4M
-         VBut7fYO0SzEukT6BlROHXf509fMnrff9hijQVreZ13ZzG/yCwXW5mgBKmgpuylH/XuH
-         eJuQ9sltPaWSGN+c7q3+3nWjs4yxCeZQQg/5BtcpB5skpsvYlNw/16Fwqh/BbnHGwrye
-         bapeOrT4zK6ZdF1O1ieZa6HjGJTRgJg+2Obm1iiRty6lWgNbULpqU7x0UWkyx3toJBYv
-         8acA==
-X-Gm-Message-State: APjAAAUiZiBlDd7RBvFOU7O0TcY55I7NXhsg5UYeiKH5JAaVJskSl84s
-        88oCN4tArkyz6fl9Vh2RPw7SPg==
-X-Google-Smtp-Source: APXvYqzYUt4jaoITjh2SooNhJuXURVi7Q9EBtl2MzF4z/F7tGYwaqBbMMXf2Y4SuZK8wSqBXbQKlrA==
-X-Received: by 2002:a2e:9f52:: with SMTP id v18mr3079299ljk.30.1575399058578;
-        Tue, 03 Dec 2019 10:50:58 -0800 (PST)
-Received: from [192.168.1.30] (c-eea3205c.06-131-73766c1.bbcust.telenor.se. [92.32.163.238])
-        by smtp.gmail.com with ESMTPSA id c12sm1787935ljk.77.2019.12.03.10.50.57
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 03 Dec 2019 10:50:57 -0800 (PST)
-Subject: Re: rt2x00 regression
-To:     Stanislaw Gruszka <sgruszka@redhat.com>
-Cc:     linux-wireless@vger.kernel.org,
-        Helmut Schaa <helmut.schaa@googlemail.com>
-References: <bff7d309-a816-6a75-51b6-5928ef4f7a8c@exuvo.se>
- <20190927080303.GA7667@redhat.com>
- <CA+GwT0B5SyRZnGLqwqOeuJK4CWMVc=dKaWre9VN8KQC6kBzKGw@mail.gmail.com>
- <20191203075736.GA701@redhat.com>
-From:   Anton Olsson <exuvo@exuvo.se>
-Message-ID: <d74dab51-3a84-9035-d89e-ea8f63e89198@exuvo.se>
-Date:   Tue, 3 Dec 2019 19:50:54 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.3.0
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=WKfh6GWqcaSVgesRgdbFaj17CDDjaivkWCoA/zzVuzk=;
+        b=AFJwSUbHeQaeYkg0RpsNUzg8/LlGxQQUg+Mbb928GCAqPJkkqUIoYHxJgxeo10Z6zs
+         bW7l+f+jFw1q6UBF7riOg1J0SHE4nlMjwuEVNu2SfcVsCiw4d89gKSS7Klf2gbdXvm/S
+         Ste/IZ73KmmDmOuo5p75dIVIrdvgsk6w54D2X2xdDRdIrUiiixoGQlbVTE3h/C95mfhS
+         BLkJe2SkdumldQM0a0mynPdq8+p6VpuXaWEdWR4qwg9+fz0WgCOP/w1bh5h5G5TiDkEO
+         4/WM6P1GhP5pnjdHdSR5Q1IOfFGt91qv/sDJrRXcpEtcuxpcaS+jH5ZrflDElqvoUNNA
+         LW/A==
+X-Gm-Message-State: APjAAAXbMCbUwiBrybt4DiLEs5g8+d/KJXtkt1rVqdu037joRg4bGuIx
+        FgS32gzhnbUxGhedJbKW3nWV495DCSNaizeefp0LYA==
+X-Google-Smtp-Source: APXvYqwitBPEhqoOUjaebGsAJwes+hxPAol9nfWGNbmaAJN5OleoZyKQjuozpKuBKgirVI2D/UnH7s7CF11QUYliVoA=
+X-Received: by 2002:ac2:5c4a:: with SMTP id s10mr3647289lfp.88.1575399775967;
+ Tue, 03 Dec 2019 11:02:55 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <20191203075736.GA701@redhat.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+References: <20191115014846.126007-1-kyan@google.com> <CA+iem5vaeLR6v_nZ1YUZhfj32wF0DrvC2nyp8nb8qYAZLQjLdw@mail.gmail.com>
+ <CAA93jw5wTbFV51oFJ6tFHLUMo=bau8fbU65k57bQjOHGJoCkkQ@mail.gmail.com>
+ <CA+iem5s4ZY239Q4=Gwy3WrmVhcdhesirXph6XQoOP5w-nuWcYw@mail.gmail.com>
+ <CAA93jw5t0TwBVv7_DVkJ_-NsVn0ODNHwU0orp2-+LPB45iFVoQ@mail.gmail.com>
+ <CA+iem5uVJFcCYpJfhker-48XPrOf3a+NWr-nKnBtGmLX2yB_Lg@mail.gmail.com>
+ <8736eiam8f.fsf@toke.dk> <CA+iem5tpfEmaWJ5Mw7xF9fb=XLceZpC1LM4Avo89Mn1fL7YZVw@mail.gmail.com>
+ <87a78p8rz7.fsf@toke.dk> <CA+iem5tNz2jjEOVmbh3aPTXLLZfkRjZ60-+bon1vDEJ8D4hQJw@mail.gmail.com>
+ <87muco5gv5.fsf@toke.dk> <CA+iem5sBPq0mfz+Qx+uJqCZ6t-Cjru+GCBcYExdu6JueUbBXyw@mail.gmail.com>
+ <87eexvyoy8.fsf@toke.dk> <878so2m5gp.fsf@nemesis.taht.net>
+In-Reply-To: <878so2m5gp.fsf@nemesis.taht.net>
+From:   Kan Yan <kyan@google.com>
+Date:   Tue, 3 Dec 2019 11:02:44 -0800
+Message-ID: <CA+iem5vVGSJXeB8k2n32f=TvqncEj+bOjVbunWS0G8sm_MEosw@mail.gmail.com>
+Subject: Re: [Make-wifi-fast] [PATCH v8 0/2] Implement Airtime-based Queue
+ Limit (AQL)
+To:     Dave Taht <dave@taht.net>
+Cc:     =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@redhat.com>,
+        Rajkumar Manoharan <rmanohar@codeaurora.org>,
+        Kevin Hayes <kevinhayes@google.com>,
+        Make-Wifi-fast <make-wifi-fast@lists.bufferbloat.net>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Yibo Zhao <yiboz@codeaurora.org>,
+        John Crispin <john@phrozen.org>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Felix Fietkau <nbd@nbd.name>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-| So, revert of that commit makes the problem gone ?
+Dave Taht <dave@taht.net> writes:
 
-No I have not yet tested that. Have had too much stuff going on and this is kinda low priority for me right now as it currently works on the old kernel.
+> I hope to take a close look at the iwl ax200 chips soon. Unless
+> someone beats me to it. Can we get these sort of stats out of it?
 
-On 2019-12-03 08:57, Stanislaw Gruszka wrote:
-> On Mon, Dec 02, 2019 at 05:40:20PM +0100, Exuvo wrote:
->> Sorry for the late reply
->>
->> The patch for increasing the amount did not work, i'll get around to
->> testing with the commit reverted.
-> So, revert of that commit makes the problem gone ?
+Here is a patch for the trace event I used to get the sojourn time:
+https://drive.google.com/open?id=3D1Mq8BO_kcneXBqf3m5Rz5xhEMj9jNbcJv
+
+Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com> writes:
+
+> While you're running tests, could you do one with the target changed to
+> 10ms, just to see what it looks like? Both sojourn time values and
+> throughput would be interesting here, of course.
+
+Apologize for the late reply. Here is the test results with target set to 1=
+0ms.
+The trace for the sojourn time:
+https://drive.google.com/open?id=3D1MEy_wbKKdl22yF17hZaGzpv3uOz6orTi
+
+Flent test for 20 ms target time vs 10 ms target time:
+https://drive.google.com/open?id=3D1leIWe0-L0XE78eFvlmRJlNmYgbpoH8xZ
+
+The sojourn time measured during throughput test with a relative good
+5G connection has mean value around 11 ms, pretty close to the 10 ms
+target.
+
+A smaller CoDel "target" time could help reduce latency, but it may
+drop packets too aggressively for stations with low data rate and
+hurts throughput, as shown in one of the tests with 2.4 GHz client.
+
+Overall, I think AQL and fq_codel works well, at least with ath10k.
+The current target value of 20 ms is a reasonable default.  It is
+relatively conservative that helps stations with weak signal to
+maintain stable throughput. Although, a debugfs entry that allows
+runtime adjustment of target value could be useful.
+
+On Tue, Nov 26, 2019 at 6:13 PM Dave Taht <dave@taht.net> wrote:
 >
->> As an aside what function can i call at that point in the code to print the
->> value in num_proto_errs? I assume some kernel special printf?
-> It's printk. You can add line like this to print values:
+> Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com> writes:
 >
-> printk("status %d num_proto_errs %u\n", status, rt2x00dev->num_proto_errs);
+> > Kan Yan <kyan@google.com> writes:
+> >
+> >>> Yeah, bpftrace can be a bit of a pain to get running; but it may be
+> >>> worth the investment longer term as well. It really is quite useful! =
+:)
+> >>
+> >> My attempt to build bpftrace didn't work out, so I just got the
+> >> sojourn time using old fashioned trace event.
+> >> The raw trace, parsed data in csv format and plots can be found here:
+> >> https://drive.google.com/open?id=3D1Mg_wHu7elYAdkXz4u--42qGCVE1nrILV
+> >>
+> >> All tests are done with 2 TCP download sessions that oversubscribed
+> >> the link bandwidth.
+> >> With AQL on, the mean sojourn time about ~20000us, matches the default
+> >> codel "target".
+> >
+> > Yeah, since CoDel is trying to control the latency to 20ms, it makes
+> > sense that the value is clustered around that. That means that the
+> > algorithm is working as they're supposed to :)
+> >
+> > While you're running tests, could you do one with the target changed to
+> > 10ms, just to see what it looks like? Both sojourn time values and
+> > throughput would be interesting here, of course.
+> >
+> >> With AQL off, the mean sojourn time is less than 4us even the latency
+> >> is off the charts, just as we expected that fd_codel with mac80211
+> >> alone is not effective for drivers with deep firmware/hardware queues
 >
-> Stanislaw
+> I hope to take a close look at the iwl ax200 chips soon. Unless
+> someone beats me to it. Can we get these sort of stats out of it?
 >
+> Has anyone looked at the marvell chips of late?
 >
->> On Fri, 27 Sep 2019, 10:03 Stanislaw Gruszka, <sgruszka@redhat.com> wrote:
->>
->>> On Thu, Sep 26, 2019 at 06:32:23PM +0200, Anton Olsson wrote:
->>>> Hello I have a USB based ID 148f:3070 Ralink Technology, Corp.
->>> RT2870/RT3070 Wireless Adapter, that stops working with recent kernels. It
->>> works on kernel 5.1.15 and does not work with 5.2.7 or 5.3.1 (I have not
->>> tested other versions). I use it in AP mode.
->>>> I found this similar bug report
->>> https://marc.info/?l=linux-wireless&m=156630037103575&w=2 but that did
->>> not have related error messages so I assume this is different?
->>>> Logs of working kernel 5.1.15-arch1-1-ARCH.
->>>> [   78.680555] ieee80211 phy0: rt2x00_set_rt: Info - RT chipset 3070,
->>> rev 0201 detected
->>>> [   78.690992] ieee80211 phy0: rt2x00_set_rf: Info - RF chipset 0005
->>> detected
->>>> [   78.799625] ieee80211 phy0: Selected rate control algorithm
->>> 'minstrel_ht'
->>>> sep 26 17:13:03 kernel: usbcore: registered new interface driver
->>> rt2800usb
->>>> sep 26 17:13:03 systemd[1]: Found device RT2870/RT3070 Wireless Adapter.
->>>> [  113.812454] ieee80211 phy0: rt2x00lib_request_firmware: Info -
->>> Loading firmware file 'rt2870.bin'
->>>> [  113.905279] ieee80211 phy0: rt2x00lib_request_firmware: Info -
->>> Firmware detected - version: 0.36
->>>> [  114.028703] ieee80211 phy0: rt2x00usb_vendor_request: Error - Vendor
->>> Request 0x06 failed for offset 0x0404 with error -71
->>>> The last error there does not seem to affect the operation of the device.
->>>>
->>>> Logs of not working with kernel 5.3.1, 5.2.7 has similar output.
->>>> sep 26 17:06:12 kernel: ieee80211 phy0: rt2x00_set_rt: Info - RT chipset
->>> 3070, rev 0201 detected
->>>> sep 26 17:06:12 kernel: ieee80211 phy0: rt2x00_set_rf: Info - RF chipset
->>> 0005 detected
->>>> sep 26 17:06:12 kernel: ieee80211 phy0: Selected rate control algorithm
->>> 'minstrel_ht'
->>>> sep 26 17:06:12 kernel: usbcore: registered new interface driver
->>> rt2800usb
->>>> sep 26 17:06:12 systemd[1]: Found device RT2870/RT3070 Wireless Adapter.
->>>> sep 26 17:06:21 ieee80211 phy0: rt2x00lib_request_firmware: Info -
->>> Loading firmware file 'rt2870.bin'
->>>> sep 26 17:06:21 ieee80211 phy0: rt2x00lib_request_firmware: Info -
->>> Firmware detected - version: 0.36
->>>> sep 26 17:06:21 ieee80211 phy0: rt2x00usb_vendor_request: Error - Vendor
->>> Request 0x06 failed for offset 0x0404 with>
->>>> sep 26 17:06:22 ieee80211 phy0: rt2800_wait_csr_ready: Error - Unstable
->>> hardware
->>>> sep 26 17:06:22 ieee80211 phy0: rt2800usb_set_device_state: Error -
->>> Device failed to enter state 4 (-5)
->>>> Unable to bring up the network interface here.
->>> This most likely is the problem introduced by commit:
->>>
->>> commit e383c70474db32b9d4a3de6dfbd08784d19e6751
->>> Author: Stanislaw Gruszka <sgruszka@redhat.com>
->>> Date:   Tue Mar 12 10:51:42 2019 +0100
->>>
->>>     rt2x00: check number of EPROTO errors
->>>
->>> Plase check below patch that increase number of EPROTO checks
->>> before marking device removed. If it does not help, plese
->>> check if reverting above commits helps.
->>>
->>> diff --git a/drivers/net/wireless/ralink/rt2x00/rt2x00usb.c
->>> b/drivers/net/wireless/ralink/rt2x00/rt2x00usb.c
->>> index bc2dfef0de22..215c3f092306 100644
->>> --- a/drivers/net/wireless/ralink/rt2x00/rt2x00usb.c
->>> +++ b/drivers/net/wireless/ralink/rt2x00/rt2x00usb.c
->>> @@ -30,7 +30,7 @@ static bool rt2x00usb_check_usb_error(struct rt2x00_dev
->>> *rt2x00dev, int status)
->>>         else
->>>                 rt2x00dev->num_proto_errs = 0;
->>>
->>> -       if (rt2x00dev->num_proto_errs > 3)
->>> +       if (rt2x00dev->num_proto_errs > 8)
->>>                 return true;
->>>
->>>         return false;
->>>
+> >
+> > Yup, also kinda expected; but another good way to visualise the impact.
+> > Nice!
+> >
+> > -Toke
+> >
+> > _______________________________________________
+> > Make-wifi-fast mailing list
+> > Make-wifi-fast@lists.bufferbloat.net
+> > https://lists.bufferbloat.net/listinfo/make-wifi-fast
