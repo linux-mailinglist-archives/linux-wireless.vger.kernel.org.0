@@ -2,156 +2,110 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F7CA10FAAD
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Dec 2019 10:22:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6EF0410FB3D
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Dec 2019 10:59:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725829AbfLCJWy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 3 Dec 2019 04:22:54 -0500
-Received: from paleale.coelho.fi ([176.9.41.70]:50178 "EHLO
-        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1725773AbfLCJWx (ORCPT
+        id S1726318AbfLCJ71 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 3 Dec 2019 04:59:27 -0500
+Received: from userp2130.oracle.com ([156.151.31.86]:58962 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725774AbfLCJ71 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 3 Dec 2019 04:22:53 -0500
-Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa)
-        by farmhouse.coelho.fi with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.92.2)
-        (envelope-from <luca@coelho.fi>)
-        id 1ic4ON-000597-Us; Tue, 03 Dec 2019 11:22:48 +0200
-Message-ID: <b9b21e355b1e9cc5c5d6d3eda978c47eddb16442.camel@coelho.fi>
-From:   Luca Coelho <luca@coelho.fi>
-To:     Kalle Valo <kvalo@codeaurora.org>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Cc:     linux-wireless@vger.kernel.org, stable@vger.kernel.org
-Date:   Tue, 03 Dec 2019 11:22:45 +0200
-In-Reply-To: <0101016ecb005b15-cd83cdda-61c0-46bd-86e5-ae4449c195ef-000000@us-west-2.amazonses.com>
-References: <20191120132628.30731-1-emmanuel.grumbach@intel.com>
-         <20191203080849.12013-1-emmanuel.grumbach@intel.com>
-         <0101016ecb005b15-cd83cdda-61c0-46bd-86e5-ae4449c195ef-000000@us-west-2.amazonses.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.1-2+b1 
+        Tue, 3 Dec 2019 04:59:27 -0500
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xB39mqEV046169;
+        Tue, 3 Dec 2019 09:59:14 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
+ bh=GMmw6G30mIhLrf+EFWdyjTxFBTqyY4JokeFFwksph9A=;
+ b=lOxFiOmjrnmy0QWfJXoLjFbVVNQiOi9BcydMqsyoOtXJNRNIf69qDGV+Tgv8qtxhfBi5
+ FCwlr9xl8hv7MDb0gfxcMj7tEE2juMPv8E3mK11eDOMOR7HWm1XUXR/3+Ub405ap2yh5
+ VlWiSAFyuAkTUqjyT7Uy1T40M78PduaBCooZcFJgoi9fQz4SRM9T3v6AqdgxKw2K2S7I
+ 2sjT9xRdR33uWSimE7axv4w4nacVeGD2R3PBatj39nhMSAn2T4vaXoe2gb2ONNqlRa9e
+ MWLySRIaiQSgQE+ClNkHW5Q9zs2j3hkbDxfmWzMIXbXLCOoLfR/MTcwdZ0TmDOIbtKFr MA== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by userp2130.oracle.com with ESMTP id 2wkfuu6me6-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 03 Dec 2019 09:59:14 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xB39m0SB020392;
+        Tue, 3 Dec 2019 09:59:13 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by aserp3020.oracle.com with ESMTP id 2wnb7xcq00-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 03 Dec 2019 09:59:13 +0000
+Received: from abhmp0012.oracle.com (abhmp0012.oracle.com [141.146.116.18])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id xB39xBMV022039;
+        Tue, 3 Dec 2019 09:59:11 GMT
+Received: from kili.mountain (/129.205.23.165)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 03 Dec 2019 01:59:10 -0800
+Date:   Tue, 3 Dec 2019 12:58:55 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Arend van Spriel <arend.vanspriel@broadcom.com>,
+        Franky Lin <frankyl@broadcom.com>
+Cc:     Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
+        Wright Feng <wright.feng@cypress.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Douglas Anderson <dianders@chromium.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
+        Naveen Gupta <naveen.gupta@cypress.com>,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        brcm80211-dev-list@cypress.com, kernel-janitors@vger.kernel.org
+Subject: [PATCH] brcmfmac: Fix use after free in brcmf_sdio_readframes()
+Message-ID: <20191203095855.c4fradmsixgbq7mc@kili.mountain>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on farmhouse.coelho.fi
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
-        TVD_RCVD_IP,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.2
-Subject: Re: [PATCH v4] iwlwifi: mvm: don't send the IWL_MVM_RXQ_NSSN_SYNC
- notif to Rx queues
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9459 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=2 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1911140001 definitions=main-1912030080
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9459 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=2 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
+ definitions=main-1912030080
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 2019-12-03 at 09:03 +0000, Kalle Valo wrote:
-> Emmanuel Grumbach <emmanuel.grumbach@intel.com> writes:
-> 
-> > The purpose of this was to keep all the queues updated with
-> > the Rx sequence numbers because unlikely yet possible
-> > situations where queues can't understand if a specific
-> > packet needs to be dropped or not.
-> > 
-> > Unfortunately, it was reported that this caused issues in
-> > our DMA engine. We don't fully understand how this is related,
-> > but this is being currently debugged. For now, just don't send
-> > this notification to the Rx queues. This de-facto reverts my
-> > commit 3c514bf831ac12356b695ff054bef641b9e99593:
-> > 
-> > iwlwifi: mvm: add a loose synchronization of the NSSN across Rx queues
-> > 
-> > This issue was reported here:
-> > https://bugzilla.kernel.org/show_bug.cgi?id=204873
-> > https://bugzilla.kernel.org/show_bug.cgi?id=205001
-> > and others maybe.
-> > 
-> > Fixes: 3c514bf831ac ("iwlwifi: mvm: add a loose synchronization of the NSSN across Rx queues")
-> > CC: <stable@vger.kernel.org> # 5.3+
-> > Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-> > ---
-> > v2: fix an unused variable warning
-> > v3: don't comment out the code
-> > v4: fix checkpatch issues
-> > ---
-> >  .../wireless/intel/iwlwifi/mvm/constants.h    |  1 +
-> >  drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c | 19 +++++++++++--------
-> >  2 files changed, 12 insertions(+), 8 deletions(-)
-> > 
-> > diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/constants.h b/drivers/net/wireless/intel/iwlwifi/mvm/constants.h
-> > index 60aff2ecec12..58df25e2fb32 100644
-> > --- a/drivers/net/wireless/intel/iwlwifi/mvm/constants.h
-> > +++ b/drivers/net/wireless/intel/iwlwifi/mvm/constants.h
-> > @@ -154,5 +154,6 @@
-> >  #define IWL_MVM_D3_DEBUG			false
-> >  #define IWL_MVM_USE_TWT				false
-> >  #define IWL_MVM_AMPDU_CONSEC_DROPS_DELBA	10
-> > +#define IWL_MVM_USE_NSSN_SYNC			0
-> >  
-> 
-> [...]
-> 
-> >  static void iwl_mvm_sync_nssn(struct iwl_mvm *mvm, u8 baid, u16 nssn)
-> >  {
-> > -	struct iwl_mvm_rss_sync_notif notif = {
-> > -		.metadata.type = IWL_MVM_RXQ_NSSN_SYNC,
-> > -		.metadata.sync = 0,
-> > -		.nssn_sync.baid = baid,
-> > -		.nssn_sync.nssn = nssn,
-> > -	};
-> > -
-> > -	iwl_mvm_sync_rx_queues_internal(mvm, (void *)&notif, sizeof(notif));
-> > +	if (IWL_MVM_USE_NSSN_SYNC) {
-> > +		struct iwl_mvm_rss_sync_notif notif = {
-> > +			.metadata.type = IWL_MVM_RXQ_NSSN_SYNC,
-> > +			.metadata.sync = 0,
-> > +			.nssn_sync.baid = baid,
-> > +			.nssn_sync.nssn = nssn,
-> > +		};
-> > +
-> > +		iwl_mvm_sync_rx_queues_internal(mvm, (void *)&notif,
-> > +						sizeof(notif));
-> > +	}
-> 
-> This is dead code, which is frowned upon and we most likely get cleanup
-> patches removing it in no time. Please just remove the code, and maybe
-> even the function. You can easily add it back with git-revert when you
-> want to fix it. Let's not leave dead code lying around.
+The brcmu_pkt_buf_free_skb() function frees "pkt" so it leads to a
+static checker warning:
 
-Hi Kalle,
+    drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c:1974 brcmf_sdio_readframes()
+    error: dereferencing freed memory 'pkt'
 
-We already have a system like this where we have some constants to
-enable/disable things or hardcode certain parameters in our driver. 
-The main reason for having this is that we have a debugging/maturation
-system internally where we can enable and disable such options
-dynamically (actually with a specific .ini file we create).
+It looks like there was supposed to be a continue after we free "pkt".
 
-Some advantages of doing this are:
+Fixes: 4754fceeb9a6 ("brcmfmac: streamline SDIO read frame routine")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+Static analysis.  Not tested.
 
-1. The code that goes upstream is not so different from our internal
-development trees;
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-2. By reducing the delta from the internal tree to upstream, we reduce
-the merge conflicts, rebase and merge damages etc.;
-
-3. It's easy to enable and disable features that are not completely
-mature in the FW without having to diverge much (again) from the
-internal tree, because we need to support it internally while it's
-still under development in the driver;
-
-4. It's easy to tell the community how to enable or disable a feature
-when we need help debugging;
-
-5. All of this is to make it easier for us to have an upstream driver
-that is as close as possible to our internal development trees. :)
-
-
-I hope this makes sense.  If not, one of the alternatives would be to
-convert this macro into a Kconfig option, but I think that just
-clutters things and the code would still be dead until we tell people
-that it's stable enough to use it...
-
-What do you think?
-
---
-Cheers,
-Luca.
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+index 264ad63232f8..1dea0178832e 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+@@ -1935,6 +1935,7 @@ static uint brcmf_sdio_readframes(struct brcmf_sdio *bus, uint maxframes)
+ 					       BRCMF_SDIO_FT_NORMAL)) {
+ 				rd->len = 0;
+ 				brcmu_pkt_buf_free_skb(pkt);
++				continue;
+ 			}
+ 			bus->sdcnt.rx_readahead_cnt++;
+ 			if (rd->len != roundup(rd_new.len, 16)) {
+-- 
+2.11.0
 
