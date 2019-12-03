@@ -2,150 +2,84 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A02DE10F348
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Dec 2019 00:16:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D137E10F903
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Dec 2019 08:39:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725899AbfLBXQv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 2 Dec 2019 18:16:51 -0500
-Received: from mail-qt1-f195.google.com ([209.85.160.195]:35378 "EHLO
-        mail-qt1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725834AbfLBXQv (ORCPT
+        id S1727493AbfLCHja (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 3 Dec 2019 02:39:30 -0500
+Received: from a27-188.smtp-out.us-west-2.amazonses.com ([54.240.27.188]:60966
+        "EHLO a27-188.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727386AbfLCHja (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 2 Dec 2019 18:16:51 -0500
-Received: by mail-qt1-f195.google.com with SMTP id n4so1716919qte.2
-        for <linux-wireless@vger.kernel.org>; Mon, 02 Dec 2019 15:16:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=XTm3dIVEwoz69UzoNll0eH2uELBdoJqAtHJA5yeL0is=;
-        b=R5LmWfCSsJpYdgPcFvM0IRr66wtepwKsb4IrXCqi5vv5W7LWGB/m32rCox2Y99L3W5
-         f+wswdRImsowi/CvCwvf3yMYUHjx6yAXZ+Cc6lvgxkIEgokOXQb5g/5+QRJndYPHP0+g
-         FiO7FSDgnxOrC9K0fhx/q4qfHya/gzpHSWZqY=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=XTm3dIVEwoz69UzoNll0eH2uELBdoJqAtHJA5yeL0is=;
-        b=k62wiSN6CjenXvxlp/VpuczL6DN/FXyNTvne2ULKXajitTkNdTMeN6KZyys8CBYOJC
-         bHPuJC4l10lId1AhW2T63JWR51AbTfJyXm6C/im6IoMc/ODw2CtXo6ajF9E6HwXIUWof
-         S3P6yy32y8+HEmmhc2YHYXbjufcxhG4d0azNvV5rrGiG5J1f8Ha7OvsXOj9vBk2M0HF3
-         +uArmdF8s0TZWsbHgPGjZxap2NqGMHZr/mmS8K6c2u+izpoHTf1QwYW1jKOOCbL/t3je
-         tPlmGI0wO4zQpEJN4hppphvYIsjYWH2CJFBzPVBzBfGyEkTHdCDHWEIh2tzC4ehjdj+F
-         XMew==
-X-Gm-Message-State: APjAAAUEOe+PAYXg191HFbzPBOcBBXtf1AvJOElWo4hNLkqWpbuLJDK5
-        uA2rfHWJYvH8aeGEErSONx6LLoS1fFc=
-X-Google-Smtp-Source: APXvYqycQsXMR7JrTLlMdgz/zTaFw21wTgZ0TGaUF6Q5YzVUk3yk5lHA7zgaXPIoR1a+uNlKrrdHzA==
-X-Received: by 2002:ac8:60d3:: with SMTP id i19mr2126780qtm.391.1575328609343;
-        Mon, 02 Dec 2019 15:16:49 -0800 (PST)
-Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com. [209.85.160.176])
-        by smtp.gmail.com with ESMTPSA id g18sm636429qkm.112.2019.12.02.15.16.47
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 02 Dec 2019 15:16:47 -0800 (PST)
-Received: by mail-qt1-f176.google.com with SMTP id n4so1716753qte.2
-        for <linux-wireless@vger.kernel.org>; Mon, 02 Dec 2019 15:16:47 -0800 (PST)
-X-Received: by 2002:ac8:327b:: with SMTP id y56mr2125727qta.161.1575328606993;
- Mon, 02 Dec 2019 15:16:46 -0800 (PST)
+        Tue, 3 Dec 2019 02:39:30 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1575358769;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:MIME-Version:Content-Type;
+        bh=a2D4wM666fr/+jCNeFoZ47rprr1qoCyHM6VCgoEhS1U=;
+        b=ZqD4L2VsRT7sxT4imN/KnHhs2HWX4z6ecZvewRt6MXkqYKokPVnAbodMCXKgIni0
+        lPYz1My03EsPmN5DYc6H/I1Kz0c2Mmz2XyQlnMOVyJfw2+QsvFgradudhYw60Zkw8fe
+        m41WCezQczuMOejc7ol8ZEfTxo75NTfcdTXRTVFY=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+        s=gdwg2y3kokkkj5a55z2ilkup5wp5hhxx; d=amazonses.com; t=1575358769;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:MIME-Version:Content-Type:Feedback-ID;
+        bh=a2D4wM666fr/+jCNeFoZ47rprr1qoCyHM6VCgoEhS1U=;
+        b=YcrCogGPoUkhv2khtfS5rW6CpSeCXwgZuCZbrEYxgRwHLlNJysvoNFDjQN1/gYHG
+        6rrFtB3LvZ5ezJUU+vPdteK6mauUImSDVAUKsas1vSFVkFqEx+Z766tSDSEjxhPeSsz
+        nGOWKIIWMIPjAZ8bBpq6/6zsByxEzCpqTPwmynlc=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.0
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 0AC81C447AE
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Anders Kaseorg <andersk@mit.edu>
+Cc:     Johannes Berg <johannes.berg@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        Intel Linux Wireless <linuxwifi@intel.com>,
+        linux-wireless@vger.kernel.org
+Subject: Re: [PATCH v1.2] Revert "iwlwifi: assign directly to iwl_trans->cfg in QuZ detection"
+References: <alpine.DEB.2.21.999.1912010127330.108936@department-of-alchemy.mit.edu>
+        <alpine.DEB.2.21.999.1912021653360.21300@department-of-alchemy.mit.edu>
+        <alpine.DEB.2.21.999.1912021706060.21300@department-of-alchemy.mit.edu>
+Date:   Tue, 3 Dec 2019 07:39:28 +0000
+In-Reply-To: <alpine.DEB.2.21.999.1912021706060.21300@department-of-alchemy.mit.edu>
+        (Anders Kaseorg's message of "Mon, 2 Dec 2019 17:09:20 -0500 (EST)")
+Message-ID: <0101016ecab326d1-88123857-cf37-47ab-b452-13658625364c-000000@us-west-2.amazonses.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-References: <20191129101054.2756-1-wangqize888888888@gmail.com>
-In-Reply-To: <20191129101054.2756-1-wangqize888888888@gmail.com>
-From:   Brian Norris <briannorris@chromium.org>
-Date:   Mon, 2 Dec 2019 15:16:35 -0800
-X-Gmail-Original-Message-ID: <CA+ASDXOj0rz4S3BoMdF1pqOiVZ4yhVE_Qy+s6iTObCnhFfwFLw@mail.gmail.com>
-Message-ID: <CA+ASDXOj0rz4S3BoMdF1pqOiVZ4yhVE_Qy+s6iTObCnhFfwFLw@mail.gmail.com>
-Subject: Re: [PATCH v3] mwifiex: Fix heap overflow in mmwifiex_process_tdls_action_frame()
-To:     qize wang <wangqize888888888@gmail.com>
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
-        amit karwar <amitkarwar@gmail.com>,
-        Nishant Sarmukadam <nishants@marvell.com>,
-        Ganapathi Bhat <gbhat@marvell.com>,
-        Xinming Hu <huxinming820@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>, greg@kroah.com,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        Solar Designer <solar@openwall.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-SES-Outgoing: 2019.12.03-54.240.27.188
+Feedback-ID: 1.us-west-2.CZuq2qbDmUIuT3qdvXlRHZZCpfZqZ4GtG9v3VKgRyF0=:AmazonSES
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-A bit late, but a few readability and maintainability thoughts:
+Anders Kaseorg <andersk@mit.edu> writes:
 
-On Fri, Nov 29, 2019 at 2:12 AM qize wang <wangqize888888888@gmail.com> wro=
-te:
+> This reverts commit 968dcfb4905245dc64d65312c0d17692fa087b99.
 >
-> mwifiex_process_tdls_action_frame() without checking
-> the incoming tdls infomation element's vality before use it,
-> this may cause multi heap buffer overflows.
+> Both that commit and commit 809805a820c6445f7a701ded24fdc6bbc841d1e4
+> attempted to fix the same bug (dead assignments to the local variable
+> cfg), but they did so in incompatible ways. When they were both merged,
+> independently of each other, the combination actually caused the bug to
+> reappear, leading to a firmware crash on boot for some cards.
 >
-> Fix them by putting vality check before use it.
+> https://bugzilla.kernel.org/show_bug.cgi?id=205719
 >
-> IE is TLV struct, but ht_cap and  ht_oper aren=E2=80=99t TLV struct.
-> the origin marvell driver code is wrong:
->
-> memcpy(&sta_ptr->tdls_cap.ht_oper, pos,....
-> memcpy((u8 *)&sta_ptr->tdls_cap.ht_capb, pos,...
->
-> Fix the bug by changing pos(the address of IE) to
-> pos+2 ( the address of IE value ).
->
-> v3: change commit log
->
-
-Would have been great to have a
-
-Cc: <stable@vger.kernel.org>
-
-tag here. I'm not sure if "just have GregKH on CC" is the right process...
-
-> Signed-off-by: qize wang <wangqize888888888@gmail.com>
+> Signed-off-by: Anders Kaseorg <andersk@mit.edu>
 > ---
->  drivers/net/wireless/marvell/mwifiex/tdls.c | 70 +++++++++++++++++++++++=
-+++---
->  1 file changed, 64 insertions(+), 6 deletions(-)
->
-> diff --git a/drivers/net/wireless/marvell/mwifiex/tdls.c b/drivers/net/wi=
-reless/marvell/mwifiex/tdls.c
-> index 09313047beed..7caf1d26124a 100644
-> --- a/drivers/net/wireless/marvell/mwifiex/tdls.c
-> +++ b/drivers/net/wireless/marvell/mwifiex/tdls.c
-> @@ -953,59 +953,117 @@ void mwifiex_process_tdls_action_frame(struct mwif=
-iex_private *priv,
->
->                 switch (*pos) {
->                 case WLAN_EID_SUPP_RATES:
-> +                       if (pos[1] > 32)
+> [Nope it was more than just format=flowed damage. This one should be
+> better for real.]
 
-Really, you needed a magic '32' here? Would be much clearer with:
+This is nitpicking but as a general comment I would prefer to use simple
+version numbering v2, v3 and so on. Trying to sort v1.2 in a script is
+awful. So calling this version v3 is very much preferred, it's not like
+we are running out of numbers :)
 
-  if (pos[1] > sizeof(sta_ptr->tdls_cap.rates))
-
-Same with many of the other cases.
-
-> +                               return;
-
-Is 'return' really the right answer for all of these? Just because,
-e.g., the rates IE is larger than our internal struct, should we
-really drop the entire frame? Should we be continuing to parse the
-other IEs, if possible? Or is this overflow a sign of a totally
-damaged (possibly malicious) frame, because it's required to be
-smaller than this? (Sorry, I didn't read the spec here yet.)
-
->                         sta_ptr->tdls_cap.rates_len =3D pos[1];
->                         for (i =3D 0; i < pos[1]; i++)
->                                 sta_ptr->tdls_cap.rates[i] =3D pos[i + 2]=
-;
->                         break;
->
-[...]
->                 case WLAN_EID_HT_CAPABILITY:
-> -                       memcpy((u8 *)&sta_ptr->tdls_cap.ht_capb, pos,
-> +                       if (pos > end - sizeof(struct ieee80211_ht_cap) -=
- 2)
-> +                               return;
-
-For checks like this ("past 'end'"), it does make sense to return.
-
-Brian
+-- 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
