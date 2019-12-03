@@ -2,113 +2,75 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0473D10FD73
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Dec 2019 13:14:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D47571103F9
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Dec 2019 19:06:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725997AbfLCMOP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 3 Dec 2019 07:14:15 -0500
-Received: from out2-smtp.messagingengine.com ([66.111.4.26]:52975 "EHLO
-        out2-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725773AbfLCMOO (ORCPT
+        id S1726628AbfLCSG7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 3 Dec 2019 13:06:59 -0500
+Received: from smail.rz.tu-ilmenau.de ([141.24.186.67]:45283 "EHLO
+        smail.rz.tu-ilmenau.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726339AbfLCSG6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 3 Dec 2019 07:14:14 -0500
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.46])
-        by mailout.nyi.internal (Postfix) with ESMTP id 2111322484;
-        Tue,  3 Dec 2019 07:14:14 -0500 (EST)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute6.internal (MEProxy); Tue, 03 Dec 2019 07:14:14 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=
-        date:from:to:cc:subject:message-id:references:mime-version
-        :content-type:content-transfer-encoding:in-reply-to; s=fm2; bh=E
-        YOPuf7xvIS+4duuNHYF9d4g3puRuvE7RB4e+PKt1OI=; b=bnADDfDsYpLDkLdIt
-        2WrZvLUfk5dC1RrLBKLHG+/24HRrlVc1m0hlsdZOjzvTPqud5eXnGZn+idYBugCT
-        tvI622WGqYULnK/rDxFlSOOd4noe+UM8J6Yx1U10krxeqK69HmzKfsotz6U13P/d
-        lX6XH2dntKGKutt+NwdBpHDOzKW+WZXtA/lDKDxBUykGyFjF2opEmsvh/hmoXVth
-        YhRMqLGkYLLwrhQnkTxiBO+f7BBviC+9yNIQQq8nh5ILxZlkSRmMaHCbWfxi+kgn
-        EmsJTglYpHKN+4wwK/VWOhjOQNM3+mdxKn50/mGwWXsfRG/0MzjITHYi/2fl0qEI
-        dIJVA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:content-transfer-encoding:content-type
-        :date:from:in-reply-to:message-id:mime-version:references
-        :subject:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-        :x-sasl-enc; s=fm1; bh=EYOPuf7xvIS+4duuNHYF9d4g3puRuvE7RB4e+PKt1
-        OI=; b=ZjII+OlwM+CbXItLVpgRjwD/w4IPrPV1Z+H3I8T7eX35lTJgIuwfWcV9c
-        Qmr16PczDS1DGF6q6S4BD2beOlbTa94kFwosJ9e2amjI5kNV703ebhId0UNlDftJ
-        nwQIF5LzKbaQOpvdlwVDW7Zq6nAan0lMKe4ut2mGpij0z0jedn3io0GIYq8PfPxz
-        H4KP9iKNNnVmhQjJVDq6TAv9DfDPTVm0qv/TufbbHBZmZwE3m2dvJJ33+wP+/+1y
-        J/h3Q02J6DOvmAzN7CtjjeSWHXZO8ENcy+a3hh8GXCUlVMdGDinLKvJBHlxCKS8+
-        eI5u7s9GutZXwMssVfcBV7aTZMU7g==
-X-ME-Sender: <xms:lVHmXZOFY7jdaPKjDBJgzlAjUFkmHdSG4M3u4q-ynIhzRBPUltFZag>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedufedrudejjedgfeelucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvffukfhfgggtugfgjggfsehtkeertddtreejnecuhfhrohhmpefirhgv
-    ghcumffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucfkphepkeefrdekiedrkeelrd
-    dutdejnecurfgrrhgrmhepmhgrihhlfhhrohhmpehgrhgvgheskhhrohgrhhdrtghomhen
-    ucevlhhushhtvghrufhiiigvpedt
-X-ME-Proxy: <xmx:lVHmXUxh-eBqtiVomfccRfebypLI0UyVin0NEsH3BnsAzTScTLtGsg>
-    <xmx:lVHmXfNvfXNeKv1BNGYHARzV0SwabEqZj0phwDJIp5bJqWzPkvm-ig>
-    <xmx:lVHmXfQxdJerKHH_sh_d91AHMoHM-AFPSxK-12Q4Pr4KoQWd1ofs2g>
-    <xmx:llHmXfn67z97L3AkEztW8Yds-pIDdCaAQNWrDIG3UIU-3ISYEyqHrQ>
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
-        by mail.messagingengine.com (Postfix) with ESMTPA id 59FA83060158;
-        Tue,  3 Dec 2019 07:14:13 -0500 (EST)
-Date:   Tue, 3 Dec 2019 13:14:06 +0100
-From:   Greg KH <greg@kroah.com>
-To:     Brian Norris <briannorris@chromium.org>
-Cc:     qize wang <wangqize888888888@gmail.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        amit karwar <amitkarwar@gmail.com>,
-        Nishant Sarmukadam <nishants@marvell.com>,
-        Ganapathi Bhat <gbhat@marvell.com>,
-        Xinming Hu <huxinming820@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        Solar Designer <solar@openwall.com>
-Subject: Re: [PATCH v3] mwifiex: Fix heap overflow in
- mmwifiex_process_tdls_action_frame()
-Message-ID: <20191203121406.GA2127957@kroah.com>
-References: <20191129101054.2756-1-wangqize888888888@gmail.com>
- <CA+ASDXOj0rz4S3BoMdF1pqOiVZ4yhVE_Qy+s6iTObCnhFfwFLw@mail.gmail.com>
+        Tue, 3 Dec 2019 13:06:58 -0500
+Received: from localhost.localdomain (unknown [141.24.207.101])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by smail.rz.tu-ilmenau.de (Postfix) with ESMTPSA id 5A0F058007F;
+        Tue,  3 Dec 2019 19:06:56 +0100 (CET)
+From:   Markus Theil <markus.theil@tu-ilmenau.de>
+To:     johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org,
+        Markus Theil <markus.theil@tu-ilmenau.de>
+Subject: [PATCH] mac80211: mesh: only warn if mesh peering is established
+Date:   Tue,  3 Dec 2019 19:06:44 +0100
+Message-Id: <20191203180644.70653-1-markus.theil@tu-ilmenau.de>
+X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CA+ASDXOj0rz4S3BoMdF1pqOiVZ4yhVE_Qy+s6iTObCnhFfwFLw@mail.gmail.com>
-User-Agent: Mutt/1.12.2 (2019-09-21)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Dec 02, 2019 at 03:16:35PM -0800, Brian Norris wrote:
-> A bit late, but a few readability and maintainability thoughts:
-> 
-> On Fri, Nov 29, 2019 at 2:12 AM qize wang <wangqize888888888@gmail.com> wrote:
-> >
-> > mwifiex_process_tdls_action_frame() without checking
-> > the incoming tdls infomation element's vality before use it,
-> > this may cause multi heap buffer overflows.
-> >
-> > Fix them by putting vality check before use it.
-> >
-> > IE is TLV struct, but ht_cap and  ht_oper aren’t TLV struct.
-> > the origin marvell driver code is wrong:
-> >
-> > memcpy(&sta_ptr->tdls_cap.ht_oper, pos,....
-> > memcpy((u8 *)&sta_ptr->tdls_cap.ht_capb, pos,...
-> >
-> > Fix the bug by changing pos(the address of IE) to
-> > pos+2 ( the address of IE value ).
-> >
-> > v3: change commit log
-> >
-> 
-> Would have been great to have a
-> 
-> Cc: <stable@vger.kernel.org>
-> 
-> tag here. I'm not sure if "just have GregKH on CC" is the right process...
+The following warning is triggered every time an unestablished mesh peer
+gets dumped. This patch checks, if a peer link is established, when dum-
+ping the airtime link metric.
 
-Not at all :)
+[ 9563.022567] WARNING: CPU: 0 PID: 6287 at net/mac80211/mesh_hwmp.c:345
+               airtime_link_metric_get+0xa2/0xb0 [mac80211]
+[ 9563.022697] Hardware name: PC Engines apu2/apu2, BIOS v4.10.0.3
+[ 9563.022756] RIP: 0010:airtime_link_metric_get+0xa2/0xb0 [mac80211]
+[ 9563.022838] Call Trace:
+[ 9563.022897]  sta_set_sinfo+0x936/0xa10 [mac80211]
+[ 9563.022964]  ieee80211_dump_station+0x6d/0x90 [mac80211]
+[ 9563.023062]  nl80211_dump_station+0x154/0x2a0 [cfg80211]
+[ 9563.023120]  netlink_dump+0x17b/0x370
+[ 9563.023130]  netlink_recvmsg+0x2a4/0x480
+[ 9563.023140]  ____sys_recvmsg+0xa6/0x160
+[ 9563.023154]  ___sys_recvmsg+0x93/0xe0
+[ 9563.023169]  __sys_recvmsg+0x7e/0xd0
+[ 9563.023210]  do_syscall_64+0x4e/0x140
+[ 9563.023217]  entry_SYSCALL_64_after_hwframe+0x44/0xa9
+
+Signed-off-by: Markus Theil <markus.theil@tu-ilmenau.de>
+---
+ net/mac80211/mesh_hwmp.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/net/mac80211/mesh_hwmp.c b/net/mac80211/mesh_hwmp.c
+index 68af62306385..d69983370381 100644
+--- a/net/mac80211/mesh_hwmp.c
++++ b/net/mac80211/mesh_hwmp.c
+@@ -328,6 +328,9 @@ u32 airtime_link_metric_get(struct ieee80211_local *local,
+ 	unsigned long fail_avg =
+ 		ewma_mesh_fail_avg_read(&sta->mesh->fail_avg);
+ 
++	if (sta->mesh->plink_state != NL80211_PLINK_ESTAB)
++		return MAX_METRIC;
++
+ 	/* Try to get rate based on HW/SW RC algorithm.
+ 	 * Rate is returned in units of Kbps, correct this
+ 	 * to comply with airtime calculation units
+-- 
+2.24.0
 
