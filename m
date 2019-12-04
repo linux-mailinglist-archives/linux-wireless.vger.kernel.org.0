@@ -2,447 +2,219 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 385D2112FD1
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Dec 2019 17:18:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 784A2112FFA
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Dec 2019 17:25:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728679AbfLDQSC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 4 Dec 2019 11:18:02 -0500
-Received: from a27-186.smtp-out.us-west-2.amazonses.com ([54.240.27.186]:57432
-        "EHLO a27-186.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728388AbfLDQSB (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 4 Dec 2019 11:18:01 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1575476280;
-        h=From:To:Cc:Subject:Date:Message-Id;
-        bh=FL7qG7ve83OzBxrVHKe+7NpDstfa6haasXkt0FE9QdM=;
-        b=D5LUCMkN6M0wGELgM5AhuCCfa4Hvzc2vIP2fGJ6hod730K0WJmI4T5cTIqeSalgp
-        ZrR6asXyeqq7x2hx3ef9yvW9t/cGE/D1QnzCigRTvWK+YZf+mVBtduL8M+cDPW8nQRy
-        a/pMmlrcST7ixMCa0EAgD93xfvpXUhImfcwN6QuY=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=gdwg2y3kokkkj5a55z2ilkup5wp5hhxx; d=amazonses.com; t=1575476280;
-        h=From:To:Cc:Subject:Date:Message-Id:Feedback-ID;
-        bh=FL7qG7ve83OzBxrVHKe+7NpDstfa6haasXkt0FE9QdM=;
-        b=G1i2VWHHHswqE3G0jZarJVhJz/OFqKZQazOF6Z8at04PwxVvmx0Q6G9qY9KYQVNu
-        FXMEGVlefrkxUdOgSyyA3MpaHraovelxVXW51XdhMUVThHJLtTCQCXhOZqwLm8int0s
-        eRIYNPSfxvMah/04B8GPlr9dauDrU6JiR3GOhShU=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE,
-        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 20958C2BB59
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=bperumal@codeaurora.org
-From:   Bhagavathi Perumal S <bperumal@codeaurora.org>
-To:     ath11k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org,
-        Bhagavathi Perumal S <bperumal@codeaurora.org>
-Subject: [PATCH v3] ath11k: Add missing pdev rx rate stats
-Date:   Wed, 4 Dec 2019 16:18:00 +0000
-Message-ID: <0101016ed1b43bf2-1e21d5b3-b396-446f-9f19-c7de3df29a61-000000@us-west-2.amazonses.com>
-X-Mailer: git-send-email 1.9.1
-X-SES-Outgoing: 2019.12.04-54.240.27.186
-Feedback-ID: 1.us-west-2.CZuq2qbDmUIuT3qdvXlRHZZCpfZqZ4GtG9v3VKgRyF0=:AmazonSES
+        id S1728841AbfLDQZu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 4 Dec 2019 11:25:50 -0500
+Received: from nbd.name ([46.4.11.11]:33698 "EHLO nbd.name"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728625AbfLDQZu (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 4 Dec 2019 11:25:50 -0500
+Received: from p5dcfb666.dip0.t-ipconnect.de ([93.207.182.102] helo=bertha.datto.lan)
+        by ds12 with esmtpa (Exim 4.89)
+        (envelope-from <john@phrozen.org>)
+        id 1icXTH-0005zn-Pb; Wed, 04 Dec 2019 17:25:47 +0100
+From:   John Crispin <john@phrozen.org>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
+        John Crispin <john@phrozen.org>
+Subject: [PATCH] ath11k: add OMI debug support
+Date:   Wed,  4 Dec 2019 17:25:41 +0100
+Message-Id: <20191204162541.9602-1-john@phrozen.org>
+X-Mailer: git-send-email 2.20.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This adds missing rx rate info stats like pilot evm,
-per chain rssi, per user ul ppdu and mpdu counts and
-ul ofdma rate info etc.
+This patch allows us to initiate a OMI transaction for test purposes using
+a debugfs interface. the xmit_omi file expects 9 parameters. The first two
+are VHT and HE followed by the 7 A-Control fields from D4.0/9.2.4.6a.2.
 
-And add null checks for memory alloc failures.
-
-Signed-off-by: Bhagavathi Perumal S <bperumal@codeaurora.org>
+Signed-off-by: John Crispin <john@phrozen.org>
 ---
-v3:
- -Rebased on top of the latest ath.git
+ drivers/net/wireless/ath/ath11k/debug.h       | 10 ++++
+ drivers/net/wireless/ath/ath11k/debugfs_sta.c | 47 +++++++++++++++++++
+ drivers/net/wireless/ath/ath11k/wmi.c         | 33 ++++++++++++-
+ drivers/net/wireless/ath/ath11k/wmi.h         | 10 ++++
+ 4 files changed, 99 insertions(+), 1 deletion(-)
 
- drivers/net/wireless/ath/ath11k/debug_htt_stats.c | 205 ++++++++++++++++++----
- drivers/net/wireless/ath/ath11k/debug_htt_stats.h |  42 +++++
- 2 files changed, 214 insertions(+), 33 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath11k/debug_htt_stats.c b/drivers/net/wireless/ath/ath11k/debug_htt_stats.c
-index 27b301b..17a598d 100644
---- a/drivers/net/wireless/ath/ath11k/debug_htt_stats.c
-+++ b/drivers/net/wireless/ath/ath11k/debug_htt_stats.c
-@@ -776,11 +776,14 @@ static inline void htt_print_tx_peer_rate_stats_tlv(const void *tag_buf,
- 	u32 len = stats_req->buf_len;
- 	u32 buf_len = ATH11K_HTT_STATS_BUF_SIZE;
- 	char str_buf[HTT_MAX_STRING_LEN] = {0};
--	char *tx_gi[HTT_TX_PEER_STATS_NUM_GI_COUNTERS];
-+	char *tx_gi[HTT_TX_PEER_STATS_NUM_GI_COUNTERS] = {0};
- 	u8 j;
+diff --git a/drivers/net/wireless/ath/ath11k/debug.h b/drivers/net/wireless/ath/ath11k/debug.h
+index 805e30c07e14..1535af2eebe5 100644
+--- a/drivers/net/wireless/ath/ath11k/debug.h
++++ b/drivers/net/wireless/ath/ath11k/debug.h
+@@ -12,6 +12,16 @@
+ #define ATH11K_TX_POWER_MAX_VAL	70
+ #define ATH11K_TX_POWER_MIN_VAL	0
  
--	for (j = 0; j < HTT_TX_PEER_STATS_NUM_GI_COUNTERS; j++)
-+	for (j = 0; j < HTT_TX_PEER_STATS_NUM_GI_COUNTERS; j++) {
- 		tx_gi[j] = kmalloc(HTT_MAX_STRING_LEN, GFP_ATOMIC);
-+		if (!tx_gi[j])
-+			goto fail;
-+	}
- 
- 	len += HTT_DBG_OUT(buf + len, buf_len - len, "HTT_TX_PEER_RATE_STATS_TLV:");
- 	len += HTT_DBG_OUT(buf + len, buf_len - len, "tx_ldpc = %u",
-@@ -841,15 +844,16 @@ static inline void htt_print_tx_peer_rate_stats_tlv(const void *tag_buf,
- 			HTT_TX_PDEV_STATS_NUM_DCM_COUNTERS);
- 	len += HTT_DBG_OUT(buf + len, buf_len - len, "tx_dcm = %s\n", str_buf);
- 
--	for (j = 0; j < HTT_TX_PEER_STATS_NUM_GI_COUNTERS; j++)
--		kfree(tx_gi[j]);
--
- 	if (len >= buf_len)
- 		buf[buf_len - 1] = 0;
- 	else
- 		buf[len] = 0;
- 
- 	stats_req->buf_len = len;
++#define	ATH11K_XMIT_OMI_VHT		BIT(0)
++#define	ATH11K_XMIT_OMI_HE		BIT(1)
++#define	ATH11K_XMIT_OMI_RX_NSS		GENMASK(4, 2)
++#define	ATH11K_XMIT_OMI_CHWIDTH		GENMASK(6, 5)
++#define	ATH11K_XMIT_OMI_UL_UM_DIS	BIT(7)
++#define	ATH11K_XMIT_OMI_TX_NSTS		GENMASK(10, 8)
++#define	ATH11K_XMIT_OMI_ER_SU_DISABLE	BIT(11)
++#define	ATH11K_XMIT_OMI_MIMO_RESOUND	BIT(12)
++#define	ATH11K_XMIT_OMI_UL_MU_DATA_DIS	BIT(13)
 +
-+fail:
-+	for (j = 0; j < HTT_TX_PEER_STATS_NUM_GI_COUNTERS; j++)
-+		kfree(tx_gi[j]);
- }
- 
- static inline void htt_print_rx_peer_rate_stats_tlv(const void *tag_buf,
-@@ -860,15 +864,21 @@ static inline void htt_print_rx_peer_rate_stats_tlv(const void *tag_buf,
- 	u32 len = stats_req->buf_len;
- 	u32 buf_len = ATH11K_HTT_STATS_BUF_SIZE;
- 	u8 j;
--	char *rssi_chain[HTT_RX_PEER_STATS_NUM_SPATIAL_STREAMS];
--	char *rx_gi[HTT_RX_PEER_STATS_NUM_GI_COUNTERS];
-+	char *rssi_chain[HTT_RX_PEER_STATS_NUM_SPATIAL_STREAMS] = {0};
-+	char *rx_gi[HTT_RX_PEER_STATS_NUM_GI_COUNTERS] = {0};
- 	char str_buf[HTT_MAX_STRING_LEN] = {0};
- 
--	for (j = 0; j < HTT_RX_PEER_STATS_NUM_SPATIAL_STREAMS; j++)
-+	for (j = 0; j < HTT_RX_PEER_STATS_NUM_SPATIAL_STREAMS; j++) {
- 		rssi_chain[j] = kmalloc(HTT_MAX_STRING_LEN, GFP_ATOMIC);
-+		if (!rssi_chain[j])
-+			goto fail;
-+	}
- 
--	for (j = 0; j < HTT_RX_PEER_STATS_NUM_GI_COUNTERS; j++)
-+	for (j = 0; j < HTT_RX_PEER_STATS_NUM_GI_COUNTERS; j++) {
- 		rx_gi[j] = kmalloc(HTT_MAX_STRING_LEN, GFP_ATOMIC);
-+		if (!rx_gi[j])
-+			goto fail;
-+	}
- 
- 	len += HTT_DBG_OUT(buf + len, buf_len - len, "HTT_RX_PEER_RATE_STATS_TLV:");
- 	len += HTT_DBG_OUT(buf + len, buf_len - len, "nsts = %u",
-@@ -928,18 +938,19 @@ static inline void htt_print_rx_peer_rate_stats_tlv(const void *tag_buf,
- 			HTT_RX_PDEV_STATS_NUM_PREAMBLE_TYPES);
- 	len += HTT_DBG_OUT(buf + len, buf_len - len, "rx_pream = %s\n", str_buf);
- 
--	for (j = 0; j < HTT_RX_PEER_STATS_NUM_SPATIAL_STREAMS; j++)
--		kfree(rssi_chain[j]);
--
--	for (j = 0; j < HTT_RX_PEER_STATS_NUM_GI_COUNTERS; j++)
--		kfree(rx_gi[j]);
--
- 	if (len >= buf_len)
- 		buf[buf_len - 1] = 0;
- 	else
- 		buf[len] = 0;
- 
- 	stats_req->buf_len = len;
-+
-+fail:
-+	for (j = 0; j < HTT_RX_PEER_STATS_NUM_SPATIAL_STREAMS; j++)
-+		kfree(rssi_chain[j]);
-+
-+	for (j = 0; j < HTT_RX_PEER_STATS_NUM_GI_COUNTERS; j++)
-+		kfree(rx_gi[j]);
- }
- 
- static inline void
-@@ -2832,10 +2843,13 @@ static inline void htt_print_tx_pdev_rate_stats_tlv(const void *tag_buf,
- 	u32 buf_len = ATH11K_HTT_STATS_BUF_SIZE;
- 	u8 j;
- 	char str_buf[HTT_MAX_STRING_LEN] = {0};
--	char *tx_gi[HTT_TX_PEER_STATS_NUM_GI_COUNTERS];
-+	char *tx_gi[HTT_TX_PEER_STATS_NUM_GI_COUNTERS] = {0};
- 
--	for (j = 0; j < HTT_TX_PEER_STATS_NUM_GI_COUNTERS; j++)
-+	for (j = 0; j < HTT_TX_PEER_STATS_NUM_GI_COUNTERS; j++) {
- 		tx_gi[j] = kmalloc(HTT_MAX_STRING_LEN, GFP_ATOMIC);
-+		if (!tx_gi[j])
-+			goto fail;
-+	}
- 
- 	len += HTT_DBG_OUT(buf + len, buf_len - len, "HTT_TX_PDEV_RATE_STATS_TLV:");
- 	len += HTT_DBG_OUT(buf + len, buf_len - len, "mac_id = %u",
-@@ -2988,15 +3002,15 @@ static inline void htt_print_tx_pdev_rate_stats_tlv(const void *tag_buf,
- 			HTT_TX_PDEV_STATS_NUM_DCM_COUNTERS);
- 	len += HTT_DBG_OUT(buf + len, buf_len - len, "tx_dcm = %s\n", str_buf);
- 
--	for (j = 0; j < HTT_TX_PEER_STATS_NUM_GI_COUNTERS; j++)
--		kfree(tx_gi[j]);
--
- 	if (len >= buf_len)
- 		buf[buf_len - 1] = 0;
- 	else
- 		buf[len] = 0;
- 
- 	stats_req->buf_len = len;
-+fail:
-+	for (j = 0; j < HTT_TX_PEER_STATS_NUM_GI_COUNTERS; j++)
-+		kfree(tx_gi[j]);
- }
- 
- static inline void htt_print_rx_pdev_rate_stats_tlv(const void *tag_buf,
-@@ -3006,16 +3020,30 @@ static inline void htt_print_rx_pdev_rate_stats_tlv(const void *tag_buf,
- 	u8 *buf = stats_req->buf;
- 	u32 len = stats_req->buf_len;
- 	u32 buf_len = ATH11K_HTT_STATS_BUF_SIZE;
--	u8 j;
--	char *rssi_chain[HTT_RX_PDEV_STATS_NUM_SPATIAL_STREAMS];
--	char *rx_gi[HTT_RX_PDEV_STATS_NUM_GI_COUNTERS];
-+	u8 i, j;
-+	u16 index = 0;
-+	char *rssi_chain[HTT_RX_PDEV_STATS_NUM_SPATIAL_STREAMS] = {0};
-+	char *rx_gi[HTT_RX_PDEV_STATS_NUM_GI_COUNTERS] = {0};
- 	char str_buf[HTT_MAX_STRING_LEN] = {0};
-+	char *rx_pilot_evm_dB[HTT_RX_PDEV_STATS_NUM_SPATIAL_STREAMS] = {0};
- 
--	for (j = 0; j < HTT_RX_PDEV_STATS_NUM_SPATIAL_STREAMS; j++)
-+	for (j = 0; j < HTT_RX_PDEV_STATS_NUM_SPATIAL_STREAMS; j++) {
- 		rssi_chain[j] = kmalloc(HTT_MAX_STRING_LEN, GFP_ATOMIC);
-+		if (!rssi_chain[j])
-+			goto fail;
-+	}
- 
--	for (j = 0; j < HTT_RX_PDEV_STATS_NUM_GI_COUNTERS; j++)
-+	for (j = 0; j < HTT_RX_PDEV_STATS_NUM_GI_COUNTERS; j++) {
- 		rx_gi[j] = kmalloc(HTT_MAX_STRING_LEN, GFP_ATOMIC);
-+		if (!rx_gi[j])
-+			goto fail;
-+	}
-+
-+	for (j = 0; j < HTT_RX_PDEV_STATS_NUM_SPATIAL_STREAMS; j++) {
-+		rx_pilot_evm_dB[j] = kmalloc(HTT_MAX_STRING_LEN, GFP_ATOMIC);
-+		if (!rx_pilot_evm_dB[j])
-+			goto fail;
-+	}
- 
- 	len += HTT_DBG_OUT(buf + len, buf_len - len, "HTT_RX_PDEV_RATE_STATS_TLV:");
- 	len += HTT_DBG_OUT(buf + len, buf_len - len, "mac_id = %u",
-@@ -3059,6 +3087,32 @@ static inline void htt_print_rx_pdev_rate_stats_tlv(const void *tag_buf,
- 	ARRAY_TO_STRING(str_buf, htt_stats_buf->rx_bw,
- 			HTT_RX_PDEV_STATS_NUM_BW_COUNTERS);
- 	len += HTT_DBG_OUT(buf + len, buf_len - len, "rx_bw = %s ", str_buf);
-+	len += HTT_DBG_OUT(buf + len, buf_len - len, "rx_evm_nss_count = %u",
-+			htt_stats_buf->nss_count);
-+
-+	len += HTT_DBG_OUT(buf + len, buf_len - len, "rx_evm_pilot_count = %u",
-+			htt_stats_buf->pilot_count);
-+
-+	for (j = 0; j < HTT_RX_PDEV_STATS_NUM_SPATIAL_STREAMS; j++) {
-+		index = 0;
-+
-+		for (i = 0; i < HTT_RX_PDEV_STATS_RXEVM_MAX_PILOTS_PER_NSS; i++)
-+			index += snprintf(&rx_pilot_evm_dB[j][index],
-+					  HTT_MAX_STRING_LEN - index,
-+					  " %u:%d,",
-+					  i,
-+					  htt_stats_buf->rx_pilot_evm_dB[j][i]);
-+		len += HTT_DBG_OUT(buf + len, buf_len - len, "pilot_evm_dB[%u] = %s ",
-+				   j, rx_pilot_evm_dB[j]);
-+	}
-+
-+	index = 0;
-+	memset(str_buf, 0x0, HTT_MAX_STRING_LEN);
-+	for (i = 0; i < HTT_RX_PDEV_STATS_NUM_SPATIAL_STREAMS; i++)
-+		index += snprintf(&str_buf[index],
-+				  HTT_MAX_STRING_LEN - index,
-+				  " %u:%d,", i, htt_stats_buf->rx_pilot_evm_dB_mean[i]);
-+	len += HTT_DBG_OUT(buf + len, buf_len - len, "pilot_evm_dB_mean = %s ", str_buf);
- 
- 	for (j = 0; j < HTT_RX_PDEV_STATS_NUM_SPATIAL_STREAMS; j++) {
- 		ARRAY_TO_STRING(rssi_chain[j], htt_stats_buf->rssi_chain[j],
-@@ -3079,12 +3133,6 @@ static inline void htt_print_rx_pdev_rate_stats_tlv(const void *tag_buf,
- 			HTT_RX_PDEV_STATS_NUM_PREAMBLE_TYPES);
- 	len += HTT_DBG_OUT(buf + len, buf_len - len, "rx_pream = %s", str_buf);
- 
--	for (j = 0; j < HTT_RX_PDEV_STATS_NUM_SPATIAL_STREAMS; j++)
--		kfree(rssi_chain[j]);
--
--	for (j = 0; j < HTT_RX_PDEV_STATS_NUM_GI_COUNTERS; j++)
--		kfree(rx_gi[j]);
--
- 	len += HTT_DBG_OUT(buf + len, buf_len - len, "rx_11ax_su_ext = %u",
- 			   htt_stats_buf->rx_11ax_su_ext);
- 	len += HTT_DBG_OUT(buf + len, buf_len - len, "rx_11ac_mumimo = %u",
-@@ -3110,8 +3158,89 @@ static inline void htt_print_rx_pdev_rate_stats_tlv(const void *tag_buf,
- 
- 	len += HTT_DBG_OUT(buf + len, buf_len - len, "rx_active_dur_us_low = %u",
- 			   htt_stats_buf->rx_active_dur_us_low);
--	len += HTT_DBG_OUT(buf + len, buf_len - len, "rx_active_dur_us_high = %u\n",
--			   htt_stats_buf->rx_active_dur_us_high);
-+	len += HTT_DBG_OUT(buf + len, buf_len - len, "rx_active_dur_us_high = %u",
-+			htt_stats_buf->rx_active_dur_us_high);
-+	len += HTT_DBG_OUT(buf + len, buf_len - len, "rx_11ax_ul_ofdma = %u",
-+			htt_stats_buf->rx_11ax_ul_ofdma);
-+
-+	memset(str_buf, 0x0, HTT_MAX_STRING_LEN);
-+	ARRAY_TO_STRING(str_buf, htt_stats_buf->ul_ofdma_rx_mcs,
-+			HTT_RX_PDEV_STATS_NUM_MCS_COUNTERS);
-+	len += HTT_DBG_OUT(buf + len, buf_len - len, "ul_ofdma_rx_mcs = %s ", str_buf);
-+
-+	for (j = 0; j < HTT_RX_PDEV_STATS_NUM_GI_COUNTERS; j++) {
-+		ARRAY_TO_STRING(rx_gi[j], htt_stats_buf->ul_ofdma_rx_gi[j],
-+				HTT_RX_PDEV_STATS_NUM_MCS_COUNTERS);
-+		len += HTT_DBG_OUT(buf + len, buf_len - len, "ul_ofdma_rx_gi[%u] = %s ",
-+				   j, rx_gi[j]);
-+	}
-+
-+	memset(str_buf, 0x0, HTT_MAX_STRING_LEN);
-+	ARRAY_TO_STRING(str_buf, htt_stats_buf->ul_ofdma_rx_nss,
-+			HTT_RX_PDEV_STATS_NUM_SPATIAL_STREAMS);
-+	len += HTT_DBG_OUT(buf + len, buf_len - len, "ul_ofdma_rx_nss = %s ", str_buf);
-+
-+	memset(str_buf, 0x0, HTT_MAX_STRING_LEN);
-+	ARRAY_TO_STRING(str_buf, htt_stats_buf->ul_ofdma_rx_bw,
-+			HTT_RX_PDEV_STATS_NUM_BW_COUNTERS);
-+	len += HTT_DBG_OUT(buf + len, buf_len - len, "ul_ofdma_rx_bw = %s ", str_buf);
-+
-+	len += HTT_DBG_OUT(buf + len, buf_len - len, "ul_ofdma_rx_stbc = %u",
-+			htt_stats_buf->ul_ofdma_rx_stbc);
-+	len += HTT_DBG_OUT(buf + len, buf_len - len, "ul_ofdma_rx_ldpc = %u",
-+			htt_stats_buf->ul_ofdma_rx_ldpc);
-+
-+	memset(str_buf, 0x0, HTT_MAX_STRING_LEN);
-+	ARRAY_TO_STRING(str_buf, htt_stats_buf->rx_ulofdma_non_data_ppdu,
-+			HTT_RX_PDEV_MAX_OFDMA_NUM_USER);
-+	len += HTT_DBG_OUT(buf + len, buf_len - len, "rx_ulofdma_non_data_ppdu = %s ",
-+			   str_buf);
-+
-+	memset(str_buf, 0x0, HTT_MAX_STRING_LEN);
-+	ARRAY_TO_STRING(str_buf, htt_stats_buf->rx_ulofdma_data_ppdu,
-+			HTT_RX_PDEV_MAX_OFDMA_NUM_USER);
-+	len += HTT_DBG_OUT(buf + len, buf_len - len, "rx_ulofdma_data_ppdu = %s ",
-+			   str_buf);
-+
-+	memset(str_buf, 0x0, HTT_MAX_STRING_LEN);
-+	ARRAY_TO_STRING(str_buf, htt_stats_buf->rx_ulofdma_mpdu_ok,
-+			HTT_RX_PDEV_MAX_OFDMA_NUM_USER);
-+	len += HTT_DBG_OUT(buf + len, buf_len - len, "rx_ulofdma_mpdu_ok = %s ", str_buf);
-+
-+	memset(str_buf, 0x0, HTT_MAX_STRING_LEN);
-+	ARRAY_TO_STRING(str_buf, htt_stats_buf->rx_ulofdma_mpdu_fail,
-+			HTT_RX_PDEV_MAX_OFDMA_NUM_USER);
-+	len += HTT_DBG_OUT(buf + len, buf_len - len, "rx_ulofdma_mpdu_fail = %s",
-+			   str_buf);
-+
-+	for (j = 0; j < HTT_RX_PDEV_STATS_NUM_SPATIAL_STREAMS; j++) {
-+		index = 0;
-+		memset(str_buf, 0x0, HTT_MAX_STRING_LEN);
-+		for (i = 0; i < HTT_RX_PDEV_MAX_OFDMA_NUM_USER; i++)
-+			index += snprintf(&str_buf[index],
-+					  HTT_MAX_STRING_LEN - index,
-+					  " %u:%d,",
-+					  i, htt_stats_buf->rx_ul_fd_rssi[j][i]);
-+		len += HTT_DBG_OUT(buf + len, buf_len - len,
-+				   "rx_ul_fd_rssi: nss[%u] = %s", j, str_buf);
-+	}
-+
-+	len += HTT_DBG_OUT(buf + len, buf_len - len, "per_chain_rssi_pkt_type = %#x",
-+			   htt_stats_buf->per_chain_rssi_pkt_type);
-+
-+	for (j = 0; j < HTT_RX_PDEV_STATS_NUM_SPATIAL_STREAMS; j++) {
-+		index = 0;
-+		memset(str_buf, 0x0, HTT_MAX_STRING_LEN);
-+		for (i = 0; i < HTT_RX_PDEV_STATS_NUM_BW_COUNTERS; i++)
-+			index += snprintf(&str_buf[index],
-+					  HTT_MAX_STRING_LEN - index,
-+					  " %u:%d,",
-+					  i,
-+					  htt_stats_buf->rx_per_chain_rssi_in_dbm[j][i]);
-+		len += HTT_DBG_OUT(buf + len, buf_len - len,
-+				   "rx_per_chain_rssi_in_dbm[%u] = %s ", j, str_buf);
-+	}
-+	len += HTT_DBG_OUT(buf + len, buf_len - len, "\n");
- 
- 	if (len >= buf_len)
- 		buf[buf_len - 1] = 0;
-@@ -3119,6 +3248,16 @@ static inline void htt_print_rx_pdev_rate_stats_tlv(const void *tag_buf,
- 		buf[len] = 0;
- 
- 	stats_req->buf_len = len;
-+
-+fail:
-+	for (j = 0; j < HTT_RX_PDEV_STATS_NUM_SPATIAL_STREAMS; j++)
-+		kfree(rssi_chain[j]);
-+
-+	for (j = 0; j < HTT_RX_PDEV_STATS_NUM_SPATIAL_STREAMS; j++)
-+		kfree(rx_pilot_evm_dB[j]);
-+
-+	for (i = 0; i < HTT_RX_PDEV_STATS_NUM_GI_COUNTERS; i++)
-+		kfree(rx_gi[i]);
- }
- 
- static inline void htt_print_rx_soc_fw_stats_tlv(const void *tag_buf,
-diff --git a/drivers/net/wireless/ath/ath11k/debug_htt_stats.h b/drivers/net/wireless/ath/ath11k/debug_htt_stats.h
-index 618f194..9807599 100644
---- a/drivers/net/wireless/ath/ath11k/debug_htt_stats.h
-+++ b/drivers/net/wireless/ath/ath11k/debug_htt_stats.h
-@@ -1231,6 +1231,8 @@ struct htt_tx_pdev_rate_stats_tlv {
- #define HTT_RX_PDEV_STATS_NUM_BW_COUNTERS          4
- #define HTT_RX_PDEV_STATS_NUM_SPATIAL_STREAMS      8
- #define HTT_RX_PDEV_STATS_NUM_PREAMBLE_TYPES       HTT_STATS_PREAM_COUNT
-+#define HTT_RX_PDEV_MAX_OFDMA_NUM_USER             8
-+#define HTT_RX_PDEV_STATS_RXEVM_MAX_PILOTS_PER_NSS 16
- 
- struct htt_rx_pdev_rate_stats_tlv {
- 	u32 mac_id__word;
-@@ -1269,6 +1271,46 @@ struct htt_rx_pdev_rate_stats_tlv {
- 	u32 rx_legacy_ofdm_rate[HTT_RX_PDEV_STATS_NUM_LEGACY_OFDM_STATS];
- 	u32 rx_active_dur_us_low;
- 	u32 rx_active_dur_us_high;
-+
-+	u32 rx_11ax_ul_ofdma;
-+
-+	u32 ul_ofdma_rx_mcs[HTT_RX_PDEV_STATS_NUM_MCS_COUNTERS];
-+	u32 ul_ofdma_rx_gi[HTT_TX_PDEV_STATS_NUM_GI_COUNTERS]
-+			  [HTT_RX_PDEV_STATS_NUM_MCS_COUNTERS];
-+	u32 ul_ofdma_rx_nss[HTT_TX_PDEV_STATS_NUM_SPATIAL_STREAMS];
-+	u32 ul_ofdma_rx_bw[HTT_TX_PDEV_STATS_NUM_BW_COUNTERS];
-+	u32 ul_ofdma_rx_stbc;
-+	u32 ul_ofdma_rx_ldpc;
-+
-+	/* record the stats for each user index */
-+	u32 rx_ulofdma_non_data_ppdu[HTT_RX_PDEV_MAX_OFDMA_NUM_USER]; /* ppdu level */
-+	u32 rx_ulofdma_data_ppdu[HTT_RX_PDEV_MAX_OFDMA_NUM_USER];     /* ppdu level */
-+	u32 rx_ulofdma_mpdu_ok[HTT_RX_PDEV_MAX_OFDMA_NUM_USER];       /* mpdu level */
-+	u32 rx_ulofdma_mpdu_fail[HTT_RX_PDEV_MAX_OFDMA_NUM_USER];     /* mpdu level */
-+
-+	u32 nss_count;
-+	u32 pilot_count;
-+	/* RxEVM stats in dB */
-+	s32 rx_pilot_evm_dB[HTT_RX_PDEV_STATS_NUM_SPATIAL_STREAMS]
-+			   [HTT_RX_PDEV_STATS_RXEVM_MAX_PILOTS_PER_NSS];
-+	/* rx_pilot_evm_dB_mean:
-+	 * EVM mean across pilots, computed as
-+	 *     mean(10*log10(rx_pilot_evm_linear)) = mean(rx_pilot_evm_dB)
-+	 */
-+	s32 rx_pilot_evm_dB_mean[HTT_RX_PDEV_STATS_NUM_SPATIAL_STREAMS];
-+	s8 rx_ul_fd_rssi[HTT_RX_PDEV_STATS_NUM_SPATIAL_STREAMS]
-+			[HTT_RX_PDEV_MAX_OFDMA_NUM_USER]; /* dBm units */
-+	/* per_chain_rssi_pkt_type:
-+	 * This field shows what type of rx frame the per-chain RSSI was computed
-+	 * on, by recording the frame type and sub-type as bit-fields within this
-+	 * field:
-+	 * BIT [3 : 0]    :- IEEE80211_FC0_TYPE
-+	 * BIT [7 : 4]    :- IEEE80211_FC0_SUBTYPE
-+	 * BIT [31 : 8]   :- Reserved
-+	 */
-+	u32 per_chain_rssi_pkt_type;
-+	s8 rx_per_chain_rssi_in_dbm[HTT_RX_PDEV_STATS_NUM_SPATIAL_STREAMS]
-+				   [HTT_RX_PDEV_STATS_NUM_BW_COUNTERS];
+ enum ath11k_debug_mask {
+ 	ATH11K_DBG_AHB		= 0x00000001,
+ 	ATH11K_DBG_WMI		= 0x00000002,
+diff --git a/drivers/net/wireless/ath/ath11k/debugfs_sta.c b/drivers/net/wireless/ath/ath11k/debugfs_sta.c
+index 3cdc34218a7d..61c40105bd2a 100644
+--- a/drivers/net/wireless/ath/ath11k/debugfs_sta.c
++++ b/drivers/net/wireless/ath/ath11k/debugfs_sta.c
+@@ -526,6 +526,52 @@ static const struct file_operations fops_peer_pktlog = {
+ 	.llseek = default_llseek,
  };
  
- /* == RX PDEV/SOC STATS == */
++static ssize_t ath11k_dbg_sta_write_xmit_omi(struct file *file,
++					     const char __user *ubuf,
++					     size_t count, loff_t *ppos)
++{
++	struct ieee80211_sta *sta = file->private_data;
++	struct ath11k_sta *arsta = (struct ath11k_sta *)sta->drv_priv;
++	u8 vht, he, rx_nss, chwidth, ul_mu_disable, tx_nsts, er_su_disable;
++	u8 resound_recommendation, ul_mu_data_disable;
++	u8 buf[64] = {0};
++	u32 val;
++	int ret;
++
++	ret = simple_write_to_buffer(buf, sizeof(buf) - 1, ppos, ubuf, count);
++	if (ret < 0)
++		return ret;
++
++	buf[ret] = '\0';
++	ret = sscanf(buf, "%hhu %hhu %hhu %hhu %hhu %hhu %hhu %hhu %hhu",
++		     &vht, &he, &rx_nss, &chwidth, &ul_mu_disable, &tx_nsts,
++		     &er_su_disable, &resound_recommendation,
++		     &ul_mu_data_disable);
++	if (ret != 9)
++		return -EINVAL;
++
++	val = FIELD_PREP(ATH11K_XMIT_OMI_VHT, vht) |
++	      FIELD_PREP(ATH11K_XMIT_OMI_HE, he) |
++	      FIELD_PREP(ATH11K_XMIT_OMI_RX_NSS, rx_nss) |
++	      FIELD_PREP(ATH11K_XMIT_OMI_CHWIDTH, chwidth) |
++	      FIELD_PREP(ATH11K_XMIT_OMI_UL_UM_DIS, ul_mu_disable) |
++	      FIELD_PREP(ATH11K_XMIT_OMI_TX_NSTS, tx_nsts) |
++	      FIELD_PREP(ATH11K_XMIT_OMI_ER_SU_DISABLE, er_su_disable) |
++	      FIELD_PREP(ATH11K_XMIT_OMI_MIMO_RESOUND, resound_recommendation) |
++	      FIELD_PREP(ATH11K_XMIT_OMI_UL_MU_DATA_DIS, ul_mu_data_disable);
++
++	ret = ath11k_wmi_set_peer_param(arsta->arvif->ar, sta->addr,
++					arsta->arvif->vdev_id,
++					WMI_PEER_PARAM_XMIT_OMI,
++					val);
++	return ret ? ret : count;
++}
++
++static const struct file_operations fops_write_xmit_omi = {
++	.write = ath11k_dbg_sta_write_xmit_omi,
++	.open = simple_open
++};
++
+ void ath11k_sta_add_debugfs(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 			    struct ieee80211_sta *sta, struct dentry *dir)
+ {
+@@ -543,4 +589,5 @@ void ath11k_sta_add_debugfs(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 
+ 	debugfs_create_file("peer_pktlog", 0644, dir, sta,
+ 			    &fops_peer_pktlog);
++	debugfs_create_file("xmit_omi", 0644, dir, sta, &fops_write_xmit_omi);
+ }
+diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
+index ba08a7d95764..425fdd46e529 100644
+--- a/drivers/net/wireless/ath/ath11k/wmi.c
++++ b/drivers/net/wireless/ath/ath11k/wmi.c
+@@ -99,6 +99,8 @@ static const struct wmi_tlv_policy wmi_tlv_policies[] = {
+ 		= { .min_len = sizeof(struct wmi_pdev_ctl_failsafe_chk_event) },
+ 	[WMI_TAG_TWT_ADD_DIALOG_COMPLETE_EVENT]
+ 		= { .min_len = sizeof(struct wmi_twt_add_dialog_event) },
++	[WMI_TAG_PEER_OPER_MODE_CHANGE_EVENT]
++		= { .min_len = sizeof(struct wmi_peer_oper_mode_change_event) },
+ };
+ 
+ #define PRIMAP(_hw_mode_) \
+@@ -5695,6 +5697,33 @@ static void ath11k_wmi_twt_add_dialog_event(struct ath11k_base *ab, struct sk_bu
+ 	kfree(tb);
+ }
+ 
++static void ath11k_wmi_peer_oper_mode_change_event(struct ath11k_base *ab, struct sk_buff *skb)
++{
++	const void **tb;
++	const struct wmi_peer_oper_mode_change_event *ev;
++	int ret;
++
++	tb = ath11k_wmi_tlv_parse_alloc(ab, skb->data, skb->len, GFP_ATOMIC);
++	if (IS_ERR(tb)) {
++		ret = PTR_ERR(tb);
++		ath11k_warn(ab, "failed to parse tlv: %d\n", ret);
++		return;
++	}
++
++	ev = tb[WMI_TAG_PEER_OPER_MODE_CHANGE_EVENT];
++	if (!ev) {
++		ath11k_warn(ab, "failed to fetch peer oper mode change ev");
++		goto exit;
++	}
++
++	ath11k_dbg(ab, ATH11K_DBG_WMI,
++		   "OMI Change Event - ind: %ds, rxnss: %d, bw: %d, txnss: %d, disablemu: %d\n",
++		   ev->ind_type, ev->new_rxnss, ev->new_bw, ev->new_txnss, ev->new_disablemu);
++
++exit:
++	kfree(tb);
++}
++
+ static void ath11k_wmi_tlv_op_rx(struct ath11k_base *ab, struct sk_buff *skb)
+ {
+ 	struct wmi_cmd_hdr *cmd_hdr;
+@@ -5775,10 +5804,12 @@ static void ath11k_wmi_tlv_op_rx(struct ath11k_base *ab, struct sk_buff *skb)
+ 	case WMI_TWT_ADD_DIALOG_EVENTID:
+ 		ath11k_wmi_twt_add_dialog_event(ab, skb);
+ 		break;
++	case WMI_PEER_OPER_MODE_CHANGE_EVENTID:
++		ath11k_wmi_peer_oper_mode_change_event(ab, skb);
++		break;
+ 	/* add Unsupported events here */
+ 	case WMI_TBTTOFFSET_EXT_UPDATE_EVENTID:
+ 	case WMI_VDEV_DELETE_RESP_EVENTID:
+-	case WMI_PEER_OPER_MODE_CHANGE_EVENTID:
+ 	case WMI_TWT_ENABLE_EVENTID:
+ 	case WMI_TWT_DISABLE_EVENTID:
+ 	case WMI_TWT_DEL_DIALOG_EVENTID:
+diff --git a/drivers/net/wireless/ath/ath11k/wmi.h b/drivers/net/wireless/ath/ath11k/wmi.h
+index 6e0be33bd37c..f8823766fc1c 100644
+--- a/drivers/net/wireless/ath/ath11k/wmi.h
++++ b/drivers/net/wireless/ath/ath11k/wmi.h
+@@ -2004,6 +2004,7 @@ enum {
+ #define WMI_PEER_SET_MAX_TX_RATE                        0x11
+ #define WMI_PEER_SET_MIN_TX_RATE                        0x12
+ #define WMI_PEER_SET_DEFAULT_ROUTING                    0x13
++#define WMI_PEER_PARAM_XMIT_OMI				0x1c
+ 
+ /* slot time long */
+ #define WMI_VDEV_SLOT_TIME_LONG         0x1
+@@ -4684,6 +4685,15 @@ struct wmi_obss_spatial_reuse_params_cmd {
+ 	u32 vdev_id;
+ };
+ 
++struct wmi_peer_oper_mode_change_event {
++	struct wmi_mac_addr peer_macaddr;
++	u32 ind_type;
++	u32 new_rxnss;
++	u32 new_bw;
++	u32 new_txnss;
++	u32 new_disablemu;
++};
++
+ struct target_resource_config {
+ 	u32 num_vdevs;
+ 	u32 num_peers;
 -- 
-1.9.1
+2.20.1
 
