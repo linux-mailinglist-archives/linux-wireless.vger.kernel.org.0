@@ -2,219 +2,141 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 784A2112FFA
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Dec 2019 17:25:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D0725113066
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Dec 2019 18:02:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728841AbfLDQZu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 4 Dec 2019 11:25:50 -0500
-Received: from nbd.name ([46.4.11.11]:33698 "EHLO nbd.name"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728625AbfLDQZu (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 4 Dec 2019 11:25:50 -0500
-Received: from p5dcfb666.dip0.t-ipconnect.de ([93.207.182.102] helo=bertha.datto.lan)
-        by ds12 with esmtpa (Exim 4.89)
-        (envelope-from <john@phrozen.org>)
-        id 1icXTH-0005zn-Pb; Wed, 04 Dec 2019 17:25:47 +0100
-From:   John Crispin <john@phrozen.org>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
-        John Crispin <john@phrozen.org>
-Subject: [PATCH] ath11k: add OMI debug support
-Date:   Wed,  4 Dec 2019 17:25:41 +0100
-Message-Id: <20191204162541.9602-1-john@phrozen.org>
-X-Mailer: git-send-email 2.20.1
+        id S1728962AbfLDRCm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 4 Dec 2019 12:02:42 -0500
+Received: from mail-pj1-f68.google.com ([209.85.216.68]:39127 "EHLO
+        mail-pj1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726934AbfLDRCm (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 4 Dec 2019 12:02:42 -0500
+Received: by mail-pj1-f68.google.com with SMTP id v93so65599pjb.6
+        for <linux-wireless@vger.kernel.org>; Wed, 04 Dec 2019 09:02:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=Eu3IyJHMQvuKhJZsYp2g7JJil3jVEh0AYfjqL0o1IiE=;
+        b=QmoH0UexrWMCC1IIRTlz1PwJWQ6h2dxtiUk7KvO3NzCeEmPQZo3S3GKwDDa6xuwAso
+         ZamUti0ojZ3jtqWW1PT1k+GCtau2iCzY1JRJUI0N8JxzE1f+lOz6PBNx/rzMdlcinqBu
+         1FTP8v36bHZVo/GlZYEGqdFxUWCYxHdxSBbOLJd/LUD/6raGJRBjaqyKOaUD5jl4EJJ/
+         LcOJkKnLuCMX9N2XsR2bssttYgqtw8euGbU2mPp3gb7dtbXQoKEwXT2/WxxVMFAVyV+Z
+         eipg2msnalCwO17Uhru4JhR0Q+VWryVf0Dh0SAwjZ4ITsQPp8csF1Co1ivCPwxes6CcB
+         qn/g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Eu3IyJHMQvuKhJZsYp2g7JJil3jVEh0AYfjqL0o1IiE=;
+        b=heJtCO13Q1u4m+pJ2ziQGB6jr8eW3r6N8xl++G9cGy7vcSV4syVM8s4pIP0/6LtGu3
+         EFvUNBcZ4Stc6Z1nSqm7Hg4upxVZ+ADwuJWM7A7WfyQtv4Sf3E9ZQENMQkHeXYU5VD5F
+         ZSnJfsKSKMejnCLBVlEdPc9LuHWQGP4rr6LJXhBODVwyhHB10Sgz2nthTG8+Fgv7g41J
+         vwzaSpcWbJ3A1+Gyqt0efJqP0x1gCaiT+UmWOtA0q/u3fsaBd+qkJKO9PuguelFs+wNN
+         9qiMEqOdpwUm/Kx90t9AtQOImsAvwluaY+36xNuCCIzmDzZe0ZWxXzN5d9dQoxHPAmnJ
+         xkZA==
+X-Gm-Message-State: APjAAAUYmA0Dqi7fL8dEdWumRaqPIp9Jn1cLYgdvwnsPO5YMdx5+/wvh
+        cKlZgl+9TgYUhEMJELNxMtf3ieoBcIEE6F2a1lEO+w==
+X-Google-Smtp-Source: APXvYqzrNQd3LocGGri7/gY6Hv0QqlU+RA0bb+qoQL4Gk6NCjiROT8Lilv2qq9FysgmHO6jzOSBR6S18uymGHTubEZg=
+X-Received: by 2002:a17:90a:1f4b:: with SMTP id y11mr4270989pjy.123.1575478961561;
+ Wed, 04 Dec 2019 09:02:41 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20191204081307.138765-1-pihsun@chromium.org>
+In-Reply-To: <20191204081307.138765-1-pihsun@chromium.org>
+From:   Nick Desaulniers <ndesaulniers@google.com>
+Date:   Wed, 4 Dec 2019 09:02:30 -0800
+Message-ID: <CAKwvOdnLxXeGYfEL+fgVts3cW71gMsP42mysQYtKse_STUErzQ@mail.gmail.com>
+Subject: Re: [PATCH v2] wireless: Use offsetof instead of custom macro.
+To:     Pi-Hsun Shih <pihsun@chromium.org>
+Cc:     linux-wireless@vger.kernel.org,
+        Johannes Berg <johannes@sipsolutions.net>,
+        open list <linux-kernel@vger.kernel.org>,
+        "open list:CLANG/LLVM BUILD SUPPORT" 
+        <clang-built-linux@googlegroups.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This patch allows us to initiate a OMI transaction for test purposes using
-a debugfs interface. the xmit_omi file expects 9 parameters. The first two
-are VHT and HE followed by the 7 A-Control fields from D4.0/9.2.4.6a.2.
+On Wed, Dec 4, 2019 at 12:13 AM Pi-Hsun Shih <pihsun@chromium.org> wrote:
+>
+> Use offsetof to calculate offset of a field to take advantage of
+> compiler built-in version when possible, and avoid UBSAN warning when
+> compiling with Clang:
+>
+> ==================================================================
+> UBSAN: Undefined behaviour in net/wireless/wext-core.c:525:14
+> member access within null pointer of type 'struct iw_point'
+> CPU: 3 PID: 165 Comm: kworker/u16:3 Tainted: G S      W         4.19.23 #43
+> Workqueue: cfg80211 __cfg80211_scan_done [cfg80211]
+> Call trace:
+>  dump_backtrace+0x0/0x194
+>  show_stack+0x20/0x2c
+>  __dump_stack+0x20/0x28
+>  dump_stack+0x70/0x94
+>  ubsan_epilogue+0x14/0x44
+>  ubsan_type_mismatch_common+0xf4/0xfc
+>  __ubsan_handle_type_mismatch_v1+0x34/0x54
+>  wireless_send_event+0x3cc/0x470
+>  ___cfg80211_scan_done+0x13c/0x220 [cfg80211]
+>  __cfg80211_scan_done+0x28/0x34 [cfg80211]
+>  process_one_work+0x170/0x35c
+>  worker_thread+0x254/0x380
+>  kthread+0x13c/0x158
+>  ret_from_fork+0x10/0x18
+> ===================================================================
+>
+> Signed-off-by: Pi-Hsun Shih <pihsun@chromium.org>
+> ---
+>
+> Change since v1:
+>  * Add #include <stddef.h>
 
-Signed-off-by: John Crispin <john@phrozen.org>
----
- drivers/net/wireless/ath/ath11k/debug.h       | 10 ++++
- drivers/net/wireless/ath/ath11k/debugfs_sta.c | 47 +++++++++++++++++++
- drivers/net/wireless/ath/ath11k/wmi.c         | 33 ++++++++++++-
- drivers/net/wireless/ath/ath11k/wmi.h         | 10 ++++
- 4 files changed, 99 insertions(+), 1 deletion(-)
+Thanks for following up on the feedback.
+Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
 
-diff --git a/drivers/net/wireless/ath/ath11k/debug.h b/drivers/net/wireless/ath/ath11k/debug.h
-index 805e30c07e14..1535af2eebe5 100644
---- a/drivers/net/wireless/ath/ath11k/debug.h
-+++ b/drivers/net/wireless/ath/ath11k/debug.h
-@@ -12,6 +12,16 @@
- #define ATH11K_TX_POWER_MAX_VAL	70
- #define ATH11K_TX_POWER_MIN_VAL	0
- 
-+#define	ATH11K_XMIT_OMI_VHT		BIT(0)
-+#define	ATH11K_XMIT_OMI_HE		BIT(1)
-+#define	ATH11K_XMIT_OMI_RX_NSS		GENMASK(4, 2)
-+#define	ATH11K_XMIT_OMI_CHWIDTH		GENMASK(6, 5)
-+#define	ATH11K_XMIT_OMI_UL_UM_DIS	BIT(7)
-+#define	ATH11K_XMIT_OMI_TX_NSTS		GENMASK(10, 8)
-+#define	ATH11K_XMIT_OMI_ER_SU_DISABLE	BIT(11)
-+#define	ATH11K_XMIT_OMI_MIMO_RESOUND	BIT(12)
-+#define	ATH11K_XMIT_OMI_UL_MU_DATA_DIS	BIT(13)
-+
- enum ath11k_debug_mask {
- 	ATH11K_DBG_AHB		= 0x00000001,
- 	ATH11K_DBG_WMI		= 0x00000002,
-diff --git a/drivers/net/wireless/ath/ath11k/debugfs_sta.c b/drivers/net/wireless/ath/ath11k/debugfs_sta.c
-index 3cdc34218a7d..61c40105bd2a 100644
---- a/drivers/net/wireless/ath/ath11k/debugfs_sta.c
-+++ b/drivers/net/wireless/ath/ath11k/debugfs_sta.c
-@@ -526,6 +526,52 @@ static const struct file_operations fops_peer_pktlog = {
- 	.llseek = default_llseek,
- };
- 
-+static ssize_t ath11k_dbg_sta_write_xmit_omi(struct file *file,
-+					     const char __user *ubuf,
-+					     size_t count, loff_t *ppos)
-+{
-+	struct ieee80211_sta *sta = file->private_data;
-+	struct ath11k_sta *arsta = (struct ath11k_sta *)sta->drv_priv;
-+	u8 vht, he, rx_nss, chwidth, ul_mu_disable, tx_nsts, er_su_disable;
-+	u8 resound_recommendation, ul_mu_data_disable;
-+	u8 buf[64] = {0};
-+	u32 val;
-+	int ret;
-+
-+	ret = simple_write_to_buffer(buf, sizeof(buf) - 1, ppos, ubuf, count);
-+	if (ret < 0)
-+		return ret;
-+
-+	buf[ret] = '\0';
-+	ret = sscanf(buf, "%hhu %hhu %hhu %hhu %hhu %hhu %hhu %hhu %hhu",
-+		     &vht, &he, &rx_nss, &chwidth, &ul_mu_disable, &tx_nsts,
-+		     &er_su_disable, &resound_recommendation,
-+		     &ul_mu_data_disable);
-+	if (ret != 9)
-+		return -EINVAL;
-+
-+	val = FIELD_PREP(ATH11K_XMIT_OMI_VHT, vht) |
-+	      FIELD_PREP(ATH11K_XMIT_OMI_HE, he) |
-+	      FIELD_PREP(ATH11K_XMIT_OMI_RX_NSS, rx_nss) |
-+	      FIELD_PREP(ATH11K_XMIT_OMI_CHWIDTH, chwidth) |
-+	      FIELD_PREP(ATH11K_XMIT_OMI_UL_UM_DIS, ul_mu_disable) |
-+	      FIELD_PREP(ATH11K_XMIT_OMI_TX_NSTS, tx_nsts) |
-+	      FIELD_PREP(ATH11K_XMIT_OMI_ER_SU_DISABLE, er_su_disable) |
-+	      FIELD_PREP(ATH11K_XMIT_OMI_MIMO_RESOUND, resound_recommendation) |
-+	      FIELD_PREP(ATH11K_XMIT_OMI_UL_MU_DATA_DIS, ul_mu_data_disable);
-+
-+	ret = ath11k_wmi_set_peer_param(arsta->arvif->ar, sta->addr,
-+					arsta->arvif->vdev_id,
-+					WMI_PEER_PARAM_XMIT_OMI,
-+					val);
-+	return ret ? ret : count;
-+}
-+
-+static const struct file_operations fops_write_xmit_omi = {
-+	.write = ath11k_dbg_sta_write_xmit_omi,
-+	.open = simple_open
-+};
-+
- void ath11k_sta_add_debugfs(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 			    struct ieee80211_sta *sta, struct dentry *dir)
- {
-@@ -543,4 +589,5 @@ void ath11k_sta_add_debugfs(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 
- 	debugfs_create_file("peer_pktlog", 0644, dir, sta,
- 			    &fops_peer_pktlog);
-+	debugfs_create_file("xmit_omi", 0644, dir, sta, &fops_write_xmit_omi);
- }
-diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
-index ba08a7d95764..425fdd46e529 100644
---- a/drivers/net/wireless/ath/ath11k/wmi.c
-+++ b/drivers/net/wireless/ath/ath11k/wmi.c
-@@ -99,6 +99,8 @@ static const struct wmi_tlv_policy wmi_tlv_policies[] = {
- 		= { .min_len = sizeof(struct wmi_pdev_ctl_failsafe_chk_event) },
- 	[WMI_TAG_TWT_ADD_DIALOG_COMPLETE_EVENT]
- 		= { .min_len = sizeof(struct wmi_twt_add_dialog_event) },
-+	[WMI_TAG_PEER_OPER_MODE_CHANGE_EVENT]
-+		= { .min_len = sizeof(struct wmi_peer_oper_mode_change_event) },
- };
- 
- #define PRIMAP(_hw_mode_) \
-@@ -5695,6 +5697,33 @@ static void ath11k_wmi_twt_add_dialog_event(struct ath11k_base *ab, struct sk_bu
- 	kfree(tb);
- }
- 
-+static void ath11k_wmi_peer_oper_mode_change_event(struct ath11k_base *ab, struct sk_buff *skb)
-+{
-+	const void **tb;
-+	const struct wmi_peer_oper_mode_change_event *ev;
-+	int ret;
-+
-+	tb = ath11k_wmi_tlv_parse_alloc(ab, skb->data, skb->len, GFP_ATOMIC);
-+	if (IS_ERR(tb)) {
-+		ret = PTR_ERR(tb);
-+		ath11k_warn(ab, "failed to parse tlv: %d\n", ret);
-+		return;
-+	}
-+
-+	ev = tb[WMI_TAG_PEER_OPER_MODE_CHANGE_EVENT];
-+	if (!ev) {
-+		ath11k_warn(ab, "failed to fetch peer oper mode change ev");
-+		goto exit;
-+	}
-+
-+	ath11k_dbg(ab, ATH11K_DBG_WMI,
-+		   "OMI Change Event - ind: %ds, rxnss: %d, bw: %d, txnss: %d, disablemu: %d\n",
-+		   ev->ind_type, ev->new_rxnss, ev->new_bw, ev->new_txnss, ev->new_disablemu);
-+
-+exit:
-+	kfree(tb);
-+}
-+
- static void ath11k_wmi_tlv_op_rx(struct ath11k_base *ab, struct sk_buff *skb)
- {
- 	struct wmi_cmd_hdr *cmd_hdr;
-@@ -5775,10 +5804,12 @@ static void ath11k_wmi_tlv_op_rx(struct ath11k_base *ab, struct sk_buff *skb)
- 	case WMI_TWT_ADD_DIALOG_EVENTID:
- 		ath11k_wmi_twt_add_dialog_event(ab, skb);
- 		break;
-+	case WMI_PEER_OPER_MODE_CHANGE_EVENTID:
-+		ath11k_wmi_peer_oper_mode_change_event(ab, skb);
-+		break;
- 	/* add Unsupported events here */
- 	case WMI_TBTTOFFSET_EXT_UPDATE_EVENTID:
- 	case WMI_VDEV_DELETE_RESP_EVENTID:
--	case WMI_PEER_OPER_MODE_CHANGE_EVENTID:
- 	case WMI_TWT_ENABLE_EVENTID:
- 	case WMI_TWT_DISABLE_EVENTID:
- 	case WMI_TWT_DEL_DIALOG_EVENTID:
-diff --git a/drivers/net/wireless/ath/ath11k/wmi.h b/drivers/net/wireless/ath/ath11k/wmi.h
-index 6e0be33bd37c..f8823766fc1c 100644
---- a/drivers/net/wireless/ath/ath11k/wmi.h
-+++ b/drivers/net/wireless/ath/ath11k/wmi.h
-@@ -2004,6 +2004,7 @@ enum {
- #define WMI_PEER_SET_MAX_TX_RATE                        0x11
- #define WMI_PEER_SET_MIN_TX_RATE                        0x12
- #define WMI_PEER_SET_DEFAULT_ROUTING                    0x13
-+#define WMI_PEER_PARAM_XMIT_OMI				0x1c
- 
- /* slot time long */
- #define WMI_VDEV_SLOT_TIME_LONG         0x1
-@@ -4684,6 +4685,15 @@ struct wmi_obss_spatial_reuse_params_cmd {
- 	u32 vdev_id;
- };
- 
-+struct wmi_peer_oper_mode_change_event {
-+	struct wmi_mac_addr peer_macaddr;
-+	u32 ind_type;
-+	u32 new_rxnss;
-+	u32 new_bw;
-+	u32 new_txnss;
-+	u32 new_disablemu;
-+};
-+
- struct target_resource_config {
- 	u32 num_vdevs;
- 	u32 num_peers;
+>
+> ---
+>  include/uapi/linux/wireless.h | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
+>
+> diff --git a/include/uapi/linux/wireless.h b/include/uapi/linux/wireless.h
+> index 86eca3208b6b..a2c006a364e0 100644
+> --- a/include/uapi/linux/wireless.h
+> +++ b/include/uapi/linux/wireless.h
+> @@ -74,6 +74,8 @@
+>  #include <linux/socket.h>              /* for "struct sockaddr" et al  */
+>  #include <linux/if.h>                  /* for IFNAMSIZ and co... */
+>
+> +#include <stddef.h>                     /* for offsetof */
+> +
+>  /***************************** VERSION *****************************/
+>  /*
+>   * This constant is used to know the availability of the wireless
+> @@ -1090,8 +1092,7 @@ struct iw_event {
+>  /* iw_point events are special. First, the payload (extra data) come at
+>   * the end of the event, so they are bigger than IW_EV_POINT_LEN. Second,
+>   * we omit the pointer, so start at an offset. */
+> -#define IW_EV_POINT_OFF (((char *) &(((struct iw_point *) NULL)->length)) - \
+> -                         (char *) NULL)
+> +#define IW_EV_POINT_OFF offsetof(struct iw_point, length)
+>  #define IW_EV_POINT_LEN        (IW_EV_LCP_LEN + sizeof(struct iw_point) - \
+>                          IW_EV_POINT_OFF)
+>
+>
+> base-commit: c5db92909beddadddb705b92d3388ea50b01e1a2
+> --
+> 2.24.0.393.g34dc348eaf-goog
+>
+> --
+> You received this message because you are subscribed to the Google Groups "Clang Built Linux" group.
+> To unsubscribe from this group and stop receiving emails from it, send an email to clang-built-linux+unsubscribe@googlegroups.com.
+> To view this discussion on the web visit https://groups.google.com/d/msgid/clang-built-linux/20191204081307.138765-1-pihsun%40chromium.org.
+
+
+
 -- 
-2.20.1
-
+Thanks,
+~Nick Desaulniers
