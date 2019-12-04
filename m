@@ -2,300 +2,123 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E8921105A1
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Dec 2019 21:02:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1098E112232
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Dec 2019 05:47:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727009AbfLCUCE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 3 Dec 2019 15:02:04 -0500
-Received: from nbd.name ([46.4.11.11]:55766 "EHLO nbd.name"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726114AbfLCUCE (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 3 Dec 2019 15:02:04 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-         s=20160729; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
-        Message-Id:Date:Subject:To:From:Sender:Reply-To:Cc:Content-Type:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=3l/fxcXqfVWxcuXOMK7PKpPTjHW20rUe/lgBMMW5SEc=; b=HUYtaH08XD/SA5AjZlDIwilUQb
-        ro/Hfy1wFfATIhxK0Kms/gVXoMq2vWKsG7dBaHK2oxnUisI0v1AMXguA2GhNERZgaj7hojdfirk9x
-        +5km4hZw3rP4aeAA0GWr8ecvAh77eTLkZn9XaQQsHg3Lfys6kY0kkAUrHfkLckyMgYAQ=;
-Received: from p5b2067e3.dip0.t-ipconnect.de ([91.32.103.227] helo=maeck.local)
-        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.89)
-        (envelope-from <nbd@nbd.name>)
-        id 1icEN0-0005a0-Gp
-        for linux-wireless@vger.kernel.org; Tue, 03 Dec 2019 21:02:02 +0100
-Received: by maeck.local (Postfix, from userid 501)
-        id 720517291C18; Tue,  3 Dec 2019 21:02:01 +0100 (CET)
-From:   Felix Fietkau <nbd@nbd.name>
-To:     linux-wireless@vger.kernel.org
-Subject: [PATCH v2 15/29] mt76: add function for allocating an extra wiphy
-Date:   Tue,  3 Dec 2019 21:02:01 +0100
-Message-Id: <20191203200201.29095-1-nbd@nbd.name>
-X-Mailer: git-send-email 2.24.0
-In-Reply-To: <20191130153045.28105-15-nbd@nbd.name>
-References: <20191130153045.28105-15-nbd@nbd.name>
+        id S1726856AbfLDErN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 3 Dec 2019 23:47:13 -0500
+Received: from a27-10.smtp-out.us-west-2.amazonses.com ([54.240.27.10]:54682
+        "EHLO a27-10.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726835AbfLDErN (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 3 Dec 2019 23:47:13 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1575434832;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding;
+        bh=XQopT6az1fhWqK9lODCmlfvuxZoA+ornaljxnXikdhM=;
+        b=VtAkSCpiqgdQRtbukxHBxCC+f7OqJOITJhclocLqQY6dkVo9FcZYU6D7HcznjTxg
+        SOoVje68kCOZCGU1AR6xLO26WhhMHD7OCQLhvAaZM17kLbo6wGFtFz3E50zdNa532XU
+        SrZc821OGz8dXchNS7F3xjwa42RJ8w6M0WcFcSbc=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+        s=gdwg2y3kokkkj5a55z2ilkup5wp5hhxx; d=amazonses.com; t=1575434832;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Feedback-ID;
+        bh=XQopT6az1fhWqK9lODCmlfvuxZoA+ornaljxnXikdhM=;
+        b=MbBmwP5Vg1meyeoV7BJDCGvyNWHeTp34EsnQ/Bu64o6ZBuWurjEQKVDmtbaam3W2
+        MIj8SWDzGFkPdgpVdzWl1RBv/nkrb2KXi2Yyr63D2rCmRPS6R44Yoho58TqPNsUgMcT
+        W0s5SbcBDm3qFs7D7RW3akzAuCo+fPzVC9KSekEc=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.0
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 92B22C433A2
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Kan Yan <kyan@google.com>
+Cc:     Dave Taht <dave@taht.net>,
+        Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+        Rajkumar Manoharan <rmanohar@codeaurora.org>,
+        Kevin Hayes <kevinhayes@google.com>,
+        Make-Wifi-fast <make-wifi-fast@lists.bufferbloat.net>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Yibo Zhao <yiboz@codeaurora.org>,
+        John Crispin <john@phrozen.org>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Felix Fietkau <nbd@nbd.name>
+Subject: Re: [Make-wifi-fast] [PATCH v8 0/2] Implement Airtime-based Queue Limit (AQL)
+References: <20191115014846.126007-1-kyan@google.com>
+        <CA+iem5vaeLR6v_nZ1YUZhfj32wF0DrvC2nyp8nb8qYAZLQjLdw@mail.gmail.com>
+        <CAA93jw5wTbFV51oFJ6tFHLUMo=bau8fbU65k57bQjOHGJoCkkQ@mail.gmail.com>
+        <CA+iem5s4ZY239Q4=Gwy3WrmVhcdhesirXph6XQoOP5w-nuWcYw@mail.gmail.com>
+        <CAA93jw5t0TwBVv7_DVkJ_-NsVn0ODNHwU0orp2-+LPB45iFVoQ@mail.gmail.com>
+        <CA+iem5uVJFcCYpJfhker-48XPrOf3a+NWr-nKnBtGmLX2yB_Lg@mail.gmail.com>
+        <8736eiam8f.fsf@toke.dk>
+        <CA+iem5tpfEmaWJ5Mw7xF9fb=XLceZpC1LM4Avo89Mn1fL7YZVw@mail.gmail.com>
+        <87a78p8rz7.fsf@toke.dk>
+        <CA+iem5tNz2jjEOVmbh3aPTXLLZfkRjZ60-+bon1vDEJ8D4hQJw@mail.gmail.com>
+        <87muco5gv5.fsf@toke.dk>
+        <CA+iem5sBPq0mfz+Qx+uJqCZ6t-Cjru+GCBcYExdu6JueUbBXyw@mail.gmail.com>
+        <87eexvyoy8.fsf@toke.dk> <878so2m5gp.fsf@nemesis.taht.net>
+        <CA+iem5vVGSJXeB8k2n32f=TvqncEj+bOjVbunWS0G8sm_MEosw@mail.gmail.com>
+Date:   Wed, 4 Dec 2019 04:47:12 +0000
+In-Reply-To: <CA+iem5vVGSJXeB8k2n32f=TvqncEj+bOjVbunWS0G8sm_MEosw@mail.gmail.com>
+        (Kan Yan's message of "Tue, 3 Dec 2019 11:02:44 -0800")
+Message-ID: <0101016ecf3bc9c2-fe85d3a0-29d8-4854-b227-42552a4f064f-000000@us-west-2.amazonses.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-SES-Outgoing: 2019.12.04-54.240.27.10
+Feedback-ID: 1.us-west-2.CZuq2qbDmUIuT3qdvXlRHZZCpfZqZ4GtG9v3VKgRyF0=:AmazonSES
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Unlike the core phy, this will have extra allocated memory for a driver
-private struct.
+Kan Yan <kyan@google.com> writes:
 
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
----
-v2: fix crash, don't rely on sband->band being initialized
+> Dave Taht <dave@taht.net> writes:
+>
+>> I hope to take a close look at the iwl ax200 chips soon. Unless
+>> someone beats me to it. Can we get these sort of stats out of it?
+>
+> Here is a patch for the trace event I used to get the sojourn time:
+> https://drive.google.com/open?id=3D1Mq8BO_kcneXBqf3m5Rz5xhEMj9jNbcJv
+>
+> Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com> writes:
+>
+>> While you're running tests, could you do one with the target changed to
+>> 10ms, just to see what it looks like? Both sojourn time values and
+>> throughput would be interesting here, of course.
+>
+> Apologize for the late reply. Here is the test results with target set to=
+ 10ms.
+> The trace for the sojourn time:
+> https://drive.google.com/open?id=3D1MEy_wbKKdl22yF17hZaGzpv3uOz6orTi
+>
+> Flent test for 20 ms target time vs 10 ms target time:
+> https://drive.google.com/open?id=3D1leIWe0-L0XE78eFvlmRJlNmYgbpoH8xZ
+>
+> The sojourn time measured during throughput test with a relative good
+> 5G connection has mean value around 11 ms, pretty close to the 10 ms
+> target.
+>
+> A smaller CoDel "target" time could help reduce latency, but it may
+> drop packets too aggressively for stations with low data rate and
+> hurts throughput, as shown in one of the tests with 2.4 GHz client.
+>
+> Overall, I think AQL and fq_codel works well, at least with ath10k.
+> The current target value of 20 ms is a reasonable default.  It is
+> relatively conservative that helps stations with weak signal to
+> maintain stable throughput. Although, a debugfs entry that allows
+> runtime adjustment of target value could be useful.
 
- drivers/net/wireless/mediatek/mt76/mac80211.c | 179 +++++++++++++-----
- drivers/net/wireless/mediatek/mt76/mt76.h     |   5 +
- 2 files changed, 135 insertions(+), 49 deletions(-)
+Why not make it configurable via nl80211? We should use debugfs only for
+testing and debugging, not in production builds, and to me the use case
+for this value sounds like more than just testing.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/wireless/mediatek/mt76/mac80211.c
-index 123321a0bc15..b4d9d9ac4f36 100644
---- a/drivers/net/wireless/mediatek/mt76/mac80211.c
-+++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
-@@ -187,8 +187,6 @@ mt76_init_sband(struct mt76_dev *dev, struct mt76_sband *msband,
- 	sband->n_channels = n_chan;
- 	sband->bitrates = rates;
- 	sband->n_bitrates = n_rates;
--	dev->phy.chandef.chan = &sband->channels[0];
--	dev->phy.chan_state = &msband->chan[0];
- 
- 	ht_cap = &sband->ht_cap;
- 	ht_cap->ht_supported = true;
-@@ -244,9 +242,10 @@ mt76_init_sband_5g(struct mt76_dev *dev, struct ieee80211_rate *rates,
- }
- 
- static void
--mt76_check_sband(struct mt76_dev *dev, int band)
-+mt76_check_sband(struct mt76_phy *phy, struct mt76_sband *msband,
-+		 enum nl80211_band band)
- {
--	struct ieee80211_supported_band *sband = dev->hw->wiphy->bands[band];
-+	struct ieee80211_supported_band *sband = &msband->sband;
- 	bool found = false;
- 	int i;
- 
-@@ -261,12 +260,132 @@ mt76_check_sband(struct mt76_dev *dev, int band)
- 		break;
- 	}
- 
--	if (found)
-+	if (found) {
-+		phy->chandef.chan = &sband->channels[0];
-+		phy->chan_state = &msband->chan[0];
- 		return;
-+	}
- 
- 	sband->n_channels = 0;
--	dev->hw->wiphy->bands[band] = NULL;
-+	phy->hw->wiphy->bands[band] = NULL;
-+}
-+
-+static void
-+mt76_phy_init(struct mt76_dev *dev, struct ieee80211_hw *hw)
-+{
-+	struct wiphy *wiphy = hw->wiphy;
-+
-+	SET_IEEE80211_DEV(hw, dev->dev);
-+	SET_IEEE80211_PERM_ADDR(hw, dev->macaddr);
-+
-+	wiphy->features |= NL80211_FEATURE_ACTIVE_MONITOR;
-+
-+	wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_CQM_RSSI_LIST);
-+	wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_AIRTIME_FAIRNESS);
-+
-+	wiphy->available_antennas_tx = dev->phy.antenna_mask;
-+	wiphy->available_antennas_rx = dev->phy.antenna_mask;
-+
-+	hw->txq_data_size = sizeof(struct mt76_txq);
-+	hw->max_tx_fragments = 16;
-+
-+	ieee80211_hw_set(hw, SIGNAL_DBM);
-+	ieee80211_hw_set(hw, PS_NULLFUNC_STACK);
-+	ieee80211_hw_set(hw, HOST_BROADCAST_PS_BUFFERING);
-+	ieee80211_hw_set(hw, AMPDU_AGGREGATION);
-+	ieee80211_hw_set(hw, SUPPORTS_RC_TABLE);
-+	ieee80211_hw_set(hw, SUPPORT_FAST_XMIT);
-+	ieee80211_hw_set(hw, SUPPORTS_CLONED_SKBS);
-+	ieee80211_hw_set(hw, SUPPORTS_AMSDU_IN_AMPDU);
-+	ieee80211_hw_set(hw, TX_AMSDU);
-+	ieee80211_hw_set(hw, TX_FRAG_LIST);
-+	ieee80211_hw_set(hw, MFP_CAPABLE);
-+	ieee80211_hw_set(hw, AP_LINK_PS);
-+	ieee80211_hw_set(hw, REPORTS_TX_ACK_STATUS);
-+	ieee80211_hw_set(hw, NEEDS_UNIQUE_STA_ADDR);
-+
-+	wiphy->flags |= WIPHY_FLAG_IBSS_RSN;
-+	wiphy->interface_modes =
-+		BIT(NL80211_IFTYPE_STATION) |
-+		BIT(NL80211_IFTYPE_AP) |
-+#ifdef CONFIG_MAC80211_MESH
-+		BIT(NL80211_IFTYPE_MESH_POINT) |
-+#endif
-+		BIT(NL80211_IFTYPE_ADHOC);
-+}
-+
-+struct mt76_phy *
-+mt76_alloc_phy(struct mt76_dev *dev, unsigned int size,
-+	       const struct ieee80211_ops *ops)
-+{
-+	struct ieee80211_hw *hw;
-+	struct mt76_phy *phy;
-+	unsigned int phy_size, chan_size;
-+	unsigned int size_2g, size_5g;
-+	void *priv;
-+
-+	phy_size = ALIGN(sizeof(*phy), 8);
-+	chan_size = sizeof(dev->phy.sband_2g.chan[0]);
-+	size_2g = ALIGN(ARRAY_SIZE(mt76_channels_2ghz) * chan_size, 8);
-+	size_5g = ALIGN(ARRAY_SIZE(mt76_channels_5ghz) * chan_size, 8);
-+
-+	size += phy_size + size_2g + size_5g;
-+	hw = ieee80211_alloc_hw(size, ops);
-+	if (!hw)
-+		return NULL;
-+
-+	phy = hw->priv;
-+	phy->dev = dev;
-+	phy->hw = hw;
-+
-+	mt76_phy_init(dev, hw);
-+
-+	priv = hw->priv + phy_size;
-+
-+	phy->sband_2g = dev->phy.sband_2g;
-+	phy->sband_2g.chan = priv;
-+	priv += size_2g;
-+
-+	phy->sband_5g = dev->phy.sband_5g;
-+	phy->sband_5g.chan = priv;
-+	priv += size_5g;
-+
-+	phy->priv = priv;
-+
-+	hw->wiphy->bands[NL80211_BAND_2GHZ] = &phy->sband_2g.sband;
-+	hw->wiphy->bands[NL80211_BAND_5GHZ] = &phy->sband_5g.sband;
-+
-+	mt76_check_sband(phy, &phy->sband_2g, NL80211_BAND_2GHZ);
-+	mt76_check_sband(phy, &phy->sband_5g, NL80211_BAND_5GHZ);
-+
-+	return phy;
-+}
-+EXPORT_SYMBOL_GPL(mt76_alloc_phy);
-+
-+int
-+mt76_register_phy(struct mt76_phy *phy)
-+{
-+	int ret;
-+
-+	ret = ieee80211_register_hw(phy->hw);
-+	if (ret)
-+		return ret;
-+
-+	phy->dev->phy2 = phy;
-+	return 0;
- }
-+EXPORT_SYMBOL_GPL(mt76_register_phy);
-+
-+void
-+mt76_unregister_phy(struct mt76_phy *phy)
-+{
-+	struct mt76_dev *dev = phy->dev;
-+
-+	dev->phy2 = NULL;
-+	mt76_tx_status_check(dev, NULL, true);
-+	ieee80211_unregister_hw(phy->hw);
-+}
-+EXPORT_SYMBOL_GPL(mt76_unregister_phy);
- 
- struct mt76_dev *
- mt76_alloc_device(struct device *pdev, unsigned int size,
-@@ -313,49 +432,11 @@ int mt76_register_device(struct mt76_dev *dev, bool vht,
- 			 struct ieee80211_rate *rates, int n_rates)
- {
- 	struct ieee80211_hw *hw = dev->hw;
--	struct wiphy *wiphy = hw->wiphy;
-+	struct mt76_phy *phy = &dev->phy;
- 	int ret;
- 
- 	dev_set_drvdata(dev->dev, dev);
--
--	SET_IEEE80211_DEV(hw, dev->dev);
--	SET_IEEE80211_PERM_ADDR(hw, dev->macaddr);
--
--	wiphy->features |= NL80211_FEATURE_ACTIVE_MONITOR;
--
--	wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_CQM_RSSI_LIST);
--	wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_AIRTIME_FAIRNESS);
--
--	wiphy->available_antennas_tx = dev->phy.antenna_mask;
--	wiphy->available_antennas_rx = dev->phy.antenna_mask;
--
--	hw->txq_data_size = sizeof(struct mt76_txq);
--	hw->max_tx_fragments = 16;
--
--	ieee80211_hw_set(hw, SIGNAL_DBM);
--	ieee80211_hw_set(hw, PS_NULLFUNC_STACK);
--	ieee80211_hw_set(hw, HOST_BROADCAST_PS_BUFFERING);
--	ieee80211_hw_set(hw, AMPDU_AGGREGATION);
--	ieee80211_hw_set(hw, SUPPORTS_RC_TABLE);
--	ieee80211_hw_set(hw, SUPPORT_FAST_XMIT);
--	ieee80211_hw_set(hw, SUPPORTS_CLONED_SKBS);
--	ieee80211_hw_set(hw, SUPPORTS_AMSDU_IN_AMPDU);
--	ieee80211_hw_set(hw, TX_AMSDU);
--	ieee80211_hw_set(hw, TX_FRAG_LIST);
--	ieee80211_hw_set(hw, MFP_CAPABLE);
--	ieee80211_hw_set(hw, AP_LINK_PS);
--	ieee80211_hw_set(hw, REPORTS_TX_ACK_STATUS);
--	ieee80211_hw_set(hw, NEEDS_UNIQUE_STA_ADDR);
--	ieee80211_hw_set(hw, SUPPORTS_REORDERING_BUFFER);
--
--	wiphy->flags |= WIPHY_FLAG_IBSS_RSN;
--	wiphy->interface_modes =
--		BIT(NL80211_IFTYPE_STATION) |
--		BIT(NL80211_IFTYPE_AP) |
--#ifdef CONFIG_MAC80211_MESH
--		BIT(NL80211_IFTYPE_MESH_POINT) |
--#endif
--		BIT(NL80211_IFTYPE_ADHOC);
-+	mt76_phy_init(dev, hw);
- 
- 	if (dev->cap.has_2ghz) {
- 		ret = mt76_init_sband_2g(dev, rates, n_rates);
-@@ -369,9 +450,9 @@ int mt76_register_device(struct mt76_dev *dev, bool vht,
- 			return ret;
- 	}
- 
--	wiphy_read_of_freq_limits(dev->hw->wiphy);
--	mt76_check_sband(dev, NL80211_BAND_2GHZ);
--	mt76_check_sband(dev, NL80211_BAND_5GHZ);
-+	wiphy_read_of_freq_limits(hw->wiphy);
-+	mt76_check_sband(&dev->phy, &phy->sband_2g, NL80211_BAND_2GHZ);
-+	mt76_check_sband(&dev->phy, &phy->sband_5g, NL80211_BAND_5GHZ);
- 
- 	if (IS_ENABLED(CONFIG_MT76_LEDS)) {
- 		ret = mt76_led_init(dev);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
-index 4402361ac67d..e237ed72979b 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76.h
-@@ -651,6 +651,11 @@ int mt76_register_device(struct mt76_dev *dev, bool vht,
- 			 struct ieee80211_rate *rates, int n_rates);
- void mt76_unregister_device(struct mt76_dev *dev);
- void mt76_free_device(struct mt76_dev *dev);
-+void mt76_unregister_phy(struct mt76_phy *phy);
-+
-+struct mt76_phy *mt76_alloc_phy(struct mt76_dev *dev, unsigned int size,
-+				const struct ieee80211_ops *ops);
-+int mt76_register_phy(struct mt76_phy *phy);
- 
- struct dentry *mt76_register_debugfs(struct mt76_dev *dev);
- int mt76_queues_read(struct seq_file *s, void *data);
--- 
-2.24.0
-
+--=20
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
+hes
