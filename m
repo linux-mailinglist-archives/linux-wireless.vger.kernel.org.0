@@ -2,145 +2,157 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EA4C41122EB
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Dec 2019 07:31:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 988751123AA
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Dec 2019 08:50:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727091AbfLDGb2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 4 Dec 2019 01:31:28 -0500
-Received: from esa9.fujitsucc.c3s2.iphmx.com ([68.232.159.90]:36027 "EHLO
-        esa9.fujitsucc.c3s2.iphmx.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725791AbfLDGb2 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 4 Dec 2019 01:31:28 -0500
-X-Greylist: delayed 427 seconds by postgrey-1.27 at vger.kernel.org; Wed, 04 Dec 2019 01:31:27 EST
-IronPort-SDR: bWzsCTHjWh/KIUmJXrBycqTCO5pjlY0zy1db/YnVKp3RosuJbwkZo5eIUm86VmRuwROyuKWXOf
- 5oDs0VT1sENDIOmIYfoW/RuxMKt7EGhmRqo+VbuN6H6kDR3MmrM425u8EwciRh6+McJdLnp2ua
- viyDvGLHHEwSVfh+DCD41VFevvbxnaT6ZPLRAKAHqe5ehvFKEeY8+wfSYXWNtdfsqI5faH4K/B
- U4HfMBiqNWcdL3F1KpGzdsw5xlFviLJn+SRWYqrqPhw/yTizTcDpncNu5aPFGTSjT2GSZRn7W9
- r+8=
-X-IronPort-AV: E=McAfee;i="6000,8403,9460"; a="8291309"
-X-IronPort-AV: E=Sophos;i="5.69,276,1571670000"; 
-   d="scan'208";a="8291309"
-Received: from mail-ty1jpn01lp2052.outbound.protection.outlook.com (HELO JPN01-TY1-obe.outbound.protection.outlook.com) ([104.47.93.52])
-  by ob1.fujitsucc.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Dec 2019 15:24:18 +0900
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=NEnNuHIv9hb0/BWlTDVi35RhSK9CZejnp6emUpVQ7bS70GdWnYHAbW0RyNiDkoCJUyP5cQCc79cRhpJaPyeZeqfF4DjTOjXfTDsE4hpvmiG5xbL1ggMx/Ehr/fKWTHtoCMPxU7mJV/Y+EseEWW2bV1WeDpsj2rV/KEDDXNY7YR6SiZbSVVlfgDXgak1Zm/MSTUfvEQ/Ya5XDR01KYKHJI+y4lIlTqk3bWPHn+0g6sFvu5F004cWWK6SixaHpxrMtli/6rv4l1ClG26SjZO8cuifPcBsZ/bhlJ8SlgkfuSIS2MVDnaMcclrg5/WrTJ8Z5ZqcoXdK/ObrhbFQcElYBGQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=d+eo22v7LYgQ8bEtWCsVxp32ur1I/vsMPv6FDyq1qME=;
- b=T73NSE5Ew45KJGKGUaufCzcHu9OEef5uf8k77viGHW8H5hTiofgll78CglK1I2VDoXq6WwvWGRja1HK5XQj/9x0tPXUAl1xN1U8uoDgk+tGWTM2UX3simoQBGDVqxyiFOEblK1Vy2+cKqrXgRKhSXxFpozk7Txl+eQSUd+sSUYGgHkk6pusp6IlcD/bjj0nbJLUpLs3AoBUbqyNpCDGxh6vYiy34DbUndYYrTZ9Gbl5UE91zF9oAl8dGZM245pRJtmQU7Nbspqil9FL6HeXWcJrv0SA8EF8mIe6Pb+Pgw2YUrHsD1NEj1el77DrgRZjHRBXE9HO9MDZ20Nah1tRPDA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=fujitsu.com; dmarc=pass action=none header.from=fujitsu.com;
- dkim=pass header.d=fujitsu.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=fujitsu.onmicrosoft.com; s=selector2-fujitsu-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=d+eo22v7LYgQ8bEtWCsVxp32ur1I/vsMPv6FDyq1qME=;
- b=AGmowb5cZGuHXtv/buTOaqJ3Ofn5Lh+VVAaVKZwpzpIq5yY5cZvw1gORb89rFvQG9OzLmvk6Cp3h9UkTozy/FHO+JZTPU+lpidVPhr6D70Ai9Mmf9yB5datg00h8aAX4qFm3blQGIw+/4LSFIQYb0x7WTtFVs9dW2jflZI0Rros=
-Received: from OSBPR01MB2168.jpnprd01.prod.outlook.com (52.134.242.11) by
- OSBPR01MB3352.jpnprd01.prod.outlook.com (20.178.99.11) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2495.22; Wed, 4 Dec 2019 06:24:15 +0000
-Received: from OSBPR01MB2168.jpnprd01.prod.outlook.com
- ([fe80::5410:46d5:c655:2775]) by OSBPR01MB2168.jpnprd01.prod.outlook.com
- ([fe80::5410:46d5:c655:2775%3]) with mapi id 15.20.2495.014; Wed, 4 Dec 2019
- 06:24:15 +0000
-From:   "ambai.masaki@fujitsu.com" <ambai.masaki@fujitsu.com>
-To:     "ambai.masaki@fujitsu.com" <ambai.masaki@fujitsu.com>,
-        "'linux-wireless@vger.kernel.org'" <linux-wireless@vger.kernel.org>
-CC:     "'brcm80211-dev-list.pdl@broadcom.com'" 
-        <brcm80211-dev-list.pdl@broadcom.com>,
-        "'brcm80211-dev-list@cypress.com'" <brcm80211-dev-list@cypress.com>
-Subject: RE: Re: What is the license for linux/lib/math/cordic.c?
-Thread-Topic: Re: What is the license for linux/lib/math/cordic.c?
-Thread-Index: AdWmm5RtoddtbjEIQ/yLayvM+Qn80QAU+8GAAN72sTs=
-Date:   Wed, 4 Dec 2019 06:24:15 +0000
-Message-ID: <OSBPR01MB2168520C8A25889FEEEF6A0B835D0@OSBPR01MB2168.jpnprd01.prod.outlook.com>
-References: <afb1b412-a632-f2dc-0b76-52c345c25491@lwfinger.net>
-In-Reply-To: <afb1b412-a632-f2dc-0b76-52c345c25491@lwfinger.net>
-Accept-Language: ja-JP, en-US
-Content-Language: ja-JP
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-shieldmailcheckerpolicyversion: FJ-ISEC-20140924-1
-x-shieldmailcheckermailid: 20bdf7c09ac144ebb3a3038047a9cbc9
-x-securitypolicycheck: OK by SHieldMailChecker v2.3.2
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=ambai.masaki@fujitsu.com; 
-x-originating-ip: [210.170.118.177]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 9e6a016a-6376-4856-072d-08d778829636
-x-ms-traffictypediagnostic: OSBPR01MB3352:|OSBPR01MB3352:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <OSBPR01MB3352B75CF27BFD748C08F8C9835D0@OSBPR01MB3352.jpnprd01.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:9508;
-x-forefront-prvs: 0241D5F98C
-x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(4636009)(396003)(376002)(136003)(346002)(39860400002)(366004)(199004)(189003)(51444003)(7736002)(966005)(81166006)(14454004)(6436002)(6306002)(8676002)(55016002)(478600001)(76116006)(9686003)(71190400001)(71200400001)(33656002)(81156014)(66556008)(66446008)(64756008)(305945005)(66946007)(229853002)(8936002)(66476007)(11346002)(6116002)(25786009)(4326008)(3846002)(256004)(86362001)(6246003)(26005)(14444005)(446003)(7696005)(76176011)(52536014)(53546011)(316002)(102836004)(6506007)(99286004)(110136005)(5660300002)(54906003)(2906002)(85182001)(186003)(74316002)(777600001)(491001);DIR:OUT;SFP:1101;SCL:1;SRVR:OSBPR01MB3352;H:OSBPR01MB2168.jpnprd01.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: AjQBv8TSkYESgCd3HJoAwBUo3/NFxCBrIc9YG6RHP+XlEMZZbd0dmeQOC/R/3GnW6ij3964CrqCIM1NKbkaLb6tvN/Q2TPul+GOL9tPTYg57b71uGL1tMXAI/LlrRP8qZCl/yfXj080B5Iq+iAxUfNdIAYBEU/+LWM5GdAj2767t6+47LZY0Kv08kTJcd070Q4tkMEewrbrT3SSqCvZXpnatpN80USBEQXGpTivJccrYyoGjFuNaYQnlRr8SEImKdn0rqaGwMmEq29cnKsc1paRGOqPiSPRIzTJyELit7sUY9e/tfbcYkzFCmLOwt2rH0Dr8hkXBur42X9Drs37xV3CIRxPJysJbRbp+7ju65YtfekJ1SZaARm0jWFseEUDzEa/Bxo9qdwgRxC+uip60YAjBis+SpfdhVuh5znh6b2sE5U1XkiyBvlUorqBTmb21P5uKQTbRnlvxYKluJrz0Q1rvhtbRZcgVHKSTjkLGoSY1FkbziQrvQcxvsBAHuvbCWjgRDT8ifuqqdk9r2MWFGDJBNdqyqzo6lRPN53rLquijN6YMDo9kOrmC6RA/irka
-Content-Type: text/plain; charset="iso-2022-jp"
-Content-Transfer-Encoding: quoted-printable
+        id S1726899AbfLDHuF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 4 Dec 2019 02:50:05 -0500
+Received: from mx2.suse.de ([195.135.220.15]:53872 "EHLO mx1.suse.de"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726166AbfLDHuF (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 4 Dec 2019 02:50:05 -0500
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx1.suse.de (Postfix) with ESMTP id 42548AF5B;
+        Wed,  4 Dec 2019 07:50:02 +0000 (UTC)
+Subject: Re: [GIT PULL] Add NVRAM files for bcm43455 found on RPi4
+From:   Matthias Brugger <matthias.bgg@gmail.com>
+To:     Linux Firmware <linux-firmware@kernel.org>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
+        serge@raspberrypi.org, Phil Elwell <phil@raspberrypi.org>,
+        Arend van Spriel <arend@broadcom.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Takashi Iwai <tiwai@suse.de>,
+        Guillaume Gardet <Guillaume.Gardet@arm.com>
+References: <b34e62bb-d217-d583-67c9-72ae7fe7b589@gmail.com>
+Autocrypt: addr=matthias.bgg@gmail.com; keydata=
+ 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
+Message-ID: <7e2fd4b5-0ea0-8509-0c7c-14e0a250ce7e@gmail.com>
+Date:   Wed, 4 Dec 2019 08:50:00 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.2
 MIME-Version: 1.0
-X-OriginatorOrg: fujitsu.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9e6a016a-6376-4856-072d-08d778829636
-X-MS-Exchange-CrossTenant-originalarrivaltime: 04 Dec 2019 06:24:15.6299
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: a19f121d-81e1-4858-a9d8-736e267fd4c7
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: XO14taAMMc4ZpnggSku3TYaPAE5S5JqXXJ5Sb9KFioamOxY0ofPSXNyyAyqIUV19+zWA1ZqRG+ISwxXG5xATn25TfUGo8pFA7VPIirl9Uao=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: OSBPR01MB3352
+In-Reply-To: <b34e62bb-d217-d583-67c9-72ae7fe7b589@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-> On 11/29/19 4:03 AM, ambai.masaki@fujitsu.com wrote:
-> > Hi,
-> >
-> > What is the license for linux/lib/math/cordic.c?
-> >
-> >>   * Copyright (c) 2011 Broadcom Corporation
-> >>   *
-> >>   * Permission to use, copy, modify, and/or distribute this software
-> for any
-> >>   * purpose with or without fee is hereby granted, provided that the
-> above
-> >>   * copyright notice and this permission notice appear in all copies.
-> >>   *
-> >>   * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL
-> WARRANTIES
-> >>   * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
-> >>   * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABL=
-E
-> FOR ANY
-> >>   * SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
-> >>   * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN
-> AN ACTION
-> >>   * OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
-> OR IN
-> >>   * CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
-> > I think this license is an ISC license.
-> >
-> >> MODULE_LICENSE("Dual BSD/GPL");
-> > However, MODULE _ LICENSE declares a different license.
-> > I don't know which license is correct.
-> > What licenses are declared in this file?
-> >
->=20
-> I am a little confused. If the author(s) declare the license to be "Dual
-> BSD/GPL", why do you not believe them?
-I judged it as an ISC license because the text in the file matched the text=
- in the ISC license.
-I am referring to SPDX license list.
-https://spdx.org/licenses/ISC.html
+On 27/11/2019 17:23, Matthias Brugger wrote:
+> Hi Josh,
+> Hi all,
+> 
 
-I think that the license for this file is "Dual MIT/GPL" if I believe this =
-license text.
-
+Friendly reminder, do you have any objections to include this file to the
+repository?
 
 Regards,
-Ambai
+Matthias
+
+> This pull request adds the NVRAM config file for BCM43455 as needed by Raspberry
+> Pi 4. The only difference to the file for RPi3 is the value of boardflags3.
+> 
+> Please have a look and drop me a line, if you have any issues.
+> 
+> Regards,
+> Matthias
+> 
+> ---
+> The following changes since commit e8a0f4c9314754d8b2cbe9840357d88a861c438a:
+> 
+>   rtl_nic: add firmware rtl8168fp-3 (2019-11-18 16:16:01 -0500)
+> 
+> are available in the Git repository at:
+> 
+> 
+> https://git.kernel.org/pub/scm/linux/kernel/git/matthias.bgg/linux-firmware.git
+> rpi4-fw
+> 
+> for you to fetch changes up to f93c7a18dbb3705aa1899318c3bf5d3819cd7781:
+> 
+>   brcm: Add BCM43455 NVRAM for Raspberry Pi 4 B (2019-11-27 17:12:39 +0100)
+> 
+> ----------------------------------------------------------------
+> Matthias Brugger (1):
+>       brcm: Add BCM43455 NVRAM for Raspberry Pi 4 B
+> 
+>  brcm/brcmfmac43455-sdio.raspberrypi,4-model-b.txt | 82 +++++++++++++++++++++++
+>  1 file changed, 82 insertions(+)
+>  create mode 100644 brcm/brcmfmac43455-sdio.raspberrypi,4-model-b.txt
+> 
 
