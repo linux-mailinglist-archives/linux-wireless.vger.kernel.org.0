@@ -2,74 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E6A111452B
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 Dec 2019 17:52:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E7013114537
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Dec 2019 17:57:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730010AbfLEQv7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 5 Dec 2019 11:51:59 -0500
-Received: from mail-oi1-f194.google.com ([209.85.167.194]:37599 "EHLO
-        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729497AbfLEQv6 (ORCPT
+        id S1729047AbfLEQ5i (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 5 Dec 2019 11:57:38 -0500
+Received: from mail2.candelatech.com ([208.74.158.173]:38130 "EHLO
+        mail3.candelatech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726028AbfLEQ5i (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 5 Dec 2019 11:51:58 -0500
-Received: by mail-oi1-f194.google.com with SMTP id x195so3364256oix.4;
-        Thu, 05 Dec 2019 08:51:57 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=V5CClDsvvWShXeom5UYJJ6CQjYP00jyKXyF2U0f40Bk=;
-        b=Q/BPet+BUYV+d6QRJq+97JfxO+clb3gUyCh4yWUrwWrSvGoKLIqrGlFuCfN1ez9Swj
-         XrEkCQ6+medZNTQTYl4NPqFKGoYE4ygbLbiqIdTV4jU0fddFhajIe9sUwOwpvI1dmQEM
-         CpOfdPOCnZ7mOobPBo7VWdRV6/6YCOMWbvJ9O4obulpEGkopyTOOAugeO4xjk/HlAVAK
-         oxP234p9KWhPq4/pNQk4GYMxXQ+TdD0Z67pxuMqd+fGh5RrUuG0VBz7nGIvLKpL6yqlt
-         XAU+h4g942EybQlLOB44it86Nv0brLR20jMK+xe2MCeS/RaCwhVW/kV9EDfuZi3AuUd5
-         0Qwg==
-X-Gm-Message-State: APjAAAUtqXGvg9Ac9tpftFQ5AS/KvkWyzhJfxESKBzDbZtR2SAV3Ka5o
-        Y2HGZR++scd8aF0Ajt+7uQ==
-X-Google-Smtp-Source: APXvYqxBvsot0cyZ13VBy4GxyGsUKNxaQpkizOPoH/p84X7Bq9kEEbQ3hWUc0e1BHvhCJ+k4DJ1VnQ==
-X-Received: by 2002:aca:aa0d:: with SMTP id t13mr8146299oie.18.1575564717419;
-        Thu, 05 Dec 2019 08:51:57 -0800 (PST)
-Received: from localhost (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.gmail.com with ESMTPSA id e21sm3723982oib.16.2019.12.05.08.51.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Dec 2019 08:51:56 -0800 (PST)
-Date:   Thu, 5 Dec 2019 10:51:55 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     "H. Nikolaus Schaller" <hns@goldelico.com>
-Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        "H. Nikolaus Schaller" <hns@goldelico.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Alexios Zavras <alexios.zavras@intel.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        letux-kernel@openphoenux.org, kernel@pyra-handheld.com
-Subject: Re: [PATCH 1/2] DTS: bindings: wl1251: mark ti,power-gpio as optional
-Message-ID: <20191205165155.GA613@bogus>
-References: <cover.1574591746.git.hns@goldelico.com>
- <c95e814deed075352a05c392147e9458b0d1a447.1574591746.git.hns@goldelico.com>
+        Thu, 5 Dec 2019 11:57:38 -0500
+Received: from [192.168.100.195] (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail3.candelatech.com (Postfix) with ESMTPSA id A5EF3137531;
+        Thu,  5 Dec 2019 08:57:37 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com A5EF3137531
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+        s=default; t=1575565057;
+        bh=GT3Kfq28O8/jytxcmj3IIENh+6oLIrfoYN9hxhL1ZHs=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+        b=h97OGLcKYPCRqG/zq1UgY6wVsSt79+lvv11iRcMkNGBKe5JE8Mo16t7PP6+4ju/CB
+         zbzHK7xO2pn8/Fk5fHLBw2Tky8zB4vKkpWbTC6Z8QrqX49zLF1v95SmDFqXzJB3B7C
+         V7bzjlhVhYyyW6SOTHTM+NwnpGId4tuSr3A2wSMo=
+Subject: Re: debugging TXQs being empty
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        =?UTF-8?Q?Toke_H=c3=b8iland-J=c3=b8rgensen?= <toke@redhat.com>
+Cc:     linux-wireless@vger.kernel.org
+References: <bbc516f28782175b27ac5e19dcdeac13cd6ee76a.camel@sipsolutions.net>
+ <49288397-55b3-f49a-e277-5197d7c1bea3@candelatech.com>
+ <2e01fb1d5b8ff3335220231251f893c01c6c22d3.camel@sipsolutions.net>
+From:   Ben Greear <greearb@candelatech.com>
+Organization: Candela Technologies
+Message-ID: <64a6ae15-b7be-8c27-4e60-4cb3d253f3dc@candelatech.com>
+Date:   Thu, 5 Dec 2019 08:57:37 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.1.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <c95e814deed075352a05c392147e9458b0d1a447.1574591746.git.hns@goldelico.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <2e01fb1d5b8ff3335220231251f893c01c6c22d3.camel@sipsolutions.net>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sun, 24 Nov 2019 11:35:45 +0100, "H. Nikolaus Schaller" wrote:
-> It is now only useful for SPI interface.
-> Power control of SDIO mode is done through mmc core.
+On 12/5/19 8:49 AM, Johannes Berg wrote:
+> On Thu, 2019-12-05 at 08:37 -0800, Ben Greear wrote:
 > 
-> Suggested by: Ulf Hansson <ulf.hansson@linaro.org>
-> Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
-> ---
->  Documentation/devicetree/bindings/net/wireless/ti,wl1251.txt | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
+>>> All this seems to mean that the TCP stack isn't feeding us fast enough,
+>>> but is that really possible?
+>>
+>> Does UDP work better?
 > 
+> Somewhat, I get about 1020-1030 Mbps. But still a TON of "TXQ of STA ...
+> is now empty" messages. Say this run got about 15 per second of those.
 
-Acked-by: Rob Herring <robh@kernel.org>
+It would seem that it is not some issue with TCP stack then?
+
+In general, UDP uses more CPU to send from user-space than TCP
+because of TSO, etc.  Sendmmsg can help a bit, but it is a bit painful
+to code against so things like iperf do not use it, at least ones I've
+looked at.
+
+Can you provide some details on how you are generating this load?
+
+For what it's worth, we've seen about 1.9Gbps download goodput
+when using ax200 as a station receiving traffic from 160Mhz AP.
+I don't have any reports of > 1Gbps of upload performance though,
+not sure our user with the fast AP has done much upload testing...
+
+>> or pktgen?
+> 
+> I haven't really tried, the setup is a bit complicated ... and it's
+> nowhere near me either :)
+
+Yeah, it will likely crash your system unless you apply years-old patches I posted
+too :)
+
+But, at least with pktgen, you can be quite sure it is not some slowdown farther up
+the stack that is causing the problem.
+
+Thanks,
+Ben
+
+-- 
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
+
