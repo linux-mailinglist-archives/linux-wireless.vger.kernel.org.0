@@ -2,119 +2,95 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 52F6E113D0C
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 Dec 2019 09:32:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D5C51144E7
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Dec 2019 17:34:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726137AbfLEIcH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 5 Dec 2019 03:32:07 -0500
-Received: from a27-186.smtp-out.us-west-2.amazonses.com ([54.240.27.186]:56284
-        "EHLO a27-186.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726059AbfLEIcG (ORCPT
+        id S1729099AbfLEQeU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 5 Dec 2019 11:34:20 -0500
+Received: from s3.sipsolutions.net ([144.76.43.62]:57918 "EHLO
+        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726028AbfLEQeU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 5 Dec 2019 03:32:06 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1575534725;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:MIME-Version:Content-Type;
-        bh=6SX9HSoHu/NJqDNPkvwsWAkZdSlmaMvxEZBuiIuHwxs=;
-        b=dBdbjR7+sguzMh4APUYH9iWjMAE4+iIq/JWM60LK4eMOzGatMbna2XK2XBNFKEM7
-        axuFHqPaQUs3PFLqMS5mZTRQZvbSltM4b465WT6+LYeehdGo+HSrt215pYfkUm6chKv
-        j1zEdwGNYW+GCq/PIyPW9FTuwco70O7KOdbOXJtg=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=gdwg2y3kokkkj5a55z2ilkup5wp5hhxx; d=amazonses.com; t=1575534725;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:MIME-Version:Content-Type:Feedback-ID;
-        bh=6SX9HSoHu/NJqDNPkvwsWAkZdSlmaMvxEZBuiIuHwxs=;
-        b=A6a9XrXiMPaBcBNiePf+yWQr7VqRt7wOyupzI8/SCBq+39+Ec3vuMRyaZ0/aTHos
-        MOEwxhYlfEJD7KaFtFn5tREdjGWdyPxwrfhPSemCa7dWiLWjeWS8Jul+0rrhNyUdDBM
-        sWwC90hHV0DPGrBVlTzYQu+s/uyn+J1O4WSfEccw=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.0
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org B765DC43383
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Tony Chuang <yhchuang@realtek.com>
-Cc:     "linux\@jusic.net" <linux@jusic.net>,
-        "linux-wireless\@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: Re: RTL8822CE IPv6 autoconfiguration not working
-References: <f0aac1e559c2a3fa1e7eb8398ed58d46@jusic.net>
-        <e58983606ddb4d3c81f4d8bb27171da8@realtek.com>
-Date:   Thu, 5 Dec 2019 08:32:05 +0000
-In-Reply-To: <e58983606ddb4d3c81f4d8bb27171da8@realtek.com> (Tony Chuang's
-        message of "Thu, 5 Dec 2019 03:36:18 +0000")
-Message-ID: <0101016ed53009ce-6e91b0d5-9ead-44ac-8b91-ae71e22fe275-000000@us-west-2.amazonses.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Thu, 5 Dec 2019 11:34:20 -0500
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.92.3)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1icu54-004ABQ-5d; Thu, 05 Dec 2019 17:34:18 +0100
+Message-ID: <bbc516f28782175b27ac5e19dcdeac13cd6ee76a.camel@sipsolutions.net>
+Subject: debugging TXQs being empty
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Toke =?ISO-8859-1?Q?H=F8iland-J=F8rgensen?= <toke@redhat.com>
+Cc:     linux-wireless@vger.kernel.org
+Date:   Thu, 05 Dec 2019 17:34:16 +0100
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.34.2 (3.34.2-1.fc31) 
 MIME-Version: 1.0
-Content-Type: text/plain
-X-SES-Outgoing: 2019.12.05-54.240.27.186
-Feedback-ID: 1.us-west-2.CZuq2qbDmUIuT3qdvXlRHZZCpfZqZ4GtG9v3VKgRyF0=:AmazonSES
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Tony Chuang <yhchuang@realtek.com> writes:
+Hi Toke, all,
 
->> Subject: RTL8822CE IPv6 autoconfiguration not working
->> 
->> Hello,
->> 
->> I just bought a new laptop with an Realtek RTL8822CE wireless card
->> buildin. I'm using NetworkManager with its internal DHCP client. I have
->> working IPv6 autoconfiguration support in my home network with 7 devices
->> with different operating systems. When I plug a USB network card into
->> the laptop IPv6 is configured sucessfully. But with the wireless card
->> IPv6 autoconfiguration doesn't work. When I manually add an IPv6 with
->> "sudo ip -6 addr add <address>/64 dev wlp1s0" I can ping IPv6 targets.
->> So there seems to be an bug either in the driver or maybe in
->> NetworkManager which prevents autoconfiguration from working, can
->> sombody look into this? I'm glad to help and provide further
->> informations or test things out.
->> 
->> Kind Regards
->> Joshua
->> 
->> 
->> ip addr
->> 1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state
->> UNKNOWN
->> group default qlen 1000
->>      link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
->>      inet 127.0.0.1/8 scope host lo
->>         valid_lft forever preferred_lft forever
->>      inet6 ::1/128 scope host
->>         valid_lft forever preferred_lft forever
->> 2: wlp1s0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq
->> state UP
->> group default qlen 1000
->>      link/ether 40:5b:d8:1a:7a:a9 brd ff:ff:ff:ff:ff:ff
->>      inet 192.168.178.25/24 brd 192.168.178.255 scope global dynamic
->> noprefixroute wlp1s0
->>         valid_lft 863798sec preferred_lft 863798sec
->>      inet6 fe80::1b8b:8c3a:b569:a882/64 scope link noprefixroute
->>         valid_lft forever preferred_lft forever
->> 
->> lspci -v
->> 01:00.0 Network controller: Realtek Semiconductor Co., Ltd. Device c822
->> 	Subsystem: Electronics & Telecommunications RSH Device 1e25
->> 	Flags: bus master, fast devsel, latency 0, IRQ 71
->> 	I/O ports at 2000 [size=256]
->> 	Memory at c0700000 (64-bit, non-prefetchable) [size=64K]
->> 	Capabilities: <access denied>
->> 	Kernel driver in use: rtw_pci
->> 	Kernel modules: rtwpci
->> 
->
-> I am not sure if this is driver-related problem, but I think you can try to
-> tcpdump and see where the autoconfiguration failed.
-> And I am not an expert of IPv6, but if there is any issue with the driver I
-> can help you.
+I'm debugging some throughput issues and wondered if you had a hint.
+This is at HE rates 2x2 80 MHz, so you'd expect ~1Gbps or a bit more,
+I'm getting ~900 Mbps. Just to set the stage.
 
-My first guess would be some kind of multicast problem with power save
-mode. I would first try disabling the power save mode on the driver and
-see if that helps.
+What I think is (part of) the problem is that I see in the logs that our
+hardware queues become empty every once a while.
 
--- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+This seems to be when/because ieee80211_tx_dequeue() returns NULL, and
+we hit the
+                        skb = ieee80211_tx_dequeue(hw, txq);
+
+                        if (!skb) {
+                                if (txq->sta)
+                                        IWL_DEBUG_TX(mvm,
+                                                     "TXQ of sta %pM tid %d is now empty\n",
+                                                     txq->sta->addr,
+                                                     txq->tid);
+
+printout, e.g.
+iwlwifi 0000:00:14.3: I iwl_mvm_mac_itxq_xmit TXQ of sta 0c:9d:92:03:12:44 tid 0 is now empty
+
+This isn't always bad, but in most cases I see it happen the hardware
+queue actually is rather shallow at the time, say only 57 packets in
+some instance. Then we can basically send all the packets in the queue
+in one or two aggregations (see I here an example with 57 packets in the
+queue, ieee80211_tx_dequeue() returns NULL, and we then send an A-MPDU
+with 38 followed by one with 19 packets, making the HW queue empty.)
+
+This is with 10 simultaneous TCP streams, so there *shouldn't* be any
+issues with that, I did indeed try to lower the pacing shift and it had
+no effect. I couldn't try with just one or two streams (actually one
+stream is not enough because the AP has only GBit LAN ... so in the
+ideal case wireless is faster than ethernet!!) - somehow the test hangs
+then, but I'll get back to that later.
+
+
+Anyhow, do you have any tips on debugging this? This is still without
+AQL code. The AQM stats for the AP look fine, basically everything is 0
+except for "new-flows", "tx-bytes" and "tx-packets".
+
+One thing that does seem odd is that the new-flows counter is increasing
+this rapidly - shouldn't we expect it to be like 10 new flows for 10 TCP
+sessions? I see this counter increase by the thousands per second.
+
+I don't see any calls to __ieee80211_stop_queue() either, as expected
+(per trace-cmd).
+
+CPU load is not an issue AFAICT, even with all the debugging being
+written into the syslog (or journal or something) that's the only thing
+that takes noticable CPU time - ~50% for systemd-journal and ~20% for
+rsyslogd, <10% for the throughput testing program and that's about it.
+The system has 4 threads and seems mostly idle.
+
+All this seems to mean that the TCP stack isn't feeding us fast enough,
+but is that really possible?
+
+Any other ideas?
+
+Thanks,
+johannes
+
