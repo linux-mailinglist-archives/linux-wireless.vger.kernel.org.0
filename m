@@ -2,222 +2,152 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D44CA113BAD
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 Dec 2019 07:28:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B0073113C16
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Dec 2019 08:04:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725953AbfLEG2U (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 5 Dec 2019 01:28:20 -0500
-Received: from nbd.name ([46.4.11.11]:56266 "EHLO nbd.name"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725880AbfLEG2U (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 5 Dec 2019 01:28:20 -0500
-Received: from pd95fd3d5.dip0.t-ipconnect.de ([217.95.211.213] helo=bertha.datto.lan)
-        by ds12 with esmtpa (Exim 4.89)
-        (envelope-from <john@phrozen.org>)
-        id 1ickcZ-0001iF-PV; Thu, 05 Dec 2019 07:28:15 +0100
-From:   John Crispin <john@phrozen.org>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        John Crispin <john@phrozen.org>
-Subject: [PATCH V2] ath11k: add OMI debug support
-Date:   Thu,  5 Dec 2019 07:28:12 +0100
-Message-Id: <20191205062812.6208-1-john@phrozen.org>
-X-Mailer: git-send-email 2.20.1
+        id S1725926AbfLEHEC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 5 Dec 2019 02:04:02 -0500
+Received: from paleale.coelho.fi ([176.9.41.70]:50496 "EHLO
+        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1725867AbfLEHEC (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 5 Dec 2019 02:04:02 -0500
+Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa.ger.corp.intel.com)
+        by farmhouse.coelho.fi with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.92.2)
+        (envelope-from <luca@coelho.fi>)
+        id 1iclB9-00069j-F9; Thu, 05 Dec 2019 09:04:00 +0200
+From:   Luca Coelho <luca@coelho.fi>
+To:     kvalo@codeaurora.org
+Cc:     linux-wireless@vger.kernel.org
+Date:   Thu,  5 Dec 2019 09:03:54 +0200
+Message-Id: <20191205070354.231246-1-luca@coelho.fi>
+X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on farmhouse.coelho.fi
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+        TVD_RCVD_IP,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.2
+Subject: [PATCH v5.5] iwlwifi: pcie: move power gating workaround earlier in the flow
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This patch allows us to initiate a OMI transaction for test purposes using
-a debugfs interface. the xmit_omi file expects 9 parameters. The first two
-are VHT and HE followed by the 7 A-Control fields from D4.0/9.2.4.6a.2.
+From: Luca Coelho <luciano.coelho@intel.com>
 
-Signed-off-by: John Crispin <john@phrozen.org>
+We need to reset the NIC after setting the bits to enable power
+gating and that cannot be done too late in the flow otherwise it
+cleans other registers and things that were already configured,
+causing initialization to fail.
+
+In order to fix this, move the function to the common code in trans.c
+so it can be called directly from there at an earlier point, just
+after the reset we already do during initialization.
+
+Fixes: 9a47cb988338 ("iwlwifi: pcie: add workaround for power gating in integrated 22000")
+Bugzilla: https://bugzilla.kernel.org/show_bug.cgi?id=205719
+Cc: stable@ver.kernel.org # 5.4+
+Reported-by: Anders Kaseorg <andersk@mit.edu>
+Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 ---
-Changes in V2
-* add __packed qualifier
+ .../wireless/intel/iwlwifi/pcie/trans-gen2.c  | 25 ----------------
+ .../net/wireless/intel/iwlwifi/pcie/trans.c   | 30 +++++++++++++++++++
+ 2 files changed, 30 insertions(+), 25 deletions(-)
 
- drivers/net/wireless/ath/ath11k/debug.h       | 10 ++++
- drivers/net/wireless/ath/ath11k/debugfs_sta.c | 47 +++++++++++++++++++
- drivers/net/wireless/ath/ath11k/wmi.c         | 33 ++++++++++++-
- drivers/net/wireless/ath/ath11k/wmi.h         | 10 ++++
- 4 files changed, 99 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/ath/ath11k/debug.h b/drivers/net/wireless/ath/ath11k/debug.h
-index 805e30c07e14..1535af2eebe5 100644
---- a/drivers/net/wireless/ath/ath11k/debug.h
-+++ b/drivers/net/wireless/ath/ath11k/debug.h
-@@ -12,6 +12,16 @@
- #define ATH11K_TX_POWER_MAX_VAL	70
- #define ATH11K_TX_POWER_MIN_VAL	0
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/trans-gen2.c b/drivers/net/wireless/intel/iwlwifi/pcie/trans-gen2.c
+index 0252716c0b24..0d8b2a8ffa5d 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/trans-gen2.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/trans-gen2.c
+@@ -57,24 +57,6 @@
+ #include "internal.h"
+ #include "fw/dbg.h"
  
-+#define	ATH11K_XMIT_OMI_VHT		BIT(0)
-+#define	ATH11K_XMIT_OMI_HE		BIT(1)
-+#define	ATH11K_XMIT_OMI_RX_NSS		GENMASK(4, 2)
-+#define	ATH11K_XMIT_OMI_CHWIDTH		GENMASK(6, 5)
-+#define	ATH11K_XMIT_OMI_UL_UM_DIS	BIT(7)
-+#define	ATH11K_XMIT_OMI_TX_NSTS		GENMASK(10, 8)
-+#define	ATH11K_XMIT_OMI_ER_SU_DISABLE	BIT(11)
-+#define	ATH11K_XMIT_OMI_MIMO_RESOUND	BIT(12)
-+#define	ATH11K_XMIT_OMI_UL_MU_DATA_DIS	BIT(13)
-+
- enum ath11k_debug_mask {
- 	ATH11K_DBG_AHB		= 0x00000001,
- 	ATH11K_DBG_WMI		= 0x00000002,
-diff --git a/drivers/net/wireless/ath/ath11k/debugfs_sta.c b/drivers/net/wireless/ath/ath11k/debugfs_sta.c
-index 3cdc34218a7d..61c40105bd2a 100644
---- a/drivers/net/wireless/ath/ath11k/debugfs_sta.c
-+++ b/drivers/net/wireless/ath/ath11k/debugfs_sta.c
-@@ -526,6 +526,52 @@ static const struct file_operations fops_peer_pktlog = {
- 	.llseek = default_llseek,
- };
+-static int iwl_pcie_gen2_force_power_gating(struct iwl_trans *trans)
+-{
+-	iwl_set_bits_prph(trans, HPM_HIPM_GEN_CFG,
+-			  HPM_HIPM_GEN_CFG_CR_FORCE_ACTIVE);
+-	udelay(20);
+-	iwl_set_bits_prph(trans, HPM_HIPM_GEN_CFG,
+-			  HPM_HIPM_GEN_CFG_CR_PG_EN |
+-			  HPM_HIPM_GEN_CFG_CR_SLP_EN);
+-	udelay(20);
+-	iwl_clear_bits_prph(trans, HPM_HIPM_GEN_CFG,
+-			    HPM_HIPM_GEN_CFG_CR_FORCE_ACTIVE);
+-
+-	iwl_trans_sw_reset(trans);
+-	iwl_clear_bit(trans, CSR_GP_CNTRL, CSR_GP_CNTRL_REG_FLAG_INIT_DONE);
+-
+-	return 0;
+-}
+-
+ /*
+  * Start up NIC's basic functionality after it has been reset
+  * (e.g. after platform boot, or shutdown via iwl_pcie_apm_stop())
+@@ -110,13 +92,6 @@ int iwl_pcie_gen2_apm_init(struct iwl_trans *trans)
  
-+static ssize_t ath11k_dbg_sta_write_xmit_omi(struct file *file,
-+					     const char __user *ubuf,
-+					     size_t count, loff_t *ppos)
+ 	iwl_pcie_apm_config(trans);
+ 
+-	if (trans->trans_cfg->device_family == IWL_DEVICE_FAMILY_22000 &&
+-	    trans->cfg->integrated) {
+-		ret = iwl_pcie_gen2_force_power_gating(trans);
+-		if (ret)
+-			return ret;
+-	}
+-
+ 	ret = iwl_finish_nic_init(trans, trans->trans_cfg);
+ 	if (ret)
+ 		return ret;
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
+index af9bc6b64542..a0677131634d 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
+@@ -1783,6 +1783,29 @@ static int iwl_trans_pcie_clear_persistence_bit(struct iwl_trans *trans)
+ 	return 0;
+ }
+ 
++static int iwl_pcie_gen2_force_power_gating(struct iwl_trans *trans)
 +{
-+	struct ieee80211_sta *sta = file->private_data;
-+	struct ath11k_sta *arsta = (struct ath11k_sta *)sta->drv_priv;
-+	u8 vht, he, rx_nss, chwidth, ul_mu_disable, tx_nsts, er_su_disable;
-+	u8 resound_recommendation, ul_mu_data_disable;
-+	u8 buf[64] = {0};
-+	u32 val;
 +	int ret;
 +
-+	ret = simple_write_to_buffer(buf, sizeof(buf) - 1, ppos, ubuf, count);
++	ret = iwl_finish_nic_init(trans, trans->trans_cfg);
 +	if (ret < 0)
 +		return ret;
 +
-+	buf[ret] = '\0';
-+	ret = sscanf(buf, "%hhu %hhu %hhu %hhu %hhu %hhu %hhu %hhu %hhu",
-+		     &vht, &he, &rx_nss, &chwidth, &ul_mu_disable, &tx_nsts,
-+		     &er_su_disable, &resound_recommendation,
-+		     &ul_mu_data_disable);
-+	if (ret != 9)
-+		return -EINVAL;
++	iwl_set_bits_prph(trans, HPM_HIPM_GEN_CFG,
++			  HPM_HIPM_GEN_CFG_CR_FORCE_ACTIVE);
++	udelay(20);
++	iwl_set_bits_prph(trans, HPM_HIPM_GEN_CFG,
++			  HPM_HIPM_GEN_CFG_CR_PG_EN |
++			  HPM_HIPM_GEN_CFG_CR_SLP_EN);
++	udelay(20);
++	iwl_clear_bits_prph(trans, HPM_HIPM_GEN_CFG,
++			    HPM_HIPM_GEN_CFG_CR_FORCE_ACTIVE);
 +
-+	val = FIELD_PREP(ATH11K_XMIT_OMI_VHT, vht) |
-+	      FIELD_PREP(ATH11K_XMIT_OMI_HE, he) |
-+	      FIELD_PREP(ATH11K_XMIT_OMI_RX_NSS, rx_nss) |
-+	      FIELD_PREP(ATH11K_XMIT_OMI_CHWIDTH, chwidth) |
-+	      FIELD_PREP(ATH11K_XMIT_OMI_UL_UM_DIS, ul_mu_disable) |
-+	      FIELD_PREP(ATH11K_XMIT_OMI_TX_NSTS, tx_nsts) |
-+	      FIELD_PREP(ATH11K_XMIT_OMI_ER_SU_DISABLE, er_su_disable) |
-+	      FIELD_PREP(ATH11K_XMIT_OMI_MIMO_RESOUND, resound_recommendation) |
-+	      FIELD_PREP(ATH11K_XMIT_OMI_UL_MU_DATA_DIS, ul_mu_data_disable);
++	iwl_trans_pcie_sw_reset(trans);
 +
-+	ret = ath11k_wmi_set_peer_param(arsta->arvif->ar, sta->addr,
-+					arsta->arvif->vdev_id,
-+					WMI_PEER_PARAM_XMIT_OMI,
-+					val);
-+	return ret ? ret : count;
++	return 0;
 +}
 +
-+static const struct file_operations fops_write_xmit_omi = {
-+	.write = ath11k_dbg_sta_write_xmit_omi,
-+	.open = simple_open
-+};
-+
- void ath11k_sta_add_debugfs(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 			    struct ieee80211_sta *sta, struct dentry *dir)
+ static int _iwl_trans_pcie_start_hw(struct iwl_trans *trans)
  {
-@@ -543,4 +589,5 @@ void ath11k_sta_add_debugfs(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 	struct iwl_trans_pcie *trans_pcie = IWL_TRANS_GET_PCIE_TRANS(trans);
+@@ -1802,6 +1825,13 @@ static int _iwl_trans_pcie_start_hw(struct iwl_trans *trans)
  
- 	debugfs_create_file("peer_pktlog", 0644, dir, sta,
- 			    &fops_peer_pktlog);
-+	debugfs_create_file("xmit_omi", 0644, dir, sta, &fops_write_xmit_omi);
- }
-diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
-index 0c1064a0aa39..8cf7220a95f9 100644
---- a/drivers/net/wireless/ath/ath11k/wmi.c
-+++ b/drivers/net/wireless/ath/ath11k/wmi.c
-@@ -99,6 +99,8 @@ static const struct wmi_tlv_policy wmi_tlv_policies[] = {
- 		= { .min_len = sizeof(struct wmi_pdev_ctl_failsafe_chk_event) },
- 	[WMI_TAG_TWT_ADD_DIALOG_COMPLETE_EVENT]
- 		= { .min_len = sizeof(struct wmi_twt_add_dialog_event) },
-+	[WMI_TAG_PEER_OPER_MODE_CHANGE_EVENT]
-+		= { .min_len = sizeof(struct wmi_peer_oper_mode_change_event) },
- };
+ 	iwl_trans_pcie_sw_reset(trans);
  
- #define PRIMAP(_hw_mode_) \
-@@ -5714,6 +5716,33 @@ static void ath11k_wmi_twt_add_dialog_event(struct ath11k_base *ab, struct sk_bu
- 	kfree(tb);
- }
- 
-+static void ath11k_wmi_peer_oper_mode_change_event(struct ath11k_base *ab, struct sk_buff *skb)
-+{
-+	const void **tb;
-+	const struct wmi_peer_oper_mode_change_event *ev;
-+	int ret;
-+
-+	tb = ath11k_wmi_tlv_parse_alloc(ab, skb->data, skb->len, GFP_ATOMIC);
-+	if (IS_ERR(tb)) {
-+		ret = PTR_ERR(tb);
-+		ath11k_warn(ab, "failed to parse tlv: %d\n", ret);
-+		return;
++	if (trans->trans_cfg->device_family == IWL_DEVICE_FAMILY_22000 &&
++	    trans->cfg->integrated) {
++		err = iwl_pcie_gen2_force_power_gating(trans);
++		if (err)
++			return err;
 +	}
 +
-+	ev = tb[WMI_TAG_PEER_OPER_MODE_CHANGE_EVENT];
-+	if (!ev) {
-+		ath11k_warn(ab, "failed to fetch peer oper mode change ev");
-+		goto exit;
-+	}
-+
-+	ath11k_dbg(ab, ATH11K_DBG_WMI,
-+		   "OMI Change Event - ind: %ds, rxnss: %d, bw: %d, txnss: %d, disablemu: %d\n",
-+		   ev->ind_type, ev->new_rxnss, ev->new_bw, ev->new_txnss, ev->new_disablemu);
-+
-+exit:
-+	kfree(tb);
-+}
-+
- static void ath11k_wmi_tlv_op_rx(struct ath11k_base *ab, struct sk_buff *skb)
- {
- 	struct wmi_cmd_hdr *cmd_hdr;
-@@ -5794,10 +5823,12 @@ static void ath11k_wmi_tlv_op_rx(struct ath11k_base *ab, struct sk_buff *skb)
- 	case WMI_TWT_ADD_DIALOG_EVENTID:
- 		ath11k_wmi_twt_add_dialog_event(ab, skb);
- 		break;
-+	case WMI_PEER_OPER_MODE_CHANGE_EVENTID:
-+		ath11k_wmi_peer_oper_mode_change_event(ab, skb);
-+		break;
- 	/* add Unsupported events here */
- 	case WMI_TBTTOFFSET_EXT_UPDATE_EVENTID:
- 	case WMI_VDEV_DELETE_RESP_EVENTID:
--	case WMI_PEER_OPER_MODE_CHANGE_EVENTID:
- 	case WMI_TWT_ENABLE_EVENTID:
- 	case WMI_TWT_DISABLE_EVENTID:
- 	case WMI_TWT_DEL_DIALOG_EVENTID:
-diff --git a/drivers/net/wireless/ath/ath11k/wmi.h b/drivers/net/wireless/ath/ath11k/wmi.h
-index 7a1ed73d8b7b..4dbcb9dc0f8d 100644
---- a/drivers/net/wireless/ath/ath11k/wmi.h
-+++ b/drivers/net/wireless/ath/ath11k/wmi.h
-@@ -2004,6 +2004,7 @@ enum {
- #define WMI_PEER_SET_MAX_TX_RATE                        0x11
- #define WMI_PEER_SET_MIN_TX_RATE                        0x12
- #define WMI_PEER_SET_DEFAULT_ROUTING                    0x13
-+#define WMI_PEER_PARAM_XMIT_OMI				0x1c
- 
- /* slot time long */
- #define WMI_VDEV_SLOT_TIME_LONG         0x1
-@@ -4684,6 +4685,15 @@ struct wmi_obss_spatial_reuse_params_cmd {
- 	u32 vdev_id;
- } __packed;
- 
-+struct wmi_peer_oper_mode_change_event {
-+	struct wmi_mac_addr peer_macaddr;
-+	u32 ind_type;
-+	u32 new_rxnss;
-+	u32 new_bw;
-+	u32 new_txnss;
-+	u32 new_disablemu;
-+} __packed;
-+
- struct target_resource_config {
- 	u32 num_vdevs;
- 	u32 num_peers;
+ 	err = iwl_pcie_apm_init(trans);
+ 	if (err)
+ 		return err;
 -- 
-2.20.1
+2.24.0
 
