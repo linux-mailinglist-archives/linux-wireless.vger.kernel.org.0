@@ -2,199 +2,109 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0216C11339E
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Dec 2019 19:19:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A4F9A113A7F
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Dec 2019 04:36:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731936AbfLDSSF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 4 Dec 2019 13:18:05 -0500
-Received: from nbd.name ([46.4.11.11]:40972 "EHLO nbd.name"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731852AbfLDSSC (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 4 Dec 2019 13:18:02 -0500
-Received: from p5dcfb666.dip0.t-ipconnect.de ([93.207.182.102] helo=bertha.datto.lan)
-        by ds12 with esmtpa (Exim 4.89)
-        (envelope-from <john@phrozen.org>)
-        id 1icZDq-0005Od-8u; Wed, 04 Dec 2019 19:17:58 +0100
-From:   John Crispin <john@phrozen.org>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        John Crispin <john@phrozen.org>
-Subject: [PATCH V2 9/9] ath11k: optimize ath11k_hal_tx_status_parse
-Date:   Wed,  4 Dec 2019 19:17:45 +0100
-Message-Id: <20191204181745.27297-10-john@phrozen.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191204181745.27297-1-john@phrozen.org>
-References: <20191204181745.27297-1-john@phrozen.org>
+        id S1728539AbfLEDg3 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 4 Dec 2019 22:36:29 -0500
+Received: from rtits2.realtek.com ([211.75.126.72]:56698 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728490AbfLEDg3 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 4 Dec 2019 22:36:29 -0500
+Authenticated-By: 
+X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID xB53aI75009433, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (RTITCAS12.realtek.com.tw[172.21.6.16])
+        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id xB53aI75009433
+        (version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 5 Dec 2019 11:36:19 +0800
+Received: from RTEXDAG01.realtek.com.tw (172.21.6.100) by
+ RTITCAS12.realtek.com.tw (172.21.6.16) with Microsoft SMTP Server (TLS) id
+ 14.3.468.0; Thu, 5 Dec 2019 11:36:18 +0800
+Received: from RTEXMB04.realtek.com.tw (172.21.6.97) by
+ RTEXDAG01.realtek.com.tw (172.21.6.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Thu, 5 Dec 2019 11:36:18 +0800
+Received: from RTEXMB04.realtek.com.tw ([fe80::7d15:f8ee:cfc7:88ce]) by
+ RTEXMB04.realtek.com.tw ([fe80::7d15:f8ee:cfc7:88ce%6]) with mapi id
+ 15.01.1779.005; Thu, 5 Dec 2019 11:36:18 +0800
+From:   Tony Chuang <yhchuang@realtek.com>
+To:     "linux@jusic.net" <linux@jusic.net>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: RE: RTL8822CE IPv6 autoconfiguration not working
+Thread-Topic: RTL8822CE IPv6 autoconfiguration not working
+Thread-Index: AQHVqFeWgmjllZPQVk+Ms5UKcM7zDKeq6Qwg
+Date:   Thu, 5 Dec 2019 03:36:18 +0000
+Message-ID: <e58983606ddb4d3c81f4d8bb27171da8@realtek.com>
+References: <f0aac1e559c2a3fa1e7eb8398ed58d46@jusic.net>
+In-Reply-To: <f0aac1e559c2a3fa1e7eb8398ed58d46@jusic.net>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.68.183]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Moving the function into dp_tx.c allows gcc to optimize the code better
-and also avoid chace invalidates and context switches.
+> Subject: RTL8822CE IPv6 autoconfiguration not working
+> 
+> Hello,
+> 
+> I just bought a new laptop with an Realtek RTL8822CE wireless card
+> buildin. I'm using NetworkManager with its internal DHCP client. I have
+> working IPv6 autoconfiguration support in my home network with 7 devices
+> with different operating systems. When I plug a USB network card into
+> the laptop IPv6 is configured sucessfully. But with the wireless card
+> IPv6 autoconfiguration doesn't work. When I manually add an IPv6 with
+> "sudo ip -6 addr add <address>/64 dev wlp1s0" I can ping IPv6 targets.
+> So there seems to be an bug either in the driver or maybe in
+> NetworkManager which prevents autoconfiguration from working, can
+> sombody look into this? I'm glad to help and provide further
+> informations or test things out.
+> 
+> Kind Regards
+> Joshua
+> 
+> 
+> ip addr
+> 1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state
+> UNKNOWN
+> group default qlen 1000
+>      link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+>      inet 127.0.0.1/8 scope host lo
+>         valid_lft forever preferred_lft forever
+>      inet6 ::1/128 scope host
+>         valid_lft forever preferred_lft forever
+> 2: wlp1s0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq
+> state UP
+> group default qlen 1000
+>      link/ether 40:5b:d8:1a:7a:a9 brd ff:ff:ff:ff:ff:ff
+>      inet 192.168.178.25/24 brd 192.168.178.255 scope global dynamic
+> noprefixroute wlp1s0
+>         valid_lft 863798sec preferred_lft 863798sec
+>      inet6 fe80::1b8b:8c3a:b569:a882/64 scope link noprefixroute
+>         valid_lft forever preferred_lft forever
+> 
+> lspci -v
+> 01:00.0 Network controller: Realtek Semiconductor Co., Ltd. Device c822
+> 	Subsystem: Electronics & Telecommunications RSH Device 1e25
+> 	Flags: bus master, fast devsel, latency 0, IRQ 71
+> 	I/O ports at 2000 [size=256]
+> 	Memory at c0700000 (64-bit, non-prefetchable) [size=64K]
+> 	Capabilities: <access denied>
+> 	Kernel driver in use: rtw_pci
+> 	Kernel modules: rtwpci
+> 
 
-Signed-off-by: John Crispin <john@phrozen.org>
----
- drivers/net/wireless/ath/ath11k/dp.h     |  2 +-
- drivers/net/wireless/ath/ath11k/dp_tx.c  | 40 ++++++++++++++++++++--
- drivers/net/wireless/ath/ath11k/hal_tx.c | 43 ------------------------
- drivers/net/wireless/ath/ath11k/hal_tx.h |  4 ---
- 4 files changed, 38 insertions(+), 51 deletions(-)
+I am not sure if this is driver-related problem, but I think you can try to
+tcpdump and see where the autoconfiguration failed.
+And I am not an expert of IPv6, but if there is any issue with the driver I
+can help you.
 
-diff --git a/drivers/net/wireless/ath/ath11k/dp.h b/drivers/net/wireless/ath/ath11k/dp.h
-index d4011f902930..2f0980f2c762 100644
---- a/drivers/net/wireless/ath/ath11k/dp.h
-+++ b/drivers/net/wireless/ath/ath11k/dp.h
-@@ -57,7 +57,7 @@ struct dp_rxdma_ring {
- 	int bufs_max;
- };
- 
--#define ATH11K_TX_COMPL_NEXT(x)	((x + 1) % DP_TX_COMP_RING_SIZE)
-+#define ATH11K_TX_COMPL_NEXT(x)	(((x) + 1) % DP_TX_COMP_RING_SIZE)
- 
- struct dp_tx_ring {
- 	u8 tcl_data_ring_id;
-diff --git a/drivers/net/wireless/ath/ath11k/dp_tx.c b/drivers/net/wireless/ath/ath11k/dp_tx.c
-index 5d6403cf99ab..66530f6c04cb 100644
---- a/drivers/net/wireless/ath/ath11k/dp_tx.c
-+++ b/drivers/net/wireless/ath/ath11k/dp_tx.c
-@@ -423,6 +423,37 @@ static void ath11k_dp_tx_complete_msdu(struct ath11k *ar,
- 	rcu_read_unlock();
- }
- 
-+static inline void ath11k_dp_tx_status_parse(struct ath11k_base *ab,
-+					     struct hal_wbm_release_ring *desc,
-+					     struct hal_tx_status *ts)
-+{
-+	ts->buf_rel_source =
-+		FIELD_GET(HAL_WBM_RELEASE_INFO0_REL_SRC_MODULE, desc->info0);
-+	if (ts->buf_rel_source != HAL_WBM_REL_SRC_MODULE_FW &&
-+	    ts->buf_rel_source != HAL_WBM_REL_SRC_MODULE_TQM)
-+		return;
-+
-+	if (ts->buf_rel_source == HAL_WBM_REL_SRC_MODULE_FW)
-+		return;
-+
-+	ts->status = FIELD_GET(HAL_WBM_RELEASE_INFO0_TQM_RELEASE_REASON,
-+			       desc->info0);
-+	ts->ppdu_id = FIELD_GET(HAL_WBM_RELEASE_INFO1_TQM_STATUS_NUMBER,
-+				desc->info1);
-+	ts->try_cnt = FIELD_GET(HAL_WBM_RELEASE_INFO1_TRANSMIT_COUNT,
-+				desc->info1);
-+	ts->ack_rssi = FIELD_GET(HAL_WBM_RELEASE_INFO2_ACK_FRAME_RSSI,
-+				 desc->info2);
-+	if (desc->info2 & HAL_WBM_RELEASE_INFO2_FIRST_MSDU)
-+		ts->flags |= HAL_TX_STATUS_FLAGS_FIRST_MSDU;
-+	ts->peer_id = FIELD_GET(HAL_WBM_RELEASE_INFO3_PEER_ID, desc->info3);
-+	ts->tid = FIELD_GET(HAL_WBM_RELEASE_INFO3_TID, desc->info3);
-+	if (desc->rate_stats.info0 & HAL_TX_RATE_STATS_INFO0_VALID)
-+		ts->rate_stats = desc->rate_stats.info0;
-+	else
-+		ts->rate_stats = 0;
-+}
-+
- void ath11k_dp_tx_completion_handler(struct ath11k_base *ab, int ring_id)
- {
- 	struct ath11k *ar;
-@@ -456,14 +487,17 @@ void ath11k_dp_tx_completion_handler(struct ath11k_base *ab, int ring_id)
- 
- 	while (ATH11K_TX_COMPL_NEXT(tx_ring->tx_status_tail) != tx_ring->tx_status_head) {
- 		struct hal_wbm_release_ring *tx_status;
-+		u32 desc_id;
- 
- 		tx_ring->tx_status_tail =
- 			ATH11K_TX_COMPL_NEXT(tx_ring->tx_status_tail);
- 		tx_status = &tx_ring->tx_status[tx_ring->tx_status_tail];
--		ath11k_hal_tx_status_parse(ab, tx_status, &ts);
-+		ath11k_dp_tx_status_parse(ab, tx_status, &ts);
- 
--		mac_id = FIELD_GET(DP_TX_DESC_ID_MAC_ID, ts.desc_id);
--		msdu_id = FIELD_GET(DP_TX_DESC_ID_MSDU_ID, ts.desc_id);
-+		desc_id = FIELD_GET(BUFFER_ADDR_INFO1_SW_COOKIE,
-+				    tx_status->buf_addr_info.info1);
-+		mac_id = FIELD_GET(DP_TX_DESC_ID_MAC_ID, desc_id);
-+		msdu_id = FIELD_GET(DP_TX_DESC_ID_MSDU_ID, desc_id);
- 
- 		if (ts.buf_rel_source == HAL_WBM_REL_SRC_MODULE_FW) {
- 			ath11k_dp_tx_process_htt_tx_complete(ab,
-diff --git a/drivers/net/wireless/ath/ath11k/hal_tx.c b/drivers/net/wireless/ath/ath11k/hal_tx.c
-index e8710bbbbc3a..e4aa7e8a1284 100644
---- a/drivers/net/wireless/ath/ath11k/hal_tx.c
-+++ b/drivers/net/wireless/ath/ath11k/hal_tx.c
-@@ -74,49 +74,6 @@ void ath11k_hal_tx_cmd_desc_setup(struct ath11k_base *ab, void *cmd,
- 	tcl_cmd->info4 = 0;
- }
- 
--void ath11k_hal_tx_status_parse(struct ath11k_base *ab,
--				struct hal_wbm_release_ring *desc,
--				struct hal_tx_status *ts)
--{
--	ts->buf_rel_source =
--		FIELD_GET(HAL_WBM_RELEASE_INFO0_REL_SRC_MODULE, desc->info0);
--	if (ts->buf_rel_source != HAL_WBM_REL_SRC_MODULE_FW &&
--	    ts->buf_rel_source != HAL_WBM_REL_SRC_MODULE_TQM)
--		return;
--
--	ts->desc_id = FIELD_GET(BUFFER_ADDR_INFO1_SW_COOKIE,
--				desc->buf_addr_info.info1);
--
--	if (ts->buf_rel_source == HAL_WBM_REL_SRC_MODULE_FW)
--		return;
--
--	ts->status = FIELD_GET(HAL_WBM_RELEASE_INFO0_TQM_RELEASE_REASON,
--			       desc->info0);
--	ts->ppdu_id = FIELD_GET(HAL_WBM_RELEASE_INFO1_TQM_STATUS_NUMBER,
--				desc->info1);
--	ts->try_cnt = FIELD_GET(HAL_WBM_RELEASE_INFO1_TRANSMIT_COUNT,
--				desc->info1);
--
--	ts->ack_rssi = FIELD_GET(HAL_WBM_RELEASE_INFO2_ACK_FRAME_RSSI,
--				 desc->info2);
--	if (desc->info2 & HAL_WBM_RELEASE_INFO2_FIRST_MSDU)
--		ts->flags |= HAL_TX_STATUS_FLAGS_FIRST_MSDU;
--
--	if (desc->info2 & HAL_WBM_RELEASE_INFO2_LAST_MSDU)
--		ts->flags |= HAL_TX_STATUS_FLAGS_LAST_MSDU;
--
--	if (desc->info2 & HAL_WBM_RELEASE_INFO2_MSDU_IN_AMSDU)
--		ts->flags |= HAL_TX_STATUS_FLAGS_MSDU_IN_AMSDU;
--
--	ts->peer_id = FIELD_GET(HAL_WBM_RELEASE_INFO3_PEER_ID, desc->info3);
--	ts->tid = FIELD_GET(HAL_WBM_RELEASE_INFO3_TID, desc->info3);
--
--	if (!(desc->rate_stats.info0 & HAL_TX_RATE_STATS_INFO0_VALID))
--		return;
--
--	ts->rate_stats = desc->rate_stats.info0;
--}
--
- void ath11k_hal_tx_set_dscp_tid_map(struct ath11k_base *ab, int id)
- {
- 	u32 ctrl_reg_val;
-diff --git a/drivers/net/wireless/ath/ath11k/hal_tx.h b/drivers/net/wireless/ath/ath11k/hal_tx.h
-index 5fe89b729a6e..ce48a61bfb66 100644
---- a/drivers/net/wireless/ath/ath11k/hal_tx.h
-+++ b/drivers/net/wireless/ath/ath11k/hal_tx.h
-@@ -48,7 +48,6 @@ struct hal_tx_info {
- /* Tx status parsed from srng desc */
- struct hal_tx_status {
- 	enum hal_wbm_rel_src_module buf_rel_source;
--	u32 desc_id;
- 	enum hal_wbm_tqm_rel_reason status;
- 	u8 ack_rssi;
- 	u32 flags; /* %HAL_TX_STATUS_FLAGS_ */
-@@ -61,9 +60,6 @@ struct hal_tx_status {
- 
- void ath11k_hal_tx_cmd_desc_setup(struct ath11k_base *ab, void *cmd,
- 				  struct hal_tx_info *ti);
--void ath11k_hal_tx_status_parse(struct ath11k_base *ab,
--				struct hal_wbm_release_ring *desc,
--				struct hal_tx_status *ts);
- void ath11k_hal_tx_set_dscp_tid_map(struct ath11k_base *ab, int id);
- int ath11k_hal_reo_cmd_send(struct ath11k_base *ab, struct hal_srng *srng,
- 			    enum hal_reo_cmd_type type,
--- 
-2.20.1
-
+Yan-Hsuan
