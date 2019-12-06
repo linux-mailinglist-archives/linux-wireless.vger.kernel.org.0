@@ -2,80 +2,161 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B0F431157ED
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 Dec 2019 20:49:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A97B1157FD
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 Dec 2019 20:53:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726332AbfLFTtS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 6 Dec 2019 14:49:18 -0500
-Received: from mail-pj1-f66.google.com ([209.85.216.66]:33983 "EHLO
-        mail-pj1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726325AbfLFTtS (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 6 Dec 2019 14:49:18 -0500
-Received: by mail-pj1-f66.google.com with SMTP id j11so2048814pjs.1
-        for <linux-wireless@vger.kernel.org>; Fri, 06 Dec 2019 11:49:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=mKTauvYmu/HzA8mbqSwTd1wp1lFbRJsDBZQvR6lo4Pk=;
-        b=RXChqlWkxNRtCrwa+M/Jd4obxGO1/ZTDujbGHYlGElRxQEM3gbOC3GyPgaQfpaKDSj
-         yyn/BvWbbM+KsZRSoj7Uwj5/0HpTWcMDFFVzZOilJo2kJzPTqBRWE0n50MQsmTemXiFc
-         nHZg/GqmWhcKJ/q20XF+adp6NNdT3tbhGeJX0=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=mKTauvYmu/HzA8mbqSwTd1wp1lFbRJsDBZQvR6lo4Pk=;
-        b=R4CnkURbALbAwQiVoi4AjatkEHvprVRO5mcdT0L+MRb9W9OZQOicfsG0/cCXUCyLL1
-         /wCGa3I5OfniaSzqJwtlub0AfqlcuAeEbal13SkvMhNNA/RZtPPQA76tKw/OpeSEDu5D
-         gjzvM6uFduZJxkqUjHOxsHOC05opby8eCZDP7Flufix9GUiTh3yA3hT2P66yS5BdV2Cw
-         uXb1szT18MYCmFtIwCJbpjBtZjeC3op4KM+/K+RG++gH8YcSGEaYCBMw/geoN031DeB7
-         iWeXExAQ3aZACOpLj4PPOYj/yGME84PLiqJJqZwlayIo9PHf9maOFXfPmFEk31at5yxm
-         az5g==
-X-Gm-Message-State: APjAAAXQEA4G+sgXJlYZo55UU1Gxk5+xMndah1PbkGn948SSjtT4Pjr0
-        ssrDFqtbXaxGqmFim9Cs1GG3hg==
-X-Google-Smtp-Source: APXvYqwnyds33ckZocFtQfDqJA/m0ntaAH75/+43y2/U4QCbOc/8i3ROuNp5RA1teaFCGF/8yCpQ0A==
-X-Received: by 2002:a17:902:9005:: with SMTP id a5mr2880589plp.194.1575661757699;
-        Fri, 06 Dec 2019 11:49:17 -0800 (PST)
-Received: from google.com ([2620:15c:202:1:534:b7c0:a63c:460c])
-        by smtp.gmail.com with ESMTPSA id h3sm3851768pji.16.2019.12.06.11.49.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Dec 2019 11:49:16 -0800 (PST)
-Date:   Fri, 6 Dec 2019 11:49:14 -0800
-From:   Brian Norris <briannorris@chromium.org>
-To:     qize wang <wangqize888888888@gmail.com>
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
-        amit karwar <amitkarwar@gmail.com>,
-        Nishant Sarmukadam <nishants@marvell.com>,
-        Ganapathi Bhat <gbhat@marvell.com>,
-        Xinming Hu <huxinming820@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>, greg@kroah.com,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        Solar Designer <solar@openwall.com>
-Subject: Re: [PATCH v3] mwifiex: Fix heap overflow in
- mmwifiex_process_tdls_action_frame()
-Message-ID: <20191206194913.GA151147@google.com>
-References: <20191129101054.2756-1-wangqize888888888@gmail.com>
- <CA+ASDXOj0rz4S3BoMdF1pqOiVZ4yhVE_Qy+s6iTObCnhFfwFLw@mail.gmail.com>
+        id S1726404AbfLFTxJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 6 Dec 2019 14:53:09 -0500
+Received: from mail.taht.net ([176.58.107.8]:50628 "EHLO mail.taht.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726325AbfLFTxJ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 6 Dec 2019 14:53:09 -0500
+Received: from dancer.taht.net (c-73-170-84-247.hsd1.ca.comcast.net [73.170.84.247])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.taht.net (Postfix) with ESMTPSA id 11276221D8;
+        Fri,  6 Dec 2019 19:53:04 +0000 (UTC)
+From:   Dave Taht <dave@taht.net>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     Kalle Valo <kvalo@codeaurora.org>, Kan Yan <kyan@google.com>,
+        Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+        Rajkumar Manoharan <rmanohar@codeaurora.org>,
+        Kevin Hayes <kevinhayes@google.com>,
+        Make-Wifi-fast <make-wifi-fast@lists.bufferbloat.net>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Yibo Zhao <yiboz@codeaurora.org>,
+        John Crispin <john@phrozen.org>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Felix Fietkau <nbd@nbd.name>
+Subject: Re: [Make-wifi-fast] [PATCH v8 0/2] Implement Airtime-based Queue Limit (AQL)
+References: <20191115014846.126007-1-kyan@google.com>
+        <CA+iem5vaeLR6v_nZ1YUZhfj32wF0DrvC2nyp8nb8qYAZLQjLdw@mail.gmail.com>
+        <CAA93jw5wTbFV51oFJ6tFHLUMo=bau8fbU65k57bQjOHGJoCkkQ@mail.gmail.com>
+        <CA+iem5s4ZY239Q4=Gwy3WrmVhcdhesirXph6XQoOP5w-nuWcYw@mail.gmail.com>
+        <CAA93jw5t0TwBVv7_DVkJ_-NsVn0ODNHwU0orp2-+LPB45iFVoQ@mail.gmail.com>
+        <CA+iem5uVJFcCYpJfhker-48XPrOf3a+NWr-nKnBtGmLX2yB_Lg@mail.gmail.com>
+        <8736eiam8f.fsf@toke.dk>
+        <CA+iem5tpfEmaWJ5Mw7xF9fb=XLceZpC1LM4Avo89Mn1fL7YZVw@mail.gmail.com>
+        <87a78p8rz7.fsf@toke.dk>
+        <CA+iem5tNz2jjEOVmbh3aPTXLLZfkRjZ60-+bon1vDEJ8D4hQJw@mail.gmail.com>
+        <87muco5gv5.fsf@toke.dk>
+        <CA+iem5sBPq0mfz+Qx+uJqCZ6t-Cjru+GCBcYExdu6JueUbBXyw@mail.gmail.com>
+        <87eexvyoy8.fsf@toke.dk> <878so2m5gp.fsf@nemesis.taht.net>
+        <CA+iem5vVGSJXeB8k2n32f=TvqncEj+bOjVbunWS0G8sm_MEosw@mail.gmail.com>
+        <0101016ecf3bc899-6e391bba-96ed-4495-a7be-1aa8dd8f1bf2-000000@us-west-2.amazonses.com>
+        <fa98f3b62454370ef6c1951571ba1789ac2679c3.camel@sipsolutions.net>
+Date:   Fri, 06 Dec 2019 11:53:01 -0800
+In-Reply-To: <fa98f3b62454370ef6c1951571ba1789ac2679c3.camel@sipsolutions.net>
+        (Johannes Berg's message of "Wed, 04 Dec 2019 09:07:59 +0100")
+Message-ID: <87h82dkz8i.fsf@taht.net>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CA+ASDXOj0rz4S3BoMdF1pqOiVZ4yhVE_Qy+s6iTObCnhFfwFLw@mail.gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Dec 02, 2019 at 03:16:35PM -0800, Brian Norris wrote:
-> A bit late, but a few readability and maintainability thoughts:
+Johannes Berg <johannes@sipsolutions.net> writes:
 
-I worded most of my suggestions in the form of a patch here:
+> On Wed, 2019-12-04 at 04:47 +0000, Kalle Valo wrote:
+>> 
+>> > Overall, I think AQL and fq_codel works well, at least with ath10k.
+>> > The current target value of 20 ms is a reasonable default.
 
-[PATCH] mwifiex: drop most magic numbers from mwifiex_process_tdls_action_frame()
-https://lore.kernel.org/linux-wireless/20191206194535.150179-1-briannorris@chromium.org/T/#u
-https://patchwork.kernel.org/patch/11277011/
+>> > It is
+>> > relatively conservative that helps stations with weak signal to
+>> > maintain stable throughput.
 
-Regards,
-Brian
+This statement is overbroad and largely incorrect.
+
+>>> Although, a debugfs entry that allows
+>> > runtime adjustment of target value could be useful.
+>> 
+>> Why not make it configurable via nl80211? We should use debugfs only for
+>> testing and debugging, not in production builds, and to me the use case
+>> for this value sounds like more than just testing.
+
+I certainly lean towards making it configurable AND autotuning it
+better.
+
+> On the other hand, what application/tool or even user would be able to
+> set this correctly?
+
+The guideline from the theory ("Power") is the target should 5-10% of
+the interval, and the interval fairly close to the most commonly
+observed max RTT. I should try to stress (based on some statements made
+here) - that you have to *consistently* exceed the target for the
+interval, in order for codel to have any effect at all. Please try to
+internalize that - the smoothing comes from the interval... 100ms is
+quite a large interval....
+
+Judging from kan's (rather noisy) data set 10ms is a good default on
+5ghz. There is zero difference in throughput as near as I can tell.
+
+It would be interesting to try 3ms (as there's up to 8ms of
+buffering in the driver) to add to this dataset, helpful also
+to be measuring the actual tcp rtt rather in addition to the fq behavior.
+
+I see what looks like channel scan behavior in the data. (on the
+client?) Running tests for 5 minutes will show the impact and frequency
+of channel scans better.
+
+The 20ms figure we used initially was due to a variety of factors:
+
+* This was the first ever attempt at applying an AQM technology to wifi!!!
+** FIXED: http://blog.cerowrt.org/post/real_results/
+* We were debugging the FQ component, primarily.
+** FIXED: http://blog.cerowrt.org/post/crypto_fq_bug/
+* We were working on backports and on integrating a zillion other pieces
+  all in motion.
+** sorta FIXED. I know dang full well how many darn variables there
+   are, as well as how much the network stack has changed since the initial work.
+*  We were working on 2.4ghz which has a baseline rate of 1Mbit (13ms target)
+   Our rule of thumb is that min target needs to MTU*1.5. There was also a
+   a fudge factor to account for half duplex operation and the minimum
+   size of a txop. 
+** FIXED: 5ghz has a baseline rate of 6mbits.
+* We didn't have tools to look at tcp rtts at the time
+** FIXED: flent --socket-stats tcp_nup
+* We had issues with power save
+** Everybody has issues with powersave...
+** These are still extant on many platforms, notably ones that wake up
+   and dump all their accumulated mcast data into the link. Not our problem.
+* channel scans: http://blog.cerowrt.org/post/disabling_channel_scans/
+**  Non background channel scans are very damaging. I am unsure from this
+    data if that's what we are seeing from the client? Or the ath10k?
+    the ability to do these in the background or notmight be a factor in
+    autotuning things better.
+* We had MAJOR issues with TSQ
+** FIXED: https://lwn.net/Articles/757643/
+
+Honestly the TSQ interaction was the biggest barrier to figuring out
+what was going wrong at the time we upstreamed this, and a tcp_nup test,
+now, with TSQ closer to "right", AQL in place and the reduced target
+should be interesting. I think the data we have now on TSQ vs wifi on
+this chip, is now totally obsolete.
+
+* We had issues with mcast
+** I think we still have many issues with multicast but improving that
+   is a separate problem entirely.
+* We ran out of time and money, and had hit it so far out of the park
+  ( https://lwn.net/Articles/705884/ ) 
+  that it seemed like sleeping more and tweaking things less was a win.
+
+Judging from the results we now get on 5ghz and on ac, it seems good to
+reduce the target to 10ms (or less!) on 5ghz ghz, especially on ac,
+which will result in a less path inflation and no loss in throughput.
+
+I have been running with a 6ms target for several years now on my
+802.11n 5ghz devices. (I advertise a 3ms rather than the default txop
+size also) These are, admittedly, mostly used as backhaul
+links (so I didn't have tsq, aql, rate changes, etc) , but seing a path
+inflation of no more than 30ms under full bidirectional load is
+nice. (and still 22ms worse than it could be in a more perfect world)
+
+Another thing I keep trying to stress: TCP's ability to grab more
+bandwidth is quadratic relative the delay.
+
+>
+> johannes
