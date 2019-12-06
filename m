@@ -2,70 +2,76 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 16E95115334
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 Dec 2019 15:34:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D28C1155D2
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 Dec 2019 17:54:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726410AbfLFOeL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 6 Dec 2019 09:34:11 -0500
-Received: from nbd.name ([46.4.11.11]:36458 "EHLO nbd.name"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726244AbfLFOeJ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 6 Dec 2019 09:34:09 -0500
-Received: from tmo-101-57.customers.d1-online.com ([80.187.101.57] helo=bertha.datto.lan)
-        by ds12 with esmtpa (Exim 4.89)
-        (envelope-from <john@phrozen.org>)
-        id 1idEgJ-0004Lm-28; Fri, 06 Dec 2019 15:34:07 +0100
-From:   John Crispin <john@phrozen.org>
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        Kalle Valo <kvalo@codeaurora.org>
-Cc:     linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
-        John Crispin <john@phrozen.org>
-Subject: [PATCH 7/7] ath11k: add handling for BSS color
-Date:   Fri,  6 Dec 2019 15:34:01 +0100
-Message-Id: <20191206143401.4080-7-john@phrozen.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191206143401.4080-1-john@phrozen.org>
-References: <20191206143401.4080-1-john@phrozen.org>
+        id S1726284AbfLFQyV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 6 Dec 2019 11:54:21 -0500
+Received: from mail.schafweide.org ([185.45.112.52]:52648 "EHLO
+        mail.schafweide.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726261AbfLFQyV (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 6 Dec 2019 11:54:21 -0500
+X-Greylist: delayed 344 seconds by postgrey-1.27 at vger.kernel.org; Fri, 06 Dec 2019 11:54:20 EST
+Received: from [IPv6:2a07:59c6:eeff:20:ad03:27fd:6840:662f] (unknown [IPv6:2a07:59c6:eeff:20:ad03:27fd:6840:662f])
+        by mail.schafweide.org (Postfix) with ESMTPSA id 2F7C32A392C
+        for <linux-wireless@vger.kernel.org>; Fri,  6 Dec 2019 17:48:34 +0100 (CET)
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=schafweide.org;
+        s=default; t=1575650915;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=owKIjhIxBTZS4DpEV27wCw0FEzuUwa7mFHHe+m9V5MM=;
+        b=Pq6G+4Gh2Uhc2f4T61mc2edi2lHEFL0pWLOyTwccKx9H5V08PW2uZdpkp5vCsXwBlMnKlV
+        ObSVMFxHkMMiqTCA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=schafweide.org;
+        s=rsa; t=1575650915;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=owKIjhIxBTZS4DpEV27wCw0FEzuUwa7mFHHe+m9V5MM=;
+        b=w8qBAxAL2m4XQTR6QWkguIAF29jCxiGLtxbRb98X08WweflX35gkJsYfQ6gycEb6pHQssu
+        xw+6j9mAOpfLHnJVEnYHp5PzMz7cGO6Bku1WoubRtHCx+Pq8oJPoEW5+iFFZq09RWXkjkW
+        5cxMyQYdTGPH9z5e/m3gsGvGpLhw/2U=
+To:     linux-wireless@vger.kernel.org
+From:   Bjoern Franke <bjo@schafweide.org>
+Subject: Realtek 8822BE: r8822be vs. rtwpci (mainline / lwfinger)
+Message-ID: <50038b2f-8b90-d803-0377-2c19cc7ad78e@schafweide.org>
+Date:   Fri, 6 Dec 2019 17:48:33 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.3.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: de-LU
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This patch adds code to handle the BSS_CHANGED_BSS_COLOR flag. IT will
-trigger the propagation of BSS color settings into the FW. Handling is
-slightly different between AP and STA interfaces.
+Hi,
 
-Signed-off-by: John Crispin <john@phrozen.org>
----
- drivers/net/wireless/ath/ath11k/mac.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+I'm a little confused about the status of the modules for the Realtek 
+8822BE.
 
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index 6a8c1c3b8da2..c692922513b2 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -1928,6 +1928,19 @@ static void ath11k_mac_op_bss_info_changed(struct ieee80211_hw *hw,
- 		ath11k_wmi_send_obss_spr_cmd(ar, arvif->vdev_id,
- 					     &info->he_obss_pd);
- 
-+	if (changed & BSS_CHANGED_HE_BSS_COLOR) {
-+		if (vif->type == NL80211_IFTYPE_AP) {
-+			ath11k_wmi_send_obss_color_collision_cfg_cmd(
-+				ar, arvif->vdev_id, info->he_bss_color.color,
-+				ATH11K_BSS_COLOR_COLLISION_DETECTION_AP_PERIOD_MS,
-+				!info->he_bss_color.disabled);
-+		} else if (vif->type == NL80211_IFTYPE_STATION) {
-+			ath11k_wmi_send_bss_color_change_enable_cmd(ar, arvif->vdev_id, 1);
-+			ath11k_wmi_send_obss_color_collision_cfg_cmd(ar, arvif->vdev_id, 0,
-+				ATH11K_BSS_COLOR_COLLISION_DETECTION_STA_PERIOD_MS, 1);
-+		}
-+	}
-+
- 	mutex_unlock(&ar->conf_mutex);
- }
- 
--- 
-2.20.1
+Once, there was r8822be which had some issues, but worked more or less 
+reliable. Then came rtw88/rtwpci and in my Thinkpad A275 it is hardly 
+usable. According to the router, a 390Mbit AC connection exists, but 
+downloads drop to 70-100kb/s. The TX-Bitrate is stuck at 6.5Mbit and the 
+rx drop misc counter increases nearly every second from time to time - 
+while being at the same place all the time, 5m away from the router, a 
+FritzBox 7590.
 
+In contrast to the mainline module, lwfingers module does not have the 
+TX-Bitrate-stuck issue and the connection drops are more rarely.
+
+I switched to the 4.19 LTS kernel and r8822be gets a 866Mbit AC 
+connection with 200-300Mbit througput, which is somehow impressive 
+compared to the 50kbit-40Mbit of rtwpci. In addition, it shows that the 
+issues seem not to be caused by interferences, as here are only 3 5Ghz 
+wifis.
+
+Can I do something to improve the situation regarding rtwpci?
+
+Best Regards
+Bjoern
