@@ -2,73 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AE23F11500A
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 Dec 2019 12:49:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 90C1F115329
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 Dec 2019 15:31:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726214AbfLFLt3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 6 Dec 2019 06:49:29 -0500
-Received: from s3.sipsolutions.net ([144.76.43.62]:58026 "EHLO
-        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726134AbfLFLt3 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 6 Dec 2019 06:49:29 -0500
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.92.3)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1idC6w-006XuJ-0Z; Fri, 06 Dec 2019 12:49:26 +0100
-Message-ID: <9bcbab4b562669b96198c632f476b1b74956ca09.camel@sipsolutions.net>
-Subject: Re: debugging TXQs being empty
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Kan Yan <kyan@google.com>
-Cc:     Toke =?ISO-8859-1?Q?H=F8iland-J=F8rgensen?= <toke@redhat.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>
-Date:   Fri, 06 Dec 2019 12:49:24 +0100
-In-Reply-To: <bf0cced86a1466285f74eb845e73fbaea1dff1c0.camel@sipsolutions.net> (sfid-20191206_101305_773178_ACF584A9)
-References: <bbc516f28782175b27ac5e19dcdeac13cd6ee76a.camel@sipsolutions.net>
-         <fd23a26dea59128ede8c1c4d02fb2f3514ffb5e9.camel@sipsolutions.net>
-         <CA+iem5tjTpO_2MKL_pEu7enTa-8=g5vY3=2WJKjg9f=JA2eCEw@mail.gmail.com>
-         (sfid-20191206_020554_916514_C4D7D41E) <9b89b3b294295063aec045b9e863a44ad20b8782.camel@sipsolutions.net>
-         (sfid-20191206_094144_773877_4A5AF79B) <bf0cced86a1466285f74eb845e73fbaea1dff1c0.camel@sipsolutions.net>
-         (sfid-20191206_101305_773178_ACF584A9)
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.2 (3.34.2-1.fc31) 
+        id S1726269AbfLFObM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 6 Dec 2019 09:31:12 -0500
+Received: from nbd.name ([46.4.11.11]:36196 "EHLO nbd.name"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726234AbfLFObM (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 6 Dec 2019 09:31:12 -0500
+Received: from tmo-101-57.customers.d1-online.com ([80.187.101.57] helo=bertha.datto.lan)
+        by ds12 with esmtpa (Exim 4.89)
+        (envelope-from <john@phrozen.org>)
+        id 1idEdR-00046n-Je; Fri, 06 Dec 2019 15:31:09 +0100
+From:   John Crispin <john@phrozen.org>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless@vger.kernel.org, John Crispin <john@phrozen.org>
+Subject: [PATCH] trivial: mac80211: fix indentation
+Date:   Fri,  6 Dec 2019 15:31:03 +0100
+Message-Id: <20191206143103.3645-1-john@phrozen.org>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 2019-12-06 at 10:12 +0100, Johannes Berg wrote:
-> On Fri, 2019-12-06 at 09:41 +0100, Johannes Berg wrote:
-> > Maybe somehow TSO is interacting badly with the TXQs and the tracking
-> > here, since TSO makes the traffic *very* bursty? A 64k packet in the
-> > driver will typically expand to 9 or 10 A-MSDUs I think?
-> 
-> No, that all seems well. Without TSO (with the trivial mac80211 patch to
-> let me turn it off with ethtool) I get about 890Mbps, so about 5% less.
-> That's not actually *that* bad, I guess due to software A-MSDU in
-> mac80211, but it's not really the right direction :)
-> 
-> Changing wmem_max/tcp_mem to outrageous values also didn't really make
-> any difference.
-> 
-> I guess it's time to see if I can poke into the TCP stack to figure out
-> what's going on...
+Signed-off-by: John Crispin <john@phrozen.org>
+---
+ include/linux/ieee80211.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Sadly no functioning kprobes on the system ... bpftrace -l lists them,
-but can't actually use them.
-
-If I also change net.ipv4.tcp_limit_output_bytes to an outrageous value
-(10x) I can recover a bit more than half of the performance loss with
-TSO disabled, but it makes no real difference with TSO enabled.
-
-Either way, what bothers me somewhat is that the backlog fluctuates so
-much. Sometimes I see a backlock of 2MB or more, while it *still*
-manages to go completely empty.
-
-Shouldn't I expect the steady state to have a somewhat even backlog? Why
-does this vary so much?
-
-johannes
+diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
+index 7d3f2ced92d1..e172d0c7bf74 100644
+--- a/include/linux/ieee80211.h
++++ b/include/linux/ieee80211.h
+@@ -2047,7 +2047,7 @@ ieee80211_he_ppe_size(u8 ppe_thres_hdr, const u8 *phy_cap_info)
+ #define IEEE80211_HE_OPERATION_ER_SU_DISABLE			0x00010000
+ #define IEEE80211_HE_OPERATION_6GHZ_OP_INFO			0x00020000
+ #define IEEE80211_HE_OPERATION_BSS_COLOR_MASK			0x3f000000
+-#define IEEE80211_HE_OPERATION_BSS_COLOR_OFFSET		24
++#define IEEE80211_HE_OPERATION_BSS_COLOR_OFFSET			24
+ #define IEEE80211_HE_OPERATION_PARTIAL_BSS_COLOR		0x40000000
+ #define IEEE80211_HE_OPERATION_BSS_COLOR_DISABLED		0x80000000
+ 
+-- 
+2.20.1
 
