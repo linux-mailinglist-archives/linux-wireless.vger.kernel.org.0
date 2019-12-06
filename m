@@ -2,161 +2,126 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A97B1157FD
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 Dec 2019 20:53:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E24911587B
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 Dec 2019 22:18:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726404AbfLFTxJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 6 Dec 2019 14:53:09 -0500
-Received: from mail.taht.net ([176.58.107.8]:50628 "EHLO mail.taht.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726325AbfLFTxJ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 6 Dec 2019 14:53:09 -0500
-Received: from dancer.taht.net (c-73-170-84-247.hsd1.ca.comcast.net [73.170.84.247])
+        id S1726388AbfLFVSN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 6 Dec 2019 16:18:13 -0500
+Received: from mail2.candelatech.com ([208.74.158.173]:56270 "EHLO
+        mail3.candelatech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726370AbfLFVSM (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 6 Dec 2019 16:18:12 -0500
+Received: from [192.168.100.195] (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.taht.net (Postfix) with ESMTPSA id 11276221D8;
-        Fri,  6 Dec 2019 19:53:04 +0000 (UTC)
-From:   Dave Taht <dave@taht.net>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     Kalle Valo <kvalo@codeaurora.org>, Kan Yan <kyan@google.com>,
-        Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-        Rajkumar Manoharan <rmanohar@codeaurora.org>,
-        Kevin Hayes <kevinhayes@google.com>,
-        Make-Wifi-fast <make-wifi-fast@lists.bufferbloat.net>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Yibo Zhao <yiboz@codeaurora.org>,
-        John Crispin <john@phrozen.org>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Felix Fietkau <nbd@nbd.name>
-Subject: Re: [Make-wifi-fast] [PATCH v8 0/2] Implement Airtime-based Queue Limit (AQL)
-References: <20191115014846.126007-1-kyan@google.com>
-        <CA+iem5vaeLR6v_nZ1YUZhfj32wF0DrvC2nyp8nb8qYAZLQjLdw@mail.gmail.com>
-        <CAA93jw5wTbFV51oFJ6tFHLUMo=bau8fbU65k57bQjOHGJoCkkQ@mail.gmail.com>
-        <CA+iem5s4ZY239Q4=Gwy3WrmVhcdhesirXph6XQoOP5w-nuWcYw@mail.gmail.com>
-        <CAA93jw5t0TwBVv7_DVkJ_-NsVn0ODNHwU0orp2-+LPB45iFVoQ@mail.gmail.com>
-        <CA+iem5uVJFcCYpJfhker-48XPrOf3a+NWr-nKnBtGmLX2yB_Lg@mail.gmail.com>
-        <8736eiam8f.fsf@toke.dk>
-        <CA+iem5tpfEmaWJ5Mw7xF9fb=XLceZpC1LM4Avo89Mn1fL7YZVw@mail.gmail.com>
-        <87a78p8rz7.fsf@toke.dk>
-        <CA+iem5tNz2jjEOVmbh3aPTXLLZfkRjZ60-+bon1vDEJ8D4hQJw@mail.gmail.com>
-        <87muco5gv5.fsf@toke.dk>
-        <CA+iem5sBPq0mfz+Qx+uJqCZ6t-Cjru+GCBcYExdu6JueUbBXyw@mail.gmail.com>
-        <87eexvyoy8.fsf@toke.dk> <878so2m5gp.fsf@nemesis.taht.net>
-        <CA+iem5vVGSJXeB8k2n32f=TvqncEj+bOjVbunWS0G8sm_MEosw@mail.gmail.com>
-        <0101016ecf3bc899-6e391bba-96ed-4495-a7be-1aa8dd8f1bf2-000000@us-west-2.amazonses.com>
-        <fa98f3b62454370ef6c1951571ba1789ac2679c3.camel@sipsolutions.net>
-Date:   Fri, 06 Dec 2019 11:53:01 -0800
-In-Reply-To: <fa98f3b62454370ef6c1951571ba1789ac2679c3.camel@sipsolutions.net>
-        (Johannes Berg's message of "Wed, 04 Dec 2019 09:07:59 +0100")
-Message-ID: <87h82dkz8i.fsf@taht.net>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        by mail3.candelatech.com (Postfix) with ESMTPSA id 19041137532
+        for <linux-wireless@vger.kernel.org>; Fri,  6 Dec 2019 13:18:12 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 19041137532
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+        s=default; t=1575667092;
+        bh=gMOZPeN80hs/v1CjqGdhgLk1Ar18YzhNLxC4fTu1EN4=;
+        h=To:From:Subject:Date:From;
+        b=kM7tO9DZNzIDKLOyC4r+nHq/FvD10O/wF8aXh2BcOx0TPCOV2vXs/OYadPpoJgDox
+         zM707nokwSvHfKpWKaiH4PBhjBkb4rJHqdQOGvkzGbq44Bc9awf03YsmjNJCBQyAWA
+         vGujtuwcoO7ZCZlj6ZWtJLr8RCoCb5aGDQQuNkTE=
+To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+From:   Ben Greear <greearb@candelatech.com>
+Subject: ax200 firmware crash on 5.2.21+ kernel
+Organization: Candela Technologies
+Message-ID: <c659f79f-afe4-c2bc-405f-34eb09ff0790@candelatech.com>
+Date:   Fri, 6 Dec 2019 13:18:11 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.1.1
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Johannes Berg <johannes@sipsolutions.net> writes:
+Hello,
 
-> On Wed, 2019-12-04 at 04:47 +0000, Kalle Valo wrote:
->> 
->> > Overall, I think AQL and fq_codel works well, at least with ath10k.
->> > The current target value of 20 ms is a reasonable default.
+Is this a known crash signature?
 
->> > It is
->> > relatively conservative that helps stations with weak signal to
->> > maintain stable throughput.
+Our kernel is 5.2.21+, and has the upload-crashes-the-firmware fix applied.
 
-This statement is overbroad and largely incorrect.
+Test was UDP bi-directional 30Mbps for both radios in APU2.
 
->>> Although, a debugfs entry that allows
->> > runtime adjustment of target value could be useful.
->> 
->> Why not make it configurable via nl80211? We should use debugfs only for
->> testing and debugging, not in production builds, and to me the use case
->> for this value sounds like more than just testing.
+iwlwifi 0000:05:00.0: Microcode SW error detected. Restarting 0x0.
+iwlwifi 0000:05:00.0: Start IWL Error Log Dump:
+iwlwifi 0000:05:00.0: Status: 0x00000080, count: 6
+iwlwifi 0000:05:00.0: Loaded firmware version: 48.4fa0041f.0
+iwlwifi 0000:05:00.0: 0x00000942 | ADVANCED_SYSASSERT
+iwlwifi 0000:05:00.0: 0x000022F0 | trm_hw_status0
+iwlwifi 0000:05:00.0: 0x00000000 | trm_hw_status1
+iwlwifi 0000:05:00.0: 0x004F8E3C | branchlink2
+iwlwifi 0000:05:00.0: 0x00000E26 | interruptlink1
+iwlwifi 0000:05:00.0: 0x00000E26 | interruptlink2
+iwlwifi 0000:05:00.0: 0x0002FFF5 | data1
+iwlwifi 0000:05:00.0: 0x64000001 | data2
+iwlwifi 0000:05:00.0: 0x040C0606 | data3
+iwlwifi 0000:05:00.0: 0xA78102B5 | beacon time
+iwlwifi 0000:05:00.0: 0x9AD90315 | tsf low
+iwlwifi 0000:05:00.0: 0x00000000 | tsf hi
+iwlwifi 0000:05:00.0: 0x00000000 | time gp1
+iwlwifi 0000:05:00.0: 0x1D7FA305 | time gp2
+iwlwifi 0000:05:00.0: 0x00000001 | uCode revision type
+iwlwifi 0000:05:00.0: 0x00000030 | uCode version major
+iwlwifi 0000:05:00.0: 0x4FA0041F | uCode version minor
+iwlwifi 0000:05:00.0: 0x00000340 | hw version
+iwlwifi 0000:05:00.0: 0x00C89000 | board version
+iwlwifi 0000:05:00.0: 0x800BFD06 | hcmd
+iwlwifi 0000:05:00.0: 0x82021000 | isr0
+iwlwifi 0000:05:00.0: 0x00444000 | isr1
+iwlwifi 0000:05:00.0: 0x08F80102 | isr2
+iwlwifi 0000:05:00.0: 0x04C1EBCD | isr3
+iwlwifi 0000:05:00.0: 0x00000000 | isr4
+iwlwifi 0000:05:00.0: 0x0021019C | last cmd Id
+iwlwifi 0000:05:00.0: 0x004EB8B4 | wait_event
+iwlwifi 0000:05:00.0: 0x00000000 | l2p_control
+iwlwifi 0000:05:00.0: 0x00000000 | l2p_duration
+iwlwifi 0000:05:00.0: 0x000000BF | l2p_mhvalid
+iwlwifi 0000:05:00.0: 0x00000000 | l2p_addr_match
+iwlwifi 0000:05:00.0: 0x00000009 | lmpm_pmg_sel
+iwlwifi 0000:05:00.0: 0x00000000 | timestamp
+iwlwifi 0000:05:00.0: 0x00009860 | flow_handler
+iwlwifi 0000:05:00.0: Start IWL Error Log Dump:
+iwlwifi 0000:05:00.0: Status: 0x00000080, count: 7
+iwlwifi 0000:05:00.0: 0x20000070 | NMI_INTERRUPT_LMAC_FATAL
+iwlwifi 0000:05:00.0: 0x00000000 | umac branchlink1
+iwlwifi 0000:05:00.0: 0xC008CC3C | umac branchlink2
+iwlwifi 0000:05:00.0: 0x8048D0E6 | umac interruptlink1
+iwlwifi 0000:05:00.0: 0x8048D0E6 | umac interruptlink2
+iwlwifi 0000:05:00.0: 0x00000400 | umac data1
+iwlwifi 0000:05:00.0: 0x8048D0E6 | umac data2
+iwlwifi 0000:05:00.0: 0x00000000 | umac data3
+iwlwifi 0000:05:00.0: 0x00000030 | umac major
+iwlwifi 0000:05:00.0: 0x4FA0041F | umac minor
+iwlwifi 0000:05:00.0: 0x1D7FA314 | frame pointer
+iwlwifi 0000:05:00.0: 0xC0886284 | stack pointer
+iwlwifi 0000:05:00.0: 0x0021019C | last host cmd
+iwlwifi 0000:05:00.0: 0x00000000 | isr status reg
+iwlwifi 0000:05:00.0: Fseq Registers:
+iwlwifi 0000:05:00.0: 0xE0000101 | FSEQ_ERROR_CODE
+iwlwifi 0000:05:00.0: 0x00290008 | FSEQ_TOP_INIT_VERSION
+iwlwifi 0000:05:00.0: 0x80050008 | FSEQ_CNVIO_INIT_VERSION
+iwlwifi 0000:05:00.0: 0x0000A503 | FSEQ_OTP_VERSION
+iwlwifi 0000:05:00.0: 0x80000003 | FSEQ_TOP_CONTENT_VERSION
+iwlwifi 0000:05:00.0: 0x4552414E | FSEQ_ALIVE_TOKEN
+iwlwifi 0000:05:00.0: 0x00100530 | FSEQ_CNVI_ID
+iwlwifi 0000:05:00.0: 0x00000532 | FSEQ_CNVR_ID
+iwlwifi 0000:05:00.0: 0x00100530 | CNVI_AUX_MISC_CHIP
+iwlwifi 0000:05:00.0: 0x00000532 | CNVR_AUX_MISC_CHIP
+iwlwifi 0000:05:00.0: 0x05B0905B | CNVR_SCU_SD_REGS_SD_REG_DIG_DCDC_VTRIM
+iwlwifi 0000:05:00.0: 0x0000025B | CNVR_SCU_SD_REGS_SD_REG_ACTIVE_VDIG_MIRROR
 
-I certainly lean towards making it configurable AND autotuning it
-better.
+Thanks,
+Ben
 
-> On the other hand, what application/tool or even user would be able to
-> set this correctly?
+-- 
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
 
-The guideline from the theory ("Power") is the target should 5-10% of
-the interval, and the interval fairly close to the most commonly
-observed max RTT. I should try to stress (based on some statements made
-here) - that you have to *consistently* exceed the target for the
-interval, in order for codel to have any effect at all. Please try to
-internalize that - the smoothing comes from the interval... 100ms is
-quite a large interval....
-
-Judging from kan's (rather noisy) data set 10ms is a good default on
-5ghz. There is zero difference in throughput as near as I can tell.
-
-It would be interesting to try 3ms (as there's up to 8ms of
-buffering in the driver) to add to this dataset, helpful also
-to be measuring the actual tcp rtt rather in addition to the fq behavior.
-
-I see what looks like channel scan behavior in the data. (on the
-client?) Running tests for 5 minutes will show the impact and frequency
-of channel scans better.
-
-The 20ms figure we used initially was due to a variety of factors:
-
-* This was the first ever attempt at applying an AQM technology to wifi!!!
-** FIXED: http://blog.cerowrt.org/post/real_results/
-* We were debugging the FQ component, primarily.
-** FIXED: http://blog.cerowrt.org/post/crypto_fq_bug/
-* We were working on backports and on integrating a zillion other pieces
-  all in motion.
-** sorta FIXED. I know dang full well how many darn variables there
-   are, as well as how much the network stack has changed since the initial work.
-*  We were working on 2.4ghz which has a baseline rate of 1Mbit (13ms target)
-   Our rule of thumb is that min target needs to MTU*1.5. There was also a
-   a fudge factor to account for half duplex operation and the minimum
-   size of a txop. 
-** FIXED: 5ghz has a baseline rate of 6mbits.
-* We didn't have tools to look at tcp rtts at the time
-** FIXED: flent --socket-stats tcp_nup
-* We had issues with power save
-** Everybody has issues with powersave...
-** These are still extant on many platforms, notably ones that wake up
-   and dump all their accumulated mcast data into the link. Not our problem.
-* channel scans: http://blog.cerowrt.org/post/disabling_channel_scans/
-**  Non background channel scans are very damaging. I am unsure from this
-    data if that's what we are seeing from the client? Or the ath10k?
-    the ability to do these in the background or notmight be a factor in
-    autotuning things better.
-* We had MAJOR issues with TSQ
-** FIXED: https://lwn.net/Articles/757643/
-
-Honestly the TSQ interaction was the biggest barrier to figuring out
-what was going wrong at the time we upstreamed this, and a tcp_nup test,
-now, with TSQ closer to "right", AQL in place and the reduced target
-should be interesting. I think the data we have now on TSQ vs wifi on
-this chip, is now totally obsolete.
-
-* We had issues with mcast
-** I think we still have many issues with multicast but improving that
-   is a separate problem entirely.
-* We ran out of time and money, and had hit it so far out of the park
-  ( https://lwn.net/Articles/705884/ ) 
-  that it seemed like sleeping more and tweaking things less was a win.
-
-Judging from the results we now get on 5ghz and on ac, it seems good to
-reduce the target to 10ms (or less!) on 5ghz ghz, especially on ac,
-which will result in a less path inflation and no loss in throughput.
-
-I have been running with a 6ms target for several years now on my
-802.11n 5ghz devices. (I advertise a 3ms rather than the default txop
-size also) These are, admittedly, mostly used as backhaul
-links (so I didn't have tsq, aql, rate changes, etc) , but seing a path
-inflation of no more than 30ms under full bidirectional load is
-nice. (and still 22ms worse than it could be in a more perfect world)
-
-Another thing I keep trying to stress: TCP's ability to grab more
-bandwidth is quadratic relative the delay.
-
->
-> johannes
