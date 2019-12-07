@@ -2,74 +2,89 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F1C70115D52
-	for <lists+linux-wireless@lfdr.de>; Sat,  7 Dec 2019 16:21:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B996115E66
+	for <lists+linux-wireless@lfdr.de>; Sat,  7 Dec 2019 21:09:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726427AbfLGPVM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 7 Dec 2019 10:21:12 -0500
-Received: from sonic317-26.consmr.mail.bf2.yahoo.com ([74.6.129.81]:38354 "EHLO
-        sonic317-26.consmr.mail.bf2.yahoo.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726409AbfLGPVL (ORCPT
+        id S1726626AbfLGUJ0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 7 Dec 2019 15:09:26 -0500
+Received: from s3.sipsolutions.net ([144.76.43.62]:60786 "EHLO
+        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726555AbfLGUJ0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 7 Dec 2019 10:21:11 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1575732070; bh=zPC9p8T5S06DA73PD5F75wViZ/EpBpeYylTS7OqjCU4=; h=Date:From:Reply-To:Subject:From:Subject; b=kuJy8cGzjbm6zyPpYcSuD/vge3S+CCkzMoRaUxYOvOGvEPBvDHGfSihvqJKRKIP+nVlHR9TOQWwDtd9puhMZ7X0BYSC8RHa9JmfFL1AYr2gHBWJYkK3oGDkxG5kidrbANKZ2fF+2H9BWe3Dk2D3WmUnFa0tdtN3uq15xTdmdi5zjBDNPoeDQ81oUcseud1JtEMvTwg+JpOHlXMNb0NvVsnCZzfjAYeBTmE4HEQtCw2iG2RaxbUKH9JZpRwDSMXmB346fOLo0o/I10DtRGqiJR/XKdI+QxJP865xWsFx16IT1W1eZj5hOzEYfzFf1wSb75AzUOECOBgGXOUq76tvzZQ==
-X-YMail-OSG: v4s.g98VM1lltKIB9WKuW1wKdsBWI.fh.FCn0UfKMVa_TOWUVtDL5OmroElP0WT
- RmBylL2ue58WCTify6.RfkE6_vGnfrKq8dAaPbRko0h6YVbBFN3Z82Et4hsPIO91Hlft0gcGwSaZ
- g9PydE7NSX49_KE6rOreRFY40lw19XF.HiRcy3Fyv8coe7aiucHNhSM.c_I2yJstOm81P1CIJg88
- mTyWWqG6jfcV6VfiE12USiLkDw63.VLJ58EbFC7w8p1mdhMAicjbK2i0vZAS93bCPUlmIqaqVCnL
- AxCMYl_3FkdDJw37eJHVffR.9LKz2rk_yMdyMiTr7Of9Twfq16et5jvYyuFtjYoyIFslJ6V90bmv
- OtfiqhenbRQyRSBYYj6CSXb8X4WxpmAo4uiD8CZoZTnAm55MQKKljbfLQCKwdHAbXkQ1YbIFt.bd
- PPNsBq4y9V9KKT.moZm_WmC0e_S6cPY8GJrK3iN6zcKyWQx8PaYf_fYuFp4.lemVoWtoiH6FlgMn
- XNzDXKORjlmClNVp3_CxDZyIycPPB7QR_.jehTMtL3Sy3n7jJ86SUtO7jr4XApTX0QDeT2owqsNz
- EOUTWih1Bj2CxWQSMDOaVkPEwkEA0rPxzlaTE.Dx.H1XixL0MJcJ9IFpjXmd.jVq1ifJ8ZTuMJql
- 3eHbQBhQJTUWey8ojsGz.z5zjCGMlpEdushglZwSyzziFcDmNTqGIuikDM3IGhSSUYTsTecSoNii
- DtyqgwxLPXwi_S6akBRVeXFwZsoEvSrrp9yyAHofTGZIZ.jf5LCM4QYhUzjNfnABa1ilJyoNlJ2R
- 6KLlAuCG1p3GYdSIq6ccGTfIJwBxPx1bbeyXapb7Xi4YQGybJVs6ALwJknmGXaPES.bbjAcDHnBi
- WV8Do8gt4v6V6jjZlRj3bNmI8vuquFEh.QQtNe8orW3.49GRJUb5vDny3iycuyaQ0lfvsnF6rvpU
- wlVOaXweBg2zwrs60Y16uNBzBQnWbaDbZqwKySVdrdUE.u6TPJGbHacwdcJKJ2szJ7mr0quTRyMd
- ejJ1B319MdHH9OSes8qqW1DEN0yNwcicaWna1517fA8hz5c8Fy5SKFnen8RiDtn5_HAuhN.owkLq
- 6aZvkBWORSaST1kG4HxUqhnTIhA9Qkt.QVnd7BoD3phqPlGkrJzdoJtW6Z5ZnfVWh.lI0DKEsYPQ
- 7A3vLZwL5aZaaSl2NWIr_N7dJSEPTz3OWR1CYtpZOJV5Cjd1eh5BtCDTWeAqPA.PgY_tvu3EG1XF
- 6I1pAIrIHuhFNwjr7eYUnJIeXZgVUFBT6V5PSpS0bsDWeZKPuTQ8KOLG_Y8G.HISpQsQDkCn.252
- a7Cslwg--
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic317.consmr.mail.bf2.yahoo.com with HTTP; Sat, 7 Dec 2019 15:21:10 +0000
-Date:   Sat, 7 Dec 2019 15:21:05 +0000 (UTC)
-From:   Ms Lisa Hugh <lisa.hugh222@gmail.com>
-Reply-To: ms.lisahugh000@gmail.com
-Message-ID: <1183044059.6687849.1575732065141@mail.yahoo.com>
-Subject: I NEED YOUR HELP FOR THIS TRANSFER.
+        Sat, 7 Dec 2019 15:09:26 -0500
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.92.3)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1idgOF-00Aana-4D; Sat, 07 Dec 2019 21:09:19 +0100
+Message-ID: <c2004c4d9defd9c391e072b2703a845185bd395e.camel@sipsolutions.net>
+Subject: Re: debugging TXQs being empty
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Ben Greear <greearb@candelatech.com>, Kan Yan <kyan@google.com>
+Cc:     Toke =?ISO-8859-1?Q?H=F8iland-J=F8rgensen?= <toke@redhat.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>
+Date:   Sat, 07 Dec 2019 21:09:17 +0100
+In-Reply-To: <336996e4-d9fe-bf3a-72fb-6919bd0adcbf@candelatech.com>
+References: <bbc516f28782175b27ac5e19dcdeac13cd6ee76a.camel@sipsolutions.net>
+         <fd23a26dea59128ede8c1c4d02fb2f3514ffb5e9.camel@sipsolutions.net>
+         <CA+iem5tjTpO_2MKL_pEu7enTa-8=g5vY3=2WJKjg9f=JA2eCEw@mail.gmail.com>
+         <9b89b3b294295063aec045b9e863a44ad20b8782.camel@sipsolutions.net>
+         <bf0cced86a1466285f74eb845e73fbaea1dff1c0.camel@sipsolutions.net>
+         <9bcbab4b562669b96198c632f476b1b74956ca09.camel@sipsolutions.net>
+         <336996e4-d9fe-bf3a-72fb-6919bd0adcbf@candelatech.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.34.2 (3.34.2-1.fc31) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On Fri, 2019-12-06 at 15:44 -0800, Ben Greear wrote:
+> I did some tests today:
+> 
+> kernel is 5.2.21+, with the fix for ax200 upload corruption bug.
+> AP is QCA 9984 based PC (i5 processor) running ath10k-ct firmware/driver, configured for 2x2 160Mhz
+> STA is PC (i5 processor) with AX200
+> OTA, about 5 feet apart
+> AP reports STA is sending at MCS-9 160Mhz (AX200 STA does not report tx rate it seems)
 
+Yeah, that was an oversight for HE, it should work for HT/VHT. I have a
+patch in the works to report the TX rate properly in iw.
 
-Dear Friend,
+> Our LANforge tool is traffic generator, running directly on AP and STA machine.
+> 
+> Download UDP, I see about 697Mbps goodput
+> Upload UDP, I see about 120Mbps goodput
+> 
+> TCP download, about 660Mbps
+> TCP upload, about 99Mbps
+> 
+> Our hacked version of pktgen, bps includes down to Ethernet frame:
+> Download: 740Mbps
+> Upload: 129Mbps
 
-I am Ms Lisa Hugh work with the department of Audit and accounting manager here in the Bank(B.O.A).
+Uh, wow, that's not good. I guess after I'm done with this bug, I should
+look at upstream ...
 
-Please i need your assistance for the transferring of thIs fund to your bank account for both of us benefit for life time investment, amount (US$4.5M DOLLARS).
+> I changed AP to 80Mhz mode, and re-ran the UDP tests:
+> 
+> Upload 137Mbps
+> Download 689Mbps
+> 
+> Though not confirmed today, one of us reports about 1.7Gbps download on AX200 against an enterprise /AX AP,
+> and only abuot 600Mbps upload in that same system.  That is in isolation chamber and such.
+> 
+> So, for whatever reason(s), we see consistent poor upload performance on AX200.
+> 
+> For reference, we have previously seen about 1.1Gbps upload between QCA9984 station and 4x4 /AC APs
+> (and about 1.3Gbps download goodput), so in general, wifi upload can run faster.
 
-I have every inquiry details to make the bank believe you and release the fund in within 5 banking working days with your full co-operation with me forsuccess.
+Yes, for sure it can. Would be interesting to find out what the limiting
+factor is for you.
 
-Note/ 50% for you why 50% for me after success of the transfer to your bank
-account.
+Then again, I doubt we've released updated firmware recently - what
+version are you using?
 
-Below information is what i need from you so will can be reaching each
-other
+johannes
 
-1)Full name ...
-2)Private telephone number...
-3)Age...
-4)Nationality...
-5)Occupation ...
-
-
-Thanks.
-
-Ms Lisa Hugh
