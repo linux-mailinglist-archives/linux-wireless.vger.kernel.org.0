@@ -2,69 +2,76 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A54F117634
-	for <lists+linux-wireless@lfdr.de>; Mon,  9 Dec 2019 20:47:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B6C4611763A
+	for <lists+linux-wireless@lfdr.de>; Mon,  9 Dec 2019 20:49:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726509AbfLITr5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 9 Dec 2019 14:47:57 -0500
-Received: from a27-10.smtp-out.us-west-2.amazonses.com ([54.240.27.10]:51956
-        "EHLO a27-10.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726342AbfLITr4 (ORCPT
+        id S1726495AbfLITtB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 9 Dec 2019 14:49:01 -0500
+Received: from mail-qv1-f51.google.com ([209.85.219.51]:45009 "EHLO
+        mail-qv1-f51.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726342AbfLITtB (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 9 Dec 2019 14:47:56 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1575920876;
-        h=MIME-Version:Content-Type:Content-Transfer-Encoding:Date:From:To:Cc:Subject:In-Reply-To:References:Message-ID;
-        bh=P1m0j0XGFyovvK7fT8FKAKKgAru998yHIVdxJadEKwE=;
-        b=g+ubyZbd9/hmtA4yOkxI083/StHCgDrjCdzkiOjdYLHo0h0liDbPq7yjI78r+2dl
-        EFTPGeipouZYe6+wnGqQn/rdpTUkNApR4Jnl2qzzVzFm/VnF7EACMzAL/nSmlb6byXw
-        hf3OpxdUhmswz7NysKoX1irmFlLQ9jCSohjerW+k=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=gdwg2y3kokkkj5a55z2ilkup5wp5hhxx; d=amazonses.com; t=1575920876;
-        h=MIME-Version:Content-Type:Content-Transfer-Encoding:Date:From:To:Cc:Subject:In-Reply-To:References:Message-ID:Feedback-ID;
-        bh=P1m0j0XGFyovvK7fT8FKAKKgAru998yHIVdxJadEKwE=;
-        b=CClNepi/3eSzYrXWmTHBZVd1CzN/U2EOIm19lYFNID7XNiBMPcTNHr5blTD+Paup
-        9G52Vf8jyy13jxBCTCKDQAEpa090yKwCG9AP898VLqumsqKcUsbtdbxpVdfY1NYFMP/
-        KnyFTePxpVKAXQRXQjVqZcuWnOoi+/LdusMpqvis=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,TVD_SPACE_RATIO
-        autolearn=unavailable autolearn_force=no version=3.4.0
+        Mon, 9 Dec 2019 14:49:01 -0500
+Received: by mail-qv1-f51.google.com with SMTP id n8so3133679qvg.11
+        for <linux-wireless@vger.kernel.org>; Mon, 09 Dec 2019 11:49:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to:cc;
+        bh=AQll4KRhgPJZReykA/0eCvQSWgdhy+FBux08PlQKUvo=;
+        b=OrlO+8ZDubdamDsG/B0TX7TJTiYB1EwlO14UoXaRBPYaa8F+oIEReSDz1y+Ga7K+c0
+         uYkdOdWvcui8BvK2nStBMMss6lVEsWBeRFSrFhBd5+tgIsGSDJqvWx1nWYmvHFozIBIH
+         jb30+1ouf/vjT8LMmhDpKTtyKfcBnK1I9RH8xPQpqPeukPIgxr8OcGD+AsYQtQJabttn
+         T95J05Z62Eviho3e31Ymk8LbRPHOMo1yn3bmtbjMAiZfiDVZovC3IR/tsolnz4ScHRGR
+         TvM5pOlF4KeB/Vi0/9tydtC7LRLYpHDlaMTX6H32Zj4btNyKKm1ephDWSnhapMH5m5RS
+         /cjQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
+        bh=AQll4KRhgPJZReykA/0eCvQSWgdhy+FBux08PlQKUvo=;
+        b=guvoOLTx1cMT3uoc8r1z2MQshyXh/9XvQxHAX0hBthN5KBxur6fEGhA5ET5Bi5beMp
+         tRMoDM5I337wgsFstMp0gRmiZH+iwHSaTau1dJn4JxnqbriCAj6KF+c3jk32z/lqGJUC
+         A3xfZqfpn5tyjioFMd2Y35zfWqLSPWcZYocBvH89L82z1163mjM4EyEkrADhUF7mqiKw
+         fbhHMyxQgVssdF8PSTUH/RS5ypBZWKJtho2xgHclxCI/1FAQvxdSOi1YLz+aSz5BCvQB
+         Q7NGCfZolSxjZ2nJ7k9Q4L+/YpWuXvAL1pvlMIJ7CFYjy+F6+j6ysr25T1GIiFYdWZ2X
+         rTFA==
+X-Gm-Message-State: APjAAAVjwiGiQaOaV49EdmMcoK6iMgUPFQU6iLSdvtVT7k0nqtKagGn2
+        sFxuKfO7RbJ+k82lOLHi/rncLWKXDYeGxEwZbC30pfay
+X-Google-Smtp-Source: APXvYqz5qDZpDUElNYxzMrnSyRDvbM6ZtlYlX/lfojPILeYexpKVffi1dJh28JPZiuLxEnHK/6Sr1K8L+T2lzsERMlI=
+X-Received: by 2002:a0c:e34e:: with SMTP id a14mr25049112qvm.73.1575920940049;
+ Mon, 09 Dec 2019 11:49:00 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Mon, 9 Dec 2019 19:47:56 +0000
-From:   pradeepc@codeaurora.org
-To:     John Crispin <john@phrozen.org>
-Cc:     Kalle Valo <kvalo@codeaurora.org>, ath11k@lists.infradead.org,
-        linux-wireless@vger.kernel.org,
-        linux-wireless-owner@vger.kernel.org
-Subject: Re: [PATCH V2 8/9] ath11k: optimise ath11k_dp_tx_completion_handler
-In-Reply-To: <20191204181745.27297-9-john@phrozen.org>
-References: <20191204181745.27297-1-john@phrozen.org>
- <20191204181745.27297-9-john@phrozen.org>
-Message-ID: <0101016eec3439d6-e9a65da0-17a1-48dd-8962-e5c9ded95375-000000@us-west-2.amazonses.com>
-X-Sender: pradeepc@codeaurora.org
-User-Agent: Roundcube Webmail/1.3.9
-X-SES-Outgoing: 2019.12.09-54.240.27.10
-Feedback-ID: 1.us-west-2.CZuq2qbDmUIuT3qdvXlRHZZCpfZqZ4GtG9v3VKgRyF0=:AmazonSES
+From:   Janusz Dziedzic <janusz.dziedzic@gmail.com>
+Date:   Mon, 9 Dec 2019 20:48:49 +0100
+Message-ID: <CAFED-jkz2U244BvqaHkMdj018fbTLOpz+ZK2j_1SrxaG4CvyNQ@mail.gmail.com>
+Subject: iw set freq regression
+To:     linux-wireless <linux-wireless@vger.kernel.org>
+Cc:     Johannes Berg <johannes@sipsolutions.net>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Hello,
 
-> @@ -828,10 +827,7 @@ void ath11k_dp_free(struct ath11k_base *ab)
->  			     ath11k_dp_tx_pending_cleanup, ab);
->  		idr_destroy(&dp->tx_ring[i].txbuf_idr);
->  		spin_unlock_bh(&dp->tx_ring[i].tx_idr_lock);
-> -
-> -		spin_lock_bh(&dp->tx_ring[i].tx_status_lock);
-> -		kfifo_free(&dp->tx_ring[i].tx_status_fifo);
-> -		spin_unlock_bh(&dp->tx_ring[i].tx_status_lock);
-> +		kfree(&dp->tx_ring[i].tx_status);
->  	}
-"kfree(&dp->tx_ring[i].tx_status)"  --> 
-"kfree(dp->tx_ring[i].tx_status)"
+For v4.9 this command works correctly:
+./iw wlp1s0 set freq 5220 20 5220 0
+./iw wlp1s0 set freq 5180 40 5190 0
+
+With latest master this fail with err msg:
+Usage:    ./iw [options] dev <devname> set freq <freq>
+[NOHT|HT20|HT40+|HT40-|5MHz|10MHz|80MHz]
+    dev <devname> set freq <control freq> [5|10|20|40|80|80+80|160]
+[<center1_freq> [<center2_freq>]]
+Options:
+    --debug        enable netlink debugging
+
+After bisection and revert this one, works as before:
+4871fcf iw: parse_freqs: check how many center frequencies to expect
+
+I know we don't need to set this all arguments and finally I can
+change my script (don't set cf1/cf2).
+Anyway report this.
+
+BR
+Janusz
