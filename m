@@ -2,91 +2,131 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E65B117765
-	for <lists+linux-wireless@lfdr.de>; Mon,  9 Dec 2019 21:28:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B01AE117837
+	for <lists+linux-wireless@lfdr.de>; Mon,  9 Dec 2019 22:17:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726509AbfLIU2P (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 9 Dec 2019 15:28:15 -0500
-Received: from mail-il1-f172.google.com ([209.85.166.172]:38803 "EHLO
-        mail-il1-f172.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726354AbfLIU2P (ORCPT
+        id S1726598AbfLIVRO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 9 Dec 2019 16:17:14 -0500
+Received: from smail.rz.tu-ilmenau.de ([141.24.186.67]:41535 "EHLO
+        smail.rz.tu-ilmenau.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726483AbfLIVRO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 9 Dec 2019 15:28:15 -0500
-Received: by mail-il1-f172.google.com with SMTP id u17so13976834ilq.5
-        for <linux-wireless@vger.kernel.org>; Mon, 09 Dec 2019 12:28:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=dsLYgrJ7e6mjvbouhqXgxQbBAlPOYr1l6/YgPUfFVVQ=;
-        b=HTqBKKzRneK5+/ylJ3c6ERaTfhOmshP+Z5r7fDku1JlLHuQA+2bkpqPDsXKF9Qp727
-         RObAOIiwyvj86l7QLsDJhPLkhjRzNhMTZYl8nynqnLNvUhyiNMMKPqSqkkwGUJ61CgHZ
-         efckUhnSEJegAsouxTq77RwY/C1oCj+OtH7m+rWqd0RKi5LG0e8Aql4vSGJ+GokpaULY
-         CnXsd6gS6MRnwvusN9+I+/9wKQ/jC+Oogwfk8pwhT48uAkesHs+2PBn9youkPxc5spOz
-         msMIT7VzgkXESvKYL8b0srkAAJy5RYrlGkXRGeNlTTM84z1hYiw6oA91DpN1y30p260a
-         alog==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=dsLYgrJ7e6mjvbouhqXgxQbBAlPOYr1l6/YgPUfFVVQ=;
-        b=cQT223rLvMjaZz8dWOhzvURxh/oZGCNjFWstmBHYUMLUS1xScgdXxRoJvB6y7gE5VR
-         /AWWJA/EI4SKPz9M/yTl8MKKoUSd3wk1b7SeAGvM80b02/gBraZDxIl4/iH9JGg0XSpk
-         KD43SYshPmSgQgRepeZi5vKojkEskWWIRmpjqTrQA5NsDXR6UPoi4Fl949ivjEG7JPre
-         i7jm2u8ganOyHoq/+noOMVXhEyUKncL+xR8bOx1Ky95EW9lrpT1D518PIbwX62KwEhcz
-         Nj0I+kpclUfm7aKGkT5L6Sx0SggNg2zSzoVtB8J/vqWvpeI8Ax11s7ZBmAIo5+6R05mC
-         BDmw==
-X-Gm-Message-State: APjAAAVVvjisiKXX5LEYy9ddwnbq1HyNQWbXkatWbRIm+P8zV+UxqoH7
-        lFBXib1K6ukFXg+59GGKzRO3igekVy2211G1gPk=
-X-Google-Smtp-Source: APXvYqxR2E2tL0pNed29qhjXxwjizHbssFF7G9bxkgepR2ixL/a8rZoIIlk9mb8kmsfUQyM8lEL/fl7caYU/CxVJJ3k=
-X-Received: by 2002:a92:d2cd:: with SMTP id w13mr4263889ilg.173.1575923293849;
- Mon, 09 Dec 2019 12:28:13 -0800 (PST)
+        Mon, 9 Dec 2019 16:17:14 -0500
+Received: from isengard.fritz.box (unknown [92.195.99.143])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by smail.rz.tu-ilmenau.de (Postfix) with ESMTPSA id 964F8580074;
+        Mon,  9 Dec 2019 22:17:11 +0100 (CET)
+From:   Markus Theil <markus.theil@tu-ilmenau.de>
+To:     nbd@nbd.name
+Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
+        Stanislaw Gruszka <stf_xl@wp.pl>,
+        Markus Theil <markus.theil@tu-ilmenau.de>
+Subject: [PATCH] mt76: use AC specific reorder timeout
+Date:   Mon,  9 Dec 2019 22:15:27 +0100
+Message-Id: <20191209211527.13977-1-markus.theil@tu-ilmenau.de>
+X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
-References: <CAH2r5mvZ=S0FHGP+Y_r5f37TXVehv2shj9f6w67zBxfjR+Zt-Q@mail.gmail.com>
- <0101016eea3353da-835ca00e-d6c9-4e2c-aa0b-f6db8a4c518a-000000@us-west-2.amazonses.com>
- <87h829lpob.fsf@toke.dk> <87muc1io8r.fsf@toke.dk> <CAH2r5msb63LFeDZ9D9dNv8tTS1yS9oLXx8tNqmjTQfXRsKrFzg@mail.gmail.com>
- <87zhg1h10j.fsf@toke.dk>
-In-Reply-To: <87zhg1h10j.fsf@toke.dk>
-From:   Steve French <smfrench@gmail.com>
-Date:   Mon, 9 Dec 2019 14:28:03 -0600
-Message-ID: <CAH2r5msJRzdrW4ua4uSqqwKC8NnKzOVKkqLWO0+cJ-OutL6qoQ@mail.gmail.com>
-Subject: Re: 5.5-rc1 oops on boot in 802.11 kernel driver
-To:     =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@redhat.com>
-Cc:     Kalle Valo <kvalo@codeaurora.org>, linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Dec 9, 2019 at 11:17 AM Toke H=C3=B8iland-J=C3=B8rgensen <toke@redh=
-at.com> wrote:
->
-> Steve French <smfrench@gmail.com> writes:
->
-> > Let me know if any additional information is needed. Reproduces with
-> > default config on my Lenovo laptop with Fedora with default config on b=
-oot
-> > of 5.5-rc1
->
-> Might be helpful to know your exact hardware model and firmware version.
-> Also, when does this happen? When first connecting to a network? What
-> kind of security is on that network (wpa type, etc)?
+Before this patch, mt76 handled rx traffic for all TIDs  equally,
+when released from reorder buffer early. This patch uses an AC specific
+reorder timeout, in order to release partial aggregated frames for voice
+or video ACs earlier. For example, ath10k also uses AC specific reorder
+timeouts (reported by firmware in that case).
 
-Did another yum update today and haven't seen the Wifi crash this
-afternoon.   Possible that it was fixed in last few days?!  But in
-case anyone still runs into it ... here are the requested details
+Signed-off-by: Markus Theil <markus.theil@tu-ilmenau.de>
+---
+ drivers/net/wireless/mediatek/mt76/agg-rx.c | 30 ++++++++++++++++++---
+ drivers/net/wireless/mediatek/mt76/mt76.h   |  2 ++
+ 2 files changed, 28 insertions(+), 4 deletions(-)
 
-# lspci | grep Wireless
-00:14.3 Network controller: Intel Corporation Wireless-AC 9560
-[Jefferson Peak] (rev 10)
+diff --git a/drivers/net/wireless/mediatek/mt76/agg-rx.c b/drivers/net/wireless/mediatek/mt76/agg-rx.c
+index 53b5a4b2dcc5..3832be7d14f3 100644
+--- a/drivers/net/wireless/mediatek/mt76/agg-rx.c
++++ b/drivers/net/wireless/mediatek/mt76/agg-rx.c
+@@ -4,7 +4,27 @@
+  */
+ #include "mt76.h"
+ 
+-#define REORDER_TIMEOUT (HZ / 10)
++static unsigned long mt76_aggr_tid_to_timeo(u8 tidno)
++{
++	const int ieee802_1d_to_ac[8] = {
++		IEEE80211_AC_BE,
++		IEEE80211_AC_BK,
++		IEEE80211_AC_BK,
++		IEEE80211_AC_BE,
++		IEEE80211_AC_VI,
++		IEEE80211_AC_VI,
++		IEEE80211_AC_VO,
++		IEEE80211_AC_VO
++	};
++	const int ac_to_timeout[] = {
++		[IEEE80211_AC_VO] = HZ / 30,
++		[IEEE80211_AC_VI] = HZ / 25,
++		[IEEE80211_AC_BE] = HZ / 10,
++		[IEEE80211_AC_BK] = HZ / 10
++	};
++
++	return ac_to_timeout[ieee802_1d_to_ac[tidno & 7]];
++}
+ 
+ static void
+ mt76_aggr_release(struct mt76_rx_tid *tid, struct sk_buff_head *frames, int idx)
+@@ -71,7 +91,8 @@ mt76_rx_aggr_check_release(struct mt76_rx_tid *tid, struct sk_buff_head *frames)
+ 		nframes--;
+ 		status = (struct mt76_rx_status *)skb->cb;
+ 		if (!time_after(jiffies,
+-				status->reorder_time + REORDER_TIMEOUT))
++				status->reorder_time +
++				mt76_aggr_tid_to_timeo(tid->num)))
+ 			continue;
+ 
+ 		mt76_rx_aggr_release_frames(tid, frames, status->seqno);
+@@ -101,7 +122,7 @@ mt76_rx_aggr_reorder_work(struct work_struct *work)
+ 
+ 	if (nframes)
+ 		ieee80211_queue_delayed_work(tid->dev->hw, &tid->reorder_work,
+-					     REORDER_TIMEOUT);
++					     mt76_aggr_tid_to_timeo(tid->num));
+ 	mt76_rx_complete(dev, &frames, NULL);
+ 
+ 	rcu_read_unlock();
+@@ -225,7 +246,7 @@ void mt76_rx_aggr_reorder(struct sk_buff *skb, struct sk_buff_head *frames)
+ 	mt76_rx_aggr_release_head(tid, frames);
+ 
+ 	ieee80211_queue_delayed_work(tid->dev->hw, &tid->reorder_work,
+-				     REORDER_TIMEOUT);
++				     mt76_aggr_tid_to_timeo(tid->num));
+ 
+ out:
+ 	spin_unlock_bh(&tid->lock);
+@@ -245,6 +266,7 @@ int mt76_rx_aggr_start(struct mt76_dev *dev, struct mt76_wcid *wcid, u8 tidno,
+ 	tid->dev = dev;
+ 	tid->head = ssn;
+ 	tid->size = size;
++	tid->num = tidno;
+ 	INIT_DELAYED_WORK(&tid->reorder_work, mt76_rx_aggr_reorder_work);
+ 	spin_lock_init(&tid->lock);
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
+index c268c3d76b3d..b604d8d5f0bc 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76.h
+@@ -237,6 +237,8 @@ struct mt76_rx_tid {
+ 	u8 size;
+ 	u8 nframes;
+ 
++	u8 num;
++
+ 	u8 started:1, stopped:1, timer_pending:1;
+ 
+ 	struct sk_buff *reorder_buf[];
+-- 
+2.24.0
 
-Wifi is configured for WPA2
-
-Model #: Lenovo P52 20MAS08500
-
---=20
-Thanks,
-
-Steve
