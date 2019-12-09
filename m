@@ -2,71 +2,91 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 437791176EA
-	for <lists+linux-wireless@lfdr.de>; Mon,  9 Dec 2019 20:59:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E65B117765
+	for <lists+linux-wireless@lfdr.de>; Mon,  9 Dec 2019 21:28:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726665AbfLIT7X (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 9 Dec 2019 14:59:23 -0500
-Received: from mail.kernel.org ([198.145.29.99]:54174 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726230AbfLIT7W (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 9 Dec 2019 14:59:22 -0500
-Received: from localhost.localdomain (unknown [151.66.51.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 423772080D;
-        Mon,  9 Dec 2019 19:59:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1575921562;
-        bh=3ktVn+l1Ecwh8XwssnCNsgaPYd0r+RVVW6J6Dk8J7RQ=;
-        h=From:To:Cc:Subject:Date:From;
-        b=MDlvN0DtVjZbt34s3W2BzEaUmQkwr3vNe0pY7H1litpmRa6RIFE1vWIHGMz3ZjQG2
-         nnJAJS9Bq1y1kjlieA9MEmum0hRa0RiLpzcytFa1JRWt7VSRo7aGCx0FTbYf1TaxKN
-         M7m99U/+OvcwppHMmvY8rwO91sYf0kSHkm1oUNw8=
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
-        ryder.lee@mediatek.com
-Subject: [PATCH] mt76: mt7615: report firmware version using ethtool
-Date:   Mon,  9 Dec 2019 20:58:59 +0100
-Message-Id: <5bb77cc6224a0ca46cecf2e435460610d583e6ae.1575921398.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.21.0
+        id S1726509AbfLIU2P (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 9 Dec 2019 15:28:15 -0500
+Received: from mail-il1-f172.google.com ([209.85.166.172]:38803 "EHLO
+        mail-il1-f172.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726354AbfLIU2P (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 9 Dec 2019 15:28:15 -0500
+Received: by mail-il1-f172.google.com with SMTP id u17so13976834ilq.5
+        for <linux-wireless@vger.kernel.org>; Mon, 09 Dec 2019 12:28:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=dsLYgrJ7e6mjvbouhqXgxQbBAlPOYr1l6/YgPUfFVVQ=;
+        b=HTqBKKzRneK5+/ylJ3c6ERaTfhOmshP+Z5r7fDku1JlLHuQA+2bkpqPDsXKF9Qp727
+         RObAOIiwyvj86l7QLsDJhPLkhjRzNhMTZYl8nynqnLNvUhyiNMMKPqSqkkwGUJ61CgHZ
+         efckUhnSEJegAsouxTq77RwY/C1oCj+OtH7m+rWqd0RKi5LG0e8Aql4vSGJ+GokpaULY
+         CnXsd6gS6MRnwvusN9+I+/9wKQ/jC+Oogwfk8pwhT48uAkesHs+2PBn9youkPxc5spOz
+         msMIT7VzgkXESvKYL8b0srkAAJy5RYrlGkXRGeNlTTM84z1hYiw6oA91DpN1y30p260a
+         alog==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=dsLYgrJ7e6mjvbouhqXgxQbBAlPOYr1l6/YgPUfFVVQ=;
+        b=cQT223rLvMjaZz8dWOhzvURxh/oZGCNjFWstmBHYUMLUS1xScgdXxRoJvB6y7gE5VR
+         /AWWJA/EI4SKPz9M/yTl8MKKoUSd3wk1b7SeAGvM80b02/gBraZDxIl4/iH9JGg0XSpk
+         KD43SYshPmSgQgRepeZi5vKojkEskWWIRmpjqTrQA5NsDXR6UPoi4Fl949ivjEG7JPre
+         i7jm2u8ganOyHoq/+noOMVXhEyUKncL+xR8bOx1Ky95EW9lrpT1D518PIbwX62KwEhcz
+         Nj0I+kpclUfm7aKGkT5L6Sx0SggNg2zSzoVtB8J/vqWvpeI8Ax11s7ZBmAIo5+6R05mC
+         BDmw==
+X-Gm-Message-State: APjAAAVVvjisiKXX5LEYy9ddwnbq1HyNQWbXkatWbRIm+P8zV+UxqoH7
+        lFBXib1K6ukFXg+59GGKzRO3igekVy2211G1gPk=
+X-Google-Smtp-Source: APXvYqxR2E2tL0pNed29qhjXxwjizHbssFF7G9bxkgepR2ixL/a8rZoIIlk9mb8kmsfUQyM8lEL/fl7caYU/CxVJJ3k=
+X-Received: by 2002:a92:d2cd:: with SMTP id w13mr4263889ilg.173.1575923293849;
+ Mon, 09 Dec 2019 12:28:13 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <CAH2r5mvZ=S0FHGP+Y_r5f37TXVehv2shj9f6w67zBxfjR+Zt-Q@mail.gmail.com>
+ <0101016eea3353da-835ca00e-d6c9-4e2c-aa0b-f6db8a4c518a-000000@us-west-2.amazonses.com>
+ <87h829lpob.fsf@toke.dk> <87muc1io8r.fsf@toke.dk> <CAH2r5msb63LFeDZ9D9dNv8tTS1yS9oLXx8tNqmjTQfXRsKrFzg@mail.gmail.com>
+ <87zhg1h10j.fsf@toke.dk>
+In-Reply-To: <87zhg1h10j.fsf@toke.dk>
+From:   Steve French <smfrench@gmail.com>
+Date:   Mon, 9 Dec 2019 14:28:03 -0600
+Message-ID: <CAH2r5msJRzdrW4ua4uSqqwKC8NnKzOVKkqLWO0+cJ-OutL6qoQ@mail.gmail.com>
+Subject: Re: 5.5-rc1 oops on boot in 802.11 kernel driver
+To:     =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@redhat.com>
+Cc:     Kalle Valo <kvalo@codeaurora.org>, linux-wireless@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Print fw_ver and build_date members of struct mt7615_fw_trailer
-similarly to what appears in the output of 'dmesg' when the MCU firmware
-is loaded.
+On Mon, Dec 9, 2019 at 11:17 AM Toke H=C3=B8iland-J=C3=B8rgensen <toke@redh=
+at.com> wrote:
+>
+> Steve French <smfrench@gmail.com> writes:
+>
+> > Let me know if any additional information is needed. Reproduces with
+> > default config on my Lenovo laptop with Fedora with default config on b=
+oot
+> > of 5.5-rc1
+>
+> Might be helpful to know your exact hardware model and firmware version.
+> Also, when does this happen? When first connecting to a network? What
+> kind of security is on that network (wpa type, etc)?
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- drivers/net/wireless/mediatek/mt76/mt7615/mcu.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+Did another yum update today and haven't seen the Wifi crash this
+afternoon.   Possible that it was fixed in last few days?!  But in
+case anyone still runs into it ... here are the requested details
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-index 9d86f77d3492..7efb4b997c28 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-@@ -539,8 +539,14 @@ static int mt7615_load_ram(struct mt7615_dev *dev)
- 		goto out;
- 
- 	ret = mt7615_mcu_start_firmware(dev, 0, FW_START_WORKING_PDA_CR4);
--	if (ret)
-+	if (ret) {
- 		dev_err(dev->mt76.dev, "Failed to start CR4 firmware\n");
-+		goto out;
-+	}
-+
-+	snprintf(dev->mt76.hw->wiphy->fw_version,
-+		 sizeof(dev->mt76.hw->wiphy->fw_version),
-+		 "%.10s-%.15s", hdr->fw_ver, hdr->build_date);
- 
- out:
- 	release_firmware(fw);
--- 
-2.21.0
+# lspci | grep Wireless
+00:14.3 Network controller: Intel Corporation Wireless-AC 9560
+[Jefferson Peak] (rev 10)
 
+Wifi is configured for WPA2
+
+Model #: Lenovo P52 20MAS08500
+
+--=20
+Thanks,
+
+Steve
