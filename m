@@ -2,38 +2,37 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 871C211986C
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Dec 2019 22:39:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F20D11983B
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Dec 2019 22:39:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730145AbfLJVe6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 10 Dec 2019 16:34:58 -0500
-Received: from mail.kernel.org ([198.145.29.99]:40466 "EHLO mail.kernel.org"
+        id S1729815AbfLJVhz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 10 Dec 2019 16:37:55 -0500
+Received: from mail.kernel.org ([198.145.29.99]:41132 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730139AbfLJVe6 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 10 Dec 2019 16:34:58 -0500
+        id S1730250AbfLJVfZ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 10 Dec 2019 16:35:25 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A61B92465A;
-        Tue, 10 Dec 2019 21:34:56 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id D23E42465A;
+        Tue, 10 Dec 2019 21:35:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1576013697;
-        bh=PVEGQdHiy+KQDr4ywzZbSqkTER8rUHDJ++jaJtm196k=;
+        s=default; t=1576013724;
+        bh=kIKboCf9bWRKrQVh14Osv6JLDFIm2cgqKH2E8+RGDuQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yaNPWpMJPOCDW6RtJk2+ywyt+GHu+lGIzJPbXNCxUnlu1Ni3z26GQ2rUo+8y2N+Ga
-         W6B3QWjHZgP8vGcqpD5p+WPVMdmvy9HV9s5jp2uRdQ3HeJyY3EAmxsUL+8udwS6fLS
-         8DxITwGLRa+qnwNlFV8RPwkjLmIWSiwn331lVSlA=
+        b=CvTVn5TIZXWTuaGEs4HzHfNqZEN3/O4gv5cU/h0cNdfef+OGe9KPFB8jPGj3VueAw
+         grjk3M1Ccjyy4M87zcjaDWSA2jyQslOGwJFCgG5S7f6JnKNf4ShlK2J1AssWZ7tne5
+         j2biehHTtP+Q3g+qQJML01NJXaK56SsrF3XUiZ+o=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Miaoqing Pan <miaoqing@codeaurora.org>,
-        Hou Bao Hou <houbao@codeaurora.org>,
-        Anilkumar Kolli <akolli@codeaurora.org>,
+Cc:     Wang Xuerui <wangxuerui@qiniu.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
         Kalle Valo <kvalo@codeaurora.org>,
-        Sasha Levin <sashal@kernel.org>, ath10k@lists.infradead.org,
+        Sasha Levin <sashal@kernel.org>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 127/177] ath10k: fix get invalid tx rate for Mesh metric
-Date:   Tue, 10 Dec 2019 16:31:31 -0500
-Message-Id: <20191210213221.11921-127-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 150/177] iwlwifi: mvm: fix unaligned read of rx_pkt_status
+Date:   Tue, 10 Dec 2019 16:31:54 -0500
+Message-Id: <20191210213221.11921-150-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20191210213221.11921-1-sashal@kernel.org>
 References: <20191210213221.11921-1-sashal@kernel.org>
@@ -46,40 +45,48 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Miaoqing Pan <miaoqing@codeaurora.org>
+From: Wang Xuerui <wangxuerui@qiniu.com>
 
-[ Upstream commit 05a11003a56507023f18d3249a4d4d119c0a3e9c ]
+[ Upstream commit c5aaa8be29b25dfe1731e9a8b19fd91b7b789ee3 ]
 
-ath10k does not provide transmit rate info per MSDU
-in tx completion, mark that as -1 so mac80211
-will ignore the rates. This fixes mac80211 update Mesh
-link metric with invalid transmit rate info.
+This is present since the introduction of iwlmvm.
+Example stack trace on MIPS:
 
-Tested HW: QCA9984
-Tested FW: 10.4-3.9.0.2-00035
+[<ffffffffc0789328>] iwl_mvm_rx_rx_mpdu+0xa8/0xb88 [iwlmvm]
+[<ffffffffc0632b40>] iwl_pcie_rx_handle+0x420/0xc48 [iwlwifi]
 
-Signed-off-by: Hou Bao Hou <houbao@codeaurora.org>
-Signed-off-by: Anilkumar Kolli <akolli@codeaurora.org>
-Signed-off-by: Miaoqing Pan <miaoqing@codeaurora.org>
+Tested with a Wireless AC 7265 for ~6 months, confirmed to fix the
+problem. No other unaligned accesses are spotted yet.
+
+Signed-off-by: Wang Xuerui <wangxuerui@qiniu.com>
+Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath10k/txrx.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/wireless/intel/iwlwifi/mvm/rx.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath10k/txrx.c b/drivers/net/wireless/ath/ath10k/txrx.c
-index 6f62ddc0494c3..6c47e4b6aa6cd 100644
---- a/drivers/net/wireless/ath/ath10k/txrx.c
-+++ b/drivers/net/wireless/ath/ath10k/txrx.c
-@@ -101,6 +101,8 @@ int ath10k_txrx_tx_unref(struct ath10k_htt *htt,
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rx.c b/drivers/net/wireless/intel/iwlwifi/mvm/rx.c
+index bfb163419c679..e6a67bc022090 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/rx.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/rx.c
+@@ -62,6 +62,7 @@
+  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  *****************************************************************************/
++#include <asm/unaligned.h>
+ #include <linux/etherdevice.h>
+ #include <linux/skbuff.h>
+ #include "iwl-trans.h"
+@@ -360,7 +361,7 @@ void iwl_mvm_rx_rx_mpdu(struct iwl_mvm *mvm, struct napi_struct *napi,
+ 	rx_res = (struct iwl_rx_mpdu_res_start *)pkt->data;
+ 	hdr = (struct ieee80211_hdr *)(pkt->data + sizeof(*rx_res));
+ 	len = le16_to_cpu(rx_res->byte_count);
+-	rx_pkt_status = le32_to_cpup((__le32 *)
++	rx_pkt_status = get_unaligned_le32((__le32 *)
+ 		(pkt->data + sizeof(*rx_res) + len));
  
- 	info = IEEE80211_SKB_CB(msdu);
- 	memset(&info->status, 0, sizeof(info->status));
-+	info->status.rates[0].idx = -1;
-+
- 	trace_ath10k_txrx_tx_unref(ar, tx_done->msdu_id);
- 
- 	if (!(info->flags & IEEE80211_TX_CTL_NO_ACK))
+ 	/* Dont use dev_alloc_skb(), we'll have enough headroom once
 -- 
 2.20.1
 
