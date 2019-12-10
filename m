@@ -2,36 +2,36 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0CC0E1196B0
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Dec 2019 22:28:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E2BA81195EA
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Dec 2019 22:25:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727835AbfLJV20 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 10 Dec 2019 16:28:26 -0500
-Received: from mail.kernel.org ([198.145.29.99]:60306 "EHLO mail.kernel.org"
+        id S1728010AbfLJVLH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 10 Dec 2019 16:11:07 -0500
+Received: from mail.kernel.org ([198.145.29.99]:33480 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728484AbfLJVK0 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 10 Dec 2019 16:10:26 -0500
+        id S1728358AbfLJVLG (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 10 Dec 2019 16:11:06 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B60172077B;
-        Tue, 10 Dec 2019 21:10:24 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 60266246A2;
+        Tue, 10 Dec 2019 21:11:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1576012225;
-        bh=pDb99hDHnLaIQT5+IsVMp+MuY1aORJ5mKqZBYwYdPOI=;
+        s=default; t=1576012266;
+        bh=SiUpEET3u+eXnAzJ/9n1WjoyrMjKh998f7eWCTivKz0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tK+H1tzd2f6QJYRM10FV0BQOWxIdCa7PcB1bzzSFEpmYwTSfc6axC4OM95bUezzQK
-         fyqFwGIfavKx+e9C2OIFh0IPoL50INauhb3uCtmI2q3YapMpZm6NUQmmKl5iE4D8Ya
-         zEpCDpthwRU/np4F62og/ObXsb4at2Q2WGC9egA0=
+        b=pz941lXcXFdTminYKZyNg1q0sow0yaAcuWsX/6ednGo0+sfdzYahP9xyq9T1MCSWQ
+         wkTjpBeR3U033tLccO2nWUecLFiGyW4MNYUimhb5qFqE/VbgUfA3Btifx1CNLV//m3
+         qfw4hJfPtQ4i4AbvDfWl4+ZkX14ZMqucAMLwK0bg=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Adham Abozaeid <adham.abozaeid@microchip.com>,
+Cc:     Marcel Holtmann <marcel@holtmann.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Sasha Levin <sashal@kernel.org>,
-        linux-wireless@vger.kernel.org, devel@driverdev.osuosl.org
-Subject: [PATCH AUTOSEL 5.4 175/350] staging: wilc1000: check if device is initialzied before changing vif
-Date:   Tue, 10 Dec 2019 16:04:40 -0500
-Message-Id: <20191210210735.9077-136-sashal@kernel.org>
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 211/350] rfkill: allocate static minor
+Date:   Tue, 10 Dec 2019 16:05:16 -0500
+Message-Id: <20191210210735.9077-172-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20191210210735.9077-1-sashal@kernel.org>
 References: <20191210210735.9077-1-sashal@kernel.org>
@@ -44,66 +44,66 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Adham Abozaeid <adham.abozaeid@microchip.com>
+From: Marcel Holtmann <marcel@holtmann.org>
 
-[ Upstream commit 6df6f3849bb8f317bf2d52711aacea4292237ede ]
+[ Upstream commit 8670b2b8b029a6650d133486be9d2ace146fd29a ]
 
-When killing hostapd, the interface is closed which deinitializes the
-device, then change virtual interface is called.
-This change checks if the device is initialized before sending the
-interface change command to the device
+udev has a feature of creating /dev/<node> device-nodes if it finds
+a devnode:<node> modalias. This allows for auto-loading of modules that
+provide the node. This requires to use a statically allocated minor
+number for misc character devices.
 
-Signed-off-by: Adham Abozaeid <adham.abozaeid@microchip.com>
-Link: https://lore.kernel.org/r/20191028184019.31194-1-adham.abozaeid@microchip.com
+However, rfkill uses dynamic minor numbers and prevents auto-loading
+of the module. So allocate the next static misc minor number and use
+it for rfkill.
+
+Signed-off-by: Marcel Holtmann <marcel@holtmann.org>
+Link: https://lore.kernel.org/r/20191024174042.19851-1-marcel@holtmann.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../staging/wilc1000/wilc_wfi_cfgoperations.c  | 18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+ include/linux/miscdevice.h | 1 +
+ net/rfkill/core.c          | 9 +++++++--
+ 2 files changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/staging/wilc1000/wilc_wfi_cfgoperations.c b/drivers/staging/wilc1000/wilc_wfi_cfgoperations.c
-index 22f21831649bd..c3cd6f389a989 100644
---- a/drivers/staging/wilc1000/wilc_wfi_cfgoperations.c
-+++ b/drivers/staging/wilc1000/wilc_wfi_cfgoperations.c
-@@ -1419,8 +1419,10 @@ static int change_virtual_intf(struct wiphy *wiphy, struct net_device *dev,
- 		if (vif->iftype == WILC_AP_MODE || vif->iftype == WILC_GO_MODE)
- 			wilc_wfi_deinit_mon_interface(wl, true);
- 		vif->iftype = WILC_STATION_MODE;
--		wilc_set_operation_mode(vif, wilc_get_vif_idx(vif),
--					WILC_STATION_MODE, vif->idx);
-+
-+		if (wl->initialized)
-+			wilc_set_operation_mode(vif, wilc_get_vif_idx(vif),
-+						WILC_STATION_MODE, vif->idx);
+diff --git a/include/linux/miscdevice.h b/include/linux/miscdevice.h
+index 3247a3dc79348..b06b75776a32f 100644
+--- a/include/linux/miscdevice.h
++++ b/include/linux/miscdevice.h
+@@ -57,6 +57,7 @@
+ #define UHID_MINOR		239
+ #define USERIO_MINOR		240
+ #define VHOST_VSOCK_MINOR	241
++#define RFKILL_MINOR		242
+ #define MISC_DYNAMIC_MINOR	255
  
- 		memset(priv->assoc_stainfo.sta_associated_bss, 0,
- 		       WILC_MAX_NUM_STA * ETH_ALEN);
-@@ -1432,8 +1434,10 @@ static int change_virtual_intf(struct wiphy *wiphy, struct net_device *dev,
- 		priv->wdev.iftype = type;
- 		vif->monitor_flag = 0;
- 		vif->iftype = WILC_CLIENT_MODE;
--		wilc_set_operation_mode(vif, wilc_get_vif_idx(vif),
--					WILC_STATION_MODE, vif->idx);
-+
-+		if (wl->initialized)
-+			wilc_set_operation_mode(vif, wilc_get_vif_idx(vif),
-+						WILC_STATION_MODE, vif->idx);
- 		break;
+ struct device;
+diff --git a/net/rfkill/core.c b/net/rfkill/core.c
+index f9b08a6d8dbe4..0bf9bf1ceb8f0 100644
+--- a/net/rfkill/core.c
++++ b/net/rfkill/core.c
+@@ -1316,10 +1316,12 @@ static const struct file_operations rfkill_fops = {
+ 	.llseek		= no_llseek,
+ };
  
- 	case NL80211_IFTYPE_AP:
-@@ -1450,8 +1454,10 @@ static int change_virtual_intf(struct wiphy *wiphy, struct net_device *dev,
- 		dev->ieee80211_ptr->iftype = type;
- 		priv->wdev.iftype = type;
- 		vif->iftype = WILC_GO_MODE;
--		wilc_set_operation_mode(vif, wilc_get_vif_idx(vif),
--					WILC_AP_MODE, vif->idx);
++#define RFKILL_NAME "rfkill"
 +
-+		if (wl->initialized)
-+			wilc_set_operation_mode(vif, wilc_get_vif_idx(vif),
-+						WILC_AP_MODE, vif->idx);
- 		break;
+ static struct miscdevice rfkill_miscdev = {
+-	.name	= "rfkill",
+ 	.fops	= &rfkill_fops,
+-	.minor	= MISC_DYNAMIC_MINOR,
++	.name	= RFKILL_NAME,
++	.minor	= RFKILL_MINOR,
+ };
  
- 	default:
+ static int __init rfkill_init(void)
+@@ -1371,3 +1373,6 @@ static void __exit rfkill_exit(void)
+ 	class_unregister(&rfkill_class);
+ }
+ module_exit(rfkill_exit);
++
++MODULE_ALIAS_MISCDEV(RFKILL_MINOR);
++MODULE_ALIAS("devname:" RFKILL_NAME);
 -- 
 2.20.1
 
