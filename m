@@ -2,108 +2,106 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 897771185CB
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Dec 2019 12:05:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E9BCF118668
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Dec 2019 12:36:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727183AbfLJLFN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 10 Dec 2019 06:05:13 -0500
-Received: from frisell.zx2c4.com ([192.95.5.64]:48071 "EHLO frisell.zx2c4.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727018AbfLJLFN (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 10 Dec 2019 06:05:13 -0500
-Received: by frisell.zx2c4.com (ZX2C4 Mail Server) with ESMTP id 66440a0d
-        for <linux-wireless@vger.kernel.org>;
-        Tue, 10 Dec 2019 10:09:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha1; c=relaxed; d=zx2c4.com; h=mime-version
-        :from:date:message-id:subject:to:content-type; s=mail; bh=LZlYW9
-        UCw4wqob1o2bmUzj8oWXs=; b=SRXdpZ7fKQz9nZgY2+HioBol4ptwDfZc9LNNKi
-        OGH4+gXYgc+nZ3aV0GvzMR//Fld/SoxPStcoVaFGtQWlTnAy9n4u7PrXRu2CbYVq
-        svxt2cZnr5W1wN9Pm+QJtSnfuDBMM0YzAfL+6K1ZwwrTUFNrcbD+4p0RH5Hpyhwy
-        TdZ8Midk5roFtdEBQXqdAME4X08gPUhbgbln9yN0j/bwddVvt8LMLwBtGe+zFYKA
-        2HQd1Fhyf8l03JiyXvWPJpCNCpDaz/E5tU8RYDfkjoFF3snfyorxLn1X7row7XcM
-        YMJCREUn7EG6sh8EmkjkIrA9vZW3Rc40L1jQg6ARqipZJKLA==
-Received: by frisell.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id bb0c5752 (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256:NO)
-        for <linux-wireless@vger.kernel.org>;
-        Tue, 10 Dec 2019 10:09:40 +0000 (UTC)
-Received: by mail-ot1-f44.google.com with SMTP id h20so15141390otn.5
-        for <linux-wireless@vger.kernel.org>; Tue, 10 Dec 2019 03:05:11 -0800 (PST)
-X-Gm-Message-State: APjAAAVd7oQs9Rq/aGimvUfmg8Nq/xeZnEyqx4Xwspxy1q8C5hNBu9QT
-        NT9qcskqzbLtyV9U53WGKIGaSYCfYgesKP/Tjvw=
-X-Google-Smtp-Source: APXvYqzngD3FtT8ET4ICbicclgjfLTQlPnozqTq3MsLgdm6CSFh9mZl2L4CLtYGbTghNKwMIero1Zl26lKSAAq8tGnc=
-X-Received: by 2002:a9d:1e88:: with SMTP id n8mr26382946otn.369.1575975911101;
- Tue, 10 Dec 2019 03:05:11 -0800 (PST)
+        id S1727227AbfLJLgH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 10 Dec 2019 06:36:07 -0500
+Received: from mail-lf1-f67.google.com ([209.85.167.67]:44624 "EHLO
+        mail-lf1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727149AbfLJLgH (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 10 Dec 2019 06:36:07 -0500
+Received: by mail-lf1-f67.google.com with SMTP id v201so13392848lfa.11;
+        Tue, 10 Dec 2019 03:36:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=XY8c6o1ZDn8cLZbnNzZSfgpKdfWpT+q9NlTDas4NADs=;
+        b=E0IPWnBysw7r8g+PXtBwBKHNMugbTCeASem8y+wRRw3YT+VThZupd4ntxO+BuZvEQB
+         cDstpy4Zk6rOK9PuSiBauARQHJ0mS5NaMXniVSOF0HO3xFiS7/PM3YjUjmFlo6WHyDuH
+         8Myq9KsDrCn3RuRYWBigmIxPfl6bj3qFx6FGurE6NdT755P9DpqSln90fnflXRxLjg8I
+         1VHhYU9dC24VkjAkfrDFUYOv9Ra0J0FASrq+BFNlcGW6LRyG2uA5T1J5uJkUL8bZuq2U
+         /xepSdSt5WJpoMKTyPnqwNGMLpyKJVpwfnPPai1RMeOEvV9j6nuN7w03PqPUanGTtCzW
+         t0Yw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=XY8c6o1ZDn8cLZbnNzZSfgpKdfWpT+q9NlTDas4NADs=;
+        b=frQPJvV+JYLoSaD0TTIfwVyaiwzqgnqoXn9GwGCV3fVdT5BVBejfkLKXcgFaLQGfHG
+         dph962/gwrsiCEcCH/FR9Cl5C9WN4VY9NnNYG1QbxztNXZyJSbHrKWcDZuzRrCJz78oV
+         23dzWJl+NLJuvRmRxGEWWVy7VJ6xBDXE9F607OBXzaDA7SBhWV3i9Z5PkI105TXbN3+l
+         9bhE4+QrSjNVaNnZV2hGeIwvJTocFX7+/XPF0vDPZvgrP4RkWcrLtVU6TTMvaRaHvmyx
+         ITxxJMFAHf6ugiidx/dv+d/YzC4s0kK4I8rELBn01Rp+NVLeW1fq/hRcRh+1u1OcLd54
+         vIDQ==
+X-Gm-Message-State: APjAAAXiYkk0VTcVSfr1MPJITQ1m9h0W6r8fs2QTYY3meGZA7fuMlbpy
+        sIl7bz25NC2Ax4rH9rmWx7XPNssH
+X-Google-Smtp-Source: APXvYqwZTeTw9gdCAOj+K3A+HpOHJgHhLsv0iGFMi1WxC/9xPxcNI/uPw/rXyFJXuLapEACmz4u9vA==
+X-Received: by 2002:ac2:4849:: with SMTP id 9mr18286682lfy.11.1575977764751;
+        Tue, 10 Dec 2019 03:36:04 -0800 (PST)
+Received: from localhost.localdomain (ip-194-187-74-233.konfederacka.maverick.com.pl. [194.187.74.233])
+        by smtp.gmail.com with ESMTPSA id j10sm1595496ljc.76.2019.12.10.03.36.03
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 10 Dec 2019 03:36:04 -0800 (PST)
+From:   =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Arend van Spriel <arend.vanspriel@broadcom.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
+        Wright Feng <wright.feng@cypress.com>,
+        Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
+        Winnie Chang <winnie.chang@cypress.com>,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        brcm80211-dev-list@cypress.com, netdev@vger.kernel.org,
+        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>
+Subject: [PATCH] brcmfmac: set interface carrier to off by default
+Date:   Tue, 10 Dec 2019 12:35:55 +0100
+Message-Id: <20191210113555.1868-1-zajec5@gmail.com>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-From:   "Jason A. Donenfeld" <Jason@zx2c4.com>
-Date:   Tue, 10 Dec 2019 12:05:00 +0100
-X-Gmail-Original-Message-ID: <CAHmME9oykQsOXVeKdhToFjaHfPV6Ms6C450FYjUGh4nrOFBbtw@mail.gmail.com>
-Message-ID: <CAHmME9oykQsOXVeKdhToFjaHfPV6Ms6C450FYjUGh4nrOFBbtw@mail.gmail.com>
-Subject: intel ax200 not properly reinitialized on reboot
-To:     linux-wireless <linux-wireless@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+From: Rafał Miłecki <rafal@milecki.pl>
 
-I have a Thinkpad P1 gen 2 (same as X1 extreme gen 2), which has an
-AX200 -- 52:00.0 0280: 8086:2723 (rev 1a). Things mostly work, but
-I've noticed that after a reboot, the card stops working.
-Specifically, wpa_supplicant can't talk to it anymore. Or, sometimes
-it appears to drop off the bus completely. After doing a full
-poweroff+poweron (not a reboot), it works again.
+It's important as brcmfmac creates one main interface for each PHY and
+doesn't allow deleting it. Not setting carrier could result in other
+subsystems misbehaving (e.g. LEDs "netdev" trigger turning LED on).
 
-Here's what one of the failure modes looks like:
+Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
+---
+I noticed this problem when using "netdev" LED trigger with "wlan0" set
+as "device_name". While my interface was down (unused) the "netdev"
+trigger was checking it with netif_carrier_ok() and assuming it's up.
 
-zx2c4@thinkpad ~ $ journalctl -b -1|egrep '(iwl|wpa)'
-Dec 10 11:57:55 thinkpad systemd[1]: Created slice system-wpa_supplicant.slice.
-Dec 10 11:57:55 thinkpad kernel: iwlwifi 0000:52:00.0: enabling device
-(0000 -> 0002)
-Dec 10 11:57:55 thinkpad kernel: iwlwifi 0000:52:00.0: Direct firmware
-load for iwlwifi-cc-a0-52.ucode failed with error -2
-Dec 10 11:57:55 thinkpad kernel: iwlwifi 0000:52:00.0: Direct firmware
-load for iwlwifi-cc-a0-51.ucode failed with error -2
-Dec 10 11:57:55 thinkpad kernel: iwlwifi 0000:52:00.0: Direct firmware
-load for iwlwifi-cc-a0-50.ucode failed with error -2
-Dec 10 11:57:55 thinkpad kernel: iwlwifi 0000:52:00.0: Direct firmware
-load for iwlwifi-cc-a0-49.ucode failed with error -2
-Dec 10 11:57:55 thinkpad kernel: iwlwifi 0000:52:00.0:
-TLV_FW_FSEQ_VERSION: FSEQ Version: 43.2.23.17
-Dec 10 11:57:55 thinkpad kernel: iwlwifi 0000:52:00.0: Found debug
-destination: EXTERNAL_DRAM
-Dec 10 11:57:55 thinkpad kernel: iwlwifi 0000:52:00.0: Found debug
-configuration: 0
-Dec 10 11:57:55 thinkpad kernel: iwlwifi 0000:52:00.0: loaded firmware
-version 48.4fa0041f.0 op_mode iwlmvm
-Dec 10 11:57:55 thinkpad kernel: iwlwifi 0000:52:00.0: Detected
-Intel(R) Wi-Fi 6 AX200 160MHz, REV=0x340
-Dec 10 11:57:55 thinkpad kernel: iwlwifi 0000:52:00.0: Applying debug
-destination EXTERNAL_DRAM
-Dec 10 11:57:55 thinkpad kernel: iwlwifi 0000:52:00.0: Allocated
-0x00400000 bytes for firmware monitor.
-Dec 10 11:57:55 thinkpad kernel: iwlwifi 0000:52:00.0: base HW
-address: sanitized
-Dec 10 11:57:56 thinkpad wpa_supplicant[747]: Successfully initialized
-wpa_supplicant
-Dec 10 11:57:56 thinkpad wpa_supplicant[747]: Could not set interface
-wlan0 flags (UP): Connection timed out
-Dec 10 11:57:56 thinkpad wpa_supplicant[747]: nl80211: Could not set
-interface 'wlan0' UP
-Dec 10 11:57:56 thinkpad wpa_supplicant[747]: nl80211: deinit
-ifname=wlan0 disabled_11b_rates=0
-Dec 10 11:57:56 thinkpad wpa_supplicant[747]: wlan0: Failed to
-initialize driver interface
-Dec 10 11:57:56 thinkpad systemd[1]: wpa_supplicant@wlan0.service:
-Main process exited, code=exited, status=255/EXCEPTION
-Dec 10 11:57:56 thinkpad systemd[1]: wpa_supplicant@wlan0.service:
-Failed with result 'exit-code'.
-Dec 10 11:58:10 thinkpad systemd[1]: Removed slice system-wpa_supplicant.slice.
+This solution affects initial state of all brcmfmac interfaces (not
+only the first non-removable one) but I think it should be fine. Later
+on brcmfmac takes care of updating carrier as needed.
+---
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-I assume this is something to do with the bios not powercycling the
-pcie bus during reboot, leaving the card in some kind of inconsistent
-state. Perhaps it's possible to add a quirk to always powercycle it
-before initializing and loading firmware?
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c
+index 85cf96461dde..d3ddd97fe768 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c
+@@ -661,6 +661,8 @@ int brcmf_net_attach(struct brcmf_if *ifp, bool rtnl_locked)
+ 		goto fail;
+ 	}
+ 
++	netif_carrier_off(ndev);
++
+ 	ndev->priv_destructor = brcmf_cfg80211_free_netdev;
+ 	brcmf_dbg(INFO, "%s: Broadcom Dongle Host Driver\n", ndev->name);
+ 	return 0;
+-- 
+2.21.0
 
-Thanks,
-Jason
