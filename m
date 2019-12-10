@@ -2,62 +2,53 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C8D5119264
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Dec 2019 21:46:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 80DBC119266
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Dec 2019 21:47:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726708AbfLJUqZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 10 Dec 2019 15:46:25 -0500
-Received: from mail-pg1-f182.google.com ([209.85.215.182]:35628 "EHLO
-        mail-pg1-f182.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725999AbfLJUqZ (ORCPT
+        id S1726595AbfLJUrH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 10 Dec 2019 15:47:07 -0500
+Received: from mail2.candelatech.com ([208.74.158.173]:60810 "EHLO
+        mail3.candelatech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726366AbfLJUrH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 10 Dec 2019 15:46:25 -0500
-Received: by mail-pg1-f182.google.com with SMTP id l24so9449790pgk.2
-        for <linux-wireless@vger.kernel.org>; Tue, 10 Dec 2019 12:46:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20150623.gappssmtp.com; s=20150623;
-        h=from:subject:to:cc:message-id:date:user-agent:mime-version
-         :content-language:content-transfer-encoding;
-        bh=mtRJL/5pVYyC4xJI0+vwTKi6i0mohpvP6qscGAqnrZw=;
-        b=ibPtQ+CNR/9Ufmc8PnF/6OdTpUvbR36CFzknvOpzLejyLNW0XDPsTS/eeXMmgIKoZ1
-         T+RdRbk6GXcjDKsbpGKsROKfrTvekErgG1IchF00Tj3CL0i7Y0t5nHYuR/liJVnK4xmC
-         KP0dgwjyEiKWeDXO5wJ+7aMWP4rqVD8gKtBlDDgQG5x5/ynVW4e8AJxQFZyfhrG19E/M
-         WYIw1J9+qo3lJ7AZ9eIHgMVwezx4EsZ3/QOt2/RuKBDEg6fQGpwvmzxQDWy5Ej4EXcNY
-         IvbA2FmVeJ1BPi+E5WsqngBUDqSwjfuQ5D/hJpWkASfLP9vgynl/cDPuenc69evqbebh
-         m4XA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:subject:to:cc:message-id:date:user-agent
-         :mime-version:content-language:content-transfer-encoding;
-        bh=mtRJL/5pVYyC4xJI0+vwTKi6i0mohpvP6qscGAqnrZw=;
-        b=CCNVSSQvMxgxEaMI8AMJodLmZ0g3h8CxmYNHgPsru66+lJ2HHEj9y3Sg86hE75gBTf
-         LLHIj6ZO9WtqNjrJBuGTi+4SWLpb3Kj26GEcjwFMiF82FhdOK7r9Nth57RRzA/PAqoMF
-         REBlNek5wUw+ezOJud678jWd/Iwu6HHRQotziDDyJsP3FMue2GeFPC9mSqfjgIraIHab
-         dCfIbYF2ThSHeEJUI/b0caKDR64hoD6z2iS5Q+FYG4xZIMAASFLEQNQmLXiavRZoIomk
-         fS3W7eIHjF7MS5I2MuSyBkhP7Tgn1ZUytmsX5hqLBmCSM1mvQkedl6Er19esOyMJg2ud
-         Zl+g==
-X-Gm-Message-State: APjAAAWAu3OzBIuzw6Xz9qFAiIqYPURu6ivYHg0AmEjkTrN47qwEQniv
-        UHF6jSzOhCRxg58Uxkyz26Bu7c7bWvNMig==
-X-Google-Smtp-Source: APXvYqzXVot7zliTMSf3m+G8HlFV5BojcJbLGGnrx1qqEMsq1eHWvCsklKWUYwye5e/KrlNwM1OHkQ==
-X-Received: by 2002:a65:4085:: with SMTP id t5mr26895669pgp.335.1576010784161;
-        Tue, 10 Dec 2019 12:46:24 -0800 (PST)
-Received: from [192.168.1.188] ([66.219.217.145])
-        by smtp.gmail.com with ESMTPSA id s15sm4237044pgq.4.2019.12.10.12.46.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 10 Dec 2019 12:46:23 -0800 (PST)
-From:   Jens Axboe <axboe@kernel.dk>
-Subject: iwlwifi warnings in 5.5-rc1
-To:     Johannes Berg <johannes.berg@intel.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>
-Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        Networking <netdev@vger.kernel.org>
-Message-ID: <ceb74ea2-6a1b-4cef-8749-db21a2ee4311@kernel.dk>
-Date:   Tue, 10 Dec 2019 13:46:22 -0700
+        Tue, 10 Dec 2019 15:47:07 -0500
+Received: from [192.168.100.195] (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail3.candelatech.com (Postfix) with ESMTPSA id 5CDC413C2B0;
+        Tue, 10 Dec 2019 12:47:06 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 5CDC413C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+        s=default; t=1576010826;
+        bh=k+GZJvdDekV3Ok0bqX8K1YWlLYnglrkCnktd2gc+Bv8=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+        b=WlsNztN9Tuw/u2U5BKI5JbUUwScyXiJnTkdfMudfVkSAIx4EWEYJSVeMkdaTMH5GS
+         Sh7p/enhE22G9zfH1HSf0J1IKkGebdW1nJ14PpitV3NNCaEezkOO/zH4LkxOT1K7XE
+         4UY48gJN2QkNDEDCVfI2skyZIhLcPZKEFAGx9aF8=
+Subject: Re: debugging TXQs being empty
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        Kan Yan <kyan@google.com>
+Cc:     =?UTF-8?Q?Toke_H=c3=b8iland-J=c3=b8rgensen?= <toke@redhat.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>
+References: <bbc516f28782175b27ac5e19dcdeac13cd6ee76a.camel@sipsolutions.net>
+ <fd23a26dea59128ede8c1c4d02fb2f3514ffb5e9.camel@sipsolutions.net>
+ <CA+iem5tjTpO_2MKL_pEu7enTa-8=g5vY3=2WJKjg9f=JA2eCEw@mail.gmail.com>
+ <9b89b3b294295063aec045b9e863a44ad20b8782.camel@sipsolutions.net>
+ <bf0cced86a1466285f74eb845e73fbaea1dff1c0.camel@sipsolutions.net>
+ <9bcbab4b562669b96198c632f476b1b74956ca09.camel@sipsolutions.net>
+ <336996e4-d9fe-bf3a-72fb-6919bd0adcbf@candelatech.com>
+ <98682dcf98525b9b7db16c30f85628d5a2725eb9.camel@sipsolutions.net>
+ <f4e526b1-3afd-9eee-8416-46f3e97fdb00@candelatech.com>
+ <9cf0c2edcfa3ade4b53263b718b0dabf3d39e9f5.camel@sipsolutions.net>
+From:   Ben Greear <greearb@candelatech.com>
+Organization: Candela Technologies
+Message-ID: <bd06b9c7-a8c7-7ec6-ab98-8f59deb807af@candelatech.com>
+Date:   Tue, 10 Dec 2019 12:47:06 -0800
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.1
+ Thunderbird/68.1.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+In-Reply-To: <9cf0c2edcfa3ade4b53263b718b0dabf3d39e9f5.camel@sipsolutions.net>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
@@ -65,90 +56,44 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+On 12/9/19 11:37 AM, Johannes Berg wrote:
+> On Mon, 2019-12-09 at 09:49 -0800, Ben Greear wrote:
+>>
+>> ommit 1416758748a12963b7dc619a54fb9cef4354fa2e
+>> Author: Johannes Berg <johannes.berg@intel.com>
+>> Date:   Wed Nov 20 12:26:39 2019 +0200
+>>
+>>       iwlwifi: pcie: fix support for transmitting SKBs with fraglist
+> 
+> OK.
+> 
+>> Please point me to the other one.
+> 
+> This one:
+> 
+> commit cb1a4badf59275eb7221dcec621e8154917eabd1 (tag: wireless-drivers-2019-11-14)
+> Author: Mordechay Goodstein <mordechay.goodstein@intel.com>
+> Date:   Thu Nov 7 13:51:47 2019 +0200
+> 
+>      iwlwifi: pcie: don't consider IV len in A-MSDU
+> 
+> but maybe it's included already?
+> 
+> I just tested (in conductive setup, open network) kernel 5.4, still see
+> TP significantly lower than what I'd expect... But even in RX?
 
-Since the GRO issue got fixed, iwlwifi has worked fine for me.
-However, on every boot, I get some warnings:
+We added this patch and tested.  I don't think it changed much in our setup,
+so maybe we were never hitting the bug for one reason or another.
 
-------------[ cut here ]------------
-STA b4:75:0e:99:1f:e0 AC 2 txq pending airtime underflow: 4294967088, 208
-WARNING: CPU: 0 PID: 606 at net/mac80211/sta_info.c:1931 ieee80211_sta_update_pending_airtime+0x11c/0x130 [mac80211]
-Modules linked in: rfcomm ccm cmac msr bnep iwlmvm joydev x86_pkg_temp_thermal intel_powerclamp coretemp kvm_intel mac80211 kvm binfmt_misc irqbypass nls_iso8859_1 snd_soc_skl libarc4 iwlwifi snd_soc_hdac_hda snd_hda_ext_core snd_hda_codec_hdmi snd_soc_acpi_intel_match hid_multitouch snd_soc_acpi snd_soc_sst_ipc snd_soc_sst_dsp wmi_bmof intel_wmi_thunderbolt snd_soc_core uvcvideo btusb snd_hda_codec_realtek crct10dif_pclmul btrtl crc32_pclmul ghash_clmulni_intel btbcm snd_hda_codec_generic btintel bluetooth videobuf2_vmalloc aesni_intel cfg80211 videobuf2_memops glue_helper videobuf2_v4l2 crypto_simd videobuf2_common cryptd intel_cstate videodev snd_hda_intel intel_rapl_perf snd_intel_dspcfg snd_hda_codec serio_raw input_leds snd_hwdep mc snd_hda_core mei_me ecdh_generic ecc snd_pcm mei snd_seq thinkpad_acpi intel_lpss_pci nvram processor_thermal_device ledtrig_audio ucsi_acpi intel_lpss intel_soc_dts_iosf typec_ucsi snd_timer idma64 intel_rapl_common virt_dma snd_seq_device
- typec intel_pch_thermal snd wmi int3403_thermal soundcore int340x_thermal_zone int3400_thermal acpi_pad acpi_thermal_rel sch_fq_codel ip_tables x_tables hid_generic usbhid i915 i2c_algo_bit drm_kms_helper syscopyarea sysfillrect sysimgblt fb_sys_fops drm e1000e nvme i2c_hid ptp nvme_core hid pps_core video
-CPU: 0 PID: 606 Comm: irq/139-iwlwifi Tainted: G     U            5.5.0-rc1+ #4143
-Hardware name: LENOVO 20QD001XUS/20QD001XUS, BIOS N2HET42W (1.25 ) 11/26/2019
-RIP: 0010:ieee80211_sta_update_pending_airtime+0x11c/0x130 [mac80211]
-Code: 99 a6 96 c4 0f 0b 8b 45 d4 eb a1 48 83 c6 40 45 89 e0 89 c1 89 45 d4 48 c7 c7 88 ec f7 c0 c6 05 6a af 09 00 01 e8 73 a6 96 c4 <0f> 0b 8b 45 d4 eb 91 0f 1f 00 66 2e 0f 1f 84 00 00 00 00 00 0f 1f
-RSP: 0018:ffffa6cfc092fb30 EFLAGS: 00010286
-RAX: 0000000000000000 RBX: 00000000ffffff30 RCX: 0000000000000000
-RDX: 0000000000000049 RSI: ffffffff86d89729 RDI: ffffffff86d872ac
-RBP: ffffa6cfc092fb60 R08: ffffffff86d896e0 R09: 0000000000000049
-R10: abcc77118461cefd R11: ffffffff86d89729 R12: 00000000000000d0
-R13: ffff8afb89fd07c0 R14: 0000000000000002 R15: ffff8afb8fcc05c8
-FS:  0000000000000000(0000) GS:ffff8afbae400000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f355c35aea0 CR3: 000000042c609005 CR4: 00000000001606f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- __ieee80211_tx_status+0x69b/0x8c0 [mac80211]
- ? sta_info_get_by_addrs+0x12e/0x1e0 [mac80211]
- ieee80211_tx_status+0x75/0xa0 [mac80211]
- iwl_mvm_tx_reclaim+0x2b5/0x3d0 [iwlmvm]
- iwl_mvm_rx_ba_notif+0x285/0x330 [iwlmvm]
- iwl_mvm_rx_common+0xde/0x2a0 [iwlmvm]
- iwl_mvm_rx_mq+0x71/0xb0 [iwlmvm]
- iwl_pcie_rx_handle+0x3b5/0xa70 [iwlwifi]
- ? irq_forced_thread_fn+0x80/0x80
- iwl_pcie_irq_rx_msix_handler+0x58/0x120 [iwlwifi]
- irq_thread_fn+0x23/0x60
- irq_thread+0xd8/0x170
- ? wake_threads_waitq+0x30/0x30
- kthread+0x103/0x140
- ? irq_thread_dtor+0xa0/0xa0
- ? kthread_park+0x90/0x90
- ret_from_fork+0x1f/0x30
----[ end trace 0c7c7c0cf1fc73ce ]---
-------------[ cut here ]------------
-Device phy0 AC 2 pending airtime underflow: 4294967088, 208
-WARNING: CPU: 0 PID: 606 at net/mac80211/sta_info.c:1940 ieee80211_sta_update_pending_airtime+0xf6/0x130 [mac80211]
-Modules linked in: rfcomm ccm cmac msr bnep iwlmvm joydev x86_pkg_temp_thermal intel_powerclamp coretemp kvm_intel mac80211 kvm binfmt_misc irqbypass nls_iso8859_1 snd_soc_skl libarc4 iwlwifi snd_soc_hdac_hda snd_hda_ext_core snd_hda_codec_hdmi snd_soc_acpi_intel_match hid_multitouch snd_soc_acpi snd_soc_sst_ipc snd_soc_sst_dsp wmi_bmof intel_wmi_thunderbolt snd_soc_core uvcvideo btusb snd_hda_codec_realtek crct10dif_pclmul btrtl crc32_pclmul ghash_clmulni_intel btbcm snd_hda_codec_generic btintel bluetooth videobuf2_vmalloc aesni_intel cfg80211 videobuf2_memops glue_helper videobuf2_v4l2 crypto_simd videobuf2_common cryptd intel_cstate videodev snd_hda_intel intel_rapl_perf snd_intel_dspcfg snd_hda_codec serio_raw input_leds snd_hwdep mc snd_hda_core mei_me ecdh_generic ecc snd_pcm mei snd_seq thinkpad_acpi intel_lpss_pci nvram processor_thermal_device ledtrig_audio ucsi_acpi intel_lpss intel_soc_dts_iosf typec_ucsi snd_timer idma64 intel_rapl_common virt_dma snd_seq_device
- typec intel_pch_thermal snd wmi int3403_thermal soundcore int340x_thermal_zone int3400_thermal acpi_pad acpi_thermal_rel sch_fq_codel ip_tables x_tables hid_generic usbhid i915 i2c_algo_bit drm_kms_helper syscopyarea sysfillrect sysimgblt fb_sys_fops drm e1000e nvme i2c_hid ptp nvme_core hid pps_core video
-CPU: 0 PID: 606 Comm: irq/139-iwlwifi Tainted: G     U  W         5.5.0-rc1+ #4143
-Hardware name: LENOVO 20QD001XUS/20QD001XUS, BIOS N2HET42W (1.25 ) 11/26/2019
-RIP: 0010:ieee80211_sta_update_pending_airtime+0xf6/0x130 [mac80211]
-Code: 48 8b b2 90 01 00 00 48 85 f6 75 07 48 8b b2 40 01 00 00 45 89 e0 89 c1 44 89 f2 89 45 d4 48 c7 c7 c0 ec f7 c0 e8 99 a6 96 c4 <0f> 0b 8b 45 d4 eb a1 48 83 c6 40 45 89 e0 89 c1 89 45 d4 48 c7 c7
-RSP: 0018:ffffa6cfc092fb30 EFLAGS: 00010286
-RAX: 0000000000000000 RBX: 00000000ffffff30 RCX: 0000000000000000
-RDX: 000000000000003b RSI: ffffffff86d8971b RDI: ffffffff86d872ac
-RBP: ffffa6cfc092fb60 R08: ffffffff86d896e0 R09: 000000000000003b
-R10: abcc77118461cefd R11: ffffffff86d8971b R12: 00000000000000d0
-R13: ffff8afb89fd07c0 R14: 0000000000000002 R15: ffff8afb8fcc05c8
-FS:  0000000000000000(0000) GS:ffff8afbae400000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f355c35aea0 CR3: 000000042c609005 CR4: 00000000001606f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- __ieee80211_tx_status+0x69b/0x8c0 [mac80211]
- ? sta_info_get_by_addrs+0x12e/0x1e0 [mac80211]
- ieee80211_tx_status+0x75/0xa0 [mac80211]
- iwl_mvm_tx_reclaim+0x2b5/0x3d0 [iwlmvm]
- iwl_mvm_rx_ba_notif+0x285/0x330 [iwlmvm]
- iwl_mvm_rx_common+0xde/0x2a0 [iwlmvm]
- iwl_mvm_rx_mq+0x71/0xb0 [iwlmvm]
- iwl_pcie_rx_handle+0x3b5/0xa70 [iwlwifi]
- ? irq_forced_thread_fn+0x80/0x80
- iwl_pcie_irq_rx_msix_handler+0x58/0x120 [iwlwifi]
- irq_thread_fn+0x23/0x60
- irq_thread+0xd8/0x170
- ? wake_threads_waitq+0x30/0x30
- kthread+0x103/0x140
- ? irq_thread_dtor+0xa0/0xa0
- ? kthread_park+0x90/0x90
- ret_from_fork+0x1f/0x30
----[ end trace 0c7c7c0cf1fc73cf ]---
+We see about 675Mbps pktgen upload, and about 1Gbps download.  AP is
+/AX and configured for 160Mhz, but AP does not actually transmit at
+more than 80Mhz it seems.  I currently have no good way to see what MCS and BW
+AX200 is transmitting at.
+
+Thanks,
+Ben
 
 -- 
-Jens Axboe
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
 
