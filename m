@@ -2,37 +2,36 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2AD3D1198A8
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Dec 2019 22:45:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D4C231198E0
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Dec 2019 22:46:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729855AbfLJVdv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 10 Dec 2019 16:33:51 -0500
-Received: from mail.kernel.org ([198.145.29.99]:38426 "EHLO mail.kernel.org"
+        id S1729411AbfLJVkj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 10 Dec 2019 16:40:39 -0500
+Received: from mail.kernel.org ([198.145.29.99]:39552 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729821AbfLJVdu (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 10 Dec 2019 16:33:50 -0500
+        id S1730030AbfLJVe0 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 10 Dec 2019 16:34:26 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A32672073B;
-        Tue, 10 Dec 2019 21:33:48 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 5F1C3205C9;
+        Tue, 10 Dec 2019 21:34:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1576013629;
-        bh=JhYi2KZDJ9AA/X4JXMH8Rg32nlQBKHerwFPfUaK+wtU=;
+        s=default; t=1576013666;
+        bh=+59qTo3q6iQil8oqgTazOmhrpR3mHbEaLWf8cKK1v+M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zHlxfLTanMVJRXtufXh+B8UQOdwi/I4trakPegktaJrnz2LHxm6koK9JoVAjydaih
-         PWfb06H74x9Cw6WvZl0snkQuAZq2D015Igyt7AqpJ9NexsymCw0g48k9qNa8s13cvi
-         ySdr9l4++S2N0fvHdE+h+QCPchSlyu3UD8hm9pMk=
+        b=gSApRDJVLbo0dUqDuM4OKPj8gOGaP5JTZXTVYGcO1euGnntnN8bpXfsA3PD6ACIJ6
+         mm6P2UZpkkhazPRLb5WqRCaUalWQCuaXBRqAtmvOhxiQ493jBhgShG8Wl4sYx3/qt7
+         a5x6u38ndCXJKmyZe0uRIrnN0AoczDzXcfGiTknY=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Chris Chiu <chiu@endlessm.com>,
-        Jes Sorensen <Jes.Sorensen@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
+Cc:     Marcel Holtmann <marcel@holtmann.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Sasha Levin <sashal@kernel.org>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 071/177] rtl8xxxu: fix RTL8723BU connection failure issue after warm reboot
-Date:   Tue, 10 Dec 2019 16:30:35 -0500
-Message-Id: <20191210213221.11921-71-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 103/177] rfkill: allocate static minor
+Date:   Tue, 10 Dec 2019 16:31:07 -0500
+Message-Id: <20191210213221.11921-103-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20191210213221.11921-1-sashal@kernel.org>
 References: <20191210213221.11921-1-sashal@kernel.org>
@@ -45,71 +44,66 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Chris Chiu <chiu@endlessm.com>
+From: Marcel Holtmann <marcel@holtmann.org>
 
-[ Upstream commit 0eeb91ade90ce06d2fa1e2fcb55e3316b64c203c ]
+[ Upstream commit 8670b2b8b029a6650d133486be9d2ace146fd29a ]
 
-The RTL8723BU has problems connecting to AP after each warm reboot.
-Sometimes it returns no scan result, and in most cases, it fails
-the authentication for unknown reason. However, it works totally
-fine after cold reboot.
+udev has a feature of creating /dev/<node> device-nodes if it finds
+a devnode:<node> modalias. This allows for auto-loading of modules that
+provide the node. This requires to use a statically allocated minor
+number for misc character devices.
 
-Compare the value of register SYS_CR and SYS_CLK_MAC_CLK_ENABLE
-for cold reboot and warm reboot, the registers imply that the MAC
-is already powered and thus some procedures are skipped during
-driver initialization. Double checked the vendor driver, it reads
-the SYS_CR and SYS_CLK_MAC_CLK_ENABLE also but doesn't skip any
-during initialization based on them. This commit only tells the
-RTL8723BU to do full initialization without checking MAC status.
+However, rfkill uses dynamic minor numbers and prevents auto-loading
+of the module. So allocate the next static misc minor number and use
+it for rfkill.
 
-Signed-off-by: Chris Chiu <chiu@endlessm.com>
-Signed-off-by: Jes Sorensen <Jes.Sorensen@gmail.com>
-Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+Signed-off-by: Marcel Holtmann <marcel@holtmann.org>
+Link: https://lore.kernel.org/r/20191024174042.19851-1-marcel@holtmann.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h       | 1 +
- drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c | 1 +
- drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c  | 3 +++
- 3 files changed, 5 insertions(+)
+ include/linux/miscdevice.h | 1 +
+ net/rfkill/core.c          | 9 +++++++--
+ 2 files changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-index 8828baf26e7b8..47c2bfe06d030 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-@@ -1349,6 +1349,7 @@ struct rtl8xxxu_fileops {
- 	u8 has_s0s1:1;
- 	u8 has_tx_report:1;
- 	u8 gen2_thermal_meter:1;
-+	u8 needs_full_init:1;
- 	u32 adda_1t_init;
- 	u32 adda_1t_path_on;
- 	u32 adda_2t_path_on_a;
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c
-index 26b674aca1258..14e207f2466ca 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c
-@@ -1673,6 +1673,7 @@ struct rtl8xxxu_fileops rtl8723bu_fops = {
- 	.has_s0s1 = 1,
- 	.has_tx_report = 1,
- 	.gen2_thermal_meter = 1,
-+	.needs_full_init = 1,
- 	.adda_1t_init = 0x01c00014,
- 	.adda_1t_path_on = 0x01c00014,
- 	.adda_2t_path_on_a = 0x01c00014,
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-index 2b4fcdf4ec5bb..66c6ee70f00aa 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-@@ -3905,6 +3905,9 @@ static int rtl8xxxu_init_device(struct ieee80211_hw *hw)
- 	else
- 		macpower = true;
+diff --git a/include/linux/miscdevice.h b/include/linux/miscdevice.h
+index 3247a3dc79348..b06b75776a32f 100644
+--- a/include/linux/miscdevice.h
++++ b/include/linux/miscdevice.h
+@@ -57,6 +57,7 @@
+ #define UHID_MINOR		239
+ #define USERIO_MINOR		240
+ #define VHOST_VSOCK_MINOR	241
++#define RFKILL_MINOR		242
+ #define MISC_DYNAMIC_MINOR	255
  
-+	if (fops->needs_full_init)
-+		macpower = false;
+ struct device;
+diff --git a/net/rfkill/core.c b/net/rfkill/core.c
+index 1355f5ca8d227..7fbc8314f6266 100644
+--- a/net/rfkill/core.c
++++ b/net/rfkill/core.c
+@@ -1328,10 +1328,12 @@ static const struct file_operations rfkill_fops = {
+ 	.llseek		= no_llseek,
+ };
+ 
++#define RFKILL_NAME "rfkill"
 +
- 	ret = fops->power_on(priv);
- 	if (ret < 0) {
- 		dev_warn(dev, "%s: Failed power on\n", __func__);
+ static struct miscdevice rfkill_miscdev = {
+-	.name	= "rfkill",
+ 	.fops	= &rfkill_fops,
+-	.minor	= MISC_DYNAMIC_MINOR,
++	.name	= RFKILL_NAME,
++	.minor	= RFKILL_MINOR,
+ };
+ 
+ static int __init rfkill_init(void)
+@@ -1383,3 +1385,6 @@ static void __exit rfkill_exit(void)
+ 	class_unregister(&rfkill_class);
+ }
+ module_exit(rfkill_exit);
++
++MODULE_ALIAS_MISCDEV(RFKILL_MINOR);
++MODULE_ALIAS("devname:" RFKILL_NAME);
 -- 
 2.20.1
 
