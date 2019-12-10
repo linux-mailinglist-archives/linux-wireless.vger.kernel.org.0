@@ -2,62 +2,80 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7275811926F
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Dec 2019 21:49:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F0DEC1192D0
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Dec 2019 22:07:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726771AbfLJUtr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 10 Dec 2019 15:49:47 -0500
-Received: from s3.sipsolutions.net ([144.76.43.62]:54114 "EHLO
-        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726417AbfLJUtr (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 10 Dec 2019 15:49:47 -0500
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.92.3)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1iemRy-0022rM-KV; Tue, 10 Dec 2019 21:49:42 +0100
-Message-ID: <ac29ab4d325cc8f33befa95d416c27e1131a2ec9.camel@sipsolutions.net>
-Subject: Re: debugging TXQs being empty
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Ben Greear <greearb@candelatech.com>, Kan Yan <kyan@google.com>
-Cc:     Toke =?ISO-8859-1?Q?H=F8iland-J=F8rgensen?= <toke@redhat.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>
-Date:   Tue, 10 Dec 2019 21:49:40 +0100
-In-Reply-To: <bd06b9c7-a8c7-7ec6-ab98-8f59deb807af@candelatech.com>
-References: <bbc516f28782175b27ac5e19dcdeac13cd6ee76a.camel@sipsolutions.net>
-         <fd23a26dea59128ede8c1c4d02fb2f3514ffb5e9.camel@sipsolutions.net>
-         <CA+iem5tjTpO_2MKL_pEu7enTa-8=g5vY3=2WJKjg9f=JA2eCEw@mail.gmail.com>
-         <9b89b3b294295063aec045b9e863a44ad20b8782.camel@sipsolutions.net>
-         <bf0cced86a1466285f74eb845e73fbaea1dff1c0.camel@sipsolutions.net>
-         <9bcbab4b562669b96198c632f476b1b74956ca09.camel@sipsolutions.net>
-         <336996e4-d9fe-bf3a-72fb-6919bd0adcbf@candelatech.com>
-         <98682dcf98525b9b7db16c30f85628d5a2725eb9.camel@sipsolutions.net>
-         <f4e526b1-3afd-9eee-8416-46f3e97fdb00@candelatech.com>
-         <9cf0c2edcfa3ade4b53263b718b0dabf3d39e9f5.camel@sipsolutions.net>
-         <bd06b9c7-a8c7-7ec6-ab98-8f59deb807af@candelatech.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.2 (3.34.2-1.fc31) 
+        id S1727229AbfLJVEZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 10 Dec 2019 16:04:25 -0500
+Received: from mail.kernel.org ([198.145.29.99]:49346 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727213AbfLJVEY (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 10 Dec 2019 16:04:24 -0500
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 6770624680;
+        Tue, 10 Dec 2019 21:04:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1576011864;
+        bh=GnTp5oCIpRDUiQDs4cjtnHdoFdSDGYmEOBxBnUXR4rQ=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=LvChAnzkwESIZLIW1pQauHmMh1ZR360bGvogUWoCWqfqqRvO3uREbFTA8+Qz29tON
+         I5a0C2YiFC876diMq00/y2sCgIrFTDtxsJgsKmGh4GGN4dbmBDJGUe5Q99b41miE7q
+         PYdMB6TnzfNehbd9Jaf4laC7qItUFIQb7Quu6+ms=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Wenwen Wang <wenwen@cs.uga.edu>, Kalle Valo <kvalo@codeaurora.org>,
+        Sasha Levin <sashal@kernel.org>, ath10k@lists.infradead.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 017/350] ath10k: add cleanup in ath10k_sta_state()
+Date:   Tue, 10 Dec 2019 15:58:29 -0500
+Message-Id: <20191210210402.8367-17-sashal@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20191210210402.8367-1-sashal@kernel.org>
+References: <20191210210402.8367-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 2019-12-10 at 12:47 -0800, Ben Greear wrote:
-> 
-> We see about 675Mbps pktgen upload, and about 1Gbps download.  AP is
-> /AX and configured for 160Mhz, but AP does not actually transmit at
-> more than 80Mhz it seems.  I currently have no good way to see what MCS and BW
-> AX200 is transmitting at.
-> 
+From: Wenwen Wang <wenwen@cs.uga.edu>
 
-Try this
+[ Upstream commit 334f5b61a6f29834e881923b98d1e27e5ce9620d ]
 
-https://p.sipsolutions.net/d421d04b8aef81c4.txt
+If 'sta->tdls' is false, no cleanup is executed, leading to memory/resource
+leaks, e.g., 'arsta->tx_stats'. To fix this issue, perform cleanup before
+go to the 'exit' label.
 
-That's our internal patch to fix this, will be going upstream soon I
-hope.
+Signed-off-by: Wenwen Wang <wenwen@cs.uga.edu>
+Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/net/wireless/ath/ath10k/mac.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-johannes
+diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
+index a6d21856b7e7d..40889b79fc70d 100644
+--- a/drivers/net/wireless/ath/ath10k/mac.c
++++ b/drivers/net/wireless/ath/ath10k/mac.c
+@@ -6549,8 +6549,12 @@ static int ath10k_sta_state(struct ieee80211_hw *hw,
+ 
+ 		spin_unlock_bh(&ar->data_lock);
+ 
+-		if (!sta->tdls)
++		if (!sta->tdls) {
++			ath10k_peer_delete(ar, arvif->vdev_id, sta->addr);
++			ath10k_mac_dec_num_stations(arvif, sta);
++			kfree(arsta->tx_stats);
+ 			goto exit;
++		}
+ 
+ 		ret = ath10k_wmi_update_fw_tdls_state(ar, arvif->vdev_id,
+ 						      WMI_TDLS_ENABLE_ACTIVE);
+-- 
+2.20.1
 
