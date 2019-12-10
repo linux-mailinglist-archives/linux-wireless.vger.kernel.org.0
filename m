@@ -2,41 +2,43 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F20D11983B
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Dec 2019 22:39:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5023A119827
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Dec 2019 22:39:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729815AbfLJVhz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 10 Dec 2019 16:37:55 -0500
-Received: from mail.kernel.org ([198.145.29.99]:41132 "EHLO mail.kernel.org"
+        id S1730205AbfLJVhB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 10 Dec 2019 16:37:01 -0500
+Received: from mail.kernel.org ([198.145.29.99]:41654 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730250AbfLJVfZ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 10 Dec 2019 16:35:25 -0500
+        id S1730329AbfLJVfl (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 10 Dec 2019 16:35:41 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D23E42465A;
-        Tue, 10 Dec 2019 21:35:23 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id C300524680;
+        Tue, 10 Dec 2019 21:35:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1576013724;
-        bh=kIKboCf9bWRKrQVh14Osv6JLDFIm2cgqKH2E8+RGDuQ=;
+        s=default; t=1576013740;
+        bh=/SA+SHJII3RxMzzB1bGENL7wAY4jwqgI+m4S3bcdUlc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CvTVn5TIZXWTuaGEs4HzHfNqZEN3/O4gv5cU/h0cNdfef+OGe9KPFB8jPGj3VueAw
-         grjk3M1Ccjyy4M87zcjaDWSA2jyQslOGwJFCgG5S7f6JnKNf4ShlK2J1AssWZ7tne5
-         j2biehHTtP+Q3g+qQJML01NJXaK56SsrF3XUiZ+o=
+        b=t5Bzh9pcpCk9fhTTqFRWIwfe0VykfnXRlAaJdN5WH7QMBF2Gb7tgonDbYk/oYAiTW
+         jLc8zzo2xL+r6xAI/5oCm3vQNqKdHFccFxayoPWsPyVvtqBENAphVmFXQSF2kXxyAr
+         CYJ7tSmBEqxP7iXdF9pGSB+kN0gCUYHuiCOgCn+Q=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Wang Xuerui <wangxuerui@qiniu.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
+Cc:     =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
         Kalle Valo <kvalo@codeaurora.org>,
         Sasha Levin <sashal@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 150/177] iwlwifi: mvm: fix unaligned read of rx_pkt_status
-Date:   Tue, 10 Dec 2019 16:31:54 -0500
-Message-Id: <20191210213221.11921-150-sashal@kernel.org>
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        brcm80211-dev-list@cypress.com, netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.19 163/177] brcmfmac: remove monitor interface when detaching
+Date:   Tue, 10 Dec 2019 16:32:07 -0500
+Message-Id: <20191210213221.11921-163-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20191210213221.11921-1-sashal@kernel.org>
 References: <20191210213221.11921-1-sashal@kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
@@ -45,48 +47,37 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Wang Xuerui <wangxuerui@qiniu.com>
+From: Rafał Miłecki <rafal@milecki.pl>
 
-[ Upstream commit c5aaa8be29b25dfe1731e9a8b19fd91b7b789ee3 ]
+[ Upstream commit 4f61563da075bc8faefddfd5f8fc0cc14c49650a ]
 
-This is present since the introduction of iwlmvm.
-Example stack trace on MIPS:
+This fixes a minor WARNING in the cfg80211:
+[  130.658034] ------------[ cut here ]------------
+[  130.662805] WARNING: CPU: 1 PID: 610 at net/wireless/core.c:954 wiphy_unregister+0xb4/0x198 [cfg80211]
 
-[<ffffffffc0789328>] iwl_mvm_rx_rx_mpdu+0xa8/0xb88 [iwlmvm]
-[<ffffffffc0632b40>] iwl_pcie_rx_handle+0x420/0xc48 [iwlwifi]
-
-Tested with a Wireless AC 7265 for ~6 months, confirmed to fix the
-problem. No other unaligned accesses are spotted yet.
-
-Signed-off-by: Wang Xuerui <wangxuerui@qiniu.com>
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
 Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/rx.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rx.c b/drivers/net/wireless/intel/iwlwifi/mvm/rx.c
-index bfb163419c679..e6a67bc022090 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/rx.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/rx.c
-@@ -62,6 +62,7 @@
-  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-  *****************************************************************************/
-+#include <asm/unaligned.h>
- #include <linux/etherdevice.h>
- #include <linux/skbuff.h>
- #include "iwl-trans.h"
-@@ -360,7 +361,7 @@ void iwl_mvm_rx_rx_mpdu(struct iwl_mvm *mvm, struct napi_struct *napi,
- 	rx_res = (struct iwl_rx_mpdu_res_start *)pkt->data;
- 	hdr = (struct ieee80211_hdr *)(pkt->data + sizeof(*rx_res));
- 	len = le16_to_cpu(rx_res->byte_count);
--	rx_pkt_status = le32_to_cpup((__le32 *)
-+	rx_pkt_status = get_unaligned_le32((__le32 *)
- 		(pkt->data + sizeof(*rx_res) + len));
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c
+index 0f56be13c7adf..584e05fdca6ad 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c
+@@ -1246,6 +1246,11 @@ void brcmf_detach(struct device *dev)
  
- 	/* Dont use dev_alloc_skb(), we'll have enough headroom once
+ 	brcmf_proto_detach_pre_delif(drvr);
+ 
++	if (drvr->mon_if) {
++		brcmf_net_detach(drvr->mon_if->ndev, false);
++		drvr->mon_if = NULL;
++	}
++
+ 	/* make sure primary interface removed last */
+ 	for (i = BRCMF_MAX_IFS-1; i > -1; i--)
+ 		brcmf_remove_interface(drvr->iflist[i], false);
 -- 
 2.20.1
 
