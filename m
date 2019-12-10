@@ -2,64 +2,30 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D97C1186D8
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Dec 2019 12:46:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CE5AA11871F
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Dec 2019 12:50:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727813AbfLJLox (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 10 Dec 2019 06:44:53 -0500
-Received: from mail-lj1-f194.google.com ([209.85.208.194]:42735 "EHLO
-        mail-lj1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727370AbfLJLot (ORCPT
+        id S1727325AbfLJLuQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 10 Dec 2019 06:50:16 -0500
+Received: from smail.rz.tu-ilmenau.de ([141.24.186.67]:44106 "EHLO
+        smail.rz.tu-ilmenau.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727223AbfLJLuQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 10 Dec 2019 06:44:49 -0500
-Received: by mail-lj1-f194.google.com with SMTP id e28so19473404ljo.9;
-        Tue, 10 Dec 2019 03:44:48 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=qWOB2/IV9LlS7RQezdilUBmbfySScHur6xA52oFN8Mk=;
-        b=Q2NcCZ9MkksL/3NQxvpoyzOR6VBFKo9p5yK/8B6NjPgFUfI3t6ZsTrMcwRVlM1iMYy
-         lcs484KF5ZFwH90hZC9hK7Yb9hj6BCUxyjQVi1XeVWZ3hdPawEYFAmSiF7HM6snygMsM
-         VxaD/DYKZ6BNgNcqNH5wg9WK4Z1/cwn2sKLrz35Wudcc1W8tbPqXfX+UuQGcne75voB6
-         MTjGIjYX2MF2epTY2TwmTLkGm/3bJZcKfSxIWSuE0uIrU/N1ZHmqmtfhgmc9fdNyWxx+
-         wgQjhB6YARFsH8Cmzy7P4SRhsy8IHavrPIRWnT50nnDcIMURZ/zxck3PjJ1SPXW+V4zj
-         pTjQ==
-X-Gm-Message-State: APjAAAWJDqm4L3C20tKD48CfAkWW6hICiueJ15Tc2pFfSVDwHkcOgdVM
-        l/jlGPVXmeuk6xspFlWtsMc=
-X-Google-Smtp-Source: APXvYqynsdHOtBWjaFSURKa7gPhmEPTZGQhZLn7lMHihEI1WubA2H/zTUly8AXEPYsJuWUpQ+LO9+w==
-X-Received: by 2002:a2e:5850:: with SMTP id x16mr1332994ljd.228.1575978287598;
-        Tue, 10 Dec 2019 03:44:47 -0800 (PST)
-Received: from xi.terra (c-14b8e655.07-184-6d6c6d4.bbcust.telenor.se. [85.230.184.20])
-        by smtp.gmail.com with ESMTPSA id x84sm1425212lfa.97.2019.12.10.03.44.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Dec 2019 03:44:43 -0800 (PST)
-Received: from johan by xi.terra with local (Exim 4.92.3)
-        (envelope-from <johan@xi.terra>)
-        id 1iedwa-0001II-Td; Tue, 10 Dec 2019 12:44:44 +0100
-From:   Johan Hovold <johan@kernel.org>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     QCA ath9k Development <ath9k-devel@qca.qualcomm.com>,
-        Arend van Spriel <arend@broadcom.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
-        Wright Feng <wright.feng@cypress.com>,
-        Jes Sorensen <Jes.Sorensen@redhat.com>,
-        Amitkumar Karwar <amitkarwar@gmail.com>,
-        Siva Rebbagondla <siva8118@gmail.com>,
-        Daniel Drake <dsd@gentoo.org>,
-        Ulrich Kunitz <kune@deine-taler.de>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Johan Hovold <johan@kernel.org>,
-        stable <stable@vger.kernel.org>
-Subject: [PATCH 7/7] zd1211rw: fix storage endpoint lookup
-Date:   Tue, 10 Dec 2019 12:44:26 +0100
-Message-Id: <20191210114426.4713-8-johan@kernel.org>
+        Tue, 10 Dec 2019 06:50:16 -0500
+Received: from isengard.tu-ilmenau.de (unknown [141.24.111.228])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by smail.rz.tu-ilmenau.de (Postfix) with ESMTPSA id 3AB13580074;
+        Tue, 10 Dec 2019 12:50:14 +0100 (CET)
+From:   Markus Theil <markus.theil@tu-ilmenau.de>
+To:     nbd@nbd.name
+Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
+        Stanislaw Gruszka <stf_xl@wp.pl>, kvalo@codeaurora.org,
+        Markus Theil <markus.theil@tu-ilmenau.de>
+Subject: [PATCH v2] mt76: use AC specific reorder timeout
+Date:   Tue, 10 Dec 2019 12:49:49 +0100
+Message-Id: <20191210114949.4516-1-markus.theil@tu-ilmenau.de>
 X-Mailer: git-send-email 2.24.0
-In-Reply-To: <20191210114426.4713-1-johan@kernel.org>
-References: <20191210114426.4713-1-johan@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
@@ -67,33 +33,102 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Make sure to use the current alternate setting when verifying the
-storage interface descriptors to avoid submitting an URB to an invalid
-endpoint.
+Before this patch, mt76 handled rx traffic for all TIDs  equally,
+when released from reorder buffer early. This patch uses an AC specific
+reorder timeout, in order to release partial aggregated frames for voice
+or video ACs earlier. For example, ath10k also uses AC specific reorder
+timeouts (reported by firmware in that case).
 
-Failing to do so could cause the driver to misbehave or trigger a WARN()
-in usb_submit_urb() that kernels with panic_on_warn set would choke on.
+v2: use static const mapping arrays
 
-Fixes: a1030e92c150 ("[PATCH] zd1211rw: Convert installer CDROM device into WLAN device")
-Cc: stable <stable@vger.kernel.org>     # 2.6.19
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Markus Theil <markus.theil@tu-ilmenau.de>
 ---
- drivers/net/wireless/zydas/zd1211rw/zd_usb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/agg-rx.c | 30 ++++++++++++++++++---
+ drivers/net/wireless/mediatek/mt76/mt76.h   |  2 ++
+ 2 files changed, 28 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/zydas/zd1211rw/zd_usb.c b/drivers/net/wireless/zydas/zd1211rw/zd_usb.c
-index 7b5c2fe5bd4d..8ff0374126e4 100644
---- a/drivers/net/wireless/zydas/zd1211rw/zd_usb.c
-+++ b/drivers/net/wireless/zydas/zd1211rw/zd_usb.c
-@@ -1263,7 +1263,7 @@ static void print_id(struct usb_device *udev)
- static int eject_installer(struct usb_interface *intf)
- {
- 	struct usb_device *udev = interface_to_usbdev(intf);
--	struct usb_host_interface *iface_desc = &intf->altsetting[0];
-+	struct usb_host_interface *iface_desc = intf->cur_altsetting;
- 	struct usb_endpoint_descriptor *endpoint;
- 	unsigned char *cmd;
- 	u8 bulk_out_ep;
+diff --git a/drivers/net/wireless/mediatek/mt76/agg-rx.c b/drivers/net/wireless/mediatek/mt76/agg-rx.c
+index 53b5a4b2dcc5..572cf26b0fa1 100644
+--- a/drivers/net/wireless/mediatek/mt76/agg-rx.c
++++ b/drivers/net/wireless/mediatek/mt76/agg-rx.c
+@@ -4,7 +4,27 @@
+  */
+ #include "mt76.h"
+ 
+-#define REORDER_TIMEOUT (HZ / 10)
++static unsigned long mt76_aggr_tid_to_timeo(u8 tidno)
++{
++	static const int ieee802_1d_to_ac[8] = {
++		IEEE80211_AC_BE,
++		IEEE80211_AC_BK,
++		IEEE80211_AC_BK,
++		IEEE80211_AC_BE,
++		IEEE80211_AC_VI,
++		IEEE80211_AC_VI,
++		IEEE80211_AC_VO,
++		IEEE80211_AC_VO
++	};
++	static const int ac_to_timeout[] = {
++		[IEEE80211_AC_VO] = HZ / 30,
++		[IEEE80211_AC_VI] = HZ / 25,
++		[IEEE80211_AC_BE] = HZ / 10,
++		[IEEE80211_AC_BK] = HZ / 10
++	};
++
++	return ac_to_timeout[ieee802_1d_to_ac[tidno & 7]];
++}
+ 
+ static void
+ mt76_aggr_release(struct mt76_rx_tid *tid, struct sk_buff_head *frames, int idx)
+@@ -71,7 +91,8 @@ mt76_rx_aggr_check_release(struct mt76_rx_tid *tid, struct sk_buff_head *frames)
+ 		nframes--;
+ 		status = (struct mt76_rx_status *)skb->cb;
+ 		if (!time_after(jiffies,
+-				status->reorder_time + REORDER_TIMEOUT))
++				status->reorder_time +
++				mt76_aggr_tid_to_timeo(tid->num)))
+ 			continue;
+ 
+ 		mt76_rx_aggr_release_frames(tid, frames, status->seqno);
+@@ -101,7 +122,7 @@ mt76_rx_aggr_reorder_work(struct work_struct *work)
+ 
+ 	if (nframes)
+ 		ieee80211_queue_delayed_work(tid->dev->hw, &tid->reorder_work,
+-					     REORDER_TIMEOUT);
++					     mt76_aggr_tid_to_timeo(tid->num));
+ 	mt76_rx_complete(dev, &frames, NULL);
+ 
+ 	rcu_read_unlock();
+@@ -225,7 +246,7 @@ void mt76_rx_aggr_reorder(struct sk_buff *skb, struct sk_buff_head *frames)
+ 	mt76_rx_aggr_release_head(tid, frames);
+ 
+ 	ieee80211_queue_delayed_work(tid->dev->hw, &tid->reorder_work,
+-				     REORDER_TIMEOUT);
++				     mt76_aggr_tid_to_timeo(tid->num));
+ 
+ out:
+ 	spin_unlock_bh(&tid->lock);
+@@ -245,6 +266,7 @@ int mt76_rx_aggr_start(struct mt76_dev *dev, struct mt76_wcid *wcid, u8 tidno,
+ 	tid->dev = dev;
+ 	tid->head = ssn;
+ 	tid->size = size;
++	tid->num = tidno;
+ 	INIT_DELAYED_WORK(&tid->reorder_work, mt76_rx_aggr_reorder_work);
+ 	spin_lock_init(&tid->lock);
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
+index c268c3d76b3d..b604d8d5f0bc 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76.h
+@@ -237,6 +237,8 @@ struct mt76_rx_tid {
+ 	u8 size;
+ 	u8 nframes;
+ 
++	u8 num;
++
+ 	u8 started:1, stopped:1, timer_pending:1;
+ 
+ 	struct sk_buff *reorder_buf[];
 -- 
 2.24.0
 
