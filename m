@@ -2,46 +2,46 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BF286117BD0
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Dec 2019 00:52:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 76F26117C85
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Dec 2019 01:39:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727337AbfLIXws (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 9 Dec 2019 18:52:48 -0500
-Received: from mail-pf1-f194.google.com ([209.85.210.194]:43606 "EHLO
-        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727235AbfLIXws (ORCPT
+        id S1727435AbfLJAjY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 9 Dec 2019 19:39:24 -0500
+Received: from mail-pl1-f195.google.com ([209.85.214.195]:38737 "EHLO
+        mail-pl1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727213AbfLJAjY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 9 Dec 2019 18:52:48 -0500
-Received: by mail-pf1-f194.google.com with SMTP id h14so8049163pfe.10
-        for <linux-wireless@vger.kernel.org>; Mon, 09 Dec 2019 15:52:48 -0800 (PST)
+        Mon, 9 Dec 2019 19:39:24 -0500
+Received: by mail-pl1-f195.google.com with SMTP id o8so6523799pls.5
+        for <linux-wireless@vger.kernel.org>; Mon, 09 Dec 2019 16:39:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=GY/+1o1zLdYfvCqb5s+Ly8hX35JVekQIGLz3reNdQ0w=;
-        b=FogYBJaCrQ5GcvCWjiTFxrHKEneYcAB8vY4Tjhcat7UFdWay6/83ZOXe9McWW+X5ig
-         Y7813rzWdHgwZpJFd1S09IEXMnWvL3d8TJj4M4sMXrBlbYm2CNcAHMtEmWDl/1ZIltZJ
-         qyHpBdGQAXi96ky96uVlmQYgqidE40eTHqsyg=
+        bh=rQ8jRWchMU/pCJrgAWxeTEB4f5607iPubBgJHWYT3M0=;
+        b=dep0PvRaGygfo0EgfIfOWbAnYsDki/VXzduGalZrmePdP/m7sNZWdv1qw71qSj1F6u
+         PTQmfeO+0bSywZM+DdI3KP/08oSgSCLBmMK6zsbWiiyPp8F+W3SqbxTwuHr2FG2OOOu3
+         Po9FOeAMHcQN5VeO5iKHkWTK0LM/S7KnJKHTQ=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=GY/+1o1zLdYfvCqb5s+Ly8hX35JVekQIGLz3reNdQ0w=;
-        b=lFxtdRxfqdWX5qui6vv1oCiqjpsZK6fWIL0CfRIUk9gN01NWdIw5Fp0mWOfcYg9kSN
-         xHCHKh2qCruwhinudieu8LE7/7YleYe4NojxrEtY2fzpWbjKXmJ76Y3H9bBRSramN+60
-         9PK8Z6Ikco3VWbLmp9B8vwZEJ/0Z5s/13YuS1/5GfxpgeEWCGBGuZTsQH1ItjHfoavq3
-         Iahd6ZlmTQLZTs1nYbRF5+Sbk/WziFrD734AtZAdAzmNSiuDK/ejCWE/+8+XIDVusQdQ
-         o92bKsCue91jphT8fr2HshiUqDYs9Lf7IGv9mQAQH+H8aaLT0wXQeIXmnQRlwOoaPYi5
-         rOHg==
-X-Gm-Message-State: APjAAAWPDecCxR36b8mYRIeXLK6wm9lW1smVdx1yDhOcJWmyvGVBg/SJ
-        x3Qt4zGZeokEiaZOtQlX5dG/luO66g4=
-X-Google-Smtp-Source: APXvYqy9TUL5rqDcp/B/qy16AJcabYQBNLq0iyZvX4GNbmTFLCh8dcHod2fiqqveCZmOOIunkNEaxw==
-X-Received: by 2002:a05:6a00:5b:: with SMTP id i27mr32641625pfk.112.1575935567260;
-        Mon, 09 Dec 2019 15:52:47 -0800 (PST)
+        bh=rQ8jRWchMU/pCJrgAWxeTEB4f5607iPubBgJHWYT3M0=;
+        b=SYyy3wuVao5cpgth5d+o5BHkO4W7aqreswjphXOPC0Ze4lPpwOi04CgH6q8NS1s85A
+         TvsRny5nvTv8zKf32cAbZHhuTBGUjI0PXZ1f+nVoVKhi1ssnhxuJzu5lZ/xsBQFTFeOw
+         Czi0CkZfyGlSPc2nXwoXYiJ9ya9KqvOTk2yJTaK7bedm/vgONunzO0lW810GEGvy1Sos
+         6cIUoficSOFNtteLxJPu06GlyxkLJloRj4XJZOKFFwZXjIES3mwhguNhXfI6UInGER5P
+         RIT/ILuwaamFgsPoA7e0ASc6+mT8UikI9CAqEZ+1iiY70h424WPa5TMvLKh/JqjugfBo
+         Tf7w==
+X-Gm-Message-State: APjAAAWyNkgszERscLMk7iaSPqh/kBn0+HoCuWDaAmUTOscZ7Z3HkWI8
+        t+QJaoACz0d+6UrxLrCRNLkUTcWwbUA=
+X-Google-Smtp-Source: APXvYqz6I1xzAJjLryfai5wDR7NXlIFVTUtpTz0Qtpn4nx49m5pqdDnECFgGHywphMX7hn1x65m0zw==
+X-Received: by 2002:a17:90a:a44:: with SMTP id o62mr2161760pjo.80.1575938363085;
+        Mon, 09 Dec 2019 16:39:23 -0800 (PST)
 Received: from smtp.gmail.com ([2620:15c:202:1:534:b7c0:a63c:460c])
-        by smtp.gmail.com with ESMTPSA id k66sm635587pgk.16.2019.12.09.15.52.45
+        by smtp.gmail.com with ESMTPSA id p28sm654515pgb.93.2019.12.09.16.39.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Dec 2019 15:52:46 -0800 (PST)
+        Mon, 09 Dec 2019 16:39:22 -0800 (PST)
 From:   Brian Norris <briannorris@chromium.org>
 To:     linux-wireless@vger.kernel.org
 Cc:     <linux-kernel@vger.kernel.org>,
@@ -49,10 +49,11 @@ Cc:     <linux-kernel@vger.kernel.org>,
         Nishant Sarmukadam <nishants@marvell.com>,
         Amitkumar Karwar <amitkarwar@gmail.com>,
         Xinming Hu <huxinming820@gmail.com>,
+        Sharvari Harisangam <sharvari@marvell.com>,
         Brian Norris <briannorris@chromium.org>
-Subject: [PATCH] mwifiex: start out with BSS type ANY, not STA
-Date:   Mon,  9 Dec 2019 15:51:16 -0800
-Message-Id: <20191209235116.142692-1-briannorris@chromium.org>
+Subject: [PATCH] mwifiex: delete unused mwifiex_get_intf_num()
+Date:   Mon,  9 Dec 2019 16:39:11 -0800
+Message-Id: <20191210003911.28066-1-briannorris@chromium.org>
 X-Mailer: git-send-email 2.24.0.393.g34dc348eaf-goog
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -61,39 +62,43 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-mwifiex starts out by setting up 3 possible interfaces, but usually only
-1 of them gets initialized later. Currently, we leave the
-"uninitialized" interfaces with bss_type==0, which means
-MWIFIEX_BSS_TYPE_STA. This gives misleading results for things like
-mwifiex_get_intf_num(..., MWIFIEX_BSS_TYPE_STA), giving the answer "3"
-even when we only have 1 initialized STA.
+Commit 7afb94da3cd8 ("mwifiex: update set_mac_address logic") fixed the
+only user of this function, partly because the author seems to have
+noticed that, as written, it's on the borderline between highly
+misleading and buggy.
 
-This bug doesn't affect functions like mwifiex_get_unused_bss_num(),
-which are looking at the bss_mode field instead (to see
-NL80211_IFTYPE_UNSPECIFIED, which happens to be 0...) for finding
-uninitialized interfaces.
+Anyway, no sense in keeping dead code around: let's drop it.
 
-Let's make mwifiex_get_intf_num() give a proper answer, by making its
-initial value the proper uninitialized value -- ANY.
-
+Fixes: 7afb94da3cd8 ("mwifiex: update set_mac_address logic")
 Signed-off-by: Brian Norris <briannorris@chromium.org>
 ---
- drivers/net/wireless/marvell/mwifiex/main.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/wireless/marvell/mwifiex/main.h | 13 -------------
+ 1 file changed, 13 deletions(-)
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/main.c b/drivers/net/wireless/marvell/mwifiex/main.c
-index a9657ae6d782..a9063411d243 100644
---- a/drivers/net/wireless/marvell/mwifiex/main.c
-+++ b/drivers/net/wireless/marvell/mwifiex/main.c
-@@ -97,6 +97,8 @@ static int mwifiex_register(void *card, struct device *dev,
+diff --git a/drivers/net/wireless/marvell/mwifiex/main.h b/drivers/net/wireless/marvell/mwifiex/main.h
+index 095837fba300..56a18a7f6853 100644
+--- a/drivers/net/wireless/marvell/mwifiex/main.h
++++ b/drivers/net/wireless/marvell/mwifiex/main.h
+@@ -1294,19 +1294,6 @@ mwifiex_copy_rates(u8 *dest, u32 pos, u8 *src, int len)
+ 	return pos;
+ }
  
- 		adapter->priv[i]->adapter = adapter;
- 		adapter->priv_num++;
-+		/* Start out as uninitialized. */
-+		adapter->priv[i]->bss_type = MWIFIEX_BSS_TYPE_ANY;
- 	}
- 	mwifiex_init_lock_list(adapter);
- 
+-/* This function return interface number with the same bss_type.
+- */
+-static inline u8
+-mwifiex_get_intf_num(struct mwifiex_adapter *adapter, u8 bss_type)
+-{
+-	u8 i, num = 0;
+-
+-	for (i = 0; i < adapter->priv_num; i++)
+-		if (adapter->priv[i] && adapter->priv[i]->bss_type == bss_type)
+-			num++;
+-	return num;
+-}
+-
+ /*
+  * This function returns the correct private structure pointer based
+  * upon the BSS type and BSS number.
 -- 
 2.24.0.393.g34dc348eaf-goog
 
