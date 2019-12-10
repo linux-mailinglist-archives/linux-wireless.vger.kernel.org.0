@@ -2,90 +2,88 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id ACD921184DA
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Dec 2019 11:20:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E271711857E
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Dec 2019 11:49:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727222AbfLJKUH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 10 Dec 2019 05:20:07 -0500
-Received: from a27-18.smtp-out.us-west-2.amazonses.com ([54.240.27.18]:50886
-        "EHLO a27-18.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727032AbfLJKUH (ORCPT
+        id S1727185AbfLJKtD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 10 Dec 2019 05:49:03 -0500
+Received: from a27-21.smtp-out.us-west-2.amazonses.com ([54.240.27.21]:33116
+        "EHLO a27-21.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727016AbfLJKtD (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 10 Dec 2019 05:20:07 -0500
+        Tue, 10 Dec 2019 05:49:03 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1575973206;
+        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1575974942;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:MIME-Version:Content-Type;
-        bh=0Kb+E+8ZdD4D68+aCTRlNTqRFi3yA4uuBGG8Rr2pQgY=;
-        b=NeYakiUCjcRoxcFOZnt6eDM0Jw6DgF/tnZftTAXzQSXZCBTLtVUHjodLxZvTXBDH
-        Hq9okvn8vJADB+4lLhu1iExlQjDCa2avyXGPQiQ2N28sL2jhNW2J3eUnPftbCBE0sjS
-        8zvVlxy4TRDsGNGGSfBhTwmNwz1AXdSkjIZLROms=
+        bh=ZTvrnw66vZ5mdkgMjuRv+ZgzgvVfK3L4RpvS9nWZjNE=;
+        b=kSqdAzYk6TOq6A8bMa3OxvSF+Ys1SlACS4E4ImCKm9Z7oXS+9i9ZPDEMHXAJyz7x
+        AWoGgfuZGPJn4/QBCL1i6aM0bSPi7aLlH+lUygHW2ju/gMjb2PWUxma+Amu5pKj6dLU
+        df3GS1yVkAYdNyIh7favlPJ38HtoHfPq9+RmRCNc=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=gdwg2y3kokkkj5a55z2ilkup5wp5hhxx; d=amazonses.com; t=1575973206;
+        s=gdwg2y3kokkkj5a55z2ilkup5wp5hhxx; d=amazonses.com; t=1575974942;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:MIME-Version:Content-Type:Feedback-ID;
-        bh=0Kb+E+8ZdD4D68+aCTRlNTqRFi3yA4uuBGG8Rr2pQgY=;
-        b=VuITrJj+QGHSbjoRYgHcNgD5stmzkqoubp1qS/rPYXMmGRDKHEZ+1XFtF503+RoY
-        vZEjZl3cu1aydYOch0/P/dlSIWprQbnvW3xoRg52LTx6/OAKq52uqvIJOIT+pqxMXjJ
-        +VfRIbeZnjfCG+yBJSf+s9Lz9Vf5FAcJAaECBda8=
+        bh=ZTvrnw66vZ5mdkgMjuRv+ZgzgvVfK3L4RpvS9nWZjNE=;
+        b=SnfZ/RzdSBGXGOmKEqZG3xf+9wuk3BFYsG4qiXMcUQWktVbiOAKPUT78Vf+kN8Ei
+        7bGmZ5B++6GjeKrwcT4fVzhlSQD6ju3+prN2KwS/qdVWMGWceHuTVj7o4tuvkyFQCUR
+        CKNBCG+eYsplVbYNvPkJey5a6nLMgI4TZ2d8Adcs=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
 X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
         autolearn=unavailable autolearn_force=no version=3.4.0
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org B3419C447AA
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 3F0E3C433A2
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Soeren Moch <smoch@web.de>
-Cc:     Wright Feng <wright.feng@cypress.com>,
-        Arend van Spriel <arend.vanspriel@broadcom.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        brcm80211-dev-list@cypress.com, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/8] brcmfmac: reset two D11 cores if chip has two D11 cores
-References: <20191209223822.27236-1-smoch@web.de>
-        <0101016eef117d24-d6de85e6-6356-4c73-bff4-f787e8c982bc-000000@us-west-2.amazonses.com>
-        <d72831ab-902e-0b69-3008-6eb915784c4d@web.de>
-Date:   Tue, 10 Dec 2019 10:20:06 +0000
-In-Reply-To: <d72831ab-902e-0b69-3008-6eb915784c4d@web.de> (Soeren Moch's
-        message of "Tue, 10 Dec 2019 11:14:22 +0100")
-Message-ID: <0101016eef52b82d-f791d0d8-d317-4050-9e8a-07a3fa7dafd8-000000@us-west-2.amazonses.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+To:     Markus Theil <markus.theil@tu-ilmenau.de>
+Cc:     nbd@nbd.name, linux-wireless@vger.kernel.org,
+        lorenzo.bianconi@redhat.com, Stanislaw Gruszka <stf_xl@wp.pl>
+Subject: Re: [PATCH] mt76: use AC specific reorder timeout
+References: <20191209211527.13977-1-markus.theil@tu-ilmenau.de>
+Date:   Tue, 10 Dec 2019 10:49:02 +0000
+In-Reply-To: <20191209211527.13977-1-markus.theil@tu-ilmenau.de> (Markus
+        Theil's message of "Mon, 9 Dec 2019 22:15:27 +0100")
+Message-ID: <0101016eef6d37ca-3ecafc5d-7b76-4c84-85e9-8c1388723603-000000@us-west-2.amazonses.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
-X-SES-Outgoing: 2019.12.10-54.240.27.18
+X-SES-Outgoing: 2019.12.10-54.240.27.21
 Feedback-ID: 1.us-west-2.CZuq2qbDmUIuT3qdvXlRHZZCpfZqZ4GtG9v3VKgRyF0=:AmazonSES
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Soeren Moch <smoch@web.de> writes:
+Markus Theil <markus.theil@tu-ilmenau.de> writes:
 
-> On 10.12.19 10:08, Kalle Valo wrote:
->> Soeren Moch <smoch@web.de> writes:
->>
->>> From: Wright Feng <wright.feng@cypress.com>
->>>
->>> There are two D11 cores in RSDB chips like 4359. We have to reset two
->>> D11 cores simutaneously before firmware download, or the firmware may
->>> not be initialized correctly and cause "fw initialized failed" error.
->>>
->>> Signed-off-by: Wright Feng <wright.feng@cypress.com>
->> Soeren's s-o-b missing at least in patches 1, 6 and 7. Please read:
->>
->> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches#signed-off-by_missing
->>
+> Before this patch, mt76 handled rx traffic for all TIDs  equally,
+> when released from reorder buffer early. This patch uses an AC specific
+> reorder timeout, in order to release partial aggregated frames for voice
+> or video ACs earlier. For example, ath10k also uses AC specific reorder
+> timeouts (reported by firmware in that case).
 >
-> OK, also for unmodified patches another s-o-b is required.
+> Signed-off-by: Markus Theil <markus.theil@tu-ilmenau.de>
 
-Yes, every patch you submit needs to have your s-o-b to mark that you
-agree with Developer's Certificate of Origin.
+[...]
 
-https://www.kernel.org/doc/html/latest/process/submitting-patches.html#sign-your-work-the-developer-s-certificate-of-origin
+> +static unsigned long mt76_aggr_tid_to_timeo(u8 tidno)
+> +{
+> +	const int ieee802_1d_to_ac[8] = {
+
+static const?
+
+> +		IEEE80211_AC_BE,
+> +		IEEE80211_AC_BK,
+> +		IEEE80211_AC_BK,
+> +		IEEE80211_AC_BE,
+> +		IEEE80211_AC_VI,
+> +		IEEE80211_AC_VI,
+> +		IEEE80211_AC_VO,
+> +		IEEE80211_AC_VO
+> +	};
+> +	const int ac_to_timeout[] = {
+
+static const?
 
 -- 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
