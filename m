@@ -2,74 +2,134 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AF0B71187A1
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Dec 2019 13:07:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F13A71187F0
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Dec 2019 13:20:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727272AbfLJMH5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 10 Dec 2019 07:07:57 -0500
-Received: from a27-21.smtp-out.us-west-2.amazonses.com ([54.240.27.21]:35030
-        "EHLO a27-21.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727231AbfLJMH5 (ORCPT
+        id S1727320AbfLJMUi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 10 Dec 2019 07:20:38 -0500
+Received: from smail.rz.tu-ilmenau.de ([141.24.186.67]:44268 "EHLO
+        smail.rz.tu-ilmenau.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727227AbfLJMUi (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 10 Dec 2019 07:07:57 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1575979676;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:MIME-Version:Content-Type;
-        bh=Wq/q6Mlz+H8rCXxs1TLWDgDwCdwKysHMIE+9Z7bHhXo=;
-        b=LQ0NzK4251p/vm/eghRKnev7g1/+mcgUeHCuwwGZm9rpNL5LU5HNIz0+8fVIEhem
-        KfQ5SOmjrnowhgY4MT/567B8byZyNlo51ELIkANRCx0DdKCxFiSzP5lX8l6y+y+SDkf
-        8gahJiHHZvPpYfb28l80svOg3bMNE354CylhMUd0=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=gdwg2y3kokkkj5a55z2ilkup5wp5hhxx; d=amazonses.com; t=1575979676;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:MIME-Version:Content-Type:Feedback-ID;
-        bh=Wq/q6Mlz+H8rCXxs1TLWDgDwCdwKysHMIE+9Z7bHhXo=;
-        b=OM1W6M7g30FlLCMp1Nq6SYPaA/ToP1Ds95i0USpFvV4EwIychn7haBbM3/4kUN64
-        +fCt6/WXVivnzKo6jbR/NvRlYoF43R8zCshqW2RHKNCjXKfSMYXLwcNdVAkmnUpK6fA
-        ItUou4/lLHPsvy3SxEWcidsMJozH9p+P25uJOPtI=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.0
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 6EDD0C447AA
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Markus Theil <markus.theil@tu-ilmenau.de>
-Cc:     nbd@nbd.name, linux-wireless@vger.kernel.org,
-        lorenzo.bianconi@redhat.com, Stanislaw Gruszka <stf_xl@wp.pl>
-Subject: Re: [PATCH v2] mt76: use AC specific reorder timeout
-References: <20191210114949.4516-1-markus.theil@tu-ilmenau.de>
-Date:   Tue, 10 Dec 2019 12:07:56 +0000
-In-Reply-To: <20191210114949.4516-1-markus.theil@tu-ilmenau.de> (Markus
-        Theil's message of "Tue, 10 Dec 2019 12:49:49 +0100")
-Message-ID: <0101016eefb572c3-6de6eb28-6829-4c64-a773-c800e7680032-000000@us-west-2.amazonses.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        Tue, 10 Dec 2019 07:20:38 -0500
+Received: from isengard.tu-ilmenau.de (unknown [141.24.207.101])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by smail.rz.tu-ilmenau.de (Postfix) with ESMTPSA id DD9A458006E;
+        Tue, 10 Dec 2019 13:20:35 +0100 (CET)
+From:   Markus Theil <markus.theil@tu-ilmenau.de>
+To:     nbd@nbd.name
+Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
+        Stanislaw Gruszka <stf_xl@wp.pl>, kvalo@codeaurora.org,
+        Markus Theil <markus.theil@tu-ilmenau.de>
+Subject: [PATCH v3] mt76: use AC specific reorder timeout
+Date:   Tue, 10 Dec 2019 13:20:05 +0100
+Message-Id: <20191210122005.7504-1-markus.theil@tu-ilmenau.de>
+X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-SES-Outgoing: 2019.12.10-54.240.27.21
-Feedback-ID: 1.us-west-2.CZuq2qbDmUIuT3qdvXlRHZZCpfZqZ4GtG9v3VKgRyF0=:AmazonSES
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Markus Theil <markus.theil@tu-ilmenau.de> writes:
+Before this patch, mt76 handled rx traffic for all TIDs  equally,
+when released from reorder buffer early. This patch uses an AC specific
+reorder timeout, in order to release partial aggregated frames for voice
+or video ACs earlier. For example, ath10k also uses AC specific reorder
+timeouts (reported by firmware in that case).
 
-> Before this patch, mt76 handled rx traffic for all TIDs  equally,
-> when released from reorder buffer early. This patch uses an AC specific
-> reorder timeout, in order to release partial aggregated frames for voice
-> or video ACs earlier. For example, ath10k also uses AC specific reorder
-> timeouts (reported by firmware in that case).
->
-> v2: use static const mapping arrays
->
-> Signed-off-by: Markus Theil <markus.theil@tu-ilmenau.de>
-> ---
+Signed-off-by: Markus Theil <markus.theil@tu-ilmenau.de>
+---
+v3: fix changelog
+v2: use static const mapping arrays
 
-Please add the changelog here, after the "---" line.
+ drivers/net/wireless/mediatek/mt76/agg-rx.c | 30 ++++++++++++++++++---
+ drivers/net/wireless/mediatek/mt76/mt76.h   |  2 ++
+ 2 files changed, 28 insertions(+), 4 deletions(-)
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches#changelog_missing
+diff --git a/drivers/net/wireless/mediatek/mt76/agg-rx.c b/drivers/net/wireless/mediatek/mt76/agg-rx.c
+index 53b5a4b2dcc5..572cf26b0fa1 100644
+--- a/drivers/net/wireless/mediatek/mt76/agg-rx.c
++++ b/drivers/net/wireless/mediatek/mt76/agg-rx.c
+@@ -4,7 +4,27 @@
+  */
+ #include "mt76.h"
 
--- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+-#define REORDER_TIMEOUT (HZ / 10)
++static unsigned long mt76_aggr_tid_to_timeo(u8 tidno)
++{
++	static const int ieee802_1d_to_ac[8] = {
++		IEEE80211_AC_BE,
++		IEEE80211_AC_BK,
++		IEEE80211_AC_BK,
++		IEEE80211_AC_BE,
++		IEEE80211_AC_VI,
++		IEEE80211_AC_VI,
++		IEEE80211_AC_VO,
++		IEEE80211_AC_VO
++	};
++	static const int ac_to_timeout[] = {
++		[IEEE80211_AC_VO] = HZ / 30,
++		[IEEE80211_AC_VI] = HZ / 25,
++		[IEEE80211_AC_BE] = HZ / 10,
++		[IEEE80211_AC_BK] = HZ / 10
++	};
++
++	return ac_to_timeout[ieee802_1d_to_ac[tidno & 7]];
++}
+
+ static void
+ mt76_aggr_release(struct mt76_rx_tid *tid, struct sk_buff_head *frames, int idx)
+@@ -71,7 +91,8 @@ mt76_rx_aggr_check_release(struct mt76_rx_tid *tid, struct sk_buff_head *frames)
+ 		nframes--;
+ 		status = (struct mt76_rx_status *)skb->cb;
+ 		if (!time_after(jiffies,
+-				status->reorder_time + REORDER_TIMEOUT))
++				status->reorder_time +
++				mt76_aggr_tid_to_timeo(tid->num)))
+ 			continue;
+
+ 		mt76_rx_aggr_release_frames(tid, frames, status->seqno);
+@@ -101,7 +122,7 @@ mt76_rx_aggr_reorder_work(struct work_struct *work)
+
+ 	if (nframes)
+ 		ieee80211_queue_delayed_work(tid->dev->hw, &tid->reorder_work,
+-					     REORDER_TIMEOUT);
++					     mt76_aggr_tid_to_timeo(tid->num));
+ 	mt76_rx_complete(dev, &frames, NULL);
+
+ 	rcu_read_unlock();
+@@ -225,7 +246,7 @@ void mt76_rx_aggr_reorder(struct sk_buff *skb, struct sk_buff_head *frames)
+ 	mt76_rx_aggr_release_head(tid, frames);
+
+ 	ieee80211_queue_delayed_work(tid->dev->hw, &tid->reorder_work,
+-				     REORDER_TIMEOUT);
++				     mt76_aggr_tid_to_timeo(tid->num));
+
+ out:
+ 	spin_unlock_bh(&tid->lock);
+@@ -245,6 +266,7 @@ int mt76_rx_aggr_start(struct mt76_dev *dev, struct mt76_wcid *wcid, u8 tidno,
+ 	tid->dev = dev;
+ 	tid->head = ssn;
+ 	tid->size = size;
++	tid->num = tidno;
+ 	INIT_DELAYED_WORK(&tid->reorder_work, mt76_rx_aggr_reorder_work);
+ 	spin_lock_init(&tid->lock);
+
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
+index c268c3d76b3d..b604d8d5f0bc 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76.h
+@@ -237,6 +237,8 @@ struct mt76_rx_tid {
+ 	u8 size;
+ 	u8 nframes;
+
++	u8 num;
++
+ 	u8 started:1, stopped:1, timer_pending:1;
+
+ 	struct sk_buff *reorder_buf[];
+--
+2.24.0
+
