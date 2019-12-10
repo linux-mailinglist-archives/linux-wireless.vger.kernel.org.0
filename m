@@ -2,36 +2,37 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D4C231198E0
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Dec 2019 22:46:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D0801198C7
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Dec 2019 22:45:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729411AbfLJVkj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 10 Dec 2019 16:40:39 -0500
-Received: from mail.kernel.org ([198.145.29.99]:39552 "EHLO mail.kernel.org"
+        id S1730050AbfLJVec (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 10 Dec 2019 16:34:32 -0500
+Received: from mail.kernel.org ([198.145.29.99]:39626 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730030AbfLJVe0 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 10 Dec 2019 16:34:26 -0500
+        id S1730045AbfLJVea (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 10 Dec 2019 16:34:30 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 5F1C3205C9;
-        Tue, 10 Dec 2019 21:34:25 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 72A13214AF;
+        Tue, 10 Dec 2019 21:34:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1576013666;
-        bh=+59qTo3q6iQil8oqgTazOmhrpR3mHbEaLWf8cKK1v+M=;
+        s=default; t=1576013670;
+        bh=cZ7EoPQojJ/5XnZa1meOrGPOL6/HG1ydnqMl/CNHDQA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gSApRDJVLbo0dUqDuM4OKPj8gOGaP5JTZXTVYGcO1euGnntnN8bpXfsA3PD6ACIJ6
-         mm6P2UZpkkhazPRLb5WqRCaUalWQCuaXBRqAtmvOhxiQ493jBhgShG8Wl4sYx3/qt7
-         a5x6u38ndCXJKmyZe0uRIrnN0AoczDzXcfGiTknY=
+        b=odOHH5qTPdDgnV3+ohopoa0guJroSHqsuwnG69o42j8/w/wEuyjSILUe2JnNdW6Uc
+         wI6XlJgzk1KgHjRfP6DXWHgOuWOyh1eUV0ko+e1GWvmpktEZDbKvRhhXr7chz/asoz
+         xteucaROKAa242LL2JksY4+nDzhQiDjS+TV+hPeg=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Marcel Holtmann <marcel@holtmann.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+Cc:     Ping-Ke Shih <pkshih@realtek.com>,
+        Stefan Wahren <wahrenst@gmx.net>,
+        Kalle Valo <kvalo@codeaurora.org>,
         Sasha Levin <sashal@kernel.org>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 103/177] rfkill: allocate static minor
-Date:   Tue, 10 Dec 2019 16:31:07 -0500
-Message-Id: <20191210213221.11921-103-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 107/177] rtlwifi: fix memory leak in rtl92c_set_fw_rsvdpagepkt()
+Date:   Tue, 10 Dec 2019 16:31:11 -0500
+Message-Id: <20191210213221.11921-107-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20191210213221.11921-1-sashal@kernel.org>
 References: <20191210213221.11921-1-sashal@kernel.org>
@@ -44,66 +45,62 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Marcel Holtmann <marcel@holtmann.org>
+From: Ping-Ke Shih <pkshih@realtek.com>
 
-[ Upstream commit 8670b2b8b029a6650d133486be9d2ace146fd29a ]
+[ Upstream commit 5174f1e41074b5186608badc2e89441d021e8c08 ]
 
-udev has a feature of creating /dev/<node> device-nodes if it finds
-a devnode:<node> modalias. This allows for auto-loading of modules that
-provide the node. This requires to use a statically allocated minor
-number for misc character devices.
+This leak was found by testing the EDIMAX EW-7612 on Raspberry Pi 3B+ with
+Linux 5.4-rc5 (multi_v7_defconfig + rtlwifi + kmemleak) and noticed a
+single memory leak during probe:
 
-However, rfkill uses dynamic minor numbers and prevents auto-loading
-of the module. So allocate the next static misc minor number and use
-it for rfkill.
+unreferenced object 0xec13ee40 (size 176):
+  comm "kworker/u8:1", pid 36, jiffies 4294939321 (age 5580.790s)
+  hex dump (first 32 bytes):
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+  backtrace:
+    [<fc1bbb3e>] __netdev_alloc_skb+0x9c/0x164
+    [<863dfa6e>] rtl92c_set_fw_rsvdpagepkt+0x254/0x340 [rtl8192c_common]
+    [<9572be0d>] rtl92cu_set_hw_reg+0xf48/0xfa4 [rtl8192cu]
+    [<116df4d8>] rtl_op_bss_info_changed+0x234/0x96c [rtlwifi]
+    [<8933575f>] ieee80211_bss_info_change_notify+0xb8/0x264 [mac80211]
+    [<d4061e86>] ieee80211_assoc_success+0x934/0x1798 [mac80211]
+    [<e55adb56>] ieee80211_rx_mgmt_assoc_resp+0x174/0x314 [mac80211]
+    [<5974629e>] ieee80211_sta_rx_queued_mgmt+0x3f4/0x7f0 [mac80211]
+    [<d91091c6>] ieee80211_iface_work+0x208/0x318 [mac80211]
+    [<ac5fcae4>] process_one_work+0x22c/0x564
+    [<f5e6d3b6>] worker_thread+0x44/0x5d8
+    [<82c7b073>] kthread+0x150/0x154
+    [<b43e1b7d>] ret_from_fork+0x14/0x2c
+    [<794dff30>] 0x0
 
-Signed-off-by: Marcel Holtmann <marcel@holtmann.org>
-Link: https://lore.kernel.org/r/20191024174042.19851-1-marcel@holtmann.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+It is because 8192cu doesn't implement usb_cmd_send_packet(), and this
+patch just frees the skb within the function to resolve memleak problem
+by now. Since 8192cu doesn't turn on fwctrl_lps that needs to download
+command packet for firmware via the function, applying this patch doesn't
+affect driver behavior.
+
+Reported-by: Stefan Wahren <wahrenst@gmx.net>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/miscdevice.h | 1 +
- net/rfkill/core.c          | 9 +++++++--
- 2 files changed, 8 insertions(+), 2 deletions(-)
+ drivers/net/wireless/realtek/rtlwifi/rtl8192cu/hw.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/include/linux/miscdevice.h b/include/linux/miscdevice.h
-index 3247a3dc79348..b06b75776a32f 100644
---- a/include/linux/miscdevice.h
-+++ b/include/linux/miscdevice.h
-@@ -57,6 +57,7 @@
- #define UHID_MINOR		239
- #define USERIO_MINOR		240
- #define VHOST_VSOCK_MINOR	241
-+#define RFKILL_MINOR		242
- #define MISC_DYNAMIC_MINOR	255
- 
- struct device;
-diff --git a/net/rfkill/core.c b/net/rfkill/core.c
-index 1355f5ca8d227..7fbc8314f6266 100644
---- a/net/rfkill/core.c
-+++ b/net/rfkill/core.c
-@@ -1328,10 +1328,12 @@ static const struct file_operations rfkill_fops = {
- 	.llseek		= no_llseek,
- };
- 
-+#define RFKILL_NAME "rfkill"
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/hw.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/hw.c
+index 1e60f70481f58..8c60a84941d55 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/hw.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/hw.c
+@@ -1556,6 +1556,8 @@ static bool usb_cmd_send_packet(struct ieee80211_hw *hw, struct sk_buff *skb)
+    * This is maybe necessary:
+    * rtlpriv->cfg->ops->fill_tx_cmddesc(hw, buffer, 1, 1, skb);
+    */
++	dev_kfree_skb(skb);
 +
- static struct miscdevice rfkill_miscdev = {
--	.name	= "rfkill",
- 	.fops	= &rfkill_fops,
--	.minor	= MISC_DYNAMIC_MINOR,
-+	.name	= RFKILL_NAME,
-+	.minor	= RFKILL_MINOR,
- };
- 
- static int __init rfkill_init(void)
-@@ -1383,3 +1385,6 @@ static void __exit rfkill_exit(void)
- 	class_unregister(&rfkill_class);
+ 	return true;
  }
- module_exit(rfkill_exit);
-+
-+MODULE_ALIAS_MISCDEV(RFKILL_MINOR);
-+MODULE_ALIAS("devname:" RFKILL_NAME);
+ 
 -- 
 2.20.1
 
