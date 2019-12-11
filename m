@@ -2,67 +2,116 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5DEEC11A575
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Dec 2019 08:52:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4706611A5E1
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Dec 2019 09:32:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728250AbfLKHwo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 11 Dec 2019 02:52:44 -0500
-Received: from mail.kernel.org ([198.145.29.99]:55862 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726230AbfLKHwo (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 11 Dec 2019 02:52:44 -0500
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 161C4214AF;
-        Wed, 11 Dec 2019 07:52:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1576050763;
-        bh=LBIqLK2WI1wJ48nl0OtgepNbLnIiVSjGWVS9d/AMdkI=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=kIDywd3xBb/97BHqNRljkjz3SraoayzZG068eYJ0XfnRd+u5zPQ3Qx9kR03f1FBcS
-         RySU0MCh3xFryON8XsPQsodbhk2hu+cjerzM7MFxFB9XVJ79/HyBzJp/vvgJmBc7da
-         cyHOUGs9TDUWK18PiYJ641r07a0JxWl8KaVcoWZ4=
-Date:   Wed, 11 Dec 2019 08:52:41 +0100
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Sasha Levin <sashal@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        Marcel Holtmann <marcel@holtmann.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 4.19 103/177] rfkill: allocate static minor
-Message-ID: <20191211075241.GM398293@kroah.com>
-References: <20191210213221.11921-1-sashal@kernel.org>
- <20191210213221.11921-103-sashal@kernel.org>
+        id S1727829AbfLKIch (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 11 Dec 2019 03:32:37 -0500
+Received: from s3.sipsolutions.net ([144.76.43.62]:46230 "EHLO
+        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726845AbfLKIch (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 11 Dec 2019 03:32:37 -0500
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.92.3)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1iexQ2-003Uuv-G0; Wed, 11 Dec 2019 09:32:26 +0100
+Message-ID: <4cf0c2a4a2d1cd92dff4f1a791d74523e446cf01.camel@sipsolutions.net>
+Subject: Re: Correct radiotap header for 802.11ad
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Guy Harris <guy@alum.mit.edu>
+Cc:     "radiotap@netbsd.org" <radiotap@netbsd.org>,
+        Simon Barber <simon@superduper.net>,
+        Richard Sharpe <realrichardsharpe@gmail.com>,
+        linux-wireless@vger.kernel.org, Maya Erez <merez@codeaurora.org>,
+        wil6210@qti.qualcomm.com
+Date:   Wed, 11 Dec 2019 09:32:25 +0100
+In-Reply-To: <C5FF46C6-BDEE-41D8-B7E1-1EFFE9411DE3@alum.mit.edu>
+References: <CACyXjPzq-ePB1ux6wi_Rv3onPKXomcJcm15XJwA51u0E4W2txw@mail.gmail.com>
+         <38F46E1D-1C4A-48DC-A906-9522006E8474@alum.mit.edu>
+         <1606812C-649C-4C06-ABE0-AE2F4474BCD0@alum.mit.edu>
+         <1440402013.3735.1.camel@sipsolutions.net>
+         <CACyXjPwSZPV+U_=zQpDBpeBnhMntzEFhyJnBOw3-N8qPfyHc1A@mail.gmail.com>
+         <55DE44EB.6080603@superduper.net>
+         <126B842D-05EA-4510-BC9B-DB1A4AABEC12@alum.mit.edu>
+         <1135A126-6A5A-4C84-A52D-13C0387609CC@alum.mit.edu>
+         <1442507879.2821.9.camel@sipsolutions.net>
+         <C5FF46C6-BDEE-41D8-B7E1-1EFFE9411DE3@alum.mit.edu>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.34.2 (3.34.2-1.fc31) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191210213221.11921-103-sashal@kernel.org>
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Dec 10, 2019 at 04:31:07PM -0500, Sasha Levin wrote:
-> From: Marcel Holtmann <marcel@holtmann.org>
-> 
-> [ Upstream commit 8670b2b8b029a6650d133486be9d2ace146fd29a ]
-> 
-> udev has a feature of creating /dev/<node> device-nodes if it finds
-> a devnode:<node> modalias. This allows for auto-loading of modules that
-> provide the node. This requires to use a statically allocated minor
-> number for misc character devices.
-> 
-> However, rfkill uses dynamic minor numbers and prevents auto-loading
-> of the module. So allocate the next static misc minor number and use
-> it for rfkill.
-> 
-> Signed-off-by: Marcel Holtmann <marcel@holtmann.org>
-> Link: https://lore.kernel.org/r/20191024174042.19851-1-marcel@holtmann.org
-> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
->  include/linux/miscdevice.h | 1 +
->  net/rfkill/core.c          | 9 +++++++--
->  2 files changed, 8 insertions(+), 2 deletions(-)
+++ for the DMG discussion
 
-Not needed here :)
+On Tue, 2019-12-10 at 15:51 -0800, Guy Harris wrote:
+> On Sep 17, 2015, at 9:37 AM, Johannes Berg <johannes@sipsolutions.net> wrote:
+
+Reviving an old thread :-)
+
+> > Not being familiar with DMG, I can't really comment on this.
+> > 
+> > It does sound like we need *some* new field though, be it either a DMG
+> > field or a PLCP SIGNAL field, or perhaps even both.
+> > 
+> > Going back to the original thread though, I think using the MCS field
+> > is quite wrong.
+> 
+> But a presumably-Linux system does appear to use it; see Wireshark bug
+> 
+> 	https://bugs.wireshark.org/bugzilla/show_bug.cgi?id=16272
+> 
+> For now, I'll throw a hack into Wireshark to treat a signal >= 60 GHz
+> as meaning 11ad, 
+
+I don't think that's quite right - you'll need to do something like >=
+56 GHz.
+
+> but, again, should there be additional fields for 11ad?
+
+I would think so.
+
+On the one hand I think (and looking at the spec seems to confirm this)
+that basically DMG uses an MCS index. Now, the MCS radiotap field was
+designed for HT and has a lot of things that are not applicable (GI,
+STBC, etc.)
+
+OTOH, there are DMG-specific things that probably ought to be captured
+by a proper sniffer, like the PPDU type, training length, etc. Also,
+there's the thing with the "Extended SC MCS Indication field", which
+really also ought to be captured.
+
+Sadly, the only Linux implementation didn't bother adjusting any of this
+even in the Linux general stack (and I didn't pay enough attention to it
+at the beginning), so even the rate reporting to userspace is just the
+MCS index. This might actually be sufficient for the current uses
+(there's a conversion function to bandwidth too), though it doesn't seem
+quite applicable to the whole spec.
+
+For both the Linux userspace reporting and radiotap then, this
+completely ignores the existence of the MCSes 9.1 and 12.1-12.6, which
+cannot be captured in either format right now. Maybe the extended SC
+MCSes are just not used by equipment in the field?
+
+
+In any case, to capture DMG properly I'd say we need a new radiotap
+field with at least
+ * (base) MCS
+ * Extended SC MCS bit
+and it should probably optionally cover the other possible fields as
+well
+ * Scrambler Initialization
+ * Length (?)
+ * Additional PPDU bit
+ * PPDU type bit
+ * Training Length
+ * Beam Tracking Request
+ * Last RSSI
+ * Turnaround
+
+johannes
+
