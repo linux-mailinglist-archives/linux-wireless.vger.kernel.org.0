@@ -2,36 +2,45 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C65F11AA3A
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Dec 2019 12:52:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 256FA11AB67
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Dec 2019 13:58:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727477AbfLKLv5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 11 Dec 2019 06:51:57 -0500
-Received: from s3.sipsolutions.net ([144.76.43.62]:51236 "EHLO
+        id S1729131AbfLKM6I (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 11 Dec 2019 07:58:08 -0500
+Received: from s3.sipsolutions.net ([144.76.43.62]:52958 "EHLO
         sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727365AbfLKLv4 (ORCPT
+        with ESMTP id S1728128AbfLKM6I (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 11 Dec 2019 06:51:56 -0500
+        Wed, 11 Dec 2019 07:58:08 -0500
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.92.3)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1if0X0-003uNE-Jk; Wed, 11 Dec 2019 12:51:50 +0100
-Message-ID: <bfab4987668990ea8d86a98f3e87c3fa31403745.camel@sipsolutions.net>
-Subject: Re: iwlwifi warnings in 5.5-rc1
+        id 1if1Z2-0042bv-Dj; Wed, 11 Dec 2019 13:58:00 +0100
+Message-ID: <8f7c0c22c9732cc831686df4b93dedf37e72d219.camel@sipsolutions.net>
+Subject: Re: Correct radiotap header for 802.11ad
 From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Toke =?ISO-8859-1?Q?H=F8iland-J=F8rgensen?= <toke@redhat.com>,
-        Jens Axboe <axboe@kernel.dk>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>
-Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        Networking <netdev@vger.kernel.org>
-Date:   Wed, 11 Dec 2019 12:51:49 +0100
-In-Reply-To: <875zingnzt.fsf@toke.dk>
-References: <ceb74ea2-6a1b-4cef-8749-db21a2ee4311@kernel.dk>
-         <9727368004ceef03f72d259b0779c2cf401432e1.camel@sipsolutions.net>
-         <878snjgs5l.fsf@toke.dk>
-         <3420d73e667b01ec64bf0cc9da6232b41e862860.camel@sipsolutions.net>
-         <875zingnzt.fsf@toke.dk>
+To:     Krishna Chaitanya <chaitanya.mgit@gmail.com>
+Cc:     Guy Harris <guy@alum.mit.edu>,
+        "radiotap@netbsd.org" <radiotap@netbsd.org>,
+        Simon Barber <simon@superduper.net>,
+        Richard Sharpe <realrichardsharpe@gmail.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Maya Erez <merez@codeaurora.org>, wil6210@qti.qualcomm.com
+Date:   Wed, 11 Dec 2019 13:57:58 +0100
+In-Reply-To: <CABPxzY+0v-Rb-GWkL-iwCfefzhFE5AiGBh2xxV_U_OC0Q+eoVQ@mail.gmail.com> (sfid-20191211_103932_224888_F0B0909C)
+References: <CACyXjPzq-ePB1ux6wi_Rv3onPKXomcJcm15XJwA51u0E4W2txw@mail.gmail.com>
+         <38F46E1D-1C4A-48DC-A906-9522006E8474@alum.mit.edu>
+         <1606812C-649C-4C06-ABE0-AE2F4474BCD0@alum.mit.edu>
+         <1440402013.3735.1.camel@sipsolutions.net>
+         <CACyXjPwSZPV+U_=zQpDBpeBnhMntzEFhyJnBOw3-N8qPfyHc1A@mail.gmail.com>
+         <55DE44EB.6080603@superduper.net>
+         <126B842D-05EA-4510-BC9B-DB1A4AABEC12@alum.mit.edu>
+         <1135A126-6A5A-4C84-A52D-13C0387609CC@alum.mit.edu>
+         <1442507879.2821.9.camel@sipsolutions.net>
+         <C5FF46C6-BDEE-41D8-B7E1-1EFFE9411DE3@alum.mit.edu>
+         <4cf0c2a4a2d1cd92dff4f1a791d74523e446cf01.camel@sipsolutions.net>
+         <CABPxzY+0v-Rb-GWkL-iwCfefzhFE5AiGBh2xxV_U_OC0Q+eoVQ@mail.gmail.com>
+         (sfid-20191211_103932_224888_F0B0909C)
 Content-Type: text/plain; charset="UTF-8"
 User-Agent: Evolution 3.34.2 (3.34.2-1.fc31) 
 MIME-Version: 1.0
@@ -41,85 +50,45 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Toke,
-
-> > OK, I talked with Emmanuel and I think it's the GSO path - it'll end up
-> > with skb_clone() and then report both of them back.
+On Wed, 2019-12-11 at 15:09 +0530, Krishna Chaitanya wrote:
 > 
-> Right, figured it was something like that; just couldn't find the place
-> in the driver where it did that from my cursory browsing.
+> > For both the Linux userspace reporting and radiotap then, this
+> > completely ignores the existence of the MCSes 9.1 and 12.1-12.6, which
+> > cannot be captured in either format right now. Maybe the extended SC
+> > MCSes are just not used by equipment in the field?
+> > 
+> They are used. Unfortunately, Linux-wireless doesn't have native support for DMG
+> wil6210 and our driver has to workaround by using HT IE's
+> (ieee80211_supported_band).
 
-Yeah, deeply hidden in the guts :)
+You make it sound like that some sort of thing that Linux cannot really
+do better. That's far from the truth! We keep extending this (HT, VHT,
+HE recently) and there's no fundamental reason we couldn't do extensions
+for DMG. It's just that nobody who actually has a driver for Linux
+bothered doing so!
 
-> > Regardless, I think I'll probably have to disable AQL and make it more
-> > opt-in for the driver - I found a bunch of other issues ...
-> 
-> Issues like what? Making it opt-in was going to be my backup plan; I was
-> kinda hoping we could work out any issues so it would be a "no harm"
-> kind of thing that could be left as always-on. Maybe that was a bit too
-> optimistic; but it's also a pain having to keep track of which drivers
-> have which features/fixes...
+> > In any case, to capture DMG properly I'd say we need a new radiotap
+> > field with at least
+> >  * (base) MCS
+> >  * Extended SC MCS bit
+> > and it should probably optionally cover the other possible fields as
+> > well
+> >  * Scrambler Initialization
+> >  * Length (?)
+> >  * Additional PPDU bit
+> >  * PPDU type bit
+> >  * Training Length
+> >  * Beam Tracking Request
+> >  * Last RSSI
+> >  * Turnaround
+> yes, we definitely need this, there are some additional fields in
+> 11ay, but I guess that
+> discussion is for another time.
 
-Sorry to keep you in suspense, had to run when I sent that email and
-didn't have time to elaborate.
-
-1) Hardware building A-MPDU will probably make the airtime estimate
-   quite a bit wrong. Maybe this doesn't matter? But I wasn't sure how
-   this works now with ath10k where (most of?) the testing was.
-
-2) GSO/TSO like what we have - it's not really clear how to handle it.
-   The airtime estimate will shoot *way* up (64kB frame) once that frame
-   enters, and then ... should it "trickle back down" as the generated 
-   parts are transmitted? But then the driver needs to split up the
-   airtime estimate? Or should it just go back down entirely? On the
-   first frame? That might overshoot. On the last frame? Opposite
-   problem ...
-
-3) I'm not quite convinced that all drivers report the TX rate
-   completely correctly in the status, some don't even use this path
-   but the ieee80211_tx_status_ext() which doesn't update the rate.
-
-4) Probably most importantly, this is completely broken with HE because
-   there's currently no way to report HE rates in the TX status at all!
-   I just worked around that in our driver for 'iw' reporting purposes
-   by implementing the rate reporting in the sta_statistics callback,
-   but that data won't be used by the airtime estimates.
-
-
-Now, (1) probably doesn't matter, the estimates don't need to be that
-accurate. (2) I'm not sure how to solve; (3) and (4) could both be
-solved by having some mechanism of the rate scaling to tell us what the
-current rate is whenever it updates, rather than relying on the
-last_rate. Really we should do that much more, and even phase out
-last_rate entirely, it's a stupid concept.
-
-
-There's an additional wrinkle here - what about HE scheduled mode, where
-the AP decided when and at what rate you're allowed to send? We don't
-report that at all, not even as part of rate scaling, since rate scaling
-only affects *our* decision, not when we send as a response to a trigger
-frame. This is _still_ relevant for AQL, but there we can only see what
-the AP used last (**), but we don't track that now nor do we track the
-proportion of packets that we sent triggered vs. normal medium access...
-
-
-(**) like it does with our rate scaling today (***), but in fact we can
-do better since that's local information.
-
-(***) There's an additional problem here - if you _just_ transmitted a
-management frame, you'll have a last_rate of say 6Mbps severely over-
-estimating the airtime for the next data frame ...
-
-
-
-Overall, at least for devices capable of HE we currently _have_ to
-disable this, and we need more infrastructure that we cannot build in
-the short term to fix that.
-
-I'm also not sure that the last_rate is reliable enough in general, both
-because of the management frame issue and because of HW offloaded rate
-scaling issues that I'm not convinced reports this correctly for all
-drivers.
+Somebody (@QCA I guess, I don't have any functioning driver/hardware for
+Linux for this) really should sit down and define the extensions to
+cfg80211/nl80211 to capture the data properly, and a radiotap extension.
+None of that is hard, I've done it for VHT before and HE recently.
 
 johannes
 
