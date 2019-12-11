@@ -2,167 +2,170 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E59411AD43
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Dec 2019 15:21:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 92C6F11ADA6
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Dec 2019 15:38:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729769AbfLKOVy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 11 Dec 2019 09:21:54 -0500
-Received: from mail.kernel.org ([198.145.29.99]:58134 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729671AbfLKOVx (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 11 Dec 2019 09:21:53 -0500
-Received: from localhost.localdomain (unknown [151.66.51.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 7447420836;
-        Wed, 11 Dec 2019 14:21:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1576074113;
-        bh=oS1HX2Zz3pkj+fcsDVFQhTLyKHsA0rs2aYnadytMw7Q=;
-        h=From:To:Cc:Subject:Date:From;
-        b=MUW5j7VJmFxui5Fq0Ex4iyV4ZPicB3cXx5zfYnt5SNsYOHYC6u0WPifFcvKYVA+JW
-         KEFiIXFYycWMlboKckAKSUyQNn8ZXpfFDCzcXJouirSHyW0B8wqL1ZfMvdn895vxv3
-         OARXOvTQvlRVhwEmkYzO8jDVwfsAl134GyI4pc2w=
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
-        ryder.lee@mediatek.com
-Subject: [PATCH] mt76: mt7615: introduce LED support
-Date:   Wed, 11 Dec 2019 15:21:41 +0100
-Message-Id: <378747af00fdd3e64e9f5d7724f1b84759f95e8f.1576074028.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.21.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        id S1729879AbfLKOit (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 11 Dec 2019 09:38:49 -0500
+Received: from mail-pj1-f68.google.com ([209.85.216.68]:45847 "EHLO
+        mail-pj1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727554AbfLKOit (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 11 Dec 2019 09:38:49 -0500
+Received: by mail-pj1-f68.google.com with SMTP id r11so9002704pjp.12;
+        Wed, 11 Dec 2019 06:38:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=5BPDmN/kK4qF1FFBcFUC5NrEjFOAwbeaBcO9T8TsnoI=;
+        b=TzSx4/i24RD3Dd71O89+B4fIq62OZ0UUbisqw9pRgyfOm6sUDMjMhyYszrxOBIjwT4
+         37vUbBF8dWFFXKS+lRjeSxxMBNOcfYT4rQNinX79d19OHoarteMsTt/0CPgLWSe53zUY
+         vMHpInIAOOfF8hLhjxAMAdtA2xrdHKzHZ9BTeukIb5Pv5vuC+Rgkj6L2H3joKWh7cXWK
+         LzgxV73ohhGvP7di7NCaWQBtfYXXkI6EJ46I/fHfYIEw7BmTXtJtK0h04kOi1Ta0bWbh
+         WXtoO+s9g2EzdiAOc3ODQ/0fgcf3A7+UzpFNYara7eRAe6vUcLv8LXM5ug3xjjL6cBTE
+         18Xw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=5BPDmN/kK4qF1FFBcFUC5NrEjFOAwbeaBcO9T8TsnoI=;
+        b=E9m+JNYEvnXtGYU72WPd790H/nhJJ86/RCDgCwYmdHRloax1ArmZjr0Irma3PWkifO
+         onGXQdKIRyeISu1dwIUHi9DHht8Ms41O9Oe7FGpErqFhMQyiKsO4ecJQ5m/0cipbsy3S
+         VhE2cnFltSrAboLqhuGEsHAQU4vBMs6Q2FSdFCFKONb65HfCI2BivfKuPXloMm1N1AFT
+         rzKQ1viQZ11tN/uOIJmUqiSc1xMqWBBwuGmi0wr9FeR4T2jl4eNkHmE38kmlCm1QEda8
+         Fl2+fuiFOZpdibq+6myiKYCVPSlZtp6UvXLkrpTexUX4jH7fQNulxlQ/IhKe3dr8b9XE
+         wVyQ==
+X-Gm-Message-State: APjAAAVF6jnuX3ZoDKmcB26h4cU7u+ldQmGsbclV1DvW/GrfsGqTbuPY
+        4isDvPkVucRkJk6m0WQikuL4Ink5VUU=
+X-Google-Smtp-Source: APXvYqxuBwnuR3LZbqfQuvFGH0wM9ioq0vUjfYErg4Lo+js0qm5mN9zlNsQwib7u5AlkkyMPa7zmWQ==
+X-Received: by 2002:a17:90a:94cc:: with SMTP id j12mr3766553pjw.3.1576075127838;
+        Wed, 11 Dec 2019 06:38:47 -0800 (PST)
+Received: from localhost.localdomain ([240f:34:212d:1:368e:e048:68f1:84e7])
+        by smtp.gmail.com with ESMTPSA id q11sm3444239pff.111.2019.12.11.06.38.39
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Wed, 11 Dec 2019 06:38:46 -0800 (PST)
+From:   Akinobu Mita <akinobu.mita@gmail.com>
+To:     linux-nvme@lists.infradead.org, linux-hwmon@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-wireless@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     Akinobu Mita <akinobu.mita@gmail.com>,
+        Sujith Thomas <sujith.thomas@intel.com>,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Amit Kucheria <amit.kucheria@verdurent.com>,
+        Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Keith Busch <kbusch@kernel.org>, Jens Axboe <axboe@fb.com>,
+        Christoph Hellwig <hch@lst.de>,
+        Sagi Grimberg <sagi@grimberg.me>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Stanislaw Gruszka <sgruszka@redhat.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        Intel Linux Wireless <linuxwifi@intel.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
+Subject: [PATCH v3 00/12] add header file for kelvin to/from Celsius conversion helpers
+Date:   Wed, 11 Dec 2019 23:38:07 +0900
+Message-Id: <1576075099-3441-1-git-send-email-akinobu.mita@gmail.com>
+X-Mailer: git-send-email 2.7.4
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Initialize brightness_set and blink_set callbacks to
-mt7615_led_set_brightness and mt7615_led_set_blink in order to enable
-LED support in mt7615 driver
+There are several helper macros to convert kelvin to/from Celsius in
+<linux/thermal.h> for thermal drivers.  These are useful for any other
+drivers or subsystems, but it's odd to include <linux/thermal.h> just for
+the helpers.
 
-Tested-by: Deng Qingfang <dengqf6@mail2.sysu.edu.cn>
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- .../net/wireless/mediatek/mt76/mt7615/init.c  | 58 +++++++++++++++++++
- .../net/wireless/mediatek/mt76/mt7615/regs.h  | 27 +++++++++
- 2 files changed, 85 insertions(+)
+This adds a new <linux/units.h> that provides the equivalent inline
+functions for any drivers or subsystems, and switches all the users of
+conversion helpers in <linux/thermal.h> to use <linux/units.h>
+helpers.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/init.c b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
-index eb7c6b9e3d4d..c25ba5fc3cdc 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
-@@ -196,6 +196,58 @@ static const struct ieee80211_iface_combination if_comb[] = {
- 	}
- };
- 
-+static void
-+mt7615_led_set_config(struct led_classdev *led_cdev,
-+		      u8 delay_on, u8 delay_off)
-+{
-+	struct mt7615_dev *dev;
-+	struct mt76_dev *mt76;
-+	u32 val, addr;
-+
-+	mt76 = container_of(led_cdev, struct mt76_dev, led_cdev);
-+	dev = container_of(mt76, struct mt7615_dev, mt76);
-+	val = MT_LED_STATUS_DURATION(0xffff) |
-+	      MT_LED_STATUS_OFF(delay_off) |
-+	      MT_LED_STATUS_ON(delay_on);
-+
-+	addr = mt7615_reg_map(dev, MT_LED_STATUS_0(mt76->led_pin));
-+	mt76_wr(dev, addr, val);
-+	addr = mt7615_reg_map(dev, MT_LED_STATUS_1(mt76->led_pin));
-+	mt76_wr(dev, addr, val);
-+
-+	val = MT_LED_CTRL_REPLAY(mt76->led_pin) |
-+	      MT_LED_CTRL_KICK(mt76->led_pin);
-+	if (mt76->led_al)
-+		val |= MT_LED_CTRL_POLARITY(mt76->led_pin);
-+	addr = mt7615_reg_map(dev, MT_LED_CTRL);
-+	mt76_wr(dev, addr, val);
-+}
-+
-+static int
-+mt7615_led_set_blink(struct led_classdev *led_cdev,
-+		     unsigned long *delay_on,
-+		     unsigned long *delay_off)
-+{
-+	u8 delta_on, delta_off;
-+
-+	delta_off = max_t(u8, *delay_off / 10, 1);
-+	delta_on = max_t(u8, *delay_on / 10, 1);
-+
-+	mt7615_led_set_config(led_cdev, delta_on, delta_off);
-+
-+	return 0;
-+}
-+
-+static void
-+mt7615_led_set_brightness(struct led_classdev *led_cdev,
-+			  enum led_brightness brightness)
-+{
-+	if (!brightness)
-+		mt7615_led_set_config(led_cdev, 0, 0xff);
-+	else
-+		mt7615_led_set_config(led_cdev, 0xff, 0);
-+}
-+
- static void
- mt7615_init_txpower(struct mt7615_dev *dev,
- 		    struct ieee80211_supported_band *sband)
-@@ -383,6 +435,12 @@ int mt7615_register_device(struct mt7615_dev *dev)
- 	mt7615_cap_dbdc_disable(dev);
- 	dev->phy.dfs_state = -1;
- 
-+	/* init led callbacks */
-+	if (IS_ENABLED(CONFIG_MT76_LEDS)) {
-+		dev->mt76.led_cdev.brightness_set = mt7615_led_set_brightness;
-+		dev->mt76.led_cdev.blink_set = mt7615_led_set_blink;
-+	}
-+
- 	ret = mt76_register_device(&dev->mt76, true, mt7615_rates,
- 				   ARRAY_SIZE(mt7615_rates));
- 	if (ret)
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/regs.h b/drivers/net/wireless/mediatek/mt76/mt7615/regs.h
-index 26d121646787..3234ae0761b8 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/regs.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/regs.h
-@@ -345,6 +345,33 @@
- 
- #define MT_TX_AGG_CNT(n)		MT_WF_MIB(0xa8 + ((n) << 2))
- 
-+#define MT_LED_BASE_PHYS		0x80024000
-+#define MT_LED_PHYS(_n)			(MT_LED_BASE_PHYS + (_n))
-+
-+#define MT_LED_CTRL			MT_LED_PHYS(0x00)
-+
-+#define MT_LED_CTRL_REPLAY(_n)		BIT(0 + (8 * (_n)))
-+#define MT_LED_CTRL_POLARITY(_n)	BIT(1 + (8 * (_n)))
-+#define MT_LED_CTRL_TX_BLINK_MODE(_n)	BIT(2 + (8 * (_n)))
-+#define MT_LED_CTRL_TX_MANUAL_BLINK(_n)	BIT(3 + (8 * (_n)))
-+#define MT_LED_CTRL_TX_OVER_BLINK(_n)	BIT(5 + (8 * (_n)))
-+#define MT_LED_CTRL_KICK(_n)		BIT(7 + (8 * (_n)))
-+
-+#define MT_LED_STATUS_0(_n)		MT_LED_PHYS(0x10 + ((_n) * 8))
-+#define MT_LED_STATUS_1(_n)		MT_LED_PHYS(0x14 + ((_n) * 8))
-+#define MT_LED_STATUS_OFF_MASK		GENMASK(31, 24)
-+#define MT_LED_STATUS_OFF(_v)		(((_v) << \
-+					  __ffs(MT_LED_STATUS_OFF_MASK)) & \
-+					 MT_LED_STATUS_OFF_MASK)
-+#define MT_LED_STATUS_ON_MASK		GENMASK(23, 16)
-+#define MT_LED_STATUS_ON(_v)		(((_v) << \
-+					  __ffs(MT_LED_STATUS_ON_MASK)) & \
-+					 MT_LED_STATUS_ON_MASK)
-+#define MT_LED_STATUS_DURATION_MASK	GENMASK(15, 0)
-+#define MT_LED_STATUS_DURATION(_v)	(((_v) << \
-+					  __ffs(MT_LED_STATUS_DURATION_MASK)) &\
-+					 MT_LED_STATUS_DURATION_MASK)
-+
- #define MT_EFUSE_BASE			0x81070000
- #define MT_EFUSE_BASE_CTRL		0x000
- #define MT_EFUSE_BASE_CTRL_EMPTY	BIT(30)
+* v3
+- rename new header name from <linux/temperature.h> to <linux/units.h>
+- add milli_kelvin_to_millicelsius() and millicelsius_to_milli_kelvin() and
+  use them for implementing other helpers
+- add MILLIDEGREE_PER_DEGREE and MILLIDEGREE_PER_DECIDEGREE and replace
+  the hardcoded constants
+- add kelvin_to_celsius() and celsius_to_kelvin() in <linux/units.h>
+- add Reviewed-by tags
+- switch iwlegacy driver to use <linux/units.h> helpers
+- switch iwlwifi driver to use <linux/units.h> helpers
+- remove unused TO_MCELSIUS macro in armada thermal driver
+- switch qcom-vadc-common module to use <linux/units.h> helpers
+
+* v2
+- add deci_kelvin_to_millicelsius_with_offset() in linux/temperature.h
+- stop including linux/temperature.h from linux/thermal.h
+- include <linux/temperature.h> explicitly from thermal drivers
+- fix s/temprature/temperature/ typo in commit log
+- use deci_kelvin_to_millicelsius_with_offset() in ACPI thermal zone driver
+- don't mix up another fix (format string for cellsius value)
+- add Acked-by and Reviewed-by tags
+
+Akinobu Mita (12):
+  add helpers for kelvin to/from Celsius conversion
+  ACPI: thermal: switch to use <linux/units.h> helpers
+  platform/x86: asus-wmi: switch to use <linux/units.h> helpers
+  platform/x86: intel_menlow: switch to use <linux/units.h> helpers
+  thermal: int340x: switch to use <linux/units.h> helpers
+  thermal: intel_pch: switch to use <linux/units.h> helpers
+  nvme: hwmon: switch to use <linux/units.h> helpers
+  thermal: remove kelvin to/from Celsius conversion helpers from
+    <linux/thermal.h>
+  wireless: iwlegacy: use <linux/units.h> helpers
+  wireless: iwlwifi: use <linux/units.h> helpers
+  thermal: armada: remove unused TO_MCELSIUS macro
+  iio: adc: qcom-vadc-common: use <linux/units.h> helpers
+
+ drivers/acpi/thermal.c                             | 36 +++++-----
+ drivers/iio/adc/qcom-vadc-common.c                 |  6 +-
+ drivers/iio/adc/qcom-vadc-common.h                 |  1 -
+ drivers/net/wireless/intel/iwlegacy/4965-mac.c     |  3 +-
+ drivers/net/wireless/intel/iwlegacy/4965.c         | 11 +--
+ drivers/net/wireless/intel/iwlegacy/common.h       |  3 -
+ drivers/net/wireless/intel/iwlwifi/dvm/dev.h       |  5 --
+ drivers/net/wireless/intel/iwlwifi/dvm/devices.c   |  6 +-
+ drivers/nvme/host/hwmon.c                          | 13 ++--
+ drivers/platform/x86/asus-wmi.c                    |  7 +-
+ drivers/platform/x86/intel_menlow.c                |  9 ++-
+ drivers/thermal/armada_thermal.c                   |  2 -
+ .../intel/int340x_thermal/int340x_thermal_zone.c   |  7 +-
+ drivers/thermal/intel/intel_pch_thermal.c          |  3 +-
+ include/linux/thermal.h                            | 11 ---
+ include/linux/units.h                              | 84 ++++++++++++++++++++++
+ 16 files changed, 139 insertions(+), 68 deletions(-)
+ create mode 100644 include/linux/units.h
+
+Cc: Sujith Thomas <sujith.thomas@intel.com>
+Cc: Darren Hart <dvhart@infradead.org>
+Cc: Andy Shevchenko <andy@infradead.org>
+Cc: Zhang Rui <rui.zhang@intel.com>
+Cc: Daniel Lezcano <daniel.lezcano@linaro.org>
+Cc: Amit Kucheria <amit.kucheria@verdurent.com>
+Cc: Jean Delvare <jdelvare@suse.com>
+Cc: Guenter Roeck <linux@roeck-us.net>
+Cc: Keith Busch <kbusch@kernel.org>
+Cc: Jens Axboe <axboe@fb.com>
+Cc: Christoph Hellwig <hch@lst.de>
+Cc: Sagi Grimberg <sagi@grimberg.me>
+Cc: Kalle Valo <kvalo@codeaurora.org>
+Cc: Stanislaw Gruszka <sgruszka@redhat.com>
+Cc: Johannes Berg <johannes.berg@intel.com>
+Cc: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Cc: Luca Coelho <luciano.coelho@intel.com>
+Cc: Intel Linux Wireless <linuxwifi@intel.com>
+Cc: Jonathan Cameron <jic23@kernel.org>
+Cc: Hartmut Knaack <knaack.h@gmx.de>
+Cc: Lars-Peter Clausen <lars@metafoo.de>
+Cc: Peter Meerwald-Stadler <pmeerw@pmeerw.net>
 -- 
-2.21.0
+2.7.4
 
