@@ -2,117 +2,131 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A5FCB11BCCD
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Dec 2019 20:23:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8FE7F11BEF4
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Dec 2019 22:17:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727548AbfLKTXJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 11 Dec 2019 14:23:09 -0500
-Received: from mail-oi1-f196.google.com ([209.85.167.196]:42942 "EHLO
-        mail-oi1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726487AbfLKTXJ (ORCPT
+        id S1726487AbfLKVRl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 11 Dec 2019 16:17:41 -0500
+Received: from s3.sipsolutions.net ([144.76.43.62]:41110 "EHLO
+        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726345AbfLKVRl (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 11 Dec 2019 14:23:09 -0500
-Received: by mail-oi1-f196.google.com with SMTP id j22so14271541oij.9;
-        Wed, 11 Dec 2019 11:23:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=bCTr7fmrdCM12DG9npwXco6rWsJDAoPjlBHUqV/P72g=;
-        b=Yu3O0jeojH9Zes6n3MGhRv6Z2hJetFnAU0HFzlmpIeQ8tXn5icPQNhoDBNAfiDjYi+
-         C4qFwFSudaOksvVtGhfIi3a7yjQ7Lvx/FjlpKW4eVFQzsJZa9NPBjLJ7O9RQzMHp8axa
-         K1OqSEFo60qKYj0d1CwGYjFadxgSp1iY0J/HrrGXkgIAlNZkUc6M0beuVU0PeBqT3gCO
-         H3lKCqhvE1EPBRccaubq0e4EUy5Q4W7eSYx8xTUGF209Ee/IXh4KvwRuJUlLohhCVEIh
-         O4ydXScx5up4u3BoBOT6DgCOoQsOswD/dhDFe60lmoq2CVtHZwWYhXokBqVvRRg1VriV
-         TFLw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=bCTr7fmrdCM12DG9npwXco6rWsJDAoPjlBHUqV/P72g=;
-        b=N8lGH1kBmkb7z6yWBwL9eXcXdiSlnbjDKDfuVzitz4uSMKkgjVjE8q+/FN0zHvgv8i
-         h50gAHS539MVq2ZUL25UXZBiRJ2gT2lFx4IAEEnlxaqhcC/z8Zi0iCoWpNmG9dq9dD77
-         sIyOTq+UvC0wXr3zKD7vv5Gy7uNPzjcxnH4UmGpID521u+Y1ca7f9l2wtgviIKu52fCD
-         vI75Y71hp5wtkRabPzsAfz1UtbUjuAmZWurC9P2Wmv1InvJmc3J5Zg4lSWO8ezh7lkK1
-         Ne3y+eyBOOcP+FS+KwoPBonxivZlaq6xjtifuJGBjICOkCA0XF9qa9PWyfqcMYovtVPj
-         EOeg==
-X-Gm-Message-State: APjAAAXn+1GPKuwDoCRJ0oJ2/UH6gAv/pXZ6Dfb1QIQQu4cc9p0ylQzI
-        UMSQwsu3HiZtxyu1kLM8aQ0=
-X-Google-Smtp-Source: APXvYqyUDGwkPUj7a4qQgGxJBjJeSklRA8D/d1M6Ib+kCUZaHC8bp/tqkEhAmR7AONWoA/pnQT2REQ==
-X-Received: by 2002:a54:4407:: with SMTP id k7mr4200950oiw.56.1576092188199;
-        Wed, 11 Dec 2019 11:23:08 -0800 (PST)
-Received: from localhost.localdomain ([2604:1380:4111:8b00::1])
-        by smtp.gmail.com with ESMTPSA id a74sm1112930oii.37.2019.12.11.11.23.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Dec 2019 11:23:07 -0800 (PST)
-From:   Nathan Chancellor <natechancellor@gmail.com>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        clang-built-linux@googlegroups.com,
-        Nathan Chancellor <natechancellor@gmail.com>
-Subject: [PATCH] ath11k: Remove unnecessary enum scan_priority
-Date:   Wed, 11 Dec 2019 12:22:52 -0700
-Message-Id: <20191211192252.35024-1-natechancellor@gmail.com>
-X-Mailer: git-send-email 2.24.0
+        Wed, 11 Dec 2019 16:17:41 -0500
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.92.3)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1if9MT-0055JU-VA; Wed, 11 Dec 2019 22:17:34 +0100
+Message-ID: <3ca2be96898e9d30c27b2411148d201318e413f2.camel@sipsolutions.net>
+Subject: Re: iwlwifi warnings in 5.5-rc1
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Toke =?ISO-8859-1?Q?H=F8iland-J=F8rgensen?= <toke@redhat.com>,
+        Jens Axboe <axboe@kernel.dk>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Luca Coelho <luciano.coelho@intel.com>
+Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        Networking <netdev@vger.kernel.org>
+Date:   Wed, 11 Dec 2019 22:17:30 +0100
+In-Reply-To: <87tv67ez9p.fsf@toke.dk>
+References: <ceb74ea2-6a1b-4cef-8749-db21a2ee4311@kernel.dk>
+         <9727368004ceef03f72d259b0779c2cf401432e1.camel@sipsolutions.net>
+         <878snjgs5l.fsf@toke.dk>
+         <3420d73e667b01ec64bf0cc9da6232b41e862860.camel@sipsolutions.net>
+         <875zingnzt.fsf@toke.dk>
+         <bfab4987668990ea8d86a98f3e87c3fa31403745.camel@sipsolutions.net>
+         <87tv67ez9p.fsf@toke.dk>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.34.2 (3.34.2-1.fc31) 
 MIME-Version: 1.0
-X-Patchwork-Bot: notify
 Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Clang warns:
+On Wed, 2019-12-11 at 15:02 +0100, Toke Høiland-Jørgensen wrote:
 
-drivers/net/wireless/ath/ath11k/wmi.c:1827:23: warning: implicit
-conversion from enumeration type 'enum wmi_scan_priority' to different
-enumeration type 'enum scan_priority' [-Wenum-conversion]
-        arg->scan_priority = WMI_SCAN_PRIORITY_LOW;
-                           ~ ^~~~~~~~~~~~~~~~~~~~~
-1 warning generated.
+> > 2) GSO/TSO like what we have - it's not really clear how to handle it.
+> >    The airtime estimate will shoot *way* up (64kB frame) once that frame
+> >    enters, and then ... should it "trickle back down" as the generated 
+> >    parts are transmitted? But then the driver needs to split up the
+> >    airtime estimate? Or should it just go back down entirely? On the
+> >    first frame? That might overshoot. On the last frame? Opposite
+> >    problem ...
+> 
+> Well, ideally it would be divided out over the component packets; but
+> yeah, who is going to do that?
 
-wmi_scan_priority and scan_priority have the same values but the wmi one
-has WMI prefixed to the names. Since that enum is already being used,
-get rid of scan_priority and switch its one use to wmi_scan_priority to
-fix this warning.
+I'm not even sure we *can* do this easily - do we know up-front how many
+packets this will expand to? We should know, but it might not be so easy
+given the abstraction layers. We could guess and if it's wrong just set
+it to 0 on any remaining ones.
 
-Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
-Link: https://github.com/ClangBuiltLinux/linux/issues/808
-Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
----
- drivers/net/wireless/ath/ath11k/wmi.h | 11 +----------
- 1 file changed, 1 insertion(+), 10 deletions(-)
+> I think reporting it on the first packet
+> would be the safest if we had to choose. 
 
-diff --git a/drivers/net/wireless/ath/ath11k/wmi.h b/drivers/net/wireless/ath/ath11k/wmi.h
-index 4a518d406bc5..756101656391 100644
---- a/drivers/net/wireless/ath/ath11k/wmi.h
-+++ b/drivers/net/wireless/ath/ath11k/wmi.h
-@@ -2896,15 +2896,6 @@ struct wmi_bcn_offload_ctrl_cmd {
- 	u32 bcn_ctrl_op;
- } __packed;
- 
--enum scan_priority {
--	SCAN_PRIORITY_VERY_LOW,
--	SCAN_PRIORITY_LOW,
--	SCAN_PRIORITY_MEDIUM,
--	SCAN_PRIORITY_HIGH,
--	SCAN_PRIORITY_VERY_HIGH,
--	SCAN_PRIORITY_COUNT,
--};
--
- enum scan_dwelltime_adaptive_mode {
- 	SCAN_DWELL_MODE_DEFAULT = 0,
- 	SCAN_DWELL_MODE_CONSERVATIVE = 1,
-@@ -3056,7 +3047,7 @@ struct scan_req_params {
- 	u32 scan_req_id;
- 	u32 vdev_id;
- 	u32 pdev_id;
--	enum scan_priority scan_priority;
-+	enum wmi_scan_priority scan_priority;
- 	union {
- 		struct {
- 			u32 scan_ev_started:1,
--- 
-2.24.0
+Agree.
+
+> Also, ideally we would want the
+> GSO/TSO mechanism to lower the size of the superpackets at lower rates
+> (does it?). At higher rates this matters less...
+
+Well TCP does limit (pacing shift) the amount of outstanding data, so if
+it's _really_ slow I guess it will also limit the size of the
+superpackets?
+
+It's really just an artifact of our software implementation that we
+report the SKBs back as used with partial content. Maybe we shouldn't
+even do that, since they weren't generated by mac80211 in the first
+place, and only report the original skb or something.
+
+> > 3) I'm not quite convinced that all drivers report the TX rate
+> >    completely correctly in the status, some don't even use this path
+> >    but the ieee80211_tx_status_ext() which doesn't update the rate.
+> > 
+> > 4) Probably most importantly, this is completely broken with HE because
+> >    there's currently no way to report HE rates in the TX status at all!
+> >    I just worked around that in our driver for 'iw' reporting purposes
+> >    by implementing the rate reporting in the sta_statistics callback,
+> >    but that data won't be used by the airtime estimates.
+> 
+> Hmm, yeah, both of those are good points. I guess I just kinda assumed
+> that the drivers were already doing the right thing there... :)
+
+I'm not really sure I want to rely on this - this was never really
+needed *functionally*, just from a *statistics* point of view (e.g. "iw
+link" or such).
+
+> > Now, (1) probably doesn't matter, the estimates don't need to be that
+> > accurate. (2) I'm not sure how to solve; (3) and (4) could both be
+> > solved by having some mechanism of the rate scaling to tell us what the
+> > current rate is whenever it updates, rather than relying on the
+> > last_rate. Really we should do that much more, and even phase out
+> > last_rate entirely, it's a stupid concept.
+> 
+> Yes, that last bit would be good!
+
+We already partially have this, we have a 'get best rate' or so callback
+in the rate scaling, we'd just have to extend it to the driver ops for
+offloaded rate scaling.
+
+Ideally, it'd be a function call from the rate scaling to mac80211 so we
+don't have to call a function every time we need the value, but the rate
+scaling just calls us whenever it updates. This would even work with
+iwlwifi's offloaded algorithm - it notifies the host on all changes.
+
+> > There's an additional wrinkle here - what about HE scheduled mode, where
+> > the AP decided when and at what rate you're allowed to send? We don't
+> > report that at all, not even as part of rate scaling, since rate scaling
+> > only affects *our* decision, not when we send as a response to a trigger
+> > frame. This is _still_ relevant for AQL, but there we can only see what
+> > the AP used last (**), but we don't track that now nor do we track the
+> > proportion of packets that we sent triggered vs. normal medium
+> > access...
+> 
+> Huh, wasn't aware that was a thing in HE; that's cool! And yeah, could
+> have interesting interactions with AQL...
+
+Yeah ...
+
+johannes
 
