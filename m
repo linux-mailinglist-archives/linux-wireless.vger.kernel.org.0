@@ -2,73 +2,72 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EFDE011A4C9
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Dec 2019 08:05:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E35511A55B
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Dec 2019 08:48:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726687AbfLKHFV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 11 Dec 2019 02:05:21 -0500
-Received: from ni.piap.pl ([195.187.100.5]:32816 "EHLO ni.piap.pl"
+        id S1728154AbfLKHsn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 11 Dec 2019 02:48:43 -0500
+Received: from mail.kernel.org ([198.145.29.99]:53350 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725800AbfLKHFU (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 11 Dec 2019 02:05:20 -0500
-X-Greylist: delayed 414 seconds by postgrey-1.27 at vger.kernel.org; Wed, 11 Dec 2019 02:05:19 EST
-Received: from t19.piap.pl (OSB1819.piap.pl [10.0.9.19])
-        (using TLSv1.2 with cipher AES256-GCM-SHA384 (256/256 bits))
+        id S1726983AbfLKHsn (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 11 Dec 2019 02:48:43 -0500
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ni.piap.pl (Postfix) with ESMTPSA id 56EF744395F;
-        Wed, 11 Dec 2019 07:58:21 +0100 (CET)
-DKIM-Filter: OpenDKIM Filter v2.11.0 ni.piap.pl 56EF744395F
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=piap.pl; s=mail;
-        t=1576047501; bh=BFS6xN/3hLjP/0lc1y+PV7Gn73ep48NKRu0MxUiCCjI=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=I6s+fdID+SeksYo02ECy1XG92biOLJMw9ej9XdI6XnF0e/5q+KK8XwnzbtabkouNU
-         aZi7XGppuMpRTz/HDc/FBVku2ZwmcEjdbTE//xFUu/WIEQPsV5AxWr9irgZWIxG4km
-         nlSAItIx2R5HLb/i9ObdwCQ0/wnjRNVOp9z0L8H8=
-From:   khalasa@piap.pl (Krzysztof =?utf-8?Q?Ha=C5=82asa?=)
-To:     Nicolas Cavallari <nicolas.cavallari@green-communications.fr>
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless@vger.kernel.org, Kalle Valo <kvalo@codeaurora.org>
-Subject: Re: [RFC] Allow userspace to reset IBSS stations to fix aggregation issue
-References: <m34l02mh71.fsf@t19.piap.pl>
-        <20191209102808.12014-1-nicolas.cavallari@green-communications.fr>
-Date:   Wed, 11 Dec 2019 07:58:20 +0100
-In-Reply-To: <20191209102808.12014-1-nicolas.cavallari@green-communications.fr>
-        (Nicolas Cavallari's message of "Mon, 9 Dec 2019 11:28:05 +0100")
-Message-ID: <m3h827jqlv.fsf@t19.piap.pl>
+        by mail.kernel.org (Postfix) with ESMTPSA id 8893420637;
+        Wed, 11 Dec 2019 07:48:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1576050523;
+        bh=4JZ8e8dgIBsEwHJUXH82+M2U3AS11Z7JV21zGuOxey4=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=WvN9ujTG/rkSPBA5i7NrgPvxm87aTaJM2wrtcgGLTFab2somSSD3B4Z+GZU8Ms6QA
+         zOQO35JhqqwFaL/g+IQb5DBi6vgBbtOlvQPR97Ec+9DRQta/7N8go6pYKwjnu4M+mz
+         xRVtBveDUoLfGaCLOGRA5d2h0eCuUQDA74LOjyYI=
+Date:   Wed, 11 Dec 2019 08:48:40 +0100
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Sasha Levin <sashal@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Marcel Holtmann <marcel@holtmann.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH AUTOSEL 4.14 077/130] rfkill: allocate static minor
+Message-ID: <20191211074840.GH398293@kroah.com>
+References: <20191210220301.13262-1-sashal@kernel.org>
+ <20191210220301.13262-77-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-KLMS-Rule-ID: 4
-X-KLMS-Message-Action: skipped
-X-KLMS-AntiSpam-Status: not scanned, whitelist
-X-KLMS-AntiPhishing: not scanned, whitelist
-X-KLMS-AntiVirus: Kaspersky Security 8.0 for Linux Mail Server, version 8.0.1.721, not scanned, whitelist
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191210220301.13262-77-sashal@kernel.org>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Nicolas,
+On Tue, Dec 10, 2019 at 05:02:08PM -0500, Sasha Levin wrote:
+> From: Marcel Holtmann <marcel@holtmann.org>
+> 
+> [ Upstream commit 8670b2b8b029a6650d133486be9d2ace146fd29a ]
+> 
+> udev has a feature of creating /dev/<node> device-nodes if it finds
+> a devnode:<node> modalias. This allows for auto-loading of modules that
+> provide the node. This requires to use a statically allocated minor
+> number for misc character devices.
+> 
+> However, rfkill uses dynamic minor numbers and prevents auto-loading
+> of the module. So allocate the next static misc minor number and use
+> it for rfkill.
+> 
+> Signed-off-by: Marcel Holtmann <marcel@holtmann.org>
+> Link: https://lore.kernel.org/r/20191024174042.19851-1-marcel@holtmann.org
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>  include/linux/miscdevice.h | 1 +
+>  net/rfkill/core.c          | 9 +++++++--
+>  2 files changed, 8 insertions(+), 2 deletions(-)
 
-Nicolas Cavallari <nicolas.cavallari@green-communications.fr> writes:
+This is not needed in older kernels, please do not backport it unless
+the networking developers _REALLY_ think it is necessary.
 
-> I encountered the same issue in an IBSS-RSN network, where quick reboot
-> of a station would cause issues with aggregation because the kernel is
-> not aware of the reboot.
->
-> I figured out that since wpa_supplicant already detect reboots, the
-> simplest way to fix it would be for wpa_supplicant to reset the entire
-> state of the station in the kernel, instead of just resetting keys and
-> port.
+thanks,
 
-Just to make sure everybody is aware that it would only be a partial fix
-- unencrypted ad hoc mode (the simplest thing available) doesn't need
-any userspace and thus must be fixed in the kernel. Alternatively this
-functionality may be moved to wpa_supplicant and only then userspace fix
-could really fix it completely.
---=20
-Krzysztof Halasa
-
-=C5=81UKASIEWICZ Research Network
-Industrial Research Institute for Automation and Measurements PIAP
-Al. Jerozolimskie 202, 02-486 Warsaw, Poland
+greg k-h
