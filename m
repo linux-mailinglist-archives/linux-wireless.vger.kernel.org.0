@@ -2,129 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AFF6511AE2D
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Dec 2019 15:47:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CB95211AE62
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Dec 2019 15:53:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730093AbfLKOrP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 11 Dec 2019 09:47:15 -0500
-Received: from us-smtp-2.mimecast.com ([205.139.110.61]:52993 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1730078AbfLKOrP (ORCPT
+        id S1729829AbfLKOwq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 11 Dec 2019 09:52:46 -0500
+Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:23452 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1728265AbfLKOwq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 11 Dec 2019 09:47:15 -0500
+        Wed, 11 Dec 2019 09:52:46 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1576075633;
+        s=mimecast20190719; t=1576075965;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=uirOhgSvjq4DT4EarKgWh3oOvWR/NL1lmoArYsaFvfU=;
-        b=XYf6iYdVDT4VPrsX6WrA/nWXGMlz37X59Dzc7pxkdyXfVADN/6apgP9xak83VCzZIocjuT
-        KlRxFFPJHKt2Q4jq6LzTp/B0pgDncskuUsROp/ZX2Si+yVxTohZCuhGDi+arRALBK523NH
-        /JyewvcEE6RYAwuMKuXupE/Q0PnjHmw=
-Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
- [209.85.208.197]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-342-ijGJlVgYOuS7qzmpRjSVgw-1; Wed, 11 Dec 2019 09:47:12 -0500
-Received: by mail-lj1-f197.google.com with SMTP id 140so2138661ljj.3
-        for <linux-wireless@vger.kernel.org>; Wed, 11 Dec 2019 06:47:12 -0800 (PST)
+         content-transfer-encoding:content-transfer-encoding;
+        bh=cRlO5uubkPHkhMBspZCc2IkOi9uLD5U64xLEgqnE2Ng=;
+        b=VfuENVRJ3kAPAS5DMsxdLAlA3kyiLXp5CXh/5mR1ouZkFCC+ZWfv1E1ucKfILOfDKMn8rE
+        Gv35Lrf/cyybQUw4+Ubi47LKpeZzy3yUL+ijWKzHqR3qItTc/suUf8EZS9vN4Eu6gV83gy
+        /5BjUhzYZZ2aQ7zqSLHwToq1brEFSCg=
+Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
+ [209.85.167.69]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-342-n2cWVv03NfCEGIFuXBWNLg-1; Wed, 11 Dec 2019 09:52:41 -0500
+Received: by mail-lf1-f69.google.com with SMTP id d6so2970996lfl.3
+        for <linux-wireless@vger.kernel.org>; Wed, 11 Dec 2019 06:52:41 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
-         :message-id:mime-version:content-transfer-encoding;
-        bh=DrlMxGv0pYjq5Gdk23gjEZddH1IAa/lFb9hEecJndV4=;
-        b=Lji4yuH5T7gnFKwuV/kZv8qW/Xk2kaYYoIwZaTUYUrqZGUkoOrWZfhsqbAHNOPA3Iw
-         +47vd9JIClV73M1Y7m440oZ0UzYbhkegONgJDalHbnaG5mlYpqu48oyvMNMSDLxenoXL
-         ZQZbLQFNKDG6QpjWwqNC2YKLRxo5qK98UO5Kfl+LALWVCSLE/oHtO+baxo2hohqUfGJk
-         Tn59UM5x1X3pWRkSeiTnQKydlMvbUUKWh9gho+nzf7rpXuhP3/EBPIzH7lG9Al1BhdDH
-         g9Ur6RHFYVLQhHRj5pVv/2o4RanT20wYsacFrRrt/wBuFxFLgnCc3Cc0Sl14MIr7rF8w
-         O6mA==
-X-Gm-Message-State: APjAAAUKX+Mqs/NgvLCf7lV9gpOsxkQTxT3KklOf89t1oekFbE51EygT
-        GTpyaqL3lZ8t6uayyWpvT74dsZ7SOKTt5oLiaVY+UWNKYDsTKHBgCzxo9GgEoLM8SgJE+DpdPvu
-        rwgbtmv6yRQciCB41achbIM6oPdc=
-X-Received: by 2002:a2e:99d0:: with SMTP id l16mr2374137ljj.1.1576075630891;
-        Wed, 11 Dec 2019 06:47:10 -0800 (PST)
-X-Google-Smtp-Source: APXvYqzV4TVbG7SBbl7pnNaA6hSPeBIeHzeUKgWyTtLqludm96u74ZEBRobOs16/al35Shb/4+N+TA==
-X-Received: by 2002:a2e:99d0:: with SMTP id l16mr2374126ljj.1.1576075630705;
-        Wed, 11 Dec 2019 06:47:10 -0800 (PST)
-Received: from alrua-x1.borgediget.toke.dk ([2a0c:4d80:42:443::2])
-        by smtp.gmail.com with ESMTPSA id c189sm1312552lfg.75.2019.12.11.06.47.09
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=D5yiVuP3AaqyXU3FTXqB0XygHNzWMsUmIJQkHT0KzxA=;
+        b=dSc42Nmv43q+DWXqCwOBCCqsCXu7inRd8D5i53t3dpJ32jC7tcUphKuWuaAFeoxEHT
+         m/2lLcGSscbGXBmRJ8xlgU+/+YsecEFwnKjteN6rgArxHzROCGwOE9/hilL9H3TgI28N
+         jhbFD3vNeh9uKz2RU+WykRZW5FMMq97kyF9hdQhb7qG4htMjHHkF/xWcPDdXTFeyyTH4
+         kk3wsIa0Jo9lHFNwP7xjmg/0g51GcZz385TQoF308rU4rnnBQW2koV/kW/YscQO/GhoA
+         Dvj6LCKFYNuqzXRQeJStpvyW3VRLBT+6Glsai/aUooZbJYNg1Q4liYhBk6JNOsq0hi70
+         Dj+w==
+X-Gm-Message-State: APjAAAX23oXOTv7swWDtMyQXOXZSzeYGlNjHC1kHSZD8hzpj87t4rxYA
+        qmQDzY/0U/5DlC5brcpP2xP2kWo3NhJABORUsVhLOO+AelPxhOUwYMDNOC9owEJ+HvtX7ClOuLi
+        479zf+0V1fSuiNwqEkqA2EMo+5AE=
+X-Received: by 2002:a2e:3e11:: with SMTP id l17mr2403268lja.45.1576075959772;
+        Wed, 11 Dec 2019 06:52:39 -0800 (PST)
+X-Google-Smtp-Source: APXvYqx64vgszgWxJkOp/5uXIlG12jevtxZZIjUOjAFSYLd/cByfoJacYghRn6ggT5jiccCyfojoHw==
+X-Received: by 2002:a2e:3e11:: with SMTP id l17mr2403259lja.45.1576075959633;
+        Wed, 11 Dec 2019 06:52:39 -0800 (PST)
+Received: from alrua-x1.borgediget.toke.dk ([45.145.92.2])
+        by smtp.gmail.com with ESMTPSA id o19sm1557300lji.54.2019.12.11.06.52.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Dec 2019 06:47:10 -0800 (PST)
+        Wed, 11 Dec 2019 06:52:37 -0800 (PST)
 Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-        id 4F04418033F; Wed, 11 Dec 2019 15:47:08 +0100 (CET)
-From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        Jens Axboe <axboe@kernel.dk>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>
-Cc:     "linux-wireless\@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        Networking <netdev@vger.kernel.org>
-Subject: Re: iwlwifi warnings in 5.5-rc1
-In-Reply-To: <b14519e81b6d2335bd0cb7dcf074f0d1a4eec707.camel@sipsolutions.net>
-References: <ceb74ea2-6a1b-4cef-8749-db21a2ee4311@kernel.dk> <9727368004ceef03f72d259b0779c2cf401432e1.camel@sipsolutions.net> <878snjgs5l.fsf@toke.dk> <3420d73e667b01ec64bf0cc9da6232b41e862860.camel@sipsolutions.net> <875zingnzt.fsf@toke.dk> <bfab4987668990ea8d86a98f3e87c3fa31403745.camel@sipsolutions.net> <14bbfcc8408500704c46701251546e7ff65c6fd0.camel@sipsolutions.net> <87r21bez5g.fsf@toke.dk> <b14519e81b6d2335bd0cb7dcf074f0d1a4eec707.camel@sipsolutions.net>
-X-Clacks-Overhead: GNU Terry Pratchett
-Date:   Wed, 11 Dec 2019 15:47:08 +0100
-Message-ID: <87k172gbrn.fsf@toke.dk>
+        id D358818033F; Wed, 11 Dec 2019 15:52:35 +0100 (CET)
+From:   =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
+To:     linux-wireless@vger.kernel.org
+Cc:     =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
+Subject: [PATCH 0/2] mac80211: Turn AQL into a proper NL80211_EXT_FEATURE flag
+Date:   Wed, 11 Dec 2019 15:52:28 +0100
+Message-Id: <20191211145230.200132-1-toke@redhat.com>
+X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
-X-MC-Unique: ijGJlVgYOuS7qzmpRjSVgw-1
+X-MC-Unique: n2cWVv03NfCEGIFuXBWNLg-1
 X-Mimecast-Spam-Score: 0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Johannes Berg <johannes@sipsolutions.net> writes:
+It turns out that there are some issues with just enabling AQL for all
+drivers; so instead, this series turns it into an NL80211_EXT_FEATURE
+flag, and only enables it for ath10k.
 
-> On Wed, 2019-12-11 at 15:04 +0100, Toke H=C3=B8iland-J=C3=B8rgensen wrote=
-:
->> Johannes Berg <johannes@sipsolutions.net> writes:
->>=20
->> > Btw, there's *another* issue. You said in the commit log:
->> >=20
->> >     This patch does *not* include any mechanism to wake a throttled TX=
-Q again,
->> >     on the assumption that this will happen anyway as a side effect of=
- whatever
->> >     freed the skb (most commonly a TX completion).
->> >=20
->> > Thinking about this some more, I'm not convinced that this assumption
->> > holds. You could have been stopped due to the global limit, and now yo=
-u
->> > wake some queue but the TXQ is empty - now you should reschedule some
->> > *other* TXQ since the global limit had kicked in, not the per-TXQ limi=
-t,
->> > and prevented dequeuing, no?
->>=20
->> Well if you hit the global limit that means you have 24ms worth of data
->> queued in the hardware; those should be completed in turn, and enable
->> more to be dequeued, no?
->
-> Yes, but on which queues?
->
-> Say you have some queues - some (Q1-Qn) got a LOT of traffic, and
-> another (Q0) just has some interactive traffic.
->
-> You could then end up in a situation where you have 24ms queued up on
-> Q1-Qn (with n high enough to not have hit the per-queue AQL limit),
-> right?
->
-> Say also the last frame on Q0 was dequeued by the hardware, but the
-> tx_dequeue() got NULL because of the AQL limit having been eaten up by
-> all the packets on Q1-Qn.
->
-> Now you'll no longer get a new dequeue attempt on Q0 (it was already
-> empty last time, so no hardware reclaim to trigger new dequeues), and a
-> new dequeue on the *other* queues will not do anything for this queue.
+Some coordination to make sure the mac80211 and the driver patch goes
+into the same -rc would be good.
 
-Oh, right, I see; yeah, that could probably happen. I guess we could
-either kick all available queues whenever the global limit goes from
-"above" to "below"; or we could remove the "return NULL" logic from
-tx_dequeue() and rely on next_txq() to throttle. I think the latter is
-probably simpler, but I'm a little worried that the throttling will
-become too lax (because the driver can keep dequeueing in the same
-scheduling round)...
+Toke H=C3=B8iland-J=C3=B8rgensen (2):
+  mac80211: Turn AQL into an NL80211_EXT_FEATURE
+  ath10k: Enable Airtime Queue Limits feature
 
--Toke
+ drivers/net/wireless/ath/ath10k/mac.c |  1 +
+ include/uapi/linux/nl80211.h          |  1 +
+ net/mac80211/debugfs_sta.c            | 76 ++++++++++++++++++++-------
+ net/mac80211/main.c                   |  4 +-
+ net/mac80211/sta_info.c               |  3 ++
+ net/mac80211/sta_info.h               |  1 -
+ net/mac80211/tx.c                     |  4 +-
+ 7 files changed, 66 insertions(+), 24 deletions(-)
+
+--=20
+2.24.0
 
