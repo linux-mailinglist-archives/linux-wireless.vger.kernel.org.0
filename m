@@ -2,126 +2,129 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C961B11ADE8
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Dec 2019 15:40:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AFF6511AE2D
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Dec 2019 15:47:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730223AbfLKOjw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 11 Dec 2019 09:39:52 -0500
-Received: from mail-pg1-f196.google.com ([209.85.215.196]:45798 "EHLO
-        mail-pg1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729991AbfLKOjv (ORCPT
+        id S1730093AbfLKOrP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 11 Dec 2019 09:47:15 -0500
+Received: from us-smtp-2.mimecast.com ([205.139.110.61]:52993 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1730078AbfLKOrP (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 11 Dec 2019 09:39:51 -0500
-Received: by mail-pg1-f196.google.com with SMTP id b9so10465357pgk.12;
-        Wed, 11 Dec 2019 06:39:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=3VEcdWQti206JWCDW3qI0BTxZ1lYQXCJ5XH3cd981NQ=;
-        b=jH82xtrYMxhgUcHQRPKqjw7ZKlvPgF+xBtcnxGsL7fh4pjdfao/pZu4Q6upvCNHIh1
-         a+G4WLTV+T+1yx2XyKqc1y8xCv1StbbjpoaBkIg8NeB3ZaZgozkM7fploPXJ9z4wTfQ+
-         Ee3DwRsSc0ZQHdjw5TCUYZzZjT/bppcgvXa+XIdYMuUnfrK1g7Ezy9pFVmVYZ5xkzhyz
-         fcFVbP3jXuwNeaeDXX7CkGxikmhPQRcLVgS21AwByB3NK8Gi6kZ+6aaemxXGyHfeFQBX
-         Jt2PbVWKRidv9CFTbWklTCKJjHPNRfVDQKtXDW3IQIf1C5PkhEmElEAQpjPQPl7rnVYf
-         OMLA==
+        Wed, 11 Dec 2019 09:47:15 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1576075633;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=uirOhgSvjq4DT4EarKgWh3oOvWR/NL1lmoArYsaFvfU=;
+        b=XYf6iYdVDT4VPrsX6WrA/nWXGMlz37X59Dzc7pxkdyXfVADN/6apgP9xak83VCzZIocjuT
+        KlRxFFPJHKt2Q4jq6LzTp/B0pgDncskuUsROp/ZX2Si+yVxTohZCuhGDi+arRALBK523NH
+        /JyewvcEE6RYAwuMKuXupE/Q0PnjHmw=
+Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
+ [209.85.208.197]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-342-ijGJlVgYOuS7qzmpRjSVgw-1; Wed, 11 Dec 2019 09:47:12 -0500
+Received: by mail-lj1-f197.google.com with SMTP id 140so2138661ljj.3
+        for <linux-wireless@vger.kernel.org>; Wed, 11 Dec 2019 06:47:12 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=3VEcdWQti206JWCDW3qI0BTxZ1lYQXCJ5XH3cd981NQ=;
-        b=jxfQBdxD65GdbDlQPpTYmT5nPdbaT9leMn5bX8Ou7FwB727x1WduhZuu8W0YzPbr+a
-         Q7yz5E2xPtzzb0zHKuGklOVOb+BGsDn6Q7NPZY1By3xIXEk8P+DuixcDPcgFP1EW+n8S
-         ARi+T99RAP3BYWirbZrjewXMRdvjNlowhjh2F9TSqcbUy9NsGrYnFH4bOXLU5ODoYra+
-         k5uqLeqjV19HSI1XFUEQx8wL6kBhDSR1u2aPn+7BA5BrOdZUj8alvZ2+xkPeokXUMpkv
-         ZqF+4hhuanH0y0Q68yM80+8DbxgU5go/zDGJ/KorTY05Gj5UzEQNl2HwO+UTKiI+JAN5
-         W6Nw==
-X-Gm-Message-State: APjAAAXPB2U3z38ghY8H5GjgbiqxOCwKLniDFE2e08h6F2vTnH3Y5b5G
-        aaNfdmTV71MbwQ3ihvlj+HQ=
-X-Google-Smtp-Source: APXvYqwgEvnp2ndBwiIE94Wh4cRVzfCw2QFRf/3PG5eerLtk1/YgeA2uxE8wypG49aWWT3GbeFUcFg==
-X-Received: by 2002:a63:fd43:: with SMTP id m3mr4566724pgj.164.1576075190151;
-        Wed, 11 Dec 2019 06:39:50 -0800 (PST)
-Received: from localhost.localdomain ([240f:34:212d:1:368e:e048:68f1:84e7])
-        by smtp.gmail.com with ESMTPSA id q11sm3444239pff.111.2019.12.11.06.39.46
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Wed, 11 Dec 2019 06:39:49 -0800 (PST)
-From:   Akinobu Mita <akinobu.mita@gmail.com>
-To:     linux-nvme@lists.infradead.org, linux-hwmon@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     Akinobu Mita <akinobu.mita@gmail.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
-Subject: [PATCH v3 12/12] iio: adc: qcom-vadc-common: use <linux/units.h> helpers
-Date:   Wed, 11 Dec 2019 23:38:19 +0900
-Message-Id: <1576075099-3441-13-git-send-email-akinobu.mita@gmail.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1576075099-3441-1-git-send-email-akinobu.mita@gmail.com>
-References: <1576075099-3441-1-git-send-email-akinobu.mita@gmail.com>
+        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
+         :message-id:mime-version:content-transfer-encoding;
+        bh=DrlMxGv0pYjq5Gdk23gjEZddH1IAa/lFb9hEecJndV4=;
+        b=Lji4yuH5T7gnFKwuV/kZv8qW/Xk2kaYYoIwZaTUYUrqZGUkoOrWZfhsqbAHNOPA3Iw
+         +47vd9JIClV73M1Y7m440oZ0UzYbhkegONgJDalHbnaG5mlYpqu48oyvMNMSDLxenoXL
+         ZQZbLQFNKDG6QpjWwqNC2YKLRxo5qK98UO5Kfl+LALWVCSLE/oHtO+baxo2hohqUfGJk
+         Tn59UM5x1X3pWRkSeiTnQKydlMvbUUKWh9gho+nzf7rpXuhP3/EBPIzH7lG9Al1BhdDH
+         g9Ur6RHFYVLQhHRj5pVv/2o4RanT20wYsacFrRrt/wBuFxFLgnCc3Cc0Sl14MIr7rF8w
+         O6mA==
+X-Gm-Message-State: APjAAAUKX+Mqs/NgvLCf7lV9gpOsxkQTxT3KklOf89t1oekFbE51EygT
+        GTpyaqL3lZ8t6uayyWpvT74dsZ7SOKTt5oLiaVY+UWNKYDsTKHBgCzxo9GgEoLM8SgJE+DpdPvu
+        rwgbtmv6yRQciCB41achbIM6oPdc=
+X-Received: by 2002:a2e:99d0:: with SMTP id l16mr2374137ljj.1.1576075630891;
+        Wed, 11 Dec 2019 06:47:10 -0800 (PST)
+X-Google-Smtp-Source: APXvYqzV4TVbG7SBbl7pnNaA6hSPeBIeHzeUKgWyTtLqludm96u74ZEBRobOs16/al35Shb/4+N+TA==
+X-Received: by 2002:a2e:99d0:: with SMTP id l16mr2374126ljj.1.1576075630705;
+        Wed, 11 Dec 2019 06:47:10 -0800 (PST)
+Received: from alrua-x1.borgediget.toke.dk ([2a0c:4d80:42:443::2])
+        by smtp.gmail.com with ESMTPSA id c189sm1312552lfg.75.2019.12.11.06.47.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Dec 2019 06:47:10 -0800 (PST)
+Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
+        id 4F04418033F; Wed, 11 Dec 2019 15:47:08 +0100 (CET)
+From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        Jens Axboe <axboe@kernel.dk>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Luca Coelho <luciano.coelho@intel.com>
+Cc:     "linux-wireless\@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        Networking <netdev@vger.kernel.org>
+Subject: Re: iwlwifi warnings in 5.5-rc1
+In-Reply-To: <b14519e81b6d2335bd0cb7dcf074f0d1a4eec707.camel@sipsolutions.net>
+References: <ceb74ea2-6a1b-4cef-8749-db21a2ee4311@kernel.dk> <9727368004ceef03f72d259b0779c2cf401432e1.camel@sipsolutions.net> <878snjgs5l.fsf@toke.dk> <3420d73e667b01ec64bf0cc9da6232b41e862860.camel@sipsolutions.net> <875zingnzt.fsf@toke.dk> <bfab4987668990ea8d86a98f3e87c3fa31403745.camel@sipsolutions.net> <14bbfcc8408500704c46701251546e7ff65c6fd0.camel@sipsolutions.net> <87r21bez5g.fsf@toke.dk> <b14519e81b6d2335bd0cb7dcf074f0d1a4eec707.camel@sipsolutions.net>
+X-Clacks-Overhead: GNU Terry Pratchett
+Date:   Wed, 11 Dec 2019 15:47:08 +0100
+Message-ID: <87k172gbrn.fsf@toke.dk>
+MIME-Version: 1.0
+X-MC-Unique: ijGJlVgYOuS7qzmpRjSVgw-1
+X-Mimecast-Spam-Score: 0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This switches the qcom-vadc-common to use milli_kelvin_to_millicelsius()
-in <linux/units.h>.
+Johannes Berg <johannes@sipsolutions.net> writes:
 
-Cc: Jonathan Cameron <jic23@kernel.org>
-Cc: Hartmut Knaack <knaack.h@gmx.de>
-Cc: Lars-Peter Clausen <lars@metafoo.de>
-Cc: Peter Meerwald-Stadler <pmeerw@pmeerw.net>
-Signed-off-by: Akinobu Mita <akinobu.mita@gmail.com>
----
-* New patch from v3
+> On Wed, 2019-12-11 at 15:04 +0100, Toke H=C3=B8iland-J=C3=B8rgensen wrote=
+:
+>> Johannes Berg <johannes@sipsolutions.net> writes:
+>>=20
+>> > Btw, there's *another* issue. You said in the commit log:
+>> >=20
+>> >     This patch does *not* include any mechanism to wake a throttled TX=
+Q again,
+>> >     on the assumption that this will happen anyway as a side effect of=
+ whatever
+>> >     freed the skb (most commonly a TX completion).
+>> >=20
+>> > Thinking about this some more, I'm not convinced that this assumption
+>> > holds. You could have been stopped due to the global limit, and now yo=
+u
+>> > wake some queue but the TXQ is empty - now you should reschedule some
+>> > *other* TXQ since the global limit had kicked in, not the per-TXQ limi=
+t,
+>> > and prevented dequeuing, no?
+>>=20
+>> Well if you hit the global limit that means you have 24ms worth of data
+>> queued in the hardware; those should be completed in turn, and enable
+>> more to be dequeued, no?
+>
+> Yes, but on which queues?
+>
+> Say you have some queues - some (Q1-Qn) got a LOT of traffic, and
+> another (Q0) just has some interactive traffic.
+>
+> You could then end up in a situation where you have 24ms queued up on
+> Q1-Qn (with n high enough to not have hit the per-queue AQL limit),
+> right?
+>
+> Say also the last frame on Q0 was dequeued by the hardware, but the
+> tx_dequeue() got NULL because of the AQL limit having been eaten up by
+> all the packets on Q1-Qn.
+>
+> Now you'll no longer get a new dequeue attempt on Q0 (it was already
+> empty last time, so no hardware reclaim to trigger new dequeues), and a
+> new dequeue on the *other* queues will not do anything for this queue.
 
- drivers/iio/adc/qcom-vadc-common.c | 6 +++---
- drivers/iio/adc/qcom-vadc-common.h | 1 -
- 2 files changed, 3 insertions(+), 4 deletions(-)
+Oh, right, I see; yeah, that could probably happen. I guess we could
+either kick all available queues whenever the global limit goes from
+"above" to "below"; or we could remove the "return NULL" logic from
+tx_dequeue() and rely on next_txq() to throttle. I think the latter is
+probably simpler, but I'm a little worried that the throttling will
+become too lax (because the driver can keep dequeueing in the same
+scheduling round)...
 
-diff --git a/drivers/iio/adc/qcom-vadc-common.c b/drivers/iio/adc/qcom-vadc-common.c
-index dcd7fb5..2bb78d1 100644
---- a/drivers/iio/adc/qcom-vadc-common.c
-+++ b/drivers/iio/adc/qcom-vadc-common.c
-@@ -6,6 +6,7 @@
- #include <linux/log2.h>
- #include <linux/err.h>
- #include <linux/module.h>
-+#include <linux/units.h>
- 
- #include "qcom-vadc-common.h"
- 
-@@ -236,8 +237,7 @@ static int qcom_vadc_scale_die_temp(const struct vadc_linear_graph *calib_graph,
- 		voltage = 0;
- 	}
- 
--	voltage -= KELVINMIL_CELSIUSMIL;
--	*result_mdec = voltage;
-+	*result_mdec = milli_kelvin_to_millicelsius(voltage);
- 
- 	return 0;
- }
-@@ -325,7 +325,7 @@ static int qcom_vadc_scale_hw_calib_die_temp(
- {
- 	*result_mdec = qcom_vadc_scale_code_voltage_factor(adc_code,
- 				prescale, data, 2);
--	*result_mdec -= KELVINMIL_CELSIUSMIL;
-+	*result_mdec = milli_kelvin_to_millicelsius(*result_mdec);
- 
- 	return 0;
- }
-diff --git a/drivers/iio/adc/qcom-vadc-common.h b/drivers/iio/adc/qcom-vadc-common.h
-index bbb1fa0..e074902a 100644
---- a/drivers/iio/adc/qcom-vadc-common.h
-+++ b/drivers/iio/adc/qcom-vadc-common.h
-@@ -38,7 +38,6 @@
- #define VADC_AVG_SAMPLES_MAX			512
- #define ADC5_AVG_SAMPLES_MAX			16
- 
--#define KELVINMIL_CELSIUSMIL			273150
- #define PMIC5_CHG_TEMP_SCALE_FACTOR		377500
- #define PMIC5_SMB_TEMP_CONSTANT			419400
- #define PMIC5_SMB_TEMP_SCALE_FACTOR		356
--- 
-2.7.4
+-Toke
 
