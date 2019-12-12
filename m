@@ -2,86 +2,87 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8241D11CC55
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Dec 2019 12:35:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BFDA011D037
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Dec 2019 15:50:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729032AbfLLLfC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 12 Dec 2019 06:35:02 -0500
-Received: from mail-il1-f198.google.com ([209.85.166.198]:50007 "EHLO
-        mail-il1-f198.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728968AbfLLLfB (ORCPT
+        id S1728939AbfLLOuW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 12 Dec 2019 09:50:22 -0500
+Received: from s3.sipsolutions.net ([144.76.43.62]:42610 "EHLO
+        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728905AbfLLOuW (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 12 Dec 2019 06:35:01 -0500
-Received: by mail-il1-f198.google.com with SMTP id t13so1366635ilk.16
-        for <linux-wireless@vger.kernel.org>; Thu, 12 Dec 2019 03:35:01 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:date:in-reply-to:message-id:subject
-         :from:to;
-        bh=zFl6E7DmT67W68XqVzR2aCsqjcFpWexNUq+6/CXmVUk=;
-        b=MIU32la//LMXecU4fSOOpMJwINTN5Y3W81Harg8FWE8bqZPh3+yol4Q1SGmWBfhtwW
-         wxs5YfWVWL48q9cUW2Q0WpGEp0BXb8/ZtDDkukZEPmO7kvTH7DHXZhtEWPFfBhvUNPf7
-         0dsocMKT6PpDUCAwOcND35aAqxTn6f0oYd/ew2tn+4fhKkLcjtIyZx25Zp7afq3mGMDg
-         Gm/OTnY5NI3+PXC13LB6eXosmzvp4SNj3gom6QY1wx/EEYlaqkAoSKTSy+nbZHz5rvAs
-         Vp6j87Uw25IbNDadkjJBUgEm3Rcs22Dze8X5EQ7XCqP0bIiZoDWcPcRS9j37ZDu042Zb
-         ZmjA==
-X-Gm-Message-State: APjAAAXI7d7JoSQhIoxrzpbpMDKrwdY3VkS4P6HNA6CF5sE29MvTDIbv
-        OCERf81e6UhxeNUVDd822VVhUogJ5clPTgxJRU2XYkGLXN19
-X-Google-Smtp-Source: APXvYqx7tAF42179GqyQGzxmn7mnoZxL7LgtxR3PNlsI/lOpd2FmYULEa+vakNib69tHnoQvSF7+iHISpB+uiby7hAsvBYRTiqDc
+        Thu, 12 Dec 2019 09:50:22 -0500
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.92.3)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1ifPnH-007Ghk-QV; Thu, 12 Dec 2019 15:50:19 +0100
+Message-ID: <14cedbb9300f887fecc399ebcdb70c153955f876.camel@sipsolutions.net>
+Subject: debugging TCP stalls on high-speed wifi
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Eric Dumazet <eric.dumazet@gmail.com>
+Cc:     Toke =?ISO-8859-1?Q?H=F8iland-J=F8rgensen?= <toke@redhat.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Date:   Thu, 12 Dec 2019 15:50:18 +0100
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.34.2 (3.34.2-1.fc31) 
 MIME-Version: 1.0
-X-Received: by 2002:a92:3b19:: with SMTP id i25mr7844146ila.85.1576150500982;
- Thu, 12 Dec 2019 03:35:00 -0800 (PST)
-Date:   Thu, 12 Dec 2019 03:35:00 -0800
-In-Reply-To: <000000000000b6b03205997b71cf@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <000000000000b949ee0599802274@google.com>
-Subject: Re: BUG: corrupted list in __dentry_kill (2)
-From:   syzbot <syzbot+31043da7725b6ec210f1@syzkaller.appspotmail.com>
-To:     a@unstable.cc, alex.aring@gmail.com, allison@lohutok.net,
-        andrew@lunn.ch, andy@greyhouse.net, ap420073@gmail.com,
-        ast@domdv.de, ast@kernel.org, b.a.t.m.a.n@lists.open-mesh.org,
-        bpf@vger.kernel.org, bridge@lists.linux-foundation.org,
-        cleech@redhat.com, daniel@iogearbox.net, davem@davemloft.net,
-        dsa@cumulusnetworks.com, dsahern@gmail.com, dvyukov@google.com,
-        f.fainelli@gmail.com, fw@strlen.de, gregkh@linuxfoundation.org,
-        haiyangz@microsoft.com, hawk@kernel.org, hdanton@sina.com,
-        idosch@mellanox.com, info@metux.net, j.vosburgh@gmail.com, j@w1.fi,
-        jakub.kicinski@netronome.com, jhs@mojatatu.com, jiri@mellanox.com,
-        jiri@resnulli.us, johan.hedberg@gmail.com, johannes.berg@intel.com,
-        john.fastabend@gmail.com, john.hurley@netronome.com,
-        jwi@linux.ibm.com, kafai@fb.com, kstewart@linuxfoundation.org,
-        kvalo@codeaurora.org, kys@microsoft.com,
-        linux-bluetooth@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-        linux-hams@vger.kernel.org, linux-hyperv@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-ppp@vger.kernel.org,
-        linux-wireless@vger.kernel.org, linux-wpan@vger.kernel.org,
-        liuhangbin@gmail.com, marcel@holtmann.org
-Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-syzbot has bisected this bug to:
+Hi Eric, all,
 
-commit ab92d68fc22f9afab480153bd82a20f6e2533769
-Author: Taehee Yoo <ap420073@gmail.com>
-Date:   Mon Oct 21 18:47:51 2019 +0000
+I've been debugging (much thanks to bpftrace) TCP stalls on wifi, in
+particular on iwlwifi.
 
-     net: core: add generic lockdep keys
+What happens, essentially, is that we transmit large aggregates (63
+packets of 7.5k A-MSDU size each, for something on the order of 500kB
+per PPDU). Theoretically we can have ~240 A-MSDUs on our hardware
+queues, and the hardware aggregates them into up to 63 to send as a
+single PPDU.
 
-bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=12d37cb6e00000
-start commit:   938f49c8 Add linux-next specific files for 20191211
-git tree:       linux-next
-final crash:    https://syzkaller.appspot.com/x/report.txt?x=11d37cb6e00000
-console output: https://syzkaller.appspot.com/x/log.txt?x=16d37cb6e00000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=96834c884ba7bb81
-dashboard link: https://syzkaller.appspot.com/bug?extid=31043da7725b6ec210f1
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=12dc83dae00000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=16ac8396e00000
+At HE rates (160 MHz, high rates) such a large PPDU takes less than 2ms
+to transmit.
 
-Reported-by: syzbot+31043da7725b6ec210f1@syzkaller.appspotmail.com
-Fixes: ab92d68fc22f ("net: core: add generic lockdep keys")
+I'm seeing around 1400 Mbps TCP throughput (a bit more than 1800 UDP),
+but I'm expecting more. A bit more than 1800 for UDP is about the max I
+can expect on this AP (it only does 8k A-MSDU size), but I'd think TCP
+then shouldn't be so much less (and our Windows drivers gets >1600).
 
-For information about bisection process see: https://goo.gl/tpsmEJ#bisection
+
+What I see is that occasionally - and this doesn't happen all the time
+but probably enough to matter - we reclaim a few of those large
+aggregates and free the transmit SKBs, and then we try to pull from
+mac80211's TXQs but they're empty.
+
+At this point - we've just freed 400+k of data, I'd expect TCP to
+immediately push more, but it doesn't happen. I sometimes see another
+set of reclaims emptying the queue entirely (literally down to 0 packets
+on the queue) and it then takes another millisecond or two for TCP to
+start pushing packets again.
+
+Once that happens, I also observe that TCP stops pushing large TSO
+packets and goes down to sometimes less than a single A-MSDU (i.e.
+~7.5k) in a TSO, perhaps even an MTU-sized frame - didn't check this,
+only the # of frames we make out of this.
+
+
+If you have any thoughts on this, I'd appreciate it.
+
+
+Something I've been wondering is if our TSO implementation causes
+issues, but apart from higher CPU usage I see no real difference if I
+turned it off. I thought so because it splits up the SKBs into those A-
+MSDU sized chunks using skb_gso_segment() and then splits them down into
+MTU-sized all packed together into an A-MSDU using the hardware engine.
+But that means we release a bunch of A-MSDU-sized SKBs back to the TCP
+stack when they transmitted.
+
+Another thought I had was our broken NAPI, but this is TX traffic so the
+only RX thing is sync, and I'm currently still using kernel 5.4 anyway.
+
+Thanks,
+johannes
+
