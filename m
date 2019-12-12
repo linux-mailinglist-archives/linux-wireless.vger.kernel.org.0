@@ -2,87 +2,78 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BFDA011D037
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Dec 2019 15:50:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 44DC311D096
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Dec 2019 16:11:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728939AbfLLOuW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 12 Dec 2019 09:50:22 -0500
-Received: from s3.sipsolutions.net ([144.76.43.62]:42610 "EHLO
-        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728905AbfLLOuW (ORCPT
+        id S1728935AbfLLPLd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 12 Dec 2019 10:11:33 -0500
+Received: from mail-ot1-f50.google.com ([209.85.210.50]:43559 "EHLO
+        mail-ot1-f50.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728654AbfLLPLd (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 12 Dec 2019 09:50:22 -0500
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.92.3)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1ifPnH-007Ghk-QV; Thu, 12 Dec 2019 15:50:19 +0100
-Message-ID: <14cedbb9300f887fecc399ebcdb70c153955f876.camel@sipsolutions.net>
-Subject: debugging TCP stalls on high-speed wifi
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Eric Dumazet <eric.dumazet@gmail.com>
-Cc:     Toke =?ISO-8859-1?Q?H=F8iland-J=F8rgensen?= <toke@redhat.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Date:   Thu, 12 Dec 2019 15:50:18 +0100
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.2 (3.34.2-1.fc31) 
+        Thu, 12 Dec 2019 10:11:33 -0500
+Received: by mail-ot1-f50.google.com with SMTP id p8so2296858oth.10
+        for <linux-wireless@vger.kernel.org>; Thu, 12 Dec 2019 07:11:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=kIhIS2YRgmUMObqWxEWVGA4aACRsODuzv8jQKXYM0Rg=;
+        b=KLHrpDMbmnM81Q4xUZEG5d3l2uH6WXOvotUm+GFFDLPgzTXjQcGWpSLwq/gBKO1nxC
+         z050ENWHsjL9MnzFu+svtP7MvZI1D0Hnxzagle755XHKlgdAIc3Z/nC8SL0M7m9dU9AW
+         BOgrfbmIWScHGcA88UbThBiFxJJLMKUYUbNGcEt9C8HTwOVM62sYL4fkzg98Pyr9JwBM
+         RPdDhVzu5STJxJOBr1TDvEoPgFRxdhTFo43PEL57Vv6hp4Ps3fh87Kt+/UnyFkClbnWL
+         Eincvd+SSSUiDRdk1peT+d4JFk8HyrcqAhOHKmP0BBl99JRFfsS0ZXO0YUWsR9r8/X0q
+         Xc8g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=kIhIS2YRgmUMObqWxEWVGA4aACRsODuzv8jQKXYM0Rg=;
+        b=NwESLSgCnMvnxDyKxR0eC7pUakfKD0pGL2x5DsBfxQJDJO8d+1vlJ6u9vpuZBm3set
+         nYB7/jW145nOBpf6ypP6S1RwTWdT1Bevm+FGX3+WtFRtaJsPSm2mxq6n2V4zPcbYh2it
+         jdyAzBUkjQJI6p4n2Y8diM2n5utwGrqBoTQqqog4Gk2N3bBT/14InYNOV+ptNBnj3m1i
+         6DFUV+vUePAGmLIkdI/id7IQho/SBIYbLqmxG88YQztG2kDcZHEPWh7msZB1jVUW7T1R
+         1DOF4jU18G8YOBDFuH6zsECMqO0BaNaJoDBwPc01+nuCrLbOpL8Hg/uHhqvvMFKPnL6u
+         uK2A==
+X-Gm-Message-State: APjAAAVEVleIBKqgryFvHJHsuT8YV38xY8ZpFAEkWogGrMuRuKCvwkUx
+        YjXkaw8xbSrT4EpxMh3Gaj6O9iv8YhZtsx9bWOTKwg==
+X-Google-Smtp-Source: APXvYqxy+6Sljwk7iFfOaKx/1+V4f5mtJq5yy/t6TSwXFxYoJS86rUxJqzrstDSC4Q6jeoGnMBriYVzN5yyFeM0koTU=
+X-Received: by 2002:a9d:624e:: with SMTP id i14mr8755970otk.371.1576163491195;
+ Thu, 12 Dec 2019 07:11:31 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+References: <14cedbb9300f887fecc399ebcdb70c153955f876.camel@sipsolutions.net>
+In-Reply-To: <14cedbb9300f887fecc399ebcdb70c153955f876.camel@sipsolutions.net>
+From:   Neal Cardwell <ncardwell@google.com>
+Date:   Thu, 12 Dec 2019 10:11:14 -0500
+Message-ID: <CADVnQym_CNktZ917q0-9dVY9dhtiJVRRotGTrPNdZUpkjd3vyw@mail.gmail.com>
+Subject: Re: debugging TCP stalls on high-speed wifi
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     Eric Dumazet <eric.dumazet@gmail.com>,
+        =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@redhat.com>,
+        linux-wireless@vger.kernel.org, Netdev <netdev@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Eric, all,
+On Thu, Dec 12, 2019 at 9:50 AM Johannes Berg <johannes@sipsolutions.net> wrote:
+> If you have any thoughts on this, I'd appreciate it.
 
-I've been debugging (much thanks to bpftrace) TCP stalls on wifi, in
-particular on iwlwifi.
+Thanks for the detailed report!
 
-What happens, essentially, is that we transmit large aggregates (63
-packets of 7.5k A-MSDU size each, for something on the order of 500kB
-per PPDU). Theoretically we can have ~240 A-MSDUs on our hardware
-queues, and the hardware aggregates them into up to 63 to send as a
-single PPDU.
+I was curious:
 
-At HE rates (160 MHz, high rates) such a large PPDU takes less than 2ms
-to transmit.
+o What's the sender's qdisc configuration?
 
-I'm seeing around 1400 Mbps TCP throughput (a bit more than 1800 UDP),
-but I'm expecting more. A bit more than 1800 for UDP is about the max I
-can expect on this AP (it only does 8k A-MSDU size), but I'd think TCP
-then shouldn't be so much less (and our Windows drivers gets >1600).
+o Would you be able to log periodic dumps (e.g. every 50ms or 100ms)
+of the test connection using a recent "ss" binary and "ss -tinm", to
+hopefully get a sense of buffer parameters, and whether the flow in
+these cases is being cwnd-limited, pacing-limited,
+send-buffer-limited, or receive-window-limited?
 
+o Would you be able to share a headers-only tcpdump pcap trace?
 
-What I see is that occasionally - and this doesn't happen all the time
-but probably enough to matter - we reclaim a few of those large
-aggregates and free the transmit SKBs, and then we try to pull from
-mac80211's TXQs but they're empty.
-
-At this point - we've just freed 400+k of data, I'd expect TCP to
-immediately push more, but it doesn't happen. I sometimes see another
-set of reclaims emptying the queue entirely (literally down to 0 packets
-on the queue) and it then takes another millisecond or two for TCP to
-start pushing packets again.
-
-Once that happens, I also observe that TCP stops pushing large TSO
-packets and goes down to sometimes less than a single A-MSDU (i.e.
-~7.5k) in a TSO, perhaps even an MTU-sized frame - didn't check this,
-only the # of frames we make out of this.
-
-
-If you have any thoughts on this, I'd appreciate it.
-
-
-Something I've been wondering is if our TSO implementation causes
-issues, but apart from higher CPU usage I see no real difference if I
-turned it off. I thought so because it splits up the SKBs into those A-
-MSDU sized chunks using skb_gso_segment() and then splits them down into
-MTU-sized all packed together into an A-MSDU using the hardware engine.
-But that means we release a bunch of A-MSDU-sized SKBs back to the TCP
-stack when they transmitted.
-
-Another thought I had was our broken NAPI, but this is TX traffic so the
-only RX thing is sync, and I'm currently still using kernel 5.4 anyway.
-
-Thanks,
-johannes
-
+thanks,
+neal
