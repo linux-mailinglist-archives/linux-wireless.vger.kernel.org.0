@@ -2,98 +2,175 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 416EF11C6AB
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Dec 2019 08:52:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AF5B611C84B
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Dec 2019 09:35:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728150AbfLLHvC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 12 Dec 2019 02:51:02 -0500
-Received: from a27-188.smtp-out.us-west-2.amazonses.com ([54.240.27.188]:40744
-        "EHLO a27-188.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728099AbfLLHvC (ORCPT
+        id S1728256AbfLLIeZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 12 Dec 2019 03:34:25 -0500
+Received: from mail-ua1-f65.google.com ([209.85.222.65]:43551 "EHLO
+        mail-ua1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728157AbfLLIeZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 12 Dec 2019 02:51:02 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1576137061;
-        h=MIME-Version:Content-Type:Content-Transfer-Encoding:Date:From:To:Cc:Subject:Message-ID;
-        bh=30SbRHuyYH9I0+meSymRw/7OWb5sfw3MRD2S/c4vwDc=;
-        b=hWvDkJaeneGDaECRSGj7+udI/ECzzAE2s3Lpc05E5Lpa+JbyfDuGjyZtkmKrbD7Z
-        SVxAnLMWUTFrdVaKsYHiHXZd7fQhYQLXJk7lhVE5bSL6WX2J5dpTL6aGEtu9XKOBxx0
-        akGkx0bgZNqIph2s7t5vl8CTuRKFX5O9KOVhKXnc=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=gdwg2y3kokkkj5a55z2ilkup5wp5hhxx; d=amazonses.com; t=1576137061;
-        h=MIME-Version:Content-Type:Content-Transfer-Encoding:Date:From:To:Cc:Subject:Message-ID:Feedback-ID;
-        bh=30SbRHuyYH9I0+meSymRw/7OWb5sfw3MRD2S/c4vwDc=;
-        b=GmDEOXHdOP6dA4nFc1HbbgtzK7uRdVcBCenkRbUNY4uT4Gk5TOqtwdh2vFFXMv4S
-        7mL/oWwSTdCV/wDAL0GSmQs5s7WNtk/BQaSu1f7Hd4QciTwY5OxI2eMxbS0bGPwveOB
-        FbxMM28k7WOsKJGzuSu32K57OhnHilz/e8T9v0BM=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED
-        autolearn=unavailable autolearn_force=no version=3.4.0
+        Thu, 12 Dec 2019 03:34:25 -0500
+Received: by mail-ua1-f65.google.com with SMTP id o42so525497uad.10
+        for <linux-wireless@vger.kernel.org>; Thu, 12 Dec 2019 00:34:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=7UHi4BJ1RU7e2Qqap02HTsnKWPKQhPRzj+3IJpyS25I=;
+        b=CazqmSjeTmhzl/T12C6gcLYS78AV26Bg70XLZn0tfPlbRO0xZA1iYgJxjWgyvbKkYM
+         fqV5h9oeUZn2BR/O8OFlfjMF2ZBJkAoH7qEN8CgXpr3Yx5caJxkU3c/jv7Vkdkn1kQcW
+         0VvbmS0LJs31VYHSUKL+UOKderGSIrcaDzMIwLQ4gBxSZQntQeVK8YxgGb7cUKPqWdPE
+         td3UK3ak3il/JVLcA4/pZvdsHY2kEG9/lPeK3G6OUwgjdD041nqzE1Eh4w2pulwEskla
+         yziHm1/CNTbjVgTqoFg/JwFFwNiQOrzY+AwZ/Y0nQ49mgMp66XvA+LVRVVinF77kDisu
+         B4+A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=7UHi4BJ1RU7e2Qqap02HTsnKWPKQhPRzj+3IJpyS25I=;
+        b=dlr1DP6jbon7gP2J89c4LbQgFHckDjGcdJv1X5FZbUk5hDmiTuNuM+ARYA5IXCcjJ3
+         b7U46uFM1TixR2SWomUHwSamr1jsCOfIE8lHRjE8xUSiSrtuFW/OyQca7g35YWrJuD+E
+         WRxidVvjOR0B5pMfrwVBkc5GkIIbjMaVExEnI6IzkJKTgSEi9clwJxN3Q+6lGuhrVfZf
+         by5oztKIO07CE5bAtgMISnDkag3Oy6fLA7TdfUdDXO2QTtQj8T95cgs0wdIwlTtNWh3B
+         4QUihp6/PmxAPxhi31tRZAC5ManQwWegUAdeFhSXIRgpEEu2dvLUsbOvlFUie6ELpoZQ
+         m/+A==
+X-Gm-Message-State: APjAAAW3othY/Zl6c71UUwuFJmpNEhn01V/hpnhRD7765hTCsACGTlx7
+        65GclOHhqEAWLk3oiFGzz32oNlIaNEFuVdXYXf64mA==
+X-Google-Smtp-Source: APXvYqynopALtn3p4wqILJgjiXAeEzWwP6jaNx08xBuWSale2Uc+wFkAq1aVL/iomN6MiJTwLqjwY+vVT8KlCKpstMw=
+X-Received: by 2002:ab0:4ea6:: with SMTP id l38mr7262273uah.129.1576139663793;
+ Thu, 12 Dec 2019 00:34:23 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Thu, 12 Dec 2019 07:51:01 +0000
-From:   Zhi Chen <zhichen@codeaurora.org>
-To:     ath10k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org
-Subject: [PATCH,v3] Revert "ath10k: fix DMA related firmware crashes on 
- multiple devices"
-Message-ID: <0101016ef916f2e7-28683312-1d0b-4c2e-b967-c13c3e45ce31-000000@us-west-2.amazonses.com>
-X-Sender: zhichen@codeaurora.org
-User-Agent: Roundcube Webmail/1.3.9
-X-SES-Outgoing: 2019.12.12-54.240.27.188
-Feedback-ID: 1.us-west-2.CZuq2qbDmUIuT3qdvXlRHZZCpfZqZ4GtG9v3VKgRyF0=:AmazonSES
+References: <20191211235253.2539-1-smoch@web.de> <20191211235253.2539-6-smoch@web.de>
+In-Reply-To: <20191211235253.2539-6-smoch@web.de>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Thu, 12 Dec 2019 09:33:46 +0100
+Message-ID: <CAPDyKFoE7g0XsyTkbSYBRE0=JraPCxCP+wyZ2PQFVpAvvQvCfg@mail.gmail.com>
+Subject: Re: [PATCH v2 5/9] brcmfmac: add support for BCM4359 SDIO chipset
+To:     Soeren Moch <smoch@web.de>
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Arend van Spriel <arend.vanspriel@broadcom.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
+        Wright Feng <wright.feng@cypress.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        brcm80211-dev-list.pdl@broadcom.com,
+        brcm80211-dev-list <brcm80211-dev-list@cypress.com>,
+        netdev <netdev@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        "open list:ARM/Rockchip SoC..." <linux-rockchip@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This reverts commit 76d164f582150fd0259ec0fcbc485470bcd8033e.
-PCIe hung issue was observed on multiple platforms. The issue was 
-reproduced
-when DUT was configured as AP and associated with 50+ STAs.
+On Thu, 12 Dec 2019 at 00:53, Soeren Moch <smoch@web.de> wrote:
+>
+> BCM4359 is a 2x2 802.11 abgn+ac Dual-Band HT80 combo chip and it
+> supports Real Simultaneous Dual Band feature.
+>
+> Based on a similar patch by: Wright Feng <wright.feng@cypress.com>
+>
+> Signed-off-by: Soeren Moch <smoch@web.de>
 
-For QCA9984/QCA9888, the DMA_BURST_SIZE register controls the AXI burst 
-size
-of the RD/WR access to the HOST MEM.
-0 - No split , RAW read/write transfer size from MAC is put out on bus
-     as burst length
-1 - Split at 256 byte boundary
-2,3 - Reserved
+Acked-by: Ulf Hansson <ulf.hansson@linaro.org>
 
-With PCIe protocol analyzer, we can see DMA Read crossing 4KB boundary 
-when
-issue happened. It broke PCIe spec and caused PCIe stuck. So revert
-the default value from 0 to 1.
+Kind regards
+Uffe
 
-Tested:  IPQ8064 + QCA9984 with firmware 10.4-3.10-00047
-          QCS404 + QCA9984 with firmware 10.4-3.9.0.2--00044
-          Synaptics AS370 + QCA9888  with firmware 10.4-3.9.0.2--00040
-
-Signed-off-by: Zhi Chen <zhichen@codeaurora.org>
----
-v2: restored 10.2 register configuration
-v3: modified commit message
----
-  drivers/net/wireless/ath/ath10k/hw.h | 2 +-
-  1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/ath/ath10k/hw.h 
-b/drivers/net/wireless/ath/ath10k/hw.h
-index 35a3623..59a9a58 100644
---- a/drivers/net/wireless/ath/ath10k/hw.h
-+++ b/drivers/net/wireless/ath/ath10k/hw.h
-@@ -813,7 +813,7 @@ ath10k_is_rssi_enable(struct ath10k_hw_params *hw,
-
-  #define TARGET_10_4_TX_DBG_LOG_SIZE		1024
-  #define TARGET_10_4_NUM_WDS_ENTRIES		32
--#define TARGET_10_4_DMA_BURST_SIZE		0
-+#define TARGET_10_4_DMA_BURST_SIZE		1
-  #define TARGET_10_4_MAC_AGGR_DELIM		0
-  #define TARGET_10_4_RX_SKIP_DEFRAG_TIMEOUT_DUP_DETECTION_CHECK 1
-  #define TARGET_10_4_VOW_CONFIG			0
--- 
-2.7.4
+> ---
+> changes in v2:
+> - add SDIO_DEVICE_ID_CYPRESS_89359 as requested
+>   by Chi-Hsien Lin <chi-hsien.lin@cypress.com>
+>
+> Cc: Kalle Valo <kvalo@codeaurora.org>
+> Cc: Heiko Stuebner <heiko@sntech.de>
+> Cc: Arend van Spriel <arend.vanspriel@broadcom.com>
+> Cc: Franky Lin <franky.lin@broadcom.com>
+> Cc: Hante Meuleman <hante.meuleman@broadcom.com>
+> Cc: Chi-Hsien Lin <chi-hsien.lin@cypress.com>
+> Cc: Wright Feng <wright.feng@cypress.com>
+> Cc: linux-wireless@vger.kernel.org
+> Cc: brcm80211-dev-list.pdl@broadcom.com
+> Cc: brcm80211-dev-list@cypress.com
+> Cc: netdev@vger.kernel.org
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: linux-rockchip@lists.infradead.org
+> Cc: linux-kernel@vger.kernel.org
+> ---
+>  drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c | 2 ++
+>  drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c   | 1 +
+>  drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c   | 2 ++
+>  include/linux/mmc/sdio_ids.h                              | 2 ++
+>  4 files changed, 7 insertions(+)
+>
+> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
+> index 68baf0189305..f4c53ab46058 100644
+> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
+> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
+> @@ -973,8 +973,10 @@ static const struct sdio_device_id brcmf_sdmmc_ids[] = {
+>         BRCMF_SDIO_DEVICE(SDIO_DEVICE_ID_BROADCOM_43455),
+>         BRCMF_SDIO_DEVICE(SDIO_DEVICE_ID_BROADCOM_4354),
+>         BRCMF_SDIO_DEVICE(SDIO_DEVICE_ID_BROADCOM_4356),
+> +       BRCMF_SDIO_DEVICE(SDIO_DEVICE_ID_BROADCOM_4359),
+>         BRCMF_SDIO_DEVICE(SDIO_DEVICE_ID_CYPRESS_4373),
+>         BRCMF_SDIO_DEVICE(SDIO_DEVICE_ID_CYPRESS_43012),
+> +       BRCMF_SDIO_DEVICE(SDIO_DEVICE_ID_CYPRESS_89359),
+>         { /* end: all zeroes */ }
+>  };
+>  MODULE_DEVICE_TABLE(sdio, brcmf_sdmmc_ids);
+> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c
+> index baf72e3984fc..282d0bc14e8e 100644
+> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c
+> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c
+> @@ -1408,6 +1408,7 @@ bool brcmf_chip_sr_capable(struct brcmf_chip *pub)
+>                 addr = CORE_CC_REG(base, sr_control0);
+>                 reg = chip->ops->read32(chip->ctx, addr);
+>                 return (reg & CC_SR_CTL0_ENABLE_MASK) != 0;
+> +       case BRCM_CC_4359_CHIP_ID:
+>         case CY_CC_43012_CHIP_ID:
+>                 addr = CORE_CC_REG(pmu->base, retention_ctl);
+>                 reg = chip->ops->read32(chip->ctx, addr);
+> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+> index 21e535072f3f..c4012ed58b9c 100644
+> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+> @@ -616,6 +616,7 @@ BRCMF_FW_DEF(43455, "brcmfmac43455-sdio");
+>  BRCMF_FW_DEF(43456, "brcmfmac43456-sdio");
+>  BRCMF_FW_DEF(4354, "brcmfmac4354-sdio");
+>  BRCMF_FW_DEF(4356, "brcmfmac4356-sdio");
+> +BRCMF_FW_DEF(4359, "brcmfmac4359-sdio");
+>  BRCMF_FW_DEF(4373, "brcmfmac4373-sdio");
+>  BRCMF_FW_DEF(43012, "brcmfmac43012-sdio");
+>
+> @@ -638,6 +639,7 @@ static const struct brcmf_firmware_mapping brcmf_sdio_fwnames[] = {
+>         BRCMF_FW_ENTRY(BRCM_CC_4345_CHIP_ID, 0xFFFFFDC0, 43455),
+>         BRCMF_FW_ENTRY(BRCM_CC_4354_CHIP_ID, 0xFFFFFFFF, 4354),
+>         BRCMF_FW_ENTRY(BRCM_CC_4356_CHIP_ID, 0xFFFFFFFF, 4356),
+> +       BRCMF_FW_ENTRY(BRCM_CC_4359_CHIP_ID, 0xFFFFFFFF, 4359),
+>         BRCMF_FW_ENTRY(CY_CC_4373_CHIP_ID, 0xFFFFFFFF, 4373),
+>         BRCMF_FW_ENTRY(CY_CC_43012_CHIP_ID, 0xFFFFFFFF, 43012)
+>  };
+> diff --git a/include/linux/mmc/sdio_ids.h b/include/linux/mmc/sdio_ids.h
+> index 08b25c02b5a1..2e9a6e4634eb 100644
+> --- a/include/linux/mmc/sdio_ids.h
+> +++ b/include/linux/mmc/sdio_ids.h
+> @@ -41,8 +41,10 @@
+>  #define SDIO_DEVICE_ID_BROADCOM_43455          0xa9bf
+>  #define SDIO_DEVICE_ID_BROADCOM_4354           0x4354
+>  #define SDIO_DEVICE_ID_BROADCOM_4356           0x4356
+> +#define SDIO_DEVICE_ID_BROADCOM_4359           0x4359
+>  #define SDIO_DEVICE_ID_CYPRESS_4373            0x4373
+>  #define SDIO_DEVICE_ID_CYPRESS_43012           43012
+> +#define SDIO_DEVICE_ID_CYPRESS_89359           0x4355
+>
+>  #define SDIO_VENDOR_ID_INTEL                   0x0089
+>  #define SDIO_DEVICE_ID_INTEL_IWMC3200WIMAX     0x1402
+> --
+> 2.17.1
+>
