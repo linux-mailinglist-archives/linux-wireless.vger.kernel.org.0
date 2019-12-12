@@ -2,123 +2,136 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0FD6211D4F3
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Dec 2019 19:11:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F06D711D534
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Dec 2019 19:21:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730293AbfLLSLS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 12 Dec 2019 13:11:18 -0500
-Received: from mail-pj1-f67.google.com ([209.85.216.67]:42295 "EHLO
-        mail-pj1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730080AbfLLSLS (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 12 Dec 2019 13:11:18 -0500
-Received: by mail-pj1-f67.google.com with SMTP id o11so1351368pjp.9;
-        Thu, 12 Dec 2019 10:11:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=W4DxNw187O1EAJo02gwzf5htqxUEbPUyJC/3DQD2iQY=;
-        b=pCaXtp0DTq76T/ezGaA/mlo4xCd/tGp/Q7Ks3010zuHtPe/tcPi/6tZ3z2iFj/AMuZ
-         m9E3Sez3iGFF+Sdtrla4sAaplJpE1FS+PKs/Gq1eMCNhwXb4ImfSvcFOs1HtjIW57seq
-         9LbnbtLrnUfot2+6GidLstNzIrx94oqMS38zIQp3fZLfsYQjvB4SJfOIn9V29qfFJgx6
-         BWDl4iNvypPv+sTbMvgvYUlfaWVRjAvrb7rM4OFC8IMvIgqkJL8XBC4A0uzDHsNKxq3o
-         b23zqRB2/tbIA7FR3ShTOV6jWmOo+xeAZX/o17snlphnYYr4xfXhDYHF5ifU7RlebCXk
-         SO5Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=W4DxNw187O1EAJo02gwzf5htqxUEbPUyJC/3DQD2iQY=;
-        b=Uqty9gTtAGlQKmluY5T2UfgBy1ie/HBx+cMMph+Eg6fc7jmO3liwOVzjVlgkwppF2P
-         aZtTnXvm2SVUeDUkuFSeB5sbtplJsPcN9dD9R2hMeTUxOKZt7wJvXYmg63RJeo7RmCwH
-         wOzdOJesfGDm2rb/gK5Tc5wm8GlLQr2wiMEBgehfy/gpYRruBfHrK/wCowHr1h3yLg96
-         u+oJU09+cei5Ys346ROFect3OleTE/8I5fGl5mKiLsFi82vKn3CdaWNxz64EXkqidPa9
-         DyuPQuyUxlc4m5WMe5uTYMSgkOHiOXNVmSZmcDCjOIPnx+a2rDjm2KL+8XhSZjs5GA7m
-         t/vQ==
-X-Gm-Message-State: APjAAAXLxvYsFZsEGyPnshUYnVLub/CoBBpGNYek96jNuWR6SvyIaRte
-        YxoS+2GEKj9Q8IoEr9Y1jjX9SBYY
-X-Google-Smtp-Source: APXvYqyYvy1Szaas3XyfMFlCEXwjG1gu2h6yTc5dvH8MxVd0sGSwrAiyxySBwyJhtdn6dcQeZ4PAfg==
-X-Received: by 2002:a17:90a:3aaf:: with SMTP id b44mr11667502pjc.9.1576174277202;
-        Thu, 12 Dec 2019 10:11:17 -0800 (PST)
-Received: from ?IPv6:2620:15c:2c1:200:55c7:81e6:c7d8:94b? ([2620:15c:2c1:200:55c7:81e6:c7d8:94b])
-        by smtp.gmail.com with ESMTPSA id g26sm7427542pfo.128.2019.12.12.10.11.15
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 12 Dec 2019 10:11:16 -0800 (PST)
-Subject: Re: debugging TCP stalls on high-speed wifi
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        Neal Cardwell <ncardwell@google.com>
-Cc:     Eric Dumazet <eric.dumazet@gmail.com>,
-        =?UTF-8?Q?Toke_H=c3=b8iland-J=c3=b8rgensen?= <toke@redhat.com>,
-        linux-wireless@vger.kernel.org, Netdev <netdev@vger.kernel.org>
-References: <14cedbb9300f887fecc399ebcdb70c153955f876.camel@sipsolutions.net>
- <CADVnQym_CNktZ917q0-9dVY9dhtiJVRRotGTrPNdZUpkjd3vyw@mail.gmail.com>
- <f4670ce0f4399fe82e7168fb9c491d8eb718e8d8.camel@sipsolutions.net>
-From:   Eric Dumazet <eric.dumazet@gmail.com>
-Message-ID: <99748db5-7898-534b-d407-ed819f07f939@gmail.com>
-Date:   Thu, 12 Dec 2019 10:11:14 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.2
+        id S1730291AbfLLSVk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 12 Dec 2019 13:21:40 -0500
+Received: from mail.kernel.org ([198.145.29.99]:34222 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730110AbfLLSVk (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 12 Dec 2019 13:21:40 -0500
+Received: from paulmck-ThinkPad-P72.home (unknown [199.201.64.130])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 7BBED21556;
+        Thu, 12 Dec 2019 18:21:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1576174899;
+        bh=i+dcJM/f6xnhJQ9i63A4Z9F3vQYpJTHOxEAe+lR+QTw=;
+        h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
+        b=MofbQa+M16OKmySZ0fjGFEYYV9jhtP606xxBU8XZeCthREeFJ2ZFvZndPaRMTZ0yS
+         Y7sL09uwIBUFXKNHGQRUIn+ga11ipL6aiwAEjGK+PNCdbl91we4M7SGVgBTUv/6jvN
+         1iQloQW7HnVbigA/nfHwLT859Bgb0JBmoapSrp7Y=
+Received: by paulmck-ThinkPad-P72.home (Postfix, from userid 1000)
+        id 05C5B3522757; Thu, 12 Dec 2019 10:21:39 -0800 (PST)
+Date:   Thu, 12 Dec 2019 10:21:39 -0800
+From:   "Paul E. McKenney" <paulmck@kernel.org>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Matthias Brugger <matthias.bgg@gmail.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        rcu@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-team@fb.com, mingo@kernel.org, jiangshanlai@gmail.com,
+        dipankar@in.ibm.com, akpm@linux-foundation.org,
+        mathieu.desnoyers@efficios.com, josh@joshtriplett.org,
+        tglx@linutronix.de, peterz@infradead.org, rostedt@goodmis.org,
+        dhowells@redhat.com, edumazet@google.com, fweisbec@gmail.com,
+        oleg@redhat.com, joel@joelfernandes.org,
+        Bart Van Assche <bart.vanassche@wdc.com>,
+        Christoph Hellwig <hch@lst.de>, Hannes Reinecke <hare@suse.de>,
+        Johannes Thumshirn <jthumshirn@suse.de>,
+        Shane M Seymour <shane.seymour@hpe.com>,
+        Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Roy Luo <royluo@google.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org
+Subject: Re: [PATCH tip/core/rcu 01/12] rcu: Remove rcu_swap_protected()
+Message-ID: <20191212182139.GA2889@paulmck-ThinkPad-P72>
+Reply-To: paulmck@kernel.org
+References: <20191210040714.GA2715@paulmck-ThinkPad-P72>
+ <20191210040741.2943-1-paulmck@kernel.org>
+ <yq1a77zmt4a.fsf@oracle.com>
+ <20191211035122.GC2889@paulmck-ThinkPad-P72>
+ <20191211183738.GA5190@paulmck-ThinkPad-P72>
+ <1911b7fa-c8d4-e34b-020d-3346a56f29d6@gmail.com>
+ <20191211231239.GK2889@paulmck-ThinkPad-P72>
+ <87mubxdh52.fsf@kamboji.qca.qualcomm.com>
 MIME-Version: 1.0
-In-Reply-To: <f4670ce0f4399fe82e7168fb9c491d8eb718e8d8.camel@sipsolutions.net>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87mubxdh52.fsf@kamboji.qca.qualcomm.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On Thu, Dec 12, 2019 at 11:31:37AM +0200, Kalle Valo wrote:
+> + linux-wireless
+> 
+> "Paul E. McKenney" <paulmck@kernel.org> writes:
+> 
+> > On Wed, Dec 11, 2019 at 08:09:11PM +0100, Matthias Brugger wrote:
+> >> On 11/12/2019 19:37, Paul E. McKenney wrote:
+> >>
+> >> > --- a/drivers/net/wireless/mediatek/mt76/agg-rx.c
+> >> > +++ b/drivers/net/wireless/mediatek/mt76/agg-rx.c
+> >> > @@ -281,8 +281,8 @@ void mt76_rx_aggr_stop(struct mt76_dev *dev, struct mt76_wcid *wcid, u8 tidno)
+> >> >  {
+> >> >  	struct mt76_rx_tid *tid = NULL;
+> >> >  
+> >> > -	rcu_swap_protected(wcid->aggr[tidno], tid,
+> >> > -			   lockdep_is_held(&dev->mutex));
+> >> > +	tid = rcu_swap_protected(wcid->aggr[tidno], tid,
+> >> > +				 lockdep_is_held(&dev->mutex));
+> >> 
+> >> I suppose you meant: rcu_replace_pointer() here.
+> >
+> > Indeed I did, and thank you for catching this!  Bad patch day here.  :-/
+> >
+> > Update below...
+> >
+> > 							Thanx, Paul
+> >
+> > ------------------------------------------------------------------------
+> >
+> > commit ad5572b091429a45e863acaa6a36cf396d44f58d
+> > Author: Paul E. McKenney <paulmck@kernel.org>
+> > Date:   Wed Dec 11 10:30:21 2019 -0800
+> >
+> >     wireless/mediatek: Replace rcu_swap_protected() with rcu_replace_pointer()
+> >     
+> >     This commit replaces the use of rcu_swap_protected() with the more
+> >     intuitively appealing rcu_replace_pointer() as a step towards removing
+> >     rcu_swap_protected().
+> >     
+> >     Link: https://lore.kernel.org/lkml/CAHk-=wiAsJLw1egFEE=Z7-GGtM6wcvtyytXZA1+BHqta4gg6Hw@mail.gmail.com/
+> >     Reported-by: Linus Torvalds <torvalds@linux-foundation.org>
+> >     Reported-by: "Martin K. Petersen" <martin.petersen@oracle.com>
+> >     [ paulmck: Apply Matthias Brugger feedback. ]
+> >     Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+> >     Reviewed-by: "Martin K. Petersen" <martin.petersen@oracle.com>
+> >     Cc: Felix Fietkau <nbd@nbd.name>
+> >     Cc: Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>
+> >     Cc: Ryder Lee <ryder.lee@mediatek.com>
+> >     Cc: Roy Luo <royluo@google.com>
+> >     Cc: Kalle Valo <kvalo@codeaurora.org>
+> >     Cc: "David S. Miller" <davem@davemloft.net>
+> >     Cc: Matthias Brugger <matthias.bgg@gmail.com>
+> >     Cc: <linux-wireless@vger.kernel.org>
+> >     Cc: <netdev@vger.kernel.org>
+> >     Cc: <linux-arm-kernel@lists.infradead.org>
+> >     Cc: <linux-mediatek@lists.infradead.org>
+> 
+> Via which tree is this supposed to go? If I should take this please
+> resend to linux-wireless so that patchwork sees it, but if someone else
+> is planning to take this:
+> 
+> Acked-by: Kalle Valo <kvalo@codeaurora.org>
 
+I have queued it just preceding the commit that remove rcu_swap_protected()
+with your ack, thank you!
 
-On 12/12/19 7:47 AM, Johannes Berg wrote:
-> Hi Neal,
-> 
-> On Thu, 2019-12-12 at 10:11 -0500, Neal Cardwell wrote:
->> On Thu, Dec 12, 2019 at 9:50 AM Johannes Berg <johannes@sipsolutions.net> wrote:
->>> If you have any thoughts on this, I'd appreciate it.
->>
->> Thanks for the detailed report!
-> 
-> Well, it wasn't. For example, I neglected to mention that I have to
-> actually use at least 2 TCP streams (but have tried up to 20) in order
-> to not run into the gbit link limit on the AP :-)
-> 
->> I was curious:
->>
->> o What's the sender's qdisc configuration?
-> 
-> There's none, mac80211 bypasses qdiscs in favour of its internal TXQs
-> with FQ/codel.
-> 
->> o Would you be able to log periodic dumps (e.g. every 50ms or 100ms)
->> of the test connection using a recent "ss" binary and "ss -tinm", to
->> hopefully get a sense of buffer parameters, and whether the flow in
->> these cases is being cwnd-limited, pacing-limited,
->> send-buffer-limited, or receive-window-limited?
-> 
-> Sure, though I'm not sure my ss is recent enough for what you had in
-> mind - if not I'll have to rebuild it (it was iproute2-ss190708).
-> 
-> https://p.sipsolutions.net/3e515625bf13fa69.txt
-> 
-> Note there are 4 connections (iperf is being used) but two are control
-> and two are data. Easy to see the difference really :-)
-> 
->> o Would you be able to share a headers-only tcpdump pcap trace?
-> 
-> I'm not sure how to do headers-only, but I guess -s100 will work.
-> 
-> https://johannes.sipsolutions.net/files/he-tcp.pcap.xz
-> 
-
-Lack of GRO on receiver is probably what is killing performance,
-both for receiver (generating gazillions of acks) and sender (to process all these acks)
-
-I had a plan about enabling compressing ACK as I did for SACK
-in commit 
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=5d9f4262b7ea41ca9981cc790e37cca6e37c789e
-
-But I have not done it yet.
-It is a pity because this would tremendously help wifi I am sure.
+							Thanx, Paul
