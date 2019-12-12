@@ -2,113 +2,187 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3890711CB33
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Dec 2019 11:45:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8406511CB40
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Dec 2019 11:47:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728691AbfLLKpu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 12 Dec 2019 05:45:50 -0500
-Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:55061 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1728679AbfLLKpt (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 12 Dec 2019 05:45:49 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1576147548;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=tn1/nohwvbWHf4oSzQNqJtRfBfJIOmLgNk9Q2cykBDg=;
-        b=OvmpuEQGE3X+bFzjgz/7dc4ShFpFIG5AcP9AjHkHUzAfq7+eJDB/qbBeovEj6cWKVedcMC
-        2Xp/IIIsTek8V20ig8XGxkZMEcDA2iXdTFi7cfezLJ5wSuud/oLMcgmpQlnvPcwFSIlnxh
-        5rKOIdG+KrFiK4rxI5g/7iegVfTKMEM=
-Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
- [209.85.167.69]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-34-Cv1mRvGyMJK2IezAaq2jvw-1; Thu, 12 Dec 2019 05:45:46 -0500
-X-MC-Unique: Cv1mRvGyMJK2IezAaq2jvw-1
-Received: by mail-lf1-f69.google.com with SMTP id t8so466709lfc.21
-        for <linux-wireless@vger.kernel.org>; Thu, 12 Dec 2019 02:45:46 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
-         :message-id:mime-version:content-transfer-encoding;
-        bh=tn1/nohwvbWHf4oSzQNqJtRfBfJIOmLgNk9Q2cykBDg=;
-        b=aiO7CGepvmlDqvQ5SQ7+LGrGlPZ5sjH1vP3pZOedHkrlJR5v5qycRC5VFMqzV8wK39
-         3PgcO07nAaqClzFyOzRO/aOnIw+c0aFpicJpFR6ndjz4byLQLViIsL/CwjOMHnXPcsvL
-         x/jJ30FOGfJ6QiRdKvcCZkpm3l/OZvibIQC3IksxsBojECI5iz9JvbVu8pMz6KGd+06/
-         H/ILL5Gx9F2z87b2vjr+dlQRHhXZbyM/86rh2FPsGjCLZ6AJB2W43RsBqTc9rIGMhUkP
-         VVreF40d/904IQVXEiQmQj/nkEfn6s0cGJH57oV8mAcl9BL/9hCh5Spzyea5k8X/JO++
-         2kQA==
-X-Gm-Message-State: APjAAAV5Cvaxe9smKQGKuNUxDyft2vgWojlxWgrL6lL3lK4CF1YIY1Md
-        1+EIHveNShNVkLbTqFuQMRac32pBFHcgmwUWKSAb3veEvMv/D7x8DcD5lhTrGeF7bBdfH/bE5sb
-        GxqE07M8gseL7uF+PkbU3mtGQjyE=
-X-Received: by 2002:a2e:918c:: with SMTP id f12mr5361746ljg.66.1576147544943;
-        Thu, 12 Dec 2019 02:45:44 -0800 (PST)
-X-Google-Smtp-Source: APXvYqweyaRisudrfp62jIayaDreWuaQeGouwa2wZFqQHf42Q6aUvVtaEjfeebmsO+9rUZCqPvVLUQ==
-X-Received: by 2002:a2e:918c:: with SMTP id f12mr5361737ljg.66.1576147544779;
-        Thu, 12 Dec 2019 02:45:44 -0800 (PST)
-Received: from alrua-x1.borgediget.toke.dk ([45.145.92.2])
-        by smtp.gmail.com with ESMTPSA id u25sm2742643lfk.46.2019.12.12.02.45.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Dec 2019 02:45:43 -0800 (PST)
-Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-        id 1062F1819EA; Thu, 12 Dec 2019 11:45:43 +0100 (CET)
-From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        Jens Axboe <axboe@kernel.dk>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>
-Cc:     "linux-wireless\@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        Networking <netdev@vger.kernel.org>
-Subject: Re: iwlwifi warnings in 5.5-rc1
-In-Reply-To: <aa22bfce34e5a938e439b0507296a8b6a23f5c61.camel@sipsolutions.net>
-References: <ceb74ea2-6a1b-4cef-8749-db21a2ee4311@kernel.dk> <9727368004ceef03f72d259b0779c2cf401432e1.camel@sipsolutions.net> <878snjgs5l.fsf@toke.dk> <3420d73e667b01ec64bf0cc9da6232b41e862860.camel@sipsolutions.net> <875zingnzt.fsf@toke.dk> <bfab4987668990ea8d86a98f3e87c3fa31403745.camel@sipsolutions.net> <14bbfcc8408500704c46701251546e7ff65c6fd0.camel@sipsolutions.net> <87r21bez5g.fsf@toke.dk> <b14519e81b6d2335bd0cb7dcf074f0d1a4eec707.camel@sipsolutions.net> <87k172gbrn.fsf@toke.dk> <aa22bfce34e5a938e439b0507296a8b6a23f5c61.camel@sipsolutions.net>
-X-Clacks-Overhead: GNU Terry Pratchett
-Date:   Thu, 12 Dec 2019 11:45:42 +0100
-Message-ID: <87y2vhesa1.fsf@toke.dk>
+        id S1728783AbfLLKr3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 12 Dec 2019 05:47:29 -0500
+Received: from mout.web.de ([212.227.17.12]:58431 "EHLO mout.web.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728648AbfLLKr3 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 12 Dec 2019 05:47:29 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+        s=dbaedf251592; t=1576147629;
+        bh=iU0ev7VoC1TijGDuRwLbBpmGPdY4l6wXakXHGIG0OlE=;
+        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=XCLwiiEEagsVPHcOL/uDVAZyOVwelM3Mmf+s8rJu111S4kNmasEi4MnhCfyYOhU44
+         r57699Z5UhuLNEwD9+MXtCTqyrrym0CJMQruVAKxT2cj+SoFGNviQG2EuoUbqJct1C
+         oUEZqZCCIzcGVFA2/PJ9pc6sGMk/YlBmAK94bZfw=
+X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
+Received: from [192.168.43.108] ([89.204.139.166]) by smtp.web.de (mrweb103
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0M6UxL-1hmGH82HNL-00yUj1; Thu, 12
+ Dec 2019 11:47:09 +0100
+Subject: Re: [PATCH v2 9/9] arm64: dts: rockchip: RockPro64: hook up bluetooth
+ at uart0
+To:     Robin Murphy <robin.murphy@arm.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Heiko Stuebner <heiko@sntech.de>
+Cc:     brcm80211-dev-list.pdl@broadcom.com, netdev@vger.kernel.org,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-rockchip@lists.infradead.org, brcm80211-dev-list@cypress.com,
+        linux-arm-kernel@lists.infradead.org
+References: <20191211235253.2539-1-smoch@web.de>
+ <20191211235253.2539-10-smoch@web.de>
+ <a0ad4723-db85-0eda-efb5-f0c9a2a6aec3@arm.com>
+From:   Soeren Moch <smoch@web.de>
+Message-ID: <b859b9f1-2d89-ddef-df26-724ac4ffb088@web.de>
+Date:   Thu, 12 Dec 2019 11:47:06 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.1
 MIME-Version: 1.0
+In-Reply-To: <a0ad4723-db85-0eda-efb5-f0c9a2a6aec3@arm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
+Content-Language: en-GB
+X-Provags-ID: V03:K1:GxvXISq/vQUw0CF4n7qCFX0ucOQQ/WrciDDXrMEuGYWZVSa/9hB
+ QAPsZtpo3t9v0XTThIaCt5DvRpmp3fB8lWb//T5QodTKvZBcSVje+4mohTMLZVqN14UT3pS
+ 7KHQIMGBpf7mjeu1cNFW5zYEmU4IgvkoM+2RAsdoSGfHlZ5dlnc9cwEZ1igGGrszaSoUP4z
+ Om2pt6sOQlrqUGzy7+qTA==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:tJ/tdq6fCbM=:+dw/5RxWG7gW0S7c717i5c
+ qC/iLBFbuQhEZZoUY63jeayspCCRnlOuPytTsAlvpqNVatg++A2+MLAvjAG8zF3zBVe+Hhqcl
+ YNsC5cTWfmNCsMOcMVdDVSGW46PPg3pW3AR7C850a2BlmmYj07PtIw84iCFGFyREwQ0bc9kFJ
+ c3QPlG/1cbtv/7AXiRzHXEiqpMthD24Yst0DkfvB8JAWdEcAbVQnoeDHiuY8PxSyfB3hMCIMy
+ otycqOrN5n4Av+3ebRscHZ4WOcPL0X9DZxmnW8B30wUv2ei1DQ7hLAesX8KklGAHtG/aMGyrG
+ mDNNt8C2Fk2AI4OO7Yud4vFPf8QWWchLzeTzoIBEj/3Krm2p59MNAgr2RHbRVhJZqb+498iKr
+ bZzTR4KbPUpmZ96FQ+zi+8h14ZFetc0ukHrepY3eAGXcYTGTMVVdqEp4clUe28GSuafEeeNW5
+ I1HXygTosgqvCX64VTQzRxOXOPBFqtpEeYF9ViEwm7NXyQK5RxCpucdcd7Uq1aeosZG3i+F/9
+ F/A+7CbF9I2VAZ2aXijdMuXVoKf8cNG2bfGhLkws086VBHDCBNz1GZfU9/p1tjC9XAt8vkRED
+ zUuAVdNBpR9oHsfT4/99nHFTeaMK1rUwekofczJXDsCXpgOwQlJuTWEaoz0iU0iva6LL87G72
+ vo9TLiBgRMpZRqtEWNKn90/Q5gXWrxMPDiUvFeNtnskT/tISY1yrCO4N2wuiM3cuddKZ74DGR
+ TYfGnwGCx3ApOFNz2aqs6KchFirYOCV76JzQtPL7xKMWSbh0tJcZ9xOwgVna5Nt64d/DlyNfa
+ 0G3kb0+wCwqahGqe0OOVvSGbecFFZ9c3Bx4VnIdT/yVrxoLNe8jrSSsQpt6EVXlVJOr/TYhwz
+ X3Mg4FjBYjBt0uBljQU+I1peJwQ9dv2YS0rc34Oj1VAYc72Pf2bjlWKJ/iWNY5POzGXgMfi03
+ Sqp8etxIB5Ir0w3k8oeIfBT1nOMt04uqhRadIq8uHlWbCZxjHO5hGN30CaIr8LEft4ghCv/9H
+ alWWN2FexeAEFSz/aqV4oAmraMzBWsN0M+QxgHVMZbOHgNCZL7iVMKFNgNlA/efAUjfVl++2X
+ n85ZSqEvUFoJVJvJ1JXvONkqNFdCYgWBpci68KdZi3jiDAGndXMKHvTzcypFLMMfFoDkcD0Ab
+ YQ/TQLlCGs50yQTK89k5h881RUrBCZVItewkt1NKp2QWPlxIbyK2iWIPjOci+RbyLOiSgtiA4
+ 3Yl5Q5K/y93xVK4y3b/JrFYO9mCnk3w3uPsN7Ow==
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Johannes Berg <johannes@sipsolutions.net> writes:
 
-> On Wed, 2019-12-11 at 15:47 +0100, Toke H=C3=B8iland-J=C3=B8rgensen wrote:
+
+On 12.12.19 11:22, Robin Murphy wrote:
+> Hi Soeren,
 >
->> > Say you have some queues - some (Q1-Qn) got a LOT of traffic, and
->> > another (Q0) just has some interactive traffic.
->> >=20
->> > You could then end up in a situation where you have 24ms queued up on
->> > Q1-Qn (with n high enough to not have hit the per-queue AQL limit),
->> > right?
->> >=20
->> > Say also the last frame on Q0 was dequeued by the hardware, but the
->> > tx_dequeue() got NULL because of the AQL limit having been eaten up by
->> > all the packets on Q1-Qn.
->> >=20
->> > Now you'll no longer get a new dequeue attempt on Q0 (it was already
->> > empty last time, so no hardware reclaim to trigger new dequeues), and a
->> > new dequeue on the *other* queues will not do anything for this queue.
->>=20
->> Oh, right, I see; yeah, that could probably happen. I guess we could
->> either kick all available queues whenever the global limit goes from
->> "above" to "below"; or we could remove the "return NULL" logic from
->> tx_dequeue() and rely on next_txq() to throttle. I think the latter is
->> probably simpler, but I'm a little worried that the throttling will
->> become too lax (because the driver can keep dequeueing in the same
->> scheduling round)...
+> On 11/12/2019 11:52 pm, Soeren Moch wrote:
+>> With enabled wifi support (required for firmware loading) for the
+>> Ampak AP6359SA based wifi/bt combo module we now also can enable
+>> the bluetooth part.
+>>
+>> Suggested-by: Heiko Stuebner <heiko@sntech.de>
+>> Signed-off-by: Soeren Moch <smoch@web.de>
+>> ---
+>> changes in v2:
+>> - new patch
+>>
+>> Cc: Heiko Stuebner <heiko@sntech.de>
+>> Cc: Kalle Valo <kvalo@codeaurora.org>
+>> Cc: linux-wireless@vger.kernel.org
+>> Cc: brcm80211-dev-list.pdl@broadcom.com
+>> Cc: brcm80211-dev-list@cypress.com
+>> Cc: netdev@vger.kernel.org
+>> Cc: linux-arm-kernel@lists.infradead.org
+>> Cc: linux-rockchip@lists.infradead.org
+>> Cc: linux-kernel@vger.kernel.org
+>> ---
+>> =C2=A0 .../boot/dts/rockchip/rk3399-rockpro64.dts=C2=A0=C2=A0=C2=A0 | 2=
+9 ++++++++++++++++++-
+>> =C2=A0 1 file changed, 28 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/arch/arm64/boot/dts/rockchip/rk3399-rockpro64.dts
+>> b/arch/arm64/boot/dts/rockchip/rk3399-rockpro64.dts
+>> index 9fa92790d6e0..94cc462e234d 100644
+>> --- a/arch/arm64/boot/dts/rockchip/rk3399-rockpro64.dts
+>> +++ b/arch/arm64/boot/dts/rockchip/rk3399-rockpro64.dts
+>> @@ -561,6 +561,20 @@
+>> =C2=A0 };
+>>
+>> =C2=A0 &pinctrl {
+>> +=C2=A0=C2=A0=C2=A0 bt {
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 bt_enable_h: bt-enable-h {
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 roc=
+kchip,pins =3D <0 RK_PB1 RK_FUNC_GPIO &pcfg_pull_none>;
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 };
+>> +
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 bt_host_wake_l: bt-host-wak=
+e-l {
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 roc=
+kchip,pins =3D <0 RK_PA4 RK_FUNC_GPIO &pcfg_pull_down>;
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 };
+>> +
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 bt_wake_l: bt-wake-l {
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 roc=
+kchip,pins =3D <2 RK_PD3 RK_FUNC_GPIO &pcfg_pull_none>;
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 };
+>> +=C2=A0=C2=A0=C2=A0 };
+>> +
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 buttons {
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 pwrbtn: pwrbtn {
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0 rockchip,pins =3D <0 RK_PA5 RK_FUNC_GPIO &pcfg_pull_up>;
+>> @@ -729,8 +743,21 @@
+>>
+>> =C2=A0 &uart0 {
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 pinctrl-names =3D "default";
+>> -=C2=A0=C2=A0=C2=A0 pinctrl-0 =3D <&uart0_xfer &uart0_cts>;
+>> +=C2=A0=C2=A0=C2=A0 pinctrl-0 =3D <&uart0_xfer &uart0_cts &uart0_rts>;
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 status =3D "okay";
+>> +
+>> +=C2=A0=C2=A0=C2=A0 bluetooth {
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 compatible =3D "brcm,bcm434=
+38-bt";
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 clocks =3D <&rk808 1>;
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 clock-names =3D "extclk";
 >
-> I honestly have no idea what's better ... :)
+> Is this right? Comparing the binding and the naming on the schematics,
+> it seems more likely that this might be the LPO clock rather than the
+> TXCO clock.
+>
+> Robin.
+On second thought I have to agree. So we need another round on this.
 
-Right, I guess we'll have to go and measure. Let's leave it as-is for
-now, then, and we can adjust in a separate patch.
-
-> You're the expert, I'm just poking holes into it ;-)
-
-And you're doing that very well, as it turns out; thanks! ;)
-
--Toke
+Thanks for your review and bug report,
+Soeren
+>
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 device-wakeup-gpios =3D <&g=
+pio2 RK_PD3 GPIO_ACTIVE_HIGH>;
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 host-wakeup-gpios =3D <&gpi=
+o0 RK_PA4 GPIO_ACTIVE_HIGH>;
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 shutdown-gpios =3D <&gpio0 =
+RK_PB1 GPIO_ACTIVE_HIGH>;
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 pinctrl-names =3D "default"=
+;
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 pinctrl-0 =3D <&bt_host_wak=
+e_l &bt_wake_l &bt_enable_h>;
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 vbat-supply =3D <&vcc3v3_sy=
+s>;
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 vddio-supply =3D <&vcc_1v8>=
+;
+>> +=C2=A0=C2=A0=C2=A0 };
+>> =C2=A0 };
+>>
+>> =C2=A0 &uart2 {
+>> --
+>> 2.17.1
+>>
+>>
+>> _______________________________________________
+>> Linux-rockchip mailing list
+>> Linux-rockchip@lists.infradead.org
+>> http://lists.infradead.org/mailman/listinfo/linux-rockchip
+>>
 
