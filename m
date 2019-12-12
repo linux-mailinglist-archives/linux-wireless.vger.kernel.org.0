@@ -2,100 +2,98 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E8DE711C5C8
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Dec 2019 07:05:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 416EF11C6AB
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Dec 2019 08:52:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727675AbfLLGFb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 12 Dec 2019 01:05:31 -0500
-Received: from mail-ot1-f65.google.com ([209.85.210.65]:39323 "EHLO
-        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726784AbfLLGFb (ORCPT
+        id S1728150AbfLLHvC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 12 Dec 2019 02:51:02 -0500
+Received: from a27-188.smtp-out.us-west-2.amazonses.com ([54.240.27.188]:40744
+        "EHLO a27-188.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728099AbfLLHvC (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 12 Dec 2019 01:05:31 -0500
-Received: by mail-ot1-f65.google.com with SMTP id 77so441335oty.6
-        for <linux-wireless@vger.kernel.org>; Wed, 11 Dec 2019 22:05:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=1XjwAkCKDxttRFF8kGyPFQ5AwyuSz+YAMDyZWuFxC0k=;
-        b=Emyj4H1riaOG8w5uF0c4Joi+R3q7h0pP+8PjkimB+vYa89pmuwK+dNm091p4GU/gRN
-         q0uYvARfwolsExfuct2elfTd+FCPA5Dkw1jzZSJLEJe2XQuM/w31Luzpl5YQjMNIMH+x
-         DRgfmRWtTvHu5Jiopknw/g28g0CZ/E14pxcUY3pjKE5XIcz2xUxR1Qebp+3drcjQ1IF7
-         vhcqINcQ6DZIdL2/4CS023C3tbON47XeMg16MZJ1doWEteZwwgtPjLy7ShrlRp8eUP7b
-         FXnwEIpNysoscX4oSHjAuelNtO5bY4zOFgX0bPjlrMpIuWhwc12HAH6CdXHj4Qf4Yrcr
-         J6/A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=1XjwAkCKDxttRFF8kGyPFQ5AwyuSz+YAMDyZWuFxC0k=;
-        b=tue4RP9uWhaRd7ts4pYUt0nqLC9vCoT9cG/oS8Wl0XIx8kl5c8OKGg7SJ4C5oUNSYu
-         my7iDQ2dUjEehOsLkwx5czGeJTYx5ebixcS7yK6tJUOQoJXIMpihucySGMkFf+/13fKF
-         LzfXE19xLByWV3NOxNXPLnvpXm881PQZchMQAadhsMM57bqRm0W5ZmL7+z5T950IwXYI
-         t94g7w3dwFMFCrV1i/GaiDm+QnZDLuw6IVhN0mGgJm8QtOAmIqqAk+88xgs0eWa5bV2P
-         Cem0wgRlV3q9ihohGGCOmjahsU3gyaXjjYM2sXQbpGQlgA3U4JCMJDoh8wbnvL04MLYO
-         5jtA==
-X-Gm-Message-State: APjAAAXgf92WdhJhRrXKMW50e3TQCUbRZG0ZFfNSDeFKyVKuQQuib9fj
-        XnlIBkVGjp9wP2GzwnzZFVZr4PYCIPIYnIaVzBgscqGG
-X-Google-Smtp-Source: APXvYqyXPM7mjYZUh3jsH5Xxi8scvGi6lG835YwBa1v4DsU9tACr/PGwdTdu2M9ozkZGUTt/+2vO+XFTZXxhSc1ZPx8=
-X-Received: by 2002:a05:6830:10c9:: with SMTP id z9mr6245002oto.200.1576130730399;
- Wed, 11 Dec 2019 22:05:30 -0800 (PST)
+        Thu, 12 Dec 2019 02:51:02 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1576137061;
+        h=MIME-Version:Content-Type:Content-Transfer-Encoding:Date:From:To:Cc:Subject:Message-ID;
+        bh=30SbRHuyYH9I0+meSymRw/7OWb5sfw3MRD2S/c4vwDc=;
+        b=hWvDkJaeneGDaECRSGj7+udI/ECzzAE2s3Lpc05E5Lpa+JbyfDuGjyZtkmKrbD7Z
+        SVxAnLMWUTFrdVaKsYHiHXZd7fQhYQLXJk7lhVE5bSL6WX2J5dpTL6aGEtu9XKOBxx0
+        akGkx0bgZNqIph2s7t5vl8CTuRKFX5O9KOVhKXnc=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+        s=gdwg2y3kokkkj5a55z2ilkup5wp5hhxx; d=amazonses.com; t=1576137061;
+        h=MIME-Version:Content-Type:Content-Transfer-Encoding:Date:From:To:Cc:Subject:Message-ID:Feedback-ID;
+        bh=30SbRHuyYH9I0+meSymRw/7OWb5sfw3MRD2S/c4vwDc=;
+        b=GmDEOXHdOP6dA4nFc1HbbgtzK7uRdVcBCenkRbUNY4uT4Gk5TOqtwdh2vFFXMv4S
+        7mL/oWwSTdCV/wDAL0GSmQs5s7WNtk/BQaSu1f7Hd4QciTwY5OxI2eMxbS0bGPwveOB
+        FbxMM28k7WOsKJGzuSu32K57OhnHilz/e8T9v0BM=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED
+        autolearn=unavailable autolearn_force=no version=3.4.0
 MIME-Version: 1.0
-References: <20191211145230.200132-1-toke@redhat.com> <20191211145230.200132-2-toke@redhat.com>
- <df7eb0b71dc9cfdc7d9b5f7abdbcce0d42fa4a1e.camel@sipsolutions.net>
-In-Reply-To: <df7eb0b71dc9cfdc7d9b5f7abdbcce0d42fa4a1e.camel@sipsolutions.net>
-From:   Justin Capella <justincapella@gmail.com>
-Date:   Wed, 11 Dec 2019 22:05:19 -0800
-Message-ID: <CAMrEMU9t-Ed9ASyjGcJvpKM=Japiy0fv_cd1_3D5Sy_UMte_9A@mail.gmail.com>
-Subject: Re: [PATCH 1/2] mac80211: Turn AQL into an NL80211_EXT_FEATURE
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@redhat.com>,
-        linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Thu, 12 Dec 2019 07:51:01 +0000
+From:   Zhi Chen <zhichen@codeaurora.org>
+To:     ath10k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org
+Subject: [PATCH,v3] Revert "ath10k: fix DMA related firmware crashes on 
+ multiple devices"
+Message-ID: <0101016ef916f2e7-28683312-1d0b-4c2e-b967-c13c3e45ce31-000000@us-west-2.amazonses.com>
+X-Sender: zhichen@codeaurora.org
+User-Agent: Roundcube Webmail/1.3.9
+X-SES-Outgoing: 2019.12.12-54.240.27.188
+Feedback-ID: 1.us-west-2.CZuq2qbDmUIuT3qdvXlRHZZCpfZqZ4GtG9v3VKgRyF0=:AmazonSES
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Disclaimer: I'm new, so don't assume my questions are rhetorical...
+This reverts commit 76d164f582150fd0259ec0fcbc485470bcd8033e.
+PCIe hung issue was observed on multiple platforms. The issue was 
+reproduced
+when DUT was configured as AP and associated with 50+ STAs.
 
-sta =3D container_of(txq->sta, struct sta_info, sta); // Is this correct?
+For QCA9984/QCA9888, the DMA_BURST_SIZE register controls the AXI burst 
+size
+of the RD/WR access to the HOST MEM.
+0 - No split , RAW read/write transfer size from MAC is put out on bus
+     as burst length
+1 - Split at 256 byte boundary
+2,3 - Reserved
 
-I see the use of IEEE80211_NUM_ACS seems to be standard, is that AC
-specific? I learned today that different devs have different numbers
-of queues...
+With PCIe protocol analyzer, we can see DMA Read crossing 4KB boundary 
+when
+issue happened. It broke PCIe spec and caused PCIe stuck. So revert
+the default value from 0 to 1.
 
-What are the units of the THRESHOLD, iirc there was some bit shifting/maski=
-ng?
+Tested:  IPQ8064 + QCA9984 with firmware 10.4-3.10-00047
+          QCS404 + QCA9984 with firmware 10.4-3.9.0.2--00044
+          Synaptics AS370 + QCA9888  with firmware 10.4-3.9.0.2--00040
 
-Is there supposed to be a queue per station, or just per interface? It
-seemed like the threshold was meant to pick a higher or lower queue,
-this seems to maybe just reject if not within the bounds?
+Signed-off-by: Zhi Chen <zhichen@codeaurora.org>
+---
+v2: restored 10.2 register configuration
+v3: modified commit message
+---
+  drivers/net/wireless/ath/ath10k/hw.h | 2 +-
+  1 file changed, 1 insertion(+), 1 deletion(-)
 
-Sorry for all the questions, I'm still on the gradual side of the learning =
-curve
+diff --git a/drivers/net/wireless/ath/ath10k/hw.h 
+b/drivers/net/wireless/ath/ath10k/hw.h
+index 35a3623..59a9a58 100644
+--- a/drivers/net/wireless/ath/ath10k/hw.h
++++ b/drivers/net/wireless/ath/ath10k/hw.h
+@@ -813,7 +813,7 @@ ath10k_is_rssi_enable(struct ath10k_hw_params *hw,
 
-
-On Wed, Dec 11, 2019 at 1:22 PM Johannes Berg <johannes@sipsolutions.net> w=
-rote:
->
-> On Wed, 2019-12-11 at 15:52 +0100, Toke H=C3=B8iland-J=C3=B8rgensen wrote=
-:
-> >
-> > diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.=
-h
-> > index 341e0e8cae46..1e6f435c709c 100644
-> > --- a/include/uapi/linux/nl80211.h
-> > +++ b/include/uapi/linux/nl80211.h
-> > @@ -5563,6 +5563,7 @@ enum nl80211_ext_feature_index {
-> >       NL80211_EXT_FEATURE_STA_TX_PWR,
-> >       NL80211_EXT_FEATURE_SAE_OFFLOAD,
-> >       NL80211_EXT_FEATURE_VLAN_OFFLOAD,
-> > +     NL80211_EXT_FEATURE_AQL,
->
-> This is missing kernel-doc.
->
-> johannes
->
+  #define TARGET_10_4_TX_DBG_LOG_SIZE		1024
+  #define TARGET_10_4_NUM_WDS_ENTRIES		32
+-#define TARGET_10_4_DMA_BURST_SIZE		0
++#define TARGET_10_4_DMA_BURST_SIZE		1
+  #define TARGET_10_4_MAC_AGGR_DELIM		0
+  #define TARGET_10_4_RX_SKIP_DEFRAG_TIMEOUT_DUP_DETECTION_CHECK 1
+  #define TARGET_10_4_VOW_CONFIG			0
+-- 
+2.7.4
