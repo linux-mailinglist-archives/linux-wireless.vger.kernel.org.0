@@ -2,142 +2,193 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C63511C0E7
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Dec 2019 00:54:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E730011C1CD
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Dec 2019 02:03:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727170AbfLKXxx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 11 Dec 2019 18:53:53 -0500
-Received: from mout.web.de ([212.227.17.12]:43363 "EHLO mout.web.de"
+        id S1727441AbfLLBCs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 11 Dec 2019 20:02:48 -0500
+Received: from mout.web.de ([212.227.17.11]:44437 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727230AbfLKXxa (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 11 Dec 2019 18:53:30 -0500
+        id S1727403AbfLLBCs (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 11 Dec 2019 20:02:48 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1576108399;
-        bh=vpmcxnQM8xeIOrgf/nLMbY75MJAw3JLGxT3wkvLPkbo=;
-        h=X-UI-Sender-Class:From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=BzrHW2OM7bnwDihbgxHzNh8UPyn71b0KWUeLA7jUPedIlK3QHYVlS0idBZM47pmbx
-         u/s2Oorz8KhTT7wAZjxE29vQzv+lZoxVuVp4hoCqQLSOFesdNtpM70cAoxjkN8VesG
-         2tWns90UzykDW0PtQzGz1+jRSE3N5Me3UUJVdcqs=
+        s=dbaedf251592; t=1576112550;
+        bh=jn+uo4Cqpx1ozQR3B2KC5B3J+RoGsXHD7RZoPdcq0nU=;
+        h=X-UI-Sender-Class:Subject:Cc:References:To:From:Date:In-Reply-To;
+        b=L9ydTcdnRJrw9gBXCFSp39/6F4PqkOI1mV5NtJlDVgKwnuD7uf7ZhBPUrHV+eEVs7
+         8rlfbWcscTZHp8s6Bybzh1921thpQkMbsT8iyrwukvHuRpmJNLzPk5UaQExBkMvSgP
+         aYxoNlWI1onySK1XhCQ9PVUaahHlQEY/JDbRvq2c=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from localhost.localdomain ([89.204.139.166]) by smtp.web.de
- (mrweb101 [213.165.67.124]) with ESMTPSA (Nemesis) id
- 0LmLoU-1i6PGv079u-00Zwng; Thu, 12 Dec 2019 00:53:19 +0100
-From:   Soeren Moch <smoch@web.de>
-To:     Kalle Valo <kvalo@codeaurora.org>, Heiko Stuebner <heiko@sntech.de>
-Cc:     Soeren Moch <smoch@web.de>, linux-wireless@vger.kernel.org,
+Received: from [192.168.43.108] ([89.204.139.166]) by smtp.web.de (mrweb101
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0Ldn6l-1hxNjC2bPH-00izDK; Thu, 12
+ Dec 2019 02:02:29 +0100
+Subject: Re: [PATCH v2 5/9] brcmfmac: add support for BCM4359 SDIO chipset
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Arend van Spriel <arend.vanspriel@broadcom.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
+        Wright Feng <wright.feng@cypress.com>,
+        linux-wireless@vger.kernel.org,
         brcm80211-dev-list.pdl@broadcom.com,
         brcm80211-dev-list@cypress.com, netdev@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org,
-        linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v2 9/9] arm64: dts: rockchip: RockPro64: hook up bluetooth at uart0
-Date:   Thu, 12 Dec 2019 00:52:53 +0100
-Message-Id: <20191211235253.2539-10-smoch@web.de>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20191211235253.2539-1-smoch@web.de>
+        linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-mmc@vger.kernel.org
 References: <20191211235253.2539-1-smoch@web.de>
+ <20191211235253.2539-6-smoch@web.de>
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+From:   Soeren Moch <smoch@web.de>
+Message-ID: <56de6321-bfc5-a66c-23c0-8928221c2a7f@web.de>
+Date:   Thu, 12 Dec 2019 02:02:27 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:5PDFH2F0gjxlcHEJO1q+UhhYMk5qrPh+R32KnEj09Ga2cRHNb6a
- WRvTk6+wPGns5t79V6A5yoGWG8mUNT8/17s9oA0//bPLHcW6hDWVFW/oVkXNIt2bhpPEv0K
- lJgNfkZq5I4mKhPg5g5ld/AlrjfJATF9j+BESdBC3KhzSqzdzaYD6z9e2CNWxmPy1A8KAmw
- LisOj0yPMWY6dMp/VuCwA==
+In-Reply-To: <20191211235253.2539-6-smoch@web.de>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Content-Language: en-GB
+X-Provags-ID: V03:K1:Qvea2KHNf/g2y1Ioev+CHDSFFOxPHdl3xf9+z6TwJCNrGKeu3DC
+ N5JpsCsR16tn96j9rG5iSRCPi5IzfAIwr8q8n237lCSdFK9bcCs8pIVHxkP72scLzpIh4s8
+ QLzbpBz2pnIO/Dfkwqax6PEfK+4psyx9Opexgc52ANnihUeQLz83ik/KTC1HqPH7ITwkTKK
+ ESRdXx9zbmH8XtthjV1Ig==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:tpVInoJ1RDg=:TY0Y8jY4BRFGaskvGFkBNh
- jwQgF+B6L5pOwcYFelXXSOSs3JUoLAzMJmi3lQHZG3zagTYa5ec3EmFKy2zWyjjkqDUYmfbxM
- SklKG+S9WrhxwukxqP48U1AB/c/nkv8Ff2Xxxxb/v4YznBy5PI9OANBHdeperFGLIG2D117rG
- RKU4govznHCUe4vzIx50qc3MBAAnQ4k2axKbCjCdQU0KZy+HjR1nMtaVUrRwb1ea0HyzBwg0v
- 2oCg2XkNnBcaXqHeWTlqOG+FGoqnL19Syz4pKB+6GznH9jaSzQ49pjSd0q5JW5aw0gpCIqDdB
- q9HHB2tBJnKWHpvNmU7FfDZLZfcQPmWdK9owN/pIZOECF3V5KEXziEn6mZqordxnGDC/EInQq
- Lc4ISJgfJXU01ERmUroP2kb44G08JMtDG/qID9OWX9Gl74/gmZYYw8gCDf+xFPfg7ne6iZAqC
- nac05Sz6FjuQUc3H2J4BQcykdjrcBmF8s5qPACTOr5o86gvN90J8gCo87hR1QOGBaw1o/hHXh
- C20wpBWRlzCZSb81nOVbKt8H387nsw9GoYEnXJ3Ib3laZ4zoX1Zuk81CECo4zINJuY1ZTzkVb
- DHyJrRg5Tizk1YhMJ6y4BK+AgXsuWHS/7hG65fBo1U9e2+rWKIdrPb0ik4QJfDN01a1Ze9IpZ
- lZiM5ydyw6NLK9fS4k8cOWwAEE68qFwCMz5otMcDMUqA35FbAGlyfa12OmyhuNpOH8bNZfuCU
- S7kgGnpZm3AvTqOyKfJRic/h9o8vQtE5hSm7PAePDr8nPLp3PttDhdzcURTllw1Nhm77lMKTk
- q8h8HiV8VS7tg4nviLnyDNvrXDnDmiBB0fGzrRCyEjLQlg4wNk8r+WEXd64pLBrrYZYLr5UKy
- gFlIeqT6utsFoLYYGvAEkLXzJgj3ByToaly7FQr1YJej5cze5QoWGV3qAAfUBCnwXk8cBurre
- Il3LMG4GJKHlRMmtui9X93CJgjPhpYIwZ3FjYfOkDvlTs6Jz9IrOM7Dyd7gXPNGtpHxY8ZRPZ
- wZYfDyXjuZ7Ttli5eXTV6CgECOYT3ldVewSf8S96IRRbruiTZ43w8oe7R04a0mxVwh30YbRTS
- EZBwgktnaiZGCVaau1310BTCnvJMj0zHgswDCshOMY/l8q6kzKyWK4+ZSNbj25ChQuw5CBa6N
- W8cppyIDzVq9kBEvrDAiEUoq3h94zApYs2Lgs2Rb3fUbwaQqcf4n0XEpjL8FdAxA6sYX4gwGK
- viCgHHeD+54tWUevFFwkG18p6Ilf+g0GP4UA1Mw==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:LJbS0jdVLI8=:ATWbHxULlQjn6MOGYVh1va
+ k8DOWElK6UqGaBsIs04vtExB6xn8PWwJfJjjLs8HFwGLLuYzwSOhytFFDxGnC6b5qfItgr2qR
+ 2m3O2kjZJ9kWRkIjfNaqyA/eUwKGVoKyWwbLIoIBpWDlWX1KcFlnKQLm/MpM5Vm6DTwIRLW1p
+ cz9YcX0qrKY62ABDP4bJoW8UxGqOgfgsDg53OlyyHikmruCLxfPPOn1qYfV/xoxONcjJYZGKu
+ SN+QowbsuqAAefygQgl+nXv5qiFDs70bnISUGQa2/aGiAJt3ynZ7edeoyZqbevvzVy/FvX2c8
+ wP0HqPca3/cAthgB6aCJDy6ds1CbK+Sn/6cJZtE26dUgDSpPB4X6llqqYRwq5D64+/emgGM3b
+ tlYUgqZyGDYAjGVHPMth5r7frtzJ0UWM7LWl//N/hlyDW9aRL/49jrew/He9aowsQpIp9XAcI
+ 9+nK5EdVNpIexu5hpgKz9KeOHv7WELHDo+qIuDmrX0KWcGdl9thhxcjMCx28wMDc+j50rN5yB
+ AKk7zlr6p7nqH195717o9gXvNGw3KMdY4ywsHGi8+0qr0op6DFdMOV+zJdK1NS/EQQQsZVDfA
+ cUZzYsvO6zkQGxbUbDlLK3v+LYvtQuZ9zARAgY+VMqcSAWw0aLKin8x3EKSRCLnf9nWlwQPhm
+ 48JmWWzP2MMO76v5PDqOv84iVPyvQEgPw1vaH8CrOFix9Gapqe2O3CeQC2KcnE88TI6Uqs/Ix
+ oCYef2L1N96qK4ftlg/ZJX5g+2S73iNA9w+9nyCmwEiLag8q0qu/3PMqw9tBHKroZi+KKdLny
+ /anTRBANHdpmGPFYpJWS1+L/GTJRx2wMnDB7joX1QZ6XfElOHZCVfNVrl9yDHiJ83wLwjfjYS
+ sEBAPcyaB48UFKNFtOfa7g5zLhEYLUTTOOtQZfiWw36gC/cQpQlBGUlWr0+7fGyuqHIHSfknH
+ jBPk1IQlPooiiJ+mT5VtpoFFUxafHlwa/6yxcuVII4NN8P/6JZReAPYltNSoUwVMtpGc08tkV
+ YH2ijg6zw7B9B6hYlr9OG0xqsY9MxwzQ/HnvgzRpAhwIRRTJmkoYOwhNOirxa4fllGyS/k7AN
+ fn40VpMf5a4L8ybR+kzHwR2ziY7fmbmCWUEpMxHXsZ2q3OlNxL+dTdY+u57+DZ4ix8TjI+J0m
+ pR7h8rACGdVUxJpJZA91wY05WqF51vVfgOeE4xFMB5IA45ciclxlvg5ZfOh0V34VoN4d4wN87
+ sWeffHekji1J7qb+gJSSJesyCznUA8H7XCc3Q+A==
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-With enabled wifi support (required for firmware loading) for the
-Ampak AP6359SA based wifi/bt combo module we now also can enable
-the bluetooth part.
+Hi Ulf,
 
-Suggested-by: Heiko Stuebner <heiko@sntech.de>
-Signed-off-by: Soeren Moch <smoch@web.de>
-=2D--
-changes in v2:
-- new patch
+This patch is part of a series [1] to add support for the BCM4359
+chipset with SDIO interface to the brcmfmac wireless network driver.
 
-Cc: Heiko Stuebner <heiko@sntech.de>
-Cc: Kalle Valo <kvalo@codeaurora.org>
-Cc: linux-wireless@vger.kernel.org
-Cc: brcm80211-dev-list.pdl@broadcom.com
-Cc: brcm80211-dev-list@cypress.com
-Cc: netdev@vger.kernel.org
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-rockchip@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org
-=2D--
- .../boot/dts/rockchip/rk3399-rockpro64.dts    | 29 ++++++++++++++++++-
- 1 file changed, 28 insertions(+), 1 deletion(-)
+I just realized that this patch touches
+include/linux/mmc/sdio_ids.h
+and therefore I need an Ack from MMC folks. Can you please look at this?
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3399-rockpro64.dts b/arch/arm6=
-4/boot/dts/rockchip/rk3399-rockpro64.dts
-index 9fa92790d6e0..94cc462e234d 100644
-=2D-- a/arch/arm64/boot/dts/rockchip/rk3399-rockpro64.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3399-rockpro64.dts
-@@ -561,6 +561,20 @@
- };
+Thanks and sorry for not including you in the original patch series
+submission,
+Soeren
 
- &pinctrl {
-+	bt {
-+		bt_enable_h: bt-enable-h {
-+			rockchip,pins =3D <0 RK_PB1 RK_FUNC_GPIO &pcfg_pull_none>;
-+		};
-+
-+		bt_host_wake_l: bt-host-wake-l {
-+			rockchip,pins =3D <0 RK_PA4 RK_FUNC_GPIO &pcfg_pull_down>;
-+		};
-+
-+		bt_wake_l: bt-wake-l {
-+			rockchip,pins =3D <2 RK_PD3 RK_FUNC_GPIO &pcfg_pull_none>;
-+		};
-+	};
-+
- 	buttons {
- 		pwrbtn: pwrbtn {
- 			rockchip,pins =3D <0 RK_PA5 RK_FUNC_GPIO &pcfg_pull_up>;
-@@ -729,8 +743,21 @@
+[1] https://lkml.org/lkml/2019/12/11/1958
 
- &uart0 {
- 	pinctrl-names =3D "default";
--	pinctrl-0 =3D <&uart0_xfer &uart0_cts>;
-+	pinctrl-0 =3D <&uart0_xfer &uart0_cts &uart0_rts>;
- 	status =3D "okay";
-+
-+	bluetooth {
-+		compatible =3D "brcm,bcm43438-bt";
-+		clocks =3D <&rk808 1>;
-+		clock-names =3D "extclk";
-+		device-wakeup-gpios =3D <&gpio2 RK_PD3 GPIO_ACTIVE_HIGH>;
-+		host-wakeup-gpios =3D <&gpio0 RK_PA4 GPIO_ACTIVE_HIGH>;
-+		shutdown-gpios =3D <&gpio0 RK_PB1 GPIO_ACTIVE_HIGH>;
-+		pinctrl-names =3D "default";
-+		pinctrl-0 =3D <&bt_host_wake_l &bt_wake_l &bt_enable_h>;
-+		vbat-supply =3D <&vcc3v3_sys>;
-+		vddio-supply =3D <&vcc_1v8>;
-+	};
- };
-
- &uart2 {
-=2D-
-2.17.1
+On 12.12.19 00:52, Soeren Moch wrote:
+> BCM4359 is a 2x2 802.11 abgn+ac Dual-Band HT80 combo chip and it
+> supports Real Simultaneous Dual Band feature.
+>
+> Based on a similar patch by: Wright Feng <wright.feng@cypress.com>
+>
+> Signed-off-by: Soeren Moch <smoch@web.de>
+> ---
+> changes in v2:
+> - add SDIO_DEVICE_ID_CYPRESS_89359 as requested
+>   by Chi-Hsien Lin <chi-hsien.lin@cypress.com>
+>
+> Cc: Kalle Valo <kvalo@codeaurora.org>
+> Cc: Heiko Stuebner <heiko@sntech.de>
+> Cc: Arend van Spriel <arend.vanspriel@broadcom.com>
+> Cc: Franky Lin <franky.lin@broadcom.com>
+> Cc: Hante Meuleman <hante.meuleman@broadcom.com>
+> Cc: Chi-Hsien Lin <chi-hsien.lin@cypress.com>
+> Cc: Wright Feng <wright.feng@cypress.com>
+> Cc: linux-wireless@vger.kernel.org
+> Cc: brcm80211-dev-list.pdl@broadcom.com
+> Cc: brcm80211-dev-list@cypress.com
+> Cc: netdev@vger.kernel.org
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: linux-rockchip@lists.infradead.org
+> Cc: linux-kernel@vger.kernel.org
+> ---
+>  drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c | 2 ++
+>  drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c   | 1 +
+>  drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c   | 2 ++
+>  include/linux/mmc/sdio_ids.h                              | 2 ++
+>  4 files changed, 7 insertions(+)
+>
+> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
+> index 68baf0189305..f4c53ab46058 100644
+> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
+> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
+> @@ -973,8 +973,10 @@ static const struct sdio_device_id brcmf_sdmmc_ids[] = {
+>  	BRCMF_SDIO_DEVICE(SDIO_DEVICE_ID_BROADCOM_43455),
+>  	BRCMF_SDIO_DEVICE(SDIO_DEVICE_ID_BROADCOM_4354),
+>  	BRCMF_SDIO_DEVICE(SDIO_DEVICE_ID_BROADCOM_4356),
+> +	BRCMF_SDIO_DEVICE(SDIO_DEVICE_ID_BROADCOM_4359),
+>  	BRCMF_SDIO_DEVICE(SDIO_DEVICE_ID_CYPRESS_4373),
+>  	BRCMF_SDIO_DEVICE(SDIO_DEVICE_ID_CYPRESS_43012),
+> +	BRCMF_SDIO_DEVICE(SDIO_DEVICE_ID_CYPRESS_89359),
+>  	{ /* end: all zeroes */ }
+>  };
+>  MODULE_DEVICE_TABLE(sdio, brcmf_sdmmc_ids);
+> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c
+> index baf72e3984fc..282d0bc14e8e 100644
+> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c
+> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c
+> @@ -1408,6 +1408,7 @@ bool brcmf_chip_sr_capable(struct brcmf_chip *pub)
+>  		addr = CORE_CC_REG(base, sr_control0);
+>  		reg = chip->ops->read32(chip->ctx, addr);
+>  		return (reg & CC_SR_CTL0_ENABLE_MASK) != 0;
+> +	case BRCM_CC_4359_CHIP_ID:
+>  	case CY_CC_43012_CHIP_ID:
+>  		addr = CORE_CC_REG(pmu->base, retention_ctl);
+>  		reg = chip->ops->read32(chip->ctx, addr);
+> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+> index 21e535072f3f..c4012ed58b9c 100644
+> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+> @@ -616,6 +616,7 @@ BRCMF_FW_DEF(43455, "brcmfmac43455-sdio");
+>  BRCMF_FW_DEF(43456, "brcmfmac43456-sdio");
+>  BRCMF_FW_DEF(4354, "brcmfmac4354-sdio");
+>  BRCMF_FW_DEF(4356, "brcmfmac4356-sdio");
+> +BRCMF_FW_DEF(4359, "brcmfmac4359-sdio");
+>  BRCMF_FW_DEF(4373, "brcmfmac4373-sdio");
+>  BRCMF_FW_DEF(43012, "brcmfmac43012-sdio");
+>
+> @@ -638,6 +639,7 @@ static const struct brcmf_firmware_mapping brcmf_sdio_fwnames[] = {
+>  	BRCMF_FW_ENTRY(BRCM_CC_4345_CHIP_ID, 0xFFFFFDC0, 43455),
+>  	BRCMF_FW_ENTRY(BRCM_CC_4354_CHIP_ID, 0xFFFFFFFF, 4354),
+>  	BRCMF_FW_ENTRY(BRCM_CC_4356_CHIP_ID, 0xFFFFFFFF, 4356),
+> +	BRCMF_FW_ENTRY(BRCM_CC_4359_CHIP_ID, 0xFFFFFFFF, 4359),
+>  	BRCMF_FW_ENTRY(CY_CC_4373_CHIP_ID, 0xFFFFFFFF, 4373),
+>  	BRCMF_FW_ENTRY(CY_CC_43012_CHIP_ID, 0xFFFFFFFF, 43012)
+>  };
+> diff --git a/include/linux/mmc/sdio_ids.h b/include/linux/mmc/sdio_ids.h
+> index 08b25c02b5a1..2e9a6e4634eb 100644
+> --- a/include/linux/mmc/sdio_ids.h
+> +++ b/include/linux/mmc/sdio_ids.h
+> @@ -41,8 +41,10 @@
+>  #define SDIO_DEVICE_ID_BROADCOM_43455		0xa9bf
+>  #define SDIO_DEVICE_ID_BROADCOM_4354		0x4354
+>  #define SDIO_DEVICE_ID_BROADCOM_4356		0x4356
+> +#define SDIO_DEVICE_ID_BROADCOM_4359		0x4359
+>  #define SDIO_DEVICE_ID_CYPRESS_4373		0x4373
+>  #define SDIO_DEVICE_ID_CYPRESS_43012		43012
+> +#define SDIO_DEVICE_ID_CYPRESS_89359		0x4355
+>
+>  #define SDIO_VENDOR_ID_INTEL			0x0089
+>  #define SDIO_DEVICE_ID_INTEL_IWMC3200WIMAX	0x1402
+> --
+> 2.17.1
+>
 
