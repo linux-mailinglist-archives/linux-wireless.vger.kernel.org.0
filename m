@@ -2,70 +2,72 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F6F411CB6F
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Dec 2019 11:55:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E8E0811CB7F
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Dec 2019 11:56:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728858AbfLLKz1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 12 Dec 2019 05:55:27 -0500
-Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:28560 "EHLO
+        id S1728877AbfLLK4B (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 12 Dec 2019 05:56:01 -0500
+Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:40489 "EHLO
         us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1728831AbfLLKz1 (ORCPT
+        with ESMTP id S1728722AbfLLK4B (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 12 Dec 2019 05:55:27 -0500
+        Thu, 12 Dec 2019 05:56:01 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1576148125;
+        s=mimecast20190719; t=1576148159;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=tViCQG3lsrEoLFHJxHOiQKzVD2qVe3ldyRDKWpQIP6E=;
-        b=Hbdl9RLKT1tnmLsW4VH95+R7tETzjynAnkGxAs9CUlwkzLETAcMoS55HX6je0aSWtJbu8x
-        q8Fu2agwCUqw+c5f8mCILQ3GmzGv4Z3KFGsGiiJ8HAbkkL+iH8Oe1uTA6kcZTWYixHU8l0
-        +Lcwd0o+mlNGCvMeuGO5JzPRIVrzxSg=
-Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
- [209.85.167.69]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-212-qw9rHIdcOte5MFiP5IW3Jw-1; Thu, 12 Dec 2019 05:55:25 -0500
-X-MC-Unique: qw9rHIdcOte5MFiP5IW3Jw-1
-Received: by mail-lf1-f69.google.com with SMTP id d7so489736lfk.9
-        for <linux-wireless@vger.kernel.org>; Thu, 12 Dec 2019 02:55:24 -0800 (PST)
+        bh=GVuBPnfR/HUS/yWuKBmjrvaEvLDIt8r0mtmDvQvQWOM=;
+        b=SPoaXexcXAin6DISTlAke9DPfLwqgE3PckrWK32etpHRdEh92ogRXnAIQirGOH1OC+XStZ
+        NQw91gBF5eY0F7Ko0GfpS204rvDkLhfxEYub0uAai+kk8hl9Cc56aKOLb/Il+sIp7x4x+I
+        x6+3QFYKOJnE5tvKjdO7uszPeS3uFiw=
+Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
+ [209.85.167.72]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-2-glD_z920OUq6RNAENiWV2w-1; Thu, 12 Dec 2019 05:55:56 -0500
+X-MC-Unique: glD_z920OUq6RNAENiWV2w-1
+Received: by mail-lf1-f72.google.com with SMTP id t74so490073lff.8
+        for <linux-wireless@vger.kernel.org>; Thu, 12 Dec 2019 02:55:55 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
          :message-id:mime-version:content-transfer-encoding;
-        bh=tViCQG3lsrEoLFHJxHOiQKzVD2qVe3ldyRDKWpQIP6E=;
-        b=tBK+rAxEQl9cwiCsJtuIpfIi1R7DamlbQq95C/7D0n9rqFSo8On/my3KpozFk45hAT
-         83lqIVpN+k3tTpnqzpaI6OrJ197YWECs2JXnxpkTgo0VDF0+cwhp8mr1NjDaY2OgS+FF
-         GigGmbqQN/2bFqMfAmd/Kct+QE9Gk0lz08tjfWKoRCXR//zf65omkYg6J7VtAoj4DUiB
-         vg9pljnM5w+0rJoPXJyDH9wFToqlzAxOivG5yJTJg2wM9kRKu+8sCjGD0oAn7oNH02a6
-         +bpg4MvzMQCaPMszyjQEIASnaeZsVKgobhAQMUXmSHLaCrrjPwCzYK2OjvE5uqe+OHIo
-         HcIA==
-X-Gm-Message-State: APjAAAWPnrBE8FeIxsCCR3dUkpt5yUyURA+zYodTR1kbsYZOVwE9S18r
-        wysL7X7bVECzK9SLBtjY4z8X8K1CYY5RPZWkxv3n52FRii3QQ+tWUKLBJ6mnwirBO0N7toeLCU3
-        AZ+gDJ130IC4uynWTV+5ZPnoDG7M=
-X-Received: by 2002:ac2:5088:: with SMTP id f8mr5221541lfm.163.1576148122893;
-        Thu, 12 Dec 2019 02:55:22 -0800 (PST)
-X-Google-Smtp-Source: APXvYqwrQLxv9HuKyygd+IzL7zmMbMbX/4g6UlQhyF2/5QjIA9HBx51WjxChDUCOaA3NDttDiXpI1Q==
-X-Received: by 2002:ac2:5088:: with SMTP id f8mr5221531lfm.163.1576148122650;
-        Thu, 12 Dec 2019 02:55:22 -0800 (PST)
-Received: from alrua-x1.borgediget.toke.dk ([2a0c:4d80:42:443::2])
-        by smtp.gmail.com with ESMTPSA id u19sm2795521ljk.75.2019.12.12.02.55.21
+        bh=GVuBPnfR/HUS/yWuKBmjrvaEvLDIt8r0mtmDvQvQWOM=;
+        b=gpVNN16MmDr5LSlzvfA6oN8BAgK0TWDtJHSMRbhB7VlrS7++KI3usyDbjmiFMd2u4e
+         tgLn8461RMx5/IsgN6q9WpD2quSLu1hWfcQO0PGuaT5b88kv4hc4hytFbDIGnR2S98mW
+         9j0TTdOGIm3xBZs4xkMYlbm5oGYVYOniRMYl9YqsZ6epdgTAFi1dudikNIsQ9CYPR74y
+         Ueq+RkGPU19cQL+0Yd9aBYnirPTkhvxdRiYR9HQSLuYlfBHtWlfMQqbWgsLBZLkIXz3J
+         XqiVkfP2Rb3Ctyqrirs+TrRY8RxZCv/ssoIZia2bF6HdMN3cbfpvv/M6ScLPUZ1dDXa0
+         08hA==
+X-Gm-Message-State: APjAAAU4hhyPFT6+waP+TKZrDmdMaJMvYktliFXu0yR/QtkkGPtIpYfA
+        qRWh5G8jkIVP6HSfN7sfZAaxxCxo4FrBvJhDX5xolFpXAvk3kNi/CKn+JUGpqlPNhP8EwmVuez+
+        p2Sg2gFVsnEWfPjB8ExofTb0daT8=
+X-Received: by 2002:a2e:6e03:: with SMTP id j3mr5586820ljc.27.1576148154770;
+        Thu, 12 Dec 2019 02:55:54 -0800 (PST)
+X-Google-Smtp-Source: APXvYqzQulJb9cL64aWnAVkDEjCXAkMtslsz6volfbLipNj/bndQRMaE4qy42O8bTfWr0N4Tt16Qug==
+X-Received: by 2002:a2e:6e03:: with SMTP id j3mr5586810ljc.27.1576148154561;
+        Thu, 12 Dec 2019 02:55:54 -0800 (PST)
+Received: from alrua-x1.borgediget.toke.dk ([45.145.92.2])
+        by smtp.gmail.com with ESMTPSA id v26sm2783102lfq.73.2019.12.12.02.55.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Dec 2019 02:55:21 -0800 (PST)
+        Thu, 12 Dec 2019 02:55:53 -0800 (PST)
 Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-        id 77DC11819EA; Thu, 12 Dec 2019 11:55:19 +0100 (CET)
+        id 7FE311819EA; Thu, 12 Dec 2019 11:55:52 +0100 (CET)
 From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
 To:     Johannes Berg <johannes@sipsolutions.net>,
         Jens Axboe <axboe@kernel.dk>,
         Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>
+        Luca Coelho <luciano.coelho@intel.com>,
+        "Jason A. Donenfeld" <Jason@zx2c4.com>,
+        Steve French <smfrench@gmail.com>
 Cc:     "linux-wireless\@vger.kernel.org" <linux-wireless@vger.kernel.org>,
         Networking <netdev@vger.kernel.org>
 Subject: Re: iwlwifi warnings in 5.5-rc1
-In-Reply-To: <3ca2be96898e9d30c27b2411148d201318e413f2.camel@sipsolutions.net>
-References: <ceb74ea2-6a1b-4cef-8749-db21a2ee4311@kernel.dk> <9727368004ceef03f72d259b0779c2cf401432e1.camel@sipsolutions.net> <878snjgs5l.fsf@toke.dk> <3420d73e667b01ec64bf0cc9da6232b41e862860.camel@sipsolutions.net> <875zingnzt.fsf@toke.dk> <bfab4987668990ea8d86a98f3e87c3fa31403745.camel@sipsolutions.net> <87tv67ez9p.fsf@toke.dk> <3ca2be96898e9d30c27b2411148d201318e413f2.camel@sipsolutions.net>
+In-Reply-To: <5d82fa60fa8170c6a41e87650785ba008da11826.camel@sipsolutions.net>
+References: <ceb74ea2-6a1b-4cef-8749-db21a2ee4311@kernel.dk> <d4a48cbdc4b0db7b07b8776a1ee70b140e8a9bbf.camel@sipsolutions.net> <87o8wfeyx5.fsf@toke.dk> <e65574ac1bb414c9feb3d51e5cbd643c2907b221.camel@sipsolutions.net> <87d0cugbe5.fsf@toke.dk> <5d82fa60fa8170c6a41e87650785ba008da11826.camel@sipsolutions.net>
 X-Clacks-Overhead: GNU Terry Pratchett
-Date:   Thu, 12 Dec 2019 11:55:19 +0100
-Message-ID: <87v9qleru0.fsf@toke.dk>
+Date:   Thu, 12 Dec 2019 11:55:52 +0100
+Message-ID: <87sglpert3.fsf@toke.dk>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
@@ -76,105 +78,31 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 Johannes Berg <johannes@sipsolutions.net> writes:
 
-> On Wed, 2019-12-11 at 15:02 +0100, Toke H=C3=B8iland-J=C3=B8rgensen wrote:
->
->> > 2) GSO/TSO like what we have - it's not really clear how to handle it.
->> >    The airtime estimate will shoot *way* up (64kB frame) once that fra=
-me
->> >    enters, and then ... should it "trickle back down" as the generated=
-=20
->> >    parts are transmitted? But then the driver needs to split up the
->> >    airtime estimate? Or should it just go back down entirely? On the
->> >    first frame? That might overshoot. On the last frame? Opposite
->> >    problem ...
+> On Wed, 2019-12-11 at 15:55 +0100, Toke H=C3=B8iland-J=C3=B8rgensen wrote:
+>> Johannes Berg <johannes@sipsolutions.net> writes:
 >>=20
->> Well, ideally it would be divided out over the component packets; but
->> yeah, who is going to do that?
->
-> I'm not even sure we *can* do this easily - do we know up-front how many
-> packets this will expand to? We should know, but it might not be so easy
-> given the abstraction layers. We could guess and if it's wrong just set
-> it to 0 on any remaining ones.
-
-I was thinking about a scheme where we re-defined the value in the cb to
-be a "time per byte" value, that we could just multiply by the packet
-length; that would make it trivial to do partial reporting. Not sure
-it's quite workable in practice, though; it would be hard to avoid
-rounding errors, and there's also the additional headers when splitting
-a packet, so the lengths don't necessarily add up.
-
->> I think reporting it on the first packet
->> would be the safest if we had to choose.=20
->
-> Agree.
->
->> Also, ideally we would want the GSO/TSO mechanism to lower the size
->> of the superpackets at lower rates (does it?). At higher rates this
->> matters less...
->
-> Well TCP does limit (pacing shift) the amount of outstanding data, so if
-> it's _really_ slow I guess it will also limit the size of the
-> superpackets?
-
-Yeah, I *think* it does... :)
-
-> It's really just an artifact of our software implementation that we
-> report the SKBs back as used with partial content. Maybe we shouldn't
-> even do that, since they weren't generated by mac80211 in the first
-> place, and only report the original skb or something.
-
-Hmm, yeah, was wondering how that works, actually. I assumed you send
-the whole thing to the hardware as one superpacket? But if so how do you
-get the completion events back? Or are you splitting it in the driver
-just before you send it to the hardware?
-
->> > 3) I'm not quite convinced that all drivers report the TX rate
->> >    completely correctly in the status, some don't even use this path
->> >    but the ieee80211_tx_status_ext() which doesn't update the rate.
+>> > On Wed, 2019-12-11 at 15:09 +0100, Toke H=C3=B8iland-J=C3=B8rgensen wr=
+ote:
+>> > > If we're doing this on a per-driver basis, let's make it a proper
+>> > > NL80211_EXT_FEATURE and expose it to userspace; that way users can at
+>> > > least discover if it's supported on their device. I can send a patch
+>> > > adding that...
 >> >=20
->> > 4) Probably most importantly, this is completely broken with HE because
->> >    there's currently no way to report HE rates in the TX status at all!
->> >    I just worked around that in our driver for 'iw' reporting purposes
->> >    by implementing the rate reporting in the sta_statistics callback,
->> >    but that data won't be used by the airtime estimates.
+>> > Sure. Just didn't get to that yet, but if you want to send a patch
+>> > that's very welcome. I have to run out now, will be back in the evening
+>> > at most.
 >>=20
->> Hmm, yeah, both of those are good points. I guess I just kinda assumed
->> that the drivers were already doing the right thing there... :)
+>> Patch here (for those not following linux-wireless):
+>> https://patchwork.kernel.org/project/linux-wireless/list/?series=3D215107
 >
-> I'm not really sure I want to rely on this - this was never really
-> needed *functionally*, just from a *statistics* point of view (e.g. "iw
-> link" or such).
-
-Right, I see. Well I guess now that we're turning this on one driver at
-a time, we can ensure that the driver provides sufficiently accurate
-rate information as part of that.
-
-BTW, since we're discussing this in the context of iwlwifi: do you have
-any data as to how much benefit AQL would be for that? I.e., do the
-Intel devices tend to buffer a lot of data in hardware/firmware?
-
->> > Now, (1) probably doesn't matter, the estimates don't need to be that
->> > accurate. (2) I'm not sure how to solve; (3) and (4) could both be
->> > solved by having some mechanism of the rate scaling to tell us what the
->> > current rate is whenever it updates, rather than relying on the
->> > last_rate. Really we should do that much more, and even phase out
->> > last_rate entirely, it's a stupid concept.
->>=20
->> Yes, that last bit would be good!
+> Thanks!
 >
-> We already partially have this, we have a 'get best rate' or so callback
-> in the rate scaling, we'd just have to extend it to the driver ops for
-> offloaded rate scaling.
->
-> Ideally, it'd be a function call from the rate scaling to mac80211 so we
-> don't have to call a function every time we need the value, but the rate
-> scaling just calls us whenever it updates. This would even work with
-> iwlwifi's offloaded algorithm - it notifies the host on all changes.
+> Maybe I should roll that into a single patch so it's actually easier to
+> apply as a bugfix while keeping ath10k on AQL for 5.5, otherwise it
+> could be argued that the ath10k patch is a feature for -next ...
 
-Yup, this makes sense, and would be easy to integrate with Minstrel as
-well, I think. We already have ieee80211_sta_set_expected_throughput(),
-so maybe expanding that? It just provides a single number now, but we
-could change it to set the full rate info instead?
+Yeah, good point. Since it seems I'm sending a v2 anyway, I'll combine
+the two for that...
 
 -Toke
 
