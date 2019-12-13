@@ -2,119 +2,117 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AFE8711DCC1
-	for <lists+linux-wireless@lfdr.de>; Fri, 13 Dec 2019 05:06:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F00411DD07
+	for <lists+linux-wireless@lfdr.de>; Fri, 13 Dec 2019 05:16:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731545AbfLMEGQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 12 Dec 2019 23:06:16 -0500
-Received: from mail-lj1-f195.google.com ([209.85.208.195]:34997 "EHLO
-        mail-lj1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727778AbfLMEGQ (ORCPT
+        id S1731684AbfLMEP1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 12 Dec 2019 23:15:27 -0500
+Received: from mail-ot1-f49.google.com ([209.85.210.49]:44734 "EHLO
+        mail-ot1-f49.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731436AbfLMEP1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 12 Dec 2019 23:06:16 -0500
-Received: by mail-lj1-f195.google.com with SMTP id j6so1098893lja.2;
-        Thu, 12 Dec 2019 20:06:14 -0800 (PST)
+        Thu, 12 Dec 2019 23:15:27 -0500
+Received: by mail-ot1-f49.google.com with SMTP id x3so4643885oto.11;
+        Thu, 12 Dec 2019 20:15:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=URwD2kqbKtqHBmAr97llX1pKhl7DZxsGfB/7E5QLYGE=;
-        b=ni2xtTjM+9tiMdl0vEVZN6oCJYd5JkmqYneP9rmdFfxSNkEaRNTnpDtUAPxhg/WkG2
-         bkcQ+xCwU3likRm558tmzXfAvt+hvoTytoPU3MIOrbdLtLvmidkGbTvIm04/n6ZeT85X
-         3xEf/wk45HDrPEj5DMysxfiNMrEZYPAFSya2j9VTgoc0bJQdq+P2lCsPoSKFd01V881b
-         ooCAS1DF8X1cCO4GwWMohtH8hHF+7K4mJYFktzDdsPSii+EjZNaSc37bMgU6z0B9h8/g
-         opfpUHJgMg/y+kTWNMp4tMhMGLKNOljlpF9vXqLJUYmQZWhYxz+dEuOyH2zld1Xq3CeY
-         fzKA==
+         :cc;
+        bh=7LVcz87mfJCZYhCb0ulqJCZii16qq0xWW3eUPOjkGkE=;
+        b=n+h8fWzqCvK2t/vEAWYqU8ajyuIOVBeYw3kh27bY7+j/BpT/Mfm0k6+U4B4q/xHfLZ
+         HB42i+ZCi9Xdmw7D1jho9iEUPCJy9bh7tO8C9PzN+0EaC8GUZpH7rKDlWtnFn0BULyuX
+         URFWSsggrpDYGF6XZyi143GGqY9VYIIvKMkGeSinlt2iHWDSzg/NAoruNR5/5ONAlDJq
+         QvAbS8RlAwhwDrJkg15ud0fIgTEnXSOrz2Keh63I61aVnNjhx9+IW/x/zgC3xy0OYsbF
+         mNMn6Q/l8Dpmj2d58emBrBhDNzCjeOVmhmN8+/QoYZU6O9G84B4OOukSk2AGnV/Y+HUD
+         tc5A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=URwD2kqbKtqHBmAr97llX1pKhl7DZxsGfB/7E5QLYGE=;
-        b=RI+RkoFoVwbWcolwHDsExSSkZkgyLgz3HSu8I6McYQQlhsFEMlGLQOEPBS86bVrcZE
-         nSPOc/iUPi9ZuM0gi23BwuGkJ2I3Y6oTnV+7R1OhCkG0ebVFesih3koyX4/Qo3CELqkD
-         PnHgbPteFwTC4SlgF1iN9OdSAFckEiX5+lJWkqxAzjFWP8UuK+QKAI7m7C2MlrqgQobi
-         AhDFv3MbUwfL+qJi98foh/jjxHPRE8WPU6eu203RKv7S5V0hXYtyXsumRwB7Yf4LLoVg
-         t/s7W4D0diu4/s3dvB415mMaDA1Ic6P/WGdKIv24/QzV1iICuuZ/LnUV1DK/1WWqoVUN
-         KtYA==
-X-Gm-Message-State: APjAAAXUQQTcD32/H+ewfWQ2jFvRs5msok1PZIN+7RGPPoCb0MqOH4Jk
-        G6IzZuskwsLQCLj2UPNd8rltaoLi07CkxCtOOiM=
-X-Google-Smtp-Source: APXvYqzu65JNr8Zns5VVeks/iQ8D6CeQ4H0T8PGRqqD+u82N39Gk52MLphGw89g9L21cri/7kJtnKuJByOQxugJm9Ls=
-X-Received: by 2002:a2e:6f19:: with SMTP id k25mr7997476ljc.84.1576209973389;
- Thu, 12 Dec 2019 20:06:13 -0800 (PST)
+         :message-id:subject:to:cc;
+        bh=7LVcz87mfJCZYhCb0ulqJCZii16qq0xWW3eUPOjkGkE=;
+        b=LlidvkNU+IeFFPE+btRJ1PF0Ev6/TfXTzFEzXBFdU9QIIlxppUZQpx3o6z3nAKfZrr
+         2xoqkkCBMGcuWL0t7NeE/JRbQ0yhUmunUiYyqsJSAt5mYkOLqVk0N6YJaoyUnv+YApoB
+         6OtK/ogaMNskihopXyg/Rb8aN2Bu4QPqQp6wD9Ev5W5jLGYgm3EzeSBqmtoCwRp7iK/+
+         Cbi+rpW3LcdqTbG16f6sce+kD9sMKCVxkenru1cfW4nK0sdnPwDi7Df7SDbnVC12NO2Z
+         dUTK2z0eDDHTswIjCWJKy4z5F3HEnsX5so6CHrLBu/YGr7wqWT6uZt0NGvVqrnqFlBXY
+         sQ5g==
+X-Gm-Message-State: APjAAAXVGO2q8u/PyuwMM049EMFCi9xNf93DAB7AaqzBsca2/3mipbfA
+        Hev/9ZdQHrrN9rrsiFlSEfaoZwkYQobwCL8oWHZ4pGMhAjo=
+X-Google-Smtp-Source: APXvYqy3WiIzz2nXfI2jcEazJ+sFxZAFvmFaLmY8uwdep/ZCq/auKkzN5QEV3q2WvjDiGasCChrVDYXcRPFk9KBIHvA=
+X-Received: by 2002:a05:6830:10c9:: with SMTP id z9mr12257307oto.200.1576210526463;
+ Thu, 12 Dec 2019 20:15:26 -0800 (PST)
 MIME-Version: 1.0
-References: <1576075099-3441-1-git-send-email-akinobu.mita@gmail.com>
- <1576075099-3441-4-git-send-email-akinobu.mita@gmail.com> <CAHp75VfSUafrg82WcfUA4LhSFaNQSgZp39oVQGD=M124urC=xA@mail.gmail.com>
-In-Reply-To: <CAHp75VfSUafrg82WcfUA4LhSFaNQSgZp39oVQGD=M124urC=xA@mail.gmail.com>
-From:   Akinobu Mita <akinobu.mita@gmail.com>
-Date:   Fri, 13 Dec 2019 13:06:02 +0900
-Message-ID: <CAC5umygGZqWh2rRGMLvPhWFvD9Mv-5u6stY3c+5Z9_QC6OrNvA@mail.gmail.com>
-Subject: Re: [PATCH v3 03/12] platform/x86: asus-wmi: switch to use
- <linux/units.h> helpers
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Linux NVMe Mailinglist <linux-nvme@lists.infradead.org>,
-        linux-hwmon@vger.kernel.org, Linux PM <linux-pm@vger.kernel.org>,
-        "open list:TI WILINK WIRELES..." <linux-wireless@vger.kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Sujith Thomas <sujith.thomas@intel.com>,
-        Darren Hart <dvhart@infradead.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Amit Kucheria <amit.kucheria@verdurent.com>,
-        Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Keith Busch <kbusch@kernel.org>, Jens Axboe <axboe@fb.com>,
-        Christoph Hellwig <hch@lst.de>,
-        Sagi Grimberg <sagi@grimberg.me>
+References: <14cedbb9300f887fecc399ebcdb70c153955f876.camel@sipsolutions.net>
+In-Reply-To: <14cedbb9300f887fecc399ebcdb70c153955f876.camel@sipsolutions.net>
+From:   Justin Capella <justincapella@gmail.com>
+Date:   Thu, 12 Dec 2019 20:15:14 -0800
+Message-ID: <CAMrEMU-WdaAe2wOxsnMn=npPyAjf1KkuxA8cHE==yez_rUELUQ@mail.gmail.com>
+Subject: Re: debugging TCP stalls on high-speed wifi
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     Eric Dumazet <eric.dumazet@gmail.com>,
+        =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@redhat.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-2019=E5=B9=B412=E6=9C=8812=E6=97=A5(=E6=9C=A8) 0:32 Andy Shevchenko <andy.s=
-hevchenko@gmail.com>:
+Could TCP window size (waiting for ACKnowledgements) be a contributing factor?
 
+On Thu, Dec 12, 2019 at 6:52 AM Johannes Berg <johannes@sipsolutions.net> wrote:
 >
-> On Wed, Dec 11, 2019 at 4:39 PM Akinobu Mita <akinobu.mita@gmail.com> wro=
-te:
-> >
-> > The asus-wmi driver doesn't implement the thermal device functionality
-> > directly, so including <linux/thermal.h> just for DECI_KELVIN_TO_CELSIU=
-S()
-> > is a bit odd.
-> >
-> > This switches the asus-wmi driver to use deci_kelvin_to_millicelsius() =
-in
-> > <linux/units.h>.
+> Hi Eric, all,
 >
-> > @@ -33,7 +33,7 @@
-> >  #include <linux/seq_file.h>
-> >  #include <linux/platform_data/x86/asus-wmi.h>
-> >  #include <linux/platform_device.h>
-> > -#include <linux/thermal.h>
-> > +#include <linux/units.h>
-> >  #include <linux/acpi.h>
-> >  #include <linux/dmi.h>
+> I've been debugging (much thanks to bpftrace) TCP stalls on wifi, in
+> particular on iwlwifi.
 >
-> Similar comment about ordering. Can we move it to the end after dmi.h?
-
-OK.
-
-> > -       return sprintf(buf, "%d\n", value);
+> What happens, essentially, is that we transmit large aggregates (63
+> packets of 7.5k A-MSDU size each, for something on the order of 500kB
+> per PPDU). Theoretically we can have ~240 A-MSDUs on our hardware
+> queues, and the hardware aggregates them into up to 63 to send as a
+> single PPDU.
 >
-> > +       return sprintf(buf, "%ld\n",
+> At HE rates (160 MHz, high rates) such a large PPDU takes less than 2ms
+> to transmit.
 >
-> %d -> %ld must be explained in the commit message (e.g. "due to
-> function returned type).
-
-OK.
-
-> > +                      deci_kelvin_to_millicelsius(value & 0xFFFF));
+> I'm seeing around 1400 Mbps TCP throughput (a bit more than 1800 UDP),
+> but I'm expecting more. A bit more than 1800 for UDP is about the max I
+> can expect on this AP (it only does 8k A-MSDU size), but I'd think TCP
+> then shouldn't be so much less (and our Windows drivers gets >1600).
 >
-> I prefer to have this in one line.
-
-It causes line over 80 characters.
-We had the same conversation in v1 :)
+>
+> What I see is that occasionally - and this doesn't happen all the time
+> but probably enough to matter - we reclaim a few of those large
+> aggregates and free the transmit SKBs, and then we try to pull from
+> mac80211's TXQs but they're empty.
+>
+> At this point - we've just freed 400+k of data, I'd expect TCP to
+> immediately push more, but it doesn't happen. I sometimes see another
+> set of reclaims emptying the queue entirely (literally down to 0 packets
+> on the queue) and it then takes another millisecond or two for TCP to
+> start pushing packets again.
+>
+> Once that happens, I also observe that TCP stops pushing large TSO
+> packets and goes down to sometimes less than a single A-MSDU (i.e.
+> ~7.5k) in a TSO, perhaps even an MTU-sized frame - didn't check this,
+> only the # of frames we make out of this.
+>
+>
+> If you have any thoughts on this, I'd appreciate it.
+>
+>
+> Something I've been wondering is if our TSO implementation causes
+> issues, but apart from higher CPU usage I see no real difference if I
+> turned it off. I thought so because it splits up the SKBs into those A-
+> MSDU sized chunks using skb_gso_segment() and then splits them down into
+> MTU-sized all packed together into an A-MSDU using the hardware engine.
+> But that means we release a bunch of A-MSDU-sized SKBs back to the TCP
+> stack when they transmitted.
+>
+> Another thought I had was our broken NAPI, but this is TX traffic so the
+> only RX thing is sync, and I'm currently still using kernel 5.4 anyway.
+>
+> Thanks,
+> johannes
+>
