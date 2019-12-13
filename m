@@ -2,87 +2,112 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 90E3811E72E
-	for <lists+linux-wireless@lfdr.de>; Fri, 13 Dec 2019 16:58:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E74C411EABB
+	for <lists+linux-wireless@lfdr.de>; Fri, 13 Dec 2019 19:51:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728065AbfLMP6S (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 13 Dec 2019 10:58:18 -0500
-Received: from nbd.name ([46.4.11.11]:56236 "EHLO nbd.name"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728018AbfLMP6O (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 13 Dec 2019 10:58:14 -0500
-Received: from pd95fd344.dip0.t-ipconnect.de ([217.95.211.68] helo=bertha.fritz.box)
-        by ds12 with esmtpa (Exim 4.89)
-        (envelope-from <john@phrozen.org>)
-        id 1ifnKW-00073u-Ii; Fri, 13 Dec 2019 16:58:12 +0100
-From:   John Crispin <john@phrozen.org>
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        Kalle Valo <kvalo@codeaurora.org>
-Cc:     linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
-        John Crispin <john@phrozen.org>
-Subject: [PATCH v2 7/7] ath11k: add handling for BSS color
-Date:   Fri, 13 Dec 2019 16:58:02 +0100
-Message-Id: <20191213155802.25491-7-john@phrozen.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191213155802.25491-1-john@phrozen.org>
-References: <20191213155802.25491-1-john@phrozen.org>
+        id S1728591AbfLMSvJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 13 Dec 2019 13:51:09 -0500
+Received: from aserp2120.oracle.com ([141.146.126.78]:54602 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728489AbfLMSvJ (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 13 Dec 2019 13:51:09 -0500
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xBDIiSiO187214;
+        Fri, 13 Dec 2019 18:51:00 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
+ bh=OHdV8pT7zAW4ljzAh7kGrjCK8SyrDdk1D8mSHJct65s=;
+ b=by25lE7Pa3vr6Wr3ZMDaPNxZkoKmR1Uh67/9Uf0F+sxbN1bNqn2E4CPKEp0J/LoA+aVa
+ FhjFN50tBY0WK/R8yqv0GBpJIfwDSPyPwg3b7+d4glAJsPLnOKBy4z/EMcOOMbfoyPRs
+ +C7W1SRIQhWXv2u0Jtn1iJSxB9NV0Y0kfFBwLeuGBESBIqqLAyCi0HbYhBXWgW1rtwXA
+ sdNUj9EJWOE1JmHv4nzljOtu9TlOExPQxnKOyfiyHcEKw7TBQsp3n5a4vs2QD7dsFOJI
+ /bYc86Y5eAX6SzdzMpWYzuuFPXkv3GfXjsN7W9IWtYt/13+kp4jsmOaE3dyZCo68Q06H ng== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by aserp2120.oracle.com with ESMTP id 2wr41qts65-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 13 Dec 2019 18:51:00 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xBDImZEr013240;
+        Fri, 13 Dec 2019 18:50:59 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by aserp3020.oracle.com with ESMTP id 2wvdwq9f79-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 13 Dec 2019 18:50:59 +0000
+Received: from abhmp0005.oracle.com (abhmp0005.oracle.com [141.146.116.11])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id xBDIowPB029384;
+        Fri, 13 Dec 2019 18:50:58 GMT
+Received: from kili.mountain (/129.205.23.165)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Fri, 13 Dec 2019 10:50:57 -0800
+Date:   Fri, 13 Dec 2019 21:50:50 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     ulf.hansson@linaro.org
+Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org
+Subject: [bug report] mmc: core: Re-work HW reset for SDIO cards
+Message-ID: <20191213185050.m6iku7defq44syrl@kili.mountain>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9470 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=1 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=689
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1911140001 definitions=main-1912130145
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9470 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=1 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=751 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
+ definitions=main-1912130145
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This patch adds code to handle the BSS_CHANGED_BSS_COLOR flag. It will
-trigger the propagation of BSS color settings into the FW. Handling is
-slightly different between AP and STA interfaces.
+Hello Ulf Hansson,
 
-Signed-off-by: John Crispin <john@phrozen.org>
+The patch 2ac55d5e5ec9: "mmc: core: Re-work HW reset for SDIO cards"
+from Oct 17, 2019, leads to the following static checker warning:
 
-Changes in V2
-* handle return codes
----
- drivers/net/wireless/ath/ath11k/mac.c | 27 +++++++++++++++++++++++++++
- 1 file changed, 27 insertions(+)
+	drivers/net/wireless/ath/ath10k/sdio.c:1521 ath10k_sdio_hif_power_down()
+	warn: 'ret' can be either negative or positive
 
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index 6a8c1c3b8da2..fec268b9b711 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -1928,6 +1928,33 @@ static void ath11k_mac_op_bss_info_changed(struct ieee80211_hw *hw,
- 		ath11k_wmi_send_obss_spr_cmd(ar, arvif->vdev_id,
- 					     &info->he_obss_pd);
- 
-+	if (changed & BSS_CHANGED_HE_BSS_COLOR) {
-+		if (vif->type == NL80211_IFTYPE_AP) {
-+			ret = ath11k_wmi_send_obss_color_collision_cfg_cmd(
-+				ar, arvif->vdev_id, info->he_bss_color.color,
-+				ATH11K_BSS_COLOR_COLLISION_DETECTION_AP_PERIOD_MS,
-+				!info->he_bss_color.disabled);
-+			if (ret)
-+				ath11k_warn(ar->ab,
-+				    "failed to set bss color collision on vdev %i: %d\n",
-+				    arvif->vdev_id,  ret);
-+		} else if (vif->type == NL80211_IFTYPE_STATION) {
-+			ret = ath11k_wmi_send_bss_color_change_enable_cmd(ar,
-+								arvif->vdev_id, 1);
-+			if (ret)
-+				ath11k_warn(ar->ab,
-+				    "failed to enable bss color change on vdev %i: %d\n",
-+				    arvif->vdev_id,  ret);
-+			ret = ath11k_wmi_send_obss_color_collision_cfg_cmd(
-+				ar, arvif->vdev_id, 0,
-+				ATH11K_BSS_COLOR_COLLISION_DETECTION_STA_PERIOD_MS, 1);
-+			if (ret)
-+				ath11k_warn(ar->ab,
-+				    "failed to set bss color collision on vdev %i: %d\n",
-+				    arvif->vdev_id,  ret);
-+}
-+	}
-+
- 	mutex_unlock(&ar->conf_mutex);
- }
- 
--- 
-2.20.1
+drivers/net/wireless/ath/ath10k/sdio.c
+  1495  static void ath10k_sdio_hif_power_down(struct ath10k *ar)
+  1496  {
+  1497          struct ath10k_sdio *ar_sdio = ath10k_sdio_priv(ar);
+  1498          int ret;
+  1499  
+  1500          if (ar_sdio->is_disabled)
+  1501                  return;
+  1502  
+  1503          ath10k_dbg(ar, ATH10K_DBG_BOOT, "sdio power off\n");
+  1504  
+  1505          /* Disable the card */
+  1506          sdio_claim_host(ar_sdio->func);
+  1507  
+  1508          ret = sdio_disable_func(ar_sdio->func);
+  1509          if (ret) {
+  1510                  ath10k_warn(ar, "unable to disable sdio function: %d\n", ret);
+  1511                  sdio_release_host(ar_sdio->func);
+  1512                  return;
+  1513          }
+  1514  
+  1515          ret = mmc_hw_reset(ar_sdio->func->card->host);
+  1516          if (ret)
 
+It used to be that mmc_hw_reset() return negative error codes or zero
+but now it returns 1 on certain success paths.
+
+  1517                  ath10k_warn(ar, "unable to reset sdio: %d\n", ret);
+  1518  
+  1519          sdio_release_host(ar_sdio->func);
+  1520  
+  1521          ar_sdio->is_disabled = true;
+  1522  }
+
+
+regards,
+dan carpenter
