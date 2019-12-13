@@ -2,65 +2,63 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AEF9811E079
-	for <lists+linux-wireless@lfdr.de>; Fri, 13 Dec 2019 10:21:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 62B2D11E08B
+	for <lists+linux-wireless@lfdr.de>; Fri, 13 Dec 2019 10:26:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725948AbfLMJVr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 13 Dec 2019 04:21:47 -0500
-Received: from paleale.coelho.fi ([176.9.41.70]:52116 "EHLO
-        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1725747AbfLMJVr (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 13 Dec 2019 04:21:47 -0500
-Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa)
-        by farmhouse.coelho.fi with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.92.2)
-        (envelope-from <luca@coelho.fi>)
-        id 1ifh8p-0002Lp-1I; Fri, 13 Dec 2019 11:21:43 +0200
-Message-ID: <3fc87add008ee42892f747bc247f15e09f6ed2d4.camel@coelho.fi>
-From:   Luca Coelho <luca@coelho.fi>
-To:     Akinobu Mita <akinobu.mita@gmail.com>,
-        linux-nvme@lists.infradead.org, linux-hwmon@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Intel Linux Wireless <linuxwifi@intel.com>
-Date:   Fri, 13 Dec 2019 11:21:40 +0200
-In-Reply-To: <1576075099-3441-11-git-send-email-akinobu.mita@gmail.com>
-References: <1576075099-3441-1-git-send-email-akinobu.mita@gmail.com>
-         <1576075099-3441-11-git-send-email-akinobu.mita@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.1-2+b1 
+        id S1725937AbfLMJ0p (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 13 Dec 2019 04:26:45 -0500
+Received: from nbd.name ([46.4.11.11]:32788 "EHLO nbd.name"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725770AbfLMJ0p (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 13 Dec 2019 04:26:45 -0500
+Received: from pd95fd344.dip0.t-ipconnect.de ([217.95.211.68] helo=bertha.fritz.box)
+        by ds12 with esmtpa (Exim 4.89)
+        (envelope-from <john@phrozen.org>)
+        id 1ifhDe-0001pp-VG; Fri, 13 Dec 2019 10:26:43 +0100
+From:   John Crispin <john@phrozen.org>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless@vger.kernel.org,
+        Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>,
+        Sven Eckelmann <seckelmann@datto.com>,
+        John Crispin <john@phrozen.org>
+Subject: [PATCH] mac80211: he_support was not set when bringing up a HE mesh interface
+Date:   Fri, 13 Dec 2019 10:26:36 +0100
+Message-Id: <20191213092636.17736-1-john@phrozen.org>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on farmhouse.coelho.fi
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
-        TVD_RCVD_IP,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.2
-Subject: Re: [PATCH v3 10/12] wireless: iwlwifi: use <linux/units.h> helpers
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 2019-12-11 at 23:38 +0900, Akinobu Mita wrote:
-> This switches the iwlwifi driver to use celsius_to_kelvin() and
-> kelvin_to_celsius() in <linux/units.h>.
-> 
-> Cc: Kalle Valo <kvalo@codeaurora.org>
-> Cc: Johannes Berg <johannes.berg@intel.com>
-> Cc: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-> Cc: Luca Coelho <luciano.coelho@intel.com>
-> Cc: Intel Linux Wireless <linuxwifi@intel.com>
-> Signed-off-by: Akinobu Mita <akinobu.mita@gmail.com>
-> ---
+From: Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>
 
-Acked-by: Luca Coelho <luciano.coelho@intel.com>
+The he_support flag inside bss_conf was not set when a HE mesh interface
+gets created. This causes the drivers to not set the HW up correctly.
 
---
-Cheers,
-Luca.
+Fixes: 60ad72da55ac ("mac80211: implement HE support for mesh")
+
+Cc: Sven Eckelmann <seckelmann@datto.com>
+Signed-off-by: John Crispin <john@phrozen.org>
+Signed-off-by: Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>
+---
+ net/mac80211/mesh.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/net/mac80211/mesh.c b/net/mac80211/mesh.c
+index d09b3c789314..98d70f4ef6a4 100644
+--- a/net/mac80211/mesh.c
++++ b/net/mac80211/mesh.c
+@@ -551,6 +551,8 @@ int mesh_add_he_cap_ie(struct ieee80211_sub_if_data *sdata,
+ 	    sdata->vif.bss_conf.chandef.width == NL80211_CHAN_WIDTH_10)
+ 		return 0;
+ 
++	sdata->vif.bss_conf.he_support = 1;
++
+ 	if (skb_tailroom(skb) < ie_len)
+ 		return -ENOMEM;
+ 
+-- 
+2.20.1
 
