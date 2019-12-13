@@ -2,29 +2,28 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A50411E6C4
-	for <lists+linux-wireless@lfdr.de>; Fri, 13 Dec 2019 16:38:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 09D7011E72B
+	for <lists+linux-wireless@lfdr.de>; Fri, 13 Dec 2019 16:58:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727990AbfLMPit (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 13 Dec 2019 10:38:49 -0500
-Received: from nbd.name ([46.4.11.11]:54880 "EHLO nbd.name"
+        id S1728042AbfLMP6P (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 13 Dec 2019 10:58:15 -0500
+Received: from nbd.name ([46.4.11.11]:56200 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727992AbfLMPis (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 13 Dec 2019 10:38:48 -0500
+        id S1727932AbfLMP6O (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 13 Dec 2019 10:58:14 -0500
 Received: from pd95fd344.dip0.t-ipconnect.de ([217.95.211.68] helo=bertha.fritz.box)
         by ds12 with esmtpa (Exim 4.89)
         (envelope-from <john@phrozen.org>)
-        id 1ifn1h-0005pC-Q1; Fri, 13 Dec 2019 16:38:46 +0100
+        id 1ifnKT-00073u-7l; Fri, 13 Dec 2019 16:58:09 +0100
 From:   John Crispin <john@phrozen.org>
-To:     Kalle Valo <kvalo@codeaurora.org>
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        Kalle Valo <kvalo@codeaurora.org>
 Cc:     linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
         John Crispin <john@phrozen.org>
-Subject: [PATCH V3 9/9] ath11k: optimize ath11k_hal_tx_status_parse
-Date:   Fri, 13 Dec 2019 16:38:39 +0100
-Message-Id: <20191213153839.12372-10-john@phrozen.org>
+Subject: [PATCH v2 1/7] mac80211: add a struct for holding BSS color settings
+Date:   Fri, 13 Dec 2019 16:57:56 +0100
+Message-Id: <20191213155802.25491-1-john@phrozen.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191213153839.12372-1-john@phrozen.org>
-References: <20191213153839.12372-1-john@phrozen.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
@@ -32,160 +31,76 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Moving the function into dp_tx.c allows gcc to optimize the code better
-and also avoid chace invalidates and context switches.
+Right now we only track the actual color but not the other bits contained
+within the he_oper field. Fix this by creating a new struct to hold all
+of the info.
 
 Signed-off-by: John Crispin <john@phrozen.org>
 ---
-Changes in V3
-* kfree was using an incorrect pointer
-Changes in V2
-* use better function name
+ include/net/cfg80211.h | 15 +++++++++++++++
+ include/net/mac80211.h |  2 ++
+ 2 files changed, 17 insertions(+)
 
- drivers/net/wireless/ath/ath11k/dp_tx.c  | 40 ++++++++++++++++++++--
- drivers/net/wireless/ath/ath11k/hal_tx.c | 43 ------------------------
- drivers/net/wireless/ath/ath11k/hal_tx.h |  4 ---
- 3 files changed, 37 insertions(+), 50 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath11k/dp_tx.c b/drivers/net/wireless/ath/ath11k/dp_tx.c
-index 5d6403cf99ab..66530f6c04cb 100644
---- a/drivers/net/wireless/ath/ath11k/dp_tx.c
-+++ b/drivers/net/wireless/ath/ath11k/dp_tx.c
-@@ -423,6 +423,37 @@ static void ath11k_dp_tx_complete_msdu(struct ath11k *ar,
- 	rcu_read_unlock();
- }
+diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+index 8140c4837122..e395ef48af83 100644
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -259,6 +259,19 @@ struct ieee80211_he_obss_pd {
+ 	u8 max_offset;
+ };
  
-+static inline void ath11k_dp_tx_status_parse(struct ath11k_base *ab,
-+					     struct hal_wbm_release_ring *desc,
-+					     struct hal_tx_status *ts)
-+{
-+	ts->buf_rel_source =
-+		FIELD_GET(HAL_WBM_RELEASE_INFO0_REL_SRC_MODULE, desc->info0);
-+	if (ts->buf_rel_source != HAL_WBM_REL_SRC_MODULE_FW &&
-+	    ts->buf_rel_source != HAL_WBM_REL_SRC_MODULE_TQM)
-+		return;
++/**
++ * struct ieee80211_he_bss_color - AP settings for BSS coloring
++ *
++ * @color: the current color.
++ * @disabled: is the feature disabled.
++ * @partial: define the AID equation.
++ */
++struct ieee80211_he_bss_color {
++	u8 color;
++	bool disabled;
++	bool partial;
++};
 +
-+	if (ts->buf_rel_source == HAL_WBM_REL_SRC_MODULE_FW)
-+		return;
-+
-+	ts->status = FIELD_GET(HAL_WBM_RELEASE_INFO0_TQM_RELEASE_REASON,
-+			       desc->info0);
-+	ts->ppdu_id = FIELD_GET(HAL_WBM_RELEASE_INFO1_TQM_STATUS_NUMBER,
-+				desc->info1);
-+	ts->try_cnt = FIELD_GET(HAL_WBM_RELEASE_INFO1_TRANSMIT_COUNT,
-+				desc->info1);
-+	ts->ack_rssi = FIELD_GET(HAL_WBM_RELEASE_INFO2_ACK_FRAME_RSSI,
-+				 desc->info2);
-+	if (desc->info2 & HAL_WBM_RELEASE_INFO2_FIRST_MSDU)
-+		ts->flags |= HAL_TX_STATUS_FLAGS_FIRST_MSDU;
-+	ts->peer_id = FIELD_GET(HAL_WBM_RELEASE_INFO3_PEER_ID, desc->info3);
-+	ts->tid = FIELD_GET(HAL_WBM_RELEASE_INFO3_TID, desc->info3);
-+	if (desc->rate_stats.info0 & HAL_TX_RATE_STATS_INFO0_VALID)
-+		ts->rate_stats = desc->rate_stats.info0;
-+	else
-+		ts->rate_stats = 0;
-+}
-+
- void ath11k_dp_tx_completion_handler(struct ath11k_base *ab, int ring_id)
- {
- 	struct ath11k *ar;
-@@ -456,14 +487,17 @@ void ath11k_dp_tx_completion_handler(struct ath11k_base *ab, int ring_id)
+ /**
+  * struct ieee80211_sta_ht_cap - STA's HT capabilities
+  *
+@@ -910,6 +923,7 @@ enum cfg80211_ap_settings_flags {
+  * @twt_responder: Enable Target Wait Time
+  * @flags: flags, as defined in enum cfg80211_ap_settings_flags
+  * @he_obss_pd: OBSS Packet Detection settings
++ * @he_bss_color: BSS Color settings
+  */
+ struct cfg80211_ap_settings {
+ 	struct cfg80211_chan_def chandef;
+@@ -938,6 +952,7 @@ struct cfg80211_ap_settings {
+ 	bool twt_responder;
+ 	u32 flags;
+ 	struct ieee80211_he_obss_pd he_obss_pd;
++	struct ieee80211_he_bss_color he_bss_color;
+ };
  
- 	while (ATH11K_TX_COMPL_NEXT(tx_ring->tx_status_tail) != tx_ring->tx_status_head) {
- 		struct hal_wbm_release_ring *tx_status;
-+		u32 desc_id;
+ /**
+diff --git a/include/net/mac80211.h b/include/net/mac80211.h
+index 6781d4637557..16a5525ddab1 100644
+--- a/include/net/mac80211.h
++++ b/include/net/mac80211.h
+@@ -604,6 +604,7 @@ struct ieee80211_ftm_responder_params {
+  *	in order to discover all the nontransmitted BSSIDs in the set.
+  * @he_operation: HE operation information of the AP we are connected to
+  * @he_obss_pd: OBSS Packet Detection parameters.
++ * @he_bss_color: BSS coloring settings, if BSS supports HE
+  */
+ struct ieee80211_bss_conf {
+ 	const u8 *bssid;
+@@ -667,6 +668,7 @@ struct ieee80211_bss_conf {
+ 	u8 profile_periodicity;
+ 	struct ieee80211_he_operation he_operation;
+ 	struct ieee80211_he_obss_pd he_obss_pd;
++	struct ieee80211_he_bss_color he_bss_color;
+ };
  
- 		tx_ring->tx_status_tail =
- 			ATH11K_TX_COMPL_NEXT(tx_ring->tx_status_tail);
- 		tx_status = &tx_ring->tx_status[tx_ring->tx_status_tail];
--		ath11k_hal_tx_status_parse(ab, tx_status, &ts);
-+		ath11k_dp_tx_status_parse(ab, tx_status, &ts);
- 
--		mac_id = FIELD_GET(DP_TX_DESC_ID_MAC_ID, ts.desc_id);
--		msdu_id = FIELD_GET(DP_TX_DESC_ID_MSDU_ID, ts.desc_id);
-+		desc_id = FIELD_GET(BUFFER_ADDR_INFO1_SW_COOKIE,
-+				    tx_status->buf_addr_info.info1);
-+		mac_id = FIELD_GET(DP_TX_DESC_ID_MAC_ID, desc_id);
-+		msdu_id = FIELD_GET(DP_TX_DESC_ID_MSDU_ID, desc_id);
- 
- 		if (ts.buf_rel_source == HAL_WBM_REL_SRC_MODULE_FW) {
- 			ath11k_dp_tx_process_htt_tx_complete(ab,
-diff --git a/drivers/net/wireless/ath/ath11k/hal_tx.c b/drivers/net/wireless/ath/ath11k/hal_tx.c
-index e8710bbbbc3a..e4aa7e8a1284 100644
---- a/drivers/net/wireless/ath/ath11k/hal_tx.c
-+++ b/drivers/net/wireless/ath/ath11k/hal_tx.c
-@@ -74,49 +74,6 @@ void ath11k_hal_tx_cmd_desc_setup(struct ath11k_base *ab, void *cmd,
- 	tcl_cmd->info4 = 0;
- }
- 
--void ath11k_hal_tx_status_parse(struct ath11k_base *ab,
--				struct hal_wbm_release_ring *desc,
--				struct hal_tx_status *ts)
--{
--	ts->buf_rel_source =
--		FIELD_GET(HAL_WBM_RELEASE_INFO0_REL_SRC_MODULE, desc->info0);
--	if (ts->buf_rel_source != HAL_WBM_REL_SRC_MODULE_FW &&
--	    ts->buf_rel_source != HAL_WBM_REL_SRC_MODULE_TQM)
--		return;
--
--	ts->desc_id = FIELD_GET(BUFFER_ADDR_INFO1_SW_COOKIE,
--				desc->buf_addr_info.info1);
--
--	if (ts->buf_rel_source == HAL_WBM_REL_SRC_MODULE_FW)
--		return;
--
--	ts->status = FIELD_GET(HAL_WBM_RELEASE_INFO0_TQM_RELEASE_REASON,
--			       desc->info0);
--	ts->ppdu_id = FIELD_GET(HAL_WBM_RELEASE_INFO1_TQM_STATUS_NUMBER,
--				desc->info1);
--	ts->try_cnt = FIELD_GET(HAL_WBM_RELEASE_INFO1_TRANSMIT_COUNT,
--				desc->info1);
--
--	ts->ack_rssi = FIELD_GET(HAL_WBM_RELEASE_INFO2_ACK_FRAME_RSSI,
--				 desc->info2);
--	if (desc->info2 & HAL_WBM_RELEASE_INFO2_FIRST_MSDU)
--		ts->flags |= HAL_TX_STATUS_FLAGS_FIRST_MSDU;
--
--	if (desc->info2 & HAL_WBM_RELEASE_INFO2_LAST_MSDU)
--		ts->flags |= HAL_TX_STATUS_FLAGS_LAST_MSDU;
--
--	if (desc->info2 & HAL_WBM_RELEASE_INFO2_MSDU_IN_AMSDU)
--		ts->flags |= HAL_TX_STATUS_FLAGS_MSDU_IN_AMSDU;
--
--	ts->peer_id = FIELD_GET(HAL_WBM_RELEASE_INFO3_PEER_ID, desc->info3);
--	ts->tid = FIELD_GET(HAL_WBM_RELEASE_INFO3_TID, desc->info3);
--
--	if (!(desc->rate_stats.info0 & HAL_TX_RATE_STATS_INFO0_VALID))
--		return;
--
--	ts->rate_stats = desc->rate_stats.info0;
--}
--
- void ath11k_hal_tx_set_dscp_tid_map(struct ath11k_base *ab, int id)
- {
- 	u32 ctrl_reg_val;
-diff --git a/drivers/net/wireless/ath/ath11k/hal_tx.h b/drivers/net/wireless/ath/ath11k/hal_tx.h
-index 5fe89b729a6e..ce48a61bfb66 100644
---- a/drivers/net/wireless/ath/ath11k/hal_tx.h
-+++ b/drivers/net/wireless/ath/ath11k/hal_tx.h
-@@ -48,7 +48,6 @@ struct hal_tx_info {
- /* Tx status parsed from srng desc */
- struct hal_tx_status {
- 	enum hal_wbm_rel_src_module buf_rel_source;
--	u32 desc_id;
- 	enum hal_wbm_tqm_rel_reason status;
- 	u8 ack_rssi;
- 	u32 flags; /* %HAL_TX_STATUS_FLAGS_ */
-@@ -61,9 +60,6 @@ struct hal_tx_status {
- 
- void ath11k_hal_tx_cmd_desc_setup(struct ath11k_base *ab, void *cmd,
- 				  struct hal_tx_info *ti);
--void ath11k_hal_tx_status_parse(struct ath11k_base *ab,
--				struct hal_wbm_release_ring *desc,
--				struct hal_tx_status *ts);
- void ath11k_hal_tx_set_dscp_tid_map(struct ath11k_base *ab, int id);
- int ath11k_hal_reo_cmd_send(struct ath11k_base *ab, struct hal_srng *srng,
- 			    enum hal_reo_cmd_type type,
+ /**
 -- 
 2.20.1
 
