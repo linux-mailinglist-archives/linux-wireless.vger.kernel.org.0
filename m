@@ -2,74 +2,65 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5FA7D11E068
-	for <lists+linux-wireless@lfdr.de>; Fri, 13 Dec 2019 10:13:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AEF9811E079
+	for <lists+linux-wireless@lfdr.de>; Fri, 13 Dec 2019 10:21:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726141AbfLMJNo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 13 Dec 2019 04:13:44 -0500
-Received: from s3.sipsolutions.net ([144.76.43.62]:44424 "EHLO
-        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725945AbfLMJNo (ORCPT
+        id S1725948AbfLMJVr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 13 Dec 2019 04:21:47 -0500
+Received: from paleale.coelho.fi ([176.9.41.70]:52116 "EHLO
+        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1725747AbfLMJVr (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 13 Dec 2019 04:13:44 -0500
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.92.3)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1ifh14-009YsK-6T; Fri, 13 Dec 2019 10:13:42 +0100
-Message-ID: <8faa14caf032ea11fc329eeefa11f0f7159b13a4.camel@sipsolutions.net>
-Subject: Re: [PATCH] mac80211: mesh: only warn if mesh peering is established
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Markus Theil <markus.theil@tu-ilmenau.de>
-Cc:     linux-wireless@vger.kernel.org
-Date:   Fri, 13 Dec 2019 10:13:39 +0100
-In-Reply-To: <20191203180644.70653-1-markus.theil@tu-ilmenau.de>
-References: <20191203180644.70653-1-markus.theil@tu-ilmenau.de>
+        Fri, 13 Dec 2019 04:21:47 -0500
+Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa)
+        by farmhouse.coelho.fi with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.92.2)
+        (envelope-from <luca@coelho.fi>)
+        id 1ifh8p-0002Lp-1I; Fri, 13 Dec 2019 11:21:43 +0200
+Message-ID: <3fc87add008ee42892f747bc247f15e09f6ed2d4.camel@coelho.fi>
+From:   Luca Coelho <luca@coelho.fi>
+To:     Akinobu Mita <akinobu.mita@gmail.com>,
+        linux-nvme@lists.infradead.org, linux-hwmon@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-wireless@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Intel Linux Wireless <linuxwifi@intel.com>
+Date:   Fri, 13 Dec 2019 11:21:40 +0200
+In-Reply-To: <1576075099-3441-11-git-send-email-akinobu.mita@gmail.com>
+References: <1576075099-3441-1-git-send-email-akinobu.mita@gmail.com>
+         <1576075099-3441-11-git-send-email-akinobu.mita@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.2 (3.34.2-1.fc31) 
+User-Agent: Evolution 3.34.1-2+b1 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on farmhouse.coelho.fi
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+        TVD_RCVD_IP,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.2
+Subject: Re: [PATCH v3 10/12] wireless: iwlwifi: use <linux/units.h> helpers
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 2019-12-03 at 19:06 +0100, Markus Theil wrote:
-> The following warning is triggered every time an unestablished mesh peer
-> gets dumped. This patch checks, if a peer link is established, when dum-
-> ping the airtime link metric.
+On Wed, 2019-12-11 at 23:38 +0900, Akinobu Mita wrote:
+> This switches the iwlwifi driver to use celsius_to_kelvin() and
+> kelvin_to_celsius() in <linux/units.h>.
 > 
-> [ 9563.022567] WARNING: CPU: 0 PID: 6287 at net/mac80211/mesh_hwmp.c:345
->                airtime_link_metric_get+0xa2/0xb0 [mac80211]
-> [ 9563.022697] Hardware name: PC Engines apu2/apu2, BIOS v4.10.0.3
-> [ 9563.022756] RIP: 0010:airtime_link_metric_get+0xa2/0xb0 [mac80211]
-> [ 9563.022838] Call Trace:
-> [ 9563.022897]  sta_set_sinfo+0x936/0xa10 [mac80211]
-> [ 9563.022964]  ieee80211_dump_station+0x6d/0x90 [mac80211]
-> [ 9563.023062]  nl80211_dump_station+0x154/0x2a0 [cfg80211]
-> [ 9563.023120]  netlink_dump+0x17b/0x370
-> [ 9563.023130]  netlink_recvmsg+0x2a4/0x480
-> [ 9563.023140]  ____sys_recvmsg+0xa6/0x160
-> [ 9563.023154]  ___sys_recvmsg+0x93/0xe0
-> [ 9563.023169]  __sys_recvmsg+0x7e/0xd0
-> [ 9563.023210]  do_syscall_64+0x4e/0x140
-> [ 9563.023217]  entry_SYSCALL_64_after_hwframe+0x44/0xa9
+> Cc: Kalle Valo <kvalo@codeaurora.org>
+> Cc: Johannes Berg <johannes.berg@intel.com>
+> Cc: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+> Cc: Luca Coelho <luciano.coelho@intel.com>
+> Cc: Intel Linux Wireless <linuxwifi@intel.com>
+> Signed-off-by: Akinobu Mita <akinobu.mita@gmail.com>
+> ---
 
-OK, I can see how this happens.
+Acked-by: Luca Coelho <luciano.coelho@intel.com>
 
-However,
-
-> +	if (sta->mesh->plink_state != NL80211_PLINK_ESTAB)
-> +		return MAX_METRIC;
-> +
-
-I'm not really sure this is the right way to fix it?
-
-I'm sure you observed this only when the link isn't established yet, but
-it seems to me that even when a link is established it could still
-happen?
-
-Or are the frames that are necessary for link establishment enough to
-always set the metric?
-
-johannes
+--
+Cheers,
+Luca.
 
