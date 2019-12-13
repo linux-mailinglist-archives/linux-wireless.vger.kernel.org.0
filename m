@@ -2,60 +2,105 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 39F9611E29C
-	for <lists+linux-wireless@lfdr.de>; Fri, 13 Dec 2019 12:16:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5865A11E2FA
+	for <lists+linux-wireless@lfdr.de>; Fri, 13 Dec 2019 12:46:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726368AbfLMLQK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 13 Dec 2019 06:16:10 -0500
-Received: from mail-oi1-f170.google.com ([209.85.167.170]:41598 "EHLO
-        mail-oi1-f170.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725937AbfLMLQJ (ORCPT
+        id S1726750AbfLMLqk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 13 Dec 2019 06:46:40 -0500
+Received: from mail-wr1-f67.google.com ([209.85.221.67]:38350 "EHLO
+        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725980AbfLMLqj (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 13 Dec 2019 06:16:09 -0500
-Received: by mail-oi1-f170.google.com with SMTP id i1so736131oie.8
-        for <linux-wireless@vger.kernel.org>; Fri, 13 Dec 2019 03:16:09 -0800 (PST)
+        Fri, 13 Dec 2019 06:46:39 -0500
+Received: by mail-wr1-f67.google.com with SMTP id y17so6325048wrh.5;
+        Fri, 13 Dec 2019 03:46:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to:cc;
-        bh=zGbUusGmcKHHNzvysS5kwUk1GddQwYh5NDnDa6dHUBo=;
-        b=osaGSDGfM0tPh1+raplBcHZz68ZqlZDak4koYhwOpun5uU6HmYjK72z9jH6ohxX2XW
-         XbIkMTBrqfxRoU1SujGQoQt1QTOeo07GTAtbm7ticIWs2lamS2y5c+dm5SdfEyWoAyIj
-         a98QUr7UxaLpO9ud8XiPvYl1UiTUQSxE0t41vlK0Uk3/m1alAKuXq7SmQOFdBBhYdLAb
-         UjCNL9QBEsGC1Hq4Q18A14FOwYJbI/qRc8u/zasKArIhYPpHp0HEQXptNFf0Kx+9GcWO
-         CYJ8iTCgrjXb9atKK5cGcGJUUOCozr1IQdpMQ1poYX4iFpUxAfpbRcALoiGF7t2bxwNG
-         jcNA==
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=HCgiaWMI/x6U67hIPPycQp/x3zK3ZvfDXctut3Mj0H8=;
+        b=ntCYo4fm2d/zzZ4lTMIHE2k18++eeMkvDoPsZ2tVIeLuOwZKRH3Xl0/iqsxYzseV32
+         9JtOFz1k8zwhM7rcEfbl4Ul3T7p2HVGhxihyrWvvbKJ9c8Ti9MqToNwSmdA1M4cTmY4g
+         FE4K278750sNT48xziH/Hxs6RpB4M7bQuLqunBAH8s3sO8vnCqtvZeG+a+zC7r+HAqW2
+         KMRmPH93e5UhTfshDBVhWpsVneNuClqdHMb/bI1GEB4bmHsAed3iODeq1gPJxb+S2IfL
+         Xg7AzfAEQOGD6GGdnskwH/MkDQnpX1HilwhQvVmxk2Otg1pDMOCSx9jdIDda6roJYSko
+         TN4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
-        bh=zGbUusGmcKHHNzvysS5kwUk1GddQwYh5NDnDa6dHUBo=;
-        b=WtT9CsRics4rltEvtl/7pEg5Zddn0Yn+87YcM6oYVzGrAUVZB8i76Xrh8Xyb381Br0
-         a5gMNun3gW+8VKcPXnJKk3Rffe/2xjf3VU8SEIOc4te/yW83L/taMYNQiPbjNvJUEdBW
-         NQ9jApAI8o4gjB/0qz6XitZC4bPMtJApgzV7VJH6Y/jyZ6+iOLAYgKyiAAjozfBPShl6
-         mA0BzwUCBObcAg6dPrEBDwz5/6UtORNlgG8GUoZbKB+FM5C8v31twGZ7wZ6wI9j6Hm4R
-         T2yKAZ93lrn4G30q5V96pMjWw6b0jALpcjDWNNwVzYnvv5F559DzQEsy5LlpHwtGwTCS
-         gXnQ==
-X-Gm-Message-State: APjAAAWbWXfJez2T1CSLo7Oa7XoYF5IB0o5iPQUZqBufCOWqSIvykN8+
-        JA/lLuCEssJrdI+38zKDHnD689O81kCHg63wHxlLTR6ES4lOxw==
-X-Google-Smtp-Source: APXvYqzSNKX83LpVNNklonOI5C4CGJHCHoZjTfea2UBGAbrKu/Hk9mhTudM5cNg50G6pJMZ1ueohPde5kuNRjEX3KBY=
-X-Received: by 2002:aca:f305:: with SMTP id r5mr6906930oih.174.1576235769044;
- Fri, 13 Dec 2019 03:16:09 -0800 (PST)
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=HCgiaWMI/x6U67hIPPycQp/x3zK3ZvfDXctut3Mj0H8=;
+        b=srnIf4YEVAB/826wJhFwKBUkJ6HZLjlkdvI2EJo2hRt2fg/knN3lWA07ZCb+cbiDB6
+         l/eE4YpqtV46Wtv0AG5CEfoR2ri0ySz/69uMeEFQwAXjqER4N6etzF3aVmSjJd8vGZ3f
+         gIGEE2pLvdbqrBDLJGohrMUnWhUexMHoyKrlxc5gYgg61tVitOTBYoZyndsNN72q6gLF
+         yVqRYeZ0JPpJbabsIlvqcD9MJB9Bd3xeOeirENfubOtH11iOPYgZXrASeo/H98qZrEst
+         2VCNWsppQwtquvPX6f64fx68WRxfXbqoQRc9rIUia/ycu9643YQDejM1Sn8Qqkiny5UW
+         xrcw==
+X-Gm-Message-State: APjAAAUMZHxIoNsf7wIF63BUMZTpytENzQpEaHTLme08Z6K5hEIIr1kP
+        u66nbvkMc2kTI+EipK2sNB8xdvhB
+X-Google-Smtp-Source: APXvYqwijV//FwSD6ZdUbelYpMbehqqqYrxwCr2pcHvthrmHzwmG+JKUW2lWiTI9HuHu8NHjX/ZVbQ==
+X-Received: by 2002:adf:f6c1:: with SMTP id y1mr13203522wrp.17.1576237596862;
+        Fri, 13 Dec 2019 03:46:36 -0800 (PST)
+Received: from [192.168.178.26] (ipservice-092-219-207-064.092.219.pools.vodafone-ip.de. [92.219.207.64])
+        by smtp.gmail.com with ESMTPSA id a184sm10170022wmf.29.2019.12.13.03.46.35
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 13 Dec 2019 03:46:36 -0800 (PST)
+Subject: Re: [PATCH 0/6] rtlwifi: convert rtl8192{ce,cu,de} to use generic
+ functions
+To:     Pkshih <pkshih@realtek.com>
+Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <20191211154755.15012-1-straube.linux@gmail.com>
+ <1576115241.2733.1.camel@realtek.com>
+From:   Michael Straube <straube.linux@gmail.com>
+Message-ID: <84f3ec5e-eda7-c955-2705-482263eb1ee6@gmail.com>
+Date:   Fri, 13 Dec 2019 12:46:21 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.2
 MIME-Version: 1.0
-From:   Justin Capella <justincapella@gmail.com>
-Date:   Fri, 13 Dec 2019 03:15:57 -0800
-Message-ID: <CAMrEMU9Mz+0RNmmGQHic_cWPf45LHeK3Mzcy6a=GuYkvgdN+RQ@mail.gmail.com>
-Subject: qca988x fw crash/unrecoverable pcie errors causes error loop
-To:     ath10k <ath10k@lists.infradead.org>
-Cc:     linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <1576115241.2733.1.camel@realtek.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Paste: http://ix.io/24hJ
+On 2019-12-12 02:47, Pkshih wrote:
+> On Wed, 2019-12-11 at 16:47 +0100, Michael Straube wrote:
+>> This series converts the drivers rtl8192{ce,cu,de} to use the generic
+>> functions rtl_query_rxpwrpercentage and rtl_signal_scale_mapping.
+>>
+>> Michael Straube (6):
+>>    rtlwifi: rtl8192ce: use generic rtl_query_rxpwrpercentage
+>>    rtlwifi: rtl8192cu: use generic rtl_query_rxpwrpercentage
+>>    rtlwifi: rtl8192de: use generic rtl_query_rxpwrpercentage
+>>    rtlwifi: rtl8192ce: use generic rtl_signal_scale_mapping
+>>    rtlwifi: rtl8192cu: use generic rtl_signal_scale_mapping
+>>    rtlwifi: rtl8192de: use generic rtl_signal_scale_mapping
+>>
+>>   .../wireless/realtek/rtlwifi/rtl8192ce/trx.c  | 48 ++----------------
+>>   .../wireless/realtek/rtlwifi/rtl8192cu/mac.c  | 49 ++-----------------
+>>   .../wireless/realtek/rtlwifi/rtl8192de/trx.c  | 47 ++----------------
+>>   3 files changed, 14 insertions(+), 130 deletions(-)
+>>
+> 
+> For all patches:
+> Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+> 
 
-I think a station went out of range, and somehow that crashed the fw,
-but when it tried to recover it was unable to read CE, and so fails to
-recover, eventually an correctable PCI error occurred but *80211_ in
-an attempt to reconfig is trying to stop all interfaces, which
-includes stopping aggregation for the peers...
+Thanks.
+
+> Curiously. How can you find these function are identical?
+> 
+While sending cleanup patches for some staging wifi drivers I noticed
+that these functions are used in many of the realtek drivers and all
+looked very similar. Then used grep and diff to verify.
+
+Michael
+
