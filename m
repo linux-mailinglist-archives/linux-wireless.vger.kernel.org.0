@@ -2,27 +2,27 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 326BD11E72D
-	for <lists+linux-wireless@lfdr.de>; Fri, 13 Dec 2019 16:58:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 05A9F11E72F
+	for <lists+linux-wireless@lfdr.de>; Fri, 13 Dec 2019 16:58:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728029AbfLMP6O (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 13 Dec 2019 10:58:14 -0500
-Received: from nbd.name ([46.4.11.11]:56226 "EHLO nbd.name"
+        id S1728045AbfLMP6S (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 13 Dec 2019 10:58:18 -0500
+Received: from nbd.name ([46.4.11.11]:56234 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727993AbfLMP6O (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        id S1727974AbfLMP6O (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
         Fri, 13 Dec 2019 10:58:14 -0500
 Received: from pd95fd344.dip0.t-ipconnect.de ([217.95.211.68] helo=bertha.fritz.box)
         by ds12 with esmtpa (Exim 4.89)
         (envelope-from <john@phrozen.org>)
-        id 1ifnKV-00073u-DD; Fri, 13 Dec 2019 16:58:11 +0100
+        id 1ifnKV-00073u-T4; Fri, 13 Dec 2019 16:58:12 +0100
 From:   John Crispin <john@phrozen.org>
 To:     Johannes Berg <johannes@sipsolutions.net>,
         Kalle Valo <kvalo@codeaurora.org>
 Cc:     linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
         John Crispin <john@phrozen.org>
-Subject: [PATCH v2 5/7] mac80211: drop now unused bss_color element
-Date:   Fri, 13 Dec 2019 16:58:00 +0100
-Message-Id: <20191213155802.25491-5-john@phrozen.org>
+Subject: [PATCH v2 6/7] ath11k: add WMI calls required for handling BSS color
+Date:   Fri, 13 Dec 2019 16:58:01 +0100
+Message-Id: <20191213155802.25491-6-john@phrozen.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20191213155802.25491-1-john@phrozen.org>
 References: <20191213155802.25491-1-john@phrozen.org>
@@ -33,47 +33,161 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-With all users of bss_color converted we can drop the old element. Driver
-code should now use the new he_bss_color struct.
+If the he_operation field of the beacon sets a BSS color, we need to inform
+the FW of the settings. This patch adds the WMI command handlers required
+to do so.
 
 Signed-off-by: John Crispin <john@phrozen.org>
----
- include/net/mac80211.h | 2 --
- net/mac80211/mlme.c    | 1 -
- 2 files changed, 3 deletions(-)
 
-diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index 994686443553..9a67fd2cfe4b 100644
---- a/include/net/mac80211.h
-+++ b/include/net/mac80211.h
-@@ -496,7 +496,6 @@ struct ieee80211_ftm_responder_params {
-  * This structure keeps information about a BSS (and an association
-  * to that BSS) that can change during the lifetime of the BSS.
-  *
-- * @bss_color: 6-bit value to mark inter-BSS frame, if BSS supports HE
-  * @htc_trig_based_pkt_ext: default PE in 4us units, if BSS supports HE
-  * @multi_sta_back_32bit: supports BA bitmap of 32-bits in Multi-STA BACK
-  * @uora_exists: is the UORA element advertised by AP
-@@ -610,7 +609,6 @@ struct ieee80211_ftm_responder_params {
-  */
- struct ieee80211_bss_conf {
- 	const u8 *bssid;
--	u8 bss_color;
- 	u8 htc_trig_based_pkt_ext;
- 	bool multi_sta_back_32bit;
- 	bool uora_exists;
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index 319d43f4082b..bc602d460b73 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -3371,7 +3371,6 @@ static bool ieee80211_assoc_success(struct ieee80211_sub_if_data *sdata,
- 	}
+Changes in V2
+* add WMI debug log
+---
+ drivers/net/wireless/ath/ath11k/wmi.c | 77 +++++++++++++++++++++++++++
+ drivers/net/wireless/ath/ath11k/wmi.h | 31 +++++++++++
+ 2 files changed, 108 insertions(+)
+
+diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
+index 5b3dc9e4c6c1..ba2cc6fac809 100644
+--- a/drivers/net/wireless/ath/ath11k/wmi.c
++++ b/drivers/net/wireless/ath/ath11k/wmi.c
+@@ -2790,6 +2790,83 @@ ath11k_wmi_send_obss_spr_cmd(struct ath11k *ar, u32 vdev_id,
+ 	return ret;
+ }
  
- 	if (bss_conf->he_support) {
--		bss_conf->bss_color =
- 		bss_conf->he_bss_color.color =
- 			le32_get_bits(elems.he_operation->he_oper_params,
- 				      IEEE80211_HE_OPERATION_BSS_COLOR_MASK);
++int
++ath11k_wmi_send_obss_color_collision_cfg_cmd(struct ath11k *ar, u32 vdev_id,
++					     u8 bss_color, u32 period,
++					     bool enable)
++{
++	struct ath11k_pdev_wmi *wmi = ar->wmi;
++	struct ath11k_base *ab = wmi->wmi_ab->ab;
++	struct wmi_obss_color_collision_cfg_params_cmd *cmd;
++	struct sk_buff *skb;
++	int ret, len;
++
++	len = sizeof(*cmd);
++
++	skb = ath11k_wmi_alloc_skb(wmi->wmi_ab, len);
++	if (!skb)
++		return -ENOMEM;
++
++	cmd = (struct wmi_obss_color_collision_cfg_params_cmd *)skb->data;
++	cmd->tlv_header = FIELD_PREP(WMI_TLV_TAG, WMI_TAG_OBSS_COLOR_COLLISION_DET_CONFIG) |
++			  FIELD_PREP(WMI_TLV_LEN, len - TLV_HDR_SIZE);
++	cmd->vdev_id = vdev_id;
++	cmd->evt_type = enable ? ATH11K_OBSS_COLOR_COLLISION_DETECTION :
++				 ATH11K_OBSS_COLOR_COLLISION_DETECTION_DISABLE;
++	cmd->current_bss_color = bss_color;
++	cmd->detection_period_ms = period;
++	cmd->scan_period_ms = ATH11K_BSS_COLOR_COLLISION_SCAN_PERIOD_MS;
++	cmd->free_slot_expiry_time_ms = 0;
++	cmd->flags = 0;
++
++	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
++		   "wmi_send_obss_color_collision_cfg id %d type %d "
++		   "bss_color %d detect_period %d scan_period %d\n",
++		   cmd->vdev_id, cmd->evt_type, cmd->current_bss_color,
++		   cmd->detection_period_ms, cmd->scan_period_ms);
++
++	ret = ath11k_wmi_cmd_send(wmi, skb,
++				  WMI_OBSS_COLOR_COLLISION_DET_CONFIG_CMDID);
++	if (ret) {
++		ath11k_warn(ab, "Failed to send WMI_OBSS_COLOR_COLLISION_DET_CONFIG_CMDID");
++		dev_kfree_skb(skb);
++	}
++	return ret;
++}
++
++int ath11k_wmi_send_bss_color_change_enable_cmd(struct ath11k *ar, u32 vdev_id, bool enable)
++{
++	struct ath11k_pdev_wmi *wmi = ar->wmi;
++	struct ath11k_base *ab = wmi->wmi_ab->ab;
++	struct wmi_bss_color_change_enable_params_cmd *cmd;
++	struct sk_buff *skb;
++	int ret, len;
++
++	len = sizeof(*cmd);
++
++	skb = ath11k_wmi_alloc_skb(wmi->wmi_ab, len);
++	if (!skb)
++		return -ENOMEM;
++
++	cmd = (struct wmi_bss_color_change_enable_params_cmd *)skb->data;
++	cmd->tlv_header = FIELD_PREP(WMI_TLV_TAG, WMI_TAG_BSS_COLOR_CHANGE_ENABLE) |
++			  FIELD_PREP(WMI_TLV_LEN, len - TLV_HDR_SIZE);
++	cmd->vdev_id = vdev_id;
++	cmd->enable = enable ? 1 : 0;
++
++	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
++		   "wmi_send_bss_color_change_enable id %d enable %d\n",
++		   cmd->vdev_id, cmd->enable);
++
++	ret = ath11k_wmi_cmd_send(wmi, skb,
++				  WMI_BSS_COLOR_CHANGE_ENABLE_CMDID);
++	if (ret) {
++		ath11k_warn(ab, "Failed to send WMI_TWT_DIeABLE_CMDID");
++		dev_kfree_skb(skb);
++	}
++	return ret;
++}
++
+ static void
+ ath11k_fill_band_to_mac_param(struct ath11k_base  *soc,
+ 			      struct wmi_host_pdev_band_to_mac *band_to_mac)
+diff --git a/drivers/net/wireless/ath/ath11k/wmi.h b/drivers/net/wireless/ath/ath11k/wmi.h
+index 4dbcb9dc0f8d..f62f796305aa 100644
+--- a/drivers/net/wireless/ath/ath11k/wmi.h
++++ b/drivers/net/wireless/ath/ath11k/wmi.h
+@@ -483,6 +483,7 @@ enum wmi_tlv_cmd_id {
+ 	WMI_SAR_LIMITS_CMDID,
+ 	WMI_OBSS_SCAN_ENABLE_CMDID = WMI_TLV_CMD(WMI_GRP_OBSS_OFL),
+ 	WMI_OBSS_SCAN_DISABLE_CMDID,
++	WMI_OBSS_COLOR_COLLISION_DET_CONFIG_CMDID,
+ 	WMI_LPI_MGMT_SNOOPING_CONFIG_CMDID = WMI_TLV_CMD(WMI_GRP_LPI),
+ 	WMI_LPI_START_SCAN_CMDID,
+ 	WMI_LPI_STOP_SCAN_CMDID,
+@@ -4694,6 +4695,30 @@ struct wmi_peer_oper_mode_change_event {
+ 	u32 new_disablemu;
+ } __packed;
+ 
++#define ATH11K_BSS_COLOR_COLLISION_SCAN_PERIOD_MS		200
++#define ATH11K_OBSS_COLOR_COLLISION_DETECTION_DISABLE		0
++#define ATH11K_OBSS_COLOR_COLLISION_DETECTION			1
++
++#define ATH11K_BSS_COLOR_COLLISION_DETECTION_STA_PERIOD_MS	10000
++#define ATH11K_BSS_COLOR_COLLISION_DETECTION_AP_PERIOD_MS	5000
++
++struct wmi_obss_color_collision_cfg_params_cmd {
++	u32 tlv_header;
++	u32 vdev_id;
++	u32 flags;
++	u32 evt_type;
++	u32 current_bss_color;
++	u32 detection_period_ms;
++	u32 scan_period_ms;
++	u32 free_slot_expiry_time_ms;
++} __packed;
++
++struct wmi_bss_color_change_enable_params_cmd {
++	u32 tlv_header;
++	u32 vdev_id;
++	u32 enable;
++} __packed;
++
+ struct target_resource_config {
+ 	u32 num_vdevs;
+ 	u32 num_peers;
+@@ -4892,4 +4917,10 @@ int ath11k_wmi_send_twt_resume_dialog_cmd(struct ath11k *ar,
+ 					  struct wmi_twt_resume_dialog_params *params);
+ int ath11k_wmi_send_obss_spr_cmd(struct ath11k *ar, u32 vdev_id,
+ 				 struct ieee80211_he_obss_pd *he_obss_pd);
++int ath11k_wmi_send_obss_color_collision_cfg_cmd(struct ath11k *ar, u32 vdev_id,
++						 u8 bss_color, u32 period,
++						 bool enable);
++int ath11k_wmi_send_bss_color_change_enable_cmd(struct ath11k *ar, u32 vdev_id,
++						bool enable);
++
+ #endif
 -- 
 2.20.1
 
