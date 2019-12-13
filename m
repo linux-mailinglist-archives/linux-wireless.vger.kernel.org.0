@@ -2,26 +2,26 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B1C911E6C2
+	by mail.lfdr.de (Postfix) with ESMTP id 94F5011E6C3
 	for <lists+linux-wireless@lfdr.de>; Fri, 13 Dec 2019 16:38:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728001AbfLMPis (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        id S1728004AbfLMPis (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
         Fri, 13 Dec 2019 10:38:48 -0500
-Received: from nbd.name ([46.4.11.11]:54860 "EHLO nbd.name"
+Received: from nbd.name ([46.4.11.11]:54872 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727986AbfLMPir (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 13 Dec 2019 10:38:47 -0500
+        id S1727920AbfLMPis (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 13 Dec 2019 10:38:48 -0500
 Received: from pd95fd344.dip0.t-ipconnect.de ([217.95.211.68] helo=bertha.fritz.box)
         by ds12 with esmtpa (Exim 4.89)
         (envelope-from <john@phrozen.org>)
-        id 1ifn1g-0005pC-Mv; Fri, 13 Dec 2019 16:38:44 +0100
+        id 1ifn1h-0005pC-6q; Fri, 13 Dec 2019 16:38:45 +0100
 From:   John Crispin <john@phrozen.org>
 To:     Kalle Valo <kvalo@codeaurora.org>
 Cc:     linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
         John Crispin <john@phrozen.org>
-Subject: [PATCH V3 7/9] ath11k: move some tx_status parsing to debugfs code
-Date:   Fri, 13 Dec 2019 16:38:37 +0100
-Message-Id: <20191213153839.12372-8-john@phrozen.org>
+Subject: [PATCH V3 8/9] ath11k: optimise ath11k_dp_tx_completion_handler
+Date:   Fri, 13 Dec 2019 16:38:38 +0100
+Message-Id: <20191213153839.12372-9-john@phrozen.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20191213153839.12372-1-john@phrozen.org>
 References: <20191213153839.12372-1-john@phrozen.org>
@@ -32,175 +32,255 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Some of the fields are only used by debugfs. Move the parsing of these
-from the data hot path to the debugfs code.
+the current code does 4 memcpys for each completion frame.
+1) duplicate the desc
+2 + 3) inside kfifo insertion
+4) kfifo remove
+
+The code simply drops the kfifo and uses a trivial ring buffer. This
+requires a single memcpy for insertion. There is no removal needed as
+we can simply use the inserted data for processing. As the code runs
+inside the NAPI context it is atomic and there is no need for most of
+the locking.
 
 Signed-off-by: John Crispin <john@phrozen.org>
 ---
- drivers/net/wireless/ath/ath11k/debugfs_sta.c | 66 +++++++++++--------
- drivers/net/wireless/ath/ath11k/hal_tx.c      | 19 +-----
- drivers/net/wireless/ath/ath11k/hal_tx.h      |  7 +-
- 3 files changed, 39 insertions(+), 53 deletions(-)
+ drivers/net/wireless/ath/ath11k/dp.c     | 16 ++++-----
+ drivers/net/wireless/ath/ath11k/dp.h     | 11 +++----
+ drivers/net/wireless/ath/ath11k/dp_tx.c  | 41 +++++++++---------------
+ drivers/net/wireless/ath/ath11k/hal_tx.c | 13 --------
+ drivers/net/wireless/ath/ath11k/hal_tx.h |  2 --
+ 5 files changed, 27 insertions(+), 56 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/debugfs_sta.c b/drivers/net/wireless/ath/ath11k/debugfs_sta.c
-index 3c5f931e22a9..3cdc34218a7d 100644
---- a/drivers/net/wireless/ath/ath11k/debugfs_sta.c
-+++ b/drivers/net/wireless/ath/ath11k/debugfs_sta.c
-@@ -129,12 +129,17 @@ void ath11k_update_per_peer_stats_from_txcompl(struct ath11k *ar,
- {
- 	struct ath11k_base *ab = ar->ab;
- 	struct ath11k_per_peer_tx_stats *peer_stats = &ar->cached_stats;
-+	enum hal_tx_rate_stats_pkt_type pkt_type;
-+	enum hal_tx_rate_stats_sgi sgi;
-+	enum hal_tx_rate_stats_bw bw;
- 	struct ath11k_peer *peer;
- 	struct ath11k_sta *arsta;
- 	struct ieee80211_sta *sta;
-+	u16 num_tones_in_ru;
- 	u16 rate;
- 	u8 rate_idx;
- 	int ret;
-+	u8 mcs;
+diff --git a/drivers/net/wireless/ath/ath11k/dp.c b/drivers/net/wireless/ath/ath11k/dp.c
+index b966a16a930f..b112825a52ed 100644
+--- a/drivers/net/wireless/ath/ath11k/dp.c
++++ b/drivers/net/wireless/ath/ath11k/dp.c
+@@ -3,7 +3,6 @@
+  * Copyright (c) 2018-2019 The Linux Foundation. All rights reserved.
+  */
  
- 	rcu_read_lock();
- 	spin_lock_bh(&ab->base_lock);
-@@ -150,51 +155,54 @@ void ath11k_update_per_peer_stats_from_txcompl(struct ath11k *ar,
- 	arsta = (struct ath11k_sta *)sta->drv_priv;
- 
- 	memset(&arsta->txrate, 0, sizeof(arsta->txrate));
+-#include <linux/kfifo.h>
+ #include "core.h"
+ #include "dp_tx.h"
+ #include "hal_tx.h"
+@@ -828,10 +827,7 @@ void ath11k_dp_free(struct ath11k_base *ab)
+ 			     ath11k_dp_tx_pending_cleanup, ab);
+ 		idr_destroy(&dp->tx_ring[i].txbuf_idr);
+ 		spin_unlock_bh(&dp->tx_ring[i].tx_idr_lock);
 -
--	if (ts->pkt_type == HAL_TX_RATE_STATS_PKT_TYPE_11A ||
--	    ts->pkt_type == HAL_TX_RATE_STATS_PKT_TYPE_11B) {
--		ret = ath11k_mac_hw_ratecode_to_legacy_rate(ts->mcs,
--							    ts->pkt_type,
-+	pkt_type = FIELD_GET(HAL_TX_RATE_STATS_INFO0_PKT_TYPE,
-+			     ts->rate_stats);
-+	mcs = FIELD_GET(HAL_TX_RATE_STATS_INFO0_MCS,
-+			ts->rate_stats);
-+	sgi = FIELD_GET(HAL_TX_RATE_STATS_INFO0_SGI,
-+			ts->rate_stats);
-+	num_tones_in_ru = FIELD_GET(HAL_TX_RATE_STATS_INFO0_TONES_IN_RU,
-+				    ts->rate_stats);
-+	bw = FIELD_GET(HAL_TX_RATE_STATS_INFO0_BW, ts->rate_stats);
-+
-+	if (pkt_type == HAL_TX_RATE_STATS_PKT_TYPE_11A ||
-+	    pkt_type == HAL_TX_RATE_STATS_PKT_TYPE_11B) {
-+		ret = ath11k_mac_hw_ratecode_to_legacy_rate(mcs,
-+							    pkt_type,
- 							    &rate_idx,
- 							    &rate);
--		if (ret < 0) {
--			spin_unlock_bh(&ab->base_lock);
--			rcu_read_unlock();
--			return;
--		}
-+		if (ret < 0)
-+			goto err_out;
- 		arsta->txrate.legacy = rate;
--	} else if (ts->pkt_type == HAL_TX_RATE_STATS_PKT_TYPE_11N) {
--		if (ts->mcs > 7) {
--			ath11k_warn(ab, "Invalid HT mcs index %d\n", ts->mcs);
--			spin_unlock_bh(&ab->base_lock);
--			rcu_read_unlock();
--			return;
-+	} else if (pkt_type == HAL_TX_RATE_STATS_PKT_TYPE_11N) {
-+		if (mcs > 7) {
-+			ath11k_warn(ab, "Invalid HT mcs index %d\n", mcs);
-+			goto err_out;
- 		}
- 
--		arsta->txrate.mcs = ts->mcs + 8 * (arsta->last_txrate.nss - 1);
-+		arsta->txrate.mcs = mcs + 8 * (arsta->last_txrate.nss - 1);
- 		arsta->txrate.flags = RATE_INFO_FLAGS_MCS;
--		if (ts->sgi)
-+		if (sgi)
- 			arsta->txrate.flags |= RATE_INFO_FLAGS_SHORT_GI;
--	} else if (ts->pkt_type == HAL_TX_RATE_STATS_PKT_TYPE_11AC) {
--		if (ts->mcs > 9) {
--			ath11k_warn(ab, "Invalid VHT mcs index %d\n", ts->mcs);
--			spin_unlock_bh(&ab->base_lock);
--			rcu_read_unlock();
--			return;
-+	} else if (pkt_type == HAL_TX_RATE_STATS_PKT_TYPE_11AC) {
-+		if (mcs > 9) {
-+			ath11k_warn(ab, "Invalid VHT mcs index %d\n", mcs);
-+			goto err_out;
- 		}
- 
--		arsta->txrate.mcs = ts->mcs;
-+		arsta->txrate.mcs = mcs;
- 		arsta->txrate.flags = RATE_INFO_FLAGS_VHT_MCS;
--		if (ts->sgi)
-+		if (sgi)
- 			arsta->txrate.flags |= RATE_INFO_FLAGS_SHORT_GI;
--	} else {
--		/*TODO: update HE rates */
-+	} else if (pkt_type == HAL_TX_RATE_STATS_PKT_TYPE_11AX) {
-+		/* TODO */
+-		spin_lock_bh(&dp->tx_ring[i].tx_status_lock);
+-		kfifo_free(&dp->tx_ring[i].tx_status_fifo);
+-		spin_unlock_bh(&dp->tx_ring[i].tx_status_lock);
++		kfree(dp->tx_ring[i].tx_status);
  	}
  
- 	arsta->txrate.nss = arsta->last_txrate.nss;
--	arsta->txrate.bw = ath11k_mac_bw_to_mac80211_bw(ts->bw);
-+	arsta->txrate.bw = ath11k_mac_bw_to_mac80211_bw(bw);
+ 	/* Deinit any SOC level resource */
+@@ -871,17 +867,17 @@ int ath11k_dp_alloc(struct ath11k_base *ab)
+ 	if (ret)
+ 		goto fail_link_desc_cleanup;
  
- 	ath11k_accumulate_per_peer_tx_stats(arsta, peer_stats, rate_idx);
-+err_out:
- 	spin_unlock_bh(&ab->base_lock);
- 	rcu_read_unlock();
- }
-diff --git a/drivers/net/wireless/ath/ath11k/hal_tx.c b/drivers/net/wireless/ath/ath11k/hal_tx.c
-index 72a51ed65a51..c2a3a9d2e534 100644
---- a/drivers/net/wireless/ath/ath11k/hal_tx.c
-+++ b/drivers/net/wireless/ath/ath11k/hal_tx.c
-@@ -127,24 +127,7 @@ void ath11k_hal_tx_status_parse(struct ath11k_base *ab,
- 	if (!(desc->rate_stats.info0 & HAL_TX_RATE_STATS_INFO0_VALID))
- 		return;
+-	size = roundup_pow_of_two(DP_TX_COMP_RING_SIZE);
++	size = sizeof(struct hal_wbm_release_ring) * DP_TX_COMP_RING_SIZE;
  
--	ts->flags |= HAL_TX_STATUS_FLAGS_RATE_STATS_VALID;
--	ts->tsf = desc->rate_stats.tsf;
--	ts->bw = FIELD_GET(HAL_TX_RATE_STATS_INFO0_BW, desc->rate_stats.info0);
--	ts->pkt_type = FIELD_GET(HAL_TX_RATE_STATS_INFO0_PKT_TYPE,
--				 desc->rate_stats.info0);
--	if (desc->rate_stats.info0 & HAL_TX_RATE_STATS_INFO0_STBC)
--		ts->flags |= HAL_TX_STATUS_FLAGS_RATE_STBC;
--	if (desc->rate_stats.info0 & HAL_TX_RATE_STATS_INFO0_LDPC)
--		ts->flags |= HAL_TX_STATUS_FLAGS_RATE_LDPC;
--	if (desc->rate_stats.info0 & HAL_TX_RATE_STATS_INFO0_OFDMA_TX)
--		ts->flags |= HAL_TX_STATUS_FLAGS_OFDMA;
--
--	ts->sgi = FIELD_GET(HAL_TX_RATE_STATS_INFO0_SGI,
--			    desc->rate_stats.info0);
--	ts->mcs = FIELD_GET(HAL_TX_RATE_STATS_INFO0_MCS,
--			    desc->rate_stats.info0);
--	ts->num_tones_in_ru = FIELD_GET(HAL_TX_RATE_STATS_INFO0_TONES_IN_RU,
--					desc->rate_stats.info0);
-+	ts->rate_stats = desc->rate_stats.info0;
- }
+ 	for (i = 0; i < DP_TCL_NUM_RING_MAX; i++) {
+ 		idr_init(&dp->tx_ring[i].txbuf_idr);
+ 		spin_lock_init(&dp->tx_ring[i].tx_idr_lock);
+ 		dp->tx_ring[i].tcl_data_ring_id = i;
  
- void ath11k_hal_tx_set_dscp_tid_map(struct ath11k_base *ab, int id)
-diff --git a/drivers/net/wireless/ath/ath11k/hal_tx.h b/drivers/net/wireless/ath/ath11k/hal_tx.h
-index 5217eaf9da50..cf99e2b31f9f 100644
---- a/drivers/net/wireless/ath/ath11k/hal_tx.h
-+++ b/drivers/net/wireless/ath/ath11k/hal_tx.h
-@@ -51,17 +51,12 @@ struct hal_tx_status {
- 	u32 desc_id;
- 	enum hal_wbm_tqm_rel_reason status;
- 	u8 ack_rssi;
--	enum hal_tx_rate_stats_bw bw;
--	enum hal_tx_rate_stats_pkt_type pkt_type;
--	enum hal_tx_rate_stats_sgi sgi;
--	u8 mcs;
--	u16 num_tones_in_ru;
- 	u32 flags; /* %HAL_TX_STATUS_FLAGS_ */
--	u32 tsf;
- 	u32 ppdu_id;
- 	u8 try_cnt;
- 	u8 tid;
- 	u16 peer_id;
-+	u32 rate_stats;
+-		spin_lock_init(&dp->tx_ring[i].tx_status_lock);
+-		ret = kfifo_alloc(&dp->tx_ring[i].tx_status_fifo, size,
+-				  GFP_KERNEL);
+-		if (ret)
++		dp->tx_ring[i].tx_status_head = 0;
++		dp->tx_ring[i].tx_status_tail = DP_TX_COMP_RING_SIZE - 1;
++		dp->tx_ring[i].tx_status = kmalloc(size, GFP_KERNEL);
++		if (!dp->tx_ring[i].tx_status)
+ 			goto fail_cmn_srng_cleanup;
+ 	}
+ 
+diff --git a/drivers/net/wireless/ath/ath11k/dp.h b/drivers/net/wireless/ath/ath11k/dp.h
+index f7e53509ae07..2f0980f2c762 100644
+--- a/drivers/net/wireless/ath/ath11k/dp.h
++++ b/drivers/net/wireless/ath/ath11k/dp.h
+@@ -6,7 +6,6 @@
+ #ifndef ATH11K_DP_H
+ #define ATH11K_DP_H
+ 
+-#include <linux/kfifo.h>
+ #include "hal_rx.h"
+ 
+ struct ath11k_base;
+@@ -58,6 +57,8 @@ struct dp_rxdma_ring {
+ 	int bufs_max;
  };
  
++#define ATH11K_TX_COMPL_NEXT(x)	(((x) + 1) % DP_TX_COMP_RING_SIZE)
++
+ struct dp_tx_ring {
+ 	u8 tcl_data_ring_id;
+ 	struct dp_srng tcl_data_ring;
+@@ -65,11 +66,9 @@ struct dp_tx_ring {
+ 	struct idr txbuf_idr;
+ 	/* Protects txbuf_idr and num_pending */
+ 	spinlock_t tx_idr_lock;
+-	DECLARE_KFIFO_PTR(tx_status_fifo, struct hal_wbm_release_ring);
+-	/* lock to protect tx_status_fifo because tx_status_fifo can be
+-	 * accessed concurrently.
+-	 */
+-	spinlock_t tx_status_lock;
++	struct hal_wbm_release_ring *tx_status;
++	int tx_status_head;
++	int tx_status_tail;
+ };
+ 
+ struct ath11k_pdev_mon_stats {
+diff --git a/drivers/net/wireless/ath/ath11k/dp_tx.c b/drivers/net/wireless/ath/ath11k/dp_tx.c
+index 28ebc414533e..5d6403cf99ab 100644
+--- a/drivers/net/wireless/ath/ath11k/dp_tx.c
++++ b/drivers/net/wireless/ath/ath11k/dp_tx.c
+@@ -79,7 +79,6 @@ int ath11k_dp_tx(struct ath11k *ar, struct ath11k_vif *arvif,
+ 	struct hal_srng *tcl_ring;
+ 	struct ieee80211_hdr *hdr = (void *)skb->data;
+ 	struct dp_tx_ring *tx_ring;
+-	u8 cached_desc[HAL_TCL_DESC_LEN];
+ 	void *hal_tcl_desc;
+ 	u8 pool_id;
+ 	u8 hal_ring_id;
+@@ -167,8 +166,6 @@ int ath11k_dp_tx(struct ath11k *ar, struct ath11k_vif *arvif,
+ 	skb_cb->vif = arvif->vif;
+ 	skb_cb->ar = ar;
+ 
+-	ath11k_hal_tx_cmd_desc_setup(ab, cached_desc, &ti);
+-
+ 	hal_ring_id = tx_ring->tcl_data_ring.ring_id;
+ 	tcl_ring = &ab->hal.srng_list[hal_ring_id];
+ 
+@@ -188,7 +185,8 @@ int ath11k_dp_tx(struct ath11k *ar, struct ath11k_vif *arvif,
+ 		goto fail_unmap_dma;
+ 	}
+ 
+-	ath11k_hal_tx_desc_sync(cached_desc, hal_tcl_desc);
++	ath11k_hal_tx_cmd_desc_setup(ab, hal_tcl_desc +
++					 sizeof(struct hal_tlv_hdr), &ti);
+ 
+ 	ath11k_hal_srng_access_end(ab, tcl_ring);
+ 
+@@ -432,47 +430,44 @@ void ath11k_dp_tx_completion_handler(struct ath11k_base *ab, int ring_id)
+ 	int hal_ring_id = dp->tx_ring[ring_id].tcl_comp_ring.ring_id;
+ 	struct hal_srng *status_ring = &ab->hal.srng_list[hal_ring_id];
+ 	struct sk_buff *msdu;
+-	struct hal_wbm_release_ring tx_status;
+ 	struct hal_tx_status ts;
+ 	struct dp_tx_ring *tx_ring = &dp->tx_ring[ring_id];
+ 	u32 *desc;
+ 	u32 msdu_id;
+ 	u8 mac_id;
+ 
+-	spin_lock_bh(&status_ring->lock);
+-
+ 	ath11k_hal_srng_access_begin(ab, status_ring);
+ 
+-	spin_lock_bh(&tx_ring->tx_status_lock);
+-	while (!kfifo_is_full(&tx_ring->tx_status_fifo) &&
++	while ((ATH11K_TX_COMPL_NEXT(tx_ring->tx_status_head) != tx_ring->tx_status_tail) &&
+ 	       (desc = ath11k_hal_srng_dst_get_next_entry(ab, status_ring))) {
+-		ath11k_hal_tx_status_desc_sync((void *)desc,
+-					       (void *)&tx_status);
+-		kfifo_put(&tx_ring->tx_status_fifo, tx_status);
++		memcpy(&tx_ring->tx_status[tx_ring->tx_status_head],
++		       desc, sizeof(struct hal_wbm_release_ring));
++		tx_ring->tx_status_head =
++			ATH11K_TX_COMPL_NEXT(tx_ring->tx_status_head);
+ 	}
+ 
+ 	if ((ath11k_hal_srng_dst_peek(ab, status_ring) != NULL) &&
+-	    kfifo_is_full(&tx_ring->tx_status_fifo)) {
++	    (ATH11K_TX_COMPL_NEXT(tx_ring->tx_status_head) == tx_ring->tx_status_tail)) {
+ 		/* TODO: Process pending tx_status messages when kfifo_is_full() */
+ 		ath11k_warn(ab, "Unable to process some of the tx_status ring desc because status_fifo is full\n");
+ 	}
+ 
+-	spin_unlock_bh(&tx_ring->tx_status_lock);
+-
+ 	ath11k_hal_srng_access_end(ab, status_ring);
+-	spin_unlock_bh(&status_ring->lock);
+ 
+-	spin_lock_bh(&tx_ring->tx_status_lock);
+-	while (kfifo_get(&tx_ring->tx_status_fifo, &tx_status)) {
+-		memset(&ts, 0, sizeof(ts));
+-		ath11k_hal_tx_status_parse(ab, &tx_status, &ts);
++	while (ATH11K_TX_COMPL_NEXT(tx_ring->tx_status_tail) != tx_ring->tx_status_head) {
++		struct hal_wbm_release_ring *tx_status;
++
++		tx_ring->tx_status_tail =
++			ATH11K_TX_COMPL_NEXT(tx_ring->tx_status_tail);
++		tx_status = &tx_ring->tx_status[tx_ring->tx_status_tail];
++		ath11k_hal_tx_status_parse(ab, tx_status, &ts);
+ 
+ 		mac_id = FIELD_GET(DP_TX_DESC_ID_MAC_ID, ts.desc_id);
+ 		msdu_id = FIELD_GET(DP_TX_DESC_ID_MSDU_ID, ts.desc_id);
+ 
+ 		if (ts.buf_rel_source == HAL_WBM_REL_SRC_MODULE_FW) {
+ 			ath11k_dp_tx_process_htt_tx_complete(ab,
+-							     (void *)&tx_status,
++							     (void *)tx_status,
+ 							     mac_id, msdu_id,
+ 							     tx_ring);
+ 			continue;
+@@ -494,12 +489,8 @@ void ath11k_dp_tx_completion_handler(struct ath11k_base *ab, int ring_id)
+ 		if (atomic_dec_and_test(&ar->dp.num_tx_pending))
+ 			wake_up(&ar->dp.tx_empty_waitq);
+ 
+-		/* TODO: Locking optimization so that tx_completion for an msdu
+-		 * is not called with tx_status_lock acquired
+-		 */
+ 		ath11k_dp_tx_complete_msdu(ar, msdu, &ts);
+ 	}
+-	spin_unlock_bh(&tx_ring->tx_status_lock);
+ }
+ 
+ int ath11k_dp_tx_send_reo_cmd(struct ath11k_base *ab, struct dp_rx_tid *rx_tid,
+diff --git a/drivers/net/wireless/ath/ath11k/hal_tx.c b/drivers/net/wireless/ath/ath11k/hal_tx.c
+index c2a3a9d2e534..e8710bbbbc3a 100644
+--- a/drivers/net/wireless/ath/ath11k/hal_tx.c
++++ b/drivers/net/wireless/ath/ath11k/hal_tx.c
+@@ -74,19 +74,6 @@ void ath11k_hal_tx_cmd_desc_setup(struct ath11k_base *ab, void *cmd,
+ 	tcl_cmd->info4 = 0;
+ }
+ 
+-/* Commit the descriptor to hardware */
+-void ath11k_hal_tx_desc_sync(void *tx_desc_cached, void *hw_desc)
+-{
+-	memcpy(hw_desc + sizeof(struct hal_tlv_hdr), tx_desc_cached,
+-	       sizeof(struct hal_tcl_data_cmd));
+-}
+-
+-/* Get the descriptor status from hardware */
+-void ath11k_hal_tx_status_desc_sync(void *hw_desc, void *local_desc)
+-{
+-	memcpy(local_desc, hw_desc, HAL_TX_STATUS_DESC_LEN);
+-}
+-
+ void ath11k_hal_tx_status_parse(struct ath11k_base *ab,
+ 				struct hal_wbm_release_ring *desc,
+ 				struct hal_tx_status *ts)
+diff --git a/drivers/net/wireless/ath/ath11k/hal_tx.h b/drivers/net/wireless/ath/ath11k/hal_tx.h
+index cf99e2b31f9f..5fe89b729a6e 100644
+--- a/drivers/net/wireless/ath/ath11k/hal_tx.h
++++ b/drivers/net/wireless/ath/ath11k/hal_tx.h
+@@ -61,11 +61,9 @@ struct hal_tx_status {
+ 
  void ath11k_hal_tx_cmd_desc_setup(struct ath11k_base *ab, void *cmd,
+ 				  struct hal_tx_info *ti);
+-void ath11k_hal_tx_desc_sync(void *tx_desc_cached, void *hw_desc);
+ void ath11k_hal_tx_status_parse(struct ath11k_base *ab,
+ 				struct hal_wbm_release_ring *desc,
+ 				struct hal_tx_status *ts);
+-void ath11k_hal_tx_status_desc_sync(void *hw_desc, void *local_desc);
+ void ath11k_hal_tx_set_dscp_tid_map(struct ath11k_base *ab, int id);
+ int ath11k_hal_reo_cmd_send(struct ath11k_base *ab, struct hal_srng *srng,
+ 			    enum hal_reo_cmd_type type,
 -- 
 2.20.1
 
