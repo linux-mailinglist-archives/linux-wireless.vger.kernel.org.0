@@ -2,105 +2,63 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5865A11E2FA
-	for <lists+linux-wireless@lfdr.de>; Fri, 13 Dec 2019 12:46:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B9B5911E6A1
+	for <lists+linux-wireless@lfdr.de>; Fri, 13 Dec 2019 16:35:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726750AbfLMLqk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 13 Dec 2019 06:46:40 -0500
-Received: from mail-wr1-f67.google.com ([209.85.221.67]:38350 "EHLO
-        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725980AbfLMLqj (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 13 Dec 2019 06:46:39 -0500
-Received: by mail-wr1-f67.google.com with SMTP id y17so6325048wrh.5;
-        Fri, 13 Dec 2019 03:46:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=HCgiaWMI/x6U67hIPPycQp/x3zK3ZvfDXctut3Mj0H8=;
-        b=ntCYo4fm2d/zzZ4lTMIHE2k18++eeMkvDoPsZ2tVIeLuOwZKRH3Xl0/iqsxYzseV32
-         9JtOFz1k8zwhM7rcEfbl4Ul3T7p2HVGhxihyrWvvbKJ9c8Ti9MqToNwSmdA1M4cTmY4g
-         FE4K278750sNT48xziH/Hxs6RpB4M7bQuLqunBAH8s3sO8vnCqtvZeG+a+zC7r+HAqW2
-         KMRmPH93e5UhTfshDBVhWpsVneNuClqdHMb/bI1GEB4bmHsAed3iODeq1gPJxb+S2IfL
-         Xg7AzfAEQOGD6GGdnskwH/MkDQnpX1HilwhQvVmxk2Otg1pDMOCSx9jdIDda6roJYSko
-         TN4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=HCgiaWMI/x6U67hIPPycQp/x3zK3ZvfDXctut3Mj0H8=;
-        b=srnIf4YEVAB/826wJhFwKBUkJ6HZLjlkdvI2EJo2hRt2fg/knN3lWA07ZCb+cbiDB6
-         l/eE4YpqtV46Wtv0AG5CEfoR2ri0ySz/69uMeEFQwAXjqER4N6etzF3aVmSjJd8vGZ3f
-         gIGEE2pLvdbqrBDLJGohrMUnWhUexMHoyKrlxc5gYgg61tVitOTBYoZyndsNN72q6gLF
-         yVqRYeZ0JPpJbabsIlvqcD9MJB9Bd3xeOeirENfubOtH11iOPYgZXrASeo/H98qZrEst
-         2VCNWsppQwtquvPX6f64fx68WRxfXbqoQRc9rIUia/ycu9643YQDejM1Sn8Qqkiny5UW
-         xrcw==
-X-Gm-Message-State: APjAAAUMZHxIoNsf7wIF63BUMZTpytENzQpEaHTLme08Z6K5hEIIr1kP
-        u66nbvkMc2kTI+EipK2sNB8xdvhB
-X-Google-Smtp-Source: APXvYqwijV//FwSD6ZdUbelYpMbehqqqYrxwCr2pcHvthrmHzwmG+JKUW2lWiTI9HuHu8NHjX/ZVbQ==
-X-Received: by 2002:adf:f6c1:: with SMTP id y1mr13203522wrp.17.1576237596862;
-        Fri, 13 Dec 2019 03:46:36 -0800 (PST)
-Received: from [192.168.178.26] (ipservice-092-219-207-064.092.219.pools.vodafone-ip.de. [92.219.207.64])
-        by smtp.gmail.com with ESMTPSA id a184sm10170022wmf.29.2019.12.13.03.46.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 13 Dec 2019 03:46:36 -0800 (PST)
-Subject: Re: [PATCH 0/6] rtlwifi: convert rtl8192{ce,cu,de} to use generic
- functions
-To:     Pkshih <pkshih@realtek.com>
-Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <20191211154755.15012-1-straube.linux@gmail.com>
- <1576115241.2733.1.camel@realtek.com>
-From:   Michael Straube <straube.linux@gmail.com>
-Message-ID: <84f3ec5e-eda7-c955-2705-482263eb1ee6@gmail.com>
-Date:   Fri, 13 Dec 2019 12:46:21 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.2
+        id S1727904AbfLMPfM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 13 Dec 2019 10:35:12 -0500
+Received: from nbd.name ([46.4.11.11]:54632 "EHLO nbd.name"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727831AbfLMPfL (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 13 Dec 2019 10:35:11 -0500
+Received: from pd95fd344.dip0.t-ipconnect.de ([217.95.211.68] helo=bertha.fritz.box)
+        by ds12 with esmtpa (Exim 4.89)
+        (envelope-from <john@phrozen.org>)
+        id 1ifmyD-0005ee-Qm; Fri, 13 Dec 2019 16:35:09 +0100
+From:   John Crispin <john@phrozen.org>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
+        Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>,
+        John Crispin <john@phrozen.org>
+Subject: [PATCH V2 1/2] ath11k: fix pdev when invoking ath11k_wmi_send_twt_enable_cmd()
+Date:   Fri, 13 Dec 2019 16:34:56 +0100
+Message-Id: <20191213153457.11946-1-john@phrozen.org>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-In-Reply-To: <1576115241.2733.1.camel@realtek.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2019-12-12 02:47, Pkshih wrote:
-> On Wed, 2019-12-11 at 16:47 +0100, Michael Straube wrote:
->> This series converts the drivers rtl8192{ce,cu,de} to use the generic
->> functions rtl_query_rxpwrpercentage and rtl_signal_scale_mapping.
->>
->> Michael Straube (6):
->>    rtlwifi: rtl8192ce: use generic rtl_query_rxpwrpercentage
->>    rtlwifi: rtl8192cu: use generic rtl_query_rxpwrpercentage
->>    rtlwifi: rtl8192de: use generic rtl_query_rxpwrpercentage
->>    rtlwifi: rtl8192ce: use generic rtl_signal_scale_mapping
->>    rtlwifi: rtl8192cu: use generic rtl_signal_scale_mapping
->>    rtlwifi: rtl8192de: use generic rtl_signal_scale_mapping
->>
->>   .../wireless/realtek/rtlwifi/rtl8192ce/trx.c  | 48 ++----------------
->>   .../wireless/realtek/rtlwifi/rtl8192cu/mac.c  | 49 ++-----------------
->>   .../wireless/realtek/rtlwifi/rtl8192de/trx.c  | 47 ++----------------
->>   3 files changed, 14 insertions(+), 130 deletions(-)
->>
-> 
-> For all patches:
-> Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-> 
+From: Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>
 
-Thanks.
+The code currently uses the wrong pdev id when enabling TWT. Fix this by
+using the correct ones.
 
-> Curiously. How can you find these function are identical?
-> 
-While sending cleanup patches for some staging wifi drivers I noticed
-that these functions are used in many of the realtek drivers and all
-looked very similar. Then used grep and diff to verify.
+Fixes: e65a616f4e74 ("ath11k: add TWT support")
+Signed-off-by: John Crispin <john@phrozen.org>
+Signed-off-by: Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>
+---
+ drivers/net/wireless/ath/ath11k/mac.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Michael
+diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
+index fec268b9b711..b229b0b3e0bd 100644
+--- a/drivers/net/wireless/ath/ath11k/mac.c
++++ b/drivers/net/wireless/ath/ath11k/mac.c
+@@ -1917,9 +1917,9 @@ static void ath11k_mac_op_bss_info_changed(struct ieee80211_hw *hw,
+ 
+ 	if (changed & BSS_CHANGED_TWT) {
+ 		if (info->twt_requester || info->twt_responder)
+-			ath11k_wmi_send_twt_enable_cmd(ar, ar->pdev_idx);
++			ath11k_wmi_send_twt_enable_cmd(ar, ar->pdev->pdev_id);
+ 		else
+-			ath11k_wmi_send_twt_disable_cmd(ar, ar->pdev_idx);
++			ath11k_wmi_send_twt_disable_cmd(ar, ar->pdev->pdev_id);
+ 		if (vif->type == NL80211_IFTYPE_AP)
+ 			ath11k_debugfs_twt(arvif, info->twt_requester);
+ 	}
+-- 
+2.20.1
 
