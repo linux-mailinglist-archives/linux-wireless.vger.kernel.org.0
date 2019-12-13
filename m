@@ -2,30 +2,31 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B60F211E144
-	for <lists+linux-wireless@lfdr.de>; Fri, 13 Dec 2019 10:56:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2442011E152
+	for <lists+linux-wireless@lfdr.de>; Fri, 13 Dec 2019 10:58:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726608AbfLMJ4Q (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 13 Dec 2019 04:56:16 -0500
-Received: from s3.sipsolutions.net ([144.76.43.62]:45458 "EHLO
+        id S1726718AbfLMJ6N (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 13 Dec 2019 04:58:13 -0500
+Received: from s3.sipsolutions.net ([144.76.43.62]:45534 "EHLO
         sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725747AbfLMJ4Q (ORCPT
+        with ESMTP id S1725928AbfLMJ6N (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 13 Dec 2019 04:56:16 -0500
+        Fri, 13 Dec 2019 04:58:13 -0500
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.92.3)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1ifhgE-009eL1-3i; Fri, 13 Dec 2019 10:56:14 +0100
-Message-ID: <94471b2381bee394f9708eae8ba47129f3facd03.camel@sipsolutions.net>
-Subject: Re: [PATCH 2/4] mac80211: fix issue in loop scenario
+        id 1ifhi6-009eZZ-RF; Fri, 13 Dec 2019 10:58:11 +0100
+Message-ID: <fd7b4cb48f3510d81d227ae8020c3b6c46f4a4b0.camel@sipsolutions.net>
+Subject: Re: [PATCH 4/4] mac80211: Sync airtime weight sum with per AC
+ synced sta airtime weight together
 From:   Johannes Berg <johannes@sipsolutions.net>
 To:     Yibo Zhao <yiboz@codeaurora.org>, linux-wireless@vger.kernel.org
 Cc:     ath10k@lists.infradead.org
-Date:   Fri, 13 Dec 2019 10:56:12 +0100
-In-Reply-To: <1576221593-1086-3-git-send-email-yiboz@codeaurora.org> (sfid-20191213_082426_564220_0827923D)
+Date:   Fri, 13 Dec 2019 10:58:09 +0100
+In-Reply-To: <1576221593-1086-5-git-send-email-yiboz@codeaurora.org> (sfid-20191213_082437_402312_070F042E)
 References: <1576221593-1086-1-git-send-email-yiboz@codeaurora.org>
-         <1576221593-1086-3-git-send-email-yiboz@codeaurora.org>
-         (sfid-20191213_082426_564220_0827923D)
+         <1576221593-1086-5-git-send-email-yiboz@codeaurora.org>
+         (sfid-20191213_082437_402312_070F042E)
 Content-Type: text/plain; charset="UTF-8"
 User-Agent: Evolution 3.34.2 (3.34.2-1.fc31) 
 MIME-Version: 1.0
@@ -35,20 +36,17 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 2019-12-13 at 15:19 +0800, Yibo Zhao wrote:
-> In a loop txqs dequeue scenario, if the first txq in the rbtree gets
-> removed from rbtree immediately in the ieee80211_return_txq(), the
-> loop will break soon in the ieee80211_next_txq() due to schedule_pos
-> not leading to the second txq in the rbtree. Thus update schedule_pos
-> to previous node once the node of schedule_pos is either removed from
-> rbtree or move to other location in rbtree due to airtime update.
 
-For my understanding - this is a fix to the first patch in the series?
+I'm going to assume that Toke will review all of this and there will be
+changes, so you'd resend anyway ...
 
-I guess you didn't squash it because that's Toke's patch or something?
+> - * @airtime_weight: station weight for airtime fairness calculation purposes
+> + * @airtime_weight: station per-AC weight for airtime fairness calculation
+> + * purposes
 
-I tend to think you still should, and annotate the changes, but I wanted
-to understand it first.
+If you do, please replace the "*<space>purposes" by "*<tab>purposes" :-)
+
+(otherwise I can just fix that myself too, but ...)
 
 johannes
 
