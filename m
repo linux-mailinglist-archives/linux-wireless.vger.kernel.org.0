@@ -2,145 +2,62 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F094B11F158
-	for <lists+linux-wireless@lfdr.de>; Sat, 14 Dec 2019 11:13:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A04811F15A
+	for <lists+linux-wireless@lfdr.de>; Sat, 14 Dec 2019 11:15:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725895AbfLNKNI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 14 Dec 2019 05:13:08 -0500
-Received: from smail.rz.tu-ilmenau.de ([141.24.186.67]:33517 "EHLO
-        smail.rz.tu-ilmenau.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725862AbfLNKNI (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 14 Dec 2019 05:13:08 -0500
-Received: from [192.168.178.23] (unknown [87.147.48.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by smail.rz.tu-ilmenau.de (Postfix) with ESMTPSA id EE3BA580075;
-        Sat, 14 Dec 2019 11:13:05 +0100 (CET)
-Subject: Re: [PATCH] mac80211: mesh: only warn if mesh peering is established
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org
-References: <20191203180644.70653-1-markus.theil@tu-ilmenau.de>
- <8faa14caf032ea11fc329eeefa11f0f7159b13a4.camel@sipsolutions.net>
-From:   Markus Theil <markus.theil@tu-ilmenau.de>
-Autocrypt: addr=markus.theil@tu-ilmenau.de; keydata=
- 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
- sGZPq8zmOtvOyZtafA==
-Message-ID: <e29d43cc-0e72-38af-6c07-5c32dca872d9@tu-ilmenau.de>
-Date:   Sat, 14 Dec 2019 11:13:05 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.3.0
+        id S1725975AbfLNKPZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 14 Dec 2019 05:15:25 -0500
+Received: from szxga04-in.huawei.com ([45.249.212.190]:8124 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725872AbfLNKPZ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 14 Dec 2019 05:15:25 -0500
+Received: from DGGEMS403-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id 41337527F6D14078B992;
+        Sat, 14 Dec 2019 18:15:20 +0800 (CST)
+Received: from huawei.com (10.90.53.225) by DGGEMS403-HUB.china.huawei.com
+ (10.3.19.203) with Microsoft SMTP Server id 14.3.439.0; Sat, 14 Dec 2019
+ 18:15:12 +0800
+From:   zhengbin <zhengbin13@huawei.com>
+To:     <kvalo@codeaurora.org>, <davem@davemloft.net>,
+        <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+        <netdev@vger.kernel.org>
+CC:     <zhengbin13@huawei.com>
+Subject: [PATCH -next] ath11k: Remove unneeded semicolon
+Date:   Sat, 14 Dec 2019 18:22:34 +0800
+Message-ID: <1576318954-40658-1-git-send-email-zhengbin13@huawei.com>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
-In-Reply-To: <8faa14caf032ea11fc329eeefa11f0f7159b13a4.camel@sipsolutions.net>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
+Content-Type: text/plain
+X-Originating-IP: [10.90.53.225]
+X-CFilter-Loop: Reflected
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 12/13/19 10:13 AM, Johannes Berg wrote:
-> On Tue, 2019-12-03 at 19:06 +0100, Markus Theil wrote:
->> The following warning is triggered every time an unestablished mesh peer
->> gets dumped. This patch checks, if a peer link is established, when dum-
->> ping the airtime link metric.
->>
->> [ 9563.022567] WARNING: CPU: 0 PID: 6287 at net/mac80211/mesh_hwmp.c:345
->>                airtime_link_metric_get+0xa2/0xb0 [mac80211]
->> [ 9563.022697] Hardware name: PC Engines apu2/apu2, BIOS v4.10.0.3
->> [ 9563.022756] RIP: 0010:airtime_link_metric_get+0xa2/0xb0 [mac80211]
->> [ 9563.022838] Call Trace:
->> [ 9563.022897]  sta_set_sinfo+0x936/0xa10 [mac80211]
->> [ 9563.022964]  ieee80211_dump_station+0x6d/0x90 [mac80211]
->> [ 9563.023062]  nl80211_dump_station+0x154/0x2a0 [cfg80211]
->> [ 9563.023120]  netlink_dump+0x17b/0x370
->> [ 9563.023130]  netlink_recvmsg+0x2a4/0x480
->> [ 9563.023140]  ____sys_recvmsg+0xa6/0x160
->> [ 9563.023154]  ___sys_recvmsg+0x93/0xe0
->> [ 9563.023169]  __sys_recvmsg+0x7e/0xd0
->> [ 9563.023210]  do_syscall_64+0x4e/0x140
->> [ 9563.023217]  entry_SYSCALL_64_after_hwframe+0x44/0xa9
-> OK, I can see how this happens.
->
-> However,
->
->> +	if (sta->mesh->plink_state != NL80211_PLINK_ESTAB)
->> +		return MAX_METRIC;
->> +
-> I'm not really sure this is the right way to fix it?
->
-> I'm sure you observed this only when the link isn't established yet, but
-> it seems to me that even when a link is established it could still
-> happen?
->
-> Or are the frames that are necessary for link establishment enough to
-> always set the metric?
->
-> johannes
+Fixes coccicheck warning:
 
-The current mac80211 code initializes this moving average when setting
-the peer link to established in sta_apply_mesh_params.
+drivers/net/wireless/ath/ath11k/wmi.h:2570:2-3: Unneeded semicolon
 
-case NL80211_PLINK_ESTAB:
-            ...
-            ewma_mesh_tx_rate_avg_init(&sta->mesh->tx_rate_avg);
-            /* init at low value */
-            ewma_mesh_tx_rate_avg_add(&sta->mesh->tx_rate_avg, 10);
-            break;
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: zhengbin <zhengbin13@huawei.com>
+---
+ drivers/net/wireless/ath/ath11k/wmi.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-This ewma_mesh_tx_rate_avg_add is the only reference that I found in the
-code. It seems, that this avg is only initialized and never updated
-during the plink lifetime.
+diff --git a/drivers/net/wireless/ath/ath11k/wmi.h b/drivers/net/wireless/ath/ath11k/wmi.h
+index 4a518d4..22c887a 100644
+--- a/drivers/net/wireless/ath/ath11k/wmi.h
++++ b/drivers/net/wireless/ath/ath11k/wmi.h
+@@ -2567,7 +2567,7 @@ static inline const char *ath11k_wmi_phymode_str(enum wmi_phy_mode mode)
+ 		/* no default handler to allow compiler to check that the
+ 		 * enum is fully handled
+ 		 */
+-	};
++	}
 
--- 
-Markus Theil
-
-Technische Universität Ilmenau, Fachgebiet Telematik/Rechnernetze
-Postfach 100565
-98684 Ilmenau, Germany
-
-Phone: +49 3677 69-4582
-Email: markus[dot]theil[at]tu-ilmenau[dot]de
-Web: http://www.tu-ilmenau.de/telematik
+ 	return "<unknown>";
+ }
+--
+2.7.4
 
