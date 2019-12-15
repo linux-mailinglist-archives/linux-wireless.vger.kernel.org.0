@@ -2,66 +2,75 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 02D1F11FA82
-	for <lists+linux-wireless@lfdr.de>; Sun, 15 Dec 2019 19:43:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AC5E211FAE9
+	for <lists+linux-wireless@lfdr.de>; Sun, 15 Dec 2019 20:59:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726260AbfLOSnj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 15 Dec 2019 13:43:39 -0500
-Received: from mail-lj1-f196.google.com ([209.85.208.196]:36072 "EHLO
-        mail-lj1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726146AbfLOSnj (ORCPT
+        id S1726445AbfLOT7H (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 15 Dec 2019 14:59:07 -0500
+Received: from mta-p5.oit.umn.edu ([134.84.196.205]:36870 "EHLO
+        mta-p5.oit.umn.edu" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726292AbfLOT7H (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 15 Dec 2019 13:43:39 -0500
-Received: by mail-lj1-f196.google.com with SMTP id r19so4305319ljg.3;
-        Sun, 15 Dec 2019 10:43:37 -0800 (PST)
+        Sun, 15 Dec 2019 14:59:07 -0500
+Received: from localhost (unknown [127.0.0.1])
+        by mta-p5.oit.umn.edu (Postfix) with ESMTP id 47bZwp3Fblz9vYBL
+        for <linux-wireless@vger.kernel.org>; Sun, 15 Dec 2019 19:59:06 +0000 (UTC)
+X-Virus-Scanned: amavisd-new at umn.edu
+Received: from mta-p5.oit.umn.edu ([127.0.0.1])
+        by localhost (mta-p5.oit.umn.edu [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id QRnLFRCJA0NU for <linux-wireless@vger.kernel.org>;
+        Sun, 15 Dec 2019 13:59:06 -0600 (CST)
+Received: from mail-yb1-f198.google.com (mail-yb1-f198.google.com [209.85.219.198])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mta-p5.oit.umn.edu (Postfix) with ESMTPS id 47bZwp2B0bz9vKbF
+        for <linux-wireless@vger.kernel.org>; Sun, 15 Dec 2019 13:59:06 -0600 (CST)
+Received: by mail-yb1-f198.google.com with SMTP id x18so4915362ybr.15
+        for <linux-wireless@vger.kernel.org>; Sun, 15 Dec 2019 11:59:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
+        d=umn.edu; s=google;
         h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=LH/0zcyS2tN4td5pD8aR0i/TpwaV4FiJpG/372fyzp8=;
-        b=J6iJOrGMCWuVVZsHSjxKG56ysHXvOD3mqWNDhq38TP97+e39sE5hShC0qV6eX0JE9/
-         /bX2dDdIZ6q98cOw6u6ZOJzlBQPBgq65j81vgbrqyGpHGKACda+1Q6OMiqrDvCEjX+tl
-         lu2Eg+GTJVM92RnyQk0FMFaVvrYVmYX/fQGMp/Mv+HlnoBBloISkJtv4xQbsutbZR9iO
-         tIOK2+ZSi0boHuagmqN3BQGpcbYl78BaztV35hQZmKhwyZn8Q4HwFmoCx2ihjO8h7Ib3
-         1kLorHCUBXtUEttOI4r9KG0SbdZR+4EbGIBZVnbFt5K2K6qdymV2cxikiF7BLiubiGwo
-         4CmQ==
+        bh=8TUcX1RfgZ492tOYJ5s68irOhl6zZB85wQRSq77/peo=;
+        b=cV5bO+pKRY3btcUkVNBJcD4tq59cy1Fw6Mlknr43a6PVbLbDvgGPoljM6wBB31iIpc
+         GccTGzcaJFMK+3ciJ0/vehKwYAKe2k10CyxyUOykIzZvsAlFGOumqum5zzu2IZo8dpaf
+         8EU+bceJKoUvtPFzXXVDlI2OpZT0FAJIjiHWHSpv65KIHuVKTmMhO4++QXY/aqByf/YM
+         cFkpC8M45swPp8XtL3huRukcVd+wbtMXpS1L4p1icFdHEQ4TGu+9+zCUcPnDK6+PqOtF
+         MyzvvX5jQ1++SHaKIWskUqeJj73fcBFv4ltA2E30iv9uJdI4QGD9IauPZ1j5gGOoOQ77
+         1vIg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=LH/0zcyS2tN4td5pD8aR0i/TpwaV4FiJpG/372fyzp8=;
-        b=lh0YB+9grb9aJBu4CRWe6VONfNO5fU2nkeVExI3FMs+i5aJJ/pHO8QFBMCjZE1s7Pb
-         uyMFSztXiKXBJbdztl+t8YN2WhJYRQgbuOzxlrXpCdwoOKmsF+baTBgRFIjD+KCFpoZH
-         NK9zr4z8ax9aZRE+cyfbdMA8waGHEr4XWNUwY/1ARruCGhZj4VOi30x1+NDTtfVzpQSt
-         BQtF0mmfuE99hEsfEiPPo9QTJ3Or4Ywwk+KcIp2E22u/l3Y1AeFX5r5WaKtgFjz4umlh
-         5hOwCajp6yheDLi3BfYWjQ1q1raPzjCXmdp3CDoKN/ESYElzoOQIWGbp01ITewY8J6oZ
-         Vv5w==
-X-Gm-Message-State: APjAAAVp+p7CjUP2fA1vhUuNsa7gVBuNeSzuh5gvvkiXFl2ZgWEEU3Ir
-        nIEw81pINev+HREyfO4wMAI=
-X-Google-Smtp-Source: APXvYqxfsMaK41jJkcs7vssL2EU4WHp3FndAzOUnht3wmhFCnObcwoYSdbTmLzYwX6sWSAO6pqVKqw==
-X-Received: by 2002:a2e:9e19:: with SMTP id e25mr6107941ljk.179.1576435416835;
-        Sun, 15 Dec 2019 10:43:36 -0800 (PST)
-Received: from localhost.localdomain (79-139-233-37.dynamic.spd-mgts.ru. [79.139.233.37])
-        by smtp.gmail.com with ESMTPSA id k5sm7455513lfd.86.2019.12.15.10.43.35
+        bh=8TUcX1RfgZ492tOYJ5s68irOhl6zZB85wQRSq77/peo=;
+        b=oLJfE24OuKIp+DQBjIEpdPrdVqufRLD2BvDyOKydy88l/FfStrnxhebtlhrIgdtDdN
+         khaT9/ptN/QtumMFNAMZ9RUpe8o7Puoi671S+PpmJ+sL81GRKX5Khh2clr8NEeK3pNk4
+         8PO/+a4RL7pAkJTzL1e1HHBS6fw8ZoZ9NOWnzLXXrrdugCa6HVnF7hOdC0smD81WCaZr
+         wHi4w9j8Gw6Uz7dqrfh5VgyzsvnKnR5SPzxf+ryNAeVU10zoMJbzcsCZFMqPa+UG/moe
+         4ZbV8TjFKQhuY8hwPJAEUxNh7K45Smmobe5QA4/m/pv036nQGLXzm1QeQiXpEpQZoSro
+         rKdQ==
+X-Gm-Message-State: APjAAAW71fOyp28Tjjwy75dXJdOav4tIp64m3/GESbLnpBGbxmCW80uj
+        wV01rD0eDECNqnTGVU9JD96Wr3MH8qjUUMnaph5cXI/oMeHvXN6jZ8Baw13hnznsK9YSWlQp4ol
+        NulG4HO5aM7oXDltJrxFDfCns8gqxNwo=
+X-Received: by 2002:a25:3009:: with SMTP id w9mr6023069ybw.47.1576439945685;
+        Sun, 15 Dec 2019 11:59:05 -0800 (PST)
+X-Google-Smtp-Source: APXvYqy5IqUJNnB0dOatc0l9p5iHfoI+NtpfRKhivnJlbv9QIJmKpopWGOVWyNhfXIUi8AuGJKEmdg==
+X-Received: by 2002:a25:3009:: with SMTP id w9mr6023058ybw.47.1576439945472;
+        Sun, 15 Dec 2019 11:59:05 -0800 (PST)
+Received: from cs-u-syssec1.dtc.umn.edu (cs-u-syssec1.cs.umn.edu. [128.101.106.66])
+        by smtp.gmail.com with ESMTPSA id d126sm1059071ywf.28.2019.12.15.11.59.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 15 Dec 2019 10:43:36 -0800 (PST)
-From:   Dmitry Osipenko <digetx@gmail.com>
-To:     Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Arend van Spriel <arend.vanspriel@broadcom.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
-        Wright Feng <wright.feng@cypress.com>,
-        Kalle Valo <kvalo@codeaurora.org>
-Cc:     linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        brcm80211-dev-list@cypress.com, linux-tegra@vger.kernel.org,
+        Sun, 15 Dec 2019 11:59:05 -0800 (PST)
+From:   Aditya Pakki <pakki001@umn.edu>
+To:     pakki001@umn.edu
+Cc:     kjlu@umn.edu, Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH v1] brcmfmac: Keep OOB wake-interrupt disabled when it shouldn't be enabled
-Date:   Sun, 15 Dec 2019 21:42:24 +0300
-Message-Id: <20191215184224.11827-1-digetx@gmail.com>
-X-Mailer: git-send-email 2.24.0
+Subject: [PATCH] orinoco: avoid assertion in case of NULL pointer
+Date:   Sun, 15 Dec 2019 13:58:58 -0600
+Message-Id: <20191215195900.6109-1-pakki001@umn.edu>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
@@ -69,69 +78,29 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-NVIDIA Tegra SoCs do not like when OOB wake is enabled and WiFi interface
-is in DOWN state during suspend. This results in a CPU hang on programming
-OOB wake-up state of the GPIO controller during of system's suspend.
+In ezusb_init, if upriv is NULL, the code crashes. However, the caller
+in ezusb_probe can handle the error and print the failure message.
+The patch replaces the BUG_ON call to error return.
 
-The solution is trivial: don't enable wake for the OOB interrupt when it
-should be disabled.
-
-This fixes hang on Tegra20 (Acer A500) and Tegra30 (Nexus 7) devices which
-are using BCM4329 and BCM4330 WiFi chips respectively.
-
-Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
+Signed-off-by: Aditya Pakki <pakki001@umn.edu>
 ---
- .../net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c  | 10 +++++-----
- .../net/wireless/broadcom/brcm80211/brcmfmac/sdio.h    |  1 -
- 2 files changed, 5 insertions(+), 6 deletions(-)
+ drivers/net/wireless/intersil/orinoco/orinoco_usb.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-index 96fd8e2bf773..b5088379b595 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-@@ -119,7 +119,7 @@ int brcmf_sdiod_intr_register(struct brcmf_sdio_dev *sdiodev)
- 			brcmf_err("enable_irq_wake failed %d\n", ret);
- 			return ret;
- 		}
--		sdiodev->irq_wake = true;
-+		disable_irq_wake(pdata->oob_irq_nr);
+diff --git a/drivers/net/wireless/intersil/orinoco/orinoco_usb.c b/drivers/net/wireless/intersil/orinoco/orinoco_usb.c
+index 40a8b941ad5c..813de06c03de 100644
+--- a/drivers/net/wireless/intersil/orinoco/orinoco_usb.c
++++ b/drivers/net/wireless/intersil/orinoco/orinoco_usb.c
+@@ -1361,7 +1361,8 @@ static int ezusb_init(struct hermes *hw)
+ 	int retval;
  
- 		sdio_claim_host(sdiodev->func1);
+ 	BUG_ON(in_interrupt());
+-	BUG_ON(!upriv);
++	if (!upriv)
++		return -EINVAL;
  
-@@ -178,10 +178,6 @@ void brcmf_sdiod_intr_unregister(struct brcmf_sdio_dev *sdiodev)
- 		sdio_release_host(sdiodev->func1);
- 
- 		sdiodev->oob_irq_requested = false;
--		if (sdiodev->irq_wake) {
--			disable_irq_wake(pdata->oob_irq_nr);
--			sdiodev->irq_wake = false;
--		}
- 		free_irq(pdata->oob_irq_nr, &sdiodev->func1->dev);
- 		sdiodev->irq_en = false;
- 		sdiodev->oob_irq_requested = false;
-@@ -1167,6 +1163,10 @@ static int brcmf_ops_sdio_resume(struct device *dev)
- 		if (ret)
- 			brcmf_err("Failed to probe device on resume\n");
- 	} else {
-+		if (sdiodev->wowl_enabled &&
-+		    sdiodev->settings->bus.sdio.oob_irq_supported)
-+			disable_irq_wake(sdiodev->settings->bus.sdio.oob_irq_nr);
-+
- 		brcmf_sdiod_freezer_off(sdiodev);
- 	}
- 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.h b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.h
-index 0bd47c119dae..163fd664780a 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.h
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.h
-@@ -178,7 +178,6 @@ struct brcmf_sdio_dev {
- 	bool sd_irq_requested;
- 	bool irq_en;			/* irq enable flags */
- 	spinlock_t irq_en_lock;
--	bool irq_wake;			/* irq wake enable flags */
- 	bool sg_support;
- 	uint max_request_size;
- 	ushort max_segment_count;
+ 	upriv->reply_count = 0;
+ 	/* Write the MAGIC number on the simulated registers to keep
 -- 
-2.24.0
+2.20.1
 
