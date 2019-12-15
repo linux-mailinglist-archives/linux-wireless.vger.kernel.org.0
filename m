@@ -2,103 +2,78 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 590AA11F884
-	for <lists+linux-wireless@lfdr.de>; Sun, 15 Dec 2019 16:33:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8078F11F871
+	for <lists+linux-wireless@lfdr.de>; Sun, 15 Dec 2019 16:26:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726437AbfLOPdj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 15 Dec 2019 10:33:39 -0500
-Received: from mta-p7.oit.umn.edu ([134.84.196.207]:60436 "EHLO
-        mta-p7.oit.umn.edu" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726231AbfLOPdj (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 15 Dec 2019 10:33:39 -0500
-X-Greylist: delayed 577 seconds by postgrey-1.27 at vger.kernel.org; Sun, 15 Dec 2019 10:33:38 EST
-Received: from localhost (unknown [127.0.0.1])
-        by mta-p7.oit.umn.edu (Postfix) with ESMTP id 47bSqP2C3qz9vYfN
-        for <linux-wireless@vger.kernel.org>; Sun, 15 Dec 2019 15:24:01 +0000 (UTC)
-X-Virus-Scanned: amavisd-new at umn.edu
-Received: from mta-p7.oit.umn.edu ([127.0.0.1])
-        by localhost (mta-p7.oit.umn.edu [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id zyTL2-8SGFB5 for <linux-wireless@vger.kernel.org>;
-        Sun, 15 Dec 2019 09:24:01 -0600 (CST)
-Received: from mail-yw1-f69.google.com (mail-yw1-f69.google.com [209.85.161.69])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mta-p7.oit.umn.edu (Postfix) with ESMTPS id 47bSqP16QMz9vYfM
-        for <linux-wireless@vger.kernel.org>; Sun, 15 Dec 2019 09:24:01 -0600 (CST)
-Received: by mail-yw1-f69.google.com with SMTP id d198so3739198ywa.17
-        for <linux-wireless@vger.kernel.org>; Sun, 15 Dec 2019 07:24:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=umn.edu; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=LXeOuc0B3gYX32LabDU9f+RSGbyw1wcQBHVeANF/Ibg=;
-        b=gFbnXdjz2JyDs4kf8BW4QAMQEHuYlzIExGtIGz08EPf7yeUz69r2qyT9KH+d6UHKYD
-         +8Y68qzOIDZjoC/J/jbi/P+wfQs+Ts54xVgQNcRO570Hu0dMRXd2kpxg4sVOQFF7rltE
-         5hqGsoOLgKmq0/4sEYqHVWCiFKXmHBgYJdsG2+YCSeKjNTJW3EGZtWqAy3/lrDv5wm6y
-         QU2i0RKp0HvZuZF4i3elIn/MjXO7LBHPV/lWHDNK8k3C33mOoZq9EV1HlAqMac7v+YMH
-         x90F2rZA0JpnodY+TigIVIH/qhsKVxsws4grBrtIq1w8VRJIqe/5lAYf+2f4ihzU79Z+
-         WMHA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=LXeOuc0B3gYX32LabDU9f+RSGbyw1wcQBHVeANF/Ibg=;
-        b=TJFJ8U3eJIyFJLTKsCdBddPiUrKST5L2IdyY9QF/4FA1dgk3S39zXjGVTanHyqO5PA
-         qsMFC7iZoGIizSvL8xMGSvRDYZnnYlb16aqhJ8T/sGNU72r1b48p+BQ/7BnhkYplpD68
-         /BJUJqGSjJfoWkgLlYEYn4SonoL6rG3Qv8TD/9m8lSKlit18FK1ejKx01SconxcCBHw1
-         4vNES4xOpzReNkpCJ7+b9qv27ZOK8Vi0QzoEJ0KFNRGMU9v5HJyaL9E5MDDORr7/NY/I
-         VudcaidVNo5e5AydkXWw8bUGKqsAUVo+H6+lUEIjHVUeVWefgYvVHi8CJkegfmq7p/qC
-         7e2Q==
-X-Gm-Message-State: APjAAAUgGVWnbUEt/udAMcm8uMh1VCBhgJpNK9jPHFDyLnFWPfzty51R
-        Rq8pobv+jYf6QobYp3t9TuBeKf88dGD09cX8VDuxEnTh+p5mh+MPS8TPLxYkTELfYoADAVkMJXC
-        hfDXs9xrYDG91hqFIsiqYTq7au1ibSaA=
-X-Received: by 2002:a25:7cc1:: with SMTP id x184mr12866653ybc.69.1576423440623;
-        Sun, 15 Dec 2019 07:24:00 -0800 (PST)
-X-Google-Smtp-Source: APXvYqzmH7sFfvfBy1cep+91o5KmIInPx1Yz9wIMEp9QMF/hlEh4qqQVE73XWTB1gu0XWKPd9zKF2g==
-X-Received: by 2002:a25:7cc1:: with SMTP id x184mr12866635ybc.69.1576423440363;
-        Sun, 15 Dec 2019 07:24:00 -0800 (PST)
-Received: from cs-u-syssec1.dtc.umn.edu (cs-u-syssec1.cs.umn.edu. [128.101.106.66])
-        by smtp.gmail.com with ESMTPSA id b192sm3235899ywe.2.2019.12.15.07.23.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 15 Dec 2019 07:24:00 -0800 (PST)
-From:   Aditya Pakki <pakki001@umn.edu>
-To:     pakki001@umn.edu
-Cc:     kjlu@umn.edu, Johannes Berg <johannes@sipsolutions.net>,
-        "David S. Miller" <davem@davemloft.net>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] mac80211: Remove redundant assertion
-Date:   Sun, 15 Dec 2019 09:23:48 -0600
-Message-Id: <20191215152348.20912-1-pakki001@umn.edu>
-X-Mailer: git-send-email 2.20.1
+        id S1726231AbfLOPZx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 15 Dec 2019 10:25:53 -0500
+Received: from nbd.name ([46.4.11.11]:60966 "EHLO nbd.name"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726207AbfLOPZx (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 15 Dec 2019 10:25:53 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
+        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=j3zT2mERXBUEFRGY7q79cUUU7YhASB2O7nOWrDEdWfk=; b=cYfcKTvQzdjk2+LdmrJWCwVoZv
+        2xQXlpuObwC/tZiiidOq4xwSoMd5ID+FGI38RoUnbs4zroZB0DwQBzdIRmcusCI4Ppzxnfbrlt1jw
+        mot1YOe3iT7y/qoaBX6fhLTn1v1JVNQR3bFhhJZruaS7cGgj55563hO20lQxRzupMePg=;
+Received: from [80.255.10.197] (helo=nf.local)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1igVmJ-0007vY-87; Sun, 15 Dec 2019 16:25:51 +0100
+Subject: Re: [PATCH 2/2] mt76: mt7603: simplify led reg definitions
+To:     Lorenzo Bianconi <lorenzo@kernel.org>
+Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com
+References: <cover.1576399834.git.lorenzo@kernel.org>
+ <263c57c29b774556bb11035882f8c0bc8ccdc77f.1576399834.git.lorenzo@kernel.org>
+From:   Felix Fietkau <nbd@nbd.name>
+Autocrypt: addr=nbd@nbd.name; prefer-encrypt=mutual; keydata=
+ xsDiBEah5CcRBADIY7pu4LIv3jBlyQ/2u87iIZGe6f0f8pyB4UjzfJNXhJb8JylYYRzIOSxh
+ ExKsdLCnJqsG1PY1mqTtoG8sONpwsHr2oJ4itjcGHfn5NJSUGTbtbbxLro13tHkGFCoCr4Z5
+ Pv+XRgiANSpYlIigiMbOkide6wbggQK32tC20QxUIwCg4k6dtV/4kwEeiOUfErq00TVqIiEE
+ AKcUi4taOuh/PQWx/Ujjl/P1LfJXqLKRPa8PwD4j2yjoc9l+7LptSxJThL9KSu6gtXQjcoR2
+ vCK0OeYJhgO4kYMI78h1TSaxmtImEAnjFPYJYVsxrhay92jisYc7z5R/76AaELfF6RCjjGeP
+ wdalulG+erWju710Bif7E1yjYVWeA/9Wd1lsOmx6uwwYgNqoFtcAunDaMKi9xVQW18FsUusM
+ TdRvTZLBpoUAy+MajAL+R73TwLq3LnKpIcCwftyQXK5pEDKq57OhxJVv1Q8XkA9Dn1SBOjNB
+ l25vJDFAT9ntp9THeDD2fv15yk4EKpWhu4H00/YX8KkhFsrtUs69+vZQwc0cRmVsaXggRmll
+ dGthdSA8bmJkQG5iZC5uYW1lPsJgBBMRAgAgBQJGoeQnAhsjBgsJCAcDAgQVAggDBBYCAwEC
+ HgECF4AACgkQ130UHQKnbvXsvgCgjsAIIOsY7xZ8VcSm7NABpi91yTMAniMMmH7FRenEAYMa
+ VrwYTIThkTlQzsFNBEah5FQQCACMIep/hTzgPZ9HbCTKm9xN4bZX0JjrqjFem1Nxf3MBM5vN
+ CYGBn8F4sGIzPmLhl4xFeq3k5irVg/YvxSDbQN6NJv8o+tP6zsMeWX2JjtV0P4aDIN1pK2/w
+ VxcicArw0VYdv2ZCarccFBgH2a6GjswqlCqVM3gNIMI8ikzenKcso8YErGGiKYeMEZLwHaxE
+ Y7mTPuOTrWL8uWWRL5mVjhZEVvDez6em/OYvzBwbkhImrryF29e3Po2cfY2n7EKjjr3/141K
+ DHBBdgXlPNfDwROnA5ugjjEBjwkwBQqPpDA7AYPvpHh5vLbZnVGu5CwG7NAsrb2isRmjYoqk
+ wu++3117AAMFB/9S0Sj7qFFQcD4laADVsabTpNNpaV4wAgVTRHKV/kC9luItzwDnUcsZUPdQ
+ f3MueRJ3jIHU0UmRBG3uQftqbZJj3ikhnfvyLmkCNe+/hXhPu9sGvXyi2D4vszICvc1KL4RD
+ aLSrOsROx22eZ26KqcW4ny7+va2FnvjsZgI8h4sDmaLzKczVRIiLITiMpLFEU/VoSv0m1F4B
+ FtRgoiyjFzigWG0MsTdAN6FJzGh4mWWGIlE7o5JraNhnTd+yTUIPtw3ym6l8P+gbvfoZida0
+ TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabwkkE
+ GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCfTKx80VvCR/PvsUlrvdOLsIgeRGAAn1ee
+ RjMaxwtSdaCKMw3j33ZbsWS4
+Message-ID: <2d0d7f6a-187f-db44-205c-7ff62d132384@nbd.name>
+Date:   Sun, 15 Dec 2019 16:25:50 +0100
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:68.0)
+ Gecko/20100101 Thunderbird/68.3.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <263c57c29b774556bb11035882f8c0bc8ccdc77f.1576399834.git.lorenzo@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-In wiphy_to_ieee80211_hw, the assertion to check if wiphy is NULL is
-repeated in wiphy_priv. The patch removes the duplicated BUG_ON check.
+On 2019-12-15 09:54, Lorenzo Bianconi wrote:
+> Rely on FIELD_PREP macro for led register definitions and
+> remove open coding
+> 
+> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Please move the FIELD_PREP from the header files to the source file to
+be consistent with the rest of the code. Same applies to the mt7615 patch.
 
-Signed-off-by: Aditya Pakki <pakki001@umn.edu>
----
- net/mac80211/util.c | 1 -
- 1 file changed, 1 deletion(-)
-
-diff --git a/net/mac80211/util.c b/net/mac80211/util.c
-index 32a7a53833c0..780df3e9092e 100644
---- a/net/mac80211/util.c
-+++ b/net/mac80211/util.c
-@@ -39,7 +39,6 @@ const void *const mac80211_wiphy_privid = &mac80211_wiphy_privid;
- struct ieee80211_hw *wiphy_to_ieee80211_hw(struct wiphy *wiphy)
- {
- 	struct ieee80211_local *local;
--	BUG_ON(!wiphy);
- 
- 	local = wiphy_priv(wiphy);
- 	return &local->hw;
--- 
-2.20.1
-
+- Felix
