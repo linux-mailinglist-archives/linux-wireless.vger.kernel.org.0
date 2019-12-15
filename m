@@ -2,89 +2,177 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4164511F577
-	for <lists+linux-wireless@lfdr.de>; Sun, 15 Dec 2019 04:56:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 73FD311F5CE
+	for <lists+linux-wireless@lfdr.de>; Sun, 15 Dec 2019 06:16:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726232AbfLOD4q (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 14 Dec 2019 22:56:46 -0500
-Received: from mailgw02.mediatek.com ([210.61.82.184]:59863 "EHLO
-        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1725933AbfLOD4q (ORCPT
+        id S1726078AbfLOFQn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 15 Dec 2019 00:16:43 -0500
+Received: from mail-pl1-f195.google.com ([209.85.214.195]:46924 "EHLO
+        mail-pl1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725861AbfLOFQn (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 14 Dec 2019 22:56:46 -0500
-X-UUID: bd32002ec29549f8b1e57599c5ff4c02-20191215
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Transfer-Encoding:Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=94xcQ2Z3dMqXswcxMI8M18CsZNx5V6+VkyJZm38GJdA=;
-        b=M6RPoHdBWCLhl7GGdPO2fAIPyIgHq8iYFcyKkoQDhlSTJ+fbVd3uBqBsUKEtmGArRipAvuYCx2woY9rJ4XRQCoK2RDScr4ToifTnL1foKHzUODPE5W+Ar108oBhQYrGXhvQX/kYac+9xixRTg7LRp7CZU7mceDz89koUmnKLFWo=;
-X-UUID: bd32002ec29549f8b1e57599c5ff4c02-20191215
-Received: from mtkexhb01.mediatek.inc [(172.21.101.102)] by mailgw02.mediatek.com
-        (envelope-from <ryder.lee@mediatek.com>)
-        (Cellopoint E-mail Firewall v4.1.10 Build 0809 with TLS)
-        with ESMTP id 1202441300; Sun, 15 Dec 2019 11:56:37 +0800
-Received: from mtkcas07.mediatek.inc (172.21.101.84) by
- mtkmbs06n2.mediatek.inc (172.21.101.130) with Microsoft SMTP Server (TLS) id
- 15.0.1395.4; Sun, 15 Dec 2019 11:56:35 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas07.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1395.4 via Frontend
- Transport; Sun, 15 Dec 2019 11:56:22 +0800
-From:   Ryder Lee <ryder.lee@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-CC:     Roy Luo <royluo@google.com>, <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, Ryder Lee <ryder.lee@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>
-Subject: [PATCH 2/2] mt76: mt7615: add set_antenna callback
-Date:   Sun, 15 Dec 2019 11:56:32 +0800
-Message-ID: <6b3ac6736c0cfa12492f383ec9cfcaad91bfb965.1576381077.git.ryder.lee@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <d3d47e29e2a39c42adfcf912a27b9d19a01d5010.1576381077.git.ryder.lee@mediatek.com>
-References: <d3d47e29e2a39c42adfcf912a27b9d19a01d5010.1576381077.git.ryder.lee@mediatek.com>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-SNTS-SMTP: 57E95DD40047F0123CF19775E0D27F7C3250BF6C281BF99FAF626FD033563F632000:8
-X-MTK:  N
-Content-Transfer-Encoding: base64
+        Sun, 15 Dec 2019 00:16:43 -0500
+Received: by mail-pl1-f195.google.com with SMTP id k20so2998607pll.13;
+        Sat, 14 Dec 2019 21:16:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=NG3H+s+fBBFZ6iq8D5+2rLQ1nI3ABlA+Ut9Zp7bqJfw=;
+        b=fFllsnGvsEGyNBVt6BCMjcLIs9kK0YQmUxliyDazXC+jL/P/+h+E031C6MADa+BhaZ
+         cPem5VxZc6Xui6mUJ2J+heoRkSdY1Tfr4MTSmtCZRK7GATNQ0SnZEGtE2dQAh3bA4em0
+         6FjpBSRHNHHvvdNJCh9P7mhoscWbr4ZnvdhXZiCIBrUz+5bROc5rWPW9jbji03z6+1ks
+         viwiAT2A0DY9a2/6FuRKgBll3PiZPA5uJtFLf90tssSpQVc1s44SgFV29BuOuz4zVmqH
+         jtOCBkhp0T3zV3WUWq53EDbiDfNfQIqx3f4LqSjJN9Hl19b+cLzQxq/47p/UJDq6jxKM
+         h5ag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=NG3H+s+fBBFZ6iq8D5+2rLQ1nI3ABlA+Ut9Zp7bqJfw=;
+        b=oxmrvZgoVArVicxBmMW+CC8EWikzuYJPgRDxubjXxESJT1lQW639QWhXCr8aNPn6Ol
+         DTYLrEi1w24nZlo7PowUsb/g9Xg68k7SVidCv63oFqIGGLE0gPPMLvr3kJ/ZcSVMdNFP
+         sJ0D2bih3ppDAoCsDkreQeZiAry4mcxGdgD+/cvyCPg/SrxW80YaOM4h1ky+6BeSW1Yz
+         qwtgnK6nLk4cB6X3J3B5VbjUlX954CSeYaEWsNcsEclOTSHKWxFkICQOChrg8wEHdSnh
+         9C4YkZ2nvO8O86n20G4YM7jZfdcGAaTjrE8ZUrurgjPu/MIYyaEoW4KBOX1jD3WkZfxk
+         BCEQ==
+X-Gm-Message-State: APjAAAXMc3hx7J7PWp3vsGTqVnBJ3Za74pm8bxKxt1mpf5iH49H/zVjw
+        5ADcsUQkowMQB/IWqbtyGm8=
+X-Google-Smtp-Source: APXvYqxgtJdFVOCE8Ms0U4eceOkCGxZyfix7v1NLBAjvEFeByQtDfmu1KxfD+5ueGYi8ZtB7bBjehg==
+X-Received: by 2002:a17:902:7896:: with SMTP id q22mr9010139pll.219.1576387002224;
+        Sat, 14 Dec 2019 21:16:42 -0800 (PST)
+Received: from localhost.localdomain ([240f:34:212d:1:368e:e048:68f1:84e7])
+        by smtp.gmail.com with ESMTPSA id u10sm16596528pgg.41.2019.12.14.21.16.34
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Sat, 14 Dec 2019 21:16:41 -0800 (PST)
+From:   Akinobu Mita <akinobu.mita@gmail.com>
+To:     linux-nvme@lists.infradead.org, linux-hwmon@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-wireless@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        akpm@linux-foundation.org
+Cc:     Akinobu Mita <akinobu.mita@gmail.com>,
+        Sujith Thomas <sujith.thomas@intel.com>,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Amit Kucheria <amit.kucheria@verdurent.com>,
+        Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Keith Busch <kbusch@kernel.org>, Jens Axboe <axboe@fb.com>,
+        Christoph Hellwig <hch@lst.de>,
+        Sagi Grimberg <sagi@grimberg.me>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Stanislaw Gruszka <sgruszka@redhat.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        Intel Linux Wireless <linuxwifi@intel.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
+Subject: [PATCH v4 00/12] add header file for kelvin to/from Celsius conversion helpers
+Date:   Sun, 15 Dec 2019 14:16:03 +0900
+Message-Id: <1576386975-7941-1-git-send-email-akinobu.mita@gmail.com>
+X-Mailer: git-send-email 2.7.4
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-QWRkIGEgc2V0X2FudGVubmEgY2FsbGJhY2sgdG8gc2V0dXAgcGVyIHBoeSB0eC9yeCBzdHJlYW1z
-Lg0KDQpTaWduZWQtb2ZmLWJ5OiBTaGF5bmUgQ2hlbiA8c2hheW5lLmNoZW5AbWVkaWF0ZWsuY29t
-Pg0KU2lnbmVkLW9mZi1ieTogUnlkZXIgTGVlIDxyeWRlci5sZWVAbWVkaWF0ZWsuY29tPg0KLS0t
-DQogLi4uL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzYxNS9tYWluLmMgIHwgMzAgKysr
-KysrKysrKysrKysrKysrKw0KIDEgZmlsZSBjaGFuZ2VkLCAzMCBpbnNlcnRpb25zKCspDQoNCmRp
-ZmYgLS1naXQgYS9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzYxNS9tYWlu
-LmMgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzYxNS9tYWluLmMNCmlu
-ZGV4IDc1OWE2Njk5N2M2Zi4uNzA3OTE1NDRhMDg4IDEwMDY0NA0KLS0tIGEvZHJpdmVycy9uZXQv
-d2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc2MTUvbWFpbi5jDQorKysgYi9kcml2ZXJzL25ldC93
-aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzYxNS9tYWluLmMNCkBAIC00OCw2ICs0OCw4IEBAIHN0
-YXRpYyBpbnQgbXQ3NjE1X3N0YXJ0KHN0cnVjdCBpZWVlODAyMTFfaHcgKmh3KQ0KIAkJbXQ3NjE1
-X21jdV9zZXRfbWFjX2VuYWJsZShkZXYsIDEsIHRydWUpOw0KIAl9DQogDQorCW10NzYxNV9tY3Vf
-c2V0X2NoYW5faW5mbyhwaHksIE1DVV9FWFRfQ01EX1NFVF9SWF9QQVRIKTsNCisNCiAJc2V0X2Jp
-dChNVDc2X1NUQVRFX1JVTk5JTkcsICZwaHktPm10NzYtPnN0YXRlKTsNCiANCiAJaWYgKHJ1bm5p
-bmcpDQpAQCAtNjM1LDYgKzYzNywzMyBAQCBtdDc2MTVfc2V0X2NvdmVyYWdlX2NsYXNzKHN0cnVj
-dCBpZWVlODAyMTFfaHcgKmh3LCBzMTYgY292ZXJhZ2VfY2xhc3MpDQogCW10NzYxNV9tYWNfc2V0
-X3RpbWluZyhwaHkpOw0KIH0NCiANCitzdGF0aWMgaW50DQorbXQ3NjE1X3NldF9hbnRlbm5hKHN0
-cnVjdCBpZWVlODAyMTFfaHcgKmh3LCB1MzIgdHhfYW50LCB1MzIgcnhfYW50KQ0KK3sNCisJc3Ry
-dWN0IG10NzYxNV9kZXYgKmRldiA9IG10NzYxNV9od19kZXYoaHcpOw0KKwlzdHJ1Y3QgbXQ3NjE1
-X3BoeSAqcGh5ID0gbXQ3NjE1X2h3X3BoeShodyk7DQorCWludCBtYXhfbnNzID0gaHdlaWdodDgo
-aHctPndpcGh5LT5hdmFpbGFibGVfYW50ZW5uYXNfdHgpOw0KKwlib29sIGV4dF9waHkgPSBwaHkg
-IT0gJmRldi0+cGh5Ow0KKw0KKwlpZiAoIXR4X2FudCB8fCB0eF9hbnQgIT0gcnhfYW50IHx8IGZm
-cyh0eF9hbnQpID4gbWF4X25zcykNCisJCXJldHVybiAtRUlOVkFMOw0KKw0KKwlpZiAoKEJJVCho
-d2VpZ2h0OCh0eF9hbnQpKSAtIDEpICE9IHR4X2FudCkNCisJCXR4X2FudCA9IEJJVChmZnModHhf
-YW50KSAtIDEpIC0gMTsNCisNCisJbXV0ZXhfbG9jaygmZGV2LT5tdDc2Lm11dGV4KTsNCisNCisJ
-cGh5LT5tdDc2LT5hbnRlbm5hX21hc2sgPSB0eF9hbnQ7DQorCXBoeS0+Y2hhaW5tYXNrID0gZXh0
-X3BoeSA/IHR4X2FudCA8PCAyIDogdHhfYW50Ow0KKw0KKwltdDc2X3NldF9zdHJlYW1fY2Fwcygm
-ZGV2LT5tdDc2LCB0cnVlKTsNCisJbXQ3NjE1X21jdV9zZXRfY2hhbl9pbmZvKHBoeSwgTUNVX0VY
-VF9DTURfU0VUX1JYX1BBVEgpOw0KKw0KKwltdXRleF91bmxvY2soJmRldi0+bXQ3Ni5tdXRleCk7
-DQorDQorCXJldHVybiAwOw0KK30NCisNCiBjb25zdCBzdHJ1Y3QgaWVlZTgwMjExX29wcyBtdDc2
-MTVfb3BzID0gew0KIAkudHggPSBtdDc2MTVfdHgsDQogCS5zdGFydCA9IG10NzYxNV9zdGFydCwN
-CkBAIC02NTksNSArNjg4LDYgQEAgY29uc3Qgc3RydWN0IGllZWU4MDIxMV9vcHMgbXQ3NjE1X29w
-cyA9IHsNCiAJLmNoYW5uZWxfc3dpdGNoX2JlYWNvbiA9IG10NzYxNV9jaGFubmVsX3N3aXRjaF9i
-ZWFjb24sDQogCS5nZXRfc3VydmV5ID0gbXQ3Nl9nZXRfc3VydmV5LA0KIAkuZ2V0X2FudGVubmEg
-PSBtdDc2X2dldF9hbnRlbm5hLA0KKwkuc2V0X2FudGVubmEgPSBtdDc2MTVfc2V0X2FudGVubmEs
-DQogCS5zZXRfY292ZXJhZ2VfY2xhc3MgPSBtdDc2MTVfc2V0X2NvdmVyYWdlX2NsYXNzLA0KIH07
-DQotLSANCjIuMTguMA0K
+There are several helper macros to convert kelvin to/from Celsius in
+<linux/thermal.h> for thermal drivers.  These are useful for any other
+drivers or subsystems, but it's odd to include <linux/thermal.h> just for
+the helpers.
+
+This adds a new <linux/units.h> that provides the equivalent inline
+functions for any drivers or subsystems, and switches all the users of
+conversion helpers in <linux/thermal.h> to use <linux/units.h>
+helpers.
+
+* v4
+- add Reviewed-by and Acked-by tags
+- change include order
+- keep the line over 80 characters because this change doesn't make it longer
+- remove "wireless: " in the title
+
+* v3
+- rename new header name from <linux/temperature.h> to <linux/units.h>
+- add milli_kelvin_to_millicelsius() and millicelsius_to_milli_kelvin() and
+  use them for implementing other helpers
+- add MILLIDEGREE_PER_DEGREE and MILLIDEGREE_PER_DECIDEGREE and replace
+  the hardcoded constants
+- add kelvin_to_celsius() and celsius_to_kelvin() in <linux/units.h>
+- add Reviewed-by tags
+- switch iwlegacy driver to use <linux/units.h> helpers
+- switch iwlwifi driver to use <linux/units.h> helpers
+- remove unused TO_MCELSIUS macro in armada thermal driver
+- switch qcom-vadc-common module to use <linux/units.h> helpers
+
+* v2
+- add deci_kelvin_to_millicelsius_with_offset() in linux/temperature.h
+- stop including linux/temperature.h from linux/thermal.h
+- include <linux/temperature.h> explicitly from thermal drivers
+- fix s/temprature/temperature/ typo in commit log
+- use deci_kelvin_to_millicelsius_with_offset() in ACPI thermal zone driver
+- don't mix up another fix (format string for cellsius value)
+- add Acked-by and Reviewed-by tags
+
+Akinobu Mita (12):
+  add helpers for kelvin to/from Celsius conversion
+  ACPI: thermal: switch to use <linux/units.h> helpers
+  platform/x86: asus-wmi: switch to use <linux/units.h> helpers
+  platform/x86: intel_menlow: switch to use <linux/units.h> helpers
+  thermal: int340x: switch to use <linux/units.h> helpers
+  thermal: intel_pch: switch to use <linux/units.h> helpers
+  nvme: hwmon: switch to use <linux/units.h> helpers
+  thermal: remove kelvin to/from Celsius conversion helpers from
+    <linux/thermal.h>
+  iwlegacy: use <linux/units.h> helpers
+  iwlwifi: use <linux/units.h> helpers
+  thermal: armada: remove unused TO_MCELSIUS macro
+  iio: adc: qcom-vadc-common: use <linux/units.h> helpers
+
+ drivers/acpi/thermal.c                             | 34 ++++-----
+ drivers/iio/adc/qcom-vadc-common.c                 |  6 +-
+ drivers/iio/adc/qcom-vadc-common.h                 |  1 -
+ drivers/net/wireless/intel/iwlegacy/4965-mac.c     |  3 +-
+ drivers/net/wireless/intel/iwlegacy/4965.c         | 11 +--
+ drivers/net/wireless/intel/iwlegacy/common.h       |  3 -
+ drivers/net/wireless/intel/iwlwifi/dvm/dev.h       |  5 --
+ drivers/net/wireless/intel/iwlwifi/dvm/devices.c   |  6 +-
+ drivers/nvme/host/hwmon.c                          | 13 ++--
+ drivers/platform/x86/asus-wmi.c                    |  7 +-
+ drivers/platform/x86/intel_menlow.c                |  9 ++-
+ drivers/thermal/armada_thermal.c                   |  2 -
+ .../intel/int340x_thermal/int340x_thermal_zone.c   |  7 +-
+ drivers/thermal/intel/intel_pch_thermal.c          |  3 +-
+ include/linux/thermal.h                            | 11 ---
+ include/linux/units.h                              | 84 ++++++++++++++++++++++
+ 16 files changed, 137 insertions(+), 68 deletions(-)
+ create mode 100644 include/linux/units.h
+
+Cc: Sujith Thomas <sujith.thomas@intel.com>
+Cc: Darren Hart <dvhart@infradead.org>
+Cc: Andy Shevchenko <andy@infradead.org>
+Cc: Zhang Rui <rui.zhang@intel.com>
+Cc: Daniel Lezcano <daniel.lezcano@linaro.org>
+Cc: Amit Kucheria <amit.kucheria@verdurent.com>
+Cc: Jean Delvare <jdelvare@suse.com>
+Cc: Guenter Roeck <linux@roeck-us.net>
+Cc: Keith Busch <kbusch@kernel.org>
+Cc: Jens Axboe <axboe@fb.com>
+Cc: Christoph Hellwig <hch@lst.de>
+Cc: Sagi Grimberg <sagi@grimberg.me>
+Cc: Kalle Valo <kvalo@codeaurora.org>
+Cc: Stanislaw Gruszka <sgruszka@redhat.com>
+Cc: Johannes Berg <johannes.berg@intel.com>
+Cc: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Cc: Luca Coelho <luciano.coelho@intel.com>
+Cc: Intel Linux Wireless <linuxwifi@intel.com>
+Cc: Jonathan Cameron <jic23@kernel.org>
+Cc: Hartmut Knaack <knaack.h@gmx.de>
+Cc: Lars-Peter Clausen <lars@metafoo.de>
+Cc: Peter Meerwald-Stadler <pmeerw@pmeerw.net>
+-- 
+2.7.4
 
