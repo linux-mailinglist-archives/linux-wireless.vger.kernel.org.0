@@ -2,94 +2,118 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2DA4811F7AF
-	for <lists+linux-wireless@lfdr.de>; Sun, 15 Dec 2019 13:29:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 68B2111F7B8
+	for <lists+linux-wireless@lfdr.de>; Sun, 15 Dec 2019 13:30:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726118AbfLOM0b (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 15 Dec 2019 07:26:31 -0500
-Received: from mail.kernel.org ([198.145.29.99]:54076 "EHLO mail.kernel.org"
+        id S1726148AbfLOM3y (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 15 Dec 2019 07:29:54 -0500
+Received: from mail.kernel.org ([198.145.29.99]:54342 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726101AbfLOM0a (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 15 Dec 2019 07:26:30 -0500
-Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        id S1726101AbfLOM3y (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 15 Dec 2019 07:29:54 -0500
+Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id EA3AA20866
-        for <linux-wireless@vger.kernel.org>; Sun, 15 Dec 2019 12:26:29 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 91F14205C9;
+        Sun, 15 Dec 2019 12:29:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1576412790;
-        bh=cyvcrZzccpsg9EdaJIsx4czj2xAYHq0o6kJ1Pv/iiQk=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=yYPaWlfpL143795Pasn0fztsbLlgubAx1oCvhBMDdvB0j0Y1KVzUQ6bFdlajUG5yi
-         A2qCAwJnPQt6ShXE6WNUZELEkHHCpGGX4uMb+K3dh4/qBjh6l5AHqhj3yZ4CBsznat
-         Oc+f8WPrl17cwY55RFTMK1vJOOYV/sPdnZsEfG38=
-Received: by mail-qk1-f169.google.com with SMTP id r14so2544021qke.13
-        for <linux-wireless@vger.kernel.org>; Sun, 15 Dec 2019 04:26:29 -0800 (PST)
-X-Gm-Message-State: APjAAAWwiVmEeaUqnuJ+GOgeyWZ+Ei/tHJ34Xdd9NIIs2QxP5dakNDfo
-        T8bAeUGPyh0srBxouokdguldsH3liWvr1yR5whQ=
-X-Google-Smtp-Source: APXvYqwWqK8qO/O6Bl4fu9jfwC+6djB0U5quKOVR3MzHG0uXCpmLxBQ5VreOuFIVIM8O1y2wx1JN4FlKIlIWjaNxk3M=
-X-Received: by 2002:a05:620a:139b:: with SMTP id k27mr22320830qki.112.1576412789066;
- Sun, 15 Dec 2019 04:26:29 -0800 (PST)
+        s=default; t=1576412993;
+        bh=2l6Be057Q7FKP+fhTZ0hbvUe6NBP4LC0WK/+kFX+Qzw=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=nVrMJK9o/bHwLle8h8ijpAz587lP5+UzFmyLzVpLfTk03WtVsGSd0loHEyynmYNq5
+         ZO+RG0dI/Kx+fn9QH1NyD5MnPsvXc/87YDMePY13Ank41Tf5vh/jWPNIlaByRYCDFY
+         LtYFkKZ5ESKhTJfvAY6m8xnv8KxC7oWcCIvH9fXk=
+Date:   Sun, 15 Dec 2019 12:29:48 +0000
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Akinobu Mita <akinobu.mita@gmail.com>
+Cc:     linux-nvme@lists.infradead.org, linux-hwmon@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-wireless@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        akpm@linux-foundation.org, Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
+Subject: Re: [PATCH v4 12/12] iio: adc: qcom-vadc-common: use
+ <linux/units.h> helpers
+Message-ID: <20191215122948.773bbc42@archlinux>
+In-Reply-To: <1576386975-7941-13-git-send-email-akinobu.mita@gmail.com>
+References: <1576386975-7941-1-git-send-email-akinobu.mita@gmail.com>
+        <1576386975-7941-13-git-send-email-akinobu.mita@gmail.com>
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-References: <b34e62bb-d217-d583-67c9-72ae7fe7b589@gmail.com>
-In-Reply-To: <b34e62bb-d217-d583-67c9-72ae7fe7b589@gmail.com>
-From:   Josh Boyer <jwboyer@kernel.org>
-Date:   Sun, 15 Dec 2019 07:26:17 -0500
-X-Gmail-Original-Message-ID: <CA+5PVA5dH7-dyczG3RHNaoPgD31mG+Dm0kVskxvnEH2YiuMNQQ@mail.gmail.com>
-Message-ID: <CA+5PVA5dH7-dyczG3RHNaoPgD31mG+Dm0kVskxvnEH2YiuMNQQ@mail.gmail.com>
-Subject: Re: [GIT PULL] Add NVRAM files for bcm43455 found on RPi4
-To:     Matthias Brugger <matthias.bgg@gmail.com>
-Cc:     Linux Firmware <linux-firmware@kernel.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        serge@raspberrypi.org, Phil Elwell <phil@raspberrypi.org>,
-        Arend van Spriel <arend@broadcom.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Takashi Iwai <tiwai@suse.de>,
-        Guillaume Gardet <Guillaume.Gardet@arm.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Nov 27, 2019 at 11:23 AM Matthias Brugger
-<matthias.bgg@gmail.com> wrote:
->
-> Hi Josh,
-> Hi all,
->
-> This pull request adds the NVRAM config file for BCM43455 as needed by Raspberry
-> Pi 4. The only difference to the file for RPi3 is the value of boardflags3.
->
-> Please have a look and drop me a line, if you have any issues.
->
-> Regards,
-> Matthias
->
+On Sun, 15 Dec 2019 14:16:15 +0900
+Akinobu Mita <akinobu.mita@gmail.com> wrote:
+
+> This switches the qcom-vadc-common to use milli_kelvin_to_millicelsius()
+> in <linux/units.h>.
+> 
+> Cc: Jonathan Cameron <jic23@kernel.org>
+> Cc: Hartmut Knaack <knaack.h@gmx.de>
+> Cc: Lars-Peter Clausen <lars@metafoo.de>
+> Cc: Peter Meerwald-Stadler <pmeerw@pmeerw.net>
+> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+> Signed-off-by: Akinobu Mita <akinobu.mita@gmail.com>
+
+Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+
+Thanks,
+
+
 > ---
-> The following changes since commit e8a0f4c9314754d8b2cbe9840357d88a861c438a:
->
->   rtl_nic: add firmware rtl8168fp-3 (2019-11-18 16:16:01 -0500)
->
-> are available in the Git repository at:
->
->
-> https://git.kernel.org/pub/scm/linux/kernel/git/matthias.bgg/linux-firmware.git
-> rpi4-fw
->
-> for you to fetch changes up to f93c7a18dbb3705aa1899318c3bf5d3819cd7781:
->
->   brcm: Add BCM43455 NVRAM for Raspberry Pi 4 B (2019-11-27 17:12:39 +0100)
->
-> ----------------------------------------------------------------
-> Matthias Brugger (1):
->       brcm: Add BCM43455 NVRAM for Raspberry Pi 4 B
->
->  brcm/brcmfmac43455-sdio.raspberrypi,4-model-b.txt | 82 +++++++++++++++++++++++
->  1 file changed, 82 insertions(+)
->  create mode 100644 brcm/brcmfmac43455-sdio.raspberrypi,4-model-b.txt
+> * v4
+> - add Reviewed-by tag
+> 
+>  drivers/iio/adc/qcom-vadc-common.c | 6 +++---
+>  drivers/iio/adc/qcom-vadc-common.h | 1 -
+>  2 files changed, 3 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/iio/adc/qcom-vadc-common.c b/drivers/iio/adc/qcom-vadc-common.c
+> index dcd7fb5..2bb78d1 100644
+> --- a/drivers/iio/adc/qcom-vadc-common.c
+> +++ b/drivers/iio/adc/qcom-vadc-common.c
+> @@ -6,6 +6,7 @@
+>  #include <linux/log2.h>
+>  #include <linux/err.h>
+>  #include <linux/module.h>
+> +#include <linux/units.h>
+>  
+>  #include "qcom-vadc-common.h"
+>  
+> @@ -236,8 +237,7 @@ static int qcom_vadc_scale_die_temp(const struct vadc_linear_graph *calib_graph,
+>  		voltage = 0;
+>  	}
+>  
+> -	voltage -= KELVINMIL_CELSIUSMIL;
+> -	*result_mdec = voltage;
+> +	*result_mdec = milli_kelvin_to_millicelsius(voltage);
+>  
+>  	return 0;
+>  }
+> @@ -325,7 +325,7 @@ static int qcom_vadc_scale_hw_calib_die_temp(
+>  {
+>  	*result_mdec = qcom_vadc_scale_code_voltage_factor(adc_code,
+>  				prescale, data, 2);
+> -	*result_mdec -= KELVINMIL_CELSIUSMIL;
+> +	*result_mdec = milli_kelvin_to_millicelsius(*result_mdec);
+>  
+>  	return 0;
+>  }
+> diff --git a/drivers/iio/adc/qcom-vadc-common.h b/drivers/iio/adc/qcom-vadc-common.h
+> index bbb1fa0..e074902a 100644
+> --- a/drivers/iio/adc/qcom-vadc-common.h
+> +++ b/drivers/iio/adc/qcom-vadc-common.h
+> @@ -38,7 +38,6 @@
+>  #define VADC_AVG_SAMPLES_MAX			512
+>  #define ADC5_AVG_SAMPLES_MAX			16
+>  
+> -#define KELVINMIL_CELSIUSMIL			273150
+>  #define PMIC5_CHG_TEMP_SCALE_FACTOR		377500
+>  #define PMIC5_SMB_TEMP_CONSTANT			419400
+>  #define PMIC5_SMB_TEMP_SCALE_FACTOR		356
 
-Pulled and pushed out.  You didn't update WHENCE, so I added a commit
-to correct that.
-
-josh
