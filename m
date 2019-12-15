@@ -2,78 +2,111 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8078F11F871
-	for <lists+linux-wireless@lfdr.de>; Sun, 15 Dec 2019 16:26:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C429D11F887
+	for <lists+linux-wireless@lfdr.de>; Sun, 15 Dec 2019 16:34:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726231AbfLOPZx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 15 Dec 2019 10:25:53 -0500
-Received: from nbd.name ([46.4.11.11]:60966 "EHLO nbd.name"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726207AbfLOPZx (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 15 Dec 2019 10:25:53 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-         s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
-        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=j3zT2mERXBUEFRGY7q79cUUU7YhASB2O7nOWrDEdWfk=; b=cYfcKTvQzdjk2+LdmrJWCwVoZv
-        2xQXlpuObwC/tZiiidOq4xwSoMd5ID+FGI38RoUnbs4zroZB0DwQBzdIRmcusCI4Ppzxnfbrlt1jw
-        mot1YOe3iT7y/qoaBX6fhLTn1v1JVNQR3bFhhJZruaS7cGgj55563hO20lQxRzupMePg=;
-Received: from [80.255.10.197] (helo=nf.local)
-        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.89)
-        (envelope-from <nbd@nbd.name>)
-        id 1igVmJ-0007vY-87; Sun, 15 Dec 2019 16:25:51 +0100
-Subject: Re: [PATCH 2/2] mt76: mt7603: simplify led reg definitions
-To:     Lorenzo Bianconi <lorenzo@kernel.org>
-Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com
-References: <cover.1576399834.git.lorenzo@kernel.org>
- <263c57c29b774556bb11035882f8c0bc8ccdc77f.1576399834.git.lorenzo@kernel.org>
-From:   Felix Fietkau <nbd@nbd.name>
-Autocrypt: addr=nbd@nbd.name; prefer-encrypt=mutual; keydata=
- xsDiBEah5CcRBADIY7pu4LIv3jBlyQ/2u87iIZGe6f0f8pyB4UjzfJNXhJb8JylYYRzIOSxh
- ExKsdLCnJqsG1PY1mqTtoG8sONpwsHr2oJ4itjcGHfn5NJSUGTbtbbxLro13tHkGFCoCr4Z5
- Pv+XRgiANSpYlIigiMbOkide6wbggQK32tC20QxUIwCg4k6dtV/4kwEeiOUfErq00TVqIiEE
- AKcUi4taOuh/PQWx/Ujjl/P1LfJXqLKRPa8PwD4j2yjoc9l+7LptSxJThL9KSu6gtXQjcoR2
- vCK0OeYJhgO4kYMI78h1TSaxmtImEAnjFPYJYVsxrhay92jisYc7z5R/76AaELfF6RCjjGeP
- wdalulG+erWju710Bif7E1yjYVWeA/9Wd1lsOmx6uwwYgNqoFtcAunDaMKi9xVQW18FsUusM
- TdRvTZLBpoUAy+MajAL+R73TwLq3LnKpIcCwftyQXK5pEDKq57OhxJVv1Q8XkA9Dn1SBOjNB
- l25vJDFAT9ntp9THeDD2fv15yk4EKpWhu4H00/YX8KkhFsrtUs69+vZQwc0cRmVsaXggRmll
- dGthdSA8bmJkQG5iZC5uYW1lPsJgBBMRAgAgBQJGoeQnAhsjBgsJCAcDAgQVAggDBBYCAwEC
- HgECF4AACgkQ130UHQKnbvXsvgCgjsAIIOsY7xZ8VcSm7NABpi91yTMAniMMmH7FRenEAYMa
- VrwYTIThkTlQzsFNBEah5FQQCACMIep/hTzgPZ9HbCTKm9xN4bZX0JjrqjFem1Nxf3MBM5vN
- CYGBn8F4sGIzPmLhl4xFeq3k5irVg/YvxSDbQN6NJv8o+tP6zsMeWX2JjtV0P4aDIN1pK2/w
- VxcicArw0VYdv2ZCarccFBgH2a6GjswqlCqVM3gNIMI8ikzenKcso8YErGGiKYeMEZLwHaxE
- Y7mTPuOTrWL8uWWRL5mVjhZEVvDez6em/OYvzBwbkhImrryF29e3Po2cfY2n7EKjjr3/141K
- DHBBdgXlPNfDwROnA5ugjjEBjwkwBQqPpDA7AYPvpHh5vLbZnVGu5CwG7NAsrb2isRmjYoqk
- wu++3117AAMFB/9S0Sj7qFFQcD4laADVsabTpNNpaV4wAgVTRHKV/kC9luItzwDnUcsZUPdQ
- f3MueRJ3jIHU0UmRBG3uQftqbZJj3ikhnfvyLmkCNe+/hXhPu9sGvXyi2D4vszICvc1KL4RD
- aLSrOsROx22eZ26KqcW4ny7+va2FnvjsZgI8h4sDmaLzKczVRIiLITiMpLFEU/VoSv0m1F4B
- FtRgoiyjFzigWG0MsTdAN6FJzGh4mWWGIlE7o5JraNhnTd+yTUIPtw3ym6l8P+gbvfoZida0
- TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabwkkE
- GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCfTKx80VvCR/PvsUlrvdOLsIgeRGAAn1ee
- RjMaxwtSdaCKMw3j33ZbsWS4
-Message-ID: <2d0d7f6a-187f-db44-205c-7ff62d132384@nbd.name>
-Date:   Sun, 15 Dec 2019 16:25:50 +0100
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:68.0)
- Gecko/20100101 Thunderbird/68.3.0
+        id S1726504AbfLOPeP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 15 Dec 2019 10:34:15 -0500
+Received: from mta-p5.oit.umn.edu ([134.84.196.205]:55520 "EHLO
+        mta-p5.oit.umn.edu" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726231AbfLOPeP (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 15 Dec 2019 10:34:15 -0500
+Received: from localhost (unknown [127.0.0.1])
+        by mta-p5.oit.umn.edu (Postfix) with ESMTP id 47bT396drKz9vKZn
+        for <linux-wireless@vger.kernel.org>; Sun, 15 Dec 2019 15:34:13 +0000 (UTC)
+X-Virus-Scanned: amavisd-new at umn.edu
+Received: from mta-p5.oit.umn.edu ([127.0.0.1])
+        by localhost (mta-p5.oit.umn.edu [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id I5RmfouQfHwT for <linux-wireless@vger.kernel.org>;
+        Sun, 15 Dec 2019 09:34:13 -0600 (CST)
+Received: from mail-yb1-f198.google.com (mail-yb1-f198.google.com [209.85.219.198])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mta-p5.oit.umn.edu (Postfix) with ESMTPS id 47bT395dL5z9vKZd
+        for <linux-wireless@vger.kernel.org>; Sun, 15 Dec 2019 09:34:13 -0600 (CST)
+Received: by mail-yb1-f198.google.com with SMTP id b5so4514712ybq.23
+        for <linux-wireless@vger.kernel.org>; Sun, 15 Dec 2019 07:34:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=umn.edu; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=i1SA+jg2gGa3dwFVvbbudYqmdZ+Mqv92RS/q1DFUgTQ=;
+        b=pTBjmvigNCVOvqSiZs1hBHOH1Kzfu4TiQaO2S0qrEPHn1tHHhGT49FjrQ+SeQL63xn
+         K0tFGUreLj+YUsPDcK+tM3zOZR3BywZb6PDe9JJcJLvfT1KwxuvchO5lb4pLSMpiiznS
+         8TUTnerRlDIURs3zOt3ocKL5nuhR6/SNLM9XWdOzC/bafAio9kdR9YXZvxBkF28YeSXm
+         RQS8xlzhDSTfSyQfXu49fMu21CD1m34o/H1AEJpDkdjXpwgqDL+URwLcMGHhIHIsgoWB
+         4rrKboRDWUWdZjflcMybZhKxTxKejLNUliPLFFpn+GTYSSslJBMcGVC2UW8aW4XfNt8q
+         aCHA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=i1SA+jg2gGa3dwFVvbbudYqmdZ+Mqv92RS/q1DFUgTQ=;
+        b=VU7w7WjtHCeGyjIwWi9QfcQp99IldygKSAc/RLtqvBDxPi8nWJ8u3esXp46+Zo8HqY
+         YrHwjK9z7nkGrnwoVuSlli0qKphhh3a7x1BmS8bNSBuMyyChosFUpruSLdFd00ehwKOS
+         pmK/cEogM2ZAE3t+TV8QPecOeb8947FcLPo/bnQ2gZVJA3Wd4in74UcbYu0dHXHZGRYd
+         6hT9+0IIDbSo47iz1toP+yzbOPV9Imp0ljPdC9QLzFruvBPnqWaVVydmIMjFE6Majp4a
+         NS2PRZOj+aWYQ4tbBLgWJwLA4vtzJYclK7CWfnAKR1WPCWa+hvYUkHDHA5ssb/HoiiFc
+         nRTg==
+X-Gm-Message-State: APjAAAWlINM/+6ZDM2a+UbfJqTFNBNWTaBhnz6ueWNiTpGvS6EGcoLc4
+        tyEfzQon1ajEuQJLCS8Vs1V7yjNTMn3aWoXAUKXWVVCmKIySK2iQhKESOS9Mw6FyanUW1Y6PglI
+        0KVCq7hKQqZ2AblW50Bbnnkraw3Xp78I=
+X-Received: by 2002:a25:c203:: with SMTP id s3mr10302769ybf.248.1576424053206;
+        Sun, 15 Dec 2019 07:34:13 -0800 (PST)
+X-Google-Smtp-Source: APXvYqzWR0ABIY4j4gOHYOR/m/1iY5qE/oV04KBsDfR0PSl9Tz4QWfFmO9sfezqVLhY/DQiBQmeiKg==
+X-Received: by 2002:a25:c203:: with SMTP id s3mr10302762ybf.248.1576424052990;
+        Sun, 15 Dec 2019 07:34:12 -0800 (PST)
+Received: from cs-u-syssec1.dtc.umn.edu (cs-u-syssec1.cs.umn.edu. [128.101.106.66])
+        by smtp.gmail.com with ESMTPSA id d126sm776365ywf.28.2019.12.15.07.34.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 15 Dec 2019 07:34:12 -0800 (PST)
+From:   Aditya Pakki <pakki001@umn.edu>
+To:     pakki001@umn.edu
+Cc:     kjlu@umn.edu, Johannes Berg <johannes@sipsolutions.net>,
+        "David S. Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] rfkill: Fix incorrect check to avoid NULL pointer dereference
+Date:   Sun, 15 Dec 2019 09:34:08 -0600
+Message-Id: <20191215153409.21696-1-pakki001@umn.edu>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-In-Reply-To: <263c57c29b774556bb11035882f8c0bc8ccdc77f.1576399834.git.lorenzo@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2019-12-15 09:54, Lorenzo Bianconi wrote:
-> Rely on FIELD_PREP macro for led register definitions and
-> remove open coding
-> 
-> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Please move the FIELD_PREP from the header files to the source file to
-be consistent with the rest of the code. Same applies to the mt7615 patch.
+In rfkill_register, the struct rfkill pointer is first derefernced
+and then checked for NULL. This patch removes the BUG_ON and returns
+an error to the caller in case rfkill is NULL.
 
-- Felix
+Signed-off-by: Aditya Pakki <pakki001@umn.edu>
+---
+ net/rfkill/core.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/net/rfkill/core.c b/net/rfkill/core.c
+index 461d75274fb3..971c73c7d34c 100644
+--- a/net/rfkill/core.c
++++ b/net/rfkill/core.c
+@@ -1002,10 +1002,13 @@ static void rfkill_sync_work(struct work_struct *work)
+ int __must_check rfkill_register(struct rfkill *rfkill)
+ {
+ 	static unsigned long rfkill_no;
+-	struct device *dev = &rfkill->dev;
++	struct device *dev;
+ 	int error;
+ 
+-	BUG_ON(!rfkill);
++	if (!rfkill)
++		return -EINVAL;
++
++	dev = &rfkill->dev;
+ 
+ 	mutex_lock(&rfkill_global_mutex);
+ 
+-- 
+2.20.1
+
