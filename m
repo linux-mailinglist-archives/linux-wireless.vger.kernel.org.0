@@ -2,129 +2,164 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B6F3B11F606
-	for <lists+linux-wireless@lfdr.de>; Sun, 15 Dec 2019 06:17:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AAD9D11F6E0
+	for <lists+linux-wireless@lfdr.de>; Sun, 15 Dec 2019 09:37:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727007AbfLOFRs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 15 Dec 2019 00:17:48 -0500
-Received: from mail-pg1-f193.google.com ([209.85.215.193]:45563 "EHLO
-        mail-pg1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726992AbfLOFRr (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 15 Dec 2019 00:17:47 -0500
-Received: by mail-pg1-f193.google.com with SMTP id b9so1707582pgk.12;
-        Sat, 14 Dec 2019 21:17:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=rs+ph61PgowUB2wxJYFFkBstw61v/JyioJPVFcT1dTo=;
-        b=PrmuGguMd8I2icLDPcfOnUjhxgAkYI89eucLm58rL6pWLvQL2jZxJTUV6iNRcYSoQ2
-         sKk2OHbbVJPQZZq8MT2heyABgtzLtkONYwt26Zk+TkTkAYRNziB7w4K8Q5suhmYOXkR3
-         POykAo/0yD/76gVPmRSp7biObXx0ma7YjYqyoVxlPQ1JTyhH6KpJ6H6Jnz94BeV/15du
-         cwtfk9+BTmygl5heycnwix988ik+j1JV7n6H5L4OTWXP+GKoFXjVCQy4x2NB/4vNQaOA
-         eoYdoyMlUaHLlo+pSFsk56d5j/vVEZ5cSa73TgiJO85GCfq+XhKbVxnbyPrRf8JLKn9b
-         /OUw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=rs+ph61PgowUB2wxJYFFkBstw61v/JyioJPVFcT1dTo=;
-        b=qWb+Y6dN2mIreYPFr1ecn8zetJA+4a/dEgeET+hVxH00DoEhfYknGvlobLI8J2un67
-         YQsS2GEJiUMXYJ53PM7MoWZ3l/GhkvboKRapq/EJbsAWqhGC7+EAet4QlChOEogBpcpt
-         3LvPeOOsOjwRiCWwLkzpcpfDWQEJKHyRtk5UtHt/D/HJTd8P8WrQV4GCHD0UaDVXrUo5
-         d+ubOxA+y0WO/Ap9ytxmj+2hjPiLr0rdvGzeTLRJdaIjW7IkWQbYg6Qbbln472ZiAFtQ
-         CIXkh4b5RvuPMSPyx7VprSmgjPuHN6FEssjOPtId4CZj8aTcyrcXMaGFRINlqjWlZnAG
-         lCWg==
-X-Gm-Message-State: APjAAAXgeEUMGY930CoFBQuhhPkZfL4PPPS8vw5m0qc9Zx/GYzZ8LBq0
-        mT6xAF5YGJNa7M8ScB9tWU4=
-X-Google-Smtp-Source: APXvYqyz2b9p5as0HpR/8ZvYU3LMjgqtKZ/4OlUPaESNc9g0DwHCBTVHwRTYyxlafrFwiY2Ib4eY4g==
-X-Received: by 2002:a63:3104:: with SMTP id x4mr9984060pgx.369.1576387066555;
-        Sat, 14 Dec 2019 21:17:46 -0800 (PST)
-Received: from localhost.localdomain ([240f:34:212d:1:368e:e048:68f1:84e7])
-        by smtp.gmail.com with ESMTPSA id u10sm16596528pgg.41.2019.12.14.21.17.42
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Sat, 14 Dec 2019 21:17:45 -0800 (PST)
-From:   Akinobu Mita <akinobu.mita@gmail.com>
-To:     linux-nvme@lists.infradead.org, linux-hwmon@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        akpm@linux-foundation.org
-Cc:     Akinobu Mita <akinobu.mita@gmail.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
-Subject: [PATCH v4 12/12] iio: adc: qcom-vadc-common: use <linux/units.h> helpers
-Date:   Sun, 15 Dec 2019 14:16:15 +0900
-Message-Id: <1576386975-7941-13-git-send-email-akinobu.mita@gmail.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1576386975-7941-1-git-send-email-akinobu.mita@gmail.com>
-References: <1576386975-7941-1-git-send-email-akinobu.mita@gmail.com>
+        id S1726050AbfLOIh4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 15 Dec 2019 03:37:56 -0500
+Received: from mail.kernel.org ([198.145.29.99]:36504 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726039AbfLOIh4 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 15 Dec 2019 03:37:56 -0500
+Received: from localhost.localdomain (unknown [151.66.51.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 84D3A21D7E;
+        Sun, 15 Dec 2019 08:37:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1576399075;
+        bh=VI+HFVTEhleyaOpNr7kWYk57SVaTbaThvuHGzJZ51og=;
+        h=From:To:Cc:Subject:Date:From;
+        b=JuSuYLP4HMhVKQ/M8pIPldMKc6gmjolGKzAH28mUE3m1ufCSUmNdrqALX1BGyKO7j
+         7+o4KLZyizJHj0a+D9V4T5yls/OzJPYS4o+5Tb8QkHmj9rGzPsHvNpOuTZLK/jYSHJ
+         BBQgHtecPfq0FZc2/Mh0nGJkfzhMtrLtcVy/uhY0=
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
+        ryder.lee@mediatek.com
+Subject: [PATCH v2] mt76: mt7615: introduce LED support
+Date:   Sun, 15 Dec 2019 09:37:44 +0100
+Message-Id: <3da29a645e10093ca8de8e7442643ab629da4621.1576398903.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.21.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This switches the qcom-vadc-common to use milli_kelvin_to_millicelsius()
-in <linux/units.h>.
+Initialize brightness_set and blink_set callbacks to
+mt7615_led_set_brightness and mt7615_led_set_blink in order to enable
+LED support in mt7615 driver
 
-Cc: Jonathan Cameron <jic23@kernel.org>
-Cc: Hartmut Knaack <knaack.h@gmx.de>
-Cc: Lars-Peter Clausen <lars@metafoo.de>
-Cc: Peter Meerwald-Stadler <pmeerw@pmeerw.net>
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Signed-off-by: Akinobu Mita <akinobu.mita@gmail.com>
+Tested-by: Deng Qingfang <dengqf6@mail2.sysu.edu.cn>
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
-* v4
-- add Reviewed-by tag
+Changes since v1:
+- rely on FIELD_PREP for LED register definitions
+---
+ .../net/wireless/mediatek/mt76/mt7615/init.c  | 58 +++++++++++++++++++
+ .../net/wireless/mediatek/mt76/mt7615/regs.h  | 21 +++++++
+ 2 files changed, 79 insertions(+)
 
- drivers/iio/adc/qcom-vadc-common.c | 6 +++---
- drivers/iio/adc/qcom-vadc-common.h | 1 -
- 2 files changed, 3 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/iio/adc/qcom-vadc-common.c b/drivers/iio/adc/qcom-vadc-common.c
-index dcd7fb5..2bb78d1 100644
---- a/drivers/iio/adc/qcom-vadc-common.c
-+++ b/drivers/iio/adc/qcom-vadc-common.c
-@@ -6,6 +6,7 @@
- #include <linux/log2.h>
- #include <linux/err.h>
- #include <linux/module.h>
-+#include <linux/units.h>
- 
- #include "qcom-vadc-common.h"
- 
-@@ -236,8 +237,7 @@ static int qcom_vadc_scale_die_temp(const struct vadc_linear_graph *calib_graph,
- 		voltage = 0;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/init.c b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
+index eb7c6b9e3d4d..c25ba5fc3cdc 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
+@@ -196,6 +196,58 @@ static const struct ieee80211_iface_combination if_comb[] = {
  	}
+ };
  
--	voltage -= KELVINMIL_CELSIUSMIL;
--	*result_mdec = voltage;
-+	*result_mdec = milli_kelvin_to_millicelsius(voltage);
++static void
++mt7615_led_set_config(struct led_classdev *led_cdev,
++		      u8 delay_on, u8 delay_off)
++{
++	struct mt7615_dev *dev;
++	struct mt76_dev *mt76;
++	u32 val, addr;
++
++	mt76 = container_of(led_cdev, struct mt76_dev, led_cdev);
++	dev = container_of(mt76, struct mt7615_dev, mt76);
++	val = MT_LED_STATUS_DURATION(0xffff) |
++	      MT_LED_STATUS_OFF(delay_off) |
++	      MT_LED_STATUS_ON(delay_on);
++
++	addr = mt7615_reg_map(dev, MT_LED_STATUS_0(mt76->led_pin));
++	mt76_wr(dev, addr, val);
++	addr = mt7615_reg_map(dev, MT_LED_STATUS_1(mt76->led_pin));
++	mt76_wr(dev, addr, val);
++
++	val = MT_LED_CTRL_REPLAY(mt76->led_pin) |
++	      MT_LED_CTRL_KICK(mt76->led_pin);
++	if (mt76->led_al)
++		val |= MT_LED_CTRL_POLARITY(mt76->led_pin);
++	addr = mt7615_reg_map(dev, MT_LED_CTRL);
++	mt76_wr(dev, addr, val);
++}
++
++static int
++mt7615_led_set_blink(struct led_classdev *led_cdev,
++		     unsigned long *delay_on,
++		     unsigned long *delay_off)
++{
++	u8 delta_on, delta_off;
++
++	delta_off = max_t(u8, *delay_off / 10, 1);
++	delta_on = max_t(u8, *delay_on / 10, 1);
++
++	mt7615_led_set_config(led_cdev, delta_on, delta_off);
++
++	return 0;
++}
++
++static void
++mt7615_led_set_brightness(struct led_classdev *led_cdev,
++			  enum led_brightness brightness)
++{
++	if (!brightness)
++		mt7615_led_set_config(led_cdev, 0, 0xff);
++	else
++		mt7615_led_set_config(led_cdev, 0xff, 0);
++}
++
+ static void
+ mt7615_init_txpower(struct mt7615_dev *dev,
+ 		    struct ieee80211_supported_band *sband)
+@@ -383,6 +435,12 @@ int mt7615_register_device(struct mt7615_dev *dev)
+ 	mt7615_cap_dbdc_disable(dev);
+ 	dev->phy.dfs_state = -1;
  
- 	return 0;
- }
-@@ -325,7 +325,7 @@ static int qcom_vadc_scale_hw_calib_die_temp(
- {
- 	*result_mdec = qcom_vadc_scale_code_voltage_factor(adc_code,
- 				prescale, data, 2);
--	*result_mdec -= KELVINMIL_CELSIUSMIL;
-+	*result_mdec = milli_kelvin_to_millicelsius(*result_mdec);
++	/* init led callbacks */
++	if (IS_ENABLED(CONFIG_MT76_LEDS)) {
++		dev->mt76.led_cdev.brightness_set = mt7615_led_set_brightness;
++		dev->mt76.led_cdev.blink_set = mt7615_led_set_blink;
++	}
++
+ 	ret = mt76_register_device(&dev->mt76, true, mt7615_rates,
+ 				   ARRAY_SIZE(mt7615_rates));
+ 	if (ret)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/regs.h b/drivers/net/wireless/mediatek/mt76/mt7615/regs.h
+index 26d121646787..0d76a3391567 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/regs.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/regs.h
+@@ -345,6 +345,27 @@
  
- 	return 0;
- }
-diff --git a/drivers/iio/adc/qcom-vadc-common.h b/drivers/iio/adc/qcom-vadc-common.h
-index bbb1fa0..e074902a 100644
---- a/drivers/iio/adc/qcom-vadc-common.h
-+++ b/drivers/iio/adc/qcom-vadc-common.h
-@@ -38,7 +38,6 @@
- #define VADC_AVG_SAMPLES_MAX			512
- #define ADC5_AVG_SAMPLES_MAX			16
+ #define MT_TX_AGG_CNT(n)		MT_WF_MIB(0xa8 + ((n) << 2))
  
--#define KELVINMIL_CELSIUSMIL			273150
- #define PMIC5_CHG_TEMP_SCALE_FACTOR		377500
- #define PMIC5_SMB_TEMP_CONSTANT			419400
- #define PMIC5_SMB_TEMP_SCALE_FACTOR		356
++#define MT_LED_BASE_PHYS		0x80024000
++#define MT_LED_PHYS(_n)			(MT_LED_BASE_PHYS + (_n))
++
++#define MT_LED_CTRL			MT_LED_PHYS(0x00)
++
++#define MT_LED_CTRL_REPLAY(_n)		BIT(0 + (8 * (_n)))
++#define MT_LED_CTRL_POLARITY(_n)	BIT(1 + (8 * (_n)))
++#define MT_LED_CTRL_TX_BLINK_MODE(_n)	BIT(2 + (8 * (_n)))
++#define MT_LED_CTRL_TX_MANUAL_BLINK(_n)	BIT(3 + (8 * (_n)))
++#define MT_LED_CTRL_TX_OVER_BLINK(_n)	BIT(5 + (8 * (_n)))
++#define MT_LED_CTRL_KICK(_n)		BIT(7 + (8 * (_n)))
++
++#define MT_LED_STATUS_0(_n)		MT_LED_PHYS(0x10 + ((_n) * 8))
++#define MT_LED_STATUS_1(_n)		MT_LED_PHYS(0x14 + ((_n) * 8))
++#define MT_LED_STATUS_OFF_MASK		GENMASK(31, 24)
++#define MT_LED_STATUS_OFF(_v)		FIELD_PREP(MT_LED_STATUS_OFF_MASK, (_v))
++#define MT_LED_STATUS_ON_MASK		GENMASK(23, 16)
++#define MT_LED_STATUS_ON(_v)		FIELD_PREP(MT_LED_STATUS_ON_MASK, (_v))
++#define MT_LED_STATUS_DURATION_MASK	GENMASK(15, 0)
++#define MT_LED_STATUS_DURATION(_v)	FIELD_PREP(MT_LED_STATUS_DURATION_MASK, (_v))
++
+ #define MT_EFUSE_BASE			0x81070000
+ #define MT_EFUSE_BASE_CTRL		0x000
+ #define MT_EFUSE_BASE_CTRL_EMPTY	BIT(30)
 -- 
-2.7.4
+2.21.0
 
