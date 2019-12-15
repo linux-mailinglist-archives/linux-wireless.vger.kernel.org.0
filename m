@@ -2,115 +2,98 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B189A11F464
-	for <lists+linux-wireless@lfdr.de>; Sat, 14 Dec 2019 23:00:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B289B11F54E
+	for <lists+linux-wireless@lfdr.de>; Sun, 15 Dec 2019 02:51:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726803AbfLNWAP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 14 Dec 2019 17:00:15 -0500
-Received: from us-smtp-1.mimecast.com ([207.211.31.81]:57142 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726713AbfLNWAP (ORCPT
+        id S1727127AbfLOBv1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 14 Dec 2019 20:51:27 -0500
+Received: from mail-il1-f196.google.com ([209.85.166.196]:36782 "EHLO
+        mail-il1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726783AbfLOBv1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 14 Dec 2019 17:00:15 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1576360813;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=3RaYgybIB5LdwY6KgrjBQCvjk6q9t8Rk6RU0GRLpATU=;
-        b=I3D8oSKTM8I+jjnjfAwEtWP2oMJS7nWVZbI6VZwD2MRPp31I/45q5ONWZT42vXJgOLgWtx
-        zG0B8zlakWKOZRLBolUYHzQCMwEScz8UJ8yY/lAHM+VpKzKqyJJvEokDvDsD7ummm6KJ0X
-        kIhbLcEl45clkKHh6kgntXj6QS+5EFI=
-Received: from mail-il1-f199.google.com (mail-il1-f199.google.com
- [209.85.166.199]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-117-5SRX7NPGMBCFvohl2Sp3Dg-1; Sat, 14 Dec 2019 17:00:10 -0500
-X-MC-Unique: 5SRX7NPGMBCFvohl2Sp3Dg-1
-Received: by mail-il1-f199.google.com with SMTP id s9so2937477ilk.0
-        for <linux-wireless@vger.kernel.org>; Sat, 14 Dec 2019 14:00:10 -0800 (PST)
+        Sat, 14 Dec 2019 20:51:27 -0500
+Received: by mail-il1-f196.google.com with SMTP id b15so2672306iln.3;
+        Sat, 14 Dec 2019 17:51:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=7ila3ACaEBkte0RQGIwBOqqVKb25YlQx6hZbg+XIx7w=;
+        b=M2YznvDUbC+oI2ORLdlKHZU221buG1yFNbL3d3PnZEFpw0MpYpDAoHadWunc3MIeMh
+         nT0ORJwX+0+c/DVfrF3oeUPXw4FvSMd6Z2YuZqHELAJeU0zVbVxMsc6YlopAePA1bmdf
+         ae89PYWru7qVtptShh1y4/02s/JSRIGPPPnYP9cee/+TL7p3g0HBReLP5jPbbxpU1WgT
+         N0T661QXxDElWDGXan5TmfKuts2sSB2IfFLimVM1Bf0VNz671cctClTeDoiR2bLzI8X7
+         TjCt5heNFIMkH+BuwsuQbHW6K3Z7FTr5J5C9qp7reNus4ax1HXWHxR8PBpoPKwExmFU3
+         cH8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=3RaYgybIB5LdwY6KgrjBQCvjk6q9t8Rk6RU0GRLpATU=;
-        b=snrwU+/lGYk99lYm4/1U/Dr9TpYAQt1fbYNVXzjlRquvSVvIh4AMTg77mVIn+XenXw
-         6Ffa3EuUEc/ocOuyGjYCbZfU58QE1xq9zzbfJ/ndmHWtEDVij0J4lc+1SIswpHMcSIHv
-         mBE/EisseWwV0CN2BTjBUljLDT9Q1bNzHjl2OV8fO7QvmH4Ob7heRf+Y26Yn+7uzdFjC
-         eljXuTSS7j7n1eNROWzoRaGJTW2EbO0ht6bsQLeYQrjTAdoQP5reFoKufrqMSHluwvD/
-         8H1LHmXtLEBkbJXsLORa5NqX2kjQxw4w3MBGjeQf/y/8NaZC5nX+7TxzR4FE6EAF49eY
-         KVaA==
-X-Gm-Message-State: APjAAAXyWEaGSvXs4L3GXtB0O/55rFNHFgJ/1HSVpmFPjlmt49s63VcR
-        i+ZsN4N3QYjST2Yrbn09QFh5PbuDEPzKOmFiVlPpITMomg04qKEhuBYFvKR1flWq7YAlaaO7T3L
-        7VhZYmcGsctoCgdNXdIqAgRpz1WCmlarG1VrXu+3EQug=
-X-Received: by 2002:a92:8991:: with SMTP id w17mr1130414ilk.12.1576360809573;
-        Sat, 14 Dec 2019 14:00:09 -0800 (PST)
-X-Google-Smtp-Source: APXvYqyFXqVrqiCQlYhYXDpz8wA+PwbY/JboDE5ZEYUKZDeW90leCu26ViDAnaw+K8W8eqlfn/1o1xV7dUzX2a+o8vE=
-X-Received: by 2002:a92:8991:: with SMTP id w17mr1130394ilk.12.1576360809344;
- Sat, 14 Dec 2019 14:00:09 -0800 (PST)
-MIME-Version: 1.0
-References: <378747af00fdd3e64e9f5d7724f1b84759f95e8f.1576074028.git.lorenzo@kernel.org>
- <20c2faaa-7709-8486-a799-02e6ce5b7ef9@nbd.name>
-In-Reply-To: <20c2faaa-7709-8486-a799-02e6ce5b7ef9@nbd.name>
-From:   Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-Date:   Sat, 14 Dec 2019 22:59:59 +0100
-Message-ID: <CAJ0CqmXqqu1UC610vG9sMBdw4ZZn5uvJ09=m7SXpegZkcMP=MA@mail.gmail.com>
-Subject: Re: [PATCH] mt76: mt7615: introduce LED support
-To:     Felix Fietkau <nbd@nbd.name>
-Cc:     Lorenzo Bianconi <lorenzo@kernel.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Ryder Lee <ryder.lee@mediatek.com>
-Content-Type: text/plain; charset="UTF-8"
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=7ila3ACaEBkte0RQGIwBOqqVKb25YlQx6hZbg+XIx7w=;
+        b=nVFD/yKadg5cBMP1C8/Ilxmf6YTM5YfTK0dW/N9QY558Sf5hIWqT80uKGAF2TxXOSK
+         g3WbTlwgwY88Cv89GoFeCUcoP3HfSobjtoZARR/AS4UQ+9PFL9y5LenumANIeckWdz0J
+         2aalVwsKWSgY4e6UpPfOYdslPdiMZY2KL/K7frjhVmliNNfRYwXTsTYjenp/ZisVbG7F
+         Gbd+xnYXEuvAksOgANLA5RZ2bXD1SBlkgpBfXU8ktBfuiLfd6Pz4tTi/JJ2mGndzBIvb
+         YGZPcr2mN/wi5v58L4Ad4ID+IfwBT+YXRoGTebRSksAap4csjLRqqiQugfK6k19NQrY2
+         Mu4Q==
+X-Gm-Message-State: APjAAAXjNOnYwzWj+M5/5jsoIx10B0nF8v7HXk2hmm24+A68FN14ae90
+        8NckfLTMH+e/nbOkpl0z7LI=
+X-Google-Smtp-Source: APXvYqz0KmdNAXYfzGhk2gPnfOnNtd6IkkcGO0SiadEIk+YNhK3wzwvkU5gjfF4ogx0edteSrt9iew==
+X-Received: by 2002:a92:b506:: with SMTP id f6mr6850648ile.103.1576374686670;
+        Sat, 14 Dec 2019 17:51:26 -0800 (PST)
+Received: from cs-dulles.cs.umn.edu (cs-dulles.cs.umn.edu. [128.101.35.54])
+        by smtp.googlemail.com with ESMTPSA id f16sm4368858ilq.16.2019.12.14.17.51.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 14 Dec 2019 17:51:26 -0800 (PST)
+From:   Navid Emamdoost <navid.emamdoost@gmail.com>
+To:     Arend van Spriel <arend@broadcom.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
+        Wright Feng <wright.feng@cypress.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Alwin Beukers <alwin@broadcom.com>,
+        Pieter-Paul Giesberts <pieterpg@broadcom.com>,
+        Kan Yan <kanyan@broadcom.com>,
+        "Franky (Zhenhui) Lin" <frankyl@broadcom.com>,
+        Piotr Figiel <p.figiel@camlintechnologies.com>,
+        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
+        YueHaibing <yuehaibing@huawei.com>, Kangjie Lu <kjlu@umn.edu>,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        brcm80211-dev-list@cypress.com, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     emamd001@umn.edu, Navid Emamdoost <navid.emamdoost@gmail.com>
+Subject: [PATCH] brcmfmac: Fix memory leak in brcmf_usbdev_qinit
+Date:   Sat, 14 Dec 2019 19:51:14 -0600
+Message-Id: <20191215015117.21801-1-navid.emamdoost@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
->
-> On 2019-12-11 15:21, Lorenzo Bianconi wrote:
-> > Initialize brightness_set and blink_set callbacks to
-> > mt7615_led_set_brightness and mt7615_led_set_blink in order to enable
-> > LED support in mt7615 driver
-> >
+In the implementation of brcmf_usbdev_qinit() the allocated memory for
+reqs is leaking if usb_alloc_urb() fails. Release reqs in the error
+handling path.
 
-[...]
+Fixes: 71bb244ba2fd ("brcm80211: fmac: add USB support for bcm43235/6/8 chipsets")
+Signed-off-by: Navid Emamdoost <navid.emamdoost@gmail.com>
+---
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-> >  #define MT_TX_AGG_CNT(n)             MT_WF_MIB(0xa8 + ((n) << 2))
-> >
-> > +#define MT_LED_BASE_PHYS             0x80024000
-> > +#define MT_LED_PHYS(_n)                      (MT_LED_BASE_PHYS + (_n))
-> > +
-> > +#define MT_LED_CTRL                  MT_LED_PHYS(0x00)
-> > +
-> > +#define MT_LED_CTRL_REPLAY(_n)               BIT(0 + (8 * (_n)))
-> > +#define MT_LED_CTRL_POLARITY(_n)     BIT(1 + (8 * (_n)))
-> > +#define MT_LED_CTRL_TX_BLINK_MODE(_n)        BIT(2 + (8 * (_n)))
-> > +#define MT_LED_CTRL_TX_MANUAL_BLINK(_n)      BIT(3 + (8 * (_n)))
-> > +#define MT_LED_CTRL_TX_OVER_BLINK(_n)        BIT(5 + (8 * (_n)))
-> > +#define MT_LED_CTRL_KICK(_n)         BIT(7 + (8 * (_n)))
-> > +
-> > +#define MT_LED_STATUS_0(_n)          MT_LED_PHYS(0x10 + ((_n) * 8))
-> > +#define MT_LED_STATUS_1(_n)          MT_LED_PHYS(0x14 + ((_n) * 8))
-> > +#define MT_LED_STATUS_OFF_MASK               GENMASK(31, 24)
-> > +#define MT_LED_STATUS_OFF(_v)                (((_v) << \
-> > +                                       __ffs(MT_LED_STATUS_OFF_MASK)) & \
-> > +                                      MT_LED_STATUS_OFF_MASK)
-> > +#define MT_LED_STATUS_ON_MASK                GENMASK(23, 16)
-> > +#define MT_LED_STATUS_ON(_v)         (((_v) << \
-> > +                                       __ffs(MT_LED_STATUS_ON_MASK)) & \
-> > +                                      MT_LED_STATUS_ON_MASK)
-> > +#define MT_LED_STATUS_DURATION_MASK  GENMASK(15, 0)
-> > +#define MT_LED_STATUS_DURATION(_v)   (((_v) << \
-> > +                                       __ffs(MT_LED_STATUS_DURATION_MASK)) &\
-> > +                                      MT_LED_STATUS_DURATION_MASK
->
-> Why are you using separate _MASK fields and macros using __ffs in
-> bitshift instead of FIELD_PREP like the rest of the code?
->
-
-ack, I will fix it in v2.
-
-Regards,
-Lorenzo
-
-> - Felix
->
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c
+index 06f3c01f10b3..237c6b491b88 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c
+@@ -430,6 +430,7 @@ brcmf_usbdev_qinit(struct list_head *q, int qsize)
+ 			usb_free_urb(req->urb);
+ 		list_del(q->next);
+ 	}
++	kfree(reqs);
+ 	return NULL;
+ 
+ }
+-- 
+2.17.1
 
