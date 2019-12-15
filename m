@@ -2,98 +2,117 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B289B11F54E
-	for <lists+linux-wireless@lfdr.de>; Sun, 15 Dec 2019 02:51:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C35311F575
+	for <lists+linux-wireless@lfdr.de>; Sun, 15 Dec 2019 04:56:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727127AbfLOBv1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 14 Dec 2019 20:51:27 -0500
-Received: from mail-il1-f196.google.com ([209.85.166.196]:36782 "EHLO
-        mail-il1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726783AbfLOBv1 (ORCPT
+        id S1726019AbfLOD4l (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 14 Dec 2019 22:56:41 -0500
+Received: from mailgw01.mediatek.com ([210.61.82.183]:18549 "EHLO
+        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1725933AbfLOD4l (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 14 Dec 2019 20:51:27 -0500
-Received: by mail-il1-f196.google.com with SMTP id b15so2672306iln.3;
-        Sat, 14 Dec 2019 17:51:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=7ila3ACaEBkte0RQGIwBOqqVKb25YlQx6hZbg+XIx7w=;
-        b=M2YznvDUbC+oI2ORLdlKHZU221buG1yFNbL3d3PnZEFpw0MpYpDAoHadWunc3MIeMh
-         nT0ORJwX+0+c/DVfrF3oeUPXw4FvSMd6Z2YuZqHELAJeU0zVbVxMsc6YlopAePA1bmdf
-         ae89PYWru7qVtptShh1y4/02s/JSRIGPPPnYP9cee/+TL7p3g0HBReLP5jPbbxpU1WgT
-         N0T661QXxDElWDGXan5TmfKuts2sSB2IfFLimVM1Bf0VNz671cctClTeDoiR2bLzI8X7
-         TjCt5heNFIMkH+BuwsuQbHW6K3Z7FTr5J5C9qp7reNus4ax1HXWHxR8PBpoPKwExmFU3
-         cH8Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=7ila3ACaEBkte0RQGIwBOqqVKb25YlQx6hZbg+XIx7w=;
-        b=nVFD/yKadg5cBMP1C8/Ilxmf6YTM5YfTK0dW/N9QY558Sf5hIWqT80uKGAF2TxXOSK
-         g3WbTlwgwY88Cv89GoFeCUcoP3HfSobjtoZARR/AS4UQ+9PFL9y5LenumANIeckWdz0J
-         2aalVwsKWSgY4e6UpPfOYdslPdiMZY2KL/K7frjhVmliNNfRYwXTsTYjenp/ZisVbG7F
-         Gbd+xnYXEuvAksOgANLA5RZ2bXD1SBlkgpBfXU8ktBfuiLfd6Pz4tTi/JJ2mGndzBIvb
-         YGZPcr2mN/wi5v58L4Ad4ID+IfwBT+YXRoGTebRSksAap4csjLRqqiQugfK6k19NQrY2
-         Mu4Q==
-X-Gm-Message-State: APjAAAXjNOnYwzWj+M5/5jsoIx10B0nF8v7HXk2hmm24+A68FN14ae90
-        8NckfLTMH+e/nbOkpl0z7LI=
-X-Google-Smtp-Source: APXvYqz0KmdNAXYfzGhk2gPnfOnNtd6IkkcGO0SiadEIk+YNhK3wzwvkU5gjfF4ogx0edteSrt9iew==
-X-Received: by 2002:a92:b506:: with SMTP id f6mr6850648ile.103.1576374686670;
-        Sat, 14 Dec 2019 17:51:26 -0800 (PST)
-Received: from cs-dulles.cs.umn.edu (cs-dulles.cs.umn.edu. [128.101.35.54])
-        by smtp.googlemail.com with ESMTPSA id f16sm4368858ilq.16.2019.12.14.17.51.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 14 Dec 2019 17:51:26 -0800 (PST)
-From:   Navid Emamdoost <navid.emamdoost@gmail.com>
-To:     Arend van Spriel <arend@broadcom.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
-        Wright Feng <wright.feng@cypress.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Alwin Beukers <alwin@broadcom.com>,
-        Pieter-Paul Giesberts <pieterpg@broadcom.com>,
-        Kan Yan <kanyan@broadcom.com>,
-        "Franky (Zhenhui) Lin" <frankyl@broadcom.com>,
-        Piotr Figiel <p.figiel@camlintechnologies.com>,
-        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
-        YueHaibing <yuehaibing@huawei.com>, Kangjie Lu <kjlu@umn.edu>,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        brcm80211-dev-list@cypress.com, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     emamd001@umn.edu, Navid Emamdoost <navid.emamdoost@gmail.com>
-Subject: [PATCH] brcmfmac: Fix memory leak in brcmf_usbdev_qinit
-Date:   Sat, 14 Dec 2019 19:51:14 -0600
-Message-Id: <20191215015117.21801-1-navid.emamdoost@gmail.com>
-X-Mailer: git-send-email 2.17.1
+        Sat, 14 Dec 2019 22:56:41 -0500
+X-UUID: efaae02709d14da28a7fe9e96562c0d2-20191215
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+        h=Content-Transfer-Encoding:Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=MvnbWM1VPsxTrRV3tUt59T8bb49saFjEAy9blQfNuV0=;
+        b=hjFaGBFoymon7ur2E+42OvSkC0EA7HnHK7cImowmiLP6G9n35K5c2pXfxLgFVdVDIZzbmWvGndLigJsW16TeWZLpS7RcBTC7sfF1CKSNbnX8qmgmEDv6+UH1mlmYovUzOV6IxPm/gW5HOOfzHsPt0NyYf1RHN/1yMoZ3fc6dOi8=;
+X-UUID: efaae02709d14da28a7fe9e96562c0d2-20191215
+Received: from mtkcas09.mediatek.inc [(172.21.101.178)] by mailgw01.mediatek.com
+        (envelope-from <ryder.lee@mediatek.com>)
+        (Cellopoint E-mail Firewall v4.1.10 Build 0809 with TLS)
+        with ESMTP id 1482699382; Sun, 15 Dec 2019 11:56:35 +0800
+Received: from mtkcas07.mediatek.inc (172.21.101.84) by
+ mtkmbs08n1.mediatek.inc (172.21.101.55) with Microsoft SMTP Server (TLS) id
+ 15.0.1395.4; Sun, 15 Dec 2019 11:56:59 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas07.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1395.4 via Frontend
+ Transport; Sun, 15 Dec 2019 11:56:21 +0800
+From:   Ryder Lee <ryder.lee@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+CC:     Roy Luo <royluo@google.com>, <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, Ryder Lee <ryder.lee@mediatek.com>
+Subject: [PATCH 1/2] mt76: mt7615: rework set_channel function
+Date:   Sun, 15 Dec 2019 11:56:31 +0800
+Message-ID: <d3d47e29e2a39c42adfcf912a27b9d19a01d5010.1576381077.git.ryder.lee@mediatek.com>
+X-Mailer: git-send-email 2.18.0
+MIME-Version: 1.0
+Content-Type: text/plain
+X-MTK:  N
+Content-Transfer-Encoding: base64
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-In the implementation of brcmf_usbdev_qinit() the allocated memory for
-reqs is leaking if usb_alloc_urb() fails. Release reqs in the error
-handling path.
-
-Fixes: 71bb244ba2fd ("brcm80211: fmac: add USB support for bcm43235/6/8 chipsets")
-Signed-off-by: Navid Emamdoost <navid.emamdoost@gmail.com>
----
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c
-index 06f3c01f10b3..237c6b491b88 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c
-@@ -430,6 +430,7 @@ brcmf_usbdev_qinit(struct list_head *q, int qsize)
- 			usb_free_urb(req->urb);
- 		list_del(q->next);
- 	}
-+	kfree(reqs);
- 	return NULL;
- 
- }
--- 
-2.17.1
+Tm8gbmVlZCB0byBzZW5kIGJvdGggTUNVX0VYVF9DTURfU0VUX1JYX1BBVEggYW5kIE1DVV9FWFRf
+Q01EX0NIQU5ORUxfU1dJVENIDQp0b2dldGhlciB0byBNQ1UuDQoNClNwbGl0IHRoZW0gb3V0IGJ5
+IHBhc3NpbmcgdGhlIHByb3BlciBjb21tYW5kIGluIHRoZSBjb3JyZXNwb25kaW5nIGZsb3cuDQoN
+ClNpZ25lZC1vZmYtYnk6IFJ5ZGVyIExlZSA8cnlkZXIubGVlQG1lZGlhdGVrLmNvbT4NCi0tLQ0K
+IC4uLi9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc2MTUvbWFpbi5jICAgfCAgMyArKy0N
+CiAuLi4vbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3NjE1L21jdS5jICAgIHwgMTggKysr
+Ky0tLS0tLS0tLS0tLS0tDQogLi4uL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzYxNS9t
+dDc2MTUuaCB8ICAyICstDQogMyBmaWxlcyBjaGFuZ2VkLCA3IGluc2VydGlvbnMoKyksIDE2IGRl
+bGV0aW9ucygtKQ0KDQpkaWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsv
+bXQ3Ni9tdDc2MTUvbWFpbi5jIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9t
+dDc2MTUvbWFpbi5jDQppbmRleCA0ZmZhOTIwZDRmNGQuLjc1OWE2Njk5N2M2ZiAxMDA2NDQNCi0t
+LSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3NjE1L21haW4uYw0KKysr
+IGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc2MTUvbWFpbi5jDQpAQCAt
+MTEsNiArMTEsNyBAQA0KICNpbmNsdWRlIDxsaW51eC9wY2kuaD4NCiAjaW5jbHVkZSA8bGludXgv
+bW9kdWxlLmg+DQogI2luY2x1ZGUgIm10NzYxNS5oIg0KKyNpbmNsdWRlICJtY3UuaCINCiANCiBz
+dGF0aWMgYm9vbCBtdDc2MTVfZGV2X3J1bm5pbmcoc3RydWN0IG10NzYxNV9kZXYgKmRldikNCiB7
+DQpAQCAtMjI0LDcgKzIyNSw3IEBAIHN0YXRpYyBpbnQgbXQ3NjE1X3NldF9jaGFubmVsKHN0cnVj
+dCBtdDc2MTVfcGh5ICpwaHkpDQogCXBoeS0+ZGZzX3N0YXRlID0gLTE7DQogCW10NzZfc2V0X2No
+YW5uZWwocGh5LT5tdDc2KTsNCiANCi0JcmV0ID0gbXQ3NjE1X21jdV9zZXRfY2hhbm5lbChwaHkp
+Ow0KKwlyZXQgPSBtdDc2MTVfbWN1X3NldF9jaGFuX2luZm8ocGh5LCBNQ1VfRVhUX0NNRF9DSEFO
+TkVMX1NXSVRDSCk7DQogCWlmIChyZXQpDQogCQlnb3RvIG91dDsNCiANCmRpZmYgLS1naXQgYS9k
+cml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzYxNS9tY3UuYyBiL2RyaXZlcnMv
+bmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3NjE1L21jdS5jDQppbmRleCBmYzA5MTI3OGQ5
+ZTUuLmZmZDA5Yzg2NzBkNCAxMDA2NDQNCi0tLSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlh
+dGVrL210NzYvbXQ3NjE1L21jdS5jDQorKysgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRl
+ay9tdDc2L210NzYxNS9tY3UuYw0KQEAgLTEzNjQsMTIgKzEzNjQsMTEgQEAgaW50IG10NzYxNV9t
+Y3VfcmRkX3NlbmRfcGF0dGVybihzdHJ1Y3QgbXQ3NjE1X2RldiAqZGV2KQ0KIAkJCQkgICAmcmVx
+LCBzaXplb2YocmVxKSwgZmFsc2UpOw0KIH0NCiANCi1pbnQgbXQ3NjE1X21jdV9zZXRfY2hhbm5l
+bChzdHJ1Y3QgbXQ3NjE1X3BoeSAqcGh5KQ0KK2ludCBtdDc2MTVfbWN1X3NldF9jaGFuX2luZm8o
+c3RydWN0IG10NzYxNV9waHkgKnBoeSwgaW50IGNtZCkNCiB7DQogCXN0cnVjdCBtdDc2MTVfZGV2
+ICpkZXYgPSBwaHktPmRldjsNCiAJc3RydWN0IGNmZzgwMjExX2NoYW5fZGVmICpjaGFuZGVmID0g
+JnBoeS0+bXQ3Ni0+Y2hhbmRlZjsNCiAJaW50IGZyZXExID0gY2hhbmRlZi0+Y2VudGVyX2ZyZXEx
+LCBmcmVxMiA9IGNoYW5kZWYtPmNlbnRlcl9mcmVxMjsNCi0JdTggbl9jaGFpbnMgPSBod2VpZ2h0
+OChwaHktPm10NzYtPmFudGVubmFfbWFzayk7DQogCXN0cnVjdCB7DQogCQl1OCBjb250cm9sX2No
+YW47DQogCQl1OCBjZW50ZXJfY2hhbjsNCkBAIC0xMzkxLDExICsxMzkwLDEwIEBAIGludCBtdDc2
+MTVfbWN1X3NldF9jaGFubmVsKHN0cnVjdCBtdDc2MTVfcGh5ICpwaHkpDQogCX0gcmVxID0gew0K
+IAkJLmNvbnRyb2xfY2hhbiA9IGNoYW5kZWYtPmNoYW4tPmh3X3ZhbHVlLA0KIAkJLmNlbnRlcl9j
+aGFuID0gaWVlZTgwMjExX2ZyZXF1ZW5jeV90b19jaGFubmVsKGZyZXExKSwNCi0JCS50eF9zdHJl
+YW1zID0gbl9jaGFpbnMsDQotCQkucnhfc3RyZWFtc19tYXNrID0gbl9jaGFpbnMsDQorCQkudHhf
+c3RyZWFtcyA9IGh3ZWlnaHQ4KHBoeS0+bXQ3Ni0+YW50ZW5uYV9tYXNrKSwNCisJCS5yeF9zdHJl
+YW1zX21hc2sgPSBwaHktPmNoYWlubWFzaywNCiAJCS5jZW50ZXJfY2hhbjIgPSBpZWVlODAyMTFf
+ZnJlcXVlbmN5X3RvX2NoYW5uZWwoZnJlcTIpLA0KIAl9Ow0KLQlpbnQgcmV0Ow0KIA0KIAlpZiAo
+ZGV2LT5tdDc2Lmh3LT5jb25mLmZsYWdzICYgSUVFRTgwMjExX0NPTkZfT0ZGQ0hBTk5FTCkNCiAJ
+CXJlcS5zd2l0Y2hfcmVhc29uID0gQ0hfU1dJVENIX1NDQU5fQllQQVNTX0RQRDsNCkBAIC0xNDM0
+LDE1ICsxNDMyLDcgQEAgaW50IG10NzYxNV9tY3Vfc2V0X2NoYW5uZWwoc3RydWN0IG10NzYxNV9w
+aHkgKnBoeSkNCiAJfQ0KIAltZW1zZXQocmVxLnR4cG93ZXJfc2t1LCAweDNmLCA0OSk7DQogDQot
+CXJldCA9IF9fbXQ3Nl9tY3Vfc2VuZF9tc2coJmRldi0+bXQ3NiwgTUNVX0VYVF9DTURfQ0hBTk5F
+TF9TV0lUQ0gsDQotCQkJCSAgJnJlcSwgc2l6ZW9mKHJlcSksIHRydWUpOw0KLQlpZiAocmV0KQ0K
+LQkJcmV0dXJuIHJldDsNCi0NCi0JcmVxLnJ4X3N0cmVhbXNfbWFzayA9IHBoeS0+Y2hhaW5tYXNr
+Ow0KLQ0KLQlyZXR1cm4gX19tdDc2X21jdV9zZW5kX21zZygmZGV2LT5tdDc2LCBNQ1VfRVhUX0NN
+RF9TRVRfUlhfUEFUSCwNCi0JCQkJICAgJnJlcSwgc2l6ZW9mKHJlcSksIHRydWUpOw0KKwlyZXR1
+cm4gX19tdDc2X21jdV9zZW5kX21zZygmZGV2LT5tdDc2LCBjbWQsICZyZXEsIHNpemVvZihyZXEp
+LCB0cnVlKTsNCiB9DQogDQogaW50IG10NzYxNV9tY3Vfc2V0X2h0X2NhcChzdHJ1Y3QgbXQ3NjE1
+X2RldiAqZGV2LCBzdHJ1Y3QgaWVlZTgwMjExX3ZpZiAqdmlmLA0KZGlmZiAtLWdpdCBhL2RyaXZl
+cnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3NjE1L210NzYxNS5oIGIvZHJpdmVycy9u
+ZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc2MTUvbXQ3NjE1LmgNCmluZGV4IDU1NGJkMDRk
+NmQ4MS4uMWUyZjFlMjI5YmQ1IDEwMDY0NA0KLS0tIGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVk
+aWF0ZWsvbXQ3Ni9tdDc2MTUvbXQ3NjE1LmgNCisrKyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21l
+ZGlhdGVrL210NzYvbXQ3NjE1L210NzYxNS5oDQpAQCAtMjUwLDcgKzI1MCw3IEBAIGludCBtdDc2
+MTVfbWN1X3NldF9zdGFfcmVjKHN0cnVjdCBtdDc2MTVfZGV2ICpkZXYsIHN0cnVjdCBpZWVlODAy
+MTFfdmlmICp2aWYsDQogCQkJICAgc3RydWN0IGllZWU4MDIxMV9zdGEgKnN0YSwgYm9vbCBlbik7
+DQogaW50IG10NzYxNV9tY3Vfc2V0X2JjbihzdHJ1Y3QgaWVlZTgwMjExX2h3ICpodywgc3RydWN0
+IGllZWU4MDIxMV92aWYgKnZpZiwNCiAJCSAgICAgICBpbnQgZW4pOw0KLWludCBtdDc2MTVfbWN1
+X3NldF9jaGFubmVsKHN0cnVjdCBtdDc2MTVfcGh5ICpwaHkpOw0KK2ludCBtdDc2MTVfbWN1X3Nl
+dF9jaGFuX2luZm8oc3RydWN0IG10NzYxNV9waHkgKnBoeSwgaW50IGNtZCk7DQogaW50IG10NzYx
+NV9tY3Vfc2V0X3dtbShzdHJ1Y3QgbXQ3NjE1X2RldiAqZGV2LCB1OCBxdWV1ZSwNCiAJCSAgICAg
+ICBjb25zdCBzdHJ1Y3QgaWVlZTgwMjExX3R4X3F1ZXVlX3BhcmFtcyAqcGFyYW1zKTsNCiBpbnQg
+bXQ3NjE1X21jdV9zZXRfdHhfYmEoc3RydWN0IG10NzYxNV9kZXYgKmRldiwNCi0tIA0KMi4xOC4w
+DQo=
 
