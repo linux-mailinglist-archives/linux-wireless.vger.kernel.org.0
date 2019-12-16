@@ -2,87 +2,163 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7DAA112042B
-	for <lists+linux-wireless@lfdr.de>; Mon, 16 Dec 2019 12:41:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F989120696
+	for <lists+linux-wireless@lfdr.de>; Mon, 16 Dec 2019 14:05:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727513AbfLPLlO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 16 Dec 2019 06:41:14 -0500
-Received: from mail25.static.mailgun.info ([104.130.122.25]:33930 "EHLO
-        mail25.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727276AbfLPLlO (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 16 Dec 2019 06:41:14 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1576496473; h=Content-Transfer-Encoding: Content-Type:
- MIME-Version: Message-ID: In-Reply-To: Date: References: Subject: Cc:
- To: From: Sender; bh=Z30igGNUdrFHS9qpIwYJruR2OxAGXIzzkvS7S6WcmPU=; b=NwCzXezs1RZBu6MUPg+w5myDXgJEhJohqv7RahelhzgCtt1MZ2Ql6e+BRqxq8nwiw2HhmI3t
- bgHuUvHuWo05/IYBJ/Qh4TSw41cxfHoefJ1/J3FoSOxxUbA0TfXDxoBuPiciTK6kY1exUu53
- KQzbY52ko0PvjE0HXGgfMmKRCW4=
-X-Mailgun-Sending-Ip: 104.130.122.25
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5df76d56.7fc4b3d000a0-smtp-out-n01;
- Mon, 16 Dec 2019 11:41:10 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 2FA32C43383; Mon, 16 Dec 2019 11:41:10 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE,
-        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from tynnyri.adurom.net (tynnyri.adurom.net [51.15.11.48])
+        id S1727722AbfLPNFS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 16 Dec 2019 08:05:18 -0500
+Received: from mail.kernel.org ([198.145.29.99]:58840 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727553AbfLPNFR (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 16 Dec 2019 08:05:17 -0500
+Received: from localhost.localdomain.com (nat-pool-mxp-t.redhat.com [149.6.153.186])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 1FCA7C433CB;
-        Mon, 16 Dec 2019 11:41:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 1FCA7C433CB
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-Cc:     linux-wireless@vger.kernel.org
-Subject: Re: [PATCH v2] mac80211: Turn AQL into an NL80211_EXT_FEATURE
-References: <20191212111437.224294-1-toke@redhat.com>
-Date:   Mon, 16 Dec 2019 13:41:06 +0200
-In-Reply-To: <20191212111437.224294-1-toke@redhat.com> ("Toke
-        \=\?utf-8\?Q\?H\=C3\=B8iland-J\=C3\=B8rgensen\=22's\?\= message of "Thu, 12 Dec 2019
- 12:14:37 +0100")
-Message-ID: <87fthk4hwt.fsf@tynnyri.adurom.net>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        by mail.kernel.org (Postfix) with ESMTPSA id 0BB9E206CB;
+        Mon, 16 Dec 2019 13:05:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1576501517;
+        bh=upTQzzBmJZihfHoCrF3kyF8fKekcfVTlcKwQi0NcJzM=;
+        h=From:To:Cc:Subject:Date:From;
+        b=BEPnC1wt5BPYBqxrR6SiPEUnOAh2096lIBmUneATCo3qPuLnKHO/Q2lviaNyiBSAI
+         +nybFW7jObRfvHkR+OzPABgjQ9kzFx8i8/J1jqDhhVP4hDCZh0rW8bpXuslMb0N8j5
+         IVcYJKJGQ8id2cmKFagHdJqZ3VR7U6NA1JUwiZHg=
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
+        ryder.lee@mediatek.com
+Subject: [PATCH v3] mt76: mt7615: introduce LED support
+Date:   Mon, 16 Dec 2019 14:05:05 +0100
+Message-Id: <8c365ff2b1603b7fef6bf544820df9a0f176f232.1576501084.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com> writes:
+Initialize brightness_set and blink_set callbacks to
+mt7615_led_set_brightness and mt7615_led_set_blink in order to enable
+LED support in mt7615 driver
 
-> Instead of just having an airtime flag in debugfs, turn AQL into a proper
-> NL80211_EXT_FEATURE, so drivers can turn it on when they are ready, and so
-> we also expose the presence of the feature to userspace.
->
-> This also has the effect of flipping the default, so drivers have to opt =
-in
-> to using AQL instead of getting it by default with TXQs. To keep
-> functionality the same as pre-patch, we set this feature for ath10k (which
-> is where it is needed the most).
->
-> While we're at it, split out the debugfs interface so AQL gets its own
-> per-station debugfs file instead of using the 'airtime' file.
->
-> Signed-off-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
-> ---
-> v2:
->   - Squash into a single patch
->   - Add kernel doc for NL80211_EXT_FEATURE_AQL
->
->  drivers/net/wireless/ath/ath10k/mac.c |  1 +
+Tested-by: Deng Qingfang <dengqf6@mail2.sysu.edu.cn>
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+Changes since v2:
+- remove _MASK suffix from register definitions and move the code in init.c
+Changes since v1:
+- rely on FIELD_PREP for LED register definitions
+---
+ .../net/wireless/mediatek/mt76/mt7615/init.c  | 58 +++++++++++++++++++
+ .../net/wireless/mediatek/mt76/mt7615/regs.h  | 18 ++++++
+ 2 files changed, 76 insertions(+)
 
-Acked-by: Kalle Valo <kvalo@codeaurora.org>
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/init.c b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
+index eb7c6b9e3d4d..a3fd68452377 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
+@@ -196,6 +196,58 @@ static const struct ieee80211_iface_combination if_comb[] = {
+ 	}
+ };
+ 
++static void
++mt7615_led_set_config(struct led_classdev *led_cdev,
++		      u8 delay_on, u8 delay_off)
++{
++	struct mt7615_dev *dev;
++	struct mt76_dev *mt76;
++	u32 val, addr;
++
++	mt76 = container_of(led_cdev, struct mt76_dev, led_cdev);
++	dev = container_of(mt76, struct mt7615_dev, mt76);
++	val = FIELD_PREP(MT_LED_STATUS_DURATION, 0xffff) |
++	      FIELD_PREP(MT_LED_STATUS_OFF, delay_off) |
++	      FIELD_PREP(MT_LED_STATUS_ON, delay_on);
++
++	addr = mt7615_reg_map(dev, MT_LED_STATUS_0(mt76->led_pin));
++	mt76_wr(dev, addr, val);
++	addr = mt7615_reg_map(dev, MT_LED_STATUS_1(mt76->led_pin));
++	mt76_wr(dev, addr, val);
++
++	val = MT_LED_CTRL_REPLAY(mt76->led_pin) |
++	      MT_LED_CTRL_KICK(mt76->led_pin);
++	if (mt76->led_al)
++		val |= MT_LED_CTRL_POLARITY(mt76->led_pin);
++	addr = mt7615_reg_map(dev, MT_LED_CTRL);
++	mt76_wr(dev, addr, val);
++}
++
++static int
++mt7615_led_set_blink(struct led_classdev *led_cdev,
++		     unsigned long *delay_on,
++		     unsigned long *delay_off)
++{
++	u8 delta_on, delta_off;
++
++	delta_off = max_t(u8, *delay_off / 10, 1);
++	delta_on = max_t(u8, *delay_on / 10, 1);
++
++	mt7615_led_set_config(led_cdev, delta_on, delta_off);
++
++	return 0;
++}
++
++static void
++mt7615_led_set_brightness(struct led_classdev *led_cdev,
++			  enum led_brightness brightness)
++{
++	if (!brightness)
++		mt7615_led_set_config(led_cdev, 0, 0xff);
++	else
++		mt7615_led_set_config(led_cdev, 0xff, 0);
++}
++
+ static void
+ mt7615_init_txpower(struct mt7615_dev *dev,
+ 		    struct ieee80211_supported_band *sband)
+@@ -383,6 +435,12 @@ int mt7615_register_device(struct mt7615_dev *dev)
+ 	mt7615_cap_dbdc_disable(dev);
+ 	dev->phy.dfs_state = -1;
+ 
++	/* init led callbacks */
++	if (IS_ENABLED(CONFIG_MT76_LEDS)) {
++		dev->mt76.led_cdev.brightness_set = mt7615_led_set_brightness;
++		dev->mt76.led_cdev.blink_set = mt7615_led_set_blink;
++	}
++
+ 	ret = mt76_register_device(&dev->mt76, true, mt7615_rates,
+ 				   ARRAY_SIZE(mt7615_rates));
+ 	if (ret)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/regs.h b/drivers/net/wireless/mediatek/mt76/mt7615/regs.h
+index 26d121646787..ad58c02220af 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/regs.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/regs.h
+@@ -345,6 +345,24 @@
+ 
+ #define MT_TX_AGG_CNT(n)		MT_WF_MIB(0xa8 + ((n) << 2))
+ 
++#define MT_LED_BASE_PHYS		0x80024000
++#define MT_LED_PHYS(_n)			(MT_LED_BASE_PHYS + (_n))
++
++#define MT_LED_CTRL			MT_LED_PHYS(0x00)
++
++#define MT_LED_CTRL_REPLAY(_n)		BIT(0 + (8 * (_n)))
++#define MT_LED_CTRL_POLARITY(_n)	BIT(1 + (8 * (_n)))
++#define MT_LED_CTRL_TX_BLINK_MODE(_n)	BIT(2 + (8 * (_n)))
++#define MT_LED_CTRL_TX_MANUAL_BLINK(_n)	BIT(3 + (8 * (_n)))
++#define MT_LED_CTRL_TX_OVER_BLINK(_n)	BIT(5 + (8 * (_n)))
++#define MT_LED_CTRL_KICK(_n)		BIT(7 + (8 * (_n)))
++
++#define MT_LED_STATUS_0(_n)		MT_LED_PHYS(0x10 + ((_n) * 8))
++#define MT_LED_STATUS_1(_n)		MT_LED_PHYS(0x14 + ((_n) * 8))
++#define MT_LED_STATUS_OFF		GENMASK(31, 24)
++#define MT_LED_STATUS_ON		GENMASK(23, 16)
++#define MT_LED_STATUS_DURATION		GENMASK(15, 0)
++
+ #define MT_EFUSE_BASE			0x81070000
+ #define MT_EFUSE_BASE_CTRL		0x000
+ #define MT_EFUSE_BASE_CTRL_EMPTY	BIT(30)
+-- 
+2.21.0
 
---=20
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
-hes
