@@ -2,157 +2,187 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A6C3121C6A
-	for <lists+linux-wireless@lfdr.de>; Mon, 16 Dec 2019 23:08:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C404121EA1
+	for <lists+linux-wireless@lfdr.de>; Mon, 16 Dec 2019 23:56:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727680AbfLPWHv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 16 Dec 2019 17:07:51 -0500
-Received: from mail2.candelatech.com ([208.74.158.173]:35492 "EHLO
+        id S1726587AbfLPW4R (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 16 Dec 2019 17:56:17 -0500
+Received: from mail2.candelatech.com ([208.74.158.173]:40152 "EHLO
         mail3.candelatech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726448AbfLPWHv (ORCPT
+        with ESMTP id S1726561AbfLPW4R (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 16 Dec 2019 17:07:51 -0500
-Received: from ben-dt4.candelatech.com (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
-        by mail3.candelatech.com (Postfix) with ESMTP id 06E7413C283;
-        Mon, 16 Dec 2019 14:07:51 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 06E7413C283
+        Mon, 16 Dec 2019 17:56:17 -0500
+Received: from [192.168.100.195] (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail3.candelatech.com (Postfix) with ESMTPSA id 4968F13C283;
+        Mon, 16 Dec 2019 14:56:16 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 4968F13C283
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1576534071;
-        bh=ZFqVxAGI8xAMa8bj4+K392PI1t7n079eUKCXai8+ysc=;
-        h=From:To:Cc:Subject:Date:From;
-        b=patw04LjHgnLgoa+ulw8MeQ/GwC4RbMxd1Ca0TzYwfcbS5t1DktcSu2Ggu5w1Z530
-         g6xC+F32PURMgfNDtOrxeaFY2sfZRJyjrbiEJhYKa069KqYhYhI5OrXbZzE8xrpbty
-         Tw+EQ+acuLwmTYbX7iK4h5vNvde02VFEk8XXkL34=
-From:   greearb@candelatech.com
-To:     linux-wireless@vger.kernel.org, ath10k@lists.infradead.org
-Cc:     Ben Greear <greearb@candelatech.com>
-Subject: [PATCH] ath10k:  Per-chain rssi should sum the secondary channels
-Date:   Mon, 16 Dec 2019 14:07:47 -0800
-Message-Id: <20191216220747.887-1-greearb@candelatech.com>
-X-Mailer: git-send-email 2.20.1
+        s=default; t=1576536976;
+        bh=v2KA2DrorMHcM46JB9Zju55tw82ClY+44aru2efRgl4=;
+        h=Subject:To:References:From:Date:In-Reply-To:From;
+        b=eekkpdFEpqzkR7ozCNv+I19rKgWNcpjyOrQx6ECFH9Jj0HsY5BQUJ3DPn2QvbhvO5
+         nJf8m6gz6U2Yz2GaR9V0XsqpqWver/soYf//Wq2Rg/4/oR6LQAZgVPD29ptigf+6sa
+         aWgSG7JRnJdvL66CaQzArPdm+rBp+Kx50NNLObWY=
+Subject: Re: [RFC] mac80211: Fix setting txpower to zero.
+To:     linux-wireless@vger.kernel.org,
+        Johannes Berg <johannes@sipsolutions.net>
+References: <20191213230334.27631-1-greearb@candelatech.com>
+From:   Ben Greear <greearb@candelatech.com>
+Organization: Candela Technologies
+Message-ID: <e2c54ffb-d346-65b0-e4ab-1cd2f8ff2a27@candelatech.com>
+Date:   Mon, 16 Dec 2019 14:56:16 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.1.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20191213230334.27631-1-greearb@candelatech.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Ben Greear <greearb@candelatech.com>
+On 12/13/19 3:03 PM, greearb@candelatech.com wrote:
+> From: Ben Greear <greearb@candelatech.com>
+> 
+> With multiple VIFS ath10k, and probably others, tries to find the
+> minimum txpower for all vifs and uses that when setting txpower in
+> the firmware.
 
-This makes per-chain RSSI be more consistent between HT20, HT40, HT80.
-Instead of doing precise log math for adding dbm, I did a rough estimate,
-it seems to work good enough.
+Johannes, sorry to be impatient, but I want to get some new ath10k-ct
+changes into OpenWRT (to fix per-chain RSSI reporting), and if only my
+driver change goes in, then ath10k-ct will have the old problem that Ryan Hsu
+tried to fix.
 
-Tested on ath10k-ct 9984 firmware.
+Are you OK with initializing the txpower to -1 to mean 'unset' in mac80211?  Or, do I need
+to come up with some other way to indicate to the driver that the txpower should
+be ignored?
 
-Signed-off-by: Ben Greear <greearb@candelatech.com>
----
- drivers/net/wireless/ath/ath10k/htt_rx.c  | 64 ++++++++++++++++++++---
- drivers/net/wireless/ath/ath10k/rx_desc.h |  3 +-
- 2 files changed, 60 insertions(+), 7 deletions(-)
+Thanks,
+Ben
 
-diff --git a/drivers/net/wireless/ath/ath10k/htt_rx.c b/drivers/net/wireless/ath/ath10k/htt_rx.c
-index 13f652b622df..034d4ace228d 100644
---- a/drivers/net/wireless/ath/ath10k/htt_rx.c
-+++ b/drivers/net/wireless/ath/ath10k/htt_rx.c
-@@ -1167,6 +1167,44 @@ static bool ath10k_htt_rx_h_channel(struct ath10k *ar,
- 	return true;
- }
- 
-+static int ath10k_sum_sigs_2(int a, int b) {
-+	int diff;
-+
-+	if (b == 0x80)
-+		return a;
-+
-+	if (a >= b) {
-+		diff = a - b;
-+		if (diff == 0)
-+			return a + 3;
-+		else if (diff == 1)
-+			return a + 2;
-+		else if (diff == 2)
-+			return a + 1;
-+		return a;
-+	}
-+	else {
-+		diff = b - a;
-+		if (diff == 0)
-+			return b + 3;
-+		else if (diff == 1)
-+			return b + 2;
-+		else if (diff == 2)
-+			return b + 1;
-+		return b;
-+	}
-+}
-+
-+static int ath10k_sum_sigs(int p20, int e20, int e40, int e80) {
-+	/* Hacky attempt at summing dbm without resorting to log(10) business */
-+	if (e40 != 0x80) {
-+		return ath10k_sum_sigs_2(ath10k_sum_sigs_2(p20, e20), ath10k_sum_sigs_2(e40, e80));
-+	}
-+	else {
-+		return ath10k_sum_sigs_2(p20, e20);
-+	}
-+}
-+
- static void ath10k_htt_rx_h_signal(struct ath10k *ar,
- 				   struct ieee80211_rx_status *status,
- 				   struct htt_rx_desc *rxd)
-@@ -1177,18 +1215,32 @@ static void ath10k_htt_rx_h_signal(struct ath10k *ar,
- 		status->chains &= ~BIT(i);
- 
- 		if (rxd->ppdu_start.rssi_chains[i].pri20_mhz != 0x80) {
--			status->chain_signal[i] = ATH10K_DEFAULT_NOISE_FLOOR +
--				rxd->ppdu_start.rssi_chains[i].pri20_mhz;
-+			status->chain_signal[i] = ATH10K_DEFAULT_NOISE_FLOOR
-+				+ ath10k_sum_sigs(rxd->ppdu_start.rssi_chains[i].pri20_mhz,
-+						  rxd->ppdu_start.rssi_chains[i].ext20_mhz,
-+						  rxd->ppdu_start.rssi_chains[i].ext40_mhz,
-+						  rxd->ppdu_start.rssi_chains[i].ext80_mhz);
-+			//ath10k_warn(ar, "rx-h-sig, chain[%i] pri20: %d ext20: %d  ext40: %d  ext80: %d\n",
-+			//	    i, rxd->ppdu_start.rssi_chains[i].pri20_mhz, rxd->ppdu_start.rssi_chains[i].ext20_mhz,
-+			//	    rxd->ppdu_start.rssi_chains[i].ext40_mhz, rxd->ppdu_start.rssi_chains[i].ext80_mhz);
- 
- 			status->chains |= BIT(i);
- 		}
- 	}
- 
- 	/* FIXME: Get real NF */
--	status->signal = ATH10K_DEFAULT_NOISE_FLOOR +
--			 rxd->ppdu_start.rssi_comb;
--	/* ath10k_warn(ar, "rx-h-sig, signal: %d  chains: 0x%x  chain[0]: %d  chain[1]: %d  chan[2]: %d\n",
--                       status->signal, status->chains, status->chain_signal[0], status->chain_signal[1], status->chain_signal[2]); */
-+	if (rxd->ppdu_start.rssi_comb_ht != 0x80) {
-+		status->signal = ATH10K_DEFAULT_NOISE_FLOOR +
-+			rxd->ppdu_start.rssi_comb_ht;
-+	}
-+	else {
-+		status->signal = ATH10K_DEFAULT_NOISE_FLOOR +
-+			rxd->ppdu_start.rssi_comb;
-+	}
-+
-+	//ath10k_warn(ar, "rx-h-sig, signal: %d  chains: 0x%x  chain[0]: %d  chain[1]: %d  chain[2]: %d chain[3]: %d\n",
-+	//	    status->signal, status->chains, status->chain_signal[0],
-+	//	    status->chain_signal[1], status->chain_signal[2], status->chain_signal[3]);
- 	status->flag &= ~RX_FLAG_NO_SIGNAL_VAL;
- }
- 
-diff --git a/drivers/net/wireless/ath/ath10k/rx_desc.h b/drivers/net/wireless/ath/ath10k/rx_desc.h
-index dec1582005b9..6b44677474dd 100644
---- a/drivers/net/wireless/ath/ath10k/rx_desc.h
-+++ b/drivers/net/wireless/ath/ath10k/rx_desc.h
-@@ -726,7 +726,8 @@ struct rx_ppdu_start {
- 		u8 ext80_mhz;
- 	} rssi_chains[4];
- 	u8 rssi_comb;
--	__le16 rsvd0;
-+	u8 rsvd0; /* first two bits are bandwidth, other 6 are reserved */
-+	u8 rssi_comb_ht;
- 	u8 info0; /* %RX_PPDU_START_INFO0_ */
- 	__le32 info1; /* %RX_PPDU_START_INFO1_ */
- 	__le32 info2; /* %RX_PPDU_START_INFO2_ */
+> 
+> If a second vif is added and starts to scan, it's txpower is not initialized yet
+> and it set to zero.
+> 
+> ath10k had a patch to ignore zero values, but then it is impossible to actually set
+> txpower to zero.
+> 
+> So, instead initialize the txpower to -1 in mac80211, and let drivers know that
+> means the power has not been set and so should be ignored.
+> 
+> This should fix regression in:
+> 
+> commit 88407beb1b1462f706a1950a355fd086e1c450b6
+> Author: Ryan Hsu <ryanhsu@qca.qualcomm.com>
+> Date:   Tue Dec 13 14:55:19 2016 -0800
+> 
+>      ath10k: fix incorrect txpower set by P2P_DEVICE interface
+> 
+> Tested on ath10k 9984 with ath10k-ct firmware.
+> 
+> Signed-off-by: Ben Greear <greearb@candelatech.com>
+> ---
+>   drivers/net/wireless/ath/ath10k/mac.c | 2 +-
+>   drivers/net/wireless/ath/ath9k/main.c | 3 +++
+>   drivers/net/wireless/ath/ath9k/xmit.c | 7 +++++--
+>   include/net/mac80211.h                | 2 +-
+>   net/mac80211/iface.c                  | 1 +
+>   net/mac80211/main.c                   | 2 ++
+>   6 files changed, 13 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
+> index 289d03da14b2..c846f232e930 100644
+> --- a/drivers/net/wireless/ath/ath10k/mac.c
+> +++ b/drivers/net/wireless/ath/ath10k/mac.c
+> @@ -5906,7 +5906,7 @@ static int ath10k_mac_txpower_recalc(struct ath10k *ar)
+>   	lockdep_assert_held(&ar->conf_mutex);
+>   
+>   	list_for_each_entry(arvif, &ar->arvifs, list) {
+> -		if (arvif->txpower <= 0)
+> +		if (arvif->txpower < 0) /* txpower not initialized yet? */
+>   			continue;
+>   
+>   		if (txpower == -1)
+> diff --git a/drivers/net/wireless/ath/ath9k/main.c b/drivers/net/wireless/ath/ath9k/main.c
+> index 14f253199909..2edf70cf7e7e 100644
+> --- a/drivers/net/wireless/ath/ath9k/main.c
+> +++ b/drivers/net/wireless/ath/ath9k/main.c
+> @@ -1196,6 +1196,9 @@ static void ath9k_tpc_vif_iter(void *data, u8 *mac, struct ieee80211_vif *vif)
+>   {
+>   	int *power = data;
+>   
+> +	if (vif->bss_conf.txpower < 0)
+> +		return;
+> +
+>   	if (*power < vif->bss_conf.txpower)
+>   		*power = vif->bss_conf.txpower;
+>   }
+> diff --git a/drivers/net/wireless/ath/ath9k/xmit.c b/drivers/net/wireless/ath/ath9k/xmit.c
+> index 751d0d0550b5..82c592ca2cd2 100644
+> --- a/drivers/net/wireless/ath/ath9k/xmit.c
+> +++ b/drivers/net/wireless/ath/ath9k/xmit.c
+> @@ -2114,10 +2114,13 @@ static void setup_frame_info(struct ieee80211_hw *hw,
+>   
+>   	if (tx_info->control.vif) {
+>   		struct ieee80211_vif *vif = tx_info->control.vif;
+> -
+> +		if (vif->bss_conf.txpower < 0)
+> +			goto nonvifpower;
+>   		txpower = 2 * vif->bss_conf.txpower;
+>   	} else {
+> -		struct ath_softc *sc = hw->priv;
+> +		struct ath_softc *sc;
+> +	nonvifpower:
+> +		sc = hw->priv;
+>   
+>   		txpower = sc->cur_chan->cur_txpower;
+>   	}
+> diff --git a/include/net/mac80211.h b/include/net/mac80211.h
+> index 2b70b9268f76..db66520c5389 100644
+> --- a/include/net/mac80211.h
+> +++ b/include/net/mac80211.h
+> @@ -569,7 +569,7 @@ struct ieee80211_ftm_responder_params {
+>    * @ssid: The SSID of the current vif. Valid in AP and IBSS mode.
+>    * @ssid_len: Length of SSID given in @ssid.
+>    * @hidden_ssid: The SSID of the current vif is hidden. Only valid in AP-mode.
+> - * @txpower: TX power in dBm
+> + * @txpower: TX power in dBm.  -1 means not configured.
+>    * @txpower_type: TX power adjustment used to control per packet Transmit
+>    *	Power Control (TPC) in lower driver for the current vif. In particular
+>    *	TPC is enabled if value passed in %txpower_type is
+> diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
+> index b0c2df6e22c5..49fcf9d80f85 100644
+> --- a/net/mac80211/iface.c
+> +++ b/net/mac80211/iface.c
+> @@ -1459,6 +1459,7 @@ static void ieee80211_setup_sdata(struct ieee80211_sub_if_data *sdata,
+>   	sdata->control_port_no_encrypt = false;
+>   	sdata->encrypt_headroom = IEEE80211_ENCRYPT_HEADROOM;
+>   	sdata->vif.bss_conf.idle = true;
+> +	sdata->vif.bss_conf.txpower = -1; /* unset */
+>   
+>   	sdata->noack_map = 0;
+>   
+> diff --git a/net/mac80211/main.c b/net/mac80211/main.c
+> index a148509a88bc..2f53188851ee 100644
+> --- a/net/mac80211/main.c
+> +++ b/net/mac80211/main.c
+> @@ -145,6 +145,8 @@ static u32 ieee80211_hw_conf_chan(struct ieee80211_local *local)
+>   			continue;
+>   		if (sdata->vif.type == NL80211_IFTYPE_AP_VLAN)
+>   			continue;
+> +		if (sdata->vif.bss_conf.txpower < 0)
+> +			continue;
+>   		power = min(power, sdata->vif.bss_conf.txpower);
+>   	}
+>   	rcu_read_unlock();
+> 
+
+
 -- 
-2.20.1
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
 
