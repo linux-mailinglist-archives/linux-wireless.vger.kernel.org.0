@@ -2,92 +2,66 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 65C43120134
-	for <lists+linux-wireless@lfdr.de>; Mon, 16 Dec 2019 10:31:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 51F5A120175
+	for <lists+linux-wireless@lfdr.de>; Mon, 16 Dec 2019 10:49:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726969AbfLPJbz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 16 Dec 2019 04:31:55 -0500
-Received: from s3.sipsolutions.net ([144.76.43.62]:41648 "EHLO
+        id S1727031AbfLPJtq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 16 Dec 2019 04:49:46 -0500
+Received: from s3.sipsolutions.net ([144.76.43.62]:42374 "EHLO
         sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726881AbfLPJbz (ORCPT
+        with ESMTP id S1726959AbfLPJtq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 16 Dec 2019 04:31:55 -0500
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        Mon, 16 Dec 2019 04:49:46 -0500
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.92.3)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1igmjJ-0019Hz-95; Mon, 16 Dec 2019 10:31:53 +0100
+        id 1ign0Z-001Bus-QJ; Mon, 16 Dec 2019 10:49:43 +0100
+Message-ID: <c4b44147e00a8c86931f680d8ea4825cebb4a524.camel@sipsolutions.net>
+Subject: Re: [PATCH v2 1/7] mac80211: add a struct for holding BSS color
+ settings
 From:   Johannes Berg <johannes@sipsolutions.net>
-To:     netdev@vger.kernel.org
-Cc:     linux-wireless@vger.kernel.org
-Subject: pull-request: mac80211 2019-10-16
-Date:   Mon, 16 Dec 2019 10:31:42 +0100
-Message-Id: <20191216093143.10808-1-johannes@sipsolutions.net>
-X-Mailer: git-send-email 2.23.0
+To:     John Crispin <john@phrozen.org>, Kalle Valo <kvalo@codeaurora.org>
+Cc:     linux-wireless@vger.kernel.org, ath11k@lists.infradead.org
+Date:   Mon, 16 Dec 2019 10:49:42 +0100
+In-Reply-To: <20191213155802.25491-1-john@phrozen.org>
+References: <20191213155802.25491-1-john@phrozen.org>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.34.2 (3.34.2-1.fc31) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+On Fri, 2019-12-13 at 16:57 +0100, John Crispin wrote:
+> Right now we only track the actual color but not the other bits contained
+> within the he_oper field. Fix this by creating a new struct to hold all
+> of the info.
+> 
+> Signed-off-by: John Crispin <john@phrozen.org>
+> ---
+>  include/net/cfg80211.h | 15 +++++++++++++++
+>  include/net/mac80211.h |  2 ++
+>  2 files changed, 17 insertions(+)
 
-I have just a handful of fixes, but the AQL one is important since
-it disables the code that causes the iwlwifi issues/warnings.
+I think you should drop this patch and put the cfg80211 and mac80211
+update into the second and third patch of this series, respectively. It
+doesn't make much sense to add some unused structs.
 
-Please pull and let me know if there's any problem.
+> diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+> index 8140c4837122..e395ef48af83 100644
+> --- a/include/net/cfg80211.h
+> +++ b/include/net/cfg80211.h
+> @@ -259,6 +259,19 @@ struct ieee80211_he_obss_pd {
 
-Thanks,
+It looks like I didn't see that previously for that one,
+
+> + * struct ieee80211_he_bss_color - AP settings for BSS coloring
+
+but I'd kinda prefer this be called cfg80211_... since it's not part of
+ieee80211.h with all the over-the-air struct definitions. I'm sure we
+have some non-over-the-air things that are called ieee80211_*, but ...
+
 johannes
-
-
-
-The following changes since commit 0af67e49b018e7280a4227bfe7b6005bc9d3e442:
-
-  qede: Fix multicast mac configuration (2019-12-12 11:08:36 -0800)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211.git tags/mac80211-for-net-2019-10-16
-
-for you to fetch changes up to 6fc232db9e8cd50b9b83534de9cd91ace711b2d7:
-
-  rfkill: Fix incorrect check to avoid NULL pointer dereference (2019-12-16 10:15:49 +0100)
-
-----------------------------------------------------------------
-A handful of fixes:
- * disable AQL on most drivers, addressing the iwlwifi issues
- * fix double-free on network namespace changes
- * fix TID field in frames injected through monitor interfaces
- * fix ieee80211_calc_rx_airtime()
- * fix NULL pointer dereference in rfkill (and remove BUG_ON)
-
-----------------------------------------------------------------
-Aditya Pakki (1):
-      rfkill: Fix incorrect check to avoid NULL pointer dereference
-
-Dan Carpenter (1):
-      mac80211: airtime: Fix an off by one in ieee80211_calc_rx_airtime()
-
-Fredrik Olofsson (1):
-      mac80211: fix TID field in monitor mode transmit
-
-Stefan Bühler (1):
-      cfg80211: fix double-free after changing network namespace
-
-Toke Høiland-Jørgensen (1):
-      mac80211: Turn AQL into an NL80211_EXT_FEATURE
-
- drivers/net/wireless/ath/ath10k/mac.c |  1 +
- include/uapi/linux/nl80211.h          |  5 +++
- net/mac80211/airtime.c                |  2 +-
- net/mac80211/debugfs_sta.c            | 76 ++++++++++++++++++++++++++---------
- net/mac80211/main.c                   |  4 +-
- net/mac80211/sta_info.c               |  3 ++
- net/mac80211/sta_info.h               |  1 -
- net/mac80211/tx.c                     | 13 +++++-
- net/rfkill/core.c                     |  7 +++-
- net/wireless/core.c                   |  1 +
- 10 files changed, 86 insertions(+), 27 deletions(-)
 
