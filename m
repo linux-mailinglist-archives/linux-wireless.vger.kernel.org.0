@@ -2,412 +2,370 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 51C7E120018
-	for <lists+linux-wireless@lfdr.de>; Mon, 16 Dec 2019 09:44:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9239B1200EA
+	for <lists+linux-wireless@lfdr.de>; Mon, 16 Dec 2019 10:22:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726840AbfLPIoG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 16 Dec 2019 03:44:06 -0500
-Received: from mail-qv1-f66.google.com ([209.85.219.66]:46102 "EHLO
-        mail-qv1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726808AbfLPIoF (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 16 Dec 2019 03:44:05 -0500
-Received: by mail-qv1-f66.google.com with SMTP id t9so2387121qvh.13
-        for <linux-wireless@vger.kernel.org>; Mon, 16 Dec 2019 00:44:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=endlessm-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=2TdJGIWRjtrpiZuH5yQi/H5WCXhgNXZWIgPqQo+Pwjs=;
-        b=Vy45OaE1VWXXJpZRj5LF7eLWxegqAprQD4kxSJ3ILwfRw/yaUhV40y1+boNLW24EnR
-         i0uiEVYLj+b9CL/La2IcsVCWALJAjUUxttu1gvbLa8zW+RF0KGLca3zaggKtA7mHrY8B
-         fwiQ7KjaG3elMvBj7fyELs2LhF/WL0cBmKHcuWs0o4YENCdsVqHzjRuK7JUrxNFh6nTe
-         4450tsD271/4VjdCi19miS+BYVVtWuXTJFhuzyafJlIsjHjw9yq3ZZ7EW5uJfAYqyPTY
-         wUfO0YAVKIWt/mGr3eLHrST0PKukvdbPs0brHOy9zUzHOMhSqwhfkTXGSOjXR2Xx9xXm
-         GgJg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=2TdJGIWRjtrpiZuH5yQi/H5WCXhgNXZWIgPqQo+Pwjs=;
-        b=AGBpKo5U8DkGs7MqrzmeoU6YKT7BHjOIXgqHUHOINIg6uF1isGmSgz78kuiadfmV8s
-         iTIlsC4OZzpCj4dlKpqqK28SBnLBm7T2EXvyr7hKtXPh/jXvZKxH1AC6wypcx42e7u2Y
-         iAA5xxz9D+UcZMtMD+IH5BL5tocXuFak/dY3uhrCBxZ5Z7MAkpOwdiiXWqLxpTudUfgZ
-         OeVbCBzGyfv2so8Rkl2uSpwctW6sULPUncumBkwKM0+OTUcpbAdT4GpdfE9j2LpIUahk
-         cW8+vfBsqTlTm/U+Qszvk4sIQqyjqwsEEsGo8RT+yKItAQoPBZQp7TGkqGmrzOO1PrfD
-         5FMA==
-X-Gm-Message-State: APjAAAVxLjUshB2xqWw2As/4lpkcq67pXwsRjwjUC0J65ZeP/0YJUcOF
-        gB8ilsa9espcl04UfNqAu2MgmnZCOriCMc0FR24xm9/fHyiG+g==
-X-Google-Smtp-Source: APXvYqyYL1L8pZxRzEjHnJ7qydVbmvChCoTPDycJrweTjS+aRAtSCoyHFmPi+FYWvOX1OTzHpxTVJrJdBvjHCeBGP6Y=
-X-Received: by 2002:a0c:9ad6:: with SMTP id k22mr24717829qvf.154.1576485844427;
- Mon, 16 Dec 2019 00:44:04 -0800 (PST)
+        id S1726987AbfLPJWY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 16 Dec 2019 04:22:24 -0500
+Received: from nbd.name ([46.4.11.11]:46620 "EHLO nbd.name"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726016AbfLPJWX (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 16 Dec 2019 04:22:23 -0500
+Received: from pd95fd428.dip0.t-ipconnect.de ([217.95.212.40] helo=bertha.datto.lan)
+        by ds12 with esmtpa (Exim 4.89)
+        (envelope-from <john@phrozen.org>)
+        id 1igma2-0003OF-4f; Mon, 16 Dec 2019 10:22:18 +0100
+From:   John Crispin <john@phrozen.org>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        John Crispin <john@phrozen.org>,
+        Vasanthakumar Thiagarajan <vthiagar@qti.qualcomm.com>
+Subject: [RESEND] ath10k: add tx hw 802.11 encapusaltion offloading support
+Date:   Mon, 16 Dec 2019 10:22:07 +0100
+Message-Id: <20191216092207.31032-1-john@phrozen.org>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-References: <20191209072139.26068-1-yhchuang@realtek.com> <20191209072139.26068-5-yhchuang@realtek.com>
-In-Reply-To: <20191209072139.26068-5-yhchuang@realtek.com>
-From:   Chris Chiu <chiu@endlessm.com>
-Date:   Mon, 16 Dec 2019 16:45:09 +0800
-Message-ID: <CAB4CAwdGJPNJRPfsvCKEGLqFGfQT2eBWXY3YCxSWJkN-1NwGrA@mail.gmail.com>
-Subject: Re: [PATCH v2 4/6] rtw88: support wowlan feature for 8822c
-To:     Tony Chuang <yhchuang@realtek.com>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Brian Norris <briannorris@chromium.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Dec 9, 2019 at 3:21 PM <yhchuang@realtek.com> wrote:
->
-> From: Chin-Yen Lee <timlee@realtek.com>
->
-> Wake on WLAN(wowlan) is a feature which allows devices
-> to be woken up from suspend state through wlan events.
->
-> When user enables wowlan feature and then let the device
-> enter suspend state, wowlan firmware will be loaded by
-> the driver and periodically monitors wifi packets.
-> Power consumption of wifi chip will be reduced in this
-> state.
->
-> If wowlan firmware detects that specific wlan event
-> happens, it will issue wakeup signal to trigger resume
-> process. Driver will load normal firmware and let wifi
-> chip return to the original state.
->
-> Currently supported wlan events include receiving magic packet,
-> rekey packet and deauth packet, and disconnecting from AP.
->
-> Signed-off-by: Chin-Yen Lee <timlee@realtek.com>
-> Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
-> ---
->
-> v1 -> v2
->  * no change
->
-> diff --git a/drivers/net/wireless/realtek/rtw88/wow.c b/drivers/net/wireless/realtek/rtw88/wow.c
-> new file mode 100644
-> index 000000000000..e1657d3cb615
-> --- /dev/null
-> +++ b/drivers/net/wireless/realtek/rtw88/wow.c
-> @@ -0,0 +1,531 @@
-> +// SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
-> +/* Copyright(c) 2018-2019  Realtek Corporation
-> + */
-> +
-> +#include "main.h"
-> +#include "fw.h"
-> +#include "wow.h"
-> +#include "reg.h"
-> +#include "debug.h"
-> +#include "mac.h"
-> +#include "ps.h"
-> +
-> +static void rtw_wow_show_wakeup_reason(struct rtw_dev *rtwdev)
-> +{
-> +       u8 reason;
-> +
-> +       reason = rtw_read8(rtwdev, REG_WOWLAN_WAKE_REASON);
-> +
-> +       if (reason == RTW_WOW_RSN_RX_DEAUTH)
-> +               rtw_dbg(rtwdev, RTW_DBG_WOW, "WOW: Rx deauth\n");
-> +       else if (reason == RTW_WOW_RSN_DISCONNECT)
-> +               rtw_dbg(rtwdev, RTW_DBG_WOW, "WOW: AP is off\n");
-> +       else if (reason == RTW_WOW_RSN_RX_MAGIC_PKT)
-> +               rtw_dbg(rtwdev, RTW_DBG_WOW, "WOW: Rx magic packet\n");
-> +       else if (reason == RTW_WOW_RSN_RX_GTK_REKEY)
-> +               rtw_dbg(rtwdev, RTW_DBG_WOW, "WOW: Rx gtk rekey\n");
-> +       else if (reason == RTW_WOW_RSN_RX_PTK_REKEY)
-> +               rtw_dbg(rtwdev, RTW_DBG_WOW, "WOW: Rx ptk rekey\n");
-> +       else
-> +               rtw_warn(rtwdev, "Unknown wakeup reason %x\n", reason);
-> +}
-> +
-> +static void rtw_wow_bb_stop(struct rtw_dev *rtwdev)
-> +{
-> +       struct rtw_wow_param *rtw_wow = &rtwdev->wow;
-> +
-> +       /* wait 100ms for firmware to finish TX */
-> +       msleep(100);
-> +
-> +       if (!rtw_read32_mask(rtwdev, REG_BCNQ_INFO, BIT_MGQ_CPU_EMPTY))
-> +               rtw_warn(rtwdev, "Wrong status of MGQ_CPU empty!\n");
-> +
-> +       rtw_wow->txpause = rtw_read8(rtwdev, REG_TXPAUSE);
-> +       rtw_write8(rtwdev, REG_TXPAUSE, 0xff);
-> +       rtw_write8_clr(rtwdev, REG_SYS_FUNC_EN, BIT_FEN_BB_RSTB);
-> +}
-> +
-> +static void rtw_wow_bb_start(struct rtw_dev *rtwdev)
-> +{
-> +       struct rtw_wow_param *rtw_wow = &rtwdev->wow;
-> +
-> +       rtw_write8_set(rtwdev, REG_SYS_FUNC_EN, BIT_FEN_BB_RSTB);
-> +       rtw_write8(rtwdev, REG_TXPAUSE, rtw_wow->txpause);
-> +}
-> +
-> +static void rtw_wow_rx_dma_stop(struct rtw_dev *rtwdev)
-> +{
-> +       /* wait 100ms for HW to finish rx dma */
-> +       msleep(100);
-> +
-> +       rtw_write32_set(rtwdev, REG_RXPKT_NUM, BIT_RW_RELEASE);
-> +
-> +       if (!check_hw_ready(rtwdev, REG_RXPKT_NUM, BIT_RXDMA_IDLE, 1))
-> +               rtw_err(rtwdev, "failed to stop rx dma\n");
-> +}
-> +
-> +static void rtw_wow_rx_dma_start(struct rtw_dev *rtwdev)
-> +{
-> +       rtw_write32_clr(rtwdev, REG_RXPKT_NUM, BIT_RW_RELEASE);
-> +}
-> +
-> +static bool rtw_wow_check_fw_status(struct rtw_dev *rtwdev, bool wow_enable)
-> +{
-> +       bool ret;
-> +
-> +       /* wait 100ms for wow firmware to finish work */
-> +       msleep(100);
-> +
-> +       if (wow_enable) {
-> +               if (!rtw_read8(rtwdev, REG_WOWLAN_WAKE_REASON))
-> +                       ret = 0;
-> +       } else {
-> +               if (rtw_read32_mask(rtwdev, REG_FE1IMR, BIT_FS_RXDONE) == 0 &&
-> +                   rtw_read32_mask(rtwdev, REG_RXPKT_NUM, BIT_RW_RELEASE) == 0)
-> +                       ret = 0;
-> +       }
-> +
-> +       if (ret)
-> +               rtw_err(rtwdev, "failed to check wow status %s\n",
-> +                       wow_enable ? "enabled" : "disabled");
-> +
-> +       return ret;
-> +}
-> +
-> +static void rtw_wow_fw_security_type_iter(struct ieee80211_hw *hw,
-> +                                         struct ieee80211_vif *vif,
-> +                                         struct ieee80211_sta *sta,
-> +                                         struct ieee80211_key_conf *key,
-> +                                         void *data)
-> +{
-> +       struct rtw_fw_key_type_iter_data *iter_data = data;
-> +       struct rtw_dev *rtwdev = hw->priv;
-> +       u8 hw_key_type;
-> +
-> +       if (vif != rtwdev->wow.wow_vif)
-> +               return;
-> +
-> +       switch (key->cipher) {
-> +       case WLAN_CIPHER_SUITE_WEP40:
-> +               hw_key_type = RTW_CAM_WEP40;
-> +               break;
-> +       case WLAN_CIPHER_SUITE_WEP104:
-> +               hw_key_type = RTW_CAM_WEP104;
-> +               break;
-> +       case WLAN_CIPHER_SUITE_TKIP:
-> +               hw_key_type = RTW_CAM_TKIP;
-> +               key->flags |= IEEE80211_KEY_FLAG_GENERATE_MMIC;
-> +               break;
-> +       case WLAN_CIPHER_SUITE_CCMP:
-> +               hw_key_type = RTW_CAM_AES;
-> +               key->flags |= IEEE80211_KEY_FLAG_SW_MGMT_TX;
-> +               break;
-> +       default:
-> +               rtw_err(rtwdev, "Unsupported key type for wowlan mode\n");
-> +               hw_key_type = 0;
-> +               break;
-> +       }
-> +
-> +       if (sta)
-> +               iter_data->pairwise_key_type = hw_key_type;
-> +       else
-> +               iter_data->group_key_type = hw_key_type;
-> +}
-> +
-> +static void rtw_wow_fw_security_type(struct rtw_dev *rtwdev)
-> +{
-> +       struct rtw_fw_key_type_iter_data data = {};
-> +       struct ieee80211_vif *wow_vif = rtwdev->wow.wow_vif;
-> +
-> +       data.rtwdev = rtwdev;
-> +       rtw_iterate_keys(rtwdev, wow_vif,
-> +                        rtw_wow_fw_security_type_iter, &data);
-> +       rtw_fw_set_aoac_global_info_cmd(rtwdev, data.pairwise_key_type,
-> +                                       data.group_key_type);
-> +}
-> +
-> +static int rtw_wow_fw_start(struct rtw_dev *rtwdev)
-> +{
-> +       if (rtw_wow_mgd_linked(rtwdev)) {
-> +               rtw_send_rsvd_page_h2c(rtwdev);
-> +               rtw_wow_fw_security_type(rtwdev);
-> +               rtw_fw_set_disconnect_decision_cmd(rtwdev, true);
-> +               rtw_fw_set_keep_alive_cmd(rtwdev, true);
-> +       }
-> +
-> +       rtw_fw_set_wowlan_ctrl_cmd(rtwdev, true);
-> +       rtw_fw_set_remote_wake_ctrl_cmd(rtwdev, true);
-> +
-> +       return rtw_wow_check_fw_status(rtwdev, true);
-> +}
-> +
-> +static int rtw_wow_fw_stop(struct rtw_dev *rtwdev)
-> +{
-> +       if (rtw_wow_mgd_linked(rtwdev)) {
-> +               rtw_fw_set_disconnect_decision_cmd(rtwdev, false);
-> +               rtw_fw_set_keep_alive_cmd(rtwdev, false);
-> +       }
-> +
-> +       rtw_fw_set_wowlan_ctrl_cmd(rtwdev, false);
-> +       rtw_fw_set_remote_wake_ctrl_cmd(rtwdev, false);
-> +
-> +       return rtw_wow_check_fw_status(rtwdev, false);
-> +}
-> +
-> +static void rtw_wow_avoid_reset_mac(struct rtw_dev *rtwdev)
-> +{
-> +       /* When resuming from wowlan mode, some hosts issue signal
-> +        * (PCIE: PREST, USB: SE0RST) to device, and lead to reset
-> +        * mac core. If it happens, the connection to AP will be lost.
-> +        * Setting REG_RSV_CTRL Register can avoid this process.
-> +        */
-> +       switch (rtw_hci_type(rtwdev)) {
-> +       case RTW_HCI_TYPE_PCIE:
-> +       case RTW_HCI_TYPE_USB:
-> +               rtw_write8(rtwdev, REG_RSV_CTRL, BIT_WLOCK_1C_B6);
-> +               rtw_write8(rtwdev, REG_RSV_CTRL,
-> +                          BIT_WLOCK_1C_B6 | BIT_R_DIS_PRST);
-> +               break;
-> +       default:
-> +               rtw_warn(rtwdev, "Unsupported hci type to disable reset MAC\n");
-> +               break;
-> +       }
-> +}
-> +
-> +static void rtw_wow_fw_media_status_iter(void *data, struct ieee80211_sta *sta)
-> +{
-> +       struct rtw_sta_info *si = (struct rtw_sta_info *)sta->drv_priv;
-> +       struct rtw_fw_media_status_iter_data *iter_data = data;
-> +       struct rtw_dev *rtwdev = iter_data->rtwdev;
-> +
-> +       rtw_fw_media_status_report(rtwdev, si->mac_id, iter_data->connect);
-> +}
-> +
-> +static void rtw_wow_fw_media_status(struct rtw_dev *rtwdev, bool connect)
-> +{
-> +       struct rtw_fw_media_status_iter_data data;
-> +
-> +       data.rtwdev = rtwdev;
-> +       data.connect = connect;
-> +
-> +       rtw_iterate_stas_atomic(rtwdev, rtw_wow_fw_media_status_iter, &data);
-> +}
-> +
-> +void __rtw_wow_config_linked_rsvd_page(struct rtw_dev *rtwdev)
-> +{
-> +       rtw_add_rsvd_page(rtwdev, RSVD_PS_POLL, true);
-> +       rtw_add_rsvd_page(rtwdev, RSVD_QOS_NULL, true);
-> +       rtw_add_rsvd_page(rtwdev, RSVD_NULL, true);
-> +       rtw_add_rsvd_page(rtwdev, RSVD_LPS_PG_DPK, true);
-> +       rtw_add_rsvd_page(rtwdev, RSVD_LPS_PG_INFO, true);
-> +}
-> +
-> +static void rtw_wow_config_rsvd_page(struct rtw_dev *rtwdev)
-> +{
-> +       rtw_reset_rsvd_page(rtwdev);
-> +
-> +       if (rtw_wow_mgd_linked(rtwdev))
-> +               __rtw_wow_config_linked_rsvd_page(rtwdev);
-> +}
-> +
-> +static int rtw_wow_dl_fw_rsvd_page(struct rtw_dev *rtwdev)
-> +{
-> +       struct ieee80211_vif *wow_vif = rtwdev->wow.wow_vif;
-> +
-> +       rtw_wow_config_rsvd_page(rtwdev);
-> +
-> +       return rtw_fw_download_rsvd_page(rtwdev, wow_vif);
-> +}
-> +
-> +static int rtw_wow_swap_fw(struct rtw_dev *rtwdev, enum rtw_fw_type type)
-> +{
-> +       struct rtw_fw_state *fw;
-> +       int ret;
-> +
-> +       switch (type) {
-> +       case RTW_WOWLAN_FW:
-> +               fw = &rtwdev->wow_fw;
-> +               break;
-> +
-> +       case RTW_NORMAL_FW:
-> +               fw = &rtwdev->fw;
-> +               break;
-> +
-> +       default:
-> +               rtw_warn(rtwdev, "unsupported firmware type to swap\n");
-> +               return -ENOENT;
-> +       }
-> +
-> +       ret = rtw_download_firmware(rtwdev, fw);
-> +       if (ret)
-> +               goto out;
-> +
-> +       rtw_fw_send_general_info(rtwdev);
-> +       rtw_fw_send_phydm_info(rtwdev);
-> +       rtw_wow_fw_media_status(rtwdev, true);
-> +
-> +out:
-> +       return ret;
-> +}
-> +
-> +static int __rtw_wow_leave_linked_ps(struct rtw_dev *rtwdev)
-> +{
-> +       if (!test_bit(RTW_FLAG_WOWLAN, rtwdev->flags))
-> +               cancel_delayed_work_sync(&rtwdev->watch_dog_work);
-> +
-> +       return 0;
-> +}
-> +
-> +static int rtw_wow_leave_ps(struct rtw_dev *rtwdev)
-> +{
-> +       int ret = 0;
-> +
-> +       if (rtw_wow_mgd_linked(rtwdev))
-> +               ret = __rtw_wow_leave_linked_ps(rtwdev);
-> +
-> +       return ret;
-> +}
-> +
-> +static int __rtw_wow_enter_linked_ps(struct rtw_dev *rtwdev)
-> +{
-> +       struct rtw_wow_param *rtw_wow = &rtwdev->wow;
-> +       struct ieee80211_vif *wow_vif = rtw_wow->wow_vif;
-> +       struct rtw_vif *rtwvif = (struct rtw_vif *)wow_vif->drv_priv;
-> +
-> +       rtw_enter_lps(rtwdev, rtwvif->port);
-> +
-> +       return 0;
-> +}
-> +
-> +static int rtw_wow_enter_ps(struct rtw_dev *rtwdev)
-> +{
-> +       int ret = 0;
-> +
-> +       if (rtw_wow_mgd_linked(rtwdev))
-> +               ret = __rtw_wow_enter_linked_ps(rtwdev);
-> +
-> +       return ret;
-> +}
-> +
+This patch adds support for ethernet rxtx mode to the driver. The feature
+is enabled via a new module parameter. If enabled to driver will enable
+the feature on a per vif basis if all other requirements were met.
 
-I don't like __underscore_means_inner_function(). The function
-void __rtw_wow_config_linked_rsvd_page does not even prefix
-with static. I strongly prefer function_has_a_proper_name() so please
-come up with something that describes what it is really doing
-and name it like that. The rest of the code looks OK to me.
+Testing on a IPQ4019 based hardware shows a increase in TCP throughput
+of ~20% when the feature is enabled.
 
-> --
-> 2.17.1
->
+Signed-off-by: Vasanthakumar Thiagarajan <vthiagar@qti.qualcomm.com>
+Signed-off-by: John Crispin <john@phrozen.org>
+---
+Resending as Johannes has merged the mac80211 part, which means we can now
+also merge the driver support patches.
+
+ drivers/net/wireless/ath/ath10k/core.c   | 11 ++++
+ drivers/net/wireless/ath/ath10k/core.h   |  3 +
+ drivers/net/wireless/ath/ath10k/htt_tx.c | 24 +++++---
+ drivers/net/wireless/ath/ath10k/mac.c    | 75 +++++++++++++++++++-----
+ drivers/net/wireless/ath/ath10k/txrx.c   | 11 +++-
+ 5 files changed, 99 insertions(+), 25 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath10k/core.c b/drivers/net/wireless/ath/ath10k/core.c
+index 5ec16ce19b69..99d3d74c0033 100644
+--- a/drivers/net/wireless/ath/ath10k/core.c
++++ b/drivers/net/wireless/ath/ath10k/core.c
+@@ -34,6 +34,7 @@ static bool uart_print;
+ static bool skip_otp;
+ static bool rawmode;
+ static bool fw_diag_log;
++static bool ethernetmode;
+ 
+ unsigned long ath10k_coredump_mask = BIT(ATH10K_FW_CRASH_DUMP_REGISTERS) |
+ 				     BIT(ATH10K_FW_CRASH_DUMP_CE_DATA);
+@@ -46,6 +47,7 @@ module_param(skip_otp, bool, 0644);
+ module_param(rawmode, bool, 0644);
+ module_param(fw_diag_log, bool, 0644);
+ module_param_named(coredump_mask, ath10k_coredump_mask, ulong, 0444);
++module_param(ethernetmode, bool, 0644);
+ 
+ MODULE_PARM_DESC(debug_mask, "Debugging mask");
+ MODULE_PARM_DESC(uart_print, "Uart target debugging");
+@@ -54,6 +56,7 @@ MODULE_PARM_DESC(cryptmode, "Crypto mode: 0-hardware, 1-software");
+ MODULE_PARM_DESC(rawmode, "Use raw 802.11 frame datapath");
+ MODULE_PARM_DESC(coredump_mask, "Bitfield of what to include in firmware crash file");
+ MODULE_PARM_DESC(fw_diag_log, "Diag based fw log debugging");
++MODULE_PARM_DESC(ethernetmode, "Use ethernet frame datapath");
+ 
+ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
+ 	{
+@@ -3030,6 +3033,14 @@ static void ath10k_core_register_work(struct work_struct *work)
+ 	/* peer stats are enabled by default */
+ 	set_bit(ATH10K_FLAG_PEER_STATS, &ar->dev_flags);
+ 
++	if (ethernetmode && rawmode) {
++		ath10k_err(ar, "ethernet and raw mode cannot co-exist\n");
++		status = -EINVAL;
++		goto err;
++	}
++
++	ar->ethernetmode = ethernetmode;
++
+ 	status = ath10k_core_probe_fw(ar);
+ 	if (status) {
+ 		ath10k_err(ar, "could not probe fw (%d)\n", status);
+diff --git a/drivers/net/wireless/ath/ath10k/core.h b/drivers/net/wireless/ath/ath10k/core.h
+index 5101bf2b5b15..fe0affbc9d29 100644
+--- a/drivers/net/wireless/ath/ath10k/core.h
++++ b/drivers/net/wireless/ath/ath10k/core.h
+@@ -109,6 +109,7 @@ enum ath10k_skb_flags {
+ 	ATH10K_SKB_F_MGMT = BIT(3),
+ 	ATH10K_SKB_F_QOS = BIT(4),
+ 	ATH10K_SKB_F_RAW_TX = BIT(5),
++	ATH10K_SKB_F_HW_80211_ENCAP = BIT(6),
+ };
+ 
+ struct ath10k_skb_cb {
+@@ -1222,6 +1223,8 @@ struct ath10k {
+ 	struct ath10k_bus_params bus_param;
+ 	struct completion peer_delete_done;
+ 
++	bool ethernetmode;
++
+ 	/* must be last */
+ 	u8 drv_priv[0] __aligned(sizeof(void *));
+ };
+diff --git a/drivers/net/wireless/ath/ath10k/htt_tx.c b/drivers/net/wireless/ath/ath10k/htt_tx.c
+index a182c0944cc7..0ca0705fe69a 100644
+--- a/drivers/net/wireless/ath/ath10k/htt_tx.c
++++ b/drivers/net/wireless/ath/ath10k/htt_tx.c
+@@ -1144,6 +1144,10 @@ static u8 ath10k_htt_tx_get_tid(struct sk_buff *skb, bool is_eth)
+ 	struct ieee80211_hdr *hdr = (void *)skb->data;
+ 	struct ath10k_skb_cb *cb = ATH10K_SKB_CB(skb);
+ 
++	/* Firmware takes care of tid classification for ethernet format */
++	if (cb->flags & ATH10K_SKB_F_HW_80211_ENCAP)
++		return skb->priority % IEEE80211_QOS_CTL_TID_MASK;
++
+ 	if (!is_eth && ieee80211_is_mgmt(hdr->frame_control))
+ 		return HTT_DATA_TX_EXT_TID_MGMT;
+ 	else if (cb->flags & ATH10K_SKB_F_QOS)
+@@ -1378,15 +1382,17 @@ static int ath10k_htt_tx_32(struct ath10k_htt *htt,
+ 	txbuf_paddr = htt->txbuf.paddr +
+ 		      (sizeof(struct ath10k_htt_txbuf_32) * msdu_id);
+ 
+-	if ((ieee80211_is_action(hdr->frame_control) ||
+-	     ieee80211_is_deauth(hdr->frame_control) ||
+-	     ieee80211_is_disassoc(hdr->frame_control)) &&
+-	     ieee80211_has_protected(hdr->frame_control)) {
+-		skb_put(msdu, IEEE80211_CCMP_MIC_LEN);
+-	} else if (!(skb_cb->flags & ATH10K_SKB_F_NO_HWCRYPT) &&
+-		   txmode == ATH10K_HW_TXRX_RAW &&
+-		   ieee80211_has_protected(hdr->frame_control)) {
+-		skb_put(msdu, IEEE80211_CCMP_MIC_LEN);
++	if (!(info->control.flags & IEEE80211_TX_CTRL_HW_80211_ENCAP)) {
++		if ((ieee80211_is_action(hdr->frame_control) ||
++		     ieee80211_is_deauth(hdr->frame_control) ||
++		     ieee80211_is_disassoc(hdr->frame_control)) &&
++		    ieee80211_has_protected(hdr->frame_control)) {
++			skb_put(msdu, IEEE80211_CCMP_MIC_LEN);
++		} else if (!(skb_cb->flags & ATH10K_SKB_F_NO_HWCRYPT) &&
++			   txmode == ATH10K_HW_TXRX_RAW &&
++			   ieee80211_has_protected(hdr->frame_control)) {
++			skb_put(msdu, IEEE80211_CCMP_MIC_LEN);
++		}
+ 	}
+ 
+ 	skb_cb->paddr = dma_map_single(dev, msdu->data, msdu->len,
+diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
+index 767c7bf16975..a7a6a8330d6a 100644
+--- a/drivers/net/wireless/ath/ath10k/mac.c
++++ b/drivers/net/wireless/ath/ath10k/mac.c
+@@ -3427,12 +3427,16 @@ ath10k_mac_tx_h_get_txmode(struct ath10k *ar,
+ 			   struct sk_buff *skb)
+ {
+ 	const struct ieee80211_hdr *hdr = (void *)skb->data;
++	struct ieee80211_tx_info *tx_info = IEEE80211_SKB_CB(skb);
+ 	const struct ath10k_skb_cb *skb_cb = ATH10K_SKB_CB(skb);
+ 	__le16 fc = hdr->frame_control;
+ 
+ 	if (!vif || vif->type == NL80211_IFTYPE_MONITOR)
+ 		return ATH10K_HW_TXRX_RAW;
+ 
++	if (tx_info->control.flags & IEEE80211_TX_CTRL_HW_80211_ENCAP)
++		return ATH10K_HW_TXRX_ETHERNET;
++
+ 	if (ieee80211_is_mgmt(fc))
+ 		return ATH10K_HW_TXRX_MGMT;
+ 
+@@ -3585,6 +3589,15 @@ static void ath10k_mac_tx_h_fill_cb(struct ath10k *ar,
+ 			ieee80211_is_data_qos(hdr->frame_control);
+ 
+ 	cb->flags = 0;
++	cb->vif = vif;
++	cb->txq = txq;
++	cb->airtime_est = airtime;
++
++	if (info->control.flags & IEEE80211_TX_CTRL_HW_80211_ENCAP) {
++		cb->flags |= ATH10K_SKB_F_HW_80211_ENCAP;
++		return;
++	}
++
+ 	if (!ath10k_tx_h_use_hwcrypto(vif, skb))
+ 		cb->flags |= ATH10K_SKB_F_NO_HWCRYPT;
+ 
+@@ -3603,10 +3616,6 @@ static void ath10k_mac_tx_h_fill_cb(struct ath10k *ar,
+ 		cb->flags |= ATH10K_SKB_F_NO_HWCRYPT;
+ 		cb->flags |= ATH10K_SKB_F_RAW_TX;
+ 	}
+-
+-	cb->vif = vif;
+-	cb->txq = txq;
+-	cb->airtime_est = airtime;
+ }
+ 
+ bool ath10k_mac_tx_frm_has_freq(struct ath10k *ar)
+@@ -3716,6 +3725,9 @@ static int ath10k_mac_tx(struct ath10k *ar,
+ 	const struct ath10k_skb_cb *skb_cb = ATH10K_SKB_CB(skb);
+ 	int ret;
+ 
++	if (info->control.flags & IEEE80211_TX_CTRL_HW_80211_ENCAP)
++		goto skip_encap;
++
+ 	/* We should disable CCK RATE due to P2P */
+ 	if (info->flags & IEEE80211_TX_CTL_NO_CCK_RATE)
+ 		ath10k_dbg(ar, ATH10K_DBG_MAC, "IEEE80211_TX_CTL_NO_CCK_RATE\n");
+@@ -3739,6 +3751,7 @@ static int ath10k_mac_tx(struct ath10k *ar,
+ 		}
+ 	}
+ 
++skip_encap:
+ 	if (!noque_offchan && info->flags & IEEE80211_TX_CTL_TX_OFFCHAN) {
+ 		if (!ath10k_mac_tx_frm_has_freq(ar)) {
+ 			ath10k_dbg(ar, ATH10K_DBG_MAC, "mac queued offchannel skb %pK len %d\n",
+@@ -3788,6 +3801,7 @@ void ath10k_offchan_tx_work(struct work_struct *work)
+ 	int ret;
+ 	unsigned long time_left;
+ 	bool tmp_peer_created = false;
++	struct ieee80211_tx_info *info;
+ 
+ 	/* FW requirement: We must create a peer before FW will send out
+ 	 * an offchannel frame. Otherwise the frame will be stuck and
+@@ -3807,8 +3821,14 @@ void ath10k_offchan_tx_work(struct work_struct *work)
+ 		ath10k_dbg(ar, ATH10K_DBG_MAC, "mac offchannel skb %pK len %d\n",
+ 			   skb, skb->len);
+ 
+-		hdr = (struct ieee80211_hdr *)skb->data;
+-		peer_addr = ieee80211_get_DA(hdr);
++		info = IEEE80211_SKB_CB(skb);
++
++		if (info->control.flags & IEEE80211_TX_CTRL_HW_80211_ENCAP) {
++			peer_addr = skb->data;
++		} else {
++			hdr = (struct ieee80211_hdr *)skb->data;
++			peer_addr = ieee80211_get_DA(hdr);
++		}
+ 
+ 		spin_lock_bh(&ar->data_lock);
+ 		vdev_id = ar->scan.vdev_id;
+@@ -4338,7 +4358,7 @@ static void ath10k_mac_op_tx(struct ieee80211_hw *hw,
+ 	struct ieee80211_vif *vif = info->control.vif;
+ 	struct ieee80211_sta *sta = control->sta;
+ 	struct ieee80211_txq *txq = NULL;
+-	struct ieee80211_hdr *hdr = (void *)skb->data;
++	struct ieee80211_hdr *hdr;
+ 	enum ath10k_hw_txrx_mode txmode;
+ 	enum ath10k_mac_tx_path txpath;
+ 	bool is_htt;
+@@ -4369,14 +4389,20 @@ static void ath10k_mac_op_tx(struct ieee80211_hw *hw,
+ 			return;
+ 		}
+ 
+-		ret = ath10k_htt_tx_mgmt_inc_pending(htt, is_mgmt, is_presp);
+-		if (ret) {
+-			ath10k_dbg(ar, ATH10K_DBG_MAC, "failed to increase tx mgmt pending count: %d, dropping\n",
+-				   ret);
+-			ath10k_htt_tx_dec_pending(htt);
+-			spin_unlock_bh(&ar->htt.tx_lock);
+-			ieee80211_free_txskb(ar->hw, skb);
+-			return;
++		if (is_mgmt) {
++			hdr = (struct ieee80211_hdr *)skb->data;
++			is_presp = ieee80211_is_probe_resp(hdr->frame_control);
++
++			ret = ath10k_htt_tx_mgmt_inc_pending(htt, is_mgmt,
++							     is_presp);
++			if (ret) {
++				ath10k_dbg(ar, ATH10K_DBG_MAC, "failed to increase tx mgmt pending count: %d, dropping\n",
++					   ret);
++				ath10k_htt_tx_dec_pending(htt);
++				spin_unlock_bh(&ar->htt.tx_lock);
++				ieee80211_free_txskb(ar->hw, skb);
++				return;
++			}
+ 		}
+ 		spin_unlock_bh(&ar->htt.tx_lock);
+ 	}
+@@ -5209,10 +5235,12 @@ static int ath10k_mac_set_txbf_conf(struct ath10k_vif *arvif)
+ static int ath10k_add_interface(struct ieee80211_hw *hw,
+ 				struct ieee80211_vif *vif)
+ {
++	struct wireless_dev *wdev = ieee80211_vif_to_wdev(vif);
+ 	struct ath10k *ar = hw->priv;
+ 	struct ath10k_vif *arvif = (void *)vif->drv_priv;
+ 	struct ath10k_peer *peer;
+ 	enum wmi_sta_powersave_param param;
++	int hw_encap = 0;
+ 	int ret = 0;
+ 	u32 value;
+ 	int bit;
+@@ -5304,6 +5332,21 @@ static int ath10k_add_interface(struct ieee80211_hw *hw,
+ 		break;
+ 	}
+ 
++	switch (vif->type) {
++	case NL80211_IFTYPE_STATION:
++	case NL80211_IFTYPE_AP_VLAN:
++		if (wdev->netdev->ieee80211_ptr->use_4addr)
++			break;
++	/* fall through */
++	case NL80211_IFTYPE_AP:
++		hw_encap = 1;
++		break;
++	default:
++		break;
++	}
++
++	ieee80211_set_hw_80211_encap(vif, ar->ethernetmode & hw_encap);
++
+ 	/* Using vdev_id as queue number will make it very easy to do per-vif
+ 	 * tx queue locking. This shouldn't wrap due to interface combinations
+ 	 * but do a modulo for correctness sake and prevent using offchannel tx
+@@ -8883,6 +8926,8 @@ int ath10k_mac_register(struct ath10k *ar)
+ 	ieee80211_hw_set(ar->hw, QUEUE_CONTROL);
+ 	ieee80211_hw_set(ar->hw, SUPPORTS_TX_FRAG);
+ 	ieee80211_hw_set(ar->hw, REPORTS_LOW_ACK);
++	if (ar->ethernetmode)
++		ieee80211_hw_set(ar->hw, SUPPORTS_80211_ENCAP);
+ 
+ 	if (!test_bit(ATH10K_FLAG_RAW_MODE, &ar->dev_flags))
+ 		ieee80211_hw_set(ar->hw, SW_CRYPTO_CONTROL);
+diff --git a/drivers/net/wireless/ath/ath10k/txrx.c b/drivers/net/wireless/ath/ath10k/txrx.c
+index 39abf8b12903..1d8a6c2571a1 100644
+--- a/drivers/net/wireless/ath/ath10k/txrx.c
++++ b/drivers/net/wireless/ath/ath10k/txrx.c
+@@ -50,6 +50,8 @@ int ath10k_txrx_tx_unref(struct ath10k_htt *htt,
+ 	struct ath10k_skb_cb *skb_cb;
+ 	struct ath10k_txq *artxq;
+ 	struct sk_buff *msdu;
++	struct ieee80211_vif *vif;
++	u8 flags;
+ 
+ 	ath10k_dbg(ar, ATH10K_DBG_HTT,
+ 		   "htt tx completion msdu_id %u status %d\n",
+@@ -78,6 +80,9 @@ int ath10k_txrx_tx_unref(struct ath10k_htt *htt,
+ 		artxq->num_fw_queued--;
+ 	}
+ 
++	flags = skb_cb->flags;
++	vif = skb_cb->vif;
++
+ 	ath10k_htt_tx_free_msdu_id(htt, tx_done->msdu_id);
+ 	ath10k_htt_tx_dec_pending(htt);
+ 	if (htt->num_pending_tx == 0)
+@@ -123,7 +128,11 @@ int ath10k_txrx_tx_unref(struct ath10k_htt *htt,
+ 		info->status.is_valid_ack_signal = true;
+ 	}
+ 
+-	ieee80211_tx_status(htt->ar->hw, msdu);
++	if (flags & ATH10K_SKB_F_HW_80211_ENCAP)
++		ieee80211_tx_status_8023(htt->ar->hw, vif, msdu);
++	else
++		ieee80211_tx_status(htt->ar->hw, msdu);
++
+ 	/* we do not own the msdu anymore */
+ 
+ 	return 0;
+-- 
+2.20.1
+
