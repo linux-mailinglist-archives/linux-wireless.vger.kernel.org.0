@@ -2,87 +2,157 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DC2C11219DD
-	for <lists+linux-wireless@lfdr.de>; Mon, 16 Dec 2019 20:20:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A6C3121C6A
+	for <lists+linux-wireless@lfdr.de>; Mon, 16 Dec 2019 23:08:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727226AbfLPTUI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 16 Dec 2019 14:20:08 -0500
-Received: from mail-pf1-f175.google.com ([209.85.210.175]:42730 "EHLO
-        mail-pf1-f175.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726191AbfLPTUH (ORCPT
+        id S1727680AbfLPWHv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 16 Dec 2019 17:07:51 -0500
+Received: from mail2.candelatech.com ([208.74.158.173]:35492 "EHLO
+        mail3.candelatech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726448AbfLPWHv (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 16 Dec 2019 14:20:07 -0500
-Received: by mail-pf1-f175.google.com with SMTP id 4so6124438pfz.9;
-        Mon, 16 Dec 2019 11:20:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=pfOv1lQoi+q268iMK7gTa2TnPvnr8S8hwCiLEnPHWh4=;
-        b=toOIdg6dhNu82nmf911KFp9vg1ejc4YILG59m5qOsy4CqbGouNmru/5LCjrqInMKPf
-         IA7xDdOs9MIuInx44BfQXFInAN0wDN3n+UCoNK0oBM6W6jjgzc/T4L3z4ehmzG5QaPN2
-         8wafhu2wphVJROdRjCNL3XZhH4SFiAW4x5VvUzWW04juSgftkvXnNl6MRNbrUfwfjZXl
-         XiaK3lLEcEvWN9AvjerWNVIHZPERap2LbnN5XlqFdsmep1Y4GHoo9ltR+13DlG+GvMCF
-         30wXlHw/xc0feQe/t+B06zqtM7DukF4zR63mVx84mw0Y7lZ8iu3j2ruQak2LkN3xEYIl
-         mwJw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=pfOv1lQoi+q268iMK7gTa2TnPvnr8S8hwCiLEnPHWh4=;
-        b=hZxP+RYiKWVP89ToW/hMW/JVOv2XnvJ1jnP4RzqdbW4zT4D5S/Aqk6oPFCSnOeuFDc
-         C16Ns820HvAtpQr9dw0I4iTcdilL9lNe8DvOpgkc0M81WHscQ9vMVzmxwwdzw+yC/7ao
-         4cUSAehdR9d4wfKthDkBp5B8zEdhAhd5Rm5GaRhKD45epN996JS/5+GyZgDQocyblRT0
-         2895/6UYt0nWpTtvZFaVO9MlxB2xfRoJmWlb/tPlyNOmqXpSmmq1Wf2Yb+LxGTuNNVDu
-         SXn9aW1QpxfSR/YBUN8YMuI1wE0urwVuTt7twe6/dKd9V8+MsC3EOUkIZmo1W4j58C/G
-         roUA==
-X-Gm-Message-State: APjAAAX2iqb8D6Xz1dDvg4yOAN/D8gOtQNxe2a38YTLrqxNhrGSs5U+7
-        v/SphFXvObx7xE1K0/5Hklc=
-X-Google-Smtp-Source: APXvYqyj549w92CUiv/GQQqV0RLnCOj7dq+R/ttPkAduDIJpN3FqY558oHQ9VYV+3FCkaDvx/yYDPg==
-X-Received: by 2002:a63:d94b:: with SMTP id e11mr20129287pgj.79.1576524007072;
-        Mon, 16 Dec 2019 11:20:07 -0800 (PST)
-Received: from ?IPv6:2620:15c:2c1:200:55c7:81e6:c7d8:94b? ([2620:15c:2c1:200:55c7:81e6:c7d8:94b])
-        by smtp.gmail.com with ESMTPSA id c18sm23731190pgj.24.2019.12.16.11.20.05
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 16 Dec 2019 11:20:06 -0800 (PST)
-Subject: Re: debugging TCP stalls on high-speed wifi
-To:     Simon Barber <simon@superduper.net>,
-        Eric Dumazet <eric.dumazet@gmail.com>
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless@vger.kernel.org, ncardwell@google.com,
-        netdev@vger.kernel.org, toke@redhat.com
-References: <80B44318-C66D-4585-BCE3-C926076E8FF8@superduper.net>
-From:   Eric Dumazet <eric.dumazet@gmail.com>
-Message-ID: <6e1b5c34-9353-de1d-015b-68d6b20db390@gmail.com>
-Date:   Mon, 16 Dec 2019 11:20:04 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.2
+        Mon, 16 Dec 2019 17:07:51 -0500
+Received: from ben-dt4.candelatech.com (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
+        by mail3.candelatech.com (Postfix) with ESMTP id 06E7413C283;
+        Mon, 16 Dec 2019 14:07:51 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 06E7413C283
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+        s=default; t=1576534071;
+        bh=ZFqVxAGI8xAMa8bj4+K392PI1t7n079eUKCXai8+ysc=;
+        h=From:To:Cc:Subject:Date:From;
+        b=patw04LjHgnLgoa+ulw8MeQ/GwC4RbMxd1Ca0TzYwfcbS5t1DktcSu2Ggu5w1Z530
+         g6xC+F32PURMgfNDtOrxeaFY2sfZRJyjrbiEJhYKa069KqYhYhI5OrXbZzE8xrpbty
+         Tw+EQ+acuLwmTYbX7iK4h5vNvde02VFEk8XXkL34=
+From:   greearb@candelatech.com
+To:     linux-wireless@vger.kernel.org, ath10k@lists.infradead.org
+Cc:     Ben Greear <greearb@candelatech.com>
+Subject: [PATCH] ath10k:  Per-chain rssi should sum the secondary channels
+Date:   Mon, 16 Dec 2019 14:07:47 -0800
+Message-Id: <20191216220747.887-1-greearb@candelatech.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-In-Reply-To: <80B44318-C66D-4585-BCE3-C926076E8FF8@superduper.net>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+From: Ben Greear <greearb@candelatech.com>
 
+This makes per-chain RSSI be more consistent between HT20, HT40, HT80.
+Instead of doing precise log math for adding dbm, I did a rough estimate,
+it seems to work good enough.
 
-On 12/16/19 10:14 AM, Simon Barber wrote:
-> I see Macbook wifi clients seemingly randomly switch in and out of using GRO (I’ve not yet figured out a pattern to it), and the packet rate when they are doing GRO (on a download) is much lower, due to ACKing one in 8 packets instead of every other data packet. This has a big impact on performance.
-> 
-> Simon
-> 
+Tested on ath10k-ct 9984 firmware.
 
+Signed-off-by: Ben Greear <greearb@candelatech.com>
+---
+ drivers/net/wireless/ath/ath10k/htt_rx.c  | 64 ++++++++++++++++++++---
+ drivers/net/wireless/ath/ath10k/rx_desc.h |  3 +-
+ 2 files changed, 60 insertions(+), 7 deletions(-)
 
-GRO has been added to linux back in 2008.
-LRO might have been supported on NICs even earlier.
+diff --git a/drivers/net/wireless/ath/ath10k/htt_rx.c b/drivers/net/wireless/ath/ath10k/htt_rx.c
+index 13f652b622df..034d4ace228d 100644
+--- a/drivers/net/wireless/ath/ath10k/htt_rx.c
++++ b/drivers/net/wireless/ath/ath10k/htt_rx.c
+@@ -1167,6 +1167,44 @@ static bool ath10k_htt_rx_h_channel(struct ath10k *ar,
+ 	return true;
+ }
+ 
++static int ath10k_sum_sigs_2(int a, int b) {
++	int diff;
++
++	if (b == 0x80)
++		return a;
++
++	if (a >= b) {
++		diff = a - b;
++		if (diff == 0)
++			return a + 3;
++		else if (diff == 1)
++			return a + 2;
++		else if (diff == 2)
++			return a + 1;
++		return a;
++	}
++	else {
++		diff = b - a;
++		if (diff == 0)
++			return b + 3;
++		else if (diff == 1)
++			return b + 2;
++		else if (diff == 2)
++			return b + 1;
++		return b;
++	}
++}
++
++static int ath10k_sum_sigs(int p20, int e20, int e40, int e80) {
++	/* Hacky attempt at summing dbm without resorting to log(10) business */
++	if (e40 != 0x80) {
++		return ath10k_sum_sigs_2(ath10k_sum_sigs_2(p20, e20), ath10k_sum_sigs_2(e40, e80));
++	}
++	else {
++		return ath10k_sum_sigs_2(p20, e20);
++	}
++}
++
+ static void ath10k_htt_rx_h_signal(struct ath10k *ar,
+ 				   struct ieee80211_rx_status *status,
+ 				   struct htt_rx_desc *rxd)
+@@ -1177,18 +1215,32 @@ static void ath10k_htt_rx_h_signal(struct ath10k *ar,
+ 		status->chains &= ~BIT(i);
+ 
+ 		if (rxd->ppdu_start.rssi_chains[i].pri20_mhz != 0x80) {
+-			status->chain_signal[i] = ATH10K_DEFAULT_NOISE_FLOOR +
+-				rxd->ppdu_start.rssi_chains[i].pri20_mhz;
++			status->chain_signal[i] = ATH10K_DEFAULT_NOISE_FLOOR
++				+ ath10k_sum_sigs(rxd->ppdu_start.rssi_chains[i].pri20_mhz,
++						  rxd->ppdu_start.rssi_chains[i].ext20_mhz,
++						  rxd->ppdu_start.rssi_chains[i].ext40_mhz,
++						  rxd->ppdu_start.rssi_chains[i].ext80_mhz);
++			//ath10k_warn(ar, "rx-h-sig, chain[%i] pri20: %d ext20: %d  ext40: %d  ext80: %d\n",
++			//	    i, rxd->ppdu_start.rssi_chains[i].pri20_mhz, rxd->ppdu_start.rssi_chains[i].ext20_mhz,
++			//	    rxd->ppdu_start.rssi_chains[i].ext40_mhz, rxd->ppdu_start.rssi_chains[i].ext80_mhz);
+ 
+ 			status->chains |= BIT(i);
+ 		}
+ 	}
+ 
+ 	/* FIXME: Get real NF */
+-	status->signal = ATH10K_DEFAULT_NOISE_FLOOR +
+-			 rxd->ppdu_start.rssi_comb;
+-	/* ath10k_warn(ar, "rx-h-sig, signal: %d  chains: 0x%x  chain[0]: %d  chain[1]: %d  chan[2]: %d\n",
+-                       status->signal, status->chains, status->chain_signal[0], status->chain_signal[1], status->chain_signal[2]); */
++	if (rxd->ppdu_start.rssi_comb_ht != 0x80) {
++		status->signal = ATH10K_DEFAULT_NOISE_FLOOR +
++			rxd->ppdu_start.rssi_comb_ht;
++	}
++	else {
++		status->signal = ATH10K_DEFAULT_NOISE_FLOOR +
++			rxd->ppdu_start.rssi_comb;
++	}
++
++	//ath10k_warn(ar, "rx-h-sig, signal: %d  chains: 0x%x  chain[0]: %d  chain[1]: %d  chain[2]: %d chain[3]: %d\n",
++	//	    status->signal, status->chains, status->chain_signal[0],
++	//	    status->chain_signal[1], status->chain_signal[2], status->chain_signal[3]);
+ 	status->flag &= ~RX_FLAG_NO_SIGNAL_VAL;
+ }
+ 
+diff --git a/drivers/net/wireless/ath/ath10k/rx_desc.h b/drivers/net/wireless/ath/ath10k/rx_desc.h
+index dec1582005b9..6b44677474dd 100644
+--- a/drivers/net/wireless/ath/ath10k/rx_desc.h
++++ b/drivers/net/wireless/ath/ath10k/rx_desc.h
+@@ -726,7 +726,8 @@ struct rx_ppdu_start {
+ 		u8 ext80_mhz;
+ 	} rssi_chains[4];
+ 	u8 rssi_comb;
+-	__le16 rsvd0;
++	u8 rsvd0; /* first two bits are bandwidth, other 6 are reserved */
++	u8 rssi_comb_ht;
+ 	u8 info0; /* %RX_PPDU_START_INFO0_ */
+ 	__le32 info1; /* %RX_PPDU_START_INFO1_ */
+ 	__le32 info2; /* %RX_PPDU_START_INFO2_ */
+-- 
+2.20.1
 
-Modern network speeds need GRO/TSO, even if this means software stacks need some changes.
-
-If some stacks still rely on the old rule of having one ACK per two mss,
-they might not have the best experience.
-
-RFC3449 might be a good starting point.
