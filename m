@@ -2,87 +2,157 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B24A7123502
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Dec 2019 19:35:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8268C12371D
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Dec 2019 21:19:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727843AbfLQSfi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 17 Dec 2019 13:35:38 -0500
-Received: from mail2.candelatech.com ([208.74.158.173]:42834 "EHLO
-        mail3.candelatech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726874AbfLQSfi (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 17 Dec 2019 13:35:38 -0500
-Received: from [192.168.100.195] (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail3.candelatech.com (Postfix) with ESMTPSA id B269313C283;
-        Tue, 17 Dec 2019 10:35:37 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com B269313C283
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1576607737;
-        bh=IrNiNk6UmF7VdwueTHkCEP89UuBxQFPbO7T5qQSqFgI=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=CqiAxKb9u914mCYGaOB9gRORYIrI3ChJGrVah6IVIHyChUynnqf0lPgsbubpZKZZG
-         cXTMrvXnCw/RvY5x3m2I0Hw5FIQB9vwuHUp1xgIQO6KrQ3+OXv+H5aqKxKYlQniWBl
-         Jc1U3VXeBsMz92CbVQAZRi66T+Ef26Mj9/lX6xlU=
-Subject: Re: [PATCH] ath10k: Per-chain rssi should sum the secondary channels
-To:     Tom Psyborg <pozega.tomislav@gmail.com>
-Cc:     Justin Capella <justincapella@gmail.com>,
-        Sebastian Gottschall <s.gottschall@newmedia-net.de>,
-        linux-wireless@vger.kernel.org, ath10k <ath10k@lists.infradead.org>
-References: <20191216220747.887-1-greearb@candelatech.com>
- <a2af03e9-8b53-b297-467b-d0f07b8a002b@newmedia-net.de>
- <b5d63d96-4ba6-bbab-bf1c-a61c6c437f37@newmedia-net.de>
- <80700614-679a-336e-bd9a-e88622e75c9a@candelatech.com>
- <4775d91a-9719-46f8-b0f2-979b8d86cf9f@newmedia-net.de>
- <CAMrEMU-vGB8uR-JZbD2vj4vXgWNHfFqcbsqB=gOqBBDZWGkzQA@mail.gmail.com>
- <11290a30-46e8-638e-4110-86e6b2eb3d3f@candelatech.com>
- <CAKR_QV+xNbAzzw12x3Ku49bHnERTxYRAK8AfUSwp_uOgNMbY4Q@mail.gmail.com>
-From:   Ben Greear <greearb@candelatech.com>
-Organization: Candela Technologies
-Message-ID: <a95e7f6d-1cb8-3188-aea4-233dce6f9330@candelatech.com>
-Date:   Tue, 17 Dec 2019 10:35:37 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.1.1
+        id S1727908AbfLQUTT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 17 Dec 2019 15:19:19 -0500
+Received: from nbd.name ([46.4.11.11]:37062 "EHLO nbd.name"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727711AbfLQUTS (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 17 Dec 2019 15:19:18 -0500
+Received: from pd95fd66b.dip0.t-ipconnect.de ([217.95.214.107] helo=bertha.fritz.box)
+        by ds12 with esmtpa (Exim 4.89)
+        (envelope-from <john@phrozen.org>)
+        id 1ihJJK-0000ls-JQ; Tue, 17 Dec 2019 21:19:14 +0100
+From:   John Crispin <john@phrozen.org>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
+        John Crispin <john@phrozen.org>
+Subject: [RESEND 1/3] ath11k: drop tx_info from ath11k_sta
+Date:   Tue, 17 Dec 2019 21:19:07 +0100
+Message-Id: <20191217201909.27420-1-john@phrozen.org>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-In-Reply-To: <CAKR_QV+xNbAzzw12x3Ku49bHnERTxYRAK8AfUSwp_uOgNMbY4Q@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 12/17/19 10:29 AM, Tom Psyborg wrote:
-> On 17/12/2019, Ben Greear <greearb@candelatech.com> wrote:
->> On 12/17/19 8:23 AM, Justin Capella wrote:
->>> I believe someone recently submitted a patch that defined noise floors
->>> per band (2/5).
->>
->> I looked at using the real noise floor.  Our radio was reporting a noise
->> floor of around -102,
->> where the hard-coded default is -95.  This of course would make the reported
->> RSSI lower by 7db
->> in that case.  I am not sure that is correct.
->>
-> 
-> Hi
-> 
-> I am getting similar NF values with all my ath10k devices, I thought
-> default was changed since ath9k from -95 to -115 just like in the
-> vendor driver? There were some discussions about it on mailing list.
-> On some channels (5Ghz) the value goes down to about -107, even saw
-> -110 once.
-> 
+We will start using ieee80211_tx_status_ext() so we do not need to track
+tx rates inside a struct ieee80211_tx_info. It is currently not possible
+to populate that struct with HE rate info anyhow.
 
-If you use ath9k and ath10k on same channel/environment, do you see similar
-RSSI reported (especially with the ath10k patch I just posted)?
+Signed-off-by: John Crispin <john@phrozen.org>
+---
+ drivers/net/wireless/ath/ath11k/core.h  |  1 -
+ drivers/net/wireless/ath/ath11k/dp_rx.c | 51 +------------------------
+ 2 files changed, 2 insertions(+), 50 deletions(-)
 
-Thanks,
-Ben
-
+diff --git a/drivers/net/wireless/ath/ath11k/core.h b/drivers/net/wireless/ath/ath11k/core.h
+index 64ebda171a9b..2c5eed29333c 100644
+--- a/drivers/net/wireless/ath/ath11k/core.h
++++ b/drivers/net/wireless/ath/ath11k/core.h
+@@ -347,7 +347,6 @@ struct ath11k_sta {
+ 	enum hal_pn_type pn_type;
+ 
+ 	struct work_struct update_wk;
+-	struct ieee80211_tx_info tx_info;
+ 	struct rate_info txrate;
+ 	struct rate_info last_txrate;
+ 	u64 rx_duration;
+diff --git a/drivers/net/wireless/ath/ath11k/dp_rx.c b/drivers/net/wireless/ath/ath11k/dp_rx.c
+index 15bf18447464..47f9414ee921 100644
+--- a/drivers/net/wireless/ath/ath11k/dp_rx.c
++++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
+@@ -1217,25 +1217,6 @@ int ath11k_dp_htt_tlv_iter(struct ath11k_base *ab, const void *ptr, size_t len,
+ 	return 0;
+ }
+ 
+-static u32 ath11k_bw_to_mac80211_bwflags(u8 bw)
+-{
+-	u32 bwflags = 0;
+-
+-	switch (bw) {
+-	case ATH11K_BW_40:
+-		bwflags = IEEE80211_TX_RC_40_MHZ_WIDTH;
+-		break;
+-	case ATH11K_BW_80:
+-		bwflags = IEEE80211_TX_RC_80_MHZ_WIDTH;
+-		break;
+-	case ATH11K_BW_160:
+-		bwflags = IEEE80211_TX_RC_160_MHZ_WIDTH;
+-		break;
+-	}
+-
+-	return bwflags;
+-}
+-
+ static void
+ ath11k_update_per_peer_tx_stats(struct ath11k *ar,
+ 				struct htt_ppdu_stats *ppdu_stats, u8 user)
+@@ -1245,7 +1226,6 @@ ath11k_update_per_peer_tx_stats(struct ath11k *ar,
+ 	struct ieee80211_sta *sta;
+ 	struct ath11k_sta *arsta;
+ 	struct htt_ppdu_stats_user_rate *user_rate;
+-	struct ieee80211_chanctx_conf *conf = NULL;
+ 	struct ath11k_per_peer_tx_stats *peer_stats = &ar->peer_tx_stats;
+ 	struct htt_ppdu_user_stats *usr_stats = &ppdu_stats->user_stats[user];
+ 	struct htt_ppdu_stats_common *common = &ppdu_stats->common;
+@@ -1325,60 +1305,33 @@ ath11k_update_per_peer_tx_stats(struct ath11k *ar,
+ 	arsta = (struct ath11k_sta *)sta->drv_priv;
+ 
+ 	memset(&arsta->txrate, 0, sizeof(arsta->txrate));
+-	memset(&arsta->tx_info.status, 0, sizeof(arsta->tx_info.status));
+ 
+ 	switch (flags) {
+ 	case WMI_RATE_PREAMBLE_OFDM:
+ 		arsta->txrate.legacy = rate;
+-		if (arsta->arvif && arsta->arvif->vif)
+-			conf = rcu_dereference(arsta->arvif->vif->chanctx_conf);
+-		if (conf && conf->def.chan->band == NL80211_BAND_5GHZ)
+-			arsta->tx_info.status.rates[0].idx = rate_idx - 4;
+ 		break;
+ 	case WMI_RATE_PREAMBLE_CCK:
+ 		arsta->txrate.legacy = rate;
+-		arsta->tx_info.status.rates[0].idx = rate_idx;
+-		if (mcs > ATH11K_HW_RATE_CCK_LP_1M &&
+-		    mcs <= ATH11K_HW_RATE_CCK_SP_2M)
+-			arsta->tx_info.status.rates[0].flags |=
+-					IEEE80211_TX_RC_USE_SHORT_PREAMBLE;
+ 		break;
+ 	case WMI_RATE_PREAMBLE_HT:
+ 		arsta->txrate.mcs = mcs + 8 * (nss - 1);
+-		arsta->tx_info.status.rates[0].idx = arsta->txrate.mcs;
+ 		arsta->txrate.flags = RATE_INFO_FLAGS_MCS;
+-		arsta->tx_info.status.rates[0].flags |= IEEE80211_TX_RC_MCS;
+-		if (sgi) {
++		if (sgi)
+ 			arsta->txrate.flags |= RATE_INFO_FLAGS_SHORT_GI;
+-			arsta->tx_info.status.rates[0].flags |=
+-					IEEE80211_TX_RC_SHORT_GI;
+-		}
+ 		break;
+ 	case WMI_RATE_PREAMBLE_VHT:
+ 		arsta->txrate.mcs = mcs;
+-		ieee80211_rate_set_vht(&arsta->tx_info.status.rates[0], mcs, nss);
+ 		arsta->txrate.flags = RATE_INFO_FLAGS_VHT_MCS;
+-		arsta->tx_info.status.rates[0].flags |= IEEE80211_TX_RC_VHT_MCS;
+-		if (sgi) {
++		if (sgi)
+ 			arsta->txrate.flags |= RATE_INFO_FLAGS_SHORT_GI;
+-			arsta->tx_info.status.rates[0].flags |=
+-						IEEE80211_TX_RC_SHORT_GI;
+-		}
+ 		break;
+ 	}
+ 
+ 	arsta->txrate.nss = nss;
+ 	arsta->txrate.bw = ath11k_mac_bw_to_mac80211_bw(bw);
+-	arsta->tx_info.status.rates[0].flags |= ath11k_bw_to_mac80211_bwflags(bw);
+ 	arsta->tx_duration += tx_duration;
+ 	memcpy(&arsta->last_txrate, &arsta->txrate, sizeof(struct rate_info));
+ 
+-	if (succ_pkts) {
+-		arsta->tx_info.flags = IEEE80211_TX_STAT_ACK;
+-		arsta->tx_info.status.rates[0].count = 1;
+-		ieee80211_tx_rate_update(ar->hw, sta, &arsta->tx_info);
+-	}
+-
+ 	/* PPDU stats reported for mgmt packet doesn't have valid tx bytes.
+ 	 * So skip peer stats update for mgmt packets.
+ 	 */
 -- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
+2.20.1
 
