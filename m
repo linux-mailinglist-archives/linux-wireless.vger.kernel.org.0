@@ -2,145 +2,82 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E89E123464
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Dec 2019 19:07:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E3A91234D1
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Dec 2019 19:29:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728277AbfLQSHP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 17 Dec 2019 13:07:15 -0500
-Received: from mo4-p04-ob.smtp.rzone.de ([85.215.255.124]:36500 "EHLO
-        mo4-p04-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727795AbfLQSHO (ORCPT
+        id S1726874AbfLQS3d (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 17 Dec 2019 13:29:33 -0500
+Received: from mail-ot1-f66.google.com ([209.85.210.66]:44492 "EHLO
+        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726191AbfLQS3d (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 17 Dec 2019 13:07:14 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1576606032;
-        s=strato-dkim-0002; d=goldelico.com;
-        h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-        X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
-        bh=UMXxJFiRafysqC5ToenIitB6VIK2rKk3aw2iJjhwYXI=;
-        b=jPyk8Ja+RdOWhpFdqUTfsfA+H6ltACGPK5lQH4IPxGajY6gI/KZiwKv5k9nWwUsJQg
-        PygrXs70zgHo6VNUVOd17tH5Yjic8n/6YO+tT4x1nTGqrK1ILzsYcjtvG9g23A9wnsLF
-        anF/a6z+jusjZjHmGqvOj2qyJdc8CpU5jG1UMz4KXq47iB3zJHs2FG6AtUu6n2zdpk1k
-        1f1+DxmggO0xBFnmwoNQGg5u9xZgw5kQdpfXVLey+e+AaoGo77XuD0oqmCUiJavU54oc
-        ktSOBIA4/FcP7h1CB08jt/vTRNL+XpxN6SaXhWPK7Auh1Q/ZbBD0aOI3xEDZpBlolXjb
-        I9sQ==
-X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMhflhwDubTJ9o1mfYzBGHXH5Hd8HaSCa"
-X-RZG-CLASS-ID: mo00
-Received: from iMac.fritz.box
-        by smtp.strato.de (RZmta 46.0.7 DYNA|AUTH)
-        with ESMTPSA id q020e2vBHI732eU
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-        (Client did not present a certificate);
-        Tue, 17 Dec 2019 19:07:03 +0100 (CET)
-From:   "H. Nikolaus Schaller" <hns@goldelico.com>
-To:     Ulf Hansson <ulf.hansson@linaro.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        "H. Nikolaus Schaller" <hns@goldelico.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Alexios Zavras <alexios.zavras@intel.com>
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        letux-kernel@openphoenux.org, kernel@pyra-handheld.com
-Subject: [PATCH v2 2/2] wl1251: remove ti,power-gpio for SDIO mode
-Date:   Tue, 17 Dec 2019 19:07:00 +0100
-Message-Id: <644b6f86c7ad5c24753a721cb262d8a9a371d914.1576606020.git.hns@goldelico.com>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <cover.1576606020.git.hns@goldelico.com>
-References: <cover.1576606020.git.hns@goldelico.com>
+        Tue, 17 Dec 2019 13:29:33 -0500
+Received: by mail-ot1-f66.google.com with SMTP id x3so14753197oto.11
+        for <linux-wireless@vger.kernel.org>; Tue, 17 Dec 2019 10:29:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc;
+        bh=gTOUNDLMfirBGIuETviNmermg4Fi1PWX+tOT/7hhvC0=;
+        b=HCogmDGH1vErIrcO/0X0IdNF6JHKjW5zPogCgd35FNJj5PAjwcDi/+NhNzlnC1qrXF
+         ufCa9kZHBoA4dik5bQEqQVpEHvC5LqQrxXUnZtIpDzGXhP9kiw8lxjEbOu/5mF6GWvyg
+         bdsuvPoGYH4+1SCN40PB/mRqHicgxmOrFBDu7D+eC298H8FDoShzKD2NNJ2wAhRgCt0x
+         OZ9t84hjSown1ZQSpyqpcbHEO7Jl+gpAdZ48Y+61qiQ1GuDtm3weh0VLm1O6kyVdkVs8
+         GtkZOdvZ1DSwpKhRj5pCURJnDaMu/iIE7G/EHedtqifXgYwhw0sfVjZnd6EPAVDRQcic
+         wBMA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc;
+        bh=gTOUNDLMfirBGIuETviNmermg4Fi1PWX+tOT/7hhvC0=;
+        b=qn+yQOtlpAFGT68VYMpyL2e25mxaY3TlfzieFCTPnGt+xtHMwk4jcdAWUXtPR6va49
+         osjczSym2X6YVrsXa0RprsDbENJDK6B6I+0pHikIvV0lgagnl+c6pYSPcgLrrifiDIFs
+         BfCd5YTdAIsnfT58kCQ0Xp2N3LVmNLHbdsUiViMELSQQsjXNWwJVMMWCEX3W7hE5RtUw
+         U8hdOb8yG6uBwI9xsdbS0z8480Lqri0PBNhL9x0ZG+k07EUu+/lqg2BRcPX+2IQgYZgy
+         J1Nj11XcBgJrmrLaagdVAVNMl6qm/FgB3lt/MtPmvChBxQWFdfk+2IZPK2e1uL0WhVwl
+         UW6g==
+X-Gm-Message-State: APjAAAWur7zcDLxPzGlxFIX+mKd/ZVXH2XXP7ypBwfy/VhK3Hau1QSW5
+        Lnxqueep9eoK8rD9QocZuJFSbEC0c1ly9e4J8D06AA==
+X-Google-Smtp-Source: APXvYqwry9Qqb/tMBd9NQXiRW6IUbVnkQ42Yo1XaO3JezrZKIEL+EgLZXum4NEtRUb5Kunlua8Rf3EJLMFWVSllRP1M=
+X-Received: by 2002:a9d:6b17:: with SMTP id g23mr37678551otp.265.1576607372289;
+ Tue, 17 Dec 2019 10:29:32 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Received: by 2002:a9d:350:0:0:0:0:0 with HTTP; Tue, 17 Dec 2019 10:29:31 -0800 (PST)
+In-Reply-To: <11290a30-46e8-638e-4110-86e6b2eb3d3f@candelatech.com>
+References: <20191216220747.887-1-greearb@candelatech.com> <a2af03e9-8b53-b297-467b-d0f07b8a002b@newmedia-net.de>
+ <b5d63d96-4ba6-bbab-bf1c-a61c6c437f37@newmedia-net.de> <80700614-679a-336e-bd9a-e88622e75c9a@candelatech.com>
+ <4775d91a-9719-46f8-b0f2-979b8d86cf9f@newmedia-net.de> <CAMrEMU-vGB8uR-JZbD2vj4vXgWNHfFqcbsqB=gOqBBDZWGkzQA@mail.gmail.com>
+ <11290a30-46e8-638e-4110-86e6b2eb3d3f@candelatech.com>
+From:   Tom Psyborg <pozega.tomislav@gmail.com>
+Date:   Tue, 17 Dec 2019 19:29:31 +0100
+Message-ID: <CAKR_QV+xNbAzzw12x3Ku49bHnERTxYRAK8AfUSwp_uOgNMbY4Q@mail.gmail.com>
+Subject: Re: [PATCH] ath10k: Per-chain rssi should sum the secondary channels
+To:     Ben Greear <greearb@candelatech.com>
+Cc:     Justin Capella <justincapella@gmail.com>,
+        Sebastian Gottschall <s.gottschall@newmedia-net.de>,
+        linux-wireless@vger.kernel.org, ath10k <ath10k@lists.infradead.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Remove handling of this property from code.
+On 17/12/2019, Ben Greear <greearb@candelatech.com> wrote:
+> On 12/17/19 8:23 AM, Justin Capella wrote:
+>> I believe someone recently submitted a patch that defined noise floors
+>> per band (2/5).
+>
+> I looked at using the real noise floor.  Our radio was reporting a noise
+> floor of around -102,
+> where the hard-coded default is -95.  This of course would make the reported
+> RSSI lower by 7db
+> in that case.  I am not sure that is correct.
+>
 
-Note that wl->power_gpio is still needed in
-the header file for SPI mode (N900).
+Hi
 
-Suggested by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
----
- drivers/net/wireless/ti/wl1251/sdio.c | 32 ++-------------------------
- 1 file changed, 2 insertions(+), 30 deletions(-)
-
-diff --git a/drivers/net/wireless/ti/wl1251/sdio.c b/drivers/net/wireless/ti/wl1251/sdio.c
-index a032a1f92b57..4dff8bceb649 100644
---- a/drivers/net/wireless/ti/wl1251/sdio.c
-+++ b/drivers/net/wireless/ti/wl1251/sdio.c
-@@ -15,9 +15,7 @@
- #include <linux/wl12xx.h>
- #include <linux/irq.h>
- #include <linux/pm_runtime.h>
--#include <linux/gpio.h>
- #include <linux/of.h>
--#include <linux/of_gpio.h>
- #include <linux/of_irq.h>
- 
- #include "wl1251.h"
-@@ -162,15 +160,6 @@ static int wl1251_sdio_set_power(struct wl1251 *wl, bool enable)
- printk("%s %d\n", __func__, enable);
- 
- 	if (enable) {
--		/*
--		 * Power is controlled by runtime PM, but we still call board
--		 * callback in case it wants to do any additional setup,
--		 * for example enabling clock buffer for the module.
--		 */
--		if (gpio_is_valid(wl->power_gpio))
--			gpio_set_value(wl->power_gpio, true);
--
--
- 		ret = pm_runtime_get_sync(&func->dev);
- 		if (ret < 0) {
- 			pm_runtime_put_sync(&func->dev);
-@@ -188,9 +177,6 @@ printk("%s %d\n", __func__, enable);
- 		ret = pm_runtime_put_sync(&func->dev);
- 		if (ret < 0)
- 			goto out;
--
--		if (gpio_is_valid(wl->power_gpio))
--			gpio_set_value(wl->power_gpio, false);
- 	}
- 
- out:
-@@ -245,31 +231,17 @@ printk("%s: of=%pOFcC\n", __func__, np);
- 
- 	wl1251_board_data = wl1251_get_platform_data();
- 	if (!IS_ERR(wl1251_board_data)) {
--		wl->power_gpio = wl1251_board_data->power_gpio;
- 		wl->irq = wl1251_board_data->irq;
- 		wl->use_eeprom = wl1251_board_data->use_eeprom;
- 	} else if (np) {
--		wl->use_eeprom = of_property_read_bool(np,
--						       "ti,wl1251-has-eeprom");
--		wl->power_gpio = of_get_named_gpio(np, "ti,power-gpio", 0);
-+		wl->use_eeprom = of_property_read_bool(np, "ti,wl1251-has-eeprom");
- 		wl->irq = of_irq_get(np, 0);
--
--		if (wl->power_gpio == -EPROBE_DEFER ||
--		    wl->irq == -EPROBE_DEFER) {
-+		if (wl->irq == -EPROBE_DEFER) {
- 			ret = -EPROBE_DEFER;
- 			goto disable;
- 		}
- 	}
- 
--	if (gpio_is_valid(wl->power_gpio)) {
--		ret = devm_gpio_request(&func->dev, wl->power_gpio,
--								"wl1251 power");
--		if (ret) {
--			wl1251_error("Failed to request gpio: %d\n", ret);
--			goto disable;
--		}
--	}
--
- 	if (wl->irq) {
- 		irq_set_status_flags(wl->irq, IRQ_NOAUTOEN);
- 		ret = request_irq(wl->irq, wl1251_line_irq, 0, "wl1251", wl);
--- 
-2.23.0
-
+I am getting similar NF values with all my ath10k devices, I thought
+default was changed since ath9k from -95 to -115 just like in the
+vendor driver? There were some discussions about it on mailing list.
+On some channels (5Ghz) the value goes down to about -107, even saw
+-110 once.
