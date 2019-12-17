@@ -2,79 +2,121 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 64C28122FC3
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Dec 2019 16:09:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 894D9122FE7
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Dec 2019 16:16:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727466AbfLQPJK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 17 Dec 2019 10:09:10 -0500
-Received: from mail2.candelatech.com ([208.74.158.173]:57356 "EHLO
-        mail3.candelatech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727039AbfLQPJJ (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 17 Dec 2019 10:09:09 -0500
-Received: from [192.168.1.47] (unknown [50.34.171.50])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail3.candelatech.com (Postfix) with ESMTPSA id 7DF3013C2B8;
-        Tue, 17 Dec 2019 07:09:04 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 7DF3013C2B8
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1576595345;
-        bh=x0Ce8VbMivkZjR5QKnOUlMinCHJEP48+vJkv8E2aJjY=;
-        h=Subject:To:References:From:Date:In-Reply-To:From;
-        b=mzbiuZ7G8uBvBqHKz05q+kStNUtyr+wjyXLG4AaOh0xgz95PqqdWrz/5HyBRrwUn0
-         NsPx4APp8A4V/kaIymj7TlzuNeTBExw1zeF+SkyS9YcYxFCcM8hrwLdWn/1wuj1ozI
-         ta3qHFIBLggqfU+MO4UgGEkSO6o+W8+pem4CfyGk=
-Subject: Re: [RFC] mac80211: Fix setting txpower to zero.
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless@vger.kernel.org
-References: <20191213230334.27631-1-greearb@candelatech.com>
- <9ff2afcfb6590e92d8e73656e657414ec2c71b3d.camel@sipsolutions.net>
-From:   Ben Greear <greearb@candelatech.com>
-Message-ID: <d54cc6e5-45b5-5c15-47e2-6bec8aad73aa@candelatech.com>
-Date:   Tue, 17 Dec 2019 07:09:03 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
- Thunderbird/45.8.0
+        id S1727546AbfLQPPs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 17 Dec 2019 10:15:48 -0500
+Received: from mail-dm6nam12on2082.outbound.protection.outlook.com ([40.107.243.82]:37473
+        "EHLO NAM12-DM6-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726487AbfLQPPs (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 17 Dec 2019 10:15:48 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=fwaGY4LZ+KUXp+h31hb25H9YYNzIiF6pFlpyEB/WJ/NRj9n9CFL9Oa9ZlL4aTzCkjpxVnFpltEYZOvUr8qHDjoCNYLwWps9zmtLhWf/Qg/2uvpCOBQ2yC2e0/oYIM+PmrzDsw8pXZncYjilk4eRqqPem6Q1rMt5H0kIrczk2MVTmsrHCSkM0hIxANssbIpOnkcYRm0+9P+ghD+pOYtYRL4JBCEK7C2lsfYDKk3egnV0S1w0MslRKfVTnCeadrxpJp73itNWnDpoww68EWyyJmPnSRyJLYs17StP7HeFQt2DR3IceJzr/CYMfqTyEguUCwW107sZi5iHRiYb9WNtCwQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=iZFxRT0GOi/Vsu5beHbq66xrGOfUhq7QJyQgnxawg+Y=;
+ b=lBw9CsCszpQpUe6b+x1PqUpMgDmGTDJNzyZMMmGVPUCLVEi9QJIkP4WEtP4v8dw9mY2hR91GQ0D7o0NnI3jkGhazpOyNrHZGA4OAUDgQeJLlHJvpu6NXHFc2fGm8eWsTjkPQQSZi128PT4xDdUbmDC5Cz6U+hkDpURFTiF4xFZKi/kG+xGxJlp90vLcjR3F3W16Ets2nFEJC54/2SWb20hIRCIEmd0nAml0WQI4jKYUdtPxPI9zBxxkkbYqiw1J7ZEcHbbf37om4+pASfbD56rsBs7CDJgbVALTOPd5phldy5xg/gIwRR5tOqKsEg2mB6t7Lq7GLkDLOhJqwId/6zQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=silabs.com; dmarc=pass action=none header.from=silabs.com;
+ dkim=pass header.d=silabs.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=silabs.onmicrosoft.com; s=selector2-silabs-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=iZFxRT0GOi/Vsu5beHbq66xrGOfUhq7QJyQgnxawg+Y=;
+ b=Qpf5jgnKhC4cXxacIfxHh3t3YT1D5kWhWXkONoIy+NjV5x0BM4pCu6GEqTCJ3ZTuFUh3gzWVWBTkG2dMdCOb6RsZMT18l03Da8swGw4ZGZw0yskMc0qbNLk07qt6TL1ryfS5P1570D//815wHFB9slITbMfON++by35L1vGcKxQ=
+Received: from MN2PR11MB4063.namprd11.prod.outlook.com (10.255.180.22) by
+ MN2PR11MB3759.namprd11.prod.outlook.com (20.178.252.145) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2538.19; Tue, 17 Dec 2019 15:15:45 +0000
+Received: from MN2PR11MB4063.namprd11.prod.outlook.com
+ ([fe80::f46c:e5b4:2a85:f0bf]) by MN2PR11MB4063.namprd11.prod.outlook.com
+ ([fe80::f46c:e5b4:2a85:f0bf%4]) with mapi id 15.20.2538.019; Tue, 17 Dec 2019
+ 15:15:44 +0000
+From:   =?iso-8859-1?Q?J=E9r=F4me_Pouiller?= <Jerome.Pouiller@silabs.com>
+To:     Felix Fietkau <nbd@nbd.name>
+CC:     "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Alban Jeantheau <Alban.Jeantheau@silabs.com>
+Subject: Re: [PATCH 07/55] staging: wfx: ensure that retry policy always
+ fallbacks to MCS0 / 1Mbps
+Thread-Topic: [PATCH 07/55] staging: wfx: ensure that retry policy always
+ fallbacks to MCS0 / 1Mbps
+Thread-Index: AQHVtDLBov0Pg1nqV0CYOt2kPrSx7ae9D0mAgAEbCoCAAAVOAIAAQayA
+Date:   Tue, 17 Dec 2019 15:15:44 +0000
+Message-ID: <3099559.gv3Q75KnN1@pc-42>
+References: <20191216170302.29543-1-Jerome.Pouiller@silabs.com>
+ <3755885.sodJc2dsoe@pc-42> <f5a6b1b4-6000-04c9-f3a6-c2be8e5dcc61@nbd.name>
+In-Reply-To: <f5a6b1b4-6000-04c9-f3a6-c2be8e5dcc61@nbd.name>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=Jerome.Pouiller@silabs.com; 
+x-originating-ip: [37.71.187.125]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: d0efa2ba-0c83-4e11-8d81-08d78303fd03
+x-ms-traffictypediagnostic: MN2PR11MB3759:
+x-ms-exchange-transport-forked: True
+x-microsoft-antispam-prvs: <MN2PR11MB3759B7FCF7DFEE1CD77D00EC93500@MN2PR11MB3759.namprd11.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:9508;
+x-forefront-prvs: 02543CD7CD
+x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(7916004)(346002)(376002)(396003)(39840400004)(366004)(136003)(189003)(199004)(186003)(81156014)(81166006)(33716001)(66574012)(86362001)(54906003)(91956017)(6916009)(107886003)(8936002)(26005)(478600001)(66556008)(66476007)(6486002)(66446008)(64756008)(76116006)(66946007)(2906002)(71200400001)(6506007)(6512007)(9686003)(316002)(5660300002)(8676002)(4326008)(39026012);DIR:OUT;SFP:1101;SCL:1;SRVR:MN2PR11MB3759;H:MN2PR11MB4063.namprd11.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+received-spf: None (protection.outlook.com: silabs.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: leuZBy7uSqJ2M3kgMi0fc1Nne48Mg92yAUO0UOj6UL+nKy8J5pLQjZzNjJYIW4IDJbALLlD/F27oV+f9e2+dsd2X1JlLUfxrSRjDDUAIDKho1t/t/7AmDJCjpMtby3es5DRWaubrDqIUydxjHWMpHOyJBDabuVsqL4t3zbMMbBZmY/HXV3hJpyzGFgC9dasykbpb7RE6cMb4nJZyS6hFq6MAQ0xJFaIuWnqgx501ROoZTJ3W2Czj1F6dDmjUeFiYPU0clp4HjRG1nU4N8rfwNJC0mFyfwIBXuxkZgEBzoumXr6Ow7V0KANWz8CVpG73PKu404LMjUNzSrrifd1jWVJfY9GHUxNTzY27dzpWJlTiNxVVKAq29vttdG7/LXDPbxng2y/vtC9dTShPFuGnmY9sgtgkkBE5cuSK9WomF2hpeoKIlonMPtKoU/MqQFPfTKb0zf3F8EcyDzxDhNM757PMRLrfj3JzHx8VOhblntfNnvIhEfxaLnEXRCGuG2jaa
+Content-Type: text/plain; charset="iso-8859-1"
+Content-ID: <85E93619B9622F42B50D80D4478C053F@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-In-Reply-To: <9ff2afcfb6590e92d8e73656e657414ec2c71b3d.camel@sipsolutions.net>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-OriginatorOrg: silabs.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d0efa2ba-0c83-4e11-8d81-08d78303fd03
+X-MS-Exchange-CrossTenant-originalarrivaltime: 17 Dec 2019 15:15:44.7754
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 54dbd822-5231-4b20-944d-6f4abcd541fb
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: IHbKaw3bpDRPS/ibEPbmcdivgki8Mmxu8ey+QRN1lJh+W4clmCXPLGz201G2lJulD8RFOpchLf3Tei1/HehdbQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR11MB3759
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On Tuesday 17 December 2019 12:20:40 CET Felix Fietkau wrote:
+[...]
+> Instead of using per-packet rate info, implement the
+> .sta_rate_tbl_update callback to maintain a primary tx policy used for
+> all non-probing non-fixed-rate packets, which you can alter while
+> packets using it are queued already.
+> The existing approach using per-packet tx_info data should then be used
+> only for probing or fixed-rate packets.
+> You then probably have to be a bit clever in the tx status path for
+> figuring out what rates were actually used.
+
+Indeed, I have noticed that we are are to react to any changes on the
+link quality. Your idea may helps a lot. Thank you.
+
+Do you know if I can safely rely on IEEE80211_TX_CTL_RATE_CTRL_PROBE and
+IEEE80211_TX_CTL_USE_MINRATE to detect probing and fixed-rate packets?
+
+I currently work on others parts, but I think I will try your suggestion
+in January.
+
+One last thing, do you know why minstrel appends the lowest rate and
+minstrel_ht don't? They should be identical, not?
 
 
-On 12/16/2019 11:57 PM, Johannes Berg wrote:
-> On Fri, 2019-12-13 at 15:03 -0800, greearb@candelatech.com wrote:
->>
->> So, instead initialize the txpower to -1 in mac80211, and let drivers know that
->> means the power has not been set and so should be ignored.
->
-> Technically (or maybe just physically?), even -1 is a sort of valid TX
-> power.
->
-> I know all of this is pretty messed up, but wouldn't it make more sense
-> to go with some kind of tx_power_valid bit, or perhaps something that
-> certainly will never make sense like MIN_INT instead of -1?
+--=20
+J=E9r=F4me Pouiller
 
-I'm fine with using MIN_INT instead of -1 as the 'not-set' special value.
-
-Certainly -1 dbm txpower can be legit, though not on the chipsets I am familiar
-with as far as I can tell.
-
-I'll redo the patch with MIN_INT later today.  I think that will be a lot less
-change than adding a new flag that needs to be propagated to the drivers and stored
-by drivers and such.
-
-Thanks,
-Ben
-
->
-> johannes
->
-
--- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
