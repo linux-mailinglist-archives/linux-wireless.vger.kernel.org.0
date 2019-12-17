@@ -2,100 +2,196 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B389122F81
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Dec 2019 15:59:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 20270122F9D
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Dec 2019 16:05:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727939AbfLQO7b (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 17 Dec 2019 09:59:31 -0500
-Received: from nbd.name ([46.4.11.11]:44488 "EHLO nbd.name"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726560AbfLQO7b (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 17 Dec 2019 09:59:31 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-         s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
-        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=+8L1lSnnK7nL4n5raeEmDmK4NyWmLIl9WA4sSDwK8jc=; b=IpUKUVmyJkWbdN9lK7cDmd9D4J
-        QR4qMW/VReCCQfTHbjgaPcsUzxxYz+T46GgnyWeKD0w5m5vrH1Klt3reSte6ZWql86dJ3rxtqKIr3
-        HRHjaJhOOvjL1diFYWZyDISzzpCSmt60vCl3xRwEPVWUtMoljzJjjWSN3WDl0r5AfPuA=;
-Received: from [178.162.209.142] (helo=nf.local)
-        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.89)
-        (envelope-from <nbd@nbd.name>)
-        id 1ihEJm-00046H-Vc; Tue, 17 Dec 2019 15:59:23 +0100
-Subject: Re: [PATCH] mt76: fix LED link time failure
-To:     Kalle Valo <kvalo@codeaurora.org>, Arnd Bergmann <arnd@arndb.de>
-Cc:     Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Roy Luo <royluo@google.com>,
-        Stanislaw Gruszka <sgruszka@redhat.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20191216131902.3251040-1-arnd@arndb.de>
- <87lfrbaull.fsf@kamboji.qca.qualcomm.com>
-From:   Felix Fietkau <nbd@nbd.name>
-Autocrypt: addr=nbd@nbd.name; prefer-encrypt=mutual; keydata=
- xsDiBEah5CcRBADIY7pu4LIv3jBlyQ/2u87iIZGe6f0f8pyB4UjzfJNXhJb8JylYYRzIOSxh
- ExKsdLCnJqsG1PY1mqTtoG8sONpwsHr2oJ4itjcGHfn5NJSUGTbtbbxLro13tHkGFCoCr4Z5
- Pv+XRgiANSpYlIigiMbOkide6wbggQK32tC20QxUIwCg4k6dtV/4kwEeiOUfErq00TVqIiEE
- AKcUi4taOuh/PQWx/Ujjl/P1LfJXqLKRPa8PwD4j2yjoc9l+7LptSxJThL9KSu6gtXQjcoR2
- vCK0OeYJhgO4kYMI78h1TSaxmtImEAnjFPYJYVsxrhay92jisYc7z5R/76AaELfF6RCjjGeP
- wdalulG+erWju710Bif7E1yjYVWeA/9Wd1lsOmx6uwwYgNqoFtcAunDaMKi9xVQW18FsUusM
- TdRvTZLBpoUAy+MajAL+R73TwLq3LnKpIcCwftyQXK5pEDKq57OhxJVv1Q8XkA9Dn1SBOjNB
- l25vJDFAT9ntp9THeDD2fv15yk4EKpWhu4H00/YX8KkhFsrtUs69+vZQwc0cRmVsaXggRmll
- dGthdSA8bmJkQG5iZC5uYW1lPsJgBBMRAgAgBQJGoeQnAhsjBgsJCAcDAgQVAggDBBYCAwEC
- HgECF4AACgkQ130UHQKnbvXsvgCgjsAIIOsY7xZ8VcSm7NABpi91yTMAniMMmH7FRenEAYMa
- VrwYTIThkTlQzsFNBEah5FQQCACMIep/hTzgPZ9HbCTKm9xN4bZX0JjrqjFem1Nxf3MBM5vN
- CYGBn8F4sGIzPmLhl4xFeq3k5irVg/YvxSDbQN6NJv8o+tP6zsMeWX2JjtV0P4aDIN1pK2/w
- VxcicArw0VYdv2ZCarccFBgH2a6GjswqlCqVM3gNIMI8ikzenKcso8YErGGiKYeMEZLwHaxE
- Y7mTPuOTrWL8uWWRL5mVjhZEVvDez6em/OYvzBwbkhImrryF29e3Po2cfY2n7EKjjr3/141K
- DHBBdgXlPNfDwROnA5ugjjEBjwkwBQqPpDA7AYPvpHh5vLbZnVGu5CwG7NAsrb2isRmjYoqk
- wu++3117AAMFB/9S0Sj7qFFQcD4laADVsabTpNNpaV4wAgVTRHKV/kC9luItzwDnUcsZUPdQ
- f3MueRJ3jIHU0UmRBG3uQftqbZJj3ikhnfvyLmkCNe+/hXhPu9sGvXyi2D4vszICvc1KL4RD
- aLSrOsROx22eZ26KqcW4ny7+va2FnvjsZgI8h4sDmaLzKczVRIiLITiMpLFEU/VoSv0m1F4B
- FtRgoiyjFzigWG0MsTdAN6FJzGh4mWWGIlE7o5JraNhnTd+yTUIPtw3ym6l8P+gbvfoZida0
- TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabwkkE
- GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCfTKx80VvCR/PvsUlrvdOLsIgeRGAAn1ee
- RjMaxwtSdaCKMw3j33ZbsWS4
-Message-ID: <c029f35a-6fd9-fc69-aa8f-16b66235f71e@nbd.name>
-Date:   Tue, 17 Dec 2019 15:59:22 +0100
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:68.0)
- Gecko/20100101 Thunderbird/68.3.0
+        id S1727958AbfLQPFG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 17 Dec 2019 10:05:06 -0500
+Received: from mail2.candelatech.com ([208.74.158.173]:56980 "EHLO
+        mail3.candelatech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726560AbfLQPFF (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 17 Dec 2019 10:05:05 -0500
+Received: from [192.168.1.47] (unknown [50.34.171.50])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail3.candelatech.com (Postfix) with ESMTPSA id 3FAB113C283;
+        Tue, 17 Dec 2019 07:05:04 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 3FAB113C283
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+        s=default; t=1576595104;
+        bh=C8xBM7xioLodaT9kHDR/7kQoUMLJxRdZS6LgCD7zX2k=;
+        h=Subject:To:References:From:Date:In-Reply-To:From;
+        b=Q3z7Y9aqHjkDgHT1f4Ad5QSZnpiNBtcCPLYnkl6kxfJlKyFNHGJeXRJzj4KRDZ4Iv
+         TMvV+AYf+BRthGrYBc2ER+TVACRkah0+Hj06gBldUHinzWedZu7+N1wpEdWti8P0si
+         6Cy4PGDhUnigliJH5/Y1wIRB9wZJCf6aZehb/1jM=
+Subject: Re: [PATCH] ath10k: Per-chain rssi should sum the secondary channels
+To:     Sebastian Gottschall <s.gottschall@newmedia-net.de>,
+        linux-wireless@vger.kernel.org, ath10k@lists.infradead.org
+References: <20191216220747.887-1-greearb@candelatech.com>
+ <a2af03e9-8b53-b297-467b-d0f07b8a002b@newmedia-net.de>
+ <b5d63d96-4ba6-bbab-bf1c-a61c6c437f37@newmedia-net.de>
+From:   Ben Greear <greearb@candelatech.com>
+Message-ID: <80700614-679a-336e-bd9a-e88622e75c9a@candelatech.com>
+Date:   Tue, 17 Dec 2019 07:05:03 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+ Thunderbird/45.8.0
 MIME-Version: 1.0
-In-Reply-To: <87lfrbaull.fsf@kamboji.qca.qualcomm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+In-Reply-To: <b5d63d96-4ba6-bbab-bf1c-a61c6c437f37@newmedia-net.de>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2019-12-17 15:35, Kalle Valo wrote:
-> Arnd Bergmann <arnd@arndb.de> writes:
-> 
->> The mt76_led_cleanup() function is called unconditionally, which
->> leads to a link error when CONFIG_LEDS is a loadable module or
->> disabled but mt76 is built-in:
->>
->> drivers/net/wireless/mediatek/mt76/mac80211.o: In function `mt76_unregister_device':
->> mac80211.c:(.text+0x2ac): undefined reference to `led_classdev_unregister'
->>
->> Use the same trick that is guarding the registration, using an
->> IS_ENABLED() check for the CONFIG_MT76_LEDS symbol that indicates
->> whether LEDs can be used or not.
->>
->> Fixes: 36f7e2b2bb1d ("mt76: do not use devm API for led classdev")
->> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> 
-> Felix, as this is a regression in v5.5-rc1 can I take this directly to
-> wireless-drivers?
-Yes. Please add:
-Acked-by: Felix Fietkau <nbd@nbd.name>
 
-- Felix
+
+On 12/17/2019 04:32 AM, Sebastian Gottschall wrote:
+> result of my tests
+>
+> on qca988x rxd->ppdu_start.rssi_comb_ht is always zero. so you need to add a additional check
+>
+> Am 17.12.2019 um 13:02 schrieb Sebastian Gottschall:
+>> i see a issue in your patch for qca988x chipsets
+>>
+>> +    if (rxd->ppdu_start.rssi_comb_ht != 0x80) {
+>> +        status->signal = ATH10K_DEFAULT_NOISE_FLOOR +
+>> +            rxd->ppdu_start.rssi_comb_ht;
+>> +    }
+>>
+>>
+>> this is always true for qca988x, but the field is not provided on these older chipsets. so signal reporting will be broken
+>> i'm currently debugging in your code, but i already have seen that the values are wrong now for this chipset
+
+Thanks for testing.  I'll add a check for 0 and ignore that value too.  That seem OK?
+
+Were the per-chain values OK?
+
+Thanks,
+Ben
+
+>>
+>> Am 16.12.2019 um 23:07 schrieb greearb@candelatech.com:
+>>> From: Ben Greear <greearb@candelatech.com>
+>>>
+>>> This makes per-chain RSSI be more consistent between HT20, HT40, HT80.
+>>> Instead of doing precise log math for adding dbm, I did a rough estimate,
+>>> it seems to work good enough.
+>>>
+>>> Tested on ath10k-ct 9984 firmware.
+>>>
+>>> Signed-off-by: Ben Greear <greearb@candelatech.com>
+>>> ---
+>>>   drivers/net/wireless/ath/ath10k/htt_rx.c  | 64 ++++++++++++++++++++---
+>>>   drivers/net/wireless/ath/ath10k/rx_desc.h |  3 +-
+>>>   2 files changed, 60 insertions(+), 7 deletions(-)
+>>>
+>>> diff --git a/drivers/net/wireless/ath/ath10k/htt_rx.c b/drivers/net/wireless/ath/ath10k/htt_rx.c
+>>> index 13f652b622df..034d4ace228d 100644
+>>> --- a/drivers/net/wireless/ath/ath10k/htt_rx.c
+>>> +++ b/drivers/net/wireless/ath/ath10k/htt_rx.c
+>>> @@ -1167,6 +1167,44 @@ static bool ath10k_htt_rx_h_channel(struct ath10k *ar,
+>>>       return true;
+>>>   }
+>>>   +static int ath10k_sum_sigs_2(int a, int b) {
+>>> +    int diff;
+>>> +
+>>> +    if (b == 0x80)
+>>> +        return a;
+>>> +
+>>> +    if (a >= b) {
+>>> +        diff = a - b;
+>>> +        if (diff == 0)
+>>> +            return a + 3;
+>>> +        else if (diff == 1)
+>>> +            return a + 2;
+>>> +        else if (diff == 2)
+>>> +            return a + 1;
+>>> +        return a;
+>>> +    }
+>>> +    else {
+>>> +        diff = b - a;
+>>> +        if (diff == 0)
+>>> +            return b + 3;
+>>> +        else if (diff == 1)
+>>> +            return b + 2;
+>>> +        else if (diff == 2)
+>>> +            return b + 1;
+>>> +        return b;
+>>> +    }
+>>> +}
+>>> +
+>>> +static int ath10k_sum_sigs(int p20, int e20, int e40, int e80) {
+>>> +    /* Hacky attempt at summing dbm without resorting to log(10) business */
+>>> +    if (e40 != 0x80) {
+>>> +        return ath10k_sum_sigs_2(ath10k_sum_sigs_2(p20, e20), ath10k_sum_sigs_2(e40, e80));
+>>> +    }
+>>> +    else {
+>>> +        return ath10k_sum_sigs_2(p20, e20);
+>>> +    }
+>>> +}
+>>> +
+>>>   static void ath10k_htt_rx_h_signal(struct ath10k *ar,
+>>>                      struct ieee80211_rx_status *status,
+>>>                      struct htt_rx_desc *rxd)
+>>> @@ -1177,18 +1215,32 @@ static void ath10k_htt_rx_h_signal(struct ath10k *ar,
+>>>           status->chains &= ~BIT(i);
+>>>             if (rxd->ppdu_start.rssi_chains[i].pri20_mhz != 0x80) {
+>>> -            status->chain_signal[i] = ATH10K_DEFAULT_NOISE_FLOOR +
+>>> -                rxd->ppdu_start.rssi_chains[i].pri20_mhz;
+>>> +            status->chain_signal[i] = ATH10K_DEFAULT_NOISE_FLOOR
+>>> +                + ath10k_sum_sigs(rxd->ppdu_start.rssi_chains[i].pri20_mhz,
+>>> + rxd->ppdu_start.rssi_chains[i].ext20_mhz,
+>>> + rxd->ppdu_start.rssi_chains[i].ext40_mhz,
+>>> + rxd->ppdu_start.rssi_chains[i].ext80_mhz);
+>>> +            //ath10k_warn(ar, "rx-h-sig, chain[%i] pri20: %d ext20: %d  ext40: %d  ext80: %d\n",
+>>> +            //        i, rxd->ppdu_start.rssi_chains[i].pri20_mhz, rxd->ppdu_start.rssi_chains[i].ext20_mhz,
+>>> +            // rxd->ppdu_start.rssi_chains[i].ext40_mhz, rxd->ppdu_start.rssi_chains[i].ext80_mhz);
+>>>                 status->chains |= BIT(i);
+>>>           }
+>>>       }
+>>>         /* FIXME: Get real NF */
+>>> -    status->signal = ATH10K_DEFAULT_NOISE_FLOOR +
+>>> -             rxd->ppdu_start.rssi_comb;
+>>> -    /* ath10k_warn(ar, "rx-h-sig, signal: %d  chains: 0x%x chain[0]: %d  chain[1]: %d  chan[2]: %d\n",
+>>> -                       status->signal, status->chains, status->chain_signal[0], status->chain_signal[1], status->chain_signal[2]); */
+>>> +    if (rxd->ppdu_start.rssi_comb_ht != 0x80) {
+>>> +        status->signal = ATH10K_DEFAULT_NOISE_FLOOR +
+>>> +            rxd->ppdu_start.rssi_comb_ht;
+>>> +    }
+>>> +    else {
+>>> +        status->signal = ATH10K_DEFAULT_NOISE_FLOOR +
+>>> +            rxd->ppdu_start.rssi_comb;
+>>> +    }
+>>> +
+>>> +    //ath10k_warn(ar, "rx-h-sig, signal: %d  chains: 0x%x chain[0]: %d  chain[1]: %d  chain[2]: %d chain[3]: %d\n",
+>>> +    //        status->signal, status->chains, status->chain_signal[0],
+>>> +    //        status->chain_signal[1], status->chain_signal[2], status->chain_signal[3]);
+>>>       status->flag &= ~RX_FLAG_NO_SIGNAL_VAL;
+>>>   }
+>>>   diff --git a/drivers/net/wireless/ath/ath10k/rx_desc.h b/drivers/net/wireless/ath/ath10k/rx_desc.h
+>>> index dec1582005b9..6b44677474dd 100644
+>>> --- a/drivers/net/wireless/ath/ath10k/rx_desc.h
+>>> +++ b/drivers/net/wireless/ath/ath10k/rx_desc.h
+>>> @@ -726,7 +726,8 @@ struct rx_ppdu_start {
+>>>           u8 ext80_mhz;
+>>>       } rssi_chains[4];
+>>>       u8 rssi_comb;
+>>> -    __le16 rsvd0;
+>>> +    u8 rsvd0; /* first two bits are bandwidth, other 6 are reserved */
+>>> +    u8 rssi_comb_ht;
+>>>       u8 info0; /* %RX_PPDU_START_INFO0_ */
+>>>       __le32 info1; /* %RX_PPDU_START_INFO1_ */
+>>>       __le32 info2; /* %RX_PPDU_START_INFO2_ */
+>>
+>> _______________________________________________
+>> ath10k mailing list
+>> ath10k@lists.infradead.org
+>> http://lists.infradead.org/mailman/listinfo/ath10k
+>>
+>
+
+-- 
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
