@@ -2,126 +2,88 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 91E951231B1
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Dec 2019 17:17:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 444721231F0
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Dec 2019 17:18:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728466AbfLQQQo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 17 Dec 2019 11:16:44 -0500
-Received: from mail26.static.mailgun.info ([104.130.122.26]:25670 "EHLO
-        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728702AbfLQQQm (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 17 Dec 2019 11:16:42 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1576599401; h=Date: Message-Id: Cc: To: Subject: From:
- Content-Transfer-Encoding: MIME-Version: Content-Type: Sender;
- bh=6jO2/DBs2drSaSvfMzRwyVGM0ShHDVB4BxydtErh8Hc=; b=j/zfCmU7fjYb658oeOifZIupbC13Sfn3y03BHPoqzuChgzKNOazEgxCaoX+fpNi0bhTlOgjo
- 1p2fUTBIsEB8le3bM2+jlkAkO8Bjamct2hfNzJ0y53AtCD+cuaC75yVyPHC3qvYLuEpLl588
- oiUaTU2N5yo9iVVamaT+6MyBAoM=
-X-Mailgun-Sending-Ip: 104.130.122.26
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5df8ff67.7efb07e70ce0-smtp-out-n01;
- Tue, 17 Dec 2019 16:16:39 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 9AB01C4479D; Tue, 17 Dec 2019 16:16:38 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
-        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id A8A65C433CB;
-        Tue, 17 Dec 2019 16:16:37 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org A8A65C433CB
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        id S1728872AbfLQQSo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 17 Dec 2019 11:18:44 -0500
+Received: from nbd.name ([46.4.11.11]:49362 "EHLO nbd.name"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729374AbfLQQSg (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 17 Dec 2019 11:18:36 -0500
+Received: from pd95fd66b.dip0.t-ipconnect.de ([217.95.214.107] helo=bertha.fritz.box)
+        by ds12 with esmtpa (Exim 4.89)
+        (envelope-from <john@phrozen.org>)
+        id 1ihFYR-0003HI-1s; Tue, 17 Dec 2019 17:18:35 +0100
+From:   John Crispin <john@phrozen.org>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
+        Venkateswara Naralasetty <vnaralas@codeaurora.org>,
+        John Crispin <john@phrozen.org>
+Subject: [PATCH] ath11k: properly convert peer stats
+Date:   Tue, 17 Dec 2019 17:18:28 +0100
+Message-Id: <20191217161828.1318-1-john@phrozen.org>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From:   Kalle Valo <kvalo@codeaurora.org>
-Subject: pull-request: wireless-drivers-2019-12-17
-To:     netdev@vger.kernel.org
-Cc:     linux-wireless@vger.kernel.org
-Message-Id: <20191217161638.9AB01C4479D@smtp.codeaurora.org>
-Date:   Tue, 17 Dec 2019 16:16:38 +0000 (UTC)
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+From: Venkateswara Naralasetty <vnaralas@codeaurora.org>
 
-here's a pull request to net tree, more info below. Please let me know if there
-are any problems.
+The bandwidth was not converted from mac80211 to ath11k values correctly.
+This patch adds a helper function to do it for us.
 
-Kalle
+Signed-off-by: John Crispin <john@phrozen.org>
+Signed-off-by: Venkateswara Naralasetty <vnaralas@codeaurora.org>
+---
+ drivers/net/wireless/ath/ath11k/debugfs_sta.c | 24 ++++++++++++++++++-
+ 1 file changed, 23 insertions(+), 1 deletion(-)
 
-The following changes since commit 6f3aeb1ba05d41320e6cf9a60f698d9c4e44348e:
+diff --git a/drivers/net/wireless/ath/ath11k/debugfs_sta.c b/drivers/net/wireless/ath/ath11k/debugfs_sta.c
+index d851d87e8a37..1d562133ae1e 100644
+--- a/drivers/net/wireless/ath/ath11k/debugfs_sta.c
++++ b/drivers/net/wireless/ath/ath11k/debugfs_sta.c
+@@ -11,6 +11,28 @@
+ #include "dp_tx.h"
+ #include "debug_htt_stats.h"
+ 
++static u8 mac80211_bw_to_ath11k_bw(u8 bw)
++{
++	u8 ret = 0;
++
++	switch (bw) {
++	case RATE_INFO_BW_20:
++		ret = ATH11K_BW_20;
++		break;
++	case RATE_INFO_BW_40:
++		ret = ATH11K_BW_40;
++		break;
++	case RATE_INFO_BW_80:
++		ret = ATH11K_BW_80;
++		break;
++	case RATE_INFO_BW_160:
++		ret = ATH11K_BW_160;
++		break;
++	}
++
++	return ret;
++}
++
+ void
+ ath11k_accumulate_per_peer_tx_stats(struct ath11k_sta *arsta,
+ 				    struct ath11k_per_peer_tx_stats *peer_stats,
+@@ -26,7 +48,7 @@ ath11k_accumulate_per_peer_tx_stats(struct ath11k_sta *arsta,
+ 	tx_stats = arsta->tx_stats;
+ 	gi = FIELD_GET(RATE_INFO_FLAGS_SHORT_GI, arsta->txrate.flags);
+ 	mcs = txrate->mcs;
+-	bw = txrate->bw;
++	bw = mac80211_bw_to_ath11k_bw(txrate->bw);
+ 	nss = txrate->nss - 1;
+ 
+ #define STATS_OP_FMT(name) tx_stats->stats[ATH11K_STATS_TYPE_##name]
+-- 
+2.20.1
 
-  hv_netvsc: make recording RSS hash depend on feature flag (2019-11-23 18:42:41 -0800)
-
-are available in the git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers.git tags/wireless-drivers-2019-12-17
-
-for you to fetch changes up to 0df36b90c47d93295b7e393da2d961b2f3b6cde4:
-
-  iwlwifi: pcie: move power gating workaround earlier in the flow (2019-12-10 10:39:39 +0200)
-
-----------------------------------------------------------------
-wireless-drivers fixes for v5.5
-
-First set of fixes for v5.5. Fixing security issues, some regressions
-and few major bugs.
-
-mwifiex
-
-* security fix for handling country Information Elements (CVE-2019-14895)
-
-* security fix for handling TDLS Information Elements
-
-ath9k
-
-* fix endian issue with ath9k_pci_owl_loader
-
-mt76
-
-* fix default mac address handling
-
-iwlwifi
-
-* fix merge damage which lead to firmware crashing during boot on some devices
-
-* fix device initialisation regression on some devices
-
-----------------------------------------------------------------
-Anders Kaseorg (1):
-      Revert "iwlwifi: assign directly to iwl_trans->cfg in QuZ detection"
-
-Christian Lamparter (1):
-      ath9k: use iowrite32 over __raw_writel
-
-Ganapathi Bhat (1):
-      mwifiex: fix possible heap overflow in mwifiex_process_country_ie()
-
-Lorenzo Bianconi (1):
-      mt76: mt76x0: fix default mac address overwrite
-
-Luca Coelho (1):
-      iwlwifi: pcie: move power gating workaround earlier in the flow
-
-qize wang (1):
-      mwifiex: Fix heap overflow in mmwifiex_process_tdls_action_frame()
-
- .../net/wireless/ath/ath9k/ath9k_pci_owl_loader.c  |  2 +-
- drivers/net/wireless/intel/iwlwifi/pcie/drv.c      | 24 ++++----
- .../net/wireless/intel/iwlwifi/pcie/trans-gen2.c   | 25 --------
- drivers/net/wireless/intel/iwlwifi/pcie/trans.c    | 30 ++++++++++
- drivers/net/wireless/marvell/mwifiex/sta_ioctl.c   | 13 +++-
- drivers/net/wireless/marvell/mwifiex/tdls.c        | 70 ++++++++++++++++++++--
- drivers/net/wireless/mediatek/mt76/mt76x0/eeprom.c |  5 +-
- 7 files changed, 122 insertions(+), 47 deletions(-)
