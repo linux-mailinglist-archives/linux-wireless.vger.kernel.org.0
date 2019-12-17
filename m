@@ -2,656 +2,206 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D3F9123111
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Dec 2019 17:05:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D475123248
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Dec 2019 17:21:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728099AbfLQQFI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 17 Dec 2019 11:05:08 -0500
-Received: from nbd.name ([46.4.11.11]:48392 "EHLO nbd.name"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727916AbfLQQFH (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 17 Dec 2019 11:05:07 -0500
-Received: from pd95fd66b.dip0.t-ipconnect.de ([217.95.214.107] helo=bertha.fritz.box)
-        by ds12 with esmtpa (Exim 4.89)
-        (envelope-from <john@phrozen.org>)
-        id 1ihFLN-0002Ku-0o; Tue, 17 Dec 2019 17:05:05 +0100
-From:   John Crispin <john@phrozen.org>
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        Kalle Valo <kvalo@codeaurora.org>
-Cc:     linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
-        Miles Hu <milehu@codeaurora.org>,
-        John Crispin <john@phrozen.org>
-Subject: [PATCH 3/3] ath11k: add support for setting fixed HE rate/gi/ltf
-Date:   Tue, 17 Dec 2019 17:04:55 +0100
-Message-Id: <20191217160455.311-3-john@phrozen.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191217160455.311-1-john@phrozen.org>
-References: <20191217160455.311-1-john@phrozen.org>
+        id S1728265AbfLQQOb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 17 Dec 2019 11:14:31 -0500
+Received: from mail-eopbgr770078.outbound.protection.outlook.com ([40.107.77.78]:1089
+        "EHLO NAM02-SN1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726858AbfLQQOb (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 17 Dec 2019 11:14:31 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=ZiMDn/mexsqYSGj6CjGhRXzj6bPaOZP2RbJpMZpMMPMCYwb5D45lP8POMNhjufz+/oRepYBgQ8WP8aYnXF/EERQeCttiK4xnY+lXYsgVNWkNpRCm7ihvvsXVEXqx96fpCEQ+yh+KDUkwlG9i5WnhlR2/30czokkVSIj+gSaaRiV9O+5r+dT0Cq98Z5xfUXJq9JHD+JdYtaYILvbkMu8IhiAryyBqvs5aJBOJCd0OOOO23Vs7XTkck/B2q7Y8M28OdAoT3H5CGVQdiI4mVnCoZFZTYXTXDWlzfEQnslwkVZ2+JWCxVcm4hz4T6HuZgowji4P0JVdDCTG5J7GQ902rOw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=G9sf6uxYBqVnhHIwr4AEGVfLgcNH20xLFhJFPAO+Tvo=;
+ b=cOO9DgzhhOXIKJJbTNoS0FLBGm/ZJs7ANwbv3eq39ZlMJ24JnhHKwACsYAWyyP4kdWIkldwGsbU0faeWpOv/mXCmeDTIZ5gOkzyuk2AbBrdH0Cp2xsobHGmjCB49DubaMggCpMEHEh68u2Kqz+p52hAlNKp4rjW+Kft5ft4q/pso9R8xW3wXY+8ArT6rDiWRKfAdM86tiUl/SYjIu/SHsWYSmp5N5tkQdFky1Wk1wwYtIAH8P+BDntgo0SDBtiDYWWVzHcAls2jVw97oYSIi7isYHuxaaWh8J1jZ4oSA4yTc3U1qGaJEh5YLLVISvu22qJ1gcdD8/hHv1Z+enjfK6Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=silabs.com; dmarc=pass action=none header.from=silabs.com;
+ dkim=pass header.d=silabs.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=silabs.onmicrosoft.com; s=selector2-silabs-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=G9sf6uxYBqVnhHIwr4AEGVfLgcNH20xLFhJFPAO+Tvo=;
+ b=ZwzI5KSRwLx/uUp1bQgRIzqfBFhQb0PU2c0SCIkw1RNA+eLJN7D3VDXIB9Q/HfLg2j2RLme2Yh9/pAqL8n5VC6ghIdWotsQhNYwZdSZ4Zn5LyNjYBTHLfHVP8k0uQ69NX3UsQ6G+6/LknYxlv1dpFTbeRAM+7/zh+PilGbQVl8w=
+Received: from MN2PR11MB4063.namprd11.prod.outlook.com (10.255.180.22) by
+ MN2PR11MB3678.namprd11.prod.outlook.com (20.178.254.11) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2538.16; Tue, 17 Dec 2019 16:14:26 +0000
+Received: from MN2PR11MB4063.namprd11.prod.outlook.com
+ ([fe80::f46c:e5b4:2a85:f0bf]) by MN2PR11MB4063.namprd11.prod.outlook.com
+ ([fe80::f46c:e5b4:2a85:f0bf%4]) with mapi id 15.20.2538.019; Tue, 17 Dec 2019
+ 16:14:26 +0000
+From:   =?utf-8?B?SsOpcsO0bWUgUG91aWxsZXI=?= <Jerome.Pouiller@silabs.com>
+To:     "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+CC:     "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        =?utf-8?B?SsOpcsO0bWUgUG91aWxsZXI=?= <Jerome.Pouiller@silabs.com>
+Subject: [PATCH v2 00/55] Improve wfx driver
+Thread-Topic: [PATCH v2 00/55] Improve wfx driver
+Thread-Index: AQHVtPUN97auvOsN5kugh2/rPbsjIw==
+Date:   Tue, 17 Dec 2019 16:14:26 +0000
+Message-ID: <20191217161318.31402-1-Jerome.Pouiller@silabs.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-clientproxiedby: PR0P264CA0174.FRAP264.PROD.OUTLOOK.COM
+ (2603:10a6:100:1c::18) To MN2PR11MB4063.namprd11.prod.outlook.com
+ (2603:10b6:208:13f::22)
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=Jerome.Pouiller@silabs.com; 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-mailer: git-send-email 2.24.0
+x-originating-ip: [37.71.187.125]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 0434cd04-502c-4932-d222-08d7830c2fdc
+x-ms-traffictypediagnostic: MN2PR11MB3678:
+x-ms-exchange-transport-forked: True
+x-microsoft-antispam-prvs: <MN2PR11MB36787CB3D8CF501B15121B0293500@MN2PR11MB3678.namprd11.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:6430;
+x-forefront-prvs: 02543CD7CD
+x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(376002)(346002)(396003)(39840400004)(366004)(136003)(53754006)(43544003)(199004)(189003)(6512007)(66574012)(1076003)(478600001)(86362001)(8936002)(110136005)(316002)(2616005)(26005)(6506007)(5660300002)(36756003)(6486002)(66946007)(66476007)(66556008)(64756008)(66446008)(71200400001)(52116002)(85182001)(81166006)(81156014)(8676002)(54906003)(107886003)(2906002)(4326008)(186003)(85202003);DIR:OUT;SFP:1101;SCL:1;SRVR:MN2PR11MB3678;H:MN2PR11MB4063.namprd11.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+received-spf: None (protection.outlook.com: silabs.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: Pjj+jeG9A5ypTwgTkk1Ny8nrX6VPGI/0mpKmeDp4hAx9k+Wn/n/37ABZBPxioXkDtVSp2KdRalvtghn6bWhsyZ6jqbnfFejKNyeFbui/u/H1BNPTHE4ISg8KcUzb7dw734ibq+m6z29+lA5nYX+/S4ZHrCC3rtw/ESQF+GJVTVM38mNRhKZ6J6QZMam06YER9TFcu1RGEKGLGvcGxQNM9Peyaq6biofUewc/712yx9uFF4YuKbJx2wgRHV360ID+GSiHXZf23entaoyMkdrbZzrJc2I1BH/Ibv5F5K0bg307vuaxo7MEOU6CrtIbs/Kb8E1WG2grooicHLAe0k7tmo/Faz/c3cSw1GeDypxNRFYQ9W7MGbioJck8Aw9TMEjzuf7hHOFgrD5Ifr1FrjzEyTl23rV+4+tIQXcks/Pk4fTQp7ZceF+eSg1NPw6JYnIiNeM5fStVkK2KVsFIamwx7BuEC1K8vhHEazJCXneULPYSf89Q4nt5N/pT25FQ1gv0jmZbJVRykJ/nRA/I43rH2A==
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <27B5DEA8D623804783FD0D8FE69D1801@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: silabs.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0434cd04-502c-4932-d222-08d7830c2fdc
+X-MS-Exchange-CrossTenant-originalarrivaltime: 17 Dec 2019 16:14:26.5019
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 54dbd822-5231-4b20-944d-6f4abcd541fb
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: WEFvtyiybsu1YoG+/WS9JLlRdf6IUKd9EppEU6QQJJznc0jaQ5rtAWjmQDKuy4ewotV/Do7YdJ91jBumG2Tw2w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR11MB3678
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Miles Hu <milehu@codeaurora.org>
-
-This patch adds ath11k support for setting fixed HE rate/gi/ltf values that
-we are now able to send to the kernel using nl80211. The added code is
-reusing parts of the existing code path already used for HT/VHT. The new
-helpers are symmetric to how we do it for HT/VHT.
-
-Signed-off-by: John Crispin <john@phrozen.org>
-Signed-off-by: Miles Hu <milehu@codeaurora.org>
----
- drivers/net/wireless/ath/ath11k/mac.c | 350 +++++++++++++++++++++++---
- drivers/net/wireless/ath/ath11k/wmi.h |   1 +
- 2 files changed, 323 insertions(+), 28 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index 59eeaf1d37ec..d849d7feda02 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -252,6 +252,18 @@ ath11k_mac_max_vht_nss(const u16 vht_mcs_mask[NL80211_VHT_NSS_MAX])
- 	return 1;
- }
- 
-+static u32
-+ath11k_mac_max_he_nss(const u16 he_mcs_mask[NL80211_HE_NSS_MAX])
-+{
-+	int nss;
-+
-+	for (nss = NL80211_HE_NSS_MAX - 1; nss >= 0; nss--)
-+		if (he_mcs_mask[nss])
-+			return nss + 1;
-+
-+	return 1;
-+}
-+
- static u8 ath11k_parse_mpdudensity(u8 mpdudensity)
- {
- /* 802.11n D2.0 defined values for "Minimum MPDU Start Spacing":
-@@ -1138,17 +1150,98 @@ static void ath11k_peer_assoc_h_vht(struct ath11k *ar,
- 	/* TODO: rxnss_override */
- }
- 
-+static int ath11k_mac_get_max_he_mcs_map(u16 mcs_map, int nss)
-+{
-+	switch ((mcs_map >> (2 * nss)) & 0x3) {
-+	case IEEE80211_HE_MCS_SUPPORT_0_7: return BIT(8) - 1;
-+	case IEEE80211_HE_MCS_SUPPORT_0_9: return BIT(10) - 1;
-+	case IEEE80211_HE_MCS_SUPPORT_0_11: return BIT(12) - 1;
-+	}
-+	return 0;
-+}
-+
-+static u16 ath11k_peer_assoc_h_he_limit(u16 tx_mcs_set,
-+					const u16 he_mcs_limit[NL80211_HE_NSS_MAX])
-+{
-+	int idx_limit;
-+	int nss;
-+	u16 mcs_map;
-+	u16 mcs;
-+
-+	for (nss = 0; nss < NL80211_HE_NSS_MAX; nss++) {
-+		mcs_map = ath11k_mac_get_max_he_mcs_map(tx_mcs_set, nss) &
-+			  he_mcs_limit[nss];
-+
-+		if (mcs_map)
-+			idx_limit = fls(mcs_map) - 1;
-+		else
-+			idx_limit = -1;
-+
-+		switch (idx_limit) {
-+		case 0 ... 7:
-+			mcs = IEEE80211_HE_MCS_SUPPORT_0_7;
-+			break;
-+		case 8:
-+		case 9:
-+			mcs = IEEE80211_HE_MCS_SUPPORT_0_9;
-+			break;
-+		case 10:
-+		case 11:
-+			mcs = IEEE80211_HE_MCS_SUPPORT_0_11;
-+			break;
-+		default:
-+			WARN_ON(1);
-+			/* fall through */
-+		case -1:
-+			mcs = IEEE80211_HE_MCS_NOT_SUPPORTED;
-+			break;
-+		}
-+
-+		tx_mcs_set &= ~(0x3 << (nss * 2));
-+		tx_mcs_set |= mcs << (nss * 2);
-+	}
-+
-+	return tx_mcs_set;
-+}
-+
-+static bool
-+ath11k_peer_assoc_h_he_masked(const u16 he_mcs_mask[NL80211_HE_NSS_MAX])
-+{
-+	int nss;
-+
-+	for (nss = 0; nss < NL80211_HE_NSS_MAX; nss++)
-+		if (he_mcs_mask[nss])
-+			return false;
-+
-+	return true;
-+}
-+
- static void ath11k_peer_assoc_h_he(struct ath11k *ar,
- 				   struct ieee80211_vif *vif,
- 				   struct ieee80211_sta *sta,
- 				   struct peer_assoc_params *arg)
- {
-+	struct ath11k_vif *arvif = (void *)vif->drv_priv;
-+	struct cfg80211_chan_def def;
- 	const struct ieee80211_sta_he_cap *he_cap = &sta->he_cap;
--	u16 v;
-+	enum nl80211_band band;
-+	const u16 *he_mcs_mask;
-+	u8 max_nss, he_mcs;
-+	__le16 he_tx_mcs = 0, v = 0;
-+	int i;
-+
-+	if (WARN_ON(ath11k_mac_vif_chan(vif, &def)))
-+		return;
- 
- 	if (!he_cap->has_he)
- 		return;
- 
-+	band = def.chan->band;
-+	he_mcs_mask = arvif->bitrate_mask.control[band].he_mcs;
-+
-+	if (ath11k_peer_assoc_h_he_masked(he_mcs_mask))
-+		return;
-+
- 	arg->he_flag = true;
- 
- 	memcpy(&arg->peer_he_cap_macinfo, he_cap->he_cap_elem.mac_cap_info,
-@@ -1205,17 +1298,22 @@ static void ath11k_peer_assoc_h_he(struct ath11k *ar,
- 			arg->peer_he_rx_mcs_set[WMI_HECAP_TXRX_MCS_NSS_IDX_80_80] = v;
- 
- 			v = le16_to_cpu(he_cap->he_mcs_nss_supp.tx_mcs_80p80);
-+			v = ath11k_peer_assoc_h_he_limit(v, he_mcs_mask);
- 			arg->peer_he_tx_mcs_set[WMI_HECAP_TXRX_MCS_NSS_IDX_80_80] = v;
- 
- 			arg->peer_he_mcs_count++;
-+			he_tx_mcs = v;
- 		}
- 		v = le16_to_cpu(he_cap->he_mcs_nss_supp.rx_mcs_160);
- 		arg->peer_he_rx_mcs_set[WMI_HECAP_TXRX_MCS_NSS_IDX_160] = v;
- 
- 		v = le16_to_cpu(he_cap->he_mcs_nss_supp.tx_mcs_160);
-+		v = ath11k_peer_assoc_h_he_limit(v, he_mcs_mask);
- 		arg->peer_he_tx_mcs_set[WMI_HECAP_TXRX_MCS_NSS_IDX_160] = v;
- 
- 		arg->peer_he_mcs_count++;
-+		if (!he_tx_mcs)
-+			he_tx_mcs = v;
- 		/* fall through */
- 
- 	default:
-@@ -1223,11 +1321,29 @@ static void ath11k_peer_assoc_h_he(struct ath11k *ar,
- 		arg->peer_he_rx_mcs_set[WMI_HECAP_TXRX_MCS_NSS_IDX_80] = v;
- 
- 		v = le16_to_cpu(he_cap->he_mcs_nss_supp.tx_mcs_80);
-+		v = ath11k_peer_assoc_h_he_limit(v, he_mcs_mask);
- 		arg->peer_he_tx_mcs_set[WMI_HECAP_TXRX_MCS_NSS_IDX_80] = v;
- 
- 		arg->peer_he_mcs_count++;
-+		if (!he_tx_mcs)
-+			he_tx_mcs = v;
- 		break;
- 	}
-+	/* Calculate peer NSS capability from HE capabilities if STA
-+	 * supports HE.
-+	 */
-+	for (i = 0, max_nss = 0, he_mcs = 0; i < NL80211_HE_NSS_MAX; i++) {
-+		he_mcs = __le16_to_cpu(he_tx_mcs) >> (2 * i) & 3;
-+
-+		if (he_mcs != IEEE80211_HE_MCS_NOT_SUPPORTED &&
-+		    he_mcs_mask[i])
-+			max_nss = i + 1;
-+	}
-+	arg->peer_nss = min(sta->rx_nss, max_nss);
-+
-+	ath11k_dbg(ar->ab, ATH11K_DBG_MAC,
-+		   "mac he peer %pM nss %d mcs cnt %d\n",
-+		   sta->addr, arg->peer_nss, arg->peer_he_mcs_count);
- }
- 
- static void ath11k_peer_assoc_h_smps(struct ieee80211_sta *sta,
-@@ -1430,6 +1546,7 @@ static void ath11k_peer_assoc_h_phymode(struct ath11k *ar,
- 	enum nl80211_band band;
- 	const u8 *ht_mcs_mask;
- 	const u16 *vht_mcs_mask;
-+	const u16 *he_mcs_mask;
- 	enum wmi_phy_mode phymode = MODE_UNKNOWN;
- 
- 	if (WARN_ON(ath11k_mac_vif_chan(vif, &def)))
-@@ -1438,10 +1555,12 @@ static void ath11k_peer_assoc_h_phymode(struct ath11k *ar,
- 	band = def.chan->band;
- 	ht_mcs_mask = arvif->bitrate_mask.control[band].ht_mcs;
- 	vht_mcs_mask = arvif->bitrate_mask.control[band].vht_mcs;
-+	he_mcs_mask = arvif->bitrate_mask.control[band].he_mcs;
- 
- 	switch (band) {
- 	case NL80211_BAND_2GHZ:
--		if (sta->he_cap.has_he) {
-+		if (sta->he_cap.has_he &&
-+		    !ath11k_peer_assoc_h_he_masked(he_mcs_mask)) {
- 			if (sta->bandwidth == IEEE80211_STA_RX_BW_80)
- 				phymode = MODE_11AX_HE80_2G;
- 			else if (sta->bandwidth == IEEE80211_STA_RX_BW_40)
-@@ -1468,7 +1587,8 @@ static void ath11k_peer_assoc_h_phymode(struct ath11k *ar,
- 		break;
- 	case NL80211_BAND_5GHZ:
- 		/* Check HE first */
--		if (sta->he_cap.has_he) {
-+		if (sta->he_cap.has_he &&
-+		    !ath11k_peer_assoc_h_he_masked(he_mcs_mask)) {
- 			phymode = ath11k_mac_get_phymode_he(ar, sta);
- 		} else if (sta->vht_cap.vht_supported &&
- 		    !ath11k_peer_assoc_h_vht_masked(vht_mcs_mask)) {
-@@ -2480,6 +2600,20 @@ ath11k_mac_bitrate_mask_num_vht_rates(struct ath11k *ar,
- 	return num_rates;
- }
- 
-+static int
-+ath11k_mac_bitrate_mask_num_he_rates(struct ath11k *ar,
-+				     enum nl80211_band band,
-+				     const struct cfg80211_bitrate_mask *mask)
-+{
-+	int num_rates = 0;
-+	int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(mask->control[band].he_mcs); i++)
-+		num_rates += hweight16(mask->control[band].he_mcs[i]);
-+
-+	return num_rates;
-+}
-+
- static int
- ath11k_mac_set_peer_vht_fixed_rate(struct ath11k_vif *arvif,
- 				   struct ieee80211_sta *sta,
-@@ -2526,6 +2660,52 @@ ath11k_mac_set_peer_vht_fixed_rate(struct ath11k_vif *arvif,
- 	return ret;
- }
- 
-+static int
-+ath11k_mac_set_peer_he_fixed_rate(struct ath11k_vif *arvif,
-+				  struct ieee80211_sta *sta,
-+				  const struct cfg80211_bitrate_mask *mask,
-+				  enum nl80211_band band)
-+{
-+	struct ath11k *ar = arvif->ar;
-+	u8 he_rate, nss;
-+	u32 rate_code;
-+	int ret, i;
-+
-+	lockdep_assert_held(&ar->conf_mutex);
-+
-+	nss = 0;
-+
-+	for (i = 0; i < ARRAY_SIZE(mask->control[band].he_mcs); i++) {
-+		if (hweight16(mask->control[band].he_mcs[i]) == 1) {
-+			nss = i + 1;
-+			he_rate = ffs(mask->control[band].he_mcs[i]) - 1;
-+		}
-+	}
-+
-+	if (!nss) {
-+		ath11k_warn(ar->ab, "No single HE Fixed rate found to set for %pM",
-+			    sta->addr);
-+		return -EINVAL;
-+	}
-+
-+	ath11k_dbg(ar->ab, ATH11K_DBG_MAC,
-+		   "Setting Fixed HE Rate for peer %pM. Device will not switch to any other selected rates",
-+		   sta->addr);
-+
-+	rate_code = ATH11K_HW_RATE_CODE(he_rate, nss - 1,
-+					WMI_RATE_PREAMBLE_HE);
-+	ret = ath11k_wmi_set_peer_param(ar, sta->addr,
-+					arvif->vdev_id,
-+					WMI_PEER_PARAM_FIXED_RATE,
-+					rate_code);
-+	if (ret)
-+		ath11k_warn(ar->ab,
-+			    "failed to update STA %pM Fixed Rate %d: %d\n",
-+			     sta->addr, rate_code, ret);
-+
-+	return ret;
-+}
-+
- static int ath11k_station_assoc(struct ath11k *ar,
- 				struct ieee80211_vif *vif,
- 				struct ieee80211_sta *sta,
-@@ -2644,8 +2824,9 @@ static void ath11k_sta_rc_update_wk(struct work_struct *wk)
- 	enum nl80211_band band;
- 	const u8 *ht_mcs_mask;
- 	const u16 *vht_mcs_mask;
-+	const u16 *he_mcs_mask;
- 	u32 changed, bw, nss, smps;
--	int err, num_vht_rates;
-+	int err, num_vht_rates,  num_he_rates;
- 	const struct cfg80211_bitrate_mask *mask;
- 	struct peer_assoc_params peer_arg;
- 
-@@ -2660,6 +2841,7 @@ static void ath11k_sta_rc_update_wk(struct work_struct *wk)
- 	band = def.chan->band;
- 	ht_mcs_mask = arvif->bitrate_mask.control[band].ht_mcs;
- 	vht_mcs_mask = arvif->bitrate_mask.control[band].vht_mcs;
-+	he_mcs_mask = arvif->bitrate_mask.control[band].he_mcs;
- 
- 	spin_lock_bh(&ar->data_lock);
- 
-@@ -2675,8 +2857,9 @@ static void ath11k_sta_rc_update_wk(struct work_struct *wk)
- 	mutex_lock(&ar->conf_mutex);
- 
- 	nss = max_t(u32, 1, nss);
--	nss = min(nss, max(ath11k_mac_max_ht_nss(ht_mcs_mask),
--			   ath11k_mac_max_vht_nss(vht_mcs_mask)));
-+	nss = min(nss, max(max(ath11k_mac_max_ht_nss(ht_mcs_mask),
-+			       ath11k_mac_max_vht_nss(vht_mcs_mask)),
-+			   ath11k_mac_max_he_nss(he_mcs_mask)));
- 
- 	if (changed & IEEE80211_RC_BW_CHANGED) {
- 		err = ath11k_wmi_set_peer_param(ar, sta->addr, arvif->vdev_id,
-@@ -2712,6 +2895,8 @@ static void ath11k_sta_rc_update_wk(struct work_struct *wk)
- 		mask = &arvif->bitrate_mask;
- 		num_vht_rates = ath11k_mac_bitrate_mask_num_vht_rates(ar, band,
- 								      mask);
-+		num_he_rates = ath11k_mac_bitrate_mask_num_he_rates(ar, band,
-+								    mask);
- 
- 		/* Peer_assoc_prepare will reject vht rates in
- 		 * bitrate_mask if its not available in range format and
-@@ -2727,6 +2912,9 @@ static void ath11k_sta_rc_update_wk(struct work_struct *wk)
- 		if (sta->vht_cap.vht_supported && num_vht_rates == 1) {
- 			ath11k_mac_set_peer_vht_fixed_rate(arvif, sta, mask,
- 							   band);
-+		} else if (sta->he_cap.has_he && num_he_rates == 1) {
-+			ath11k_mac_set_peer_he_fixed_rate(arvif, sta, mask,
-+							  band);
- 		} else {
- 			/* If the peer is non-VHT or no fixed VHT rate
- 			 * is provided in the new bitrate mask we set the
-@@ -4087,6 +4275,8 @@ static int ath11k_mac_op_add_interface(struct ieee80211_hw *hw,
- 		       sizeof(arvif->bitrate_mask.control[i].ht_mcs));
- 		memset(arvif->bitrate_mask.control[i].vht_mcs, 0xff,
- 		       sizeof(arvif->bitrate_mask.control[i].vht_mcs));
-+		memset(arvif->bitrate_mask.control[i].he_mcs, 0xff,
-+		       sizeof(arvif->bitrate_mask.control[i].he_mcs));
- 	}
- 
- 	bit = __ffs64(ab->free_vdev_map);
-@@ -5015,9 +5205,25 @@ ath11k_mac_has_single_legacy_rate(struct ath11k *ar,
- 	if (ath11k_mac_bitrate_mask_num_vht_rates(ar, band, mask))
- 		return false;
- 
-+	if (ath11k_mac_bitrate_mask_num_he_rates(ar, band, mask))
-+		return false;
-+
- 	return num_rates == 1;
- }
- 
-+u16 ath11k_mac_get_tx_mcs_map(const struct ieee80211_sta_he_cap *he_cap)
-+{
-+	if (he_cap->he_cap_elem.phy_cap_info[0] &
-+	    IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_80PLUS80_MHZ_IN_5G)
-+		return he_cap->he_mcs_nss_supp.tx_mcs_80p80;
-+
-+	if (he_cap->he_cap_elem.phy_cap_info[0] &
-+	    IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_160MHZ_IN_5G)
-+		return he_cap->he_mcs_nss_supp.tx_mcs_160;
-+
-+	return he_cap->he_mcs_nss_supp.tx_mcs_80;
-+}
-+
- static bool
- ath11k_mac_bitrate_mask_get_single_nss(struct ath11k *ar,
- 				       enum nl80211_band band,
-@@ -5026,8 +5232,10 @@ ath11k_mac_bitrate_mask_get_single_nss(struct ath11k *ar,
- {
- 	struct ieee80211_supported_band *sband = &ar->mac.sbands[band];
- 	u16 vht_mcs_map = le16_to_cpu(sband->vht_cap.vht_mcs.tx_mcs_map);
-+	u16 he_mcs_map = 0;
- 	u8 ht_nss_mask = 0;
- 	u8 vht_nss_mask = 0;
-+	u8 he_nss_mask = 0;
- 	int i;
- 
- 	/* No need to consider legacy here. Basic rates are always present
-@@ -5054,7 +5262,19 @@ ath11k_mac_bitrate_mask_get_single_nss(struct ath11k *ar,
- 			return false;
- 	}
- 
--	if (ht_nss_mask != vht_nss_mask)
-+	he_mcs_map = le16_to_cpu(ath11k_mac_get_tx_mcs_map(&sband->iftype_data->he_cap));
-+
-+	for (i = 0; i < ARRAY_SIZE(mask->control[band].he_mcs); i++) {
-+		if (mask->control[band].he_mcs[i] == 0)
-+			continue;
-+		else if (mask->control[band].he_mcs[i] ==
-+			 ath11k_mac_get_max_he_mcs_map(he_mcs_map, i))
-+			he_nss_mask |= BIT(i);
-+		else
-+			return false;
-+	}
-+
-+	if (ht_nss_mask != vht_nss_mask || ht_nss_mask != he_nss_mask)
- 		return false;
- 
- 	if (ht_nss_mask == 0)
-@@ -5102,7 +5322,8 @@ ath11k_mac_get_single_legacy_rate(struct ath11k *ar,
- }
- 
- static int ath11k_mac_set_fixed_rate_params(struct ath11k_vif *arvif,
--					    u32 rate, u8 nss, u8 sgi, u8 ldpc)
-+					    u32 rate, u8 nss, u8 sgi, u8 ldpc,
-+					    u8 he_gi, u8 he_ltf)
- {
- 	struct ath11k *ar = arvif->ar;
- 	u32 vdev_param;
-@@ -5113,15 +5334,16 @@ static int ath11k_mac_set_fixed_rate_params(struct ath11k_vif *arvif,
- 	ath11k_dbg(ar->ab, ATH11K_DBG_MAC, "mac set fixed rate params vdev %i rate 0x%02hhx nss %hhu sgi %hhu\n",
- 		   arvif->vdev_id, rate, nss, sgi);
- 
--	vdev_param = WMI_VDEV_PARAM_FIXED_RATE;
--	ret = ath11k_wmi_vdev_set_param_cmd(ar, arvif->vdev_id,
--					    vdev_param, rate);
--	if (ret) {
--		ath11k_warn(ar->ab, "failed to set fixed rate param 0x%02x: %d\n",
--			    rate, ret);
--		return ret;
-+	if (!arvif->vif->bss_conf.he_support) {
-+		vdev_param = WMI_VDEV_PARAM_FIXED_RATE;
-+		ret = ath11k_wmi_vdev_set_param_cmd(ar, arvif->vdev_id,
-+						    vdev_param, rate);
-+		if (ret) {
-+			ath11k_warn(ar->ab, "failed to set fixed rate param 0x%02x: %d\n",
-+				    rate, ret);
-+			return ret;
-+		}
- 	}
--
- 	vdev_param = WMI_VDEV_PARAM_NSS;
- 	ret = ath11k_wmi_vdev_set_param_cmd(ar, arvif->vdev_id,
- 					    vdev_param, nss);
-@@ -5131,15 +5353,6 @@ static int ath11k_mac_set_fixed_rate_params(struct ath11k_vif *arvif,
- 		return ret;
- 	}
- 
--	vdev_param = WMI_VDEV_PARAM_SGI;
--	ret = ath11k_wmi_vdev_set_param_cmd(ar, arvif->vdev_id,
--					    vdev_param, sgi);
--	if (ret) {
--		ath11k_warn(ar->ab, "failed to set sgi param %d: %d\n",
--			    sgi, ret);
--		return ret;
--	}
--
- 	vdev_param = WMI_VDEV_PARAM_LDPC;
- 	ret = ath11k_wmi_vdev_set_param_cmd(ar, arvif->vdev_id,
- 					    vdev_param, ldpc);
-@@ -5149,6 +5362,43 @@ static int ath11k_mac_set_fixed_rate_params(struct ath11k_vif *arvif,
- 		return ret;
- 	}
- 
-+	if (arvif->vif->bss_conf.he_support) {
-+		if (he_gi != 0xFF) {
-+			vdev_param = WMI_VDEV_PARAM_SGI;
-+			/* 0.8 = 0, 1.6 = 2 and 3.2 = 3. */
-+			if (he_gi)
-+				he_gi += 1;
-+			ret = ath11k_wmi_vdev_set_param_cmd(ar, arvif->vdev_id,
-+							    vdev_param, he_gi);
-+			if (ret) {
-+				ath11k_warn(ar->ab, "failed to set hegi param %d: %d\n",
-+					    sgi, ret);
-+				return ret;
-+			}
-+		}
-+		if (he_ltf != 0xFF) {
-+			vdev_param = WMI_VDEV_PARAM_HE_LTF;
-+				/* start from 1 */
-+				he_ltf += 1;
-+			ret = ath11k_wmi_vdev_set_param_cmd(ar, arvif->vdev_id,
-+							    vdev_param, he_ltf);
-+			if (ret) {
-+				ath11k_warn(ar->ab, "failed to set heltf param %d: %d\n",
-+					    he_ltf, ret);
-+					return ret;
-+			}
-+		}
-+	} else {
-+		vdev_param = WMI_VDEV_PARAM_SGI;
-+		ret = ath11k_wmi_vdev_set_param_cmd(ar, arvif->vdev_id,
-+						    vdev_param, sgi);
-+		if (ret) {
-+			ath11k_warn(ar->ab, "failed to set sgi param %d: %d\n",
-+				    sgi, ret);
-+			return ret;
-+		}
-+	}
-+
- 	return 0;
- }
- 
-@@ -5177,6 +5427,31 @@ ath11k_mac_vht_mcs_range_present(struct ath11k *ar,
- 	return true;
- }
- 
-+static bool
-+ath11k_mac_he_mcs_range_present(struct ath11k *ar,
-+				enum nl80211_band band,
-+				const struct cfg80211_bitrate_mask *mask)
-+{
-+	int i;
-+	u16 he_mcs;
-+
-+	for (i = 0; i < NL80211_HE_NSS_MAX; i++) {
-+		he_mcs = mask->control[band].he_mcs[i];
-+
-+		switch (he_mcs) {
-+		case 0:
-+		case BIT(8) - 1:
-+		case BIT(10) - 1:
-+		case BIT(12) - 1:
-+			break;
-+		default:
-+			return false;
-+		}
-+	}
-+
-+	return true;
-+}
-+
- static void ath11k_mac_set_bitrate_mask_iter(void *data,
- 					     struct ieee80211_sta *sta)
- {
-@@ -5219,6 +5494,9 @@ ath11k_mac_op_set_bitrate_mask(struct ieee80211_hw *hw,
- 	enum nl80211_band band;
- 	const u8 *ht_mcs_mask;
- 	const u16 *vht_mcs_mask;
-+	const u16 *he_mcs_mask;
-+	u8 he_ltf = 0;
-+	u8 he_gi = 0;
- 	u32 rate;
- 	u8 nss;
- 	u8 sgi;
-@@ -5233,12 +5511,16 @@ ath11k_mac_op_set_bitrate_mask(struct ieee80211_hw *hw,
- 	band = def.chan->band;
- 	ht_mcs_mask = mask->control[band].ht_mcs;
- 	vht_mcs_mask = mask->control[band].vht_mcs;
-+	he_mcs_mask = mask->control[band].he_mcs;
- 	ldpc = !!(ar->ht_cap_info & WMI_HT_CAP_LDPC);
- 
- 	sgi = mask->control[band].gi;
- 	if (sgi == NL80211_TXRATE_FORCE_LGI)
- 		return -EINVAL;
- 
-+	he_gi = mask->control[band].he_gi;
-+	he_ltf = mask->control[band].he_ltf;
-+
- 	/* mac80211 doesn't support sending a fixed HT/VHT MCS alone, rather it
- 	 * requires passing atleast one of used basic rates along with them.
- 	 * Fixed rate setting across different preambles(legacy, HT, VHT) is
-@@ -5265,8 +5547,9 @@ ath11k_mac_op_set_bitrate_mask(struct ieee80211_hw *hw,
- 	} else {
- 		rate = WMI_FIXED_RATE_NONE;
- 		nss = min_t(u32, ar->num_tx_chains,
--			    max(ath11k_mac_max_ht_nss(ht_mcs_mask),
--				ath11k_mac_max_vht_nss(vht_mcs_mask)));
-+			    max(max(ath11k_mac_max_ht_nss(ht_mcs_mask),
-+				    ath11k_mac_max_vht_nss(vht_mcs_mask)),
-+				ath11k_mac_max_he_nss(he_mcs_mask)));
- 
- 		/* If multiple rates across different preambles are given
- 		 * we can reconfigure this info with all peers using PEER_ASSOC
-@@ -5301,6 +5584,16 @@ ath11k_mac_op_set_bitrate_mask(struct ieee80211_hw *hw,
- 			return -EINVAL;
- 		}
- 
-+		num_rates = ath11k_mac_bitrate_mask_num_he_rates(ar, band,
-+								 mask);
-+
-+		if (!ath11k_mac_he_mcs_range_present(ar, band, mask) &&
-+		    num_rates > 1) {
-+			ath11k_warn(ar->ab,
-+				    "Setting more than one HE MCS Value in bitrate mask not supported\n");
-+			return -EINVAL;
-+		}
-+
- 		ieee80211_iterate_stations_atomic(ar->hw,
- 						  ath11k_mac_disable_peer_fixed_rate,
- 						  arvif);
-@@ -5317,7 +5610,8 @@ ath11k_mac_op_set_bitrate_mask(struct ieee80211_hw *hw,
- 
- 	mutex_lock(&ar->conf_mutex);
- 
--	ret = ath11k_mac_set_fixed_rate_params(arvif, rate, nss, sgi, ldpc);
-+	ret = ath11k_mac_set_fixed_rate_params(arvif, rate, nss, sgi, ldpc,
-+					       he_gi, he_ltf);
- 	if (ret) {
- 		ath11k_warn(ar->ab, "failed to set fixed rate params on vdev %i: %d\n",
- 			    arvif->vdev_id, ret);
-diff --git a/drivers/net/wireless/ath/ath11k/wmi.h b/drivers/net/wireless/ath/ath11k/wmi.h
-index cd5b7a33a73f..ac48f3f3425c 100644
---- a/drivers/net/wireless/ath/ath11k/wmi.h
-+++ b/drivers/net/wireless/ath/ath11k/wmi.h
-@@ -1012,6 +1012,7 @@ enum wmi_tlv_vdev_param {
- 	WMI_VDEV_PARAM_HE_RANGE_EXT,
- 	WMI_VDEV_PARAM_ENABLE_BCAST_PROBE_RESPONSE,
- 	WMI_VDEV_PARAM_FILS_MAX_CHANNEL_GUARD_TIME,
-+	WMI_VDEV_PARAM_HE_LTF = 0x74,
- 	WMI_VDEV_PARAM_BA_MODE = 0x7e,
- 	WMI_VDEV_PARAM_SET_HE_SOUNDING_MODE = 0x87,
- 	WMI_VDEV_PARAM_PROTOTYPE = 0x8000,
--- 
-2.20.1
-
+RnJvbTogSsOpcsO0bWUgUG91aWxsZXIgPGplcm9tZS5wb3VpbGxlckBzaWxhYnMuY29tPgoKSGVs
+bG8gYWxsLAoKVGhpcyBwdWxsIHJlcXVlc3QgY29udGludWUgdG8gY2xlYW4gdXAgdGhlIHdmeCBk
+cml2ZXIuIEl0IGNhbiBiZSBtb3JlIG9yCmxlc3MgZGl2aWRlZCBpbiBmb3VyIHBhcnRzOgogIC0g
+MDAwMSB0byAwMDA5IGZpeCBzb21lIGlzc3VlcyAoc2hvdWxkIGJlIGluY2x1ZGVkIGluIDUuNT8p
+CiAgLSAwMDEwIHRvIDAwMjggbW9zdGx5IGNvbnRhaW5zIGNvc21ldGljcyBjaGFuZ2VzCiAgLSAw
+MDI5IHRvIDAwNDMgcmUtd29yayBwb3dlciBzYXZlIChpbiBzdGF0aW9uIG1vZGUpIGFuZCBRb1MK
+ICAtIDAwNDQgdG8gMDA1NCByZS13b3JrIHRoZSBzY2FuIHByb2Nlc3MKClRoZSBsYXN0IHBhdGNo
+IHVwZGF0ZXMgdGhlIFRPRE8gd2l0aCBhIG1vcmUgcHJlY2lzZSBsaXN0LiBJIGluY2x1ZGVkCnJl
+ZmVyZW5jZXMgdG8gZGlzY3Vzc2lvbnMgSSBoYXZlIGhhZCBvbiBtYWlsaW5nIGxpc3RzLCBpbiBv
+cmRlciB0byBub3QKZm9yZ2V0IHRoZW0uIEkgc3RhcnRlZCB0aGUgZmlyc3QgaXRlbXMgb2YgdGhl
+IGxpc3QgYW5kIEkgaG9wZSB0byBiZSBhYmxlCnRvIHNlbmQgYW5vdGhlciAoc21hbGxlcikgcHVs
+bCByZXF1ZXN0IGluIDItMyB3ZWVrcy4KClRoaXMgc2VyaWVzIGFsc28gdHJ5IGNsYXJpZnkgdGhl
+IG92ZXJhbGwgYXJjaGl0ZWN0dXJlOgoKICAgICwtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0uCiAgICB8ICAgICAgICAgICAgICAgIG1hYzgwMjExICAgICAgICAgICAgfAogICAg
+YC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLScKICAgICwtLS0tLS0tLS0tLS0r
+LS0tLS0tLS0tLS0rLS0tLS0tLS0tLS0uCiAgICB8ICAgIHN0YSAgICAgfCAgICAgICAgICAgfCAg
+ICAgICAgICAgfAogICAgfCAgICBzY2FuICAgIHwgICAgICAgICAgIHwgICAgICAgICAgIHwKICAg
+IHwgICAgbWFpbiAgICB8ICAgICAgICAgICB8ICAgICAgICAgICB8CiAgICArLS0tLS0tLS0tLS0t
+KyAgZGF0YV90eCAgfCAgICAgICAgICAgfAogICAgfCAgICBrZXkgICAgIHwgICAgICAgICAgIHwg
+IGRhdGFfcnggIHwKICAgIHwgaGlmX3R4X21pYiB8ICAgcXVldWUgICB8ICAgICAgICAgICB8CiAg
+ICB8ICAgaGlmX3R4ICAgfCAgICAgICAgICAgfCAgICAgICAgICAgfAogICAgfCAgIGhpZl9yeCAg
+IHwgICAgICAgICAgIHwgICAgICAgICAgIHwKICAgIHwgIGhpZl9hcGlfKiB8ICAgICAgICAgICB8
+ICAgICAgICAgICB8CiAgICArLS0tLS0tLS0tLS0tKy0tLS0tLS0tLS0tKy0tLS0tLS0tLS0tKy0t
+LS0tLS0tLgogICAgfCAgICAgICAgICAgICAgICAgIGJoICAgICAgICAgICAgICAgIHwgIGZ3aW8g
+IHwKICAgIHwgICAgICAgICAgICAgIHNlY3VyZV9saW5rICAgICAgICAgICB8ICAgICAgICB8CiAg
+ICArLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tKy0tLS0tLS0tKwogICAgfCAg
+ICAgICAgICAgICAgICAgICAgIGh3aW8gICAgICAgICAgICAgICAgICAgIHwKICAgICstLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0rCiAgICB8ICAgICAgICAgICAg
+ICAgICAgIGJ1c19zZGlvICAgICAgICAgICAgICAgICAgfAogICAgfCAgICAgICAgICAgICAgICAg
+ICBidXNfc3BpICAgICAgICAgICAgICAgICAgIHwKICAgIHwgICAgICAgICAgICAgICAgICAgIGh3
+YnVzICAgICAgICAgICAgICAgICAgICB8CiAgICBgLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tJwogICAgLC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS4KICAgIHwgICAgICAgICAgICAgICAgICAgc2Rpby9zcGkgICAgICAgICAg
+ICAgICAgICB8CiAgICArLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tKwogICAgfCAgICAgICAgICAgICAgICAgICBoYXJkd2FyZSAgICAgICAgICAgICAgICAgIHwK
+ICAgIGAtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0nCgpJdCB0
+cnkgdG8gbWFrZSBhIGNsZWFyIHNlcGFyYXRpb24gYmV0d2VlbiBmdW5jdGlvbnMgdGhhdCB0YWtl
+IGNhcmUgb2YKaGFyZHdhcmUgY29tbXVuaWNhdGlvbiAoaGlmXyopIGFuZCBmdW5jdGlvbnMgdGhh
+dCB3b3JrIHdpdGggbWFjODAyMTEKKHN0YS5jIGFuZCBzY2FuLmMpLgoKdjI6CiAgLSBGaXggbGlu
+ZSBlbmRzCiAgLSBVcGRhdGUgVE9ETyB3aXRoIEZlbGl4IGlkZWEKICAtIEFkZCBhcmNoaXRlY3R1
+cmUgc2NoZW1hdGljcyBpbiBjb3ZlciBsZXR0ZXIKCgpKw6lyw7RtZSBQb3VpbGxlciAoNTUpOgog
+IHN0YWdpbmc6IHdmeDogZml4IHRoZSBjYWNoZSBvZiByYXRlIHBvbGljaWVzIG9uIGludGVyZmFj
+ZSByZXNldAogIHN0YWdpbmc6IHdmeDogZml4IGNhc2Ugb2YgbGFjayBvZiB0eF9yZXRyeV9wb2xp
+Y2llcwogIHN0YWdpbmc6IHdmeDogZml4IGNvdW50ZXIgb3ZlcmZsb3cKICBzdGFnaW5nOiB3Zng6
+IHVzZSBib29sZWFuIGFwcHJvcHJpYXRlbHkKICBzdGFnaW5nOiB3Zng6IGZpcm13YXJlIGRvZXMg
+bm90IHN1cHBvcnQgbW9yZSB0aGFuIDMyIHRvdGFsIHJldHJpZXMKICBzdGFnaW5nOiB3Zng6IGZp
+eCByYXRlIGNvbnRyb2wgaGFuZGxpbmcKICBzdGFnaW5nOiB3Zng6IGVuc3VyZSB0aGF0IHJldHJ5
+IHBvbGljeSBhbHdheXMgZmFsbGJhY2tzIHRvIE1DUzAgLwogICAgMU1icHMKICBzdGFnaW5nOiB3
+Zng6IGRldGVjdCByYWNlIGNvbmRpdGlvbiBpbiBXRVAgYXV0aGVudGljYXRpb24KICBzdGFnaW5n
+OiB3Zng6IGZpeCBoaWZfc2V0X21mcCgpIHdpdGggYmlnIGVuZGlhbiBob3N0cwogIHN0YWdpbmc6
+IHdmeDogZml4IHdyb25nIGVycm9yIG1lc3NhZ2UKICBzdGFnaW5nOiB3Zng6IGluY3JlYXNlIFNQ
+SSBidXMgZnJlcXVlbmN5IGxpbWl0CiAgc3RhZ2luZzogd2Z4OiBkb24ndCBwcmludCB1c2VsZXNz
+IGVycm9yIG1lc3NhZ2VzCiAgc3RhZ2luZzogd2Z4OiBhdm9pZCBkb3VibGUgd2FybmluZyB3aGVu
+IG5vIG1vcmUgdHggcG9saWN5IGFyZQogICAgYXZhaWxhYmxlCiAgc3RhZ2luZzogd2Z4OiBpbXBy
+b3ZlIGVycm9yIG1lc3NhZ2Ugb24gdW5leHBlY3RlZCBjb25maXJtYXRpb24KICBzdGFnaW5nOiB3
+Zng6IHRha2UgYWR2YW50YWdlIG9mIElTX0VSUl9PUl9OVUxMKCkKICBzdGFnaW5nOiB3Zng6IHVu
+aWZvcm1pemUgbmFtaW5nIHJ1bGUKICBzdGFnaW5nOiB3Zng6IHVzZSBtZWFuaW5nZnVsIG5hbWVz
+IGZvciBDRkdfQllURV9PUkRFUl8qCiAgc3RhZ2luZzogd2Z4OiByZW1vdmUgdXNlbGVzcyBpbmNs
+dWRlCiAgc3RhZ2luZzogd2Z4OiBzaW1wbGlmeSB2YXJpYWJsZSBhc3NpZ25tZW50CiAgc3RhZ2lu
+Zzogd2Z4OiBtYWtlIGNvbmRpdGlvbnMgZWFzaWVyIHRvIHJlYWQKICBzdGFnaW5nOiB3Zng6IGVu
+c3VyZSB0aGF0IHRyYWNlcyBuZXZlciBtb2RpZnkgYXJndW1lbnRzCiAgc3RhZ2luZzogd2Z4OiBl
+bnN1cmUgdGhhdCByZWNlaXZlZCBoaWYgbWVzc2FnZXMgYXJlIG5ldmVyIG1vZGlmaWVkCiAgc3Rh
+Z2luZzogd2Z4OiBmaXggdHlwbyBpbiAibnVtX29mX3NzaV9kcyIKICBzdGFnaW5nOiB3Zng6IGZp
+eCB0eXBvIGluICJudW1faV9lcyIKICBzdGFnaW5nOiB3Zng6IGZpeCBuYW1lIG9mIHN0cnVjdCBo
+aWZfcmVxX3N0YXJ0X3NjYW5fYWx0CiAgc3RhZ2luZzogd2Z4OiBpbXByb3ZlIEFQSSBvZiBoaWZf
+cmVxX2pvaW4tPmluZnJhc3RydWN0dXJlX2Jzc19tb2RlCiAgc3RhZ2luZzogd2Z4OiBiZXR0ZXIg
+bmFtaW5nIGZvciBoaWZfcmVxX2pvaW4tPnNob3J0X3ByZWFtYmxlCiAgc3RhZ2luZzogd2Z4OiBi
+ZXR0ZXIgbmFtaW5nIGZvcgogICAgaGlmX21pYl9zZXRfYXNzb2NpYXRpb25fbW9kZS0+Z3JlZW5m
+aWVsZAogIHN0YWdpbmc6IHdmeDogc2ltcGxpZnkgaGFuZGxpbmcgb2YgdHhfbG9jayBpbiB3Znhf
+ZG9fam9pbigpCiAgc3RhZ2luZzogd2Z4OiBmaXJtd2FyZSBhbHJlYWR5IGhhbmRsZSBwb3dlcnNh
+dmUgbW9kZSBkdXJpbmcgc2NhbgogIHN0YWdpbmc6IHdmeDogZGVjbGFyZSB3Znhfc2V0X3BtKCkg
+c3RhdGljCiAgc3RhZ2luZzogd2Z4OiBkcm9wIHVzZWxlc3MgYXJndW1lbnQgZnJvbSB3Znhfc2V0
+X3BtKCkKICBzdGFnaW5nOiB3Zng6IHJlbW92ZSByZWR1bmRhbnQgdGVzdCB3aGlsZSBjYWxsaW5n
+IHdmeF91cGRhdGVfcG0oKQogIHN0YWdpbmc6IHdmeDogZHJvcCB1bm5lY2Vzc2FyeSB3dmlmLT5w
+b3dlcnNhdmVfbW9kZQogIHN0YWdpbmc6IHdmeDogZG8gbm90IHRyeSB0byBzYXZlIGNhbGwgdG8g
+aGlmX3NldF9wbSgpCiAgc3RhZ2luZzogd2Z4OiBmaXggcG1fbW9kZSB0aW1lb3V0CiAgc3RhZ2lu
+Zzogd2Z4OiBzaW1wbGlmeSB3ZnhfY29uZl90eCgpCiAgc3RhZ2luZzogd2Z4OiBwcmVmZXIgYSBi
+aXRtYXNrIGluc3RlYWQgb2YgYW4gYXJyYXkgb2YgYm9vbGVhbgogIHN0YWdpbmc6IHdmeDogc2lt
+cGxpZnkgaGlmX3NldF91YXBzZF9pbmZvKCkgdXNhZ2UKICBzdGFnaW5nOiB3Zng6IHNpbXBsaWZ5
+IGhpZl9zZXRfcG0oKSB1c2FnZQogIHN0YWdpbmc6IHdmeDogZHJvcCBzdHJ1Y3Qgd2Z4X2VkY2Ff
+cGFyYW1zCiAgc3RhZ2luZzogd2Z4OiByZW1vdmUgdW5uZWNlc3NhcnkgRURDQSBpbml0aWFsaXNh
+dGlvbgogIHN0YWdpbmc6IHdmeDogc2ltcGxpZnkgaGlmX3NldF9lZGNhX3F1ZXVlX3BhcmFtcygp
+IHVzYWdlCiAgc3RhZ2luZzogd2Z4OiBoaWZfc2NhbigpIG5ldmVyIGZhaWxzCiAgc3RhZ2luZzog
+d2Z4OiBkZXZpY2UgYWxyZWFkeSBoYW5kbGUgc2xlZXAgbW9kZSBkdXJpbmcgc2NhbgogIHN0YWdp
+bmc6IHdmeDogZHJvcCB1c2VsZXNzIHdmeF9zY2FuX2NvbXBsZXRlKCkKICBzdGFnaW5nOiB3Zng6
+IHNpbXBsaWZ5IGhpZl9zY2FuKCkgdXNhZ2UKICBzdGFnaW5nOiB3Zng6IGludHJvZHVjZSB1cGRh
+dGVfcHJvYmVfdG1wbCgpCiAgc3RhZ2luZzogd2Z4OiBzaW1wbGlmeSBoaWZfc2V0X3RlbXBsYXRl
+X2ZyYW1lKCkgdXNhZ2UKICBzdGFnaW5nOiB3Zng6IHJld3JpdGUgd2Z4X2h3X3NjYW4oKQogIHN0
+YWdpbmc6IHdmeDogd29ya2Fyb3VuZCBidWcgd2l0aCAiaXcgc2NhbiIKICBzdGFnaW5nOiB3Zng6
+IGRlbGF5ZWRfdW5qb2luIGNhbm5vdCBoYXBwZW4KICBzdGFnaW5nOiB3Zng6IGRlbGF5ZWRfbGlu
+a19sb3NzIGNhbm5vdCBoYXBwZW4KICBzdGFnaW5nOiB3Zng6IGltcGxlbWVudCBjYW5jZWxfaHdf
+c2NhbigpCiAgc3RhZ2luZzogd2Z4OiB1cGRhdGUgVE9ETwoKIGRyaXZlcnMvc3RhZ2luZy93Zngv
+VE9ETyAgICAgICAgICB8ICA4MSArKysrKy0tCiBkcml2ZXJzL3N0YWdpbmcvd2Z4L2JoLmMgICAg
+ICAgICAgfCAgIDMgKy0KIGRyaXZlcnMvc3RhZ2luZy93ZngvYnVzX3NwaS5jICAgICB8ICAgOSAr
+LQogZHJpdmVycy9zdGFnaW5nL3dmeC9kYXRhX3J4LmMgICAgIHwgICA4ICstCiBkcml2ZXJzL3N0
+YWdpbmcvd2Z4L2RhdGFfcnguaCAgICAgfCAgIDQgKy0KIGRyaXZlcnMvc3RhZ2luZy93ZngvZGF0
+YV90eC5jICAgICB8ICA0MCArKystCiBkcml2ZXJzL3N0YWdpbmcvd2Z4L2RhdGFfdHguaCAgICAg
+fCAgIDcgKy0KIGRyaXZlcnMvc3RhZ2luZy93ZngvZndpby5jICAgICAgICB8ICAyOCArLS0KIGRy
+aXZlcnMvc3RhZ2luZy93ZngvaGlmX2FwaV9jbWQuaCB8ICAzMiArLS0KIGRyaXZlcnMvc3RhZ2lu
+Zy93ZngvaGlmX2FwaV9taWIuaCB8ICAxMyArLQogZHJpdmVycy9zdGFnaW5nL3dmeC9oaWZfcngu
+YyAgICAgIHwgMTAzICsrKysrLS0tLQogZHJpdmVycy9zdGFnaW5nL3dmeC9oaWZfdHguYyAgICAg
+IHwgMTA5ICsrKysrLS0tLQogZHJpdmVycy9zdGFnaW5nL3dmeC9oaWZfdHguaCAgICAgIHwgIDE3
+ICstCiBkcml2ZXJzL3N0YWdpbmcvd2Z4L2hpZl90eF9taWIuaCAgfCAgMjcgKystCiBkcml2ZXJz
+L3N0YWdpbmcvd2Z4L2h3aW8uaCAgICAgICAgfCAgMTUgKy0KIGRyaXZlcnMvc3RhZ2luZy93Zngv
+bWFpbi5jICAgICAgICB8ICAgNSArLQogZHJpdmVycy9zdGFnaW5nL3dmeC9xdWV1ZS5jICAgICAg
+IHwgICA5ICstCiBkcml2ZXJzL3N0YWdpbmcvd2Z4L3NjYW4uYyAgICAgICAgfCAzMjMgKysrKysr
+Ky0tLS0tLS0tLS0tLS0tLS0tLS0tCiBkcml2ZXJzL3N0YWdpbmcvd2Z4L3NjYW4uaCAgICAgICAg
+fCAgMjUgKy0tCiBkcml2ZXJzL3N0YWdpbmcvd2Z4L3NlY3VyZV9saW5rLmggfCAgIDggKy0KIGRy
+aXZlcnMvc3RhZ2luZy93Zngvc3RhLmMgICAgICAgICB8IDM1MyArKysrKysrKy0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0KIGRyaXZlcnMvc3RhZ2luZy93Zngvc3RhLmggICAgICAgICB8ICAgOSArLQog
+ZHJpdmVycy9zdGFnaW5nL3dmeC90cmFjZXMuaCAgICAgIHwgIDE0ICstCiBkcml2ZXJzL3N0YWdp
+bmcvd2Z4L3dmeC5oICAgICAgICAgfCAgMTggKy0KIDI0IGZpbGVzIGNoYW5nZWQsIDUwOSBpbnNl
+cnRpb25zKCspLCA3NTEgZGVsZXRpb25zKC0pCgotLSAKMi4yNC4wCgo=
