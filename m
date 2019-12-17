@@ -2,88 +2,83 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F94F122E3B
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Dec 2019 15:12:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 750E9122E44
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Dec 2019 15:14:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728798AbfLQOM4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 17 Dec 2019 09:12:56 -0500
-Received: from mail-wr1-f68.google.com ([209.85.221.68]:40718 "EHLO
-        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728560AbfLQOM4 (ORCPT
+        id S1728811AbfLQOOt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 17 Dec 2019 09:14:49 -0500
+Received: from mail25.static.mailgun.info ([104.130.122.25]:54831 "EHLO
+        mail25.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728695AbfLQOOt (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 17 Dec 2019 09:12:56 -0500
-Received: by mail-wr1-f68.google.com with SMTP id c14so11464635wrn.7
-        for <linux-wireless@vger.kernel.org>; Tue, 17 Dec 2019 06:12:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=1IEBfeiXWdSeAPu3kBBy1VziKqf2hShqp/AAgg9MEEg=;
-        b=uhbkVDF1WLNp6mi572XKAcmSWTT8EOCf1JSIjSDXGo+kOAoNzYhvAXZHSNzU1GCRBC
-         DZD1k9NV3AnfZ1USp2CU1RDGm5YhNRIYJnk60kLPZjUbj2EWHflIYuqlPryp2H6XAl2F
-         2oqXD3FJq8cVW7t3NvfQKO6iD1CG2CYMV94UByBBc3LDw500321NWbl/spkN3SbzbEV0
-         XarK4FtHQGysIFsTXLtvGlgYwq0/Ain2SJdIxaHt4stbYUZ4KISiqSlzmq+0iCNUiPDk
-         Wou72za3hFZSTW2e60lFKMKCb5DpwU2nJ9rVJFtpjUeyFshssL0sdTaxPWXfcuYJrjMJ
-         9OFQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=1IEBfeiXWdSeAPu3kBBy1VziKqf2hShqp/AAgg9MEEg=;
-        b=mbzSguRhEAofukvKMtyKsRE/0eoV0bDeFfFgMfZGr5lV4pc8HsdboyIhk2b/5aaIWE
-         6ZHinDkHg8Sl7Sm6snoJVJ5DuFA5IG0Vg0NGjHbIHZQuKzfjJk+2B0+cDa6LK+i5nPkF
-         WDk1x39yrKWJpnl+Lz7MaqknHuncur9zifDx7N4S8TDdrHZan2I8iuTiVucXrZAPyRpD
-         +5v5CkrYcqQCMitKBXdF13rGqpvFu4P/55xTEiIh+WAWkEPoUfN5wVGCc9ShU/e7/Ej7
-         4Yieoug0EgSMMo40P+B8BxJSN0b8Komhmhl0NXoOYVwb9q+ZZmhKlpp4crpNdJcpPSqt
-         Xykw==
-X-Gm-Message-State: APjAAAW/raiIsZorlKmw8/K93v9LC4Anp2VDQRlYvn9rxbo240k8xYGa
-        VYihby/IAKXbH+nascLG+sS+sO5n
-X-Google-Smtp-Source: APXvYqws4A5aPc013BltYGN7FQTg3PdMCtevd6Q1iD8LtbGnUeJ+Dd7Evr+MVyu4BtMf376vHzAvwg==
-X-Received: by 2002:a5d:6b88:: with SMTP id n8mr38701062wrx.288.1576591973447;
-        Tue, 17 Dec 2019 06:12:53 -0800 (PST)
-Received: from localhost.localdomain ([193.27.220.66])
-        by smtp.gmail.com with ESMTPSA id b15sm3078922wmj.13.2019.12.17.06.12.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Dec 2019 06:12:52 -0800 (PST)
-From:   Eduardo Abinader <eduardoabinader@gmail.com>
-To:     linux-wireless@vger.kernel.org, wcn36xx@lists.infradead.org,
-        kvalo@codeaurora.org
-Subject: [PATCH] wcn36xx: disable HW_CONNECTION_MONITOR
-Date:   Tue, 17 Dec 2019 15:12:47 +0100
-Message-Id: <20191217141247.14387-1-eduardoabinader@gmail.com>
-X-Mailer: git-send-email 2.20.1
+        Tue, 17 Dec 2019 09:14:49 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1576592088; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=IQ/h7WGtsxPAeTcFQEEn1Y2mtfDbwOvIuZQCUrAuAQg=; b=o2nmbjJx6X5bTKOf0y8rtDlF6XsbRwCBJZ+Ixk573QLU4JyW9yCMVue+WxtuHZtFVymcrFmj
+ qdAGwuzPyM6PXdZlTzeMjLP/kqL9LPbwffBZxhO5n4QrNi1dwGT2WjWzcMJ1+x1xM80G7cze
+ nmte3IO8sluqtU8Bbjl4VxGuxd8=
+X-Mailgun-Sending-Ip: 104.130.122.25
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5df8e2d1.7f9b740f11f0-smtp-out-n02;
+ Tue, 17 Dec 2019 14:14:41 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id DF7CCC433CB; Tue, 17 Dec 2019 14:14:40 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 27ACCC43383;
+        Tue, 17 Dec 2019 14:14:38 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 27ACCC43383
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     govinds@codeaurora.org
+Cc:     Rob Herring <robh@kernel.org>, devicetree@vger.kernel.org,
+        linux-wireless@vger.kernel.org, ath10k@lists.infradead.org
+Subject: Re: [PATCH v2 1/2] dt: bindings: add dt entry flag to skip SCM call for msa region
+References: <20191111042508.12628-1-govinds@codeaurora.org>
+        <20191111042508.12628-2-govinds@codeaurora.org>
+        <20191114191640.GA8426@bogus>
+        <0101016e8d2426fc-31499903-e1a0-44b3-83eb-73ba4f4a8b4a-000000@us-west-2.amazonses.com>
+Date:   Tue, 17 Dec 2019 16:14:36 +0200
+In-Reply-To: <0101016e8d2426fc-31499903-e1a0-44b3-83eb-73ba4f4a8b4a-000000@us-west-2.amazonses.com>
+        (govinds@codeaurora.org's message of "Thu, 21 Nov 2019 08:46:27
+        +0000")
+Message-ID: <87pngnavjn.fsf@kamboji.qca.qualcomm.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Whenever the signal stregth decays smoothly and physical connnection
-is already gone and no deauth has arrived, the qcom soc is not
-able to indicate neither WCN36XX_HAL_MISSED_BEACON_IND nor
-WCN36XX_HAL_MISSED_BEACON_IND. It was noticed that such situation gets
-even more reproducible, when the driver fails to enter bmps mode - which is
-highly likely to occur. Thus, in order to provide proper disconnection
-of the connected STA, let mac80211 handle it, instead of wcn3xx driver.
+govinds@codeaurora.org writes:
 
-Signed-off-by: Eduardo Abinader <eduardoabinader@gmail.com>
----
- drivers/net/wireless/ath/wcn36xx/main.c | 1 -
- 1 file changed, 1 deletion(-)
+> On 2019-11-15 00:46, Rob Herring wrote:
+>> On Mon, Nov 11, 2019 at 09:55:07AM +0530, Govind Singh wrote:
+>>> Add boolean context flag to disable SCM call for statically
+>>> mapped msa region.
+>>
+>> Can't this be implied by the compatible string?
+>>
+>
+> same soc compatible will be used in older TZ vs new TZ.
+> Due to this reason I added this.
 
-diff --git a/drivers/net/wireless/ath/wcn36xx/main.c b/drivers/net/wireless/ath/wcn36xx/main.c
-index c30fdd0cbf1e..e49c306e0eef 100644
---- a/drivers/net/wireless/ath/wcn36xx/main.c
-+++ b/drivers/net/wireless/ath/wcn36xx/main.c
-@@ -1169,7 +1169,6 @@ static int wcn36xx_init_ieee80211(struct wcn36xx *wcn)
- 
- 	ieee80211_hw_set(wcn->hw, TIMING_BEACON_ONLY);
- 	ieee80211_hw_set(wcn->hw, AMPDU_AGGREGATION);
--	ieee80211_hw_set(wcn->hw, CONNECTION_MONITOR);
- 	ieee80211_hw_set(wcn->hw, SUPPORTS_PS);
- 	ieee80211_hw_set(wcn->hw, SIGNAL_DBM);
- 	ieee80211_hw_set(wcn->hw, HAS_RATE_CONTROL);
+So what should we do? Rob, any suggestions?
+
+Full patch here:
+
+https://patchwork.kernel.org/patch/11236535/
+
 -- 
-2.20.1
-
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
