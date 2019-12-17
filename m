@@ -2,95 +2,88 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 76939122DF2
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Dec 2019 15:05:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F94F122E3B
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Dec 2019 15:12:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728768AbfLQOFj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 17 Dec 2019 09:05:39 -0500
-Received: from mail-lj1-f193.google.com ([209.85.208.193]:35035 "EHLO
-        mail-lj1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728546AbfLQOFj (ORCPT
+        id S1728798AbfLQOM4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 17 Dec 2019 09:12:56 -0500
+Received: from mail-wr1-f68.google.com ([209.85.221.68]:40718 "EHLO
+        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728560AbfLQOM4 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 17 Dec 2019 09:05:39 -0500
-Received: by mail-lj1-f193.google.com with SMTP id j6so11094616lja.2
-        for <linux-wireless@vger.kernel.org>; Tue, 17 Dec 2019 06:05:37 -0800 (PST)
+        Tue, 17 Dec 2019 09:12:56 -0500
+Received: by mail-wr1-f68.google.com with SMTP id c14so11464635wrn.7
+        for <linux-wireless@vger.kernel.org>; Tue, 17 Dec 2019 06:12:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=a8f3Bpq6dFoGf8pYbLbjxw846b7BaA25DVfJ6Nk16sc=;
-        b=YlWv4l3cvCBom1ZjEksgQv2qzCt2Jd0OoZin9Npb73ERISkEQAocWKtHJilag6iOrX
-         goaxcROUc+rmbSf+fo1r61jsVRGPze1Az1OZGsiyW6K+I/jo32k/e+eCb4nJoOTzZQZ3
-         wykECaBVLpeqA6ovKInzbNwherieK+HrXKOKlqKulMK+BXMzWRuWm+jNosKgoWUBjmno
-         6F2kDGMi17CaI+Io0qjbic9Ufxi0YKFaylEr3yVOHQbEn9vJfXxaX2UmztFIv56ZxzZB
-         asAODUfm6EWkdjVuxWfB0aKaDCvxonjFctdoJqBBaOEdunNCfgFr7Au4l5bjiQZadMnR
-         D8Vw==
+        h=from:to:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=1IEBfeiXWdSeAPu3kBBy1VziKqf2hShqp/AAgg9MEEg=;
+        b=uhbkVDF1WLNp6mi572XKAcmSWTT8EOCf1JSIjSDXGo+kOAoNzYhvAXZHSNzU1GCRBC
+         DZD1k9NV3AnfZ1USp2CU1RDGm5YhNRIYJnk60kLPZjUbj2EWHflIYuqlPryp2H6XAl2F
+         2oqXD3FJq8cVW7t3NvfQKO6iD1CG2CYMV94UByBBc3LDw500321NWbl/spkN3SbzbEV0
+         XarK4FtHQGysIFsTXLtvGlgYwq0/Ain2SJdIxaHt4stbYUZ4KISiqSlzmq+0iCNUiPDk
+         Wou72za3hFZSTW2e60lFKMKCb5DpwU2nJ9rVJFtpjUeyFshssL0sdTaxPWXfcuYJrjMJ
+         9OFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=a8f3Bpq6dFoGf8pYbLbjxw846b7BaA25DVfJ6Nk16sc=;
-        b=LRYlaUNppYcevSaYBu2sfx7HiM+wjtoI8mE/tHPh75nhveFYgzG0xp+x4wl+nn4ty3
-         Bjq1fW7XX3BYpEcr9pdKSvtuPuIgQkUqnOKu6o4t6SmQdX+JekYbnW2B27yBIzVHgZT7
-         w7MmNcxqcFv4l1Aig3xomsP/v/AnNAHfHwJAH/0TEoA6hPKUB7uBlGvQOjrej6BjSbwF
-         esrQa7QPjXf9QJleX3k7uo2JKDMPUyOoEsLnCRDzVUKeCk/+yX0jS6tS3MttdByXuV/G
-         lBlqUCUQ2Fa351DcXKOhY7AMUlg3Clnhboeu8nvBypKluc4JWo19FnyudPf6LFNXc35W
-         BJYg==
-X-Gm-Message-State: APjAAAXnVrrv6cH51JQ0j672mYP/iST58jqwP7H4IWYKMgyRgbYIcMUq
-        Gs58sNGlgWWvx3LbqdkDxz+Vo2407dUoRwstN2w=
-X-Google-Smtp-Source: APXvYqz1nyuAC4GOKP9YL55S219dezJuQ79pjaZJZl2egNjjMOVt0QOXOvRGOQnl1FG1kZ/db035gOoLF1RIBSZd0sk=
-X-Received: by 2002:a2e:b0c4:: with SMTP id g4mr3286033ljl.83.1576591536918;
- Tue, 17 Dec 2019 06:05:36 -0800 (PST)
-MIME-Version: 1.0
-References: <20191205061922.1801-1-eduardoabinader@gmail.com>
- <0101016ed4f1db3a-e6a9458a-676e-48b1-bf5b-120a4a8d4ab7-000000@us-west-2.amazonses.com>
- <CAGoNHngJQteebGkq2dwofhm819xD9u=zTgFD0xV4WfbgiwR+AQ@mail.gmail.com>
-In-Reply-To: <CAGoNHngJQteebGkq2dwofhm819xD9u=zTgFD0xV4WfbgiwR+AQ@mail.gmail.com>
+        h=x-gm-message-state:from:to:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=1IEBfeiXWdSeAPu3kBBy1VziKqf2hShqp/AAgg9MEEg=;
+        b=mbzSguRhEAofukvKMtyKsRE/0eoV0bDeFfFgMfZGr5lV4pc8HsdboyIhk2b/5aaIWE
+         6ZHinDkHg8Sl7Sm6snoJVJ5DuFA5IG0Vg0NGjHbIHZQuKzfjJk+2B0+cDa6LK+i5nPkF
+         WDk1x39yrKWJpnl+Lz7MaqknHuncur9zifDx7N4S8TDdrHZan2I8iuTiVucXrZAPyRpD
+         +5v5CkrYcqQCMitKBXdF13rGqpvFu4P/55xTEiIh+WAWkEPoUfN5wVGCc9ShU/e7/Ej7
+         4Yieoug0EgSMMo40P+B8BxJSN0b8Komhmhl0NXoOYVwb9q+ZZmhKlpp4crpNdJcpPSqt
+         Xykw==
+X-Gm-Message-State: APjAAAW/raiIsZorlKmw8/K93v9LC4Anp2VDQRlYvn9rxbo240k8xYGa
+        VYihby/IAKXbH+nascLG+sS+sO5n
+X-Google-Smtp-Source: APXvYqws4A5aPc013BltYGN7FQTg3PdMCtevd6Q1iD8LtbGnUeJ+Dd7Evr+MVyu4BtMf376vHzAvwg==
+X-Received: by 2002:a5d:6b88:: with SMTP id n8mr38701062wrx.288.1576591973447;
+        Tue, 17 Dec 2019 06:12:53 -0800 (PST)
+Received: from localhost.localdomain ([193.27.220.66])
+        by smtp.gmail.com with ESMTPSA id b15sm3078922wmj.13.2019.12.17.06.12.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Dec 2019 06:12:52 -0800 (PST)
 From:   Eduardo Abinader <eduardoabinader@gmail.com>
-Date:   Tue, 17 Dec 2019 15:05:26 +0100
-Message-ID: <CAGoNHnixgDE3mm=8AhUXye0SoPRuuGB48Pzh1vm-r1VphxGyxA@mail.gmail.com>
-Subject: Re: [PATCH] wcn36xx: disconnect timeout
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     wcn36xx@lists.infradead.org, linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+To:     linux-wireless@vger.kernel.org, wcn36xx@lists.infradead.org,
+        kvalo@codeaurora.org
+Subject: [PATCH] wcn36xx: disable HW_CONNECTION_MONITOR
+Date:   Tue, 17 Dec 2019 15:12:47 +0100
+Message-Id: <20191217141247.14387-1-eduardoabinader@gmail.com>
+X-Mailer: git-send-email 2.20.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Thanks for the hint, Kalle.
+Whenever the signal stregth decays smoothly and physical connnection
+is already gone and no deauth has arrived, the qcom soc is not
+able to indicate neither WCN36XX_HAL_MISSED_BEACON_IND nor
+WCN36XX_HAL_MISSED_BEACON_IND. It was noticed that such situation gets
+even more reproducible, when the driver fails to enter bmps mode - which is
+highly likely to occur. Thus, in order to provide proper disconnection
+of the connected STA, let mac80211 handle it, instead of wcn3xx driver.
 
-The disconnection procedure seems more steady by delegating it to mac80211.
-I'm gonna send a patch with such change then.
+Signed-off-by: Eduardo Abinader <eduardoabinader@gmail.com>
+---
+ drivers/net/wireless/ath/wcn36xx/main.c | 1 -
+ 1 file changed, 1 deletion(-)
 
+diff --git a/drivers/net/wireless/ath/wcn36xx/main.c b/drivers/net/wireless/ath/wcn36xx/main.c
+index c30fdd0cbf1e..e49c306e0eef 100644
+--- a/drivers/net/wireless/ath/wcn36xx/main.c
++++ b/drivers/net/wireless/ath/wcn36xx/main.c
+@@ -1169,7 +1169,6 @@ static int wcn36xx_init_ieee80211(struct wcn36xx *wcn)
+ 
+ 	ieee80211_hw_set(wcn->hw, TIMING_BEACON_ONLY);
+ 	ieee80211_hw_set(wcn->hw, AMPDU_AGGREGATION);
+-	ieee80211_hw_set(wcn->hw, CONNECTION_MONITOR);
+ 	ieee80211_hw_set(wcn->hw, SUPPORTS_PS);
+ 	ieee80211_hw_set(wcn->hw, SIGNAL_DBM);
+ 	ieee80211_hw_set(wcn->hw, HAS_RATE_CONTROL);
+-- 
+2.20.1
 
-On Tue, 17 Dec 2019 at 15:03, Eduardo Abinader
-<eduardoabinader@gmail.com> wrote:
->
-> Thanks for the hint, Kalle.
->
-> The disconnection procedure seems more steady by delegating it to mac80211.
-> I'm gonna send a patch with such change then.
->
->
->
-> On Thu, 5 Dec 2019 at 08:24, Kalle Valo <kvalo@codeaurora.org> wrote:
->>
->> Eduardo Abinader <eduardoabinader@gmail.com> writes:
->>
->> > Whenever the signal stregth decays smoothly and physical connnection
->> > is already gone and no deauth has arrived, the qcom soc is not
->> > able to indicate neither WCN36XX_HAL_MISSED_BEACON_IND nor
->> > WCN36XX_HAL_MISSED_BEACON_IND. It was noticed that such situation gets
->> > even more reproducible, when the driver fails to enter bmps mode - which is
->> > highly likely to occur. Thus, in order to provide proper disconnection
->> > of the connected STA, a disconnection timeout based on last time seen
->> > bss beacon is here given.
->> >
->> > Signed-off-by: Eduardo Abinader <eduardoabinader@gmail.com>
->>
->> Wouldn't it be better to disable IEEE80211_HW_CONNECTION_MONITOR and let
->> mac80211 handle it entirely?
->>
->> --
->> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
