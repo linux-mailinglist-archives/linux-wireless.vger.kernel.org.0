@@ -2,197 +2,295 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 81ACB1230F9
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Dec 2019 16:58:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E43312310F
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Dec 2019 17:05:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727517AbfLQP6b (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 17 Dec 2019 10:58:31 -0500
-Received: from webmail.newmedia-net.de ([185.84.6.166]:60812 "EHLO
-        webmail.newmedia-net.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726933AbfLQP6b (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 17 Dec 2019 10:58:31 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=newmedia-net.de; s=mikd;
-        h=Content-Transfer-Encoding:Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:To:Subject; bh=za3cJOCaZuT5GQwiv3nIfwdkTIVrTryKwXbjymuUcJI=;
-        b=Xqx9JngcLIaRiGJLcEd346Qs4i6PP5f/3fyKtzKNEgGiGMDBsYSvJdyLaAS9YnyootYN2SHvL3a9HvBfvR4QY06m2TQn6WOTYrTb1H0+MK1nIrjSFC0jHyP+vb7LdbMq9Xn0OTedIsW39zYflQ1f0ELlvLji+z8GcM/YkZFbr8c=;
-Subject: Re: [PATCH] ath10k: Per-chain rssi should sum the secondary channels
-To:     Ben Greear <greearb@candelatech.com>,
-        linux-wireless@vger.kernel.org, ath10k@lists.infradead.org
-References: <20191216220747.887-1-greearb@candelatech.com>
- <a2af03e9-8b53-b297-467b-d0f07b8a002b@newmedia-net.de>
- <b5d63d96-4ba6-bbab-bf1c-a61c6c437f37@newmedia-net.de>
- <80700614-679a-336e-bd9a-e88622e75c9a@candelatech.com>
-From:   Sebastian Gottschall <s.gottschall@newmedia-net.de>
-Message-ID: <4775d91a-9719-46f8-b0f2-979b8d86cf9f@newmedia-net.de>
-Date:   Tue, 17 Dec 2019 16:58:24 +0100
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
- Thunderbird/68.3.0
+        id S1728092AbfLQQFH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 17 Dec 2019 11:05:07 -0500
+Received: from nbd.name ([46.4.11.11]:48384 "EHLO nbd.name"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726858AbfLQQFH (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 17 Dec 2019 11:05:07 -0500
+Received: from pd95fd66b.dip0.t-ipconnect.de ([217.95.214.107] helo=bertha.fritz.box)
+        by ds12 with esmtpa (Exim 4.89)
+        (envelope-from <john@phrozen.org>)
+        id 1ihFLL-0002Ku-NX; Tue, 17 Dec 2019 17:05:03 +0100
+From:   John Crispin <john@phrozen.org>
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        Kalle Valo <kvalo@codeaurora.org>
+Cc:     linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
+        Miles Hu <milehu@codeaurora.org>,
+        John Crispin <john@phrozen.org>
+Subject: [PATCH 1/3] nl80211: add support for setting fixed HE rate/gi/ltf
+Date:   Tue, 17 Dec 2019 17:04:53 +0100
+Message-Id: <20191217160455.311-1-john@phrozen.org>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-In-Reply-To: <80700614-679a-336e-bd9a-e88622e75c9a@candelatech.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Received:  from [2a01:7700:8040:3500:8860:b628:52d9:8f37]
-        by webmail.newmedia-net.de with esmtpsa (TLSv1:AES128-SHA:128)
-        (Exim 4.72)
-        (envelope-from <s.gottschall@newmedia-net.de>)
-        id 1ihFDb-0007YZ-Pq; Tue, 17 Dec 2019 16:57:03 +0100
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+From: Miles Hu <milehu@codeaurora.org>
 
->> currently debugging in your code, but i already have seen that the 
->> values are wrong now for this chipset
->
-> Thanks for testing.  I'll add a check for 0 and ignore that value 
-> too.  That seem OK?
-i tested already the 0 check and it works
->
-> Were the per-chain values OK?
-on 9984 i see no disadvantage so far. seem to work and the values look 
-sane. i will do a side by side comparisation later this day on 9984
->
-> Thanks,
-> Ben
->
->>>
->>> Am 16.12.2019 um 23:07 schrieb greearb@candelatech.com:
->>>> From: Ben Greear <greearb@candelatech.com>
->>>>
->>>> This makes per-chain RSSI be more consistent between HT20, HT40, HT80.
->>>> Instead of doing precise log math for adding dbm, I did a rough 
->>>> estimate,
->>>> it seems to work good enough.
->>>>
->>>> Tested on ath10k-ct 9984 firmware.
->>>>
->>>> Signed-off-by: Ben Greear <greearb@candelatech.com>
->>>> ---
->>>>   drivers/net/wireless/ath/ath10k/htt_rx.c  | 64 
->>>> ++++++++++++++++++++---
->>>>   drivers/net/wireless/ath/ath10k/rx_desc.h |  3 +-
->>>>   2 files changed, 60 insertions(+), 7 deletions(-)
->>>>
->>>> diff --git a/drivers/net/wireless/ath/ath10k/htt_rx.c 
->>>> b/drivers/net/wireless/ath/ath10k/htt_rx.c
->>>> index 13f652b622df..034d4ace228d 100644
->>>> --- a/drivers/net/wireless/ath/ath10k/htt_rx.c
->>>> +++ b/drivers/net/wireless/ath/ath10k/htt_rx.c
->>>> @@ -1167,6 +1167,44 @@ static bool ath10k_htt_rx_h_channel(struct 
->>>> ath10k *ar,
->>>>       return true;
->>>>   }
->>>>   +static int ath10k_sum_sigs_2(int a, int b) {
->>>> +    int diff;
->>>> +
->>>> +    if (b == 0x80)
->>>> +        return a;
->>>> +
->>>> +    if (a >= b) {
->>>> +        diff = a - b;
->>>> +        if (diff == 0)
->>>> +            return a + 3;
->>>> +        else if (diff == 1)
->>>> +            return a + 2;
->>>> +        else if (diff == 2)
->>>> +            return a + 1;
->>>> +        return a;
->>>> +    }
->>>> +    else {
->>>> +        diff = b - a;
->>>> +        if (diff == 0)
->>>> +            return b + 3;
->>>> +        else if (diff == 1)
->>>> +            return b + 2;
->>>> +        else if (diff == 2)
->>>> +            return b + 1;
->>>> +        return b;
->>>> +    }
->>>> +}
->>>> +
->>>> +static int ath10k_sum_sigs(int p20, int e20, int e40, int e80) {
->>>> +    /* Hacky attempt at summing dbm without resorting to log(10) 
->>>> business */
->>>> +    if (e40 != 0x80) {
->>>> +        return ath10k_sum_sigs_2(ath10k_sum_sigs_2(p20, e20), 
->>>> ath10k_sum_sigs_2(e40, e80));
->>>> +    }
->>>> +    else {
->>>> +        return ath10k_sum_sigs_2(p20, e20);
->>>> +    }
->>>> +}
->>>> +
->>>>   static void ath10k_htt_rx_h_signal(struct ath10k *ar,
->>>>                      struct ieee80211_rx_status *status,
->>>>                      struct htt_rx_desc *rxd)
->>>> @@ -1177,18 +1215,32 @@ static void ath10k_htt_rx_h_signal(struct 
->>>> ath10k *ar,
->>>>           status->chains &= ~BIT(i);
->>>>             if (rxd->ppdu_start.rssi_chains[i].pri20_mhz != 0x80) {
->>>> -            status->chain_signal[i] = ATH10K_DEFAULT_NOISE_FLOOR +
->>>> - rxd->ppdu_start.rssi_chains[i].pri20_mhz;
->>>> +            status->chain_signal[i] = ATH10K_DEFAULT_NOISE_FLOOR
->>>> +                + 
->>>> ath10k_sum_sigs(rxd->ppdu_start.rssi_chains[i].pri20_mhz,
->>>> + rxd->ppdu_start.rssi_chains[i].ext20_mhz,
->>>> + rxd->ppdu_start.rssi_chains[i].ext40_mhz,
->>>> + rxd->ppdu_start.rssi_chains[i].ext80_mhz);
->>>> +            //ath10k_warn(ar, "rx-h-sig, chain[%i] pri20: %d 
->>>> ext20: %d  ext40: %d  ext80: %d\n",
->>>> +            //        i, rxd->ppdu_start.rssi_chains[i].pri20_mhz, 
->>>> rxd->ppdu_start.rssi_chains[i].ext20_mhz,
->>>> +            // rxd->ppdu_start.rssi_chains[i].ext40_mhz, 
->>>> rxd->ppdu_start.rssi_chains[i].ext80_mhz);
->>>>                 status->chains |= BIT(i);
->>>>           }
->>>>       }
->>>>         /* FIXME: Get real NF */
->>>> -    status->signal = ATH10K_DEFAULT_NOISE_FLOOR +
->>>> -             rxd->ppdu_start.rssi_comb;
->>>> -    /* ath10k_warn(ar, "rx-h-sig, signal: %d  chains: 0x%x 
->>>> chain[0]: %d  chain[1]: %d  chan[2]: %d\n",
->>>> -                       status->signal, status->chains, 
->>>> status->chain_signal[0], status->chain_signal[1], 
->>>> status->chain_signal[2]); */
->>>> +    if (rxd->ppdu_start.rssi_comb_ht != 0x80) {
->>>> +        status->signal = ATH10K_DEFAULT_NOISE_FLOOR +
->>>> +            rxd->ppdu_start.rssi_comb_ht;
->>>> +    }
->>>> +    else {
->>>> +        status->signal = ATH10K_DEFAULT_NOISE_FLOOR +
->>>> +            rxd->ppdu_start.rssi_comb;
->>>> +    }
->>>> +
->>>> +    //ath10k_warn(ar, "rx-h-sig, signal: %d  chains: 0x%x 
->>>> chain[0]: %d  chain[1]: %d  chain[2]: %d chain[3]: %d\n",
->>>> +    //        status->signal, status->chains, 
->>>> status->chain_signal[0],
->>>> +    //        status->chain_signal[1], status->chain_signal[2], 
->>>> status->chain_signal[3]);
->>>>       status->flag &= ~RX_FLAG_NO_SIGNAL_VAL;
->>>>   }
->>>>   diff --git a/drivers/net/wireless/ath/ath10k/rx_desc.h 
->>>> b/drivers/net/wireless/ath/ath10k/rx_desc.h
->>>> index dec1582005b9..6b44677474dd 100644
->>>> --- a/drivers/net/wireless/ath/ath10k/rx_desc.h
->>>> +++ b/drivers/net/wireless/ath/ath10k/rx_desc.h
->>>> @@ -726,7 +726,8 @@ struct rx_ppdu_start {
->>>>           u8 ext80_mhz;
->>>>       } rssi_chains[4];
->>>>       u8 rssi_comb;
->>>> -    __le16 rsvd0;
->>>> +    u8 rsvd0; /* first two bits are bandwidth, other 6 are 
->>>> reserved */
->>>> +    u8 rssi_comb_ht;
->>>>       u8 info0; /* %RX_PPDU_START_INFO0_ */
->>>>       __le32 info1; /* %RX_PPDU_START_INFO1_ */
->>>>       __le32 info2; /* %RX_PPDU_START_INFO2_ */
->>>
->>> _______________________________________________
->>> ath10k mailing list
->>> ath10k@lists.infradead.org
->>> http://lists.infradead.org/mailman/listinfo/ath10k
->>>
->>
->
+This patch adds the nl80211 structs, definitions, policies and parsing
+code required to pass fixed HE rate, gi and ltf settings.
+
+Signed-off-by: John Crispin <john@phrozen.org>
+Signed-off-by: Miles Hu <milehu@codeaurora.org>
+---
+ include/net/cfg80211.h       |   4 ++
+ include/uapi/linux/nl80211.h |  28 +++++++++
+ net/wireless/nl80211.c       | 111 ++++++++++++++++++++++++++++++++++-
+ 3 files changed, 141 insertions(+), 2 deletions(-)
+
+diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+index fed307d9a4fe..cf2350dd7a79 100644
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -386,6 +386,7 @@ struct ieee80211_supported_band {
+ 	int n_bitrates;
+ 	struct ieee80211_sta_ht_cap ht_cap;
+ 	struct ieee80211_sta_vht_cap vht_cap;
++	struct ieee80211_sta_he_cap he_cap;
+ 	u16 n_iftype_data;
+ 	const struct ieee80211_sband_iftype_data *iftype_data;
+ };
+@@ -888,7 +889,10 @@ struct cfg80211_bitrate_mask {
+ 		u32 legacy;
+ 		u8 ht_mcs[IEEE80211_HT_MCS_MASK_LEN];
+ 		u16 vht_mcs[NL80211_VHT_NSS_MAX];
++		u16 he_mcs[NL80211_HE_NSS_MAX];
+ 		enum nl80211_txrate_gi gi;
++		enum nl80211_he_gi he_gi;
++		enum nl80211_he_ltf he_ltf;
+ 	} control[NUM_NL80211_BANDS];
+ };
+ 
+diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
+index fd5028459c3a..4c7c5c881f24 100644
+--- a/include/uapi/linux/nl80211.h
++++ b/include/uapi/linux/nl80211.h
+@@ -3013,6 +3013,18 @@ enum nl80211_he_gi {
+ 	NL80211_RATE_INFO_HE_GI_3_2,
+ };
+ 
++/**
++ * enum nl80211_he_ltf - HE long training field
++ * @NL80211_RATE_INFO_HE_1xLTF: 3.2 usec
++ * @NL80211_RATE_INFO_HE_2xLTF: 6.4 usec
++ * @NL80211_RATE_INFO_HE_4xLTF: 12.8 usec
++ */
++enum nl80211_he_ltf {
++	NL80211_RATE_INFO_HE_1XLTF,
++	NL80211_RATE_INFO_HE_2XLTF,
++	NL80211_RATE_INFO_HE_4XLTF,
++};
++
+ /**
+  * enum nl80211_he_ru_alloc - HE RU allocation values
+  * @NL80211_RATE_INFO_HE_RU_ALLOC_26: 26-tone RU allocation
+@@ -4510,6 +4522,10 @@ enum nl80211_key_attributes {
+  * @NL80211_TXRATE_VHT: VHT rates allowed for TX rate selection,
+  *	see &struct nl80211_txrate_vht
+  * @NL80211_TXRATE_GI: configure GI, see &enum nl80211_txrate_gi
++ * @NL80211_TXRATE_HE: HE rates allowed for TX rate selection,
++ *	see &struct nl80211_txrate_he
++ * @NL80211_TXRATE_HE_GI: configure HE GI, 0.8us, 1.6us and 3.2us.
++ * @NL80211_TXRATE_HE_LTF: configure HE LTF, 1XLTF, 2XLTF and 4XLTF.
+  * @__NL80211_TXRATE_AFTER_LAST: internal
+  * @NL80211_TXRATE_MAX: highest TX rate attribute
+  */
+@@ -4519,6 +4535,9 @@ enum nl80211_tx_rate_attributes {
+ 	NL80211_TXRATE_HT,
+ 	NL80211_TXRATE_VHT,
+ 	NL80211_TXRATE_GI,
++	NL80211_TXRATE_HE,
++	NL80211_TXRATE_HE_GI,
++	NL80211_TXRATE_HE_LTF,
+ 
+ 	/* keep last */
+ 	__NL80211_TXRATE_AFTER_LAST,
+@@ -4536,6 +4555,15 @@ struct nl80211_txrate_vht {
+ 	__u16 mcs[NL80211_VHT_NSS_MAX];
+ };
+ 
++#define NL80211_HE_NSS_MAX		8
++/**
++ * struct nl80211_txrate_he - HE MCS/NSS txrate bitmap
++ * @mcs: MCS bitmap table for each NSS (array index 0 for 1 stream, etc.)
++ */
++struct nl80211_txrate_he {
++	__u16 mcs[NL80211_HE_NSS_MAX];
++};
++
+ enum nl80211_txrate_gi {
+ 	NL80211_TXRATE_DEFAULT_GI,
+ 	NL80211_TXRATE_FORCE_SGI,
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 65e33db93633..de4e33869061 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -4161,6 +4161,80 @@ static bool vht_set_mcs_mask(struct ieee80211_supported_band *sband,
+ 	return true;
+ }
+ 
++static u16 he_mcs_map_to_mcs_mask(u8 he_mcs_map)
++{
++	switch (he_mcs_map) {
++	case IEEE80211_HE_MCS_NOT_SUPPORTED:
++		return 0;
++	case IEEE80211_HE_MCS_SUPPORT_0_7:
++		return 0x00FF;
++	case IEEE80211_HE_MCS_SUPPORT_0_9:
++		return 0x03FF;
++	case IEEE80211_HE_MCS_SUPPORT_0_11:
++		return 0xFFF;
++	default:
++		break;
++	}
++	return 0;
++}
++
++static void he_build_mcs_mask(u16 he_mcs_map,
++			      u16 he_mcs_mask[NL80211_HE_NSS_MAX])
++{
++	u8 nss;
++
++	for (nss = 0; nss < NL80211_HE_NSS_MAX; nss++) {
++		he_mcs_mask[nss] = he_mcs_map_to_mcs_mask(he_mcs_map & 0x03);
++		he_mcs_map >>= 2;
++	}
++}
++
++static u16 he_get_txmcsmap(struct genl_info *info,
++			   const struct ieee80211_sta_he_cap *he_cap)
++{
++	struct net_device *dev = info->user_ptr[1];
++	struct wireless_dev *wdev = dev->ieee80211_ptr;
++
++	switch (wdev->chandef.width) {
++	case NL80211_CHAN_WIDTH_80P80:
++		return he_cap->he_mcs_nss_supp.tx_mcs_80p80;
++	case NL80211_CHAN_WIDTH_160:
++		return he_cap->he_mcs_nss_supp.tx_mcs_160;
++	default:
++		break;
++	}
++	return he_cap->he_mcs_nss_supp.tx_mcs_80;
++}
++
++static bool he_set_mcs_mask(struct genl_info *info,
++			    struct ieee80211_supported_band *sband,
++			    struct nl80211_txrate_he *txrate,
++			    u16 mcs[NL80211_HE_NSS_MAX])
++{
++	u16 tx_mcs_map = 0;
++	u16 tx_mcs_mask[NL80211_HE_NSS_MAX] = {};
++	u8 i;
++
++	if (!sband->iftype_data->he_cap.has_he)
++		return false;
++
++	memset(mcs, 0, sizeof(u16) * NL80211_HE_NSS_MAX);
++
++	tx_mcs_map = le16_to_cpu(he_get_txmcsmap(info, &sband->iftype_data->he_cap));
++
++	/* Build he_mcs_mask from HE capabilities */
++	he_build_mcs_mask(tx_mcs_map, tx_mcs_mask);
++
++	for (i = 0; i < NL80211_HE_NSS_MAX; i++) {
++		if ((tx_mcs_mask[i] & txrate->mcs[i]) == txrate->mcs[i])
++			mcs[i] = txrate->mcs[i];
++		else
++			return false;
++	}
++
++	return true;
++}
++
+ static const struct nla_policy nl80211_txattr_policy[NL80211_TXRATE_MAX + 1] = {
+ 	[NL80211_TXRATE_LEGACY] = { .type = NLA_BINARY,
+ 				    .len = NL80211_MAX_SUPP_RATES },
+@@ -4170,6 +4244,10 @@ static const struct nla_policy nl80211_txattr_policy[NL80211_TXRATE_MAX + 1] = {
+ 		.type = NLA_EXACT_LEN_WARN,
+ 		.len = sizeof(struct nl80211_txrate_vht),
+ 	},
++	[NL80211_TXRATE_HE] = {
++		.type = NLA_EXACT_LEN_WARN,
++		.len = sizeof(struct nl80211_txrate_he),
++	},
+ 	[NL80211_TXRATE_GI] = { .type = NLA_U8 },
+ };
+ 
+@@ -4181,7 +4259,7 @@ static int nl80211_parse_tx_bitrate_mask(struct genl_info *info,
+ 	int rem, i;
+ 	struct nlattr *tx_rates;
+ 	struct ieee80211_supported_band *sband;
+-	u16 vht_tx_mcs_map;
++	u16 vht_tx_mcs_map, he_tx_mcs_map;
+ 
+ 	memset(mask, 0, sizeof(*mask));
+ 	/* Default to all rates enabled */
+@@ -4201,6 +4279,13 @@ static int nl80211_parse_tx_bitrate_mask(struct genl_info *info,
+ 
+ 		vht_tx_mcs_map = le16_to_cpu(sband->vht_cap.vht_mcs.tx_mcs_map);
+ 		vht_build_mcs_mask(vht_tx_mcs_map, mask->control[i].vht_mcs);
++
++		he_tx_mcs_map = he_get_txmcsmap(info, &sband->iftype_data->he_cap);
++		he_tx_mcs_map = le16_to_cpu(he_tx_mcs_map);
++		he_build_mcs_mask(he_tx_mcs_map, mask->control[i].he_mcs);
++
++		mask->control[i].he_gi = 0xFF;
++		mask->control[i].he_ltf = 0xFF;
+ 	}
+ 
+ 	/* if no rates are given set it back to the defaults */
+@@ -4256,13 +4341,31 @@ static int nl80211_parse_tx_bitrate_mask(struct genl_info *info,
+ 			if (mask->control[band].gi > NL80211_TXRATE_FORCE_LGI)
+ 				return -EINVAL;
+ 		}
++		if (tb[NL80211_TXRATE_HE]) {
++			if (!he_set_mcs_mask(info, sband, nla_data(tb[NL80211_TXRATE_HE]),
++					     mask->control[band].he_mcs))
++				return -EINVAL;
++		}
++		if (tb[NL80211_TXRATE_HE_GI]) {
++			mask->control[band].he_gi =
++				nla_get_u8(tb[NL80211_TXRATE_HE_GI]);
++			if (mask->control[band].he_gi > NL80211_RATE_INFO_HE_GI_3_2)
++				return -EINVAL;
++		}
++		if (tb[NL80211_TXRATE_HE_LTF]) {
++			mask->control[band].he_ltf =
++				nla_get_u8(tb[NL80211_TXRATE_HE_LTF]);
++			if (mask->control[band].he_ltf > NL80211_RATE_INFO_HE_4XLTF)
++				return -EINVAL;
++		}
+ 
+ 		if (mask->control[band].legacy == 0) {
+ 			/* don't allow empty legacy rates if HT or VHT
+ 			 * are not even supported.
+ 			 */
+ 			if (!(rdev->wiphy.bands[band]->ht_cap.ht_supported ||
+-			      rdev->wiphy.bands[band]->vht_cap.vht_supported))
++			      rdev->wiphy.bands[band]->vht_cap.vht_supported ||
++			      rdev->wiphy.bands[band]->he_cap.has_he))
+ 				return -EINVAL;
+ 
+ 			for (i = 0; i < IEEE80211_HT_MCS_MASK_LEN; i++)
+@@ -4273,6 +4376,10 @@ static int nl80211_parse_tx_bitrate_mask(struct genl_info *info,
+ 				if (mask->control[band].vht_mcs[i])
+ 					goto out;
+ 
++			for (i = 0; i < NL80211_HE_NSS_MAX; i++)
++				if (mask->control[band].he_mcs[i])
++					goto out;
++
+ 			/* legacy and mcs rates may not be both empty */
+ 			return -EINVAL;
+ 		}
+-- 
+2.20.1
+
