@@ -2,88 +2,87 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D1883123503
+	by mail.lfdr.de (Postfix) with ESMTP id B24A7123502
 	for <lists+linux-wireless@lfdr.de>; Tue, 17 Dec 2019 19:35:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728130AbfLQSfi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        id S1727843AbfLQSfi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
         Tue, 17 Dec 2019 13:35:38 -0500
-Received: from mail-qt1-f193.google.com ([209.85.160.193]:40668 "EHLO
-        mail-qt1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726813AbfLQSfi (ORCPT
+Received: from mail2.candelatech.com ([208.74.158.173]:42834 "EHLO
+        mail3.candelatech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726874AbfLQSfi (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Tue, 17 Dec 2019 13:35:38 -0500
-Received: by mail-qt1-f193.google.com with SMTP id e6so2394655qtq.7
-        for <linux-wireless@vger.kernel.org>; Tue, 17 Dec 2019 10:35:37 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=KqR10Ray35SJpBzHXPMJL31vlypWu7cUa6JUcMASLbo=;
-        b=hzL+8zVgIFxpFV7m5pnrtTW2SEXZVOzmBS2NwnkjJLvE1sxxWaPl7RipEwinV+Ot2k
-         EKOHWxbX24UreWevkU8ihQisTz87NyDKYo1+vqwHoQrNiwdykiSuh9GHgJeUwuve0UnC
-         x081/aQodoP8BMXVOQT5gVxtxXvBLHdICxw61xGLH/7B72ciWV7xb01gzD3kihL66Msp
-         d6RfbETWNgubg1+3AzUo8scu6qRBpnc5ksoqlQob6gAzcbtZpJ+e7DkmNRtGIE5ndP82
-         jzHoHFwfT/L85OzZJgcdADEAOZR/qGb+HAof6sGg3HiNB0Gv9l+mfScko34tfz0D0xXa
-         jopw==
-X-Gm-Message-State: APjAAAUN0W/9ne2hFWFV8a6NNUk28cdB3zOu7LSmoc6Vbcd0QkvaL9eW
-        2nzEX90VdWBIzyb8xmoaQFfLr4M82ZSShkpt3uvWCw==
-X-Google-Smtp-Source: APXvYqxBR61uXHQdXc7T+abVhe0nPlueXaWUbDpDPZwZkiwa9C2SYqPpSBYiXoCknsYb3WQlCHaSzQ4e/9WeYLEZIM0=
-X-Received: by 2002:ac8:1e8e:: with SMTP id c14mr5506175qtm.330.1576607737384;
- Tue, 17 Dec 2019 10:35:37 -0800 (PST)
-MIME-Version: 1.0
-References: <20191216220747.887-1-greearb@candelatech.com> <a2af03e9-8b53-b297-467b-d0f07b8a002b@newmedia-net.de>
- <b5d63d96-4ba6-bbab-bf1c-a61c6c437f37@newmedia-net.de> <80700614-679a-336e-bd9a-e88622e75c9a@candelatech.com>
- <4775d91a-9719-46f8-b0f2-979b8d86cf9f@newmedia-net.de> <CAMrEMU-vGB8uR-JZbD2vj4vXgWNHfFqcbsqB=gOqBBDZWGkzQA@mail.gmail.com>
- <11290a30-46e8-638e-4110-86e6b2eb3d3f@candelatech.com> <CAKR_QV+xNbAzzw12x3Ku49bHnERTxYRAK8AfUSwp_uOgNMbY4Q@mail.gmail.com>
-In-Reply-To: <CAKR_QV+xNbAzzw12x3Ku49bHnERTxYRAK8AfUSwp_uOgNMbY4Q@mail.gmail.com>
-From:   Adrian Chadd <adrian@freebsd.org>
-Date:   Tue, 17 Dec 2019 10:35:23 -0800
-Message-ID: <CAJ-Vmon5811ktT-+8HcMOAPnOLGzd20rFMxaTucXbEEAz4+q0A@mail.gmail.com>
+Received: from [192.168.100.195] (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail3.candelatech.com (Postfix) with ESMTPSA id B269313C283;
+        Tue, 17 Dec 2019 10:35:37 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com B269313C283
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+        s=default; t=1576607737;
+        bh=IrNiNk6UmF7VdwueTHkCEP89UuBxQFPbO7T5qQSqFgI=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+        b=CqiAxKb9u914mCYGaOB9gRORYIrI3ChJGrVah6IVIHyChUynnqf0lPgsbubpZKZZG
+         cXTMrvXnCw/RvY5x3m2I0Hw5FIQB9vwuHUp1xgIQO6KrQ3+OXv+H5aqKxKYlQniWBl
+         Jc1U3VXeBsMz92CbVQAZRi66T+Ef26Mj9/lX6xlU=
 Subject: Re: [PATCH] ath10k: Per-chain rssi should sum the secondary channels
 To:     Tom Psyborg <pozega.tomislav@gmail.com>
-Cc:     Ben Greear <greearb@candelatech.com>,
-        Justin Capella <justincapella@gmail.com>,
+Cc:     Justin Capella <justincapella@gmail.com>,
         Sebastian Gottschall <s.gottschall@newmedia-net.de>,
         linux-wireless@vger.kernel.org, ath10k <ath10k@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
+References: <20191216220747.887-1-greearb@candelatech.com>
+ <a2af03e9-8b53-b297-467b-d0f07b8a002b@newmedia-net.de>
+ <b5d63d96-4ba6-bbab-bf1c-a61c6c437f37@newmedia-net.de>
+ <80700614-679a-336e-bd9a-e88622e75c9a@candelatech.com>
+ <4775d91a-9719-46f8-b0f2-979b8d86cf9f@newmedia-net.de>
+ <CAMrEMU-vGB8uR-JZbD2vj4vXgWNHfFqcbsqB=gOqBBDZWGkzQA@mail.gmail.com>
+ <11290a30-46e8-638e-4110-86e6b2eb3d3f@candelatech.com>
+ <CAKR_QV+xNbAzzw12x3Ku49bHnERTxYRAK8AfUSwp_uOgNMbY4Q@mail.gmail.com>
+From:   Ben Greear <greearb@candelatech.com>
+Organization: Candela Technologies
+Message-ID: <a95e7f6d-1cb8-3188-aea4-233dce6f9330@candelatech.com>
+Date:   Tue, 17 Dec 2019 10:35:37 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.1.1
+MIME-Version: 1.0
+In-Reply-To: <CAKR_QV+xNbAzzw12x3Ku49bHnERTxYRAK8AfUSwp_uOgNMbY4Q@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 17 Dec 2019 at 10:29, Tom Psyborg <pozega.tomislav@gmail.com> wrote:
->
+On 12/17/19 10:29 AM, Tom Psyborg wrote:
 > On 17/12/2019, Ben Greear <greearb@candelatech.com> wrote:
-> > On 12/17/19 8:23 AM, Justin Capella wrote:
-> >> I believe someone recently submitted a patch that defined noise floors
-> >> per band (2/5).
-> >
-> > I looked at using the real noise floor.  Our radio was reporting a noise
-> > floor of around -102,
-> > where the hard-coded default is -95.  This of course would make the reported
-> > RSSI lower by 7db
-> > in that case.  I am not sure that is correct.
-> >
->
+>> On 12/17/19 8:23 AM, Justin Capella wrote:
+>>> I believe someone recently submitted a patch that defined noise floors
+>>> per band (2/5).
+>>
+>> I looked at using the real noise floor.  Our radio was reporting a noise
+>> floor of around -102,
+>> where the hard-coded default is -95.  This of course would make the reported
+>> RSSI lower by 7db
+>> in that case.  I am not sure that is correct.
+>>
+> 
 > Hi
->
+> 
 > I am getting similar NF values with all my ath10k devices, I thought
 > default was changed since ath9k from -95 to -115 just like in the
 > vendor driver? There were some discussions about it on mailing list.
 > On some channels (5Ghz) the value goes down to about -107, even saw
 > -110 once.
+> 
 
-IIRC they're /not/ calibrated dBm values. They're just internal noise
-floor calibration values derived from the internal ADC reads when you
-kick off a NF cal. Then everything is relative to this NF value.
+If you use ath9k and ath10k on same channel/environment, do you see similar
+RSSI reported (especially with the ath10k patch I just posted)?
 
-This is one of the many, many reasons things get gunked up when you
-start seeing higher noise floor values; since a lot of things
-internally are/were related to what the currently calibrated NF value
-is, a too-high NF sample value would result in quite exciting things
-in the PHY like "this channel never drops below CCA"...
+Thanks,
+Ben
 
+-- 
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
 
-
-
--adrian
