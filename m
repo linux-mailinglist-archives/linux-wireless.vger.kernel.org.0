@@ -2,83 +2,85 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0999D12300C
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Dec 2019 16:20:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B0D7123052
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Dec 2019 16:30:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728431AbfLQPUU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 17 Dec 2019 10:20:20 -0500
-Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:47850 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1727546AbfLQPUU (ORCPT
+        id S1728511AbfLQPaF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 17 Dec 2019 10:30:05 -0500
+Received: from mail26.static.mailgun.info ([104.130.122.26]:42656 "EHLO
+        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728118AbfLQPaF (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 17 Dec 2019 10:20:20 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1576596019;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=NjTz7LOmmrU7defJswKhdMHwuqxWQ3iCJF5TdK3gajs=;
-        b=gtVexMRP4J0t0NzMvnCgQ7OhM+k9WBLAIz8RIh12MpuwI7LcyC0g2j8DMES052HaHSdF6b
-        lvbhNn4DptmGpeK9PnmIGS4VfpZQRzHlskKphfvtPRWn0MxxnYJKaGz1wb1vmobYF1sE4N
-        Ysq6Ep/BN6OhqiYyOUtvgIkAWexARgo=
-Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
- [209.85.167.69]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-177-nwHeLK2oOSqdxVuXjf1NTA-1; Tue, 17 Dec 2019 10:20:18 -0500
-X-MC-Unique: nwHeLK2oOSqdxVuXjf1NTA-1
-Received: by mail-lf1-f69.google.com with SMTP id y4so1040419lfg.1
-        for <linux-wireless@vger.kernel.org>; Tue, 17 Dec 2019 07:20:17 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
-         :message-id:mime-version;
-        bh=NjTz7LOmmrU7defJswKhdMHwuqxWQ3iCJF5TdK3gajs=;
-        b=WjK5+KowWm8LGNylSC10EaM5WMe+Mpny7P6E4JYgfZlw58A2NjRn6PnEptLgasIHZw
-         Uqmhh+CHd8ZwGVluSu/cnjmu5XXJdHFIkeys1UeOYAgp9Z6nz2XaE419JusodXFndB9g
-         EnNTnU0mE1PdQutvvahHx3NmuaZDjLBzRAQ7QXtjWNXVkV5UHQqykHfUkUxhIKJObWcq
-         Gtj+SUWbMT4YF0pxWsljEOFD4ECGlMJ2rcNHEBFa8assAsIKhBAA4yBw0PDx/E4ej6Px
-         nEB5u4Wb1SDov7zsWmSEXZ8lQe2eUPokgJ0On/M/OITxVBMwWF8hwIO7rCKhVyLoauN7
-         0q8A==
-X-Gm-Message-State: APjAAAVUxXARe3zJejziy9uKWcxzrlomqoxon5RzOVScLynIYgmRCnJ0
-        6aT9Brw2Lyd3nrH+fYA7ae1hA3EHtPdw/zT/Za/DuDCm/NooJATnC0FP9zGTcKdu26kJfFi/jL7
-        FMfDdpmcMNoATiEDJoDuFUhGmxWc=
-X-Received: by 2002:a2e:a0c6:: with SMTP id f6mr3590613ljm.46.1576596016293;
-        Tue, 17 Dec 2019 07:20:16 -0800 (PST)
-X-Google-Smtp-Source: APXvYqztxgpKt/OSWn6SzHt4oocpDc3uFmJvtqVjNlgXLq4a034Zy2YphmRg5xQxdRLqtAjIGV0oow==
-X-Received: by 2002:a2e:a0c6:: with SMTP id f6mr3590604ljm.46.1576596016143;
-        Tue, 17 Dec 2019 07:20:16 -0800 (PST)
-Received: from alrua-x1.borgediget.toke.dk ([45.145.92.2])
-        by smtp.gmail.com with ESMTPSA id i9sm7236641lfd.6.2019.12.17.07.20.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Dec 2019 07:20:15 -0800 (PST)
-Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-        id 5CE361800B3; Tue, 17 Dec 2019 16:20:14 +0100 (CET)
-From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        Yibo Zhao <yiboz@codeaurora.org>,
-        linux-wireless@vger.kernel.org
-Cc:     ath10k@lists.infradead.org
-Subject: Re: [PATCH 4/4] mac80211: Sync airtime weight sum with per AC synced sta airtime weight together
-In-Reply-To: <fd7b4cb48f3510d81d227ae8020c3b6c46f4a4b0.camel@sipsolutions.net>
-References: <1576221593-1086-1-git-send-email-yiboz@codeaurora.org> <1576221593-1086-5-git-send-email-yiboz@codeaurora.org> <fd7b4cb48f3510d81d227ae8020c3b6c46f4a4b0.camel@sipsolutions.net>
-X-Clacks-Overhead: GNU Terry Pratchett
-Date:   Tue, 17 Dec 2019 16:20:14 +0100
-Message-ID: <87v9qf6ksx.fsf@toke.dk>
+        Tue, 17 Dec 2019 10:30:05 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1576596604; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=Sxp0Uxph9M80mn/VZBTi9arxxIqvGaiv+JDv/KfaTdo=;
+ b=hz98iM5pv+9nU7Z56P09tv7ZgEH8KWfHp6/IzILayg132V5Q202HHDho8FlAx0h3BgYqwRMe
+ LAH+eQXuo6uLegXTKjNDLeJIOwrT2gDhRmhpcFCaQZfS47KYBFAty91XeesW1SywSTDZFxdA
+ ciwUo3KgQ4GKrsSc0i8lNtLf6n0=
+X-Mailgun-Sending-Ip: 104.130.122.26
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5df8f478.7efb7ed1be30-smtp-out-n01;
+ Tue, 17 Dec 2019 15:30:00 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 76AB1C4479C; Tue, 17 Dec 2019 15:30:00 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
+        MISSING_MID,SPF_NONE,URIBL_BLOCKED autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 2505CC433A2;
+        Tue, 17 Dec 2019 15:29:57 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 2505CC433A2
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+Subject: Re: [RESEND] ath10k: add tx hw 802.11 encapusaltion offloading support
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20191216092207.31032-1-john@phrozen.org>
+References: <20191216092207.31032-1-john@phrozen.org>
+To:     John Crispin <john@phrozen.org>
+Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        John Crispin <john@phrozen.org>,
+        Vasanthakumar Thiagarajan <vthiagar@qti.qualcomm.com>
+User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
+Message-Id: <20191217153000.76AB1C4479C@smtp.codeaurora.org>
+Date:   Tue, 17 Dec 2019 15:30:00 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Johannes Berg <johannes@sipsolutions.net> writes:
+John Crispin <john@phrozen.org> wrote:
 
-> I'm going to assume that Toke will review all of this and there will be
-> changes, so you'd resend anyway ...
+> This patch adds support for ethernet rxtx mode to the driver. The feature
+> is enabled via a new module parameter. If enabled to driver will enable
+> the feature on a per vif basis if all other requirements were met.
+> 
+> Testing on a IPQ4019 based hardware shows a increase in TCP throughput
+> of ~20% when the feature is enabled.
+> 
+> Signed-off-by: Vasanthakumar Thiagarajan <vthiagar@qti.qualcomm.com>
+> Signed-off-by: John Crispin <john@phrozen.org>
 
-Yeah, this series doesn't even apply in its current form. I'll try to
-fix that, and do a few other updates that are needed while I'm at it.
-And to answer your question in the other email, yeah, this should
-probably be squashed to a single patch...
+Depends on:
 
--Toke
+50ff477a8639 mac80211: add 802.11 encapsulation offloading support
 
+Currently in mac80211-next.
+
+Patch set to Awaiting Upstream.
+
+-- 
+https://patchwork.kernel.org/patch/11293627/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
