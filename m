@@ -2,85 +2,86 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 74A7012513E
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Dec 2019 20:05:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 19A36125144
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Dec 2019 20:05:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727435AbfLRTFP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 18 Dec 2019 14:05:15 -0500
-Received: from mail25.static.mailgun.info ([104.130.122.25]:22074 "EHLO
+        id S1727491AbfLRTFr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 18 Dec 2019 14:05:47 -0500
+Received: from mail25.static.mailgun.info ([104.130.122.25]:53334 "EHLO
         mail25.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726939AbfLRTFO (ORCPT
+        by vger.kernel.org with ESMTP id S1727451AbfLRTFr (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 18 Dec 2019 14:05:14 -0500
+        Wed, 18 Dec 2019 14:05:47 -0500
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1576695914; h=Date: Message-Id: Cc: To: References:
+ s=smtp; t=1576695946; h=Date: Message-Id: Cc: To: References:
  In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=BjpzurhMhS3nVjCNC6B/Q+JIxPeQXE2CiRAt+BcpBCY=;
- b=tt9xRXI3e6vQGIO0W0sHJqJXdHq101QfuVfmkYYgrlSChdhA/2Ul8NHVu805RZ/Qw4M8Q50i
- //6zqlZIGVN/9dSQBIay0LylWtca4j6WyGYWzcLMFoMSltWiGD0jvhWzKW7cHq1DptJ6b19j
- rlNaShZGuC6y9C7xBt/IlVCqC7k=
+ Content-Type: Sender; bh=BqYctTn38rjNZLKCLP3wcdlqM7zOfIhkILzWxq9gFhI=;
+ b=KQIH+uvbfCF+LLFgXRSi0h4gLTWgm41XlEf02oJUbFspjYeEG2uYtNVeSZED5eTA1H74QKGc
+ R6byvazNzwAFopnErNgwCFzCVYx713kg112Q84cZQ02qQsRMI1/+N98j056UTTDcJfwDUw/R
+ G9nfrCoUACuLuc6sf3/51nSIVus=
 X-Mailgun-Sending-Ip: 104.130.122.25
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5dfa7869.7f0461220a78-smtp-out-n03;
- Wed, 18 Dec 2019 19:05:13 -0000 (UTC)
+ by mxa.mailgun.org with ESMTP id 5dfa7889.7f2ca1cd27d8-smtp-out-n02;
+ Wed, 18 Dec 2019 19:05:45 -0000 (UTC)
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 005CFC4479F; Wed, 18 Dec 2019 19:05:12 +0000 (UTC)
+        id 878ABC4479C; Wed, 18 Dec 2019 19:05:44 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
 X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
-        MISSING_MID,SPF_NONE,URIBL_BLOCKED autolearn=no autolearn_force=no
-        version=3.4.0
+        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
 Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id AFE48C447A5;
-        Wed, 18 Dec 2019 19:05:09 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org AFE48C447A5
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 5B7B7C43383;
+        Wed, 18 Dec 2019 19:05:41 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 5B7B7C43383
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] mwifiex: delete unused mwifiex_get_intf_num()
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH] brcmfmac: set interface carrier to off by default
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20191210003911.28066-1-briannorris@chromium.org>
-References: <20191210003911.28066-1-briannorris@chromium.org>
-To:     Brian Norris <briannorris@chromium.org>
-Cc:     linux-wireless@vger.kernel.org, <linux-kernel@vger.kernel.org>,
-        Ganapathi Bhat <ganapathi.bhat@nxp.com>,
-        Nishant Sarmukadam <nishants@marvell.com>,
-        Amitkumar Karwar <amitkarwar@gmail.com>,
-        Xinming Hu <huxinming820@gmail.com>,
-        Sharvari Harisangam <sharvari@marvell.com>,
-        Brian Norris <briannorris@chromium.org>
+In-Reply-To: <20191210113555.1868-1-zajec5@gmail.com>
+References: <20191210113555.1868-1-zajec5@gmail.com>
+To:     =?utf-8?b?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
+Cc:     Arend van Spriel <arend.vanspriel@broadcom.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
+        Wright Feng <wright.feng@cypress.com>,
+        Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
+        Winnie Chang <winnie.chang@cypress.com>,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        brcm80211-dev-list@cypress.com, netdev@vger.kernel.org,
+        =?utf-8?b?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>
 User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20191218190513.005CFC4479F@smtp.codeaurora.org>
-Date:   Wed, 18 Dec 2019 19:05:12 +0000 (UTC)
+Message-Id: <20191218190544.878ABC4479C@smtp.codeaurora.org>
+Date:   Wed, 18 Dec 2019 19:05:44 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Brian Norris <briannorris@chromium.org> wrote:
+Rafał Miłecki wrote:
 
-> Commit 7afb94da3cd8 ("mwifiex: update set_mac_address logic") fixed the
-> only user of this function, partly because the author seems to have
-> noticed that, as written, it's on the borderline between highly
-> misleading and buggy.
+> From: Rafał Miłecki <rafal@milecki.pl>
 > 
-> Anyway, no sense in keeping dead code around: let's drop it.
+> It's important as brcmfmac creates one main interface for each PHY and
+> doesn't allow deleting it. Not setting carrier could result in other
+> subsystems misbehaving (e.g. LEDs "netdev" trigger turning LED on).
 > 
-> Fixes: 7afb94da3cd8 ("mwifiex: update set_mac_address logic")
-> Signed-off-by: Brian Norris <briannorris@chromium.org>
+> Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
 
 Patch applied to wireless-drivers-next.git, thanks.
 
-1c9f329b084b mwifiex: delete unused mwifiex_get_intf_num()
+8d9627b05b2c brcmfmac: set interface carrier to off by default
 
 -- 
-https://patchwork.kernel.org/patch/11281155/
+https://patchwork.kernel.org/patch/11281933/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
