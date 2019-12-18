@@ -2,84 +2,141 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E6114124604
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Dec 2019 12:44:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B5CE12460F
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Dec 2019 12:46:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726551AbfLRLoe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 18 Dec 2019 06:44:34 -0500
-Received: from mail25.static.mailgun.info ([104.130.122.25]:12113 "EHLO
-        mail25.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725930AbfLRLoe (ORCPT
+        id S1726911AbfLRLqx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 18 Dec 2019 06:46:53 -0500
+Received: from mail-pj1-f67.google.com ([209.85.216.67]:40048 "EHLO
+        mail-pj1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725930AbfLRLqx (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 18 Dec 2019 06:44:34 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1576669474; h=Date: Message-Id: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=6n8uBLBguZLcx/AsdK+gdhMJRD1dnVw0mQoehxHz7No=;
- b=kGBCP0O7sqbSxB8znPZd+sI0vYTibSp/ML6UTMnaiRlssSdJrYEsaxyc1rxhY1Yv3NazsNKz
- fxVmXgzb9/5gLZBEhzi0v4OoQyw8q7pWDnEiP1UiGnrKu6Nc4I8g39DYJ+j9RtijlwvzPrDr
- aIexxXa6o7DHOqGVJS/ETl/hnTY=
-X-Mailgun-Sending-Ip: 104.130.122.25
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5dfa111e.7fcfd61366c0-smtp-out-n02;
- Wed, 18 Dec 2019 11:44:30 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 04CA1C433CB; Wed, 18 Dec 2019 11:44:30 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
-        MISSING_MID,SPF_NONE,URIBL_BLOCKED autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id A8853C43383;
-        Wed, 18 Dec 2019 11:44:28 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org A8853C43383
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH V3 8/9] ath11k: optimise ath11k_dp_tx_completion_handler
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20191213153839.12372-9-john@phrozen.org>
-References: <20191213153839.12372-9-john@phrozen.org>
-To:     John Crispin <john@phrozen.org>
-Cc:     linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
-        John Crispin <john@phrozen.org>
-User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20191218114430.04CA1C433CB@smtp.codeaurora.org>
-Date:   Wed, 18 Dec 2019 11:44:30 +0000 (UTC)
+        Wed, 18 Dec 2019 06:46:53 -0500
+Received: by mail-pj1-f67.google.com with SMTP id bg7so262124pjb.5;
+        Wed, 18 Dec 2019 03:46:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=8Rm3PGAG4ZjJjxffgjZO01XuGdZ5Se+lxRoTd65jV/I=;
+        b=ZqdU5bMscFQvm8p09tXvtNABGBJq3yux1pRvAaSqHYWoBHsvLzpx40uJaQXuXESBMy
+         uFXxFSZYelsqKFR9u97FntWyBuRrNZSiUzu5UUXshbqPHsStjihAGvW+ajqEG1EbOfPo
+         CduQ2IZkIVxIZeAaHojbbW/tuxGxmxAllFCZKTj9CAH1CuO8lkcQszADJvRwU7fQhyzU
+         zhkiN/jm65g1GHgd/qp5N+glagyd4JzNwME+ofMcnZvqiltufXLulTwnVoZM4j6hTuWe
+         D2NNi9Gtqt/tAooIXZqAb9wUAVNgMtXyikiC/W49ZmSFYqVsituX+OOu/u1AAbxR5XtM
+         O3rw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=8Rm3PGAG4ZjJjxffgjZO01XuGdZ5Se+lxRoTd65jV/I=;
+        b=T/kq+1VwOU6ilo7BaSX9S8t5v4WVpkKCYB6rpGzfrqhmaHpM+QvAM4T52KLDA8x/Kn
+         ECp3W8vi643Lyxr4A2LOnrUtKGiq1w+e1pz4prMZKRfDqTmtOAXh9V+3IzRIhJlCBlFI
+         ovQWu+Ig1TPVqjVs1Q7/KHQ20nF5WPJvibodvfjTGqSyxj/0XjF2EZu06ZyCmtnlGTx+
+         ZmhqkDRp3bbr1UCV07ZK2hhO+1CF2jbVxytb5eCAAmsC0yWuadAYn8hRx9EXgOhyrJoo
+         qsWBzY7MlvHdScvrKb2B1SPEQDpUX1s8J7DSUCxN3z0yCQqSliWlCPqDIxN3opwp8kJy
+         Hzpw==
+X-Gm-Message-State: APjAAAXP+xh6xULQY3yg+9pqglGZuKsTeKKQnUt4Gjpme3pFA/UFmmt4
+        a3xtIWq4A+8suFB22TCqEig=
+X-Google-Smtp-Source: APXvYqwRkgvw8jDHziQzj693orxCe6AxRD4tkkS6Jhb3GveNfnhdDXtHvoza5yByb4hW1lEpWrgvUA==
+X-Received: by 2002:a17:902:bd93:: with SMTP id q19mr52436pls.134.1576669612673;
+        Wed, 18 Dec 2019 03:46:52 -0800 (PST)
+Received: from oslab.tsinghua.edu.cn ([166.111.139.172])
+        by smtp.gmail.com with ESMTPSA id a10sm2913237pgm.81.2019.12.18.03.46.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 18 Dec 2019 03:46:52 -0800 (PST)
+From:   Jia-Ju Bai <baijiaju1990@gmail.com>
+To:     ath9k-devel@qca.qualcomm.com, kvalo@codeaurora.org,
+        davem@davemloft.net
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Jia-Ju Bai <baijiaju1990@gmail.com>
+Subject: [PATCH] ath9k: fix possible sleep-in-atomic-context bugs in hif_usb_send_regout()
+Date:   Wed, 18 Dec 2019 19:45:33 +0800
+Message-Id: <20191218114533.9268-1-baijiaju1990@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-John Crispin <john@phrozen.org> wrote:
+The driver may sleep while holding a spinlock.
+The function call path (from bottom to top) in Linux 4.19 is:
 
-> the current code does 4 memcpys for each completion frame.
-> 1) duplicate the desc
-> 2 + 3) inside kfifo insertion
-> 4) kfifo remove
-> 
-> The code simply drops the kfifo and uses a trivial ring buffer. This
-> requires a single memcpy for insertion. There is no removal needed as
-> we can simply use the inserted data for processing. As the code runs
-> inside the NAPI context it is atomic and there is no need for most of
-> the locking.
-> 
-> Signed-off-by: John Crispin <john@phrozen.org>
-> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+drivers/net/wireless/ath/ath9k/hif_usb.c, 108: 
+	usb_alloc_urb(GFP_KERNEL) in hif_usb_send_regout
+drivers/net/wireless/ath/ath9k/hif_usb.c, 470: 
+	hif_usb_send_regout in hif_usb_send
+drivers/net/wireless/ath/ath9k/htc_hst.c, 34: 
+	(FUNC_PTR)hif_usb_send in htc_issue_send
+drivers/net/wireless/ath/ath9k/htc_hst.c, 295: 
+	htc_issue_send in htc_send
+drivers/net/wireless/ath/ath9k/htc_drv_beacon.c, 250: 
+	htc_send in ath9k_htc_send_beacon
+drivers/net/wireless/ath/ath9k/htc_drv_beacon.c, 207: 
+	spin_lock_bh in ath9k_htc_send_beacon
 
-This had a new warning, fixed in the pending branch:
+drivers/net/wireless/ath/ath9k/hif_usb.c, 112: 
+	kzalloc(GFP_KERNEL) in hif_usb_send_regout
+drivers/net/wireless/ath/ath9k/hif_usb.c, 470: 
+	hif_usb_send_regout in hif_usb_send
+drivers/net/wireless/ath/ath9k/htc_hst.c, 34: 
+	(FUNC_PTR)hif_usb_send in htc_issue_send
+drivers/net/wireless/ath/ath9k/htc_hst.c, 295: 
+	htc_issue_send in htc_send
+drivers/net/wireless/ath/ath9k/htc_drv_beacon.c, 250: 
+	htc_send in ath9k_htc_send_beacon
+drivers/net/wireless/ath/ath9k/htc_drv_beacon.c, 207: 
+	spin_lock_bh in ath9k_htc_send_beacon
 
-drivers/net/wireless/ath/ath11k/dp_tx.c:441: line over 90 characters
+drivers/net/wireless/ath/ath9k/hif_usb.c, 127: 
+	usb_submit_urb(GFP_KERNEL) in hif_usb_send_regout
+drivers/net/wireless/ath/ath9k/hif_usb.c, 470: 
+	hif_usb_send_regout in hif_usb_send
+drivers/net/wireless/ath/ath9k/htc_hst.c, 34: 
+	(FUNC_PTR)hif_usb_send in htc_issue_send
+drivers/net/wireless/ath/ath9k/htc_hst.c, 295: 
+	htc_issue_send in htc_send
+drivers/net/wireless/ath/ath9k/htc_drv_beacon.c, 250: 
+	htc_send in ath9k_htc_send_beacon
+drivers/net/wireless/ath/ath9k/htc_drv_beacon.c, 207: 
+	spin_lock_bh in ath9k_htc_send_beacon
 
+(FUNC_PTR) means a function pointer is called.
+
+To fix these bugs, GFP_KERNEL is replaced with GFP_ATOMIC.
+
+These bugs are found by a static analysis tool STCheck written by myself.
+
+Signed-off-by: Jia-Ju Bai <baijiaju1990@gmail.com>
+---
+ drivers/net/wireless/ath/ath9k/hif_usb.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath9k/hif_usb.c b/drivers/net/wireless/ath/ath9k/hif_usb.c
+index fb649d85b8fc..37231fde102d 100644
+--- a/drivers/net/wireless/ath/ath9k/hif_usb.c
++++ b/drivers/net/wireless/ath/ath9k/hif_usb.c
+@@ -105,11 +105,11 @@ static int hif_usb_send_regout(struct hif_device_usb *hif_dev,
+ 	struct cmd_buf *cmd;
+ 	int ret = 0;
+ 
+-	urb = usb_alloc_urb(0, GFP_KERNEL);
++	urb = usb_alloc_urb(0, GFP_ATOMIC);
+ 	if (urb == NULL)
+ 		return -ENOMEM;
+ 
+-	cmd = kzalloc(sizeof(*cmd), GFP_KERNEL);
++	cmd = kzalloc(sizeof(*cmd), GFP_ATOMIC);
+ 	if (cmd == NULL) {
+ 		usb_free_urb(urb);
+ 		return -ENOMEM;
+@@ -124,7 +124,7 @@ static int hif_usb_send_regout(struct hif_device_usb *hif_dev,
+ 			 hif_usb_regout_cb, cmd, 1);
+ 
+ 	usb_anchor_urb(urb, &hif_dev->regout_submitted);
+-	ret = usb_submit_urb(urb, GFP_KERNEL);
++	ret = usb_submit_urb(urb, GFP_ATOMIC);
+ 	if (ret) {
+ 		usb_unanchor_urb(urb);
+ 		kfree(cmd);
 -- 
-https://patchwork.kernel.org/patch/11290755/
+2.17.1
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
