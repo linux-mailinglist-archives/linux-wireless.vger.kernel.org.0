@@ -2,92 +2,60 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C240A123B05
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Dec 2019 00:43:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F0144123BAC
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Dec 2019 01:36:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726167AbfLQXnb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 17 Dec 2019 18:43:31 -0500
-Received: from mail2.candelatech.com ([208.74.158.173]:33174 "EHLO
-        mail3.candelatech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725946AbfLQXnb (ORCPT
+        id S1726072AbfLRAgt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 17 Dec 2019 19:36:49 -0500
+Received: from mail-oi1-f180.google.com ([209.85.167.180]:33377 "EHLO
+        mail-oi1-f180.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725946AbfLRAgt (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 17 Dec 2019 18:43:31 -0500
-Received: from [192.168.100.195] (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail3.candelatech.com (Postfix) with ESMTPSA id 4A72A13C283;
-        Tue, 17 Dec 2019 15:43:30 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 4A72A13C283
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1576626210;
-        bh=W4EeFtOn6k8fxk6cPbhJW7G5Q9zNW6cz6lNTDxCi1UE=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=lTfcrIKz2sYsI040hvtQFod8r9jSgltjqAnuNaceRFIOYT9XxFBEH61hKNB3SNa3n
-         ZTQ2VjUbqhaGXSmjYQTpJp3akPLGdHPb8a2D3MjW/hLFodt171VbwsUpk5eUKQNqrt
-         GnMXdE2a189VG6V1XKJKj7PHoqL5rp3m+A+jetT4=
-Subject: Re: [PATCH] ath10k: Per-chain rssi should sum the secondary channels
-To:     Tom Psyborg <pozega.tomislav@gmail.com>
-Cc:     Justin Capella <justincapella@gmail.com>,
-        Sebastian Gottschall <s.gottschall@newmedia-net.de>,
-        linux-wireless@vger.kernel.org, ath10k <ath10k@lists.infradead.org>
-References: <20191216220747.887-1-greearb@candelatech.com>
- <a2af03e9-8b53-b297-467b-d0f07b8a002b@newmedia-net.de>
- <b5d63d96-4ba6-bbab-bf1c-a61c6c437f37@newmedia-net.de>
- <80700614-679a-336e-bd9a-e88622e75c9a@candelatech.com>
- <4775d91a-9719-46f8-b0f2-979b8d86cf9f@newmedia-net.de>
- <CAMrEMU-vGB8uR-JZbD2vj4vXgWNHfFqcbsqB=gOqBBDZWGkzQA@mail.gmail.com>
- <11290a30-46e8-638e-4110-86e6b2eb3d3f@candelatech.com>
- <CAKR_QV+xNbAzzw12x3Ku49bHnERTxYRAK8AfUSwp_uOgNMbY4Q@mail.gmail.com>
- <a95e7f6d-1cb8-3188-aea4-233dce6f9330@candelatech.com>
- <CAKR_QVL0P4qYidtqLwhhacCOpx2iq+4RRhTXbGhfRnf2PUj5tA@mail.gmail.com>
- <CAKR_QV+KV1dR_QKjANL34DGJuyf3OSN8J6gs3bqcmiRCCzkdXA@mail.gmail.com>
-From:   Ben Greear <greearb@candelatech.com>
-Organization: Candela Technologies
-Message-ID: <475d9be9-622c-08b7-12b9-d7cdf80a04f6@candelatech.com>
-Date:   Tue, 17 Dec 2019 15:43:29 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.1.1
+        Tue, 17 Dec 2019 19:36:49 -0500
+Received: by mail-oi1-f180.google.com with SMTP id v140so206185oie.0
+        for <linux-wireless@vger.kernel.org>; Tue, 17 Dec 2019 16:36:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc;
+        bh=l+5X5vMQ6YkQcZtac3wkcM7mV4o2WEa8wKesrwPdpfo=;
+        b=miRzFCkvA1IM/AfGOimn+QqAvoCqJbKu6sDr+xpJu2T7jjuVJR41/7N4Q5LbV2bPY4
+         asMf2nkeQpPBeIFOVh5H4Qpu3tI9tkhEYPXn6qkjjqSRkNQFKnZxNNR63KihF/aoEzLj
+         ghU9yhJY5OxxBDbQmeSnWWhnixTefgB2asjdLAppbISTbjeGGMzpczAC64KRIo0Ni1qz
+         2YIzBtjVc6rTT3Oax1IxlKEbuWHJDqcVXyyQMTW4K4DJFnGX/Wz29SksL3ErbE5pPkFr
+         M/r8Zq/gg1qow7RIzGB77gzkjJJLzfb+k4EFr3ajgn520NLI6IqcddkwRh/XIA1DEJ09
+         PYVQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc;
+        bh=l+5X5vMQ6YkQcZtac3wkcM7mV4o2WEa8wKesrwPdpfo=;
+        b=M8txjWtilJ7tTwgoyl1BlMcOekrFtz+NJYHzuklU2aajz+NNXrpbiqBiL+gpL3Eth8
+         FYrKXY7rYVq+ojSGvUMJgfJg8eWzcOnKaHaOFy2bdQ4Aoymi081TOgjeuZBg1WQY3Hsh
+         RMMQU2v06ZbYlm8Cn9hOz2SmnEqG0y+9RTWH1UHnpgW+8/c0mKiNmrKMwXd1+1tPNdh1
+         ytKR6c9rtpVUyZoRQpK787GbcD7VTXbkQe0rSmjKCVRcmZKHNJ1D6nX0mjTCGJ8Fc4Bl
+         o+A1+PG2Xmtccj0FP+gmEiK/6XemFCSXZEiVw0oYDJJlXEQwYPH0AjlNjguELSVNfhxP
+         Mbcw==
+X-Gm-Message-State: APjAAAWoOyqCB9IP71qQN4Pifk1C4Zkxgn8EcpOOwCp2Vz8T9yZxSGbB
+        PcKvdDOVjQbrkr8gZbY7QNrnpSBtvbhMAXSFHTc7Yw==
+X-Google-Smtp-Source: APXvYqxX9UgXZHIY8njDh20T1lCIcfy4T0iDtyDTbrKPQCfOA0oKSz9ip/2F3uZMvNTntqP5KglSfEbPxHQy8lLtCYs=
+X-Received: by 2002:aca:ea43:: with SMTP id i64mr119364oih.30.1576629408473;
+ Tue, 17 Dec 2019 16:36:48 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <CAKR_QV+KV1dR_QKjANL34DGJuyf3OSN8J6gs3bqcmiRCCzkdXA@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Received: by 2002:a9d:362:0:0:0:0:0 with HTTP; Tue, 17 Dec 2019 16:36:47 -0800 (PST)
+In-Reply-To: <CAKR_QVLabBXcsPfcCt8MdQXUrkgw5aNVAJD9XUke-G7XhsTwAA@mail.gmail.com>
+References: <CAKR_QVLabBXcsPfcCt8MdQXUrkgw5aNVAJD9XUke-G7XhsTwAA@mail.gmail.com>
+From:   Tom Psyborg <pozega.tomislav@gmail.com>
+Date:   Wed, 18 Dec 2019 01:36:47 +0100
+Message-ID: <CAKR_QVK2fJkR6OveFAhcjqjToh_mJMxfvjD6vJssqVtpmbQkGA@mail.gmail.com>
+Subject: Re: [RFC] ath10k: possible RSSI recalibration bug?
+To:     ath10k <ath10k@lists.infradead.org>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 12/17/19 3:37 PM, Tom Psyborg wrote:
-> also noticed now that the noise floor changes with signal strength as
-> described in this bug report:
-> https://www.mail-archive.com/ath10k@lists.infradead.org/msg11553.html
-> 
-> after wifi restart
-> 
-> iwinfo:
-> 
-> signal: -59dBm noise: -108dBm
-> 
-> then goes to
-> 
-> signal: -52dBm noise: -103dBm
-> 
-> and finally drops to
-> 
-> signal: -59dBm noise: -103dBm
-> 
-
-The problem with debugging this sort of stuff is that you need an RF scope
-to determine whether signal power of transmitter is changing or receiver
-is reporting stuff weirdly.
-
-If you are comparing against ath9k, probably you need to force your ath10k station to do /n only
-(or change your AP to do /n only) so that you can be comparing similar MCS rates.
-
-Thanks,
-Ben
-
--- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
-
+some more testing revealed it might be NF related bug:
+https://marc.info/?l=linux-wireless&m=157662586107288&w=2
