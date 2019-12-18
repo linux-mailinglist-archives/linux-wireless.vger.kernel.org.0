@@ -2,30 +2,28 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id ABBC4124687
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Dec 2019 13:11:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 82DB812468D
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Dec 2019 13:12:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726707AbfLRML2 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 18 Dec 2019 07:11:28 -0500
-Received: from smail.rz.tu-ilmenau.de ([141.24.186.67]:50310 "EHLO
+        id S1726718AbfLRMM5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 18 Dec 2019 07:12:57 -0500
+Received: from smail.rz.tu-ilmenau.de ([141.24.186.67]:50320 "EHLO
         smail.rz.tu-ilmenau.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726551AbfLRML2 (ORCPT
+        with ESMTP id S1726551AbfLRMM5 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 18 Dec 2019 07:11:28 -0500
+        Wed, 18 Dec 2019 07:12:57 -0500
 Received: from [192.168.2.97] (unknown [141.24.207.101])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by smail.rz.tu-ilmenau.de (Postfix) with ESMTPSA id 5E914580074;
-        Wed, 18 Dec 2019 13:11:23 +0100 (CET)
-Subject: Re: [PATCH v9 4/6] mt76: mt76x02: remove a copy call for usb speedup
-To:     Lorenzo Bianconi <lorenzo@kernel.org>
+        by smail.rz.tu-ilmenau.de (Postfix) with ESMTPSA id 7C757580075;
+        Wed, 18 Dec 2019 13:12:54 +0100 (CET)
+Subject: Re: [PATCH v9 2/6] mt76: mt76x02: split beaconing
+To:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
 Cc:     nbd@nbd.name, linux-wireless@vger.kernel.org,
-        lorenzo.bianconi@redhat.com,
         Stanislaw Gruszka <sgruszka@redhat.com>
 References: <20191126214704.27297-1-markus.theil@tu-ilmenau.de>
- <20191126214704.27297-5-markus.theil@tu-ilmenau.de>
- <20191217094019.GA2567@localhost.localdomain>
+ <20191126214704.27297-3-markus.theil@tu-ilmenau.de>
+ <20191218093733.GA13035@localhost.localdomain>
 From:   Markus Theil <markus.theil@tu-ilmenau.de>
 Autocrypt: addr=markus.theil@tu-ilmenau.de; keydata=
  mQINBFcopAYBEADBcwd5L8+T0zgqq4kYY4nQt6CYh5sOalHdI3zNE6fWbRbzQwViIlC9Q0q/
@@ -70,82 +68,56 @@ Autocrypt: addr=markus.theil@tu-ilmenau.de; keydata=
  q9141nbyLRYAhUXxiqajb+Zocp2Am4BF19rBUa1C78ooye9XShhuQvDTB6tZuiYWc24tiyqb
  IjR1hmG/zg8APhURAv/zUubaf4IA7v5YHVQqAbpUfb6ePlPVJBtVw2CwXFrGwnqDFh82La8D
  sGZPq8zmOtvOyZtafA==
-Message-ID: <ed93b477-dc15-8af4-eadc-9ecc5c4509ec@tu-ilmenau.de>
-Date:   Wed, 18 Dec 2019 13:11:23 +0100
+Message-ID: <611d70a2-3299-6260-de44-2dc8792250fc@tu-ilmenau.de>
+Date:   Wed, 18 Dec 2019 13:12:54 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.3.0
 MIME-Version: 1.0
-In-Reply-To: <20191217094019.GA2567@localhost.localdomain>
+In-Reply-To: <20191218093733.GA13035@localhost.localdomain>
 Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 8BIT
+Content-Transfer-Encoding: 7bit
 Content-Language: en-US
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 12/17/19 10:40 AM, Lorenzo Bianconi wrote:
->> This patch removes a mt76_wr_copy call from the beacon path to hw.
->> The skb which is used in this place gets therefore build with txwi
->> inside its data. For mt76 usb drivers, this saves one synchronuous
->> copy call over usb, which lets the beacon work complete faster.
->>
->> In mmio case, there is not enough headroom to put the txwi into the
->> skb, it is therefore using an additional mt76_wr_copy, which is fast
->> over mmio. Thanks Stanislaw for pointing this out.
->>
->> Signed-off-by: Markus Theil <markus.theil@tu-ilmenau.de>
->> ---
->>  .../wireless/mediatek/mt76/mt76x02_beacon.c   | 20 +++++++++++++++----
->>  1 file changed, 16 insertions(+), 4 deletions(-)
->>
->> diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_beacon.c b/drivers/net/wireless/mediatek/mt76/mt76x02_beacon.c
->> index 1c4bdf88f712..68a4f512319e 100644
->> --- a/drivers/net/wireless/mediatek/mt76/mt76x02_beacon.c
->> +++ b/drivers/net/wireless/mediatek/mt76/mt76x02_beacon.c
->> @@ -26,15 +26,27 @@ static int
->>  mt76x02_write_beacon(struct mt76x02_dev *dev, int offset, struct sk_buff *skb)
+On 12/18/19 10:37 AM, Lorenzo Bianconi wrote:
+> [...]
+>>  
+>> @@ -244,19 +248,15 @@ static void mt76x02u_pre_tbtt_enable(struct mt76x02_dev *dev, bool en)
+>>  
+>>  static void mt76x02u_beacon_enable(struct mt76x02_dev *dev, bool en)
 >>  {
->>  	int beacon_len = dev->beacon_ops->slot_size;
->> -	struct mt76x02_txwi txwi;
+>> -	int i;
+>> -
+>>  	if (WARN_ON_ONCE(!dev->mt76.beacon_int))
+>>  		return;
 >>  
->>  	if (WARN_ON_ONCE(beacon_len < skb->len + sizeof(struct mt76x02_txwi)))
->>  		return -ENOSPC;
->>  
->> -	mt76x02_mac_write_txwi(dev, &txwi, skb, NULL, NULL, skb->len);
->> +	/* USB devices already reserve enough skb headroom for txwi's. This
->> +	 * helps to save slow copies over USB.
->> +	 */
->> +	if (mt76_is_usb(&dev->mt76)) {
->> +		struct mt76x02_txwi *txwi;
->> +
->> +		mt76_insert_hdr_pad(skb);
-> Do we really need mt76_insert_hdr_pad? I think beacon header should be 4B
-> aligned.
+>>  	if (en) {
+>>  		mt76x02u_start_pre_tbtt_timer(dev);
+>>  	} else {
+>> -		/* Timer is already stopped, only clean up
+>> -		 * PS buffered frames if any.
+>> +		/* Timer is already stopped,
+>> +		 * nothing else to do here.
+>>  		 */
+>> -		for (i = 0; i < N_BCN_SLOTS; i++)
+>> -			mt76x02_mac_set_beacon(dev, i, NULL);
+>>  	}
+> I guess here you can get rid of 'else' branch
 >
 > Regards,
 > Lorenzo
-I can leave it out of course, but I don't  know, if beacons from
-mac80211 are always 4B aligned.
 
-Regards,
+I changed my patch regarding to your suggestions. I'll wait with sending
+another iteration on comments to the
+4B alignment of beacons.
+
 Markus
->> +		txwi = (struct mt76x02_txwi *)(skb->data - sizeof(*txwi));
->> +		mt76x02_mac_write_txwi(dev, txwi, skb, NULL, NULL, skb->len);
->> +		skb_push(skb, sizeof(*txwi));
->> +	} else {
->> +		struct mt76x02_txwi txwi;
+
+>>  }
 >>  
->> -	mt76_wr_copy(dev, offset, &txwi, sizeof(txwi));
->> -	offset += sizeof(txwi);
->> +		mt76x02_mac_write_txwi(dev, &txwi, skb, NULL, NULL, skb->len);
->> +		mt76_wr_copy(dev, offset, &txwi, sizeof(txwi));
->> +		offset += sizeof(txwi);
->> +	}
->>  
->>  	mt76_wr_copy(dev, offset, skb->data, skb->len);
->>  	return 0;
 >> -- 
 >> 2.24.0
 >>
-
