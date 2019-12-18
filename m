@@ -2,91 +2,199 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D627A124252
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Dec 2019 10:00:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 290A712426E
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Dec 2019 10:10:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726141AbfLRJA2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 18 Dec 2019 04:00:28 -0500
-Received: from mail26.static.mailgun.info ([104.130.122.26]:57815 "EHLO
-        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725785AbfLRJA2 (ORCPT
+        id S1726141AbfLRJK0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 18 Dec 2019 04:10:26 -0500
+Received: from webmail.newmedia-net.de ([185.84.6.166]:41884 "EHLO
+        webmail.newmedia-net.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725930AbfLRJKZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 18 Dec 2019 04:00:28 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1576659628; h=Content-Transfer-Encoding: Content-Type:
- MIME-Version: Message-ID: In-Reply-To: Date: References: Subject: Cc:
- To: From: Sender; bh=C6xg5DcjA3hSmJzJichK0Av56FlXQEQ8x34hW9f9Do4=; b=gVyAi23PEo3vOxw33uPn0rH5kOJcubC0uHq716m/RcdZsBSTe8LQDsw51snrm6vjgAkDXMnw
- P28offlX9lE2EfG93jQr+iP65FPh1MqjCx5w0XvccOe6NjvGg2V8ZhDOnCAMkTDn6Fho4YsO
- Wpv+J3YNqqV6DI/rzVK8VdFWRPo=
-X-Mailgun-Sending-Ip: 104.130.122.26
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5df9eaa2.7fb499dc52d0-smtp-out-n03;
- Wed, 18 Dec 2019 09:00:18 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 736DFC447A0; Wed, 18 Dec 2019 09:00:17 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from x230.qca.qualcomm.com (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 31459C43383;
-        Wed, 18 Dec 2019 09:00:13 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 31459C43383
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Lorenzo Bianconi <lorenzo@kernel.org>
-Cc:     nbd@nbd.name, linux-wireless@vger.kernel.org,
-        lorenzo.bianconi@redhat.com, ryder.lee@mediatek.com,
-        shayne.chen@mediatek.com
-Subject: Re: [PATCH] mt76: fix compilation warning in mt76_eeprom_override()
-References: <a64aaf778d3d144a46678f2833db2ec0afa3c58a.1576521036.git.lorenzo@kernel.org>
-        <87bls63ujm.fsf@tynnyri.adurom.net>
-        <20191218085825.GB11823@localhost.localdomain>
-Date:   Wed, 18 Dec 2019 11:00:11 +0200
-In-Reply-To: <20191218085825.GB11823@localhost.localdomain> (Lorenzo
-        Bianconi's message of "Wed, 18 Dec 2019 09:58:25 +0100")
-Message-ID: <871rt2uhyc.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        Wed, 18 Dec 2019 04:10:25 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=newmedia-net.de; s=mikd;
+        h=Content-Transfer-Encoding:Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject; bh=oCUt9A6TWSkwOW8q/znGHI08A2boDTYHCaaf+56tyaQ=;
+        b=iCqFrk3Q5tSXb9fXRa3ulV5jqrUH0KYPTRGxI1XkY9+IxqDh+/hWDVyh3XJ16cVeE9c74Pp3UvnOLm56IS2UBnen/r1jjH689RiqgTfIKGyLSGYHElIX9gtvDGWTl+F5kJA8mjZEhErPYEvG6sOoK/+tvwclcebrKyYp8hSBeho=;
+Subject: Re: [PATCH] ath10k: Per-chain rssi should sum the secondary channels
+To:     Justin Capella <justincapella@gmail.com>
+Cc:     Ben Greear <greearb@candelatech.com>,
+        Tom Psyborg <pozega.tomislav@gmail.com>,
+        linux-wireless@vger.kernel.org, ath10k <ath10k@lists.infradead.org>
+References: <20191216220747.887-1-greearb@candelatech.com>
+ <a2af03e9-8b53-b297-467b-d0f07b8a002b@newmedia-net.de>
+ <b5d63d96-4ba6-bbab-bf1c-a61c6c437f37@newmedia-net.de>
+ <80700614-679a-336e-bd9a-e88622e75c9a@candelatech.com>
+ <4775d91a-9719-46f8-b0f2-979b8d86cf9f@newmedia-net.de>
+ <CAMrEMU-vGB8uR-JZbD2vj4vXgWNHfFqcbsqB=gOqBBDZWGkzQA@mail.gmail.com>
+ <11290a30-46e8-638e-4110-86e6b2eb3d3f@candelatech.com>
+ <CAKR_QV+xNbAzzw12x3Ku49bHnERTxYRAK8AfUSwp_uOgNMbY4Q@mail.gmail.com>
+ <a95e7f6d-1cb8-3188-aea4-233dce6f9330@candelatech.com>
+ <CAKR_QVL0P4qYidtqLwhhacCOpx2iq+4RRhTXbGhfRnf2PUj5tA@mail.gmail.com>
+ <CAKR_QV+KV1dR_QKjANL34DGJuyf3OSN8J6gs3bqcmiRCCzkdXA@mail.gmail.com>
+ <5e3f22d1-b8ba-d756-a15c-1e7ae56c1dad@newmedia-net.de>
+ <8eae96cd-a94e-abc1-4750-73f931d657d6@candelatech.com>
+ <9431f1a2-a44e-9b81-72b0-9a703e1841ac@newmedia-net.de>
+ <CAMrEMU8UrY9F++ut88to0AxKJXHTi9cwUs8uGOmN=k0ymcH0FA@mail.gmail.com>
+From:   Sebastian Gottschall <s.gottschall@newmedia-net.de>
+Message-ID: <3de7edd6-4dfc-f1c6-bf8f-6a74e33f05af@newmedia-net.de>
+Date:   Wed, 18 Dec 2019 10:10:18 +0100
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
+ Thunderbird/68.3.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <CAMrEMU8UrY9F++ut88to0AxKJXHTi9cwUs8uGOmN=k0ymcH0FA@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Received:  from [2003:c9:3f0e:3a00:6985:e55e:37bb:a21e]
+        by webmail.newmedia-net.de with esmtpsa (TLSv1:AES128-SHA:128)
+        (Exim 4.72)
+        (envelope-from <s.gottschall@newmedia-net.de>)
+        id 1ihVKE-0002Lw-1Z; Wed, 18 Dec 2019 10:08:58 +0100
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Lorenzo Bianconi <lorenzo@kernel.org> writes:
 
->> Lorenzo Bianconi <lorenzo@kernel.org> writes:
->>=20
->> > Fix the following compilation warning in mt76_eeprom_override routine
->> > when CONFIG_OF is not set and label 'out' is not actually used
->> >
->> > drivers/net/wireless/mediatek/mt76/eeprom.c: In function =E2=80=98mt76=
-_eeprom_override=E2=80=99:
->> > drivers/net/wireless/mediatek/mt76/eeprom.c:100:1: warning: label
->> > =E2=80=98out=E2=80=99 defined but not used [-Wunused-label]
->> >
->> > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
->>=20
->> What commit introduced this? Or is this an old issue?
+Am 18.12.2019 um 09:05 schrieb Justin Capella:
+> Don't mean to steal your thread here, but since it's being discussed--
+> is there something that can be done to provide more accurate/precise
+> data? Use of the default is widespread so not a reason to hold back
+> the patch imo, but with a proposed pcap-ng capture information block
+> they would become more accessible and maybe there will be increased
+> interest in real values.
 >
-> Hi Kalle,
+> Anyway to fill out IEEE80211_RADIOTAP_DBM_ANT{SIGNAL,NOISE}?
 >
-> I did not added the Fixed tag since this commit is currently just on Feli=
-x's tree:
+> I recall from another thread that there isn't currently periodic
+> calibration but the floor could change with environment too.
+there is periodic calibration. this is done by the chipset firmware 
+according to my
+review of the firmware code last night. without periodic calibration the 
+chipset is likelly to turn
+unstable over time and may also hang. the periodic calibration is 
+triggerd by temperature changes
+(if change is more than 30 degrees celsius) and various baseband hanging 
+checks. in addition its still periodic
+thats the case for 10.4 and also for 10.2 based firmwares. (i checked 
+qca998x and qca9984 firmware codes)
 >
-> commit c203e25590b472eb561e1c53898a7f7b5c734563
-> mt76: fix possible undetected invalid MAC address
-
-Ok, so no need to push to wireless-drivers then.
-
---=20
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
-hes
+> On Tue, Dec 17, 2019 at 8:05 PM Sebastian Gottschall
+> <s.gottschall@newmedia-net.de> wrote:
+>>
+>> Am 18.12.2019 um 03:37 schrieb Ben Greear:
+>>>
+>>> On 12/17/2019 06:12 PM, Sebastian Gottschall wrote:
+>>>> i dont know what you want to compare here.
+>>>>
+>>>> 1. you compare 2 different wifi chipsets. both have different
+>>>> sensititivy and overall output power spec
+>>>>
+>>>> 2. both have different amount of antenna chains. which does make a
+>>>> difference in input sensitivity
+>>>>
+>>>> 3. the patch ben made has no effect on qca9880 chipsets. it only
+>>>> takes effect on 10.4 based chipsets like 9984
+>>> The part of my patch that sums secondary frequencies should apply to
+>>> wave-1 as well, but I have
+>>> not verified that yet.
+>> yeah. right. sorry i was just looking at total signal sum which uses
+>> rssi_comb_ht
+>>>
+>>>> about noise floors in general. noise floors of -108 are bogus. there
+>>>> is a physical limit a noise level can be.
+>>>> since drivers like ath9k are doing a cyclic calibration, the noise
+>>>> value might indeed change. but this calibration is
+>>>> not running in realtime. its cyclic. i'm not aware if chipsets like
+>>>> qca988x are going the same way, but since qca988x
+>>>> has sime similaries with ath9k chipsets unlike the newer 9984
+>>>> variants, it could be. the 30 seconds mentioned
+>>>> in the bug report fits to my expectations of the early noisefloor
+>>>> calibration which has a short delay and after success
+>>>> turning to use a long delay. anyway. in this early calibration phase
+>>>> signals might change and will stabilize after. this isnt a issue
+>>>> since your connection will work anyway even if it might take a little
+>>>> bit longer if you have poor signal levels
+>>>>
+>>>> @ben. am i wrong or what do think?
+>>> I don't know enough about how the noise floor calculations are done or
+>>> how the apply to settings
+>>> to know the answer.
+>>>
+>>> I will be happy in general if ath10k wave-1, wave-2, and ath9k report
+>>> similar RSSI for similar
+>>> setups.
+>> that will not work. you compare different chipsets and depending on the
+>> implementation by the card vendor
+>> rf sensitivity can be very diffent. the same goes for output power. some
+>> vendors are using additional rf amps
+>> for enhancing output power (ubiquiti is best example here). this these
+>> amps also may have influence to sensitivity.
+>> on these cards you set 10 db output power, but in fact it outputs 18 db.
+>> so there is a bias offset on these cards or devices. (the offset is
+>> depending on the device model)
+>>
+>> what you measure is what the chip receives, but not what was lost on the
+>> pcb layout. (or was even generated in case of noise)
+>> and when it comes to calibration data. correct would be if each
+>> individual card is calibrated before shipment. in reality manufactures
+>> are doing calibration on a single reference card and clone it on all
+>> following cards to save time. the result depends on day or week of
+>> production
+>> and current position of the moon and sun. errors of +- 2 db are common
+>> here. (this is not a fact for all card or device vendors)
+>>
+>>> If you look at the tx-rate-power table in ath10k, for instance, you
+>>> can see different MCS are transmitted
+>>> at different signal levels.  So, some change from initial conditions
+>>> might be because higher MCS is
+>>> being transmitted after rate-ctrl scales up?
+>> yes. this is modulation related. as higher the rate goes as lower the
+>> power will be. thats princible of QAM.
+>> and the rate control itself isnt signal but error rate based. so high
+>> packet loss triggers the rate control to lower the rate which results
+>> in increased output power and vice versa. but as mentioned. at card
+>> startup a noise floor calibration starts which may succeed or fail.
+>> if it succeeds it will turn into a long delay phase. so cyclic
+>> calibration. the calibration time is exactly 30 seconds (minimum) and if
+>> it fails it can
+>> exceed to 60 seconds. after that time it will sleep for 300 seconds and
+>> will check for recalibration conditions. (there are rules like high
+>> noise floor changes etc.)
+>> a recalibration is also triggered at channel changes  and if chipset
+>> temperature changes at a certain level.
+>> from what i have seen the procedure in the qca9880 firmware is exactly
+>> the same as in ath9k.
+>> anyway. while this calibration is running, the signal and noise floor
+>> might be unstable or even bogus until this is finished and rate control
+>> might not be optimal
+>> under stress conditions like long range links with low signals. with
+>> standard wifi usage you should not notice it that much since signal to
+>> noise ratio is high enough anyway
+>>
+>>
+>>> Lots of moving parts...
+>>>
+>>> Thanks,
+>>> Ben
+>>>
+>>>> Sebastian
+>>>>
+>>>> Am 18.12.2019 um 00:37 schrieb Tom Psyborg:
+>>>>> also noticed now that the noise floor changes with signal strength as
+>>>>> described in this bug report:
+>>>>> https://www.mail-archive.com/ath10k@lists.infradead.org/msg11553.html
+>>>>>
+>>>>> after wifi restart
+>>>>>
+>>>>> iwinfo:
+>>>>>
+>>>>> signal: -59dBm noise: -108dBm
+>>>>>
+>>>>> then goes to
+>>>>>
+>>>>> signal: -52dBm noise: -103dBm
+>>>>>
+>>>>> and finally drops to
+>>>>>
+>>>>> signal: -59dBm noise: -103dBm
+>>>>>
