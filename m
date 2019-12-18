@@ -2,87 +2,86 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 61581125197
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Dec 2019 20:12:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 95C281251AD
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Dec 2019 20:17:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727188AbfLRTMy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 18 Dec 2019 14:12:54 -0500
-Received: from mail25.static.mailgun.info ([104.130.122.25]:25259 "EHLO
-        mail25.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726998AbfLRTMy (ORCPT
+        id S1727281AbfLRTRV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 18 Dec 2019 14:17:21 -0500
+Received: from mail26.static.mailgun.info ([104.130.122.26]:59086 "EHLO
+        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726831AbfLRTRV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 18 Dec 2019 14:12:54 -0500
+        Wed, 18 Dec 2019 14:17:21 -0500
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1576696373; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=DzTVsP1VogpMHkWNF9D06rFfZMG1jWECCz2mUrfk124=; b=cyBAV+VBJKeoSmd//FXfJpuQaGyavu3TRwH007+v8gxGm+aI8fMsGoMf5u0EdS9jh9iKZhJh
- AYNkum06iNJk/uwNk2fAqZa8WcMjNkXnYAYzv33iv1AsR1mCTwN9OGuNMNPTv6zkO7qKiSip
- anBbHBljDd2EyHVUUGaojC1iwx8=
-X-Mailgun-Sending-Ip: 104.130.122.25
+ s=smtp; t=1576696640; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=0aEP2Sp3eZIk92bi5/Z9oakJLITSM32pzxma96nkWu4=;
+ b=UXXxahC9a85ltYj38Rh26cr979UntrWLVisfgp9iiV4mxHFGUrnMPeiAOOsXFL7Kx7VBoc6w
+ 0Jgjw/JOjv5wi6Sq/xhtjr5QmhsIR9Byl0+D+iKcsBbcVzW1iU1RRt0PYHxphNBGWFSOoX1P
+ /u7qMSRZrTHtLklmGQZ0IW3UhOI=
+X-Mailgun-Sending-Ip: 104.130.122.26
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5dfa7a31.7f6fc4517c38-smtp-out-n02;
- Wed, 18 Dec 2019 19:12:49 -0000 (UTC)
+ by mxa.mailgun.org with ESMTP id 5dfa7b3c.7fb727ead7a0-smtp-out-n02;
+ Wed, 18 Dec 2019 19:17:16 -0000 (UTC)
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id E10CBC4479C; Wed, 18 Dec 2019 19:12:48 +0000 (UTC)
+        id 6A7D6C43383; Wed, 18 Dec 2019 19:17:15 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE,
-        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from tynnyri.adurom.net (tynnyri.adurom.net [51.15.11.48])
+X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
+        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id ADEFEC4479F;
-        Wed, 18 Dec 2019 19:12:46 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org ADEFEC4479F
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 945B7C43383;
+        Wed, 18 Dec 2019 19:17:13 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 945B7C43383
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     Ganapathi Bhat <gbhat@marvell.com>,
-        <linux-wireless@vger.kernel.org>, Cathy Luo <cluo@marvell.com>,
-        Zhiyuan Yang <yangzy@marvell.com>,
-        James Cao <jcao@marvell.com>,
-        Rakesh Parmar <rakeshp@marvell.com>,
-        Brian Norris <briannorris@chromium.org>
-Subject: Re: [PATCH] MAINTAINERS: update Ganapathi Bhat's email address
-References: <1575620268-4613-1-git-send-email-gbhat@marvell.com>
-        <20191218185936.B6A77C43383@smtp.codeaurora.org>
-        <87tv5x3183.fsf@tynnyri.adurom.net>
-Date:   Wed, 18 Dec 2019 21:12:43 +0200
-In-Reply-To: <87tv5x3183.fsf@tynnyri.adurom.net> (Kalle Valo's message of
-        "Wed, 18 Dec 2019 21:03:40 +0200")
-Message-ID: <87pngl30t0.fsf@tynnyri.adurom.net>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] MAINTAINERS: change Gruszka's email address
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20191209091305.5998-1-sgruszka@redhat.com>
+References: <20191209091305.5998-1-sgruszka@redhat.com>
+To:     Stanislaw Gruszka <sgruszka@redhat.com>
+Cc:     linux-wireless@vger.kernel.org, Stanislaw Gruszka <stf_xl@wp.pl>,
+        Felix Fietkau <nbd@nbd.name>,
+        Daniel Golle <daniel@makrotopia.org>,
+        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>
+User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
+Message-Id: <20191218191715.6A7D6C43383@smtp.codeaurora.org>
+Date:   Wed, 18 Dec 2019 19:17:15 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Kalle Valo <kvalo@codeaurora.org> writes:
+Stanislaw Gruszka <sgruszka@redhat.com> wrote:
 
-> Kalle Valo <kvalo@codeaurora.org> writes:
->
->> Ganapathi Bhat <gbhat@marvell.com> wrote:
->>
->>> I'd like to use this email-id from now on.
->>> 
->>> Signed-off-by: Ganapathi Bhat <gbhat@marvell.com>
->>
->> Patch applied to wireless-drivers-next.git, thanks.
->>
->> d0b103a52b72 MAINTAINERS: update Ganapathi Bhat's email address
->
-> Actually please ignore that email, I should have applied this to
-> wireless-drivers. There will be a new email with correct commit id.
+> My RedHat email address will soon stop work. Change to my private one.
+> 
+> Signed-off-by: Stanislaw Gruszka <sgruszka@redhat.com>
 
-But of course I forgot to remove the commit from w-d-next. So forget all
-I said above, this goes wireless-drivers-next and the commit id above is
-correct. I'm going to bed now before I make more mistakes :)
+Failed to apply to wireless-drivers, please rebase.
+
+Recorded preimage for 'MAINTAINERS'
+error: Failed to merge in the changes.
+Applying: MAINTAINERS: change Gruszka's email address
+Using index info to reconstruct a base tree...
+M	MAINTAINERS
+Falling back to patching base and 3-way merge...
+Auto-merging MAINTAINERS
+CONFLICT (content): Merge conflict in MAINTAINERS
+Patch failed at 0001 MAINTAINERS: change Gruszka's email address
+The copy of the patch that failed is found in: .git/rebase-apply/patch
+
+Patch set to Changes Requested.
 
 -- 
+https://patchwork.kernel.org/patch/11278661/
+
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
