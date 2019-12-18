@@ -2,30 +2,30 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8747D124FEC
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Dec 2019 18:58:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6BCDE125000
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Dec 2019 19:02:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727071AbfLRR6z (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 18 Dec 2019 12:58:55 -0500
-Received: from mail25.static.mailgun.info ([104.130.122.25]:47852 "EHLO
+        id S1727193AbfLRSCy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 18 Dec 2019 13:02:54 -0500
+Received: from mail25.static.mailgun.info ([104.130.122.25]:61426 "EHLO
         mail25.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727063AbfLRR6z (ORCPT
+        by vger.kernel.org with ESMTP id S1727024AbfLRSCy (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 18 Dec 2019 12:58:55 -0500
+        Wed, 18 Dec 2019 13:02:54 -0500
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1576691935; h=Date: Message-Id: Cc: To: References:
+ s=smtp; t=1576692174; h=Date: Message-Id: Cc: To: References:
  In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=3C6L4b2dA8aEQpFcyQGCt4S6TCBt8DWzO/OHKf/+d/Q=;
- b=sjS0HqG9ljt91DXxDWPuhJvCKcG8+ewseIy2bBGLz7Cw0vZxjK/+tqsLO9NibEMA9auj8yXq
- Z9RINFuXO7MBurF0g9cq0bZOi2DKrZLk+3fJS0H2dh4XtxRforeIUV+NrrOGGShyIkpnr5N1
- jEtnfB/mO1rqCloLkH128Xl2uls=
+ Content-Type: Sender; bh=mmxYwqlNnvfhoGG6sDIZwqTCpf9MHzspknNWWIvr9Cg=;
+ b=DMxHUkFLNFni4d2drjGslb1kQIqTHMG9HGtD08SQioBdg/c2xg4ki/pjySGt35Ld5Dra0zeK
+ 01zzQK/e9/1iRBBY9eHM/gLKhWYh8QmjQES/Arx5cQMcQneP1rAQzw6ZcLxm8IAX/+fMg67H
+ lrVzSdOgZDwTDlPcM3MSDeZmI64=
 X-Mailgun-Sending-Ip: 104.130.122.25
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5dfa68d9.7f828cb120d8-smtp-out-n02;
- Wed, 18 Dec 2019 17:58:49 -0000 (UTC)
+ by mxa.mailgun.org with ESMTP id 5dfa69ca.7f5b12e079d0-smtp-out-n01;
+ Wed, 18 Dec 2019 18:02:50 -0000 (UTC)
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 79F77C447A0; Wed, 18 Dec 2019 17:58:47 +0000 (UTC)
+        id DD8A9C4479C; Wed, 18 Dec 2019 18:02:49 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -36,61 +36,46 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 00DB5C433CB;
-        Wed, 18 Dec 2019 17:58:42 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 00DB5C433CB
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id C3F9BC43383;
+        Wed, 18 Dec 2019 18:02:48 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org C3F9BC43383
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 1/7] ath9k: fix storage endpoint lookup
+Subject: Re: [PATCH] wcn36xx: disable HW_CONNECTION_MONITOR
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20191210114426.4713-2-johan@kernel.org>
-References: <20191210114426.4713-2-johan@kernel.org>
-To:     Johan Hovold <johan@kernel.org>
-Cc:     QCA ath9k Development <ath9k-devel@qca.qualcomm.com>,
-        Arend van Spriel <arend@broadcom.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
-        Wright Feng <wright.feng@cypress.com>,
-        Jes Sorensen <Jes.Sorensen@redhat.com>,
-        Amitkumar Karwar <amitkarwar@gmail.com>,
-        Siva Rebbagondla <siva8118@gmail.com>,
-        Daniel Drake <dsd@gentoo.org>,
-        Ulrich Kunitz <kune@deine-taler.de>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Johan Hovold <johan@kernel.org>,
-        stable <stable@vger.kernel.org>
+In-Reply-To: <20191217141247.14387-1-eduardoabinader@gmail.com>
+References: <20191217141247.14387-1-eduardoabinader@gmail.com>
+To:     Eduardo Abinader <eduardoabinader@gmail.com>
+Cc:     linux-wireless@vger.kernel.org, wcn36xx@lists.infradead.org
 User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20191218175847.79F77C447A0@smtp.codeaurora.org>
-Date:   Wed, 18 Dec 2019 17:58:47 +0000 (UTC)
+Message-Id: <20191218180249.DD8A9C4479C@smtp.codeaurora.org>
+Date:   Wed, 18 Dec 2019 18:02:49 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Johan Hovold <johan@kernel.org> wrote:
+Eduardo Abinader <eduardoabinader@gmail.com> wrote:
 
-> Make sure to use the current alternate setting when verifying the
-> storage interface descriptors to avoid submitting an URB to an invalid
-> endpoint.
+> Whenever the signal stregth decays smoothly and physical connnection
+> is already gone and no deauth has arrived, the qcom soc is not
+> able to indicate neither WCN36XX_HAL_MISSED_BEACON_IND nor
+> WCN36XX_HAL_MISSED_BEACON_IND. It was noticed that such situation gets
+> even more reproducible, when the driver fails to enter bmps mode - which is
+> highly likely to occur. Thus, in order to provide proper disconnection
+> of the connected STA, let mac80211 handle it, instead of wcn3xx driver.
 > 
-> Failing to do so could cause the driver to misbehave or trigger a WARN()
-> in usb_submit_urb() that kernels with panic_on_warn set would choke on.
-> 
-> Fixes: 36bcce430657 ("ath9k_htc: Handle storage devices")
-> Cc: stable <stable@vger.kernel.org>     # 2.6.39
-> Signed-off-by: Johan Hovold <johan@kernel.org>
+> Signed-off-by: Eduardo Abinader <eduardoabinader@gmail.com>
 > Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 
 Patch applied to ath-next branch of ath.git, thanks.
 
-0ef332951e85 ath9k: fix storage endpoint lookup
+f998f9fcf903 wcn36xx: disable HW_CONNECTION_MONITOR
 
 -- 
-https://patchwork.kernel.org/patch/11282013/
+https://patchwork.kernel.org/patch/11297683/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
