@@ -2,60 +2,108 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F0144123BAC
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Dec 2019 01:36:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 01D49123C49
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Dec 2019 02:16:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726072AbfLRAgt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 17 Dec 2019 19:36:49 -0500
-Received: from mail-oi1-f180.google.com ([209.85.167.180]:33377 "EHLO
-        mail-oi1-f180.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725946AbfLRAgt (ORCPT
+        id S1726467AbfLRBPz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 17 Dec 2019 20:15:55 -0500
+Received: from mail-ot1-f67.google.com ([209.85.210.67]:40816 "EHLO
+        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726227AbfLRBPz (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 17 Dec 2019 19:36:49 -0500
-Received: by mail-oi1-f180.google.com with SMTP id v140so206185oie.0
-        for <linux-wireless@vger.kernel.org>; Tue, 17 Dec 2019 16:36:48 -0800 (PST)
+        Tue, 17 Dec 2019 20:15:55 -0500
+Received: by mail-ot1-f67.google.com with SMTP id i15so263739oto.7;
+        Tue, 17 Dec 2019 17:15:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc;
-        bh=l+5X5vMQ6YkQcZtac3wkcM7mV4o2WEa8wKesrwPdpfo=;
-        b=miRzFCkvA1IM/AfGOimn+QqAvoCqJbKu6sDr+xpJu2T7jjuVJR41/7N4Q5LbV2bPY4
-         asMf2nkeQpPBeIFOVh5H4Qpu3tI9tkhEYPXn6qkjjqSRkNQFKnZxNNR63KihF/aoEzLj
-         ghU9yhJY5OxxBDbQmeSnWWhnixTefgB2asjdLAppbISTbjeGGMzpczAC64KRIo0Ni1qz
-         2YIzBtjVc6rTT3Oax1IxlKEbuWHJDqcVXyyQMTW4K4DJFnGX/Wz29SksL3ErbE5pPkFr
-         M/r8Zq/gg1qow7RIzGB77gzkjJJLzfb+k4EFr3ajgn520NLI6IqcddkwRh/XIA1DEJ09
-         PYVQ==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=d+ndbyvc/xD98taLiNNXwi7PgRFqCDT7vLcEGC7qSs0=;
+        b=klfD6ikoFcBcQTz83KNWoTyZ3DWEyEpYlYh420dAZkyObXgJYGu+A7bbLmBULVM/fr
+         VOhKZJHI63y5oNRdCC81ooP6oIfGBAKtQGngys2D4isGSmUHJTQ50RYpWkbkZaKIy0Y3
+         hBYpNUSesVnLVTCu1LR6I+2o6trC05hzbujAGHz7dxMMliEtiJcxSVCSRyj9d4NqhFjt
+         o6NT2CtbLtj0o+ufN4mXKcBHhVYvNO4nqimaTBVsR+FzN4IDWlXYfJf1a09VxbgRAHlN
+         OODXoNk+puIAM66JXIZ+Z9m0A9U96BRQUftCHn5EBVycPDFNw0XfetdlBfFuLXSEATEM
+         ArZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc;
-        bh=l+5X5vMQ6YkQcZtac3wkcM7mV4o2WEa8wKesrwPdpfo=;
-        b=M8txjWtilJ7tTwgoyl1BlMcOekrFtz+NJYHzuklU2aajz+NNXrpbiqBiL+gpL3Eth8
-         FYrKXY7rYVq+ojSGvUMJgfJg8eWzcOnKaHaOFy2bdQ4Aoymi081TOgjeuZBg1WQY3Hsh
-         RMMQU2v06ZbYlm8Cn9hOz2SmnEqG0y+9RTWH1UHnpgW+8/c0mKiNmrKMwXd1+1tPNdh1
-         ytKR6c9rtpVUyZoRQpK787GbcD7VTXbkQe0rSmjKCVRcmZKHNJ1D6nX0mjTCGJ8Fc4Bl
-         o+A1+PG2Xmtccj0FP+gmEiK/6XemFCSXZEiVw0oYDJJlXEQwYPH0AjlNjguELSVNfhxP
-         Mbcw==
-X-Gm-Message-State: APjAAAWoOyqCB9IP71qQN4Pifk1C4Zkxgn8EcpOOwCp2Vz8T9yZxSGbB
-        PcKvdDOVjQbrkr8gZbY7QNrnpSBtvbhMAXSFHTc7Yw==
-X-Google-Smtp-Source: APXvYqxX9UgXZHIY8njDh20T1lCIcfy4T0iDtyDTbrKPQCfOA0oKSz9ip/2F3uZMvNTntqP5KglSfEbPxHQy8lLtCYs=
-X-Received: by 2002:aca:ea43:: with SMTP id i64mr119364oih.30.1576629408473;
- Tue, 17 Dec 2019 16:36:48 -0800 (PST)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=d+ndbyvc/xD98taLiNNXwi7PgRFqCDT7vLcEGC7qSs0=;
+        b=QAHf1aYsC7kWaaA2aUicA2twbn0ukQnT50ChrCRDItvGsszx5MdbxgiPbWPdCk1i1t
+         yhLVmAb0q52crfZJYsyEFkuHhIYq4rZwGH2PGhoZKeRoEnuzZVOAoOLeNZl5HPQ4V9pC
+         jIgzCIqH6qCzn83mOsCix0hKwxJt/KYi2xCoqFrONpgDhssDMJBVp+40rUr6eR0TYQkG
+         aUKqtIgf1GXv4vB3KjHbVeVxEgzjr8UbNNMw8AMy5jmrJP9DatHnKoOJfiaxOeDC5zD6
+         MqX3WV79GBBMDHpitpRxairICJOE4NGuoJeN496Paq4BBdnBbDxAv/mB8bxD+UTDXeN6
+         WpUQ==
+X-Gm-Message-State: APjAAAVO29EfS/tFyAMwsOqicaPskI/Yc9dTJyks5ZPD4mgGH/er2DAp
+        XdDKPMNvS6GoiqBuEP3X1eE=
+X-Google-Smtp-Source: APXvYqxrNwmRwujD+Yy4djLv6WsgbcLhkN1LpMKWV/Q29CvujkUrnsk3sIX6i+0NCjpzzGU0irxPHw==
+X-Received: by 2002:a05:6830:1e84:: with SMTP id n4mr115298otr.267.1576631754206;
+        Tue, 17 Dec 2019 17:15:54 -0800 (PST)
+Received: from localhost.localdomain ([2604:1380:4111:8b00::1])
+        by smtp.gmail.com with ESMTPSA id w12sm186001otk.75.2019.12.17.17.15.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Dec 2019 17:15:53 -0800 (PST)
+From:   Nathan Chancellor <natechancellor@gmail.com>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, clang-built-linux@googlegroups.com,
+        Nathan Chancellor <natechancellor@gmail.com>
+Subject: [PATCH] hostap: Adjust indentation in prism2_hostapd_add_sta
+Date:   Tue, 17 Dec 2019 18:15:46 -0700
+Message-Id: <20191218011545.40557-1-natechancellor@gmail.com>
+X-Mailer: git-send-email 2.24.1
 MIME-Version: 1.0
-Received: by 2002:a9d:362:0:0:0:0:0 with HTTP; Tue, 17 Dec 2019 16:36:47 -0800 (PST)
-In-Reply-To: <CAKR_QVLabBXcsPfcCt8MdQXUrkgw5aNVAJD9XUke-G7XhsTwAA@mail.gmail.com>
-References: <CAKR_QVLabBXcsPfcCt8MdQXUrkgw5aNVAJD9XUke-G7XhsTwAA@mail.gmail.com>
-From:   Tom Psyborg <pozega.tomislav@gmail.com>
-Date:   Wed, 18 Dec 2019 01:36:47 +0100
-Message-ID: <CAKR_QVK2fJkR6OveFAhcjqjToh_mJMxfvjD6vJssqVtpmbQkGA@mail.gmail.com>
-Subject: Re: [RFC] ath10k: possible RSSI recalibration bug?
-To:     ath10k <ath10k@lists.infradead.org>
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+X-Patchwork-Bot: notify
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-some more testing revealed it might be NF related bug:
-https://marc.info/?l=linux-wireless&m=157662586107288&w=2
+Clang warns:
+
+../drivers/net/wireless/intersil/hostap/hostap_ap.c:2511:3: warning:
+misleading indentation; statement is not part of the previous 'if'
+[-Wmisleading-indentation]
+        if (sta->tx_supp_rates & WLAN_RATE_5M5)
+        ^
+../drivers/net/wireless/intersil/hostap/hostap_ap.c:2509:2: note:
+previous statement is here
+        if (sta->tx_supp_rates & WLAN_RATE_2M)
+        ^
+1 warning generated.
+
+This warning occurs because there is a space before the tab on this
+line. Remove it so that the indentation is consistent with the Linux
+kernel coding style and clang no longer warns.
+
+Fixes: ff1d2767d5a4 ("Add HostAP wireless driver.")
+Link: https://github.com/ClangBuiltLinux/linux/issues/813
+Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
+---
+
+Sorry for sending a patch for an "Obselete" driver (especially one as
+trivial as this) but it is still a warning from clang and shows up on
+all{yes,mod}config.
+
+ drivers/net/wireless/intersil/hostap/hostap_ap.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/intersil/hostap/hostap_ap.c b/drivers/net/wireless/intersil/hostap/hostap_ap.c
+index 0094b1d2b577..3ec46f48cfde 100644
+--- a/drivers/net/wireless/intersil/hostap/hostap_ap.c
++++ b/drivers/net/wireless/intersil/hostap/hostap_ap.c
+@@ -2508,7 +2508,7 @@ static int prism2_hostapd_add_sta(struct ap_data *ap,
+ 		sta->supported_rates[0] = 2;
+ 	if (sta->tx_supp_rates & WLAN_RATE_2M)
+ 		sta->supported_rates[1] = 4;
+- 	if (sta->tx_supp_rates & WLAN_RATE_5M5)
++	if (sta->tx_supp_rates & WLAN_RATE_5M5)
+ 		sta->supported_rates[2] = 11;
+ 	if (sta->tx_supp_rates & WLAN_RATE_11M)
+ 		sta->supported_rates[3] = 22;
+-- 
+2.24.1
+
