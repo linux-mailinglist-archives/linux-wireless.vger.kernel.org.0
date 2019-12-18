@@ -2,122 +2,230 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 82DB812468D
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Dec 2019 13:12:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B4DB1124773
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Dec 2019 13:59:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726718AbfLRMM5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 18 Dec 2019 07:12:57 -0500
-Received: from smail.rz.tu-ilmenau.de ([141.24.186.67]:50320 "EHLO
-        smail.rz.tu-ilmenau.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726551AbfLRMM5 (ORCPT
+        id S1726718AbfLRM7a (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 18 Dec 2019 07:59:30 -0500
+Received: from mail2.candelatech.com ([208.74.158.173]:34796 "EHLO
+        mail3.candelatech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726545AbfLRM7a (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 18 Dec 2019 07:12:57 -0500
-Received: from [192.168.2.97] (unknown [141.24.207.101])
+        Wed, 18 Dec 2019 07:59:30 -0500
+Received: from [192.168.1.47] (unknown [50.34.171.50])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by smail.rz.tu-ilmenau.de (Postfix) with ESMTPSA id 7C757580075;
-        Wed, 18 Dec 2019 13:12:54 +0100 (CET)
-Subject: Re: [PATCH v9 2/6] mt76: mt76x02: split beaconing
-To:     Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-Cc:     nbd@nbd.name, linux-wireless@vger.kernel.org,
-        Stanislaw Gruszka <sgruszka@redhat.com>
-References: <20191126214704.27297-1-markus.theil@tu-ilmenau.de>
- <20191126214704.27297-3-markus.theil@tu-ilmenau.de>
- <20191218093733.GA13035@localhost.localdomain>
-From:   Markus Theil <markus.theil@tu-ilmenau.de>
-Autocrypt: addr=markus.theil@tu-ilmenau.de; keydata=
- mQINBFcopAYBEADBcwd5L8+T0zgqq4kYY4nQt6CYh5sOalHdI3zNE6fWbRbzQwViIlC9Q0q/
- ys+nMmQajMWHalsgcdeVSQ2GJ/06qhtogCpmL3d2/GdlvVROh33zeqwqevscKvPH5i7oiBhh
- dMs8/5g89q4aTYtyaausy8qQbv3Q8BCVkwFW2pEcqfxNKgWi/8nM2A3powNA9gzCR2rmoGyd
- nvQNkk0MCwT8JSGnUkiEYEkWF4aIr3XToavpn+OMIIIizcDzRwU5NBmC3Q07PQTn8Srr+rJQ
- DF65vgaoI8G7wlNLQYavL1uFX1LVMP1jVr6GMOczeURqiF/QSuHCdyT3R8P3Qknc74tGT2Ow
- EbxllMnk1gvSfGQq47EYIvuXFyMUWOjjtgP+NxryXVAvQBmuqWWjRjfqMSx9URhvB/ZMQLbZ
- LUPNW0Whl/vOQdxVbEMQOSKhKYoWKeCDe7567sEi02bMScvr6ybKBvRMs71hT1T+HFcBE/IJ
- g3ZX+6qRzs+XKLTFGipRbRiLYKKNR+UM/sNc/w+3BTowB9g/cQukrITvb792T4/IPBJzpEry
- 9eZFhFTlIqggy/fGrpZkEpEsOyOWYlRyseETvNdrdeVG7dRGPj68jKUWTVcAaAAiu8WhgnvG
- 4tvpaORUhjdg4DfkbE9b9lvYkeesFsE0bUAd5z2DeVbtR0QBUwARAQABtClNYXJrdXMgVGhl
- aWwgPG1hcmt1cy50aGVpbEB0dS1pbG1lbmF1LmRlPokCPQQTAQoAJwUCVyikBgIbAwUJB4Yf
- gAULCQgHAwUVCgkICwUWAgMBAAIeAQIXgAAKCRBt3CLaT/oEE5bzD/94Ezfl7mm57PXniW3m
- yIcjofJXw7YCJOprUon36W2Na2xrH3j8QH/sqkfTyCoj1LWxxDGQs+CQGkZ47cX+H1KqKKSS
- iGoNRV/cvoozWe7cn9bAvR3JkqLxjIi0vp68rs/f6ZI49N7zuZAsSBrXN2/2xIgH+mRoAPyw
- mgzaIXZL87vajXol4TlbMaC7blRs6Q4kzOP7ZjvfM/yxwUsifQltNY4wAEWKXLk67ij9akGO
- FG+y3sHF1HYH3w0sB+mIIN3x4BjYqXSH3XDx4xvCQXWkHmFl1RoQbJDvMjxP5/HXLR3omPjF
- ZpV657Grh/PgonwZ/U6sigaA11pjcPfkYNYkcGyb0OMqSKb3Ke52/bhxv4pPWrKRS7btMhj7
- 4zuMDk9V+De3YFXvKGllXBMAA6J8TlY71rlcOWKyBQNLLkUZ7/uAA949GTNzM0fPTRqry5qn
- WCR/ekzm3VyFgjWSun39L1W13bJW8aUu8k5x2KWq4YrdB0TOYZpKSAconOHVxhkEMxLwRUfZ
- B9kEPqlfQY5YYE6ZoZQF38Kvx3VFuAnhf+82PjMMrkQ3g07D3xJlq7xWdq1jrwG1QxmVFS64
- g+oWM9IIFisvVspNrJAEgSGmYgTw+VT3PDP3Gj8sqD32mWb18bVE9I5FyagOewKdLpqcljIi
- Bz8WAuz+RbwX4i/mMrkCDQRXKKQGARAAzTGnHyUtTBcGHMKArcGiVnCB6knTFgU7I1gsoBrc
- J1bo0JRJj1lduYkdm12kC49c4dZtv1CciQIN9UEpalZsB2TXaC/xaDJ2IsZuHLOOaqSSwVg/
- Bs41vMeFYmmwRRN1y6MQRCBobCC6KNuCpgtEmS/v4hurISt+MoPIppjK6E7tJQ0lgtfRHq/M
- HW+Wabw5Nq3OFSaLYC3nRJkoB1Vej8XGO8X6URWnZmL3xcnkIkoH13y2WTO0lJz9tF47t5U2
- +xWrFMR+a6ow/QPL4Wi53IqhXDqa6OUzDAUuplZOm71VhwsEkk6u0YjzNRbgAYMBh7iye2j/
- 4Lf2+YUB8+uKimpsEwW0nR85sKCQm102Zb9+1bYXPuIIP9HbVNy77X4aM9V0W48zBTqWZzh8
- 2i0oq8z1xN3qeuZbAXnzelKZvE1wM9cLQ3YHA629J2OGe3dkv2+untuyj6KMCEU3+vp6j7TX
- hKf+jy3PIrQcQmzMTs7xnkEm5LvbAtaZLrg4OGYjSpvH4bKsLA3sNGt5Xqsuqh5dsO7ccX1G
- nfY7Ug8UyNT5/0gZVkOileTQl0KtgwO9VBXAdrmMPHFldRn3dGNiGlCbxnsaNQDfQwTFmDu0
- 1TjzwC4byWLQT+C7yCTk8h9q0NwmCJ5yG7Fe7VUUpA+ZVLyMSt+tSpH8v3n+3I2AKoMAEQEA
- AYkCJQQYAQoADwUCVyikBgIbDAUJB4YfgAAKCRBt3CLaT/oEE7lZEACgrOxRaCQ7D5Rc4BOA
- N4VDIQqVch8X3pBE/k/v3UopkgmYnP4RlhegWr4wp2E6Vuyt8nwnZs3WhxQENfMjd5rV3WhG
- k5ib+pmLvtAht5j8jfP5+UKUTvX1a6oMi98PT8PuQ70oKM7T/KN+RpXIHoz/2Dgde1RQpwKC
- XWtkU9tBF87fE8FfwuqS6myOfd8zc6fOVV/fxmTXVC8qA7tB+0tOSDHB80GRYwnlumChOtOB
- Np8ABFWryE2e6mZZnp9Tpd1A74B45z6l445f5BixGLExAOoTJNA2k0JWx79/2Yi+pwTnQMzW
- QBLa48MnL3DUlVlahz1FZfGbA2U5NARS8iRdUhCaHL0Lph8HxWJwYA5w2afyCCwRD7xFo44V
- jsCNbqtZ6TrFARJdrbeWQl3RZ4Y+uuvN9mgvttVenAbx5d68IariYtXashucQeIMoqIloHTN
- sJDaupNm6+A9T3Re5yXmZsrWSxEEEGv1Bh+5DH6vauP0Ng0ebZ4c6jXfgLpPnAUWlV0rnmrJ
- q9141nbyLRYAhUXxiqajb+Zocp2Am4BF19rBUa1C78ooye9XShhuQvDTB6tZuiYWc24tiyqb
- IjR1hmG/zg8APhURAv/zUubaf4IA7v5YHVQqAbpUfb6ePlPVJBtVw2CwXFrGwnqDFh82La8D
- sGZPq8zmOtvOyZtafA==
-Message-ID: <611d70a2-3299-6260-de44-2dc8792250fc@tu-ilmenau.de>
-Date:   Wed, 18 Dec 2019 13:12:54 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.3.0
+        by mail3.candelatech.com (Postfix) with ESMTPSA id 48D3E13C283;
+        Wed, 18 Dec 2019 04:59:28 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 48D3E13C283
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+        s=default; t=1576673968;
+        bh=Sag/mHNsvZsFk+6vOV3EndnQxk0xnqoKwZ3hNgXe5mY=;
+        h=Subject:To:References:Cc:From:Date:In-Reply-To:From;
+        b=AdYE/PmMvvnD7O0Owvd+nPjPaFPW2E4aM8kx7VQSfWoHmgA+bzPszfQQi+ree9rJM
+         /InsSypNx16NqUEXtfm8BnMTgSprje0w34Q7nTMvweaebKtWTTO9zFwC5/5l6zKf/t
+         +0wX6YA+gkPU8020HlhCNwzZQzgsgz0nY8H5kbvg=
+Subject: Re: [PATCH] ath10k: Per-chain rssi should sum the secondary channels
+To:     Justin Capella <justincapella@gmail.com>
+References: <20191216220747.887-1-greearb@candelatech.com>
+ <a2af03e9-8b53-b297-467b-d0f07b8a002b@newmedia-net.de>
+ <b5d63d96-4ba6-bbab-bf1c-a61c6c437f37@newmedia-net.de>
+ <80700614-679a-336e-bd9a-e88622e75c9a@candelatech.com>
+ <4775d91a-9719-46f8-b0f2-979b8d86cf9f@newmedia-net.de>
+ <CAMrEMU-vGB8uR-JZbD2vj4vXgWNHfFqcbsqB=gOqBBDZWGkzQA@mail.gmail.com>
+ <11290a30-46e8-638e-4110-86e6b2eb3d3f@candelatech.com>
+ <CAKR_QV+xNbAzzw12x3Ku49bHnERTxYRAK8AfUSwp_uOgNMbY4Q@mail.gmail.com>
+ <a95e7f6d-1cb8-3188-aea4-233dce6f9330@candelatech.com>
+ <CAKR_QVL0P4qYidtqLwhhacCOpx2iq+4RRhTXbGhfRnf2PUj5tA@mail.gmail.com>
+ <CAKR_QV+KV1dR_QKjANL34DGJuyf3OSN8J6gs3bqcmiRCCzkdXA@mail.gmail.com>
+ <5e3f22d1-b8ba-d756-a15c-1e7ae56c1dad@newmedia-net.de>
+ <8eae96cd-a94e-abc1-4750-73f931d657d6@candelatech.com>
+ <9431f1a2-a44e-9b81-72b0-9a703e1841ac@newmedia-net.de>
+ <CAMrEMU8UrY9F++ut88to0AxKJXHTi9cwUs8uGOmN=k0ymcH0FA@mail.gmail.com>
+Cc:     Sebastian Gottschall <s.gottschall@newmedia-net.de>,
+        Tom Psyborg <pozega.tomislav@gmail.com>,
+        linux-wireless@vger.kernel.org, ath10k <ath10k@lists.infradead.org>
+From:   Ben Greear <greearb@candelatech.com>
+Message-ID: <c06008e6-680f-5fec-081f-1f832034c92a@candelatech.com>
+Date:   Wed, 18 Dec 2019 04:59:27 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+ Thunderbird/45.8.0
 MIME-Version: 1.0
-In-Reply-To: <20191218093733.GA13035@localhost.localdomain>
-Content-Type: text/plain; charset=windows-1252
+In-Reply-To: <CAMrEMU8UrY9F++ut88to0AxKJXHTi9cwUs8uGOmN=k0ymcH0FA@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Content-Language: en-US
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 12/18/19 10:37 AM, Lorenzo Bianconi wrote:
-> [...]
->>  
->> @@ -244,19 +248,15 @@ static void mt76x02u_pre_tbtt_enable(struct mt76x02_dev *dev, bool en)
->>  
->>  static void mt76x02u_beacon_enable(struct mt76x02_dev *dev, bool en)
->>  {
->> -	int i;
->> -
->>  	if (WARN_ON_ONCE(!dev->mt76.beacon_int))
->>  		return;
->>  
->>  	if (en) {
->>  		mt76x02u_start_pre_tbtt_timer(dev);
->>  	} else {
->> -		/* Timer is already stopped, only clean up
->> -		 * PS buffered frames if any.
->> +		/* Timer is already stopped,
->> +		 * nothing else to do here.
->>  		 */
->> -		for (i = 0; i < N_BCN_SLOTS; i++)
->> -			mt76x02_mac_set_beacon(dev, i, NULL);
->>  	}
-> I guess here you can get rid of 'else' branch
+
+
+On 12/18/2019 12:05 AM, Justin Capella wrote:
+> Don't mean to steal your thread here, but since it's being discussed--
+> is there something that can be done to provide more accurate/precise
+> data? Use of the default is widespread so not a reason to hold back
+> the patch imo, but with a proposed pcap-ng capture information block
+> they would become more accessible and maybe there will be increased
+> interest in real values.
+
+It would take some large effort up and down the stack, but we could potentially
+report the raw data for the secondary frequencies.  Probably that is of so little
+use for the general user that it is not worth the effort.
+
+You could just uncomment the printk in my patch if you are curious, or perhaps
+add some debugfs API if you wanted to get at lots of data with run-time config
+change.
+
 >
-> Regards,
-> Lorenzo
+> Anyway to fill out IEEE80211_RADIOTAP_DBM_ANT{SIGNAL,NOISE}?
 
-I changed my patch regarding to your suggestions. I'll wait with sending
-another iteration on comments to the
-4B alignment of beacons.
+Per-antenna rssi is already in wireshark capture for ath10k-ct.  I'm pretty
+sure it is working in upstream ath10k too.
 
-Markus
+> I recall from another thread that there isn't currently periodic
+> calibration but the floor could change with environment too.
 
->>  }
->>  
->> -- 
->> 2.24.0
+I don't think it is correct to say periodic calibration does not happen with
+ath10k.  Maybe very old wave-1 firmware has some issues, but recent stuff appears
+to work.  I do see reported noise floor changing on 9984.
+
+Thanks,
+Ben
+
+>
+> On Tue, Dec 17, 2019 at 8:05 PM Sebastian Gottschall
+> <s.gottschall@newmedia-net.de> wrote:
 >>
+>>
+>> Am 18.12.2019 um 03:37 schrieb Ben Greear:
+>>>
+>>>
+>>> On 12/17/2019 06:12 PM, Sebastian Gottschall wrote:
+>>>> i dont know what you want to compare here.
+>>>>
+>>>> 1. you compare 2 different wifi chipsets. both have different
+>>>> sensititivy and overall output power spec
+>>>>
+>>>> 2. both have different amount of antenna chains. which does make a
+>>>> difference in input sensitivity
+>>>>
+>>>> 3. the patch ben made has no effect on qca9880 chipsets. it only
+>>>> takes effect on 10.4 based chipsets like 9984
+>>>
+>>> The part of my patch that sums secondary frequencies should apply to
+>>> wave-1 as well, but I have
+>>> not verified that yet.
+>> yeah. right. sorry i was just looking at total signal sum which uses
+>> rssi_comb_ht
+>>>
+>>>
+>>>> about noise floors in general. noise floors of -108 are bogus. there
+>>>> is a physical limit a noise level can be.
+>>>> since drivers like ath9k are doing a cyclic calibration, the noise
+>>>> value might indeed change. but this calibration is
+>>>> not running in realtime. its cyclic. i'm not aware if chipsets like
+>>>> qca988x are going the same way, but since qca988x
+>>>> has sime similaries with ath9k chipsets unlike the newer 9984
+>>>> variants, it could be. the 30 seconds mentioned
+>>>> in the bug report fits to my expectations of the early noisefloor
+>>>> calibration which has a short delay and after success
+>>>> turning to use a long delay. anyway. in this early calibration phase
+>>>> signals might change and will stabilize after. this isnt a issue
+>>>> since your connection will work anyway even if it might take a little
+>>>> bit longer if you have poor signal levels
+>>>>
+>>>> @ben. am i wrong or what do think?
+>>>
+>>> I don't know enough about how the noise floor calculations are done or
+>>> how the apply to settings
+>>> to know the answer.
+>>>
+>>> I will be happy in general if ath10k wave-1, wave-2, and ath9k report
+>>> similar RSSI for similar
+>>> setups.
+>> that will not work. you compare different chipsets and depending on the
+>> implementation by the card vendor
+>> rf sensitivity can be very diffent. the same goes for output power. some
+>> vendors are using additional rf amps
+>> for enhancing output power (ubiquiti is best example here). this these
+>> amps also may have influence to sensitivity.
+>> on these cards you set 10 db output power, but in fact it outputs 18 db.
+>> so there is a bias offset on these cards or devices. (the offset is
+>> depending on the device model)
+>>
+>> what you measure is what the chip receives, but not what was lost on the
+>> pcb layout. (or was even generated in case of noise)
+>> and when it comes to calibration data. correct would be if each
+>> individual card is calibrated before shipment. in reality manufactures
+>> are doing calibration on a single reference card and clone it on all
+>> following cards to save time. the result depends on day or week of
+>> production
+>> and current position of the moon and sun. errors of +- 2 db are common
+>> here. (this is not a fact for all card or device vendors)
+>>
+>>>
+>>> If you look at the tx-rate-power table in ath10k, for instance, you
+>>> can see different MCS are transmitted
+>>> at different signal levels.  So, some change from initial conditions
+>>> might be because higher MCS is
+>>> being transmitted after rate-ctrl scales up?
+>> yes. this is modulation related. as higher the rate goes as lower the
+>> power will be. thats princible of QAM.
+>> and the rate control itself isnt signal but error rate based. so high
+>> packet loss triggers the rate control to lower the rate which results
+>> in increased output power and vice versa. but as mentioned. at card
+>> startup a noise floor calibration starts which may succeed or fail.
+>> if it succeeds it will turn into a long delay phase. so cyclic
+>> calibration. the calibration time is exactly 30 seconds (minimum) and if
+>> it fails it can
+>> exceed to 60 seconds. after that time it will sleep for 300 seconds and
+>> will check for recalibration conditions. (there are rules like high
+>> noise floor changes etc.)
+>> a recalibration is also triggered at channel changes  and if chipset
+>> temperature changes at a certain level.
+>> from what i have seen the procedure in the qca9880 firmware is exactly
+>> the same as in ath9k.
+>> anyway. while this calibration is running, the signal and noise floor
+>> might be unstable or even bogus until this is finished and rate control
+>> might not be optimal
+>> under stress conditions like long range links with low signals. with
+>> standard wifi usage you should not notice it that much since signal to
+>> noise ratio is high enough anyway
+>>
+>>
+>>>
+>>> Lots of moving parts...
+>>>
+>>> Thanks,
+>>> Ben
+>>>
+>>>>
+>>>> Sebastian
+>>>>
+>>>> Am 18.12.2019 um 00:37 schrieb Tom Psyborg:
+>>>>> also noticed now that the noise floor changes with signal strength as
+>>>>> described in this bug report:
+>>>>> https://www.mail-archive.com/ath10k@lists.infradead.org/msg11553.html
+>>>>>
+>>>>> after wifi restart
+>>>>>
+>>>>> iwinfo:
+>>>>>
+>>>>> signal: -59dBm noise: -108dBm
+>>>>>
+>>>>> then goes to
+>>>>>
+>>>>> signal: -52dBm noise: -103dBm
+>>>>>
+>>>>> and finally drops to
+>>>>>
+>>>>> signal: -59dBm noise: -103dBm
+>>>>>
+>>>>
+>>>
+>
+
+-- 
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
