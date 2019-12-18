@@ -2,93 +2,89 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8326B124613
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Dec 2019 12:48:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 56796124627
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Dec 2019 12:52:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726551AbfLRLsn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 18 Dec 2019 06:48:43 -0500
-Received: from mail-ot1-f65.google.com ([209.85.210.65]:36794 "EHLO
-        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725930AbfLRLsn (ORCPT
+        id S1726743AbfLRLww (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 18 Dec 2019 06:52:52 -0500
+Received: from mail26.static.mailgun.info ([104.130.122.26]:49844 "EHLO
+        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726551AbfLRLww (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 18 Dec 2019 06:48:43 -0500
-Received: by mail-ot1-f65.google.com with SMTP id w1so2196479otg.3
-        for <linux-wireless@vger.kernel.org>; Wed, 18 Dec 2019 03:48:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc;
-        bh=SF+iiSVsBKQmDSLLYDr33/ZnGLsk/vtl5947FDvEZL8=;
-        b=l2b4A0iSD6L0rlZ6zNCCW11A4dRjGzUvNofQM/v/mSDFWi0Dc3/NPZk6z2v7/1R9j5
-         X7eENMZZglUV4oxYgJLXsNLBfW4c2Fh5a4JRVF7F1g+gC9HQob2E4hDoAFSxdshkY8Lb
-         63ohxznYfIyshSCT1qln9gr07lVNwbLN+cbSsDocwj3E1t3flNFS0QWBEVgKWRt9FRXP
-         z+BHumNhfrNH5zuyUeGgxppgC3xfqv/K/mcmx/I/JYXd51WKYtaCi+pn58DF7eWy1WiQ
-         pBa82N/2U1lmaKK80viTS3w/kEWES5KQliOi9WG4xYXKo/+estdn0osGQbj/a3kty6AQ
-         Gx5Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc;
-        bh=SF+iiSVsBKQmDSLLYDr33/ZnGLsk/vtl5947FDvEZL8=;
-        b=AtDtVWw6zm0kF/u8iI3kVb6AntCo8KXxqPmym66B3gQ0Hrs9oYG8rT9/sTg3a7+h04
-         /+6CNWFBVsYjqTXm/fOSHVXi8lSDOzw7SBZ1vGKQvZL1WBbbCRgjdTAO3IE3dyJeAdUF
-         7uR5Dm8zgJ/NTQyCNG1XJpgE2yfqFApJB9LVQIlodbCzm/BacfRpSWDc0c1mAym0QDn4
-         86mHleWM8+RAHqsdDN0BwDKE/NReNzdGU/Z+bKn1ZMIHeNLiOotEHgUGq4058e1evJkc
-         8mcvaUh+umPB1GRrD4Sq9w8PyCzE/t1/O9cIWP+WTL+eXhOiB/ik4C3WOsYNQK+VYjNY
-         5bDw==
-X-Gm-Message-State: APjAAAWdyh5iWF/oryMEEKRksQ6EVlBtZAixuwoUY4wDiWKFk6cgDTSr
-        eC9oeuOu0UDXmV+wLA/D3TAIHRmAgAoZjSo52V8=
-X-Google-Smtp-Source: APXvYqzQV1FPZ2Cxlzj9tp/r0uOyvlbLOAKv32nbZd1F53Yl3UUQYN0w75vyBYlo4qxKyVLY2CT6bLpUMhee3H2lFf0=
-X-Received: by 2002:a05:6830:1116:: with SMTP id w22mr2247658otq.63.1576669722352;
- Wed, 18 Dec 2019 03:48:42 -0800 (PST)
+        Wed, 18 Dec 2019 06:52:52 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1576669971; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=TMT0l9tfkSs9AfqC0EUNi0voHc2lvjwSQWCTyL1O2vs=;
+ b=XCW3uRlysuTPmWktJPSNMh6XKMHVwdTdFu3rusPqZznkRNkFOor8lkNliRHKqJ0hPHVVvcvN
+ IFIArQm6I8dj5zr3+yrnwKDevTCkpfZt1/rNg1Lec5+YgYcDt1egqqTqMeUwTyQs0w5kEl7r
+ WviiN+XGvZPOLh5gBHvG/WOcBQE=
+X-Mailgun-Sending-Ip: 104.130.122.26
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5dfa1311.7f99678d3c38-smtp-out-n02;
+ Wed, 18 Dec 2019 11:52:49 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id CE06FC43383; Wed, 18 Dec 2019 11:52:48 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
+        MISSING_MID,SPF_NONE,URIBL_BLOCKED autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 76215C433CB;
+        Wed, 18 Dec 2019 11:52:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 76215C433CB
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Received: by 2002:a9d:362:0:0:0:0:0 with HTTP; Wed, 18 Dec 2019 03:48:41 -0800 (PST)
-In-Reply-To: <9431f1a2-a44e-9b81-72b0-9a703e1841ac@newmedia-net.de>
-References: <20191216220747.887-1-greearb@candelatech.com> <a2af03e9-8b53-b297-467b-d0f07b8a002b@newmedia-net.de>
- <b5d63d96-4ba6-bbab-bf1c-a61c6c437f37@newmedia-net.de> <80700614-679a-336e-bd9a-e88622e75c9a@candelatech.com>
- <4775d91a-9719-46f8-b0f2-979b8d86cf9f@newmedia-net.de> <CAMrEMU-vGB8uR-JZbD2vj4vXgWNHfFqcbsqB=gOqBBDZWGkzQA@mail.gmail.com>
- <11290a30-46e8-638e-4110-86e6b2eb3d3f@candelatech.com> <CAKR_QV+xNbAzzw12x3Ku49bHnERTxYRAK8AfUSwp_uOgNMbY4Q@mail.gmail.com>
- <a95e7f6d-1cb8-3188-aea4-233dce6f9330@candelatech.com> <CAKR_QVL0P4qYidtqLwhhacCOpx2iq+4RRhTXbGhfRnf2PUj5tA@mail.gmail.com>
- <CAKR_QV+KV1dR_QKjANL34DGJuyf3OSN8J6gs3bqcmiRCCzkdXA@mail.gmail.com>
- <5e3f22d1-b8ba-d756-a15c-1e7ae56c1dad@newmedia-net.de> <8eae96cd-a94e-abc1-4750-73f931d657d6@candelatech.com>
- <9431f1a2-a44e-9b81-72b0-9a703e1841ac@newmedia-net.de>
-From:   Tom Psyborg <pozega.tomislav@gmail.com>
-Date:   Wed, 18 Dec 2019 12:48:41 +0100
-Message-ID: <CAKR_QVKhe37QnRvfE0-0pHTjBtjMoTsZMMn6SkP+iV4HN8rRnw@mail.gmail.com>
-Subject: Re: [PATCH] ath10k: Per-chain rssi should sum the secondary channels
-To:     Sebastian Gottschall <s.gottschall@newmedia-net.de>
-Cc:     Ben Greear <greearb@candelatech.com>,
-        Justin Capella <justincapella@gmail.com>,
-        linux-wireless@vger.kernel.org, ath10k <ath10k@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v3] ath11k: Add missing pdev rx rate stats
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <0101016ed1b43bf2-1e21d5b3-b396-446f-9f19-c7de3df29a61-000000@us-west-2.amazonses.com>
+References: <0101016ed1b43bf2-1e21d5b3-b396-446f-9f19-c7de3df29a61-000000@us-west-2.amazonses.com>
+To:     Bhagavathi Perumal S <bperumal@codeaurora.org>
+Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        Bhagavathi Perumal S <bperumal@codeaurora.org>
+User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
+Message-Id: <20191218115248.CE06FC43383@smtp.codeaurora.org>
+Date:   Wed, 18 Dec 2019 11:52:48 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 18/12/2019, Sebastian Gottschall <s.gottschall@newmedia-net.de> wrote:
->
-> Am 18.12.2019 um 03:37 schrieb Ben Greear:
->>
->>
->> On 12/17/2019 06:12 PM, Sebastian Gottschall wrote:
->>> i dont know what you want to compare here.
->>>
->>> 1. you compare 2 different wifi chipsets. both have different
->>> sensititivy and overall output power spec
->>>
->>> 2. both have different amount of antenna chains. which does make a
->>> difference in input sensitivity
->>>
+Bhagavathi Perumal S <bperumal@codeaurora.org> wrote:
 
-both were connecting to 2x2 AP. 3x3 card should disable 3rd chain in
-that case but driver doesn't do that yet.
+> This adds missing rx rate info stats like pilot evm,
+> per chain rssi, per user ul ppdu and mpdu counts and
+> ul ofdma rate info etc.
+> 
+> And add null checks for memory alloc failures.
+> 
+> Signed-off-by: Bhagavathi Perumal S <bperumal@codeaurora.org>
+> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 
-> anyway. while this calibration is running, the signal and noise floor
-> might be unstable or even bogus until this is finished and rate control
-> might not be optimal
-> under stress conditions like long range links with low signals.
+This one has warnings, please fix and resend:
 
-i've noticed noise level switching between -105 and 0 on some high
-5ghz channels between 2 litebeams (not very long range, less than 5km)
-while signal levels are in -65 - -75dBm range
+drivers/net/wireless/ath/ath11k/debug_htt_stats.c:2846:59: warning: Using plain integer as NULL pointer
+drivers/net/wireless/ath/ath11k/debug_htt_stats.c:3025:68: warning: Using plain integer as NULL pointer
+drivers/net/wireless/ath/ath11k/debug_htt_stats.c:3026:59: warning: Using plain integer as NULL pointer
+drivers/net/wireless/ath/ath11k/debug_htt_stats.c:3028:73: warning: Using plain integer as NULL pointer
+drivers/net/wireless/ath/ath11k/debug_htt_stats.c:779:59: warning: Using plain integer as NULL pointer
+drivers/net/wireless/ath/ath11k/debug_htt_stats.c:867:68: warning: Using plain integer as NULL pointer
+drivers/net/wireless/ath/ath11k/debug_htt_stats.c:868:59: warning: Using plain integer as NULL pointer
+drivers/net/wireless/ath/ath11k/debug_htt_stats.h:1294: Avoid CamelCase: <rx_pilot_evm_dB>
+drivers/net/wireless/ath/ath11k/debug_htt_stats.h:1300: Avoid CamelCase: <rx_pilot_evm_dB_mean>
+drivers/net/wireless/ath/ath11k/debug_htt_stats.c:3028: Avoid CamelCase: <rx_pilot_evm_dB>
+drivers/net/wireless/ath/ath11k/debug_htt_stats.c:3114: Avoid CamelCase: <rx_pilot_evm_dB_mean>
+
+-- 
+https://patchwork.kernel.org/patch/11273269/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
