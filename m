@@ -2,115 +2,150 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 890E0124662
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Dec 2019 13:02:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ABBC4124687
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Dec 2019 13:11:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726591AbfLRMC2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 18 Dec 2019 07:02:28 -0500
-Received: from mail25.static.mailgun.info ([104.130.122.25]:56303 "EHLO
-        mail25.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726749AbfLRMC2 (ORCPT
+        id S1726707AbfLRML2 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 18 Dec 2019 07:11:28 -0500
+Received: from smail.rz.tu-ilmenau.de ([141.24.186.67]:50310 "EHLO
+        smail.rz.tu-ilmenau.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726551AbfLRML2 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 18 Dec 2019 07:02:28 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1576670547; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=B4/RlwWd+D6Up8aRuxBevuGNVTwp4B7x7EDttVNYIiA=; b=PuV5LSO9N1BGJ+hpuhu1BWZGOgwO3Ga1d1fLd6g+NCzEKdG6PcDp8YVOeiq0uCM2/h1rg299
- 8CmUhEdTAT7M6HKFrqKXkMI3juruP9YdQ8pI8e+ZhDivvgHsLOqlb6JSkGxJayNW/dDsM0c8
- nvqP0i0bllhme/MCu6ZGrd4x7sA=
-X-Mailgun-Sending-Ip: 104.130.122.25
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5dfa1551.7fd173ba7420-smtp-out-n02;
- Wed, 18 Dec 2019 12:02:25 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 76B02C4479F; Wed, 18 Dec 2019 12:02:24 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        Wed, 18 Dec 2019 07:11:28 -0500
+Received: from [192.168.2.97] (unknown [141.24.207.101])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 2EA18C43383;
-        Wed, 18 Dec 2019 12:02:20 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 2EA18C43383
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Jia-Ju Bai <baijiaju1990@gmail.com>
-Cc:     ath9k-devel@qca.qualcomm.com, davem@davemloft.net,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] ath9k: fix possible sleep-in-atomic-context bugs in hif_usb_send_regout()
-References: <20191218114533.9268-1-baijiaju1990@gmail.com>
-Date:   Wed, 18 Dec 2019 14:02:19 +0200
-In-Reply-To: <20191218114533.9268-1-baijiaju1990@gmail.com> (Jia-Ju Bai's
-        message of "Wed, 18 Dec 2019 19:45:33 +0800")
-Message-ID: <87h81xc050.fsf@kamboji.qca.qualcomm.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        by smail.rz.tu-ilmenau.de (Postfix) with ESMTPSA id 5E914580074;
+        Wed, 18 Dec 2019 13:11:23 +0100 (CET)
+Subject: Re: [PATCH v9 4/6] mt76: mt76x02: remove a copy call for usb speedup
+To:     Lorenzo Bianconi <lorenzo@kernel.org>
+Cc:     nbd@nbd.name, linux-wireless@vger.kernel.org,
+        lorenzo.bianconi@redhat.com,
+        Stanislaw Gruszka <sgruszka@redhat.com>
+References: <20191126214704.27297-1-markus.theil@tu-ilmenau.de>
+ <20191126214704.27297-5-markus.theil@tu-ilmenau.de>
+ <20191217094019.GA2567@localhost.localdomain>
+From:   Markus Theil <markus.theil@tu-ilmenau.de>
+Autocrypt: addr=markus.theil@tu-ilmenau.de; keydata=
+ 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
+ sGZPq8zmOtvOyZtafA==
+Message-ID: <ed93b477-dc15-8af4-eadc-9ecc5c4509ec@tu-ilmenau.de>
+Date:   Wed, 18 Dec 2019 13:11:23 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.3.0
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <20191217094019.GA2567@localhost.localdomain>
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 8BIT
+Content-Language: en-US
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Jia-Ju Bai <baijiaju1990@gmail.com> writes:
+On 12/17/19 10:40 AM, Lorenzo Bianconi wrote:
+>> This patch removes a mt76_wr_copy call from the beacon path to hw.
+>> The skb which is used in this place gets therefore build with txwi
+>> inside its data. For mt76 usb drivers, this saves one synchronuous
+>> copy call over usb, which lets the beacon work complete faster.
+>>
+>> In mmio case, there is not enough headroom to put the txwi into the
+>> skb, it is therefore using an additional mt76_wr_copy, which is fast
+>> over mmio. Thanks Stanislaw for pointing this out.
+>>
+>> Signed-off-by: Markus Theil <markus.theil@tu-ilmenau.de>
+>> ---
+>>  .../wireless/mediatek/mt76/mt76x02_beacon.c   | 20 +++++++++++++++----
+>>  1 file changed, 16 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_beacon.c b/drivers/net/wireless/mediatek/mt76/mt76x02_beacon.c
+>> index 1c4bdf88f712..68a4f512319e 100644
+>> --- a/drivers/net/wireless/mediatek/mt76/mt76x02_beacon.c
+>> +++ b/drivers/net/wireless/mediatek/mt76/mt76x02_beacon.c
+>> @@ -26,15 +26,27 @@ static int
+>>  mt76x02_write_beacon(struct mt76x02_dev *dev, int offset, struct sk_buff *skb)
+>>  {
+>>  	int beacon_len = dev->beacon_ops->slot_size;
+>> -	struct mt76x02_txwi txwi;
+>>  
+>>  	if (WARN_ON_ONCE(beacon_len < skb->len + sizeof(struct mt76x02_txwi)))
+>>  		return -ENOSPC;
+>>  
+>> -	mt76x02_mac_write_txwi(dev, &txwi, skb, NULL, NULL, skb->len);
+>> +	/* USB devices already reserve enough skb headroom for txwi's. This
+>> +	 * helps to save slow copies over USB.
+>> +	 */
+>> +	if (mt76_is_usb(&dev->mt76)) {
+>> +		struct mt76x02_txwi *txwi;
+>> +
+>> +		mt76_insert_hdr_pad(skb);
+> Do we really need mt76_insert_hdr_pad? I think beacon header should be 4B
+> aligned.
+>
+> Regards,
+> Lorenzo
+I can leave it out of course, but I don't  know, if beacons from
+mac80211 are always 4B aligned.
 
-> The driver may sleep while holding a spinlock.
-> The function call path (from bottom to top) in Linux 4.19 is:
->
-> drivers/net/wireless/ath/ath9k/hif_usb.c, 108: 
-> 	usb_alloc_urb(GFP_KERNEL) in hif_usb_send_regout
-> drivers/net/wireless/ath/ath9k/hif_usb.c, 470: 
-> 	hif_usb_send_regout in hif_usb_send
-> drivers/net/wireless/ath/ath9k/htc_hst.c, 34: 
-> 	(FUNC_PTR)hif_usb_send in htc_issue_send
-> drivers/net/wireless/ath/ath9k/htc_hst.c, 295: 
-> 	htc_issue_send in htc_send
-> drivers/net/wireless/ath/ath9k/htc_drv_beacon.c, 250: 
-> 	htc_send in ath9k_htc_send_beacon
-> drivers/net/wireless/ath/ath9k/htc_drv_beacon.c, 207: 
-> 	spin_lock_bh in ath9k_htc_send_beacon
->
-> drivers/net/wireless/ath/ath9k/hif_usb.c, 112: 
-> 	kzalloc(GFP_KERNEL) in hif_usb_send_regout
-> drivers/net/wireless/ath/ath9k/hif_usb.c, 470: 
-> 	hif_usb_send_regout in hif_usb_send
-> drivers/net/wireless/ath/ath9k/htc_hst.c, 34: 
-> 	(FUNC_PTR)hif_usb_send in htc_issue_send
-> drivers/net/wireless/ath/ath9k/htc_hst.c, 295: 
-> 	htc_issue_send in htc_send
-> drivers/net/wireless/ath/ath9k/htc_drv_beacon.c, 250: 
-> 	htc_send in ath9k_htc_send_beacon
-> drivers/net/wireless/ath/ath9k/htc_drv_beacon.c, 207: 
-> 	spin_lock_bh in ath9k_htc_send_beacon
->
-> drivers/net/wireless/ath/ath9k/hif_usb.c, 127: 
-> 	usb_submit_urb(GFP_KERNEL) in hif_usb_send_regout
-> drivers/net/wireless/ath/ath9k/hif_usb.c, 470: 
-> 	hif_usb_send_regout in hif_usb_send
-> drivers/net/wireless/ath/ath9k/htc_hst.c, 34: 
-> 	(FUNC_PTR)hif_usb_send in htc_issue_send
-> drivers/net/wireless/ath/ath9k/htc_hst.c, 295: 
-> 	htc_issue_send in htc_send
-> drivers/net/wireless/ath/ath9k/htc_drv_beacon.c, 250: 
-> 	htc_send in ath9k_htc_send_beacon
-> drivers/net/wireless/ath/ath9k/htc_drv_beacon.c, 207: 
-> 	spin_lock_bh in ath9k_htc_send_beacon
->
-> (FUNC_PTR) means a function pointer is called.
->
-> To fix these bugs, GFP_KERNEL is replaced with GFP_ATOMIC.
->
-> These bugs are found by a static analysis tool STCheck written by myself.
->
-> Signed-off-by: Jia-Ju Bai <baijiaju1990@gmail.com>
+Regards,
+Markus
+>> +		txwi = (struct mt76x02_txwi *)(skb->data - sizeof(*txwi));
+>> +		mt76x02_mac_write_txwi(dev, txwi, skb, NULL, NULL, skb->len);
+>> +		skb_push(skb, sizeof(*txwi));
+>> +	} else {
+>> +		struct mt76x02_txwi txwi;
+>>  
+>> -	mt76_wr_copy(dev, offset, &txwi, sizeof(txwi));
+>> -	offset += sizeof(txwi);
+>> +		mt76x02_mac_write_txwi(dev, &txwi, skb, NULL, NULL, skb->len);
+>> +		mt76_wr_copy(dev, offset, &txwi, sizeof(txwi));
+>> +		offset += sizeof(txwi);
+>> +	}
+>>  
+>>  	mt76_wr_copy(dev, offset, skb->data, skb->len);
+>>  	return 0;
+>> -- 
+>> 2.24.0
+>>
 
-Can someone else verify this and provide Reviewed-by?
-
--- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
