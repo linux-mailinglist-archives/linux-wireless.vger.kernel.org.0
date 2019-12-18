@@ -2,86 +2,88 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 95C281251AD
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Dec 2019 20:17:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9CEBF1252F1
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Dec 2019 21:14:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727281AbfLRTRV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 18 Dec 2019 14:17:21 -0500
-Received: from mail26.static.mailgun.info ([104.130.122.26]:59086 "EHLO
-        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726831AbfLRTRV (ORCPT
+        id S1726984AbfLRUOf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 18 Dec 2019 15:14:35 -0500
+Received: from mail-oi1-f196.google.com ([209.85.167.196]:32899 "EHLO
+        mail-oi1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726561AbfLRUOf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 18 Dec 2019 14:17:21 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1576696640; h=Date: Message-Id: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=0aEP2Sp3eZIk92bi5/Z9oakJLITSM32pzxma96nkWu4=;
- b=UXXxahC9a85ltYj38Rh26cr979UntrWLVisfgp9iiV4mxHFGUrnMPeiAOOsXFL7Kx7VBoc6w
- 0Jgjw/JOjv5wi6Sq/xhtjr5QmhsIR9Byl0+D+iKcsBbcVzW1iU1RRt0PYHxphNBGWFSOoX1P
- /u7qMSRZrTHtLklmGQZ0IW3UhOI=
-X-Mailgun-Sending-Ip: 104.130.122.26
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5dfa7b3c.7fb727ead7a0-smtp-out-n02;
- Wed, 18 Dec 2019 19:17:16 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 6A7D6C43383; Wed, 18 Dec 2019 19:17:15 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
-        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 945B7C43383;
-        Wed, 18 Dec 2019 19:17:13 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 945B7C43383
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        Wed, 18 Dec 2019 15:14:35 -0500
+Received: by mail-oi1-f196.google.com with SMTP id v140so1847763oie.0
+        for <linux-wireless@vger.kernel.org>; Wed, 18 Dec 2019 12:14:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc;
+        bh=ak4IdTSq0yrRUmmZNdJtmrrHyp40e8oWD/CHPhAwXvw=;
+        b=TcBS08aVmpDwrjilD2Hfl2W4EuyALoxKCbi0uwSfm9uW42Ua+FZwLV1Xi3xO1XVHCf
+         ltGJAIyt+tpifIEzauz2+mJ7DjB/ovGRqMoETMGNgzb4zMPg7j4BJ2UyJ9GOx/j8qZgp
+         60bMGWFIhChv/5ynScY/X1TdQwXrHAlUqKFjP8j9ezPzGCafi/8h0vQsiR3G9JMz74BW
+         JV3HoAZVp7GOArlhjPsXnRR2s+6bNFvmC1WDsS7VIiUUUQutRN65fz12BRhKATLy50zC
+         qrIPBG82QpaBE5vT7Y8uasTDx227MBenXRMayYvj/BtY0R/lpiDi3X/cXTf3jc+ItzAl
+         2ACQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc;
+        bh=ak4IdTSq0yrRUmmZNdJtmrrHyp40e8oWD/CHPhAwXvw=;
+        b=BBoDWUTsSCHR+ik806U51ercZllk6erwM/PN0AbTIeccqvEhI/pcq72je5Y6IjYkyS
+         R/VDszC7shdBQMUJFX6Fco9YdXHLI5ZNr7Xnh34F2k/1KkEUehUxfGXQWB18trpObi1p
+         ykH4EEeeKu9PLed2Mg3ExDIWs7Wgn53sU71Rw4fm2mreSjIBbXdZSOJnDYMOC/Ght8MS
+         Wz77FcPFuf9nkKZICDdaA3DRd6Yqn9w8CuIDqEdFvClitWH3X6viJyLGbNITqnY51vDj
+         Qv5iSc6ox+MjI5gMgY4IUapiHsGooZaXIzJzS8EFXO499Dnf/wU6Pdmpws8Ui7JVAsti
+         6M5g==
+X-Gm-Message-State: APjAAAXU45wg3mYux6EbUenuQvPG7qHBO1AIAq3LI89tJl7CULfATo8j
+        BlayMaV/Ysaak0QsoESsRo/3DFE+IQjjbOdV+9TWTQ==
+X-Google-Smtp-Source: APXvYqxcJq+FRaKbA1sazXdbynHRsoWhPOzQwa624odcO6H869EYMu+ka6tsC30WQqoO737vodHwt093EwkPhtN3DlE=
+X-Received: by 2002:aca:7244:: with SMTP id p65mr1293671oic.50.1576700074510;
+ Wed, 18 Dec 2019 12:14:34 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] MAINTAINERS: change Gruszka's email address
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20191209091305.5998-1-sgruszka@redhat.com>
-References: <20191209091305.5998-1-sgruszka@redhat.com>
-To:     Stanislaw Gruszka <sgruszka@redhat.com>
-Cc:     linux-wireless@vger.kernel.org, Stanislaw Gruszka <stf_xl@wp.pl>,
-        Felix Fietkau <nbd@nbd.name>,
-        Daniel Golle <daniel@makrotopia.org>,
-        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>
-User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20191218191715.6A7D6C43383@smtp.codeaurora.org>
-Date:   Wed, 18 Dec 2019 19:17:15 +0000 (UTC)
+Received: by 2002:a9d:362:0:0:0:0:0 with HTTP; Wed, 18 Dec 2019 12:14:34 -0800 (PST)
+In-Reply-To: <20191217153000.76AB1C4479C@smtp.codeaurora.org>
+References: <20191216092207.31032-1-john@phrozen.org> <20191217153000.76AB1C4479C@smtp.codeaurora.org>
+From:   Tom Psyborg <pozega.tomislav@gmail.com>
+Date:   Wed, 18 Dec 2019 21:14:34 +0100
+Message-ID: <CAKR_QVJVfqid8i5PXj3Yg8VJjht=MF2fZg+twkLgEkKuMB2bbQ@mail.gmail.com>
+Subject: Re: [RESEND] ath10k: add tx hw 802.11 encapusaltion offloading support
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     John Crispin <john@phrozen.org>, ath10k@lists.infradead.org,
+        linux-wireless@vger.kernel.org,
+        Vasanthakumar Thiagarajan <vthiagar@qti.qualcomm.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Stanislaw Gruszka <sgruszka@redhat.com> wrote:
+On 17/12/2019, Kalle Valo <kvalo@codeaurora.org> wrote:
+> John Crispin <john@phrozen.org> wrote:
+>
+>> This patch adds support for ethernet rxtx mode to the driver. The feature
+>> is enabled via a new module parameter. If enabled to driver will enable
+>> the feature on a per vif basis if all other requirements were met.
+>>
+>> Testing on a IPQ4019 based hardware shows a increase in TCP throughput
+>> of ~20% when the feature is enabled.
+>>
+>> Signed-off-by: Vasanthakumar Thiagarajan <vthiagar@qti.qualcomm.com>
+>> Signed-off-by: John Crispin <john@phrozen.org>
+>
+> Depends on:
+>
+> 50ff477a8639 mac80211: add 802.11 encapsulation offloading support
+>
+> Currently in mac80211-next.
+>
+> Patch set to Awaiting Upstream.
+>
+> --
+> https://patchwork.kernel.org/patch/11293627/
+>
+> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+>
 
-> My RedHat email address will soon stop work. Change to my private one.
-> 
-> Signed-off-by: Stanislaw Gruszka <sgruszka@redhat.com>
-
-Failed to apply to wireless-drivers, please rebase.
-
-Recorded preimage for 'MAINTAINERS'
-error: Failed to merge in the changes.
-Applying: MAINTAINERS: change Gruszka's email address
-Using index info to reconstruct a base tree...
-M	MAINTAINERS
-Falling back to patching base and 3-way merge...
-Auto-merging MAINTAINERS
-CONFLICT (content): Merge conflict in MAINTAINERS
-Patch failed at 0001 MAINTAINERS: change Gruszka's email address
-The copy of the patch that failed is found in: .git/rebase-apply/patch
-
-Patch set to Changes Requested.
-
--- 
-https://patchwork.kernel.org/patch/11278661/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+the changeset is missing support for 64bit targets in htt_tx.c
