@@ -2,78 +2,99 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E888A125164
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Dec 2019 20:10:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 87058125190
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Dec 2019 20:12:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727565AbfLRTJy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 18 Dec 2019 14:09:54 -0500
-Received: from mail25.static.mailgun.info ([104.130.122.25]:13765 "EHLO
-        mail25.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727121AbfLRTJx (ORCPT
+        id S1727391AbfLRTMC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 18 Dec 2019 14:12:02 -0500
+Received: from mail-lj1-f195.google.com ([209.85.208.195]:36994 "EHLO
+        mail-lj1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727031AbfLRTMC (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 18 Dec 2019 14:09:53 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1576696193; h=Date: Message-Id: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=9FmfKq8lX65gFLtKmYO1d5wTTZANyQDiYN2cm9uFzg0=;
- b=LVf0FiFgXoJgtZhkNVEKDA8wfNtt3ZNJYld7NbRVFccQwl5RRY1EW+RAYunfvWRoAwP3UTpj
- FWSZG4JxG65eKcAJv3ppF8FeWXJywdCYvfvwmXJuU6kCzNjuL4AsT2F1W53y5y815VaB/O6X
- Qt3GeGBj/otF2R1ELbmWujLcj+w=
-X-Mailgun-Sending-Ip: 104.130.122.25
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5dfa797d.7fd587501650-smtp-out-n03;
- Wed, 18 Dec 2019 19:09:49 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 8FD16C43383; Wed, 18 Dec 2019 19:09:49 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
-        MISSING_MID,SPF_NONE,URIBL_BLOCKED autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 85FD3C433CB;
-        Wed, 18 Dec 2019 19:09:47 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 85FD3C433CB
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] orinoco: avoid assertion in case of NULL pointer
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20191215195900.6109-1-pakki001@umn.edu>
-References: <20191215195900.6109-1-pakki001@umn.edu>
-To:     Aditya Pakki <pakki001@umn.edu>
-Cc:     pakki001@umn.edu, kjlu@umn.edu,
-        "David S. Miller" <davem@davemloft.net>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        Wed, 18 Dec 2019 14:12:02 -0500
+Received: by mail-lj1-f195.google.com with SMTP id u17so3379606lja.4;
+        Wed, 18 Dec 2019 11:12:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=PUaCVt65eGbtZOQrA+QrYkS8a6/lLOGisIvBVA/ZJC0=;
+        b=e5wQfexmU8qJfdDza+PnA1p/FWjmVF9ZYSkyWXOMvEDUedGuMMdY4Zpaf60SpcKALh
+         LfrQSukE+CqeUl1wPp7RXz56dceESGiJoZAjJxj/tGlVv/+igQ523G5vM/H/CrhWNpTF
+         F36r4pBD2CNSLclh0NCEJUEdRwQWveCdKg3Hxf1LYhycXT+luAa7mSC5y0x46TDC55qO
+         nExSW/habOFwscnxqz8wVZa9LzSJYBCNKdRvyo0K7OPanok6oPhxNc88V66nUvTQU+Ku
+         jYktcc3JPQTJrcUW131LkTm45dXgul0lvNLiW8uv88ZALoDGX3lOIDvr+Pj2PAl16HgV
+         z5RQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=PUaCVt65eGbtZOQrA+QrYkS8a6/lLOGisIvBVA/ZJC0=;
+        b=q3wHa9XkLPw4pi1KhKDwtnvo7qTNiOgZDOEnhegjRXpMvKwhlmBAy14/sfBZsuuNiy
+         f8YOoVJIiOanzH1ocYM48HNwVgyxoQV3pv2UivyxNqURdHQKUB6TlGBnm811NPpnIwrS
+         2sTcf5H/bn3AmecTsTmRxvJymIJ3NUek6G9YcmCd+mYTAADuHda9GsXllLPiKHPZhqap
+         fPDibd8EoIN84A+KCgD1YwXRGcETU2+IsdjtyfIkLSjZHI7FRSq/kZ08xdGx3PeylbNb
+         v8bFvn56pQN4BrJe7nEOT3OFSrpi1Uz4nIDW+BOaFfk6ixdu6WofKHWg9tqmh4MY/Cp5
+         bP8g==
+X-Gm-Message-State: APjAAAVnQm+2kWScMgAT8CmtmOJzOk5oUWb9KtpB0VlH3YYjidtLnP/f
+        apvSgCGnulnqzEW+EP3vuCLDteV/
+X-Google-Smtp-Source: APXvYqw2y9P6Ouu8BJzJfFLZAORzaiRusYivNM0101yYJDujl7PAWWZoiDpwqyv9yeC/CoHLSEDUbA==
+X-Received: by 2002:a2e:9b9a:: with SMTP id z26mr2964181lji.181.1576696319508;
+        Wed, 18 Dec 2019 11:11:59 -0800 (PST)
+Received: from [192.168.2.145] (79-139-233-37.dynamic.spd-mgts.ru. [79.139.233.37])
+        by smtp.googlemail.com with ESMTPSA id t6sm1609391ljj.62.2019.12.18.11.11.58
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 18 Dec 2019 11:11:59 -0800 (PST)
+Subject: Re: [PATCH v1] brcmfmac: Keep OOB wake-interrupt disabled when it
+ shouldn't be enabled
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Arend van Spriel <arend.vanspriel@broadcom.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
+        Wright Feng <wright.feng@cypress.com>,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        brcm80211-dev-list@cypress.com, linux-tegra@vger.kernel.org,
         linux-kernel@vger.kernel.org
-User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20191218190949.8FD16C43383@smtp.codeaurora.org>
-Date:   Wed, 18 Dec 2019 19:09:49 +0000 (UTC)
+References: <20191215184224.11827-1-digetx@gmail.com>
+ <20191218190920.C0B97C4479F@smtp.codeaurora.org>
+From:   Dmitry Osipenko <digetx@gmail.com>
+Message-ID: <9217d183-69ec-8be1-217e-0e4d67710743@gmail.com>
+Date:   Wed, 18 Dec 2019 22:11:58 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.3.0
+MIME-Version: 1.0
+In-Reply-To: <20191218190920.C0B97C4479F@smtp.codeaurora.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Aditya Pakki <pakki001@umn.edu> wrote:
-
-> In ezusb_init, if upriv is NULL, the code crashes. However, the caller
-> in ezusb_probe can handle the error and print the failure message.
-> The patch replaces the BUG_ON call to error return.
+18.12.2019 22:09, Kalle Valo пишет:
+> Dmitry Osipenko <digetx@gmail.com> wrote:
 > 
-> Signed-off-by: Aditya Pakki <pakki001@umn.edu>
+>> NVIDIA Tegra SoCs do not like when OOB wake is enabled and WiFi interface
+>> is in DOWN state during suspend. This results in a CPU hang on programming
+>> OOB wake-up state of the GPIO controller during of system's suspend.
+>>
+>> The solution is trivial: don't enable wake for the OOB interrupt when it
+>> should be disabled.
+>>
+>> This fixes hang on Tegra20 (Acer A500) and Tegra30 (Nexus 7) devices which
+>> are using BCM4329 and BCM4330 WiFi chips respectively.
+>>
+>> Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
+> 
+> Patch applied to wireless-drivers-next.git, thanks.
+> 
+> a32de68edab7 brcmfmac: Keep OOB wake-interrupt disabled when it shouldn't be enabled
+> 
 
-Patch applied to wireless-drivers-next.git, thanks.
-
-c705f9fc6a17 orinoco: avoid assertion in case of NULL pointer
-
--- 
-https://patchwork.kernel.org/patch/11293143/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Thank you very much!
