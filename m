@@ -2,30 +2,30 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B17FA125147
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Dec 2019 20:06:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 38A7312514D
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Dec 2019 20:07:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727184AbfLRTGe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 18 Dec 2019 14:06:34 -0500
-Received: from mail26.static.mailgun.info ([104.130.122.26]:37146 "EHLO
+        id S1727511AbfLRTHT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 18 Dec 2019 14:07:19 -0500
+Received: from mail26.static.mailgun.info ([104.130.122.26]:23818 "EHLO
         mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726698AbfLRTGe (ORCPT
+        by vger.kernel.org with ESMTP id S1727462AbfLRTHT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 18 Dec 2019 14:06:34 -0500
+        Wed, 18 Dec 2019 14:07:19 -0500
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1576695993; h=Date: Message-Id: Cc: To: References:
+ s=smtp; t=1576696038; h=Date: Message-Id: Cc: To: References:
  In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=7NiU3hLTXWzHEhyJIYMdxnxbeihs4foH5jdP5okwMbc=;
- b=h7GNUonj1ogWp2EfP/qm4CjlmolgionuMIns4vDqLdO0bKyJhcz/adEBAxG1nHzuGqNDnIv3
- LaS3UJ5/BzJn+2qkfOMsnlXE5s+rRaD5s7CRAH71Zcn6N+lOF+uncefmegKlDagXsk9LBNmv
- immDcCj/DuS33BAn1qWut6ezMOw=
+ Content-Type: Sender; bh=Ab4NGr8qk+XaJqpupgPmtusLhOTBZgyemH+ZzAaLCcA=;
+ b=b0nQBUsiekiKM3uhPugVXek+2b/nE2CJBh7jmmzX73RfCnaSzFSCxzThe1+hAOOY/4of+YJf
+ BBaa7BUIna7CYUOHQYvmCpZztc3mAgCbPny72fix6UDcMHQTS6oeqyzLh8CL7PY1yAuZeTqP
+ RyUD4BHXmud5zJuqFWQx5PDVrlI=
 X-Mailgun-Sending-Ip: 104.130.122.26
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5dfa78b7.7f46ea6e81f0-smtp-out-n03;
- Wed, 18 Dec 2019 19:06:31 -0000 (UTC)
+ by mxa.mailgun.org with ESMTP id 5dfa78e2.7f045e908a78-smtp-out-n03;
+ Wed, 18 Dec 2019 19:07:14 -0000 (UTC)
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 3F453C433CB; Wed, 18 Dec 2019 19:06:31 +0000 (UTC)
+        id 0D0DCC43383; Wed, 18 Dec 2019 19:07:14 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -35,59 +35,50 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 12E94C43383;
-        Wed, 18 Dec 2019 19:06:26 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 12E94C43383
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 2FC2AC433CB;
+        Wed, 18 Dec 2019 19:07:11 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 2FC2AC433CB
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 2/7] at76c50x-usb: fix endpoint debug message
+Subject: Re: [PATCH 1/6] rtlwifi: rtl8192ce: use generic
+ rtl_query_rxpwrpercentage
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20191210114426.4713-3-johan@kernel.org>
-References: <20191210114426.4713-3-johan@kernel.org>
-To:     Johan Hovold <johan@kernel.org>
-Cc:     QCA ath9k Development <ath9k-devel@qca.qualcomm.com>,
-        Arend van Spriel <arend@broadcom.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
-        Wright Feng <wright.feng@cypress.com>,
-        Jes Sorensen <Jes.Sorensen@redhat.com>,
-        Amitkumar Karwar <amitkarwar@gmail.com>,
-        Siva Rebbagondla <siva8118@gmail.com>,
-        Daniel Drake <dsd@gentoo.org>,
-        Ulrich Kunitz <kune@deine-taler.de>,
+In-Reply-To: <20191211154755.15012-2-straube.linux@gmail.com>
+References: <20191211154755.15012-2-straube.linux@gmail.com>
+To:     Michael Straube <straube.linux@gmail.com>
+Cc:     pkshih@realtek.com, davem@davemloft.net,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Johan Hovold <johan@kernel.org>
+        linux-kernel@vger.kernel.org,
+        Michael Straube <straube.linux@gmail.com>
 User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20191218190631.3F453C433CB@smtp.codeaurora.org>
-Date:   Wed, 18 Dec 2019 19:06:31 +0000 (UTC)
+Message-Id: <20191218190714.0D0DCC43383@smtp.codeaurora.org>
+Date:   Wed, 18 Dec 2019 19:07:14 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Johan Hovold <johan@kernel.org> wrote:
+Michael Straube <straube.linux@gmail.com> wrote:
 
-> Make sure to use the current alternate setting, which may not be the
-> same as the first alternate setting, also when printing the number of
-> endpoints at probe.
+> Function _rtl92c_query_rxpwrpercentage is identical to the generic
+> version rtl_query_rxpwrpercentage. Remove _rtl92c_query_rxpwrpercentage
+> and use the generic function.
 > 
-> Signed-off-by: Johan Hovold <johan@kernel.org>
+> Signed-off-by: Michael Straube <straube.linux@gmail.com>
 
 6 patches applied to wireless-drivers-next.git, thanks.
 
-af615abd1596 at76c50x-usb: fix endpoint debug message
-3428fbcd6e6c brcmfmac: fix interface sanity check
-b73e05aa543c orinoco_usb: fix interface sanity check
-39a4281c312f rtl8xxxu: fix interface sanity check
-3139b180906a rsi_91x_usb: fix interface sanity check
-2d68bb2687ab zd1211rw: fix storage endpoint lookup
+f365f2f67b6a rtlwifi: rtl8192ce: use generic rtl_query_rxpwrpercentage
+b8a19dd64501 rtlwifi: rtl8192cu: use generic rtl_query_rxpwrpercentage
+5a87ae1d676e rtlwifi: rtl8192de: use generic rtl_query_rxpwrpercentage
+d01b26734297 rtlwifi: rtl8192ce: use generic rtl_signal_scale_mapping
+fef91a2b5f5f rtlwifi: rtl8192cu: use generic rtl_signal_scale_mapping
+716c733f52ec rtlwifi: rtl8192de: use generic rtl_signal_scale_mapping
 
 -- 
-https://patchwork.kernel.org/patch/11282005/
+https://patchwork.kernel.org/patch/11285545/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
