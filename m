@@ -2,113 +2,87 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 87379125196
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Dec 2019 20:12:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 61581125197
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Dec 2019 20:12:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727507AbfLRTMf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 18 Dec 2019 14:12:35 -0500
-Received: from mail-lj1-f195.google.com ([209.85.208.195]:44020 "EHLO
-        mail-lj1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727031AbfLRTMf (ORCPT
+        id S1727188AbfLRTMy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 18 Dec 2019 14:12:54 -0500
+Received: from mail25.static.mailgun.info ([104.130.122.25]:25259 "EHLO
+        mail25.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726998AbfLRTMy (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 18 Dec 2019 14:12:35 -0500
-Received: by mail-lj1-f195.google.com with SMTP id a13so3370282ljm.10;
-        Wed, 18 Dec 2019 11:12:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=imHiZexO5gB1oYoKS2la2qSlq4WlB0r7VycYXAA4s/o=;
-        b=sQqbD3Mz+RZ6Z1MUd7DPSgWvdfSGAk51I/o6rzFjc+Xv632r5ibELypjtoSqTdVWDh
-         GEJWdHR5XWNPbx/iHVRGBNblyhXADWI4OKYdkHjfrLPfC4+eSY1S+8QYBKq3i3Mw+s4j
-         iLtrdc+r0n0ypO33q/4d4pOd0hFvhsU8VaqDMmawJ9zf0U5byvU9V7AfDwf9zbwTqvWl
-         lSQUzYAbksIdxR3UZGaP4Usqs0CL3c0bf5L215ke9+1vf2vtSTWyhwAf/8ud1ScLNJLc
-         XquOmAtVL4f+SB9MKreLyJMNWEij6T9Ucuvfz6K2YXwC5l/yHxh0gIp28NoS/krB+O+7
-         q36Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=imHiZexO5gB1oYoKS2la2qSlq4WlB0r7VycYXAA4s/o=;
-        b=HS1H6FKrqgyG/6w8h3eVkNlXsS1zBZ+SWa7sjZlKJNZ7lXZPkPtQAZcwioA2+LQeQ0
-         QDOFJvgkDUsRBQthDsKWLF0P1pD3G07QFfyO3P71GzdbCCDA4Xel7AZs7plMorgKJta+
-         kiI+U7n6jTej+f1j35EBgiHXU4mxYBG8xVvuj3iihCjscxQayTG1JaBbHhMQkawcX3cK
-         ERWyHGTM3ZdrEv+O+4oGewGyE4ewsLjemrTnvAyQB6SXk413fEZxmDvXjSJ+dubrK09+
-         k15wqcXTBdM54VvQxaqR1VZephCaBkpUXhcsBwrzmRBnG1N/TuVEUIEcys06HBfeLZ0R
-         04sA==
-X-Gm-Message-State: APjAAAW6KwQDIG29o3/ZIsEUtydtDaWDqp4X03VQj5IpHPqs1GOzzGsQ
-        MbAqcPwcR2GuyUhhiGTBpcldt7wVboI0a4bS0C8=
-X-Google-Smtp-Source: APXvYqxn5bDtvU5FDUKdrFEaDxvDh2DKt212ij5keCSeXMtaOLOnCu2OROZYjJXHxP7p2tHwqXaTHgSEk0Ip9J22DII=
-X-Received: by 2002:a2e:9ad1:: with SMTP id p17mr3084567ljj.26.1576696352864;
- Wed, 18 Dec 2019 11:12:32 -0800 (PST)
+        Wed, 18 Dec 2019 14:12:54 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1576696373; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=DzTVsP1VogpMHkWNF9D06rFfZMG1jWECCz2mUrfk124=; b=cyBAV+VBJKeoSmd//FXfJpuQaGyavu3TRwH007+v8gxGm+aI8fMsGoMf5u0EdS9jh9iKZhJh
+ AYNkum06iNJk/uwNk2fAqZa8WcMjNkXnYAYzv33iv1AsR1mCTwN9OGuNMNPTv6zkO7qKiSip
+ anBbHBljDd2EyHVUUGaojC1iwx8=
+X-Mailgun-Sending-Ip: 104.130.122.25
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5dfa7a31.7f6fc4517c38-smtp-out-n02;
+ Wed, 18 Dec 2019 19:12:49 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id E10CBC4479C; Wed, 18 Dec 2019 19:12:48 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE,
+        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from tynnyri.adurom.net (tynnyri.adurom.net [51.15.11.48])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id ADEFEC4479F;
+        Wed, 18 Dec 2019 19:12:46 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org ADEFEC4479F
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Ganapathi Bhat <gbhat@marvell.com>,
+        <linux-wireless@vger.kernel.org>, Cathy Luo <cluo@marvell.com>,
+        Zhiyuan Yang <yangzy@marvell.com>,
+        James Cao <jcao@marvell.com>,
+        Rakesh Parmar <rakeshp@marvell.com>,
+        Brian Norris <briannorris@chromium.org>
+Subject: Re: [PATCH] MAINTAINERS: update Ganapathi Bhat's email address
+References: <1575620268-4613-1-git-send-email-gbhat@marvell.com>
+        <20191218185936.B6A77C43383@smtp.codeaurora.org>
+        <87tv5x3183.fsf@tynnyri.adurom.net>
+Date:   Wed, 18 Dec 2019 21:12:43 +0200
+In-Reply-To: <87tv5x3183.fsf@tynnyri.adurom.net> (Kalle Valo's message of
+        "Wed, 18 Dec 2019 21:03:40 +0200")
+Message-ID: <87pngl30t0.fsf@tynnyri.adurom.net>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-References: <20191213203512.8250-1-makiftasova@gmail.com>
-In-Reply-To: <20191213203512.8250-1-makiftasova@gmail.com>
-From:   Roman Gilg <subdiff@gmail.com>
-Date:   Wed, 18 Dec 2019 20:12:37 +0100
-Message-ID: <CAJcyoyusgtw0++KsEHK-t=EFGx2v9GKv7+BSViUCaB3nyDr2Jw@mail.gmail.com>
-Subject: Re: [PATCH] Revert "iwlwifi: mvm: fix scan config command size"
-To:     Mehmet Akif Tasova <makiftasova@gmail.com>
-Cc:     Johannes Berg <johannes.berg@intel.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Intel Linux Wireless <linuxwifi@intel.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Shahar S Matityahu <shahar.s.matityahu@intel.com>,
-        Tova Mussai <tova.mussai@intel.com>,
-        Ayala Beker <ayala.beker@intel.com>,
-        Sara Sharon <sara.sharon@intel.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Dec 13, 2019 at 9:36 PM Mehmet Akif Tasova
-<makiftasova@gmail.com> wrote:
->
-> Since Linux 5.4.1 released, iwlwifi could not initialize Intel(R) Dual Band
-> Wireless AC 9462 firmware, failing with following error in dmesg:
->
-> iwlwifi 0000:00:14.3: FW error in SYNC CMD SCAN_CFG_CMD
->
-> whole dmesg output of error can be found at:
-> https://gist.github.com/makiftasova/354e46439338f4ab3fba0b77ad5c19ec
->
-> also bug report from ArchLinux bug tracker (contains more info):
-> https://bugs.archlinux.org/task/64703
+Kalle Valo <kvalo@codeaurora.org> writes:
 
-Since this bug report is about the Dell XPS 13 2-in1: I tested your
-revert with this device, but the issue persists at least on this
-device. So these might be two different issues, one for your device
-and another one for the XPS.
+> Kalle Valo <kvalo@codeaurora.org> writes:
+>
+>> Ganapathi Bhat <gbhat@marvell.com> wrote:
+>>
+>>> I'd like to use this email-id from now on.
+>>> 
+>>> Signed-off-by: Ganapathi Bhat <gbhat@marvell.com>
+>>
+>> Patch applied to wireless-drivers-next.git, thanks.
+>>
+>> d0b103a52b72 MAINTAINERS: update Ganapathi Bhat's email address
+>
+> Actually please ignore that email, I should have applied this to
+> wireless-drivers. There will be a new email with correct commit id.
 
-> Reverting commit 06eb547c4ae4 ("iwlwifi: mvm: fix scan config command
-> size") seems to fix this issue  until proper solution is found.
->
-> This reverts commit 06eb547c4ae4382e70d556ba213d13c95ca1801b.
->
-> Signed-off-by: Mehmet Akif Tasova <makiftasova@gmail.com>
-> ---
->  drivers/net/wireless/intel/iwlwifi/mvm/scan.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-> index a046ac9fa852..a5af8f4128b1 100644
-> --- a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-> +++ b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-> @@ -1213,7 +1213,7 @@ static int iwl_mvm_legacy_config_scan(struct iwl_mvm *mvm)
->                 cmd_size = sizeof(struct iwl_scan_config_v2);
->         else
->                 cmd_size = sizeof(struct iwl_scan_config_v1);
-> -       cmd_size += num_channels;
-> +       cmd_size += mvm->fw->ucode_capa.n_scan_channels;
->
->         cfg = kzalloc(cmd_size, GFP_KERNEL);
->         if (!cfg)
-> --
-> 2.24.1
->
+But of course I forgot to remove the commit from w-d-next. So forget all
+I said above, this goes wireless-drivers-next and the commit id above is
+correct. I'm going to bed now before I make more mistakes :)
+
+-- 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
