@@ -2,30 +2,30 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 64BD9124FB7
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Dec 2019 18:52:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 532E1124FBB
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Dec 2019 18:53:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727193AbfLRRwb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 18 Dec 2019 12:52:31 -0500
-Received: from mail26.static.mailgun.info ([104.130.122.26]:57081 "EHLO
-        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726960AbfLRRwb (ORCPT
+        id S1727177AbfLRRxQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 18 Dec 2019 12:53:16 -0500
+Received: from mail25.static.mailgun.info ([104.130.122.25]:22177 "EHLO
+        mail25.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726985AbfLRRxQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 18 Dec 2019 12:52:31 -0500
+        Wed, 18 Dec 2019 12:53:16 -0500
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1576691550; h=Date: Message-Id: Cc: To: References:
+ s=smtp; t=1576691595; h=Date: Message-Id: Cc: To: References:
  In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=F5m8QQ4p8IPJ3aJPJPuQyUzhNMvwbEpBTfkagoJetIQ=;
- b=fCnEJhvIiVcjB+6IDAvdKcOoHkFdeluJcrgzGWnsNWJvylO6PMMt6bi9X05x5VgDekJNYrpn
- K+NxVUzwcQ4QLMCkkRvsNdF6sXQIz9j9FwqIKEVlPz98eurGWZ9Y/u9PhwI5m+Smx1KjEs7z
- DwxfpwvyCpue+6Py589hm2ZLndY=
-X-Mailgun-Sending-Ip: 104.130.122.26
+ Content-Type: Sender; bh=pxHNl3g/Np7ckzqogsAEjjScLfDQeB6bvKT+piieRTY=;
+ b=Iu5g73MDmcj4h+6Md4hTaMBmQRDiYP++zcQwNZuClmfmbrjn/YT71eg7jL2zOMbiXtnYnqsy
+ S4724ILEO6HVYYPk+fuQ+3kkirfkqnZQOcj/MM5DT3Bk5FRXY/tOFoUmk2VIsM+r0qOKylLb
+ DBdfU6X6OgdzLIyZNty1HDZussQ=
+X-Mailgun-Sending-Ip: 104.130.122.25
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5dfa675a.7efb76ae92d0-smtp-out-n01;
- Wed, 18 Dec 2019 17:52:26 -0000 (UTC)
+ by mxa.mailgun.org with ESMTP id 5dfa678b.7f080a3af030-smtp-out-n02;
+ Wed, 18 Dec 2019 17:53:15 -0000 (UTC)
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 8352CC433A2; Wed, 18 Dec 2019 17:52:26 +0000 (UTC)
+        id 21F8AC433CB; Wed, 18 Dec 2019 17:53:14 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -36,18 +36,18 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id AF429C43383;
-        Wed, 18 Dec 2019 17:52:23 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org AF429C43383
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 65F68C43383;
+        Wed, 18 Dec 2019 17:53:11 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 65F68C43383
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH][next] ath11k: fix memory leak on reg_info
+Subject: Re: [PATCH][next] ath11k: fix uninitialized variable radioup
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20191212183228.105993-1-colin.king@canonical.com>
-References: <20191212183228.105993-1-colin.king@canonical.com>
+In-Reply-To: <20191212191044.107544-1-colin.king@canonical.com>
+References: <20191212191044.107544-1-colin.king@canonical.com>
 To:     Colin King <colin.king@canonical.com>
 Cc:     "David S . Miller" <davem@davemloft.net>,
         Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>,
@@ -57,8 +57,8 @@ Cc:     "David S . Miller" <davem@davemloft.net>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
 User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20191218175226.8352CC433A2@smtp.codeaurora.org>
-Date:   Wed, 18 Dec 2019 17:52:26 +0000 (UTC)
+Message-Id: <20191218175314.21F8AC433CB@smtp.codeaurora.org>
+Date:   Wed, 18 Dec 2019 17:53:14 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
@@ -66,21 +66,20 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 Colin King <colin.king@canonical.com> wrote:
 
-> Currently a return path is leaking the previously allocate reg_info. Fix
-> this by exiting via the return path mem_free.  Since the return value ret
-> is defaulted to 0, there is no need to re-assign ret to the 0 before
-> the goto.
+> The variable radioup is not uninitalized so it may contain a garbage
+> value and hence the detection of a radio that is not up is buggy.
+> Fix this by initializing it to zero.
 > 
-> Addresses-Coverity: ("Resource leak")
+> Addresses-Coverity: ("Uninitalized scalar variable")
 > Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
 > Signed-off-by: Colin Ian King <colin.king@canonical.com>
 > Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 
 Patch applied to ath-next branch of ath.git, thanks.
 
-b5316db229d5 ath11k: fix memory leak on reg_info
+08cc0f44f5ed ath11k: fix uninitialized variable radioup
 
 -- 
-https://patchwork.kernel.org/patch/11289073/
+https://patchwork.kernel.org/patch/11289309/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
