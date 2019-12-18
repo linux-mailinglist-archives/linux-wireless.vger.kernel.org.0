@@ -2,96 +2,116 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C9CB3124914
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Dec 2019 15:07:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 387C6124991
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Dec 2019 15:28:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726932AbfLROHl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 18 Dec 2019 09:07:41 -0500
-Received: from mail26.static.mailgun.info ([104.130.122.26]:42063 "EHLO
-        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726856AbfLROHl (ORCPT
+        id S1727311AbfLRO1z (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 18 Dec 2019 09:27:55 -0500
+Received: from smail.rz.tu-ilmenau.de ([141.24.186.67]:50969 "EHLO
+        smail.rz.tu-ilmenau.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727063AbfLRO1z (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 18 Dec 2019 09:07:41 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1576678060; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=R08EXNh/NqRs6WB6d4v4PJs0E+F6CZC33plOYfDtU4c=; b=OdRH6jbRiTmqoPuwj3+Hs8McYZwBRS8j3AUFKjEdO3LWdikx0fuIFhCub344+w+Y2YvgiHFr
- hqP4VG77D40K9yzEzz3Ej73a8xLX7HeESjKjy+nIHILvuF6maurE01DYhlmdTTzVg0rUGQep
- cHCC+rcGPRXLEeyzC50cxyEEoVo=
-X-Mailgun-Sending-Ip: 104.130.122.26
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5dfa32a9.7f77856b0960-smtp-out-n03;
- Wed, 18 Dec 2019 14:07:37 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id B7AB2C4479D; Wed, 18 Dec 2019 14:07:37 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE,
-        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        Wed, 18 Dec 2019 09:27:55 -0500
+Received: from isengard.tu-ilmenau.de (unknown [141.24.207.101])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 02EF4C43383;
-        Wed, 18 Dec 2019 14:07:35 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 02EF4C43383
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Maya Erez <merez@codeaurora.org>
-Cc:     Ahmad Masri <amasri@codeaurora.org>,
-        linux-wireless@vger.kernel.org, wil6210@qti.qualcomm.com
-Subject: Re: [PATCH 1/8] wil6210: dump Rx status message on errors
-References: <20191218135947.5903-1-merez@codeaurora.org>
-        <20191218135947.5903-2-merez@codeaurora.org>
-Date:   Wed, 18 Dec 2019 16:07:33 +0200
-In-Reply-To: <20191218135947.5903-2-merez@codeaurora.org> (Maya Erez's message
-        of "Wed, 18 Dec 2019 15:59:40 +0200")
-Message-ID: <87v9qd917e.fsf@kamboji.qca.qualcomm.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        by smail.rz.tu-ilmenau.de (Postfix) with ESMTPSA id CD3B4580074;
+        Wed, 18 Dec 2019 15:27:53 +0100 (CET)
+From:   Markus Theil <markus.theil@tu-ilmenau.de>
+To:     johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org,
+        Markus Theil <markus.theil@tu-ilmenau.de>
+Subject: [PATCH] mac80211: fix tx status for no ack cases
+Date:   Wed, 18 Dec 2019 15:27:36 +0100
+Message-Id: <20191218142736.15843-1-markus.theil@tu-ilmenau.de>
+X-Mailer: git-send-email 2.24.1
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Maya Erez <merez@codeaurora.org> writes:
+Before this patch, frames which where successfully transmitted without
+requiring acks where accounted as lost frames.
 
-> From: Ahmad Masri <amasri@codeaurora.org>
->
-> Dump all the Rx status message on different errors to allow more
-> visibility of the case.
->
-> Signed-off-by: Ahmad Masri <amasri@codeaurora.org>
-> Signed-off-by: Maya Erez <merez@codeaurora.org>
-> ---
->  drivers/net/wireless/ath/wil6210/txrx_edma.c | 10 ++++++++++
->  1 file changed, 10 insertions(+)
->
-> diff --git a/drivers/net/wireless/ath/wil6210/txrx_edma.c b/drivers/net/wireless/ath/wil6210/txrx_edma.c
-> index 02548d40253c..6a1671c3a2be 100644
-> --- a/drivers/net/wireless/ath/wil6210/txrx_edma.c
-> +++ b/drivers/net/wireless/ath/wil6210/txrx_edma.c
-> @@ -903,6 +903,11 @@ static struct sk_buff *wil_sring_reap_rx_edma(struct wil6210_priv *wil,
->  	if (unlikely(!wil_val_in_range(buff_id, 1, wil->rx_buff_mgmt.size))) {
->  		wil_err(wil, "Corrupt buff_id=%d, sring->swhead=%d\n",
->  			buff_id, sring->swhead);
-> +		print_hex_dump(KERN_ERR, "RxS ", DUMP_PREFIX_OFFSET, 16, 1,
-> +			       (void *)msg, wil->use_compressed_rx_status ?
+Signed-off-by: Markus Theil <markus.theil@tu-ilmenau.de>
+---
+ net/mac80211/status.c | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
-Isn't the cast unnecessary? Please avoid casting as much as possible.
-
-> @@ -963,6 +968,11 @@ static struct sk_buff *wil_sring_reap_rx_edma(struct wil6210_priv *wil,
->  
->  	if (unlikely(dmalen > sz)) {
->  		wil_err(wil, "Rx size too large: %d bytes!\n", dmalen);
-> +		print_hex_dump(KERN_ERR, "RxS ", DUMP_PREFIX_OFFSET, 16, 1,
-> +			       (void *)msg, wil->use_compressed_rx_status ?
-
-Same here.
-
+diff --git a/net/mac80211/status.c b/net/mac80211/status.c
+index b720feaf9a74..f0bc314cd6ec 100644
+--- a/net/mac80211/status.c
++++ b/net/mac80211/status.c
+@@ -888,6 +888,7 @@ static void __ieee80211_tx_status(struct ieee80211_hw *hw,
+ 	int rates_idx;
+ 	bool send_to_cooked;
+ 	bool acked;
++	bool noack_success;
+ 	struct ieee80211_bar *bar;
+ 	int shift = 0;
+ 	int tid = IEEE80211_NUM_TIDS;
+@@ -906,6 +907,8 @@ static void __ieee80211_tx_status(struct ieee80211_hw *hw,
+ 			clear_sta_flag(sta, WLAN_STA_SP);
+ 
+ 		acked = !!(info->flags & IEEE80211_TX_STAT_ACK);
++		noack_success = !!(info->flags &
++				   IEEE80211_TX_STAT_NOACK_TRANSMITTED);
+ 
+ 		/* mesh Peer Service Period support */
+ 		if (ieee80211_vif_is_mesh(&sta->sdata->vif) &&
+@@ -970,12 +973,12 @@ static void __ieee80211_tx_status(struct ieee80211_hw *hw,
+ 			ieee80211_handle_filtered_frame(local, sta, skb);
+ 			return;
+ 		} else {
+-			if (!acked)
++			if (!acked && !noack_success)
+ 				sta->status_stats.retry_failed++;
+ 			sta->status_stats.retry_count += retry_count;
+ 
+ 			if (ieee80211_is_data_present(fc)) {
+-				if (!acked)
++				if (!acked && !noack_success)
+ 					sta->status_stats.msdu_failed[tid]++;
+ 
+ 				sta->status_stats.msdu_retries[tid] +=
+@@ -1013,7 +1016,7 @@ static void __ieee80211_tx_status(struct ieee80211_hw *hw,
+ 		}
+ 
+ 		if (ieee80211_hw_check(&local->hw, REPORTS_TX_ACK_STATUS)) {
+-			if (info->flags & IEEE80211_TX_STAT_ACK) {
++			if (acked) {
+ 				if (sta->status_stats.lost_packets)
+ 					sta->status_stats.lost_packets = 0;
+ 
+@@ -1021,6 +1024,8 @@ static void __ieee80211_tx_status(struct ieee80211_hw *hw,
+ 				if (test_sta_flag(sta, WLAN_STA_TDLS_PEER_AUTH))
+ 					sta->status_stats.last_tdls_pkt_time =
+ 						jiffies;
++			} else if (noack_success) {
++				/* nothing to do here, do not account as lost */
+ 			} else {
+ 				ieee80211_lost_packet(sta, info);
+ 			}
+@@ -1141,7 +1146,7 @@ void ieee80211_tx_status_ext(struct ieee80211_hw *hw,
+ 
+ 		sta = container_of(pubsta, struct sta_info, sta);
+ 
+-		if (!acked)
++		if (!acked && !noack_success)
+ 			sta->status_stats.retry_failed++;
+ 		sta->status_stats.retry_count += retry_count;
+ 
+@@ -1156,6 +1161,8 @@ void ieee80211_tx_status_ext(struct ieee80211_hw *hw,
+ 				sta->status_stats.last_tdls_pkt_time = jiffies;
+ 		} else if (test_sta_flag(sta, WLAN_STA_PS_STA)) {
+ 			return;
++		} else if (noack_success) {
++			/* nothing to do here, do not account as lost */
+ 		} else {
+ 			ieee80211_lost_packet(sta, info);
+ 		}
 -- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+2.24.1
+
