@@ -2,67 +2,95 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 25DA0124A99
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Dec 2019 16:05:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 63648124B26
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Dec 2019 16:14:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727173AbfLRPE4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 18 Dec 2019 10:04:56 -0500
-Received: from mail.kernel.org ([198.145.29.99]:51318 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727114AbfLRPE4 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 18 Dec 2019 10:04:56 -0500
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 79E8820684;
-        Wed, 18 Dec 2019 15:04:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1576681496;
-        bh=/Xwy0EYDAWm9IUmqarXi6RASHE7DRX2pjkg+940R3xc=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=TjnG36vCL53/t2504//iSgiNAM2/Nb8XGdqdkMkqNuLbwx0OAbgmdvZwdVXhj5B0y
-         vNhc3zZjTbwHJZFlgrL4vdbLoSBKNy2CmrhB/0ecaApmQg2RnmRwWyYPEubtpUK3y8
-         7JDRqjgC1xASB3MQ27ehzPSYiHnGPa+1EJU+BN0k=
-Date:   Wed, 18 Dec 2019 16:03:46 +0100
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     =?iso-8859-1?B?Suly9G1l?= Pouiller <Jerome.Pouiller@silabs.com>
-Cc:     "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Kalle Valo <kvalo@codeaurora.org>
-Subject: Re: [PATCH v2 00/55] Improve wfx driver
-Message-ID: <20191218150346.GA431628@kroah.com>
-References: <20191217161318.31402-1-Jerome.Pouiller@silabs.com>
+        id S1727188AbfLRPOG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 18 Dec 2019 10:14:06 -0500
+Received: from mail-qt1-f195.google.com ([209.85.160.195]:37876 "EHLO
+        mail-qt1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727433AbfLRPOF (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 18 Dec 2019 10:14:05 -0500
+Received: by mail-qt1-f195.google.com with SMTP id w47so2208579qtk.4
+        for <linux-wireless@vger.kernel.org>; Wed, 18 Dec 2019 07:14:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=R9l9mbjTMtC+3agOxuj88vgGSGUSi1shzIvbtHPQHDA=;
+        b=RfaUJbE64AqObBUWyZFAX00yFzfv+PMQBeMlfEbyOTSSIZSlP9dNPzblRe9C4/Xp5G
+         OOrfzjlEIPRCszaxaclLviha/Gl6J+8MNE2wJIlQr3g8uWJn+m5NNx6dyOIWXJDzHKAu
+         CFfw6ayoPSChbR+RAE0+B68G/pEf5o1uZqam8GCW/DM3JVJn1rrKg09G5nyaA4x8K46C
+         DidFmOGbhUnnebgzWtKvL2IYqcm0dJ4hRYsroJX5h4wZl5ygcdMBOrPylnEG0iZgtaC4
+         tctA6UVKTV1ZO7eaOpJeM3zJ9lY8Otzi6Az77Sm1wv6CYLTS/yvcKPbBaIHIL7wY9gk+
+         23sQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=R9l9mbjTMtC+3agOxuj88vgGSGUSi1shzIvbtHPQHDA=;
+        b=U0KfWY2mrnvJkQxs8w7+FVv69vHrklQoqlT381F6LWaJVwsq3q1Ikyx/Ss7U1YiN0S
+         +Qp3eoAX8n2m5e3vMNDkwGP+jS9uRxYGrHIqVz0KoUeBtMPadAu44CKtujAseBnZWYQ0
+         VwPobfjre4nJVaHem9/inu0y/lYI7BG130nbABXn+qkC63NbIlZdNdeaUM18H60nqQlW
+         qzqqY9ozSS3y4tDuY9hiUtuTFgcrJaJxTEslb3TbF+ddf9V/VSLDt2GZc3AMRfDIB0qj
+         KdCh3IB73//YSuEfPVppm/xJBLM/mJiLT7xLxpaHFzAs1c7tVfL8ndYcieDmBETHQt2Y
+         0YIg==
+X-Gm-Message-State: APjAAAXfKKqkX1s5ww351mhUOIrkDOps5y5dcHvKPs37J7hDR20QK5QG
+        ZSkXjgEs2kyDLf/AnEnI+RvcfVIh3TcSKl1tIIZqR48=
+X-Google-Smtp-Source: APXvYqyIz9CrpHcrXivylieLEiE1VxRyGUw+E9DXz6VIYz+kYlOCef915g/qsmML8+OoqrwbsBK3G0eW6o6RBALrF/E=
+X-Received: by 2002:a05:6638:950:: with SMTP id f16mr2789501jad.107.1576682043767;
+ Wed, 18 Dec 2019 07:14:03 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20191217161318.31402-1-Jerome.Pouiller@silabs.com>
+Received: by 2002:a02:6603:0:0:0:0:0 with HTTP; Wed, 18 Dec 2019 07:14:03
+ -0800 (PST)
+Reply-To: dhl.expresscourier102156@outlook.fr
+From:   "MS. MARYANNA B. THOMASON" <info.zennitbankplcnigerian@gmail.com>
+Date:   Wed, 18 Dec 2019 16:14:03 +0100
+Message-ID: <CABHzvr=Pq7-TqhY8TPvFCsr+5-DhDQy=XOg-TM13qqbFWeemfQ@mail.gmail.com>
+Subject: =?UTF-8?Q?Urgent_delivery_Notification_of_your_ATM_MASTER_CARD?=
+        =?UTF-8?Q?_Amount=2C=2415=2E800=E2=80=99000=E2=80=9900=2C?=
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Dec 17, 2019 at 04:14:26PM +0000, Jérôme Pouiller wrote:
-> From: Jérôme Pouiller <jerome.pouiller@silabs.com>
-> 
-> Hello all,
-> 
-> This pull request continue to clean up the wfx driver. It can be more or
-> less divided in four parts:
->   - 0001 to 0009 fix some issues (should be included in 5.5?)
->   - 0010 to 0028 mostly contains cosmetics changes
+Attn Dear.
 
-I took the first 10 to staging-linus to get into 5.5-final.
+Urgent delivery Notification of your ATM MASTER CARD, Dhl-Benin is
+ready for delivery of your ATM Master card worth $15.800=E2=80=99000=E2=80=
+=9900, as
+approved this morning, Date, 18/12/2019. Through the Intruction from
+INTERNATIONAL MONETARY FUNDS, I.M.F official Directors.
 
->   - 0029 to 0043 re-work power save (in station mode) and QoS
->   - 0044 to 0054 re-work the scan process
+REGISTRATION NO :EG58945
+PARCEL NUMBER: 140479
+Delivery Schuleded now,
+Finally all we required from you is your ATM Card Proccessing Delivery
+fees $19.00 only which you must send to this DHL service to enable us
+dispatch the parcel to your destination today.
 
-all the rest of these I've queued up "normally" in staging-next.
+Here is our receiving payment details.
+You are advised to send it Via Money Gram Service.
 
-And thanks for fixing up the mime issue, these applied with no problems
-at all.
+Receiver's Name--------Alan Ude
+Country-------Benin Republic.
+City/ Address--------Cotonou
+Test Question--------In God
+Answer-------We Trust
+Amount------------$US19.00 only
+Mtcn-------------
+Sender's Name-------
 
-greg k-h
+Your delivery  ATM card worth $15.800=E2=80=99000=E2=80=9900,
+Is Due for delivery to your address today upon confirmation of
+required fee from you asap.
+
+Call us on this phone number for any inquiry. +229 62819378
+Awaiting your urgent response.
+
+MS. MARYANNA B. THOMASON, Shipment director, DHL Express
+Courier Company-Benin
