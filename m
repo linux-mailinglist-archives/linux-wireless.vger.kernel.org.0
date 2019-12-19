@@ -2,76 +2,86 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C1886126692
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Dec 2019 17:19:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B56F01267AA
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Dec 2019 18:07:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727092AbfLSQTA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 19 Dec 2019 11:19:00 -0500
-Received: from mail26.static.mailgun.info ([104.130.122.26]:38680 "EHLO
-        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726992AbfLSQS6 (ORCPT
+        id S1727095AbfLSRGu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 19 Dec 2019 12:06:50 -0500
+Received: from mail-pj1-f68.google.com ([209.85.216.68]:53251 "EHLO
+        mail-pj1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726869AbfLSRGu (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 19 Dec 2019 11:18:58 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1576772338; h=Date: Message-Id: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=WWzgqMCs3OvjqZLCaMbpY7f3izcNFaVnzcUYiTYGFw0=;
- b=QKDcqsJUmv0QC04bIdfe9DasYOetxmG3koEfc6TVLUCLxfU0hbuoc/CAaBSqZtzB9aMC2g+D
- EeioPwiYrI6e8LgFd0L4vkJRfR+z7bBq6Z72JAxkVq1N0jpfXfCnE/HtQXylDas/1RBvB9ti
- JD6DdUUp3uZeSu7zZTGEHYN//rM=
-X-Mailgun-Sending-Ip: 104.130.122.26
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5dfba2f1.7fb23f4df0a0-smtp-out-n03;
- Thu, 19 Dec 2019 16:18:57 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 6FD8AC447AF; Thu, 19 Dec 2019 16:18:57 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
-        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 0F4D8C43383;
-        Thu, 19 Dec 2019 16:18:55 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 0F4D8C43383
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        Thu, 19 Dec 2019 12:06:50 -0500
+Received: by mail-pj1-f68.google.com with SMTP id n96so2809686pjc.3
+        for <linux-wireless@vger.kernel.org>; Thu, 19 Dec 2019 09:06:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=ggI/u1Hdyu9CCu5/c+HTrd/ZpT0m9d7Vzr8WRuTSKCk=;
+        b=r/pPQutHWlw6VyAXT2bxHLFev0H77LHp66kYaujlhy2o/5XPZsJkCza1NueqSMvjEu
+         Gfn9MrWzJrPce9mN4Bilc40mvgfzFP8McDHK1PnY0IXO/OSgnwi5SRCqzgdxoj8vOVYg
+         JGhEJ06OTFGsQP4VTCnUz0aT9hwY0kNFczwWppHEX1v62UTsIK8JI6q+TWiZLA2B9ibf
+         OQWNovQd5GsCjBjjNcjeUu1pdQLQj23MTufOY5GeueFFn8VACLt85aPFPnV7NiFby4mV
+         In5qUzMSPj1ld61/PaIYVAxDq3EMfhc3h6wHsAmMhJjayWoPHALPPtp8zgOGPnLNzwbL
+         VuPw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=ggI/u1Hdyu9CCu5/c+HTrd/ZpT0m9d7Vzr8WRuTSKCk=;
+        b=N1QDCsii+J1SmuzpFclv5c6M0pivVx5DqfAQ1TRw6CM2LxplvmQZnET+TIiPYCp9UK
+         x+uG8pXnK1SBuQMYihuEfEwiq4PZmXABepL9HcOc5RGBLCag8dy2oFPRVrYSvAD9Db5v
+         pr7WmaW2yMzrC1GKsuVtmgOaFsJ+tlRzdfI9Pos3U5nQRgsc6m/y1p3VU7qIUmcuxm1A
+         NHxf64DzicXRdzltRTagv/NGiNj0XfuHTqcLY5c2MNHr2o3VGDsCCMSM/ajK03hCICCj
+         PwD+yLs7QnQd6FczqUzmodwRa3aLZdXNQIa7JWUYGixnCWvbkGItJ24xazFYhQmmg9zQ
+         E1oQ==
+X-Gm-Message-State: APjAAAX42M7iTg0PRHkUK+K81p3LrNCMqn2r2m5RUNMv59ctpNtA0zgj
+        ixBmQL5uS7VZ+BuKXWlKCmbFTPMQrfoQSlAMdBOWFg==
+X-Google-Smtp-Source: APXvYqxqxsEj2OttOz43YW9dsdsZ9JH2CzkLhBO906Jga6l6c3H9XIl47GBiSOLZiapTHFUKrg0ydPLQ+JWIDI9HDIw=
+X-Received: by 2002:a17:902:6948:: with SMTP id k8mr9829302plt.223.1576775209535;
+ Thu, 19 Dec 2019 09:06:49 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] ath11k: Use sizeof_field() instead of FIELD_SIZEOF()
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <201912181657.CE7D3CE33@keescook>
-References: <201912181657.CE7D3CE33@keescook>
-To:     Kees Cook <keescook@chromium.org>
-Cc:     linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+References: <20191211192252.35024-1-natechancellor@gmail.com>
+ <CAKwvOdmQp+Rjgh49kbTp1ocLCjv4SUACEO4+tX5vz4stX-pPpg@mail.gmail.com> <87a77o786o.fsf@kamboji.qca.qualcomm.com>
+In-Reply-To: <87a77o786o.fsf@kamboji.qca.qualcomm.com>
+From:   Nick Desaulniers <ndesaulniers@google.com>
+Date:   Thu, 19 Dec 2019 09:06:37 -0800
+Message-ID: <CAKwvOdk3EPurHLMf81VHowauRYZ4FZXxNg98hJvp8CLgu=SSPw@mail.gmail.com>
+Subject: Re: [PATCH] ath11k: Remove unnecessary enum scan_priority
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Nathan Chancellor <natechancellor@gmail.com>,
+        Network Development <netdev@vger.kernel.org>,
+        linux-wireless@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>,
+        clang-built-linux <clang-built-linux@googlegroups.com>,
         ath11k@lists.infradead.org
-User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20191219161857.6FD8AC447AF@smtp.codeaurora.org>
-Date:   Thu, 19 Dec 2019 16:18:57 +0000 (UTC)
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Kees Cook <keescook@chromium.org> wrote:
+On Thu, Dec 19, 2019 at 5:32 AM Kalle Valo <kvalo@codeaurora.org> wrote:
+>
+> Nick Desaulniers <ndesaulniers@google.com> writes:
+>
+> > On Wed, Dec 11, 2019 at 11:23 AM Nathan Chancellor
+> > <natechancellor@gmail.com> wrote:
+> >> wmi_scan_priority and scan_priority have the same values but the wmi one
+> >> has WMI prefixed to the names. Since that enum is already being used,
+> >> get rid of scan_priority and switch its one use to wmi_scan_priority to
+> >> fix this warning.
+> >>
+> > Also, I don't know if the more concisely named enum is preferable?
+>
+> I didn't get this comment.
 
-> The FIELD_SIZEOF() macro was redundant, and is being removed from the
-> kernel. Since commit c593642c8be0 ("treewide: Use sizeof_field() macro")
-> this is one of the last users of the old macro, so replace it.
-> 
-> Signed-off-by: Kees Cook <keescook@chromium.org>
-> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
-
-Patch applied to ath-next branch of ath.git, thanks.
-
-ca0e477931c5 ath11k: Use sizeof_field() instead of FIELD_SIZEOF()
-
+Given two enums with the same values:
+enum scan_priority
+enum wmi_scan_priority
+wouldn't you prefer to type wmi_ a few times less?  Doesn't really
+matter, but that was the point I was making.
 -- 
-https://patchwork.kernel.org/patch/11302533/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Thanks,
+~Nick Desaulniers
