@@ -2,57 +2,57 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A769212635E
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Dec 2019 14:24:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C3C912635F
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Dec 2019 14:24:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726719AbfLSNYY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 19 Dec 2019 08:24:24 -0500
-Received: from mail-ed1-f68.google.com ([209.85.208.68]:37603 "EHLO
-        mail-ed1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726695AbfLSNYY (ORCPT
+        id S1726744AbfLSNYZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 19 Dec 2019 08:24:25 -0500
+Received: from mail-ed1-f65.google.com ([209.85.208.65]:43821 "EHLO
+        mail-ed1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726695AbfLSNYZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 19 Dec 2019 08:24:24 -0500
-Received: by mail-ed1-f68.google.com with SMTP id cy15so4864577edb.4
-        for <linux-wireless@vger.kernel.org>; Thu, 19 Dec 2019 05:24:23 -0800 (PST)
+        Thu, 19 Dec 2019 08:24:25 -0500
+Received: by mail-ed1-f65.google.com with SMTP id dc19so4842377edb.10
+        for <linux-wireless@vger.kernel.org>; Thu, 19 Dec 2019 05:24:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=WcPY2DOnYcilQeR9udjKYbcsm2SYeFm9eHViqPb53Zw=;
-        b=Zd+QfflrbWOQrYRJjFg/z6bsfmD77k5rL3ZvM0YgaDvYRLS5DxLLLVh4UKFHFtWRRL
-         vs2qOnVa276iQ6wezrdEWkCuso8BRVMtvhJbi0iBQhuUvHroYXAX4TmHENTp77DHIjXQ
-         l8SE1yv80yIETnXD4PJhCEdOrttC6tBfJ92O+9oSxtVPYptWbr7rckseN1duEwCdtGvC
-         JY8poG+HbUP/8qehMlgxzh67ghpl8qm6LujOb6xEgYhdeovZz8bwJfj7JVDSuZJPFBq7
-         91wEbZWLCF+xQl4wj510/bNs5I7x76vadsaQGrqvYnguT0tJgHvKag5ciCeO4c+VWUvb
-         ROcw==
+        bh=uH+aDS9FUX0GfFwi0ZzL3xSE3Gr6/KDnkMPDTHrbWGU=;
+        b=RX/8tecahw1r+PMulH8xINJ4kaoUwAGQs0CjBfHXoXKe+ddKMMVL98ff/55YHZHUpq
+         yz1iwfJnQxcCJNookUWotO6cCBnhD+nZMSZJE0Z5Ilyjvz3L/h69HYiuqLMDO2XI7S7e
+         QpZw+eRlmNE1IIaLhbIHW6/GkfbfIUQ2+0ftG3TqUgdTDaC1N2aFREZ7IWBaOtJBcQuG
+         +kOojnN65cO/XwKn0j/vfRq+wOt66EfKKxIeY2Xupa31oGxOCyxrwIpTpFUrHS/J9E7y
+         X1LmQZUJCLAV0DDu8J8k2EgRi2E6DrcR+ccrlhsAMZQ4sqMLtapT4f+0uD/jTxUmw780
+         w75w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=WcPY2DOnYcilQeR9udjKYbcsm2SYeFm9eHViqPb53Zw=;
-        b=WbW7VYtfBvaatFzAAsBbdIdEThfG005ebEoikZe6RJaD5k12CqWOtIki1Ed36HOLRS
-         2PatErDCSqLcQGiGN3ttFffA7kWn9sGHQDYOf+KVKwoIvR4rrmyNiDR+8NxzlVrGa43Q
-         vl/O2SwTbJ4xawIq268q0iVkUUuMJV0VuayF6dlzzONSXIqRx3qIk9/iP9IW7LA3xV/b
-         PUD4pAFsYKmwrmtD2n69eTGWP/UL3LH3U42axVumpiQqzcmprLvcUokE2wFZKHbxcCji
-         xv+oUHBCbYMVzldefcRZCj/f0uNS1L2z7V1jJB0zpF2JvqS+KZVEULi9bbswbDiadkyv
-         Wesw==
-X-Gm-Message-State: APjAAAX/zIlOvi3+/AFc4DvgURA/kMkkXsEQDFTCf939o2d0Cm+FJkVr
-        w/kH8xQM/8BMa8rbL7nCHEI87UhfkK0=
-X-Google-Smtp-Source: APXvYqw2s6q/NPfbe/cw73hwaCHBRODtJnwzmB3wMsgxBRGt63lzJh2FMbaaOA+cvBquVXHeAyrMiw==
-X-Received: by 2002:a17:906:3d62:: with SMTP id r2mr9197382ejf.150.1576761862623;
-        Thu, 19 Dec 2019 05:24:22 -0800 (PST)
+        bh=uH+aDS9FUX0GfFwi0ZzL3xSE3Gr6/KDnkMPDTHrbWGU=;
+        b=ucoJYR9v9vh++I7qw6dX3zhpjarVBbMi4qd03ST/PY9QpKywOVFKijA8o+yOXqdvJo
+         jKcWP9nJCMF+NYAT8wJZDHCtT7yonv7q2HeQKLp2jzABAPHziqzDm6kKdYnnT4OwU/M+
+         XONmUCn37m45+VpXtl5QZqCtswNymcc4xn52E+D34GdwGDQPBnFCjwTLCCuVU8OkWoo/
+         CfDPuOKo5urTBOKMcbZwz0FtMzICb6Wnm5JOr1ZscsE6eXYgExUCzCjN2gCo2ipWzl0C
+         SKaQdQFmDlSX1a8f7eD6wSm69mKWP26uiRp0QjkJV/6QcLKE+D8pRi6Az/jEDf+hUQtw
+         oPWw==
+X-Gm-Message-State: APjAAAWMounWVGi75wZWAkhT0kahw837XvWQiJJzRG4FhPZo0AY2LBhI
+        H337Xal6V5qupo5sIfsYoW0+JNFyTvw=
+X-Google-Smtp-Source: APXvYqzllGHKaz42y389MG+UUUFshXZdU8TK+QtM1Os0aRVrOP2s4lubdfeYnEqljWeTGFXE629Dzg==
+X-Received: by 2002:a17:906:260b:: with SMTP id h11mr9333551ejc.327.1576761863807;
+        Thu, 19 Dec 2019 05:24:23 -0800 (PST)
 Received: from localhost.localdomain ([176.61.57.127])
-        by smtp.gmail.com with ESMTPSA id cw15sm410286edb.44.2019.12.19.05.24.21
+        by smtp.gmail.com with ESMTPSA id cw15sm410286edb.44.2019.12.19.05.24.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Dec 2019 05:24:22 -0800 (PST)
+        Thu, 19 Dec 2019 05:24:23 -0800 (PST)
 From:   Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 To:     kvalo@codeaurora.org, akolli@codeaurora.org,
         ath10k@lists.infradead.org
 Cc:     linux-wireless@vger.kernel.org,
         Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Subject: [PATCH 1/2] ath10k: pci: Only dump ATH10K_MEM_REGION_TYPE_IOREG when safe
-Date:   Thu, 19 Dec 2019 13:15:38 +0000
-Message-Id: <20191219131539.1003793-2-bryan.odonoghue@linaro.org>
+Subject: [PATCH 2/2] ath10k: pci: Fix comment on ath10k_pci_dump_memory_sram
+Date:   Thu, 19 Dec 2019 13:15:39 +0000
+Message-Id: <20191219131539.1003793-3-bryan.odonoghue@linaro.org>
 X-Mailer: git-send-email 2.24.0
 In-Reply-To: <20191219131539.1003793-1-bryan.odonoghue@linaro.org>
 References: <20191219131539.1003793-1-bryan.odonoghue@linaro.org>
@@ -63,63 +63,29 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-ath10k_pci_dump_memory_reg() will try to access memory of type
-ATH10K_MEM_REGION_TYPE_IOREG however, if a hardware restart is in progress
-this can crash a system.
-
-Individual ioread32() time has been observed to jump from 15-20 ticks to >
-80k ticks followed by a secure-watchdog bite and a system reset.
-
-Work around this corner case by only issuing the read transaction when the
-driver state is ATH10K_STATE_ON.
+The description of ath10k_pci_dump_memory_sram() is inaccurate, an error
+can never be returned, it is always the length. Update the comment to
+reflect.
 
 Fixes: 219cc084c6706 ("ath10k: add memory dump support QCA9984")
 Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 ---
- drivers/net/wireless/ath/ath10k/pci.c | 19 +++++++++++++++++--
- 1 file changed, 17 insertions(+), 2 deletions(-)
+ drivers/net/wireless/ath/ath10k/pci.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/net/wireless/ath/ath10k/pci.c b/drivers/net/wireless/ath/ath10k/pci.c
-index bb44f5a0941b..4822a65f6f3c 100644
+index 4822a65f6f3c..ded7a220a4aa 100644
 --- a/drivers/net/wireless/ath/ath10k/pci.c
 +++ b/drivers/net/wireless/ath/ath10k/pci.c
-@@ -1604,11 +1604,22 @@ static int ath10k_pci_dump_memory_reg(struct ath10k *ar,
- {
- 	struct ath10k_pci *ar_pci = ath10k_pci_priv(ar);
- 	u32 i;
-+	int ret;
-+
-+	mutex_lock(&ar->conf_mutex);
-+	if (ar->state != ATH10K_STATE_ON) {
-+		ath10k_warn(ar, "Skipping pci_dump_memory_reg invalid state\n");
-+		ret = -EIO;
-+		goto done;
-+	}
- 
- 	for (i = 0; i < region->len; i += 4)
- 		*(u32 *)(buf + i) = ioread32(ar_pci->mem + region->start + i);
- 
--	return region->len;
-+	ret = region->len;
-+done:
-+	mutex_unlock(&ar->conf_mutex);
-+	return ret;
+@@ -1578,7 +1578,7 @@ static int ath10k_pci_set_ram_config(struct ath10k *ar, u32 config)
+ 	return 0;
  }
  
- /* if an error happened returns < 0, otherwise the length */
-@@ -1704,7 +1715,11 @@ static void ath10k_pci_dump_memory(struct ath10k *ar,
- 			count = ath10k_pci_dump_memory_sram(ar, current_region, buf);
- 			break;
- 		case ATH10K_MEM_REGION_TYPE_IOREG:
--			count = ath10k_pci_dump_memory_reg(ar, current_region, buf);
-+			ret = ath10k_pci_dump_memory_reg(ar, current_region, buf);
-+			if (ret < 0)
-+				break;
-+
-+			count = ret;
- 			break;
- 		default:
- 			ret = ath10k_pci_dump_memory_generic(ar, current_region, buf);
+-/* if an error happened returns < 0, otherwise the length */
++/* Always returns the length */
+ static int ath10k_pci_dump_memory_sram(struct ath10k *ar,
+ 				       const struct ath10k_mem_region *region,
+ 				       u8 *buf)
 -- 
 2.24.0
 
