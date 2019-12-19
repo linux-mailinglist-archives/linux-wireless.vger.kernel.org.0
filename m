@@ -2,90 +2,78 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C3C912635F
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Dec 2019 14:24:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 873F4126363
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Dec 2019 14:26:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726744AbfLSNYZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 19 Dec 2019 08:24:25 -0500
-Received: from mail-ed1-f65.google.com ([209.85.208.65]:43821 "EHLO
-        mail-ed1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726695AbfLSNYZ (ORCPT
+        id S1726757AbfLSN0F (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 19 Dec 2019 08:26:05 -0500
+Received: from mail26.static.mailgun.info ([104.130.122.26]:60356 "EHLO
+        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726752AbfLSN0F (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 19 Dec 2019 08:24:25 -0500
-Received: by mail-ed1-f65.google.com with SMTP id dc19so4842377edb.10
-        for <linux-wireless@vger.kernel.org>; Thu, 19 Dec 2019 05:24:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=uH+aDS9FUX0GfFwi0ZzL3xSE3Gr6/KDnkMPDTHrbWGU=;
-        b=RX/8tecahw1r+PMulH8xINJ4kaoUwAGQs0CjBfHXoXKe+ddKMMVL98ff/55YHZHUpq
-         yz1iwfJnQxcCJNookUWotO6cCBnhD+nZMSZJE0Z5Ilyjvz3L/h69HYiuqLMDO2XI7S7e
-         QpZw+eRlmNE1IIaLhbIHW6/GkfbfIUQ2+0ftG3TqUgdTDaC1N2aFREZ7IWBaOtJBcQuG
-         +kOojnN65cO/XwKn0j/vfRq+wOt66EfKKxIeY2Xupa31oGxOCyxrwIpTpFUrHS/J9E7y
-         X1LmQZUJCLAV0DDu8J8k2EgRi2E6DrcR+ccrlhsAMZQ4sqMLtapT4f+0uD/jTxUmw780
-         w75w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=uH+aDS9FUX0GfFwi0ZzL3xSE3Gr6/KDnkMPDTHrbWGU=;
-        b=ucoJYR9v9vh++I7qw6dX3zhpjarVBbMi4qd03ST/PY9QpKywOVFKijA8o+yOXqdvJo
-         jKcWP9nJCMF+NYAT8wJZDHCtT7yonv7q2HeQKLp2jzABAPHziqzDm6kKdYnnT4OwU/M+
-         XONmUCn37m45+VpXtl5QZqCtswNymcc4xn52E+D34GdwGDQPBnFCjwTLCCuVU8OkWoo/
-         CfDPuOKo5urTBOKMcbZwz0FtMzICb6Wnm5JOr1ZscsE6eXYgExUCzCjN2gCo2ipWzl0C
-         SKaQdQFmDlSX1a8f7eD6wSm69mKWP26uiRp0QjkJV/6QcLKE+D8pRi6Az/jEDf+hUQtw
-         oPWw==
-X-Gm-Message-State: APjAAAWMounWVGi75wZWAkhT0kahw837XvWQiJJzRG4FhPZo0AY2LBhI
-        H337Xal6V5qupo5sIfsYoW0+JNFyTvw=
-X-Google-Smtp-Source: APXvYqzllGHKaz42y389MG+UUUFshXZdU8TK+QtM1Os0aRVrOP2s4lubdfeYnEqljWeTGFXE629Dzg==
-X-Received: by 2002:a17:906:260b:: with SMTP id h11mr9333551ejc.327.1576761863807;
-        Thu, 19 Dec 2019 05:24:23 -0800 (PST)
-Received: from localhost.localdomain ([176.61.57.127])
-        by smtp.gmail.com with ESMTPSA id cw15sm410286edb.44.2019.12.19.05.24.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Dec 2019 05:24:23 -0800 (PST)
-From:   Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-To:     kvalo@codeaurora.org, akolli@codeaurora.org,
-        ath10k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org,
-        Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Subject: [PATCH 2/2] ath10k: pci: Fix comment on ath10k_pci_dump_memory_sram
-Date:   Thu, 19 Dec 2019 13:15:39 +0000
-Message-Id: <20191219131539.1003793-3-bryan.odonoghue@linaro.org>
-X-Mailer: git-send-email 2.24.0
-In-Reply-To: <20191219131539.1003793-1-bryan.odonoghue@linaro.org>
-References: <20191219131539.1003793-1-bryan.odonoghue@linaro.org>
+        Thu, 19 Dec 2019 08:26:05 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1576761964; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=0NkWaXjNVJPX2dUfkRTD8QKI9J6MTZv5tKvbm+RWy/c=; b=FRPBRK9F9JdMhyqIxiX2MelWJB8eT/pJbHSDN+ik7EVOANurBJvX57r8UDuufawf65m3YMWW
+ D4uadqB9uNw+t4Aomp2PJ1VLghP0eQwCo6CBLgHid8HE2gJroWlhvCLCFr+B/LYaCZDvqNVG
+ Yy5/hQaIyjzG9kQ0RrL629Gdbjc=
+X-Mailgun-Sending-Ip: 104.130.122.26
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5dfb7a68.7fc08d5b99d0-smtp-out-n01;
+ Thu, 19 Dec 2019 13:26:00 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 51F7AC433CB; Thu, 19 Dec 2019 13:25:59 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 78C59C433A2;
+        Thu, 19 Dec 2019 13:25:57 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 78C59C433A2
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     vthiagar@codeaurora.org
+Cc:     John Crispin <john@phrozen.org>,
+        linux-wireless-owner@vger.kernel.org,
+        linux-wireless@vger.kernel.org, ath11k@lists.infradead.org
+Subject: Re: [RESEND 6/9] ath11k: add debugfs for TWT debug calls
+References: <20191204053713.3064-1-john@phrozen.org>
+        <20191204053713.3064-7-john@phrozen.org>
+        <0101016ecf7e75e3-b26c2edc-e278-4fbc-97d5-fc7f678c240f-000000@us-west-2.amazonses.com>
+Date:   Thu, 19 Dec 2019 15:25:55 +0200
+In-Reply-To: <0101016ecf7e75e3-b26c2edc-e278-4fbc-97d5-fc7f678c240f-000000@us-west-2.amazonses.com>
+        (vthiagar@codeaurora.org's message of "Wed, 4 Dec 2019 06:00:03
+        +0000")
+Message-ID: <87eex078gs.fsf@kamboji.qca.qualcomm.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The description of ath10k_pci_dump_memory_sram() is inaccurate, an error
-can never be returned, it is always the length. Update the comment to
-reflect.
+vthiagar@codeaurora.org writes:
 
-Fixes: 219cc084c6706 ("ath10k: add memory dump support QCA9984")
-Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
----
- drivers/net/wireless/ath/ath10k/pci.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> On 2019-12-04 11:07, John Crispin wrote:
+>> These new debugfs files allow us to manually add/del/pause/resume TWT
+>> dialogs for test/debug purposes.
+>>
+>
+> Information such as how these debugfs entries are supposed to be used
+> could be helpful.
 
-diff --git a/drivers/net/wireless/ath/ath10k/pci.c b/drivers/net/wireless/ath/ath10k/pci.c
-index 4822a65f6f3c..ded7a220a4aa 100644
---- a/drivers/net/wireless/ath/ath10k/pci.c
-+++ b/drivers/net/wireless/ath/ath10k/pci.c
-@@ -1578,7 +1578,7 @@ static int ath10k_pci_set_ram_config(struct ath10k *ar, u32 config)
- 	return 0;
- }
- 
--/* if an error happened returns < 0, otherwise the length */
-+/* Always returns the length */
- static int ath10k_pci_dump_memory_sram(struct ath10k *ar,
- 				       const struct ath10k_mem_region *region,
- 				       u8 *buf)
+Yes, please always add instructions how the debugfs file is supposed to
+be used. Not only it helps the users but makes the review easier as
+well.
+
 -- 
-2.24.0
-
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
