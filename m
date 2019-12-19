@@ -2,92 +2,81 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AD7A6126481
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Dec 2019 15:22:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 820E11264AB
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Dec 2019 15:29:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726925AbfLSOWC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 19 Dec 2019 09:22:02 -0500
-Received: from mail25.static.mailgun.info ([104.130.122.25]:22442 "EHLO
-        mail25.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726778AbfLSOWC (ORCPT
+        id S1726758AbfLSO3W (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 19 Dec 2019 09:29:22 -0500
+Received: from mail-ed1-f68.google.com ([209.85.208.68]:33999 "EHLO
+        mail-ed1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726701AbfLSO3W (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 19 Dec 2019 09:22:02 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1576765321; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=UmveuUtZWLgWspyGtVGArhySgeISuX0U1mjzVzlm+5c=; b=l048cI+lodI3RJgdmquJHrLMTJWJgo6Xus97WMvN4nhKZecwZo+2Nr83RW5ZFRtIg6gkXOpw
- Dj5jizcdAFTx89fdRGJOtJ8Iz/VNP015B++LW/pHO3A2tATXWVYOuU9FM0mNeHtAsAzrQR6/
- 8jeZcJRJot/l6WE0+rIzjqjG1MU=
-X-Mailgun-Sending-Ip: 104.130.122.25
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5dfb8788.7f2e05bef688-smtp-out-n03;
- Thu, 19 Dec 2019 14:22:00 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 9B656C5380F; Thu, 19 Dec 2019 14:22:00 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id A5340C5380C;
-        Thu, 19 Dec 2019 14:21:57 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org A5340C5380C
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+        Thu, 19 Dec 2019 09:29:22 -0500
+Received: by mail-ed1-f68.google.com with SMTP id l8so5069977edw.1
+        for <linux-wireless@vger.kernel.org>; Thu, 19 Dec 2019 06:29:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=UhFjAFltYCyzRH3ujc/w8dyQT7TRLcLqXgMDLirCbrc=;
+        b=APOsFYGFcBfcpbcrFigIoDmZjytG4oL3oRM4CRE/+k2mKUZBlfwaqB1LGO7oRSOU/G
+         580xwWim1HfpGSbZ5zu8HHSkkM9qSKXn8kRHPnX7NJ2FIZgVwj7A/qwoAmaw3u0NhjzA
+         i75kxxqtfwVMF1w24L+WZpjHGTvFLQajtyzdSQ3RS5OQL6+W6mmdDIVjozZaP06WGdAr
+         U+v2xiUeEEJ1ZRRnZRSeaQAzGn/Ys91pcnwPW57NsUDyHQ8Wyg6MCqs58sPy1qrHIWeB
+         1hYyECOPt3rLLS4Zblzi4XVqrxJ500cYc0pv83Y/d6RuIpjgtvwmER42GvBl7qxVE6zQ
+         zmwQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=UhFjAFltYCyzRH3ujc/w8dyQT7TRLcLqXgMDLirCbrc=;
+        b=LayeIADOScgC2q5E4mRAO9Wd+7t6BNlj8vof+sTHybRs+tAhhGc1Xfcn3tmOFI+Y8I
+         bHXl8+Hxd+6yRUuRvmWpe4vSl79T94/d1bPL9CBuZ6euOsi+iPftP7dLx2A23bF1Qpra
+         m4kUEsuexDmbLSp9xruIIaFvfpMHs3s6TWN09DBfzjIvlE+gu3cC49qyg6oUJZ4Psx0V
+         K14k7UAx8o5/dvhKjcBcT9j0RMWIfBqzjS2+x8fek9IPNgeXMfiBni8AMyho3aamvOqx
+         h+LzUfgqGBPaFfeievrZ7y9yeb9VdmEqZ0HX255FGu3BfpM+lG5ziWbO75f4FxeptSBK
+         OwEw==
+X-Gm-Message-State: APjAAAVgTTAtbi+S8ZIzMkzD6fWcxtshUlHg9sdLuCxJe4DQUsc7lcJ8
+        C9Hr46edq/SPlfAUC8Mi9gJOWOtgUUQ=
+X-Google-Smtp-Source: APXvYqyZPWOkOSnAhj5sr6bTr+m3mp50ealr0bgqj0CgCijIhawAly+6PZWhzDUUsYa95M3r/ZNm7g==
+X-Received: by 2002:a50:b8e2:: with SMTP id l89mr9486539ede.245.1576765760010;
+        Thu, 19 Dec 2019 06:29:20 -0800 (PST)
+Received: from [192.168.0.38] ([176.61.57.127])
+        by smtp.gmail.com with ESMTPSA id j17sm390080ejf.83.2019.12.19.06.29.19
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 19 Dec 2019 06:29:19 -0800 (PST)
+Subject: Re: [PATCH 1/2] ath10k: pci: Only dump ATH10K_MEM_REGION_TYPE_IOREG
+ when safe
+To:     Kalle Valo <kvalo@codeaurora.org>
 Cc:     akolli@codeaurora.org, ath10k@lists.infradead.org,
         linux-wireless@vger.kernel.org
-Subject: Re: [PATCH 1/2] ath10k: pci: Only dump ATH10K_MEM_REGION_TYPE_IOREG when safe
 References: <20191219131539.1003793-1-bryan.odonoghue@linaro.org>
-        <20191219131539.1003793-2-bryan.odonoghue@linaro.org>
-        <87woas5slt.fsf@kamboji.qca.qualcomm.com>
-        <38bf1f75-0554-920a-0f29-354e70cfc077@linaro.org>
-Date:   Thu, 19 Dec 2019 16:21:55 +0200
-In-Reply-To: <38bf1f75-0554-920a-0f29-354e70cfc077@linaro.org> (Bryan
-        O'Donoghue's message of "Thu, 19 Dec 2019 14:15:37 +0000")
-Message-ID: <87sglg5rb0.fsf@kamboji.qca.qualcomm.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+ <20191219131539.1003793-2-bryan.odonoghue@linaro.org>
+ <87woas5slt.fsf@kamboji.qca.qualcomm.com>
+ <38bf1f75-0554-920a-0f29-354e70cfc077@linaro.org>
+ <87sglg5rb0.fsf@kamboji.qca.qualcomm.com>
+From:   Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Message-ID: <4a8b7913-c9b9-dd67-124d-b4f71747c849@linaro.org>
+Date:   Thu, 19 Dec 2019 14:29:40 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.3.0
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <87sglg5rb0.fsf@kamboji.qca.qualcomm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Bryan O'Donoghue <bryan.odonoghue@linaro.org> writes:
+On 19/12/2019 14:21, Kalle Valo wrote:
+> 'dmesg | grep ath10k' should show it.
 
-> On 19/12/2019 13:53, Kalle Valo wrote:
->> Bryan O'Donoghue <bryan.odonoghue@linaro.org> writes:
->>
->>> ath10k_pci_dump_memory_reg() will try to access memory of type
->>> ATH10K_MEM_REGION_TYPE_IOREG however, if a hardware restart is in progress
->>> this can crash a system.
->>>
->>> Individual ioread32() time has been observed to jump from 15-20 ticks to >
->>> 80k ticks followed by a secure-watchdog bite and a system reset.
->>>
->>> Work around this corner case by only issuing the read transaction when the
->>> driver state is ATH10K_STATE_ON.
->>>
->>> Fixes: 219cc084c6706 ("ath10k: add memory dump support QCA9984")
->>> Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
->>
->> What ath10k hardware and firmware did you test this on? I can add that
->> to the commit log.
->>
->
-> HW = QCA9988
-> FW = ??
->
-> Not quite sure how to find the firmware version TBH
 
-'dmesg | grep ath10k' should show it.
+[    6.579772] ath10k_pci 0000:01:00.0: firmware ver 10.4-3.9.0.2-00044 
+api 5 features 
+no-p2p,mfp,peer-flow-ctrl,btcoex-param,allows-mesh-bcast,no-ps crc32 
+c3e1b393
 
--- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
