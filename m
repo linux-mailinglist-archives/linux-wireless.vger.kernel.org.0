@@ -2,104 +2,160 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 16770125DF0
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Dec 2019 10:45:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0873C125EB3
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Dec 2019 11:15:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726656AbfLSJpY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 19 Dec 2019 04:45:24 -0500
-Received: from rtits2.realtek.com ([211.75.126.72]:34242 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726609AbfLSJpX (ORCPT
+        id S1726681AbfLSKPk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 19 Dec 2019 05:15:40 -0500
+Received: from mail-lf1-f67.google.com ([209.85.167.67]:42687 "EHLO
+        mail-lf1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726609AbfLSKPk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 19 Dec 2019 04:45:23 -0500
-Authenticated-By: 
-X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID xBJ9jFDW003133, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (RTITCAS12.realtek.com.tw[172.21.6.16])
-        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id xBJ9jFDW003133
-        (version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 19 Dec 2019 17:45:15 +0800
-Received: from RTEXMB03.realtek.com.tw (172.21.6.96) by
- RTITCAS12.realtek.com.tw (172.21.6.16) with Microsoft SMTP Server (TLS) id
- 14.3.468.0; Thu, 19 Dec 2019 17:45:15 +0800
-Received: from RTEXMB04.realtek.com.tw (172.21.6.97) by
- RTEXMB03.realtek.com.tw (172.21.6.96) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Thu, 19 Dec 2019 17:45:15 +0800
-Received: from RTEXMB04.realtek.com.tw ([fe80::d9c5:a079:495e:b999]) by
- RTEXMB04.realtek.com.tw ([fe80::d9c5:a079:495e:b999%6]) with mapi id
- 15.01.1779.005; Thu, 19 Dec 2019 17:45:15 +0800
-From:   Pkshih <pkshih@realtek.com>
-To:     "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
-        "ath10k@lists.infradead.org" <ath10k@lists.infradead.org>
-CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH 2/2] ath10k: allow dynamic SAR power limits to be configured
-Thread-Topic: [PATCH 2/2] ath10k: allow dynamic SAR power limits to be
- configured
-Thread-Index: AQHVtbqgmfC7L3CRJUO4KPQhAXkz/6fAsHQA
-Date:   Thu, 19 Dec 2019 09:45:14 +0000
-Message-ID: <1576748714.7758.18.camel@realtek.com>
-References: <1576684108-30177-1-git-send-email-kvalo@codeaurora.org>
-         <1576684108-30177-3-git-send-email-kvalo@codeaurora.org>
-In-Reply-To: <1576684108-30177-3-git-send-email-kvalo@codeaurora.org>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.95]
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <7E4378CAE2EA9E4480D1745429D99BF2@realtek.com>
-Content-Transfer-Encoding: base64
+        Thu, 19 Dec 2019 05:15:40 -0500
+Received: by mail-lf1-f67.google.com with SMTP id y19so3923150lfl.9;
+        Thu, 19 Dec 2019 02:15:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:from:to:cc:references:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding:content-language;
+        bh=Rj2q3wD6aajz3PdA1FLrek6nU5zhW+vEBFUB4MYLIYs=;
+        b=VYe/tjzPHNpyq9kN24qr+0wfOwumba6bmciRVLa+9L5NEuwXAUQgygIBNEwsMvxx2A
+         5Sg/FAQKikTm1I6zgD3Pfq46QC69Fc4LaxF9XYMgsjj5m5DWD41kn7ShaJs9Hp/a0BfW
+         8+MYUQ9/VfDCVH6sY0bhMFCQPTPvGw8IrrwXoyYxUesoqKWMpmZh/ltZjqVVR2arkFwe
+         0yisTx5w/UZcNm/Zj4SWqhfR/xQVoWtjbLyBBi/iTAkAB5rxnbCp+QwSphWccc79DSi4
+         AMgYBzY/A3xL/PWG24tLgjNzZn2hBJPqCs3WfUMJ1XApJqo090kvepcXm2XyV0t9mqWB
+         r5MA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:from:to:cc:references:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding
+         :content-language;
+        bh=Rj2q3wD6aajz3PdA1FLrek6nU5zhW+vEBFUB4MYLIYs=;
+        b=POuZyLbRHk4Hu5hZesNlsNL9sys7iZCrhOdvF7cuSBlSNqwHJlyi9Q6aeS39Vyd4hw
+         k1+2DW2J8OmHLpQfx8nymj5pD/MWs9Xx3eYwgA0Svrudiwnu5bUmCsE2Sp9h8sw8lEKf
+         yCRrLvOlAPBqj45bK+djTD1N9pzL85VNhH9XEXeWbHhOGSO5FTg2iF09B7HOl1wveo1P
+         69oUsR8Rref3dQRC0C3Z+RR7J9ewrnw8/z9vpL8Cx9/KDxDO6lndVwpmHkPAmEwFMmr6
+         GiwUROFfN/WC4iRHpcOolsoHjqSLAZ/3WT/SXJBXTw9sG5b1lU5A5ik7xd1eJKqamaJz
+         +RFA==
+X-Gm-Message-State: APjAAAXZuztYZgI188mo1xSv0YvPaNqBcs9d854QOkkVJbzkKBF6+Ulv
+        da5MukE3q3d0pSpgM4IZdeNMBoQDqsyDgw==
+X-Google-Smtp-Source: APXvYqya/tgd7VQnmbu9lTExcsRK48yqlOicy53+7Ka2wVmIDOYpJUSfB1plClM8Ws9/ZUmRYzQX1A==
+X-Received: by 2002:ac2:4834:: with SMTP id 20mr4443150lft.166.1576750537756;
+        Thu, 19 Dec 2019 02:15:37 -0800 (PST)
+Received: from [192.168.43.60] ([176.227.99.155])
+        by smtp.gmail.com with ESMTPSA id g24sm2384473lfb.85.2019.12.19.02.15.34
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 19 Dec 2019 02:15:36 -0800 (PST)
+Subject: Re: [PATCH] Revert "iwlwifi: mvm: fix scan config command size"
+From:   Mehmet Akif Tasova <makiftasova@gmail.com>
+To:     Roman Gilg <subdiff@gmail.com>
+Cc:     Johannes Berg <johannes.berg@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        Intel Linux Wireless <linuxwifi@intel.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Shahar S Matityahu <shahar.s.matityahu@intel.com>,
+        Tova Mussai <tova.mussai@intel.com>,
+        Ayala Beker <ayala.beker@intel.com>,
+        Sara Sharon <sara.sharon@intel.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20191213203512.8250-1-makiftasova@gmail.com>
+ <CAJcyoyusgtw0++KsEHK-t=EFGx2v9GKv7+BSViUCaB3nyDr2Jw@mail.gmail.com>
+ <CAP=YcKGLDx_coFsY7ej6BkdBJT+FELGSOMM6YM_r7jgqEsvChw@mail.gmail.com>
+Message-ID: <8b895e5a-745b-a9f1-2bc8-8a1fac61129f@gmail.com>
+Date:   Thu, 19 Dec 2019 13:15:32 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.3.0
 MIME-Version: 1.0
+In-Reply-To: <CAP=YcKGLDx_coFsY7ej6BkdBJT+FELGSOMM6YM_r7jgqEsvChw@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-T24gV2VkLCAyMDE5LTEyLTE4IGF0IDE3OjQ4ICswMjAwLCBLYWxsZSBWYWxvIHdyb3RlOg0KPiBG
-cm9tOiBXZW4gR29uZyA8d2dvbmdAY29kZWF1cm9yYS5vcmc+DQo+IA0KPiBBZGQgc3VwcG9ydCBm
-b3IgYSB2ZW5kb3IgY29tbWFuZCBmb3IgU1RBVElPTiwgdGhlIGNvbW1hbmQNCj4gUUNBX05MODAy
-MTFfVkVORE9SX1NVQkNNRF9TRVRfU0FSX0xJTUlUUyB3aGljaCBpcyBhbHJlYWR5IGRlZmluZWQg
-aW4NCj4gZ2l0Oi8vdzEuZmkvaG9zdGFwLmdpdCAoc3JjL2NvbW1hbmQvcWNhLXZlbmRvci5oKS4g
-VGhpcyBhbGxvd3MgdXNlcg0KPiBzcGFjZSB0byBjb25maWd1cmUgcG93ZXIgbGltaXRzIGZvciAy
-LjQgR0h6IGFuZCA1IEdIeiBiYW5kcy4NCj4gDQo+IGF0aDEwayBzZXQgcGRldiBwYXJhbWV0ZXIg
-V01JX1BERVZfUEFSQU1fVFhQT1dFUl9MSU1JVDJHIGFuZA0KPiBXTUlfUERFVl9QQVJBTV9UWFBP
-V0VSX0xJTUlUNUcgdG8gZmlybXdhcmUsIHRoZSAyIHZhbHVlIHdpbGwNCj4gYmUgdXNlZCBhcyBv
-bmUgaW5wdXQgc291cmNlIHRvIGFmZmVjdCB0aGUgdHggcG93ZXIuDQo+IA0KPiBXaGVuIFFDQV9O
-TDgwMjExX1ZFTkRPUl9TVUJDTURfU0VUX1NBUl9MSU1JVFMgc2V0IHRvIGF0aDEwaywgaXQgd2ls
-bA0KPiBiZSBzYXZlZCB0aGUgMi40RyBhbmQgNUcgbGltaXQgdmFsdWUsIElmIFNUQVRJT04gaXMg
-Y29ubmVjdGVkIG1lYW53aGlsZSwNCj4gdGhlbiB0aGUgMi40RyBhbmQgNUcgV01JIGNvbW1hbmQg
-d2lsbCBiZSBzZXQgdG8gZmlybXdhcmUsIG90aGVyd2lzZQ0KPiBpdCB3aWxsIG5vdCBzZXQgdG8g
-ZmlybXdhcmUgYXQgdGhpcyBtb21lbnQuIFdoZW4gU1RBVElPTiBjb25uZWN0DQo+IG5leHQgdGlt
-ZSwgaXQgd2lsbCBzZXQgdG8gZmlybXdhcmUuDQo+IA0KPiBUZXN0ZWQgd2l0aCBRQ0E2MTc0IFNE
-SU8gd2l0aCBmaXJtd2FyZSBXTEFOLlJNSC40LjQuMS0wMDAyOS4NCj4gDQo+IFNpZ25lZC1vZmYt
-Ynk6IFdlbiBHb25nIDx3Z29uZ0Bjb2RlYXVyb3JhLm9yZz4NCj4gU2lnbmVkLW9mZi1ieTogS2Fs
-bGUgVmFsbyA8a3ZhbG9AY29kZWF1cm9yYS5vcmc+DQo+IC0tLQ0KPiDCoGRyaXZlcnMvbmV0L3dp
-cmVsZXNzL2F0aC9hdGgxMGsvTWFrZWZpbGUgfMKgwqDCoDEgKw0KPiDCoGRyaXZlcnMvbmV0L3dp
-cmVsZXNzL2F0aC9hdGgxMGsvY29yZS5jwqDCoMKgfMKgwqDCoDIgKw0KPiDCoGRyaXZlcnMvbmV0
-L3dpcmVsZXNzL2F0aC9hdGgxMGsvY29yZS5owqDCoMKgfMKgwqDCoDIgKw0KPiDCoGRyaXZlcnMv
-bmV0L3dpcmVsZXNzL2F0aC9hdGgxMGsvaHcuaMKgwqDCoMKgwqB8wqDCoMKgMyArDQo+IMKgZHJp
-dmVycy9uZXQvd2lyZWxlc3MvYXRoL2F0aDEway9tYWMuY8KgwqDCoMKgfMKgwqA2NCArKysrKysr
-KysrKysrKysrKw0KPiDCoGRyaXZlcnMvbmV0L3dpcmVsZXNzL2F0aC9hdGgxMGsvbWFjLmjCoMKg
-wqDCoHzCoMKgwqAyICstDQo+IMKgZHJpdmVycy9uZXQvd2lyZWxlc3MvYXRoL2F0aDEway92ZW5k
-b3IuYyB8IDExNA0KPiArKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrDQo+IMKgZHJpdmVy
-cy9uZXQvd2lyZWxlc3MvYXRoL2F0aDEway92ZW5kb3IuaCB8wqDCoDEzICsrKysNCj4gwqBkcml2
-ZXJzL25ldC93aXJlbGVzcy9hdGgvYXRoMTBrL3dtaS5owqDCoMKgwqB8wqDCoMKgNiArKw0KPiDC
-oDkgZmlsZXMgY2hhbmdlZCwgMjA2IGluc2VydGlvbnMoKyksIDEgZGVsZXRpb24oLSkNCj4gwqBj
-cmVhdGUgbW9kZSAxMDA2NDQgZHJpdmVycy9uZXQvd2lyZWxlc3MvYXRoL2F0aDEway92ZW5kb3Iu
-Yw0KPiDCoGNyZWF0ZSBtb2RlIDEwMDY0NCBkcml2ZXJzL25ldC93aXJlbGVzcy9hdGgvYXRoMTBr
-L3ZlbmRvci5oDQo+IA0KDQpbLi4uXQ0KDQo+IGRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC93aXJl
-bGVzcy9hdGgvYXRoMTBrL3dtaS5oDQo+IGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvYXRoL2F0aDEw
-ay93bWkuaA0KPiBpbmRleCA5NzJkNTNkNzc2NTQuLmYwY2FkYWExMjM5OSAxMDA2NDQNCj4gLS0t
-IGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvYXRoL2F0aDEway93bWkuaA0KPiArKysgYi9kcml2ZXJz
-L25ldC93aXJlbGVzcy9hdGgvYXRoMTBrL3dtaS5oDQo+IEBAIC0zNjk1LDYgKzM2OTUsMTIgQEAg
-c3RydWN0IHdtaV9jc2FfZXZlbnQgew0KPiDCoCNkZWZpbmUgVkRFVl9ERUZBVUxUX1NUQVRTX1VQ
-REFURV9QRVJJT0TCoMKgwqDCoDUwMA0KPiDCoCNkZWZpbmUgUEVFUl9ERUZBVUxUX1NUQVRTX1VQ
-REFURV9QRVJJT0TCoMKgwqDCoDUwMA0KPiDCoA0KPiArLyogdGhlIG1hc2sgb2YgNCBzdWIgYmFu
-ZCBvZiA1RyBmb3IgU0FSIHBhcmFtZXRlcnMgKi8NCj4gKyNkZWZpbmUgQVRIMTBLX1dNSV9TQVJf
-NUdfMF9NQVNLIEdFTk1BU0soNywgMCkNCj4gKyNkZWZpbmUgQVRIMTBLX1dNSV9TQVJfNUdfMV9N
-QVNLIEdFTk1BU0soMTUsIDgpDQo+ICsjZGVmaW5lIEFUSDEwS19XTUlfU0FSXzVHXzJfTUFTSyBH
-RU5NQVNLKDIzLCAxNikNCj4gKyNkZWZpbmUgQVRIMTBLX1dNSV9TQVJfNUdfM19NQVNLIEdFTk1B
-U0soMzEsIDI0KQ0KPiArDQoNClRoZXNlIG1hc2tzIGFyZW4ndCB1c2VkLg0KRG8geW91IHVzZSAn
-dTMyJyBhcyBmb3VyICd1OCcgU0FSIHBvd2VyIGxpbWl0IGZvciBmb3VyIGJhbmRzPw0KDQo+IMKg
-c3RydWN0IHdtaV9wZGV2X3BhcmFtX21hcCB7DQo+IMKgCXUzMiB0eF9jaGFpbl9tYXNrOw0KPiDC
-oAl1MzIgcnhfY2hhaW5fbWFzazsNCg==
+Hello,
+
+Because I used gmail mobile app to response and the app decided that 
+always using HTML is a valid choice for every one, my previous mail 
+rejected by mailing lists.
+
+Because of that I am (re)sending this mail. You can find contents of my 
+previous mail below.
+
+Regards,
+Mehmet Akif.
+
+> Hi Roman,
+>
+> Unfortunately I don't have XPS 13 and tested the patch on Dell Vostro 
+> 5481 and this patch is the result of bisection on Vostro.
+>
+> At first, the Archlinux bug report I shared looked similar thus that 
+> bug report contains lots of dmesg outputs from different users. But 
+> yes probably there is 2 distinct issue which should be solved separately.
+>
+> I will update commit message accordingly as soon as possible.
+>
+> Regards,
+> Mehmet Akif
+>
+>
+> On Wed, Dec 18, 2019, 22:12 Roman Gilg <subdiff@gmail.com 
+> <mailto:subdiff@gmail.com>> wrote:
+>
+>     On Fri, Dec 13, 2019 at 9:36 PM Mehmet Akif Tasova
+>     <makiftasova@gmail.com <mailto:makiftasova@gmail.com>> wrote:
+>     >
+>     > Since Linux 5.4.1 released, iwlwifi could not initialize
+>     Intel(R) Dual Band
+>     > Wireless AC 9462 firmware, failing with following error in dmesg:
+>     >
+>     > iwlwifi 0000:00:14.3: FW error in SYNC CMD SCAN_CFG_CMD
+>     >
+>     > whole dmesg output of error can be found at:
+>     > https://gist.github.com/makiftasova/354e46439338f4ab3fba0b77ad5c19ec
+>     >
+>     > also bug report from ArchLinux bug tracker (contains more info):
+>     > https://bugs.archlinux.org/task/64703
+>
+>     Since this bug report is about the Dell XPS 13 2-in1: I tested your
+>     revert with this device, but the issue persists at least on this
+>     device. So these might be two different issues, one for your device
+>     and another one for the XPS.
+>
+>     > Reverting commit 06eb547c4ae4 ("iwlwifi: mvm: fix scan config
+>     command
+>     > size") seems to fix this issue  until proper solution is found.
+>     >
+>     > This reverts commit 06eb547c4ae4382e70d556ba213d13c95ca1801b.
+>     >
+>     > Signed-off-by: Mehmet Akif Tasova <makiftasova@gmail.com
+>     <mailto:makiftasova@gmail.com>>
+>     > ---
+>     >  drivers/net/wireless/intel/iwlwifi/mvm/scan.c | 2 +-
+>     >  1 file changed, 1 insertion(+), 1 deletion(-)
+>     >
+>     > diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
+>     b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
+>     > index a046ac9fa852..a5af8f4128b1 100644
+>     > --- a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
+>     > +++ b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
+>     > @@ -1213,7 +1213,7 @@ static int
+>     iwl_mvm_legacy_config_scan(struct iwl_mvm *mvm)
+>     >                 cmd_size = sizeof(struct iwl_scan_config_v2);
+>     >         else
+>     >                 cmd_size = sizeof(struct iwl_scan_config_v1);
+>     > -       cmd_size += num_channels;
+>     > +       cmd_size += mvm->fw->ucode_capa.n_scan_channels;
+>     >
+>     >         cfg = kzalloc(cmd_size, GFP_KERNEL);
+>     >         if (!cfg)
+>     > --
+>     > 2.24.1
+>     >
+>
