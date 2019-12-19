@@ -2,69 +2,103 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AED06125B81
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Dec 2019 07:36:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D8B60125D18
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Dec 2019 09:58:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725993AbfLSGgU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 19 Dec 2019 01:36:20 -0500
-Received: from webmail.newmedia-net.de ([185.84.6.166]:44099 "EHLO
-        webmail.newmedia-net.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725843AbfLSGgU (ORCPT
+        id S1726708AbfLSI6l (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 19 Dec 2019 03:58:41 -0500
+Received: from rtits2.realtek.com ([211.75.126.72]:59555 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726609AbfLSI6l (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 19 Dec 2019 01:36:20 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=newmedia-net.de; s=mikd;
-        h=Content-Transfer-Encoding:Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject; bh=RxZXmpD1r5rWdodi5dIRAPji6QPoqfkPDV/+JsbJV4M=;
-        b=Mz32dpDnzVbeozVnxjqqewgVDMUfAjJjcrJaGzTGf0DXrQ9k7g9WScuanIbSeyjU1H7YYD5j968pjpGfwgpqHKg6pKl97/6JqF0SySlvHGIccwFvLGFoXl9npxs2dNKaLDxSQCl1jUC+h1dgOGOZaR0Ql0mCVd3Qo5Dt5BLUaik=;
-Subject: Re: [RESEND] ath10k: add tx hw 802.11 encapusaltion offloading
- support
-To:     Tom Psyborg <pozega.tomislav@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>
-Cc:     John Crispin <john@phrozen.org>, ath10k@lists.infradead.org,
-        linux-wireless@vger.kernel.org,
-        Vasanthakumar Thiagarajan <vthiagar@qti.qualcomm.com>,
-        Johannes Berg <johannes@sipsolutions.net>
-References: <20191216092207.31032-1-john@phrozen.org>
- <20191217153000.76AB1C4479C@smtp.codeaurora.org>
- <CAKR_QVJVfqid8i5PXj3Yg8VJjht=MF2fZg+twkLgEkKuMB2bbQ@mail.gmail.com>
- <CAKR_QVJ1PhCHfAO5Rp6pm-wjAO-HcZiq-9Lw67FzBFO5jjYtbA@mail.gmail.com>
-From:   Sebastian Gottschall <s.gottschall@newmedia-net.de>
-Message-ID: <d24c7821-4e5e-28b5-5d1d-f076cfd762fc@newmedia-net.de>
-Date:   Thu, 19 Dec 2019 07:36:12 +0100
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
- Thunderbird/68.3.0
+        Thu, 19 Dec 2019 03:58:41 -0500
+Authenticated-By: 
+X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID xBJ8wV5T024844, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (RTITCASV01.realtek.com.tw[172.21.6.18])
+        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id xBJ8wV5T024844
+        (version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+        Thu, 19 Dec 2019 16:58:31 +0800
+Received: from localhost.localdomain (172.21.68.126) by
+ RTITCASV01.realtek.com.tw (172.21.6.18) with Microsoft SMTP Server id
+ 14.3.468.0; Thu, 19 Dec 2019 16:58:30 +0800
+From:   <yhchuang@realtek.com>
+To:     <kvalo@codeaurora.org>
+CC:     <linux-wireless@vger.kernel.org>, <briannorris@chromium.org>,
+        <chiu@endlessm.com>
+Subject: [PATCH v4 0/7] rtw88: add wowlan support for 8822c
+Date:   Thu, 19 Dec 2019 16:58:09 +0800
+Message-ID: <20191219085816.20709-1-yhchuang@realtek.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-In-Reply-To: <CAKR_QVJ1PhCHfAO5Rp6pm-wjAO-HcZiq-9Lw67FzBFO5jjYtbA@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Received:  from [2003:c9:3f2c:4f00:bc20:1f41:7042:9c0e]
-        by webmail.newmedia-net.de with esmtpsa (TLSv1:AES128-SHA:128)
-        (Exim 4.72)
-        (envelope-from <s.gottschall@newmedia-net.de>)
-        id 1ihpOe-0003GP-Hi; Thu, 19 Dec 2019 07:34:52 +0100
+Content-Type: text/plain
+X-Originating-IP: [172.21.68.126]
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+From: Yan-Hsuan Chuang <yhchuang@realtek.com>
 
-Am 18.12.2019 um 23:45 schrieb Tom Psyborg:
-> ccing Johannes Berg since upstream change (mac80211-next) breaks build:
->
-> In the commit log its written: remove SUPPORTS_80211_ENCAP HW flag
->
-> Any sane reasons for doing that? mac80211 fails to build because of
-> removed flags, this is on backports-5.3-rc4
->
-> Other than that the feature delivers the promised:
-> QCA9880 iperf between wired and wireless machine
-> native mode 449Mbps
-> ethernet mode 522Mbps
-johns patch does not work for qca9880 wave 1 chipsets. it works only for 
-10.4 firmares like 9984, ipq40xx  etc. the 9880 has no benefit from it 
-and has no effect.
+Add wake on wireless LAN support for 8822c. When system enters
+suspend, wifi driver can enable wowlan mode, and waits for
+waking host up by receiving wireless LAN events. Events could
+be AP lost, deauthed, magic packets, rekey, or patterns. Also
+most of the functions can be shutdown to reduce power consumption.
 
-so your test seem to have false results
+To enter wowlan mode, Realtek's devices need to swap to another
+firmware called wowlan firmware. It can monitor special events
+and generate wake up signals if necessary. To swap the firmware,
+driver needs to re-configure the HCI link, to make sure that
+the link is idle, reset the link for sending H2C commands to
+wowlan firmware, and then stop the link.
 
-Sebastian
+After wake up signals generated and sent to host, driver needs
+to swap back to normal firmware to get to the original state
+before suspend. So it should setup the link again and send
+H2C commands to firmware to restore the information.
 
->
+
+v1 -> v2
+ * remove duplicated rtw_pci_dma_reset()
+
+v2 -> v3
+ * include new patch "rtw88: add interface config for 8822c"
+
+v3 -> v4
+ * mark some functions static
+ * remove some unnecessary double-underscores
+
+
+Chin-Yen Lee (6):
+  rtw88: pci: reset ring index when release skbs in tx ring
+  rtw88: pci: reset dma when reset pci trx ring
+  rtw88: load wowlan firmware if wowlan is supported
+  rtw88: support wowlan feature for 8822c
+  rtw88: Add wowlan pattern match support
+  rtw88: Add wowlan net-detect support
+
+Yan-Hsuan Chuang (1):
+  rtw88: add interface config for 8822c
+
+ drivers/net/wireless/realtek/rtw88/Makefile   |   1 +
+ drivers/net/wireless/realtek/rtw88/debug.h    |   1 +
+ drivers/net/wireless/realtek/rtw88/fw.c       | 384 +++++++-
+ drivers/net/wireless/realtek/rtw88/fw.h       | 186 ++++
+ drivers/net/wireless/realtek/rtw88/hci.h      |   6 +
+ drivers/net/wireless/realtek/rtw88/mac.c      |   2 +
+ drivers/net/wireless/realtek/rtw88/mac80211.c |  44 +
+ drivers/net/wireless/realtek/rtw88/main.c     |  76 +-
+ drivers/net/wireless/realtek/rtw88/main.h     |  67 ++
+ drivers/net/wireless/realtek/rtw88/pci.c      |  55 +-
+ drivers/net/wireless/realtek/rtw88/reg.h      |  29 +
+ drivers/net/wireless/realtek/rtw88/rtw8822c.c |  18 +
+ drivers/net/wireless/realtek/rtw88/util.h     |   2 +
+ drivers/net/wireless/realtek/rtw88/wow.c      | 890 ++++++++++++++++++
+ drivers/net/wireless/realtek/rtw88/wow.h      |  58 ++
+ 15 files changed, 1786 insertions(+), 33 deletions(-)
+ create mode 100644 drivers/net/wireless/realtek/rtw88/wow.c
+ create mode 100644 drivers/net/wireless/realtek/rtw88/wow.h
+
+-- 
+2.17.1
+
