@@ -2,26 +2,26 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 98892127A5B
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Dec 2019 12:56:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 86418127A5C
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Dec 2019 12:57:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727391AbfLTL44 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 20 Dec 2019 06:56:56 -0500
-Received: from paleale.coelho.fi ([176.9.41.70]:54010 "EHLO
+        id S1727364AbfLTL5F (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 20 Dec 2019 06:57:05 -0500
+Received: from paleale.coelho.fi ([176.9.41.70]:54024 "EHLO
         farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1727177AbfLTL4z (ORCPT
+        with ESMTP id S1727177AbfLTL5F (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 20 Dec 2019 06:56:55 -0500
+        Fri, 20 Dec 2019 06:57:05 -0500
 Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa.ger.corp.intel.com)
         by farmhouse.coelho.fi with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.92.2)
         (envelope-from <luca@coelho.fi>)
-        id 1iiGto-0007ip-7b; Fri, 20 Dec 2019 13:56:53 +0200
+        id 1iiGtp-0007ip-Hi; Fri, 20 Dec 2019 13:56:54 +0200
 From:   Luca Coelho <luca@coelho.fi>
 To:     kvalo@codeaurora.org
 Cc:     linux-wireless@vger.kernel.org
-Date:   Fri, 20 Dec 2019 13:56:37 +0200
-Message-Id: <20191220115638.1299888-10-luca@coelho.fi>
+Date:   Fri, 20 Dec 2019 13:56:38 +0200
+Message-Id: <20191220115638.1299888-11-luca@coelho.fi>
 X-Mailer: git-send-email 2.24.0
 In-Reply-To: <20191220115638.1299888-1-luca@coelho.fi>
 References: <20191220115638.1299888-1-luca@coelho.fi>
@@ -32,159 +32,168 @@ X-Spam-Level:
 X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
         TVD_RCVD_IP,URIBL_BLOCKED autolearn=ham autolearn_force=no
         version=3.4.2
-Subject: [PATCH v5.5 09/10] iwlwifi: Don't ignore the cap field upon mcc update
+Subject: [PATCH v5.5 10/10] iwlwifi: pcie: extend hardware workaround to context-info
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Haim Dreyfuss <haim.dreyfuss@intel.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-When receiving a new MCC driver get all the data about the new country
-code and its regulatory information.
-Mistakenly, we ignored the cap field, which includes global regulatory
-information which should be applies to every channel.
-Fix it.
+After more investigation on the hardware side, it appears that the
+hardware bug regarding 2^32 boundary reaching/crossing also affects
+other uses of the DMA engine, in particular the ones triggered by
+the context-info (image loader) mechanism.
 
-Signed-off-by: Haim Dreyfuss <haim.dreyfuss@intel.com>
+It also turns out that the bug only affects devices with gen2 TX
+hardware engine, so we don't need to change context info for gen3.
+The TX path workarounds are simpler to still keep for both though.
+
+Add the workaround to that code as well; this is a lot simpler as
+we have just a single way to allocate DMA memory there.
+
+I made the algorithm recursive (with a small limit) since it's
+actually (almost) impossible to hit this today - dma_alloc_coherent
+is currently documented to always return 32-bit addressable memory
+regardless of the DMA mask for it, and so we could only get REALLY
+unlucky to get the very last page in that area.
+
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 ---
- .../wireless/intel/iwlwifi/iwl-nvm-parse.c    | 48 ++++++++++++++++++-
- .../wireless/intel/iwlwifi/iwl-nvm-parse.h    |  6 +--
- .../net/wireless/intel/iwlwifi/mvm/mac80211.c |  3 +-
- 3 files changed, 51 insertions(+), 6 deletions(-)
+ .../wireless/intel/iwlwifi/pcie/ctxt-info.c   | 45 +++++++++++++++++--
+ .../wireless/intel/iwlwifi/pcie/internal.h    | 10 +++++
+ .../net/wireless/intel/iwlwifi/pcie/tx-gen2.c | 14 +-----
+ 3 files changed, 54 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
-index 1e240a2a8329..068e4924c04e 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
-@@ -224,6 +224,34 @@ enum iwl_nvm_channel_flags {
- 	NVM_CHANNEL_DC_HIGH		= BIT(12),
- };
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info.c b/drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info.c
+index d38cefbb779e..e249e3fd14c6 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info.c
+@@ -57,6 +57,42 @@
+ #include "internal.h"
+ #include "iwl-prph.h"
  
-+/**
-+ * enum iwl_reg_capa_flags - global flags applied for the whole regulatory
-+ * domain.
-+ * @REG_CAPA_BF_CCD_LOW_BAND: Beam-forming or Cyclic Delay Diversity in the
-+ *	2.4Ghz band is allowed.
-+ * @REG_CAPA_BF_CCD_HIGH_BAND: Beam-forming or Cyclic Delay Diversity in the
-+ *	5Ghz band is allowed.
-+ * @REG_CAPA_160MHZ_ALLOWED: 11ac channel with a width of 160Mhz is allowed
-+ *	for this regulatory domain (valid only in 5Ghz).
-+ * @REG_CAPA_80MHZ_ALLOWED: 11ac channel with a width of 80Mhz is allowed
-+ *	for this regulatory domain (valid only in 5Ghz).
-+ * @REG_CAPA_MCS_8_ALLOWED: 11ac with MCS 8 is allowed.
-+ * @REG_CAPA_MCS_9_ALLOWED: 11ac with MCS 9 is allowed.
-+ * @REG_CAPA_40MHZ_FORBIDDEN: 11n channel with a width of 40Mhz is forbidden
-+ *	for this regulatory domain (valid only in 5Ghz).
-+ * @REG_CAPA_DC_HIGH_ENABLED: DC HIGH allowed.
-+ */
-+enum iwl_reg_capa_flags {
-+	REG_CAPA_BF_CCD_LOW_BAND	= BIT(0),
-+	REG_CAPA_BF_CCD_HIGH_BAND	= BIT(1),
-+	REG_CAPA_160MHZ_ALLOWED		= BIT(2),
-+	REG_CAPA_80MHZ_ALLOWED		= BIT(3),
-+	REG_CAPA_MCS_8_ALLOWED		= BIT(4),
-+	REG_CAPA_MCS_9_ALLOWED		= BIT(5),
-+	REG_CAPA_40MHZ_FORBIDDEN	= BIT(7),
-+	REG_CAPA_DC_HIGH_ENABLED	= BIT(9),
-+};
++static void *_iwl_pcie_ctxt_info_dma_alloc_coherent(struct iwl_trans *trans,
++						    size_t size,
++						    dma_addr_t *phys,
++						    int depth)
++{
++	void *result;
 +
- static inline void iwl_nvm_print_channel_flags(struct device *dev, u32 level,
- 					       int chan, u32 flags)
- {
-@@ -1038,6 +1066,7 @@ IWL_EXPORT_SYMBOL(iwl_parse_nvm_data);
- 
- static u32 iwl_nvm_get_regdom_bw_flags(const u16 *nvm_chan,
- 				       int ch_idx, u16 nvm_flags,
-+				       u16 cap_flags,
- 				       const struct iwl_cfg *cfg)
- {
- 	u32 flags = NL80211_RRF_NO_HT40;
-@@ -1076,13 +1105,27 @@ static u32 iwl_nvm_get_regdom_bw_flags(const u16 *nvm_chan,
- 	    (flags & NL80211_RRF_NO_IR))
- 		flags |= NL80211_RRF_GO_CONCURRENT;
- 
-+	/*
-+	 * cap_flags is per regulatory domain so apply it for every channel
-+	 */
-+	if (ch_idx >= NUM_2GHZ_CHANNELS) {
-+		if (cap_flags & REG_CAPA_40MHZ_FORBIDDEN)
-+			flags |= NL80211_RRF_NO_HT40;
++	if (WARN(depth > 2,
++		 "failed to allocate DMA memory not crossing 2^32 boundary"))
++		return NULL;
 +
-+		if (!(cap_flags & REG_CAPA_80MHZ_ALLOWED))
-+			flags |= NL80211_RRF_NO_80MHZ;
++	result = dma_alloc_coherent(trans->dev, size, phys, GFP_KERNEL);
 +
-+		if (!(cap_flags & REG_CAPA_160MHZ_ALLOWED))
-+			flags |= NL80211_RRF_NO_160MHZ;
++	if (!result)
++		return NULL;
++
++	if (unlikely(iwl_pcie_crosses_4g_boundary(*phys, size))) {
++		void *old = result;
++		dma_addr_t oldphys = *phys;
++
++		result = _iwl_pcie_ctxt_info_dma_alloc_coherent(trans, size,
++								phys,
++								depth + 1);
++		dma_free_coherent(trans->dev, size, old, oldphys);
 +	}
 +
- 	return flags;
++	return result;
++}
++
++static void *iwl_pcie_ctxt_info_dma_alloc_coherent(struct iwl_trans *trans,
++						   size_t size,
++						   dma_addr_t *phys)
++{
++	return _iwl_pcie_ctxt_info_dma_alloc_coherent(trans, size, phys, 0);
++}
++
+ void iwl_pcie_ctxt_info_free_paging(struct iwl_trans *trans)
+ {
+ 	struct iwl_self_init_dram *dram = &trans->init_dram;
+@@ -161,14 +197,17 @@ int iwl_pcie_ctxt_info_init(struct iwl_trans *trans,
+ 	struct iwl_context_info *ctxt_info;
+ 	struct iwl_context_info_rbd_cfg *rx_cfg;
+ 	u32 control_flags = 0, rb_size;
++	dma_addr_t phys;
+ 	int ret;
+ 
+-	ctxt_info = dma_alloc_coherent(trans->dev, sizeof(*ctxt_info),
+-				       &trans_pcie->ctxt_info_dma_addr,
+-				       GFP_KERNEL);
++	ctxt_info = iwl_pcie_ctxt_info_dma_alloc_coherent(trans,
++							  sizeof(*ctxt_info),
++							  &phys);
+ 	if (!ctxt_info)
+ 		return -ENOMEM;
+ 
++	trans_pcie->ctxt_info_dma_addr = phys;
++
+ 	ctxt_info->version.version = 0;
+ 	ctxt_info->version.mac_id =
+ 		cpu_to_le16((u16)iwl_read32(trans, CSR_HW_REV));
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/internal.h b/drivers/net/wireless/intel/iwlwifi/pcie/internal.h
+index 04361ecf31bd..f14bcef3495e 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/internal.h
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/internal.h
+@@ -672,6 +672,16 @@ void iwl_pcie_disable_ict(struct iwl_trans *trans);
+ /*****************************************************
+ * TX / HCMD
+ ******************************************************/
++/*
++ * We need this inline in case dma_addr_t is only 32-bits - since the
++ * hardware is always 64-bit, the issue can still occur in that case,
++ * so use u64 for 'phys' here to force the addition in 64-bit.
++ */
++static inline bool iwl_pcie_crosses_4g_boundary(u64 phys, u16 len)
++{
++	return upper_32_bits(phys) != upper_32_bits(phys + len);
++}
++
+ int iwl_pcie_tx_init(struct iwl_trans *trans);
+ int iwl_pcie_gen2_tx_init(struct iwl_trans *trans, int txq_id,
+ 			  int queue_size);
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c b/drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c
+index 4adda83d5f02..5ad02e816e21 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c
+@@ -213,16 +213,6 @@ static void iwl_pcie_gen2_free_tfd(struct iwl_trans *trans, struct iwl_txq *txq)
+ 	}
  }
  
- struct ieee80211_regdomain *
- iwl_parse_nvm_mcc_info(struct device *dev, const struct iwl_cfg *cfg,
- 		       int num_of_ch, __le32 *channels, u16 fw_mcc,
--		       u16 geo_info)
-+		       u16 geo_info, u16 cap)
- {
- 	int ch_idx;
- 	u16 ch_flags;
-@@ -1140,7 +1183,8 @@ iwl_parse_nvm_mcc_info(struct device *dev, const struct iwl_cfg *cfg,
- 		}
+-/*
+- * We need this inline in case dma_addr_t is only 32-bits - since the
+- * hardware is always 64-bit, the issue can still occur in that case,
+- * so use u64 for 'phys' here to force the addition in 64-bit.
+- */
+-static inline bool crosses_4g_boundary(u64 phys, u16 len)
+-{
+-	return upper_32_bits(phys) != upper_32_bits(phys + len);
+-}
+-
+ static int iwl_pcie_gen2_set_tb(struct iwl_trans *trans,
+ 				struct iwl_tfh_tfd *tfd, dma_addr_t addr,
+ 				u16 len)
+@@ -238,7 +228,7 @@ static int iwl_pcie_gen2_set_tb(struct iwl_trans *trans,
+ 	 * there's no more space, and so when we know there is enough we
+ 	 * don't always check ...
+ 	 */
+-	WARN(crosses_4g_boundary(addr, len),
++	WARN(iwl_pcie_crosses_4g_boundary(addr, len),
+ 	     "possible DMA problem with iova:0x%llx, len:%d\n",
+ 	     (unsigned long long)addr, len);
  
- 		reg_rule_flags = iwl_nvm_get_regdom_bw_flags(nvm_chan, ch_idx,
--							     ch_flags, cfg);
-+							     ch_flags, cap,
-+							     cfg);
+@@ -300,7 +290,7 @@ static int iwl_pcie_gen2_set_tb_with_wa(struct iwl_trans *trans,
+ 	if (unlikely(dma_mapping_error(trans->dev, phys)))
+ 		return -ENOMEM;
  
- 		/* we can't continue the same rule */
- 		if (ch_idx == 0 || prev_reg_rule_flags != reg_rule_flags ||
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.h b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.h
-index b7e1ddf8f177..4eeedb41e9ac 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.h
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.h
-@@ -7,7 +7,7 @@
-  *
-  * Copyright(c) 2008 - 2015 Intel Corporation. All rights reserved.
-  * Copyright(c) 2016 - 2017 Intel Deutschland GmbH
-- * Copyright(c) 2018        Intel Corporation
-+ * Copyright(c) 2018 - 2019 Intel Corporation
-  *
-  * This program is free software; you can redistribute it and/or modify
-  * it under the terms of version 2 of the GNU General Public License as
-@@ -29,7 +29,7 @@
-  *
-  * Copyright(c) 2005 - 2014 Intel Corporation. All rights reserved.
-  * Copyright(c) 2016 - 2017 Intel Deutschland GmbH
-- * Copyright(c) 2018        Intel Corporation
-+ * Copyright(c) 2018 - 2019 Intel Corporation
-  * All rights reserved.
-  *
-  * Redistribution and use in source and binary forms, with or without
-@@ -103,7 +103,7 @@ iwl_parse_nvm_data(struct iwl_trans *trans, const struct iwl_cfg *cfg,
- struct ieee80211_regdomain *
- iwl_parse_nvm_mcc_info(struct device *dev, const struct iwl_cfg *cfg,
- 		       int num_of_ch, __le32 *channels, u16 fw_mcc,
--		       u16 geo_info);
-+		       u16 geo_info, u16 cap);
+-	if (likely(!crosses_4g_boundary(phys, len))) {
++	if (likely(!iwl_pcie_crosses_4g_boundary(phys, len))) {
+ 		ret = iwl_pcie_gen2_set_tb(trans, tfd, phys, len);
  
- /**
-  * struct iwl_nvm_section - describes an NVM section in memory.
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-index 481f1c9d814f..a46204b905d2 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-@@ -256,7 +256,8 @@ struct ieee80211_regdomain *iwl_mvm_get_regdomain(struct wiphy *wiphy,
- 				      __le32_to_cpu(resp->n_channels),
- 				      resp->channels,
- 				      __le16_to_cpu(resp->mcc),
--				      __le16_to_cpu(resp->geo_info));
-+				      __le16_to_cpu(resp->geo_info),
-+				      __le16_to_cpu(resp->cap));
- 	/* Store the return source id */
- 	src_id = resp->source_id;
- 	kfree(resp);
+ 		if (ret < 0)
 -- 
 2.24.0
 
