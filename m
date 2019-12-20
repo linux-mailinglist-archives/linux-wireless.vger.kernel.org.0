@@ -2,147 +2,138 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id ABA34127823
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Dec 2019 10:31:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 26542127906
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Dec 2019 11:14:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727281AbfLTJbv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 20 Dec 2019 04:31:51 -0500
-Received: from alexa-out-sd-02.qualcomm.com ([199.106.114.39]:38965 "EHLO
-        alexa-out-sd-02.qualcomm.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727167AbfLTJbv (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 20 Dec 2019 04:31:51 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=qca.qualcomm.com; i=@qca.qualcomm.com; q=dns/txt;
-  s=qcdkim; t=1576834311; x=1608370311;
-  h=from:to:cc:subject:date:message-id:
-   content-transfer-encoding:mime-version;
-  bh=RGXjA4GkuWhtGpIeQCF8s2FKL45KUD5hCe1nIjwNRvs=;
-  b=U8yH63uGnuYVqBbKXfkkw/KXYrQEC9n5lk+FhLFMqCYsFXSQUXUVJ0ns
-   HxpA8/1+FWx4puyCoj7b/TmJ3D1Ik8/ETITJYJrxkmjnjJOMj0Hgf56sb
-   83jUZUVE6lk176pBkevaLj1BSnC4stlqaK8pMGFROM4POf5vJo3rlsZgZ
-   c=;
-Received: from unknown (HELO ironmsg04-sd.qualcomm.com) ([10.53.140.144])
-  by alexa-out-sd-02.qualcomm.com with ESMTP; 20 Dec 2019 01:31:50 -0800
-Received: from nasanexm01a.na.qualcomm.com ([10.85.0.81])
-  by ironmsg04-sd.qualcomm.com with ESMTP/TLS/AES256-SHA; 20 Dec 2019 01:31:50 -0800
-Received: from APSANEXR01B.ap.qualcomm.com (10.85.0.37) by
- nasanexm01a.na.qualcomm.com (10.85.0.81) with Microsoft SMTP Server (TLS) id
- 15.0.1473.3; Fri, 20 Dec 2019 01:31:49 -0800
-Received: from nasanexm01a.na.qualcomm.com (10.85.0.81) by
- APSANEXR01B.ap.qualcomm.com (10.85.0.37) with Microsoft SMTP Server (TLS) id
- 15.0.1473.3; Fri, 20 Dec 2019 01:31:22 -0800
-Received: from NAM04-SN1-obe.outbound.protection.outlook.com (199.106.107.6)
- by nasanexm01a.na.qualcomm.com (10.85.0.81) with Microsoft SMTP Server (TLS)
- id 15.0.1473.3 via Frontend Transport; Fri, 20 Dec 2019 01:31:21 -0800
-Received: from BYAPR02MB6006.namprd02.prod.outlook.com (20.179.63.144) by
- BYAPR02MB4184.namprd02.prod.outlook.com (20.176.251.155) with Microsoft SMTP
+        id S1727192AbfLTKOg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 20 Dec 2019 05:14:36 -0500
+Received: from mail-eopbgr140084.outbound.protection.outlook.com ([40.107.14.84]:51076
+        "EHLO EUR01-VE1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1727129AbfLTKOg (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 20 Dec 2019 05:14:36 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=ZfClErobgtgF/pfZnVx3fdhVvLKR6ZhYxF8GOd4Dmr7W5NkgDYp/tDt0YJQCjQ4enwM619C8nheIAo4hYyeC481l0ytZSWHYEFTaHQAOvf6LL+3J9u72kG8zp0nQeBOGtqAI7wY6QTpRYBPNmbkQ7JoO6cvxJ2Icl01BziPOa7uOtPuADKTPiumWOmju8YWYfxYuUF3FrjZiUUMLzXIL0JXzLvnsYCIF6Y63NYRRjwkl1F45/qtuyLNprvuCUeLFA5sN2wQTrr20JfgboU1Pn0mu32+ck58QVz2ZVSDFNpoGk8bwSQ7wx80AkGalngopdOEdTJq9oO4EfFlvUwx4hw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=nBqReNbJ8E4/7Ss/O2EDv14mJnYDL1Xo6RXAp9ialVY=;
+ b=eyU+aQiqsZSqW+smOKf9/iq8Kf81AEU6D+jPG4EY2Agz2R18qdywx3mruUEPRy6W6uqSjW+p8TJOqjoM44CEUGGwXn/KDOPwDGNU+2hlCRleM26Gt4eAAgSyDMhRbOpO7cPi48iTuX4NOexoOUAHKvUC224GM888n/L0iSSH0xcySQXA6U5DWSsXmOHy2w+mXr6VfxHimw06Kf1ITkmtfHsp5WsrPZzoCZuBJU9/5m2PgfzT6+DJVxUJ7wQq/HPeLdiWfalhz8aqQvWioH8iJnYYxAzZrVbg3rxttlqBFUBlXfgoz+ZcXbW3cXivtMyEeU1W2tfsSp+iSt9CL9EHwA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=nBqReNbJ8E4/7Ss/O2EDv14mJnYDL1Xo6RXAp9ialVY=;
+ b=Vx7BTa3TF4p0/AT4IBmQrw9g1Il2+Uv1rOaDImzL+rGubYmyWQIW0SUGqItjtbt8NnBNVYbFjtYShp/FWRf3Krf2H8s8rHjh4AMYfQkwoQ+JPZMm/gdj3Sth+s1Kf8ppqoZGLlKepyn29BHtf74MpMy/lCPuLzs9Wi8HZLvKlAM=
+Received: from DB7PR04MB5242.eurprd04.prod.outlook.com (20.176.234.25) by
+ DB7PR04MB5065.eurprd04.prod.outlook.com (20.176.234.225) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2559.14; Fri, 20 Dec 2019 09:31:20 +0000
-Received: from BYAPR02MB6006.namprd02.prod.outlook.com
- ([fe80::fd7e:211b:8809:c956]) by BYAPR02MB6006.namprd02.prod.outlook.com
- ([fe80::fd7e:211b:8809:c956%7]) with mapi id 15.20.2559.012; Fri, 20 Dec 2019
- 09:31:20 +0000
-From:   Kalle Valo <kvalo@qca.qualcomm.com>
-To:     "linux-firmware@kernel.org" <linux-firmware@kernel.org>
-CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "ath10k@lists.infradead.org" <ath10k@lists.infradead.org>
-Subject: [PULL] ath10k firmware 20191220
-Thread-Topic: [PULL] ath10k firmware 20191220
-Thread-Index: AQHVtxg8lXD0ns6gx0+QjZyYoWO6PA==
-Date:   Fri, 20 Dec 2019 09:31:19 +0000
-Message-ID: <BYAPR02MB6006CC2E199B34B8EF53D30D922D0@BYAPR02MB6006.namprd02.prod.outlook.com>
+ 15.20.2538.18; Fri, 20 Dec 2019 10:14:32 +0000
+Received: from DB7PR04MB5242.eurprd04.prod.outlook.com
+ ([fe80::bce1:71a5:299f:f2ff]) by DB7PR04MB5242.eurprd04.prod.outlook.com
+ ([fe80::bce1:71a5:299f:f2ff%7]) with mapi id 15.20.2559.015; Fri, 20 Dec 2019
+ 10:14:32 +0000
+From:   Ganapathi Bhat <ganapathi.bhat@nxp.com>
+To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+CC:     Brian Norris <briannorris@chromium.org>,
+        Cathy Luo <cluo@marvell.com>,
+        Zhiyuan Yang <yangzy@marvell.com>,
+        Rakesh Parmar <rakeshp@marvell.com>,
+        Ganapathi Bhat <ganapathi.bhat@nxp.com>,
+        Cathy Luo <xiaohua.luo@nxp.com>
+Subject: [PATCH] wireless: fix enabling channel 12 for custom regulatory
+ domain
+Thread-Topic: [PATCH] wireless: fix enabling channel 12 for custom regulatory
+ domain
+Thread-Index: AQHVtx5F2vBO0po3d0S4qRl+Mr9tgg==
+Date:   Fri, 20 Dec 2019 10:14:32 +0000
+Message-ID: <1576836859-8945-1-git-send-email-ganapathi.bhat@nxp.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
+x-clientproxiedby: SGBP274CA0016.SGPP274.PROD.OUTLOOK.COM (2603:1096:4:b0::28)
+ To DB7PR04MB5242.eurprd04.prod.outlook.com (2603:10a6:10:18::25)
 authentication-results: spf=none (sender IP is )
- smtp.mailfrom=kvalo@qca.qualcomm.com; 
-x-originating-ip: [88.114.240.156]
+ smtp.mailfrom=ganapathi.bhat@nxp.com; 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-mailer: git-send-email 1.9.1
+x-originating-ip: [92.121.64.9]
 x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 5c040812-d4ce-4515-8828-08d7852f5f1b
-x-ms-traffictypediagnostic: BYAPR02MB4184:
-x-microsoft-antispam-prvs: <BYAPR02MB4184EDEEB105FD0E01012F8F922D0@BYAPR02MB4184.namprd02.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:2201;
+x-ms-office365-filtering-ht: Tenant
+x-ms-office365-filtering-correlation-id: 43a16382-9eb0-4f5d-dc01-08d785356835
+x-ms-traffictypediagnostic: DB7PR04MB5065:|DB7PR04MB5065:
+x-ms-exchange-transport-forked: True
+x-microsoft-antispam-prvs: <DB7PR04MB5065154399C3B4188993C1658F2D0@DB7PR04MB5065.eurprd04.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:1850;
 x-forefront-prvs: 025796F161
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(366004)(346002)(376002)(39860400002)(396003)(136003)(189003)(199004)(4326008)(66476007)(81156014)(2906002)(33656002)(26005)(71200400001)(4001150100001)(81166006)(8676002)(54906003)(316002)(7696005)(66556008)(6506007)(8936002)(6916009)(186003)(76116006)(52536014)(91956017)(66946007)(64756008)(66446008)(5660300002)(55016002)(86362001)(9686003)(478600001);DIR:OUT;SFP:1102;SCL:1;SRVR:BYAPR02MB4184;H:BYAPR02MB6006.namprd02.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(4636009)(346002)(396003)(39860400002)(366004)(136003)(376002)(189003)(199004)(6512007)(4326008)(478600001)(6486002)(8936002)(8676002)(26005)(44832011)(2616005)(81166006)(81156014)(71200400001)(66946007)(52116002)(6506007)(36756003)(66476007)(66556008)(186003)(5660300002)(64756008)(54906003)(66446008)(6916009)(86362001)(2906002)(15650500001)(316002);DIR:OUT;SFP:1101;SCL:1;SRVR:DB7PR04MB5065;H:DB7PR04MB5242.eurprd04.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+received-spf: None (protection.outlook.com: nxp.com does not designate
+ permitted sender hosts)
 x-ms-exchange-senderadcheck: 1
 x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: T/KjgE9HcftJ8OvL/Co7g0zbme5hTSXHShYsLbNfnj7NooWNMW17xVYpCDmQPV6YGDmiKj2Pm970SCjYrdIDVhTYU9gksAmWg4383T2v6tOVWcBudP8znSU8hgKYHkSgqIrpZSp4z/xxT4f7IOgqsansJx43I42tBa2ydUETWjwNuVcFwlTL9NstmlbSlg4HhwUJzmyeHe9Dse2ffYIzupSByzkqVE/Sh8Kx8VnV1tUYl4sixIJDf0OLcF1kzKsH2tGxEgUvOxZGUbZqMhg3mv/OUXggYAYD3lWDW8Lfe8N+7pt8VqnWkkk8VTIA4i0xsMAiySGhFSlYSOriPsoFIhef4cPIMF+4p/qkazY9Z0i55VprEOqmyKVJnA4v0hzK9LoEO4ekZ7IQUA8mg/7pO3UCNAPUJWeUIVnU0kB+xTP4CIG8H0c46XxNjUVeyPCN
-x-ms-exchange-transport-forked: True
-arc-seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Yp80aXUxaUEnD35FcJgxKj5Idz1/L0quPp8TLuS1Jo1xjRwcTSU57GutieHQXyCXwgCR1aHrzYdKwoIc8lAPYREHhhI6zIDYOt2+kkH1JfWxQvzNJdZNbXLy+cdRPUqotYgUx2O+E0XGWz8h2ATSWzxKFJH9RcLBIgvQNzodLtpRtWU/OSp5Peiy31H3F+A3DuNYvPY1LNUUIk+S281LbDObUz/JdAag60QCi2AfdWW+pXVVG+FeJjH8iczHcXQ67K3OSQtkHN9gGjFNcGq6W3PxdXdehpZsT4+mFBveeHZl8hPUjCOd81P+JqDF7e7DlRIc6m/osUp771ZbQ8l7hw==
-arc-message-signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8tmmCO3ngWPDEdVT6mQOOYehM0vDm5nWNmIjDxdGdfk=;
- b=PB6f1pScrLFygTCKTVmjZwX9wadmRCcXje5ERebuq0/o+/6E8vuAjlKj+YwlPF9hW1/Pqbo+c4tLpNtFjgA7H4Uh9SXihHNYE/GlYokV0LjLUG3Cst8NNCyUGTrxU42PgJm6e74OIl1ImHBOXFC8eFrxsmX0EYo0K3Ecs8neGGzrq00OTXLOMiv/BN8pJSJJcOy5Xl0K/YmBqrdh7Q79nkWKXKn2H2g5P6Vp9yae/Q7PSO+krHyIiuppEJbxJzMEILT9I65kyQEaAdl9iyrPhfgGhOwb6lgaAl8TANfWUL5bcHwtpfXGmmwHXk+O+i6NkcQKwkpSSoiMsevCHX2VTQ==
-arc-authentication-results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=qca.qualcomm.com; dmarc=pass action=none
- header.from=qca.qualcomm.com; dkim=pass header.d=qca.qualcomm.com; arc=none
-dkim-signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=qualcomm.onmicrosoft.com; s=selector1-qualcomm-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8tmmCO3ngWPDEdVT6mQOOYehM0vDm5nWNmIjDxdGdfk=;
- b=WgcOEMMQp28eQ7J80dZzyWX6Kx5SR2i8YaQLQWflTP3zzLxTw/NSotHlAd0nchFLlgAJHBnAf//lk62KeO8vbccYUYQXN8DLUYeBqk5Lk5GiKvhWv2gPTABbO3YK7z+aIEB31ObZnsYlfHaMKc8sUUK646Ii5M/QEUqR4wKGSto=
-x-ms-exchange-crosstenant-network-message-id: 5c040812-d4ce-4515-8828-08d7852f5f1b
-x-ms-exchange-crosstenant-originalarrivaltime: 20 Dec 2019 09:31:20.0752 (UTC)
-x-ms-exchange-crosstenant-fromentityheader: Hosted
-x-ms-exchange-crosstenant-id: 98e9ba89-e1a1-4e38-9007-8bdabc25de1d
-x-ms-exchange-crosstenant-mailboxtype: HOSTED
-x-ms-exchange-crosstenant-userprincipalname: liLB8nmSnv3bPTaxI3Z+9G1fLiS52BtGc/RwzJUHqWDuEaJj2Wlgg7s6yUyj8bOnsgPiDMCOTnj5BidWRSd8+Q==
-x-ms-exchange-transport-crosstenantheadersstamped: BYAPR02MB4184
+x-microsoft-antispam-message-info: /sQO4sHYGfCeZ/hAERJI7J0Jw7+t7ExLoVcD+F6Ih+M0uGO952xREaspihZaR9fnhFuzePnnhZ1PFqM6aMd42xpj9CO6MyZ2g/4m7qei4ShIGbUEKyIgdj4Y/1pkKX9xjYiFcrT8gOOePzV0BrAZsCeKeD/jZAwMIAYE5ubO4EIy/YoyFiOx0Px/iFNmboP53j3sfGaCp6vQ6yFrDkf7islpSxbF+wibGXSHNMJZYlkRAlxAmwVGHQMu7gOE7lGANaUckOJMmJYdDWPnzbiT4riJlQbHgQH71QBZca3hkywMSYOq4JBgEr2HIkhs/qpZL/YTImvKwM+FPLg6OrisQHf90SHWZNAwhX20BSxi2YsX0Opg8Ke6NJUatYLNcNi4MIYsmEFsuRc2SmDsK4WpJlnSxoIS7yGCIsem7k9bwxgIImafKi0NGw8xcKqKvPem
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-X-OriginatorOrg: qca.qualcomm.com
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 43a16382-9eb0-4f5d-dc01-08d785356835
+X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Dec 2019 10:14:32.7483
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: Gt9BVbRWLH0VY7OShwpfg2m3CGoXnL5wzgKVxNdGvNaChNvbNr5tItzKl07mvwDXbNHZfZSnOgcTbLGhXSoOoQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB7PR04MB5065
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+'e33e2241e272 ("Revert "cfg80211: Use 5MHz bandwidth by
+default when checking usable channels"")' fixed a broken
+regulatory(which leave channel 12 open for AP). We need similar
+fix, in case of custom regulatory domain as well.
 
-ath10k firmware updates and also new hardware WCN3990. Please let me know i=
-f there are any problems.
+Signed-off-by: Cathy Luo <xiaohua.luo@nxp.com>
+Signed-off-by: Ganapathi Bhat <ganapathi.bhat@nxp.com>
+---
+ net/wireless/reg.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-Kalle
+diff --git a/net/wireless/reg.c b/net/wireless/reg.c
+index 446c76d..91fa3df 100644
+--- a/net/wireless/reg.c
++++ b/net/wireless/reg.c
+@@ -2261,14 +2261,15 @@ static void update_all_wiphy_regulatory(enum nl8021=
+1_reg_initiator initiator)
+=20
+ static void handle_channel_custom(struct wiphy *wiphy,
+ 				  struct ieee80211_channel *chan,
+-				  const struct ieee80211_regdomain *regd)
++				  const struct ieee80211_regdomain *regd,
++				  u32 min_bw)
+ {
+ 	u32 bw_flags =3D 0;
+ 	const struct ieee80211_reg_rule *reg_rule =3D NULL;
+ 	const struct ieee80211_power_rule *power_rule =3D NULL;
+ 	u32 bw;
+=20
+-	for (bw =3D MHZ_TO_KHZ(20); bw >=3D MHZ_TO_KHZ(5); bw =3D bw / 2) {
++	for (bw =3D MHZ_TO_KHZ(20); bw >=3D min_bw; bw =3D bw / 2) {
+ 		reg_rule =3D freq_reg_info_regd(MHZ_TO_KHZ(chan->center_freq),
+ 					      regd, bw);
+ 		if (!IS_ERR(reg_rule))
+@@ -2325,7 +2326,7 @@ static void handle_band_custom(struct wiphy *wiphy,
+ 		return;
+=20
+ 	for (i =3D 0; i < sband->n_channels; i++)
+-		handle_channel_custom(wiphy, &sband->channels[i], regd);
++		handle_channel_custom(wiphy, &sband->channels[i], regd, MHZ_TO_KHZ(20));
+ }
+=20
+ /* Used by drivers prior to wiphy registration */
+--=20
+1.9.1
 
-The following changes since commit c4586ffaac0ca0d7045e06140b6426f2e79e96e6=
-:
-
-  linux-firmware: Update AMD cpu microcode (2019-12-18 09:37:15 -0500)
-
-are available in the git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/linux-firmware.git at=
-h10k-20191220
-
-for you to fetch changes up to b142c2e0229bc89b44ac527f4f3c3def063bcbc6:
-
-  ath10k: WCN3990 hw1.0: add firmware WLAN.HL.2.0-01387-QCAHLSWMTPLZ-1 (201=
-9-12-20 11:18:46 +0200)
-
-----------------------------------------------------------------
-Kalle Valo (6):
-      ath10k: QCA6174 hw3.0: update board-2.bin
-      ath10k: QCA9887 hw1.0: update firmware-5.bin to 10.2.4-1.0-00047
-      ath10k: QCA9888 hw2.0: update firmware-5.bin to 10.4-3.9.0.2-00070
-      ath10k: QCA988X hw2.0: update firmware-5.bin to 10.2.4-1.0-00047
-      ath10k: QCA9984 hw1.0: update firmware-5.bin to 10.4-3.9.0.2-00070
-      ath10k: WCN3990 hw1.0: add firmware WLAN.HL.2.0-01387-QCAHLSWMTPLZ-1
-
- WHENCE                                   |  12 +-
- ath10k/QCA6174/hw3.0/board-2.bin         | Bin 567608 -> 584036 bytes
- ath10k/QCA9887/hw1.0/firmware-5.bin      | Bin 238484 -> 238548 bytes
- ath10k/QCA9888/hw2.0/firmware-5.bin      | Bin 686996 -> 688140 bytes
- ath10k/QCA988X/hw2.0/firmware-5.bin      | Bin 248984 -> 249044 bytes
- ath10k/QCA9984/hw1.0/firmware-5.bin      | Bin 674940 -> 675948 bytes
- ath10k/WCN3990/hw1.0/firmware-5.bin      | Bin 0 -> 60 bytes
- ath10k/WCN3990/hw1.0/notice.txt_wlanmdsp | 571 +++++++++++++++++++++++++++=
-++++
- ath10k/WCN3990/hw1.0/wlanmdsp.mbn        | Bin 0 -> 3725044 bytes
- 9 files changed, 579 insertions(+), 4 deletions(-)
- create mode 100644 ath10k/WCN3990/hw1.0/firmware-5.bin
- create mode 100644 ath10k/WCN3990/hw1.0/notice.txt_wlanmdsp
- create mode 100644 ath10k/WCN3990/hw1.0/wlanmdsp.mbn
