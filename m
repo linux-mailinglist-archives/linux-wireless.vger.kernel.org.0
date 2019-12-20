@@ -2,26 +2,26 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BAD80127B48
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Dec 2019 13:51:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AAAC1127B49
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Dec 2019 13:51:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727412AbfLTMvg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 20 Dec 2019 07:51:36 -0500
-Received: from paleale.coelho.fi ([176.9.41.70]:54054 "EHLO
+        id S1727417AbfLTMvh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 20 Dec 2019 07:51:37 -0500
+Received: from paleale.coelho.fi ([176.9.41.70]:54060 "EHLO
         farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1727394AbfLTMvf (ORCPT
+        with ESMTP id S1727341AbfLTMvh (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 20 Dec 2019 07:51:35 -0500
+        Fri, 20 Dec 2019 07:51:37 -0500
 Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa.ger.corp.intel.com)
         by farmhouse.coelho.fi with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.92.2)
         (envelope-from <luca@coelho.fi>)
-        id 1iiHki-0007lx-N2; Fri, 20 Dec 2019 14:51:33 +0200
+        id 1iiHkj-0007lx-MP; Fri, 20 Dec 2019 14:51:34 +0200
 From:   Luca Coelho <luca@coelho.fi>
 To:     kvalo@codeaurora.org
 Cc:     linux-wireless@vger.kernel.org
-Date:   Fri, 20 Dec 2019 14:51:16 +0200
-Message-Id: <20191220125124.1315679-4-luca@coelho.fi>
+Date:   Fri, 20 Dec 2019 14:51:17 +0200
+Message-Id: <20191220125124.1315679-5-luca@coelho.fi>
 X-Mailer: git-send-email 2.24.0
 In-Reply-To: <20191220125124.1315679-1-luca@coelho.fi>
 References: <20191220125124.1315679-1-luca@coelho.fi>
@@ -32,169 +32,469 @@ X-Spam-Level:
 X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
         TVD_RCVD_IP,URIBL_BLOCKED autolearn=ham autolearn_force=no
         version=3.4.2
-Subject: [PATCH 03/11] iwlwifi: scan: remove support for fw scan api v11
+Subject: [PATCH 04/11] iwlwifi: mvm: add support for location range request version 8
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Tova Mussai <tova.mussai@intel.com>
+From: Avraham Stern <avraham.stern@intel.com>
 
-The fw already support scan api v12,
-v11 is not needed anymore.
+The new API requires the driver to set the frame format
+(legacy, HT, VHT etc.) to be used for the measurement.
 
-Signed-off-by: Tova Mussai <tova.mussai@intel.com>
+The new API also supports 11az and secured measurement, but
+these are not supported by the driver for now.
+
+Signed-off-by: Avraham Stern <avraham.stern@intel.com>
 Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 ---
- .../net/wireless/intel/iwlwifi/fw/api/scan.h  | 41 ----------------
- drivers/net/wireless/intel/iwlwifi/mvm/scan.c | 47 -------------------
- 2 files changed, 88 deletions(-)
+ .../wireless/intel/iwlwifi/fw/api/location.h  | 104 +++++++-
+ .../intel/iwlwifi/mvm/ftm-initiator.c         | 238 ++++++++++++++----
+ 2 files changed, 289 insertions(+), 53 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/scan.h b/drivers/net/wireless/intel/iwlwifi/fw/api/scan.h
-index 408798f351c6..1b2b5fa56e19 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/api/scan.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/api/scan.h
-@@ -921,21 +921,6 @@ struct iwl_scan_probe_params_v4 {
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/location.h b/drivers/net/wireless/intel/iwlwifi/fw/api/location.h
+index 7a0fe5adefa5..a51fda4c9588 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/api/location.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/api/location.h
+@@ -403,7 +403,7 @@ enum iwl_initiator_ap_flags {
+ };
  
- #define SCAN_MAX_NUM_CHANS_V3 67
- 
--/**
-- * struct iwl_scan_channel_params_v3
-- * @flags: channel flags &enum iwl_scan_channel_flags
-- * @count: num of channels in scan request
-- * @reserved: for future use and alignment
-- * @channel_config: array of explicit channel configurations
-- *                  for 2.4Ghz and 5.2Ghz bands
-- */
--struct iwl_scan_channel_params_v3 {
--	u8 flags;
--	u8 count;
--	__le16 reserved;
--	struct iwl_scan_channel_cfg_umac channel_config[SCAN_MAX_NUM_CHANS_V3];
--} __packed; /* SCAN_CHANNEL_PARAMS_API_S_VER_3 */
--
  /**
-  * struct iwl_scan_channel_params_v4
-  * @flags: channel flags &enum iwl_scan_channel_flags
-@@ -1010,20 +995,6 @@ struct iwl_scan_periodic_parms_v1 {
- 	__le16 reserved;
- } __packed; /* SCAN_PERIODIC_PARAMS_API_S_VER_1 */
+- * struct iwl_tof_range_req_ap_entry - AP configuration parameters
++ * struct iwl_tof_range_req_ap_entry_v3 - AP configuration parameters
+  * @initiator_ap_flags: see &enum iwl_initiator_ap_flags.
+  * @channel_num: AP Channel number
+  * @bandwidth: AP bandwidth. One of iwl_tof_bandwidth.
+@@ -420,7 +420,7 @@ enum iwl_initiator_ap_flags {
+  * @reserved: For alignment and future use
+  * @tsf_delta: not in use
+  */
+-struct iwl_tof_range_req_ap_entry {
++struct iwl_tof_range_req_ap_entry_v3 {
+ 	__le32 initiator_ap_flags;
+ 	u8 channel_num;
+ 	u8 bandwidth;
+@@ -434,6 +434,72 @@ struct iwl_tof_range_req_ap_entry {
+ 	__le32 tsf_delta;
+ } __packed; /* LOCATION_RANGE_REQ_AP_ENTRY_CMD_API_S_VER_3 */
  
--/**
-- * struct iwl_scan_req_params_v11
-- * @general_params: &struct iwl_scan_general_params_v10
-- * @channel_params: &struct iwl_scan_channel_params_v3
-- * @periodic_params: &struct iwl_scan_periodic_parms_v1
-- * @probe_params: &struct iwl_scan_probe_params_v3
-- */
--struct iwl_scan_req_params_v11 {
--	struct iwl_scan_general_params_v10 general_params;
--	struct iwl_scan_channel_params_v3 channel_params;
--	struct iwl_scan_periodic_parms_v1 periodic_params;
--	struct iwl_scan_probe_params_v3 probe_params;
--} __packed; /* SCAN_REQUEST_PARAMS_API_S_VER_11 */
--
++/**
++ * enum iwl_location_frame_format - location frame formats
++ * @IWL_LOCATION_FRAME_FORMAT_LEGACY: legacy
++ * @IWL_LOCATION_FRAME_FORMAT_HT: HT
++ * @IWL_LOCATION_FRAME_FORMAT_VHT: VHT
++ * @IWL_LOCATION_FRAME_FORMAT_HE: HE
++ */
++enum iwl_location_frame_format {
++	IWL_LOCATION_FRAME_FORMAT_LEGACY,
++	IWL_LOCATION_FRAME_FORMAT_HT,
++	IWL_LOCATION_FRAME_FORMAT_VHT,
++	IWL_LOCATION_FRAME_FORMAT_HE,
++};
++
++/**
++ * enum iwl_location_bw - location bandwidth selection
++ * @IWL_LOCATION_BW_20MHZ: 20MHz
++ * @IWL_LOCATION_BW_40MHZ: 40MHz
++ * @IWL_LOCATION_BW_80MHZ: 80MHz
++ */
++enum iwl_location_bw {
++	IWL_LOCATION_BW_20MHZ,
++	IWL_LOCATION_BW_40MHZ,
++	IWL_LOCATION_BW_80MHZ,
++};
++
++#define HLTK_11AZ_LEN	32
++#define TK_11AZ_LEN	32
++
++#define LOCATION_BW_POS	4
++
++/**
++ * struct iwl_tof_range_req_ap_entry - AP configuration parameters
++ * @initiator_ap_flags: see &enum iwl_initiator_ap_flags.
++ * @channel_num: AP Channel number
++ * @format_bw: bits 0 - 3: &enum iwl_location_frame_format.
++ *             bits 4 - 7: &enum iwl_location_bw.
++ * @ctrl_ch_position: Coding of the control channel position relative to the
++ *	center frequency, see iwl_mvm_get_ctrl_pos().
++ * @ftmr_max_retries: Max number of retries to send the FTMR in case of no
++ *	reply from the AP.
++ * @bssid: AP's BSSID
++ * @burst_period: Recommended value to be sent to the AP. Measurement
++ *	periodicity In units of 100ms. ignored if num_of_bursts_exp = 0
++ * @samples_per_burst: the number of FTMs pairs in single Burst (1-31);
++ * @num_of_bursts: Recommended value to be sent to the AP. 2s Exponent of
++ *	the number of measurement iterations (min 2^0 = 1, max 2^14)
++ * @reserved: For alignment and future use
++ * @hltk: HLTK to be used for secured 11az measurement
++ * @tk: TK to be used for secured 11az measurement
++ */
++struct iwl_tof_range_req_ap_entry {
++	__le32 initiator_ap_flags;
++	u8 channel_num;
++	u8 format_bw;
++	u8 ctrl_ch_position;
++	u8 ftmr_max_retries;
++	u8 bssid[ETH_ALEN];
++	__le16 burst_period;
++	u8 samples_per_burst;
++	u8 num_of_bursts;
++	__le16 reserved;
++	u8 hltk[HLTK_11AZ_LEN];
++	u8 tk[TK_11AZ_LEN];
++} __packed; /* LOCATION_RANGE_REQ_AP_ENTRY_CMD_API_S_VER_4 */
++
  /**
-  * struct iwl_scan_req_params_v12
-  * @general_params: &struct iwl_scan_general_params_v10
-@@ -1052,18 +1023,6 @@ struct iwl_scan_req_params_v13 {
- 	struct iwl_scan_probe_params_v4 probe_params;
- } __packed; /* SCAN_REQUEST_PARAMS_API_S_VER_13 */
+  * enum iwl_tof_response_mode
+  * @IWL_MVM_TOF_RESPONSE_ASAP: report each AP measurement separately as soon as
+@@ -535,6 +601,38 @@ struct iwl_tof_range_req_cmd_v5 {
+ } __packed;
+ /* LOCATION_RANGE_REQ_CMD_API_S_VER_5 */
  
--/**
-- * struct iwl_scan_req_umac_v11
-- * @uid: scan id, &enum iwl_umac_scan_uid_offsets
-- * @ooc_priority: out of channel priority - &enum iwl_scan_priority
-- * @scan_params: scan parameters
-- */
--struct iwl_scan_req_umac_v11 {
--	__le32 uid;
--	__le32 ooc_priority;
--	struct iwl_scan_req_params_v11 scan_params;
--} __packed; /* SCAN_REQUEST_CMD_UMAC_API_S_VER_11 */
--
++/**
++ * struct iwl_tof_range_req_cmd_v7 - start measurement cmd
++ * @initiator_flags: see flags @ iwl_tof_initiator_flags
++ * @request_id: A Token incremented per request. The same Token will be
++ *		sent back in the range response
++ * @num_of_ap: Number of APs to measure (error if > IWL_MVM_TOF_MAX_APS)
++ * @range_req_bssid: ranging request BSSID
++ * @macaddr_mask: Bits set to 0 shall be copied from the MAC address template.
++ *		  Bits set to 1 shall be randomized by the UMAC
++ * @macaddr_template: MAC address template to use for non-randomized bits
++ * @req_timeout_ms: Requested timeout of the response in units of milliseconds.
++ *	This is the session time for completing the measurement.
++ * @tsf_mac_id: report the measurement start time for each ap in terms of the
++ *	TSF of this mac id. 0xff to disable TSF reporting.
++ * @common_calib: The common calib value to inject to this measurement calc
++ * @specific_calib: The specific calib value to inject to this measurement calc
++ * @ap: per-AP request data, see &struct iwl_tof_range_req_ap_entry_v2.
++ */
++struct iwl_tof_range_req_cmd_v7 {
++	__le32 initiator_flags;
++	u8 request_id;
++	u8 num_of_ap;
++	u8 range_req_bssid[ETH_ALEN];
++	u8 macaddr_mask[ETH_ALEN];
++	u8 macaddr_template[ETH_ALEN];
++	__le32 req_timeout_ms;
++	__le32 tsf_mac_id;
++	__le16 common_calib;
++	__le16 specific_calib;
++	struct iwl_tof_range_req_ap_entry_v3 ap[IWL_MVM_TOF_MAX_APS];
++} __packed; /* LOCATION_RANGE_REQ_CMD_API_S_VER_7 */
++
  /**
-  * struct iwl_scan_req_umac_v12
-  * @uid: scan id, &enum iwl_umac_scan_uid_offsets
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-index a046ac9fa852..c0c89d460700 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-@@ -1906,20 +1906,6 @@ iwl_mvm_scan_umac_fill_probe_p_v4(struct iwl_mvm_scan_params *params,
- 	iwl_scan_build_ssids(params, pp->direct_scan, bitmap_ssid);
+  * struct iwl_tof_range_req_cmd - start measurement cmd
+  * @initiator_flags: see flags @ iwl_tof_initiator_flags
+@@ -565,7 +663,7 @@ struct iwl_tof_range_req_cmd {
+ 	__le16 common_calib;
+ 	__le16 specific_calib;
+ 	struct iwl_tof_range_req_ap_entry ap[IWL_MVM_TOF_MAX_APS];
+-} __packed; /* LOCATION_RANGE_REQ_CMD_API_S_VER_7 */
++} __packed; /* LOCATION_RANGE_REQ_CMD_API_S_VER_8 */
+ 
+ /*
+  * enum iwl_tof_range_request_status - status of the sent request
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c b/drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c
+index 9f4b117db9d7..237d35ef7e76 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c
+@@ -208,10 +208,11 @@ static void iwl_mvm_ftm_cmd(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
+ 	cmd->tsf_mac_id = cpu_to_le32(0xff);
  }
  
--static void
--iwl_mvm_scan_umac_fill_ch_p_v3(struct iwl_mvm *mvm,
--			       struct iwl_mvm_scan_params *params,
--			       struct ieee80211_vif *vif,
--			       struct iwl_scan_channel_params_v3 *cp)
--{
--	cp->flags = iwl_mvm_scan_umac_chan_flags_v2(mvm, params, vif);
--	cp->count = params->n_channels;
--
--	iwl_mvm_umac_scan_cfg_channels(mvm, params->channels,
--				       params->n_channels, 0,
--				       cp->channel_config);
--}
--
- static void
- iwl_mvm_scan_umac_fill_ch_p_v4(struct iwl_mvm *mvm,
- 			       struct iwl_mvm_scan_params *params,
-@@ -1937,37 +1923,6 @@ iwl_mvm_scan_umac_fill_ch_p_v4(struct iwl_mvm *mvm,
- 					  vif->type);
+-static int iwl_mvm_ftm_target_chandef(struct iwl_mvm *mvm,
+-				      struct cfg80211_pmsr_request_peer *peer,
+-				      u8 *channel, u8 *bandwidth,
+-				      u8 *ctrl_ch_position)
++static int
++iwl_mvm_ftm_target_chandef_v1(struct iwl_mvm *mvm,
++			      struct cfg80211_pmsr_request_peer *peer,
++			      u8 *channel, u8 *bandwidth,
++			      u8 *ctrl_ch_position)
+ {
+ 	u32 freq = peer->chandef.chan->center_freq;
+ 
+@@ -242,6 +243,45 @@ static int iwl_mvm_ftm_target_chandef(struct iwl_mvm *mvm,
+ 	return 0;
  }
  
--static int iwl_mvm_scan_umac_v11(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
--				 struct iwl_mvm_scan_params *params, int type,
--				 int uid)
--{
--	struct iwl_scan_req_umac_v11 *cmd = mvm->scan_cmd;
--	struct iwl_scan_req_params_v11 *scan_p = &cmd->scan_params;
++static int
++iwl_mvm_ftm_target_chandef_v2(struct iwl_mvm *mvm,
++			      struct cfg80211_pmsr_request_peer *peer,
++			      u8 *channel, u8 *format_bw,
++			      u8 *ctrl_ch_position)
++{
++	u32 freq = peer->chandef.chan->center_freq;
++
++	*channel = ieee80211_frequency_to_channel(freq);
++
++	switch (peer->chandef.width) {
++	case NL80211_CHAN_WIDTH_20_NOHT:
++		*format_bw = IWL_LOCATION_FRAME_FORMAT_LEGACY;
++		*format_bw |= IWL_LOCATION_BW_20MHZ << LOCATION_BW_POS;
++		break;
++	case NL80211_CHAN_WIDTH_20:
++		*format_bw = IWL_LOCATION_FRAME_FORMAT_HT;
++		*format_bw |= IWL_LOCATION_BW_20MHZ << LOCATION_BW_POS;
++		break;
++	case NL80211_CHAN_WIDTH_40:
++		*format_bw = IWL_LOCATION_FRAME_FORMAT_HT;
++		*format_bw |= IWL_LOCATION_BW_40MHZ << LOCATION_BW_POS;
++		break;
++	case NL80211_CHAN_WIDTH_80:
++		*format_bw = IWL_LOCATION_FRAME_FORMAT_VHT;
++		*format_bw |= IWL_LOCATION_BW_80MHZ << LOCATION_BW_POS;
++		break;
++	default:
++		IWL_ERR(mvm, "Unsupported BW in FTM request (%d)\n",
++			peer->chandef.width);
++		return -EINVAL;
++	}
++
++	*ctrl_ch_position = (peer->chandef.width > NL80211_CHAN_WIDTH_20) ?
++		iwl_mvm_get_ctrl_pos(&peer->chandef) : 0;
++
++	return 0;
++}
++
+ static int
+ iwl_mvm_ftm_put_target_v2(struct iwl_mvm *mvm,
+ 			  struct cfg80211_pmsr_request_peer *peer,
+@@ -249,9 +289,9 @@ iwl_mvm_ftm_put_target_v2(struct iwl_mvm *mvm,
+ {
+ 	int ret;
+ 
+-	ret = iwl_mvm_ftm_target_chandef(mvm, peer, &target->channel_num,
+-					 &target->bandwidth,
+-					 &target->ctrl_ch_position);
++	ret = iwl_mvm_ftm_target_chandef_v1(mvm, peer, &target->channel_num,
++					    &target->bandwidth,
++					    &target->ctrl_ch_position);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -278,18 +318,11 @@ iwl_mvm_ftm_put_target_v2(struct iwl_mvm *mvm,
+ #define FTM_PUT_FLAG(flag)	(target->initiator_ap_flags |= \
+ 				 cpu_to_le32(IWL_INITIATOR_AP_FLAGS_##flag))
+ 
+-static int iwl_mvm_ftm_put_target(struct iwl_mvm *mvm,
+-				  struct cfg80211_pmsr_request_peer *peer,
+-				  struct iwl_tof_range_req_ap_entry *target)
++static void
++iwl_mvm_ftm_put_target_common(struct iwl_mvm *mvm,
++			      struct cfg80211_pmsr_request_peer *peer,
++			      struct iwl_tof_range_req_ap_entry *target)
+ {
 -	int ret;
--	u16 gen_flags;
 -
--	mvm->scan_uid_status[uid] = type;
--
--	cmd->ooc_priority = cpu_to_le32(iwl_mvm_scan_umac_ooc_priority(params));
--	cmd->uid = cpu_to_le32(uid);
--
--	gen_flags = iwl_mvm_scan_umac_flags_v2(mvm, params, vif, type);
--	iwl_mvm_scan_umac_fill_general_p_v10(mvm, params, vif,
--					     &scan_p->general_params,
--					     gen_flags);
--
--	 ret = iwl_mvm_fill_scan_sched_params(params,
--					      scan_p->periodic_params.schedule,
--					      &scan_p->periodic_params.delay);
+-	ret = iwl_mvm_ftm_target_chandef(mvm, peer, &target->channel_num,
+-					 &target->bandwidth,
+-					 &target->ctrl_ch_position);
 -	if (ret)
 -		return ret;
 -
--	iwl_mvm_scan_umac_fill_probe_p_v3(params, &scan_p->probe_params);
--	iwl_mvm_scan_umac_fill_ch_p_v3(mvm, params, vif,
--				       &scan_p->channel_params);
--
--	return 0;
--}
+ 	memcpy(target->bssid, peer->addr, ETH_ALEN);
+ 	target->burst_period =
+ 		cpu_to_le16(peer->ftm.burst_period);
+@@ -315,59 +348,164 @@ static int iwl_mvm_ftm_put_target(struct iwl_mvm *mvm,
+ 	else if (IWL_MVM_FTM_INITIATOR_ALGO == IWL_TOF_ALGO_TYPE_FFT)
+ 		FTM_PUT_FLAG(ALGO_FFT);
  
- static int iwl_mvm_scan_umac_v12(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
- 				 struct iwl_mvm_scan_params *params, int type,
-@@ -2152,7 +2107,6 @@ static const struct iwl_scan_umac_handler iwl_scan_umac_handlers[] = {
- 	/* set the newest version first to shorten the list traverse time */
- 	IWL_SCAN_UMAC_HANDLER(13),
- 	IWL_SCAN_UMAC_HANDLER(12),
--	IWL_SCAN_UMAC_HANDLER(11),
- };
++static int
++iwl_mvm_ftm_put_target_v3(struct iwl_mvm *mvm,
++			  struct cfg80211_pmsr_request_peer *peer,
++			  struct iwl_tof_range_req_ap_entry_v3 *target)
++{
++	int ret;
++
++	ret = iwl_mvm_ftm_target_chandef_v1(mvm, peer, &target->channel_num,
++					    &target->bandwidth,
++					    &target->ctrl_ch_position);
++	if (ret)
++		return ret;
++
++	/*
++	 * Versions 3 and 4 has some common fields, so
++	 * iwl_mvm_ftm_put_target_common() can be used for version 7 too.
++	 */
++	iwl_mvm_ftm_put_target_common(mvm, peer, (void *)target);
++
+ 	return 0;
+ }
  
- static int iwl_mvm_build_scan_cmd(struct iwl_mvm *mvm,
-@@ -2511,7 +2465,6 @@ static int iwl_scan_req_umac_get_size(u8 scan_ver)
- 	switch (scan_ver) {
- 		IWL_SCAN_REQ_UMAC_HANDLE_SIZE(13);
- 		IWL_SCAN_REQ_UMAC_HANDLE_SIZE(12);
--		IWL_SCAN_REQ_UMAC_HANDLE_SIZE(11);
+-int iwl_mvm_ftm_start(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
+-		      struct cfg80211_pmsr_request *req)
++static int iwl_mvm_ftm_put_target_v4(struct iwl_mvm *mvm,
++				     struct cfg80211_pmsr_request_peer *peer,
++				     struct iwl_tof_range_req_ap_entry *target)
++{
++	int ret;
++
++	ret = iwl_mvm_ftm_target_chandef_v2(mvm, peer, &target->channel_num,
++					    &target->format_bw,
++					    &target->ctrl_ch_position);
++	if (ret)
++		return ret;
++
++	iwl_mvm_ftm_put_target_common(mvm, peer, target);
++
++	return 0;
++}
++
++static int iwl_mvm_ftm_send_cmd(struct iwl_mvm *mvm, struct iwl_host_cmd *hcmd)
++{
++	u32 status;
++	int err = iwl_mvm_send_cmd_status(mvm, hcmd, &status);
++
++	if (!err && status) {
++		IWL_ERR(mvm, "FTM range request command failure, status: %u\n",
++			status);
++		err = iwl_ftm_range_request_status_to_err(status);
++	}
++
++	return err;
++}
++
++static int iwl_mvm_ftm_start_v5(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
++				struct cfg80211_pmsr_request *req)
+ {
+ 	struct iwl_tof_range_req_cmd_v5 cmd_v5;
+-	struct iwl_tof_range_req_cmd cmd;
+-	bool new_api = fw_has_api(&mvm->fw->ucode_capa,
+-				  IWL_UCODE_TLV_API_FTM_NEW_RANGE_REQ);
+-	u8 num_of_ap;
+ 	struct iwl_host_cmd hcmd = {
+ 		.id = iwl_cmd_id(TOF_RANGE_REQ_CMD, LOCATION_GROUP, 0),
+ 		.dataflags[0] = IWL_HCMD_DFL_DUP,
++		.data[0] = &cmd_v5,
++		.len[0] = sizeof(cmd_v5),
+ 	};
+-	u32 status = 0;
+-	int err, i;
++	u8 i;
++	int err;
+ 
+-	lockdep_assert_held(&mvm->mutex);
++	iwl_mvm_ftm_cmd_v5(mvm, vif, &cmd_v5, req);
+ 
+-	if (mvm->ftm_initiator.req)
+-		return -EBUSY;
++	for (i = 0; i < cmd_v5.num_of_ap; i++) {
++		struct cfg80211_pmsr_request_peer *peer = &req->peers[i];
+ 
+-	if (new_api) {
+-		iwl_mvm_ftm_cmd(mvm, vif, &cmd, req);
+-		hcmd.data[0] = &cmd;
+-		hcmd.len[0] = sizeof(cmd);
+-		num_of_ap = cmd.num_of_ap;
+-	} else {
+-		iwl_mvm_ftm_cmd_v5(mvm, vif, &cmd_v5, req);
+-		hcmd.data[0] = &cmd_v5;
+-		hcmd.len[0] = sizeof(cmd_v5);
+-		num_of_ap = cmd_v5.num_of_ap;
++		err = iwl_mvm_ftm_put_target_v2(mvm, peer, &cmd_v5.ap[i]);
++		if (err)
++			return err;
  	}
  
- 	return 0;
+-	for (i = 0; i < num_of_ap; i++) {
++	return iwl_mvm_ftm_send_cmd(mvm, &hcmd);
++}
++
++static int iwl_mvm_ftm_start_v7(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
++				struct cfg80211_pmsr_request *req)
++{
++	struct iwl_tof_range_req_cmd_v7 cmd_v7;
++	struct iwl_host_cmd hcmd = {
++		.id = iwl_cmd_id(TOF_RANGE_REQ_CMD, LOCATION_GROUP, 0),
++		.dataflags[0] = IWL_HCMD_DFL_DUP,
++		.data[0] = &cmd_v7,
++		.len[0] = sizeof(cmd_v7),
++	};
++	u8 i;
++	int err;
++
++	/*
++	 * Versions 7 and 8 has the same structure except from the responders
++	 * list, so iwl_mvm_ftm_cmd() can be used for version 7 too.
++	 */
++	iwl_mvm_ftm_cmd(mvm, vif, (void *)&cmd_v7, req);
++
++	for (i = 0; i < cmd_v7.num_of_ap; i++) {
+ 		struct cfg80211_pmsr_request_peer *peer = &req->peers[i];
+ 
+-		if (new_api)
+-			err = iwl_mvm_ftm_put_target(mvm, peer, &cmd.ap[i]);
+-		else
+-			err = iwl_mvm_ftm_put_target_v2(mvm, peer,
+-							&cmd_v5.ap[i]);
++		err = iwl_mvm_ftm_put_target_v3(mvm, peer, &cmd_v7.ap[i]);
++		if (err)
++			return err;
++	}
++
++	return iwl_mvm_ftm_send_cmd(mvm, &hcmd);
++}
+ 
++static int iwl_mvm_ftm_start_v8(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
++				struct cfg80211_pmsr_request *req)
++{
++	struct iwl_tof_range_req_cmd cmd;
++	struct iwl_host_cmd hcmd = {
++		.id = iwl_cmd_id(TOF_RANGE_REQ_CMD, LOCATION_GROUP, 0),
++		.dataflags[0] = IWL_HCMD_DFL_DUP,
++		.data[0] = &cmd,
++		.len[0] = sizeof(cmd),
++	};
++	u8 i;
++	int err;
++
++	iwl_mvm_ftm_cmd(mvm, vif, &cmd, req);
++
++	for (i = 0; i < cmd.num_of_ap; i++) {
++		struct cfg80211_pmsr_request_peer *peer = &req->peers[i];
++
++		err = iwl_mvm_ftm_put_target_v4(mvm, peer, &cmd.ap[i]);
+ 		if (err)
+ 			return err;
+ 	}
+ 
+-	err = iwl_mvm_send_cmd_status(mvm, &hcmd, &status);
+-	if (!err && status) {
+-		IWL_ERR(mvm, "FTM range request command failure, status: %u\n",
+-			status);
+-		err = iwl_ftm_range_request_status_to_err(status);
++	return iwl_mvm_ftm_send_cmd(mvm, &hcmd);
++}
++
++int iwl_mvm_ftm_start(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
++		      struct cfg80211_pmsr_request *req)
++{
++	bool new_api = fw_has_api(&mvm->fw->ucode_capa,
++				  IWL_UCODE_TLV_API_FTM_NEW_RANGE_REQ);
++	int err;
++
++	lockdep_assert_held(&mvm->mutex);
++
++	if (mvm->ftm_initiator.req)
++		return -EBUSY;
++
++	if (new_api) {
++		u8 cmd_ver = iwl_mvm_lookup_cmd_ver(mvm->fw, LOCATION_GROUP,
++						    TOF_RANGE_REQ_CMD);
++
++		if (cmd_ver == 8)
++			err = iwl_mvm_ftm_start_v8(mvm, vif, req);
++		else
++			err = iwl_mvm_ftm_start_v7(mvm, vif, req);
++
++	} else {
++		err = iwl_mvm_ftm_start_v5(mvm, vif, req);
+ 	}
+ 
+ 	if (!err) {
 -- 
 2.24.0
 
