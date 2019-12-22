@@ -2,87 +2,79 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 76473128C94
-	for <lists+linux-wireless@lfdr.de>; Sun, 22 Dec 2019 05:36:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D8302128D5D
+	for <lists+linux-wireless@lfdr.de>; Sun, 22 Dec 2019 11:33:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726564AbfLVEft (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 21 Dec 2019 23:35:49 -0500
-Received: from mail-lj1-f196.google.com ([209.85.208.196]:38168 "EHLO
-        mail-lj1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726339AbfLVEft (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 21 Dec 2019 23:35:49 -0500
-Received: by mail-lj1-f196.google.com with SMTP id k8so14357197ljh.5;
-        Sat, 21 Dec 2019 20:35:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:subject:from:in-reply-to:date:cc
-         :content-transfer-encoding:message-id:references:to;
-        bh=COqV+F9ei+E2oY/KUB0AC+nOpaJlD5cnAnx3su+cln8=;
-        b=Cv0SnhHugHFXM1wehyT8ZP9WXuaIPyVcBG6QAPwrblORdbVMiTAq5PHe4q50nyM/yb
-         7uEgLheCNNJx5Q34a5dRlsr3bz70WQoFgnfd0vNUZc/DPyzWEnmrb/N7VVxEpHzA6gte
-         O8jawT7C5MPN4poBDjy1xgqL74lKqd7+xQmN5rVfGQIr7BuYYHWMPG/V9aqYIthcXXSg
-         cazi3FoZXNrpwOAhTN/CBxTcxmMwWW7jMBTMGZcf16SPjrPx+z7QlU9i6arOrqjdSYZ/
-         N42CdQnpuBqd4eOwRVh7LrPJAQ2OX3lVzj95Ewy1hLSsPULxOhX8qH2uuHbXR11a+KCJ
-         /oyw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:subject:from:in-reply-to:date:cc
-         :content-transfer-encoding:message-id:references:to;
-        bh=COqV+F9ei+E2oY/KUB0AC+nOpaJlD5cnAnx3su+cln8=;
-        b=ZVjCXS11NRf2SAS7Mkw6Mh3wDSNCNAVzBuoE8WOg+Fs1GNvbTM+ugWXSH7SKcCBbXb
-         dDCzZPICULzcrtu6tmazoFBck4ahWVgGqEuYQo1NOq0hVNb16A6z28KsD8Pl7arlMF7m
-         ilDZH+wnF/4ohk9yq0fdDxgO9+84o6eXfoUiE6lfRlFblzHJFwuB+5cAwA3p1NQ/Eypc
-         YyMkOtCtLhluRR+G9xOB60OgemzUZwo/PgflbuY9CAhtggLLkp+MDJbMPj/hIQ4t7fJ9
-         NxQsssUK6wWi1ECqtw9mm2tT6vCmLCK4qUukIvtZek/9VNOuCCrvEMogt5o9Phd4ED7c
-         QtxQ==
-X-Gm-Message-State: APjAAAWPKW7Ugkr0TxWXA3KYNtwNm5PQRuyeV5mK+BankAckDlAR7fVG
-        qtbm7/NO4VPLJnMcnrnukiU=
-X-Google-Smtp-Source: APXvYqwwHNpyqONsjbrnnDi7Do8gsYy7HpNpEiploEtWoEqRQpQQl2rppymPVsg7yDY255l1Q74Klw==
-X-Received: by 2002:a2e:88c5:: with SMTP id a5mr14669392ljk.201.1576989347408;
-        Sat, 21 Dec 2019 20:35:47 -0800 (PST)
-Received: from [172.20.1.19] ([5.42.224.242])
-        by smtp.gmail.com with ESMTPSA id g15sm1827895ljl.10.2019.12.21.20.35.44
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Sat, 21 Dec 2019 20:35:46 -0800 (PST)
-Content-Type: text/plain;
-        charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 12.4 \(3445.104.11\))
-Subject: Re: [PATCH v2 0/9] brcmfmac: add support for BCM4359 SDIO chipset
-From:   Christian Hewitt <christianshewitt@gmail.com>
-In-Reply-To: <cb3ac55f-4c8f-b0a0-41ee-f16b3232c87e@web.de>
-Date:   Sun, 22 Dec 2019 07:35:43 +0300
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        Heiko Stuebner <heiko@sntech.de>,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        brcm80211-dev-list@cypress.com, netdev@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org,
-        Neil Armstrong <narmstrong@baylibre.com>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <47DB71CE-ACC4-431D-9E66-D28A8C18C0A4@gmail.com>
-References: <20191211235253.2539-1-smoch@web.de>
- <D1B53CE9-E87C-4514-A2D7-0FE70A4D1A5D@gmail.com>
- <cb3ac55f-4c8f-b0a0-41ee-f16b3232c87e@web.de>
-To:     Soeren Moch <smoch@web.de>
-X-Mailer: Apple Mail (2.3445.104.11)
+        id S1726053AbfLVKdf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 22 Dec 2019 05:33:35 -0500
+Received: from mail.kernel.org ([198.145.29.99]:45058 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725977AbfLVKdf (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 22 Dec 2019 05:33:35 -0500
+Received: from lore-desk-wlan.lan (unknown [151.66.53.26])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id BA7F52070A;
+        Sun, 22 Dec 2019 10:33:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1577010814;
+        bh=w1tnrpgtpkbsqyfTD5u4m/FzCOENslSHWXFVCL8GOgw=;
+        h=From:To:Cc:Subject:Date:From;
+        b=x1W9cZHktkE2zKndPvREXT+4tSjXPEMBwfi6Cy1NcPxQXqfwH07ldkWKS2usL9J2W
+         ApjS4koVsHwv/fvoGrEYqDS8qgaYv94amNWAe4QzCn0YvKvNt0I+NncJDcj4eBAVVu
+         6f7uOjqM3ikgZ39l54TDgs224NcjAp7WrU2s80Yc=
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
+        Sean.Wang@mediatek.com
+Subject: [PATCH 00/18] rework mt76u layer to support new devices
+Date:   Sun, 22 Dec 2019 11:33:02 +0100
+Message-Id: <cover.1577010183.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.24.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Rework mt76u layer to support new devices (e.g. 7663u).
+The main difference between mt7663u and previous mt76u dongles
+(e.g. mt76x2u) is mt7663u reports fw events through a dedicated
+mcu hw queue. Moreover, mt7663u relies on full usb 32bit address
+space to configure the usb dongle.
+This series is based on "mt76: channel switch support for USB devices"
+https://patchwork.kernel.org/cover/11301193/
 
-> On 19 Dec 2019, at 2:04 am, Soeren Moch <smoch@web.de> wrote:
->=20
-> I guess you need similar enhancements of the board device tree as in
-> patch 8 of this series for your VIM3 board.
+Lorenzo Bianconi (18):
+  mt76: mt76u: check tx_status_data pointer in mt76u_tx_tasklet
+  mt76: mt76u: add mt76u_process_rx_queue utility routine
+  mt76: mt76u: add mt76_queue to mt76u_get_next_rx_entry signature
+  mt76: mt76u: add mt76_queue to mt76u_refill_rx signature
+  mt76: mt76u: use mt76_queue as mt76u_complete_rx context
+  mt76: mt76u: add queue id parameter to mt76u_submit_rx_buffers
+  mt76: mt76u: move mcu buffer allocation in mt76x02u drivers
+  mt76: mt76u: introduce mt76u_free_rx_queue utility routine
+  mt76: mt76u: stop/free all possible rx queues
+  mt76: mt76u: add mt76u_alloc_rx_queue utility routine
+  mt76: mt76u: add queue parameter to mt76u_rx_urb_alloc
+  mt76: mt76u: resume all rx queue in mt76u_resume_rx
+  mt76: mt76u: introduce mt76u_alloc_mcu_queue utility routine
+  mt76: mt76u: add {read/write}_extended utility routines
+  mt76: mt76u: take into account different queue mapping for 7663
+  mt76: mt76u: introduce mt76u_skb_dma_info routine
+  mt76: mt76u: add endpoint to mt76u_bulk_msg signature
+  mt76: mt76u: introduce MT_DRV_RX_DMA_HDR flag
 
-Wider testing now points to a known SDIO issue (SoC bug) with Amlogic =
-G12A/B hardware. The merged workaround for the bug was only tested with =
-bcmdhd and brcmfmac may require tweaking as the same issue exhibits on =
-an Amlogic G12B device with BCM4356 chip. Testing the series with =
-Amlogic GXM (older) and SM1 (newer) hardware to exclude the SoC bug =
-shows everything working as expected.
+ drivers/net/wireless/mediatek/mt76/mt76.h     |  15 +-
+ .../net/wireless/mediatek/mt76/mt76x0/usb.c   |   8 +-
+ .../wireless/mediatek/mt76/mt76x02_usb_core.c |  25 +-
+ .../wireless/mediatek/mt76/mt76x02_usb_mcu.c  |   9 +-
+ .../net/wireless/mediatek/mt76/mt76x2/usb.c   |   2 +-
+ .../wireless/mediatek/mt76/mt76x2/usb_init.c  |   6 +
+ drivers/net/wireless/mediatek/mt76/usb.c      | 370 +++++++++++++-----
+ 7 files changed, 309 insertions(+), 126 deletions(-)
 
-Christian=
+-- 
+2.24.1
+
