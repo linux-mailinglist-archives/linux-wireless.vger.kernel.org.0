@@ -2,262 +2,242 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B0AC6128E92
-	for <lists+linux-wireless@lfdr.de>; Sun, 22 Dec 2019 15:57:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CE7DA128EA0
+	for <lists+linux-wireless@lfdr.de>; Sun, 22 Dec 2019 16:07:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725932AbfLVOzi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 22 Dec 2019 09:55:38 -0500
-Received: from mail-eopbgr30101.outbound.protection.outlook.com ([40.107.3.101]:43758
-        "EHLO EUR03-AM5-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725903AbfLVOzi (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 22 Dec 2019 09:55:38 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=CuUaqqmKQdZyUBB6w32kiRX5nuOplY6kGFBKoMMD1NPxIDHaO5xBwrUMCtanBjsLzsRnCmJUjD6vUTGaUwryjua7MfGOzPjuTqxCMx/xIvzWONV6ITHClvKFjhemF8sW2O8evapvVMLiAMod4PXM+Ry36iVeuSr8tUkt2AK+erSRxZuf5iiwqzd2NRpznWMsL/KFdVc9wK545SUvKaIe4WQ5XeUJJpHcLXpLSyMqBg1rREdwe/31E861/tEEbCr0cWAHwkIsGTmdkP7byiKd79Gh42EU9FNRUcS4AWM5arXmK/bYLZXThixKPYm7AapBhkcX746Pyp+MTLNKJcqOIg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=JU2HBLV6VhDPV+K8HiNAo6QvoLPxc9edAGN39bSCs3Y=;
- b=PQvKy6ZbPoTr9F1I16YuKbri1OEIS5P2MaagaxxKXQWUGwcfmA++zB+sahjAMUnFpxEyjH2FPgqBDMMxnMqaWslaHBJ0VYvHI0DNfFvlfMcywmJSLYLaaMxTfENpLqUkgbBilB/7HdF+/tsW9OjbrmE93zy31D+VGHATs2zVWo47Fvr83KZCMgOjj3oNv35DLWqW+RAgguOrInCd+voCDGV5VywujaIXhuDukf4YIMnUiBHlbqPgZoGSaZoh0STOkysK7Q/bSxWfhcSNkF+ueuSR/9OURN3/iHX3+96kuotkG9v2ts4mCzYHz3eVgxykhpyAMeMpCXyHQA3f4lNQiA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=tandemg.com; dmarc=pass action=none header.from=tandemg.com;
- dkim=pass header.d=tandemg.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tandemg.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=JU2HBLV6VhDPV+K8HiNAo6QvoLPxc9edAGN39bSCs3Y=;
- b=BkY4p+oZF25j5DOjNGzxPfrorOeuU+CKAbr/3Hx45WyIHx9z1jgXhspROmHgzCa0KCswGhA+08sWTOB90hSSDUy/ped576cYXEsJE9EALNgbuiwgiGk+K44NCi4t/b3TXvTXerS7bUZwJjFDY2UaAK7FWC1G6awFnwpHYcvQXKA=
-Received: from AM0PR02MB3620.eurprd02.prod.outlook.com (52.133.63.21) by
- AM0PR02MB5572.eurprd02.prod.outlook.com (10.255.31.94) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2559.14; Sun, 22 Dec 2019 14:55:32 +0000
-Received: from AM0PR02MB3620.eurprd02.prod.outlook.com
- ([fe80::4565:4fd:e296:3ad]) by AM0PR02MB3620.eurprd02.prod.outlook.com
- ([fe80::4565:4fd:e296:3ad%6]) with mapi id 15.20.2559.017; Sun, 22 Dec 2019
- 14:55:32 +0000
-From:   Orr Mazor <orr.mazor@tandemg.com>
-To:     Johannes Berg <johannes@sipsolutions.net>
-CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        Orr Mazor <orr.mazor@tandemg.com>
-Subject: [PATCH] subsystem: Fix radar event during another phy CAC
-Thread-Topic: [PATCH] subsystem: Fix radar event during another phy CAC
-Thread-Index: AQHVuNfbH206ZJg9QUmhdGm55ai8ZA==
-Date:   Sun, 22 Dec 2019 14:55:31 +0000
-Message-ID: <20191222145449.15792-1-Orr.Mazor@tandemg.com>
-Accept-Language: he-IL, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-clientproxiedby: ZRAP278CA0009.CHEP278.PROD.OUTLOOK.COM
- (2603:10a6:910:10::19) To AM0PR02MB3620.eurprd02.prod.outlook.com
- (2603:10a6:208:3f::21)
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=orr.mazor@tandemg.com; 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-mailer: git-send-email 2.17.1
-x-originating-ip: [84.95.243.50]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: c72082fb-b3d8-4ce4-6e30-08d786eefde6
-x-ms-traffictypediagnostic: AM0PR02MB5572:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <AM0PR02MB55721FC3D513E6C9C1A275BAEF2F0@AM0PR02MB5572.eurprd02.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:4502;
-x-forefront-prvs: 02596AB7DA
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(396003)(39840400004)(136003)(376002)(366004)(346002)(199004)(189003)(81166006)(26005)(8936002)(6512007)(186003)(71200400001)(66946007)(2906002)(66556008)(66476007)(6486002)(64756008)(66446008)(1076003)(81156014)(8676002)(36756003)(86362001)(5660300002)(52116002)(54906003)(508600001)(6916009)(107886003)(2616005)(4326008)(6506007)(316002);DIR:OUT;SFP:1102;SCL:1;SRVR:AM0PR02MB5572;H:AM0PR02MB3620.eurprd02.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
-received-spf: None (protection.outlook.com: tandemg.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: tKtKPT2zrU28CcmJkJSD8/o6OvNOWbJJexote9XBFwaWiSY+kwGBurhJFa9fybDqhYXlBrVGqQfBiqrAigpk1HghKcNMOk+vMfQtjof0RZ1hWMoIv2MwgPUoHswXKB57b+9PQ+kNaGaH9zboaGDLLcyI9o7iu7Z3UN1eqEJJ942MQMIxR/2WT/8IrmhHbCTF3aFieg2UrchY35+9K4OajBSbVGgpLdJBRuPsr1zMDs0tTRQ1rqMCq82DCfJFUixze4W8VM/GAtCa1NxQpZXxAkM+Vx/wukPQekAl4NfGUblv+SDnKS1fRSPs1t9DRnrJEEdsRlser+cyvZgiHPGxI0ZMrnDnXqgmd3hJcXlJk7rwlnYnNKfXcmXdkW5ezB229f6bE0mOMkm/7YjOn6z+V2d5NKafIZJ1HNTGlHZVzm2FotJqsgncE81dEYcxJI6t
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+        id S1726048AbfLVPHU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 22 Dec 2019 10:07:20 -0500
+Received: from nbd.name ([46.4.11.11]:47412 "EHLO nbd.name"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725852AbfLVPHT (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 22 Dec 2019 10:07:19 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject
+        :To:From:Sender:Reply-To:Cc:Content-Type:Content-ID:Content-Description:
+        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=bsjuho1caCIpPL5XbIBIBSjfd6ILFRIyZkXFBYPxV14=; b=VKwYFdv2jnIi24pq+GGJC3p8ac
+        B5/kzbYyTnFu448/OEm1ymGrsXLHjogtJZs5b0ol7HqW1AQjGjGoebjP/5a4ECpMnKX+XtOS5QV41
+        r5aOz+s1zjX0Mnb9i64EnmsqawI28o/k4MaYVy4MFGGWxBxGYVZNTnHbQD2shMX/8Apo=;
+Received: from [81.95.5.44] (helo=maeck.local)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1ij2pB-00030W-Ry
+        for linux-wireless@vger.kernel.org; Sun, 22 Dec 2019 16:07:18 +0100
+Received: by maeck.local (Postfix, from userid 501)
+        id 505A7742EAFB; Sun, 22 Dec 2019 16:07:17 +0100 (CET)
+From:   Felix Fietkau <nbd@nbd.name>
+To:     linux-wireless@vger.kernel.org
+Subject: [PATCH 1/4] mt76: mt7615: measure channel noise and report it via survey
+Date:   Sun, 22 Dec 2019 16:07:14 +0100
+Message-Id: <20191222150717.51379-1-nbd@nbd.name>
+X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
-X-OriginatorOrg: tandemg.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c72082fb-b3d8-4ce4-6e30-08d786eefde6
-X-MS-Exchange-CrossTenant-originalarrivaltime: 22 Dec 2019 14:55:32.0137
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: d690b55a-f04a-454b-9f62-fb1e25467a25
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 4ZIXyErTSNCCrncfxxe9buVgWYEBu4QZM2mix76mfZyiJQ5e3gM2OT8kFb0LIvJ/cTdJdOZ7AAiRSXtMD4mZCQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR02MB5572
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-In case a radar event of CAC_FINISHED or RADAR_DETECTED
-happens during another phy is during CAC we might need
-to cancel that CAC.
-If we got a radar in a channel that another phy is now
-doing CAC on then the CAC should be canceled.
-If, for example, 2 phys doing CAC on the same channels,
-or on comptable channels, once on of them will finish his CAC
-the other might need to cancel his CAC, since it is no
-longer relevant.
+Read measurements every 100 ms and build a simple moving average
 
-To fix that the commit adds an callback and implement it in mac80211
-to end CAC.
-This commit also adds a call to said callback if after a radar
-event we see the cac is no longer relevant
-
-Signed-off-by: Orr Mazor <Orr.Mazor@tandemg.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 ---
- include/net/cfg80211.h  |  5 +++++
- net/mac80211/cfg.c      | 23 +++++++++++++++++++++++
- net/wireless/rdev-ops.h | 10 ++++++++++
- net/wireless/reg.c      | 24 +++++++++++++++++++++++-
- net/wireless/trace.h    |  5 +++++
- 5 files changed, 66 insertions(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mac80211.c |  4 ++
+ drivers/net/wireless/mediatek/mt76/mt76.h     |  2 +
+ .../net/wireless/mediatek/mt76/mt7615/mac.c   | 42 +++++++++++++++++++
+ .../net/wireless/mediatek/mt76/mt7615/main.c  |  3 ++
+ .../wireless/mediatek/mt76/mt7615/mt7615.h    |  3 ++
+ .../net/wireless/mediatek/mt76/mt7615/regs.h  |  6 +++
+ 6 files changed, 60 insertions(+)
 
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index 4ab2c49423dc..68782ba8b6e8 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -3537,6 +3537,9 @@ struct cfg80211_update_owe_info {
-  *
-  * @start_radar_detection: Start radar detection in the driver.
-  *
-+ * @end_cac: End running CAC, probably because a related CAC
-+ *	was finished on another phy.
-+ *
-  * @update_ft_ies: Provide updated Fast BSS Transition information to the
-  *	driver. If the SME is in the driver/firmware, this information can be
-  *	used in building Authentication and Reassociation Request frames.
-@@ -3863,6 +3866,8 @@ struct cfg80211_ops {
- 					 struct net_device *dev,
- 					 struct cfg80211_chan_def *chandef,
- 					 u32 cac_time_ms);
-+	void	(*end_cac)(struct wiphy *wiphy,
-+				struct net_device *dev);
- 	int	(*update_ft_ies)(struct wiphy *wiphy, struct net_device *dev,
- 				 struct cfg80211_update_ft_ies_params *ftie);
- 	int	(*crit_proto_start)(struct wiphy *wiphy,
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index 70739e746c13..0daaf7e37a21 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -2954,6 +2954,28 @@ static int ieee80211_start_radar_detection(struct wi=
-phy *wiphy,
- 	return err;
+diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/wireless/mediatek/mt76/mac80211.c
+index 0c71d671f29a..cd9a3882cb9d 100644
+--- a/drivers/net/wireless/mediatek/mt76/mac80211.c
++++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
+@@ -617,6 +617,9 @@ int mt76_get_survey(struct ieee80211_hw *hw, int idx,
+ 	survey->channel = chan;
+ 	survey->filled = SURVEY_INFO_TIME | SURVEY_INFO_TIME_BUSY;
+ 	survey->filled |= dev->drv->survey_flags;
++	if (state->noise)
++		survey->filled |= SURVEY_INFO_NOISE_DBM;
++
+ 	if (chan == phy->main_chan) {
+ 		survey->filled |= SURVEY_INFO_IN_USE;
+ 
+@@ -627,6 +630,7 @@ int mt76_get_survey(struct ieee80211_hw *hw, int idx,
+ 	survey->time_busy = div_u64(state->cc_busy, 1000);
+ 	survey->time_rx = div_u64(state->cc_rx, 1000);
+ 	survey->time = div_u64(state->cc_active, 1000);
++	survey->noise = state->noise;
+ 
+ 	spin_lock_bh(&dev->cc_lock);
+ 	survey->time_bss_rx = div_u64(state->cc_bss_rx, 1000);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
+index f819d9e4ff5f..217f8c5ad201 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76.h
+@@ -328,6 +328,8 @@ struct mt76_channel_state {
+ 	u64 cc_rx;
+ 	u64 cc_bss_rx;
+ 	u64 cc_tx;
++
++	s8 noise;
+ };
+ 
+ struct mt76_sband {
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
+index 903b8395a446..1b52d8b79496 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
+@@ -1379,6 +1379,19 @@ void mt7615_mac_set_scs(struct mt7615_dev *dev, bool enable)
+ 	mutex_unlock(&dev->mt76.mutex);
  }
-=20
-+static void ieee80211_end_cac(struct wiphy *wiphy,
-+			      struct net_device *dev)
+ 
++void mt7615_mac_enable_nf(struct mt7615_dev *dev, bool ext_phy)
 +{
-+	struct ieee80211_sub_if_data *sdata =3D IEEE80211_DEV_TO_SUB_IF(dev);
-+	struct ieee80211_local *local =3D sdata->local;
++	u32 rxtd;
 +
-+	mutex_lock(&local->mtx);
-+	list_for_each_entry(sdata, &local->interfaces, list) {
-+		/* it might be waiting for the local->mtx, but then
-+		 * by the time it gets it, sdata->wdev.cac_started
-+		 * will no longer be true
-+		 */
-+		cancel_delayed_work(&sdata->dfs_cac_timer_work);
++	if (ext_phy)
++		rxtd = MT_WF_PHY_RXTD2(10);
++	else
++		rxtd = MT_WF_PHY_RXTD(12);
 +
-+		if (sdata->wdev.cac_started) {
-+			ieee80211_vif_release_channel(sdata);
-+			sdata->wdev.cac_started =3D false;
-+		}
-+	}
-+	mutex_unlock(&local->mtx);
++	mt76_set(dev, rxtd, BIT(18) | BIT(29));
++	mt76_set(dev, MT_WF_PHY_R0_PHYMUX_5(ext_phy), 0x5 << 12);
 +}
 +
- static struct cfg80211_beacon_data *
- cfg80211_beacon_dup(struct cfg80211_beacon_data *beacon)
+ void mt7615_mac_cca_stats_reset(struct mt7615_phy *phy)
  {
-@@ -4023,6 +4045,7 @@ const struct cfg80211_ops mac80211_config_ops =3D {
- #endif
- 	.get_channel =3D ieee80211_cfg_get_channel,
- 	.start_radar_detection =3D ieee80211_start_radar_detection,
-+	.end_cac =3D ieee80211_end_cac,
- 	.channel_switch =3D ieee80211_channel_switch,
- 	.set_qos_map =3D ieee80211_set_qos_map,
- 	.set_ap_chanwidth =3D ieee80211_set_ap_chanwidth,
-diff --git a/net/wireless/rdev-ops.h b/net/wireless/rdev-ops.h
-index e853a4fe6f97..663c0d3127a4 100644
---- a/net/wireless/rdev-ops.h
-+++ b/net/wireless/rdev-ops.h
-@@ -1167,6 +1167,16 @@ rdev_start_radar_detection(struct cfg80211_registere=
-d_device *rdev,
- 	return ret;
+ 	struct mt7615_dev *dev = phy->dev;
+@@ -1511,13 +1524,35 @@ mt7615_mac_scs_check(struct mt7615_phy *phy)
+ 		mt7615_mac_set_default_sensitivity(phy);
  }
-=20
-+static inline void
-+rdev_end_cac(struct cfg80211_registered_device *rdev,
-+	     struct net_device *dev)
+ 
++static u8
++mt7615_phy_get_nf(struct mt7615_dev *dev, int idx)
 +{
-+	trace_rdev_end_cac(&rdev->wiphy, dev);
-+	if (rdev->ops->end_cac)
-+		rdev->ops->end_cac(&rdev->wiphy, dev);
-+	trace_rdev_return_void(&rdev->wiphy);
-+}
++	static const u8 nf_power[] = { 92, 89, 86, 83, 80, 75, 70, 65, 60, 55, 52 };
++	u32 reg = idx ? MT_WF_PHY_RXTD2(17) : MT_WF_PHY_RXTD(20);
++	u32 val, sum = 0, n = 0;
++	int i;
 +
- static inline int
- rdev_set_mcast_rate(struct cfg80211_registered_device *rdev,
- 		    struct net_device *dev,
-diff --git a/net/wireless/reg.c b/net/wireless/reg.c
-index 446c76d44e65..d18cc05061a0 100644
---- a/net/wireless/reg.c
-+++ b/net/wireless/reg.c
-@@ -3885,6 +3885,26 @@ bool regulatory_pre_cac_allowed(struct wiphy *wiphy)
- }
- EXPORT_SYMBOL(regulatory_pre_cac_allowed);
-=20
-+static void cfg80211_check_and_end_cac(struct cfg80211_registered_device *=
-rdev)
-+{
-+	struct wireless_dev *wdev;
-+	/* If we finished CAC or received radar, we should end any
-+	 * CAC running on the same channels.
-+	 * the check !cfg80211_chandef_dfs_usable contain 2 options:
-+	 * either all channels are available - those the CAC_FINISHED
-+	 * event has effected another wdev state, or there is a channel
-+	 * in unavailable state in wdev chandef - those the RADAR_DETECTED
-+	 * event has effected another wdev state.
-+	 * In both cases we should end the CAC on the wdev.
-+	 *
-+	 */
-+	list_for_each_entry(wdev, &rdev->wiphy.wdev_list, list) {
-+		if (wdev->cac_started &&
-+		    !cfg80211_chandef_dfs_usable(&rdev->wiphy, &wdev->chandef))
-+			rdev_end_cac(rdev, wdev->netdev);
++	for (i = 0; i < ARRAY_SIZE(nf_power); i++, reg += 4) {
++		val = mt76_rr(dev, reg);
++		sum += val * nf_power[i];
++		n += val;
 +	}
++
++	if (!n)
++		return 0;
++
++	return sum / n;
 +}
 +
- void regulatory_propagate_dfs_state(struct wiphy *wiphy,
- 				    struct cfg80211_chan_def *chandef,
- 				    enum nl80211_dfs_state dfs_state,
-@@ -3911,8 +3931,10 @@ void regulatory_propagate_dfs_state(struct wiphy *wi=
-phy,
- 		cfg80211_set_dfs_state(&rdev->wiphy, chandef, dfs_state);
-=20
- 		if (event =3D=3D NL80211_RADAR_DETECTED ||
--		    event =3D=3D NL80211_RADAR_CAC_FINISHED)
-+		    event =3D=3D NL80211_RADAR_CAC_FINISHED) {
- 			cfg80211_sched_dfs_chan_update(rdev);
-+			cfg80211_check_and_end_cac(rdev);
-+		}
-=20
- 		nl80211_radar_notify(rdev, chandef, event, NULL, GFP_KERNEL);
- 	}
-diff --git a/net/wireless/trace.h b/net/wireless/trace.h
-index d98ad2b3143b..8677d7ab7d69 100644
---- a/net/wireless/trace.h
-+++ b/net/wireless/trace.h
-@@ -646,6 +646,11 @@ DEFINE_EVENT(wiphy_netdev_evt, rdev_flush_pmksa,
- 	TP_ARGS(wiphy, netdev)
- );
-=20
-+DEFINE_EVENT(wiphy_netdev_evt, rdev_end_cac,
-+	     TP_PROTO(struct wiphy *wiphy, struct net_device *netdev),
-+	     TP_ARGS(wiphy, netdev)
-+);
+ static void
+ mt7615_phy_update_channel(struct mt76_phy *mphy, int idx)
+ {
+ 	struct mt7615_dev *dev = container_of(mphy->dev, struct mt7615_dev, mt76);
++	struct mt7615_phy *phy = mphy->priv;
+ 	struct mt76_channel_state *state;
+ 	u64 busy_time, tx_time, rx_time, obss_time;
+ 	u32 obss_reg = idx ? MT_WF_RMAC_MIB_TIME6 : MT_WF_RMAC_MIB_TIME5;
++	int nf;
+ 
+ 	busy_time = mt76_get_field(dev, MT_MIB_SDR9(idx),
+ 				   MT_MIB_SDR9_BUSY_MASK);
+@@ -1527,11 +1562,18 @@ mt7615_phy_update_channel(struct mt76_phy *mphy, int idx)
+ 				 MT_MIB_SDR37_RXTIME_MASK);
+ 	obss_time = mt76_get_field(dev, obss_reg, MT_MIB_OBSSTIME_MASK);
+ 
++	nf = mt7615_phy_get_nf(dev, idx);
++	if (!phy->noise)
++		phy->noise = nf << 4;
++	else if (nf)
++		phy->noise += nf - (phy->noise >> 4);
 +
- DECLARE_EVENT_CLASS(station_add_change,
- 	TP_PROTO(struct wiphy *wiphy, struct net_device *netdev, u8 *mac,
- 		 struct station_parameters *params),
---=20
-2.17.1
+ 	state = mphy->chan_state;
+ 	state->cc_busy += busy_time;
+ 	state->cc_tx += tx_time;
+ 	state->cc_rx += rx_time + obss_time;
+ 	state->cc_bss_rx += rx_time;
++	state->noise = -(phy->noise >> 4);
+ }
+ 
+ void mt7615_update_channel(struct mt76_dev *mdev)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/main.c b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
+index 4ffa920d4f4d..2a85859da754 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
+@@ -40,11 +40,13 @@ static int mt7615_start(struct ieee80211_hw *hw)
+ 	if (!running) {
+ 		mt7615_mcu_ctrl_pm_state(dev, 0, 0);
+ 		mt7615_mcu_set_mac_enable(dev, 0, true);
++		mt7615_mac_enable_nf(dev, 0);
+ 	}
+ 
+ 	if (phy != &dev->phy) {
+ 		mt7615_mcu_ctrl_pm_state(dev, 1, 0);
+ 		mt7615_mcu_set_mac_enable(dev, 1, true);
++		mt7615_mac_enable_nf(dev, 1);
+ 	}
+ 
+ 	set_bit(MT76_STATE_RUNNING, &phy->mt76->state);
+@@ -238,6 +240,7 @@ static int mt7615_set_channel(struct mt7615_phy *phy)
+ 	mt7615_mac_cca_stats_reset(phy);
+ 
+ 	mt7615_mac_reset_counters(dev);
++	phy->noise = 0;
+ 
+ out:
+ 	clear_bit(MT76_RESET, &phy->mt76->state);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
+index 48810eda1cd6..eaafae9cc279 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
+@@ -94,6 +94,8 @@ struct mt7615_phy {
+ 	u32 rxfilter;
+ 	u32 omac_mask;
+ 
++	u16 noise;
++
+ 	unsigned long last_cca_adj;
+ 	int false_cca_ofdm, false_cca_cck;
+ 	s8 ofdm_sensitivity;
+@@ -288,6 +290,7 @@ bool mt7615_mac_wtbl_update(struct mt7615_dev *dev, int idx, u32 mask);
+ void mt7615_mac_reset_counters(struct mt7615_dev *dev);
+ void mt7615_mac_cca_stats_reset(struct mt7615_phy *phy);
+ void mt7615_mac_set_scs(struct mt7615_dev *dev, bool enable);
++void mt7615_mac_enable_nf(struct mt7615_dev *dev, bool ext_phy);
+ void mt7615_mac_sta_poll(struct mt7615_dev *dev);
+ int mt7615_mac_write_txwi(struct mt7615_dev *dev, __le32 *txwi,
+ 			  struct sk_buff *skb, struct mt76_wcid *wcid,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/regs.h b/drivers/net/wireless/mediatek/mt76/mt7615/regs.h
+index 26d121646787..46db0faae93d 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/regs.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/regs.h
+@@ -104,6 +104,9 @@
+ #define MT_WF_PHY_B1_PD_OFDM(v)		((v) << 16)
+ #define MT_WF_PHY_B1_PD_BLK		BIT(25)
+ 
++#define MT_WF_PHY_RXTD_BASE		MT_WF_PHY(0x2200)
++#define MT_WF_PHY_RXTD(_n)		(MT_WF_PHY_RXTD_BASE + ((_n) << 2))
++
+ #define MT_WF_PHY_B0_RXTD_CCK_PD	MT_WF_PHY(0x2310)
+ #define MT_WF_PHY_B0_PD_CCK_MASK	GENMASK(8, 1)
+ #define MT_WF_PHY_B0_PD_CCK(v)		((v) << 1)
+@@ -112,6 +115,9 @@
+ #define MT_WF_PHY_B1_PD_CCK_MASK	GENMASK(31, 24)
+ #define MT_WF_PHY_B1_PD_CCK(v)		((v) << 24)
+ 
++#define MT_WF_PHY_RXTD2_BASE		MT_WF_PHY(0x2a00)
++#define MT_WF_PHY_RXTD2(_n)		(MT_WF_PHY_RXTD2_BASE + ((_n) << 2))
++
+ #define MT_WF_CFG_BASE			0x20200
+ #define MT_WF_CFG(ofs)			(MT_WF_CFG_BASE + (ofs))
+ 
+-- 
+2.24.0
 
