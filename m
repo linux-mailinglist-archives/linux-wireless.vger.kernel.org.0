@@ -2,129 +2,67 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E59412964F
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Dec 2019 14:10:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C1ADF129631
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Dec 2019 14:01:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726873AbfLWNJw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 23 Dec 2019 08:09:52 -0500
-Received: from srv2.anyservers.com ([77.79.239.202]:56196 "EHLO
-        srv2.anyservers.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726709AbfLWNJw (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 23 Dec 2019 08:09:52 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=asmblr.net;
-         s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:References:
-        In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=n7GtaCKJbQxPZo28gDx6RScAysfknWdat5EWVpSMU6c=; b=eM3ytUQZXDAfeZe1IibVV7YOgs
-        IrcUTwWH5lJu4Ws8VerFRJcMSdcNR7wQDKdzTA1/laOGvbOli/GuXXM7KjsopBgrfEKdKgQDxd+Iq
-        ZxlLUz7kESGV4s9MRLqiDIQkMYh5tdcy5+LW0mlOpXiIjWP5HdPaYXBjVSAwSCcSuBv+tELjvHvSh
-        thsAW7Vh1c8yTWzVrdYrLN/OnqomKTsiEYYXIABXYdI7rn1Sk2EBJrggc33eZJwjKqIqlOjWwo/zz
-        q0IdWZR+8n89P9CkIujwCyih7/g5VjidIw0c1lmMHqLC6BwV4ks05PkK6jZTmLrwDxXWzx85WZAvq
-        IA1GVNUA==;
-Received: from 89-64-37-27.dynamic.chello.pl ([89.64.37.27]:49046 helo=milkyway.galaxy)
-        by srv2.anyservers.com with esmtpsa (TLSv1.2:ECDHE-RSA-AES128-GCM-SHA256:128)
-        (Exim 4.92)
-        (envelope-from <amade@asmblr.net>)
-        id 1ijMxR-00Gi5o-BW; Mon, 23 Dec 2019 13:37:09 +0100
-From:   =?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amade@asmblr.net>
-To:     Ping-Ke Shih <pkshih@realtek.com>,
-        Kalle Valo <kvalo@codeaurora.org>
-Cc:     "David S . Miller" <davem@davemloft.net>,
-        Larry Finger <Larry.Finger@lwfinger.net>,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org,
-        =?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amade@asmblr.net>
-Subject: [PATCH 9/9] rtlwifi: rtl8821ae: Make functions static & rm sw.h
-Date:   Mon, 23 Dec 2019 13:37:15 +0100
-Message-Id: <20191223123715.7177-10-amade@asmblr.net>
-X-Mailer: git-send-email 2.24.1
-In-Reply-To: <20191223123715.7177-1-amade@asmblr.net>
-References: <20191223123715.7177-1-amade@asmblr.net>
+        id S1726733AbfLWNBU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 23 Dec 2019 08:01:20 -0500
+Received: from mga11.intel.com ([192.55.52.93]:54442 "EHLO mga11.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726680AbfLWNBT (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 23 Dec 2019 08:01:19 -0500
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 23 Dec 2019 05:01:19 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.69,347,1571727600"; 
+   d="scan'208";a="367054476"
+Received: from tblake-mobl2.ger.corp.intel.com ([10.252.4.201])
+  by orsmga004.jf.intel.com with ESMTP; 23 Dec 2019 05:01:16 -0800
+Message-ID: <16647dbe5d9c8431060dcf6169c12c3267d67d0d.camel@intel.com>
+Subject: Re: PROBLEM: iwlwifi in 5.4 does not load firmware for Intel device
+ 9560
+From:   Luciano Coelho <luciano.coelho@intel.com>
+To:     Stuart Little <achirvasub@gmail.com>
+Cc:     Johannes Berg <johannes.berg@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        kernel list <linux-kernel@vger.kernel.org>,
+        Intel Linux Wireless <linuxwifi@intel.com>,
+        linux-wireless@vger.kernel.org
+Date:   Mon, 23 Dec 2019 15:01:16 +0200
+In-Reply-To: <20191223125742.GA2586@system76-pc.localdomain>
+References: <20190817041258.GA1641@chirva-slack.chirva-slack>
+         <20191208203810.GA2920@system76-pc.localdomain>
+         <20191222224207.GA2408@system76-pc.localdomain>
+         <ec9092a28196f24c39051b89f9dc87b40942b6de.camel@intel.com>
+         <20191223125742.GA2586@system76-pc.localdomain>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.34.1-2+b1 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - srv2.anyservers.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - asmblr.net
-X-Get-Message-Sender-Via: srv2.anyservers.com: authenticated_id: amade@asmblr.net
-X-Authenticated-Sender: srv2.anyservers.com: amade@asmblr.net
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Some of functions which were exposed in sw.h, are only used in sw.c, so
-just make them static. This makes sw.h unnecessary, so remove it.
+On Mon, 2019-12-23 at 07:57 -0500, Stuart Little wrote:
+> On Mon, Dec 23, 2019 at 02:52:11PM +0200, Luciano Coelho wrote:
+> > Hi,
+> > 
+> > The fix for this is already in v5.5-rc3:
+> > 
+> > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=db5cce1afc8d2475d2c1c37c2a8267dd0e151526
+> > 
+> 
+> I was actually going to write just now to report this: I've checked
+> that the very latest 5.5.0-rc3 works fine on this machine.
 
-Signed-off-by: Amadeusz Sławiński <amade@asmblr.net>
----
- drivers/net/wireless/realtek/rtlwifi/rtl8821ae/sw.c |  7 +++----
- drivers/net/wireless/realtek/rtlwifi/rtl8821ae/sw.h | 12 ------------
- 2 files changed, 3 insertions(+), 16 deletions(-)
- delete mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8821ae/sw.h
+Great! Thanks for letting me know.  I have now sent the patch to v5.4
+stable, hopefully it will be picked up soon.
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/sw.c b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/sw.c
-index 3def6a2b3450..d8df816753cb 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/sw.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/sw.c
-@@ -10,7 +10,6 @@
- #include "dm.h"
- #include "hw.h"
- #include "fw.h"
--#include "sw.h"
- #include "trx.h"
- #include "led.h"
- #include "table.h"
-@@ -65,7 +64,7 @@ static void rtl8821ae_init_aspm_vars(struct ieee80211_hw *hw)
- }
- 
- /*InitializeVariables8812E*/
--int rtl8821ae_init_sw_vars(struct ieee80211_hw *hw)
-+static int rtl8821ae_init_sw_vars(struct ieee80211_hw *hw)
- {
- 	int err = 0;
- 	struct rtl_priv *rtlpriv = rtl_priv(hw);
-@@ -211,7 +210,7 @@ int rtl8821ae_init_sw_vars(struct ieee80211_hw *hw)
- 	return 0;
- }
- 
--void rtl8821ae_deinit_sw_vars(struct ieee80211_hw *hw)
-+static void rtl8821ae_deinit_sw_vars(struct ieee80211_hw *hw)
- {
- 	struct rtl_priv *rtlpriv = rtl_priv(hw);
- 
-@@ -228,7 +227,7 @@ void rtl8821ae_deinit_sw_vars(struct ieee80211_hw *hw)
- }
- 
- /* get bt coexist status */
--bool rtl8821ae_get_btc_status(void)
-+static bool rtl8821ae_get_btc_status(void)
- {
- 	return true;
- }
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/sw.h b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/sw.h
-deleted file mode 100644
-index 9d7610f84b20..000000000000
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/sw.h
-+++ /dev/null
-@@ -1,12 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0 */
--/* Copyright(c) 2009-2010  Realtek Corporation.*/
--
--#ifndef __RTL8821AE_SW_H__
--#define __RTL8821AE_SW_H__
--
--int rtl8821ae_init_sw_vars(struct ieee80211_hw *hw);
--void rtl8821ae_deinit_sw_vars(struct ieee80211_hw *hw);
--void rtl8821ae_init_var_map(struct ieee80211_hw *hw);
--bool rtl8821ae_get_btc_status(void);
--
--#endif
--- 
-2.24.1
+--
+Cheers,
+Luca.
 
