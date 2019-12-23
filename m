@@ -2,98 +2,100 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 410EF12963A
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Dec 2019 14:03:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7372C129640
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Dec 2019 14:08:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726763AbfLWNDo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 23 Dec 2019 08:03:44 -0500
-Received: from mail.kernel.org ([198.145.29.99]:35996 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726680AbfLWNDo (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 23 Dec 2019 08:03:44 -0500
-Received: from localhost.localdomain.com (nat-pool-mxp-t.redhat.com [149.6.153.186])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 92FD0206CB;
-        Mon, 23 Dec 2019 13:03:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1577106223;
-        bh=WlrptsVcJSucGF3/RpaEbFaVPWaDeDbY2xmrpPU8Eo4=;
-        h=From:To:Cc:Subject:Date:From;
-        b=b9scGGAqy+p4Wa1CsSpeO35E5yJ33HMofcoZqg6pxTF8nzPYzg8xOPdlqmL0umCgH
-         IrNT8tErAuL/XRph91ytzIpHEI5+II1LnnxozgQwf0nLsEjEy9GIMkhrEeojvMQGkU
-         UM0nmp24AH6vZ3aEFry1vPfYZLybFyN8E/VBVhm0=
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org
-Subject: [PATCH] mt76: mt76x02u: avoid overwrite max_tx_fragments
-Date:   Mon, 23 Dec 2019 14:03:32 +0100
-Message-Id: <3dd971ebf46f9c4e1151461b67a419cbb7370415.1577106053.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.21.0
+        id S1726802AbfLWNHy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 23 Dec 2019 08:07:54 -0500
+Received: from mail-lf1-f65.google.com ([209.85.167.65]:34613 "EHLO
+        mail-lf1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726680AbfLWNHy (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 23 Dec 2019 08:07:54 -0500
+Received: by mail-lf1-f65.google.com with SMTP id l18so4409015lfc.1;
+        Mon, 23 Dec 2019 05:07:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=5eJH2So2Y3KqY/K1ixMNRpaPpKx0b38bhcNlkypecC0=;
+        b=N7FN0ncLXb065P3FN14ZDLucMWMpNKGbWPL84vdRLA17Kc3XtT8pnSKLjbseUPj918
+         b9yDdgKBeG55jltDFLk9cDzyCHWPNVXrw4qoKL0NK/RoO24MAp8q04nFdEJcZpgaT5BF
+         Q15J2JBVrmMrQx4zFr9FLZw/VeElcbpyV3hIkGOi1aH3of4W5V7Pz5pv99zVfEeU/F0K
+         SoqCCo4ejdPWZ5XPiDBHIxGsbm8jsgy1f4YZ0a2rDR8r1ttquMOBRfzWSCRjKNS9W/oB
+         PELHjv9r8rJchpunfS3Od1m02nbafGGlA5trUX/4PLKhVRONJM6uv5xUiPD//ox37mFL
+         dK4w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=5eJH2So2Y3KqY/K1ixMNRpaPpKx0b38bhcNlkypecC0=;
+        b=PWdt69KWzpEnD7AY/7sODWcRHrQjmvZQqUo9v3BCfB6qr7YNZvk+29EOm3Ua821tJ+
+         BE+CG8YXe1VVGx4DVPZli06E/rRWBmmnwsaAxsQZ1q5xtOeYGMTKVfQ1tmsa9NQRTy87
+         vQuEIQCuS1XP+lSHNQ7L43sgNayRHsqrRkOTgPbeaznDsnfADIDpq45myeI49hpL5F2f
+         yjvW73cZ63P8XXcYS/SeFSjXVyIoU363G60MdJ7Yt0EHX0ejCpAjW3cM5tYpHyUhvXsC
+         3wah0m5ZeFz/yKZxJ+QknTvg/tCMwJ5qBnPmvwEkElYfYYy5XBaJBZzCW11U4TjLykvl
+         FtFA==
+X-Gm-Message-State: APjAAAVvB1MMveyg0c/S7qajWwsCOm8QX/dEnxbxul/mgvRJvqaX4ssi
+        8/Ov7Gy+lrdjfOVWPfsLNz4FAomiyjRseJKc2Wo=
+X-Google-Smtp-Source: APXvYqx35NtG2msl9BoMH2SPDevhyYA9MZsbmqBAxBohTRg/NXhM9CHIaYC1N0ZR9f0Dh28z9OhNSEDQtt4irLWQGH0=
+X-Received: by 2002:ac2:4a89:: with SMTP id l9mr16617018lfp.121.1577106471345;
+ Mon, 23 Dec 2019 05:07:51 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <1576386975-7941-1-git-send-email-akinobu.mita@gmail.com>
+In-Reply-To: <1576386975-7941-1-git-send-email-akinobu.mita@gmail.com>
+From:   Akinobu Mita <akinobu.mita@gmail.com>
+Date:   Mon, 23 Dec 2019 22:07:39 +0900
+Message-ID: <CAC5umygqpmb0s8zHC+TFEFffQmsU4N1hUs_XWGDLtqkJEccfBw@mail.gmail.com>
+Subject: Re: [PATCH v4 00/12] add header file for kelvin to/from Celsius
+ conversion helpers
+To:     Linux NVMe Mailinglist <linux-nvme@lists.infradead.org>,
+        linux-hwmon@vger.kernel.org, Linux PM <linux-pm@vger.kernel.org>,
+        "open list:TI WILINK WIRELES..." <linux-wireless@vger.kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>
+Cc:     Sujith Thomas <sujith.thomas@intel.com>,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Amit Kucheria <amit.kucheria@verdurent.com>,
+        Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Keith Busch <kbusch@kernel.org>, Jens Axboe <axboe@fb.com>,
+        Christoph Hellwig <hch@lst.de>,
+        Sagi Grimberg <sagi@grimberg.me>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Stanislaw Gruszka <sgruszka@redhat.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        Intel Linux Wireless <linuxwifi@intel.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Starting from 'commit ee8040139ab1 ("mt76: do not overwrite
-max_tx_fragments if it has been set")' we can avoid overwriting
-max_tx_fragments for mt76x02u devices
+Andrew,
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- drivers/net/wireless/mediatek/mt76/mt76x0/usb.c      | 8 ++------
- drivers/net/wireless/mediatek/mt76/mt76x2/usb_init.c | 8 ++------
- 2 files changed, 4 insertions(+), 12 deletions(-)
+Could you take a look at this series, and consider including into -mm tree?
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x0/usb.c b/drivers/net/wireless/mediatek/mt76/mt76x0/usb.c
-index abf0a19ee70e..68a00795c91e 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x0/usb.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x0/usb.c
-@@ -182,16 +182,12 @@ static int mt76x0u_register_device(struct mt76x02_dev *dev)
- 	if (err < 0)
- 		goto out_err;
- 
-+	/* check hw sg support in order to enable AMSDU */
-+	hw->max_tx_fragments = dev->mt76.usb.sg_en ? MT_TX_SG_MAX_SIZE : 1;
- 	err = mt76x0_register_device(dev);
- 	if (err < 0)
- 		goto out_err;
- 
--	/* check hw sg support in order to enable AMSDU */
--	if (dev->mt76.usb.sg_en)
--		hw->max_tx_fragments = MT_TX_SG_MAX_SIZE;
--	else
--		hw->max_tx_fragments = 1;
--
- 	set_bit(MT76_STATE_INITIALIZED, &dev->mphy.state);
- 
- 	return 0;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/usb_init.c b/drivers/net/wireless/mediatek/mt76/mt76x2/usb_init.c
-index 62e5e89baf23..d2ca8fe42655 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x2/usb_init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x2/usb_init.c
-@@ -207,17 +207,13 @@ int mt76x2u_register_device(struct mt76x02_dev *dev)
- 	if (err < 0)
- 		goto fail;
- 
-+	/* check hw sg support in order to enable AMSDU */
-+	hw->max_tx_fragments = dev->mt76.usb.sg_en ? MT_TX_SG_MAX_SIZE : 1;
- 	err = mt76_register_device(&dev->mt76, true, mt76x02_rates,
- 				   ARRAY_SIZE(mt76x02_rates));
- 	if (err)
- 		goto fail;
- 
--	/* check hw sg support in order to enable AMSDU */
--	if (dev->mt76.usb.sg_en)
--		hw->max_tx_fragments = MT_TX_SG_MAX_SIZE;
--	else
--		hw->max_tx_fragments = 1;
--
- 	set_bit(MT76_STATE_INITIALIZED, &dev->mphy.state);
- 
- 	mt76x02_init_debugfs(dev);
--- 
-2.21.0
-
+2019=E5=B9=B412=E6=9C=8815=E6=97=A5(=E6=97=A5) 14:16 Akinobu Mita <akinobu.=
+mita@gmail.com>:
+>
+> There are several helper macros to convert kelvin to/from Celsius in
+> <linux/thermal.h> for thermal drivers.  These are useful for any other
+> drivers or subsystems, but it's odd to include <linux/thermal.h> just for
+> the helpers.
+>
+> This adds a new <linux/units.h> that provides the equivalent inline
+> functions for any drivers or subsystems, and switches all the users of
+> conversion helpers in <linux/thermal.h> to use <linux/units.h>
+> helpers.
