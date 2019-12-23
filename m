@@ -2,100 +2,119 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7372C129640
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Dec 2019 14:08:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E2DFD129684
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Dec 2019 14:32:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726802AbfLWNHy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 23 Dec 2019 08:07:54 -0500
-Received: from mail-lf1-f65.google.com ([209.85.167.65]:34613 "EHLO
-        mail-lf1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726680AbfLWNHy (ORCPT
+        id S1726925AbfLWNbu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 23 Dec 2019 08:31:50 -0500
+Received: from srv2.anyservers.com ([77.79.239.202]:35586 "EHLO
+        srv2.anyservers.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726680AbfLWNbt (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 23 Dec 2019 08:07:54 -0500
-Received: by mail-lf1-f65.google.com with SMTP id l18so4409015lfc.1;
-        Mon, 23 Dec 2019 05:07:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=5eJH2So2Y3KqY/K1ixMNRpaPpKx0b38bhcNlkypecC0=;
-        b=N7FN0ncLXb065P3FN14ZDLucMWMpNKGbWPL84vdRLA17Kc3XtT8pnSKLjbseUPj918
-         b9yDdgKBeG55jltDFLk9cDzyCHWPNVXrw4qoKL0NK/RoO24MAp8q04nFdEJcZpgaT5BF
-         Q15J2JBVrmMrQx4zFr9FLZw/VeElcbpyV3hIkGOi1aH3of4W5V7Pz5pv99zVfEeU/F0K
-         SoqCCo4ejdPWZ5XPiDBHIxGsbm8jsgy1f4YZ0a2rDR8r1ttquMOBRfzWSCRjKNS9W/oB
-         PELHjv9r8rJchpunfS3Od1m02nbafGGlA5trUX/4PLKhVRONJM6uv5xUiPD//ox37mFL
-         dK4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=5eJH2So2Y3KqY/K1ixMNRpaPpKx0b38bhcNlkypecC0=;
-        b=PWdt69KWzpEnD7AY/7sODWcRHrQjmvZQqUo9v3BCfB6qr7YNZvk+29EOm3Ua821tJ+
-         BE+CG8YXe1VVGx4DVPZli06E/rRWBmmnwsaAxsQZ1q5xtOeYGMTKVfQ1tmsa9NQRTy87
-         vQuEIQCuS1XP+lSHNQ7L43sgNayRHsqrRkOTgPbeaznDsnfADIDpq45myeI49hpL5F2f
-         yjvW73cZ63P8XXcYS/SeFSjXVyIoU363G60MdJ7Yt0EHX0ejCpAjW3cM5tYpHyUhvXsC
-         3wah0m5ZeFz/yKZxJ+QknTvg/tCMwJ5qBnPmvwEkElYfYYy5XBaJBZzCW11U4TjLykvl
-         FtFA==
-X-Gm-Message-State: APjAAAVvB1MMveyg0c/S7qajWwsCOm8QX/dEnxbxul/mgvRJvqaX4ssi
-        8/Ov7Gy+lrdjfOVWPfsLNz4FAomiyjRseJKc2Wo=
-X-Google-Smtp-Source: APXvYqx35NtG2msl9BoMH2SPDevhyYA9MZsbmqBAxBohTRg/NXhM9CHIaYC1N0ZR9f0Dh28z9OhNSEDQtt4irLWQGH0=
-X-Received: by 2002:ac2:4a89:: with SMTP id l9mr16617018lfp.121.1577106471345;
- Mon, 23 Dec 2019 05:07:51 -0800 (PST)
+        Mon, 23 Dec 2019 08:31:49 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=asmblr.net;
+         s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:References:
+        In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=SUrMh+BHIOC24ZAm0n+NADsw/cuWmXCc+FgBPXPbD4Y=; b=TClo9OT2jIrZGlaK67Yi396Uun
+        2yOfamIZ273XsqGc0S0vdku3Vcv4k8dGZLuRBjpPxD/tP3TAD6AaqyUFHcHdTPx4nYAkh0gKFfH8L
+        OVCrvsEtpRLbMLmuqoPd/enqMhcunbXPOWaBbdIPLnaezNwTAtbueaxLtGg3b1t/q9v2gUMHfltjI
+        0B5rT4nuHx/idmjvQuSIKn92ehP2vYzhVL3vvwaa0hIrIQbld2CiZLHyijiEiQD8xoZycLvjEqlQo
+        mLi0Nwj706sm2G2WW0k00YoEcKLczhKm56vqJEtbnHN3m/ocDRKmeXmkjR/+3mGkoOIdpw5hKZQ3T
+        dSlT8JcQ==;
+Received: from 89-64-37-27.dynamic.chello.pl ([89.64.37.27]:49046 helo=milkyway.galaxy)
+        by srv2.anyservers.com with esmtpsa (TLSv1.2:ECDHE-RSA-AES128-GCM-SHA256:128)
+        (Exim 4.92)
+        (envelope-from <amade@asmblr.net>)
+        id 1ijMxQ-00Gi5o-0n; Mon, 23 Dec 2019 13:37:08 +0100
+From:   =?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amade@asmblr.net>
+To:     Ping-Ke Shih <pkshih@realtek.com>,
+        Kalle Valo <kvalo@codeaurora.org>
+Cc:     "David S . Miller" <davem@davemloft.net>,
+        Larry Finger <Larry.Finger@lwfinger.net>,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org,
+        =?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amade@asmblr.net>
+Subject: [PATCH 4/9] rtlwifi: rtl8192cu: Remove sw.h header
+Date:   Mon, 23 Dec 2019 13:37:10 +0100
+Message-Id: <20191223123715.7177-5-amade@asmblr.net>
+X-Mailer: git-send-email 2.24.1
+In-Reply-To: <20191223123715.7177-1-amade@asmblr.net>
+References: <20191223123715.7177-1-amade@asmblr.net>
 MIME-Version: 1.0
-References: <1576386975-7941-1-git-send-email-akinobu.mita@gmail.com>
-In-Reply-To: <1576386975-7941-1-git-send-email-akinobu.mita@gmail.com>
-From:   Akinobu Mita <akinobu.mita@gmail.com>
-Date:   Mon, 23 Dec 2019 22:07:39 +0900
-Message-ID: <CAC5umygqpmb0s8zHC+TFEFffQmsU4N1hUs_XWGDLtqkJEccfBw@mail.gmail.com>
-Subject: Re: [PATCH v4 00/12] add header file for kelvin to/from Celsius
- conversion helpers
-To:     Linux NVMe Mailinglist <linux-nvme@lists.infradead.org>,
-        linux-hwmon@vger.kernel.org, Linux PM <linux-pm@vger.kernel.org>,
-        "open list:TI WILINK WIRELES..." <linux-wireless@vger.kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>
-Cc:     Sujith Thomas <sujith.thomas@intel.com>,
-        Darren Hart <dvhart@infradead.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Amit Kucheria <amit.kucheria@verdurent.com>,
-        Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Keith Busch <kbusch@kernel.org>, Jens Axboe <axboe@fb.com>,
-        Christoph Hellwig <hch@lst.de>,
-        Sagi Grimberg <sagi@grimberg.me>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Stanislaw Gruszka <sgruszka@redhat.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Intel Linux Wireless <linuxwifi@intel.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - srv2.anyservers.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - asmblr.net
+X-Get-Message-Sender-Via: srv2.anyservers.com: authenticated_id: amade@asmblr.net
+X-Authenticated-Sender: srv2.anyservers.com: amade@asmblr.net
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Andrew,
+It has one define, which is already defined in include from reg.h.
+All functions are declared in their own headers and included in *.c
+files belonging to them.
+This makes sw.h unnecessary, so we can remove it.
 
-Could you take a look at this series, and consider including into -mm tree?
+Signed-off-by: Amadeusz Sławiński <amade@asmblr.net>
+---
+ .../wireless/realtek/rtlwifi/rtl8192cu/sw.c   |  1 -
+ .../wireless/realtek/rtlwifi/rtl8192cu/sw.h   | 27 -------------------
+ 2 files changed, 28 deletions(-)
+ delete mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192cu/sw.h
 
-2019=E5=B9=B412=E6=9C=8815=E6=97=A5(=E6=97=A5) 14:16 Akinobu Mita <akinobu.=
-mita@gmail.com>:
->
-> There are several helper macros to convert kelvin to/from Celsius in
-> <linux/thermal.h> for thermal drivers.  These are useful for any other
-> drivers or subsystems, but it's odd to include <linux/thermal.h> just for
-> the helpers.
->
-> This adds a new <linux/units.h> that provides the equivalent inline
-> functions for any drivers or subsystems, and switches all the users of
-> conversion helpers in <linux/thermal.h> to use <linux/units.h>
-> helpers.
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/sw.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/sw.c
+index 6b954059e830..b53daf1b29f7 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/sw.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/sw.c
+@@ -12,7 +12,6 @@
+ #include "mac.h"
+ #include "dm.h"
+ #include "rf.h"
+-#include "sw.h"
+ #include "trx.h"
+ #include "led.h"
+ #include "hw.h"
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/sw.h b/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/sw.h
+deleted file mode 100644
+index 662440c4cdc9..000000000000
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/sw.h
++++ /dev/null
+@@ -1,27 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0 */
+-/* Copyright(c) 2009-2012  Realtek Corporation.*/
+-
+-#ifndef __RTL92CU_SW_H__
+-#define __RTL92CU_SW_H__
+-
+-#define EFUSE_MAX_SECTION	16
+-
+-void rtl92cu_phy_rf6052_set_cck_txpower(struct ieee80211_hw *hw,
+-					u8 *powerlevel);
+-void rtl92cu_phy_rf6052_set_ofdm_txpower(struct ieee80211_hw *hw,
+-					u8 *ppowerlevel, u8 channel);
+-bool _rtl92cu_phy_config_bb_with_headerfile(struct ieee80211_hw *hw,
+-					    u8 configtype);
+-bool _rtl92cu_phy_config_bb_with_pgheaderfile(struct ieee80211_hw *hw,
+-						    u8 configtype);
+-void _rtl92cu_phy_lc_calibrate(struct ieee80211_hw *hw, bool is2t);
+-void rtl92cu_phy_set_rf_reg(struct ieee80211_hw *hw,
+-			   enum radio_path rfpath,
+-			   u32 regaddr, u32 bitmask, u32 data);
+-bool rtl92cu_phy_set_rf_power_state(struct ieee80211_hw *hw,
+-				   enum rf_pwrstate rfpwr_state);
+-u32 rtl92cu_phy_query_rf_reg(struct ieee80211_hw *hw,
+-			    enum radio_path rfpath, u32 regaddr, u32 bitmask);
+-void rtl92cu_phy_set_bw_mode_callback(struct ieee80211_hw *hw);
+-
+-#endif
+-- 
+2.24.1
+
