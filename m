@@ -2,123 +2,144 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5AFA3129612
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Dec 2019 13:39:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B3D9129622
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Dec 2019 13:52:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726798AbfLWMjm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 23 Dec 2019 07:39:42 -0500
-Received: from mx1.yrkesakademin.fi ([85.134.45.194]:23192 "EHLO
-        mx1.yrkesakademin.fi" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726257AbfLWMjm (ORCPT
+        id S1726866AbfLWMw2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 23 Dec 2019 07:52:28 -0500
+Received: from srv2.anyservers.com ([77.79.239.202]:55646 "EHLO
+        srv2.anyservers.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726680AbfLWMw1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 23 Dec 2019 07:39:42 -0500
-X-Greylist: delayed 904 seconds by postgrey-1.27 at vger.kernel.org; Mon, 23 Dec 2019 07:39:40 EST
-Subject: Re: [PATCH] Revert "iwlwifi: mvm: fix scan config command size"
-To:     Roman Gilg <subdiff@gmail.com>,
-        Mehmet Akif Tasova <makiftasova@gmail.com>
-CC:     Johannes Berg <johannes.berg@intel.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Intel Linux Wireless <linuxwifi@intel.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Shahar S Matityahu <shahar.s.matityahu@intel.com>,
-        Tova Mussai <tova.mussai@intel.com>,
-        Ayala Beker <ayala.beker@intel.com>,
-        Sara Sharon <sara.sharon@intel.com>,
-        <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-References: <20191213203512.8250-1-makiftasova@gmail.com>
- <CAJcyoyusgtw0++KsEHK-t=EFGx2v9GKv7+BSViUCaB3nyDr2Jw@mail.gmail.com>
-From:   Thomas Backlund <tmb@mageia.org>
-Message-ID: <946da821-9e54-4508-e3ab-f2cdc19c8084@mageia.org>
-Date:   Mon, 23 Dec 2019 14:24:33 +0200
+        Mon, 23 Dec 2019 07:52:27 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=asmblr.net;
+         s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:References:
+        In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=TjhyZtVGXeZiT/7ziQoThyRywRWC9b0F5fUg+oxiM5Y=; b=rX6KxPMVrkp6MBh3aQqgueT0Nf
+        MlMdBwLJeOXAtFX1QO5P4C6iTT0ASsbIZPNqE7WQg44BbWrGQ/Hjsa605y8yDF4zmzRrUdhwtUnLn
+        ayLfW7q9raV8TaZVI495E0ERkQBh91JzZITMADzFXZwhHoeuEo3AWmunbE9IZ466FjdyhZcs+JWuH
+        G6kJ53tarH53zTmik6/3LAtXkaANYEJ0gDzo7LaIi0CAQxB/Ly7q8uGchgX5KoqlioFaPDnmpDw4c
+        Eai3/KpVK6CnXo49D0kfDUITuN8i2EAtvWjXqfbDsxB98nwzSxLtRoNE2Byh0ABSJiDUIUFejQIJb
+        KDocwIOg==;
+Received: from 89-64-37-27.dynamic.chello.pl ([89.64.37.27]:49046 helo=milkyway.galaxy)
+        by srv2.anyservers.com with esmtpsa (TLSv1.2:ECDHE-RSA-AES128-GCM-SHA256:128)
+        (Exim 4.92)
+        (envelope-from <amade@asmblr.net>)
+        id 1ijMxP-00Gi5o-61; Mon, 23 Dec 2019 13:37:07 +0100
+From:   =?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amade@asmblr.net>
+To:     Ping-Ke Shih <pkshih@realtek.com>,
+        Kalle Valo <kvalo@codeaurora.org>
+Cc:     "David S . Miller" <davem@davemloft.net>,
+        Larry Finger <Larry.Finger@lwfinger.net>,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org,
+        =?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amade@asmblr.net>
+Subject: [PATCH 1/9] rtlwifi: rtl8192cu: Fix typo
+Date:   Mon, 23 Dec 2019 13:37:07 +0100
+Message-Id: <20191223123715.7177-2-amade@asmblr.net>
+X-Mailer: git-send-email 2.24.1
+In-Reply-To: <20191223123715.7177-1-amade@asmblr.net>
+References: <20191223123715.7177-1-amade@asmblr.net>
 MIME-Version: 1.0
-In-Reply-To: <CAJcyoyusgtw0++KsEHK-t=EFGx2v9GKv7+BSViUCaB3nyDr2Jw@mail.gmail.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-WatchGuard-Spam-ID: str=0001.0A0C0215.5E00B58D.0066,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-X-WatchGuard-Spam-Score: 0, clean; 0, virus threat unknown
-X-WatchGuard-Mail-Client-IP: 85.134.45.194
-X-WatchGuard-Mail-From: tmb@mageia.org
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - srv2.anyservers.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - asmblr.net
+X-Get-Message-Sender-Via: srv2.anyservers.com: authenticated_id: amade@asmblr.net
+X-Authenticated-Sender: srv2.anyservers.com: amade@asmblr.net
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Den 18-12-2019 kl. 21:12, skrev Roman Gilg:
-> On Fri, Dec 13, 2019 at 9:36 PM Mehmet Akif Tasova
-> <makiftasova@gmail.com> wrote:
->>
->> Since Linux 5.4.1 released, iwlwifi could not initialize Intel(R) Dual Band
->> Wireless AC 9462 firmware, failing with following error in dmesg:
->>
->> iwlwifi 0000:00:14.3: FW error in SYNC CMD SCAN_CFG_CMD
->>
->> whole dmesg output of error can be found at:
->> https://gist.github.com/makiftasova/354e46439338f4ab3fba0b77ad5c19ec
->>
->> also bug report from ArchLinux bug tracker (contains more info):
->> https://bugs.archlinux.org/task/64703
-> 
-> Since this bug report is about the Dell XPS 13 2-in1: I tested your
-> revert with this device, but the issue persists at least on this
-> device. So these might be two different issues, one for your device
-> and another one for the XPS.
+Replace USB_VENDER_ID_REALTEK with USB_VENDOR_ID_REALTEK.
 
+Signed-off-by: Amadeusz Sławiński <amade@asmblr.net>
+---
+ .../wireless/realtek/rtlwifi/rtl8192cu/sw.c   | 34 +++++++++----------
+ 1 file changed, 17 insertions(+), 17 deletions(-)
 
-Yeah, to get iwlwifi to work somewhat nicely you need this revert, and 
-also theese on top of 5.4.6:
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/sw.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/sw.c
+index ab3e4aebad39..6b954059e830 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/sw.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/sw.c
+@@ -252,45 +252,45 @@ static struct rtl_hal_cfg rtl92cu_hal_cfg = {
+ 	.maps[RTL_RC_HT_RATEMCS15] = DESC_RATEMCS15,
+ };
+ 
+-#define USB_VENDER_ID_REALTEK		0x0bda
++#define USB_VENDOR_ID_REALTEK		0x0bda
+ 
+ /* 2010-10-19 DID_USB_V3.4 */
+ static const struct usb_device_id rtl8192c_usb_ids[] = {
+ 
+ 	/*=== Realtek demoboard ===*/
+ 	/* Default ID */
+-	{RTL_USB_DEVICE(USB_VENDER_ID_REALTEK, 0x8191, rtl92cu_hal_cfg)},
++	{RTL_USB_DEVICE(USB_VENDOR_ID_REALTEK, 0x8191, rtl92cu_hal_cfg)},
+ 
+ 	/****** 8188CU ********/
+ 	/* RTL8188CTV */
+-	{RTL_USB_DEVICE(USB_VENDER_ID_REALTEK, 0x018a, rtl92cu_hal_cfg)},
++	{RTL_USB_DEVICE(USB_VENDOR_ID_REALTEK, 0x018a, rtl92cu_hal_cfg)},
+ 	/* 8188CE-VAU USB minCard */
+-	{RTL_USB_DEVICE(USB_VENDER_ID_REALTEK, 0x8170, rtl92cu_hal_cfg)},
++	{RTL_USB_DEVICE(USB_VENDOR_ID_REALTEK, 0x8170, rtl92cu_hal_cfg)},
+ 	/* 8188cu 1*1 dongle */
+-	{RTL_USB_DEVICE(USB_VENDER_ID_REALTEK, 0x8176, rtl92cu_hal_cfg)},
++	{RTL_USB_DEVICE(USB_VENDOR_ID_REALTEK, 0x8176, rtl92cu_hal_cfg)},
+ 	/* 8188cu 1*1 dongle, (b/g mode only) */
+-	{RTL_USB_DEVICE(USB_VENDER_ID_REALTEK, 0x8177, rtl92cu_hal_cfg)},
++	{RTL_USB_DEVICE(USB_VENDOR_ID_REALTEK, 0x8177, rtl92cu_hal_cfg)},
+ 	/* 8188cu Slim Solo */
+-	{RTL_USB_DEVICE(USB_VENDER_ID_REALTEK, 0x817a, rtl92cu_hal_cfg)},
++	{RTL_USB_DEVICE(USB_VENDOR_ID_REALTEK, 0x817a, rtl92cu_hal_cfg)},
+ 	/* 8188cu Slim Combo */
+-	{RTL_USB_DEVICE(USB_VENDER_ID_REALTEK, 0x817b, rtl92cu_hal_cfg)},
++	{RTL_USB_DEVICE(USB_VENDOR_ID_REALTEK, 0x817b, rtl92cu_hal_cfg)},
+ 	/* 8188RU High-power USB Dongle */
+-	{RTL_USB_DEVICE(USB_VENDER_ID_REALTEK, 0x817d, rtl92cu_hal_cfg)},
++	{RTL_USB_DEVICE(USB_VENDOR_ID_REALTEK, 0x817d, rtl92cu_hal_cfg)},
+ 	/* 8188CE-VAU USB minCard (b/g mode only) */
+-	{RTL_USB_DEVICE(USB_VENDER_ID_REALTEK, 0x817e, rtl92cu_hal_cfg)},
++	{RTL_USB_DEVICE(USB_VENDOR_ID_REALTEK, 0x817e, rtl92cu_hal_cfg)},
+ 	/* 8188RU in Alfa AWUS036NHR */
+-	{RTL_USB_DEVICE(USB_VENDER_ID_REALTEK, 0x817f, rtl92cu_hal_cfg)},
++	{RTL_USB_DEVICE(USB_VENDOR_ID_REALTEK, 0x817f, rtl92cu_hal_cfg)},
+ 	/* RTL8188CUS-VL */
+-	{RTL_USB_DEVICE(USB_VENDER_ID_REALTEK, 0x818a, rtl92cu_hal_cfg)},
+-	{RTL_USB_DEVICE(USB_VENDER_ID_REALTEK, 0x819a, rtl92cu_hal_cfg)},
++	{RTL_USB_DEVICE(USB_VENDOR_ID_REALTEK, 0x818a, rtl92cu_hal_cfg)},
++	{RTL_USB_DEVICE(USB_VENDOR_ID_REALTEK, 0x819a, rtl92cu_hal_cfg)},
+ 	/* 8188 Combo for BC4 */
+-	{RTL_USB_DEVICE(USB_VENDER_ID_REALTEK, 0x8754, rtl92cu_hal_cfg)},
++	{RTL_USB_DEVICE(USB_VENDOR_ID_REALTEK, 0x8754, rtl92cu_hal_cfg)},
+ 
+ 	/****** 8192CU ********/
+ 	/* 8192cu 2*2 */
+-	{RTL_USB_DEVICE(USB_VENDER_ID_REALTEK, 0x8178, rtl92cu_hal_cfg)},
++	{RTL_USB_DEVICE(USB_VENDOR_ID_REALTEK, 0x8178, rtl92cu_hal_cfg)},
+ 	/* 8192CE-VAU USB minCard */
+-	{RTL_USB_DEVICE(USB_VENDER_ID_REALTEK, 0x817c, rtl92cu_hal_cfg)},
++	{RTL_USB_DEVICE(USB_VENDOR_ID_REALTEK, 0x817c, rtl92cu_hal_cfg)},
+ 
+ 	/*=== Customer ID ===*/
+ 	/****** 8188CU ********/
+@@ -329,7 +329,7 @@ static const struct usb_device_id rtl8192c_usb_ids[] = {
+ 
+ 	/****** 8188 RU ********/
+ 	/* Netcore */
+-	{RTL_USB_DEVICE(USB_VENDER_ID_REALTEK, 0x317f, rtl92cu_hal_cfg)},
++	{RTL_USB_DEVICE(USB_VENDOR_ID_REALTEK, 0x317f, rtl92cu_hal_cfg)},
+ 
+ 	/****** 8188CUS Slim Solo********/
+ 	{RTL_USB_DEVICE(0x04f2, 0xaff7, rtl92cu_hal_cfg)}, /*Xavi*/
+-- 
+2.24.1
 
- From db5cce1afc8d2475d2c1c37c2a8267dd0e151526 Mon Sep 17 00:00:00 2001
-From: Anders Kaseorg <andersk@mit.edu>
-Date: Mon, 2 Dec 2019 17:09:20 -0500
-Subject: Revert "iwlwifi: assign directly to iwl_trans->cfg in QuZ 
-detection"
-
- From 0df36b90c47d93295b7e393da2d961b2f3b6cde4 Mon Sep 17 00:00:00 2001
-From: Luca Coelho <luciano.coelho@intel.com>
-Date: Thu, 5 Dec 2019 09:03:54 +0200
-Subject: iwlwifi: pcie: move power gating workaround earlier in the flow
-
-and atleast v2 of the "iwlwifi: mvm: don't send the 
-IWL_MVM_RXQ_NSSN_SYNC notif to Rx queues" patch that is being debated on 
-this list.
-
-With theese in place, we seem to have it behaving properly again for 
-Mageia users reporting various problems / firmware crashes / ...
-
-Hopefully Intel guys will get this sorted soon-ish and all sent to stable@
-
-> 
->> Reverting commit 06eb547c4ae4 ("iwlwifi: mvm: fix scan config command
->> size") seems to fix this issue  until proper solution is found.
->>
->> This reverts commit 06eb547c4ae4382e70d556ba213d13c95ca1801b.
->>
->> Signed-off-by: Mehmet Akif Tasova <makiftasova@gmail.com>
->> ---
->>   drivers/net/wireless/intel/iwlwifi/mvm/scan.c | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
->> index a046ac9fa852..a5af8f4128b1 100644
->> --- a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
->> +++ b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
->> @@ -1213,7 +1213,7 @@ static int iwl_mvm_legacy_config_scan(struct iwl_mvm *mvm)
->>                  cmd_size = sizeof(struct iwl_scan_config_v2);
->>          else
->>                  cmd_size = sizeof(struct iwl_scan_config_v1);
->> -       cmd_size += num_channels;
->> +       cmd_size += mvm->fw->ucode_capa.n_scan_channels;
->>
->>          cfg = kzalloc(cmd_size, GFP_KERNEL);
->>          if (!cfg)
->> --
->> 2.24.1
->>
-> 
-
---
-Thomas
