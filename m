@@ -2,505 +2,194 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 73BB71293D3
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Dec 2019 10:54:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 41376129473
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Dec 2019 11:53:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726666AbfLWJya (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 23 Dec 2019 04:54:30 -0500
-Received: from paleale.coelho.fi ([176.9.41.70]:54556 "EHLO
-        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726233AbfLWJya (ORCPT
+        id S1726717AbfLWKxY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 23 Dec 2019 05:53:24 -0500
+Received: from mx0a-00183b01.pphosted.com ([67.231.149.44]:61956 "EHLO
+        mx0a-00183b01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726663AbfLWKxX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 23 Dec 2019 04:54:30 -0500
-Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa.ger.corp.intel.com)
-        by farmhouse.coelho.fi with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.92.2)
-        (envelope-from <luca@coelho.fi>)
-        id 1ijKPz-0000iz-DN; Mon, 23 Dec 2019 11:54:28 +0200
-From:   Luca Coelho <luca@coelho.fi>
-To:     kvalo@codeaurora.org
-Cc:     linux-wireless@vger.kernel.org
-Date:   Mon, 23 Dec 2019 11:54:23 +0200
-Message-Id: <20191223095423.1464552-1-luca@coelho.fi>
-X-Mailer: git-send-email 2.24.0
-In-Reply-To: <20191220125124.1315679-5-luca@coelho.fi>
-References: <20191220125124.1315679-5-luca@coelho.fi>
+        Mon, 23 Dec 2019 05:53:23 -0500
+Received: from pps.filterd (m0059812.ppops.net [127.0.0.1])
+        by m0059812.ppops.net (8.16.0.42/8.16.0.42) with SMTP id xBNAqnOP023461;
+        Mon, 23 Dec 2019 03:53:16 -0700
+Received: from nam04-co1-obe.outbound.protection.outlook.com (mail-co1nam04lp2058.outbound.protection.outlook.com [104.47.45.58])
+        by m0059812.ppops.net with ESMTP id 2x1eu13bpt-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 23 Dec 2019 03:53:16 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=X+3dR0wWyD936UGviX6FI63fJ2nZjnPigqaTbF1pI3SQ8GW2T/9x9Y3M1bbnuC6eAmnRGf+rWxkxZR7bMOB4+SKN4gyeY3UpYJ+SGpP7XAjlviCQgmt23Ghc54GkUOStJJ84hTFEayzIwfPeO7Y/rkiFk6WMK2s1ELal/waxnfVrYEUAezvEAh1wqRqXgdf9wlYoONjqENYPPPkUV9nmoE9NwRP5sAiNhD48kZ6NO1v64hzqeLBlCMdi+pcYEq0hwGRgQS8VsAdaHcGG5x/58N6pT9ovyczuuhkoJyS5Mlzi/6k2ZGCJNGPL1CgJfne+1nzKYytWQZQnLtT8+lI0kg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=E90+380u87Szk8n8igZwa3a1GXSZGcxBJ2Qg0mGUyjY=;
+ b=mhGeQlfBWI88rmE2tj/imL2e9ZhCGhrQsM0+mWH/WpxFTwuaj6PoL7HBLgIceCF+R4R7kLPoEVFNXXPlgKuuZDhW3jY7o9Ao93kMgbPx0/JKVCKCWjN+4QHZ1DMq8/bANTDoIQmnqEy28UxcwrA5nwFqSdeiKhWIUHfll5mHwroDhjtGMBEPp+Quc7VDiSkSdVQHrAOEaSMzNO1ie7C8UYb+wV8CIynnOJNeDgR79qDVdjpx4laMCCc4OQfb64tA9HMdsT3bfKnsJhHa1eZjG9I07WEAkkodQ7MEM2Nz5jM7LIg3Btd6DdslAdBNSoO7JXwr8ujEV0ao1tk5rBH/UA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=quantenna.com; dmarc=pass action=none
+ header.from=quantenna.com; dkim=pass header.d=quantenna.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quantenna.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=E90+380u87Szk8n8igZwa3a1GXSZGcxBJ2Qg0mGUyjY=;
+ b=Zz+x5zNdzWQT8ZWw3hNT+Lo0Xvdwh8U06JQnM/i1Kl9cWPg8l7n/tZRSUFYw+g/jp9dsCHJOgXVAtzTJi5BCpgJjkXvmbKOE52dCcbKIu3kyK2sqodQujBmYA7I9fACLO4Sd/Y5KNzWbsHOXsinwQ/0RLd8g3JK1nylqQmw/SJM=
+Received: from DM5PR0501MB3768.namprd05.prod.outlook.com (10.167.109.30) by
+ DM5PR0501MB3911.namprd05.prod.outlook.com (10.167.108.38) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2581.8; Mon, 23 Dec 2019 10:53:15 +0000
+Received: from DM5PR0501MB3768.namprd05.prod.outlook.com
+ ([fe80::69cc:e366:dd60:7bb0]) by DM5PR0501MB3768.namprd05.prod.outlook.com
+ ([fe80::69cc:e366:dd60:7bb0%3]) with mapi id 15.20.2581.007; Mon, 23 Dec 2019
+ 10:53:14 +0000
+Received: from SN6PR05MB4928.namprd05.prod.outlook.com (52.135.117.74) by
+ SN6PR05MB4286.namprd05.prod.outlook.com (52.135.73.25) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2581.6; Mon, 23 Dec 2019 10:52:41 +0000
+Received: from SN6PR05MB4928.namprd05.prod.outlook.com
+ ([fe80::2956:4ff3:7d5b:333c]) by SN6PR05MB4928.namprd05.prod.outlook.com
+ ([fe80::2956:4ff3:7d5b:333c%5]) with mapi id 15.20.2581.007; Mon, 23 Dec 2019
+ 10:52:41 +0000
+Date:   Mon, 23 Dec 2019 13:52:35 +0300
+From:   Sergey Matyukevich <sergey.matyukevich.os@quantenna.com>
+To:     Orr Mazor <orr.mazor@tandemg.com>
+CC:     Johannes Berg <johannes@sipsolutions.net>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH] subsystem: Fix radar event during another phy CAC
+Message-ID: <20191223105234.lgsupxfapbmxuvc5@bars>
+Mail-Followup-To: Orr Mazor <orr.mazor@tandemg.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+References: <20191222145449.15792-1-Orr.Mazor@tandemg.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191222145449.15792-1-Orr.Mazor@tandemg.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-ClientProxiedBy: AM4PR0202CA0004.eurprd02.prod.outlook.com
+ (2603:10a6:200:89::14) To SN6PR05MB4928.namprd05.prod.outlook.com
+ (2603:10b6:805:9d::10)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on farmhouse.coelho.fi
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
-        TVD_RCVD_IP,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.2
-Subject: [PATCH v2 04/11] iwlwifi: mvm: add support for location range request version 8
+Received: from bars (195.182.157.78) by AM4PR0202CA0004.eurprd02.prod.outlook.com (2603:10a6:200:89::14) with Microsoft SMTP Server (version=TLS1_2, cipher=) via Frontend Transport; Mon, 23 Dec 2019 10:52:39 +0000
+X-Originating-IP: [195.182.157.78]
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 524d7bf2-9a78-49ae-5ae7-08d787963b4a
+X-MS-TrafficTypeDiagnostic: SN6PR05MB4286:|DM5PR0501MB3911:
+X-Microsoft-Antispam-PRVS: <SN6PR05MB42868CC93C4AEDDC34022541A32E0@SN6PR05MB4286.namprd05.prod.outlook.com>
+X-Moderation-Data: 12/23/2019 10:53:11 AM
+Content-Transfer-Encoding: quoted-printable
+X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
+X-Forefront-PRVS: 0260457E99
+X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(136003)(346002)(376002)(396003)(39840400004)(366004)(199004)(189003)(186003)(5660300002)(956004)(26005)(316002)(6496006)(52116002)(86362001)(1076003)(478600001)(16526019)(9686003)(4326008)(55016002)(2906002)(8936002)(6666004)(81166006)(81156014)(8676002)(6916009)(66946007)(33716001)(9576002)(66556008)(66476007)(54906003);DIR:OUT;SFP:1101;SCL:1;SRVR:DM5PR0501MB3911;H:DM5PR0501MB3768.namprd05.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+Received-SPF: None (protection.outlook.com: quantenna.com does not designate
+ permitted sender hosts)
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: Vk90ehgzXCY+Axsp1JjDMZsQ7nG/lkBP1AdpmEyVNrSffXlCP3vqJ+1QwRXu5JrImy2p0iB/aDAYxZ+tP0ofIsGYcqhrONPM+vQZqwrOMPD7+xFu0bQwh/34sivynHAcUSizHwD0xHtSXwDDsOT2xCpYF4KoMQ0XFcISdHV3TGyID3Y4OosdDPI3EmNPE/siRE9eXAHwvt+zpuA1ZxEhJ3eoq5V5gW5UB1WAvUuElj3INAppPEh/bELe8Y+mV28tme4o8UBPy0xrU0Cs2akbw0UV/uYuWXGpevp3+z1OSbw5ROoZmt3KHve4N99rnlUaWWF691nc4ppG4eBSupS7oYsz1jfrsojHAachi/MV0gAXOUqgmKSNjMPo0nMbymT5uSEMBPu15sgxlb7aTeAqpUnJPnMvB+SjWdS9YBWGIGx2/QrdOJZG/jOvika0kka8
+X-OriginatorOrg: quantenna.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 524d7bf2-9a78-49ae-5ae7-08d787963b4a
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: a355dbce-62b4-4789-9446-c1d5582180ff
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: kiN6PxjgcihCHxPTgFBwZps9uZuAVFZVCgFFH8w56uEMC+YK/04AVCjoMeR47ADVyBu9+xD+mk11ePLDMCRg48RCwAV3l6tcUk5Vy38nVvrl9owVTjRRe+oR5ErFo65NKY2YmmRR69FJ/BwUWKNpYRac30pJhYmOdSiqKATTNSlGoj8olN8Dwuboiych66KPEl6yv+F7HLuWePt+FmmF3hKtpSj6FjqDCU7Ep+ZjIwk=
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Dec 2019 10:53:14.5223
+ (UTC)
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM5PR0501MB3911
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
+ definitions=2019-12-23_05:2019-12-23,2019-12-23 signatures=0
+X-Proofpoint-Spam-Reason: safe
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Avraham Stern <avraham.stern@intel.com>
+Hi Orr,
 
-The new API requires the driver to set the frame format
-(legacy, HT, VHT etc.) to be used for the measurement.
+> In case a radar event of CAC_FINISHED or RADAR_DETECTED
+> happens during another phy is during CAC we might need
+> to cancel that CAC.
+> If we got a radar in a channel that another phy is now
+> doing CAC on then the CAC should be canceled.
+> If, for example, 2 phys doing CAC on the same channels,
+> or on comptable channels, once on of them will finish his CAC
+> the other might need to cancel his CAC, since it is no
+> longer relevant.
+>
+> To fix that the commit adds an callback and implement it in mac80211
+> to end CAC.
+> This commit also adds a call to said callback if after a radar
+> event we see the cac is no longer relevant
 
-The new API also supports 11az and secured measurement, but
-these are not supported by the driver for now.
+>  net/mac80211/cfg.c      | 23 +++++++++++++++++++++++
+>  net/wireless/rdev-ops.h | 10 ++++++++++
+>  net/wireless/reg.c      | 24 +++++++++++++++++++++++-
+>  net/wireless/trace.h    |  5 +++++
+>  5 files changed, 66 insertions(+), 1 deletion(-)
+>
+> diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+> index 4ab2c49423dc..68782ba8b6e8 100644
+> --- a/include/net/cfg80211.h
+> +++ b/include/net/cfg80211.h
+> @@ -3537,6 +3537,9 @@ struct cfg80211_update_owe_info {
+>   *
+>   * @start_radar_detection: Start radar detection in the driver.
+>   *
+> + * @end_cac: End running CAC, probably because a related CAC
+> + *   was finished on another phy.
+> + *
 
-Signed-off-by: Avraham Stern <avraham.stern@intel.com>
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
----
-In v2:
-   * Fix small merge damage (missing braces) [kbuildbot].
+Maybe it makes sense to follow existing naming convention here
+and to use something like 'stop_radar_detection' ?
+
+>   * @update_ft_ies: Provide updated Fast BSS Transition information to th=
+e
+>   *   driver. If the SME is in the driver/firmware, this information can =
+be
+>   *   used in building Authentication and Reassociation Request frames.
+> @@ -3863,6 +3866,8 @@ struct cfg80211_ops {
+>                                        struct net_device *dev,
+>                                        struct cfg80211_chan_def *chandef,
+>                                        u32 cac_time_ms);
+> +     void    (*end_cac)(struct wiphy *wiphy,
+> +                             struct net_device *dev);
+
+...
+
+> +static void cfg80211_check_and_end_cac(struct cfg80211_registered_device=
+ *rdev)
+> +{
+> +     struct wireless_dev *wdev;
+> +     /* If we finished CAC or received radar, we should end any
+> +      * CAC running on the same channels.
+> +      * the check !cfg80211_chandef_dfs_usable contain 2 options:
+> +      * either all channels are available - those the CAC_FINISHED
+> +      * event has effected another wdev state, or there is a channel
+> +      * in unavailable state in wdev chandef - those the RADAR_DETECTED
+> +      * event has effected another wdev state.
+> +      * In both cases we should end the CAC on the wdev.
+> +      *
+> +      */
+> +     list_for_each_entry(wdev, &rdev->wiphy.wdev_list, list) {
+> +             if (wdev->cac_started &&
+> +                 !cfg80211_chandef_dfs_usable(&rdev->wiphy, &wdev->chand=
+ef))
+> +                     rdev_end_cac(rdev, wdev->netdev);
+> +     }
+> +}
+> +
+
+IIUC, this code does not match your commit message. You are stopping CAC
+on all the virtual wireless interfaces on the same PHY, but not CACs on
+different PHYs. Meanwhile CAC does not need to be started on multiple
+virtual interfaces. For instance, in multiple BSSID configuration,
+hostapd performs CAC only on primary interface.
+
+Could you please clarify the use-case which requires this functionality ?
+
+Regards,
+Sergey
 
 
-.../wireless/intel/iwlwifi/fw/api/location.h  | 104 +++++++-
- .../intel/iwlwifi/mvm/ftm-initiator.c         | 239 ++++++++++++++----
- 2 files changed, 290 insertions(+), 53 deletions(-)
-
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/location.h b/drivers/net/wireless/intel/iwlwifi/fw/api/location.h
-index 7a0fe5adefa5..a51fda4c9588 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/api/location.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/api/location.h
-@@ -403,7 +403,7 @@ enum iwl_initiator_ap_flags {
- };
- 
- /**
-- * struct iwl_tof_range_req_ap_entry - AP configuration parameters
-+ * struct iwl_tof_range_req_ap_entry_v3 - AP configuration parameters
-  * @initiator_ap_flags: see &enum iwl_initiator_ap_flags.
-  * @channel_num: AP Channel number
-  * @bandwidth: AP bandwidth. One of iwl_tof_bandwidth.
-@@ -420,7 +420,7 @@ enum iwl_initiator_ap_flags {
-  * @reserved: For alignment and future use
-  * @tsf_delta: not in use
-  */
--struct iwl_tof_range_req_ap_entry {
-+struct iwl_tof_range_req_ap_entry_v3 {
- 	__le32 initiator_ap_flags;
- 	u8 channel_num;
- 	u8 bandwidth;
-@@ -434,6 +434,72 @@ struct iwl_tof_range_req_ap_entry {
- 	__le32 tsf_delta;
- } __packed; /* LOCATION_RANGE_REQ_AP_ENTRY_CMD_API_S_VER_3 */
- 
-+/**
-+ * enum iwl_location_frame_format - location frame formats
-+ * @IWL_LOCATION_FRAME_FORMAT_LEGACY: legacy
-+ * @IWL_LOCATION_FRAME_FORMAT_HT: HT
-+ * @IWL_LOCATION_FRAME_FORMAT_VHT: VHT
-+ * @IWL_LOCATION_FRAME_FORMAT_HE: HE
-+ */
-+enum iwl_location_frame_format {
-+	IWL_LOCATION_FRAME_FORMAT_LEGACY,
-+	IWL_LOCATION_FRAME_FORMAT_HT,
-+	IWL_LOCATION_FRAME_FORMAT_VHT,
-+	IWL_LOCATION_FRAME_FORMAT_HE,
-+};
-+
-+/**
-+ * enum iwl_location_bw - location bandwidth selection
-+ * @IWL_LOCATION_BW_20MHZ: 20MHz
-+ * @IWL_LOCATION_BW_40MHZ: 40MHz
-+ * @IWL_LOCATION_BW_80MHZ: 80MHz
-+ */
-+enum iwl_location_bw {
-+	IWL_LOCATION_BW_20MHZ,
-+	IWL_LOCATION_BW_40MHZ,
-+	IWL_LOCATION_BW_80MHZ,
-+};
-+
-+#define HLTK_11AZ_LEN	32
-+#define TK_11AZ_LEN	32
-+
-+#define LOCATION_BW_POS	4
-+
-+/**
-+ * struct iwl_tof_range_req_ap_entry - AP configuration parameters
-+ * @initiator_ap_flags: see &enum iwl_initiator_ap_flags.
-+ * @channel_num: AP Channel number
-+ * @format_bw: bits 0 - 3: &enum iwl_location_frame_format.
-+ *             bits 4 - 7: &enum iwl_location_bw.
-+ * @ctrl_ch_position: Coding of the control channel position relative to the
-+ *	center frequency, see iwl_mvm_get_ctrl_pos().
-+ * @ftmr_max_retries: Max number of retries to send the FTMR in case of no
-+ *	reply from the AP.
-+ * @bssid: AP's BSSID
-+ * @burst_period: Recommended value to be sent to the AP. Measurement
-+ *	periodicity In units of 100ms. ignored if num_of_bursts_exp = 0
-+ * @samples_per_burst: the number of FTMs pairs in single Burst (1-31);
-+ * @num_of_bursts: Recommended value to be sent to the AP. 2s Exponent of
-+ *	the number of measurement iterations (min 2^0 = 1, max 2^14)
-+ * @reserved: For alignment and future use
-+ * @hltk: HLTK to be used for secured 11az measurement
-+ * @tk: TK to be used for secured 11az measurement
-+ */
-+struct iwl_tof_range_req_ap_entry {
-+	__le32 initiator_ap_flags;
-+	u8 channel_num;
-+	u8 format_bw;
-+	u8 ctrl_ch_position;
-+	u8 ftmr_max_retries;
-+	u8 bssid[ETH_ALEN];
-+	__le16 burst_period;
-+	u8 samples_per_burst;
-+	u8 num_of_bursts;
-+	__le16 reserved;
-+	u8 hltk[HLTK_11AZ_LEN];
-+	u8 tk[TK_11AZ_LEN];
-+} __packed; /* LOCATION_RANGE_REQ_AP_ENTRY_CMD_API_S_VER_4 */
-+
- /**
-  * enum iwl_tof_response_mode
-  * @IWL_MVM_TOF_RESPONSE_ASAP: report each AP measurement separately as soon as
-@@ -535,6 +601,38 @@ struct iwl_tof_range_req_cmd_v5 {
- } __packed;
- /* LOCATION_RANGE_REQ_CMD_API_S_VER_5 */
- 
-+/**
-+ * struct iwl_tof_range_req_cmd_v7 - start measurement cmd
-+ * @initiator_flags: see flags @ iwl_tof_initiator_flags
-+ * @request_id: A Token incremented per request. The same Token will be
-+ *		sent back in the range response
-+ * @num_of_ap: Number of APs to measure (error if > IWL_MVM_TOF_MAX_APS)
-+ * @range_req_bssid: ranging request BSSID
-+ * @macaddr_mask: Bits set to 0 shall be copied from the MAC address template.
-+ *		  Bits set to 1 shall be randomized by the UMAC
-+ * @macaddr_template: MAC address template to use for non-randomized bits
-+ * @req_timeout_ms: Requested timeout of the response in units of milliseconds.
-+ *	This is the session time for completing the measurement.
-+ * @tsf_mac_id: report the measurement start time for each ap in terms of the
-+ *	TSF of this mac id. 0xff to disable TSF reporting.
-+ * @common_calib: The common calib value to inject to this measurement calc
-+ * @specific_calib: The specific calib value to inject to this measurement calc
-+ * @ap: per-AP request data, see &struct iwl_tof_range_req_ap_entry_v2.
-+ */
-+struct iwl_tof_range_req_cmd_v7 {
-+	__le32 initiator_flags;
-+	u8 request_id;
-+	u8 num_of_ap;
-+	u8 range_req_bssid[ETH_ALEN];
-+	u8 macaddr_mask[ETH_ALEN];
-+	u8 macaddr_template[ETH_ALEN];
-+	__le32 req_timeout_ms;
-+	__le32 tsf_mac_id;
-+	__le16 common_calib;
-+	__le16 specific_calib;
-+	struct iwl_tof_range_req_ap_entry_v3 ap[IWL_MVM_TOF_MAX_APS];
-+} __packed; /* LOCATION_RANGE_REQ_CMD_API_S_VER_7 */
-+
- /**
-  * struct iwl_tof_range_req_cmd - start measurement cmd
-  * @initiator_flags: see flags @ iwl_tof_initiator_flags
-@@ -565,7 +663,7 @@ struct iwl_tof_range_req_cmd {
- 	__le16 common_calib;
- 	__le16 specific_calib;
- 	struct iwl_tof_range_req_ap_entry ap[IWL_MVM_TOF_MAX_APS];
--} __packed; /* LOCATION_RANGE_REQ_CMD_API_S_VER_7 */
-+} __packed; /* LOCATION_RANGE_REQ_CMD_API_S_VER_8 */
- 
- /*
-  * enum iwl_tof_range_request_status - status of the sent request
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c b/drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c
-index 9f4b117db9d7..f783d6d53b6f 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c
-@@ -208,10 +208,11 @@ static void iwl_mvm_ftm_cmd(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
- 	cmd->tsf_mac_id = cpu_to_le32(0xff);
- }
- 
--static int iwl_mvm_ftm_target_chandef(struct iwl_mvm *mvm,
--				      struct cfg80211_pmsr_request_peer *peer,
--				      u8 *channel, u8 *bandwidth,
--				      u8 *ctrl_ch_position)
-+static int
-+iwl_mvm_ftm_target_chandef_v1(struct iwl_mvm *mvm,
-+			      struct cfg80211_pmsr_request_peer *peer,
-+			      u8 *channel, u8 *bandwidth,
-+			      u8 *ctrl_ch_position)
- {
- 	u32 freq = peer->chandef.chan->center_freq;
- 
-@@ -242,6 +243,45 @@ static int iwl_mvm_ftm_target_chandef(struct iwl_mvm *mvm,
- 	return 0;
- }
- 
-+static int
-+iwl_mvm_ftm_target_chandef_v2(struct iwl_mvm *mvm,
-+			      struct cfg80211_pmsr_request_peer *peer,
-+			      u8 *channel, u8 *format_bw,
-+			      u8 *ctrl_ch_position)
-+{
-+	u32 freq = peer->chandef.chan->center_freq;
-+
-+	*channel = ieee80211_frequency_to_channel(freq);
-+
-+	switch (peer->chandef.width) {
-+	case NL80211_CHAN_WIDTH_20_NOHT:
-+		*format_bw = IWL_LOCATION_FRAME_FORMAT_LEGACY;
-+		*format_bw |= IWL_LOCATION_BW_20MHZ << LOCATION_BW_POS;
-+		break;
-+	case NL80211_CHAN_WIDTH_20:
-+		*format_bw = IWL_LOCATION_FRAME_FORMAT_HT;
-+		*format_bw |= IWL_LOCATION_BW_20MHZ << LOCATION_BW_POS;
-+		break;
-+	case NL80211_CHAN_WIDTH_40:
-+		*format_bw = IWL_LOCATION_FRAME_FORMAT_HT;
-+		*format_bw |= IWL_LOCATION_BW_40MHZ << LOCATION_BW_POS;
-+		break;
-+	case NL80211_CHAN_WIDTH_80:
-+		*format_bw = IWL_LOCATION_FRAME_FORMAT_VHT;
-+		*format_bw |= IWL_LOCATION_BW_80MHZ << LOCATION_BW_POS;
-+		break;
-+	default:
-+		IWL_ERR(mvm, "Unsupported BW in FTM request (%d)\n",
-+			peer->chandef.width);
-+		return -EINVAL;
-+	}
-+
-+	*ctrl_ch_position = (peer->chandef.width > NL80211_CHAN_WIDTH_20) ?
-+		iwl_mvm_get_ctrl_pos(&peer->chandef) : 0;
-+
-+	return 0;
-+}
-+
- static int
- iwl_mvm_ftm_put_target_v2(struct iwl_mvm *mvm,
- 			  struct cfg80211_pmsr_request_peer *peer,
-@@ -249,9 +289,9 @@ iwl_mvm_ftm_put_target_v2(struct iwl_mvm *mvm,
- {
- 	int ret;
- 
--	ret = iwl_mvm_ftm_target_chandef(mvm, peer, &target->channel_num,
--					 &target->bandwidth,
--					 &target->ctrl_ch_position);
-+	ret = iwl_mvm_ftm_target_chandef_v1(mvm, peer, &target->channel_num,
-+					    &target->bandwidth,
-+					    &target->ctrl_ch_position);
- 	if (ret)
- 		return ret;
- 
-@@ -278,18 +318,11 @@ iwl_mvm_ftm_put_target_v2(struct iwl_mvm *mvm,
- #define FTM_PUT_FLAG(flag)	(target->initiator_ap_flags |= \
- 				 cpu_to_le32(IWL_INITIATOR_AP_FLAGS_##flag))
- 
--static int iwl_mvm_ftm_put_target(struct iwl_mvm *mvm,
--				  struct cfg80211_pmsr_request_peer *peer,
--				  struct iwl_tof_range_req_ap_entry *target)
-+static void
-+iwl_mvm_ftm_put_target_common(struct iwl_mvm *mvm,
-+			      struct cfg80211_pmsr_request_peer *peer,
-+			      struct iwl_tof_range_req_ap_entry *target)
- {
--	int ret;
--
--	ret = iwl_mvm_ftm_target_chandef(mvm, peer, &target->channel_num,
--					 &target->bandwidth,
--					 &target->ctrl_ch_position);
--	if (ret)
--		return ret;
--
- 	memcpy(target->bssid, peer->addr, ETH_ALEN);
- 	target->burst_period =
- 		cpu_to_le16(peer->ftm.burst_period);
-@@ -314,60 +347,166 @@ static int iwl_mvm_ftm_put_target(struct iwl_mvm *mvm,
- 		FTM_PUT_FLAG(ALGO_LR);
- 	else if (IWL_MVM_FTM_INITIATOR_ALGO == IWL_TOF_ALGO_TYPE_FFT)
- 		FTM_PUT_FLAG(ALGO_FFT);
-+}
-+
-+static int
-+iwl_mvm_ftm_put_target_v3(struct iwl_mvm *mvm,
-+			  struct cfg80211_pmsr_request_peer *peer,
-+			  struct iwl_tof_range_req_ap_entry_v3 *target)
-+{
-+	int ret;
-+
-+	ret = iwl_mvm_ftm_target_chandef_v1(mvm, peer, &target->channel_num,
-+					    &target->bandwidth,
-+					    &target->ctrl_ch_position);
-+	if (ret)
-+		return ret;
-+
-+	/*
-+	 * Versions 3 and 4 has some common fields, so
-+	 * iwl_mvm_ftm_put_target_common() can be used for version 7 too.
-+	 */
-+	iwl_mvm_ftm_put_target_common(mvm, peer, (void *)target);
- 
- 	return 0;
- }
- 
--int iwl_mvm_ftm_start(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
--		      struct cfg80211_pmsr_request *req)
-+static int iwl_mvm_ftm_put_target_v4(struct iwl_mvm *mvm,
-+				     struct cfg80211_pmsr_request_peer *peer,
-+				     struct iwl_tof_range_req_ap_entry *target)
-+{
-+	int ret;
-+
-+	ret = iwl_mvm_ftm_target_chandef_v2(mvm, peer, &target->channel_num,
-+					    &target->format_bw,
-+					    &target->ctrl_ch_position);
-+	if (ret)
-+		return ret;
-+
-+	iwl_mvm_ftm_put_target_common(mvm, peer, target);
-+
-+	return 0;
-+}
-+
-+static int iwl_mvm_ftm_send_cmd(struct iwl_mvm *mvm, struct iwl_host_cmd *hcmd)
-+{
-+	u32 status;
-+	int err = iwl_mvm_send_cmd_status(mvm, hcmd, &status);
-+
-+	if (!err && status) {
-+		IWL_ERR(mvm, "FTM range request command failure, status: %u\n",
-+			status);
-+		err = iwl_ftm_range_request_status_to_err(status);
-+	}
-+
-+	return err;
-+}
-+
-+static int iwl_mvm_ftm_start_v5(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
-+				struct cfg80211_pmsr_request *req)
- {
- 	struct iwl_tof_range_req_cmd_v5 cmd_v5;
--	struct iwl_tof_range_req_cmd cmd;
--	bool new_api = fw_has_api(&mvm->fw->ucode_capa,
--				  IWL_UCODE_TLV_API_FTM_NEW_RANGE_REQ);
--	u8 num_of_ap;
- 	struct iwl_host_cmd hcmd = {
- 		.id = iwl_cmd_id(TOF_RANGE_REQ_CMD, LOCATION_GROUP, 0),
- 		.dataflags[0] = IWL_HCMD_DFL_DUP,
-+		.data[0] = &cmd_v5,
-+		.len[0] = sizeof(cmd_v5),
- 	};
--	u32 status = 0;
--	int err, i;
-+	u8 i;
-+	int err;
- 
--	lockdep_assert_held(&mvm->mutex);
-+	iwl_mvm_ftm_cmd_v5(mvm, vif, &cmd_v5, req);
- 
--	if (mvm->ftm_initiator.req)
--		return -EBUSY;
-+	for (i = 0; i < cmd_v5.num_of_ap; i++) {
-+		struct cfg80211_pmsr_request_peer *peer = &req->peers[i];
- 
--	if (new_api) {
--		iwl_mvm_ftm_cmd(mvm, vif, &cmd, req);
--		hcmd.data[0] = &cmd;
--		hcmd.len[0] = sizeof(cmd);
--		num_of_ap = cmd.num_of_ap;
--	} else {
--		iwl_mvm_ftm_cmd_v5(mvm, vif, &cmd_v5, req);
--		hcmd.data[0] = &cmd_v5;
--		hcmd.len[0] = sizeof(cmd_v5);
--		num_of_ap = cmd_v5.num_of_ap;
-+		err = iwl_mvm_ftm_put_target_v2(mvm, peer, &cmd_v5.ap[i]);
-+		if (err)
-+			return err;
- 	}
- 
--	for (i = 0; i < num_of_ap; i++) {
-+	return iwl_mvm_ftm_send_cmd(mvm, &hcmd);
-+}
-+
-+static int iwl_mvm_ftm_start_v7(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
-+				struct cfg80211_pmsr_request *req)
-+{
-+	struct iwl_tof_range_req_cmd_v7 cmd_v7;
-+	struct iwl_host_cmd hcmd = {
-+		.id = iwl_cmd_id(TOF_RANGE_REQ_CMD, LOCATION_GROUP, 0),
-+		.dataflags[0] = IWL_HCMD_DFL_DUP,
-+		.data[0] = &cmd_v7,
-+		.len[0] = sizeof(cmd_v7),
-+	};
-+	u8 i;
-+	int err;
-+
-+	/*
-+	 * Versions 7 and 8 has the same structure except from the responders
-+	 * list, so iwl_mvm_ftm_cmd() can be used for version 7 too.
-+	 */
-+	iwl_mvm_ftm_cmd(mvm, vif, (void *)&cmd_v7, req);
-+
-+	for (i = 0; i < cmd_v7.num_of_ap; i++) {
- 		struct cfg80211_pmsr_request_peer *peer = &req->peers[i];
- 
--		if (new_api)
--			err = iwl_mvm_ftm_put_target(mvm, peer, &cmd.ap[i]);
--		else
--			err = iwl_mvm_ftm_put_target_v2(mvm, peer,
--							&cmd_v5.ap[i]);
-+		err = iwl_mvm_ftm_put_target_v3(mvm, peer, &cmd_v7.ap[i]);
-+		if (err)
-+			return err;
-+	}
-+
-+	return iwl_mvm_ftm_send_cmd(mvm, &hcmd);
-+}
- 
-+static int iwl_mvm_ftm_start_v8(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
-+				struct cfg80211_pmsr_request *req)
-+{
-+	struct iwl_tof_range_req_cmd cmd;
-+	struct iwl_host_cmd hcmd = {
-+		.id = iwl_cmd_id(TOF_RANGE_REQ_CMD, LOCATION_GROUP, 0),
-+		.dataflags[0] = IWL_HCMD_DFL_DUP,
-+		.data[0] = &cmd,
-+		.len[0] = sizeof(cmd),
-+	};
-+	u8 i;
-+	int err;
-+
-+	iwl_mvm_ftm_cmd(mvm, vif, &cmd, req);
-+
-+	for (i = 0; i < cmd.num_of_ap; i++) {
-+		struct cfg80211_pmsr_request_peer *peer = &req->peers[i];
-+
-+		err = iwl_mvm_ftm_put_target_v4(mvm, peer, &cmd.ap[i]);
- 		if (err)
- 			return err;
- 	}
- 
--	err = iwl_mvm_send_cmd_status(mvm, &hcmd, &status);
--	if (!err && status) {
--		IWL_ERR(mvm, "FTM range request command failure, status: %u\n",
--			status);
--		err = iwl_ftm_range_request_status_to_err(status);
-+	return iwl_mvm_ftm_send_cmd(mvm, &hcmd);
-+}
-+
-+int iwl_mvm_ftm_start(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
-+		      struct cfg80211_pmsr_request *req)
-+{
-+	bool new_api = fw_has_api(&mvm->fw->ucode_capa,
-+				  IWL_UCODE_TLV_API_FTM_NEW_RANGE_REQ);
-+	int err;
-+
-+	lockdep_assert_held(&mvm->mutex);
-+
-+	if (mvm->ftm_initiator.req)
-+		return -EBUSY;
-+
-+	if (new_api) {
-+		u8 cmd_ver = iwl_mvm_lookup_cmd_ver(mvm->fw, LOCATION_GROUP,
-+						    TOF_RANGE_REQ_CMD);
-+
-+		if (cmd_ver == 8)
-+			err = iwl_mvm_ftm_start_v8(mvm, vif, req);
-+		else
-+			err = iwl_mvm_ftm_start_v7(mvm, vif, req);
-+
-+	} else {
-+		err = iwl_mvm_ftm_start_v5(mvm, vif, req);
- 	}
- 
- 	if (!err) {
--- 
-2.24.0
-
+This email, including its contents and any attachment(s), may contain confi=
+dential information of ON Semiconductor and is solely for the intended reci=
+pient(s). If you may have received this in error, please contact the sender=
+ and permanently delete this email, its contents and any attachment(s).
