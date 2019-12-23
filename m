@@ -2,67 +2,98 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C1ADF129631
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Dec 2019 14:01:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 410EF12963A
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Dec 2019 14:03:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726733AbfLWNBU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 23 Dec 2019 08:01:20 -0500
-Received: from mga11.intel.com ([192.55.52.93]:54442 "EHLO mga11.intel.com"
+        id S1726763AbfLWNDo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 23 Dec 2019 08:03:44 -0500
+Received: from mail.kernel.org ([198.145.29.99]:35996 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726680AbfLWNBT (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 23 Dec 2019 08:01:19 -0500
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 23 Dec 2019 05:01:19 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.69,347,1571727600"; 
-   d="scan'208";a="367054476"
-Received: from tblake-mobl2.ger.corp.intel.com ([10.252.4.201])
-  by orsmga004.jf.intel.com with ESMTP; 23 Dec 2019 05:01:16 -0800
-Message-ID: <16647dbe5d9c8431060dcf6169c12c3267d67d0d.camel@intel.com>
-Subject: Re: PROBLEM: iwlwifi in 5.4 does not load firmware for Intel device
- 9560
-From:   Luciano Coelho <luciano.coelho@intel.com>
-To:     Stuart Little <achirvasub@gmail.com>
-Cc:     Johannes Berg <johannes.berg@intel.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        kernel list <linux-kernel@vger.kernel.org>,
-        Intel Linux Wireless <linuxwifi@intel.com>,
-        linux-wireless@vger.kernel.org
-Date:   Mon, 23 Dec 2019 15:01:16 +0200
-In-Reply-To: <20191223125742.GA2586@system76-pc.localdomain>
-References: <20190817041258.GA1641@chirva-slack.chirva-slack>
-         <20191208203810.GA2920@system76-pc.localdomain>
-         <20191222224207.GA2408@system76-pc.localdomain>
-         <ec9092a28196f24c39051b89f9dc87b40942b6de.camel@intel.com>
-         <20191223125742.GA2586@system76-pc.localdomain>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.1-2+b1 
+        id S1726680AbfLWNDo (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 23 Dec 2019 08:03:44 -0500
+Received: from localhost.localdomain.com (nat-pool-mxp-t.redhat.com [149.6.153.186])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 92FD0206CB;
+        Mon, 23 Dec 2019 13:03:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1577106223;
+        bh=WlrptsVcJSucGF3/RpaEbFaVPWaDeDbY2xmrpPU8Eo4=;
+        h=From:To:Cc:Subject:Date:From;
+        b=b9scGGAqy+p4Wa1CsSpeO35E5yJ33HMofcoZqg6pxTF8nzPYzg8xOPdlqmL0umCgH
+         IrNT8tErAuL/XRph91ytzIpHEI5+II1LnnxozgQwf0nLsEjEy9GIMkhrEeojvMQGkU
+         UM0nmp24AH6vZ3aEFry1vPfYZLybFyN8E/VBVhm0=
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org
+Subject: [PATCH] mt76: mt76x02u: avoid overwrite max_tx_fragments
+Date:   Mon, 23 Dec 2019 14:03:32 +0100
+Message-Id: <3dd971ebf46f9c4e1151461b67a419cbb7370415.1577106053.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 2019-12-23 at 07:57 -0500, Stuart Little wrote:
-> On Mon, Dec 23, 2019 at 02:52:11PM +0200, Luciano Coelho wrote:
-> > Hi,
-> > 
-> > The fix for this is already in v5.5-rc3:
-> > 
-> > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=db5cce1afc8d2475d2c1c37c2a8267dd0e151526
-> > 
-> 
-> I was actually going to write just now to report this: I've checked
-> that the very latest 5.5.0-rc3 works fine on this machine.
+Starting from 'commit ee8040139ab1 ("mt76: do not overwrite
+max_tx_fragments if it has been set")' we can avoid overwriting
+max_tx_fragments for mt76x02u devices
 
-Great! Thanks for letting me know.  I have now sent the patch to v5.4
-stable, hopefully it will be picked up soon.
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+ drivers/net/wireless/mediatek/mt76/mt76x0/usb.c      | 8 ++------
+ drivers/net/wireless/mediatek/mt76/mt76x2/usb_init.c | 8 ++------
+ 2 files changed, 4 insertions(+), 12 deletions(-)
 
---
-Cheers,
-Luca.
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x0/usb.c b/drivers/net/wireless/mediatek/mt76/mt76x0/usb.c
+index abf0a19ee70e..68a00795c91e 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x0/usb.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x0/usb.c
+@@ -182,16 +182,12 @@ static int mt76x0u_register_device(struct mt76x02_dev *dev)
+ 	if (err < 0)
+ 		goto out_err;
+ 
++	/* check hw sg support in order to enable AMSDU */
++	hw->max_tx_fragments = dev->mt76.usb.sg_en ? MT_TX_SG_MAX_SIZE : 1;
+ 	err = mt76x0_register_device(dev);
+ 	if (err < 0)
+ 		goto out_err;
+ 
+-	/* check hw sg support in order to enable AMSDU */
+-	if (dev->mt76.usb.sg_en)
+-		hw->max_tx_fragments = MT_TX_SG_MAX_SIZE;
+-	else
+-		hw->max_tx_fragments = 1;
+-
+ 	set_bit(MT76_STATE_INITIALIZED, &dev->mphy.state);
+ 
+ 	return 0;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/usb_init.c b/drivers/net/wireless/mediatek/mt76/mt76x2/usb_init.c
+index 62e5e89baf23..d2ca8fe42655 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x2/usb_init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x2/usb_init.c
+@@ -207,17 +207,13 @@ int mt76x2u_register_device(struct mt76x02_dev *dev)
+ 	if (err < 0)
+ 		goto fail;
+ 
++	/* check hw sg support in order to enable AMSDU */
++	hw->max_tx_fragments = dev->mt76.usb.sg_en ? MT_TX_SG_MAX_SIZE : 1;
+ 	err = mt76_register_device(&dev->mt76, true, mt76x02_rates,
+ 				   ARRAY_SIZE(mt76x02_rates));
+ 	if (err)
+ 		goto fail;
+ 
+-	/* check hw sg support in order to enable AMSDU */
+-	if (dev->mt76.usb.sg_en)
+-		hw->max_tx_fragments = MT_TX_SG_MAX_SIZE;
+-	else
+-		hw->max_tx_fragments = 1;
+-
+ 	set_bit(MT76_STATE_INITIALIZED, &dev->mphy.state);
+ 
+ 	mt76x02_init_debugfs(dev);
+-- 
+2.21.0
 
