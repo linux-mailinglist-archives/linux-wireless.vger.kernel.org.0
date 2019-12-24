@@ -2,188 +2,91 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E6D6129EF9
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Dec 2019 09:30:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B339129F85
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Dec 2019 10:02:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726195AbfLXIam (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 24 Dec 2019 03:30:42 -0500
-Received: from mail-eopbgr30126.outbound.protection.outlook.com ([40.107.3.126]:33253
-        "EHLO EUR03-AM5-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726047AbfLXIam (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 24 Dec 2019 03:30:42 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=D+5noYDn/Oe64T/+ZxrBKeDeGhc6w9/EOIe/z9eQsA8+imyWnwJVK7Toi77Wo8dn9hfTEnAvEe/Xd8g28CkAzK4DdAgnflypGMDbx7Qyyj1ektcA+tdZ+lXx5AJ5ni3NQvgZ3/GEfVqHCfFQNixzslg0Yin0voQFFIDwcIOrZjBngSMwjfEp49Y1ME0vdrcTn0sny1CilLqRYTrRn5roLp7dqWsWunaavBINIWLtsPxtc3xsaiskK+oj88PFp2VI6OxCx5F+sRtQ0WwAv+FwPCS+c9jA34c4Rfmyw6uW1jDAPQfC2oxYi2tdopr6+Q539yeWQ9S1AHE7mdz6jbJzUQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=UXekGoiHb6SbU1hK33OCjwU+6RtjJXpbXvt0UtPMeFc=;
- b=aBXibHe0bDozuBk2dNvpcw0FdDpNtfj7hyJmir/G2qa8fq+h0LEvP+EGgB3LvPrzOg2gCZq+qjBT8eys58iuYq0ufsW6k7+Ea3yGmpkqKQtlA5MS9genf+MZqK20uwSTtXEeJQnyvUTQFzh4IL5sMIAyHP4S7u8i4RXnwndwb+VbLTStMqXjLxrp/sp36hrzbLCpXlXaivuhCFOrFRGDIaHvufMxNKrU7nSD0JcMvMU5yXXH5D5nZXMgt2/giRYQ7VAIZYsjHFLieDQvo2aeh+uNPlY6Dalhb+wtE0wQhqzoyFGVSIs93z3KgJAmqNjbiLX4WoqstxYDv3EhDydWtQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=tandemg.com; dmarc=pass action=none header.from=tandemg.com;
- dkim=pass header.d=tandemg.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tandemg.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=UXekGoiHb6SbU1hK33OCjwU+6RtjJXpbXvt0UtPMeFc=;
- b=G7z0YLrHFm9fVP/gj6nxGa8L5yxur5tx9HU1xmzC+MV11NzUQTkK2MnARza/JULdOJJrsVj/xnVxdoaHELGEOWTN8VUJ08f7qEPVANjAd4DI6vgXfzF1PUZWwrO0yNYYBDcU66Iaj6nSe0juLuQtAULF2k6VoKRmT/LdxC0ki6Y=
-Received: from AM6PR02MB3621.eurprd02.prod.outlook.com (52.134.115.32) by
- AM6PR02MB4659.eurprd02.prod.outlook.com (20.177.188.207) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2559.16; Tue, 24 Dec 2019 08:29:57 +0000
-Received: from AM6PR02MB3621.eurprd02.prod.outlook.com
- ([fe80::d967:3749:3fcd:778a]) by AM6PR02MB3621.eurprd02.prod.outlook.com
- ([fe80::d967:3749:3fcd:778a%4]) with mapi id 15.20.2559.017; Tue, 24 Dec 2019
- 08:29:57 +0000
-From:   Orr Mazor <orr.mazor@tandemg.com>
-To:     Sergey Matyukevich <sergey.matyukevich.os@quantenna.com>
-CC:     Johannes Berg <johannes@sipsolutions.net>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: RE: [PATCH] subsystem: Fix radar event during another phy CAC
-Thread-Topic: [PATCH] subsystem: Fix radar event during another phy CAC
-Thread-Index: AQHVuNfbH206ZJg9QUmhdGm55ai8ZKfHjHuAgAE7TwA=
-Date:   Tue, 24 Dec 2019 08:29:57 +0000
-Message-ID: <AM6PR02MB36219B15C4F70980804728B0EF290@AM6PR02MB3621.eurprd02.prod.outlook.com>
-References: <20191222145449.15792-1-Orr.Mazor@tandemg.com>
- <20191223105234.lgsupxfapbmxuvc5@bars>
-In-Reply-To: <20191223105234.lgsupxfapbmxuvc5@bars>
-Accept-Language: he-IL, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=orr.mazor@tandemg.com; 
-x-originating-ip: [84.95.243.50]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 518a957f-b875-446f-1d03-08d7884b75bb
-x-ms-traffictypediagnostic: AM6PR02MB4659:
-x-microsoft-antispam-prvs: <AM6PR02MB4659B8FC94D44273CF2C9EC3EF290@AM6PR02MB4659.eurprd02.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:5797;
-x-forefront-prvs: 0261CCEEDF
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(396003)(39830400003)(346002)(136003)(376002)(366004)(189003)(199004)(9686003)(7696005)(6506007)(52536014)(4326008)(186003)(2906002)(6916009)(44832011)(55016002)(26005)(66476007)(71200400001)(76116006)(64756008)(5660300002)(66446008)(81156014)(8676002)(66946007)(81166006)(33656002)(8936002)(508600001)(66556008)(316002)(86362001)(54906003);DIR:OUT;SFP:1102;SCL:1;SRVR:AM6PR02MB4659;H:AM6PR02MB3621.eurprd02.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-received-spf: None (protection.outlook.com: tandemg.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: /fKrdMSumDwuu1jNEzKG8TTITLHw6rayshYiM5PJZSCXUmWEYIKkuNcfhpGmqDxhuLcE9Anjp0IWM4ketCmVvJdEjbqUZt3p/rF5rNKrue7xu9aa5AXiYXBTzB4w6s/nQtecdOHDA+TOS2ONQ/REISQcMjdHzwYaFRB6PxVuouRlqih6hRMwQSvh+1azw4NdrSg0rdBYzjS4ANVIwxY8BiZdSTCdInDc+s+f/U2iI3vsQjkbZUG4Q+yBAg7yAldI3M0hpfb6bMifhYJN2uGCBbzM4hEsrTAk7eHG//fOsCp0CtMJI13BBgdSHDYDxya0dx/UOYHMcHWcNe/chGGfXtQgQAGsmvJWMINctwtrj2KD7kPSH4eXM8Aw51t1qcN8nw3WHxnjU5PbixkphAnu33n5BJYLjyn8HNAwKZysbszNpRV3wwdg9uYtwZ0NdATv
-x-ms-exchange-transport-forked: True
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        id S1726184AbfLXJCE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 24 Dec 2019 04:02:04 -0500
+Received: from mail-wm1-f67.google.com ([209.85.128.67]:50846 "EHLO
+        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726068AbfLXJCA (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 24 Dec 2019 04:02:00 -0500
+Received: by mail-wm1-f67.google.com with SMTP id a5so1877559wmb.0
+        for <linux-wireless@vger.kernel.org>; Tue, 24 Dec 2019 01:01:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=JpIUPsCQ4mUZV8clqM6x3//3zxhuxnyUCEItvWS4lIE=;
+        b=EJ2m8BgGEtcQm8iSYsrb6jbllbscoKNSW55IMHI0wPcev4mLznd5VMRKwg2/sTmJx7
+         6B0CFsO0Hi5zcoPBFR5UJazH++6qulEdmR+LgsQTpX43ge6h4U8J8ZJNVTYRJqa9zOoX
+         KHYdGmdBFl3qmjTINlKlX73vsGbpXDplIawOo=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=JpIUPsCQ4mUZV8clqM6x3//3zxhuxnyUCEItvWS4lIE=;
+        b=UisLHRN35je9P/VYRH28p1MJDKY0ylDpZ22oSj9SY0S+j0X7LWcknG73h2cuFh6Je2
+         1vZn0mO6ywD10AToVnTPuvlbuJTeUdmKEHSyMdzMbtKYYFuUSCytoSLs5D4Dv1sgnJiU
+         Ib+8lHiwHzhyq4L0951Gyt6ZP6yquClB3zJ262Hnmv2a9szcWbb9pHv6Mpu5JZT+Qxr6
+         BuvdcvYIh3Blyq1HnFeKko3igvBGrnO/UWlh3jgkQHaDbUJ9+JqHxResEHmkPjAeYy01
+         JSC8/L46X6a9oiwgPhyU4YxoDVDTFK5rj4d+fCoqj+Ls3LyGLqKnDUgaDc6ZldMx76za
+         SkdA==
+X-Gm-Message-State: APjAAAXYJKh9BGrLjnLtbBrTAAFXqtgdSUmQMBu27yp791VJIhNSN73X
+        j/7SC+c+aVmk4t6VGjOwuYvhCQ==
+X-Google-Smtp-Source: APXvYqwaDJpckqJ1JrVbZPbh8vFZ6XADgxx76CNzAlm8TnNSIoHONxdbgCmk6gW2sYiAbh73ok449A==
+X-Received: by 2002:a1c:4b01:: with SMTP id y1mr3010277wma.12.1577178118405;
+        Tue, 24 Dec 2019 01:01:58 -0800 (PST)
+Received: from [10.230.41.59] ([192.19.215.251])
+        by smtp.gmail.com with ESMTPSA id v22sm1942400wml.11.2019.12.24.01.01.56
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 24 Dec 2019 01:01:57 -0800 (PST)
+Subject: Re: [PATCH v2 0/9] brcmfmac: add support for BCM4359 SDIO chipset
+To:     Christian Hewitt <christianshewitt@gmail.com>,
+        Soeren Moch <smoch@web.de>
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        Heiko Stuebner <heiko@sntech.de>,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        brcm80211-dev-list@cypress.com, netdev@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Neil Armstrong <narmstrong@baylibre.com>
+References: <20191211235253.2539-1-smoch@web.de>
+ <D1B53CE9-E87C-4514-A2D7-0FE70A4D1A5D@gmail.com>
+ <cb3ac55f-4c8f-b0a0-41ee-f16b3232c87e@web.de>
+ <47DB71CE-ACC4-431D-9E66-D28A8C18C0A4@gmail.com>
+From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
+Message-ID: <3c42d6de-670d-fee8-aa81-99f44d447e87@broadcom.com>
+Date:   Tue, 24 Dec 2019 10:01:56 +0100
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.1
 MIME-Version: 1.0
-X-OriginatorOrg: tandemg.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 518a957f-b875-446f-1d03-08d7884b75bb
-X-MS-Exchange-CrossTenant-originalarrivaltime: 24 Dec 2019 08:29:57.4486
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: d690b55a-f04a-454b-9f62-fb1e25467a25
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 4GHsyK/i72YNmmpBWF4ZdXjBA53NOie/M5y/zBMJW2OkPiRmvY3vvqNnqgbhRlweMUS3YSoJ6m9Rw/aFPxtG1Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM6PR02MB4659
+In-Reply-To: <47DB71CE-ACC4-431D-9E66-D28A8C18C0A4@gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-SGkgU2VyZ2V5LA0KDQo+SGkgT3JyLA0KPg0KPj4gSW4gY2FzZSBhIHJhZGFyIGV2ZW50IG9mIENB
-Q19GSU5JU0hFRCBvciBSQURBUl9ERVRFQ1RFRCBoYXBwZW5zIGR1cmluZw0KPj4gYW5vdGhlciBw
-aHkgaXMgZHVyaW5nIENBQyB3ZSBtaWdodCBuZWVkIHRvIGNhbmNlbCB0aGF0IENBQy4NCj4+IElm
-IHdlIGdvdCBhIHJhZGFyIGluIGEgY2hhbm5lbCB0aGF0IGFub3RoZXIgcGh5IGlzIG5vdyBkb2lu
-ZyBDQUMgb24NCj4+IHRoZW4gdGhlIENBQyBzaG91bGQgYmUgY2FuY2VsZWQuDQo+PiBJZiwgZm9y
-IGV4YW1wbGUsIDIgcGh5cyBkb2luZyBDQUMgb24gdGhlIHNhbWUgY2hhbm5lbHMsIG9yIG9uDQo+
-PiBjb21wdGFibGUgY2hhbm5lbHMsIG9uY2Ugb24gb2YgdGhlbSB3aWxsIGZpbmlzaCBoaXMgQ0FD
-IHRoZSBvdGhlcg0KPj4gbWlnaHQgbmVlZCB0byBjYW5jZWwgaGlzIENBQywgc2luY2UgaXQgaXMg
-bm8gbG9uZ2VyIHJlbGV2YW50Lg0KPj4NCj4+IFRvIGZpeCB0aGF0IHRoZSBjb21taXQgYWRkcyBh
-biBjYWxsYmFjayBhbmQgaW1wbGVtZW50IGl0IGluIG1hYzgwMjExDQo+PiB0byBlbmQgQ0FDLg0K
-Pj4gVGhpcyBjb21taXQgYWxzbyBhZGRzIGEgY2FsbCB0byBzYWlkIGNhbGxiYWNrIGlmIGFmdGVy
-IGEgcmFkYXIgZXZlbnQNCj4+IHdlIHNlZSB0aGUgY2FjIGlzIG5vIGxvbmdlciByZWxldmFudA0K
-Pg0KPj7CoCBuZXQvbWFjODAyMTEvY2ZnLmPCoMKgwqDCoMKgIHwgMjMgKysrKysrKysrKysrKysr
-KysrKysrKysNCj4+wqAgbmV0L3dpcmVsZXNzL3JkZXYtb3BzLmggfCAxMCArKysrKysrKysrDQo+
-PsKgIG5ldC93aXJlbGVzcy9yZWcuY8KgwqDCoMKgwqAgfCAyNCArKysrKysrKysrKysrKysrKysr
-KysrKy0NCj4+wqAgbmV0L3dpcmVsZXNzL3RyYWNlLmjCoMKgwqAgfMKgIDUgKysrKysNCj4+wqAg
-NSBmaWxlcyBjaGFuZ2VkLCA2NiBpbnNlcnRpb25zKCspLCAxIGRlbGV0aW9uKC0pDQo+Pg0KPj4g
-ZGlmZiAtLWdpdCBhL2luY2x1ZGUvbmV0L2NmZzgwMjExLmggYi9pbmNsdWRlL25ldC9jZmc4MDIx
-MS5oIGluZGV4DQo+PiA0YWIyYzQ5NDIzZGMuLjY4NzgyYmE4YjZlOCAxMDA2NDQNCj4+IC0tLSBh
-L2luY2x1ZGUvbmV0L2NmZzgwMjExLmgNCj4+ICsrKyBiL2luY2x1ZGUvbmV0L2NmZzgwMjExLmgN
-Cj4+IEBAIC0zNTM3LDYgKzM1MzcsOSBAQCBzdHJ1Y3QgY2ZnODAyMTFfdXBkYXRlX293ZV9pbmZv
-IHsNCj4+wqDCoCAqDQo+PsKgwqAgKiBAc3RhcnRfcmFkYXJfZGV0ZWN0aW9uOiBTdGFydCByYWRh
-ciBkZXRlY3Rpb24gaW4gdGhlIGRyaXZlci4NCj4+wqDCoCAqDQo+PiArICogQGVuZF9jYWM6IEVu
-ZCBydW5uaW5nIENBQywgcHJvYmFibHkgYmVjYXVzZSBhIHJlbGF0ZWQgQ0FDDQo+PiArICrCoMKg
-IHdhcyBmaW5pc2hlZCBvbiBhbm90aGVyIHBoeS4NCj4+ICsgKg0KPg0KPk1heWJlIGl0IG1ha2Vz
-IHNlbnNlIHRvIGZvbGxvdyBleGlzdGluZyBuYW1pbmcgY29udmVudGlvbiBoZXJlIGFuZCB0byB1
-c2UNCj5zb21ldGhpbmcgbGlrZSAnc3RvcF9yYWRhcl9kZXRlY3Rpb24nID8NCg0KSSB0aGluayAn
-c3RvcF9yYWRhcl9kZXRlY3Rpb24nIG1pZ2h0IGJlIG1pc2xlYWRpbmcgYXMgd2UgZG9u4oCZdCBz
-dG9wIHJhZGFyX2RldGVjdGlvbiwgDQp3ZSBvbmx5IGVuZCBjYWMsIG5vcm1hbCByYWRhciBkZXRl
-Y3Rpb24gd2lsbCBjb250aW51ZS4gDQoNCj4NCj4+wqDCoCAqIEB1cGRhdGVfZnRfaWVzOiBQcm92
-aWRlIHVwZGF0ZWQgRmFzdCBCU1MgVHJhbnNpdGlvbiBpbmZvcm1hdGlvbiB0byB0aGUNCj4+wqDC
-oCAqwqDCoCBkcml2ZXIuIElmIHRoZSBTTUUgaXMgaW4gdGhlIGRyaXZlci9maXJtd2FyZSwgdGhp
-cyBpbmZvcm1hdGlvbiBjYW4gYmUNCj4+wqDCoCAqwqDCoCB1c2VkIGluIGJ1aWxkaW5nIEF1dGhl
-bnRpY2F0aW9uIGFuZCBSZWFzc29jaWF0aW9uIFJlcXVlc3QgZnJhbWVzLg0KPj4gQEAgLTM4NjMs
-NiArMzg2Niw4IEBAIHN0cnVjdCBjZmc4MDIxMV9vcHMgew0KPj7CoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqAgc3RydWN0IG5ldF9kZXZpY2UgKmRldiwNCj4+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHN0cnVj
-dCBjZmc4MDIxMV9jaGFuX2RlZiAqY2hhbmRlZiwNCj4+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHUz
-MiBjYWNfdGltZV9tcyk7DQo+PiArwqDCoMKgwqAgdm9pZMKgwqDCoCAoKmVuZF9jYWMpKHN0cnVj
-dCB3aXBoeSAqd2lwaHksDQo+PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqAgc3RydWN0IG5ldF9kZXZpY2UgKmRldik7DQo+DQo+Li4uDQo+
-DQo+PiArc3RhdGljIHZvaWQgY2ZnODAyMTFfY2hlY2tfYW5kX2VuZF9jYWMoc3RydWN0DQo+PiAr
-Y2ZnODAyMTFfcmVnaXN0ZXJlZF9kZXZpY2UgKnJkZXYpIHsNCj4+ICvCoMKgwqDCoCBzdHJ1Y3Qg
-d2lyZWxlc3NfZGV2ICp3ZGV2Ow0KPj4gK8KgwqDCoMKgIC8qIElmIHdlIGZpbmlzaGVkIENBQyBv
-ciByZWNlaXZlZCByYWRhciwgd2Ugc2hvdWxkIGVuZCBhbnkNCj4+ICvCoMKgwqDCoMKgICogQ0FD
-IHJ1bm5pbmcgb24gdGhlIHNhbWUgY2hhbm5lbHMuDQo+PiArwqDCoMKgwqDCoCAqIHRoZSBjaGVj
-ayAhY2ZnODAyMTFfY2hhbmRlZl9kZnNfdXNhYmxlIGNvbnRhaW4gMiBvcHRpb25zOg0KPj4gK8Kg
-wqDCoMKgwqAgKiBlaXRoZXIgYWxsIGNoYW5uZWxzIGFyZSBhdmFpbGFibGUgLSB0aG9zZSB0aGUg
-Q0FDX0ZJTklTSEVEDQo+PiArwqDCoMKgwqDCoCAqIGV2ZW50IGhhcyBlZmZlY3RlZCBhbm90aGVy
-IHdkZXYgc3RhdGUsIG9yIHRoZXJlIGlzIGEgY2hhbm5lbA0KPj4gK8KgwqDCoMKgwqAgKiBpbiB1
-bmF2YWlsYWJsZSBzdGF0ZSBpbiB3ZGV2IGNoYW5kZWYgLSB0aG9zZSB0aGUgUkFEQVJfREVURUNU
-RUQNCj4+ICvCoMKgwqDCoMKgICogZXZlbnQgaGFzIGVmZmVjdGVkIGFub3RoZXIgd2RldiBzdGF0
-ZS4NCj4+ICvCoMKgwqDCoMKgICogSW4gYm90aCBjYXNlcyB3ZSBzaG91bGQgZW5kIHRoZSBDQUMg
-b24gdGhlIHdkZXYuDQo+PiArwqDCoMKgwqDCoCAqDQo+PiArwqDCoMKgwqDCoCAqLw0KPj4gK8Kg
-wqDCoMKgIGxpc3RfZm9yX2VhY2hfZW50cnkod2RldiwgJnJkZXYtPndpcGh5LndkZXZfbGlzdCwg
-bGlzdCkgew0KPj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBpZiAod2Rldi0+Y2FjX3N0YXJ0
-ZWQgJiYNCj4+ICvCoMKgwqDCoMKgIMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAhY2ZnODAyMTFfY2hh
-bmRlZl9kZnNfdXNhYmxlKCZyZGV2LT53aXBoeSwgJndkZXYtDQo+PmNoYW5kZWYpKQ0KPj4gK8Kg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgcmRldl9lbmRfY2FjKHJkZXYs
-IHdkZXYtPm5ldGRldik7DQo+PiArwqDCoMKgwqAgfQ0KPj4gK30NCj4+ICsNCj4NCj5JSVVDLCB0
-aGlzIGNvZGUgZG9lcyBub3QgbWF0Y2ggeW91ciBjb21taXQgbWVzc2FnZS4gWW91IGFyZSBzdG9w
-cGluZyBDQUMNCj5vbiBhbGwgdGhlIHZpcnR1YWwgd2lyZWxlc3MgaW50ZXJmYWNlcyBvbiB0aGUg
-c2FtZSBQSFksIGJ1dCBub3QgQ0FDcyBvbg0KPmRpZmZlcmVudCBQSFlzLiBNZWFud2hpbGUgQ0FD
-IGRvZXMgbm90IG5lZWQgdG8gYmUgc3RhcnRlZCBvbiBtdWx0aXBsZQ0KPnZpcnR1YWwgaW50ZXJm
-YWNlcy4gRm9yIGluc3RhbmNlLCBpbiBtdWx0aXBsZSBCU1NJRCBjb25maWd1cmF0aW9uLCBob3N0
-YXBkDQo+cGVyZm9ybXMgQ0FDIG9ubHkgb24gcHJpbWFyeSBpbnRlcmZhY2UuDQo+DQoNCnJlZ3Vs
-YXRvcnlfcHJvcGFnYXRlX2Rmc19zdGF0ZSB3aWxsIGNhbGwgY2ZnODAyMTFfY2hlY2tfYW5kX2Vu
-ZF9jYWMNCm9ubHkgb24gcGh5cyAhPSBjdXJyZW50IHBoeS4NClNvIGZvciBlYWNoIHBoeSAhPSBj
-dXJyZW50IHdlIHdpbGwgY2FsbCBtYWM4MDIxMSBlbmRfY2FjIChpZiBuZWVkZWQpDQp3aGljaCBp
-biB0dXJuIHdpbGwgZW5kIHRoZSBjYWMgb24gYWxsIHRoYXQgcGh5c+KAmSBpbnRlcmZhY2VzLg0K
-DQo+Q291bGQgeW91IHBsZWFzZSBjbGFyaWZ5IHRoZSB1c2UtY2FzZSB3aGljaCByZXF1aXJlcyB0
-aGlzIGZ1bmN0aW9uYWxpdHkgPw0KPg0KDQoNCkkgd2lsbCBleHBsYWluIG1vcmUgb24gdGhlIHVz
-ZS1jYXNlOg0KTGV0IHNheSB3ZSBoYXZlIDIgcGh5cyBvbiA1Z2h6OiBwaHkwLCBwaHkxDQpBbmQg
-MiBpbnRlcmZhY2VzIGFjY29yZGluZ2x5OiB3bGFuMCwgd2xhbjENCldlIHN0YXJ0IGhvc3RhcGQg
-d2l0aCB3bGFuMCBpbiBjaGFubmVsIDYwLA0KNSBzZWNvbmRzIGxhdGVyIHdlIHN0YXJ0IGhvc3Rh
-cGQgd2l0aCB3bGFuMSBvbiBjaGFubmVsIDYwLg0KDQpXaGF0IHdpbGwgaGFwcGVuIGlzIHRoYXQg
-d2hlbiBwaHkwIGZpbmlzaGVzIENBQywNCkl0IHdpbGwgcHJvcGFnYXRlIGl0IHRvIHBoeTEgYW5k
-IHRvIHRoZSBvdGhlciBob3N0YXBkLCANCndoaWNoIGNhdXNlcyBpdCB0byBzdGFydCB0aGUgYXAg
-ZnVsbHkuDQpIb3dldmVyIHRoZSBDQUMgdGltZXIgb24gd2xhbjEgaXMgc3RpbGwgcnVubmluZywN
-ClRoZSBwcm9wYWdhdGUgZGlkIG5vdCBzdG9wIGl0Lg0KDQpXaGVuIHdsYW4xIENBQyBpcyBmaW5p
-c2hlZCB3ZSB3aWxsIGdldCB0aGUgZm9sbG93aW5nOg0KV0FSTklORzogQ1BVOiAwIFBJRDogNDQw
-NiBhdCBuZXQvbWFjODAyMTEvY2hhbi5jOjE3NTMgaWVlZTgwMjExX3ZpZl9yZWxlYXNlX2NoYW5u
-ZWwrMHgyMS8weDYwIFttYWM4MDIxMV0NCkZyb20NClvCoCArMC4wMDAwMDJdIENhbGwgVHJhY2U6
-DQpbwqAgKzAuMDAwMDQ0XcKgIGllZWU4MDIxMV9kZnNfY2FjX3RpbWVyX3dvcmsrMHg3NC8weGMw
-IFttYWM4MDIxMV0NClNpbmNlIHdlIGFyZSB0cnlpbmcgdG8gcmVsZWFzZSB0aGUgY2hhbm5lbCB3
-aGVuIHRoZSBpbnRlcmZhY2UgaXMgYWN0aXZlLg0KDQpBbHNvLCBmcm9tIHRoYXQgcG9pbnQgb24s
-IHdlIHdpbGwgYmUgdW5hYmxlIHRvIGRvIGNoYW5uZWwgc3dpdGNoIG9uIHdsYW4xLA0KcHJvYmFi
-bHkgYmVjYXVzZSB3ZSByZWxlYXNlZCB0aGUgY2hhbm5lbC4gDQoNCkEgZmV3IG1pbnV0ZXMgbGF0
-ZXIgdGhpcyBhbHNvIHNob3dzIHVwOg0KV0FSTklORzogQ1BVOiAyIFBJRDogNjAxNyBhdCBuZXQv
-bWFjODAyMTEvaWVlZTgwMjExX2kuaDoxNDM1IGllZWU4MDIxMV9jaGFuZ2VfYnNzKzB4MWE2LzB4
-MWMwIFttYWM4MDIxMV0NCg0KVGhlIGlkZWEgYmVoaW5kIHRoaXMgcGF0Y2ggaXMgdG8gaW1wcm92
-ZSB0aGUgcmVndWxhdG9yeV9wcm9wYWdhdGVfZGZzX3N0YXRlLA0Kc28gaXQgd2lsbCBhbHNvIGNv
-bnNpZGVyIGNhc2VzIGluIHdoaWNoIHRoZSByYWRhciBldmVudCBlZmZlY3RzIG90aGVyIHBoeXMg
-Q0FDLA0KYW5kIHdvbuKAmXQgZ2V0IHRoYXQgd2FybmluZ3MgYW5kIGlzc3VlcyBpbiB0aGF0IGNh
-c2UuDQoNCj5SZWdhcmRzLA0KPlNlcmdleQ0KPg0KPg0KPlRoaXMgZW1haWwsIGluY2x1ZGluZyBp
-dHMgY29udGVudHMgYW5kIGFueSBhdHRhY2htZW50KHMpLCBtYXkgY29udGFpbg0KPmNvbmZpZGVu
-dGlhbCBpbmZvcm1hdGlvbiBvZiBPTiBTZW1pY29uZHVjdG9yIGFuZCBpcyBzb2xlbHkgZm9yIHRo
-ZSBpbnRlbmRlZA0KPnJlY2lwaWVudChzKS4gSWYgeW91IG1heSBoYXZlIHJlY2VpdmVkIHRoaXMg
-aW4gZXJyb3IsIHBsZWFzZSBjb250YWN0IHRoZSBzZW5kZXINCj5hbmQgcGVybWFuZW50bHkgZGVs
-ZXRlIHRoaXMgZW1haWwsIGl0cyBjb250ZW50cyBhbmQgYW55IGF0dGFjaG1lbnQocykuDQoNClJl
-Z2FyZHMsDQpPcnINCg0KDQoNCg0KDQoNCg0K
+On 12/22/2019 5:35 AM, Christian Hewitt wrote:
+> 
+>> On 19 Dec 2019, at 2:04 am, Soeren Moch <smoch@web.de> wrote:
+>>
+>> I guess you need similar enhancements of the board device tree as in
+>> patch 8 of this series for your VIM3 board.
+> 
+> Wider testing now points to a known SDIO issue (SoC bug) with Amlogic G12A/B hardware. The merged workaround for the bug was only tested with bcmdhd and brcmfmac may require tweaking as the same issue exhibits on an Amlogic G12B device with BCM4356 chip. Testing the series with Amlogic GXM (older) and SM1 (newer) hardware to exclude the SoC bug shows everything working as expected.
+
+Hi Christian,
+
+Can you elaborate on the "known SDIO issue"? Is it an issue with ADMA or 
+something else. I am asking because there is a workaround in brcmfmac to 
+avoid scatter-gather lists, which may or may not address the issue.
+
+Regards,
+Arend
