@@ -2,178 +2,189 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E638512A0CC
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Dec 2019 12:43:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D470B12A1AB
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Dec 2019 14:18:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726225AbfLXLmo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 24 Dec 2019 06:42:44 -0500
-Received: from mail-lf1-f67.google.com ([209.85.167.67]:40049 "EHLO
-        mail-lf1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726195AbfLXLmo (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 24 Dec 2019 06:42:44 -0500
-Received: by mail-lf1-f67.google.com with SMTP id i23so14901803lfo.7
-        for <linux-wireless@vger.kernel.org>; Tue, 24 Dec 2019 03:42:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to
-         :user-agent;
-        bh=OYWduoQaPz3/fAD9SEXfgk2ycSYLzq/KSQ7h5c0MpnI=;
-        b=E/U0CPsd6ckk0OVSw/vaKIlpxRtVqTxPWqpI+AlRBcxknGomVvBPu/CYPTzv8LzP1V
-         HdCQcbDw6tQjgC5I9xNPY+XdQ8QFIW9wklCUTwCC9Z/5W8rYmbXsG4/O3tUa7Y3lO7YZ
-         fOW8AvRT41/Vtv9u0HYWOyfXN8WR6b3UdPIAgtMM0PeDFABvlq6XbVHu0N1jIwOFe3Rh
-         5iqkUZCmaGX5Z7jeqzmJ52DRE0nSEnqqa3xEDyO1Wg6rvvJC7rZyf6lC2MyM64QPS+k3
-         fkehmr6xG1BP8BKPI4nPOU2C/snFOWgnZad1MKxeBlRT2lSwk8HgltKAp2exWM8dl2+h
-         vZww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to:user-agent;
-        bh=OYWduoQaPz3/fAD9SEXfgk2ycSYLzq/KSQ7h5c0MpnI=;
-        b=Q44+520/VLXzqbpVhqnqNgbM63SWAwYnpA+QxF0fUDZyMmAM+/66grYejMxhrZFQWa
-         9hHSWM/Xsyfzpb4lSr7CKsH37zdaZpK5J8P7miNnnh6oDvgat44/tQ4Um5EeKjQNGkmg
-         SGlFCSAqBOIWwsJyuP/v0iuD7HpYk98yONt2nk6zY3dFmV96+ejHKIyX0PUgtPq/9aTY
-         Pj36pY7B9N/bdGjTZn5qUinnR9KpCa4mOi75VAiFpq1O3/tk6TPwPqg4C72yt6sq67BV
-         tPfGdf2HUSNB01f4QxX2NKd1p5yHC7jj1Cvn5EuYmzJW32KzoDxKRxej5N6uQnZScRS/
-         CqvA==
-X-Gm-Message-State: APjAAAVdfNnwGt6w4+H1tzcEAc69nwE3VYzWSS6lg3dO3h/Jy7I/FFGb
-        ikZqHJJUxPzREvJYqvuQVLJ/1Num3jE=
-X-Google-Smtp-Source: APXvYqxPjwMc8ECQF/WtFhUlOfrBHKEltqsxksOC/xe4EQGP+VBwD44jPiXMPRethGsxKyWjVEdTbw==
-X-Received: by 2002:a19:888:: with SMTP id 130mr20125401lfi.167.1577187762454;
-        Tue, 24 Dec 2019 03:42:42 -0800 (PST)
-Received: from bars (ip-195-182-157-78.clients.cmk.ru. [195.182.157.78])
-        by smtp.gmail.com with ESMTPSA id y14sm9860541ljk.46.2019.12.24.03.42.41
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 24 Dec 2019 03:42:41 -0800 (PST)
-Date:   Tue, 24 Dec 2019 14:42:41 +0300
-From:   Sergey Matyukevich <geomatsi@gmail.com>
-To:     Orr Mazor <orr.mazor@tandemg.com>
-Cc:     Sergey Matyukevich <sergey.matyukevich.os@quantenna.com>,
+        id S1726178AbfLXNSy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 24 Dec 2019 08:18:54 -0500
+Received: from mail-eopbgr140119.outbound.protection.outlook.com ([40.107.14.119]:25477
+        "EHLO EUR01-VE1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726140AbfLXNSy (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 24 Dec 2019 08:18:54 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=NUf5wCcXA0vbOIRESX8jfKw8uZAvIW1KRoFEcs4lHwGw47lDy+Na8nKBO3vY4NBI3/H73eQBUbm/2DhNGc7Uvg/l2BdJK/ZYvhxPE4pm+q6tGnLNRkX3xt5QTurJB/Fxl2UiLrwnkCYty0j6EtwjaMTEkvzu8s9/LaAfAsF3/ZxSB7rV2xZ849R8LjdXH2/89c9m9EsuqA+wcdl18o6wQndzSBoB+NPDYwBKdIJ2R15Z/4iVTEkPENXQm3K62rTcJU7KKxeCIb8pkw5R/jWszgPXU0KJceAW3eOIWHF97l9Ych6OgpvqY3bkS6eaeRD+lOKhR943kaf3AmepRj7iJg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=OyjAnL+Dq9PsEI1u+15f7UEMcSD7rr9+xiofJ6Yp7Uk=;
+ b=MFx6LzqIBcv3uA0167Vj71+3hwR057GSVJcS7QDRx9InTb8WkBa6X7y+6DB9RTMh0kKaD1LcleCvLaVJtEYwgYh2TEDmPmzcnC/qSq6vjzn9MZ70Wx4hgmeCsCI1W1nFJUFr+vMnPxuW1nNXyxVbRqYovj/xaxx/htmZNc8cWWwYcjjOg9XaVwzEDgFqXBJhbuyrsY/3TOmizSAqL3FJkpizoDaznGJCeUYDzNbgBn2I7lO9qrBEDVe4AcV4gQ9aMz1y5I0TFwim3kD7wSNHd2+weaJRy1dT0SHGZjJfH920+rv9CDtE97yTTNLGY5ayQi7O7qWm4NQzLl5iLM8rIQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=tandemg.com; dmarc=pass action=none header.from=tandemg.com;
+ dkim=pass header.d=tandemg.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tandemg.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=OyjAnL+Dq9PsEI1u+15f7UEMcSD7rr9+xiofJ6Yp7Uk=;
+ b=jIQjZxubUU5X0kS4r9NYJB8AUsBtyowsCgWy80gIwETKxpj0bmeNmaj4ZgvkBx3As5+YDMXH8RONiWx+uZYL/WQpNkEVedNDgW2OJPqwVZ9rgWmgHcbZ+kfI6aaAtircb0KZOWtShFId4Q1QlhkHJZypNXICsE0XpW5G36iGsZA=
+Received: from AM6PR02MB3621.eurprd02.prod.outlook.com (52.134.115.32) by
+ AM6PR02MB4263.eurprd02.prod.outlook.com (20.177.113.208) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2559.13; Tue, 24 Dec 2019 13:18:43 +0000
+Received: from AM6PR02MB3621.eurprd02.prod.outlook.com
+ ([fe80::d967:3749:3fcd:778a]) by AM6PR02MB3621.eurprd02.prod.outlook.com
+ ([fe80::d967:3749:3fcd:778a%4]) with mapi id 15.20.2559.017; Tue, 24 Dec 2019
+ 13:18:43 +0000
+From:   Orr Mazor <orr.mazor@tandemg.com>
+To:     Sergey Matyukevich <geomatsi@gmail.com>
+CC:     Sergey Matyukevich <sergey.matyukevich.os@quantenna.com>,
         Johannes Berg <johannes@sipsolutions.net>,
         "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH] subsystem: Fix radar event during another phy CAC
-Message-ID: <20191224114241.uxfdifi2suocp2sa@bars>
+Subject: RE: [PATCH] subsystem: Fix radar event during another phy CAC
+Thread-Topic: [PATCH] subsystem: Fix radar event during another phy CAC
+Thread-Index: AQHVuNfbH206ZJg9QUmhdGm55ai8ZKfHjHuAgAE7TwCAAGUFgP//6i8Q
+Date:   Tue, 24 Dec 2019 13:18:42 +0000
+Message-ID: <AM6PR02MB362166B19724CB89D587751DEF290@AM6PR02MB3621.eurprd02.prod.outlook.com>
 References: <20191222145449.15792-1-Orr.Mazor@tandemg.com>
  <20191223105234.lgsupxfapbmxuvc5@bars>
  <AM6PR02MB36219B15C4F70980804728B0EF290@AM6PR02MB3621.eurprd02.prod.outlook.com>
+ <20191224114241.uxfdifi2suocp2sa@bars>
+In-Reply-To: <20191224114241.uxfdifi2suocp2sa@bars>
+Accept-Language: he-IL, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=orr.mazor@tandemg.com; 
+x-originating-ip: [84.95.243.50]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 61486226-046b-40fc-82af-08d78873cc8e
+x-ms-traffictypediagnostic: AM6PR02MB4263:
+x-microsoft-antispam-prvs: <AM6PR02MB4263F792CB822815C090E596EF290@AM6PR02MB4263.eurprd02.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:10000;
+x-forefront-prvs: 0261CCEEDF
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(396003)(366004)(39840400004)(136003)(346002)(376002)(199004)(189003)(508600001)(8676002)(6506007)(81166006)(33656002)(81156014)(52536014)(7696005)(5660300002)(2906002)(86362001)(186003)(8936002)(6916009)(26005)(71200400001)(66446008)(66476007)(66946007)(44832011)(4326008)(64756008)(55016002)(316002)(9686003)(66556008)(76116006)(54906003);DIR:OUT;SFP:1102;SCL:1;SRVR:AM6PR02MB4263;H:AM6PR02MB3621.eurprd02.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+received-spf: None (protection.outlook.com: tandemg.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: VxdieRPtSruwCswCk/tj2KCxg3t4NIBp8fihvYQaOQg/yAkMxfOdQAMAmcQ7lqdVyZ9jFp2E/oU/7vGJZKv8Bp+DH09awxqJOUG0j3cpFP7Dwqty9yYPw8XYssJnCTDkYyeokmq3T+H1fbanJaMDEQvjTzEKP2pHlElSEHM1fpykRHvzdz12movkYlJwXBUPzGrC+DjZ+iFzoBbiRnTOfphw7H3Q1d+1EBqF7waMaFsVKoheHiOx8N2AgLO66vV8jyIe+gXd9P4gNv7HuLkBy3ZTiG/FeF7mty50bOFWg/nEP0K0RHzH5IN0dZmM8r6HQkkOc4KnB1ahzjLS3Srfs5tQPjEnWgb100e0LGcqx21VqTWgM8l6D0q0FRFX9uCTdkQ5gUwdu4mKcKP1gMSTfuEJUksWxHpXzyGqxWvUNuIxl3FTI1mRluxCAs6nllVp
+x-ms-exchange-transport-forked: True
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <AM6PR02MB36219B15C4F70980804728B0EF290@AM6PR02MB3621.eurprd02.prod.outlook.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
+X-OriginatorOrg: tandemg.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 61486226-046b-40fc-82af-08d78873cc8e
+X-MS-Exchange-CrossTenant-originalarrivaltime: 24 Dec 2019 13:18:42.9453
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: d690b55a-f04a-454b-9f62-fb1e25467a25
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 4tyApM110uz/MJaky6fGJnYjh0GKVi+4ZsA22AOdp1z4rb3whc5ibTf61tj1GRZoJ1rvMhC/rK+EtyzxffcA/g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM6PR02MB4263
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Orr,
-
-Thanks for detailed use-case clarification.
-
-> >> In case a radar event of CAC_FINISHED or RADAR_DETECTED happens during
-> >> another phy is during CAC we might need to cancel that CAC.
-> >> If we got a radar in a channel that another phy is now doing CAC on
-> >> then the CAC should be canceled.
-> >> If, for example, 2 phys doing CAC on the same channels, or on
-> >> comptable channels, once on of them will finish his CAC the other
-> >> might need to cancel his CAC, since it is no longer relevant.
-> >>
-> >> To fix that the commit adds an callback and implement it in mac80211
-> >> to end CAC.
-> >> This commit also adds a call to said callback if after a radar event
-> >> we see the cac is no longer relevant
-> >
-> >>  net/mac80211/cfg.c      | 23 +++++++++++++++++++++++
-> >>  net/wireless/rdev-ops.h | 10 ++++++++++
-> >>  net/wireless/reg.c      | 24 +++++++++++++++++++++++-
-> >>  net/wireless/trace.h    |  5 +++++
-> >>  5 files changed, 66 insertions(+), 1 deletion(-)
-> >>
-> >> diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h index
-> >> 4ab2c49423dc..68782ba8b6e8 100644
-> >> --- a/include/net/cfg80211.h
-> >> +++ b/include/net/cfg80211.h
-> >> @@ -3537,6 +3537,9 @@ struct cfg80211_update_owe_info {
-> >>   *
-> >>   * @start_radar_detection: Start radar detection in the driver.
-> >>   *
-> >> + * @end_cac: End running CAC, probably because a related CAC
-> >> + *   was finished on another phy.
-> >> + *
-> >
-> >Maybe it makes sense to follow existing naming convention here and to use
-> >something like 'stop_radar_detection' ?
-> 
-> I think 'stop_radar_detection' might be misleading as we don’t stop radar_detection, 
-> we only end cac, normal radar detection will continue. 
-
-Ok, good point.
-
-
-> >>   * @update_ft_ies: Provide updated Fast BSS Transition information to the
-> >>   *   driver. If the SME is in the driver/firmware, this information can be
-> >>   *   used in building Authentication and Reassociation Request frames.
-> >> @@ -3863,6 +3866,8 @@ struct cfg80211_ops {
-> >>                                        struct net_device *dev,
-> >>                                        struct cfg80211_chan_def *chandef,
-> >>                                        u32 cac_time_ms);
-> >> +     void    (*end_cac)(struct wiphy *wiphy,
-> >> +                             struct net_device *dev);
-> >
-> >...
-> >
-> >> +static void cfg80211_check_and_end_cac(struct
-> >> +cfg80211_registered_device *rdev) {
-> >> +     struct wireless_dev *wdev;
-> >> +     /* If we finished CAC or received radar, we should end any
-> >> +      * CAC running on the same channels.
-> >> +      * the check !cfg80211_chandef_dfs_usable contain 2 options:
-> >> +      * either all channels are available - those the CAC_FINISHED
-> >> +      * event has effected another wdev state, or there is a channel
-> >> +      * in unavailable state in wdev chandef - those the RADAR_DETECTED
-> >> +      * event has effected another wdev state.
-> >> +      * In both cases we should end the CAC on the wdev.
-> >> +      *
-> >> +      */
-> >> +     list_for_each_entry(wdev, &rdev->wiphy.wdev_list, list) {
-> >> +             if (wdev->cac_started &&
-> >> +                 !cfg80211_chandef_dfs_usable(&rdev->wiphy, &wdev-
-> >>chandef))
-> >> +                     rdev_end_cac(rdev, wdev->netdev);
-> >> +     }
-> >> +}
-> >> +
-> >
-> >IIUC, this code does not match your commit message. You are stopping CAC
-> >on all the virtual wireless interfaces on the same PHY, but not CACs on
-> >different PHYs. Meanwhile CAC does not need to be started on multiple
-> >virtual interfaces. For instance, in multiple BSSID configuration, hostapd
-> >performs CAC only on primary interface.
-> >
-> 
-> regulatory_propagate_dfs_state will call cfg80211_check_and_end_cac
-> only on phys != current phy.
-> So for each phy != current we will call mac80211 end_cac (if needed)
-> which in turn will end the cac on all that phys’ interfaces.
-
-Ok, so regulatory_propagate_dfs_state iterates over other PHYs from the
-same regulatory region updating state of DFS channel reported by the
-original PHY. Unless I am missing something, in this case there are two
-possible ways to proceed with CAC running on other PHYs:
-
-- to stop CAC on other PHYs with the same channel/bandwidth in both
-  RADAR_DETECTION and CAC_FINISHED cases
-- to stop CAC on other PHYs if their channel has just become unusable
-  due to RADAR_DETECTION event reported by the original PHY
-
-So it looks like you have chosen a more conservative second option.
-But then I don't quite understand your comment for the new function
-cfg80211_check_and_end_cac: why do you say that CAC_FINISHED case
-is also covered here ?
-
-
-Regards,
-Sergey
+SGkgU2VyZ2V5LA0KDQo+SGkgT3JyLA0KPg0KPlRoYW5rcyBmb3IgZGV0YWlsZWQgdXNlLWNhc2Ug
+Y2xhcmlmaWNhdGlvbi4NCg0KU3VyZSB0aGluZy4NClRoYW5rcyBmb3IgcmV2aWV3aW5nIG15IHBh
+dGNoLg0KDQo+DQo+PiA+PiBJbiBjYXNlIGEgcmFkYXIgZXZlbnQgb2YgQ0FDX0ZJTklTSEVEIG9y
+IFJBREFSX0RFVEVDVEVEIGhhcHBlbnMNCj5kdXJpbmcNCj4+ID4+IGFub3RoZXIgcGh5IGlzIGR1
+cmluZyBDQUMgd2UgbWlnaHQgbmVlZCB0byBjYW5jZWwgdGhhdCBDQUMuDQo+PiA+PiBJZiB3ZSBn
+b3QgYSByYWRhciBpbiBhIGNoYW5uZWwgdGhhdCBhbm90aGVyIHBoeSBpcyBub3cgZG9pbmcgQ0FD
+IG9uDQo+PiA+PiB0aGVuIHRoZSBDQUMgc2hvdWxkIGJlIGNhbmNlbGVkLg0KPj4gPj4gSWYsIGZv
+ciBleGFtcGxlLCAyIHBoeXMgZG9pbmcgQ0FDIG9uIHRoZSBzYW1lIGNoYW5uZWxzLCBvciBvbg0K
+Pj4gPj4gY29tcHRhYmxlIGNoYW5uZWxzLCBvbmNlIG9uIG9mIHRoZW0gd2lsbCBmaW5pc2ggaGlz
+IENBQyB0aGUgb3RoZXINCj4+ID4+IG1pZ2h0IG5lZWQgdG8gY2FuY2VsIGhpcyBDQUMsIHNpbmNl
+IGl0IGlzIG5vIGxvbmdlciByZWxldmFudC4NCj4+ID4+DQo+PiA+PiBUbyBmaXggdGhhdCB0aGUg
+Y29tbWl0IGFkZHMgYW4gY2FsbGJhY2sgYW5kIGltcGxlbWVudCBpdCBpbiBtYWM4MDIxMQ0KPj4g
+Pj4gdG8gZW5kIENBQy4NCj4+ID4+IFRoaXMgY29tbWl0IGFsc28gYWRkcyBhIGNhbGwgdG8gc2Fp
+ZCBjYWxsYmFjayBpZiBhZnRlciBhIHJhZGFyIGV2ZW50DQo+PiA+PiB3ZSBzZWUgdGhlIGNhYyBp
+cyBubyBsb25nZXIgcmVsZXZhbnQNCj4+ID4NCj4+ID4+wqAgbmV0L21hYzgwMjExL2NmZy5jwqDC
+oMKgwqDCoCB8IDIzICsrKysrKysrKysrKysrKysrKysrKysrDQo+PiA+PsKgIG5ldC93aXJlbGVz
+cy9yZGV2LW9wcy5oIHwgMTAgKysrKysrKysrKw0KPj4gPj7CoCBuZXQvd2lyZWxlc3MvcmVnLmPC
+oMKgwqDCoMKgIHwgMjQgKysrKysrKysrKysrKysrKysrKysrKystDQo+PiA+PsKgIG5ldC93aXJl
+bGVzcy90cmFjZS5owqDCoMKgIHzCoCA1ICsrKysrDQo+PiA+PsKgIDUgZmlsZXMgY2hhbmdlZCwg
+NjYgaW5zZXJ0aW9ucygrKSwgMSBkZWxldGlvbigtKQ0KPj4gPj4NCj4+ID4+IGRpZmYgLS1naXQg
+YS9pbmNsdWRlL25ldC9jZmc4MDIxMS5oIGIvaW5jbHVkZS9uZXQvY2ZnODAyMTEuaCBpbmRleA0K
+Pj4gPj4gNGFiMmM0OTQyM2RjLi42ODc4MmJhOGI2ZTggMTAwNjQ0DQo+PiA+PiAtLS0gYS9pbmNs
+dWRlL25ldC9jZmc4MDIxMS5oDQo+PiA+PiArKysgYi9pbmNsdWRlL25ldC9jZmc4MDIxMS5oDQo+
+PiA+PiBAQCAtMzUzNyw2ICszNTM3LDkgQEAgc3RydWN0IGNmZzgwMjExX3VwZGF0ZV9vd2VfaW5m
+byB7DQo+PiA+PsKgwqAgKg0KPj4gPj7CoMKgICogQHN0YXJ0X3JhZGFyX2RldGVjdGlvbjogU3Rh
+cnQgcmFkYXIgZGV0ZWN0aW9uIGluIHRoZSBkcml2ZXIuDQo+PiA+PsKgwqAgKg0KPj4gPj4gKyAq
+IEBlbmRfY2FjOiBFbmQgcnVubmluZyBDQUMsIHByb2JhYmx5IGJlY2F1c2UgYSByZWxhdGVkIENB
+Qw0KPj4gPj4gKyAqwqDCoCB3YXMgZmluaXNoZWQgb24gYW5vdGhlciBwaHkuDQo+PiA+PiArICoN
+Cj4+ID4NCj4+ID5NYXliZSBpdCBtYWtlcyBzZW5zZSB0byBmb2xsb3cgZXhpc3RpbmcgbmFtaW5n
+IGNvbnZlbnRpb24gaGVyZSBhbmQgdG8NCj51c2UNCj4+ID5zb21ldGhpbmcgbGlrZSAnc3RvcF9y
+YWRhcl9kZXRlY3Rpb24nID8NCj4+DQo+PiBJIHRoaW5rICdzdG9wX3JhZGFyX2RldGVjdGlvbicg
+bWlnaHQgYmUgbWlzbGVhZGluZyBhcyB3ZSBkb27igJl0IHN0b3ANCj5yYWRhcl9kZXRlY3Rpb24s
+DQo+PiB3ZSBvbmx5IGVuZCBjYWMsIG5vcm1hbCByYWRhciBkZXRlY3Rpb24gd2lsbCBjb250aW51
+ZS4NCj4NCj5PaywgZ29vZCBwb2ludC4NCj4NCj4NCj4+ID4+wqDCoCAqIEB1cGRhdGVfZnRfaWVz
+OiBQcm92aWRlIHVwZGF0ZWQgRmFzdCBCU1MgVHJhbnNpdGlvbiBpbmZvcm1hdGlvbiB0bw0KPnRo
+ZQ0KPj4gPj7CoMKgICrCoMKgIGRyaXZlci4gSWYgdGhlIFNNRSBpcyBpbiB0aGUgZHJpdmVyL2Zp
+cm13YXJlLCB0aGlzIGluZm9ybWF0aW9uIGNhbiBiZQ0KPj4gPj7CoMKgICrCoMKgIHVzZWQgaW4g
+YnVpbGRpbmcgQXV0aGVudGljYXRpb24gYW5kIFJlYXNzb2NpYXRpb24gUmVxdWVzdCBmcmFtZXMu
+DQo+PiA+PiBAQCAtMzg2Myw2ICszODY2LDggQEAgc3RydWN0IGNmZzgwMjExX29wcyB7DQo+PiA+
+PsKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBzdHJ1Y3QgbmV0X2RldmljZSAqZGV2LA0KPj4gPj7CoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqAgc3RydWN0IGNmZzgwMjExX2NoYW5fZGVmICpjaGFuZGVmLA0KPj4g
+Pj7CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgdTMyIGNhY190aW1lX21zKTsNCj4+ID4+ICvCoMKgwqDC
+oCB2b2lkwqDCoMKgICgqZW5kX2NhYykoc3RydWN0IHdpcGh5ICp3aXBoeSwNCj4+ID4+ICvCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBzdHJ1
+Y3QgbmV0X2RldmljZSAqZGV2KTsNCj4+ID4NCj4+ID4uLi4NCj4+ID4NCj4+ID4+ICtzdGF0aWMg
+dm9pZCBjZmc4MDIxMV9jaGVja19hbmRfZW5kX2NhYyhzdHJ1Y3QNCj4+ID4+ICtjZmc4MDIxMV9y
+ZWdpc3RlcmVkX2RldmljZSAqcmRldikgew0KPj4gPj4gK8KgwqDCoMKgIHN0cnVjdCB3aXJlbGVz
+c19kZXYgKndkZXY7DQo+PiA+PiArwqDCoMKgwqAgLyogSWYgd2UgZmluaXNoZWQgQ0FDIG9yIHJl
+Y2VpdmVkIHJhZGFyLCB3ZSBzaG91bGQgZW5kIGFueQ0KPj4gPj4gK8KgwqDCoMKgwqAgKiBDQUMg
+cnVubmluZyBvbiB0aGUgc2FtZSBjaGFubmVscy4NCj4+ID4+ICvCoMKgwqDCoMKgICogdGhlIGNo
+ZWNrICFjZmc4MDIxMV9jaGFuZGVmX2Rmc191c2FibGUgY29udGFpbiAyIG9wdGlvbnM6DQo+PiA+
+PiArwqDCoMKgwqDCoCAqIGVpdGhlciBhbGwgY2hhbm5lbHMgYXJlIGF2YWlsYWJsZSAtIHRob3Nl
+IHRoZSBDQUNfRklOSVNIRUQNCj4+ID4+ICvCoMKgwqDCoMKgICogZXZlbnQgaGFzIGVmZmVjdGVk
+IGFub3RoZXIgd2RldiBzdGF0ZSwgb3IgdGhlcmUgaXMgYSBjaGFubmVsDQo+PiA+PiArwqDCoMKg
+wqDCoCAqIGluIHVuYXZhaWxhYmxlIHN0YXRlIGluIHdkZXYgY2hhbmRlZiAtIHRob3NlIHRoZSBS
+QURBUl9ERVRFQ1RFRA0KPj4gPj4gK8KgwqDCoMKgwqAgKiBldmVudCBoYXMgZWZmZWN0ZWQgYW5v
+dGhlciB3ZGV2IHN0YXRlLg0KPj4gPj4gK8KgwqDCoMKgwqAgKiBJbiBib3RoIGNhc2VzIHdlIHNo
+b3VsZCBlbmQgdGhlIENBQyBvbiB0aGUgd2Rldi4NCj4+ID4+ICvCoMKgwqDCoMKgICoNCj4+ID4+
+ICvCoMKgwqDCoMKgICovDQo+PiA+PiArwqDCoMKgwqAgbGlzdF9mb3JfZWFjaF9lbnRyeSh3ZGV2
+LCAmcmRldi0+d2lwaHkud2Rldl9saXN0LCBsaXN0KSB7DQo+PiA+PiArwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgIGlmICh3ZGV2LT5jYWNfc3RhcnRlZCAmJg0KPj4gPj4gK8KgwqDCoMKgwqAgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoCFjZmc4MDIxMV9jaGFuZGVmX2Rmc191c2FibGUoJnJkZXYtPndp
+cGh5LCAmd2Rldi0NCj4+ID4+Y2hhbmRlZikpDQo+PiA+PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoCByZGV2X2VuZF9jYWMocmRldiwgd2Rldi0+bmV0ZGV2KTsNCj4+
+ID4+ICvCoMKgwqDCoCB9DQo+PiA+PiArfQ0KPj4gPj4gKw0KPj4gPg0KPj4gPklJVUMsIHRoaXMg
+Y29kZSBkb2VzIG5vdCBtYXRjaCB5b3VyIGNvbW1pdCBtZXNzYWdlLiBZb3UgYXJlIHN0b3BwaW5n
+DQo+Q0FDDQo+PiA+b24gYWxsIHRoZSB2aXJ0dWFsIHdpcmVsZXNzIGludGVyZmFjZXMgb24gdGhl
+IHNhbWUgUEhZLCBidXQgbm90IENBQ3Mgb24NCj4+ID5kaWZmZXJlbnQgUEhZcy4gTWVhbndoaWxl
+IENBQyBkb2VzIG5vdCBuZWVkIHRvIGJlIHN0YXJ0ZWQgb24gbXVsdGlwbGUNCj4+ID52aXJ0dWFs
+IGludGVyZmFjZXMuIEZvciBpbnN0YW5jZSwgaW4gbXVsdGlwbGUgQlNTSUQgY29uZmlndXJhdGlv
+biwgaG9zdGFwZA0KPj4gPnBlcmZvcm1zIENBQyBvbmx5IG9uIHByaW1hcnkgaW50ZXJmYWNlLg0K
+Pj4gPg0KPj4NCj4+IHJlZ3VsYXRvcnlfcHJvcGFnYXRlX2Rmc19zdGF0ZSB3aWxsIGNhbGwgY2Zn
+ODAyMTFfY2hlY2tfYW5kX2VuZF9jYWMNCj4+IG9ubHkgb24gcGh5cyAhPSBjdXJyZW50IHBoeS4N
+Cj4+IFNvIGZvciBlYWNoIHBoeSAhPSBjdXJyZW50IHdlIHdpbGwgY2FsbCBtYWM4MDIxMSBlbmRf
+Y2FjIChpZiBuZWVkZWQpDQo+PiB3aGljaCBpbiB0dXJuIHdpbGwgZW5kIHRoZSBjYWMgb24gYWxs
+IHRoYXQgcGh5c+KAmSBpbnRlcmZhY2VzLg0KPg0KPk9rLCBzbyByZWd1bGF0b3J5X3Byb3BhZ2F0
+ZV9kZnNfc3RhdGUgaXRlcmF0ZXMgb3ZlciBvdGhlciBQSFlzIGZyb20gdGhlDQo+c2FtZSByZWd1
+bGF0b3J5IHJlZ2lvbiB1cGRhdGluZyBzdGF0ZSBvZiBERlMgY2hhbm5lbCByZXBvcnRlZCBieSB0
+aGUNCj5vcmlnaW5hbCBQSFkuIFVubGVzcyBJIGFtIG1pc3Npbmcgc29tZXRoaW5nLCBpbiB0aGlz
+IGNhc2UgdGhlcmUgYXJlIHR3bw0KPnBvc3NpYmxlIHdheXMgdG8gcHJvY2VlZCB3aXRoIENBQyBy
+dW5uaW5nIG9uIG90aGVyIFBIWXM6DQo+DQo+LSB0byBzdG9wIENBQyBvbiBvdGhlciBQSFlzIHdp
+dGggdGhlIHNhbWUgY2hhbm5lbC9iYW5kd2lkdGggaW4gYm90aA0KPiAgUkFEQVJfREVURUNUSU9O
+IGFuZCBDQUNfRklOSVNIRUQgY2FzZXMNCj4tIHRvIHN0b3AgQ0FDIG9uIG90aGVyIFBIWXMgaWYg
+dGhlaXIgY2hhbm5lbCBoYXMganVzdCBiZWNvbWUgdW51c2FibGUNCj4gIGR1ZSB0byBSQURBUl9E
+RVRFQ1RJT04gZXZlbnQgcmVwb3J0ZWQgYnkgdGhlIG9yaWdpbmFsIFBIWQ0KPg0KPlNvIGl0IGxv
+b2tzIGxpa2UgeW91IGhhdmUgY2hvc2VuIGEgbW9yZSBjb25zZXJ2YXRpdmUgc2Vjb25kIG9wdGlv
+bi4NCj5CdXQgdGhlbiBJIGRvbid0IHF1aXRlIHVuZGVyc3RhbmQgeW91ciBjb21tZW50IGZvciB0
+aGUgbmV3IGZ1bmN0aW9uDQo+Y2ZnODAyMTFfY2hlY2tfYW5kX2VuZF9jYWM6IHdoeSBkbyB5b3Ug
+c2F5IHRoYXQgQ0FDX0ZJTklTSEVEIGNhc2UNCj5pcyBhbHNvIGNvdmVyZWQgaGVyZSA/DQo+DQoN
+CkNBQ19GSU5JU0hFRCBpcyBjb3ZlcmVkIGhlcmU6DQpJZiB0aGVyZSBpcyBhbiB1bmF2YWlsYWJs
+ZSBjaGFubmVsIGNmZzgwMjExX2NoYW5kZWZfZGZzX3VzYWJsZSB3aWxsIHJldHVybiBmYWxzZSAt
+IHRoaXMgY292ZXJzIFJBREFSX0RFVEVDVEVELg0KSWYgYWxsIGNoYW5uZWxzIGFyZSBhdmFpbGFi
+bGUgY2ZnODAyMTFfY2hhbmRlZl9kZnNfdXNhYmxlIHdpbGwgYWxzbyByZXR1cm4gZmFsc2UsDQph
+cyB0aGV5IGFyZSBub3QgdXNhYmxlLCB0aGV5IGFyZSBhdmFpbGFibGUgLSB0aGlzIGNvdmVycyBD
+QUNfRklOSVNIRUQuDQpCYXNpY2FsbHkgY2ZnODAyMTFfY2hhbmRlZl9kZnNfdXNhYmxlIGNoZWNr
+cyBpZiB3ZSBuZWVkIHRvIGRvIENBQywNCml0IGlzIGFsc28gdXNlZCBpbiBubDgwMjExX3N0YXJ0
+X3JhZGFyX2RldGVjdGlvbiBpbiBvcmRlciB0byBtYWtlIHN1cmUgd2UgYWN0dWFsbHkgbmVlZCBD
+QUMuDQoNClJlZ2FyZHMsDQpPcnINCg0K
