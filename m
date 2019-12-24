@@ -2,103 +2,104 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9482D129C7A
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Dec 2019 02:57:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0DE5E129D9D
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Dec 2019 06:17:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727100AbfLXB5j (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 23 Dec 2019 20:57:39 -0500
-Received: from rtits2.realtek.com ([211.75.126.72]:44323 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726997AbfLXB5j (ORCPT
+        id S1726043AbfLXFRD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 24 Dec 2019 00:17:03 -0500
+Received: from mail-wm1-f67.google.com ([209.85.128.67]:36664 "EHLO
+        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725208AbfLXFRD (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 23 Dec 2019 20:57:39 -0500
-Authenticated-By: 
-X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID xBO1vEDr005591, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (RTITCAS12.realtek.com.tw[172.21.6.16])
-        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id xBO1vEDr005591
-        (version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 24 Dec 2019 09:57:14 +0800
-Received: from RTEXMB01.realtek.com.tw (172.21.6.94) by
- RTITCAS12.realtek.com.tw (172.21.6.16) with Microsoft SMTP Server (TLS) id
- 14.3.468.0; Tue, 24 Dec 2019 09:57:14 +0800
-Received: from RTEXMB04.realtek.com.tw (172.21.6.97) by
- RTEXMB01.realtek.com.tw (172.21.6.94) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Tue, 24 Dec 2019 09:57:13 +0800
-Received: from RTEXMB04.realtek.com.tw ([fe80::d9c5:a079:495e:b999]) by
- RTEXMB04.realtek.com.tw ([fe80::d9c5:a079:495e:b999%6]) with mapi id
- 15.01.1779.005; Tue, 24 Dec 2019 09:57:13 +0800
-From:   Pkshih <pkshih@realtek.com>
-To:     "amade@asmblr.net" <amade@asmblr.net>,
-        "kvalo@codeaurora.org" <kvalo@codeaurora.org>
-CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "Larry.Finger@lwfinger.net" <Larry.Finger@lwfinger.net>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Subject: Re: [PATCH 0/9] rtlwifi: Cleanups
-Thread-Topic: [PATCH 0/9] rtlwifi: Cleanups
-Thread-Index: AQHVuY20w+4l9icG/0ewZ8k4l2sdbKfIAbOA
-Date:   Tue, 24 Dec 2019 01:57:13 +0000
-Message-ID: <1577152633.3237.0.camel@realtek.com>
-References: <20191223123715.7177-1-amade@asmblr.net>
-In-Reply-To: <20191223123715.7177-1-amade@asmblr.net>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.95]
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <ECB1C69587152244A915A668A1FAEA16@realtek.com>
-Content-Transfer-Encoding: base64
+        Tue, 24 Dec 2019 00:17:03 -0500
+Received: by mail-wm1-f67.google.com with SMTP id p17so1549430wma.1;
+        Mon, 23 Dec 2019 21:17:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Lhb2/Wn8KL6wQAXMqBhmYyMRWbVdSHyVwiNWPEDlVn4=;
+        b=T+/JmH2QEamsgbBUB7qAWZxchCbgSbkJOa9KSOlpvBhRbblYAFCZdwGjXpJS9KDnXz
+         Q53WHBkdBi25Xk5Z1zwwsj6+Bo12qByHlMqT12JPobtbocyGb9oulIe9gi4snh0Yci76
+         iYJCChL2uGC/BHjsoqyGK3tSv+pJxh7Yr/h3mtdRsxTHZ1IcQ06xX7+BewVrEMyN1QbU
+         ECbTJ863kkkm+p+knMvOoVunOvDJSGH3ySjEDNCtyEIwvOlhWvMddivFd9IcbcfS/B8f
+         a7ZG3MJGVxBHQ2YX2KA2ce51g4lm0wiYu0tBxVryk30L5QVNayFLF7e41tPa5E7kYVSm
+         nOdg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Lhb2/Wn8KL6wQAXMqBhmYyMRWbVdSHyVwiNWPEDlVn4=;
+        b=sxDRrbX6s9p4CCAY8nWdHk2hxVnwmFJaAle5Sqg13ueIirZzTnzAavVwcuUjPea9A3
+         1j74sER4wuHfpPeze3f81PFIHqhkFgK6KF958dAoZzN1CC57+sXXCYR8foUf/SZXTc5X
+         YNDPscRSRAad+VybUIKrkF8EAcAL4T8EIW+LmG2RkfstiKTU6Eyc9PwszAwluIN1pmiX
+         JQmjSvKuBpIjqadCd0TJtugIYUiXyBA5vP6rszCGUgOBO7zEPD851HjIuiw9JJkgQdRy
+         VWpAYAOy7qE3BIsHfIa0pN9bG4OBTvHRNrC74/7s2UiQd/HmdYvPTIzwhxV1VBUshLJT
+         0Bhg==
+X-Gm-Message-State: APjAAAVTbMKa9tLpp6jv51eXMzqdWjDTErXJ7DH74sIZI37ykYeDM5O8
+        lfMeU03HFAc9y2kLLILjwLo=
+X-Google-Smtp-Source: APXvYqwxjMQ/4ZTRt4ngXINLm3krGBv8jxyi3B+9jTWTFOBo+1Yn+FY9rNAIXVaYQXEid8pDvhNmVg==
+X-Received: by 2002:a05:600c:228f:: with SMTP id 15mr2257747wmf.56.1577164620561;
+        Mon, 23 Dec 2019 21:17:00 -0800 (PST)
+Received: from ocellus.fritz.box (p200300EAE7168C007DE5706AB5458F3F.dip0.t-ipconnect.de. [2003:ea:e716:8c00:7de5:706a:b545:8f3f])
+        by smtp.gmail.com with ESMTPSA id b10sm23551750wrt.90.2019.12.23.21.16.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 23 Dec 2019 21:16:59 -0800 (PST)
+From:   "Jan Alexander Steffens (heftig)" <jan.steffens@gmail.com>
+To:     Johannes Berg <johannes.berg@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        Intel Linux Wireless <linuxwifi@intel.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>
+Cc:     "Jan Alexander Steffens (heftig)" <jan.steffens@gmail.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] iwlwifi: pcie: restore support for Killer Qu C0 NICs
+Date:   Tue, 24 Dec 2019 06:16:39 +0100
+Message-Id: <20191224051639.6904-1-jan.steffens@gmail.com>
+X-Mailer: git-send-email 2.24.1
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-T24gTW9uLCAyMDE5LTEyLTIzIGF0IDEzOjM3ICswMTAwLCBBbWFkZXVzeiBTxYJhd2nFhHNraSB3
-cm90ZToNCj4gU3RhcnQgZnJvbSBmaXhpbmcgYSB0eXBvIGVycm9yLCB0aGVuIG1vdmUgb250byBt
-YWtpbmcgc2VyaWVzIG9mDQo+IGZ1bmN0aW9ucyBzdGF0aWMgYW5kIHJlbW92aW5nIHVubmVjZXNz
-YXJ5IGhlYWRlci4NCj4gDQo+IEFtYWRldXN6IFPFgmF3acWEc2tpICg5KToNCj4gwqAgcnRsd2lm
-aTogcnRsODE5MmN1OiBGaXggdHlwbw0KPiDCoCBydGx3aWZpOiBydGw4MTg4ZWU6IE1ha2UgZnVu
-Y3Rpb25zIHN0YXRpYyAmIHJtIHN3LmgNCj4gwqAgcnRsd2lmaTogcnRsODE5MmNlOiBNYWtlIGZ1
-bmN0aW9ucyBzdGF0aWMgJiBybSBzdy5oDQo+IMKgIHJ0bHdpZmk6IHJ0bDgxOTJjdTogUmVtb3Zl
-IHN3LmggaGVhZGVyDQo+IMKgIHJ0bHdpZmk6IHJ0bDgxOTJlZTogTWFrZSBmdW5jdGlvbnMgc3Rh
-dGljICYgcm0gc3cuaA0KPiDCoCBydGx3aWZpOiBydGw4MTkyc2U6IFJlbW92ZSBzdy5oIGhlYWRl
-cg0KPiDCoCBydGx3aWZpOiBydGw4NzIzYWU6IE1ha2UgZnVuY3Rpb25zIHN0YXRpYyAmIHJtIHN3
-LmgNCj4gwqAgcnRsd2lmaTogcnRsODcyM2JlOiBNYWtlIGZ1bmN0aW9ucyBzdGF0aWMgJiBybSBz
-dy5oDQo+IMKgIHJ0bHdpZmk6IHJ0bDg4MjFhZTogTWFrZSBmdW5jdGlvbnMgc3RhdGljICYgcm0g
-c3cuaA0KPiANCj4gwqAuLi4vd2lyZWxlc3MvcmVhbHRlay9ydGx3aWZpL3J0bDgxODhlZS9zdy5j
-wqDCoMKgfMKgwqA3ICsrLS0NCj4gwqAuLi4vd2lyZWxlc3MvcmVhbHRlay9ydGx3aWZpL3J0bDgx
-ODhlZS9zdy5owqDCoMKgfCAxMiAtLS0tLS0tDQo+IMKgLi4uL3dpcmVsZXNzL3JlYWx0ZWsvcnRs
-d2lmaS9ydGw4MTkyY2Uvc3cuY8KgwqDCoHzCoMKgNSArKy0NCj4gwqAuLi4vd2lyZWxlc3MvcmVh
-bHRlay9ydGx3aWZpL3J0bDgxOTJjZS9zdy5owqDCoMKgfCAxNSAtLS0tLS0tLQ0KPiDCoC4uLi93
-aXJlbGVzcy9yZWFsdGVrL3J0bHdpZmkvcnRsODE5MmN1L3N3LmPCoMKgwqB8IDM1ICsrKysrKysr
-Ky0tLS0tLS0tLS0NCj4gwqAuLi4vd2lyZWxlc3MvcmVhbHRlay9ydGx3aWZpL3J0bDgxOTJjdS9z
-dy5owqDCoMKgfCAyNyAtLS0tLS0tLS0tLS0tLQ0KPiDCoC4uLi93aXJlbGVzcy9yZWFsdGVrL3J0
-bHdpZmkvcnRsODE5MmVlL3N3LmPCoMKgwqB8wqDCoDcgKystLQ0KPiDCoC4uLi93aXJlbGVzcy9y
-ZWFsdGVrL3J0bHdpZmkvcnRsODE5MmVlL3N3LmjCoMKgwqB8IDExIC0tLS0tLQ0KPiDCoC4uLi93
-aXJlbGVzcy9yZWFsdGVrL3J0bHdpZmkvcnRsODE5MnNlL3N3LmPCoMKgwqB8wqDCoDEgLQ0KPiDC
-oC4uLi93aXJlbGVzcy9yZWFsdGVrL3J0bHdpZmkvcnRsODE5MnNlL3N3LmjCoMKgwqB8IDEzIC0t
-LS0tLS0NCj4gwqAuLi4vd2lyZWxlc3MvcmVhbHRlay9ydGx3aWZpL3J0bDg3MjNhZS9zdy5jwqDC
-oMKgfMKgwqA3ICsrLS0NCj4gwqAuLi4vd2lyZWxlc3MvcmVhbHRlay9ydGx3aWZpL3J0bDg3MjNh
-ZS9zdy5owqDCoMKgfCAxMyAtLS0tLS0tDQo+IMKgLi4uL3dpcmVsZXNzL3JlYWx0ZWsvcnRsd2lm
-aS9ydGw4NzIzYmUvc3cuY8KgwqDCoHzCoMKgNyArKy0tDQo+IMKgLi4uL3dpcmVsZXNzL3JlYWx0
-ZWsvcnRsd2lmaS9ydGw4NzIzYmUvc3cuaMKgwqDCoHwgMTMgLS0tLS0tLQ0KPiDCoC4uLi93aXJl
-bGVzcy9yZWFsdGVrL3J0bHdpZmkvcnRsODgyMWFlL3N3LmPCoMKgwqB8wqDCoDcgKystLQ0KPiDC
-oC4uLi93aXJlbGVzcy9yZWFsdGVrL3J0bHdpZmkvcnRsODgyMWFlL3N3LmjCoMKgwqB8IDEyIC0t
-LS0tLS0NCj4gwqAxNiBmaWxlcyBjaGFuZ2VkLCAzNCBpbnNlcnRpb25zKCspLCAxNTggZGVsZXRp
-b25zKC0pDQo+IMKgZGVsZXRlIG1vZGUgMTAwNjQ0IGRyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0
-ZWsvcnRsd2lmaS9ydGw4MTg4ZWUvc3cuaA0KPiDCoGRlbGV0ZSBtb2RlIDEwMDY0NCBkcml2ZXJz
-L25ldC93aXJlbGVzcy9yZWFsdGVrL3J0bHdpZmkvcnRsODE5MmNlL3N3LmgNCj4gwqBkZWxldGUg
-bW9kZSAxMDA2NDQgZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydGx3aWZpL3J0bDgxOTJj
-dS9zdy5oDQo+IMKgZGVsZXRlIG1vZGUgMTAwNjQ0IGRyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0
-ZWsvcnRsd2lmaS9ydGw4MTkyZWUvc3cuaA0KPiDCoGRlbGV0ZSBtb2RlIDEwMDY0NCBkcml2ZXJz
-L25ldC93aXJlbGVzcy9yZWFsdGVrL3J0bHdpZmkvcnRsODE5MnNlL3N3LmgNCj4gwqBkZWxldGUg
-bW9kZSAxMDA2NDQgZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydGx3aWZpL3J0bDg3MjNh
-ZS9zdy5oDQo+IMKgZGVsZXRlIG1vZGUgMTAwNjQ0IGRyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0
-ZWsvcnRsd2lmaS9ydGw4NzIzYmUvc3cuaA0KPiDCoGRlbGV0ZSBtb2RlIDEwMDY0NCBkcml2ZXJz
-L25ldC93aXJlbGVzcy9yZWFsdGVrL3J0bHdpZmkvcnRsODgyMWFlL3N3LmgNCj4gDQoNCkZvciBh
-bGwgcGF0Y2hlczrCoA0KQWNrZWQtYnk6IFBpbmctS2UgU2hpaCA8cGtzaGloQHJlYWx0ZWsuY29t
-Pg0KDQpUaGFua3MuDQoNCg0K
+Commit 809805a820c6 ("iwlwifi: pcie: move some cfg mangling from
+trans_pcie_alloc to probe") refactored the cfg mangling. Unfortunately,
+in this process the lines which picked the right cfg for Killer Qu C0
+NICs after C0 detection were lost. These lines were added by commit
+b9500577d361 ("iwlwifi: pcie: handle switching killer Qu B0 NICs to
+C0").
+
+I suspect this is more of the "merge damage" which commit 7cded5658329
+("iwlwifi: pcie: fix merge damage on making QnJ exclusive") talks about.
+
+Restore the missing lines so the driver loads the right firmware for
+these NICs.
+
+Fixes: 809805a820c6 ("iwlwifi: pcie: move some cfg mangling from trans_pcie_alloc to probe")
+Signed-off-by: Jan Alexander Steffens (heftig) <jan.steffens@gmail.com>
+---
+ drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+index b0b7eca1754e..de62a6dc4e73 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+@@ -1107,6 +1107,10 @@ static int iwl_pci_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 			cfg = &iwl9560_2ac_cfg_qu_c0_jf_b0;
+ 		else if (cfg == &iwl9560_2ac_160_cfg_qu_b0_jf_b0)
+ 			cfg = &iwl9560_2ac_160_cfg_qu_c0_jf_b0;
++		else if (cfg == &killer1650s_2ax_cfg_qu_b0_hr_b0)
++			cfg = &killer1650s_2ax_cfg_qu_c0_hr_b0;
++		else if (cfg == &killer1650i_2ax_cfg_qu_b0_hr_b0)
++			cfg = &killer1650i_2ax_cfg_qu_c0_hr_b0;
+ 	}
+ 
+ 	/* same thing for QuZ... */
+-- 
+2.24.1
+
