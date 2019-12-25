@@ -2,114 +2,147 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 10C5112A87F
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Dec 2019 17:19:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A06F12A93E
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Dec 2019 23:55:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726399AbfLYQTG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 25 Dec 2019 11:19:06 -0500
-Received: from mail-wr1-f67.google.com ([209.85.221.67]:37281 "EHLO
-        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726353AbfLYQTG (ORCPT
+        id S1726866AbfLYWzf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 25 Dec 2019 17:55:35 -0500
+Received: from mail-ot1-f66.google.com ([209.85.210.66]:35779 "EHLO
+        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726489AbfLYWzf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 25 Dec 2019 11:19:06 -0500
-Received: by mail-wr1-f67.google.com with SMTP id w15so9379141wru.4
-        for <linux-wireless@vger.kernel.org>; Wed, 25 Dec 2019 08:19:04 -0800 (PST)
+        Wed, 25 Dec 2019 17:55:35 -0500
+Received: by mail-ot1-f66.google.com with SMTP id k16so25856683otb.2
+        for <linux-wireless@vger.kernel.org>; Wed, 25 Dec 2019 14:55:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=message-id:subject:from:to:date:in-reply-to:references:user-agent
-         :mime-version:content-transfer-encoding;
-        bh=i2yMdmxjGb4rDaw+dBL/0nptlZbgGHghIdN7JfaSM6o=;
-        b=QiGsp6cxGyNxvLLvobXb7h+Gr5hs3JN9ST893NLQP9HkMue7vnCBi91Bmcp8xNyGFV
-         5rXu3e9nXziXOJyu/18MHMNVQPGGZytjZXj/b0mH3f9yc+YgNng0D7lCsd11DurhyGAT
-         bKix0eSYIg4POlt7agBjAn4Q/i7lQRArBG+BTlMnC1BwqKV+7wt1w9ud9j8smM/lV3Fh
-         MIbD6k79EPy0ngJ/6de20D3SIWMECJtvniSZyyRBuCiYqDQoflbSSYncvm2TSTvw39GP
-         MaThfU+mu1XVbfMCtRzh4Z7AGAJXXJQel9PxGTcl+1ayKRB3K/2M2CmGpFqIJ2SOh2G1
-         OsOg==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=80jAyJVeOXTuDUpErDnlHfp3L/JfNwepEBZzxURdIw4=;
+        b=EM4EzMjCA7x6i1mOp1QgRJj2l/WUw15fnus3M+6rRaUAjahc22yyA3yJn0w35oSkWO
+         zOXILFfQrhewpxeOSkn/51T+MqPCBoIMbhn6oPlxq01niSAqSK0uomj036cga4Oms7Jq
+         nPOK3v8ZKfobFzZTlJXITg6In6J0Oq1AVw+mFQNhf75EBN9RHF8OGNXDa/46G1c+nvOH
+         NLhOhFzCicmWz57HZJbqNqHNVbQv7QI1oizPWzkGpCF7EYjdwFH/XJNMxRXInhP01khf
+         0/Np3rsW/cJTrvr0MibNOYuEmvK3RzUHulR+wx5/6e2O+7+G5uxOzjqhX1M9iajVgXSM
+         gaqA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:message-id:subject:from:to:date:in-reply-to
-         :references:user-agent:mime-version:content-transfer-encoding;
-        bh=i2yMdmxjGb4rDaw+dBL/0nptlZbgGHghIdN7JfaSM6o=;
-        b=H+kyi3YlQFnlpyEtcKOpzx4vvCNAM4/3yqCX1aH1AKZkmWXtwLdT1MYBuMb+eymR3o
-         qphr019SAWtSQ7tcO6DobOd7kNe52rEDFI1YOiC/grM2vF5wHjTG+KCilQtHvTVWS9RC
-         TFwYHMlQRBi+CJ1gIGdLpoyxHDUvxJgetStyJDc2daZEaIpucLWSJSjnlhUT5/VRoROx
-         rrvKVitGAXc4HBxBtaPX/jiFAL5EBlXkP4neukel8qFxGhDepVAYRVrlideD4WYADECM
-         LroFTHMJWgWiLlhzO8KbDHs16liP/IR84N3Gk7Pu99Yv0AEOtrWTdC1C8NM3BQdeSa9f
-         jdjg==
-X-Gm-Message-State: APjAAAX5BEiHSHJ9ccArSEWzWEBZGi4jdeMFs+7mmxp+aan2rW7dS+dW
-        EcAMFZ445b8YrOGnSyKtRZY=
-X-Google-Smtp-Source: APXvYqzUDv09s+UkniSvRxOsdfCpF/xhS1irr8FwzeBER2cQaL9e2e3XslBaoC5PzL2ruhNJ4Ubtmg==
-X-Received: by 2002:adf:e74f:: with SMTP id c15mr42888625wrn.274.1577290744219;
-        Wed, 25 Dec 2019 08:19:04 -0800 (PST)
-Received: from kaiser (ip-89-177-205-133.net.upcbroadband.cz. [89.177.205.133])
-        by smtp.gmail.com with ESMTPSA id a5sm5975037wmb.37.2019.12.25.08.19.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Dec 2019 08:19:03 -0800 (PST)
-Message-ID: <24df021f5e30c51e2d9fff8533ff5591d37d2d2d.camel@gmail.com>
-Subject: Re: [PATCH 1/2] Support python 3 in utils/key2pub.py.
-From:   jtojnar@gmail.com
-To:     ahmed.taahir@gmail.com, linux-wireless@vger.kernel.org
-Date:   Wed, 25 Dec 2019 17:19:01 +0100
-In-Reply-To: <1437542484-23409-2-git-send-email-ahmed.taahir@gmail.com> (sfid-20150722_072142_438085_5E3B829E)
-References: <1437542484-23409-1-git-send-email-ahmed.taahir@gmail.com>
-         <1437542484-23409-2-git-send-email-ahmed.taahir@gmail.com>
-         (sfid-20150722_072142_438085_5E3B829E)
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.2 
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=80jAyJVeOXTuDUpErDnlHfp3L/JfNwepEBZzxURdIw4=;
+        b=X72L0sbNLHE6/ynmFcKJlHVIim0M9igUeLCleYWrBNv2HDH3D5NmMx+kp5giEXdftW
+         +tiIDZsRqc5DGUGUSxOIYfIrmv7Kriy9VgsiHe74XQeU2K24yAt2Ff0uQEO6rSKYhbLp
+         +Pra7ddfgZ2h7HLt0tPa0C/ecDE8CZ8+4cslyoe7l5Szr97m+PtX04I/QQhgLmbqFJ34
+         aWUFX9o6AlxPJfT/AwPVrDjMNLX3oMgb16hhLPhuxwk+C+NPSvVZWpKZ/uacGN/zuCK1
+         q5NbGBhhGiXbgL9YaY3cPU7P9TBHOP6G5IR0bLqTGcFcXr9MXywG8KRWSGuR6wpbW3gs
+         +fDw==
+X-Gm-Message-State: APjAAAVW9YRAfmr+BUJrGXiffY0IMkPz2UqKgmzml7ffmyFI7IgF3e71
+        sETZI5WwHyVCoouv0jk81S3I6W1l6of/Kx1ZyKY=
+X-Google-Smtp-Source: APXvYqxPk3MCnzXx4k2wZwiqWJ8ttbT6p9kAjJNFaHu8Q3TSgpMB4oURBrHk2s13I/DPioK1tvmFgMe7NAx6M+U5hdY=
+X-Received: by 2002:a05:6830:1515:: with SMTP id k21mr32167294otp.177.1577314534400;
+ Wed, 25 Dec 2019 14:55:34 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+References: <20191225120002.11163-1-wgong@codeaurora.org> <20191225120002.11163-3-wgong@codeaurora.org>
+In-Reply-To: <20191225120002.11163-3-wgong@codeaurora.org>
+From:   Justin Capella <justincapella@gmail.com>
+Date:   Wed, 25 Dec 2019 14:56:01 -0800
+Message-ID: <CAMrEMU9ZVV-yotvH2Odn+sb1HiiL_tN_GASSeSnhAOzCUjLZ7Q@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] ath10k: start recovery process when payload length
+ exceeds max htc length for sdio
+To:     Wen Gong <wgong@codeaurora.org>
+Cc:     ath10k <ath10k@lists.infradead.org>, linux-wireless@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 2015-07-22 at 00:21 -0500, ahmed.taahir@gmail.com wrote:
-> From: Taahir Ahmed <ahmed.taahir@gmail.com>
-> 
-> utils/key2pub.py can now be run under either python 2.7 or python
-> 3.x.
-> This required some minor syntactical changes as well as switching
-> from
-> M2Crypto to pycrypto, since M2Crypto doesn't support python 3.x.
-[...]
->  CFLAGS += -O2 -fpic
->  CFLAGS += -std=gnu99 -Wall -Werror -pedantic
->  CFLAGS += -Wall -g
-> @@ -42,13 +46,13 @@ ifeq ($(USE_OPENSSL),1)
->  CFLAGS += -DUSE_OPENSSL -DPUBKEY_DIR=\"$(RUNTIME_PUBKEY_DIR)\" `pkg-
-> config --cflags openssl`
->  LDLIBS += `pkg-config --libs openssl`
->  
-> -$(LIBREG): keys-ssl.c
-> +$(LIBREG): keys-ssl.h
->  
->  else
->  CFLAGS += -DUSE_GCRYPT
->  LDLIBS += -lgcrypt
->  
-> -$(LIBREG): keys-gcrypt.c
-> +$(LIBREG): keys-gcrypt.h
+Does the SDIO bus require addresses to be word aligned like the PCI
+bus does? I'm thinking of how netdev alloc uses skb_push to ensure
+that the payload is aligned.
 
-Changing the file names to headers appears to install them. We probably
-do not want to do that either.
 
-[...]
-> -    modes[mode][0](output, 'e_%d' % idx, key.e[4:])
-> -    modes[mode][0](output, 'n_%d' % idx, key.n[4:])
-> +    key_contents = io.open(f, 'rb').read()
-> +    key = RSA.importKey(key_contents)
+>> if (ar->state == ATH10K_STATE_ON)
 
-It is a good practice to close opened files. It would be even better to
-use context manager (i.e. `with io.open(f, 'rb') as key_file:`) since
-it will close the file automatically.
+What about the other STATEs: RESTARTED/ING
 
-Other than this the patches look good, crda builds with both Python 2
-and Python 3 with the patch and produce the same keys-gcrypt.h files.
-Comparing to the keys-gcrypt.c, apart from the trivial formatting
-changes, the ul suffixes for numbers are the only difference.
+The value you mentioned 57005, is 0xDEAD is that a special case?
+Perhaps a result of fw crash? Maybe a lookahead gone wong? I see its
+the WMI PEER ALIVE/DEAD indicator but I'm not sure why it would be
+trailer of the other
 
-I was not able to build crda with USE_OPENSSL=1 with or without this
-patch due to a large number of compilation errors. However, the
-differences between keys-ssl.c and keys-ssl.h are equivalent to the
-grypt ones. Also the addition of ul suffixes fixed the overflow errors, so definitely an improvement in this case as well.
-
+On Wed, Dec 25, 2019 at 4:01 AM Wen Gong <wgong@codeaurora.org> wrote:
+>
+> When simulate random transfer fail for sdio write and read, it happened
+> "payload length exceeds max htc length" and recovery later sometimes.
+>
+> Test steps:
+> 1. Add config and update kernel:
+> CONFIG_FAIL_MMC_REQUEST=y
+> CONFIG_FAULT_INJECTION=y
+> CONFIG_FAULT_INJECTION_DEBUG_FS=y
+>
+> 2. Run simulate fail:
+> cd /sys/kernel/debug/mmc1/fail_mmc_request
+> echo 10 > probability
+> echo 10 > times # repeat until hitting issues
+>
+> 3. It happened payload length exceeds max htc length.
+> [  199.935506] ath10k_sdio mmc1:0001:1: payload length 57005 exceeds max htc length: 4088
+> ....
+> [  264.990191] ath10k_sdio mmc1:0001:1: payload length 57005 exceeds max htc length: 4088
+>
+> 4. after some time, such as 60 seconds, it start recovery which triggered
+> by wmi command timeout for periodic scan.
+> [  269.229232] ieee80211 phy0: Hardware restart was requested
+> [  269.734693] ath10k_sdio mmc1:0001:1: device successfully recovered
+>
+> The simulate fail of sdio is not a real sdio transter fail, it only
+> set an error status in mmc_should_fail_request after the transfer end,
+> actually the transfer is success, then sdio_io_rw_ext_helper will
+> return error status and stop transfer the left data. For example,
+> the really RX len is 286 bytes, then it will split to 2 blocks in
+> sdio_io_rw_ext_helper, one is 256 bytes, left is 30 bytes, if the
+> first 256 bytes get an error status by mmc_should_fail_request,then
+> the left 30 bytes will not read in this RX operation. Then when the
+> next RX arrive, the left 30 bytes will be considered as the header
+> of the read, the top 4 bytes of the 30 bytes will be considered as
+> lookaheads, but actually the 4 bytes is not the lookaheads, so the len
+> from this lookaheads is not correct, it exceeds max htc length 4088
+> sometimes. When happened exceeds, the buffer chain is not matched between
+> firmware and ath10k, then it need to start recovery ASAP. Recently then
+> recovery will be started by wmi command timeout, but it will be long time
+> later, for example, it is 60+ seconds later from the periodic scan, if
+> it does not have periodic scan, it will be longer.
+>
+> Start recovery when it happened "payload length exceeds max htc length"
+> will be reasonable.
+>
+> This patch only effect sdio chips.
+>
+> Tested with QCA6174 SDIO with firmware WLAN.RMH.4.4.1-00029.
+>
+> Signed-off-by: Wen Gong <wgong@codeaurora.org>
+> ---
+>  drivers/net/wireless/ath/ath10k/sdio.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
+>
+> diff --git a/drivers/net/wireless/ath/ath10k/sdio.c b/drivers/net/wireless/ath/ath10k/sdio.c
+> index 7b894dcaad2e..78f431609493 100644
+> --- a/drivers/net/wireless/ath/ath10k/sdio.c
+> +++ b/drivers/net/wireless/ath/ath10k/sdio.c
+> @@ -557,6 +557,12 @@ static int ath10k_sdio_mbox_rx_alloc(struct ath10k *ar,
+>                                     le16_to_cpu(htc_hdr->len),
+>                                     ATH10K_HTC_MBOX_MAX_PAYLOAD_LENGTH);
+>                         ret = -ENOMEM;
+> +
+> +                       if (ar->state == ATH10K_STATE_ON) {
+> +                               queue_work(ar->workqueue, &ar->restart_work);
+> +                               ath10k_warn(ar, "exceeds length, start recovery\n");
+> +                       }
+> +
+>                         goto err;
+>                 }
+>
+> --
+> 2.23.0
