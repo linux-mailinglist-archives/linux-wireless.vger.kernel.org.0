@@ -2,129 +2,114 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 62F3E12A866
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Dec 2019 16:15:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 10C5112A87F
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Dec 2019 17:19:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726399AbfLYPOw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 25 Dec 2019 10:14:52 -0500
-Received: from mail-oi1-f194.google.com ([209.85.167.194]:34753 "EHLO
-        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726353AbfLYPOw (ORCPT
+        id S1726399AbfLYQTG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 25 Dec 2019 11:19:06 -0500
+Received: from mail-wr1-f67.google.com ([209.85.221.67]:37281 "EHLO
+        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726353AbfLYQTG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 25 Dec 2019 10:14:52 -0500
-Received: by mail-oi1-f194.google.com with SMTP id l136so8149957oig.1
-        for <linux-wireless@vger.kernel.org>; Wed, 25 Dec 2019 07:14:51 -0800 (PST)
+        Wed, 25 Dec 2019 11:19:06 -0500
+Received: by mail-wr1-f67.google.com with SMTP id w15so9379141wru.4
+        for <linux-wireless@vger.kernel.org>; Wed, 25 Dec 2019 08:19:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=8Aqdscs588lY4i7HDXEbNZYDFxUNRhq25hsL4hnvxXs=;
-        b=imS9vn64hqsYHK913rD73T92+rvmM94DC5ySY4aaB/YBAitGEjlW73QHuUDYLwrmWM
-         Ak+SiKXrlUVpJJt/3/m167+TsY5NPRTKKLWhiB2HKJafyd7cIS1VIjhO7bp/++QUOSNO
-         tjHKFHUvb6ni4vDXfDJNxefEteRWGrPDwpU3TaHxEIiSS2W1LewlVTBju80DxMaYeS+G
-         T+2EIT94GltL47waRWqgewd6hzoflk1WlelUkvQ6MYx9wNwURaebkz0qalRCfQYAehF5
-         ZVKm/rasOIVcBwBoiT+NtkUuVqaTV/jzlWVqw8r4/riXdlu8gyTt+3Beg5Mm1eNmHonT
-         kC+Q==
+        h=message-id:subject:from:to:date:in-reply-to:references:user-agent
+         :mime-version:content-transfer-encoding;
+        bh=i2yMdmxjGb4rDaw+dBL/0nptlZbgGHghIdN7JfaSM6o=;
+        b=QiGsp6cxGyNxvLLvobXb7h+Gr5hs3JN9ST893NLQP9HkMue7vnCBi91Bmcp8xNyGFV
+         5rXu3e9nXziXOJyu/18MHMNVQPGGZytjZXj/b0mH3f9yc+YgNng0D7lCsd11DurhyGAT
+         bKix0eSYIg4POlt7agBjAn4Q/i7lQRArBG+BTlMnC1BwqKV+7wt1w9ud9j8smM/lV3Fh
+         MIbD6k79EPy0ngJ/6de20D3SIWMECJtvniSZyyRBuCiYqDQoflbSSYncvm2TSTvw39GP
+         MaThfU+mu1XVbfMCtRzh4Z7AGAJXXJQel9PxGTcl+1ayKRB3K/2M2CmGpFqIJ2SOh2G1
+         OsOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=8Aqdscs588lY4i7HDXEbNZYDFxUNRhq25hsL4hnvxXs=;
-        b=TTu6hTrnG1pO1WJ5PPhCQeNqTLFCwMKWcaiMhpCsifv+25LFApRfbywrigjuxtlWHO
-         CrorWu+GlmEvb/HON+wOlY1jDH8lN26Ha/RSMO9COdkZesyCjwd9Cp5GWeXSdHM69nIw
-         dVp3A2nPbG2xsx9OaW1PyCZZgBrOHjIQQVk0Bcq36q9sgDRhXkXK01LWUVaq0xcep8PG
-         95QnfWDNqubYEYFPo0FXu6CCWCS53ISDAJiGjKvN+I33MzgEWLeiPiHSYXB1LLArI6Qy
-         tvcTbt7M13dFlbHAL1ayLCmXoX5xpWHgfI725xijwQ97fuu0npqmA2uXhOqPja1KpCp5
-         2rMw==
-X-Gm-Message-State: APjAAAWlejmpz5cZsf4cOu57ImRCWX+Ho3MvrwFYRJ58T8JhvtddZLRc
-        doJ16AKfPdvZR2ktbHLudK35v/klDcMJpvb0l5Y=
-X-Google-Smtp-Source: APXvYqzpP+fvEZUxl4b0VHahIOCrBk+neYQOSum4pwCIEMizKu1QFC+S7CxMHunN+21jr7CLGphOIZqjPSH1yOhSVNM=
-X-Received: by 2002:aca:f305:: with SMTP id r5mr1662822oih.174.1577286891473;
- Wed, 25 Dec 2019 07:14:51 -0800 (PST)
-MIME-Version: 1.0
-References: <20191225120002.11163-1-wgong@codeaurora.org> <20191225120002.11163-2-wgong@codeaurora.org>
-In-Reply-To: <20191225120002.11163-2-wgong@codeaurora.org>
-From:   Justin Capella <justincapella@gmail.com>
-Date:   Wed, 25 Dec 2019 07:14:38 -0800
-Message-ID: <CAMrEMU-p3+HRZYW6TzXwZSwhxj9oJ9JW1Rg=ZysJ3fr0rm45Ng@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] ath10k: add refcount for ath10k_core_restart
-To:     Wen Gong <wgong@codeaurora.org>
-Cc:     ath10k <ath10k@lists.infradead.org>, linux-wireless@vger.kernel.org
+        h=x-gm-message-state:message-id:subject:from:to:date:in-reply-to
+         :references:user-agent:mime-version:content-transfer-encoding;
+        bh=i2yMdmxjGb4rDaw+dBL/0nptlZbgGHghIdN7JfaSM6o=;
+        b=H+kyi3YlQFnlpyEtcKOpzx4vvCNAM4/3yqCX1aH1AKZkmWXtwLdT1MYBuMb+eymR3o
+         qphr019SAWtSQ7tcO6DobOd7kNe52rEDFI1YOiC/grM2vF5wHjTG+KCilQtHvTVWS9RC
+         TFwYHMlQRBi+CJ1gIGdLpoyxHDUvxJgetStyJDc2daZEaIpucLWSJSjnlhUT5/VRoROx
+         rrvKVitGAXc4HBxBtaPX/jiFAL5EBlXkP4neukel8qFxGhDepVAYRVrlideD4WYADECM
+         LroFTHMJWgWiLlhzO8KbDHs16liP/IR84N3Gk7Pu99Yv0AEOtrWTdC1C8NM3BQdeSa9f
+         jdjg==
+X-Gm-Message-State: APjAAAX5BEiHSHJ9ccArSEWzWEBZGi4jdeMFs+7mmxp+aan2rW7dS+dW
+        EcAMFZ445b8YrOGnSyKtRZY=
+X-Google-Smtp-Source: APXvYqzUDv09s+UkniSvRxOsdfCpF/xhS1irr8FwzeBER2cQaL9e2e3XslBaoC5PzL2ruhNJ4Ubtmg==
+X-Received: by 2002:adf:e74f:: with SMTP id c15mr42888625wrn.274.1577290744219;
+        Wed, 25 Dec 2019 08:19:04 -0800 (PST)
+Received: from kaiser (ip-89-177-205-133.net.upcbroadband.cz. [89.177.205.133])
+        by smtp.gmail.com with ESMTPSA id a5sm5975037wmb.37.2019.12.25.08.19.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 25 Dec 2019 08:19:03 -0800 (PST)
+Message-ID: <24df021f5e30c51e2d9fff8533ff5591d37d2d2d.camel@gmail.com>
+Subject: Re: [PATCH 1/2] Support python 3 in utils/key2pub.py.
+From:   jtojnar@gmail.com
+To:     ahmed.taahir@gmail.com, linux-wireless@vger.kernel.org
+Date:   Wed, 25 Dec 2019 17:19:01 +0100
+In-Reply-To: <1437542484-23409-2-git-send-email-ahmed.taahir@gmail.com> (sfid-20150722_072142_438085_5E3B829E)
+References: <1437542484-23409-1-git-send-email-ahmed.taahir@gmail.com>
+         <1437542484-23409-2-git-send-email-ahmed.taahir@gmail.com>
+         (sfid-20150722_072142_438085_5E3B829E)
 Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.34.2 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This does not only effect SDIO.
+On Wed, 2015-07-22 at 00:21 -0500, ahmed.taahir@gmail.com wrote:
+> From: Taahir Ahmed <ahmed.taahir@gmail.com>
+> 
+> utils/key2pub.py can now be run under either python 2.7 or python
+> 3.x.
+> This required some minor syntactical changes as well as switching
+> from
+> M2Crypto to pycrypto, since M2Crypto doesn't support python 3.x.
+[...]
+>  CFLAGS += -O2 -fpic
+>  CFLAGS += -std=gnu99 -Wall -Werror -pedantic
+>  CFLAGS += -Wall -g
+> @@ -42,13 +46,13 @@ ifeq ($(USE_OPENSSL),1)
+>  CFLAGS += -DUSE_OPENSSL -DPUBKEY_DIR=\"$(RUNTIME_PUBKEY_DIR)\" `pkg-
+> config --cflags openssl`
+>  LDLIBS += `pkg-config --libs openssl`
+>  
+> -$(LIBREG): keys-ssl.c
+> +$(LIBREG): keys-ssl.h
+>  
+>  else
+>  CFLAGS += -DUSE_GCRYPT
+>  LDLIBS += -lgcrypt
+>  
+> -$(LIBREG): keys-gcrypt.c
+> +$(LIBREG): keys-gcrypt.h
 
-Why a semaphore / count? Could the conf_mutex be held earlier, or
-perhaps change the state to ATH10K_STATE_RESTARTING first?
-ath10k_reconfig_complete is also called in mac.c when channel is changed so
+Changing the file names to headers appears to install them. We probably
+do not want to do that either.
 
-On Wed, Dec 25, 2019 at 4:01 AM Wen Gong <wgong@codeaurora.org> wrote:
->
-> When it has more than one restart_work queued meanwhile, the 2nd
-> restart_work is very esay to break the 1st restart work and lead
-> recovery fail.
->
-> Add a ref count to allow only one restart work running untill
-> device successfully recovered.
->
-> This patch only effect sdio chips.
->
-> Tested with QCA6174 SDIO with firmware WLAN.RMH.4.4.1-00029.
->
-> Signed-off-by: Wen Gong <wgong@codeaurora.org>
-> ---
->  drivers/net/wireless/ath/ath10k/core.c | 8 ++++++++
->  drivers/net/wireless/ath/ath10k/core.h | 2 ++
->  drivers/net/wireless/ath/ath10k/mac.c  | 1 +
->  3 files changed, 11 insertions(+)
->
-> diff --git a/drivers/net/wireless/ath/ath10k/core.c b/drivers/net/wireless/ath/ath10k/core.c
-> index 91f131b87efc..4e0e8c86bdd4 100644
-> --- a/drivers/net/wireless/ath/ath10k/core.c
-> +++ b/drivers/net/wireless/ath/ath10k/core.c
-> @@ -2199,6 +2199,14 @@ static void ath10k_core_restart(struct work_struct *work)
->  {
->         struct ath10k *ar = container_of(work, struct ath10k, restart_work);
->         int ret;
-> +       int restart_count;
-> +
-> +       restart_count = atomic_inc_and_test(&ar->restart_count);
-> +       if (restart_count > 1) {
-> +               ath10k_warn(ar, "can not restart, count: %d\n", restart_count);
-> +               atomic_dec(&ar->restart_count);
-> +               return;
-> +       }
->
->         set_bit(ATH10K_FLAG_CRASH_FLUSH, &ar->dev_flags);
->
-> diff --git a/drivers/net/wireless/ath/ath10k/core.h b/drivers/net/wireless/ath/ath10k/core.h
-> index e57b2e7235e3..810c99f2dc0e 100644
-> --- a/drivers/net/wireless/ath/ath10k/core.h
-> +++ b/drivers/net/wireless/ath/ath10k/core.h
-> @@ -982,6 +982,8 @@ struct ath10k {
->         /* protected by conf_mutex */
->         u8 ps_state_enable;
->
-> +       atomic_t restart_count;
-> +
->         bool nlo_enabled;
->         bool p2p;
->
-> diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
-> index 3856edba7915..bc1574145e66 100644
-> --- a/drivers/net/wireless/ath/ath10k/mac.c
-> +++ b/drivers/net/wireless/ath/ath10k/mac.c
-> @@ -7208,6 +7208,7 @@ static void ath10k_reconfig_complete(struct ieee80211_hw *hw,
->                 ath10k_info(ar, "device successfully recovered\n");
->                 ar->state = ATH10K_STATE_ON;
->                 ieee80211_wake_queues(ar->hw);
-> +               atomic_dec(&ar->restart_count);
->         }
->
->         mutex_unlock(&ar->conf_mutex);
-> --
-> 2.23.0
+[...]
+> -    modes[mode][0](output, 'e_%d' % idx, key.e[4:])
+> -    modes[mode][0](output, 'n_%d' % idx, key.n[4:])
+> +    key_contents = io.open(f, 'rb').read()
+> +    key = RSA.importKey(key_contents)
+
+It is a good practice to close opened files. It would be even better to
+use context manager (i.e. `with io.open(f, 'rb') as key_file:`) since
+it will close the file automatically.
+
+Other than this the patches look good, crda builds with both Python 2
+and Python 3 with the patch and produce the same keys-gcrypt.h files.
+Comparing to the keys-gcrypt.c, apart from the trivial formatting
+changes, the ul suffixes for numbers are the only difference.
+
+I was not able to build crda with USE_OPENSSL=1 with or without this
+patch due to a large number of compilation errors. However, the
+differences between keys-ssl.c and keys-ssl.h are equivalent to the
+grypt ones. Also the addition of ul suffixes fixed the overflow errors, so definitely an improvement in this case as well.
+
