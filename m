@@ -2,152 +2,97 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D40F712AD16
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Dec 2019 15:38:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 573AC12ADFA
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Dec 2019 19:51:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726596AbfLZOiD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 26 Dec 2019 09:38:03 -0500
-Received: from mail-lf1-f68.google.com ([209.85.167.68]:44513 "EHLO
-        mail-lf1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726074AbfLZOiC (ORCPT
+        id S1726640AbfLZSvf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 26 Dec 2019 13:51:35 -0500
+Received: from mail-il1-f196.google.com ([209.85.166.196]:40771 "EHLO
+        mail-il1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726480AbfLZSvf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 26 Dec 2019 09:38:02 -0500
-Received: by mail-lf1-f68.google.com with SMTP id v201so18618597lfa.11;
-        Thu, 26 Dec 2019 06:38:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=2uXdMyHtTWWc+0rTxfP2Cz8myNyuUa0oqAF7KA6mwz8=;
-        b=aTqAifniw/x+mvTlGZRNdXxg/Vacd5KTNENcr9w65x/UftLQ9pMULKiwyt2FQGeqeK
-         VmHla6phspDVELC8vVU++gzau8vt7YIQuGFMqArlYykoOQdACIOGKvTmN27G3MfOVw3Q
-         yCSSTKiJpMwy4hBO4Q2oR6/4AQc3vM0rnzcwh4OBron/Kw7FXjTkUOdrvMnVXBtQ5blL
-         UP4IAWa95snDlFHnFnnq0qCg1LWzTqwmom+yJ1LOFviv3BLdVlUK97R/k43C4lzE+RHR
-         jWn5k4EONVlXswHz5NECuLs27/ZvpESjC3YcuBtWcmRvdB9ifsLGHffPnwNwNh4HQubo
-         T8WA==
+        Thu, 26 Dec 2019 13:51:35 -0500
+Received: by mail-il1-f196.google.com with SMTP id c4so20787962ilo.7;
+        Thu, 26 Dec 2019 10:51:35 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=2uXdMyHtTWWc+0rTxfP2Cz8myNyuUa0oqAF7KA6mwz8=;
-        b=tf4KlLKo0tig6skL6VT4QiaTTAPBMXXYQgwXsLNb1uRmJnpebpoN+E0PetpWkZfvfX
-         e6Vw+gPSpz8DvOEwbRBfbT8/O4/ypbNpRZImTqX4+US6hgwihaFKHPCq7tAZL5/to0pv
-         qZcC68u91aHbW7y6KPqe6qh3c2Uy3rBwxPfo1uM0vGyOr6GiVOaagUs1/XMm1FM8KpJV
-         HxZsaJ0z+bja1vVEsNSQB5eFYg3j5OU4s3zxnANAsM0ZlrFKHZPgBcskRR5j4XoDEmmY
-         fXOXCccwSiHi020lO1FnOzFnFhYrx7prWoRxR7ebvKOJeDt0gtcMMTFbqLYTb6Gt2ao3
-         X4SQ==
-X-Gm-Message-State: APjAAAVbGjVo5uHbgBT4q4z8k1nCOSdM7l747GNN2+PS2WLkG3iA6pZU
-        kRBrDnmpcfFH/xVmqzEnO1o=
-X-Google-Smtp-Source: APXvYqzLvmX9xvbqZfqMciYkfmu7gE48D+i9eKKISYQS/PqPPyLoOU2sGnLVgxk5uWIe+ygP+3nFCQ==
-X-Received: by 2002:ac2:5582:: with SMTP id v2mr27328339lfg.183.1577371080463;
-        Thu, 26 Dec 2019 06:38:00 -0800 (PST)
-Received: from [192.168.2.145] (79-139-233-37.dynamic.spd-mgts.ru. [79.139.233.37])
-        by smtp.googlemail.com with ESMTPSA id u13sm13033823lfq.19.2019.12.26.06.37.59
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 26 Dec 2019 06:37:59 -0800 (PST)
-Subject: Re: [PATCH] brcmfmac: sdio: Fix OOB interrupt initialization on
- brcm43362
-To:     Arend Van Spriel <arend.vanspriel@broadcom.com>,
-        Jean-Philippe Brucker <jean-philippe@linaro.org>,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        brcm80211-dev-list@cypress.com, netdev@vger.kernel.org,
-        hdegoede@redhat.com
-Cc:     franky.lin@broadcom.com, hante.meuleman@broadcom.com,
-        chi-hsien.lin@cypress.com, wright.feng@cypress.com,
-        kvalo@codeaurora.org, davem@davemloft.net
-References: <20191226092033.12600-1-jean-philippe@linaro.org>
- <16f419a7070.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
-From:   Dmitry Osipenko <digetx@gmail.com>
-Message-ID: <141f055a-cd1d-66cb-7052-007cda629d3a@gmail.com>
-Date:   Thu, 26 Dec 2019 17:37:58 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.3.0
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=3UMtDU8DxQ3MGtUa2c3Y90UpyYpDwJplb5ZS1zSkCmc=;
+        b=QrtocgHCQXk04vR6BgiPYGQm7ytzjiESt+NOeJO1mbHgWqa0VE1HZiCOlU7j/35RPI
+         e2yGeK8iCmQEQaWPAMLEhorxennaDJ6IL+VUtcRCPIkkqmKSmkZE+3b1geWoBjZ3sGpM
+         +0am8og/i+aOzMGIQ5a2mMzr06Pthk8MxKEkX4LNSJfqSbCYdbdfdLFbGkqZ4zhFhYKF
+         GXak+4NVTGODibAclqCuW8pA87KlLT+zGio450BNB3iaaC9J/3AHbKjUlKakwbb7SNzl
+         oN2XrzTK7U8KSzi7JkpXQqzPhZPzzBohzpjbFxfSseBilEQndodVGuiDYVunebopGYDe
+         BeJQ==
+X-Gm-Message-State: APjAAAUfvBPaNiBvirnysKFiyoJIgJWzN3rNHDuYmEQ2Q1fapPqUtest
+        /ISXr4IQCb0GXmzcoI8xiPBPEmo=
+X-Google-Smtp-Source: APXvYqySldlRAzOb9NpZjVOq6WC0G5C70Vuhd2vFmw3FOsorrKM5EEz3CstEkjK7Hu4QPpJKtktk+g==
+X-Received: by 2002:a92:9a56:: with SMTP id t83mr40442318ili.200.1577386294850;
+        Thu, 26 Dec 2019 10:51:34 -0800 (PST)
+Received: from localhost ([64.188.179.250])
+        by smtp.gmail.com with ESMTPSA id k16sm12454714ili.35.2019.12.26.10.51.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 26 Dec 2019 10:51:34 -0800 (PST)
+Date:   Thu, 26 Dec 2019 11:51:32 -0700
+From:   Rob Herring <robh@kernel.org>
+To:     Tamizh Chelvam <tamizhr@codeaurora.org>
+Cc:     ath10k@lists.infradead.org, devicetree@vger.kernel.org,
+        linux-wireless@vger.kernel.org
+Subject: Re: [PATCH 1/2] dt-bindings: ath10k: Add new dt entries to identify
+ coex support
+Message-ID: <20191226185132.GA31120@bogus>
+References: <1576496415-23064-1-git-send-email-tamizhr@codeaurora.org>
 MIME-Version: 1.0
-In-Reply-To: <16f419a7070.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1576496415-23064-1-git-send-email-tamizhr@codeaurora.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-26.12.2019 12:47, Arend Van Spriel пишет:
-> On December 26, 2019 10:23:41 AM Jean-Philippe Brucker
-> <jean-philippe@linaro.org> wrote:
+On Mon, Dec 16, 2019 at 05:10:14PM +0530, Tamizh Chelvam wrote:
+> This adds new dt entries qcom,coexist-support and qcom,coexist-gpio-pin
+> which will be used by ath10k driver to identify coex support
+> of a hardware and notify wifi firmware the gpio pin number.
+> This pin number information is needed for the hardware QCA4019.
 > 
->> Commit 262f2b53f679 ("brcmfmac: call brcmf_attach() just before calling
->> brcmf_bus_started()") changed the initialization order of the brcmfmac
->> SDIO driver. Unfortunately since brcmf_sdiod_intr_register() is now
->> called before the sdiodev->bus_if initialization, it reads the wrong
->> chip ID and fails to initialize the GPIO on brcm43362. Thus the chip
->> cannot send interrupts and fails to probe:
->>
->> [   12.517023] brcmfmac: brcmf_sdio_bus_rxctl: resumed on timeout
->> [   12.531214] ieee80211 phy0: brcmf_bus_started: failed: -110
->> [   12.536976] ieee80211 phy0: brcmf_attach: dongle is not responding:
->> err=-110
->> [   12.566467] brcmfmac: brcmf_sdio_firmware_callback: brcmf_attach
->> failed
->>
->> Initialize the bus interface earlier to ensure that
->> brcmf_sdiod_intr_register() properly sets up the OOB interrupt.
->>
->> BugLink: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=908438
->> Fixes: 262f2b53f679 ("brcmfmac: call brcmf_attach() just before
->> calling brcmf_bus_started()")
+> Signed-off-by: Tamizh Chelvam <tamizhr@codeaurora.org>
+> ---
+>  Documentation/devicetree/bindings/net/wireless/qcom,ath10k.txt | 6 ++++++
+>  1 file changed, 6 insertions(+)
 > 
-> Reviewed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-> 
->> Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
->> ---
->> A workaround [1] disabling the OOB interrupt is being discussed. It
->> works for me, but this patch fixes the wifi problem on my cubietruck.
-> 
-> I missed that one. Too bad it was not sent to linux-wireless as well.
-> Good find here. I did see another patch dealing with the OOB interrupt
-> on Nvidia Tegra. Now I wonder if this is the same issue.
-> 
-> Regards,
-> Arend
-> 
->> [1]
->> https://lore.kernel.org/linux-arm-kernel/20180930150927.12076-1-hdegoede@redhat.com/
->>
->> ---
->> .../net/wireless/broadcom/brcm80211/brcmfmac/sdio.c  | 12 ++++++------
->> 1 file changed, 6 insertions(+), 6 deletions(-)
+> diff --git a/Documentation/devicetree/bindings/net/wireless/qcom,ath10k.txt b/Documentation/devicetree/bindings/net/wireless/qcom,ath10k.txt
+> index 0171283..a41e936 100644
+> --- a/Documentation/devicetree/bindings/net/wireless/qcom,ath10k.txt
+> +++ b/Documentation/devicetree/bindings/net/wireless/qcom,ath10k.txt
+> @@ -87,6 +87,10 @@ Optional properties:
+>  	Definition: Quirk specifying that the firmware expects the 8bit version
+>  		    of the host capability QMI request
+>  - qcom,xo-cal-data: xo cal offset to be configured in xo trim register.
+> +- qcom,coexist-support : should contain eithr "0" or "1" to indicate coex
+> +			 support by the hardware.
+> +- qcom,coexist-gpio-pin : gpio pin number  information to support coex
+> +			  which will be used by wifi firmware.
 
-I haven't seen any driver probe failures due to OOB on NVIDIA Tegra,
-only suspend-resume was problematic due to the unbalanced OOB
-interrupt-wake enabling.
+What combinations of these 2 properties are valid?
 
-But maybe checking whether OOB interrupt-wake works by invoking
-enable_irq_wake() during brcmf_sdiod_intr_register() causes trouble for
-the cubietruck board.
+Is qcom,coexist-gpio-pin required for coexist support? If so then it 
+alone should be enough to enable/disable coexist.
 
-@Jean-Philippe, could you please try this change (on top of recent
-linux-next):
-
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-index b684a5b6d904..80d7106b10a9 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-@@ -115,13 +115,6 @@ int brcmf_sdiod_intr_register(struct brcmf_sdio_dev
-*sdiodev)
-                }
-                sdiodev->oob_irq_requested = true;
-
--               ret = enable_irq_wake(pdata->oob_irq_nr);
--               if (ret != 0) {
--                       brcmf_err("enable_irq_wake failed %d\n", ret);
--                       return ret;
--               }
--               disable_irq_wake(pdata->oob_irq_nr);
--
-                sdio_claim_host(sdiodev->func1);
-
-                if (sdiodev->bus_if->chip == BRCM_CC_43362_CHIP_ID) {
+>  
+>  Example (to supply PCI based wifi block details):
+>  
+> @@ -156,6 +160,8 @@ wifi0: wifi@a000000 {
+>  	qcom,msi_addr = <0x0b006040>;
+>  	qcom,msi_base = <0x40>;
+>  	qcom,ath10k-pre-calibration-data = [ 01 02 03 ... ];
+> +	qcom,coexist-support = <1>;
+> +	qcom,coexist-gpio-pin = <0x33>;
+>  };
+>  
+>  Example (to supply wcn3990 SoC wifi block details):
+> -- 
+> 1.9.1
