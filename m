@@ -2,80 +2,100 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 77D0912B35F
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Dec 2019 10:00:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DA07112B3C5
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Dec 2019 11:02:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726293AbfL0JAV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 27 Dec 2019 04:00:21 -0500
-Received: from mailgw01.mediatek.com ([210.61.82.183]:3598 "EHLO
-        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726169AbfL0JAV (ORCPT
+        id S1726396AbfL0KCm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 27 Dec 2019 05:02:42 -0500
+Received: from mail-lj1-f195.google.com ([209.85.208.195]:37015 "EHLO
+        mail-lj1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726014AbfL0KCm (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 27 Dec 2019 04:00:21 -0500
-X-UUID: b9de2991da414af59d50dae5af12f267-20191227
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Transfer-Encoding:Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=ay+ibNcB5NYuieSrDeYdH8wOhecnM0m+aMHmpuj+/+g=;
-        b=EtXThFTMb4P/nuUn0mAeVpVjxhxCg3venYqslp1vxLUCF/lfgY5YOeXQnb1a/1pPDcM90jLTnQxs6hI3vn1GCrWm1uZyLZv62IskeEEC2s7ZB6f9gT8sR5UmNJlaJXoF10ngkyaVa2mLRv0YSb1Q/cUpGhtoRRDX1Zl2pMXK2UE=;
-X-UUID: b9de2991da414af59d50dae5af12f267-20191227
-Received: from mtkmrs01.mediatek.inc [(172.21.131.159)] by mailgw01.mediatek.com
-        (envelope-from <ryder.lee@mediatek.com>)
-        (Cellopoint E-mail Firewall v4.1.10 Build 0809 with TLS)
-        with ESMTP id 1178422584; Fri, 27 Dec 2019 17:00:14 +0800
-Received: from mtkcas07.mediatek.inc (172.21.101.84) by
- mtkmbs08n2.mediatek.inc (172.21.101.56) with Microsoft SMTP Server (TLS) id
- 15.0.1395.4; Fri, 27 Dec 2019 16:59:38 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas07.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1395.4 via Frontend
- Transport; Fri, 27 Dec 2019 17:00:00 +0800
-From:   Ryder Lee <ryder.lee@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-CC:     Shayne Chen <shayne.chen@mediatek.com>,
-        Roy Luo <royluo@google.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>,
-        Ryder Lee <ryder.lee@mediatek.com>
-Subject: [PATCH 3/3] mt76: mt7615: add a .get_stats callback
-Date:   Fri, 27 Dec 2019 17:00:09 +0800
-Message-ID: <b9c5cf59dd656fb5dea67b46ed264d0e0290da3f.1577411732.git.ryder.lee@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <7d450f0c4fec3c7242804e47f9bce13255e7f28d.1577411732.git.ryder.lee@mediatek.com>
-References: <7d450f0c4fec3c7242804e47f9bce13255e7f28d.1577411732.git.ryder.lee@mediatek.com>
+        Fri, 27 Dec 2019 05:02:42 -0500
+Received: by mail-lj1-f195.google.com with SMTP id o13so15290087ljg.4
+        for <linux-wireless@vger.kernel.org>; Fri, 27 Dec 2019 02:02:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Eox7lEH740PTF6D96eI3HV/UGGPqU91i5ubWo4citZk=;
+        b=r+gp22DTWkzSgzAMpTbiOylfpkQd67WQmmo+0oYgza5niAhbeux7h7Px2gXotp9GpX
+         CZ/UqfB2Drv0cqj47BsP1tlaVP5kC8/LjAwFbcqV6srVOPR5sl3vCJjEFxVIFnfQCUnW
+         P30jwJPN4EyvA4RdrZG3hEUBdc0h/Bh+uWv9sESpbllJJjX+SepEChRfOj6aKBZ5wFzH
+         CqXOF/wIJjp5gSgQomt9RqAEe2jHHjD7i2eh/2RGO+C053OhzrPfGeCh8obX6gMK8FBJ
+         fAwklMyPnt19Ag7ddEbFed1jHzfxgIfe+lxgxLgItIaiXhC+ukCGVIhlLrfw4TuXnYIA
+         yUQg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Eox7lEH740PTF6D96eI3HV/UGGPqU91i5ubWo4citZk=;
+        b=Va5Pzc0ok9LcDz5O4sw2u6zJUmyUhevIuNtxvZBdWKqEEzNilEesApu3dEPMqS66mY
+         tLE7s2mOa0LBDBYMn03eygIixZBlzDJRbvi/fiV+Lcgr+i9+N+jiCUyGIWX3PBlMgCAz
+         PyBQQH2dPP004pfpX8my9YtOyAy0BPF2/GPRvM9e/PVyWKpguH+6A3h56rXBRJdHY2S7
+         Wtokjel3SVSRSaI1byeBExBDYQPX18HYpsODoxE+NO4nFTh8Dk+YYxS6gQoGdAcSV9Bp
+         vomzUo+RqIZOAgfaCAOHB8U8rGr2jJzN23ywCwarTMDnNV4ue2xpDoEDiAHbLHBQfGbm
+         +ltA==
+X-Gm-Message-State: APjAAAWfULJQwq8uUIM1jzSvvw5ydOJs0OTuASlHyc2tyYhUhCwhcBtD
+        FHTB+kErhZg9l+3YEDWal0K46bmRYkI=
+X-Google-Smtp-Source: APXvYqw/8n9exj2PKvPupbAprB2qPrkTg4gVhQq+Zm87NnJxSklJsLgmZSpW6RDP9xVLtiRlYogohg==
+X-Received: by 2002:a2e:6f19:: with SMTP id k25mr27216632ljc.84.1577440959667;
+        Fri, 27 Dec 2019 02:02:39 -0800 (PST)
+Received: from dk.user.kdf.lan ([89.18.140.18])
+        by smtp.gmail.com with ESMTPSA id s13sm13492983lje.35.2019.12.27.02.02.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 27 Dec 2019 02:02:39 -0800 (PST)
+From:   Denis Kalashnikov <denis281089@gmail.com>
+To:     linux-wireless@vger.kernel.org
+Cc:     kvalo@codeaurora.org
+Subject: [RESEND] ath9k: fix firmware bug in some of Mikrotik R11e-2HPnD cards
+Date:   Fri, 27 Dec 2019 13:01:15 +0300
+Message-Id: <20191227100115.6870-1-denis281089@gmail.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-SNTS-SMTP: D8B3679B52C8892946EFCE5EE48E5DCE8D2162D8BAB16D665268CFBF2D8ACECB2000:8
-X-MTK:  N
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-QWRkIGEgLmdldF9zdGF0cyBjYWxsYmFjay4NCg0KU2lnbmVkLW9mZi1ieTogUnlkZXIgTGVlIDxy
-eWRlci5sZWVAbWVkaWF0ZWsuY29tPg0KLS0tDQogZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0
-ZWsvbXQ3Ni9tdDc2MTUvbWFpbi5jIHwgMTYgKysrKysrKysrKysrKysrKw0KIDEgZmlsZSBjaGFu
-Z2VkLCAxNiBpbnNlcnRpb25zKCspDQoNCmRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC93aXJlbGVz
-cy9tZWRpYXRlay9tdDc2L210NzYxNS9tYWluLmMgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRp
-YXRlay9tdDc2L210NzYxNS9tYWluLmMNCmluZGV4IDBlZmQ4MDY1ODEyYy4uMzMxYmVkNzc1YjZk
-IDEwMDY0NA0KLS0tIGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc2MTUv
-bWFpbi5jDQorKysgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzYxNS9t
-YWluLmMNCkBAIC02MjgsNiArNjI4LDIxIEBAIG10NzYxNV9zdGFfcmVtb3ZlKHN0cnVjdCBpZWVl
-ODAyMTFfaHcgKmh3LCBzdHJ1Y3QgaWVlZTgwMjExX3ZpZiAqdmlmLA0KIAkJCSAgSUVFRTgwMjEx
-X1NUQV9OT1RFWElTVCk7DQogfQ0KIA0KK3N0YXRpYyBpbnQNCittdDc2MTVfZ2V0X3N0YXRzKHN0
-cnVjdCBpZWVlODAyMTFfaHcgKmh3LA0KKwkJIHN0cnVjdCBpZWVlODAyMTFfbG93X2xldmVsX3N0
-YXRzICpzdGF0cykNCit7DQorCXN0cnVjdCBtdDc2MTVfcGh5ICpwaHkgPSBtdDc2MTVfaHdfcGh5
-KGh3KTsNCisJc3RydWN0IG1pYl9zdGF0cyAqbWliID0gJnBoeS0+bWliOw0KKw0KKwlzdGF0cy0+
-ZG90MTFSVFNTdWNjZXNzQ291bnQgPSBtaWItPnJ0c19jbnQ7DQorCXN0YXRzLT5kb3QxMVJUU0Zh
-aWx1cmVDb3VudCA9IG1pYi0+cnRzX3JldHJpZXNfY250Ow0KKwlzdGF0cy0+ZG90MTFGQ1NFcnJv
-ckNvdW50ID0gbWliLT5mY3NfZXJyX2NudDsNCisJc3RhdHMtPmRvdDExQUNLRmFpbHVyZUNvdW50
-ID0gbWliLT5hY2tfZmFpbF9jbnQ7DQorDQorCXJldHVybiAwOw0KK30NCisNCiBzdGF0aWMgdTY0
-DQogbXQ3NjE1X2dldF90c2Yoc3RydWN0IGllZWU4MDIxMV9odyAqaHcsIHN0cnVjdCBpZWVlODAy
-MTFfdmlmICp2aWYpDQogew0KQEAgLTY3OSw2ICs2OTQsNyBAQCBjb25zdCBzdHJ1Y3QgaWVlZTgw
-MjExX29wcyBtdDc2MTVfb3BzID0gew0KIAkucmVsZWFzZV9idWZmZXJlZF9mcmFtZXMgPSBtdDc2
-X3JlbGVhc2VfYnVmZmVyZWRfZnJhbWVzLA0KIAkuZ2V0X3R4cG93ZXIgPSBtdDc2X2dldF90eHBv
-d2VyLA0KIAkuY2hhbm5lbF9zd2l0Y2hfYmVhY29uID0gbXQ3NjE1X2NoYW5uZWxfc3dpdGNoX2Jl
-YWNvbiwNCisJLmdldF9zdGF0cyA9IG10NzYxNV9nZXRfc3RhdHMsDQogCS5nZXRfdHNmID0gbXQ3
-NjE1X2dldF90c2YsDQogCS5nZXRfc3VydmV5ID0gbXQ3Nl9nZXRfc3VydmV5LA0KIAkuZ2V0X2Fu
-dGVubmEgPSBtdDc2X2dldF9hbnRlbm5hLA0KLS0gDQoyLjE4LjANCg==
+Sorry, first I sent the patch through a Gmail web interface, and spaces
+were broken.
+---
+
+Some of the Mikrotik R11e-2HPnD cards have EEPROM where is
+flashed that a card has 3 chains, but actually all this cards
+have only 2. This leads ath9k to write periodically into the logs:
+'ath: phy0: Unable to reset channel, reset status -5' and
+stations don't see that AP.
+
+Mikrotik R11e-2HPnD is based on AR9582 chip.
+
+Signed-off-by: Denis Kalashnikov <denis281089@gmail.com>
+---
+ drivers/net/wireless/ath/ath9k/ar9003_eeprom.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/drivers/net/wireless/ath/ath9k/ar9003_eeprom.c b/drivers/net/wireless/ath/ath9k/ar9003_eeprom.c
+index b4885a700296..554a81400648 100644
+--- a/drivers/net/wireless/ath/ath9k/ar9003_eeprom.c
++++ b/drivers/net/wireless/ath/ath9k/ar9003_eeprom.c
+@@ -3373,6 +3373,15 @@ static int ar9300_eeprom_restore_internal(struct ath_hw *ah,
+ 		cptr -= (COMP_HDR_LEN + osize + COMP_CKSUM_LEN);
+ 	}
+ 
++	/**
++	 * Fix firmware bug of some Mikrotik R11e-2HPnD cards (based on AR9582)
++	 * that claim that they have 3 chains, but actually have only 2.
++	 */
++	if (AR_SREV_9580(ah)) {
++		eep = (struct ar9300_eeprom *)mptr;
++		eep->baseEepHeader.txrxMask &= 0x33;
++	}
++
+ 	kfree(word);
+ 	return cptr;
+ 
+-- 
+2.23.0
 
