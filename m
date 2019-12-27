@@ -2,100 +2,106 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DA07112B3C5
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Dec 2019 11:02:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 349CF12B8F7
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Dec 2019 18:59:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726396AbfL0KCm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 27 Dec 2019 05:02:42 -0500
-Received: from mail-lj1-f195.google.com ([209.85.208.195]:37015 "EHLO
-        mail-lj1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726014AbfL0KCm (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 27 Dec 2019 05:02:42 -0500
-Received: by mail-lj1-f195.google.com with SMTP id o13so15290087ljg.4
-        for <linux-wireless@vger.kernel.org>; Fri, 27 Dec 2019 02:02:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=Eox7lEH740PTF6D96eI3HV/UGGPqU91i5ubWo4citZk=;
-        b=r+gp22DTWkzSgzAMpTbiOylfpkQd67WQmmo+0oYgza5niAhbeux7h7Px2gXotp9GpX
-         CZ/UqfB2Drv0cqj47BsP1tlaVP5kC8/LjAwFbcqV6srVOPR5sl3vCJjEFxVIFnfQCUnW
-         P30jwJPN4EyvA4RdrZG3hEUBdc0h/Bh+uWv9sESpbllJJjX+SepEChRfOj6aKBZ5wFzH
-         CqXOF/wIJjp5gSgQomt9RqAEe2jHHjD7i2eh/2RGO+C053OhzrPfGeCh8obX6gMK8FBJ
-         fAwklMyPnt19Ag7ddEbFed1jHzfxgIfe+lxgxLgItIaiXhC+ukCGVIhlLrfw4TuXnYIA
-         yUQg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=Eox7lEH740PTF6D96eI3HV/UGGPqU91i5ubWo4citZk=;
-        b=Va5Pzc0ok9LcDz5O4sw2u6zJUmyUhevIuNtxvZBdWKqEEzNilEesApu3dEPMqS66mY
-         tLE7s2mOa0LBDBYMn03eygIixZBlzDJRbvi/fiV+Lcgr+i9+N+jiCUyGIWX3PBlMgCAz
-         PyBQQH2dPP004pfpX8my9YtOyAy0BPF2/GPRvM9e/PVyWKpguH+6A3h56rXBRJdHY2S7
-         Wtokjel3SVSRSaI1byeBExBDYQPX18HYpsODoxE+NO4nFTh8Dk+YYxS6gQoGdAcSV9Bp
-         vomzUo+RqIZOAgfaCAOHB8U8rGr2jJzN23ywCwarTMDnNV4ue2xpDoEDiAHbLHBQfGbm
-         +ltA==
-X-Gm-Message-State: APjAAAWfULJQwq8uUIM1jzSvvw5ydOJs0OTuASlHyc2tyYhUhCwhcBtD
-        FHTB+kErhZg9l+3YEDWal0K46bmRYkI=
-X-Google-Smtp-Source: APXvYqw/8n9exj2PKvPupbAprB2qPrkTg4gVhQq+Zm87NnJxSklJsLgmZSpW6RDP9xVLtiRlYogohg==
-X-Received: by 2002:a2e:6f19:: with SMTP id k25mr27216632ljc.84.1577440959667;
-        Fri, 27 Dec 2019 02:02:39 -0800 (PST)
-Received: from dk.user.kdf.lan ([89.18.140.18])
-        by smtp.gmail.com with ESMTPSA id s13sm13492983lje.35.2019.12.27.02.02.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Dec 2019 02:02:39 -0800 (PST)
-From:   Denis Kalashnikov <denis281089@gmail.com>
-To:     linux-wireless@vger.kernel.org
-Cc:     kvalo@codeaurora.org
-Subject: [RESEND] ath9k: fix firmware bug in some of Mikrotik R11e-2HPnD cards
-Date:   Fri, 27 Dec 2019 13:01:15 +0300
-Message-Id: <20191227100115.6870-1-denis281089@gmail.com>
-X-Mailer: git-send-email 2.23.0
+        id S1727200AbfL0RlH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 27 Dec 2019 12:41:07 -0500
+Received: from mail.kernel.org ([198.145.29.99]:37064 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727175AbfL0RlH (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 27 Dec 2019 12:41:07 -0500
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 8470E21775;
+        Fri, 27 Dec 2019 17:41:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1577468466;
+        bh=eSBIlZaB+1Zf9Pp3QrfkfLpJAZHv8lJk20E9gHCjWwg=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=2A+IpCXKvBUrQknVgf9BMGu5246cGCoERKEMHItp7WaD+zlRjyEskmvqx16aG/NTI
+         CzGFxhaIAMUn3NWhSqRZTs0/+pAACqZHuFqkCBbcH6TrW3Zjt+YJjeUkIrz5U8zQp8
+         Vs/JzWsIoppS+n0kIJGBcc6n8VUXlcJPUDZAgObg=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Ganapathi Bhat <gbhat@marvell.com>,
+        huangwen <huangwenabc@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Sasha Levin <sashal@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 008/187] mwifiex: fix possible heap overflow in mwifiex_process_country_ie()
+Date:   Fri, 27 Dec 2019 12:37:56 -0500
+Message-Id: <20191227174055.4923-8-sashal@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20191227174055.4923-1-sashal@kernel.org>
+References: <20191227174055.4923-1-sashal@kernel.org>
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Sorry, first I sent the patch through a Gmail web interface, and spaces
-were broken.
+From: Ganapathi Bhat <gbhat@marvell.com>
+
+[ Upstream commit 3d94a4a8373bf5f45cf5f939e88b8354dbf2311b ]
+
+mwifiex_process_country_ie() function parse elements of bss
+descriptor in beacon packet. When processing WLAN_EID_COUNTRY
+element, there is no upper limit check for country_ie_len before
+calling memcpy. The destination buffer domain_info->triplet is an
+array of length MWIFIEX_MAX_TRIPLET_802_11D(83). The remote
+attacker can build a fake AP with the same ssid as real AP, and
+send malicous beacon packet with long WLAN_EID_COUNTRY elemen
+(country_ie_len > 83). Attacker can  force STA connect to fake AP
+on a different channel. When the victim STA connects to fake AP,
+will trigger the heap buffer overflow. Fix this by checking for
+length and if found invalid, don not connect to the AP.
+
+This fix addresses CVE-2019-14895.
+
+Reported-by: huangwen <huangwenabc@gmail.com>
+Signed-off-by: Ganapathi Bhat <gbhat@marvell.com>
+Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
+ drivers/net/wireless/marvell/mwifiex/sta_ioctl.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-Some of the Mikrotik R11e-2HPnD cards have EEPROM where is
-flashed that a card has 3 chains, but actually all this cards
-have only 2. This leads ath9k to write periodically into the logs:
-'ath: phy0: Unable to reset channel, reset status -5' and
-stations don't see that AP.
-
-Mikrotik R11e-2HPnD is based on AR9582 chip.
-
-Signed-off-by: Denis Kalashnikov <denis281089@gmail.com>
----
- drivers/net/wireless/ath/ath9k/ar9003_eeprom.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
-
-diff --git a/drivers/net/wireless/ath/ath9k/ar9003_eeprom.c b/drivers/net/wireless/ath/ath9k/ar9003_eeprom.c
-index b4885a700296..554a81400648 100644
---- a/drivers/net/wireless/ath/ath9k/ar9003_eeprom.c
-+++ b/drivers/net/wireless/ath/ath9k/ar9003_eeprom.c
-@@ -3373,6 +3373,15 @@ static int ar9300_eeprom_restore_internal(struct ath_hw *ah,
- 		cptr -= (COMP_HDR_LEN + osize + COMP_CKSUM_LEN);
+diff --git a/drivers/net/wireless/marvell/mwifiex/sta_ioctl.c b/drivers/net/wireless/marvell/mwifiex/sta_ioctl.c
+index 74e50566db1f..6dd835f1efc2 100644
+--- a/drivers/net/wireless/marvell/mwifiex/sta_ioctl.c
++++ b/drivers/net/wireless/marvell/mwifiex/sta_ioctl.c
+@@ -229,6 +229,14 @@ static int mwifiex_process_country_ie(struct mwifiex_private *priv,
+ 			    "11D: skip setting domain info in FW\n");
+ 		return 0;
  	}
- 
-+	/**
-+	 * Fix firmware bug of some Mikrotik R11e-2HPnD cards (based on AR9582)
-+	 * that claim that they have 3 chains, but actually have only 2.
-+	 */
-+	if (AR_SREV_9580(ah)) {
-+		eep = (struct ar9300_eeprom *)mptr;
-+		eep->baseEepHeader.txrxMask &= 0x33;
++
++	if (country_ie_len >
++	    (IEEE80211_COUNTRY_STRING_LEN + MWIFIEX_MAX_TRIPLET_802_11D)) {
++		mwifiex_dbg(priv->adapter, ERROR,
++			    "11D: country_ie_len overflow!, deauth AP\n");
++		return -EINVAL;
 +	}
 +
- 	kfree(word);
- 	return cptr;
+ 	memcpy(priv->adapter->country_code, &country_ie[2], 2);
  
+ 	domain_info->country_code[0] = country_ie[2];
+@@ -272,8 +280,9 @@ int mwifiex_bss_start(struct mwifiex_private *priv, struct cfg80211_bss *bss,
+ 	priv->scan_block = false;
+ 
+ 	if (bss) {
+-		if (adapter->region_code == 0x00)
+-			mwifiex_process_country_ie(priv, bss);
++		if (adapter->region_code == 0x00 &&
++		    mwifiex_process_country_ie(priv, bss))
++			return -EINVAL;
+ 
+ 		/* Allocate and fill new bss descriptor */
+ 		bss_desc = kzalloc(sizeof(struct mwifiex_bssdescriptor),
 -- 
-2.23.0
+2.20.1
 
