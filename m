@@ -2,39 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 616DE12BA60
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Dec 2019 19:18:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D34A712BA31
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Dec 2019 19:17:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727998AbfL0SSV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 27 Dec 2019 13:18:21 -0500
-Received: from mail.kernel.org ([198.145.29.99]:39778 "EHLO mail.kernel.org"
+        id S1727730AbfL0SQv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 27 Dec 2019 13:16:51 -0500
+Received: from mail.kernel.org ([198.145.29.99]:41314 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727691AbfL0SPH (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 27 Dec 2019 13:15:07 -0500
+        id S1727354AbfL0SQJ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 27 Dec 2019 13:16:09 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 60E5921744;
-        Fri, 27 Dec 2019 18:15:06 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 9231A208C4;
+        Fri, 27 Dec 2019 18:16:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1577470507;
-        bh=m3YkXNtADal+FxT5+G8XsLoAk5H/L8pRwhFC/xDTCPA=;
+        s=default; t=1577470569;
+        bh=9PSO96laJwfTFN/udnzL7oFhHLs7x63cDkU5jvLE2Jo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=eptMlGIXlkMQNFcOqnF64tjPAydLwSCrPIFyxKpesLjvP8Ar9IaL6y2EGKcWPQiCo
-         go3AG2ycXLf3LvMQZ4uHq6vywkT2jpaMwcV6bknxirSszDrTL/beh3eHfc5vzVX32J
-         O6uVHf1rfem80LEZeB/7TASRhHs8iXaJhB8PXYWc=
+        b=AruFGMELk/ZI7voBbow4wpdh9hr9CtFCqY/IMgPRtatu6qZFt8AMH/CE0Deco7j/0
+         z2wLewTJiF9K7+cnZ5lhU64a/yYYX9vatcYqZ2V/I6GteWTFAmBLhsMaXdA+3AZ/Ia
+         Rplq1KbLT5v3zy6gnbOI52szzcbHKaSPK/n8tSOs=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Aditya Pakki <pakki001@umn.edu>,
         Johannes Berg <johannes.berg@intel.com>,
         Sasha Levin <sashal@kernel.org>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.9 25/38] rfkill: Fix incorrect check to avoid NULL pointer dereference
-Date:   Fri, 27 Dec 2019 13:14:22 -0500
-Message-Id: <20191227181435.7644-25-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.4 16/25] rfkill: Fix incorrect check to avoid NULL pointer dereference
+Date:   Fri, 27 Dec 2019 13:15:40 -0500
+Message-Id: <20191227181549.8040-16-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191227181435.7644-1-sashal@kernel.org>
-References: <20191227181435.7644-1-sashal@kernel.org>
+In-Reply-To: <20191227181549.8040-1-sashal@kernel.org>
+References: <20191227181549.8040-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -61,10 +61,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 5 insertions(+), 2 deletions(-)
 
 diff --git a/net/rfkill/core.c b/net/rfkill/core.c
-index 884027f62783..87c35844d7d9 100644
+index cf5b69ab1829..ad927a6ca2a1 100644
 --- a/net/rfkill/core.c
 +++ b/net/rfkill/core.c
-@@ -940,10 +940,13 @@ static void rfkill_sync_work(struct work_struct *work)
+@@ -941,10 +941,13 @@ static void rfkill_sync_work(struct work_struct *work)
  int __must_check rfkill_register(struct rfkill *rfkill)
  {
  	static unsigned long rfkill_no;
