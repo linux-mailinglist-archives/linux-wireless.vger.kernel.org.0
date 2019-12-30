@@ -2,120 +2,72 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 80C3C12CC8E
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Dec 2019 06:07:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EEA5E12CD0D
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 Dec 2019 06:49:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727149AbfL3FHT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 30 Dec 2019 00:07:19 -0500
-Received: from mail26.static.mailgun.info ([104.130.122.26]:43696 "EHLO
-        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727069AbfL3FHT (ORCPT
+        id S1727158AbfL3FtK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 30 Dec 2019 00:49:10 -0500
+Received: from outgoing-auth-1.mit.edu ([18.9.28.11]:60860 "EHLO
+        outgoing.mit.edu" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1727142AbfL3FtK (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 30 Dec 2019 00:07:19 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1577682438; h=Message-ID: References: In-Reply-To: Subject:
- Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
- MIME-Version: Sender; bh=iUHiDa50ipV5g8yjtiIT6rc5EqqmqjGaHB1Oj0CvJfc=;
- b=fBgsYsZqwx+Rc6STAv5372ybc6Gqg5woAJpe5q+TAZ236Gtr3PGp/8QRIUmyDYNeeIprWheV
- GwvwBZlVr/KOGJvT1Nv5Txwn8LzK+pdDzWX5Jw6DY99yagE0cDZ/7UnWJZ7I52NNLrpXm7Lc
- b7V4x8WTc1sZqXTnqksFxnkaVgE=
-X-Mailgun-Sending-Ip: 104.130.122.26
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e098605.7f2ca45e0fb8-smtp-out-n02;
- Mon, 30 Dec 2019 05:07:17 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id BB8A2C433A2; Mon, 30 Dec 2019 05:07:16 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: tamizhr)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 315CDC433CB;
-        Mon, 30 Dec 2019 05:07:16 +0000 (UTC)
+        Mon, 30 Dec 2019 00:49:10 -0500
+Received: from [192.168.9.205] (157-131-199-19.fiber.dynamic.sonic.net [157.131.199.19])
+        (authenticated bits=0)
+        (User authenticated as andersk@ATHENA.MIT.EDU)
+        by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id xBU5mscK010955
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES128-SHA bits=128 verify=NOT);
+        Mon, 30 Dec 2019 00:48:57 -0500
+Subject: Re: [PATCH AUTOSEL 5.4 056/187] Revert "iwlwifi: assign directly to
+ iwl_trans->cfg in QuZ detection"
+To:     Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+Cc:     Luca Coelho <luciano.coelho@intel.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+References: <20191227174055.4923-1-sashal@kernel.org>
+ <20191227174055.4923-56-sashal@kernel.org>
+From:   Anders Kaseorg <andersk@mit.edu>
+Message-ID: <5dbea7a0-5c66-abe4-b1ef-bbfceccbb9bb@mit.edu>
+Date:   Sun, 29 Dec 2019 21:48:53 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.3.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Mon, 30 Dec 2019 10:37:16 +0530
-From:   tamizhr@codeaurora.org
-To:     Rob Herring <robh@kernel.org>
-Cc:     ath10k@lists.infradead.org, devicetree@vger.kernel.org,
-        linux-wireless@vger.kernel.org
-Subject: Re: [PATCH 1/2] dt-bindings: ath10k: Add new dt entries to identify
- coex support
-In-Reply-To: <20191226185132.GA31120@bogus>
-References: <1576496415-23064-1-git-send-email-tamizhr@codeaurora.org>
- <20191226185132.GA31120@bogus>
-Message-ID: <62b9e7b140a96401469f7075811d0d67@codeaurora.org>
-X-Sender: tamizhr@codeaurora.org
-User-Agent: Roundcube Webmail/1.3.9
+In-Reply-To: <20191227174055.4923-56-sashal@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Rob,
-
-Thanks for your review comments.
-
->> This adds new dt entries qcom,coexist-support and 
->> qcom,coexist-gpio-pin
->> which will be used by ath10k driver to identify coex support
->> of a hardware and notify wifi firmware the gpio pin number.
->> This pin number information is needed for the hardware QCA4019.
->> 
->> Signed-off-by: Tamizh Chelvam <tamizhr@codeaurora.org>
->> ---
->>  Documentation/devicetree/bindings/net/wireless/qcom,ath10k.txt | 6 
->> ++++++
->>  1 file changed, 6 insertions(+)
->> 
->> diff --git 
->> a/Documentation/devicetree/bindings/net/wireless/qcom,ath10k.txt 
->> b/Documentation/devicetree/bindings/net/wireless/qcom,ath10k.txt
->> index 0171283..a41e936 100644
->> --- a/Documentation/devicetree/bindings/net/wireless/qcom,ath10k.txt
->> +++ b/Documentation/devicetree/bindings/net/wireless/qcom,ath10k.txt
->> @@ -87,6 +87,10 @@ Optional properties:
->>  	Definition: Quirk specifying that the firmware expects the 8bit 
->> version
->>  		    of the host capability QMI request
->>  - qcom,xo-cal-data: xo cal offset to be configured in xo trim 
->> register.
->> +- qcom,coexist-support : should contain eithr "0" or "1" to indicate 
->> coex
->> +			 support by the hardware.
->> +- qcom,coexist-gpio-pin : gpio pin number  information to support 
->> coex
->> +			  which will be used by wifi firmware.
+On 12/27/19 9:38 AM, Sasha Levin wrote:
+> From: Anders Kaseorg <andersk@mit.edu>
 > 
-> What combinations of these 2 properties are valid?
+> [ Upstream commit db5cce1afc8d2475d2c1c37c2a8267dd0e151526 ]
 > 
-> Is qcom,coexist-gpio-pin required for coexist support? If so then it
-> alone should be enough to enable/disable coexist.
+> This reverts commit 968dcfb4905245dc64d65312c0d17692fa087b99.
 > 
-qcom,coexist-gpio-pin is required for QCA4019 devices. And other ath10k 
-devices doesn't required that value.
-So only added two fields to enable/disable coexist and another for 
-notifying the gpio pin info.
->> 
->>  Example (to supply PCI based wifi block details):
->> 
->> @@ -156,6 +160,8 @@ wifi0: wifi@a000000 {
->>  	qcom,msi_addr = <0x0b006040>;
->>  	qcom,msi_base = <0x40>;
->>  	qcom,ath10k-pre-calibration-data = [ 01 02 03 ... ];
->> +	qcom,coexist-support = <1>;
->> +	qcom,coexist-gpio-pin = <0x33>;
->>  };
->> 
->>  Example (to supply wcn3990 SoC wifi block details):
->> --
+> Both that commit and commit 809805a820c6445f7a701ded24fdc6bbc841d1e4
+> attempted to fix the same bug (dead assignments to the local variable
+> cfg), but they did so in incompatible ways. When they were both merged,
+> independently of each other, the combination actually caused the bug to
+> reappear, leading to a firmware crash on boot for some cards.
+> 
+> https://bugzilla.kernel.org/show_bug.cgi?id=205719
+> 
+> Signed-off-by: Anders Kaseorg <andersk@mit.edu>
+> Acked-by: Luca Coelho <luciano.coelho@intel.com>
+> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
 
-Thanks,
-Tamizh.
+This commit’s child 0df36b90c47d93295b7e393da2d961b2f3b6cde4 (part of
+the same bug 205719) is now enqueued for v5.4, but this one doesn’t seem
+to have made it yet, perhaps because I forgot to Cc: stable@ in the
+commit message.  Can someone make sure this goes to v5.4 as well?  Luca
+previously nominated it for v5.4 here:
+
+https://patchwork.kernel.org/patch/11269985/#23032785
+
+Anders
