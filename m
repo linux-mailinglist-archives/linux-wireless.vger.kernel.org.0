@@ -2,82 +2,106 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 627CF12D06E
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Dec 2019 14:48:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B47712D30B
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 Dec 2019 19:02:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727482AbfL3Ns0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 30 Dec 2019 08:48:26 -0500
-Received: from paleale.coelho.fi ([176.9.41.70]:55604 "EHLO
-        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1727445AbfL3Ns0 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 30 Dec 2019 08:48:26 -0500
-Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa.ger.corp.intel.com)
-        by farmhouse.coelho.fi with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.92.2)
-        (envelope-from <luca@coelho.fi>)
-        id 1ilvPD-0004G3-6e; Mon, 30 Dec 2019 15:48:24 +0200
-From:   Luca Coelho <luca@coelho.fi>
-To:     kvalo@codeaurora.org
-Cc:     linux-wireless@vger.kernel.org
-Date:   Mon, 30 Dec 2019 15:48:16 +0200
-Message-Id: <20191230134816.88136-1-luca@coelho.fi>
-X-Mailer: git-send-email 2.24.1
+        id S1727474AbfL3SCP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 30 Dec 2019 13:02:15 -0500
+Received: from mail.kernel.org ([198.145.29.99]:59868 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726602AbfL3SCP (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 30 Dec 2019 13:02:15 -0500
+Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 8D9EB20718;
+        Mon, 30 Dec 2019 18:02:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1577728934;
+        bh=mmLEN5EVhqLVybqcxDuhfGriciuvTU6AmdSNL96/umg=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=Bc4RjaEDQ1ETswDQYyXiPwv76AKYwd/0t9BG0JWxVixpXvfl41zF0xXKTgUNwatnZ
+         4Ehht6ai6mWNwzzvk7vA8L2KLFoZrZ5qF1vKaUzGzu32X22nl3rbzAQgjF5kWonh2j
+         cY0epFe+rpWNCBlbvPFab1ZWvffD5T3CrOo10Li4=
+Received: by mail-qk1-f181.google.com with SMTP id x1so26747306qkl.12;
+        Mon, 30 Dec 2019 10:02:14 -0800 (PST)
+X-Gm-Message-State: APjAAAVbBY/EsJUlYQrX+g/i0j4saPAU3AqSG9l0vXC2vKGIxIgbTvPy
+        2fgda/WEIBoFcQRRjf3/sExddYS0KMSL8bvhLA==
+X-Google-Smtp-Source: APXvYqxnbEUjGyxvCU4ntE7buUgy18mz5Tni7Bm9/X322VaakU+9YenlJraMm5LyISnrzCBgzdGBaqVdjNI50V7PeH4=
+X-Received: by 2002:a37:85c4:: with SMTP id h187mr56849186qkd.223.1577728933710;
+ Mon, 30 Dec 2019 10:02:13 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on farmhouse.coelho.fi
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
-        TVD_RCVD_IP,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.2
-Subject: [PATCH v5.5] Revert "iwlwifi: mvm: fix scan config command size"
+References: <1576496415-23064-1-git-send-email-tamizhr@codeaurora.org>
+ <20191226185132.GA31120@bogus> <62b9e7b140a96401469f7075811d0d67@codeaurora.org>
+In-Reply-To: <62b9e7b140a96401469f7075811d0d67@codeaurora.org>
+From:   Rob Herring <robh@kernel.org>
+Date:   Mon, 30 Dec 2019 11:02:02 -0700
+X-Gmail-Original-Message-ID: <CAL_JsqKspnQ50Muw-jeq+uE1+vj5nuzpxmYcOSFwY+n2Gj3tXA@mail.gmail.com>
+Message-ID: <CAL_JsqKspnQ50Muw-jeq+uE1+vj5nuzpxmYcOSFwY+n2Gj3tXA@mail.gmail.com>
+Subject: Re: [PATCH 1/2] dt-bindings: ath10k: Add new dt entries to identify
+ coex support
+To:     Tamizh Chelvam <tamizhr@codeaurora.org>
+Cc:     ath10k@lists.infradead.org, devicetree@vger.kernel.org,
+        linux-wireless <linux-wireless@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Mehmet Akif Tasova <makiftasova@gmail.com>
+On Sun, Dec 29, 2019 at 10:07 PM <tamizhr@codeaurora.org> wrote:
+>
+> Hi Rob,
+>
+> Thanks for your review comments.
+>
+> >> This adds new dt entries qcom,coexist-support and
+> >> qcom,coexist-gpio-pin
+> >> which will be used by ath10k driver to identify coex support
+> >> of a hardware and notify wifi firmware the gpio pin number.
+> >> This pin number information is needed for the hardware QCA4019.
+> >>
+> >> Signed-off-by: Tamizh Chelvam <tamizhr@codeaurora.org>
+> >> ---
+> >>  Documentation/devicetree/bindings/net/wireless/qcom,ath10k.txt | 6
+> >> ++++++
+> >>  1 file changed, 6 insertions(+)
+> >>
+> >> diff --git
+> >> a/Documentation/devicetree/bindings/net/wireless/qcom,ath10k.txt
+> >> b/Documentation/devicetree/bindings/net/wireless/qcom,ath10k.txt
+> >> index 0171283..a41e936 100644
+> >> --- a/Documentation/devicetree/bindings/net/wireless/qcom,ath10k.txt
+> >> +++ b/Documentation/devicetree/bindings/net/wireless/qcom,ath10k.txt
+> >> @@ -87,6 +87,10 @@ Optional properties:
+> >>      Definition: Quirk specifying that the firmware expects the 8bit
+> >> version
+> >>                  of the host capability QMI request
+> >>  - qcom,xo-cal-data: xo cal offset to be configured in xo trim
+> >> register.
+> >> +- qcom,coexist-support : should contain eithr "0" or "1" to indicate
 
-Since v5.4-rc1 was released, iwlwifi started throwing errors when scan
-commands were sent to the firmware with certain devices (depending on
-the OTP burned in the device, which contains the list of available
-channels).  For instance:
+typo
 
-iwlwifi 0000:00:14.3: FW error in SYNC CMD SCAN_CFG_CMD
+> >> coex
+> >> +                     support by the hardware.
+> >> +- qcom,coexist-gpio-pin : gpio pin number  information to support
+> >> coex
+> >> +                      which will be used by wifi firmware.
+> >
+> > What combinations of these 2 properties are valid?
+> >
+> > Is qcom,coexist-gpio-pin required for coexist support? If so then it
+> > alone should be enough to enable/disable coexist.
+> >
+> qcom,coexist-gpio-pin is required for QCA4019 devices. And other ath10k
+> devices doesn't required that value.
+> So only added two fields to enable/disable coexist and another for
+> notifying the gpio pin info.
 
-This bug was reported in the ArchLinux bug tracker:
-https://bugs.archlinux.org/task/64703
+Okay.
 
-And also in a specific case in bugzilla, when the lar_disabled option
-was set: https://bugzilla.kernel.org/show_bug.cgi?id=205193
+'qcom,coexist-support' can be boolean instead. Unless you need it to
+override a default setting.
 
-Revert the commit that introduced this error, by using the number of
-channels from the OTP instead of the number of channels that is
-specified in the FW TLV that tells us how many channels it supports.
-
-This reverts commit 06eb547c4ae4382e70d556ba213d13c95ca1801b.
-
-Cc: stable@vger.kernel.org # v5.4+
-Signed-off-by: Mehmet Akif Tasova <makiftasova@gmail.com>
-[ Luca: reworded the commit message a bit. ]
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
----
- drivers/net/wireless/intel/iwlwifi/mvm/scan.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-index a046ac9fa852..a5af8f4128b1 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-@@ -1213,7 +1213,7 @@ static int iwl_mvm_legacy_config_scan(struct iwl_mvm *mvm)
- 		cmd_size = sizeof(struct iwl_scan_config_v2);
- 	else
- 		cmd_size = sizeof(struct iwl_scan_config_v1);
--	cmd_size += num_channels;
-+	cmd_size += mvm->fw->ucode_capa.n_scan_channels;
- 
- 	cfg = kzalloc(cmd_size, GFP_KERNEL);
- 	if (!cfg)
--- 
-2.24.1
-
+Rob
