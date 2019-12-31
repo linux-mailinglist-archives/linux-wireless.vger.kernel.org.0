@@ -2,107 +2,97 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CC0E912D6B7
-	for <lists+linux-wireless@lfdr.de>; Tue, 31 Dec 2019 07:50:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 266ED12D722
+	for <lists+linux-wireless@lfdr.de>; Tue, 31 Dec 2019 09:39:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725554AbfLaGuh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 31 Dec 2019 01:50:37 -0500
-Received: from mail-eopbgr70080.outbound.protection.outlook.com ([40.107.7.80]:55507
-        "EHLO EUR04-HE1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725497AbfLaGuh (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 31 Dec 2019 01:50:37 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=n0zPRFSD9WowFakzJ8Nw4IExrb3cX2FVqirpvYRgWaBOdD9kHuhKAsaUxPPyXo5tEAQr63RGSD9PbRIZoCjNDub7c5XB8DymC+Dcf9LFUYTlDh36XYyCSlHjtP/Lo5m70MQT53o92NY5VY8+ohFHm+D8urKrOFcgttJDV8r2ThkdPEA9l5NDRM7B9iPd/v87d+6+JfZrD3LpamJpYp0+p/2u+KF0kIV/13ykspizwjv3cfzPfuDreeQKtTevJWNjnFpsgiGd5bgYTwzbl5ezpeBQPbw4aPBEaatYgV4t00Cd0O3zoVrjFuA08EMTQXBwuf1K1E6q72BgTNYnRjgYHA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=YsblNSgR1iOUuZCUaj8n0UTeZ6z54pliUMfBas0Z8SY=;
- b=YsZ3yG4LZs7aztGjBrKPVZNHJ3bbdf+fkPC2Dx6Jm4ChPln7Oxwy5+l2cSTknbAyqKinJZhkZ6XrfYAVXq2y/TfRhmlCcnvLi2kyTSaIguhVDaFIi38FnxycAUQrIVjKOH/13DjscJP+9cvZX5Ypf3kzsivLm8udEbGKl+EU2LaDDZPT+kDC1tqN2NOhszuN/LB7NhlXiKDjip2nmngLnCEkILUPBDWqu64gR7TTu+glrmDHZaXuRLhvzHa6kzwzeMxe1QygCnoTyRBMErBUnwkCx92/ZuGi+K5gQt8vpEMsIW+JBuf4cIuYzwgcNHIHG/fWumAoNiXr2uznPgTIUQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=YsblNSgR1iOUuZCUaj8n0UTeZ6z54pliUMfBas0Z8SY=;
- b=mVZNbTqZcun64Q1zXyWyQbFvbuTG3e9HtLRpHdVvlmlnoUHA5rZLmzQi6t/DDW9Xlu42uRon1ZzrFun0k2P5F0MYe6rIwC9gE7OxDuHkAKGdtkYg6LGLFDqsbc+S7w7lLtvOQ930Qc7Es+kFX3/cc79y75bcdgJL1Nu2I8BQDME=
-Received: from DB7PR04MB5242.eurprd04.prod.outlook.com (20.176.234.25) by
- DB7PR04MB3977.eurprd04.prod.outlook.com (52.135.129.15) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2581.12; Tue, 31 Dec 2019 06:50:34 +0000
-Received: from DB7PR04MB5242.eurprd04.prod.outlook.com
- ([fe80::bce1:71a5:299f:f2ff]) by DB7PR04MB5242.eurprd04.prod.outlook.com
- ([fe80::bce1:71a5:299f:f2ff%7]) with mapi id 15.20.2581.007; Tue, 31 Dec 2019
- 06:50:34 +0000
-From:   Ganapathi Bhat <ganapathi.bhat@nxp.com>
-To:     "linux-firmware@kernel.org" <linux-firmware@kernel.org>
-CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        Cathy Luo <xiaohua.luo@nxp.com>,
-        Rakesh Parmar <rakesh.parmar@nxp.com>,
-        James Cao <james.cao@nxp.com>, Josh Boyer <jwboyer@kernel.org>
-Subject: pull-request mwifiex-firmware 2019-12-31
-Thread-Topic: pull-request mwifiex-firmware 2019-12-31
-Thread-Index: AQHVv6Zqpauc//SeX0WUrgYJIsJ97g==
-Date:   Tue, 31 Dec 2019 06:50:33 +0000
-Message-ID: <DB7PR04MB5242F3AB5904D80328C2E70E8F260@DB7PR04MB5242.eurprd04.prod.outlook.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=ganapathi.bhat@nxp.com; 
-x-originating-ip: [92.121.64.9]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-ht: Tenant
-x-ms-office365-filtering-correlation-id: c0e7cc9a-5a25-4ae6-5454-08d78dbdbc30
-x-ms-traffictypediagnostic: DB7PR04MB3977:|DB7PR04MB3977:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <DB7PR04MB3977F2F79003656610771E308F260@DB7PR04MB3977.eurprd04.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:330;
-x-forefront-prvs: 0268246AE7
-x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(4636009)(396003)(376002)(136003)(39860400002)(366004)(346002)(189003)(199004)(8936002)(2906002)(478600001)(966005)(4001150100001)(9686003)(81156014)(81166006)(8676002)(44832011)(55016002)(71200400001)(52536014)(26005)(66446008)(6506007)(316002)(66476007)(186003)(66556008)(6916009)(86362001)(5660300002)(4744005)(76116006)(66946007)(64756008)(4326008)(54906003)(7696005)(91956017)(33656002);DIR:OUT;SFP:1101;SCL:1;SRVR:DB7PR04MB3977;H:DB7PR04MB5242.eurprd04.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-received-spf: None (protection.outlook.com: nxp.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: 8ONNNO+UfzYiJycyHye5k7qnS06VJMY7SVP7fs4dwK9j/sBqTducrw+wfdDtTBHpyBGcIGECs3YPAZaadlnh7UJELeagsjrq71oTe9iGWff8Gt8J6g+kr4nYkNImBGf3vOKvcFEy7ohrhjTEXsqHEByeZrRRYiUcchvEpp/ym1wNBYaMabS6m/MYWwT47D5BpzJ0wTM/lQ1FbP9oKLO2WYp0k8UR79heoqWiUeIe9DNTySyAas9ZkkpcTtx1gszRd97mVMnSDeTrBMhlhpDg2Y10Ika15rbxbb37jgvvkvZmiAzSZxNPk5tPcbHt8fTO3QlSLd8JwsA2J7DfZXMuIop1VG+nxPSFDumAzj7GHMsif7YvRqCYJCGsYfDx6vj0Mq/kJDjLlmP7vBpI2OqMNsV8eZdVxMblPrIOklZ9kQe4WMWWrC+2WBJmu0TTzWxwqOG5DmtiH2NUOisxDlYYAqFTMmprEPUNdOCjbFYac40=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+        id S1726119AbfLaIjr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 31 Dec 2019 03:39:47 -0500
+Received: from mail-pl1-f195.google.com ([209.85.214.195]:35099 "EHLO
+        mail-pl1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725536AbfLaIjr (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 31 Dec 2019 03:39:47 -0500
+Received: by mail-pl1-f195.google.com with SMTP id g6so15698594plt.2
+        for <linux-wireless@vger.kernel.org>; Tue, 31 Dec 2019 00:39:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=endlessm-com.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=BQtaeDD9iVM5+b30tZbRI2EHQA2GRCPLt5coFH0Hu7k=;
+        b=QtFPBRgexpYA+27porJnxIo3FiID+P4q/uunZRO1911fhApxltA68KLt3FnSAPmSFg
+         o3vDx3KQLkxMzc+YGjItwPwaa1bI3SccD7XL81cYet5UBwSk23N4Y7viJ7QZRzLkoQFf
+         yDUUNPAO8r7K0glITDJkhKjbu+AYwXc+Digc/rjcCxzb87PeUOHNh2+Pa45hi2ep9t1i
+         qmWznwyLzgGxDQJtw3q8xZTKSjka609jGyiKjnAJdw1sq78SjUUg31drO4vvVuEsRoXj
+         WeLdMpnsodrBZJCTrolRCvvWA353118SUOGicN9U93xl4aZAQ/PCeW6ZDQBwCQOmaIfG
+         eYIw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=BQtaeDD9iVM5+b30tZbRI2EHQA2GRCPLt5coFH0Hu7k=;
+        b=ErLBhci4Unzey/jbD9aeuDwD3yQWGRbvDinHAW52nyqfaq3YFlfTwfUKQCtjy/fRqZ
+         EsfzRF3ydPaQvgp5YU8C4k8miu/pPWjP11/98SwN/tB1OufCAJwYApbTvXJRuU2+39gH
+         eKGJVf/ulnFPZcUCtHGwaZJXPoEouNdjaA/6kl8MkRP9BtoWHS1SIzrfYTC9uhIougSL
+         Bs/x+qD4r0aj5Xlvfho2X+DapZAy01qTyWxNrcv/BZQgaBotMV0zUSYORS4zVIrRImhG
+         bDZZhUXotUQIhsGgYcdjldYiYwgogdycdj+y+jA7RwwgcTqnCzgTm76/EkMFoYZAwQuh
+         4FuQ==
+X-Gm-Message-State: APjAAAVza4KIoGL6U7dB9/6o3YND1f27xMAjG5SDzFi5ZGMKxJ8rVsFW
+        gmzGwCe096Z2LrbN34cudEsfyw==
+X-Google-Smtp-Source: APXvYqyogbKOzEE1A3fEkjBs2LajnnAHqltAyAdH5gr4gm+XpBJEB1ntQvC/9yctl9aSkv2SZI5teA==
+X-Received: by 2002:a17:90b:258:: with SMTP id fz24mr4782140pjb.6.1577781586060;
+        Tue, 31 Dec 2019 00:39:46 -0800 (PST)
+Received: from starnight.8.8.8.8 (123-204-46-122.static.seed.net.tw. [123.204.46.122])
+        by smtp.gmail.com with ESMTPSA id z30sm56896800pfq.154.2019.12.31.00.39.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 31 Dec 2019 00:39:45 -0800 (PST)
+From:   Jian-Hong Pan <jian-hong@endlessm.com>
+To:     Johannes Berg <johannes.berg@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Shahar S Matityahu <shahar.s.matityahu@intel.com>,
+        Tova Mussai <tova.mussai@intel.com>,
+        Ayala Beker <ayala.beker@intel.com>
+Cc:     Intel Linux Wireless <linuxwifi@intel.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux@endlessm.com,
+        Jian-Hong Pan <jian-hong@endlessm.com>
+Subject: [PATCH] iwlwifi: mvm: Revert "iwlwifi: mvm: fix scan config command size"
+Date:   Tue, 31 Dec 2019 16:36:06 +0800
+Message-Id: <20191231083604.5639-1-jian-hong@endlessm.com>
+X-Mailer: git-send-email 2.24.1
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c0e7cc9a-5a25-4ae6-5454-08d78dbdbc30
-X-MS-Exchange-CrossTenant-originalarrivaltime: 31 Dec 2019 06:50:34.1344
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: bo8gn4EfT0npzmraCfhW0oxh0S9DuQZHnVC510zhOzmcXdIWkc9phrDLAPG/v3NkqXgsx6Hsmz6slrpS8FFs/A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB7PR04MB3977
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The following changes since commit 6ae3652bbf4cc025afec3e15fc4bebc6fd29ee2b=
-:=0A=
-=0A=
-  linux-firmware: update licence text for Marvell firmware (2019-06-08 12:1=
-3:25 +0530)=0A=
-=0A=
-are available in the git repository at:=0A=
-=0A=
-  https://github.com/NXP/mwifiex-firmware.git master=0A=
-=0A=
-for you to fetch changes up to e65245cc861d0ed57eaf79519af440d1e66b75d6:=0A=
-=0A=
-  linux-firmware: add NXP firmware licence file (2019-12-31 12:14:50 +0530)=
-=0A=
-=0A=
-----------------------------------------------------------------=0A=
-Ganapathi Bhat (1):=0A=
-      linux-firmware: add NXP firmware licence file=0A=
-=0A=
- LICENCE.NXP | 22 ++++++++++++++++++++++=0A=
- WHENCE      |  4 ++--=0A=
- 2 files changed, 24 insertions(+), 2 deletions(-)=0A=
- create mode 100644 LICENCE.NXP=
+The Intel(R) Dual Band Wireless AC 9461 WiFi keeps restarting until
+commit 06eb547c4ae4 ("wlwifi: mvm: fix scan config command size") is
+reverted.
+
+Buglink: https://bugzilla.kernel.org/show_bug.cgi?id=206025
+Fixes: commit 06eb547c4ae4 ("wlwifi: mvm: fix scan config command size")
+Signed-off-by: Jian-Hong Pan <jian-hong@endlessm.com>
+---
+ drivers/net/wireless/intel/iwlwifi/mvm/scan.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
+index a046ac9fa852..a5af8f4128b1 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
+@@ -1213,7 +1213,7 @@ static int iwl_mvm_legacy_config_scan(struct iwl_mvm *mvm)
+ 		cmd_size = sizeof(struct iwl_scan_config_v2);
+ 	else
+ 		cmd_size = sizeof(struct iwl_scan_config_v1);
+-	cmd_size += num_channels;
++	cmd_size += mvm->fw->ucode_capa.n_scan_channels;
+ 
+ 	cfg = kzalloc(cmd_size, GFP_KERNEL);
+ 	if (!cfg)
+-- 
+2.24.1
+
