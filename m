@@ -2,68 +2,65 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 364C912DF9C
-	for <lists+linux-wireless@lfdr.de>; Wed,  1 Jan 2020 18:02:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B1AF12DFCA
+	for <lists+linux-wireless@lfdr.de>; Wed,  1 Jan 2020 18:48:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727235AbgAARCJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 1 Jan 2020 12:02:09 -0500
-Received: from mail.kernel.org ([198.145.29.99]:56806 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727170AbgAARCJ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 1 Jan 2020 12:02:09 -0500
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        id S1727249AbgAARst (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 1 Jan 2020 12:48:49 -0500
+Received: from smail.rz.tu-ilmenau.de ([141.24.186.67]:58254 "EHLO
+        smail.rz.tu-ilmenau.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727234AbgAARss (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 1 Jan 2020 12:48:48 -0500
+Received: from legolas.fritz.box (unknown [87.147.48.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 929B22073D;
-        Wed,  1 Jan 2020 17:02:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1577898129;
-        bh=Z72xXzYeU8UO0ouYCieTIKHb116ITy/6JH6vJ93XMxQ=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=SivCZ0gfnnZqSc4fevvGwb2QwqfAyRiHZAY0/TIPGqU1By+JvNLWFs8318c/Vy/0K
-         m5Nz10llvAnSiVNAIi/LSyNVuH4cfuN2i9yS3E0v8zTSCeh/HvtUQeqa4eGYvKVCX1
-         QzlfeUqTcdrr9q25NvINh/R/22aMEASFW2z9mIS8=
-Date:   Wed, 1 Jan 2020 18:02:06 +0100
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Luca Coelho <luca@coelho.fi>
-Cc:     stable@vger.kernel.org, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH v5.4] Revert "iwlwifi: assign directly to iwl_trans->cfg
- in QuZ detection"
-Message-ID: <20200101170206.GC2712976@kroah.com>
-References: <20191223125612.1475700-1-luca@coelho.fi>
+        by smail.rz.tu-ilmenau.de (Postfix) with ESMTPSA id BC6F6580068;
+        Wed,  1 Jan 2020 18:48:46 +0100 (CET)
+From:   Markus Theil <markus.theil@tu-ilmenau.de>
+To:     johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org,
+        Markus Theil <markus.theil@tu-ilmenau.de>
+Subject: [PATCH] iw: info: print missing extended feature flag information
+Date:   Wed,  1 Jan 2020 18:48:36 +0100
+Message-Id: <20200101174836.5513-1-markus.theil@tu-ilmenau.de>
+X-Mailer: git-send-email 2.24.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191223125612.1475700-1-luca@coelho.fi>
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Dec 23, 2019 at 02:56:12PM +0200, Luca Coelho wrote:
-> From: Anders Kaseorg <andersk@mit.edu>
-> 
-> This reverts commit 968dcfb4905245dc64d65312c0d17692fa087b99.
-> 
-> Both that commit and commit 809805a820c6445f7a701ded24fdc6bbc841d1e4
-> attempted to fix the same bug (dead assignments to the local variable
-> cfg), but they did so in incompatible ways. When they were both merged,
-> independently of each other, the combination actually caused the bug to
-> reappear, leading to a firmware crash on boot for some cards.
-> 
-> https://bugzilla.kernel.org/show_bug.cgi?id=205719
-> 
-> Signed-off-by: Anders Kaseorg <andersk@mit.edu>
-> Acked-by: Luca Coelho <luciano.coelho@intel.com>
-> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
-> ---
->  drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 24 +++++++++----------
->  1 file changed, 12 insertions(+), 12 deletions(-)
-> 
+Some extended feature flags were not considered before.
 
-Next time a hint as to what this git commit id is in Linus's tree would
-be nice :)
+Signed-off-by: Markus Theil <markus.theil@tu-ilmenau.de>
+---
+ info.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-thanks,
+diff --git a/info.c b/info.c
+index 38362d8..0f24dae 100644
+--- a/info.c
++++ b/info.c
+@@ -676,7 +676,17 @@ broken_combination:
+ 		ext_feat_print(tb, DFS_OFFLOAD, "DFS offload");
+ 		ext_feat_print(tb, CONTROL_PORT_OVER_NL80211,
+ 			       "control port over nl80211");
++		ext_feat_print(tb, ACK_SIGNAL_SUPPORT,
++			       "ack signal level support");
+ 		ext_feat_print(tb, TXQS, "FQ-CoDel-enabled intermediate TXQs");
++		ext_feat_print(tb, SCAN_RANDOM_SN,
++			       "use random sequence numbers in scans");
++		ext_feat_print(tb, SCAN_MIN_PREQ_CONTENT,
++			       "use probe request with only rate IEs in scans");
++		ext_feat_print(tb, CAN_REPLACE_PTK0,
++			       "can safely replace PTK 0 when rekeying");
++		ext_feat_print(tb, ENABLE_FTM_RESPONDER,
++			       "enable FTM (Fine Time Measurement) responder");
+ 		ext_feat_print(tb, AIRTIME_FAIRNESS,
+ 			       "airtime fairness scheduling");
+ 		ext_feat_print(tb, AP_PMKSA_CACHING,
+-- 
+2.24.1
 
-greg k-h
