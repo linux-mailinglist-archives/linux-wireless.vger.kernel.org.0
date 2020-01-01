@@ -2,67 +2,68 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F58412DDF5
-	for <lists+linux-wireless@lfdr.de>; Wed,  1 Jan 2020 07:00:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 364C912DF9C
+	for <lists+linux-wireless@lfdr.de>; Wed,  1 Jan 2020 18:02:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725851AbgAAF4q (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 1 Jan 2020 00:56:46 -0500
-Received: from mailgw01.mediatek.com ([210.61.82.183]:6945 "EHLO
-        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1725765AbgAAF4q (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 1 Jan 2020 00:56:46 -0500
-X-UUID: bf8f0a30a2f34b2385b6f8c4becc16b7-20200101
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Transfer-Encoding:Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=hKgJzwzefE+FPfSamusgqvNTI7peHIm1WvPCMjSXGwY=;
-        b=bAiToZYs4Tl0vsvVJPJ/EDIBfXf7fk0GcUluU4KH+m2ULQgqQ4ujMp2blWqx3XciOSm961YnFbCT8We2TrefPMYRGxZibIQr50xkWRbKtH3sS96XgJ4zOL4oNAaG6vvFyskSJCfIZoCYV8iPS8sxOStM3RwrqgTC7STijf6rcBU=;
-X-UUID: bf8f0a30a2f34b2385b6f8c4becc16b7-20200101
-Received: from mtkcas09.mediatek.inc [(172.21.101.178)] by mailgw01.mediatek.com
-        (envelope-from <ryder.lee@mediatek.com>)
-        (Cellopoint E-mail Firewall v4.1.10 Build 0809 with TLS)
-        with ESMTP id 194416538; Wed, 01 Jan 2020 13:56:35 +0800
-Received: from mtkcas08.mediatek.inc (172.21.101.126) by
- mtkmbs08n2.mediatek.inc (172.21.101.56) with Microsoft SMTP Server (TLS) id
- 15.0.1395.4; Wed, 1 Jan 2020 13:55:42 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas08.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1395.4 via Frontend
- Transport; Wed, 1 Jan 2020 13:56:35 +0800
-From:   Ryder Lee <ryder.lee@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-CC:     Shayne Chen <shayne.chen@mediatek.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>,
-        Ryder Lee <ryder.lee@mediatek.com>
-Subject: [PATCH] mt76: mt7615: fix endianness in mt7615_mcu_set_eeprom
-Date:   Wed, 1 Jan 2020 13:56:25 +0800
-Message-ID: <4f6dfa450f2bf3ca5be7c7b417d62b2eb339918d.1577856956.git.ryder.lee@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+        id S1727235AbgAARCJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 1 Jan 2020 12:02:09 -0500
+Received: from mail.kernel.org ([198.145.29.99]:56806 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727170AbgAARCJ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 1 Jan 2020 12:02:09 -0500
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 929B22073D;
+        Wed,  1 Jan 2020 17:02:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1577898129;
+        bh=Z72xXzYeU8UO0ouYCieTIKHb116ITy/6JH6vJ93XMxQ=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=SivCZ0gfnnZqSc4fevvGwb2QwqfAyRiHZAY0/TIPGqU1By+JvNLWFs8318c/Vy/0K
+         m5Nz10llvAnSiVNAIi/LSyNVuH4cfuN2i9yS3E0v8zTSCeh/HvtUQeqa4eGYvKVCX1
+         QzlfeUqTcdrr9q25NvINh/R/22aMEASFW2z9mIS8=
+Date:   Wed, 1 Jan 2020 18:02:06 +0100
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Luca Coelho <luca@coelho.fi>
+Cc:     stable@vger.kernel.org, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH v5.4] Revert "iwlwifi: assign directly to iwl_trans->cfg
+ in QuZ detection"
+Message-ID: <20200101170206.GC2712976@kroah.com>
+References: <20191223125612.1475700-1-luca@coelho.fi>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-SNTS-SMTP: 858B261DFA2EE7E5F64E35FECBE3FABDF3C6DA8D88590AABFE143C117432EDE82000:8
-X-MTK:  N
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191223125612.1475700-1-luca@coelho.fi>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-VGhlIGZpZWxkICd1MTYgbGVuJyBzaG91bGQgYmUgX19sZTE2Lg0KDQpTaWduZWQtb2ZmLWJ5OiBS
-eWRlciBMZWUgPHJ5ZGVyLmxlZUBtZWRpYXRlay5jb20+DQotLS0NCiBkcml2ZXJzL25ldC93aXJl
-bGVzcy9tZWRpYXRlay9tdDc2L210NzYxNS9tY3UuYyB8IDQgKystLQ0KIDEgZmlsZSBjaGFuZ2Vk
-LCAyIGluc2VydGlvbnMoKyksIDIgZGVsZXRpb25zKC0pDQoNCmRpZmYgLS1naXQgYS9kcml2ZXJz
-L25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzYxNS9tY3UuYyBiL2RyaXZlcnMvbmV0L3dp
-cmVsZXNzL21lZGlhdGVrL210NzYvbXQ3NjE1L21jdS5jDQppbmRleCBjOGQ2YTM2ZjVkMGEuLjFh
-NjAwMTZkODUzNCAxMDA2NDQNCi0tLSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210
-NzYvbXQ3NjE1L21jdS5jDQorKysgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2
-L210NzYxNS9tY3UuYw0KQEAgLTU5OCwxMCArNTk4LDEwIEBAIGludCBtdDc2MTVfbWN1X3NldF9l
-ZXByb20oc3RydWN0IG10NzYxNV9kZXYgKmRldikNCiAJc3RydWN0IHsNCiAJCXU4IGJ1ZmZlcl9t
-b2RlOw0KIAkJdTggcGFkOw0KLQkJdTE2IGxlbjsNCisJCV9fbGUxNiBsZW47DQogCX0gX19wYWNr
-ZWQgcmVxX2hkciA9IHsNCiAJCS5idWZmZXJfbW9kZSA9IDEsDQotCQkubGVuID0gX19NVF9FRV9N
-QVggLSBNVF9FRV9OSUNfQ09ORl8wLA0KKwkJLmxlbiA9IGNwdV90b19sZTE2KF9fTVRfRUVfTUFY
-IC0gTVRfRUVfTklDX0NPTkZfMCksDQogCX07DQogCWludCByZXQsIGxlbiA9IHNpemVvZihyZXFf
-aGRyKSArIF9fTVRfRUVfTUFYIC0gTVRfRUVfTklDX0NPTkZfMDsNCiAJdTggKnJlcSwgKmVlcCA9
-ICh1OCAqKWRldi0+bXQ3Ni5lZXByb20uZGF0YTsNCi0tIA0KMi4xOC4wDQo=
+On Mon, Dec 23, 2019 at 02:56:12PM +0200, Luca Coelho wrote:
+> From: Anders Kaseorg <andersk@mit.edu>
+> 
+> This reverts commit 968dcfb4905245dc64d65312c0d17692fa087b99.
+> 
+> Both that commit and commit 809805a820c6445f7a701ded24fdc6bbc841d1e4
+> attempted to fix the same bug (dead assignments to the local variable
+> cfg), but they did so in incompatible ways. When they were both merged,
+> independently of each other, the combination actually caused the bug to
+> reappear, leading to a firmware crash on boot for some cards.
+> 
+> https://bugzilla.kernel.org/show_bug.cgi?id=205719
+> 
+> Signed-off-by: Anders Kaseorg <andersk@mit.edu>
+> Acked-by: Luca Coelho <luciano.coelho@intel.com>
+> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+> ---
+>  drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 24 +++++++++----------
+>  1 file changed, 12 insertions(+), 12 deletions(-)
+> 
 
+Next time a hint as to what this git commit id is in Linus's tree would
+be nice :)
+
+thanks,
+
+greg k-h
