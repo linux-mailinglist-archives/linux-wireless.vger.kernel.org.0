@@ -2,297 +2,190 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 11F5F12D899
-	for <lists+linux-wireless@lfdr.de>; Tue, 31 Dec 2019 13:25:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D70FF12DC73
+	for <lists+linux-wireless@lfdr.de>; Wed,  1 Jan 2020 01:57:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726673AbfLaMZP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 31 Dec 2019 07:25:15 -0500
-Received: from mail.kernel.org ([198.145.29.99]:50386 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726334AbfLaMZP (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 31 Dec 2019 07:25:15 -0500
-Received: from localhost.localdomain.homenet.telecomitalia.it (host163-113-dynamic.21-87-r.retail.telecomitalia.it [87.21.113.163])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        id S1727156AbgAAA5s (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 31 Dec 2019 19:57:48 -0500
+Received: from egyptian.birch.relay.mailchannels.net ([23.83.209.56]:13180
+        "EHLO egyptian.birch.relay.mailchannels.net" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727130AbgAAA5s (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 31 Dec 2019 19:57:48 -0500
+X-Sender-Id: dreamhost|x-authsender|stevie@qrpff.net
+Received: from relay.mailchannels.net (localhost [127.0.0.1])
+        by relay.mailchannels.net (Postfix) with ESMTP id E95D27403C1;
+        Wed,  1 Jan 2020 00:49:21 +0000 (UTC)
+Received: from pdx1-sub0-mail-a23.g.dreamhost.com (100-96-85-12.trex.outbound.svc.cluster.local [100.96.85.12])
+        (Authenticated sender: dreamhost)
+        by relay.mailchannels.net (Postfix) with ESMTPA id 7B588740826;
+        Wed,  1 Jan 2020 00:49:21 +0000 (UTC)
+X-Sender-Id: dreamhost|x-authsender|stevie@qrpff.net
+Received: from pdx1-sub0-mail-a23.g.dreamhost.com ([TEMPUNAVAIL].
+ [64.90.62.162])
+        (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384)
+        by 0.0.0.0:2500 (trex/5.18.5);
+        Wed, 01 Jan 2020 00:49:21 +0000
+X-MC-Relay: Neutral
+X-MailChannels-SenderId: dreamhost|x-authsender|stevie@qrpff.net
+X-MailChannels-Auth-Id: dreamhost
+X-Scare-Towering: 37433ba95e9f52fa_1577839761745_1607478431
+X-MC-Loop-Signature: 1577839761745:3007572954
+X-MC-Ingress-Time: 1577839761745
+Received: from pdx1-sub0-mail-a23.g.dreamhost.com (localhost [127.0.0.1])
+        by pdx1-sub0-mail-a23.g.dreamhost.com (Postfix) with ESMTP id 6CE197F652;
+        Tue, 31 Dec 2019 16:49:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed; d=qrpff.net; h=mime-version
+        :from:date:message-id:subject:to:cc:content-type; s=qrpff.net;
+         bh=IdDsUeZzxkRY3vzVfF0jYDoTJKs=; b=KdY6uTQrsaT3zFkjw7FyaPIQLf5Y
+        qmrObrfRGro5iyOOSYa6mm1itQbhWL3TMfApfGvZ9OL25fvu/8M0yoS25tWPwNhf
+        5OZUWt9wwDvKy3JcCSNEoC4uuhB/HQQAmJOyJIiMtqpck866sCtXCh14B/j9GPv5
+        Sed+1YmHoQfbQ04=
+Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 2C291206D9;
-        Tue, 31 Dec 2019 12:25:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1577795114;
-        bh=29PYfquoiXAZCU+rIkBw9eX0JPDU6C05zB/AS9Gfu2U=;
-        h=From:To:Cc:Subject:Date:From;
-        b=vQ7u402GPtAxiuVZ+ruROda9w7kojGDlTCXiGFAcGbzahqTmpVWkfA01MeUXi0aaj
-         eYpmT5pAl4iP3sB7IOMQ/iBTAhoG+LuArqSgushxUAvH9jMlDkjtFeG5pAQJmLPhdD
-         HhE5EgpCAC2WgWtS2ott8wjBIC7RB3G2xA2MpQNU=
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
-        ryder.lee@mediatek.com
-Subject: [PATCH] mt76: mt7615: initialize radar specs from host driver
-Date:   Tue, 31 Dec 2019 13:25:23 +0100
-Message-Id: <acd04b9636106d6448ff57ec4cc90bb221d746f6.1577790002.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.21.0
+        (Authenticated sender: stevie@qrpff.net)
+        by pdx1-sub0-mail-a23.g.dreamhost.com (Postfix) with ESMTPSA id 8705C7F651;
+        Tue, 31 Dec 2019 16:49:18 -0800 (PST)
+Received: by mail-lj1-f173.google.com with SMTP id a13so37481510ljm.10;
+        Tue, 31 Dec 2019 16:49:18 -0800 (PST)
+X-Gm-Message-State: APjAAAVeQ71tjkq1cLCPHLvfZ+bhtO+8YKSqlDA0sfpiBGtFV+9o3kbf
+        rsD/h30v1pC96klDExCqQqCT752AgfqehejR0pk=
+X-Google-Smtp-Source: APXvYqyadK0g2j37BFcyuvxwrIM6nKkD733uJxbBxdUGAXsFR4ik/VyIXd9Jw5hsreAHgue9Zrn+LV1NZ9N3SOikrow=
+X-Received: by 2002:a2e:9196:: with SMTP id f22mr44373035ljg.18.1577839756557;
+ Tue, 31 Dec 2019 16:49:16 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-DH-BACKEND: pdx1-sub0-mail-a23
+From:   Stephen Oberholtzer <stevie@qrpff.net>
+Date:   Tue, 31 Dec 2019 19:49:04 -0500
+X-Gmail-Original-Message-ID: <CAD_xR9eDL+9jzjYxPXJjS7U58ypCPWHYzrk0C3_vt-w26FZeAQ@mail.gmail.com>
+Message-ID: <CAD_xR9eDL+9jzjYxPXJjS7U58ypCPWHYzrk0C3_vt-w26FZeAQ@mail.gmail.com>
+Subject: PROBLEM: Wireless networking goes down on Acer C720P Chromebook (bisected)
+To:     toke@redhat.com
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        "David S. Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-VR-OUT-STATUS: OK
+X-VR-OUT-SCORE: -100
+X-VR-OUT-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedufedrvdefkedgvdeiucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuggftfghnshhusghstghrihgsvgdpffftgfetoffjqffuvfenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepggfhfffkuffvtgesthdtredttddtjeenucfhrhhomhepufhtvghphhgvnhcuqfgsvghrhhholhhtiigvrhcuoehsthgvvhhivgesqhhrphhffhdrnhgvtheqnecukfhppedvtdelrdekhedrvddtkedrudejfeenucfrrghrrghmpehmohguvgepshhmthhppdhhvghlohepmhgrihhlqdhljhduqdhfudejfedrghhoohhglhgvrdgtohhmpdhinhgvthepvddtledrkeehrddvtdekrddujeefpdhrvghtuhhrnhdqphgrthhhpefuthgvphhhvghnucfqsggvrhhhohhlthiivghruceoshhtvghvihgvsehqrhhpfhhfrdhnvghtqedpmhgrihhlfhhrohhmpehsthgvvhhivgesqhhrphhffhdrnhgvthdpnhhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptd
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Introduce dfs radar pattern specs in mt7615 driver in order to make
-dfs debugging easier. Radar pulse/pattern thresholds are taken from
-vendor SDK.
+Wireless networking goes down on Acer C720P Chromebook (bisected)
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- .../net/wireless/mediatek/mt76/mt7615/mac.c   | 78 +++++++++++++++++++
- .../net/wireless/mediatek/mt76/mt7615/mac.h   | 32 ++++++++
- .../net/wireless/mediatek/mt76/mt7615/mcu.c   | 48 ++++++++++++
- .../net/wireless/mediatek/mt76/mt7615/mcu.h   |  1 +
- .../wireless/mediatek/mt76/mt7615/mt7615.h    |  7 ++
- 5 files changed, 166 insertions(+)
+Culprit: 7a89233a ("mac80211: Use Airtime-based Queue Limits (AQL) on
+packet dequeue")
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-index c958137465c9..2da6cd299cb3 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-@@ -17,6 +17,44 @@
- 
- #define to_rssi(field, rxv)		((FIELD_GET(field, rxv) - 220) / 2)
- 
-+static const struct mt7615_dfs_radar_spec etsi_radar_specs = {
-+	.pulse_th = { 40, -10, -80, 800, 3360, 128, 5200 },
-+	.radar_pattern = {
-+		[5] =  { 1, 0,  6, 32, 28, 0, 17,  990, 5010, 1, 1 },
-+		[6] =  { 1, 0,  9, 32, 28, 0, 27,  615, 5010, 1, 1 },
-+		[7] =  { 1, 0, 15, 32, 28, 0, 27,  240,  445, 1, 1 },
-+		[8] =  { 1, 0, 12, 32, 28, 0, 42,  240,  510, 1, 1 },
-+		[9] =  { 1, 1,  0,  0,  0, 0, 14, 2490, 3343, 0, 0, 12, 32, 28 },
-+		[10] = { 1, 1,  0,  0,  0, 0, 14, 2490, 3343, 0, 0, 15, 32, 24 },
-+		[11] = { 1, 1,  0,  0,  0, 0, 14,  823, 2510, 0, 0, 18, 32, 28 },
-+		[12] = { 1, 1,  0,  0,  0, 0, 14,  823, 2510, 0, 0, 27, 32, 24 },
-+	},
-+};
-+
-+static const struct mt7615_dfs_radar_spec fcc_radar_specs = {
-+	.pulse_th = { 40, -10, -80, 800, 3360, 128, 5200 },
-+	.radar_pattern = {
-+		[0] = { 1, 0,  9,  32, 28, 0, 13, 508, 3076, 1,  1 },
-+		[1] = { 1, 0, 12,  32, 28, 0, 17, 140,  240, 1,  1 },
-+		[2] = { 1, 0,  8,  32, 28, 0, 22, 190,  510, 1,  1 },
-+		[3] = { 1, 0,  6,  32, 28, 0, 32, 190,  510, 1,  1 },
-+		[4] = { 1, 0,  9, 255, 28, 0, 13, 323,  343, 1, 32 },
-+	},
-+};
-+
-+static const struct mt7615_dfs_radar_spec jp_radar_specs = {
-+	.pulse_th = { 40, -10, -80, 800, 3360, 128, 5200 },
-+	.radar_pattern = {
-+		[0] =  { 1, 0,  8, 32, 28, 0, 13,  508, 3076, 1,  1 },
-+		[1] =  { 1, 0, 12, 32, 28, 0, 17,  140,  240, 1,  1 },
-+		[2] =  { 1, 0,  8, 32, 28, 0, 22,  190,  510, 1,  1 },
-+		[3] =  { 1, 0,  6, 32, 28, 0, 32,  190,  510, 1,  1 },
-+		[4] =  { 1, 0,  9, 32, 28, 0, 13,  323,  343, 1, 32 },
-+		[13] = { 1, 0, 8,  32, 28, 0, 14, 3836, 3856, 1,  1 },
-+		[14] = { 1, 0, 8,  32, 28, 0, 14, 3990, 4010, 1,  1 },
-+	},
-+};
-+
- static struct mt76_wcid *mt7615_rx_get_wcid(struct mt7615_dev *dev,
- 					    u8 idx, bool unicast)
- {
-@@ -1663,6 +1701,40 @@ static int mt7615_dfs_start_radar_detector(struct mt7615_phy *phy)
- 	return 0;
- }
- 
-+static int
-+mt7615_dfs_init_radar_specs(struct mt7615_phy *phy)
-+{
-+	const struct mt7615_dfs_radar_spec *radar_specs;
-+	struct mt7615_dev *dev = phy->dev;
-+	int err, i;
-+
-+	switch (dev->mt76.region) {
-+	case NL80211_DFS_FCC:
-+		radar_specs = &fcc_radar_specs;
-+		err = mt7615_mcu_set_fcc5_lpn(dev, 8);
-+		if (err < 0)
-+			return err;
-+		break;
-+	case NL80211_DFS_ETSI:
-+		radar_specs = &etsi_radar_specs;
-+		break;
-+	case NL80211_DFS_JP:
-+		radar_specs = &jp_radar_specs;
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	for (i = 0; i < ARRAY_SIZE(radar_specs->radar_pattern); i++) {
-+		err = mt7615_mcu_set_radar_th(dev, i,
-+					      &radar_specs->radar_pattern[i]);
-+		if (err < 0)
-+			return err;
-+	}
-+
-+	return mt7615_mcu_set_pulse_th(dev, &radar_specs->pulse_th);
-+}
-+
- int mt7615_dfs_init_radar_detector(struct mt7615_phy *phy)
- {
- 	struct cfg80211_chan_def *chandef = &phy->mt76->chandef;
-@@ -1684,6 +1756,12 @@ int mt7615_dfs_init_radar_detector(struct mt7615_phy *phy)
- 	if (phy->dfs_state == chandef->chan->dfs_state)
- 		return 0;
- 
-+	err = mt7615_dfs_init_radar_specs(phy);
-+	if (err < 0) {
-+		phy->dfs_state = -1;
-+		goto stop;
-+	}
-+
- 	phy->dfs_state = chandef->chan->dfs_state;
- 
- 	if (chandef->chan->flags & IEEE80211_CHAN_RADAR) {
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mac.h b/drivers/net/wireless/mediatek/mt76/mt7615/mac.h
-index 8579b829778d..8f053fadd3df 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.h
-@@ -306,6 +306,38 @@ struct mt7615_tx_free {
- #define MT_TXS6_F1_RCPI_1		GENMASK(15, 8)
- #define MT_TXS6_F1_RCPI_0		GENMASK(7, 0)
- 
-+struct mt7615_dfs_pulse {
-+	u32 max_width;		/* us */
-+	int max_pwr;		/* dbm */
-+	int min_pwr;		/* dbm */
-+	u32 min_stgr_pri;	/* us */
-+	u32 max_stgr_pri;	/* us */
-+	u32 min_cr_pri;		/* us */
-+	u32 max_cr_pri;		/* us */
-+};
-+
-+struct mt7615_dfs_pattern {
-+	u8 enb;
-+	u8 stgr;
-+	u8 min_crpn;
-+	u8 max_crpn;
-+	u8 min_crpr;
-+	u8 min_pw;
-+	u8 max_pw;
-+	u32 min_pri;
-+	u32 max_pri;
-+	u8 min_crbn;
-+	u8 max_crbn;
-+	u8 min_stgpn;
-+	u8 max_stgpn;
-+	u8 min_stgpr;
-+};
-+
-+struct mt7615_dfs_radar_spec {
-+	struct mt7615_dfs_pulse pulse_th;
-+	struct mt7615_dfs_pattern radar_pattern[16];
-+};
-+
- enum mt7615_cipher_type {
- 	MT_CIPHER_NONE,
- 	MT_CIPHER_WEP40,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-index 9d2d7f25385c..41eeca09409f 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-@@ -1358,6 +1358,54 @@ int mt7615_mcu_rdd_cmd(struct mt7615_dev *dev,
- 				   &req, sizeof(req), true);
- }
- 
-+int mt7615_mcu_set_fcc5_lpn(struct mt7615_dev *dev, int val)
-+{
-+	struct {
-+		u16 tag;
-+		u16 min_lpn;
-+	} req = {
-+		.tag = 0x1,
-+		.min_lpn = val,
-+	};
-+
-+	return __mt76_mcu_send_msg(&dev->mt76, MCU_EXT_CMD_SET_RDD_TH,
-+				   &req, sizeof(req), true);
-+}
-+
-+int mt7615_mcu_set_pulse_th(struct mt7615_dev *dev,
-+			    const struct mt7615_dfs_pulse *pulse)
-+{
-+	struct {
-+		u16 tag;
-+		struct mt7615_dfs_pulse pulse;
-+	} req = {
-+		.tag = 0x3,
-+	};
-+
-+	memcpy(&req.pulse, pulse, sizeof(*pulse));
-+
-+	return __mt76_mcu_send_msg(&dev->mt76, MCU_EXT_CMD_SET_RDD_TH,
-+				   &req, sizeof(req), true);
-+}
-+
-+int mt7615_mcu_set_radar_th(struct mt7615_dev *dev, int index,
-+			    const struct mt7615_dfs_pattern *pattern)
-+{
-+	struct {
-+		u16 tag;
-+		u16 radar_type;
-+		struct mt7615_dfs_pattern pattern;
-+	} req = {
-+		.tag = 0x2,
-+		.radar_type = index,
-+	};
-+
-+	memcpy(&req.pattern, pattern, sizeof(*pattern));
-+
-+	return __mt76_mcu_send_msg(&dev->mt76, MCU_EXT_CMD_SET_RDD_TH,
-+				   &req, sizeof(req), true);
-+}
-+
- int mt7615_mcu_rdd_send_pattern(struct mt7615_dev *dev)
- {
- 	struct {
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.h
-index 0c576dcb9ce5..a7cf777d69a7 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.h
-@@ -158,6 +158,7 @@ enum {
- 	MCU_EXT_CMD_MAC_INIT_CTRL = 0x46,
- 	MCU_EXT_CMD_BCN_OFFLOAD = 0x49,
- 	MCU_EXT_CMD_SET_RX_PATH = 0x4e,
-+	MCU_EXT_CMD_SET_RDD_TH = 0x7c,
- 	MCU_EXT_CMD_SET_RDD_PATTERN = 0x7d,
- };
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
-index eaafae9cc279..963aa421c719 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
-@@ -46,6 +46,8 @@
- 
- struct mt7615_vif;
- struct mt7615_sta;
-+struct mt7615_dfs_pulse;
-+struct mt7615_dfs_pattern;
- 
- enum mt7615_hw_txq_id {
- 	MT7615_TXQ_MAIN,
-@@ -332,6 +334,11 @@ void mt7615_mac_work(struct work_struct *work);
- void mt7615_txp_skb_unmap(struct mt76_dev *dev,
- 			  struct mt76_txwi_cache *txwi);
- int mt76_dfs_start_rdd(struct mt7615_dev *dev, bool force);
-+int mt7615_mcu_set_fcc5_lpn(struct mt7615_dev *dev, int val);
-+int mt7615_mcu_set_pulse_th(struct mt7615_dev *dev,
-+			    const struct mt7615_dfs_pulse *pulse);
-+int mt7615_mcu_set_radar_th(struct mt7615_dev *dev, int index,
-+			    const struct mt7615_dfs_pattern *pattern);
- int mt7615_dfs_init_radar_detector(struct mt7615_phy *phy);
- 
- int mt7615_init_debugfs(struct mt7615_dev *dev);
+I found that the newest kernel (5.4) displayed a curious issue on my
+Acer C720P Chromebook: shortly after bringing networking up, all
+connections would suddenly fail.  I discovered that I could
+consistently reproduce the issue by ssh'ing into the machine and
+running 'dmesg' -- on a non-working kernel; I would get partial
+output, and then the connection would completely hang. This was so
+consistent, in fact, that I was able to leverage it to automate the
+process from 'git bisect run'.
+
+KEYWORDS: c720p, chromebook, wireless, networking, mac80211
+
+KERNEL: any kernel containing commit 7a89233a ("mac80211: Use
+Airtime-based Queue Limits (AQL) on packet dequeue")
+
+I find this bit in the offending commit's message suspicious:
+
+> This patch does *not* include any mechanism to wake a throttled TXQ again,
+> on the assumption that this will happen anyway as a side effect of whatever
+>  freed the skb (most commonly a TX completion).
+
+Methinks this assumption is not a fully valid one.
+
+I'll be happy to test any patches. If you need some printk calls, just
+tell me where to put 'em.
+
+This is the card:
+
+01:00.0 Network controller: Qualcomm Atheros AR9462 Wireless Network
+Adapter (rev 01)
+        Subsystem: Foxconn International, Inc. AR9462 Wireless Network Adapter
+        Control: I/O- Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop-
+ParErr- Stepping- SERR- FastB2B- DisINTx-
+        Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=fast >TAbort-
+<TAbort- <MAbort- >SERR- <PERR- INTx-
+        Latency: 0, Cache Line Size: 64 bytes
+        Interrupt: pin A routed to IRQ 16
+        Region 0: Memory at e0400000 (64-bit, non-prefetchable) [size=512K]
+        Expansion ROM at e0480000 [disabled] [size=64K]
+        Capabilities: [40] Power Management version 2
+                Flags: PMEClk- DSI- D1+ D2+ AuxCurrent=375mA
+PME(D0+,D1+,D2+,D3hot+,D3cold+)
+                Status: D0 NoSoftRst- PME-Enable- DSel=0 DScale=0 PME-
+        Capabilities: [50] MSI: Enable- Count=1/4 Maskable+ 64bit+
+                Address: 0000000000000000  Data: 0000
+                Masking: 00000000  Pending: 00000000
+        Capabilities: [70] Express (v2) Endpoint, MSI 00
+                DevCap: MaxPayload 128 bytes, PhantFunc 0, Latency L0s
+unlimited, L1 <64us
+                        ExtTag- AttnBtn- AttnInd- PwrInd- RBE+
+FLReset- SlotPowerLimit 0.000W
+                DevCtl: CorrErr- NonFatalErr- FatalErr- UnsupReq-
+                        RlxdOrd+ ExtTag- PhantFunc- AuxPwr- NoSnoop-
+                        MaxPayload 128 bytes, MaxReadReq 512 bytes
+                DevSta: CorrErr- NonFatalErr- FatalErr- UnsupReq-
+AuxPwr+ TransPend-
+                LnkCap: Port #0, Speed 2.5GT/s, Width x1, ASPM L0s L1,
+Exit Latency L0s <4us, L1 <64us
+                        ClockPM- Surprise- LLActRep- BwNot- ASPMOptComp-
+                LnkCtl: ASPM L0s L1 Enabled; RCB 64 bytes Disabled- CommClk+
+                        ExtSynch- ClockPM- AutWidDis- BWInt- AutBWInt-
+                LnkSta: Speed 2.5GT/s (ok), Width x1 (ok)
+                        TrErr- Train- SlotClk+ DLActive- BWMgmt- ABWMgmt-
+                DevCap2: Completion Timeout: Not Supported,
+TimeoutDis+, LTR-, OBFF Not Supported
+                         AtomicOpsCap: 32bit- 64bit- 128bitCAS-
+                DevCtl2: Completion Timeout: 50us to 50ms,
+TimeoutDis-, LTR-, OBFF Disabled
+                         AtomicOpsCtl: ReqEn-
+                LnkCtl2: Target Link Speed: 2.5GT/s, EnterCompliance- SpeedDis-
+                         Transmit Margin: Normal Operating Range,
+EnterModifiedCompliance- ComplianceSOS-
+                         Compliance De-emphasis: -6dB
+                LnkSta2: Current De-emphasis Level: -6dB,
+EqualizationComplete-, EqualizationPhase1-
+                         EqualizationPhase2-, EqualizationPhase3-,
+LinkEqualizationRequest-
+        Capabilities: [100 v1] Advanced Error Reporting
+                UESta:  DLP- SDES- TLP- FCP- CmpltTO- CmpltAbrt-
+UnxCmplt- RxOF- MalfTLP- ECRC- UnsupReq- ACSViol-
+                UEMsk:  DLP- SDES- TLP- FCP- CmpltTO- CmpltAbrt-
+UnxCmplt- RxOF- MalfTLP- ECRC- UnsupReq- ACSViol-
+                UESvrt: DLP+ SDES+ TLP- FCP+ CmpltTO- CmpltAbrt-
+UnxCmplt- RxOF+ MalfTLP+ ECRC- UnsupReq- ACSViol-
+                CESta:  RxErr- BadTLP- BadDLLP- Rollover- Timeout-
+AdvNonFatalErr-
+                CEMsk:  RxErr- BadTLP- BadDLLP- Rollover- Timeout-
+AdvNonFatalErr+
+                AERCap: First Error Pointer: 00, ECRCGenCap-
+ECRCGenEn- ECRCChkCap- ECRCChkEn-
+                        MultHdrRecCap- MultHdrRecEn- TLPPfxPres- HdrLogCap-
+                HeaderLog: 00000000 00000000 00000000 00000000
+        Capabilities: [140 v1] Virtual Channel
+                Caps:   LPEVC=0 RefClk=100ns PATEntryBits=1
+                Arb:    Fixed- WRR32- WRR64- WRR128-
+                Ctrl:   ArbSelect=Fixed
+                Status: InProgress-
+                VC0:    Caps:   PATOffset=00 MaxTimeSlots=1 RejSnoopTrans-
+                        Arb:    Fixed- WRR32- WRR64- WRR128- TWRR128- WRR256-
+                        Ctrl:   Enable+ ID=0 ArbSelect=Fixed TC/VC=ff
+                        Status: NegoPending- InProgress-
+        Capabilities: [160 v1] Device Serial Number 00-00-00-00-00-00-00-00
+        Kernel driver in use: ath9k
+        Kernel modules: ath9k
+
+
+
 -- 
-2.21.0
-
+-- Stevie-O
+Real programmers use COPY CON PROGRAM.EXE
