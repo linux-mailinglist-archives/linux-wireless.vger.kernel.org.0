@@ -2,72 +2,82 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 03D7F12DFD3
-	for <lists+linux-wireless@lfdr.de>; Wed,  1 Jan 2020 18:56:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 421C212E1C2
+	for <lists+linux-wireless@lfdr.de>; Thu,  2 Jan 2020 03:39:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727259AbgAAR4h (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 1 Jan 2020 12:56:37 -0500
-Received: from paleale.coelho.fi ([176.9.41.70]:50738 "EHLO
-        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1727237AbgAAR4g (ORCPT
+        id S1727536AbgABCjl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 1 Jan 2020 21:39:41 -0500
+Received: from mail-pl1-f196.google.com ([209.85.214.196]:40180 "EHLO
+        mail-pl1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727509AbgABCjl (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 1 Jan 2020 12:56:36 -0500
-Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa)
-        by farmhouse.coelho.fi with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.92.2)
-        (envelope-from <luca@coelho.fi>)
-        id 1imiEU-0002Hj-AR; Wed, 01 Jan 2020 19:56:35 +0200
-Message-ID: <a34fa1b91f33eacc31d3e4e4782e3b62c0d89992.camel@coelho.fi>
-From:   Luca Coelho <luca@coelho.fi>
-To:     Greg KH <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, linux-wireless@vger.kernel.org
-Date:   Wed, 01 Jan 2020 19:56:32 +0200
-In-Reply-To: <20200101170206.GC2712976@kroah.com>
-References: <20191223125612.1475700-1-luca@coelho.fi>
-         <20200101170206.GC2712976@kroah.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.1-2+b1 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on farmhouse.coelho.fi
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
-        TVD_RCVD_IP,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.2
-Subject: Re: [PATCH v5.4] Revert "iwlwifi: assign directly to iwl_trans->cfg
- in QuZ detection"
+        Wed, 1 Jan 2020 21:39:41 -0500
+Received: by mail-pl1-f196.google.com with SMTP id s21so14541663plr.7
+        for <linux-wireless@vger.kernel.org>; Wed, 01 Jan 2020 18:39:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=Ehh8DQVFAGT2+nXBsFrbowHh8y2akSWjoRRHCcRDlno=;
+        b=abnlLvaHQn8vfA7nRBOYsVYwU4WtO/lv20nRxHuw8JmHXPIYcvkzviHzQL38jScadH
+         lnPB3S4MR7zi6uijpoqWtOruSweOpz7bnNt6uQDZ1q4boTJ3e/TJP7q2ezAC27ismM6E
+         YhX7dViSNZ57lrMdf/6ln75tSa8mY25Pmcljn6PZTcMKntjcUcKupPA1FzRWtX/8SX7m
+         a6wMroTdGj84ob6UUcOyU/Di3oEWinNAko58ejd+0SRIQ2lFMvX62Sq2J2RImK8+lh44
+         FKT/gBL8O6O065L/C+AqRgkIkwEicx/gy5EMv8WS/RwAg/LqnnVZplP590uKuwZVCqQQ
+         kyww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=Ehh8DQVFAGT2+nXBsFrbowHh8y2akSWjoRRHCcRDlno=;
+        b=I8U4qVxD6OCjW7SAvT1Dy154LTa7N5rFJ9dmDI3MMXRI95HPfKYNl7Nso/QGYtljTO
+         5fi8U843y+pQLSSTX+ZbsyJsByi0azj6+H6tuIfj2MLwrIHTx4K4KM8vzWGZsZHC/oBT
+         LAca/gvJRJp322vyhAYTx3xSoYmwyRNGGnxY0xvZfj4gZLfsjEL+hFpIClP9dFlLVbLG
+         ioAIvh/YPUEFBuKAOl34SYtL9XuCy/4DZAvTE2ucrTHI8YXBWuZGWRvWWCbOH1n8JTYJ
+         mgbLlgrNSA6Rpqw3sEAuYDv5IUhSkN0+aebb0euXqpXHiYCn5+9YhWRVYbNj4RZGyVXa
+         c+GA==
+X-Gm-Message-State: APjAAAXXvTfRI1+TU7jtxe+bTBfpjLYzNyWXWtIiO0OUHtqe3ydWDClY
+        Mauf+SfKoPTxW1uZwhDH8xQzas74T+w=
+X-Google-Smtp-Source: APXvYqxKVM5NdSRJTOhAK8V+Q6v6qWiIs31B3zxx4WKiBBcI9aJEkKO/hQeS4SM8d+CplBIVxFLJBw==
+X-Received: by 2002:a17:902:aa8f:: with SMTP id d15mr84981301plr.80.1577932780767;
+        Wed, 01 Jan 2020 18:39:40 -0800 (PST)
+Received: from localhost (172.96.199.36.16clouds.com. [172.96.199.36])
+        by smtp.gmail.com with ESMTPSA id 11sm62706713pfz.25.2020.01.01.18.39.39
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Wed, 01 Jan 2020 18:39:40 -0800 (PST)
+From:   m1s5p6688@gmail.com
+To:     linux-wireless@vger.kernel.org
+Cc:     amitkarwar@gmail.com, nishants@marvell.com, gbhat@marvell.com,
+        huxinming820@gmail.com
+Subject: [PATCH 0/2] Fix two possible Buffer overflow in mwifiex
+Date:   Thu,  2 Jan 2020 10:39:25 +0800
+Message-Id: <20200102023927.4687-1-m1s5p6688@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 2020-01-01 at 18:02 +0100, Greg KH wrote:
-> On Mon, Dec 23, 2019 at 02:56:12PM +0200, Luca Coelho wrote:
-> > From: Anders Kaseorg <andersk@mit.edu>
-> > 
-> > This reverts commit 968dcfb4905245dc64d65312c0d17692fa087b99.
-> > 
-> > Both that commit and commit 809805a820c6445f7a701ded24fdc6bbc841d1e4
-> > attempted to fix the same bug (dead assignments to the local variable
-> > cfg), but they did so in incompatible ways. When they were both merged,
-> > independently of each other, the combination actually caused the bug to
-> > reappear, leading to a firmware crash on boot for some cards.
-> > 
-> > https://bugzilla.kernel.org/show_bug.cgi?id=205719
-> > 
-> > Signed-off-by: Anders Kaseorg <andersk@mit.edu>
-> > Acked-by: Luca Coelho <luciano.coelho@intel.com>
-> > Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
-> > ---
-> >  drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 24 +++++++++----------
-> >  1 file changed, 12 insertions(+), 12 deletions(-)
-> > 
-> 
-> Next time a hint as to what this git commit id is in Linus's tree would
-> be nice :)
+From: Qing Xu <m1s5p6688@gmail.com>
 
-Oh, right.  I'm sorry, I completely forgot it...
+Hi,
 
---
-Luca.
+this is fixes for a few spots that perform memcpy() without checking
+the source and the destination size in mwifiex driver, which may lead
+to buffer overflows or read over boundary.
+
+
+Qing Xu
+
+===
+
+Qing Xu (2):
+  mwifiex: Fix possible buffer overflows in mwifiex_ret_wmm_get_status()
+  mwifiex: Fix possible buffer overflows in
+    mwifiex_cmd_append_vsie_tlv()
+
+ drivers/net/wireless/marvell/mwifiex/scan.c | 7 +++++++
+ drivers/net/wireless/marvell/mwifiex/wmm.c  | 4 ++++
+ 2 files changed, 11 insertions(+)
+
+-- 
+2.17.1
 
