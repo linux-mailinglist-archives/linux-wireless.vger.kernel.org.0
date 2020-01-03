@@ -2,182 +2,110 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 66BFE12F4E7
-	for <lists+linux-wireless@lfdr.de>; Fri,  3 Jan 2020 08:22:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 48C8412F604
+	for <lists+linux-wireless@lfdr.de>; Fri,  3 Jan 2020 10:21:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726133AbgACHWJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 3 Jan 2020 02:22:09 -0500
-Received: from mail-ot1-f65.google.com ([209.85.210.65]:33852 "EHLO
-        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725890AbgACHWJ (ORCPT
+        id S1727442AbgACJVl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 3 Jan 2020 04:21:41 -0500
+Received: from userp2120.oracle.com ([156.151.31.85]:36388 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725972AbgACJVl (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 3 Jan 2020 02:22:09 -0500
-Received: by mail-ot1-f65.google.com with SMTP id a15so60048820otf.1;
-        Thu, 02 Jan 2020 23:22:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=o43WK0aGQfxtR36Yk2dMmC8IKe8HC2vf043dM8fz/J0=;
-        b=kBHjrs1XnSyfWoGPfctBX/UaQV+2CNFQiPTPd/Y01UbdDbmQau1AHdLldzBtIEVBxW
-         Xlq+HQwZ3DkZRiYhm2WL8NVNftcQZMTsUBedt/BGOihOWTIHtGA8Jtd7MZ6IJrFlDyvY
-         Ieyrbn61qQoi8zCilr+LU+ZkmSDPahF/zMKxK2i0GTxL7RYJho2P7GD8I5ffiuRJP/rK
-         o03DXNJc8n0gZGxx/WExyayA3Ih4rfBgPRnBSBP2JQQtjp+g6NYLdee2A+tHY293TrdH
-         sSinmfuC25QZLd4Gjs3HmMSVVZlt2k0RN5IiV/CwR4D3Rkqh9nlFp5nz1sMdYbOf10uf
-         889Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=o43WK0aGQfxtR36Yk2dMmC8IKe8HC2vf043dM8fz/J0=;
-        b=TBjhYPsYTpOGC6PlDgHbu0L7QoT7YwvlDexAS9h7mBy4U/v+eVKownSQ6OMBMqN5Oh
-         9Rq95O4rfbFslv+oahH0un2MLsKN2dJqUjP22n1v2O0ETs/ys3q7Kj3SUixqY+XE/mlr
-         YEvuGKhv1BJCG6A8S8MKrxR4N9t/ZDQC0BKolRXXpaFez/LmdnNQzo67jHboLSUbeOkb
-         DQc+vIA0NHFH+7CqHg5YIkOFH8S1UD4n45jWaZs1a7zz8S5/ZNa022eR4ALTuMWrC13k
-         aB6yTvaFmFmY9AGukeV4ihJjNC/Wap/U76D4F8B1g/LAIsgnh7hUWONU07IqxI48swBz
-         FAQA==
-X-Gm-Message-State: APjAAAVxexPxMcyHDQh8Hr/22RYqy7V8Y/VMY9P9A2bWs1ZShdOZse35
-        h+eKTuUIoUvc+jptdkc+eCM650LdoxKro8zBY9I=
-X-Google-Smtp-Source: APXvYqySDXOnLw7kJKhe72eMXvoQUtPXGwbXBK+RARSAlJHRXKujxFmp2PP49cECDcsrEE9JZ9Zu4JvoRjkzEU78Fns=
-X-Received: by 2002:a05:6830:2141:: with SMTP id r1mr97473012otd.39.1578036128160;
- Thu, 02 Jan 2020 23:22:08 -0800 (PST)
+        Fri, 3 Jan 2020 04:21:41 -0500
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 0039JSOL147608;
+        Fri, 3 Jan 2020 09:21:29 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ content-transfer-encoding : in-reply-to; s=corp-2019-08-05;
+ bh=bkC+gH1gD70/cKhu2SkRir3vZoci85ALB0n5zKjNm3A=;
+ b=E9vg9kmgQfkLWml1NQoxKfNmZyH9oTPOUolivhsXlWGzKH4Ep+g0WmmexnDI8rmeUCYU
+ rGMg9oeKM0eVxzejBxqZWZi2fDdEC4ZxSMOb7b9rhNFj6iJRx50ZFLFX+3oPSGu6LFGx
+ C3poSDXrvvTq58ygWynFXEt19j0/cKxBDOSdfoQMy7pG6P4dD0+ESCL/Wu2x4oJGcORk
+ nuGQf+sMSsVTTEHbKWQzAxEZhBtDd0/A2BOy/G7XM1Ff/dLRHwCjP7v79mOTlF/HAz+D
+ 6AA+Bk3iwqvUo0/25bROi2m6UQ2TafscFE1aw/RLtQrarwfcAkgaEY/7joOoT/nmp9BV Ug== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by userp2120.oracle.com with ESMTP id 2x5ypqubqj-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 03 Jan 2020 09:21:29 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 0039JL6v002296;
+        Fri, 3 Jan 2020 09:21:28 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by aserp3030.oracle.com with ESMTP id 2x9jm766xj-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 03 Jan 2020 09:21:28 +0000
+Received: from abhmp0017.oracle.com (abhmp0017.oracle.com [141.146.116.23])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 0039LQRH012272;
+        Fri, 3 Jan 2020 09:21:26 GMT
+Received: from kadam (/129.205.23.165)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Fri, 03 Jan 2020 01:21:25 -0800
+Date:   Fri, 3 Jan 2020 12:21:16 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     =?iso-8859-1?B?Suly9G1l?= Pouiller <Jerome.Pouiller@silabs.com>
+Cc:     "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Kalle Valo <kvalo@codeaurora.org>
+Subject: Re: [PATCH 13/55] staging: wfx: avoid double warning when no more tx
+ policy are available
+Message-ID: <20200103092116.GB3911@kadam>
+References: <20191216170302.29543-1-Jerome.Pouiller@silabs.com>
+ <20191216170302.29543-14-Jerome.Pouiller@silabs.com>
 MIME-Version: 1.0
-References: <CAD_xR9eDL+9jzjYxPXJjS7U58ypCPWHYzrk0C3_vt-w26FZeAQ@mail.gmail.com>
- <1762437703fd150bb535ee488c78c830f107a531.camel@sipsolutions.net> <CAD_xR9eh=CAYeQZ3Vp9Yj9h3ifMu2exy0ihaXyE+736tJrPVLA@mail.gmail.com>
-In-Reply-To: <CAD_xR9eh=CAYeQZ3Vp9Yj9h3ifMu2exy0ihaXyE+736tJrPVLA@mail.gmail.com>
-From:   Justin Capella <justincapella@gmail.com>
-Date:   Thu, 2 Jan 2020 23:21:56 -0800
-Message-ID: <CAMrEMU-QF8HCTMFhzHd0w2f132iA4GLUXHmBPGnuetPqkz=U7A@mail.gmail.com>
-Subject: Re: PROBLEM: Wireless networking goes down on Acer C720P Chromebook (bisected)
-To:     Stephen Oberholtzer <stevie@qrpff.net>
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@redhat.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20191216170302.29543-14-Jerome.Pouiller@silabs.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9488 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=2 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1911140001 definitions=main-2001030088
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9488 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=2 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
+ definitions=main-2001030088
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The rather large negative deficit stands out to me. See this patch,
-https://patchwork.kernel.org/patch/11246363/ specifically the comments
-by Kan Yan
+On Mon, Dec 16, 2019 at 05:03:40PM +0000, Jérôme Pouiller wrote:
+> From: Jérôme Pouiller <jerome.pouiller@silabs.com>
+> 
+> Currently, number of available tx retry policies is checked two times.
+> Only one is sufficient.
+> 
+> Signed-off-by: Jérôme Pouiller <jerome.pouiller@silabs.com>
+> ---
+>  drivers/staging/wfx/data_tx.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/staging/wfx/data_tx.c b/drivers/staging/wfx/data_tx.c
+> index 32e269becd75..c9dea627661f 100644
+> --- a/drivers/staging/wfx/data_tx.c
+> +++ b/drivers/staging/wfx/data_tx.c
+> @@ -169,7 +169,8 @@ static int wfx_tx_policy_get(struct wfx_vif *wvif,
+>  	wfx_tx_policy_build(wvif, &wanted, rates);
+>  
+>  	spin_lock_bh(&cache->lock);
+> -	if (WARN_ON(list_empty(&cache->free))) {
+> +	if (list_empty(&cache->free)) {
+> +		WARN(1, "unable to get a valid Tx policy");
+>  		spin_unlock_bh(&cache->lock);
+>  		return WFX_INVALID_RATE_ID;
 
-On Thu, Jan 2, 2020, 3:14 PM Stephen Oberholtzer <stevie@qrpff.net> wrote:
->
->
-> /sys/kernel/debug/ieee80211/phy0
->
-> airtime_flags = 7
->
-> stations/<my AP's MAC>/airtime =
->
-> RX: 6583578 us
-> TX: 32719 us
-> Weight: 256
-> Deficit: VO: -1128 us VI: 11 us BE: -5098636 us BK: 256 us
-> Q depth: VO: 3868 us VI: 3636 us BE: 12284 us BK: 0 us
-> Q limit[low/high]: VO: 5000/12000 VI: 5000/12000 BE: 5000/12000 BK: 5000/1200
+This warning is more clear than the original which is good, but that's
+not what the commit message says.  How does this fix a double warning?
 
-On Thu, Jan 2, 2020 at 3:14 PM Stephen Oberholtzer <stevie@qrpff.net> wrote:
->
-> On Thu, Jan 2, 2020 at 8:28 AM Johannes Berg <johannes@sipsolutions.net> wrote:
-> >
-> > On Tue, 2019-12-31 at 19:49 -0500, Stephen Oberholtzer wrote:
-> > > Wireless networking goes down on Acer C720P Chromebook (bisected)
-> > >
-> > > Culprit: 7a89233a ("mac80211: Use Airtime-based Queue Limits (AQL) on
-> > > packet dequeue")
-> > >
->
-> <snip>
->
-> > I think I found at least one hole in this, but IIRC (it was before my
-> > vacation, sorry) it was pretty unlikely to actually happen. Perhaps
-> > there are more though.
-> >
-> > https://lore.kernel.org/r/b14519e81b6d2335bd0cb7dcf074f0d1a4eec707.camel@sipsolutions.net
->
-> <snippety-snip>
->
-> > Do you get any output at all? Like a WARN_ON() for an underflow, or
-> > something?
-> >
-> > johannes
-> >
->
-> Johannes,
->
-> To answer your immediate question, no, I don't get any dmesg output at
-> all. Nothing about underruns.
-> However, while pursuing other avenues -- specifically, enabling
-> mac80211 debugfs and log messages -- I realized that my 'master' was
-> out-of-date from linux-stable and did a git pull.  Imagine my surprise
-> when the resulting kernel did not exhibit the problem!
->
-> Apparently, I had been a bit too pessimistic; since the problem
-> existed in 5.5-rc1 release, I'd assumed that the problem wouldn't get
-> rectified before 5.5.
->
-> However, I decided to bisect the fix, and ended up with: 911bde0f
-> ("mac80211: Turn AQL into an NL80211_EXT_FEATURE"), which appears to
-> have "solved" the problem by just disabling the feature (this is
-> ath9k, by the way.)
->
-> This AQL stuff sounds pretty nifty, and I'd love to try my hand at
-> making it work for ath9k (also, since I put so much effort into an
-> automated build-and-test framework, it'd be a shame to just abandon
-> it.)  However, the ath9k code is rather lacking for comments, so I
-> don't even know where I should start, except for (I suspect) a call to
-> `wiphy_ext_feature_set(whatever, NL80211_EXT_FEATURE_AQL);` from
-> inside ath9k_set_hw_capab()?
->
-> In the meantime, I went back to e548f749b096 -- the commit prior to
-> the one making AQL support opt-in -- and cranked up the debugging.
->
-> I'm not sure how to interpret any of this, but  here's what I got:
->
-> dmesg output:
->
-> Last relevant mention is "moving STA <my AP's MAC> to state 4" which
-> happened during startup, before everything shut down.
->
-> /sys/kernel/debug/ieee80211/phy0
->
-> airtime_flags = 7
->
-> stations/<my AP's MAC>/airtime =
->
-> RX: 6583578 us
-> TX: 32719 us
-> Weight: 256
-> Deficit: VO: -1128 us VI: 11 us BE: -5098636 us BK: 256 us
-> Q depth: VO: 3868 us VI: 3636 us BE: 12284 us BK: 0 us
-> Q limit[low/high]: VO: 5000/12000 VI: 5000/12000 BE: 5000/12000 BK: 5000/12000
->
-> (I have no idea how to interpret this, but that '32719 us' seems odd,
-> I thought the airtime usage was in 4us units?)
->
->
-> Doing an 'echo 3 | tee airtime_flags' to clear the (old) AQL-enabled
-> bit seemed to *immediately* restore network connectivity.
->
-> I ran a ping, and saw this:
->
-> - pings coming back in <5ms
-> - re-enable AQL (echo 7 | tee airtime_flags)
-> - pings stop coming back immediately
-> - some seconds later, disable AQL again (echo 3 | tee airtime_flags)
-> - immediate *flood* of ping replies registered, with times 16000ms,
-> 15000ms, 14000ms, .. down to 1000ms, 15ms, then stabilizing sub-5ms
-> - According to the icmp_seq values, all 28 requests were replied to,
-> and their replies were delivered in-order
->
-> This certainly looks like a missing TX queue restart to me?
->
->
-> --
-> -- Stevie-O
-> Real programmers use COPY CON PROGRAM.EXE
+regards,
+dan carpenter
+
