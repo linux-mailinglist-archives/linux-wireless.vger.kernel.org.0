@@ -2,119 +2,122 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9FD3812F8EC
-	for <lists+linux-wireless@lfdr.de>; Fri,  3 Jan 2020 14:44:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2FAA512FA32
+	for <lists+linux-wireless@lfdr.de>; Fri,  3 Jan 2020 17:20:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727843AbgACNoc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 3 Jan 2020 08:44:32 -0500
-Received: from mail25.static.mailgun.info ([104.130.122.25]:47858 "EHLO
-        mail25.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727842AbgACNob (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 3 Jan 2020 08:44:31 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1578059071; h=Content-Transfer-Encoding: MIME-Version:
- References: In-Reply-To: Message-Id: Date: Subject: Cc: To: From:
- Sender; bh=UlpiOoJT8j543QirBk1cXC1jCPY25M9dD9qGZjatIyI=; b=KdowJ11A7RK5XXg3xPyHITpwe/Y4qxP/yjYjtJUE9j1e9XT65GYx0Q4aLnWy1HpgA0pd+mMg
- GlTG3OaUPGaOKcYDhf55Hd6PRIjWCh3nIcONFJZ9/i9jIL1Tuhg2hKRoFY8WskdMUW8Qfu4D
- u2mfXsdaVsz3ixQZBjdqArQAV9o=
-X-Mailgun-Sending-Ip: 104.130.122.25
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e0f453b.7f7749dea7a0-smtp-out-n01;
- Fri, 03 Jan 2020 13:44:27 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id E2B55C433CB; Fri,  3 Jan 2020 13:44:26 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from govinds-linux.qualcomm.com (blr-c-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.19.19])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: govinds)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 54B3FC4479C;
-        Fri,  3 Jan 2020 13:44:23 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 54B3FC4479C
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=govinds@codeaurora.org
-From:   Govind Singh <govinds@codeaurora.org>
-To:     robh@kernel.org, devicetree@vger.kernel.org,
-        ath10k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org,
-        Govind Singh <govinds@codeaurora.org>
-Subject: [PATCH v3 2/2] ath10k: Don't call SCM interface for statically mapped msa region
-Date:   Fri,  3 Jan 2020 19:14:14 +0530
-Message-Id: <20200103134414.15457-3-govinds@codeaurora.org>
-X-Mailer: git-send-email 2.22.0
-In-Reply-To: <20200103134414.15457-1-govinds@codeaurora.org>
-References: <20200103134414.15457-1-govinds@codeaurora.org>
+        id S1727916AbgACQUC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 3 Jan 2020 11:20:02 -0500
+Received: from mx3.wp.pl ([212.77.101.9]:27460 "EHLO mx3.wp.pl"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727905AbgACQUC (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 3 Jan 2020 11:20:02 -0500
+Received: (wp-smtpd smtp.wp.pl 10991 invoked from network); 3 Jan 2020 17:19:59 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=1024a;
+          t=1578068399; bh=Yv7Ci0NICOXQ+VDT8P0hxUqgm3v5amyFowMTqAMfJZA=;
+          h=From:To:Cc:Subject;
+          b=NIXiI59x9VFHOP3jhUKjGPQjrNt0V2CDvwA5r8D58cYkS/kw0W69sE0CZ92TTBlD8
+           n4wUUngu7Rox1WNLZqoT6gGS4BhUeb8YM2NgEMi0NCWsFmx7ORSu7I9Gtod34cPALk
+           o0/QJXdaHYVzI+hCkvOWElyZ6Whbhz8GZZ5Rh6iQ=
+Received: from ip4-46-39-164-203.cust.nbox.cz (HELO localhost) (stf_xl@wp.pl@[46.39.164.203])
+          (envelope-sender <stf_xl@wp.pl>)
+          by smtp.wp.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
+          for <dsimila82@hotmail.com>; 3 Jan 2020 17:19:59 +0100
+Date:   Fri, 3 Jan 2020 17:19:58 +0100
+From:   Stanislaw Gruszka <stf_xl@wp.pl>
+To:     Daniel =?iso-8859-1?Q?Simil=E4?= <dsimila82@hotmail.com>
+Cc:     Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
+        linux-wireless@vger.kernel.org
+Subject: Re: mt76x0u. Unusable performance while compiling stuff.
+Message-ID: <20200103161958.GA7186@wp.pl>
+References: <270ccb561149f7af3596470b3f9bb2ec@wp.pl>
+ <20200103121849.GA2832@wp.pl>
+ <b335da869c0ae7d859a27ec4a26d8c35@wp.pl>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <b335da869c0ae7d859a27ec4a26d8c35@wp.pl>
+User-Agent: Mutt/1.8.3 (2017-05-23)
+X-WP-MailID: 5e9d1dfe29d8aae9f525d216ddc8009c
+X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
+X-WP-SPAM: NO 0000000 [MZO0]                               
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-For some targets ex: QCS404, SCM permissions for MSA region is
-statically configured in TrustZone fw. Add SCM call disable option
-for such targets to avoid duplicate permissions.
+On Fri, Jan 03, 2020 at 03:30:18PM +0000, Daniel Similä wrote:
+> Ok. I'm happy to test it. 
+> But where do i download a patch or a complete tree?
+> Sorry for my noobiness.
 
-Testing: Tested on WCN3990 HW
-Tested FW: WLAN.HL.3.1-01040-QCAHLSWMTPLZ-1
+You can use 5.5-rcX kernel from kernel.org if your distribution
+does not provide 5.5-rcX kernels already.
 
-Signed-off-by: Govind Singh <govinds@codeaurora.org>
----
- drivers/net/wireless/ath/ath10k/qmi.c | 9 +++++++++
- drivers/net/wireless/ath/ath10k/qmi.h | 1 +
- 2 files changed, 10 insertions(+)
+Patch can be downloaded from:
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/patch/?id=284efb473ef5f02a7f2c13fdf8d516ecc589bdf1 
 
-diff --git a/drivers/net/wireless/ath/ath10k/qmi.c b/drivers/net/wireless/ath/ath10k/qmi.c
-index 637f83ef65f8..1b91de70c8d6 100644
---- a/drivers/net/wireless/ath/ath10k/qmi.c
-+++ b/drivers/net/wireless/ath/ath10k/qmi.c
-@@ -84,6 +84,9 @@ static int ath10k_qmi_setup_msa_permissions(struct ath10k_qmi *qmi)
- 	int ret;
- 	int i;
- 
-+	if (qmi->msa_fixed_perm)
-+		return 0;
-+
- 	for (i = 0; i < qmi->nr_mem_region; i++) {
- 		ret = ath10k_qmi_map_msa_permission(qmi, &qmi->mem_region[i]);
- 		if (ret)
-@@ -102,6 +105,9 @@ static void ath10k_qmi_remove_msa_permission(struct ath10k_qmi *qmi)
- {
- 	int i;
- 
-+	if (qmi->msa_fixed_perm)
-+		return;
-+
- 	for (i = 0; i < qmi->nr_mem_region; i++)
- 		ath10k_qmi_unmap_msa_permission(qmi, &qmi->mem_region[i]);
- }
-@@ -1018,6 +1024,9 @@ static int ath10k_qmi_setup_msa_resources(struct ath10k_qmi *qmi, u32 msa_size)
- 		qmi->msa_mem_size = msa_size;
- 	}
- 
-+	if (of_property_read_bool(dev->of_node, "qcom,msa-fixed-perm"))
-+		qmi->msa_fixed_perm = true;
-+
- 	ath10k_dbg(ar, ATH10K_DBG_QMI, "msa pa: %pad , msa va: 0x%p\n",
- 		   &qmi->msa_pa,
- 		   qmi->msa_va);
-diff --git a/drivers/net/wireless/ath/ath10k/qmi.h b/drivers/net/wireless/ath/ath10k/qmi.h
-index 40aafb875ed0..dc257375f161 100644
---- a/drivers/net/wireless/ath/ath10k/qmi.h
-+++ b/drivers/net/wireless/ath/ath10k/qmi.h
-@@ -104,6 +104,7 @@ struct ath10k_qmi {
- 	bool fw_ready;
- 	char fw_build_timestamp[MAX_TIMESTAMP_LEN + 1];
- 	struct ath10k_qmi_cal_data cal_data[MAX_NUM_CAL_V01];
-+	bool msa_fixed_perm;
- };
- 
- int ath10k_qmi_wlan_enable(struct ath10k *ar,
--- 
-2.22.0
+> fre 2020-01-03 klockan 13:18 +0100 skrev Stanislaw Gruszka:
+> > (cc linux-wireless & Lorenzo)
+
+Please do not drop CC , adding those back ...
+
+Stanislaw
+
+
+> > On Fri, Jan 03, 2020 at 12:19:20AM +0000, Daniel Similä wrote:
+> > > Bus 001 Device 005: ID 148f:761a Ralink Technology, Corp. MT7610U ("Archer T2U" 2.4G+5G WLAN Adapter
+> > > 
+> > > Driver is mt76x0u
+> > > Wifi is 5GHz ~260Mb
+> > > 
+> > > while doing:
+> > > nice make -j16 
+> > > 
+> > > Pinging my router goes from:
+> > > ping _gateway
+> > > PING _gateway (192.168.0.1) 56(84) bytes of data.
+> > > 64 bytes from _gateway (192.168.0.1): icmp_seq=1 ttl=64 time=1.20 ms
+> > > 64 bytes from _gateway (192.168.0.1): icmp_seq=2 ttl=64 time=1.02 ms
+> > > 64 bytes from _gateway (192.168.0.1): icmp_seq=3 ttl=64 time=2.12 ms
+> > > 64 bytes from _gateway (192.168.0.1): icmp_seq=4 ttl=64 time=1.32 ms
+> > > 64 bytes from _gateway (192.168.0.1): icmp_seq=5 ttl=64 time=2.04 ms
+> > > 64 bytes from _gateway (192.168.0.1): icmp_seq=6 ttl=64 time=1.31 ms
+> > > 64 bytes from _gateway (192.168.0.1): icmp_seq=7 ttl=64 time=1.71 ms
+> > > 64 bytes from _gateway (192.168.0.1): icmp_seq=8 ttl=64 time=0.903 ms
+> > > 64 bytes from _gateway (192.168.0.1): icmp_seq=9 ttl=64 time=1.00 ms
+> > > 64 bytes from _gateway (192.168.0.1): icmp_seq=10 ttl=64 time=1.42 ms
+> > > 64 bytes from _gateway (192.168.0.1): icmp_seq=11 ttl=64 time=1.15 ms
+> > > 
+> > > to unusable:
+> > > 
+> > > ping _gateway
+> > > PING _gateway (192.168.0.1) 56(84) bytes of data.
+> > > 64 bytes from _gateway (192.168.0.1): icmp_seq=1 ttl=64 time=167 ms
+> > > 64 bytes from _gateway (192.168.0.1): icmp_seq=3 ttl=64 time=306 ms
+> > > 64 bytes from _gateway (192.168.0.1): icmp_seq=4 ttl=64 time=255 ms
+> > > 64 bytes from _gateway (192.168.0.1): icmp_seq=6 ttl=64 time=253 ms
+> > > 64 bytes from _gateway (192.168.0.1): icmp_seq=8 ttl=64 time=84.7 ms
+> > > 64 bytes from _gateway (192.168.0.1): icmp_seq=9 ttl=64 time=522 ms
+> > > 64 bytes from _gateway (192.168.0.1): icmp_seq=10 ttl=64 time=211 ms
+> > > 64 bytes from _gateway (192.168.0.1): icmp_seq=11 ttl=64 time=304 ms
+> > > 64 bytes from _gateway (192.168.0.1): icmp_seq=15 ttl=64 time=2825 ms
+> > > 64 bytes from _gateway (192.168.0.1): icmp_seq=16 ttl=64 time=1812 ms
+> > > 64 bytes from _gateway (192.168.0.1): icmp_seq=17 ttl=64 time=799 ms
+> > > 
+> > > Running kernel 5.4.6-arch3-1
+> > > CPU is Amd 2700X and ram is 16GB
+> > 
+> > I think this should be fixed by 5.5 commit:
+> > 
+> > commit 284efb473ef5f02a7f2c13fdf8d516ecc589bdf1
+> > Author: Lorenzo Bianconi <lorenzo@kernel.org>
+> > Date:   Mon Oct 28 17:38:05 2019 +0100
+> > 
+> >     mt76: mt76u: rely on a dedicated stats workqueue
+> > 
+> > and if it indeed fixes the problem, this commit should be requested
+> > to stable.
+> > 
+> > Stanislaw
+> 
