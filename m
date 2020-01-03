@@ -2,122 +2,155 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2FAA512FA32
-	for <lists+linux-wireless@lfdr.de>; Fri,  3 Jan 2020 17:20:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DB9D312FD72
+	for <lists+linux-wireless@lfdr.de>; Fri,  3 Jan 2020 21:14:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727916AbgACQUC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 3 Jan 2020 11:20:02 -0500
-Received: from mx3.wp.pl ([212.77.101.9]:27460 "EHLO mx3.wp.pl"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727905AbgACQUC (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 3 Jan 2020 11:20:02 -0500
-Received: (wp-smtpd smtp.wp.pl 10991 invoked from network); 3 Jan 2020 17:19:59 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=1024a;
-          t=1578068399; bh=Yv7Ci0NICOXQ+VDT8P0hxUqgm3v5amyFowMTqAMfJZA=;
-          h=From:To:Cc:Subject;
-          b=NIXiI59x9VFHOP3jhUKjGPQjrNt0V2CDvwA5r8D58cYkS/kw0W69sE0CZ92TTBlD8
-           n4wUUngu7Rox1WNLZqoT6gGS4BhUeb8YM2NgEMi0NCWsFmx7ORSu7I9Gtod34cPALk
-           o0/QJXdaHYVzI+hCkvOWElyZ6Whbhz8GZZ5Rh6iQ=
-Received: from ip4-46-39-164-203.cust.nbox.cz (HELO localhost) (stf_xl@wp.pl@[46.39.164.203])
-          (envelope-sender <stf_xl@wp.pl>)
-          by smtp.wp.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
-          for <dsimila82@hotmail.com>; 3 Jan 2020 17:19:59 +0100
-Date:   Fri, 3 Jan 2020 17:19:58 +0100
-From:   Stanislaw Gruszka <stf_xl@wp.pl>
-To:     Daniel =?iso-8859-1?Q?Simil=E4?= <dsimila82@hotmail.com>
-Cc:     Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
-        linux-wireless@vger.kernel.org
-Subject: Re: mt76x0u. Unusable performance while compiling stuff.
-Message-ID: <20200103161958.GA7186@wp.pl>
-References: <270ccb561149f7af3596470b3f9bb2ec@wp.pl>
- <20200103121849.GA2832@wp.pl>
- <b335da869c0ae7d859a27ec4a26d8c35@wp.pl>
+        id S1726313AbgACUOO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 3 Jan 2020 15:14:14 -0500
+Received: from mail-io1-f66.google.com ([209.85.166.66]:43966 "EHLO
+        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726050AbgACUOO (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 3 Jan 2020 15:14:14 -0500
+Received: by mail-io1-f66.google.com with SMTP id n21so40873429ioo.10;
+        Fri, 03 Jan 2020 12:14:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to:cc;
+        bh=rV3hLJ1PYGvGESjNlIumRkdp9DivEV3BkcOThoD4wIQ=;
+        b=Rbjfqvhuozr4fZ8UvcV394OYIjbGu/5fWOFttaqTNj0GmxH8clPNH1uZPjRvpAdC9i
+         7krA6DG0zKw+973kEo3YnUq1H4QL8h54DWADBFClz7mRCIfHgZhBNU9vZhhte0cdNeb1
+         piA2Tzzz67Oi3eywLwTPCKoLvt/Rrj+GgrVCNm/YlBpNj3MlmxTwkBQQr/WUOY+OyTIq
+         DmHR9HK8XKyKlleS/opO4qWdl+eiIbnNzRQUDdaEm44dQJWB7+cznpmPDlnE1lqsqnrA
+         RzPRdRgF0Wdspz8/4XC23LKiS1e0er2qdcY4UxR2DDyENAB7Y8frj6W8e2Gq8LezCPdX
+         rY8w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
+        bh=rV3hLJ1PYGvGESjNlIumRkdp9DivEV3BkcOThoD4wIQ=;
+        b=jQjmM/+wEmpAAcyOmYk1sIkIIXHzQb9nQK0FsNcMaMMxZGvbwl8X52jsrfTqPid/3c
+         h1LQkW9LnDqttjf+dVAO1IHguIoPGaFysUe7KJTV1utblCemDiQeXQkvkXYeu4f6pSDx
+         er/eg6Xkv+qCFWrx8oIurXhKSZ7Ml/7VEzdQQphzafQR8NrKwXPb4GF96XLfy4UPyTwS
+         NR1bo5UipZntYNIda9MhFNNpCxvrK+FPJn+IVepAuJl/IB9O+7tMQ7KliKujarLHpAnQ
+         /U8iC2CAY8IC47PNEX5FYXJ8TP0i+HxHRT/1H4xSZz8HCeGogZzff1v329emBfei+LlC
+         Ds4g==
+X-Gm-Message-State: APjAAAXm4rXFbjZV54n+mk+eOwh8mqUC5S+q5xkv7P8mbQmr7XssUeOe
+        2SdOTnnauekvz5AXhaGlxnJGzF7RExHpj8vENw5G2qMmXpF0tg==
+X-Google-Smtp-Source: APXvYqxYD5xt5uosDGM15eDbeGo7npu7qR8B1fpV18MjDSjrXfQMiLdLWb7RNTH8xrK53/eu9JDIC0z4izMEmjojM8M=
+X-Received: by 2002:a6b:8e51:: with SMTP id q78mr56753106iod.179.1578082452839;
+ Fri, 03 Jan 2020 12:14:12 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <b335da869c0ae7d859a27ec4a26d8c35@wp.pl>
-User-Agent: Mutt/1.8.3 (2017-05-23)
-X-WP-MailID: 5e9d1dfe29d8aae9f525d216ddc8009c
-X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
-X-WP-SPAM: NO 0000000 [MZO0]                               
+From:   Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+Date:   Sat, 4 Jan 2020 01:14:02 +0500
+Message-ID: <CABXGCsODygM_F4JCesQOH_i+QA9XLWXvcT2o_K=dW6R8ZeJ6rQ@mail.gmail.com>
+Subject: BUG: kernel NULL pointer dereference, address: 0000000000000070
+To:     Linux List Kernel Mailing <linux-kernel@vger.kernel.org>,
+        Linux List Kernel Mailing <linux-wireless@vger.kernel.org>
+Cc:     =?UTF-8?B?0KDQuNGI0LDRgiDQoNC40LzQvtCy0LjRhyDQotC10YDQtdCz0YPQu9C+0LI=?= 
+        <rtereguloff@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Jan 03, 2020 at 03:30:18PM +0000, Daniel Similä wrote:
-> Ok. I'm happy to test it. 
-> But where do i download a patch or a complete tree?
-> Sorry for my noobiness.
+Hi folks.
+My friend today launched stress-ng multiple times and he could twice
+time reproduce the odd bug, which looks like a bug in the wifi driver.
 
-You can use 5.5-rcX kernel from kernel.org if your distribution
-does not provide 5.5-rcX kernels already.
+lspci detects this device as:
+Network controller: Realtek Semiconductor Co., Ltd. RTL8822BE
+802.11a/b/g/n/ac WiFi adapter
 
-Patch can be downloaded from:
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/patch/?id=284efb473ef5f02a7f2c13fdf8d516ecc589bdf1 
+I decided to report here because every time after this bug happens the
+system became fully unresponsive. Which is really very annoying.
 
-> fre 2020-01-03 klockan 13:18 +0100 skrev Stanislaw Gruszka:
-> > (cc linux-wireless & Lorenzo)
+stress-ng-iomix (147381): drop_caches: 3
+stress-ng-iomix (147417): drop_caches: 3
+stress-ng-iomix (147415): drop_caches: 3
+rtw_pci 0000:04:00.0: stop vif ea:01:4e:ce:99:c5 on port 0
+rtw_pci 0000:04:00.0: start vif 06:72:1e:97:fc:83 on port 0
+BUG: kernel NULL pointer dereference, address: 0000000000000070
+#PF: supervisor read access in kernel mode
+#PF: error_code(0x0000) - not-present page
+PGD 0 P4D 0
+Oops: 0000 [#1] SMP NOPTI
+CPU: 1 PID: 819 Comm: irq/76-rtwpci Not tainted
+5.5.0-0.rc4.git0.1.fc32.x86_64 #1
+Hardware name: System manufacturer System Product Name/ROG STRIX
+X470-I GAMING, BIOS 3004 12/16/2019
+RIP: 0010:rtw_pci_tx_isr+0x96/0x230 [rtwpci]
+Code: 0e 01 00 00 48 8b 44 24 08 44 0f b6 64 24 13 48 c1 e0 06 49 83
+c4 01 48 89 04 24 49 c1 e4 06 49 01 dc 4c 89 e7 e8 8a d1 96 ce <8b> 50
+70 48 8b 70 48 49 89 c6 48 8b 03 48 8d b8 b0 00 00 00 48 8b
+RSP: 0018:ffffad9f00d6fe08 EFLAGS: 00010086
+RAX: 0000000000000000 RBX: ffff9b66766e5d68 RCX: 0000000000000000
+RDX: 0000000000000001 RSI: 0000000000000086 RDI: 0000000000000086
+RBP: 000000000000006a R08: 0000000000000000 R09: 0000000000000059
+R10: 0000000000000000 R11: ffff9b667da6ae38 R12: ffff9b66766e5ee8
+R13: ffff9b66766e1e80 R14: 0000000000000005 R15: ffff9b66766e07c0
+FS:  0000000000000000(0000) GS:ffff9b667da40000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000000000070 CR3: 0000000333690000 CR4: 00000000003406e0
+Call Trace:
+ rtw_pci_interrupt_threadfn+0x15b/0x210 [rtwpci]
+ ? irq_finalize_oneshot.part.0+0xf0/0xf0
+ irq_thread_fn+0x20/0x60
+ irq_thread+0xdc/0x170
+ ? irq_forced_thread_fn+0x80/0x80
+ kthread+0xf9/0x130
+ ? irq_thread_check_affinity+0xf0/0xf0
+ ? kthread_park+0x90/0x90
+ ret_from_fork+0x22/0x40
+Modules linked in: salsa20_generic camellia_generic
+camellia_aesni_avx2 camellia_aesni_avx_x86_64 camellia_x86_64
+cast6_avx_x86_64 cast6_generic cast_common serpent_avx2
+serpent_avx_x86_64 serpent_sse2_x86_64 serpent_generic twofish_generic
+twofish_avx_x86_64 twofish_x86_64_3way twofish_x86_64 twofish_common
+ofb tgr192 wp512 rmd320 rmd256 rmd160 rmd128 md4 uinput rfcomm
+xt_CHECKSUM xt_MASQUERADE xt_conntrack ipt_REJECT nf_nat_tftp
+nf_conntrack_tftp tun bridge stp llc nft_objref
+nf_conntrack_netbios_ns nf_conntrack_broadcast nft_fib_inet
+nft_fib_ipv4 nft_fib_ipv6 nft_fib nft_reject_inet nf_reject_ipv4
+nf_reject_ipv6 nft_reject nft_ct nf_tables_set nft_chain_nat nf_tables
+ebtable_nat ebtable_broute ip6table_nat ip6table_mangle ip6table_raw
+ip6table_security iptable_nat nf_nat nf_conntrack nf_defrag_ipv6
+nf_defrag_ipv4 libcrc32c iptable_mangle iptable_raw iptable_security
+ip_set nfnetlink ebtable_filter ebtables ip6table_filter ip6_tables
+iptable_filter cmac bnep sunrpc
+ snd_hda_codec_realtek snd_hda_codec_generic ledtrig_audio rtwpci
+snd_hda_codec_hdmi rtw88 snd_hda_intel snd_intel_dspcfg edac_mce_amd
+snd_usb_audio uvcvideo videobuf2_vmalloc videobuf2_memops
+snd_hda_codec snd_usbmidi_lib videobuf2_v4l2 snd_hda_core
+videobuf2_common mac80211 btusb snd_rawmidi kvm snd_hwdep btrtl
+videodev snd_seq btbcm btintel snd_seq_device irqbypass bluetooth
+cfg80211 snd_pcm eeepc_wmi mc joydev crct10dif_pclmul snd_timer
+crc32_pclmul asus_wmi ecdh_generic snd sparse_keymap rfkill sp5100_tco
+ccp ecc video soundcore libarc4 wmi_bmof pcspkr i2c_piix4
+ghash_clmulni_intel k10temp gpio_amdpt gpio_generic acpi_cpufreq
+binfmt_misc ip_tables amdgpu amd_iommu_v2 gpu_sched ttm drm_kms_helper
+drm igb crc32c_intel uas dca i2c_algo_bit usb_storage wmi pinctrl_amd
+fuse
+CR2: 0000000000000070
+---[ end trace 5e058b15ff4e55d6 ]---
 
-Please do not drop CC , adding those back ...
 
-Stanislaw
+# /usr/src/kernels/`uname -r`/scripts/faddr2line
+/lib/debug/lib/modules/`uname
+-r`/kernel/drivers/net/wireless/realtek/rtw88/rtwpci.ko.debug
+rtw_pci_tx_isr+0x96
+rtw_pci_tx_isr+0x96/0x230:
+rtw_pci_tx_isr at
+/usr/src/debug/kernel-5.4.fc32/linux-5.5.0-0.rc4.git0.1.fc32.x86_64/drivers/net/wireless/realtek/rtw88/pci.c:836
 
+# eu-addr2line -e /lib/debug/lib/modules/`uname
+-r`/kernel/drivers/net/wireless/realtek/rtw88/rtwpci.ko.debug
+rtw_pci_tx_isr+0x96
+drivers/net/wireless/realtek/rtw88/pci.c:836:3
 
-> > On Fri, Jan 03, 2020 at 12:19:20AM +0000, Daniel Similä wrote:
-> > > Bus 001 Device 005: ID 148f:761a Ralink Technology, Corp. MT7610U ("Archer T2U" 2.4G+5G WLAN Adapter
-> > > 
-> > > Driver is mt76x0u
-> > > Wifi is 5GHz ~260Mb
-> > > 
-> > > while doing:
-> > > nice make -j16 
-> > > 
-> > > Pinging my router goes from:
-> > > ping _gateway
-> > > PING _gateway (192.168.0.1) 56(84) bytes of data.
-> > > 64 bytes from _gateway (192.168.0.1): icmp_seq=1 ttl=64 time=1.20 ms
-> > > 64 bytes from _gateway (192.168.0.1): icmp_seq=2 ttl=64 time=1.02 ms
-> > > 64 bytes from _gateway (192.168.0.1): icmp_seq=3 ttl=64 time=2.12 ms
-> > > 64 bytes from _gateway (192.168.0.1): icmp_seq=4 ttl=64 time=1.32 ms
-> > > 64 bytes from _gateway (192.168.0.1): icmp_seq=5 ttl=64 time=2.04 ms
-> > > 64 bytes from _gateway (192.168.0.1): icmp_seq=6 ttl=64 time=1.31 ms
-> > > 64 bytes from _gateway (192.168.0.1): icmp_seq=7 ttl=64 time=1.71 ms
-> > > 64 bytes from _gateway (192.168.0.1): icmp_seq=8 ttl=64 time=0.903 ms
-> > > 64 bytes from _gateway (192.168.0.1): icmp_seq=9 ttl=64 time=1.00 ms
-> > > 64 bytes from _gateway (192.168.0.1): icmp_seq=10 ttl=64 time=1.42 ms
-> > > 64 bytes from _gateway (192.168.0.1): icmp_seq=11 ttl=64 time=1.15 ms
-> > > 
-> > > to unusable:
-> > > 
-> > > ping _gateway
-> > > PING _gateway (192.168.0.1) 56(84) bytes of data.
-> > > 64 bytes from _gateway (192.168.0.1): icmp_seq=1 ttl=64 time=167 ms
-> > > 64 bytes from _gateway (192.168.0.1): icmp_seq=3 ttl=64 time=306 ms
-> > > 64 bytes from _gateway (192.168.0.1): icmp_seq=4 ttl=64 time=255 ms
-> > > 64 bytes from _gateway (192.168.0.1): icmp_seq=6 ttl=64 time=253 ms
-> > > 64 bytes from _gateway (192.168.0.1): icmp_seq=8 ttl=64 time=84.7 ms
-> > > 64 bytes from _gateway (192.168.0.1): icmp_seq=9 ttl=64 time=522 ms
-> > > 64 bytes from _gateway (192.168.0.1): icmp_seq=10 ttl=64 time=211 ms
-> > > 64 bytes from _gateway (192.168.0.1): icmp_seq=11 ttl=64 time=304 ms
-> > > 64 bytes from _gateway (192.168.0.1): icmp_seq=15 ttl=64 time=2825 ms
-> > > 64 bytes from _gateway (192.168.0.1): icmp_seq=16 ttl=64 time=1812 ms
-> > > 64 bytes from _gateway (192.168.0.1): icmp_seq=17 ttl=64 time=799 ms
-> > > 
-> > > Running kernel 5.4.6-arch3-1
-> > > CPU is Amd 2700X and ram is 16GB
-> > 
-> > I think this should be fixed by 5.5 commit:
-> > 
-> > commit 284efb473ef5f02a7f2c13fdf8d516ecc589bdf1
-> > Author: Lorenzo Bianconi <lorenzo@kernel.org>
-> > Date:   Mon Oct 28 17:38:05 2019 +0100
-> > 
-> >     mt76: mt76u: rely on a dedicated stats workqueue
-> > 
-> > and if it indeed fixes the problem, this commit should be requested
-> > to stable.
-> > 
-> > Stanislaw
-> 
+$ uname -r
+5.5.0-0.rc4.git0.1.fc32.x86_64
+
+--
+Best Regards,
+Mike Gavrilov.
