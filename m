@@ -2,73 +2,245 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5BBB112FFDF
-	for <lists+linux-wireless@lfdr.de>; Sat,  4 Jan 2020 02:00:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4CDC1130026
+	for <lists+linux-wireless@lfdr.de>; Sat,  4 Jan 2020 03:34:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727173AbgADBAD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 3 Jan 2020 20:00:03 -0500
-Received: from mail-io1-f66.google.com ([209.85.166.66]:43710 "EHLO
-        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727149AbgADBAC (ORCPT
+        id S1727282AbgADCec (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 3 Jan 2020 21:34:32 -0500
+Received: from mail-lj1-f195.google.com ([209.85.208.195]:36693 "EHLO
+        mail-lj1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727222AbgADCe3 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 3 Jan 2020 20:00:02 -0500
-Received: by mail-io1-f66.google.com with SMTP id n21so41580877ioo.10
-        for <linux-wireless@vger.kernel.org>; Fri, 03 Jan 2020 17:00:02 -0800 (PST)
+        Fri, 3 Jan 2020 21:34:29 -0500
+Received: by mail-lj1-f195.google.com with SMTP id r19so45562907ljg.3
+        for <linux-wireless@vger.kernel.org>; Fri, 03 Jan 2020 18:34:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=BQvpmc6bTYtIoGI7mIebVuPQLrewKdFxgpvNfh1jXk8=;
+        b=tAZK3OEKd7k1M9evv8ECR6IT4KuCG9ELRfiOy7DNKz4dsEPusPe/W4hprN3ZoOOUz3
+         +ODcHgUFQ4f7YwPVWXfHrzvzWU3ldmbVznRqqa1zjiUkPu4LpoCrsAknU2pSs7MXrXIu
+         Y/xlv7+HrXX2kZSD/sFcN30bWts4SGSC4NXHj1vHv5ddjdk8O2FOHd/Rolgxf2cns+sm
+         JXsm1ZhUMMiY+ixrFoIcOP0aW8DHcgEfeK6MQn7dP0f2AzG/APBX9Bucp+PPpWqmxSQz
+         DHL2CocOXAEQcVBUweSFLywO+ba7qejLqqpJTYRMTjsrVcuRnFB62Lll2tPT7II4iznT
+         iGbA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=I+/EbHTtG3XdToYbfWwK52tIPgUdmxs5X56AS9/kYW4=;
-        b=MZJO/S4zZVJWcRpkraNSIyTYU0+8x8vh4fZfQ9jCrvDEIkOmI+f1In5zG/fV1vm6v1
-         7cRrq/JkNTTsOV3RsKsqj4NanM9nSf7I4tjC0um9vw5mDoYbJ205S0mxXgJZEY4GZNep
-         PcjF10moabKheDWppQcbXYq4nStURTbOc8DJyGWGB22qmwEgaa8EHXKFfl9m5R7Ky++0
-         BSQjiKjYTnwW0siQEDF2iL2Ait9XUye4tBaWYi6UUKiWx9ySjHhPNfrj3/QOcdR1K57P
-         xc+cGb3kP9++C7zcGnsYUrEdzZkXW5r2w6OVp9pIxjXAfNiLHviCzlvae4ImFG/4G0YP
-         qBdw==
-X-Gm-Message-State: APjAAAXxIerKzGE3IKGqW70I94JaNE07pXTR8/cs0HQ1DXMolvbickmF
-        y6/uaimbxFE8abAJSYMosUrUGIw=
-X-Google-Smtp-Source: APXvYqyUQbFIsoiCJpvqSEp4qqwhQw7fGoN4YQB16/OcCDQ/ZJYfURbKQj9K1gvi6eOKGMPchcGcPA==
-X-Received: by 2002:a5d:8cda:: with SMTP id k26mr36880773iot.26.1578099601929;
-        Fri, 03 Jan 2020 17:00:01 -0800 (PST)
-Received: from rob-hp-laptop ([64.188.179.251])
-        by smtp.gmail.com with ESMTPSA id j26sm15256715iok.3.2020.01.03.17.00.00
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 03 Jan 2020 17:00:01 -0800 (PST)
-Received: from rob (uid 1000)
-        (envelope-from rob@rob-hp-laptop)
-        id 2219b7
-        by rob-hp-laptop (DragonFly Mail Agent v0.11);
-        Fri, 03 Jan 2020 17:59:59 -0700
-Date:   Fri, 3 Jan 2020 17:59:59 -0700
-From:   Rob Herring <robh@kernel.org>
-To:     Govind Singh <govinds@codeaurora.org>
-Cc:     robh@kernel.org, devicetree@vger.kernel.org,
-        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        Govind Singh <govinds@codeaurora.org>
-Subject: Re: [PATCH v3 1/2] dt: bindings: add dt entry flag to skip SCM call
- for msa region
-Message-ID: <20200104005959.GA15965@bogus>
-References: <20200103134414.15457-1-govinds@codeaurora.org>
- <20200103134414.15457-2-govinds@codeaurora.org>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=BQvpmc6bTYtIoGI7mIebVuPQLrewKdFxgpvNfh1jXk8=;
+        b=jMCDMwlXKnnrZjCKaE4hTPHCvP+xIH3p1g3lpiZ6PF4ZQ/B0DmbeGJDBaNLkTGuI9A
+         wnyJSbtoxbIhLnWGWT9n+RbepmcxedrDq78SRtyDMaw9z1ULvIJaGDIrbhwfUdYjEVrc
+         tE1hS63al+VkjvukNw+hFF6RJWhjUZqTBCRx/XqbdeYVCjTpsqJfLEr0dBz2KuQaTFg1
+         lkah6j+ClMbS/EuoUlEWwR6JkDEXonSCoHVt/mU2m/k26zLPNhj3e1RFfUMt76SR3t8Y
+         fBI3l+4LBeK6lXRSKY9NDSq2y0XkdUHBMGi8Cdn8ESt93cTVNrQ/cXaW+i3yQwJqEYjc
+         M0fQ==
+X-Gm-Message-State: APjAAAXhGO56EoDMM+xJYKlo/Qgpf2WuxKkMtfW+q25rNRf6XMZX/Pxn
+        yCrS5BNWMUmEZUt+tsh5lWDEvWwlPACwkp7KrJY/Ew==
+X-Google-Smtp-Source: APXvYqyD9oMygC2d1JGl/rCxn+X/nhk+8OE08L9az0yTsFlrgLIFWrcAV9zmwbipEHAuXtJG1WtnbPXhiUtiQEvCzyo=
+X-Received: by 2002:a2e:9804:: with SMTP id a4mr27224065ljj.10.1578105265406;
+ Fri, 03 Jan 2020 18:34:25 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200103134414.15457-2-govinds@codeaurora.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+References: <CAD_xR9eDL+9jzjYxPXJjS7U58ypCPWHYzrk0C3_vt-w26FZeAQ@mail.gmail.com>
+ <1762437703fd150bb535ee488c78c830f107a531.camel@sipsolutions.net>
+ <CAD_xR9eh=CAYeQZ3Vp9Yj9h3ifMu2exy0ihaXyE+736tJrPVLA@mail.gmail.com> <CAMrEMU-QF8HCTMFhzHd0w2f132iA4GLUXHmBPGnuetPqkz=U7A@mail.gmail.com>
+In-Reply-To: <CAMrEMU-QF8HCTMFhzHd0w2f132iA4GLUXHmBPGnuetPqkz=U7A@mail.gmail.com>
+From:   Kan Yan <kyan@google.com>
+Date:   Fri, 3 Jan 2020 18:34:14 -0800
+Message-ID: <CA+iem5uPaYmZr=+kdHopm1Yo9dgyL98k7KfV6uYx_yH22FSGag@mail.gmail.com>
+Subject: Re: PROBLEM: Wireless networking goes down on Acer C720P Chromebook (bisected)
+To:     Justin Capella <justincapella@gmail.com>
+Cc:     Stephen Oberholtzer <stevie@qrpff.net>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@redhat.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        netdev@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri,  3 Jan 2020 19:14:13 +0530, Govind Singh wrote:
-> Add boolean context flag to disable SCM call for statically
-> mapped msa region.
-> 
-> Signed-off-by: Govind Singh <govinds@codeaurora.org>
-> ---
->  .../devicetree/bindings/net/wireless/qcom,ath10k.txt          | 4 ++++
->  1 file changed, 4 insertions(+)
-> 
+> This AQL stuff sounds pretty nifty, and I'd love to try my hand at
+> making it work for ath9k (also, since I put so much effort into an
+> automated build-and-test framework, it'd be a shame to just abandon
+> it.)  However, the ath9k code is rather lacking for comments, so I
+> don't even know where I should start, except for (I suspect) a call to
+> `wiphy_ext_feature_set(whatever, NL80211_EXT_FEATURE_AQL);` from
+> inside ath9k_set_hw_capab()?
+> In the meantime, I went back to e548f749b096 -- the commit prior to
+> the one making AQL support opt-in -- and cranked up the debugging.
 
-Acked-by: Rob Herring <robh@kernel.org>
+AQL is designed for wireless chipset that uses firmware/hardware
+offloading, to manage the firmware/hardware queue size. For ath9k, the
+TX queues are controlled by the host driver and chipsets that use
+ath9k have a much smaller hardware queue compared to ath10k, so AQL is
+probably not needed for ath9k. The airtime based TX scheduler alone
+should be sufficient.
+
+> > /sys/kernel/debug/ieee80211/phy0
+> >
+> > airtime_flags = 7
+> >
+> > stations/<my AP's MAC>/airtime =
+> >
+> > RX: 6583578 us
+> > TX: 32719 us
+> > Weight: 256
+> > Deficit: VO: -1128 us VI: 11 us BE: -5098636 us BK: 256 us
+> > Q depth: VO: 3868 us VI: 3636 us BE: 12284 us BK: 0 us
+> > Q limit[low/high]: VO: 5000/12000 VI: 5000/12000 BE: 5000/12000 BK: 5000/12000
+> >
+> > (I have no idea how to interpret this, but that '32719 us' seems odd,
+> > I thought the airtime usage was in 4us units?)
+> Me neither, off the top of my head, let's wait for Toke.
+
+"TX: 32719 us" is the airtime reported by firmware, which is not in 4us units.
+There are two airtime: the "consumed" airtime reported by firmware,
+which is used by the airtimed based TX scheduler to enforce fairness,
+and the "estimated" airtime used by AQL to control the queue length
+for frames pending in the firmware/hardware queue, which in 4us unit.
+
+> I ran a ping, and saw this:
+>
+> - pings coming back in <5ms
+> - re-enable AQL (echo 7 | tee airtime_flags)
+> - pings stop coming back immediately
+> - some seconds later, disable AQL again (echo 3 | tee airtime_flags)
+> - immediate *flood* of ping replies registered, with times 16000ms,
+> 15000ms, 14000ms, .. down to 1000ms, 15ms, then stabilizing sub-5ms
+> - According to the icmp_seq values, all 28 requests were replied to,
+> and their replies were delivered in-order
+>
+> This certainly looks like a missing TX queue restart to me?
+I don't think TX queue restart is "missing", the TX queue should get
+restarted when the pending frames is completed and returned to the
+host driver. However, It looks like there is some issue with the
+deficit refill logic in ath9k, and the TX queue got blocked due to the
+negative deficit.
+
+
+On Thu, Jan 2, 2020 at 11:22 PM Justin Capella <justincapella@gmail.com> wrote:
+>
+> The rather large negative deficit stands out to me. See this patch,
+> https://patchwork.kernel.org/patch/11246363/ specifically the comments
+> by Kan Yan
+>
+> On Thu, Jan 2, 2020, 3:14 PM Stephen Oberholtzer <stevie@qrpff.net> wrote:
+> >
+> >
+> > /sys/kernel/debug/ieee80211/phy0
+> >
+> > airtime_flags = 7
+> >
+> > stations/<my AP's MAC>/airtime =
+> >
+> > RX: 6583578 us
+> > TX: 32719 us
+> > Weight: 256
+> > Deficit: VO: -1128 us VI: 11 us BE: -5098636 us BK: 256 us
+> > Q depth: VO: 3868 us VI: 3636 us BE: 12284 us BK: 0 us
+> > Q limit[low/high]: VO: 5000/12000 VI: 5000/12000 BE: 5000/12000 BK: 5000/1200
+>
+> On Thu, Jan 2, 2020 at 3:14 PM Stephen Oberholtzer <stevie@qrpff.net> wrote:
+> >
+> > On Thu, Jan 2, 2020 at 8:28 AM Johannes Berg <johannes@sipsolutions.net> wrote:
+> > >
+> > > On Tue, 2019-12-31 at 19:49 -0500, Stephen Oberholtzer wrote:
+> > > > Wireless networking goes down on Acer C720P Chromebook (bisected)
+> > > >
+> > > > Culprit: 7a89233a ("mac80211: Use Airtime-based Queue Limits (AQL) on
+> > > > packet dequeue")
+> > > >
+> >
+> > <snip>
+> >
+> > > I think I found at least one hole in this, but IIRC (it was before my
+> > > vacation, sorry) it was pretty unlikely to actually happen. Perhaps
+> > > there are more though.
+> > >
+> > > https://lore.kernel.org/r/b14519e81b6d2335bd0cb7dcf074f0d1a4eec707.camel@sipsolutions.net
+> >
+> > <snippety-snip>
+> >
+> > > Do you get any output at all? Like a WARN_ON() for an underflow, or
+> > > something?
+> > >
+> > > johannes
+> > >
+> >
+> > Johannes,
+> >
+> > To answer your immediate question, no, I don't get any dmesg output at
+> > all. Nothing about underruns.
+> > However, while pursuing other avenues -- specifically, enabling
+> > mac80211 debugfs and log messages -- I realized that my 'master' was
+> > out-of-date from linux-stable and did a git pull.  Imagine my surprise
+> > when the resulting kernel did not exhibit the problem!
+> >
+> > Apparently, I had been a bit too pessimistic; since the problem
+> > existed in 5.5-rc1 release, I'd assumed that the problem wouldn't get
+> > rectified before 5.5.
+> >
+> > However, I decided to bisect the fix, and ended up with: 911bde0f
+> > ("mac80211: Turn AQL into an NL80211_EXT_FEATURE"), which appears to
+> > have "solved" the problem by just disabling the feature (this is
+> > ath9k, by the way.)
+> >
+> > This AQL stuff sounds pretty nifty, and I'd love to try my hand at
+> > making it work for ath9k (also, since I put so much effort into an
+> > automated build-and-test framework, it'd be a shame to just abandon
+> > it.)  However, the ath9k code is rather lacking for comments, so I
+> > don't even know where I should start, except for (I suspect) a call to
+> > `wiphy_ext_feature_set(whatever, NL80211_EXT_FEATURE_AQL);` from
+> > inside ath9k_set_hw_capab()?
+> >
+> > In the meantime, I went back to e548f749b096 -- the commit prior to
+> > the one making AQL support opt-in -- and cranked up the debugging.
+> >
+> > I'm not sure how to interpret any of this, but  here's what I got:
+> >
+> > dmesg output:
+> >
+> > Last relevant mention is "moving STA <my AP's MAC> to state 4" which
+> > happened during startup, before everything shut down.
+> >
+> > /sys/kernel/debug/ieee80211/phy0
+> >
+> > airtime_flags = 7
+> >
+> > stations/<my AP's MAC>/airtime =
+> >
+> > RX: 6583578 us
+> > TX: 32719 us
+> > Weight: 256
+> > Deficit: VO: -1128 us VI: 11 us BE: -5098636 us BK: 256 us
+> > Q depth: VO: 3868 us VI: 3636 us BE: 12284 us BK: 0 us
+> > Q limit[low/high]: VO: 5000/12000 VI: 5000/12000 BE: 5000/12000 BK: 5000/12000
+> >
+> > (I have no idea how to interpret this, but that '32719 us' seems odd,
+> > I thought the airtime usage was in 4us units?)
+> >
+> >
+> > Doing an 'echo 3 | tee airtime_flags' to clear the (old) AQL-enabled
+> > bit seemed to *immediately* restore network connectivity.
+> >
+> > I ran a ping, and saw this:
+> >
+> > - pings coming back in <5ms
+> > - re-enable AQL (echo 7 | tee airtime_flags)
+> > - pings stop coming back immediately
+> > - some seconds later, disable AQL again (echo 3 | tee airtime_flags)
+> > - immediate *flood* of ping replies registered, with times 16000ms,
+> > 15000ms, 14000ms, .. down to 1000ms, 15ms, then stabilizing sub-5ms
+> > - According to the icmp_seq values, all 28 requests were replied to,
+> > and their replies were delivered in-order
+> >
+> > This certainly looks like a missing TX queue restart to me?
+> >
+> >
+> > --
+> > -- Stevie-O
+> > Real programmers use COPY CON PROGRAM.EXE
