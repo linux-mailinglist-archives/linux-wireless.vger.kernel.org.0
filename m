@@ -2,245 +2,81 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4CDC1130026
-	for <lists+linux-wireless@lfdr.de>; Sat,  4 Jan 2020 03:34:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 854AA1301F7
+	for <lists+linux-wireless@lfdr.de>; Sat,  4 Jan 2020 12:19:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727282AbgADCec (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 3 Jan 2020 21:34:32 -0500
-Received: from mail-lj1-f195.google.com ([209.85.208.195]:36693 "EHLO
-        mail-lj1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727222AbgADCe3 (ORCPT
+        id S1725862AbgADLTq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 4 Jan 2020 06:19:46 -0500
+Received: from mail.w1.fi ([212.71.239.96]:46980 "EHLO
+        li674-96.members.linode.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725796AbgADLTq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 3 Jan 2020 21:34:29 -0500
-Received: by mail-lj1-f195.google.com with SMTP id r19so45562907ljg.3
-        for <linux-wireless@vger.kernel.org>; Fri, 03 Jan 2020 18:34:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=BQvpmc6bTYtIoGI7mIebVuPQLrewKdFxgpvNfh1jXk8=;
-        b=tAZK3OEKd7k1M9evv8ECR6IT4KuCG9ELRfiOy7DNKz4dsEPusPe/W4hprN3ZoOOUz3
-         +ODcHgUFQ4f7YwPVWXfHrzvzWU3ldmbVznRqqa1zjiUkPu4LpoCrsAknU2pSs7MXrXIu
-         Y/xlv7+HrXX2kZSD/sFcN30bWts4SGSC4NXHj1vHv5ddjdk8O2FOHd/Rolgxf2cns+sm
-         JXsm1ZhUMMiY+ixrFoIcOP0aW8DHcgEfeK6MQn7dP0f2AzG/APBX9Bucp+PPpWqmxSQz
-         DHL2CocOXAEQcVBUweSFLywO+ba7qejLqqpJTYRMTjsrVcuRnFB62Lll2tPT7II4iznT
-         iGbA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=BQvpmc6bTYtIoGI7mIebVuPQLrewKdFxgpvNfh1jXk8=;
-        b=jMCDMwlXKnnrZjCKaE4hTPHCvP+xIH3p1g3lpiZ6PF4ZQ/B0DmbeGJDBaNLkTGuI9A
-         wnyJSbtoxbIhLnWGWT9n+RbepmcxedrDq78SRtyDMaw9z1ULvIJaGDIrbhwfUdYjEVrc
-         tE1hS63al+VkjvukNw+hFF6RJWhjUZqTBCRx/XqbdeYVCjTpsqJfLEr0dBz2KuQaTFg1
-         lkah6j+ClMbS/EuoUlEWwR6JkDEXonSCoHVt/mU2m/k26zLPNhj3e1RFfUMt76SR3t8Y
-         fBI3l+4LBeK6lXRSKY9NDSq2y0XkdUHBMGi8Cdn8ESt93cTVNrQ/cXaW+i3yQwJqEYjc
-         M0fQ==
-X-Gm-Message-State: APjAAAXhGO56EoDMM+xJYKlo/Qgpf2WuxKkMtfW+q25rNRf6XMZX/Pxn
-        yCrS5BNWMUmEZUt+tsh5lWDEvWwlPACwkp7KrJY/Ew==
-X-Google-Smtp-Source: APXvYqyD9oMygC2d1JGl/rCxn+X/nhk+8OE08L9az0yTsFlrgLIFWrcAV9zmwbipEHAuXtJG1WtnbPXhiUtiQEvCzyo=
-X-Received: by 2002:a2e:9804:: with SMTP id a4mr27224065ljj.10.1578105265406;
- Fri, 03 Jan 2020 18:34:25 -0800 (PST)
+        Sat, 4 Jan 2020 06:19:46 -0500
+Received: from localhost (localhost [127.0.0.1])
+        by li674-96.members.linode.com (Postfix) with ESMTP id 2013611D0F;
+        Sat,  4 Jan 2020 11:19:45 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at w1.fi
+Received: from li674-96.members.linode.com ([127.0.0.1])
+        by localhost (mail.w1.fi [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id RTybslCnDNGU; Sat,  4 Jan 2020 11:19:43 +0000 (UTC)
+From:   Jouni Malinen <j@w1.fi>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless@vger.kernel.org, Jouni Malinen <j@w1.fi>
+Subject: [PATCH] mac80211: Fix TKIP replay protection immediately after key setup
+Date:   Sat,  4 Jan 2020 13:19:31 +0200
+Message-Id: <20200104111931.18144-1-j@w1.fi>
 MIME-Version: 1.0
-References: <CAD_xR9eDL+9jzjYxPXJjS7U58ypCPWHYzrk0C3_vt-w26FZeAQ@mail.gmail.com>
- <1762437703fd150bb535ee488c78c830f107a531.camel@sipsolutions.net>
- <CAD_xR9eh=CAYeQZ3Vp9Yj9h3ifMu2exy0ihaXyE+736tJrPVLA@mail.gmail.com> <CAMrEMU-QF8HCTMFhzHd0w2f132iA4GLUXHmBPGnuetPqkz=U7A@mail.gmail.com>
-In-Reply-To: <CAMrEMU-QF8HCTMFhzHd0w2f132iA4GLUXHmBPGnuetPqkz=U7A@mail.gmail.com>
-From:   Kan Yan <kyan@google.com>
-Date:   Fri, 3 Jan 2020 18:34:14 -0800
-Message-ID: <CA+iem5uPaYmZr=+kdHopm1Yo9dgyL98k7KfV6uYx_yH22FSGag@mail.gmail.com>
-Subject: Re: PROBLEM: Wireless networking goes down on Acer C720P Chromebook (bisected)
-To:     Justin Capella <justincapella@gmail.com>
-Cc:     Stephen Oberholtzer <stevie@qrpff.net>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@redhat.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        netdev@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-> This AQL stuff sounds pretty nifty, and I'd love to try my hand at
-> making it work for ath9k (also, since I put so much effort into an
-> automated build-and-test framework, it'd be a shame to just abandon
-> it.)  However, the ath9k code is rather lacking for comments, so I
-> don't even know where I should start, except for (I suspect) a call to
-> `wiphy_ext_feature_set(whatever, NL80211_EXT_FEATURE_AQL);` from
-> inside ath9k_set_hw_capab()?
-> In the meantime, I went back to e548f749b096 -- the commit prior to
-> the one making AQL support opt-in -- and cranked up the debugging.
+TKIP replay protection was skipped for the very first frame received
+after a new key is configured. While this is potentially needed to avoid
+dropping a frame in some cases, this does leave a window for replay
+attacks with group-addressed frames at the station side. Any earlier
+frame sent by the AP using the same key would be accepted as a valid
+frame and the internal RSC counter would then be updated to the TSC from
+that frame. This would allow multiple previously transmitted
+group-addressed frames to be replayed until the next valid new
+group-addressed frame from the AP is received by the station.
 
-AQL is designed for wireless chipset that uses firmware/hardware
-offloading, to manage the firmware/hardware queue size. For ath9k, the
-TX queues are controlled by the host driver and chipsets that use
-ath9k have a much smaller hardware queue compared to ath10k, so AQL is
-probably not needed for ath9k. The airtime based TX scheduler alone
-should be sufficient.
+Fix this by limiting the no-replay-protection exception to apply only
+for the case where TSC=0, i.e., when this is for the very first frame
+protected using the new key. There cannot be previously transmitted
+frames in such a case, so there cannot be a replay attack either.
 
-> > /sys/kernel/debug/ieee80211/phy0
-> >
-> > airtime_flags = 7
-> >
-> > stations/<my AP's MAC>/airtime =
-> >
-> > RX: 6583578 us
-> > TX: 32719 us
-> > Weight: 256
-> > Deficit: VO: -1128 us VI: 11 us BE: -5098636 us BK: 256 us
-> > Q depth: VO: 3868 us VI: 3636 us BE: 12284 us BK: 0 us
-> > Q limit[low/high]: VO: 5000/12000 VI: 5000/12000 BE: 5000/12000 BK: 5000/12000
-> >
-> > (I have no idea how to interpret this, but that '32719 us' seems odd,
-> > I thought the airtime usage was in 4us units?)
-> Me neither, off the top of my head, let's wait for Toke.
+Signed-off-by: Jouni Malinen <j@w1.fi>
+---
+ net/mac80211/tkip.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
-"TX: 32719 us" is the airtime reported by firmware, which is not in 4us units.
-There are two airtime: the "consumed" airtime reported by firmware,
-which is used by the airtimed based TX scheduler to enforce fairness,
-and the "estimated" airtime used by AQL to control the queue length
-for frames pending in the firmware/hardware queue, which in 4us unit.
+diff --git a/net/mac80211/tkip.c b/net/mac80211/tkip.c
+index 727dc9f3f3b3..7a62b3aaf248 100644
+--- a/net/mac80211/tkip.c
++++ b/net/mac80211/tkip.c
+@@ -263,9 +263,17 @@ int ieee80211_tkip_decrypt_data(struct arc4_ctx *ctx,
+ 	if ((keyid >> 6) != key->conf.keyidx)
+ 		return TKIP_DECRYPT_INVALID_KEYIDX;
+ 
+-	if (rx_ctx->ctx.state != TKIP_STATE_NOT_INIT &&
+-	    (iv32 < rx_ctx->iv32 ||
+-	     (iv32 == rx_ctx->iv32 && iv16 <= rx_ctx->iv16)))
++	/* Reject replays if the received TSC is smaller than or equal to the
++	 * last received value in a valid message, but with an exception for
++	 * the case where a new key has been set, but not yet fully initialized
++	 * and the received value is 0. This exception allows the very first
++	 * frame sent by the transmitter to be accepted.
++	 */
++	if (iv32 < rx_ctx->iv32 ||
++	    (iv32 == rx_ctx->iv32 &&
++	     (iv16 < rx_ctx->iv16 ||
++	      (iv16 == rx_ctx->iv16 &&
++	       (iv32 || iv16 || rx_ctx->ctx.state != TKIP_STATE_NOT_INIT)))))
+ 		return TKIP_DECRYPT_REPLAY;
+ 
+ 	if (only_iv) {
+-- 
+2.20.1
 
-> I ran a ping, and saw this:
->
-> - pings coming back in <5ms
-> - re-enable AQL (echo 7 | tee airtime_flags)
-> - pings stop coming back immediately
-> - some seconds later, disable AQL again (echo 3 | tee airtime_flags)
-> - immediate *flood* of ping replies registered, with times 16000ms,
-> 15000ms, 14000ms, .. down to 1000ms, 15ms, then stabilizing sub-5ms
-> - According to the icmp_seq values, all 28 requests were replied to,
-> and their replies were delivered in-order
->
-> This certainly looks like a missing TX queue restart to me?
-I don't think TX queue restart is "missing", the TX queue should get
-restarted when the pending frames is completed and returned to the
-host driver. However, It looks like there is some issue with the
-deficit refill logic in ath9k, and the TX queue got blocked due to the
-negative deficit.
-
-
-On Thu, Jan 2, 2020 at 11:22 PM Justin Capella <justincapella@gmail.com> wrote:
->
-> The rather large negative deficit stands out to me. See this patch,
-> https://patchwork.kernel.org/patch/11246363/ specifically the comments
-> by Kan Yan
->
-> On Thu, Jan 2, 2020, 3:14 PM Stephen Oberholtzer <stevie@qrpff.net> wrote:
-> >
-> >
-> > /sys/kernel/debug/ieee80211/phy0
-> >
-> > airtime_flags = 7
-> >
-> > stations/<my AP's MAC>/airtime =
-> >
-> > RX: 6583578 us
-> > TX: 32719 us
-> > Weight: 256
-> > Deficit: VO: -1128 us VI: 11 us BE: -5098636 us BK: 256 us
-> > Q depth: VO: 3868 us VI: 3636 us BE: 12284 us BK: 0 us
-> > Q limit[low/high]: VO: 5000/12000 VI: 5000/12000 BE: 5000/12000 BK: 5000/1200
->
-> On Thu, Jan 2, 2020 at 3:14 PM Stephen Oberholtzer <stevie@qrpff.net> wrote:
-> >
-> > On Thu, Jan 2, 2020 at 8:28 AM Johannes Berg <johannes@sipsolutions.net> wrote:
-> > >
-> > > On Tue, 2019-12-31 at 19:49 -0500, Stephen Oberholtzer wrote:
-> > > > Wireless networking goes down on Acer C720P Chromebook (bisected)
-> > > >
-> > > > Culprit: 7a89233a ("mac80211: Use Airtime-based Queue Limits (AQL) on
-> > > > packet dequeue")
-> > > >
-> >
-> > <snip>
-> >
-> > > I think I found at least one hole in this, but IIRC (it was before my
-> > > vacation, sorry) it was pretty unlikely to actually happen. Perhaps
-> > > there are more though.
-> > >
-> > > https://lore.kernel.org/r/b14519e81b6d2335bd0cb7dcf074f0d1a4eec707.camel@sipsolutions.net
-> >
-> > <snippety-snip>
-> >
-> > > Do you get any output at all? Like a WARN_ON() for an underflow, or
-> > > something?
-> > >
-> > > johannes
-> > >
-> >
-> > Johannes,
-> >
-> > To answer your immediate question, no, I don't get any dmesg output at
-> > all. Nothing about underruns.
-> > However, while pursuing other avenues -- specifically, enabling
-> > mac80211 debugfs and log messages -- I realized that my 'master' was
-> > out-of-date from linux-stable and did a git pull.  Imagine my surprise
-> > when the resulting kernel did not exhibit the problem!
-> >
-> > Apparently, I had been a bit too pessimistic; since the problem
-> > existed in 5.5-rc1 release, I'd assumed that the problem wouldn't get
-> > rectified before 5.5.
-> >
-> > However, I decided to bisect the fix, and ended up with: 911bde0f
-> > ("mac80211: Turn AQL into an NL80211_EXT_FEATURE"), which appears to
-> > have "solved" the problem by just disabling the feature (this is
-> > ath9k, by the way.)
-> >
-> > This AQL stuff sounds pretty nifty, and I'd love to try my hand at
-> > making it work for ath9k (also, since I put so much effort into an
-> > automated build-and-test framework, it'd be a shame to just abandon
-> > it.)  However, the ath9k code is rather lacking for comments, so I
-> > don't even know where I should start, except for (I suspect) a call to
-> > `wiphy_ext_feature_set(whatever, NL80211_EXT_FEATURE_AQL);` from
-> > inside ath9k_set_hw_capab()?
-> >
-> > In the meantime, I went back to e548f749b096 -- the commit prior to
-> > the one making AQL support opt-in -- and cranked up the debugging.
-> >
-> > I'm not sure how to interpret any of this, but  here's what I got:
-> >
-> > dmesg output:
-> >
-> > Last relevant mention is "moving STA <my AP's MAC> to state 4" which
-> > happened during startup, before everything shut down.
-> >
-> > /sys/kernel/debug/ieee80211/phy0
-> >
-> > airtime_flags = 7
-> >
-> > stations/<my AP's MAC>/airtime =
-> >
-> > RX: 6583578 us
-> > TX: 32719 us
-> > Weight: 256
-> > Deficit: VO: -1128 us VI: 11 us BE: -5098636 us BK: 256 us
-> > Q depth: VO: 3868 us VI: 3636 us BE: 12284 us BK: 0 us
-> > Q limit[low/high]: VO: 5000/12000 VI: 5000/12000 BE: 5000/12000 BK: 5000/12000
-> >
-> > (I have no idea how to interpret this, but that '32719 us' seems odd,
-> > I thought the airtime usage was in 4us units?)
-> >
-> >
-> > Doing an 'echo 3 | tee airtime_flags' to clear the (old) AQL-enabled
-> > bit seemed to *immediately* restore network connectivity.
-> >
-> > I ran a ping, and saw this:
-> >
-> > - pings coming back in <5ms
-> > - re-enable AQL (echo 7 | tee airtime_flags)
-> > - pings stop coming back immediately
-> > - some seconds later, disable AQL again (echo 3 | tee airtime_flags)
-> > - immediate *flood* of ping replies registered, with times 16000ms,
-> > 15000ms, 14000ms, .. down to 1000ms, 15ms, then stabilizing sub-5ms
-> > - According to the icmp_seq values, all 28 requests were replied to,
-> > and their replies were delivered in-order
-> >
-> > This certainly looks like a missing TX queue restart to me?
-> >
-> >
-> > --
-> > -- Stevie-O
-> > Real programmers use COPY CON PROGRAM.EXE
