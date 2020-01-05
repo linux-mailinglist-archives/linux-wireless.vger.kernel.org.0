@@ -2,153 +2,85 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 72F6E1307F3
-	for <lists+linux-wireless@lfdr.de>; Sun,  5 Jan 2020 13:23:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C4BA21308D9
+	for <lists+linux-wireless@lfdr.de>; Sun,  5 Jan 2020 16:42:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726561AbgAEMXI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 5 Jan 2020 07:23:08 -0500
-Received: from mail.kernel.org ([198.145.29.99]:47576 "EHLO mail.kernel.org"
+        id S1726411AbgAEPmW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 5 Jan 2020 10:42:22 -0500
+Received: from mail.kernel.org ([198.145.29.99]:57586 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725897AbgAEMXI (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 5 Jan 2020 07:23:08 -0500
-Received: from new-host-5.station (net-2-42-61-77.cust.vodafonedsl.it [2.42.61.77])
+        id S1726212AbgAEPmW (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 5 Jan 2020 10:42:22 -0500
+Received: from localhost (unknown [73.61.17.19])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 86797217F4;
-        Sun,  5 Jan 2020 12:23:06 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 67CC92077B;
+        Sun,  5 Jan 2020 15:42:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1578226987;
-        bh=2wkttU5VvjZfagmMP91pcWkNKGIZo3GmhxT0z318yTk=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DtAYLhJCIY/Gn5yDiwr8ZSeu0YHMK4SZ2LNJ5qgtc0D/uTbjL73qJckDB8l1LZI6G
-         s5XP1niVPZkhHuQCh9GbW9V4pUIFeElj1lOdKLOqb3j7Gjl8FVzWtr4N4dnUUAhHTg
-         d4kB7zmOAxoUTFKO3b5hA8jnN9DD5+rkYOT4r30A=
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
-        Sean.Wang@mediatek.com
-Subject: [PATCH v2 18/18] mt76: mt76u: introduce MT_DRV_RX_DMA_HDR flag
-Date:   Sun,  5 Jan 2020 13:21:56 +0100
-Message-Id: <df482f4b2b50263b6243a78758546e628a4b0ff1.1578226544.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.21.1
-In-Reply-To: <cover.1578226544.git.lorenzo@kernel.org>
-References: <cover.1578226544.git.lorenzo@kernel.org>
+        s=default; t=1578238941;
+        bh=kqa7E7pY27pjTz+f6e0ccECN9J2A3cYu1FhYrBZerzc=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=ns+keplO9pEXxkWOQaPUzgi19poKeoyq3kSgJGOe0ITWRgN6k/+44J1jWsi0f76O5
+         siUTlW8OWdS2yQq3mSEaq0UspmFfiGoldNXHFdB2IXJtbh+Q3liaZpASWS85Ly8iMa
+         gwCTlf2xt5CW5I1TNQR00zSu4Okksn14H0b36GoM=
+Date:   Sun, 5 Jan 2020 10:42:18 -0500
+From:   Sasha Levin <sashal@kernel.org>
+To:     Anders Kaseorg <andersk@mit.edu>
+Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Luca Coelho <luciano.coelho@intel.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH AUTOSEL 5.4 056/187] Revert "iwlwifi: assign directly to
+ iwl_trans->cfg in QuZ detection"
+Message-ID: <20200105154218.GP16372@sasha-vm>
+References: <20191227174055.4923-1-sashal@kernel.org>
+ <20191227174055.4923-56-sashal@kernel.org>
+ <5dbea7a0-5c66-abe4-b1ef-bbfceccbb9bb@mit.edu>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <5dbea7a0-5c66-abe4-b1ef-bbfceccbb9bb@mit.edu>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Define MT_DRV_RX_DMA_HDR flag in drv_flag in order to not skip rx frame
-dma header since new devices (e.g. mt7663u) reports rx frame info in the
-usb dma header
+On Sun, Dec 29, 2019 at 09:48:53PM -0800, Anders Kaseorg wrote:
+>On 12/27/19 9:38 AM, Sasha Levin wrote:
+>> From: Anders Kaseorg <andersk@mit.edu>
+>>
+>> [ Upstream commit db5cce1afc8d2475d2c1c37c2a8267dd0e151526 ]
+>>
+>> This reverts commit 968dcfb4905245dc64d65312c0d17692fa087b99.
+>>
+>> Both that commit and commit 809805a820c6445f7a701ded24fdc6bbc841d1e4
+>> attempted to fix the same bug (dead assignments to the local variable
+>> cfg), but they did so in incompatible ways. When they were both merged,
+>> independently of each other, the combination actually caused the bug to
+>> reappear, leading to a firmware crash on boot for some cards.
+>>
+>> https://bugzilla.kernel.org/show_bug.cgi?id=205719
+>>
+>> Signed-off-by: Anders Kaseorg <andersk@mit.edu>
+>> Acked-by: Luca Coelho <luciano.coelho@intel.com>
+>> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+>> Signed-off-by: Sasha Levin <sashal@kernel.org>
+>
+>This commit’s child 0df36b90c47d93295b7e393da2d961b2f3b6cde4 (part of
+>the same bug 205719) is now enqueued for v5.4, but this one doesn’t seem
+>to have made it yet, perhaps because I forgot to Cc: stable@ in the
+>commit message.  Can someone make sure this goes to v5.4 as well?  Luca
+>previously nominated it for v5.4 here:
+>
+>https://patchwork.kernel.org/patch/11269985/#23032785
 
-Signed-off-by: Sean Wang <sean.wang@mediatek.com>
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- drivers/net/wireless/mediatek/mt76/mt76.h |  1 +
- drivers/net/wireless/mediatek/mt76/usb.c  | 31 ++++++++++++++---------
- 2 files changed, 20 insertions(+), 12 deletions(-)
+Great to hear from you again Anders!
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
-index e7b86712f574..aa153c7a28e9 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76.h
-@@ -286,6 +286,7 @@ struct mt76_hw_cap {
- #define MT_DRV_TXWI_NO_FREE		BIT(0)
- #define MT_DRV_TX_ALIGNED4_SKBS		BIT(1)
- #define MT_DRV_SW_RX_AIRTIME		BIT(2)
-+#define MT_DRV_RX_DMA_HDR		BIT(3)
- 
- struct mt76_driver_ops {
- 	u32 drv_flags;
-diff --git a/drivers/net/wireless/mediatek/mt76/usb.c b/drivers/net/wireless/mediatek/mt76/usb.c
-index 57d2590165e3..981d8a985557 100644
---- a/drivers/net/wireless/mediatek/mt76/usb.c
-+++ b/drivers/net/wireless/mediatek/mt76/usb.c
-@@ -506,14 +506,17 @@ mt76u_get_next_rx_entry(struct mt76_queue *q)
- 	return urb;
- }
- 
--static int mt76u_get_rx_entry_len(u8 *data, u32 data_len)
-+static int
-+mt76u_get_rx_entry_len(struct mt76_dev *dev, u8 *data,
-+		       u32 data_len)
- {
- 	u16 dma_len, min_len;
- 
- 	dma_len = get_unaligned_le16(data);
--	min_len = MT_DMA_HDR_LEN + MT_RX_RXWI_LEN +
--		  MT_FCE_INFO_LEN;
-+	if (dev->drv->drv_flags & MT_DRV_RX_DMA_HDR)
-+		return dma_len;
- 
-+	min_len = MT_DMA_HDR_LEN + MT_RX_RXWI_LEN + MT_FCE_INFO_LEN;
- 	if (data_len < min_len || !dma_len ||
- 	    dma_len + MT_DMA_HDR_LEN > data_len ||
- 	    (dma_len & 0x3))
-@@ -522,11 +525,14 @@ static int mt76u_get_rx_entry_len(u8 *data, u32 data_len)
- }
- 
- static struct sk_buff *
--mt76u_build_rx_skb(void *data, int len, int buf_size)
-+mt76u_build_rx_skb(struct mt76_dev *dev, void *data,
-+		   int len, int buf_size)
- {
-+	int head_room, drv_flags = dev->drv->drv_flags;
- 	struct sk_buff *skb;
- 
--	if (SKB_WITH_OVERHEAD(buf_size) < MT_DMA_HDR_LEN + len) {
-+	head_room = drv_flags & MT_DRV_RX_DMA_HDR ? 0 : MT_DMA_HDR_LEN;
-+	if (SKB_WITH_OVERHEAD(buf_size) < head_room + len) {
- 		struct page *page;
- 
- 		/* slow path, not enough space for data and
-@@ -536,8 +542,8 @@ mt76u_build_rx_skb(void *data, int len, int buf_size)
- 		if (!skb)
- 			return NULL;
- 
--		skb_put_data(skb, data + MT_DMA_HDR_LEN, MT_SKB_HEAD_LEN);
--		data += (MT_DMA_HDR_LEN + MT_SKB_HEAD_LEN);
-+		skb_put_data(skb, data + head_room, MT_SKB_HEAD_LEN);
-+		data += head_room + MT_SKB_HEAD_LEN;
- 		page = virt_to_head_page(data);
- 		skb_add_rx_frag(skb, skb_shinfo(skb)->nr_frags,
- 				page, data - page_address(page),
-@@ -551,7 +557,7 @@ mt76u_build_rx_skb(void *data, int len, int buf_size)
- 	if (!skb)
- 		return NULL;
- 
--	skb_reserve(skb, MT_DMA_HDR_LEN);
-+	skb_reserve(skb, head_room);
- 	__skb_put(skb, len);
- 
- 	return skb;
-@@ -563,18 +569,19 @@ mt76u_process_rx_entry(struct mt76_dev *dev, struct urb *urb,
- {
- 	u8 *data = urb->num_sgs ? sg_virt(&urb->sg[0]) : urb->transfer_buffer;
- 	int data_len = urb->num_sgs ? urb->sg[0].length : urb->actual_length;
--	int len, nsgs = 1;
-+	int len, nsgs = 1, head_room, drv_flags = dev->drv->drv_flags;
- 	struct sk_buff *skb;
- 
- 	if (!test_bit(MT76_STATE_INITIALIZED, &dev->phy.state))
- 		return 0;
- 
--	len = mt76u_get_rx_entry_len(data, urb->actual_length);
-+	len = mt76u_get_rx_entry_len(dev, data, urb->actual_length);
- 	if (len < 0)
- 		return 0;
- 
--	data_len = min_t(int, len, data_len - MT_DMA_HDR_LEN);
--	skb = mt76u_build_rx_skb(data, data_len, buf_size);
-+	head_room = drv_flags & MT_DRV_RX_DMA_HDR ? 0 : MT_DMA_HDR_LEN;
-+	data_len = min_t(int, len, data_len - head_room);
-+	skb = mt76u_build_rx_skb(dev, data, data_len, buf_size);
- 	if (!skb)
- 		return 0;
- 
+Yes, AUTOSEL runs on a slower cycle than patches tagged for stable.
+Anyway, I've queued this patch up for the next release.
+
 -- 
-2.21.1
-
+Thanks,
+Sasha
