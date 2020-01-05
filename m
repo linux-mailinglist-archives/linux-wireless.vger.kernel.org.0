@@ -2,91 +2,74 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5BFEA1309FF
-	for <lists+linux-wireless@lfdr.de>; Sun,  5 Jan 2020 22:17:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 77346130A23
+	for <lists+linux-wireless@lfdr.de>; Sun,  5 Jan 2020 23:08:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727160AbgAEVRP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 5 Jan 2020 16:17:15 -0500
-Received: from mx2.suse.de ([195.135.220.15]:50100 "EHLO mx2.suse.de"
+        id S1727166AbgAEWIq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 5 Jan 2020 17:08:46 -0500
+Received: from vps0.lunn.ch ([185.16.172.187]:48182 "EHLO vps0.lunn.ch"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727149AbgAEVRO (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 5 Jan 2020 16:17:14 -0500
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id 463D2B1AB;
-        Sun,  5 Jan 2020 21:17:12 +0000 (UTC)
-Received: by unicorn.suse.cz (Postfix, from userid 1000)
-        id EE930E048B; Sun,  5 Jan 2020 22:17:11 +0100 (CET)
-Message-Id: <146ace9856b8576eea83a1a5dc6329315831c44e.1578257976.git.mkubecek@suse.cz>
-In-Reply-To: <cover.1578257976.git.mkubecek@suse.cz>
-References: <cover.1578257976.git.mkubecek@suse.cz>
-From:   Michal Kubecek <mkubecek@suse.cz>
-Subject: [PATCH net-next 3/3] epic100: allow nesting of ethtool_ops begin()
- and complete()
-To:     "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org
-Cc:     Maya Erez <merez@codeaurora.org>,
+        id S1726851AbgAEWIq (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 5 Jan 2020 17:08:46 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+        s=20171124; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
+        Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=aEHWEEo6XrkuQmxbIi/VOLDO1KN+ijDmrPx0ATskWBA=; b=idZIs0K6tVwGiyWJKDRknZN0An
+        cRoK7GkFfUEADbdBu9CL598ESka2Oin0LiGpIE4vWlU5iTY9VUTiavkoUe/iUb7Cbzm9MGMQv1lig
+        XWKrMnskOLwxGWAliUaeS1KKZGFf94dkS4jFTQzTGVNZcgco3owQkWJkj/kCgA8ESaYc=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.93)
+        (envelope-from <andrew@lunn.ch>)
+        id 1ioE4W-0000rJ-HB; Sun, 05 Jan 2020 23:08:32 +0100
+Date:   Sun, 5 Jan 2020 23:08:32 +0100
+From:   Andrew Lunn <andrew@lunn.ch>
+To:     Michal Kubecek <mkubecek@suse.cz>
+Cc:     "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
+        Maya Erez <merez@codeaurora.org>,
         Kalle Valo <kvalo@codeaurora.org>,
         linux-wireless@vger.kernel.org, wil6210@qti.qualcomm.com,
         Francois Romieu <romieu@fr.zoreil.com>,
-        linux-kernel@vger.kernel.org, Andrew Lunn <andrew@lunn.ch>,
+        linux-kernel@vger.kernel.org,
         Florian Fainelli <f.fainelli@gmail.com>
-Date:   Sun,  5 Jan 2020 22:17:11 +0100 (CET)
+Subject: Re: [PATCH net-next 3/3] epic100: allow nesting of ethtool_ops
+ begin() and complete()
+Message-ID: <20200105220832.GA21914@lunn.ch>
+References: <cover.1578257976.git.mkubecek@suse.cz>
+ <146ace9856b8576eea83a1a5dc6329315831c44e.1578257976.git.mkubecek@suse.cz>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <146ace9856b8576eea83a1a5dc6329315831c44e.1578257976.git.mkubecek@suse.cz>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Unlike most networking drivers using begin() and complete() ethtool_ops
-callbacks to resume a device which is down and suspend it again when done,
-epic100 does not use standard refcounted infrastructure but sets device
-sleep state directly.
+> @@ -1435,8 +1436,10 @@ static int ethtool_begin(struct net_device *dev)
+>  	struct epic_private *ep = netdev_priv(dev);
+>  	void __iomem *ioaddr = ep->ioaddr;
+>  
+> +	if (ep->ethtool_ops_nesting == U32_MAX)
+> +		return -EBUSY;
+>  	/* power-up, if interface is down */
+> -	if (!netif_running(dev)) {
+> +	if (ep->ethtool_ops_nesting++ && !netif_running(dev)) {
+>  		ew32(GENCTL, 0x0200);
+>  		ew32(NVCTL, (er32(NVCTL) & ~0x003c) | 0x4800);
+>  	}
 
-With the introduction of netlink ethtool interface, we may have nested
-begin-complete blocks so that inner complete() would put the device back to
-sleep for the rest of the outer block.
+Hi Michal
 
-To avoid rewriting an old and not very actively developed driver, just add
-a nesting counter and only perform resume and suspend on the outermost
-level.
+In the via-velocity you added:
 
-Signed-off-by: Michal Kubecek <mkubecek@suse.cz>
----
- drivers/net/ethernet/smsc/epic100.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
++       if (vptr->ethtool_ops_nesting == U32_MAX)
++               return -EBUSY;
++       if (!vptr->ethtool_ops_nesting++ && !netif_running(dev))
+                velocity_set_power_state(vptr, PCI_D0);
+        return 0;
 
-diff --git a/drivers/net/ethernet/smsc/epic100.c b/drivers/net/ethernet/smsc/epic100.c
-index 912760e8514c..b9915645412c 100644
---- a/drivers/net/ethernet/smsc/epic100.c
-+++ b/drivers/net/ethernet/smsc/epic100.c
-@@ -280,6 +280,7 @@ struct epic_private {
- 	signed char phys[4];				/* MII device addresses. */
- 	u16 advertising;					/* NWay media advertisement */
- 	int mii_phy_cnt;
-+	u32 ethtool_ops_nesting;
- 	struct mii_if_info mii;
- 	unsigned int tx_full:1;				/* The Tx queue is full. */
- 	unsigned int default_port:4;		/* Last dev->if_port value. */
-@@ -1435,8 +1436,10 @@ static int ethtool_begin(struct net_device *dev)
- 	struct epic_private *ep = netdev_priv(dev);
- 	void __iomem *ioaddr = ep->ioaddr;
- 
-+	if (ep->ethtool_ops_nesting == U32_MAX)
-+		return -EBUSY;
- 	/* power-up, if interface is down */
--	if (!netif_running(dev)) {
-+	if (ep->ethtool_ops_nesting++ && !netif_running(dev)) {
- 		ew32(GENCTL, 0x0200);
- 		ew32(NVCTL, (er32(NVCTL) & ~0x003c) | 0x4800);
- 	}
-@@ -1449,7 +1452,7 @@ static void ethtool_complete(struct net_device *dev)
- 	void __iomem *ioaddr = ep->ioaddr;
- 
- 	/* power-down, if interface is down */
--	if (!netif_running(dev)) {
-+	if (!--ep->ethtool_ops_nesting && !netif_running(dev)) {
- 		ew32(GENCTL, 0x0008);
- 		ew32(NVCTL, (er32(NVCTL) & ~0x483c) | 0x0000);
- 	}
--- 
-2.24.1
+These two fragments differ by a ! . Is that correct?
 
+      Andrew
