@@ -2,74 +2,88 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 77346130A23
-	for <lists+linux-wireless@lfdr.de>; Sun,  5 Jan 2020 23:08:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BCC0B130A9D
+	for <lists+linux-wireless@lfdr.de>; Sun,  5 Jan 2020 23:58:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727166AbgAEWIq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 5 Jan 2020 17:08:46 -0500
-Received: from vps0.lunn.ch ([185.16.172.187]:48182 "EHLO vps0.lunn.ch"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726851AbgAEWIq (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 5 Jan 2020 17:08:46 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-        s=20171124; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
-        Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=aEHWEEo6XrkuQmxbIi/VOLDO1KN+ijDmrPx0ATskWBA=; b=idZIs0K6tVwGiyWJKDRknZN0An
-        cRoK7GkFfUEADbdBu9CL598ESka2Oin0LiGpIE4vWlU5iTY9VUTiavkoUe/iUb7Cbzm9MGMQv1lig
-        XWKrMnskOLwxGWAliUaeS1KKZGFf94dkS4jFTQzTGVNZcgco3owQkWJkj/kCgA8ESaYc=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.93)
-        (envelope-from <andrew@lunn.ch>)
-        id 1ioE4W-0000rJ-HB; Sun, 05 Jan 2020 23:08:32 +0100
-Date:   Sun, 5 Jan 2020 23:08:32 +0100
-From:   Andrew Lunn <andrew@lunn.ch>
-To:     Michal Kubecek <mkubecek@suse.cz>
-Cc:     "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
-        Maya Erez <merez@codeaurora.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        linux-wireless@vger.kernel.org, wil6210@qti.qualcomm.com,
-        Francois Romieu <romieu@fr.zoreil.com>,
-        linux-kernel@vger.kernel.org,
-        Florian Fainelli <f.fainelli@gmail.com>
-Subject: Re: [PATCH net-next 3/3] epic100: allow nesting of ethtool_ops
- begin() and complete()
-Message-ID: <20200105220832.GA21914@lunn.ch>
-References: <cover.1578257976.git.mkubecek@suse.cz>
- <146ace9856b8576eea83a1a5dc6329315831c44e.1578257976.git.mkubecek@suse.cz>
+        id S1727215AbgAEW6B (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 5 Jan 2020 17:58:01 -0500
+Received: from mail-io1-f72.google.com ([209.85.166.72]:41462 "EHLO
+        mail-io1-f72.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727171AbgAEW6B (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 5 Jan 2020 17:58:01 -0500
+Received: by mail-io1-f72.google.com with SMTP id m12so9127286ioh.8
+        for <linux-wireless@vger.kernel.org>; Sun, 05 Jan 2020 14:58:01 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:date:in-reply-to:message-id:subject
+         :from:to;
+        bh=MybccZLowdSuY610EZVsc1I89suuz7NXH7uvIv0mFvY=;
+        b=MfHBad+Vub94jcH3pDfXkVXwxR75+ccBtfBprq7Q8SwVlg1B2OOPdtEc+2SfsCqaB5
+         MAnTei+PB3+mf/NoaXgcFU1hreXTH92zzseAoaQBm5nwN6Xrs/XIMDFxfNeWKoTopbg3
+         AUXB/SWnmOp2dLX4xX9/Xl8xiVJMf1HhAGJ6CiWiLvNM5E5DYVDejJZrQ2ugZrxlhEBL
+         wVWVv681sPf1GhPlBOxp6QAov9wDbF8IKiXUqHfTkfOqui+ePpPhqgoePPRy13Wrub8x
+         H8Xx/AkObaf6Jk0piOwTkPhlMDuGkFRGzCozJwj4PECRN3wpt+MgLxbzkGIDmYMuD6PK
+         uJkg==
+X-Gm-Message-State: APjAAAVmwuDK7/0UPGN+eNN67HhUlF8FyJh9fh+4RIifYUbpPnnY63L4
+        5v/4b8wnx4c0Y3HRC8TBNnuxHhxiL6ZeaI1K11LgxxHrPbo7
+X-Google-Smtp-Source: APXvYqwI1kaOaU+6OhN9mHkSBgJLPiiG9E2oMRL3MMauj8xdpOQ/nYJTOKJNppAbqi17MDpHQfb0GrThss7Ve4NxONRpCk4GrB8O
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <146ace9856b8576eea83a1a5dc6329315831c44e.1578257976.git.mkubecek@suse.cz>
+X-Received: by 2002:a92:3996:: with SMTP id h22mr81182568ilf.129.1578265080765;
+ Sun, 05 Jan 2020 14:58:00 -0800 (PST)
+Date:   Sun, 05 Jan 2020 14:58:00 -0800
+In-Reply-To: <000000000000ab3f800598cec624@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <000000000000802598059b6c7989@google.com>
+Subject: Re: WARNING: bad unlock balance in sch_direct_xmit
+From:   syzbot <syzbot+4ec99438ed7450da6272@syzkaller.appspotmail.com>
+To:     a@unstable.cc, alex.aring@gmail.com, allison@lohutok.net,
+        andrew@lunn.ch, andy@greyhouse.net, ap420073@gmail.com,
+        ast@domdv.de, b.a.t.m.a.n@lists.open-mesh.org,
+        bridge@lists.linux-foundation.org, cleech@redhat.com,
+        daniel@iogearbox.net, davem@davemloft.net, dsa@cumulusnetworks.com,
+        f.fainelli@gmail.com, fw@strlen.de, gregkh@linuxfoundation.org,
+        gustavo@embeddedor.com, haiyangz@microsoft.com, info@metux.net,
+        j.vosburgh@gmail.com, j@w1.fi, jakub.kicinski@netronome.com,
+        jhs@mojatatu.com, jiri@resnulli.us, johan.hedberg@gmail.com,
+        johannes.berg@intel.com, jwi@linux.ibm.com,
+        kstewart@linuxfoundation.org, kvalo@codeaurora.org,
+        kys@microsoft.com, linmiaohe@huawei.com,
+        linux-bluetooth@vger.kernel.org, linux-hams@vger.kernel.org,
+        linux-hyperv@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-ppp@vger.kernel.org, linux-wireless@vger.kernel.org,
+        linux-wpan@vger.kernel.org, liuhangbin@gmail.com,
+        marcel@holtmann.org, mareklindner@neomailbox.ch, mkubecek@suse.cz,
+        mmanning@vyatta.att-mail.com, netdev@vger.kernel.org,
+        nikolay@cumulusnetworks.com, oss-drivers@netronome.com,
+        paulus@samba.org, ralf@linux-mips.org, roopa@cumulusnetworks.com,
+        sashal@kernel.org
+Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-> @@ -1435,8 +1436,10 @@ static int ethtool_begin(struct net_device *dev)
->  	struct epic_private *ep = netdev_priv(dev);
->  	void __iomem *ioaddr = ep->ioaddr;
->  
-> +	if (ep->ethtool_ops_nesting == U32_MAX)
-> +		return -EBUSY;
->  	/* power-up, if interface is down */
-> -	if (!netif_running(dev)) {
-> +	if (ep->ethtool_ops_nesting++ && !netif_running(dev)) {
->  		ew32(GENCTL, 0x0200);
->  		ew32(NVCTL, (er32(NVCTL) & ~0x003c) | 0x4800);
->  	}
+syzbot has bisected this bug to:
 
-Hi Michal
+commit ab92d68fc22f9afab480153bd82a20f6e2533769
+Author: Taehee Yoo <ap420073@gmail.com>
+Date:   Mon Oct 21 18:47:51 2019 +0000
 
-In the via-velocity you added:
+     net: core: add generic lockdep keys
 
-+       if (vptr->ethtool_ops_nesting == U32_MAX)
-+               return -EBUSY;
-+       if (!vptr->ethtool_ops_nesting++ && !netif_running(dev))
-                velocity_set_power_state(vptr, PCI_D0);
-        return 0;
+bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=15e88ec6e00000
+start commit:   36487907 Merge branch 'akpm' (patches from Andrew)
+git tree:       upstream
+final crash:    https://syzkaller.appspot.com/x/report.txt?x=17e88ec6e00000
+console output: https://syzkaller.appspot.com/x/log.txt?x=13e88ec6e00000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=f2f3ef188b7e16cf
+dashboard link: https://syzkaller.appspot.com/bug?extid=4ec99438ed7450da6272
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=1722c5c1e00000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=167aee3ee00000
 
-These two fragments differ by a ! . Is that correct?
+Reported-by: syzbot+4ec99438ed7450da6272@syzkaller.appspotmail.com
+Fixes: ab92d68fc22f ("net: core: add generic lockdep keys")
 
-      Andrew
+For information about bisection process see: https://goo.gl/tpsmEJ#bisection
