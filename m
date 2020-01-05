@@ -2,85 +2,83 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C4BA21308D9
-	for <lists+linux-wireless@lfdr.de>; Sun,  5 Jan 2020 16:42:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F7631309F8
+	for <lists+linux-wireless@lfdr.de>; Sun,  5 Jan 2020 22:17:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726411AbgAEPmW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 5 Jan 2020 10:42:22 -0500
-Received: from mail.kernel.org ([198.145.29.99]:57586 "EHLO mail.kernel.org"
+        id S1726856AbgAEVRB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 5 Jan 2020 16:17:01 -0500
+Received: from mx2.suse.de ([195.135.220.15]:50002 "EHLO mx2.suse.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726212AbgAEPmW (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 5 Jan 2020 10:42:22 -0500
-Received: from localhost (unknown [73.61.17.19])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 67CC92077B;
-        Sun,  5 Jan 2020 15:42:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1578238941;
-        bh=kqa7E7pY27pjTz+f6e0ccECN9J2A3cYu1FhYrBZerzc=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=ns+keplO9pEXxkWOQaPUzgi19poKeoyq3kSgJGOe0ITWRgN6k/+44J1jWsi0f76O5
-         siUTlW8OWdS2yQq3mSEaq0UspmFfiGoldNXHFdB2IXJtbh+Q3liaZpASWS85Ly8iMa
-         gwCTlf2xt5CW5I1TNQR00zSu4Okksn14H0b36GoM=
-Date:   Sun, 5 Jan 2020 10:42:18 -0500
-From:   Sasha Levin <sashal@kernel.org>
-To:     Anders Kaseorg <andersk@mit.edu>
-Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        Luca Coelho <luciano.coelho@intel.com>,
+        id S1726792AbgAEVRB (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 5 Jan 2020 16:17:01 -0500
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx2.suse.de (Postfix) with ESMTP id 89988AE07;
+        Sun,  5 Jan 2020 21:16:58 +0000 (UTC)
+Received: by unicorn.suse.cz (Postfix, from userid 1000)
+        id DBDB4E048B; Sun,  5 Jan 2020 22:16:56 +0100 (CET)
+Message-Id: <cover.1578257976.git.mkubecek@suse.cz>
+From:   Michal Kubecek <mkubecek@suse.cz>
+Subject: [PATCH net-next 0/3] ethtool: allow nesting of begin() and complete()
+ callbacks
+To:     "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org
+Cc:     Maya Erez <merez@codeaurora.org>,
         Kalle Valo <kvalo@codeaurora.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 5.4 056/187] Revert "iwlwifi: assign directly to
- iwl_trans->cfg in QuZ detection"
-Message-ID: <20200105154218.GP16372@sasha-vm>
-References: <20191227174055.4923-1-sashal@kernel.org>
- <20191227174055.4923-56-sashal@kernel.org>
- <5dbea7a0-5c66-abe4-b1ef-bbfceccbb9bb@mit.edu>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <5dbea7a0-5c66-abe4-b1ef-bbfceccbb9bb@mit.edu>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+        linux-wireless@vger.kernel.org, wil6210@qti.qualcomm.com,
+        Francois Romieu <romieu@fr.zoreil.com>,
+        linux-kernel@vger.kernel.org, Andrew Lunn <andrew@lunn.ch>,
+        Florian Fainelli <f.fainelli@gmail.com>
+Date:   Sun,  5 Jan 2020 22:16:56 +0100 (CET)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sun, Dec 29, 2019 at 09:48:53PM -0800, Anders Kaseorg wrote:
->On 12/27/19 9:38 AM, Sasha Levin wrote:
->> From: Anders Kaseorg <andersk@mit.edu>
->>
->> [ Upstream commit db5cce1afc8d2475d2c1c37c2a8267dd0e151526 ]
->>
->> This reverts commit 968dcfb4905245dc64d65312c0d17692fa087b99.
->>
->> Both that commit and commit 809805a820c6445f7a701ded24fdc6bbc841d1e4
->> attempted to fix the same bug (dead assignments to the local variable
->> cfg), but they did so in incompatible ways. When they were both merged,
->> independently of each other, the combination actually caused the bug to
->> reappear, leading to a firmware crash on boot for some cards.
->>
->> https://bugzilla.kernel.org/show_bug.cgi?id=205719
->>
->> Signed-off-by: Anders Kaseorg <andersk@mit.edu>
->> Acked-by: Luca Coelho <luciano.coelho@intel.com>
->> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
->> Signed-off-by: Sasha Levin <sashal@kernel.org>
->
->This commit’s child 0df36b90c47d93295b7e393da2d961b2f3b6cde4 (part of
->the same bug 205719) is now enqueued for v5.4, but this one doesn’t seem
->to have made it yet, perhaps because I forgot to Cc: stable@ in the
->commit message.  Can someone make sure this goes to v5.4 as well?  Luca
->previously nominated it for v5.4 here:
->
->https://patchwork.kernel.org/patch/11269985/#23032785
+The ethtool ioctl interface used to guarantee that ethtool_ops callbacks
+were always called in a block between calls to ->begin() and ->complete()
+(if these are defined) and that this whole block was executed with RTNL
+lock held:
 
-Great to hear from you again Anders!
+	rtnl_lock();
+	ops->begin();
+	/* other ethtool_ops calls */
+	ops->complete();
+	rtnl_unlock();
 
-Yes, AUTOSEL runs on a slower cycle than patches tagged for stable.
-Anyway, I've queued this patch up for the next release.
+This prevented any nesting or crossing of the begin-complete blocks.
+However, this is no longer guaranteed even for ioctl interface as at least
+ethtool_phys_id() releases RTNL lock while waiting for a timer. With the
+introduction of netlink ethtool interface, the begin-complete pairs are
+naturally nested e.g. when a request triggers a netlink notification.
+
+Fortunately, only minority of networking drivers implements begin() and
+complete() callbacks and most of those that do, fall into three groups:
+
+  - wrappers for pm_runtime_get_sync() and pm_runtime_put()
+  - wrappers for clk_prepare_enable() and clk_disable_unprepare()
+  - begin() checks netif_running() (fails if false), no complete()
+
+First two have their own refcounting, third is safe w.r.t. nesting of the
+blocks.
+
+Only three in-tree networking drivers need an update to deal with nesting
+of begin() and complete() calls: via-velocity and epic100 perform resume
+and suspend on their own and wil6210 completely serializes the calls using
+its own mutex (which would lead to a deadlock if a request request
+triggered a netlink notification). The series addresses these problems.
+
+
+Michal Kubecek (3):
+  wil6210: get rid of begin() and complete() ethtool_ops
+  via-velocity: allow nesting of ethtool_ops begin() and complete()
+  epic100: allow nesting of ethtool_ops begin() and complete()
+
+ drivers/net/ethernet/smsc/epic100.c        |  7 +++-
+ drivers/net/ethernet/via/via-velocity.c    | 14 +++++--
+ drivers/net/ethernet/via/via-velocity.h    |  1 +
+ drivers/net/wireless/ath/wil6210/ethtool.c | 43 ++++++++--------------
+ 4 files changed, 32 insertions(+), 33 deletions(-)
 
 -- 
-Thanks,
-Sasha
+2.24.1
+
