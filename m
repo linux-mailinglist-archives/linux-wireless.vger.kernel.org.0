@@ -2,34 +2,34 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DCEB81307F2
-	for <lists+linux-wireless@lfdr.de>; Sun,  5 Jan 2020 13:23:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 72F6E1307F3
+	for <lists+linux-wireless@lfdr.de>; Sun,  5 Jan 2020 13:23:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726548AbgAEMXH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 5 Jan 2020 07:23:07 -0500
-Received: from mail.kernel.org ([198.145.29.99]:47552 "EHLO mail.kernel.org"
+        id S1726561AbgAEMXI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 5 Jan 2020 07:23:08 -0500
+Received: from mail.kernel.org ([198.145.29.99]:47576 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725897AbgAEMXG (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 5 Jan 2020 07:23:06 -0500
+        id S1725897AbgAEMXI (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 5 Jan 2020 07:23:08 -0500
 Received: from new-host-5.station (net-2-42-61-77.cust.vodafonedsl.it [2.42.61.77])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id CFFC0215A4;
-        Sun,  5 Jan 2020 12:23:04 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 86797217F4;
+        Sun,  5 Jan 2020 12:23:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1578226986;
-        bh=/reuDa2D8elOVkRq0En+vuwI5Yg7j8ixrHM5ooHsBHg=;
+        s=default; t=1578226987;
+        bh=2wkttU5VvjZfagmMP91pcWkNKGIZo3GmhxT0z318yTk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cKUFiEx4XK7HC5FuUTlSpA4IAWRo0bNqXqKNfDOMB70rK3orTbl/PQgVlIyGECAfV
-         choSIZ2X7SEE8u3fzS6obC4zLuF3d9EaLm5mERWSUEMHZ7A5UbXyioDr2M+Kt794kp
-         vk7DHHyouOzbV9MqFkYSzs1zVCAkIglGjYMcsLeg=
+        b=DtAYLhJCIY/Gn5yDiwr8ZSeu0YHMK4SZ2LNJ5qgtc0D/uTbjL73qJckDB8l1LZI6G
+         s5XP1niVPZkhHuQCh9GbW9V4pUIFeElj1lOdKLOqb3j7Gjl8FVzWtr4N4dnUUAhHTg
+         d4kB7zmOAxoUTFKO3b5hA8jnN9DD5+rkYOT4r30A=
 From:   Lorenzo Bianconi <lorenzo@kernel.org>
 To:     nbd@nbd.name
 Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
         Sean.Wang@mediatek.com
-Subject: [PATCH v2 17/18] mt76: mt76u: add endpoint to mt76u_bulk_msg signature
-Date:   Sun,  5 Jan 2020 13:21:55 +0100
-Message-Id: <652a6d8e7815099738ff6f2eab6daffaaf14bb9d.1578226544.git.lorenzo@kernel.org>
+Subject: [PATCH v2 18/18] mt76: mt76u: introduce MT_DRV_RX_DMA_HDR flag
+Date:   Sun,  5 Jan 2020 13:21:56 +0100
+Message-Id: <df482f4b2b50263b6243a78758546e628a4b0ff1.1578226544.git.lorenzo@kernel.org>
 X-Mailer: git-send-email 2.21.1
 In-Reply-To: <cover.1578226544.git.lorenzo@kernel.org>
 References: <cover.1578226544.git.lorenzo@kernel.org>
@@ -40,74 +40,115 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This is a preliminary patch to support mt7663u usb dongles
+Define MT_DRV_RX_DMA_HDR flag in drv_flag in order to not skip rx frame
+dma header since new devices (e.g. mt7663u) reports rx frame info in the
+usb dma header
 
 Signed-off-by: Sean Wang <sean.wang@mediatek.com>
 Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt76.h            | 6 +++---
- drivers/net/wireless/mediatek/mt76/mt76x02_usb_mcu.c | 9 ++++++---
- 2 files changed, 9 insertions(+), 6 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt76.h |  1 +
+ drivers/net/wireless/mediatek/mt76/usb.c  | 31 ++++++++++++++---------
+ 2 files changed, 20 insertions(+), 12 deletions(-)
 
 diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
-index 69211472d8fb..e7b86712f574 100644
+index e7b86712f574..aa153c7a28e9 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt76.h
 +++ b/drivers/net/wireless/mediatek/mt76/mt76.h
-@@ -870,7 +870,7 @@ static inline u8 q2ep(u8 qid)
+@@ -286,6 +286,7 @@ struct mt76_hw_cap {
+ #define MT_DRV_TXWI_NO_FREE		BIT(0)
+ #define MT_DRV_TX_ALIGNED4_SKBS		BIT(1)
+ #define MT_DRV_SW_RX_AIRTIME		BIT(2)
++#define MT_DRV_RX_DMA_HDR		BIT(3)
  
- static inline int
- mt76u_bulk_msg(struct mt76_dev *dev, void *data, int len, int *actual_len,
--	       int timeout)
-+	       int timeout, int ep)
- {
- 	struct usb_interface *uintf = to_usb_interface(dev->dev);
- 	struct usb_device *udev = interface_to_usbdev(uintf);
-@@ -878,9 +878,9 @@ mt76u_bulk_msg(struct mt76_dev *dev, void *data, int len, int *actual_len,
- 	unsigned int pipe;
- 
- 	if (actual_len)
--		pipe = usb_rcvbulkpipe(udev, usb->in_ep[MT_EP_IN_CMD_RESP]);
-+		pipe = usb_rcvbulkpipe(udev, usb->in_ep[ep]);
- 	else
--		pipe = usb_sndbulkpipe(udev, usb->out_ep[MT_EP_OUT_INBAND_CMD]);
-+		pipe = usb_sndbulkpipe(udev, usb->out_ep[ep]);
- 
- 	return usb_bulk_msg(udev, pipe, data, len, actual_len, timeout);
+ struct mt76_driver_ops {
+ 	u32 drv_flags;
+diff --git a/drivers/net/wireless/mediatek/mt76/usb.c b/drivers/net/wireless/mediatek/mt76/usb.c
+index 57d2590165e3..981d8a985557 100644
+--- a/drivers/net/wireless/mediatek/mt76/usb.c
++++ b/drivers/net/wireless/mediatek/mt76/usb.c
+@@ -506,14 +506,17 @@ mt76u_get_next_rx_entry(struct mt76_queue *q)
+ 	return urb;
  }
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_usb_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76x02_usb_mcu.c
-index 106ff4b3e6ff..c58282baee46 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x02_usb_mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x02_usb_mcu.c
-@@ -55,7 +55,8 @@ static int mt76x02u_mcu_wait_resp(struct mt76_dev *dev, u8 seq)
- 	u32 rxfce;
  
- 	for (i = 0; i < 5; i++) {
--		ret = mt76u_bulk_msg(dev, data, MCU_RESP_URB_SIZE, &len, 300);
-+		ret = mt76u_bulk_msg(dev, data, MCU_RESP_URB_SIZE, &len,
-+				     300, MT_EP_IN_CMD_RESP);
- 		if (ret == -ETIMEDOUT)
- 			continue;
- 		if (ret)
-@@ -103,7 +104,8 @@ __mt76x02u_mcu_send_msg(struct mt76_dev *dev, struct sk_buff *skb,
- 	if (ret)
- 		return ret;
+-static int mt76u_get_rx_entry_len(u8 *data, u32 data_len)
++static int
++mt76u_get_rx_entry_len(struct mt76_dev *dev, u8 *data,
++		       u32 data_len)
+ {
+ 	u16 dma_len, min_len;
  
--	ret = mt76u_bulk_msg(dev, skb->data, skb->len, NULL, 500);
-+	ret = mt76u_bulk_msg(dev, skb->data, skb->len, NULL, 500,
-+			     MT_EP_OUT_INBAND_CMD);
- 	if (ret)
- 		return ret;
+ 	dma_len = get_unaligned_le16(data);
+-	min_len = MT_DMA_HDR_LEN + MT_RX_RXWI_LEN +
+-		  MT_FCE_INFO_LEN;
++	if (dev->drv->drv_flags & MT_DRV_RX_DMA_HDR)
++		return dma_len;
  
-@@ -248,7 +250,8 @@ __mt76x02u_mcu_fw_send_data(struct mt76x02_dev *dev, u8 *data,
++	min_len = MT_DMA_HDR_LEN + MT_RX_RXWI_LEN + MT_FCE_INFO_LEN;
+ 	if (data_len < min_len || !dma_len ||
+ 	    dma_len + MT_DMA_HDR_LEN > data_len ||
+ 	    (dma_len & 0x3))
+@@ -522,11 +525,14 @@ static int mt76u_get_rx_entry_len(u8 *data, u32 data_len)
+ }
  
- 	data_len = MT_CMD_HDR_LEN + len + sizeof(info);
+ static struct sk_buff *
+-mt76u_build_rx_skb(void *data, int len, int buf_size)
++mt76u_build_rx_skb(struct mt76_dev *dev, void *data,
++		   int len, int buf_size)
+ {
++	int head_room, drv_flags = dev->drv->drv_flags;
+ 	struct sk_buff *skb;
  
--	err = mt76u_bulk_msg(&dev->mt76, data, data_len, NULL, 1000);
-+	err = mt76u_bulk_msg(&dev->mt76, data, data_len, NULL, 1000,
-+			     MT_EP_OUT_INBAND_CMD);
- 	if (err) {
- 		dev_err(dev->mt76.dev, "firmware upload failed: %d\n", err);
- 		return err;
+-	if (SKB_WITH_OVERHEAD(buf_size) < MT_DMA_HDR_LEN + len) {
++	head_room = drv_flags & MT_DRV_RX_DMA_HDR ? 0 : MT_DMA_HDR_LEN;
++	if (SKB_WITH_OVERHEAD(buf_size) < head_room + len) {
+ 		struct page *page;
+ 
+ 		/* slow path, not enough space for data and
+@@ -536,8 +542,8 @@ mt76u_build_rx_skb(void *data, int len, int buf_size)
+ 		if (!skb)
+ 			return NULL;
+ 
+-		skb_put_data(skb, data + MT_DMA_HDR_LEN, MT_SKB_HEAD_LEN);
+-		data += (MT_DMA_HDR_LEN + MT_SKB_HEAD_LEN);
++		skb_put_data(skb, data + head_room, MT_SKB_HEAD_LEN);
++		data += head_room + MT_SKB_HEAD_LEN;
+ 		page = virt_to_head_page(data);
+ 		skb_add_rx_frag(skb, skb_shinfo(skb)->nr_frags,
+ 				page, data - page_address(page),
+@@ -551,7 +557,7 @@ mt76u_build_rx_skb(void *data, int len, int buf_size)
+ 	if (!skb)
+ 		return NULL;
+ 
+-	skb_reserve(skb, MT_DMA_HDR_LEN);
++	skb_reserve(skb, head_room);
+ 	__skb_put(skb, len);
+ 
+ 	return skb;
+@@ -563,18 +569,19 @@ mt76u_process_rx_entry(struct mt76_dev *dev, struct urb *urb,
+ {
+ 	u8 *data = urb->num_sgs ? sg_virt(&urb->sg[0]) : urb->transfer_buffer;
+ 	int data_len = urb->num_sgs ? urb->sg[0].length : urb->actual_length;
+-	int len, nsgs = 1;
++	int len, nsgs = 1, head_room, drv_flags = dev->drv->drv_flags;
+ 	struct sk_buff *skb;
+ 
+ 	if (!test_bit(MT76_STATE_INITIALIZED, &dev->phy.state))
+ 		return 0;
+ 
+-	len = mt76u_get_rx_entry_len(data, urb->actual_length);
++	len = mt76u_get_rx_entry_len(dev, data, urb->actual_length);
+ 	if (len < 0)
+ 		return 0;
+ 
+-	data_len = min_t(int, len, data_len - MT_DMA_HDR_LEN);
+-	skb = mt76u_build_rx_skb(data, data_len, buf_size);
++	head_room = drv_flags & MT_DRV_RX_DMA_HDR ? 0 : MT_DMA_HDR_LEN;
++	data_len = min_t(int, len, data_len - head_room);
++	skb = mt76u_build_rx_skb(dev, data, data_len, buf_size);
+ 	if (!skb)
+ 		return 0;
+ 
 -- 
 2.21.1
 
