@@ -2,108 +2,77 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 914141319FC
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 Jan 2020 22:01:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CD6D7131A6B
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 Jan 2020 22:30:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726939AbgAFVB0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 6 Jan 2020 16:01:26 -0500
-Received: from mail-qt1-f198.google.com ([209.85.160.198]:47073 "EHLO
-        mail-qt1-f198.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726699AbgAFVBZ (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 6 Jan 2020 16:01:25 -0500
-Received: by mail-qt1-f198.google.com with SMTP id d9so30645695qtq.13
-        for <linux-wireless@vger.kernel.org>; Mon, 06 Jan 2020 13:01:24 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:date:message-id:subject:from:to
-         :content-transfer-encoding;
-        bh=hQ0VUd4anpfZBkhboMtHMpou3T+xFEcqGfWYXlUJbuI=;
-        b=TKOfHUS/3wAHtolzA41/ExRva4OYggNXxz+CMifK5UYePnbi7UUPWGLO/I6+kXzo5H
-         yBdYFo14oHp0i2YdU7QsHLlwmr0E8lT1Nwb3/QVxfUBxRBZuuRvQZ3H87YiWxw2wI/SI
-         xhN2ABQqrrH2+o5BQqwz+qIjki6qLsbkBf1yhUAwnwh5RfsSgjH0vImHY0MRzqIzDGSN
-         EHpceHGgL6iZclxARDepSZ0B5I0i+RFukiiF3Rg2e7Hdtq6Zszvv9EdUXpXHrg90kJKj
-         zynY+KHkfE1PqNCppylAimXboMSE7Tzysm1HMSjXBOd3BmXS3/EaLwWOqh1A8tna+klk
-         YW6Q==
-X-Gm-Message-State: APjAAAWTIdivZ0X2oSFrBxASiCWTB6jhiDokCt/OKqvz3zC9x10g8xN2
-        NMCUSC+n5S9RGuSXfDc44HttLhsBfWSo4ePH4Ct2WRI4vp6A
-X-Google-Smtp-Source: APXvYqxQ6z9NKh46eCnFOPrOGqkIJJlqV0WOPFrKnwNTf0qTq4nxAyE+TIuBaHSp9KMJW4jCsgR5ofszXvdpoNT28Hv21mm2rYx7
+        id S1726779AbgAFVa1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 6 Jan 2020 16:30:27 -0500
+Received: from mail.kernel.org ([198.145.29.99]:42478 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726735AbgAFVa1 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 6 Jan 2020 16:30:27 -0500
+Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 89D9E21744
+        for <linux-wireless@vger.kernel.org>; Mon,  6 Jan 2020 21:30:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1578346226;
+        bh=zt2cipuUcBin5ZksuZK5p3CaS5gJFK69vb1I6cpfeUE=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=Dq7xNIa+QyOvm50nf0J9wAyeq/WZEkvMyZs1TNcG1bic4azKsEmyU81Mkkuku3Y5X
+         S9wg3DJbZ+DDRBdNexjPzyZxnYXeAiNlKUsd1NNTmho6juw+79dSknLUS0N+MdVXTm
+         51oQ3ocfo0BKDfcrukvW0rfiV2yFCqLpSy7COzFU=
+Received: by mail-qt1-f172.google.com with SMTP id e12so43686523qto.2
+        for <linux-wireless@vger.kernel.org>; Mon, 06 Jan 2020 13:30:26 -0800 (PST)
+X-Gm-Message-State: APjAAAVRERkqtW0/RWyVSeXlUiTUOVbAytTE5Y0CGGvunUmYmNN4cjOu
+        HKhKzHoVTNjpbbz+eTJ/nUZQj5DDnZi89akka0w=
+X-Google-Smtp-Source: APXvYqyMIwY8w2g53pXFhSO7MJ40xSVa8Sz2qpRNIT0nAvliecEeM6MaPvHs39uc+1XEvhenfVVyRxCt/ASI0C7NtZs=
+X-Received: by 2002:ac8:30f7:: with SMTP id w52mr77707481qta.380.1578346225720;
+ Mon, 06 Jan 2020 13:30:25 -0800 (PST)
 MIME-Version: 1.0
-X-Received: by 2002:a02:620c:: with SMTP id d12mr9247806jac.116.1578344052401;
- Mon, 06 Jan 2020 12:54:12 -0800 (PST)
-Date:   Mon, 06 Jan 2020 12:54:12 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <00000000000093b204059b7edce0@google.com>
-Subject: WARNING in restore_regulatory_settings
-From:   syzbot <syzbot+d451401ffd00a60677ee@syzkaller.appspotmail.com>
-To:     davem@davemloft.net, johannes@sipsolutions.net,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
-Content-Transfer-Encoding: base64
+References: <DB7PR04MB5242F3AB5904D80328C2E70E8F260@DB7PR04MB5242.eurprd04.prod.outlook.com>
+In-Reply-To: <DB7PR04MB5242F3AB5904D80328C2E70E8F260@DB7PR04MB5242.eurprd04.prod.outlook.com>
+From:   Josh Boyer <jwboyer@kernel.org>
+Date:   Mon, 6 Jan 2020 16:30:04 -0500
+X-Gmail-Original-Message-ID: <CA+5PVA5GCJv2cp9Ff_U7H_YqpSSNgJ2cO3Weu_abAuxUjFgc_g@mail.gmail.com>
+Message-ID: <CA+5PVA5GCJv2cp9Ff_U7H_YqpSSNgJ2cO3Weu_abAuxUjFgc_g@mail.gmail.com>
+Subject: Re: pull-request mwifiex-firmware 2019-12-31
+To:     Ganapathi Bhat <ganapathi.bhat@nxp.com>
+Cc:     "linux-firmware@kernel.org" <linux-firmware@kernel.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        Cathy Luo <xiaohua.luo@nxp.com>,
+        Rakesh Parmar <rakesh.parmar@nxp.com>,
+        James Cao <james.cao@nxp.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-SGVsbG8sDQoNCnN5emJvdCBmb3VuZCB0aGUgZm9sbG93aW5nIGNyYXNoIG9uOg0KDQpIRUFEIGNv
-bW1pdDogICAgYzc5ZjQ2YTIgTGludXggNS41LXJjNQ0KZ2l0IHRyZWU6ICAgICAgIHVwc3RyZWFt
-DQpjb25zb2xlIG91dHB1dDogaHR0cHM6Ly9zeXprYWxsZXIuYXBwc3BvdC5jb20veC9sb2cudHh0
-P3g9MTM1NzUxM2VlMDAwMDANCmtlcm5lbCBjb25maWc6ICBodHRwczovL3N5emthbGxlci5hcHBz
-cG90LmNvbS94Ly5jb25maWc/eD00MmM4MjY5NGY3OTJiMmY1DQpkYXNoYm9hcmQgbGluazogaHR0
-cHM6Ly9zeXprYWxsZXIuYXBwc3BvdC5jb20vYnVnP2V4dGlkPWQ0NTE0MDFmZmQwMGE2MDY3N2Vl
-DQpjb21waWxlcjogICAgICAgZ2NjIChHQ0MpIDkuMC4wIDIwMTgxMjMxIChleHBlcmltZW50YWwp
-DQpzeXogcmVwcm86ICAgICAgaHR0cHM6Ly9zeXprYWxsZXIuYXBwc3BvdC5jb20veC9yZXByby5z
-eXo/eD0xMTUzODExNWUwMDAwMA0KQyByZXByb2R1Y2VyOiAgIGh0dHBzOi8vc3l6a2FsbGVyLmFw
-cHNwb3QuY29tL3gvcmVwcm8uYz94PTExZDZlZTNlZTAwMDAwDQoNCklNUE9SVEFOVDogaWYgeW91
-IGZpeCB0aGUgYnVnLCBwbGVhc2UgYWRkIHRoZSBmb2xsb3dpbmcgdGFnIHRvIHRoZSBjb21taXQ6
-DQpSZXBvcnRlZC1ieTogc3l6Ym90K2Q0NTE0MDFmZmQwMGE2MDY3N2VlQHN5emthbGxlci5hcHBz
-cG90bWFpbC5jb20NCg0KLS0tLS0tLS0tLS0tWyBjdXQgaGVyZSBdLS0tLS0tLS0tLS0tDQpVbmV4
-cGVjdGVkIHVzZXIgYWxwaGEyOiAAAA0KV0FSTklORzogQ1BVOiAwIFBJRDogMjgxMCBhdCBuZXQv
-d2lyZWxlc3MvcmVnLmM6NDE4IGlzX3VzZXJfcmVnZG9tX3NhdmVkICANCm5ldC93aXJlbGVzcy9y
-ZWcuYzo0MTggW2lubGluZV0NCldBUk5JTkc6IENQVTogMCBQSUQ6IDI4MTAgYXQgbmV0L3dpcmVs
-ZXNzL3JlZy5jOjQxOCByZXN0b3JlX2FscGhhMiAgDQpuZXQvd2lyZWxlc3MvcmVnLmM6MzA5MiBb
-aW5saW5lXQ0KV0FSTklORzogQ1BVOiAwIFBJRDogMjgxMCBhdCBuZXQvd2lyZWxlc3MvcmVnLmM6
-NDE4ICANCnJlc3RvcmVfcmVndWxhdG9yeV9zZXR0aW5ncysweDIyNi8weDEzZTAgbmV0L3dpcmVs
-ZXNzL3JlZy5jOjMxODQNCktlcm5lbCBwYW5pYyAtIG5vdCBzeW5jaW5nOiBwYW5pY19vbl93YXJu
-IHNldCAuLi4NCkNQVTogMCBQSUQ6IDI4MTAgQ29tbToga3dvcmtlci8wOjU1IE5vdCB0YWludGVk
-IDUuNS4wLXJjNS1zeXprYWxsZXIgIzANCkhhcmR3YXJlIG5hbWU6IEdvb2dsZSBHb29nbGUgQ29t
-cHV0ZSBFbmdpbmUvR29vZ2xlIENvbXB1dGUgRW5naW5lLCBCSU9TICANCkdvb2dsZSAwMS8wMS8y
-MDExDQpXb3JrcXVldWU6IGV2ZW50c19wb3dlcl9lZmZpY2llbnQgY3JkYV90aW1lb3V0X3dvcmsN
-CkNhbGwgVHJhY2U6DQogIF9fZHVtcF9zdGFjayBsaWIvZHVtcF9zdGFjay5jOjc3IFtpbmxpbmVd
-DQogIGR1bXBfc3RhY2srMHgxOTcvMHgyMTAgbGliL2R1bXBfc3RhY2suYzoxMTgNCiAgcGFuaWMr
-MHgyZTMvMHg3NWMga2VybmVsL3BhbmljLmM6MjIxDQogIF9fd2Fybi5jb2xkKzB4MmYvMHgzZSBr
-ZXJuZWwvcGFuaWMuYzo1ODINCiAgcmVwb3J0X2J1ZysweDI4OS8weDMwMCBsaWIvYnVnLmM6MTk1
-DQogIGZpeHVwX2J1ZyBhcmNoL3g4Ni9rZXJuZWwvdHJhcHMuYzoxNzQgW2lubGluZV0NCiAgZml4
-dXBfYnVnIGFyY2gveDg2L2tlcm5lbC90cmFwcy5jOjE2OSBbaW5saW5lXQ0KICBkb19lcnJvcl90
-cmFwKzB4MTFiLzB4MjAwIGFyY2gveDg2L2tlcm5lbC90cmFwcy5jOjI2Nw0KICBkb19pbnZhbGlk
-X29wKzB4MzcvMHg1MCBhcmNoL3g4Ni9rZXJuZWwvdHJhcHMuYzoyODYNCiAgaW52YWxpZF9vcCsw
-eDIzLzB4MzAgYXJjaC94ODYvZW50cnkvZW50cnlfNjQuUzoxMDI3DQpSSVA6IDAwMTA6aXNfdXNl
-cl9yZWdkb21fc2F2ZWQgbmV0L3dpcmVsZXNzL3JlZy5jOjQxOCBbaW5saW5lXQ0KUklQOiAwMDEw
-OnJlc3RvcmVfYWxwaGEyIG5ldC93aXJlbGVzcy9yZWcuYzozMDkyIFtpbmxpbmVdDQpSSVA6IDAw
-MTA6cmVzdG9yZV9yZWd1bGF0b3J5X3NldHRpbmdzKzB4MjI2LzB4MTNlMCBuZXQvd2lyZWxlc3Mv
-cmVnLmM6MzE4NA0KQ29kZTogMDMgNDQgODkgZjYgZTggMmIgYmEgMWYgZmEgNDUgODQgZjYgMGYg
-ODUgOWEgMDcgMDAgMDAgZTggZGQgYjggMWYgZmEgIA0KNDEgMGYgYmUgZDUgMGYgYmUgZjMgNDgg
-YzcgYzcgMDAgYmEgZWQgODggZTggZjkgNjAgZjAgZjkgPDBmPiAwYiBlOCBjMyBiOCAgDQoxZiBm
-YSA0YyA4YiAyZCA2YyBlMiAxMiAwMyA0OCBiOCAwMCAwMCAwMCAwMCAwMCBmYw0KUlNQOiAwMDE4
-OmZmZmZjOTAwMDgwZGZjMjAgRUZMQUdTOiAwMDAxMDI4Ng0KUkFYOiAwMDAwMDAwMDAwMDAwMDAw
-IFJCWDogMDAwMDAwMDAwMDAwMDAwMCBSQ1g6IDAwMDAwMDAwMDAwMDAwMDANClJEWDogMDAwMDAw
-MDAwMDAwMDAwMCBSU0k6IGZmZmZmZmZmODE1ZThiNDYgUkRJOiBmZmZmZjUyMDAxMDFiZjc2DQpS
-QlA6IGZmZmZjOTAwMDgwZGZkMjAgUjA4OiBmZmZmODg4MDlmNmNhMDgwIFIwOTogZmZmZmVkMTAx
-NWQwNjYyMQ0KUjEwOiBmZmZmZWQxMDE1ZDA2NjIwIFIxMTogZmZmZjg4ODBhZTgzMzEwNyBSMTI6
-IDAwMDAwMDAwMDAwMDAwMDENClIxMzogMDAwMDAwMDAwMDAwMDAwMCBSMTQ6IDAwMDAwMDAwMDAw
-MDAwMDAgUjE1OiBmZmZmODg4MGFlODM2YjQwDQogIGNyZGFfdGltZW91dF93b3JrKzB4MjEvMHgz
-MCBuZXQvd2lyZWxlc3MvcmVnLmM6NTIwDQogIHByb2Nlc3Nfb25lX3dvcmsrMHg5YWYvMHgxNzQw
-IGtlcm5lbC93b3JrcXVldWUuYzoyMjY0DQogIHdvcmtlcl90aHJlYWQrMHg5OC8weGU0MCBrZXJu
-ZWwvd29ya3F1ZXVlLmM6MjQxMA0KICBrdGhyZWFkKzB4MzYxLzB4NDMwIGtlcm5lbC9rdGhyZWFk
-LmM6MjU1DQogIHJldF9mcm9tX2ZvcmsrMHgyNC8weDMwIGFyY2gveDg2L2VudHJ5L2VudHJ5XzY0
-LlM6MzUyDQpLZXJuZWwgT2Zmc2V0OiBkaXNhYmxlZA0KUmVib290aW5nIGluIDg2NDAwIHNlY29u
-ZHMuLg0KDQoNCi0tLQ0KVGhpcyBidWcgaXMgZ2VuZXJhdGVkIGJ5IGEgYm90LiBJdCBtYXkgY29u
-dGFpbiBlcnJvcnMuDQpTZWUgaHR0cHM6Ly9nb28uZ2wvdHBzbUVKIGZvciBtb3JlIGluZm9ybWF0
-aW9uIGFib3V0IHN5emJvdC4NCnN5emJvdCBlbmdpbmVlcnMgY2FuIGJlIHJlYWNoZWQgYXQgc3l6
-a2FsbGVyQGdvb2dsZWdyb3Vwcy5jb20uDQoNCnN5emJvdCB3aWxsIGtlZXAgdHJhY2sgb2YgdGhp
-cyBidWcgcmVwb3J0LiBTZWU6DQpodHRwczovL2dvby5nbC90cHNtRUojc3RhdHVzIGZvciBob3cg
-dG8gY29tbXVuaWNhdGUgd2l0aCBzeXpib3QuDQpzeXpib3QgY2FuIHRlc3QgcGF0Y2hlcyBmb3Ig
-dGhpcyBidWcsIGZvciBkZXRhaWxzIHNlZToNCmh0dHBzOi8vZ29vLmdsL3Rwc21FSiN0ZXN0aW5n
-LXBhdGNoZXMNCg==
+On Tue, Dec 31, 2019 at 1:50 AM Ganapathi Bhat <ganapathi.bhat@nxp.com> wrote:
+>
+> The following changes since commit 6ae3652bbf4cc025afec3e15fc4bebc6fd29ee2b:
+>
+>   linux-firmware: update licence text for Marvell firmware (2019-06-08 12:13:25 +0530)
+>
+> are available in the git repository at:
+>
+>   https://github.com/NXP/mwifiex-firmware.git master
+>
+> for you to fetch changes up to e65245cc861d0ed57eaf79519af440d1e66b75d6:
+>
+>   linux-firmware: add NXP firmware licence file (2019-12-31 12:14:50 +0530)
+>
+> ----------------------------------------------------------------
+> Ganapathi Bhat (1):
+>       linux-firmware: add NXP firmware licence file
+>
+>  LICENCE.NXP | 22 ++++++++++++++++++++++
+>  WHENCE      |  4 ++--
+>  2 files changed, 24 insertions(+), 2 deletions(-)
+>  create mode 100644 LICENCE.NXP
+
+Pulled and pushed out.
+
+josh
