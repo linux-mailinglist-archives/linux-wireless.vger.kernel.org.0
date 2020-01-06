@@ -2,119 +2,108 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F3B6131897
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 Jan 2020 20:20:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 914141319FC
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 Jan 2020 22:01:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727169AbgAFTT1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 6 Jan 2020 14:19:27 -0500
-Received: from mail-wr1-f65.google.com ([209.85.221.65]:46581 "EHLO
-        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727020AbgAFTT1 (ORCPT
+        id S1726939AbgAFVB0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 6 Jan 2020 16:01:26 -0500
+Received: from mail-qt1-f198.google.com ([209.85.160.198]:47073 "EHLO
+        mail-qt1-f198.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726699AbgAFVBZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 6 Jan 2020 14:19:27 -0500
-Received: by mail-wr1-f65.google.com with SMTP id z7so50902229wrl.13
-        for <linux-wireless@vger.kernel.org>; Mon, 06 Jan 2020 11:19:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=1DiUbn/uge4ZdZwSZw1/xSvzuKtRN5x2iHMem43HB8Q=;
-        b=LI+Il05dGaGaAFvZ7nINzPFXom+zumQtKFnxIrRG39Vu6dj4EcSFCuGEb1UqtJP6mI
-         WvfUICKFOII7dfooq8Gg+3vxvS8yiFOYxm6NV5HER5t20Ef9lXw3dNL2194noM7wLJkb
-         FDcGOThRjt2vW/PAHOTAoalBX35/5wdb6qv2ClSqjn75licL2p0O7AV6gKYm9m9H/2T5
-         DlFRe+FtZFiWY6xvmDyI+mZ4HRUfkHuw03Ht+dw6c/7K9t/HAmylmHVp3ILouxq6qPNu
-         w6DhkzBUyxfu9HSabcsrX96MNk+VPqF0V6Hl+UGE87Ivb6HD00NmPCVKDQ6mpPWkkk+B
-         WDUA==
+        Mon, 6 Jan 2020 16:01:25 -0500
+Received: by mail-qt1-f198.google.com with SMTP id d9so30645695qtq.13
+        for <linux-wireless@vger.kernel.org>; Mon, 06 Jan 2020 13:01:24 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=1DiUbn/uge4ZdZwSZw1/xSvzuKtRN5x2iHMem43HB8Q=;
-        b=bfSU+ap/TRLzLVCiPXKtjQqOZGy0popeSHaLfW7HNMCm2LMF8yfa06WilJ1zY74Obx
-         Lvxl+qW5Mv1OeFqBYA/P/0aNz06YPKBiI3tALGO1qucv18/8q2ilF6FC/QhmhIhmVuke
-         nQaNVnHn3pydvo4tAHd3BgaZu7k355yThCBYOJ3QcPA80LqWP7LuN4Q1/ZBO+PvuMSsH
-         RtX1XyaaiV/VKwSyjEvfAPQDY3lruOe5A2XQ6gNY000dHbaLliTF6eSk9e8NpRgAhNPH
-         lkdlQhpvExvNZeh3UrEy/bpY6OStiy5r4IpuAKTcuFpuE8/b94iv9ZfNe2+tErNdsmAj
-         1VVQ==
-X-Gm-Message-State: APjAAAWLefRCesEr1I0DSDMQtspl1pwJJHGV54H/umqnUzGFDHAoQ2oC
-        wbYaWCir8Il7MhxVx8Qy2HmB4Q==
-X-Google-Smtp-Source: APXvYqyzNYcpxQB7KuyEARjMmiPeO3GDXFQaHaE6c9tJ5UN7KMiwgFVxOBX9llyIb6rwjf7khc2uEg==
-X-Received: by 2002:adf:c147:: with SMTP id w7mr108157303wre.389.1578338365461;
-        Mon, 06 Jan 2020 11:19:25 -0800 (PST)
-Received: from myrica (adsl-84-227-176-239.adslplus.ch. [84.227.176.239])
-        by smtp.gmail.com with ESMTPSA id q11sm72195148wrp.24.2020.01.06.11.19.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Jan 2020 11:19:24 -0800 (PST)
-Date:   Mon, 6 Jan 2020 20:19:19 +0100
-From:   Jean-Philippe Brucker <jean-philippe@linaro.org>
-To:     Dmitry Osipenko <digetx@gmail.com>
-Cc:     Arend Van Spriel <arend.vanspriel@broadcom.com>,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        brcm80211-dev-list@cypress.com, netdev@vger.kernel.org,
-        hdegoede@redhat.com, franky.lin@broadcom.com,
-        hante.meuleman@broadcom.com, chi-hsien.lin@cypress.com,
-        wright.feng@cypress.com, kvalo@codeaurora.org, davem@davemloft.net
-Subject: Re: [PATCH] brcmfmac: sdio: Fix OOB interrupt initialization on
- brcm43362
-Message-ID: <20200106191919.GA826263@myrica>
-References: <20191226092033.12600-1-jean-philippe@linaro.org>
- <16f419a7070.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
- <141f055a-cd1d-66cb-7052-007cda629d3a@gmail.com>
+        h=x-gm-message-state:mime-version:date:message-id:subject:from:to
+         :content-transfer-encoding;
+        bh=hQ0VUd4anpfZBkhboMtHMpou3T+xFEcqGfWYXlUJbuI=;
+        b=TKOfHUS/3wAHtolzA41/ExRva4OYggNXxz+CMifK5UYePnbi7UUPWGLO/I6+kXzo5H
+         yBdYFo14oHp0i2YdU7QsHLlwmr0E8lT1Nwb3/QVxfUBxRBZuuRvQZ3H87YiWxw2wI/SI
+         xhN2ABQqrrH2+o5BQqwz+qIjki6qLsbkBf1yhUAwnwh5RfsSgjH0vImHY0MRzqIzDGSN
+         EHpceHGgL6iZclxARDepSZ0B5I0i+RFukiiF3Rg2e7Hdtq6Zszvv9EdUXpXHrg90kJKj
+         zynY+KHkfE1PqNCppylAimXboMSE7Tzysm1HMSjXBOd3BmXS3/EaLwWOqh1A8tna+klk
+         YW6Q==
+X-Gm-Message-State: APjAAAWTIdivZ0X2oSFrBxASiCWTB6jhiDokCt/OKqvz3zC9x10g8xN2
+        NMCUSC+n5S9RGuSXfDc44HttLhsBfWSo4ePH4Ct2WRI4vp6A
+X-Google-Smtp-Source: APXvYqxQ6z9NKh46eCnFOPrOGqkIJJlqV0WOPFrKnwNTf0qTq4nxAyE+TIuBaHSp9KMJW4jCsgR5ofszXvdpoNT28Hv21mm2rYx7
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <141f055a-cd1d-66cb-7052-007cda629d3a@gmail.com>
+X-Received: by 2002:a02:620c:: with SMTP id d12mr9247806jac.116.1578344052401;
+ Mon, 06 Jan 2020 12:54:12 -0800 (PST)
+Date:   Mon, 06 Jan 2020 12:54:12 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <00000000000093b204059b7edce0@google.com>
+Subject: WARNING in restore_regulatory_settings
+From:   syzbot <syzbot+d451401ffd00a60677ee@syzkaller.appspotmail.com>
+To:     davem@davemloft.net, johannes@sipsolutions.net,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
+Content-Transfer-Encoding: base64
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Dmitry,
-
-On Thu, Dec 26, 2019 at 05:37:58PM +0300, Dmitry Osipenko wrote:
-> I haven't seen any driver probe failures due to OOB on NVIDIA Tegra,
-> only suspend-resume was problematic due to the unbalanced OOB
-> interrupt-wake enabling.
-> 
-> But maybe checking whether OOB interrupt-wake works by invoking
-> enable_irq_wake() during brcmf_sdiod_intr_register() causes trouble for
-> the cubietruck board.
-> 
-> @Jean-Philippe, could you please try this change (on top of recent
-> linux-next):
-
-Sorry for the delay, linux-next doesn't boot for me at the moment and I
-have little time to investigate why, so I might retry closer to the merge
-window.
-
-However, isn't the interrupt-wake issue independent from the problem
-(introduced in v4.17) that my patch fixes? I applied "brcmfmac: Keep OOB
-wake-interrupt disabled when it shouldn't be enabled" on v5.5-rc5 and it
-doesn't seem to cause a regression, but the wifi only works if I apply my
-patch as well.
-
-Thanks,
-Jean
-
-> 
-> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-> b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-> index b684a5b6d904..80d7106b10a9 100644
-> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-> @@ -115,13 +115,6 @@ int brcmf_sdiod_intr_register(struct brcmf_sdio_dev
-> *sdiodev)
->                 }
->                 sdiodev->oob_irq_requested = true;
-> 
-> -               ret = enable_irq_wake(pdata->oob_irq_nr);
-> -               if (ret != 0) {
-> -                       brcmf_err("enable_irq_wake failed %d\n", ret);
-> -                       return ret;
-> -               }
-> -               disable_irq_wake(pdata->oob_irq_nr);
-> -
->                 sdio_claim_host(sdiodev->func1);
-> 
->                 if (sdiodev->bus_if->chip == BRCM_CC_43362_CHIP_ID) {
+SGVsbG8sDQoNCnN5emJvdCBmb3VuZCB0aGUgZm9sbG93aW5nIGNyYXNoIG9uOg0KDQpIRUFEIGNv
+bW1pdDogICAgYzc5ZjQ2YTIgTGludXggNS41LXJjNQ0KZ2l0IHRyZWU6ICAgICAgIHVwc3RyZWFt
+DQpjb25zb2xlIG91dHB1dDogaHR0cHM6Ly9zeXprYWxsZXIuYXBwc3BvdC5jb20veC9sb2cudHh0
+P3g9MTM1NzUxM2VlMDAwMDANCmtlcm5lbCBjb25maWc6ICBodHRwczovL3N5emthbGxlci5hcHBz
+cG90LmNvbS94Ly5jb25maWc/eD00MmM4MjY5NGY3OTJiMmY1DQpkYXNoYm9hcmQgbGluazogaHR0
+cHM6Ly9zeXprYWxsZXIuYXBwc3BvdC5jb20vYnVnP2V4dGlkPWQ0NTE0MDFmZmQwMGE2MDY3N2Vl
+DQpjb21waWxlcjogICAgICAgZ2NjIChHQ0MpIDkuMC4wIDIwMTgxMjMxIChleHBlcmltZW50YWwp
+DQpzeXogcmVwcm86ICAgICAgaHR0cHM6Ly9zeXprYWxsZXIuYXBwc3BvdC5jb20veC9yZXByby5z
+eXo/eD0xMTUzODExNWUwMDAwMA0KQyByZXByb2R1Y2VyOiAgIGh0dHBzOi8vc3l6a2FsbGVyLmFw
+cHNwb3QuY29tL3gvcmVwcm8uYz94PTExZDZlZTNlZTAwMDAwDQoNCklNUE9SVEFOVDogaWYgeW91
+IGZpeCB0aGUgYnVnLCBwbGVhc2UgYWRkIHRoZSBmb2xsb3dpbmcgdGFnIHRvIHRoZSBjb21taXQ6
+DQpSZXBvcnRlZC1ieTogc3l6Ym90K2Q0NTE0MDFmZmQwMGE2MDY3N2VlQHN5emthbGxlci5hcHBz
+cG90bWFpbC5jb20NCg0KLS0tLS0tLS0tLS0tWyBjdXQgaGVyZSBdLS0tLS0tLS0tLS0tDQpVbmV4
+cGVjdGVkIHVzZXIgYWxwaGEyOiAAAA0KV0FSTklORzogQ1BVOiAwIFBJRDogMjgxMCBhdCBuZXQv
+d2lyZWxlc3MvcmVnLmM6NDE4IGlzX3VzZXJfcmVnZG9tX3NhdmVkICANCm5ldC93aXJlbGVzcy9y
+ZWcuYzo0MTggW2lubGluZV0NCldBUk5JTkc6IENQVTogMCBQSUQ6IDI4MTAgYXQgbmV0L3dpcmVs
+ZXNzL3JlZy5jOjQxOCByZXN0b3JlX2FscGhhMiAgDQpuZXQvd2lyZWxlc3MvcmVnLmM6MzA5MiBb
+aW5saW5lXQ0KV0FSTklORzogQ1BVOiAwIFBJRDogMjgxMCBhdCBuZXQvd2lyZWxlc3MvcmVnLmM6
+NDE4ICANCnJlc3RvcmVfcmVndWxhdG9yeV9zZXR0aW5ncysweDIyNi8weDEzZTAgbmV0L3dpcmVs
+ZXNzL3JlZy5jOjMxODQNCktlcm5lbCBwYW5pYyAtIG5vdCBzeW5jaW5nOiBwYW5pY19vbl93YXJu
+IHNldCAuLi4NCkNQVTogMCBQSUQ6IDI4MTAgQ29tbToga3dvcmtlci8wOjU1IE5vdCB0YWludGVk
+IDUuNS4wLXJjNS1zeXprYWxsZXIgIzANCkhhcmR3YXJlIG5hbWU6IEdvb2dsZSBHb29nbGUgQ29t
+cHV0ZSBFbmdpbmUvR29vZ2xlIENvbXB1dGUgRW5naW5lLCBCSU9TICANCkdvb2dsZSAwMS8wMS8y
+MDExDQpXb3JrcXVldWU6IGV2ZW50c19wb3dlcl9lZmZpY2llbnQgY3JkYV90aW1lb3V0X3dvcmsN
+CkNhbGwgVHJhY2U6DQogIF9fZHVtcF9zdGFjayBsaWIvZHVtcF9zdGFjay5jOjc3IFtpbmxpbmVd
+DQogIGR1bXBfc3RhY2srMHgxOTcvMHgyMTAgbGliL2R1bXBfc3RhY2suYzoxMTgNCiAgcGFuaWMr
+MHgyZTMvMHg3NWMga2VybmVsL3BhbmljLmM6MjIxDQogIF9fd2Fybi5jb2xkKzB4MmYvMHgzZSBr
+ZXJuZWwvcGFuaWMuYzo1ODINCiAgcmVwb3J0X2J1ZysweDI4OS8weDMwMCBsaWIvYnVnLmM6MTk1
+DQogIGZpeHVwX2J1ZyBhcmNoL3g4Ni9rZXJuZWwvdHJhcHMuYzoxNzQgW2lubGluZV0NCiAgZml4
+dXBfYnVnIGFyY2gveDg2L2tlcm5lbC90cmFwcy5jOjE2OSBbaW5saW5lXQ0KICBkb19lcnJvcl90
+cmFwKzB4MTFiLzB4MjAwIGFyY2gveDg2L2tlcm5lbC90cmFwcy5jOjI2Nw0KICBkb19pbnZhbGlk
+X29wKzB4MzcvMHg1MCBhcmNoL3g4Ni9rZXJuZWwvdHJhcHMuYzoyODYNCiAgaW52YWxpZF9vcCsw
+eDIzLzB4MzAgYXJjaC94ODYvZW50cnkvZW50cnlfNjQuUzoxMDI3DQpSSVA6IDAwMTA6aXNfdXNl
+cl9yZWdkb21fc2F2ZWQgbmV0L3dpcmVsZXNzL3JlZy5jOjQxOCBbaW5saW5lXQ0KUklQOiAwMDEw
+OnJlc3RvcmVfYWxwaGEyIG5ldC93aXJlbGVzcy9yZWcuYzozMDkyIFtpbmxpbmVdDQpSSVA6IDAw
+MTA6cmVzdG9yZV9yZWd1bGF0b3J5X3NldHRpbmdzKzB4MjI2LzB4MTNlMCBuZXQvd2lyZWxlc3Mv
+cmVnLmM6MzE4NA0KQ29kZTogMDMgNDQgODkgZjYgZTggMmIgYmEgMWYgZmEgNDUgODQgZjYgMGYg
+ODUgOWEgMDcgMDAgMDAgZTggZGQgYjggMWYgZmEgIA0KNDEgMGYgYmUgZDUgMGYgYmUgZjMgNDgg
+YzcgYzcgMDAgYmEgZWQgODggZTggZjkgNjAgZjAgZjkgPDBmPiAwYiBlOCBjMyBiOCAgDQoxZiBm
+YSA0YyA4YiAyZCA2YyBlMiAxMiAwMyA0OCBiOCAwMCAwMCAwMCAwMCAwMCBmYw0KUlNQOiAwMDE4
+OmZmZmZjOTAwMDgwZGZjMjAgRUZMQUdTOiAwMDAxMDI4Ng0KUkFYOiAwMDAwMDAwMDAwMDAwMDAw
+IFJCWDogMDAwMDAwMDAwMDAwMDAwMCBSQ1g6IDAwMDAwMDAwMDAwMDAwMDANClJEWDogMDAwMDAw
+MDAwMDAwMDAwMCBSU0k6IGZmZmZmZmZmODE1ZThiNDYgUkRJOiBmZmZmZjUyMDAxMDFiZjc2DQpS
+QlA6IGZmZmZjOTAwMDgwZGZkMjAgUjA4OiBmZmZmODg4MDlmNmNhMDgwIFIwOTogZmZmZmVkMTAx
+NWQwNjYyMQ0KUjEwOiBmZmZmZWQxMDE1ZDA2NjIwIFIxMTogZmZmZjg4ODBhZTgzMzEwNyBSMTI6
+IDAwMDAwMDAwMDAwMDAwMDENClIxMzogMDAwMDAwMDAwMDAwMDAwMCBSMTQ6IDAwMDAwMDAwMDAw
+MDAwMDAgUjE1OiBmZmZmODg4MGFlODM2YjQwDQogIGNyZGFfdGltZW91dF93b3JrKzB4MjEvMHgz
+MCBuZXQvd2lyZWxlc3MvcmVnLmM6NTIwDQogIHByb2Nlc3Nfb25lX3dvcmsrMHg5YWYvMHgxNzQw
+IGtlcm5lbC93b3JrcXVldWUuYzoyMjY0DQogIHdvcmtlcl90aHJlYWQrMHg5OC8weGU0MCBrZXJu
+ZWwvd29ya3F1ZXVlLmM6MjQxMA0KICBrdGhyZWFkKzB4MzYxLzB4NDMwIGtlcm5lbC9rdGhyZWFk
+LmM6MjU1DQogIHJldF9mcm9tX2ZvcmsrMHgyNC8weDMwIGFyY2gveDg2L2VudHJ5L2VudHJ5XzY0
+LlM6MzUyDQpLZXJuZWwgT2Zmc2V0OiBkaXNhYmxlZA0KUmVib290aW5nIGluIDg2NDAwIHNlY29u
+ZHMuLg0KDQoNCi0tLQ0KVGhpcyBidWcgaXMgZ2VuZXJhdGVkIGJ5IGEgYm90LiBJdCBtYXkgY29u
+dGFpbiBlcnJvcnMuDQpTZWUgaHR0cHM6Ly9nb28uZ2wvdHBzbUVKIGZvciBtb3JlIGluZm9ybWF0
+aW9uIGFib3V0IHN5emJvdC4NCnN5emJvdCBlbmdpbmVlcnMgY2FuIGJlIHJlYWNoZWQgYXQgc3l6
+a2FsbGVyQGdvb2dsZWdyb3Vwcy5jb20uDQoNCnN5emJvdCB3aWxsIGtlZXAgdHJhY2sgb2YgdGhp
+cyBidWcgcmVwb3J0LiBTZWU6DQpodHRwczovL2dvby5nbC90cHNtRUojc3RhdHVzIGZvciBob3cg
+dG8gY29tbXVuaWNhdGUgd2l0aCBzeXpib3QuDQpzeXpib3QgY2FuIHRlc3QgcGF0Y2hlcyBmb3Ig
+dGhpcyBidWcsIGZvciBkZXRhaWxzIHNlZToNCmh0dHBzOi8vZ29vLmdsL3Rwc21FSiN0ZXN0aW5n
+LXBhdGNoZXMNCg==
