@@ -2,82 +2,87 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 23468130D68
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 Jan 2020 07:09:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 77230130D9A
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 Jan 2020 07:39:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726770AbgAFGIz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 6 Jan 2020 01:08:55 -0500
-Received: from mx2.suse.de ([195.135.220.15]:37024 "EHLO mx2.suse.de"
+        id S1726952AbgAFGj3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 6 Jan 2020 01:39:29 -0500
+Received: from mx2.suse.de ([195.135.220.15]:42554 "EHLO mx2.suse.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726338AbgAFGIz (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 6 Jan 2020 01:08:55 -0500
+        id S1726338AbgAFGj3 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 6 Jan 2020 01:39:29 -0500
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id 40CA6AC46;
-        Mon,  6 Jan 2020 06:08:53 +0000 (UTC)
+        by mx2.suse.de (Postfix) with ESMTP id 1AF7FADBE;
+        Mon,  6 Jan 2020 06:39:27 +0000 (UTC)
 Received: by unicorn.suse.cz (Postfix, from userid 1000)
-        id 53217E048A; Mon,  6 Jan 2020 07:08:51 +0100 (CET)
-Date:   Mon, 6 Jan 2020 07:08:51 +0100
+        id 75D20E048A; Mon,  6 Jan 2020 07:39:26 +0100 (CET)
+Message-Id: <cover.1578292157.git.mkubecek@suse.cz>
 From:   Michal Kubecek <mkubecek@suse.cz>
-To:     netdev@vger.kernel.org
-Cc:     Andrew Lunn <andrew@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        Maya Erez <merez@codeaurora.org>,
+Subject: [PATCH net-next v2 0/3] ethtool: allow nesting of begin() and
+ complete() callbacks
+To:     "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org
+Cc:     Maya Erez <merez@codeaurora.org>,
         Kalle Valo <kvalo@codeaurora.org>,
         linux-wireless@vger.kernel.org, wil6210@qti.qualcomm.com,
         Francois Romieu <romieu@fr.zoreil.com>,
-        linux-kernel@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Andrew Lunn <andrew@lunn.ch>,
         Florian Fainelli <f.fainelli@gmail.com>
-Subject: Re: [PATCH net-next 3/3] epic100: allow nesting of ethtool_ops
- begin() and complete()
-Message-ID: <20200106060851.GE22387@unicorn.suse.cz>
-References: <cover.1578257976.git.mkubecek@suse.cz>
- <146ace9856b8576eea83a1a5dc6329315831c44e.1578257976.git.mkubecek@suse.cz>
- <20200105220832.GA21914@lunn.ch>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200105220832.GA21914@lunn.ch>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Date:   Mon,  6 Jan 2020 07:39:26 +0100 (CET)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sun, Jan 05, 2020 at 11:08:32PM +0100, Andrew Lunn wrote:
-> > @@ -1435,8 +1436,10 @@ static int ethtool_begin(struct net_device *dev)
-> >  	struct epic_private *ep = netdev_priv(dev);
-> >  	void __iomem *ioaddr = ep->ioaddr;
-> >  
-> > +	if (ep->ethtool_ops_nesting == U32_MAX)
-> > +		return -EBUSY;
-> >  	/* power-up, if interface is down */
-> > -	if (!netif_running(dev)) {
-> > +	if (ep->ethtool_ops_nesting++ && !netif_running(dev)) {
-> >  		ew32(GENCTL, 0x0200);
-> >  		ew32(NVCTL, (er32(NVCTL) & ~0x003c) | 0x4800);
-> >  	}
-> 
-> Hi Michal
-> 
-> In the via-velocity you added:
-> 
-> +       if (vptr->ethtool_ops_nesting == U32_MAX)
-> +               return -EBUSY;
-> +       if (!vptr->ethtool_ops_nesting++ && !netif_running(dev))
->                 velocity_set_power_state(vptr, PCI_D0);
->         return 0;
-> 
-> These two fragments differ by a ! . Is that correct?
+The ethtool ioctl interface used to guarantee that ethtool_ops callbacks
+were always called in a block between calls to ->begin() and ->complete()
+(if these are defined) and that this whole block was executed with RTNL
+lock held:
 
-You are right, thank you for catching it. This should be 
+	rtnl_lock();
+	ops->begin();
+	/* other ethtool_ops calls */
+	ops->complete();
+	rtnl_unlock();
 
-	if (!ep->ethtool_ops_nesting++ && !netif_running(dev)) {
+This prevented any nesting or crossing of the begin-complete blocks.
+However, this is no longer guaranteed even for ioctl interface as at least
+ethtool_phys_id() releases RTNL lock while waiting for a timer. With the
+introduction of netlink ethtool interface, the begin-complete pairs are
+naturally nested e.g. when a request triggers a netlink notification.
 
-as well, we only want to wake the device up in the first (outermost)
-->begin(). (It would probably do no harm to do it each time but not
-doing it in the first would be wrong.)
+Fortunately, only minority of networking drivers implements begin() and
+complete() callbacks and most of those that do, fall into three groups:
 
-I'll send v2 in a moment.
+  - wrappers for pm_runtime_get_sync() and pm_runtime_put()
+  - wrappers for clk_prepare_enable() and clk_disable_unprepare()
+  - begin() checks netif_running() (fails if false), no complete()
 
-Michal
+First two have their own refcounting, third is safe w.r.t. nesting of the
+blocks.
+
+Only three in-tree networking drivers need an update to deal with nesting
+of begin() and complete() calls: via-velocity and epic100 perform resume
+and suspend on their own and wil6210 completely serializes the calls using
+its own mutex (which would lead to a deadlock if a request request
+triggered a netlink notification). The series addresses these problems.
+
+changes between v1 and v2:
+  - fix inverted condition in epic100 ethtool_begin() (thanks to Andrew
+    Lunn)
+
+
+Michal Kubecek (3):
+  wil6210: get rid of begin() and complete() ethtool_ops
+  via-velocity: allow nesting of ethtool_ops begin() and complete()
+  epic100: allow nesting of ethtool_ops begin() and complete()
+
+ drivers/net/ethernet/smsc/epic100.c        |  7 +++-
+ drivers/net/ethernet/via/via-velocity.c    | 14 +++++--
+ drivers/net/ethernet/via/via-velocity.h    |  1 +
+ drivers/net/wireless/ath/wil6210/ethtool.c | 43 ++++++++--------------
+ 4 files changed, 32 insertions(+), 33 deletions(-)
+
+-- 
+2.24.1
+
