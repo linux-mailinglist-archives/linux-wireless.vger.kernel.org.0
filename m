@@ -2,98 +2,83 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B2928131AC5
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 Jan 2020 22:55:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D997E131B3A
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 Jan 2020 23:20:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727024AbgAFVz2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 6 Jan 2020 16:55:28 -0500
-Received: from us-smtp-1.mimecast.com ([205.139.110.61]:58834 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726731AbgAFVz2 (ORCPT
+        id S1727025AbgAFWUM convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 6 Jan 2020 17:20:12 -0500
+Received: from mail-lf1-f66.google.com ([209.85.167.66]:42930 "EHLO
+        mail-lf1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726695AbgAFWUM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 6 Jan 2020 16:55:28 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1578347727;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=vmmECI1BArQVwUDJptXcPvRtU+ySdyFJRPuvbFtEwis=;
-        b=LjCtEYgppRW2Uw0WHIadd4vNzmJNVA6glK9u4Jfge/eQFyEn9TzPdU5gAHOTbOVa67KolJ
-        kDTULtjNdZ2Z7jDK0+WZoNxr+psMH7TVZ0DM49eDfd5R9Ylz9cRUK5kTuDnMV3RexfN3Ub
-        ryPxEaBj/L/s4092rLUt07aLxHzWVv4=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-30-RrKuuhBfPFKSJHwusUSmsQ-1; Mon, 06 Jan 2020 16:55:23 -0500
-X-MC-Unique: RrKuuhBfPFKSJHwusUSmsQ-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 4DAF7800D48;
-        Mon,  6 Jan 2020 21:55:21 +0000 (UTC)
-Received: from localhost (ovpn-112-4.rdu2.redhat.com [10.10.112.4])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 28C537BA28;
-        Mon,  6 Jan 2020 21:55:17 +0000 (UTC)
-Date:   Mon, 06 Jan 2020 13:55:16 -0800 (PST)
-Message-Id: <20200106.135516.1925975914161500836.davem@redhat.com>
-To:     mkubecek@suse.cz
-Cc:     netdev@vger.kernel.org, merez@codeaurora.org, kvalo@codeaurora.org,
-        linux-wireless@vger.kernel.org, wil6210@qti.qualcomm.com,
-        romieu@fr.zoreil.com, linux-kernel@vger.kernel.org, andrew@lunn.ch,
-        f.fainelli@gmail.com
-Subject: Re: [PATCH net-next v2 0/3] ethtool: allow nesting of begin() and
- complete() callbacks
-From:   David Miller <davem@redhat.com>
-In-Reply-To: <cover.1578292157.git.mkubecek@suse.cz>
-References: <cover.1578292157.git.mkubecek@suse.cz>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
+        Mon, 6 Jan 2020 17:20:12 -0500
+Received: by mail-lf1-f66.google.com with SMTP id y19so37408166lfl.9
+        for <linux-wireless@vger.kernel.org>; Mon, 06 Jan 2020 14:20:11 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=psNd5SDAxN8kmAqWfEDCIqtkY8hu3ItV7K5NPbyFLwo=;
+        b=Nqy04B5+6dW3Vz2MsI7XBcQMGyo0gV428StwyUU65pBtZz+pJitCs4KMuNaXC7utwB
+         XvFtBp4aU2G/cBue+xWQADJkOZhy6EsOFROTz7lFtYMs3ShZVIQ7PXzJac0RJRwg+jH8
+         hVDXJMLEyiKZqGvGa+gztbROKIG8ekkL3M7iHR1Ex87EC+TNSDTgjSnv1MVCVrToBsu8
+         rpgzUkAnnSgnYhfe0oe6RkHnBDEP8/chMvLd/gdvzN6OsoAWwH2UapnaVAOJJ8zbASRp
+         SLJGIZKORZ2Cv2wUyEUWG7WoKAy1ZREeINeciKwINHtTkPyvPLV7yHdqrsQNJuKAxlhF
+         kTlw==
+X-Gm-Message-State: APjAAAWiLPciqw3NCwGDokDO9gFExZBXAnNf/DdjIAaVVV+ruZwuEEqu
+        C75lGoNUhjm7TWPIMgBbCGotjybfq5Sv92K75UU=
+X-Google-Smtp-Source: APXvYqy3vSWY4JvLwRKAiXT5YpGZiRCalqahNGOENEH6jPpVI90YArjvmaPMsfnwQXHy4HeZF83HNDZHWSawY1bAqXo=
+X-Received: by 2002:ac2:47ec:: with SMTP id b12mr55159530lfp.162.1578349210465;
+ Mon, 06 Jan 2020 14:20:10 -0800 (PST)
+MIME-Version: 1.0
+References: <20191222172423.131033-1-toke@redhat.com> <5bab549a72d526f4fd0f708f14b49a7af6e2c0b9.camel@sipsolutions.net>
+ <87r20ck3x9.fsf@toke.dk> <CAJnXXoiyWKSLHqMzMcSzHBM-HhfYtcURW1hYd-3Yf7K00NTqgQ@mail.gmail.com>
+ <87mub0k2cd.fsf@toke.dk>
+In-Reply-To: <87mub0k2cd.fsf@toke.dk>
+From:   John Yates <john@yates-sheets.org>
+Date:   Mon, 6 Jan 2020 17:19:58 -0500
+Message-ID: <CAJnXXogQCKQSLT+8_NnEfFd7MLc0=YxShvb4hY2Y+BDJjybQTg@mail.gmail.com>
+Subject: Re: [Make-wifi-fast] [PATCH v5] mac80211: Switch to a virtual
+ time-based airtime scheduler
+To:     =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@redhat.com>
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Kan Yan <kyan@google.com>,
+        Make-Wifi-fast <make-wifi-fast@lists.bufferbloat.net>,
+        Yibo Zhao <yiboz@codeaurora.org>,
+        Rajkumar Manoharan <rmanohar@codeaurora.org>,
+        Felix Fietkau <nbd@nbd.name>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Michal Kubecek <mkubecek@suse.cz>
-Date: Mon,  6 Jan 2020 07:39:26 +0100 (CET)
+On Mon, Jan 6, 2020 at 10:54 AM Toke Høiland-Jørgensen <toke@redhat.com> wrote:
+> Yeah, we'd be doing the accumulation in 64bit values in any case; we're
+> talking about mainly multiplication here (the whole point of the
+> reciprocal stuff is to get the division out of the fast path). So how
+> big of an impact is one (or two) extra 64-bit multiplications going to
+> have on a 32bit platform?
 
-> The ethtool ioctl interface used to guarantee that ethtool_ops callbacks
-> were always called in a block between calls to ->begin() and ->complete()
-> (if these are defined) and that this whole block was executed with RTNL
-> lock held:
-> 
-> 	rtnl_lock();
-> 	ops->begin();
-> 	/* other ethtool_ops calls */
-> 	ops->complete();
-> 	rtnl_unlock();
-> 
-> This prevented any nesting or crossing of the begin-complete blocks.
-> However, this is no longer guaranteed even for ioctl interface as at least
-> ethtool_phys_id() releases RTNL lock while waiting for a timer. With the
-> introduction of netlink ethtool interface, the begin-complete pairs are
-> naturally nested e.g. when a request triggers a netlink notification.
-> 
-> Fortunately, only minority of networking drivers implements begin() and
-> complete() callbacks and most of those that do, fall into three groups:
-> 
->   - wrappers for pm_runtime_get_sync() and pm_runtime_put()
->   - wrappers for clk_prepare_enable() and clk_disable_unprepare()
->   - begin() checks netif_running() (fails if false), no complete()
-> 
-> First two have their own refcounting, third is safe w.r.t. nesting of the
-> blocks.
-> 
-> Only three in-tree networking drivers need an update to deal with nesting
-> of begin() and complete() calls: via-velocity and epic100 perform resume
-> and suspend on their own and wil6210 completely serializes the calls using
-> its own mutex (which would lead to a deadlock if a request request
-> triggered a netlink notification). The series addresses these problems.
-> 
-> changes between v1 and v2:
->   - fix inverted condition in epic100 ethtool_begin() (thanks to Andrew
->     Lunn)
+Top line: usually replacing 64 bit divide with multiply is a massive win.
 
-Series applied, thanks.
+Many platforms make (32 bits * 32 bits) -> 64 bits quite cheap:
+- x86 has this as a single instruction: eax * edx -> eax:edx
+- arm has much the same, plus a variant that tacks ona  64 bit accumulation!
+- mips leaves the 64 bit product in a dedicated register; retrieval
+requires 2 instructions
+- ppc, being more "RISCy", has two instruction: mullo and mulhi
+(performs multiply twice!)
 
+Best case is when the compiler can recognize a 64 bit multiply as really
+
+  widen_32_to_64(left) x widen_32_to_64(right) -> 64_bit_product
+
+In such a case only one of the above multiply cases is necessary.  Otherwise
+one tends to get multiple partial products and double width additions.  Still,
+better than nearly any flavor of 64 bit divide.
+
+/john
