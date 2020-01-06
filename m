@@ -2,110 +2,106 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7DFB1130EC7
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 Jan 2020 09:42:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D82D130EF1
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 Jan 2020 09:55:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726180AbgAFImB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 6 Jan 2020 03:42:01 -0500
-Received: from mail-wr1-f66.google.com ([209.85.221.66]:42616 "EHLO
-        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725446AbgAFImA (ORCPT
+        id S1725887AbgAFIzK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 6 Jan 2020 03:55:10 -0500
+Received: from paleale.coelho.fi ([176.9.41.70]:51346 "EHLO
+        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1725446AbgAFIzK (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 6 Jan 2020 03:42:00 -0500
-Received: by mail-wr1-f66.google.com with SMTP id q6so48610277wro.9
-        for <linux-wireless@vger.kernel.org>; Mon, 06 Jan 2020 00:41:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=netronome-com.20150623.gappssmtp.com; s=20150623;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=M8EUuah2JQYFbZVRs4FZbIzhWD8SMtL+msO/T9weTJI=;
-        b=cOVWGtwbDXYSvf0c0GX5XlAiVh+TPkIgTWgHF6Tabz3GUbi9aAt+qWys5MuUOzY1OP
-         XovJm8QftmdmY7GzMtQhlpOmnoXiNnZuTOkQP6f3ogZi1KeQ0JpiKUYAHJyEA5zvCZvT
-         ytT+NqePYbZk0eGryXBzDhB/luNCVNDoitk8W+QNh8DpUWKt8FK306UKWgXV7OL4xT6N
-         3zjMC5v1tiFnKzH1qVP8um0np30HxiA+0xMnEfJWabnzitBa/Au5DtyU1tnQpMW4J5ZW
-         cAxNdMCoEkbfWH4BH3H4IwMIYLseffge0XbsYwaptB2KwkzEBwMTIZab8l4ukezP/IEq
-         5ffg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=M8EUuah2JQYFbZVRs4FZbIzhWD8SMtL+msO/T9weTJI=;
-        b=S2iBLeTMlTH3HCYe/6Gxzak8xv5RQQ026111KrRfU7ob04PTMgexrJRVIJvnV15Aak
-         0UZSBCKPmozpmVPf4sxmubtSIuEiLMab2ykyps9oMy2i0YFy+3u6NqvT9c+Vx+tDLUHX
-         kMPSCAt6+FyKBacBMR/BvA/A7IUfYGcICl6plbh0bME7orkWAEHm9nNJ4SZoeHCj9s7M
-         M61Ow6AxyzlMmpMEaw8izgkLyOSKQQUxJxeAh8JAxXsuFPheAHAQxiggReb+gYlc023P
-         dt2HCa3Yt7F7SxPjDjI2GWqGNsQfp+NDGGZ9VOFdHVLJtktx4x/ipfbR/yh+8STKaYe4
-         sG9g==
-X-Gm-Message-State: APjAAAULk+Quw83Z5+iEAo6wEw9ihP5gq7yYpmbgiheBzbVGwr03kMIj
-        o9JflrryNJVW/Djc/fvO+hhnFA==
-X-Google-Smtp-Source: APXvYqyXJ1E8kAivSw7L5PiTuqmj6FvNr+aT48bF+Uyd9IWHg2Ch1S32YoUtE1yw0rjXlM+ROZu6TA==
-X-Received: by 2002:a5d:4749:: with SMTP id o9mr53851412wrs.242.1578300118793;
-        Mon, 06 Jan 2020 00:41:58 -0800 (PST)
-Received: from netronome.com ([2001:982:756:703:d63d:7eff:fe99:ac9d])
-        by smtp.gmail.com with ESMTPSA id a1sm22350876wmj.40.2020.01.06.00.41.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Jan 2020 00:41:58 -0800 (PST)
-Date:   Mon, 6 Jan 2020 09:41:57 +0100
-From:   Simon Horman <simon.horman@netronome.com>
-To:     Michal Kubecek <mkubecek@suse.cz>
-Cc:     "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
-        Maya Erez <merez@codeaurora.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        linux-wireless@vger.kernel.org, wil6210@qti.qualcomm.com,
-        Francois Romieu <romieu@fr.zoreil.com>,
-        linux-kernel@vger.kernel.org, Andrew Lunn <andrew@lunn.ch>,
-        Florian Fainelli <f.fainelli@gmail.com>
-Subject: Re: [PATCH net-next v2 0/3] ethtool: allow nesting of begin() and
- complete() callbacks
-Message-ID: <20200106084156.GA10460@netronome.com>
-References: <cover.1578292157.git.mkubecek@suse.cz>
+        Mon, 6 Jan 2020 03:55:10 -0500
+Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa.ger.corp.intel.com)
+        by farmhouse.coelho.fi with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.92.2)
+        (envelope-from <luca@coelho.fi>)
+        id 1ioOAG-0007qa-6B; Mon, 06 Jan 2020 10:55:08 +0200
+From:   Luca Coelho <luca@coelho.fi>
+To:     kvalo@codeaurora.org
+Cc:     linux-wireless@vger.kernel.org
+Date:   Mon,  6 Jan 2020 10:54:50 +0200
+Message-Id: <20200106085502.363205-1-luca@coelho.fi>
+X-Mailer: git-send-email 2.24.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cover.1578292157.git.mkubecek@suse.cz>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on farmhouse.coelho.fi
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+        TVD_RCVD_IP,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.2
+Subject: [PATCH 00/12] iwlwifi: updates intended for v5.6 2020-01-06
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Jan 06, 2020 at 07:39:26AM +0100, Michal Kubecek wrote:
-> The ethtool ioctl interface used to guarantee that ethtool_ops callbacks
-> were always called in a block between calls to ->begin() and ->complete()
-> (if these are defined) and that this whole block was executed with RTNL
-> lock held:
-> 
-> 	rtnl_lock();
-> 	ops->begin();
-> 	/* other ethtool_ops calls */
-> 	ops->complete();
-> 	rtnl_unlock();
-> 
-> This prevented any nesting or crossing of the begin-complete blocks.
-> However, this is no longer guaranteed even for ioctl interface as at least
-> ethtool_phys_id() releases RTNL lock while waiting for a timer. With the
-> introduction of netlink ethtool interface, the begin-complete pairs are
-> naturally nested e.g. when a request triggers a netlink notification.
-> 
-> Fortunately, only minority of networking drivers implements begin() and
-> complete() callbacks and most of those that do, fall into three groups:
-> 
->   - wrappers for pm_runtime_get_sync() and pm_runtime_put()
->   - wrappers for clk_prepare_enable() and clk_disable_unprepare()
->   - begin() checks netif_running() (fails if false), no complete()
-> 
-> First two have their own refcounting, third is safe w.r.t. nesting of the
-> blocks.
-> 
-> Only three in-tree networking drivers need an update to deal with nesting
-> of begin() and complete() calls: via-velocity and epic100 perform resume
-> and suspend on their own and wil6210 completely serializes the calls using
-> its own mutex (which would lead to a deadlock if a request request
-> triggered a netlink notification). The series addresses these problems.
-> 
-> changes between v1 and v2:
->   - fix inverted condition in epic100 ethtool_begin() (thanks to Andrew
->     Lunn)
+From: Luca Coelho <luciano.coelho@intel.com>
 
-Reviewed-by: Simon Horman <simon.horman@netronome.com>
+Hi,
+
+Here's the second set of patches intended for v5.6.  It's the usual
+development, new features, cleanups and bugfixes.
+
+The changes are:
+
+* Support new version of the beacon template FW API;
+* Print some extra information when the driver is loaded;
+* Some debugging infrastructure (aka. yoyo) updates;
+* Support for a new HW version;
+* Second phase of device configuration work started;
+* Some clean-ups;
+
+As usual, I'm pushing this to a pending branch, for kbuild bot, and
+will send a pull-request later.
+
+Please review.
+
+Cheers,
+Luca.
+
+
+Andrei Otcheretianski (1):
+  iwlwifi: mvm: Update BEACON_TEMPLATE_CMD firmware API
+
+Johannes Berg (3):
+  iwlwifi: incorporate firmware filename into version
+  iwlwifi: mvm: print out extended secboot status before dump
+  iwlwifi: prph: remove some unused register definitions
+
+Luca Coelho (7):
+  iwlwifi: yoyo: don't allow changing the domain via debugfs
+  iwlwifi: yoyo: remove unnecessary active triggers status flag
+  iwlwifi: yoyo: remove the iwl_dbg_tlv_gen_active_trigs() function
+  iwlwifi: yoyo: check for the domain on all TLV types during init
+  iwlwifi: assume the driver_data is a trans_cfg, but allow full cfg
+  iwlwifi: implement a new device configuration table
+  iwlwifi: add device name to device_info
+
+Oren Givon (1):
+  iwlwifi: add new iwlax411 struct for type SoSnj
+
+ .../net/wireless/intel/iwlwifi/cfg/22000.c    |  10 ++
+ drivers/net/wireless/intel/iwlwifi/cfg/9000.c |  10 +-
+ drivers/net/wireless/intel/iwlwifi/dvm/main.c |   4 +-
+ .../net/wireless/intel/iwlwifi/fw/api/tx.h    |   7 +-
+ drivers/net/wireless/intel/iwlwifi/fw/dbg.c   |   5 +-
+ .../net/wireless/intel/iwlwifi/fw/debugfs.c   |  29 +---
+ drivers/net/wireless/intel/iwlwifi/fw/img.h   |   2 +-
+ .../net/wireless/intel/iwlwifi/fw/runtime.h   |  13 +-
+ .../net/wireless/intel/iwlwifi/iwl-config.h   |  14 ++
+ .../net/wireless/intel/iwlwifi/iwl-dbg-tlv.c  |  65 +++-----
+ .../net/wireless/intel/iwlwifi/iwl-dbg-tlv.h  |   1 -
+ drivers/net/wireless/intel/iwlwifi/iwl-drv.c  |  26 ++-
+ drivers/net/wireless/intel/iwlwifi/iwl-prph.h |  10 +-
+ .../net/wireless/intel/iwlwifi/iwl-trans.h    |   4 +
+ .../net/wireless/intel/iwlwifi/mvm/debugfs.c  |   2 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c   |  27 ++-
+ drivers/net/wireless/intel/iwlwifi/mvm/nvm.c  |   2 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/ops.c  |   2 +-
+ drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 156 ++++++++++++------
+ 19 files changed, 217 insertions(+), 172 deletions(-)
+
+-- 
+2.24.1
 
