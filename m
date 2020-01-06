@@ -2,77 +2,98 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CD6D7131A6B
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 Jan 2020 22:30:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B2928131AC5
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 Jan 2020 22:55:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726779AbgAFVa1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 6 Jan 2020 16:30:27 -0500
-Received: from mail.kernel.org ([198.145.29.99]:42478 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726735AbgAFVa1 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 6 Jan 2020 16:30:27 -0500
-Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        id S1727024AbgAFVz2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 6 Jan 2020 16:55:28 -0500
+Received: from us-smtp-1.mimecast.com ([205.139.110.61]:58834 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726731AbgAFVz2 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 6 Jan 2020 16:55:28 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1578347727;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=vmmECI1BArQVwUDJptXcPvRtU+ySdyFJRPuvbFtEwis=;
+        b=LjCtEYgppRW2Uw0WHIadd4vNzmJNVA6glK9u4Jfge/eQFyEn9TzPdU5gAHOTbOVa67KolJ
+        kDTULtjNdZ2Z7jDK0+WZoNxr+psMH7TVZ0DM49eDfd5R9Ylz9cRUK5kTuDnMV3RexfN3Ub
+        ryPxEaBj/L/s4092rLUt07aLxHzWVv4=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-30-RrKuuhBfPFKSJHwusUSmsQ-1; Mon, 06 Jan 2020 16:55:23 -0500
+X-MC-Unique: RrKuuhBfPFKSJHwusUSmsQ-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 89D9E21744
-        for <linux-wireless@vger.kernel.org>; Mon,  6 Jan 2020 21:30:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1578346226;
-        bh=zt2cipuUcBin5ZksuZK5p3CaS5gJFK69vb1I6cpfeUE=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=Dq7xNIa+QyOvm50nf0J9wAyeq/WZEkvMyZs1TNcG1bic4azKsEmyU81Mkkuku3Y5X
-         S9wg3DJbZ+DDRBdNexjPzyZxnYXeAiNlKUsd1NNTmho6juw+79dSknLUS0N+MdVXTm
-         51oQ3ocfo0BKDfcrukvW0rfiV2yFCqLpSy7COzFU=
-Received: by mail-qt1-f172.google.com with SMTP id e12so43686523qto.2
-        for <linux-wireless@vger.kernel.org>; Mon, 06 Jan 2020 13:30:26 -0800 (PST)
-X-Gm-Message-State: APjAAAVRERkqtW0/RWyVSeXlUiTUOVbAytTE5Y0CGGvunUmYmNN4cjOu
-        HKhKzHoVTNjpbbz+eTJ/nUZQj5DDnZi89akka0w=
-X-Google-Smtp-Source: APXvYqyMIwY8w2g53pXFhSO7MJ40xSVa8Sz2qpRNIT0nAvliecEeM6MaPvHs39uc+1XEvhenfVVyRxCt/ASI0C7NtZs=
-X-Received: by 2002:ac8:30f7:: with SMTP id w52mr77707481qta.380.1578346225720;
- Mon, 06 Jan 2020 13:30:25 -0800 (PST)
-MIME-Version: 1.0
-References: <DB7PR04MB5242F3AB5904D80328C2E70E8F260@DB7PR04MB5242.eurprd04.prod.outlook.com>
-In-Reply-To: <DB7PR04MB5242F3AB5904D80328C2E70E8F260@DB7PR04MB5242.eurprd04.prod.outlook.com>
-From:   Josh Boyer <jwboyer@kernel.org>
-Date:   Mon, 6 Jan 2020 16:30:04 -0500
-X-Gmail-Original-Message-ID: <CA+5PVA5GCJv2cp9Ff_U7H_YqpSSNgJ2cO3Weu_abAuxUjFgc_g@mail.gmail.com>
-Message-ID: <CA+5PVA5GCJv2cp9Ff_U7H_YqpSSNgJ2cO3Weu_abAuxUjFgc_g@mail.gmail.com>
-Subject: Re: pull-request mwifiex-firmware 2019-12-31
-To:     Ganapathi Bhat <ganapathi.bhat@nxp.com>
-Cc:     "linux-firmware@kernel.org" <linux-firmware@kernel.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        Cathy Luo <xiaohua.luo@nxp.com>,
-        Rakesh Parmar <rakesh.parmar@nxp.com>,
-        James Cao <james.cao@nxp.com>
-Content-Type: text/plain; charset="UTF-8"
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 4DAF7800D48;
+        Mon,  6 Jan 2020 21:55:21 +0000 (UTC)
+Received: from localhost (ovpn-112-4.rdu2.redhat.com [10.10.112.4])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 28C537BA28;
+        Mon,  6 Jan 2020 21:55:17 +0000 (UTC)
+Date:   Mon, 06 Jan 2020 13:55:16 -0800 (PST)
+Message-Id: <20200106.135516.1925975914161500836.davem@redhat.com>
+To:     mkubecek@suse.cz
+Cc:     netdev@vger.kernel.org, merez@codeaurora.org, kvalo@codeaurora.org,
+        linux-wireless@vger.kernel.org, wil6210@qti.qualcomm.com,
+        romieu@fr.zoreil.com, linux-kernel@vger.kernel.org, andrew@lunn.ch,
+        f.fainelli@gmail.com
+Subject: Re: [PATCH net-next v2 0/3] ethtool: allow nesting of begin() and
+ complete() callbacks
+From:   David Miller <davem@redhat.com>
+In-Reply-To: <cover.1578292157.git.mkubecek@suse.cz>
+References: <cover.1578292157.git.mkubecek@suse.cz>
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Dec 31, 2019 at 1:50 AM Ganapathi Bhat <ganapathi.bhat@nxp.com> wrote:
->
-> The following changes since commit 6ae3652bbf4cc025afec3e15fc4bebc6fd29ee2b:
->
->   linux-firmware: update licence text for Marvell firmware (2019-06-08 12:13:25 +0530)
->
-> are available in the git repository at:
->
->   https://github.com/NXP/mwifiex-firmware.git master
->
-> for you to fetch changes up to e65245cc861d0ed57eaf79519af440d1e66b75d6:
->
->   linux-firmware: add NXP firmware licence file (2019-12-31 12:14:50 +0530)
->
-> ----------------------------------------------------------------
-> Ganapathi Bhat (1):
->       linux-firmware: add NXP firmware licence file
->
->  LICENCE.NXP | 22 ++++++++++++++++++++++
->  WHENCE      |  4 ++--
->  2 files changed, 24 insertions(+), 2 deletions(-)
->  create mode 100644 LICENCE.NXP
+From: Michal Kubecek <mkubecek@suse.cz>
+Date: Mon,  6 Jan 2020 07:39:26 +0100 (CET)
 
-Pulled and pushed out.
+> The ethtool ioctl interface used to guarantee that ethtool_ops callbacks
+> were always called in a block between calls to ->begin() and ->complete()
+> (if these are defined) and that this whole block was executed with RTNL
+> lock held:
+> 
+> 	rtnl_lock();
+> 	ops->begin();
+> 	/* other ethtool_ops calls */
+> 	ops->complete();
+> 	rtnl_unlock();
+> 
+> This prevented any nesting or crossing of the begin-complete blocks.
+> However, this is no longer guaranteed even for ioctl interface as at least
+> ethtool_phys_id() releases RTNL lock while waiting for a timer. With the
+> introduction of netlink ethtool interface, the begin-complete pairs are
+> naturally nested e.g. when a request triggers a netlink notification.
+> 
+> Fortunately, only minority of networking drivers implements begin() and
+> complete() callbacks and most of those that do, fall into three groups:
+> 
+>   - wrappers for pm_runtime_get_sync() and pm_runtime_put()
+>   - wrappers for clk_prepare_enable() and clk_disable_unprepare()
+>   - begin() checks netif_running() (fails if false), no complete()
+> 
+> First two have their own refcounting, third is safe w.r.t. nesting of the
+> blocks.
+> 
+> Only three in-tree networking drivers need an update to deal with nesting
+> of begin() and complete() calls: via-velocity and epic100 perform resume
+> and suspend on their own and wil6210 completely serializes the calls using
+> its own mutex (which would lead to a deadlock if a request request
+> triggered a netlink notification). The series addresses these problems.
+> 
+> changes between v1 and v2:
+>   - fix inverted condition in epic100 ethtool_begin() (thanks to Andrew
+>     Lunn)
 
-josh
+Series applied, thanks.
+
