@@ -2,83 +2,90 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D997E131B3A
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 Jan 2020 23:20:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D878E131BB0
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 Jan 2020 23:43:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727025AbgAFWUM convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 6 Jan 2020 17:20:12 -0500
-Received: from mail-lf1-f66.google.com ([209.85.167.66]:42930 "EHLO
-        mail-lf1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726695AbgAFWUM (ORCPT
+        id S1727067AbgAFWnT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 6 Jan 2020 17:43:19 -0500
+Received: from mail-pj1-f66.google.com ([209.85.216.66]:50501 "EHLO
+        mail-pj1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726742AbgAFWnS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 6 Jan 2020 17:20:12 -0500
-Received: by mail-lf1-f66.google.com with SMTP id y19so37408166lfl.9
-        for <linux-wireless@vger.kernel.org>; Mon, 06 Jan 2020 14:20:11 -0800 (PST)
+        Mon, 6 Jan 2020 17:43:18 -0500
+Received: by mail-pj1-f66.google.com with SMTP id r67so8141602pjb.0
+        for <linux-wireless@vger.kernel.org>; Mon, 06 Jan 2020 14:43:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=4RdNkbYZ+RFZlefMkKQtcxx/Dp7xm2bgzJO9aSRTQLY=;
+        b=QhMRk2miiCccImpiN7ngaz8l/5k8dYIz8H5fJO42jEYHW27vEkedCNTlRho3fGndFu
+         5QmOFMEWE8InP1O3SYox05L915GR/CiaWoBoJFatws6hS3VnOUZSc3Ytvy7bbW73JK9h
+         otvV+5+5GpT6ehoJbxJ1SbUkyFxd8cNJLUYgE=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=psNd5SDAxN8kmAqWfEDCIqtkY8hu3ItV7K5NPbyFLwo=;
-        b=Nqy04B5+6dW3Vz2MsI7XBcQMGyo0gV428StwyUU65pBtZz+pJitCs4KMuNaXC7utwB
-         XvFtBp4aU2G/cBue+xWQADJkOZhy6EsOFROTz7lFtYMs3ShZVIQ7PXzJac0RJRwg+jH8
-         hVDXJMLEyiKZqGvGa+gztbROKIG8ekkL3M7iHR1Ex87EC+TNSDTgjSnv1MVCVrToBsu8
-         rpgzUkAnnSgnYhfe0oe6RkHnBDEP8/chMvLd/gdvzN6OsoAWwH2UapnaVAOJJ8zbASRp
-         SLJGIZKORZ2Cv2wUyEUWG7WoKAy1ZREeINeciKwINHtTkPyvPLV7yHdqrsQNJuKAxlhF
-         kTlw==
-X-Gm-Message-State: APjAAAWiLPciqw3NCwGDokDO9gFExZBXAnNf/DdjIAaVVV+ruZwuEEqu
-        C75lGoNUhjm7TWPIMgBbCGotjybfq5Sv92K75UU=
-X-Google-Smtp-Source: APXvYqy3vSWY4JvLwRKAiXT5YpGZiRCalqahNGOENEH6jPpVI90YArjvmaPMsfnwQXHy4HeZF83HNDZHWSawY1bAqXo=
-X-Received: by 2002:ac2:47ec:: with SMTP id b12mr55159530lfp.162.1578349210465;
- Mon, 06 Jan 2020 14:20:10 -0800 (PST)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=4RdNkbYZ+RFZlefMkKQtcxx/Dp7xm2bgzJO9aSRTQLY=;
+        b=IfiiUPhM7fs35xC+xFqe9roqho1/MYSCmD46zajkyuVAcjuQvWHXFyWCOVXfieGMXX
+         zH+nircTveSoiJ6BZGy081P9xZfbliz+UNUTldekItrLXyB/YpKDGUtpnsM4NpZ/MU7a
+         pWuJMbiSsZv8RoBC/R+0IClLsA4Lul8Q5PZSq5twrINAmV7hyx+JPmA/XBRcNx6ZdZGS
+         Tw/TK+J91l5K0pl+DBZoWCmTyfGYRWNAm5/RGbF1hoMGgZ3KYNE8J4AjYrU9GDcGgZkq
+         Xa5zGqK+e5HuXFq3t2Ytt2y6GB6YGUYF6fMLEaZBdx3IRllsSRxtUwC2wpqycU8+MJkO
+         Wl2Q==
+X-Gm-Message-State: APjAAAWpCKgtbwYzGgHAoTLRXANXjwrljtrl3teeQEtkAmhVZfaEaiUW
+        FS0oDhK9WmYhVpTr2Z8uwPuGq2Ml4lk=
+X-Google-Smtp-Source: APXvYqxGo7WUNXWWAK/AkTd2VsWCEWtIq05rE0cnXnQOct/PG90XE4sHAB+yXBghEH929maGJR8hkw==
+X-Received: by 2002:a17:90a:868b:: with SMTP id p11mr45627715pjn.60.1578350597921;
+        Mon, 06 Jan 2020 14:43:17 -0800 (PST)
+Received: from smtp.gmail.com ([2620:15c:202:1:534:b7c0:a63c:460c])
+        by smtp.gmail.com with ESMTPSA id b12sm4360280pfi.157.2020.01.06.14.43.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 06 Jan 2020 14:43:16 -0800 (PST)
+From:   Brian Norris <briannorris@chromium.org>
+To:     linux-wireless@vger.kernel.org
+Cc:     <linux-kernel@vger.kernel.org>,
+        Ganapathi Bhat <ganapathi.bhat@nxp.com>,
+        Nishant Sarmukadam <nishants@marvell.com>,
+        Amitkumar Karwar <amitkarwar@gmail.com>,
+        Xinming Hu <huxinming820@gmail.com>,
+        Brian Norris <briannorris@chromium.org>,
+        stable@vger.kernel.org, huangwen <huangwenabc@gmail.com>
+Subject: [PATCH] mwifiex: fix unbalanced locking in mwifiex_process_country_ie()
+Date:   Mon,  6 Jan 2020 14:42:12 -0800
+Message-Id: <20200106224212.189763-1-briannorris@chromium.org>
+X-Mailer: git-send-email 2.24.1.735.g03f4e72817-goog
 MIME-Version: 1.0
-References: <20191222172423.131033-1-toke@redhat.com> <5bab549a72d526f4fd0f708f14b49a7af6e2c0b9.camel@sipsolutions.net>
- <87r20ck3x9.fsf@toke.dk> <CAJnXXoiyWKSLHqMzMcSzHBM-HhfYtcURW1hYd-3Yf7K00NTqgQ@mail.gmail.com>
- <87mub0k2cd.fsf@toke.dk>
-In-Reply-To: <87mub0k2cd.fsf@toke.dk>
-From:   John Yates <john@yates-sheets.org>
-Date:   Mon, 6 Jan 2020 17:19:58 -0500
-Message-ID: <CAJnXXogQCKQSLT+8_NnEfFd7MLc0=YxShvb4hY2Y+BDJjybQTg@mail.gmail.com>
-Subject: Re: [Make-wifi-fast] [PATCH v5] mac80211: Switch to a virtual
- time-based airtime scheduler
-To:     =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@redhat.com>
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Kan Yan <kyan@google.com>,
-        Make-Wifi-fast <make-wifi-fast@lists.bufferbloat.net>,
-        Yibo Zhao <yiboz@codeaurora.org>,
-        Rajkumar Manoharan <rmanohar@codeaurora.org>,
-        Felix Fietkau <nbd@nbd.name>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Jan 6, 2020 at 10:54 AM Toke Høiland-Jørgensen <toke@redhat.com> wrote:
-> Yeah, we'd be doing the accumulation in 64bit values in any case; we're
-> talking about mainly multiplication here (the whole point of the
-> reciprocal stuff is to get the division out of the fast path). So how
-> big of an impact is one (or two) extra 64-bit multiplications going to
-> have on a 32bit platform?
+We called rcu_read_lock(), so we need to call rcu_read_unlock() before
+we return.
 
-Top line: usually replacing 64 bit divide with multiply is a massive win.
+Fixes: 3d94a4a8373b ("mwifiex: fix possible heap overflow in mwifiex_process_country_ie()")
+Cc: stable@vger.kernel.org
+Cc: huangwen <huangwenabc@gmail.com>
+Cc: Ganapathi Bhat <ganapathi.bhat@nxp.com>
+Signed-off-by: Brian Norris <briannorris@chromium.org>
+---
+ drivers/net/wireless/marvell/mwifiex/sta_ioctl.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Many platforms make (32 bits * 32 bits) -> 64 bits quite cheap:
-- x86 has this as a single instruction: eax * edx -> eax:edx
-- arm has much the same, plus a variant that tacks ona  64 bit accumulation!
-- mips leaves the 64 bit product in a dedicated register; retrieval
-requires 2 instructions
-- ppc, being more "RISCy", has two instruction: mullo and mulhi
-(performs multiply twice!)
+diff --git a/drivers/net/wireless/marvell/mwifiex/sta_ioctl.c b/drivers/net/wireless/marvell/mwifiex/sta_ioctl.c
+index 6dd835f1efc2..fbfa0b15d0c8 100644
+--- a/drivers/net/wireless/marvell/mwifiex/sta_ioctl.c
++++ b/drivers/net/wireless/marvell/mwifiex/sta_ioctl.c
+@@ -232,6 +232,7 @@ static int mwifiex_process_country_ie(struct mwifiex_private *priv,
+ 
+ 	if (country_ie_len >
+ 	    (IEEE80211_COUNTRY_STRING_LEN + MWIFIEX_MAX_TRIPLET_802_11D)) {
++		rcu_read_unlock();
+ 		mwifiex_dbg(priv->adapter, ERROR,
+ 			    "11D: country_ie_len overflow!, deauth AP\n");
+ 		return -EINVAL;
+-- 
+2.24.1.735.g03f4e72817-goog
 
-Best case is when the compiler can recognize a 64 bit multiply as really
-
-  widen_32_to_64(left) x widen_32_to_64(right) -> 64_bit_product
-
-In such a case only one of the above multiply cases is necessary.  Otherwise
-one tends to get multiple partial products and double width additions.  Still,
-better than nearly any flavor of 64 bit divide.
-
-/john
