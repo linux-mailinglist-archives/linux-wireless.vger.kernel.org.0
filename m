@@ -2,89 +2,132 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 674EA131BD9
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 Jan 2020 23:51:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 74F41131C27
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Jan 2020 00:15:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727315AbgAFWvq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 6 Jan 2020 17:51:46 -0500
-Received: from mail-qk1-f194.google.com ([209.85.222.194]:37684 "EHLO
-        mail-qk1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727300AbgAFWvn (ORCPT
+        id S1727266AbgAFXPW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 6 Jan 2020 18:15:22 -0500
+Received: from mail-lj1-f195.google.com ([209.85.208.195]:32902 "EHLO
+        mail-lj1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727001AbgAFXPV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 6 Jan 2020 17:51:43 -0500
-Received: by mail-qk1-f194.google.com with SMTP id 21so41061301qky.4
-        for <linux-wireless@vger.kernel.org>; Mon, 06 Jan 2020 14:51:42 -0800 (PST)
+        Mon, 6 Jan 2020 18:15:21 -0500
+Received: by mail-lj1-f195.google.com with SMTP id y6so44667959lji.0;
+        Mon, 06 Jan 2020 15:15:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=DcDJpyHhT/zuHt9L/g76CdYSvylHBQA1EbFEZdNVtEg=;
-        b=d35htZm0gVCK/o7dbN8yxRvxzIEDYFhUfHYTtCUanbQlAQUMbA7D9fJQ7sI+7YkUYI
-         fpuj36oPW2PXPysY4rVwdiRH0I2zfeUYPpyYdP1pGpAM2VHM60s2z5fmvIrfO0S+4CcN
-         lOApLOvozrkfiXp8w2ciqEbwqOGsPZ9cKipyo=
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=GcHJg22cvo8ljopBl3kBLmCFRVo0QCzkiqo6O1LyDuE=;
+        b=hoW9RI/ZapKnQCth4HdKJwZKngbGc9yt7QGH8LrsDBLY9WesJ34GJYbNfP5blSBIIl
+         0+leGvAAGl6/uRFjmq+P5xtc6txH41TpAia7SwtCDueUo+dGNFJeAYlqG6rMYgjHoKJa
+         REuPY3nIdi0m/zhitowkaA8Z8X1qAY/dp/8rlShg9M7nXzAKLSZjqb10xgMtYXiaislN
+         lWYpURSArfUew39d11gLh/pKBe3EU49IgfrCONFZGKqDURxsP34ulXm3fzCKLsj4s/Po
+         0wojxUlXh58BLDS49RzWzdkuzF+fmAsZSFywVd3t8sbb+rH+6l7Fn/QvMgVFiYjYRKzi
+         V8OA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=DcDJpyHhT/zuHt9L/g76CdYSvylHBQA1EbFEZdNVtEg=;
-        b=qD4j5Mm812W3/aoZ9iiDQ0c5h7jub3ktlSe1244cThMK2wM9f09JRp5a8FlhYkw+3z
-         iF0d15mOeD1LxF19Gx1i7etsp0vdbL1LTIFX+Vb6g0D+bpMVcK0TgfFEDVIctTKv/V7w
-         0Q5o07a7veJjX9HFEhtako13Z+RzSa55Rr5yuQ7h1xBb7g2cyMNYQZqPLxtQZcPG3isA
-         BzqGDmcOvZsJKDDCXuBrz00zi/ae/WweDy/13wLMri8psaiIS/ZrxMwBlqGijkV7+srH
-         8fPnamW0bWImH5g2S/uuCj0o5QsFSuvCsmeG4U9u2aybgc+CKPZ/HeCpaDx+sk9veZqN
-         3TuA==
-X-Gm-Message-State: APjAAAX+fcufHiAwM+lmjBLbJCyKxWP+SvvXFAs2YE5IpxAYz+kiagSg
-        ams9SbWj+kOga1YFWw9VipEI9dtk5Ug=
-X-Google-Smtp-Source: APXvYqz9LEkKjn4ZLi8NNoffWw4epq4OhII6fa+SgO4ZkZKcki7tbUP4M9ulzVu1Gzq12ov0UvtlSA==
-X-Received: by 2002:a05:620a:2043:: with SMTP id d3mr85420017qka.279.1578351101220;
-        Mon, 06 Jan 2020 14:51:41 -0800 (PST)
-Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com. [209.85.160.175])
-        by smtp.gmail.com with ESMTPSA id b35sm24417702qtc.9.2020.01.06.14.51.40
-        for <linux-wireless@vger.kernel.org>
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=GcHJg22cvo8ljopBl3kBLmCFRVo0QCzkiqo6O1LyDuE=;
+        b=ouRMY1ouWudy7BjleKaDs2MBFjHWAtzXdQBGyhPpX0SDS7Wpm+njzfwrbAYtQ8Ouak
+         O8ZBwBnZuDSbAVnxSOUsWLIwgp2W+S7FlCy5AjaxS7jeDo4vLJbS+EUZJa4CVuNXQ10a
+         pt6L0zqE+ddRf270YusnYuLroBpmyBletsPy2YISdWN5tVlOiTF7h9rXWhNmh/3tQKU/
+         kb/etUbWRCtfTxhvBxqBV+1pkF495fkNSVDx3SbuweZZiTnDTb4P7TGquQJ3DrGhJUis
+         6UcX8WztrbwysDzJd1LQLEoRIL/juIDHdyPqy4sz7FolIP86AKd0FN7GO9c5uMYcCNJC
+         aHcA==
+X-Gm-Message-State: APjAAAUHcDhfroSa/saaujssKt4hyReEkC1Zl7vmbTfRBsDDmXW8DacN
+        GQI3pgGWT8MCGUztwR1vGXY=
+X-Google-Smtp-Source: APXvYqy/7HxcFhKd7hifJSt5qHNNgYUM7sQG6qyy6Dz+T5mjvtfn8r5FCSwZB+0VuLc51qM5jWtOYA==
+X-Received: by 2002:a2e:b4ef:: with SMTP id s15mr55146151ljm.20.1578352519724;
+        Mon, 06 Jan 2020 15:15:19 -0800 (PST)
+Received: from [192.168.2.145] (79-139-233-37.dynamic.spd-mgts.ru. [79.139.233.37])
+        by smtp.googlemail.com with ESMTPSA id o10sm11984144lfn.20.2020.01.06.15.15.18
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 06 Jan 2020 14:51:40 -0800 (PST)
-Received: by mail-qt1-f175.google.com with SMTP id k40so43798128qtk.8
-        for <linux-wireless@vger.kernel.org>; Mon, 06 Jan 2020 14:51:40 -0800 (PST)
-X-Received: by 2002:ac8:678d:: with SMTP id b13mr67296866qtp.213.1578351099829;
- Mon, 06 Jan 2020 14:51:39 -0800 (PST)
+        Mon, 06 Jan 2020 15:15:19 -0800 (PST)
+Subject: Re: [PATCH] brcmfmac: sdio: Fix OOB interrupt initialization on
+ brcm43362
+To:     Jean-Philippe Brucker <jean-philippe@linaro.org>
+Cc:     Arend Van Spriel <arend.vanspriel@broadcom.com>,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        brcm80211-dev-list@cypress.com, netdev@vger.kernel.org,
+        hdegoede@redhat.com, franky.lin@broadcom.com,
+        hante.meuleman@broadcom.com, chi-hsien.lin@cypress.com,
+        wright.feng@cypress.com, kvalo@codeaurora.org, davem@davemloft.net
+References: <20191226092033.12600-1-jean-philippe@linaro.org>
+ <16f419a7070.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+ <141f055a-cd1d-66cb-7052-007cda629d3a@gmail.com>
+ <20200106191919.GA826263@myrica>
+From:   Dmitry Osipenko <digetx@gmail.com>
+Message-ID: <c2bb1067-9b9c-3be1-b87e-e733a668a056@gmail.com>
+Date:   Tue, 7 Jan 2020 02:15:18 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.3.0
 MIME-Version: 1.0
-References: <20191227174055.4923-1-sashal@kernel.org> <20191227174055.4923-8-sashal@kernel.org>
-In-Reply-To: <20191227174055.4923-8-sashal@kernel.org>
-From:   Brian Norris <briannorris@chromium.org>
-Date:   Mon, 6 Jan 2020 14:51:28 -0800
-X-Gmail-Original-Message-ID: <CA+ASDXM6UvVCDYGq7gMEai_v3d79Pi_ZH=UFs1gfw_pL_BLMJg@mail.gmail.com>
-Message-ID: <CA+ASDXM6UvVCDYGq7gMEai_v3d79Pi_ZH=UFs1gfw_pL_BLMJg@mail.gmail.com>
-Subject: Re: [PATCH AUTOSEL 5.4 008/187] mwifiex: fix possible heap overflow
- in mwifiex_process_country_ie()
-To:     Sasha Levin <sashal@kernel.org>
-Cc:     Linux Kernel <linux-kernel@vger.kernel.org>,
-        stable <stable@vger.kernel.org>,
-        huangwen <huangwenabc@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        "<netdev@vger.kernel.org>" <netdev@vger.kernel.org>,
-        Ganapathi Bhat <ganapathi.bhat@nxp.com>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20200106191919.GA826263@myrica>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Dec 27, 2019 at 9:59 AM Sasha Levin <sashal@kernel.org> wrote:
->
-> From: Ganapathi Bhat <gbhat@marvell.com>
->
-> [ Upstream commit 3d94a4a8373bf5f45cf5f939e88b8354dbf2311b ]
+06.01.2020 22:19, Jean-Philippe Brucker пишет:
+> Hi Dmitry,
+> 
+> On Thu, Dec 26, 2019 at 05:37:58PM +0300, Dmitry Osipenko wrote:
+>> I haven't seen any driver probe failures due to OOB on NVIDIA Tegra,
+>> only suspend-resume was problematic due to the unbalanced OOB
+>> interrupt-wake enabling.
+>>
+>> But maybe checking whether OOB interrupt-wake works by invoking
+>> enable_irq_wake() during brcmf_sdiod_intr_register() causes trouble for
+>> the cubietruck board.
+>>
+>> @Jean-Philippe, could you please try this change (on top of recent
+>> linux-next):
+> 
+> Sorry for the delay, linux-next doesn't boot for me at the moment and I
+> have little time to investigate why, so I might retry closer to the merge
+> window.
+> 
+> However, isn't the interrupt-wake issue independent from the problem
+> (introduced in v4.17) that my patch fixes? I applied "brcmfmac: Keep OOB
+> wake-interrupt disabled when it shouldn't be enabled" on v5.5-rc5 and it
+> doesn't seem to cause a regression, but the wifi only works if I apply my
+> patch as well.
+> 
+> Thanks,
+> Jean
+> 
+>>
+>> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
+>> b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
+>> index b684a5b6d904..80d7106b10a9 100644
+>> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
+>> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
+>> @@ -115,13 +115,6 @@ int brcmf_sdiod_intr_register(struct brcmf_sdio_dev
+>> *sdiodev)
+>>                 }
+>>                 sdiodev->oob_irq_requested = true;
+>>
+>> -               ret = enable_irq_wake(pdata->oob_irq_nr);
+>> -               if (ret != 0) {
+>> -                       brcmf_err("enable_irq_wake failed %d\n", ret);
+>> -                       return ret;
+>> -               }
+>> -               disable_irq_wake(pdata->oob_irq_nr);
+>> -
+>>                 sdio_claim_host(sdiodev->func1);
+>>
+>>                 if (sdiodev->bus_if->chip == BRCM_CC_43362_CHIP_ID) {
 
-FYI, this upstream commit has unbalanced locking. I've submitted a
-followup here:
+Hello Jean,
 
-[PATCH] mwifiex: fix unbalanced locking in mwifiex_process_country_ie()
-https://lkml.kernel.org/linux-wireless/20200106224212.189763-1-briannorris@chromium.org/T/#u
-https://patchwork.kernel.org/patch/11320227/
+Could you please clarify whether you applied [1] and then the above
+snippet on top of it or you only applied [1] without the snippet?
 
-I'd recommend holding off until that gets landed somewhere. (Same for
-the AUTOSEL patches sent to other kernel branches.)
-
-Regards,
-Brian
+[1] brcmfmac: Keep OOB wake-interrupt disabled when it shouldn't be enabled
