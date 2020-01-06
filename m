@@ -2,93 +2,81 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D09E130D9F
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 Jan 2020 07:39:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 19E39130E4C
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 Jan 2020 09:04:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727528AbgAFGjo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 6 Jan 2020 01:39:44 -0500
-Received: from mx2.suse.de ([195.135.220.15]:42620 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727522AbgAFGjn (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 6 Jan 2020 01:39:43 -0500
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id D0BECADBE;
-        Mon,  6 Jan 2020 06:39:41 +0000 (UTC)
-Received: by unicorn.suse.cz (Postfix, from userid 1000)
-        id 847C5E048A; Mon,  6 Jan 2020 07:39:41 +0100 (CET)
-Message-Id: <4d6d90454847364e49b104caf5736493170f2bea.1578292157.git.mkubecek@suse.cz>
-In-Reply-To: <cover.1578292157.git.mkubecek@suse.cz>
-References: <cover.1578292157.git.mkubecek@suse.cz>
-From:   Michal Kubecek <mkubecek@suse.cz>
-Subject: [PATCH net-next v2 3/3] epic100: allow nesting of ethtool_ops begin()
- and complete()
-To:     "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org
-Cc:     Maya Erez <merez@codeaurora.org>,
+        id S1725844AbgAFIEB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 6 Jan 2020 03:04:01 -0500
+Received: from condef-09.nifty.com ([202.248.20.74]:20333 "EHLO
+        condef-09.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725446AbgAFIEB (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 6 Jan 2020 03:04:01 -0500
+X-Greylist: delayed 315 seconds by postgrey-1.27 at vger.kernel.org; Mon, 06 Jan 2020 03:04:00 EST
+Received: from conuserg-09.nifty.com ([10.126.8.72])by condef-09.nifty.com with ESMTP id 0067tUEZ001868
+        for <linux-wireless@vger.kernel.org>; Mon, 6 Jan 2020 16:55:32 +0900
+Received: from localhost.localdomain (p14092-ipngnfx01kyoto.kyoto.ocn.ne.jp [153.142.97.92]) (authenticated)
+        by conuserg-09.nifty.com with ESMTP id 0067t0HK015985;
+        Mon, 6 Jan 2020 16:55:00 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-09.nifty.com 0067t0HK015985
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1578297301;
+        bh=efnKuYuz9lMVFzD60VImov9gE/cfNQG04Z6RLrlvcBI=;
+        h=From:To:Cc:Subject:Date:From;
+        b=OqTiVlEP/fkyxM1gu4IB+r9/4yKPkoItNtAoplP08Y/dGD1/Vd59g5avkZJTuN2ma
+         aGlLfxaJTNJi/rrMea7KDUnZXOMRoLw1q9MeHqZzUyl4uc5aenKPuFjTYZUWwcDDRF
+         AbtwzxCFBzis7hWTClf2+TMMcPxXGHiTv6Eddu5+cfzE58VvfVu8pXEn55C0BgEw1K
+         Y+M2B0CBQuRm9C1KmSnZGn1Uhw3eWmk9uqBNxD24kAb0+R5+J6ysruDcWHJB0Ektgk
+         j/KBJe9p6ENLN+kTNhUNJ09ZILGh48m1UEM4gp+YrrZQnljaJsjfWHXgOY8LDFcS7O
+         mWCokwk9nTLSg==
+X-Nifty-SrcIP: [153.142.97.92]
+From:   Masahiro Yamada <masahiroy@kernel.org>
+To:     Johannes Berg <johannes.berg@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        Intel Linux Wireless <linuxwifi@intel.com>,
+        linux-wireless@vger.kernel.org
+Cc:     Masahiro Yamada <masahiroy@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
         Kalle Valo <kvalo@codeaurora.org>,
-        linux-wireless@vger.kernel.org, wil6210@qti.qualcomm.com,
-        Francois Romieu <romieu@fr.zoreil.com>,
-        linux-kernel@vger.kernel.org, Andrew Lunn <andrew@lunn.ch>,
-        Florian Fainelli <f.fainelli@gmail.com>
-Date:   Mon,  6 Jan 2020 07:39:41 +0100 (CET)
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+Subject: [PATCH] iwlwifi: remove object duplication in Makefile
+Date:   Mon,  6 Jan 2020 16:54:38 +0900
+Message-Id: <20200106075439.20926-1-masahiroy@kernel.org>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Unlike most networking drivers using begin() and complete() ethtool_ops
-callbacks to resume a device which is down and suspend it again when done,
-epic100 does not use standard refcounted infrastructure but sets device
-sleep state directly.
+The objects in $(iwlwifi-objs) $(iwlwifi-y) $(iwlwifi-m) are linked to
+iwlwifi.ko .
 
-With the introduction of netlink ethtool interface, we may have nested
-begin-complete blocks so that inner complete() would put the device back to
-sleep for the rest of the outer block.
+This line adds $(iwlwifi-m) to iwlwifi-objs, so the objects from
+$(iwlwifi-m) are listed twice as the dependency of the module.
 
-To avoid rewriting an old and not very actively developed driver, just add
-a nesting counter and only perform resume and suspend on the outermost
-level.
+It works because Kbuild trims the duplicated objects from linking,
+but there is no good reason to have this line.
 
-Signed-off-by: Michal Kubecek <mkubecek@suse.cz>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 ---
-v2: fix inverted condition in ethtool_begin() (thanks to Andrew Lunn)
----
- drivers/net/ethernet/smsc/epic100.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/smsc/epic100.c b/drivers/net/ethernet/smsc/epic100.c
-index 912760e8514c..61ddee0c2a2e 100644
---- a/drivers/net/ethernet/smsc/epic100.c
-+++ b/drivers/net/ethernet/smsc/epic100.c
-@@ -280,6 +280,7 @@ struct epic_private {
- 	signed char phys[4];				/* MII device addresses. */
- 	u16 advertising;					/* NWay media advertisement */
- 	int mii_phy_cnt;
-+	u32 ethtool_ops_nesting;
- 	struct mii_if_info mii;
- 	unsigned int tx_full:1;				/* The Tx queue is full. */
- 	unsigned int default_port:4;		/* Last dev->if_port value. */
-@@ -1435,8 +1436,10 @@ static int ethtool_begin(struct net_device *dev)
- 	struct epic_private *ep = netdev_priv(dev);
- 	void __iomem *ioaddr = ep->ioaddr;
+ drivers/net/wireless/intel/iwlwifi/Makefile | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/drivers/net/wireless/intel/iwlwifi/Makefile b/drivers/net/wireless/intel/iwlwifi/Makefile
+index 0aae3fa4128c..a018d27a5410 100644
+--- a/drivers/net/wireless/intel/iwlwifi/Makefile
++++ b/drivers/net/wireless/intel/iwlwifi/Makefile
+@@ -19,8 +19,6 @@ iwlwifi-$(CONFIG_IWLMVM) += fw/paging.o fw/smem.o fw/init.o
+ iwlwifi-$(CONFIG_ACPI) += fw/acpi.o
+ iwlwifi-$(CONFIG_IWLWIFI_DEBUGFS) += fw/debugfs.o
  
-+	if (ep->ethtool_ops_nesting == U32_MAX)
-+		return -EBUSY;
- 	/* power-up, if interface is down */
--	if (!netif_running(dev)) {
-+	if (!ep->ethtool_ops_nesting++ && !netif_running(dev)) {
- 		ew32(GENCTL, 0x0200);
- 		ew32(NVCTL, (er32(NVCTL) & ~0x003c) | 0x4800);
- 	}
-@@ -1449,7 +1452,7 @@ static void ethtool_complete(struct net_device *dev)
- 	void __iomem *ioaddr = ep->ioaddr;
+-iwlwifi-objs += $(iwlwifi-m)
+-
+ iwlwifi-$(CONFIG_IWLWIFI_DEVICE_TRACING) += iwl-devtrace.o
  
- 	/* power-down, if interface is down */
--	if (!netif_running(dev)) {
-+	if (!--ep->ethtool_ops_nesting && !netif_running(dev)) {
- 		ew32(GENCTL, 0x0008);
- 		ew32(NVCTL, (er32(NVCTL) & ~0x483c) | 0x0000);
- 	}
+ ccflags-y += -I$(src)
 -- 
-2.24.1
+2.17.1
 
