@@ -2,123 +2,112 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7BD67131183
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 Jan 2020 12:42:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2892B1312FF
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 Jan 2020 14:34:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726303AbgAFLmO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 6 Jan 2020 06:42:14 -0500
-Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:26305 "EHLO
+        id S1726300AbgAFNe1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 6 Jan 2020 08:34:27 -0500
+Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:24900 "EHLO
         us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726296AbgAFLmO (ORCPT
+        with ESMTP id S1726173AbgAFNe1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 6 Jan 2020 06:42:14 -0500
+        Mon, 6 Jan 2020 08:34:27 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1578310933;
+        s=mimecast20190719; t=1578317666;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=TNqdhqczgGxdK5AdjOJfUfkF3f4OWqEVU8tl4ZyprUA=;
-        b=MvABnr/ArXBF9JURHTQvofftR+U8x4B3tMtFammhMovniylVCFfgsrxJqSK8s6SkAoNfHu
-        U9qcbqyCClYGXSOMQrOFS6zbCM0bB6OvniKPw82YBT/QBAqqbcPZlrj2tcVaWq9i3wGyl/
-        RB/DS0umaOy2XRV3IoOPVn2HkOBkRCE=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-385-4fjAnKbgPO6v02ABuawmAg-1; Mon, 06 Jan 2020 06:42:12 -0500
-X-MC-Unique: 4fjAnKbgPO6v02ABuawmAg-1
-Received: by mail-wr1-f72.google.com with SMTP id j13so12822423wrr.20
-        for <linux-wireless@vger.kernel.org>; Mon, 06 Jan 2020 03:42:12 -0800 (PST)
+        bh=+Dkkujyfe/gezec8u0wxy79DdORx+9S3fm+dMwU0Eyc=;
+        b=i3TQ5Fp7S+05pIqtLZwi+y9gfnXEqGfxSovEwQSmw8F/1zNGXxHxRsBbUMDPDTpzOHtqv8
+        nD05nr5IZU+2/O6+o9/o8Zl7j+Hs5wgCxhl59/f48iv0KhQyiHXRq1SufdEyAUkCrJxlKr
+        FlYkuDPK4HJgq0qqWMK5cp5EejP5+10=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-414-oMa1Am4ZNfWUxpfOP_Qa8w-1; Mon, 06 Jan 2020 08:34:25 -0500
+X-MC-Unique: oMa1Am4ZNfWUxpfOP_Qa8w-1
+Received: by mail-wm1-f69.google.com with SMTP id 18so2854678wmp.0
+        for <linux-wireless@vger.kernel.org>; Mon, 06 Jan 2020 05:34:24 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
-         :message-id:mime-version:content-transfer-encoding;
-        bh=TNqdhqczgGxdK5AdjOJfUfkF3f4OWqEVU8tl4ZyprUA=;
-        b=EmGo9HYWSNqOXLao7VecFlszUKZ4zx20mMNEFXCmfRqrrQKIRtM0Bnh/wgvcdtXuQw
-         lZGFJu+nhZRb5Lz/fGoXxMeBza2UWzfBKe9Q3IiyJhSmATpb8qxtsCHEAFS900Ii9yaf
-         zPVcsOSULs7Uo6r178Cd8nn4A5zso9nrCHa9G65ZrRELNg4+d5hos2lgunnheC7At3OZ
-         bWmbwA6yeGfEqZPZZdtX+u4f/bzABUsE5/d92CVwdP4ISWsen+RStNlfWHLGyGoe7OLU
-         yJwCQZ8yDDBLeJdulVDIJ0p7zTmqB/RgNfhg4SMV4novX7qV1n0xYJdvaTZ2CCO3zI6/
-         vCAA==
-X-Gm-Message-State: APjAAAVJz2O7u05Mi5ZNlTmq6owlEzyq2F0tyyhWA6wNYnMokEucptH6
-        9IFKF6cRkR1bFb2cyr/3ASg+rgjX1gvcCAjVlchLHlgVVJRq/n7qSp4ddyq3rNKoyxcizT357y6
-        dCTPafKt4AvEovGjHM2ngioDL8cw=
-X-Received: by 2002:a1c:9a44:: with SMTP id c65mr35846639wme.30.1578310931285;
-        Mon, 06 Jan 2020 03:42:11 -0800 (PST)
-X-Google-Smtp-Source: APXvYqxFqj5hbTmw5TNCiaFK0bcZ9ys0kpODCGKf2BRFw7C+DJBPxTlQ/OGlH4m6didvNL8jYT5x8Q==
-X-Received: by 2002:a1c:9a44:: with SMTP id c65mr35846622wme.30.1578310931078;
-        Mon, 06 Jan 2020 03:42:11 -0800 (PST)
-Received: from alrua-x1.borgediget.toke.dk ([45.145.92.2])
-        by smtp.gmail.com with ESMTPSA id c17sm73314622wrr.87.2020.01.06.03.42.10
+         :message-id:mime-version;
+        bh=+Dkkujyfe/gezec8u0wxy79DdORx+9S3fm+dMwU0Eyc=;
+        b=kxG+IuyPUIDJ5gXy9pjQCtlivmf+oFi+yhiDUjGoJeivyr43xRVAmJOt+8IK8F2USg
+         ARHg072VObYatSg667cZUBldlaWH+sWbwrVMmCqWaEJTNL4qUlsup/Yt+J1Rk57JFe6+
+         zEKG/7ocA+nNhkELFlCavCHnsS6UB5+0Qxyw50CaBoW4ObsYTrQESp2bVXGHQvofJFJz
+         I74yJwAvLUVr8NfDP+c4tR95EdZf6GNS6nCHdcgKyEogjM4nTkdUwAEmLy+n+WBCSNRP
+         IJlK/bdLp9PQIEgWp/G59TPU4w7A/hh9m60d2KwBetwBvO8blusjQsqfysdYMntS5ClW
+         aagg==
+X-Gm-Message-State: APjAAAU2W5TxKFkqN62rj+b2j1M2Wlg7mB4tX4aN2fXHLVN4pRi4YGRY
+        L+xRb8obRiQdExTaQbqRudDhXGiqXE1I4tZXnUFUJXgIFlc74w1LHuSpLgFiFQOmT95hl8OQXlA
+        hijx4BmxQdyknUbpOeP8veSs0n00=
+X-Received: by 2002:adf:f508:: with SMTP id q8mr27908554wro.334.1578317663890;
+        Mon, 06 Jan 2020 05:34:23 -0800 (PST)
+X-Google-Smtp-Source: APXvYqxm40NiLw1TYjidTWCotGayLqivBaOTg5hEb2NN8tw0Sw35bt3Zm76Owu+8ubw6JUQgXScAiA==
+X-Received: by 2002:adf:f508:: with SMTP id q8mr27908539wro.334.1578317663728;
+        Mon, 06 Jan 2020 05:34:23 -0800 (PST)
+Received: from alrua-x1.borgediget.toke.dk ([2a0c:4d80:42:443::2])
+        by smtp.gmail.com with ESMTPSA id q68sm24387041wme.14.2020.01.06.05.34.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Jan 2020 03:42:10 -0800 (PST)
+        Mon, 06 Jan 2020 05:34:23 -0800 (PST)
 Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-        id F1609180ADB; Mon,  6 Jan 2020 12:42:09 +0100 (CET)
+        id A0E54180ADA; Mon,  6 Jan 2020 14:34:22 +0100 (CET)
 From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-To:     Markus Theil <markus.theil@tu-ilmenau.de>,
-        johannes@sipsolutions.net
-Cc:     linux-wireless@vger.kernel.org
-Subject: Re: [PATCH] iw: info: print missing extended feature flag information
-In-Reply-To: <0e8cd8ee-e9c3-2b0a-bdce-f831367734a1@tu-ilmenau.de>
-References: <20200101174836.5513-1-markus.theil@tu-ilmenau.de> <8736csltrb.fsf@toke.dk> <0e8cd8ee-e9c3-2b0a-bdce-f831367734a1@tu-ilmenau.de>
+To:     Kan Yan <kyan@google.com>, Justin Capella <justincapella@gmail.com>
+Cc:     Stephen Oberholtzer <stevie@qrpff.net>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        "David S. Miller" <davem@davemloft.net>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        netdev@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>
+Subject: Re: PROBLEM: Wireless networking goes down on Acer C720P Chromebook (bisected)
+In-Reply-To: <CA+iem5uPaYmZr=+kdHopm1Yo9dgyL98k7KfV6uYx_yH22FSGag@mail.gmail.com>
+References: <CAD_xR9eDL+9jzjYxPXJjS7U58ypCPWHYzrk0C3_vt-w26FZeAQ@mail.gmail.com> <1762437703fd150bb535ee488c78c830f107a531.camel@sipsolutions.net> <CAD_xR9eh=CAYeQZ3Vp9Yj9h3ifMu2exy0ihaXyE+736tJrPVLA@mail.gmail.com> <CAMrEMU-QF8HCTMFhzHd0w2f132iA4GLUXHmBPGnuetPqkz=U7A@mail.gmail.com> <CA+iem5uPaYmZr=+kdHopm1Yo9dgyL98k7KfV6uYx_yH22FSGag@mail.gmail.com>
 X-Clacks-Overhead: GNU Terry Pratchett
-Date:   Mon, 06 Jan 2020 12:42:09 +0100
-Message-ID: <87zhf0ke0e.fsf@toke.dk>
+Date:   Mon, 06 Jan 2020 14:34:22 +0100
+Message-ID: <87tv58k8td.fsf@toke.dk>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Markus Theil <markus.theil@tu-ilmenau.de> writes:
+Kan Yan <kyan@google.com> writes:
 
-> On 1/6/20 12:16 PM, Toke H=C3=B8iland-J=C3=B8rgensen wrote:
->> Markus Theil <markus.theil@tu-ilmenau.de> writes:
+>> I ran a ping, and saw this:
 >>
->>> Some extended feature flags were not considered before.
->>>
->>> Signed-off-by: Markus Theil <markus.theil@tu-ilmenau.de>
->>> ---
->>>  info.c | 10 ++++++++++
->>>  1 file changed, 10 insertions(+)
->>>
->>> diff --git a/info.c b/info.c
->>> index 38362d8..0f24dae 100644
->>> --- a/info.c
->>> +++ b/info.c
->>> @@ -676,7 +676,17 @@ broken_combination:
->>>  		ext_feat_print(tb, DFS_OFFLOAD, "DFS offload");
->>>  		ext_feat_print(tb, CONTROL_PORT_OVER_NL80211,
->>>  			       "control port over nl80211");
->>> +		ext_feat_print(tb, ACK_SIGNAL_SUPPORT,
->>> +			       "ack signal level support");
->>>  		ext_feat_print(tb, TXQS, "FQ-CoDel-enabled intermediate TXQs");
->>> +		ext_feat_print(tb, SCAN_RANDOM_SN,
->>> +			       "use random sequence numbers in scans");
->>> +		ext_feat_print(tb, SCAN_MIN_PREQ_CONTENT,
->>> +			       "use probe request with only rate IEs in scans");
->>> +		ext_feat_print(tb, CAN_REPLACE_PTK0,
->>> +			       "can safely replace PTK 0 when rekeying");
->>> +		ext_feat_print(tb, ENABLE_FTM_RESPONDER,
->>> +			       "enable FTM (Fine Time Measurement) responder");
->>>  		ext_feat_print(tb, AIRTIME_FAIRNESS,
->>>  			       "airtime fairness scheduling");
->> I would prefer to keep TXQS and AIRTIME_FAIRNESS next to each other.
+>> - pings coming back in <5ms
+>> - re-enable AQL (echo 7 | tee airtime_flags)
+>> - pings stop coming back immediately
+>> - some seconds later, disable AQL again (echo 3 | tee airtime_flags)
+>> - immediate *flood* of ping replies registered, with times 16000ms,
+>> 15000ms, 14000ms, .. down to 1000ms, 15ms, then stabilizing sub-5ms
+>> - According to the icmp_seq values, all 28 requests were replied to,
+>> and their replies were delivered in-order
 >>
->> Also, while you're at it, could you please add the newly-added AQL
->> feature? Something like
->>
->>   		ext_feat_print(tb, AIRTIME_FAIRNESS,
->>   			       "airtime fairness scheduling");
->>  +		ext_feat_print(tb, AQL,
->>  +			       "Airtime Queue Limits (AQL)");
-> I'm currently working on some other small patches and will include this
-> and reorder the flags such that TXQS and AIRTIME_FAIRNESS will be next
-> to each other.
-> Thanks for the hint!
+>> This certainly looks like a missing TX queue restart to me?
+> I don't think TX queue restart is "missing", the TX queue should get
+> restarted when the pending frames is completed and returned to the
+> host driver. However, It looks like there is some issue with the
+> deficit refill logic in ath9k, and the TX queue got blocked due to the
+> negative deficit.
 
-Great, thanks! :)
+s/deficit refill/packet freeing/. I.e., there's an issue with the ath9k
+driver either stomping on the tx_time_est field in the cb, or it's not
+reporting back all freed TX skbs properly, so the AQL Q depth doesn't go
+back down.
+
+The large negative deficit is just because the queue is being blocked by
+AQL, so it won't get its deficit refilled (and it keeps decreasing as RX
+packets are being accounted).
+
+All this being said, given the fact that ath9k definitely doesn't need
+AQL, I think it's probably not worth it to try to find out exactly what
+is causing this, and instead just leave AQL off for that driver?
+
+(As an aside, this definitely disproves my initial "AQL should be benign
+for drivers that don't need it" hypothesis. Guess that was way too
+optimistic anyway ;))
 
 -Toke
 
