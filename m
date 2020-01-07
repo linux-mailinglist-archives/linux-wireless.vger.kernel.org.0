@@ -2,144 +2,109 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C786C132108
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Jan 2020 09:09:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DF61B1322F5
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Jan 2020 10:52:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727549AbgAGIJJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 7 Jan 2020 03:09:09 -0500
-Received: from rtits2.realtek.com ([211.75.126.72]:47763 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725987AbgAGIJJ (ORCPT
+        id S1727167AbgAGJwF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 7 Jan 2020 04:52:05 -0500
+Received: from relay7-d.mail.gandi.net ([217.70.183.200]:37901 "EHLO
+        relay7-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726558AbgAGJwF (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 7 Jan 2020 03:09:09 -0500
-Authenticated-By: 
-X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID 007893wo009060, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (RTITCAS12.realtek.com.tw[172.21.6.16])
-        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id 007893wo009060
-        (version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 7 Jan 2020 16:09:03 +0800
-Received: from RTEXMB02.realtek.com.tw (172.21.6.95) by
- RTITCAS12.realtek.com.tw (172.21.6.16) with Microsoft SMTP Server (TLS) id
- 14.3.468.0; Tue, 7 Jan 2020 16:09:03 +0800
-Received: from RTEXMB04.realtek.com.tw (172.21.6.97) by
- RTEXMB02.realtek.com.tw (172.21.6.95) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Tue, 7 Jan 2020 16:09:02 +0800
-Received: from RTEXMB04.realtek.com.tw ([fe80::d9c5:a079:495e:b999]) by
- RTEXMB04.realtek.com.tw ([fe80::d9c5:a079:495e:b999%6]) with mapi id
- 15.01.1779.005; Tue, 7 Jan 2020 16:09:02 +0800
-From:   Tony Chuang <yhchuang@realtek.com>
-To:     Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>,
-        Linux List Kernel Mailing <linux-kernel@vger.kernel.org>,
-        Linux List Kernel Mailing <linux-wireless@vger.kernel.org>
-CC:     =?utf-8?B?0KDQuNGI0LDRgiDQoNC40LzQvtCy0LjRhyDQotC10YDQtdCz0YPQu9C+0LI=?= 
-        <rtereguloff@gmail.com>
-Subject: RE: kernel NULL pointer dereference, address: 0000000000000070
-Thread-Topic: kernel NULL pointer dereference, address: 0000000000000070
-Thread-Index: AQHVwnJlWOGZOZl7FUOgIuVYXKzd7KfefxUQ
-Date:   Tue, 7 Jan 2020 08:09:02 +0000
-Message-ID: <f286f8ec456e448abe9de81f07041d18@realtek.com>
-References: <CABXGCsODygM_F4JCesQOH_i+QA9XLWXvcT2o_K=dW6R8ZeJ6rQ@mail.gmail.com>
-In-Reply-To: <CABXGCsODygM_F4JCesQOH_i+QA9XLWXvcT2o_K=dW6R8ZeJ6rQ@mail.gmail.com>
-Accept-Language: zh-TW, en-US
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.68.183]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        Tue, 7 Jan 2020 04:52:05 -0500
+X-Originating-IP: 83.155.44.161
+Received: from classic (mon69-7-83-155-44-161.fbx.proxad.net [83.155.44.161])
+        (Authenticated sender: hadess@hadess.net)
+        by relay7-d.mail.gandi.net (Postfix) with ESMTPSA id 2DBA02000F;
+        Tue,  7 Jan 2020 09:52:02 +0000 (UTC)
+Message-ID: <d96a7108ce72bd00c58a07fbed529ab4b1702466.camel@hadess.net>
+Subject: [PATCH] rtl8188eu: Add rtw_led_enable module parameter
+From:   Bastien Nocera <hadess@hadess.net>
+To:     Larry Finger <Larry.Finger@lwfinger.net>
+Cc:     linux-wireless@vger.kernel.org
+Date:   Tue, 07 Jan 2020 10:52:02 +0100
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.34.2 (3.34.2-1.fc31) 
 MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-PiBTdWJqZWN0OiBCVUc6IGtlcm5lbCBOVUxMIHBvaW50ZXIgZGVyZWZlcmVuY2UsIGFkZHJlc3M6
-IDAwMDAwMDAwMDAwMDAwNzANCj4gDQo+IEhpIGZvbGtzLg0KPiBNeSBmcmllbmQgdG9kYXkgbGF1
-bmNoZWQgc3RyZXNzLW5nIG11bHRpcGxlIHRpbWVzIGFuZCBoZSBjb3VsZCB0d2ljZQ0KPiB0aW1l
-IHJlcHJvZHVjZSB0aGUgb2RkIGJ1Zywgd2hpY2ggbG9va3MgbGlrZSBhIGJ1ZyBpbiB0aGUgd2lm
-aSBkcml2ZXIuDQo+IA0KPiBsc3BjaSBkZXRlY3RzIHRoaXMgZGV2aWNlIGFzOg0KPiBOZXR3b3Jr
-IGNvbnRyb2xsZXI6IFJlYWx0ZWsgU2VtaWNvbmR1Y3RvciBDby4sIEx0ZC4gUlRMODgyMkJFDQo+
-IDgwMi4xMWEvYi9nL24vYWMgV2lGaSBhZGFwdGVyDQo+IA0KPiBJIGRlY2lkZWQgdG8gcmVwb3J0
-IGhlcmUgYmVjYXVzZSBldmVyeSB0aW1lIGFmdGVyIHRoaXMgYnVnIGhhcHBlbnMgdGhlDQo+IHN5
-c3RlbSBiZWNhbWUgZnVsbHkgdW5yZXNwb25zaXZlLiBXaGljaCBpcyByZWFsbHkgdmVyeSBhbm5v
-eWluZy4NCj4gDQo+IHN0cmVzcy1uZy1pb21peCAoMTQ3MzgxKTogZHJvcF9jYWNoZXM6IDMNCj4g
-c3RyZXNzLW5nLWlvbWl4ICgxNDc0MTcpOiBkcm9wX2NhY2hlczogMw0KPiBzdHJlc3MtbmctaW9t
-aXggKDE0NzQxNSk6IGRyb3BfY2FjaGVzOiAzDQo+IHJ0d19wY2kgMDAwMDowNDowMC4wOiBzdG9w
-IHZpZiBlYTowMTo0ZTpjZTo5OTpjNSBvbiBwb3J0IDANCj4gcnR3X3BjaSAwMDAwOjA0OjAwLjA6
-IHN0YXJ0IHZpZiAwNjo3MjoxZTo5NzpmYzo4MyBvbiBwb3J0IDANCj4gQlVHOiBrZXJuZWwgTlVM
-TCBwb2ludGVyIGRlcmVmZXJlbmNlLCBhZGRyZXNzOiAwMDAwMDAwMDAwMDAwMDcwDQo+ICNQRjog
-c3VwZXJ2aXNvciByZWFkIGFjY2VzcyBpbiBrZXJuZWwgbW9kZQ0KPiAjUEY6IGVycm9yX2NvZGUo
-MHgwMDAwKSAtIG5vdC1wcmVzZW50IHBhZ2UNCj4gUEdEIDAgUDREIDANCj4gT29wczogMDAwMCBb
-IzFdIFNNUCBOT1BUSQ0KPiBDUFU6IDEgUElEOiA4MTkgQ29tbTogaXJxLzc2LXJ0d3BjaSBOb3Qg
-dGFpbnRlZA0KPiA1LjUuMC0wLnJjNC5naXQwLjEuZmMzMi54ODZfNjQgIzENCj4gSGFyZHdhcmUg
-bmFtZTogU3lzdGVtIG1hbnVmYWN0dXJlciBTeXN0ZW0gUHJvZHVjdCBOYW1lL1JPRyBTVFJJWA0K
-PiBYNDcwLUkgR0FNSU5HLCBCSU9TIDMwMDQgMTIvMTYvMjAxOQ0KPiBSSVA6IDAwMTA6cnR3X3Bj
-aV90eF9pc3IrMHg5Ni8weDIzMCBbcnR3cGNpXQ0KPiBDb2RlOiAwZSAwMSAwMCAwMCA0OCA4YiA0
-NCAyNCAwOCA0NCAwZiBiNiA2NCAyNCAxMyA0OCBjMSBlMCAwNiA0OSA4Mw0KPiBjNCAwMSA0OCA4
-OSAwNCAyNCA0OSBjMSBlNCAwNiA0OSAwMSBkYyA0YyA4OSBlNyBlOCA4YSBkMSA5NiBjZSA8OGI+
-IDUwDQo+IDcwIDQ4IDhiIDcwIDQ4IDQ5IDg5IGM2IDQ4IDhiIDAzIDQ4IDhkIGI4IGIwIDAwIDAw
-IDAwIDQ4IDhiDQo+IFJTUDogMDAxODpmZmZmYWQ5ZjAwZDZmZTA4IEVGTEFHUzogMDAwMTAwODYN
-Cj4gUkFYOiAwMDAwMDAwMDAwMDAwMDAwIFJCWDogZmZmZjliNjY3NjZlNWQ2OCBSQ1g6IDAwMDAw
-MDAwMDAwMDAwMDANCj4gUkRYOiAwMDAwMDAwMDAwMDAwMDAxIFJTSTogMDAwMDAwMDAwMDAwMDA4
-NiBSREk6IDAwMDAwMDAwMDAwMDAwODYNCj4gUkJQOiAwMDAwMDAwMDAwMDAwMDZhIFIwODogMDAw
-MDAwMDAwMDAwMDAwMCBSMDk6IDAwMDAwMDAwMDAwMDAwNTkNCj4gUjEwOiAwMDAwMDAwMDAwMDAw
-MDAwIFIxMTogZmZmZjliNjY3ZGE2YWUzOCBSMTI6IGZmZmY5YjY2NzY2ZTVlZTgNCj4gUjEzOiBm
-ZmZmOWI2Njc2NmUxZTgwIFIxNDogMDAwMDAwMDAwMDAwMDAwNSBSMTU6IGZmZmY5YjY2NzY2ZTA3
-YzANCj4gRlM6ICAwMDAwMDAwMDAwMDAwMDAwKDAwMDApIEdTOmZmZmY5YjY2N2RhNDAwMDAoMDAw
-MCkNCj4ga25sR1M6MDAwMDAwMDAwMDAwMDAwMA0KPiBDUzogIDAwMTAgRFM6IDAwMDAgRVM6IDAw
-MDAgQ1IwOiAwMDAwMDAwMDgwMDUwMDMzDQo+IENSMjogMDAwMDAwMDAwMDAwMDA3MCBDUjM6IDAw
-MDAwMDAzMzM2OTAwMDAgQ1I0OiAwMDAwMDAwMDAwMzQwNmUwDQo+IENhbGwgVHJhY2U6DQo+ICBy
-dHdfcGNpX2ludGVycnVwdF90aHJlYWRmbisweDE1Yi8weDIxMCBbcnR3cGNpXQ0KPiAgPyBpcnFf
-ZmluYWxpemVfb25lc2hvdC5wYXJ0LjArMHhmMC8weGYwDQo+ICBpcnFfdGhyZWFkX2ZuKzB4MjAv
-MHg2MA0KPiAgaXJxX3RocmVhZCsweGRjLzB4MTcwDQo+ICA/IGlycV9mb3JjZWRfdGhyZWFkX2Zu
-KzB4ODAvMHg4MA0KPiAga3RocmVhZCsweGY5LzB4MTMwDQo+ICA/IGlycV90aHJlYWRfY2hlY2tf
-YWZmaW5pdHkrMHhmMC8weGYwDQo+ICA/IGt0aHJlYWRfcGFyaysweDkwLzB4OTANCj4gIHJldF9m
-cm9tX2ZvcmsrMHgyMi8weDQwDQo+IE1vZHVsZXMgbGlua2VkIGluOiBzYWxzYTIwX2dlbmVyaWMg
-Y2FtZWxsaWFfZ2VuZXJpYw0KPiBjYW1lbGxpYV9hZXNuaV9hdngyIGNhbWVsbGlhX2Flc25pX2F2
-eF94ODZfNjQgY2FtZWxsaWFfeDg2XzY0DQo+IGNhc3Q2X2F2eF94ODZfNjQgY2FzdDZfZ2VuZXJp
-YyBjYXN0X2NvbW1vbiBzZXJwZW50X2F2eDINCj4gc2VycGVudF9hdnhfeDg2XzY0IHNlcnBlbnRf
-c3NlMl94ODZfNjQgc2VycGVudF9nZW5lcmljIHR3b2Zpc2hfZ2VuZXJpYw0KPiB0d29maXNoX2F2
-eF94ODZfNjQgdHdvZmlzaF94ODZfNjRfM3dheSB0d29maXNoX3g4Nl82NA0KPiB0d29maXNoX2Nv
-bW1vbg0KPiBvZmIgdGdyMTkyIHdwNTEyIHJtZDMyMCBybWQyNTYgcm1kMTYwIHJtZDEyOCBtZDQg
-dWlucHV0IHJmY29tbQ0KPiB4dF9DSEVDS1NVTSB4dF9NQVNRVUVSQURFIHh0X2Nvbm50cmFjayBp
-cHRfUkVKRUNUIG5mX25hdF90ZnRwDQo+IG5mX2Nvbm50cmFja190ZnRwIHR1biBicmlkZ2Ugc3Rw
-IGxsYyBuZnRfb2JqcmVmDQo+IG5mX2Nvbm50cmFja19uZXRiaW9zX25zIG5mX2Nvbm50cmFja19i
-cm9hZGNhc3QgbmZ0X2ZpYl9pbmV0DQo+IG5mdF9maWJfaXB2NCBuZnRfZmliX2lwdjYgbmZ0X2Zp
-YiBuZnRfcmVqZWN0X2luZXQgbmZfcmVqZWN0X2lwdjQNCj4gbmZfcmVqZWN0X2lwdjYgbmZ0X3Jl
-amVjdCBuZnRfY3QgbmZfdGFibGVzX3NldCBuZnRfY2hhaW5fbmF0IG5mX3RhYmxlcw0KPiBlYnRh
-YmxlX25hdCBlYnRhYmxlX2Jyb3V0ZSBpcDZ0YWJsZV9uYXQgaXA2dGFibGVfbWFuZ2xlIGlwNnRh
-YmxlX3Jhdw0KPiBpcDZ0YWJsZV9zZWN1cml0eSBpcHRhYmxlX25hdCBuZl9uYXQgbmZfY29ubnRy
-YWNrIG5mX2RlZnJhZ19pcHY2DQo+IG5mX2RlZnJhZ19pcHY0IGxpYmNyYzMyYyBpcHRhYmxlX21h
-bmdsZSBpcHRhYmxlX3JhdyBpcHRhYmxlX3NlY3VyaXR5DQo+IGlwX3NldCBuZm5ldGxpbmsgZWJ0
-YWJsZV9maWx0ZXIgZWJ0YWJsZXMgaXA2dGFibGVfZmlsdGVyIGlwNl90YWJsZXMNCj4gaXB0YWJs
-ZV9maWx0ZXIgY21hYyBibmVwIHN1bnJwYw0KPiAgc25kX2hkYV9jb2RlY19yZWFsdGVrIHNuZF9o
-ZGFfY29kZWNfZ2VuZXJpYyBsZWR0cmlnX2F1ZGlvIHJ0d3BjaQ0KPiBzbmRfaGRhX2NvZGVjX2hk
-bWkgcnR3ODggc25kX2hkYV9pbnRlbCBzbmRfaW50ZWxfZHNwY2ZnIGVkYWNfbWNlX2FtZA0KPiBz
-bmRfdXNiX2F1ZGlvIHV2Y3ZpZGVvIHZpZGVvYnVmMl92bWFsbG9jIHZpZGVvYnVmMl9tZW1vcHMN
-Cj4gc25kX2hkYV9jb2RlYyBzbmRfdXNibWlkaV9saWIgdmlkZW9idWYyX3Y0bDIgc25kX2hkYV9j
-b3JlDQo+IHZpZGVvYnVmMl9jb21tb24gbWFjODAyMTEgYnR1c2Igc25kX3Jhd21pZGkga3ZtIHNu
-ZF9od2RlcCBidHJ0bA0KPiB2aWRlb2RldiBzbmRfc2VxIGJ0YmNtIGJ0aW50ZWwgc25kX3NlcV9k
-ZXZpY2UgaXJxYnlwYXNzIGJsdWV0b290aA0KPiBjZmc4MDIxMSBzbmRfcGNtIGVlZXBjX3dtaSBt
-YyBqb3lkZXYgY3JjdDEwZGlmX3BjbG11bCBzbmRfdGltZXINCj4gY3JjMzJfcGNsbXVsIGFzdXNf
-d21pIGVjZGhfZ2VuZXJpYyBzbmQgc3BhcnNlX2tleW1hcCByZmtpbGwgc3A1MTAwX3Rjbw0KPiBj
-Y3AgZWNjIHZpZGVvIHNvdW5kY29yZSBsaWJhcmM0IHdtaV9ibW9mIHBjc3BrciBpMmNfcGlpeDQN
-Cj4gZ2hhc2hfY2xtdWxuaV9pbnRlbCBrMTB0ZW1wIGdwaW9fYW1kcHQgZ3Bpb19nZW5lcmljIGFj
-cGlfY3B1ZnJlcQ0KPiBiaW5mbXRfbWlzYyBpcF90YWJsZXMgYW1kZ3B1IGFtZF9pb21tdV92MiBn
-cHVfc2NoZWQgdHRtDQo+IGRybV9rbXNfaGVscGVyDQo+IGRybSBpZ2IgY3JjMzJjX2ludGVsIHVh
-cyBkY2EgaTJjX2FsZ29fYml0IHVzYl9zdG9yYWdlIHdtaSBwaW5jdHJsX2FtZA0KPiBmdXNlDQo+
-IENSMjogMDAwMDAwMDAwMDAwMDA3MA0KPiAtLS1bIGVuZCB0cmFjZSA1ZTA1OGIxNWZmNGU1NWQ2
-IF0tLS0NCj4gDQo+IA0KPiAjIC91c3Ivc3JjL2tlcm5lbHMvYHVuYW1lIC1yYC9zY3JpcHRzL2Zh
-ZGRyMmxpbmUNCj4gL2xpYi9kZWJ1Zy9saWIvbW9kdWxlcy9gdW5hbWUNCj4gLXJgL2tlcm5lbC9k
-cml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L3J0d3BjaS5rby5kZWJ1Zw0KPiBydHdf
-cGNpX3R4X2lzcisweDk2DQo+IHJ0d19wY2lfdHhfaXNyKzB4OTYvMHgyMzA6DQo+IHJ0d19wY2lf
-dHhfaXNyIGF0DQo+IC91c3Ivc3JjL2RlYnVnL2tlcm5lbC01LjQuZmMzMi9saW51eC01LjUuMC0w
-LnJjNC5naXQwLjEuZmMzMi54ODZfNjQvZHJpdmVycy8NCj4gbmV0L3dpcmVsZXNzL3JlYWx0ZWsv
-cnR3ODgvcGNpLmM6ODM2DQo+IA0KPiAjIGV1LWFkZHIybGluZSAtZSAvbGliL2RlYnVnL2xpYi9t
-b2R1bGVzL2B1bmFtZQ0KPiAtcmAva2VybmVsL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsv
-cnR3ODgvcnR3cGNpLmtvLmRlYnVnDQo+IHJ0d19wY2lfdHhfaXNyKzB4OTYNCj4gZHJpdmVycy9u
-ZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9wY2kuYzo4MzY6Mw0KPiANCj4gJCB1bmFtZSAtcg0K
-PiA1LjUuMC0wLnJjNC5naXQwLjEuZmMzMi54ODZfNjQNCj4gDQo+IC0tDQo+IEJlc3QgUmVnYXJk
-cywNCj4gTWlrZSBHYXZyaWxvdi4NCj4gDQoNCkkgdGhpbmsgdGhlIGRyaXZlciBpcyBkZXJlZmVy
-ZW5jaW5nIGEgTlVMTCBza2IuDQpBbmQgSSd2ZSBzZW50IGEgcGF0Y2ggZm9yIGl0Lg0KaHR0cHM6
-Ly9wYXRjaHdvcmsua2VybmVsLm9yZy9wYXRjaC8xMTMyMDU2Ny8NCg0KWWFuLUhzdWFuDQo=
+Make it possible to disable the LED, as it can be pretty annoying
+depending on where it's located.
+
+Signed-off-by: Bastien Nocera <hadess@hadess.net>
+
+---
+ drivers/staging/rtl8188eu/core/rtw_led.c      | 6 ++++++
+ drivers/staging/rtl8188eu/include/drv_types.h | 2 ++
+ drivers/staging/rtl8188eu/os_dep/os_intfs.c   | 5 +++++
+ 3 files changed, 13 insertions(+)
+
+diff --git a/drivers/staging/rtl8188eu/core/rtw_led.c b/drivers/staging/rtl8188eu/core/rtw_led.c
+index d1406cc99768..75a859accb7e 100644
+--- a/drivers/staging/rtl8188eu/core/rtw_led.c
++++ b/drivers/staging/rtl8188eu/core/rtw_led.c
+@@ -467,10 +467,16 @@ void blink_handler(struct LED_871x *pLed)
+ 
+ void led_control_8188eu(struct adapter *padapter, enum LED_CTL_MODE LedAction)
+ {
++	struct registry_priv *registry_par;
++
+ 	if (padapter->bSurpriseRemoved || padapter->bDriverStopped ||
+ 	    !padapter->hw_init_completed)
+ 		return;
+ 
++	registry_par = &padapter->registrypriv;
++	if (!registry_par->led_enable)
++		return;
++
+ 	if ((padapter->pwrctrlpriv.rf_pwrstate != rf_on &&
+ 	     padapter->pwrctrlpriv.rfoff_reason > RF_CHANGE_BY_PS) &&
+ 	    (LedAction == LED_CTL_TX || LedAction == LED_CTL_RX ||
+diff --git a/drivers/staging/rtl8188eu/include/drv_types.h b/drivers/staging/rtl8188eu/include/drv_types.h
+index 35c0946bc65d..4ca828141d3f 100644
+--- a/drivers/staging/rtl8188eu/include/drv_types.h
++++ b/drivers/staging/rtl8188eu/include/drv_types.h
+@@ -67,6 +67,8 @@ struct registry_priv {
+ 	u8	wmm_enable;
+ 	u8	uapsd_enable;
+ 
++	u8	led_enable;
++
+ 	struct wlan_bssid_ex    dev_network;
+ 
+ 	u8	ht_enable;
+diff --git a/drivers/staging/rtl8188eu/os_dep/os_intfs.c b/drivers/staging/rtl8188eu/os_dep/os_intfs.c
+index 8907bf6bb7ff..ba55ae741215 100644
+--- a/drivers/staging/rtl8188eu/os_dep/os_intfs.c
++++ b/drivers/staging/rtl8188eu/os_dep/os_intfs.c
+@@ -47,6 +47,8 @@ static int rtw_acm_method;/*  0:By SW 1:By HW. */
+ static int rtw_wmm_enable = 1;/*  default is set to enable the wmm. */
+ static int rtw_uapsd_enable;
+ 
++static int rtw_led_enable = 1;
++
+ static int rtw_ht_enable = 1;
+ /* 0 :disable, bit(0): enable 2.4g, bit(1): enable 5g */
+ static int rtw_cbw40_enable = 3;
+@@ -98,6 +100,7 @@ module_param(rtw_channel, int, 0644);
+ module_param(rtw_wmm_enable, int, 0644);
+ module_param(rtw_vrtl_carrier_sense, int, 0644);
+ module_param(rtw_vcs_type, int, 0644);
++module_param(rtw_led_enable, int, 0644);
+ module_param(rtw_ht_enable, int, 0644);
+ module_param(rtw_cbw40_enable, int, 0644);
+ module_param(rtw_ampdu_enable, int, 0644);
+@@ -162,6 +165,8 @@ static void loadparam(struct adapter *padapter, struct net_device *pnetdev)
+ 	registry_par->wmm_enable = (u8)rtw_wmm_enable;
+ 	registry_par->uapsd_enable = (u8)rtw_uapsd_enable;
+ 
++	registry_par->led_enable = (u8)rtw_led_enable;
++
+ 	registry_par->ht_enable = (u8)rtw_ht_enable;
+ 	registry_par->cbw40_enable = (u8)rtw_cbw40_enable;
+ 	registry_par->ampdu_enable = (u8)rtw_ampdu_enable;
+
