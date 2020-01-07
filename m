@@ -2,104 +2,130 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 63F331323EB
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Jan 2020 11:40:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F2EAA1323FE
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Jan 2020 11:43:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727805AbgAGKkg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 7 Jan 2020 05:40:36 -0500
-Received: from mail-ot1-f66.google.com ([209.85.210.66]:33086 "EHLO
-        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727699AbgAGKkf (ORCPT
+        id S1727589AbgAGKnx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 7 Jan 2020 05:43:53 -0500
+Received: from us-smtp-2.mimecast.com ([207.211.31.81]:32381 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1727559AbgAGKnx (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 7 Jan 2020 05:40:35 -0500
-Received: by mail-ot1-f66.google.com with SMTP id b18so54074925otp.0
-        for <linux-wireless@vger.kernel.org>; Tue, 07 Jan 2020 02:40:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=endlessm-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=ZOSsP5w7ArOQdKi1+vWZxS/I1CmqWkexlUqev11qtoc=;
-        b=Nih3GoPMshrT5wTqgo7vz2a5hUIeqntNNrQec+ktEP5JH7LSHBcHVN9QR+BCh1YyYp
-         97PfwktOgxCC1Lsn8Bp7JJU52BvpcXkaB6fxJAkL3kMWG1AmvF+ty7DQi10feuHmANxg
-         FsZYyPFJRoISC3SizuNritOPKTd91H/+w/4EpE/UgFj6GfVbV1FzNvR31d6E6Cl9x0On
-         oowFU0ONstOfrne3lW6SB7U8LJZNwhOu+zoWuz2ZbOJmD050GsEdXstgoaAMVULvgWtp
-         vkS3mVBJv5+UpHyrWhvI8AzQr6Nn0rD8sPd6guKhtylvaJhT1sO5z6M31SGbr3E2fqU0
-         Kqxw==
+        Tue, 7 Jan 2020 05:43:53 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1578393831;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=HreyvVESVBdgkhYgE7YdIkJiIbgwH2Igij/MagPRtS8=;
+        b=KbZIXtLNTm7Wh9LGAqb3z3x9P46guCaqbk9nPvXDLWYLtzc033I7QfxUhxNBOOVWaUze9p
+        CISRrLK2aEOSe35RaQne7Cb1yEsWUoIAdITtd/cHb9jurB6wFx3Sy6M1ENpJIKqhxfOGQH
+        +yBl7jRPXqT2evBygOW69MyaZHHGnds=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-337-W7jGqqvQMEuAalvKYjJUCg-1; Tue, 07 Jan 2020 05:43:50 -0500
+X-MC-Unique: W7jGqqvQMEuAalvKYjJUCg-1
+Received: by mail-wm1-f70.google.com with SMTP id t4so3932366wmf.2
+        for <linux-wireless@vger.kernel.org>; Tue, 07 Jan 2020 02:43:50 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=ZOSsP5w7ArOQdKi1+vWZxS/I1CmqWkexlUqev11qtoc=;
-        b=qnXYzkpRIR856hmnHHBnXeyq1FeLOnFZkV+kBk3gM9OURJUZylz6Yd84Ps2izeeCiw
-         NOTpkWayHtX0RK2j9QzHf6OP5ojwpdWtpJJuWZdtr9Ba/fXm1c55moR2/0Mx/XgRCMt4
-         GXlMsJUNduka8ajnol0brivZMNyt6xo4ccd6ofV19GKzuJD/PIHF8olFjqMiP6xWIZ8F
-         vDVCr7pKIYI0EhFeXwoZBm2xHAcxe1Y+WnzdaLbpgfrDVWPFjE0nqX4g5t4m6RUDjwae
-         iou6QhrT1Q4fu/TTDkE1E1ksdIhC4LLmzEMMUwg1htxaeA9KelTI4BuZSGLMNKNbVdCs
-         ATCg==
-X-Gm-Message-State: APjAAAUC6KVWRM/I5AI4u4IiNcnvQ84WUnp7il4rVdlrwPPobahSEG1j
-        j7M1N80coE0Ibjp5loEIMYXemeaPujI+Xv7TRIzh2w==
-X-Google-Smtp-Source: APXvYqwQrWpoFybDJu8Hn14uxn76c4kUMf+Ev2xRshKBdwqksbprYAItOzcBNnD0zSZQV65uTkqruxsro4omB6wl/xg=
-X-Received: by 2002:a05:6830:1689:: with SMTP id k9mr125365761otr.311.1578393634943;
- Tue, 07 Jan 2020 02:40:34 -0800 (PST)
-MIME-Version: 1.0
-References: <20200107080807.14433-1-yhchuang@realtek.com>
-In-Reply-To: <20200107080807.14433-1-yhchuang@realtek.com>
-From:   Chris Chiu <chiu@endlessm.com>
-Date:   Tue, 7 Jan 2020 18:40:24 +0800
-Message-ID: <CAB4CAwfxQJzsJfxScVE+Y_xYbdSigTf567b9Xv-LFyQQnOXEAA@mail.gmail.com>
-Subject: Re: [PATCH] rtw88: fix potential NULL skb access in TX ISR
-To:     Tony Chuang <yhchuang@realtek.com>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
+         :message-id:mime-version:content-transfer-encoding;
+        bh=HreyvVESVBdgkhYgE7YdIkJiIbgwH2Igij/MagPRtS8=;
+        b=KI9Vher+ufjyaOF8HXiJ9wzic+RqTSVcbIyW0d+HQahf3PcaeMOqYspy62SCouT9i/
+         Ly0hDZX55QATUhuCc/HtjMcrNTs5j3I7uvf1bvj196h42/OYCxIo9K8MrHqqGRjfNAPs
+         qcjWsLpuqDA76ioBNHYQ7D/U2hRV8xLSeyXehMNu7qOOdi0ZiAOWbIjz2jJfHknV6Iwf
+         33L1O1tA/Txycb3C/sB31qAYN3lp5KRH/XTUYjSoTmPhUPSohvGkEivqsqRVuFljCZ8G
+         kSYPQUlxOgrmf44DuR850UnPkz4ergymgGW7iFIpm/4gGsBPcsiIZV+EAZXgZ2VyITMN
+         JKDg==
+X-Gm-Message-State: APjAAAWOJIbIMqB+rxFwfzQo+nJgLWxnRwnzeliUq5D2cwg7bExnhn8I
+        kED1kWOEoyskpOmoXPgOiaw8Fh7qWliT0fw4zIJzVGyUd7Y01X2NetUvl2YXWFCIRHhQZkivkkg
+        ILYqn6r6IPEQxR/V/rJiUlffLnrs=
+X-Received: by 2002:a7b:c85a:: with SMTP id c26mr39479736wml.107.1578393829491;
+        Tue, 07 Jan 2020 02:43:49 -0800 (PST)
+X-Google-Smtp-Source: APXvYqwhqAe0MIUxLCEBxHeY/zXx0E6R+L+jUAUk8pqHkZQb/JZCT90nDRxmSPx5pmZtbaYuiI5qpA==
+X-Received: by 2002:a7b:c85a:: with SMTP id c26mr39479708wml.107.1578393829109;
+        Tue, 07 Jan 2020 02:43:49 -0800 (PST)
+Received: from alrua-x1.borgediget.toke.dk ([2a0c:4d80:42:443::2])
+        by smtp.gmail.com with ESMTPSA id b10sm78630008wrt.90.2020.01.07.02.43.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 07 Jan 2020 02:43:47 -0800 (PST)
+Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
+        id 74051180960; Tue,  7 Jan 2020 11:43:47 +0100 (CET)
+From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
+To:     John Yates <john@yates-sheets.org>
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
         linux-wireless <linux-wireless@vger.kernel.org>,
-        Brian Norris <briannorris@chromium.org>,
-        mikhail.v.gavrilov@gmail.com, rtereguloff@gmail.com
-Content-Type: text/plain; charset="UTF-8"
+        Kan Yan <kyan@google.com>,
+        Make-Wifi-fast <make-wifi-fast@lists.bufferbloat.net>,
+        Yibo Zhao <yiboz@codeaurora.org>,
+        Rajkumar Manoharan <rmanohar@codeaurora.org>,
+        Felix Fietkau <nbd@nbd.name>
+Subject: Re: [Make-wifi-fast] [PATCH v5] mac80211: Switch to a virtual time-based airtime scheduler
+In-Reply-To: <CAJnXXogQCKQSLT+8_NnEfFd7MLc0=YxShvb4hY2Y+BDJjybQTg@mail.gmail.com>
+References: <20191222172423.131033-1-toke@redhat.com> <5bab549a72d526f4fd0f708f14b49a7af6e2c0b9.camel@sipsolutions.net> <87r20ck3x9.fsf@toke.dk> <CAJnXXoiyWKSLHqMzMcSzHBM-HhfYtcURW1hYd-3Yf7K00NTqgQ@mail.gmail.com> <87mub0k2cd.fsf@toke.dk> <CAJnXXogQCKQSLT+8_NnEfFd7MLc0=YxShvb4hY2Y+BDJjybQTg@mail.gmail.com>
+X-Clacks-Overhead: GNU Terry Pratchett
+Date:   Tue, 07 Jan 2020 11:43:47 +0100
+Message-ID: <875zhnk0m4.fsf@toke.dk>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Jan 7, 2020 at 4:08 PM <yhchuang@realtek.com> wrote:
->
-> From: Yan-Hsuan Chuang <yhchuang@realtek.com>
->
-> Sometimes the TX queue may be empty and we could possible
-> dequeue a NULL pointer, crash the kernel. If the skb is NULL
-> then there is nothing to do, just leave the ISR.
->
-> And the TX queue should not be empty here, so print an error
-> to see if there is anything wrong for DMA ring.
->
-> Fixes: e3037485c68e ("rtw88: new Realtek 802.11ac driver")
-> Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
-> ---
->  drivers/net/wireless/realtek/rtw88/pci.c | 5 +++++
->  1 file changed, 5 insertions(+)
->
-> diff --git a/drivers/net/wireless/realtek/rtw88/pci.c b/drivers/net/wireless/realtek/rtw88/pci.c
-> index a58e8276a41a..a6746b5a9ff2 100644
-> --- a/drivers/net/wireless/realtek/rtw88/pci.c
-> +++ b/drivers/net/wireless/realtek/rtw88/pci.c
-> @@ -832,6 +832,11 @@ static void rtw_pci_tx_isr(struct rtw_dev *rtwdev, struct rtw_pci *rtwpci,
->
->         while (count--) {
->                 skb = skb_dequeue(&ring->queue);
-> +               if (!skb) {
-> +                       rtw_err(rtwdev, "failed to dequeue %d skb TX queue %d, BD=0x%08x, rp %d -> %d\n",
-> +                               count, hw_queue, bd_idx, ring->r.rp, cur_rp);
-> +                       break;
-> +               }
->                 tx_data = rtw_pci_get_tx_data(skb);
->                 pci_unmap_single(rtwpci->pdev, tx_data->dma, skb->len,
->                                  PCI_DMA_TODEVICE);
-> --
-> 2.17.1
->
+John Yates <john@yates-sheets.org> writes:
 
-Maybe we can simply do 'while (count -- &&
-!skb_queue_empty(&ring->queue))' to achieve the same thing?
-I don't think it worths to raise an error unless the count is expected
-to exactly match the queue length in any
-circumstances.
+> On Mon, Jan 6, 2020 at 10:54 AM Toke H=C3=B8iland-J=C3=B8rgensen <toke@re=
+dhat.com> wrote:
+>> Yeah, we'd be doing the accumulation in 64bit values in any case; we're
+>> talking about mainly multiplication here (the whole point of the
+>> reciprocal stuff is to get the division out of the fast path). So how
+>> big of an impact is one (or two) extra 64-bit multiplications going to
+>> have on a 32bit platform?
+>
+> Top line: usually replacing 64 bit divide with multiply is a massive
+> win.
+>
+> Many platforms make (32 bits * 32 bits) -> 64 bits quite cheap:
+> - x86 has this as a single instruction: eax * edx -> eax:edx
+> - arm has much the same, plus a variant that tacks ona  64 bit accumulati=
+on!
+> - mips leaves the 64 bit product in a dedicated register; retrieval
+> requires 2 instructions
+> - ppc, being more "RISCy", has two instruction: mullo and mulhi
+> (performs multiply twice!)
 
-Chris
+Ah, this is very useful, thanks :)
+
+> Best case is when the compiler can recognize a 64 bit multiply as really
+>
+>   widen_32_to_64(left) x widen_32_to_64(right) -> 64_bit_product
+>
+> In such a case only one of the above multiply cases is necessary.  Otherw=
+ise
+> one tends to get multiple partial products and double width additions.  S=
+till,
+> better than nearly any flavor of 64 bit divide.
+
+So going back to the original patch, we don't really need to use 64-bit
+divides to compute the reciprocals; not sure what I was thinking there.
+That leaves us with a single 32-bit divide whenever a station is
+scheduled or unscheduled, and two 64-bit multiplications in
+ieee80211_register_airtime().
+
+If we assume no more than 8ms of airtime is being reported at a time, we
+can use 2^19 as the divisor and keep the multiplication in 32 bits
+without overflowing, which would keep the rounding error <10% for
+weights <2^15. This should be enough for single-station weights, at
+least. I think it could also be sufficient for the weight_sum for most
+uses, actually, so we could start out with that and only revert to
+64-bit multiplication if it turns out people are pushing the weighted
+fairness stuff to a point where this breaks?
+
+Johannes, WDYT? Also, what is a good place to document this?
+
+-Toke
+
