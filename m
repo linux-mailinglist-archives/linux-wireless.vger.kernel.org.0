@@ -2,139 +2,117 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 59AF9131FB2
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Jan 2020 07:04:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D1F5131FC2
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Jan 2020 07:23:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727565AbgAGGEJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 7 Jan 2020 01:04:09 -0500
-Received: from mail-io1-f72.google.com ([209.85.166.72]:53170 "EHLO
-        mail-io1-f72.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725965AbgAGGEJ (ORCPT
+        id S1725874AbgAGGXY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 7 Jan 2020 01:23:24 -0500
+Received: from mail26.static.mailgun.info ([104.130.122.26]:13906 "EHLO
+        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725267AbgAGGXX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 7 Jan 2020 01:04:09 -0500
-Received: by mail-io1-f72.google.com with SMTP id d10so32696160iod.19
-        for <linux-wireless@vger.kernel.org>; Mon, 06 Jan 2020 22:04:08 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
-        bh=MpBXCcCu6Jkfd1WtSRJVeNF1LvLtwS/lptU4QXrTk+E=;
-        b=bPfV5cEYZ6A9YbGjvZDgLrKsn0m3Y/+HPG6Li+4Ip51//iptE8E3cA7AwWfJijojVq
-         PfvCNWU7CLSDsKOtsNzw2FStDQrcuRJoSdZBJh5eMhYUDuP5NmF3wPSxekq9V4kEehtd
-         yx+g6vhWuQZuLsUQ0kFemRAXmU9DbeYfLMb3+DLwBhrWO9+tgO9iORTwsMy8pV2gXyU/
-         /KWebuLps5KKb3omMrqy1pJrCwFzBpSpbyBWseuV+Tx8yD9QxuDHdRsh27yH2FwoG+hy
-         7Eu/xB+TS9ve9ihPxalsDX5ZR488SfR+JwXBliEnfRVB0kPx+NgrZQoxSj503B9v5Etu
-         6lGw==
-X-Gm-Message-State: APjAAAWFqouOKCIGkHrSduq4oXV6C1mwKKP+NY2AzcWfKj8sXA9sBRyA
-        Q0OBFsdhA+Ne56XErA51GISQkaDpGfskyES2S92Txv2KsROm
-X-Google-Smtp-Source: APXvYqzJzNdE6kTaG7j29Oo9KVQ0AI3berNT+GPIjNiZvx/RP1u/97tGFBy8QcVLOu4JD1yhUOrzwEg0JigHTiFug58N7pRtHGSw
-MIME-Version: 1.0
-X-Received: by 2002:a6b:731a:: with SMTP id e26mr69528220ioh.254.1578377048547;
- Mon, 06 Jan 2020 22:04:08 -0800 (PST)
-Date:   Mon, 06 Jan 2020 22:04:08 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <0000000000004ceb27059b868b57@google.com>
-Subject: BUG: unable to handle kernel NULL pointer dereference in cfg80211_wext_siwfrag
-From:   syzbot <syzbot+e8a797964a4180eb57d5@syzkaller.appspotmail.com>
-To:     davem@davemloft.net, johannes@sipsolutions.net,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
+        Tue, 7 Jan 2020 01:23:23 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1578378203; h=Message-Id: Date: Subject: Cc: To: From:
+ Sender; bh=/5Cj4kGBRUTN/E1SEncRP8qPjJOV4btr6EY3RJAXrPE=; b=B073zNThg88rkch1IErlVPqKAm9JcC4w1YPjtv3W0Ybug7pGlz3J/V35jhOb4fdy/llJ2ztS
+ B3kkngWb0Sz8Jyi9VlsTy+XY4yw4SlEM9yngeM07rppXDsY3doCXvkEAui1pNFqzNLsZNixu
+ 6p15N1+dPPMyi9hTlb8MCv9PBRA=
+X-Mailgun-Sending-Ip: 104.130.122.26
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5e1423d6.7f0161be7a78-smtp-out-n02;
+ Tue, 07 Jan 2020 06:23:18 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 543C5C4479C; Tue,  7 Jan 2020 06:23:17 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from che-swdbs-01.qca.qualcomm.com (blr-c-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.19.19])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: mkenna)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 55525C43383;
+        Tue,  7 Jan 2020 06:23:14 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 55525C43383
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=mkenna@codeaurora.org
+From:   Maharaja Kennadyrajan <mkenna@codeaurora.org>
+To:     ath10k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org,
+        Vikas Patel <vikpatel@codeaurora.org>,
+        Maharaja Kennadyrajan <mkenna@codeaurora.org>
+Subject: [PATCH] ath10k: avoid consecutive OTP download to reduce boot time
+Date:   Tue,  7 Jan 2020 11:53:15 +0530
+Message-Id: <1578378195-25780-1-git-send-email-mkenna@codeaurora.org>
+X-Mailer: git-send-email 1.7.9.5
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
+From: Vikas Patel <vikpatel@codeaurora.org>
 
-syzbot found the following crash on:
+Currently, OTP is downloaded twice in case of "pre-cal-dt"
+and "pre-cal-file" to fetch the board ID and takes around
+~2 sec more boot uptime.
 
-HEAD commit:    d89091a4 macb: Don't unregister clks unconditionally
-git tree:       net
-console output: https://syzkaller.appspot.com/x/log.txt?x=130a0915e00000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=f2f3ef188b7e16cf
-dashboard link: https://syzkaller.appspot.com/bug?extid=e8a797964a4180eb57d5
-compiler:       gcc (GCC) 9.0.0 20181231 (experimental)
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=15c85915e00000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=11c02bc1e00000
+First OTP download happens in "ath10k_core_probe_fw" and
+second in ath10k_core_start. First boot does not need OTP
+download in core start when valid board id acquired.
 
-IMPORTANT: if you fix the bug, please add the following tag to the commit:
-Reported-by: syzbot+e8a797964a4180eb57d5@syzkaller.appspotmail.com
+The second OTP download is required upon core stop/start.
 
-device veth1_vlan entered promiscuous mode
-BUG: kernel NULL pointer dereference, address: 0000000000000000
-#PF: supervisor instruction fetch in kernel mode
-#PF: error_code(0x0010) - not-present page
-PGD a066f067 P4D a066f067 PUD 958e3067 PMD 0
-Oops: 0010 [#1] PREEMPT SMP KASAN
-CPU: 0 PID: 9308 Comm: syz-executor762 Not tainted 5.5.0-rc4-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS  
-Google 01/01/2011
-RIP: 0010:0x0
-Code: Bad RIP value.
-RSP: 0018:ffffc90001d37a78 EFLAGS: 00010246
-RAX: dffffc0000000000 RBX: ffff8882186a6540 RCX: ffffffff876a3fd1
-RDX: 1ffffffff1148afc RSI: 0000000000000004 RDI: ffff8882186a6540
-RBP: ffffc90001d37ab8 R08: ffff88809f9ba580 R09: ffffed1015d0703d
-R10: ffffed1015d0703c R11: ffff8880ae8381e3 R12: ffffffff88a45660
-R13: ffff8880a7aed000 R14: ffffc90001d37bb0 R15: 0000000000000000
-FS:  0000000001a01880(0000) GS:ffff8880ae800000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: ffffffffffffffd6 CR3: 00000000a5220000 CR4: 00000000001406f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
-  rdev_set_wiphy_params net/wireless/rdev-ops.h:542 [inline]
-  cfg80211_wext_siwfrag+0x279/0x910 net/wireless/wext-compat.c:307
-  ioctl_standard_call+0xca/0x1d0 net/wireless/wext-core.c:1015
-  wireless_process_ioctl.constprop.0+0x236/0x2b0 net/wireless/wext-core.c:953
-  wext_ioctl_dispatch net/wireless/wext-core.c:986 [inline]
-  wext_ioctl_dispatch net/wireless/wext-core.c:974 [inline]
-  wext_handle_ioctl+0x106/0x1c0 net/wireless/wext-core.c:1047
-  sock_ioctl+0x47d/0x790 net/socket.c:1112
-  vfs_ioctl fs/ioctl.c:47 [inline]
-  file_ioctl fs/ioctl.c:545 [inline]
-  do_vfs_ioctl+0x977/0x14e0 fs/ioctl.c:732
-  ksys_ioctl+0xab/0xd0 fs/ioctl.c:749
-  __do_sys_ioctl fs/ioctl.c:756 [inline]
-  __se_sys_ioctl fs/ioctl.c:754 [inline]
-  __x64_sys_ioctl+0x73/0xb0 fs/ioctl.c:754
-  do_syscall_64+0xfa/0x790 arch/x86/entry/common.c:294
-  entry_SYSCALL_64_after_hwframe+0x49/0xbe
-RIP: 0033:0x4423f9
-Code: 18 89 d0 c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 00 48 89 f8 48 89 f7  
-48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff  
-ff 0f 83 5b 10 fc ff c3 66 2e 0f 1f 84 00 00 00 00
-RSP: 002b:00007ffd5699e578 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-RAX: ffffffffffffffda RBX: 0000000000000003 RCX: 00000000004423f9
-RDX: 0000000020000040 RSI: 0800000000008b24 RDI: 0000000000000003
-RBP: 0000000000000004 R08: 0000000000000025 R09: 0000000000000025
-R10: 0000000000000025 R11: 0000000000000246 R12: 0000000000000000
-R13: 0000000000403970 R14: 0000000000000000 R15: 0000000000000000
-Modules linked in:
-CR2: 0000000000000000
----[ end trace d5d5f75393c2f62d ]---
-RIP: 0010:0x0
-Code: Bad RIP value.
-RSP: 0018:ffffc90001d37a78 EFLAGS: 00010246
-RAX: dffffc0000000000 RBX: ffff8882186a6540 RCX: ffffffff876a3fd1
-RDX: 1ffffffff1148afc RSI: 0000000000000004 RDI: ffff8882186a6540
-RBP: ffffc90001d37ab8 R08: ffff88809f9ba580 R09: ffffed1015d0703d
-R10: ffffed1015d0703c R11: ffff8880ae8381e3 R12: ffffffff88a45660
-R13: ffff8880a7aed000 R14: ffffc90001d37bb0 R15: 0000000000000000
-FS:  0000000001a01880(0000) GS:ffff8880ae800000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: ffffffffffffffd6 CR3: 00000000a5220000 CR4: 00000000001406f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+This patch skips the OTP download when first OTP download
+has acquired a valid board id. This patch also marks board
+id invalid in "ath10k_core_stop", which will force the OTP
+download in ath10k_core_start and fetches valid board id.
 
+Tested HW: QCA9984
+Tested FW: 10.4-3.6-00104
 
+Signed-off-by: Vikas Patel <vikpatel@codeaurora.org>
+Signed-off-by: Maharaja Kennadyrajan <mkenna@codeaurora.org>
 ---
-This bug is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+ drivers/net/wireless/ath/ath10k/core.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-syzbot will keep track of this bug report. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-syzbot can test patches for this bug, for details see:
-https://goo.gl/tpsmEJ#testing-patches
+diff --git a/drivers/net/wireless/ath/ath10k/core.c b/drivers/net/wireless/ath/ath10k/core.c
+index 5ec16ce..8fef991 100644
+--- a/drivers/net/wireless/ath/ath10k/core.c
++++ b/drivers/net/wireless/ath/ath10k/core.c
+@@ -874,6 +874,13 @@ static int ath10k_core_get_board_id_from_otp(struct ath10k *ar)
+ 		return -ENODATA;
+ 	}
+ 
++	if (ar->id.bmi_ids_valid) {
++		ath10k_dbg(ar, ATH10K_DBG_BOOT,
++			   "boot already acquired valid otp board id,skip download, board_id %d chip_id %d\n",
++			   ar->id.bmi_board_id, ar->id.bmi_chip_id);
++		goto skip_otp_download;
++	}
++
+ 	ath10k_dbg(ar, ATH10K_DBG_BOOT,
+ 		   "boot upload otp to 0x%x len %zd for board id\n",
+ 		   address, ar->normal_mode_fw.fw_file.otp_len);
+@@ -921,6 +928,8 @@ static int ath10k_core_get_board_id_from_otp(struct ath10k *ar)
+ 	ar->id.bmi_board_id = board_id;
+ 	ar->id.bmi_chip_id = chip_id;
+ 
++skip_otp_download:
++
+ 	return 0;
+ }
+ 
+@@ -2863,6 +2872,8 @@ void ath10k_core_stop(struct ath10k *ar)
+ 	ath10k_htt_tx_stop(&ar->htt);
+ 	ath10k_htt_rx_free(&ar->htt);
+ 	ath10k_wmi_detach(ar);
++
++	ar->id.bmi_ids_valid = false;
+ }
+ EXPORT_SYMBOL(ath10k_core_stop);
+ 
+-- 
+1.9.1
