@@ -2,94 +2,96 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C90DB133040
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Jan 2020 21:04:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B295913304D
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Jan 2020 21:07:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728726AbgAGUEI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 7 Jan 2020 15:04:08 -0500
-Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:36058 "EHLO
-        shadbolt.e.decadent.org.uk" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728358AbgAGUEI (ORCPT
+        id S1728688AbgAGUHu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 7 Jan 2020 15:07:50 -0500
+Received: from mout.kundenserver.de ([212.227.126.130]:55461 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728379AbgAGUHu (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 7 Jan 2020 15:04:08 -0500
-Received: from [167.98.27.226] (helo=deadeye)
-        by shadbolt.decadent.org.uk with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.89)
-        (envelope-from <ben@decadent.org.uk>)
-        id 1iov59-0002jq-C1; Tue, 07 Jan 2020 20:04:03 +0000
-Received: from ben by deadeye with local (Exim 4.93)
-        (envelope-from <ben@decadent.org.uk>)
-        id 1iov58-006ywd-Bs; Tue, 07 Jan 2020 20:04:02 +0000
-Message-ID: <bc4aa741a1da2e4929af072c93566c20729eb687.camel@decadent.org.uk>
-Subject: Re: Please backport "mwifiex: Fix NL80211_TX_POWER_LIMITED" to
- stable branches
-From:   Ben Hutchings <ben@decadent.org.uk>
-To:     Adrian Bunk <bunk@kernel.org>, netdev@vger.kernel.org
-Cc:     Amitkumar Karwar <amitkarwar@gmail.com>,
-        Nishant Sarmukadam <nishants@marvell.com>,
-        Ganapathi Bhat <gbhat@marvell.com>,
-        Xinming Hu <huxinming820@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        linux-wireless@vger.kernel.org, stable@vger.kernel.org
-Date:   Tue, 07 Jan 2020 20:04:01 +0000
-In-Reply-To: <20191122172431.GA24156@localhost>
-References: <20191122172431.GA24156@localhost>
-Content-Type: multipart/signed; micalg="pgp-sha512";
-        protocol="application/pgp-signature"; boundary="=-74YX61Llp/MokHE9JvDf"
-User-Agent: Evolution 3.34.1-2+b1 
+        Tue, 7 Jan 2020 15:07:50 -0500
+Received: from threadripper.lan ([149.172.19.189]) by mrelayeu.kundenserver.de
+ (mreue011 [212.227.15.129]) with ESMTPA (Nemesis) id
+ 1MhULz-1jKQPM1LcJ-00eay6; Tue, 07 Jan 2020 21:07:43 +0100
+From:   Arnd Bergmann <arnd@arndb.de>
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        "David S. Miller" <davem@davemloft.net>
+Cc:     Oleksandr Natalenko <oleksandr@redhat.com>,
+        Arnd Bergmann <arnd@arndb.de>, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] wireless: wext: avoid gcc -O3 warning
+Date:   Tue,  7 Jan 2020 21:07:35 +0100
+Message-Id: <20200107200741.3588770-1-arnd@arndb.de>
+X-Mailer: git-send-email 2.20.0
 MIME-Version: 1.0
-X-SA-Exim-Connect-IP: 167.98.27.226
-X-SA-Exim-Mail-From: ben@decadent.org.uk
-X-SA-Exim-Scanned: No (on shadbolt.decadent.org.uk); SAEximRunCond expanded to false
+Content-Transfer-Encoding: 8bit
+X-Provags-ID: V03:K1:OJr2mJSwCElifh7i0B7h1tOzyHAQp2FUNVpAYKr3i1g/pntO5sP
+ eZUXHLCDl+k4KqZkBByoHwxeVT/CASxI1iuyW7d2UHnbMxpb2p0+ZG2LqktoShycU9cgl7V
+ B0Fq6xQ683cgyVPNqEyOVutBUacfbrL14QHnwv7uuG68Jxih0I0mjsEH9ki37cxRsKWagLJ
+ OKQkHehfch217Xf3Twl9g==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:/elu+XAKXtw=:DQXqmMWVs2DUnsIjgF110Z
+ yUQA7xIPowjY/T9udFmw2ijdOwVLH1JoeZLdytihWjXv3ogHwI8v230dSkEaVeggcEI0r1Bn/
+ rsHzV2grVlYmEGZ0tqczENFYarIf1KDmAK77++IxutnzHBRuR9kJEAlver5xlITrtlfUoFS1N
+ cSkRkQPwszAY0PVa45gfg5S8sbllKkHxq5wAhrLX1n9SQiyAd5h1Q0ASc3tX5QdiEz3urbOX1
+ S2xFKf1nAla7OV32ePpzalCY1LJ662ORqaFPl2KLRBB7XwCg9jaQjN5uyRc2JIpsY19a/TbCf
+ 8ysPWPWPn05cNI3IA2aWgrCToJ0R0RkiONtKNBzr1E2dEe88+Fyr1TDzIB1OZdezcNLladNnP
+ EDhbnYm99nQPsiGlJr+LJq4QWe4helWPOPK8S6uBU3cjtYnlo/qRNV7ZG7XLUDb2dRILLC368
+ qYHvHUcL5RltRO1IhSzU18GB0NNYHNwUK8JwKmJi+UyUgfjb9tsf40sIG+xHVJNjBfhwtNJ0W
+ kxLBYfdhfdnPbYO1CvFzRQbJjxEiZri7hUwtjB5ybPjT+gavSktqNWDAu/jfULVwI8AoK3DM2
+ 2oEy4YqAYoboT2yYbYvW+x/vXtqTmrGweqxxeOCs0CoW4wuip3B4El+dx/EL50fXoJVQId0zB
+ Bi029kDPPOCfrF2V4vMXs0GWNlWGyOvKT4N9H0XQ2z3nssalXkTsEa7BJt8LmI8rMPOnYdwLj
+ A2jyzb1dIzEKFJKxkMKr0ZDZoA3hXNySoKWNGu+798c727qf6jJ+fVMlifcVoEBtA0QiiIKUe
+ GSoCYi/XnFZp0xTZg9cQaE4XwxURywfposLTFnSY9R5bi7K2bRDGH6oFqkT0Qbr67baI++AWy
+ 5ez5Lm3fU/M2WeWciIEw==
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+After the introduction of CONFIG_CC_OPTIMIZE_FOR_PERFORMANCE_O3,
+the wext code produces a bogus warning:
 
---=-74YX61Llp/MokHE9JvDf
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+In function 'iw_handler_get_iwstats',
+    inlined from 'ioctl_standard_call' at net/wireless/wext-core.c:1015:9,
+    inlined from 'wireless_process_ioctl' at net/wireless/wext-core.c:935:10,
+    inlined from 'wext_ioctl_dispatch.part.8' at net/wireless/wext-core.c:986:8,
+    inlined from 'wext_handle_ioctl':
+net/wireless/wext-core.c:671:3: error: argument 1 null where non-null expected [-Werror=nonnull]
+   memcpy(extra, stats, sizeof(struct iw_statistics));
+   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from arch/x86/include/asm/string.h:5,
+net/wireless/wext-core.c: In function 'wext_handle_ioctl':
+arch/x86/include/asm/string_64.h:14:14: note: in a call to function 'memcpy' declared here
 
-On Fri, 2019-11-22 at 19:24 +0200, Adrian Bunk wrote:
-> Please backport commit 65a576e27309120e0621f54d5c81eb9128bd56be
-> "mwifiex: Fix NL80211_TX_POWER_LIMITED" to stable branches.
->=20
-> It is a non-CVE kind of security issue when a wifi adapter
-> exceeds the configured TX power limit.
->=20
-> The commit applies and builds against all branches from 3.16 to 4.19,=20
-> confirmed working with 4.14. It is already included in kernel 5.3.
+The problem is that ioctl_standard_call() sometimes calls the handler
+with a NULL argument that would cause a problem for iw_handler_get_iwstats.
+However, iw_handler_get_iwstats never actually gets called that way.
 
-Queued up for 3.16, thanks.
+Marking that function as noinline avoids the warning and leads
+to slightly smaller object code as well.
 
-Ben.
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+---
+ net/wireless/wext-core.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---=20
-Ben Hutchings
-Larkinson's Law: All laws are basically false.
+diff --git a/net/wireless/wext-core.c b/net/wireless/wext-core.c
+index 5e677dac2a0c..69102fda9ebd 100644
+--- a/net/wireless/wext-core.c
++++ b/net/wireless/wext-core.c
+@@ -657,7 +657,8 @@ struct iw_statistics *get_wireless_stats(struct net_device *dev)
+ 	return NULL;
+ }
+ 
+-static int iw_handler_get_iwstats(struct net_device *		dev,
++/* noinline to avoid a bogus warning with -O3 */
++static noinline int iw_handler_get_iwstats(struct net_device *	dev,
+ 				  struct iw_request_info *	info,
+ 				  union iwreq_data *		wrqu,
+ 				  char *			extra)
+-- 
+2.20.0
 
-
-
---=-74YX61Llp/MokHE9JvDf
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEErCspvTSmr92z9o8157/I7JWGEQkFAl4U5DEACgkQ57/I7JWG
-EQk2dxAAmPYtcxPbw0b9aGdDzzHzY6kP+toPYhl9H01J+fy+0zqENAKzTrSKm0Rp
-JEiLmSF2y/HRCvy1CKAvZjpfa/32yo9HWyeyYemQkLCJChNP8An4CUoQQKaf+EF0
-yIq3ZNDpJLv6fL1EeyWMSmBVRSJmFbDpJt2R6OiO1UlnaCgpGRbyW1GgyRf2Iy0a
-d5NujUUrFU6PNNHaP1aUUvVl7cEPQsxg9glmURz9dGZ6I2vAjZAHksYThJ9Cp/EQ
-5N5QeYaAP+VPFIwrHD8PbBt3QqaB/qN6mKVYJQ0jon5WmN4v+3+Ps9oVy/d3hv0L
-IARiS+Z0G4MzZJzgfebA2HvhCgAcars6iWWdHKd3a+Xa/cr/lscLfSh5LUZWL8Dw
-lNk7jUPjZJMGHKu+e3hX9QxJS7NIik83W2noHHezCwneVpKZrB+1ACqT61AlZ6+c
-Hrs2zAODLqx9Iu2zi8lyRUDVmqBx8rsuVjayGBTd/ulMoOJrA9+t5DyyAPGKOTB8
-e/Z8iP8qBhxMGU/ddLlImeXdOx0nfTpEIuvPMQIbpYYLdxes+Epfr+o3OY+k8R59
-ZMvCvPcXMknXbOajYCWG7I6k0eForw8oI6zjQgQ/PWg9fPfi1lEfgcIG5MjIh/iq
-kJlNb2lpDOcuPM3ULqIEbwCDtI4DnEXGgw7BoA+G5qvvG+ShR74=
-=sTMY
------END PGP SIGNATURE-----
-
---=-74YX61Llp/MokHE9JvDf--
