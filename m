@@ -2,146 +2,162 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B82C132B0D
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Jan 2020 17:23:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 082B5132B93
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Jan 2020 17:54:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728369AbgAGQXf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 7 Jan 2020 11:23:35 -0500
-Received: from mail-lf1-f68.google.com ([209.85.167.68]:37401 "EHLO
-        mail-lf1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727994AbgAGQXf (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 7 Jan 2020 11:23:35 -0500
-Received: by mail-lf1-f68.google.com with SMTP id b15so153627lfc.4;
-        Tue, 07 Jan 2020 08:23:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=O/bmJUGYaSPiqae8SdBJMnI+D+zAGfBGbWHgwMFDxAM=;
-        b=Ew8tukmrLS5wGQ4OZbkjMjsfJxlwUD62IHCNMH421sapQiIkB2oJw0qwjbVNFnmTq+
-         a9KbU1u5Vwo0m4+Vkocvo1iVm4ZtiDsLJDE6oIt2s969KD8Yu8ci0vHUWrNrya8xaXxa
-         a7MMLBIrcNUijX7vTsidwADS01DuuNC7FumdIgC8eT2cirle/makwZWqJfyWO5MzSuO5
-         9IhdHOyhSuMgMjEXUuxmRrmLtjrAhgVWn++Ui2BIhIMOCQoAGE3T/bD7OlumzssyiXvX
-         FTn9qDWprappNDJ7GzrtGD954TgBaCMwy4OFdCJZX7cKGebCtQ4N8CnX9+y60bxxn8AU
-         hLMQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=O/bmJUGYaSPiqae8SdBJMnI+D+zAGfBGbWHgwMFDxAM=;
-        b=baxWpPJpLKqPCvEAP2tZx5wkrw4TeB5+pXChNN19RkXFIpq3fge1bIWyJSUYH4CsDN
-         nr+N1pcH+5EMyEmaVlqK7u1+vbSvOdKYdF3sbtDzwwx5/gsbgcyoq6AwmmwIiCuVMs1t
-         ZOeXZ/IDenJn+8JYf4Rahw5DkDdg4sZDnJCdBanCBbLcxFtdNvTuLgDtV51pXOw8/rGy
-         bCRQZpX2WCtJM3/q9ysLqOsVThmG/9axLX9jYUvPRmodjruS9TazeD5tsjYn0rg1AhCR
-         4+ghxCSOnrqyVi5uYi5MrKYQfoVP7jsUU4XPDwgwcwDk+Sl8TzdainYBJs/VBYTiDswv
-         C/YA==
-X-Gm-Message-State: APjAAAV06pxiBbU0vNKSohOSR/bqlFA4Zxcul0DQXPUyYdoc8oh39XJr
-        /2uumSXprINh6XJaDrh/LuSOHCjO
-X-Google-Smtp-Source: APXvYqwzd16CLdeHDTjCg1TkpuQJdYa209eu5WrMIGe+3aJfzsD/JpNoIONEe/yU7+uDuc8u2dqkcA==
-X-Received: by 2002:a19:710a:: with SMTP id m10mr177115lfc.58.1578414213714;
-        Tue, 07 Jan 2020 08:23:33 -0800 (PST)
-Received: from [192.168.2.145] (79-139-233-37.dynamic.spd-mgts.ru. [79.139.233.37])
-        by smtp.googlemail.com with ESMTPSA id m16sm54962ljb.47.2020.01.07.08.23.32
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 07 Jan 2020 08:23:33 -0800 (PST)
-Subject: Re: [PATCH] brcmfmac: sdio: Fix OOB interrupt initialization on
- brcm43362
-To:     Jean-Philippe Brucker <jean-philippe@linaro.org>
-Cc:     Arend Van Spriel <arend.vanspriel@broadcom.com>,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        brcm80211-dev-list@cypress.com, netdev@vger.kernel.org,
-        hdegoede@redhat.com, franky.lin@broadcom.com,
-        hante.meuleman@broadcom.com, chi-hsien.lin@cypress.com,
-        wright.feng@cypress.com, kvalo@codeaurora.org, davem@davemloft.net
-References: <20191226092033.12600-1-jean-philippe@linaro.org>
- <16f419a7070.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
- <141f055a-cd1d-66cb-7052-007cda629d3a@gmail.com>
- <20200106191919.GA826263@myrica>
- <c2bb1067-9b9c-3be1-b87e-e733a668a056@gmail.com>
- <20200107072354.GA832497@myrica>
-From:   Dmitry Osipenko <digetx@gmail.com>
-Message-ID: <34dbd037-0a40-bf5f-4988-6b821811ffcd@gmail.com>
-Date:   Tue, 7 Jan 2020 19:23:32 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.3.0
-MIME-Version: 1.0
-In-Reply-To: <20200107072354.GA832497@myrica>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+        id S1728449AbgAGQxb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 7 Jan 2020 11:53:31 -0500
+Received: from mail.kernel.org ([198.145.29.99]:39882 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728386AbgAGQxa (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 7 Jan 2020 11:53:30 -0500
+Received: from PC-kkoz.proceq.com (unknown [213.160.61.66])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id B395D2073D;
+        Tue,  7 Jan 2020 16:53:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1578416009;
+        bh=5pGZzG2R2Yg9BvXiJJcmzkQkuLAOfS9PEHpiBXb0Uls=;
+        h=From:To:Cc:Subject:Date:From;
+        b=Q+mZvp8DRBQ+NGLFMRHq+ToaCPgY0sfmDNR9VpdaiZ9T2V/2nT/SeANXkK/wLMDoP
+         zenjraQPO9M07VwPEmNNuyRUDTXxaFInE+OA1UUiQvrcd9MJ0C7xFDpFQN49dMy/gI
+         GDlqwuMx3bvmjp+6UgH+xyziWuKaIO8OxKhrqNsk=
+From:   Krzysztof Kozlowski <krzk@kernel.org>
+To:     Richard Henderson <rth@twiddle.net>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        Alexey Brodkin <abrodkin@synopsys.com>,
+        Vineet Gupta <vgupta@synopsys.com>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        Dave Airlie <airlied@redhat.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Ben Skeggs <bskeggs@redhat.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Jiri Slaby <jirislaby@gmail.com>,
+        Nick Kossifidis <mickflemm@gmail.com>,
+        Luis Chamberlain <mcgrof@kernel.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Dave Jiang <dave.jiang@intel.com>,
+        Jon Mason <jdmason@kudzu.us>, Allen Hubbe <allenbh@gmail.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        Jason Wang <jasowang@redhat.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-snps-arc@lists.infradead.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, nouveau@lists.freedesktop.org,
+        linux-media@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-ntb@googlegroups.com,
+        virtualization@lists.linux-foundation.org,
+        linux-arch@vger.kernel.org
+Cc:     Krzysztof Kozlowski <krzk@kernel.org>
+Subject: [RFT 00/13] iomap: Constify ioreadX() iomem argument
+Date:   Tue,  7 Jan 2020 17:52:57 +0100
+Message-Id: <1578415992-24054-1-git-send-email-krzk@kernel.org>
+X-Mailer: git-send-email 2.7.4
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-07.01.2020 10:23, Jean-Philippe Brucker пишет:
-> On Tue, Jan 07, 2020 at 02:15:18AM +0300, Dmitry Osipenko wrote:
->> 06.01.2020 22:19, Jean-Philippe Brucker пишет:
->>> Hi Dmitry,
->>>
->>> On Thu, Dec 26, 2019 at 05:37:58PM +0300, Dmitry Osipenko wrote:
->>>> I haven't seen any driver probe failures due to OOB on NVIDIA Tegra,
->>>> only suspend-resume was problematic due to the unbalanced OOB
->>>> interrupt-wake enabling.
->>>>
->>>> But maybe checking whether OOB interrupt-wake works by invoking
->>>> enable_irq_wake() during brcmf_sdiod_intr_register() causes trouble for
->>>> the cubietruck board.
->>>>
->>>> @Jean-Philippe, could you please try this change (on top of recent
->>>> linux-next):
->>>
->>> Sorry for the delay, linux-next doesn't boot for me at the moment and I
->>> have little time to investigate why, so I might retry closer to the merge
->>> window.
->>>
->>> However, isn't the interrupt-wake issue independent from the problem
->>> (introduced in v4.17) that my patch fixes? I applied "brcmfmac: Keep OOB
->>> wake-interrupt disabled when it shouldn't be enabled" on v5.5-rc5 and it
->>> doesn't seem to cause a regression, but the wifi only works if I apply my
->>> patch as well.
->>>
->>> Thanks,
->>> Jean
->>>
->>>>
->>>> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
->>>> b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
->>>> index b684a5b6d904..80d7106b10a9 100644
->>>> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
->>>> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
->>>> @@ -115,13 +115,6 @@ int brcmf_sdiod_intr_register(struct brcmf_sdio_dev
->>>> *sdiodev)
->>>>                 }
->>>>                 sdiodev->oob_irq_requested = true;
->>>>
->>>> -               ret = enable_irq_wake(pdata->oob_irq_nr);
->>>> -               if (ret != 0) {
->>>> -                       brcmf_err("enable_irq_wake failed %d\n", ret);
->>>> -                       return ret;
->>>> -               }
->>>> -               disable_irq_wake(pdata->oob_irq_nr);
->>>> -
->>>>                 sdio_claim_host(sdiodev->func1);
->>>>
->>>>                 if (sdiodev->bus_if->chip == BRCM_CC_43362_CHIP_ID) {
->>
->> Hello Jean,
->>
->> Could you please clarify whether you applied [1] and then the above
->> snippet on top of it or you only applied [1] without the snippet?
-> 
-> I applied [1] without the snippet
-> 
-> Thanks,
-> Jean
-> 
->>
->> [1] brcmfmac: Keep OOB wake-interrupt disabled when it shouldn't be enabled
+Hi,
 
-Will you be able to test *with* the snippet? I guess chances that it
-will make any difference are not high, nevertheless will be good to know
-for sure.
+The ioread8/16/32() and others have inconsistent interface among the
+architectures: some taking address as const, some not.
+
+It seems there is nothing really stopping all of them to take
+pointer to const.
+
+Patchset was really tested on all affected architectures.
+Build testing is in progress - I hope auto-builders will point any issues.
+
+
+Todo
+====
+Convert also string versions (ioread16_rep() etc) if this aproach looks OK.
+
+
+Merging
+=======
+The first 5 patches - iomap, alpha, sh, parisc and powerpc - should probably go
+via one tree, or even squashed into one.
+
+All other can go separately after these get merged.
+
+Best regards,
+Krzysztof
+
+
+Krzysztof Kozlowski (13):
+  iomap: Constify ioreadX() iomem argument (as in generic
+    implementation)
+  alpha: Constify ioreadX() iomem argument (as in generic
+    implementation)
+  sh: Constify ioreadX() iomem argument (as in generic implementation)
+  parisc: Constify ioreadX() iomem argument (as in generic
+    implementation)
+  powerpc: Constify ioreadX() iomem argument (as in generic
+    implementation)
+  arc: Constify ioreadX() iomem argument (as in generic implementation)
+  drm/mgag200: Constify ioreadX() iomem argument (as in generic
+    implementation)
+  drm/nouveau: Constify ioreadX() iomem argument (as in generic
+    implementation)
+  media: fsl-viu: Constify ioreadX() iomem argument (as in generic
+    implementation)
+  net: wireless: ath5k: Constify ioreadX() iomem argument (as in generic
+    implementation)
+  net: wireless: rtl818x: Constify ioreadX() iomem argument (as in
+    generic implementation)
+  ntb: intel: Constify ioreadX() iomem argument (as in generic
+    implementation)
+  virtio: pci: Constify ioreadX() iomem argument (as in generic
+    implementation)
+
+ arch/alpha/include/asm/core_apecs.h                |  6 +--
+ arch/alpha/include/asm/core_cia.h                  |  6 +--
+ arch/alpha/include/asm/core_lca.h                  |  6 +--
+ arch/alpha/include/asm/core_marvel.h               |  4 +-
+ arch/alpha/include/asm/core_mcpcia.h               |  6 +--
+ arch/alpha/include/asm/core_t2.h                   |  2 +-
+ arch/alpha/include/asm/io.h                        | 12 +++---
+ arch/alpha/include/asm/io_trivial.h                | 16 ++++----
+ arch/alpha/include/asm/jensen.h                    |  2 +-
+ arch/alpha/include/asm/machvec.h                   |  6 +--
+ arch/alpha/kernel/core_marvel.c                    |  2 +-
+ arch/alpha/kernel/io.c                             |  6 +--
+ arch/arc/plat-axs10x/axs10x.c                      |  4 +-
+ arch/parisc/include/asm/io.h                       |  4 +-
+ arch/parisc/lib/iomap.c                            | 48 +++++++++++-----------
+ arch/powerpc/kernel/iomap.c                        | 22 +++++-----
+ arch/sh/kernel/iomap.c                             | 10 ++---
+ drivers/gpu/drm/mgag200/mgag200_drv.h              |  4 +-
+ drivers/gpu/drm/nouveau/nouveau_bo.c               |  2 +-
+ drivers/media/platform/fsl-viu.c                   |  2 +-
+ drivers/net/wireless/ath/ath5k/ahb.c               | 10 ++---
+ .../net/wireless/realtek/rtl818x/rtl8180/rtl8180.h |  6 +--
+ drivers/ntb/hw/intel/ntb_hw_gen1.c                 |  2 +-
+ drivers/ntb/hw/intel/ntb_hw_gen3.h                 |  2 +-
+ drivers/ntb/hw/intel/ntb_hw_intel.h                |  2 +-
+ drivers/virtio/virtio_pci_modern.c                 |  6 +--
+ include/asm-generic/iomap.h                        | 22 +++++-----
+ include/linux/io-64-nonatomic-hi-lo.h              |  4 +-
+ include/linux/io-64-nonatomic-lo-hi.h              |  4 +-
+ lib/iomap.c                                        | 18 ++++----
+ 30 files changed, 123 insertions(+), 123 deletions(-)
+
+-- 
+2.7.4
+
