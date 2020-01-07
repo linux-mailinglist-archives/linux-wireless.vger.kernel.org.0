@@ -2,130 +2,95 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F2EAA1323FE
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Jan 2020 11:43:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 88BBF1324BB
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Jan 2020 12:21:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727589AbgAGKnx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 7 Jan 2020 05:43:53 -0500
-Received: from us-smtp-2.mimecast.com ([207.211.31.81]:32381 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1727559AbgAGKnx (ORCPT
+        id S1727915AbgAGLVi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 7 Jan 2020 06:21:38 -0500
+Received: from rtits2.realtek.com ([211.75.126.72]:60126 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726937AbgAGLVi (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 7 Jan 2020 05:43:53 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1578393831;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=HreyvVESVBdgkhYgE7YdIkJiIbgwH2Igij/MagPRtS8=;
-        b=KbZIXtLNTm7Wh9LGAqb3z3x9P46guCaqbk9nPvXDLWYLtzc033I7QfxUhxNBOOVWaUze9p
-        CISRrLK2aEOSe35RaQne7Cb1yEsWUoIAdITtd/cHb9jurB6wFx3Sy6M1ENpJIKqhxfOGQH
-        +yBl7jRPXqT2evBygOW69MyaZHHGnds=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-337-W7jGqqvQMEuAalvKYjJUCg-1; Tue, 07 Jan 2020 05:43:50 -0500
-X-MC-Unique: W7jGqqvQMEuAalvKYjJUCg-1
-Received: by mail-wm1-f70.google.com with SMTP id t4so3932366wmf.2
-        for <linux-wireless@vger.kernel.org>; Tue, 07 Jan 2020 02:43:50 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
-         :message-id:mime-version:content-transfer-encoding;
-        bh=HreyvVESVBdgkhYgE7YdIkJiIbgwH2Igij/MagPRtS8=;
-        b=KI9Vher+ufjyaOF8HXiJ9wzic+RqTSVcbIyW0d+HQahf3PcaeMOqYspy62SCouT9i/
-         Ly0hDZX55QATUhuCc/HtjMcrNTs5j3I7uvf1bvj196h42/OYCxIo9K8MrHqqGRjfNAPs
-         qcjWsLpuqDA76ioBNHYQ7D/U2hRV8xLSeyXehMNu7qOOdi0ZiAOWbIjz2jJfHknV6Iwf
-         33L1O1tA/Txycb3C/sB31qAYN3lp5KRH/XTUYjSoTmPhUPSohvGkEivqsqRVuFljCZ8G
-         kSYPQUlxOgrmf44DuR850UnPkz4ergymgGW7iFIpm/4gGsBPcsiIZV+EAZXgZ2VyITMN
-         JKDg==
-X-Gm-Message-State: APjAAAWOJIbIMqB+rxFwfzQo+nJgLWxnRwnzeliUq5D2cwg7bExnhn8I
-        kED1kWOEoyskpOmoXPgOiaw8Fh7qWliT0fw4zIJzVGyUd7Y01X2NetUvl2YXWFCIRHhQZkivkkg
-        ILYqn6r6IPEQxR/V/rJiUlffLnrs=
-X-Received: by 2002:a7b:c85a:: with SMTP id c26mr39479736wml.107.1578393829491;
-        Tue, 07 Jan 2020 02:43:49 -0800 (PST)
-X-Google-Smtp-Source: APXvYqwhqAe0MIUxLCEBxHeY/zXx0E6R+L+jUAUk8pqHkZQb/JZCT90nDRxmSPx5pmZtbaYuiI5qpA==
-X-Received: by 2002:a7b:c85a:: with SMTP id c26mr39479708wml.107.1578393829109;
-        Tue, 07 Jan 2020 02:43:49 -0800 (PST)
-Received: from alrua-x1.borgediget.toke.dk ([2a0c:4d80:42:443::2])
-        by smtp.gmail.com with ESMTPSA id b10sm78630008wrt.90.2020.01.07.02.43.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Jan 2020 02:43:47 -0800 (PST)
-Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-        id 74051180960; Tue,  7 Jan 2020 11:43:47 +0100 (CET)
-From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-To:     John Yates <john@yates-sheets.org>
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        Tue, 7 Jan 2020 06:21:38 -0500
+Authenticated-By: 
+X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID 007BLQ05013713, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (RTITCASV02.realtek.com.tw[172.21.6.19])
+        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id 007BLQ05013713
+        (version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+        Tue, 7 Jan 2020 19:21:26 +0800
+Received: from RTEXMB06.realtek.com.tw (172.21.6.99) by
+ RTITCASV02.realtek.com.tw (172.21.6.19) with Microsoft SMTP Server (TLS) id
+ 14.3.468.0; Tue, 7 Jan 2020 19:21:26 +0800
+Received: from RTEXMB04.realtek.com.tw (172.21.6.97) by
+ RTEXMB06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Tue, 7 Jan 2020 19:21:26 +0800
+Received: from RTEXMB04.realtek.com.tw ([fe80::d9c5:a079:495e:b999]) by
+ RTEXMB04.realtek.com.tw ([fe80::d9c5:a079:495e:b999%6]) with mapi id
+ 15.01.1779.005; Tue, 7 Jan 2020 19:21:26 +0800
+From:   Tony Chuang <yhchuang@realtek.com>
+To:     Chris Chiu <chiu@endlessm.com>
+CC:     Kalle Valo <kvalo@codeaurora.org>,
         linux-wireless <linux-wireless@vger.kernel.org>,
-        Kan Yan <kyan@google.com>,
-        Make-Wifi-fast <make-wifi-fast@lists.bufferbloat.net>,
-        Yibo Zhao <yiboz@codeaurora.org>,
-        Rajkumar Manoharan <rmanohar@codeaurora.org>,
-        Felix Fietkau <nbd@nbd.name>
-Subject: Re: [Make-wifi-fast] [PATCH v5] mac80211: Switch to a virtual time-based airtime scheduler
-In-Reply-To: <CAJnXXogQCKQSLT+8_NnEfFd7MLc0=YxShvb4hY2Y+BDJjybQTg@mail.gmail.com>
-References: <20191222172423.131033-1-toke@redhat.com> <5bab549a72d526f4fd0f708f14b49a7af6e2c0b9.camel@sipsolutions.net> <87r20ck3x9.fsf@toke.dk> <CAJnXXoiyWKSLHqMzMcSzHBM-HhfYtcURW1hYd-3Yf7K00NTqgQ@mail.gmail.com> <87mub0k2cd.fsf@toke.dk> <CAJnXXogQCKQSLT+8_NnEfFd7MLc0=YxShvb4hY2Y+BDJjybQTg@mail.gmail.com>
-X-Clacks-Overhead: GNU Terry Pratchett
-Date:   Tue, 07 Jan 2020 11:43:47 +0100
-Message-ID: <875zhnk0m4.fsf@toke.dk>
+        Brian Norris <briannorris@chromium.org>,
+        "mikhail.v.gavrilov@gmail.com" <mikhail.v.gavrilov@gmail.com>,
+        "rtereguloff@gmail.com" <rtereguloff@gmail.com>
+Subject: RE: [PATCH] rtw88: fix potential NULL skb access in TX ISR
+Thread-Topic: [PATCH] rtw88: fix potential NULL skb access in TX ISR
+Thread-Index: AQHVxTGiMOLXsg77gUalprFlQHz+SqfefTwAgACQ6FA=
+Date:   Tue, 7 Jan 2020 11:21:26 +0000
+Message-ID: <5ffa570167b34b77ab05cdf490812a59@realtek.com>
+References: <20200107080807.14433-1-yhchuang@realtek.com>
+ <CAB4CAwfxQJzsJfxScVE+Y_xYbdSigTf567b9Xv-LFyQQnOXEAA@mail.gmail.com>
+In-Reply-To: <CAB4CAwfxQJzsJfxScVE+Y_xYbdSigTf567b9Xv-LFyQQnOXEAA@mail.gmail.com>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.68.183]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-John Yates <john@yates-sheets.org> writes:
-
-> On Mon, Jan 6, 2020 at 10:54 AM Toke H=C3=B8iland-J=C3=B8rgensen <toke@re=
-dhat.com> wrote:
->> Yeah, we'd be doing the accumulation in 64bit values in any case; we're
->> talking about mainly multiplication here (the whole point of the
->> reciprocal stuff is to get the division out of the fast path). So how
->> big of an impact is one (or two) extra 64-bit multiplications going to
->> have on a 32bit platform?
->
-> Top line: usually replacing 64 bit divide with multiply is a massive
-> win.
->
-> Many platforms make (32 bits * 32 bits) -> 64 bits quite cheap:
-> - x86 has this as a single instruction: eax * edx -> eax:edx
-> - arm has much the same, plus a variant that tacks ona  64 bit accumulati=
-on!
-> - mips leaves the 64 bit product in a dedicated register; retrieval
-> requires 2 instructions
-> - ppc, being more "RISCy", has two instruction: mullo and mulhi
-> (performs multiply twice!)
-
-Ah, this is very useful, thanks :)
-
-> Best case is when the compiler can recognize a 64 bit multiply as really
->
->   widen_32_to_64(left) x widen_32_to_64(right) -> 64_bit_product
->
-> In such a case only one of the above multiply cases is necessary.  Otherw=
-ise
-> one tends to get multiple partial products and double width additions.  S=
-till,
-> better than nearly any flavor of 64 bit divide.
-
-So going back to the original patch, we don't really need to use 64-bit
-divides to compute the reciprocals; not sure what I was thinking there.
-That leaves us with a single 32-bit divide whenever a station is
-scheduled or unscheduled, and two 64-bit multiplications in
-ieee80211_register_airtime().
-
-If we assume no more than 8ms of airtime is being reported at a time, we
-can use 2^19 as the divisor and keep the multiplication in 32 bits
-without overflowing, which would keep the rounding error <10% for
-weights <2^15. This should be enough for single-station weights, at
-least. I think it could also be sufficient for the weight_sum for most
-uses, actually, so we could start out with that and only revert to
-64-bit multiplication if it turns out people are pushing the weighted
-fairness stuff to a point where this breaks?
-
-Johannes, WDYT? Also, what is a good place to document this?
-
--Toke
-
+RnJvbTogQ2hyaXMgQ2hpdQ0KPiBTdWJqZWN0OiBSZTogW1BBVENIXSBydHc4ODogZml4IHBvdGVu
+dGlhbCBOVUxMIHNrYiBhY2Nlc3MgaW4gVFggSVNSDQo+IA0KPiBPbiBUdWUsIEphbiA3LCAyMDIw
+IGF0IDQ6MDggUE0gPHloY2h1YW5nQHJlYWx0ZWsuY29tPiB3cm90ZToNCj4gPg0KPiA+IEZyb206
+IFlhbi1Ic3VhbiBDaHVhbmcgPHloY2h1YW5nQHJlYWx0ZWsuY29tPg0KPiA+DQo+ID4gU29tZXRp
+bWVzIHRoZSBUWCBxdWV1ZSBtYXkgYmUgZW1wdHkgYW5kIHdlIGNvdWxkIHBvc3NpYmxlDQo+ID4g
+ZGVxdWV1ZSBhIE5VTEwgcG9pbnRlciwgY3Jhc2ggdGhlIGtlcm5lbC4gSWYgdGhlIHNrYiBpcyBO
+VUxMDQo+ID4gdGhlbiB0aGVyZSBpcyBub3RoaW5nIHRvIGRvLCBqdXN0IGxlYXZlIHRoZSBJU1Iu
+DQo+ID4NCj4gPiBBbmQgdGhlIFRYIHF1ZXVlIHNob3VsZCBub3QgYmUgZW1wdHkgaGVyZSwgc28g
+cHJpbnQgYW4gZXJyb3INCj4gPiB0byBzZWUgaWYgdGhlcmUgaXMgYW55dGhpbmcgd3JvbmcgZm9y
+IERNQSByaW5nLg0KPiA+DQo+ID4gRml4ZXM6IGUzMDM3NDg1YzY4ZSAoInJ0dzg4OiBuZXcgUmVh
+bHRlayA4MDIuMTFhYyBkcml2ZXIiKQ0KPiA+IFNpZ25lZC1vZmYtYnk6IFlhbi1Ic3VhbiBDaHVh
+bmcgPHloY2h1YW5nQHJlYWx0ZWsuY29tPg0KPiA+IC0tLQ0KPiA+ICBkcml2ZXJzL25ldC93aXJl
+bGVzcy9yZWFsdGVrL3J0dzg4L3BjaS5jIHwgNSArKysrKw0KPiA+ICAxIGZpbGUgY2hhbmdlZCwg
+NSBpbnNlcnRpb25zKCspDQo+ID4NCj4gPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQvd2lyZWxl
+c3MvcmVhbHRlay9ydHc4OC9wY2kuYw0KPiBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsv
+cnR3ODgvcGNpLmMNCj4gPiBpbmRleCBhNThlODI3NmE0MWEuLmE2NzQ2YjVhOWZmMiAxMDA2NDQN
+Cj4gPiAtLS0gYS9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L3BjaS5jDQo+ID4g
+KysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9wY2kuYw0KPiA+IEBAIC04
+MzIsNiArODMyLDExIEBAIHN0YXRpYyB2b2lkIHJ0d19wY2lfdHhfaXNyKHN0cnVjdCBydHdfZGV2
+ICpydHdkZXYsDQo+IHN0cnVjdCBydHdfcGNpICpydHdwY2ksDQo+ID4NCj4gPiAgICAgICAgIHdo
+aWxlIChjb3VudC0tKSB7DQo+ID4gICAgICAgICAgICAgICAgIHNrYiA9IHNrYl9kZXF1ZXVlKCZy
+aW5nLT5xdWV1ZSk7DQo+ID4gKyAgICAgICAgICAgICAgIGlmICghc2tiKSB7DQo+ID4gKyAgICAg
+ICAgICAgICAgICAgICAgICAgcnR3X2VycihydHdkZXYsICJmYWlsZWQgdG8gZGVxdWV1ZSAlZCBz
+a2IgVFgNCj4gcXVldWUgJWQsIEJEPTB4JTA4eCwgcnAgJWQgLT4gJWRcbiIsDQo+ID4gKyAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICBjb3VudCwgaHdfcXVldWUsIGJkX2lkeCwgcmluZy0+
+ci5ycCwNCj4gY3VyX3JwKTsNCj4gPiArICAgICAgICAgICAgICAgICAgICAgICBicmVhazsNCj4g
+PiArICAgICAgICAgICAgICAgfQ0KPiA+ICAgICAgICAgICAgICAgICB0eF9kYXRhID0gcnR3X3Bj
+aV9nZXRfdHhfZGF0YShza2IpOw0KPiA+ICAgICAgICAgICAgICAgICBwY2lfdW5tYXBfc2luZ2xl
+KHJ0d3BjaS0+cGRldiwgdHhfZGF0YS0+ZG1hLA0KPiBza2ItPmxlbiwNCj4gPiAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICBQQ0lfRE1BX1RPREVWSUNFKTsNCj4gPiAtLQ0KPiA+IDIu
+MTcuMQ0KPiA+DQo+IA0KPiBNYXliZSB3ZSBjYW4gc2ltcGx5IGRvICd3aGlsZSAoY291bnQgLS0g
+JiYNCj4gIXNrYl9xdWV1ZV9lbXB0eSgmcmluZy0+cXVldWUpKScgdG8gYWNoaWV2ZSB0aGUgc2Ft
+ZSB0aGluZz8NCj4gSSBkb24ndCB0aGluayBpdCB3b3J0aHMgdG8gcmFpc2UgYW4gZXJyb3IgdW5s
+ZXNzIHRoZSBjb3VudCBpcyBleHBlY3RlZA0KPiB0byBleGFjdGx5IG1hdGNoIHRoZSBxdWV1ZSBs
+ZW5ndGggaW4gYW55DQo+IGNpcmN1bXN0YW5jZXMuDQo+IA0KDQpZZXMsIEkgZXhwZWN0ZWQgdGhh
+dCB0aGUgcXVldWUgbGVuZ3RoIHNob3VsZCBtYXRjaCB3aXRoIHRoZSBETUEgcmluZy4NCkFuZCBz
+byBJIHByaW50ZWQgYW4gZXJyb3IgdG8gc2VlIHdoeSB0aGUgY291bnQgbWlzbWF0Y2hlZC4NCg0K
+WWFuLUhzdWFuDQo=
