@@ -2,79 +2,94 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 173F4132FF9
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Jan 2020 20:54:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C90DB133040
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Jan 2020 21:04:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728678AbgAGTyZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 7 Jan 2020 14:54:25 -0500
-Received: from mail-ed1-f65.google.com ([209.85.208.65]:38897 "EHLO
-        mail-ed1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728619AbgAGTyW (ORCPT
+        id S1728726AbgAGUEI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 7 Jan 2020 15:04:08 -0500
+Received: from shadbolt.e.decadent.org.uk ([88.96.1.126]:36058 "EHLO
+        shadbolt.e.decadent.org.uk" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728358AbgAGUEI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 7 Jan 2020 14:54:22 -0500
-Received: by mail-ed1-f65.google.com with SMTP id i16so621455edr.5
-        for <linux-wireless@vger.kernel.org>; Tue, 07 Jan 2020 11:54:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=Pi/olKLeaBrqhttAwoMGSoT+Sxp+y5xY3PQr7eygtLM=;
-        b=rePy6dvW+ZH47h+1V5ZzhOdHt3hyIpKxcBqRG6Yxugb8Ug55qYyaTQK4+wINdwq55f
-         jyS7yVvOQ5iMzNISAd+yiqtmzzFVbayzDS39QWeF/dmepISKDIrC01/Pyd16Jkxknswo
-         ZxY/mmXagT/Q6hX/41m7OLd2SMfr8CZO7Ci1IzWbi02KR9YYzIjtqbyhfstjO3po9RzC
-         tRdf7rgiUAYJtfRgzdFxSV7Qq5Jehd/t/PYuqt0rxIFlDCGzailtByweOtMj5bqBnwVk
-         IjZK4uPjcTNDDRooC9FKrWtSPPIiz9LQ6akzqbAN2ioBe4cx30eADGCJ98dfGgAz0k84
-         86YA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=Pi/olKLeaBrqhttAwoMGSoT+Sxp+y5xY3PQr7eygtLM=;
-        b=DVVC6qWTfqC5exXWubc3u1x8BepMi7DD6PZsqSXKEOybqcSrijsJPCGEf5oPmxEXFk
-         0pqFlEWCJ5dtFE3tHHxl2S+1AbYyawS2eDdCxTe/EEMLSjJdb05xYSynnUWyo6/98mw7
-         tUlMw8EaSqWpG6pGzOzvFNbpcbiNL0LKvbar5APnTyR6s5IffKObmeKeDJc8CHyxnba4
-         yP7cDFEiLX6+yCXWQGFbgVAHHiAW1FiZvLLAjCQZD8oxggPFv7os4k9hQldUv/Bz0Seb
-         wJKUc+a/USLKexfb7ocPhgQWHzekyD3YeWHwsha0hGrhTKG1RO6f2reYYoK1K6g+qDyB
-         LxTA==
-X-Gm-Message-State: APjAAAWXmsnERUyVnmErR8KfhPD9XVmbhrvKmR7jY5Egrw8+NgIMFpeG
-        EaOcjLr1L8VU9DcO1QEWN5Pl1mt/7z1ehIPKDe0=
-X-Google-Smtp-Source: APXvYqx1uh7JY9TsleWmDC3UVv1ETHY9DfduKRb8/JpOu+/AEBPnllkLYgtKF65Y7XFrgtyDYVY72zE2SUwJXZDirUk=
-X-Received: by 2002:a17:906:2894:: with SMTP id o20mr1108577ejd.199.1578426859045;
- Tue, 07 Jan 2020 11:54:19 -0800 (PST)
+        Tue, 7 Jan 2020 15:04:08 -0500
+Received: from [167.98.27.226] (helo=deadeye)
+        by shadbolt.decadent.org.uk with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.89)
+        (envelope-from <ben@decadent.org.uk>)
+        id 1iov59-0002jq-C1; Tue, 07 Jan 2020 20:04:03 +0000
+Received: from ben by deadeye with local (Exim 4.93)
+        (envelope-from <ben@decadent.org.uk>)
+        id 1iov58-006ywd-Bs; Tue, 07 Jan 2020 20:04:02 +0000
+Message-ID: <bc4aa741a1da2e4929af072c93566c20729eb687.camel@decadent.org.uk>
+Subject: Re: Please backport "mwifiex: Fix NL80211_TX_POWER_LIMITED" to
+ stable branches
+From:   Ben Hutchings <ben@decadent.org.uk>
+To:     Adrian Bunk <bunk@kernel.org>, netdev@vger.kernel.org
+Cc:     Amitkumar Karwar <amitkarwar@gmail.com>,
+        Nishant Sarmukadam <nishants@marvell.com>,
+        Ganapathi Bhat <gbhat@marvell.com>,
+        Xinming Hu <huxinming820@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        linux-wireless@vger.kernel.org, stable@vger.kernel.org
+Date:   Tue, 07 Jan 2020 20:04:01 +0000
+In-Reply-To: <20191122172431.GA24156@localhost>
+References: <20191122172431.GA24156@localhost>
+Content-Type: multipart/signed; micalg="pgp-sha512";
+        protocol="application/pgp-signature"; boundary="=-74YX61Llp/MokHE9JvDf"
+User-Agent: Evolution 3.34.1-2+b1 
 MIME-Version: 1.0
-Received: by 2002:a17:906:72c6:0:0:0:0 with HTTP; Tue, 7 Jan 2020 11:54:18
- -0800 (PST)
-Reply-To: dhlexpresscouriercompany.nyusa@gmail.com
-From:   "Dr. William Johnson" <currency1000000@gmail.com>
-Date:   Tue, 7 Jan 2020 20:54:18 +0100
-Message-ID: <CAPqfnSFyOwF0m-QsrOdcFV_PCC3TSBr=YQHoQHvH0baKHfeF6Q@mail.gmail.com>
-Subject: contact Dhl office New York to receive your Prepaid ATM Master Card
- worth $15.8Million US DOLLARS now.
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+X-SA-Exim-Connect-IP: 167.98.27.226
+X-SA-Exim-Mail-From: ben@decadent.org.uk
+X-SA-Exim-Scanned: No (on shadbolt.decadent.org.uk); SAEximRunCond expanded to false
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-ATTN Dear Beneficiary.
-Goodnews
-I have Registered your Prepaid ATM Master Card
-worth $15.800,000.00 US DOLLARS Courier company asigned to deliver it
-to you today.
-So contact Dhl office New York to receive your Prepaid ATM Master Card
-worth $15.8Million US DOLLARS now.
-Contact Person: Mrs. Mary Michael, Director, DHL Courier Company-NY USA. 10218
-Email. dhlexpresscouriercompany.nyusa@gmail.com
-Call the office +(202) 890-8752
-Rec-Confirmed your mailing address to the office as I listed below.
-Your Full Name--------------
-House Address-----------
-Your working Phone Number----------------
-ID copy-------------------------
-Sex-----------------------------
-Note,delivery fee to your address is only $50.00. send it to this
-company urgent on itunes card today so that DHL will deliver this
-Prepaid ATM Master Card to you today according to our finally
-agreement.
-Thanks for coperations,
-Dr. William Johnson
+
+--=-74YX61Llp/MokHE9JvDf
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+On Fri, 2019-11-22 at 19:24 +0200, Adrian Bunk wrote:
+> Please backport commit 65a576e27309120e0621f54d5c81eb9128bd56be
+> "mwifiex: Fix NL80211_TX_POWER_LIMITED" to stable branches.
+>=20
+> It is a non-CVE kind of security issue when a wifi adapter
+> exceeds the configured TX power limit.
+>=20
+> The commit applies and builds against all branches from 3.16 to 4.19,=20
+> confirmed working with 4.14. It is already included in kernel 5.3.
+
+Queued up for 3.16, thanks.
+
+Ben.
+
+--=20
+Ben Hutchings
+Larkinson's Law: All laws are basically false.
+
+
+
+--=-74YX61Llp/MokHE9JvDf
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEErCspvTSmr92z9o8157/I7JWGEQkFAl4U5DEACgkQ57/I7JWG
+EQk2dxAAmPYtcxPbw0b9aGdDzzHzY6kP+toPYhl9H01J+fy+0zqENAKzTrSKm0Rp
+JEiLmSF2y/HRCvy1CKAvZjpfa/32yo9HWyeyYemQkLCJChNP8An4CUoQQKaf+EF0
+yIq3ZNDpJLv6fL1EeyWMSmBVRSJmFbDpJt2R6OiO1UlnaCgpGRbyW1GgyRf2Iy0a
+d5NujUUrFU6PNNHaP1aUUvVl7cEPQsxg9glmURz9dGZ6I2vAjZAHksYThJ9Cp/EQ
+5N5QeYaAP+VPFIwrHD8PbBt3QqaB/qN6mKVYJQ0jon5WmN4v+3+Ps9oVy/d3hv0L
+IARiS+Z0G4MzZJzgfebA2HvhCgAcars6iWWdHKd3a+Xa/cr/lscLfSh5LUZWL8Dw
+lNk7jUPjZJMGHKu+e3hX9QxJS7NIik83W2noHHezCwneVpKZrB+1ACqT61AlZ6+c
+Hrs2zAODLqx9Iu2zi8lyRUDVmqBx8rsuVjayGBTd/ulMoOJrA9+t5DyyAPGKOTB8
+e/Z8iP8qBhxMGU/ddLlImeXdOx0nfTpEIuvPMQIbpYYLdxes+Epfr+o3OY+k8R59
+ZMvCvPcXMknXbOajYCWG7I6k0eForw8oI6zjQgQ/PWg9fPfi1lEfgcIG5MjIh/iq
+kJlNb2lpDOcuPM3ULqIEbwCDtI4DnEXGgw7BoA+G5qvvG+ShR74=
+=sTMY
+-----END PGP SIGNATURE-----
+
+--=-74YX61Llp/MokHE9JvDf--
