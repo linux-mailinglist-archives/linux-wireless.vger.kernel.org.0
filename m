@@ -2,105 +2,139 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A0FC131F6F
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Jan 2020 06:46:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 59AF9131FB2
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Jan 2020 07:04:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725914AbgAGFp6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 7 Jan 2020 00:45:58 -0500
-Received: from mail-eopbgr70072.outbound.protection.outlook.com ([40.107.7.72]:56263
-        "EHLO EUR04-HE1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725267AbgAGFp6 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 7 Jan 2020 00:45:58 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=W5WVQUTNgs8S+/INA0ZtyjH6Wxv30EKgo13k0ggYnw8fYUdWbpXCDxy5Nsyq4EsGiqB5kq8R36jaJbsa5wWll1jExF4iWYFRsdHfGyMxftHhUj53BiUGE9hYnvhTlMSgweMywKYRoIo0Wh2g4dLvVhVsgLBiHcqRThw0+O/zv1JsYbz7QQG+31KWh9k68jdk3XU6cGhET8CO6pGDA9gmFpkbL8YQ7OLFGvvn/EJiEyae5+NHgviSsASTPxvQhHpAB9JtGJlY2NdTj+xQ34AGjh6IPs+Ioe96CF0vSTN3G8OZokh5KSFA0miglRhyctFEcVdGYY4mYTKQJazms/HbFQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=0taP77OPtAKrcY4WTj9JPhLA4605sD22Jf61WJQddQA=;
- b=oHzQA2lceEc2Q0SX/wElh9akpR9DWdpbHS86+pGzeOlv65S0ga1FpkeR94cb4HiJ8pB14fJT78ARh9CrrewNM+pZ907pDE0y5x1XKBGsYWKfqpihtwy63E+/DeKE5Y7eCmaLIhmyRcWDy7Wls6jxyu0g6xX4o2QDjgL++5+Fxth5NVPgPpCNuCWwavTAneYtttEfuGYfg1TPsu28EjZLXOdXp50/X8fzYxRLG66bBiMe9j8VysXVm/MwY9WM30OZkWtsgV4s7DXYtYUb64KABIxIK0ysg/XRwV/AXOFeXfWCyoj/4LkEFoDe/Kq6qv5VFMWnBdkodcHdJoVA0JZffw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=0taP77OPtAKrcY4WTj9JPhLA4605sD22Jf61WJQddQA=;
- b=OZMO5laCUEXHYHSPh8wwn00eCN8nfB8oJqoFmS0DtYvobygnXuGL+aqMnbj9oMu2LF+swEYVs65doPKCiCBfLBKLKxEOi6K0hJ+rKTCnNqCIleT03YaVj3nYgiJTpOfme0vms1N2y03j0y9iqF2v9/I9mgFVh6vE5lhY7hDNsao=
-Received: from DB7PR04MB5242.eurprd04.prod.outlook.com (20.176.234.25) by
- DB7PR04MB5035.eurprd04.prod.outlook.com (20.176.234.13) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2602.12; Tue, 7 Jan 2020 05:45:54 +0000
-Received: from DB7PR04MB5242.eurprd04.prod.outlook.com
- ([fe80::bce1:71a5:299f:f2ff]) by DB7PR04MB5242.eurprd04.prod.outlook.com
- ([fe80::bce1:71a5:299f:f2ff%7]) with mapi id 15.20.2602.016; Tue, 7 Jan 2020
- 05:45:54 +0000
-From:   Ganapathi Bhat <ganapathi.bhat@nxp.com>
-To:     Brian Norris <briannorris@chromium.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Nishant Sarmukadam <nishants@marvell.com>,
-        Amitkumar Karwar <amitkarwar@gmail.com>,
-        Xinming Hu <huxinming820@gmail.com>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        huangwen <huangwenabc@gmail.com>
-Subject: RE: [EXT] [PATCH] mwifiex: fix unbalanced locking in
- mwifiex_process_country_ie()
-Thread-Topic: [EXT] [PATCH] mwifiex: fix unbalanced locking in
- mwifiex_process_country_ie()
-Thread-Index: AQHVxOKzzKY3R1cUp0qpKstXsSvPEqfesJ8Q
-Date:   Tue, 7 Jan 2020 05:45:54 +0000
-Message-ID: <DB7PR04MB5242BEB1F917B1FDB21DF3DF8F3F0@DB7PR04MB5242.eurprd04.prod.outlook.com>
-References: <20200106224212.189763-1-briannorris@chromium.org>
-In-Reply-To: <20200106224212.189763-1-briannorris@chromium.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=ganapathi.bhat@nxp.com; 
-x-originating-ip: [92.121.64.9]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-ht: Tenant
-x-ms-office365-filtering-correlation-id: 1fe76047-1faf-4f86-ad94-08d79334dcb0
-x-ms-traffictypediagnostic: DB7PR04MB5035:
-x-microsoft-antispam-prvs: <DB7PR04MB50357FD3DD8BBBDC6B6874398F3F0@DB7PR04MB5035.eurprd04.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:6790;
-x-forefront-prvs: 027578BB13
-x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(4636009)(366004)(39860400002)(346002)(376002)(396003)(136003)(199004)(189003)(51914003)(316002)(8936002)(558084003)(2906002)(33656002)(478600001)(52536014)(26005)(76116006)(8676002)(81156014)(66446008)(64756008)(81166006)(66556008)(6506007)(7696005)(71200400001)(186003)(9686003)(4326008)(54906003)(55016002)(110136005)(44832011)(5660300002)(86362001)(66476007)(66946007);DIR:OUT;SFP:1101;SCL:1;SRVR:DB7PR04MB5035;H:DB7PR04MB5242.eurprd04.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
-received-spf: None (protection.outlook.com: nxp.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: GIflOm31oy4GzZPXMKkncSYdX0DKFjYoemE6ylVM3H3uveiy1D/OkZ7QZe69srhX9VZGVVFNjFh5zwHG0L+mhDCqrLtsLoSGfGcUr0PPnh5NiWFr+YraAuDpmisBNf4OaJNH1x6/orXeWKl5GQ0HvplPrj4eUPvD5B7TUnmw4FXs8v82FlBc87DOs862q4VmkwxQT6p4WmuB9qbMMq0AAkDjnFergIzN6/jZK0FeqlaIYiTafxMwcew6+l5T+rRMY8cVPgABnuTQMmnQI6BzfDqAFHSLtIcSSSBh3YVxTR7xAKLXwGnWFpmR7IGOtTBDH6GEL2lPO1b4tFYUnPSfsnTTKoFCI3FyV2P9hNI+7D1nIy+tD6rRKIm3PdVtlk+NtZYw9UhV1Ww5TBIm3KS+Y9bynGipFIdBB+5N5ajkqqTOnx7xzf6l0fQ9Uzxgv4sy21NEPfA5toTmwyqlPIWPYeOnvxc9N7cSGUKj6m/HNePRq6U3FsT+UYj8DyK92Wev
-x-ms-exchange-transport-forked: True
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        id S1727565AbgAGGEJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 7 Jan 2020 01:04:09 -0500
+Received: from mail-io1-f72.google.com ([209.85.166.72]:53170 "EHLO
+        mail-io1-f72.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725965AbgAGGEJ (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 7 Jan 2020 01:04:09 -0500
+Received: by mail-io1-f72.google.com with SMTP id d10so32696160iod.19
+        for <linux-wireless@vger.kernel.org>; Mon, 06 Jan 2020 22:04:08 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
+        bh=MpBXCcCu6Jkfd1WtSRJVeNF1LvLtwS/lptU4QXrTk+E=;
+        b=bPfV5cEYZ6A9YbGjvZDgLrKsn0m3Y/+HPG6Li+4Ip51//iptE8E3cA7AwWfJijojVq
+         PfvCNWU7CLSDsKOtsNzw2FStDQrcuRJoSdZBJh5eMhYUDuP5NmF3wPSxekq9V4kEehtd
+         yx+g6vhWuQZuLsUQ0kFemRAXmU9DbeYfLMb3+DLwBhrWO9+tgO9iORTwsMy8pV2gXyU/
+         /KWebuLps5KKb3omMrqy1pJrCwFzBpSpbyBWseuV+Tx8yD9QxuDHdRsh27yH2FwoG+hy
+         7Eu/xB+TS9ve9ihPxalsDX5ZR488SfR+JwXBliEnfRVB0kPx+NgrZQoxSj503B9v5Etu
+         6lGw==
+X-Gm-Message-State: APjAAAWFqouOKCIGkHrSduq4oXV6C1mwKKP+NY2AzcWfKj8sXA9sBRyA
+        Q0OBFsdhA+Ne56XErA51GISQkaDpGfskyES2S92Txv2KsROm
+X-Google-Smtp-Source: APXvYqzJzNdE6kTaG7j29Oo9KVQ0AI3berNT+GPIjNiZvx/RP1u/97tGFBy8QcVLOu4JD1yhUOrzwEg0JigHTiFug58N7pRtHGSw
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1fe76047-1faf-4f86-ad94-08d79334dcb0
-X-MS-Exchange-CrossTenant-originalarrivaltime: 07 Jan 2020 05:45:54.4954
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: IcjVNtA868YmOwpl8u550M80fbdYzlAIbBJurhqPS+dGrOjpjV+n+96F7Qz7YBVottKmsegaE9f0qjUUo87ebg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB7PR04MB5035
+X-Received: by 2002:a6b:731a:: with SMTP id e26mr69528220ioh.254.1578377048547;
+ Mon, 06 Jan 2020 22:04:08 -0800 (PST)
+Date:   Mon, 06 Jan 2020 22:04:08 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <0000000000004ceb27059b868b57@google.com>
+Subject: BUG: unable to handle kernel NULL pointer dereference in cfg80211_wext_siwfrag
+From:   syzbot <syzbot+e8a797964a4180eb57d5@syzkaller.appspotmail.com>
+To:     davem@davemloft.net, johannes@sipsolutions.net,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Brian,
+Hello,
 
-> We called rcu_read_lock(), so we need to call rcu_read_unlock() before we
-> return.
+syzbot found the following crash on:
 
-Right; I should have at least checked the previous *return* statements in t=
-he same function;=20
+HEAD commit:    d89091a4 macb: Don't unregister clks unconditionally
+git tree:       net
+console output: https://syzkaller.appspot.com/x/log.txt?x=130a0915e00000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=f2f3ef188b7e16cf
+dashboard link: https://syzkaller.appspot.com/bug?extid=e8a797964a4180eb57d5
+compiler:       gcc (GCC) 9.0.0 20181231 (experimental)
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=15c85915e00000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=11c02bc1e00000
 
-Thanks for the fix;
+IMPORTANT: if you fix the bug, please add the following tag to the commit:
+Reported-by: syzbot+e8a797964a4180eb57d5@syzkaller.appspotmail.com
 
-Acked-by: Ganapathi Bhat <ganapathi.bhat@nxp.com>
+device veth1_vlan entered promiscuous mode
+BUG: kernel NULL pointer dereference, address: 0000000000000000
+#PF: supervisor instruction fetch in kernel mode
+#PF: error_code(0x0010) - not-present page
+PGD a066f067 P4D a066f067 PUD 958e3067 PMD 0
+Oops: 0010 [#1] PREEMPT SMP KASAN
+CPU: 0 PID: 9308 Comm: syz-executor762 Not tainted 5.5.0-rc4-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS  
+Google 01/01/2011
+RIP: 0010:0x0
+Code: Bad RIP value.
+RSP: 0018:ffffc90001d37a78 EFLAGS: 00010246
+RAX: dffffc0000000000 RBX: ffff8882186a6540 RCX: ffffffff876a3fd1
+RDX: 1ffffffff1148afc RSI: 0000000000000004 RDI: ffff8882186a6540
+RBP: ffffc90001d37ab8 R08: ffff88809f9ba580 R09: ffffed1015d0703d
+R10: ffffed1015d0703c R11: ffff8880ae8381e3 R12: ffffffff88a45660
+R13: ffff8880a7aed000 R14: ffffc90001d37bb0 R15: 0000000000000000
+FS:  0000000001a01880(0000) GS:ffff8880ae800000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: ffffffffffffffd6 CR3: 00000000a5220000 CR4: 00000000001406f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+  rdev_set_wiphy_params net/wireless/rdev-ops.h:542 [inline]
+  cfg80211_wext_siwfrag+0x279/0x910 net/wireless/wext-compat.c:307
+  ioctl_standard_call+0xca/0x1d0 net/wireless/wext-core.c:1015
+  wireless_process_ioctl.constprop.0+0x236/0x2b0 net/wireless/wext-core.c:953
+  wext_ioctl_dispatch net/wireless/wext-core.c:986 [inline]
+  wext_ioctl_dispatch net/wireless/wext-core.c:974 [inline]
+  wext_handle_ioctl+0x106/0x1c0 net/wireless/wext-core.c:1047
+  sock_ioctl+0x47d/0x790 net/socket.c:1112
+  vfs_ioctl fs/ioctl.c:47 [inline]
+  file_ioctl fs/ioctl.c:545 [inline]
+  do_vfs_ioctl+0x977/0x14e0 fs/ioctl.c:732
+  ksys_ioctl+0xab/0xd0 fs/ioctl.c:749
+  __do_sys_ioctl fs/ioctl.c:756 [inline]
+  __se_sys_ioctl fs/ioctl.c:754 [inline]
+  __x64_sys_ioctl+0x73/0xb0 fs/ioctl.c:754
+  do_syscall_64+0xfa/0x790 arch/x86/entry/common.c:294
+  entry_SYSCALL_64_after_hwframe+0x49/0xbe
+RIP: 0033:0x4423f9
+Code: 18 89 d0 c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 00 48 89 f8 48 89 f7  
+48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff  
+ff 0f 83 5b 10 fc ff c3 66 2e 0f 1f 84 00 00 00 00
+RSP: 002b:00007ffd5699e578 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+RAX: ffffffffffffffda RBX: 0000000000000003 RCX: 00000000004423f9
+RDX: 0000000020000040 RSI: 0800000000008b24 RDI: 0000000000000003
+RBP: 0000000000000004 R08: 0000000000000025 R09: 0000000000000025
+R10: 0000000000000025 R11: 0000000000000246 R12: 0000000000000000
+R13: 0000000000403970 R14: 0000000000000000 R15: 0000000000000000
+Modules linked in:
+CR2: 0000000000000000
+---[ end trace d5d5f75393c2f62d ]---
+RIP: 0010:0x0
+Code: Bad RIP value.
+RSP: 0018:ffffc90001d37a78 EFLAGS: 00010246
+RAX: dffffc0000000000 RBX: ffff8882186a6540 RCX: ffffffff876a3fd1
+RDX: 1ffffffff1148afc RSI: 0000000000000004 RDI: ffff8882186a6540
+RBP: ffffc90001d37ab8 R08: ffff88809f9ba580 R09: ffffed1015d0703d
+R10: ffffed1015d0703c R11: ffff8880ae8381e3 R12: ffffffff88a45660
+R13: ffff8880a7aed000 R14: ffffc90001d37bb0 R15: 0000000000000000
+FS:  0000000001a01880(0000) GS:ffff8880ae800000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: ffffffffffffffd6 CR3: 00000000a5220000 CR4: 00000000001406f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
 
-Regards,
-Ganapathi
+
+---
+This bug is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this bug report. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+syzbot can test patches for this bug, for details see:
+https://goo.gl/tpsmEJ#testing-patches
