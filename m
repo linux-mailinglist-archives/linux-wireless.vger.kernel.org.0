@@ -2,130 +2,138 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E3EE713201A
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Jan 2020 08:00:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CD731132059
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Jan 2020 08:24:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726651AbgAGHAY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 7 Jan 2020 02:00:24 -0500
-Received: from mail25.static.mailgun.info ([104.130.122.25]:29598 "EHLO
-        mail25.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725781AbgAGHAY (ORCPT
+        id S1725987AbgAGHYB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 7 Jan 2020 02:24:01 -0500
+Received: from mail-wm1-f66.google.com ([209.85.128.66]:36821 "EHLO
+        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725781AbgAGHYB (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 7 Jan 2020 02:00:24 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1578380424; h=Message-ID: References: In-Reply-To: Subject:
- Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
- MIME-Version: Sender; bh=nwrXD85GM7JS1yms6oB4ZFld/jMasK8YbTRh3BalevY=;
- b=g1IpxB8pq28CneHjQ3mU/hTaZcLTYRlvD2J6ybv29VTVCA//DfWlYeFOHwUcJrXYOEprPCRX
- fKCJ7/APpWLIkf5V2OnyxZ/N1O23Obw7PDSkOzsr2BKDghy1ipct4q6xPt2X2a8i+UtGnpqi
- jp15zGFB1qML1MDOl/3gz+JCu1o=
-X-Mailgun-Sending-Ip: 104.130.122.25
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e142c86.7f6570844928-smtp-out-n03;
- Tue, 07 Jan 2020 07:00:22 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 83328C447A3; Tue,  7 Jan 2020 07:00:21 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: mkenna)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 9BDF5C433CB;
-        Tue,  7 Jan 2020 07:00:19 +0000 (UTC)
+        Tue, 7 Jan 2020 02:24:01 -0500
+Received: by mail-wm1-f66.google.com with SMTP id p17so18149895wma.1
+        for <linux-wireless@vger.kernel.org>; Mon, 06 Jan 2020 23:24:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=hS02mr1KQqtn1L2M7x0gAEGGeyTPnAaCI8Fi6777qXo=;
+        b=D8vO8J+/UrejXMFUPsaq0tPZKX0tESDcJxgdJ2cb+CbxRcCzmGheBCePqfbpr6SnYe
+         Q+BuCue2Mv2ov46zAJYD9jma1KeFdKTFwZhySxi8srMr13pgOZ9ia8SBjeg+wERlJQYL
+         ezciRb1LIYhvCENNd+dPcqutvpk1xglYs5trMvLMoqDm4fJCGrWktZDnKzSapy0aPAtU
+         HzADB2JHivrYH6JiAsDuXvTRTo9cqU1FntFWapIyplE25jvbsuPiYglgV5H1VtKNud6B
+         8gYIG990t/m+Krbhp1rH+5hJF8Kv5UaxUZXL7FBsad/a97UjJNR2b5zfM2tnGzAYIF1B
+         h2DA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=hS02mr1KQqtn1L2M7x0gAEGGeyTPnAaCI8Fi6777qXo=;
+        b=DuMoXHS/25QeKWZ7vriRWok6LWqkyxCekJuOJp7pZ9IT9c59wlompFHiAMwsjqBE38
+         LnPUzQumzOdPGdxIZQSfhb6CDe0d37D1hsSbQ32zEGS3++WJSDURZAvNzAdnGdbvinUB
+         dnoeFGPv1WODM/Yc8/0pVfZXJwUpZPLLAwUEZa0ipWkbZhwKGXs/tE835t5o94khmhte
+         +ACGbmHTuYClOwOp1V9T9ULkUrLEF/N56S3YI493leCcnBkqr0swmJ3aMouwwzOqVIuG
+         gyxkEdXcRQnho1O9T/EFJvNwF1wVAX22D9+NLWhfVW2UwZTI+a11Ozp0zKcIGD51Wqfj
+         uhOg==
+X-Gm-Message-State: APjAAAUZIP06E5Mc6lSKb7m0FOenfBC24hNJVIpL56ke5g7AHQojWcLV
+        ejvJzAZRmJnsSJVO2CefvOWadA==
+X-Google-Smtp-Source: APXvYqzEngBqpWpVaXaQWBumdzr7GXAcqIEKqq2Y9SOJoJLMyJ8aakL563yhaKn+90EQlOQu375csg==
+X-Received: by 2002:a05:600c:2c06:: with SMTP id q6mr36778338wmg.154.1578381839342;
+        Mon, 06 Jan 2020 23:23:59 -0800 (PST)
+Received: from myrica (adsl-84-227-176-239.adslplus.ch. [84.227.176.239])
+        by smtp.gmail.com with ESMTPSA id q3sm25675275wmc.47.2020.01.06.23.23.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 06 Jan 2020 23:23:58 -0800 (PST)
+Date:   Tue, 7 Jan 2020 08:23:54 +0100
+From:   Jean-Philippe Brucker <jean-philippe@linaro.org>
+To:     Dmitry Osipenko <digetx@gmail.com>
+Cc:     Arend Van Spriel <arend.vanspriel@broadcom.com>,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        brcm80211-dev-list@cypress.com, netdev@vger.kernel.org,
+        hdegoede@redhat.com, franky.lin@broadcom.com,
+        hante.meuleman@broadcom.com, chi-hsien.lin@cypress.com,
+        wright.feng@cypress.com, kvalo@codeaurora.org, davem@davemloft.net
+Subject: Re: [PATCH] brcmfmac: sdio: Fix OOB interrupt initialization on
+ brcm43362
+Message-ID: <20200107072354.GA832497@myrica>
+References: <20191226092033.12600-1-jean-philippe@linaro.org>
+ <16f419a7070.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+ <141f055a-cd1d-66cb-7052-007cda629d3a@gmail.com>
+ <20200106191919.GA826263@myrica>
+ <c2bb1067-9b9c-3be1-b87e-e733a668a056@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Tue, 07 Jan 2020 12:30:19 +0530
-From:   Maharaja Kennadyrajan <mkenna@codeaurora.org>
-To:     ath10k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org,
-        Vikas Patel <vikpatel@codeaurora.org>
-Subject: Re: [PATCH] ath10k: avoid consecutive OTP download to reduce boot
- time
-In-Reply-To: <1578378195-25780-1-git-send-email-mkenna@codeaurora.org>
-References: <1578378195-25780-1-git-send-email-mkenna@codeaurora.org>
-Message-ID: <f1b4007f9d7e882c4ed2db67dc64cc96@codeaurora.org>
-X-Sender: mkenna@codeaurora.org
-User-Agent: Roundcube Webmail/1.3.9
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <c2bb1067-9b9c-3be1-b87e-e733a668a056@gmail.com>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2020-01-07 11:53, Maharaja Kennadyrajan wrote:
+On Tue, Jan 07, 2020 at 02:15:18AM +0300, Dmitry Osipenko wrote:
+> 06.01.2020 22:19, Jean-Philippe Brucker пишет:
+> > Hi Dmitry,
+> > 
+> > On Thu, Dec 26, 2019 at 05:37:58PM +0300, Dmitry Osipenko wrote:
+> >> I haven't seen any driver probe failures due to OOB on NVIDIA Tegra,
+> >> only suspend-resume was problematic due to the unbalanced OOB
+> >> interrupt-wake enabling.
+> >>
+> >> But maybe checking whether OOB interrupt-wake works by invoking
+> >> enable_irq_wake() during brcmf_sdiod_intr_register() causes trouble for
+> >> the cubietruck board.
+> >>
+> >> @Jean-Philippe, could you please try this change (on top of recent
+> >> linux-next):
+> > 
+> > Sorry for the delay, linux-next doesn't boot for me at the moment and I
+> > have little time to investigate why, so I might retry closer to the merge
+> > window.
+> > 
+> > However, isn't the interrupt-wake issue independent from the problem
+> > (introduced in v4.17) that my patch fixes? I applied "brcmfmac: Keep OOB
+> > wake-interrupt disabled when it shouldn't be enabled" on v5.5-rc5 and it
+> > doesn't seem to cause a regression, but the wifi only works if I apply my
+> > patch as well.
+> > 
+> > Thanks,
+> > Jean
+> > 
+> >>
+> >> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
+> >> b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
+> >> index b684a5b6d904..80d7106b10a9 100644
+> >> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
+> >> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
+> >> @@ -115,13 +115,6 @@ int brcmf_sdiod_intr_register(struct brcmf_sdio_dev
+> >> *sdiodev)
+> >>                 }
+> >>                 sdiodev->oob_irq_requested = true;
+> >>
+> >> -               ret = enable_irq_wake(pdata->oob_irq_nr);
+> >> -               if (ret != 0) {
+> >> -                       brcmf_err("enable_irq_wake failed %d\n", ret);
+> >> -                       return ret;
+> >> -               }
+> >> -               disable_irq_wake(pdata->oob_irq_nr);
+> >> -
+> >>                 sdio_claim_host(sdiodev->func1);
+> >>
+> >>                 if (sdiodev->bus_if->chip == BRCM_CC_43362_CHIP_ID) {
+> 
+> Hello Jean,
+> 
+> Could you please clarify whether you applied [1] and then the above
+> snippet on top of it or you only applied [1] without the snippet?
 
-[Maha]: Please ignore/drop this duplicate patch as I sent it already.
-Regret for inconvenience caused.
+I applied [1] without the snippet
 
+Thanks,
+Jean
 
-> From: Vikas Patel <vikpatel@codeaurora.org>
 > 
-> Currently, OTP is downloaded twice in case of "pre-cal-dt"
-> and "pre-cal-file" to fetch the board ID and takes around
-> ~2 sec more boot uptime.
-> 
-> First OTP download happens in "ath10k_core_probe_fw" and
-> second in ath10k_core_start. First boot does not need OTP
-> download in core start when valid board id acquired.
-> 
-> The second OTP download is required upon core stop/start.
-> 
-> This patch skips the OTP download when first OTP download
-> has acquired a valid board id. This patch also marks board
-> id invalid in "ath10k_core_stop", which will force the OTP
-> download in ath10k_core_start and fetches valid board id.
-> 
-> Tested HW: QCA9984
-> Tested FW: 10.4-3.6-00104
-> 
-> Signed-off-by: Vikas Patel <vikpatel@codeaurora.org>
-> Signed-off-by: Maharaja Kennadyrajan <mkenna@codeaurora.org>
-> ---
->  drivers/net/wireless/ath/ath10k/core.c | 11 +++++++++++
->  1 file changed, 11 insertions(+)
-> 
-> diff --git a/drivers/net/wireless/ath/ath10k/core.c
-> b/drivers/net/wireless/ath/ath10k/core.c
-> index 5ec16ce..8fef991 100644
-> --- a/drivers/net/wireless/ath/ath10k/core.c
-> +++ b/drivers/net/wireless/ath/ath10k/core.c
-> @@ -874,6 +874,13 @@ static int
-> ath10k_core_get_board_id_from_otp(struct ath10k *ar)
->  		return -ENODATA;
->  	}
-> 
-> +	if (ar->id.bmi_ids_valid) {
-> +		ath10k_dbg(ar, ATH10K_DBG_BOOT,
-> +			   "boot already acquired valid otp board id,skip download,
-> board_id %d chip_id %d\n",
-> +			   ar->id.bmi_board_id, ar->id.bmi_chip_id);
-> +		goto skip_otp_download;
-> +	}
-> +
->  	ath10k_dbg(ar, ATH10K_DBG_BOOT,
->  		   "boot upload otp to 0x%x len %zd for board id\n",
->  		   address, ar->normal_mode_fw.fw_file.otp_len);
-> @@ -921,6 +928,8 @@ static int
-> ath10k_core_get_board_id_from_otp(struct ath10k *ar)
->  	ar->id.bmi_board_id = board_id;
->  	ar->id.bmi_chip_id = chip_id;
-> 
-> +skip_otp_download:
-> +
->  	return 0;
->  }
-> 
-> @@ -2863,6 +2872,8 @@ void ath10k_core_stop(struct ath10k *ar)
->  	ath10k_htt_tx_stop(&ar->htt);
->  	ath10k_htt_rx_free(&ar->htt);
->  	ath10k_wmi_detach(ar);
-> +
-> +	ar->id.bmi_ids_valid = false;
->  }
->  EXPORT_SYMBOL(ath10k_core_stop);
+> [1] brcmfmac: Keep OOB wake-interrupt disabled when it shouldn't be enabled
