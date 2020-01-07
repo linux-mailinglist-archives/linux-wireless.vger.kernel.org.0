@@ -2,96 +2,177 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B295913304D
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Jan 2020 21:07:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BE01813353B
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Jan 2020 22:51:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728688AbgAGUHu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 7 Jan 2020 15:07:50 -0500
-Received: from mout.kundenserver.de ([212.227.126.130]:55461 "EHLO
+        id S1727221AbgAGVvK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 7 Jan 2020 16:51:10 -0500
+Received: from mout.kundenserver.de ([212.227.126.135]:57577 "EHLO
         mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728379AbgAGUHu (ORCPT
+        with ESMTP id S1727135AbgAGVvK (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 7 Jan 2020 15:07:50 -0500
+        Tue, 7 Jan 2020 16:51:10 -0500
 Received: from threadripper.lan ([149.172.19.189]) by mrelayeu.kundenserver.de
- (mreue011 [212.227.15.129]) with ESMTPA (Nemesis) id
- 1MhULz-1jKQPM1LcJ-00eay6; Tue, 07 Jan 2020 21:07:43 +0100
+ (mreue010 [212.227.15.129]) with ESMTPA (Nemesis) id
+ 1MJmbB-1j8wTR45Dl-00K4yP; Tue, 07 Jan 2020 22:50:41 +0100
 From:   Arnd Bergmann <arnd@arndb.de>
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        "David S. Miller" <davem@davemloft.net>
-Cc:     Oleksandr Natalenko <oleksandr@redhat.com>,
-        Arnd Bergmann <arnd@arndb.de>, linux-wireless@vger.kernel.org,
+To:     Kalle Valo <kvalo@codeaurora.org>,
+        Manikanta Pubbisetty <mpubbise@codeaurora.org>,
+        John Crispin <john@phrozen.org>,
+        Sven Eckelmann <seckelmann@datto.com>,
+        Bhagavathi Perumal S <bperumal@codeaurora.org>,
+        Anilkumar Kolli <akolli@codeaurora.org>
+Cc:     Arnd Bergmann <arnd@arndb.de>,
+        Ganesh Sesetti <gseset@codeaurora.org>,
+        Govindaraj Saminathan <gsamin@codeaurora.org>,
+        Julia Lawall <julia.lawall@lip6.fr>,
+        Karthikeyan Periyasamy <periyasa@codeaurora.org>,
+        kbuild test robot <lkp@intel.com>,
+        Maharaja Kennadyrajan <mkenna@codeaurora.org>,
+        Miles Hu <milehu@codeaurora.org>,
+        Muna Sinada <msinada@codeaurora.org>,
+        Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>,
+        Rajkumar Manoharan <rmanohar@codeaurora.org>,
+        Sathishkumar Muruganandam <murugana@codeaurora.org>,
+        Shashidhar Lakkavalli <slakkavalli@datto.com>,
+        Sriram R <srirrama@codeaurora.org>,
+        Vasanthakumar Thiagarajan <vthiagar@codeaurora.org>,
+        Venkateswara Naralasetty <vnaralas@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Tamizh chelvam <tamizhr@codeaurora.org>,
+        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
         netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] wireless: wext: avoid gcc -O3 warning
-Date:   Tue,  7 Jan 2020 21:07:35 +0100
-Message-Id: <20200107200741.3588770-1-arnd@arndb.de>
+Subject: [PATCH] ath11k: fix debugfs build failure
+Date:   Tue,  7 Jan 2020 22:50:04 +0100
+Message-Id: <20200107215036.1333983-1-arnd@arndb.de>
 X-Mailer: git-send-email 2.20.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:OJr2mJSwCElifh7i0B7h1tOzyHAQp2FUNVpAYKr3i1g/pntO5sP
- eZUXHLCDl+k4KqZkBByoHwxeVT/CASxI1iuyW7d2UHnbMxpb2p0+ZG2LqktoShycU9cgl7V
- B0Fq6xQ683cgyVPNqEyOVutBUacfbrL14QHnwv7uuG68Jxih0I0mjsEH9ki37cxRsKWagLJ
- OKQkHehfch217Xf3Twl9g==
+X-Provags-ID: V03:K1:1IwwBGhuOz0cd0fMgrQmU/t4gEgEbaY4kf54G9AmPByhjQQY7fh
+ QQff/ZJNDnmGx924TaQblUyv7rp3cQfsvSoH8yH7/yXdJR1ISoA/dR7lC8paPX8lGQAcWWZ
+ LHqBUDplT7XEGiO3wen35XFc1XN3SwaDPM9McT45/lQhibx/jMp5gZS6lq/Clz9Kv40V0ad
+ 42xWSqOCYKQpqsJnlflBA==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:/elu+XAKXtw=:DQXqmMWVs2DUnsIjgF110Z
- yUQA7xIPowjY/T9udFmw2ijdOwVLH1JoeZLdytihWjXv3ogHwI8v230dSkEaVeggcEI0r1Bn/
- rsHzV2grVlYmEGZ0tqczENFYarIf1KDmAK77++IxutnzHBRuR9kJEAlver5xlITrtlfUoFS1N
- cSkRkQPwszAY0PVa45gfg5S8sbllKkHxq5wAhrLX1n9SQiyAd5h1Q0ASc3tX5QdiEz3urbOX1
- S2xFKf1nAla7OV32ePpzalCY1LJ662ORqaFPl2KLRBB7XwCg9jaQjN5uyRc2JIpsY19a/TbCf
- 8ysPWPWPn05cNI3IA2aWgrCToJ0R0RkiONtKNBzr1E2dEe88+Fyr1TDzIB1OZdezcNLladNnP
- EDhbnYm99nQPsiGlJr+LJq4QWe4helWPOPK8S6uBU3cjtYnlo/qRNV7ZG7XLUDb2dRILLC368
- qYHvHUcL5RltRO1IhSzU18GB0NNYHNwUK8JwKmJi+UyUgfjb9tsf40sIG+xHVJNjBfhwtNJ0W
- kxLBYfdhfdnPbYO1CvFzRQbJjxEiZri7hUwtjB5ybPjT+gavSktqNWDAu/jfULVwI8AoK3DM2
- 2oEy4YqAYoboT2yYbYvW+x/vXtqTmrGweqxxeOCs0CoW4wuip3B4El+dx/EL50fXoJVQId0zB
- Bi029kDPPOCfrF2V4vMXs0GWNlWGyOvKT4N9H0XQ2z3nssalXkTsEa7BJt8LmI8rMPOnYdwLj
- A2jyzb1dIzEKFJKxkMKr0ZDZoA3hXNySoKWNGu+798c727qf6jJ+fVMlifcVoEBtA0QiiIKUe
- GSoCYi/XnFZp0xTZg9cQaE4XwxURywfposLTFnSY9R5bi7K2bRDGH6oFqkT0Qbr67baI++AWy
- 5ez5Lm3fU/M2WeWciIEw==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:nUUMxddKHx0=:WTvF1Wfyj2/ouKy4oFxjNw
+ hYhq8wgb4UfSK0NVybZqABq/OCKo+QSD65xfbimTwoZkgEWSPHD30YGFwrA3ADZVtGBYwCSoN
+ JMDHy8rGgJv8gcUDWDkR42jx176v3QRRpj2r7plNJQI3WOO3XyY5i3e0oZLW46c02jdzFJhiZ
+ XOzZJLI2xPVvYmyRqBGHJO9JAaB6qazdzNAIO7cqrXiB0Cw6FYg3XIBB2/uA2HU44a8kuxoch
+ G7jF1sTwsZlWOrpLQqMfS800wdQkHNMeWp/OELaPXZwD5JTdda0xfiSG+Do0VgZxhHmkjgzTv
+ GqTmpfU/alK6h8WeQAW3E9AIpuKWMtTGu0+hovPlfdEJ+29HL5eBUK5F9GqlB4QwT1tn+3AZL
+ A2X2HkWXX7OMYdkN0ffXod/iGxsZuT4eZG01APUc5GKX+8invc8U07FRC8w83cRDdYoFx3LJv
+ ik8ZKoxDADlUY3niMFmNXpt66uJT19w5i2caMsAjiOK+udmbdo+5y4/tEyMi4URj+TXUcA7AY
+ 683/vRlsCokJTINAaizPjipJAfKL+kxsTvmxXoNEWT5wl0fbE51iNtnPqLa6vFZyVvuq/lYlG
+ sn3/gaWyRxRgBIB/H5NuLIhCmTGWb/EPMf/YQcsK48ZEgSXEWcnUgtzMMEDffc94JzToB+j2b
+ 23c2JhWhrYfRvYDU8ziN7twGCF2nuAFPotQyoFJbHuCjYeSzRrZKnLjZdsmAL+Eqfww+QHwTa
+ fjCPE3GH3SqM1noEi8zvojf5VnXYjxA9yCs8jwyYNmva++Ts5HI+RIJqHh58+fEzI3DtzEEFJ
+ HbplIo6Cq4kCf6Lj/SV0AwtiKYyRSPJ8TvsAGL8tVSo0DhvJISMplhpE0qC4cXeVageGUbKAg
+ OHrnrI0r9VGXgW/XnUGQ==
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-After the introduction of CONFIG_CC_OPTIMIZE_FOR_PERFORMANCE_O3,
-the wext code produces a bogus warning:
+When CONFIG_ATH11K_DEBUGFS is disabled, but CONFIG_MAC80211_DEBUGFS
+is turned on, the driver fails to build:
 
-In function 'iw_handler_get_iwstats',
-    inlined from 'ioctl_standard_call' at net/wireless/wext-core.c:1015:9,
-    inlined from 'wireless_process_ioctl' at net/wireless/wext-core.c:935:10,
-    inlined from 'wext_ioctl_dispatch.part.8' at net/wireless/wext-core.c:986:8,
-    inlined from 'wext_handle_ioctl':
-net/wireless/wext-core.c:671:3: error: argument 1 null where non-null expected [-Werror=nonnull]
-   memcpy(extra, stats, sizeof(struct iw_statistics));
-   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-In file included from arch/x86/include/asm/string.h:5,
-net/wireless/wext-core.c: In function 'wext_handle_ioctl':
-arch/x86/include/asm/string_64.h:14:14: note: in a call to function 'memcpy' declared here
+drivers/net/wireless/ath/ath11k/debugfs_sta.c: In function 'ath11k_dbg_sta_open_htt_peer_stats':
+drivers/net/wireless/ath/ath11k/debugfs_sta.c:416:4: error: 'struct ath11k' has no member named 'debug'
+  ar->debug.htt_stats.stats_req = stats_req;
+    ^~
 
-The problem is that ioctl_standard_call() sometimes calls the handler
-with a NULL argument that would cause a problem for iw_handler_get_iwstats.
-However, iw_handler_get_iwstats never actually gets called that way.
+It appears that just using the former symbol is sufficient here,
+adding a Kconfig dependency takes care of the corner cases.
 
-Marking that function as noinline avoids the warning and leads
-to slightly smaller object code as well.
-
+Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 ---
- net/wireless/wext-core.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath11k/Kconfig  |  2 +-
+ drivers/net/wireless/ath/ath11k/Makefile |  3 +--
+ drivers/net/wireless/ath/ath11k/debug.h  | 22 ++++++++++------------
+ drivers/net/wireless/ath/ath11k/mac.c    |  2 +-
+ 4 files changed, 13 insertions(+), 16 deletions(-)
 
-diff --git a/net/wireless/wext-core.c b/net/wireless/wext-core.c
-index 5e677dac2a0c..69102fda9ebd 100644
---- a/net/wireless/wext-core.c
-+++ b/net/wireless/wext-core.c
-@@ -657,7 +657,8 @@ struct iw_statistics *get_wireless_stats(struct net_device *dev)
- 	return NULL;
- }
+diff --git a/drivers/net/wireless/ath/ath11k/Kconfig b/drivers/net/wireless/ath/ath11k/Kconfig
+index cfab4fb86aef..c88e16d4022b 100644
+--- a/drivers/net/wireless/ath/ath11k/Kconfig
++++ b/drivers/net/wireless/ath/ath11k/Kconfig
+@@ -22,7 +22,7 @@ config ATH11K_DEBUG
  
--static int iw_handler_get_iwstats(struct net_device *		dev,
-+/* noinline to avoid a bogus warning with -O3 */
-+static noinline int iw_handler_get_iwstats(struct net_device *	dev,
- 				  struct iw_request_info *	info,
- 				  union iwreq_data *		wrqu,
- 				  char *			extra)
+ config ATH11K_DEBUGFS
+ 	bool "QCA ath11k debugfs support"
+-	depends on ATH11K && DEBUG_FS
++	depends on ATH11K && DEBUG_FS && MAC80211_DEBUGFS
+ 	---help---
+ 	  Enable ath11k debugfs support
+ 
+diff --git a/drivers/net/wireless/ath/ath11k/Makefile b/drivers/net/wireless/ath/ath11k/Makefile
+index a91d75c1cfeb..2761d07d938e 100644
+--- a/drivers/net/wireless/ath/ath11k/Makefile
++++ b/drivers/net/wireless/ath/ath11k/Makefile
+@@ -17,8 +17,7 @@ ath11k-y += core.o \
+ 	    ce.o \
+ 	    peer.o
+ 
+-ath11k-$(CONFIG_ATH11K_DEBUGFS) += debug_htt_stats.o
+-ath11k-$(CONFIG_MAC80211_DEBUGFS) += debugfs_sta.o
++ath11k-$(CONFIG_ATH11K_DEBUGFS) += debug_htt_stats.o debugfs_sta.o
+ ath11k-$(CONFIG_NL80211_TESTMODE) += testmode.o
+ ath11k-$(CONFIG_ATH11K_TRACING) += trace.o
+ 
+diff --git a/drivers/net/wireless/ath/ath11k/debug.h b/drivers/net/wireless/ath/ath11k/debug.h
+index a317a7bdb9a2..8e8d5588b541 100644
+--- a/drivers/net/wireless/ath/ath11k/debug.h
++++ b/drivers/net/wireless/ath/ath11k/debug.h
+@@ -172,6 +172,16 @@ static inline int ath11k_debug_is_extd_rx_stats_enabled(struct ath11k *ar)
+ {
+ 	return ar->debug.extd_rx_stats;
+ }
++
++void ath11k_sta_add_debugfs(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
++			    struct ieee80211_sta *sta, struct dentry *dir);
++void
++ath11k_accumulate_per_peer_tx_stats(struct ath11k_sta *arsta,
++				    struct ath11k_per_peer_tx_stats *peer_stats,
++				    u8 legacy_rate_idx);
++void ath11k_update_per_peer_stats_from_txcompl(struct ath11k *ar,
++					       struct sk_buff *msdu,
++					       struct hal_tx_status *ts);
+ #else
+ static inline int ath11k_debug_soc_create(struct ath11k_base *ab)
+ {
+@@ -243,19 +253,7 @@ static inline bool ath11k_debug_is_pktlog_peer_valid(struct ath11k *ar, u8 *addr
+ {
+ 	return false;
+ }
+-#endif /* CONFIG_ATH11K_DEBUGFS */
+ 
+-#ifdef CONFIG_MAC80211_DEBUGFS
+-void ath11k_sta_add_debugfs(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+-			    struct ieee80211_sta *sta, struct dentry *dir);
+-void
+-ath11k_accumulate_per_peer_tx_stats(struct ath11k_sta *arsta,
+-				    struct ath11k_per_peer_tx_stats *peer_stats,
+-				    u8 legacy_rate_idx);
+-void ath11k_update_per_peer_stats_from_txcompl(struct ath11k *ar,
+-					       struct sk_buff *msdu,
+-					       struct hal_tx_status *ts);
+-#else /* !CONFIG_MAC80211_DEBUGFS */
+ static inline void
+ ath11k_accumulate_per_peer_tx_stats(struct ath11k_sta *arsta,
+ 				    struct ath11k_per_peer_tx_stats *peer_stats,
+diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
+index 556eef9881a7..0ed3e4d19f7a 100644
+--- a/drivers/net/wireless/ath/ath11k/mac.c
++++ b/drivers/net/wireless/ath/ath11k/mac.c
+@@ -5468,7 +5468,7 @@ static const struct ieee80211_ops ath11k_ops = {
+ 	.flush				= ath11k_mac_op_flush,
+ 	.sta_statistics			= ath11k_mac_op_sta_statistics,
+ 	CFG80211_TESTMODE_CMD(ath11k_tm_cmd)
+-#ifdef CONFIG_MAC80211_DEBUGFS
++#ifdef CONFIG_ATH11K_DEBUGFS
+ 	.sta_add_debugfs		= ath11k_sta_add_debugfs,
+ #endif
+ };
 -- 
 2.20.0
 
