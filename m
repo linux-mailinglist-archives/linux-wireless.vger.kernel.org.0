@@ -2,114 +2,79 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A36C132C43
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Jan 2020 17:57:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 173F4132FF9
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Jan 2020 20:54:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728793AbgAGQzo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 7 Jan 2020 11:55:44 -0500
-Received: from mail.kernel.org ([198.145.29.99]:44234 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728391AbgAGQzn (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 7 Jan 2020 11:55:43 -0500
-Received: from PC-kkoz.proceq.com (unknown [213.160.61.66])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 4236B2467F;
-        Tue,  7 Jan 2020 16:55:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1578416142;
-        bh=zdByYEGMS3ESVQ5qOHN1kIYsWdU38BLlIlo+0ZPdrE4=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=B9XX5z37aO9kO6TkoMZBWRljecz6mxaLsnUJweo1Opz89I73sTah4aguq2M+qbAtk
-         jJqm5ERlXNfIDH66LmWHTiUD9ISWyzlIjrcT5hLgLk+5mFBneKkY4HBIjWPl8jboDN
-         drdv6nwNwT+gPU/NfUpzBRq4v5bgiFQUyIlD1qE4=
-From:   Krzysztof Kozlowski <krzk@kernel.org>
-To:     Richard Henderson <rth@twiddle.net>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
-        Alexey Brodkin <abrodkin@synopsys.com>,
-        Vineet Gupta <vgupta@synopsys.com>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Dave Airlie <airlied@redhat.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Ben Skeggs <bskeggs@redhat.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Jiri Slaby <jirislaby@gmail.com>,
-        Nick Kossifidis <mickflemm@gmail.com>,
-        Luis Chamberlain <mcgrof@kernel.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Dave Jiang <dave.jiang@intel.com>,
-        Jon Mason <jdmason@kudzu.us>, Allen Hubbe <allenbh@gmail.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        Jason Wang <jasowang@redhat.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-snps-arc@lists.infradead.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, nouveau@lists.freedesktop.org,
-        linux-media@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-ntb@googlegroups.com,
-        virtualization@lists.linux-foundation.org,
-        linux-arch@vger.kernel.org
-Cc:     Krzysztof Kozlowski <krzk@kernel.org>
-Subject: [RFT 13/13] virtio: pci: Constify ioreadX() iomem argument (as in generic implementation)
-Date:   Tue,  7 Jan 2020 17:53:12 +0100
-Message-Id: <1578415992-24054-16-git-send-email-krzk@kernel.org>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1578415992-24054-1-git-send-email-krzk@kernel.org>
-References: <1578415992-24054-1-git-send-email-krzk@kernel.org>
+        id S1728678AbgAGTyZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 7 Jan 2020 14:54:25 -0500
+Received: from mail-ed1-f65.google.com ([209.85.208.65]:38897 "EHLO
+        mail-ed1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728619AbgAGTyW (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 7 Jan 2020 14:54:22 -0500
+Received: by mail-ed1-f65.google.com with SMTP id i16so621455edr.5
+        for <linux-wireless@vger.kernel.org>; Tue, 07 Jan 2020 11:54:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=Pi/olKLeaBrqhttAwoMGSoT+Sxp+y5xY3PQr7eygtLM=;
+        b=rePy6dvW+ZH47h+1V5ZzhOdHt3hyIpKxcBqRG6Yxugb8Ug55qYyaTQK4+wINdwq55f
+         jyS7yVvOQ5iMzNISAd+yiqtmzzFVbayzDS39QWeF/dmepISKDIrC01/Pyd16Jkxknswo
+         ZxY/mmXagT/Q6hX/41m7OLd2SMfr8CZO7Ci1IzWbi02KR9YYzIjtqbyhfstjO3po9RzC
+         tRdf7rgiUAYJtfRgzdFxSV7Qq5Jehd/t/PYuqt0rxIFlDCGzailtByweOtMj5bqBnwVk
+         IjZK4uPjcTNDDRooC9FKrWtSPPIiz9LQ6akzqbAN2ioBe4cx30eADGCJ98dfGgAz0k84
+         86YA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=Pi/olKLeaBrqhttAwoMGSoT+Sxp+y5xY3PQr7eygtLM=;
+        b=DVVC6qWTfqC5exXWubc3u1x8BepMi7DD6PZsqSXKEOybqcSrijsJPCGEf5oPmxEXFk
+         0pqFlEWCJ5dtFE3tHHxl2S+1AbYyawS2eDdCxTe/EEMLSjJdb05xYSynnUWyo6/98mw7
+         tUlMw8EaSqWpG6pGzOzvFNbpcbiNL0LKvbar5APnTyR6s5IffKObmeKeDJc8CHyxnba4
+         yP7cDFEiLX6+yCXWQGFbgVAHHiAW1FiZvLLAjCQZD8oxggPFv7os4k9hQldUv/Bz0Seb
+         wJKUc+a/USLKexfb7ocPhgQWHzekyD3YeWHwsha0hGrhTKG1RO6f2reYYoK1K6g+qDyB
+         LxTA==
+X-Gm-Message-State: APjAAAWXmsnERUyVnmErR8KfhPD9XVmbhrvKmR7jY5Egrw8+NgIMFpeG
+        EaOcjLr1L8VU9DcO1QEWN5Pl1mt/7z1ehIPKDe0=
+X-Google-Smtp-Source: APXvYqx1uh7JY9TsleWmDC3UVv1ETHY9DfduKRb8/JpOu+/AEBPnllkLYgtKF65Y7XFrgtyDYVY72zE2SUwJXZDirUk=
+X-Received: by 2002:a17:906:2894:: with SMTP id o20mr1108577ejd.199.1578426859045;
+ Tue, 07 Jan 2020 11:54:19 -0800 (PST)
+MIME-Version: 1.0
+Received: by 2002:a17:906:72c6:0:0:0:0 with HTTP; Tue, 7 Jan 2020 11:54:18
+ -0800 (PST)
+Reply-To: dhlexpresscouriercompany.nyusa@gmail.com
+From:   "Dr. William Johnson" <currency1000000@gmail.com>
+Date:   Tue, 7 Jan 2020 20:54:18 +0100
+Message-ID: <CAPqfnSFyOwF0m-QsrOdcFV_PCC3TSBr=YQHoQHvH0baKHfeF6Q@mail.gmail.com>
+Subject: contact Dhl office New York to receive your Prepaid ATM Master Card
+ worth $15.8Million US DOLLARS now.
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The ioreadX() helpers have inconsistent interface.  On some architectures
-void *__iomem address argument is a pointer to const, on some not.
-
-Implementations of ioreadX() do not modify the memory under the address
-so they can be converted to a "const" version for const-safety and
-consistency among architectures.
-
-Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
----
- drivers/virtio/virtio_pci_modern.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/virtio/virtio_pci_modern.c b/drivers/virtio/virtio_pci_modern.c
-index 7abcc50838b8..fc58db4ab6c3 100644
---- a/drivers/virtio/virtio_pci_modern.c
-+++ b/drivers/virtio/virtio_pci_modern.c
-@@ -26,16 +26,16 @@
-  * method, i.e. 32-bit accesses for 32-bit fields, 16-bit accesses
-  * for 16-bit fields and 8-bit accesses for 8-bit fields.
-  */
--static inline u8 vp_ioread8(u8 __iomem *addr)
-+static inline u8 vp_ioread8(const u8 __iomem *addr)
- {
- 	return ioread8(addr);
- }
--static inline u16 vp_ioread16 (__le16 __iomem *addr)
-+static inline u16 vp_ioread16 (const __le16 __iomem *addr)
- {
- 	return ioread16(addr);
- }
- 
--static inline u32 vp_ioread32(__le32 __iomem *addr)
-+static inline u32 vp_ioread32(const __le32 __iomem *addr)
- {
- 	return ioread32(addr);
- }
--- 
-2.7.4
-
+ATTN Dear Beneficiary.
+Goodnews
+I have Registered your Prepaid ATM Master Card
+worth $15.800,000.00 US DOLLARS Courier company asigned to deliver it
+to you today.
+So contact Dhl office New York to receive your Prepaid ATM Master Card
+worth $15.8Million US DOLLARS now.
+Contact Person: Mrs. Mary Michael, Director, DHL Courier Company-NY USA. 10218
+Email. dhlexpresscouriercompany.nyusa@gmail.com
+Call the office +(202) 890-8752
+Rec-Confirmed your mailing address to the office as I listed below.
+Your Full Name--------------
+House Address-----------
+Your working Phone Number----------------
+ID copy-------------------------
+Sex-----------------------------
+Note,delivery fee to your address is only $50.00. send it to this
+company urgent on itunes card today so that DHL will deliver this
+Prepaid ATM Master Card to you today according to our finally
+agreement.
+Thanks for coperations,
+Dr. William Johnson
