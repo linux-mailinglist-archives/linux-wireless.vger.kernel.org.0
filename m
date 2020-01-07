@@ -2,124 +2,104 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 79BB113234C
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Jan 2020 11:12:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 63F331323EB
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Jan 2020 11:40:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727833AbgAGKMT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 7 Jan 2020 05:12:19 -0500
-Received: from mail-vi1eur05on2081.outbound.protection.outlook.com ([40.107.21.81]:22689
-        "EHLO EUR05-VI1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726558AbgAGKMT (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 7 Jan 2020 05:12:19 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ZJ+0w8q+WT7n7JSCTdRAsKzlJj5Fps9bWwb8sgEv4OvttavLgWb5aDWGNGt9Gu3R4lVYVhls9A7ihEHir9NtLuutVZyx10OTcYtpek8JDbIXPOABsuLNp+ESFSrvNzSPO+kVTV5DZvQKTzlMp903icXBFPRqy9MbjzUggrQUs5N7kInzQj3h6S8vu9HtxFC7kZytlx2JGd2f5SnGgQqGvGEj6mimFXu7d8jrrcZIDF2e43yiD/tpM6npaopF1BuQJaKznDSTfSkqDGoSdidAFypxuYF+nrzV9vMLgbC0RjtxxYIlKC1g2Cqjg73ol1dPR6uoNsNQsE4cH+SOfjBAjg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=X0Cmmn9N7F+74KQZi83aZQOREtBarhMPxDjJJbpMyeE=;
- b=nzDBSJ5PtMls8Pwb46T2t5smx93NcM1KXk3Nlqmgkg2FRDq6Dy1cQpTWq1xUhukfhJ9GYtY8rXxD+Jt5RNhxcqIJB3+/793+cMgeHxn22sDCe3YpqR4WvJxiMZ0XQ7lAhqNb1OOn5ef4l47Nob6q8VVuMn6qCaMUuNVpI92TBt3mBX39YhBjESCG4pCujunh/cQJDoZgKvsLjbjy/y2kIxV5XuGoZvYAO66gdLWKkW3kaI2kStQi8ERigjOvn/47xChKdNiyExPjxF4vCVvRDFC3UBDuZgh4GINSV8elx+w50Do01PTThUw8JA7a7jfPtVz+SKO/JsjQ/r/XPZlD8w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=X0Cmmn9N7F+74KQZi83aZQOREtBarhMPxDjJJbpMyeE=;
- b=NBpnJ/AIsZig0ooe5ZSL1bTXQMeCTFxdSljR7zGVM02yHRoARfiAmbvaPW8mg2fFwWRBXZQ3JLUM5UfmZalONghgdB2wPm07YgcrqF/s5TX4mR7WcWNKJParJLzeh1Zm7/Dvs+O4wcdXD3F5TKIOZV4I5vOiVNY1Y/1PUO5aIv4=
-Received: from DB7PR04MB5242.eurprd04.prod.outlook.com (20.176.234.25) by
- DB7PR04MB4524.eurprd04.prod.outlook.com (52.135.141.28) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2602.10; Tue, 7 Jan 2020 10:12:09 +0000
-Received: from DB7PR04MB5242.eurprd04.prod.outlook.com
- ([fe80::bce1:71a5:299f:f2ff]) by DB7PR04MB5242.eurprd04.prod.outlook.com
- ([fe80::bce1:71a5:299f:f2ff%7]) with mapi id 15.20.2602.016; Tue, 7 Jan 2020
- 10:12:09 +0000
-Received: from localhost.localdomain (92.121.64.9) by SG2PR06CA0116.apcprd06.prod.outlook.com (2603:1096:1:1d::18) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.20.2602.11 via Frontend Transport; Tue, 7 Jan 2020 10:12:06 +0000
-From:   Ganapathi Bhat <ganapathi.bhat@nxp.com>
-To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-CC:     Cathy Luo <cluo@marvell.com>, Zhiyuan Yang <yangzy@marvell.com>,
-        James Cao <jcao@marvell.com>,
-        Rakesh Parmar <rakeshp@marvell.com>,
-        Ganapathi Bhat <ganapathi.bhat@nxp.com>,
-        Rakesh Parmar <rakesh.parmar@nxp.com>,
-        Sharvari Harisangam <sharvari.harisangam@nxp.com>,
-        Sachin Shelke <sachin.shelke@nxp.com>
-Subject: [PATCH] MAINTAINERS: update for mwifiex driver maintainers
-Thread-Topic: [PATCH] MAINTAINERS: update for mwifiex driver maintainers
-Thread-Index: AQHVxULra7xFx8PUQkCYPtEHbpzs0w==
-Date:   Tue, 7 Jan 2020 10:12:09 +0000
-Message-ID: <1578391915-3960-1-git-send-email-ganapathi.bhat@nxp.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-clientproxiedby: SG2PR06CA0116.apcprd06.prod.outlook.com
- (2603:1096:1:1d::18) To DB7PR04MB5242.eurprd04.prod.outlook.com
- (2603:10a6:10:18::25)
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=ganapathi.bhat@nxp.com; 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-mailer: git-send-email 1.9.1
-x-originating-ip: [92.121.64.9]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-ht: Tenant
-x-ms-office365-filtering-correlation-id: 9aec1c2a-341d-46e0-4d10-08d7935a0e29
-x-ms-traffictypediagnostic: DB7PR04MB4524:|DB7PR04MB4524:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <DB7PR04MB45246E9FF31DDDC546D536928F3F0@DB7PR04MB4524.eurprd04.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:3631;
-x-forefront-prvs: 027578BB13
-x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(4636009)(346002)(396003)(136003)(366004)(376002)(39860400002)(189003)(199004)(4744005)(478600001)(2616005)(66446008)(66556008)(66476007)(956004)(6506007)(66946007)(4326008)(8676002)(69590400006)(64756008)(16526019)(26005)(186003)(71200400001)(54906003)(316002)(6916009)(52116002)(86362001)(5660300002)(2906002)(8936002)(44832011)(6512007)(36756003)(81166006)(81156014)(6486002);DIR:OUT;SFP:1101;SCL:1;SRVR:DB7PR04MB4524;H:DB7PR04MB5242.eurprd04.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-received-spf: None (protection.outlook.com: nxp.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: noewF4KzMh1iSWSvHL7y3RX2S9wCHCb+d5xuSJBi44C52L51EGPcqCFkw20LSVrYyKiNKNh9micM60ewIwOGOMDGI59HbI7I7Udg6xVAS6IP6dOkGa3CkTnxym7a4B+KDaP1wH92kzKStTwSfKWmjQzpn5xbRtZwA3nitleI0mYz8iR+SZM8PZNbtlVzsVhHh5FvBCYtPGmd4IcpiEC53R7AeCNO2F0BMomm0e3bPxl1lbmnbwQ+eMFws2DEf6QRhN29xVz1UTb/e3/exa4pX9ahkY3q8TO2z450N4HrsScn2+53QEULgRoMoYyrKQlaF3ZQw1oRI0y9ygZpb35sch/I8AMl3JVh3Q+fzN6BT8C04fimY7x/sjG58jApZV8HpDZFlfwLB5byq5BmEjvL+zX/K+zp1KRNARUVunCiTeeksy0IopvvIxPrWpwpKPW5bFguVqc0y2/MbG5lJBo9QcNzX+5lDNhSaeteG/LROLieTAPYkkcFJOO6rM6pDfVj
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+        id S1727805AbgAGKkg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 7 Jan 2020 05:40:36 -0500
+Received: from mail-ot1-f66.google.com ([209.85.210.66]:33086 "EHLO
+        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727699AbgAGKkf (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 7 Jan 2020 05:40:35 -0500
+Received: by mail-ot1-f66.google.com with SMTP id b18so54074925otp.0
+        for <linux-wireless@vger.kernel.org>; Tue, 07 Jan 2020 02:40:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=endlessm-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=ZOSsP5w7ArOQdKi1+vWZxS/I1CmqWkexlUqev11qtoc=;
+        b=Nih3GoPMshrT5wTqgo7vz2a5hUIeqntNNrQec+ktEP5JH7LSHBcHVN9QR+BCh1YyYp
+         97PfwktOgxCC1Lsn8Bp7JJU52BvpcXkaB6fxJAkL3kMWG1AmvF+ty7DQi10feuHmANxg
+         FsZYyPFJRoISC3SizuNritOPKTd91H/+w/4EpE/UgFj6GfVbV1FzNvR31d6E6Cl9x0On
+         oowFU0ONstOfrne3lW6SB7U8LJZNwhOu+zoWuz2ZbOJmD050GsEdXstgoaAMVULvgWtp
+         vkS3mVBJv5+UpHyrWhvI8AzQr6Nn0rD8sPd6guKhtylvaJhT1sO5z6M31SGbr3E2fqU0
+         Kqxw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=ZOSsP5w7ArOQdKi1+vWZxS/I1CmqWkexlUqev11qtoc=;
+        b=qnXYzkpRIR856hmnHHBnXeyq1FeLOnFZkV+kBk3gM9OURJUZylz6Yd84Ps2izeeCiw
+         NOTpkWayHtX0RK2j9QzHf6OP5ojwpdWtpJJuWZdtr9Ba/fXm1c55moR2/0Mx/XgRCMt4
+         GXlMsJUNduka8ajnol0brivZMNyt6xo4ccd6ofV19GKzuJD/PIHF8olFjqMiP6xWIZ8F
+         vDVCr7pKIYI0EhFeXwoZBm2xHAcxe1Y+WnzdaLbpgfrDVWPFjE0nqX4g5t4m6RUDjwae
+         iou6QhrT1Q4fu/TTDkE1E1ksdIhC4LLmzEMMUwg1htxaeA9KelTI4BuZSGLMNKNbVdCs
+         ATCg==
+X-Gm-Message-State: APjAAAUC6KVWRM/I5AI4u4IiNcnvQ84WUnp7il4rVdlrwPPobahSEG1j
+        j7M1N80coE0Ibjp5loEIMYXemeaPujI+Xv7TRIzh2w==
+X-Google-Smtp-Source: APXvYqwQrWpoFybDJu8Hn14uxn76c4kUMf+Ev2xRshKBdwqksbprYAItOzcBNnD0zSZQV65uTkqruxsro4omB6wl/xg=
+X-Received: by 2002:a05:6830:1689:: with SMTP id k9mr125365761otr.311.1578393634943;
+ Tue, 07 Jan 2020 02:40:34 -0800 (PST)
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9aec1c2a-341d-46e0-4d10-08d7935a0e29
-X-MS-Exchange-CrossTenant-originalarrivaltime: 07 Jan 2020 10:12:09.3100
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: mkHf/3eDFr2FeEMyoz5QXx0qTmzPTIEFq7HEFIE1ga5FvFFjg8HfgZrsfPQJ+uBgcx/zE/NTOzVzKaTyPc2vCQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB7PR04MB4524
+References: <20200107080807.14433-1-yhchuang@realtek.com>
+In-Reply-To: <20200107080807.14433-1-yhchuang@realtek.com>
+From:   Chris Chiu <chiu@endlessm.com>
+Date:   Tue, 7 Jan 2020 18:40:24 +0800
+Message-ID: <CAB4CAwfxQJzsJfxScVE+Y_xYbdSigTf567b9Xv-LFyQQnOXEAA@mail.gmail.com>
+Subject: Re: [PATCH] rtw88: fix potential NULL skb access in TX ISR
+To:     Tony Chuang <yhchuang@realtek.com>
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Brian Norris <briannorris@chromium.org>,
+        mikhail.v.gavrilov@gmail.com, rtereguloff@gmail.com
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Rakesh Parmar, Sharvari Harisangam & Sachin Shelke have started
-to take a more active role in mwifiex driver maintainership.
-This change is to add them to the list of MAINTAINERS.
+On Tue, Jan 7, 2020 at 4:08 PM <yhchuang@realtek.com> wrote:
+>
+> From: Yan-Hsuan Chuang <yhchuang@realtek.com>
+>
+> Sometimes the TX queue may be empty and we could possible
+> dequeue a NULL pointer, crash the kernel. If the skb is NULL
+> then there is nothing to do, just leave the ISR.
+>
+> And the TX queue should not be empty here, so print an error
+> to see if there is anything wrong for DMA ring.
+>
+> Fixes: e3037485c68e ("rtw88: new Realtek 802.11ac driver")
+> Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
+> ---
+>  drivers/net/wireless/realtek/rtw88/pci.c | 5 +++++
+>  1 file changed, 5 insertions(+)
+>
+> diff --git a/drivers/net/wireless/realtek/rtw88/pci.c b/drivers/net/wireless/realtek/rtw88/pci.c
+> index a58e8276a41a..a6746b5a9ff2 100644
+> --- a/drivers/net/wireless/realtek/rtw88/pci.c
+> +++ b/drivers/net/wireless/realtek/rtw88/pci.c
+> @@ -832,6 +832,11 @@ static void rtw_pci_tx_isr(struct rtw_dev *rtwdev, struct rtw_pci *rtwpci,
+>
+>         while (count--) {
+>                 skb = skb_dequeue(&ring->queue);
+> +               if (!skb) {
+> +                       rtw_err(rtwdev, "failed to dequeue %d skb TX queue %d, BD=0x%08x, rp %d -> %d\n",
+> +                               count, hw_queue, bd_idx, ring->r.rp, cur_rp);
+> +                       break;
+> +               }
+>                 tx_data = rtw_pci_get_tx_data(skb);
+>                 pci_unmap_single(rtwpci->pdev, tx_data->dma, skb->len,
+>                                  PCI_DMA_TODEVICE);
+> --
+> 2.17.1
+>
 
-Signed-off-by: Rakesh Parmar <rakesh.parmar@nxp.com>
-Signed-off-by: Sharvari Harisangam <sharvari.harisangam@nxp.com>
-Signed-off-by: Sachin Shelke <sachin.shelke@nxp.com>
-Signed-off-by: Ganapathi Bhat <ganapathi.bhat@nxp.com>
----
- MAINTAINERS | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+Maybe we can simply do 'while (count -- &&
+!skb_queue_empty(&ring->queue))' to achieve the same thing?
+I don't think it worths to raise an error unless the count is expected
+to exactly match the queue length in any
+circumstances.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index d095198..d371843 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -9955,8 +9955,10 @@ F:	drivers/net/ethernet/marvell/mvneta.*
-=20
- MARVELL MWIFIEX WIRELESS DRIVER
- M:	Amitkumar Karwar <amitkarwar@gmail.com>
--M:	Nishant Sarmukadam <nishants@marvell.com>
-+M:	Rakesh Parmar <rakesh.parmar@nxp.com>
- M:	Ganapathi Bhat <ganapathi.bhat@nxp.com>
-+M:	Sharvari Harisangam <sharvari.harisangam@nxp.com>
-+M:	Sachin Shelke <sachin.shelke@nxp.com>
- M:	Xinming Hu <huxinming820@gmail.com>
- L:	linux-wireless@vger.kernel.org
- S:	Maintained
---=20
-1.9.1
-
+Chris
