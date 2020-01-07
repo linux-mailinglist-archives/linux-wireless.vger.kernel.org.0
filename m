@@ -2,100 +2,80 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8DB7A13283F
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Jan 2020 14:59:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AF8621328DE
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Jan 2020 15:27:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728124AbgAGN7v (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 7 Jan 2020 08:59:51 -0500
-Received: from mail.kernel.org ([198.145.29.99]:37380 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727658AbgAGN7v (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 7 Jan 2020 08:59:51 -0500
-Received: from new-host-3.redhat.com (net-2-42-61-77.cust.vodafonedsl.it [2.42.61.77])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id CBDA02087F;
-        Tue,  7 Jan 2020 13:59:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1578405590;
-        bh=KrOxa2l64iWq/UyD6/WgsNSXGy4ROnUknfQWhSnFD8Y=;
-        h=From:To:Cc:Subject:Date:From;
-        b=tfKXdVmnwvkLiKpifisP1+QgZ/1/abQ3jDolDeCUGbizlLCAaX7F2Pi671E2jH+18
-         K2Sprvc137Xy8cwsdIg3TyEhyrUMEl9Chb/vSygvOr6bV7t7k1pqgzmNrj9onge14Z
-         oPVC0zwt3a0a9D3ksm+53LzraSObpscnGcS28Hxg=
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org
-Subject: [PATCH] mt76: move WIPHY_FLAG_HAS_CHANNEL_SWITCH in mt76_phy_init
-Date:   Tue,  7 Jan 2020 14:59:34 +0100
-Message-Id: <2976d83f00a3b03909ff2814c2161801d729c456.1578405489.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.21.1
+        id S1728309AbgAGO1v (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 7 Jan 2020 09:27:51 -0500
+Received: from rtits2.realtek.com ([211.75.126.72]:43532 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727958AbgAGO1v (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 7 Jan 2020 09:27:51 -0500
+Authenticated-By: 
+X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID 007ERd8X016937, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (RTITCASV01.realtek.com.tw[172.21.6.18])
+        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id 007ERd8X016937
+        (version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+        Tue, 7 Jan 2020 22:27:39 +0800
+Received: from localhost.localdomain (172.21.68.128) by
+ RTITCASV01.realtek.com.tw (172.21.6.18) with Microsoft SMTP Server id
+ 14.3.468.0; Tue, 7 Jan 2020 22:27:39 +0800
+From:   <yhchuang@realtek.com>
+To:     <kvalo@codeaurora.org>
+CC:     <linux-wireless@vger.kernel.org>, <briannorris@chromium.org>
+Subject: [PATCH] rtw88: use shorter delay time to poll PS state
+Date:   Tue, 7 Jan 2020 22:27:29 +0800
+Message-ID: <20200107142729.17716-1-yhchuang@realtek.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [172.21.68.128]
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Move WIPHY_FLAG_HAS_CHANNEL_SWITCH in mt76-core module since now all
-drivers support Channel Switch Announcement
+From: Yan-Hsuan Chuang <yhchuang@realtek.com>
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+When TX packet arrives, driver should leave deep PS state to make
+sure the DMA is working. After requested to leave deep PS state,
+driver needs to poll the PS state to check if the mode has been
+changed successfully. The driver used to check the state of the
+hardware every 20 msecs, which means upon the first failure of
+state check, the CPU is delayed 20 msecs for next check. This is
+harmful for some time-sensitive applications such as media players.
+
+So, use shorter delay time each check from 20 msecs to 100 usecs.
+The state should be changed in several tries. But we still need
+to reserve ~15 msecs in total in case of the state just took too
+long to be changed successfully. If the states of driver and the
+hardware is not synchronized, the power state could be locked
+forever, which mean we could never enter/leave the PS state.
+
+Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
 ---
- drivers/net/wireless/mediatek/mt76/mac80211.c     | 1 +
- drivers/net/wireless/mediatek/mt76/mt7603/init.c  | 1 -
- drivers/net/wireless/mediatek/mt76/mt7615/init.c  | 1 -
- drivers/net/wireless/mediatek/mt76/mt76x02_util.c | 1 -
- 4 files changed, 1 insertion(+), 3 deletions(-)
+ drivers/net/wireless/realtek/rtw88/ps.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/wireless/mediatek/mt76/mac80211.c
-index f462a72b043c..9947e627318b 100644
---- a/drivers/net/wireless/mediatek/mt76/mac80211.c
-+++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
-@@ -279,6 +279,7 @@ mt76_phy_init(struct mt76_dev *dev, struct ieee80211_hw *hw)
- 	SET_IEEE80211_PERM_ADDR(hw, dev->macaddr);
+diff --git a/drivers/net/wireless/realtek/rtw88/ps.c b/drivers/net/wireless/realtek/rtw88/ps.c
+index 913e6f47130f..7a189a9926fe 100644
+--- a/drivers/net/wireless/realtek/rtw88/ps.c
++++ b/drivers/net/wireless/realtek/rtw88/ps.c
+@@ -91,11 +91,11 @@ void rtw_power_mode_change(struct rtw_dev *rtwdev, bool enter)
+ 			return;
  
- 	wiphy->features |= NL80211_FEATURE_ACTIVE_MONITOR;
-+	wiphy->flags |= WIPHY_FLAG_HAS_CHANNEL_SWITCH;
- 
- 	wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_CQM_RSSI_LIST);
- 	wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_AIRTIME_FAIRNESS);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/init.c b/drivers/net/wireless/mediatek/mt76/mt7603/init.c
-index 32fdb81b2bb0..182ce5a86f65 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7603/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7603/init.c
-@@ -564,7 +564,6 @@ int mt7603_register_device(struct mt7603_dev *dev)
- 		dev->mt76.led_cdev.blink_set = mt7603_led_set_blink;
- 	}
- 
--	wiphy->flags |= WIPHY_FLAG_HAS_CHANNEL_SWITCH;
- 	wiphy->reg_notifier = mt7603_regd_notifier;
- 
- 	ret = mt76_register_device(&dev->mt76, true, mt7603_rates,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/init.c b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
-index 403e8051dc7b..e626842988e8 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
-@@ -341,7 +341,6 @@ mt7615_init_wiphy(struct ieee80211_hw *hw)
- 	wiphy->iface_combinations = if_comb;
- 	wiphy->n_iface_combinations = ARRAY_SIZE(if_comb);
- 	wiphy->reg_notifier = mt7615_regd_notifier;
--	wiphy->flags |= WIPHY_FLAG_HAS_CHANNEL_SWITCH;
- 
- 	wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_VHT_IBSS);
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_util.c b/drivers/net/wireless/mediatek/mt76/mt76x02_util.c
-index 28d8d447fc76..48da4f3a17db 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x02_util.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x02_util.c
-@@ -175,7 +175,6 @@ void mt76x02_init_device(struct mt76x02_dev *dev)
+ 		/* check confirm power mode has left power save state */
+-		for (polling_cnt = 0; polling_cnt < 3; polling_cnt++) {
++		for (polling_cnt = 0; polling_cnt < 50; polling_cnt++) {
+ 			polling = rtw_read8(rtwdev, rtwdev->hci.cpwm_addr);
+ 			if ((polling ^ confirm) & BIT_RPWM_TOGGLE)
+ 				return;
+-			mdelay(20);
++			udelay(100);
  		}
- 	}
  
--	wiphy->flags |= WIPHY_FLAG_HAS_CHANNEL_SWITCH;
- 	wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_VHT_IBSS);
- 
- 	hw->sta_data_size = sizeof(struct mt76x02_sta);
+ 		/* in case of fw/hw missed the request, retry */
 -- 
-2.21.1
+2.17.1
 
