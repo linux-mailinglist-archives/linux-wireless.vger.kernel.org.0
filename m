@@ -2,98 +2,142 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BE676133C61
-	for <lists+linux-wireless@lfdr.de>; Wed,  8 Jan 2020 08:40:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EB63A133D43
+	for <lists+linux-wireless@lfdr.de>; Wed,  8 Jan 2020 09:36:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726715AbgAHHkD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 8 Jan 2020 02:40:03 -0500
-Received: from mail-wr1-f68.google.com ([209.85.221.68]:35727 "EHLO
-        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726319AbgAHHkD (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 8 Jan 2020 02:40:03 -0500
-Received: by mail-wr1-f68.google.com with SMTP id g17so2261384wro.2
-        for <linux-wireless@vger.kernel.org>; Tue, 07 Jan 2020 23:40:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=vSmXwBn2AR3fxtJigVCv7P0HAA4z7xXMzI8QIwHygZY=;
-        b=VnayRjxnxRPSG7FcqpWm55V4hTIFurPcd5F7kKk+WtJFqrYH8Dr3cxuzp9E+9FkN/0
-         ExVW6wYRxU35sEXoWv8z7lq0FtmrRcZKEpbvh1+cv5i1GoMowMbPPmY0+cX12MmIxo8L
-         4dWzeTVMp7l3FQoQk6LAkBHuvVt+Axq8pKR1/CLzB9SUr06+mxSG81vY1FaGOiKoNDQb
-         AFV7Pq5paITG02NL7jHHAeJlI+EEmMrdn+3Solniv959co+pxQ+/aGxLWMhN46d2+Vx3
-         TJFJxlRu1WlalBp6/yGS7XeB2fFYyqzc+88E8RUZxe8BkrGNe6GTywf16PFVRaXBGzAe
-         uoDQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=vSmXwBn2AR3fxtJigVCv7P0HAA4z7xXMzI8QIwHygZY=;
-        b=H/Xrt5QD1iUJqdOPkgBWebxpuxaWLstFNyHhWO4Yj8JlsG2w7IoYQKes3QUeifEl+w
-         eGysijuJG6gBdKzSKaUNZtb8r3bBnYerE1B0bXBXJJiddZPDyvs4Y7XESXZ1YXWHj3SS
-         MfgrXl1znT0Vank3XUZ0EpFeDFw5ZXzOjW9nfA8XatMScIQjqyxD8/obUKIzQputQ870
-         GdZTxZ5l5EF7V2cN0GHIelqeE5M8VW9GX6JArFOLGKsOI19ra8R3IPbYpMv0GqZ3UuVN
-         PET1hl43gr2+szG2WMRrMwxYbFiknjsf8eNzu7A24ZV6lQIY1IMqi65ULRIUhnXzKskh
-         z5uQ==
-X-Gm-Message-State: APjAAAUUWRRElWcTaxGdQwto21Q7Y1XposoRtlMJrCwf97KXUVfn7Bvj
-        jPFQdYI+UqvYRl2S+pE3ZOBInA==
-X-Google-Smtp-Source: APXvYqz9FEcQdGQc0YS8qK1JJnoGFNGqthccEUkGMfgP/cnH4wsppaslw1AkA5K5Qpz+tKFdutsMMw==
-X-Received: by 2002:adf:9c8a:: with SMTP id d10mr2821293wre.156.1578469201237;
-        Tue, 07 Jan 2020 23:40:01 -0800 (PST)
-Received: from myrica (adsl-84-227-176-239.adslplus.ch. [84.227.176.239])
-        by smtp.gmail.com with ESMTPSA id p17sm3218208wrx.20.2020.01.07.23.40.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Jan 2020 23:40:00 -0800 (PST)
-Date:   Wed, 8 Jan 2020 08:39:55 +0100
-From:   Jean-Philippe Brucker <jean-philippe@linaro.org>
-To:     Dmitry Osipenko <digetx@gmail.com>
-Cc:     Arend Van Spriel <arend.vanspriel@broadcom.com>,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        brcm80211-dev-list@cypress.com, netdev@vger.kernel.org,
-        hdegoede@redhat.com, franky.lin@broadcom.com,
-        hante.meuleman@broadcom.com, chi-hsien.lin@cypress.com,
-        wright.feng@cypress.com, kvalo@codeaurora.org, davem@davemloft.net
-Subject: Re: [PATCH] brcmfmac: sdio: Fix OOB interrupt initialization on
- brcm43362
-Message-ID: <20200108073955.GA896413@myrica>
-References: <20191226092033.12600-1-jean-philippe@linaro.org>
- <16f419a7070.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
- <141f055a-cd1d-66cb-7052-007cda629d3a@gmail.com>
- <20200106191919.GA826263@myrica>
- <c2bb1067-9b9c-3be1-b87e-e733a668a056@gmail.com>
- <20200107072354.GA832497@myrica>
- <34dbd037-0a40-bf5f-4988-6b821811ffcd@gmail.com>
+        id S1727283AbgAHIf6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 8 Jan 2020 03:35:58 -0500
+Received: from pegase1.c-s.fr ([93.17.236.30]:54687 "EHLO pegase1.c-s.fr"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726313AbgAHIf5 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 8 Jan 2020 03:35:57 -0500
+Received: from localhost (mailhub1-int [192.168.12.234])
+        by localhost (Postfix) with ESMTP id 47t2dP2tfYz9v3gf;
+        Wed,  8 Jan 2020 09:35:53 +0100 (CET)
+Authentication-Results: localhost; dkim=pass
+        reason="1024-bit key; insecure key"
+        header.d=c-s.fr header.i=@c-s.fr header.b=fxUelGuu; dkim-adsp=pass;
+        dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+        by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+        with ESMTP id I0TjIRBHFA-4; Wed,  8 Jan 2020 09:35:53 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+        by pegase1.c-s.fr (Postfix) with ESMTP id 47t2dP1Xwtz9v3gS;
+        Wed,  8 Jan 2020 09:35:53 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+        t=1578472553; bh=pyCqgPPZ7kRofrDb80nScePrylWdxYR2l2/ULCClPrs=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+        b=fxUelGuuZbXfGsWb57/3BxUjvtvdC/2QbyAEo6YqIvKJAL5rv4xC8YAPDeq7nhud3
+         dkB/UdAQUigd1rFWPHMhgX/6Fa4jCdXgPI62S3zygNDeTcqR1ZOBKH62ej2i0cflHq
+         zb2g6a/VdTBtVa3azjNLc7pwBVFpYUnXR94BgWzQ=
+Received: from localhost (localhost [127.0.0.1])
+        by messagerie.si.c-s.fr (Postfix) with ESMTP id 2FF4A8B7EC;
+        Wed,  8 Jan 2020 09:35:54 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+        by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+        with ESMTP id PkGUzhhRpTGx; Wed,  8 Jan 2020 09:35:54 +0100 (CET)
+Received: from [172.25.230.100] (po15451.idsi0.si.c-s.fr [172.25.230.100])
+        by messagerie.si.c-s.fr (Postfix) with ESMTP id BE1C98B7EA;
+        Wed,  8 Jan 2020 09:35:53 +0100 (CET)
+Subject: Re: [RFT 00/13] iomap: Constify ioreadX() iomem argument
+To:     Krzysztof Kozlowski <krzk@kernel.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     Rich Felker <dalias@libc.org>, Jiri Slaby <jirislaby@gmail.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        David Airlie <airlied@linux.ie>,
+        Jason Wang <jasowang@redhat.com>,
+        DRI Development <dri-devel@lists.freedesktop.org>,
+        virtualization@lists.linux-foundation.org,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        netdev <netdev@vger.kernel.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Linux-Arch <linux-arch@vger.kernel.org>,
+        Dave Jiang <dave.jiang@intel.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Helge Deller <deller@gmx.de>,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        Alexey Brodkin <abrodkin@synopsys.com>,
+        Ben Skeggs <bskeggs@redhat.com>, nouveau@lists.freedesktop.org,
+        Dave Airlie <airlied@redhat.com>,
+        Matt Turner <mattst88@gmail.com>,
+        arcml <linux-snps-arc@lists.infradead.org>,
+        Nick Kossifidis <mickflemm@gmail.com>,
+        Allen Hubbe <allenbh@gmail.com>, Arnd Bergmann <arnd@arndb.de>,
+        alpha <linux-alpha@vger.kernel.org>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Richard Henderson <rth@twiddle.net>,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        Vineet Gupta <vgupta@synopsys.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Luis Chamberlain <mcgrof@kernel.org>,
+        Daniel Vetter <daniel@ffwll.ch>, Jon Mason <jdmason@kudzu.us>,
+        linux-ntb@googlegroups.com,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Linux Media Mailing List <linux-media@vger.kernel.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        "David S. Miller" <davem@davemloft.net>
+References: <1578415992-24054-1-git-send-email-krzk@kernel.org>
+ <CAMuHMdW4ek0OYQDrrbcpZjNUTTP04nSbwkmiZvBmKcU=PQM9qA@mail.gmail.com>
+ <CAMuHMdUBmYtJKtSYzS_5u67hVZOqcKSgFY1rDGme6gLNRBJ_gA@mail.gmail.com>
+ <CAJKOXPfq9vS4kSyx1jOPHBvi9_HjviRv0LU2A8ZwdmqgUuebHQ@mail.gmail.com>
+From:   Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <2355489c-a207-1927-54cf-85c04b62f18f@c-s.fr>
+Date:   Wed, 8 Jan 2020 09:35:54 +0100
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <34dbd037-0a40-bf5f-4988-6b821811ffcd@gmail.com>
+In-Reply-To: <CAJKOXPfq9vS4kSyx1jOPHBvi9_HjviRv0LU2A8ZwdmqgUuebHQ@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Jan 07, 2020 at 07:23:32PM +0300, Dmitry Osipenko wrote:
-> >> Hello Jean,
-> >>
-> >> Could you please clarify whether you applied [1] and then the above
-> >> snippet on top of it or you only applied [1] without the snippet?
-> > 
-> > I applied [1] without the snippet
-> > 
-> > Thanks,
-> > Jean
-> > 
-> >>
-> >> [1] brcmfmac: Keep OOB wake-interrupt disabled when it shouldn't be enabled
+
+
+Le 08/01/2020 à 09:18, Krzysztof Kozlowski a écrit :
+> On Wed, 8 Jan 2020 at 09:13, Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+>>
+>> Hi Krzysztof,
+>>
+>> On Wed, Jan 8, 2020 at 9:07 AM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+>>> On Tue, Jan 7, 2020 at 5:53 PM Krzysztof Kozlowski <krzk@kernel.org> wrote:
+>>>> The ioread8/16/32() and others have inconsistent interface among the
+>>>> architectures: some taking address as const, some not.
+>>>>
+>>>> It seems there is nothing really stopping all of them to take
+>>>> pointer to const.
+>>>
+>>> Shouldn't all of them take const volatile __iomem pointers?
+>>> It seems the "volatile" is missing from all but the implementations in
+>>> include/asm-generic/io.h.
+>>
+>> As my "volatile" comment applies to iowrite*(), too, probably that should be
+>> done in a separate patch.
+>>
+>> Hence with patches 1-5 squashed, and for patches 11-13:
+>> Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
 > 
-> Will you be able to test *with* the snippet? I guess chances that it
-> will make any difference are not high, nevertheless will be good to know
-> for sure.
+> I'll add to this one also changes to ioreadX_rep() and add another
+> patch for volatile for reads and writes. I guess your review will be
+> appreciated once more because of ioreadX_rep()
+> 
 
-I tested it with the snippet and didn't notice a difference
+volatile should really only be used where deemed necessary:
 
-Thanks,
-Jean
+https://www.kernel.org/doc/html/latest/process/volatile-considered-harmful.html
 
+It is said: " ...  accessor functions might use volatile on 
+architectures where direct I/O memory access does work. Essentially, 
+each accessor call becomes a little critical section on its own and 
+ensures that the access happens as expected by the programmer."
+
+Christophe
