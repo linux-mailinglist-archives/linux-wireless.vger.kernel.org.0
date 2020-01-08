@@ -2,63 +2,44 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E362313446A
-	for <lists+linux-wireless@lfdr.de>; Wed,  8 Jan 2020 14:58:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 18E34134548
+	for <lists+linux-wireless@lfdr.de>; Wed,  8 Jan 2020 15:45:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727856AbgAHN6F (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 8 Jan 2020 08:58:05 -0500
-Received: from szxga06-in.huawei.com ([45.249.212.32]:58532 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727206AbgAHN6F (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 8 Jan 2020 08:58:05 -0500
-Received: from DGGEMS402-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id DB3D44FDA4190C1CA6DA;
-        Wed,  8 Jan 2020 21:58:02 +0800 (CST)
-Received: from localhost (10.133.213.239) by DGGEMS402-HUB.china.huawei.com
- (10.3.19.202) with Microsoft SMTP Server id 14.3.439.0; Wed, 8 Jan 2020
- 21:57:55 +0800
-From:   YueHaibing <yuehaibing@huawei.com>
-To:     <kvalo@codeaurora.org>, <arend.vanspriel@broadcom.com>
-CC:     <linux-wireless@vger.kernel.org>,
-        <brcm80211-dev-list.pdl@broadcom.com>,
-        <brcm80211-dev-list@cypress.com>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, yuehaibing <yuehaibing@huawei.com>
-Subject: [PATCH] brcmfmac: Remove always false 'idx < 0' statement
-Date:   Wed, 8 Jan 2020 21:57:48 +0800
-Message-ID: <20200108135748.46096-1-yuehaibing@huawei.com>
-X-Mailer: git-send-email 2.10.2.windows.1
+        id S1728508AbgAHOpw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 8 Jan 2020 09:45:52 -0500
+Received: from s3.sipsolutions.net ([144.76.43.62]:44534 "EHLO
+        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726697AbgAHOpw (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 8 Jan 2020 09:45:52 -0500
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.92.3)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1ipCak-0061UM-Mp; Wed, 08 Jan 2020 15:45:50 +0100
+Message-ID: <30cc55076b4c04b4c4ff9923535c3d3bbc037222.camel@sipsolutions.net>
+Subject: Re: Possible deadlock in cfg80211
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Markus Theil <markus.theil@tu-ilmenau.de>,
+        linux-wireless@vger.kernel.org
+Date:   Wed, 08 Jan 2020 15:45:49 +0100
+In-Reply-To: <64dc212d-fde7-ab84-369c-c7cb5bf579d7@tu-ilmenau.de> (sfid-20200108_122337_992318_9DCD9168)
+References: <64dc212d-fde7-ab84-369c-c7cb5bf579d7@tu-ilmenau.de>
+         (sfid-20200108_122337_992318_9DCD9168)
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.34.2 (3.34.2-1.fc31) 
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.133.213.239]
-X-CFilter-Loop: Reflected
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: yuehaibing <yuehaibing@huawei.com>
+On Wed, 2020-01-08 at 12:23 +0100, Markus Theil wrote:
+> Hi,
+> 
+> while testing hostapd with hwsim, the following deadlock was reported:
 
-idx is declared as u32, it will never less than 0.
+I see you already sent a patch to fix this, thanks :)
 
-Signed-off-by: yuehaibing <yuehaibing@huawei.com>
----
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/msgbuf.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/msgbuf.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/msgbuf.c
-index e3dd862..8bb4f1f 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/msgbuf.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/msgbuf.c
-@@ -365,7 +365,7 @@ brcmf_msgbuf_get_pktid(struct device *dev, struct brcmf_msgbuf_pktids *pktids,
- 	struct brcmf_msgbuf_pktid *pktid;
- 	struct sk_buff *skb;
- 
--	if (idx < 0 || idx >= pktids->array_size) {
-+	if (idx >= pktids->array_size) {
- 		brcmf_err("Invalid packet id %d (max %d)\n", idx,
- 			  pktids->array_size);
- 		return NULL;
--- 
-2.7.4
-
+johannes
 
