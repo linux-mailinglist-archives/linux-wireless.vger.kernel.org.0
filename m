@@ -2,177 +2,75 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BE01813353B
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Jan 2020 22:51:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E7B3A13398D
+	for <lists+linux-wireless@lfdr.de>; Wed,  8 Jan 2020 04:20:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727221AbgAGVvK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 7 Jan 2020 16:51:10 -0500
-Received: from mout.kundenserver.de ([212.227.126.135]:57577 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727135AbgAGVvK (ORCPT
+        id S1726180AbgAHDUK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 7 Jan 2020 22:20:10 -0500
+Received: from mail25.static.mailgun.info ([104.130.122.25]:25850 "EHLO
+        mail25.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726142AbgAHDUK (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 7 Jan 2020 16:51:10 -0500
-Received: from threadripper.lan ([149.172.19.189]) by mrelayeu.kundenserver.de
- (mreue010 [212.227.15.129]) with ESMTPA (Nemesis) id
- 1MJmbB-1j8wTR45Dl-00K4yP; Tue, 07 Jan 2020 22:50:41 +0100
-From:   Arnd Bergmann <arnd@arndb.de>
-To:     Kalle Valo <kvalo@codeaurora.org>,
-        Manikanta Pubbisetty <mpubbise@codeaurora.org>,
-        John Crispin <john@phrozen.org>,
-        Sven Eckelmann <seckelmann@datto.com>,
-        Bhagavathi Perumal S <bperumal@codeaurora.org>,
-        Anilkumar Kolli <akolli@codeaurora.org>
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        Ganesh Sesetti <gseset@codeaurora.org>,
-        Govindaraj Saminathan <gsamin@codeaurora.org>,
-        Julia Lawall <julia.lawall@lip6.fr>,
-        Karthikeyan Periyasamy <periyasa@codeaurora.org>,
-        kbuild test robot <lkp@intel.com>,
-        Maharaja Kennadyrajan <mkenna@codeaurora.org>,
-        Miles Hu <milehu@codeaurora.org>,
-        Muna Sinada <msinada@codeaurora.org>,
-        Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>,
-        Rajkumar Manoharan <rmanohar@codeaurora.org>,
-        Sathishkumar Muruganandam <murugana@codeaurora.org>,
-        Shashidhar Lakkavalli <slakkavalli@datto.com>,
-        Sriram R <srirrama@codeaurora.org>,
-        Vasanthakumar Thiagarajan <vthiagar@codeaurora.org>,
-        Venkateswara Naralasetty <vnaralas@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Tamizh chelvam <tamizhr@codeaurora.org>,
-        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] ath11k: fix debugfs build failure
-Date:   Tue,  7 Jan 2020 22:50:04 +0100
-Message-Id: <20200107215036.1333983-1-arnd@arndb.de>
-X-Mailer: git-send-email 2.20.0
+        Tue, 7 Jan 2020 22:20:10 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1578453609; h=Content-Transfer-Encoding: MIME-Version:
+ Message-Id: Date: Subject: Cc: To: From: Sender;
+ bh=F7JyZ/oMEmFgVBHR7Mu5PKIJmLDZQX7TveUow6wRTL4=; b=VCRJ7Agy7+SpJnDoizu4KAyx/gvjvAr9kZxZkBqJU8EFWNfZfpwOpeQVBMk/IPyHo0Do8g24
+ Jo+7aTpRgpeJ6up6YCqK/jkIbknDJTZeJihWA2tsX3ie+6lz4ifbBP6rsGl5IJnRQ7ufSPyX
+ jM5i2Na+DeS9qEfgcUhZLG2whNU=
+X-Mailgun-Sending-Ip: 104.130.122.25
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5e154a69.7faf27d8b500-smtp-out-n01;
+ Wed, 08 Jan 2020 03:20:09 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 0D734C433A2; Wed,  8 Jan 2020 03:20:08 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from wgong-HP-Z240-SFF-Workstation.qca.qualcomm.com (unknown [180.166.53.21])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: wgong)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id CA437C433CB;
+        Wed,  8 Jan 2020 03:20:05 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org CA437C433CB
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=wgong@codeaurora.org
+From:   Wen Gong <wgong@codeaurora.org>
+To:     ath10k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org
+Subject: [PATCH v4 0/2] start recovery process when payload length overflow for sdio
+Date:   Wed,  8 Jan 2020 11:19:55 +0800
+Message-Id: <20200108031957.22308-1-wgong@codeaurora.org>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:1IwwBGhuOz0cd0fMgrQmU/t4gEgEbaY4kf54G9AmPByhjQQY7fh
- QQff/ZJNDnmGx924TaQblUyv7rp3cQfsvSoH8yH7/yXdJR1ISoA/dR7lC8paPX8lGQAcWWZ
- LHqBUDplT7XEGiO3wen35XFc1XN3SwaDPM9McT45/lQhibx/jMp5gZS6lq/Clz9Kv40V0ad
- 42xWSqOCYKQpqsJnlflBA==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:nUUMxddKHx0=:WTvF1Wfyj2/ouKy4oFxjNw
- hYhq8wgb4UfSK0NVybZqABq/OCKo+QSD65xfbimTwoZkgEWSPHD30YGFwrA3ADZVtGBYwCSoN
- JMDHy8rGgJv8gcUDWDkR42jx176v3QRRpj2r7plNJQI3WOO3XyY5i3e0oZLW46c02jdzFJhiZ
- XOzZJLI2xPVvYmyRqBGHJO9JAaB6qazdzNAIO7cqrXiB0Cw6FYg3XIBB2/uA2HU44a8kuxoch
- G7jF1sTwsZlWOrpLQqMfS800wdQkHNMeWp/OELaPXZwD5JTdda0xfiSG+Do0VgZxhHmkjgzTv
- GqTmpfU/alK6h8WeQAW3E9AIpuKWMtTGu0+hovPlfdEJ+29HL5eBUK5F9GqlB4QwT1tn+3AZL
- A2X2HkWXX7OMYdkN0ffXod/iGxsZuT4eZG01APUc5GKX+8invc8U07FRC8w83cRDdYoFx3LJv
- ik8ZKoxDADlUY3niMFmNXpt66uJT19w5i2caMsAjiOK+udmbdo+5y4/tEyMi4URj+TXUcA7AY
- 683/vRlsCokJTINAaizPjipJAfKL+kxsTvmxXoNEWT5wl0fbE51iNtnPqLa6vFZyVvuq/lYlG
- sn3/gaWyRxRgBIB/H5NuLIhCmTGWb/EPMf/YQcsK48ZEgSXEWcnUgtzMMEDffc94JzToB+j2b
- 23c2JhWhrYfRvYDU8ziN7twGCF2nuAFPotQyoFJbHuCjYeSzRrZKnLjZdsmAL+Eqfww+QHwTa
- fjCPE3GH3SqM1noEi8zvojf5VnXYjxA9yCs8jwyYNmva++Ts5HI+RIJqHh58+fEzI3DtzEEFJ
- HbplIo6Cq4kCf6Lj/SV0AwtiKYyRSPJ8TvsAGL8tVSo0DhvJISMplhpE0qC4cXeVageGUbKAg
- OHrnrI0r9VGXgW/XnUGQ==
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-When CONFIG_ATH11K_DEBUGFS is disabled, but CONFIG_MAC80211_DEBUGFS
-is turned on, the driver fails to build:
+when it happened payload length exceeds max htc length, start recovery process
 
-drivers/net/wireless/ath/ath11k/debugfs_sta.c: In function 'ath11k_dbg_sta_open_htt_peer_stats':
-drivers/net/wireless/ath/ath11k/debugfs_sta.c:416:4: error: 'struct ath11k' has no member named 'debug'
-  ar->debug.htt_stats.stats_req = stats_req;
-    ^~
+v4: add atomic_dec(&ar->restart_count) if state is not on
 
-It appears that just using the former symbol is sufficient here,
-adding a Kconfig dependency takes care of the corner cases.
+v3: change atomic_inc_and_test to atomic_add_return, remove check of ATH10K_STATE_ON
 
-Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
- drivers/net/wireless/ath/ath11k/Kconfig  |  2 +-
- drivers/net/wireless/ath/ath11k/Makefile |  3 +--
- drivers/net/wireless/ath/ath11k/debug.h  | 22 ++++++++++------------
- drivers/net/wireless/ath/ath11k/mac.c    |  2 +-
- 4 files changed, 13 insertions(+), 16 deletions(-)
+v2: add "add refcount for ath10k_core_restart" and remove ar_sdio->can_recovery
 
-diff --git a/drivers/net/wireless/ath/ath11k/Kconfig b/drivers/net/wireless/ath/ath11k/Kconfig
-index cfab4fb86aef..c88e16d4022b 100644
---- a/drivers/net/wireless/ath/ath11k/Kconfig
-+++ b/drivers/net/wireless/ath/ath11k/Kconfig
-@@ -22,7 +22,7 @@ config ATH11K_DEBUG
- 
- config ATH11K_DEBUGFS
- 	bool "QCA ath11k debugfs support"
--	depends on ATH11K && DEBUG_FS
-+	depends on ATH11K && DEBUG_FS && MAC80211_DEBUGFS
- 	---help---
- 	  Enable ath11k debugfs support
- 
-diff --git a/drivers/net/wireless/ath/ath11k/Makefile b/drivers/net/wireless/ath/ath11k/Makefile
-index a91d75c1cfeb..2761d07d938e 100644
---- a/drivers/net/wireless/ath/ath11k/Makefile
-+++ b/drivers/net/wireless/ath/ath11k/Makefile
-@@ -17,8 +17,7 @@ ath11k-y += core.o \
- 	    ce.o \
- 	    peer.o
- 
--ath11k-$(CONFIG_ATH11K_DEBUGFS) += debug_htt_stats.o
--ath11k-$(CONFIG_MAC80211_DEBUGFS) += debugfs_sta.o
-+ath11k-$(CONFIG_ATH11K_DEBUGFS) += debug_htt_stats.o debugfs_sta.o
- ath11k-$(CONFIG_NL80211_TESTMODE) += testmode.o
- ath11k-$(CONFIG_ATH11K_TRACING) += trace.o
- 
-diff --git a/drivers/net/wireless/ath/ath11k/debug.h b/drivers/net/wireless/ath/ath11k/debug.h
-index a317a7bdb9a2..8e8d5588b541 100644
---- a/drivers/net/wireless/ath/ath11k/debug.h
-+++ b/drivers/net/wireless/ath/ath11k/debug.h
-@@ -172,6 +172,16 @@ static inline int ath11k_debug_is_extd_rx_stats_enabled(struct ath11k *ar)
- {
- 	return ar->debug.extd_rx_stats;
- }
-+
-+void ath11k_sta_add_debugfs(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
-+			    struct ieee80211_sta *sta, struct dentry *dir);
-+void
-+ath11k_accumulate_per_peer_tx_stats(struct ath11k_sta *arsta,
-+				    struct ath11k_per_peer_tx_stats *peer_stats,
-+				    u8 legacy_rate_idx);
-+void ath11k_update_per_peer_stats_from_txcompl(struct ath11k *ar,
-+					       struct sk_buff *msdu,
-+					       struct hal_tx_status *ts);
- #else
- static inline int ath11k_debug_soc_create(struct ath11k_base *ab)
- {
-@@ -243,19 +253,7 @@ static inline bool ath11k_debug_is_pktlog_peer_valid(struct ath11k *ar, u8 *addr
- {
- 	return false;
- }
--#endif /* CONFIG_ATH11K_DEBUGFS */
- 
--#ifdef CONFIG_MAC80211_DEBUGFS
--void ath11k_sta_add_debugfs(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
--			    struct ieee80211_sta *sta, struct dentry *dir);
--void
--ath11k_accumulate_per_peer_tx_stats(struct ath11k_sta *arsta,
--				    struct ath11k_per_peer_tx_stats *peer_stats,
--				    u8 legacy_rate_idx);
--void ath11k_update_per_peer_stats_from_txcompl(struct ath11k *ar,
--					       struct sk_buff *msdu,
--					       struct hal_tx_status *ts);
--#else /* !CONFIG_MAC80211_DEBUGFS */
- static inline void
- ath11k_accumulate_per_peer_tx_stats(struct ath11k_sta *arsta,
- 				    struct ath11k_per_peer_tx_stats *peer_stats,
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index 556eef9881a7..0ed3e4d19f7a 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -5468,7 +5468,7 @@ static const struct ieee80211_ops ath11k_ops = {
- 	.flush				= ath11k_mac_op_flush,
- 	.sta_statistics			= ath11k_mac_op_sta_statistics,
- 	CFG80211_TESTMODE_CMD(ath11k_tm_cmd)
--#ifdef CONFIG_MAC80211_DEBUGFS
-+#ifdef CONFIG_ATH11K_DEBUGFS
- 	.sta_add_debugfs		= ath11k_sta_add_debugfs,
- #endif
- };
+Wen Gong (2):
+  ath10k: add refcount for ath10k_core_restart
+  ath10k: start recovery process when payload length exceeds max htc
+    length for sdio
+
+ drivers/net/wireless/ath/ath10k/core.c | 13 +++++++++++++
+ drivers/net/wireless/ath/ath10k/core.h |  2 ++
+ drivers/net/wireless/ath/ath10k/mac.c  |  1 +
+ drivers/net/wireless/ath/ath10k/sdio.c |  4 ++++
+ 4 files changed, 20 insertions(+)
+
 -- 
-2.20.0
-
+2.23.0
