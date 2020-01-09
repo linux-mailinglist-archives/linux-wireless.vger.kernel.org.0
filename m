@@ -2,213 +2,125 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 630E513530A
-	for <lists+linux-wireless@lfdr.de>; Thu,  9 Jan 2020 07:05:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 878341356CE
+	for <lists+linux-wireless@lfdr.de>; Thu,  9 Jan 2020 11:26:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728040AbgAIGEs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 9 Jan 2020 01:04:48 -0500
-Received: from mx2.suse.de ([195.135.220.15]:43740 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725893AbgAIGEs (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 9 Jan 2020 01:04:48 -0500
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id DF4A4AEE0;
-        Thu,  9 Jan 2020 06:04:42 +0000 (UTC)
-Subject: Re: [PATCH v2 6/9] drm/mgag200: Constify ioreadX() iomem argument (as
- in generic implementation)
-To:     Krzysztof Kozlowski <krzk@kernel.org>,
-        Richard Henderson <rth@twiddle.net>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
-        Alexey Brodkin <abrodkin@synopsys.com>,
-        Vineet Gupta <vgupta@synopsys.com>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Dave Airlie <airlied@redhat.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Ben Skeggs <bskeggs@redhat.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Jiri Slaby <jirislaby@gmail.com>,
-        Nick Kossifidis <mickflemm@gmail.com>,
-        Luis Chamberlain <mcgrof@kernel.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Dave Jiang <dave.jiang@intel.com>,
-        Jon Mason <jdmason@kudzu.us>, Allen Hubbe <allenbh@gmail.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        Jason Wang <jasowang@redhat.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-snps-arc@lists.infradead.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, nouveau@lists.freedesktop.org,
-        linux-media@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-ntb@googlegroups.com,
-        virtualization@lists.linux-foundation.org,
-        linux-arch@vger.kernel.org
-References: <20200108200528.4614-1-krzk@kernel.org>
- <20200108200528.4614-7-krzk@kernel.org>
-From:   Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- mQENBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAG0J1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPokBVAQTAQgAPhYh
- BHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJbOdLgAhsDBQkDwmcABQsJCAcCBhUKCQgLAgQWAgMB
- Ah4BAheAAAoJEGgNwR1TC3ojR80H/jH+vYavwQ+TvO8ksXL9JQWc3IFSiGpuSVXLCdg62AmR
- irxW+qCwNncNQyb9rd30gzdectSkPWL3KSqEResBe24IbA5/jSkPweJasgXtfhuyoeCJ6PXo
- clQQGKIoFIAEv1s8l0ggPZswvCinegl1diyJXUXmdEJRTWYAtxn/atut1o6Giv6D2qmYbXN7
- mneMC5MzlLaJKUtoH7U/IjVw1sx2qtxAZGKVm4RZxPnMCp9E1MAr5t4dP5gJCIiqsdrVqI6i
- KupZstMxstPU//azmz7ZWWxT0JzgJqZSvPYx/SATeexTYBP47YFyri4jnsty2ErS91E6H8os
- Bv6pnSn7eAq5AQ0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRH
- UE9eosYbT6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgT
- RjP+qbU63Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+R
- dhgATnWWGKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zb
- ehDda8lvhFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r
- 12+lqdsAEQEAAYkBPAQYAQgAJhYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJbOdLgAhsMBQkD
- wmcAAAoJEGgNwR1TC3ojpfcIAInwP5OlcEKokTnHCiDTz4Ony4GnHRP2fXATQZCKxmu4AJY2
- h9ifw9Nf2TjCZ6AMvC3thAN0rFDj55N9l4s1CpaDo4J+0fkrHuyNacnT206CeJV1E7NYntxU
- n+LSiRrOdywn6erjxRi9EYTVLCHcDhBEjKmFZfg4AM4GZMWX1lg0+eHbd5oL1as28WvvI/uI
- aMyV8RbyXot1r/8QLlWldU3NrTF5p7TMU2y3ZH2mf5suSKHAMtbE4jKJ8ZHFOo3GhLgjVrBW
- HE9JXO08xKkgD+w6v83+nomsEuf6C6LYrqY/tsZvyEX6zN8CtirPdPWu/VXNRYAl/lat7lSI
- 3H26qrE=
-Message-ID: <ff03b149-b825-47f3-f92e-100899bb05fd@suse.de>
-Date:   Thu, 9 Jan 2020 07:04:36 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.3.1
+        id S1728649AbgAIK0l (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 9 Jan 2020 05:26:41 -0500
+Received: from mail-oi1-f194.google.com ([209.85.167.194]:41893 "EHLO
+        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728614AbgAIK0l (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 9 Jan 2020 05:26:41 -0500
+Received: by mail-oi1-f194.google.com with SMTP id i1so5395407oie.8
+        for <linux-wireless@vger.kernel.org>; Thu, 09 Jan 2020 02:26:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=endlessm-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=UQJKMw2DKrzoM93kVfwLvG1Z80enNY4bvse02ifcw+s=;
+        b=BiTyM1FDl619QUQWYpQcAUivNguZDOkZ+h3LezLx7CrRiUjuR7hD0x6TQH+xZ0hkf6
+         ++Itr7fcj7Fl1a7UJ3VEG1bO0dpisFVWea7IuP6IgchtxT2CihBw8zAb4weMgEN1fqcG
+         RLOIfSxgEoMfpTxkcf+xJ6pJNDLXZI1tfsW2EZZUton6hV+x4vx1axO9I2axspnbepH6
+         AeAg+IjFVPs+ROYPqhMaoXxMDJBxW8dkDRxapIWoQZSoACtBXtytSMKoHZzki000Z4DP
+         Cw/lly5j/7tRin7LQuqZRZ9eA9+tWg+HBwYnoFWZfC5iYDftmNzdm0R9tU4WqyU21Im6
+         KuCQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=UQJKMw2DKrzoM93kVfwLvG1Z80enNY4bvse02ifcw+s=;
+        b=p3oooPMF4YFSOA3pZCfzfHPWP2fTQ0jB8vfdVjuU1Nlvf6pg6/2fEes7YvKxvRtKh1
+         AnKvRjs6GSYyxYGxB3GIl1Ldk5YAj0vS+lZkKJTqDnioGutvBN7PW3q8VgdsBs1ufoo7
+         79TbulfZUHif+nOBk9uMiruvHbg1AjlQQFdH+zQ+lIuBJcQfnAxWrmd6AhoMXwEjHSWj
+         dzSfYQ/bh6Z6b5tnQD2JGoNR9mNTS5yhGrPvheZhYTSF9qLKXPXK6dH44Lxj2upPv4IM
+         CIvUmR3vLaV67Se6TUSS/SmR7crZQr853ehmF49N8RyIq+dIDlRsHB7CAQnnzVuTQm5n
+         c54A==
+X-Gm-Message-State: APjAAAUvNpAUJlFwZa2YwNfanML0AICEPp9/3w5ps1jQcfdmBABFY0Nd
+        yHgWNPRoF/61h9crzfqsu6GAYnrfNxf7YWKnEpi5Dw==
+X-Google-Smtp-Source: APXvYqw6evGvP8dEMTdVrloslQxYJ/4Bck9WOhSWXFg94ke+rCAnDN3DDpOYYHf8bEZUvGRNnjBb2h1cP9SW3eCqwG0=
+X-Received: by 2002:aca:5e02:: with SMTP id s2mr2474761oib.80.1578565600133;
+ Thu, 09 Jan 2020 02:26:40 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <20200108200528.4614-7-krzk@kernel.org>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="3rd3nqEKmviIlgYXLgxkt4GDz8CFTZqke"
+References: <20200107080807.14433-1-yhchuang@realtek.com> <CAB4CAwfxQJzsJfxScVE+Y_xYbdSigTf567b9Xv-LFyQQnOXEAA@mail.gmail.com>
+ <5ffa570167b34b77ab05cdf490812a59@realtek.com>
+In-Reply-To: <5ffa570167b34b77ab05cdf490812a59@realtek.com>
+From:   Chris Chiu <chiu@endlessm.com>
+Date:   Thu, 9 Jan 2020 18:26:29 +0800
+Message-ID: <CAB4CAwf0G6HMaZwPGSXm3uxUGxipzKp-OS4bpanF6f6xZw1fjQ@mail.gmail.com>
+Subject: Re: [PATCH] rtw88: fix potential NULL skb access in TX ISR
+To:     Tony Chuang <yhchuang@realtek.com>
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Brian Norris <briannorris@chromium.org>,
+        "mikhail.v.gavrilov@gmail.com" <mikhail.v.gavrilov@gmail.com>,
+        "rtereguloff@gmail.com" <rtereguloff@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---3rd3nqEKmviIlgYXLgxkt4GDz8CFTZqke
-Content-Type: multipart/mixed; boundary="EqxkoMtfePcRgHH0AtAZfgeT52t9h5L9b";
- protected-headers="v1"
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: Krzysztof Kozlowski <krzk@kernel.org>, Richard Henderson
- <rth@twiddle.net>, Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
- Matt Turner <mattst88@gmail.com>, Alexey Brodkin <abrodkin@synopsys.com>,
- Vineet Gupta <vgupta@synopsys.com>,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
- Helge Deller <deller@gmx.de>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
- Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>,
- Dave Airlie <airlied@redhat.com>, David Airlie <airlied@linux.ie>,
- Daniel Vetter <daniel@ffwll.ch>, Ben Skeggs <bskeggs@redhat.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>, Jiri Slaby
- <jirislaby@gmail.com>, Nick Kossifidis <mickflemm@gmail.com>,
- Luis Chamberlain <mcgrof@kernel.org>, Kalle Valo <kvalo@codeaurora.org>,
- "David S. Miller" <davem@davemloft.net>, Dave Jiang <dave.jiang@intel.com>,
- Jon Mason <jdmason@kudzu.us>, Allen Hubbe <allenbh@gmail.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
- Arnd Bergmann <arnd@arndb.de>, Geert Uytterhoeven <geert+renesas@glider.be>,
- Thomas Gleixner <tglx@linutronix.de>, linux-alpha@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-snps-arc@lists.infradead.org,
- linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-sh@vger.kernel.org, dri-devel@lists.freedesktop.org,
- nouveau@lists.freedesktop.org, linux-media@vger.kernel.org,
- linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
- linux-ntb@googlegroups.com, virtualization@lists.linux-foundation.org,
- linux-arch@vger.kernel.org
-Message-ID: <ff03b149-b825-47f3-f92e-100899bb05fd@suse.de>
-Subject: Re: [PATCH v2 6/9] drm/mgag200: Constify ioreadX() iomem argument (as
- in generic implementation)
-References: <20200108200528.4614-1-krzk@kernel.org>
- <20200108200528.4614-7-krzk@kernel.org>
-In-Reply-To: <20200108200528.4614-7-krzk@kernel.org>
+On Tue, Jan 7, 2020 at 7:21 PM Tony Chuang <yhchuang@realtek.com> wrote:
+>
+> From: Chris Chiu
+> > Subject: Re: [PATCH] rtw88: fix potential NULL skb access in TX ISR
+> >
+> > On Tue, Jan 7, 2020 at 4:08 PM <yhchuang@realtek.com> wrote:
+> > >
+> > > From: Yan-Hsuan Chuang <yhchuang@realtek.com>
+> > >
+> > > Sometimes the TX queue may be empty and we could possible
+> > > dequeue a NULL pointer, crash the kernel. If the skb is NULL
+> > > then there is nothing to do, just leave the ISR.
+> > >
+> > > And the TX queue should not be empty here, so print an error
+> > > to see if there is anything wrong for DMA ring.
+> > >
+> > > Fixes: e3037485c68e ("rtw88: new Realtek 802.11ac driver")
+> > > Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
+> > > ---
+> > >  drivers/net/wireless/realtek/rtw88/pci.c | 5 +++++
+> > >  1 file changed, 5 insertions(+)
+> > >
+> > > diff --git a/drivers/net/wireless/realtek/rtw88/pci.c
+> > b/drivers/net/wireless/realtek/rtw88/pci.c
+> > > index a58e8276a41a..a6746b5a9ff2 100644
+> > > --- a/drivers/net/wireless/realtek/rtw88/pci.c
+> > > +++ b/drivers/net/wireless/realtek/rtw88/pci.c
+> > > @@ -832,6 +832,11 @@ static void rtw_pci_tx_isr(struct rtw_dev *rtwdev,
+> > struct rtw_pci *rtwpci,
+> > >
+> > >         while (count--) {
+> > >                 skb = skb_dequeue(&ring->queue);
+> > > +               if (!skb) {
+> > > +                       rtw_err(rtwdev, "failed to dequeue %d skb TX
+> > queue %d, BD=0x%08x, rp %d -> %d\n",
+> > > +                               count, hw_queue, bd_idx, ring->r.rp,
+> > cur_rp);
+> > > +                       break;
+> > > +               }
+> > >                 tx_data = rtw_pci_get_tx_data(skb);
+> > >                 pci_unmap_single(rtwpci->pdev, tx_data->dma,
+> > skb->len,
+> > >                                  PCI_DMA_TODEVICE);
+> > > --
+> > > 2.17.1
+> > >
+> >
+> > Maybe we can simply do 'while (count -- &&
+> > !skb_queue_empty(&ring->queue))' to achieve the same thing?
+> > I don't think it worths to raise an error unless the count is expected
+> > to exactly match the queue length in any
+> > circumstances.
+> >
+>
+> Yes, I expected that the queue length should match with the DMA ring.
+> And so I printed an error to see why the count mismatched.
+>
+> Yan-Hsuan
 
---EqxkoMtfePcRgHH0AtAZfgeT52t9h5L9b
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
+Maybe you can spin lock around skb_dequeue and skb_enqueue to prevent
+some possible race conditions?
 
-Hi
-
-Am 08.01.20 um 21:05 schrieb Krzysztof Kozlowski:
-> The ioreadX() helpers have inconsistent interface.  On some architectur=
-es
-> void *__iomem address argument is a pointer to const, on some not.
->=20
-> Implementations of ioreadX() do not modify the memory under the address=
-
-> so they can be converted to a "const" version for const-safety and
-> consistency among architectures.
->=20
-> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
-
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-
-> ---
->  drivers/gpu/drm/mgag200/mgag200_drv.h | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->=20
-> diff --git a/drivers/gpu/drm/mgag200/mgag200_drv.h b/drivers/gpu/drm/mg=
-ag200/mgag200_drv.h
-> index aa32aad222c2..6512b3af4fb7 100644
-> --- a/drivers/gpu/drm/mgag200/mgag200_drv.h
-> +++ b/drivers/gpu/drm/mgag200/mgag200_drv.h
-> @@ -34,9 +34,9 @@
-> =20
->  #define MGAG200FB_CONN_LIMIT 1
-> =20
-> -#define RREG8(reg) ioread8(((void __iomem *)mdev->rmmio) + (reg))
-> +#define RREG8(reg) ioread8(((const void __iomem *)mdev->rmmio) + (reg)=
-)
->  #define WREG8(reg, v) iowrite8(v, ((void __iomem *)mdev->rmmio) + (reg=
-))
-> -#define RREG32(reg) ioread32(((void __iomem *)mdev->rmmio) + (reg))
-> +#define RREG32(reg) ioread32(((const void __iomem *)mdev->rmmio) + (re=
-g))
->  #define WREG32(reg, v) iowrite32(v, ((void __iomem *)mdev->rmmio) + (r=
-eg))
-> =20
->  #define ATTR_INDEX 0x1fc0
->=20
-
---=20
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Maxfeldstr. 5, 90409 N=C3=BCrnberg, Germany
-(HRB 36809, AG N=C3=BCrnberg)
-Gesch=C3=A4ftsf=C3=BChrer: Felix Imend=C3=B6rffer
-
-
---EqxkoMtfePcRgHH0AtAZfgeT52t9h5L9b--
-
---3rd3nqEKmviIlgYXLgxkt4GDz8CFTZqke
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEchf7rIzpz2NEoWjlaA3BHVMLeiMFAl4WwngACgkQaA3BHVML
-eiOKNgf/dNIJuZ1NzHHcf9BEmT/BV7QlRe6/FHHA4aiJdqTNYEZ4xQWzoZBT3FUD
-+t1ZzbPtJWF3dx/Bi2AyeI9UK9D5lqSqMPpjgfAgMdT60DkhStpiz4k80WtBG7NY
-dDcotCOrSeaYxImtCFAchwYcIw0l/cAD/ohiQYTfXx3FRj2Sb2hRIKx2h5Mr7k6G
-3lSOqlEt69S2/G/Xlb37VeI2f07RsVR+b89pQPgS5WWUyITa5ukgxWrI5sc7Sn5U
-ogamIdJCPT06fCNVF1JRsOBlI4qw+LNh5Z63REuA8V0qPytUKOW9kdxMwUlhkZJ/
-bQNkg8ibheQ3Xn8Bq6EjM/UUSS7XyQ==
-=C0TM
------END PGP SIGNATURE-----
-
---3rd3nqEKmviIlgYXLgxkt4GDz8CFTZqke--
+Chris
