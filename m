@@ -2,79 +2,73 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B9348135B1F
-	for <lists+linux-wireless@lfdr.de>; Thu,  9 Jan 2020 15:12:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 15465135CC0
+	for <lists+linux-wireless@lfdr.de>; Thu,  9 Jan 2020 16:29:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731539AbgAIOMd convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 9 Jan 2020 09:12:33 -0500
-Received: from mx2.suse.de ([195.135.220.15]:48312 "EHLO mx2.suse.de"
+        id S1731041AbgAIP31 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 9 Jan 2020 10:29:27 -0500
+Received: from mail.kernel.org ([198.145.29.99]:33566 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731527AbgAIOMd (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 9 Jan 2020 09:12:33 -0500
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id BEE25B2F31;
-        Thu,  9 Jan 2020 14:12:25 +0000 (UTC)
-From:   Nicolai Stange <nstange@suse.de>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     huangwenabc@gmail.com, linux-wireless@vger.kernel.org,
-        Takashi Iwai <tiwai@suse.de>, Nicolai Stange <nstange@suse.de>,
-        Miroslav Benes <mbenes@suse.cz>
-Subject: Re: [PATCH] libertas: Fix two buffer overflows at parsing bss descriptor
-In-Reply-To: <20191122052917.11309-1-huangwenabc@gmail.com>
-Date:   Thu, 09 Jan 2020 15:12:24 +0100
-Message-ID: <87woa04t2v.fsf@suse.de>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.3 (gnu/linux)
+        id S1728257AbgAIP31 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 9 Jan 2020 10:29:27 -0500
+Received: from localhost (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 494B220673;
+        Thu,  9 Jan 2020 15:29:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1578583766;
+        bh=4yxdqliRGaByZbgaDZ+g0vdg0HH/Wm3FEJvh3Vpr2hA=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=TcAh4qCnn5OC28taqif6ZQ5peLRBI0+88/71AT9LJjl1Yooy6ln/XA/nkGmMTYWM1
+         AafmmaIpfOvqtN2/d6SYTQ4fphKoWzNLx6DvYDK5syk1uVnzIrtiX032CJAPc67pJj
+         1c3QK0M89DmKJsTda8pbXY2AW7E601NPpiJFVbGM=
+Date:   Thu, 9 Jan 2020 10:29:25 -0500
+From:   Sasha Levin <sashal@kernel.org>
+To:     Brian Norris <briannorris@chromium.org>
+Cc:     Linux Kernel <linux-kernel@vger.kernel.org>,
+        stable <stable@vger.kernel.org>,
+        huangwen <huangwenabc@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        "<netdev@vger.kernel.org>" <netdev@vger.kernel.org>,
+        Ganapathi Bhat <ganapathi.bhat@nxp.com>
+Subject: Re: [PATCH AUTOSEL 5.4 008/187] mwifiex: fix possible heap overflow
+ in mwifiex_process_country_ie()
+Message-ID: <20200109152925.GF1706@sasha-vm>
+References: <20191227174055.4923-1-sashal@kernel.org>
+ <20191227174055.4923-8-sashal@kernel.org>
+ <CA+ASDXM6UvVCDYGq7gMEai_v3d79Pi_ZH=UFs1gfw_pL_BLMJg@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <CA+ASDXM6UvVCDYGq7gMEai_v3d79Pi_ZH=UFs1gfw_pL_BLMJg@mail.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+On Mon, Jan 06, 2020 at 02:51:28PM -0800, Brian Norris wrote:
+>On Fri, Dec 27, 2019 at 9:59 AM Sasha Levin <sashal@kernel.org> wrote:
+>>
+>> From: Ganapathi Bhat <gbhat@marvell.com>
+>>
+>> [ Upstream commit 3d94a4a8373bf5f45cf5f939e88b8354dbf2311b ]
+>
+>FYI, this upstream commit has unbalanced locking. I've submitted a
+>followup here:
+>
+>[PATCH] mwifiex: fix unbalanced locking in mwifiex_process_country_ie()
+>https://lkml.kernel.org/linux-wireless/20200106224212.189763-1-briannorris@chromium.org/T/#u
+>https://patchwork.kernel.org/patch/11320227/
+>
+>I'd recommend holding off until that gets landed somewhere. (Same for
+>the AUTOSEL patches sent to other kernel branches.)
 
-the patch queued as e5e884b42639 ("libertas: Fix two buffer overflows at
-parsing bss descriptor") at the wireless tree doesn't look completely
-correct to me.
-
-This hunk here...
-
-diff --git a/drivers/net/wireless/marvell/libertas/cfg.c b/drivers/net/wireless/marvell/libertas/cfg.c
-index 57edfada0665..c9401c121a14 100644
---- a/drivers/net/wireless/marvell/libertas/cfg.c
-+++ b/drivers/net/wireless/marvell/libertas/cfg.c
-@@ -1775,9 +1782,12 @@ static int lbs_ibss_join_existing(struct lbs_private *priv,
- 	if (!rates_eid) {
- 		lbs_add_rates(cmd.bss.rates);
- 	} else {
--		int hw, i;
--		u8 rates_max = rates_eid[1];
--		u8 *rates = cmd.bss.rates;
-+		rates_max = rates_eid[1];
-+		if (rates_max > MAX_RATES) {
-+			lbs_deb_join("invalid rates");
-+			goto out;
-
-... makes the error path skip over the rcu_read_unlock() following later
-in the code and leaves the RCU read section unbalanced.
-
-Also, I'm wondering if ret should perhaps get set to some -Exxxx in case
-of rates_max > MAX_RATES?
-
-Thanks,
-
-Nicolai
-
-
-+		}
-+		rates = cmd.bss.rates;
- 		for (hw = 0; hw < ARRAY_SIZE(lbs_rates); hw++) {
- 			u8 hw_rate = lbs_rates[hw].bitrate / 5;
- 			for (i = 0; i < rates_max; i++) {
+I'll drop it for now, just ping us when the fix is in and we'll get both
+patches queued back up.
 
 -- 
-SUSE Software Solutions Germany GmbH, Maxfeldstr. 5, 90409 Nürnberg, Germany
-(HRB 36809, AG Nürnberg), GF: Felix Imendörffer
+Thanks,
+Sasha
