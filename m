@@ -2,83 +2,107 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B0EA6136DA0
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 Jan 2020 14:17:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C3FA136DE1
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 Jan 2020 14:23:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727859AbgAJNQa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 10 Jan 2020 08:16:30 -0500
-Received: from mail25.static.mailgun.info ([104.130.122.25]:52689 "EHLO
-        mail25.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727806AbgAJNQ0 (ORCPT
+        id S1727500AbgAJNXY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 10 Jan 2020 08:23:24 -0500
+Received: from mail-lj1-f194.google.com ([209.85.208.194]:41994 "EHLO
+        mail-lj1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727492AbgAJNXY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 10 Jan 2020 08:16:26 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1578662186; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: From: Sender;
- bh=i+FSacw/oKHPosASdYmNACUkHU9zjbv90HutOF8oZS0=; b=uaDpsRB7BIS/DcVe6uXRkyGmZGRM/3auRooFwVdRgk+5ZrkcwxDwKL7Ng28euEXYxM4v0muB
- UflWsjrc1xxYYXH2a3W1/4Ls5DndqhguamFGweHzH01liX9ZrZwpLUow6Z7aP3WPA7s5+eJr
- RzXduaFWCnehYtxW3vBhpTjVdx4=
-X-Mailgun-Sending-Ip: 104.130.122.25
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e187928.7f556634fa08-smtp-out-n03;
- Fri, 10 Jan 2020 13:16:24 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 49E1EC447A5; Fri, 10 Jan 2020 13:16:24 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=0.2 required=2.0 tests=ALL_TRUSTED,MISSING_HEADERS,
-        SPF_NONE autolearn=no autolearn_force=no version=3.4.0
-Received: from x230.qca.qualcomm.com (unknown [83.145.195.18])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 8EFE4C447A4;
-        Fri, 10 Jan 2020 13:16:21 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 8EFE4C447A4
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-Cc:     linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
-        linux-next@vger.kernel.org, sfr@canb.auug.org.au,
-        Stanislaw Gruszka <stf_xl@wp.pl>,
-        linux-wireless@vger.kernel.org
-Subject: Re: [PATCH] iwlwifi: fix build warnings with format string
-References: <20200106171452.201c3b4c@canb.auug.org.au>
-        <1578322389-13716-1-git-send-email-akinobu.mita@gmail.com>
-nTo:    Akinobu Mita <akinobu.mita@gmail.com>
-Date:   Fri, 10 Jan 2020 15:16:18 +0200
-In-Reply-To: <1578322389-13716-1-git-send-email-akinobu.mita@gmail.com>
-        (Akinobu Mita's message of "Mon, 6 Jan 2020 23:53:09 +0900")
-Message-ID: <87muavsb8d.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        Fri, 10 Jan 2020 08:23:24 -0500
+Received: by mail-lj1-f194.google.com with SMTP id y4so2112281ljj.9
+        for <linux-wireless@vger.kernel.org>; Fri, 10 Jan 2020 05:23:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=lGIL7xB5vL/1N3b42c5s3EEu3HqzAh3oOl0k2K1LYTw=;
+        b=mGvHcYmNxDS0zt5KHZiDP9DgEokfLGQ74WZLN9hhD3jDh+8B531T641nAXhQ4bcTLh
+         +eQd0GRLv8EQRY0DMsIuU9eDGDHrVZZbyinqsBUFOy813S1kI2n7XsYWQyjLvhddIwPw
+         j7+YVT7I7EbBS4Kt1VW+rSk1Hhx+knBZRgqvCxXuBMxqIaj8C+B3+V6+oC4q0xRwT2sB
+         Cd6FWFJRQWVBGCQFFiXLzCyrr4D2mJFlk+fsAUqCpztyDn0RShAQ5RilivKdw5p/lYw1
+         TbPTlPiiPWMsW75PMIqST8R50vQDpawoBd9nkYxY4nUWquLvye3layG0aXleE0JxTlp4
+         j4ug==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=lGIL7xB5vL/1N3b42c5s3EEu3HqzAh3oOl0k2K1LYTw=;
+        b=a+R0BJB6Y/1XVqnmJYVl9d3x9aRkbgd0+QpOqP/58HpP6lshxzyRrMaEYKkjbbnKF0
+         lH8MmVWi5PeH/AMy7T2hMglNIYLFTfmteB7ZmrAnAQSoeoQFHw/fdePohZoR7lGvmiMs
+         RabwnhTprLO+nb8fkADNGm8vO/JQPTLtrP1sHLFOOt/I/WjJKgF6TwQKIox1HkKvnNXZ
+         kDEQIEwbxqtbFsU+ofzNKHOwwcH8bTOFLmKMnDNrkseT1m30SnC4h67UFlORE9jWIy7I
+         UMKV2eJwdS/D0RZ7IP62LSH9Ef4OSLVPmbh0eWitmDgBfqdTZ5uEsyXy8XGDgsgEt9zj
+         zxyg==
+X-Gm-Message-State: APjAAAVWIvPY6sgK/3u5ahBkCXfZs8lBKxI1QN07ymvYtlLic9rDa1WI
+        gM9rUswTS7grTYiaaArau/47TeHW
+X-Google-Smtp-Source: APXvYqw4TtiuajtBw1Yk0JwLuari0T2llLxZxioQGgrwHjkJhba4DS2fi6ijNKO/4HtGFuseY+s7Ww==
+X-Received: by 2002:a2e:b555:: with SMTP id a21mr2716241ljn.170.1578662602669;
+        Fri, 10 Jan 2020 05:23:22 -0800 (PST)
+Received: from dk.user.kdf.lan ([89.18.140.18])
+        by smtp.gmail.com with ESMTPSA id p136sm1039641lfa.8.2020.01.10.05.23.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 10 Jan 2020 05:23:22 -0800 (PST)
+From:   Denis Kalashnikov <denis281089@gmail.com>
+To:     linux-wireless@vger.kernel.org
+Cc:     kvalo@codeaurora.org
+Subject: [PATCH v3] ath9k: fix firmware bug in some Mikrotik R11e-2HPnD cards
+Date:   Fri, 10 Jan 2020 16:21:42 +0300
+Message-Id: <20200110132142.7737-1-denis281089@gmail.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-Content-Type: text/plain
-To:     unlisted-recipients:; (no To-header on input)
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-(please cc linux-wireless on all wireless patches)
+Some of the Mikrotik R11e-2HPnD cards have EEPROM where is
+flashed that a card has 3 chains, but actually all this cards
+have only 2. This leads ath9k to write into the logs:
+'ath: phy0: Unable to reset channel, reset status -5' and
+stations don't see that AP.
 
-Akinobu Mita <akinobu.mita@gmail.com> writes:
+Mikrotik R11e-2HPnD is based on AR9582 chip.
 
-> This fixes build warnings introduced by commit "iwlegacy: use
-> <linux/units.h> helpers" (iwlegacy-use-linux-unitsh-helpers.patch in -mm)
->
-> The format '%d' has to be changed to '%ld' because the return type of
-> kelvin_to_celsius() is 'long'.
->
-> Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
-> Link: https://lore.kernel.org/r/20200106171452.201c3b4c@canb.auug.org.au
-> Cc: Kalle Valo <kvalo@codeaurora.org>
-> Cc: Stanislaw Gruszka <stf_xl@wp.pl>
-> Signed-off-by: Akinobu Mita <akinobu.mita@gmail.com>
+Signed-off-by: Denis Kalashnikov <denis281089@gmail.com>
+---
 
-I don't know what's Andrew's workflow, but shouldn't the original patch
-be fixed instead?
+Changelog:
 
+Changes since v2:
+  Use macros AR_SREV_9580_10 to select only AR9582 chips (they all
+  have only 2 chains) instead of more general macros AR_SREV_9580
+  that selects not only AR9582 but also AR9580 chips with 3 chains.
+
+Changes since v1:
+  No changes, only resending through 'git send-email' instead of Gmail.
+
+ drivers/net/wireless/ath/ath9k/ar9003_eeprom.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/drivers/net/wireless/ath/ath9k/ar9003_eeprom.c b/drivers/net/wireless/ath/ath9k/ar9003_eeprom.c
+index b4885a700296..86a9f49ae0d0 100644
+--- a/drivers/net/wireless/ath/ath9k/ar9003_eeprom.c
++++ b/drivers/net/wireless/ath/ath9k/ar9003_eeprom.c
+@@ -3373,6 +3373,15 @@ static int ar9300_eeprom_restore_internal(struct ath_hw *ah,
+ 		cptr -= (COMP_HDR_LEN + osize + COMP_CKSUM_LEN);
+ 	}
+ 
++	/**
++	 * Fix firmware bug of some Mikrotik R11e-2HPnD cards (based on AR9582)
++	 * that claim that they have 3 chains, but actually have only 2.
++	 */
++	if (AR_SREV_9580_10(ah)) {
++		eep = (struct ar9300_eeprom *)mptr;
++		eep->baseEepHeader.txrxMask &= 0x33;
++	}
++
+ 	kfree(word);
+ 	return cptr;
+ 
 -- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+2.23.0
+
