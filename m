@@ -2,145 +2,107 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3DF22136B0F
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 Jan 2020 11:29:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E918136C10
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 Jan 2020 12:39:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727366AbgAJK3i (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 10 Jan 2020 05:29:38 -0500
-Received: from mail26.static.mailgun.info ([104.130.122.26]:42074 "EHLO
-        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727339AbgAJK3h (ORCPT
+        id S1727710AbgAJLjL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 10 Jan 2020 06:39:11 -0500
+Received: from mail-ot1-f68.google.com ([209.85.210.68]:36913 "EHLO
+        mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727457AbgAJLjK (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 10 Jan 2020 05:29:37 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1578652177; h=Message-ID: References: In-Reply-To: Subject:
- Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
- MIME-Version: Sender; bh=IytsLbM1pR0Qzs157gZv5EoAroYoP4LB4watZpuwJso=;
- b=JrFHgdSFAyGQHrPd8F/BVK76f2Mb/GZYG50RPpOlm6sQgfqi03hfZNJ+SaxpAoX4/bEwm3Ro
- MsoszPob5W5SHsFpCPSLPgFSFVY9O+qHJ2kT/dWu7IXFUhaLxHnZLBBl3M2Nnssou9d/5B0w
- +zAwbHe1L5T7Zlhmo9I959h6qPQ=
-X-Mailgun-Sending-Ip: 104.130.122.26
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e185210.7f29dee6b228-smtp-out-n02;
- Fri, 10 Jan 2020 10:29:36 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 1313FC433A2; Fri, 10 Jan 2020 10:29:35 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: wgong)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 93091C433CB;
-        Fri, 10 Jan 2020 10:29:34 +0000 (UTC)
+        Fri, 10 Jan 2020 06:39:10 -0500
+Received: by mail-ot1-f68.google.com with SMTP id k14so1644993otn.4
+        for <linux-wireless@vger.kernel.org>; Fri, 10 Jan 2020 03:39:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=N5q315f9LjOiYAZl8Osbhhg/nIGipOca4U1i12aQxzg=;
+        b=j+dYtAD7VSmuHXSKuI074QT6Q74r/OEJBeXmrI/wL8hQxkIo67if/LXhfTEH5899sZ
+         I5bglopMnHe+dU/0ZSEsg3PzbIEouzrePgkYSMX66SWenJcFeO+ACrMLSRFnqffm83Mz
+         tyM1Emseujcpl6wzSqT9Ie097arY/q2G++tr7w/LT3ZYowfXkQ1xgpnhQ3ADHslfHSr+
+         Zmc3XjY8NYD9y3DQzIpyd+IJ0qPaBOBrsKWvxnH9ofGxtx4bO4Nr2f9vEq/FHYL0Zjtd
+         C8Of7sIRWulJqQePqmMn5TE6cRg0M75niotcVidxZRbuiaC+mgF3+K/e03GjRx0DLLgr
+         lZRA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=N5q315f9LjOiYAZl8Osbhhg/nIGipOca4U1i12aQxzg=;
+        b=iqoEHnELYzL022ZaHhT0byfZWRSYGJLXT6HFNlInQU1Heb/EJveZ3Yf1J/6k4DEqj1
+         kOE5SJjFHIjtioEvHHbHlHapDb6kvkR9yewdZKZnAuNObiCAnYLgBuybZj1o7VfRgvm/
+         TkB0YNaOaC+xGl3M1addXRIqpZLuO3F2wZqovm1nbrbNx5/fj1ae+Q+eVdpIg84kr3Yu
+         onQ9YCpozb1L3C8dDd74YHObi0vfYybqCT710l/w9zBIJHcoRKrUkHtr0F5KQDTkLOZ+
+         gtk5UOl00rQ8Ue2ZATpptOhEO8wlpdLPnsvt0uCGC+JUlBFAxUOKCXLY8br8KhSAgo3m
+         c35Q==
+X-Gm-Message-State: APjAAAVXJLq0LI9AAFrKQwcV3n5aLYGI3OChj8UGw1arRzAhdt0Ne5AX
+        y8nd8U5nt+JKHgqpnwfVm4Jy4znuKIVX9XVQ+oe+zw==
+X-Google-Smtp-Source: APXvYqx7/Xicuqkr3xFcewvf0l1V57IutpgM/5oHx85hOJJ9Acnu00CD6cuJnfEFEIVcEH6X5LcaIWyN04cnLjrgVf0=
+X-Received: by 2002:a05:6830:ce:: with SMTP id x14mr2100394oto.289.1578656350008;
+ Fri, 10 Jan 2020 03:39:10 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Fri, 10 Jan 2020 18:29:34 +0800
-From:   Wen Gong <wgong@codeaurora.org>
-To:     Justin Capella <justincapella@gmail.com>
-Cc:     ath10k <ath10k@lists.infradead.org>, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH v4 1/2] ath10k: add refcount for ath10k_core_restart
-In-Reply-To: <CAMrEMU-UTtxJ-eMoNEBONXJCTpaZCcGc8Mu34wqQNXkpVz=gJA@mail.gmail.com>
-References: <20200108031957.22308-1-wgong@codeaurora.org>
- <20200108031957.22308-2-wgong@codeaurora.org>
- <CAMrEMU-UTtxJ-eMoNEBONXJCTpaZCcGc8Mu34wqQNXkpVz=gJA@mail.gmail.com>
-Message-ID: <55ab2d64e78d51a9da587f276899e08b@codeaurora.org>
-X-Sender: wgong@codeaurora.org
-User-Agent: Roundcube Webmail/1.3.9
+References: <CAKoLU8M+QU-96vnfet-759nnXyxxJmsf1Csba4FgNas8ZVOnOQ@mail.gmail.com>
+ <87v9pjsom7.fsf@codeaurora.org>
+In-Reply-To: <87v9pjsom7.fsf@codeaurora.org>
+From:   Denis Kalashnikov <denis281089@gmail.com>
+Date:   Fri, 10 Jan 2020 14:37:23 +0300
+Message-ID: <CAKoLU8Oft1Lu1fQx2wRyO8nfOuynu6Ns5=xdq+j2X-wyyzYV9w@mail.gmail.com>
+Subject: Re: [PATCH 1/1] ath9k: fix firmware bug in some of Mikrotik
+ R11e-2HPnD cards
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     linux-wireless@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2020-01-08 20:02, Justin Capella wrote:
-> I think this might break the "wedged" state.
-> 
-> Would simply not taking action unless STATE ON avoid the problems with
-> multiple calls to _restart? ie:
-> 
+You are right, it is possible. I will fix my patch and resend. Thank you.
 
-ath10k_core_restart is one part of the recovery process,
-after ath10k_core_restart, it has other things do in mac80211/ath10k...,
-it need to make sure all the recovery 
-finished(ath10k_reconfig_complete),
-then the next recovery can start from ath10k_core_restart.
-
-so it can not simply change like below.
-> diff --git a/drivers/net/wireless/ath/ath10k/core.c
-> b/drivers/net/wireless/ath/ath10k/core.c
-> index 5ec16ce19b69..a6c11b2bc97c 100644
-> --- a/drivers/net/wireless/ath/ath10k/core.c
-> +++ b/drivers/net/wireless/ath/ath10k/core.c
-> @@ -2198,11 +2198,8 @@ static int ath10k_init_hw_params(struct ath10k 
-> *ar)
->   return 0;
->  }
-> 
-> -static void ath10k_core_restart(struct work_struct *work)
-> +static void inline _ath10k_core_restart(struct ath10k *ar)
->  {
-> - struct ath10k *ar = container_of(work, struct ath10k, restart_work);
-> - int ret;
-> -
->   set_bit(ATH10K_FLAG_CRASH_FLUSH, &ar->dev_flags);
-> 
->   /* Place a barrier to make sure the compiler doesn't reorder
-> @@ -2232,14 +2229,28 @@ static void ath10k_core_restart(struct
-> work_struct *work)
->   */
->   cancel_work_sync(&ar->set_coverage_class_work);
-> 
-> + ath10k_halt(ar);
-> + ath10k_scan_finish(ar);
-> + ieee80211_restart_hw(ar->hw);
-> +
-> + ret = ath10k_coredump_submit(ar);
-> + if (ret)
-> + ath10k_warn(ar, "failed to send firmware crash dump via devcoredump:
-> %d", ret);
-> +
-> + complete(&ar->driver_recovery);
-> +}
-> +
-> +static void ath10k_core_restart(struct work_struct *work)
-> +{
-> + struct ath10k *ar = container_of(work, struct ath10k, restart_work);
-> + int ret;
-> +
->   mutex_lock(&ar->conf_mutex);
-> 
->   switch (ar->state) {
->   case ATH10K_STATE_ON:
->   ar->state = ATH10K_STATE_RESTARTING;
-> - ath10k_halt(ar);
-> - ath10k_scan_finish(ar);
-> - ieee80211_restart_hw(ar->hw);
-> + _ath10k_core_restart(ar);
->   break;
->   case ATH10K_STATE_OFF:
->   /* this can happen if driver is being unloaded
-> @@ -2262,13 +2273,6 @@ static void ath10k_core_restart(struct 
-> work_struct *work)
->   }
-> 
->   mutex_unlock(&ar->conf_mutex);
-> -
-> - ret = ath10k_coredump_submit(ar);
-> - if (ret)
-> - ath10k_warn(ar, "failed to send firmware crash dump via devcoredump: 
-> %d",
-> -     ret);
-> -
-> - complete(&ar->driver_recovery);
->  }
-> 
->  static void ath10k_core_set_coverage_class_work(struct work_struct 
-> *work)
-> 
-> On Tue, Jan 7, 2020 at 7:20 PM Wen Gong <wgong@codeaurora.org> wrote:
+=D0=BF=D1=82, 10 =D1=8F=D0=BD=D0=B2. 2020 =D0=B3. =D0=B2 11:27, Kalle Valo =
+<kvalo@codeaurora.org>:
+>
+> Denis Kalashnikov <denis281089@gmail.com> writes:
+>
+> > Some of the Mikrotik R11e-2HPnD cards have EEPROM where is
+> > flashed that a card has 3 chains, but actually all this cards
+> > have only 2. This leads ath9k to write periodically into the logs:
+> > 'ath: phy0: Unable to reset channel, reset status -5' and
+> > stations don't see that AP.
+> >
+> > Mikrotik R11e-2HPnD is based on AR9582 chip.
+> >
+> > Signed-off-by: Denis Kalashnikov <denis281089@gmail.com>
+> > ---
+> >  drivers/net/wireless/ath/ath9k/ar9003_eeprom.c | 9 +++++++++
+> >  1 file changed, 9 insertions(+)
+> >
+> > diff --git a/drivers/net/wireless/ath/ath9k/ar9003_eeprom.c
+> > b/drivers/net/wireless/ath/ath9k/ar9003_eeprom.c
+> > index b4885a700296..554a81400648 100644
+> > --- a/drivers/net/wireless/ath/ath9k/ar9003_eeprom.c
+> > +++ b/drivers/net/wireless/ath/ath9k/ar9003_eeprom.c
+> > @@ -3373,6 +3373,15 @@ static int
+> > ar9300_eeprom_restore_internal(struct ath_hw *ah,
+> >                 cptr -=3D (COMP_HDR_LEN + osize + COMP_CKSUM_LEN);
+> >         }
+> >
+> > +       /**
+> > +        * Fix firmware bug of some Mikrotik R11e-2HPnD cards (based on=
+ AR9582)
+> > +        * that claim that they have 3 chains, but actually have only 2=
+.
+> > +        */
+> > +       if (AR_SREV_9580(ah)) {
+> > +               eep =3D (struct ar9300_eeprom *)mptr;
+> > +               eep->baseEepHeader.txrxMask &=3D 0x33;
+> > +       }
+>
+> What about 9580 devices which really have 3 chains, doesn't this broke
+> those? Or is such setup impossible?
+>
+> --
+> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpa=
+tches
