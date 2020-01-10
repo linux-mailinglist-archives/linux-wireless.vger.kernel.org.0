@@ -2,45 +2,43 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 314BB13764C
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 Jan 2020 19:45:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 33CD71376B7
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 Jan 2020 20:11:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728724AbgAJSoN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 10 Jan 2020 13:44:13 -0500
-Received: from mail-io1-f70.google.com ([209.85.166.70]:37865 "EHLO
-        mail-io1-f70.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728412AbgAJSoM (ORCPT
+        id S1727855AbgAJTLL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 10 Jan 2020 14:11:11 -0500
+Received: from mail-il1-f198.google.com ([209.85.166.198]:45902 "EHLO
+        mail-il1-f198.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727612AbgAJTLK (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 10 Jan 2020 13:44:12 -0500
-Received: by mail-io1-f70.google.com with SMTP id t70so2105708iof.4
-        for <linux-wireless@vger.kernel.org>; Fri, 10 Jan 2020 10:44:11 -0800 (PST)
+        Fri, 10 Jan 2020 14:11:10 -0500
+Received: by mail-il1-f198.google.com with SMTP id w6so2186652ill.12
+        for <linux-wireless@vger.kernel.org>; Fri, 10 Jan 2020 11:11:10 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
-        bh=UtgqWyCMHEbuMc1chkx9FfigMbDl2qVQb2WRO39xvW8=;
-        b=JzE0Ca+Qnn4/hCu6Rho0ZsCfetoJu1dCJdEZ9Ip0k3ZPxLl3euSdBEqDhVaSSSsBew
-         c3EWjjS6XAmIy0IB+90SvFg4aXHOoVuAonMFJ4psdK/CcT63zGC3Ri+iV0ibw/rirF6z
-         qnKlnR/KUxhKBGlRaelBYHr68dCMMBOLeAECQh63PRy6IhoQ9ktgkTFSEAJATnFUa0cc
-         QJHz8ajIFajQXhujS0MXnZCxxG8LXBmKD0wXDtWvvnupVU75LY43XjmUTGl0Wvsrwf+1
-         d6fGFpGM4kRmp1bZvt+p68xlrhn8NMOOIvO+glKVgLr4wH5oxS+fOG1NjIHs9nFz1pnG
-         Zm7A==
-X-Gm-Message-State: APjAAAVWwcmYQzW6Eo+xxEN5Qsz0vzgxTV1QMt1jGNCHgdCb/6bWaXb/
-        DrA0+KZNhzo6TTxjaLQBXROs1WMIZNsw1+Fy5xmaF6IuAmN6
-X-Google-Smtp-Source: APXvYqz/absesZKveMvYc0mhZ7cQ4Ny4xIv6iOqFCtlPa1fHpSpzkHhTbbUQGL1GiI5GNSBDPPcZOL+G8hHdpLSrUr+ykFDhxjQy
+        bh=Fy/WFcnJ25iyWFvsl9r5AXVP+hcY+D0Rh4DTlOZdONM=;
+        b=rFEChyTLHV6oP/+Q2yc/Lu99FIjW7fW8X5fbTEYCYxYLiZ5177UNB4hnss4y0W9T+C
+         Lr0Fgoi+IIANv/vF8lD+YDu2UqfMkZ3CQEwaV2cxy+ltBFTuvhcWmwIGea37/T/4m5Ak
+         t/IaBTcQ9OUUufEPKZw85rv3heJiBk1WVMbsbpPaE+oAm2ebg/7cXIwBzs/KpupQJlxd
+         vO3dWylUq3GeHZu6UBrZNsG4ll7zGE2p4mMSzafUb0gBZ5kvdmE2wTcFoov2DubMIr77
+         u/c232QxpTXK4c2nIgsswbpGwcG12gTgV7E4IVzfHbpEAv4Ijh9ywSEmsr8kSSA6YHyH
+         PIYQ==
+X-Gm-Message-State: APjAAAVUsJAuQafW6YUuMubVy8Cw65owtP0XYgHBqrXSuEC9FqigkHOe
+        65/JiOC+C6U3nG/ImKvrxXva4CWxDSY+Ugm4S0aUWHKMGnk9
+X-Google-Smtp-Source: APXvYqwY3GgaXVZtkAQIcr7wURVRj5PLnEFSR3Wg8Z1BDSmZIfg3rWTj3510J3NUyAXFL3aFFxXUt677cxsGvHDKy4AIRx2nqtdv
 MIME-Version: 1.0
-X-Received: by 2002:a02:6a10:: with SMTP id l16mr4151275jac.77.1578681851625;
- Fri, 10 Jan 2020 10:44:11 -0800 (PST)
-Date:   Fri, 10 Jan 2020 10:44:11 -0800
+X-Received: by 2002:a5d:97c3:: with SMTP id k3mr3909079ios.38.1578683470163;
+ Fri, 10 Jan 2020 11:11:10 -0800 (PST)
+Date:   Fri, 10 Jan 2020 11:11:10 -0800
 X-Google-Appengine-App-Id: s~syzkaller
 X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <000000000000fac92e059bcd82f4@google.com>
-Subject: WARNING in set_precision (2)
-From:   syzbot <syzbot+6693adf1698864d21734@syzkaller.appspotmail.com>
-To:     andrew@lunn.ch, davem@davemloft.net, f.fainelli@gmail.com,
-        johannes@sipsolutions.net, kvalo@codeaurora.org,
+Message-ID: <00000000000073b469059bcde315@google.com>
+Subject: BUG: unable to handle kernel NULL pointer dereference in cfg80211_wext_siwrts
+From:   syzbot <syzbot+34b582cf32c1db008f8e@syzkaller.appspotmail.com>
+To:     davem@davemloft.net, johannes@sipsolutions.net,
         linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        mkubecek@suse.cz, netdev@vger.kernel.org,
-        syzkaller-bugs@googlegroups.com
+        netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
@@ -51,96 +49,83 @@ Hello,
 
 syzbot found the following crash on:
 
-HEAD commit:    1ece2fbe ptp: clockmatrix: Rework clockmatrix version info..
-git tree:       net-next
-console output: https://syzkaller.appspot.com/x/log.txt?x=1709d58ee00000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=ff06bf0a19e7467d
-dashboard link: https://syzkaller.appspot.com/bug?extid=6693adf1698864d21734
+HEAD commit:    2f806c2a Merge branch 'net-ungraft-prio'
+git tree:       net
+console output: https://syzkaller.appspot.com/x/log.txt?x=1032069ee00000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=5c90cac8f1f8c619
+dashboard link: https://syzkaller.appspot.com/bug?extid=34b582cf32c1db008f8e
 compiler:       gcc (GCC) 9.0.0 20181231 (experimental)
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=15380c66e00000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=131916aee00000
 
-The bug was bisected to:
-
-commit 2b4a8990b7df55875745a80a609a1ceaaf51f322
-Author: Michal Kubecek <mkubecek@suse.cz>
-Date:   Fri Dec 27 14:55:18 2019 +0000
-
-     ethtool: introduce ethtool netlink interface
-
-bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=11c40c66e00000
-final crash:    https://syzkaller.appspot.com/x/report.txt?x=13c40c66e00000
-console output: https://syzkaller.appspot.com/x/log.txt?x=15c40c66e00000
+Unfortunately, I don't have any reproducer for this crash yet.
 
 IMPORTANT: if you fix the bug, please add the following tag to the commit:
-Reported-by: syzbot+6693adf1698864d21734@syzkaller.appspotmail.com
-Fixes: 2b4a8990b7df ("ethtool: introduce ethtool netlink interface")
+Reported-by: syzbot+34b582cf32c1db008f8e@syzkaller.appspotmail.com
 
-netlink: 179916 bytes leftover after parsing attributes in process  
-`syz-executor273'.
-------------[ cut here ]------------
-precision 33020 too large
-WARNING: CPU: 0 PID: 9618 at lib/vsprintf.c:2471 set_precision+0x150/0x180  
-lib/vsprintf.c:2471
-Kernel panic - not syncing: panic_on_warn set ...
-CPU: 0 PID: 9618 Comm: syz-executor273 Not tainted 5.5.0-rc4-syzkaller #0
+BUG: kernel NULL pointer dereference, address: 0000000000000000
+#PF: supervisor instruction fetch in kernel mode
+#PF: error_code(0x0010) - not-present page
+PGD a7499067 P4D a7499067 PUD 9a778067 PMD 0
+Oops: 0010 [#1] PREEMPT SMP KASAN
+CPU: 1 PID: 12180 Comm: syz-executor.2 Not tainted 5.5.0-rc4-syzkaller #0
 Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS  
 Google 01/01/2011
+RIP: 0010:0x0
+Code: Bad RIP value.
+RSP: 0018:ffffc90001727a78 EFLAGS: 00010246
+RAX: dffffc0000000000 RBX: ffff888218678540 RCX: ffffc9000e5df000
+RDX: 1ffffffff1148744 RSI: 0000000000000008 RDI: ffff888218678540
+RBP: ffffc90001727ab8 R08: ffff8880957ac0c0 R09: ffffed1015d2703d
+R10: ffffed1015d2703c R11: ffff8880ae9381e3 R12: ffffffff88a438a0
+R13: ffff88808f309000 R14: ffffc90001727bb0 R15: 0000000000000000
+FS:  00007f1e9f870700(0000) GS:ffff8880ae900000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: ffffffffffffffd6 CR3: 0000000094518000 CR4: 00000000001406e0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
 Call Trace:
-  __dump_stack lib/dump_stack.c:77 [inline]
-  dump_stack+0x197/0x210 lib/dump_stack.c:118
-  panic+0x2e3/0x75c kernel/panic.c:221
-  __warn.cold+0x2f/0x3e kernel/panic.c:582
-  report_bug+0x289/0x300 lib/bug.c:195
-  fixup_bug arch/x86/kernel/traps.c:174 [inline]
-  fixup_bug arch/x86/kernel/traps.c:169 [inline]
-  do_error_trap+0x11b/0x200 arch/x86/kernel/traps.c:267
-  do_invalid_op+0x37/0x50 arch/x86/kernel/traps.c:286
-  invalid_op+0x23/0x30 arch/x86/entry/entry_64.S:1027
-RIP: 0010:set_precision+0x150/0x180 lib/vsprintf.c:2471
-Code: 24 07 e8 23 30 9f f9 5b 41 5c 41 5d 41 5e 5d c3 e8 15 30 9f f9 89 de  
-48 c7 c7 60 c1 f7 88 c6 05 64 4b a1 02 01 e8 5f de 6f f9 <0f> 0b e9 60 ff  
-ff ff be 08 00 00 00 4c 89 e7 e8 4c e5 dc f9 e9 04
-RSP: 0018:ffffc90001d87280 EFLAGS: 00010286
-RAX: 0000000000000000 RBX: 00000000000080fc RCX: 0000000000000000
-RDX: 0000000000000000 RSI: ffffffff815e8fc6 RDI: fffff520003b0e42
-RBP: ffffc90001d872a0 R08: ffff88808d0702c0 R09: fffffbfff165f9ab
-R10: fffffbfff165f9aa R11: ffffffff8b2fcd57 R12: ffffc90001d87320
-R13: 0000000000000000 R14: ffffc90001d87327 R15: ffffc90001d87360
-  vsnprintf+0xa7b/0x19a0 lib/vsprintf.c:2547
-  kvasprintf+0xb2/0x170 lib/kasprintf.c:22
-  kasprintf+0xbb/0xf0 lib/kasprintf.c:59
-  hwsim_del_radio_nl+0x63a/0x7e0 drivers/net/wireless/mac80211_hwsim.c:3625
-  genl_family_rcv_msg_doit net/netlink/genetlink.c:672 [inline]
-  genl_family_rcv_msg net/netlink/genetlink.c:717 [inline]
-  genl_rcv_msg+0x67d/0xea0 net/netlink/genetlink.c:734
-  netlink_rcv_skb+0x177/0x450 net/netlink/af_netlink.c:2477
-  genl_rcv+0x29/0x40 net/netlink/genetlink.c:745
-  netlink_unicast_kernel net/netlink/af_netlink.c:1302 [inline]
-  netlink_unicast+0x58c/0x7d0 net/netlink/af_netlink.c:1328
-  netlink_sendmsg+0x91c/0xea0 net/netlink/af_netlink.c:1917
-  sock_sendmsg_nosec net/socket.c:643 [inline]
-  sock_sendmsg+0xd7/0x130 net/socket.c:663
-  ____sys_sendmsg+0x753/0x880 net/socket.c:2342
-  ___sys_sendmsg+0x100/0x170 net/socket.c:2396
-  __sys_sendmsg+0x105/0x1d0 net/socket.c:2429
-  __do_sys_sendmsg net/socket.c:2438 [inline]
-  __se_sys_sendmsg net/socket.c:2436 [inline]
-  __x64_sys_sendmsg+0x78/0xb0 net/socket.c:2436
+  rdev_set_wiphy_params net/wireless/rdev-ops.h:542 [inline]
+  cfg80211_wext_siwrts+0x265/0x8f0 net/wireless/wext-compat.c:267
+  ioctl_standard_call+0xca/0x1d0 net/wireless/wext-core.c:1015
+  wireless_process_ioctl.constprop.0+0x236/0x2b0 net/wireless/wext-core.c:953
+  wext_ioctl_dispatch net/wireless/wext-core.c:986 [inline]
+  wext_ioctl_dispatch net/wireless/wext-core.c:974 [inline]
+  wext_handle_ioctl+0x106/0x1c0 net/wireless/wext-core.c:1047
+  sock_ioctl+0x47d/0x790 net/socket.c:1112
+  vfs_ioctl fs/ioctl.c:47 [inline]
+  file_ioctl fs/ioctl.c:545 [inline]
+  do_vfs_ioctl+0x977/0x14e0 fs/ioctl.c:732
+  ksys_ioctl+0xab/0xd0 fs/ioctl.c:749
+  __do_sys_ioctl fs/ioctl.c:756 [inline]
+  __se_sys_ioctl fs/ioctl.c:754 [inline]
+  __x64_sys_ioctl+0x73/0xb0 fs/ioctl.c:754
   do_syscall_64+0xfa/0x790 arch/x86/entry/common.c:294
   entry_SYSCALL_64_after_hwframe+0x49/0xbe
-RIP: 0033:0x4401f9
-Code: 18 89 d0 c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 00 48 89 f8 48 89 f7  
+RIP: 0033:0x45af49
+Code: ad b6 fb ff c3 66 2e 0f 1f 84 00 00 00 00 00 66 90 48 89 f8 48 89 f7  
 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff  
-ff 0f 83 fb 13 fc ff c3 66 2e 0f 1f 84 00 00 00 00
-RSP: 002b:00007ffe53b2d788 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
-RAX: ffffffffffffffda RBX: 00000000004002c8 RCX: 00000000004401f9
-RDX: 0000000000000000 RSI: 0000000020000000 RDI: 0000000000000003
-RBP: 00000000006ca018 R08: 0000000000000000 R09: 00000000004002c8
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000401a80
-R13: 0000000000401b10 R14: 0000000000000000 R15: 0000000000000000
-Kernel Offset: disabled
-Rebooting in 86400 seconds..
+ff 0f 83 7b b6 fb ff c3 66 2e 0f 1f 84 00 00 00 00
+RSP: 002b:00007f1e9f86fc78 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+RAX: ffffffffffffffda RBX: 0000000000000003 RCX: 000000000045af49
+RDX: 0000000020000040 RSI: 0000000000008b22 RDI: 0000000000000004
+RBP: 000000000075c070 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 00007f1e9f8706d4
+R13: 00000000004c2837 R14: 00000000004d8b30 R15: 00000000ffffffff
+Modules linked in:
+CR2: 0000000000000000
+---[ end trace 4579299d7d6f7d47 ]---
+RIP: 0010:0x0
+Code: Bad RIP value.
+RSP: 0018:ffffc90001727a78 EFLAGS: 00010246
+RAX: dffffc0000000000 RBX: ffff888218678540 RCX: ffffc9000e5df000
+RDX: 1ffffffff1148744 RSI: 0000000000000008 RDI: ffff888218678540
+RBP: ffffc90001727ab8 R08: ffff8880957ac0c0 R09: ffffed1015d2703d
+R10: ffffed1015d2703c R11: ffff8880ae9381e3 R12: ffffffff88a438a0
+R13: ffff88808f309000 R14: ffffc90001727bb0 R15: 0000000000000000
+FS:  00007f1e9f870700(0000) GS:ffff8880ae900000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007fff5d5b8fc8 CR3: 0000000094518000 CR4: 00000000001406e0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
 
 
 ---
@@ -150,6 +135,3 @@ syzbot engineers can be reached at syzkaller@googlegroups.com.
 
 syzbot will keep track of this bug report. See:
 https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-For information about bisection process see: https://goo.gl/tpsmEJ#bisection
-syzbot can test patches for this bug, for details see:
-https://goo.gl/tpsmEJ#testing-patches
