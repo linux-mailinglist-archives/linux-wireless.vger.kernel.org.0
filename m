@@ -2,105 +2,145 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DEEA1138CC9
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Jan 2020 09:27:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 94AE0138D33
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Jan 2020 09:49:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728769AbgAMI1G (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 13 Jan 2020 03:27:06 -0500
-Received: from nbd.name ([46.4.11.11]:57666 "EHLO nbd.name"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728680AbgAMI1G (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 13 Jan 2020 03:27:06 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-         s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
-        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=/NHwwQnGBAa85zcV4M8gNdsSSkTKTe3Kl6d6gN17ino=; b=tKzaUnt5QT42dRYU/FjhfrfmXF
-        liDld7MJepEdNDuZpRoJSCDIIssSb89CrgCkjhONFiFWr7YWBQIH2phOTbzAnEcQjVLTL2+1CG6U7
-        4RX7rRAIuuzvovpbMQ6U6FmI9hBwv00Plhb3hqh5d01LR7iDoXC2kTx9s03RqGfl5X3U=;
-Received: from [80.255.7.117] (helo=nf.local)
-        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.89)
-        (envelope-from <nbd@nbd.name>)
-        id 1iqv3u-0007t4-C7; Mon, 13 Jan 2020 09:27:02 +0100
-Subject: Re: [PATCH] ath9k: Fix possible data races in ath_set_channel()
-To:     Jia-Ju Bai <baijiaju1990@gmail.com>, ath9k-devel@qca.qualcomm.com,
-        kvalo@codeaurora.org, davem@davemloft.net
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20200111171528.7053-1-baijiaju1990@gmail.com>
-From:   Felix Fietkau <nbd@nbd.name>
-Autocrypt: addr=nbd@nbd.name; prefer-encrypt=mutual; keydata=
- xsDiBEah5CcRBADIY7pu4LIv3jBlyQ/2u87iIZGe6f0f8pyB4UjzfJNXhJb8JylYYRzIOSxh
- ExKsdLCnJqsG1PY1mqTtoG8sONpwsHr2oJ4itjcGHfn5NJSUGTbtbbxLro13tHkGFCoCr4Z5
- Pv+XRgiANSpYlIigiMbOkide6wbggQK32tC20QxUIwCg4k6dtV/4kwEeiOUfErq00TVqIiEE
- AKcUi4taOuh/PQWx/Ujjl/P1LfJXqLKRPa8PwD4j2yjoc9l+7LptSxJThL9KSu6gtXQjcoR2
- vCK0OeYJhgO4kYMI78h1TSaxmtImEAnjFPYJYVsxrhay92jisYc7z5R/76AaELfF6RCjjGeP
- wdalulG+erWju710Bif7E1yjYVWeA/9Wd1lsOmx6uwwYgNqoFtcAunDaMKi9xVQW18FsUusM
- TdRvTZLBpoUAy+MajAL+R73TwLq3LnKpIcCwftyQXK5pEDKq57OhxJVv1Q8XkA9Dn1SBOjNB
- l25vJDFAT9ntp9THeDD2fv15yk4EKpWhu4H00/YX8KkhFsrtUs69+vZQwc0cRmVsaXggRmll
- dGthdSA8bmJkQG5iZC5uYW1lPsJgBBMRAgAgBQJGoeQnAhsjBgsJCAcDAgQVAggDBBYCAwEC
- HgECF4AACgkQ130UHQKnbvXsvgCgjsAIIOsY7xZ8VcSm7NABpi91yTMAniMMmH7FRenEAYMa
- VrwYTIThkTlQzsFNBEah5FQQCACMIep/hTzgPZ9HbCTKm9xN4bZX0JjrqjFem1Nxf3MBM5vN
- CYGBn8F4sGIzPmLhl4xFeq3k5irVg/YvxSDbQN6NJv8o+tP6zsMeWX2JjtV0P4aDIN1pK2/w
- VxcicArw0VYdv2ZCarccFBgH2a6GjswqlCqVM3gNIMI8ikzenKcso8YErGGiKYeMEZLwHaxE
- Y7mTPuOTrWL8uWWRL5mVjhZEVvDez6em/OYvzBwbkhImrryF29e3Po2cfY2n7EKjjr3/141K
- DHBBdgXlPNfDwROnA5ugjjEBjwkwBQqPpDA7AYPvpHh5vLbZnVGu5CwG7NAsrb2isRmjYoqk
- wu++3117AAMFB/9S0Sj7qFFQcD4laADVsabTpNNpaV4wAgVTRHKV/kC9luItzwDnUcsZUPdQ
- f3MueRJ3jIHU0UmRBG3uQftqbZJj3ikhnfvyLmkCNe+/hXhPu9sGvXyi2D4vszICvc1KL4RD
- aLSrOsROx22eZ26KqcW4ny7+va2FnvjsZgI8h4sDmaLzKczVRIiLITiMpLFEU/VoSv0m1F4B
- FtRgoiyjFzigWG0MsTdAN6FJzGh4mWWGIlE7o5JraNhnTd+yTUIPtw3ym6l8P+gbvfoZida0
- TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabwkkE
- GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCfTKx80VvCR/PvsUlrvdOLsIgeRGAAn1ee
- RjMaxwtSdaCKMw3j33ZbsWS4
-Message-ID: <67d7a9f7-546b-3dc9-07b2-846e390c1c5e@nbd.name>
-Date:   Mon, 13 Jan 2020 09:27:01 +0100
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:68.0)
- Gecko/20100101 Thunderbird/68.3.1
+        id S1728844AbgAMItS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 13 Jan 2020 03:49:18 -0500
+Received: from aserp2120.oracle.com ([141.146.126.78]:49288 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728783AbgAMItR (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 13 Jan 2020 03:49:17 -0500
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00D8mev4053829;
+        Mon, 13 Jan 2020 08:49:08 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ content-transfer-encoding : in-reply-to; s=corp-2019-08-05;
+ bh=lMx21tGcjb+jsEbRtABZz15Zz4x8qwLIqH7vx+tLHy0=;
+ b=QAtIetbIzElkUUiTe/pxyaKmXwng6vbZ1v5NDNRT6l/qp1JS3dBkZkyiM/1dtc1qwIwu
+ E0a6NJRrmGjM8dcXr8cuk449QA3F4Xj0ibSDrO/mtExqscsX5n9seKFhYEFRsx+GB7C0
+ AIrxB2FjJM7mW6+0ihQhgU61iuQaQM+DoQISkaGyM5+8x2wAaChEZ7dnsu2VOVKxvIjM
+ 0yrNFv2/J/JzI6WzXtoRMzV1XPZjwKha7z7xssCN/3YOMkyHkA16kWehp54NBajgsBYl
+ MoglJSF6brE6dEgxZZ8pXGfaaWpsEKuKBELD+XanouscNtmkghxuuMnxTdX109e6OsKt 4w== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by aserp2120.oracle.com with ESMTP id 2xf73tdgdy-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 13 Jan 2020 08:49:08 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00D8n4gM117794;
+        Mon, 13 Jan 2020 08:49:08 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by aserp3020.oracle.com with ESMTP id 2xfqvpxaen-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 13 Jan 2020 08:49:07 +0000
+Received: from abhmp0019.oracle.com (abhmp0019.oracle.com [141.146.116.25])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 00D8m2Ue014690;
+        Mon, 13 Jan 2020 08:48:02 GMT
+Received: from kadam (/129.205.23.165)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 13 Jan 2020 00:48:01 -0800
+Date:   Mon, 13 Jan 2020 11:47:53 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Marion & Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     Colin King <colin.king@canonical.com>,
+        David Miller <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        Kernel Janitors <kernel-janitors@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH][next] ath11k: avoid null pointer dereference when
+ pointer band is null
+Message-ID: <20200113084753.GA9510@kadam>
+References: <05d5d54e035e4d69ad4ffb4a835a495a@huawei.com>
+ <64797126-0c77-4c2c-ad2b-29d7af452c13@wanadoo.fr>
+ <17571eee-9d72-98cb-00f5-d714a28b853b@wanadoo.fr>
 MIME-Version: 1.0
-In-Reply-To: <20200111171528.7053-1-baijiaju1990@gmail.com>
 Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <17571eee-9d72-98cb-00f5-d714a28b853b@wanadoo.fr>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9498 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1911140001 definitions=main-2001130074
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9498 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
+ definitions=main-2001130074
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2020-01-11 18:15, Jia-Ju Bai wrote:
-> The functions ath9k_config() and ath_ani_calibrate() may be concurrently
-> executed.
+On Sat, Jan 11, 2020 at 12:57:11PM +0100, Marion & Christophe JAILLET wrote:
+> Le 11/01/2020 à 10:50, linmiaohe a écrit :
+> > Colin Ian King<colin.king@canonical.com>  wrote：
+> > > From: Colin Ian King<colin.king@canonical.com>
+> > > 
+> > > In the unlikely event that cap->supported_bands has neither WMI_HOST_WLAN_2G_CAP set or WMI_HOST_WLAN_5G_CAP set then pointer band is null and a null dereference occurs when assigning
+> > > band->n_iftype_data.  Move the assignment to the if blocks to
+> > > avoid this.  Cleans up static analysis warnings.
+> > > 
+> > > Addresses-Coverity: ("Explicit null dereference")
+> > > Fixes: 9f056ed8ee01 ("ath11k: add HE support")
+> > > Signed-off-by: Colin Ian King<colin.king@canonical.com>
+> > > ---
+> > > drivers/net/wireless/ath/ath11k/mac.c | 8 ++++----
+> > > 1 file changed, 4 insertions(+), 4 deletions(-)
+> > It looks fine for me. Thanks.
+> > Reviewed-by: Miaohe Lin<linmiaohe@huawei.com>
+> (sorry for incomplete mail and mailing list addresses, my newsreader ate
+> them, and I cannot get the list from get_maintainer.pl because my (outdated)
+> tree does not have ath11k/...
+> I've only including the ones in memory of my mail writer.
 > 
-> A variable survey->filled is accessed with holding a spinlock
-> common->cc_lock, through:
-> ath_ani_calibrate()
->     spin_lock_irqsave(&common->cc_lock, flags);
->     ath_update_survey_stats()
->         ath_update_survey_nf()
->             survey->filled |= SURVEY_INFO_NOISE_DBM;
+> Please forward if needed)
 > 
-> The identical variables sc->cur_survey->filled and 
-> sc->survey[pos].filled is accessed without holding this lock, through:
-> ath9k_config()
->     ath_chanctx_set_channel()
->         ath_set_channel()
->             sc->cur_survey->filled &= ~SURVEY_INFO_IN_USE;
->             sc->cur_survey->filled |= SURVEY_INFO_IN_USE;
->             else if (!(sc->survey[pos].filled & SURVEY_INFO_IN_USE))
->             ath_update_survey_nf
->                 survey->filled |= SURVEY_INFO_NOISE_DBM;
 > 
-> Thus, possible data races may occur.
+> Hi
 > 
-> To fix these data races, in ath_set_channel(), these variables are
-> accessed with holding the spinlock common->cc_lock.
+> Shouldn't there be a
 > 
-> These data races are found by the runtime testing of our tool DILP-2.
+> |
 > 
-> Signed-off-by: Jia-Ju Bai <baijiaju1990@gmail.com>
-I think a much better solution would be to stop common->ani.timer
-earlier in ath_set_channel to prevent this race from occurring.
+> - band->n_iftype_data  =  count; at the end of the patch if the assignment
+> is *moved*? Without it, 'band' (as well as 'count') could be un-initialized,
+> and lead to memory corruption. Just my 2c. CJ |
 
-- Felix
+You must be looking at different code.  There is no uninitialized
+variable.  The patched code looks like:
+
+drivers/net/wireless/ath/ath11k/mac.c
+  3520  static void ath11k_mac_setup_he_cap(struct ath11k *ar,
+  3521                                      struct ath11k_pdev_cap *cap)
+  3522  {
+  3523          struct ieee80211_supported_band *band;
+  3524          int count;
+  3525  
+  3526          if (cap->supported_bands & WMI_HOST_WLAN_2G_CAP) {
+  3527                  count = ath11k_mac_copy_he_cap(ar, cap,
+  3528                                                 ar->mac.iftype[NL80211_BAND_2GHZ],
+  3529                                                 NL80211_BAND_2GHZ);
+  3530                  band = &ar->mac.sbands[NL80211_BAND_2GHZ];
+  3531                  band->iftype_data = ar->mac.iftype[NL80211_BAND_2GHZ];
+  3532                  band->n_iftype_data = count;
+  3533          }
+  3534  
+  3535          if (cap->supported_bands & WMI_HOST_WLAN_5G_CAP) {
+  3536                  count = ath11k_mac_copy_he_cap(ar, cap,
+  3537                                                 ar->mac.iftype[NL80211_BAND_5GHZ],
+  3538                                                 NL80211_BAND_5GHZ);
+  3539                  band = &ar->mac.sbands[NL80211_BAND_5GHZ];
+  3540                  band->iftype_data = ar->mac.iftype[NL80211_BAND_5GHZ];
+  3541                  band->n_iftype_data = count;
+  3542          }
+  3543  }
+
+regards,
+dan carpenter
