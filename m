@@ -2,73 +2,97 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A73E138B5E
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Jan 2020 06:52:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A497138C3B
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Jan 2020 08:17:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387604AbgAMFwk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 13 Jan 2020 00:52:40 -0500
-Received: from mail-oi1-f195.google.com ([209.85.167.195]:46162 "EHLO
-        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387541AbgAMFwj (ORCPT
+        id S1728688AbgAMHRl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 13 Jan 2020 02:17:41 -0500
+Received: from mail25.static.mailgun.info ([104.130.122.25]:48756 "EHLO
+        mail25.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728665AbgAMHRl (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 13 Jan 2020 00:52:39 -0500
-Received: by mail-oi1-f195.google.com with SMTP id 13so7164714oij.13
-        for <linux-wireless@vger.kernel.org>; Sun, 12 Jan 2020 21:52:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=Rjbe3pVeMfYVPdmVklZ4b2stSqI32LIYp+bn/8NyJvk=;
-        b=MaFAR6FR5toOKNJiEvYgCYPSHBGxfYmCPV6emkC7SrII/5AmIWDAmjw+8MGyn64q68
-         9CsgcE1hGtq75I6+9hwFmyBssVlHG8xOr3te5U8HrnTcKEJc+7juFT9oooRvWt1+45DG
-         RPV96DxfwDihu0rCNOFyxk2ERywYRaBSesCO/LOAkwlbgAvaSG/6DM8RXOy3mUhyHVeM
-         sujmVe6N/DFa+La31T34jj9TMU+/zoHchXnntqs/45nixai6zXFC/Dj/ie9ONUNDdCBl
-         wLYFSBTuGG/E+CveKQ3ZD2EjJiiPHbBj9j2S1uTteq+3hmhBlvSgfLgtMc/1Q9R0Qp/9
-         wN7g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=Rjbe3pVeMfYVPdmVklZ4b2stSqI32LIYp+bn/8NyJvk=;
-        b=Wb7NGWt3u+mQ9p5ei3U1ETma9L7jyPlrRzwPuq1DseovioiH8IhUwQVXlbAg5hWtwq
-         GFw45PCx8ysZLb6yX+U7tMUbyGze1WbLt5/vs/GZY0JO47uNzlYakpnK63RAUt/qDgyB
-         7nWgI1RYTVL6W6mmV6XE0RC1XJBmfAEgV/qq7VgDjPjuNAEJXn/5gunYMzuZcmCTG6lb
-         KJVqdZphVj1R3POi9Ep2n8dsNGP3S/N1oI1kKbdVTJ7uw9NajlPBltEcBikwMANz04K4
-         q/3fWMR2Y43drlg/uvsYCn7Gl6GnZV9P0TF8cme1DulOhGmtxjTlAC5hBDhZ58tX47AM
-         Wxqg==
-X-Gm-Message-State: APjAAAUiysg1FOuRYzzgqlKPYYW0GpBTFhoTcRuKi3HvUfjmwi58jpQR
-        ufCtWODCLkbz/PO1g70lXAKevZx6d2R1XHc89ys=
-X-Google-Smtp-Source: APXvYqxpLuvGBSXJi0LygFRWySu0TKIxqhta6upKSXVoj+SD3HVRl3hBir1/mczgV9iZ7wN0WQE0dauBJq3F3sofYg0=
-X-Received: by 2002:a54:4f04:: with SMTP id e4mr10830211oiy.111.1578894758224;
- Sun, 12 Jan 2020 21:52:38 -0800 (PST)
+        Mon, 13 Jan 2020 02:17:41 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1578899861; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=PHpcWydMf81SX9BI3zK7atci8ZDAip52kbaK4/vTAKM=; b=QmZW/qV5NfimtI5ij1K4pQSrSdDmVImTvXzC6vCwnGs0kxtg1jJdv8ETFxYJVOloQeZWvN1z
+ GeBy+odk178Ua9G+oTzg5Rt2+AUNxGHfN8P8itT3kgEB+sgB+gKDn7jBEXq9khOIySwR0R9p
+ KfuwZBvGHqxrO6G16kLCBlSJ5eQ=
+X-Mailgun-Sending-Ip: 104.130.122.25
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5e1c1991.7f8189d6d6c0-smtp-out-n02;
+ Mon, 13 Jan 2020 07:17:37 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 77C56C4479C; Mon, 13 Jan 2020 07:17:37 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from x230.qca.qualcomm.com (dsl-hkibng32-54f84f-238.dhcp.inet.fi [84.248.79.238])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id A0D18C433CB;
+        Mon, 13 Jan 2020 07:17:35 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org A0D18C433CB
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Jia-Ju Bai <baijiaju1990@gmail.com>
+Cc:     ath9k-devel@qca.qualcomm.com, davem@davemloft.net,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] ath9k: Fix possible data races in ath_set_channel()
+References: <20200111171528.7053-1-baijiaju1990@gmail.com>
+Date:   Mon, 13 Jan 2020 09:17:28 +0200
+In-Reply-To: <20200111171528.7053-1-baijiaju1990@gmail.com> (Jia-Ju Bai's
+        message of "Sun, 12 Jan 2020 01:15:28 +0800")
+Message-ID: <87a76rsu47.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-Received: by 2002:a4a:41cb:0:0:0:0:0 with HTTP; Sun, 12 Jan 2020 21:52:37
- -0800 (PST)
-Reply-To: rickschaech@gmail.com
-From:   Rick Schaech <cathben72@gmail.com>
-Date:   Mon, 13 Jan 2020 01:52:37 -0400
-Message-ID: <CAEcBxO=DoZZeZuHjVOxQpB8CM4fADYg6sCQVLkjP+qQwsNEH9A@mail.gmail.com>
-Subject: I wait for your swift response,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Dear, I'm Mr Rick Schaech, I am the General Account Auditor, Though i
-know we have not meet each other before but sometimes in life God have
-a reason of bringing two people from two different countries together
-as business partners or life partners.
+Jia-Ju Bai <baijiaju1990@gmail.com> writes:
 
-My dear friend, I have the sum of 15.7 Million USD i wish to put in
-your name due to the death of my late client who died several years
-ago as his next of kin column still remain blank. Though the internet
-medium is highly abuse these days but am assuring you that this
-transaction is legitimate and I am contacting you that we may have a
-deal, note for your cooperation and collaboration 40% of the sum will
-be for you while the other 60% will be for me as well. I wait for your
-swift response for more details. please forward your response to my
-personal E-mail: rickschaech@gmail.com
+> The functions ath9k_config() and ath_ani_calibrate() may be concurrently
+> executed.
+>
+> A variable survey->filled is accessed with holding a spinlock
+> common->cc_lock, through:
+> ath_ani_calibrate()
+>     spin_lock_irqsave(&common->cc_lock, flags);
+>     ath_update_survey_stats()
+>         ath_update_survey_nf()
+>             survey->filled |= SURVEY_INFO_NOISE_DBM;
+>
+> The identical variables sc->cur_survey->filled and 
+> sc->survey[pos].filled is accessed without holding this lock, through:
+> ath9k_config()
+>     ath_chanctx_set_channel()
+>         ath_set_channel()
+>             sc->cur_survey->filled &= ~SURVEY_INFO_IN_USE;
+>             sc->cur_survey->filled |= SURVEY_INFO_IN_USE;
+>             else if (!(sc->survey[pos].filled & SURVEY_INFO_IN_USE))
+>             ath_update_survey_nf
+>                 survey->filled |= SURVEY_INFO_NOISE_DBM;
+>
+> Thus, possible data races may occur.
+>
+> To fix these data races, in ath_set_channel(), these variables are
+> accessed with holding the spinlock common->cc_lock.
+>
+> These data races are found by the runtime testing of our tool DILP-2.
+>
+> Signed-off-by: Jia-Ju Bai <baijiaju1990@gmail.com>
 
-Yours sincerely,
-Rick Schaech.
+I need a detailed review from somone familiar with ath9k before I can
+consider applying this.
+
+-- 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
