@@ -2,64 +2,124 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D06EF139072
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Jan 2020 12:54:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 47EC21391D8
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Jan 2020 14:11:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726236AbgAMLyN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 13 Jan 2020 06:54:13 -0500
-Received: from s3.sipsolutions.net ([144.76.43.62]:47284 "EHLO
-        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726127AbgAMLyM (ORCPT
+        id S1726523AbgAMNLu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 13 Jan 2020 08:11:50 -0500
+Received: from mail25.static.mailgun.info ([104.130.122.25]:39513 "EHLO
+        mail25.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726480AbgAMNLt (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 13 Jan 2020 06:54:12 -0500
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.92.3)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1iqyIN-002tqw-2G; Mon, 13 Jan 2020 12:54:11 +0100
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     linux-wireless@vger.kernel.org
-Cc:     Johannes Berg <johannes.berg@intel.com>,
-        syzbot+e8a797964a4180eb57d5@syzkaller.appspotmail.com,
-        syzbot+34b582cf32c1db008f8e@syzkaller.appspotmail.com
-Subject: [PATCH] cfg80211: check for set_wiphy_params
-Date:   Mon, 13 Jan 2020 12:53:59 +0100
-Message-Id: <20200113125358.ac07f276efff.Ibd85ee1b12e47b9efb00a2adc5cd3fac50da791a@changeid>
-X-Mailer: git-send-email 2.24.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        Mon, 13 Jan 2020 08:11:49 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1578921108; h=Message-Id: Date: Subject: Cc: To: From:
+ Sender; bh=UdRWunpuPF5nrySfQo4TgbpFWVKs8WxqbY+Ndc7zIvE=; b=JCOQF1TRk5WwnZwj98lAbHY+e6IUsvFEriwZWGVpR9yDZSL/+G3+ZqGCkXizMj3OHMqWmnFl
+ vGkI3DmDYwfei7Rgj+fJ4m4Db7CGtgbt3xFUu66Uee1Hia6IP37J0XkbRgBl8WhDxu7PIO0O
+ 76A3zEdPOCVYUKgiARkDrZk3xHU=
+X-Mailgun-Sending-Ip: 104.130.122.25
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5e1c6c94.7fec0b768848-smtp-out-n01;
+ Mon, 13 Jan 2020 13:11:48 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 6C811C447A3; Mon, 13 Jan 2020 13:11:47 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.0
+Received: from akolli-ThinkPad-L560.qca.qualcomm.com (blr-c-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.19.19])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: tamizhr)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id D3140C4479C;
+        Mon, 13 Jan 2020 13:11:45 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org D3140C4479C
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=tamizhr@codeaurora.org
+From:   Tamizh Chelvam <tamizhr@codeaurora.org>
+To:     johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org,
+        Tamizh chelvam <tamizhr@codeaurora.org>
+Subject: [PATCHv9 0/6] cfg80211/mac80211: Add support for TID specific configuration
+Date:   Mon, 13 Jan 2020 18:41:24 +0530
+Message-Id: <1578921090-9758-1-git-send-email-tamizhr@codeaurora.org>
+X-Mailer: git-send-email 1.9.1
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Tamizh chelvam <tamizhr@codeaurora.org>
 
-Check if set_wiphy_params is assigned and return an error if not,
-some drivers (e.g. virt_wifi where syzbot reported it) don't have
-it.
+Add infrastructure to support per TID configurations like noack policy,
+retry count, AMPDU control(disable/enable), RTSCTS control(enable/disable)
+and TX rate mask configurations.
+This will be useful for the driver which can supports data TID
+specific configuration rather than phy level configurations.
+Here NL80211_CMD_SET_TID_CONFIG added to support this operation by
+accepting TID configuration.
+This command can accept STA mac addreess to make the configuration
+station specific rather than applying to all the connected stations
+to the netdev.
+And this nested command configuration can accept multiple number of
+data TID specific configuration in a single command,
+enum ieee80211_tid_conf_mask used to notify the driver that which
+configuration got modified for the TID.
 
-Reported-by: syzbot+e8a797964a4180eb57d5@syzkaller.appspotmail.com
-Reported-by: syzbot+34b582cf32c1db008f8e@syzkaller.appspotmail.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
----
- net/wireless/rdev-ops.h | 4 ++++
- 1 file changed, 4 insertions(+)
+Tamizh chelvam (6):
+  nl80211: Add NL command to support TID speicific configurations
+  nl80211: Add support to configure TID specific retry configuration
+  nl80211: Add support to configure TID specific AMPDU configuration
+  nl80211: Add support to configure TID specific RTSCTS configuration
+  nl80211: Add support to configure TID specific txrate configuration
+  mac80211: Add api to support configuring TID specific configuration
 
-diff --git a/net/wireless/rdev-ops.h b/net/wireless/rdev-ops.h
-index e853a4fe6f97..3dd9515c836b 100644
---- a/net/wireless/rdev-ops.h
-+++ b/net/wireless/rdev-ops.h
-@@ -538,6 +538,10 @@ static inline int
- rdev_set_wiphy_params(struct cfg80211_registered_device *rdev, u32 changed)
- {
- 	int ret;
-+
-+	if (!rdev->ops->set_wiphy_params)
-+		return -EOPNOTSUPP;
-+
- 	trace_rdev_set_wiphy_params(&rdev->wiphy, changed);
- 	ret = rdev->ops->set_wiphy_params(&rdev->wiphy, changed);
- 	trace_rdev_return_int(&rdev->wiphy, ret);
+ include/net/cfg80211.h       |   65 ++++++++++
+ include/net/mac80211.h       |   10 ++
+ include/uapi/linux/nl80211.h |  139 +++++++++++++++++++++
+ net/mac80211/cfg.c           |   56 +++++++++
+ net/mac80211/driver-ops.h    |   27 ++++
+ net/wireless/nl80211.c       |  280 +++++++++++++++++++++++++++++++++++++++---
+ net/wireless/rdev-ops.h      |   24 ++++
+ net/wireless/trace.h         |   37 ++++++
+ 8 files changed, 621 insertions(+), 17 deletions(-)
+
+v9:
+  * Modified to accept multiple TIDs.
+  * Splitted retry_short and retry_long as separate parameter
+  * Introduced new api to reset tid config
+
+v8:
+  * Fixed enum typecast warning.
+
+v7:
+  * Fixed compilation error and removed tid config variables from mac80211
+
+v6:
+  * Addressed Johannes comments.
+
+v5:
+  * Fixed possible memleak of 'tid_conf' in nl80211_set_tid_config.
+
+v4:
+  * Fixed kbuild warnings.
+
+v3:
+  * Modified "nl80211: Add netlink attribute to configure TID specific tx rate" patch
+    to accept multiple TX rate configuration at a time.
+  * Modified noack and ampdu variable data type to int in
+    "mac80211: Add api to support configuring TID specific configuration" patch to store
+    default configuration.
+  * Modified "ath10k: Add new api to support TID specific configuration" patch to handle
+    default values for noack and ampdu. And added sta pointer sanity check in
+    ath10k_mac_tid_bitrate_config function.
+  * Fixed "ath10k: Add extended TID configuration support" wmi command parameters
+    assigned part.
+
+v2:
+  * Added support to accept multiple TID configuration
+  * Added support to configure TX rate and RTSCTS control
 -- 
-2.24.1
-
+1.7.9.5
