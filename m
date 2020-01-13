@@ -2,207 +2,93 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F36BC1391DD
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Jan 2020 14:12:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A375113934A
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Jan 2020 15:15:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728734AbgAMNMB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 13 Jan 2020 08:12:01 -0500
-Received: from mail26.static.mailgun.info ([104.130.122.26]:55873 "EHLO
-        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728682AbgAMNMA (ORCPT
+        id S1728757AbgAMOPB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 13 Jan 2020 09:15:01 -0500
+Received: from mail-ot1-f49.google.com ([209.85.210.49]:34132 "EHLO
+        mail-ot1-f49.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726505AbgAMOPB (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 13 Jan 2020 08:12:00 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1578921119; h=References: In-Reply-To: Message-Id: Date:
- Subject: Cc: To: From: Sender;
- bh=fa2dPezte4xe7W3VHwC3S0Oaq7l7V7MlQz4H00dK8z8=; b=aYP5KjRBb5/Nb84z5TwFnPY88Ywdjm6fv/Qeo3QPu2MY9aqbjXeiz47qA+lzWCvtBsVWbwnH
- WVLzv6bVBp4f0nb5FBWIABKzFypSs7dtJ6cpbDyZBIsK5kysJ4fvLzmmZh9pz9N0JFrXmarB
- Bx9h+Vdf2PhphTan9KSiWtVM0bA=
-X-Mailgun-Sending-Ip: 104.130.122.26
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e1c6c9e.7f82c35a45a8-smtp-out-n02;
- Mon, 13 Jan 2020 13:11:58 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 8AB42C447A3; Mon, 13 Jan 2020 13:11:58 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from akolli-ThinkPad-L560.qca.qualcomm.com (blr-c-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.19.19])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: tamizhr)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id A5C7DC4479C;
-        Mon, 13 Jan 2020 13:11:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org A5C7DC4479C
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=tamizhr@codeaurora.org
-From:   Tamizh Chelvam <tamizhr@codeaurora.org>
-To:     johannes@sipsolutions.net
-Cc:     linux-wireless@vger.kernel.org,
-        Tamizh chelvam <tamizhr@codeaurora.org>
-Subject: [PATCHv9 6/6] mac80211: Add api to support configuring TID specific configuration
-Date:   Mon, 13 Jan 2020 18:41:30 +0530
-Message-Id: <1578921090-9758-7-git-send-email-tamizhr@codeaurora.org>
-X-Mailer: git-send-email 1.9.1
-In-Reply-To: <1578921090-9758-1-git-send-email-tamizhr@codeaurora.org>
-References: <1578921090-9758-1-git-send-email-tamizhr@codeaurora.org>
+        Mon, 13 Jan 2020 09:15:01 -0500
+Received: by mail-ot1-f49.google.com with SMTP id a15so9053508otf.1
+        for <linux-wireless@vger.kernel.org>; Mon, 13 Jan 2020 06:15:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=ktlpbV8JhpEQtpBOTtFZIp0QxeG75WOzqkK9rMrTWc0=;
+        b=ptzDp+9d+5NbquVcbbEdsdvRXdUqRT67MONrI/360oZ4pkyvqGV7AymhFKBUI/+UHl
+         nd/haMRkw2QYzUrzoxg1aCodRZMtJ/ZVavfk/66LlZgG4nx8szSGdLIFTPpVSfbYO0IC
+         KPbXjce7ThMm0/Hzl6gOjWkoYce9DaA/AC1zQYOyIZ30ZRcKzcn8ryN+KvDu6WJUJyKI
+         HwAzkKsXfAVQaXx+rRGHKtdPGGpUNYMn08wpht9ljR55149fBbglhxFpODJkDqOZHWWh
+         L/+HxDFssW6Aao8n2WpyB/hKNAszmbVB9+YtRknLeNls4dm0xcO+OnTym5iWINZ37qxd
+         TP7Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=ktlpbV8JhpEQtpBOTtFZIp0QxeG75WOzqkK9rMrTWc0=;
+        b=eO+vZMP98GcBYODThxSXp1kSF7K21jYSJuQVQTvienceh52DftxQLDl7GW0BY6bSmu
+         r9sqznTNYyrti3gUe8FJjAdSz9LiklTzbEMDM24ObeGzOMRZzBSi6BgIgRsN+SsgT3Io
+         cWsTbThuCITe8ejixKTRHLtqL57nkQbOwZSpZl24CTHo68yFQ9vJiZpwtMpapydM+UsM
+         0vOsYVI6XZT253C5V/2AlcAb4oW5THJZXibThu+gMdLJiOKCAjKPFayb+OCP/zcdAeAT
+         VRU3ermsUjVQUs74yV5YWrtxAsIi1Adlfk2wv2beABBRI3Axo30vnyGQkyfHEb41taIw
+         K8lw==
+X-Gm-Message-State: APjAAAWAfVsGgasODtG/6cn4nxr8SF2DknLOqMKr8ra2IjUx9rILlpDH
+        hpBcR8THgVtLvPbsHJeXLzMdHZzLvJc542TTdNw=
+X-Google-Smtp-Source: APXvYqwoeM6MgvmrRgLVeFxPKGEtT7juRnkXH2oYE/XMIzYxs50Ch86YnrjQbu3ZswlD4YNls82F2eDE8mTM2ZUy+7I=
+X-Received: by 2002:a05:6830:145:: with SMTP id j5mr12628144otp.242.1578924900340;
+ Mon, 13 Jan 2020 06:15:00 -0800 (PST)
+MIME-Version: 1.0
+References: <20200110132142.7737-1-denis281089@gmail.com> <aab66c75-49ae-0955-03a8-f817685b0925@nbd.name>
+In-Reply-To: <aab66c75-49ae-0955-03a8-f817685b0925@nbd.name>
+From:   Denis Kalashnikov <denis281089@gmail.com>
+Date:   Mon, 13 Jan 2020 17:13:12 +0300
+Message-ID: <CAKoLU8P3MyauCUevcRHtzMj8HSZQLD-hYyEaZyRH9OfLye6knQ@mail.gmail.com>
+Subject: Re: [PATCH v3] ath9k: fix firmware bug in some Mikrotik R11e-2HPnD cards
+To:     Felix Fietkau <nbd@nbd.name>
+Cc:     linux-wireless@vger.kernel.org, Kalle Valo <kvalo@codeaurora.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Tamizh chelvam <tamizhr@codeaurora.org>
+I read value from the SREV register of AR9582 -- got 0x001c04ff. I
+looked through the code of ath9k and found out that in this case the
+revision is 4. So, since AR_SREV_REVISION_9580_10 is defined as 4, I
+logically concluded that AR_SREV_9580_10 would do the job. But you
+suspicions turned to be right. I tested AR9580 now and it has the same
+value as AR9582 in the SREV register -- 0x001c04ff. PCI Subsystem ID
+is zero on those Mikrotik cards, so it is not useful. Felix, guys, may
+be somebody have any thoughts how we can distinguish AR9582? Or that a
+chip has only 2 chains? May be values from other registers?
 
-Implement drv_set_tid_config api to allow TID specific
-configuration and drv_reset_tid_config api to reset peer
-specific TID configuration. This per-TID onfiguration
-will be applied for all the connected stations when MAC is NULL.
-
-Signed-off-by: Tamizh chelvam <tamizhr@codeaurora.org>
----
- include/net/mac80211.h    |   10 ++++++++
- net/mac80211/cfg.c        |   56 +++++++++++++++++++++++++++++++++++++++++++++
- net/mac80211/driver-ops.h |   27 ++++++++++++++++++++++
- 3 files changed, 93 insertions(+)
-
-diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index 682fd2f..c50713a 100644
---- a/include/net/mac80211.h
-+++ b/include/net/mac80211.h
-@@ -3775,6 +3775,9 @@ enum ieee80211_reconfig_type {
-  *
-  * @start_pmsr: start peer measurement (e.g. FTM) (this call can sleep)
-  * @abort_pmsr: abort peer measurement (this call can sleep)
-+ * @set_tid_config: Apply TID specific configurations. This callback may sleep.
-+ * @reset_tid_config: Reset TID specific configuration for the peer.
-+ *	This callback may sleep.
-  */
- struct ieee80211_ops {
- 	void (*tx)(struct ieee80211_hw *hw,
-@@ -4079,6 +4082,13 @@ struct ieee80211_ops {
- 			  struct cfg80211_pmsr_request *request);
- 	void (*abort_pmsr)(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 			   struct cfg80211_pmsr_request *request);
-+	int (*set_tid_config)(struct ieee80211_hw *hw,
-+			      struct ieee80211_vif *vif,
-+			      struct ieee80211_sta *sta,
-+			      struct ieee80211_tid_config *tid_conf);
-+	int (*reset_tid_config)(struct ieee80211_hw *hw,
-+				struct ieee80211_vif *vif,
-+				struct ieee80211_sta *sta, u8 tid);
- };
- 
- /**
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index 4fb7f1f..f0f7e42 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -3942,6 +3942,60 @@ static int ieee80211_get_txq_stats(struct wiphy *wiphy,
- 	return drv_abort_pmsr(local, sdata, request);
- }
- 
-+static int ieee80211_set_tid_config(struct wiphy *wiphy,
-+				    struct net_device *dev,
-+				    struct ieee80211_tid_config *tid_conf)
-+{
-+	struct ieee80211_sub_if_data *sdata = IEEE80211_DEV_TO_SUB_IF(dev);
-+	struct sta_info *sta;
-+	int ret;
-+
-+	if (!sdata->local->ops->set_tid_config)
-+		return -EOPNOTSUPP;
-+
-+	if (!tid_conf->peer)
-+		return drv_set_tid_config(sdata->local, sdata, NULL, tid_conf);
-+
-+	mutex_lock(&sdata->local->sta_mtx);
-+
-+	sta = sta_info_get_bss(sdata, tid_conf->peer);
-+	if (!sta) {
-+		mutex_unlock(&sdata->local->sta_mtx);
-+		return -ENOENT;
-+	}
-+
-+	ret = drv_set_tid_config(sdata->local, sdata, &sta->sta, tid_conf);
-+	mutex_unlock(&sdata->local->sta_mtx);
-+	return ret;
-+}
-+
-+static int ieee80211_reset_tid_config(struct wiphy *wiphy,
-+				      struct net_device *dev,
-+				      const u8 *peer, u8 tid)
-+{
-+	struct ieee80211_sub_if_data *sdata = IEEE80211_DEV_TO_SUB_IF(dev);
-+	struct sta_info *sta;
-+	int ret;
-+
-+	if (!sdata->local->ops->reset_tid_config)
-+		return -EOPNOTSUPP;
-+
-+	if (!peer)
-+		return -EINVAL;
-+
-+	mutex_lock(&sdata->local->sta_mtx);
-+
-+	sta = sta_info_get_bss(sdata, peer);
-+	if (!sta) {
-+		mutex_unlock(&sdata->local->sta_mtx);
-+		return -ENOENT;
-+	}
-+
-+	ret = drv_reset_tid_config(sdata->local, sdata, &sta->sta, tid);
-+	mutex_unlock(&sdata->local->sta_mtx);
-+	return ret;
-+}
-+
- const struct cfg80211_ops mac80211_config_ops = {
- 	.add_virtual_intf = ieee80211_add_iface,
- 	.del_virtual_intf = ieee80211_del_iface,
-@@ -4040,4 +4094,6 @@ static int ieee80211_get_txq_stats(struct wiphy *wiphy,
- 	.start_pmsr = ieee80211_start_pmsr,
- 	.abort_pmsr = ieee80211_abort_pmsr,
- 	.probe_mesh_link = ieee80211_probe_mesh_link,
-+	.set_tid_config = ieee80211_set_tid_config,
-+	.reset_tid_config = ieee80211_reset_tid_config,
- };
-diff --git a/net/mac80211/driver-ops.h b/net/mac80211/driver-ops.h
-index 2c9b3eb8..dcbd105 100644
---- a/net/mac80211/driver-ops.h
-+++ b/net/mac80211/driver-ops.h
-@@ -1358,4 +1358,31 @@ static inline void drv_del_nan_func(struct ieee80211_local *local,
- 	trace_drv_return_void(local);
- }
- 
-+static inline int drv_set_tid_config(struct ieee80211_local *local,
-+				     struct ieee80211_sub_if_data *sdata,
-+				     struct ieee80211_sta *sta,
-+				     struct ieee80211_tid_config *tid_conf)
-+{
-+	int ret;
-+
-+	might_sleep();
-+	ret = local->ops->set_tid_config(&local->hw, &sdata->vif, sta,
-+					 tid_conf);
-+	trace_drv_return_int(local, ret);
-+
-+	return ret;
-+}
-+
-+static inline int drv_reset_tid_config(struct ieee80211_local *local,
-+				       struct ieee80211_sub_if_data *sdata,
-+				       struct ieee80211_sta *sta, u8 tid)
-+{
-+	int ret;
-+
-+	might_sleep();
-+	ret = local->ops->reset_tid_config(&local->hw, &sdata->vif, sta, tid);
-+	trace_drv_return_int(local, ret);
-+
-+	return ret;
-+}
- #endif /* __MAC80211_DRIVER_OPS */
--- 
-1.7.9.5
+=D1=81=D0=B1, 11 =D1=8F=D0=BD=D0=B2. 2020 =D0=B3. =D0=B2 13:37, Felix Fietk=
+au <nbd@nbd.name>:
+>
+> On 2020-01-10 14:21, Denis Kalashnikov wrote:
+> > Some of the Mikrotik R11e-2HPnD cards have EEPROM where is
+> > flashed that a card has 3 chains, but actually all this cards
+> > have only 2. This leads ath9k to write into the logs:
+> > 'ath: phy0: Unable to reset channel, reset status -5' and
+> > stations don't see that AP.
+> >
+> > Mikrotik R11e-2HPnD is based on AR9582 chip.
+> >
+> > Signed-off-by: Denis Kalashnikov <denis281089@gmail.com>
+> > ---
+> >
+> > Changelog:
+> >
+> > Changes since v2:
+> >   Use macros AR_SREV_9580_10 to select only AR9582 chips (they all
+> >   have only 2 chains) instead of more general macros AR_SREV_9580
+> >   that selects not only AR9582 but also AR9580 chips with 3 chains.
+> I don't think you can detect AR9582 based on SREV. Where did you get
+> this information from?
+>
+> - Felix
