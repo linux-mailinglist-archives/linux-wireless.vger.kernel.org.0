@@ -2,94 +2,105 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E1011138C81
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Jan 2020 08:49:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DEEA1138CC9
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Jan 2020 09:27:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728641AbgAMHtK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 13 Jan 2020 02:49:10 -0500
-Received: from rtits2.realtek.com ([211.75.126.72]:35391 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727021AbgAMHtJ (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 13 Jan 2020 02:49:09 -0500
-Authenticated-By: 
-X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID 00D7n6s9025323, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (RTITCAS12.realtek.com.tw[172.21.6.16])
-        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id 00D7n6s9025323
-        (version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 13 Jan 2020 15:49:06 +0800
-Received: from RTEXMB05.realtek.com.tw (172.21.6.98) by
- RTITCAS12.realtek.com.tw (172.21.6.16) with Microsoft SMTP Server (TLS) id
- 14.3.468.0; Mon, 13 Jan 2020 15:49:06 +0800
-Received: from RTEXMB04.realtek.com.tw (172.21.6.97) by
- RTEXMB05.realtek.com.tw (172.21.6.98) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Mon, 13 Jan 2020 15:49:05 +0800
-Received: from RTEXMB04.realtek.com.tw ([fe80::d9c5:a079:495e:b999]) by
- RTEXMB04.realtek.com.tw ([fe80::d9c5:a079:495e:b999%6]) with mapi id
- 15.01.1779.005; Mon, 13 Jan 2020 15:49:05 +0800
-From:   Tony Chuang <yhchuang@realtek.com>
-To:     Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>,
-        Linux List Kernel Mailing <linux-wireless@vger.kernel.org>,
-        Linux List Kernel Mailing <linux-kernel@vger.kernel.org>
-Subject: RE: [rtw88] purge skb(s) not reported by firmware
-Thread-Topic: [rtw88] purge skb(s) not reported by firmware
-Thread-Index: AQHVxgumpbelFNHZSEWWibZh50EtlafoNYPw
-Date:   Mon, 13 Jan 2020 07:49:05 +0000
-Message-ID: <fe3cd3c3d4364ef4bfb14b5ac3fcee1d@realtek.com>
-References: <CABXGCsNu+nih5nZkuavoYot0eo5pF7quD4JviN+vWctPdmbu=A@mail.gmail.com>
-In-Reply-To: <CABXGCsNu+nih5nZkuavoYot0eo5pF7quD4JviN+vWctPdmbu=A@mail.gmail.com>
-Accept-Language: zh-TW, en-US
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.68.183]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        id S1728769AbgAMI1G (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 13 Jan 2020 03:27:06 -0500
+Received: from nbd.name ([46.4.11.11]:57666 "EHLO nbd.name"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728680AbgAMI1G (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 13 Jan 2020 03:27:06 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
+        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=/NHwwQnGBAa85zcV4M8gNdsSSkTKTe3Kl6d6gN17ino=; b=tKzaUnt5QT42dRYU/FjhfrfmXF
+        liDld7MJepEdNDuZpRoJSCDIIssSb89CrgCkjhONFiFWr7YWBQIH2phOTbzAnEcQjVLTL2+1CG6U7
+        4RX7rRAIuuzvovpbMQ6U6FmI9hBwv00Plhb3hqh5d01LR7iDoXC2kTx9s03RqGfl5X3U=;
+Received: from [80.255.7.117] (helo=nf.local)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1iqv3u-0007t4-C7; Mon, 13 Jan 2020 09:27:02 +0100
+Subject: Re: [PATCH] ath9k: Fix possible data races in ath_set_channel()
+To:     Jia-Ju Bai <baijiaju1990@gmail.com>, ath9k-devel@qca.qualcomm.com,
+        kvalo@codeaurora.org, davem@davemloft.net
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20200111171528.7053-1-baijiaju1990@gmail.com>
+From:   Felix Fietkau <nbd@nbd.name>
+Autocrypt: addr=nbd@nbd.name; prefer-encrypt=mutual; keydata=
+ xsDiBEah5CcRBADIY7pu4LIv3jBlyQ/2u87iIZGe6f0f8pyB4UjzfJNXhJb8JylYYRzIOSxh
+ ExKsdLCnJqsG1PY1mqTtoG8sONpwsHr2oJ4itjcGHfn5NJSUGTbtbbxLro13tHkGFCoCr4Z5
+ Pv+XRgiANSpYlIigiMbOkide6wbggQK32tC20QxUIwCg4k6dtV/4kwEeiOUfErq00TVqIiEE
+ AKcUi4taOuh/PQWx/Ujjl/P1LfJXqLKRPa8PwD4j2yjoc9l+7LptSxJThL9KSu6gtXQjcoR2
+ vCK0OeYJhgO4kYMI78h1TSaxmtImEAnjFPYJYVsxrhay92jisYc7z5R/76AaELfF6RCjjGeP
+ wdalulG+erWju710Bif7E1yjYVWeA/9Wd1lsOmx6uwwYgNqoFtcAunDaMKi9xVQW18FsUusM
+ TdRvTZLBpoUAy+MajAL+R73TwLq3LnKpIcCwftyQXK5pEDKq57OhxJVv1Q8XkA9Dn1SBOjNB
+ l25vJDFAT9ntp9THeDD2fv15yk4EKpWhu4H00/YX8KkhFsrtUs69+vZQwc0cRmVsaXggRmll
+ dGthdSA8bmJkQG5iZC5uYW1lPsJgBBMRAgAgBQJGoeQnAhsjBgsJCAcDAgQVAggDBBYCAwEC
+ HgECF4AACgkQ130UHQKnbvXsvgCgjsAIIOsY7xZ8VcSm7NABpi91yTMAniMMmH7FRenEAYMa
+ VrwYTIThkTlQzsFNBEah5FQQCACMIep/hTzgPZ9HbCTKm9xN4bZX0JjrqjFem1Nxf3MBM5vN
+ CYGBn8F4sGIzPmLhl4xFeq3k5irVg/YvxSDbQN6NJv8o+tP6zsMeWX2JjtV0P4aDIN1pK2/w
+ VxcicArw0VYdv2ZCarccFBgH2a6GjswqlCqVM3gNIMI8ikzenKcso8YErGGiKYeMEZLwHaxE
+ Y7mTPuOTrWL8uWWRL5mVjhZEVvDez6em/OYvzBwbkhImrryF29e3Po2cfY2n7EKjjr3/141K
+ DHBBdgXlPNfDwROnA5ugjjEBjwkwBQqPpDA7AYPvpHh5vLbZnVGu5CwG7NAsrb2isRmjYoqk
+ wu++3117AAMFB/9S0Sj7qFFQcD4laADVsabTpNNpaV4wAgVTRHKV/kC9luItzwDnUcsZUPdQ
+ f3MueRJ3jIHU0UmRBG3uQftqbZJj3ikhnfvyLmkCNe+/hXhPu9sGvXyi2D4vszICvc1KL4RD
+ aLSrOsROx22eZ26KqcW4ny7+va2FnvjsZgI8h4sDmaLzKczVRIiLITiMpLFEU/VoSv0m1F4B
+ FtRgoiyjFzigWG0MsTdAN6FJzGh4mWWGIlE7o5JraNhnTd+yTUIPtw3ym6l8P+gbvfoZida0
+ TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabwkkE
+ GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCfTKx80VvCR/PvsUlrvdOLsIgeRGAAn1ee
+ RjMaxwtSdaCKMw3j33ZbsWS4
+Message-ID: <67d7a9f7-546b-3dc9-07b2-846e390c1c5e@nbd.name>
+Date:   Mon, 13 Jan 2020 09:27:01 +0100
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:68.0)
+ Gecko/20100101 Thunderbird/68.3.1
 MIME-Version: 1.0
+In-Reply-To: <20200111171528.7053-1-baijiaju1990@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-PiBTdWJqZWN0OiBbcnR3ODhdIHB1cmdlIHNrYihzKSBub3QgcmVwb3J0ZWQgYnkgZmlybXdhcmUN
-Cj4gDQo+IEhpIGZvbGtzLg0KPiBJIHJlY2VudGx5IGpvaW5lZCB0ZXN0aW5nIHRoZSBydHc4OCBk
-cml2ZXIuDQo+IEluIGp1c3QgYSBmZXcgZGF5cywgSSBhbHJlYWR5IGNhdGNoZXMgc3VjaCBXQVJO
-SU5HIHR3aWNlIHRpbWVzOg0KPiANCj4gDQo+IFsgNDg5OS42MDE2NTZdIHJ0d19wY2kgMDAwMDow
-NTowMC4wOiBmYWlsZWQgdG8gc2VuZCBoMmMgY29tbWFuZA0KPiBbIDkwODQuNjYxMzgyXSBydHdf
-cGNpIDAwMDA6MDU6MDAuMDogZmlybXdhcmUgZmFpbGVkIHRvIHJlc3RvcmUgaGFyZHdhcmUNCj4g
-c2V0dGluZw0KPiBbIDkwODUuMTY3MzY0XSAtLS0tLS0tLS0tLS1bIGN1dCBoZXJlIF0tLS0tLS0t
-LS0tLS0NCj4gWyA5MDg1LjE2NzM3MF0gcHVyZ2Ugc2tiKHMpIG5vdCByZXBvcnRlZCBieSBmaXJt
-d2FyZQ0KPiBbIDkwODUuMTY3NDE3XSBXQVJOSU5HOiBDUFU6IDkgUElEOiAwIGF0DQo+IGRyaXZl
-cnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgvdHguYzoxNTUNCj4gcnR3X3R4X3JlcG9ydF9w
-dXJnZV90aW1lcisweDIwLzB4NTAgW3J0dzg4XQ0KPiBbIDkwODUuMTY3NDE5XSBNb2R1bGVzIGxp
-bmtlZCBpbjogdWlucHV0IHJmY29tbSB4dF9DSEVDS1NVTQ0KPiB4dF9NQVNRVUVSQURFIHh0X2Nv
-bm50cmFjayBpcHRfUkVKRUNUIG5mX25hdF90ZnRwIG5mX2Nvbm50cmFja190ZnRwDQoNCi4uLg0K
-DQo+IFsgOTA4NS4xNjc1OTZdICBkb19pZGxlKzB4MWU0LzB4MjgwDQo+IFsgOTA4NS4xNjc1OTld
-ICBjcHVfc3RhcnR1cF9lbnRyeSsweDE5LzB4MjANCj4gWyA5MDg1LjE2NzYwM10gIHN0YXJ0X3Nl
-Y29uZGFyeSsweDE2Mi8weDFiMA0KPiBbIDkwODUuMTY3NjA2XSAgc2Vjb25kYXJ5X3N0YXJ0dXBf
-NjQrMHhiNi8weGMwDQo+IFsgOTA4NS4xNjc2MTBdIC0tLVsgZW5kIHRyYWNlIGY3MzRmMmIxYmM0
-MGViZGIgXS0tLQ0KPiBbMTIxMTEuNTA1OTAxXSBydHdfcGNpIDAwMDA6MDU6MDAuMDogZmFpbGVk
-IHRvIHNlbmQgaDJjIGNvbW1hbmQNCj4gWzEyMTExLjUwNTk1Nl0gcnR3X3BjaSAwMDAwOjA1OjAw
-LjA6IGZhaWxlZCB0byBzZW5kIGgyYyBjb21tYW5kDQo+IA0KPiANCj4gWWVzLCBpdCBzZWVtcyBs
-aWtlIG5vdGhpbmcgYmFkIGhhcHBlbmVkLCBleGNlcHQgZnJlcXVlbnQgbmV0d29yayBkaXNjb25u
-ZWN0Lg0KPiBVbmZvcnR1bmF0ZWx5IEkgZG9uJ3Qga25vdyBob3cgZXhhY3RseSByZXByb2R1Y2Ug
-aXQuDQo+IEJ1dCBJIHRoaW5rIGlmIHNvbWVvbmUgcHJvcG9zZSBwYXRjaCBhbmQgdGhpcyBXQVJO
-SU5HIGFmdGVyIGFwcGx5aW5nDQo+IGRpZG4ndCBhcHBlYXJzIGFnYWlubiBhdCBsZWFzdCBhIHdl
-ZWsgdGhlbiB3ZSBjYW4gYXNzdW1lIHRoYXQgdGhlDQo+IHByb2JsZW0gaXMgZml4ZWQuDQo+IA0K
-DQpJdCBzZWVtcyBsaWtlIHRoZSBmaXJtd2FyZSBpcyBub3QgcmVzcG9uc2l2ZSwgYW5kIGlzIG5v
-dCByZXBvcnRpbmcgVFgNCnN0YXR1cyBvciBjb25zdW1pbmcgSDJDIGNvbW1hbmRzLg0KVGhlIGZp
-cnN0IHRyYWNlIGR1bXAgInB1cmdlIHNrYihzKSBub3QgcmVwb3J0ZWQgYnkgZmlybXdhcmUiIHdp
-bGwgYmUNCnByaW50ZWQgd2hlbiBkcml2ZXIgdGltZWQtb3V0IGZvciBUWCBzdGF0dXMgcmVwb3J0
-LiBJdCBjb3VsZCBoYXBwZW4NCnNvbWV0aW1lcyB3aGVuIGRyaXZlciB0dXJucyBwb3dlciBvZmYg
-dG9vIHF1aWNrbHkgYWZ0ZXIgZGUtYXV0aCBzZW50Lg0KT3IgZmlybXdhcmUganVzdCBtaXNzZWQg
-aXQuIE9yaWdpbmFsbHkgSSB3YXMgdGhpbmtpbmcgdGhhdCB0aGUgVFggc3RhdHVzDQptaXNzaW5n
-IG1lYW5zIHRoYXQgdGhlIGZpcm13YXJlIGlzIG5vdCB3b3JraW5nLCBidXQgc2VlbXMgaXQncyBu
-b3QNCnRydWUuIFNvIEkgdGhpbmsgSSBtaWdodCBsb3dlciB0aGUgcHJpbnQgbGV2ZWwgKFdBUk4o
-KSAtPiBydHdfd2FybigpKS4NCg0KQnV0IGZyb20geW91ciBrZXJuZWwgbG9nIEkgY2FuIHNlZSB0
-aGF0IHRoZSBoMmMgY29tbWFuZHMgZmFpbGVkIHRvDQpiZSBzZW50IHRvIGZpcm13YXJlLCB3aGlj
-aCBtZWFucyB0aGVyZSdzIGFub3RoZXIgdGhpbmdzIHRoYXQgY2F1c2UNCmZpcm13YXJlIHRvIHN0
-YWxsLiBJdCB3aWxsIGJlIGJldHRlciBpZiB5b3UgY2FuIHR1cm4gdGhlIGRlYnVnIG1hc2tzIG9u
-LA0KYW5kIHJlcHJvZHVjZSBpdCwgdG8gaGVscCBtZSBzbyBzZWUgd2hhdCBoYXBwZW5lZC4NClRv
-IHR1cm4gdGhlIGRlYnVnIG1hc2tzIG9uOg0KJCBlY2hvIDB4ZmZmZmZmZmYgPiAvc3lzL21vZHVs
-ZS9ydHc4OC9wYXJhbWV0ZXJzL2RlYnVnX21hc2sNCg0KWWFuLUhzdWFuDQo=
+On 2020-01-11 18:15, Jia-Ju Bai wrote:
+> The functions ath9k_config() and ath_ani_calibrate() may be concurrently
+> executed.
+> 
+> A variable survey->filled is accessed with holding a spinlock
+> common->cc_lock, through:
+> ath_ani_calibrate()
+>     spin_lock_irqsave(&common->cc_lock, flags);
+>     ath_update_survey_stats()
+>         ath_update_survey_nf()
+>             survey->filled |= SURVEY_INFO_NOISE_DBM;
+> 
+> The identical variables sc->cur_survey->filled and 
+> sc->survey[pos].filled is accessed without holding this lock, through:
+> ath9k_config()
+>     ath_chanctx_set_channel()
+>         ath_set_channel()
+>             sc->cur_survey->filled &= ~SURVEY_INFO_IN_USE;
+>             sc->cur_survey->filled |= SURVEY_INFO_IN_USE;
+>             else if (!(sc->survey[pos].filled & SURVEY_INFO_IN_USE))
+>             ath_update_survey_nf
+>                 survey->filled |= SURVEY_INFO_NOISE_DBM;
+> 
+> Thus, possible data races may occur.
+> 
+> To fix these data races, in ath_set_channel(), these variables are
+> accessed with holding the spinlock common->cc_lock.
+> 
+> These data races are found by the runtime testing of our tool DILP-2.
+> 
+> Signed-off-by: Jia-Ju Bai <baijiaju1990@gmail.com>
+I think a much better solution would be to stop common->ani.timer
+earlier in ath_set_channel to prevent this race from occurring.
+
+- Felix
