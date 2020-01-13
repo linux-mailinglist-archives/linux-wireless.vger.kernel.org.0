@@ -2,57 +2,102 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A19E1138DE4
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Jan 2020 10:32:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E5E0138ED1
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Jan 2020 11:16:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726505AbgAMJb5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 13 Jan 2020 04:31:57 -0500
-Received: from s3.sipsolutions.net ([144.76.43.62]:45266 "EHLO
-        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725978AbgAMJb5 (ORCPT
+        id S1726878AbgAMKQA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 13 Jan 2020 05:16:00 -0500
+Received: from mail26.static.mailgun.info ([104.130.122.26]:15649 "EHLO
+        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725992AbgAMKP7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 13 Jan 2020 04:31:57 -0500
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.92.3)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1iqw4W-002bnY-RN; Mon, 13 Jan 2020 10:31:44 +0100
-Message-ID: <8e1acaf6529f997b939a75975e958a4cf7f58738.camel@sipsolutions.net>
-Subject: Re: BUG: unable to handle kernel NULL pointer dereference in
- cfg80211_wext_siwrts
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Justin Capella <justincapella@gmail.com>
-Cc:     syzbot <syzbot+34b582cf32c1db008f8e@syzkaller.appspotmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        LKML <linux-kernel@vger.kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        syzkaller-bugs@googlegroups.com,
-        Cody Schuffelen <schuffelen@google.com>
-Date:   Mon, 13 Jan 2020 10:31:43 +0100
-In-Reply-To: <20200113092820.GB9510@kadam>
-References: <00000000000073b469059bcde315@google.com>
-         <b5d74ce6b6e3c4b39cfac7df6c2b65d0a43d4416.camel@sipsolutions.net>
-         <CAMrEMU_a9evtp26tYB6VUxznmSmH98AmpP8xnejQr5bGTgE+8g@mail.gmail.com>
-         <20200113092820.GB9510@kadam>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.2 (3.34.2-1.fc31) 
+        Mon, 13 Jan 2020 05:15:59 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1578910559; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=BljZPdbyLz1oIxLZQU2DxQV4e8yNWqRV7wN1KDuFTC4=; b=I6Nux/uQNMZLpohE+N0bUnIxg4qRliSsOkzs6Rccc0/pXZ/A6jEqctIobwgK0duwZCKghfos
+ HwkZn37vXs8Wqg2ni8A6UrwZVez1sCkDU2mBxu3ni1GRfpqqxJjDgKeVbgsG6kS8UYyku3R5
+ ujYYnqHZL2CN8kJxBlM1UwewZu0=
+X-Mailgun-Sending-Ip: 104.130.122.26
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5e1c435d.7fbe123dfea0-smtp-out-n02;
+ Mon, 13 Jan 2020 10:15:57 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 5D793C447A2; Mon, 13 Jan 2020 10:15:56 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from tynnyri.adurom.net (tynnyri.adurom.net [51.15.11.48])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id F01E4C447A5;
+        Mon, 13 Jan 2020 10:15:53 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org F01E4C447A5
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Ganapathi Bhat <ganapathi.bhat@nxp.com>
+Cc:     "linux-wireless\@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        Cathy Luo <cluo@marvell.com>,
+        Zhiyuan Yang <yangzy@marvell.com>,
+        James Cao <jcao@marvell.com>,
+        Rakesh Parmar <rakeshp@marvell.com>,
+        Rakesh Parmar <rakesh.parmar@nxp.com>,
+        Sharvari Harisangam <sharvari.harisangam@nxp.com>,
+        Sachin Shelke <sachin.shelke@nxp.com>
+Subject: Re: [PATCH] MAINTAINERS: update for mwifiex driver maintainers
+References: <1578391915-3960-1-git-send-email-ganapathi.bhat@nxp.com>
+Date:   Mon, 13 Jan 2020 12:15:51 +0200
+In-Reply-To: <1578391915-3960-1-git-send-email-ganapathi.bhat@nxp.com>
+        (Ganapathi Bhat's message of "Tue, 7 Jan 2020 10:12:09 +0000")
+Message-ID: <87sgkj1x2g.fsf@tynnyri.adurom.net>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 2020-01-13 at 12:28 +0300, Dan Carpenter wrote:
-> That's the wrong ops struct?  I think I was looking at the "previous
-> report" that Johannes mentioned where it was crashing because
-> virt_wifi doesn't implement a set_wiphy_params function.
+Ganapathi Bhat <ganapathi.bhat@nxp.com> writes:
 
-Did I say that? Had forgotten by the time I got to this email ...
+> Rakesh Parmar, Sharvari Harisangam & Sachin Shelke have started
+> to take a more active role in mwifiex driver maintainership.
+> This change is to add them to the list of MAINTAINERS.
+>
+> Signed-off-by: Rakesh Parmar <rakesh.parmar@nxp.com>
+> Signed-off-by: Sharvari Harisangam <sharvari.harisangam@nxp.com>
+> Signed-off-by: Sachin Shelke <sachin.shelke@nxp.com>
+> Signed-off-by: Ganapathi Bhat <ganapathi.bhat@nxp.com>
+> ---
+>  MAINTAINERS | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+>
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index d095198..d371843 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -9955,8 +9955,10 @@ F:	drivers/net/ethernet/marvell/mvneta.*
+>  
+>  MARVELL MWIFIEX WIRELESS DRIVER
+>  M:	Amitkumar Karwar <amitkarwar@gmail.com>
+> -M:	Nishant Sarmukadam <nishants@marvell.com>
 
-But thanks for the pointer (reminder?) I'll go through cfg80211 and fix
-it there then.
+What about Nishant, you don't mention anything about him.
 
-johannes
+> +M:	Rakesh Parmar <rakesh.parmar@nxp.com>
+>  M:	Ganapathi Bhat <ganapathi.bhat@nxp.com>
+> +M:	Sharvari Harisangam <sharvari.harisangam@nxp.com>
+> +M:	Sachin Shelke <sachin.shelke@nxp.com>
+>  M:	Xinming Hu <huxinming820@gmail.com>
 
+I think there are too many maintainers now. There should be just one or
+two maintainers per driver, not six. Maintainer is a different role from
+a person actively working on the driver.
 
+-- 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
