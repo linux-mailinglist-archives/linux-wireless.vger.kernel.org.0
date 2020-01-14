@@ -2,86 +2,142 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5435613ACBE
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jan 2020 15:57:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4EF4413ACD6
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jan 2020 16:00:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728773AbgANO5F (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 14 Jan 2020 09:57:05 -0500
-Received: from mail25.static.mailgun.info ([104.130.122.25]:15057 "EHLO
-        mail25.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727092AbgANO5F (ORCPT
+        id S1729106AbgANPAi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 14 Jan 2020 10:00:38 -0500
+Received: from mail2-relais-roc.national.inria.fr ([192.134.164.83]:2123 "EHLO
+        mail2-relais-roc.national.inria.fr" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725904AbgANPAi (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 14 Jan 2020 09:57:05 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1579013824; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=/wDQzX9drwe6MnLxKEd1wgdmQ0ROFJy34Icy9JXF50Q=; b=mCFVjMMLOkJjVieBWS00YukNNyVXqDv4E4pVpljdbctxbFkJz/k647JDFEB1TXVqB1dEHrOF
- +5EtBZEPV1Mn8+BM1diBbYJCCvcy74ZIMfspusmrHlqS1beW/hM1+IH+Tue06MdsyelH+/HT
- xuqxYIWL01Vc0kiRxBTUM+Vhe3o=
-X-Mailgun-Sending-Ip: 104.130.122.25
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e1dd6be.7fba760c6f48-smtp-out-n01;
- Tue, 14 Jan 2020 14:57:02 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 655D2C4479F; Tue, 14 Jan 2020 14:57:01 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from tynnyri.adurom.net (tynnyri.adurom.net [51.15.11.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 2370AC43383;
-        Tue, 14 Jan 2020 14:56:57 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 2370AC43383
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Brian Norris <briannorris@chromium.org>
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
-        Linux Kernel <linux-kernel@vger.kernel.org>,
-        Ganapathi Bhat <ganapathi.bhat@nxp.com>,
-        Nishant Sarmukadam <nishants@marvell.com>,
-        Amitkumar Karwar <amitkarwar@gmail.com>,
-        Xinming Hu <huxinming820@gmail.com>,
-        stable <stable@vger.kernel.org>, huangwen <huangwenabc@gmail.com>
-Subject: Re: [PATCH] mwifiex: fix unbalanced locking in mwifiex_process_country_ie()
-References: <20200106224212.189763-1-briannorris@chromium.org>
-        <CA+ASDXNN5=97nhN99rPneLGSQAmQ4ULS6Kim1oxCzKWNtPkWFw@mail.gmail.com>
-Date:   Tue, 14 Jan 2020 16:56:54 +0200
-In-Reply-To: <CA+ASDXNN5=97nhN99rPneLGSQAmQ4ULS6Kim1oxCzKWNtPkWFw@mail.gmail.com>
-        (Brian Norris's message of "Mon, 6 Jan 2020 14:51:02 -0800")
-Message-ID: <87imle13yh.fsf@tynnyri.adurom.net>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Tue, 14 Jan 2020 10:00:38 -0500
+X-IronPort-AV: E=Sophos;i="5.69,433,1571695200"; 
+   d="scan'208";a="431311145"
+Received: from roc002r.vpn.inria.fr ([128.93.183.2])
+  by mail2-relais-roc.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 14 Jan 2020 16:00:16 +0100
+Date:   Tue, 14 Jan 2020 16:00:16 +0100 (CET)
+From:   Julia Lawall <julia.lawall@inria.fr>
+X-X-Sender: julia@hadrien
+To:     Daniel Baluta <daniel.baluta@gmail.com>
+cc:     Aveek Basu <basu.aveek@gmail.com>,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+        Till Kamppeter <till.kamppeter@gmail.com>,
+        Alexey Khoroshilov <khoroshilov@ispras.ru>,
+        "Bogdan, Dragos" <Dragos.Bogdan@analog.com>,
+        Denis Silakov <silakov@ispras.ru>,
+        Gary O'Neall <garysourceauditor@gmail.com>,
+        Ira McDonald <blueroofmusic@gmail.com>,
+        =?ISO-8859-15?Q?Jan-Simon_M=F6ller?= 
+        <jsmoeller@linuxfoundation.org>, Jay Berkenbilt <ejb@ql.org>,
+        Jeff Licquia <jeff@licquia.org>,
+        Julia Lawall <julia.lawall@lip6.fr>,
+        "Luis R. Rodriguez" <mcgrof@gmail.com>,
+        Mats Wichmann <mats@wichmann.us>,
+        Matt Germonprez <germonprez@gmail.com>,
+        Michael Sweet <msweet@apple.com>,
+        Nicholas Mc Guire <der.herr@hofr.at>,
+        Open Printing <printing-architecture@lists.linux-foundation.org>,
+        Philippe Ombredanne <pombredanne@nexb.com>,
+        Ralf Ramsauer <ralf.ramsauer@oth-regensburg.de>,
+        Tobias Hoffmann <smilingthax@googlemail.com>,
+        Vadim Mutilin <mutilin@ispras.ru>, dl9pf@gmx.de,
+        linux-wireless <linux-wireless@vger.kernel.org>
+Subject: Re: Google Summer of Code 2020 - Project ideas page for the Linux
+ Foundation online
+In-Reply-To: <CAEnQRZD=GH6s5dkuLxT=MojwuM6WZgL4WZN500yzk=qcjV=_wA@mail.gmail.com>
+Message-ID: <alpine.DEB.2.21.2001141558020.6231@hadrien>
+References: <d6d2eb63-e2b5-26f1-34b3-d1b1dd511fe8@gmail.com> <CAKXUXMyswP6S7aZCcA6n50PPKb1=KXOd=-fctCsEg+vwByD63w@mail.gmail.com> <CAKSHSL40okJrsQv9zHhKwxzZ49C0kct1Nr4=zQu-NYGKp-z83w@mail.gmail.com>
+ <CAEnQRZD=GH6s5dkuLxT=MojwuM6WZgL4WZN500yzk=qcjV=_wA@mail.gmail.com>
+User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=US-ASCII
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Brian Norris <briannorris@chromium.org> writes:
 
-> On Mon, Jan 6, 2020 at 2:43 PM Brian Norris <briannorris@chromium.org> wrote:
->>
->> We called rcu_read_lock(), so we need to call rcu_read_unlock() before
->> we return.
->>
->> Fixes: 3d94a4a8373b ("mwifiex: fix possible heap overflow in mwifiex_process_country_ie()")
->> Cc: stable@vger.kernel.org
->> Cc: huangwen <huangwenabc@gmail.com>
->> Cc: Ganapathi Bhat <ganapathi.bhat@nxp.com>
->> Signed-off-by: Brian Norris <briannorris@chromium.org>
+
+On Tue, 14 Jan 2020, Daniel Baluta wrote:
+
+> Hi Aveek,
 >
-> I probably should have mentioned somewhere here: the bug is currently
-> in 5.5-rc and is being ported to -stable already (I'll try to head
-> that off). So this probably should have said [PATCH 5.5]. Sorry about
-> that.
+> I think Lucas was referring to Linux kernel community. There are
+> plenty of developers from all companies
+> around the world who might have some ideas.
+>
+> For example we could send an emal to lkml or kernelnewbies mailinglists.
 
-Ok, I'll queue this to v5.5.
+Actually, I think he was referring to this:
 
--- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+https://lore.kernel.org/workflows/
+
+I'm not sure if there is any intersection between the people CCd on this
+message and that list, but I don't know the names of all of the people on
+that list.
+
+julia
+
+
+
+>
+> On Tue, Jan 14, 2020 at 4:29 PM Aveek Basu <basu.aveek@gmail.com> wrote:
+> >
+> > Hi Lukas,
+> >
+> > Folks from the kernel groups are already copied in this email.
+> >
+> > Regards,
+> > Aveek
+> >
+> > On Tue, Jan 14, 2020 at 4:57 AM Lukas Bulwahn <lukas.bulwahn@gmail.com> wrote:
+> >>
+> >> Hi Till,
+> >>
+> >> I would suggest to also reach out to the kernel workflows group. I have seen various good ideas for student projects, which are more suitable for students and have larger impact on kernel development than many topics that I would provide.
+> >>
+> >> What do you think?
+> >>
+> >> Lukas
+> >>
+> >> Till Kamppeter <till.kamppeter@gmail.com> schrieb am Mo., 13. Jan. 2020 um 23:04:
+> >>>
+> >>> Hi,
+> >>>
+> >>> Tomorrow the application period for mentoring organizations for the Google
+> >>> Summer of Code 2020 will start.
+> >>>
+> >>> To be successful, we need a rich project idea list so that we will get selected
+> >>> by Google.
+> >>>
+> >>> I have set up a page for project ideas for the Linux Foundation's participation
+> >>> in the Google Summer of Code 2020:
+> >>>
+> >>> https://wiki.linuxfoundation.org/gsoc/google-summer-code-2020
+> >>>
+> >>> Please add your ideas to the sub-page of your work group. Also remove project
+> >>> ideas which are already done in one of the previous years or not needed any more
+> >>> and make sure that all contact info is up-to-date and all links are working.
+> >>>
+> >>> If you have problems mail me with your project ideas and other editing wishes.
+> >>>
+> >>> The ideas list is in the Linux Foundation Wiki. If you want to edit and did not
+> >>> have the edit rights already from previous years, please tell me and I give you
+> >>> edit rights. I need your Linux Foundation user name for that and the e-mail
+> >>> address associated with this account for this.
+> >>>
+> >>> Please also take into account that the deadline for our application as mentoring
+> >>> organization is Feb 5 and after that Google will evaluate the applications. So
+> >>> have your ideas (at least most of them, ideas can be posted up to the student
+> >>> application deadline) in by then to raise our chances to get accepted.
+> >>>
+> >>>     Till
+> >
+> >
+> >
+> > --
+> >
+> > Regards,
+> > Aveek
+>
