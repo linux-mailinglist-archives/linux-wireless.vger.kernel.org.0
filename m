@@ -2,170 +2,89 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 67A2D13A959
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jan 2020 13:33:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F13CA13AB3B
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jan 2020 14:41:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726335AbgANMdx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 14 Jan 2020 07:33:53 -0500
-Received: from mx0b-00183b01.pphosted.com ([67.231.157.42]:48936 "EHLO
-        mx0a-00183b01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1725994AbgANMdx (ORCPT
+        id S1728761AbgANNlR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 14 Jan 2020 08:41:17 -0500
+Received: from mail25.static.mailgun.info ([104.130.122.25]:53656 "EHLO
+        mail25.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726106AbgANNlQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 14 Jan 2020 07:33:53 -0500
-Received: from pps.filterd (m0048104.ppops.net [127.0.0.1])
-        by mx0b-00183b01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 00ECUhac018769;
-        Tue, 14 Jan 2020 05:32:08 -0700
-Received: from nam11-dm6-obe.outbound.protection.outlook.com (mail-dm6nam11lp2169.outbound.protection.outlook.com [104.47.57.169])
-        by mx0b-00183b01.pphosted.com with ESMTP id 2xfafg5w4n-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 14 Jan 2020 05:32:07 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=fSDz9LFV8YmSPJtMfQZ8IZh9N2egpSdHTnEKNiYpNEzIv5LY66wZu6XC6dvg0qeoQVIlTUwRHLuz2LKD4XaGKQ88jQpTtXxDrsnMqxDZi/0vfqbjFEtcAMBYAtT1EANQ7qO8tXBP4/pKLfRXd4EZrZz3ax2Yu7GaYSxFWoiIurj8DfUnIv0ThwLBZeRrGHOqrlQ+yxaR5ugr7MEs7k4CyD/hmfGBhO7mEmNlt7YGUzWHrsfrzrGUsrnEL+ro2a+komEcegjUtHK63/7YPUTInm6NUGvyYJM0wbGab23xy+0oY+NJi15pfrP9f7hQbIJG/yheiIFvg6GWErV4XDYQ3w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=JQ9DrkMfOAwTbDwAUSwryqa4w/tyyodWQu7goL2Yy0E=;
- b=C9jvPi3OOSa7dP/SAcJxr8GM3Xsq0mO8wI7J9Pyl5zch9v06j43K4Q6+TPD3N5dltGyU0BiJsPG8nEtbSlCvDJFtek+PUpibF/gW+IWHiZZJT+zNTLGpWGuw2ar5SaskzjNBp3jRrLmbyuIOhywVxx3BTMQo1tGZaJtTP6+PpN0dx9Ez2nrQRlYVVfno9qF/TqGv7sPEadStog1PFLDls+lb+7I2AduSNAo95Mv0x413ASjDOyWCyOVRPDuQMeRi01yBFm+C/rd23WdBH6sH5saJx+3ipMXczmh4/IL7+ZCl1KflAoGGT+JjuFNAuLaRanxdfKcMah3YWR5pyIxePA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=quantenna.com; dmarc=pass action=none
- header.from=quantenna.com; dkim=pass header.d=quantenna.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quantenna.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=JQ9DrkMfOAwTbDwAUSwryqa4w/tyyodWQu7goL2Yy0E=;
- b=NO/5m/YiBA9sBI/0dhADH1zL5pBx6yRfPPF6lZLc5TqUFJFpacMy6gkgxtKpvxrWEo4irgEzVfH3D3GsNnMOiZ1IeHtYejES8zayGcqkXVEsqdfhSjKRXlzgRNd+TfUYSKs/azRgr5k6N6q7zjGv8x97SmWIs20kGBzN2TSC1MA=
-Received: from SN6PR05MB4159.namprd05.prod.outlook.com (52.135.67.138) by
- SN6PR05MB4751.namprd05.prod.outlook.com (52.135.114.225) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2644.16; Tue, 14 Jan 2020 12:32:06 +0000
-Received: from SN6PR05MB4159.namprd05.prod.outlook.com
- ([fe80::1cb0:4867:5f58:4959]) by SN6PR05MB4159.namprd05.prod.outlook.com
- ([fe80::1cb0:4867:5f58:4959%6]) with mapi id 15.20.2644.015; Tue, 14 Jan 2020
- 12:32:06 +0000
-Received: from SN6PR05MB4928.namprd05.prod.outlook.com (52.135.117.74) by
- SN6PR05MB5854.namprd05.prod.outlook.com (20.178.6.29) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2644.10; Tue, 14 Jan 2020 12:31:15 +0000
-Received: from SN6PR05MB4928.namprd05.prod.outlook.com
- ([fe80::2956:4ff3:7d5b:333c]) by SN6PR05MB4928.namprd05.prod.outlook.com
- ([fe80::2956:4ff3:7d5b:333c%5]) with mapi id 15.20.2644.015; Tue, 14 Jan 2020
- 12:31:15 +0000
-Date:   Tue, 14 Jan 2020 15:31:09 +0300
-From:   Sergey Matyukevich <sergey.matyukevich.os@quantenna.com>
-To:     Tamizh Chelvam <tamizhr@codeaurora.org>
-CC:     johannes@sipsolutions.net, linux-wireless@vger.kernel.org
-Subject: Re: [PATCHv9 5/6] nl80211: Add support to configure TID specific
- txrate configuration
-Message-ID: <20200114123108.5mrzvyqkjp7defln@bars>
-Mail-Followup-To: Tamizh Chelvam <tamizhr@codeaurora.org>,
-        johannes@sipsolutions.net, linux-wireless@vger.kernel.org
-References: <1578921090-9758-1-git-send-email-tamizhr@codeaurora.org>
- <1578921090-9758-6-git-send-email-tamizhr@codeaurora.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1578921090-9758-6-git-send-email-tamizhr@codeaurora.org>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-ClientProxiedBy: LO2P265CA0100.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:c::16) To SN6PR05MB4928.namprd05.prod.outlook.com
- (2603:10b6:805:9d::10)
+        Tue, 14 Jan 2020 08:41:16 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1579009275; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=XgsptuF1PzYyDRBhyFpT7E0jFEYQTfHc3/giWQnRSk0=; b=D6G1OF4DtRmV7VxN1WSBHPGOw5BsSyEspFa8MJsPWSeNDKua5Soy6FoguXKMa+YZFoBFu/cc
+ 3XMA7BRWxpF2BuFMaN+7M7nrQFoR7/vdANpB+6AaqrjstSlseFyD60n3rrk2n698jqModZoZ
+ V58t0ebF6bOVSRLBqxe2cKFh2t0=
+X-Mailgun-Sending-Ip: 104.130.122.25
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5e1dc4f4.7f93cbd7bbc8-smtp-out-n02;
+ Tue, 14 Jan 2020 13:41:08 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 0C998C447A2; Tue, 14 Jan 2020 13:41:08 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from x230.qca.qualcomm.com (85-76-19-103-nat.elisa-mobile.fi [85.76.19.103])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id EB5F5C43383;
+        Tue, 14 Jan 2020 13:41:04 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org EB5F5C43383
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Brian Norris <briannorris@chromium.org>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
+        Linux Kernel <linux-kernel@vger.kernel.org>,
+        Ganapathi Bhat <ganapathi.bhat@nxp.com>,
+        Nishant Sarmukadam <nishants@marvell.com>,
+        Amitkumar Karwar <amitkarwar@gmail.com>,
+        Xinming Hu <huxinming820@gmail.com>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        Solar Designer <solar@openwall.com>,
+        qize wang <wangqize888888888@gmail.com>
+Subject: Re: [PATCH] mwifiex: drop most magic numbers from mwifiex_process_tdls_action_frame()
+References: <20191206194535.150179-1-briannorris@chromium.org>
+        <0101016eea4fa7f5-e04b23cd-17a0-4306-8100-7761f1161da3-000000@us-west-2.amazonses.com>
+        <CA+ASDXNCzyRfZs0D6_+j0Tyqai4PaFk50HpF_LqC-GuOTYJCmA@mail.gmail.com>
+Date:   Tue, 14 Jan 2020 15:41:02 +0200
+In-Reply-To: <CA+ASDXNCzyRfZs0D6_+j0Tyqai4PaFk50HpF_LqC-GuOTYJCmA@mail.gmail.com>
+        (Brian Norris's message of "Mon, 13 Jan 2020 11:05:36 -0800")
+Message-ID: <87sgkiqhox.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-Received: from bars (195.182.157.78) by LO2P265CA0100.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:c::16) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2644.18 via Frontend Transport; Tue, 14 Jan 2020 12:31:13 +0000
-X-Originating-IP: [195.182.157.78]
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 633ac74e-5311-43d0-4716-08d798eda57d
-X-MS-TrafficTypeDiagnostic: SN6PR05MB5854:|SN6PR05MB4751:
-X-Microsoft-Antispam-PRVS: <SN6PR05MB5854DC55CAD2E013E92E5E46A3340@SN6PR05MB5854.namprd05.prod.outlook.com>
-X-Moderation-Data: 1/14/2020 12:31:39 PM
-X-MS-Oob-TLC-OOBClassifiers: OLM:7219;
-X-Forefront-PRVS: 028256169F
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(366004)(376002)(396003)(39850400004)(346002)(136003)(199004)(189003)(316002)(478600001)(55016002)(26005)(81156014)(4326008)(9686003)(8676002)(52116002)(81166006)(6496006)(1076003)(6916009)(9576002)(186003)(33716001)(6666004)(16526019)(8936002)(86362001)(66476007)(66556008)(5660300002)(2906002)(956004)(66946007);DIR:OUT;SFP:1101;SCL:1;SRVR:SN6PR05MB4751;H:SN6PR05MB4159.namprd05.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
-Received-SPF: None (protection.outlook.com: quantenna.com does not designate
- permitted sender hosts)
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: Fjr80ElGTNphSvY3vqKlON+pa84I3CGGJFU3PY33kaWtDSaSE5Ueov8YElPQkz1IVzYMNnRQmnYqLqsjSciH+6IBaBPU3gZWDhgARsPcL2DKVv05Wj5Ly8hiSJ+AtlqEyjHV37DPnVKUhFWZqBgvzBAmH+KCy81+spw83R4UIDHYhb7h8mnyNw6UFLeEV2EGyI8lRuQrgRAMN899TmTK38+MCl0kkR1pbv/MAQXg6vP5I9ynLjq12oueNTMwponmIfgiD4dNZKPD5ZVqJjqWxnSpwKqGAlGn88UxokIdruFZ8iIhc1Jj0yTV8OLW3B/okgF2Qk7sNxnNKpBCwkWfjByeqpEKcdk4v4Ylh7N1ccfdaOVNMTrzFyhgikbhdcZdMmGGjJpnAc8FAN3Gbz5vmL6zQL2ZDSS+IM0p2x6c/AUo373ifXbLHipmGm6K4PXf
-X-OriginatorOrg: quantenna.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 633ac74e-5311-43d0-4716-08d798eda57d
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: a355dbce-62b4-4789-9446-c1d5582180ff
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: J8VPmWBYdxTVECQcBlS514eD5yF+7V4TV/eq+MPFHW1nrNOQR4SxiJK/bYBYf3KbrkEvVmLVJkl3e+sOcvHSlVlWvSrnMSSc40zaAQaJChzL18m0JD7N/dSnB3EmCHOntPTnBQdgIZvTvEKxlyQ+Bcb+EGPbajqOJbyvVEgVgOjvch7I502xOPvemV4ZXq774ISyEc+URnml+7niLKM7kBYlK4igAAtZi9u1tuX09+U=
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jan 2020 12:32:06.3393
- (UTC)
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN6PR05MB4751
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.572
- definitions=2020-01-14_03:2020-01-13,2020-01-14 signatures=0
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 lowpriorityscore=0
- bulkscore=0 suspectscore=2 spamscore=0 phishscore=0 mlxlogscore=999
- impostorscore=0 malwarescore=0 mlxscore=0 clxscore=1015 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-1910280000
- definitions=main-2001140105
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-> This patch adds support to configure per TID txrate configuration
-> configuration through the NL80211_TID_CONFIG_ATTR_TX_RATE_TYPE
-> and NL80211_TID_CONFIG_ATTR_TX_RATE
-> attribute. TX bitrate mask values passed
-> in NL80211_ATTR_TX_RATES attribute and NL80211_TID_CONFIG_ATTR_TX_RATES
-> attribute will have types of the TX rate should be applied. This uses
-> nl80211_parse_tx_bitrate_mask to validate and calculate the bitrate
-> mask.
-> 
-> Signed-off-by: Tamizh chelvam <tamizhr@codeaurora.org>
-> ---
->  include/net/cfg80211.h       |    5 +++
->  include/uapi/linux/nl80211.h |   24 +++++++++++++
->  net/wireless/nl80211.c       |   76 ++++++++++++++++++++++++++++++++----------
->  3 files changed, 88 insertions(+), 17 deletions(-)
+Brian Norris <briannorris@chromium.org> writes:
 
-...
+> On Mon, Dec 9, 2019 at 2:58 AM Kalle Valo <kvalo@codeaurora.org> wrote:
+>>
+>> Brian Norris <briannorris@chromium.org> writes:
+>>
+>> > AFAICT, the existing commit (1e58252e334d) isn't wrong, per se -- just
+>> > very poorly styled -- so this probably doesn't need to go to -stable.
+>> > Not sure if it's a candidate for wireless-drivers (where the original
+>> > commit currently sites) vs. wireless-drivers-next.
+>>
+>> I'll try to do so that I'll put this patch to "Awaiting Upstream" state
+>> and apply it to w-d-next once 1e58252e334d is merged to w-d-next. Feel
+>> free to remind me then that happens :)
+>
+> It's that time!
 
-> @@ -13936,6 +13947,37 @@ static int parse_tid_conf(struct cfg80211_registered_device *rdev,
->  			nla_get_u8(attrs[NL80211_TID_CONFIG_ATTR_RTSCTS_CTRL]);
->  	}
->  
-> +	if (attrs[NL80211_TID_CONFIG_ATTR_TX_RATE_TYPE]) {
-> +		int idx;
-> +		enum nl80211_attrs attr;
-> +
-> +		err = nl80211_check_tid_config_support(rdev, extack, peer,
-> +						       attrs, tid_conf,
-> +						       TX_RATE);
-> +		if (err)
-> +			return err;
-> +		idx = NL80211_TID_CONFIG_ATTR_TX_RATE_TYPE;
-> +		tid_conf->txrate_type = nla_get_u8(attrs[idx]);
-> +		if (tid_conf->txrate_type != NL80211_TX_RATE_AUTOMATIC) {
-> +			tid_conf->mask =
-> +				kzalloc(sizeof(struct cfg80211_bitrate_mask),
-> +					GFP_KERNEL);
-> +			if (!tid_conf->mask)
-> +				return -ENOMEM;
-> +
-> +			attr =
-> +			(enum nl80211_attrs)NL80211_TID_CONFIG_ATTR_TX_RATE;
-> +			err = nl80211_parse_tx_bitrate_mask(info, attrs, attr,
-> +							    tid_conf->mask);
-> +			if (err) {
-> +				kfree(tid_conf->mask);
-> +				return err;
-> +			}
+Thanks, changed the state to 'Under Review' which means this is back in
+my queue.
 
-IIUC we have to free all the allocated tid_conf->mask entries in the end of
-nl80211_set_tid_config, right before tid_config is freed. Alternatively,
-struct ieee80211_tid_cfg can be modified to keep cfg80211_bitrate_mask
-value rather than pointer.
-
-> +		} else {
-> +			tid_conf->mask = NULL;
-> +		}
-> +	}
-> +
->  	return 0;
->  }
-
-Regards,
-Sergey
+-- 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
