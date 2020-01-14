@@ -2,96 +2,145 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7CA4B13AC74
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jan 2020 15:39:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0FAFC13AC9C
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Jan 2020 15:50:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728981AbgANOjo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 14 Jan 2020 09:39:44 -0500
-Received: from mail26.static.mailgun.info ([104.130.122.26]:50219 "EHLO
-        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726197AbgANOjo (ORCPT
+        id S1728925AbgANOuB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 14 Jan 2020 09:50:01 -0500
+Received: from mail-wm1-f66.google.com ([209.85.128.66]:55515 "EHLO
+        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728868AbgANOuA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 14 Jan 2020 09:39:44 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1579012784; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=ZkztEpCYEhA5aKlShnTRK8rmUDN6DAkVLfMmBsKZpVM=; b=g2aS8vKImjmY2mC9JcXTo/O//+MFOTtArrJGPUURQaH3sQYE0ixkrT8exv0iZVWVf00sRP+5
- pJXc1IPS/eyypws4FunupDkM8g99rT8SMLbyDK4THWRrGsu97NBzQHFlyet0ECC2RyyEZyA0
- /RtiVRedO9Z2Tvk1PA8kb+zk1LI=
-X-Mailgun-Sending-Ip: 104.130.122.26
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e1dd2ae.7f78b7c2e458-smtp-out-n03;
- Tue, 14 Jan 2020 14:39:42 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id E4102C433A2; Tue, 14 Jan 2020 14:39:41 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from x230.qca.qualcomm.com (85-76-19-103-nat.elisa-mobile.fi [85.76.19.103])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 7205AC4479C;
-        Tue, 14 Jan 2020 14:39:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 7205AC4479C
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Lorenzo Bianconi <lorenzo@kernel.org>
-Cc:     nbd@nbd.name, lorenzo.bianconi@redhat.com,
-        linux-wireless@vger.kernel.org, Sean.Wang@mediatek.com
-Subject: Re: [PATCH v2 01/18] mt76: mt76u: check tx_status_data pointer in mt76u_tx_tasklet
-References: <cover.1578226544.git.lorenzo@kernel.org>
-        <abcddd40dcf003980e1d095d6cbd40b22ac98a43.1578226544.git.lorenzo@kernel.org>
-        <87muaq15x8.fsf@tynnyri.adurom.net>
-        <20200114143131.GA29696@localhost.localdomain>
-Date:   Tue, 14 Jan 2020 16:39:36 +0200
-In-Reply-To: <20200114143131.GA29696@localhost.localdomain> (Lorenzo
-        Bianconi's message of "Tue, 14 Jan 2020 15:31:31 +0100")
-Message-ID: <878smap0ev.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        Tue, 14 Jan 2020 09:50:00 -0500
+Received: by mail-wm1-f66.google.com with SMTP id q9so14107992wmj.5
+        for <linux-wireless@vger.kernel.org>; Tue, 14 Jan 2020 06:49:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=oaOhAZj47epTCdn4cs/FH6YiWO63fzhtUgFb6q7Vyoo=;
+        b=cOBwcBVkHENBZF3+Y1dspIK6/Ga3yDdnTSXStxqjPkZ5S7gICMu11gcaLUeghjTPSg
+         viK95Y0U9JCAPw4NKjIPiE4s9fgppad9JpEYyK18b1IcQEFUY0PqsffuVtHrKxtJUe1U
+         uiIpvDGYoGvLTk0ORhYE8c/+TTCY4SA945Tn23wpc//ym2H2YmPerIoRg49wxZw+fUrV
+         bhk6mFM1BDJ49pGsvBTBLPgzEQrWw3FzX4fds2FiLqNCtyFAI0RulkOeuLqy2Fpwb7Kf
+         Af5LgPSQABKTs2irl7mLr6imEQdWU+G3zMbKIfwK7F4ckCaruuq2XVqKJsUM5kD/3TUQ
+         rtIQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=oaOhAZj47epTCdn4cs/FH6YiWO63fzhtUgFb6q7Vyoo=;
+        b=NfLJ5PRMdt9Co/JSl8vyAeO8OkFBLHB/RWPuWtc4xlgd18lGeKD3vrTdfBr2bVRmY7
+         KZ3ZM3H5BHcy7XPWiePjvqqtcOpgPtKWvEJfIt5G6oIvFoHQMvYkJtkQ5p2QJDLz1OPh
+         +gGEbNbioVSTVXXqOJW6pUICrCxjBhMm8VmZ6kdUuQqJHO2Sm84fwyhoWh7CaKz50Pb0
+         bHHZO9Cxh+9gSRquD3tPlcgkYIGt6LneKhHpffACVbNkqJYZDjNR8lBKSeddX2JfJzlH
+         hQz2Hp6yV1/sTHPdbN/pMl7LBIUrs5sH8xbY71ocGc1dEORWWSjTUjF9IAaoqJeNfYd8
+         tHXw==
+X-Gm-Message-State: APjAAAW5BahQ6PbYoW3trwkk81UAlTnphLWSNTn8XkgjguVRgdh2HkRw
+        gf3y75tXcMmh5WJUnWOT+0H0BwoCYrfBGKe3CEk=
+X-Google-Smtp-Source: APXvYqycqqH/oHqpYnvxpRorQlyTMIh5g/aIdw81GxleZYOWe+JMtaS+u2Hp5y2fum8qOiNCL9eJ7yalkd06rrxxoEY=
+X-Received: by 2002:a1c:23d7:: with SMTP id j206mr26596259wmj.39.1579013399194;
+ Tue, 14 Jan 2020 06:49:59 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <d6d2eb63-e2b5-26f1-34b3-d1b1dd511fe8@gmail.com>
+ <CAKXUXMyswP6S7aZCcA6n50PPKb1=KXOd=-fctCsEg+vwByD63w@mail.gmail.com> <CAKSHSL40okJrsQv9zHhKwxzZ49C0kct1Nr4=zQu-NYGKp-z83w@mail.gmail.com>
+In-Reply-To: <CAKSHSL40okJrsQv9zHhKwxzZ49C0kct1Nr4=zQu-NYGKp-z83w@mail.gmail.com>
+From:   Daniel Baluta <daniel.baluta@gmail.com>
+Date:   Tue, 14 Jan 2020 16:49:47 +0200
+Message-ID: <CAEnQRZD=GH6s5dkuLxT=MojwuM6WZgL4WZN500yzk=qcjV=_wA@mail.gmail.com>
+Subject: Re: Google Summer of Code 2020 - Project ideas page for the Linux
+ Foundation online
+To:     Aveek Basu <basu.aveek@gmail.com>
+Cc:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+        Till Kamppeter <till.kamppeter@gmail.com>,
+        Alexey Khoroshilov <khoroshilov@ispras.ru>,
+        "Bogdan, Dragos" <Dragos.Bogdan@analog.com>,
+        Denis Silakov <silakov@ispras.ru>,
+        "Gary O'Neall" <garysourceauditor@gmail.com>,
+        Ira McDonald <blueroofmusic@gmail.com>,
+        =?UTF-8?Q?Jan=2DSimon_M=C3=B6ller?= <jsmoeller@linuxfoundation.org>,
+        Jay Berkenbilt <ejb@ql.org>, Jeff Licquia <jeff@licquia.org>,
+        Julia Lawall <julia.lawall@lip6.fr>,
+        "Luis R. Rodriguez" <mcgrof@gmail.com>,
+        Mats Wichmann <mats@wichmann.us>,
+        Matt Germonprez <germonprez@gmail.com>,
+        Michael Sweet <msweet@apple.com>,
+        Nicholas Mc Guire <der.herr@hofr.at>,
+        Open Printing <printing-architecture@lists.linux-foundation.org>,
+        Philippe Ombredanne <pombredanne@nexb.com>,
+        Ralf Ramsauer <ralf.ramsauer@oth-regensburg.de>,
+        Tobias Hoffmann <smilingthax@googlemail.com>,
+        Vadim Mutilin <mutilin@ispras.ru>, dl9pf@gmx.de,
+        linux-wireless <linux-wireless@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Lorenzo Bianconi <lorenzo@kernel.org> writes:
+Hi Aveek,
 
-> On Jan 14, Kalle Valo wrote:
->> Lorenzo Bianconi <lorenzo@kernel.org> writes:
->> 
->> > New devices (e.g. mt7663u) do not rely on stats workqueue to load tx
->> > statistics but will be reported by the firmware. Check tx_status_data
->> > pointer in mt76u_tx_tasklet in order to reuse tx tasklet for new devices
->> >
->> > Signed-off-by: Sean Wang <sean.wang@mediatek.com>
->> > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
->> 
->> Why is Sean's s-o-b first? Lorenzo is marked as the author so his s-o-b
->> should be first.
+I think Lucas was referring to Linux kernel community. There are
+plenty of developers from all companies
+around the world who might have some ideas.
+
+For example we could send an emal to lkml or kernelnewbies mailinglists.
+
+On Tue, Jan 14, 2020 at 4:29 PM Aveek Basu <basu.aveek@gmail.com> wrote:
 >
-> Hi Kalle,
+> Hi Lukas,
 >
-> my bad, I did not pay attention on it, I should put my SoB first.
+> Folks from the kernel groups are already copied in this email.
 >
->> 
->> Also I recommend taking a look at the new Co-Developed-by tag.
+> Regards,
+> Aveek
 >
-> I think Co-Developed-by fits better.
-
-Do note that you still need s-o-b as well:
-
-https://www.kernel.org/doc/html/latest/process/submitting-patches.html#when-to-use-acked-by-cc-and-co-developed-by
-
-> @Felix and Kalle: do you prefer to resubmit?
-
-I prefer to resubmit, but not a strong requirement and don't know if
-Felix already applied this.
-
--- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+> On Tue, Jan 14, 2020 at 4:57 AM Lukas Bulwahn <lukas.bulwahn@gmail.com> wrote:
+>>
+>> Hi Till,
+>>
+>> I would suggest to also reach out to the kernel workflows group. I have seen various good ideas for student projects, which are more suitable for students and have larger impact on kernel development than many topics that I would provide.
+>>
+>> What do you think?
+>>
+>> Lukas
+>>
+>> Till Kamppeter <till.kamppeter@gmail.com> schrieb am Mo., 13. Jan. 2020 um 23:04:
+>>>
+>>> Hi,
+>>>
+>>> Tomorrow the application period for mentoring organizations for the Google
+>>> Summer of Code 2020 will start.
+>>>
+>>> To be successful, we need a rich project idea list so that we will get selected
+>>> by Google.
+>>>
+>>> I have set up a page for project ideas for the Linux Foundation's participation
+>>> in the Google Summer of Code 2020:
+>>>
+>>> https://wiki.linuxfoundation.org/gsoc/google-summer-code-2020
+>>>
+>>> Please add your ideas to the sub-page of your work group. Also remove project
+>>> ideas which are already done in one of the previous years or not needed any more
+>>> and make sure that all contact info is up-to-date and all links are working.
+>>>
+>>> If you have problems mail me with your project ideas and other editing wishes.
+>>>
+>>> The ideas list is in the Linux Foundation Wiki. If you want to edit and did not
+>>> have the edit rights already from previous years, please tell me and I give you
+>>> edit rights. I need your Linux Foundation user name for that and the e-mail
+>>> address associated with this account for this.
+>>>
+>>> Please also take into account that the deadline for our application as mentoring
+>>> organization is Feb 5 and after that Google will evaluate the applications. So
+>>> have your ideas (at least most of them, ideas can be posted up to the student
+>>> application deadline) in by then to raise our chances to get accepted.
+>>>
+>>>     Till
+>
+>
+>
+> --
+>
+> Regards,
+> Aveek
