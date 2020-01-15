@@ -2,34 +2,34 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1AB9E13BDEE
+	by mail.lfdr.de (Postfix) with ESMTP id 8DAAD13BDEF
 	for <lists+linux-wireless@lfdr.de>; Wed, 15 Jan 2020 12:00:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729947AbgAOK7z (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 15 Jan 2020 05:59:55 -0500
-Received: from mail.kernel.org ([198.145.29.99]:59482 "EHLO mail.kernel.org"
+        id S1729952AbgAOK75 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 15 Jan 2020 05:59:57 -0500
+Received: from mail.kernel.org ([198.145.29.99]:59506 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729940AbgAOK7z (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 15 Jan 2020 05:59:55 -0500
+        id S1729940AbgAOK74 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 15 Jan 2020 05:59:56 -0500
 Received: from localhost.localdomain.com (nat-pool-mxp-t.redhat.com [149.6.153.186])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id BED4324679;
-        Wed, 15 Jan 2020 10:59:53 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 3225F2187F;
+        Wed, 15 Jan 2020 10:59:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1579085994;
-        bh=Qnr1GUcUMjGQtb8CAGoyajjc04bzj7QM+CMOx6lyRFs=;
+        s=default; t=1579085996;
+        bh=I3II6KJDNpPcmqvdhjK5OoZsxn2vKAIRDPyqZxsNmxA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=N9FzaxZH3JH0Uchf0Ia9UUhenb/P2n+7EwDRhKK+1cPBdtCdcgCAI/bg4cXo7Gyzc
-         3NrM4Yi1m/8jgLwMOnfQeJNn1tMXBdfc99abSL2zGm0BqCmbWOc9tr7sjn0yu1wAjf
-         K6VZ+PcyC7izC1JqnUtX3qCVeuiEDCaKvk8juyJE=
+        b=CMHOodrYd0Q+BQEZNzUHFECWonrKisa8JRZ2dFZqjtYkhch5Y+WKKWGzvMY9YJoHM
+         KqXWHduBdBAwnmvLo+MPQ+QFqFR7hFZ1vBBLDO9NRN1xn/BB1fAefmzTyJJeXQYVTh
+         c1DiHiZTFmOcMXnjRPoyXy88AMxW66fAGsWWa2Ug=
 From:   Lorenzo Bianconi <lorenzo@kernel.org>
 To:     nbd@nbd.name
 Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
         Sean.Wang@mediatek.com
-Subject: [PATCH v3 16/18] mt76: mt76u: introduce mt76u_skb_dma_info routine
-Date:   Wed, 15 Jan 2020 11:58:56 +0100
-Message-Id: <112f4dc4a940ea5bd2c7af1e9e0ac78c083f648b.1579085367.git.lorenzo@kernel.org>
+Subject: [PATCH v3 17/18] mt76: mt76u: add endpoint to mt76u_bulk_msg signature
+Date:   Wed, 15 Jan 2020 11:58:57 +0100
+Message-Id: <ab1cfc17d1255e7f03d511bb28f5d32c5c577797.1579085367.git.lorenzo@kernel.org>
 X-Mailer: git-send-email 2.21.1
 In-Reply-To: <cover.1579085367.git.lorenzo@kernel.org>
 References: <cover.1579085367.git.lorenzo@kernel.org>
@@ -40,114 +40,75 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Introduce mt76u_skb_dma_info utility routine in mt76-usb module in order
-to be reused adding mt7663u support
+This is a preliminary patch to support mt7663u usb dongles
 
 Co-developed-by: Sean Wang <sean.wang@mediatek.com>
 Signed-off-by: Sean Wang <sean.wang@mediatek.com>
 Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt76.h     |  1 +
- .../wireless/mediatek/mt76/mt76x02_usb_core.c | 25 ++--------------
- drivers/net/wireless/mediatek/mt76/usb.c      | 29 +++++++++++++++++++
- 3 files changed, 32 insertions(+), 23 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt76.h            | 6 +++---
+ drivers/net/wireless/mediatek/mt76/mt76x02_usb_mcu.c | 9 ++++++---
+ 2 files changed, 9 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
-index a30b994e98de..69211472d8fb 100644
+index 69211472d8fb..e7b86712f574 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt76.h
 +++ b/drivers/net/wireless/mediatek/mt76/mt76.h
-@@ -885,6 +885,7 @@ mt76u_bulk_msg(struct mt76_dev *dev, void *data, int len, int *actual_len,
+@@ -870,7 +870,7 @@ static inline u8 q2ep(u8 qid)
+ 
+ static inline int
+ mt76u_bulk_msg(struct mt76_dev *dev, void *data, int len, int *actual_len,
+-	       int timeout)
++	       int timeout, int ep)
+ {
+ 	struct usb_interface *uintf = to_usb_interface(dev->dev);
+ 	struct usb_device *udev = interface_to_usbdev(uintf);
+@@ -878,9 +878,9 @@ mt76u_bulk_msg(struct mt76_dev *dev, void *data, int len, int *actual_len,
+ 	unsigned int pipe;
+ 
+ 	if (actual_len)
+-		pipe = usb_rcvbulkpipe(udev, usb->in_ep[MT_EP_IN_CMD_RESP]);
++		pipe = usb_rcvbulkpipe(udev, usb->in_ep[ep]);
+ 	else
+-		pipe = usb_sndbulkpipe(udev, usb->out_ep[MT_EP_OUT_INBAND_CMD]);
++		pipe = usb_sndbulkpipe(udev, usb->out_ep[ep]);
+ 
  	return usb_bulk_msg(udev, pipe, data, len, actual_len, timeout);
  }
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_usb_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76x02_usb_mcu.c
+index 106ff4b3e6ff..c58282baee46 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x02_usb_mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x02_usb_mcu.c
+@@ -55,7 +55,8 @@ static int mt76x02u_mcu_wait_resp(struct mt76_dev *dev, u8 seq)
+ 	u32 rxfce;
  
-+int mt76u_skb_dma_info(struct sk_buff *skb, u32 info);
- int mt76u_vendor_request(struct mt76_dev *dev, u8 req,
- 			 u8 req_type, u16 val, u16 offset,
- 			 void *buf, size_t len);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_usb_core.c b/drivers/net/wireless/mediatek/mt76/mt76x02_usb_core.c
-index bf3198ec193b..0180b6200b17 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x02_usb_core.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x02_usb_core.c
-@@ -46,8 +46,7 @@ EXPORT_SYMBOL_GPL(mt76x02u_mac_start);
+ 	for (i = 0; i < 5; i++) {
+-		ret = mt76u_bulk_msg(dev, data, MCU_RESP_URB_SIZE, &len, 300);
++		ret = mt76u_bulk_msg(dev, data, MCU_RESP_URB_SIZE, &len,
++				     300, MT_EP_IN_CMD_RESP);
+ 		if (ret == -ETIMEDOUT)
+ 			continue;
+ 		if (ret)
+@@ -103,7 +104,8 @@ __mt76x02u_mcu_send_msg(struct mt76_dev *dev, struct sk_buff *skb,
+ 	if (ret)
+ 		return ret;
  
- int mt76x02u_skb_dma_info(struct sk_buff *skb, int port, u32 flags)
- {
--	struct sk_buff *iter, *last = skb;
--	u32 info, pad;
-+	u32 info;
+-	ret = mt76u_bulk_msg(dev, skb->data, skb->len, NULL, 500);
++	ret = mt76u_bulk_msg(dev, skb->data, skb->len, NULL, 500,
++			     MT_EP_OUT_INBAND_CMD);
+ 	if (ret)
+ 		return ret;
  
- 	/* Buffer layout:
- 	 *	|   4B   | xfer len |      pad       |  4B  |
-@@ -57,28 +56,8 @@ int mt76x02u_skb_dma_info(struct sk_buff *skb, int port, u32 flags)
- 	 */
- 	info = FIELD_PREP(MT_TXD_INFO_LEN, round_up(skb->len, 4)) |
- 	       FIELD_PREP(MT_TXD_INFO_DPORT, port) | flags;
--	put_unaligned_le32(info, skb_push(skb, sizeof(info)));
+@@ -248,7 +250,8 @@ __mt76x02u_mcu_fw_send_data(struct mt76x02_dev *dev, u8 *data,
  
--	/* Add zero pad of 4 - 7 bytes */
--	pad = round_up(skb->len, 4) + 4 - skb->len;
--
--	/* First packet of a A-MSDU burst keeps track of the whole burst
--	 * length, need to update length of it and the last packet.
--	 */
--	skb_walk_frags(skb, iter) {
--		last = iter;
--		if (!iter->next) {
--			skb->data_len += pad;
--			skb->len += pad;
--			break;
--		}
--	}
--
--	if (skb_pad(last, pad))
--		return -ENOMEM;
--	__skb_put(last, pad);
--
--	return 0;
-+	return mt76u_skb_dma_info(skb, info);
- }
+ 	data_len = MT_CMD_HDR_LEN + len + sizeof(info);
  
- int mt76x02u_tx_prepare_skb(struct mt76_dev *mdev, void *data,
-diff --git a/drivers/net/wireless/mediatek/mt76/usb.c b/drivers/net/wireless/mediatek/mt76/usb.c
-index 1f29cd905fdd..57d2590165e3 100644
---- a/drivers/net/wireless/mediatek/mt76/usb.c
-+++ b/drivers/net/wireless/mediatek/mt76/usb.c
-@@ -907,6 +907,35 @@ mt76u_tx_setup_buffers(struct mt76_dev *dev, struct sk_buff *skb,
- 	return urb->num_sgs;
- }
- 
-+int mt76u_skb_dma_info(struct sk_buff *skb, u32 info)
-+{
-+	struct sk_buff *iter, *last = skb;
-+	u32 pad;
-+
-+	put_unaligned_le32(info, skb_push(skb, sizeof(info)));
-+	/* Add zero pad of 4 - 7 bytes */
-+	pad = round_up(skb->len, 4) + 4 - skb->len;
-+
-+	/* First packet of a A-MSDU burst keeps track of the whole burst
-+	 * length, need to update length of it and the last packet.
-+	 */
-+	skb_walk_frags(skb, iter) {
-+		last = iter;
-+		if (!iter->next) {
-+			skb->data_len += pad;
-+			skb->len += pad;
-+			break;
-+		}
-+	}
-+
-+	if (skb_pad(last, pad))
-+		return -ENOMEM;
-+	__skb_put(last, pad);
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(mt76u_skb_dma_info);
-+
- static int
- mt76u_tx_queue_skb(struct mt76_dev *dev, enum mt76_txq_id qid,
- 		   struct sk_buff *skb, struct mt76_wcid *wcid,
+-	err = mt76u_bulk_msg(&dev->mt76, data, data_len, NULL, 1000);
++	err = mt76u_bulk_msg(&dev->mt76, data, data_len, NULL, 1000,
++			     MT_EP_OUT_INBAND_CMD);
+ 	if (err) {
+ 		dev_err(dev->mt76.dev, "firmware upload failed: %d\n", err);
+ 		return err;
 -- 
 2.21.1
 
