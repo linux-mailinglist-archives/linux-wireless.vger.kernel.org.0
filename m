@@ -2,88 +2,86 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E9DF13BBDA
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Jan 2020 10:04:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 05F2013BC42
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Jan 2020 10:18:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729319AbgAOJEb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 15 Jan 2020 04:04:31 -0500
-Received: from mail25.static.mailgun.info ([104.130.122.25]:64965 "EHLO
+        id S1729440AbgAOJS1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 15 Jan 2020 04:18:27 -0500
+Received: from mail25.static.mailgun.info ([104.130.122.25]:55545 "EHLO
         mail25.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1729067AbgAOJEb (ORCPT
+        by vger.kernel.org with ESMTP id S1729375AbgAOJS0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 15 Jan 2020 04:04:31 -0500
+        Wed, 15 Jan 2020 04:18:26 -0500
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1579079071; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=SEmOCijvsdwGF7pEkrg8FPnYkaWi/mjXIm3JEWQ3QPA=; b=ZkT8PNj6foZxE2PqNeZGKce7/oVrzBIdlQ37jsL19Kk63K6m+cpsu9pc1Y8S/bMtBpDkaf23
- G2K9nLXgzMU4McliaSO4Og+TBTsFBkcQkH9SDwf6oKvs6yQe+vIqMBpHWKQHrtKnNk9LKjR6
- gZsB+q5RFaWBQBsNzSHBveqxOsE=
+ s=smtp; t=1579079906; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=LwpyJ0UYPR60KAvjTtDBpUcnBmCujeM5UzXPAG1UXVM=;
+ b=OqdshJ+skMLiMQKXatqTOXUU7eZ4OwaAdF3lEl71m0TrFWFY9kO8lY4EJrknYBEcXkah3S0l
+ jLwKDjIpZBkdC8QqPPqX5HzlvX5BLy+NqGVqphTdIXBvei4W16IsUI2c3RqM72nC9LgAEh8i
+ cOvIcgFcAupo7Ya6CSipsqRH9rg=
 X-Mailgun-Sending-Ip: 104.130.122.25
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e1ed59e.7f1f0790f6f8-smtp-out-n01;
- Wed, 15 Jan 2020 09:04:30 -0000 (UTC)
+ by mxa.mailgun.org with ESMTP id 5e1ed8dd.7f4002311fb8-smtp-out-n02;
+ Wed, 15 Jan 2020 09:18:21 -0000 (UTC)
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id EBAE0C447A2; Wed, 15 Jan 2020 09:04:28 +0000 (UTC)
+        id 1A5C0C43383; Wed, 15 Jan 2020 09:18:20 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
+        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
 Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id E1EFEC43383;
-        Wed, 15 Jan 2020 09:04:24 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org E1EFEC43383
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 8CF1EC433CB;
+        Wed, 15 Jan 2020 09:18:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 8CF1EC433CB
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Bjorn Andersson <bjorn.andersson@linaro.org>
-Cc:     Mark Rutland <mark.rutland@arm.com>, devicetree@vger.kernel.org,
-        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        Andy Gross <agross@kernel.org>, ath10k@lists.infradead.org,
-        linux-arm-msm@vger.kernel.org,
-        "David S. Miller" <davem@davemloft.net>
-Subject: Re: [PATCH 0/2] ath10k: Enable QDSS clock on sm8150
-References: <20191223054855.3020665-1-bjorn.andersson@linaro.org>
-        <87zhevsrwk.fsf@codeaurora.org>
-Date:   Wed, 15 Jan 2020 11:04:22 +0200
-In-Reply-To: <87zhevsrwk.fsf@codeaurora.org> (Kalle Valo's message of "Fri, 10
-        Jan 2020 09:16:11 +0200")
-Message-ID: <87r201xf8p.fsf@kamboji.qca.qualcomm.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH -next] ath11k: add dependency for struct ath11k member
+ debug
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20191213012417.130719-1-maowenan@huawei.com>
+References: <20191213012417.130719-1-maowenan@huawei.com>
+To:     Mao Wenan <maowenan@huawei.com>
+Cc:     <davem@davemloft.net>, <msinada@codeaurora.org>,
+        <periyasa@codeaurora.org>, <mpubbise@codeaurora.org>,
+        <julia.lawall@lip6.fr>, <milehu@codeaurora.org>,
+        <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+        <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>
+User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
+Message-Id: <20200115091820.1A5C0C43383@smtp.codeaurora.org>
+Date:   Wed, 15 Jan 2020 09:18:20 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Kalle Valo <kvalo@codeaurora.org> writes:
+Mao Wenan <maowenan@huawei.com> wrote:
 
-> Bjorn Andersson <bjorn.andersson@linaro.org> writes:
->
->> On SM8150 the WiFi firmware depends on the QDSS clock ticking, or the system
->> will reset due to an NoC error. So this adds an optional clock to the ath10k
->> binding and makes sure it's enabled while the WiFi firmware needs it.
->>
->> Bjorn Andersson (2):
->>   ath10k: Add optional qdss clk
->>   arm64: dts: qcom: sm8150: Specify qdss clock for wifi
->>
->>  .../devicetree/bindings/net/wireless/qcom,ath10k.txt          | 2 +-
->>  arch/arm64/boot/dts/qcom/sm8150.dtsi                          | 4 ++--
->>  drivers/net/wireless/ath/ath10k/snoc.c                        | 2 +-
->>  3 files changed, 4 insertions(+), 4 deletions(-)
->
-> Via which tree are these supposed to go? I'll take patch 1 and arm
-> mantainers take patch 2, or what?
+> If CONFIG_ATH11K, CONFIG_MAC80211_DEBUGFS are set,
+> and CONFIG_ATH11K_DEBUGFS is not set, below error can be found,
+> drivers/net/wireless/ath/ath11k/debugfs_sta.c: In function ath11k_dbg_sta_open_htt_peer_stats:
+> drivers/net/wireless/ath/ath11k/debugfs_sta.c:411:4: error: struct ath11k has no member named debug
+>   ar->debug.htt_stats.stats_req = stats_req;
+> 
+> It is to add the dependency for the member of struct ath11k.
+> 
+> Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
+> Signed-off-by: Mao Wenan <maowenan@huawei.com>
 
-No reply, so I'm planning to take patch 1. Please holler if I
-misunderstood.
+Arnd already did something what I proposed:
+https://patchwork.kernel.org/patch/11321921/
+
+Patch set to Superseded.
 
 -- 
+https://patchwork.kernel.org/patch/11289709/
+
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
