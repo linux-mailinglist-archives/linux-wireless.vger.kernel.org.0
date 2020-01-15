@@ -2,189 +2,144 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C64113C489
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Jan 2020 15:00:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8BF0213C6D8
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Jan 2020 16:02:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729566AbgAOOAJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 15 Jan 2020 09:00:09 -0500
-Received: from mail-eopbgr770053.outbound.protection.outlook.com ([40.107.77.53]:11386
-        "EHLO NAM02-SN1-obe.outbound.protection.outlook.com"
+        id S1726501AbgAOPCU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 15 Jan 2020 10:02:20 -0500
+Received: from mail-eopbgr80104.outbound.protection.outlook.com ([40.107.8.104]:38166
+        "EHLO EUR04-VI1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1729504AbgAONyr (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 15 Jan 2020 08:54:47 -0500
+        id S1726472AbgAOPCU (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 15 Jan 2020 10:02:20 -0500
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=k2VvN2ZMXMv2GpTv1VwYZWS0sHgcI8ko++GkLPB6EShnEtbU6Smit40ofHbatUTvY8SbZnTtSnMrOKwrJWb25lpgSw6grL7DBylq7CUErykp9g3Y1w3I2QYB+7o3ZVJMnquHBgXjssOlNw9SOzkgwtDThzn+VXrogO1xm8PHw0SGPfK7JyEKMlWpb7hCswUpX+LTXKQjd1TfwRqVI5evZ0cJy/zRf34mud5N47OMyBzFpY87tWu44fOGTP7oerCWZtZAufiH21P1yFSIbE80jXo7yeGigF89gEOpHaxg7bu60jWuKjsYMZh+mMTcbBIPEb39a9JrWLHrnFtybQ+mbg==
+ b=GwjPas1canX0ebO5yfS7ucxSMrImuQIGVEMsdOzvxvuOguYKPdrCkBbxyDFEwC9c3n85tA8RgAlGi7+O0Qw5dEojjyNqOAVyj0FnZZScACTML7GefTkwGZb9lOIEgRXeVqGiCIhbeYPFz/PobIALQc//XoJxGjeGxCJZ6hvlxoon1fs2nWRNk9DLCxRzwBtu0pCJxHUVhgq+q8C8nUSWxamO26Mit+x7BfhEYHBPGIeX30JZjzeunEG5ci7/9LzaMNeK/wa0LTEMoP/SuFzH0R9wWpFz0aka2M2J/FU8w0EKDSN+Utp2dzapxv4nol5r9JwPyyJN+4dsdBMMHWHKGA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=lh4Sgj/UN1E/Qd8hmHGGL7HIEuTRhUu+NasuAtyaxyw=;
- b=k7ZOh3a9fyRuZFZwujpu9jtQg+BVVe1H7oaazGUW02vJezfMVmpPRwcJDIBT49eaBTqr0fxvAvNt5+irLfES2/6S4r4pLFHjgkdQh34BAkxA00EqdqF1gspgHtyMB8cMu9pQnMzpNmAPR65/zrWFqJJOVLD+cP6T+1RlAIOh8xd7R9+SYRh27DEMmMTVYYI1aMvD5DVJVFmxm1xoiHk/t/LulXxakWYK6HaEtHYjDz0BT7C96PJEx3Pe4Mh5OnMYGsyinrFfE9KPOVwetuPcVJfHhpAdNm78cUqQtAydt9jaKN2HjOG33nWKUYsgt0Uzp8hnMHEcIaOnhFm0oKFvpA==
+ bh=TulLm90Ai/5uZLceRUx1X0jqKsnqHugYpvipfRw93aU=;
+ b=h/7H7OYpBupxauSR6Y6pvua2141Hmm7KjrS1ikDD0kaTwN6dLP6NSMkxGPZxk7CJwH2XGjSCSSkLD35M2hl0DLIXI8SpSCaFanMXlGtAsbEPqBcg3vKoGb5E6bsgx3rCXAB4nbY31dS0+Zlyie/PdZbxP+M7LdEzxy7arZQWYZgdO+Ij6izS+su0VrzV8csVUbD18mBi0jTBzUjKKLTpk7dZHg5stVARlDdQ9Lgs8qr2Cq6LlSsl1dbGDXQvMRa2UseDHZQYtAVMnu80c4RR8wtRe9tAWgOllF3qP5mnHPWloiSskgvnwZl8DCEU8iKpRJkXS1OFwSsAL5yHrGYSfw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=silabs.com; dmarc=pass action=none header.from=silabs.com;
- dkim=pass header.d=silabs.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=silabs.onmicrosoft.com; s=selector2-silabs-onmicrosoft-com;
+ smtp.mailfrom=tandemg.com; dmarc=pass action=none header.from=tandemg.com;
+ dkim=pass header.d=tandemg.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tandemg.com;
+ s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=lh4Sgj/UN1E/Qd8hmHGGL7HIEuTRhUu+NasuAtyaxyw=;
- b=WYVIRL53YEcxyOeTLO5nQYEjhZA5OmdUD3z7DJT1oGzz5VkGDGzQ4oGKXawiaWWUKLB3cS6389bK+v4+4Lmvoou8I6R7mx9cCDUyyWCfjmDWemmN2bghqUq2vx5T1i7YHlYqz6nXyXl1eRGQhkz1Dmr5pmj/ueFJeGKd4XdxZws=
-Received: from MN2PR11MB4063.namprd11.prod.outlook.com (10.255.180.22) by
- MN2PR11MB3661.namprd11.prod.outlook.com (20.178.252.33) with Microsoft SMTP
+ bh=TulLm90Ai/5uZLceRUx1X0jqKsnqHugYpvipfRw93aU=;
+ b=rzkKmiSVDcbXM4CFKh014K+5s0ogRU8yXcuID3L8kccoJhbB9X2JM9xsYUB3EgSYNEYV4m6K5PjwgR2qyzIn/qqIZ+Qamh4uPo5o4L9wwpAesw0o5HJIFUCEE02xBi7nNi38JCG103Nax2wr56fyvjaQCup3OEpj8H0JDfCR0p0=
+Received: from AM0PR02MB3620.eurprd02.prod.outlook.com (52.133.63.21) by
+ AM0PR02MB5732.eurprd02.prod.outlook.com (10.255.31.225) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2644.18; Wed, 15 Jan 2020 13:54:45 +0000
-Received: from MN2PR11MB4063.namprd11.prod.outlook.com
- ([fe80::f46c:e5b4:2a85:f0bf]) by MN2PR11MB4063.namprd11.prod.outlook.com
- ([fe80::f46c:e5b4:2a85:f0bf%4]) with mapi id 15.20.2623.018; Wed, 15 Jan 2020
- 13:54:45 +0000
-Received: from pc-42.home (2a01:e35:8bf5:66a0:3dbe:4cb5:6059:a948) by PR2P264CA0008.FRAP264.PROD.OUTLOOK.COM (2603:10a6:101::20) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2644.18 via Frontend Transport; Wed, 15 Jan 2020 13:54:43 +0000
-From:   =?utf-8?B?SsOpcsO0bWUgUG91aWxsZXI=?= <Jerome.Pouiller@silabs.com>
-To:     "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-CC:     "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        =?utf-8?B?SsOpcsO0bWUgUG91aWxsZXI=?= <Jerome.Pouiller@silabs.com>
-Subject: [PATCH v2 29/65] staging: wfx: simplify hif_join()
-Thread-Topic: [PATCH v2 29/65] staging: wfx: simplify hif_join()
-Thread-Index: AQHVy6tXquCrSDEORkeaA5ycct2Rrw==
-Date:   Wed, 15 Jan 2020 13:54:44 +0000
-Message-ID: <20200115135338.14374-30-Jerome.Pouiller@silabs.com>
-References: <20200115135338.14374-1-Jerome.Pouiller@silabs.com>
-In-Reply-To: <20200115135338.14374-1-Jerome.Pouiller@silabs.com>
-Accept-Language: en-US
+ 15.20.2644.19; Wed, 15 Jan 2020 15:02:16 +0000
+Received: from AM0PR02MB3620.eurprd02.prod.outlook.com
+ ([fe80::cc09:22f:6786:819c]) by AM0PR02MB3620.eurprd02.prod.outlook.com
+ ([fe80::cc09:22f:6786:819c%5]) with mapi id 15.20.2623.018; Wed, 15 Jan 2020
+ 15:02:16 +0000
+Received: from orr-ub.tandemg.local (84.95.243.50) by AM0PR06CA0086.eurprd06.prod.outlook.com (2603:10a6:208:fa::27) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2644.19 via Frontend Transport; Wed, 15 Jan 2020 15:02:15 +0000
+From:   Orr Mazor <orr.mazor@tandemg.com>
+To:     Johannes Berg <johannes@sipsolutions.net>
+CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        Orr Mazor <orr.mazor@tandemg.com>
+Subject: [PATCH] cfg80211: Fix regulatory data is reset in case all phys have
+ disconnected
+Thread-Topic: [PATCH] cfg80211: Fix regulatory data is reset in case all phys
+ have disconnected
+Thread-Index: AQHVy7TG5nX+3c3iBUKSj4Vf+8rn0Q==
+Date:   Wed, 15 Jan 2020 15:02:16 +0000
+Message-ID: <20200115150123.7612-1-Orr.Mazor@tandemg.com>
+Accept-Language: he-IL, en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
-x-clientproxiedby: PR2P264CA0008.FRAP264.PROD.OUTLOOK.COM (2603:10a6:101::20)
- To MN2PR11MB4063.namprd11.prod.outlook.com (2603:10b6:208:13f::22)
+x-clientproxiedby: AM0PR06CA0086.eurprd06.prod.outlook.com
+ (2603:10a6:208:fa::27) To AM0PR02MB3620.eurprd02.prod.outlook.com
+ (2603:10a6:208:3f::21)
 authentication-results: spf=none (sender IP is )
- smtp.mailfrom=Jerome.Pouiller@silabs.com; 
+ smtp.mailfrom=orr.mazor@tandemg.com; 
 x-ms-exchange-messagesentrepresentingtype: 1
-x-mailer: git-send-email 2.25.0
-x-originating-ip: [2a01:e35:8bf5:66a0:3dbe:4cb5:6059:a948]
+x-mailer: git-send-email 2.17.1
+x-originating-ip: [84.95.243.50]
 x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: a200b61c-5c96-4d7d-e1c7-08d799c27a1a
-x-ms-traffictypediagnostic: MN2PR11MB3661:
+x-ms-office365-filtering-correlation-id: fcd95982-f3dc-47c4-82c5-08d799cbe8f2
+x-ms-traffictypediagnostic: AM0PR02MB5732:
 x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <MN2PR11MB3661E88C58F211A122C6379093370@MN2PR11MB3661.namprd11.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:3173;
+x-microsoft-antispam-prvs: <AM0PR02MB573294FE1965C46B31A6D2F5EF370@AM0PR02MB5732.eurprd02.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:8273;
 x-forefront-prvs: 02830F0362
-x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(39860400002)(376002)(396003)(136003)(346002)(366004)(199004)(189003)(8886007)(6486002)(316002)(54906003)(71200400001)(36756003)(6506007)(66476007)(66446008)(66946007)(110136005)(8676002)(81166006)(81156014)(478600001)(86362001)(2616005)(4326008)(66574012)(2906002)(107886003)(1076003)(16526019)(186003)(85202003)(5660300002)(6512007)(52116002)(64756008)(66556008)(85182001)(8936002);DIR:OUT;SFP:1101;SCL:1;SRVR:MN2PR11MB3661;H:MN2PR11MB4063.namprd11.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
-received-spf: None (protection.outlook.com: silabs.com does not designate
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(346002)(136003)(376002)(366004)(396003)(39840400004)(199004)(189003)(16526019)(6916009)(186003)(4326008)(54906003)(26005)(71200400001)(316002)(6506007)(52116002)(2906002)(107886003)(81166006)(508600001)(15650500001)(8676002)(1076003)(5660300002)(81156014)(956004)(36756003)(8936002)(66946007)(86362001)(66476007)(66556008)(64756008)(2616005)(66446008)(6486002)(6512007);DIR:OUT;SFP:1102;SCL:1;SRVR:AM0PR02MB5732;H:AM0PR02MB3620.eurprd02.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+received-spf: None (protection.outlook.com: tandemg.com does not designate
  permitted sender hosts)
 x-ms-exchange-senderadcheck: 1
 x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: F2LMhS+T2ONX6Xn89JBoFXGIxV3toVnamorFxhmBq1ieOfcsP4ATyjVgfozsSa7tFdVy4lVPIPN8VRFLyqJJKsmWkWfr9B20pFv5iujJzHcwxFrgxLR2Zal2lt7DaQ5Hpveqp9Ou15fSTdKNoPTWnKjeZ2qUeLG0TMpoPnCY1Rs3k92GETF+9faQ6YoqHPTepDEewSLvuP35nt7Tas1I7suGhBtI34re0Tekd47iNBakYJrnuVKXgZk7l/Px7iZAE23kktzPKyCGQmDuZbpPj44BA5oTwHv14ckrKnBBqXFFEJppk7dgy8oLl/xriK1Ux5ODeeuKOX1DGl7OKvlVBV7xNDrOw6fzcUxz/CQuYRBaSIBRqbqvyiEY1s+cSdJpAjXKiS74Ke9y0lZP3EgBvGxFAievz0bxL2KiQbZAFbc30kXtl04Ku3sJCm7on/Tu
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <4EE34D735786754AACA3310B6DF3A509@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+x-microsoft-antispam-message-info: d2BuIieTSZ3ry1h88p+lOGZ9eEmcD0+ZDEEI8mZ7n56I8Xa7M8W7gxHAZcSKaUxem6EYIkio7z457a+f142ddBN3zeawtLPOjxa7BKoYgF6WAzJ4kjy9Cyx+JUv00ofBetepoMW1KYceNPBSD6qkW/v2+kxntDLyAxi8f9Q/peIrOTMKnvybcVRmxjjdoAvNkyMcoB4DBTM8okePilExz1/9qKqqhg6N2ZCD1Qe6Nb6FNrAqHcPFu8rMUJM54f5VVQqba4m2/UsyHh7VlVbmCDE/3/LQx6zGXlUG+Ir27Ouam1UNSxe7C73P5Zj5oDtmthU7T3sBn5EZw3LL+0MFDIJex2eqEz83dDbaHFYH7v0+5MXSNqAa0i0JhAAepAab/4sTFnaKu+E4PuEmyLcngk+Fqb6QCCJAxed3hTla0i5//uy2pemQ8FhpE+mgDbu6
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-X-OriginatorOrg: silabs.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a200b61c-5c96-4d7d-e1c7-08d799c27a1a
-X-MS-Exchange-CrossTenant-originalarrivaltime: 15 Jan 2020 13:54:44.9310
+X-OriginatorOrg: tandemg.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: fcd95982-f3dc-47c4-82c5-08d799cbe8f2
+X-MS-Exchange-CrossTenant-originalarrivaltime: 15 Jan 2020 15:02:16.3441
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 54dbd822-5231-4b20-944d-6f4abcd541fb
+X-MS-Exchange-CrossTenant-id: d690b55a-f04a-454b-9f62-fb1e25467a25
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: UyuXiyIMcnyeAx2GXGhhjRAF5Xsc73il+duY3sYyfpE3Qk2mym0G/6ZJhJg9kONYmMiuPR+bRiRmyk0I7h7cYA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR11MB3661
+X-MS-Exchange-CrossTenant-userprincipalname: Esxw2gLhjaiwCJqzpXMz7wbasav8gR+QaWHe73fmxDiULhdxfiRa6qIeXPnA+4Cy1MBJvOj0mcp1AgbU6v7rYA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR02MB5732
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-RnJvbTogSsOpcsO0bWUgUG91aWxsZXIgPGplcm9tZS5wb3VpbGxlckBzaWxhYnMuY29tPgoKVGhl
-IHN0cnVjdHVyZSBoaWZfcmVxX2pvaW4gY29tZSBmcm9tIGhhcmR3YXJlIEFQSS4gSXQgaXMgbm90
-IGludGVuZGVkCnRvIGJlIG1hbmlwdWxhdGVkIGluIHVwcGVyIGxheWVycyBvZiB0aGUgZHJpdmVy
-LgoKSW4gYWRkLCBjdXJyZW50IGNvZGUgZm9yIGhpZl9qb2luKCkgaXMgdG9vIGR1bWIuIEl0IHNo
-b3VsZCBwYWNrIGRhdGEKd2l0aCBoYXJkd2FyZSByZXByZXNlbnRhdGlvbiBpbnN0ZWFkIG9mIGxl
-YXZpbmcgYWxsIHdvcmsgdG8gdGhlIGNhbGxlci4KClNpZ25lZC1vZmYtYnk6IErDqXLDtG1lIFBv
-dWlsbGVyIDxqZXJvbWUucG91aWxsZXJAc2lsYWJzLmNvbT4KLS0tCiBkcml2ZXJzL3N0YWdpbmcv
-d2Z4L2hpZl90eC5jIHwgMjUgKysrKysrKysrKysrKystLS0tLS0KIGRyaXZlcnMvc3RhZ2luZy93
-ZngvaGlmX3R4LmggfCAgMyArKy0KIGRyaXZlcnMvc3RhZ2luZy93Zngvc3RhLmMgICAgfCA0NSAr
-KysrKysrKy0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KIDMgZmlsZXMgY2hhbmdlZCwgMzAg
-aW5zZXJ0aW9ucygrKSwgNDMgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvZHJpdmVycy9zdGFn
-aW5nL3dmeC9oaWZfdHguYyBiL2RyaXZlcnMvc3RhZ2luZy93ZngvaGlmX3R4LmMKaW5kZXggMzJl
-ZWJhMmZjYTQ3Li4yNDI4MzYzMzcxZmEgMTAwNjQ0Ci0tLSBhL2RyaXZlcnMvc3RhZ2luZy93Zngv
-aGlmX3R4LmMKKysrIGIvZHJpdmVycy9zdGFnaW5nL3dmeC9oaWZfdHguYwpAQCAtMjg4LDE4ICsy
-ODgsMjkgQEAgaW50IGhpZl9zdG9wX3NjYW4oc3RydWN0IHdmeF92aWYgKnd2aWYpCiAJcmV0dXJu
-IHJldDsKIH0KIAotaW50IGhpZl9qb2luKHN0cnVjdCB3ZnhfdmlmICp3dmlmLCBjb25zdCBzdHJ1
-Y3QgaGlmX3JlcV9qb2luICphcmcpCitpbnQgaGlmX2pvaW4oc3RydWN0IHdmeF92aWYgKnd2aWYs
-IGNvbnN0IHN0cnVjdCBpZWVlODAyMTFfYnNzX2NvbmYgKmNvbmYsCisJICAgICBjb25zdCBzdHJ1
-Y3QgaWVlZTgwMjExX2NoYW5uZWwgKmNoYW5uZWwsIGNvbnN0IHU4ICpzc2lkaWUpCiB7CiAJaW50
-IHJldDsKIAlzdHJ1Y3QgaGlmX21zZyAqaGlmOwogCXN0cnVjdCBoaWZfcmVxX2pvaW4gKmJvZHkg
-PSB3ZnhfYWxsb2NfaGlmKHNpemVvZigqYm9keSksICZoaWYpOwogCi0JbWVtY3B5KGJvZHksIGFy
-Zywgc2l6ZW9mKHN0cnVjdCBoaWZfcmVxX2pvaW4pKTsKLQljcHVfdG9fbGUxNnMoJmJvZHktPmNo
-YW5uZWxfbnVtYmVyKTsKLQljcHVfdG9fbGUxNnMoJmJvZHktPmF0aW1fd2luZG93KTsKLQljcHVf
-dG9fbGUzMnMoJmJvZHktPnNzaWRfbGVuZ3RoKTsKLQljcHVfdG9fbGUzMnMoJmJvZHktPmJlYWNv
-bl9pbnRlcnZhbCk7Ci0JY3B1X3RvX2xlMzJzKCZib2R5LT5iYXNpY19yYXRlX3NldCk7CisJV0FS
-Tl9PTighY29uZi0+YmFzaWNfcmF0ZXMpOworCWJvZHktPmluZnJhc3RydWN0dXJlX2Jzc19tb2Rl
-ID0gIWNvbmYtPmlic3Nfam9pbmVkOworCWJvZHktPnNob3J0X3ByZWFtYmxlID0gY29uZi0+dXNl
-X3Nob3J0X3ByZWFtYmxlOworCWlmIChjaGFubmVsICYmIGNoYW5uZWwtPmZsYWdzICYgSUVFRTgw
-MjExX0NIQU5fTk9fSVIpCisJCWJvZHktPnByb2JlX2Zvcl9qb2luID0gMDsKKwllbHNlCisJCWJv
-ZHktPnByb2JlX2Zvcl9qb2luID0gMTsKKwlib2R5LT5jaGFubmVsX251bWJlciA9IGNwdV90b19s
-ZTE2KGNoYW5uZWwtPmh3X3ZhbHVlKTsKKwlib2R5LT5iZWFjb25faW50ZXJ2YWwgPSBjcHVfdG9f
-bGUzMihjb25mLT5iZWFjb25faW50KTsKKwlib2R5LT5iYXNpY19yYXRlX3NldCA9CisJCWNwdV90
-b19sZTMyKHdmeF9yYXRlX21hc2tfdG9faHcod3ZpZi0+d2RldiwgY29uZi0+YmFzaWNfcmF0ZXMp
-KTsKKwltZW1jcHkoYm9keS0+YnNzaWQsIGNvbmYtPmJzc2lkLCBzaXplb2YoYm9keS0+YnNzaWQp
-KTsKKwlpZiAoIWNvbmYtPmlic3Nfam9pbmVkICYmIHNzaWRpZSkgeworCQlib2R5LT5zc2lkX2xl
-bmd0aCA9IGNwdV90b19sZTMyKHNzaWRpZVsxXSk7CisJCW1lbWNweShib2R5LT5zc2lkLCAmc3Np
-ZGllWzJdLCBzc2lkaWVbMV0pOworCX0KIAl3ZnhfZmlsbF9oZWFkZXIoaGlmLCB3dmlmLT5pZCwg
-SElGX1JFUV9JRF9KT0lOLCBzaXplb2YoKmJvZHkpKTsKIAlyZXQgPSB3ZnhfY21kX3NlbmQod3Zp
-Zi0+d2RldiwgaGlmLCBOVUxMLCAwLCBmYWxzZSk7CiAJa2ZyZWUoaGlmKTsKZGlmZiAtLWdpdCBh
-L2RyaXZlcnMvc3RhZ2luZy93ZngvaGlmX3R4LmggYi9kcml2ZXJzL3N0YWdpbmcvd2Z4L2hpZl90
-eC5oCmluZGV4IDkyNGI4ODljYWQwYS4uMjA5NzdlNDYxNzE4IDEwMDY0NAotLS0gYS9kcml2ZXJz
-L3N0YWdpbmcvd2Z4L2hpZl90eC5oCisrKyBiL2RyaXZlcnMvc3RhZ2luZy93ZngvaGlmX3R4LmgK
-QEAgLTQ1LDcgKzQ1LDggQEAgaW50IGhpZl93cml0ZV9taWIoc3RydWN0IHdmeF9kZXYgKndkZXYs
-IGludCB2aWZfaWQsIHUxNiBtaWJfaWQsCiBpbnQgaGlmX3NjYW4oc3RydWN0IHdmeF92aWYgKnd2
-aWYsIHN0cnVjdCBjZmc4MDIxMV9zY2FuX3JlcXVlc3QgKnJlcTgwMjExLAogCSAgICAgaW50IGNo
-YW5fc3RhcnQsIGludCBjaGFuX251bSk7CiBpbnQgaGlmX3N0b3Bfc2NhbihzdHJ1Y3Qgd2Z4X3Zp
-ZiAqd3ZpZik7Ci1pbnQgaGlmX2pvaW4oc3RydWN0IHdmeF92aWYgKnd2aWYsIGNvbnN0IHN0cnVj
-dCBoaWZfcmVxX2pvaW4gKmFyZyk7CitpbnQgaGlmX2pvaW4oc3RydWN0IHdmeF92aWYgKnd2aWYs
-IGNvbnN0IHN0cnVjdCBpZWVlODAyMTFfYnNzX2NvbmYgKmNvbmYsCisJICAgICBjb25zdCBzdHJ1
-Y3QgaWVlZTgwMjExX2NoYW5uZWwgKmNoYW5uZWwsIGNvbnN0IHU4ICpzc2lkaWUpOwogaW50IGhp
-Zl9zZXRfcG0oc3RydWN0IHdmeF92aWYgKnd2aWYsIGJvb2wgcHMsIGludCBkeW5hbWljX3BzX3Rp
-bWVvdXQpOwogaW50IGhpZl9zZXRfYnNzX3BhcmFtcyhzdHJ1Y3Qgd2Z4X3ZpZiAqd3ZpZiwKIAkJ
-ICAgICAgIGNvbnN0IHN0cnVjdCBoaWZfcmVxX3NldF9ic3NfcGFyYW1zICphcmcpOwpkaWZmIC0t
-Z2l0IGEvZHJpdmVycy9zdGFnaW5nL3dmeC9zdGEuYyBiL2RyaXZlcnMvc3RhZ2luZy93Zngvc3Rh
-LmMKaW5kZXggMzk1YTI4MjM0NmIxLi4zMGM2MmUzYjM3MTYgMTAwNjQ0Ci0tLSBhL2RyaXZlcnMv
-c3RhZ2luZy93Zngvc3RhLmMKKysrIGIvZHJpdmVycy9zdGFnaW5nL3dmeC9zdGEuYwpAQCAtNTEy
-LDMyICs1MTIsMTkgQEAgc3RhdGljIHZvaWQgd2Z4X3NldF9tZnAoc3RydWN0IHdmeF92aWYgKnd2
-aWYsCiAKIHN0YXRpYyB2b2lkIHdmeF9kb19qb2luKHN0cnVjdCB3ZnhfdmlmICp3dmlmKQogewot
-CWNvbnN0IHU4ICpic3NpZDsKKwlpbnQgcmV0OworCWNvbnN0IHU4ICpzc2lkaWU7CiAJc3RydWN0
-IGllZWU4MDIxMV9ic3NfY29uZiAqY29uZiA9ICZ3dmlmLT52aWYtPmJzc19jb25mOwogCXN0cnVj
-dCBjZmc4MDIxMV9ic3MgKmJzcyA9IE5VTEw7Ci0Jc3RydWN0IGhpZl9yZXFfam9pbiBqb2luID0g
-ewotCQkuaW5mcmFzdHJ1Y3R1cmVfYnNzX21vZGUgPSAhY29uZi0+aWJzc19qb2luZWQsCi0JCS5z
-aG9ydF9wcmVhbWJsZSA9IGNvbmYtPnVzZV9zaG9ydF9wcmVhbWJsZSwKLQkJLnByb2JlX2Zvcl9q
-b2luID0gMSwKLQkJLmF0aW1fd2luZG93ID0gMCwKLQkJLmJhc2ljX3JhdGVfc2V0ID0gd2Z4X3Jh
-dGVfbWFza190b19odyh3dmlmLT53ZGV2LAotCQkJCQkJICAgICAgY29uZi0+YmFzaWNfcmF0ZXMp
-LAotCX07CiAKIAl3ZnhfdHhfbG9ja19mbHVzaCh3dmlmLT53ZGV2KTsKIAotCWlmICh3dmlmLT5j
-aGFubmVsLT5mbGFncyAmIElFRUU4MDIxMV9DSEFOX05PX0lSKQotCQlqb2luLnByb2JlX2Zvcl9q
-b2luID0gMDsKLQogCWlmICh3dmlmLT5zdGF0ZSkKIAkJd2Z4X2RvX3Vuam9pbih3dmlmKTsKIAot
-CWJzc2lkID0gd3ZpZi0+dmlmLT5ic3NfY29uZi5ic3NpZDsKLQogCWJzcyA9IGNmZzgwMjExX2dl
-dF9ic3Mod3ZpZi0+d2Rldi0+aHctPndpcGh5LCB3dmlmLT5jaGFubmVsLAotCQkJICAgICAgIGJz
-c2lkLCBOVUxMLCAwLAorCQkJICAgICAgIGNvbmYtPmJzc2lkLCBOVUxMLCAwLAogCQkJICAgICAg
-IElFRUU4MDIxMV9CU1NfVFlQRV9BTlksIElFRUU4MDIxMV9QUklWQUNZX0FOWSk7Ci0KIAlpZiAo
-IWJzcyAmJiAhY29uZi0+aWJzc19qb2luZWQpIHsKIAkJd2Z4X3R4X3VubG9jayh3dmlmLT53ZGV2
-KTsKIAkJcmV0dXJuOwpAQCAtNTQ1LDI5ICs1MzIsMTUgQEAgc3RhdGljIHZvaWQgd2Z4X2RvX2pv
-aW4oc3RydWN0IHdmeF92aWYgKnd2aWYpCiAKIAltdXRleF9sb2NrKCZ3dmlmLT53ZGV2LT5jb25m
-X211dGV4KTsKIAotCS8qIFNhbml0eSBjaGVjayBiYXNpYyByYXRlcyAqLwotCWlmICgham9pbi5i
-YXNpY19yYXRlX3NldCkKLQkJam9pbi5iYXNpY19yYXRlX3NldCA9IDc7Ci0KIAkvKiBTYW5pdHkg
-Y2hlY2sgYmVhY29uIGludGVydmFsICovCiAJaWYgKCF3dmlmLT5iZWFjb25faW50KQogCQl3dmlm
-LT5iZWFjb25faW50ID0gMTsKIAotCWpvaW4uYmVhY29uX2ludGVydmFsID0gd3ZpZi0+YmVhY29u
-X2ludDsKLQlqb2luLmNoYW5uZWxfbnVtYmVyID0gd3ZpZi0+Y2hhbm5lbC0+aHdfdmFsdWU7Ci0J
-bWVtY3B5KGpvaW4uYnNzaWQsIGJzc2lkLCBzaXplb2Yoam9pbi5ic3NpZCkpOwotCi0JaWYgKCFj
-b25mLT5pYnNzX2pvaW5lZCkgewotCQljb25zdCB1OCAqc3NpZGllOwotCi0JCXJjdV9yZWFkX2xv
-Y2soKTsKKwlyY3VfcmVhZF9sb2NrKCk7CisJaWYgKCFjb25mLT5pYnNzX2pvaW5lZCkKIAkJc3Np
-ZGllID0gaWVlZTgwMjExX2Jzc19nZXRfaWUoYnNzLCBXTEFOX0VJRF9TU0lEKTsKLQkJaWYgKHNz
-aWRpZSkgewotCQkJam9pbi5zc2lkX2xlbmd0aCA9IHNzaWRpZVsxXTsKLQkJCW1lbWNweShqb2lu
-LnNzaWQsICZzc2lkaWVbMl0sIGpvaW4uc3NpZF9sZW5ndGgpOwotCQl9Ci0JCXJjdV9yZWFkX3Vu
-bG9jaygpOwotCX0KKwllbHNlCisJCXNzaWRpZSA9IE5VTEw7CiAKIAl3ZnhfdHhfZmx1c2god3Zp
-Zi0+d2Rldik7CiAKQEAgLTU3OCw3ICs1NTEsOSBAQCBzdGF0aWMgdm9pZCB3ZnhfZG9fam9pbihz
-dHJ1Y3Qgd2Z4X3ZpZiAqd3ZpZikKIAogCS8qIFBlcmZvcm0gYWN0dWFsIGpvaW4gKi8KIAl3dmlm
-LT53ZGV2LT50eF9idXJzdF9pZHggPSAtMTsKLQlpZiAoaGlmX2pvaW4od3ZpZiwgJmpvaW4pKSB7
-CisJcmV0ID0gaGlmX2pvaW4od3ZpZiwgY29uZiwgd3ZpZi0+Y2hhbm5lbCwgc3NpZGllKTsKKwly
-Y3VfcmVhZF91bmxvY2soKTsKKwlpZiAocmV0KSB7CiAJCWllZWU4MDIxMV9jb25uZWN0aW9uX2xv
-c3Mod3ZpZi0+dmlmKTsKIAkJd3ZpZi0+am9pbl9jb21wbGV0ZV9zdGF0dXMgPSAtMTsKIAkJLyog
-VHggbG9jayBzdGlsbCBoZWxkLCB1bmpvaW4gd2lsbCBjbGVhciBpdC4gKi8KLS0gCjIuMjUuMAoK
+In case no one is occupying a wiphy, all past regulatory data will be lost
+as a result of reset to world reg domain.
+
+This includes any channel that is currently in NOP time as well as
+in AVAILABLE state.
+
+This means that after detecting a radar on a channel the user might be
+able to simply reset hostapd and get back to that channel,
+this is a major issue.
+
+To solve this I have added a check before doing any resets.
+
+If the user (for example: hostapd) asks for a regdomain and we are
+already in that regdomain, than we shouldn't reset that regdomain in case
+of wiphy disconnection (for example: hostapd reset or killed).
+
+That way the regulatory data will be saved as long as we are
+in the same regdomain.
+
+Since in that case we will anyway get back to the same regdomain
+the only difference is we will now save the regulatory data,
+won't lose it, and as a result won't get back to a channel that a radar
+was detected on until NOP will be finished, as should be.
+
+Signed-off-by: Orr Mazor <Orr.Mazor@tandemg.com>
+---
+ net/wireless/reg.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/net/wireless/reg.c b/net/wireless/reg.c
+index d18cc05061a0..5049c487950b 100644
+--- a/net/wireless/reg.c
++++ b/net/wireless/reg.c
+@@ -3180,6 +3180,16 @@ static void restore_regulatory_settings(bool reset_u=
+ser, bool cached)
+ 	}
+ 	spin_unlock(&reg_indoor_lock);
+=20
++	/* If the user asks for a regdomain and we are
++	 * already in that regdomain, than we shouldn't reset
++	 * the regdomain in the case of wiphy disconnection.
++	 */
++	if (cached && !reset_user &&
++	    (!IS_ERR_OR_NULL(cfg80211_user_regdom)) &&
++	    (!regdom_changes(cfg80211_user_regdom->alpha2))) {
++		return;
++	}
++
+ 	reset_regdomains(true, &world_regdom);
+ 	restore_alpha2(alpha2, reset_user);
+=20
+--=20
+2.17.1
+
