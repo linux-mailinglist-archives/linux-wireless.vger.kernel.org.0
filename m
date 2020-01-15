@@ -2,54 +2,59 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A634F13BA6B
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Jan 2020 08:40:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E9DF13BBDA
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Jan 2020 10:04:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729190AbgAOHks (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 15 Jan 2020 02:40:48 -0500
-Received: from mail26.static.mailgun.info ([104.130.122.26]:64704 "EHLO
-        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726018AbgAOHks (ORCPT
+        id S1729319AbgAOJEb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 15 Jan 2020 04:04:31 -0500
+Received: from mail25.static.mailgun.info ([104.130.122.25]:64965 "EHLO
+        mail25.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1729067AbgAOJEb (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 15 Jan 2020 02:40:48 -0500
+        Wed, 15 Jan 2020 04:04:31 -0500
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1579074047; h=Content-Type: MIME-Version: Message-ID:
+ s=smtp; t=1579079071; h=Content-Type: MIME-Version: Message-ID:
  In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=ZdGbrm9v1PsnbuITIu0oiR/1DgzctAFZVd9crSlWywE=; b=XCJSDhyy+o6UigmFX0JlV4MVRtQG+7SK9ZwJstRbmLx5JUPtn70PZHSGPTwsglH6/Zf4+lR3
- WzxFIEeKBNOSNgcWA7b6FqVFsYNLoU52+jhzZGuY8iRFaCVcKwgWS3qpu2NFINARt1vvSVrY
- eHha3zZJWlZzRPNfu1dQIUsiVN0=
-X-Mailgun-Sending-Ip: 104.130.122.26
+ bh=SEmOCijvsdwGF7pEkrg8FPnYkaWi/mjXIm3JEWQ3QPA=; b=ZkT8PNj6foZxE2PqNeZGKce7/oVrzBIdlQ37jsL19Kk63K6m+cpsu9pc1Y8S/bMtBpDkaf23
+ G2K9nLXgzMU4McliaSO4Og+TBTsFBkcQkH9SDwf6oKvs6yQe+vIqMBpHWKQHrtKnNk9LKjR6
+ gZsB+q5RFaWBQBsNzSHBveqxOsE=
+X-Mailgun-Sending-Ip: 104.130.122.25
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e1ec1fa.7f79c196cf48-smtp-out-n01;
- Wed, 15 Jan 2020 07:40:42 -0000 (UTC)
+ by mxa.mailgun.org with ESMTP id 5e1ed59e.7f1f0790f6f8-smtp-out-n01;
+ Wed, 15 Jan 2020 09:04:30 -0000 (UTC)
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 20FE7C4479C; Wed, 15 Jan 2020 07:40:41 +0000 (UTC)
+        id EBAE0C447A2; Wed, 15 Jan 2020 09:04:28 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
 X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
         autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from tynnyri.adurom.net (tynnyri.adurom.net [51.15.11.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id F035EC433CB;
-        Wed, 15 Jan 2020 07:40:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org F035EC433CB
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id E1EFEC43383;
+        Wed, 15 Jan 2020 09:04:24 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org E1EFEC43383
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Orr Mazor <orr.mazor@tandemg.com>
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        "linux-wireless\@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH] subsystem: Fix radar event during another phy CAC
-References: <20191222145449.15792-1-Orr.Mazor@tandemg.com>
-Date:   Wed, 15 Jan 2020 09:40:37 +0200
-In-Reply-To: <20191222145449.15792-1-Orr.Mazor@tandemg.com> (Orr Mazor's
-        message of "Sun, 22 Dec 2019 14:55:31 +0000")
-Message-ID: <87d0bl1822.fsf@tynnyri.adurom.net>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+To:     Bjorn Andersson <bjorn.andersson@linaro.org>
+Cc:     Mark Rutland <mark.rutland@arm.com>, devicetree@vger.kernel.org,
+        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        Andy Gross <agross@kernel.org>, ath10k@lists.infradead.org,
+        linux-arm-msm@vger.kernel.org,
+        "David S. Miller" <davem@davemloft.net>
+Subject: Re: [PATCH 0/2] ath10k: Enable QDSS clock on sm8150
+References: <20191223054855.3020665-1-bjorn.andersson@linaro.org>
+        <87zhevsrwk.fsf@codeaurora.org>
+Date:   Wed, 15 Jan 2020 11:04:22 +0200
+In-Reply-To: <87zhevsrwk.fsf@codeaurora.org> (Kalle Valo's message of "Fri, 10
+        Jan 2020 09:16:11 +0200")
+Message-ID: <87r201xf8p.fsf@kamboji.qca.qualcomm.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
@@ -57,26 +62,28 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Orr Mazor <orr.mazor@tandemg.com> writes:
+Kalle Valo <kvalo@codeaurora.org> writes:
 
-> In case a radar event of CAC_FINISHED or RADAR_DETECTED
-> happens during another phy is during CAC we might need
-> to cancel that CAC.
-> If we got a radar in a channel that another phy is now
-> doing CAC on then the CAC should be canceled.
-> If, for example, 2 phys doing CAC on the same channels,
-> or on comptable channels, once on of them will finish his CAC
-> the other might need to cancel his CAC, since it is no
-> longer relevant.
+> Bjorn Andersson <bjorn.andersson@linaro.org> writes:
 >
-> To fix that the commit adds an callback and implement it in mac80211
-> to end CAC.
-> This commit also adds a call to said callback if after a radar
-> event we see the cac is no longer relevant
+>> On SM8150 the WiFi firmware depends on the QDSS clock ticking, or the system
+>> will reset due to an NoC error. So this adds an optional clock to the ath10k
+>> binding and makes sure it's enabled while the WiFi firmware needs it.
+>>
+>> Bjorn Andersson (2):
+>>   ath10k: Add optional qdss clk
+>>   arm64: dts: qcom: sm8150: Specify qdss clock for wifi
+>>
+>>  .../devicetree/bindings/net/wireless/qcom,ath10k.txt          | 2 +-
+>>  arch/arm64/boot/dts/qcom/sm8150.dtsi                          | 4 ++--
+>>  drivers/net/wireless/ath/ath10k/snoc.c                        | 2 +-
+>>  3 files changed, 4 insertions(+), 4 deletions(-)
 >
-> Signed-off-by: Orr Mazor <Orr.Mazor@tandemg.com>
+> Via which tree are these supposed to go? I'll take patch 1 and arm
+> mantainers take patch 2, or what?
 
-The title prefix should be "cfg80211: ", not "subsystem: ".
+No reply, so I'm planning to take patch 1. Please holler if I
+misunderstood.
 
 -- 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
