@@ -2,36 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C590313EB4C
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Jan 2020 18:49:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F58D13EB32
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Jan 2020 18:49:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2406601AbgAPRqN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 16 Jan 2020 12:46:13 -0500
-Received: from mail.kernel.org ([198.145.29.99]:38734 "EHLO mail.kernel.org"
+        id S2406687AbgAPRqa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 16 Jan 2020 12:46:30 -0500
+Received: from mail.kernel.org ([198.145.29.99]:39298 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2406584AbgAPRqM (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 16 Jan 2020 12:46:12 -0500
+        id S2406678AbgAPRq3 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 16 Jan 2020 12:46:29 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 78D23246DB;
-        Thu, 16 Jan 2020 17:46:11 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 41340246EA;
+        Thu, 16 Jan 2020 17:46:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1579196772;
-        bh=YOIE4NNw0fteHkmepF0f7B4QZv5cJzxsWkK7m3/I6zQ=;
+        s=default; t=1579196788;
+        bh=Vl0mUl3nyA3+imvByviOLU+uQpGETegssy81vreRVno=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WIy2oMHHRsivfAaWL3d29+UxuwrlVDv+fAnxWb+9Zlu+9vKpUuhiEDuP7qDtdk77r
-         CZez3125JD+IhXlA/GRic1gykM/FwZN+i+JwI2MP41W3COKQnohBBB1XKR84F5ptim
-         27wtzw56OnhBuHw5GgpnrUNvlSHI5AK6gDSBHMUI=
+        b=uOuj/myyekutclpFsBSSmvIfJ7KoYiWS5RXXje10aObPDmj5jA8Rlj/upN5sOhqk9
+         PJWn3g8Os2RErZWxc8lwKikXJng1cPNdu0ZAyGgd/YxYw72N0veLYjW4CI63vV92+v
+         KvN2WNtY/4VTPtspLAV6jDumkkARqDGR03sSmRKE=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Johannes Berg <johannes.berg@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
+Cc:     Lorenzo Bianconi <lorenzo@kernel.org>,
+        Jakub Kicinski <kubakici@wp.pl>,
+        Kalle Valo <kvalo@codeaurora.org>,
         Sasha Levin <sashal@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.4 143/174] mac80211: accept deauth frames in IBSS mode
-Date:   Thu, 16 Jan 2020 12:42:20 -0500
-Message-Id: <20200116174251.24326-143-sashal@kernel.org>
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org
+Subject: [PATCH AUTOSEL 4.4 151/174] mt7601u: fix bbp version check in mt7601u_wait_bbp_ready
+Date:   Thu, 16 Jan 2020 12:42:28 -0500
+Message-Id: <20200116174251.24326-151-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20200116174251.24326-1-sashal@kernel.org>
 References: <20200116174251.24326-1-sashal@kernel.org>
@@ -44,47 +47,40 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Lorenzo Bianconi <lorenzo@kernel.org>
 
-[ Upstream commit 95697f9907bfe3eab0ef20265a766b22e27dde64 ]
+[ Upstream commit 15e14f76f85f4f0eab3b8146e1cd3c58ce272823 ]
 
-We can process deauth frames and all, but we drop them very
-early in the RX path today - this could never have worked.
+Fix bbp ready check in mt7601u_wait_bbp_ready. The issue is reported by
+coverity with the following error:
 
-Fixes: 2cc59e784b54 ("mac80211: reply to AUTH with DEAUTH if sta allocation fails in IBSS")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
-Link: https://lore.kernel.org/r/20191004123706.15768-2-luca@coelho.fi
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Logical vs. bitwise operator
+The expression's value does not depend on the operands; inadvertent use
+of the wrong operator is a likely logic error.
+
+Addresses-Coverity-ID: 1309441 ("Logical vs. bitwise operator")
+Fixes: c869f77d6abb ("add mt7601u driver")
+Acked-by: Jakub Kicinski <kubakici@wp.pl>
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/rx.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt7601u/phy.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-index 3b8e2f97d815..2b7975c4dac7 100644
---- a/net/mac80211/rx.c
-+++ b/net/mac80211/rx.c
-@@ -3040,9 +3040,18 @@ ieee80211_rx_h_mgmt(struct ieee80211_rx_data *rx)
- 	case cpu_to_le16(IEEE80211_STYPE_PROBE_RESP):
- 		/* process for all: mesh, mlme, ibss */
- 		break;
-+	case cpu_to_le16(IEEE80211_STYPE_DEAUTH):
-+		if (is_multicast_ether_addr(mgmt->da) &&
-+		    !is_broadcast_ether_addr(mgmt->da))
-+			return RX_DROP_MONITOR;
-+
-+		/* process only for station/IBSS */
-+		if (sdata->vif.type != NL80211_IFTYPE_STATION &&
-+		    sdata->vif.type != NL80211_IFTYPE_ADHOC)
-+			return RX_DROP_MONITOR;
-+		break;
- 	case cpu_to_le16(IEEE80211_STYPE_ASSOC_RESP):
- 	case cpu_to_le16(IEEE80211_STYPE_REASSOC_RESP):
--	case cpu_to_le16(IEEE80211_STYPE_DEAUTH):
- 	case cpu_to_le16(IEEE80211_STYPE_DISASSOC):
- 		if (is_multicast_ether_addr(mgmt->da) &&
- 		    !is_broadcast_ether_addr(mgmt->da))
+diff --git a/drivers/net/wireless/mediatek/mt7601u/phy.c b/drivers/net/wireless/mediatek/mt7601u/phy.c
+index 1908af6add87..59ed073a8572 100644
+--- a/drivers/net/wireless/mediatek/mt7601u/phy.c
++++ b/drivers/net/wireless/mediatek/mt7601u/phy.c
+@@ -219,7 +219,7 @@ int mt7601u_wait_bbp_ready(struct mt7601u_dev *dev)
+ 
+ 	do {
+ 		val = mt7601u_bbp_rr(dev, MT_BBP_REG_VERSION);
+-		if (val && ~val)
++		if (val && val != 0xff)
+ 			break;
+ 	} while (--i);
+ 
 -- 
 2.20.1
 
