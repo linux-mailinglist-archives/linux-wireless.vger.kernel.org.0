@@ -2,37 +2,38 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2DCED13E0B1
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Jan 2020 17:45:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D2AE013E119
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Jan 2020 17:47:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729451AbgAPQo6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 16 Jan 2020 11:44:58 -0500
-Received: from mail.kernel.org ([198.145.29.99]:53396 "EHLO mail.kernel.org"
+        id S1729993AbgAPQro (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 16 Jan 2020 11:47:44 -0500
+Received: from mail.kernel.org ([198.145.29.99]:57526 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729005AbgAPQoz (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 16 Jan 2020 11:44:55 -0500
+        id S1729972AbgAPQrj (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 16 Jan 2020 11:47:39 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B6B5E214AF;
-        Thu, 16 Jan 2020 16:44:50 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 5233E20663;
+        Thu, 16 Jan 2020 16:47:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1579193094;
-        bh=HSzZeyZOCMTW1ielyMng8hwcj7scf2yJ/mEbaDIbSvs=;
+        s=default; t=1579193258;
+        bh=zGiHIJ/sfrkiEqz3zUsx/+MVHMdK+6Jn2DmDZgbzp7w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vophNceU86Fbag6iPOZjamwVVsIBcM/EnkYo5h8etoiNFSjVOkjU2nBSmyzReAUOE
-         Vk0f4aawOc7AttaXA/YXDcMvY4LcPj37TAIbMv6RBrBuA1SOH+KVjdFTfyD0L6EjEc
-         bUtF5y0372VWIH78Xa+8P9V0pZaU2+/4snpxHIwo=
+        b=iHbXuwmnE1KIZ/uCYX+nEFgv70uNaU1FukP1ZzaxbcavmfMWrMS4tu2rtTkc85ucK
+         9CFxPSfrzqN1qKBHiZd1TF2lu//9JLVAcY6iPUIVN5CGOmQzCZoBPV8lPQKdMGqMfg
+         z0uC47nL17Yn3FAGixEGxHxWlhNxFrC9UThNMa50=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Ping-Ke Shih <pkshih@realtek.com>,
-        Yan-Hsuan Chuang <yhchuang@realtek.com>,
+Cc:     Nathan Chancellor <natechancellor@gmail.com>,
+        Ping-Ke Shih <pkshih@realtek.com>,
         Kalle Valo <kvalo@codeaurora.org>,
         Sasha Levin <sashal@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 023/205] rtw88: fix error handling when setup efuse info
-Date:   Thu, 16 Jan 2020 11:39:58 -0500
-Message-Id: <20200116164300.6705-23-sashal@kernel.org>
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        clang-built-linux@googlegroups.com
+Subject: [PATCH AUTOSEL 5.4 057/205] rtlwifi: Remove unnecessary NULL check in rtl_regd_init
+Date:   Thu, 16 Jan 2020 11:40:32 -0500
+Message-Id: <20200116164300.6705-57-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20200116164300.6705-1-sashal@kernel.org>
 References: <20200116164300.6705-1-sashal@kernel.org>
@@ -45,62 +46,53 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Ping-Ke Shih <pkshih@realtek.com>
+From: Nathan Chancellor <natechancellor@gmail.com>
 
-[ Upstream commit f4268729eb1eefe23f6746849c1b5626d9030532 ]
+[ Upstream commit 091c6e9c083f7ebaff00b37ad13562d51464d175 ]
 
-Disable efuse if the efuse is enabled when we failed to setup the efuse
-information, otherwise the hardware will not turn off.
+When building with Clang + -Wtautological-pointer-compare:
 
-Fixes: e3037485c68e ("rtw88: new Realtek 802.11ac driver")
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
+drivers/net/wireless/realtek/rtlwifi/regd.c:389:33: warning: comparison
+of address of 'rtlpriv->regd' equal to a null pointer is always false
+[-Wtautological-pointer-compare]
+        if (wiphy == NULL || &rtlpriv->regd == NULL)
+                              ~~~~~~~~~^~~~    ~~~~
+1 warning generated.
+
+The address of an array member is never NULL unless it is the first
+struct member so remove the unnecessary check. This was addressed in
+the staging version of the driver in commit f986978b32b3 ("Staging:
+rtlwifi: remove unnecessary NULL check").
+
+While we are here, fix the following checkpatch warning:
+
+CHECK: Comparison to NULL could be written "!wiphy"
+35: FILE: drivers/net/wireless/realtek/rtlwifi/regd.c:389:
++       if (wiphy == NULL)
+
+Fixes: 0c8173385e54 ("rtl8192ce: Add new driver")
+Link:https://github.com/ClangBuiltLinux/linux/issues/750
+Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
 Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw88/main.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/net/wireless/realtek/rtlwifi/regd.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
-index 7a3a4911bde2..806af37192bc 100644
---- a/drivers/net/wireless/realtek/rtw88/main.c
-+++ b/drivers/net/wireless/realtek/rtw88/main.c
-@@ -1048,19 +1048,19 @@ static int rtw_chip_efuse_info_setup(struct rtw_dev *rtwdev)
- 	/* power on mac to read efuse */
- 	ret = rtw_chip_efuse_enable(rtwdev);
- 	if (ret)
--		goto out;
-+		goto out_unlock;
+diff --git a/drivers/net/wireless/realtek/rtlwifi/regd.c b/drivers/net/wireless/realtek/rtlwifi/regd.c
+index c10432cd703e..8be31e0ad878 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/regd.c
++++ b/drivers/net/wireless/realtek/rtlwifi/regd.c
+@@ -386,7 +386,7 @@ int rtl_regd_init(struct ieee80211_hw *hw,
+ 	struct wiphy *wiphy = hw->wiphy;
+ 	struct country_code_to_enum_rd *country = NULL;
  
- 	ret = rtw_parse_efuse_map(rtwdev);
- 	if (ret)
--		goto out;
-+		goto out_disable;
+-	if (wiphy == NULL || &rtlpriv->regd == NULL)
++	if (!wiphy)
+ 		return -EINVAL;
  
- 	ret = rtw_dump_hw_feature(rtwdev);
- 	if (ret)
--		goto out;
-+		goto out_disable;
- 
- 	ret = rtw_check_supported_rfe(rtwdev);
- 	if (ret)
--		goto out;
-+		goto out_disable;
- 
- 	if (efuse->crystal_cap == 0xff)
- 		efuse->crystal_cap = 0;
-@@ -1087,9 +1087,10 @@ static int rtw_chip_efuse_info_setup(struct rtw_dev *rtwdev)
- 	efuse->ext_pa_5g = efuse->pa_type_5g & BIT(0) ? 1 : 0;
- 	efuse->ext_lna_2g = efuse->lna_type_5g & BIT(3) ? 1 : 0;
- 
-+out_disable:
- 	rtw_chip_efuse_disable(rtwdev);
- 
--out:
-+out_unlock:
- 	mutex_unlock(&rtwdev->mutex);
- 	return ret;
- }
+ 	/* init country_code from efuse channel plan */
 -- 
 2.20.1
 
