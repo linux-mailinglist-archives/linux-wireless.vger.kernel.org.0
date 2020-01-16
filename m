@@ -2,41 +2,38 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 28E1713E6CF
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Jan 2020 18:22:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8472213E7F3
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Jan 2020 18:29:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390798AbgAPRNl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 16 Jan 2020 12:13:41 -0500
-Received: from mail.kernel.org ([198.145.29.99]:59276 "EHLO mail.kernel.org"
+        id S2404315AbgAPR3Q (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 16 Jan 2020 12:29:16 -0500
+Received: from mail.kernel.org ([198.145.29.99]:40984 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2390792AbgAPRNk (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 16 Jan 2020 12:13:40 -0500
+        id S2404306AbgAPR3O (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 16 Jan 2020 12:29:14 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 71FDA20684;
-        Thu, 16 Jan 2020 17:13:39 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id D143724709;
+        Thu, 16 Jan 2020 17:29:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1579194820;
-        bh=1SjJAlZJgHXI8ZPZc0v1AGoOUn/u9gQxhzVoZQ7cp+w=;
+        s=default; t=1579195754;
+        bh=JYnzlzmlOi8zxfkZ3gNkyag99DW/iJIorNEPxenw/wA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QVDhz4Gc3ShC7HIjy2Bv+vQyJi2qU/UJlXBnhz/1VN9skNE0XEqm/KpW8pMChUykm
-         YKFVveM8qfXsbeXRC4bR3PbDR3jqlVapT8Mt3CfgQ3UY2ehdBBvh5hMNENHgxmDttp
-         C5slQxzIE2QhKLSt52Po7RwhbBPhI48TxbIGuQ30=
+        b=GlNGfiN2Fn+WIZjKKCtnVQ0w/x390ABNcHHglx47Vmt4MIh75odRGCBBZWXABU3p0
+         OUOl+XWzuUrK3BnQ/huHJYh66gLSLNlFJRAezDlSNz73r2EdN7xPLr6tMXdz9za6KT
+         QMOeSXTRIXI+XNMxdoNrr1+WuInKqVAUu6x4Je4s=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Nathan Chancellor <natechancellor@gmail.com>,
-        Ping-Ke Shih <pkshih@realtek.com>,
+Cc:     Colin Ian King <colin.king@canonical.com>,
         Kalle Valo <kvalo@codeaurora.org>,
-        Sasha Levin <sashal@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        clang-built-linux@googlegroups.com
-Subject: [PATCH AUTOSEL 4.19 625/671] rtlwifi: Remove unnecessary NULL check in rtl_regd_init
-Date:   Thu, 16 Jan 2020 12:04:23 -0500
-Message-Id: <20200116170509.12787-362-sashal@kernel.org>
+        Sasha Levin <sashal@kernel.org>, linux-wireless@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.14 285/371] bcma: fix incorrect update of BCMA_CORE_PCI_MDIO_DATA
+Date:   Thu, 16 Jan 2020 12:22:37 -0500
+Message-Id: <20200116172403.18149-228-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200116170509.12787-1-sashal@kernel.org>
-References: <20200116170509.12787-1-sashal@kernel.org>
+In-Reply-To: <20200116172403.18149-1-sashal@kernel.org>
+References: <20200116172403.18149-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -46,53 +43,46 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Nathan Chancellor <natechancellor@gmail.com>
+From: Colin Ian King <colin.king@canonical.com>
 
-[ Upstream commit 091c6e9c083f7ebaff00b37ad13562d51464d175 ]
+[ Upstream commit 420c20be08a4597404d272ae9793b642401146eb ]
 
-When building with Clang + -Wtautological-pointer-compare:
+An earlier commit re-worked the setting of the bitmask and is now
+assigning v with some bit flags rather than bitwise or-ing them
+into v, consequently the earlier bit-settings of v are being lost.
+Fix this by replacing an assignment with the bitwise or instead.
 
-drivers/net/wireless/realtek/rtlwifi/regd.c:389:33: warning: comparison
-of address of 'rtlpriv->regd' equal to a null pointer is always false
-[-Wtautological-pointer-compare]
-        if (wiphy == NULL || &rtlpriv->regd == NULL)
-                              ~~~~~~~~~^~~~    ~~~~
-1 warning generated.
-
-The address of an array member is never NULL unless it is the first
-struct member so remove the unnecessary check. This was addressed in
-the staging version of the driver in commit f986978b32b3 ("Staging:
-rtlwifi: remove unnecessary NULL check").
-
-While we are here, fix the following checkpatch warning:
-
-CHECK: Comparison to NULL could be written "!wiphy"
-35: FILE: drivers/net/wireless/realtek/rtlwifi/regd.c:389:
-+       if (wiphy == NULL)
-
-Fixes: 0c8173385e54 ("rtl8192ce: Add new driver")
-Link:https://github.com/ClangBuiltLinux/linux/issues/750
-Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+Addresses-Coverity: ("Unused value")
+Fixes: 2be25cac8402 ("bcma: add constants for PCI and use them")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
 Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtlwifi/regd.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/bcma/driver_pci.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/regd.c b/drivers/net/wireless/realtek/rtlwifi/regd.c
-index 1bf3eb25c1da..72ca370331fb 100644
---- a/drivers/net/wireless/realtek/rtlwifi/regd.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/regd.c
-@@ -427,7 +427,7 @@ int rtl_regd_init(struct ieee80211_hw *hw,
- 	struct wiphy *wiphy = hw->wiphy;
- 	struct country_code_to_enum_rd *country = NULL;
+diff --git a/drivers/bcma/driver_pci.c b/drivers/bcma/driver_pci.c
+index f499a469e66d..12b2cc9a3fbe 100644
+--- a/drivers/bcma/driver_pci.c
++++ b/drivers/bcma/driver_pci.c
+@@ -78,7 +78,7 @@ static u16 bcma_pcie_mdio_read(struct bcma_drv_pci *pc, u16 device, u8 address)
+ 		v |= (address << BCMA_CORE_PCI_MDIODATA_REGADDR_SHF_OLD);
+ 	}
  
--	if (wiphy == NULL || &rtlpriv->regd == NULL)
-+	if (!wiphy)
- 		return -EINVAL;
+-	v = BCMA_CORE_PCI_MDIODATA_START;
++	v |= BCMA_CORE_PCI_MDIODATA_START;
+ 	v |= BCMA_CORE_PCI_MDIODATA_READ;
+ 	v |= BCMA_CORE_PCI_MDIODATA_TA;
  
- 	/* init country_code from efuse channel plan */
+@@ -121,7 +121,7 @@ static void bcma_pcie_mdio_write(struct bcma_drv_pci *pc, u16 device,
+ 		v |= (address << BCMA_CORE_PCI_MDIODATA_REGADDR_SHF_OLD);
+ 	}
+ 
+-	v = BCMA_CORE_PCI_MDIODATA_START;
++	v |= BCMA_CORE_PCI_MDIODATA_START;
+ 	v |= BCMA_CORE_PCI_MDIODATA_WRITE;
+ 	v |= BCMA_CORE_PCI_MDIODATA_TA;
+ 	v |= data;
 -- 
 2.20.1
 
