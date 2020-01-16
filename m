@@ -2,67 +2,75 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E3C013D18F
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Jan 2020 02:33:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 45BEE13D38E
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Jan 2020 06:23:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729835AbgAPBdR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 15 Jan 2020 20:33:17 -0500
-Received: from webmail.newmedia-net.de ([185.84.6.166]:35215 "EHLO
-        webmail.newmedia-net.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729195AbgAPBdR (ORCPT
+        id S1726897AbgAPFXF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 16 Jan 2020 00:23:05 -0500
+Received: from mail.adapt-ip.com ([173.164.178.19]:48350 "EHLO
+        mail.adapt-ip.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726329AbgAPFXF (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 15 Jan 2020 20:33:17 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=newmedia-net.de; s=mikd;
-        h=Content-Transfer-Encoding:Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject; bh=TQ+9Zc6C00sz0i3CaaDbkTDF1x+VWewGUVwWmIMahTU=;
-        b=scL/K0YoKNKXxTRcargW82COVwlVzjwAPPsSlGZVsHlTIsEj9gx2vpBWlWWJi9nwilViL2jJ5dObY3i7mlmRb9YEV0pwrtAqzq0iOeSNgvDKUWwdu5C16vZ28d7l+q1+weOWsdwleLfseeeeYj2h3F9xZ02ttTXGWIPxuqXgiKE=;
-Subject: Re: [PATCH v3] ath9k: fix firmware bug in some Mikrotik R11e-2HPnD
- cards
-To:     Tom Psyborg <pozega.tomislav@gmail.com>
-Cc:     Denis Kalashnikov <denis281089@gmail.com>,
-        Felix Fietkau <nbd@nbd.name>, linux-wireless@vger.kernel.org,
-        Kalle Valo <kvalo@codeaurora.org>
-References: <20200110132142.7737-1-denis281089@gmail.com>
- <aab66c75-49ae-0955-03a8-f817685b0925@nbd.name>
- <CAKoLU8P3MyauCUevcRHtzMj8HSZQLD-hYyEaZyRH9OfLye6knQ@mail.gmail.com>
- <CAKR_QVKb21WWbUup-O9nsDvfVO7-c_+Kpxx3n8=b1e4X5pkmkw@mail.gmail.com>
- <CAKoLU8MRzBaB9AS0--vCG01hKhBrdzB8=42A+vMv9X39ZAPZLQ@mail.gmail.com>
- <28f78f20-b415-4046-674f-070ad6c43f44@newmedia-net.de>
- <CAKR_QV++azTZKi0dodYXDEgXbkUcUhBqezzMtGc0=dh_ngOqOQ@mail.gmail.com>
-From:   Sebastian Gottschall <s.gottschall@newmedia-net.de>
-Message-ID: <18634217-2e93-83fd-ec40-9b2a1bf28f56@newmedia-net.de>
-Date:   Thu, 16 Jan 2020 02:33:13 +0100
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
- Thunderbird/68.3.1
+        Thu, 16 Jan 2020 00:23:05 -0500
+Received: from localhost (unknown [127.0.0.1])
+        by mail.adapt-ip.com (Postfix) with ESMTP id E5DFD2F0ADA;
+        Thu, 16 Jan 2020 05:23:04 +0000 (UTC)
+X-Virus-Scanned: amavisd-new at web.adapt-ip.com
+Received: from mail.adapt-ip.com ([127.0.0.1])
+        by localhost (web.adapt-ip.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id EnUyHID1lMa6; Wed, 15 Jan 2020 21:23:03 -0800 (PST)
+Received: from [10.10.10.201] (c-73-202-5-52.hsd1.ca.comcast.net [73.202.5.52])
+        (using TLSv1.2 with cipher AES128-SHA (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: thomas@adapt-ip.com)
+        by mail.adapt-ip.com (Postfix) with ESMTPSA id C00C52F0AA5;
+        Wed, 15 Jan 2020 21:23:02 -0800 (PST)
+Subject: Re: [PATCH v2 0/3] fix a STA PS bug and add PS support to
+ mac80211_hwsim
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>
+References: <20191119053538.25979-1-thomas@adapt-ip.com>
+ <85ed0881d0aeecd886b27bd482fa61fa86d96729.camel@sipsolutions.net>
+ <f0ae4c07-d3c3-768f-49c0-1f2a6c5a687d@adapt-ip.com>
+ <d943f37db7a57dbc335cacfa5cbbd38c8ae8dea9.camel@sipsolutions.net>
+ <43f4d446d7f8b9a08e091ab811fbf99bf00da2af.camel@sipsolutions.net>
+ <8ebb225f-8ec5-0897-03cd-f37bfdd94429@adapt-ip.com>
+ <34040c2da85b14ff7881460efd2348b7d84b4b21.camel@sipsolutions.net>
+From:   Thomas Pedersen <thomas@adapt-ip.com>
+Message-ID: <385589b2-e8a2-1e39-d347-f3353bc681aa@adapt-ip.com>
+Date:   Wed, 15 Jan 2020 21:23:01 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-In-Reply-To: <CAKR_QV++azTZKi0dodYXDEgXbkUcUhBqezzMtGc0=dh_ngOqOQ@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
+In-Reply-To: <34040c2da85b14ff7881460efd2348b7d84b4b21.camel@sipsolutions.net>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Received:  from [2003:c9:3f10:df00:34e8:ca65:edfc:6be9]
-        by webmail.newmedia-net.de with esmtpsa (TLSv1:AES128-SHA:128)
-        (Exim 4.72)
-        (envelope-from <s.gottschall@newmedia-net.de>)
-        id 1iru0H-0005TZ-AF; Thu, 16 Jan 2020 02:31:21 +0100
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
->> checking subvendor and subdevice id is usefull. mikrotik has special
->> values here
+On 1/14/20 12:00 AM, Johannes Berg wrote:
+> Hi Thomas,
+> 
+>> Is there a list of known passing hwsim tests somewhere?
 >>
->> the R11e-2HPnD card has
->>
->> subvendor 0x19b6
->>
->> subdevice 0xd016
->>
->>
-> that i already suggested but it appears his units have zeroed sub fields
-if it has zero subfields it has no original eeprom but a modified one. 
-all mikrotik cards with no exception have the subvendor and subdevice id 
-set.
-the subvendor and subdevice is is stored in the eeprom. or the eeprom 
-could be also broke, but in this case the values should be 0xffff
-i have several original mikrotik cards of this type and this is where i 
-got these values from. are you sure that your card is no immitation?
-can he send me a picture of this card?
+>> Maybe a subset of suites / tests you like to see passing as a smoke test?
+> 
+> Not really.
+> 
+>> Or do you run through the 3300+ tests and expect them all to pass?
+> 
+> Pretty much, yes. It takes <10 minutes on my quad-core desktop to run
+> using the UML time-travel mode against recent kernels.
+> 
+> I don't always get 100% pass on the first round, but the handful that
+> fails sometimes I expect to pass when running just those manually with
+> vm-run.sh.
+
+Thanks, I'll give UML time-travel mode a try.
+
+
+-- 
+-- thomas
