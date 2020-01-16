@@ -2,37 +2,37 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EFF2413EFB4
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Jan 2020 19:17:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AE96213EF8D
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Jan 2020 19:16:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2405019AbgAPSRA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 16 Jan 2020 13:17:00 -0500
-Received: from mail.kernel.org ([198.145.29.99]:41058 "EHLO mail.kernel.org"
+        id S2392759AbgAPR3e (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 16 Jan 2020 12:29:34 -0500
+Received: from mail.kernel.org ([198.145.29.99]:41474 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2404317AbgAPR3R (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 16 Jan 2020 12:29:17 -0500
+        id S2392752AbgAPR3e (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 16 Jan 2020 12:29:34 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id BD06724709;
-        Thu, 16 Jan 2020 17:29:15 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 7785024724;
+        Thu, 16 Jan 2020 17:29:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1579195756;
-        bh=0NI5eg90uq0zouBTqhJBrfGAOMmaxF1zTGm0KwDIzGE=;
+        s=default; t=1579195773;
+        bh=RIjjSlgXFljZ+ANBVrJotX5XLZbHnKiqcXVztCjBkvM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JtFVSUzaxfYYpVMQse4cZjefmEqBgM3B9iRHk1D7XJrztujCA5bwLP4f+vt/DZL71
-         RzfQF3vbvILwUHcoY3eVI220MybF/p0ThUCw5fHO6tKMTDJO+ngrXNhyGfu3N7aidt
-         5XBSl2R7vfzpc85exeIR0z5bWSmcdYtjjuxbROhE=
+        b=Z+HQbpTDiyrmLJXlUaiqVCAyikJ7dBR+hDIbSQ0lf8Kxa9gGonCiVMq9oOgRVfY5L
+         JBPSdfw5MYJNZbhcZgSSOBV0fGxGJWOZ1d8bwBpnGUsk4QCl+I5Oy51mv69PhPc4pU
+         7btsQ2K+lTLf3o4JqCQ9aQBuW1IOMBqkSNx/mbA0=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Lorenzo Bianconi <lorenzo@kernel.org>,
-        Koen Vandeputte <koen.vandeputte@ncentric.com>,
+Cc:     Nicolas Boichat <drinkcat@chromium.org>,
+        Wen Gong <wgong@codeaurora.org>,
         Kalle Valo <kvalo@codeaurora.org>,
-        Sasha Levin <sashal@kernel.org>,
+        Sasha Levin <sashal@kernel.org>, ath10k@lists.infradead.org,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 287/371] ath9k: dynack: fix possible deadlock in ath_dynack_node_{de}init
-Date:   Thu, 16 Jan 2020 12:22:39 -0500
-Message-Id: <20200116172403.18149-230-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 299/371] ath10k: adjust skb length in ath10k_sdio_mbox_rx_packet
+Date:   Thu, 16 Jan 2020 12:22:51 -0500
+Message-Id: <20200116172403.18149-242-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20200116172403.18149-1-sashal@kernel.org>
 References: <20200116172403.18149-1-sashal@kernel.org>
@@ -45,134 +45,99 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Lorenzo Bianconi <lorenzo@kernel.org>
+From: Nicolas Boichat <drinkcat@chromium.org>
 
-[ Upstream commit e1aa1a1db3b01c9890e82cf065cee99962ba1ed9 ]
+[ Upstream commit b7139960832eb56fa15d390a4b5c8c5739bd0d1a ]
 
-Fix following lockdep warning disabling bh in
-ath_dynack_node_init/ath_dynack_node_deinit
+When the FW bundles multiple packets, pkt->act_len may be incorrect
+as it refers to the first packet only (however, the FW will only
+bundle packets that fit into the same pkt->alloc_len).
 
-[   75.955878] --------------------------------
-[   75.955880] inconsistent {SOFTIRQ-ON-W} -> {IN-SOFTIRQ-W} usage.
-[   75.955884] swapper/0/0 [HC0[0]:SC1[3]:HE1:SE0] takes:
-[   75.955888] 00000000792a7ee0 (&(&da->qlock)->rlock){+.?.}, at: ath_dynack_sample_ack_ts+0x4d/0xa0 [ath9k_hw]
-[   75.955905] {SOFTIRQ-ON-W} state was registered at:
-[   75.955912]   lock_acquire+0x9a/0x160
-[   75.955917]   _raw_spin_lock+0x2c/0x70
-[   75.955927]   ath_dynack_node_init+0x2a/0x60 [ath9k_hw]
-[   75.955934]   ath9k_sta_state+0xec/0x160 [ath9k]
-[   75.955976]   drv_sta_state+0xb2/0x740 [mac80211]
-[   75.956008]   sta_info_insert_finish+0x21a/0x420 [mac80211]
-[   75.956039]   sta_info_insert_rcu+0x12b/0x2c0 [mac80211]
-[   75.956069]   sta_info_insert+0x7/0x70 [mac80211]
-[   75.956093]   ieee80211_prep_connection+0x42e/0x730 [mac80211]
-[   75.956120]   ieee80211_mgd_auth.cold+0xb9/0x15c [mac80211]
-[   75.956152]   cfg80211_mlme_auth+0x143/0x350 [cfg80211]
-[   75.956169]   nl80211_authenticate+0x25e/0x2b0 [cfg80211]
-[   75.956172]   genl_family_rcv_msg+0x198/0x400
-[   75.956174]   genl_rcv_msg+0x42/0x90
-[   75.956176]   netlink_rcv_skb+0x35/0xf0
-[   75.956178]   genl_rcv+0x1f/0x30
-[   75.956180]   netlink_unicast+0x154/0x200
-[   75.956182]   netlink_sendmsg+0x1bf/0x3d0
-[   75.956186]   ___sys_sendmsg+0x2c2/0x2f0
-[   75.956187]   __sys_sendmsg+0x44/0x80
-[   75.956190]   do_syscall_64+0x55/0x1a0
-[   75.956192]   entry_SYSCALL_64_after_hwframe+0x49/0xbe
-[   75.956194] irq event stamp: 2357092
-[   75.956196] hardirqs last  enabled at (2357092): [<ffffffff818c62de>] _raw_spin_unlock_irqrestore+0x3e/0x50
-[   75.956199] hardirqs last disabled at (2357091): [<ffffffff818c60b1>] _raw_spin_lock_irqsave+0x11/0x80
-[   75.956202] softirqs last  enabled at (2357072): [<ffffffff8106dc09>] irq_enter+0x59/0x60
-[   75.956204] softirqs last disabled at (2357073): [<ffffffff8106dcbe>] irq_exit+0xae/0xc0
-[   75.956206]
-               other info that might help us debug this:
-[   75.956207]  Possible unsafe locking scenario:
+Before this patch, the skb length would be set (incorrectly) to
+pkt->act_len in ath10k_sdio_mbox_rx_packet, and then later manually
+adjusted in ath10k_sdio_mbox_rx_process_packet.
 
-[   75.956208]        CPU0
-[   75.956209]        ----
-[   75.956210]   lock(&(&da->qlock)->rlock);
-[   75.956213]   <Interrupt>
-[   75.956214]     lock(&(&da->qlock)->rlock);
-[   75.956216]
-                *** DEADLOCK ***
+The first problem is that ath10k_sdio_mbox_rx_process_packet does not
+use proper skb_put commands to adjust the length (it directly changes
+skb->len), so we end up with a mismatch between skb->head + skb->tail
+and skb->data + skb->len. This is quite serious, and causes corruptions
+in the TCP stack, as the stack tries to coalesce packets, and relies
+on skb->tail being correct (that is, skb_tail_pointer must point to
+the first byte_after_ the data).
 
-[   75.956217] 1 lock held by swapper/0/0:
-[   75.956219]  #0: 000000003bb5675c (&(&sc->sc_pcu_lock)->rlock){+.-.}, at: ath9k_tasklet+0x55/0x240 [ath9k]
-[   75.956225]
-               stack backtrace:
-[   75.956228] CPU: 0 PID: 0 Comm: swapper/0 Not tainted 5.3.0-rc1-wdn+ #13
-[   75.956229] Hardware name: Dell Inc. Studio XPS 1340/0K183D, BIOS A11 09/08/2009
-[   75.956231] Call Trace:
-[   75.956233]  <IRQ>
-[   75.956236]  dump_stack+0x67/0x90
-[   75.956239]  mark_lock+0x4c1/0x640
-[   75.956242]  ? check_usage_backwards+0x130/0x130
-[   75.956245]  ? sched_clock_local+0x12/0x80
-[   75.956247]  __lock_acquire+0x484/0x7a0
-[   75.956250]  ? __lock_acquire+0x3b9/0x7a0
-[   75.956252]  lock_acquire+0x9a/0x160
-[   75.956259]  ? ath_dynack_sample_ack_ts+0x4d/0xa0 [ath9k_hw]
-[   75.956262]  _raw_spin_lock_bh+0x34/0x80
-[   75.956268]  ? ath_dynack_sample_ack_ts+0x4d/0xa0 [ath9k_hw]
-[   75.956275]  ath_dynack_sample_ack_ts+0x4d/0xa0 [ath9k_hw]
-[   75.956280]  ath_rx_tasklet+0xd09/0xe90 [ath9k]
-[   75.956286]  ath9k_tasklet+0x102/0x240 [ath9k]
-[   75.956288]  tasklet_action_common.isra.0+0x6d/0x170
-[   75.956291]  __do_softirq+0xcc/0x425
-[   75.956294]  irq_exit+0xae/0xc0
-[   75.956296]  do_IRQ+0x8a/0x110
-[   75.956298]  common_interrupt+0xf/0xf
-[   75.956300]  </IRQ>
-[   75.956303] RIP: 0010:cpuidle_enter_state+0xb2/0x400
-[   75.956308] RSP: 0018:ffffffff82203e70 EFLAGS: 00000202 ORIG_RAX: ffffffffffffffd7
-[   75.956310] RAX: ffffffff82219800 RBX: ffffffff822bd0a0 RCX: 0000000000000000
-[   75.956312] RDX: 0000000000000046 RSI: 0000000000000006 RDI: ffffffff82219800
-[   75.956314] RBP: ffff888155a01c00 R08: 00000011af51aabe R09: 0000000000000000
-[   75.956315] R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000002
-[   75.956317] R13: 00000011af51aabe R14: 0000000000000003 R15: ffffffff82219800
-[   75.956321]  cpuidle_enter+0x24/0x40
-[   75.956323]  do_idle+0x1ac/0x220
-[   75.956326]  cpu_startup_entry+0x14/0x20
-[   75.956329]  start_kernel+0x482/0x489
-[   75.956332]  secondary_startup_64+0xa4/0xb0
+Instead of re-adjusting the size in ath10k_sdio_mbox_rx_process_packet,
+this moves the code to ath10k_sdio_mbox_rx_packet, and also add a
+bounds check, as skb_put would crash the kernel if not enough space is
+available.
 
-Fixes: c774d57fd47c ("ath9k: add dynamic ACK timeout estimation")
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Tested-by: Koen Vandeputte <koen.vandeputte@ncentric.com>
+Tested with QCA6174 SDIO with firmware
+WLAN.RMH.4.4.1-00007-QCARMSWP-1.
+
+Fixes: 8530b4e7b22bc3b ("ath10k: sdio: set skb len for all rx packets")
+Signed-off-by: Nicolas Boichat <drinkcat@chromium.org>
+Signed-off-by: Wen Gong <wgong@codeaurora.org>
 Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath9k/dynack.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/wireless/ath/ath10k/sdio.c | 29 +++++++++++++++++++-------
+ 1 file changed, 21 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/dynack.c b/drivers/net/wireless/ath/ath9k/dynack.c
-index 6e236a485431..71b4888b30e7 100644
---- a/drivers/net/wireless/ath/ath9k/dynack.c
-+++ b/drivers/net/wireless/ath/ath9k/dynack.c
-@@ -300,9 +300,9 @@ void ath_dynack_node_init(struct ath_hw *ah, struct ath_node *an)
+diff --git a/drivers/net/wireless/ath/ath10k/sdio.c b/drivers/net/wireless/ath/ath10k/sdio.c
+index 0a1248ebccf5..f49b21b137c1 100644
+--- a/drivers/net/wireless/ath/ath10k/sdio.c
++++ b/drivers/net/wireless/ath/ath10k/sdio.c
+@@ -392,16 +392,11 @@ static int ath10k_sdio_mbox_rx_process_packet(struct ath10k *ar,
+ 	struct ath10k_htc_hdr *htc_hdr = (struct ath10k_htc_hdr *)skb->data;
+ 	bool trailer_present = htc_hdr->flags & ATH10K_HTC_FLAG_TRAILER_PRESENT;
+ 	enum ath10k_htc_ep_id eid;
+-	u16 payload_len;
+ 	u8 *trailer;
+ 	int ret;
  
- 	an->ackto = ackto;
+-	payload_len = le16_to_cpu(htc_hdr->len);
+-	skb->len = payload_len + sizeof(struct ath10k_htc_hdr);
+-
+ 	if (trailer_present) {
+-		trailer = skb->data + sizeof(*htc_hdr) +
+-			  payload_len - htc_hdr->trailer_len;
++		trailer = skb->data + skb->len - htc_hdr->trailer_len;
  
--	spin_lock(&da->qlock);
-+	spin_lock_bh(&da->qlock);
- 	list_add_tail(&an->list, &da->nodes);
--	spin_unlock(&da->qlock);
-+	spin_unlock_bh(&da->qlock);
- }
- EXPORT_SYMBOL(ath_dynack_node_init);
+ 		eid = pipe_id_to_eid(htc_hdr->eid);
  
-@@ -316,9 +316,9 @@ void ath_dynack_node_deinit(struct ath_hw *ah, struct ath_node *an)
+@@ -635,13 +630,31 @@ static int ath10k_sdio_mbox_rx_packet(struct ath10k *ar,
  {
- 	struct ath_dynack *da = &ah->dynack;
+ 	struct ath10k_sdio *ar_sdio = ath10k_sdio_priv(ar);
+ 	struct sk_buff *skb = pkt->skb;
++	struct ath10k_htc_hdr *htc_hdr;
+ 	int ret;
  
--	spin_lock(&da->qlock);
-+	spin_lock_bh(&da->qlock);
- 	list_del(&an->list);
--	spin_unlock(&da->qlock);
-+	spin_unlock_bh(&da->qlock);
+ 	ret = ath10k_sdio_readsb(ar, ar_sdio->mbox_info.htc_addr,
+ 				 skb->data, pkt->alloc_len);
++	if (ret)
++		goto out;
++
++	/* Update actual length. The original length may be incorrect,
++	 * as the FW will bundle multiple packets as long as their sizes
++	 * fit within the same aligned length (pkt->alloc_len).
++	 */
++	htc_hdr = (struct ath10k_htc_hdr *)skb->data;
++	pkt->act_len = le16_to_cpu(htc_hdr->len) + sizeof(*htc_hdr);
++	if (pkt->act_len > pkt->alloc_len) {
++		ath10k_warn(ar, "rx packet too large (%zu > %zu)\n",
++			    pkt->act_len, pkt->alloc_len);
++		ret = -EMSGSIZE;
++		goto out;
++	}
++
++	skb_put(skb, pkt->act_len);
++
++out:
+ 	pkt->status = ret;
+-	if (!ret)
+-		skb_put(skb, pkt->act_len);
+ 
+ 	return ret;
  }
- EXPORT_SYMBOL(ath_dynack_node_deinit);
- 
 -- 
 2.20.1
 
