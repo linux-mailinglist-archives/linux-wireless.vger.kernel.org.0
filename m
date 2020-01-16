@@ -2,36 +2,36 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 601D913F5A4
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Jan 2020 19:57:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 022D013F3B5
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Jan 2020 19:45:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389050AbgAPRG7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 16 Jan 2020 12:06:59 -0500
-Received: from mail.kernel.org ([198.145.29.99]:38020 "EHLO mail.kernel.org"
+        id S2390064AbgAPRKs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 16 Jan 2020 12:10:48 -0500
+Received: from mail.kernel.org ([198.145.29.99]:49790 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2389044AbgAPRG6 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 16 Jan 2020 12:06:58 -0500
+        id S2390020AbgAPRKr (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 16 Jan 2020 12:10:47 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 6650A2081E;
-        Thu, 16 Jan 2020 17:06:56 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 9926D24681;
+        Thu, 16 Jan 2020 17:10:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1579194417;
-        bh=9LdsUBp7qfC8M7hIx4I1cjSoYSEPj8Dn1kYaez5MelE=;
+        s=default; t=1579194647;
+        bh=2/wvCZSZdoE3p4fHJ4Le/4J8A/f3Y1RdJ0mrcMPZnps=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Yu2aVTu9KuYd2slD/1/jbgFdFzLhTrdsN9MQpu6gcYsu8orlCjCMjbQ1gmOobxPgI
-         +BAe2Tap+ksQqFkB38jazEBg2kidEtJ8Sl/4207Vuh3kAt4hOzlC0tjbJEEINR5dn7
-         G4lIKUX7pzp2hoIxUoXMem+C/CPdv1g+YkhCSBvw=
+        b=i8Ew2o6bqnYROGkqZ9XLXOR0bgDstcBXS2HKB9aCvUGTSQqWVEaXb78D5qL/riqn6
+         r6dvdaJhes0yYpIKpzHwofa0YH9k77krLP+swiyCOhZOBGrURPiETLUn9ZXXbgbTe4
+         gfoeY2R9mM5kYyUd+pz2dakQ9+xdKGVapzPaTOPU=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Rakesh Pillai <pillair@codeaurora.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Sasha Levin <sashal@kernel.org>, ath10k@lists.infradead.org,
+Cc:     Felix Fietkau <nbd@nbd.name>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Sasha Levin <sashal@kernel.org>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 338/671] ath10k: Fix encoding for protected management frames
-Date:   Thu, 16 Jan 2020 11:59:36 -0500
-Message-Id: <20200116170509.12787-75-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 503/671] mac80211: minstrel_ht: fix per-group max throughput rate initialization
+Date:   Thu, 16 Jan 2020 12:02:21 -0500
+Message-Id: <20200116170509.12787-240-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20200116170509.12787-1-sashal@kernel.org>
 References: <20200116170509.12787-1-sashal@kernel.org>
@@ -44,46 +44,35 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Rakesh Pillai <pillair@codeaurora.org>
+From: Felix Fietkau <nbd@nbd.name>
 
-[ Upstream commit 42f1bc43e6a97b9ddbe976eba9bd05306c990c75 ]
+[ Upstream commit 56dd918ff06e3ee24d8067e93ed12b2a39e71394 ]
 
-Currently the protected management frames are
-not appended with the MIC_LEN which results in
-the protected management frames being encoded
-incorrectly.
+The group number needs to be multiplied by the number of rates per group
+to get the full rate index
 
-Add the extra space at the end of the protected
-management frames to fix this encoding error for
-the protected management frames.
-
-Tested HW: WCN3990
-Tested FW: WLAN.HL.3.1-00784-QCAHLSWMTPLZ-1
-
-Fixes: 1807da49733e ("ath10k: wmi: add management tx by reference support over wmi")
-Signed-off-by: Rakesh Pillai <pillair@codeaurora.org>
-Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+Fixes: 5935839ad735 ("mac80211: improve minstrel_ht rate sorting by throughput & probability")
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Link: https://lore.kernel.org/r/20190820095449.45255-1-nbd@nbd.name
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath10k/wmi-tlv.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/mac80211/rc80211_minstrel_ht.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath10k/wmi-tlv.c b/drivers/net/wireless/ath/ath10k/wmi-tlv.c
-index a90990b8008d..248decb494c2 100644
---- a/drivers/net/wireless/ath/ath10k/wmi-tlv.c
-+++ b/drivers/net/wireless/ath/ath10k/wmi-tlv.c
-@@ -2692,8 +2692,10 @@ ath10k_wmi_tlv_op_gen_mgmt_tx_send(struct ath10k *ar, struct sk_buff *msdu,
- 	if ((ieee80211_is_action(hdr->frame_control) ||
- 	     ieee80211_is_deauth(hdr->frame_control) ||
- 	     ieee80211_is_disassoc(hdr->frame_control)) &&
--	     ieee80211_has_protected(hdr->frame_control))
-+	     ieee80211_has_protected(hdr->frame_control)) {
-+		skb_put(msdu, IEEE80211_CCMP_MIC_LEN);
- 		buf_len += IEEE80211_CCMP_MIC_LEN;
-+	}
+diff --git a/net/mac80211/rc80211_minstrel_ht.c b/net/mac80211/rc80211_minstrel_ht.c
+index 3d5520776655..0b60e330c115 100644
+--- a/net/mac80211/rc80211_minstrel_ht.c
++++ b/net/mac80211/rc80211_minstrel_ht.c
+@@ -529,7 +529,7 @@ minstrel_ht_update_stats(struct minstrel_priv *mp, struct minstrel_ht_sta *mi)
  
- 	buf_len = min_t(u32, buf_len, WMI_TLV_MGMT_TX_FRAME_MAX_LEN);
- 	buf_len = round_up(buf_len, 4);
+ 		/* (re)Initialize group rate indexes */
+ 		for(j = 0; j < MAX_THR_RATES; j++)
+-			tmp_group_tp_rate[j] = group;
++			tmp_group_tp_rate[j] = MCS_GROUP_RATES * group;
+ 
+ 		for (i = 0; i < MCS_GROUP_RATES; i++) {
+ 			if (!(mi->supported[group] & BIT(i)))
 -- 
 2.20.1
 
