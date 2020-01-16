@@ -2,71 +2,90 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B19D13D528
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Jan 2020 08:43:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3741813D54F
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Jan 2020 08:47:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726726AbgAPHmA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 16 Jan 2020 02:42:00 -0500
-Received: from s3.sipsolutions.net ([144.76.43.62]:47944 "EHLO
-        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726315AbgAPHl7 (ORCPT
+        id S1727015AbgAPHq7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 16 Jan 2020 02:46:59 -0500
+Received: from mail-il1-f194.google.com ([209.85.166.194]:34723 "EHLO
+        mail-il1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727005AbgAPHq7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 16 Jan 2020 02:41:59 -0500
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.93)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1irzmv-00BTj7-Ff; Thu, 16 Jan 2020 08:41:57 +0100
-Message-ID: <11f9a3969270b7f0cb60e1b91ac31aea3bc94a93.camel@sipsolutions.net>
-Subject: Re: [PATCH v2 0/3] fix a STA PS bug and add PS support to
- mac80211_hwsim
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Thomas Pedersen <thomas@adapt-ip.com>
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>
-Date:   Thu, 16 Jan 2020 08:41:56 +0100
-In-Reply-To: <385589b2-e8a2-1e39-d347-f3353bc681aa@adapt-ip.com>
-References: <20191119053538.25979-1-thomas@adapt-ip.com>
-         <85ed0881d0aeecd886b27bd482fa61fa86d96729.camel@sipsolutions.net>
-         <f0ae4c07-d3c3-768f-49c0-1f2a6c5a687d@adapt-ip.com>
-         <d943f37db7a57dbc335cacfa5cbbd38c8ae8dea9.camel@sipsolutions.net>
-         <43f4d446d7f8b9a08e091ab811fbf99bf00da2af.camel@sipsolutions.net>
-         <8ebb225f-8ec5-0897-03cd-f37bfdd94429@adapt-ip.com>
-         <34040c2da85b14ff7881460efd2348b7d84b4b21.camel@sipsolutions.net>
-         <385589b2-e8a2-1e39-d347-f3353bc681aa@adapt-ip.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.2 (3.34.2-1.fc31) 
+        Thu, 16 Jan 2020 02:46:59 -0500
+Received: by mail-il1-f194.google.com with SMTP id s15so17363906iln.1
+        for <linux-wireless@vger.kernel.org>; Wed, 15 Jan 2020 23:46:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc;
+        bh=1pjl2ZsCt0UbUg8esDB/zX8N9uxotuFxEgz8ENSEiBU=;
+        b=A2s2HIir+OqnjmfNVNRcbSW6co6/8Mn9EJN4R5niyQ3YHvldqi6l5ut2Q6p0aa+0jY
+         VUZm9v/TULUf/Aa77fyIomg6CweBGiVSK4ixbFEyTyIX8N3NSy/RBoBTJ1+fxUDckfE/
+         QOs+tbS+9F0tHb7hR1ry4hIgX9dV/X3yM2Gd6HxM/ipX6HAYXV32fujohulLSwIjKAVa
+         tWqnKNAKOm0Zht58bA391VKURb/3AvaVeuFOfvt+Azbn+oiRJPNQ8r4RwcHC1EP58gLi
+         H165jkFEMtLHdr1ymAKW+xM5NCNfqjLzYV3IvYaw+KkvUW1tZFvsj24uPPKf4jdXJIc6
+         lI4g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc;
+        bh=1pjl2ZsCt0UbUg8esDB/zX8N9uxotuFxEgz8ENSEiBU=;
+        b=GoJnIR8ckG7VzRm95O0zzzWokWTS27gkRGTixTCUeyqXpBnJJvuTOHkOoyzOYw2tTV
+         QPixpKg9G65zFI32pSLSQyWQot3p5Q2XtYhTTb3JFAl4Xt0Y7pnEs63VZq8mehkt2Lsp
+         oxO38mraRZEIrZRIexc8uIL9tjZKGwkvITK2EfvajiyiC6FC/TzcyrGHr+F9WmTEVqTU
+         Sr9XNYZUTf3IODU0MrVPGK65x+eXHQUemxkcphvzUtHP5lRsowrvu5g8ORJssIu4ReVA
+         25rVkPRfV3mRP12pVDnI6edg+5VeB/vf2net8+oxpex5qp7VMUrPOobhodNbMrdtWe46
+         dxWQ==
+X-Gm-Message-State: APjAAAXwkXHCspLbyc/ERRZl+Tu5Te1cHK+WiEQ+GX1OPOsJX//ZMJZW
+        4vg5zirPnavCWs0dMUdBB3R1B3qSIvKmcBhX1bk=
+X-Google-Smtp-Source: APXvYqx5TtZNbR4N6HrXZctbTt/77Tsu61h6oEUM4MknJIEoeoJYe4FeQGrYOu26nUeDALHwzMIR2EosHOkkkdFcDi4=
+X-Received: by 2002:a92:9885:: with SMTP id a5mr2366845ill.107.1579160818515;
+ Wed, 15 Jan 2020 23:46:58 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Received: by 2002:a6b:a0b:0:0:0:0:0 with HTTP; Wed, 15 Jan 2020 23:46:57 -0800 (PST)
+In-Reply-To: <18634217-2e93-83fd-ec40-9b2a1bf28f56@newmedia-net.de>
+References: <20200110132142.7737-1-denis281089@gmail.com> <aab66c75-49ae-0955-03a8-f817685b0925@nbd.name>
+ <CAKoLU8P3MyauCUevcRHtzMj8HSZQLD-hYyEaZyRH9OfLye6knQ@mail.gmail.com>
+ <CAKR_QVKb21WWbUup-O9nsDvfVO7-c_+Kpxx3n8=b1e4X5pkmkw@mail.gmail.com>
+ <CAKoLU8MRzBaB9AS0--vCG01hKhBrdzB8=42A+vMv9X39ZAPZLQ@mail.gmail.com>
+ <28f78f20-b415-4046-674f-070ad6c43f44@newmedia-net.de> <CAKR_QV++azTZKi0dodYXDEgXbkUcUhBqezzMtGc0=dh_ngOqOQ@mail.gmail.com>
+ <18634217-2e93-83fd-ec40-9b2a1bf28f56@newmedia-net.de>
+From:   Tom Psyborg <pozega.tomislav@gmail.com>
+Date:   Thu, 16 Jan 2020 08:46:57 +0100
+Message-ID: <CAKR_QVLXTYsBztSH2wU3FDfwV5vaaUa0JzN=aQtMGd+CeEKE-w@mail.gmail.com>
+Subject: Re: [PATCH v3] ath9k: fix firmware bug in some Mikrotik R11e-2HPnD cards
+To:     Sebastian Gottschall <s.gottschall@newmedia-net.de>
+Cc:     Denis Kalashnikov <denis281089@gmail.com>,
+        Felix Fietkau <nbd@nbd.name>, linux-wireless@vger.kernel.org,
+        Kalle Valo <kvalo@codeaurora.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 2020-01-15 at 21:23 -0800, Thomas Pedersen wrote:
-> On 1/14/20 12:00 AM, Johannes Berg wrote:
-> > Hi Thomas,
-> > 
-> > > Is there a list of known passing hwsim tests somewhere?
-> > > 
-> > > Maybe a subset of suites / tests you like to see passing as a smoke test?
-> > 
-> > Not really.
-> > 
-> > > Or do you run through the 3300+ tests and expect them all to pass?
-> > 
-> > Pretty much, yes. It takes <10 minutes on my quad-core desktop to run
-> > using the UML time-travel mode against recent kernels.
-> > 
-> > I don't always get 100% pass on the first round, but the handful that
-> > fails sometimes I expect to pass when running just those manually with
-> > vm-run.sh.
-> 
-> Thanks, I'll give UML time-travel mode a try.
+On 16/01/2020, Sebastian Gottschall <s.gottschall@newmedia-net.de> wrote:
+>>> checking subvendor and subdevice id is usefull. mikrotik has special
+>>> values here
+>>>
+>>> the R11e-2HPnD card has
+>>>
+>>> subvendor 0x19b6
+>>>
+>>> subdevice 0xd016
+>>>
+>>>
+>> that i already suggested but it appears his units have zeroed sub fields
+> if it has zero subfields it has no original eeprom but a modified one.
+> all mikrotik cards with no exception have the subvendor and subdevice id
+> set.
+> the subvendor and subdevice is is stored in the eeprom. or the eeprom
+> could be also broke, but in this case the values should be 0xffff
+> i have several original mikrotik cards of this type and this is where i
+> got these values from. are you sure that your card is no immitation?
+> can he send me a picture of this card?
+>
 
-FWIW, I applied your patches yesterday. There was one issue remaining
-uncovered by them, but it wasn't actually related to your patches, just
-related to the test sending too many frames. I sent a workaround to the
-hostap list and also the "mac80211: use more bits for ack_frame_id" to
-the kernel to fix that.
-
-johannes
-
+oh really? probably some fools then tampered with his cards and tried
+to screw him. your units work without this patch, and tx/rx chain
+reads out 0x3 ?
