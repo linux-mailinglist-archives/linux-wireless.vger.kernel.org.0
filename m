@@ -2,38 +2,36 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D2AE013E119
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Jan 2020 17:47:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8827813E179
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Jan 2020 17:50:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729993AbgAPQro (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 16 Jan 2020 11:47:44 -0500
-Received: from mail.kernel.org ([198.145.29.99]:57526 "EHLO mail.kernel.org"
+        id S1730124AbgAPQsB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 16 Jan 2020 11:48:01 -0500
+Received: from mail.kernel.org ([198.145.29.99]:58078 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729972AbgAPQrj (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 16 Jan 2020 11:47:39 -0500
+        id S1730113AbgAPQsA (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 16 Jan 2020 11:48:00 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 5233E20663;
-        Thu, 16 Jan 2020 16:47:37 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id BF49220663;
+        Thu, 16 Jan 2020 16:47:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1579193258;
-        bh=zGiHIJ/sfrkiEqz3zUsx/+MVHMdK+6Jn2DmDZgbzp7w=;
+        s=default; t=1579193279;
+        bh=ylrQYMiUd958FmaBqH6W2z+JR6vME6Lajrty0yVxl4g=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iHbXuwmnE1KIZ/uCYX+nEFgv70uNaU1FukP1ZzaxbcavmfMWrMS4tu2rtTkc85ucK
-         9CFxPSfrzqN1qKBHiZd1TF2lu//9JLVAcY6iPUIVN5CGOmQzCZoBPV8lPQKdMGqMfg
-         z0uC47nL17Yn3FAGixEGxHxWlhNxFrC9UThNMa50=
+        b=yflLwB7+G0XhdyYmQBnKlNJhRkN2tusLhaIYDMYtVLQkXMu2NiKjjoYiiBoQdRI2c
+         /I5xt2GZv/CpPiaWqi5nDOoPw6bUwCHcDqcjXJJTqxSfTsoLER+wHulcRZjcGLK8GR
+         L3HfJEZw3ahEjtklDzDMmfFCUbWS+2ALrnBn7CxM=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Nathan Chancellor <natechancellor@gmail.com>,
-        Ping-Ke Shih <pkshih@realtek.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
+Cc:     Mordechay Goodstein <mordechay.goodstein@intel.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
         Sasha Levin <sashal@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        clang-built-linux@googlegroups.com
-Subject: [PATCH AUTOSEL 5.4 057/205] rtlwifi: Remove unnecessary NULL check in rtl_regd_init
-Date:   Thu, 16 Jan 2020 11:40:32 -0500
-Message-Id: <20200116164300.6705-57-sashal@kernel.org>
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 064/205] iwlwifi: mvm: consider ieee80211 station max amsdu value
+Date:   Thu, 16 Jan 2020 11:40:39 -0500
+Message-Id: <20200116164300.6705-64-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20200116164300.6705-1-sashal@kernel.org>
 References: <20200116164300.6705-1-sashal@kernel.org>
@@ -46,53 +44,59 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Nathan Chancellor <natechancellor@gmail.com>
+From: Mordechay Goodstein <mordechay.goodstein@intel.com>
 
-[ Upstream commit 091c6e9c083f7ebaff00b37ad13562d51464d175 ]
+[ Upstream commit ee4cce9b9d6421d037ffc002536b918fd7f4aff3 ]
 
-When building with Clang + -Wtautological-pointer-compare:
+debugfs amsdu_len sets only the max_amsdu_len for ieee80211 station
+so take it into consideration while getting max amsdu
 
-drivers/net/wireless/realtek/rtlwifi/regd.c:389:33: warning: comparison
-of address of 'rtlpriv->regd' equal to a null pointer is always false
-[-Wtautological-pointer-compare]
-        if (wiphy == NULL || &rtlpriv->regd == NULL)
-                              ~~~~~~~~~^~~~    ~~~~
-1 warning generated.
-
-The address of an array member is never NULL unless it is the first
-struct member so remove the unnecessary check. This was addressed in
-the staging version of the driver in commit f986978b32b3 ("Staging:
-rtlwifi: remove unnecessary NULL check").
-
-While we are here, fix the following checkpatch warning:
-
-CHECK: Comparison to NULL could be written "!wiphy"
-35: FILE: drivers/net/wireless/realtek/rtlwifi/regd.c:389:
-+       if (wiphy == NULL)
-
-Fixes: 0c8173385e54 ("rtl8192ce: Add new driver")
-Link:https://github.com/ClangBuiltLinux/linux/issues/750
-Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+Fixes: af2984e9e625 ("iwlwifi: mvm: add a debugfs entry to set a fixed size AMSDU for all TX packets")
+Signed-off-by: Mordechay Goodstein <mordechay.goodstein@intel.com>
+Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtlwifi/regd.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/rs-fw.c | 8 +++++++-
+ drivers/net/wireless/intel/iwlwifi/mvm/tx.c    | 7 ++++++-
+ 2 files changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/regd.c b/drivers/net/wireless/realtek/rtlwifi/regd.c
-index c10432cd703e..8be31e0ad878 100644
---- a/drivers/net/wireless/realtek/rtlwifi/regd.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/regd.c
-@@ -386,7 +386,7 @@ int rtl_regd_init(struct ieee80211_hw *hw,
- 	struct wiphy *wiphy = hw->wiphy;
- 	struct country_code_to_enum_rd *country = NULL;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rs-fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/rs-fw.c
+index 8f50e2b121bd..098d48153a38 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/rs-fw.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/rs-fw.c
+@@ -350,7 +350,13 @@ void iwl_mvm_tlc_update_notif(struct iwl_mvm *mvm,
+ 		u16 size = le32_to_cpu(notif->amsdu_size);
+ 		int i;
  
--	if (wiphy == NULL || &rtlpriv->regd == NULL)
-+	if (!wiphy)
- 		return -EINVAL;
+-		if (WARN_ON(sta->max_amsdu_len < size))
++		/*
++		 * In debug sta->max_amsdu_len < size
++		 * so also check with orig_amsdu_len which holds the original
++		 * data before debugfs changed the value
++		 */
++		if (WARN_ON(sta->max_amsdu_len < size &&
++			    mvmsta->orig_amsdu_len < size))
+ 			goto out;
  
- 	/* init country_code from efuse channel plan */
+ 		mvmsta->amsdu_enabled = le32_to_cpu(notif->amsdu_enabled);
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
+index 8a059da7a1fa..e3b2a2bf3863 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
+@@ -935,7 +935,12 @@ static int iwl_mvm_tx_tso(struct iwl_mvm *mvm, struct sk_buff *skb,
+ 	    !(mvmsta->amsdu_enabled & BIT(tid)))
+ 		return iwl_mvm_tx_tso_segment(skb, 1, netdev_flags, mpdus_skb);
+ 
+-	max_amsdu_len = iwl_mvm_max_amsdu_size(mvm, sta, tid);
++	/*
++	 * Take the min of ieee80211 station and mvm station
++	 */
++	max_amsdu_len =
++		min_t(unsigned int, sta->max_amsdu_len,
++		      iwl_mvm_max_amsdu_size(mvm, sta, tid));
+ 
+ 	/*
+ 	 * Limit A-MSDU in A-MPDU to 4095 bytes when VHT is not
 -- 
 2.20.1
 
