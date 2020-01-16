@@ -2,40 +2,38 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BB1EB13F8A1
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Jan 2020 20:20:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 935F513F7D8
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Jan 2020 20:17:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2407350AbgAPTTs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 16 Jan 2020 14:19:48 -0500
-Received: from mail.kernel.org ([198.145.29.99]:38578 "EHLO mail.kernel.org"
+        id S1733012AbgAPQzd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 16 Jan 2020 11:55:33 -0500
+Received: from mail.kernel.org ([198.145.29.99]:40860 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731611AbgAPQyM (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 16 Jan 2020 11:54:12 -0500
+        id S1728890AbgAPQzc (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 16 Jan 2020 11:55:32 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id E86812176D;
-        Thu, 16 Jan 2020 16:54:10 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id F33152467C;
+        Thu, 16 Jan 2020 16:55:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1579193651;
-        bh=OzFODw4fgcmPhpz8E8cgdKYNHhUMu9ketHJs8OPWZQA=;
+        s=default; t=1579193731;
+        bh=eq4V5fWRWUv3qEIk4JJVlBSpyfCfuRrIIjYJ1RW9xb0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=b7ifsK/NcQq8eYKGbGo/0xDU7rp/wLTiVeRLW/B0Ofg6KoujqKPNzFGY/3z9vSM3R
-         eR6gxRXOEin3hNHlb95Ykf3xySSkexWancXvfpJQ3j8nF4W4YDYCUKbmAOKskOrlR7
-         5CoKFzUR1aQn+Sq8EMvlY+Zik2MpPySEY1txYZso=
+        b=qrqzuh17heWZLcRbrZSplidfpuKusQH8UV6gya78hxuY0H5LbyzTmPsSZjLYmE0FC
+         zJGFcpfxXC91TQZ5YEPVvnFq5kN3j3eRdggS3NK7pYIRjs5ZmbQ9GtnIu5ZQL6QD/X
+         yzQnu1SwVY9XeK4AWL2M7w5KfkY2E8WsCGSs+obQ=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Christian Lamparter <chunkeey@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
+Cc:     Johannes Berg <johannes.berg@intel.com>,
         Sasha Levin <sashal@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 5.4 181/205] ath9k: use iowrite32 over __raw_writel
-Date:   Thu, 16 Jan 2020 11:42:36 -0500
-Message-Id: <20200116164300.6705-181-sashal@kernel.org>
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.19 024/671] cfg80211: regulatory: make initialization more robust
+Date:   Thu, 16 Jan 2020 11:44:15 -0500
+Message-Id: <20200116165502.8838-24-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200116164300.6705-1-sashal@kernel.org>
-References: <20200116164300.6705-1-sashal@kernel.org>
+In-Reply-To: <20200116165502.8838-1-sashal@kernel.org>
+References: <20200116165502.8838-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -45,38 +43,42 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Christian Lamparter <chunkeey@gmail.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 22d0d5ae7a089967e9295a06694aa3e8a812b15e ]
+[ Upstream commit 71e5e886806ee3f8e0c44ed945eb2e4d6659c6e3 ]
 
-This patch changes the ath9k_pci_owl_loader to use the
-same iowrite32 memory accessor that ath9k_pci is using
-to communicate with the PCI(e) chip.
+Since my change to split out the regulatory init to occur later,
+any issues during earlier cfg80211_init() or errors during the
+platform device allocation would lead to crashes later. Make this
+more robust by checking that the earlier initialization succeeded.
 
-This will fix endian issues that came up during testing
-with loaned AVM Fritz!Box 7360 (Lantiq MIPS SoCs + AR9287).
-
-Fixes: 5a4f2040fd07 ("ath9k: add loader for AR92XX (and older) pci(e)")
-Signed-off-by: Christian Lamparter <chunkeey@gmail.com>
-Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+Fixes: d7be102f2945 ("cfg80211: initialize regulatory keys/database later")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath9k/ath9k_pci_owl_loader.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/wireless/reg.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath9k/ath9k_pci_owl_loader.c b/drivers/net/wireless/ath/ath9k/ath9k_pci_owl_loader.c
-index 159490f5a111..60731e07f681 100644
---- a/drivers/net/wireless/ath/ath9k/ath9k_pci_owl_loader.c
-+++ b/drivers/net/wireless/ath/ath9k/ath9k_pci_owl_loader.c
-@@ -84,7 +84,7 @@ static int ath9k_pci_fixup(struct pci_dev *pdev, const u16 *cal_data,
- 			val = swahb32(val);
- 		}
+diff --git a/net/wireless/reg.c b/net/wireless/reg.c
+index 64841238df85..5643bdee7198 100644
+--- a/net/wireless/reg.c
++++ b/net/wireless/reg.c
+@@ -3870,6 +3870,15 @@ static int __init regulatory_init_db(void)
+ {
+ 	int err;
  
--		__raw_writel(val, mem + reg);
-+		iowrite32(val, mem + reg);
- 		usleep_range(100, 120);
- 	}
- 
++	/*
++	 * It's possible that - due to other bugs/issues - cfg80211
++	 * never called regulatory_init() below, or that it failed;
++	 * in that case, don't try to do any further work here as
++	 * it's doomed to lead to crashes.
++	 */
++	if (IS_ERR_OR_NULL(reg_pdev))
++		return -EINVAL;
++
+ 	err = load_builtin_regdb_keys();
+ 	if (err)
+ 		return err;
 -- 
 2.20.1
 
