@@ -2,36 +2,36 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BEF2813EF12
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Jan 2020 19:13:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 381D913EDEC
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Jan 2020 19:06:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404452AbgAPSM5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 16 Jan 2020 13:12:57 -0500
-Received: from mail.kernel.org ([198.145.29.99]:52022 "EHLO mail.kernel.org"
+        id S2407017AbgAPSGA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 16 Jan 2020 13:06:00 -0500
+Received: from mail.kernel.org ([198.145.29.99]:56410 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2405266AbgAPRhB (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 16 Jan 2020 12:37:01 -0500
+        id S2404971AbgAPRjt (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 16 Jan 2020 12:39:49 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id EB927207FF;
-        Thu, 16 Jan 2020 17:36:59 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 8509824706;
+        Thu, 16 Jan 2020 17:39:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1579196220;
-        bh=5Qy8pOOL9asVjdrhdxH5PsKggFw8QxFaaQF4AxmRH5w=;
+        s=default; t=1579196388;
+        bh=9jFjZ5bu+tsaBRyIe6orZnczu0wyPfyxbPpkonaWPQQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ty557IvZVUPKxM/APDyHBdpbtlIcjYa52aNrRfdJ1LSOqBLGkVJY5bdkV/kaaNJa4
-         9agtlXJDtJ+hPlhxGWMEwDbxYfOZ5r6PDBohdp8KL/YXJmtsdvZ0l5oHNOwUS2+HBV
-         zDm57HIjrRVEuTGaDb1ONSBmOZA7J/fAW9Pqp0T8=
+        b=n/UC/PD+orpIpFOlSSqHxfJTvAzG9zDUHto12nPaRxunG+sqFk3Me6oixcnjLRLEm
+         xdVHmQdR5/gDQ+DYYRMyN17A1obOonpqaOUeMZa/PQIDS10pkdiE+aiU1Oc5dSW+/A
+         Zy20oVmGtkXJ6dLPGZazATIBtctSZsGSkYDfLdRM=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Sara Sharon <sara.sharon@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
+Cc:     YueHaibing <yuehaibing@huawei.com>, Hulk Robot <hulkci@huawei.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
         Sasha Levin <sashal@kernel.org>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.9 055/251] iwlwifi: mvm: fix RSS config command
-Date:   Thu, 16 Jan 2020 12:33:24 -0500
-Message-Id: <20200116173641.22137-15-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.9 169/251] libertas_tf: Use correct channel range in lbtf_geo_init
+Date:   Thu, 16 Jan 2020 12:35:18 -0500
+Message-Id: <20200116173641.22137-129-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20200116173641.22137-1-sashal@kernel.org>
 References: <20200116173641.22137-1-sashal@kernel.org>
@@ -44,44 +44,36 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Sara Sharon <sara.sharon@intel.com>
+From: YueHaibing <yuehaibing@huawei.com>
 
-[ Upstream commit 608dce95db10b8ee1a26dbce3f60204bb69812a5 ]
+[ Upstream commit 2ec4ad49b98e4a14147d04f914717135eca7c8b1 ]
 
-The hash mask is a bitmap, so we should use BIT() on
-the enum values.
+It seems we should use 'range' instead of 'priv->range'
+in lbtf_geo_init(), because 'range' is the corret one
+related to current regioncode.
 
-Signed-off-by: Sara Sharon <sara.sharon@intel.com>
-Fixes: 43413a975d06 ("iwlwifi: mvm: support rss queues configuration command")
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Fixes: 691cdb49388b ("libertas_tf: command helper functions for libertas_tf")
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/fw.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/net/wireless/marvell/libertas_tf/cmd.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-index 2ec3a91a0f6b..bba7ace1a744 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-@@ -106,12 +106,12 @@ static int iwl_send_rss_cfg_cmd(struct iwl_mvm *mvm)
- 	int i;
- 	struct iwl_rss_config_cmd cmd = {
- 		.flags = cpu_to_le32(IWL_RSS_ENABLE),
--		.hash_mask = IWL_RSS_HASH_TYPE_IPV4_TCP |
--			     IWL_RSS_HASH_TYPE_IPV4_UDP |
--			     IWL_RSS_HASH_TYPE_IPV4_PAYLOAD |
--			     IWL_RSS_HASH_TYPE_IPV6_TCP |
--			     IWL_RSS_HASH_TYPE_IPV6_UDP |
--			     IWL_RSS_HASH_TYPE_IPV6_PAYLOAD,
-+		.hash_mask = BIT(IWL_RSS_HASH_TYPE_IPV4_TCP) |
-+			     BIT(IWL_RSS_HASH_TYPE_IPV4_UDP) |
-+			     BIT(IWL_RSS_HASH_TYPE_IPV4_PAYLOAD) |
-+			     BIT(IWL_RSS_HASH_TYPE_IPV6_TCP) |
-+			     BIT(IWL_RSS_HASH_TYPE_IPV6_UDP) |
-+			     BIT(IWL_RSS_HASH_TYPE_IPV6_PAYLOAD),
- 	};
+diff --git a/drivers/net/wireless/marvell/libertas_tf/cmd.c b/drivers/net/wireless/marvell/libertas_tf/cmd.c
+index 909ac3685010..2b193f1257a5 100644
+--- a/drivers/net/wireless/marvell/libertas_tf/cmd.c
++++ b/drivers/net/wireless/marvell/libertas_tf/cmd.c
+@@ -69,7 +69,7 @@ static void lbtf_geo_init(struct lbtf_private *priv)
+ 			break;
+ 		}
  
- 	if (mvm->trans->num_rx_queues == 1)
+-	for (ch = priv->range.start; ch < priv->range.end; ch++)
++	for (ch = range->start; ch < range->end; ch++)
+ 		priv->channels[CHAN_TO_IDX(ch)].flags = 0;
+ }
+ 
 -- 
 2.20.1
 
