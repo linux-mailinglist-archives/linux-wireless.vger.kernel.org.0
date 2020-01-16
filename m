@@ -2,97 +2,71 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C37413EB21
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Jan 2020 18:48:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5702F13EBFF
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Jan 2020 18:54:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2406749AbgAPRql (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 16 Jan 2020 12:46:41 -0500
-Received: from mail.kernel.org ([198.145.29.99]:39560 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2406070AbgAPRqh (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 16 Jan 2020 12:46:37 -0500
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        id S2392981AbgAPRyH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 16 Jan 2020 12:54:07 -0500
+Received: from mail.adapt-ip.com ([173.164.178.19]:53824 "EHLO
+        mail.adapt-ip.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1733250AbgAPRyG (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 16 Jan 2020 12:54:06 -0500
+Received: from localhost (unknown [127.0.0.1])
+        by mail.adapt-ip.com (Postfix) with ESMTP id 3C7152F1649;
+        Thu, 16 Jan 2020 17:54:05 +0000 (UTC)
+X-Virus-Scanned: amavisd-new at web.adapt-ip.com
+Received: from mail.adapt-ip.com ([127.0.0.1])
+        by localhost (web.adapt-ip.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id veuEyXMcWkfo; Thu, 16 Jan 2020 09:54:03 -0800 (PST)
+Received: from [10.1.10.44] (vpn.adapt-ip.com [173.164.178.20])
+        (using TLSv1.2 with cipher AES128-SHA (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B43B9246EE;
-        Thu, 16 Jan 2020 17:46:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1579196796;
-        bh=TxM3qVnpDjX0DTpLZkO2lRx2c75/ekB66V9OZlZuzAA=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=w2GBgU+s4VZ49oUEX5mYvI3GjxIQPvfUzOResc5UJYcl3slzrzvlO7CqiP5HjGtEs
-         8G1QuKSNy8vzPgXKedDQEdX/Avr78wUiK/CJuOyPF8wy4clQLQsjTdvADMcn0HdCTo
-         sX8UfA2OxSc+zad4UPNeNt7KR0chFdQHHEoTmcKA=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Nathan Chancellor <natechancellor@gmail.com>,
-        Ping-Ke Shih <pkshih@realtek.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Sasha Levin <sashal@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        clang-built-linux@googlegroups.com
-Subject: [PATCH AUTOSEL 4.4 157/174] rtlwifi: Remove unnecessary NULL check in rtl_regd_init
-Date:   Thu, 16 Jan 2020 12:42:34 -0500
-Message-Id: <20200116174251.24326-157-sashal@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200116174251.24326-1-sashal@kernel.org>
-References: <20200116174251.24326-1-sashal@kernel.org>
+        (Authenticated sender: thomas@adapt-ip.com)
+        by mail.adapt-ip.com (Postfix) with ESMTPSA id 685982F1646;
+        Thu, 16 Jan 2020 09:54:03 -0800 (PST)
+Subject: Re: [PATCH v2 0/3] fix a STA PS bug and add PS support to
+ mac80211_hwsim
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>
+References: <2b07e86b-9be7-4fc3-ae92-a4f831e585ef@email.android.com>
+ <4c2d7cc81e83238512360903f38e12be16c16ed5.camel@sipsolutions.net>
+From:   Thomas Pedersen <thomas@adapt-ip.com>
+Message-ID: <bd9d68d2-114d-7e7a-000b-d2bf40658e74@adapt-ip.com>
+Date:   Thu, 16 Jan 2020 09:54:03 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <4c2d7cc81e83238512360903f38e12be16c16ed5.camel@sipsolutions.net>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Nathan Chancellor <natechancellor@gmail.com>
+On 1/15/20 11:54 PM, Johannes Berg wrote:
+> On Wed, 2020-01-15 at 23:53 -0800, thomas@adapt-ip.com wrote:
+>>
+>>> FWIW, I applied your patches yesterday. There was one issue remaining 
+>>> uncovered by them, but it wasn't actually related to your patches, just 
+>>> related to the test sending too many frames. I sent a workaround to the 
+>>> hostap list and also the "mac80211: use more bits for ack_frame_id" to 
+>>> the kernel to fix that. 
+>>>
+>>
+>> But in the v3, no frames should actually be buffered unless power save
+>> is explicitly enabled on the STA side. Or is this some rrm specific
+>> behavior?
+> 
+> I didn't check whether or not powersave got enabled by default now, I
+> sort of assumed it did? But that isn't really bad, almost all real
+> devices will have it enabled by default too.
 
-[ Upstream commit 091c6e9c083f7ebaff00b37ad13562d51464d175 ]
+In v2 powersave was enabled by default, but that broke some test
+assumptions (and p2p stuff I don't really understand), so v3 disables it
+by default: https://lore.kernel.org/linux-wireless/20200114055940.18502-2-thomas@adapt-ip.com/T/#u
 
-When building with Clang + -Wtautological-pointer-compare:
-
-drivers/net/wireless/realtek/rtlwifi/regd.c:389:33: warning: comparison
-of address of 'rtlpriv->regd' equal to a null pointer is always false
-[-Wtautological-pointer-compare]
-        if (wiphy == NULL || &rtlpriv->regd == NULL)
-                              ~~~~~~~~~^~~~    ~~~~
-1 warning generated.
-
-The address of an array member is never NULL unless it is the first
-struct member so remove the unnecessary check. This was addressed in
-the staging version of the driver in commit f986978b32b3 ("Staging:
-rtlwifi: remove unnecessary NULL check").
-
-While we are here, fix the following checkpatch warning:
-
-CHECK: Comparison to NULL could be written "!wiphy"
-35: FILE: drivers/net/wireless/realtek/rtlwifi/regd.c:389:
-+       if (wiphy == NULL)
-
-Fixes: 0c8173385e54 ("rtl8192ce: Add new driver")
-Link:https://github.com/ClangBuiltLinux/linux/issues/750
-Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/net/wireless/realtek/rtlwifi/regd.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/realtek/rtlwifi/regd.c b/drivers/net/wireless/realtek/rtlwifi/regd.c
-index f67e7e5b13e1..005bd7abc247 100644
---- a/drivers/net/wireless/realtek/rtlwifi/regd.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/regd.c
-@@ -427,7 +427,7 @@ int rtl_regd_init(struct ieee80211_hw *hw,
- 	struct wiphy *wiphy = hw->wiphy;
- 	struct country_code_to_enum_rd *country = NULL;
- 
--	if (wiphy == NULL || &rtlpriv->regd == NULL)
-+	if (!wiphy)
- 		return -EINVAL;
- 
- 	/* init country_code from efuse channel plan */
 -- 
-2.20.1
-
+-- thomas
