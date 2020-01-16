@@ -2,40 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0FD3813E323
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Jan 2020 18:00:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8219013E4B1
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Jan 2020 18:10:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387711AbgAPRAN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 16 Jan 2020 12:00:13 -0500
-Received: from mail.kernel.org ([198.145.29.99]:49652 "EHLO mail.kernel.org"
+        id S2389817AbgAPRKC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 16 Jan 2020 12:10:02 -0500
+Received: from mail.kernel.org ([198.145.29.99]:47170 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2387702AbgAPRAN (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 16 Jan 2020 12:00:13 -0500
+        id S2389804AbgAPRKA (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 16 Jan 2020 12:10:00 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A455F22525;
-        Thu, 16 Jan 2020 17:00:11 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 471F324691;
+        Thu, 16 Jan 2020 17:09:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1579194012;
-        bh=CFG0zw8xGFG5ueKpnGzhAA1T+6jpreofWYPOdc1r7rI=;
+        s=default; t=1579194600;
+        bh=9jFjZ5bu+tsaBRyIe6orZnczu0wyPfyxbPpkonaWPQQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Co6IPM50TBIo6LPt5479+u7+ySRP9LRatGghBWrgDJ7CgX1aTu6LFNTQf4VRVhYrA
-         XNnPoLDZHcz4gAtBCBeheyo4THVJz9Jph/w/hmAZube8Fng+j6QjtJtNdrB4efYVuI
-         mJqy6OEFj1c3Zpx6VPzHF1otkkmd0c3NDmMAUYOA=
+        b=LHKLR1NLahz5oNRrkeG2y20REgXpWV2mcGbBbj+LR/mRHIPiJMp5uEj1ETDauSmtF
+         IO4IynIkjg/UMOUck50BDZdt/O7Dch/+x4g9rrewg0EEyWIfapTu7SLt/l0r9GAgbL
+         jHbc8Yf9aDz9XQE+Tx9YgRNSeBTkv4Bk2cTW/00k=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Johannes Berg <johannes.berg@intel.com>,
-        Danny Alexander <danny.alexander@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
+Cc:     YueHaibing <yuehaibing@huawei.com>, Hulk Robot <hulkci@huawei.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
         Sasha Levin <sashal@kernel.org>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 136/671] iwlwifi: mvm: fix A-MPDU reference assignment
-Date:   Thu, 16 Jan 2020 11:50:45 -0500
-Message-Id: <20200116165940.10720-19-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 468/671] libertas_tf: Use correct channel range in lbtf_geo_init
+Date:   Thu, 16 Jan 2020 12:01:46 -0500
+Message-Id: <20200116170509.12787-205-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200116165940.10720-1-sashal@kernel.org>
-References: <20200116165940.10720-1-sashal@kernel.org>
+In-Reply-To: <20200116170509.12787-1-sashal@kernel.org>
+References: <20200116170509.12787-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -45,50 +44,36 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: YueHaibing <yuehaibing@huawei.com>
 
-[ Upstream commit 1f7698abedeeb3fef3cbcf78e16f925df675a179 ]
+[ Upstream commit 2ec4ad49b98e4a14147d04f914717135eca7c8b1 ]
 
-The current code assigns the reference, and then goes to increment
-it if the toggle bit has changed. That way, we get
+It seems we should use 'range' instead of 'priv->range'
+in lbtf_geo_init(), because 'range' is the corret one
+related to current regioncode.
 
-Toggle  0  0  0  0  1  1  1  1
-ID      1  1  1  1  1  2  2  2
-
-Fix that by assigning the post-toggle ID to get
-
-Toggle  0  0  0  0  1  1  1  1
-ID      1  1  1  1  2  2  2  2
-
-Reported-by: Danny Alexander <danny.alexander@intel.com>
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Fixes: fbe4112791b8 ("iwlwifi: mvm: update mpdu metadata API")
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Fixes: 691cdb49388b ("libertas_tf: command helper functions for libertas_tf")
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c | 2 +-
+ drivers/net/wireless/marvell/libertas_tf/cmd.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
-index 036d1d82d93e..77e369453642 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
-@@ -1077,7 +1077,6 @@ void iwl_mvm_rx_mpdu_mq(struct iwl_mvm *mvm, struct napi_struct *napi,
- 			he_phy_data = le64_to_cpu(desc->v1.he_phy_data);
- 
- 		rx_status->flag |= RX_FLAG_AMPDU_DETAILS;
--		rx_status->ampdu_reference = mvm->ampdu_ref;
- 		/* toggle is switched whenever new aggregation starts */
- 		if (toggle_bit != mvm->ampdu_toggle) {
- 			mvm->ampdu_ref++;
-@@ -1092,6 +1091,7 @@ void iwl_mvm_rx_mpdu_mq(struct iwl_mvm *mvm, struct napi_struct *napi,
- 						RX_FLAG_AMPDU_EOF_BIT;
- 			}
+diff --git a/drivers/net/wireless/marvell/libertas_tf/cmd.c b/drivers/net/wireless/marvell/libertas_tf/cmd.c
+index 909ac3685010..2b193f1257a5 100644
+--- a/drivers/net/wireless/marvell/libertas_tf/cmd.c
++++ b/drivers/net/wireless/marvell/libertas_tf/cmd.c
+@@ -69,7 +69,7 @@ static void lbtf_geo_init(struct lbtf_private *priv)
+ 			break;
  		}
-+		rx_status->ampdu_reference = mvm->ampdu_ref;
- 	}
  
- 	rcu_read_lock();
+-	for (ch = priv->range.start; ch < priv->range.end; ch++)
++	for (ch = range->start; ch < range->end; ch++)
+ 		priv->channels[CHAN_TO_IDX(ch)].flags = 0;
+ }
+ 
 -- 
 2.20.1
 
