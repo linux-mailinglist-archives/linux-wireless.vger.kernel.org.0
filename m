@@ -2,37 +2,36 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2628A13EF1F
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Jan 2020 19:13:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BEF2813EF12
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Jan 2020 19:13:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2405227AbgAPRgy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 16 Jan 2020 12:36:54 -0500
-Received: from mail.kernel.org ([198.145.29.99]:51796 "EHLO mail.kernel.org"
+        id S2404452AbgAPSM5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 16 Jan 2020 13:12:57 -0500
+Received: from mail.kernel.org ([198.145.29.99]:52022 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2405211AbgAPRgv (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 16 Jan 2020 12:36:51 -0500
+        id S2405266AbgAPRhB (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 16 Jan 2020 12:37:01 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 59162246C5;
-        Thu, 16 Jan 2020 17:36:50 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id EB927207FF;
+        Thu, 16 Jan 2020 17:36:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1579196211;
-        bh=LW2F/jHELeJRFD9QL7sp0B9QATRcwZeOVrASKbhON6M=;
+        s=default; t=1579196220;
+        bh=5Qy8pOOL9asVjdrhdxH5PsKggFw8QxFaaQF4AxmRH5w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Im8+VoS+bdZ5csWX+o0KtkdzgegB0jr3fCQN3ScN5ancrjaPKeh1oIfDbERxlforz
-         VHdfNK3NYtomdeaByE00NZOh4UEUhFfyUWaxWYihcLvLEV8H12Lptj025VORgqaFcU
-         EAS1i1Kz+5GAhR5zV9wz5sf6wgTY2lMtnZxxogsk=
+        b=ty557IvZVUPKxM/APDyHBdpbtlIcjYa52aNrRfdJ1LSOqBLGkVJY5bdkV/kaaNJa4
+         9agtlXJDtJ+hPlhxGWMEwDbxYfOZ5r6PDBohdp8KL/YXJmtsdvZ0l5oHNOwUS2+HBV
+         zDm57HIjrRVEuTGaDb1ONSBmOZA7J/fAW9Pqp0T8=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Johannes Berg <johannes.berg@intel.com>,
-        Danny Alexander <danny.alexander@intel.com>,
+Cc:     Sara Sharon <sara.sharon@intel.com>,
         Luca Coelho <luciano.coelho@intel.com>,
         Sasha Levin <sashal@kernel.org>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.9 047/251] iwlwifi: mvm: fix A-MPDU reference assignment
-Date:   Thu, 16 Jan 2020 12:33:16 -0500
-Message-Id: <20200116173641.22137-7-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.9 055/251] iwlwifi: mvm: fix RSS config command
+Date:   Thu, 16 Jan 2020 12:33:24 -0500
+Message-Id: <20200116173641.22137-15-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20200116173641.22137-1-sashal@kernel.org>
 References: <20200116173641.22137-1-sashal@kernel.org>
@@ -45,48 +44,44 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Sara Sharon <sara.sharon@intel.com>
 
-[ Upstream commit 1f7698abedeeb3fef3cbcf78e16f925df675a179 ]
+[ Upstream commit 608dce95db10b8ee1a26dbce3f60204bb69812a5 ]
 
-The current code assigns the reference, and then goes to increment
-it if the toggle bit has changed. That way, we get
+The hash mask is a bitmap, so we should use BIT() on
+the enum values.
 
-Toggle  0  0  0  0  1  1  1  1
-ID      1  1  1  1  1  2  2  2
-
-Fix that by assigning the post-toggle ID to get
-
-Toggle  0  0  0  0  1  1  1  1
-ID      1  1  1  1  2  2  2  2
-
-Reported-by: Danny Alexander <danny.alexander@intel.com>
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Fixes: fbe4112791b8 ("iwlwifi: mvm: update mpdu metadata API")
+Signed-off-by: Sara Sharon <sara.sharon@intel.com>
+Fixes: 43413a975d06 ("iwlwifi: mvm: support rss queues configuration command")
 Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
-index c2bbc8c17beb..bc06d87a0106 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
-@@ -810,12 +810,12 @@ void iwl_mvm_rx_mpdu_mq(struct iwl_mvm *mvm, struct napi_struct *napi,
- 		bool toggle_bit = phy_info & IWL_RX_MPDU_PHY_AMPDU_TOGGLE;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+index 2ec3a91a0f6b..bba7ace1a744 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+@@ -106,12 +106,12 @@ static int iwl_send_rss_cfg_cmd(struct iwl_mvm *mvm)
+ 	int i;
+ 	struct iwl_rss_config_cmd cmd = {
+ 		.flags = cpu_to_le32(IWL_RSS_ENABLE),
+-		.hash_mask = IWL_RSS_HASH_TYPE_IPV4_TCP |
+-			     IWL_RSS_HASH_TYPE_IPV4_UDP |
+-			     IWL_RSS_HASH_TYPE_IPV4_PAYLOAD |
+-			     IWL_RSS_HASH_TYPE_IPV6_TCP |
+-			     IWL_RSS_HASH_TYPE_IPV6_UDP |
+-			     IWL_RSS_HASH_TYPE_IPV6_PAYLOAD,
++		.hash_mask = BIT(IWL_RSS_HASH_TYPE_IPV4_TCP) |
++			     BIT(IWL_RSS_HASH_TYPE_IPV4_UDP) |
++			     BIT(IWL_RSS_HASH_TYPE_IPV4_PAYLOAD) |
++			     BIT(IWL_RSS_HASH_TYPE_IPV6_TCP) |
++			     BIT(IWL_RSS_HASH_TYPE_IPV6_UDP) |
++			     BIT(IWL_RSS_HASH_TYPE_IPV6_PAYLOAD),
+ 	};
  
- 		rx_status->flag |= RX_FLAG_AMPDU_DETAILS;
--		rx_status->ampdu_reference = mvm->ampdu_ref;
- 		/* toggle is switched whenever new aggregation starts */
- 		if (toggle_bit != mvm->ampdu_toggle) {
- 			mvm->ampdu_ref++;
- 			mvm->ampdu_toggle = toggle_bit;
- 		}
-+		rx_status->ampdu_reference = mvm->ampdu_ref;
- 	}
- 
- 	rcu_read_lock();
+ 	if (mvm->trans->num_rx_queues == 1)
 -- 
 2.20.1
 
