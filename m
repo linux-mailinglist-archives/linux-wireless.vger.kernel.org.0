@@ -2,36 +2,36 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 387B713ED80
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Jan 2020 19:03:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CE2CC13ED49
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Jan 2020 19:01:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2393725AbgAPRkv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 16 Jan 2020 12:40:51 -0500
-Received: from mail.kernel.org ([198.145.29.99]:58272 "EHLO mail.kernel.org"
+        id S2393766AbgAPRlW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 16 Jan 2020 12:41:22 -0500
+Received: from mail.kernel.org ([198.145.29.99]:58970 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2393711AbgAPRkv (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 16 Jan 2020 12:40:51 -0500
+        id S2405649AbgAPRlW (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 16 Jan 2020 12:41:22 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id F145B2469F;
-        Thu, 16 Jan 2020 17:40:49 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 66E6C24695;
+        Thu, 16 Jan 2020 17:41:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1579196450;
-        bh=Vf/wZ++dasu955Wj8MzgBxoKKBiWtLaIoB2MFgusvjY=;
+        s=default; t=1579196481;
+        bh=wMgQC9Nxeaz0aIRTUtqD2m4QS3kZMLRfFhrPVF3c2AM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=od4NsFZYuwoXfBAd2L0YSye0IvjO8nmAPb3/F3QuwznCZFqsx/Fg9OHpPsZHr2ZJW
-         E/FX3t61yMrTMYF2yEWoIBRuJS61X3lZZ52wxvK6HotUpNLJFNhAo02rfS/nN9ImTi
-         sc6t2feYcBvcSxbTsE+DYv6donj5VDB0qXPC//6Q=
+        b=tct32E98bDL0uUIjnDyhM1LSIyUzcaoTrbAX7KVWaW2C1Th47quMA2bK2N403Kxgw
+         mhlNhJ4ti03zvioLoCtrboC1Muj1EN+5gsazk61IuNY1Pm/0hx7/CaD3pzKiDfDtTz
+         Z3ulfiv7Ium5VfaRrrxIBM0au1S3QQnu6T1GuVEo=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Johannes Berg <johannes.berg@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
+Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
         Sasha Levin <sashal@kernel.org>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.9 211/251] mac80211: accept deauth frames in IBSS mode
-Date:   Thu, 16 Jan 2020 12:36:00 -0500
-Message-Id: <20200116173641.22137-171-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.9 228/251] cw1200: Fix a signedness bug in cw1200_load_firmware()
+Date:   Thu, 16 Jan 2020 12:36:17 -0500
+Message-Id: <20200116173641.22137-188-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20200116173641.22137-1-sashal@kernel.org>
 References: <20200116173641.22137-1-sashal@kernel.org>
@@ -44,47 +44,41 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Dan Carpenter <dan.carpenter@oracle.com>
 
-[ Upstream commit 95697f9907bfe3eab0ef20265a766b22e27dde64 ]
+[ Upstream commit 4a50d454502f1401171ff061a5424583f91266db ]
 
-We can process deauth frames and all, but we drop them very
-early in the RX path today - this could never have worked.
+The "priv->hw_type" is an enum and in this context GCC will treat it
+as an unsigned int so the error handling will never trigger.
 
-Fixes: 2cc59e784b54 ("mac80211: reply to AUTH with DEAUTH if sta allocation fails in IBSS")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
-Link: https://lore.kernel.org/r/20191004123706.15768-2-luca@coelho.fi
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: a910e4a94f69 ("cw1200: add driver for the ST-E CW1100 & CW1200 WLAN chipsets")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/rx.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ drivers/net/wireless/st/cw1200/fwio.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-index 3b423c50ec8f..74652eb2f90f 100644
---- a/net/mac80211/rx.c
-+++ b/net/mac80211/rx.c
-@@ -3205,9 +3205,18 @@ ieee80211_rx_h_mgmt(struct ieee80211_rx_data *rx)
- 	case cpu_to_le16(IEEE80211_STYPE_PROBE_RESP):
- 		/* process for all: mesh, mlme, ibss */
- 		break;
-+	case cpu_to_le16(IEEE80211_STYPE_DEAUTH):
-+		if (is_multicast_ether_addr(mgmt->da) &&
-+		    !is_broadcast_ether_addr(mgmt->da))
-+			return RX_DROP_MONITOR;
-+
-+		/* process only for station/IBSS */
-+		if (sdata->vif.type != NL80211_IFTYPE_STATION &&
-+		    sdata->vif.type != NL80211_IFTYPE_ADHOC)
-+			return RX_DROP_MONITOR;
-+		break;
- 	case cpu_to_le16(IEEE80211_STYPE_ASSOC_RESP):
- 	case cpu_to_le16(IEEE80211_STYPE_REASSOC_RESP):
--	case cpu_to_le16(IEEE80211_STYPE_DEAUTH):
- 	case cpu_to_le16(IEEE80211_STYPE_DISASSOC):
- 		if (is_multicast_ether_addr(mgmt->da) &&
- 		    !is_broadcast_ether_addr(mgmt->da))
+diff --git a/drivers/net/wireless/st/cw1200/fwio.c b/drivers/net/wireless/st/cw1200/fwio.c
+index 30e7646d04af..16be7fa82a23 100644
+--- a/drivers/net/wireless/st/cw1200/fwio.c
++++ b/drivers/net/wireless/st/cw1200/fwio.c
+@@ -323,12 +323,12 @@ int cw1200_load_firmware(struct cw1200_common *priv)
+ 		goto out;
+ 	}
+ 
+-	priv->hw_type = cw1200_get_hw_type(val32, &major_revision);
+-	if (priv->hw_type < 0) {
++	ret = cw1200_get_hw_type(val32, &major_revision);
++	if (ret < 0) {
+ 		pr_err("Can't deduce hardware type.\n");
+-		ret = -ENOTSUPP;
+ 		goto out;
+ 	}
++	priv->hw_type = ret;
+ 
+ 	/* Set DPLL Reg value, and read back to confirm writes work */
+ 	ret = cw1200_reg_write_32(priv, ST90TDS_TSET_GEN_R_W_REG_ID,
 -- 
 2.20.1
 
