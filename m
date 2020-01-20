@@ -2,137 +2,127 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DC4CC142472
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Jan 2020 08:49:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AF430142479
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Jan 2020 08:51:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726407AbgATHtP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 20 Jan 2020 02:49:15 -0500
-Received: from mail26.static.mailgun.info ([104.130.122.26]:33551 "EHLO
-        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726039AbgATHtP (ORCPT
+        id S1726125AbgATHvl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 20 Jan 2020 02:51:41 -0500
+Received: from mail25.static.mailgun.info ([104.130.122.25]:39738 "EHLO
+        mail25.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725872AbgATHvl (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 20 Jan 2020 02:49:15 -0500
+        Mon, 20 Jan 2020 02:51:41 -0500
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1579506554; h=Message-ID: References: In-Reply-To: Subject:
- Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
- MIME-Version: Sender; bh=uZgHgiVXVyoqGSSn5GF1zo6e1fmH75gjeV3cXdoJwz4=;
- b=AXx7TSxNy+hkqWEtLNyMEH8xFNztnuHT5o2d+SnGjdrzYMQFPjMUgQCda6jelxtrMPy3SICH
- 4kxd2ZOtpq49pVJlbioXFTzqR8pJqfyq9Y2h0z2eRsS1hFMfaOQ4gN8kfjBeNjzIr1BgI4gv
- aAYs+DVwLPGp837HS9uTUJSOsw0=
-X-Mailgun-Sending-Ip: 104.130.122.26
+ s=smtp; t=1579506700; h=Message-Id: Date: Subject: Cc: To: From:
+ Sender; bh=FIEolavvo0sGf4c05NemGJUYyFiUzrKvRwRKakKacOw=; b=QoGpUCcCRUXR+Q1D8B9risx70uqXx/rwrRDLLtnYNW1x2EgcNB5by1CSAB9uAcc2IcGWyjIr
+ PoXkpgOhpjYOJUytB/gyjxU1pXT4QoCxsjrhnrpLAVV2CjIJQhDfxrKZjyl2HtJazyHJUz5w
+ S7/Cf1N+BR/PouR0VpTB528Ddus=
+X-Mailgun-Sending-Ip: 104.130.122.25
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e255b79.7f4ca69a9d18-smtp-out-n01;
- Mon, 20 Jan 2020 07:49:13 -0000 (UTC)
+ by mxa.mailgun.org with ESMTP id 5e255c0b.7fa71bf31c70-smtp-out-n02;
+ Mon, 20 Jan 2020 07:51:39 -0000 (UTC)
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 95288C43383; Mon, 20 Jan 2020 07:49:12 +0000 (UTC)
+        id D7C6EC4479F; Mon, 20 Jan 2020 07:51:38 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
         autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+Received: from akolli-ThinkPad-L560.qca.qualcomm.com (blr-c-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.19.19])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: tamizhr)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 09BC0C433CB;
-        Mon, 20 Jan 2020 07:49:12 +0000 (UTC)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Mon, 20 Jan 2020 13:19:11 +0530
-From:   tamizhr@codeaurora.org
-To:     Tamizh Chelvam <tamizhr@codeaurora.org>
-Cc:     johannes@sipsolutions.net, linux-wireless@vger.kernel.org
-Subject: Re: [PATCHv9 5/6] nl80211: Add support to configure TID specific
- txrate configuration
-In-Reply-To: <20200114123108.5mrzvyqkjp7defln@bars>
-References: <1578921090-9758-1-git-send-email-tamizhr@codeaurora.org>
- <1578921090-9758-6-git-send-email-tamizhr@codeaurora.org>
- <20200114123108.5mrzvyqkjp7defln@bars>
-Message-ID: <c1f8ed5c0d001d2647a8ef23c0329fab@codeaurora.org>
-X-Sender: tamizhr@codeaurora.org
-User-Agent: Roundcube Webmail/1.3.9
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 549FBC433CB;
+        Mon, 20 Jan 2020 07:51:36 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 549FBC433CB
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=tamizhr@codeaurora.org
+From:   Tamizh Chelvam <tamizhr@codeaurora.org>
+To:     johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org,
+        Tamizh chelvam <tamizhr@codeaurora.org>
+Subject: [PATCHv10 0/6] cfg80211/mac80211: Add support for TID specific configuration
+Date:   Mon, 20 Jan 2020 13:21:21 +0530
+Message-Id: <1579506687-18296-1-git-send-email-tamizhr@codeaurora.org>
+X-Mailer: git-send-email 1.9.1
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2020-01-14 18:01, Sergey Matyukevich wrote:
->> This patch adds support to configure per TID txrate configuration
->> configuration through the NL80211_TID_CONFIG_ATTR_TX_RATE_TYPE
->> and NL80211_TID_CONFIG_ATTR_TX_RATE
->> attribute. TX bitrate mask values passed
->> in NL80211_ATTR_TX_RATES attribute and 
->> NL80211_TID_CONFIG_ATTR_TX_RATES
->> attribute will have types of the TX rate should be applied. This uses
->> nl80211_parse_tx_bitrate_mask to validate and calculate the bitrate
->> mask.
->> 
->> Signed-off-by: Tamizh chelvam <tamizhr@codeaurora.org>
->> ---
->>  include/net/cfg80211.h       |    5 +++
->>  include/uapi/linux/nl80211.h |   24 +++++++++++++
->>  net/wireless/nl80211.c       |   76 
->> ++++++++++++++++++++++++++++++++----------
->>  3 files changed, 88 insertions(+), 17 deletions(-)
-> 
-> ...
-> 
->> @@ -13936,6 +13947,37 @@ static int parse_tid_conf(struct 
->> cfg80211_registered_device *rdev,
->>  			nla_get_u8(attrs[NL80211_TID_CONFIG_ATTR_RTSCTS_CTRL]);
->>  	}
->> 
->> +	if (attrs[NL80211_TID_CONFIG_ATTR_TX_RATE_TYPE]) {
->> +		int idx;
->> +		enum nl80211_attrs attr;
->> +
->> +		err = nl80211_check_tid_config_support(rdev, extack, peer,
->> +						       attrs, tid_conf,
->> +						       TX_RATE);
->> +		if (err)
->> +			return err;
->> +		idx = NL80211_TID_CONFIG_ATTR_TX_RATE_TYPE;
->> +		tid_conf->txrate_type = nla_get_u8(attrs[idx]);
->> +		if (tid_conf->txrate_type != NL80211_TX_RATE_AUTOMATIC) {
->> +			tid_conf->mask =
->> +				kzalloc(sizeof(struct cfg80211_bitrate_mask),
->> +					GFP_KERNEL);
->> +			if (!tid_conf->mask)
->> +				return -ENOMEM;
->> +
->> +			attr =
->> +			(enum nl80211_attrs)NL80211_TID_CONFIG_ATTR_TX_RATE;
->> +			err = nl80211_parse_tx_bitrate_mask(info, attrs, attr,
->> +							    tid_conf->mask);
->> +			if (err) {
->> +				kfree(tid_conf->mask);
->> +				return err;
->> +			}
-> 
-> IIUC we have to free all the allocated tid_conf->mask entries in the 
-> end of
-> nl80211_set_tid_config, right before tid_config is freed.
-Yeah, this needs to be take care by the driver, since it will be sent 
-with multiple
-configuration. I have added that in the comment in next patchset.
-> Alternatively,struct ieee80211_tid_cfg can be modified to keep 
-> cfg80211_bitrate_mask
-> value rather than pointer.
-I have just reused the nl80211_parse_tx_bitrate_mask, so I feel using 
-the similar approach
-should be good.
+From: Tamizh chelvam <tamizhr@codeaurora.org>
 
-> 
->> +		} else {
->> +			tid_conf->mask = NULL;
->> +		}
->> +	}
->> +
->>  	return 0;
->>  }
-> 
-Thanks,
-Tamizh.
+Add infrastructure to support per TID configurations like noack policy,
+retry count, AMPDU control(disable/enable), RTSCTS control(enable/disable)
+and TX rate mask configurations.
+This will be useful for the driver which can supports data TID
+specific configuration rather than phy level configurations.
+Here NL80211_CMD_SET_TID_CONFIG added to support this operation by
+accepting TID configuration.
+This command can accept STA mac addreess to make the configuration
+station specific rather than applying to all the connected stations
+to the netdev.
+And this nested command configuration can accept multiple number of
+data TID specific configuration in a single command,
+enum ieee80211_tid_conf_mask used to notify the driver that which
+configuration got modified for the TID.
+
+Tamizh chelvam (6):
+  nl80211: Add NL command to support TID speicific configurations
+  nl80211: Add support to configure TID specific retry configuration
+  nl80211: Add support to configure TID specific AMPDU configuration
+  nl80211: Add support to configure TID specific RTSCTS configuration
+  nl80211: Add support to configure TID specific txrate configuration
+  mac80211: Add api to support configuring TID specific configuration
+
+ include/net/cfg80211.h       |   65 ++++++++++
+ include/net/mac80211.h       |   10 ++
+ include/uapi/linux/nl80211.h |  140 +++++++++++++++++++++
+ net/mac80211/cfg.c           |   56 +++++++++
+ net/mac80211/driver-ops.h    |   27 ++++
+ net/wireless/nl80211.c       |  287 +++++++++++++++++++++++++++++++++++++++---
+ net/wireless/rdev-ops.h      |   24 ++++
+ net/wireless/trace.h         |   37 ++++++
+ 8 files changed, 629 insertions(+), 17 deletions(-)
+
+v10:
+  * Addressed Sergey comments.
+
+v9:
+  * Modified to accept multiple TIDs.
+  * Splitted retry_short and retry_long as separate parameter
+  * Introduced new api to reset tid config
+
+v8:
+  * Fixed enum typecast warning.
+
+v7:
+  * Fixed compilation error and removed tid config variables from mac80211
+
+v6:
+  * Addressed Johannes comments.
+
+v5:
+  * Fixed possible memleak of 'tid_conf' in nl80211_set_tid_config.
+
+v4:
+  * Fixed kbuild warnings.
+
+v3:
+  * Modified "nl80211: Add netlink attribute to configure TID specific tx rate" patch
+    to accept multiple TX rate configuration at a time.
+  * Modified noack and ampdu variable data type to int in
+    "mac80211: Add api to support configuring TID specific configuration" patch to store
+    default configuration.
+  * Modified "ath10k: Add new api to support TID specific configuration" patch to handle
+    default values for noack and ampdu. And added sta pointer sanity check in
+    ath10k_mac_tid_bitrate_config function.
+  * Fixed "ath10k: Add extended TID configuration support" wmi command parameters
+    assigned part.
+
+v2:
+  * Added support to accept multiple TID configuration
+  * Added support to configure TX rate and RTSCTS control
+-- 
+1.7.9.5
