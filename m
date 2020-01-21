@@ -2,198 +2,120 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A054014403D
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Jan 2020 16:11:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 74D3B144128
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Jan 2020 17:00:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729186AbgAUPLN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 21 Jan 2020 10:11:13 -0500
-Received: from mail.kernel.org ([198.145.29.99]:47190 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729106AbgAUPLN (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 21 Jan 2020 10:11:13 -0500
-Received: from localhost.localdomain (nat-pool-brq-t.redhat.com [213.175.37.10])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id F138D21569;
-        Tue, 21 Jan 2020 15:11:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1579619472;
-        bh=Nf+pOqPROw4DJFNsxg2rTIhXK+9kSGaNFWOCAAgGwRs=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=uTOzTNuoC9gXsOuBpvrdaxncYyI0qq6tdigf+tjUeUvao0KRe0tWrHgJom/FIEArX
-         DqOArQbvPLiE+1PO68hjOLlvF/283x6LRxtbQIe82d1sHV/bbTTTfAQdAkaUHsTrIj
-         7gMvez/MHpaFgGnRQvoa6qpU4YM+z+5qMYs3n+Qw=
-Date:   Tue, 21 Jan 2020 16:11:05 +0100
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     Ryder Lee <ryder.lee@mediatek.com>
-Cc:     Felix Fietkau <nbd@nbd.name>,
+        id S1728779AbgAUQAo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 21 Jan 2020 11:00:44 -0500
+Received: from mailgw01.mediatek.com ([210.61.82.183]:14698 "EHLO
+        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726968AbgAUQAo (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 21 Jan 2020 11:00:44 -0500
+X-UUID: 4b30edc956f84d85bc4e2ce0221ea96e-20200122
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+        h=Content-Transfer-Encoding:MIME-Version:Content-Type:References:In-Reply-To:Date:CC:To:From:Subject:Message-ID; bh=hl0UeD+P+rTTtPqsFkqtujX3P2uXkUS9JL4iwIHiWhk=;
+        b=hB9PHdQocbpaaPneY55GxhipThVOhW6GnMyRx5l5kDd1bXoa+XuDa0ZWAaiMbygCpqZr/ov6Y8ReatlixWOvJDMUFukeKG+IbnIb98NFldU07DTPy6v4d8/HNvfHXft6ZFRVMv/M/rsi9XtPhd3zXCvFADS7+QnMa6GlW7x6wWU=;
+X-UUID: 4b30edc956f84d85bc4e2ce0221ea96e-20200122
+Received: from mtkcas06.mediatek.inc [(172.21.101.30)] by mailgw01.mediatek.com
+        (envelope-from <ryder.lee@mediatek.com>)
+        (Cellopoint E-mail Firewall v4.1.10 Build 0809 with TLS)
+        with ESMTP id 1909450229; Wed, 22 Jan 2020 00:00:40 +0800
+Received: from mtkcas09.mediatek.inc (172.21.101.178) by
+ mtkmbs06n1.mediatek.inc (172.21.101.129) with Microsoft SMTP Server (TLS) id
+ 15.0.1395.4; Wed, 22 Jan 2020 00:00:39 +0800
+Received: from [172.21.77.33] (172.21.77.33) by mtkcas09.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1395.4 via Frontend
+ Transport; Wed, 22 Jan 2020 00:01:35 +0800
+Message-ID: <1579622439.4993.17.camel@mtkswgap22>
+Subject: Re: [PATCH 1/7] mt76: mt7615: simplify mcu_set_bmc flow
+From:   Ryder Lee <ryder.lee@mediatek.com>
+To:     Lorenzo Bianconi <lorenzo@kernel.org>
+CC:     Felix Fietkau <nbd@nbd.name>,
         Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
         Shayne Chen <shayne.chen@mediatek.com>,
-        Roy Luo <royluo@google.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org
-Subject: Re: [PATCH 1/7] mt76: mt7615: simplify mcu_set_bmc flow
-Message-ID: <20200121151105.GA2396@localhost.localdomain>
+        "Roy Luo" <royluo@google.com>, Sean Wang <sean.wang@mediatek.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>
+Date:   Wed, 22 Jan 2020 00:00:39 +0800
+In-Reply-To: <20200121151105.GA2396@localhost.localdomain>
 References: <ae72dd289f8a26a2c0f42de1f940bb8b6d1f2c29.1579237414.git.ryder.lee@mediatek.com>
+         <20200121151105.GA2396@localhost.localdomain>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.2.3-0ubuntu6 
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="1yeeQ81UyVL57Vl7"
-Content-Disposition: inline
-In-Reply-To: <ae72dd289f8a26a2c0f42de1f940bb8b6d1f2c29.1579237414.git.ryder.lee@mediatek.com>
+X-MTK:  N
+Content-Transfer-Encoding: base64
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+T24gVHVlLCAyMDIwLTAxLTIxIGF0IDE2OjExICswMTAwLCBMb3JlbnpvIEJpYW5jb25pIHdyb3Rl
+Og0KPiA+IE1vdmUgbWN1X3d0YmxfYm1jIGludG8gbWN1X3NldF9zdGFfcmVjX2JtYyB0byBzaW1w
+bGlmeSBmbG93Lg0KPiA+IA0KPiA+IFNpZ25lZC1vZmYtYnk6IFJ5ZGVyIExlZSA8cnlkZXIubGVl
+QG1lZGlhdGVrLmNvbT4NCj4gPiAtLS0NCj4gPiAgLi4uL25ldC93aXJlbGVzcy9tZWRpYXRlay9t
+dDc2L210NzYxNS9tYWluLmMgIHwgIDMgKy0NCj4gPiAgLi4uL25ldC93aXJlbGVzcy9tZWRpYXRl
+ay9tdDc2L210NzYxNS9tY3UuYyAgIHwgOTcgKysrKysrKystLS0tLS0tLS0tLQ0KPiA+ICAuLi4v
+d2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc2MTUvbXQ3NjE1LmggICAgfCAgNiArLQ0KPiA+ICAz
+IGZpbGVzIGNoYW5nZWQsIDQ1IGluc2VydGlvbnMoKyksIDYxIGRlbGV0aW9ucygtKQ0KPiA+IA0K
+PiANCj4gWy4uLl0NCj4gDQo+ID4gLWludCBtdDc2MTVfbWN1X3NldF9zdGFfcmVjX2JtYyhzdHJ1
+Y3QgbXQ3NjE1X2RldiAqZGV2LA0KPiA+IC0JCQkgICAgICAgc3RydWN0IGllZWU4MDIxMV92aWYg
+KnZpZiwgYm9vbCBlbikNCj4gPiAraW50IG10NzYxNV9tY3Vfc2V0X2JtYyhzdHJ1Y3QgbXQ3NjE1
+X2RldiAqZGV2LA0KPiA+ICsJCSAgICAgICBzdHJ1Y3QgaWVlZTgwMjExX3ZpZiAqdmlmLCBib29s
+IGVuKQ0KPiA+ICB7DQo+ID4gIAlzdHJ1Y3QgbXQ3NjE1X3ZpZiAqbXZpZiA9IChzdHJ1Y3QgbXQ3
+NjE1X3ZpZiAqKXZpZi0+ZHJ2X3ByaXY7DQo+ID4gIAlzdHJ1Y3Qgew0KPiA+ICAJCXN0cnVjdCBz
+dGFfcmVxX2hkciBoZHI7DQo+ID4gIAkJc3RydWN0IHN0YV9yZWNfYmFzaWMgYmFzaWM7DQo+ID4g
+LQl9IHJlcSA9IHsNCj4gPiArCQl1OCBidWZbTVQ3NjE1X1dUQkxfVVBEQVRFX01BWF9TSVpFXTsN
+Cj4gPiArCX0gX19wYWNrZWQgcmVxID0gew0KPiA+ICAJCS5oZHIgPSB7DQo+ID4gIAkJCS5ic3Nf
+aWR4ID0gbXZpZi0+aWR4LA0KPiA+ICAJCQkud2xhbl9pZHggPSBtdmlmLT5zdGEud2NpZC5pZHgs
+DQo+ID4gQEAgLTExMDksOCArMTA1OSwxOCBAQCBpbnQgbXQ3NjE1X21jdV9zZXRfc3RhX3JlY19i
+bWMoc3RydWN0IG10NzYxNV9kZXYgKmRldiwNCj4gPiAgCQkJLmNvbm5fdHlwZSA9IGNwdV90b19s
+ZTMyKENPTk5FQ1RJT05fSU5GUkFfQkMpLA0KPiA+ICAJCX0sDQo+ID4gIAl9Ow0KPiA+ICsJc3Ry
+dWN0IHd0YmxfcmVxX2hkciAqd3RibF9oZHI7DQo+ID4gKwlzdHJ1Y3Qgd3RibF9nZW5lcmljICp3
+dGJsX2c7DQo+ID4gKwlzdHJ1Y3Qgd3RibF9yeCAqd3RibF9yeDsNCj4gPiArCXU4ICpidWYgPSBy
+ZXEuYnVmOw0KPiA+ICsNCj4gPiAgCWV0aF9icm9hZGNhc3RfYWRkcihyZXEuYmFzaWMucGVlcl9h
+ZGRyKTsNCj4gPiAgDQo+ID4gKwl3dGJsX2hkciA9IChzdHJ1Y3Qgd3RibF9yZXFfaGRyICopYnVm
+Ow0KPiA+ICsJYnVmICs9IHNpemVvZigqd3RibF9oZHIpOw0KPiA+ICsJd3RibF9oZHItPndsYW5f
+aWR4ID0gbXZpZi0+c3RhLndjaWQuaWR4Ow0KPiA+ICsJd3RibF9oZHItPm9wZXJhdGlvbiA9IFdU
+QkxfUkVTRVRfQU5EX1NFVDsNCj4gPiArDQo+ID4gIAlpZiAoZW4pIHsNCj4gPiAgCQlyZXEuYmFz
+aWMuY29ubl9zdGF0ZSA9IENPTk5fU1RBVEVfUE9SVF9TRUNVUkU7DQo+ID4gIAkJcmVxLmJhc2lj
+LmV4dHJhX2luZm8gPSBjcHVfdG9fbGUxNihFWFRSQV9JTkZPX1ZFUiB8DQo+ID4gQEAgLTExMTgs
+MTAgKzEwNzgsMzcgQEAgaW50IG10NzYxNV9tY3Vfc2V0X3N0YV9yZWNfYm1jKHN0cnVjdCBtdDc2
+MTVfZGV2ICpkZXYsDQo+ID4gIAl9IGVsc2Ugew0KPiA+ICAJCXJlcS5iYXNpYy5jb25uX3N0YXRl
+ID0gQ09OTl9TVEFURV9ESVNDT05ORUNUOw0KPiA+ICAJCXJlcS5iYXNpYy5leHRyYV9pbmZvID0g
+Y3B1X3RvX2xlMTYoRVhUUkFfSU5GT19WRVIpOw0KPiA+ICsNCj4gPiArCQlfX210NzZfbWN1X3Nl
+bmRfbXNnKCZkZXYtPm10NzYsIE1DVV9FWFRfQ01EX1NUQV9SRUNfVVBEQVRFLA0KPiA+ICsJCQkJ
+ICAgICZyZXEsICh1OCAqKXd0YmxfaGRyIC0gKHU4ICopJnJlcSwgdHJ1ZSk7DQo+IA0KPiB3ZSBu
+ZWVkIHRvIGNoZWNrIHRoZSByZXR1cm4gdmFsdWUgZnJvbSBfX210NzZfbWN1X3NlbmRfbXNnIGhl
+cmUuDQoNCk9rYXksIGJ1dCBpdCBzZWVtcyB3ZSBsYWNrIG9mIHNvbWUgZXJyb3IgaGFuZGxpbmcg
+Zm9yIG1jdSBpbiBtYWluLmMuDQoNCj4gTW9yZW92ZXIsIGhlcmUgKHU4ICopd3RibF9oZHIgLSAo
+dTggKikmcmVxIGlzDQo+IHNpemVvZihzdHJ1Y3Qgc3RhX3JlcV9oZHIpICsgc2l6ZW9mKHN0cnVj
+dCBzdGFfcmVjX2Jhc2ljKSwgcmlnaHQ/DQo+IEkgZ3Vlc3MgaXQgd291bGQgYmUgZWFzaWVyIHRv
+IHVuZGVyc3RhbmQgaWYgd2UgZXhwbGljaXQgdGhlIGxlbmd0aCwgd2hhdCBkbyB5b3UgdGhpbms/
+DQoNCkknZCBsb3ZlIHRvIGV4cGxpY2l0IHRoZSBsZW5ndGgsIGJ1dCB0aGUgbGVuZ3RoIG9mIHRo
+ZXNlIHZhcmlhYmxlIHRsdg0KcmVseSBvbiBzdGEncyBodC92aHRfY2FwLiBFc3BlY2lhbGx5IHdl
+IGhhdmUgdG8gdGFrZSBiYWNrd2FyZA0KY29tcGF0aWJpbGl0eSAoZmlybXdhcmUgdjEpIGludG8g
+YWNjb3VudCwgYW5kIHRoaXMgYWN0dWFsbHkgbWFrZXMgY29kZSBhDQpiaXQgbWVzc3kuIA0KDQo+
+ID4gKw0KPiA+ICsJCXJldHVybiBfX210NzZfbWN1X3NlbmRfbXNnKCZkZXYtPm10NzYsIE1DVV9F
+WFRfQ01EX1dUQkxfVVBEQVRFLA0KPiA+ICsJCQkJCSAgICh1OCAqKXd0YmxfaGRyLCBidWYgLSAo
+dTggKil3dGJsX2hkciwNCj4gPiArCQkJCQkgICB0cnVlKTsNCj4gPiAgCX0NCj4gPiAgDQo+ID4g
+Kwl3dGJsX2cgPSAoc3RydWN0IHd0YmxfZ2VuZXJpYyAqKWJ1ZjsNCj4gPiArCWJ1ZiArPSBzaXpl
+b2YoKnd0YmxfZyk7DQo+ID4gKwl3dGJsX2ctPnRhZyA9IGNwdV90b19sZTE2KFdUQkxfR0VORVJJ
+Qyk7DQo+ID4gKwl3dGJsX2ctPmxlbiA9IGNwdV90b19sZTE2KHNpemVvZigqd3RibF9nKSk7DQo+
+ID4gKwl3dGJsX2ctPm11YXJfaWR4ID0gMHhlOw0KPiA+ICsJZXRoX2Jyb2FkY2FzdF9hZGRyKHd0
+YmxfZy0+cGVlcl9hZGRyKTsNCj4gPiArDQo+ID4gKwl3dGJsX3J4ID0gKHN0cnVjdCB3dGJsX3J4
+ICopYnVmOw0KPiA+ICsJYnVmICs9IHNpemVvZigqd3RibF9yeCk7DQo+ID4gKwl3dGJsX3J4LT50
+YWcgPSBjcHVfdG9fbGUxNihXVEJMX1JYKTsNCj4gPiArCXd0YmxfcngtPmxlbiA9IGNwdV90b19s
+ZTE2KHNpemVvZigqd3RibF9yeCkpOw0KPiA+ICsJd3RibF9yeC0+cnYgPSAxOw0KPiA+ICsJd3Ri
+bF9yeC0+cmNhMSA9IDE7DQo+ID4gKwl3dGJsX3J4LT5yY2EyID0gMTsNCj4gPiArDQo+ID4gKwl3
+dGJsX2hkci0+dGx2X251bSA9IGNwdV90b19sZTE2KDIpOw0KPiA+ICsNCj4gPiArCV9fbXQ3Nl9t
+Y3Vfc2VuZF9tc2coJmRldi0+bXQ3NiwgTUNVX0VYVF9DTURfV1RCTF9VUERBVEUsDQo+ID4gKwkJ
+CSAgICAodTggKil3dGJsX2hkciwgYnVmIC0gKHU4ICopd3RibF9oZHIsIHRydWUpOw0KPiANCj4g
+d2UgbmVlZCB0byBjaGVjayB0aGUgcmV0dXJuIHZhbHVlIGZyb20gX19tdDc2X21jdV9zZW5kX21z
+ZyBoZXJlDQo+ID4gKw0KPiA+ICAJcmV0dXJuIF9fbXQ3Nl9tY3Vfc2VuZF9tc2coJmRldi0+bXQ3
+NiwgTUNVX0VYVF9DTURfU1RBX1JFQ19VUERBVEUsDQo+ID4gLQkJCQkgICAmcmVxLCBzaXplb2Yo
+cmVxKSwgdHJ1ZSk7DQo+ID4gKwkJCQkgICAmcmVxLCAodTggKil3dGJsX2hkciAtICh1OCAqKSZy
+ZXEsIHRydWUpOw0KPiANCj4gc2FtZSBoZXJlIGFib3V0IHRoZSBsZW5ndGguDQo+IA0KPiBSZWdh
+cmRzLA0KPiBMb3JlbnpvDQo+IA0KUnlkZXINCg0KDQo=
 
---1yeeQ81UyVL57Vl7
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-> Move mcu_wtbl_bmc into mcu_set_sta_rec_bmc to simplify flow.
->=20
-> Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
-> ---
->  .../net/wireless/mediatek/mt76/mt7615/main.c  |  3 +-
->  .../net/wireless/mediatek/mt76/mt7615/mcu.c   | 97 ++++++++-----------
->  .../wireless/mediatek/mt76/mt7615/mt7615.h    |  6 +-
->  3 files changed, 45 insertions(+), 61 deletions(-)
->=20
-
-[...]
-
-> -int mt7615_mcu_set_sta_rec_bmc(struct mt7615_dev *dev,
-> -			       struct ieee80211_vif *vif, bool en)
-> +int mt7615_mcu_set_bmc(struct mt7615_dev *dev,
-> +		       struct ieee80211_vif *vif, bool en)
->  {
->  	struct mt7615_vif *mvif =3D (struct mt7615_vif *)vif->drv_priv;
->  	struct {
->  		struct sta_req_hdr hdr;
->  		struct sta_rec_basic basic;
-> -	} req =3D {
-> +		u8 buf[MT7615_WTBL_UPDATE_MAX_SIZE];
-> +	} __packed req =3D {
->  		.hdr =3D {
->  			.bss_idx =3D mvif->idx,
->  			.wlan_idx =3D mvif->sta.wcid.idx,
-> @@ -1109,8 +1059,18 @@ int mt7615_mcu_set_sta_rec_bmc(struct mt7615_dev *=
-dev,
->  			.conn_type =3D cpu_to_le32(CONNECTION_INFRA_BC),
->  		},
->  	};
-> +	struct wtbl_req_hdr *wtbl_hdr;
-> +	struct wtbl_generic *wtbl_g;
-> +	struct wtbl_rx *wtbl_rx;
-> +	u8 *buf =3D req.buf;
-> +
->  	eth_broadcast_addr(req.basic.peer_addr);
-> =20
-> +	wtbl_hdr =3D (struct wtbl_req_hdr *)buf;
-> +	buf +=3D sizeof(*wtbl_hdr);
-> +	wtbl_hdr->wlan_idx =3D mvif->sta.wcid.idx;
-> +	wtbl_hdr->operation =3D WTBL_RESET_AND_SET;
-> +
->  	if (en) {
->  		req.basic.conn_state =3D CONN_STATE_PORT_SECURE;
->  		req.basic.extra_info =3D cpu_to_le16(EXTRA_INFO_VER |
-> @@ -1118,10 +1078,37 @@ int mt7615_mcu_set_sta_rec_bmc(struct mt7615_dev =
-*dev,
->  	} else {
->  		req.basic.conn_state =3D CONN_STATE_DISCONNECT;
->  		req.basic.extra_info =3D cpu_to_le16(EXTRA_INFO_VER);
-> +
-> +		__mt76_mcu_send_msg(&dev->mt76, MCU_EXT_CMD_STA_REC_UPDATE,
-> +				    &req, (u8 *)wtbl_hdr - (u8 *)&req, true);
-
-we need to check the return value from __mt76_mcu_send_msg here.
-Moreover, here (u8 *)wtbl_hdr - (u8 *)&req is
-sizeof(struct sta_req_hdr) + sizeof(struct sta_rec_basic), right?
-I guess it would be easier to understand if we explicit the length, what do=
- you think?
-
-> +
-> +		return __mt76_mcu_send_msg(&dev->mt76, MCU_EXT_CMD_WTBL_UPDATE,
-> +					   (u8 *)wtbl_hdr, buf - (u8 *)wtbl_hdr,
-> +					   true);
->  	}
-> =20
-> +	wtbl_g =3D (struct wtbl_generic *)buf;
-> +	buf +=3D sizeof(*wtbl_g);
-> +	wtbl_g->tag =3D cpu_to_le16(WTBL_GENERIC);
-> +	wtbl_g->len =3D cpu_to_le16(sizeof(*wtbl_g));
-> +	wtbl_g->muar_idx =3D 0xe;
-> +	eth_broadcast_addr(wtbl_g->peer_addr);
-> +
-> +	wtbl_rx =3D (struct wtbl_rx *)buf;
-> +	buf +=3D sizeof(*wtbl_rx);
-> +	wtbl_rx->tag =3D cpu_to_le16(WTBL_RX);
-> +	wtbl_rx->len =3D cpu_to_le16(sizeof(*wtbl_rx));
-> +	wtbl_rx->rv =3D 1;
-> +	wtbl_rx->rca1 =3D 1;
-> +	wtbl_rx->rca2 =3D 1;
-> +
-> +	wtbl_hdr->tlv_num =3D cpu_to_le16(2);
-> +
-> +	__mt76_mcu_send_msg(&dev->mt76, MCU_EXT_CMD_WTBL_UPDATE,
-> +			    (u8 *)wtbl_hdr, buf - (u8 *)wtbl_hdr, true);
-
-we need to check the return value from __mt76_mcu_send_msg here
-> +
->  	return __mt76_mcu_send_msg(&dev->mt76, MCU_EXT_CMD_STA_REC_UPDATE,
-> -				   &req, sizeof(req), true);
-> +				   &req, (u8 *)wtbl_hdr - (u8 *)&req, true);
-
-same here about the length.
-
-Regards,
-Lorenzo
-
->  }
-> =20
->  int mt7615_mcu_set_sta_rec(struct mt7615_dev *dev, struct ieee80211_vif =
-*vif,
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h b/drivers=
-/net/wireless/mediatek/mt76/mt7615/mt7615.h
-> index eaafae9cc279..84949256601f 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
-> @@ -241,14 +241,12 @@ int mt7615_mcu_set_bss_info(struct mt7615_dev *dev,=
- struct ieee80211_vif *vif,
->  void mt7615_mac_set_rates(struct mt7615_phy *phy, struct mt7615_sta *sta,
->  			  struct ieee80211_tx_rate *probe_rate,
->  			  struct ieee80211_tx_rate *rates);
-> -int mt7615_mcu_wtbl_bmc(struct mt7615_dev *dev, struct ieee80211_vif *vi=
-f,
-> -			bool enable);
->  int mt7615_mcu_add_wtbl(struct mt7615_dev *dev, struct ieee80211_vif *vi=
-f,
->  			struct ieee80211_sta *sta);
->  int mt7615_mcu_del_wtbl(struct mt7615_dev *dev, struct ieee80211_sta *st=
-a);
->  int mt7615_mcu_del_wtbl_all(struct mt7615_dev *dev);
-> -int mt7615_mcu_set_sta_rec_bmc(struct mt7615_dev *dev,
-> -			       struct ieee80211_vif *vif, bool en);
-> +int mt7615_mcu_set_bmc(struct mt7615_dev *dev, struct ieee80211_vif *vif,
-> +		       bool en);
->  int mt7615_mcu_set_sta_rec(struct mt7615_dev *dev, struct ieee80211_vif =
-*vif,
->  			   struct ieee80211_sta *sta, bool en);
->  int mt7615_mcu_set_bcn(struct ieee80211_hw *hw, struct ieee80211_vif *vi=
-f,
-> --=20
-> 2.18.0
-
---1yeeQ81UyVL57Vl7
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCXicUhwAKCRA6cBh0uS2t
-rE0TAP99qoAH5LfpJ/A9pFDbcKQem+kh5Ku+cIQ/ULjuso4SMQD+NpQ7PXYVwOYl
-zinnZjga5RmI9cLdqjMoms+G4H6cZAQ=
-=4+yn
------END PGP SIGNATURE-----
-
---1yeeQ81UyVL57Vl7--
