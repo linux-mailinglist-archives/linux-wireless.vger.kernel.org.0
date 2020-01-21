@@ -2,95 +2,185 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D0DB143258
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Jan 2020 20:32:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D5A85143593
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Jan 2020 03:11:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728778AbgATTco (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 20 Jan 2020 14:32:44 -0500
-Received: from mail-lf1-f66.google.com ([209.85.167.66]:44391 "EHLO
-        mail-lf1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728708AbgATTco (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 20 Jan 2020 14:32:44 -0500
-Received: by mail-lf1-f66.google.com with SMTP id v201so152409lfa.11
-        for <linux-wireless@vger.kernel.org>; Mon, 20 Jan 2020 11:32:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=z7I/Kq2V0EnXiuoACdRbnwoAql3KZ080nwyXVjlruyU=;
-        b=I1roYPqxBJzWtUK/EbeI6Kt4sZi+JdSJm6qJbGHrPRZYvHUSh5jIrCeNC6L/G/f0o1
-         SOUBr7y32ZptFoyqXLV46mqkCVXIPksz6dHNenBfKH5ZmZaxgtbXfnD4DPiQngFU9XCO
-         yyR3xavKr41v/xLWwuSw91WJb2uX+wjZFxyyrAuDZ+hvXvCheAMdiLqD+HrlaysRfXCL
-         GNNQRcxyOsqzXo4wRH2J/upuPpeDO5ZRhzNY4HfuYgHfElCshp5fZYHSWkrBX0jAzQvX
-         wM9NfRj8QHz6JxUFOI+rZ3wcUi7Ikp+pHr28kaxr4n7py/KC1H5pYclpR4JTvoTIZ7Jv
-         h8rg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=z7I/Kq2V0EnXiuoACdRbnwoAql3KZ080nwyXVjlruyU=;
-        b=KmVzlsllNG+t4d/i6nm2zlhrURABF9jU66E+zZEwYGwCHb9SQvqzBGmdp5OXvQy3VV
-         diJneQ1F/950lNndsSXEeXd/P6oVop9ch0db42pqkpGZ6dRQO/M0HfOb9ne31mMKOIvG
-         mBvmHjFNAciosLhEsqQwAdJaH6e9i/XEFMA4saN9R5ZWRP8vUlUQv3q88v/bjWtkVPSh
-         C0oEvY7OBahKKVbDo2QIMEs1sFrJcJJIZgTwzyXEI93cEcVhjlMkggwf1PEgZIa/fzZG
-         LIRFZ3csmhpBLn0S34CFexSABgx9RAiXy22B7hc8J8UaH9Rc54L/Oh95W0TCLklu83Fz
-         mTIw==
-X-Gm-Message-State: APjAAAUKASOSOzZgY4xvdkI7VN2j/2tjpMPvtEiSxI5hFvBheqXdzPR4
-        EvlJlKwADZLqZMlwJat3G3hfbX+ndQhQKD5g71GUaD9/xIU=
-X-Google-Smtp-Source: APXvYqwKjCT5QnfvXWtJkO29cRmoOGR1uhIhw9Ol6eYz9VuYzVaqX/o8Ejt2WLDxZ+bl2CebXLO8AWZ4Emn93SBTQws=
-X-Received: by 2002:a17:906:1fcd:: with SMTP id e13mr898516ejt.333.1579548761316;
- Mon, 20 Jan 2020 11:32:41 -0800 (PST)
+        id S1728792AbgAUCLg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 20 Jan 2020 21:11:36 -0500
+Received: from szxga05-in.huawei.com ([45.249.212.191]:9223 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726890AbgAUCLg (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 20 Jan 2020 21:11:36 -0500
+Received: from DGGEMS413-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id AB7ED5D8A0920FDB57A4;
+        Tue, 21 Jan 2020 10:11:33 +0800 (CST)
+Received: from localhost (10.173.223.234) by DGGEMS413-HUB.china.huawei.com
+ (10.3.19.213) with Microsoft SMTP Server id 14.3.439.0; Tue, 21 Jan 2020
+ 10:11:23 +0800
+From:   YueHaibing <yuehaibing@huawei.com>
+To:     <pkshih@realtek.com>, <kvalo@codeaurora.org>,
+        <davem@davemloft.net>, <Larry.Finger@lwfinger.net>,
+        <yuehaibing@huawei.com>
+CC:     <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: [PATCH] rtlwifi: rtl8821ae: remove unused variables
+Date:   Tue, 21 Jan 2020 10:09:58 +0800
+Message-ID: <20200121020958.27548-1-yuehaibing@huawei.com>
+X-Mailer: git-send-email 2.10.2.windows.1
 MIME-Version: 1.0
-Received: by 2002:a05:6402:22dc:0:0:0:0 with HTTP; Mon, 20 Jan 2020 11:32:40
- -0800 (PST)
-Reply-To: mcclainejohn.13@gmail.com
-From:   "Prof, William Roberts" <eco.bank1204@gmail.com>
-Date:   Mon, 20 Jan 2020 20:32:40 +0100
-Message-ID: <CAOE+jABpcHQWZWhtskhDFbtTqfBe7h065WE2kC1G+jQD+tQiTA@mail.gmail.com>
-Subject: Contact Diplomatic Agent, Mr. Mcclaine John to receive your ATM CARD
- valued the sum of $12.8Million United States Dollars
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
+X-Originating-IP: [10.173.223.234]
+X-CFilter-Loop: Reflected
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Attn: Dear Beneficiary,
+drivers/net/wireless/realtek/rtlwifi/rtl8821ae/dm.c:142:17:
+ warning: cckswing_table_ch1ch13 defined but not used [-Wunused-const-variable=]
+drivers/net/wireless/realtek/rtlwifi/rtl8821ae/dm.c:178:17:
+ warning: cckswing_table_ch14 defined but not used [-Wunused-const-variable=]
+drivers/net/wireless/realtek/rtlwifi/rtl8821ae/dm.c:96:18:
+ warning: ofdmswing_table defined but not used [-Wunused-const-variable=]
 
-I wish to inform you that the diplomatic agent conveying your ATM CARD
-valued the sum of $12.8Million United States Dollars has misplaced
-your address and he is currently stranded at (George Bush
-International Airport) Houston Texas USA now
-We required you to reconfirm the following information's below to him
-so that he can deliver your Payment CARD to you today or tomorrow
-morning as information provided with open communications via email and
-telephone for security reasons.
-HERE IS THE DETAILS  HE NEED FROM YOU URGENT
-YOUR FULL NAME:========
-ADDRESS:========
-MOBILE NO:========
-NAME OF YOUR NEAREST AIRPORT:========
-A COPY OF YOUR IDENTIFICATION :========
+These variable is never used, so remove them.
 
-Note; do contact the diplomatic agent immediately through the
-information's listed below
-Contact Person: Diplomatic Agent, Mr. Mcclaine John
-EMAIL: mcclainejohn.13@gmail.com
-Tel:(223) 777-7518
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+---
+ .../net/wireless/realtek/rtlwifi/rtl8821ae/dm.c    | 118 ---------------------
+ 1 file changed, 118 deletions(-)
 
-Contact the diplomatic agent immediately
-because he is waiting to hear from you today with the needed information's.
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/dm.c b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/dm.c
+index b542304..f57e879 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/dm.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/dm.c
+@@ -93,124 +93,6 @@ static const u32 rtl8821ae_txscaling_table[TXSCALE_TABLE_SIZE] = {
+ 	0x3FE  /* 36, +6.0dB */
+ };
+ 
+-static const u32 ofdmswing_table[] = {
+-	0x0b40002d, /* 0, -15.0dB */
+-	0x0c000030, /* 1, -14.5dB */
+-	0x0cc00033, /* 2, -14.0dB */
+-	0x0d800036, /* 3, -13.5dB */
+-	0x0e400039, /* 4, -13.0dB */
+-	0x0f00003c, /* 5, -12.5dB */
+-	0x10000040, /* 6, -12.0dB */
+-	0x11000044, /* 7, -11.5dB */
+-	0x12000048, /* 8, -11.0dB */
+-	0x1300004c, /* 9, -10.5dB */
+-	0x14400051, /* 10, -10.0dB */
+-	0x15800056, /* 11, -9.5dB */
+-	0x16c0005b, /* 12, -9.0dB */
+-	0x18000060, /* 13, -8.5dB */
+-	0x19800066, /* 14, -8.0dB */
+-	0x1b00006c, /* 15, -7.5dB */
+-	0x1c800072, /* 16, -7.0dB */
+-	0x1e400079, /* 17, -6.5dB */
+-	0x20000080, /* 18, -6.0dB */
+-	0x22000088, /* 19, -5.5dB */
+-	0x24000090, /* 20, -5.0dB */
+-	0x26000098, /* 21, -4.5dB */
+-	0x288000a2, /* 22, -4.0dB */
+-	0x2ac000ab, /* 23, -3.5dB */
+-	0x2d4000b5, /* 24, -3.0dB */
+-	0x300000c0, /* 25, -2.5dB */
+-	0x32c000cb, /* 26, -2.0dB */
+-	0x35c000d7, /* 27, -1.5dB */
+-	0x390000e4, /* 28, -1.0dB */
+-	0x3c8000f2, /* 29, -0.5dB */
+-	0x40000100, /* 30, +0dB */
+-	0x43c0010f, /* 31, +0.5dB */
+-	0x47c0011f, /* 32, +1.0dB */
+-	0x4c000130, /* 33, +1.5dB */
+-	0x50800142, /* 34, +2.0dB */
+-	0x55400155, /* 35, +2.5dB */
+-	0x5a400169, /* 36, +3.0dB */
+-	0x5fc0017f, /* 37, +3.5dB */
+-	0x65400195, /* 38, +4.0dB */
+-	0x6b8001ae, /* 39, +4.5dB */
+-	0x71c001c7, /* 40, +5.0dB */
+-	0x788001e2, /* 41, +5.5dB */
+-	0x7f8001fe  /* 42, +6.0dB */
+-};
+-
+-static const u8 cckswing_table_ch1ch13[CCK_TABLE_SIZE][8] = {
+-	{0x09, 0x08, 0x07, 0x06, 0x04, 0x03, 0x01, 0x01}, /* 0, -16.0dB */
+-	{0x09, 0x09, 0x08, 0x06, 0x05, 0x03, 0x01, 0x01}, /* 1, -15.5dB */
+-	{0x0a, 0x09, 0x08, 0x07, 0x05, 0x03, 0x02, 0x01}, /* 2, -15.0dB */
+-	{0x0a, 0x0a, 0x09, 0x07, 0x05, 0x03, 0x02, 0x01}, /* 3, -14.5dB */
+-	{0x0b, 0x0a, 0x09, 0x08, 0x06, 0x04, 0x02, 0x01}, /* 4, -14.0dB */
+-	{0x0b, 0x0b, 0x0a, 0x08, 0x06, 0x04, 0x02, 0x01}, /* 5, -13.5dB */
+-	{0x0c, 0x0c, 0x0a, 0x09, 0x06, 0x04, 0x02, 0x01}, /* 6, -13.0dB */
+-	{0x0d, 0x0c, 0x0b, 0x09, 0x07, 0x04, 0x02, 0x01}, /* 7, -12.5dB */
+-	{0x0d, 0x0d, 0x0c, 0x0a, 0x07, 0x05, 0x02, 0x01}, /* 8, -12.0dB */
+-	{0x0e, 0x0e, 0x0c, 0x0a, 0x08, 0x05, 0x02, 0x01}, /* 9, -11.5dB */
+-	{0x0f, 0x0f, 0x0d, 0x0b, 0x08, 0x05, 0x03, 0x01}, /* 10, -11.0dB */
+-	{0x10, 0x10, 0x0e, 0x0b, 0x08, 0x05, 0x03, 0x01}, /* 11, -10.5dB */
+-	{0x11, 0x11, 0x0f, 0x0c, 0x09, 0x06, 0x03, 0x01}, /* 12, -10.0dB */
+-	{0x12, 0x12, 0x0f, 0x0c, 0x09, 0x06, 0x03, 0x01}, /* 13, -9.5dB */
+-	{0x13, 0x13, 0x10, 0x0d, 0x0a, 0x06, 0x03, 0x01}, /* 14, -9.0dB */
+-	{0x14, 0x14, 0x11, 0x0e, 0x0b, 0x07, 0x03, 0x02}, /* 15, -8.5dB */
+-	{0x16, 0x15, 0x12, 0x0f, 0x0b, 0x07, 0x04, 0x01}, /* 16, -8.0dB */
+-	{0x17, 0x16, 0x13, 0x10, 0x0c, 0x08, 0x04, 0x02}, /* 17, -7.5dB */
+-	{0x18, 0x17, 0x15, 0x11, 0x0c, 0x08, 0x04, 0x02}, /* 18, -7.0dB */
+-	{0x1a, 0x19, 0x16, 0x12, 0x0d, 0x09, 0x04, 0x02}, /* 19, -6.5dB */
+-	{0x1b, 0x1a, 0x17, 0x13, 0x0e, 0x09, 0x04, 0x02}, /* 20, -6.0dB */
+-	{0x1d, 0x1c, 0x18, 0x14, 0x0f, 0x0a, 0x05, 0x02}, /* 21, -5.5dB */
+-	{0x1f, 0x1e, 0x1a, 0x15, 0x10, 0x0a, 0x05, 0x02}, /* 22, -5.0dB */
+-	{0x20, 0x20, 0x1b, 0x16, 0x11, 0x08, 0x05, 0x02}, /* 23, -4.5dB */
+-	{0x22, 0x21, 0x1d, 0x18, 0x11, 0x0b, 0x06, 0x02}, /* 24, -4.0dB */
+-	{0x24, 0x23, 0x1f, 0x19, 0x13, 0x0c, 0x06, 0x03}, /* 25, -3.5dB */
+-	{0x26, 0x25, 0x21, 0x1b, 0x14, 0x0d, 0x06, 0x03}, /* 26, -3.0dB */
+-	{0x28, 0x28, 0x22, 0x1c, 0x15, 0x0d, 0x07, 0x03}, /* 27, -2.5dB */
+-	{0x2b, 0x2a, 0x25, 0x1e, 0x16, 0x0e, 0x07, 0x03}, /* 28, -2.0dB */
+-	{0x2d, 0x2d, 0x27, 0x1f, 0x18, 0x0f, 0x08, 0x03}, /* 29, -1.5dB */
+-	{0x30, 0x2f, 0x29, 0x21, 0x19, 0x10, 0x08, 0x03}, /* 30, -1.0dB */
+-	{0x33, 0x32, 0x2b, 0x23, 0x1a, 0x11, 0x08, 0x04}, /* 31, -0.5dB */
+-	{0x36, 0x35, 0x2e, 0x25, 0x1c, 0x12, 0x09, 0x04} /* 32, +0dB */
+-};
+-
+-static const u8 cckswing_table_ch14[CCK_TABLE_SIZE][8] = {
+-	{0x09, 0x08, 0x07, 0x04, 0x00, 0x00, 0x00, 0x00}, /* 0, -16.0dB */
+-	{0x09, 0x09, 0x08, 0x05, 0x00, 0x00, 0x00, 0x00}, /* 1, -15.5dB */
+-	{0x0a, 0x09, 0x08, 0x05, 0x00, 0x00, 0x00, 0x00}, /* 2, -15.0dB */
+-	{0x0a, 0x0a, 0x09, 0x05, 0x00, 0x00, 0x00, 0x00}, /* 3, -14.5dB */
+-	{0x0b, 0x0a, 0x09, 0x05, 0x00, 0x00, 0x00, 0x00}, /* 4, -14.0dB */
+-	{0x0b, 0x0b, 0x0a, 0x06, 0x00, 0x00, 0x00, 0x00}, /* 5, -13.5dB */
+-	{0x0c, 0x0c, 0x0a, 0x06, 0x00, 0x00, 0x00, 0x00}, /* 6, -13.0dB */
+-	{0x0d, 0x0c, 0x0b, 0x06, 0x00, 0x00, 0x00, 0x00}, /* 7, -12.5dB */
+-	{0x0d, 0x0d, 0x0c, 0x07, 0x00, 0x00, 0x00, 0x00}, /* 8, -12.0dB */
+-	{0x0e, 0x0e, 0x0c, 0x07, 0x00, 0x00, 0x00, 0x00}, /* 9, -11.5dB */
+-	{0x0f, 0x0f, 0x0d, 0x08, 0x00, 0x00, 0x00, 0x00}, /* 10, -11.0dB */
+-	{0x10, 0x10, 0x0e, 0x08, 0x00, 0x00, 0x00, 0x00}, /* 11, -10.5dB */
+-	{0x11, 0x11, 0x0f, 0x09, 0x00, 0x00, 0x00, 0x00}, /* 12, -10.0dB */
+-	{0x12, 0x12, 0x0f, 0x09, 0x00, 0x00, 0x00, 0x00}, /* 13, -9.5dB */
+-	{0x13, 0x13, 0x10, 0x0a, 0x00, 0x00, 0x00, 0x00}, /* 14, -9.0dB */
+-	{0x14, 0x14, 0x11, 0x0a, 0x00, 0x00, 0x00, 0x00}, /* 15, -8.5dB */
+-	{0x16, 0x15, 0x12, 0x0b, 0x00, 0x00, 0x00, 0x00}, /* 16, -8.0dB */
+-	{0x17, 0x16, 0x13, 0x0b, 0x00, 0x00, 0x00, 0x00}, /* 17, -7.5dB */
+-	{0x18, 0x17, 0x15, 0x0c, 0x00, 0x00, 0x00, 0x00}, /* 18, -7.0dB */
+-	{0x1a, 0x19, 0x16, 0x0d, 0x00, 0x00, 0x00, 0x00}, /* 19, -6.5dB */
+-	{0x1b, 0x1a, 0x17, 0x0e, 0x00, 0x00, 0x00, 0x00}, /* 20, -6.0dB */
+-	{0x1d, 0x1c, 0x18, 0x0e, 0x00, 0x00, 0x00, 0x00}, /* 21, -5.5dB */
+-	{0x1f, 0x1e, 0x1a, 0x0f, 0x00, 0x00, 0x00, 0x00}, /* 22, -5.0dB */
+-	{0x20, 0x20, 0x1b, 0x10, 0x00, 0x00, 0x00, 0x00}, /* 23, -4.5dB */
+-	{0x22, 0x21, 0x1d, 0x11, 0x00, 0x00, 0x00, 0x00}, /* 24, -4.0dB */
+-	{0x24, 0x23, 0x1f, 0x12, 0x00, 0x00, 0x00, 0x00}, /* 25, -3.5dB */
+-	{0x26, 0x25, 0x21, 0x13, 0x00, 0x00, 0x00, 0x00}, /* 26, -3.0dB */
+-	{0x28, 0x28, 0x24, 0x14, 0x00, 0x00, 0x00, 0x00}, /* 27, -2.5dB */
+-	{0x2b, 0x2a, 0x25, 0x15, 0x00, 0x00, 0x00, 0x00}, /* 28, -2.0dB */
+-	{0x2d, 0x2d, 0x17, 0x17, 0x00, 0x00, 0x00, 0x00}, /* 29, -1.5dB */
+-	{0x30, 0x2f, 0x29, 0x18, 0x00, 0x00, 0x00, 0x00}, /* 30, -1.0dB */
+-	{0x33, 0x32, 0x2b, 0x19, 0x00, 0x00, 0x00, 0x00}, /* 31, -0.5dB */
+-	{0x36, 0x35, 0x2e, 0x1b, 0x00, 0x00, 0x00, 0x00} /* 32, +0dB */
+-};
+-
+ static const u32 edca_setting_dl[PEER_MAX] = {
+ 	0xa44f,		/* 0 UNKNOWN */
+ 	0x5ea44f,	/* 1 REALTEK_90 */
+-- 
+2.7.4
 
-NOTE: The Diplomatic agent does not know that the content of the
-consignment box is $12.800,000,00 Million United States Dollars and on
-no circumstances should you let him know the content. The consignment
-was moved from here as family treasures, so never allow him to open
-the box. Please I have paid delivery fees for you but the only money
-you must send to Mcclaine John is your ATM CARD delivery fee $25.00
-only. text Him as you contact Him Immediately
 
-Thanks,
-with Regards.
-Prof, William Roberts
-Director DHL COURIER SERVICES-Benin
