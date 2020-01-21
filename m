@@ -2,109 +2,141 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 46FAC1437CA
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Jan 2020 08:41:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C4EA3143812
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Jan 2020 09:12:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727453AbgAUHlE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 21 Jan 2020 02:41:04 -0500
-Received: from mail26.static.mailgun.info ([104.130.122.26]:29581 "EHLO
-        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726052AbgAUHlE (ORCPT
+        id S1726052AbgAUIMV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 21 Jan 2020 03:12:21 -0500
+Received: from paleale.coelho.fi ([176.9.41.70]:54422 "EHLO
+        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1725789AbgAUIMV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 21 Jan 2020 02:41:04 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1579592463; h=Message-ID: References: In-Reply-To: Subject:
- Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
- MIME-Version: Sender; bh=mZT02m5WtNm8DGwtlMPRSKxETSGBgxHA89dSYIx5LGc=;
- b=XQ7i3VqbKuzHgJ9NRfHjr9Iy/Pk6CQY0ATN+Y94mKS223xktO8iqfTxYxkXFw5tZAOB088xJ
- /QER5VGSgjuQu0Na1msvlPF41sIAVXNTHyjoU2R60iX+ZLRqKBOQI5yklc9Dz+NUlFTnxX61
- 6S395idRiU9ISoPMLtDxddX8eQA=
-X-Mailgun-Sending-Ip: 104.130.122.26
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e26ab0e.7efd85da30a0-smtp-out-n02;
- Tue, 21 Jan 2020 07:41:02 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 81FF8C433A2; Tue, 21 Jan 2020 07:41:02 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: tamizhr)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 08BBEC433CB;
-        Tue, 21 Jan 2020 07:41:02 +0000 (UTC)
+        Tue, 21 Jan 2020 03:12:21 -0500
+Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa.ger.corp.intel.com)
+        by farmhouse.coelho.fi with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.92.2)
+        (envelope-from <luca@coelho.fi>)
+        id 1itoe1-0003Py-MT; Tue, 21 Jan 2020 10:12:18 +0200
+From:   Luca Coelho <luca@coelho.fi>
+To:     johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org
+Date:   Tue, 21 Jan 2020 10:12:13 +0200
+Message-Id: <20200121081213.733757-1-luca@coelho.fi>
+X-Mailer: git-send-email 2.24.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Tue, 21 Jan 2020 13:11:02 +0530
-From:   tamizhr@codeaurora.org
-To:     Tamizh Chelvam <tamizhr@codeaurora.org>
-Cc:     johannes@sipsolutions.net, linux-wireless@vger.kernel.org
-Subject: Re: [PATCHv10 0/6] cfg80211/mac80211: Add support for TID specific
- configuration
-In-Reply-To: <20200121071724.p6mbyiqjal3jjfin@bars>
-References: <1579506687-18296-1-git-send-email-tamizhr@codeaurora.org>
- <20200121071724.p6mbyiqjal3jjfin@bars>
-Message-ID: <528d2b83942394ae1aad08ffe7548a8a@codeaurora.org>
-X-Sender: tamizhr@codeaurora.org
-User-Agent: Roundcube Webmail/1.3.9
+Content-Transfer-Encoding: 8bit
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on farmhouse.coelho.fi
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+        TVD_RCVD_IP,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.2
+Subject: [PATCH] cfg80211: add no HE indication to the channel flag
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2020-01-21 12:47, Sergey Matyukevich wrote:
->> Add infrastructure to support per TID configurations like noack 
->> policy,
->> retry count, AMPDU control(disable/enable), RTSCTS 
->> control(enable/disable)
->> and TX rate mask configurations.
->> This will be useful for the driver which can supports data TID
->> specific configuration rather than phy level configurations.
->> Here NL80211_CMD_SET_TID_CONFIG added to support this operation by
->> accepting TID configuration.
->> This command can accept STA mac addreess to make the configuration
->> station specific rather than applying to all the connected stations
->> to the netdev.
->> And this nested command configuration can accept multiple number of
->> data TID specific configuration in a single command,
->> enum ieee80211_tid_conf_mask used to notify the driver that which
->> configuration got modified for the TID.
->> 
->> Tamizh chelvam (6):
->>   nl80211: Add NL command to support TID speicific configurations
->>   nl80211: Add support to configure TID specific retry configuration
->>   nl80211: Add support to configure TID specific AMPDU configuration
->>   nl80211: Add support to configure TID specific RTSCTS configuration
->>   nl80211: Add support to configure TID specific txrate configuration
->>   mac80211: Add api to support configuring TID specific configuration
->> 
->>  include/net/cfg80211.h       |   65 ++++++++++
->>  include/net/mac80211.h       |   10 ++
->>  include/uapi/linux/nl80211.h |  140 +++++++++++++++++++++
->>  net/mac80211/cfg.c           |   56 +++++++++
->>  net/mac80211/driver-ops.h    |   27 ++++
->>  net/wireless/nl80211.c       |  287 
->> +++++++++++++++++++++++++++++++++++++++---
->>  net/wireless/rdev-ops.h      |   24 ++++
->>  net/wireless/trace.h         |   37 ++++++
->>  8 files changed, 629 insertions(+), 17 deletions(-)
-> 
-> Hello Tamizh,
-> 
-> Thanks for you fixes and patience! The last two versions look pretty
-> good to me.
-> 
-> Reviewed-by: Sergey Matyukevich <sergey.matyukevich.os@quantenna.com>
-> 
-Sergey,
+From: Haim Dreyfuss <haim.dreyfuss@intel.com>
 
-Thanks for your continuous support in reviewing this patchset:)
+The regulatory domain might forbid HE operation.  Certain regulatory
+domains may restrict it for specific channels whereas others may do it
+for the whole regulatory domain.
 
-Thanks,
-Tamizh.
+Add an option to indicate it in the channel flag.
+
+Signed-off-by: Haim Dreyfuss <haim.dreyfuss@intel.com>
+Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+---
+ include/net/cfg80211.h       | 2 ++
+ include/uapi/linux/nl80211.h | 5 +++++
+ net/wireless/nl80211.c       | 3 +++
+ net/wireless/reg.c           | 2 ++
+ 4 files changed, 12 insertions(+)
+
+diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+index fa027d0d031b..40f2a3a30e3d 100644
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -95,6 +95,7 @@ struct wiphy;
+  *	on this channel.
+  * @IEEE80211_CHAN_NO_10MHZ: 10 MHz bandwidth is not permitted
+  *	on this channel.
++ * @IEEE80211_CHAN_NO_HE: HE operation is not permitted on this channel.
+  *
+  */
+ enum ieee80211_channel_flags {
+@@ -111,6 +112,7 @@ enum ieee80211_channel_flags {
+ 	IEEE80211_CHAN_IR_CONCURRENT	= 1<<10,
+ 	IEEE80211_CHAN_NO_20MHZ		= 1<<11,
+ 	IEEE80211_CHAN_NO_10MHZ		= 1<<12,
++	IEEE80211_CHAN_NO_HE		= 1<<13,
+ };
+ 
+ #define IEEE80211_CHAN_NO_HT40 \
+diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
+index 809ef9165684..d996bac97e9d 100644
+--- a/include/uapi/linux/nl80211.h
++++ b/include/uapi/linux/nl80211.h
+@@ -3587,6 +3587,8 @@ enum nl80211_wmm_rule {
+  * @NL80211_FREQUENCY_ATTR_WMM: this channel has wmm limitations.
+  *	This is a nested attribute that contains the wmm limitation per AC.
+  *	(see &enum nl80211_wmm_rule)
++ * @NL80211_FREQUENCY_ATTR_NO_HE: HE operation is not allowed on this channel
++ *	in current regulatory domain.
+  * @NL80211_FREQUENCY_ATTR_MAX: highest frequency attribute number
+  *	currently defined
+  * @__NL80211_FREQUENCY_ATTR_AFTER_LAST: internal use
+@@ -3616,6 +3618,7 @@ enum nl80211_frequency_attr {
+ 	NL80211_FREQUENCY_ATTR_NO_20MHZ,
+ 	NL80211_FREQUENCY_ATTR_NO_10MHZ,
+ 	NL80211_FREQUENCY_ATTR_WMM,
++	NL80211_FREQUENCY_ATTR_NO_HE,
+ 
+ 	/* keep last */
+ 	__NL80211_FREQUENCY_ATTR_AFTER_LAST,
+@@ -3813,6 +3816,7 @@ enum nl80211_sched_scan_match_attr {
+  * @NL80211_RRF_NO_HT40PLUS: channels can't be used in HT40+ operation
+  * @NL80211_RRF_NO_80MHZ: 80MHz operation not allowed
+  * @NL80211_RRF_NO_160MHZ: 160MHz operation not allowed
++ * @NL80211_RRF_NO_HE: HE operation not allowed
+  */
+ enum nl80211_reg_rule_flags {
+ 	NL80211_RRF_NO_OFDM		= 1<<0,
+@@ -3830,6 +3834,7 @@ enum nl80211_reg_rule_flags {
+ 	NL80211_RRF_NO_HT40PLUS		= 1<<14,
+ 	NL80211_RRF_NO_80MHZ		= 1<<15,
+ 	NL80211_RRF_NO_160MHZ		= 1<<16,
++	NL80211_RRF_NO_HE		= 1<<17,
+ };
+ 
+ #define NL80211_RRF_PASSIVE_SCAN	NL80211_RRF_NO_IR
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 00f24d4c623e..d8cdbf07aeec 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -972,6 +972,9 @@ static int nl80211_msg_put_channel(struct sk_buff *msg, struct wiphy *wiphy,
+ 		if ((chan->flags & IEEE80211_CHAN_NO_10MHZ) &&
+ 		    nla_put_flag(msg, NL80211_FREQUENCY_ATTR_NO_10MHZ))
+ 			goto nla_put_failure;
++		if ((chan->flags & IEEE80211_CHAN_NO_HE) &&
++		    nla_put_flag(msg, NL80211_FREQUENCY_ATTR_NO_HE))
++			goto nla_put_failure;
+ 	}
+ 
+ 	if (nla_put_u32(msg, NL80211_FREQUENCY_ATTR_MAX_TX_POWER,
+diff --git a/net/wireless/reg.c b/net/wireless/reg.c
+index 446c76d44e65..ea7bc5652a41 100644
+--- a/net/wireless/reg.c
++++ b/net/wireless/reg.c
+@@ -1569,6 +1569,8 @@ static u32 map_regdom_flags(u32 rd_flags)
+ 		channel_flags |= IEEE80211_CHAN_NO_80MHZ;
+ 	if (rd_flags & NL80211_RRF_NO_160MHZ)
+ 		channel_flags |= IEEE80211_CHAN_NO_160MHZ;
++	if (rd_flags & NL80211_RRF_NO_HE)
++		channel_flags |= IEEE80211_CHAN_NO_HE;
+ 	return channel_flags;
+ }
+ 
+-- 
+2.24.1
+
