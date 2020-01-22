@@ -2,98 +2,99 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C6F6144485
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Jan 2020 19:45:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 63C8F144AB0
+	for <lists+linux-wireless@lfdr.de>; Wed, 22 Jan 2020 05:07:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729127AbgAUSpF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 21 Jan 2020 13:45:05 -0500
-Received: from mail-qv1-f53.google.com ([209.85.219.53]:42399 "EHLO
-        mail-qv1-f53.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728186AbgAUSpF (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 21 Jan 2020 13:45:05 -0500
-Received: by mail-qv1-f53.google.com with SMTP id dc14so1953612qvb.9
-        for <linux-wireless@vger.kernel.org>; Tue, 21 Jan 2020 10:45:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=message-id:subject:from:to:date:mime-version
-         :content-transfer-encoding;
-        bh=FeOFghGrmcA+YWk9xGzeEU37IWVrqXbmdpbExs/ASjI=;
-        b=SQ36kL18YUHUZRrUgufKNNWAh0ZW+dNkqA15VEdK+O6monhuli3rGIHJYU7JV44Cxt
-         Q9+D+9r3E9FGZ4g7wtWlLNpjzHUfu/QIBCXarrkl88G/hCBsoAhnLfttOlg0/0EzkYrK
-         lwJVJ72r6vJ9VVfaApayYsxajzOAHuDODZO1N1fjr8xxZjMtKRuow6jd4zSdMLST2kv2
-         j7l4gvOdbbpOPPFeS0cE/WpJ7usO4llBjN4rThR9sAeQyiYS8BYK0W7Vv5vU7ljKDlrD
-         WKuknVrThHPmr9YoDI7WUbbXkXY2As5o6dhiMz7uRZ3DAGsRQ/b+DauzsxYPoXncthFS
-         mXdg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:message-id:subject:from:to:date:mime-version
-         :content-transfer-encoding;
-        bh=FeOFghGrmcA+YWk9xGzeEU37IWVrqXbmdpbExs/ASjI=;
-        b=Urp4U/8Jl2fQP9XPcsgGppxvxkQBbKMq+WJ8v9VmwP4L5Toj2n13gsspeQWjwU9SE2
-         IiJxE9FYfgo+hOkJ/wcrhsc6XjeFP6KjjxtpWzT0/eeIYvtOCi4D55uy/tPm4kDTOJsv
-         9je8dEqJK9jwwuIUuhFyhUEi6wt5GSnmlcxzUDg9rCVEBWUNLJA/wx8IaRcW6I7bzyYt
-         mc8LXGrHIDsRQGHNpUiWZoXdErfUKU9DD85SpGRhaz38iu9W8izNjNFI/iEl1fA8WxkQ
-         9yoymGcV/AQwwhEtiYRYmUb+cwKTQQR2oknos6+YcNs1A4VAGpNHp7cuGSFutsLbLiC5
-         P5+g==
-X-Gm-Message-State: APjAAAX9me7oHlWbeHWJw0Ly/CMU66FBPKScf8MGj15uKwUuzS8mqDEZ
-        wRI9HKpfyItE1fsLsBUkhsU47frc
-X-Google-Smtp-Source: APXvYqxxWu8gsCH8xU/NsCtjYKDlk3H6/5+1S5b3+cgjmKJqtZyDvNG+CdIJYeTGvUUCKS2WZO0yKw==
-X-Received: by 2002:a05:6214:94b:: with SMTP id dn11mr6171456qvb.12.1579632304071;
-        Tue, 21 Jan 2020 10:45:04 -0800 (PST)
-Received: from [192.168.0.10] (dhcp-108-168-58-21.cable.user.start.ca. [108.168.58.21])
-        by smtp.gmail.com with ESMTPSA id b24sm19540670qto.71.2020.01.21.10.45.02
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 21 Jan 2020 10:45:03 -0800 (PST)
-Message-ID: <1579632300.17789.18.camel@gmail.com>
-Subject: RT5370 performance issues
-From:   Marlon Smith <marlon.smith10@gmail.com>
-To:     linux-wireless@vger.kernel.org
-Date:   Tue, 21 Jan 2020 13:45:00 -0500
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.18.5.2-0ubuntu3.2 
-Mime-Version: 1.0
+        id S1728733AbgAVEHd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 21 Jan 2020 23:07:33 -0500
+Received: from bilbo.ozlabs.org ([203.11.71.1]:54233 "EHLO ozlabs.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727022AbgAVEHc (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 21 Jan 2020 23:07:32 -0500
+Received: by ozlabs.org (Postfix, from userid 1034)
+        id 482X1G3C2cz9sRR; Wed, 22 Jan 2020 15:07:30 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+        s=201909; t=1579666050;
+        bh=G7bbOYoKRp6jrs8GgGQz2ON95U4owgnlnz579hK3u2o=;
+        h=From:To:Cc:Subject:Date:From;
+        b=iva23+yXgpPhxd556QpzNZZ+YheLIZT1526j5B6Xr00lqX1DY/UcF1y5QwLPPn1Nq
+         /bM0KMZARUT6MVYuFgJL7fN9GvAbN/S4x5yFX24I2MT0+mVb9JOGIbs+x8szKg6d11
+         XF+S07HUyPH6JC+lQaSM8MQzZzyEmMmeWXvoXbhkG/0zngeCeNnzyV3KfTFjZYrwJj
+         fCn8kGzeCWPu/Rr6TCLRnJ53944/tlpZkTDFyZ3uEqKCBIHxH/PiFOFlvqFgjRXmOA
+         Pf2dRKCaV9rmzMs9JY/pUhHRTpWkr258ul1XfEtFLMkcN6zm4gTHCw1JYWMlgt6yDU
+         HnIIBz0I+A6Zg==
+From:   Michael Ellerman <mpe@ellerman.id.au>
+To:     netdev@vger.kernel.org
+Cc:     linux-wireless@vger.kernel.org, kvalo@codeaurora.org,
+        davem@davemloft.net, linux-kernel@vger.kernel.org,
+        security@kernel.org, ivansprundel@ioactive.com
+Subject: [PATCH 1/2] airo: Fix possible info leak in AIROOLDIOCTL/SIOCDEVPRIVATE
+Date:   Wed, 22 Jan 2020 15:07:27 +1100
+Message-Id: <20200122040728.8437-1-mpe@ellerman.id.au>
+X-Mailer: git-send-email 2.21.1
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi everyone,
+The driver for Cisco Aironet 4500 and 4800 series cards (airo.c),
+implements AIROOLDIOCTL/SIOCDEVPRIVATE in airo_ioctl().
 
-I'm having some trouble with an RT5370 Wi-Fi module on an embedded
-Linux system. With just one of these modules connected to an access
-point, performance is around 30 Mbit/s. However, as soon as a second
-module is connected to the access point, performance drops to about 3
-Mbit/s.
+The ioctl handler copies an aironet_ioctl struct from userspace, which
+includes a command and a length. Some of the commands are handled in
+readrids(), which kmalloc()'s a buffer of RIDSIZE (2048) bytes.
 
-With debug output enabled, there are many copies of this message:
+That buffer is then passed to PC4500_readrid(), which has two cases.
+The else case does some setup and then reads up to RIDSIZE bytes from
+the hardware into the kmalloc()'ed buffer.
 
-wlan0: release an RX reorder frame due to timeout on earlier frames
+Here len == RIDSIZE, pBuf is the kmalloc()'ed buffer:
 
-which seems to be related to MDPU aggregation. So, I went into
-rt2800lib.c in the function rt2800_ampdu_action and added the line
-ret = -ENOTSUPP; to disable support for RX frame aggregation:
-
-	switch (action) {
-	case IEEE80211_AMPDU_RX_START:
-	case IEEE80211_AMPDU_RX_STOP:
-		ret = -ENOTSUPP;
+	// read the rid length field
+	bap_read(ai, pBuf, 2, BAP1);
+	// length for remaining part of rid
+	len = min(len, (int)le16_to_cpu(*(__le16*)pBuf)) - 2;
 	...
+	// read remainder of the rid
+	rc = bap_read(ai, ((__le16*)pBuf)+1, len, BAP1);
 
-After that change, debug output shows:
+PC4500_readrid() then returns to readrids() which does:
 
-wlan0: AddBA Req buf_size=64 for 00:ad:24:ff:6c:a0
-wlan0: Rx A-MPDU request on 00:ad:24:ff:6c:a0 tid 0 result -524
+	len = comp->len;
+	if (copy_to_user(comp->data, iobuf, min(len, (int)RIDSIZE))) {
 
-and performance seems to be maybe slightly faster but not by much.
+Where comp->len is the user controlled length field.
 
-I'm using backports, and have tried with version 5.3-rc4 and 
-4.14-rc2. I've also tried several versions of the device firmware
-file rt2870.bin; 0.36, 0.33, and 0.22.
+So if the "rid length field" returned by the hardware is < 2048, and
+the user requests 2048 bytes in comp->len, we will leak the previous
+contents of the kmalloc()'ed buffer to userspace.
 
-Many thanks for any ideas you can offer.
+Fix it by kzalloc()'ing the buffer.
 
-Marlon
+Found by Ilja by code inspection, not tested as I don't have the
+required hardware.
+
+Reported-by: Ilja Van Sprundel <ivansprundel@ioactive.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+---
+ drivers/net/wireless/cisco/airo.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/cisco/airo.c b/drivers/net/wireless/cisco/airo.c
+index f43c06569ea1..d69c2ee7e206 100644
+--- a/drivers/net/wireless/cisco/airo.c
++++ b/drivers/net/wireless/cisco/airo.c
+@@ -7813,7 +7813,7 @@ static int readrids(struct net_device *dev, aironet_ioctl *comp) {
+ 		return -EINVAL;
+ 	}
+ 
+-	if ((iobuf = kmalloc(RIDSIZE, GFP_KERNEL)) == NULL)
++	if ((iobuf = kzalloc(RIDSIZE, GFP_KERNEL)) == NULL)
+ 		return -ENOMEM;
+ 
+ 	PC4500_readrid(ai,ridcode,iobuf,RIDSIZE, 1);
+-- 
+2.21.1
 
