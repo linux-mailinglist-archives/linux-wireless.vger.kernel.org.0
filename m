@@ -2,114 +2,90 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B844E144AB5
-	for <lists+linux-wireless@lfdr.de>; Wed, 22 Jan 2020 05:07:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3AF51145183
+	for <lists+linux-wireless@lfdr.de>; Wed, 22 Jan 2020 10:54:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729066AbgAVEHe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 21 Jan 2020 23:07:34 -0500
-Received: from ozlabs.org ([203.11.71.1]:45803 "EHLO ozlabs.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727141AbgAVEHd (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 21 Jan 2020 23:07:33 -0500
-Received: by ozlabs.org (Postfix, from userid 1034)
-        id 482X1G5HCbz9sRd; Wed, 22 Jan 2020 15:07:30 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
-        s=201909; t=1579666050;
-        bh=iagcn4dvwH0XRZXprwATFUQJb7S42Syhw+4ZaH4ZbW0=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SnPSq9Yv4SxusxlR0Wyx4BPy/peuvB6oNW9q+mhTISFnQ+DGSPP6ei81tZ4jAi7Sc
-         YHA3BqYtgXuK3HrBOur0WHM2Ig9QmxJgqmMGRhOtOFxf30dbBVPr0SBFs9Epz4Ciql
-         8LzfecaMGBxo9W1ReH+VF6NZDS0YgR8JQ9cdB/wq61chMJhtWs4BX3RdXpny1RXIIg
-         noTX9flkQ5d2eQyqhaA06sBGzCf+mLkjdh4fHbMLwIPa57QHYo17Sza4veBr+LDbdA
-         74BffuJbuScuiMx6Wl+YO0cCRMFEhRNyZTotU/DPYEX7548ZRBqN40LRFnkljNGb7d
-         zGTiNcwh2fvBQ==
-From:   Michael Ellerman <mpe@ellerman.id.au>
-To:     netdev@vger.kernel.org
-Cc:     linux-wireless@vger.kernel.org, kvalo@codeaurora.org,
-        davem@davemloft.net, linux-kernel@vger.kernel.org,
-        security@kernel.org, ivansprundel@ioactive.com
-Subject: [PATCH 2/2] airo: Add missing CAP_NET_ADMIN check in AIROOLDIOCTL/SIOCDEVPRIVATE
-Date:   Wed, 22 Jan 2020 15:07:28 +1100
-Message-Id: <20200122040728.8437-2-mpe@ellerman.id.au>
-X-Mailer: git-send-email 2.21.1
-In-Reply-To: <20200122040728.8437-1-mpe@ellerman.id.au>
-References: <20200122040728.8437-1-mpe@ellerman.id.au>
+        id S1730681AbgAVJdw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 22 Jan 2020 04:33:52 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:36079 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729668AbgAVJdt (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 22 Jan 2020 04:33:49 -0500
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1iuCOK-0003Me-Dh; Wed, 22 Jan 2020 09:33:40 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Ping-Ke Shih <pkshih@realtek.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] rtlwifi: btcoex: fix spelling mistake "initilized" -> "initialized"
+Date:   Wed, 22 Jan 2020 09:33:40 +0000
+Message-Id: <20200122093340.2800226-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The driver for Cisco Aironet 4500 and 4800 series cards (airo.c),
-implements AIROOLDIOCTL/SIOCDEVPRIVATE in airo_ioctl().
+From: Colin Ian King <colin.king@canonical.com>
 
-The ioctl handler copies an aironet_ioctl struct from userspace, which
-includes a command. Some of the commands are handled in readrids(),
-where the user controlled command is converted into a driver-internal
-value called "ridcode".
+There is a spelling mistake in one of the fields in the btc_coexist struct,
+fix it.
 
-There are two command values, AIROGWEPKTMP and AIROGWEPKNV, which
-correspond to ridcode values of RID_WEP_TEMP and RID_WEP_PERM
-respectively. These commands both have checks that the user has
-CAP_NET_ADMIN, with the comment that "Only super-user can read WEP
-keys", otherwise they return -EPERM.
-
-However there is another command value, AIRORRID, that lets the user
-specify the ridcode value directly, with no other checks. This means
-the user can bypass the CAP_NET_ADMIN check on AIROGWEPKTMP and
-AIROGWEPKNV.
-
-Fix it by moving the CAP_NET_ADMIN check out of the command handling
-and instead do it later based on the ridcode. That way regardless of
-whether the ridcode is set via AIROGWEPKTMP or AIROGWEPKNV, or passed
-in using AIRORID, we always do the CAP_NET_ADMIN check.
-
-Found by Ilja by code inspection, not tested as I don't have the
-required hardware.
-
-Reported-by: Ilja Van Sprundel <ivansprundel@ioactive.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/net/wireless/cisco/airo.c | 18 ++++++++----------
- 1 file changed, 8 insertions(+), 10 deletions(-)
+ .../net/wireless/realtek/rtlwifi/btcoexist/halbtc8192e2ant.c    | 2 +-
+ drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtcoutsrc.c   | 2 +-
+ drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtcoutsrc.h   | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/cisco/airo.c b/drivers/net/wireless/cisco/airo.c
-index d69c2ee7e206..c4c8f1b62e1e 100644
---- a/drivers/net/wireless/cisco/airo.c
-+++ b/drivers/net/wireless/cisco/airo.c
-@@ -7790,16 +7790,8 @@ static int readrids(struct net_device *dev, aironet_ioctl *comp) {
- 	case AIROGVLIST:    ridcode = RID_APLIST;       break;
- 	case AIROGDRVNAM:   ridcode = RID_DRVNAME;      break;
- 	case AIROGEHTENC:   ridcode = RID_ETHERENCAP;   break;
--	case AIROGWEPKTMP:  ridcode = RID_WEP_TEMP;
--		/* Only super-user can read WEP keys */
--		if (!capable(CAP_NET_ADMIN))
--			return -EPERM;
--		break;
--	case AIROGWEPKNV:   ridcode = RID_WEP_PERM;
--		/* Only super-user can read WEP keys */
--		if (!capable(CAP_NET_ADMIN))
--			return -EPERM;
--		break;
-+	case AIROGWEPKTMP:  ridcode = RID_WEP_TEMP;	break;
-+	case AIROGWEPKNV:   ridcode = RID_WEP_PERM;	break;
- 	case AIROGSTAT:     ridcode = RID_STATUS;       break;
- 	case AIROGSTATSD32: ridcode = RID_STATSDELTA;   break;
- 	case AIROGSTATSC32: ridcode = RID_STATS;        break;
-@@ -7813,6 +7805,12 @@ static int readrids(struct net_device *dev, aironet_ioctl *comp) {
- 		return -EINVAL;
+diff --git a/drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtc8192e2ant.c b/drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtc8192e2ant.c
+index 3c96c320236c..658ff425c256 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtc8192e2ant.c
++++ b/drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtc8192e2ant.c
+@@ -862,7 +862,7 @@ static void btc8192e2ant_set_sw_rf_rx_lpf_corner(struct btc_coexist *btcoexist,
+ 		/* Resume RF Rx LPF corner
+ 		 * After initialized, we can use coex_dm->btRf0x1eBackup
+ 		 */
+-		if (btcoexist->initilized) {
++		if (btcoexist->initialized) {
+ 			RT_TRACE(rtlpriv, COMP_BT_COEXIST, DBG_LOUD,
+ 				 "[BTCoex], Resume RF Rx LPF corner!!\n");
+ 			btcoexist->btc_set_rf_reg(btcoexist, BTC_RF_A, 0x1e,
+diff --git a/drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtcoutsrc.c b/drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtcoutsrc.c
+index 191dafd03189..a4940a3842de 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtcoutsrc.c
++++ b/drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtcoutsrc.c
+@@ -1461,7 +1461,7 @@ void exhalbtc_init_coex_dm(struct btc_coexist *btcoexist)
+ 			ex_btc8192e2ant_init_coex_dm(btcoexist);
  	}
  
-+	if (ridcode == RID_WEP_TEMP || ridcode == RID_WEP_PERM) {
-+		/* Only super-user can read WEP keys */
-+		if (!capable(CAP_NET_ADMIN))
-+			return -EPERM;
-+	}
-+
- 	if ((iobuf = kzalloc(RIDSIZE, GFP_KERNEL)) == NULL)
- 		return -ENOMEM;
+-	btcoexist->initilized = true;
++	btcoexist->initialized = true;
+ }
  
+ void exhalbtc_ips_notify(struct btc_coexist *btcoexist, u8 type)
+diff --git a/drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtcoutsrc.h b/drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtcoutsrc.h
+index 8c0a7fdbf200..a96a995dd850 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtcoutsrc.h
++++ b/drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtcoutsrc.h
+@@ -679,7 +679,7 @@ struct btc_coexist {
+ 	bool auto_report_2ant;
+ 	bool dbg_mode_1ant;
+ 	bool dbg_mode_2ant;
+-	bool initilized;
++	bool initialized;
+ 	bool stop_coex_dm;
+ 	bool manual_control;
+ 	struct btc_statistics statistics;
 -- 
-2.21.1
+2.24.0
 
