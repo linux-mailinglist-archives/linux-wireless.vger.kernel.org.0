@@ -2,61 +2,70 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BCC6614601C
-	for <lists+linux-wireless@lfdr.de>; Thu, 23 Jan 2020 01:51:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4986014611E
+	for <lists+linux-wireless@lfdr.de>; Thu, 23 Jan 2020 05:08:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726170AbgAWAvW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 22 Jan 2020 19:51:22 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:52784 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725911AbgAWAvW (ORCPT
+        id S1726054AbgAWEIe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 22 Jan 2020 23:08:34 -0500
+Received: from forward104p.mail.yandex.net ([77.88.28.107]:46660 "EHLO
+        forward104p.mail.yandex.net" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725989AbgAWEId (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 22 Jan 2020 19:51:22 -0500
-Received: from [82.43.126.140] (helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1iuQiL-00072x-Tt; Thu, 23 Jan 2020 00:51:18 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     gKalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        wcn36xx@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] wcn36xx: rockchip: fix spelling mistake "to" -> "too"
-Date:   Thu, 23 Jan 2020 00:51:17 +0000
-Message-Id: <20200123005117.2833765-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.24.0
+        Wed, 22 Jan 2020 23:08:33 -0500
+X-Greylist: delayed 373 seconds by postgrey-1.27 at vger.kernel.org; Wed, 22 Jan 2020 23:08:33 EST
+Received: from forward103q.mail.yandex.net (forward103q.mail.yandex.net [IPv6:2a02:6b8:c0e:50:0:640:b21c:d009])
+        by forward104p.mail.yandex.net (Yandex) with ESMTP id 9300E4B00AC8;
+        Thu, 23 Jan 2020 07:02:15 +0300 (MSK)
+Received: from mxback6q.mail.yandex.net (mxback6q.mail.yandex.net [IPv6:2a02:6b8:c0e:42:0:640:9de5:975f])
+        by forward103q.mail.yandex.net (Yandex) with ESMTP id 8EDB661E0020;
+        Thu, 23 Jan 2020 07:02:15 +0300 (MSK)
+Received: from vla1-bdd5685c3f79.qloud-c.yandex.net (vla1-bdd5685c3f79.qloud-c.yandex.net [2a02:6b8:c0d:4201:0:640:bdd5:685c])
+        by mxback6q.mail.yandex.net (mxback/Yandex) with ESMTP id BBOVZMhRWH-2FCGlq4I;
+        Thu, 23 Jan 2020 07:02:15 +0300
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; s=mail; t=1579752135;
+        bh=wltdw+Y4FZfJ9AEZIulqrneDatNp8MsguFUdlmxFers=;
+        h=In-Reply-To:Subject:To:From:Cc:References:Date:Message-ID;
+        b=UA8h69O2dtycNGBniGLuAFAdtO2KDI3BCDwsoD+NKV10y1dk4ia2dLTvZVikTOwgv
+         5G6JyNkor8Q8Uv7HCJtJowNOs2MQUrOXVJVmwH1jPzrJA6z5oOHquzsIND4/xriy6N
+         EJtYujmbAKeoaaGFyXlQV8yiCJtgBa1RSbqhhvrA=
+Authentication-Results: mxback6q.mail.yandex.net; dkim=pass header.i=@flygoat.com
+Received: by vla1-bdd5685c3f79.qloud-c.yandex.net (smtp/Yandex) with ESMTPSA id OCBBbOW1gm-2BxGIxe2;
+        Thu, 23 Jan 2020 07:02:14 +0300
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+        (Client certificate not present)
+From:   Jiaxun Yang <jiaxun.yang@flygoat.com>
+To:     linux-stable@vger.kernel.org, Luca Coelho <luca@coelho.fi>
+Cc:     linux-wireless@vger.kernel.org
+Subject: Stable Backport Request: iwlwifi: mvm: fix non-ACPI function
+Date:   Thu, 23 Jan 2020 12:02:02 +0800
+Message-ID: <1742750.tdWV9SEqCh@flygoat-x1e>
+In-Reply-To: <20191020085545.16407-11-luca@coelho.fi>
+References: <20191020085545.16407-1-luca@coelho.fi> <20191020085545.16407-11-luca@coelho.fi>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+=E5=9C=A8 2019=E5=B9=B410=E6=9C=8820=E6=97=A5=E6=98=9F=E6=9C=9F=E6=97=A5 CS=
+T =E4=B8=8B=E5=8D=884:55:45=EF=BC=8CLuca Coelho =E5=86=99=E9=81=93:
+Hi  Stable and wireless:
 
-There is a spelling mistake in a wcn36xx_err message. Fix it.
+I believe that Upstream Commit:
 
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/net/wireless/ath/wcn36xx/smd.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+7937fd3227055892e169f4b34d21157e57d919e2
+iwlwifi: mvm: fix non-ACPI function
 
-diff --git a/drivers/net/wireless/ath/wcn36xx/smd.c b/drivers/net/wireless/ath/wcn36xx/smd.c
-index 523550f94a3f..77269ac7f352 100644
---- a/drivers/net/wireless/ath/wcn36xx/smd.c
-+++ b/drivers/net/wireless/ath/wcn36xx/smd.c
-@@ -1620,7 +1620,7 @@ int wcn36xx_smd_send_beacon(struct wcn36xx *wcn, struct ieee80211_vif *vif,
- 	msg_body.beacon_length6 = msg_body.beacon_length + 6;
- 
- 	if (msg_body.beacon_length > BEACON_TEMPLATE_SIZE) {
--		wcn36xx_err("Beacon is to big: beacon size=%d\n",
-+		wcn36xx_err("Beacon is too big: beacon size=%d\n",
- 			      msg_body.beacon_length);
- 		ret = -ENOMEM;
- 		goto out;
--- 
-2.24.0
+Should be backported to 5.4-stable as iwlwifi failed to initialize
+8200AC card on Loongson systems without ACPI support.
+
+Thanks.
+
+=2D-
+Jiaxun Yang
+
+
+
 
