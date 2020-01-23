@@ -2,192 +2,96 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 77195146654
-	for <lists+linux-wireless@lfdr.de>; Thu, 23 Jan 2020 12:09:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C80DD1467A6
+	for <lists+linux-wireless@lfdr.de>; Thu, 23 Jan 2020 13:12:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726703AbgAWLJw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 23 Jan 2020 06:09:52 -0500
-Received: from mail25.static.mailgun.info ([104.130.122.25]:18538 "EHLO
-        mail25.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726026AbgAWLJw (ORCPT
+        id S1726590AbgAWMMJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 23 Jan 2020 07:12:09 -0500
+Received: from mail-vs1-f68.google.com ([209.85.217.68]:41369 "EHLO
+        mail-vs1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726026AbgAWMMJ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 23 Jan 2020 06:09:52 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1579777791; h=Date: Message-Id: Cc: To: Subject: From:
- Content-Transfer-Encoding: MIME-Version: Content-Type: Sender;
- bh=jIU99pv6hOFOAlASDfRIFhdKALyIOfG4UkdYz7zOhzM=; b=sSg/nFjNiClnEFki4TZBgGG31X23i02Hxtu0ZoF46oM+CfYOU9nbzGt0IUFcPXXrgmyehMjC
- J8RVPin/gXL23f7Ym1anADKdM/7wwSmcBjxYmVt+WkiuepYenyEb2MJsg2so2VVfOs/Ar9ar
- ALlR+tQUogTaWWx/umSw9GVZugU=
-X-Mailgun-Sending-Ip: 104.130.122.25
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e297efe.7f0700ec5e68-smtp-out-n01;
- Thu, 23 Jan 2020 11:09:50 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 31AF8C433CB; Thu, 23 Jan 2020 11:09:49 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
-        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 351D8C43383;
-        Thu, 23 Jan 2020 11:09:47 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 351D8C43383
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        Thu, 23 Jan 2020 07:12:09 -0500
+Received: by mail-vs1-f68.google.com with SMTP id k188so1553968vsc.8
+        for <linux-wireless@vger.kernel.org>; Thu, 23 Jan 2020 04:12:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=9qVnN+i/91XCi89WmTvmn1d9sJ27U3Ed0a+QjCWqw+k=;
+        b=bnbWIHsTsAIAilOUjwzOejUbocSPXGVxvXbmanc5PTt7gdevKtL0pLQ1L1gWni/XkX
+         q/I4HusjnQ3b3TTqHwJWC/en4wJgRS4MctKv7U7fehyDDETEe1TU+8xsAytj53aErzw1
+         iwc6xodFUtEck04x3GwAKy79h3I/xSyfK2sMTUX1ET5nL8mnhz5wvxWil5/IrgOHNmVC
+         tIKAM86d7YkiushwXQt13C2C4P12VTPawiI9IK7pZ3qut0mhYzN4gKnTB7p5b03UUwlc
+         FGEU6bAP2i2s0eiHCC6hb7LFYQ6WgB8ZJxW+jx9vNx4pFhTAqJ4dedUYDXPwIhCOK+Wt
+         CEZg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=9qVnN+i/91XCi89WmTvmn1d9sJ27U3Ed0a+QjCWqw+k=;
+        b=cUYgA2HZSIZKRfHB0VRb1+yTeO1YA8NFOCIPYtaSxJHwqU69BGiYsK5SPrH+2cmCHZ
+         tjqD4flSjqRGFkhvTbogTDNNpCndshQk51Wfl/CJyhiqSXkTCNDUodNn9wKuKlURg634
+         iNjV1Ei9c0erOpJSOPLb3jQ6s3sGHV1myRX3DStlqy4nxuAmBbzTxp8l1an6pnuP/YuD
+         1gUcR0bPjf4TRe1c2zRN/9BRR9efU8xioe1hwtgQBv6tLo/yWdkWpxwqkVrpiRW/9t/O
+         StGrvhSsNT7/GuSyGSifMU+2xrGW346GjKUutZTEBIfDWkbmj7qzf6YtRcaLzma4AGXX
+         bP4g==
+X-Gm-Message-State: APjAAAV7w5Qg5yucbAt9YGf+RueTQ5YkiHKmj5hp4Oj9r6T6UfvduKBb
+        Qi/YTJRFGdD2zlGMdsvYigB7wPOM+NqkfRTNCk4=
+X-Google-Smtp-Source: APXvYqx+APAekwKBuE51Gpt+HiIHX5dpr4xt2evgYzJQ6BsfN81yX281T5061pCobZt+HtIr8RSIcJIfnQd8eD1Voz4=
+X-Received: by 2002:a67:fb8a:: with SMTP id n10mr5801639vsr.82.1579781528535;
+ Thu, 23 Jan 2020 04:12:08 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From:   Kalle Valo <kvalo@codeaurora.org>
-Subject: pull-request: wireless-drivers-2020-01-23
-To:     netdev@vger.kernel.org
-Cc:     linux-wireless@vger.kernel.org
-Message-Id: <20200123110949.31AF8C433CB@smtp.codeaurora.org>
-Date:   Thu, 23 Jan 2020 11:09:49 +0000 (UTC)
+Received: by 2002:a67:f40a:0:0:0:0:0 with HTTP; Thu, 23 Jan 2020 04:12:08
+ -0800 (PST)
+Reply-To: mariamorwa100@gmail.com
+From:   MARIAM ORWA <mariamorwa01@gmail.com>
+Date:   Thu, 23 Jan 2020 12:12:08 +0000
+Message-ID: <CAM1mEPOD-uNi7dSpbZvM-wtH4=-ft1C50RBCdcZnnt9ksc+tXA@mail.gmail.com>
+Subject: VERY IMPORTANT /TREAT AND REPLY URGENT
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+Hello My Dear Friend,
 
-here's a pull request to net tree, more info below. Please let me know if there
-are any problems.
+With due respect to your person and much sincerity of purpose, It=E2=80=99s=
+ my
+pleasure to write you today, I am Mrs  Mariam Orwa, I work in a bank.
+and I get your contact from internet search I hope that you will not
+expose or betray this trust and confident that am about to repose in
+you for the benefit of our both families.
 
-Kalle
+Am in need of your help as a foreigner to transfer fourteen Million Usd
+($14000000.00, Million U.S.dollar) into your bank account,The fund is for
+late Sir Ratnavale Victor,dual citizen of Switzerland and Britain whom
+died in a Plane crash many years back living nobody as the next of kin
+to the fund. Risk is completely 100% free for this transaction.
 
-The following changes since commit ddd9b5e3e765d8ed5a35786a6cb00111713fe161:
+Please I will like you to keep this proposal as a top secret or delete
+it from your mail box, if you are not interested. Also note that you
+will have 40% of the above mentioned sum, if you agree to transact
+this business with me.
 
-  net-sysfs: Call dev_hold always in rx_queue_add_kobject (2019-12-17 22:57:11 -0800)
+while 60% will be for me. I will give you full details of this transaction
+immediately you notify me your interest by sending your data information to
+me.Also know that immediately this fund is transfered to your account,
+I will resign from my work and come over to your country  for the sharing
+of the money and for you to help me and direct me on what is profitable tha=
+t
+i can invest my own share of the money on it in your country.
 
-are available in the git repository at:
+Your Full Name,........
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers.git tags/wireless-drivers-2020-01-23
+Your Country.............
 
-for you to fetch changes up to d829229e35f302fd49c052b5c5906c90ecf9911d:
+Your Age.................
 
-  iwlwifi: mvm: don't send the IWL_MVM_RXQ_NSSN_SYNC notif to Rx queues (2020-01-22 19:13:28 +0200)
+Phone Number............
 
-----------------------------------------------------------------
-wireless-drivers fixes for v5.5
-
-Second set of fixes for v5.5. There are quite a few patches,
-especially on iwlwifi, due to me being on a long break. Libertas also
-has a security fix and mt76 a build fix.
-
-iwlwifi
-
-* don't send the PPAG command when PPAG is disabled, since it can cause problems
-
-* a few fixes for a HW bug
-
-* a fix for RS offload;
-
-* a fix for 3168 devices where the NVM tables where the wrong tables were being read
-
-* fix a couple of potential memory leaks in TXQ code
-
-* disable L0S states in all hardware since our hardware doesn't
- officially support them anymore (and older versions of the hardware
- had instability in these states)
-
-* remove lar_disable parameter since it has been causing issues for
-  some people who erroneously disable it
-
-* force the debug monitor HW to stop also when debug is disabled,
-  since it sometimes stays on and prevents low system power states
-
-* don't send IWL_MVM_RXQ_NSSN_SYNC notification due to DMA problems
-
-libertas
-
-* fix two buffer overflows
-
-mt76
-
-* build fix related to CONFIG_MT76_LEDS
-
-* fix off by one in bitrates handling
-
-----------------------------------------------------------------
-Arnd Bergmann (1):
-      mt76: fix LED link time failure
-
-Dan Carpenter (1):
-      mt76: Off by one in mt76_calc_rx_airtime()
-
-Emmanuel Grumbach (1):
-      iwlwifi: mvm: don't send the IWL_MVM_RXQ_NSSN_SYNC notif to Rx queues
-
-Gil Adam (1):
-      iwlwifi: don't send PPAG command if disabled
-
-Haim Dreyfuss (1):
-      iwlwifi: Don't ignore the cap field upon mcc update
-
-Johannes Berg (8):
-      iwlwifi: pcie: move page tracking into get_page_hdr()
-      iwlwifi: pcie: work around DMA hardware bug
-      iwlwifi: pcie: detect the DMA bug and warn if it happens
-      iwlwifi: pcie: allocate smaller dev_cmd for TX headers
-      iwlwifi: mvm: report TX rate to mac80211 directly for RS offload
-      iwlwifi: pcie: extend hardware workaround to context-info
-      iwlwifi: mvm: fix SKB leak on invalid queue
-      iwlwifi: mvm: fix potential SKB leak on TXQ TX
-
-Kalle Valo (1):
-      Merge tag 'iwlwifi-for-kalle-2020-01-11' of git://git.kernel.org/.../iwlwifi/iwlwifi-fixes
-
-Luca Coelho (6):
-      iwlwifi: fix TLV fragment allocation loop
-      iwlwifi: mvm: fix NVM check for 3168 devices
-      iwlwifi: pcie: rename L0S_ENABLED bit to L0S_DISABLED
-      iwlwifi: pcie: always disable L0S states
-      iwlwifi: remove lar_disable module parameter
-      iwlwifi: fw: make pos static in iwl_sar_get_ewrd_table() loop
-
-Mehmet Akif Tasova (1):
-      Revert "iwlwifi: mvm: fix scan config command size"
-
-Shahar S Matityahu (1):
-      iwlwifi: dbg: force stop the debug monitor HW
-
-Stanislaw Gruszka (1):
-      MAINTAINERS: change Gruszka's email address
-
-Wen Huang (1):
-      libertas: Fix two buffer overflows at parsing bss descriptor
-
- MAINTAINERS                                        |   4 +-
- drivers/net/wireless/intel/iwlwifi/dvm/tx.c        |   3 +-
- drivers/net/wireless/intel/iwlwifi/fw/acpi.c       |  10 +-
- drivers/net/wireless/intel/iwlwifi/fw/dbg.c        |   7 +-
- drivers/net/wireless/intel/iwlwifi/iwl-csr.h       |   2 +-
- drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c   |   9 +-
- drivers/net/wireless/intel/iwlwifi/iwl-drv.c       |   3 -
- drivers/net/wireless/intel/iwlwifi/iwl-modparams.h |   2 -
- drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c |  61 +++++-
- drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.h |   9 +-
- drivers/net/wireless/intel/iwlwifi/iwl-trans.c     |  10 +-
- drivers/net/wireless/intel/iwlwifi/iwl-trans.h     |  26 ++-
- drivers/net/wireless/intel/iwlwifi/mvm/constants.h |   1 +
- drivers/net/wireless/intel/iwlwifi/mvm/fw.c        |   8 +-
- drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c  | 157 ++++++++++++++--
- drivers/net/wireless/intel/iwlwifi/mvm/mvm.h       |   7 +-
- drivers/net/wireless/intel/iwlwifi/mvm/nvm.c       |  12 +-
- drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c      |  19 +-
- drivers/net/wireless/intel/iwlwifi/mvm/scan.c      |   2 +-
- drivers/net/wireless/intel/iwlwifi/mvm/tx.c        |  21 +--
- .../net/wireless/intel/iwlwifi/pcie/ctxt-info.c    |  45 ++++-
- drivers/net/wireless/intel/iwlwifi/pcie/internal.h |  19 +-
- drivers/net/wireless/intel/iwlwifi/pcie/trans.c    |  47 +++--
- drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c  | 208 +++++++++++++++++----
- drivers/net/wireless/intel/iwlwifi/pcie/tx.c       |  68 ++++---
- drivers/net/wireless/marvell/libertas/cfg.c        |  16 +-
- drivers/net/wireless/mediatek/mt76/airtime.c       |   2 +-
- drivers/net/wireless/mediatek/mt76/mac80211.c      |   3 +-
- 28 files changed, 596 insertions(+), 185 deletions(-)
+Waiting for your urgent reply
+Yours Mariam Orwa
