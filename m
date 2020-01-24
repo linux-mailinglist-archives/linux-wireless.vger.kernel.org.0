@@ -2,95 +2,95 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 81F981488D4
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 Jan 2020 15:31:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 975E91489AF
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 Jan 2020 15:37:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2403794AbgAXObJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 24 Jan 2020 09:31:09 -0500
-Received: from mail.kernel.org ([198.145.29.99]:41580 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731125AbgAXOUa (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 24 Jan 2020 09:20:30 -0500
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B93932087E;
-        Fri, 24 Jan 2020 14:20:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1579875629;
-        bh=OHbEb95UQ/uDxKtaT7TWCgF3ujdAcFfh7VMwS96ofwA=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rKXAwtcFg9OdFDhXzP9WZakOLJVTEj6lgRRpY24r46WPdAW9ZSnAUB0ZKf+Wp8Au3
-         Mb+nm8tFbEgVYf8prPx3UXycXx4PyjP0xGIqR5Nkc/rkp6CodwL7bLPAcKQnfqC+wD
-         F7zY71GQ3QidsRJpgXOqsmqmQB/rJ4pzdxjIxNsE=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Markus Theil <markus.theil@tu-ilmenau.de>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Sasha Levin <sashal@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 14/56] mac80211: mesh: restrict airtime metric to peered established plinks
-Date:   Fri, 24 Jan 2020 09:19:30 -0500
-Message-Id: <20200124142012.29752-14-sashal@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200124142012.29752-1-sashal@kernel.org>
-References: <20200124142012.29752-1-sashal@kernel.org>
+        id S2387544AbgAXOg3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 24 Jan 2020 09:36:29 -0500
+Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:52878 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S2387432AbgAXOg2 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 24 Jan 2020 09:36:28 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1579876587;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=Wj/1Np6tPiIHIdRkmXqH+0Q7Vx47Fnaoj8U+49DUvSE=;
+        b=M7fhiPcm49PZ7LeJoVrRNwU/fe4LDai30qHF2bw0aF32jRGI4pzJ/NEqOqVtzQrAGxoymW
+        RYroOKeC1kWKmmTqfZHmm+PdMFJ6yozI+fyM1mJc8opqUcIvxIje7pk54MCBozMNebVFTu
+        er35tE+dygcwdKx/1COgUJwVmX6AgSU=
+Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
+ [209.85.208.200]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-362-k3VuTjwfNSOHMDMD9f7JqA-1; Fri, 24 Jan 2020 09:36:25 -0500
+X-MC-Unique: k3VuTjwfNSOHMDMD9f7JqA-1
+Received: by mail-lj1-f200.google.com with SMTP id v1so709561lja.21
+        for <linux-wireless@vger.kernel.org>; Fri, 24 Jan 2020 06:36:25 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
+         :message-id:mime-version;
+        bh=Wj/1Np6tPiIHIdRkmXqH+0Q7Vx47Fnaoj8U+49DUvSE=;
+        b=hy4dZpbjwEb4fO2K78JAma8B5xkKrtyKg6nR7jd0bxvwXDutuW/t5KSpXEPe+Ccmif
+         KCB79sFSX1E8u1CSIsRoMFS97f/cYCVXh+WzEMKV2qKIN2CgWaJ1GIwwUiR645reksZ8
+         5sO4EEuzzk9D+F/z8etoJBcAlUez3uPkZnLoJ6NOZugKxMTbsnMuEGkORfRh+1nQ+ek6
+         /S4FLUxzqj8jNU1v+ySHrWrccm9pGWdilXiR9sT5hGqz16+b9M5xgRxclI49xwocX2O4
+         y56+E0eBHkrlw02MbiLjHTsz6bRRs5BAT37VLPEXh2xO19qQVt7THc/40N6wMzVlHtWh
+         gaag==
+X-Gm-Message-State: APjAAAXQVIo3CGJyId+VjLYog2zQpLKAi0bxSK86+QVp5CcEGenr0/Y0
+        OJO1gumoW/Ml4HVej+GF5iJJQbF+mmxCzsazSSZLM8/hAZpZ73SS72mmvbA2NzDqjYLd4aSwzEj
+        25+qsEra7HMH1+8n2HqEFGMowDio=
+X-Received: by 2002:a19:94d:: with SMTP id 74mr1465832lfj.144.1579876583878;
+        Fri, 24 Jan 2020 06:36:23 -0800 (PST)
+X-Google-Smtp-Source: APXvYqznCkM+SnfubCMRf3++pc/n1dVTMwKmIt4aEhx4XEEmHCTRW135YSQE1CXbO/PlbROKBeBGGA==
+X-Received: by 2002:a19:94d:: with SMTP id 74mr1465821lfj.144.1579876583661;
+        Fri, 24 Jan 2020 06:36:23 -0800 (PST)
+Received: from alrua-x1.borgediget.toke.dk ([85.204.121.218])
+        by smtp.gmail.com with ESMTPSA id v5sm3136380ljk.67.2020.01.24.06.36.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 24 Jan 2020 06:36:23 -0800 (PST)
+Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
+        id 41623180073; Fri, 24 Jan 2020 15:36:22 +0100 (CET)
+From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless@vger.kernel.org
+Cc:     Kalle Valo <kvalo@codeaurora.org>
+Subject: Re: REMINDER: wireless workshop at netdevconf 0x14, registration now open
+In-Reply-To: <70df55a1da3e8a99c6d2fc3a479c9c0eed3b71a0.camel@sipsolutions.net>
+References: <70df55a1da3e8a99c6d2fc3a479c9c0eed3b71a0.camel@sipsolutions.net>
+X-Clacks-Overhead: GNU Terry Pratchett
+Date:   Fri, 24 Jan 2020 15:36:22 +0100
+Message-ID: <87zhecgbvd.fsf@toke.dk>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Markus Theil <markus.theil@tu-ilmenau.de>
+Johannes Berg <johannes@sipsolutions.net> writes:
 
-[ Upstream commit 02a614499600af836137c3fbc4404cd96365fff2 ]
+> Hi all,
+>
+> Just a reminder. We will be having a wireless workshop at netdevconf
+> 0x14 in Vancouver, BC. As far as I know, it's scheduled for day 1, i.e.
+> March 17th.
+>
+> https://netdevconf.info/0x14/
+>
+> Since some people have asked: In order to attend the wireless workshop
+> you only need to be registered for the conference, there are no other
+> restrictions.
+>
+> If you have anything you'd like to present or any topics to suggest, let
+> Kalle or myself know!
 
-The following warning is triggered every time an unestablished mesh peer
-gets dumped. Checks if a peer link is established before retrieving the
-airtime link metric.
+Won't be able to make it to Vancouver myself, unfortunately, but you
+guys have fun!
 
-[ 9563.022567] WARNING: CPU: 0 PID: 6287 at net/mac80211/mesh_hwmp.c:345
-               airtime_link_metric_get+0xa2/0xb0 [mac80211]
-[ 9563.022697] Hardware name: PC Engines apu2/apu2, BIOS v4.10.0.3
-[ 9563.022756] RIP: 0010:airtime_link_metric_get+0xa2/0xb0 [mac80211]
-[ 9563.022838] Call Trace:
-[ 9563.022897]  sta_set_sinfo+0x936/0xa10 [mac80211]
-[ 9563.022964]  ieee80211_dump_station+0x6d/0x90 [mac80211]
-[ 9563.023062]  nl80211_dump_station+0x154/0x2a0 [cfg80211]
-[ 9563.023120]  netlink_dump+0x17b/0x370
-[ 9563.023130]  netlink_recvmsg+0x2a4/0x480
-[ 9563.023140]  ____sys_recvmsg+0xa6/0x160
-[ 9563.023154]  ___sys_recvmsg+0x93/0xe0
-[ 9563.023169]  __sys_recvmsg+0x7e/0xd0
-[ 9563.023210]  do_syscall_64+0x4e/0x140
-[ 9563.023217]  entry_SYSCALL_64_after_hwframe+0x44/0xa9
+Topics - Maybe trying to Tom Sawyer someone into finally porting the
+regular mac80211 TX path to go via TXQs? :)
 
-Signed-off-by: Markus Theil <markus.theil@tu-ilmenau.de>
-Link: https://lore.kernel.org/r/20191203180644.70653-1-markus.theil@tu-ilmenau.de
-[rewrite commit message]
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- net/mac80211/mesh_hwmp.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/net/mac80211/mesh_hwmp.c b/net/mac80211/mesh_hwmp.c
-index 6950cd0bf5940..740dc9fa127cd 100644
---- a/net/mac80211/mesh_hwmp.c
-+++ b/net/mac80211/mesh_hwmp.c
-@@ -326,6 +326,9 @@ static u32 airtime_link_metric_get(struct ieee80211_local *local,
- 	unsigned long fail_avg =
- 		ewma_mesh_fail_avg_read(&sta->mesh->fail_avg);
- 
-+	if (sta->mesh->plink_state != NL80211_PLINK_ESTAB)
-+		return MAX_METRIC;
-+
- 	/* Try to get rate based on HW/SW RC algorithm.
- 	 * Rate is returned in units of Kbps, correct this
- 	 * to comply with airtime calculation units
--- 
-2.20.1
+-Toke
 
