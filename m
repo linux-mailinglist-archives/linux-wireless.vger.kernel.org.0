@@ -2,114 +2,104 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 449FA148E24
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 Jan 2020 19:59:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D112149224
+	for <lists+linux-wireless@lfdr.de>; Sat, 25 Jan 2020 00:49:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391725AbgAXS7R (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 24 Jan 2020 13:59:17 -0500
-Received: from paleale.coelho.fi ([176.9.41.70]:54886 "EHLO
-        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S2389376AbgAXS7R (ORCPT
+        id S1729530AbgAXXtT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 24 Jan 2020 18:49:19 -0500
+Received: from mail-pj1-f48.google.com ([209.85.216.48]:55372 "EHLO
+        mail-pj1-f48.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729147AbgAXXtT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 24 Jan 2020 13:59:17 -0500
-Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa)
-        by farmhouse.coelho.fi with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.92.2)
-        (envelope-from <luca@coelho.fi>)
-        id 1iv4Ai-00058m-6E; Fri, 24 Jan 2020 20:59:12 +0200
-Message-ID: <2fb702500e0232083956f6ac1b3cf60bc2e65914.camel@coelho.fi>
-From:   Luca Coelho <luca@coelho.fi>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     linux-wireless@vger.kernel.org, linuxwifi@intel.com,
-        david.e.box@intel.com, joe.konno@intel.com
-Date:   Fri, 24 Jan 2020 20:59:10 +0200
-In-Reply-To: <875zh0ewuz.fsf@kamboji.qca.qualcomm.com>
-References: <f548bee28a2ef4700a024e33c02b62893af498c7.camel@coelho.fi>
-         <87eevoex5m.fsf@kamboji.qca.qualcomm.com>
-         <875zh0ewuz.fsf@kamboji.qca.qualcomm.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.1-2+b1 
+        Fri, 24 Jan 2020 18:49:19 -0500
+Received: by mail-pj1-f48.google.com with SMTP id d5so484091pjz.5;
+        Fri, 24 Jan 2020 15:49:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=moF1ZyovcBBfBqfEzcD3uJdsfAd0Eoiy0NYti5D6FQc=;
+        b=Q1qOuG3k6bI3d/sCC2ZVVn2pJoWJtNLYmP4OXgGSr0giyUBORK+Am55nXdFYPsUEI9
+         cp3Ln8GxX6LtYRthuR5vHomz/0FbeRaCrXI9pXVa4+4LPoSUjdgQ1IbIeXt7ludyQzEF
+         WhBX7nDOza8c6kIYutDlnpgLkccWeNg+Q+ayiBF77/KyCXToQ6mlEi0x2NZDoXlCJLPZ
+         7zQwekXBfHDL17IMF2bwullqv/DRGlxPQvZ77GiVqdEE/kYlT/+DZpAIqQUbJMJGGwEg
+         QlIl0f6LmtHNR2ikhPnM7Gw4oSjKld57n3IQYRN3CCc8OsrimRjAhT3Ke74FiasQg58z
+         uEgA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=moF1ZyovcBBfBqfEzcD3uJdsfAd0Eoiy0NYti5D6FQc=;
+        b=LRz0qekEZYPkjv3119TI7dzfqwZepO/7F/s9j/+NfXdHLQGcwRqHho6nwPRPhp9zlF
+         9tf3jM9pwm6kvqMmu4yleod1LEaSUhcvaXXnfI8YHSh647fyZEroX2r3wHG3liXLbrSo
+         MZxrZMDJoyZLB5IhMgX05jYK7B7Ks65z4S7E1MbiGhmQG43iS2LK86Qjf90P9k4bmLR9
+         5N67b3Xk7OidUep4ypchVQw6SlQ0lk2YP0to1B+ruznN91I5zz/mABHJ7KLPSEmWaSpH
+         f5+ZQuDgSHUqjLC6Gf77N4PVrTqkV/juRFtO62g/csTOpuR10Q175OZ4GhKOPzCjU4If
+         TAlw==
+X-Gm-Message-State: APjAAAUFXjPHg9+Qeo5SvSAYoVNUlllWDQqv5jgQagJywXYgO0Y1bi3v
+        NdQwGi/NrDkOUNfq+57CkbHnXd6m
+X-Google-Smtp-Source: APXvYqxTW0slf51CuFlMiJmQhPi96oNyuyV7QrWsyHdag6d6GXN16mePt8TkbLB82ynjoale57lz4A==
+X-Received: by 2002:a17:90a:fe8:: with SMTP id 95mr1938251pjz.98.1579909758046;
+        Fri, 24 Jan 2020 15:49:18 -0800 (PST)
+Received: from ?IPv6:2620:15c:2c1:200:55c7:81e6:c7d8:94b? ([2620:15c:2c1:200:55c7:81e6:c7d8:94b])
+        by smtp.gmail.com with ESMTPSA id e16sm7577660pgk.77.2020.01.24.15.49.16
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 24 Jan 2020 15:49:17 -0800 (PST)
+Subject: Re: debugging TCP stalls on high-speed wifi
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        Krishna Chaitanya <chaitanya.mgit@gmail.com>
+Cc:     Neal Cardwell <ncardwell@google.com>,
+        =?UTF-8?Q?Toke_H=c3=b8iland-J=c3=b8rgensen?= <toke@redhat.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Netdev <netdev@vger.kernel.org>
+References: <14cedbb9300f887fecc399ebcdb70c153955f876.camel@sipsolutions.net>
+ <CADVnQym_CNktZ917q0-9dVY9dhtiJVRRotGTrPNdZUpkjd3vyw@mail.gmail.com>
+ <f4670ce0f4399fe82e7168fb9c491d8eb718e8d8.camel@sipsolutions.net>
+ <99748db5-7898-534b-d407-ed819f07f939@gmail.com>
+ <ff6b35ad589d7cf0710cb9fca4c799538da2e653.camel@sipsolutions.net>
+ <CABPxzYJZLHBvtjN7=-hPiUK1XU_b60m8Wpw4tHsT7zOQwZWRVw@mail.gmail.com>
+ <ef348261c1edd9892b09ed017a59be23aa2be688.camel@sipsolutions.net>
+From:   Eric Dumazet <eric.dumazet@gmail.com>
+Message-ID: <9f984cda-2209-fa07-569e-2555ef2aa78d@gmail.com>
+Date:   Fri, 24 Jan 2020 15:49:15 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.2
 MIME-Version: 1.0
+In-Reply-To: <ef348261c1edd9892b09ed017a59be23aa2be688.camel@sipsolutions.net>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on farmhouse.coelho.fi
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
-        TVD_RCVD_IP,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.2
-Subject: Re: pull-request: iwlwifi-next 2020-01-11
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 2020-01-24 at 16:45 +0200, Kalle Valo wrote:
-> Kalle Valo <kvalo@codeaurora.org> writes:
+
+
+On 1/24/20 2:34 AM, Johannes Berg wrote:
+> On Fri, 2019-12-13 at 14:40 +0530, Krishna Chaitanya wrote:
+>>
+>> Maybe try 'reno' instead of 'cubic' to see if congestion control is
+>> being too careful?
 > 
-> > Luca Coelho <luca@coelho.fi> writes:
-> > 
-> > > Here's the fist batch of patches intended for v5.6.  This includes
-> > > the last two patchsets I sent out.  Usual development work.  More
-> > > details about the contents in the tag description.
-> > > 
-> > > I pushed these patches to my pending branch, but it was just now, so I
-> > > didn't get the results from kbuildbot yet.
-> > > 
-> > > Please let me know if there are any issues.
-> > > 
-> > > Cheers,
-> > > Luca.
-> > > 
-> > > 
-> > > The following changes since commit ae0a723c4cfd89dad31ce238f47ccfbe81b35b84:
-> > > 
-> > >   Merge ath-next from
-> > > git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git
-> > > (2019-12-19 18:27:36 +0200)
-> > > 
-> > > are available in the Git repository at:
-> > > 
-> > >   git://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/iwlwifi-next.git
-> > > tags/iwlwifi-next-for-kalle-2020-01-11
-> > > 
-> > > for you to fetch changes up to 0b295a1eb81f37dc7d4f4f2ee9ef375fb36ab5d8:
-> > > 
-> > >   iwlwifi: add device name to device_info (2020-01-04 12:48:41 +0200)
-> > > 
-> > > ----------------------------------------------------------------
-> > > First set of patches intended for v5.6
-> > > 
-> > > * Support new versions of the FTM FW APIs;
-> > > * Fix an old bug in D3 (WoWLAN);
-> > > * A couple of fixes/improvements in the receive-buffers code;
-> > > * Fix in the debugging where we were skipping one TXQ;
-> > > * Support new version of the beacon template FW API;
-> > > * Print some extra information when the driver is loaded;
-> > > * Some debugging infrastructure (aka. yoyo) updates;
-> > > * Support for a new HW version;
-> > > * Second phase of device configuration work started;
-> > > * Some clean-ups;
-> > > 
-> > > ----------------------------------------------------------------
-> > 
-> > There was a conflict in pcie/drv.c due to this commit:
-> > 
-> > db5cce1afc8d Revert "iwlwifi: assign directly to iwl_trans->cfg in QuZ detection"
-> > 
-> > Please double check my resolution in the pending branch:
-> > 
-> > https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git/commit/?h=pending&id=5e01e8338c9d741dbf473a56f753b9c12344432d
-> > 
-> > I just took the hunk from commit db5cce1afc8d and didn't do any other
-> > changes.
+> I played around with this a bit now, but apart from a few outliers, the
+> congestion control algorithm doesn't have much effect. The outliers are
 > 
-> Wrong link obviously, it should be this one:
+>  * vegas with ~120 Mbps
+>  * nv with ~300 Mbps
+>  * cdg with ~600 Mbps
 > 
-> https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git/commit/?h=pending&id=8dd96ed75b07e0134df24333c5766cf656af60af
+> All the others from my list (reno cubic bbr bic cdg dctcp highspeed htcp
+> hybla illinois lp nv scalable vegas veno westwood yeah) are within 50
+> Mbps or so from each other (around 1.45Gbps).
 > 
 
-Looks good! Thanks for resolving it, Kalle!
+When the stalls happens, what is causing TCP to resume the xmit ?
 
---
-Cheers,
-Luca.
+Some tcpdump traces could help.
+
+(-s 100 to only capture headers)
+
+
 
