@@ -2,98 +2,96 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E716B1474CE
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 Jan 2020 00:29:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DE99F1477B1
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 Jan 2020 05:34:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729613AbgAWX3u (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 23 Jan 2020 18:29:50 -0500
-Received: from mail-pf1-f193.google.com ([209.85.210.193]:41567 "EHLO
-        mail-pf1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729476AbgAWX3q (ORCPT
+        id S1730222AbgAXEen (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 23 Jan 2020 23:34:43 -0500
+Received: from mail-pj1-f66.google.com ([209.85.216.66]:36824 "EHLO
+        mail-pj1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728799AbgAXEen (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 23 Jan 2020 18:29:46 -0500
-Received: by mail-pf1-f193.google.com with SMTP id w62so156644pfw.8
-        for <linux-wireless@vger.kernel.org>; Thu, 23 Jan 2020 15:29:45 -0800 (PST)
+        Thu, 23 Jan 2020 23:34:43 -0500
+Received: by mail-pj1-f66.google.com with SMTP id gv17so242331pjb.1;
+        Thu, 23 Jan 2020 20:34:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=KLJZo46tQPRXDmKRyvfvXMbLAN2h1kL3Vua+/I58BTE=;
-        b=hcYWKNAo8Cy8EeRiueJAEn+mXal6m5OY6GOKQabIHmRKD6AGZLLsfjrNZKv3rt9MFc
-         JTAf6Lqkvg5zu5qR+nH7g7Ou3JUx87svy/KnmRVTQRQNNl+gn/17w+2G1xdrH07eBTrF
-         ey32vEsWdRNpQN0unvqosgXbFWv9VUiHd/tmM=
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
+         :user-agent;
+        bh=slaKvzH5vQEl55keAvrBKgGVpQ4RBWEB5cwMnx6Pme4=;
+        b=VybEWHw4xyxxvRIZISN0/Cxmn+9as/TDFmdhVj2TLkFlgOPIT3y4mZXrwFacxNd4ms
+         qEE1wNonid1KEcI18FWUbHfwUN9jd+s2vlK7JJC/0UFCKM5w5ofGjA9oyqqneJLjQVVw
+         G1QEBxLQkudxLrKqeQGRk2eih8w8UZ9wVO5CrdFwTDDLzaFotzNvk5f4EM7PVh0Nweqx
+         whMPyEDxACinCyJJTLyk9+v5v52h1dnW2ecHHt8KZ1g4SPoW7sYdDfVmLmoisiNkHs3R
+         j2LGLespV2gJ63aTGq8dDOCGR5cYwPgrLBl4ArcMOQn75Z6WaDBq7nfVOZY0gSNcGDB+
+         mEtg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=KLJZo46tQPRXDmKRyvfvXMbLAN2h1kL3Vua+/I58BTE=;
-        b=MAqUrNiNC7IgVaMQoKtJ+4so9F7++Kb/syM6hiO15sFycIpackr/LStZ+DsmAjPD21
-         S0xXaMMGNBG+33LIxD2Eme+W4j2DrqwTE3ZXMlZs6c3r5cywgjP8ELQHXEfPTGTsQ6sy
-         MPyQGp37WXPfKjFwb1DxuoIcT5f3Tg+4p420mgNyj2picjyGnBP2JImNCU4SGBngp3f3
-         pEvaEWp07d/XYOSPs/MYY5/1S3jGty7gsHrwpjL3evXuYGz0q/0KWnQwO4kMoyFdjXr6
-         kt9lqsO8TbS687lhlXefQ23ULO+VU9isy4XvjPR5BZ4wXEVjK/HfpfycqysSIn8liOdm
-         47BQ==
-X-Gm-Message-State: APjAAAXJdMlzwppj4pXM4WHRzqM+mQJtK31mNc1pQStEP/JLm8D73kdN
-        vEQYEtfMqwP/PlVOTVAicsFmaA==
-X-Google-Smtp-Source: APXvYqzGg6/xG/ALOXguOUyZGSJKC0EKTomJZgx4LZsRS1iAXgQ5k6JifZ8wlhHRo551vRDHtc+yCw==
-X-Received: by 2002:a62:d405:: with SMTP id a5mr661947pfh.254.1579822185284;
-        Thu, 23 Jan 2020 15:29:45 -0800 (PST)
-Received: from smtp.gmail.com ([2620:15c:202:1:fa53:7765:582b:82b9])
-        by smtp.gmail.com with ESMTPSA id 3sm3973649pjg.27.2020.01.23.15.29.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Jan 2020 15:29:44 -0800 (PST)
-From:   Stephen Boyd <swboyd@chromium.org>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     linux-kernel@vger.kernel.org, ath10k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH] ath10k: Use device_get_match_data() to simplify code
-Date:   Thu, 23 Jan 2020 15:29:44 -0800
-Message-Id: <20200123232944.39247-1-swboyd@chromium.org>
-X-Mailer: git-send-email 2.25.0.341.g760bfbb309-goog
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition:user-agent;
+        bh=slaKvzH5vQEl55keAvrBKgGVpQ4RBWEB5cwMnx6Pme4=;
+        b=CPEARsSY/E+aJ76tLm8sXdACv4PzXAPn/GG8ZZSZAo0mN3dw4X0UoCGbPjtUAVTWXH
+         fXd0T5OQnj0K4i8B3toN4VyM3vpOaZB4C/mVNZQierLzgiNvCvtRu0DNPwawvYT3y4HH
+         slTqc9+ujhwRIZTEJXHYWNMEtm8Dl5S5VvqQRxxxXRvHu9OalvpD8Z8w5AjfaWcY0eCZ
+         oUhrBbQjBF/pQz8ogRJNlwdINlR68rsM92JAuCpdkXuqdm+HcAMQON3DULgTxIWaxNO0
+         3ertsX3mp/fZj5hUNfhDx/5lbvNPH9UwIwiFmJWhS9pDvQTpK8FtQTlKgmdXD3XJ35Wl
+         dQZQ==
+X-Gm-Message-State: APjAAAW19Za3H7uqTfOjHT3krvtWsetljvBvxULtDK2g+8oqLdpw/Zd6
+        RXpOVpSEgZXukKn+2aTlWvg=
+X-Google-Smtp-Source: APXvYqzQcZRkU0QraWfKb9QtgdwqU0GN0/ZJHa/SD87sHtzFuRJqNGn31wFmKx+UNcy33LBo7GEFbQ==
+X-Received: by 2002:a17:902:7b94:: with SMTP id w20mr1649872pll.257.1579840482165;
+        Thu, 23 Jan 2020 20:34:42 -0800 (PST)
+Received: from google.com ([123.201.77.6])
+        by smtp.gmail.com with ESMTPSA id z26sm4356895pfa.90.2020.01.23.20.34.39
+        (version=TLS1_2 cipher=AES128-SHA bits=128/128);
+        Thu, 23 Jan 2020 20:34:41 -0800 (PST)
+Date:   Fri, 24 Jan 2020 10:04:33 +0530
+From:   Saurav Girepunje <saurav.girepunje@gmail.com>
+To:     pkshih@realtek.com, kvalo@codeaurora.org, davem@davemloft.net,
+        Larry.Finger@lwfinger.net, saurav.girepunje@gmail.com,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     saurav.girepunje@hotmail.com
+Subject: [PATCH] net: wireless: realtek: rtlwifi: fix spelling mistake
+Message-ID: <20200124043433.GA3024@google.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+User-Agent: Mutt/1.6.2-neo (NetBSD/sparc64)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Use device_get_match_data() here to simplify the code a bit.
+fix spelling mistake reported by checkpatch in trx.c .
 
-Signed-off-by: Stephen Boyd <swboyd@chromium.org>
+Signed-off-by: Saurav Girepunje <saurav.girepunje@gmail.com>
 ---
- drivers/net/wireless/ath/ath10k/snoc.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+  drivers/net/wireless/realtek/rtlwifi/rtl8192se/trx.c | 4 ++--
+  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath10k/snoc.c b/drivers/net/wireless/ath/ath10k/snoc.c
-index 19a4d053d1de..88900f0399f5 100644
---- a/drivers/net/wireless/ath/ath10k/snoc.c
-+++ b/drivers/net/wireless/ath/ath10k/snoc.c
-@@ -1466,7 +1466,6 @@ MODULE_DEVICE_TABLE(of, ath10k_snoc_dt_match);
- static int ath10k_snoc_probe(struct platform_device *pdev)
- {
- 	const struct ath10k_snoc_drv_priv *drv_data;
--	const struct of_device_id *of_id;
- 	struct ath10k_snoc *ar_snoc;
- 	struct device *dev;
- 	struct ath10k *ar;
-@@ -1474,14 +1473,13 @@ static int ath10k_snoc_probe(struct platform_device *pdev)
- 	int ret;
- 	u32 i;
- 
--	of_id = of_match_device(ath10k_snoc_dt_match, &pdev->dev);
--	if (!of_id) {
-+	dev = &pdev->dev;
-+	drv_data = device_get_match_data(dev);
-+	if (!drv_data) {
- 		dev_err(&pdev->dev, "failed to find matching device tree id\n");
- 		return -EINVAL;
- 	}
- 
--	drv_data = of_id->data;
--	dev = &pdev->dev;
- 
- 	ret = dma_set_mask_and_coherent(dev, drv_data->dma_mask);
- 	if (ret) {
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192se/trx.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192se/trx.c
+index 9eaa534..cad4c9f 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192se/trx.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192se/trx.c
+@@ -276,7 +276,7 @@ bool rtl92se_rx_query_desc(struct ieee80211_hw *hw, struct rtl_stats *stats,
+  
+  	/* hw will set stats->decrypted true, if it finds the
+  	 * frame is open data frame or mgmt frame,
+-	 * hw will not decrypt robust managment frame
++	 * hw will not decrypt robust management frame
+  	 * for IEEE80211w but still set stats->decrypted
+  	 * true, so here we should set it back to undecrypted
+  	 * for IEEE80211w frame, and mac80211 sw will help
+@@ -466,7 +466,7 @@ void rtl92se_tx_fill_desc(struct ieee80211_hw *hw,
+  		/* Alwasy enable all rate fallback range */
+  		set_tx_desc_data_rate_fb_limit(pdesc, 0x1F);
+  
+-		/* Fix: I don't kown why hw use 6.5M to tx when set it */
++		/* Fix: I don't know why hw use 6.5M to tx when set it */
+  		set_tx_desc_user_rate(pdesc,
+  				      ptcb_desc->use_driver_rate ? 1 : 0);
+  
 -- 
-Sent by a computer, using git, on the internet
+1.9.1
 
