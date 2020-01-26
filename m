@@ -2,146 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B77E0149CBF
-	for <lists+linux-wireless@lfdr.de>; Sun, 26 Jan 2020 21:12:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B652C149CCD
+	for <lists+linux-wireless@lfdr.de>; Sun, 26 Jan 2020 21:24:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727278AbgAZUMT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 26 Jan 2020 15:12:19 -0500
-Received: from mo4-p02-ob.smtp.rzone.de ([81.169.146.168]:14121 "EHLO
-        mo4-p02-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726087AbgAZUMQ (ORCPT
+        id S1726252AbgAZUXa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 26 Jan 2020 15:23:30 -0500
+Received: from mail26.static.mailgun.info ([104.130.122.26]:56966 "EHLO
+        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726087AbgAZUXa (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 26 Jan 2020 15:12:16 -0500
-X-Greylist: delayed 538 seconds by postgrey-1.27 at vger.kernel.org; Sun, 26 Jan 2020 15:12:15 EST
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1580069534;
-        s=strato-dkim-0002; d=goldelico.com;
-        h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-        X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
-        bh=9DXGwXErgXDHdL5PyUUKhEt+Tr0bMtP/eeo2aEv0+0w=;
-        b=ghWMU6VBrG2JH4vAVV9uMWK3trWHUUL8XMw1LVj9YQ/9/I+W3NL7Ln1ARX9W+DVKM/
-        1SsVFAyRLqRFnEWE6cD5M3HKQ43QrFHkiA+RF2OihB/lI1mWzFoC53cz3+qL9Ef2lrIV
-        oDrnE/HykuQzEtFUrw+LSFvaoCmr4il1jTYMt7zO+3U/EYfq2W3RL8vHpjdCYhCeSVfs
-        s8Te5xdPXveoRNeUs/JNvWU5G6uJEyQBRPNPkIwW7r+tLirKxjibR/ULT/CoIVjpdls5
-        VpbwzyKdDcqiii9H9BltZphEb4juHxRh2VAG5HojKB09g/azof+ueV6URZr6MVZM4s/E
-        bUjA==
-X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMhflhwDubTJ9o1OAA2UNf2AyPQjcv7w="
-X-RZG-CLASS-ID: mo00
-Received: from iMac.fritz.box
-        by smtp.strato.de (RZmta 46.1.7 DYNA|AUTH)
-        with ESMTPSA id k0645aw0QK0FF2G
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-        (Client did not present a certificate);
-        Sun, 26 Jan 2020 21:00:15 +0100 (CET)
-From:   "H. Nikolaus Schaller" <hns@goldelico.com>
-To:     Kalle Valo <kvalo@codeaurora.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        "H. Nikolaus Schaller" <hns@goldelico.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Alexios Zavras <alexios.zavras@intel.com>
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        letux-kernel@openphoenux.org, kernel@pyra-handheld.com
-Subject: [PATCH v3 2/2] wl1251: remove ti,power-gpio for SDIO mode
-Date:   Sun, 26 Jan 2020 21:00:14 +0100
-Message-Id: <e77b49bb475f63dd7b07bfb76a75651e80bbace7.1580068813.git.hns@goldelico.com>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <cover.1580068813.git.hns@goldelico.com>
-References: <cover.1580068813.git.hns@goldelico.com>
+        Sun, 26 Jan 2020 15:23:30 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1580070209; h=Message-ID: References: In-Reply-To: Subject:
+ Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Sender; bh=+eZvrmtCrapPDrDuqhWitxmJ2H8paSKabKmsxKe/HxU=;
+ b=IJdNQUHR5In7MocCIaM+fv7ZfcNmnAc9Ok5lhpmQH4NuCCiLxpEiPs/mTrJje3WzE2iwlCQp
+ B2+cuzqM64SWen2xf90wc85obq+JZLIDJJFf4Z1KF4SLoiVzlAyTyhKRDz5dg2lU9X9dr1aM
+ bD4txB/Zr/ajBxSqy3RAyGPk3Hs=
+X-Mailgun-Sending-Ip: 104.130.122.26
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5e2df53c.7f93edf260a0-smtp-out-n03;
+ Sun, 26 Jan 2020 20:23:24 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 30EE2C433CB; Sun, 26 Jan 2020 20:23:23 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: vjakkam)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id F1A00C433CB;
+        Sun, 26 Jan 2020 20:23:21 +0000 (UTC)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Mon, 27 Jan 2020 01:53:21 +0530
+From:   vjakkam@codeaurora.org
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless@vger.kernel.org
+Subject: Re: [PATCH v3] cfg80211: Enhance the AKM advertizement to support per
+ interface.
+In-Reply-To: <5290eda7dee50997e7fa5bb5976256b024f7e94e.camel@sipsolutions.net>
+References: <20200117113507.13503-1-vjakkam@codeaurora.org>
+ <20200126112113.19542-1-vjakkam@codeaurora.org>
+ <5290eda7dee50997e7fa5bb5976256b024f7e94e.camel@sipsolutions.net>
+Message-ID: <89bad215ed8dbf917a9583c572298c7d@codeaurora.org>
+X-Sender: vjakkam@codeaurora.org
+User-Agent: Roundcube Webmail/1.3.9
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Remove handling of this property from code.
+On 2020-01-26 23:02, Johannes Berg wrote:
+> On Sun, 2020-01-26 at 16:51 +0530, Veerendranath Jakkam wrote:
+>> 
+>> +
+>> +	nested = nla_nest_start(msg, NL80211_ATTR_IFTYPE_AKM_SUITES);
+>> +	if (!nested)
+>> +		return -ENOBUFS;
+>> +
+>> +	for (i = 0; i < rdev->wiphy.num_iftype_akm_suites; i++) {
+>> +		nested_akms = nla_nest_start(msg, i + 1);
+>> +		if (!nested_akms)
+>> +			return -ENOBUFS;
+>> +
+>> +		iftype_akms = &rdev->wiphy.iftype_akm_suites[i];
+>> +
+>> +		if (nl80211_put_iftypes(msg, NL80211_ATTR_SUPPORTED_IFTYPES,
+>> +					iftype_akms->iftypes_mask))
+>> +			return -ENOBUFS;
+>> +
+>> +		if (nla_put(msg, NL80211_ATTR_AKM_SUITES,
+> 
+> Using the top-level attributes inside the nesting makes things
+> unnecessarily difficult to understand and take far more memory to 
+> parse,
+> IMHO it'd be better to define a new set of inner attributes
+> NL80211_IFTYPE_AKM_ATTR_IFTYPES, ..._SUITES or so.
+> 
+> johannes
 
-Note that wl->power_gpio is still needed in
-the header file for SPI mode (N900).
+Thanks, I will correct this in v4 as per suggestion
 
-Suggested by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
----
- drivers/net/wireless/ti/wl1251/sdio.c | 32 ++-------------------------
- 1 file changed, 2 insertions(+), 30 deletions(-)
-
-diff --git a/drivers/net/wireless/ti/wl1251/sdio.c b/drivers/net/wireless/ti/wl1251/sdio.c
-index 94569cd695c8..c9a4e9a43400 100644
---- a/drivers/net/wireless/ti/wl1251/sdio.c
-+++ b/drivers/net/wireless/ti/wl1251/sdio.c
-@@ -15,9 +15,7 @@
- #include <linux/wl12xx.h>
- #include <linux/irq.h>
- #include <linux/pm_runtime.h>
--#include <linux/gpio.h>
- #include <linux/of.h>
--#include <linux/of_gpio.h>
- #include <linux/of_irq.h>
- 
- #include "wl1251.h"
-@@ -160,15 +158,6 @@ static int wl1251_sdio_set_power(struct wl1251 *wl, bool enable)
- 	int ret;
- 
- 	if (enable) {
--		/*
--		 * Power is controlled by runtime PM, but we still call board
--		 * callback in case it wants to do any additional setup,
--		 * for example enabling clock buffer for the module.
--		 */
--		if (gpio_is_valid(wl->power_gpio))
--			gpio_set_value(wl->power_gpio, true);
--
--
- 		ret = pm_runtime_get_sync(&func->dev);
- 		if (ret < 0) {
- 			pm_runtime_put_sync(&func->dev);
-@@ -186,9 +175,6 @@ static int wl1251_sdio_set_power(struct wl1251 *wl, bool enable)
- 		ret = pm_runtime_put_sync(&func->dev);
- 		if (ret < 0)
- 			goto out;
--
--		if (gpio_is_valid(wl->power_gpio))
--			gpio_set_value(wl->power_gpio, false);
- 	}
- 
- out:
-@@ -241,31 +227,17 @@ static int wl1251_sdio_probe(struct sdio_func *func,
- 
- 	wl1251_board_data = wl1251_get_platform_data();
- 	if (!IS_ERR(wl1251_board_data)) {
--		wl->power_gpio = wl1251_board_data->power_gpio;
- 		wl->irq = wl1251_board_data->irq;
- 		wl->use_eeprom = wl1251_board_data->use_eeprom;
- 	} else if (np) {
--		wl->use_eeprom = of_property_read_bool(np,
--						       "ti,wl1251-has-eeprom");
--		wl->power_gpio = of_get_named_gpio(np, "ti,power-gpio", 0);
-+		wl->use_eeprom = of_property_read_bool(np, "ti,wl1251-has-eeprom");
- 		wl->irq = of_irq_get(np, 0);
--
--		if (wl->power_gpio == -EPROBE_DEFER ||
--		    wl->irq == -EPROBE_DEFER) {
-+		if (wl->irq == -EPROBE_DEFER) {
- 			ret = -EPROBE_DEFER;
- 			goto disable;
- 		}
- 	}
- 
--	if (gpio_is_valid(wl->power_gpio)) {
--		ret = devm_gpio_request(&func->dev, wl->power_gpio,
--								"wl1251 power");
--		if (ret) {
--			wl1251_error("Failed to request gpio: %d\n", ret);
--			goto disable;
--		}
--	}
--
- 	if (wl->irq) {
- 		irq_set_status_flags(wl->irq, IRQ_NOAUTOEN);
- 		ret = request_irq(wl->irq, wl1251_line_irq, 0, "wl1251", wl);
--- 
-2.23.0
-
+veeru
