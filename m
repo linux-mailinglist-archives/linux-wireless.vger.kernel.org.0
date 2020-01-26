@@ -2,95 +2,86 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 819A5149B7C
-	for <lists+linux-wireless@lfdr.de>; Sun, 26 Jan 2020 16:39:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 74409149B7F
+	for <lists+linux-wireless@lfdr.de>; Sun, 26 Jan 2020 16:40:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726240AbgAZPje (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 26 Jan 2020 10:39:34 -0500
-Received: from mail25.static.mailgun.info ([104.130.122.25]:36554 "EHLO
-        mail25.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725944AbgAZPjd (ORCPT
+        id S1727228AbgAZPkU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 26 Jan 2020 10:40:20 -0500
+Received: from mail26.static.mailgun.info ([104.130.122.26]:10656 "EHLO
+        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726252AbgAZPkU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 26 Jan 2020 10:39:33 -0500
+        Sun, 26 Jan 2020 10:40:20 -0500
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1580053173; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=nDbhVB0PL0Z9ZeZHzZJHurvBTfdBcAdeXI2UbJJ30hs=; b=wnREQJmz9jj9ekoabqvxuBr+nrlfehvjt1aUzJqaoVpT+SK+s0mSHRO+5/afp5MPwzfe1h2s
- u3m3Gz711mbFvqu+BwvREFTiycULqS372vBn91jVIzKEQJjtwI6Oa7jdWeKh99CHsS78taD0
- VDjovP2XO/TflZec8wBtZPVAca8=
-X-Mailgun-Sending-Ip: 104.130.122.25
+ s=smtp; t=1580053219; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=OF9fRbiOS6tzfpTdXJ/mEBq3doMM9zm/VxgXYRmkFP8=;
+ b=J3aDGqtb2heOnauDr4lirj1//9oZRGk+SFS6wphh3jBZpMg6PkhqmHVq9ofvZ0m+B3vcqBnu
+ 1ltDEOzrbR78SmytGc2RePFGoUN6WOUo8sGv+06xFwLkEdkt2TKHyHNsQr9YV0x+p3E5nGmy
+ 5aCcFhwmZHHtXrM8e1JYS2VfJRU=
+X-Mailgun-Sending-Ip: 104.130.122.26
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e2db2b4.7f7de34299d0-smtp-out-n01;
- Sun, 26 Jan 2020 15:39:32 -0000 (UTC)
+ by mxa.mailgun.org with ESMTP id 5e2db2de.7f84087ed228-smtp-out-n03;
+ Sun, 26 Jan 2020 15:40:14 -0000 (UTC)
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 46139C43383; Sun, 26 Jan 2020 15:39:32 +0000 (UTC)
+        id 5E46AC433A2; Sun, 26 Jan 2020 15:40:14 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.0
-Received: from tynnyri.adurom.net (tynnyri.adurom.net [51.15.11.48])
+X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
+        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id E1E3EC433CB;
-        Sun, 26 Jan 2020 15:39:30 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org E1E3EC433CB
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 66EB6C433CB;
+        Sun, 26 Jan 2020 15:40:11 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 66EB6C433CB
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     <yhchuang@realtek.com>, <linux-wireless@vger.kernel.org>,
-        <briannorris@chromium.org>
-Subject: Re: [PATCH 01/11] rtw88: fix rate mask for 1SS chip
-References: <20191220092156.13443-2-yhchuang@realtek.com>
-        <20200126153842.DF08CC447A1@smtp.codeaurora.org>
-Date:   Sun, 26 Jan 2020 17:39:28 +0200
-In-Reply-To: <20200126153842.DF08CC447A1@smtp.codeaurora.org> (Kalle Valo's
-        message of "Sun, 26 Jan 2020 15:38:42 +0000 (UTC)")
-Message-ID: <87k15exm4v.fsf@tynnyri.adurom.net>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH 1/9] rtlwifi: rtl8192cu: Fix typo
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20191223123715.7177-2-amade@asmblr.net>
+References: <20191223123715.7177-2-amade@asmblr.net>
+To:     =?utf-8?q?Amadeusz_S=C5=82awi=C5=84ski?= <amade@asmblr.net>
+Cc:     Ping-Ke Shih <pkshih@realtek.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Larry Finger <Larry.Finger@lwfinger.net>,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org,
+        =?utf-8?q?Amadeusz_?==?utf-8?q?S=C5=82awi=C5=84ski?= 
+        <amade@asmblr.net>
+User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
+Message-Id: <20200126154014.5E46AC433A2@smtp.codeaurora.org>
+Date:   Sun, 26 Jan 2020 15:40:14 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Kalle Valo <kvalo@codeaurora.org> writes:
+Amadeusz Sławiński wrote:
 
-> <yhchuang@realtek.com> wrote:
->
->> From: Ping-Ke Shih <pkshih@realtek.com>
->> 
->> The rate mask is used to tell firmware the supported rate depends on
->> negotiation. We loop 2 times for all VHT/HT 2SS rate mask first, and then
->> only keep the part according to chip's NSS.
->> 
->> This commit fixes the logic error of '&' operations for VHT/HT rate, and
->> we should run this logic before adding legacy rate.
->> 
->> To access HT MCS map, index 0/1 represent MCS 0-7/8-15 respectively. Use
->> NL80211_BAND_xxx is incorrect, so fix it as well.
->> 
->> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
->> Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
->> Reviewed-by: Chris Chiu <chiu@endlessm.com>
->
-> 9 patches applied to wireless-drivers-next.git, thanks.
->
-> 35a68fa5f96a rtw88: fix rate mask for 1SS chip
-> 73a2d0b83424 rtw88: fix TX secondary channel offset of 40M if current bw is 20M or 40M
-> e339b6493524 rtw88: 8822c: update power sequence to v15
-> 3f43f10bd619 rtw88: remove unused spinlock
-> 962562cde154 rtw88: remove unused variable 'in_lps'
-> 65ae64d37575 rtw88: remove unused vif pointer in struct rtw_vif
-> fc83c616d4d9 rtw88: use rtw_hci_stop() instead of rtwdev->hci.ops->stop()
-> f48abf064ade rtw88: assign NULL to skb after being kfree()'ed
-> bbdd1d854e0a rtw88: change max_num_of_tx_queue() definition to inline in pci.h
+> Replace USB_VENDER_ID_REALTEK with USB_VENDOR_ID_REALTEK.
+> 
+> Signed-off-by: Amadeusz Sławiński <amade@asmblr.net>
 
-I dropped patches 3 and 5 as they had comments.
+9 patches applied to wireless-drivers-next.git, thanks.
+
+fd156bdf62bb rtlwifi: rtl8192cu: Fix typo
+5d3f9145f54e rtlwifi: rtl8188ee: Make functions static & rm sw.h
+be913e3f49ac rtlwifi: rtl8192ce: Make functions static & rm sw.h
+a3cda3c363ca rtlwifi: rtl8192cu: Remove sw.h header
+fef8a2d969af rtlwifi: rtl8192ee: Make functions static & rm sw.h
+5b2640835a34 rtlwifi: rtl8192se: Remove sw.h header
+c218acfaa637 rtlwifi: rtl8723ae: Make functions static & rm sw.h
+02a214e29ea4 rtlwifi: rtl8723be: Make functions static & rm sw.h
+8ddd4a2a6b59 rtlwifi: rtl8821ae: Make functions static & rm sw.h
 
 -- 
+https://patchwork.kernel.org/patch/11308205/
+
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
