@@ -2,230 +2,119 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 908E2149A59
-	for <lists+linux-wireless@lfdr.de>; Sun, 26 Jan 2020 12:21:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 30CCC149A5D
+	for <lists+linux-wireless@lfdr.de>; Sun, 26 Jan 2020 12:28:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387396AbgAZLV2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 26 Jan 2020 06:21:28 -0500
-Received: from mail26.static.mailgun.info ([104.130.122.26]:52539 "EHLO
-        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S2387394AbgAZLV2 (ORCPT
+        id S1729427AbgAZL2H (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 26 Jan 2020 06:28:07 -0500
+Received: from mail25.static.mailgun.info ([104.130.122.25]:48422 "EHLO
+        mail25.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1729423AbgAZL2H (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 26 Jan 2020 06:21:28 -0500
+        Sun, 26 Jan 2020 06:28:07 -0500
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1580037687; h=Content-Transfer-Encoding: MIME-Version:
- References: In-Reply-To: Message-Id: Date: Subject: Cc: To: From:
- Sender; bh=lSNs9CgANAqyg7i/feYFff2RT9kFbJkh79ZskIgluCk=; b=h/vWKRMwDUXDbhHswfc33/58rqgBHYUbclyY3pGy9PdkmNQpf8IUNi6c4VctT/xQyW7qFTPq
- nSlNUkogWTPJcxpLYEVdQI1XbaUdHIO+T9OXtrafDBJCZFV3NOM+AzIs8mjKIybQ03g0O0Jn
- r0rjZgfHGuLfOioIAvGFsMNeOWo=
-X-Mailgun-Sending-Ip: 104.130.122.26
+ s=smtp; t=1580038086; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=8pC1f+5TseNLOzXWnh50j9+olx1UGi1E4ktzEnfWwAA=;
+ b=OOPd8ZarvHjhb8Ax+eiE6sIMhVxcNn6no+4Z5jtCONxgEU9SVc9A9sTj1QF5AP5q6QyNhODp
+ WzDvy1P9dzkkCFDig/35PEXyIceWFyCPwulFfvg/P+qr6Di2LjO2/amdkqNGhn6qz0tW1a6q
+ rzR72jrZzbQbcSpQD/stHLQVT0Y=
+X-Mailgun-Sending-Ip: 104.130.122.25
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e2d7636.7f0f282f00a0-smtp-out-n03;
- Sun, 26 Jan 2020 11:21:26 -0000 (UTC)
+ by mxa.mailgun.org with ESMTP id 5e2d77c5.7fca6d599880-smtp-out-n03;
+ Sun, 26 Jan 2020 11:28:05 -0000 (UTC)
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id A9FD3C4479F; Sun, 26 Jan 2020 11:21:26 +0000 (UTC)
+        id 02A83C433A2; Sun, 26 Jan 2020 11:28:05 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from vjakkam-linux.qualcomm.com (blr-c-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.19.19])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
+        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        (Authenticated sender: vjakkam)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 8DABEC433A2;
-        Sun, 26 Jan 2020 11:21:24 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 8DABEC433A2
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 17123C43383;
+        Sun, 26 Jan 2020 11:28:02 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 17123C43383
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=vjakkam@codeaurora.org
-From:   Veerendranath Jakkam <vjakkam@codeaurora.org>
-To:     johannes@sipsolutions.net
-Cc:     linux-wireless@vger.kernel.org,
-        Veerendranath Jakkam <vjakkam@codeaurora.org>
-Subject: [PATCH v3] cfg80211: Enhance the AKM advertizement to support per interface.
-Date:   Sun, 26 Jan 2020 16:51:13 +0530
-Message-Id: <20200126112113.19542-1-vjakkam@codeaurora.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200117113507.13503-1-vjakkam@codeaurora.org>
-References: <20200117113507.13503-1-vjakkam@codeaurora.org>
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+Subject: Re: [RESEND] ath11k: add tx hw 802.11 encapusaltion offloading support
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20200122142930.19239-1-john@phrozen.org>
+References: <20200122142930.19239-1-john@phrozen.org>
+To:     John Crispin <john@phrozen.org>
+Cc:     linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
+        John Crispin <john@phrozen.org>,
+        Shashidhar Lakkavalli <slakkavalli@datto.com>
+User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
+Message-Id: <20200126112805.02A83C433A2@smtp.codeaurora.org>
+Date:   Sun, 26 Jan 2020 11:28:05 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Commit ab4dfa20534e ("cfg80211: Allow drivers to advertise supported AKM
-suites") introduces the support to advertize supported AKMs to userspace.
+John Crispin <john@phrozen.org> wrote:
 
-This needs an enhancement to advertize the AKM support per interface type,
-specifically for the cfg80211-based drivers that implement SME and use
-different mechanisms to support the AKM's for each interface type (e.g.,
-the support for SAE, OWE AKM's take different paths for such drivers on
-STA/AP mode).
+> This patch adds support for ethernet rxtx mode to the driver. The feature
+> is enabled via a new module parameter. If enabled to driver will enable
+> the feature on a per vif basis if all other requirements were met.
+> 
+> Signed-off-by: Shashidhar Lakkavalli <slakkavalli@datto.com>
+> Signed-off-by: John Crispin <john@phrozen.org>
 
-Add a new nl80211 attribute to provide supported AKMs per interface type
-to userspace.
+Depends on:
 
-This commit aims the same and enhances the earlier mechanism of advertizing
-the AKMs per wiphy. AKMs advertized in akm_suites are default capabilities
-if not advertized for a specific interface type in iftype_akm_suites.
+50ff477a8639 mac80211: add 802.11 encapsulation offloading support
 
-Signed-off-by: Veerendranath Jakkam <vjakkam@codeaurora.org>
----
-Changelog:
-v2->v3:
- -Use bitmask of iftypes instead of single iftype
-v1->v2:
- -Keep advertizing support for AKM suites per wiphy
- -AKM suites per interface overrides wiphy AKM suites for specific interface
- -Rename new nl80211 attribute to NL80211_ATTR_IFTYPE_AKM_SUITES
----
- include/net/cfg80211.h       | 28 ++++++++++++++++++++++-
- include/uapi/linux/nl80211.h |  7 ++++++
- net/wireless/nl80211.c       | 43 ++++++++++++++++++++++++++++++++++++
- 3 files changed, 77 insertions(+), 1 deletion(-)
+Currently in mac80211-next.
 
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index fa027d0d031b..83e92d5c20d8 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -4398,6 +4398,21 @@ struct cfg80211_pmsr_capabilities {
- 	} ftm;
- };
- 
-+/**
-+ * struct wiphy_iftype_akm_suites - This structure encapsulates supported akm
-+ * suites for interface types defined in @iftypes_mask. Each type in the
-+ * @iftypes_mask must be unique across all instances of iftype_akm_suites.
-+ *
-+ * @iftypes_mask: bitmask of interfaces types
-+ * @akm_suites: points to an array of supported akm suites
-+ * @n_akm_suites: number of supported AKM suites
-+ */
-+struct wiphy_iftype_akm_suites {
-+	u16 iftypes_mask;
-+	const u32 *akm_suites;
-+	int n_akm_suites;
-+};
-+
- /**
-  * struct wiphy - wireless hardware description
-  * @reg_notifier: the driver's regulatory notification callback,
-@@ -4410,8 +4425,16 @@ struct cfg80211_pmsr_capabilities {
-  * @signal_type: signal type reported in &struct cfg80211_bss.
-  * @cipher_suites: supported cipher suites
-  * @n_cipher_suites: number of supported cipher suites
-- * @akm_suites: supported AKM suites
-+ * @akm_suites: supported AKM suites. These are the default AKMs supported if
-+ *	the supported AKMs not advertized for a specific interface type in
-+ *	iftype_akm_suites.
-  * @n_akm_suites: number of supported AKM suites
-+ * @iftype_akm_suites: array of supported akm suites info per interface type.
-+ *	Note that the bits in @iftypes_mask inside this structure cannot
-+ *	overlap (i.e. only one occurrence of each type is allowed across all
-+ *	instances of iftype_akm_suites).
-+ * @num_iftype_akm_suites: number of interface types for which supported akm
-+ *	suites are specified separately.
-  * @retry_short: Retry limit for short frames (dot11ShortRetryLimit)
-  * @retry_long: Retry limit for long frames (dot11LongRetryLimit)
-  * @frag_threshold: Fragmentation threshold (dot11FragmentationThreshold);
-@@ -4618,6 +4641,9 @@ struct wiphy {
- 	int n_akm_suites;
- 	const u32 *akm_suites;
- 
-+	const struct wiphy_iftype_akm_suites *iftype_akm_suites;
-+	unsigned int num_iftype_akm_suites;
-+
- 	u8 retry_short;
- 	u8 retry_long;
- 	u32 frag_threshold;
-diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-index 809ef9165684..108c039cc54b 100644
---- a/include/uapi/linux/nl80211.h
-+++ b/include/uapi/linux/nl80211.h
-@@ -2402,6 +2402,11 @@ enum nl80211_commands {
-  *
-  * @NL80211_ATTR_HE_BSS_COLOR: nested attribute for BSS Color Settings.
-  *
-+ * @NL80211_ATTR_IFTYPE_AKM_SUITES: Used for AKM suite capability advertisement
-+ *	per interface. This is a nested attribute of %NL80211_ATTR_AKM_SUITES
-+ *	and %NL80211_ATTR_SUPPORTED_IFTYPE to specify supported AKMs per
-+ *	interface type.
-+ *
-  * @NUM_NL80211_ATTR: total number of nl80211_attrs available
-  * @NL80211_ATTR_MAX: highest attribute number currently defined
-  * @__NL80211_ATTR_AFTER_LAST: internal use
-@@ -2868,6 +2873,8 @@ enum nl80211_attrs {
- 
- 	NL80211_ATTR_HE_BSS_COLOR,
- 
-+	NL80211_ATTR_IFTYPE_AKM_SUITES,
-+
- 	/* add attributes here, update the policy in nl80211.c */
- 
- 	__NL80211_ATTR_AFTER_LAST,
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 00f24d4c623e..7dd0e622b2f1 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -1893,6 +1893,46 @@ static int nl80211_send_pmsr_capa(struct cfg80211_registered_device *rdev,
- 	return 0;
- }
- 
-+static int
-+nl80211_put_iftype_akm_suites(struct cfg80211_registered_device *rdev,
-+			      struct sk_buff *msg)
-+{
-+	int i;
-+	struct nlattr *nested, *nested_akms;
-+	const struct wiphy_iftype_akm_suites *iftype_akms;
-+
-+	if (!rdev->wiphy.num_iftype_akm_suites ||
-+	    !rdev->wiphy.iftype_akm_suites)
-+		return 0;
-+
-+	nested = nla_nest_start(msg, NL80211_ATTR_IFTYPE_AKM_SUITES);
-+	if (!nested)
-+		return -ENOBUFS;
-+
-+	for (i = 0; i < rdev->wiphy.num_iftype_akm_suites; i++) {
-+		nested_akms = nla_nest_start(msg, i + 1);
-+		if (!nested_akms)
-+			return -ENOBUFS;
-+
-+		iftype_akms = &rdev->wiphy.iftype_akm_suites[i];
-+
-+		if (nl80211_put_iftypes(msg, NL80211_ATTR_SUPPORTED_IFTYPES,
-+					iftype_akms->iftypes_mask))
-+			return -ENOBUFS;
-+
-+		if (nla_put(msg, NL80211_ATTR_AKM_SUITES,
-+			    sizeof(u32) * iftype_akms->n_akm_suites,
-+			    iftype_akms->akm_suites)) {
-+			return -ENOBUFS;
-+		}
-+		nla_nest_end(msg, nested_akms);
-+	}
-+
-+	nla_nest_end(msg, nested);
-+
-+	return 0;
-+}
-+
- struct nl80211_dump_wiphy_state {
- 	s64 filter_wiphy;
- 	long start;
-@@ -2451,6 +2491,9 @@ static int nl80211_send_wiphy(struct cfg80211_registered_device *rdev,
- 			    rdev->wiphy.akm_suites))
- 			goto nla_put_failure;
- 
-+		if (nl80211_put_iftype_akm_suites(rdev, msg))
-+			goto nla_put_failure;
-+
- 		/* done */
- 		state->split_start = 0;
- 		break;
+drivers/net/wireless/ath/ath11k/mac.c: In function 'ath11k_mac_mgmt_tx_wmi':
+drivers/net/wireless/ath/ath11k/mac.c:3653:30: error: 'IEEE80211_TX_CTRL_HW_80211_ENCAP' undeclared (first use in this function); did you mean 'IEEE80211_TX_CTRL_RATE_INJECT'?
+  if (!(info->control.flags & IEEE80211_TX_CTRL_HW_80211_ENCAP)) {
+                              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                              IEEE80211_TX_CTRL_RATE_INJECT
+drivers/net/wireless/ath/ath11k/mac.c:3653:30: note: each undeclared identifier is reported only once for each function it appears in
+drivers/net/wireless/ath/ath11k/mac.c: In function 'ath11k_mac_op_tx':
+drivers/net/wireless/ath/ath11k/mac.c:3766:28: error: 'IEEE80211_TX_CTRL_HW_80211_ENCAP' undeclared (first use in this function); did you mean 'IEEE80211_TX_CTRL_RATE_INJECT'?
+  if (info->control.flags & IEEE80211_TX_CTRL_HW_80211_ENCAP) {
+                            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                            IEEE80211_TX_CTRL_RATE_INJECT
+drivers/net/wireless/ath/ath11k/mac.c: In function 'ath11k_mac_op_add_interface':
+drivers/net/wireless/ath/ath11k/mac.c:4145:6: error: implicit declaration of function 'ieee80211_set_hw_80211_encap'; did you mean 'ieee80211_get_he_sta_cap'? [-Werror=implicit-function-declaration]
+  if (ieee80211_set_hw_80211_encap(vif, ath11k_ethernet_mode && hw_encap))
+      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      ieee80211_get_he_sta_cap
+cc1: some warnings being treated as errors
+make[5]: *** [drivers/net/wireless/ath/ath11k/mac.o] Error 1
+make[5]: *** Waiting for unfinished jobs....
+drivers/net/wireless/ath/ath11k/dp_tx.c: In function 'ath11k_dp_tx_get_encap_type':
+drivers/net/wireless/ath/ath11k/dp_tx.c:20:31: error: 'IEEE80211_TX_CTRL_HW_80211_ENCAP' undeclared (first use in this function); did you mean 'IEEE80211_TX_CTRL_RATE_INJECT'?
+  if (tx_info->control.flags & IEEE80211_TX_CTRL_HW_80211_ENCAP)
+                               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                               IEEE80211_TX_CTRL_RATE_INJECT
+drivers/net/wireless/ath/ath11k/dp_tx.c:20:31: note: each undeclared identifier is reported only once for each function it appears in
+drivers/net/wireless/ath/ath11k/dp_tx.c: In function 'ath11k_dp_tx':
+drivers/net/wireless/ath/ath11k/dp_tx.c:97:30: error: 'IEEE80211_TX_CTRL_HW_80211_ENCAP' undeclared (first use in this function); did you mean 'IEEE80211_TX_CTRL_RATE_INJECT'?
+  if (!(info->control.flags & IEEE80211_TX_CTRL_HW_80211_ENCAP) &&
+                              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                              IEEE80211_TX_CTRL_RATE_INJECT
+make[5]: *** [drivers/net/wireless/ath/ath11k/dp_tx.o] Error 1
+make[4]: *** [drivers/net/wireless/ath/ath11k] Error 2
+make[3]: *** [drivers/net/wireless/ath] Error 2
+make[2]: *** [drivers/net/wireless] Error 2
+make[1]: *** [drivers/net] Error 2
+make[1]: *** Waiting for unfinished jobs....
+make: *** [drivers] Error 2
+
+Patch set to Awaiting Upstream.
+
 -- 
-2.20.1
+https://patchwork.kernel.org/patch/11345841/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
