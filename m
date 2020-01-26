@@ -2,30 +2,30 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 83612149B54
-	for <lists+linux-wireless@lfdr.de>; Sun, 26 Jan 2020 16:15:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 68074149B68
+	for <lists+linux-wireless@lfdr.de>; Sun, 26 Jan 2020 16:31:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726179AbgAZPOy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 26 Jan 2020 10:14:54 -0500
-Received: from mail26.static.mailgun.info ([104.130.122.26]:24867 "EHLO
-        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725944AbgAZPOy (ORCPT
+        id S1726758AbgAZPbZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 26 Jan 2020 10:31:25 -0500
+Received: from mail25.static.mailgun.info ([104.130.122.25]:13084 "EHLO
+        mail25.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726181AbgAZPbZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 26 Jan 2020 10:14:54 -0500
+        Sun, 26 Jan 2020 10:31:25 -0500
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1580051693; h=Date: Message-Id: Cc: To: References:
+ s=smtp; t=1580052685; h=Date: Message-Id: Cc: To: References:
  In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=Y+S8D8aDvc3709rvH/pShWk38I9cJw+rSMPM2E0L9S8=;
- b=fhpIg5X5ebJ5x/08bu6fjpa9X8OEXU1MmFZbrJR9kkFNaLi7HaMA5JfgLnacUcSrP0OZIdrz
- jJ4oufCAEo/GjLdHQKEbVQApVgFdizKJgbi3o1H2HX3wtKH+eJoHu06RKHDlPxj4XwgTnrix
- ovWpPJ+OWkzuRoLeX37aPPMJkGQ=
-X-Mailgun-Sending-Ip: 104.130.122.26
+ Content-Type: Sender; bh=bO52typVteT+dUc0mpKNPXbpFZmLnOhBYL05cpNAgdY=;
+ b=ouZuhw1jQ9rQ4LafFuoCAjyrAMClwnm4XZVJzwRHyQsQkfs0pWUBcAtpmOP6xAJ/p8ZSMkEN
+ hppLP3sNKNlYmMFeVXLPYgUGU0XVaKPRaa/IwsU72tokc7ixV2JO31WRi4oXjAxPYKiuqTy1
+ ZDh+SZa+tkM9yR+kmA0HLynMWho=
+X-Mailgun-Sending-Ip: 104.130.122.25
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e2dacec.7f4b9dbd7ab0-smtp-out-n02;
- Sun, 26 Jan 2020 15:14:52 -0000 (UTC)
+ by mxa.mailgun.org with ESMTP id 5e2db0c4.7f4b9dbef650-smtp-out-n02;
+ Sun, 26 Jan 2020 15:31:16 -0000 (UTC)
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id DB95CC433A2; Sun, 26 Jan 2020 15:14:52 +0000 (UTC)
+        id A1C26C4479F; Sun, 26 Jan 2020 15:31:16 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -35,51 +35,61 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 0BFB3C433CB;
-        Sun, 26 Jan 2020 15:14:49 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 0BFB3C433CB
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 96579C433CB;
+        Sun, 26 Jan 2020 15:31:12 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 96579C433CB
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 1/2] libertas: don't exit from lbs_ibss_join_existing()
- with RCU read lock held
+Subject: Re: [PATCH v2 1/2] DTS: bindings: wl1251: mark ti,
+ power-gpio as optional
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20200114103903.2336-2-nstange@suse.de>
-References: <20200114103903.2336-2-nstange@suse.de>
-To:     Nicolai Stange <nstange@suse.de>
-Cc:     "David S. Miller" <davem@davemloft.net>,
-        Wen Huang <huangwenabc@gmail.com>,
-        Nicolai Stange <nstange@suse.de>,
-        libertas-dev@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Takashi Iwai <tiwai@suse.de>, Miroslav Benes <mbenes@suse.cz>
+In-Reply-To: <de42cdd5c5d2c46978c15cd2f27b49fa144ae6a7.1576606020.git.hns@goldelico.com>
+References: <de42cdd5c5d2c46978c15cd2f27b49fa144ae6a7.1576606020.git.hns@goldelico.com>
+To:     "H. Nikolaus Schaller" <hns@goldelico.com>
+Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        "H. Nikolaus Schaller" <hns@goldelico.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Alexios Zavras <alexios.zavras@intel.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        letux-kernel@openphoenux.org, kernel@pyra-handheld.com
 User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20200126151452.DB95CC433A2@smtp.codeaurora.org>
-Date:   Sun, 26 Jan 2020 15:14:52 +0000 (UTC)
+Message-Id: <20200126153116.A1C26C4479F@smtp.codeaurora.org>
+Date:   Sun, 26 Jan 2020 15:31:16 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Nicolai Stange <nstange@suse.de> wrote:
+"H. Nikolaus Schaller" <hns@goldelico.com> wrote:
 
-> Commit e5e884b42639 ("libertas: Fix two buffer overflows at parsing bss
-> descriptor") introduced a bounds check on the number of supplied rates to
-> lbs_ibss_join_existing().
+> It is now only useful for SPI interface.
+> Power control of SDIO mode is done through mmc core.
 > 
-> Unfortunately, it introduced a return path from within a RCU read side
-> critical section without a corresponding rcu_read_unlock(). Fix this.
-> 
-> Fixes: e5e884b42639 ("libertas: Fix two buffer overflows at parsing bss
->                       descriptor")
-> Signed-off-by: Nicolai Stange <nstange@suse.de>
+> Suggested by: Ulf Hansson <ulf.hansson@linaro.org>
+> Acked-by: Rob Herring <robh@kernel.org>
+> Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
 
-I'll queue these to v5.5, unless Linus releases the final today and then they
-will go to v5.6.
+Failed to apply to wireless-drivers-next, please rebase and resend.
+
+fatal: sha1 information is lacking or useless (drivers/net/wireless/ti/wl1251/sdio.c).
+error: could not build fake ancestor
+Applying: wl1251: remove ti,power-gpio for SDIO mode
+Patch failed at 0001 wl1251: remove ti,power-gpio for SDIO mode
+The copy of the patch that failed is found in: .git/rebase-apply/patch
+
+2 patches set to Changes Requested.
+
+11298403 [PATCH v2 1/2] DTS: bindings: wl1251: mark ti,power-gpio as optional
+11298399 [v2,2/2] wl1251: remove ti,power-gpio for SDIO mode
 
 -- 
-https://patchwork.kernel.org/patch/11331869/
+https://patchwork.kernel.org/patch/11298403/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
