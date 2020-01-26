@@ -2,30 +2,30 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9DD62149A25
-	for <lists+linux-wireless@lfdr.de>; Sun, 26 Jan 2020 11:37:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D0BE149A28
+	for <lists+linux-wireless@lfdr.de>; Sun, 26 Jan 2020 11:38:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729262AbgAZKhp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 26 Jan 2020 05:37:45 -0500
-Received: from mail26.static.mailgun.info ([104.130.122.26]:56067 "EHLO
-        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728512AbgAZKhp (ORCPT
+        id S1729255AbgAZKio (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 26 Jan 2020 05:38:44 -0500
+Received: from mail25.static.mailgun.info ([104.130.122.25]:63966 "EHLO
+        mail25.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726571AbgAZKio (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 26 Jan 2020 05:37:45 -0500
+        Sun, 26 Jan 2020 05:38:44 -0500
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1580035064; h=Date: Message-Id: Cc: To: References:
+ s=smtp; t=1580035123; h=Date: Message-Id: Cc: To: References:
  In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=Z75vo15kFHSAjpOh8gqvQcI40tUdEQ8bAOEe2NzjOZg=;
- b=BfBnDHcfAhE6zh0DCToqqMCT1A/LGh3GPWImW3D8ujlVj2ZaKPks8zh4iVY+tE+HMw64KhIi
- UfK8JD4AOix5M0NqptHmBkpsO5id9LuP+1wEB/qykHNDLCbBkbWrXQ66TOnqJqZnay7G4RA+
- wsbj3xMREJhYpO3Dx7A6xAvxBP0=
-X-Mailgun-Sending-Ip: 104.130.122.26
+ Content-Type: Sender; bh=xsLADkGhmy7OvlWwD+f2ukruY2Z/OOTtWyxS2hhwemg=;
+ b=raGArcTXN6A8vuVxJAccD9bIDO7CD9TuPNP61pz7BTe3qTjsX4KwzjN9S67Zm5mmko25v7wJ
+ UdIzXfzQJPn7LFj+jM2EHfQz/UY3d2e9uZk/fc2EMBaDJfaQ6d3jZFVSb8W7moJAeluXD/f2
+ n9eAsyIaE5sd8StviMXMLbZ9v2c=
+X-Mailgun-Sending-Ip: 104.130.122.25
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e2d6bf7.7fb04d30e810-smtp-out-n02;
- Sun, 26 Jan 2020 10:37:43 -0000 (UTC)
+ by mxa.mailgun.org with ESMTP id 5e2d6c2f.7fc27f8e2f48-smtp-out-n03;
+ Sun, 26 Jan 2020 10:38:39 -0000 (UTC)
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 83EBBC433A2; Sun, 26 Jan 2020 10:37:43 +0000 (UTC)
+        id EC67AC4479F; Sun, 26 Jan 2020 10:38:38 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -35,74 +35,43 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id E43F3C433CB;
-        Sun, 26 Jan 2020 10:37:36 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org E43F3C433CB
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 3A450C433CB;
+        Sun, 26 Jan 2020 10:38:36 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 3A450C433CB
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] ath11k: fix debugfs build failure
+Subject: Re: [PATCH] ath11k: enable HE tlvs in ppdu stats for pktlog lite
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20200107215036.1333983-1-arnd@arndb.de>
-References: <20200107215036.1333983-1-arnd@arndb.de>
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     Manikanta Pubbisetty <mpubbise@codeaurora.org>,
-        John Crispin <john@phrozen.org>,
-        Sven Eckelmann <seckelmann@datto.com>,
-        Bhagavathi Perumal S <bperumal@codeaurora.org>,
+In-Reply-To: <20191217162140.2102-1-john@phrozen.org>
+References: <20191217162140.2102-1-john@phrozen.org>
+To:     John Crispin <john@phrozen.org>
+Cc:     linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
         Anilkumar Kolli <akolli@codeaurora.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Ganesh Sesetti <gseset@codeaurora.org>,
-        Govindaraj Saminathan <gsamin@codeaurora.org>,
-        Julia Lawall <julia.lawall@lip6.fr>,
-        Karthikeyan Periyasamy <periyasa@codeaurora.org>,
-        kbuild test robot <lkp@intel.com>,
-        Maharaja Kennadyrajan <mkenna@codeaurora.org>,
-        Miles Hu <milehu@codeaurora.org>,
-        Muna Sinada <msinada@codeaurora.org>,
-        Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>,
-        Rajkumar Manoharan <rmanohar@codeaurora.org>,
-        Sathishkumar Muruganandam <murugana@codeaurora.org>,
-        Shashidhar Lakkavalli <slakkavalli@datto.com>,
-        Sriram R <srirrama@codeaurora.org>,
-        Vasanthakumar Thiagarajan <vthiagar@codeaurora.org>,
-        Venkateswara Naralasetty <vnaralas@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Tamizh chelvam <tamizhr@codeaurora.org>,
-        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+        John Crispin <john@phrozen.org>
 User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20200126103743.83EBBC433A2@smtp.codeaurora.org>
-Date:   Sun, 26 Jan 2020 10:37:43 +0000 (UTC)
+Message-Id: <20200126103838.EC67AC4479F@smtp.codeaurora.org>
+Date:   Sun, 26 Jan 2020 10:38:38 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Arnd Bergmann <arnd@arndb.de> wrote:
+John Crispin <john@phrozen.org> wrote:
 
-> When CONFIG_ATH11K_DEBUGFS is disabled, but CONFIG_MAC80211_DEBUGFS
-> is turned on, the driver fails to build:
+> This patch enables HE tlvs in ppdu stats for pktlog lite mode.
 > 
-> drivers/net/wireless/ath/ath11k/debugfs_sta.c: In function 'ath11k_dbg_sta_open_htt_peer_stats':
-> drivers/net/wireless/ath/ath11k/debugfs_sta.c:416:4: error: 'struct ath11k' has no member named 'debug'
->   ar->debug.htt_stats.stats_req = stats_req;
->     ^~
-> 
-> It appears that just using the former symbol is sufficient here,
-> adding a Kconfig dependency takes care of the corner cases.
-> 
-> Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> Signed-off-by: John Crispin <john@phrozen.org>
+> Signed-off-by: Anilkumar Kolli <akolli@codeaurora.org>
 > Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 
 Patch applied to ath-next branch of ath.git, thanks.
 
-a45ceea5015d ath11k: fix debugfs build failure
+1e93a78113b4 ath11k: enable HE tlvs in ppdu stats for pktlog lite
 
 -- 
-https://patchwork.kernel.org/patch/11321921/
+https://patchwork.kernel.org/patch/11298211/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
