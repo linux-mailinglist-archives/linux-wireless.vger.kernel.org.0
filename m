@@ -2,73 +2,77 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 679D7149B04
-	for <lists+linux-wireless@lfdr.de>; Sun, 26 Jan 2020 15:25:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 11DC7149B10
+	for <lists+linux-wireless@lfdr.de>; Sun, 26 Jan 2020 15:27:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726911AbgAZOZQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 26 Jan 2020 09:25:16 -0500
-Received: from mail25.static.mailgun.info ([104.130.122.25]:32346 "EHLO
+        id S2387442AbgAZO16 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 26 Jan 2020 09:27:58 -0500
+Received: from mail25.static.mailgun.info ([104.130.122.25]:28471 "EHLO
         mail25.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726275AbgAZOZQ (ORCPT
+        by vger.kernel.org with ESMTP id S2387401AbgAZO15 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 26 Jan 2020 09:25:16 -0500
+        Sun, 26 Jan 2020 09:27:57 -0500
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1580048715; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=DzhIXU+qv1ciGaNGzExa6n/8OGLjYzAcP3i90CedJAI=; b=eBGmqTJa8tRijD3iJoVA7otxxDGoWRQAaH9mKNTW+nFomBmGlrXJ+0nXCuo3j1IgpEcds/I0
- 89Kx7NE2LIKIa08GN2g4d4AvjIAbci17I8IISyhmfQ/k0FD53ZnDNjplZe7JPrykWeb/jEWx
- 10FqyZ9RBCD4L3vP9rg4bKqxVcs=
+ s=smtp; t=1580048877; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=0rPOLB0oMazvkqBbmaIrXbhKMlza0H/GTIy0jvYRGbU=;
+ b=qLk8PZtzzOJhdd/3tiAs0PzitA9eBF+iy4zQIxdDaPmfWi2DRO+3lfEfJzj1l+IPsJsZ3Kz3
+ zMx/T5KytHxH52rGaorfuXk0vkjwImSKY3AsyYZndk0XiEvnVUyhNVWVyV3DE7ZjDULPW3sH
+ JcVSKQTDyecnzFYiPm1lDIPXomo=
 X-Mailgun-Sending-Ip: 104.130.122.25
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e2da147.7f33070196c0-smtp-out-n03;
- Sun, 26 Jan 2020 14:25:11 -0000 (UTC)
+ by mxa.mailgun.org with ESMTP id 5e2da1ec.7f28a8cc8650-smtp-out-n01;
+ Sun, 26 Jan 2020 14:27:56 -0000 (UTC)
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id AB1CAC4479F; Sun, 26 Jan 2020 14:25:11 +0000 (UTC)
+        id F4214C433A2; Sun, 26 Jan 2020 14:27:55 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
+        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
 Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id B35A3C43383;
-        Sun, 26 Jan 2020 14:25:09 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org B35A3C43383
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 43F1BC43383;
+        Sun, 26 Jan 2020 14:27:54 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 43F1BC43383
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Justin Capella <justincapella@gmail.com>
-Cc:     Stephen Boyd <swboyd@chromium.org>, netdev@vger.kernel.org,
-        ath10k <ath10k@lists.infradead.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] ath10k: Use device_get_match_data() to simplify code
-References: <20200123232944.39247-1-swboyd@chromium.org>
-        <CAMrEMU-e55q7uvd220+1kuYJ4Xa-4ckz5CvYezCj2ahn_K8t9w@mail.gmail.com>
-Date:   Sun, 26 Jan 2020 16:25:07 +0200
-In-Reply-To: <CAMrEMU-e55q7uvd220+1kuYJ4Xa-4ckz5CvYezCj2ahn_K8t9w@mail.gmail.com>
-        (Justin Capella's message of "Sat, 25 Jan 2020 20:18:40 -0800")
-Message-ID: <87o8uqcn24.fsf@kamboji.qca.qualcomm.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] ath11k: htt stats module does not handle multiple skbs
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20191217172200.7470-1-john@phrozen.org>
+References: <20191217172200.7470-1-john@phrozen.org>
+To:     John Crispin <john@phrozen.org>
+Cc:     linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
+        Miles Hu <milehu@codeaurora.org>,
+        John Crispin <john@phrozen.org>
+User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
+Message-Id: <20200126142755.F4214C433A2@smtp.codeaurora.org>
+Date:   Sun, 26 Jan 2020 14:27:55 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Justin Capella <justincapella@gmail.com> writes:
+John Crispin <john@phrozen.org> wrote:
 
-> Maybe use dev here as well?
->
->>                 dev_err(&pdev->dev, "failed to find matching device tree id\n");
+> This patch removes the "done" check from the stats handler thus allowing
+> the code to parse more skbs.
+> 
+> Reviewed-by: John Crispin <john@phrozen.org>
+> Signed-off-by: Miles Hu <milehu@codeaurora.org>
+> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 
-I changed that. And also fixed a checkpatch warning:
+s-o-b from John missing
 
-drivers/net/wireless/ath/ath10k/snoc.c:1483: Please don't use multiple blank lines
+Patch set to Changes Requested.
 
 -- 
+https://patchwork.kernel.org/patch/11298295/
+
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
