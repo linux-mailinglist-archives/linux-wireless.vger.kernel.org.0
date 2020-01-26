@@ -2,99 +2,87 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E83C149A2A
-	for <lists+linux-wireless@lfdr.de>; Sun, 26 Jan 2020 11:42:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E89A3149A2E
+	for <lists+linux-wireless@lfdr.de>; Sun, 26 Jan 2020 11:45:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729255AbgAZKmE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 26 Jan 2020 05:42:04 -0500
-Received: from mail-wr1-f68.google.com ([209.85.221.68]:40465 "EHLO
-        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726571AbgAZKmD (ORCPT
+        id S1729402AbgAZKps (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 26 Jan 2020 05:45:48 -0500
+Received: from mail25.static.mailgun.info ([104.130.122.25]:31181 "EHLO
+        mail25.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1729107AbgAZKps (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 26 Jan 2020 05:42:03 -0500
-Received: by mail-wr1-f68.google.com with SMTP id c14so7412098wrn.7
-        for <linux-wireless@vger.kernel.org>; Sun, 26 Jan 2020 02:42:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=9Sa84KuNUFfV1BzPCtN6+5TepgyVkJdVvBLY4aoS9rQ=;
-        b=eMBL0Z6FVnomr5kGfwb42CcACySvQYu2MkfoB6uTqlXpD7ONW2LZzBNPxnUxsM2SFM
-         5iXcXL7aXgzaWmUgtyJGLVsk++rUlecJOoJMOpnd84SEFY8EJlcTuljEJ0uNbG9X5woF
-         lrWWBrMQZDe/Q3lAkSAVW5X4AtCEwoCdM+IOCpIfY75zpUh6OcrSCqOlpcQdtAjiz6YU
-         UliE5lQ0Z3/QRDt3ko3succmdAV25C8F6yCwBoDKe0BDshp0+3dBM+FmpIvblHjEKDV4
-         HSZyRgYN6f+Gvzz1B6xOq6jjRikhlB8ejqeRLGItsWnScJtcLsaeMlweKOP9jXhlpZXM
-         eb9Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=9Sa84KuNUFfV1BzPCtN6+5TepgyVkJdVvBLY4aoS9rQ=;
-        b=cjUuE+p2f1dvytUCvWdbBVNUDk5IjgPHwcMfNsXCeo9ufGxB4AE/jc+2mTajQdtK2J
-         4Dz4GX2kNoxu+PXeCElXnuT10D1eZVUeR9aMeeIyIpLraeZtcqzb/+XrQuUkmnON8z8f
-         JD/sBlPyFLqKaxTP2le98vF2wleC0rK8y8aeZkb94NLeGyb6Vb9UON+7F5/NBphPVBth
-         e72cWWckBfXiZIuba9aWnzAvGBuvwRVontmGciOsOOfxnSa3eITtNsbuvzly74rlQb+8
-         4eWfA1lul49JMsz65qPMalChuOd6POJR7GKfaN8nB/23g0anqDYgt8o2GVCgsSRYQt1q
-         SdnQ==
-X-Gm-Message-State: APjAAAVIG+bnSknxHwKQSjgDyWa3awKfTKekr8gHflF7j2mbyKtGbhuP
-        9w2P/WrY/eYM7WEMyJ70QsDz0Nshh/axIM1Fa6Q=
-X-Google-Smtp-Source: APXvYqyBnbv0WxWUmGpCy+ckhv1MipUgNuN7TF6Dz1+bwNyAJjIekWe6gIkQXKB7UAEW+qj4AmzhfkAxWtGlF/P8fjM=
-X-Received: by 2002:adf:ebc1:: with SMTP id v1mr15343063wrn.351.1580035322275;
- Sun, 26 Jan 2020 02:42:02 -0800 (PST)
+        Sun, 26 Jan 2020 05:45:48 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1580035547; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=lKIj5JfD580Id9PMIjtYGG9Iadxjo+CVo5FKnaSVU/o=;
+ b=sDIzu8PhGj+lfcwZ2Vj/mHDk0I3QG3vBVXWLyPmwEddMJrttto8hgbesywn5hVd4YFA9f6iO
+ /BYffGRSX+UUWshMCG4M0M/LQDP/TojgCgtAwuIOntOPyu6pvKXy9BjpHp59VWBWq59mfuzq
+ VLR8sOj6RDtweQuyP60rnFcxyU0=
+X-Mailgun-Sending-Ip: 104.130.122.25
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5e2d6dda.7f30fa55b688-smtp-out-n01;
+ Sun, 26 Jan 2020 10:45:46 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 83226C447A2; Sun, 26 Jan 2020 10:45:45 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
+        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 5B208C433CB;
+        Sun, 26 Jan 2020 10:45:42 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 5B208C433CB
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Received: by 2002:a1c:98cb:0:0:0:0:0 with HTTP; Sun, 26 Jan 2020 02:42:01
- -0800 (PST)
-Reply-To: tapsobaahmed100@gmail.com
-From:   "Mr. Tapsoba Ahmed" <miss.mimunazongo1985@gmail.com>
-Date:   Sun, 26 Jan 2020 02:42:01 -0800
-Message-ID: <CAAyAQ1HP7OESH1BycvGw7DDHqp-pPQm9H85R4LrgiuSR9uC5nw@mail.gmail.com>
-Subject: I NEED YOUR URGENT RESPOND PLEASE
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] ath11k: ensure ts.flags is initialized before bit-wise
+ or'ing in values
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20191221004046.15859-1-colin.king@canonical.com>
+References: <20191221004046.15859-1-colin.king@canonical.com>
+To:     Colin King <colin.king@canonical.com>
+Cc:     "David S . Miller" <davem@davemloft.net>,
+        Anilkumar Kolli <akolli@codeaurora.org>,
+        Manikanta Pubbisetty <mpubbise@codeaurora.org>,
+        Sven Eckelmann <seckelmann@datto.com>,
+        Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>,
+        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
+Message-Id: <20200126104545.83226C447A2@smtp.codeaurora.org>
+Date:   Sun, 26 Jan 2020 10:45:45 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello Dear Friend,
+Colin King <colin.king@canonical.com> wrote:
 
-My name is Mr.Tapsoba Ahmed. I have decided to seek a confidential
-co-operation  with you in the execution of the deal described
-here-under for our both  mutual benefit and I hope you will keep it a
-top secret because of the nature  of the transaction, During the
-course of our bank year auditing, I discovered  an unclaimed/abandoned
-fund, sum total of {US$19.3 Million United State  Dollars} in the bank
-account that belongs to a Saudi Arabia businessman Who unfortunately
-lost his life and entire family in a Motor Accident.
+> Currently the structure ts is not inititalized and ts.flags contains
+> garbage values from the stack.  This is being passed into function
+> ath11k_dp_tx_status_parse that bit-wise or'ing in settings into the
+> ts.flags field.  To avoid flags (and other fields) from containing
+> garbage, initialize the structure to zero before use.
+> 
+> Addresses-Coverity: ("Uninitialized scalar variable)"
+> Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 
-Now our bank has been waiting for any of the relatives to come-up for
-the claim but nobody has done that. I personally has been unsuccessful
-in locating any of the relatives, now, I sincerely seek your consent
-to present you as the next of kin / Will Beneficiary to the deceased
-so that the proceeds of this account valued at {US$19.3 Million United
-State Dollars} can be paid to you, which we will share in these
-percentages ratio, 60% to me and 40% to you. All I request is your
-utmost sincere co-operation; trust and maximum confidentiality to
-achieve this project successfully. I have carefully mapped out the
-moralities for execution of this transaction under a legitimate
-arrangement to protect you from any breach of the law both in your
-country and here in Burkina Faso when the fund is being transferred to
-your bank account.
+Patch applied to ath-next branch of ath.git, thanks.
 
-I will have to provide all the relevant document that will be
-requested to indicate that you are the rightful beneficiary of this
-legacy and our bank will release the fund to you without any further
-delay, upon your consideration and acceptance of this offer, please
-send me the following information as stated below so we can proceed
-and get this fund transferred to your designated bank account
-immediately.
+eefca584140b ath11k: ensure ts.flags is initialized before bit-wise or'ing in values
 
--Your Full Name:
--Your Contact Address:
--Your direct Mobile telephone Number:
--Your Date of Birth:
--Your occupation:
+-- 
+https://patchwork.kernel.org/patch/11306545/
 
-I await your swift response and re-assurance.
-
-Best regards,
-Mr.Tapsoba Ahmed.
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
