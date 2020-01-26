@@ -2,64 +2,63 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B76901498B9
-	for <lists+linux-wireless@lfdr.de>; Sun, 26 Jan 2020 05:19:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 34C851499D8
+	for <lists+linux-wireless@lfdr.de>; Sun, 26 Jan 2020 10:46:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729219AbgAZESx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 25 Jan 2020 23:18:53 -0500
-Received: from mail-vs1-f67.google.com ([209.85.217.67]:35500 "EHLO
-        mail-vs1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729159AbgAZESx (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 25 Jan 2020 23:18:53 -0500
-Received: by mail-vs1-f67.google.com with SMTP id x123so3723546vsc.2;
-        Sat, 25 Jan 2020 20:18:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=lq3lIVfl7ApjZuiHmE6fiMLLbsA7AiogeQoH4ZIMHa8=;
-        b=dPwwBpaPryuxcw1l4lbP4vYM1gqsLMCfn2pk9rnI+IhGSlyh81H5QfsAYJOblF9E0C
-         l00HSeX59GqSds+G3pSY9GbpX/kL/UyvrGf2ol8vFsjvAepM3o+Fi0kr6WaPYyKLtr/O
-         IHIxS9iSD9kaSUAP7FkaGOwriwtdXN8ePW1JaDmTx0hmutHo+8LWb9/j2Ezm1kE2KzPO
-         EvH7GZPucbAAG+AJL3DTpJ7msovpYsyozZB+5J2hDuZ6mit8hgAhNMLeeL6BqoBhzBTl
-         gqtS8pPa/o1/4Cr4EuqGR+oXKuCS1M17lMA+SlRkNJr4DHfrikt0U+DYMmD94lvAlJAg
-         DUeA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=lq3lIVfl7ApjZuiHmE6fiMLLbsA7AiogeQoH4ZIMHa8=;
-        b=MLsMxv5XTs/qR7IT1tzPHbOGM8JC8l0jVutcAPT71ZOqapAxqpB4oe24znKMX37uP5
-         qoiA6OocPZNpuh/Zs8+nxMXfwnvgIxJ+Wg/bIg74xDdj7B1Qwc4wm2CNZnIh4lb1ufCu
-         nFq+nKdDnbiKuGkJhQiHSq2dMu9/lqwQDZzpUW4w9vvoTpTOIUwa53tDiIqg0NZRo2QI
-         Mqr63U0NZph/AqDbCzyTwHSctQrri9Y2a2Yz7s9ta8T0eOy8jLqONVuKBH7J18nIVqgr
-         26FpLM43qXajEzYsYFbXYBBGzFF4+XSEL1j6UBCUKi/9kbW2rKKRrMOGCFIMAD5oMN/U
-         Bj9g==
-X-Gm-Message-State: APjAAAWReIWz6WT30QoRjzrivjQkQpgx+RzUgxDa25QxAtn5vBEUcnjC
-        nKIU8fNQEryxMOGgsTETp1+4YezUlI5znfeqGpo=
-X-Google-Smtp-Source: APXvYqy6dktF7WcxFxQFinwVQCe98+om3ALC3H32+yhVeALtJYLxCghljNOK0DC9d9HR8Xxnlikix+OwptuLKzGE7DA=
-X-Received: by 2002:a67:f10c:: with SMTP id n12mr6652494vsk.208.1580012332237;
- Sat, 25 Jan 2020 20:18:52 -0800 (PST)
-MIME-Version: 1.0
-References: <20200123232944.39247-1-swboyd@chromium.org>
-In-Reply-To: <20200123232944.39247-1-swboyd@chromium.org>
-From:   Justin Capella <justincapella@gmail.com>
-Date:   Sat, 25 Jan 2020 20:18:40 -0800
-Message-ID: <CAMrEMU-e55q7uvd220+1kuYJ4Xa-4ckz5CvYezCj2ahn_K8t9w@mail.gmail.com>
-Subject: Re: [PATCH] ath10k: Use device_get_match_data() to simplify code
-To:     Stephen Boyd <swboyd@chromium.org>
+        id S1729076AbgAZJqO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 26 Jan 2020 04:46:14 -0500
+Received: from mx3.wp.pl ([212.77.101.9]:11574 "EHLO mx3.wp.pl"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727295AbgAZJqO (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 26 Jan 2020 04:46:14 -0500
+Received: (wp-smtpd smtp.wp.pl 1467 invoked from network); 26 Jan 2020 10:39:33 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=1024a;
+          t=1580031573; bh=8l1rmL5X5Cv0Cj5XiywukSTYoIUEeUjYPldXFydWbC0=;
+          h=From:To:Cc:Subject;
+          b=nOuavmRoSp5RRbeyZdERhjGL6lBZfuXp1C1VmIyHyeBce9sOakGtCD5JYmxMVHj4p
+           jvLiTTi+ttVtC62AHQY30tVHldAx8qkFpPY4H4fzMzBBtG7g8PBn5G/1x8ilpdGDLi
+           on5uDFfGmaLAJd15pl1s+7iBsuBqrtzBsV+ikYR4=
+Received: from host-178.215.207.168-internet.zabrze.debacom.pl (HELO localhost) (stf_xl@wp.pl@[178.215.207.168])
+          (envelope-sender <stf_xl@wp.pl>)
+          by smtp.wp.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
+          for <colin.king@canonical.com>; 26 Jan 2020 10:39:33 +0100
+Date:   Sun, 26 Jan 2020 10:39:32 +0100
+From:   Stanislaw Gruszka <stf_xl@wp.pl>
+To:     Colin King <colin.king@canonical.com>
 Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        ath10k <ath10k@lists.infradead.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+        "David S . Miller" <davem@davemloft.net>,
+        Meenakshi Venkataraman <meenakshi.venkataraman@intel.com>,
+        Wey-Yi Guy <wey-yi.w.guy@intel.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][next] iwlegacy: ensure loop counter addr does not wrap
+ and cause an infinite loop
+Message-ID: <20200126093932.GA605118@wp.pl>
+References: <20200126000954.22807-1-colin.king@canonical.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200126000954.22807-1-colin.king@canonical.com>
+X-WP-MailID: 5300318e69b08c0e5e0d2f8643f46dc7
+X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
+X-WP-SPAM: NO 0000000 [oROH]                               
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Maybe use dev here as well?
+On Sun, Jan 26, 2020 at 12:09:54AM +0000, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> The loop counter addr is a u16 where as the upper limit of the loop
+> is a an int. In the unlikely event that the il->cfg->eeprom_size is
+> greater than 64K then we end up with an infinite loop since addr will
+> wrap around an never reach upper loop limit. Fix this by making addr
+> an int.
+> 
+> Addresses-Coverity: ("Infinite loop")
+> Fixes: be663ab67077 ("iwlwifi: split the drivers for agn and legacy devices 3945/4965")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
->                 dev_err(&pdev->dev, "failed to find matching device tree id\n");
+Acked-by: Stanislaw Gruszka <stf_xl@wp.pl>
