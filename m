@@ -2,95 +2,105 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CFF111499F4
-	for <lists+linux-wireless@lfdr.de>; Sun, 26 Jan 2020 11:04:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E75E41499F8
+	for <lists+linux-wireless@lfdr.de>; Sun, 26 Jan 2020 11:11:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729317AbgAZKEm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 26 Jan 2020 05:04:42 -0500
-Received: from mail-lf1-f67.google.com ([209.85.167.67]:41616 "EHLO
-        mail-lf1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726571AbgAZKEm (ORCPT
+        id S1729094AbgAZKLH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 26 Jan 2020 05:11:07 -0500
+Received: from mail26.static.mailgun.info ([104.130.122.26]:39495 "EHLO
+        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726571AbgAZKLH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 26 Jan 2020 05:04:42 -0500
-Received: by mail-lf1-f67.google.com with SMTP id m30so4156741lfp.8
-        for <linux-wireless@vger.kernel.org>; Sun, 26 Jan 2020 02:04:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cogentembedded-com.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=X+a0RSsX8qTothLnSZgV/VBOHW9ZL3PJUsg+L9yuDSk=;
-        b=jTvv0LFLubFkhsEXfG7Qvxp6GSS+KhYZR8HMwKvhuLHZ/PzO4CnrN8ojF7QfEs72Bv
-         zebHeVNuIing3pqBK30XxP9PYs3RBKe9G7k6JKQE+RmYE5xYqHqyZOmzgzPJYxLfUK+0
-         WD0DeWN+o556EAkD+Q9c2siPy4LmSSJbPydtL4uJBPJQSsmL9/jmHrqMVUa4x8NO5f4a
-         /HINrYJrW3gzpSEHe+MYDyWqo5cI0e3vDYRgvzvfKt9oXuX8FsaU2sDZ70mJBWoZ76jv
-         cgLnzxiOa58S0GF2CPR/JGtHXxkMXV/n5B6Pko0cjRTdZsY4HXvL5dHfvg4QSf8LSTyi
-         jTJw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=X+a0RSsX8qTothLnSZgV/VBOHW9ZL3PJUsg+L9yuDSk=;
-        b=JRV3+U5RF8exhKmmxAriypArI7zn4hVxcH0yVrKz2NeEBvyhOGwCTOdoXmLyp5MyyZ
-         kbOYW3M0kDJXE/Rk0tT81Cfrl2AKgkhBsFkDAaPVD35KJtR+ffmfYDPDwR08AwtLCLxo
-         rIBCWkH8b9JwTqYONT2UnQlBwnbOj+qbSlfQ7B6UtwqRrd1CNWxdv4J8unTy8D0AhrAI
-         de1BC9xguQ/ge8gJXE4Hq8glx5KL8d83G2Ijetey63VhdHaOo35NpKcjmIGDJYMlm7Rw
-         JY8L/9H7qc520q3QDbyolIm2vsnF8gYn5KVKjrSulZuIrXBdp/fyF9a3LoUixgpNLqSy
-         FEug==
-X-Gm-Message-State: APjAAAU9VXKw8IoFTMrtT95wm9F2MxyJzK8vOpGmEBpM1na6hgPxnjkl
-        sqA/8NSJl1iizhmY+LMMBHI54A==
-X-Google-Smtp-Source: APXvYqzOMIqhu/08iu0gB1bHMAtOhBQqDBFr5YViFhfYM5qO530YULttCsWKb34V/z8S2jwjzkMMRg==
-X-Received: by 2002:a19:c3c2:: with SMTP id t185mr5386491lff.56.1580033080215;
-        Sun, 26 Jan 2020 02:04:40 -0800 (PST)
-Received: from ?IPv6:2a00:1fa0:6d4:c52e:d9aa:1e8e:9d86:c74a? ([2a00:1fa0:6d4:c52e:d9aa:1e8e:9d86:c74a])
-        by smtp.gmail.com with ESMTPSA id u11sm6037885lfo.71.2020.01.26.02.04.38
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 26 Jan 2020 02:04:39 -0800 (PST)
-Subject: Re: [PATCH][next] iwlegacy: ensure loop counter addr does not wrap
- and cause an infinite loop
-To:     Colin King <colin.king@canonical.com>,
-        Stanislaw Gruszka <stf_xl@wp.pl>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Meenakshi Venkataraman <meenakshi.venkataraman@intel.com>,
-        Wey-Yi Guy <wey-yi.w.guy@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20200126000954.22807-1-colin.king@canonical.com>
-From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Message-ID: <7e76394c-cb50-e6e3-e3be-9574dcd7b5b8@cogentembedded.com>
-Date:   Sun, 26 Jan 2020 13:04:21 +0300
-User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
+        Sun, 26 Jan 2020 05:11:07 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1580033467; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=ArKpCudoRTrV8huNHo9JQpUNM2ZgwVkq/3kn2Bg0GY8=; b=JbcwTXCQ/8/wDtNweRejpWq+Gilnfjjq7JNxa0qS9PaaYeBpqC/wuVHXd3LPNouO4XQYj6lu
+ bmp9N1yLKPUDTytJuV1Y94luVNqJP//sLGTtwFJ/r9/lacsPhEr2W45cwuWjjIORWnAB7foj
+ CWHMAQ7HVbUYLbN6+CHfdcS93u4=
+X-Mailgun-Sending-Ip: 104.130.122.26
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5e2d65b8.7fe44ddb0ae8-smtp-out-n02;
+ Sun, 26 Jan 2020 10:11:04 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 6E4C1C433A2; Sun, 26 Jan 2020 10:11:03 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 7CF2DC43383;
+        Sun, 26 Jan 2020 10:11:01 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 7CF2DC43383
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Luca Coelho <luca@coelho.fi>
+Cc:     linux-wireless@vger.kernel.org, linuxwifi@intel.com,
+        david.e.box@intel.com, joe.konno@intel.com
+Subject: Re: pull-request: iwlwifi-next 2020-01-11
+References: <f548bee28a2ef4700a024e33c02b62893af498c7.camel@coelho.fi>
+Date:   Sun, 26 Jan 2020 12:10:59 +0200
+In-Reply-To: <f548bee28a2ef4700a024e33c02b62893af498c7.camel@coelho.fi> (Luca
+        Coelho's message of "Sat, 11 Jan 2020 11:51:28 +0200")
+Message-ID: <871rrmede4.fsf@kamboji.qca.qualcomm.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-In-Reply-To: <20200126000954.22807-1-colin.king@canonical.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello!
+Luca Coelho <luca@coelho.fi> writes:
 
-On 26.01.2020 3:09, Colin King wrote:
+> Here's the fist batch of patches intended for v5.6.  This includes
+> the last two patchsets I sent out.  Usual development work.  More
+> details about the contents in the tag description.
+>
+> I pushed these patches to my pending branch, but it was just now, so I
+> didn't get the results from kbuildbot yet.
+>
+> Please let me know if there are any issues.
+>
+> Cheers,
+> Luca.
+>
+>
+> The following changes since commit ae0a723c4cfd89dad31ce238f47ccfbe81b35b84:
+>
+>   Merge ath-next from git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git (2019-12-19 18:27:36 +0200)
+>
+> are available in the Git repository at:
+>
+>   git://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/iwlwifi-next.git tags/iwlwifi-next-for-kalle-2020-01-11
+>
+> for you to fetch changes up to 0b295a1eb81f37dc7d4f4f2ee9ef375fb36ab5d8:
+>
+>   iwlwifi: add device name to device_info (2020-01-04 12:48:41 +0200)
+>
+> ----------------------------------------------------------------
+> First set of patches intended for v5.6
+>
+> * Support new versions of the FTM FW APIs;
+> * Fix an old bug in D3 (WoWLAN);
+> * A couple of fixes/improvements in the receive-buffers code;
+> * Fix in the debugging where we were skipping one TXQ;
+> * Support new version of the beacon template FW API;
+> * Print some extra information when the driver is loaded;
+> * Some debugging infrastructure (aka. yoyo) updates;
+> * Support for a new HW version;
+> * Second phase of device configuration work started;
+> * Some clean-ups;
+>
+> ----------------------------------------------------------------
 
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> The loop counter addr is a u16 where as the upper limit of the loop
-> is a an int. In the unlikely event that the il->cfg->eeprom_size is
-      ^^^^
-    Double article? :-)
+Pulled, thanks Luca.
 
-> greater than 64K then we end up with an infinite loop since addr will
-> wrap around an never reach upper loop limit. Fix this by making addr
-> an int.
-> 
-> Addresses-Coverity: ("Infinite loop")
-> Fixes: be663ab67077 ("iwlwifi: split the drivers for agn and legacy devices 3945/4965")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-[...]
-
-MBR< Sergei
+-- 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
