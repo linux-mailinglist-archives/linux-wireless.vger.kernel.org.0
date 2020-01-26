@@ -2,30 +2,30 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 40FD1149B73
-	for <lists+linux-wireless@lfdr.de>; Sun, 26 Jan 2020 16:37:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 206DF149B75
+	for <lists+linux-wireless@lfdr.de>; Sun, 26 Jan 2020 16:37:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725908AbgAZPfx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 26 Jan 2020 10:35:53 -0500
+        id S1726858AbgAZPgi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 26 Jan 2020 10:36:38 -0500
 Received: from mail25.static.mailgun.info ([104.130.122.25]:42750 "EHLO
         mail25.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725838AbgAZPfx (ORCPT
+        by vger.kernel.org with ESMTP id S1725838AbgAZPgi (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 26 Jan 2020 10:35:53 -0500
+        Sun, 26 Jan 2020 10:36:38 -0500
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1580052952; h=Date: Message-Id: Cc: To: References:
+ s=smtp; t=1580052997; h=Date: Message-Id: Cc: To: References:
  In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=qMnja45+flMm1zuskmceWDwyBDiSxWej9g6UdHAmhSw=;
- b=IzJVQDSVZKntHGzduBreVVuRmbhHUN2VyjNXw9ARloolAgnTJk7zwHilW5Kuv3+71hqioU1R
- iBwjn2yhwfMUX7AXpKZ5CwP2qUt+oK2jQQ5j9CUrsDQrVsry9JUlkkO1FiKAEu4vRqNkHhcl
- lzucx700uM57VRnilO+WaL1bAIg=
+ Content-Type: Sender; bh=fB+9Ig6BEvL0LASv8D9I/HUEKOK3HLWIXnz4r7aDix4=;
+ b=g2zDBk/bZ/r1UdKY2bNpA/MTwDA6ogjPrUbz+LjclXC3arLvpcbEJOpxhCAP3F8lyhju+nHl
+ 8U6Whr85Avq77dJiirKINhyJW5yXrfppVm8LNiZleBN53o0mnPmXQzuvPhsqepspy8TCEfUH
+ d7VXLOpqFUxR+XUH+WOovY423yw=
 X-Mailgun-Sending-Ip: 104.130.122.25
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e2db1d4.7fbb1c37bd50-smtp-out-n02;
- Sun, 26 Jan 2020 15:35:48 -0000 (UTC)
+ by mxa.mailgun.org with ESMTP id 5e2db201.7f4488a5bca8-smtp-out-n01;
+ Sun, 26 Jan 2020 15:36:33 -0000 (UTC)
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id CEE1BC433CB; Sun, 26 Jan 2020 15:35:48 +0000 (UTC)
+        id CD520C4479C; Sun, 26 Jan 2020 15:36:33 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -35,48 +35,59 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 7C0A3C433A2;
-        Sun, 26 Jan 2020 15:35:46 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 7C0A3C433A2
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 2E70FC43383;
+        Sun, 26 Jan 2020 15:36:31 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 2E70FC43383
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH wireless-drivers-next 1/1] wlcore: mesh: Add support for
- RX Broadcast Key
+Subject: Re: [PATCH] hostap: Adjust indentation in prism2_hostapd_add_sta
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20200116143353.7541-2-hnagalla@gmail.com>
-References: <20200116143353.7541-2-hnagalla@gmail.com>
-To:     Hari Nagalla <hnagalla@gmail.com>
-Cc:     linux-wireless@vger.kernel.org, mailtalm@ti.com, hnagalla@gmail.com
+In-Reply-To: <20191218011545.40557-1-natechancellor@gmail.com>
+References: <20191218011545.40557-1-natechancellor@gmail.com>
+To:     Nathan Chancellor <natechancellor@gmail.com>
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, clang-built-linux@googlegroups.com,
+        Nathan Chancellor <natechancellor@gmail.com>
 User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20200126153548.CEE1BC433CB@smtp.codeaurora.org>
-Date:   Sun, 26 Jan 2020 15:35:48 +0000 (UTC)
+Message-Id: <20200126153633.CD520C4479C@smtp.codeaurora.org>
+Date:   Sun, 26 Jan 2020 15:36:33 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hari Nagalla <hnagalla@gmail.com> wrote:
+Nathan Chancellor <natechancellor@gmail.com> wrote:
 
-> From: Maital Hahn <maitalm@ti.com>
+> Clang warns:
 > 
-> In order to support authentication of equals peers,
-> need to save RX Broadcast key per peer (on top of 1 TX broadcast key
-> and unicast key per peer).
+> ../drivers/net/wireless/intersil/hostap/hostap_ap.c:2511:3: warning:
+> misleading indentation; statement is not part of the previous 'if'
+> [-Wmisleading-indentation]
+>         if (sta->tx_supp_rates & WLAN_RATE_5M5)
+>         ^
+> ../drivers/net/wireless/intersil/hostap/hostap_ap.c:2509:2: note:
+> previous statement is here
+>         if (sta->tx_supp_rates & WLAN_RATE_2M)
+>         ^
+> 1 warning generated.
 > 
-> Signed-off-by: Maital Hahn <maitalm@ti.com>
-> Acked-by: Guy Mishol <guym@ti.com>
-> Signed-off-by: Hari Nagalla <hnagalla@gmail.com>
+> This warning occurs because there is a space before the tab on this
+> line. Remove it so that the indentation is consistent with the Linux
+> kernel coding style and clang no longer warns.
+> 
+> Fixes: ff1d2767d5a4 ("Add HostAP wireless driver.")
+> Link: https://github.com/ClangBuiltLinux/linux/issues/813
+> Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
+> Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
 
-The subject was broken and I had to manually fix it. It should look like this:
+Patch applied to wireless-drivers-next.git, thanks.
 
-Subject: [PATCH wireless-drivers-next 1/1] wlcore: mesh: Add support for RX Boradcast Key
-
-Please check this in the future patches, thanks.
+b61156fba74f hostap: Adjust indentation in prism2_hostapd_add_sta
 
 -- 
-https://patchwork.kernel.org/patch/11337165/
+https://patchwork.kernel.org/patch/11299247/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
