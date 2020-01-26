@@ -2,88 +2,97 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 426DD149BB2
-	for <lists+linux-wireless@lfdr.de>; Sun, 26 Jan 2020 16:52:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A4034149BBE
+	for <lists+linux-wireless@lfdr.de>; Sun, 26 Jan 2020 17:04:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727453AbgAZPwP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 26 Jan 2020 10:52:15 -0500
-Received: from mail26.static.mailgun.info ([104.130.122.26]:36243 "EHLO
-        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728292AbgAZPwN (ORCPT
+        id S1726155AbgAZQDx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 26 Jan 2020 11:03:53 -0500
+Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.53]:13734 "EHLO
+        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725907AbgAZQDx (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 26 Jan 2020 10:52:13 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1580053933; h=Date: Message-Id: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=JD2pxB6M6Wq/L05zP++/dLn61nN2ob1L8mfn2pSrEp8=;
- b=COSS5hosEhyRhD75pIEBOTdYouMinEQkA9qKeegnl1aQN9fRc59Zm/TfXRmBaUkTYA3HCGfn
- vkt3J8nE0OozX/iVecQbn/29XLohNP0Ehs9tDwUY+8j+1aKetJk/KeE6zOacnqan4o7ITeo/
- qX/+qb8Gmn2VArnybMCJYHrlafY=
-X-Mailgun-Sending-Ip: 104.130.122.26
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e2db5a7.7f0d7ee0c340-smtp-out-n02;
- Sun, 26 Jan 2020 15:52:07 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 5337DC4479C; Sun, 26 Jan 2020 15:52:06 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
-        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 75FB2C43383;
-        Sun, 26 Jan 2020 15:52:03 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 75FB2C43383
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH][next] iwlegacy: ensure loop counter addr does not wrap
- and cause an infinite loop
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20200126000954.22807-1-colin.king@canonical.com>
-References: <20200126000954.22807-1-colin.king@canonical.com>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Stanislaw Gruszka <stf_xl@wp.pl>,
-        "David S . Miller" <davem@davemloft.net>,
-        Meenakshi Venkataraman <meenakshi.venkataraman@intel.com>,
-        Wey-Yi Guy <wey-yi.w.guy@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>,
+        Sun, 26 Jan 2020 11:03:53 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1580054628;
+        s=strato-dkim-0002; d=goldelico.com;
+        h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:
+        X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
+        bh=2PNO1/c46RHFtyhHk/O9HQMuWsUZHHEAaOB0sL7r4Pw=;
+        b=aRTRqD92HPjzkZ/TiMD0b5BsIvhqVPmo/g19reIU8agO73xmXNS2XcJkqEhDi3/nUE
+        YNHKuBhv3Zs/TJlj/uYZEnQQQS+UudFMyb/gmt/ufLLmOQDuUVJkPpMzosZuPQ47FXoD
+        4965sJJDBP2zMlywonqNuuYeS7lFa6glNiRAKxNk3OqHtONEVamj8Tq4s7U446SddqPZ
+        Cwx2VdkUzK2WSlT4sIzDMch7x/MvhJtJCxvb63qSsE7Ku6PTqWOWH0uribxuvkkR7Krh
+        /HjIvkOb4t6W9LHRorBs2UF7NijSbiJLu5NE3BQxJLPULfRYnwcuiuweFE4GXWzQeNLC
+        /u8g==
+X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBj7wpz8NMGHPrrwDuiNA=="
+X-RZG-CLASS-ID: mo00
+Received: from imac.fritz.box
+        by smtp.strato.de (RZmta 46.1.7 DYNA|AUTH)
+        with ESMTPSA id k0645aw0QG3bETx
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (curve X9_62_prime256v1 with 256 ECDH bits, eq. 3072 bits RSA))
+        (Client did not present a certificate);
+        Sun, 26 Jan 2020 17:03:37 +0100 (CET)
+Content-Type: text/plain; charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+Subject: Re: ***UNCHECKED*** Re: [PATCH v2 1/2] DTS: bindings: wl1251: mark ti, power-gpio as optional
+From:   "H. Nikolaus Schaller" <hns@goldelico.com>
+In-Reply-To: <20200126153116.2E6E8C433A2@smtp.codeaurora.org>
+Date:   Sun, 26 Jan 2020 17:03:36 +0100
+Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Alexios Zavras <alexios.zavras@intel.com>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20200126155206.5337DC4479C@smtp.codeaurora.org>
-Date:   Sun, 26 Jan 2020 15:52:06 +0000 (UTC)
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        letux-kernel@openphoenux.org, kernel@pyra-handheld.com
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <8FB64063-5DE1-4C13-8647-F3C5B0D3E999@goldelico.com>
+References: <de42cdd5c5d2c46978c15cd2f27b49fa144ae6a7.1576606020.git.hns@goldelico.com> <20200126153116.2E6E8C433A2@smtp.codeaurora.org>
+To:     Kalle Valo <kvalo@codeaurora.org>
+X-Mailer: Apple Mail (2.3124)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Colin King <colin.king@canonical.com> wrote:
+Hi,
 
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> The loop counter addr is a u16 where as the upper limit of the loop
-> is an int. In the unlikely event that the il->cfg->eeprom_size is
-> greater than 64K then we end up with an infinite loop since addr will
-> wrap around an never reach upper loop limit. Fix this by making addr
-> an int.
-> 
-> Addresses-Coverity: ("Infinite loop")
-> Fixes: be663ab67077 ("iwlwifi: split the drivers for agn and legacy devices 3945/4965")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> Acked-by: Stanislaw Gruszka <stf_xl@wp.pl>
+> Am 26.01.2020 um 16:31 schrieb Kalle Valo <kvalo@codeaurora.org>:
+>=20
+> "H. Nikolaus Schaller" <hns@goldelico.com> wrote:
+>=20
+>> It is now only useful for SPI interface.
+>> Power control of SDIO mode is done through mmc core.
+>>=20
+>> Suggested by: Ulf Hansson <ulf.hansson@linaro.org>
+>> Acked-by: Rob Herring <robh@kernel.org>
+>> Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
+>=20
+> Failed to apply to wireless-drivers-next, please rebase and resend.
 
-Patch applied to wireless-drivers-next.git, thanks.
+On which commit and/or tree do you want to apply it?
 
-c2f9a4e4a5ab iwlegacy: ensure loop counter addr does not wrap and cause an infinite loop
+> fatal: sha1 information is lacking or useless =
+(drivers/net/wireless/ti/wl1251/sdio.c).
+> error: could not build fake ancestor
+> Applying: wl1251: remove ti,power-gpio for SDIO mode
+> Patch failed at 0001 wl1251: remove ti,power-gpio for SDIO mode
+> The copy of the patch that failed is found in: .git/rebase-apply/patch
+>=20
+> 2 patches set to Changes Requested.
+>=20
+> 11298403 [PATCH v2 1/2] DTS: bindings: wl1251: mark ti,power-gpio as =
+optional
+> 11298399 [v2,2/2] wl1251: remove ti,power-gpio for SDIO mode
+>=20
+> --=20
+> https://patchwork.kernel.org/patch/11298403/
+>=20
+> =
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpat=
+ches
 
--- 
-https://patchwork.kernel.org/patch/11351769/
+BR and thanks,
+Nikolaus Schaller
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
