@@ -2,84 +2,130 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D9003149A42
-	for <lists+linux-wireless@lfdr.de>; Sun, 26 Jan 2020 11:51:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E7A1149A55
+	for <lists+linux-wireless@lfdr.de>; Sun, 26 Jan 2020 12:10:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729351AbgAZKvo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 26 Jan 2020 05:51:44 -0500
-Received: from mail26.static.mailgun.info ([104.130.122.26]:23362 "EHLO
+        id S1729255AbgAZLK3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 26 Jan 2020 06:10:29 -0500
+Received: from mail26.static.mailgun.info ([104.130.122.26]:17914 "EHLO
         mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1729255AbgAZKvo (ORCPT
+        by vger.kernel.org with ESMTP id S1726436AbgAZLK3 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 26 Jan 2020 05:51:44 -0500
+        Sun, 26 Jan 2020 06:10:29 -0500
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1580035903; h=Date: Message-Id: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=jh3KcYIcK3fpyqI5D5qIbgxY95iJ5LcxRI3DTIlMrss=;
- b=pd5gqTi10Rm6vojFQb+3zWAnHkerKHclgFeKQuRrXJrRZtWuc7zfpGrnmMhT5O7j364znKmp
- NHoVaTn1nzuGp9rKzjIebiFyoA04qVmj/wjCMxdwvXrGbl+kwu6yVhDEjJDtRoo5iuPsz5Im
- 9K3EE9jqYv9BHBWf35G5MdjyX5o=
+ s=smtp; t=1580037028; h=Message-ID: References: In-Reply-To: Subject:
+ Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Sender; bh=9cXD0JbgoEOJ/xwaPErLWvhid4jdbxT0RLrSqEM4ZsE=;
+ b=IT2h8XNZ768JuTZFyvbTk5zuYdazO9zz8RHrYeC0sRR3dMPLuXMYm7SJZ+TuCA0ygfgMl/Oq
+ nfYEX8fb8p9X8gbXVeKAHBqqFanhqnMtSHLTjJk8JHx5PFRz7jeRXPZU0LxPrpZgHqiPOCwP
+ QpWpbQDh2FLsI1Ej7dK4twSz0Ks=
 X-Mailgun-Sending-Ip: 104.130.122.26
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e2d6f3e.7f52250f6ea0-smtp-out-n01;
- Sun, 26 Jan 2020 10:51:42 -0000 (UTC)
+ by mxa.mailgun.org with ESMTP id 5e2d73a3.7f105259fae8-smtp-out-n01;
+ Sun, 26 Jan 2020 11:10:27 -0000 (UTC)
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id F0F6DC433CB; Sun, 26 Jan 2020 10:51:41 +0000 (UTC)
+        id 37295C4479C; Sun, 26 Jan 2020 11:10:26 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
-        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id B3051C43383;
-        Sun, 26 Jan 2020 10:51:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org B3051C43383
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        (Authenticated sender: vjakkam)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 9BE04C43383;
+        Sun, 26 Jan 2020 11:10:25 +0000 (UTC)
 MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2] ath11k: fix up some error paths
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20200115174652.dvkmznhfvjaoc47l@kili.mountain>
-References: <20200115174652.dvkmznhfvjaoc47l@kili.mountain>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, John Crispin <john@phrozen.org>,
-        Vasanthakumar Thiagarajan <vthiagar@codeaurora.org>,
-        Anilkumar Kolli <akolli@codeaurora.org>,
-        Bhagavathi Perumal S <bperumal@codeaurora.org>
-User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20200126105141.F0F6DC433CB@smtp.codeaurora.org>
-Date:   Sun, 26 Jan 2020 10:51:41 +0000 (UTC)
+Date:   Sun, 26 Jan 2020 16:40:25 +0530
+From:   vjakkam@codeaurora.org
+To:     Arend Van Spriel <arend.vanspriel@broadcom.com>
+Cc:     johannes@sipsolutions.net, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH v2] cfg80211: Enhance the AKM advertizement to support per
+ interface.
+In-Reply-To: <a09e490e-a1e9-b4ec-afbf-438aef816435@broadcom.com>
+References: <20191223185255.1009-1-vjakkam@codeaurora.org>
+ <20200117113507.13503-1-vjakkam@codeaurora.org>
+ <a09e490e-a1e9-b4ec-afbf-438aef816435@broadcom.com>
+Message-ID: <1793692bd48e546915d3a3ec28208b01@codeaurora.org>
+X-Sender: vjakkam@codeaurora.org
+User-Agent: Roundcube Webmail/1.3.9
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Dan Carpenter <dan.carpenter@oracle.com> wrote:
-
-> There are two error paths where "ret" wasn't set.  Also one error path
-> we set the error code to -EINVAL but we should just preserve the error
-> code from ath11k_hal_srng_get_entrysize().  That function only returns
-> -EINVAL so this doesn't change anything.
+On 2020-01-20 14:27, Arend Van Spriel wrote:
+> On 1/17/2020 12:35 PM, Veerendranath Jakkam wrote:
+>> Commit ab4dfa20534e ("cfg80211: Allow drivers to advertise supported 
+>> AKM
+>> suites") introduces the support to advertize supported AKMs to 
+>> userspace.
+>> 
+>> This needs an enhancement to advertize the AKM support per interface 
+>> type,
+>> specifically for the cfg80211-based drivers that implement SME and use
+>> different mechanisms to support the AKM's for each interface type 
+>> (e.g.,
+>> the support for SAE, OWE AKM's take different paths for such drivers 
+>> on
+>> STA/AP mode).
+>> 
+>> Add a new nl80211 attribute to provide supported AKMs per interface 
+>> type
+>> to userspace.
+>> 
+>> This commit aims the same and enhances the earlier mechanism of 
+>> advertizing
+>> the AKMs per wiphy. AKMs advertized in akm_suites are default 
+>> capabilities
+>> if not advertized for a specific interface type in iftype_akm_suites.
+>> 
+>> Signed-off-by: Veerendranath Jakkam <vjakkam@codeaurora.org>
+>> ---
+>> Changelog:
+>> v1->v2:
+>>   -Keep advertizing support for AKM suites per wiphy
+>>   -AKM suites per interface overrides wiphy AKM suites for specific 
+>> interface
+>>   -Rename new nl80211 attribute to NL80211_ATTR_IFTYPE_AKM_SUITES
+>> ---
+>>   include/net/cfg80211.h       | 22 +++++++++++++++++++-
+>>   include/uapi/linux/nl80211.h |  6 ++++++
+>>   net/wireless/nl80211.c       | 39 
+>> ++++++++++++++++++++++++++++++++++++
+>>   3 files changed, 66 insertions(+), 1 deletion(-)
+>> 
+>> diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+>> index fa027d0d031b..10533dff2102 100644
+>> --- a/include/net/cfg80211.h
+>> +++ b/include/net/cfg80211.h
+>> @@ -4398,6 +4398,18 @@ struct cfg80211_pmsr_capabilities {
+>>   	} ftm;
+>>   };
+>>   +/**
+>> + * struct wiphy_iftype_akm_suites - supported akm suites per 
+>> interface type
+>> + * @iftype: interface type
+>> + * @akm_suites: points to an array of supported akm suites
+>> + * @n_akm_suites: number of supported AKM suites
+>> + */
+>> +struct wiphy_iftype_akm_suites {
+>> +	enum nl80211_iftype iftype;
 > 
-> I removed the "ret = 0;" initializers so that hopefully GCC will be able
-> to detect these sorts of bugs in the future.
+> I can imagine certain iftypes could support same suites so maybe good
+> to use bitmask of iftypes iso single iftype.
 > 
-> Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+> Regards,
+> Arend
+> 
+>> +	const u32 *akm_suites;
+>> +	int n_akm_suites;
+>> +};
+>> +
 
-Patch applied to ath-next branch of ath.git, thanks.
-
-7195c8747e87 ath11k: fix up some error paths
-
--- 
-https://patchwork.kernel.org/patch/11335489/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Thanks, I will upload v3 patch with suggested changes.
