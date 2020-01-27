@@ -2,88 +2,144 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E315149E09
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Jan 2020 01:42:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2FD2C149E7D
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Jan 2020 05:25:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727430AbgA0Amk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 26 Jan 2020 19:42:40 -0500
-Received: from ozlabs.org ([203.11.71.1]:50209 "EHLO ozlabs.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726654AbgA0Amk (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 26 Jan 2020 19:42:40 -0500
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mail.ozlabs.org (Postfix) with ESMTPSA id 485WDZ09G6z9sR1;
-        Mon, 27 Jan 2020 11:42:37 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
-        s=201702; t=1580085758;
-        bh=wO0ypkROhkUr4z3gWxp0SqLXy6Npy/RkH51sLbfQp8c=;
-        h=Date:From:To:Cc:Subject:From;
-        b=WpLmCC3wzrlNW+RqVdz2rWmXgDFPOwW+2KMkDrt35TlPUm3B6p8wzDyNidi3JmMdV
-         6MdbGSQl1aQDdsi6nppQ4Z0aIV8zyvFtG4P4ryd0NPX9DHhyOh1/sMw2HYdwUb23iv
-         kc1A6A7fkKW9Xfk7L+ADwblpVLN88p+Q7T3YcBLz+vWEIAW6CP7FatMIDOasYcQzt4
-         5QaLLe/b6p77txwV4slUoZuGkm/UI6+LdZ1oLPCIiKCS8YRbbYJ2cyswvdK/aBp12H
-         JOq4jRuo4U19IaUJCAe3RdOLnnSIww/I2hZz45S3r7PfQF+bD+kPe51gyzz7UjI13K
-         2Dl6IEHHvJpJA==
-Date:   Mon, 27 Jan 2020 11:42:21 +1100
-From:   Stephen Rothwell <sfr@canb.auug.org.au>
-To:     Kalle Valo <kvalo@codeaurora.org>,
-        Wireless <linux-wireless@vger.kernel.org>
-Cc:     Linux Next Mailing List <linux-next@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Rakesh Pillai <pillair@codeaurora.org>
-Subject: linux-next: Fixes tag needs some work in the wireless-drivers-next
- tree
-Message-ID: <20200127114221.52ba6027@canb.auug.org.au>
+        id S1726743AbgA0EZF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 26 Jan 2020 23:25:05 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:41155 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726545AbgA0EZF (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 26 Jan 2020 23:25:05 -0500
+Received: from mail-yb1-f199.google.com ([209.85.219.199])
+        by youngberry.canonical.com with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <seth.forshee@canonical.com>)
+        id 1ivvxP-0001W5-76
+        for linux-wireless@vger.kernel.org; Mon, 27 Jan 2020 04:25:03 +0000
+Received: by mail-yb1-f199.google.com with SMTP id o82so6784164ybc.18
+        for <linux-wireless@vger.kernel.org>; Sun, 26 Jan 2020 20:25:03 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=ncNHyL05RjLNXt8zPvZ6gJhRQry1ZuLpxwmOk+lMSv0=;
+        b=EIsTOtn7pfMGJrSDoT0suk5DZZibJDY1ls6lXyyDnGSFQjZxs0GKxoFbdF2PFKcK+J
+         FARFNZvv6wpFzlIx7+CDM/t8VzU36fBXMbuBOfaiMF7QZSB9iZa1Vtv/mU988DInlmYe
+         ANG9kNYVSUef2UiKo70rgHbLgPWSEIVVR26nvfqHaM7yu8NsLP5Eo9QQ7qWwXuuP73fL
+         +U1yTRuzKqOIt2P2RLqAX6CtHCWLkmR80tlw/U8jwSoc4haHHyoLuQEGXaKjQR7J4OP/
+         iOhPfuLE2Bm3e3cUQUiK6pjqWUR+c1yldGra7iYa4FBgZXwauKWn46wvgpicaRth8Hn6
+         KHmw==
+X-Gm-Message-State: APjAAAXf+ohMhxy1P4MJylOTrW+Wcg3ZVMOH0goDwwcYiRZHNIDBEyYS
+        WvRUEVAoVnQl2J3IYeqxJ0AkIK1Bj6MQowWzAFqvyHYmlVillf+ah+Mg2pwSwH04h2+jNON+Wt/
+        b3m+HpRakQhU/xFuX1DzquSLXOPqOm3joBNeAGCRnZyWP
+X-Received: by 2002:a0d:eb50:: with SMTP id u77mr11534921ywe.104.1580099102205;
+        Sun, 26 Jan 2020 20:25:02 -0800 (PST)
+X-Google-Smtp-Source: APXvYqzyJLZoyuqcw+WzSTIUDazMlu8K6H2zwi2qtBnivkB4ZI+J3Vay4l5kKXYFs2DUsxo5Q669yA==
+X-Received: by 2002:a0d:eb50:: with SMTP id u77mr11534912ywe.104.1580099101880;
+        Sun, 26 Jan 2020 20:25:01 -0800 (PST)
+Received: from localhost ([2605:a601:af9b:a120:2508:7928:f79b:3f69])
+        by smtp.gmail.com with ESMTPSA id x184sm5798210ywg.4.2020.01.26.20.25.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 26 Jan 2020 20:25:01 -0800 (PST)
+Date:   Sun, 26 Jan 2020 22:25:00 -0600
+From:   Seth Forshee <seth.forshee@canonical.com>
+To:     Dmitry Tunin <hanipouspilot@gmail.com>
+Cc:     wireless-regdb@lists.infradead.org, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH v2] wireless-regdb: update regulatory rules for
+ Kazakhstan (KZ)
+Message-ID: <20200127042500.GE3730@ubuntu-xps13>
+References: <1567189484-27536-1-git-send-email-hanipouspilot@gmail.com>
+ <20191029144815.GR30813@ubuntu-xps13>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/qyN85kgIZux/DvSwoHyT/kD";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191029144815.GR30813@ubuntu-xps13>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---Sig_/qyN85kgIZux/DvSwoHyT/kD
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+On Tue, Oct 29, 2019 at 09:48:15AM -0500, Seth Forshee wrote:
+> On Fri, Aug 30, 2019 at 09:24:44PM +0300, Dmitry Tunin wrote:
+> > Update according to the regulatory rule of January 21, 2015
+> > 
+> > http://egov.kz/cms/ru/law/list/V1500010730
+> > https://tengrinews.kz/zakon/pravitelstvo_respubliki_kazahstan_premer_ministr_rk/svyaz/id-V1500010730/
+> > 
+> > No DFS or TPC is mentioned in the document. Neither is 80 MHz channel width.
+> > 
+> > Signed-off-by: Dmitry Tunin <hanipouspilot@gmail.com>
+> 
+> Thanks for the patch. I don't agree with all of your changes though,
+> please see details below.
 
-Hi all,
+Hi Dmitry - it's been a while since I sent this last email. I wanted to
+check if you had any responses to my comments below, or if you intend to
+send a v3 patch.
 
-n commit
+Thanks,
+Seth
 
-  6ba8b3b6bd77 ("ath10k: Correct the DMA direction for management tx buffer=
-s")
-
-Fixes tag
-
-  Fixes: dc405152bb6 ("ath10k: handle mgmt tx completion event")
-
-has these problem(s):
-
-  - SHA1 should be at least 12 digits long
-    Can be fixed by setting core.abbrev to 12 (or more) or (for git v2.11
-    or later) just making sure it is not set (or set to "auto").
-
---=20
-Cheers,
-Stephen Rothwell
-
---Sig_/qyN85kgIZux/DvSwoHyT/kD
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAl4uMe0ACgkQAVBC80lX
-0GwIvgf/bmddk0hzqop3e1BFKbeq+Gf8UHsKmVdjUQyxY93Tf3w/quahjL+6oK9c
-ht+QTLIlpJm7XjauCqP2d5zkysJ/07+x4pU7T7X1aB13MqyvjLVmUTTH6utzY6Ap
-0f/KuaVja5pQcBqfZS5aSUN+WkoaUVeAMLxe6/2x+xxWKIgSbN25dHRf7apwEd/j
-GYKRIoP5ECpapTYR4Ey9QA/rCLF+Ch32ECqhhFY4SmwBmxWtaH1LB3tbw5pEVw3t
-AecgI9DoWVUkf+joztQDznLxdx31GQMsRlsTQBYbGoj9dOu4gGl4TtzhQe7wx0gK
-uZ31CtU5+J0z+ibhGA7rgHDTVS6f6Q==
-=jnjF
------END PGP SIGNATURE-----
-
---Sig_/qyN85kgIZux/DvSwoHyT/kD--
+> 
+> > ---
+> >  db.txt | 14 +++++++-------
+> >  1 file changed, 7 insertions(+), 7 deletions(-)
+> > 
+> > diff --git a/db.txt b/db.txt
+> > index 37393e6..491598e 100644
+> > --- a/db.txt
+> > +++ b/db.txt
+> > @@ -717,13 +717,13 @@ country KY: DFS-FCC
+> >  	(5735 - 5835 @ 80), (30)
+> >  
+> >  # Source:
+> > -# http://mic.gov.kz/sites/default/files/pages/pravila_prisvoeniya_polos_chastot_no34.pdf
+> > -# http://adilet.zan.kz/rus/docs/P000001379_
+> > -country KZ: DFS-ETSI
+> > -	(2402 - 2482 @ 40), (20)
+> > -	(5150 - 5250 @ 80), (20), NO-OUTDOOR, AUTO-BW
+> > -	(5250 - 5350 @ 80), (20), NO-OUTDOOR, DFS, AUTO-BW
+> > -	(5470 - 5725 @ 80), (20), NO-OUTDOOR, DFS
+> > +# http://egov.kz/cms/ru/law/list/V1500010730
+> > +# https://tengrinews.kz/zakon/pravitelstvo_respubliki_kazahstan_premer_ministr_rk/svyaz/id-V1500010730/
+> > +country KZ:
+> > +	(2400 - 2483.5 @ 40), (20)
+> > +	(5150 - 5350 @ 160), (23), NO-OUTDOOR
+> > +	(5470 - 5850 @ 160), (20), NO-OUTDOOR
+> 
+> The documents you provided reference this document:
+> 
+> https://egov.kz/wps/poc?uri=mjnpa:document&language=ru&documentId=V1500010375#z7
+> 
+> Which says that bands 5150-5350 MHz and 5470-5725 MHz should conform to
+> WRC-12 resolution 229:
+> 
+> https://www.itu.int/dms_pub/itu-r/opb/act/R-ACT-WRC.9-2012-PDF-E.pdf
+> 
+> This indicates that 5250-5350 MHz and 5470-5725 MHz must either have TPC
+> or reduce the maximum EIRP by 3 dBm, which for this database means
+> reducing the maximum power by 3 dBm for these bands. It also states that
+> these bands must implement the mitigation measures from ITU-R M.1652-1
+> in these bands, i.e. DFS.
+> 
+> So it appears to me that the existing DFS requirements are correct.
+> I think 5150-5250 MHz can be raised to 23 dBm, and 5250-5350 MHz needs
+> to remain at 20 dBm due to the TPC requirement. WRC-12 does mandate TCP
+> for 5470-5725 MHz, but also a maximum EIRP of 1W, so since 100 mW is far
+> less than half of that I suspect we can leave that at 20 dBm.
+> 
+> > +	(57000 - 66000 @ 2160), (40), NO-OUTDOOR
+> 
+> This addition looks fine to me.
+> 
+> Thanks,
+> Seth
+> 
+> >  
+> >  country LB: DFS-FCC
+> >  	(2402 - 2482 @ 40), (20)
+> > -- 
+> > 2.7.4
+> > 
