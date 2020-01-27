@@ -2,67 +2,65 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 031B614A23F
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Jan 2020 11:48:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E08E914A23D
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Jan 2020 11:48:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730082AbgA0Ks2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 27 Jan 2020 05:48:28 -0500
-Received: from mx0b-00183b01.pphosted.com ([67.231.157.42]:31258 "EHLO
-        mx0a-00183b01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726428AbgA0Ks1 (ORCPT
+        id S1730076AbgA0KsY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 27 Jan 2020 05:48:24 -0500
+Received: from mx0a-00183b01.pphosted.com ([67.231.149.44]:64014 "EHLO
+        mx0a-00183b01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1730011AbgA0KsY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 27 Jan 2020 05:48:27 -0500
-Received: from pps.filterd (m0059811.ppops.net [127.0.0.1])
-        by mx0b-00183b01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 00RAj2EA006182
-        for <linux-wireless@vger.kernel.org>; Mon, 27 Jan 2020 03:48:26 -0700
-Received: from nam10-mw2-obe.outbound.protection.outlook.com (mail-mw2nam10lp2102.outbound.protection.outlook.com [104.47.55.102])
-        by mx0b-00183b01.pphosted.com with ESMTP id 2xrh3032d9-1
+        Mon, 27 Jan 2020 05:48:24 -0500
+Received: from pps.filterd (m0048106.ppops.net [127.0.0.1])
+        by mx0a-00183b01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 00RAh5XZ020666
+        for <linux-wireless@vger.kernel.org>; Mon, 27 Jan 2020 03:48:21 -0700
+Received: from nam02-cy1-obe.outbound.protection.outlook.com (mail-cys01nam02lp2056.outbound.protection.outlook.com [104.47.37.56])
+        by mx0a-00183b01.pphosted.com with ESMTP id 2xrhdav4af-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <linux-wireless@vger.kernel.org>; Mon, 27 Jan 2020 03:48:26 -0700
+        for <linux-wireless@vger.kernel.org>; Mon, 27 Jan 2020 03:48:21 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ISBqNd65ndI29uKjyO2n6UvtQ8SkA2i941Qi7OprcEY/v4k0AJmMfeV0czXpCO2Idmxi16W7d5dGbAfv8W8rbppk8lO6XXcUsg8K0O2XbZ5cw94P/0JHcoWP8dzACu+cK5hkI9/aOWeCicyENeMlggw3hI1LVfYeg8H6aMOKyOrlcRDlKVXDqV2Vh25uJp6Gn/073vtYk9A657mpFaFwlNxR5OpVKwxFHRhbH33OZp3PsbhlSXjLykP0QaDwYX2RU5uMMye5W0pzsgOVHfbLs7n+Ljh5hVAZYX9qt0wZ1RPop7tmucJKoRbsqq4TgravsooxSbKZfgzls7dy6NZM9Q==
+ b=WM9V/1FPfatLAHQIKAikad6S60qzumljHx9+17yt3YaLZ4CYC4GDP50QKEUOV5uzLlVP0k/Zu6KNXMYiRqWM3XzYLoSMy0KCbRznphN0NvLeG/0Re+End6HYfoSU7VjTIboRA7bfD5mmaT4gmxNmLw2Mp1cssf+Ch2Vw9T74hty71t7EbyvLsFAQ3o6TaPmuktNy2IJvPYeEImOB+LnXicKUZ+Hj67iAoDKMmOrpatxKv9m6lx3aCGyg9Q20BEYl2UEXIVfdrDZVMQAZ+WH6Z+lHYRXBbe6nTa4e7eY/9qlJXoNOtHuueS0kOZQoFTyp0InQQdfuCwDF5TGd7JtjKQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=kV4Jd3neiwkvQntvpLJJ5bjawzqJGmw/YW99OPPXc8M=;
- b=gcJ7ZUqhgiH2LZgHyWurVI7dbHbisjp9cR5LauXA1tPtwD3is12tSQXAlpPdM/VeT414KRUWj5+OLKj+RBrd59Mu5SnIBb2KeFi+j1gC5iWL1flcyVqeBihAOpdZob4Id0UEW9bNS3REQXAg3OdwVhLOBvSQzcCl13ZMTTVJNPay/kLnqvIbf+X8l0JliJkHo99udv8QxTGrkfjULHijKMMLeDJNPIoUmDIKWSppO5xRSZ2ZO6yvA64PASoiugfswNYqvBD7zYE3hb+k5PJ5bBP72iKKBHIAchIJhOa+A6V2AVXwzCSBl4F9B3Ts+6WujO8fRMi7XR4ubl2cnDyjVQ==
+ bh=prUoUt9Fn4c11remkL03VBBBKZdqcwdTUfI7OdyR1ZI=;
+ b=C++ePENsp9E+/MxUCTGbHPgbk1khP7aP27eGbotdp5JxnDaSWHYkCB2muq+uN8s8qwFMnBpfW3Rdu063eOws3xX7bAHeB0t/VfFVthDqpKZk9GKqlLEykqksaohF+4G0M78J4hfDZSNckK4BfTkGDEiJC2cHh5t/StRi4iezRvs38S0feoTDM8SZNn97A+c8CalP1EqYeqflfBBh1K53xtbOP3jl9MsT9qCwnAnBZ29hIaUwSzqSZvXf8VNN9DoJzNx8cg6pxmPBntjt7plZHlrRstiEMYStIqBlcx7M61J85Lub2tRRSkLtLCCdbLDTwtnN/GCHHfSQSfAFxD43cw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=quantenna.com; dmarc=pass action=none
  header.from=quantenna.com; dkim=pass header.d=quantenna.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quantenna.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=kV4Jd3neiwkvQntvpLJJ5bjawzqJGmw/YW99OPPXc8M=;
- b=cXnZMLxkjB9PxtIt9GthsOIjw8r0uWfdampnmATqXAg7NduH92fyDoQy/ybv+jUSq+nAlaWJMGbCi9JK/k4U82Z6wd031W7t2O8J08ADFTw3OdPDTX9/u7Js90uMBXnxpRL11Fv5o2QNyzkEznx+IRZaZShetcCodI4fdm2Ss5I=
-Received: from DM6PR05MB5786.namprd05.prod.outlook.com (20.178.25.95) by
- DM6PR05MB6332.namprd05.prod.outlook.com (20.178.227.152) with Microsoft SMTP
+ bh=prUoUt9Fn4c11remkL03VBBBKZdqcwdTUfI7OdyR1ZI=;
+ b=b9/rAGn3/qVF9uYvPcL8s2iGc3AR22nlCzAO2hS0dQXzBxldt4Gf0xSLSJgTNY8I8XPnh8L2n9S+AUuIXDr87jwkFLXbRiP/8zNgGYjsNtDNgT/gYyMDeMjzHVHhKg7xEuU/acy9nXQO+fLO4ZWCMZANxaK+ZrZcBSu+9JNdv8Q=
+Received: from BN7PR05MB5874.namprd05.prod.outlook.com (20.176.29.22) by
+ BN7PR05MB4306.namprd05.prod.outlook.com (52.133.220.31) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2686.14; Mon, 27 Jan 2020 10:48:24 +0000
-Received: from DM6PR05MB5786.namprd05.prod.outlook.com
- ([fe80::a186:bc44:281:5774]) by DM6PR05MB5786.namprd05.prod.outlook.com
- ([fe80::a186:bc44:281:5774%6]) with mapi id 15.20.2686.019; Mon, 27 Jan 2020
- 10:48:24 +0000
+ 15.20.2686.19; Mon, 27 Jan 2020 10:48:20 +0000
+Received: from BN7PR05MB5874.namprd05.prod.outlook.com
+ ([fe80::60e4:931b:3c94:8d1f]) by BN7PR05MB5874.namprd05.prod.outlook.com
+ ([fe80::60e4:931b:3c94:8d1f%7]) with mapi id 15.20.2686.019; Mon, 27 Jan 2020
+ 10:48:19 +0000
 Received: from SN6PR05MB4928.namprd05.prod.outlook.com (52.135.117.74) by
  SN6PR05MB5391.namprd05.prod.outlook.com (52.135.111.23) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2686.18; Mon, 27 Jan 2020 10:46:55 +0000
+ 15.20.2686.18; Mon, 27 Jan 2020 10:46:57 +0000
 Received: from SN6PR05MB4928.namprd05.prod.outlook.com
  ([fe80::2956:4ff3:7d5b:333c]) by SN6PR05MB4928.namprd05.prod.outlook.com
  ([fe80::2956:4ff3:7d5b:333c%5]) with mapi id 15.20.2686.019; Mon, 27 Jan 2020
- 10:46:55 +0000
-Received: from bars.quantenna.com (195.182.157.78) by HE1PR07CA0018.eurprd07.prod.outlook.com (2603:10a6:7:67::28) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2665.14 via Frontend Transport; Mon, 27 Jan 2020 10:46:53 +0000
+ 10:46:57 +0000
+Received: from bars.quantenna.com (195.182.157.78) by HE1PR07CA0018.eurprd07.prod.outlook.com (2603:10a6:7:67::28) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2665.14 via Frontend Transport; Mon, 27 Jan 2020 10:46:55 +0000
 From:   Sergey Matyukevich <sergey.matyukevich.os@quantenna.com>
 To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
 CC:     Igor Mitsyanko <igor.mitsyanko.os@quantenna.com>,
         Mikhail Karpenko <mkarpenko@quantenna.com>,
         Sergey Matyukevich <sergey.matyukevich.os@quantenna.com>
-Subject: [PATCH 08/10] qtnfmac: update channel switch command to support 6GHz
- band
-Thread-Topic: [PATCH 08/10] qtnfmac: update channel switch command to support
- 6GHz band
-Thread-Index: AQHV1P8Xw/Yd+jgnmE6Z2jOn5zs8Mw==
-Date:   Mon, 27 Jan 2020 10:46:55 +0000
-Message-ID: <20200127104634.7248-9-sergey.matyukevich.os@quantenna.com>
+Subject: [PATCH 09/10] qtnfmac: drop unnecessary TLVs from scan command
+Thread-Topic: [PATCH 09/10] qtnfmac: drop unnecessary TLVs from scan command
+Thread-Index: AQHV1P8YoGp2x7LMKkGSUuBVx97qmw==
+Date:   Mon, 27 Jan 2020 10:46:56 +0000
+Message-ID: <20200127104634.7248-10-sergey.matyukevich.os@quantenna.com>
 References: <20200127104634.7248-1-sergey.matyukevich.os@quantenna.com>
 In-Reply-To: <20200127104634.7248-1-sergey.matyukevich.os@quantenna.com>
 Accept-Language: en-US
@@ -76,39 +74,35 @@ x-ms-exchange-messagesentrepresentingtype: 1
 x-mailer: git-send-email 2.11.0
 x-originating-ip: [195.182.157.78]
 x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 7bac7453-8e6f-4773-6358-08d7a31639a6
-x-ms-traffictypediagnostic: SN6PR05MB5391:|DM6PR05MB6332:
+x-ms-office365-filtering-correlation-id: 9c1e32b1-36b8-424c-23ae-08d7a3163ac8
+x-ms-traffictypediagnostic: SN6PR05MB5391:|BN7PR05MB4306:
 x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <SN6PR05MB5391CC582EB3F8D274807728A30B0@SN6PR05MB5391.namprd05.prod.outlook.com>
-x-moderation-data: 1/27/2020 10:48:20 AM
-x-ms-oob-tlc-oobclassifiers: OLM:4941;
+x-microsoft-antispam-prvs: <SN6PR05MB53913B367C9351EBED52F425A30B0@SN6PR05MB5391.namprd05.prod.outlook.com>
+x-moderation-data: 1/27/2020 10:48:15 AM
+x-ms-oob-tlc-oobclassifiers: OLM:353;
 x-forefront-prvs: 02951C14DC
-x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(396003)(39840400004)(366004)(136003)(346002)(376002)(189003)(199004)(26005)(186003)(16526019)(956004)(2616005)(36756003)(86362001)(103116003)(66446008)(7696005)(2906002)(66946007)(66556008)(71200400001)(66476007)(64756008)(478600001)(52116002)(81156014)(316002)(4326008)(54906003)(8676002)(107886003)(81166006)(5660300002)(8936002)(15650500001)(6486002)(6916009)(1076003);DIR:OUT;SFP:1101;SCL:1;SRVR:DM6PR05MB6332;H:DM6PR05MB5786.namprd05.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(396003)(39840400004)(136003)(376002)(346002)(366004)(199004)(189003)(66946007)(8936002)(8676002)(478600001)(54906003)(956004)(2616005)(1076003)(316002)(71200400001)(4326008)(86362001)(81156014)(81166006)(26005)(7696005)(66556008)(66476007)(36756003)(107886003)(52116002)(5660300002)(6916009)(66446008)(64756008)(6486002)(2906002)(186003)(16526019)(103116003);DIR:OUT;SFP:1101;SCL:1;SRVR:BN7PR05MB4306;H:BN7PR05MB5874.namprd05.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
 received-spf: None (protection.outlook.com: quantenna.com does not designate
  permitted sender hosts)
 x-ms-exchange-senderadcheck: 1
 x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: wCIx4P22Cy0yjq59exbO6XPYZtPJF7WgzUwHUekETcdY+ejkL2KZmo7nnLFpqV+nPrZOBaqHfc4eclukYPqQO87g/NBM5bDy1oC6XA0UWYxlLGq0DOAheOSv06oDZFX6p4VvECLB4ldFCQOJABBjMsoeuCvv/Gf4ws+GsfSVr+alcMC8BXJN6m47pCz+gQ5v3QFSDRJJ54eyWeCh25vd/OkAhciP0E3Q1nGF0/XCLA7vhfvdjZzBTtmNIu3Ebl+xMVrOAEv7ToLJrMVPfN6vIFQ11qgUZnllZkV4w4sF7pJPijIUWIdANBYlccw7IZstMNEYxG0X44h37xoeC6fyG80fHsSX87m+A82UeJFU1jDOAhnLJgMzeBikQUAM2m6jZ4cmCI64+ZineVfTjdiW2FxNXvvlGhvly7eXhx9APBPxSL/xi0jcLWf/94IstgAt
-x-ms-exchange-antispam-messagedata: 0eE5ZEvaQmCoXW/XZ/bTaE1yM37pI8261ThIzs2C8xVtQBkmAdDt0v/+AharjKsbleTtJwberAzDM6mhC8l5VddLyaL6ibk6e8au/FiIcfsqHfOHu4ZkXTiy0uHjcMnhMX+Ai+kG9oiwD3PpffEmVQ==
+x-microsoft-antispam-message-info: Efu71vw4yfxwkvCZuNTRfM21/BnYVR0yvAs3vcZn7YrDR87FD9eeRGroN5IYH7GKvYJGxTIP/vNPgnuRwQ/EEjAinnL/5NiadvdQGgKH26x6b/332mG5kv5f9fVlD2oUDihaGP/7wofIDk1d2xZL90EjV8WwIMz9f02k6RMxDlr3f18Dva+4iLtjJ8pZbjDsJHNzoyJ2LfWQAKC34uaEuWJHV8GUGJ9Wty/1B3/QIwT26amG4WVjaeemIXf8oAD4am9fTIa4rM7lAKV2RB4sXW8COZ2ORJ1mjgFPrB/45iSivCq30LFUSQV1QYOotI0ZrIND39QAc4b3l5DxjwCqd2W89E54GDON75WixK2MbmbdFz43zdIk2tA42rIiTWTl7YehdmvlUxcPCA2GH/H2mjJrvTaI+UVTP725n2d09Vni11GwrifMFsQscvfAskhj
+x-ms-exchange-antispam-messagedata: dOOophqL3h8Li7qib+x2vgs53RBTHQShwMJbVfEDLz6vtolZW/npAkZQ5VVWGkIuewrcNTYY4j5A0G6m0ugBTOCqdpY12WLz+KmqSonp9F2A23wZ3/N4wnGgZrm+s1Bz1hILEsTMuf3bm1lW9uQc5Q==
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-OriginatorOrg: quantenna.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7bac7453-8e6f-4773-6358-08d7a31639a6
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9c1e32b1-36b8-424c-23ae-08d7a3163ac8
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: a355dbce-62b4-4789-9446-c1d5582180ff
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: Ad3J3jbPcXD4QUPz9D0tT+Ula7V6y7RiWhf90Ho42NvQUiOXGxfUSb/iRUg1gXIugQoaRBif+LKHoBRs/kPkNvqq36lj/0RgZjm6FTswiE9zCFm3lG7MArv/X698F7KcCirnVQOU2IOSsE9qxHOKmdQqoa46OBcf+uvEC+snJ6Xd1IMK/ULJdTevYw2RcNnGGXMZ+tpfmLDGLlq60F3htA5LSTa5QhjDPgGe8wausL0=
-X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Jan 2020 10:48:24.5152
+X-MS-Exchange-CrossTenant-userprincipalname: oBgs8EHFRmJtQ3UHhh1LqOiXQgfyuwP3O3z6AjrsmhAiEKJMqR98iBFsFrGD1IsPku+0+7/Ld9sRj2qz2m4trcYYWWhfXaCW0jc5zELvfbyMp2pCce4U/ubFMV9//Q38CAG4zEZJrKPTRz+NqOfq+PmNscLUWBzmgrIVW702eVUa0xVV5dc/A9G+IyYk+ygVQ5NXgDZARizOkI1FEHSxvDwEPA7ediJlY1zzLvIDHeQ=
+X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Jan 2020 10:48:19.6511
  (UTC)
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR05MB6332
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN7PR05MB4306
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.572
  definitions=2020-01-27_02:2020-01-24,2020-01-27 signatures=0
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 clxscore=1015 mlxscore=0
- phishscore=0 mlxlogscore=999 priorityscore=1501 lowpriorityscore=0
- spamscore=0 impostorscore=0 adultscore=0 malwarescore=0 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-1911200001
- definitions=main-2001270091
+X-Proofpoint-Spam-Reason: safe
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
@@ -116,49 +110,201 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Igor Mitsyanko <igor.mitsyanko.os@quantenna.com>
 
-With an addition of 6GHz band support, channel number can no longer be
-used to uniquely identify a specific channel. Modify channel switch
-command to use chandef data.
+Most part of scan command data is always present, so no need
+to keep it in TLV. Simplify scan command processing moving
+most part of its parameters into a fixed part of
+qlink_cmd_scan message.
+
+Use fixed dwell time values for normal scan when device is not
+connected, and allow wireless card decide on dwell times by
+itself if it's operating as a STA and is connected. When
+connected, card can select dwell times dynamically based on
+traffic conditions to get best results.
 
 Signed-off-by: Igor Mitsyanko <igor.mitsyanko.os@quantenna.com>
 ---
- drivers/net/wireless/quantenna/qtnfmac/commands.c | 17 +++++++--------
- drivers/net/wireless/quantenna/qtnfmac/qlink.h    | 25 +++++++++++++++++--=
+ drivers/net/wireless/quantenna/qtnfmac/commands.c  | 130 +++++++++--------=
 ----
- 2 files changed, 28 insertions(+), 14 deletions(-)
+ drivers/net/wireless/quantenna/qtnfmac/qlink.h     |  51 ++++++--
+ .../net/wireless/quantenna/qtnfmac/qlink_util.h    |   8 --
+ 3 files changed, 96 insertions(+), 93 deletions(-)
 
 diff --git a/drivers/net/wireless/quantenna/qtnfmac/commands.c b/drivers/ne=
 t/wireless/quantenna/qtnfmac/commands.c
-index 1271d38e4c7a..31286699a5b7 100644
+index 31286699a5b7..ccc1e06dfcf6 100644
 --- a/drivers/net/wireless/quantenna/qtnfmac/commands.c
 +++ b/drivers/net/wireless/quantenna/qtnfmac/commands.c
-@@ -2519,6 +2519,7 @@ int qtnf_cmd_send_chan_switch(struct qtnf_vif *vif,
- 	struct qlink_cmd_chan_switch *cmd;
- 	struct sk_buff *cmd_skb;
- 	int ret;
-+	u64 flags =3D 0;
+@@ -11,11 +11,11 @@
+ #include "bus.h"
+ #include "commands.h"
 =20
- 	cmd_skb =3D qtnf_cmd_alloc_new_cmdskb(mac->macid, vif->vifid,
- 					    QLINK_CMD_CHAN_SWITCH,
-@@ -2526,19 +2527,19 @@ int qtnf_cmd_send_chan_switch(struct qtnf_vif *vif,
++/* Let device itself to select best values for current conditions */
+ #define QTNF_SCAN_TIME_AUTO	0
+=20
+-/* Let device itself to select best values for current conditions */
+-#define QTNF_SCAN_DWELL_ACTIVE_DEFAULT		QTNF_SCAN_TIME_AUTO
+-#define QTNF_SCAN_DWELL_PASSIVE_DEFAULT		QTNF_SCAN_TIME_AUTO
++#define QTNF_SCAN_DWELL_ACTIVE_DEFAULT		90
++#define QTNF_SCAN_DWELL_PASSIVE_DEFAULT		100
+ #define QTNF_SCAN_SAMPLE_DURATION_DEFAULT	QTNF_SCAN_TIME_AUTO
+=20
+ static int qtnf_cmd_check_reply_header(const struct qlink_resp *resp,
+@@ -2011,108 +2011,90 @@ static void qtnf_cmd_randmac_tlv_add(struct sk_buf=
+f *cmd_skb,
+ 	memcpy(randmac->mac_addr_mask, mac_addr_mask, ETH_ALEN);
+ }
+=20
+-static void qtnf_cmd_scan_set_dwell(struct qtnf_wmac *mac,
+-				    struct sk_buff *cmd_skb)
++int qtnf_cmd_send_scan(struct qtnf_wmac *mac)
+ {
+ 	struct cfg80211_scan_request *scan_req =3D mac->scan_req;
+-	u16 dwell_active =3D QTNF_SCAN_DWELL_ACTIVE_DEFAULT;
+ 	u16 dwell_passive =3D QTNF_SCAN_DWELL_PASSIVE_DEFAULT;
+-	u16 duration =3D QTNF_SCAN_SAMPLE_DURATION_DEFAULT;
+-
+-	if (scan_req->duration) {
+-		dwell_active =3D scan_req->duration;
+-		dwell_passive =3D scan_req->duration;
+-	}
+-
+-	pr_debug("MAC%u: %s scan dwell active=3D%u, passive=3D%u, duration=3D%u\n=
+",
+-		 mac->macid,
+-		 scan_req->duration_mandatory ? "mandatory" : "max",
+-		 dwell_active, dwell_passive, duration);
+-
+-	qtnf_cmd_skb_put_tlv_u32(cmd_skb,
+-				 QTN_TLV_ID_SCAN_DWELL_ACTIVE,
+-				 dwell_active);
+-	qtnf_cmd_skb_put_tlv_u32(cmd_skb,
+-				 QTN_TLV_ID_SCAN_DWELL_PASSIVE,
+-				 dwell_passive);
+-	qtnf_cmd_skb_put_tlv_u32(cmd_skb,
+-				 QTN_TLV_ID_SCAN_SAMPLE_DURATION,
+-				 duration);
+-}
+-
+-int qtnf_cmd_send_scan(struct qtnf_wmac *mac)
+-{
+-	struct sk_buff *cmd_skb;
++	u16 dwell_active =3D QTNF_SCAN_DWELL_ACTIVE_DEFAULT;
++	struct wireless_dev *wdev =3D scan_req->wdev;
+ 	struct ieee80211_channel *sc;
+-	struct cfg80211_scan_request *scan_req =3D mac->scan_req;
+-	int n_channels;
+-	int count =3D 0;
++	struct qlink_cmd_scan *cmd;
++	struct sk_buff *cmd_skb;
++	int n_channels =3D 0;
++	u64 flags =3D 0;
++	int count;
+ 	int ret;
+=20
+ 	cmd_skb =3D qtnf_cmd_alloc_new_cmdskb(mac->macid, QLINK_VIFID_RSVD,
+ 					    QLINK_CMD_SCAN,
+-					    sizeof(struct qlink_cmd));
++					    sizeof(*cmd));
  	if (!cmd_skb)
  		return -ENOMEM;
 =20
 -	qtnf_bus_lock(mac->bus);
-+	if (params->radar_required)
-+		flags |=3D QLINK_CHAN_SW_RADAR_REQUIRED;
++	cmd =3D (struct qlink_cmd_scan *)cmd_skb->data;
+=20
+-	if (scan_req->n_ssids !=3D 0) {
+-		while (count < scan_req->n_ssids) {
+-			qtnf_cmd_skb_put_tlv_arr(cmd_skb, WLAN_EID_SSID,
+-				scan_req->ssids[count].ssid,
+-				scan_req->ssids[count].ssid_len);
+-			count++;
+-		}
++	if (scan_req->duration) {
++		dwell_active =3D scan_req->duration;
++		dwell_passive =3D scan_req->duration;
++	} else if (wdev->iftype =3D=3D NL80211_IFTYPE_STATION &&
++		   wdev->current_bss) {
++		/* let device select dwell based on traffic conditions */
++		dwell_active =3D QTNF_SCAN_TIME_AUTO;
++		dwell_passive =3D QTNF_SCAN_TIME_AUTO;
++	}
 +
-+	if (params->block_tx)
-+		flags |=3D QLINK_CHAN_SW_BLOCK_TX;
++	cmd->n_ssids =3D cpu_to_le16(scan_req->n_ssids);
++	for (count =3D 0; count < scan_req->n_ssids; ++count) {
++		qtnf_cmd_skb_put_tlv_arr(cmd_skb, WLAN_EID_SSID,
++					 scan_req->ssids[count].ssid,
++					 scan_req->ssids[count].ssid_len);
+ 	}
 =20
- 	cmd =3D (struct qlink_cmd_chan_switch *)cmd_skb->data;
--	cmd->channel =3D cpu_to_le16(params->chandef.chan->hw_value);
--	cmd->radar_required =3D params->radar_required;
--	cmd->block_tx =3D params->block_tx;
-+	qlink_chandef_cfg2q(&params->chandef, &cmd->channel);
+ 	if (scan_req->ie_len !=3D 0)
+ 		qtnf_cmd_tlv_ie_set_add(cmd_skb, QLINK_IE_SET_PROBE_REQ,
+ 					scan_req->ie, scan_req->ie_len);
+=20
+-	if (scan_req->n_channels) {
+-		n_channels =3D scan_req->n_channels;
+-		count =3D 0;
+-
+-		while (n_channels !=3D 0) {
+-			sc =3D scan_req->channels[count];
+-			if (sc->flags & IEEE80211_CHAN_DISABLED) {
+-				n_channels--;
+-				continue;
+-			}
++	for (count =3D 0; count < scan_req->n_channels; ++count) {
++		sc =3D scan_req->channels[count];
++		if (sc->flags & IEEE80211_CHAN_DISABLED)
++			continue;
+=20
+-			pr_debug("MAC%u: scan chan=3D%d, freq=3D%d, flags=3D%#x\n",
+-				 mac->macid, sc->hw_value, sc->center_freq,
+-				 sc->flags);
++		pr_debug("[MAC%u] scan chan=3D%d, freq=3D%d, flags=3D%#x\n",
++			 mac->macid, sc->hw_value, sc->center_freq,
++			 sc->flags);
+=20
+-			qtnf_cmd_channel_tlv_add(cmd_skb, sc);
+-			n_channels--;
+-			count++;
+-		}
++		qtnf_cmd_channel_tlv_add(cmd_skb, sc);
++		++n_channels;
+ 	}
+=20
+-	qtnf_cmd_scan_set_dwell(mac, cmd_skb);
++	if (scan_req->flags & NL80211_SCAN_FLAG_FLUSH)
++		flags |=3D QLINK_SCAN_FLAG_FLUSH;
++
++	if (scan_req->duration_mandatory)
++		flags |=3D QLINK_SCAN_FLAG_DURATION_MANDATORY;
++
++	cmd->n_channels =3D cpu_to_le16(n_channels);
++	cmd->active_dwell =3D cpu_to_le16(dwell_active);
++	cmd->passive_dwell =3D cpu_to_le16(dwell_passive);
++	cmd->sample_duration =3D cpu_to_le16(QTNF_SCAN_SAMPLE_DURATION_DEFAULT);
 +	cmd->flags =3D cpu_to_le64(flags);
- 	cmd->beacon_count =3D params->count;
++
++	pr_debug("[MAC%u] %s scan dwell active=3D%u passive=3D%u duration=3D%u\n"=
+,
++		 mac->macid,
++		 scan_req->duration_mandatory ? "mandatory" : "max",
++		 dwell_active, dwell_passive,
++		 QTNF_SCAN_SAMPLE_DURATION_DEFAULT);
 =20
+ 	if (scan_req->flags & NL80211_SCAN_FLAG_RANDOM_ADDR) {
+-		pr_debug("MAC%u: scan with random addr=3D%pM, mask=3D%pM\n",
++		pr_debug("[MAC%u] scan with random addr=3D%pM, mask=3D%pM\n",
+ 			 mac->macid,
+ 			 scan_req->mac_addr, scan_req->mac_addr_mask);
+-
+ 		qtnf_cmd_randmac_tlv_add(cmd_skb, scan_req->mac_addr,
+ 					 scan_req->mac_addr_mask);
+ 	}
+=20
+-	if (scan_req->flags & NL80211_SCAN_FLAG_FLUSH) {
+-		pr_debug("MAC%u: flush cache before scan\n", mac->macid);
+-
+-		qtnf_cmd_skb_put_tlv_tag(cmd_skb, QTN_TLV_ID_SCAN_FLUSH);
+-	}
+-
 +	qtnf_bus_lock(mac->bus);
  	ret =3D qtnf_cmd_send(mac->bus, cmd_skb);
 -	if (ret)
@@ -170,49 +316,109 @@ index 1271d38e4c7a..31286699a5b7 100644
  	return ret;
 diff --git a/drivers/net/wireless/quantenna/qtnfmac/qlink.h b/drivers/net/w=
 ireless/quantenna/qtnfmac/qlink.h
-index 3577482c5076..ab2bfae7ff3e 100644
+index ab2bfae7ff3e..7ee1070f985f 100644
 --- a/drivers/net/wireless/quantenna/qtnfmac/qlink.h
 +++ b/drivers/net/wireless/quantenna/qtnfmac/qlink.h
-@@ -701,18 +701,31 @@ struct qlink_cmd_reg_notify {
+@@ -920,6 +920,46 @@ struct qlink_cmd_ndev_changeupper {
+ 	u8 rsvd[1];
  } __packed;
 =20
- /**
-+ * enum qlink_chan_sw_flags - channel switch control flags
++/**
++ * enum qlink_scan_flags -  scan request control flags
 + *
-+ * @QLINK_CHAN_SW_RADAR_REQUIRED: whether radar detection is required on a=
- new
-+ *	channel.
-+ * @QLINK_CHAN_SW_BLOCK_TX: whether transmissions should be blocked while
-+ *	changing a channel.
++ * Scan flags are used to control QLINK_CMD_SCAN behavior.
++ *
++ * @QLINK_SCAN_FLAG_FLUSH: flush cache before scanning.
 + */
-+enum qlink_chan_sw_flags {
-+	QLINK_CHAN_SW_RADAR_REQUIRED =3D BIT(0),
-+	QLINK_CHAN_SW_BLOCK_TX =3D BIT(1),
++enum qlink_scan_flags {
++	QLINK_SCAN_FLAG_FLUSH =3D BIT(0),
++	QLINK_SCAN_FLAG_DURATION_MANDATORY =3D BIT(1),
 +};
 +
 +/**
-  * struct qlink_cmd_chan_switch - data for QLINK_CMD_CHAN_SWITCH command
-  *
-- * @channel: channel number according to 802.11 17.3.8.3.2 and Annex J
-- * @radar_required: whether radar detection is required on the new channel
-- * @block_tx: whether transmissions should be blocked while changing
-+ * @channel: channel to switch to.
-+ * @flags: flags to control channel switch, bitmap of &enum qlink_chan_sw_=
-flags.
-  * @beacon_count: number of beacons until switch
-  */
- struct qlink_cmd_chan_switch {
- 	struct qlink_cmd chdr;
--	__le16 channel;
--	u8 radar_required;
--	u8 block_tx;
-+	struct qlink_chandef channel;
++ * struct qlink_cmd_scan - data for QLINK_CMD_SCAN command
++ *
++ * @flags: scan flags, a bitmap of &enum qlink_scan_flags.
++ * @n_ssids: number of WLAN_EID_SSID TLVs expected in variable portion of =
+the
++ *	command.
++ * @n_channels: number of QTN_TLV_ID_CHANNEL TLVs expected in variable pay=
+load.
++ * @active_dwell: time spent on a single channel for an active scan.
++ * @passive_dwell: time spent on a single channel for a passive scan.
++ * @sample_duration: total duration of sampling a single channel during a =
+scan
++ *	including off-channel dwell time and operating channel time.
++ * @bssid: specific BSSID to scan for or a broadcast BSSID.
++ * @scan_width: channel width to use, one of &enum qlink_channel_width.
++ */
++struct qlink_cmd_scan {
++	struct qlink_cmd chdr;
 +	__le64 flags;
-+	__le32 n_counter_offsets_beacon;
-+	__le32 n_counter_offsets_presp;
- 	u8 beacon_count;
- 	u8 rsvd[3];
- } __packed;
++	__le16 n_ssids;
++	__le16 n_channels;
++	__le16 active_dwell;
++	__le16 passive_dwell;
++	__le16 sample_duration;
++	u8 bssid[ETH_ALEN];
++	u8 scan_width;
++	u8 rsvd[3];
++	u8 var_info[0];
++} __packed;
++
+ /* QLINK Command Responses messages related definitions
+  */
+=20
+@@ -1407,13 +1447,6 @@ struct qlink_event_mic_failure {
+  * @QTN_TLV_ID_STA_STATS: per-STA statistics as defined by
+  *	&struct qlink_sta_stats. Valid values are marked as such in a bitmap
+  *	carried by QTN_TLV_ID_BITMAP.
+- * @QTN_TLV_ID_SCAN_DWELL_ACTIVE: time spent on a single channel for an ac=
+tive
+- *	scan.
+- * @QTN_TLV_ID_SCAN_DWELL_PASSIVE: time spent on a single channel for a pa=
+ssive
+- *	scan.
+- * @QTN_TLV_ID_SCAN_SAMPLE_DURATION: total duration of sampling a single c=
+hannel
+- *	during a scan including off-channel dwell time and operating channel
+- *	time.
+  * @QTN_TLV_ID_IFTYPE_DATA: supported band data.
+  */
+ enum qlink_tlv_id {
+@@ -1444,10 +1477,6 @@ enum qlink_tlv_id {
+ 	QTN_TLV_ID_RANDOM_MAC_ADDR	=3D 0x0408,
+ 	QTN_TLV_ID_WOWLAN_CAPAB		=3D 0x0410,
+ 	QTN_TLV_ID_WOWLAN_PATTERN	=3D 0x0411,
+-	QTN_TLV_ID_SCAN_FLUSH		=3D 0x0412,
+-	QTN_TLV_ID_SCAN_DWELL_ACTIVE	=3D 0x0413,
+-	QTN_TLV_ID_SCAN_DWELL_PASSIVE	=3D 0x0416,
+-	QTN_TLV_ID_SCAN_SAMPLE_DURATION	=3D 0x0417,
+ 	QTN_TLV_ID_IFTYPE_DATA		=3D 0x0418,
+ };
+=20
+diff --git a/drivers/net/wireless/quantenna/qtnfmac/qlink_util.h b/drivers/=
+net/wireless/quantenna/qtnfmac/qlink_util.h
+index 9164b750396c..230a10a41c7a 100644
+--- a/drivers/net/wireless/quantenna/qtnfmac/qlink_util.h
++++ b/drivers/net/wireless/quantenna/qtnfmac/qlink_util.h
+@@ -28,14 +28,6 @@ static inline void qtnf_cmd_skb_put_tlv_arr(struct sk_bu=
+ff *skb,
+ 	memcpy(hdr->val, arr, arr_len);
+ }
+=20
+-static inline void qtnf_cmd_skb_put_tlv_tag(struct sk_buff *skb, u16 tlv_i=
+d)
+-{
+-	struct qlink_tlv_hdr *hdr =3D skb_put(skb, sizeof(*hdr));
+-
+-	hdr->type =3D cpu_to_le16(tlv_id);
+-	hdr->len =3D cpu_to_le16(0);
+-}
+-
+ static inline void qtnf_cmd_skb_put_tlv_u32(struct sk_buff *skb,
+ 					    u16 tlv_id, u32 value)
+ {
 --=20
 2.11.0
 
