@@ -2,76 +2,85 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 258DD14A3DD
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Jan 2020 13:29:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F32F14A632
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Jan 2020 15:33:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730324AbgA0M33 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 27 Jan 2020 07:29:29 -0500
-Received: from mail-io1-f48.google.com ([209.85.166.48]:44677 "EHLO
-        mail-io1-f48.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730205AbgA0M33 (ORCPT
+        id S1728904AbgA0Odi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 27 Jan 2020 09:33:38 -0500
+Received: from mail26.static.mailgun.info ([104.130.122.26]:12367 "EHLO
+        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725828AbgA0Odi (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 27 Jan 2020 07:29:29 -0500
-Received: by mail-io1-f48.google.com with SMTP id e7so9713519iof.11
-        for <linux-wireless@vger.kernel.org>; Mon, 27 Jan 2020 04:29:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=4bbXWrCOiDmmxcPPYrRBxk8fQ528le+/5Oq199urbbI=;
-        b=tvBEIBYfcNAeDn9JbGcID9r9lCHJJdVw/PtjqtR7Ht7/ZchpBzcETp63CrLcc3YeO4
-         64vxWxPHas8MNvdG9k9n6pl7YNQmExWc/xDTwQ4Kf3TXxrjhjkfw8q/InXBuTIcLu9zI
-         ZnNx2aGn8RQpCqfnetg+KwgMs2XjT+MY7//m74R20WW3MHndyPo40QrvdWQlZuS0e6eQ
-         wZU2r/DbhdXjLtMXvWQ9GjSuCHIQq8rZ2FATF928C4i3FknTuvVjGDFb+fQDmAK1uFRa
-         Orop+tcb5TuCDmZ+3LGaL/vab/6JIm5c55kdA9VS8GXotmZVKYCQhYmvSmSSQEjciWNb
-         0Qng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=4bbXWrCOiDmmxcPPYrRBxk8fQ528le+/5Oq199urbbI=;
-        b=SFuRLUzL8xKg/6rq2VgxA7KOKIt78l04gkt6L4u7zzYqt5j1JaCv8TC2pIFrNORdaA
-         3p/pASJjp9cQGI8KMQlEBp2f9kY99IGFSVC7GlpFG2pqZ9ZV07yN5BF6OLlIfPNVOzcK
-         8db6yuu02e+z0cNc7lGGQ1acaMs1imyLIcEKfyX45BEy2Ua0dwFyI9y21HOq/3ZaP1Sl
-         bXtpg2eEJOfZbGHi+zM/gVZt6mY0rTjvID46FC0wsJMS0tdf8EIlEzISsPiah+rxBL6N
-         RQZFHLZeWOwbjXxqZrZ4XRszWlJFrWVcTNd8KFaqAfjLLOE2ADQOm1+fKt634g0DBXXl
-         /bUg==
-X-Gm-Message-State: APjAAAVv8XQ2YXqtO+f7lIu9BhQHogFoMZN0qkcWtjC11aJ0KPq3g8Pv
-        +vi3BKcHruQ6Zx1suzs5zujtC0rJvkGN1fFO1Ys=
-X-Google-Smtp-Source: APXvYqzmRv9mFMxDRYl5wVPca5VTJ0i2cYqyRXj6Wk0jQzYyaey9GQfALzIJ+mJr76UP6//8rEtYpEqlLkNPkZhM1PQ=
-X-Received: by 2002:a02:ad0a:: with SMTP id s10mr13259041jan.73.1580128168954;
- Mon, 27 Jan 2020 04:29:28 -0800 (PST)
+        Mon, 27 Jan 2020 09:33:38 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1580135617; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=7+xkR3BHg9A0v14RQ5mF55Y04fzclGoR+oy704vl4Fc=;
+ b=LDOSuqK4EiPo9x3GCa26paev9eaNUmWSWxobefwkjMgp9q2zizS440bkNKIm7kb+33bp4b1a
+ fTJ6aq928eAdczu1NrUZ7XuCA6/ua6GkyzdAg4Y1mxUss00MRM8SJ9kj7L0Ml+KGIPkZVYgd
+ man/42mZbKMOyb2aP7xvpVahNF0=
+X-Mailgun-Sending-Ip: 104.130.122.26
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5e2ef4bc.7fb04834eea0-smtp-out-n02;
+ Mon, 27 Jan 2020 14:33:32 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id D78F4C433CB; Mon, 27 Jan 2020 14:33:32 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
+        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id EBDCEC433CB;
+        Mon, 27 Jan 2020 14:33:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org EBDCEC433CB
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-References: <1567189484-27536-1-git-send-email-hanipouspilot@gmail.com>
- <20191029144815.GR30813@ubuntu-xps13> <20200127042500.GE3730@ubuntu-xps13>
-In-Reply-To: <20200127042500.GE3730@ubuntu-xps13>
-From:   Dmitry Tunin <hanipouspilot@gmail.com>
-Date:   Mon, 27 Jan 2020 15:29:18 +0300
-Message-ID: <CANoib0FRd5-rVgLJhgxuQk591uMSvG1ytxg87mWuKF6nbrnEdg@mail.gmail.com>
-Subject: Re: [PATCH v2] wireless-regdb: update regulatory rules for Kazakhstan (KZ)
-To:     Seth Forshee <seth.forshee@canonical.com>
-Cc:     wireless-regdb@lists.infradead.org,
-        linux-wireless <linux-wireless@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] mwifiex: fix unbalanced locking in
+ mwifiex_process_country_ie()
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20200106224212.189763-1-briannorris@chromium.org>
+References: <20200106224212.189763-1-briannorris@chromium.org>
+To:     Brian Norris <briannorris@chromium.org>
+Cc:     linux-wireless@vger.kernel.org, <linux-kernel@vger.kernel.org>,
+        Ganapathi Bhat <ganapathi.bhat@nxp.com>,
+        Nishant Sarmukadam <nishants@marvell.com>,
+        Amitkumar Karwar <amitkarwar@gmail.com>,
+        Xinming Hu <huxinming820@gmail.com>,
+        Brian Norris <briannorris@chromium.org>,
+        stable@vger.kernel.org, huangwen <huangwenabc@gmail.com>
+User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
+Message-Id: <20200127143332.D78F4C433CB@smtp.codeaurora.org>
+Date:   Mon, 27 Jan 2020 14:33:32 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-> Hi Dmitry - it's been a while since I sent this last email. I wanted to
-> check if you had any responses to my comments below, or if you intend to
-> send a v3 patch.
->
-> Thanks,
-> Seth
->
+Brian Norris <briannorris@chromium.org> wrote:
 
-Hi Seth
+> We called rcu_read_lock(), so we need to call rcu_read_unlock() before
+> we return.
+> 
+> Fixes: 3d94a4a8373b ("mwifiex: fix possible heap overflow in mwifiex_process_country_ie()")
+> Cc: stable@vger.kernel.org
+> Cc: huangwen <huangwenabc@gmail.com>
+> Cc: Ganapathi Bhat <ganapathi.bhat@nxp.com>
+> Signed-off-by: Brian Norris <briannorris@chromium.org>
+> Acked-by: Ganapathi Bhat <ganapathi.bhat@nxp.com>
 
-It looks like you found a lot more information about Kazakh regulations.
-I have nothing to add and I agree with your comments. I had troubles
-with my storage and I've lost the wireless-regdb tree.
-So you can discard my patch or amend it as you like.
+Patch applied to wireless-drivers.git, thanks.
 
-Regards,
-Dmitry
+65b1aae0d9d5 mwifiex: fix unbalanced locking in mwifiex_process_country_ie()
+
+-- 
+https://patchwork.kernel.org/patch/11320227/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
