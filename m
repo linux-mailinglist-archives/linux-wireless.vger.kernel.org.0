@@ -2,124 +2,133 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9503114B1F8
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Jan 2020 10:47:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EEDE914C16C
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Jan 2020 21:08:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725912AbgA1Jrn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 28 Jan 2020 04:47:43 -0500
-Received: from mail-wm1-f65.google.com ([209.85.128.65]:51464 "EHLO
-        mail-wm1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725882AbgA1Jrn (ORCPT
+        id S1726234AbgA1UIs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 28 Jan 2020 15:08:48 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:36939 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726143AbgA1UIs (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 28 Jan 2020 04:47:43 -0500
-Received: by mail-wm1-f65.google.com with SMTP id t23so1763629wmi.1
-        for <linux-wireless@vger.kernel.org>; Tue, 28 Jan 2020 01:47:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=qGo8vat57oZKbX952ZOsgs3M79WlJfUSUaH5Jb0b7Lg=;
-        b=R5ajh80sNA0KcS9gJCaGIaPV6Nq/OTsd33b2r/Brsp75k9Bzenkas6TmhsYjfWnKAC
-         ojhTrSg9JY0OkpKgPrS4H7QMnQc7ATWcNYv4UGG23WHjCngU9uZatZdTiQ8aaoT2x8oM
-         B78sKfgyftREzVZdXSraE2rIWjmlNeYge6aLQ=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=qGo8vat57oZKbX952ZOsgs3M79WlJfUSUaH5Jb0b7Lg=;
-        b=F9QZVHDox6tj98u9cDYMXr1eePXrXhOKZftGjCTq61UuBy1nzmEwAcnT1r9HCoF5QB
-         FQBITuprcyEq/PiVYV99u4cLY+ILRUisxPXCrWHkvNEMbWZ8gLmMLOCRRXjkWlNB4KBh
-         xEDVAMxxMN9OHx8AsEoXcFHjJL5a4hlAo3hojZsdriJqNZNUU5+c6CYaJ/c4qCI2IQxM
-         CNL68BM9DEsi3Lrkoq9bkORfHUCzBiSj1HgEfoDDslOtvoisWcOUyvoefzVRZfsfn5vg
-         imyqJjHQislkf8/XSPPg+SxB2v/tS3eHNaw3lxkgXUs2H08yJrrSm4ILMwvWdPxm+EJy
-         IpBw==
-X-Gm-Message-State: APjAAAW4GHP9pVVPwRaBvoP9rsVKj72I+60YchfbHg7w2Ep40ngtVZ3n
-        RW/H5vhXoY4f1M167624IO16XA==
-X-Google-Smtp-Source: APXvYqzHdILHJfQ0v7X+gakV1nGX5TRxrHQPZU+bJywfnsN8JNTkNGuevTdK/FF9bgcy1IOKQsU2aw==
-X-Received: by 2002:a1c:2ed5:: with SMTP id u204mr4110373wmu.170.1580204860561;
-        Tue, 28 Jan 2020 01:47:40 -0800 (PST)
-Received: from [10.176.68.244] ([192.19.248.250])
-        by smtp.gmail.com with ESMTPSA id w5sm816444wrs.34.2020.01.28.01.47.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 28 Jan 2020 01:47:39 -0800 (PST)
-Subject: Re: [PATCH v2] brcmfmac: add the BRCM 4364 found in MacBook Pro 15,2
-To:     "brian m. carlson" <sandals@crustytoothpaste.net>
-Cc:     linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        brcm80211-dev-list@cypress.com,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
-        Wright Feng <wright.feng@cypress.com>
-References: <20200126155108.7DDD7C433CB@smtp.codeaurora.org>
- <20200126193339.167346-1-sandals@crustytoothpaste.net>
- <16fe3b278d0.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
- <20200126230029.GI4113372@camp.crustytoothpaste.net>
-From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
-Message-ID: <71763ca9-ed7a-2403-b85a-d7dc624cd050@broadcom.com>
-Date:   Tue, 28 Jan 2020 10:47:37 +0100
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+        Tue, 28 Jan 2020 15:08:48 -0500
+Received: from 1.general.cking.uk.vpn ([10.172.193.212])
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1iwXAC-0004NW-Qx; Tue, 28 Jan 2020 20:08:44 +0000
+To:     Chin-Yen Lee <timlee@realtek.com>,
+        Yan-Hsuan Chuang <yhchuang@realtek.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+From:   Colin Ian King <colin.king@canonical.com>
+Autocrypt: addr=colin.king@canonical.com; prefer-encrypt=mutual; keydata=
+ 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
+Subject: re: rtw88: support wowlan feature for 8822c
+Message-ID: <3ec2e7e0-cb21-f1ae-af6f-00eedc296235@canonical.com>
+Date:   Tue, 28 Jan 2020 20:08:44 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.4.1
 MIME-Version: 1.0
-In-Reply-To: <20200126230029.GI4113372@camp.crustytoothpaste.net>
-Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 1/27/2020 12:00 AM, brian m. carlson wrote:
-> On 2020-01-26 at 21:12:02, Arend Van Spriel wrote:
->> On January 26, 2020 8:34:18 PM "brian m. carlson"
->> <sandals@crustytoothpaste.net> wrote:
->>
->>> The 2018 13" MacBook Pro (MacBookPro15,2) has a Broadcom chip, the 4364.
->>> This chip appears to be specific to Apple and is not found in other
->>> hardware.
->>>
->>> Add this chip to the brcmfmac driver so that it can be recognized
->>> automatically.  Note that the PCI device id is 4464 even though the chip
->>> is referred to as the 4364.
->>
->> So what is the plan regarding firmware. In the previous patch you mentioned
->> it can be copied from macos, but I am not sure if that is acceptable from
->> legal perspective. At least Linux distributions will have problem with that
->> for sure.
-> 
-> I don't have a way to solve that problem.  The firmware copyright
-> presumably belongs to Broadcom and they would be able to grant that
-> permission or ship firmware through the normal channels.
-> 
-> As far as I know, this chip only comes with Apple systems, so users will
-> acquire the system with macOS.  I'm not aware of any legal reason that a
-> user cannot copy the firmware from one location on their hard disk to
-> another, so users will probably be able to legally use the firmware,
-> even if it's not shipped with distros.
+Hi
 
-I think you are right provided they use it on the same system they acquired.
+Static analysis with Coverity has found an issue with an uninitialized
+variable in the following linux-next commit:
 
-> There is also precedent for users acquiring firmware themselves via the
-> b43 and b43legacy drivers, where users have to use a script to extract
-> the firmware from other drivers.
-> 
-> I wish I had a better answer to this, but I don't work for Broadcom or
-> anyone associated with it and am just trying to get the Mac I was given
-> for $DAYJOB to work with Linux.  Perhaps since you do you'd be willing
-> to ask them to release the firmware.
-> 
-> The alternative is that the chip doesn't work at all (and can't be added
-> via the new_id sysfs entry because of the rambase setting) and users
-> have to compile a custom patched kernel to make their wireless card work
-> at all.  I'd really prefer to avoid that if possible, since it's
-> a strictly worse experience in every way.
+commit 44bc17f7f5b3b2cc4084eba6307ba750078a8a73
+Author: Chin-Yen Lee <timlee@realtek.com>
+Date:   Thu Dec 19 16:58:14 2019 +0800
 
-How about putting this device under some Kconfig flag. If distro kernel 
-start probing the device and fail, most users will probably turn to 
-their distro for help. Having a Kconfig with a good description could 
-avoid that. It would mean an extra step of building the driver though.
+    rtw88: support wowlan feature for 8822c
 
-Regards,
-Arend
+Anaysis is as follows:
+
+284 static bool rtw_wow_check_fw_status(struct rtw_dev *rtwdev, bool
+wow_enable)
+285 {
+
+   1. var_decl: Declaring variable ret without initializer.
+286        bool ret;
+287
+288        /* wait 100ms for wow firmware to finish work */
+289        msleep(100);
+290
+
+   2. Condition wow_enable, taking true branch.
+291        if (wow_enable) {
+
+   3. Condition !rtw_read8(rtwdev, 455), taking false branch.
+292                if (!rtw_read8(rtwdev, REG_WOWLAN_WAKE_REASON))
+293                        ret = 0;
+
+   4. Falling through to end of if statement.
+294        } else {
+295                if (rtw_read32_mask(rtwdev, REG_FE1IMR,
+BIT_FS_RXDONE) == 0 &&
+296                    rtw_read32_mask(rtwdev, REG_RXPKT_NUM,
+BIT_RW_RELEASE) == 0)
+297                        ret = 0;
+298        }
+299
+
+Uninitialized scalar variable (UNINIT)5. uninit_use: Using uninitialized
+value ret.
+
+300        if (ret)
+301                rtw_err(rtwdev, "failed to check wow status %s\n",
+302                        wow_enable ? "enabled" : "disabled");
+303
+304        return ret;
+
+Colin
