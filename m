@@ -2,83 +2,124 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4250F14B1C5
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Jan 2020 10:31:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9503114B1F8
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Jan 2020 10:47:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726007AbgA1Jbh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 28 Jan 2020 04:31:37 -0500
-Received: from mr85p00im-hyfv06021401.me.com ([17.58.23.190]:59806 "EHLO
-        mr85p00im-hyfv06021401.me.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725880AbgA1Jbg (ORCPT
+        id S1725912AbgA1Jrn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 28 Jan 2020 04:47:43 -0500
+Received: from mail-wm1-f65.google.com ([209.85.128.65]:51464 "EHLO
+        mail-wm1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725882AbgA1Jrn (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 28 Jan 2020 04:31:36 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=me.com; s=1a1hai;
-        t=1580203895; bh=ZMzR/8JyeMhZZOSK2w/eTcj8BsGlPiyEh/fg4/R8wyU=;
-        h=From:To:Subject:Date:Message-Id;
-        b=2BNpLBezHIX45z8YHGyRhXGbHI48jnz20dECPJ7/137afiIKZGCfT/dieEAeSy0yE
-         X3aTPSmHfeC2QpkWkX7gf2CdFylZSepkP59Ooh6IAJHrDsb980bq+NGrm1tJgEOvgk
-         vcQiGEw0sUXvpveaLrSiDRopN6CkXbplTOFgppExnOqPFmu/EaEMGxRYplVI+LIxrH
-         cxNz3Wfn7mDjkiezwkb3N7TRJgSxRP5g5tBJqL44cm2BH2zWttEvIXiLTi5pGW77ZF
-         3KoEC3e3O7lp+k4gByf1wqz4HYnrYzCcyBAGLZTOW0oqTisIiaoGxSsvnci6E1h1sr
-         csdEdpJSYQK7g==
-Received: from stitch.danm.net (c-73-98-236-45.hsd1.ut.comcast.net [73.98.236.45])
-        by mr85p00im-hyfv06021401.me.com (Postfix) with ESMTPSA id 8FD499C07D0;
-        Tue, 28 Jan 2020 09:31:35 +0000 (UTC)
-From:   Dan Moulding <dmoulding@me.com>
-To:     linux-wireless@vger.kernel.org
-Cc:     johannes.berg@intel.com, emmanuel.grumbach@intel.com,
-        luciano.coelho@intel.com, linuxwifi@intel.com,
-        Dan Moulding <dmoulding@me.com>
-Subject: [PATCH v2 5.5] iwlwifi: mvm: Do not require PHY_SKU NVM section for 3168 devices
-Date:   Tue, 28 Jan 2020 02:31:07 -0700
-Message-Id: <20200128093107.9740-1-dmoulding@me.com>
-X-Mailer: git-send-email 2.24.1
+        Tue, 28 Jan 2020 04:47:43 -0500
+Received: by mail-wm1-f65.google.com with SMTP id t23so1763629wmi.1
+        for <linux-wireless@vger.kernel.org>; Tue, 28 Jan 2020 01:47:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=qGo8vat57oZKbX952ZOsgs3M79WlJfUSUaH5Jb0b7Lg=;
+        b=R5ajh80sNA0KcS9gJCaGIaPV6Nq/OTsd33b2r/Brsp75k9Bzenkas6TmhsYjfWnKAC
+         ojhTrSg9JY0OkpKgPrS4H7QMnQc7ATWcNYv4UGG23WHjCngU9uZatZdTiQ8aaoT2x8oM
+         B78sKfgyftREzVZdXSraE2rIWjmlNeYge6aLQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=qGo8vat57oZKbX952ZOsgs3M79WlJfUSUaH5Jb0b7Lg=;
+        b=F9QZVHDox6tj98u9cDYMXr1eePXrXhOKZftGjCTq61UuBy1nzmEwAcnT1r9HCoF5QB
+         FQBITuprcyEq/PiVYV99u4cLY+ILRUisxPXCrWHkvNEMbWZ8gLmMLOCRRXjkWlNB4KBh
+         xEDVAMxxMN9OHx8AsEoXcFHjJL5a4hlAo3hojZsdriJqNZNUU5+c6CYaJ/c4qCI2IQxM
+         CNL68BM9DEsi3Lrkoq9bkORfHUCzBiSj1HgEfoDDslOtvoisWcOUyvoefzVRZfsfn5vg
+         imyqJjHQislkf8/XSPPg+SxB2v/tS3eHNaw3lxkgXUs2H08yJrrSm4ILMwvWdPxm+EJy
+         IpBw==
+X-Gm-Message-State: APjAAAW4GHP9pVVPwRaBvoP9rsVKj72I+60YchfbHg7w2Ep40ngtVZ3n
+        RW/H5vhXoY4f1M167624IO16XA==
+X-Google-Smtp-Source: APXvYqzHdILHJfQ0v7X+gakV1nGX5TRxrHQPZU+bJywfnsN8JNTkNGuevTdK/FF9bgcy1IOKQsU2aw==
+X-Received: by 2002:a1c:2ed5:: with SMTP id u204mr4110373wmu.170.1580204860561;
+        Tue, 28 Jan 2020 01:47:40 -0800 (PST)
+Received: from [10.176.68.244] ([192.19.248.250])
+        by smtp.gmail.com with ESMTPSA id w5sm816444wrs.34.2020.01.28.01.47.39
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 28 Jan 2020 01:47:39 -0800 (PST)
+Subject: Re: [PATCH v2] brcmfmac: add the BRCM 4364 found in MacBook Pro 15,2
+To:     "brian m. carlson" <sandals@crustytoothpaste.net>
+Cc:     linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        brcm80211-dev-list@cypress.com,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
+        Wright Feng <wright.feng@cypress.com>
+References: <20200126155108.7DDD7C433CB@smtp.codeaurora.org>
+ <20200126193339.167346-1-sandals@crustytoothpaste.net>
+ <16fe3b278d0.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+ <20200126230029.GI4113372@camp.crustytoothpaste.net>
+From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
+Message-ID: <71763ca9-ed7a-2403-b85a-d7dc624cd050@broadcom.com>
+Date:   Tue, 28 Jan 2020 10:47:37 +0100
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2020-01-28_02:,,
- signatures=0
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=1 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 clxscore=1015 mlxscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1908290000 definitions=main-2001280078
+In-Reply-To: <20200126230029.GI4113372@camp.crustytoothpaste.net>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The logic for checking required NVM sections was recently fixed in
-commit b3f20e098293 ("iwlwifi: mvm: fix NVM check for 3168
-devices"). However, with that fixed the else is now taken for 3168
-devices and within the else clause there is a mandatory check for the
-PHY_SKU section. This causes the parsing to fail for 3168 devices.
+On 1/27/2020 12:00 AM, brian m. carlson wrote:
+> On 2020-01-26 at 21:12:02, Arend Van Spriel wrote:
+>> On January 26, 2020 8:34:18 PM "brian m. carlson"
+>> <sandals@crustytoothpaste.net> wrote:
+>>
+>>> The 2018 13" MacBook Pro (MacBookPro15,2) has a Broadcom chip, the 4364.
+>>> This chip appears to be specific to Apple and is not found in other
+>>> hardware.
+>>>
+>>> Add this chip to the brcmfmac driver so that it can be recognized
+>>> automatically.  Note that the PCI device id is 4464 even though the chip
+>>> is referred to as the 4364.
+>>
+>> So what is the plan regarding firmware. In the previous patch you mentioned
+>> it can be copied from macos, but I am not sure if that is acceptable from
+>> legal perspective. At least Linux distributions will have problem with that
+>> for sure.
+> 
+> I don't have a way to solve that problem.  The firmware copyright
+> presumably belongs to Broadcom and they would be able to grant that
+> permission or ship firmware through the normal channels.
+> 
+> As far as I know, this chip only comes with Apple systems, so users will
+> acquire the system with macOS.  I'm not aware of any legal reason that a
+> user cannot copy the firmware from one location on their hard disk to
+> another, so users will probably be able to legally use the firmware,
+> even if it's not shipped with distros.
 
-The PHY_SKU section is really only mandatory for the IWL_NVM_EXT
-layout (the phy_sku parameter of iwl_parse_nvm_data is only used when
-the NVM type is IWL_NVM_EXT). So this changes the PHY_SKU section
-check so that it's only mandatory for IWL_NVM_EXT.
+I think you are right provided they use it on the same system they acquired.
 
-Fixes: b3f20e098293 ("iwlwifi: mvm: fix NVM check for 3168 devices")
-Signed-off-by: Dan Moulding <dmoulding@me.com>
----
-v2: Fixed incorrect commit title in commit references in the commit message
+> There is also precedent for users acquiring firmware themselves via the
+> b43 and b43legacy drivers, where users have to use a script to extract
+> the firmware from other drivers.
+> 
+> I wish I had a better answer to this, but I don't work for Broadcom or
+> anyone associated with it and am just trying to get the Mac I was given
+> for $DAYJOB to work with Linux.  Perhaps since you do you'd be willing
+> to ask them to release the firmware.
+> 
+> The alternative is that the chip doesn't work at all (and can't be added
+> via the new_id sysfs entry because of the rambase setting) and users
+> have to compile a custom patched kernel to make their wireless card work
+> at all.  I'd really prefer to avoid that if possible, since it's
+> a strictly worse experience in every way.
 
- drivers/net/wireless/intel/iwlwifi/mvm/nvm.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+How about putting this device under some Kconfig flag. If distro kernel 
+start probing the device and fail, most users will probably turn to 
+their distro for help. Having a Kconfig with a good description could 
+avoid that. It would mean an extra step of building the driver though.
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/nvm.c b/drivers/net/wireless/intel/iwlwifi/mvm/nvm.c
-index 46128a2a9c6e..e98ce380c7b9 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/nvm.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/nvm.c
-@@ -308,7 +308,8 @@ iwl_parse_nvm_sections(struct iwl_mvm *mvm)
- 		}
- 
- 		/* PHY_SKU section is mandatory in B0 */
--		if (!mvm->nvm_sections[NVM_SECTION_TYPE_PHY_SKU].data) {
-+		if (mvm->trans->cfg->nvm_type == IWL_NVM_EXT &&
-+		    !mvm->nvm_sections[NVM_SECTION_TYPE_PHY_SKU].data) {
- 			IWL_ERR(mvm,
- 				"Can't parse phy_sku in B0, empty sections\n");
- 			return NULL;
--- 
-2.24.1
-
+Regards,
+Arend
