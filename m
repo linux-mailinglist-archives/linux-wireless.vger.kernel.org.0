@@ -2,116 +2,117 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E7B514C527
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Jan 2020 05:17:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A056614C7F6
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 Jan 2020 10:21:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726548AbgA2ERn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 28 Jan 2020 23:17:43 -0500
-Received: from mail-yb1-f193.google.com ([209.85.219.193]:45706 "EHLO
-        mail-yb1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726438AbgA2ERn (ORCPT
+        id S1726068AbgA2JVe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 29 Jan 2020 04:21:34 -0500
+Received: from mail-io1-f51.google.com ([209.85.166.51]:38167 "EHLO
+        mail-io1-f51.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726010AbgA2JVe (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 28 Jan 2020 23:17:43 -0500
-Received: by mail-yb1-f193.google.com with SMTP id x191so8079673ybg.12;
-        Tue, 28 Jan 2020 20:17:42 -0800 (PST)
+        Wed, 29 Jan 2020 04:21:34 -0500
+Received: by mail-io1-f51.google.com with SMTP id s24so16253820iog.5
+        for <linux-wireless@vger.kernel.org>; Wed, 29 Jan 2020 01:21:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=sender:subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=YgN2vJdNk1lL2IID1Scb4JgUP1haIp4B4zNHK5VBexM=;
-        b=HZohCZp8ZN9vFhOZgrf/KLupunbdQWYsFXlPefiGgT0P9W9sYk4bfS1qGWcet0bVRe
-         xkaAvFHA/i9ENPRV7O+Eb9qs65WDFIqLGt4712EM2CdtxN95Ymv9drvaTybsQ7pQ7kEV
-         eO62COFCNiXiBgskB2F2avqc6rDDBVBK1Gp/SPf7y00FDbXeCpKmkG1keD1gq02nBA1d
-         dMjbNKjZ+Shz9qWayoYUhxt1FDt9XC0y+npfxFTC63+G/DgLwzWsQ80KAkFCpHers6bm
-         nZjDxTeP+lfUUR9I6WZBhmNF+d+jN9KWX4mn+UxDHp/Lm6Sr+DnW4euNch20ZvaivXiO
-         ikVg==
+        h=mime-version:from:date:message-id:subject:to;
+        bh=5tcVQVGb+XudIjTVD8K0YOqj3inPAiJRCq9yYTrXUNk=;
+        b=H0lY4OjgU+tFa3xpo5SOGlbYe0r6tTgBLaHUiQWhfl/FSbaVDsJf8wmuNcb7m/3Qlo
+         F/GuFVZgFl/q1ijWLUKR/PlBc8DaHZE3+3Sz7gu9q4e1OYLAfImN6boLI3WnWZqHal9X
+         gcAhUBd0tomgw3a+8kEMdhcTMh3V/JaKLYa7rS2cIMHjALBVDT+MNM9ja9Q5el50G4B0
+         E/hSLAOBn9b2qMI+yulfr3QJFXNMXXr5GCfD+UDy/MPAZ2S9wrpYO2k1OWSHayIi2DWC
+         dEm2gG1hOh4A0Yt27P+l5MfnooIoUqbz7Evm6yih6I83uItc63h8ixK6+E84AAIMGsIY
+         W8rQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
-         :date:user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=YgN2vJdNk1lL2IID1Scb4JgUP1haIp4B4zNHK5VBexM=;
-        b=uAURAZYOjsGcfgxzio7FWv69iFCdKuwNpgoCi+sYjP2UALnjcsJdZ+0CpTPPvtK00n
-         aKvx2P5IZYmtIkpMmdPY0zmUsstx+xBGqIuy0IsdS3xeFb0ufm1jNmP4XaIQ50qB5MUH
-         ikHWjSnaJ4jkZS3p73Tkg2bcUl3RHIIqjLQidK5r9VE3L/3ngj2cH9yvlLBkWHS2rTVv
-         NqsU4l0m9HrNyPnN/5MHnmO3Rf8PEpOMSt8gr4jMs11DHF5RbWueo9CJhmVrH6pdpFhd
-         W3gHtNkQRvWFPwzkB7+cbOZ6Gew0Vs2CMhyfZAEhSsmbwxvmfTEVEqeGhanUkLX4fNni
-         htew==
-X-Gm-Message-State: APjAAAUE920N+7MPFd+Vxo0McidaMIDph4NBG37EW7Kqay0rq1hMH6S5
-        LucSaEtOTGjboXD0+076mJ4vINmw
-X-Google-Smtp-Source: APXvYqzBrkPShoR+ShGfyr94vYImAiHD+5VC/An9AX/npCHND/fCueWVOdnbCq+cKoNY7bXtO18Lbw==
-X-Received: by 2002:a25:d156:: with SMTP id i83mr18620000ybg.254.1580271462331;
-        Tue, 28 Jan 2020 20:17:42 -0800 (PST)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id e186sm450145ywb.73.2020.01.28.20.17.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 28 Jan 2020 20:17:41 -0800 (PST)
-Subject: Re: [PATCH] brcmfmac: abort and release host after error
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        Arend van Spriel <arend.vanspriel@broadcom.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        brcm80211-dev-list@cypress.com, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Matthias Kaehlcke <mka@chromium.org>,
-        Brian Norris <briannorris@chromium.org>,
-        Douglas Anderson <dianders@chromium.org>
-References: <20200128221457.12467-1-linux@roeck-us.net>
- <20200129033257.GC1754@kadam>
-From:   Guenter Roeck <linux@roeck-us.net>
-Message-ID: <f9f1dfab-2c48-f37b-836b-6dc7fa5bc801@roeck-us.net>
-Date:   Tue, 28 Jan 2020 20:17:39 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.2
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=5tcVQVGb+XudIjTVD8K0YOqj3inPAiJRCq9yYTrXUNk=;
+        b=YbsVgVjNsOC4HhyjEuR9OnkNnUMJeRQDyYQ7WnJqWlZvbAP5uUPfIYt4QR9Q5sDfd3
+         JMURxMQKo3+l25tUS0JVk5hgM2Myv6PXhUq800mnjgbEh6u7FJoJPpSzvlkpWkio4p9+
+         hrL/MgfnTzJvMrDY7F5kw0aQ9EBKq2A2jQs3Y9tK6cPRBiwQHmfjCPvNsBJUHh44eXmK
+         zCDZpEl9JeINQXOfU+SkNlnmxIbsxBlwLNODAZDAmCaWOLI1kdXGIpRy6Ts7puILztAs
+         0fwUaF2taRfSKydm57hC9PhYGrvCC85EEHONo6rtVmXyvvox0lSBLbzqjaYfeS7wVK29
+         IrCQ==
+X-Gm-Message-State: APjAAAXOHjao9GvRIhjROi9S5bQj9+APsOwI1N5cK2NIr5iKAXShWizH
+        GUsUInSs6BJdZPPNrPgadX4h0pEGOcGRsC+u53rwITDXQno=
+X-Google-Smtp-Source: APXvYqxZ+0TC4AaJcZUbIGe96FUbTYMPSBtMW2ZVqgaSqRq1C+zhqNKzHib6iZuFtLdJ1WuWycm4O9WiE0r3+mNQjdg=
+X-Received: by 2002:a6b:d912:: with SMTP id r18mr19544315ioc.306.1580289693257;
+ Wed, 29 Jan 2020 01:21:33 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <20200129033257.GC1754@kadam>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Received: by 2002:ad5:5d0d:0:0:0:0:0 with HTTP; Wed, 29 Jan 2020 01:21:32
+ -0800 (PST)
+From:   JH <jupiter.hce@gmail.com>
+Date:   Wed, 29 Jan 2020 20:21:32 +1100
+Message-ID: <CAA=hcWTEnYraPy5Un7a7ryeDBJmf0KoCU2VoJjr5LJWtbc9j_g@mail.gmail.com>
+Subject: Strange inconsistant WiFi network behaviour
+To:     linux-wireless <linux-wireless@vger.kernel.org>,
+        connman <connman@lists.01.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 1/28/20 7:32 PM, Dan Carpenter wrote:
-> On Tue, Jan 28, 2020 at 02:14:57PM -0800, Guenter Roeck wrote:
->> With commit 216b44000ada ("brcmfmac: Fix use after free in
->> brcmf_sdio_readframes()") applied, we see locking timeouts in
->> brcmf_sdio_watchdog_thread().
->>
->> brcmfmac: brcmf_escan_timeout: timer expired
->> INFO: task brcmf_wdog/mmc1:621 blocked for more than 120 seconds.
->> Not tainted 4.19.94-07984-g24ff99a0f713 #1
->> "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
->> brcmf_wdog/mmc1 D    0   621      2 0x00000000 last_sleep: 2440793077.  last_runnable: 2440766827
->> [<c0aa1e60>] (__schedule) from [<c0aa2100>] (schedule+0x98/0xc4)
->> [<c0aa2100>] (schedule) from [<c0853830>] (__mmc_claim_host+0x154/0x274)
->> [<c0853830>] (__mmc_claim_host) from [<bf10c5b8>] (brcmf_sdio_watchdog_thread+0x1b0/0x1f8 [brcmfmac])
->> [<bf10c5b8>] (brcmf_sdio_watchdog_thread [brcmfmac]) from [<c02570b8>] (kthread+0x178/0x180)
->>
->> In addition to restarting or exiting the loop, it is also necessary to
->> abort the command and to release the host.
->>
->> Fixes: 216b44000ada ("brcmfmac: Fix use after free in brcmf_sdio_readframes()")
-> 
-> Huh...  Thanks for fixing the bug.  That seems to indicate that we were
-> triggering the use after free but no one noticed at runtime.  With
+Hi,
 
-Actually, we did see the problem. We just didn't realize it.
+I have 2 iMX6 devices running uBlox Lily WiFi, mrvl firmware
+sd8801_uapsta.bin in kernel 4.19.75. In my office, a WiFi router is
+just 1 meter away, the WiFi signal should not be a problem. One device
+could connect to the WiFi router well and stably, one could not, here
+were error messages:
 
-> kfree(), a use after free can be harmless if you don't have poisoning
-> enabled and no other thread has re-used the memory.  I'm not sure about
-> kfree_skb() but presumably it's the same.
-> 
+[  408.990029] ieee80211 phy0: mwifiex_cfg80211_sched_scan_start :
+Invalid Sched_scan parameters
+.....................
 
-Not really; it ultimately does result in a crash. We see that in ChromeOS
-R80 (and probably in all earlier releases, but I didn't check), which does
-not (yet) include 216b44000ada. The upcoming R81, which does include
-216b44000ada, doesn't crash but there are lots of stalls like the one
-above. The combination of both (ie the difference in behavior) helped
-tracking down the problem.
+[56.986414] ieee80211 phy0: mwifiex_cfg80211_sched_scan_start :
+Invalid Sched_scan parameter
 
-Guenter
+connmand[13469]:
+../connman-1.35/src/service.c:preferred_tech_add_by_type() type 5
+service 0x119120 Telstra
+connmand[13469]: ../connman-1.35/src/service.c:auto_connect_service()
+preferred 1 sessions 0 reason auto
+connmand[13469]: ../connman-1.35/src/ntp.c:send_timeout() send timeout
+2 (retries 0)
+connmand[13469]:
+../connman-1.35/plugins/ofono.c:netreg_update_strength() /ubloxqmi_2
+Strength 80
+connmand[13469]: ../connman-1.35/src/ntp.c:send_timeout() send timeout
+4 (retries 1)
+connmand[13469]: ../connman-1.35/plugins/wifi.c:throw_wifi_scan()
+device 0x118da8 0x116c78
+connmand[13469]:
+../connman-1.35/src/device.c:connman_device_ref_debug() 0x118da8 ref 4
+by ../connman-1.35/plugins/wifi.c:1214:throw_wifi_scan()
+connmand[13469]:
+../connman-1.35/src/device.c:connman_device_set_scanning() device
+0x118da8 scanning 1
+connmand[13469]:
+../connman-1.35/src/technology.c:__connman_technology_scan_started()
+device 0x118da8
+connmand[13469]: ../connman-1.35/plugins/wifi.c:autoscan_timeout() interval 27
+connmand[13469]: ../connman-1.35/plugins/wifi.c:interface_state() wifi
+0x11a7c8 interface state 4
+connmand[13469]: ../connman-1.35/plugins/wifi.c:scan_started()
+connmand[13469]: ../connman-1.35/src/rtnl.c:rtnl_message() NEWLINK len
+56 type 16 flags 0x0000 seq 0 pid 0
+connmand[13469]: ../connman-1.35/plugins/wifi.c:scan_finished()
+connmand[13469]: ../connman-1.35/plugins/wifi.c:interface_state() wifi
+0x11a7c8 interface state 3
+
+Both devices were installed the same firmware and software, if it was
+firmware / software issues, both would not be able to connect to WiFi,
+as one device could connect to the office WiFi router well, it could
+not the WiFi router problem either.
+
+If I move the faulty one to my home, it could connect to my home WiFi,
+so the device does not have WiFi problem, that is really confusing,
+what could cause that kind problem and how to debug and fix it?
+
+Thank you.
+
+Kind regards,
+
+- jh
