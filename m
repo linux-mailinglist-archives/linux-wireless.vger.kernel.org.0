@@ -2,115 +2,88 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C18F414D016
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Jan 2020 19:04:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E04614D099
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 Jan 2020 19:40:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726847AbgA2SEe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 29 Jan 2020 13:04:34 -0500
-Received: from mail-pj1-f66.google.com ([209.85.216.66]:38618 "EHLO
-        mail-pj1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726245AbgA2SEe (ORCPT
+        id S1727490AbgA2SkF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 29 Jan 2020 13:40:05 -0500
+Received: from mail-qt1-f177.google.com ([209.85.160.177]:33331 "EHLO
+        mail-qt1-f177.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726332AbgA2SkF (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 29 Jan 2020 13:04:34 -0500
-Received: by mail-pj1-f66.google.com with SMTP id j17so125344pjz.3
-        for <linux-wireless@vger.kernel.org>; Wed, 29 Jan 2020 10:04:33 -0800 (PST)
+        Wed, 29 Jan 2020 13:40:05 -0500
+Received: by mail-qt1-f177.google.com with SMTP id d5so319014qto.0
+        for <linux-wireless@vger.kernel.org>; Wed, 29 Jan 2020 10:40:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=6QNebILk02STEyIe5/0fAJxmh4v1Dv7+qDAzRC1FUDQ=;
-        b=LowdrKlK0P6qecyQGM0hzYenViTrLksQTfxjJ9ni4gKyCCIp1FahM6Ho5TjGK9OAVj
-         7oqM88GFtBs997v7Yh1XJCADc6MeqKnvobn1CGwvE1MPLZNH0uZswwf2Zu4yOPQi3Cdi
-         0e9TIPoczxRInL3Xrd1lCEWURMROuKtqa8IP4=
+        d=gmail.com; s=20161025;
+        h=message-id:subject:from:to:date:mime-version
+         :content-transfer-encoding;
+        bh=edDbto1ayWJTc7kkFco+GN3h20aSoy5f31PU1XYRnl8=;
+        b=H74ENqB1d0MpbPoFJrusHJYZfaAypd+fE6rB6R4o38hbL5OSErOD+DLEjiG5HaLhHW
+         ftHbZMmxPMSbpVEJ8JgrYOjHDP1/Wxq5I4Eemslw8D6FGoSNXDHv9VAHI0kR19Pw2FaF
+         AgBq2QBhwhnUcypvfY49uIkv/vGhQNIbHThXKhfMZNafk0hJ1JbLa5qroTsVj6pD8GTZ
+         kvwOr6WSfH4GTxRELPu7xsu7S9SaDqAC9CB3T6clOOY2BBKxnThGIYCSu/cN1EqSeeCX
+         unE5f7eEVnvOdpvKH9WYonjt93AMo7scAFWvi5y2MQqKnOGkRMNR7cqMNlJwHd5B+qNu
+         43MQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=6QNebILk02STEyIe5/0fAJxmh4v1Dv7+qDAzRC1FUDQ=;
-        b=uUWVzPgbgifrGZRDyc29NwDrCjwTs/0WJeIOCxfFrJpNTu/5HVnoFlcc1iaeF+97Av
-         HO1RW/gQQ/LJe5m+nVysieqpveettww7besVJ664cSr0hXl+kvm8KtTBUcgMtYDKyMa4
-         pse0LirfDxAfqaYfJFVwig73caeppz/o3yeVZQHSpY/iCOprUhlHZhIpUrmOHHuIOhBo
-         QF5sczZNtsPL8lmR8O7KF6R9pmRKDEa3sdRDEiDW8EJvGjzKpDeKQQ5SXWh5i8sh/2Rw
-         UDlWDXTBlD/bMY9n9YLFdViPPXauFjhl1TcAgKEruIP57pNR4AbCn5NFwrtQAPoQvLCy
-         pi5A==
-X-Gm-Message-State: APjAAAUhwtMYr89mn4rdPTjVgd1ib1UbNEQVGBCZOmcMA4hp5eezdViV
-        ZTBGZpP6h8G/pxXrXsgt3w3zZA==
-X-Google-Smtp-Source: APXvYqxVUyW4yrpYAV6X6fDHS+gRG2rAx1gwUyY8QSDnEvQsn0QmEVreNGiM5X7rKr6GWTnyLky0ug==
-X-Received: by 2002:a17:902:bf41:: with SMTP id u1mr552856pls.207.1580321073273;
-        Wed, 29 Jan 2020 10:04:33 -0800 (PST)
-Received: from google.com ([2620:15c:202:1:534:b7c0:a63c:460c])
-        by smtp.gmail.com with ESMTPSA id q6sm3385291pgt.47.2020.01.29.10.04.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Jan 2020 10:04:32 -0800 (PST)
-Date:   Wed, 29 Jan 2020 10:04:30 -0800
-From:   Brian Norris <briannorris@chromium.org>
-To:     Franky Lin <franky.lin@broadcom.com>
-Cc:     Guenter Roeck <linux@roeck-us.net>,
-        Doug Anderson <dianders@chromium.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Arend van Spriel <arend.vanspriel@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        "open list:BROADCOM BRCM80211 IEEE802.11n WIRELESS DRIVER" 
-        <brcm80211-dev-list.pdl@broadcom.com>,
-        brcm80211-dev-list <brcm80211-dev-list@cypress.com>,
-        netdev <netdev@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Matthias Kaehlcke <mka@chromium.org>
-Subject: Re: [PATCH] brcmfmac: abort and release host after error
-Message-ID: <20200129180428.GA99393@google.com>
-References: <20200128221457.12467-1-linux@roeck-us.net>
- <CAD=FV=Wg2MZ56fsCk+TvRSSeZVz5eM4cwugK=HN6imm5wfGgiw@mail.gmail.com>
- <20200129000551.GA17256@roeck-us.net>
- <CA+8PC_f=qCUjihwbjd3vtGaNkG-=R1qm83oS7AmgtLTy6EgjyQ@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CA+8PC_f=qCUjihwbjd3vtGaNkG-=R1qm83oS7AmgtLTy6EgjyQ@mail.gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+        h=x-gm-message-state:message-id:subject:from:to:date:mime-version
+         :content-transfer-encoding;
+        bh=edDbto1ayWJTc7kkFco+GN3h20aSoy5f31PU1XYRnl8=;
+        b=CcGvWxCuVZSjfHM5up9ZQOLO5QfjKe7fLZlfujohUMsqEaXCaRtr6v7JJ2la4rRbvg
+         +CyygFJ/Ixqw1NszXOoJdT/smv3ZGlIWOP4CwCpRxoQ15hvwR5WRqTnBs9D2LycJWEv5
+         W/Nc8JZhIQ13xtLCpCkAnYmquWE6OBV/LiesePrzPMuBaQqLX8e2bcYD3/78BHQ81ROz
+         28mmD6tWXHQaz/UGc2E2yh9IYJwzrrDSIzhMJ5Q5c2E28qMcBXfmuACNNe7LlpfFbm7G
+         Leun7AqpWOiuzzOKXtMxdb7mJ2HAUKFa8ws9i/vxfEjSexjJcS62y0z8sPvtgCKuYpmh
+         l8Vg==
+X-Gm-Message-State: APjAAAXFCVrhwrsyMBpEgFj7V5undRDkqiKFsUxkc2KTDUqAhvutX5S5
+        N3vmEQ8AtVjnc1qh6i9++00NUBJE
+X-Google-Smtp-Source: APXvYqxzurb/DkcwamAbS4cisE08RBAT6nsSE3F9kGcbuai3KusQcJ5CjyLyKOuo+Mcu5e2fKVvz9Q==
+X-Received: by 2002:ac8:6f04:: with SMTP id g4mr596577qtv.314.1580323203534;
+        Wed, 29 Jan 2020 10:40:03 -0800 (PST)
+Received: from [192.168.0.10] (dhcp-108-168-58-21.cable.user.start.ca. [108.168.58.21])
+        by smtp.gmail.com with ESMTPSA id z1sm1433199qtq.69.2020.01.29.10.40.02
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 29 Jan 2020 10:40:02 -0800 (PST)
+Message-ID: <1580323191.26012.48.camel@gmail.com>
+Subject: Strange performance issue when using two devices at once
+From:   Marlon Smith <marlon.smith10@gmail.com>
+To:     linux-wireless@vger.kernel.org
+Date:   Wed, 29 Jan 2020 13:39:51 -0500
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.18.5.2-0ubuntu3.2 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Franky,
+Hi everyone,
 
-[I'm very unfamiliar with this driver, but I had the same questions as
-Guenter, I think:]
+I have two RT5370 devices connected to the same access point. Both
+devices are very slow, but the instant I disconnect one device, the
+other speeds up by a factor of 10.
 
-On Tue, Jan 28, 2020 at 04:57:59PM -0800, Franky Lin wrote:
-> On Tue, Jan 28, 2020 at 4:05 PM Guenter Roeck <linux@roeck-us.net> wrote:
-> > On Tue, Jan 28, 2020 at 03:14:45PM -0800, Doug Anderson wrote:
-> > > On Tue, Jan 28, 2020 at 2:15 PM Guenter Roeck <linux@roeck-us.net> wrote:
-> > > > --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-> > > > +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-> > > > @@ -1938,6 +1938,8 @@ static uint brcmf_sdio_readframes(struct brcmf_sdio *bus, uint maxframes)
-> > > >                         if (brcmf_sdio_hdparse(bus, bus->rxhdr, &rd_new,
-> > > >                                                BRCMF_SDIO_FT_NORMAL)) {
-> > > >                                 rd->len = 0;
-> > > > +                               brcmf_sdio_rxfail(bus, true, true);
-> > > > +                               sdio_release_host(bus->sdiodev->func1);
-> > >
-> > > I don't know much about this driver so I don't personally know if
-> > > "true, true" is the correct thing to pass to brcmf_sdio_rxfail(), but
-> > > it seems plausible.  Definitely the fix to call sdio_release_host() is
-> > > sane.
-> > >
-> > > Thus, unless someone knows for sure that brcmf_sdio_rxfail()'s
-> > > parameters should be different:
-> > >
-> > Actually, looking at brcmf_sdio_hdparse() and its other callers,
-> > I think it may not be needed at all - other callers don't do it, and
-> > there already are some calls to brcmf_sdio_rxfail() in that function.
-> > It would be nice though to get a confirmation before I submit v2.
-> 
-> I think invoking rxfail with both abort and NACK set to true is the
-> right thing to do here so that the pipeline can be properly purged.
+The really strange part is that one device will perform slowly even if
+the other device is basically idle! I've confirmed this with a packet
+sniffer.
 
-Thanks for looking here. I'm not sure I totally understand your answer:
-brcmf_sdio_hdparse() already calls brcmf_sdio_rxfail() in several error
-cases. Is it really OK to call it twice in a row?
+I've been trying to do some debugging, and I've found that when both
+devices are connected to the access point, they report a large number
+of duplicate frames. I added some debug output
+in ieee80211_rx_h_check_dup() to confirm that this only happens while
+both devices are connected. The packet sniffer also shows a large
+number of retries while this is occurring.
 
-Brian
+Using backports 5.3-rc4 for this, but also tested on 4.14-rc2.
+
+I did post about this previously on this mailing list (RT5370
+performance issues), but I thought I'd post again with this new
+information and more descriptive title. I'm a little bit stuck on this
+for a while now, so any ideas are much appreciated.
+
+Thanks!
+
+Marlon
