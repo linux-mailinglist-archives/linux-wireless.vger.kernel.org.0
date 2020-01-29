@@ -2,108 +2,103 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A510C14C886
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Jan 2020 11:09:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6BB6714C8C8
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 Jan 2020 11:34:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726068AbgA2KJz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 29 Jan 2020 05:09:55 -0500
-Received: from bsmtp3.bon.at ([213.33.87.17]:6889 "EHLO bsmtp3.bon.at"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726010AbgA2KJz (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 29 Jan 2020 05:09:55 -0500
-X-Greylist: delayed 2545 seconds by postgrey-1.27 at vger.kernel.org; Wed, 29 Jan 2020 05:09:54 EST
-Received: from bsmtp2.bon.at (unknown [192.168.181.102])
-        by bsmtp3.bon.at (Postfix) with ESMTPS id 486ynF4Q2Sz5tyv
-        for <linux-wireless@vger.kernel.org>; Wed, 29 Jan 2020 10:27:29 +0100 (CET)
-Received: from [192.168.100.138] (unknown [188.20.71.254])
-        by bsmtp2.bon.at (Postfix) with ESMTPSA id 486ynD1lBfz5tl9;
-        Wed, 29 Jan 2020 10:27:27 +0100 (CET)
-Subject: Re: Strange inconsistant WiFi network behaviour
-To:     JH <jupiter.hce@gmail.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        connman <connman@lists.01.org>
-References: <CAA=hcWTEnYraPy5Un7a7ryeDBJmf0KoCU2VoJjr5LJWtbc9j_g@mail.gmail.com>
-From:   Emil Petersky <emil.petersky@streamunlimited.com>
-Message-ID: <5E314FFF.8040602@streamunlimited.com>
-Date:   Wed, 29 Jan 2020 10:27:27 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; rv:38.0) Gecko/20100101
- Thunderbird/38.5.0
+        id S1726157AbgA2Ke4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 29 Jan 2020 05:34:56 -0500
+Received: from userp2120.oracle.com ([156.151.31.85]:55774 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726069AbgA2Ke4 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 29 Jan 2020 05:34:56 -0500
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00TANLMg068813;
+        Wed, 29 Jan 2020 10:34:53 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
+ bh=QFtwn2bpK8wEKShSizFhDFOQZoZyxhR8RogebRUqGrs=;
+ b=TjeBIETpEeeeF7GXi82b5Us+qAcVEQZeu6WCOAdFB44ebOLodIypzOoLZ/S++GlZnjaS
+ hrRvOStntP4bsybaFlvn82Fs/3snrsUvwEj9U1aomAUySqFUUQS+XpKVOdeXEzI3dmld
+ 6h7LyAiU+n4JwXrAt5lhfyTcTJ9uvIfC7yXdwNwGhO/C+AVo/VVW+TYR0VX4O/jneav+
+ AMK/cTceEVHnjHoEbCF9JVFxJ5PZVA14c/0cPdBjRdYlwcfKNgksuqz0q33oW/OH5XIs
+ za8d3P16s75F0/u1iVU9vApy0f5qJ3X2oH36PG2nkFeQaaEHXrh2aLHxoJovriB7tlnE xg== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by userp2120.oracle.com with ESMTP id 2xrearbxcs-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 29 Jan 2020 10:34:52 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00TAORhM063446;
+        Wed, 29 Jan 2020 10:34:52 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by userp3030.oracle.com with ESMTP id 2xth5jvar1-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 29 Jan 2020 10:34:52 +0000
+Received: from abhmp0003.oracle.com (abhmp0003.oracle.com [141.146.116.9])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 00TAYp0d019213;
+        Wed, 29 Jan 2020 10:34:52 GMT
+Received: from kili.mountain (/129.205.23.165)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Wed, 29 Jan 2020 02:34:51 -0800
+Date:   Wed, 29 Jan 2020 13:34:45 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     luciano.coelho@intel.com
+Cc:     linux-wireless@vger.kernel.org
+Subject: [bug report] iwlwifi: implement a new device configuration table
+Message-ID: <20200129103445.5cngpvhjktmvt57i@kili.mountain>
 MIME-Version: 1.0
-In-Reply-To: <CAA=hcWTEnYraPy5Un7a7ryeDBJmf0KoCU2VoJjr5LJWtbc9j_g@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9514 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=1 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=891
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1911140001 definitions=main-2001290086
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9514 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=1 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=956 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
+ definitions=main-2001290086
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Try to increase distance from router or other WiFi device.
+Hello Luca Coelho,
 
-Best regards,
+The patch 2a612a60ab44: "iwlwifi: implement a new device
+configuration table" from Oct 10, 2019, leads to the following static
+checker warning:
 
-Emil
+    drivers/net/wireless/intel/iwlwifi/pcie/drv.c:1034 iwl_pci_probe()
+    warn: impossible condition '(dev_info->device == (~0)) => (0-u16max == (-1))'
 
-On 29.01.2020 10:21, JH wrote:
-> Hi,
->
-> I have 2 iMX6 devices running uBlox Lily WiFi, mrvl firmware
-> sd8801_uapsta.bin in kernel 4.19.75. In my office, a WiFi router is
-> just 1 meter away, the WiFi signal should not be a problem. One device
-> could connect to the WiFi router well and stably, one could not, here
-> were error messages:
->
-> [  408.990029] ieee80211 phy0: mwifiex_cfg80211_sched_scan_start :
-> Invalid Sched_scan parameters
-> .....................
->
-> [56.986414] ieee80211 phy0: mwifiex_cfg80211_sched_scan_start :
-> Invalid Sched_scan parameter
->
-> connmand[13469]:
-> ../connman-1.35/src/service.c:preferred_tech_add_by_type() type 5
-> service 0x119120 Telstra
-> connmand[13469]: ../connman-1.35/src/service.c:auto_connect_service()
-> preferred 1 sessions 0 reason auto
-> connmand[13469]: ../connman-1.35/src/ntp.c:send_timeout() send timeout
-> 2 (retries 0)
-> connmand[13469]:
-> ../connman-1.35/plugins/ofono.c:netreg_update_strength() /ubloxqmi_2
-> Strength 80
-> connmand[13469]: ../connman-1.35/src/ntp.c:send_timeout() send timeout
-> 4 (retries 1)
-> connmand[13469]: ../connman-1.35/plugins/wifi.c:throw_wifi_scan()
-> device 0x118da8 0x116c78
-> connmand[13469]:
-> ../connman-1.35/src/device.c:connman_device_ref_debug() 0x118da8 ref 4
-> by ../connman-1.35/plugins/wifi.c:1214:throw_wifi_scan()
-> connmand[13469]:
-> ../connman-1.35/src/device.c:connman_device_set_scanning() device
-> 0x118da8 scanning 1
-> connmand[13469]:
-> ../connman-1.35/src/technology.c:__connman_technology_scan_started()
-> device 0x118da8
-> connmand[13469]: ../connman-1.35/plugins/wifi.c:autoscan_timeout() interval 27
-> connmand[13469]: ../connman-1.35/plugins/wifi.c:interface_state() wifi
-> 0x11a7c8 interface state 4
-> connmand[13469]: ../connman-1.35/plugins/wifi.c:scan_started()
-> connmand[13469]: ../connman-1.35/src/rtnl.c:rtnl_message() NEWLINK len
-> 56 type 16 flags 0x0000 seq 0 pid 0
-> connmand[13469]: ../connman-1.35/plugins/wifi.c:scan_finished()
-> connmand[13469]: ../connman-1.35/plugins/wifi.c:interface_state() wifi
-> 0x11a7c8 interface state 3
->
-> Both devices were installed the same firmware and software, if it was
-> firmware / software issues, both would not be able to connect to WiFi,
-> as one device could connect to the office WiFi router well, it could
-> not the WiFi router problem either.
->
-> If I move the faulty one to my home, it could connect to my home WiFi,
-> so the device does not have WiFi problem, that is really confusing,
-> what could cause that kind problem and how to debug and fix it?
->
-> Thank you.
->
-> Kind regards,
->
-> - jh
->
+    drivers/net/wireless/intel/iwlwifi/pcie/drv.c:1036 iwl_pci_probe()
+    warn: impossible condition '(dev_info->subdevice == (~0)) => (0-u16max == (-1))'
+
+drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+  1029          iwl_trans->trans_cfg = trans;
+  1030  
+  1031          for (i = 0; i < ARRAY_SIZE(iwl_dev_info_table); i++) {
+  1032                  const struct iwl_dev_info *dev_info = &iwl_dev_info_table[i];
+  1033  
+  1034                  if ((dev_info->device == IWL_CFG_ANY ||
+                                                 ^^^^^^^^^^^
+A u16 can't be -1.
+
+  1035                       dev_info->device == pdev->device) &&
+  1036                      (dev_info->subdevice == IWL_CFG_ANY ||
+                                                    ^^^^^^^^^^^
+
+  1037                       dev_info->subdevice == pdev->subsystem_device)) {
+  1038                          iwl_trans->cfg = dev_info->cfg;
+  1039                          iwl_trans->name = dev_info->name;
+  1040                          goto found;
+  1041                  }
+  1042          }
+
+
+regards,
+dan carpenter
