@@ -2,179 +2,110 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 81D3B14C8F4
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Jan 2020 11:49:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 228C914C96D
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 Jan 2020 12:18:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726358AbgA2Ktd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 29 Jan 2020 05:49:33 -0500
-Received: from de-deferred1.bosch-org.com ([139.15.180.216]:45824 "EHLO
-        de-deferred1.bosch-org.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726067AbgA2Kta (ORCPT
+        id S1726177AbgA2LSU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 29 Jan 2020 06:18:20 -0500
+Received: from aserp2120.oracle.com ([141.146.126.78]:57714 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726067AbgA2LST (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 29 Jan 2020 05:49:30 -0500
-X-Greylist: delayed 537 seconds by postgrey-1.27 at vger.kernel.org; Wed, 29 Jan 2020 05:49:28 EST
-Received: from de-out1.bosch-org.com (unknown [139.15.180.215])
-        by si0vms0224.rbdmz01.com (Postfix) with ESMTPS id 4870PV3lYlz3B0
-        for <linux-wireless@vger.kernel.org>; Wed, 29 Jan 2020 11:40:30 +0100 (CET)
-Received: from fe0vm1649.rbesz01.com (unknown [139.15.230.188])
-        by fe0vms0187.rbdmz01.com (Postfix) with ESMTPS id 4870PS72Xsz1XLDR3;
-        Wed, 29 Jan 2020 11:40:28 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=bshg.com;
-        s=key2-intmail; t=1580294429;
-        bh=Skgd7nQuGIH0SzNyM73QXazPLkq6t2aHCOtjPfNCUbc=; l=10;
-        h=From:Subject:From:Reply-To:Sender;
-        b=lxtvtRGQW6+uoOadisBkvmFTobrRRbIuHEyH4Gr2oeSCD2bcD2AtvicWnxorgAYNZ
-         Et3X9lHvJabw9U+n2N0itW8sJA3DsOt2UL4Q6Dru6L4hQdOneXVJtXKMrvFPJ85yVt
-         q+BpLtC/MYZnpivP6h0vcKWvWhBjiXuYo2h72AzI=
-Received: from fe0vm1740.rbesz01.com (unknown [10.58.172.176])
-        by fe0vm1649.rbesz01.com (Postfix) with ESMTPS id 4870PS6jPBz1Mq;
-        Wed, 29 Jan 2020 11:40:28 +0100 (CET)
-X-AuditID: 0a3aad14-aadff700000047f7-63-5e31611cf972
-Received: from fe0vm1652.rbesz01.com ( [10.58.173.29])
-        (using TLS with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (Client did not present a certificate)
-        by fe0vm1740.rbesz01.com (SMG Outbound) with SMTP id 6C.1A.18423.C11613E5; Wed, 29 Jan 2020 11:40:28 +0100 (CET)
-Received: from SI0SWIEXHC01.bsh.corp.bshg.com (si0swiexhc01.bsh.corp.bshg.com [10.49.76.137])
-        by fe0vm1652.rbesz01.com (Postfix) with ESMTPS id 4870PS4XQmzB0t;
-        Wed, 29 Jan 2020 11:40:28 +0100 (CET)
-Received: from SI0SWIEXMB2A.bsh.corp.bshg.com (10.49.76.131) by
- SI0SWIEXHC01.bsh.corp.bshg.com (10.49.76.137) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.1913.5; Wed, 29 Jan 2020 11:40:28 +0100
-Received: from SI0SWIEXMB2B.bsh.corp.bshg.com (10.49.76.132) by
- SI0SWIEXMB2A.bsh.corp.bshg.com (10.49.76.131) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.1847.3; Wed, 29 Jan 2020 11:40:28 +0100
-Received: from SI0SWIEXMB2B.bsh.corp.bshg.com ([fe80::5154:c3ab:d4e0:8272]) by
- SI0SWIEXMB2B.bsh.corp.bshg.com ([fe80::5154:c3ab:d4e0:8272%5]) with mapi id
- 15.01.1847.005; Wed, 29 Jan 2020 11:40:28 +0100
-From:   "Ryll, Jan (GED-SDD2)" <Jan.Ryll@bshg.com>
-To:     JH <jupiter.hce@gmail.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        connman <connman@lists.01.org>
-Subject: RE: Strange inconsistant WiFi network behaviour
-Thread-Topic: Strange inconsistant WiFi network behaviour
-Thread-Index: AQHV1oWC58uQ1YLNlUiYf68AHLTNsqgBcp1w
-Date:   Wed, 29 Jan 2020 10:40:28 +0000
-Message-ID: <c76ff8bb50164eeb86feeb2eba76beac@bshg.com>
-References: <CAA=hcWTEnYraPy5Un7a7ryeDBJmf0KoCU2VoJjr5LJWtbc9j_g@mail.gmail.com>
-In-Reply-To: <CAA=hcWTEnYraPy5Un7a7ryeDBJmf0KoCU2VoJjr5LJWtbc9j_g@mail.gmail.com>
-Accept-Language: de-DE, en-US
-Content-Language: de-DE
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.49.87.17]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        Wed, 29 Jan 2020 06:18:19 -0500
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00TBEEMW098641;
+        Wed, 29 Jan 2020 11:18:13 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
+ bh=3lA69pvmgvgQeZ7xeb05qM/NtDuWT0CsaqkaX8ar/24=;
+ b=MPhLsiHCcv/ORex4zTfZVzbbnkoPCV+KAYZFvkQOeYo4hyNq7lZW4mTFYjgsddzc3gfr
+ TZMAnJa0vAcG71BNjCs7GrYYaFApWE+pvD7Yguv9Urcu33xuzSNNsQQFdBDyPAqd2En0
+ wXVq6Ezg54OvSR5CxBWcPCbiAIjDXzXQeJPwz4YYZbmeWeawIvpZUBgdBz2mnTgGYLRD
+ kR+46vlCCMCIjYIUl+LbMSz2BWBVDJQ8dQaJIBsdg8bXeGd/9ddsdbxQ9F+M9yvRuJzC
+ WK9HLaER+0PNBteUQSAFfI1Twvs3qdjIdGhjQmNLr0tz4cW6c6WjpZ+42r+lS287U39w nw== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by aserp2120.oracle.com with ESMTP id 2xrdmqmd47-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 29 Jan 2020 11:18:13 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00TBEocs084654;
+        Wed, 29 Jan 2020 11:18:12 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by aserp3030.oracle.com with ESMTP id 2xtg7x2tf1-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 29 Jan 2020 11:18:12 +0000
+Received: from abhmp0005.oracle.com (abhmp0005.oracle.com [141.146.116.11])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 00TBIAoC011911;
+        Wed, 29 Jan 2020 11:18:10 GMT
+Received: from kili.mountain (/129.205.23.165)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Wed, 29 Jan 2020 03:18:09 -0800
+Date:   Wed, 29 Jan 2020 14:18:02 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     timlee@realtek.com
+Cc:     linux-wireless@vger.kernel.org
+Subject: [bug report] rtw88: support wowlan feature for 8822c
+Message-ID: <20200129111802.kbphgme3t27ow2no@kili.mountain>
 MIME-Version: 1.0
-X-EXCLAIMER-MD-CONFIG: fd782ad6-06f5-4690-bfdd-57c58a3839e9
-X-Brightmail-Tracker: H4sIAAAAAAAAA22TW1AbZRTH+XaXZBNZuyykOYaQQmoftIoJ1mlsHUfH6uRJ26m8UKWGspCM
-        udAkIPBgsVovKWNBi0iwJU0jokMwclEoLdigHai3dmhaGCnFabyExlpKbSk0GXdZaPLgyzfn
-        +5/zO//znZ0lcaaHVJAmq5O1Ww1mtUhKSDf5sx9WGrRFmqlD63VNvbNiXd9gE6GLtk+Kn8L1
-        /e6LYv3+ljihn+tSbcULpU+UsGZTJWt/5MlXpEb/6KdE+VBW1ZuNIawWDcpdSEICvQGuuEK4
-        C0lJhm7CYO7Ut6nCZRTB7bN/YXwVQ+/F4KOvC4VEDEHf5CAmXH5G0BnwifgqEa2B865JnI8z
-        6d3QMhcj+DiD1kFD43WRoD8OrhEvIcT50DwUWdIJeh20nRsT8zFFb4Rj3rhIcN4K7dd/W4ol
-        9Da40zG9FCM6GwKBX5a8cFoOXX/cShXeQ4PvuKADLYPI5fiyvgZ+aphNFeofAs+AMA9Or4e2
-        I1dwwTcdRpvDhFC/GT7rnkb1CNxJFu4k3J2Eu5NwDyK+QLJSVlNp0W7coMmzF7OOGo02b5fN
-        0oWEb5jZhxaDpUGEkSiIHiMxtYyKbtEWMfcW20qqjQaHcae9wsw61ApqT/S9l5mMu7Kjothi
-        cjhMNmsQAYmrMynZsxxHlRiqa1i7TcCCKIsk1HKqjHzhJYYuMzjZV1m2nLWvZDeTpBqoUBEH
-        ptvZMraq1GR2rqTV2RRKSUlhVidnkm0xUhJEj5JpnHeEb0E5yg0Wh6lsGb9PwJkVNYGeRgVk
-        feSQFydPfn+YO08tnYsBnxdnCKvNyirkVMpOriPNs8YK692ZFEpqaHdeESNLSiT6zqBxRCJ1
-        BiXh4TTud0lMA1Qtv8D0ZTEB5fs4hm6hoc6vA9/ZfgK+DEcI8LQuiGHcc4CEOyfaJHD1yJgE
-        vhq4KoHD459Q0Fl/i4KF5sZVsNjfmgnz0ZgMhk6eXw0j1y5lwf6jPUoI/z6shKmDE0r4PMQd
-        8Y9D2RC/6VVB78BRFYx894MKpk5Pq2DeF1dBe+f0GpicacmB+Y72HJiIHs8Bz68/5sKNhoVc
-        GA3Hcme4TWPcpm8aNPymnQbn/2x6WU08TlGLAh1nzGf2jV16x1O7ZWJ4x4Xgvtt/MoXd515k
-        ruH2gyP/9qwDyWxvCRl7a9ASEGPI73968cPXC765Ubjtjc7nd8GAryptQqRVrcVqCvTdvj3V
-        m+Siyzvuj12M/dP07muVihOevQ/kP1fvqXhm7fa/6z5oCB841nphOC3+9vt2veWeuiw14TAa
-        tA/idofhP3bti7bHBAAA
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9514 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=1 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=779
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1911140001 definitions=main-2001290094
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9514 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=1 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=847 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
+ definitions=main-2001290094
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+Hello Chin-Yen Lee,
 
-there are WiFi routers like AVM which are implement the WiFi Stack in a str=
-icter way than other routers or other WiFi chips-firmware.
-I mention this cause weh ad some issue with a cypress wifi firmware which l=
-eads to "sometimes" disconnect from routers. And we figured out that this w=
-as mostly the case with AVM. We are in contact with AVM in it turns out tha=
-t the AVM router work proberly. The issues was with the cypress chipset fir=
-mware. Now we are in contact with cypress and they accepted the issue.
-So it is not always a connman problem :-) .
+The patch 44bc17f7f5b3: "rtw88: support wowlan feature for 8822c"
+from Dec 19, 2019, leads to the following static checker warning:
 
-Best regards
-Jan
+	drivers/net/wireless/realtek/rtw88/wow.c:300 rtw_wow_check_fw_status()
+	error: uninitialized symbol 'ret'.
 
------Original Message-----
-From: JH <jupiter.hce@gmail.com>=20
-Sent: Wednesday, January 29, 2020 10:22 AM
-To: linux-wireless <linux-wireless@vger.kernel.org>; connman <connman@lists=
-.01.org>
-Subject: Strange inconsistant WiFi network behaviour
+drivers/net/wireless/realtek/rtw88/wow.c
+   284  static bool rtw_wow_check_fw_status(struct rtw_dev *rtwdev, bool wow_enable)
+   285  {
+   286          bool ret;
+                     ^^^
+This is not initialized.
 
-Hi,
 
-I have 2 iMX6 devices running uBlox Lily WiFi, mrvl firmware sd8801_uapsta.=
-bin in kernel 4.19.75. In my office, a WiFi router is just 1 meter away, th=
-e WiFi signal should not be a problem. One device could connect to the WiFi=
- router well and stably, one could not, here were error messages:
+   287  
+   288          /* wait 100ms for wow firmware to finish work */
+   289          msleep(100);
+   290  
+   291          if (wow_enable) {
+   292                  if (!rtw_read8(rtwdev, REG_WOWLAN_WAKE_REASON))
+   293                          ret = 0;
 
-[  408.990029] ieee80211 phy0: mwifiex_cfg80211_sched_scan_start :
-Invalid Sched_scan parameters
-.....................
+"ret" is bool so it should be "ret = false;" but really returning
+true on error and false on success is not beautiful.  Also these return
+values get propogated back so it should return negative error codes.
 
-[56.986414] ieee80211 phy0: mwifiex_cfg80211_sched_scan_start :
-Invalid Sched_scan parameter
+   294          } else {
+   295                  if (rtw_read32_mask(rtwdev, REG_FE1IMR, BIT_FS_RXDONE) == 0 &&
+   296                      rtw_read32_mask(rtwdev, REG_RXPKT_NUM, BIT_RW_RELEASE) == 0)
+   297                          ret = 0;
+   298          }
+   299  
+   300          if (ret)
+   301                  rtw_err(rtwdev, "failed to check wow status %s\n",
+   302                          wow_enable ? "enabled" : "disabled");
+   303  
+   304          return ret;
+   305  }
 
-connmand[13469]:
-../connman-1.35/src/service.c:preferred_tech_add_by_type() type 5 service 0=
-x119120 Telstra
-connmand[13469]: ../connman-1.35/src/service.c:auto_connect_service()
-preferred 1 sessions 0 reason auto
-connmand[13469]: ../connman-1.35/src/ntp.c:send_timeout() send timeout
-2 (retries 0)
-connmand[13469]:
-../connman-1.35/plugins/ofono.c:netreg_update_strength() /ubloxqmi_2 Streng=
-th 80
-connmand[13469]: ../connman-1.35/src/ntp.c:send_timeout() send timeout
-4 (retries 1)
-connmand[13469]: ../connman-1.35/plugins/wifi.c:throw_wifi_scan()
-device 0x118da8 0x116c78
-connmand[13469]:
-../connman-1.35/src/device.c:connman_device_ref_debug() 0x118da8 ref 4 by .=
-./connman-1.35/plugins/wifi.c:1214:throw_wifi_scan()
-connmand[13469]:
-../connman-1.35/src/device.c:connman_device_set_scanning() device
-0x118da8 scanning 1
-connmand[13469]:
-../connman-1.35/src/technology.c:__connman_technology_scan_started()
-device 0x118da8
-connmand[13469]: ../connman-1.35/plugins/wifi.c:autoscan_timeout() interval=
- 27
-connmand[13469]: ../connman-1.35/plugins/wifi.c:interface_state() wifi
-0x11a7c8 interface state 4
-connmand[13469]: ../connman-1.35/plugins/wifi.c:scan_started()
-connmand[13469]: ../connman-1.35/src/rtnl.c:rtnl_message() NEWLINK len
-56 type 16 flags 0x0000 seq 0 pid 0
-connmand[13469]: ../connman-1.35/plugins/wifi.c:scan_finished()
-connmand[13469]: ../connman-1.35/plugins/wifi.c:interface_state() wifi
-0x11a7c8 interface state 3
-
-Both devices were installed the same firmware and software, if it was firmw=
-are / software issues, both would not be able to connect to WiFi, as one de=
-vice could connect to the office WiFi router well, it could not the WiFi ro=
-uter problem either.
-
-If I move the faulty one to my home, it could connect to my home WiFi, so t=
-he device does not have WiFi problem, that is really confusing, what could =
-cause that kind problem and how to debug and fix it?
-
-Thank you.
-
-Kind regards,
-
-- jh
-_______________________________________________
-connman mailing list -- connman@lists.01.org To unsubscribe send an email t=
-o connman-leave@lists.01.org
+regards,
+dan carpenter
