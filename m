@@ -2,192 +2,116 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5BC8214D212
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Jan 2020 21:49:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 12E4B14D35B
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Jan 2020 00:13:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726751AbgA2UtY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 29 Jan 2020 15:49:24 -0500
-Received: from mail-qv1-f52.google.com ([209.85.219.52]:46141 "EHLO
-        mail-qv1-f52.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726672AbgA2UtY (ORCPT
+        id S1726833AbgA2XNW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 29 Jan 2020 18:13:22 -0500
+Received: from mail-io1-f65.google.com ([209.85.166.65]:37786 "EHLO
+        mail-io1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726663AbgA2XNV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 29 Jan 2020 15:49:24 -0500
-Received: by mail-qv1-f52.google.com with SMTP id y2so358645qvu.13
-        for <linux-wireless@vger.kernel.org>; Wed, 29 Jan 2020 12:49:22 -0800 (PST)
+        Wed, 29 Jan 2020 18:13:21 -0500
+Received: by mail-io1-f65.google.com with SMTP id k24so1801219ioc.4
+        for <linux-wireless@vger.kernel.org>; Wed, 29 Jan 2020 15:13:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=message-id:subject:from:to:date:in-reply-to:references:mime-version
-         :content-transfer-encoding;
-        bh=FFhp+MTDGFRUEbZLOp2FoXozZ8qfMM/1xyGfVx88ALk=;
-        b=Y7+foQGBl5EKby3WS2++EID5KswEKTKU7T2K13D4rmXmHFBz3XhB91r+SUBuz6OYEL
-         sthVcb47T2JPzuyhhngHmPcEGOa5FAZFuVDCAD2Q4PCeI50wt2ZH9FTrE79teyaLGpGT
-         Y0fH1NQv75ayTT6qcqH8nvZWGHsll3jVeScQIU5P83v+YolX6XW93vBB+aNHNyKVaMdp
-         dnmDeaGuQvFHiikUOCYknAHK49mQc84SZEbWnkKJCzua1B3wKO9lijdHmVzXgJKXlEuq
-         ZFJd3Gms8Qtj9v7nrkFdk+1pwSsnBs8xYbwHaS0i0KhdXuB0+cqZqssZAoY5yGiZWOEG
-         oyNw==
+        d=broadcom.com; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=LCUbrUz7P+ZZOGgq2SEr224JKtlddICvuICcnGrb8wI=;
+        b=SdkOg+CGhQWsyghj0M3VcH36oGpO89eNNXRye+lGikf5O5Is0N+RxBrpq/SFFroshF
+         X865+RzEqL7tuwe6qQBrHRSo7IIb3mgnByPT5LO1mkE3R9BlviVxtp3u+QSA2QzOryf4
+         gVPKzRsEO6gnwep19v1pcG56Mcttgie4MWpj4=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:message-id:subject:from:to:date:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=FFhp+MTDGFRUEbZLOp2FoXozZ8qfMM/1xyGfVx88ALk=;
-        b=EOVyz1qcSvonLqrZRV6i2tY3PerR4vStcjkNyn24knOYxFOFkimoZBmslNLrqGEeGU
-         IyRgBDFZUeAbbTe//KWYoZBWMJFsbSRoo/cMNbXrMB/9dHzIlpGbmx2CHs27UTH0I+uG
-         pcYPCZNKHtjNWMZnv6ptfyPvwPyKSpvaz7+UYxA0px0wRl2t6BSPR99r2Fhx9cgM7MY3
-         LJPS8vbHE8AKJhSembtgg6oekylRB9/pLFQGPf46npUhmHLujJukVgFcVxsVFkJuKrfY
-         MHwFw8Cj6ip6nkqPk1WwPd8pEv9MV54U9YlUWXc4Zxm/Tqh6h4CYin4897LKU7Yu2V4C
-         P8sw==
-X-Gm-Message-State: APjAAAVOBE5Lk62/XiS6zRo42wOasql/U5Jwz5Y6hZ1tyEsu1jCDXvME
-        iqWPf/CihFYLJ+U8D3jQogRDxBVW
-X-Google-Smtp-Source: APXvYqzjEPCs+Gj5j9fYyvv6eqLncLzsr/zqJ9sDpNBwppvFHLAWVYlbN8qrXTDehhU/U5Lx2YViFA==
-X-Received: by 2002:a05:6214:c3:: with SMTP id f3mr982784qvs.226.1580330962291;
-        Wed, 29 Jan 2020 12:49:22 -0800 (PST)
-Received: from [192.168.0.10] (dhcp-108-168-58-21.cable.user.start.ca. [108.168.58.21])
-        by smtp.gmail.com with ESMTPSA id 11sm1536050qko.76.2020.01.29.12.49.21
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 29 Jan 2020 12:49:21 -0800 (PST)
-Message-ID: <1580330950.26012.62.camel@gmail.com>
-Subject: Re: Strange performance issue when using two devices at once
-From:   Marlon Smith <marlon.smith10@gmail.com>
-To:     Ben Greear <greearb@candelatech.com>,
-        linux-wireless@vger.kernel.org
-Date:   Wed, 29 Jan 2020 15:49:10 -0500
-In-Reply-To: <c8788984-3de0-b41c-e2a1-66b67d0674a6@candelatech.com>
-References: <1580323191.26012.48.camel@gmail.com>
-         <2e80a485-892d-3b29-19c7-38a9caa14f4b@candelatech.com>
-         <1580325769.26012.54.camel@gmail.com>
-         <6bcff97c-3b9b-7fa9-5101-80aca367ff84@candelatech.com>
-         <1580327314.26012.59.camel@gmail.com>
-         <c8788984-3de0-b41c-e2a1-66b67d0674a6@candelatech.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=LCUbrUz7P+ZZOGgq2SEr224JKtlddICvuICcnGrb8wI=;
+        b=W113lb5Eq7AROPRCIJ6T+HNvejEWM0fNIt5f5iB3JxDbx1SjEuY/k7BkHIEEpuOeB1
+         QQvL4a5cIDpcKmwl1M1yoF89I/PwLhi4UvxyrlMhjPl6fLHPLivL842McuJfZ8XWcdCy
+         BG5IcUkwiot25bmTSTTPiGlNx7GnUUcsn13vnizM01Z+JB6/hj8g61bojCiYRwL/kLTD
+         GXrzWNX/hA8efX2lxsit1DeaGGBR7KHcD8ncw4iBgH2Euyh9pMt5+O++XxH5SF54vD7a
+         xA3EwnxQqQ5mKDt/77G5EY+5sk8YL1MDR5AqLk4Mk+H8zOVq951XI+LCT3v3nBfGR7xz
+         KZCA==
+X-Gm-Message-State: APjAAAWKwjfHc/mP3Zn1S1dEmMLPlPqtUu+iIlCweqDW/UBDNiJ/Mm8W
+        OzM9n1vifGZMUlTXtoEsUtGOxtrfk/BdIdg4RzzoSA==
+X-Google-Smtp-Source: APXvYqxHMtiCwMc6jPRHRw63xfLorZNlXp+L+Bp/WE3y4H4JqVTTE0Uo9byH9oRz6OydL59iyNlWuRq15pvmR8iqCJY=
+X-Received: by 2002:a5e:c907:: with SMTP id z7mr1648711iol.88.1580339600746;
+ Wed, 29 Jan 2020 15:13:20 -0800 (PST)
+MIME-Version: 1.0
+References: <20200128221457.12467-1-linux@roeck-us.net> <CAD=FV=Wg2MZ56fsCk+TvRSSeZVz5eM4cwugK=HN6imm5wfGgiw@mail.gmail.com>
+ <20200129000551.GA17256@roeck-us.net> <CA+8PC_f=qCUjihwbjd3vtGaNkG-=R1qm83oS7AmgtLTy6EgjyQ@mail.gmail.com>
+ <20200129180428.GA99393@google.com>
+In-Reply-To: <20200129180428.GA99393@google.com>
+From:   Franky Lin <franky.lin@broadcom.com>
+Date:   Wed, 29 Jan 2020 15:12:54 -0800
+Message-ID: <CA+8PC_cr8D-tFT1QwS=DSNOW1X2sW3f__Aqts33bUseu9L7yfg@mail.gmail.com>
+Subject: Re: [PATCH] brcmfmac: abort and release host after error
+To:     Brian Norris <briannorris@chromium.org>
+Cc:     Guenter Roeck <linux@roeck-us.net>,
+        Doug Anderson <dianders@chromium.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Arend van Spriel <arend.vanspriel@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        "open list:BROADCOM BRCM80211 IEEE802.11n WIRELESS DRIVER" 
+        <brcm80211-dev-list.pdl@broadcom.com>,
+        brcm80211-dev-list <brcm80211-dev-list@cypress.com>,
+        netdev <netdev@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Matthias Kaehlcke <mka@chromium.org>
 Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.18.5.2-0ubuntu3.2 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 2020-01-29 at 12:01 -0800, Ben Greear wrote:
-> On 1/29/20 11:48 AM, Marlon Smith wrote:
-> > 
-> > On Wed, 2020-01-29 at 11:27 -0800, Ben Greear wrote:
-> > > 
-> > > On 1/29/20 11:22 AM, Marlon Smith wrote:
-> > > > 
-> > > > 
-> > > > On Wed, 2020-01-29 at 10:42 -0800, Ben Greear wrote:
-> > > > > 
-> > > > > 
-> > > > > On 1/29/20 10:39 AM, Marlon Smith wrote:
-> > > > > > 
-> > > > > > 
-> > > > > > 
-> > > > > > Hi everyone,
-> > > > > > 
-> > > > > > I have two RT5370 devices connected to the same access
-> > > > > > point.
-> > > > > > Both
-> > > > > > devices are very slow, but the instant I disconnect one
-> > > > > > device,
-> > > > > > the
-> > > > > > other speeds up by a factor of 10.
-> > > > > Out of curiosity, are both of the RT5370 used on the same
-> > > > > client
-> > > > > device?
-> > > > > > 
-> > > > > > 
-> > > > > > Did you check that they have unique MAC addresses?
-> > > > > > Thanks,
-> > > > > Ben
-> > > > > > 
-> > > > > > 
-> > > > > > > 
-> > > > > > > 
-> > > > > > > 
-> > > > > > The really strange part is that one device will perform
-> > > > > > slowly
-> > > > > > even
-> > > > > > if
-> > > > > > the other device is basically idle! I've confirmed this
-> > > > > > with a
-> > > > > > packet
-> > > > > > sniffer.
-> > > > > > 
-> > > > > > I've been trying to do some debugging, and I've found that
-> > > > > > when
-> > > > > > both
-> > > > > > devices are connected to the access point, they report a
-> > > > > > large
-> > > > > > number
-> > > > > > of duplicate frames. I added some debug output
-> > > > > > in ieee80211_rx_h_check_dup() to confirm that this only
-> > > > > > happens
-> > > > > > while
-> > > > > > both devices are connected. The packet sniffer also shows a
-> > > > > > large
-> > > > > > number of retries while this is occurring.
-> > > > > > 
-> > > > > > Using backports 5.3-rc4 for this, but also tested on 4.14-
-> > > > > > rc2.
-> > > > > > 
-> > > > > > I did post about this previously on this mailing list
-> > > > > > (RT5370
-> > > > > > performance issues), but I thought I'd post again with this
-> > > > > > new
-> > > > > > information and more descriptive title. I'm a little bit
-> > > > > > stuck
-> > > > > > on
-> > > > > > this
-> > > > > > for a while now, so any ideas are much appreciated.
-> > > > > > 
-> > > > > > Thanks!
-> > > > > > 
-> > > > > > Marlon
-> > > > > > 
-> > > > They are on separate devices, although the mac addresses are
-> > > > close.
-> > > > 70:F1:1C:2E:AF:B4 and
-> > > > 70:F1:1C:2E:AF:B6.
-> > > > 
-> > > > However, I have a third device 70:F1:1C:2E:AF:BB which performs
-> > > > well
-> > > > and does not affect the performance of the other two.
-> > > > 
-> > > Have you tried a different AP?
-> > > 
-> > > And also tried using the exact same MAC addresses configured on a
-> > > different
-> > > radio (like ath9k)?
-> > > 
-> > > Thanks,
-> > > Ben
-> > > 
-> > > 
-> > I have tried a different access point in a different environment
-> > but no
-> > luck. I'll see if I can configure my laptop to use one of the
-> > problematic devices' mac address.
-> It might be tricky to determine, but if you can notice whether one of
-> your station devices
-> is (block-)acking the other's frames, that would be a good clue that
-> it is a station
-> side bug.  A carefully inspected sniff, especially if you can put
-> sniffer near one station
-> and far from the other and so use RSSI as a sorting factor, should
-> allow you to determine
-> this.
-> 
-> Thanks,
-> Ben
-> 
-> 
+On Wed, Jan 29, 2020 at 10:04 AM Brian Norris <briannorris@chromium.org> wrote:
+>
+> Hi Franky,
+>
+> [I'm very unfamiliar with this driver, but I had the same questions as
+> Guenter, I think:]
+>
+> On Tue, Jan 28, 2020 at 04:57:59PM -0800, Franky Lin wrote:
+> > On Tue, Jan 28, 2020 at 4:05 PM Guenter Roeck <linux@roeck-us.net> wrote:
+> > > On Tue, Jan 28, 2020 at 03:14:45PM -0800, Doug Anderson wrote:
+> > > > On Tue, Jan 28, 2020 at 2:15 PM Guenter Roeck <linux@roeck-us.net> wrote:
+> > > > > --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+> > > > > +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+> > > > > @@ -1938,6 +1938,8 @@ static uint brcmf_sdio_readframes(struct brcmf_sdio *bus, uint maxframes)
+> > > > >                         if (brcmf_sdio_hdparse(bus, bus->rxhdr, &rd_new,
+> > > > >                                                BRCMF_SDIO_FT_NORMAL)) {
+> > > > >                                 rd->len = 0;
+> > > > > +                               brcmf_sdio_rxfail(bus, true, true);
+> > > > > +                               sdio_release_host(bus->sdiodev->func1);
+> > > >
+> > > > I don't know much about this driver so I don't personally know if
+> > > > "true, true" is the correct thing to pass to brcmf_sdio_rxfail(), but
+> > > > it seems plausible.  Definitely the fix to call sdio_release_host() is
+> > > > sane.
+> > > >
+> > > > Thus, unless someone knows for sure that brcmf_sdio_rxfail()'s
+> > > > parameters should be different:
+> > > >
+> > > Actually, looking at brcmf_sdio_hdparse() and its other callers,
+> > > I think it may not be needed at all - other callers don't do it, and
+> > > there already are some calls to brcmf_sdio_rxfail() in that function.
+> > > It would be nice though to get a confirmation before I submit v2.
+> >
+> > I think invoking rxfail with both abort and NACK set to true is the
+> > right thing to do here so that the pipeline can be properly purged.
+>
+> Thanks for looking here. I'm not sure I totally understand your answer:
+> brcmf_sdio_hdparse() already calls brcmf_sdio_rxfail() in several error
+> cases. Is it really OK to call it twice in a row?
 
-I'll double check this, but I believe there is very little traffic from
-the second station while the first station is (slowly) transferring
-data. I think that means it's not likely that one device is acking the
-other's frames?
+Yes. brcmf_sdio_rxglom does the same thing that calls
+brcmf_sdio_rxfail again in error handling. For this instance I think
+it's better using the same logic as the length mismatch block below (
+calling brcmf_sdio_rxfail with true ture).
 
-I will test this though, and the mac address spoofing, and get back to
-you tomorrow.
-
-Really appreciate the help so far, thank you!
+Thanks,
+- Franky
