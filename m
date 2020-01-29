@@ -2,94 +2,115 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C68014CFC5
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Jan 2020 18:39:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C18F414D016
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 Jan 2020 19:04:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727355AbgA2Rjm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 29 Jan 2020 12:39:42 -0500
-Received: from userp2130.oracle.com ([156.151.31.86]:35198 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726679AbgA2Rjm (ORCPT
+        id S1726847AbgA2SEe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 29 Jan 2020 13:04:34 -0500
+Received: from mail-pj1-f66.google.com ([209.85.216.66]:38618 "EHLO
+        mail-pj1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726245AbgA2SEe (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 29 Jan 2020 12:39:42 -0500
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00THd9BE126228;
-        Wed, 29 Jan 2020 17:39:35 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
- bh=tr7gEXy7VyEAfiCPoAPHT51+Uv8d46qh3HaBdWx9DyY=;
- b=InmgxSRfxnrmXMUdd6hZFTwq7ROQ9hM65S0xFOTPX51KwAV0J3cBVl9lwsU2GdQySnfT
- a5qIIvSmmb59lFVQNaySczLjKBgNfN0Ri6H1TCGkBAPba4OdnKUdyD0jp0jFv120Tb7H
- H1vM+3ZZgCmAqN2FGBhfXVK8vZyR1J9QRgPlhyoD3/zHgS6Vi5/S8whjTrjySFabNHz0
- 5Q3lyW+hjH7nGAIz9Z00m1++eiCXkAFHBkJJitv+h/d1zCPYZ8tMb3SCtTkdR+qd9Ft7
- /2bOVq2o6XaHpO5rbd1ftNy6X1tvZXskBi3hAwsIl4gN8ljX2eddf3IkDJGiTqB42pxt kw== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by userp2130.oracle.com with ESMTP id 2xrd3uf1tt-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 29 Jan 2020 17:39:35 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00THcFVl127704;
-        Wed, 29 Jan 2020 17:39:34 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by aserp3030.oracle.com with ESMTP id 2xuc2x4mjy-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 29 Jan 2020 17:39:34 +0000
-Received: from abhmp0004.oracle.com (abhmp0004.oracle.com [141.146.116.10])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 00THdWMi012513;
-        Wed, 29 Jan 2020 17:39:32 GMT
-Received: from kili.mountain (/129.205.23.165)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 29 Jan 2020 09:39:31 -0800
-Date:   Wed, 29 Jan 2020 20:39:24 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Yan-Hsuan Chuang <yhchuang@realtek.com>,
-        Chin-Yen Lee <timlee@realtek.com>
-Cc:     Kalle Valo <kvalo@codeaurora.org>, linux-wireless@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: [PATCH] rtw88: Use kfree_skb() instead of kfree()
-Message-ID: <20200129173923.rfufhv5c5pxwodm6@kili.mountain>
+        Wed, 29 Jan 2020 13:04:34 -0500
+Received: by mail-pj1-f66.google.com with SMTP id j17so125344pjz.3
+        for <linux-wireless@vger.kernel.org>; Wed, 29 Jan 2020 10:04:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=6QNebILk02STEyIe5/0fAJxmh4v1Dv7+qDAzRC1FUDQ=;
+        b=LowdrKlK0P6qecyQGM0hzYenViTrLksQTfxjJ9ni4gKyCCIp1FahM6Ho5TjGK9OAVj
+         7oqM88GFtBs997v7Yh1XJCADc6MeqKnvobn1CGwvE1MPLZNH0uZswwf2Zu4yOPQi3Cdi
+         0e9TIPoczxRInL3Xrd1lCEWURMROuKtqa8IP4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=6QNebILk02STEyIe5/0fAJxmh4v1Dv7+qDAzRC1FUDQ=;
+        b=uUWVzPgbgifrGZRDyc29NwDrCjwTs/0WJeIOCxfFrJpNTu/5HVnoFlcc1iaeF+97Av
+         HO1RW/gQQ/LJe5m+nVysieqpveettww7besVJ664cSr0hXl+kvm8KtTBUcgMtYDKyMa4
+         pse0LirfDxAfqaYfJFVwig73caeppz/o3yeVZQHSpY/iCOprUhlHZhIpUrmOHHuIOhBo
+         QF5sczZNtsPL8lmR8O7KF6R9pmRKDEa3sdRDEiDW8EJvGjzKpDeKQQ5SXWh5i8sh/2Rw
+         UDlWDXTBlD/bMY9n9YLFdViPPXauFjhl1TcAgKEruIP57pNR4AbCn5NFwrtQAPoQvLCy
+         pi5A==
+X-Gm-Message-State: APjAAAUhwtMYr89mn4rdPTjVgd1ib1UbNEQVGBCZOmcMA4hp5eezdViV
+        ZTBGZpP6h8G/pxXrXsgt3w3zZA==
+X-Google-Smtp-Source: APXvYqxVUyW4yrpYAV6X6fDHS+gRG2rAx1gwUyY8QSDnEvQsn0QmEVreNGiM5X7rKr6GWTnyLky0ug==
+X-Received: by 2002:a17:902:bf41:: with SMTP id u1mr552856pls.207.1580321073273;
+        Wed, 29 Jan 2020 10:04:33 -0800 (PST)
+Received: from google.com ([2620:15c:202:1:534:b7c0:a63c:460c])
+        by smtp.gmail.com with ESMTPSA id q6sm3385291pgt.47.2020.01.29.10.04.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 29 Jan 2020 10:04:32 -0800 (PST)
+Date:   Wed, 29 Jan 2020 10:04:30 -0800
+From:   Brian Norris <briannorris@chromium.org>
+To:     Franky Lin <franky.lin@broadcom.com>
+Cc:     Guenter Roeck <linux@roeck-us.net>,
+        Doug Anderson <dianders@chromium.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Arend van Spriel <arend.vanspriel@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        "open list:BROADCOM BRCM80211 IEEE802.11n WIRELESS DRIVER" 
+        <brcm80211-dev-list.pdl@broadcom.com>,
+        brcm80211-dev-list <brcm80211-dev-list@cypress.com>,
+        netdev <netdev@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Matthias Kaehlcke <mka@chromium.org>
+Subject: Re: [PATCH] brcmfmac: abort and release host after error
+Message-ID: <20200129180428.GA99393@google.com>
+References: <20200128221457.12467-1-linux@roeck-us.net>
+ <CAD=FV=Wg2MZ56fsCk+TvRSSeZVz5eM4cwugK=HN6imm5wfGgiw@mail.gmail.com>
+ <20200129000551.GA17256@roeck-us.net>
+ <CA+8PC_f=qCUjihwbjd3vtGaNkG-=R1qm83oS7AmgtLTy6EgjyQ@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9514 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=982
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1911140001 definitions=main-2001290145
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9514 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
- definitions=main-2001290145
+In-Reply-To: <CA+8PC_f=qCUjihwbjd3vtGaNkG-=R1qm83oS7AmgtLTy6EgjyQ@mail.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-sk_buff structs need to be freed with kfree_skb(), not kfree().
+Hi Franky,
 
-Fixes: b6c12908a33e ("rtw88: Add wowlan net-detect support")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
- drivers/net/wireless/realtek/rtw88/fw.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+[I'm very unfamiliar with this driver, but I had the same questions as
+Guenter, I think:]
 
-diff --git a/drivers/net/wireless/realtek/rtw88/fw.c b/drivers/net/wireless/realtek/rtw88/fw.c
-index 243441453ead..5bdfc70c4529 100644
---- a/drivers/net/wireless/realtek/rtw88/fw.c
-+++ b/drivers/net/wireless/realtek/rtw88/fw.c
-@@ -745,7 +745,7 @@ static struct sk_buff *rtw_nlo_info_get(struct ieee80211_hw *hw)
- 		loc  = rtw_get_rsvd_page_probe_req_location(rtwdev, ssid);
- 		if (!loc) {
- 			rtw_err(rtwdev, "failed to get probe req rsvd loc\n");
--			kfree(skb);
-+			kfree_skb(skb);
- 			return NULL;
- 		}
- 		nlo_hdr->location[i] = loc;
--- 
-2.11.0
+On Tue, Jan 28, 2020 at 04:57:59PM -0800, Franky Lin wrote:
+> On Tue, Jan 28, 2020 at 4:05 PM Guenter Roeck <linux@roeck-us.net> wrote:
+> > On Tue, Jan 28, 2020 at 03:14:45PM -0800, Doug Anderson wrote:
+> > > On Tue, Jan 28, 2020 at 2:15 PM Guenter Roeck <linux@roeck-us.net> wrote:
+> > > > --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+> > > > +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+> > > > @@ -1938,6 +1938,8 @@ static uint brcmf_sdio_readframes(struct brcmf_sdio *bus, uint maxframes)
+> > > >                         if (brcmf_sdio_hdparse(bus, bus->rxhdr, &rd_new,
+> > > >                                                BRCMF_SDIO_FT_NORMAL)) {
+> > > >                                 rd->len = 0;
+> > > > +                               brcmf_sdio_rxfail(bus, true, true);
+> > > > +                               sdio_release_host(bus->sdiodev->func1);
+> > >
+> > > I don't know much about this driver so I don't personally know if
+> > > "true, true" is the correct thing to pass to brcmf_sdio_rxfail(), but
+> > > it seems plausible.  Definitely the fix to call sdio_release_host() is
+> > > sane.
+> > >
+> > > Thus, unless someone knows for sure that brcmf_sdio_rxfail()'s
+> > > parameters should be different:
+> > >
+> > Actually, looking at brcmf_sdio_hdparse() and its other callers,
+> > I think it may not be needed at all - other callers don't do it, and
+> > there already are some calls to brcmf_sdio_rxfail() in that function.
+> > It would be nice though to get a confirmation before I submit v2.
+> 
+> I think invoking rxfail with both abort and NACK set to true is the
+> right thing to do here so that the pipeline can be properly purged.
 
+Thanks for looking here. I'm not sure I totally understand your answer:
+brcmf_sdio_hdparse() already calls brcmf_sdio_rxfail() in several error
+cases. Is it really OK to call it twice in a row?
+
+Brian
