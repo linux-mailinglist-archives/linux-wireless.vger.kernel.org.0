@@ -2,97 +2,82 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C84214E2C3
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Jan 2020 19:54:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EE10314E2E9
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Jan 2020 20:08:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727964AbgA3Sj5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 30 Jan 2020 13:39:57 -0500
-Received: from us-smtp-2.mimecast.com ([207.211.31.81]:53864 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1727947AbgA3Sj5 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 30 Jan 2020 13:39:57 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1580409595;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=w+IsZLk2QS34Oo7KTKmvIUSpjq3N05oYW9SD/Unr8w4=;
-        b=RRiHr7bW11uB7kK8R2TAIxYNnlnxwUqmQ9qWSPX6r3sA5HEEhdPs+U1HEIrdrvy/QP4JMO
-        ADkoLJaNOtcb7jqtcp/4nJBUvyNovOAu728VtWWbFJ7dWnBDsHsPnYbfnhnYQ3qdzLfr/B
-        zrPJ8fw8par5GEVdDvHcjCH9ATNABeA=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-365-wb1VbVZAMMK-6Y2788fnkg-1; Thu, 30 Jan 2020 13:39:51 -0500
-X-MC-Unique: wb1VbVZAMMK-6Y2788fnkg-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 8439B1800D41;
-        Thu, 30 Jan 2020 18:39:49 +0000 (UTC)
-Received: from ovpn-112-12.rdu2.redhat.com (ovpn-112-12.rdu2.redhat.com [10.10.112.12])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 1658219E9C;
-        Thu, 30 Jan 2020 18:39:47 +0000 (UTC)
-Message-ID: <dec7cce5138d4cfeb5596d63048db7ec19a18c3c.camel@redhat.com>
-Subject: Re: Redpine RS9116 M.2 module with NetworkManager
-From:   Dan Williams <dcbw@redhat.com>
-To:     Angus Ainslie <angus@akkea.ca>,
-        Amitkumar Karwar <amitkarwar@gmail.com>,
-        Siva Rebbagondla <siva8118@gmail.com>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        id S1727578AbgA3TIY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 30 Jan 2020 14:08:24 -0500
+Received: from node.akkea.ca ([192.155.83.177]:59260 "EHLO node.akkea.ca"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727541AbgA3TIX (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 30 Jan 2020 14:08:23 -0500
+Received: from localhost (localhost [127.0.0.1])
+        by node.akkea.ca (Postfix) with ESMTP id 375164E204D;
+        Thu, 30 Jan 2020 19:08:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=akkea.ca; s=mail;
+        t=1580411303; bh=QCWqH3i6d7d//U54D23iF2Hbhl80FK9JvAL3ILoF+mE=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References;
+        b=pOO9Itn2isE39rKwYWjLZuG0PjnqpBRrjBatfdhXx1gXo5/x7qBUtyTjWR1JIFOEg
+         VoOCQ2Ou3A75wCcZntUteAjd34cbEReRk+efA4XTL7SDRwGRKIFQbNfaYr2R/VRvQ1
+         xJny9RnrFPk3orRjH35Pnpwh346cr6nXbAv+IrdA=
+X-Virus-Scanned: Debian amavisd-new at mail.akkea.ca
+Received: from node.akkea.ca ([127.0.0.1])
+        by localhost (mail.akkea.ca [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id e0iH27lz8nbj; Thu, 30 Jan 2020 19:08:22 +0000 (UTC)
+Received: from www.akkea.ca (node.akkea.ca [192.155.83.177])
+        by node.akkea.ca (Postfix) with ESMTPSA id AE0BA4E200C;
+        Thu, 30 Jan 2020 19:08:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=akkea.ca; s=mail;
+        t=1580411302; bh=QCWqH3i6d7d//U54D23iF2Hbhl80FK9JvAL3ILoF+mE=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References;
+        b=JYlXYzUu+ZVgG563aVfsaQ99S9y/WvTjFPlAI8N3r4iMe/smi2lGQMlZri0yfiwVY
+         BFoP5No+HHdspJjFgD9I8P/hFjtVLeNX3KYlmsM8jECpvU3GMFLYa9p3XLqWztFa9K
+         XA0CaUykfYrziL+9kXgSRCifzJGKiGdy/nrw0TyQ=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Thu, 30 Jan 2020 11:08:22 -0800
+From:   Angus Ainslie <angus@akkea.ca>
+To:     Dan Williams <dcbw@redhat.com>
+Cc:     Amitkumar Karwar <amitkarwar@gmail.com>,
+        Siva Rebbagondla <siva8118@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
         "David S. Miller" <davem@davemloft.net>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Date:   Thu, 30 Jan 2020 12:39:52 -0600
-In-Reply-To: <59789f30ee686338c7bcffe3c6cbc453@akkea.ca>
+Subject: Re: Redpine RS9116 M.2 module with NetworkManager
+In-Reply-To: <dec7cce5138d4cfeb5596d63048db7ec19a18c3c.camel@redhat.com>
 References: <59789f30ee686338c7bcffe3c6cbc453@akkea.ca>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.32.5 (3.32.5-1.fc30) 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
+ <dec7cce5138d4cfeb5596d63048db7ec19a18c3c.camel@redhat.com>
+Message-ID: <47d5e080faa1edbf17d2bdeccee5ded9@akkea.ca>
+X-Sender: angus@akkea.ca
+User-Agent: Roundcube Webmail/1.3.6
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, 2020-01-30 at 10:18 -0800, Angus Ainslie wrote:
-> Hi,
-> 
-> I'm trying the get a Redpine RS9116 module working with
-> networkmanager. 
-> I've tried this on 5.3, 5.5 and next-20200128. I'm using the Redpine
-> 1.5 
-> "rs9116_wlan_bt_classic.rps" firmware.
-> 
-> If I configure the interface using iw, wpa_supplicant and dhclient
-> all 
-> works as expected.
-> 
-> If I try to configure the interface using nmtui most of the time no
-> APs 
-> show up to associate to. "iw dev wlan0 list" shows all of the APs in
-> the 
-> vicinity.
-> 
-> If I do manage to get an AP to show when I try to "Activate a 
-> connection" I get the error below
-> 
-> Could not activate connection:
-> Activation failed: No reason given
-> 
-> I suspect this is a driver bug rather than a NM bug as I saw similar 
-> issues with an earlier Redpine proprietary driver that was fixed by 
-> updating that driver. What rsi_dbg zone will help debug this ?
+Hi Dan,
 
-NM just uses wpa_supplicant underneath, so if you can get supplicant
-debug logs showing the failure, that would help. But perhaps the driver
-has a problem with scan MAC randomization that NM can be configured to
-do by default; that's been an issue with proprietary and out-of-tree
-drivers in the past. Just a thought.
+On 2020-01-30 10:39, Dan Williams wrote:
+> On Thu, 2020-01-30 at 10:18 -0800, Angus Ainslie wrote:
+>> 
+>> I suspect this is a driver bug rather than a NM bug as I saw similar
+>> issues with an earlier Redpine proprietary driver that was fixed by
+>> updating that driver. What rsi_dbg zone will help debug this ?
+> 
+> NM just uses wpa_supplicant underneath, so if you can get supplicant
+> debug logs showing the failure, that would help. But perhaps the driver
+> has a problem with scan MAC randomization that NM can be configured to
+> do by default; that's been an issue with proprietary and out-of-tree
+> drivers in the past. Just a thought.
+> 
+> https://blog.muench-johannes.de/networkmanager-disable-mac-randomization-314
+> 
 
-https://blog.muench-johannes.de/networkmanager-disable-mac-randomization-314
+Thanks that was the fix.
 
-Dan
+Angus
 
+> Dan
