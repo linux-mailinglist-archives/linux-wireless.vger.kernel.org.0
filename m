@@ -2,37 +2,37 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E3C4114DD12
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Jan 2020 15:47:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B42E614DD19
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Jan 2020 15:47:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727291AbgA3OrW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 30 Jan 2020 09:47:22 -0500
-Received: from nbd.name ([46.4.11.11]:57434 "EHLO nbd.name"
+        id S1727378AbgA3Orc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 30 Jan 2020 09:47:32 -0500
+Received: from nbd.name ([46.4.11.11]:57432 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727190AbgA3OrW (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 30 Jan 2020 09:47:22 -0500
+        id S1726996AbgA3OrV (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 30 Jan 2020 09:47:21 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
          s=20160729; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
         Message-Id:Date:Subject:To:From:Sender:Reply-To:Cc:Content-Type:Content-ID:
         Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
         :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
         List-Post:List-Owner:List-Archive;
-        bh=ICGQzIrxSFDTO1uQTJKA7L4lSQmY/RDhH1tmWvIAW8M=; b=RGzsQ5ppXkEP/9JhO3g1C365aL
-        CHj/zpIOgDp+4lOfMMcwPh4AAmBYxzSIQ9RswqEuoME0G4JFaap9B9p3UulhvrfIyzNW6NQR9oJmZ
-        5sfLe38sFrw8qeLgv3ahrBmfIwrgrM5BMw5aPDGhHUSZmqtFXiO3p0YqynKdIIyIBYpY=;
+        bh=UIDh2EmmPmcE8+8YJVeVox3FcGUP2G4ICyDlt2cvFmA=; b=YeAHJswk2PnQEBRVlRTsnDN8Ct
+        md7YWP/s6MfHTKN2WDbZLo2t6d3n8eK2+KZrIpMOXEcxrjaGxkUIFYeOtoO+Ad+7+eUWHJPOWOk5D
+        UlISHY1vjZ/GOOejUeKRH3suYEcEdvlwfBZCAKkSbIayp78T8OKsvqFRUt+yV8lX1Ho0=;
 Received: from [178.162.209.135] (helo=maeck.local)
         by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.89)
         (envelope-from <nbd@nbd.name>)
-        id 1ixB6F-0001VJ-Kl
+        id 1ixB6F-0001VN-Kd
         for linux-wireless@vger.kernel.org; Thu, 30 Jan 2020 15:47:19 +0100
 Received: by maeck.local (Postfix, from userid 501)
-        id EB4297AE468A; Thu, 30 Jan 2020 15:47:18 +0100 (CET)
+        id EC4997AE468D; Thu, 30 Jan 2020 15:47:18 +0100 (CET)
 From:   Felix Fietkau <nbd@nbd.name>
 To:     linux-wireless@vger.kernel.org
-Subject: [PATCH 11/15] mt76: mt7615: implement probing and firmware loading on MT7622
-Date:   Thu, 30 Jan 2020 15:47:14 +0100
-Message-Id: <20200130144718.14298-11-nbd@nbd.name>
+Subject: [PATCH 12/15] mt76: mt7615: implement DMA support for MT7622
+Date:   Thu, 30 Jan 2020 15:47:15 +0100
+Message-Id: <20200130144718.14298-12-nbd@nbd.name>
 X-Mailer: git-send-email 2.24.0
 In-Reply-To: <20200130144718.14298-1-nbd@nbd.name>
 References: <20200130144718.14298-1-nbd@nbd.name>
@@ -43,424 +43,419 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-MT7622 does not have a CR4 microcontroller, so it only uses its own N9
-firmware.
+MT7622 does not have the CR4 microcontroller sitting in the data path.
+Because of that, it uses the chip's native tx descriptor format instead of
+something parsed and converted by the firmware.
 
 Co-developed-by: Shayne Chen <shayne.chen@mediatek.com>
 Signed-off-by: Felix Fietkau <nbd@nbd.name>
 ---
- .../wireless/mediatek/mt76/mt7615/Makefile    |  1 +
- .../net/wireless/mediatek/mt76/mt7615/init.c  |  4 +
- .../net/wireless/mediatek/mt76/mt7615/main.c  | 28 ++++++
- .../net/wireless/mediatek/mt76/mt7615/mcu.c   | 85 ++++++++++++++++---
- .../wireless/mediatek/mt76/mt7615/mt7615.h    | 19 +++++
- .../net/wireless/mediatek/mt76/mt7615/pci.c   |  3 -
- .../net/wireless/mediatek/mt76/mt7615/regs.h  |  9 ++
- .../net/wireless/mediatek/mt76/mt7615/soc.c   | 77 +++++++++++++++++
- 8 files changed, 213 insertions(+), 13 deletions(-)
- create mode 100644 drivers/net/wireless/mediatek/mt76/mt7615/soc.c
+ .../net/wireless/mediatek/mt76/mt7615/init.c  |   5 +-
+ .../net/wireless/mediatek/mt76/mt7615/mac.c   | 221 +++++++++++++-----
+ .../net/wireless/mediatek/mt76/mt7615/mac.h   |  32 ++-
+ .../net/wireless/mediatek/mt76/mt7615/mmio.c  |   2 +-
+ 4 files changed, 200 insertions(+), 60 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/Makefile b/drivers/net/wireless/mediatek/mt76/mt7615/Makefile
-index a93d147edf44..5c6a220ed7e3 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/Makefile
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/Makefile
-@@ -6,3 +6,4 @@ CFLAGS_trace.o := -I$(src)
- 
- mt7615e-y := pci.o init.o dma.o eeprom.o main.o mcu.o mac.o mmio.o \
- 	     debugfs.o trace.o
-+mt7615e-$(CONFIG_MT7622_WMAC) += soc.o
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/init.c b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
-index 1af941f83213..df6ef323f7a2 100644
+index df6ef323f7a2..79b177ac4261 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7615/init.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
-@@ -442,6 +442,10 @@ int mt7615_register_device(struct mt7615_dev *dev)
- 	INIT_LIST_HEAD(&dev->sta_poll_list);
- 	spin_lock_init(&dev->sta_poll_lock);
+@@ -346,7 +346,10 @@ mt7615_init_wiphy(struct ieee80211_hw *hw)
  
-+	ret = mt7622_wmac_init(dev);
-+	if (ret)
-+		return ret;
-+
- 	ret = mt7615_init_hardware(dev);
- 	if (ret)
- 		return ret;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/main.c b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-index 14034592b918..b8e57bf7814b 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-@@ -730,3 +730,31 @@ const struct ieee80211_ops mt7615_ops = {
- 	.set_antenna = mt7615_set_antenna,
- 	.set_coverage_class = mt7615_set_coverage_class,
- };
-+
-+static int __init mt7615_init(void)
-+{
-+	int ret;
-+
-+	ret = pci_register_driver(&mt7615_pci_driver);
-+	if (ret)
-+		return ret;
-+
-+	if (IS_ENABLED(CONFIG_MT7622_WMAC)) {
-+		ret = platform_driver_register(&mt7622_wmac_driver);
-+		if (ret)
-+			pci_unregister_driver(&mt7615_pci_driver);
-+	}
-+
-+	return ret;
-+}
-+
-+static void __exit mt7615_exit(void)
-+{
-+	if (IS_ENABLED(CONFIG_MT7622_WMAC))
-+		platform_driver_unregister(&mt7622_wmac_driver);
-+	pci_unregister_driver(&mt7615_pci_driver);
-+}
-+
-+module_init(mt7615_init);
-+module_exit(mt7615_exit);
-+MODULE_LICENSE("Dual BSD/GPL");
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-index e51e584bf81f..d8bdd88d9fe9 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-@@ -29,7 +29,8 @@ struct mt7615_fw_trailer {
- 	__le32 len;
- } __packed;
+ 	ieee80211_hw_set(hw, TX_STATUS_NO_AMPDU_LEN);
  
--#define MCU_PATCH_ADDRESS		0x80000
-+#define MT7615_PATCH_ADDRESS		0x80000
-+#define MT7622_PATCH_ADDRESS		0x9c000
- 
- #define N9_REGION_NUM			2
- #define CR4_REGION_NUM			1
-@@ -333,19 +334,50 @@ static int mt7615_mcu_start_patch(struct mt7615_dev *dev)
- 				   &req, sizeof(req), true);
+-	hw->max_tx_fragments = MT_TXP_MAX_BUF_NUM;
++	if (is_mt7615(&phy->dev->mt76))
++		hw->max_tx_fragments = MT_TXP_MAX_BUF_NUM;
++	else
++		hw->max_tx_fragments = MT_HW_TXP_MAX_BUF_NUM;
  }
  
-+static void mt7622_trigger_hif_int(struct mt7615_dev *dev, bool en)
+ static void
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
+index 49924d502daa..c4fea7227cee 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
+@@ -396,13 +396,20 @@ void mt7615_tx_complete_skb(struct mt76_dev *mdev, enum mt76_txq_id qid,
+ 	if (e->skb == DMA_DUMMY_DATA) {
+ 		struct mt76_txwi_cache *t;
+ 		struct mt7615_dev *dev;
+-		struct mt7615_txp *txp;
++		struct mt7615_txp_common *txp;
++		u16 token;
+ 
+ 		dev = container_of(mdev, struct mt7615_dev, mt76);
+ 		txp = mt7615_txwi_to_txp(mdev, e->txwi);
+ 
++		if (is_mt7615(&dev->mt76))
++			token = le16_to_cpu(txp->fw.token);
++		else
++			token = le16_to_cpu(txp->hw.msdu_id[0]) &
++				~MT_MSDU_ID_VALID;
++
+ 		spin_lock_bh(&dev->token_lock);
+-		t = idr_remove(&dev->token, le16_to_cpu(txp->token));
++		t = idr_remove(&dev->token, token);
+ 		spin_unlock_bh(&dev->token_lock);
+ 		e->skb = t ? t->skb : NULL;
+ 	}
+@@ -621,18 +628,56 @@ int mt7615_mac_write_txwi(struct mt7615_dev *dev, __le32 *txwi,
+ 	return 0;
+ }
+ 
+-void mt7615_txp_skb_unmap(struct mt76_dev *dev,
+-			  struct mt76_txwi_cache *t)
++static void
++mt7615_txp_skb_unmap_fw(struct mt76_dev *dev, struct mt7615_fw_txp *txp)
+ {
+-	struct mt7615_txp *txp;
+ 	int i;
+ 
+-	txp = mt7615_txwi_to_txp(dev, t);
+ 	for (i = 1; i < txp->nbuf; i++)
+ 		dma_unmap_single(dev->dev, le32_to_cpu(txp->buf[i]),
+ 				 le16_to_cpu(txp->len[i]), DMA_TO_DEVICE);
+ }
+ 
++static void
++mt7615_txp_skb_unmap_hw(struct mt76_dev *dev, struct mt7615_hw_txp *txp)
 +{
-+	if (!is_mt7622(&dev->mt76))
++	int i;
++
++	for (i = 0; i < ARRAY_SIZE(txp->ptr); i++) {
++		struct mt7615_txp_ptr *ptr = &txp->ptr[i];
++		bool last;
++		u16 len;
++
++		len = le16_to_cpu(ptr->len0);
++		last = len & MT_TXD_LEN_MSDU_LAST;
++		len &= ~MT_TXD_LEN_MSDU_LAST;
++		dma_unmap_single(dev->dev, le32_to_cpu(ptr->buf0), len,
++				 DMA_TO_DEVICE);
++		if (last)
++			break;
++
++		len = le16_to_cpu(ptr->len1);
++		last = len & MT_TXD_LEN_MSDU_LAST;
++		len &= ~MT_TXD_LEN_MSDU_LAST;
++		dma_unmap_single(dev->dev, le32_to_cpu(ptr->buf1), len,
++				 DMA_TO_DEVICE);
++		if (last)
++			break;
++	}
++}
++
++void mt7615_txp_skb_unmap(struct mt76_dev *dev,
++			  struct mt76_txwi_cache *t)
++{
++	struct mt7615_txp_common *txp;
++
++	txp = mt7615_txwi_to_txp(dev, t);
++	if (is_mt7615(dev))
++		mt7615_txp_skb_unmap_fw(dev, &txp->fw);
++	else
++		mt7615_txp_skb_unmap_hw(dev, &txp->hw);
++}
++
+ static u32 mt7615_mac_wtbl_addr(int wcid)
+ {
+ 	return MT_WTBL_BASE + wcid * MT_WTBL_ENTRY_SIZE;
+@@ -1022,44 +1067,51 @@ int mt7615_mac_wtbl_set_key(struct mt7615_dev *dev,
+ 	return err;
+ }
+ 
+-int mt7615_tx_prepare_skb(struct mt76_dev *mdev, void *txwi_ptr,
+-			  enum mt76_txq_id qid, struct mt76_wcid *wcid,
+-			  struct ieee80211_sta *sta,
+-			  struct mt76_tx_info *tx_info)
++static void
++mt7615_write_hw_txp(struct mt7615_dev *dev, struct mt76_tx_info *tx_info,
++		    void *txp_ptr, u32 id)
+ {
+-	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)tx_info->skb->data;
+-	struct mt7615_dev *dev = container_of(mdev, struct mt7615_dev, mt76);
+-	struct mt7615_sta *msta = container_of(wcid, struct mt7615_sta, wcid);
+-	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(tx_info->skb);
+-	struct ieee80211_key_conf *key = info->control.hw_key;
+-	struct ieee80211_vif *vif = info->control.vif;
+-	int i, pid, id, nbuf = tx_info->nbuf - 1;
+-	u8 *txwi = (u8 *)txwi_ptr;
+-	struct mt76_txwi_cache *t;
+-	struct mt7615_txp *txp;
++	struct mt7615_hw_txp *txp = txp_ptr;
++	struct mt7615_txp_ptr *ptr = &txp->ptr[0];
++	int nbuf = tx_info->nbuf - 1;
++	int i;
+ 
+-	if (!wcid)
+-		wcid = &dev->mt76.global_wcid;
++	tx_info->buf[0].len = MT_TXD_SIZE + sizeof(*txp);
++	tx_info->nbuf = 1;
+ 
+-	pid = mt76_tx_status_skb_add(mdev, wcid, tx_info->skb);
++	txp->msdu_id[0] = id | MT_MSDU_ID_VALID;
+ 
+-	if (info->flags & IEEE80211_TX_CTL_RATE_CTRL_PROBE) {
+-		struct mt7615_phy *phy = &dev->phy;
++	for (i = 0; i < nbuf; i++) {
++		u32 addr = tx_info->buf[i + 1].addr;
++		u16 len = tx_info->buf[i + 1].len;
+ 
+-		if ((info->hw_queue & MT_TX_HW_QUEUE_EXT_PHY) && mdev->phy2)
+-			phy = mdev->phy2->priv;
++		if (i == nbuf - 1)
++			len |= MT_TXD_LEN_MSDU_LAST |
++			       MT_TXD_LEN_AMSDU_LAST;
+ 
+-		spin_lock_bh(&dev->mt76.lock);
+-		mt7615_mac_set_rates(phy, msta, &info->control.rates[0],
+-				     msta->rates);
+-		msta->rate_probe = true;
+-		spin_unlock_bh(&dev->mt76.lock);
++		if (i & 1) {
++			ptr->buf1 = cpu_to_le32(addr);
++			ptr->len1 = cpu_to_le16(len);
++			ptr++;
++		} else {
++			ptr->buf0 = cpu_to_le32(addr);
++			ptr->len0 = cpu_to_le16(len);
++		}
+ 	}
++}
+ 
+-	mt7615_mac_write_txwi(dev, txwi_ptr, tx_info->skb, wcid, sta,
+-			      pid, key);
++static void
++mt7615_write_fw_txp(struct mt7615_dev *dev, struct mt76_tx_info *tx_info,
++		    void *txp_ptr, u32 id)
++{
++	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)tx_info->skb->data;
++	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(tx_info->skb);
++	struct ieee80211_key_conf *key = info->control.hw_key;
++	struct ieee80211_vif *vif = info->control.vif;
++	struct mt7615_fw_txp *txp = txp_ptr;
++	int nbuf = tx_info->nbuf - 1;
++	int i;
+ 
+-	txp = (struct mt7615_txp *)(txwi + MT_TXD_SIZE);
+ 	for (i = 0; i < nbuf; i++) {
+ 		txp->buf[i] = cpu_to_le32(tx_info->buf[i + 1].addr);
+ 		txp->len[i] = cpu_to_le16(tx_info->buf[i + 1].len);
+@@ -1067,6 +1119,7 @@ int mt7615_tx_prepare_skb(struct mt76_dev *mdev, void *txwi_ptr,
+ 	txp->nbuf = nbuf;
+ 
+ 	/* pass partial skb header to fw */
++	tx_info->buf[0].len = MT_TXD_SIZE + sizeof(*txp);
+ 	tx_info->buf[1].len = MT_CT_PARSE_LEN;
+ 	tx_info->nbuf = MT_CT_DMA_BUF_NUM;
+ 
+@@ -1084,6 +1137,42 @@ int mt7615_tx_prepare_skb(struct mt76_dev *mdev, void *txwi_ptr,
+ 		txp->bss_idx = mvif->idx;
+ 	}
+ 
++	txp->token = cpu_to_le16(id);
++	txp->rept_wds_wcid = 0xff;
++}
++
++int mt7615_tx_prepare_skb(struct mt76_dev *mdev, void *txwi_ptr,
++			  enum mt76_txq_id qid, struct mt76_wcid *wcid,
++			  struct ieee80211_sta *sta,
++			  struct mt76_tx_info *tx_info)
++{
++	struct mt7615_dev *dev = container_of(mdev, struct mt7615_dev, mt76);
++	struct mt7615_sta *msta = container_of(wcid, struct mt7615_sta, wcid);
++	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(tx_info->skb);
++	struct ieee80211_key_conf *key = info->control.hw_key;
++	int pid, id;
++	u8 *txwi = (u8 *)txwi_ptr;
++	struct mt76_txwi_cache *t;
++	void *txp;
++
++	if (!wcid)
++		wcid = &dev->mt76.global_wcid;
++
++	pid = mt76_tx_status_skb_add(mdev, wcid, tx_info->skb);
++
++	if (info->flags & IEEE80211_TX_CTL_RATE_CTRL_PROBE) {
++		struct mt7615_phy *phy = &dev->phy;
++
++		if ((info->hw_queue & MT_TX_HW_QUEUE_EXT_PHY) && mdev->phy2)
++			phy = mdev->phy2->priv;
++
++		spin_lock_bh(&dev->mt76.lock);
++		mt7615_mac_set_rates(phy, msta, &info->control.rates[0],
++				     msta->rates);
++		msta->rate_probe = true;
++		spin_unlock_bh(&dev->mt76.lock);
++	}
++
+ 	t = (struct mt76_txwi_cache *)(txwi + mdev->drv->txwi_size);
+ 	t->skb = tx_info->skb;
+ 
+@@ -1093,8 +1182,16 @@ int mt7615_tx_prepare_skb(struct mt76_dev *mdev, void *txwi_ptr,
+ 	if (id < 0)
+ 		return id;
+ 
+-	txp->token = cpu_to_le16(id);
+-	txp->rept_wds_wcid = 0xff;
++	mt7615_mac_write_txwi(dev, txwi_ptr, tx_info->skb, wcid, sta,
++			      pid, key);
++
++	txp = txwi + MT_TXD_SIZE;
++	memset(txp, 0, sizeof(struct mt7615_txp_common));
++	if (is_mt7615(&dev->mt76))
++		mt7615_write_fw_txp(dev, tx_info, txp, id);
++	else
++		mt7615_write_hw_txp(dev, tx_info, txp, id);
++
+ 	tx_info->skb = DMA_DUMMY_DATA;
+ 
+ 	return 0;
+@@ -1330,34 +1427,48 @@ void mt7615_mac_add_txs(struct mt7615_dev *dev, void *data)
+ 	rcu_read_unlock();
+ }
+ 
+-void mt7615_mac_tx_free(struct mt7615_dev *dev, struct sk_buff *skb)
++static void
++mt7615_mac_tx_free_token(struct mt7615_dev *dev, u16 token)
+ {
+-	struct mt7615_tx_free *free = (struct mt7615_tx_free *)skb->data;
+ 	struct mt76_dev *mdev = &dev->mt76;
+ 	struct mt76_txwi_cache *txwi;
+-	u8 i, count;
+ 
+-	count = FIELD_GET(MT_TX_FREE_MSDU_ID_CNT, le16_to_cpu(free->ctrl));
+-	for (i = 0; i < count; i++) {
+-		u16 token = le16_to_cpu(free->token[i]);
++	trace_mac_tx_free(dev, token);
+ 
+-		spin_lock_bh(&dev->token_lock);
+-		txwi = idr_remove(&dev->token, token);
+-		spin_unlock_bh(&dev->token_lock);
++	spin_lock_bh(&dev->token_lock);
++	txwi = idr_remove(&dev->token, token);
++	spin_unlock_bh(&dev->token_lock);
+ 
+-		if (!txwi)
+-			continue;
++	if (!txwi)
 +		return;
 +
-+	regmap_update_bits(dev->infracfg, MT_INFRACFG_MISC,
-+			   MT_INFRACFG_MISC_AP2CONN_WAKE,
-+			   !en * MT_INFRACFG_MISC_AP2CONN_WAKE);
-+}
-+
- static int mt7615_driver_own(struct mt7615_dev *dev)
- {
- 	mt76_wr(dev, MT_CFG_LPCR_HOST, MT_CFG_LPCR_HOST_DRV_OWN);
-+
-+	mt7622_trigger_hif_int(dev, true);
- 	if (!mt76_poll_msec(dev, MT_CFG_LPCR_HOST,
--			    MT_CFG_LPCR_HOST_FW_OWN, 0, 500)) {
-+			    MT_CFG_LPCR_HOST_FW_OWN, 0, 3000)) {
- 		dev_err(dev->mt76.dev, "Timeout for driver own\n");
- 		return -EIO;
- 	}
-+	mt7622_trigger_hif_int(dev, false);
- 
- 	return 0;
- }
- 
--static int mt7615_load_patch(struct mt7615_dev *dev, const char *name)
-+static int mt7615_firmware_own(struct mt7615_dev *dev)
-+{
-+	mt7622_trigger_hif_int(dev, true);
-+
-+	mt76_wr(dev, MT_CFG_LPCR_HOST, MT_CFG_LPCR_HOST_FW_OWN);
-+
-+	if (is_mt7622(&dev->mt76) &&
-+	    !mt76_poll_msec(dev, MT_CFG_LPCR_HOST,
-+			    MT_CFG_LPCR_HOST_FW_OWN,
-+			    MT_CFG_LPCR_HOST_FW_OWN, 3000)) {
-+		dev_err(dev->mt76.dev, "Timeout for firmware own\n");
-+		return -EIO;
++	mt7615_txp_skb_unmap(mdev, txwi);
++	if (txwi->skb) {
++		mt76_tx_complete_skb(mdev, txwi->skb);
++		txwi->skb = NULL;
 +	}
-+	mt7622_trigger_hif_int(dev, false);
-+
-+	return 0;
-+}
-+
-+static int mt7615_load_patch(struct mt7615_dev *dev, u32 addr, const char *name)
- {
- 	const struct mt7615_patch_hdr *hdr;
- 	const struct firmware *fw = NULL;
-@@ -379,8 +411,7 @@ static int mt7615_load_patch(struct mt7615_dev *dev, const char *name)
  
- 	len = fw->size - sizeof(*hdr);
- 
--	ret = mt7615_mcu_init_download(dev, MCU_PATCH_ADDRESS, len,
--				       DL_MODE_NEED_RSP);
-+	ret = mt7615_mcu_init_download(dev, addr, len, DL_MODE_NEED_RSP);
- 	if (ret) {
- 		dev_err(dev->mt76.dev, "Download request failed\n");
- 		goto out;
-@@ -561,7 +592,7 @@ static int mt7615_load_firmware(struct mt7615_dev *dev)
- 		return -EIO;
- 	}
- 
--	ret = mt7615_load_patch(dev, MT7615_ROM_PATCH);
-+	ret = mt7615_load_patch(dev, MT7615_PATCH_ADDRESS, MT7615_ROM_PATCH);
- 	if (ret)
- 		return ret;
- 
-@@ -576,9 +607,38 @@ static int mt7615_load_firmware(struct mt7615_dev *dev)
- 		return -EIO;
- 	}
- 
--	mt76_queue_tx_cleanup(dev, MT_TXQ_FWDL, false);
-+	return 0;
+-		trace_mac_tx_free(dev, token);
++	mt76_put_txwi(mdev, txwi);
 +}
  
--	dev_dbg(dev->mt76.dev, "Firmware init done\n");
-+static int mt7622_load_firmware(struct mt7615_dev *dev)
+-		mt7615_txp_skb_unmap(mdev, txwi);
+-		if (txwi->skb) {
+-			mt76_tx_complete_skb(mdev, txwi->skb);
+-			txwi->skb = NULL;
+-		}
++void mt7615_mac_tx_free(struct mt7615_dev *dev, struct sk_buff *skb)
 +{
-+	int ret;
-+	u32 val;
++	struct mt7615_tx_free *free = (struct mt7615_tx_free *)skb->data;
++	u8 i, count;
 +
-+	mt76_set(dev, MT_WPDMA_GLO_CFG, MT_WPDMA_GLO_CFG_BYPASS_TX_SCH);
++	count = FIELD_GET(MT_TX_FREE_MSDU_ID_CNT, le16_to_cpu(free->ctrl));
++	if (is_mt7615(&dev->mt76)) {
++		__le16 *token = &free->token[0];
 +
-+	val = mt76_get_field(dev, MT_TOP_OFF_RSV, MT_TOP_OFF_RSV_FW_STATE);
-+	if (val != FW_STATE_FW_DOWNLOAD) {
-+		dev_err(dev->mt76.dev, "Firmware is not ready for download\n");
-+		return -EIO;
-+	}
-+
-+	ret = mt7615_load_patch(dev, MT7622_PATCH_ADDRESS, MT7622_ROM_PATCH);
-+	if (ret)
-+		return ret;
-+
-+	ret = mt7615_load_n9(dev, MT7622_FIRMWARE_N9);
-+	if (ret)
-+		return ret;
-+
-+	if (!mt76_poll_msec(dev, MT_TOP_OFF_RSV, MT_TOP_OFF_RSV_FW_STATE,
-+			    FIELD_PREP(MT_TOP_OFF_RSV_FW_STATE,
-+				       FW_STATE_NORMAL_TRX), 1500)) {
-+		dev_err(dev->mt76.dev, "Timeout for initializing firmware\n");
-+		return -EIO;
-+	}
-+
-+	mt76_clear(dev, MT_WPDMA_GLO_CFG, MT_WPDMA_GLO_CFG_BYPASS_TX_SCH);
++		for (i = 0; i < count; i++)
++			mt7615_mac_tx_free_token(dev, le16_to_cpu(token[i]));
++	} else {
++		__le32 *token = (__le32 *)&free->token[0];
  
- 	return 0;
- }
-@@ -597,10 +657,15 @@ int mt7615_mcu_init(struct mt7615_dev *dev)
- 	if (ret)
- 		return ret;
- 
--	ret = mt7615_load_firmware(dev);
-+	if (is_mt7622(&dev->mt76))
-+		ret = mt7622_load_firmware(dev);
-+	else
-+		ret = mt7615_load_firmware(dev);
- 	if (ret)
- 		return ret;
- 
-+	mt76_queue_tx_cleanup(dev, MT_TXQ_FWDL, false);
-+	dev_dbg(dev->mt76.dev, "Firmware init done\n");
- 	set_bit(MT76_STATE_MCU_RUNNING, &dev->mphy.state);
- 
- 	return 0;
-@@ -609,7 +674,7 @@ int mt7615_mcu_init(struct mt7615_dev *dev)
- void mt7615_mcu_exit(struct mt7615_dev *dev)
- {
- 	__mt76_mcu_restart(&dev->mt76);
--	mt76_wr(dev, MT_CFG_LPCR_HOST, MT_CFG_LPCR_HOST_FW_OWN);
-+	mt7615_firmware_own(dev);
- 	skb_queue_purge(&dev->mt76.mmio.mcu.res_q);
+-		mt76_put_txwi(mdev, txwi);
++		for (i = 0; i < count; i++)
++			mt7615_mac_tx_free_token(dev, le32_to_cpu(token[i]));
+ 	}
++
+ 	dev_kfree_skb(skb);
  }
  
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
-index d9e487ba98e0..9eb5cfcfe704 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
-@@ -6,6 +6,7 @@
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mac.h b/drivers/net/wireless/mediatek/mt76/mt7615/mac.h
+index 9b7c45bf1ec5..bf12eba549f7 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.h
+@@ -233,8 +233,27 @@ enum tx_phy_bandwidth {
+ #define MT_TX_RATE_IDX			GENMASK(5, 0)
  
- #include <linux/interrupt.h>
- #include <linux/ktime.h>
-+#include <linux/regmap.h>
- #include "../mt76.h"
- #include "regs.h"
+ #define MT_TXP_MAX_BUF_NUM		6
++#define MT_HW_TXP_MAX_MSDU_NUM		4
++#define MT_HW_TXP_MAX_BUF_NUM		4
  
-@@ -31,6 +32,9 @@
- #define MT7615_FIRMWARE_N9		"mediatek/mt7615_n9.bin"
- #define MT7615_ROM_PATCH		"mediatek/mt7615_rom_patch.bin"
- 
-+#define MT7622_FIRMWARE_N9		"mediatek/mt7622_n9.bin"
-+#define MT7622_ROM_PATCH		"mediatek/mt7622_rom_patch.bin"
+-struct mt7615_txp {
++#define MT_MSDU_ID_VALID		BIT(15)
 +
- #define MT7615_EEPROM_SIZE		1024
- #define MT7615_TOKEN_SIZE		4096
- 
-@@ -148,6 +152,8 @@ struct mt7615_dev {
- 
- 	u16 chainmask;
- 
-+	struct regmap *infracfg;
++#define MT_TXD_LEN_MSDU_LAST		BIT(14)
++#define MT_TXD_LEN_AMSDU_LAST		BIT(15)
 +
- 	struct work_struct mcu_work;
- 
- 	struct list_head sta_poll_list;
-@@ -241,6 +247,16 @@ mt7615_ext_phy(struct mt7615_dev *dev)
- 
- extern const struct ieee80211_ops mt7615_ops;
- extern struct pci_driver mt7615_pci_driver;
-+extern struct platform_driver mt7622_wmac_driver;
++struct mt7615_txp_ptr {
++	__le32 buf0;
++	__le16 len0;
++	__le16 len1;
++	__le32 buf1;
++} __packed __aligned(4);
 +
-+#ifdef CONFIG_MT7622_WMAC
-+int mt7622_wmac_init(struct mt7615_dev *dev);
-+#else
-+static inline int mt7622_wmac_init(struct mt7615_dev *dev)
-+{
-+	return 0;
-+}
-+#endif
- 
- int mt7615_mmio_probe(struct device *pdev, void __iomem *mem_base, int irq);
- u32 mt7615_reg_map(struct mt7615_dev *dev, u32 addr);
-@@ -295,6 +311,9 @@ int mt7615_mcu_rdd_send_pattern(struct mt7615_dev *dev);
- 
- static inline bool is_mt7622(struct mt76_dev *dev)
- {
-+	if (!IS_ENABLED(CONFIG_MT7622_WMAC))
-+		return false;
++struct mt7615_hw_txp {
++	__le16 msdu_id[MT_HW_TXP_MAX_MSDU_NUM];
++	struct mt7615_txp_ptr ptr[MT_HW_TXP_MAX_BUF_NUM / 2];
++} __packed __aligned(4);
 +
- 	return mt76_chip(dev) == 0x7622;
- }
++struct mt7615_fw_txp {
+ 	__le16 flags;
+ 	__le16 token;
+ 	u8 bss_idx;
+@@ -245,6 +264,13 @@ struct mt7615_txp {
+ 	__le16 len[MT_TXP_MAX_BUF_NUM];
+ } __packed __aligned(4);
  
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/pci.c b/drivers/net/wireless/mediatek/mt76/mt7615/pci.c
-index caaad936a34a..43e02128cc48 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/pci.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/pci.c
-@@ -53,10 +53,7 @@ struct pci_driver mt7615_pci_driver = {
- 	.remove		= mt7615_pci_remove,
++struct mt7615_txp_common {
++	union {
++		struct mt7615_fw_txp fw;
++		struct mt7615_hw_txp hw;
++	};
++};
++
+ struct mt7615_tx_free {
+ 	__le16 rx_byte_cnt;
+ 	__le16 ctrl;
+@@ -353,7 +379,7 @@ enum mt7615_cipher_type {
+ 	MT_CIPHER_GCMP_256,
  };
  
--module_pci_driver(mt7615_pci_driver);
--
- MODULE_DEVICE_TABLE(pci, mt7615_pci_device_table);
- MODULE_FIRMWARE(MT7615_FIRMWARE_CR4);
- MODULE_FIRMWARE(MT7615_FIRMWARE_N9);
- MODULE_FIRMWARE(MT7615_ROM_PATCH);
--MODULE_LICENSE("Dual BSD/GPL");
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/regs.h b/drivers/net/wireless/mediatek/mt76/mt7615/regs.h
-index de71d2672cf7..abecb3bfbc4b 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/regs.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/regs.h
-@@ -8,6 +8,10 @@
- #define MT_HW_CHIPID			0x1008
- #define MT_TOP_STRAP_STA		0x1010
- #define MT_TOP_3NSS			BIT(24)
-+
-+#define MT_TOP_OFF_RSV			0x1128
-+#define MT_TOP_OFF_RSV_FW_STATE		GENMASK(18, 16)
-+
- #define MT_TOP_MISC2			0x1134
- #define MT_TOP_MISC2_FW_STATE		GENMASK(2, 0)
+-static inline struct mt7615_txp *
++static inline struct mt7615_txp_common *
+ mt7615_txwi_to_txp(struct mt76_dev *dev, struct mt76_txwi_cache *t)
+ {
+ 	u8 *txwi;
+@@ -363,7 +389,7 @@ mt7615_txwi_to_txp(struct mt76_dev *dev, struct mt76_txwi_cache *t)
  
-@@ -49,6 +53,7 @@
- #define MT_WPDMA_GLO_CFG_TX_WRITEBACK_DONE	BIT(6)
- #define MT_WPDMA_GLO_CFG_BIG_ENDIAN	BIT(7)
- #define MT_WPDMA_GLO_CFG_TX_BT_SIZE_BIT0	BIT(9)
-+#define MT_WPDMA_GLO_CFG_BYPASS_TX_SCH		BIT(9) /* MT7622 */
- #define MT_WPDMA_GLO_CFG_MULTI_DMA_EN	GENMASK(11, 10)
- #define MT_WPDMA_GLO_CFG_FIFO_LITTLE_ENDIAN	BIT(12)
- #define MT_WPDMA_GLO_CFG_TX_BT_SIZE_BIT21	GENMASK(23, 22)
-@@ -395,4 +400,8 @@
- #define MT_EFUSE_WDATA(_i)		(0x010 + ((_i) * 4))
- #define MT_EFUSE_RDATA(_i)		(0x030 + ((_i) * 4))
+ 	txwi = mt76_get_txwi_ptr(dev, t);
  
-+/* INFRACFG host register range on MT7622 */
-+#define MT_INFRACFG_MISC		0x700
-+#define MT_INFRACFG_MISC_AP2CONN_WAKE	BIT(1)
-+
+-	return (struct mt7615_txp *)(txwi + MT_TXD_SIZE);
++	return (struct mt7615_txp_common *)(txwi + MT_TXD_SIZE);
+ }
+ 
  #endif
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/soc.c b/drivers/net/wireless/mediatek/mt76/mt7615/soc.c
-new file mode 100644
-index 000000000000..07ec9ec282f5
---- /dev/null
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/soc.c
-@@ -0,0 +1,77 @@
-+// SPDX-License-Identifier: ISC
-+/* Copyright (C) 2019 MediaTek Inc.
-+ *
-+ * Author: Ryder Lee <ryder.lee@mediatek.com>
-+ *         Felix Fietkau <nbd@nbd.name>
-+ */
-+
-+#include <linux/kernel.h>
-+#include <linux/module.h>
-+#include <linux/platform_device.h>
-+#include <linux/regmap.h>
-+#include <linux/mfd/syscon.h>
-+#include <linux/of.h>
-+#include "mt7615.h"
-+
-+int mt7622_wmac_init(struct mt7615_dev *dev)
-+{
-+	struct device_node *np = dev->mt76.dev->of_node;
-+
-+	if (!is_mt7622(&dev->mt76))
-+		return 0;
-+
-+	dev->infracfg = syscon_regmap_lookup_by_phandle(np, "mediatek,infracfg");
-+	if (IS_ERR(dev->infracfg)) {
-+		dev_err(dev->mt76.dev, "Cannot find infracfg controller\n");
-+		return PTR_ERR(dev->infracfg);
-+	}
-+
-+	return 0;
-+}
-+
-+static int mt7622_wmac_probe(struct platform_device *pdev)
-+{
-+	struct resource *res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+	void __iomem *mem_base;
-+	int irq;
-+
-+	irq = platform_get_irq(pdev, 0);
-+	if (irq < 0) {
-+		dev_err(&pdev->dev, "Failed to get device IRQ\n");
-+		return irq;
-+	}
-+
-+	mem_base = devm_ioremap_resource(&pdev->dev, res);
-+	if (IS_ERR(mem_base)) {
-+		dev_err(&pdev->dev, "Failed to get memory resource\n");
-+		return PTR_ERR(mem_base);
-+	}
-+
-+	return mt7615_mmio_probe(&pdev->dev, mem_base, irq);
-+}
-+
-+static int mt7622_wmac_remove(struct platform_device *pdev)
-+{
-+	struct mt7615_dev *dev = platform_get_drvdata(pdev);
-+
-+	mt7615_unregister_device(dev);
-+
-+	return 0;
-+}
-+
-+static const struct of_device_id mt7622_wmac_of_match[] = {
-+	{ .compatible = "mediatek,mt7622-wmac" },
-+	{},
-+};
-+
-+struct platform_driver mt7622_wmac_driver = {
-+	.driver = {
-+		.name = "mt7622-wmac",
-+		.of_match_table = mt7622_wmac_of_match,
-+	},
-+	.probe = mt7622_wmac_probe,
-+	.remove = mt7622_wmac_remove,
-+};
-+
-+MODULE_FIRMWARE(MT7622_FIRMWARE_N9);
-+MODULE_FIRMWARE(MT7622_ROM_PATCH);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mmio.c b/drivers/net/wireless/mediatek/mt76/mt7615/mmio.c
+index 4575bfda81c0..fcd8a8b4e816 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mmio.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mmio.c
+@@ -60,7 +60,7 @@ int mt7615_mmio_probe(struct device *pdev, void __iomem *mem_base, int irq)
+ {
+ 	static const struct mt76_driver_ops drv_ops = {
+ 		/* txwi_size = txd size + txp size */
+-		.txwi_size = MT_TXD_SIZE + sizeof(struct mt7615_txp),
++		.txwi_size = MT_TXD_SIZE + sizeof(struct mt7615_txp_common),
+ 		.drv_flags = MT_DRV_TXWI_NO_FREE,
+ 		.survey_flags = SURVEY_INFO_TIME_TX |
+ 				SURVEY_INFO_TIME_RX |
 -- 
 2.24.0
 
