@@ -2,116 +2,170 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 12E4B14D35B
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Jan 2020 00:13:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D91B14D445
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Jan 2020 01:04:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726833AbgA2XNW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 29 Jan 2020 18:13:22 -0500
-Received: from mail-io1-f65.google.com ([209.85.166.65]:37786 "EHLO
-        mail-io1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726663AbgA2XNV (ORCPT
+        id S1726663AbgA3AEI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 29 Jan 2020 19:04:08 -0500
+Received: from mail-io1-f46.google.com ([209.85.166.46]:40013 "EHLO
+        mail-io1-f46.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726618AbgA3AEI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 29 Jan 2020 18:13:21 -0500
-Received: by mail-io1-f65.google.com with SMTP id k24so1801219ioc.4
-        for <linux-wireless@vger.kernel.org>; Wed, 29 Jan 2020 15:13:21 -0800 (PST)
+        Wed, 29 Jan 2020 19:04:08 -0500
+Received: by mail-io1-f46.google.com with SMTP id x1so1892818iop.7
+        for <linux-wireless@vger.kernel.org>; Wed, 29 Jan 2020 16:04:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+        d=gmail.com; s=20161025;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
          :cc;
-        bh=LCUbrUz7P+ZZOGgq2SEr224JKtlddICvuICcnGrb8wI=;
-        b=SdkOg+CGhQWsyghj0M3VcH36oGpO89eNNXRye+lGikf5O5Is0N+RxBrpq/SFFroshF
-         X865+RzEqL7tuwe6qQBrHRSo7IIb3mgnByPT5LO1mkE3R9BlviVxtp3u+QSA2QzOryf4
-         gVPKzRsEO6gnwep19v1pcG56Mcttgie4MWpj4=
+        bh=N2HzLYaUkJlpq5f346L/ENXDmRQREL1ljiVLi5Ox/KE=;
+        b=JIcXa8F1blkSxO5MSs5K5V7CFwdg8IGE8OqgX0/vfbiH4jRPFAH6KaYKPmZ5xCGXmw
+         hcmysqm8iWwnJOCiA6XLqYuG1+aGswHwubf6lA/JvRZ7N3dTttq/uCitJSVlfUMBG4gN
+         uuP90ix05+EdQQVJQb9PJXMz11x7JQMAOHH+Fs5cENmj6b5QqcGPWc+3hZbpabTdNqeC
+         Vb/Xv7U1PPP4qWqFteVodPAa4YRw9SN0CIRMGQNXeYS+bzmBWwH6klmUR7S9qdC2ijVd
+         zJzhKhjDK1QWDiFSF+m9Ex6SxOQSoAJMq2RFa6R8WZBzP2ztUk+AIKwokG2DM++cHi+D
+         9Rnw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
          :message-id:subject:to:cc;
-        bh=LCUbrUz7P+ZZOGgq2SEr224JKtlddICvuICcnGrb8wI=;
-        b=W113lb5Eq7AROPRCIJ6T+HNvejEWM0fNIt5f5iB3JxDbx1SjEuY/k7BkHIEEpuOeB1
-         QQvL4a5cIDpcKmwl1M1yoF89I/PwLhi4UvxyrlMhjPl6fLHPLivL842McuJfZ8XWcdCy
-         BG5IcUkwiot25bmTSTTPiGlNx7GnUUcsn13vnizM01Z+JB6/hj8g61bojCiYRwL/kLTD
-         GXrzWNX/hA8efX2lxsit1DeaGGBR7KHcD8ncw4iBgH2Euyh9pMt5+O++XxH5SF54vD7a
-         xA3EwnxQqQ5mKDt/77G5EY+5sk8YL1MDR5AqLk4Mk+H8zOVq951XI+LCT3v3nBfGR7xz
-         KZCA==
-X-Gm-Message-State: APjAAAWKwjfHc/mP3Zn1S1dEmMLPlPqtUu+iIlCweqDW/UBDNiJ/Mm8W
-        OzM9n1vifGZMUlTXtoEsUtGOxtrfk/BdIdg4RzzoSA==
-X-Google-Smtp-Source: APXvYqxHMtiCwMc6jPRHRw63xfLorZNlXp+L+Bp/WE3y4H4JqVTTE0Uo9byH9oRz6OydL59iyNlWuRq15pvmR8iqCJY=
-X-Received: by 2002:a5e:c907:: with SMTP id z7mr1648711iol.88.1580339600746;
- Wed, 29 Jan 2020 15:13:20 -0800 (PST)
+        bh=N2HzLYaUkJlpq5f346L/ENXDmRQREL1ljiVLi5Ox/KE=;
+        b=pPpW5+2vLF7ZPFn/3SOQeTJWwXxfC8twEXH8V/mAL8jtQDyAsUDa+aAkqtrKqi2KQA
+         shnlsyH0H3oBhOlAaP0TWxFHumu2N8Va+ZxVPd+qiFF6CS9Ve2OsjRBGQIi7SyFaZ0Ju
+         zedvpQvD+mwmivIZ21tooZjw5jLKKHm9O6zyyTvc5Sc8s7A+jMbhjgwV1HDNWxtogHSN
+         6m4zCDoGMTqfN9VUotXETmbM9E0msjHmIWeObM2xmU2Uz0gvFRYio8lqaiW9jHt4hd+Z
+         KvEJGQUPXLJBn47BICHSWaGAqs/vZH8NQtWPQsBHQxxw8ToOuv8NgLXTaC8LumEJXuWQ
+         UOgQ==
+X-Gm-Message-State: APjAAAW4n1AbUfu2u7UNCWvT/gzBNHLRfeY6XEvSyY90x81opG8m9TjF
+        GlIKVBi6xmtu3CbwA0TckhGr8QKdIrk+esf+2Qm0dFIk
+X-Google-Smtp-Source: APXvYqzSbWdXQlNr5II+49EBfZMHJvX3TKNxljXYqp3wUPoHgFPx1nlmL2ZlTPttmwjRcK9iGiIf0fDF7Vy/yNR50lk=
+X-Received: by 2002:a5d:8043:: with SMTP id b3mr1906789ior.192.1580342647004;
+ Wed, 29 Jan 2020 16:04:07 -0800 (PST)
 MIME-Version: 1.0
-References: <20200128221457.12467-1-linux@roeck-us.net> <CAD=FV=Wg2MZ56fsCk+TvRSSeZVz5eM4cwugK=HN6imm5wfGgiw@mail.gmail.com>
- <20200129000551.GA17256@roeck-us.net> <CA+8PC_f=qCUjihwbjd3vtGaNkG-=R1qm83oS7AmgtLTy6EgjyQ@mail.gmail.com>
- <20200129180428.GA99393@google.com>
-In-Reply-To: <20200129180428.GA99393@google.com>
-From:   Franky Lin <franky.lin@broadcom.com>
-Date:   Wed, 29 Jan 2020 15:12:54 -0800
-Message-ID: <CA+8PC_cr8D-tFT1QwS=DSNOW1X2sW3f__Aqts33bUseu9L7yfg@mail.gmail.com>
-Subject: Re: [PATCH] brcmfmac: abort and release host after error
-To:     Brian Norris <briannorris@chromium.org>
-Cc:     Guenter Roeck <linux@roeck-us.net>,
-        Doug Anderson <dianders@chromium.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Arend van Spriel <arend.vanspriel@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        "open list:BROADCOM BRCM80211 IEEE802.11n WIRELESS DRIVER" 
-        <brcm80211-dev-list.pdl@broadcom.com>,
-        brcm80211-dev-list <brcm80211-dev-list@cypress.com>,
-        netdev <netdev@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Matthias Kaehlcke <mka@chromium.org>
+Received: by 2002:ad5:5d0d:0:0:0:0:0 with HTTP; Wed, 29 Jan 2020 16:04:06
+ -0800 (PST)
+In-Reply-To: <c76ff8bb50164eeb86feeb2eba76beac@bshg.com>
+References: <CAA=hcWTEnYraPy5Un7a7ryeDBJmf0KoCU2VoJjr5LJWtbc9j_g@mail.gmail.com>
+ <c76ff8bb50164eeb86feeb2eba76beac@bshg.com>
+From:   JH <jupiter.hce@gmail.com>
+Date:   Thu, 30 Jan 2020 11:04:06 +1100
+Message-ID: <CAA=hcWT=RQBxB1-FT11awQz1SYK0qWp0PnvTSFrX9+V-nEgUnA@mail.gmail.com>
+Subject: Re: Strange inconsistant WiFi network behaviour
+To:     "Ryll, Jan (GED-SDD2)" <Jan.Ryll@bshg.com>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
+        connman <connman@lists.01.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Jan 29, 2020 at 10:04 AM Brian Norris <briannorris@chromium.org> wrote:
->
-> Hi Franky,
->
-> [I'm very unfamiliar with this driver, but I had the same questions as
-> Guenter, I think:]
->
-> On Tue, Jan 28, 2020 at 04:57:59PM -0800, Franky Lin wrote:
-> > On Tue, Jan 28, 2020 at 4:05 PM Guenter Roeck <linux@roeck-us.net> wrote:
-> > > On Tue, Jan 28, 2020 at 03:14:45PM -0800, Doug Anderson wrote:
-> > > > On Tue, Jan 28, 2020 at 2:15 PM Guenter Roeck <linux@roeck-us.net> wrote:
-> > > > > --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-> > > > > +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-> > > > > @@ -1938,6 +1938,8 @@ static uint brcmf_sdio_readframes(struct brcmf_sdio *bus, uint maxframes)
-> > > > >                         if (brcmf_sdio_hdparse(bus, bus->rxhdr, &rd_new,
-> > > > >                                                BRCMF_SDIO_FT_NORMAL)) {
-> > > > >                                 rd->len = 0;
-> > > > > +                               brcmf_sdio_rxfail(bus, true, true);
-> > > > > +                               sdio_release_host(bus->sdiodev->func1);
-> > > >
-> > > > I don't know much about this driver so I don't personally know if
-> > > > "true, true" is the correct thing to pass to brcmf_sdio_rxfail(), but
-> > > > it seems plausible.  Definitely the fix to call sdio_release_host() is
-> > > > sane.
-> > > >
-> > > > Thus, unless someone knows for sure that brcmf_sdio_rxfail()'s
-> > > > parameters should be different:
-> > > >
-> > > Actually, looking at brcmf_sdio_hdparse() and its other callers,
-> > > I think it may not be needed at all - other callers don't do it, and
-> > > there already are some calls to brcmf_sdio_rxfail() in that function.
-> > > It would be nice though to get a confirmation before I submit v2.
-> >
-> > I think invoking rxfail with both abort and NACK set to true is the
-> > right thing to do here so that the pipeline can be properly purged.
->
-> Thanks for looking here. I'm not sure I totally understand your answer:
-> brcmf_sdio_hdparse() already calls brcmf_sdio_rxfail() in several error
-> cases. Is it really OK to call it twice in a row?
+Thanks Emil and Jan,
 
-Yes. brcmf_sdio_rxglom does the same thing that calls
-brcmf_sdio_rxfail again in error handling. For this instance I think
-it's better using the same logic as the length mismatch block below (
-calling brcmf_sdio_rxfail with true ture).
+On 1/29/20, Ryll, Jan (GED-SDD2) <Jan.Ryll@bshg.com> wrote:
+> Try to increase distance from router or other WiFi device.
 
-Thanks,
-- Franky
+Tried, but no avail.
+
+> there are WiFi routers like AVM which are implement the WiFi Stack in a
+> stricter way than other routers or other WiFi chips-firmware.
+> I mention this cause weh ad some issue with a cypress wifi firmware which
+> leads to "sometimes" disconnect from routers. And we figured out that this
+> was mostly the case with AVM. We are in contact with AVM in it turns out
+> that the AVM router work proberly. The issues was with the cypress chipset
+> firmware. Now we are in contact with cypress and they accepted the issue.
+> So it is not always a connman problem :-) .
+
+That really worries me, my WiFi router is TP-Link AC1200 dual band
+router, it should have no problem for my device to connect it as I
+mentioned I have two devices one could connected without any issues.
+that definitely won't be my WiFi chip uBlox Lily issues, if it was,
+the another unit would not be possible to connect to my WiFi router in
+office.
+
+I am not saying it is connman problem or mwifiex problem or kernel
+problem, what I like is to get  helps and clues from open source
+communities to help me to debug and to find issues, it could be my
+contributions as well if there could be potential open source bugs to
+be found from my test, debug and report :-).
+
+Thank you.
+
+Kind regards,
+
+- jh
+>
+> -----Original Message-----
+> From: JH <jupiter.hce@gmail.com>
+> Sent: Wednesday, January 29, 2020 10:22 AM
+> To: linux-wireless <linux-wireless@vger.kernel.org>; connman
+> <connman@lists.01.org>
+> Subject: Strange inconsistant WiFi network behaviour
+>
+> Hi,
+>
+> I have 2 iMX6 devices running uBlox Lily WiFi, mrvl firmware
+> sd8801_uapsta.bin in kernel 4.19.75. In my office, a WiFi router is just 1
+> meter away, the WiFi signal should not be a problem. One device could
+> connect to the WiFi router well and stably, one could not, here were error
+> messages:
+>
+> [  408.990029] ieee80211 phy0: mwifiex_cfg80211_sched_scan_start :
+> Invalid Sched_scan parameters
+> .....................
+>
+> [56.986414] ieee80211 phy0: mwifiex_cfg80211_sched_scan_start :
+> Invalid Sched_scan parameter
+>
+> connmand[13469]:
+> ../connman-1.35/src/service.c:preferred_tech_add_by_type() type 5 service
+> 0x119120 Telstra
+> connmand[13469]: ../connman-1.35/src/service.c:auto_connect_service()
+> preferred 1 sessions 0 reason auto
+> connmand[13469]: ../connman-1.35/src/ntp.c:send_timeout() send timeout
+> 2 (retries 0)
+> connmand[13469]:
+> ../connman-1.35/plugins/ofono.c:netreg_update_strength() /ubloxqmi_2
+> Strength 80
+> connmand[13469]: ../connman-1.35/src/ntp.c:send_timeout() send timeout
+> 4 (retries 1)
+> connmand[13469]: ../connman-1.35/plugins/wifi.c:throw_wifi_scan()
+> device 0x118da8 0x116c78
+> connmand[13469]:
+> ../connman-1.35/src/device.c:connman_device_ref_debug() 0x118da8 ref 4 by
+> ../connman-1.35/plugins/wifi.c:1214:throw_wifi_scan()
+> connmand[13469]:
+> ../connman-1.35/src/device.c:connman_device_set_scanning() device
+> 0x118da8 scanning 1
+> connmand[13469]:
+> ../connman-1.35/src/technology.c:__connman_technology_scan_started()
+> device 0x118da8
+> connmand[13469]: ../connman-1.35/plugins/wifi.c:autoscan_timeout() interval
+> 27
+> connmand[13469]: ../connman-1.35/plugins/wifi.c:interface_state() wifi
+> 0x11a7c8 interface state 4
+> connmand[13469]: ../connman-1.35/plugins/wifi.c:scan_started()
+> connmand[13469]: ../connman-1.35/src/rtnl.c:rtnl_message() NEWLINK len
+> 56 type 16 flags 0x0000 seq 0 pid 0
+> connmand[13469]: ../connman-1.35/plugins/wifi.c:scan_finished()
+> connmand[13469]: ../connman-1.35/plugins/wifi.c:interface_state() wifi
+> 0x11a7c8 interface state 3
+>
+> Both devices were installed the same firmware and software, if it was
+> firmware / software issues, both would not be able to connect to WiFi, as
+> one device could connect to the office WiFi router well, it could not the
+> WiFi router problem either.
+>
+> If I move the faulty one to my home, it could connect to my home WiFi, so
+> the device does not have WiFi problem, that is really confusing, what could
+> cause that kind problem and how to debug and fix it?
+>
+> Thank you.
+>
+> Kind regards,
+>
+> - jh
+> _______________________________________________
+> connman mailing list -- connman@lists.01.org To unsubscribe send an email to
+> connman-leave@lists.01.org
+>
