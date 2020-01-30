@@ -2,170 +2,109 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D91B14D445
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Jan 2020 01:04:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 899DD14D4FF
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Jan 2020 02:33:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726663AbgA3AEI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 29 Jan 2020 19:04:08 -0500
-Received: from mail-io1-f46.google.com ([209.85.166.46]:40013 "EHLO
-        mail-io1-f46.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726618AbgA3AEI (ORCPT
+        id S1727186AbgA3BdO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 29 Jan 2020 20:33:14 -0500
+Received: from mail-oi1-f195.google.com ([209.85.167.195]:33792 "EHLO
+        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726618AbgA3BdO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 29 Jan 2020 19:04:08 -0500
-Received: by mail-io1-f46.google.com with SMTP id x1so1892818iop.7
-        for <linux-wireless@vger.kernel.org>; Wed, 29 Jan 2020 16:04:07 -0800 (PST)
+        Wed, 29 Jan 2020 20:33:14 -0500
+Received: by mail-oi1-f195.google.com with SMTP id l136so1926781oig.1;
+        Wed, 29 Jan 2020 17:33:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc;
-        bh=N2HzLYaUkJlpq5f346L/ENXDmRQREL1ljiVLi5Ox/KE=;
-        b=JIcXa8F1blkSxO5MSs5K5V7CFwdg8IGE8OqgX0/vfbiH4jRPFAH6KaYKPmZ5xCGXmw
-         hcmysqm8iWwnJOCiA6XLqYuG1+aGswHwubf6lA/JvRZ7N3dTttq/uCitJSVlfUMBG4gN
-         uuP90ix05+EdQQVJQb9PJXMz11x7JQMAOHH+Fs5cENmj6b5QqcGPWc+3hZbpabTdNqeC
-         Vb/Xv7U1PPP4qWqFteVodPAa4YRw9SN0CIRMGQNXeYS+bzmBWwH6klmUR7S9qdC2ijVd
-         zJzhKhjDK1QWDiFSF+m9Ex6SxOQSoAJMq2RFa6R8WZBzP2ztUk+AIKwokG2DM++cHi+D
-         9Rnw==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=5ZdzI82fvwujvYsag8I7TqJgzKEukKEgmUxw93uz7R0=;
+        b=FfWX/ESk/Ny+soGUtrSk5sBftjMj5pXOQcWF82TaJBaEL0q9IwJVd6Zf27SJ90qTJx
+         2QA4hFaB/nS+UD4pGjVKm8dKvBPVmEXqzZotl2Bc5nTfQZ8wZ+HX6vt4HbHsyj3Cy8Qh
+         tVS2tsY5FhnUJmseLiVblX0u5b5zDWVaWTA7H/qNLurJBpt7VbWL3ZgIFLzizSN9Hfp3
+         MAILHnkofSiqwIqvlLv2z15G24koWdJaX7MyQC++n/H6GfYnzRrDn+hI8+jr0N10k5r/
+         aXxUN7gjq0HF+DpSc1ytLuDhUgrmplLsEVY/FvNmHA8FZswsZpuNvMnRHkk5vVBoIcEs
+         yd3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc;
-        bh=N2HzLYaUkJlpq5f346L/ENXDmRQREL1ljiVLi5Ox/KE=;
-        b=pPpW5+2vLF7ZPFn/3SOQeTJWwXxfC8twEXH8V/mAL8jtQDyAsUDa+aAkqtrKqi2KQA
-         shnlsyH0H3oBhOlAaP0TWxFHumu2N8Va+ZxVPd+qiFF6CS9Ve2OsjRBGQIi7SyFaZ0Ju
-         zedvpQvD+mwmivIZ21tooZjw5jLKKHm9O6zyyTvc5Sc8s7A+jMbhjgwV1HDNWxtogHSN
-         6m4zCDoGMTqfN9VUotXETmbM9E0msjHmIWeObM2xmU2Uz0gvFRYio8lqaiW9jHt4hd+Z
-         KvEJGQUPXLJBn47BICHSWaGAqs/vZH8NQtWPQsBHQxxw8ToOuv8NgLXTaC8LumEJXuWQ
-         UOgQ==
-X-Gm-Message-State: APjAAAW4n1AbUfu2u7UNCWvT/gzBNHLRfeY6XEvSyY90x81opG8m9TjF
-        GlIKVBi6xmtu3CbwA0TckhGr8QKdIrk+esf+2Qm0dFIk
-X-Google-Smtp-Source: APXvYqzSbWdXQlNr5II+49EBfZMHJvX3TKNxljXYqp3wUPoHgFPx1nlmL2ZlTPttmwjRcK9iGiIf0fDF7Vy/yNR50lk=
-X-Received: by 2002:a5d:8043:: with SMTP id b3mr1906789ior.192.1580342647004;
- Wed, 29 Jan 2020 16:04:07 -0800 (PST)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=5ZdzI82fvwujvYsag8I7TqJgzKEukKEgmUxw93uz7R0=;
+        b=ddSMsYE1hXDxYfJeBzpAkoX3lZ9PBgziLHfDnWGyzmNF8pI0pjsBcr1rFCb9yBuWfz
+         EpBZC0JXRlPqM80N3l5wh5vaqUB20xOPyGf+bpHtbdqAU/z+qerZlK1zCVWwfGBPDwIc
+         FSIT5aYxw5amLdRiQr1uYYIMMAgFzl5XTqf2d6a+frfs81pFMfwSWleXMQi9nWybZItK
+         ME4R9EdLuoN9hWB4icYjHgXaiAv1oWkPsmRZH1x998YP+L5iKjq5ADZGxBkOxIpxcod5
+         uWpAlGQYgFx3hYOfZXiDG/+mtTLMAFfmFrJs///uRNP9ghFNxNKZCzsX5DqAExcXzHzG
+         Fyxg==
+X-Gm-Message-State: APjAAAVEOXuTa394Y6ucizOVztKxPnoOvLDvDaLD73CAq5Z2BktqEkOG
+        07YkWrIzTkeq1q8SfGRw5UU=
+X-Google-Smtp-Source: APXvYqwiujT7PdmmUTwP1B9oYsiW6xYwpjN4TQq2gTWxjUxEg75TIEEyy9SW2soJdDmlJkt5YB7D1g==
+X-Received: by 2002:aca:d483:: with SMTP id l125mr1277102oig.124.1580347993400;
+        Wed, 29 Jan 2020 17:33:13 -0800 (PST)
+Received: from localhost.localdomain ([2604:1380:4111:8b00::1])
+        by smtp.gmail.com with ESMTPSA id i12sm1336938otk.11.2020.01.29.17.33.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 29 Jan 2020 17:33:12 -0800 (PST)
+From:   Nathan Chancellor <natechancellor@gmail.com>
+To:     Yan-Hsuan Chuang <yhchuang@realtek.com>,
+        Kalle Valo <kvalo@codeaurora.org>
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, clang-built-linux@googlegroups.com,
+        Nathan Chancellor <natechancellor@gmail.com>
+Subject: [PATCH] rtw88: Initialize ret in rtw_wow_check_fw_status
+Date:   Wed, 29 Jan 2020 18:33:08 -0700
+Message-Id: <20200130013308.16395-1-natechancellor@gmail.com>
+X-Mailer: git-send-email 2.25.0
 MIME-Version: 1.0
-Received: by 2002:ad5:5d0d:0:0:0:0:0 with HTTP; Wed, 29 Jan 2020 16:04:06
- -0800 (PST)
-In-Reply-To: <c76ff8bb50164eeb86feeb2eba76beac@bshg.com>
-References: <CAA=hcWTEnYraPy5Un7a7ryeDBJmf0KoCU2VoJjr5LJWtbc9j_g@mail.gmail.com>
- <c76ff8bb50164eeb86feeb2eba76beac@bshg.com>
-From:   JH <jupiter.hce@gmail.com>
-Date:   Thu, 30 Jan 2020 11:04:06 +1100
-Message-ID: <CAA=hcWT=RQBxB1-FT11awQz1SYK0qWp0PnvTSFrX9+V-nEgUnA@mail.gmail.com>
-Subject: Re: Strange inconsistant WiFi network behaviour
-To:     "Ryll, Jan (GED-SDD2)" <Jan.Ryll@bshg.com>
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
-        connman <connman@lists.01.org>
-Content-Type: text/plain; charset="UTF-8"
+X-Patchwork-Bot: notify
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Thanks Emil and Jan,
+Clang warns a few times (trimmed for brevity):
 
-On 1/29/20, Ryll, Jan (GED-SDD2) <Jan.Ryll@bshg.com> wrote:
-> Try to increase distance from router or other WiFi device.
+../drivers/net/wireless/realtek/rtw88/wow.c:295:7: warning: variable
+'ret' is used uninitialized whenever 'if' condition is false
+[-Wsometimes-uninitialized]
 
-Tried, but no avail.
+Initialize ret to true and change the other assignments to false because
+it is a boolean value.
 
-> there are WiFi routers like AVM which are implement the WiFi Stack in a
-> stricter way than other routers or other WiFi chips-firmware.
-> I mention this cause weh ad some issue with a cypress wifi firmware which
-> leads to "sometimes" disconnect from routers. And we figured out that this
-> was mostly the case with AVM. We are in contact with AVM in it turns out
-> that the AVM router work proberly. The issues was with the cypress chipset
-> firmware. Now we are in contact with cypress and they accepted the issue.
-> So it is not always a connman problem :-) .
+Fixes: 44bc17f7f5b3 ("rtw88: support wowlan feature for 8822c")
+Link: https://github.com/ClangBuiltLinux/linux/issues/850
+Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
+---
+ drivers/net/wireless/realtek/rtw88/wow.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-That really worries me, my WiFi router is TP-Link AC1200 dual band
-router, it should have no problem for my device to connect it as I
-mentioned I have two devices one could connected without any issues.
-that definitely won't be my WiFi chip uBlox Lily issues, if it was,
-the another unit would not be possible to connect to my WiFi router in
-office.
+diff --git a/drivers/net/wireless/realtek/rtw88/wow.c b/drivers/net/wireless/realtek/rtw88/wow.c
+index af5c27e1bb07..5db49802c72c 100644
+--- a/drivers/net/wireless/realtek/rtw88/wow.c
++++ b/drivers/net/wireless/realtek/rtw88/wow.c
+@@ -283,18 +283,18 @@ static void rtw_wow_rx_dma_start(struct rtw_dev *rtwdev)
+ 
+ static bool rtw_wow_check_fw_status(struct rtw_dev *rtwdev, bool wow_enable)
+ {
+-	bool ret;
++	bool ret = true;
+ 
+ 	/* wait 100ms for wow firmware to finish work */
+ 	msleep(100);
+ 
+ 	if (wow_enable) {
+ 		if (!rtw_read8(rtwdev, REG_WOWLAN_WAKE_REASON))
+-			ret = 0;
++			ret = false;
+ 	} else {
+ 		if (rtw_read32_mask(rtwdev, REG_FE1IMR, BIT_FS_RXDONE) == 0 &&
+ 		    rtw_read32_mask(rtwdev, REG_RXPKT_NUM, BIT_RW_RELEASE) == 0)
+-			ret = 0;
++			ret = false;
+ 	}
+ 
+ 	if (ret)
+-- 
+2.25.0
 
-I am not saying it is connman problem or mwifiex problem or kernel
-problem, what I like is to get  helps and clues from open source
-communities to help me to debug and to find issues, it could be my
-contributions as well if there could be potential open source bugs to
-be found from my test, debug and report :-).
-
-Thank you.
-
-Kind regards,
-
-- jh
->
-> -----Original Message-----
-> From: JH <jupiter.hce@gmail.com>
-> Sent: Wednesday, January 29, 2020 10:22 AM
-> To: linux-wireless <linux-wireless@vger.kernel.org>; connman
-> <connman@lists.01.org>
-> Subject: Strange inconsistant WiFi network behaviour
->
-> Hi,
->
-> I have 2 iMX6 devices running uBlox Lily WiFi, mrvl firmware
-> sd8801_uapsta.bin in kernel 4.19.75. In my office, a WiFi router is just 1
-> meter away, the WiFi signal should not be a problem. One device could
-> connect to the WiFi router well and stably, one could not, here were error
-> messages:
->
-> [  408.990029] ieee80211 phy0: mwifiex_cfg80211_sched_scan_start :
-> Invalid Sched_scan parameters
-> .....................
->
-> [56.986414] ieee80211 phy0: mwifiex_cfg80211_sched_scan_start :
-> Invalid Sched_scan parameter
->
-> connmand[13469]:
-> ../connman-1.35/src/service.c:preferred_tech_add_by_type() type 5 service
-> 0x119120 Telstra
-> connmand[13469]: ../connman-1.35/src/service.c:auto_connect_service()
-> preferred 1 sessions 0 reason auto
-> connmand[13469]: ../connman-1.35/src/ntp.c:send_timeout() send timeout
-> 2 (retries 0)
-> connmand[13469]:
-> ../connman-1.35/plugins/ofono.c:netreg_update_strength() /ubloxqmi_2
-> Strength 80
-> connmand[13469]: ../connman-1.35/src/ntp.c:send_timeout() send timeout
-> 4 (retries 1)
-> connmand[13469]: ../connman-1.35/plugins/wifi.c:throw_wifi_scan()
-> device 0x118da8 0x116c78
-> connmand[13469]:
-> ../connman-1.35/src/device.c:connman_device_ref_debug() 0x118da8 ref 4 by
-> ../connman-1.35/plugins/wifi.c:1214:throw_wifi_scan()
-> connmand[13469]:
-> ../connman-1.35/src/device.c:connman_device_set_scanning() device
-> 0x118da8 scanning 1
-> connmand[13469]:
-> ../connman-1.35/src/technology.c:__connman_technology_scan_started()
-> device 0x118da8
-> connmand[13469]: ../connman-1.35/plugins/wifi.c:autoscan_timeout() interval
-> 27
-> connmand[13469]: ../connman-1.35/plugins/wifi.c:interface_state() wifi
-> 0x11a7c8 interface state 4
-> connmand[13469]: ../connman-1.35/plugins/wifi.c:scan_started()
-> connmand[13469]: ../connman-1.35/src/rtnl.c:rtnl_message() NEWLINK len
-> 56 type 16 flags 0x0000 seq 0 pid 0
-> connmand[13469]: ../connman-1.35/plugins/wifi.c:scan_finished()
-> connmand[13469]: ../connman-1.35/plugins/wifi.c:interface_state() wifi
-> 0x11a7c8 interface state 3
->
-> Both devices were installed the same firmware and software, if it was
-> firmware / software issues, both would not be able to connect to WiFi, as
-> one device could connect to the office WiFi router well, it could not the
-> WiFi router problem either.
->
-> If I move the faulty one to my home, it could connect to my home WiFi, so
-> the device does not have WiFi problem, that is really confusing, what could
-> cause that kind problem and how to debug and fix it?
->
-> Thank you.
->
-> Kind regards,
->
-> - jh
-> _______________________________________________
-> connman mailing list -- connman@lists.01.org To unsubscribe send an email to
-> connman-leave@lists.01.org
->
