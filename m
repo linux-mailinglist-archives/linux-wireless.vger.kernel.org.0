@@ -2,114 +2,118 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2BCB514E9D3
-	for <lists+linux-wireless@lfdr.de>; Fri, 31 Jan 2020 09:50:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7731B14EA94
+	for <lists+linux-wireless@lfdr.de>; Fri, 31 Jan 2020 11:24:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728164AbgAaIuT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 31 Jan 2020 03:50:19 -0500
-Received: from mail-wr1-f67.google.com ([209.85.221.67]:38219 "EHLO
-        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728141AbgAaIuT (ORCPT
+        id S1728326AbgAaKXx convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 31 Jan 2020 05:23:53 -0500
+Received: from rtits2.realtek.com ([211.75.126.72]:35106 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728071AbgAaKXx (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 31 Jan 2020 03:50:19 -0500
-Received: by mail-wr1-f67.google.com with SMTP id y17so7639670wrh.5
-        for <linux-wireless@vger.kernel.org>; Fri, 31 Jan 2020 00:50:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=hU5postrxd2Z+I0s97KAquQNmprVibWfKwFZYOgeXJM=;
-        b=gnCcOWVf62SAeMYNgjIIGV8QhMAGm1Naxa1Ck30+I7ZgqUD+o5BylxRnHlO9o2ZiKi
-         bdzTijCiA5CY0hCRfuo9nlFukR+ZEZfU80pjKGrLrHbiwHtnceO8manvwPN7ozMIrAyJ
-         FupUGmuq8tSzmqnaFnTj3QrsVUFlt/HA7v6rA=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=hU5postrxd2Z+I0s97KAquQNmprVibWfKwFZYOgeXJM=;
-        b=RNt984R2xEOzBGW4i7/YJKG3Ggug1Bgx/UmLXvBENcFuXURMeBV5+O2Vhf6IHOYqTl
-         A7o0jSffk0XTGbgJnmOkujhbvgh8wTjMqha7LVCATRik9GMtrs/X3/3nmsfQfaPhpyRx
-         BJOff6NGPl2q7eDgE91YG5P+i8ZI+to9Vor6xoLi62pzKtbSrXrJSKnJRep2D8gAGk1N
-         tlHlpxRtIm0l5os16Z9OKC/t0Y+nVoY81+p1jArk6K9GrPQADJvk/F1YQOAinXq4iU/U
-         QOgo6WUTbuGFH3dKsbfmW+kcMExj9tGL39ewKfZZ+wMS+1KhMzukAOPFkrPyGeKe8anC
-         3Klw==
-X-Gm-Message-State: APjAAAWqx+kZpQtXC8mEcM1lwABKxZRXjMCnmXONhUCG5zdAWKi3bDSe
-        SJcqMyd2JcNoerLz66bGK86P+Q==
-X-Google-Smtp-Source: APXvYqx0gMJ4oR+2H7wrLDbf1HDlffrOq+OxgT6XZWeSnpJp1MTZr+9jkxDilQjQck90LxtOoT377w==
-X-Received: by 2002:a5d:4984:: with SMTP id r4mr10479452wrq.137.1580460616905;
-        Fri, 31 Jan 2020 00:50:16 -0800 (PST)
-Received: from [192.168.178.129] (f140230.upc-f.chello.nl. [80.56.140.230])
-        by smtp.gmail.com with ESMTPSA id 5sm7017184wrc.75.2020.01.31.00.50.15
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 31 Jan 2020 00:50:16 -0800 (PST)
-Subject: Re: [PATCH v2] brcmfmac: add the BRCM 4364 found in MacBook Pro 15,2
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     "brian m. carlson" <sandals@crustytoothpaste.net>,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        brcm80211-dev-list@cypress.com,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
-        Wright Feng <wright.feng@cypress.com>
-References: <20200126155108.7DDD7C433CB@smtp.codeaurora.org>
- <20200126193339.167346-1-sandals@crustytoothpaste.net>
- <16fe3b278d0.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
- <20200126230029.GI4113372@camp.crustytoothpaste.net>
- <71763ca9-ed7a-2403-b85a-d7dc624cd050@broadcom.com>
- <87a766xq4u.fsf@tynnyri.adurom.net>
-From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
-Message-ID: <2a7409b1-df6a-4d94-6a28-d69990ba01eb@broadcom.com>
-Date:   Fri, 31 Jan 2020 09:50:14 +0100
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.2
+        Fri, 31 Jan 2020 05:23:53 -0500
+Authenticated-By: 
+X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID 00VANfqG016275, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (RTEXMB06.realtek.com.tw[172.21.6.99])
+        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id 00VANfqG016275
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 31 Jan 2020 18:23:41 +0800
+Received: from RTEXDAG02.realtek.com.tw (172.21.6.101) by
+ RTEXMB06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Fri, 31 Jan 2020 18:23:41 +0800
+Received: from RTEXMB04.realtek.com.tw (172.21.6.97) by
+ RTEXDAG02.realtek.com.tw (172.21.6.101) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Fri, 31 Jan 2020 18:23:40 +0800
+Received: from RTEXMB04.realtek.com.tw ([fe80::d9c5:a079:495e:b999]) by
+ RTEXMB04.realtek.com.tw ([fe80::d9c5:a079:495e:b999%6]) with mapi id
+ 15.01.1779.005; Fri, 31 Jan 2020 18:23:40 +0800
+From:   Tony Chuang <yhchuang@realtek.com>
+To:     Nathan Chancellor <natechancellor@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>
+CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "clang-built-linux@googlegroups.com" 
+        <clang-built-linux@googlegroups.com>
+Subject: RE: [PATCH] rtw88: Initialize ret in rtw_wow_check_fw_status
+Thread-Topic: [PATCH] rtw88: Initialize ret in rtw_wow_check_fw_status
+Thread-Index: AQHV1w0+cQfBiHwgKkKd8alOOCYKsqgEkmQA
+Date:   Fri, 31 Jan 2020 10:23:40 +0000
+Message-ID: <e0fb1ead6dcc4ecc973b3b9b5399ef66@realtek.com>
+References: <20200130013308.16395-1-natechancellor@gmail.com>
+In-Reply-To: <20200130013308.16395-1-natechancellor@gmail.com>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.68.175]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-In-Reply-To: <87a766xq4u.fsf@tynnyri.adurom.net>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-
-
-On 1/29/2020 4:02 PM, Kalle Valo wrote:
-> Arend Van Spriel <arend.vanspriel@broadcom.com> writes:
+From: Nathan Chancellor
+> Subject: [PATCH] rtw88: Initialize ret in rtw_wow_check_fw_status
 > 
->>> There is also precedent for users acquiring firmware themselves via the
->>> b43 and b43legacy drivers, where users have to use a script to extract
->>> the firmware from other drivers.
->>>
->>> I wish I had a better answer to this, but I don't work for Broadcom or
->>> anyone associated with it and am just trying to get the Mac I was given
->>> for $DAYJOB to work with Linux.  Perhaps since you do you'd be willing
->>> to ask them to release the firmware.
->>>
->>> The alternative is that the chip doesn't work at all (and can't be added
->>> via the new_id sysfs entry because of the rambase setting) and users
->>> have to compile a custom patched kernel to make their wireless card work
->>> at all.  I'd really prefer to avoid that if possible, since it's
->>> a strictly worse experience in every way.
->>
->> How about putting this device under some Kconfig flag. If distro
->> kernel start probing the device and fail, most users will probably
->> turn to their distro for help. Having a Kconfig with a good
->> description could avoid that. It would mean an extra step of building
->> the driver though.
+> Clang warns a few times (trimmed for brevity):
 > 
-> I don't understand the issue you are trying to solve. If the firmware
-> image is missing there's a clear error message in the log and the kernel
-> continues to operate normally, right? That way users have a clear
-> understanding why their wireless is not working, and hopefully push
-> Broadcom to release the firmware with a suitable license :)
+> ../drivers/net/wireless/realtek/rtw88/wow.c:295:7: warning: variable
+> 'ret' is used uninitialized whenever 'if' condition is false
+> [-Wsometimes-uninitialized]
+> 
+> Initialize ret to true and change the other assignments to false because
+> it is a boolean value.
+> 
+> Fixes: 44bc17f7f5b3 ("rtw88: support wowlan feature for 8822c")
+> Link: https://github.com/ClangBuiltLinux/linux/issues/850
+> Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
+> ---
+>  drivers/net/wireless/realtek/rtw88/wow.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/realtek/rtw88/wow.c
+> b/drivers/net/wireless/realtek/rtw88/wow.c
+> index af5c27e1bb07..5db49802c72c 100644
+> --- a/drivers/net/wireless/realtek/rtw88/wow.c
+> +++ b/drivers/net/wireless/realtek/rtw88/wow.c
+> @@ -283,18 +283,18 @@ static void rtw_wow_rx_dma_start(struct rtw_dev
+> *rtwdev)
+> 
+>  static bool rtw_wow_check_fw_status(struct rtw_dev *rtwdev, bool
+> wow_enable)
+>  {
+> -	bool ret;
+> +	bool ret = true;
+> 
+>  	/* wait 100ms for wow firmware to finish work */
+>  	msleep(100);
+> 
+>  	if (wow_enable) {
+>  		if (!rtw_read8(rtwdev, REG_WOWLAN_WAKE_REASON))
+> -			ret = 0;
+> +			ret = false;
+>  	} else {
+>  		if (rtw_read32_mask(rtwdev, REG_FE1IMR, BIT_FS_RXDONE) == 0
+> &&
+>  		    rtw_read32_mask(rtwdev, REG_RXPKT_NUM,
+> BIT_RW_RELEASE) == 0)
+> -			ret = 0;
+> +			ret = false;
+>  	}
+> 
+>  	if (ret)
+> --
+> 2.25.0
 
-Hi Kalle,
+NACK.
 
-Actually as there is precedent of firmwareless drivers in distros I am 
-fine with the change as is.
+This patch could lead to incorrect behavior of WOW.
+I will send a new patch to fix it, and change the type to "int".
 
-Regards,
-Arend
+Yan-Hsuan
