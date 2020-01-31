@@ -2,29 +2,29 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B3FF14EBBC
-	for <lists+linux-wireless@lfdr.de>; Fri, 31 Jan 2020 12:31:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9305714EBE6
+	for <lists+linux-wireless@lfdr.de>; Fri, 31 Jan 2020 12:45:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728387AbgAaLbR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 31 Jan 2020 06:31:17 -0500
-Received: from paleale.coelho.fi ([176.9.41.70]:55954 "EHLO
+        id S1728453AbgAaLpg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 31 Jan 2020 06:45:36 -0500
+Received: from paleale.coelho.fi ([176.9.41.70]:55960 "EHLO
         farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1728325AbgAaLbR (ORCPT
+        with ESMTP id S1728423AbgAaLpg (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 31 Jan 2020 06:31:17 -0500
+        Fri, 31 Jan 2020 06:45:36 -0500
 Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa.ger.corp.intel.com)
         by farmhouse.coelho.fi with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.92.2)
         (envelope-from <luca@coelho.fi>)
-        id 1ixUW3-0002LX-A8; Fri, 31 Jan 2020 13:31:15 +0200
+        id 1ixUjt-0002M3-EY; Fri, 31 Jan 2020 13:45:34 +0200
 From:   Luca Coelho <luca@coelho.fi>
 To:     johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org
-Date:   Fri, 31 Jan 2020 13:31:11 +0200
-Message-Id: <20200131113111.893106-1-luca@coelho.fi>
+Date:   Fri, 31 Jan 2020 13:45:29 +0200
+Message-Id: <20200131114529.894206-1-luca@coelho.fi>
 X-Mailer: git-send-email 2.24.1
-In-Reply-To: <20200131111300.891737-12-luca@coelho.fi>
-References: <20200131111300.891737-12-luca@coelho.fi>
+In-Reply-To: <20200131111300.891737-13-luca@coelho.fi>
+References: <20200131111300.891737-13-luca@coelho.fi>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on farmhouse.coelho.fi
@@ -32,86 +32,170 @@ X-Spam-Level:
 X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
         TVD_RCVD_IP,URIBL_BLOCKED autolearn=ham autolearn_force=no
         version=3.4.2
-Subject: [PATCH v2] mac80211: remove supported channels element in 6 GHz if ECSA support
+Subject: [PATCH 12/23 v2] cfg80211/mac80211: Allow user space to register for station Rx authentication
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Ilan Peer <ilan.peer@intel.com>
 
-We should not include the supported channels element if we have
-(advertise) support for extended channel switching. To avoid any
-interop issues because we always added it in the past, obey this
-restriction only in the (new) 6 GHz band.
+To support Pre Association Security Negotiation (PASN) while already
+associated to one AP, allow user space to register to Rx
+authentication frames, so that the user space logic would be able to
+receive/handle authentication frames from a different AP as part of
+PASN.
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Note that it is expected that user space would intelligently register
+for Rx authentication frames, i.e., only when PASN is used and
+configure a match filter only for PASN authentication algorithm, as
+otherwise the MLME functionality of mac80211 would be broken.
+
+Additionally, since some versions of the user space daemons wrongly
+register to all types of authentication frames (which might result in
+unexpected behavior) allow such registration if the request is for a
+specific authentication algorithm number.
+
+Signed-off-by: Ilan Peer <ilan.peer@intel.com>
 Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 ---
 
 In v2:
-   * Replaced the commit message as we had agreed (and I'd forgetten)
+   * In addition to the change in cfg80211, I squashed the mac80211
+     patch I had sent earlier into this one, as you requested.
 
- net/mac80211/mlme.c | 32 +++++++++++++++++++-------------
- 1 file changed, 19 insertions(+), 13 deletions(-)
 
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index 152577cc2213..bb20a5d8a172 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -671,6 +671,13 @@ static void ieee80211_send_assoc(struct ieee80211_sub_if_data *sdata)
- 	struct ieee80211_chanctx_conf *chanctx_conf;
- 	struct ieee80211_channel *chan;
- 	u32 rates = 0;
-+	struct element *ext_capa = NULL;
+ net/mac80211/main.c    | 13 +++++++++++++
+ net/wireless/core.h    |  2 +-
+ net/wireless/mlme.c    | 33 +++++++++++++++++++++++++++++----
+ net/wireless/nl80211.c |  5 +++--
+ 4 files changed, 46 insertions(+), 7 deletions(-)
+
+diff --git a/net/mac80211/main.c b/net/mac80211/main.c
+index d91bcef738dc..9dd3c9e3731f 100644
+--- a/net/mac80211/main.c
++++ b/net/mac80211/main.c
+@@ -416,7 +416,20 @@ ieee80211_default_mgmt_stypes[NUM_NL80211_IFTYPES] = {
+ 	},
+ 	[NL80211_IFTYPE_STATION] = {
+ 		.tx = 0xffff,
++		/*
++		 * To support Pre Association Security Negotiation (PASN) while
++		 * already associated to one AP, allow user space to register to
++		 * Rx authentication frames, so that the user space logic would
++		 * be able to receive/handle authentication frames from a
++		 * different AP as part of PASN.
++		 * It is expected that user space would intelligently register
++		 * for Rx authentication frames, i.e., only when PASN is used
++		 * and configure a match filter only for PASN authentication
++		 * algorithm, as otherwise the MLME functionality of mac80211
++		 * would be broken.
++		 */
+ 		.rx = BIT(IEEE80211_STYPE_ACTION >> 4) |
++			BIT(IEEE80211_STYPE_AUTH >> 4) |
+ 			BIT(IEEE80211_STYPE_PROBE_REQ >> 4),
+ 	},
+ 	[NL80211_IFTYPE_AP] = {
+diff --git a/net/wireless/core.h b/net/wireless/core.h
+index ed487e324571..bb897a803ffe 100644
+--- a/net/wireless/core.h
++++ b/net/wireless/core.h
+@@ -385,7 +385,7 @@ void cfg80211_mlme_down(struct cfg80211_registered_device *rdev,
+ 			struct net_device *dev);
+ int cfg80211_mlme_register_mgmt(struct wireless_dev *wdev, u32 snd_pid,
+ 				u16 frame_type, const u8 *match_data,
+-				int match_len);
++				int match_len, struct netlink_ext_ack *extack);
+ void cfg80211_mlme_unreg_wk(struct work_struct *wk);
+ void cfg80211_mlme_unregister_socket(struct wireless_dev *wdev, u32 nlpid);
+ void cfg80211_mlme_purge_registrations(struct wireless_dev *wdev);
+diff --git a/net/wireless/mlme.c b/net/wireless/mlme.c
+index f9462010575f..e4805a3bd310 100644
+--- a/net/wireless/mlme.c
++++ b/net/wireless/mlme.c
+@@ -4,6 +4,7 @@
+  *
+  * Copyright (c) 2009, Jouni Malinen <j@w1.fi>
+  * Copyright (c) 2015		Intel Deutschland GmbH
++ * Copyright (C) 2019 Intel Corporation
+  */
+ 
+ #include <linux/kernel.h>
+@@ -470,7 +471,7 @@ void cfg80211_mlme_unreg_wk(struct work_struct *wk)
+ 
+ int cfg80211_mlme_register_mgmt(struct wireless_dev *wdev, u32 snd_portid,
+ 				u16 frame_type, const u8 *match_data,
+-				int match_len)
++				int match_len, struct netlink_ext_ack *extack)
+ {
+ 	struct wiphy *wiphy = wdev->wiphy;
+ 	struct cfg80211_registered_device *rdev = wiphy_to_rdev(wiphy);
+@@ -481,15 +482,38 @@ int cfg80211_mlme_register_mgmt(struct wireless_dev *wdev, u32 snd_portid,
+ 	if (!wdev->wiphy->mgmt_stypes)
+ 		return -EOPNOTSUPP;
+ 
+-	if ((frame_type & IEEE80211_FCTL_FTYPE) != IEEE80211_FTYPE_MGMT)
++	if ((frame_type & IEEE80211_FCTL_FTYPE) != IEEE80211_FTYPE_MGMT) {
++		NL_SET_ERR_MSG(extack, "frame type not management");
+ 		return -EINVAL;
++	}
+ 
+-	if (frame_type & ~(IEEE80211_FCTL_FTYPE | IEEE80211_FCTL_STYPE))
++	if (frame_type & ~(IEEE80211_FCTL_FTYPE | IEEE80211_FCTL_STYPE)) {
++		NL_SET_ERR_MSG(extack, "Invalid frame type");
+ 		return -EINVAL;
++	}
+ 
+ 	mgmt_type = (frame_type & IEEE80211_FCTL_STYPE) >> 4;
+-	if (!(wdev->wiphy->mgmt_stypes[wdev->iftype].rx & BIT(mgmt_type)))
++	if (!(wdev->wiphy->mgmt_stypes[wdev->iftype].rx & BIT(mgmt_type))) {
++		NL_SET_ERR_MSG(extack,
++			       "Registration to specific type not supported");
++		return -EINVAL;
++	}
 +
-+	/* we know it's writable, cast away the const */
-+	if (assoc_data->ie_len)
-+		ext_capa = (void *)cfg80211_find_elem(WLAN_EID_EXT_CAPABILITY,
-+						      assoc_data->ie,
-+						      assoc_data->ie_len);
- 
- 	sdata_assert_lock(sdata);
- 
-@@ -821,7 +828,15 @@ static void ieee80211_send_assoc(struct ieee80211_sub_if_data *sdata)
- 		*pos++ = ieee80211_chandef_max_power(&chanctx_conf->def);
- 	}
- 
--	if (capab & WLAN_CAPABILITY_SPECTRUM_MGMT) {
 +	/*
-+	 * Per spec, we shouldn't include the list of channels if we advertise
-+	 * support for extended channel switching, but we've always done that;
-+	 * (for now?) apply this restriction only on the (new) 6 GHz band.
++	 * To support Pre Association Security Negotiation (PASN), registration
++	 * for authentication frames should be supported. However, as some
++	 * versions of the user space daemons wrongly register to all types of
++	 * authentication frames (which might result in unexpected behavior)
++	 * allow such registration if the request is for a specific
++	 * authentication algorithm number.
 +	 */
-+	if (capab & WLAN_CAPABILITY_SPECTRUM_MGMT &&
-+	    (sband->band != NL80211_BAND_6GHZ ||
-+	     !ext_capa || ext_capa->datalen < 1 ||
-+	     !(ext_capa->data[0] & WLAN_EXT_CAPA1_EXT_CHANNEL_SWITCHING))) {
- 		/* TODO: get this in reg domain format */
- 		pos = skb_put(skb, 2 * sband->n_channels + 2);
- 		*pos++ = WLAN_EID_SUPPORTED_CHANNELS;
-@@ -835,18 +850,9 @@ static void ieee80211_send_assoc(struct ieee80211_sub_if_data *sdata)
++	if (wdev->iftype == NL80211_IFTYPE_STATION &&
++	    (frame_type & IEEE80211_FCTL_STYPE) == IEEE80211_STYPE_AUTH &&
++	    !(match_data && match_len >= 2)) {
++		NL_SET_ERR_MSG(extack,
++			       "Authentication algorithm number required");
+ 		return -EINVAL;
++	}
  
- 	/* Set MBSSID support for HE AP if needed */
- 	if (ieee80211_hw_check(&local->hw, SUPPORTS_ONLY_HE_MULTI_BSSID) &&
--	    !(ifmgd->flags & IEEE80211_STA_DISABLE_HE) && assoc_data->ie_len) {
--		struct element *elem;
--
--		/* we know it's writable, cast away the const */
--		elem = (void *)cfg80211_find_elem(WLAN_EID_EXT_CAPABILITY,
--						  assoc_data->ie,
--						  assoc_data->ie_len);
--
--		/* We can probably assume both always true */
--		if (elem && elem->datalen >= 3)
--			elem->data[2] |= WLAN_EXT_CAPA3_MULTI_BSSID_SUPPORT;
--	}
-+	    !(ifmgd->flags & IEEE80211_STA_DISABLE_HE) && assoc_data->ie_len &&
-+	    ext_capa && ext_capa->datalen >= 3)
-+		ext_capa->data[2] |= WLAN_EXT_CAPA3_MULTI_BSSID_SUPPORT;
+ 	nreg = kzalloc(sizeof(*reg) + match_len, GFP_KERNEL);
+ 	if (!nreg)
+@@ -504,6 +528,7 @@ int cfg80211_mlme_register_mgmt(struct wireless_dev *wdev, u32 snd_portid,
+ 			continue;
  
- 	/* if present, add any custom IEs that go before HT */
- 	if (assoc_data->ie_len) {
+ 		if (memcmp(reg->match, match_data, mlen) == 0) {
++			NL_SET_ERR_MSG(extack, "Match already configured");
+ 			err = -EALREADY;
+ 			break;
+ 		}
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 4ac21cf5ffc1..25e9c936289b 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -10589,8 +10589,9 @@ static int nl80211_register_mgmt(struct sk_buff *skb, struct genl_info *info)
+ 		return -EOPNOTSUPP;
+ 
+ 	return cfg80211_mlme_register_mgmt(wdev, info->snd_portid, frame_type,
+-			nla_data(info->attrs[NL80211_ATTR_FRAME_MATCH]),
+-			nla_len(info->attrs[NL80211_ATTR_FRAME_MATCH]));
++					   nla_data(info->attrs[NL80211_ATTR_FRAME_MATCH]),
++					   nla_len(info->attrs[NL80211_ATTR_FRAME_MATCH]),
++					   info->extack);
+ }
+ 
+ static int nl80211_tx_mgmt(struct sk_buff *skb, struct genl_info *info)
 -- 
 2.24.1
 
