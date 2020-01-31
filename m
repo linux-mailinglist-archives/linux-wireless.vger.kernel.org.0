@@ -2,26 +2,26 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A43F14EBB6
-	for <lists+linux-wireless@lfdr.de>; Fri, 31 Jan 2020 12:28:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2BF6614EBBA
+	for <lists+linux-wireless@lfdr.de>; Fri, 31 Jan 2020 12:30:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728406AbgAaL2e (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 31 Jan 2020 06:28:34 -0500
-Received: from paleale.coelho.fi ([176.9.41.70]:55926 "EHLO
+        id S1728374AbgAaLaQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 31 Jan 2020 06:30:16 -0500
+Received: from paleale.coelho.fi ([176.9.41.70]:55938 "EHLO
         farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1728374AbgAaL2e (ORCPT
+        with ESMTP id S1728268AbgAaLaQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 31 Jan 2020 06:28:34 -0500
+        Fri, 31 Jan 2020 06:30:16 -0500
 Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa.ger.corp.intel.com)
         by farmhouse.coelho.fi with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.92.2)
         (envelope-from <luca@coelho.fi>)
-        id 1ixUEo-0002GC-0t; Fri, 31 Jan 2020 13:13:26 +0200
+        id 1ixUEo-0002GC-Og; Fri, 31 Jan 2020 13:13:27 +0200
 From:   Luca Coelho <luca@coelho.fi>
 To:     johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org
-Date:   Fri, 31 Jan 2020 13:12:58 +0200
-Message-Id: <20200131111300.891737-22-luca@coelho.fi>
+Date:   Fri, 31 Jan 2020 13:12:59 +0200
+Message-Id: <20200131111300.891737-23-luca@coelho.fi>
 X-Mailer: git-send-email 2.24.1
 In-Reply-To: <20200131111300.891737-1-luca@coelho.fi>
 References: <20200131111300.891737-1-luca@coelho.fi>
@@ -32,81 +32,53 @@ X-Spam-Level:
 X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
         TVD_RCVD_IP,URIBL_BLOCKED autolearn=ham autolearn_force=no
         version=3.4.2
-Subject: [PATCH 21/23] mac80211: consider more elements in parsing CRC
+Subject: [PATCH 22/23] nl80211: add PROTECTED_TWT nl80211 extended feature
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Shaul Triebitz <shaul.triebitz@intel.com>
 
-We only use the parsing CRC for checking if a beacon changed,
-and elements with an ID > 63 cannot be represented in the
-filter. Thus, like we did before with WMM and Cisco vendor
-elements, just statically add these forgotten items to the
-CRC:
- - WLAN_EID_VHT_OPERATION
- - WLAN_EID_OPMODE_NOTIF
- - WLAN_EID_EXT_HE_OPERATION.
+Add API for telling whether the driver supports protected TWT.
+The protected_twt capability in the RSNXE will be based on this.
 
-I guess that in most cases when VHT/HE operation change, the HT
-operation also changed, and so the change was picked up, but we
-did notice that pure operating mode notification changes were
-ignored.
-
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Shaul Triebitz <shaul.triebitz@intel.com>
 Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 ---
- net/mac80211/util.c | 24 +++++++++++++++++-------
- 1 file changed, 17 insertions(+), 7 deletions(-)
+ include/uapi/linux/nl80211.h | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/net/mac80211/util.c b/net/mac80211/util.c
-index 7ddf0508779f..278d65ee8121 100644
---- a/net/mac80211/util.c
-+++ b/net/mac80211/util.c
-@@ -912,8 +912,12 @@ static void ieee80211_parse_extension_element(u32 *crc,
- 		break;
- 	case WLAN_EID_EXT_HE_OPERATION:
- 		if (len >= sizeof(*elems->he_operation) &&
--		    len == ieee80211_he_oper_size(data) - 1)
-+		    len == ieee80211_he_oper_size(data) - 1) {
-+			if (crc)
-+				*crc = crc32_be(*crc, (void *)elem,
-+						elem->datalen + 2);
- 			elems->he_operation = data;
-+		}
- 		break;
- 	case WLAN_EID_EXT_UORA:
- 		if (len == 1)
-@@ -1108,16 +1112,22 @@ _ieee802_11_parse_elems_crc(const u8 *start, size_t len, bool action,
- 				elem_parse_failed = true;
- 			break;
- 		case WLAN_EID_VHT_OPERATION:
--			if (elen >= sizeof(struct ieee80211_vht_operation))
-+			if (elen >= sizeof(struct ieee80211_vht_operation)) {
- 				elems->vht_operation = (void *)pos;
--			else
--				elem_parse_failed = true;
-+				if (calc_crc)
-+					crc = crc32_be(crc, pos - 2, elen + 2);
-+				break;
-+			}
-+			elem_parse_failed = true;
- 			break;
- 		case WLAN_EID_OPMODE_NOTIF:
--			if (elen > 0)
-+			if (elen > 0) {
- 				elems->opmode_notif = pos;
--			else
--				elem_parse_failed = true;
-+				if (calc_crc)
-+					crc = crc32_be(crc, pos - 2, elen + 2);
-+				break;
-+			}
-+			elem_parse_failed = true;
- 			break;
- 		case WLAN_EID_MESH_ID:
- 			elems->mesh_id = pos;
+diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
+index ef87b8afb6e0..d7ba9ece51da 100644
+--- a/include/uapi/linux/nl80211.h
++++ b/include/uapi/linux/nl80211.h
+@@ -11,7 +11,7 @@
+  * Copyright 2008 Jouni Malinen <jouni.malinen@atheros.com>
+  * Copyright 2008 Colin McCabe <colin@cozybit.com>
+  * Copyright 2015-2017	Intel Deutschland GmbH
+- * Copyright (C) 2018-2019 Intel Corporation
++ * Copyright (C) 2018-2020 Intel Corporation
+  *
+  * Permission to use, copy, modify, and/or distribute this software for any
+  * purpose with or without fee is hereby granted, provided that the above
+@@ -5530,6 +5530,8 @@ enum nl80211_feature_flags {
+  *	feature, which prevents bufferbloat by using the expected transmission
+  *	time to limit the amount of data buffered in the hardware.
+  *
++ * @NL80211_EXT_FEATURE_PROTECTED_TWT: Driver supports protected TWT frames
++ *
+  * @NUM_NL80211_EXT_FEATURES: number of extended features.
+  * @MAX_NL80211_EXT_FEATURES: highest extended feature index.
+  */
+@@ -5577,6 +5579,7 @@ enum nl80211_ext_feature_index {
+ 	NL80211_EXT_FEATURE_SAE_OFFLOAD,
+ 	NL80211_EXT_FEATURE_VLAN_OFFLOAD,
+ 	NL80211_EXT_FEATURE_AQL,
++	NL80211_EXT_FEATURE_PROTECTED_TWT,
+ 
+ 	/* add new features before the definition below */
+ 	NUM_NL80211_EXT_FEATURES,
 -- 
 2.24.1
 
