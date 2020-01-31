@@ -2,127 +2,123 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B7EB14EB60
-	for <lists+linux-wireless@lfdr.de>; Fri, 31 Jan 2020 12:03:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 41CAE14EB7C
+	for <lists+linux-wireless@lfdr.de>; Fri, 31 Jan 2020 12:13:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728406AbgAaLD5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 31 Jan 2020 06:03:57 -0500
-Received: from mail25.static.mailgun.info ([104.130.122.25]:42546 "EHLO
-        mail25.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728268AbgAaLD5 (ORCPT
+        id S1728374AbgAaLNK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 31 Jan 2020 06:13:10 -0500
+Received: from paleale.coelho.fi ([176.9.41.70]:55760 "EHLO
+        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1728268AbgAaLNK (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 31 Jan 2020 06:03:57 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1580468636; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=rNOUhYWPTelGWLCs3FtWi8wsKS2uU5eRrCt6VpYAPQ0=; b=FuvKaCKb5Ix343TAsrO28+fU15XYvHT34kqDfcBzZ7SLQjlWFl0OWgzc+aghGV11sD1K4mKb
- PYeeV5sipo5D+Hz3WRobsnRZb6FWOUToaJrFFgET1876vDw4i5XVui9quUnu7FwEF7NhQFCn
- ygto1wk35t5VBg5SJfgO5ERtCoY=
-X-Mailgun-Sending-Ip: 104.130.122.25
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e340999.7efdf0508f48-smtp-out-n03;
- Fri, 31 Jan 2020 11:03:53 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id D055BC433A2; Fri, 31 Jan 2020 11:03:53 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 57225C433A2;
-        Fri, 31 Jan 2020 11:03:51 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 57225C433A2
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Tony Chuang <yhchuang@realtek.com>
-Cc:     Nathan Chancellor <natechancellor@gmail.com>,
-        "linux-wireless\@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "netdev\@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel\@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "clang-built-linux\@googlegroups.com" 
-        <clang-built-linux@googlegroups.com>
-Subject: Re: [PATCH] rtw88: Initialize ret in rtw_wow_check_fw_status
-References: <20200130013308.16395-1-natechancellor@gmail.com>
-        <e0fb1ead6dcc4ecc973b3b9b5399ef66@realtek.com>
-Date:   Fri, 31 Jan 2020 13:03:48 +0200
-In-Reply-To: <e0fb1ead6dcc4ecc973b3b9b5399ef66@realtek.com> (Tony Chuang's
-        message of "Fri, 31 Jan 2020 10:23:40 +0000")
-Message-ID: <87mua3c2gb.fsf@kamboji.qca.qualcomm.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        Fri, 31 Jan 2020 06:13:10 -0500
+Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa.ger.corp.intel.com)
+        by farmhouse.coelho.fi with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.92.2)
+        (envelope-from <luca@coelho.fi>)
+        id 1ixUEU-0002GC-Ng; Fri, 31 Jan 2020 13:13:07 +0200
+From:   Luca Coelho <luca@coelho.fi>
+To:     johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org
+Date:   Fri, 31 Jan 2020 13:12:37 +0200
+Message-Id: <20200131111300.891737-1-luca@coelho.fi>
+X-Mailer: git-send-email 2.24.1
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on farmhouse.coelho.fi
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+        TVD_RCVD_IP,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.2
+Subject: [PATCH 00/23] cfg80211/mac80211 patches from our internal tree 2020-01-31
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Tony Chuang <yhchuang@realtek.com> writes:
+From: Luca Coelho <luciano.coelho@intel.com>
 
-> From: Nathan Chancellor
->> Subject: [PATCH] rtw88: Initialize ret in rtw_wow_check_fw_status
->> 
->> Clang warns a few times (trimmed for brevity):
->> 
->> ../drivers/net/wireless/realtek/rtw88/wow.c:295:7: warning: variable
->> 'ret' is used uninitialized whenever 'if' condition is false
->> [-Wsometimes-uninitialized]
->> 
->> Initialize ret to true and change the other assignments to false because
->> it is a boolean value.
->> 
->> Fixes: 44bc17f7f5b3 ("rtw88: support wowlan feature for 8822c")
->> Link: https://github.com/ClangBuiltLinux/linux/issues/850
->> Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
->> ---
->>  drivers/net/wireless/realtek/rtw88/wow.c | 6 +++---
->>  1 file changed, 3 insertions(+), 3 deletions(-)
->> 
->> diff --git a/drivers/net/wireless/realtek/rtw88/wow.c
->> b/drivers/net/wireless/realtek/rtw88/wow.c
->> index af5c27e1bb07..5db49802c72c 100644
->> --- a/drivers/net/wireless/realtek/rtw88/wow.c
->> +++ b/drivers/net/wireless/realtek/rtw88/wow.c
->> @@ -283,18 +283,18 @@ static void rtw_wow_rx_dma_start(struct rtw_dev
->> *rtwdev)
->> 
->>  static bool rtw_wow_check_fw_status(struct rtw_dev *rtwdev, bool
->> wow_enable)
->>  {
->> -	bool ret;
->> +	bool ret = true;
->> 
->>  	/* wait 100ms for wow firmware to finish work */
->>  	msleep(100);
->> 
->>  	if (wow_enable) {
->>  		if (!rtw_read8(rtwdev, REG_WOWLAN_WAKE_REASON))
->> -			ret = 0;
->> +			ret = false;
->>  	} else {
->>  		if (rtw_read32_mask(rtwdev, REG_FE1IMR, BIT_FS_RXDONE) == 0
->> &&
->>  		    rtw_read32_mask(rtwdev, REG_RXPKT_NUM,
->> BIT_RW_RELEASE) == 0)
->> -			ret = 0;
->> +			ret = false;
->>  	}
->> 
->>  	if (ret)
->> --
->> 2.25.0
->
-> NACK.
->
-> This patch could lead to incorrect behavior of WOW.
-> I will send a new patch to fix it, and change the type to "int".
+Hi,
 
-Please send it separately so that I can queue it to v5.6.
+A bunch of patches with mac80211 and cfg80211 changes from our
+internal tree.
+
+Please review, though you have already reviewed most if not all of
+them ;)
+
+Cheers,
+Luca.
+
+
+Andrei Otcheretianski (1):
+  mac80211: Accept broadcast probe responses on 6GHz band
+
+Avraham Stern (1):
+  nl80211/cfg80211: add support for non EDCA based ranging measurement
+
+Daniel Gabay (1):
+  mac80211: update condition for HE disablement
+
+Haim Dreyfuss (2):
+  cfg80211: add no HE indication to the channel flag
+  mac80211: check whether HE connection is allowed by the reg domain
+
+Ilan Peer (3):
+  cfg80211: Limit the registration for authentication frames
+  mac80211: Handle SMPS mode changes only in AP mode
+  mac80211: Remove support for changing AP SMPS mode
+
+Johannes Berg (7):
+  mac80211: simplify and improve HT/VHT/HE disable code
+  mac80211: refactor extended element parsing
+  mac80211: set station bandwidth from HE capability
+  mac80211: remove some stray braces
+  mac80211: allow changing TX-related netdev features
+  mac80211: update conditions for supported channels element
+  mac80211: consider more elements in parsing CRC
+
+Luca Coelho (1):
+  mac80211: make ieee80211_wep_init() return void
+
+Sara Sharon (1):
+  mac80211: fix quiet mode activation in action frames
+
+Shaul Triebitz (5):
+  nl80211: he: pass to driver the HE operation IE
+  mac80211: he: set missing bss_conf fields in AP mode
+  mac80211: parse also the RSNXE IE
+  nl80211: add PROTECTED_TWT nl80211 extended feature
+  mac80211: Properly set the SMPS mode for 6GHz station
+
+Tova Mussai (1):
+  mac80211: he: set rx nss
+
+ include/linux/ieee80211.h     |   8 ++
+ include/net/cfg80211.h        |  22 ++++-
+ include/net/mac80211.h        |   2 +
+ include/uapi/linux/nl80211.h  |  34 +++++++-
+ net/mac80211/cfg.c            | 113 +++-----------------------
+ net/mac80211/debugfs_netdev.c |  13 +--
+ net/mac80211/he.c             |   4 +
+ net/mac80211/ht.c             |  64 ++++++---------
+ net/mac80211/ieee80211_i.h    |  16 ++--
+ net/mac80211/iface.c          |  10 +--
+ net/mac80211/main.c           |  16 ++--
+ net/mac80211/mlme.c           | 146 ++++++++++++++++++++++------------
+ net/mac80211/rx.c             |   6 +-
+ net/mac80211/sta_info.c       |  16 +---
+ net/mac80211/util.c           | 104 ++++++++++++++++--------
+ net/mac80211/vht.c            |  58 +++++++++++++-
+ net/mac80211/wep.c            |   4 +-
+ net/mac80211/wep.h            |   2 +-
+ net/wireless/core.c           |   6 ++
+ net/wireless/core.h           |   2 +-
+ net/wireless/mlme.c           |  33 +++++++-
+ net/wireless/nl80211.c        |  21 ++++-
+ net/wireless/pmsr.c           |  32 ++++++++
+ net/wireless/reg.c            |   2 +
+ 24 files changed, 444 insertions(+), 290 deletions(-)
 
 -- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+2.24.1
+
