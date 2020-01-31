@@ -2,26 +2,26 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3102C14EB97
-	for <lists+linux-wireless@lfdr.de>; Fri, 31 Jan 2020 12:16:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4277E14EBAD
+	for <lists+linux-wireless@lfdr.de>; Fri, 31 Jan 2020 12:25:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728397AbgAaLQr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 31 Jan 2020 06:16:47 -0500
-Received: from paleale.coelho.fi ([176.9.41.70]:55876 "EHLO
+        id S1728374AbgAaLZL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 31 Jan 2020 06:25:11 -0500
+Received: from paleale.coelho.fi ([176.9.41.70]:55906 "EHLO
         farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1728268AbgAaLQr (ORCPT
+        with ESMTP id S1728395AbgAaLZL (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 31 Jan 2020 06:16:47 -0500
+        Fri, 31 Jan 2020 06:25:11 -0500
 Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa.ger.corp.intel.com)
         by farmhouse.coelho.fi with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.92.2)
         (envelope-from <luca@coelho.fi>)
-        id 1ixUEc-0002GC-Hl; Fri, 31 Jan 2020 13:13:14 +0200
+        id 1ixUEd-0002GC-6a; Fri, 31 Jan 2020 13:13:15 +0200
 From:   Luca Coelho <luca@coelho.fi>
 To:     johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org
-Date:   Fri, 31 Jan 2020 13:12:47 +0200
-Message-Id: <20200131111300.891737-11-luca@coelho.fi>
+Date:   Fri, 31 Jan 2020 13:12:48 +0200
+Message-Id: <20200131111300.891737-12-luca@coelho.fi>
 X-Mailer: git-send-email 2.24.1
 In-Reply-To: <20200131111300.891737-1-luca@coelho.fi>
 References: <20200131111300.891737-1-luca@coelho.fi>
@@ -32,71 +32,81 @@ X-Spam-Level:
 X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
         TVD_RCVD_IP,URIBL_BLOCKED autolearn=ham autolearn_force=no
         version=3.4.2
-Subject: [PATCH 10/23] mac80211: make ieee80211_wep_init() return void
+Subject: [PATCH 11/23] mac80211: update conditions for supported channels element
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Luca Coelho <luciano.coelho@intel.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-This function always returns 0, so there's no point in returning int.
-Make it void and remove the impossible error-path when calling it.
+We should not include the supported channels element if we have
+(advertise) support for extended channel switching. Update this
+in the code.
 
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 ---
- net/mac80211/main.c | 5 +----
- net/mac80211/wep.c  | 4 +---
- net/mac80211/wep.h  | 2 +-
- 3 files changed, 3 insertions(+), 8 deletions(-)
+ net/mac80211/mlme.c | 32 +++++++++++++++++++-------------
+ 1 file changed, 19 insertions(+), 13 deletions(-)
 
-diff --git a/net/mac80211/main.c b/net/mac80211/main.c
-index 287dd0588476..d91bcef738dc 100644
---- a/net/mac80211/main.c
-+++ b/net/mac80211/main.c
-@@ -1185,10 +1185,7 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
- 	if (!local->hw.weight_multiplier)
- 		local->hw.weight_multiplier = 1;
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index 152577cc2213..bb20a5d8a172 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -671,6 +671,13 @@ static void ieee80211_send_assoc(struct ieee80211_sub_if_data *sdata)
+ 	struct ieee80211_chanctx_conf *chanctx_conf;
+ 	struct ieee80211_channel *chan;
+ 	u32 rates = 0;
++	struct element *ext_capa = NULL;
++
++	/* we know it's writable, cast away the const */
++	if (assoc_data->ie_len)
++		ext_capa = (void *)cfg80211_find_elem(WLAN_EID_EXT_CAPABILITY,
++						      assoc_data->ie,
++						      assoc_data->ie_len);
  
--	result = ieee80211_wep_init(local);
--	if (result < 0)
--		wiphy_debug(local->hw.wiphy, "Failed to initialize wep: %d\n",
--			    result);
-+	ieee80211_wep_init(local);
+ 	sdata_assert_lock(sdata);
  
- 	local->hw.conf.flags = IEEE80211_CONF_IDLE;
+@@ -821,7 +828,15 @@ static void ieee80211_send_assoc(struct ieee80211_sub_if_data *sdata)
+ 		*pos++ = ieee80211_chandef_max_power(&chanctx_conf->def);
+ 	}
  
-diff --git a/net/mac80211/wep.c b/net/mac80211/wep.c
-index b75c2c54e665..9a6e11d7b4db 100644
---- a/net/mac80211/wep.c
-+++ b/net/mac80211/wep.c
-@@ -22,12 +22,10 @@
- #include "wep.h"
+-	if (capab & WLAN_CAPABILITY_SPECTRUM_MGMT) {
++	/*
++	 * Per spec, we shouldn't include the list of channels if we advertise
++	 * support for extended channel switching, but we've always done that;
++	 * (for now?) apply this restriction only on the (new) 6 GHz band.
++	 */
++	if (capab & WLAN_CAPABILITY_SPECTRUM_MGMT &&
++	    (sband->band != NL80211_BAND_6GHZ ||
++	     !ext_capa || ext_capa->datalen < 1 ||
++	     !(ext_capa->data[0] & WLAN_EXT_CAPA1_EXT_CHANNEL_SWITCHING))) {
+ 		/* TODO: get this in reg domain format */
+ 		pos = skb_put(skb, 2 * sband->n_channels + 2);
+ 		*pos++ = WLAN_EID_SUPPORTED_CHANNELS;
+@@ -835,18 +850,9 @@ static void ieee80211_send_assoc(struct ieee80211_sub_if_data *sdata)
  
- 
--int ieee80211_wep_init(struct ieee80211_local *local)
-+void ieee80211_wep_init(struct ieee80211_local *local)
- {
- 	/* start WEP IV from a random value */
- 	get_random_bytes(&local->wep_iv, IEEE80211_WEP_IV_LEN);
+ 	/* Set MBSSID support for HE AP if needed */
+ 	if (ieee80211_hw_check(&local->hw, SUPPORTS_ONLY_HE_MULTI_BSSID) &&
+-	    !(ifmgd->flags & IEEE80211_STA_DISABLE_HE) && assoc_data->ie_len) {
+-		struct element *elem;
 -
--	return 0;
- }
+-		/* we know it's writable, cast away the const */
+-		elem = (void *)cfg80211_find_elem(WLAN_EID_EXT_CAPABILITY,
+-						  assoc_data->ie,
+-						  assoc_data->ie_len);
+-
+-		/* We can probably assume both always true */
+-		if (elem && elem->datalen >= 3)
+-			elem->data[2] |= WLAN_EXT_CAPA3_MULTI_BSSID_SUPPORT;
+-	}
++	    !(ifmgd->flags & IEEE80211_STA_DISABLE_HE) && assoc_data->ie_len &&
++	    ext_capa && ext_capa->datalen >= 3)
++		ext_capa->data[2] |= WLAN_EXT_CAPA3_MULTI_BSSID_SUPPORT;
  
- static inline bool ieee80211_wep_weak_iv(u32 iv, int keylen)
-diff --git a/net/mac80211/wep.h b/net/mac80211/wep.h
-index 997a034233c2..4ffe83554c67 100644
---- a/net/mac80211/wep.h
-+++ b/net/mac80211/wep.h
-@@ -13,7 +13,7 @@
- #include "ieee80211_i.h"
- #include "key.h"
- 
--int ieee80211_wep_init(struct ieee80211_local *local);
-+void ieee80211_wep_init(struct ieee80211_local *local);
- int ieee80211_wep_encrypt_data(struct arc4_ctx *ctx, u8 *rc4key,
- 				size_t klen, u8 *data, size_t data_len);
- int ieee80211_wep_encrypt(struct ieee80211_local *local,
+ 	/* if present, add any custom IEs that go before HT */
+ 	if (assoc_data->ie_len) {
 -- 
 2.24.1
 
