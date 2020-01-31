@@ -2,118 +2,127 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7731B14EA94
-	for <lists+linux-wireless@lfdr.de>; Fri, 31 Jan 2020 11:24:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B7EB14EB60
+	for <lists+linux-wireless@lfdr.de>; Fri, 31 Jan 2020 12:03:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728326AbgAaKXx convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 31 Jan 2020 05:23:53 -0500
-Received: from rtits2.realtek.com ([211.75.126.72]:35106 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728071AbgAaKXx (ORCPT
+        id S1728406AbgAaLD5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 31 Jan 2020 06:03:57 -0500
+Received: from mail25.static.mailgun.info ([104.130.122.25]:42546 "EHLO
+        mail25.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728268AbgAaLD5 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 31 Jan 2020 05:23:53 -0500
-Authenticated-By: 
-X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID 00VANfqG016275, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (RTEXMB06.realtek.com.tw[172.21.6.99])
-        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id 00VANfqG016275
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 31 Jan 2020 18:23:41 +0800
-Received: from RTEXDAG02.realtek.com.tw (172.21.6.101) by
- RTEXMB06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Fri, 31 Jan 2020 18:23:41 +0800
-Received: from RTEXMB04.realtek.com.tw (172.21.6.97) by
- RTEXDAG02.realtek.com.tw (172.21.6.101) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Fri, 31 Jan 2020 18:23:40 +0800
-Received: from RTEXMB04.realtek.com.tw ([fe80::d9c5:a079:495e:b999]) by
- RTEXMB04.realtek.com.tw ([fe80::d9c5:a079:495e:b999%6]) with mapi id
- 15.01.1779.005; Fri, 31 Jan 2020 18:23:40 +0800
-From:   Tony Chuang <yhchuang@realtek.com>
-To:     Nathan Chancellor <natechancellor@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>
-CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "clang-built-linux@googlegroups.com" 
+        Fri, 31 Jan 2020 06:03:57 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1580468636; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=rNOUhYWPTelGWLCs3FtWi8wsKS2uU5eRrCt6VpYAPQ0=; b=FuvKaCKb5Ix343TAsrO28+fU15XYvHT34kqDfcBzZ7SLQjlWFl0OWgzc+aghGV11sD1K4mKb
+ PYeeV5sipo5D+Hz3WRobsnRZb6FWOUToaJrFFgET1876vDw4i5XVui9quUnu7FwEF7NhQFCn
+ ygto1wk35t5VBg5SJfgO5ERtCoY=
+X-Mailgun-Sending-Ip: 104.130.122.25
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5e340999.7efdf0508f48-smtp-out-n03;
+ Fri, 31 Jan 2020 11:03:53 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id D055BC433A2; Fri, 31 Jan 2020 11:03:53 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 57225C433A2;
+        Fri, 31 Jan 2020 11:03:51 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 57225C433A2
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Tony Chuang <yhchuang@realtek.com>
+Cc:     Nathan Chancellor <natechancellor@gmail.com>,
+        "linux-wireless\@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "netdev\@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel\@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "clang-built-linux\@googlegroups.com" 
         <clang-built-linux@googlegroups.com>
-Subject: RE: [PATCH] rtw88: Initialize ret in rtw_wow_check_fw_status
-Thread-Topic: [PATCH] rtw88: Initialize ret in rtw_wow_check_fw_status
-Thread-Index: AQHV1w0+cQfBiHwgKkKd8alOOCYKsqgEkmQA
-Date:   Fri, 31 Jan 2020 10:23:40 +0000
-Message-ID: <e0fb1ead6dcc4ecc973b3b9b5399ef66@realtek.com>
+Subject: Re: [PATCH] rtw88: Initialize ret in rtw_wow_check_fw_status
 References: <20200130013308.16395-1-natechancellor@gmail.com>
-In-Reply-To: <20200130013308.16395-1-natechancellor@gmail.com>
-Accept-Language: zh-TW, en-US
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.68.175]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        <e0fb1ead6dcc4ecc973b3b9b5399ef66@realtek.com>
+Date:   Fri, 31 Jan 2020 13:03:48 +0200
+In-Reply-To: <e0fb1ead6dcc4ecc973b3b9b5399ef66@realtek.com> (Tony Chuang's
+        message of "Fri, 31 Jan 2020 10:23:40 +0000")
+Message-ID: <87mua3c2gb.fsf@kamboji.qca.qualcomm.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Nathan Chancellor
-> Subject: [PATCH] rtw88: Initialize ret in rtw_wow_check_fw_status
-> 
-> Clang warns a few times (trimmed for brevity):
-> 
-> ../drivers/net/wireless/realtek/rtw88/wow.c:295:7: warning: variable
-> 'ret' is used uninitialized whenever 'if' condition is false
-> [-Wsometimes-uninitialized]
-> 
-> Initialize ret to true and change the other assignments to false because
-> it is a boolean value.
-> 
-> Fixes: 44bc17f7f5b3 ("rtw88: support wowlan feature for 8822c")
-> Link: https://github.com/ClangBuiltLinux/linux/issues/850
-> Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
-> ---
->  drivers/net/wireless/realtek/rtw88/wow.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/realtek/rtw88/wow.c
-> b/drivers/net/wireless/realtek/rtw88/wow.c
-> index af5c27e1bb07..5db49802c72c 100644
-> --- a/drivers/net/wireless/realtek/rtw88/wow.c
-> +++ b/drivers/net/wireless/realtek/rtw88/wow.c
-> @@ -283,18 +283,18 @@ static void rtw_wow_rx_dma_start(struct rtw_dev
-> *rtwdev)
-> 
->  static bool rtw_wow_check_fw_status(struct rtw_dev *rtwdev, bool
-> wow_enable)
->  {
-> -	bool ret;
-> +	bool ret = true;
-> 
->  	/* wait 100ms for wow firmware to finish work */
->  	msleep(100);
-> 
->  	if (wow_enable) {
->  		if (!rtw_read8(rtwdev, REG_WOWLAN_WAKE_REASON))
-> -			ret = 0;
-> +			ret = false;
->  	} else {
->  		if (rtw_read32_mask(rtwdev, REG_FE1IMR, BIT_FS_RXDONE) == 0
-> &&
->  		    rtw_read32_mask(rtwdev, REG_RXPKT_NUM,
-> BIT_RW_RELEASE) == 0)
-> -			ret = 0;
-> +			ret = false;
->  	}
-> 
->  	if (ret)
-> --
-> 2.25.0
+Tony Chuang <yhchuang@realtek.com> writes:
 
-NACK.
+> From: Nathan Chancellor
+>> Subject: [PATCH] rtw88: Initialize ret in rtw_wow_check_fw_status
+>> 
+>> Clang warns a few times (trimmed for brevity):
+>> 
+>> ../drivers/net/wireless/realtek/rtw88/wow.c:295:7: warning: variable
+>> 'ret' is used uninitialized whenever 'if' condition is false
+>> [-Wsometimes-uninitialized]
+>> 
+>> Initialize ret to true and change the other assignments to false because
+>> it is a boolean value.
+>> 
+>> Fixes: 44bc17f7f5b3 ("rtw88: support wowlan feature for 8822c")
+>> Link: https://github.com/ClangBuiltLinux/linux/issues/850
+>> Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
+>> ---
+>>  drivers/net/wireless/realtek/rtw88/wow.c | 6 +++---
+>>  1 file changed, 3 insertions(+), 3 deletions(-)
+>> 
+>> diff --git a/drivers/net/wireless/realtek/rtw88/wow.c
+>> b/drivers/net/wireless/realtek/rtw88/wow.c
+>> index af5c27e1bb07..5db49802c72c 100644
+>> --- a/drivers/net/wireless/realtek/rtw88/wow.c
+>> +++ b/drivers/net/wireless/realtek/rtw88/wow.c
+>> @@ -283,18 +283,18 @@ static void rtw_wow_rx_dma_start(struct rtw_dev
+>> *rtwdev)
+>> 
+>>  static bool rtw_wow_check_fw_status(struct rtw_dev *rtwdev, bool
+>> wow_enable)
+>>  {
+>> -	bool ret;
+>> +	bool ret = true;
+>> 
+>>  	/* wait 100ms for wow firmware to finish work */
+>>  	msleep(100);
+>> 
+>>  	if (wow_enable) {
+>>  		if (!rtw_read8(rtwdev, REG_WOWLAN_WAKE_REASON))
+>> -			ret = 0;
+>> +			ret = false;
+>>  	} else {
+>>  		if (rtw_read32_mask(rtwdev, REG_FE1IMR, BIT_FS_RXDONE) == 0
+>> &&
+>>  		    rtw_read32_mask(rtwdev, REG_RXPKT_NUM,
+>> BIT_RW_RELEASE) == 0)
+>> -			ret = 0;
+>> +			ret = false;
+>>  	}
+>> 
+>>  	if (ret)
+>> --
+>> 2.25.0
+>
+> NACK.
+>
+> This patch could lead to incorrect behavior of WOW.
+> I will send a new patch to fix it, and change the type to "int".
 
-This patch could lead to incorrect behavior of WOW.
-I will send a new patch to fix it, and change the type to "int".
+Please send it separately so that I can queue it to v5.6.
 
-Yan-Hsuan
+-- 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
