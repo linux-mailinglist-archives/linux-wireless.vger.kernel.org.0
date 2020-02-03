@@ -2,81 +2,98 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A80BE150191
-	for <lists+linux-wireless@lfdr.de>; Mon,  3 Feb 2020 07:13:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C7AD915023C
+	for <lists+linux-wireless@lfdr.de>; Mon,  3 Feb 2020 09:08:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727412AbgBCGNS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 3 Feb 2020 01:13:18 -0500
-Received: from mail-ot1-f68.google.com ([209.85.210.68]:46478 "EHLO
-        mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727222AbgBCGNS (ORCPT
+        id S1727728AbgBCIIp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 3 Feb 2020 03:08:45 -0500
+Received: from mail-wm1-f67.google.com ([209.85.128.67]:36097 "EHLO
+        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727308AbgBCIIo (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 3 Feb 2020 01:13:18 -0500
-Received: by mail-ot1-f68.google.com with SMTP id g64so12495657otb.13
-        for <linux-wireless@vger.kernel.org>; Sun, 02 Feb 2020 22:13:17 -0800 (PST)
+        Mon, 3 Feb 2020 03:08:44 -0500
+Received: by mail-wm1-f67.google.com with SMTP id p17so15772024wma.1;
+        Mon, 03 Feb 2020 00:08:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=WDgwveZNiwQI4lN1T/HnxxN3QEUl6oNocQfLFOXnUBw=;
-        b=fzFQcigNnDYTH/XDKeoODFKtfZK6S8gTxJheGUMCOETVdrV0qYLdEoc0KHc9MQLu11
-         vsGuzPrLcZOMd2TDoSEzyt42LJAo5Ji0NEHXjPftXBu28uNEFXp0wUyiHrKw6rVS61GB
-         KiOgMdrPVnPyX8uwwJQMYNxUvezVuvENJbCMVRMuEGVV9+n+DB2aMKqDzUD7ogrD963U
-         /Q0IfUos6y/WRGRSLPHckecFSloDBTkFKNvGasOgX4FEN5BvPpqVVMY2iuiTmfUIAfzu
-         9l/6a4bHRbT9kn/Q8koU1/HORv+BlxkTjnXJ0mJe7iYNV+cNNDhNG/y9beufhy6Vqs7A
-         4StQ==
+        h=from:to:cc:subject:date:message-id;
+        bh=7sYM8eT+kTrvZyGwiZN7bHkcGk6EIz1tRLoNiTTlspc=;
+        b=gVb5orNbcPgO8uiztYf9dkqrOY5Uj+gwy/YprnUdAM3jj0VO7P/f0X5oK2PyqFIoLm
+         Ui2DgFwADsMKIVOrgP6fC/tRFqduZrj0Pk1sE/nSmV3rtrRY+ZHmzhGhsltXCOChWu1K
+         CSd6XJTcV4zLe8/i96rwf4c+df9qTbv7zVa7wpc9IU3MPg6FIcrhS90n1lFEinKROlAm
+         S4LUkAm4febSUdtfF6gs4hSJqn9Ukti0xj3VcHZ/RG0XONPpIorhZKk9oalG1xnsV3Yn
+         H2wRTMCaUbceR5qpDpsmLQonHHbIa+X3gIglGTO+9En0uWxF0oGRKPwtty0H7Ri56680
+         PGOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=WDgwveZNiwQI4lN1T/HnxxN3QEUl6oNocQfLFOXnUBw=;
-        b=DzIx7hwA/QW0bQk0/G5dk3tuF8ThXLjQrHUHuOlA0Rr0L+PmvDskcWxs+qFaXgM8hd
-         wQ7nZTD3J5UAeLIa55dy0L/bwcE3NYoE60bmX2Zko5vfGOSRCF06jLHhnq8WW1K2bKyq
-         zS2NLblkItGbgdUGmSrBn2l9wyRnAF1ijkkZyPJv25kXuT2UnQ6enRFPEwcbhgwY0R6G
-         kPJjy6bNI/MdZOZ7vJThfi1MatCU8S9HokzyPU+7JFZZVlZIJj8S74+kTD0UqnQ9yNvv
-         Pz4MAUDgQbvZL/+co1G9T1Gtu+0VNNx8EaSgVMCckzYs+72dJaS5u3DwthYgNB0MjJze
-         8VaA==
-X-Gm-Message-State: APjAAAWFNQV8HS3T2N1qPd3FS0Wq6o/MZQ+O83PJjBShs/Af/V6Utq7M
-        AQ9afVpUr8mY9ygUKQuKPlM=
-X-Google-Smtp-Source: APXvYqw9we359N2EvXg0CkOQosSH3h90Us/Mz1LJs4DROHZZwpBTqCYl9uGW8D+rzjQV/wCKdAPnvA==
-X-Received: by 2002:a05:6830:1e95:: with SMTP id n21mr17247683otr.25.1580710397405;
-        Sun, 02 Feb 2020 22:13:17 -0800 (PST)
-Received: from ubuntu-x2-xlarge-x86 ([2604:1380:4111:8b00::1])
-        by smtp.gmail.com with ESMTPSA id i20sm6236785otp.14.2020.02.02.22.13.16
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Sun, 02 Feb 2020 22:13:16 -0800 (PST)
-Date:   Sun, 2 Feb 2020 23:13:15 -0700
-From:   Nathan Chancellor <natechancellor@gmail.com>
-To:     yhchuang@realtek.com
-Cc:     kvalo@codeaurora.org, linux-wireless@vger.kernel.org,
-        briannorris@chromium.org
-Subject: Re: [PATCH 5.6] rtw88: Fix return value of rtw_wow_check_fw_status
-Message-ID: <20200203061315.GA6067@ubuntu-x2-xlarge-x86>
-References: <20200203060157.15330-1-yhchuang@realtek.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200203060157.15330-1-yhchuang@realtek.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=7sYM8eT+kTrvZyGwiZN7bHkcGk6EIz1tRLoNiTTlspc=;
+        b=rXGql2DgQvrMI3Gsrz2rrTD4DsQa6nv4PUnFtHXNCTA6ptC93K/NVGbzv/IioSjXmZ
+         Bg/zkjMhTifeHrTmDsddcmFus7MpSyM+tbnuXY7zGS0gV7WrM7ZWJWlzXsWyj66eXTk9
+         6Vjz67yg3c2DRmEC2KxEuMeSef7fe0A3jc5Uw+A2ri0Agq8rt4fTZDfvqEoaMTIawaYW
+         KFUwLvIUUamj7yeYT2IHWnXWHHmww11RZaPGd4iEAKs9BNZqJblz8ewNjK9GbxaedFCy
+         j76IOlrLvcAhmTbw1FgXXJa0oXYUJgX9FhlsLKEhl8x7fzce9NPPE0xykv9lmQ9jDe8n
+         NM1A==
+X-Gm-Message-State: APjAAAXZZAtheMSvofUBBbMAbODGOmRwI7cPUgdUxPG51ODmwSomWhIY
+        9qeKWexgHOuAOLjcAl0XIsCoBe58
+X-Google-Smtp-Source: APXvYqzD+OR1dr/24HpXa1q62h4Zp5MSd5va7uv+zjVjRgeKNmVlatznscrxp7p/DgmuVKOcaBSx9A==
+X-Received: by 2002:a7b:cb97:: with SMTP id m23mr26069459wmi.37.1580717322440;
+        Mon, 03 Feb 2020 00:08:42 -0800 (PST)
+Received: from localhost.localdomain ([185.120.125.36])
+        by smtp.googlemail.com with ESMTPSA id a16sm23455649wrt.37.2020.02.03.00.08.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 03 Feb 2020 00:08:41 -0800 (PST)
+From:   Zvika Yehudai <zvikayeh@gmail.com>
+To:     johannes@sipsolutions.net, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     Zvika Yehudai <zvikayeh@gmail.com>
+Subject: [PATCH] mac80211: Fix minor typo.
+Date:   Mon,  3 Feb 2020 10:08:23 +0200
+Message-Id: <20200203080823.24949-1-zvikayeh@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Feb 03, 2020 at 02:01:57PM +0800, yhchuang@realtek.com wrote:
-> From: Chin-Yen Lee <timlee@realtek.com>
-> 
-> Clang warns that ret is used uninitialzed.
-> And we found that actually the return type should be "int" instead
-> of "bool".
-> 
-> Fixes: 44bc17f7f5b3 ("rtw88: support wowlan feature for 8822c")
-> Link: https://github.com/ClangBuiltLinux/linux/issues/850
-> Reported-by: Nathan Chancellor <natechancellor@gmail.com>
-> Signed-off-by: Chin-Yen Lee <timlee@realtek.com>
-> Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
+Remove redundant 'the'.
 
-Looks good to me, thank you for the fix and keeping my tags :)
+Signed-off-by: Zvika Yehudai <zvikayeh@gmail.com>
+---
+ include/linux/ieee80211.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-Reviewed-by: Nathan Chancellor <natechancellor@gmail.com>
-Tested-by: Nathan Chancellor <natechancellor@gmail.com> # build
+diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
+index 7d3f2ced92d1..5aff704eb0f4 100644
+--- a/include/linux/ieee80211.h
++++ b/include/linux/ieee80211.h
+@@ -2053,7 +2053,7 @@ ieee80211_he_ppe_size(u8 ppe_thres_hdr, const u8 *phy_cap_info)
+ 
+ /*
+  * ieee80211_he_oper_size - calculate 802.11ax HE Operations IE size
+- * @he_oper_ie: byte data of the He Operations IE, stating from the the byte
++ * @he_oper_ie: byte data of the He Operations IE, stating from the byte
+  *	after the ext ID byte. It is assumed that he_oper_ie has at least
+  *	sizeof(struct ieee80211_he_operation) bytes, the caller must have
+  *	validated this.
+@@ -2091,7 +2091,7 @@ ieee80211_he_oper_size(const u8 *he_oper_ie)
+ 
+ /*
+  * ieee80211_he_spr_size - calculate 802.11ax HE Spatial Reuse IE size
+- * @he_spr_ie: byte data of the He Spatial Reuse IE, stating from the the byte
++ * @he_spr_ie: byte data of the He Spatial Reuse IE, stating from the byte
+  *	after the ext ID byte. It is assumed that he_spr_ie has at least
+  *	sizeof(struct ieee80211_he_spr) bytes, the caller must have validated
+  *	this
+@@ -2734,7 +2734,7 @@ enum ieee80211_tdls_actioncode {
+  */
+ #define WLAN_EXT_CAPA3_MULTI_BSSID_SUPPORT	BIT(6)
+ 
+-/* TDLS capabilities in the the 4th byte of @WLAN_EID_EXT_CAPABILITY */
++/* TDLS capabilities in the 4th byte of @WLAN_EID_EXT_CAPABILITY */
+ #define WLAN_EXT_CAPA4_TDLS_BUFFER_STA		BIT(4)
+ #define WLAN_EXT_CAPA4_TDLS_PEER_PSM		BIT(5)
+ #define WLAN_EXT_CAPA4_TDLS_CHAN_SWITCH		BIT(6)
+-- 
+2.17.1
+
