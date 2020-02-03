@@ -2,82 +2,118 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5682E150892
-	for <lists+linux-wireless@lfdr.de>; Mon,  3 Feb 2020 15:40:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0245D1509A3
+	for <lists+linux-wireless@lfdr.de>; Mon,  3 Feb 2020 16:19:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727854AbgBCOke (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 3 Feb 2020 09:40:34 -0500
-Received: from mail26.static.mailgun.info ([104.130.122.26]:47136 "EHLO
-        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727540AbgBCOke (ORCPT
+        id S1728354AbgBCPTC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 3 Feb 2020 10:19:02 -0500
+Received: from mail-pj1-f68.google.com ([209.85.216.68]:51125 "EHLO
+        mail-pj1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727805AbgBCPTC (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 3 Feb 2020 09:40:34 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1580740833; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=sha3FlisbQv9dZwqSTMvOoYAc27o0Fi9GObgxH4RJbg=; b=VgW/RgNa6n9mcc2tDLUurlTHoXMlWaNdFWJPdbxY1FOU3NaySVI1xQXTaFBos8Z58XqqwrQu
- f2q2M6jl8E32qTOW9iTtAL4QeI+cZjpzbYwnSfPIqG99Bp/6HnymVAvjhY8kY428955zfl+o
- nwbf/o44hfIIpP83PBVIdb1f7Ks=
-X-Mailgun-Sending-Ip: 104.130.122.26
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e3830e0.7f95a5029d88-smtp-out-n03;
- Mon, 03 Feb 2020 14:40:32 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 745C9C433A2; Mon,  3 Feb 2020 14:40:32 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE,
-        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 3A471C433CB;
-        Mon,  3 Feb 2020 14:40:30 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 3A471C433CB
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org
-Subject: Re: REMINDER: wireless workshop at netdevconf 0x14, registration now open
-References: <70df55a1da3e8a99c6d2fc3a479c9c0eed3b71a0.camel@sipsolutions.net>
-Date:   Mon, 03 Feb 2020 16:40:27 +0200
-In-Reply-To: <70df55a1da3e8a99c6d2fc3a479c9c0eed3b71a0.camel@sipsolutions.net>
-        (Johannes Berg's message of "Thu, 23 Jan 2020 22:40:00 +0100")
-Message-ID: <87wo9391k4.fsf@kamboji.qca.qualcomm.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        Mon, 3 Feb 2020 10:19:02 -0500
+Received: by mail-pj1-f68.google.com with SMTP id r67so6500739pjb.0
+        for <linux-wireless@vger.kernel.org>; Mon, 03 Feb 2020 07:19:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=YtI3wko9t2oOAIREAUfJm0gqwgXj0Ak15/2Y+WhYEy8=;
+        b=k9Vsr0TwVe7g/4grDXN9hkJZJsbpojRFe3qfhI1TxV6zt/LLOSkhRwXU6hfe7YqeIP
+         E/fyx1pRXp/R4tj/PvG78ZU2TLLW/JfE+Rme1VSK6lwhOoY940Ah24K44tA/zijDf/Vc
+         Gl0p33bU5YYSU505zeGLXcTwPZ6FwDhkkL0wdSCQlpO5ro6gAVWepUZ6a1bKmvCj7XZX
+         0Jm/k+Rf0SO2r+V6GQGJdTD70xzXbhRkAy5Vtgpv7LZiIROm/IgcX/6/cGzN7Yi9K+I/
+         hpjT68/m5N5WfiS5Plckd6tDJ9m1uYTyd55RYt4J1fiGQ/xf/DTzFEw4gDKtyLTMj5Kx
+         jGYw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=YtI3wko9t2oOAIREAUfJm0gqwgXj0Ak15/2Y+WhYEy8=;
+        b=terh1igjA9JMR9atCVUMAi5rYa82ymfUAUUexo9IVuemZHvFhMACc8pO/7rj18YsIK
+         s6yeWp07PZECgqVSzMeMtJDPxtks+SM1QJ84qaQQl6Km7OGO9B86Gqp6RzCnwmmz1Efg
+         +/fOXpbE973gZEvqHzEHk/YEBl8vbWOs3SBzv3NiNs1Dq5YOWbzi3PQRtu5IF6FRE1V7
+         JwTRofA3IKwPJJdUPrhrzITHT0mz48PC1xECgC9yQWp8VdzxmD4eXNGC+WdsQmIESJvf
+         150Sr+TaAFEGiVD9DJcLphWEdcwWpEKoUbKte+qA2NOwOBVOsDcDwAslamfWBEWrbVYP
+         0OJQ==
+X-Gm-Message-State: APjAAAXmurCShM9bjd3zjqO6AnVmcX3HAfDw14AxP2Ue+THcyfnCrq6R
+        JhSp/mzURWlYYHhlabq3MQf95EXbGx6wh717ndVIbg==
+X-Google-Smtp-Source: APXvYqydqwFjJ7KIhfrB5Pm4jGzVBOS+I28Gm5EkJXdXEK+sFb79PGm4CuD3XNTph9XeVjoQg+idlgI4TsJauIBmlMU=
+X-Received: by 2002:a17:902:760e:: with SMTP id k14mr22914555pll.119.1580743140892;
+ Mon, 03 Feb 2020 07:19:00 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20200130015905.18610-1-natechancellor@gmail.com>
+In-Reply-To: <20200130015905.18610-1-natechancellor@gmail.com>
+From:   Nick Desaulniers <ndesaulniers@google.com>
+Date:   Mon, 3 Feb 2020 15:18:49 +0000
+Message-ID: <CAKwvOd=kehh2A6O1my6FbYtSU7e=p0JVM0+RBSF=rpPU7QWbOw@mail.gmail.com>
+Subject: Re: [PATCH] ath11k: Silence clang -Wsometimes-uninitialized in ath11k_update_per_peer_stats_from_txcompl
+To:     Nathan Chancellor <natechancellor@gmail.com>
+Cc:     Kalle Valo <kvalo@codeaurora.org>, ath11k@lists.infradead.org,
+        linux-wireless@vger.kernel.org,
+        Network Development <netdev@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        clang-built-linux <clang-built-linux@googlegroups.com>,
+        CI Notify <ci_notify@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Johannes Berg <johannes@sipsolutions.net> writes:
-
-> Just a reminder. We will be having a wireless workshop at netdevconf
-> 0x14 in Vancouver, BC. As far as I know, it's scheduled for day 1, i.e.
-> March 17th.
+On Thu, Jan 30, 2020 at 1:59 AM Nathan Chancellor
+<natechancellor@gmail.com> wrote:
 >
-> https://netdevconf.info/0x14/
+> Clang warns a few times (trimmed for brevity):
 >
-> Since some people have asked: In order to attend the wireless workshop
-> you only need to be registered for the conference, there are no other
-> restrictions.
+> ../drivers/net/wireless/ath/ath11k/debugfs_sta.c:185:7: warning:
+> variable 'rate_idx' is used uninitialized whenever 'if' condition is
+> false [-Wsometimes-uninitialized]
 >
-> If you have anything you'd like to present or any topics to suggest, let
-> Kalle or myself know!
+> It is not wrong, rate_idx is only initialized in the first if block.
+> However, this is not necessarily an issue in practice because rate_idx
+> will only be used when initialized because
+> ath11k_accumulate_per_peer_tx_stats only uses rate_idx when flags is not
+> set to RATE_INFO_FLAGS_HE_MCS, RATE_INFO_FLAGS_VHT_MCS, or
+> RATE_INFO_FLAGS_MCS. Still, it is not good to stick uninitialized values
+> into another function so initialize it to zero to prevent any issues
+> down the line.
+>
+> Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
+> Link: https://github.com/ClangBuiltLinux/linux/issues/832
+> Reported-by: ci_notify@linaro.org
+> Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
 
-There's now a wiki page up:
+Thanks for the patch. A bit tricky to follow that this (previously) is safe.
+Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
 
-https://wireless.wiki.kernel.org/en/developers/summits/vancouver-2020
+> ---
+>  drivers/net/wireless/ath/ath11k/debugfs_sta.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/net/wireless/ath/ath11k/debugfs_sta.c b/drivers/net/wireless/ath/ath11k/debugfs_sta.c
+> index 743760c9bcae..a5bdd16d6d46 100644
+> --- a/drivers/net/wireless/ath/ath11k/debugfs_sta.c
+> +++ b/drivers/net/wireless/ath/ath11k/debugfs_sta.c
+> @@ -136,7 +136,7 @@ void ath11k_update_per_peer_stats_from_txcompl(struct ath11k *ar,
+>         struct ath11k_sta *arsta;
+>         struct ieee80211_sta *sta;
+>         u16 rate;
+> -       u8 rate_idx;
+> +       u8 rate_idx = 0;
+>         int ret;
+>         u8 mcs;
+>
+> --
+> 2.25.0
+>
+> --
+> You received this message because you are subscribed to the Google Groups "Clang Built Linux" group.
+> To unsubscribe from this group and stop receiving emails from it, send an email to clang-built-linux+unsubscribe@googlegroups.com.
+> To view this discussion on the web visit https://groups.google.com/d/msgid/clang-built-linux/20200130015905.18610-1-natechancellor%40gmail.com.
 
-If you are planning to come please add yourself to the attendee list on
-the page, it helps us estimating how many people there might be. And
-there's also a list of proposed topics.
+
 
 -- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Thanks,
+~Nick Desaulniers
