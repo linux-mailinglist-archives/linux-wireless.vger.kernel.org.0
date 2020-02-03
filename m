@@ -2,98 +2,100 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C7AD915023C
-	for <lists+linux-wireless@lfdr.de>; Mon,  3 Feb 2020 09:08:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DE66C150384
+	for <lists+linux-wireless@lfdr.de>; Mon,  3 Feb 2020 10:42:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727728AbgBCIIp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 3 Feb 2020 03:08:45 -0500
-Received: from mail-wm1-f67.google.com ([209.85.128.67]:36097 "EHLO
-        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727308AbgBCIIo (ORCPT
+        id S1727917AbgBCJmg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 3 Feb 2020 04:42:36 -0500
+Received: from aserp2120.oracle.com ([141.146.126.78]:49532 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727225AbgBCJmf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 3 Feb 2020 03:08:44 -0500
-Received: by mail-wm1-f67.google.com with SMTP id p17so15772024wma.1;
-        Mon, 03 Feb 2020 00:08:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=7sYM8eT+kTrvZyGwiZN7bHkcGk6EIz1tRLoNiTTlspc=;
-        b=gVb5orNbcPgO8uiztYf9dkqrOY5Uj+gwy/YprnUdAM3jj0VO7P/f0X5oK2PyqFIoLm
-         Ui2DgFwADsMKIVOrgP6fC/tRFqduZrj0Pk1sE/nSmV3rtrRY+ZHmzhGhsltXCOChWu1K
-         CSd6XJTcV4zLe8/i96rwf4c+df9qTbv7zVa7wpc9IU3MPg6FIcrhS90n1lFEinKROlAm
-         S4LUkAm4febSUdtfF6gs4hSJqn9Ukti0xj3VcHZ/RG0XONPpIorhZKk9oalG1xnsV3Yn
-         H2wRTMCaUbceR5qpDpsmLQonHHbIa+X3gIglGTO+9En0uWxF0oGRKPwtty0H7Ri56680
-         PGOA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=7sYM8eT+kTrvZyGwiZN7bHkcGk6EIz1tRLoNiTTlspc=;
-        b=rXGql2DgQvrMI3Gsrz2rrTD4DsQa6nv4PUnFtHXNCTA6ptC93K/NVGbzv/IioSjXmZ
-         Bg/zkjMhTifeHrTmDsddcmFus7MpSyM+tbnuXY7zGS0gV7WrM7ZWJWlzXsWyj66eXTk9
-         6Vjz67yg3c2DRmEC2KxEuMeSef7fe0A3jc5Uw+A2ri0Agq8rt4fTZDfvqEoaMTIawaYW
-         KFUwLvIUUamj7yeYT2IHWnXWHHmww11RZaPGd4iEAKs9BNZqJblz8ewNjK9GbxaedFCy
-         j76IOlrLvcAhmTbw1FgXXJa0oXYUJgX9FhlsLKEhl8x7fzce9NPPE0xykv9lmQ9jDe8n
-         NM1A==
-X-Gm-Message-State: APjAAAXZZAtheMSvofUBBbMAbODGOmRwI7cPUgdUxPG51ODmwSomWhIY
-        9qeKWexgHOuAOLjcAl0XIsCoBe58
-X-Google-Smtp-Source: APXvYqzD+OR1dr/24HpXa1q62h4Zp5MSd5va7uv+zjVjRgeKNmVlatznscrxp7p/DgmuVKOcaBSx9A==
-X-Received: by 2002:a7b:cb97:: with SMTP id m23mr26069459wmi.37.1580717322440;
-        Mon, 03 Feb 2020 00:08:42 -0800 (PST)
-Received: from localhost.localdomain ([185.120.125.36])
-        by smtp.googlemail.com with ESMTPSA id a16sm23455649wrt.37.2020.02.03.00.08.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Feb 2020 00:08:41 -0800 (PST)
-From:   Zvika Yehudai <zvikayeh@gmail.com>
-To:     johannes@sipsolutions.net, linux-wireless@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     Zvika Yehudai <zvikayeh@gmail.com>
-Subject: [PATCH] mac80211: Fix minor typo.
-Date:   Mon,  3 Feb 2020 10:08:23 +0200
-Message-Id: <20200203080823.24949-1-zvikayeh@gmail.com>
-X-Mailer: git-send-email 2.17.1
+        Mon, 3 Feb 2020 04:42:35 -0500
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 0139c6mU121618;
+        Mon, 3 Feb 2020 09:42:32 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2019-08-05;
+ bh=Ld1gAObiFV0beMeBZXaX5X98rEt4HUzLbBGH42xu++w=;
+ b=eV6AYyz/ZskmkUPXJxJAbI0R3M85dblg141+2SvTBQF5S968XiYRm3no9+Kv9hvh+UHV
+ tXMCedDPVcYObqOKnRwc4Ct/794DY5+38oOYy1fziApkU0PC4TP8+TJegn9gt9xEoEcu
+ k18CcJAqEVKgeixjF3I5V8eLNODDrRrpUov0+Jt1JRV3FBjKxcc89RF1PickH4EqSrRW
+ 9XYADVZ7Llmaizx2dsN7xOujD5RRhiweDUew6uerR9aM8L5GtRYtaGxjGfbxxY9uxBhq
+ b5vyzc+IQCQDb7CAF75IY1Mbilte08lijKajd95ZKd+Q32nLwKhm1F1Mtmn919wp4TzO sg== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by aserp2120.oracle.com with ESMTP id 2xw19q6hm0-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 03 Feb 2020 09:42:31 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 0139cLmk082290;
+        Mon, 3 Feb 2020 09:42:31 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by userp3030.oracle.com with ESMTP id 2xwjt3gs7w-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 03 Feb 2020 09:42:30 +0000
+Received: from abhmp0016.oracle.com (abhmp0016.oracle.com [141.146.116.22])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 0139gTDO022979;
+        Mon, 3 Feb 2020 09:42:29 GMT
+Received: from kadam (/41.210.143.134)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 03 Feb 2020 01:42:29 -0800
+Date:   Mon, 3 Feb 2020 12:42:22 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Malcolm Priestley <tvboxspy@gmail.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>,
+        linux-wireless@vger.kernel.org
+Subject: Re: [PATCH 1/2] staging: vt6656: fix sign of rx_dbm to
+ bb_pre_ed_rssi.
+Message-ID: <20200203094222.GM1778@kadam>
+References: <9b3b92d6-3672-00be-d0b5-ccd222236ba9@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9b3b92d6-3672-00be-d0b5-ccd222236ba9@gmail.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9519 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1911140001 definitions=main-2002030076
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9519 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
+ definitions=main-2002030076
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Remove redundant 'the'.
+On Sun, Feb 02, 2020 at 12:27:25PM +0000, Malcolm Priestley wrote:
+> bb_pre_ed_rssi is an u8 rx_dm always returns negative signed
+> values add minus operator to always yield positive.
+> 
+> fixes issue where rx sensitivity is always set to maximum because
+> the unsigned numbers were always greater then 100.
+> 
+> Cc: stable <stable@vger.kernel.org>
 
-Signed-off-by: Zvika Yehudai <zvikayeh@gmail.com>
----
- include/linux/ieee80211.h | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Can you add a Fixes tag for stable kernels?
 
-diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
-index 7d3f2ced92d1..5aff704eb0f4 100644
---- a/include/linux/ieee80211.h
-+++ b/include/linux/ieee80211.h
-@@ -2053,7 +2053,7 @@ ieee80211_he_ppe_size(u8 ppe_thres_hdr, const u8 *phy_cap_info)
- 
- /*
-  * ieee80211_he_oper_size - calculate 802.11ax HE Operations IE size
-- * @he_oper_ie: byte data of the He Operations IE, stating from the the byte
-+ * @he_oper_ie: byte data of the He Operations IE, stating from the byte
-  *	after the ext ID byte. It is assumed that he_oper_ie has at least
-  *	sizeof(struct ieee80211_he_operation) bytes, the caller must have
-  *	validated this.
-@@ -2091,7 +2091,7 @@ ieee80211_he_oper_size(const u8 *he_oper_ie)
- 
- /*
-  * ieee80211_he_spr_size - calculate 802.11ax HE Spatial Reuse IE size
-- * @he_spr_ie: byte data of the He Spatial Reuse IE, stating from the the byte
-+ * @he_spr_ie: byte data of the He Spatial Reuse IE, stating from the byte
-  *	after the ext ID byte. It is assumed that he_spr_ie has at least
-  *	sizeof(struct ieee80211_he_spr) bytes, the caller must have validated
-  *	this
-@@ -2734,7 +2734,7 @@ enum ieee80211_tdls_actioncode {
-  */
- #define WLAN_EXT_CAPA3_MULTI_BSSID_SUPPORT	BIT(6)
- 
--/* TDLS capabilities in the the 4th byte of @WLAN_EID_EXT_CAPABILITY */
-+/* TDLS capabilities in the 4th byte of @WLAN_EID_EXT_CAPABILITY */
- #define WLAN_EXT_CAPA4_TDLS_BUFFER_STA		BIT(4)
- #define WLAN_EXT_CAPA4_TDLS_PEER_PSM		BIT(5)
- #define WLAN_EXT_CAPA4_TDLS_CHAN_SWITCH		BIT(6)
--- 
-2.17.1
+Fixes: 63b9907f58f1 ("staging: vt6656: mac80211 conversion: create rx function.")
+
+Otherwise we don't backport it far enough and then it becomes an
+actively exploited Android vulnerability and Google writes an article
+about it.  Then everyone gets annoyed with us and shakes their head
+because OpenBSD never has Android vulnerabilities etc...
+
+> Signed-off-by: Malcolm Priestley <tvboxspy@gmail.com>
+> ---
+>  drivers/staging/vt6656/dpc.c | 2 +-
+
+It appears that the vt6655 driver has the same issue.
+
+regards,
+dan carpenter
 
