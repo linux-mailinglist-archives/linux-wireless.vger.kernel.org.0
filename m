@@ -2,30 +2,30 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5CEF6150F1F
-	for <lists+linux-wireless@lfdr.de>; Mon,  3 Feb 2020 19:09:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E0FFD150F22
+	for <lists+linux-wireless@lfdr.de>; Mon,  3 Feb 2020 19:10:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728486AbgBCSJ6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 3 Feb 2020 13:09:58 -0500
+        id S1728573AbgBCSK6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 3 Feb 2020 13:10:58 -0500
 Received: from mail26.static.mailgun.info ([104.130.122.26]:34331 "EHLO
         mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728319AbgBCSJ5 (ORCPT
+        by vger.kernel.org with ESMTP id S1728319AbgBCSK6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 3 Feb 2020 13:09:57 -0500
+        Mon, 3 Feb 2020 13:10:58 -0500
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1580753397; h=Date: Message-Id: Cc: To: References:
+ s=smtp; t=1580753457; h=Date: Message-Id: Cc: To: References:
  In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=NQHsZzUkKlLbPklE26U1tu8prxmtIig1Iajv73yBYP8=;
- b=CjYTitGZzRJ7sAnDdO2fRiimWwmLT/jchhtnAYZgm29ZfGk8BzwcNBSkMKm9E9dwYn0Va0EI
- bPYo8yrmLLZLyzx+FSrUDx8dMM6E4wow9hmRyA/SzflnY1Z3zhD7sZR1cHqMo3tujz870DPP
- Cf0QbFV+4lt/XNxHta8bIn11hy0=
+ Content-Type: Sender; bh=3CTvLLzXqTZeONPfPLu31GcM4WwXKq2PqNvyqStAQCE=;
+ b=Hz5UnMjdfuc+b1Gq6mLjbR/28ETXVZMEbnlcEEk/AKHbXVeJmACzDfdcWUk3gis19I4Azb/f
+ 39rV4ZzQbkno9Sf+P5HmaTXxZz9O2pdo43FaohSlppwrZR6sRlqj6vNr6yYaf+uwwYyTRpzc
+ g5DMTU4lkbZdcZxX1T5pDwKFqps=
 X-Mailgun-Sending-Ip: 104.130.122.26
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e3861ee.7fbe256eaa08-smtp-out-n02;
- Mon, 03 Feb 2020 18:09:50 -0000 (UTC)
+ by mxa.mailgun.org with ESMTP id 5e38622b.7f8191e13ca8-smtp-out-n02;
+ Mon, 03 Feb 2020 18:10:51 -0000 (UTC)
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 79D2EC433CB; Mon,  3 Feb 2020 18:09:49 +0000 (UTC)
+        id B99E1C4479C; Mon,  3 Feb 2020 18:10:51 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -36,68 +36,50 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 7786AC43383;
-        Mon,  3 Feb 2020 18:09:47 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 7786AC43383
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id D0563C433CB;
+        Mon,  3 Feb 2020 18:10:49 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org D0563C433CB
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v5.6 1/7] iwlwifi: mvm: Fix thermal zone registration
+Subject: Re: [PATCH 5.6] rtw88: Fix return value of rtw_wow_check_fw_status
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20200131134530.931641-2-luca@coelho.fi>
-References: <20200131134530.931641-2-luca@coelho.fi>
-To:     Luca Coelho <luca@coelho.fi>
-Cc:     linux-wireless@vger.kernel.org
+In-Reply-To: <20200203060157.15330-1-yhchuang@realtek.com>
+References: <20200203060157.15330-1-yhchuang@realtek.com>
+To:     <yhchuang@realtek.com>
+Cc:     <linux-wireless@vger.kernel.org>, <briannorris@chromium.org>,
+        <natechancellor@gmail.com>
 User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20200203180949.79D2EC433CB@smtp.codeaurora.org>
-Date:   Mon,  3 Feb 2020 18:09:49 +0000 (UTC)
+Message-Id: <20200203181051.B99E1C4479C@smtp.codeaurora.org>
+Date:   Mon,  3 Feb 2020 18:10:51 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Luca Coelho <luca@coelho.fi> wrote:
+<yhchuang@realtek.com> wrote:
 
-> From: Andrei Otcheretianski <andrei.otcheretianski@intel.com>
+> From: Chin-Yen Lee <timlee@realtek.com>
 > 
-> Use a unique name when registering a thermal zone. Otherwise, with
-> multiple NICS, we hit the following warning during the unregistration.
+> Clang warns that ret is used uninitialzed.
+> And we found that actually the return type should be "int" instead
+> of "bool".
 > 
-> WARNING: CPU: 2 PID: 3525 at fs/sysfs/group.c:255
->  RIP: 0010:sysfs_remove_group+0x80/0x90
->  Call Trace:
->   dpm_sysfs_remove+0x57/0x60
->   device_del+0x5a/0x350
->   ? sscanf+0x4e/0x70
->   device_unregister+0x1a/0x60
->   hwmon_device_unregister+0x4a/0xa0
->   thermal_remove_hwmon_sysfs+0x175/0x1d0
->   thermal_zone_device_unregister+0x188/0x1e0
->   iwl_mvm_thermal_exit+0xe7/0x100 [iwlmvm]
->   iwl_op_mode_mvm_stop+0x27/0x180 [iwlmvm]
->   _iwl_op_mode_stop.isra.3+0x2b/0x50 [iwlwifi]
->   iwl_opmode_deregister+0x90/0xa0 [iwlwifi]
->   __exit_compat+0x10/0x2c7 [iwlmvm]
->   __x64_sys_delete_module+0x13f/0x270
->   do_syscall_64+0x5a/0x110
->   entry_SYSCALL_64_after_hwframe+0x44/0xa9
-> 
-> Signed-off-by: Andrei Otcheretianski <andrei.otcheretianski@intel.com>
-> Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+> Fixes: 44bc17f7f5b3 ("rtw88: support wowlan feature for 8822c")
+> Link: https://github.com/ClangBuiltLinux/linux/issues/850
+> Reported-by: Nathan Chancellor <natechancellor@gmail.com>
+> Signed-off-by: Chin-Yen Lee <timlee@realtek.com>
+> Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
+> Reviewed-by: Nathan Chancellor <natechancellor@gmail.com>
+> Tested-by: Nathan Chancellor <natechancellor@gmail.com> # build
 
-7 patches applied to wireless-drivers.git, thanks.
+Patch applied to wireless-drivers.git, thanks.
 
-baa6cf8450b7 iwlwifi: mvm: Fix thermal zone registration
-197288d5ba8a iwlwifi: don't throw error when trying to remove IGTK
-6bd5fa332a8c iwlwifi: mvm: update the DTS measurement type
-cc4255eff523 iwlwifi: mvm: avoid use after free for pmsr request
-12d47f0ea5e0 iwlwifi: mvm: Check the sta is not NULL in iwl_mvm_cfg_he_sta()
-b5b878e36c18 iwlwifi: mvm: fix TDLS discovery with the new firmware API
-577ddbee1f43 iwlwifi: d3: read all FW CPUs error info
+ebe8e6116ac4 rtw88: Fix return value of rtw_wow_check_fw_status
 
 -- 
-https://patchwork.kernel.org/patch/11359937/
+https://patchwork.kernel.org/patch/11362063/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
