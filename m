@@ -2,33 +2,52 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 08FD7151257
-	for <lists+linux-wireless@lfdr.de>; Mon,  3 Feb 2020 23:30:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F8A215150E
+	for <lists+linux-wireless@lfdr.de>; Tue,  4 Feb 2020 05:42:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727160AbgBCW34 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 3 Feb 2020 17:29:56 -0500
-Received: from s3.sipsolutions.net ([144.76.43.62]:40492 "EHLO
-        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726853AbgBCW34 (ORCPT
+        id S1727199AbgBDEmb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 3 Feb 2020 23:42:31 -0500
+Received: from mail-il1-f177.google.com ([209.85.166.177]:45976 "EHLO
+        mail-il1-f177.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726924AbgBDEmb (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 3 Feb 2020 17:29:56 -0500
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.93)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1iykE5-00Eml6-SH; Mon, 03 Feb 2020 23:29:54 +0100
-Message-ID: <0a39afdd47460597c51a0a6ea9871f78d9ea5854.camel@sipsolutions.net>
-Subject: Re: mac80211: background scan issue
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Cedric VONCKEN <cedric.voncken@acksys.fr>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Date:   Mon, 03 Feb 2020 23:29:52 +0100
-In-Reply-To: <DB8PR01MB5529FBFD07C989F0E934CDD990000@DB8PR01MB5529.eurprd01.prod.exchangelabs.com> (sfid-20200203_164721_336174_40CD3BE8)
-References: <DB8PR01MB5529FBFD07C989F0E934CDD990000@DB8PR01MB5529.eurprd01.prod.exchangelabs.com>
-         (sfid-20200203_164721_336174_40CD3BE8)
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.2 (3.34.2-1.fc31) 
+        Mon, 3 Feb 2020 23:42:31 -0500
+Received: by mail-il1-f177.google.com with SMTP id p8so14692624iln.12
+        for <linux-wireless@vger.kernel.org>; Mon, 03 Feb 2020 20:42:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to:cc;
+        bh=q0qFMAPlpIif/WUzkvX+0vWo8RAka1cyW/tA0f1CbCk=;
+        b=fuvODWxspwX6QN0Ji6snZD4cM2tiTmsGEakE6/d4oQpZGutRu8cyOSIdGrf1acT9wT
+         m69fAJF/1ViJOUltNXdnFtCQxj7XjkbZkP/8Ad5LH1112dkqrNQDrTcY5GnBHomPwpwp
+         mLkMB0iCluhMjaqk4C56j8dr0qS9BKNeX75M6IRPs7o68qqDhP4P78q06FSkysw4JGDW
+         +UChtvs8UY++Rw1nmg5+NnO8vB9ESpOHKNX2fYXdnsRknCBWscjwITBcgBSw8ALh6QlH
+         YeiBoJWEBdgHrJeX/sBLXgbjFQmQc3BpNFNFc8wcsemenjfc2gD03QrxAcud67XnxoSI
+         Nlfg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
+        bh=q0qFMAPlpIif/WUzkvX+0vWo8RAka1cyW/tA0f1CbCk=;
+        b=n6vItmJglrtdu0DGLWsGBp/01hkBERnh+V5RT3Av835khrHaDMZc3JXDXWAb7BwfYj
+         j1DSVbiaKcXHi/CsMrY0nMEvjQdBQqPfQr/2wuhSafsEeXvVKAg2T+KUpy/ZbfOYy8Kt
+         NEa3o/gQ6qlhJD3MM0/J8T4oqkJ4VJ2tHdIJPha+gbAvBxNXJsUM8XDmSObVF/fkDe6X
+         taUSUsfktnCQ7DL0joUMvurc2m60Xb1WAz/BMumoJmp6eXDoerMnj32uhPSVh8OMd95A
+         Jez3NpHqzONP5FcaXBvJ6ililkP3bh0wWeSO1kcmSStSy6cwRNpb2t1SyUrMMiWSKZGs
+         MY6w==
+X-Gm-Message-State: APjAAAVNjiB5YLe1QawVv8/ddS4yP45an+17ZoxfjOBVRVwr+V66O70u
+        8xSiI/yeX6uncKZQTisjGbxuakG9TROslMrhcsLb2DMK0Ts=
+X-Google-Smtp-Source: APXvYqxNenXES/xcoAwPNtNGrJpwU9ozyAeMVxrYnEGD1wlVEsQ20p38ePYzyPV/38fAIaIgbImc38CkTWQHb5EbkkU=
+X-Received: by 2002:a92:d5cf:: with SMTP id d15mr17943555ilq.306.1580791350294;
+ Mon, 03 Feb 2020 20:42:30 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Received: by 2002:ad5:5d0d:0:0:0:0:0 with HTTP; Mon, 3 Feb 2020 20:42:29 -0800 (PST)
+From:   JH <jupiter.hce@gmail.com>
+Date:   Tue, 4 Feb 2020 15:42:29 +1100
+Message-ID: <CAA=hcWQo-NhePgyFhQ-OxP-7xTdM+zVf+cWN+Owpjfk+Mgs6dA@mail.gmail.com>
+Subject: 
+To:     linux-wireless <linux-wireless@vger.kernel.org>
+Cc:     connman <connman@lists.01.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
@@ -36,24 +55,18 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 Hi,
 
-	
-> @@ -297,7 +297,8 @@ ieee80211_tx_h_check_assoc(struct ieee80
->        if (unlikely(test_bit(SCAN_SW_SCANNING, &tx->local->scanning)) &&
->            test_bit(SDATA_STATE_OFFCHANNEL, &tx->sdata->state) &&
->            !ieee80211_is_probe_req(hdr->frame_control) &&
-> -          !ieee80211_is_nullfunc(hdr->frame_control))
-> +          !ieee80211_is_nullfunc(hdr->frame_control) &&
-> +              !ieee80211_is_qos_nullfunc(hdr->frame_control))
->                /*
->                 * When software scanning only nullfunc frames (to notify
->                 * the sleep state to the AP) and probe requests (for the
+I am running kernel 4.19.75 on iMX6, the WiFi was working most of
+time, but from time to time, the connman could not get WiFi be
+connected due to following error:
 
-yeah, Thomas also found it, we now have this in the tree:
+[23703.958751] ieee80211 phy0: mwifiex_cfg80211_sched_scan_start :
+Invalid Sched_scan parameters
 
-        if (unlikely(test_bit(SCAN_SW_SCANNING, &tx->local->scanning)) &&
-            test_bit(SDATA_STATE_OFFCHANNEL, &tx->sdata->state) &&
-            !ieee80211_is_probe_req(hdr->frame_control) &&
-            !ieee80211_is_any_nullfunc(hdr->frame_control))
+What does that error means, in which circumstance it occurred? How can
+we prevent it?
 
-johannes
+Thank you.
 
+Kind regards,
+
+- jh
