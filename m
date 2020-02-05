@@ -2,116 +2,70 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 564B015279A
-	for <lists+linux-wireless@lfdr.de>; Wed,  5 Feb 2020 09:35:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E5A98153704
+	for <lists+linux-wireless@lfdr.de>; Wed,  5 Feb 2020 18:49:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727459AbgBEIfl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 5 Feb 2020 03:35:41 -0500
-Received: from mail26.static.mailgun.info ([104.130.122.26]:54462 "EHLO
-        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727068AbgBEIfl (ORCPT
+        id S1727369AbgBERtP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 5 Feb 2020 12:49:15 -0500
+Received: from mail-wm1-f67.google.com ([209.85.128.67]:36816 "EHLO
+        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726957AbgBERtO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 5 Feb 2020 03:35:41 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1580891740; h=Message-Id: Date: Subject: Cc: To: From:
- Sender; bh=lj4f+MD9H6ancfUR5vhoNmQMx4d6fdDWJ54DZFxbXqw=; b=RTIfo0m/YpzVIQV99epJhaFiwYjXM3Zc55k7K4ermuU8E3ipj3cWdviRUEGbhs2GbJjeK1I9
- RphFjF4HypPqNd4c9bUGw+0QRI2O6rX9RwqBeJJXhB/wjHWUxCV/WOfOBYNqosiib5fc4beW
- fDhjVo8PnrHt8JfRK7T9L5ILljQ=
-X-Mailgun-Sending-Ip: 104.130.122.26
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e3a7e5b.7f20da47aab0-smtp-out-n02;
- Wed, 05 Feb 2020 08:35:39 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 551FEC433A2; Wed,  5 Feb 2020 08:35:38 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE,
-        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from vnaralas-linux.qualcomm.com (blr-c-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.19.19])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: vnaralas)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 782AEC43383;
-        Wed,  5 Feb 2020 08:35:36 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 782AEC43383
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=vnaralas@codeaurora.org
-From:   Venkateswara Rao Naralasetty <vnaralas@codeaurora.org>
-To:     ath11k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org,
-        Venkateswara Naralasetty <vnaralas@codeaurora.org>
-Subject: [PATCH] ath11k: fix incorrect peer stats counters update
-Date:   Wed,  5 Feb 2020 14:05:30 +0530
-Message-Id: <1580891730-23868-1-git-send-email-vnaralas@codeaurora.org>
-X-Mailer: git-send-email 2.7.4
+        Wed, 5 Feb 2020 12:49:14 -0500
+Received: by mail-wm1-f67.google.com with SMTP id p17so3905744wma.1;
+        Wed, 05 Feb 2020 09:49:13 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=p7yEieln0jae2eT2M/0er6+kV9NoBt/oQX2qMjPZJ/Q=;
+        b=Vkg6rWGzIbo2Rb2+JwVkfGipK8LcEPHzzweKLy1UXhfWkt8taI12ZVYMyTHw+Sx+az
+         kcscyMSDyzCHgo4BUNWLRs86WOl6RgWT34GUkdXYQGODl/n3wAaUub8205qukgpfLsZ1
+         xe2wRUc+sQeZxWzHwuoWzmy5aOLhKBwVaBZc0XEFzxJ955Xd9BR+T1N/PnK3nCojidQB
+         7WamhChOj+p15UVuKr3l7i2HpFr4EPCNfajws4S12LjtXVZYUlXDZECdFPItenZcJEZ7
+         rYSqfJVCKMCK15gCn+dfah65C1xoq/ZMssX4T4LK4qAivMVTycBUHt1BMKsXaVZPoziH
+         RgPQ==
+X-Gm-Message-State: APjAAAW7L6wkzm46TYRgKxfgZZvJA1AEaIa4GMAFUEGffr7mKHvLE9gO
+        G2VWjf1j6RHg9eoEweColw==
+X-Google-Smtp-Source: APXvYqxrkccvNl9da8AtZiLVomEnf+cjr97jeYk9zDCvBB4OzibTwGtQk0HvdayBC/CQAVvY6ffffQ==
+X-Received: by 2002:a05:600c:20c6:: with SMTP id y6mr6912417wmm.95.1580924952525;
+        Wed, 05 Feb 2020 09:49:12 -0800 (PST)
+Received: from rob-hp-laptop ([212.187.182.166])
+        by smtp.gmail.com with ESMTPSA id s1sm695548wro.66.2020.02.05.09.49.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 05 Feb 2020 09:49:11 -0800 (PST)
+Received: (nullmailer pid 29276 invoked by uid 1000);
+        Wed, 05 Feb 2020 17:49:10 -0000
+Date:   Wed, 5 Feb 2020 17:49:10 +0000
+From:   Rob Herring <robh@kernel.org>
+To:     Tamizh Chelvam <tamizhr@codeaurora.org>
+Cc:     ath10k@lists.infradead.org, devicetree@vger.kernel.org,
+        linux-wireless@vger.kernel.org,
+        Tamizh Chelvam <tamizhr@codeaurora.org>
+Subject: Re: [PATCHv2 1/2] dt-bindings: ath10k: Add new dt entries to
+ identify coex support
+Message-ID: <20200205174910.GA29218@bogus>
+References: <1580152736-18654-1-git-send-email-tamizhr@codeaurora.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1580152736-18654-1-git-send-email-tamizhr@codeaurora.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Venkateswara Naralasetty <vnaralas@codeaurora.org>
+On Tue, 28 Jan 2020 00:48:55 +0530, Tamizh Chelvam wrote:
+> This adds new dt entries qcom,coexist-support and qcom,coexist-gpio-pin
+> which will be used by ath10k driver to identify coex support
+> of a hardware and notify wifi firmware the gpio pin number.
+> This pin number information is needed for the hardware QCA4019.
+> 
+> Signed-off-by: Tamizh Chelvam <tamizhr@codeaurora.org>
+> ---
+>  Documentation/devicetree/bindings/net/wireless/qcom,ath10k.txt | 7 +++++++
+>  1 file changed, 7 insertions(+)
+> 
 
-Convert mac80211 bw to ath11k bw before updating peer stats
-bw counters, which fixes incorrect peer stats counters update.
-
-Signed-off-by: Venkateswara Naralasetty <vnaralas@codeaurora.org>
----
- drivers/net/wireless/ath/ath11k/debugfs_sta.c |  2 +-
- drivers/net/wireless/ath/ath11k/mac.c         | 16 ++++++++++++++++
- drivers/net/wireless/ath/ath11k/mac.h         |  1 +
- 3 files changed, 18 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/ath/ath11k/debugfs_sta.c b/drivers/net/wireless/ath/ath11k/debugfs_sta.c
-index 743760c..8e8f2a8 100644
---- a/drivers/net/wireless/ath/ath11k/debugfs_sta.c
-+++ b/drivers/net/wireless/ath/ath11k/debugfs_sta.c
-@@ -24,7 +24,7 @@ ath11k_accumulate_per_peer_tx_stats(struct ath11k_sta *arsta,
- 	tx_stats = arsta->tx_stats;
- 	gi = FIELD_GET(RATE_INFO_FLAGS_SHORT_GI, arsta->txrate.flags);
- 	mcs = txrate->mcs;
--	bw = txrate->bw;
-+	bw = ath11k_mac_mac80211_bw_to_ath11k_bw(txrate->bw);
- 	nss = txrate->nss - 1;
- 
- #define STATS_OP_FMT(name) tx_stats->stats[ATH11K_STATS_TYPE_##name]
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index 6640662..da117e1 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -178,6 +178,22 @@ u8 ath11k_mac_bw_to_mac80211_bw(u8 bw)
- 	return ret;
- }
- 
-+enum ath11k_supported_bw ath11k_mac_mac80211_bw_to_ath11k_bw(enum rate_info_bw bw)
-+{
-+	switch (bw) {
-+	case RATE_INFO_BW_20:
-+		return ATH11K_BW_20;
-+	case RATE_INFO_BW_40:
-+		return ATH11K_BW_40;
-+	case RATE_INFO_BW_80:
-+		return ATH11K_BW_80;
-+	case RATE_INFO_BW_160:
-+		return ATH11K_BW_160;
-+	default:
-+		return ATH11K_BW_20;
-+	}
-+}
-+
- int ath11k_mac_hw_ratecode_to_legacy_rate(u8 hw_rc, u8 preamble, u8 *rateidx,
- 					  u16 *rate)
- {
-diff --git a/drivers/net/wireless/ath/ath11k/mac.h b/drivers/net/wireless/ath/ath11k/mac.h
-index f286531..f4937a0 100644
---- a/drivers/net/wireless/ath/ath11k/mac.h
-+++ b/drivers/net/wireless/ath/ath11k/mac.h
-@@ -144,4 +144,5 @@ void ath11k_mac_drain_tx(struct ath11k *ar);
- void ath11k_mac_peer_cleanup_all(struct ath11k *ar);
- int ath11k_mac_tx_mgmt_pending_free(int buf_id, void *skb, void *ctx);
- u8 ath11k_mac_bw_to_mac80211_bw(u8 bw);
-+enum ath11k_supported_bw ath11k_mac_mac80211_bw_to_ath11k_bw(enum rate_info_bw bw);
- #endif
--- 
-2.7.4
+Reviewed-by: Rob Herring <robh@kernel.org>
