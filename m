@@ -2,94 +2,115 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 16D8A15277E
-	for <lists+linux-wireless@lfdr.de>; Wed,  5 Feb 2020 09:19:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CE32C152797
+	for <lists+linux-wireless@lfdr.de>; Wed,  5 Feb 2020 09:32:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727459AbgBEITG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 5 Feb 2020 03:19:06 -0500
-Received: from nbd.name ([46.4.11.11]:53028 "EHLO nbd.name"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727068AbgBEITG (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 5 Feb 2020 03:19:06 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-         s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
-        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=MAi2ziLm73yBVR1HelvKHpsAbG3ROAi3rNA0HWTfhZs=; b=KuSMIfKeHwXwvMhqMAImQvQPT6
-        8yO2EEuSmn6oupkVI3KHaPHTFXSaGv6AuX9l8PkVegK5gSieF2gw8wGJi4wIwdwtrnPCf4F21tUyg
-        qU6GbPcuLSQKbUJj+q7+0URPNcgkDb4W4VhKfw1q2kcwjEQQa6s+1NU9GV3xmcfil5H8=;
-Received: from [80.255.10.202] (helo=nf.local)
-        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.89)
-        (envelope-from <nbd@nbd.name>)
-        id 1izFtn-0002xx-FD; Wed, 05 Feb 2020 09:19:03 +0100
-Subject: Re: [PATCH] mt76: mt7615: fix wrong length in strncmp
-To:     Ryder Lee <ryder.lee@mediatek.com>,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-Cc:     Shayne Chen <shayne.chen@mediatek.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        Josh Boyer <jwboyer@kernel.org>,
-        linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org
-References: <cee34bac9d6041784a92c5fdbf667c367dc7f968.1580874252.git.ryder.lee@mediatek.com>
-From:   Felix Fietkau <nbd@nbd.name>
-Autocrypt: addr=nbd@nbd.name; prefer-encrypt=mutual; keydata=
- xsDiBEah5CcRBADIY7pu4LIv3jBlyQ/2u87iIZGe6f0f8pyB4UjzfJNXhJb8JylYYRzIOSxh
- ExKsdLCnJqsG1PY1mqTtoG8sONpwsHr2oJ4itjcGHfn5NJSUGTbtbbxLro13tHkGFCoCr4Z5
- Pv+XRgiANSpYlIigiMbOkide6wbggQK32tC20QxUIwCg4k6dtV/4kwEeiOUfErq00TVqIiEE
- AKcUi4taOuh/PQWx/Ujjl/P1LfJXqLKRPa8PwD4j2yjoc9l+7LptSxJThL9KSu6gtXQjcoR2
- vCK0OeYJhgO4kYMI78h1TSaxmtImEAnjFPYJYVsxrhay92jisYc7z5R/76AaELfF6RCjjGeP
- wdalulG+erWju710Bif7E1yjYVWeA/9Wd1lsOmx6uwwYgNqoFtcAunDaMKi9xVQW18FsUusM
- TdRvTZLBpoUAy+MajAL+R73TwLq3LnKpIcCwftyQXK5pEDKq57OhxJVv1Q8XkA9Dn1SBOjNB
- l25vJDFAT9ntp9THeDD2fv15yk4EKpWhu4H00/YX8KkhFsrtUs69+vZQwc0cRmVsaXggRmll
- dGthdSA8bmJkQG5iZC5uYW1lPsJgBBMRAgAgBQJGoeQnAhsjBgsJCAcDAgQVAggDBBYCAwEC
- HgECF4AACgkQ130UHQKnbvXsvgCgjsAIIOsY7xZ8VcSm7NABpi91yTMAniMMmH7FRenEAYMa
- VrwYTIThkTlQzsFNBEah5FQQCACMIep/hTzgPZ9HbCTKm9xN4bZX0JjrqjFem1Nxf3MBM5vN
- CYGBn8F4sGIzPmLhl4xFeq3k5irVg/YvxSDbQN6NJv8o+tP6zsMeWX2JjtV0P4aDIN1pK2/w
- VxcicArw0VYdv2ZCarccFBgH2a6GjswqlCqVM3gNIMI8ikzenKcso8YErGGiKYeMEZLwHaxE
- Y7mTPuOTrWL8uWWRL5mVjhZEVvDez6em/OYvzBwbkhImrryF29e3Po2cfY2n7EKjjr3/141K
- DHBBdgXlPNfDwROnA5ugjjEBjwkwBQqPpDA7AYPvpHh5vLbZnVGu5CwG7NAsrb2isRmjYoqk
- wu++3117AAMFB/9S0Sj7qFFQcD4laADVsabTpNNpaV4wAgVTRHKV/kC9luItzwDnUcsZUPdQ
- f3MueRJ3jIHU0UmRBG3uQftqbZJj3ikhnfvyLmkCNe+/hXhPu9sGvXyi2D4vszICvc1KL4RD
- aLSrOsROx22eZ26KqcW4ny7+va2FnvjsZgI8h4sDmaLzKczVRIiLITiMpLFEU/VoSv0m1F4B
- FtRgoiyjFzigWG0MsTdAN6FJzGh4mWWGIlE7o5JraNhnTd+yTUIPtw3ym6l8P+gbvfoZida0
- TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabwkkE
- GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCfTKx80VvCR/PvsUlrvdOLsIgeRGAAn1ee
- RjMaxwtSdaCKMw3j33ZbsWS4
-Message-ID: <4d166d0c-db0a-fc25-4315-a15bf1002bf8@nbd.name>
-Date:   Wed, 5 Feb 2020 09:19:02 +0100
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:68.0)
- Gecko/20100101 Thunderbird/68.4.2
-MIME-Version: 1.0
-In-Reply-To: <cee34bac9d6041784a92c5fdbf667c367dc7f968.1580874252.git.ryder.lee@mediatek.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+        id S1728088AbgBEIc0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 5 Feb 2020 03:32:26 -0500
+Received: from mail26.static.mailgun.info ([104.130.122.26]:63850 "EHLO
+        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728079AbgBEIc0 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 5 Feb 2020 03:32:26 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1580891545; h=Message-Id: Date: Subject: Cc: To: From:
+ Sender; bh=jYeXu8Bq1N/yKhVNgvvndQG64TjmW7ULdklQC4cBpwk=; b=pRDaZ/3DgApP3mACjKm/HC24tpoS9YPMp8OA6aeROuXZqg36zzvBtGXUfk+sV9dBbWdvOy3D
+ 5x+81U+aWo40Uch8asQLy1q7q3JFLoI4+bnH8uaP/P8FpMJfGpqu0q6aKW4gSqY25ZWeY73Y
+ G0gctC2cFod5zuOm6C665Pe353M=
+X-Mailgun-Sending-Ip: 104.130.122.26
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5e3a7d8e.7f52ee421110-smtp-out-n01;
+ Wed, 05 Feb 2020 08:32:14 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 56441C433A2; Wed,  5 Feb 2020 08:32:14 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from vnaralas-linux.qualcomm.com (blr-c-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.19.19])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: vnaralas)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 3AD42C43383;
+        Wed,  5 Feb 2020 08:32:11 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 3AD42C43383
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=vnaralas@codeaurora.org
+From:   Venkateswara Rao Naralasetty <vnaralas@codeaurora.org>
+To:     ath11k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org,
+        Vikas Patel <vikpatel@codeaurora.org>,
+        Venkateswara Naralasetty <vnaralas@codeaurora.org>
+Subject: [PATCH] ath11k: Fixing dangling pointer issue upon peer delete failure
+Date:   Wed,  5 Feb 2020 14:01:55 +0530
+Message-Id: <1580891515-15054-1-git-send-email-vnaralas@codeaurora.org>
+X-Mailer: git-send-email 2.7.4
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2020-02-05 04:46, Ryder Lee wrote:
-> Fix it to proper length.
-> 
-> Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
-> ---
->  drivers/net/wireless/mediatek/mt76/mt7615/mcu.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-> index 6639f9291721..fbda56342d11 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-> @@ -491,7 +491,7 @@ static int mt7615_load_ram(struct mt7615_dev *dev)
->  		goto out;
->  	}
->  
-> -	if (!strncmp(hdr->fw_ver, "2.0", 6))
-> +	if (!strncmp(hdr->fw_ver, "2.0", 3))
-Do you plan on allowing more characters after the 2.0 and still match?
-If not, maybe we should just use sizeof(hdr->fw_ver) as max len.
+From: Vikas Patel <vikpatel@codeaurora.org>
 
-- Felix
+When there is WMI command failure, 'peer->sta' was not getting
+cleaned up, and mac80211 frees the 'sta' memory, which is causing
+the below page fault.
+
+Cleaning up the sta pointer in ath11k whenever peer delete command
+is sent.
+
+Unable to handle kernel paging request at virtual address 200080000006a
+pgd = ffffffc02a774000
+[200080000006a] *pgd=0000000000000000, *pud=0000000000000000
+Internal error: Oops: 96000004 [#1] PREEMPT SMP
+.
+.
+.
+CPU: 0 PID: 0 Comm: swapper/0 Tainted: G        W       4.4.60 #1
+Hardware name: Qualcomm Technologies, Inc. IPQ807x/AP-HK01-C1 (DT)
+task: ffffffc00083c6d0 ti: ffffffc00083c6d0 task.ti: ffffffc00083c6d0
+PC is at ath11k_dp_rx_process_mon_status+0x114/0x4e0 [ath11k]
+LR is at ath11k_dp_rx_process_mon_status+0xe8/0x4e0 [ath11k]
+pc : [<ffffffbffcf8e544>] lr : [<ffffffbffcf8e518>] pstate: 60000145
+sp : ffffffc000833a30
+
+Signed-off-by: Vikas Patel <vikpatel@codeaurora.org>
+Signed-off-by: Venkateswara Naralasetty <vnaralas@codeaurora.org>
+---
+ drivers/net/wireless/ath/ath11k/mac.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
+index 6640662..4868c83 100644
+--- a/drivers/net/wireless/ath/ath11k/mac.c
++++ b/drivers/net/wireless/ath/ath11k/mac.c
+@@ -2786,6 +2786,7 @@ static int ath11k_mac_op_sta_state(struct ieee80211_hw *hw,
+ 	struct ath11k *ar = hw->priv;
+ 	struct ath11k_vif *arvif = ath11k_vif_to_arvif(vif);
+ 	struct ath11k_sta *arsta = (struct ath11k_sta *)sta->drv_priv;
++	struct ath11k_peer *peer;
+ 	int ret = 0;
+ 
+ 	/* cancel must be done outside the mutex to avoid deadlock */
+@@ -2818,6 +2819,17 @@ static int ath11k_mac_op_sta_state(struct ieee80211_hw *hw,
+ 				   sta->addr, arvif->vdev_id);
+ 
+ 		ath11k_mac_dec_num_stations(arvif, sta);
++		spin_lock_bh(&ar->ab->base_lock);
++		peer = ath11k_peer_find(ar->ab, arvif->vdev_id, sta->addr);
++		if (peer && peer->sta == sta) {
++			ath11k_warn(ar->ab, "Found peer entry %pM n vdev %i after it was supposedly removed\n",
++				    vif->addr, arvif->vdev_id);
++			peer->sta = NULL;
++			list_del(&peer->list);
++			kfree(peer);
++			ar->num_peers--;
++		}
++		spin_unlock_bh(&ar->ab->base_lock);
+ 
+ 		kfree(arsta->tx_stats);
+ 		arsta->tx_stats = NULL;
+-- 
+2.7.4
