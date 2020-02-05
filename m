@@ -2,105 +2,94 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 08AB0152755
-	for <lists+linux-wireless@lfdr.de>; Wed,  5 Feb 2020 09:04:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 16D8A15277E
+	for <lists+linux-wireless@lfdr.de>; Wed,  5 Feb 2020 09:19:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728015AbgBEIEM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 5 Feb 2020 03:04:12 -0500
-Received: from rtits2.realtek.com ([211.75.126.72]:51208 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727068AbgBEIEM (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 5 Feb 2020 03:04:12 -0500
-Authenticated-By: 
-X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID 015844Zx026167, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (RTEXMB06.realtek.com.tw[172.21.6.99])
-        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id 015844Zx026167
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 5 Feb 2020 16:04:04 +0800
-Received: from RTEXMB05.realtek.com.tw (172.21.6.98) by
- RTEXMB06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Wed, 5 Feb 2020 16:04:03 +0800
-Received: from RTEXMB06.realtek.com.tw (172.21.6.99) by
- RTEXMB05.realtek.com.tw (172.21.6.98) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Wed, 5 Feb 2020 16:04:03 +0800
-Received: from RTITCASV01.realtek.com.tw (172.21.6.18) by
- RTEXMB06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
- (version=TLS1_0, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.1.1779.2
- via Frontend Transport; Wed, 5 Feb 2020 16:04:03 +0800
-Received: from localhost.localdomain (172.21.69.117) by
- RTITCASV01.realtek.com.tw (172.21.6.18) with Microsoft SMTP Server id
- 14.3.468.0; Wed, 5 Feb 2020 16:04:02 +0800
-From:   <yhchuang@realtek.com>
-To:     <kvalo@codeaurora.org>
-CC:     <linux-wireless@vger.kernel.org>, <briannorris@chromium.org>,
-        <tehuang@realtek.com>
-Subject: [PATCH] rtw88: Fix incorrect beamformee role setting
-Date:   Wed, 5 Feb 2020 16:04:00 +0800
-Message-ID: <20200205080400.16580-1-yhchuang@realtek.com>
-X-Mailer: git-send-email 2.17.1
+        id S1727459AbgBEITG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 5 Feb 2020 03:19:06 -0500
+Received: from nbd.name ([46.4.11.11]:53028 "EHLO nbd.name"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727068AbgBEITG (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 5 Feb 2020 03:19:06 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
+        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=MAi2ziLm73yBVR1HelvKHpsAbG3ROAi3rNA0HWTfhZs=; b=KuSMIfKeHwXwvMhqMAImQvQPT6
+        8yO2EEuSmn6oupkVI3KHaPHTFXSaGv6AuX9l8PkVegK5gSieF2gw8wGJi4wIwdwtrnPCf4F21tUyg
+        qU6GbPcuLSQKbUJj+q7+0URPNcgkDb4W4VhKfw1q2kcwjEQQa6s+1NU9GV3xmcfil5H8=;
+Received: from [80.255.10.202] (helo=nf.local)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1izFtn-0002xx-FD; Wed, 05 Feb 2020 09:19:03 +0100
+Subject: Re: [PATCH] mt76: mt7615: fix wrong length in strncmp
+To:     Ryder Lee <ryder.lee@mediatek.com>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+Cc:     Shayne Chen <shayne.chen@mediatek.com>,
+        Sean Wang <sean.wang@mediatek.com>,
+        Josh Boyer <jwboyer@kernel.org>,
+        linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org
+References: <cee34bac9d6041784a92c5fdbf667c367dc7f968.1580874252.git.ryder.lee@mediatek.com>
+From:   Felix Fietkau <nbd@nbd.name>
+Autocrypt: addr=nbd@nbd.name; prefer-encrypt=mutual; keydata=
+ xsDiBEah5CcRBADIY7pu4LIv3jBlyQ/2u87iIZGe6f0f8pyB4UjzfJNXhJb8JylYYRzIOSxh
+ ExKsdLCnJqsG1PY1mqTtoG8sONpwsHr2oJ4itjcGHfn5NJSUGTbtbbxLro13tHkGFCoCr4Z5
+ Pv+XRgiANSpYlIigiMbOkide6wbggQK32tC20QxUIwCg4k6dtV/4kwEeiOUfErq00TVqIiEE
+ AKcUi4taOuh/PQWx/Ujjl/P1LfJXqLKRPa8PwD4j2yjoc9l+7LptSxJThL9KSu6gtXQjcoR2
+ vCK0OeYJhgO4kYMI78h1TSaxmtImEAnjFPYJYVsxrhay92jisYc7z5R/76AaELfF6RCjjGeP
+ wdalulG+erWju710Bif7E1yjYVWeA/9Wd1lsOmx6uwwYgNqoFtcAunDaMKi9xVQW18FsUusM
+ TdRvTZLBpoUAy+MajAL+R73TwLq3LnKpIcCwftyQXK5pEDKq57OhxJVv1Q8XkA9Dn1SBOjNB
+ l25vJDFAT9ntp9THeDD2fv15yk4EKpWhu4H00/YX8KkhFsrtUs69+vZQwc0cRmVsaXggRmll
+ dGthdSA8bmJkQG5iZC5uYW1lPsJgBBMRAgAgBQJGoeQnAhsjBgsJCAcDAgQVAggDBBYCAwEC
+ HgECF4AACgkQ130UHQKnbvXsvgCgjsAIIOsY7xZ8VcSm7NABpi91yTMAniMMmH7FRenEAYMa
+ VrwYTIThkTlQzsFNBEah5FQQCACMIep/hTzgPZ9HbCTKm9xN4bZX0JjrqjFem1Nxf3MBM5vN
+ CYGBn8F4sGIzPmLhl4xFeq3k5irVg/YvxSDbQN6NJv8o+tP6zsMeWX2JjtV0P4aDIN1pK2/w
+ VxcicArw0VYdv2ZCarccFBgH2a6GjswqlCqVM3gNIMI8ikzenKcso8YErGGiKYeMEZLwHaxE
+ Y7mTPuOTrWL8uWWRL5mVjhZEVvDez6em/OYvzBwbkhImrryF29e3Po2cfY2n7EKjjr3/141K
+ DHBBdgXlPNfDwROnA5ugjjEBjwkwBQqPpDA7AYPvpHh5vLbZnVGu5CwG7NAsrb2isRmjYoqk
+ wu++3117AAMFB/9S0Sj7qFFQcD4laADVsabTpNNpaV4wAgVTRHKV/kC9luItzwDnUcsZUPdQ
+ f3MueRJ3jIHU0UmRBG3uQftqbZJj3ikhnfvyLmkCNe+/hXhPu9sGvXyi2D4vszICvc1KL4RD
+ aLSrOsROx22eZ26KqcW4ny7+va2FnvjsZgI8h4sDmaLzKczVRIiLITiMpLFEU/VoSv0m1F4B
+ FtRgoiyjFzigWG0MsTdAN6FJzGh4mWWGIlE7o5JraNhnTd+yTUIPtw3ym6l8P+gbvfoZida0
+ TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabwkkE
+ GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCfTKx80VvCR/PvsUlrvdOLsIgeRGAAn1ee
+ RjMaxwtSdaCKMw3j33ZbsWS4
+Message-ID: <4d166d0c-db0a-fc25-4315-a15bf1002bf8@nbd.name>
+Date:   Wed, 5 Feb 2020 09:19:02 +0100
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:68.0)
+ Gecko/20100101 Thunderbird/68.4.2
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [172.21.69.117]
+In-Reply-To: <cee34bac9d6041784a92c5fdbf667c367dc7f968.1580874252.git.ryder.lee@mediatek.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Tzu-En Huang <tehuang@realtek.com>
+On 2020-02-05 04:46, Ryder Lee wrote:
+> Fix it to proper length.
+> 
+> Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+> ---
+>  drivers/net/wireless/mediatek/mt76/mt7615/mcu.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+> index 6639f9291721..fbda56342d11 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+> @@ -491,7 +491,7 @@ static int mt7615_load_ram(struct mt7615_dev *dev)
+>  		goto out;
+>  	}
+>  
+> -	if (!strncmp(hdr->fw_ver, "2.0", 6))
+> +	if (!strncmp(hdr->fw_ver, "2.0", 3))
+Do you plan on allowing more characters after the 2.0 and still match?
+If not, maybe we should just use sizeof(hdr->fw_ver) as max len.
 
-In associating and configuring beamformee, bfee->role is not
-correctly set before rtw_chip_ops::config_bfee().
-Fix it by setting it correctly.
-
-Fixes: 0bd9557341b7 ("rtw88: Enable 802.11ac beamformee support")
-Signed-off-by: Tzu-En Huang <tehuang@realtek.com>
-Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
----
- drivers/net/wireless/realtek/rtw88/bf.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/net/wireless/realtek/rtw88/bf.c b/drivers/net/wireless/realtek/rtw88/bf.c
-index fda771d23f71..0ada0ae665dc 100644
---- a/drivers/net/wireless/realtek/rtw88/bf.c
-+++ b/drivers/net/wireless/realtek/rtw88/bf.c
-@@ -41,7 +41,6 @@ void rtw_bf_assoc(struct rtw_dev *rtwdev, struct ieee80211_vif *vif,
- 	struct ieee80211_sta_vht_cap *ic_vht_cap;
- 	const u8 *bssid = bss_conf->bssid;
- 	u32 sound_dim;
--	u8 bfee_role = RTW_BFEE_NONE;
- 	u8 i;
- 
- 	if (!(chip->band & RTW_BAND_5G))
-@@ -67,7 +66,7 @@ void rtw_bf_assoc(struct rtw_dev *rtwdev, struct ieee80211_vif *vif,
- 		}
- 
- 		ether_addr_copy(bfee->mac_addr, bssid);
--		bfee_role = RTW_BFEE_MU;
-+		bfee->role = RTW_BFEE_MU;
- 		bfee->p_aid = (bssid[5] << 1) | (bssid[4] >> 7);
- 		bfee->aid = bss_conf->aid;
- 		bfinfo->bfer_mu_cnt++;
-@@ -85,7 +84,7 @@ void rtw_bf_assoc(struct rtw_dev *rtwdev, struct ieee80211_vif *vif,
- 		sound_dim >>= IEEE80211_VHT_CAP_SOUNDING_DIMENSIONS_SHIFT;
- 
- 		ether_addr_copy(bfee->mac_addr, bssid);
--		bfee_role = RTW_BFEE_SU;
-+		bfee->role = RTW_BFEE_SU;
- 		bfee->sound_dim = (u8)sound_dim;
- 		bfee->g_id = 0;
- 		bfee->p_aid = (bssid[5] << 1) | (bssid[4] >> 7);
-@@ -102,7 +101,7 @@ void rtw_bf_assoc(struct rtw_dev *rtwdev, struct ieee80211_vif *vif,
- 	}
- 
- out_unlock:
--	bfee->role = bfee_role;
-+	bfee->role = RTW_BFEE_NONE;
- 	rcu_read_unlock();
- }
- 
--- 
-2.17.1
-
+- Felix
