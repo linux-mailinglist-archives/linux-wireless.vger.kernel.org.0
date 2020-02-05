@@ -2,57 +2,34 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8BBEC153BAB
-	for <lists+linux-wireless@lfdr.de>; Thu,  6 Feb 2020 00:10:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F836153C1E
+	for <lists+linux-wireless@lfdr.de>; Thu,  6 Feb 2020 00:53:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727482AbgBEXKQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 5 Feb 2020 18:10:16 -0500
-Received: from mail-pf1-f195.google.com ([209.85.210.195]:41419 "EHLO
-        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727149AbgBEXKP (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 5 Feb 2020 18:10:15 -0500
-Received: by mail-pf1-f195.google.com with SMTP id j9so1986668pfa.8
-        for <linux-wireless@vger.kernel.org>; Wed, 05 Feb 2020 15:10:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=/rjZ1BE1+tmBdqT4ZzG4XZPhZyhsStFok3T+POKaIrY=;
-        b=Qn3JBYUIhHFG2nHClrFYb+w0DziOtdwoLgzKUaPR8XXgVpnk2rXjK7MmTWJRNgMmrv
-         uNbA3QiovEm2N+hX72jMjcrCNBkubOxUcBSKa5yJksVYTsRUVrCBGqNaedaTTBMj1uLt
-         P+l6iyN4VAZmrfwyaTYQjiirzEskU2fftCpqc=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=/rjZ1BE1+tmBdqT4ZzG4XZPhZyhsStFok3T+POKaIrY=;
-        b=oFreVKtxbKadSvm2+0guRCUUcVtzJcoEixZlOEfj+wyhs1RigYirJCnWznX4iKa9As
-         qDB76qAGtwSxwT2uEwD1svH9sDpHjN+ccp3rDfJM6NVx3VJhf/FOMfOSNjiOjjA5hnSW
-         6e5CBAnP0aNqIEBCiDRrH92bL8n0S7KPssmj8m3cseGsh8qUCclgI1yNSE84w8c8KbZh
-         CzMbqXteYONIQTJiYGz2kbtW9HknFXPlQCmc2i98gx4ghirx9fYsBxP2SWjVcSIdfxYj
-         On6Wao5rs8iqLysRS7mwedVtT9asp1d8guMOLesHOuDnK5yUlDnKpQULQG/jR+HFfX0h
-         gNWw==
-X-Gm-Message-State: APjAAAULMsxrx88yO+OhCcCMxcWsrNmJ0M2DWKEex6WBrowioY3IsA9i
-        kn5HS9ss2sqzeC165k/4OIdzGQ==
-X-Google-Smtp-Source: APXvYqw+sqm/l1v1ZKkGd+orF85F3NgOT+OuF6bzz5Pj5jWo3jMKTuJXJgJqKxndPkuGxbDFkfJqbA==
-X-Received: by 2002:a65:5549:: with SMTP id t9mr247688pgr.439.1580944214992;
-        Wed, 05 Feb 2020 15:10:14 -0800 (PST)
-Received: from smtp.gmail.com ([2620:15c:202:1:534:b7c0:a63c:460c])
-        by smtp.gmail.com with ESMTPSA id t63sm567963pfb.70.2020.02.05.15.10.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Feb 2020 15:10:14 -0800 (PST)
-From:   Brian Norris <briannorris@chromium.org>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Brian Norris <briannorris@chromium.org>
-Subject: [PATCH 3/3] iw: reg: parse the NO_HE regulatory flag
-Date:   Wed,  5 Feb 2020 15:10:01 -0800
-Message-Id: <20200205231001.132595-3-briannorris@chromium.org>
-X-Mailer: git-send-email 2.25.0.341.g760bfbb309-goog
-In-Reply-To: <20200205231001.132595-1-briannorris@chromium.org>
-References: <20200205231001.132595-1-briannorris@chromium.org>
+        id S1727443AbgBEXxW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 5 Feb 2020 18:53:22 -0500
+Received: from mail.kernel.org ([198.145.29.99]:46152 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727170AbgBEXxW (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 5 Feb 2020 18:53:22 -0500
+Received: from localhost.lan (unknown [151.48.147.3])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id A98B720672;
+        Wed,  5 Feb 2020 23:53:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1580946801;
+        bh=B8S0cSFMRnPunM7hGtX/UcwnafhXYWO8syCal9DZtok=;
+        h=From:To:Cc:Subject:Date:From;
+        b=lzq4ZJubu6RaCFBk4DiJfqbqp21Hej3HqsZGy1x2b/qM82J2QZ/wQm9h7QclDLEUw
+         1m6IWQnHymqSnnhkv+5E8CWMeA4ftL28jE2YAiMJOLWZly5pQ+dTxeJQaqOIkaRs/q
+         LizbOna1lXTb6TMoarKlCaU+udHk1AMYOOUu3lQk=
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org
+Subject: [PATCH 0/3] remove mmio dependency from mcu event code
+Date:   Thu,  6 Feb 2020 00:53:07 +0100
+Message-Id: <cover.1580945999.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.21.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
@@ -60,29 +37,23 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This isn't supported in wireless-regdb yet, but self-managed drivers are
-preparing to report it:
+Remove mmio dependency from mt76_mcu_rx_event and mt76_mcu_get_response in
+order to reuse them in usb code and remove duplicated code
 
-https://patchwork.kernel.org/patch/11343173/
-https://lkml.kernel.org/linux-wireless/20200121081213.733757-1-luca@coelho.fi
+Lorenzo Bianconi (3):
+  mt76: reuse mt76_mcu in mt76u_mcu
+  mt76: generalize mt76_mcu_rx_event routine
+  mt76: generalize mt76_mcu_get_response routine
 
-Signed-off-by: Brian Norris <briannorris@chromium.org>
----
- reg.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/mediatek/mt76/mcu.c      | 15 ++++---
+ drivers/net/wireless/mediatek/mt76/mt76.h     | 43 ++++++++++---------
+ .../net/wireless/mediatek/mt76/mt7603/dma.c   |  4 +-
+ .../net/wireless/mediatek/mt76/mt7615/mcu.c   |  2 +-
+ .../net/wireless/mediatek/mt76/mt76x02_txrx.c |  3 +-
+ .../wireless/mediatek/mt76/mt76x02_usb_mcu.c  | 22 ++++++----
+ drivers/net/wireless/mediatek/mt76/usb.c      |  6 ++-
+ 7 files changed, 52 insertions(+), 43 deletions(-)
 
-diff --git a/reg.c b/reg.c
-index a2368df39009..db1b12906519 100644
---- a/reg.c
-+++ b/reg.c
-@@ -209,6 +209,7 @@ static int print_reg_handler(struct nl_msg *msg, void *arg)
- 		PARSE_FLAG(NL80211_RRF_NO_HT40PLUS, "NO-HT40PLUS");
- 		PARSE_FLAG(NL80211_RRF_NO_80MHZ, "NO-80MHZ");
- 		PARSE_FLAG(NL80211_RRF_NO_160MHZ, "NO-160MHZ");
-+		PARSE_FLAG(NL80211_RRF_NO_HE, "NO-HE");
- 
- 		/* Kernels that support NO_IR always turn on both flags */
- 		if ((flags & NL80211_RRF_NO_IR) && (flags & __NL80211_RRF_NO_IBSS)) {
 -- 
-2.25.0.341.g760bfbb309-goog
+2.21.1
 
