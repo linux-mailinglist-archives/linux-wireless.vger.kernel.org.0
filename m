@@ -2,80 +2,127 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 107171526AB
-	for <lists+linux-wireless@lfdr.de>; Wed,  5 Feb 2020 08:09:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7CDD41526BC
+	for <lists+linux-wireless@lfdr.de>; Wed,  5 Feb 2020 08:16:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727987AbgBEHJQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 5 Feb 2020 02:09:16 -0500
-Received: from rtits2.realtek.com ([211.75.126.72]:49351 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727963AbgBEHJP (ORCPT
+        id S1726386AbgBEHQZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 5 Feb 2020 02:16:25 -0500
+Received: from mail26.static.mailgun.info ([104.130.122.26]:54810 "EHLO
+        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725980AbgBEHQZ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 5 Feb 2020 02:09:15 -0500
-Authenticated-By: 
-X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID 015797Cl008636, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (RTEXMB06.realtek.com.tw[172.21.6.99])
-        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id 015797Cl008636
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 5 Feb 2020 15:09:07 +0800
-Received: from RTEXMB03.realtek.com.tw (172.21.6.96) by
- RTEXMB06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Wed, 5 Feb 2020 15:09:07 +0800
-Received: from RTEXMB06.realtek.com.tw (172.21.6.99) by
- RTEXMB03.realtek.com.tw (172.21.6.96) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Wed, 5 Feb 2020 15:09:07 +0800
-Received: from RTITCASV01.realtek.com.tw (172.21.6.18) by
- RTEXMB06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
- (version=TLS1_0, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.1.1779.2
- via Frontend Transport; Wed, 5 Feb 2020 15:09:07 +0800
-Received: from localhost.localdomain (172.21.69.117) by
- RTITCASV01.realtek.com.tw (172.21.6.18) with Microsoft SMTP Server id
- 14.3.468.0; Wed, 5 Feb 2020 15:09:06 +0800
-From:   <yhchuang@realtek.com>
-To:     <kvalo@codeaurora.org>
-CC:     <linux-wireless@vger.kernel.org>, <briannorris@chromium.org>
-Subject: [PATCH 7/7] rtw88: 8822c: update power sequence to v16
-Date:   Wed, 5 Feb 2020 15:08:58 +0800
-Message-ID: <20200205070858.15386-8-yhchuang@realtek.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200205070858.15386-1-yhchuang@realtek.com>
-References: <20200205070858.15386-1-yhchuang@realtek.com>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [172.21.69.117]
+        Wed, 5 Feb 2020 02:16:25 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1580886984; h=Message-Id: Date: Subject: Cc: To: From:
+ Sender; bh=oEibU5IqrW/VSVySG903o9KMYMihm++jSvuEESHQfTs=; b=i3iSxZZuWdlR+oPn8Ski2PXdrKTvW6WTObriU56aykKRLyQUgCCAU8xS2n35P7o3QWTPM6JR
+ N3d6Ez6CjVCHEP/U75vEDsp3E9Ie0/vHHQY10e+yTyz6uI+Ckah2XKYjojR+0VD8TTCppHZJ
+ uWtKICwZVZTdfSTClotgcjWSXKg=
+X-Mailgun-Sending-Ip: 104.130.122.26
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5e3a6bc2.7f2e3bc433e8-smtp-out-n03;
+ Wed, 05 Feb 2020 07:16:18 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 59EFCC43383; Wed,  5 Feb 2020 07:16:17 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.0
+Received: from vnaralas-linux.qualcomm.com (blr-c-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.19.19])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: akolli)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id AE2AFC433CB;
+        Wed,  5 Feb 2020 07:16:15 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org AE2AFC433CB
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=akolli@codeaurora.org
+From:   Anilkumar Kolli <akolli@codeaurora.org>
+To:     ath11k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org,
+        Anilkumar Kolli <akolli@codeaurora.org>
+Subject: [PATCH] ath11k: fix parsing PPDU_CTRL type in pktlog
+Date:   Wed,  5 Feb 2020 12:45:59 +0530
+Message-Id: <1580886959-8436-1-git-send-email-akolli@codeaurora.org>
+X-Mailer: git-send-email 2.7.4
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Tzu-En Huang <tehuang@realtek.com>
+PPDU_CTRL type is missing in current pktlog dumps.
+PPDU_CTRL is sent on CE5 with len 2560 bytes, current
+driver ignores the payload len greter than 2048.
+PPDU_CTRL of 2560 bytes is sent in two fragments of len 2028
+and 532 bytes, but firmware reports pkt header has length as 2560
+for both of the fragments.
 
-Fix switching xtal mode leads to BT USB error issue.
-
-Signed-off-by: Tzu-En Huang <tehuang@realtek.com>
-Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
+Signed-off-by: Anilkumar Kolli <akolli@codeaurora.org>
 ---
- drivers/net/wireless/realtek/rtw88/rtw8822c.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/net/wireless/ath/ath11k/debug.h | 13 ++++++++++---
+ drivers/net/wireless/ath/ath11k/dp_rx.c | 12 ++----------
+ 2 files changed, 12 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822c.c b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-index 3865097696d4..d49c8b697e4f 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-@@ -3544,6 +3544,11 @@ static struct rtw_pwr_seq_cmd trans_cardemu_to_act_8822c[] = {
- 	 RTW_PWR_INTF_ALL_MSK,
- 	 RTW_PWR_ADDR_MAC,
- 	 RTW_PWR_CMD_WRITE, BIT(2), BIT(2)},
-+	{0x1064,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_ALL_MSK,
-+	 RTW_PWR_ADDR_MAC,
-+	 RTW_PWR_CMD_WRITE, BIT(1), BIT(1)},
- 	{0xFFFF,
- 	 RTW_PWR_CUT_ALL_MSK,
- 	 RTW_PWR_INTF_ALL_MSK,
+diff --git a/drivers/net/wireless/ath/ath11k/debug.h b/drivers/net/wireless/ath/ath11k/debug.h
+index aef33f83c9b1..12332eeabc10 100644
+--- a/drivers/net/wireless/ath/ath11k/debug.h
++++ b/drivers/net/wireless/ath/ath11k/debug.h
+@@ -65,12 +65,19 @@ struct debug_htt_stats_req {
+ 	u8 buf[0];
+ };
+ 
+-#define ATH11K_HTT_STATS_BUF_SIZE (1024 * 512)
++struct ath_pktlog_hdr {
++	u16 flags;
++	u16 missed_cnt;
++	u16 log_type;
++	u16 size;
++	u32 timestamp;
++	u32 type_specific_data;
++	u8 payload[0];
++};
+ 
++#define ATH11K_HTT_STATS_BUF_SIZE (1024 * 512)
+ #define ATH11K_FW_STATS_BUF_SIZE (1024 * 1024)
+ 
+-#define ATH11K_HTT_PKTLOG_MAX_SIZE 2048
+-
+ enum ath11k_pktlog_filter {
+ 	ATH11K_PKTLOG_RX		= 0x000000001,
+ 	ATH11K_PKTLOG_TX		= 0x000000002,
+diff --git a/drivers/net/wireless/ath/ath11k/dp_rx.c b/drivers/net/wireless/ath/ath11k/dp_rx.c
+index ae4bfa5fe3b8..4e4bffd57b3f 100644
+--- a/drivers/net/wireless/ath/ath11k/dp_rx.c
++++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
+@@ -1282,18 +1282,10 @@ static int ath11k_htt_pull_ppdu_stats(struct ath11k_base *ab,
+ static void ath11k_htt_pktlog(struct ath11k_base *ab, struct sk_buff *skb)
+ {
+ 	struct htt_pktlog_msg *data = (struct htt_pktlog_msg *)skb->data;
++	struct ath_pktlog_hdr *hdr = (struct ath_pktlog_hdr *)data;
+ 	struct ath11k *ar;
+-	u32 len;
+ 	u8 pdev_id;
+ 
+-	len = FIELD_GET(HTT_T2H_PPDU_STATS_INFO_PAYLOAD_SIZE, data->hdr);
+-	if (len > ATH11K_HTT_PKTLOG_MAX_SIZE) {
+-		ath11k_warn(ab, "htt pktlog buffer size %d, expected < %d\n",
+-			    len,
+-			    ATH11K_HTT_PKTLOG_MAX_SIZE);
+-		return;
+-	}
+-
+ 	pdev_id = FIELD_GET(HTT_T2H_PPDU_STATS_INFO_PDEV_ID, data->hdr);
+ 	ar = ath11k_mac_get_ar_by_pdev_id(ab, pdev_id);
+ 	if (!ar) {
+@@ -1301,7 +1293,7 @@ static void ath11k_htt_pktlog(struct ath11k_base *ab, struct sk_buff *skb)
+ 		return;
+ 	}
+ 
+-	trace_ath11k_htt_pktlog(ar, data->payload, len);
++	trace_ath11k_htt_pktlog(ar, data->payload, hdr->size);
+ }
+ 
+ void ath11k_dp_htt_htc_t2h_msg_handler(struct ath11k_base *ab,
 -- 
-2.17.1
-
+1.9.1
