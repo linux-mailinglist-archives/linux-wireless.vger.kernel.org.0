@@ -2,410 +2,86 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 589991523AA
-	for <lists+linux-wireless@lfdr.de>; Wed,  5 Feb 2020 01:00:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 980BC152470
+	for <lists+linux-wireless@lfdr.de>; Wed,  5 Feb 2020 02:22:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727522AbgBEAAl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 4 Feb 2020 19:00:41 -0500
-Received: from mail26.static.mailgun.info ([104.130.122.26]:56347 "EHLO
-        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727483AbgBEAAk (ORCPT
+        id S1727758AbgBEBWo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 4 Feb 2020 20:22:44 -0500
+Received: from mail25.static.mailgun.info ([104.130.122.25]:47055 "EHLO
+        mail25.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727745AbgBEBWo (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 4 Feb 2020 19:00:40 -0500
+        Tue, 4 Feb 2020 20:22:44 -0500
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1580860839; h=References: In-Reply-To: Message-Id: Date:
- Subject: Cc: To: From: Sender;
- bh=z8A6h18v+UmRaKE2scC/ngpD1OoHxA8BZhH78vwFKRo=; b=uTCUVa+aJ5lXmRpR7tqCca6B911P0I5s4hWv6l0o4VXTqzmbXJwIlk+V5wTMZpN0OaaKkNZe
- WZb5I84WmQpBkPdQNdAB/nyDKM8HjMs06uPJD4MPpN+SI1S5SMl/ntjq6uB/5TVA2/2nYCpQ
- J3UQS2qFdkHYBL+tJo8V6oShryY=
-X-Mailgun-Sending-Ip: 104.130.122.26
+ s=smtp; t=1580865763; h=Message-Id: Date: Subject: Cc: To: From:
+ Sender; bh=nvU8Bm7e64yia8HQ3RtvUNluoAWYe9/80/taN/q3odc=; b=niZal6Mmzcp1n4k0yzGgUvNORL0dPDHeCYYf00WWRsKju2SlJ5Gu/fhngHZavCYivG3by9rh
+ BGMj5fBekrX+/G+qVaxYNYdPQF0+9zqIv3fJX5nHzr/xV+BGVvAn3+jJfgA+GiiVSHQfRdCY
+ O0IWGS2GvB/PKX+U+VnaY5xwc8I=
+X-Mailgun-Sending-Ip: 104.130.122.25
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e3a05a6.7fa688c2bce0-smtp-out-n01;
- Wed, 05 Feb 2020 00:00:38 -0000 (UTC)
+ by mxa.mailgun.org with ESMTP id 5e3a18e0.7effc153fa40-smtp-out-n02;
+ Wed, 05 Feb 2020 01:22:40 -0000 (UTC)
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 73A12C4479C; Wed,  5 Feb 2020 00:00:37 +0000 (UTC)
+        id 9A5CDC433CB; Wed,  5 Feb 2020 01:22:39 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from pradeepc-linux.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE,
+        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from CHECSTP284781-LIN.qualcomm.com (blr-c-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.19.19])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
         (No client certificate requested)
-        (Authenticated sender: pradeepc)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 16D3FC433A2;
-        Wed,  5 Feb 2020 00:00:35 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 16D3FC433A2
+        (Authenticated sender: periyasa)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 59258C43383;
+        Wed,  5 Feb 2020 01:22:37 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 59258C43383
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=pradeepc@codeaurora.org
-From:   Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=periyasa@codeaurora.org
+From:   Karthikeyan Periyasamy <periyasa@codeaurora.org>
 To:     ath11k@lists.infradead.org
 Cc:     linux-wireless@vger.kernel.org,
-        Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>
-Subject: [PATCH 2/2] ath11k: add thermal sensor device support
-Date:   Wed,  5 Feb 2020 05:30:30 +0530
-Message-Id: <1580860830-12696-2-git-send-email-pradeepc@codeaurora.org>
+        Karthikeyan Periyasamy <periyasa@codeaurora.org>
+Subject: [PATCH] ath11k: fix rcu lock protect in peer assoc confirmation
+Date:   Wed,  5 Feb 2020 06:52:28 +0530
+Message-Id: <1580865748-31286-1-git-send-email-periyasa@codeaurora.org>
 X-Mailer: git-send-email 1.9.1
-In-Reply-To: <1580860830-12696-1-git-send-email-pradeepc@codeaurora.org>
-References: <1580860830-12696-1-git-send-email-pradeepc@codeaurora.org>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Temperature sensor generates electrical analog voltage from temperature
-of each chain. The analog voltage is converted to digital value through
-ADC. For reading temperature values fom user space, hw monitoring device
-is used.
+ath11k_mac_get_ar_by_vdev_id() get protected under rcu lock
+and unlock. peer association confirmation event get used this API
+without rcu protection, so corrected it.
 
-Whenever the user requests for current temperature, the driver sends WMI
-command and wait for response. For reading temperature,
-
-cat /sys/class/ieee80211/phy*/device/hwmon/hwmon2/temp1_input
-
-Signed-off-by: Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>
+Signed-off-by: Karthikeyan Periyasamy <periyasa@codeaurora.org>
 ---
- drivers/net/wireless/ath/ath11k/core.c    |  1 +
- drivers/net/wireless/ath/ath11k/mac.c     |  2 +
- drivers/net/wireless/ath/ath11k/thermal.c | 79 ++++++++++++++++++++++++++++
- drivers/net/wireless/ath/ath11k/thermal.h | 13 +++++
- drivers/net/wireless/ath/ath11k/wmi.c     | 85 +++++++++++++++++++++++++++++++
- drivers/net/wireless/ath/ath11k/wmi.h     | 13 +++++
- 6 files changed, 193 insertions(+)
+ drivers/net/wireless/ath/ath11k/wmi.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
-index 63b0864c6bcb..d9849bc6033d 100644
---- a/drivers/net/wireless/ath/ath11k/core.c
-+++ b/drivers/net/wireless/ath/ath11k/core.c
-@@ -654,6 +654,7 @@ static void ath11k_core_restart(struct work_struct *work)
- 		complete(&ar->install_key_done);
- 		complete(&ar->vdev_setup_done);
- 		complete(&ar->bss_survey_done);
-+		complete(&ar->thermal.wmi_sync);
- 
- 		wake_up(&ar->dp.tx_empty_waitq);
- 		idr_for_each(&ar->txmgmt_idr,
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index 6640662f5ede..90d4ebe6be89 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -5873,6 +5873,8 @@ int ath11k_mac_allocate(struct ath11k_base *ab)
- 		init_completion(&ar->bss_survey_done);
- 		init_completion(&ar->scan.started);
- 		init_completion(&ar->scan.completed);
-+		init_completion(&ar->thermal.wmi_sync);
-+
- 		INIT_DELAYED_WORK(&ar->scan.timeout, ath11k_scan_timeout_work);
- 		INIT_WORK(&ar->regd_update_work, ath11k_regd_update_work);
- 
-diff --git a/drivers/net/wireless/ath/ath11k/thermal.c b/drivers/net/wireless/ath/ath11k/thermal.c
-index 6c2d96be34cb..259dddbda2c7 100644
---- a/drivers/net/wireless/ath/ath11k/thermal.c
-+++ b/drivers/net/wireless/ath/ath11k/thermal.c
-@@ -6,6 +6,8 @@
- #include <linux/device.h>
- #include <linux/sysfs.h>
- #include <linux/thermal.h>
-+#include <linux/hwmon.h>
-+#include <linux/hwmon-sysfs.h>
- #include "core.h"
- #include "debug.h"
- 
-@@ -57,6 +59,70 @@
- 	.set_cur_state = ath11k_thermal_set_cur_throttle_state,
- };
- 
-+static ssize_t ath11k_thermal_show_temp(struct device *dev,
-+					struct device_attribute *attr,
-+					char *buf)
-+{
-+	struct ath11k *ar = dev_get_drvdata(dev);
-+	int ret, temperature;
-+	unsigned long time_left;
-+
-+	mutex_lock(&ar->conf_mutex);
-+
-+	/* Can't get temperature when the card is off */
-+	if (ar->state != ATH11K_STATE_ON) {
-+		ret = -ENETDOWN;
-+		goto out;
-+	}
-+
-+	reinit_completion(&ar->thermal.wmi_sync);
-+	ret = ath11k_wmi_send_pdev_temperature_cmd(ar);
-+	if (ret) {
-+		ath11k_warn(ar->ab, "failed to read temperature %d\n", ret);
-+		goto out;
-+	}
-+
-+	if (test_bit(ATH11K_FLAG_CRASH_FLUSH, &ar->ab->dev_flags)) {
-+		ret = -ESHUTDOWN;
-+		goto out;
-+	}
-+
-+	time_left = wait_for_completion_timeout(&ar->thermal.wmi_sync,
-+						ATH11K_THERMAL_SYNC_TIMEOUT_HZ);
-+	if (!time_left) {
-+		ath11k_warn(ar->ab, "failed to synchronize thermal read\n");
-+		ret = -ETIMEDOUT;
-+		goto out;
-+	}
-+
-+	spin_lock_bh(&ar->data_lock);
-+	temperature = ar->thermal.temperature;
-+	spin_unlock_bh(&ar->data_lock);
-+
-+	/* display in millidegree celcius */
-+	ret = snprintf(buf, PAGE_SIZE, "%d\n", temperature * 1000);
-+out:
-+	mutex_unlock(&ar->conf_mutex);
-+	return ret;
-+}
-+
-+void ath11k_thermal_event_temperature(struct ath11k *ar, int temperature)
-+{
-+	spin_lock_bh(&ar->data_lock);
-+	ar->thermal.temperature = temperature;
-+	spin_unlock_bh(&ar->data_lock);
-+	complete(&ar->thermal.wmi_sync);
-+}
-+
-+static SENSOR_DEVICE_ATTR(temp1_input, 0444, ath11k_thermal_show_temp,
-+			  NULL, 0);
-+
-+static struct attribute *ath11k_hwmon_attrs[] = {
-+	&sensor_dev_attr_temp1_input.dev_attr.attr,
-+	NULL,
-+};
-+ATTRIBUTE_GROUPS(ath11k_hwmon);
-+
- int ath11k_thermal_set_throttling(struct ath11k *ar, u32 throttle_state)
- {
- 	struct ath11k_base *sc = ar->ab;
-@@ -91,6 +157,7 @@ int ath11k_thermal_set_throttling(struct ath11k *ar, u32 throttle_state)
- int ath11k_thermal_register(struct ath11k_base *sc)
- {
- 	struct thermal_cooling_device *cdev;
-+	struct device *hwmon_dev;
- 	struct ath11k *ar;
- 	struct ath11k_pdev *pdev;
- 	int i, ret;
-@@ -118,6 +185,18 @@ int ath11k_thermal_register(struct ath11k_base *sc)
- 		}
- 
- 		ar->thermal.cdev = cdev;
-+		if (!IS_REACHABLE(CONFIG_HWMON))
-+			return 0;
-+
-+		hwmon_dev = devm_hwmon_device_register_with_groups(&ar->hw->wiphy->dev,
-+								   "ath11k_hwmon", ar,
-+								   ath11k_hwmon_groups);
-+		if (IS_ERR(hwmon_dev)) {
-+			ath11k_err(ar->ab, "failed to register hwmon device: %ld\n",
-+				   PTR_ERR(hwmon_dev));
-+			ret = -EINVAL;
-+			goto err_thermal_destroy;
-+		}
- 	}
- 
- 	return 0;
-diff --git a/drivers/net/wireless/ath/ath11k/thermal.h b/drivers/net/wireless/ath/ath11k/thermal.h
-index 7aa8dcfdb624..510c5aaebefa 100644
---- a/drivers/net/wireless/ath/ath11k/thermal.h
-+++ b/drivers/net/wireless/ath/ath11k/thermal.h
-@@ -10,18 +10,26 @@
- #define ATH11K_THERMAL_TEMP_HIGH_MARK 150
- #define ATH11K_THERMAL_THROTTLE_MAX     100
- #define ATH11K_THERMAL_DEFAULT_DUTY_CYCLE 100
-+#define ATH11K_HWMON_NAME_LEN           15
-+#define ATH11K_THERMAL_SYNC_TIMEOUT_HZ (5 * HZ)
- 
- struct ath11k_thermal {
- 	struct thermal_cooling_device *cdev;
-+	struct completion wmi_sync;
- 
- 	/* protected by conf_mutex */
- 	u32 throttle_state;
-+	/* temperature value in Celcius degree
-+	 * protected by data_lock
-+	 */
-+	int temperature;
- };
- 
- #if IS_REACHABLE(CONFIG_THERMAL)
- int ath11k_thermal_register(struct ath11k_base *sc);
- void ath11k_thermal_unregister(struct ath11k_base *sc);
- int ath11k_thermal_set_throttling(struct ath11k *ar, u32 throttle_state);
-+void ath11k_thermal_event_temperature(struct ath11k *ar, int temperature);
- #else
- static inline int ath11k_thermal_register(struct ath11k_base *sc)
- {
-@@ -36,5 +44,10 @@ static inline int ath11k_thermal_set_throttling(struct ath11k *ar, u32 throttle_
- {
- }
- 
-+static inline void ath11k_thermal_event_temperature(struct ath11k *ar,
-+						    int temperature)
-+{
-+}
-+
- #endif
- #endif /* _ATH11K_THERMAL_ */
 diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
-index 425c9fdee71d..ca63ce07f12d 100644
+index a9b301c..9cbe038d 100644
 --- a/drivers/net/wireless/ath/ath11k/wmi.c
 +++ b/drivers/net/wireless/ath/ath11k/wmi.c
-@@ -1471,6 +1471,34 @@ int ath11k_wmi_send_stats_request_cmd(struct ath11k *ar,
- 	return ret;
+@@ -5345,15 +5345,18 @@ static void ath11k_peer_assoc_conf_event(struct ath11k_base *ab, struct sk_buff
+ 		   "peer assoc conf ev vdev id %d macaddr %pM\n",
+ 		   peer_assoc_conf.vdev_id, peer_assoc_conf.macaddr);
+ 
++	rcu_read_lock();
+ 	ar = ath11k_mac_get_ar_by_vdev_id(ab, peer_assoc_conf.vdev_id);
+ 
+ 	if (!ar) {
+ 		ath11k_warn(ab, "invalid vdev id in peer assoc conf ev %d",
+ 			    peer_assoc_conf.vdev_id);
++		rcu_read_unlock();
+ 		return;
+ 	}
+ 
+ 	complete(&ar->peer_assoc_done);
++	rcu_read_unlock();
  }
  
-+int ath11k_wmi_send_pdev_temperature_cmd(struct ath11k *ar)
-+{
-+	struct ath11k_pdev_wmi *wmi = ar->wmi;
-+	struct wmi_get_pdev_temperature_cmd *cmd;
-+	struct sk_buff *skb;
-+	int ret;
-+
-+	skb = ath11k_wmi_alloc_skb(wmi->wmi_ab, sizeof(*cmd));
-+	if (!skb)
-+		return -ENOMEM;
-+
-+	cmd = (struct wmi_get_pdev_temperature_cmd *)skb->data;
-+	cmd->tlv_header = FIELD_PREP(WMI_TLV_TAG, WMI_TAG_PDEV_GET_TEMPERATURE_CMD) |
-+			  FIELD_PREP(WMI_TLV_LEN, sizeof(*cmd) - TLV_HDR_SIZE);
-+	cmd->pdev_id = ar->pdev->pdev_id;
-+
-+	ret = ath11k_wmi_cmd_send(wmi, skb, WMI_PDEV_GET_TEMPERATURE_CMDID);
-+	if (ret) {
-+		ath11k_warn(ar->ab, "failed to send WMI_PDEV_GET_TEMPERATURE cmd\n");
-+		dev_kfree_skb(skb);
-+	}
-+
-+	ath11k_dbg(ar->ab, ATH11K_DBG_WMI,
-+		   "WMI pdev get temperature for pdev_id %d\n", ar->pdev->pdev_id);
-+
-+	return ret;
-+}
-+
- int ath11k_wmi_send_bcn_offload_control_cmd(struct ath11k *ar,
- 					    u32 vdev_id, u32 bcn_ctrl_op)
- {
-@@ -4232,6 +4260,35 @@ int ath11k_wmi_pull_fw_stats(struct ath11k_base *ab, struct sk_buff *skb,
- 	return 0;
- }
- 
-+static int
-+ath11k_pull_pdev_temp_ev(struct ath11k_base *ab, u8 *evt_buf,
-+			 u32 len, s32 *temp, u32 *pdev_id)
-+{
-+	const void **tb;
-+	const struct wmi_pdev_temperature_event *ev;
-+	int ret;
-+
-+	tb = ath11k_wmi_tlv_parse_alloc(ab, evt_buf, len, GFP_ATOMIC);
-+	if (IS_ERR(tb)) {
-+		ret = PTR_ERR(tb);
-+		ath11k_warn(ab, "failed to parse tlv: %d\n", ret);
-+		return ret;
-+	}
-+
-+	ev = tb[WMI_TAG_PDEV_TEMPERATURE_EVENT];
-+	if (!ev) {
-+		ath11k_warn(ab, "failed to fetch pdev temp ev");
-+		kfree(tb);
-+		return -EPROTO;
-+	}
-+
-+	*pdev_id = ev->pdev_id;
-+	*temp = ev->temperature;
-+
-+	kfree(tb);
-+	return 0;
-+}
-+
- size_t ath11k_wmi_fw_stats_num_vdevs(struct list_head *head)
- {
- 	struct ath11k_fw_stats_vdev *i;
-@@ -5575,6 +5632,31 @@ static void ath11k_pdev_ctl_failsafe_check_event(struct ath11k_base *ab,
- 	kfree(tb);
- }
- 
-+static void
-+ath11k_wmi_pdev_temperature_event(struct ath11k_base *ab,
-+				  struct sk_buff *skb)
-+{
-+	struct ath11k *ar;
-+	s32 temp;
-+	u32 pdev_id;
-+
-+	if (ath11k_pull_pdev_temp_ev(ab, skb->data, skb->len, &temp, &pdev_id) != 0) {
-+		ath11k_warn(ab, "failed to extract pdev temperature event");
-+		return;
-+	}
-+
-+	ath11k_dbg(ab, ATH11K_DBG_WMI,
-+		   "pdev temperature ev temp %d pdev_id %d\n", temp, pdev_id);
-+
-+	ar = ath11k_mac_get_ar_by_pdev_id(ab, pdev_id);
-+	if (!ar) {
-+		ath11k_warn(ab, "invalid pdev id in pdev temperature ev %d", pdev_id);
-+		return;
-+	}
-+
-+	ath11k_thermal_event_temperature(ar, temp);
-+}
-+
- static void ath11k_wmi_tlv_op_rx(struct ath11k_base *ab, struct sk_buff *skb)
- {
- 	struct wmi_cmd_hdr *cmd_hdr;
-@@ -5652,6 +5734,9 @@ static void ath11k_wmi_tlv_op_rx(struct ath11k_base *ab, struct sk_buff *skb)
- 	case WMI_PDEV_CSA_SWITCH_COUNT_STATUS_EVENTID:
- 		ath11k_wmi_pdev_csa_switch_count_status_event(ab, skb);
- 		break;
-+	case WMI_PDEV_TEMPERATURE_EVENTID:
-+		ath11k_wmi_pdev_temperature_event(ab, skb);
-+		break;
- 	/* add Unsupported events here */
- 	case WMI_TBTTOFFSET_EXT_UPDATE_EVENTID:
- 	case WMI_VDEV_DELETE_RESP_EVENTID:
-diff --git a/drivers/net/wireless/ath/ath11k/wmi.h b/drivers/net/wireless/ath/ath11k/wmi.h
-index c8aa4cbb9a49..5192dda614d1 100644
---- a/drivers/net/wireless/ath/ath11k/wmi.h
-+++ b/drivers/net/wireless/ath/ath11k/wmi.h
-@@ -3304,6 +3304,12 @@ struct wmi_request_stats_cmd {
- 	u32 pdev_id;
- } __packed;
- 
-+struct wmi_get_pdev_temperature_cmd {
-+	u32 tlv_header;
-+	u32 param;
-+	u32 pdev_id;
-+} __packed;
-+
- #define WMI_BEACON_TX_BUFFER_SIZE	512
- 
- struct wmi_bcn_tmpl_cmd {
-@@ -4132,6 +4138,12 @@ struct wmi_pdev_radar_ev {
- 	s32 sidx;
- } __packed;
- 
-+struct wmi_pdev_temperature_event {
-+	/* temperature value in Celcius degree */
-+	s32 temperature;
-+	u32 pdev_id;
-+} __packed;
-+
- #define WMI_RX_STATUS_OK			0x00
- #define WMI_RX_STATUS_ERR_CRC			0x01
- #define WMI_RX_STATUS_ERR_DECRYPT		0x08
-@@ -4763,6 +4775,7 @@ int ath11k_wmi_pdev_bss_chan_info_request(struct ath11k *ar,
- 					  enum wmi_bss_chan_info_req_type type);
- int ath11k_wmi_send_stats_request_cmd(struct ath11k *ar,
- 				      struct stats_request_params *param);
-+int ath11k_wmi_send_pdev_temperature_cmd(struct ath11k *ar);
- int ath11k_wmi_send_peer_flush_tids_cmd(struct ath11k *ar,
- 					u8 peer_addr[ETH_ALEN],
- 					struct peer_flush_params *param);
+ static void ath11k_update_stats_event(struct ath11k_base *ab, struct sk_buff *skb)
 -- 
 1.9.1
