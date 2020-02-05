@@ -2,133 +2,105 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 726EA1526CE
-	for <lists+linux-wireless@lfdr.de>; Wed,  5 Feb 2020 08:27:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 08AB0152755
+	for <lists+linux-wireless@lfdr.de>; Wed,  5 Feb 2020 09:04:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726386AbgBEH1W (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 5 Feb 2020 02:27:22 -0500
-Received: from mail26.static.mailgun.info ([104.130.122.26]:49676 "EHLO
-        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725468AbgBEH1W (ORCPT
+        id S1728015AbgBEIEM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 5 Feb 2020 03:04:12 -0500
+Received: from rtits2.realtek.com ([211.75.126.72]:51208 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727068AbgBEIEM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 5 Feb 2020 02:27:22 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1580887641; h=Message-Id: Date: Subject: Cc: To: From:
- Sender; bh=a6928noU/VpV2+yVNNNmairirn+k6UvpBHK3xJkoj4g=; b=qiW6ILA3+qfAErMByd6uh/iD/pd4BDvov2d1BZFVosL0LqvdgvAI3jjFddCe/mnGCwpikK25
- JxTDrkl8UcdPagQeDB2owJJcdX+AHt5hLl5qgZR56nr/zQsH+QzwTaN+uZkfDyXl/WLOfLCf
- ap3zvIRkeS6Y631SzACgszywZqU=
-X-Mailgun-Sending-Ip: 104.130.122.26
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e3a6e57.7fcd16a29420-smtp-out-n02;
- Wed, 05 Feb 2020 07:27:19 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 8667DC43383; Wed,  5 Feb 2020 07:27:19 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from yintang-HP-Z230-SFF-Workstation.qca.qualcomm.com (unknown [180.166.53.21])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: yintang)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 5BC12C433CB;
-        Wed,  5 Feb 2020 07:27:17 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 5BC12C433CB
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=yintang@codeaurora.org
-From:   Yingying Tang <yintang@codeaurora.org>
-To:     ath10k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org
-Subject: [PATCH] ath10k: fix unsupported chip reset debugs file write
-Date:   Wed,  5 Feb 2020 15:27:24 +0800
-Message-Id: <1580887644-21061-1-git-send-email-yintang@codeaurora.org>
-X-Mailer: git-send-email 1.9.1
+        Wed, 5 Feb 2020 03:04:12 -0500
+Authenticated-By: 
+X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID 015844Zx026167, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (RTEXMB06.realtek.com.tw[172.21.6.99])
+        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id 015844Zx026167
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 5 Feb 2020 16:04:04 +0800
+Received: from RTEXMB05.realtek.com.tw (172.21.6.98) by
+ RTEXMB06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Wed, 5 Feb 2020 16:04:03 +0800
+Received: from RTEXMB06.realtek.com.tw (172.21.6.99) by
+ RTEXMB05.realtek.com.tw (172.21.6.98) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Wed, 5 Feb 2020 16:04:03 +0800
+Received: from RTITCASV01.realtek.com.tw (172.21.6.18) by
+ RTEXMB06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
+ (version=TLS1_0, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.1.1779.2
+ via Frontend Transport; Wed, 5 Feb 2020 16:04:03 +0800
+Received: from localhost.localdomain (172.21.69.117) by
+ RTITCASV01.realtek.com.tw (172.21.6.18) with Microsoft SMTP Server id
+ 14.3.468.0; Wed, 5 Feb 2020 16:04:02 +0800
+From:   <yhchuang@realtek.com>
+To:     <kvalo@codeaurora.org>
+CC:     <linux-wireless@vger.kernel.org>, <briannorris@chromium.org>,
+        <tehuang@realtek.com>
+Subject: [PATCH] rtw88: Fix incorrect beamformee role setting
+Date:   Wed, 5 Feb 2020 16:04:00 +0800
+Message-ID: <20200205080400.16580-1-yhchuang@realtek.com>
+X-Mailer: git-send-email 2.17.1
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Originating-IP: [172.21.69.117]
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Before this change, after writing "warm_hw_reset" debugfs file, host
-will send chip reset command to FW even though FW do not support this
-service getting a warning print.
+From: Tzu-En Huang <tehuang@realtek.com>
 
-Though there is no FW impact before this change, this patch restricts
-chip reset command sent to FW only if FW advertises the support via WMI
-service bit.
+In associating and configuring beamformee, bfee->role is not
+correctly set before rtw_chip_ops::config_bfee().
+Fix it by setting it correctly.
 
-Removed the redundant check and ath10k_warn() print as well.
-
-New version FW will report chip reset service bit to host. Host allow user
-to trigger WLAN chip reset only when fw report this service bit.
-
-For older NON-TLV FW, since it do not report chip reset service bit, host
-will not send chip reset command. For older TLV FW, since it report chip
-reset service bit, host will send chip reset command.
-
-Tested HW:  QCA9984, WCN3990
-
-QCA9984 FW version: WLAN.BL.3.9.0.2-00042-S-1
-
-Signed-off-by: Yingying Tang <yintang@codeaurora.org>
+Fixes: 0bd9557341b7 ("rtw88: Enable 802.11ac beamformee support")
+Signed-off-by: Tzu-En Huang <tehuang@realtek.com>
+Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
 ---
- drivers/net/wireless/ath/ath10k/debug.c | 9 ++++-----
- drivers/net/wireless/ath/ath10k/wmi.h   | 8 ++++++++
- 2 files changed, 12 insertions(+), 5 deletions(-)
+ drivers/net/wireless/realtek/rtw88/bf.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath10k/debug.c b/drivers/net/wireless/ath/ath10k/debug.c
-index 32d967a..4cec1a85 100644
---- a/drivers/net/wireless/ath/ath10k/debug.c
-+++ b/drivers/net/wireless/ath/ath10k/debug.c
-@@ -2365,9 +2365,6 @@ static ssize_t ath10k_write_warm_hw_reset(struct file *file,
- 		goto exit;
+diff --git a/drivers/net/wireless/realtek/rtw88/bf.c b/drivers/net/wireless/realtek/rtw88/bf.c
+index fda771d23f71..0ada0ae665dc 100644
+--- a/drivers/net/wireless/realtek/rtw88/bf.c
++++ b/drivers/net/wireless/realtek/rtw88/bf.c
+@@ -41,7 +41,6 @@ void rtw_bf_assoc(struct rtw_dev *rtwdev, struct ieee80211_vif *vif,
+ 	struct ieee80211_sta_vht_cap *ic_vht_cap;
+ 	const u8 *bssid = bss_conf->bssid;
+ 	u32 sound_dim;
+-	u8 bfee_role = RTW_BFEE_NONE;
+ 	u8 i;
+ 
+ 	if (!(chip->band & RTW_BAND_5G))
+@@ -67,7 +66,7 @@ void rtw_bf_assoc(struct rtw_dev *rtwdev, struct ieee80211_vif *vif,
+ 		}
+ 
+ 		ether_addr_copy(bfee->mac_addr, bssid);
+-		bfee_role = RTW_BFEE_MU;
++		bfee->role = RTW_BFEE_MU;
+ 		bfee->p_aid = (bssid[5] << 1) | (bssid[4] >> 7);
+ 		bfee->aid = bss_conf->aid;
+ 		bfinfo->bfer_mu_cnt++;
+@@ -85,7 +84,7 @@ void rtw_bf_assoc(struct rtw_dev *rtwdev, struct ieee80211_vif *vif,
+ 		sound_dim >>= IEEE80211_VHT_CAP_SOUNDING_DIMENSIONS_SHIFT;
+ 
+ 		ether_addr_copy(bfee->mac_addr, bssid);
+-		bfee_role = RTW_BFEE_SU;
++		bfee->role = RTW_BFEE_SU;
+ 		bfee->sound_dim = (u8)sound_dim;
+ 		bfee->g_id = 0;
+ 		bfee->p_aid = (bssid[5] << 1) | (bssid[4] >> 7);
+@@ -102,7 +101,7 @@ void rtw_bf_assoc(struct rtw_dev *rtwdev, struct ieee80211_vif *vif,
  	}
  
--	if (!(test_bit(WMI_SERVICE_RESET_CHIP, ar->wmi.svc_map)))
--		ath10k_warn(ar, "wmi service for reset chip is not available\n");
--
- 	ret = ath10k_wmi_pdev_set_param(ar, ar->wmi.pdev_param->pdev_reset,
- 					WMI_RST_MODE_WARM_RESET);
- 
-@@ -2603,8 +2600,10 @@ int ath10k_debug_register(struct ath10k *ar)
- 				    ar->debug.debugfs_phy, ar,
- 				    &fops_tpc_stats_final);
- 
--	debugfs_create_file("warm_hw_reset", 0600, ar->debug.debugfs_phy, ar,
--			    &fops_warm_hw_reset);
-+	if (test_bit(WMI_SERVICE_RESET_CHIP, ar->wmi.svc_map))
-+		debugfs_create_file("warm_hw_reset", 0600,
-+				    ar->debug.debugfs_phy, ar,
-+				    &fops_warm_hw_reset);
- 
- 	debugfs_create_file("ps_state_enable", 0600, ar->debug.debugfs_phy, ar,
- 			    &fops_ps_state_enable);
-diff --git a/drivers/net/wireless/ath/ath10k/wmi.h b/drivers/net/wireless/ath/ath10k/wmi.h
-index e1c40bb..d753924 100644
---- a/drivers/net/wireless/ath/ath10k/wmi.h
-+++ b/drivers/net/wireless/ath/ath10k/wmi.h
-@@ -367,6 +367,12 @@ enum wmi_10_4_service {
- 	WMI_10_4_SERVICE_RTT_RESPONDER_ROLE,
- 	WMI_10_4_SERVICE_EXT_PEER_TID_CONFIGS_SUPPORT,
- 	WMI_10_4_SERVICE_REPORT_AIRTIME,
-+	WMI_10_4_SERVICE_TX_PWR_PER_PEER,
-+	WMI_10_4_SERVICE_FETCH_PEER_TX_PN,
-+	WMI_10_4_SERVICE_MULTIPLE_VDEV_RESTART,
-+	WMI_10_4_SERVICE_ENHANCED_RADIO_COUNTERS,
-+	WMI_10_4_SERVICE_QINQ_SUPPORT,
-+	WMI_10_4_SERVICE_RESET_CHIP,
- };
- 
- static inline char *wmi_service_name(enum wmi_service service_id)
-@@ -818,6 +824,8 @@ static inline void wmi_10_4_svc_map(const __le32 *in, unsigned long *out,
- 	       WMI_SERVICE_PER_PACKET_SW_ENCRYPT, len);
- 	SVCMAP(WMI_10_4_SERVICE_REPORT_AIRTIME,
- 	       WMI_SERVICE_REPORT_AIRTIME, len);
-+	SVCMAP(WMI_10_4_SERVICE_RESET_CHIP,
-+	       WMI_SERVICE_RESET_CHIP, len);
+ out_unlock:
+-	bfee->role = bfee_role;
++	bfee->role = RTW_BFEE_NONE;
+ 	rcu_read_unlock();
  }
  
- #undef SVCMAP
 -- 
-1.9.1
+2.17.1
+
