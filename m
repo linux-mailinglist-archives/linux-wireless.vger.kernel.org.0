@@ -2,455 +2,100 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A3DB154286
-	for <lists+linux-wireless@lfdr.de>; Thu,  6 Feb 2020 12:03:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 574531542A7
+	for <lists+linux-wireless@lfdr.de>; Thu,  6 Feb 2020 12:08:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726956AbgBFLCL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 6 Feb 2020 06:02:11 -0500
-Received: from smtprelay0019.hostedemail.com ([216.40.44.19]:51067 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726744AbgBFLCL (ORCPT
+        id S1727502AbgBFLIR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 6 Feb 2020 06:08:17 -0500
+Received: from mail-io1-f52.google.com ([209.85.166.52]:40365 "EHLO
+        mail-io1-f52.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727473AbgBFLIR (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 6 Feb 2020 06:02:11 -0500
-X-Greylist: delayed 344 seconds by postgrey-1.27 at vger.kernel.org; Thu, 06 Feb 2020 06:02:07 EST
-Received: from smtprelay.hostedemail.com (10.5.19.251.rfc1918.com [10.5.19.251])
-        by smtpgrave06.hostedemail.com (Postfix) with ESMTP id 0311C80104E8
-        for <linux-wireless@vger.kernel.org>; Thu,  6 Feb 2020 10:56:25 +0000 (UTC)
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay03.hostedemail.com (Postfix) with ESMTP id F3517837F27D;
-        Thu,  6 Feb 2020 10:56:22 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,:::::::::::,RULES_HIT:4:41:69:355:379:800:960:973:988:989:1260:1277:1311:1313:1314:1345:1437:1515:1516:1518:1593:1594:1605:1730:1747:1777:1792:2393:2553:2559:2562:2640:2828:3138:3139:3140:3141:3142:3865:3867:4321:4384:4605:5007:6117:6119:7903:8603:8829:10004:11026:11473:11657:11658:11914:12043:12296:12297:12438:12555:12760:12986:13439:14394:14659:21080:21433:21627:21740:21939:21990:30054:30090,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:1,LUA_SUMMARY:none
-X-HE-Tag: ink51_5482e4a147944
-X-Filterd-Recvd-Size: 15578
-Received: from XPS-9350 (unknown [172.58.43.208])
-        (Authenticated sender: joe@perches.com)
-        by omf07.hostedemail.com (Postfix) with ESMTPA;
-        Thu,  6 Feb 2020 10:56:20 +0000 (UTC)
-Message-ID: <4ba111ba18f14f0630cc550b58dbe5dbc82a48ac.camel@perches.com>
-Subject: [PATCH] rtw88: 8822[bc]: Make tables const, reduce data object size
-From:   Joe Perches <joe@perches.com>
-To:     Yan-Hsuan Chuang <yhchuang@realtek.com>,
-        Kalle Valo <kvalo@codeaurora.org>
-Cc:     "David S. Miller" <davem@davemloft.net>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel <linux-kernel@vger.kernel.org>
-Date:   Thu, 06 Feb 2020 02:54:38 -0800
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.34.1-2 
+        Thu, 6 Feb 2020 06:08:17 -0500
+Received: by mail-io1-f52.google.com with SMTP id x1so5838232iop.7
+        for <linux-wireless@vger.kernel.org>; Thu, 06 Feb 2020 03:08:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc;
+        bh=NfptxjaStYrkEGbe/gRNZpHFhG9VdM3zlMBB+L7NlbA=;
+        b=aK8mQQ7N+LiJWLXTB/ZA59FCckRgTP4BbvZu4evNDbQGA17KBO0giVjoWUVliHUT5a
+         O5uNgGcZoAmN3Se46pbzkLoSp8yRcSnENkHIbIznwlciVY1pvnXn2aYqbUXiSOUfF4OH
+         nPQJCjFU/GNbYH1LK8TUC10J2a58HP19eYb1H2M5Qpt2urrLiqgcRKfpYxrcDyV0RmSg
+         eT/9P0kG2JMkkAORDyNRw6ecST2VzertnOcf/iUYAnuULIDTvgUbIS1QKuMjhSW81a63
+         2QojjiwkfJMvHhnzCfRwY5M2IOXsFVT53nBz9geMZA0pt8JDMTixpiiXPHvXfQs8LzT9
+         yrvA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc;
+        bh=NfptxjaStYrkEGbe/gRNZpHFhG9VdM3zlMBB+L7NlbA=;
+        b=rOlRNnIBy0flKWqcqB+4CwZDKsgzIVZ7zLMZvsKRDDOkAA1GfFNCiQHtSsF/4xsqR8
+         K3GUHuyyXmBB+k2vH/aiShpgZMF6++aDRtVlxW85ysgnRorVXN+xWCQIC95sINpLaCqA
+         5ykL7qXWaaz22lprE26DlCXb1nnEZXdmgxwxFlGj2XeeYiZ3DhET3P0bb350zrofsTDS
+         6DK3LlgrSiRjYhDH01tD2F9sEjoP3VVmxrPRpT3Af1FJWOBq0QarXDVkyap5ezHfCk5b
+         dzwPtSZUcyjcS8MWnwKL5doZkKQjwkZ9MFlJau/r1QaOnBQBzH42n6igfR3Khy1oqZG2
+         5MHg==
+X-Gm-Message-State: APjAAAVTbSdDIFciLiAZ1mELw/q/w6/2pdKBJ+0swbP3cNJl40VNQDL+
+        4Eicl7XqHmZWvi7f5SS125jRrT+BzWbMg5CHBOC6inwo17w=
+X-Google-Smtp-Source: APXvYqyzOO9WVp758wGEQcI1wbuos++1VVWc+oNjIIEznjeZySIEQETSf6AvpR9MVNacQLny6yiqQMn90P+GQrNI1dI=
+X-Received: by 2002:a02:6055:: with SMTP id d21mr34700826jaf.21.1580987296827;
+ Thu, 06 Feb 2020 03:08:16 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Received: by 2002:ad5:5d0d:0:0:0:0:0 with HTTP; Thu, 6 Feb 2020 03:08:16 -0800 (PST)
+In-Reply-To: <20200204081435.zhzqtsnrcgkzhpdw@beryllium.lan>
+References: <CAA=hcWQuz9QTvbRJgFXBbYrB9RBmWajCJ=oD49DyEaLw91t2bQ@mail.gmail.com>
+ <20200204081435.zhzqtsnrcgkzhpdw@beryllium.lan>
+From:   JH <jupiter.hce@gmail.com>
+Date:   Thu, 6 Feb 2020 22:08:16 +1100
+Message-ID: <CAA=hcWQ780vCx8KkNPqgmtbzxqZbrGnZx6zghr0PAwhG3o4hng@mail.gmail.com>
+Subject: Re: Failed to can wifi Invalid Sched_scan parameters
+To:     Daniel Wagner <wagi@monom.org>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
+        connman <connman@lists.01.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Reduce the data size 2kb or 3kb by making tables const.
-Add const to pointer declarations to make compilation work too.
+Hi Daniel,
 
-(x86-64 defconfig)
-$ size drivers/net/wireless/realtek/rtw88/rtw8822?.o*
-   text	   data	    bss	    dec	    hex	filename
-  25054	    672	      8	  25734	   6486	drivers/net/wireless/realtek/rtw88/rtw8822b.o.new
-  23870	   1872	      8	  25750	   6496	drivers/net/wireless/realtek/rtw88/rtw8822b.o.old
-  53646	    828	      0	  54474	   d4ca	drivers/net/wireless/realtek/rtw88/rtw8822c.o.new
-  52846	   1652	      0	  54498	   d4e2	drivers/net/wireless/realtek/rtw88/rtw8822c.o.old
+On 2/4/20, Daniel Wagner <wagi@monom.org> wrote:
+> The 'Invalid Sched_scan parameters' indicates, wpa_supplicant is
+> providing the wrong parameters. Best thing is to monitor between
+> wpa_supplicant and kernel the netlink messages. iwmon is an excellent
+> tool for this.
 
-(x86-64 allyesconfig)
-$ size drivers/net/wireless/realtek/rtw88/rtw8822?.o*
-   text	   data	    bss	    dec	    hex	filename
-  45811	   6280	    128	  52219	   cbfb	drivers/net/wireless/realtek/rtw88/rtw8822b.o.new
-  44211	   7880	    128	  52219	   cbfb	drivers/net/wireless/realtek/rtw88/rtw8822b.o.old
- 100195	   8128	      0	 108323	  1a723	drivers/net/wireless/realtek/rtw88/rtw8822c.o.new
-  98947	   9376	      0	 108323	  1a723	drivers/net/wireless/realtek/rtw88/rtw8822c.o.old
+Thanks for the tip, I did not realize that connman is actually heavily
+relied on wpa_supplicant, if I restarted wpa_supplicant, most of time
+it popped up mwifiex_sdio messages, then the WiFi could be up:
 
-Signed-off-by: Joe Perches <joe@perches.com>
----
- drivers/net/wireless/realtek/rtw88/mac.c      | 19 +++++++++---------
- drivers/net/wireless/realtek/rtw88/main.h     | 22 ++++++++++-----------
- drivers/net/wireless/realtek/rtw88/pci.c      |  2 +-
- drivers/net/wireless/realtek/rtw88/rtw8822b.c | 28 +++++++++++++--------------
- drivers/net/wireless/realtek/rtw88/rtw8822c.c | 28 +++++++++++++--------------
- 5 files changed, 50 insertions(+), 49 deletions(-)
+$ systemctl restart wpa_supplicant
+[  371.617417] mwifiex_sdio mmc0:0001:1: info: 2
+[  371.647545] mwifiex_sdio mmc0:0001:1: info: associated to bssid 34:08:04:12:y
+[  371.726667] IPv6: ADDRCONF(NETDEV_CHANGE): mlan0: link becomes ready
+[  371.772758] mwifiex_sdio mmc0:0001:1: CMD_RESP: cmd 0x23f error, result=0x2
 
-diff --git a/drivers/net/wireless/realtek/rtw88/mac.c b/drivers/net/wireless/realtek/rtw88/mac.c
-index cadf0a..0b98d3 100644
---- a/drivers/net/wireless/realtek/rtw88/mac.c
-+++ b/drivers/net/wireless/realtek/rtw88/mac.c
-@@ -101,7 +101,7 @@ static int rtw_mac_pre_system_cfg(struct rtw_dev *rtwdev)
- }
- 
- static int rtw_pwr_cmd_polling(struct rtw_dev *rtwdev,
--			       struct rtw_pwr_seq_cmd *cmd)
-+			       const struct rtw_pwr_seq_cmd *cmd)
- {
- 	u8 value;
- 	u8 flag = 0;
-@@ -139,9 +139,10 @@ static int rtw_pwr_cmd_polling(struct rtw_dev *rtwdev,
- }
- 
- static int rtw_sub_pwr_seq_parser(struct rtw_dev *rtwdev, u8 intf_mask,
--				  u8 cut_mask, struct rtw_pwr_seq_cmd *cmd)
-+				  u8 cut_mask,
-+				  const struct rtw_pwr_seq_cmd *cmd)
- {
--	struct rtw_pwr_seq_cmd *cur_cmd;
-+	const struct rtw_pwr_seq_cmd *cur_cmd;
- 	u32 offset;
- 	u8 value;
- 
-@@ -183,13 +184,13 @@ static int rtw_sub_pwr_seq_parser(struct rtw_dev *rtwdev, u8 intf_mask,
- }
- 
- static int rtw_pwr_seq_parser(struct rtw_dev *rtwdev,
--			      struct rtw_pwr_seq_cmd **cmd_seq)
-+			      const struct rtw_pwr_seq_cmd **cmd_seq)
- {
- 	u8 cut_mask;
- 	u8 intf_mask;
- 	u8 cut;
- 	u32 idx = 0;
--	struct rtw_pwr_seq_cmd *cmd;
-+	const struct rtw_pwr_seq_cmd *cmd;
- 	int ret;
- 
- 	cut = rtwdev->hal.cut_version;
-@@ -223,7 +224,7 @@ static int rtw_pwr_seq_parser(struct rtw_dev *rtwdev,
- static int rtw_mac_power_switch(struct rtw_dev *rtwdev, bool pwr_on)
- {
- 	struct rtw_chip_info *chip = rtwdev->chip;
--	struct rtw_pwr_seq_cmd **pwr_seq;
-+	const struct rtw_pwr_seq_cmd **pwr_seq;
- 	u8 rpwm;
- 	bool cur_pwr;
- 
-@@ -705,7 +706,7 @@ int rtw_download_firmware(struct rtw_dev *rtwdev, struct rtw_fw_state *fw)
- 
- static u32 get_priority_queues(struct rtw_dev *rtwdev, u32 queues)
- {
--	struct rtw_rqpn *rqpn = rtwdev->fifo.rqpn;
-+	const struct rtw_rqpn *rqpn = rtwdev->fifo.rqpn;
- 	u32 prio_queues = 0;
- 
- 	if (queues & BIT(IEEE80211_AC_VO))
-@@ -793,7 +794,7 @@ void rtw_mac_flush_queues(struct rtw_dev *rtwdev, u32 queues, bool drop)
- static int txdma_queue_mapping(struct rtw_dev *rtwdev)
- {
- 	struct rtw_chip_info *chip = rtwdev->chip;
--	struct rtw_rqpn *rqpn = NULL;
-+	const struct rtw_rqpn *rqpn = NULL;
- 	u16 txdma_pq_map = 0;
- 
- 	switch (rtw_hci_type(rtwdev)) {
-@@ -882,7 +883,7 @@ static int priority_queue_cfg(struct rtw_dev *rtwdev)
- {
- 	struct rtw_fifo_conf *fifo = &rtwdev->fifo;
- 	struct rtw_chip_info *chip = rtwdev->chip;
--	struct rtw_page_table *pg_tbl = NULL;
-+	const struct rtw_page_table *pg_tbl = NULL;
- 	u16 pubq_num;
- 	int ret;
- 
-diff --git a/drivers/net/wireless/realtek/rtw88/main.h b/drivers/net/wireless/realtek/rtw88/main.h
-index f334d2..a55635 100644
---- a/drivers/net/wireless/realtek/rtw88/main.h
-+++ b/drivers/net/wireless/realtek/rtw88/main.h
-@@ -948,10 +948,10 @@ struct rtw_wow_param {
- };
- 
- struct rtw_intf_phy_para_table {
--	struct rtw_intf_phy_para *usb2_para;
--	struct rtw_intf_phy_para *usb3_para;
--	struct rtw_intf_phy_para *gen1_para;
--	struct rtw_intf_phy_para *gen2_para;
-+	const struct rtw_intf_phy_para *usb2_para;
-+	const struct rtw_intf_phy_para *usb3_para;
-+	const struct rtw_intf_phy_para *gen1_para;
-+	const struct rtw_intf_phy_para *gen2_para;
- 	u8 n_usb2_para;
- 	u8 n_usb3_para;
- 	u8 n_gen1_para;
-@@ -1048,13 +1048,13 @@ struct rtw_chip_info {
- 
- 	/* init values */
- 	u8 sys_func_en;
--	struct rtw_pwr_seq_cmd **pwr_on_seq;
--	struct rtw_pwr_seq_cmd **pwr_off_seq;
--	struct rtw_rqpn *rqpn_table;
--	struct rtw_page_table *page_table;
--	struct rtw_intf_phy_para_table *intf_table;
-+	const struct rtw_pwr_seq_cmd **pwr_on_seq;
-+	const struct rtw_pwr_seq_cmd **pwr_off_seq;
-+	const struct rtw_rqpn *rqpn_table;
-+	const struct rtw_page_table *page_table;
-+	const struct rtw_intf_phy_para_table *intf_table;
- 
--	struct rtw_hw_reg *dig;
-+	const struct rtw_hw_reg *dig;
- 	u32 rf_base_addr[2];
- 	u32 rf_sipi_addr[2];
- 
-@@ -1500,7 +1500,7 @@ struct rtw_fifo_conf {
- 	u16 rsvd_cpu_instr_addr;
- 	u16 rsvd_fw_txbuf_addr;
- 	u16 rsvd_csibuf_addr;
--	struct rtw_rqpn *rqpn;
-+	const struct rtw_rqpn *rqpn;
- };
- 
- struct rtw_fw_state {
-diff --git a/drivers/net/wireless/realtek/rtw88/pci.c b/drivers/net/wireless/realtek/rtw88/pci.c
-index 1fbc14..82b1f86 100644
---- a/drivers/net/wireless/realtek/rtw88/pci.c
-+++ b/drivers/net/wireless/realtek/rtw88/pci.c
-@@ -1248,7 +1248,7 @@ static void rtw_pci_interface_cfg(struct rtw_dev *rtwdev)
- static void rtw_pci_phy_cfg(struct rtw_dev *rtwdev)
- {
- 	struct rtw_chip_info *chip = rtwdev->chip;
--	struct rtw_intf_phy_para *para;
-+	const struct rtw_intf_phy_para *para;
- 	u16 cut;
- 	u16 value;
- 	u16 offset;
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822b.c b/drivers/net/wireless/realtek/rtw88/rtw8822b.c
-index 4bc14b..ded1e9f 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8822b.c
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8822b.c
-@@ -1543,7 +1543,7 @@ static void rtw8822b_bf_config_bfee(struct rtw_dev *rtwdev, struct rtw_vif *vif,
- 		rtw_warn(rtwdev, "wrong bfee role\n");
- }
- 
--static struct rtw_pwr_seq_cmd trans_carddis_to_cardemu_8822b[] = {
-+static const struct rtw_pwr_seq_cmd trans_carddis_to_cardemu_8822b[] = {
- 	{0x0086,
- 	 RTW_PWR_CUT_ALL_MSK,
- 	 RTW_PWR_INTF_SDIO_MSK,
-@@ -1581,7 +1581,7 @@ static struct rtw_pwr_seq_cmd trans_carddis_to_cardemu_8822b[] = {
- 	 RTW_PWR_CMD_END, 0, 0},
- };
- 
--static struct rtw_pwr_seq_cmd trans_cardemu_to_act_8822b[] = {
-+static const struct rtw_pwr_seq_cmd trans_cardemu_to_act_8822b[] = {
- 	{0x0012,
- 	 RTW_PWR_CUT_ALL_MSK,
- 	 RTW_PWR_INTF_ALL_MSK,
-@@ -1714,7 +1714,7 @@ static struct rtw_pwr_seq_cmd trans_cardemu_to_act_8822b[] = {
- 	 RTW_PWR_CMD_END, 0, 0},
- };
- 
--static struct rtw_pwr_seq_cmd trans_act_to_cardemu_8822b[] = {
-+static const struct rtw_pwr_seq_cmd trans_act_to_cardemu_8822b[] = {
- 	{0x0003,
- 	 RTW_PWR_CUT_ALL_MSK,
- 	 RTW_PWR_INTF_SDIO_MSK,
-@@ -1787,7 +1787,7 @@ static struct rtw_pwr_seq_cmd trans_act_to_cardemu_8822b[] = {
- 	 RTW_PWR_CMD_END, 0, 0},
- };
- 
--static struct rtw_pwr_seq_cmd trans_cardemu_to_carddis_8822b[] = {
-+static const struct rtw_pwr_seq_cmd trans_cardemu_to_carddis_8822b[] = {
- 	{0x0005,
- 	 RTW_PWR_CUT_ALL_MSK,
- 	 RTW_PWR_INTF_SDIO_MSK,
-@@ -1905,26 +1905,26 @@ static struct rtw_pwr_seq_cmd trans_cardemu_to_carddis_8822b[] = {
- 	 RTW_PWR_CMD_END, 0, 0},
- };
- 
--static struct rtw_pwr_seq_cmd *card_enable_flow_8822b[] = {
-+static const struct rtw_pwr_seq_cmd *card_enable_flow_8822b[] = {
- 	trans_carddis_to_cardemu_8822b,
- 	trans_cardemu_to_act_8822b,
- 	NULL
- };
- 
--static struct rtw_pwr_seq_cmd *card_disable_flow_8822b[] = {
-+static const struct rtw_pwr_seq_cmd *card_disable_flow_8822b[] = {
- 	trans_act_to_cardemu_8822b,
- 	trans_cardemu_to_carddis_8822b,
- 	NULL
- };
- 
--static struct rtw_intf_phy_para usb2_param_8822b[] = {
-+static const struct rtw_intf_phy_para usb2_param_8822b[] = {
- 	{0xFFFF, 0x00,
- 	 RTW_IP_SEL_PHY,
- 	 RTW_INTF_PHY_CUT_ALL,
- 	 RTW_INTF_PHY_PLATFORM_ALL},
- };
- 
--static struct rtw_intf_phy_para usb3_param_8822b[] = {
-+static const struct rtw_intf_phy_para usb3_param_8822b[] = {
- 	{0x0001, 0xA841,
- 	 RTW_IP_SEL_PHY,
- 	 RTW_INTF_PHY_CUT_D,
-@@ -1935,7 +1935,7 @@ static struct rtw_intf_phy_para usb3_param_8822b[] = {
- 	 RTW_INTF_PHY_PLATFORM_ALL},
- };
- 
--static struct rtw_intf_phy_para pcie_gen1_param_8822b[] = {
-+static const struct rtw_intf_phy_para pcie_gen1_param_8822b[] = {
- 	{0x0001, 0xA841,
- 	 RTW_IP_SEL_PHY,
- 	 RTW_INTF_PHY_CUT_C,
-@@ -1982,7 +1982,7 @@ static struct rtw_intf_phy_para pcie_gen1_param_8822b[] = {
- 	 RTW_INTF_PHY_PLATFORM_ALL},
- };
- 
--static struct rtw_intf_phy_para pcie_gen2_param_8822b[] = {
-+static const struct rtw_intf_phy_para pcie_gen2_param_8822b[] = {
- 	{0x0001, 0xA841,
- 	 RTW_IP_SEL_PHY,
- 	 RTW_INTF_PHY_CUT_C,
-@@ -2029,7 +2029,7 @@ static struct rtw_intf_phy_para pcie_gen2_param_8822b[] = {
- 	 RTW_INTF_PHY_PLATFORM_ALL},
- };
- 
--static struct rtw_intf_phy_para_table phy_para_table_8822b = {
-+static const struct rtw_intf_phy_para_table phy_para_table_8822b = {
- 	.usb2_para	= usb2_param_8822b,
- 	.usb3_para	= usb3_param_8822b,
- 	.gen1_para	= pcie_gen1_param_8822b,
-@@ -2046,12 +2046,12 @@ static const struct rtw_rfe_def rtw8822b_rfe_defs[] = {
- 	[5] = RTW_DEF_RFE(8822b, 5, 5),
- };
- 
--static struct rtw_hw_reg rtw8822b_dig[] = {
-+static const struct rtw_hw_reg rtw8822b_dig[] = {
- 	[0] = { .addr = 0xc50, .mask = 0x7f },
- 	[1] = { .addr = 0xe50, .mask = 0x7f },
- };
- 
--static struct rtw_page_table page_table_8822b[] = {
-+static const struct rtw_page_table page_table_8822b[] = {
- 	{64, 64, 64, 64, 1},
- 	{64, 64, 64, 64, 1},
- 	{64, 64, 0, 0, 1},
-@@ -2059,7 +2059,7 @@ static struct rtw_page_table page_table_8822b[] = {
- 	{64, 64, 64, 64, 1},
- };
- 
--static struct rtw_rqpn rqpn_table_8822b[] = {
-+static const struct rtw_rqpn rqpn_table_8822b[] = {
- 	{RTW_DMA_MAPPING_NORMAL, RTW_DMA_MAPPING_NORMAL,
- 	 RTW_DMA_MAPPING_LOW, RTW_DMA_MAPPING_LOW,
- 	 RTW_DMA_MAPPING_EXTRA, RTW_DMA_MAPPING_HIGH},
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822c.c b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-index 386509..5b2f594 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-@@ -3399,7 +3399,7 @@ static void rtw8822c_pwr_track(struct rtw_dev *rtwdev)
- 	dm_info->pwr_trk_triggered = false;
- }
- 
--static struct rtw_pwr_seq_cmd trans_carddis_to_cardemu_8822c[] = {
-+static const struct rtw_pwr_seq_cmd trans_carddis_to_cardemu_8822c[] = {
- 	{0x0086,
- 	 RTW_PWR_CUT_ALL_MSK,
- 	 RTW_PWR_INTF_SDIO_MSK,
-@@ -3442,7 +3442,7 @@ static struct rtw_pwr_seq_cmd trans_carddis_to_cardemu_8822c[] = {
- 	 RTW_PWR_CMD_END, 0, 0},
- };
- 
--static struct rtw_pwr_seq_cmd trans_cardemu_to_act_8822c[] = {
-+static const struct rtw_pwr_seq_cmd trans_cardemu_to_act_8822c[] = {
- 	{0x0000,
- 	 RTW_PWR_CUT_ALL_MSK,
- 	 RTW_PWR_INTF_USB_MSK | RTW_PWR_INTF_SDIO_MSK,
-@@ -3551,7 +3551,7 @@ static struct rtw_pwr_seq_cmd trans_cardemu_to_act_8822c[] = {
- 	 RTW_PWR_CMD_END, 0, 0},
- };
- 
--static struct rtw_pwr_seq_cmd trans_act_to_cardemu_8822c[] = {
-+static const struct rtw_pwr_seq_cmd trans_act_to_cardemu_8822c[] = {
- 	{0x0093,
- 	 RTW_PWR_CUT_ALL_MSK,
- 	 RTW_PWR_INTF_ALL_MSK,
-@@ -3614,7 +3614,7 @@ static struct rtw_pwr_seq_cmd trans_act_to_cardemu_8822c[] = {
- 	 RTW_PWR_CMD_END, 0, 0},
- };
- 
--static struct rtw_pwr_seq_cmd trans_cardemu_to_carddis_8822c[] = {
-+static const struct rtw_pwr_seq_cmd trans_cardemu_to_carddis_8822c[] = {
- 	{0x0005,
- 	 RTW_PWR_CUT_ALL_MSK,
- 	 RTW_PWR_INTF_SDIO_MSK,
-@@ -3677,47 +3677,47 @@ static struct rtw_pwr_seq_cmd trans_cardemu_to_carddis_8822c[] = {
- 	 RTW_PWR_CMD_END, 0, 0},
- };
- 
--static struct rtw_pwr_seq_cmd *card_enable_flow_8822c[] = {
-+static const struct rtw_pwr_seq_cmd *card_enable_flow_8822c[] = {
- 	trans_carddis_to_cardemu_8822c,
- 	trans_cardemu_to_act_8822c,
- 	NULL
- };
- 
--static struct rtw_pwr_seq_cmd *card_disable_flow_8822c[] = {
-+static const struct rtw_pwr_seq_cmd *card_disable_flow_8822c[] = {
- 	trans_act_to_cardemu_8822c,
- 	trans_cardemu_to_carddis_8822c,
- 	NULL
- };
- 
--static struct rtw_intf_phy_para usb2_param_8822c[] = {
-+static const struct rtw_intf_phy_para usb2_param_8822c[] = {
- 	{0xFFFF, 0x00,
- 	 RTW_IP_SEL_PHY,
- 	 RTW_INTF_PHY_CUT_ALL,
- 	 RTW_INTF_PHY_PLATFORM_ALL},
- };
- 
--static struct rtw_intf_phy_para usb3_param_8822c[] = {
-+static const struct rtw_intf_phy_para usb3_param_8822c[] = {
- 	{0xFFFF, 0x0000,
- 	 RTW_IP_SEL_PHY,
- 	 RTW_INTF_PHY_CUT_ALL,
- 	 RTW_INTF_PHY_PLATFORM_ALL},
- };
- 
--static struct rtw_intf_phy_para pcie_gen1_param_8822c[] = {
-+static const struct rtw_intf_phy_para pcie_gen1_param_8822c[] = {
- 	{0xFFFF, 0x0000,
- 	 RTW_IP_SEL_PHY,
- 	 RTW_INTF_PHY_CUT_ALL,
- 	 RTW_INTF_PHY_PLATFORM_ALL},
- };
- 
--static struct rtw_intf_phy_para pcie_gen2_param_8822c[] = {
-+static const struct rtw_intf_phy_para pcie_gen2_param_8822c[] = {
- 	{0xFFFF, 0x0000,
- 	 RTW_IP_SEL_PHY,
- 	 RTW_INTF_PHY_CUT_ALL,
- 	 RTW_INTF_PHY_PLATFORM_ALL},
- };
- 
--static struct rtw_intf_phy_para_table phy_para_table_8822c = {
-+static const struct rtw_intf_phy_para_table phy_para_table_8822c = {
- 	.usb2_para	= usb2_param_8822c,
- 	.usb3_para	= usb3_param_8822c,
- 	.gen1_para	= pcie_gen1_param_8822c,
-@@ -3734,12 +3734,12 @@ static const struct rtw_rfe_def rtw8822c_rfe_defs[] = {
- 	[2] = RTW_DEF_RFE(8822c, 0, 0),
- };
- 
--static struct rtw_hw_reg rtw8822c_dig[] = {
-+static const struct rtw_hw_reg rtw8822c_dig[] = {
- 	[0] = { .addr = 0x1d70, .mask = 0x7f },
- 	[1] = { .addr = 0x1d70, .mask = 0x7f00 },
- };
- 
--static struct rtw_page_table page_table_8822c[] = {
-+static const struct rtw_page_table page_table_8822c[] = {
- 	{64, 64, 64, 64, 1},
- 	{64, 64, 64, 64, 1},
- 	{64, 64, 0, 0, 1},
-@@ -3747,7 +3747,7 @@ static struct rtw_page_table page_table_8822c[] = {
- 	{64, 64, 64, 64, 1},
- };
- 
--static struct rtw_rqpn rqpn_table_8822c[] = {
-+static const struct rtw_rqpn rqpn_table_8822c[] = {
- 	{RTW_DMA_MAPPING_NORMAL, RTW_DMA_MAPPING_NORMAL,
- 	 RTW_DMA_MAPPING_LOW, RTW_DMA_MAPPING_LOW,
- 	 RTW_DMA_MAPPING_EXTRA, RTW_DMA_MAPPING_HIGH},
+But sometime when I restated wpa_supplicant, that message did not
+come, the WiFi network was still down.
 
+How is mwifiex_sdio related to wpa_supplicant?
+
+Why it is nondeterministic, sometime restart wpa_supplicant could
+bring mwifiex_sdio and WiFi up, something it couldn't?
+
+I think mwifiex_sdio is the lowest layer to interact to WiFi modem, in
+which circumstance it could bring WiFi modem up and in which
+circumstance it couldn't?
+
+That is far too unstable, I always thought I could rely on connman for
+WiFi connection stability, but it seems that beyond connman capacity,
+so what I can do when the WiFi is not up when restart wpa_supplicant
+could not fix it?
+
+Thank you very much Daniel.
+
+Kind regards,
+
+- jh
