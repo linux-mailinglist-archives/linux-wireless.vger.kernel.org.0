@@ -2,105 +2,66 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 366C21544AD
-	for <lists+linux-wireless@lfdr.de>; Thu,  6 Feb 2020 14:14:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 446ED154D19
+	for <lists+linux-wireless@lfdr.de>; Thu,  6 Feb 2020 21:45:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727325AbgBFNO6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 6 Feb 2020 08:14:58 -0500
-Received: from mail.monom.org ([188.138.9.77]:53710 "EHLO mail.monom.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726538AbgBFNO6 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 6 Feb 2020 08:14:58 -0500
-Received: from mail.monom.org (localhost [127.0.0.1])
-        by filter.mynetwork.local (Postfix) with ESMTP id 9A14E5004AE;
-        Thu,  6 Feb 2020 14:14:55 +0100 (CET)
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on mail.monom.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.5 required=5.0 tests=ALL_TRUSTED,BAYES_00
-        autolearn=ham autolearn_force=no version=3.4.2
-Received: from localhost (b9168f78.cgn.dg-w.de [185.22.143.120])
-        by mail.monom.org (Postfix) with ESMTPSA id 4ADAC500294;
-        Thu,  6 Feb 2020 14:14:55 +0100 (CET)
-Date:   Thu, 6 Feb 2020 14:14:55 +0100
-From:   Daniel Wagner <wagi@monom.org>
-To:     JH <jupiter.hce@gmail.com>
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
-        connman <connman@lists.01.org>
-Subject: Re: Failed to can wifi Invalid Sched_scan parameters
-Message-ID: <20200206131455.knx2nsitunrfo4nu@beryllium.lan>
-References: <CAA=hcWQuz9QTvbRJgFXBbYrB9RBmWajCJ=oD49DyEaLw91t2bQ@mail.gmail.com>
- <20200204081435.zhzqtsnrcgkzhpdw@beryllium.lan>
- <CAA=hcWQ780vCx8KkNPqgmtbzxqZbrGnZx6zghr0PAwhG3o4hng@mail.gmail.com>
+        id S1727891AbgBFUp2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 6 Feb 2020 15:45:28 -0500
+Received: from mail-pj1-f67.google.com ([209.85.216.67]:34051 "EHLO
+        mail-pj1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727830AbgBFUp2 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 6 Feb 2020 15:45:28 -0500
+Received: by mail-pj1-f67.google.com with SMTP id f2so655154pjq.1;
+        Thu, 06 Feb 2020 12:45:28 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=vCgkQ9Nwh84zfpfOxPFRld6KLGaYtG3x5hpmxoRF600=;
+        b=MxC4VA803Hx8yGCukVXoo1C+5DjvHn7GLVWuGx9pZvDNRLaVC/JaZh6IbY63DdFA/K
+         zOBEBvbXuhb42j0CnKWfMg1A4q8aQyt2ph3CAH3ii/vHEa9tN5DlQhunYEWj7JSofetJ
+         AUMjrLURO8HgZRIyYNE2KBAkdgT3V1xmcJ7WWZNlUlbbkb+pG8DDoOkLy0ubvfoUpfCH
+         zHi2r7bK2wW+hIYCPfL6LlpLvbAo3MdMhXzg6u79WiQ2u1zjvJ+aRTvuRnqkW00CQVru
+         Lw7nHChEkz6lzwqud2AR8g+OLE0WWkkr2ABDvmFsFsVvxrh9UZSNP8wdW27ki3LWVZZ7
+         t/PA==
+X-Gm-Message-State: APjAAAXr/0x5g/3gjPF7AzZ0bjqnsli1abXwzQ3oymCwMAyWOEXH32j3
+        W7N51BtQccDMGdDu/7XILEHuL/FafQ==
+X-Google-Smtp-Source: APXvYqyq2g8mBmBjRil05ulZerB8hO+T93Rrx3/WCqh8GeKdyfaMW0nZ4KUewMQgTDEGvsBfTkFq3g==
+X-Received: by 2002:a17:90a:330f:: with SMTP id m15mr6596932pjb.24.1581021927783;
+        Thu, 06 Feb 2020 12:45:27 -0800 (PST)
+Received: from rob-hp-laptop (63-158-47-182.dia.static.qwest.net. [63.158.47.182])
+        by smtp.gmail.com with ESMTPSA id f127sm280145pfa.112.2020.02.06.12.45.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 06 Feb 2020 12:45:27 -0800 (PST)
+Received: (nullmailer pid 12148 invoked by uid 1000);
+        Thu, 06 Feb 2020 18:22:39 -0000
+Date:   Thu, 6 Feb 2020 18:22:39 +0000
+From:   Rob Herring <robh@kernel.org>
+To:     Felix Fietkau <nbd@nbd.name>
+Cc:     linux-wireless@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH 01/15] dt-bindings: net: wireless: mt76: document
+ bindings for MT7622
+Message-ID: <20200206182239.GA12086@bogus>
+References: <20200130144718.14298-1-nbd@nbd.name>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAA=hcWQ780vCx8KkNPqgmtbzxqZbrGnZx6zghr0PAwhG3o4hng@mail.gmail.com>
+In-Reply-To: <20200130144718.14298-1-nbd@nbd.name>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Feb 06, 2020 at 10:08:16PM +1100, JH wrote:
-> On 2/4/20, Daniel Wagner <wagi@monom.org> wrote:
-> > The 'Invalid Sched_scan parameters' indicates, wpa_supplicant is
-> > providing the wrong parameters. Best thing is to monitor between
-> > wpa_supplicant and kernel the netlink messages. iwmon is an excellent
-> > tool for this.
+On Thu, 30 Jan 2020 15:47:04 +0100, Felix Fietkau wrote:
+> MT7622 is a SoC that includes a 2.4 GHz 4x4 802.11n WMAC. Its
+> feature set is comparable to a MT7615 chip, but limited to 2.4 GHz.
 > 
-> Thanks for the tip, I did not realize that connman is actually heavily
-> relied on wpa_supplicant, if I restarted wpa_supplicant, most of time
-> it popped up mwifiex_sdio messages, then the WiFi could be up:
-
-The good news here: with iwd ConnMan doesn't have to rely on
-wpa_supplicant anymore. We had to add *a lot* of code to ConnMan
-because of wpa_supplicant including a lot of work arounds. With iwd we
-have a clear separation between the domains. So I strongly recommend
-to look at iwd.
-
-> $ systemctl restart wpa_supplicant
-> [  371.617417] mwifiex_sdio mmc0:0001:1: info: 2
-> [  371.647545] mwifiex_sdio mmc0:0001:1: info: associated to bssid 34:08:04:12:y
-> [  371.726667] IPv6: ADDRCONF(NETDEV_CHANGE): mlan0: link becomes ready
-> [  371.772758] mwifiex_sdio mmc0:0001:1: CMD_RESP: cmd 0x23f error, result=0x2
+> Signed-off-by: Felix Fietkau <nbd@nbd.name>
+> ---
+>  .../bindings/net/wireless/mediatek,mt76.txt   | 26 ++++++++++++++++---
+>  1 file changed, 23 insertions(+), 3 deletions(-)
 > 
-> But sometime when I restated wpa_supplicant, that message did not
-> come, the WiFi network was still down.
 
-You need to look at what your hardware/firmware, driver and
-wpa_supplicant is going on. This is something ConnMan can't fix.
-
-> How is mwifiex_sdio related to wpa_supplicant?
-
-wpa_supplicant steers your WiFi chip.
-
-> Why it is nondeterministic, sometime restart wpa_supplicant could
-> bring mwifiex_sdio and WiFi up, something it couldn't?
-
-That is the sad part about WiFi. The quality of the firmware, driver
-and wpa_supplicant varies a lot. Some combination works great, others
-are unusable.
-
-> I think mwifiex_sdio is the lowest layer to interact to WiFi modem, in
-> which circumstance it could bring WiFi modem up and in which
-> circumstance it couldn't?
-
-Sure, depending on the quality of the firmware and driver it might be
-your main problem.
-
-Don't get me wrong. I don't say your current setup is not good, but
-from expierence firmware/drivers and wpa_supplicant tend to be
-problematic.
-
-iwd on the other hand is able to hide most of the nasty stuff for
-ConnMan and I think in the long run it will be a lot more reliable
-then wpa_supplicant was.
-
-> That is far too unstable, I always thought I could rely on connman for
-> WiFi connection stability, but it seems that beyond connman capacity,
-> so what I can do when the WiFi is not up when restart wpa_supplicant
-> could not fix it?
-
-Try iwd.
-
-Thanks,
-Daniel
+Reviewed-by: Rob Herring <robh@kernel.org>
