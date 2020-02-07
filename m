@@ -2,43 +2,44 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 687681553ED
-	for <lists+linux-wireless@lfdr.de>; Fri,  7 Feb 2020 09:47:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E71215549B
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 Feb 2020 10:28:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726954AbgBGIrs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 7 Feb 2020 03:47:48 -0500
-Received: from rtits2.realtek.com ([211.75.126.72]:42879 "EHLO
+        id S1726674AbgBGJ2y (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 7 Feb 2020 04:28:54 -0500
+Received: from rtits2.realtek.com ([211.75.126.72]:44676 "EHLO
         rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726130AbgBGIrs (ORCPT
+        with ESMTP id S1726417AbgBGJ2x (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 7 Feb 2020 03:47:48 -0500
+        Fri, 7 Feb 2020 04:28:53 -0500
 Authenticated-By: 
-X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID 0178lfct009980, This message is accepted by code: ctloc85258
+X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID 0179Sk35018548, This message is accepted by code: ctloc85258
 Received: from mail.realtek.com (RTEXMB06.realtek.com.tw[172.21.6.99])
-        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id 0178lfct009980
+        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id 0179Sk35018548
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 7 Feb 2020 16:47:41 +0800
-Received: from RTEXMB02.realtek.com.tw (172.21.6.95) by
+        Fri, 7 Feb 2020 17:28:46 +0800
+Received: from RTEXMB03.realtek.com.tw (172.21.6.96) by
  RTEXMB06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Fri, 7 Feb 2020 16:47:41 +0800
+ 15.1.1779.2; Fri, 7 Feb 2020 17:28:46 +0800
 Received: from RTEXMB06.realtek.com.tw (172.21.6.99) by
- RTEXMB02.realtek.com.tw (172.21.6.95) with Microsoft SMTP Server
+ RTEXMB03.realtek.com.tw (172.21.6.96) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Fri, 7 Feb 2020 16:47:41 +0800
+ 15.1.1779.2; Fri, 7 Feb 2020 17:28:46 +0800
 Received: from RTITCASV01.realtek.com.tw (172.21.6.18) by
  RTEXMB06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
  (version=TLS1_0, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.1.1779.2
- via Frontend Transport; Fri, 7 Feb 2020 16:47:41 +0800
+ via Frontend Transport; Fri, 7 Feb 2020 17:28:46 +0800
 Received: from localhost.localdomain (172.21.68.128) by
  RTITCASV01.realtek.com.tw (172.21.6.18) with Microsoft SMTP Server id
- 14.3.468.0; Fri, 7 Feb 2020 16:47:31 +0800
+ 14.3.468.0; Fri, 7 Feb 2020 17:28:45 +0800
 From:   <yhchuang@realtek.com>
 To:     <kvalo@codeaurora.org>
-CC:     <linux-wireless@vger.kernel.org>, <briannorris@chromium.org>
-Subject: [PATCH v3] rtw88: Fix incorrect beamformee role setting
-Date:   Fri, 7 Feb 2020 16:47:29 +0800
-Message-ID: <20200207084729.24882-1-yhchuang@realtek.com>
+CC:     <linux-wireless@vger.kernel.org>, <briannorris@chromium.org>,
+        <pkshih@realtek.com>
+Subject: [PATCH 0/8] rtw88: Add SAR implementation
+Date:   Fri, 7 Feb 2020 17:28:36 +0800
+Message-ID: <20200207092844.29175-1-yhchuang@realtek.com>
 X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -48,64 +49,58 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Tzu-En Huang <tehuang@realtek.com>
+From: Yan-Hsuan Chuang <yhchuang@realtek.com>
 
-In associating and configuring beamformee, bfee->role is not
-correctly set before rtw_chip_ops::config_bfee().
-Fix it by setting it correctly.
+Add SAR implemention that allows driver to set SAR power from
+three different sources:
+  1. From vendor command
+  2. From static SAR configuration
+  3. From dynamic SAR
 
-Signed-off-by: Tzu-En Huang <tehuang@realtek.com>
-Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
----
+SAR sources will provide driver a list of target power in dBm
+which should be translated into power indexes. Then driver
+will just treat those indexes as another power limit to force
+the power output being lower then SAR restriction.
 
-v1 -> v2
-  * cannot put bfee->role = RTW_BFEE_NONE after out_unlock
-    put it enclosed by else
+For either vendor command, static or dynamic SAR, driver stores
+the values in tx_pwr_sar_{2,5}g[regd][path][rs][ch]. Whenever
+the channel is changed or a new SAR table is applied, driver
+will configure the power indexes.
 
-v2 -> v3
-  * remove unnecessary 'else' statement
+To check if SAR power is configured properly, append a column
+to debugfs "tx_pwr_tbl". But for dynamic SAR, the profile ID
+may change, so add a new debugfs "sar" to display SAR power.
 
- drivers/net/wireless/realtek/rtw88/bf.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/bf.c b/drivers/net/wireless/realtek/rtw88/bf.c
-index fda771d23f71..b6d1d71f4d30 100644
---- a/drivers/net/wireless/realtek/rtw88/bf.c
-+++ b/drivers/net/wireless/realtek/rtw88/bf.c
-@@ -41,7 +41,6 @@ void rtw_bf_assoc(struct rtw_dev *rtwdev, struct ieee80211_vif *vif,
- 	struct ieee80211_sta_vht_cap *ic_vht_cap;
- 	const u8 *bssid = bss_conf->bssid;
- 	u32 sound_dim;
--	u8 bfee_role = RTW_BFEE_NONE;
- 	u8 i;
- 
- 	if (!(chip->band & RTW_BAND_5G))
-@@ -67,7 +66,7 @@ void rtw_bf_assoc(struct rtw_dev *rtwdev, struct ieee80211_vif *vif,
- 		}
- 
- 		ether_addr_copy(bfee->mac_addr, bssid);
--		bfee_role = RTW_BFEE_MU;
-+		bfee->role = RTW_BFEE_MU;
- 		bfee->p_aid = (bssid[5] << 1) | (bssid[4] >> 7);
- 		bfee->aid = bss_conf->aid;
- 		bfinfo->bfer_mu_cnt++;
-@@ -85,7 +84,7 @@ void rtw_bf_assoc(struct rtw_dev *rtwdev, struct ieee80211_vif *vif,
- 		sound_dim >>= IEEE80211_VHT_CAP_SOUNDING_DIMENSIONS_SHIFT;
- 
- 		ether_addr_copy(bfee->mac_addr, bssid);
--		bfee_role = RTW_BFEE_SU;
-+		bfee->role = RTW_BFEE_SU;
- 		bfee->sound_dim = (u8)sound_dim;
- 		bfee->g_id = 0;
- 		bfee->p_aid = (bssid[5] << 1) | (bssid[4] >> 7);
-@@ -102,7 +101,6 @@ void rtw_bf_assoc(struct rtw_dev *rtwdev, struct ieee80211_vif *vif,
- 	}
- 
- out_unlock:
--	bfee->role = bfee_role;
- 	rcu_read_unlock();
- }
- 
+Ping-Ke Shih (8):
+  rtw88: sar: add SAR of TX power limit
+  nl80211: vendor-cmd: realtek: Add vendor command to set SAR power
+    limit
+  rtw88: vndcmd: sar: Apply SAR power limit via vendor command
+  rtw88: sar: Load static SAR table from ACPI WRDS method
+  rtw88: sar: Load dynamic SAR table from ACPI methods
+  rtw88: sar: apply dynamic SAR table to tx power limit
+  rtw88: sar: add sar_work to poll if dynamic SAR table is changed
+  rtw88: sar: dump sar information via debugfs
+
+ drivers/net/wireless/realtek/rtw88/Makefile |   2 +
+ drivers/net/wireless/realtek/rtw88/debug.c  |  30 +-
+ drivers/net/wireless/realtek/rtw88/main.c   |  10 +
+ drivers/net/wireless/realtek/rtw88/main.h   |  26 +
+ drivers/net/wireless/realtek/rtw88/phy.c    | 173 ++++-
+ drivers/net/wireless/realtek/rtw88/phy.h    |   3 +
+ drivers/net/wireless/realtek/rtw88/sar.c    | 778 ++++++++++++++++++++
+ drivers/net/wireless/realtek/rtw88/sar.h    |  15 +
+ drivers/net/wireless/realtek/rtw88/vndcmd.c | 131 ++++
+ drivers/net/wireless/realtek/rtw88/vndcmd.h |  10 +
+ include/uapi/nl80211-vnd-realtek.h          |  72 ++
+ 11 files changed, 1218 insertions(+), 32 deletions(-)
+ create mode 100644 drivers/net/wireless/realtek/rtw88/sar.c
+ create mode 100644 drivers/net/wireless/realtek/rtw88/sar.h
+ create mode 100644 drivers/net/wireless/realtek/rtw88/vndcmd.c
+ create mode 100644 drivers/net/wireless/realtek/rtw88/vndcmd.h
+ create mode 100644 include/uapi/nl80211-vnd-realtek.h
+
 -- 
 2.17.1
 
