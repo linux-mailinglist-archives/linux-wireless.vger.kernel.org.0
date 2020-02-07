@@ -2,117 +2,81 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 683851550AD
-	for <lists+linux-wireless@lfdr.de>; Fri,  7 Feb 2020 03:21:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E13F31553D1
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 Feb 2020 09:40:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727012AbgBGCVu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 6 Feb 2020 21:21:50 -0500
-Received: from mail-ot1-f67.google.com ([209.85.210.67]:33096 "EHLO
-        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726597AbgBGCVu (ORCPT
+        id S1726899AbgBGIkw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 7 Feb 2020 03:40:52 -0500
+Received: from rtits2.realtek.com ([211.75.126.72]:42502 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726417AbgBGIkw (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 6 Feb 2020 21:21:50 -0500
-Received: by mail-ot1-f67.google.com with SMTP id b18so747695otp.0
-        for <linux-wireless@vger.kernel.org>; Thu, 06 Feb 2020 18:21:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=endlessm-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=NxLizjA/LdZHlqTKcHf2NNbjaoo7PWjl574Z7alvCIs=;
-        b=T4wIiwcb3x59GgiPJxBANLn+pX2xC2q8PMd2QVj0Y3NDTegrenzOcRdWfhM3EwM21f
-         5p5ve3pdIWt2wp2yXn6rxx1CqckUY0ZWogrQ61nJroYSyMpZMm9GReI5jY/p74A87HO7
-         MoQJbophxrQdHrBGGnBeZjI3Hkj8v7tx3Q3ktszR7cFQL7nnUB7gC0EWI3P75vp/a5i1
-         202P93tLPGZsY1ld2d8FaOcA6fplSWvCZi2/klOzkshSAjNdTGz9FgxwBKe/HBeLP4Kf
-         vhWNMaZTx7nQ0pPA2SnGXYTWyuV+QJrGaQkKg891pOqDTdO1oOhputyXAuGt+A6TV8im
-         MZgg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=NxLizjA/LdZHlqTKcHf2NNbjaoo7PWjl574Z7alvCIs=;
-        b=U7VXzMnODCFmZgPwJr5XupEThF6PYat5k2frkPW67GEcsHaRZu8Je3ibue7l3gqOX6
-         orpChpsH5rZsh74H6smRBM//nao+a7ADIR7lheluhhopbUiFNgKrp9URzfcenRTw1UuG
-         Y7Em9hl6zWrVPJ6KMJfXFE3lrnFFpnCu+vz0x6fq8hZ43FZAnLIZDXg5ET8fKiuSUo8P
-         XC1+FoJ5a/3SbAiCfqMBe3BHiJQwxK6S6SAnkatJAF0M4gcFaRIWRfNNOTcY2ywtt65Z
-         EdoiQTplSksq/OSLJ8uBINVHDAg4hBz42n7neIUEz7NEyAH77jy+f8s+y6WLHtM2MnhB
-         rXDg==
-X-Gm-Message-State: APjAAAWSHPPyPuUx/9Zj550XWys/ngOZw03LdrIVYDCKDqBkXNZIv2N5
-        sCF8U86EaPkrtuP1AtwO2MZi3275yrxOE0EzV9KrWQ==
-X-Google-Smtp-Source: APXvYqzMN8QaKAN632TCjxCPMPTtotGucjk/VeSdDvq/62ACuo0eFVhLgHFv3zYf3BO2TqLRHIMf8yeSvpTpbcQFidw=
-X-Received: by 2002:a9d:774e:: with SMTP id t14mr921611otl.358.1581042108832;
- Thu, 06 Feb 2020 18:21:48 -0800 (PST)
-MIME-Version: 1.0
-References: <20200204120614.28861-1-yhchuang@realtek.com>
-In-Reply-To: <20200204120614.28861-1-yhchuang@realtek.com>
-From:   Chris Chiu <chiu@endlessm.com>
-Date:   Fri, 7 Feb 2020 10:21:38 +0800
-Message-ID: <CAB4CAwdFez_WbRQb2jZQtqspSkO5ujL31ZLt4XshNcWiSqHByA@mail.gmail.com>
-Subject: Re: [PATCH] rtw88: disable TX-AMSDU on 2.4G band
-To:     Tony Chuang <yhchuang@realtek.com>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        Fri, 7 Feb 2020 03:40:52 -0500
+Authenticated-By: 
+X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID 0178eeT9008499, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (RTEXMB06.realtek.com.tw[172.21.6.99])
+        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id 0178eeT9008499
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 7 Feb 2020 16:40:40 +0800
+Received: from RTEXMB04.realtek.com.tw (172.21.6.97) by
+ RTEXMB06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Fri, 7 Feb 2020 16:40:39 +0800
+Received: from RTEXMB04.realtek.com.tw ([fe80::d9c5:a079:495e:b999]) by
+ RTEXMB04.realtek.com.tw ([fe80::d9c5:a079:495e:b999%6]) with mapi id
+ 15.01.1779.005; Fri, 7 Feb 2020 16:40:39 +0800
+From:   Tony Chuang <yhchuang@realtek.com>
+To:     Chris Chiu <chiu@endlessm.com>
+CC:     Kalle Valo <kvalo@codeaurora.org>,
         linux-wireless <linux-wireless@vger.kernel.org>,
         Brian Norris <briannorris@chromium.org>
-Content-Type: text/plain; charset="UTF-8"
+Subject: RE: [PATCH v2] rtw88: Fix incorrect beamformee role setting
+Thread-Topic: [PATCH v2] rtw88: Fix incorrect beamformee role setting
+Thread-Index: AQHV3J13am0lYwY0X0+jN725/xeLYagOeF4AgADyhPA=
+Date:   Fri, 7 Feb 2020 08:40:39 +0000
+Message-ID: <d03928b308654704a360e73dd4441058@realtek.com>
+References: <20200206032801.25835-1-yhchuang@realtek.com>
+ <CAB4CAwe_uiCitczp2KYQ-H5gAVE_fPGr8GzRqnKAoXSxVw9meQ@mail.gmail.com>
+In-Reply-To: <CAB4CAwe_uiCitczp2KYQ-H5gAVE_fPGr8GzRqnKAoXSxVw9meQ@mail.gmail.com>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.68.175]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Feb 4, 2020 at 8:06 PM <yhchuang@realtek.com> wrote:
->
-> From: Yan-Hsuan Chuang <yhchuang@realtek.com>
->
-> Some tests shows that using AMSDU to aggregate TCP ACKs to specific
-> APs will degrade the throughput on 2.4G band in 20MHz bandwidth
-> (< 10 Mbps, should be ~100 Mbps for 2x2). Also found that there's
-> barely no negative impact if we disable TX AMSDU on 2.4G to connect
-> to other APs. So it seems like we can just tell mac80211 to not to
-> aggregate MSDUs when transmitting on 2.4G band.
->
-> Note that we still can TX AMSDU on 5G band and benefit from it by
-> having 50 ~ 70 Mbps throughput improvement.
->
-> Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
-> ---
-Reviewed-by: Chris Chiu <chiu@endlessm.com>
-
-
->  drivers/net/wireless/realtek/rtw88/mac80211.c | 15 +++++++++++++++
->  1 file changed, 15 insertions(+)
->
-> diff --git a/drivers/net/wireless/realtek/rtw88/mac80211.c b/drivers/net/wireless/realtek/rtw88/mac80211.c
-> index 6fc33e11d08c..21b56db16916 100644
-> --- a/drivers/net/wireless/realtek/rtw88/mac80211.c
-> +++ b/drivers/net/wireless/realtek/rtw88/mac80211.c
-> @@ -592,6 +592,20 @@ static int rtw_ops_ampdu_action(struct ieee80211_hw *hw,
->         return 0;
->  }
->
-> +static bool rtw_ops_can_aggregate_in_amsdu(struct ieee80211_hw *hw,
-> +                                          struct sk_buff *head,
-> +                                          struct sk_buff *skb)
-> +{
-> +       struct rtw_dev *rtwdev = hw->priv;
-> +       struct rtw_hal *hal = &rtwdev->hal;
-> +
-> +       /* we don't want to enable TX AMSDU on 2.4G */
-> +       if (hal->current_band_type == RTW_BAND_2G)
-> +               return false;
-> +
-> +       return true;
-> +}
-> +
->  static void rtw_ops_sw_scan_start(struct ieee80211_hw *hw,
->                                   struct ieee80211_vif *vif,
->                                   const u8 *mac_addr)
-> @@ -787,6 +801,7 @@ const struct ieee80211_ops rtw_ops = {
->         .sta_remove             = rtw_ops_sta_remove,
->         .set_key                = rtw_ops_set_key,
->         .ampdu_action           = rtw_ops_ampdu_action,
-> +       .can_aggregate_in_amsdu = rtw_ops_can_aggregate_in_amsdu,
->         .sw_scan_start          = rtw_ops_sw_scan_start,
->         .sw_scan_complete       = rtw_ops_sw_scan_complete,
->         .mgd_prepare_tx         = rtw_ops_mgd_prepare_tx,
-> --
-> 2.17.1
->
+PiBPbiBUaHUsIEZlYiA2LCAyMDIwIGF0IDExOjI4IEFNIDx5aGNodWFuZ0ByZWFsdGVrLmNvbT4g
+d3JvdGU6DQo+ID4NCj4gPiBGcm9tOiBUenUtRW4gSHVhbmcgPHRlaHVhbmdAcmVhbHRlay5jb20+
+DQo+ID4NCj4gPiBJbiBhc3NvY2lhdGluZyBhbmQgY29uZmlndXJpbmcgYmVhbWZvcm1lZSwgYmZl
+ZS0+cm9sZSBpcyBub3QNCj4gPiBjb3JyZWN0bHkgc2V0IGJlZm9yZSBydHdfY2hpcF9vcHM6OmNv
+bmZpZ19iZmVlKCkuDQo+ID4gRml4IGl0IGJ5IHNldHRpbmcgaXQgY29ycmVjdGx5Lg0KPiA+DQo+
+ID4gRml4ZXM6IDBiZDk1NTczNDFiNyAoInJ0dzg4OiBFbmFibGUgODAyLjExYWMgYmVhbWZvcm1l
+ZSBzdXBwb3J0IikNCj4gPiBTaWduZWQtb2ZmLWJ5OiBUenUtRW4gSHVhbmcgPHRlaHVhbmdAcmVh
+bHRlay5jb20+DQo+ID4gU2lnbmVkLW9mZi1ieTogWWFuLUhzdWFuIENodWFuZyA8eWhjaHVhbmdA
+cmVhbHRlay5jb20+DQo+ID4gLS0tDQo+ID4NCj4gPiB2MSAtPiB2Mg0KPiA+ICAgKiBjYW5ub3Qg
+cHV0IGJmZWUtPnJvbGUgPSBSVFdfQkZFRV9OT05FIGFmdGVyIG91dF91bmxvY2sNCj4gPiAgICAg
+cHV0IGl0IGVuY2xvc2VkIGJ5IGVsc2UNCj4gPg0KPiA+ICBkcml2ZXJzL25ldC93aXJlbGVzcy9y
+ZWFsdGVrL3J0dzg4L2JmLmMgfCA4ICsrKystLS0tDQo+ID4gIDEgZmlsZSBjaGFuZ2VkLCA0IGlu
+c2VydGlvbnMoKyksIDQgZGVsZXRpb25zKC0pDQo+ID4NCj4gPiBkaWZmIC0tZ2l0IGEvZHJpdmVy
+cy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9iZi5jDQo+IGIvZHJpdmVycy9uZXQvd2lyZWxl
+c3MvcmVhbHRlay9ydHc4OC9iZi5jDQo+ID4gaW5kZXggZmRhNzcxZDIzZjcxLi4wNzNjNzU0ZTll
+NzAgMTAwNjQ0DQo+ID4gLS0tIGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9i
+Zi5jDQo+ID4gKysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9iZi5jDQo+
+ID4gQEAgLTk5LDEwICs5OCwxMSBAQCB2b2lkIHJ0d19iZl9hc3NvYyhzdHJ1Y3QgcnR3X2RldiAq
+cnR3ZGV2LCBzdHJ1Y3QNCj4gaWVlZTgwMjExX3ZpZiAqdmlmLA0KPiA+ICAgICAgICAgICAgICAg
+ICB9DQo+ID4NCj4gPiAgICAgICAgICAgICAgICAgY2hpcC0+b3BzLT5jb25maWdfYmZlZShydHdk
+ZXYsIHJ0d3ZpZiwgYmZlZSwgdHJ1ZSk7DQo+ID4gKyAgICAgICB9IGVsc2Ugew0KPiA+ICsgICAg
+ICAgICAgICAgICBiZmVlLT5yb2xlID0gUlRXX0JGRUVfTk9ORTsNCj4gPiAgICAgICAgIH0NCj4g
+Pg0KPiANCj4gRG8gd2UgcmVhbGx5IG5lZWQgdGhpcyBgZWxzZWAgc2VjdGlvbj8gVGhlIGJmZWUt
+PnJvbGUgaXMgb25seSBmb3INCj4gYGNvbmZpZ19iZmVlYCwgcmlnaHQ/IElmIHdlIGRvbid0DQo+
+IG5lZWQgdG8gY29uZmlnX2JmZWUgZm9yIFJUV19CRkVFX05PTkUsIHRoZW4gd2UgZG9uJ3QgbmVl
+ZCB0aGUgYGVsc2VgDQo+IHBhcnQuDQo+IA0KDQpSaWdodCwgaXQgbG9va3MgdW5uZWNlc3Nhcnkg
+dG8gc2V0IGl0IHRvIE5PTkUgd2hpbGUgZGlzYXNzb2Mgd2lsbCBzZXQgaXQuDQpTbyBJIHRoaW5r
+IHdlIGNhbiBqdXN0IHNraXAgdGhpcyAiZWxzZSIgc3RhdGVtZW50LCB3aWxsIHNlbmQgYSB2MyBs
+YXRlci4NClRoYW5rcy4NCg0KWWFuLUhzdWFuDQo=
