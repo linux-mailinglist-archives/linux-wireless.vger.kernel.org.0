@@ -2,75 +2,77 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 743BA155A4F
-	for <lists+linux-wireless@lfdr.de>; Fri,  7 Feb 2020 16:04:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 461BA155AEB
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 Feb 2020 16:43:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726951AbgBGPEW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 7 Feb 2020 10:04:22 -0500
-Received: from mail-il1-f182.google.com ([209.85.166.182]:38548 "EHLO
-        mail-il1-f182.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726867AbgBGPEW (ORCPT
+        id S1726951AbgBGPnD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 7 Feb 2020 10:43:03 -0500
+Received: from mail-wr1-f65.google.com ([209.85.221.65]:38778 "EHLO
+        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726897AbgBGPnC (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 7 Feb 2020 10:04:22 -0500
-Received: by mail-il1-f182.google.com with SMTP id f5so1956623ilq.5
-        for <linux-wireless@vger.kernel.org>; Fri, 07 Feb 2020 07:04:21 -0800 (PST)
+        Fri, 7 Feb 2020 10:43:02 -0500
+Received: by mail-wr1-f65.google.com with SMTP id y17so3228772wrh.5
+        for <linux-wireless@vger.kernel.org>; Fri, 07 Feb 2020 07:43:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=MBGi1cfCz6Gqa27LRzy8F8lKupJYjEcvdM7f3wUr/IY=;
-        b=Gg8GCvcspgQjs4N9z8VQPPce1C6UuR12lEUYtgeF2/7CT8ETu089mYtSmJTvMlC1iE
-         HWUIX3kTgVA3gxViCqQ/ZDMh+EB1XCUIzy9fL1LhEASQmBcBbl2tcWd3n2Rq32XQmmly
-         ckFP1fBuouYj584qD4UMbskuthvfk82CQwUnv5bynMmAeFXMBJdLEs0uzTOJapF4AUbA
-         10Ades1791z0xFlsizftTi66X7A3UNqxqeWOj3rm6FCXrloLaiu5iCKUqGy8Llpg4g2G
-         kfaz+inrFyT2r7QjxzkKLtkhmCgsKUUBEffb5NVZwC0FDocXpGlmVEww10GXeYRmj7xo
-         yjAQ==
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=4RbjksI4ZVf8jlMAui9QSDoZFwWF9mQNUo5m2497TSc=;
+        b=ePCkl8blcm5ClCP8VTvYtjEaJ+bISV+gaySvuhCb8fxjAopYv5ozPLEdHJdsbGgif3
+         8OynROx464CfMDVPOSRdwI9+LD3gyMnXmJXArQRN9dn0ME+UTF0fGxwDeFbiltUly0ma
+         B9AnfOIdSAtbGO2Vw2otK2uxbYuQ25abE0FqQ/6RG+foxqujc5j8W3O7WvjGN8S1jzRa
+         7oDTAJJxQl30CnbFSL9JQIe5yRhWy7BUGyuNhUbkWoH3FHUC/ag6frpgLRBrG7fxDtCs
+         d3aHNA2muHGIEpPaOQHMZg+SONeucNAwdVvmGqc6vY/wi8xcL5Hx9uFlpCJnw0ocnMql
+         mLbA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=MBGi1cfCz6Gqa27LRzy8F8lKupJYjEcvdM7f3wUr/IY=;
-        b=As1pQwZDfBneafE/chEpsM7U5Frt2S9DMtq+Ys84Gg3GzbFvG0GwLHF6sbn/jCeIeQ
-         6sF9anM5n9IEYjcvUeLIMaG2fDpGF4iEx9zBT1LqXQ3x3AZ2Sk3kyMj30rjBPDFByNn4
-         7TwbOTM89DS077imEWge9n9E4wcOGSRFw5wPGmpVjE3drMt47Ii9XlIIqD49S/sl4tnj
-         4nuwBqjgaTvRp5A+xsxBDjZF9vAxmJC4Bn8zFixzLnRh+Q8eQ/KfVjMJVmA7V9Cb3Lfv
-         3wX9RB64s3hgH1BiSF2otf9vq7IeIOSoKdyDkpYHyftdkuz3+FI49QSBsozasByMJ0sX
-         gNPw==
-X-Gm-Message-State: APjAAAUdaNX1/qYPeRh5BpKf0qG3+iOgj3B8X9NGqT38aIcF5A3MuotX
-        sUukFGPj6ihXgnb5bRruhMZKgaYP3shAW5+yvts=
-X-Google-Smtp-Source: APXvYqxEE70B/9m5pBKgHK+LpddFreOrytLntBkKv1H5QTG5I3V40IwNSejIX79woWjhf9r9OkRiVzlb6dCeNtbw17w=
-X-Received: by 2002:a92:1fda:: with SMTP id f87mr9971910ilf.225.1581087861351;
- Fri, 07 Feb 2020 07:04:21 -0800 (PST)
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=4RbjksI4ZVf8jlMAui9QSDoZFwWF9mQNUo5m2497TSc=;
+        b=diIKM0o2KIMHX8TWTHqxk7lsHPtTZ3rQcoypAvpbeWmaBLSawGQ+GsEMUwP++hxaUY
+         SF+hEdHx6PMpWlie62rFFpNqwgofeGkIYZHRQl3rcnl1qen2NepUpf3vutgV0+MjIjbg
+         dC9UYUPsYQf8iN/7jlVVNP+Jlhf0RZy5ruHWmllVPq3aj5jB4Z4G9uQv3mUXWL0o+B0T
+         3MqW+3fS7kxrafCYGvIPfN0ptY9v5ACJxONcWiglpJ43S13aD29177WINCTlwt9ftNvJ
+         fP5ERtZvo5euarbFx1q3AsRGQxB2A2aP3Ykl50/2CHe19D/Y5We92ij3hfV2KZL0ML0c
+         5H4Q==
+X-Gm-Message-State: APjAAAXYglkz7vrlEE8DzB91trtXULmBU41Rt7X82Bl6FUJRCiPI2KTh
+        3gxv2/x6moe2/F9PvrP72+npb5mPzPcJ8jHkkHE=
+X-Google-Smtp-Source: APXvYqwQ6HUilIEIxNhxpVYQRw5cd3aj2W3adMvEWpA+3Y5E3tpcQExSyapnY3xY0E96w7gmwD8H8GkuyZGvHvOKsnA=
+X-Received: by 2002:a5d:55d2:: with SMTP id i18mr5121071wrw.287.1581090180545;
+ Fri, 07 Feb 2020 07:43:00 -0800 (PST)
 MIME-Version: 1.0
-From:   Zulkifli Izoel <izoel21@gmail.com>
-Date:   Fri, 7 Feb 2020 22:04:10 +0700
-Message-ID: <CAKAWfyJ=H9rGaPvYvY_cBmzD+nW8ZGra5tFTBhCbZyT0BPNtjQ@mail.gmail.com>
-Subject: wireless-regdb: Update regulatory rules for Indonesia (ID) on 2.4GHz
- and 5Ghz
-To:     wireless-regdb@lists.infradead.org, linux-wireless@vger.kernel.org
+Received: by 2002:a5d:4844:0:0:0:0:0 with HTTP; Fri, 7 Feb 2020 07:42:59 -0800 (PST)
+Reply-To: aakkaavvii@gmail.com
+From:   Abraham Morrison <sambchambers06@gmail.com>
+Date:   Fri, 7 Feb 2020 07:42:59 -0800
+Message-ID: <CA+RS1P2juY7tJcTXGg2_B3RgaTh1Lwvuo=qUnxjBd41veF2mQw@mail.gmail.com>
+Subject: Good day!
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Latest update regulatory rules for Indonesia of 2019 :
-Taken from Ministry of Communication and Information Republic of
-Indonesia Website, cancelling 2005 old regulatory.
-
-Ref:
-Peraturan Menteri Komunikasi dan Informatika Nomor 1 Tahun 2019
-tanggal 24 April 2019
-See Appendix II (Lampiran II), Section WLAN Telecommunication
-Equipment (Alat dan/atau Perangkat Telekomunikasi WLAN)
-
-country ID:
-
-(2400 - 2483.5 @ 40), (500 mW)
-(5150 - 5250 @ 80), (200 mW)
-(5250 - 5350 @ 80), (200 mW)
-(5725 - 5825 @ 80), (200 mW)
-(5725 - 5825 Outdoor @ 20), (4 W)
-
-Please make correction,
-Thank You
-
-Zulkifli Yusuf Singedekane
+RGVhciBGcmllbmQsDQpJIGFtIEJhcnJpc3RlciBBYnJhaGFtIE1vcnJpc29uLCBEaWQgeW91IHJl
+Y2VpdmUgbXkgcHJldmlvdXMgbWVzc2FnZQ0KdG8geW91PyBJIGhhdmUgYW4gaW1wb3J0YW50IGlu
+Zm9ybWF0aW9uIGZvciB5b3UgYWJvdXQgeW91ciBpbmhlcml0YW5jZQ0KZnVuZCB3b3J0aCBvZiAo
+JDIwLDUwMCwwMDAuMDApIE1pbGxpb24gd2hpY2ggd2FzIGxlZnQgZm9yIHlvdSBieSB5b3VyDQps
+YXRlIHJlbGF0aXZlLCBNci4gQWxleGFuZGVyLiBTbyBpZiB5b3UgYXJlIGludGVyZXN0ZWQgZ2V0
+IGJhY2sgdG8gbWUNCmZvciBtb3JlIGRldGFpbHMuDQpUaGFuayB5b3UuDQpCYXJyaXN0ZXIgQWJy
+YWhhbSBNb3JyaXNvbi4NCi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4u
+Li4uLi4uLi4uLi4uLi4uLi4uDQrQlNC+0YDQvtCz0L7QuSDQtNGA0YPQsywNCtCvINCR0LDRgNGA
+0LjRgdGC0LXRgCDQkNCy0YDQsNCw0Lwg0JzQvtGA0YDQuNGB0L7QvSwg0JLRiyDQv9C+0LvRg9GH
+0LjQu9C4INC80L7QtSDQv9GA0LXQtNGL0LTRg9GJ0LXQtSDRgdC+0L7QsdGJ0LXQvdC40LUg0LTQ
+u9GPDQrQstCw0YE/INCjINC80LXQvdGPINC10YHRgtGMINC00LvRjyDQstCw0YEg0LLQsNC20L3Q
+sNGPINC40L3RhNC+0YDQvNCw0YbQuNGPINC+INCy0LDRiNC10Lwg0L3QsNGB0LvQtdC00YHRgtCy
+0LXQvdC90L7QvA0K0YTQvtC90LTQtSDQsiDRgNCw0LfQvNC10YDQtSAoMjAgNTAwIDAwMCwwMCkg
+0LzQuNC70LvQuNC+0L3QvtCyINC00L7Qu9C70LDRgNC+0LIsINC+0YHRgtCw0LLQu9C10L3QvdC+
+0Lwg0LLQsNC8DQrQv9C+0LrQvtC50L3Ri9C8INGA0L7QtNGB0YLQstC10L3QvdC40LrQvtC8LCDQ
+vNC40YHRgtC10YAg0JDQu9C10LrRgdCw0L3QtNGALiDQotCw0Log0YfRgtC+LCDQtdGB0LvQuCDQ
+stGLDQrQt9Cw0LjQvdGC0LXRgNC10YHQvtCy0LDQvdGLLCDRgdCy0Y/QttC40YLQtdGB0Ywg0YHQ
+viDQvNC90L7QuSDQtNC70Y8g0LHQvtC70LXQtSDQv9C+0LTRgNC+0LHQvdC+0Lkg0LjQvdGE0L7R
+gNC80LDRhtC40LguDQrQodC/0LDRgdC40LHQvi4NCtCR0LDRgNGA0LjRgdGC0LXRgCDQkNCy0YDQ
+sNCw0Lwg0JzQvtGA0YDQuNGB0L7QvS4NCg==
