@@ -2,44 +2,40 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C166515549F
-	for <lists+linux-wireless@lfdr.de>; Fri,  7 Feb 2020 10:28:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BD5D91554A2
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 Feb 2020 10:29:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726897AbgBGJ25 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 7 Feb 2020 04:28:57 -0500
-Received: from rtits2.realtek.com ([211.75.126.72]:44688 "EHLO
+        id S1726974AbgBGJ3A (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 7 Feb 2020 04:29:00 -0500
+Received: from rtits2.realtek.com ([211.75.126.72]:44691 "EHLO
         rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726586AbgBGJ24 (ORCPT
+        with ESMTP id S1726586AbgBGJ27 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 7 Feb 2020 04:28:56 -0500
+        Fri, 7 Feb 2020 04:28:59 -0500
 Authenticated-By: 
-X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID 0179Sog4018564, This message is accepted by code: ctloc85258
+X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID 0179SpEa018568, This message is accepted by code: ctloc85258
 Received: from mail.realtek.com (RTEXMB06.realtek.com.tw[172.21.6.99])
-        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id 0179Sog4018564
+        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id 0179SpEa018568
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 7 Feb 2020 17:28:50 +0800
-Received: from RTEXMB05.realtek.com.tw (172.21.6.98) by
+        Fri, 7 Feb 2020 17:28:51 +0800
+Received: from RTEXMB06.realtek.com.tw (172.21.6.99) by
  RTEXMB06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Fri, 7 Feb 2020 17:28:50 +0800
-Received: from RTEXMB06.realtek.com.tw (172.21.6.99) by
- RTEXMB05.realtek.com.tw (172.21.6.98) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Fri, 7 Feb 2020 17:28:50 +0800
+ 15.1.1779.2; Fri, 7 Feb 2020 17:28:51 +0800
 Received: from RTITCASV01.realtek.com.tw (172.21.6.18) by
  RTEXMB06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
  (version=TLS1_0, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.1.1779.2
- via Frontend Transport; Fri, 7 Feb 2020 17:28:50 +0800
+ via Frontend Transport; Fri, 7 Feb 2020 17:28:51 +0800
 Received: from localhost.localdomain (172.21.68.128) by
  RTITCASV01.realtek.com.tw (172.21.6.18) with Microsoft SMTP Server id
- 14.3.468.0; Fri, 7 Feb 2020 17:28:49 +0800
+ 14.3.468.0; Fri, 7 Feb 2020 17:28:50 +0800
 From:   <yhchuang@realtek.com>
 To:     <kvalo@codeaurora.org>
 CC:     <linux-wireless@vger.kernel.org>, <briannorris@chromium.org>,
         <pkshih@realtek.com>
-Subject: [PATCH 4/8] rtw88: sar: Load static SAR table from ACPI WRDS method
-Date:   Fri, 7 Feb 2020 17:28:40 +0800
-Message-ID: <20200207092844.29175-5-yhchuang@realtek.com>
+Subject: [PATCH 5/8] rtw88: sar: Load dynamic SAR table from ACPI methods
+Date:   Fri, 7 Feb 2020 17:28:41 +0800
+Message-ID: <20200207092844.29175-6-yhchuang@realtek.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200207092844.29175-1-yhchuang@realtek.com>
 References: <20200207092844.29175-1-yhchuang@realtek.com>
@@ -53,278 +49,405 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Ping-Ke Shih <pkshih@realtek.com>
 
-ACPI WRDS method returns static SAR table that contains two chains (RF paths)
-and five power limit data for each chain. The limit data are corresponding
-to certain ranges of frequency, such as 2.4G band, 5.15~5.35G etc.
+Three tables RWRD, RWSI and RWGS are defined to support SAR power limit
+proposed by Realtek. RWRD describes main power limit values that can support
+more than one mode, tablet, lid close and etc. RWSI is used to indicate
+which mode is operating, so driver must apply SAR power limit corresponding
+to the mode. Since each country (geography) has some different SAR power
+limit values, RWGS is introduced to adjust power limit mentioned in RWRD
+if stack hints driver that regulatory domain is changed.
 
-The data is in Q.3 notation that is the same with SAR entry function, so
-we don't need to convert its quantity.
+RWRD contains customer ID, SAR enable, table count and SAR power limit.
+With different customer ID, the formats of RWRD, RWSI and RWGS are
+different, such as the number of fields in table and precision of power
+limit value (in Q-notation). By now, two customer IDs are supported, RT
+and HP. 'table count' indicates total number of tables corresponding to
+operating modes, and selected by WRSI.
+
+To validate RWSI and RWGS tables, we check if read length and sizeof() are
+equal. But these checking statements depend on RWRD's ID are little
+verbose, so I use two predefined values, rwsi_sz and rwgs_sz, would be easy
+to understand the code.
 
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw88/Makefile |   1 +
- drivers/net/wireless/realtek/rtw88/main.c   |   2 +
- drivers/net/wireless/realtek/rtw88/sar.c    | 200 ++++++++++++++++++++
- drivers/net/wireless/realtek/rtw88/sar.h    |  10 +
- 4 files changed, 213 insertions(+)
- create mode 100644 drivers/net/wireless/realtek/rtw88/sar.c
- create mode 100644 drivers/net/wireless/realtek/rtw88/sar.h
+ drivers/net/wireless/realtek/rtw88/main.c |   2 +
+ drivers/net/wireless/realtek/rtw88/main.h |   8 +
+ drivers/net/wireless/realtek/rtw88/sar.c  | 301 ++++++++++++++++++++++
+ drivers/net/wireless/realtek/rtw88/sar.h  |   1 +
+ 4 files changed, 312 insertions(+)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/Makefile b/drivers/net/wireless/realtek/rtw88/Makefile
-index 935333f734a9..0e141edfd174 100644
---- a/drivers/net/wireless/realtek/rtw88/Makefile
-+++ b/drivers/net/wireless/realtek/rtw88/Makefile
-@@ -17,6 +17,7 @@ rtw88-y += main.o \
- 	   bf.o \
- 	   wow.o \
- 	   vndcmd.o \
-+	   sar.o \
- 	   regd.o
- 
- rtw88-$(CONFIG_RTW88_8822BE)	+= rtw8822b.o rtw8822b_table.o
 diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
-index 7156a06eea74..23cbb00e16b1 100644
+index 23cbb00e16b1..039703f1ccb9 100644
 --- a/drivers/net/wireless/realtek/rtw88/main.c
 +++ b/drivers/net/wireless/realtek/rtw88/main.c
-@@ -16,6 +16,7 @@
- #include "debug.h"
- #include "bf.h"
- #include "vndcmd.h"
-+#include "sar.h"
+@@ -1449,6 +1449,8 @@ void rtw_core_deinit(struct rtw_dev *rtwdev)
+ 		kfree(rsvd_pkt);
+ 	}
  
- unsigned int rtw_fw_lps_deep_mode;
- EXPORT_SYMBOL(rtw_fw_lps_deep_mode);
-@@ -1305,6 +1306,7 @@ static int rtw_chip_board_info_setup(struct rtw_dev *rtwdev)
- 	rtw_load_table(rtwdev, rfe_def->txpwr_lmt_tbl);
- 	rtw_phy_tx_power_by_rate_config(hal);
- 	rtw_phy_tx_power_limit_config(hal);
-+	rtw_sar_load_table(rtwdev);
++	rtw_sar_release_table(rtwdev);
++
+ 	mutex_destroy(&rtwdev->mutex);
+ 	mutex_destroy(&rtwdev->coex.mutex);
+ 	mutex_destroy(&rtwdev->hal.tx_power_mutex);
+diff --git a/drivers/net/wireless/realtek/rtw88/main.h b/drivers/net/wireless/realtek/rtw88/main.h
+index b4e9e18f89a5..bf5e66930424 100644
+--- a/drivers/net/wireless/realtek/rtw88/main.h
++++ b/drivers/net/wireless/realtek/rtw88/main.h
+@@ -46,6 +46,10 @@ extern struct rtw_chip_info rtw8822c_hw_spec;
+ #define RTW_MAX_CHANNEL_NUM_5G 49
+ 
+ struct rtw_dev;
++struct rtw_sar_rwrd;
++union rtw_sar_rwsi;
++union rtw_sar_rwgs;
++struct rtw_sar_read;
+ 
+ enum rtw_hci_type {
+ 	RTW_HCI_TYPE_PCIE,
+@@ -1522,6 +1526,10 @@ struct rtw_fw_state {
+ 
+ struct rtw_sar {
+ 	enum rtw_sar_sources source;
++	struct rtw_sar_rwrd *rwrd;
++	union rtw_sar_rwsi *rwsi;
++	union rtw_sar_rwgs *rwgs;
++	const struct rtw_sar_read *read;
+ };
+ 
+ struct rtw_hal {
+diff --git a/drivers/net/wireless/realtek/rtw88/sar.c b/drivers/net/wireless/realtek/rtw88/sar.c
+index f15366ce1046..d81a6511f138 100644
+--- a/drivers/net/wireless/realtek/rtw88/sar.c
++++ b/drivers/net/wireless/realtek/rtw88/sar.c
+@@ -187,14 +187,315 @@ static int rtw_sar_load_static_tables(struct rtw_dev *rtwdev)
  
  	return 0;
  }
-diff --git a/drivers/net/wireless/realtek/rtw88/sar.c b/drivers/net/wireless/realtek/rtw88/sar.c
-new file mode 100644
-index 000000000000..f15366ce1046
---- /dev/null
-+++ b/drivers/net/wireless/realtek/rtw88/sar.c
-@@ -0,0 +1,200 @@
-+// SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
-+/* Copyright(c) 2018-2019  Realtek Corporation
-+ */
 +
-+#include <linux/acpi.h>
-+#include "main.h"
-+#include "debug.h"
-+#include "phy.h"
-+#include "sar.h"
++#define ACPI_RWRD_METHOD	"RWRD"
++#define ACPI_RWSI_METHOD	"RWSI"
++#define ACPI_RWGS_METHOD	"RWGS"
 +
-+#define RTW_SAR_WRDS_CHAIN_NR	2
++#define RTW_SAR_RWRD_ID_HP	0x5048
++#define RTW_SAR_RWRD_ID_RT	0x5452
 +
-+enum rtw_sar_limit_index {
-+	RTW_SAR_LMT_CH1_14,
-+	RTW_SAR_LMT_CH36_64,
-+	RTW_SAR_LMT_UND1,
-+	RTW_SAR_LMT_CH100_144,
-+	RTW_SAR_LMT_CH149_165,
++#define RTW_SAR_RWRD_CHAIN_NR	4
 +
-+	RTW_SAR_LMT_TOTAL_NR,
++struct rtw_sar_rwrd {
++	u16 id;
++	u8 en;
++	u8 count;
++	struct {
++		struct rtw_sar_limits chain[RTW_SAR_RWRD_CHAIN_NR];
++	} mode[0];
++} __packed;
++
++struct rtw_sar_rwsi_hp {
++	u8 index[RTW_SAR_RWRD_CHAIN_NR];
++} __packed;
++
++struct rtw_sar_rwsi_rt {
++	u8 index;
++} __packed;
++
++union rtw_sar_rwsi {
++	struct rtw_sar_rwsi_hp hp;
++	struct rtw_sar_rwsi_rt rt;
 +};
 +
-+struct rtw_sar_limits {
-+	s8 limit[RTW_SAR_LMT_TOTAL_NR];
++enum rtw_sar_rwgs_band {
++	RTW_SAR_RWGS_2G,
++	RTW_SAR_RWGS_5G,
++	RTW_SAR_RWGS_BAND_NR,
 +};
 +
-+struct rtw_sar_wrds {
-+	struct rtw_sar_limits chain[RTW_SAR_WRDS_CHAIN_NR];
++enum rtw_sar_rwgs_geo_hp {
++	RTW_SAR_RWGS_HP_FCC_IC,
++	RTW_SAR_RWGS_HP_ETSI_MKK,
++	RTW_SAR_RWGS_HP_WW_KCC,
++
++	RTW_SAR_RWGS_HP_NR,
 +};
 +
-+#define ACPI_WRDS_METHOD	"WRDS"
-+#define ACPI_WRDS_SIZE		sizeof(struct rtw_sar_wrds)
-+#define ACPI_WRDS_TOTAL_SIZE	(sizeof(struct rtw_sar_wrds) + 2)
-+#define ACPI_WIFI_DOMAIN	0x07
++struct rtw_sar_rwgs_hp {
++	struct {
++		struct {
++			s8 max;		/* Q1 + 10 */
++			s8 delta[4];	/* Q1 */
++		} band[RTW_SAR_RWGS_BAND_NR];
++	} geo[RTW_SAR_RWGS_HP_NR];
++} __packed;
 +
-+#ifdef CONFIG_ACPI
-+static union acpi_object *rtw_sar_get_acpiobj(struct rtw_dev *rtwdev,
-+					      const char *method)
++enum rtw_sar_rwgs_geo_rt {
++	RTW_SAR_RWGS_RT_FCC,
++	RTW_SAR_RWGS_RT_CE,
++	RTW_SAR_RWGS_RT_MKK,
++	RTW_SAR_RWGS_RT_IC,
++	RTW_SAR_RWGS_RT_KCC,
++	RTW_SAR_RWGS_RT_WW,
++
++	RTW_SAR_RWGS_RT_NR,
++};
++
++struct rtw_sar_rwgs_rt {
++	struct {
++		struct {
++			u8 max;		/* Q3 */
++			s8 delta;	/* Q1 */
++		} band[RTW_SAR_RWGS_BAND_NR];
++	} geo[RTW_SAR_RWGS_RT_NR];
++} __packed;
++
++union rtw_sar_rwgs {
++	struct rtw_sar_rwgs_hp hp;
++	struct rtw_sar_rwgs_rt rt;
++};
++
++struct rtw_sar_read {
++	int rwsi_sz;
++	int rwgs_sz;
++};
++
++static const struct rtw_sar_read sar_read_hp = {
++	.rwsi_sz = sizeof(struct rtw_sar_rwsi_hp),
++	.rwgs_sz = sizeof(struct rtw_sar_rwgs_hp),
++};
++
++static const struct rtw_sar_read sar_read_rt = {
++	.rwsi_sz = sizeof(struct rtw_sar_rwsi_rt),
++	.rwgs_sz = sizeof(struct rtw_sar_rwgs_rt),
++};
++
++static u8 *rtw_sar_get_raw_package(struct rtw_dev *rtwdev,
++				   union acpi_object *obj, int *len)
 +{
-+	struct device *dev = rtwdev->dev;
-+	acpi_handle root_handle;
-+	acpi_handle handle;
-+	acpi_status status;
-+	struct acpi_buffer buf = {ACPI_ALLOCATE_BUFFER, NULL};
-+
-+	/* Check device handler */
-+	root_handle = ACPI_HANDLE(dev);
-+	if (!root_handle) {
-+		rtw_dbg(rtwdev, RTW_DBG_REGD,
-+			"SAR: Could not retireve root port ACPI handle\n");
-+		return NULL;
-+	}
-+
-+	/* Get method's handler */
-+	status = acpi_get_handle(root_handle, (acpi_string)method, &handle);
-+	if (ACPI_FAILURE(status)) {
-+		rtw_dbg(rtwdev, RTW_DBG_REGD, "SAR: %s method not found (0x%x)\n",
-+			method, status);
-+		return NULL;
-+	}
-+
-+	/* Call specific method with no argument */
-+	status = acpi_evaluate_object(handle, NULL, NULL, &buf);
-+	if (ACPI_FAILURE(status)) {
-+		rtw_dbg(rtwdev, RTW_DBG_REGD,
-+			"SAR: %s invocation failed (0x%x)\n", method, status);
-+		return NULL;
-+	}
-+
-+	return buf.pointer;
-+}
-+
-+static union acpi_object *rtw_sar_get_wifi_pkt(struct rtw_dev *rtwdev,
-+					       union acpi_object *obj,
-+					       u32 element_count)
-+{
-+	union acpi_object *wifi_pkg;
++	u8 *raw;
 +	u32 i;
 +
-+	if (obj->type != ACPI_TYPE_PACKAGE ||
-+	    obj->package.count < 2 ||
-+	    obj->package.elements[0].type != ACPI_TYPE_INTEGER ||
-+	    obj->package.elements[0].integer.value != 0) {
++	if (obj->type != ACPI_TYPE_PACKAGE || obj->package.count <= 0) {
 +		rtw_dbg(rtwdev, RTW_DBG_REGD,
-+			"SAR: Unsupported wifi package structure\n");
++			"SAR: Unsupported obj to dump\n");
 +		return NULL;
 +	}
 +
-+	/* loop through all the packages to find the one for WiFi */
-+	for (i = 1; i < obj->package.count; i++) {
-+		union acpi_object *domain;
-+
-+		wifi_pkg = &obj->package.elements[i];
-+
-+		/* Skip anything that is not a package with the right amount of
-+		 * elements (i.e. domain_type, enabled/disabled plus the sar
-+		 * table size.)
-+		 */
-+		if (wifi_pkg->type != ACPI_TYPE_PACKAGE ||
-+		    wifi_pkg->package.count != element_count)
-+			continue;
-+
-+		domain = &wifi_pkg->package.elements[0];
-+		if (domain->type == ACPI_TYPE_INTEGER &&
-+		    domain->integer.value == ACPI_WIFI_DOMAIN)
-+			return wifi_pkg;
-+	}
-+
-+	return NULL;
-+}
-+
-+static void *rtw_sar_get_wrds_table(struct rtw_dev *rtwdev)
-+{
-+	union acpi_object *wrds, *wrds_pkg;
-+	int i, idx = 2;
-+	u8 *wrds_raw = NULL;
-+
-+	wrds = rtw_sar_get_acpiobj(rtwdev, ACPI_WRDS_METHOD);
-+	if (!wrds)
++	raw = kmalloc(obj->package.count, GFP_KERNEL);
++	if (!raw)
 +		return NULL;
 +
-+	wrds_pkg = rtw_sar_get_wifi_pkt(rtwdev, wrds, ACPI_WRDS_TOTAL_SIZE);
-+	if (!wrds_pkg)
-+		goto out;
++	for (i = 0; i < obj->package.count; i++) {
++		union acpi_object *element;
 +
-+	/* WiFiSarEnable 0: ignore BIOS config; 1: use BIOS config */
-+	if (wrds_pkg->package.elements[1].type != ACPI_TYPE_INTEGER ||
-+	    wrds_pkg->package.elements[1].integer.value == 0)
-+		goto out;
++		element = &obj->package.elements[i];
 +
-+	wrds_raw = kmalloc(ACPI_WRDS_SIZE, GFP_KERNEL);
-+	if (!wrds_raw)
-+		goto out;
-+
-+	/* read elements[2~11] */
-+	for (i = 0; i < ACPI_WRDS_SIZE; i++) {
-+		union acpi_object *entry;
-+
-+		entry = &wrds_pkg->package.elements[idx++];
-+		if (entry->type != ACPI_TYPE_INTEGER ||
-+		    entry->integer.value > U8_MAX) {
-+			kfree(wrds_raw);
-+			wrds_raw = NULL;
-+			goto out;
++		if (element->type != ACPI_TYPE_INTEGER) {
++			rtw_dbg(rtwdev, RTW_DBG_REGD,
++				"SAR: Unexpected element type\n");
++			kfree(raw);
++			return NULL;
 +		}
 +
-+		wrds_raw[i] = entry->integer.value;
-+	}
-+out:
-+	kfree(wrds);
-+
-+	return wrds_raw;
-+}
-+
-+static void rtw_sar_apply_wrds(struct rtw_dev *rtwdev,
-+			       const struct rtw_sar_wrds *wrds)
-+{
-+	int path;
-+
-+	for (path = 0; path < RTW_SAR_WRDS_CHAIN_NR; path++) {
-+		rtw_phy_set_tx_power_sar(rtwdev, RTW_REGD_WW, path, 1, 14,
-+					 wrds->chain[path].limit[RTW_SAR_LMT_CH1_14]);
-+		rtw_phy_set_tx_power_sar(rtwdev, RTW_REGD_WW, path, 36, 64,
-+					 wrds->chain[path].limit[RTW_SAR_LMT_CH36_64]);
-+		rtw_phy_set_tx_power_sar(rtwdev, RTW_REGD_WW, path, 100, 144,
-+					 wrds->chain[path].limit[RTW_SAR_LMT_CH100_144]);
-+		rtw_phy_set_tx_power_sar(rtwdev, RTW_REGD_WW, path, 149, 165,
-+					 wrds->chain[path].limit[RTW_SAR_LMT_CH149_165]);
++		raw[i] = (u8)element->integer.value;
 +	}
 +
-+	rtwdev->sar.source = RTW_SAR_SOURCE_ACPI_STATIC;
++	*len = obj->package.count;
++
++	return raw;
 +}
 +
-+static int rtw_sar_load_static_tables(struct rtw_dev *rtwdev)
++static void *rtw_sar_get_raw_table(struct rtw_dev *rtwdev, const char *method,
++				   int *len)
 +{
-+	struct rtw_sar_wrds *wrds;
++	union acpi_object *obj;
++	u8 *raw;
 +
-+	wrds = rtw_sar_get_wrds_table(rtwdev);
-+	if (!wrds)
-+		return -ENOENT;
++	obj = rtw_sar_get_acpiobj(rtwdev, method);
++	if (!obj)
++		return NULL;
++
++	raw = rtw_sar_get_raw_package(rtwdev, obj, len);
++	kfree(obj);
++
++	return raw;
++}
++
++static bool is_valid_rwrd(struct rtw_dev *rtwdev, const struct rtw_sar_rwrd *rwrd,
++			  int len)
++{
++	if (len < sizeof(*rwrd)) {
++		rtw_dbg(rtwdev, RTW_DBG_REGD,
++			"SAR: RWRD: len %d is too short\n", len);
++		return false;
++	}
++
++	switch (rwrd->id) {
++	case RTW_SAR_RWRD_ID_HP:
++		rtwdev->sar.read = &sar_read_hp;
++		break;
++	case RTW_SAR_RWRD_ID_RT:
++		rtwdev->sar.read = &sar_read_rt;
++		break;
++	default:
++		rtw_dbg(rtwdev, RTW_DBG_REGD,
++			"SAR: RWRD: ID %04x isn't supported\n", rwrd->id);
++		return false;
++	}
++
++	if (sizeof(*rwrd) + rwrd->count * sizeof(rwrd->mode[0]) != len) {
++		rtw_dbg(rtwdev, RTW_DBG_REGD,
++			"SAR: RWRD: len(%d) doesn't match count(%d)\n",
++			len, rwrd->count);
++		return false;
++	}
++
++	return true;
++}
++
++static bool is_valid_rwsi_idx(struct rtw_dev *rtwdev, const struct rtw_sar_rwrd *rwrd,
++			      const u8 index[], int len)
++{
++	/* index range is one based. i.e. 1 <= index[] <= rwrd->count */
++	int i;
++
++	for (i = 0; i < len; i++)
++		if (index[i] < 1 || index[i] > rwrd->count) {
++			rtw_dbg(rtwdev, RTW_DBG_REGD,
++				"SAR: RWSI: index is out of range\n");
++			return false;
++		}
++
++	return true;
++}
++
++static bool is_valid_rwsi(struct rtw_dev *rtwdev, const struct rtw_sar_rwrd *rwrd,
++			  const union rtw_sar_rwsi *rwsi, int len)
++{
++	const struct rtw_sar_read *r = rtwdev->sar.read;
++
++	if (r->rwsi_sz != len)
++		goto err;
++
++	if (rwrd->id == RTW_SAR_RWRD_ID_HP &&
++	    is_valid_rwsi_idx(rtwdev, rwrd, rwsi->hp.index, RTW_SAR_RWRD_CHAIN_NR))
++		return true;
++
++	if (rwrd->id == RTW_SAR_RWRD_ID_RT &&
++	    is_valid_rwsi_idx(rtwdev, rwrd, &rwsi->rt.index, 1)) {
++		return true;
++	}
++
++err:
++	rtw_dbg(rtwdev, RTW_DBG_REGD,
++		"SAR: RWSI: len doesn't match struct size\n");
++
++	return false;
++}
++
++static bool is_valid_rwgs(struct rtw_dev *rtwdev, const struct rtw_sar_rwrd *rwrd,
++			  const union rtw_sar_rwgs *rwgs, int len)
++{
++	const struct rtw_sar_read *r = rtwdev->sar.read;
++
++	if (r->rwgs_sz == len)
++		return true;
 +
 +	rtw_dbg(rtwdev, RTW_DBG_REGD,
-+		"SAR: Apply WRDS to TX power\n");
++		"SAR: RWGS: len doesn't match struct size\n");
 +
-+	rtw_sar_apply_wrds(rtwdev, wrds);
-+	kfree(wrds);
++	return false;
++}
++
++static int rtw_sar_load_dynamic_tables(struct rtw_dev *rtwdev)
++{
++	struct rtw_sar_rwrd *rwrd;
++	union rtw_sar_rwsi *rwsi;
++	union rtw_sar_rwgs *rwgs;
++	int len;
++	bool valid;
++
++	rwrd = rtw_sar_get_raw_table(rtwdev, ACPI_RWRD_METHOD, &len);
++	if (!rwrd)
++		goto out;
++	valid = is_valid_rwrd(rtwdev, rwrd, len);
++	if (!valid)
++		goto out_rwrd;
++	if (!rwrd->en) {
++		rtw_dbg(rtwdev, RTW_DBG_REGD, "SAR: RWRD isn't enabled\n");
++		goto out_rwrd;
++	}
++
++	rwsi = rtw_sar_get_raw_table(rtwdev, ACPI_RWSI_METHOD, &len);
++	if (!rwsi)
++		goto out_rwrd;
++	valid = is_valid_rwsi(rtwdev, rwrd, rwsi, len);
++	if (!valid)
++		goto out_rwsi;
++
++	rwgs = rtw_sar_get_raw_table(rtwdev, ACPI_RWGS_METHOD, &len);
++	if (!rwgs)
++		goto out_rwsi;
++	valid = is_valid_rwgs(rtwdev, rwrd, rwgs, len);
++	if (!valid)
++		goto out_rwgs;
++
++	rtwdev->sar.rwrd = rwrd;
++	rtwdev->sar.rwsi = rwsi;
++	rtwdev->sar.rwgs = rwgs;
++
++	rtw_dbg(rtwdev, RTW_DBG_REGD, "SAR: RWRD/RWSI/RWGS is adopted\n");
 +
 +	return 0;
++
++out_rwgs:
++	kfree(rwgs);
++out_rwsi:
++	kfree(rwsi);
++out_rwrd:
++	kfree(rwrd);
++out:
++	return -ENOENT;
 +}
-+#else
-+static int rtw_sar_load_static_tables(struct rtw_dev *rtwdev)
+ #else
+ static int rtw_sar_load_static_tables(struct rtw_dev *rtwdev)
+ {
+ 	return -ENOENT;
+ }
++
++static int rtw_sar_load_dynamic_tables(struct rtw_dev *rtwdev)
 +{
 +	return -ENOENT;
 +}
-+#endif /* CONFIG_ACPI */
+ #endif /* CONFIG_ACPI */
+ 
+ void rtw_sar_load_table(struct rtw_dev *rtwdev)
+ {
++	int ret;
 +
-+void rtw_sar_load_table(struct rtw_dev *rtwdev)
++	ret = rtw_sar_load_dynamic_tables(rtwdev);
++	if (!ret)
++		return;	/* if dynamic SAR table is loaded, ignore static SAR table */
++
+ 	rtw_sar_load_static_tables(rtwdev);
+ }
++
++void rtw_sar_release_table(struct rtw_dev *rtwdev)
 +{
-+	rtw_sar_load_static_tables(rtwdev);
++	kfree(rtwdev->sar.rwrd);
++	kfree(rtwdev->sar.rwsi);
++	kfree(rtwdev->sar.rwgs);
 +}
 diff --git a/drivers/net/wireless/realtek/rtw88/sar.h b/drivers/net/wireless/realtek/rtw88/sar.h
-new file mode 100644
-index 000000000000..632de7ed58c3
---- /dev/null
+index 632de7ed58c3..16ceae5bf79e 100644
+--- a/drivers/net/wireless/realtek/rtw88/sar.h
 +++ b/drivers/net/wireless/realtek/rtw88/sar.h
-@@ -0,0 +1,10 @@
-+/* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
-+/* Copyright(c) 2018-2019  Realtek Corporation
-+ */
-+
-+#ifndef __RTW_SAR_H_
-+#define __RTW_SAR_H_
-+
-+void rtw_sar_load_table(struct rtw_dev *rtwdev);
-+
-+#endif
+@@ -6,5 +6,6 @@
+ #define __RTW_SAR_H_
+ 
+ void rtw_sar_load_table(struct rtw_dev *rtwdev);
++void rtw_sar_release_table(struct rtw_dev *rtwdev);
+ 
+ #endif
 -- 
 2.17.1
 
