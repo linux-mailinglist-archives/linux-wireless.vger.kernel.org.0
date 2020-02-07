@@ -2,52 +2,52 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B6275155092
-	for <lists+linux-wireless@lfdr.de>; Fri,  7 Feb 2020 03:11:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 683851550AD
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 Feb 2020 03:21:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727509AbgBGCLS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 6 Feb 2020 21:11:18 -0500
-Received: from mail-ot1-f66.google.com ([209.85.210.66]:45707 "EHLO
-        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727028AbgBGCLS (ORCPT
+        id S1727012AbgBGCVu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 6 Feb 2020 21:21:50 -0500
+Received: from mail-ot1-f67.google.com ([209.85.210.67]:33096 "EHLO
+        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726597AbgBGCVu (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 6 Feb 2020 21:11:18 -0500
-Received: by mail-ot1-f66.google.com with SMTP id 59so660774otp.12
-        for <linux-wireless@vger.kernel.org>; Thu, 06 Feb 2020 18:11:17 -0800 (PST)
+        Thu, 6 Feb 2020 21:21:50 -0500
+Received: by mail-ot1-f67.google.com with SMTP id b18so747695otp.0
+        for <linux-wireless@vger.kernel.org>; Thu, 06 Feb 2020 18:21:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=endlessm-com.20150623.gappssmtp.com; s=20150623;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=GWc7Ijn6yHG/2KgjgfrGjVuqZdUeAuHimZKaD1xcjgA=;
-        b=osEHepPh3mVNSEYrrEd5xYSh7kAlTn3tjhRZ9OoEYMbMjm+g/LUzJnaKqJCqD7L1Mq
-         lTBh+yLS4yhmL4Fn49c4RM2Y9ea9O5kapLQsaDoc/EQ8YpPERESZf4nAvaawscnnJEUM
-         xpH+umK+5wXgMBtAvVTbWSd5MyZudhqUGLfhHnyKnPU4TgsnfvwWJebz1Wo/EQ+QkqCU
-         PTpBT4NvADmRcTtuS9pxYonbeN+KKv3NZQXLhuOwP2iC76eY5aHc4uQswp9kFfsDWoJV
-         mlP83+yp0QEShNz/bIH4XtagoBePELe54O8LJmdxTE46HjEGyiCk29YYkm8c00hcwgfZ
-         mIJQ==
+        bh=NxLizjA/LdZHlqTKcHf2NNbjaoo7PWjl574Z7alvCIs=;
+        b=T4wIiwcb3x59GgiPJxBANLn+pX2xC2q8PMd2QVj0Y3NDTegrenzOcRdWfhM3EwM21f
+         5p5ve3pdIWt2wp2yXn6rxx1CqckUY0ZWogrQ61nJroYSyMpZMm9GReI5jY/p74A87HO7
+         MoQJbophxrQdHrBGGnBeZjI3Hkj8v7tx3Q3ktszR7cFQL7nnUB7gC0EWI3P75vp/a5i1
+         202P93tLPGZsY1ld2d8FaOcA6fplSWvCZi2/klOzkshSAjNdTGz9FgxwBKe/HBeLP4Kf
+         vhWNMaZTx7nQ0pPA2SnGXYTWyuV+QJrGaQkKg891pOqDTdO1oOhputyXAuGt+A6TV8im
+         MZgg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=GWc7Ijn6yHG/2KgjgfrGjVuqZdUeAuHimZKaD1xcjgA=;
-        b=IfYqobal126yinxdgUW6tt/NYyXlHPwgO3Nr3LdVI81R2EvJ3++R6HBQuQH/Ogmp/B
-         Dhlz76iQ5ErNeBMKeYvkgmYs4MWnAv9oGU97pi6AyiBCgpTzOYCNa8pYcKLC67CVlDVU
-         RGUHRPGE54TZe6KUCvlSMXauELvggAz/KWJCsjMd8jBmUoPbOW5iEuXZq363BRqRFKV/
-         0zIj/+kkDTTcliiRF4u69DGHjchql+JBqv+FaDF6svHuw0aB6Pqqlro6sF+B2YEv3GEF
-         rjEB9/SENG+eWLGmy3beHRxr4xs4brNHPT1fyadYOUlQM5HYp4gg6A4/JcJH82bHGxuW
-         OnDA==
-X-Gm-Message-State: APjAAAUd/CCFhUA9X+QE+jXv5IASCyYOlbMBZexGM5khTabgQBAUoH7M
-        Vcjq38J+BYrXXWpTKP2RZV1aTlTSgPIUVTSbwND4fw==
-X-Google-Smtp-Source: APXvYqzY1NQd2nFxJ3rFX0KM9A/8Rjz0gRHdmL98amPSfjzfUMTUIo/Hac7rOCKU3xAr2AtdFMeiEMKEI3VdzfzknBs=
-X-Received: by 2002:a9d:774e:: with SMTP id t14mr898875otl.358.1581041477467;
- Thu, 06 Feb 2020 18:11:17 -0800 (PST)
+        bh=NxLizjA/LdZHlqTKcHf2NNbjaoo7PWjl574Z7alvCIs=;
+        b=U7VXzMnODCFmZgPwJr5XupEThF6PYat5k2frkPW67GEcsHaRZu8Je3ibue7l3gqOX6
+         orpChpsH5rZsh74H6smRBM//nao+a7ADIR7lheluhhopbUiFNgKrp9URzfcenRTw1UuG
+         Y7Em9hl6zWrVPJ6KMJfXFE3lrnFFpnCu+vz0x6fq8hZ43FZAnLIZDXg5ET8fKiuSUo8P
+         XC1+FoJ5a/3SbAiCfqMBe3BHiJQwxK6S6SAnkatJAF0M4gcFaRIWRfNNOTcY2ywtt65Z
+         EdoiQTplSksq/OSLJ8uBINVHDAg4hBz42n7neIUEz7NEyAH77jy+f8s+y6WLHtM2MnhB
+         rXDg==
+X-Gm-Message-State: APjAAAWSHPPyPuUx/9Zj550XWys/ngOZw03LdrIVYDCKDqBkXNZIv2N5
+        sCF8U86EaPkrtuP1AtwO2MZi3275yrxOE0EzV9KrWQ==
+X-Google-Smtp-Source: APXvYqzMN8QaKAN632TCjxCPMPTtotGucjk/VeSdDvq/62ACuo0eFVhLgHFv3zYf3BO2TqLRHIMf8yeSvpTpbcQFidw=
+X-Received: by 2002:a9d:774e:: with SMTP id t14mr921611otl.358.1581042108832;
+ Thu, 06 Feb 2020 18:21:48 -0800 (PST)
 MIME-Version: 1.0
-References: <20200206032801.25835-1-yhchuang@realtek.com>
-In-Reply-To: <20200206032801.25835-1-yhchuang@realtek.com>
+References: <20200204120614.28861-1-yhchuang@realtek.com>
+In-Reply-To: <20200204120614.28861-1-yhchuang@realtek.com>
 From:   Chris Chiu <chiu@endlessm.com>
-Date:   Fri, 7 Feb 2020 10:11:06 +0800
-Message-ID: <CAB4CAwe_uiCitczp2KYQ-H5gAVE_fPGr8GzRqnKAoXSxVw9meQ@mail.gmail.com>
-Subject: Re: [PATCH v2] rtw88: Fix incorrect beamformee role setting
+Date:   Fri, 7 Feb 2020 10:21:38 +0800
+Message-ID: <CAB4CAwdFez_WbRQb2jZQtqspSkO5ujL31ZLt4XshNcWiSqHByA@mail.gmail.com>
+Subject: Re: [PATCH] rtw88: disable TX-AMSDU on 2.4G band
 To:     Tony Chuang <yhchuang@realtek.com>
 Cc:     Kalle Valo <kvalo@codeaurora.org>,
         linux-wireless <linux-wireless@vger.kernel.org>,
@@ -58,50 +58,61 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Feb 6, 2020 at 11:28 AM <yhchuang@realtek.com> wrote:
+On Tue, Feb 4, 2020 at 8:06 PM <yhchuang@realtek.com> wrote:
 >
-> From: Tzu-En Huang <tehuang@realtek.com>
+> From: Yan-Hsuan Chuang <yhchuang@realtek.com>
 >
-> In associating and configuring beamformee, bfee->role is not
-> correctly set before rtw_chip_ops::config_bfee().
-> Fix it by setting it correctly.
+> Some tests shows that using AMSDU to aggregate TCP ACKs to specific
+> APs will degrade the throughput on 2.4G band in 20MHz bandwidth
+> (< 10 Mbps, should be ~100 Mbps for 2x2). Also found that there's
+> barely no negative impact if we disable TX AMSDU on 2.4G to connect
+> to other APs. So it seems like we can just tell mac80211 to not to
+> aggregate MSDUs when transmitting on 2.4G band.
 >
-> Fixes: 0bd9557341b7 ("rtw88: Enable 802.11ac beamformee support")
-> Signed-off-by: Tzu-En Huang <tehuang@realtek.com>
+> Note that we still can TX AMSDU on 5G band and benefit from it by
+> having 50 ~ 70 Mbps throughput improvement.
+>
 > Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
 > ---
->
-> v1 -> v2
->   * cannot put bfee->role = RTW_BFEE_NONE after out_unlock
->     put it enclosed by else
->
->  drivers/net/wireless/realtek/rtw88/bf.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
->
-> diff --git a/drivers/net/wireless/realtek/rtw88/bf.c b/drivers/net/wireless/realtek/rtw88/bf.c
-> index fda771d23f71..073c754e9e70 100644
-> --- a/drivers/net/wireless/realtek/rtw88/bf.c
-> +++ b/drivers/net/wireless/realtek/rtw88/bf.c
-> @@ -99,10 +98,11 @@ void rtw_bf_assoc(struct rtw_dev *rtwdev, struct ieee80211_vif *vif,
->                 }
->
->                 chip->ops->config_bfee(rtwdev, rtwvif, bfee, true);
-> +       } else {
-> +               bfee->role = RTW_BFEE_NONE;
->         }
->
+Reviewed-by: Chris Chiu <chiu@endlessm.com>
 
-Do we really need this `else` section? The bfee->role is only for
-`config_bfee`, right? If we don't
-need to config_bfee for RTW_BFEE_NONE, then we don't need the `else` part.
 
-Chris
-
->  out_unlock:
-> -       bfee->role = bfee_role;
->         rcu_read_unlock();
+>  drivers/net/wireless/realtek/rtw88/mac80211.c | 15 +++++++++++++++
+>  1 file changed, 15 insertions(+)
+>
+> diff --git a/drivers/net/wireless/realtek/rtw88/mac80211.c b/drivers/net/wireless/realtek/rtw88/mac80211.c
+> index 6fc33e11d08c..21b56db16916 100644
+> --- a/drivers/net/wireless/realtek/rtw88/mac80211.c
+> +++ b/drivers/net/wireless/realtek/rtw88/mac80211.c
+> @@ -592,6 +592,20 @@ static int rtw_ops_ampdu_action(struct ieee80211_hw *hw,
+>         return 0;
 >  }
 >
+> +static bool rtw_ops_can_aggregate_in_amsdu(struct ieee80211_hw *hw,
+> +                                          struct sk_buff *head,
+> +                                          struct sk_buff *skb)
+> +{
+> +       struct rtw_dev *rtwdev = hw->priv;
+> +       struct rtw_hal *hal = &rtwdev->hal;
+> +
+> +       /* we don't want to enable TX AMSDU on 2.4G */
+> +       if (hal->current_band_type == RTW_BAND_2G)
+> +               return false;
+> +
+> +       return true;
+> +}
+> +
+>  static void rtw_ops_sw_scan_start(struct ieee80211_hw *hw,
+>                                   struct ieee80211_vif *vif,
+>                                   const u8 *mac_addr)
+> @@ -787,6 +801,7 @@ const struct ieee80211_ops rtw_ops = {
+>         .sta_remove             = rtw_ops_sta_remove,
+>         .set_key                = rtw_ops_set_key,
+>         .ampdu_action           = rtw_ops_ampdu_action,
+> +       .can_aggregate_in_amsdu = rtw_ops_can_aggregate_in_amsdu,
+>         .sw_scan_start          = rtw_ops_sw_scan_start,
+>         .sw_scan_complete       = rtw_ops_sw_scan_complete,
+>         .mgd_prepare_tx         = rtw_ops_mgd_prepare_tx,
 > --
 > 2.17.1
 >
