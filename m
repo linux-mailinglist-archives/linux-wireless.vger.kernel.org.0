@@ -2,110 +2,93 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AE99F155CC0
-	for <lists+linux-wireless@lfdr.de>; Fri,  7 Feb 2020 18:22:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A18E155CDF
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 Feb 2020 18:29:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727130AbgBGRW1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 7 Feb 2020 12:22:27 -0500
-Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:26128 "EHLO
+        id S1727065AbgBGR3e (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 7 Feb 2020 12:29:34 -0500
+Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:31357 "EHLO
         us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1727012AbgBGRW1 (ORCPT
+        with ESMTP id S1726874AbgBGR3d (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 7 Feb 2020 12:22:27 -0500
+        Fri, 7 Feb 2020 12:29:33 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1581096145;
+        s=mimecast20190719; t=1581096572;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          in-reply-to:in-reply-to:references:references;
-        bh=ZxWNv6iA6gWQL1mJMZPg00oBxiFGslEj8XYJ4RCtALA=;
-        b=ZREWH0hXYGJ/JFvIPq+sS91+55cp0E4544vssZTQ1TW4rsl/s5eB2jsFkcWAsilAl4gvSM
-        k8kICNvhyllzyPHrahNTXi9by8q9+1VM9M/kx/7n70CbltAF95/nuDDX7WN0PaAv71aCnB
-        HuZewVNGNIULNa17jdCM1JurxDTzEbU=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-75-5lY_XQbYN0OsaummTck8eQ-1; Fri, 07 Feb 2020 12:22:23 -0500
-X-MC-Unique: 5lY_XQbYN0OsaummTck8eQ-1
-Received: by mail-wr1-f72.google.com with SMTP id n23so1591767wra.20
-        for <linux-wireless@vger.kernel.org>; Fri, 07 Feb 2020 09:22:23 -0800 (PST)
+        bh=uYsLnj6pxCbmXJ8pKWAi/BQk9bKglVJIk91anl+O7fk=;
+        b=F4sr3UQIpi3o7qU3m2aVXC+fkfJ8gRCuGplteuxFZqyJZzhevihkOnh8QPAXM7QX46hqga
+        W6mRDELWgU1T4s/AGhaeO08i85EUbxrFPB1jpEdzzdfMy86lSV3yLfQwJpnPls4y/WRh/V
+        i/o9424A8kF50xjrohcKEHgDLb+6Rt4=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-107-RQ8ADplfPqWD-pa8P152jQ-1; Fri, 07 Feb 2020 12:29:29 -0500
+X-MC-Unique: RQ8ADplfPqWD-pa8P152jQ-1
+Received: by mail-wr1-f69.google.com with SMTP id t6so1632120wru.3
+        for <linux-wireless@vger.kernel.org>; Fri, 07 Feb 2020 09:29:28 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=ZxWNv6iA6gWQL1mJMZPg00oBxiFGslEj8XYJ4RCtALA=;
-        b=ebCSbqD11/8nE3ebry8UCAticOxDwsROnm/fLM+3uPPFOcpbOX7w+pOZLdU154m4E+
-         a7hAYVKlDMZ7DHcb0FsYd9ZDb0osrPAEkSnwDHAwL/ROt7UjpS28+XgAU9xc/n30DB4s
-         qMrvvdeavIbXrl3ywz3Ozjkhj2z2f+k/CI3c3cJkCWGnbic7rKbTYFBly+l3dga8IC1S
-         CWkNEJ3ttR4+zoFpEQDGgcCyh+nu7+YIzN1KhVOMAVU6G2tP/bPF9pKqnt4glIcqDm30
-         R3SRwZYjYH9kU5XoHehTepqseP/GsjuuQebvG7qeBigkCFIdjL+9icD6aDuiyU/VxQ+F
-         OmjQ==
-X-Gm-Message-State: APjAAAUtfhaMLamzOzIVN7mjj4Wk+zrT4ypwrzljitMYSNApe6hoBN2a
-        QXKhWh3FEwuW3e7CnoY5xq/rQWTjJeAByM3r1L49oMzhrGrm4QAxXCSL7yETpEJD3W5uZTbc0Hf
-        TN2rMz0YngGkvwbTOzlLI5DJa+i0=
-X-Received: by 2002:a1c:e246:: with SMTP id z67mr5666959wmg.52.1581096142326;
-        Fri, 07 Feb 2020 09:22:22 -0800 (PST)
-X-Google-Smtp-Source: APXvYqxa997EoT4KYl1POAVXlDfDP1Xs7t1I1SEL5rp/nCmFe6bC4UGcMauDcv1mnWpvRMkhNuc8IQ==
-X-Received: by 2002:a1c:e246:: with SMTP id z67mr5666947wmg.52.1581096142066;
-        Fri, 07 Feb 2020 09:22:22 -0800 (PST)
+        bh=uYsLnj6pxCbmXJ8pKWAi/BQk9bKglVJIk91anl+O7fk=;
+        b=TWwb9yAGWwWEwi7RYnbYwaGqLOfNiK2iA4X5LTvdu00hpj4mMDw0TR+/cKE8HKAJxz
+         KqL8kGf2ShQy/aiCHIIknYmq9RoaRiKXHMMV1Y8cM1D5nUwVyMQZbON7bK7ltb7RjuTN
+         5bjCOCdYmB9Jc8VGy0ERBCvyW4Npx/PN2NuRdGklYXk/dc1ws86r/NgTk3CUKPgyS/uF
+         SpKjHeP2slNMW4nvpvUWTiUbRrBCm0b/dDTQmlvd0HFrnRhtp99DJ+XkUNqn64xPw4hY
+         1Jr1/gbTwZJdk1gHr263AFguUd/N0b0bsuSP13kR1qKvDNBXLzid2DBeyX0xtXQXeN/L
+         fgaQ==
+X-Gm-Message-State: APjAAAXQWB5CkdW3mSvkago/A8A9OrT3fjqL16i6jKEsc8XgWalD6328
+        mPKdSdsjD+12oD/bT4KjISac7hou30JIbFCwr34AzHiM94e5wFH+cv67YIThR0qcy+dPZdpcE9+
+        8YrqinJL2N5sRW6ORkseEPWDwAXI=
+X-Received: by 2002:adf:ed09:: with SMTP id a9mr84660wro.350.1581096567782;
+        Fri, 07 Feb 2020 09:29:27 -0800 (PST)
+X-Google-Smtp-Source: APXvYqxzN8KwkTazthR0emRCDY1zp+ceoLziI1OEqr57bihVFMi4aEiOMhso10oNHzM09i1V0nul6w==
+X-Received: by 2002:adf:ed09:: with SMTP id a9mr84645wro.350.1581096567608;
+        Fri, 07 Feb 2020 09:29:27 -0800 (PST)
 Received: from localhost.localdomain (nat-pool-mxp-t.redhat.com. [149.6.153.186])
-        by smtp.gmail.com with ESMTPSA id j5sm4266332wrw.24.2020.02.07.09.22.20
+        by smtp.gmail.com with ESMTPSA id 133sm4433049wmd.5.2020.02.07.09.29.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Feb 2020 09:22:21 -0800 (PST)
-Date:   Fri, 7 Feb 2020 18:22:18 +0100
+        Fri, 07 Feb 2020 09:29:26 -0800 (PST)
+Date:   Fri, 7 Feb 2020 18:29:24 +0100
 From:   Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
 To:     Felix Fietkau <nbd@nbd.name>
 Cc:     Lorenzo Bianconi <lorenzo@kernel.org>,
         linux-wireless@vger.kernel.org
-Subject: Re: [PATCH 2/3] mt76: generalize mt76_mcu_rx_event routine
-Message-ID: <20200207172218.GA2538@localhost.localdomain>
+Subject: Re: [PATCH 1/3] mt76: reuse mt76_mcu in mt76u_mcu
+Message-ID: <20200207172924.GB2538@localhost.localdomain>
 References: <cover.1580945999.git.lorenzo@kernel.org>
- <0b2e476900157cd99417328e661e71a6ffedcb6a.1580945999.git.lorenzo@kernel.org>
- <9206f86a-8bd5-1f43-482d-8027e1a60d42@nbd.name>
+ <9edce905c69623f50f64b0904e0657d1345b0ffe.1580945999.git.lorenzo@kernel.org>
+ <3b5b64dd-8939-b730-5b2c-f720a8e1d001@nbd.name>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="6TrnltStXW4iwmi0"
+        protocol="application/pgp-signature"; boundary="wzJLGUyc3ArbnUjN"
 Content-Disposition: inline
-In-Reply-To: <9206f86a-8bd5-1f43-482d-8027e1a60d42@nbd.name>
+In-Reply-To: <3b5b64dd-8939-b730-5b2c-f720a8e1d001@nbd.name>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 
---6TrnltStXW4iwmi0
+--wzJLGUyc3ArbnUjN
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
 On Feb 07, Felix Fietkau wrote:
 > On 2020-02-06 00:53, Lorenzo Bianconi wrote:
-> > Rely on mt76_mcu in mt76_mcu_rx_event signature in order to reuse
-> > it in usb code
-> >=20
-> > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-> > ---
-> >  drivers/net/wireless/mediatek/mt76/mcu.c          | 8 +++++---
-> >  drivers/net/wireless/mediatek/mt76/mt76.h         | 2 +-
-> >  drivers/net/wireless/mediatek/mt76/mt7603/dma.c   | 4 ++--
-> >  drivers/net/wireless/mediatek/mt76/mt7615/mcu.c   | 2 +-
-> >  drivers/net/wireless/mediatek/mt76/mt76x02_txrx.c | 3 +--
-> >  5 files changed, 10 insertions(+), 9 deletions(-)
-> >=20
-> > diff --git a/drivers/net/wireless/mediatek/mt76/mcu.c b/drivers/net/wir=
-eless/mediatek/mt76/mcu.c
-> > index b0fb0830c9e1..a2936f8de915 100644
-> > --- a/drivers/net/wireless/mediatek/mt76/mcu.c
-> > +++ b/drivers/net/wireless/mediatek/mt76/mcu.c
-> > @@ -42,9 +42,11 @@ struct sk_buff *mt76_mcu_get_response(struct mt76_de=
-v *dev,
-> >  }
-> >  EXPORT_SYMBOL_GPL(mt76_mcu_get_response);
-> > =20
-> > -void mt76_mcu_rx_event(struct mt76_dev *dev, struct sk_buff *skb)
-> > +void mt76_mcu_rx_event(void *data, struct sk_buff *skb)
-> Why the void* pointer if we have the mcu struct in a common place in
-> struct mt76_dev anyway?
+> > Introduce mt76_mcu data structure to contain common fields between
+> > mt76u_mcu and mt76e_mcu.
+> > Move mt76u_mcu at the beginning of mt76_usb in order to rely on mt76_mcu
+> > to access mt76u_mcu common fields
+> Why not move it to struct mt76_dev directly and out of the union?
+> I think that would be cleaner, and you can also initialize its fields in
+> mt76_alloc_device().
 
-ack, I will fix it in v2
+ack and I can maintain the usb specific fields (e.g mt76_reg_pair or burst)=
+ in
+mt76u_mcu. I will fix it in v2
 
 Regards,
 Lorenzo
@@ -114,16 +97,16 @@ Lorenzo
 > - Felix
 >=20
 
---6TrnltStXW4iwmi0
+--wzJLGUyc3ArbnUjN
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCXj2cxwAKCRA6cBh0uS2t
-rK6WAP0cZtEBPWs3aE8QTcFqTouZh98U2CEsPhCam2OTGhH8IwEAonWeJZ7FArgG
-RtjtPMGdbMrulxhH8hqso2TZcu36YQQ=
-=/K1J
+iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCXj2ecQAKCRA6cBh0uS2t
+rMsZAQCzIPAfCVDiCkk4hSKdvPUKF4uQBFb7fTQFsdoR0UQtywEAwd5yxQ7LO6n8
+EkwrTFzWJVKIE4j0AhmmaKc9sGgvuwM=
+=AyaW
 -----END PGP SIGNATURE-----
 
---6TrnltStXW4iwmi0--
+--wzJLGUyc3ArbnUjN--
 
