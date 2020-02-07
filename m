@@ -2,81 +2,110 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E13F31553D1
-	for <lists+linux-wireless@lfdr.de>; Fri,  7 Feb 2020 09:40:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 687681553ED
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 Feb 2020 09:47:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726899AbgBGIkw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 7 Feb 2020 03:40:52 -0500
-Received: from rtits2.realtek.com ([211.75.126.72]:42502 "EHLO
+        id S1726954AbgBGIrs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 7 Feb 2020 03:47:48 -0500
+Received: from rtits2.realtek.com ([211.75.126.72]:42879 "EHLO
         rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726417AbgBGIkw (ORCPT
+        with ESMTP id S1726130AbgBGIrs (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 7 Feb 2020 03:40:52 -0500
+        Fri, 7 Feb 2020 03:47:48 -0500
 Authenticated-By: 
-X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID 0178eeT9008499, This message is accepted by code: ctloc85258
+X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID 0178lfct009980, This message is accepted by code: ctloc85258
 Received: from mail.realtek.com (RTEXMB06.realtek.com.tw[172.21.6.99])
-        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id 0178eeT9008499
+        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id 0178lfct009980
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 7 Feb 2020 16:40:40 +0800
-Received: from RTEXMB04.realtek.com.tw (172.21.6.97) by
+        Fri, 7 Feb 2020 16:47:41 +0800
+Received: from RTEXMB02.realtek.com.tw (172.21.6.95) by
  RTEXMB06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Fri, 7 Feb 2020 16:40:39 +0800
-Received: from RTEXMB04.realtek.com.tw ([fe80::d9c5:a079:495e:b999]) by
- RTEXMB04.realtek.com.tw ([fe80::d9c5:a079:495e:b999%6]) with mapi id
- 15.01.1779.005; Fri, 7 Feb 2020 16:40:39 +0800
-From:   Tony Chuang <yhchuang@realtek.com>
-To:     Chris Chiu <chiu@endlessm.com>
-CC:     Kalle Valo <kvalo@codeaurora.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Brian Norris <briannorris@chromium.org>
-Subject: RE: [PATCH v2] rtw88: Fix incorrect beamformee role setting
-Thread-Topic: [PATCH v2] rtw88: Fix incorrect beamformee role setting
-Thread-Index: AQHV3J13am0lYwY0X0+jN725/xeLYagOeF4AgADyhPA=
-Date:   Fri, 7 Feb 2020 08:40:39 +0000
-Message-ID: <d03928b308654704a360e73dd4441058@realtek.com>
-References: <20200206032801.25835-1-yhchuang@realtek.com>
- <CAB4CAwe_uiCitczp2KYQ-H5gAVE_fPGr8GzRqnKAoXSxVw9meQ@mail.gmail.com>
-In-Reply-To: <CAB4CAwe_uiCitczp2KYQ-H5gAVE_fPGr8GzRqnKAoXSxVw9meQ@mail.gmail.com>
-Accept-Language: zh-TW, en-US
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.68.175]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ 15.1.1779.2; Fri, 7 Feb 2020 16:47:41 +0800
+Received: from RTEXMB06.realtek.com.tw (172.21.6.99) by
+ RTEXMB02.realtek.com.tw (172.21.6.95) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Fri, 7 Feb 2020 16:47:41 +0800
+Received: from RTITCASV01.realtek.com.tw (172.21.6.18) by
+ RTEXMB06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
+ (version=TLS1_0, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.1.1779.2
+ via Frontend Transport; Fri, 7 Feb 2020 16:47:41 +0800
+Received: from localhost.localdomain (172.21.68.128) by
+ RTITCASV01.realtek.com.tw (172.21.6.18) with Microsoft SMTP Server id
+ 14.3.468.0; Fri, 7 Feb 2020 16:47:31 +0800
+From:   <yhchuang@realtek.com>
+To:     <kvalo@codeaurora.org>
+CC:     <linux-wireless@vger.kernel.org>, <briannorris@chromium.org>
+Subject: [PATCH v3] rtw88: Fix incorrect beamformee role setting
+Date:   Fri, 7 Feb 2020 16:47:29 +0800
+Message-ID: <20200207084729.24882-1-yhchuang@realtek.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
+Content-Type: text/plain
+X-Originating-IP: [172.21.68.128]
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-PiBPbiBUaHUsIEZlYiA2LCAyMDIwIGF0IDExOjI4IEFNIDx5aGNodWFuZ0ByZWFsdGVrLmNvbT4g
-d3JvdGU6DQo+ID4NCj4gPiBGcm9tOiBUenUtRW4gSHVhbmcgPHRlaHVhbmdAcmVhbHRlay5jb20+
-DQo+ID4NCj4gPiBJbiBhc3NvY2lhdGluZyBhbmQgY29uZmlndXJpbmcgYmVhbWZvcm1lZSwgYmZl
-ZS0+cm9sZSBpcyBub3QNCj4gPiBjb3JyZWN0bHkgc2V0IGJlZm9yZSBydHdfY2hpcF9vcHM6OmNv
-bmZpZ19iZmVlKCkuDQo+ID4gRml4IGl0IGJ5IHNldHRpbmcgaXQgY29ycmVjdGx5Lg0KPiA+DQo+
-ID4gRml4ZXM6IDBiZDk1NTczNDFiNyAoInJ0dzg4OiBFbmFibGUgODAyLjExYWMgYmVhbWZvcm1l
-ZSBzdXBwb3J0IikNCj4gPiBTaWduZWQtb2ZmLWJ5OiBUenUtRW4gSHVhbmcgPHRlaHVhbmdAcmVh
-bHRlay5jb20+DQo+ID4gU2lnbmVkLW9mZi1ieTogWWFuLUhzdWFuIENodWFuZyA8eWhjaHVhbmdA
-cmVhbHRlay5jb20+DQo+ID4gLS0tDQo+ID4NCj4gPiB2MSAtPiB2Mg0KPiA+ICAgKiBjYW5ub3Qg
-cHV0IGJmZWUtPnJvbGUgPSBSVFdfQkZFRV9OT05FIGFmdGVyIG91dF91bmxvY2sNCj4gPiAgICAg
-cHV0IGl0IGVuY2xvc2VkIGJ5IGVsc2UNCj4gPg0KPiA+ICBkcml2ZXJzL25ldC93aXJlbGVzcy9y
-ZWFsdGVrL3J0dzg4L2JmLmMgfCA4ICsrKystLS0tDQo+ID4gIDEgZmlsZSBjaGFuZ2VkLCA0IGlu
-c2VydGlvbnMoKyksIDQgZGVsZXRpb25zKC0pDQo+ID4NCj4gPiBkaWZmIC0tZ2l0IGEvZHJpdmVy
-cy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9iZi5jDQo+IGIvZHJpdmVycy9uZXQvd2lyZWxl
-c3MvcmVhbHRlay9ydHc4OC9iZi5jDQo+ID4gaW5kZXggZmRhNzcxZDIzZjcxLi4wNzNjNzU0ZTll
-NzAgMTAwNjQ0DQo+ID4gLS0tIGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9i
-Zi5jDQo+ID4gKysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9iZi5jDQo+
-ID4gQEAgLTk5LDEwICs5OCwxMSBAQCB2b2lkIHJ0d19iZl9hc3NvYyhzdHJ1Y3QgcnR3X2RldiAq
-cnR3ZGV2LCBzdHJ1Y3QNCj4gaWVlZTgwMjExX3ZpZiAqdmlmLA0KPiA+ICAgICAgICAgICAgICAg
-ICB9DQo+ID4NCj4gPiAgICAgICAgICAgICAgICAgY2hpcC0+b3BzLT5jb25maWdfYmZlZShydHdk
-ZXYsIHJ0d3ZpZiwgYmZlZSwgdHJ1ZSk7DQo+ID4gKyAgICAgICB9IGVsc2Ugew0KPiA+ICsgICAg
-ICAgICAgICAgICBiZmVlLT5yb2xlID0gUlRXX0JGRUVfTk9ORTsNCj4gPiAgICAgICAgIH0NCj4g
-Pg0KPiANCj4gRG8gd2UgcmVhbGx5IG5lZWQgdGhpcyBgZWxzZWAgc2VjdGlvbj8gVGhlIGJmZWUt
-PnJvbGUgaXMgb25seSBmb3INCj4gYGNvbmZpZ19iZmVlYCwgcmlnaHQ/IElmIHdlIGRvbid0DQo+
-IG5lZWQgdG8gY29uZmlnX2JmZWUgZm9yIFJUV19CRkVFX05PTkUsIHRoZW4gd2UgZG9uJ3QgbmVl
-ZCB0aGUgYGVsc2VgDQo+IHBhcnQuDQo+IA0KDQpSaWdodCwgaXQgbG9va3MgdW5uZWNlc3Nhcnkg
-dG8gc2V0IGl0IHRvIE5PTkUgd2hpbGUgZGlzYXNzb2Mgd2lsbCBzZXQgaXQuDQpTbyBJIHRoaW5r
-IHdlIGNhbiBqdXN0IHNraXAgdGhpcyAiZWxzZSIgc3RhdGVtZW50LCB3aWxsIHNlbmQgYSB2MyBs
-YXRlci4NClRoYW5rcy4NCg0KWWFuLUhzdWFuDQo=
+From: Tzu-En Huang <tehuang@realtek.com>
+
+In associating and configuring beamformee, bfee->role is not
+correctly set before rtw_chip_ops::config_bfee().
+Fix it by setting it correctly.
+
+Signed-off-by: Tzu-En Huang <tehuang@realtek.com>
+Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
+---
+
+v1 -> v2
+  * cannot put bfee->role = RTW_BFEE_NONE after out_unlock
+    put it enclosed by else
+
+v2 -> v3
+  * remove unnecessary 'else' statement
+
+ drivers/net/wireless/realtek/rtw88/bf.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/net/wireless/realtek/rtw88/bf.c b/drivers/net/wireless/realtek/rtw88/bf.c
+index fda771d23f71..b6d1d71f4d30 100644
+--- a/drivers/net/wireless/realtek/rtw88/bf.c
++++ b/drivers/net/wireless/realtek/rtw88/bf.c
+@@ -41,7 +41,6 @@ void rtw_bf_assoc(struct rtw_dev *rtwdev, struct ieee80211_vif *vif,
+ 	struct ieee80211_sta_vht_cap *ic_vht_cap;
+ 	const u8 *bssid = bss_conf->bssid;
+ 	u32 sound_dim;
+-	u8 bfee_role = RTW_BFEE_NONE;
+ 	u8 i;
+ 
+ 	if (!(chip->band & RTW_BAND_5G))
+@@ -67,7 +66,7 @@ void rtw_bf_assoc(struct rtw_dev *rtwdev, struct ieee80211_vif *vif,
+ 		}
+ 
+ 		ether_addr_copy(bfee->mac_addr, bssid);
+-		bfee_role = RTW_BFEE_MU;
++		bfee->role = RTW_BFEE_MU;
+ 		bfee->p_aid = (bssid[5] << 1) | (bssid[4] >> 7);
+ 		bfee->aid = bss_conf->aid;
+ 		bfinfo->bfer_mu_cnt++;
+@@ -85,7 +84,7 @@ void rtw_bf_assoc(struct rtw_dev *rtwdev, struct ieee80211_vif *vif,
+ 		sound_dim >>= IEEE80211_VHT_CAP_SOUNDING_DIMENSIONS_SHIFT;
+ 
+ 		ether_addr_copy(bfee->mac_addr, bssid);
+-		bfee_role = RTW_BFEE_SU;
++		bfee->role = RTW_BFEE_SU;
+ 		bfee->sound_dim = (u8)sound_dim;
+ 		bfee->g_id = 0;
+ 		bfee->p_aid = (bssid[5] << 1) | (bssid[4] >> 7);
+@@ -102,7 +101,6 @@ void rtw_bf_assoc(struct rtw_dev *rtwdev, struct ieee80211_vif *vif,
+ 	}
+ 
+ out_unlock:
+-	bfee->role = bfee_role;
+ 	rcu_read_unlock();
+ }
+ 
+-- 
+2.17.1
+
