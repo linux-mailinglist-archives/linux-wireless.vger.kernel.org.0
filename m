@@ -2,44 +2,40 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D6F11554A0
-	for <lists+linux-wireless@lfdr.de>; Fri,  7 Feb 2020 10:29:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 702D01554A3
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 Feb 2020 10:29:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726935AbgBGJ27 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 7 Feb 2020 04:28:59 -0500
-Received: from rtits2.realtek.com ([211.75.126.72]:44692 "EHLO
+        id S1726991AbgBGJ3A (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 7 Feb 2020 04:29:00 -0500
+Received: from rtits2.realtek.com ([211.75.126.72]:44694 "EHLO
         rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726901AbgBGJ26 (ORCPT
+        with ESMTP id S1726901AbgBGJ3A (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 7 Feb 2020 04:28:58 -0500
+        Fri, 7 Feb 2020 04:29:00 -0500
 Authenticated-By: 
-X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID 0179SrTY018573, This message is accepted by code: ctloc85258
+X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID 0179Srm0018582, This message is accepted by code: ctloc85258
 Received: from mail.realtek.com (RTEXMB06.realtek.com.tw[172.21.6.99])
-        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id 0179SrTY018573
+        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id 0179Srm0018582
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT);
         Fri, 7 Feb 2020 17:28:53 +0800
-Received: from RTEXMB05.realtek.com.tw (172.21.6.98) by
+Received: from RTEXMB06.realtek.com.tw (172.21.6.99) by
  RTEXMB06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Fri, 7 Feb 2020 17:28:52 +0800
-Received: from RTEXMB06.realtek.com.tw (172.21.6.99) by
- RTEXMB05.realtek.com.tw (172.21.6.98) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Fri, 7 Feb 2020 17:28:52 +0800
+ 15.1.1779.2; Fri, 7 Feb 2020 17:28:53 +0800
 Received: from RTITCASV01.realtek.com.tw (172.21.6.18) by
  RTEXMB06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
  (version=TLS1_0, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.1.1779.2
- via Frontend Transport; Fri, 7 Feb 2020 17:28:52 +0800
+ via Frontend Transport; Fri, 7 Feb 2020 17:28:53 +0800
 Received: from localhost.localdomain (172.21.68.128) by
  RTITCASV01.realtek.com.tw (172.21.6.18) with Microsoft SMTP Server id
- 14.3.468.0; Fri, 7 Feb 2020 17:28:51 +0800
+ 14.3.468.0; Fri, 7 Feb 2020 17:28:52 +0800
 From:   <yhchuang@realtek.com>
 To:     <kvalo@codeaurora.org>
 CC:     <linux-wireless@vger.kernel.org>, <briannorris@chromium.org>,
         <pkshih@realtek.com>
-Subject: [PATCH 6/8] rtw88: sar: apply dynamic SAR table to tx power limit
-Date:   Fri, 7 Feb 2020 17:28:42 +0800
-Message-ID: <20200207092844.29175-7-yhchuang@realtek.com>
+Subject: [PATCH 7/8] rtw88: sar: add sar_work to poll if dynamic SAR table is changed
+Date:   Fri, 7 Feb 2020 17:28:43 +0800
+Message-ID: <20200207092844.29175-8-yhchuang@realtek.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200207092844.29175-1-yhchuang@realtek.com>
 References: <20200207092844.29175-1-yhchuang@realtek.com>
@@ -53,184 +49,151 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Ping-Ke Shih <pkshih@realtek.com>
 
-We apply four frequency ranges to calculate TX power, though RWRD defines
-five ranges. RWGS is used to adjust SAR power limit value and define the
-upper bound corresponding to geography.
-
-Some sar_read::ops are added to convert to proper unit, because the units
-and fields of SAR power limit for each customer ID are different.
+RWSI is used to tell driver operating mode is changed. For example, a
+notebook PC can also play as a tablet. Driver detects RWSI in period of
+10 seconds, and reconfigure SAR power limit if RWSI values are changed.
 
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw88/sar.c | 129 +++++++++++++++++++++++
- 1 file changed, 129 insertions(+)
+ drivers/net/wireless/realtek/rtw88/main.c |  4 ++
+ drivers/net/wireless/realtek/rtw88/main.h |  1 +
+ drivers/net/wireless/realtek/rtw88/sar.c  | 56 +++++++++++++++++++++++
+ drivers/net/wireless/realtek/rtw88/sar.h  |  3 ++
+ 4 files changed, 64 insertions(+)
 
+diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
+index 039703f1ccb9..bb90dce0a70d 100644
+--- a/drivers/net/wireless/realtek/rtw88/main.c
++++ b/drivers/net/wireless/realtek/rtw88/main.c
+@@ -892,6 +892,8 @@ int rtw_core_start(struct rtw_dev *rtwdev)
+ 
+ 	ieee80211_queue_delayed_work(rtwdev->hw, &rtwdev->watch_dog_work,
+ 				     RTW_WATCH_DOG_DELAY_TIME);
++	ieee80211_queue_delayed_work(rtwdev->hw, &rtwdev->sar.work,
++				     RTW_SAR_DELAY_TIME);
+ 
+ 	set_bit(RTW_FLAG_RUNNING, rtwdev->flags);
+ 
+@@ -912,6 +914,7 @@ void rtw_core_stop(struct rtw_dev *rtwdev)
+ 	clear_bit(RTW_FLAG_FW_RUNNING, rtwdev->flags);
+ 
+ 	cancel_delayed_work_sync(&rtwdev->watch_dog_work);
++	cancel_delayed_work_sync(&rtwdev->sar.work);
+ 	cancel_delayed_work_sync(&coex->bt_relink_work);
+ 	cancel_delayed_work_sync(&coex->bt_reenable_work);
+ 	cancel_delayed_work_sync(&coex->defreeze_work);
+@@ -1370,6 +1373,7 @@ int rtw_core_init(struct rtw_dev *rtwdev)
+ 		     (unsigned long)rtwdev);
+ 
+ 	INIT_DELAYED_WORK(&rtwdev->watch_dog_work, rtw_watch_dog_work);
++	INIT_DELAYED_WORK(&rtwdev->sar.work, rtw_sar_work);
+ 	INIT_DELAYED_WORK(&coex->bt_relink_work, rtw_coex_bt_relink_work);
+ 	INIT_DELAYED_WORK(&coex->bt_reenable_work, rtw_coex_bt_reenable_work);
+ 	INIT_DELAYED_WORK(&coex->defreeze_work, rtw_coex_defreeze_work);
+diff --git a/drivers/net/wireless/realtek/rtw88/main.h b/drivers/net/wireless/realtek/rtw88/main.h
+index bf5e66930424..ae7a4a080cfa 100644
+--- a/drivers/net/wireless/realtek/rtw88/main.h
++++ b/drivers/net/wireless/realtek/rtw88/main.h
+@@ -1530,6 +1530,7 @@ struct rtw_sar {
+ 	union rtw_sar_rwsi *rwsi;
+ 	union rtw_sar_rwgs *rwgs;
+ 	const struct rtw_sar_read *read;
++	struct delayed_work work;
+ };
+ 
+ struct rtw_hal {
 diff --git a/drivers/net/wireless/realtek/rtw88/sar.c b/drivers/net/wireless/realtek/rtw88/sar.c
-index d81a6511f138..80b8913d1a49 100644
+index 80b8913d1a49..2bc6da4e5fcf 100644
 --- a/drivers/net/wireless/realtek/rtw88/sar.c
 +++ b/drivers/net/wireless/realtek/rtw88/sar.c
-@@ -267,17 +267,101 @@ union rtw_sar_rwgs {
- 	struct rtw_sar_rwgs_rt rt;
- };
- 
-+struct rtw_sar_geo_map {
-+	int idx;	/* index of rwgs.geo[] */
-+	int rd;		/* RTW_REGD_xxx */
-+};
-+
-+static const struct rtw_sar_geo_map geo_map_hp[] = {
-+	{RTW_SAR_RWGS_HP_FCC_IC,   RTW_REGD_FCC},
-+	{RTW_SAR_RWGS_HP_FCC_IC,   RTW_REGD_IC},
-+	{RTW_SAR_RWGS_HP_ETSI_MKK, RTW_REGD_ETSI},
-+	{RTW_SAR_RWGS_HP_ETSI_MKK, RTW_REGD_MKK},
-+	{RTW_SAR_RWGS_HP_WW_KCC,   RTW_REGD_KCC},
-+	{RTW_SAR_RWGS_HP_WW_KCC,   RTW_REGD_WW},
-+};
-+
-+static const struct rtw_sar_geo_map geo_map_rt[] = {
-+	{RTW_SAR_RWGS_RT_FCC, RTW_REGD_FCC},
-+	{RTW_SAR_RWGS_RT_CE,  RTW_REGD_ETSI},
-+	{RTW_SAR_RWGS_RT_MKK, RTW_REGD_MKK},
-+	{RTW_SAR_RWGS_RT_IC,  RTW_REGD_IC},
-+	{RTW_SAR_RWGS_RT_KCC, RTW_REGD_KCC},
-+	{RTW_SAR_RWGS_RT_WW,  RTW_REGD_WW},
-+};
-+
- struct rtw_sar_read {
-+	int (*rwsi_mode)(struct rtw_dev *rtwdev, int path);
-+	int (*rwrd_base_q3)(struct rtw_dev *rtwdev, int mode, int path, int chidx);
-+	int (*rwgs_delta_q3)(struct rtw_dev *rtwdev, int gi, int path, int band);
-+	int (*rwgs_max_q3)(struct rtw_dev *rtwdev, int gi, int band);
-+	const struct rtw_sar_geo_map *gm, *gm_end;
- 	int rwsi_sz;
- 	int rwgs_sz;
- };
- 
-+static int rwsi_mode_hp(struct rtw_dev *rtwdev, int path)
-+{
-+	return rtwdev->sar.rwsi->hp.index[path] - 1;
-+}
-+
-+static int rwrd_base_q3_hp(struct rtw_dev *rtwdev, int mode, int path, int chidx)
-+{
-+	int sar;
-+
-+	sar = rtwdev->sar.rwrd->mode[mode].chain[path].limit[chidx];
-+
-+	return (10 << 3) + (sar << 2);
-+}
-+
-+static int rwgs_delta_q3_hp(struct rtw_dev *rtwdev, int gi, int path, int band)
-+{
-+	return rtwdev->sar.rwgs->hp.geo[gi].band[band].delta[path] << 2;
-+}
-+
-+static int rwgs_max_q3_hp(struct rtw_dev *rtwdev, int gi, int band)
-+{
-+	return (10 << 3) + (rtwdev->sar.rwgs->hp.geo[gi].band[band].max << 2);
-+}
-+
- static const struct rtw_sar_read sar_read_hp = {
-+	.rwsi_mode = rwsi_mode_hp,
-+	.rwrd_base_q3 = rwrd_base_q3_hp,
-+	.rwgs_delta_q3 = rwgs_delta_q3_hp,
-+	.rwgs_max_q3 = rwgs_max_q3_hp,
-+	.gm = geo_map_hp,
-+	.gm_end = geo_map_hp + ARRAY_SIZE(geo_map_hp),
- 	.rwsi_sz = sizeof(struct rtw_sar_rwsi_hp),
- 	.rwgs_sz = sizeof(struct rtw_sar_rwgs_hp),
- };
- 
-+static int rwsi_mode_rt(struct rtw_dev *rtwdev, int path)
-+{
-+	return rtwdev->sar.rwsi->rt.index - 1;
-+}
-+
-+static int rwrd_base_q3_rt(struct rtw_dev *rtwdev, int mode, int path, int chidx)
-+{
-+	return rtwdev->sar.rwrd->mode[mode].chain[path].limit[chidx] << 3;
-+}
-+
-+static int rwgs_delta_q3_rt(struct rtw_dev *rtwdev, int gi, int path, int band)
-+{
-+	return rtwdev->sar.rwgs->rt.geo[gi].band[band].delta << 2;
-+}
-+
-+static int rwgs_max_q3_rt(struct rtw_dev *rtwdev, int gi, int band)
-+{
-+	return rtwdev->sar.rwgs->rt.geo[gi].band[band].max;
-+}
-+
- static const struct rtw_sar_read sar_read_rt = {
-+	.rwsi_mode = rwsi_mode_rt,
-+	.rwrd_base_q3 = rwrd_base_q3_rt,
-+	.rwgs_delta_q3 = rwgs_delta_q3_rt,
-+	.rwgs_max_q3 = rwgs_max_q3_rt,
-+	.gm = geo_map_rt,
-+	.gm_end = geo_map_rt + ARRAY_SIZE(geo_map_rt),
- 	.rwsi_sz = sizeof(struct rtw_sar_rwsi_rt),
- 	.rwgs_sz = sizeof(struct rtw_sar_rwgs_rt),
- };
-@@ -420,6 +504,49 @@ static bool is_valid_rwgs(struct rtw_dev *rtwdev, const struct rtw_sar_rwrd *rwr
- 	return false;
+@@ -547,6 +547,45 @@ static void rtw_sar_apply_dynamic_tables(struct rtw_dev *rtwdev)
+ 	rtwdev->sar.source = RTW_SAR_SOURCE_ACPI_DYNAMIC;
  }
  
-+static void rtw_sar_apply_dynamic_tables(struct rtw_dev *rtwdev)
++static bool rtw_sar_is_rwsi_changed(struct rtw_dev *rtwdev)
 +{
-+	struct rtw_hal *hal = &rtwdev->hal;
-+	const struct rtw_sar_read *r = rtwdev->sar.read;
-+	const struct rtw_sar_geo_map *gm = r->gm;
-+	const struct rtw_sar_geo_map *gm_end = r->gm_end;
-+	int path_num = min_t(int, RTW_SAR_RWRD_CHAIN_NR, hal->rf_path_num);
-+	int path, mode;
-+	int sar, delta, max;
++	union rtw_sar_rwsi *rwsi, *old;
++	bool valid;
++	int len;
 +
-+	for (; gm < gm_end; gm++) {
-+		for (path = 0; path < path_num; path++) {
-+			mode = r->rwsi_mode(rtwdev, path);
++	if (rtwdev->sar.source != RTW_SAR_SOURCE_ACPI_DYNAMIC)
++		return false;
 +
-+			/* 2.4G part */
-+			delta = r->rwgs_delta_q3(rtwdev, gm->idx, path, RTW_SAR_RWGS_2G);
-+			max = r->rwgs_max_q3(rtwdev, gm->idx, RTW_SAR_RWGS_2G);
++	if (!rtwdev->sar.rwrd || !rtwdev->sar.rwsi || !rtwdev->sar.rwgs)
++		return false;
 +
-+			sar = r->rwrd_base_q3(rtwdev, mode, path, RTW_SAR_LMT_CH1_14);
-+			sar = min(sar + delta, max);
-+			rtw_phy_set_tx_power_sar(rtwdev, gm->rd, path, 1, 14, sar);
-+
-+			/* 5G part */
-+			delta = r->rwgs_delta_q3(rtwdev, gm->idx, path, RTW_SAR_RWGS_5G);
-+			max = r->rwgs_max_q3(rtwdev, gm->idx, RTW_SAR_RWGS_5G);
-+
-+			sar = r->rwrd_base_q3(rtwdev, mode, path, RTW_SAR_LMT_CH36_64);
-+			sar = min(sar + delta, max);
-+			rtw_phy_set_tx_power_sar(rtwdev, gm->rd, path, 36, 64, sar);
-+
-+			sar = r->rwrd_base_q3(rtwdev, mode, path, RTW_SAR_LMT_CH100_144);
-+			sar = min(sar + delta, max);
-+			rtw_phy_set_tx_power_sar(rtwdev, gm->rd, path, 100, 144, sar);
-+
-+			sar = r->rwrd_base_q3(rtwdev, mode, path, RTW_SAR_LMT_CH149_165);
-+			sar = min(sar + delta, max);
-+			rtw_phy_set_tx_power_sar(rtwdev, gm->rd, path, 149, 165, sar);
-+		}
++	rwsi = rtw_sar_get_raw_table(rtwdev, ACPI_RWSI_METHOD, &len);
++	if (!rwsi)
++		return false;
++	valid = is_valid_rwsi(rtwdev, rtwdev->sar.rwrd, rwsi, len);
++	if (!valid) {
++		kfree(rwsi);
++		return false;
 +	}
 +
-+	rtwdev->sar.source = RTW_SAR_SOURCE_ACPI_DYNAMIC;
++	if (memcmp(rwsi, rtwdev->sar.rwsi, len) == 0) {
++		kfree(rwsi);
++		return true;
++	}
++
++	old = rtwdev->sar.rwsi;
++	rtwdev->sar.rwsi = rwsi;
++	kfree(old);
++
++	rtw_dbg(rtwdev, RTW_DBG_REGD, "SAR: RWSI is changed\n");
++
++	rtw_sar_apply_dynamic_tables(rtwdev);
++
++	rtw_phy_set_tx_power_level(rtwdev, rtwdev->hal.current_channel);
++
++	return true;
 +}
 +
  static int rtw_sar_load_dynamic_tables(struct rtw_dev *rtwdev)
  {
  	struct rtw_sar_rwrd *rwrd;
-@@ -457,6 +584,8 @@ static int rtw_sar_load_dynamic_tables(struct rtw_dev *rtwdev)
- 	rtwdev->sar.rwsi = rwsi;
- 	rtwdev->sar.rwgs = rwgs;
+@@ -605,6 +644,11 @@ static int rtw_sar_load_static_tables(struct rtw_dev *rtwdev)
+ 	return -ENOENT;
+ }
  
-+	rtw_sar_apply_dynamic_tables(rtwdev);
++static bool rtw_sar_is_rwsi_changed(struct rtw_dev *rtwdev)
++{
++	return false;
++}
 +
- 	rtw_dbg(rtwdev, RTW_DBG_REGD, "SAR: RWRD/RWSI/RWGS is adopted\n");
+ static int rtw_sar_load_dynamic_tables(struct rtw_dev *rtwdev)
+ {
+ 	return -ENOENT;
+@@ -628,3 +672,15 @@ void rtw_sar_release_table(struct rtw_dev *rtwdev)
+ 	kfree(rtwdev->sar.rwsi);
+ 	kfree(rtwdev->sar.rwgs);
+ }
++
++void rtw_sar_work(struct work_struct *work)
++{
++	struct rtw_dev *rtwdev = container_of(work, struct rtw_dev,
++					      sar.work.work);
++
++	if (!rtw_sar_is_rwsi_changed(rtwdev))
++		return;
++
++	ieee80211_queue_delayed_work(rtwdev->hw, &rtwdev->sar.work,
++				     RTW_SAR_DELAY_TIME);
++}
+diff --git a/drivers/net/wireless/realtek/rtw88/sar.h b/drivers/net/wireless/realtek/rtw88/sar.h
+index 16ceae5bf79e..154f7bce6759 100644
+--- a/drivers/net/wireless/realtek/rtw88/sar.h
++++ b/drivers/net/wireless/realtek/rtw88/sar.h
+@@ -7,5 +7,8 @@
  
- 	return 0;
+ void rtw_sar_load_table(struct rtw_dev *rtwdev);
+ void rtw_sar_release_table(struct rtw_dev *rtwdev);
++void rtw_sar_work(struct work_struct *work);
++
++#define RTW_SAR_DELAY_TIME	(10 * HZ)
+ 
+ #endif
 -- 
 2.17.1
 
