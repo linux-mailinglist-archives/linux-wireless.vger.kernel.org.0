@@ -2,72 +2,76 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 880A4156013
-	for <lists+linux-wireless@lfdr.de>; Fri,  7 Feb 2020 21:44:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 05717156031
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 Feb 2020 21:53:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727455AbgBGUoQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 7 Feb 2020 15:44:16 -0500
-Received: from mail-ot1-f67.google.com ([209.85.210.67]:47023 "EHLO
-        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727032AbgBGUoK (ORCPT
+        id S1727068AbgBGUxk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 7 Feb 2020 15:53:40 -0500
+Received: from mail-qt1-f195.google.com ([209.85.160.195]:43916 "EHLO
+        mail-qt1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726947AbgBGUxk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 7 Feb 2020 15:44:10 -0500
-Received: by mail-ot1-f67.google.com with SMTP id g64so553693otb.13
-        for <linux-wireless@vger.kernel.org>; Fri, 07 Feb 2020 12:44:10 -0800 (PST)
+        Fri, 7 Feb 2020 15:53:40 -0500
+Received: by mail-qt1-f195.google.com with SMTP id d18so420074qtj.10
+        for <linux-wireless@vger.kernel.org>; Fri, 07 Feb 2020 12:53:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=8cDRXBFOpE9J1p6S5H+HXSQg9q3m7pUJ3iUuQ5MPcDc=;
-        b=WJgFJ9PR0yBQ+ciD08Pby60OVZzn3dTgtieZ17slfRQssKmPnwQmAwZPgDIpR6heck
-         dDY9m0nAiR73dL1CtCDLlqWI9lV6barO9i6phYUUcmMyI9lhyUunotwwGjtLNjZZXHps
-         B+ZJy7kS8IDHqb+LatDXLkBcGkPTiMku+kX9Fb92ZmFsnK1n3liOHkc4TmrSz2VBzqpm
-         gOXxQUuwBna/l8aq9nu864h1RGE/T5vMQdJwoV4IagKfmqrsTX7n4WpDLnLJobosvK0X
-         9Z7fBUirFx02ZREq+PBFhuGxFcksAi/eOnsjoHpvtfcuXe3k+tw0qtyYWnKvHtkX+Drl
-         CMWw==
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=pujW8/4AJugw2pHHXAsw2ZhP4vwZh/wLfhnKnw780uI=;
+        b=I706I18OkWKTVuuNLujRuTmyOd//DPAixq4EJgfZqXCXYdQxw70L1KiyDJTCtw4OAe
+         JePHgIvv715JZVwXEbEwezkw/duVpJH3zJ63xbN6ZkqGpitk196ZmIst/qp5bN1Zthjf
+         8dKQhgZagxZtXJBz4vHdR1x96gSPe34rsbZzw=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=8cDRXBFOpE9J1p6S5H+HXSQg9q3m7pUJ3iUuQ5MPcDc=;
-        b=TKJDOilqTxDTGLuRarPxrYMK/5g4DSU+C7rNBBnUtMTev2X2puGcAbjxEjTc8eKK1O
-         FLAkowhuc6VckfabRD9eZgeqShqGUf3M2X8n754js8V+n1v8EF5AvK26RE58vwyAJVzT
-         ZW9CMKAKxaJocCVdeTiin0pQs3Tw1epVN2FLeys5dUoF6y7RllDq1GEltLq9cBpDEyhi
-         UQwFskIHe+ozWaeHVg1oFmqNwbWK3+ww0vRX3NVE5kLFTkz0HQi0rWOdth+M7nEzyejH
-         X6xVawqmQPlNXdZDVYeZ+XTZx7ie3kZGS0km9V09l4A8rDTWVKauH1PT47ES8B7qtMX4
-         DO+g==
-X-Gm-Message-State: APjAAAWmP38i2OLo3EG/Lmpw0SRBAEWvdStipuc2L7K+ymVr/2vHX9rg
-        O24GjSI3Mb7L0YtjXlUMwUc+RTcoaqOqrKzdPB6bGtIlxh5J4Q==
-X-Google-Smtp-Source: APXvYqxZ0BHxezvYatUCwR5ujJY2IO6fZCUlpHww8WEnDHAAAY+0VvtiMdEe6JnWZWwDRH8AP8uVvx3q0Y+IviYPdhQ=
-X-Received: by 2002:a9d:7305:: with SMTP id e5mr948882otk.64.1581108248790;
- Fri, 07 Feb 2020 12:44:08 -0800 (PST)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=pujW8/4AJugw2pHHXAsw2ZhP4vwZh/wLfhnKnw780uI=;
+        b=rLGgouhGg3lo1LNAZcrllkx6zJId7muaDGjqOpArV9HlNKTMi+ZQSiqxKHUU27nUTX
+         wIduaCWPoO376ZG1Aslqz/u8BKfL9+TXP6wnQQkhcKLOF6OocmHD5PZisGOX7JWO9Eed
+         LveV753470Xj+4VrF9vruUjqtCOuaTzkkTjrAs71Dvb1SQ0wTyoUuX1FD9laM8hEutx6
+         mzpWREXPUi1KiuFura5+aA+2+Kyqe9U93K9aiRxz2lGilpcJW17qW8YB2ZHlSib9E/xo
+         3iu5fsZ6+hRYINemQ/CnednvnB2qGWKB2rPOa9etzTAmDvW98qR2l1NdnH18ZNjwdSJc
+         nIEQ==
+X-Gm-Message-State: APjAAAXtQSxiZlcCC8WJb26xuu870Bw0u9k8383LdThmazD93+crjNHv
+        bt7ZRvlIwUSDyzXRviSbvKwHMrB9G4A=
+X-Google-Smtp-Source: APXvYqwMHeounXATSkB8Xyrx5ykgrYJvl1N0YDbYnw+cv45Nod2s4zHLa4tRiuLDucWOORHUyaxsTQ==
+X-Received: by 2002:aed:2584:: with SMTP id x4mr200295qtc.343.1581108819282;
+        Fri, 07 Feb 2020 12:53:39 -0800 (PST)
+Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com. [209.85.222.171])
+        by smtp.gmail.com with ESMTPSA id a141sm1262331qkb.50.2020.02.07.12.53.38
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 07 Feb 2020 12:53:38 -0800 (PST)
+Received: by mail-qk1-f171.google.com with SMTP id x1so427891qkl.12
+        for <linux-wireless@vger.kernel.org>; Fri, 07 Feb 2020 12:53:38 -0800 (PST)
+X-Received: by 2002:a05:620a:5b:: with SMTP id t27mr698902qkt.221.1581108817962;
+ Fri, 07 Feb 2020 12:53:37 -0800 (PST)
 MIME-Version: 1.0
-Received: by 2002:a4a:d508:0:0:0:0:0 with HTTP; Fri, 7 Feb 2020 12:44:08 -0800 (PST)
-Reply-To: auch197722@gmail.com
-From:   "Mr. Theophilus Odadudu" <cristinamedina0010@gmail.com>
-Date:   Fri, 7 Feb 2020 15:44:08 -0500
-Message-ID: <CAPNvSTj-8q7w5QPmnH26+_3xCKjEWyE+9xcb8QyQs9Xie+iYgg@mail.gmail.com>
-Subject: LETTER OF INQUIRY
-To:     undisclosed-recipients:;
+References: <20200204120614.28861-1-yhchuang@realtek.com> <CAB4CAwdFez_WbRQb2jZQtqspSkO5ujL31ZLt4XshNcWiSqHByA@mail.gmail.com>
+ <CAMrEMU_KJbwAK-onH0sRUgUPxDuZtD5bPJN6XmF=a9NqpfeJ+g@mail.gmail.com>
+ <CA+ASDXPHWNN+TvrJFi_6w+ep_TBtLJ0refKenNb0tc8Vs+YjgQ@mail.gmail.com> <CAMrEMU93LScySw4mpidAC5pVHV_NOShP1_GMMsvsAk1QBhdJjQ@mail.gmail.com>
+In-Reply-To: <CAMrEMU93LScySw4mpidAC5pVHV_NOShP1_GMMsvsAk1QBhdJjQ@mail.gmail.com>
+From:   Brian Norris <briannorris@chromium.org>
+Date:   Fri, 7 Feb 2020 12:53:26 -0800
+X-Gmail-Original-Message-ID: <CA+ASDXPHXFquF2iXvdxZXhkkLPndkACgenLJwMR_9ON7zZZM3w@mail.gmail.com>
+Message-ID: <CA+ASDXPHXFquF2iXvdxZXhkkLPndkACgenLJwMR_9ON7zZZM3w@mail.gmail.com>
+Subject: Re: [PATCH] rtw88: disable TX-AMSDU on 2.4G band
+To:     Justin Capella <justincapella@gmail.com>
+Cc:     Chris Chiu <chiu@endlessm.com>, Tony Chuang <yhchuang@realtek.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Good Day,
+On Fri, Feb 7, 2020 at 12:48 PM Justin Capella <justincapella@gmail.com> wrote:
+> I understand, I'm suggesting disable by default but option to re-enable
 
-I work as a clerk in a Bank here in Nigeria, I have a very
-confidential Business Proposition for you. There is a said amount of
-money floating in the bank unclaimed, belonging to the bank Foreign
-customer who die with his family in the Ethiopian Airline crash of
-March 11, 2019.
+Ah, OK. Seems reasonable, I suppose, although I don't recall Kalle
+having a particularly-high opinion of module parameters for tweaking
+core 802.11 protocol behaviors.
 
-I seek your good collaboration to move the fund for our benefit. we
-have agreed that 40% be yours once you help claim.
-
-Do get back to with 1) Your Full Name: (2) Residential Address: (3)
-Phone, Mobile  (4) Scan Copy of Your ID. to apply for claims of the
-funds.
-
-Regards
-Theophilus Odadudu
+Brian
