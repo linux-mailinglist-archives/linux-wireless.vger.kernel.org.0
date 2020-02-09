@@ -2,84 +2,100 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 39FFC156AD5
-	for <lists+linux-wireless@lfdr.de>; Sun,  9 Feb 2020 15:16:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A928156AF9
+	for <lists+linux-wireless@lfdr.de>; Sun,  9 Feb 2020 16:28:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727784AbgBIOP1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 9 Feb 2020 09:15:27 -0500
-Received: from mail.kernel.org ([198.145.29.99]:36674 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727473AbgBIOP1 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 9 Feb 2020 09:15:27 -0500
-Received: from lore-desk-wlan.lan (unknown [151.48.137.85])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id BD7DF20733;
-        Sun,  9 Feb 2020 14:15:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1581257726;
-        bh=ozCZ5IDcxCbHd4n50GpxOKbRUcjWGnwEjNRhKCdtR24=;
-        h=From:To:Cc:Subject:Date:From;
-        b=GK/4FPg53hFJbtIOKRLOlG9wjxpoeRNdUxUQ0lCZ9OiZdIA6AKHQKFZdaQq+x3vqU
-         9P2nP1g0aVaPKVs7STpfA9Em3JT1MdtYhXZkocJGiq+7B51Kv8rDsV9bbZA/WEG5Zx
-         rEy9eSQgwPu+WCBbat9lvQoy8Fj/JVoBGB+ivjTE=
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org
-Subject: [PATCH] mt76: mt7615: rely on mt76_queues_read for mt7622
-Date:   Sun,  9 Feb 2020 15:15:08 +0100
-Message-Id: <4ac612059543771e116c0cc9b485d61b8c2f75e0.1581257677.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.24.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        id S1727707AbgBIP23 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 9 Feb 2020 10:28:29 -0500
+Received: from mail-wm1-f67.google.com ([209.85.128.67]:34550 "EHLO
+        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727682AbgBIP23 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 9 Feb 2020 10:28:29 -0500
+Received: by mail-wm1-f67.google.com with SMTP id s144so6634753wme.1
+        for <linux-wireless@vger.kernel.org>; Sun, 09 Feb 2020 07:28:27 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=fCWcqQrunjHI+5ZvOjzOZlCLgsAwORDxtjRMmMFFvTU=;
+        b=HyDJPijbnlqygMIurWakFA866oVzQ4lKEhVEiXmFwCyWzU+LyPjngEqz7N3It6dwfT
+         vPkmOAgboUlP5S4UGG16Wq6E5OUUef+g6ea+/PnfJD6y2lihpKHjMKcFoW+1+GMSlrJr
+         9GNWPSdiB1AKaB4TMqXKKjyzN0blaGgwFoHboGSeERKAZJCsBJbE9PaMIuK2bHwYZTPl
+         GUT1/GL4qfrtJxmsd8Zs/fEgDQsytJZGcvOW4rAcBr6j9XcDZ8cxEuVPll4Kcrx88RQc
+         lZI0J0rarMcLjVwt1wN89elSdI75/WM9aiPEUnh3Hc+GdtyY3S5nLzcAs+6X/hXVY3gr
+         aWqQ==
+X-Gm-Message-State: APjAAAX5WcRbNm2kpL0smfR5KsxgOg/gnwvODPQ3rUMdN8iYMmopOSvg
+        4mpp4FRR4/KJHhyaK3waOaADVQ9q
+X-Google-Smtp-Source: APXvYqyDj53lBYZGNJ6Hgb+65R7FrEURauALULkx4LR7WAdZOmtp/ZYC3EL0vCM9J5QO9wFzrejquw==
+X-Received: by 2002:a1c:545d:: with SMTP id p29mr10791703wmi.91.1581262106956;
+        Sun, 09 Feb 2020 07:28:26 -0800 (PST)
+Received: from localhost.localdomain ([87.71.82.22])
+        by smtp.gmail.com with ESMTPSA id g128sm11454468wme.47.2020.02.09.07.28.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 09 Feb 2020 07:28:26 -0800 (PST)
+From:   Shay Bar <shay.bar@celeno.com>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless@vger.kernel.org, shay.bar@celeno.com,
+        aviad.brikman@celeno.com
+Subject: [PATCH] [PATCH] mac80211: fix wrong 160/80+80 Mhz setting
+Date:   Sun,  9 Feb 2020 17:28:18 +0200
+Message-Id: <20200209152818.4630-1-shay.bar@celeno.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-As previous devices, mt7622 relies on multiple hw queues while for
-mt7615 we have just on per band hw queue and the mcu demux the traffic
-according to the packet AC. In order to dump all configured hw queues,
-rely on mt76_queues_read for mt7622 in mt7615 debugfs
+Before this patch, STA's would set new width of 160/80+80 Mhz based on AP capability only.
+This is wrong because STA may not support > 80Mhz BW.
+Fix is to verify STA has 160/80+80 Mhz capability before increasing its width to > 80Mhz.
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Signed-off-by: Aviad Brikman <aviad.brikman@celeno.com>
+Signed-off-by: Shay Bar <shay.bar@celeno.com>
 ---
- drivers/net/wireless/mediatek/mt76/debugfs.c        | 2 +-
- drivers/net/wireless/mediatek/mt76/mt7615/debugfs.c | 8 ++++++--
- 2 files changed, 7 insertions(+), 3 deletions(-)
+ net/mac80211/util.c | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/debugfs.c b/drivers/net/wireless/mediatek/mt76/debugfs.c
-index 2567c5d6945f..d2202acb8dc6 100644
---- a/drivers/net/wireless/mediatek/mt76/debugfs.c
-+++ b/drivers/net/wireless/mediatek/mt76/debugfs.c
-@@ -30,7 +30,7 @@ int mt76_queues_read(struct seq_file *s, void *data)
- 	struct mt76_dev *dev = dev_get_drvdata(s->private);
- 	int i;
+diff --git a/net/mac80211/util.c b/net/mac80211/util.c
+index 32a7a53833c0..950fa4741d98 100644
+--- a/net/mac80211/util.c
++++ b/net/mac80211/util.c
+@@ -2987,10 +2987,22 @@ bool ieee80211_chandef_vht_oper(struct ieee80211_hw *hw,
+ 	int cf0, cf1;
+ 	int ccfs0, ccfs1, ccfs2;
+ 	int ccf0, ccf1;
++	u32 vht_cap;
++	bool support_80_80 = false;
++	bool support_160 = false;
  
--	for (i = 0; i < __MT_TXQ_MAX; i++) {
-+	for (i = 0; i < ARRAY_SIZE(dev->q_tx); i++) {
- 		struct mt76_sw_queue *q = &dev->q_tx[i];
+ 	if (!oper || !htop)
+ 		return false;
  
- 		if (!q->q)
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7615/debugfs.c
-index 7d8e53ac51ef..b4d0795154e3 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/debugfs.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/debugfs.c
-@@ -264,8 +264,12 @@ int mt7615_init_debugfs(struct mt7615_dev *dev)
- 	if (!dir)
- 		return -ENOMEM;
++	vht_cap = hw->wiphy->bands[chandef->chan->band]->vht_cap.cap;
++	support_160 = (vht_cap & (IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_MASK |
++				  IEEE80211_VHT_CAP_EXT_NSS_BW_MASK));
++	support_80_80 = ((vht_cap &
++			 IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160_80PLUS80MHZ) ||
++			(vht_cap & IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160MHZ &&
++			 vht_cap & IEEE80211_VHT_CAP_EXT_NSS_BW_MASK) ||
++			((vht_cap & IEEE80211_VHT_CAP_EXT_NSS_BW_MASK) >>
++				    IEEE80211_VHT_CAP_EXT_NSS_BW_SHIFT > 1));
+ 	ccfs0 = oper->center_freq_seg0_idx;
+ 	ccfs1 = oper->center_freq_seg1_idx;
+ 	ccfs2 = (le16_to_cpu(htop->operation_mode) &
+@@ -3018,10 +3030,10 @@ bool ieee80211_chandef_vht_oper(struct ieee80211_hw *hw,
+ 			unsigned int diff;
  
--	debugfs_create_devm_seqfile(dev->mt76.dev, "queues", dir,
--				    mt7615_queues_read);
-+	if (is_mt7615(&dev->mt76))
-+		debugfs_create_devm_seqfile(dev->mt76.dev, "queues", dir,
-+					    mt7615_queues_read);
-+	else
-+		debugfs_create_devm_seqfile(dev->mt76.dev, "queues", dir,
-+					    mt76_queues_read);
- 	debugfs_create_devm_seqfile(dev->mt76.dev, "acq", dir,
- 				    mt7615_queues_acq);
- 	debugfs_create_file("ampdu_stat", 0400, dir, dev, &fops_ampdu_stat);
+ 			diff = abs(ccf1 - ccf0);
+-			if (diff == 8) {
++			if ((diff == 8) && support_160) {
+ 				new.width = NL80211_CHAN_WIDTH_160;
+ 				new.center_freq1 = cf1;
+-			} else if (diff > 8) {
++			} else if ((diff > 8) && support_80_80) {
+ 				new.width = NL80211_CHAN_WIDTH_80P80;
+ 				new.center_freq2 = cf1;
+ 			}
 -- 
-2.24.1
+2.17.1
 
