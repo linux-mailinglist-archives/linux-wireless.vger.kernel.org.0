@@ -2,108 +2,80 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F33321570C0
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Feb 2020 09:22:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 39DDC157203
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Feb 2020 10:46:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727447AbgBJIWz convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 10 Feb 2020 03:22:55 -0500
-Received: from smail.rz.tu-ilmenau.de ([141.24.186.67]:51576 "EHLO
+        id S1727079AbgBJJqY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 10 Feb 2020 04:46:24 -0500
+Received: from smail.rz.tu-ilmenau.de ([141.24.186.67]:52011 "EHLO
         smail.rz.tu-ilmenau.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727029AbgBJIWz (ORCPT
+        with ESMTP id S1726950AbgBJJqY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 10 Feb 2020 03:22:55 -0500
-Received: from [192.168.178.26] (unknown [84.174.247.41])
+        Mon, 10 Feb 2020 04:46:24 -0500
+Received: from isengard.fritz.box (unknown [84.174.247.41])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by smail.rz.tu-ilmenau.de (Postfix) with ESMTPSA id D34A2580073;
-        Mon, 10 Feb 2020 09:22:52 +0100 (CET)
-Subject: Re: [PATCH 0/8] iw: parse measurement pilot and fix scan bugs
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org
-References: <20200209165902.44110-1-markus.theil@tu-ilmenau.de>
- <b5ac3a1aaa57cee8df1276d3a07d0f6f3f2ff207.camel@sipsolutions.net>
+        by smail.rz.tu-ilmenau.de (Postfix) with ESMTPSA id C2372580073;
+        Mon, 10 Feb 2020 10:46:22 +0100 (CET)
 From:   Markus Theil <markus.theil@tu-ilmenau.de>
-Autocrypt: addr=markus.theil@tu-ilmenau.de; keydata=
- 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
- sGZPq8zmOtvOyZtafA==
-Message-ID: <4ae7d5c8-5e14-0cfc-e72a-82955d8e11e7@tu-ilmenau.de>
-Date:   Mon, 10 Feb 2020 09:22:52 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.2
+To:     johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org,
+        Markus Theil <markus.theil@tu-ilmenau.de>
+Subject: [PATCH 1/2] iw: scan: fix endless loop in print_measurement_pilot_tx
+Date:   Mon, 10 Feb 2020 10:46:18 +0100
+Message-Id: <20200210094619.14416-1-markus.theil@tu-ilmenau.de>
+X-Mailer: git-send-email 2.25.0
 MIME-Version: 1.0
-In-Reply-To: <b5ac3a1aaa57cee8df1276d3a07d0f6f3f2ff207.camel@sipsolutions.net>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8BIT
-Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2/10/20 9:11 AM, Johannes Berg wrote:
-> On Sun, 2020-02-09 at 17:58 +0100, Markus Theil wrote:
->> this
->> series fixes several bugs found while fuzzing the scan code of iw.
-> Nice, can you describe the setup you used for this?
->
-> johannes
->
-I used clang with its sanitizers (-fsanitize=address,fuzzer,undefined).
-A file named fuzz_scan.c is used to call print_ies() with random input.
-Some beacon frame TLVs were used as seed corpus for libfuzzer. I can also
-post my small patches doing this, but the current integration into the Makefile can
-be called "ad-hoc" at best :).
+---
+ scan.c | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
-Markus
-
-fuzz_scan.c:
-
-#include "iw.h"
-
-int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
-	print_ies((unsigned char *)data, size, size % 2, PRINT_SCAN);
-	return 0;
-}
-
+diff --git a/scan.c b/scan.c
+index 98c5c10..a5beb0e 100644
+--- a/scan.c
++++ b/scan.c
+@@ -1548,6 +1548,7 @@ static void print_measurement_pilot_tx(const uint8_t type, uint8_t len,
+ 		++p;
+ 		uint8_t len = *p;
+ 		++p;
++		const uint8_t *end = p + len;
+ 
+ 		len_remaining -= 2;
+ 
+@@ -1557,18 +1558,21 @@ static void print_measurement_pilot_tx(const uint8_t type, uint8_t len,
+ 			return;
+ 		}
+ 
+-		printf("\t\t * vendor specific: OUI %.2x:%.2x:%.2x, data:",
+-			p[0], p[1], p[2]);
+-		len_remaining -= 3;
+-
+-		if (len > len_remaining) {
++		if (len < 3 || len > len_remaining) {
+ 			printf(" <Parse error, element too short>\n");
+ 			return;
+ 		}
+ 
+-		while (p < p + len)
++		printf("\t\t * vendor specific: OUI %.2x:%.2x:%.2x, data:",
++			p[0], p[1], p[2]);
++		/* add only two here and use ++p in while loop */
++		p += 2;
++
++		while (++p < end)
+ 			printf(" %.2x", *p);
+ 		printf("\n");
++
++		len_remaining -= len;
+ 	}
+ }
+ 
+-- 
+2.25.0
 
