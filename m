@@ -2,68 +2,85 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 10089157B93
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Feb 2020 14:31:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AA141157C25
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Feb 2020 14:35:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731372AbgBJNbC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 10 Feb 2020 08:31:02 -0500
-Received: from mail26.static.mailgun.info ([104.130.122.26]:14749 "EHLO
-        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727755AbgBJNbB (ORCPT
+        id S1728514AbgBJNfT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 10 Feb 2020 08:35:19 -0500
+Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:26425 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1728003AbgBJNfT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 10 Feb 2020 08:31:01 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1581341461; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=hs8RL5kGM5mjbd5UTslrOKZYxO/QqrUB5kXqpBmMwD8=; b=iThmZ1EXaCOXaLJnqZ8zBDB9/ZEymaqt8EQgKlm7t6bKFQyuDv3hXyJb1zJv8lZE2G4ndL5A
- n8/mpsSiZwQLj62NIHKz4Gx1E++Sv598qeyfXhX2RJfHr4RVD3XldWKaGyMX7qaYogz3VoQr
- Fq7V8B6jxCiSG4bmQFLoun5ZdYw=
-X-Mailgun-Sending-Ip: 104.130.122.26
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e415b10.7fdd1c17e228-smtp-out-n02;
- Mon, 10 Feb 2020 13:30:56 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 5B15CC447A4; Mon, 10 Feb 2020 13:30:55 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from tynnyri.adurom.net (tynnyri.adurom.net [51.15.11.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 2A78AC4479C;
-        Mon, 10 Feb 2020 13:30:52 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 2A78AC4479C
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Lorenzo Bianconi <lorenzo@kernel.org>
-Cc:     nbd@nbd.name, lorenzo.bianconi@redhat.com,
-        linux-wireless@vger.kernel.org, sean.wang@mediatek.com
-Subject: Re: [PATCH] mt76: mt76u: extend RX scatter gather number
-References: <42e3b88414f473af278b4584b2f1d76b06ddd82a.1581328358.git.lorenzo@kernel.org>
-Date:   Mon, 10 Feb 2020 15:30:50 +0200
-In-Reply-To: <42e3b88414f473af278b4584b2f1d76b06ddd82a.1581328358.git.lorenzo@kernel.org>
-        (Lorenzo Bianconi's message of "Mon, 10 Feb 2020 11:34:00 +0100")
-Message-ID: <87pnemwovp.fsf@tynnyri.adurom.net>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        Mon, 10 Feb 2020 08:35:19 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1581341718;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=Li8O8E0AA9IarmXHuPcayPz2Oq6NZuJ7v3a3dOOjY+E=;
+        b=UsLUjtEzwK6xJBkghtO8kt8p3+WluZcM7atMll1WfuP1bWWEh8M0WciFXr01EBMKpUNhio
+        ZYz+5b4R0u68S+2Gkdl00QpjJDGNPnrZfGVcA1hoATz8hY6adQXqaG4z8GWNwAQQCTOA70
+        DCdWOxEeQQ2uEFN3q2CvVHtog50tTmo=
+Received: from mail-vk1-f200.google.com (mail-vk1-f200.google.com
+ [209.85.221.200]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-361-wIcCJDDyP-uk6woAA4sKqw-1; Mon, 10 Feb 2020 08:35:13 -0500
+X-MC-Unique: wIcCJDDyP-uk6woAA4sKqw-1
+Received: by mail-vk1-f200.google.com with SMTP id a20so2193681vkm.22
+        for <linux-wireless@vger.kernel.org>; Mon, 10 Feb 2020 05:35:13 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Li8O8E0AA9IarmXHuPcayPz2Oq6NZuJ7v3a3dOOjY+E=;
+        b=R/gXUYGXbQ10Y9BXtsREvHRtFWf2SWvZ8PstO2HCuitU121yxfM6f9q7ntvnY+b3v0
+         prtyUbOfaxEZ1ktDfmW9IyHm/NYgM7VLN31AeFOPG/JYdCH+8AziuumBpfA3kmr0MwJV
+         0Jqut+8dC3vSaYEvipn0B3SizKLaLx90l4pgaMaCnaEAS0jsI+OqneDeuYldi0X7TDfR
+         l/7ifU9OYnWSofnxrxTxw2iwwQSuj1KHkYbf1r+iLLRa9V3xe/s/hTVxW/dyfUaDZaqt
+         sQsOKQ4yuyCPEAHEI0cznzrYHBp4vArHPOhFNz2UAx0w/4NGWHZHpkd6wKFbE4yK3Wyw
+         o8Uw==
+X-Gm-Message-State: APjAAAVSaDioMg8os7NoCUEex4BaLpxXr27hFjZC5j9Udc6yfl0sis0c
+        KmmC3HyI73hXyZJFCaVyxf2HschvqGn3KchtBHusonU/mOVCkaNVBZ8JPyaDxRVV+op067wXdfe
+        PK+eJAYaCk+/lyc9dSlk+Gk9UYHY2LPk4aN8cxQWsWvY=
+X-Received: by 2002:a67:af15:: with SMTP id v21mr6125325vsl.161.1581341713014;
+        Mon, 10 Feb 2020 05:35:13 -0800 (PST)
+X-Google-Smtp-Source: APXvYqwunxTs+H78SxNAbJ55o3IgCpw98jkDXvEjQAvQ7nCgWVAjJUEWS6LVwBRLGbpaJq65gzfsfFi3XzWbEdyun2E=
+X-Received: by 2002:a67:af15:: with SMTP id v21mr6125315vsl.161.1581341712802;
+ Mon, 10 Feb 2020 05:35:12 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <42e3b88414f473af278b4584b2f1d76b06ddd82a.1581328358.git.lorenzo@kernel.org>
+ <87pnemwovp.fsf@tynnyri.adurom.net>
+In-Reply-To: <87pnemwovp.fsf@tynnyri.adurom.net>
+From:   Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+Date:   Mon, 10 Feb 2020 14:35:01 +0100
+Message-ID: <CAJ0CqmWhmUiv5O_eHckMnY0rFcmHMBit+QOaj09dt1VMK87Bug@mail.gmail.com>
+Subject: Re: [PATCH] mt76: mt76u: extend RX scatter gather number
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Lorenzo Bianconi <lorenzo@kernel.org>,
+        Felix Fietkau <nbd@nbd.name>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Sean Wang <sean.wang@mediatek.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Lorenzo Bianconi <lorenzo@kernel.org> writes:
-
-> From: Sean Wang <sean.wang@mediatek.com>
 >
-> From: Sean Wang <sean.wang@mediatek.com>
+> Lorenzo Bianconi <lorenzo@kernel.org> writes:
+>
+> > From: Sean Wang <sean.wang@mediatek.com>
+> >
+> > From: Sean Wang <sean.wang@mediatek.com>
+>
+> The From line is twice.
 
-The From line is twice.
+Yes, I figured it out later. Sorry for the noise.
 
--- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Regards,
+Lorenzo
+
+>
+> --
+> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+>
+
