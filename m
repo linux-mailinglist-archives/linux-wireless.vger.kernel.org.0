@@ -2,95 +2,109 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 266561591CB
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Feb 2020 15:24:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 46A31159212
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Feb 2020 15:38:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730150AbgBKOYh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 11 Feb 2020 09:24:37 -0500
-Received: from mail26.static.mailgun.info ([104.130.122.26]:16126 "EHLO
-        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1730089AbgBKOYh (ORCPT
+        id S1728821AbgBKOib (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 11 Feb 2020 09:38:31 -0500
+Received: from dvalin.narfation.org ([213.160.73.56]:46910 "EHLO
+        dvalin.narfation.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728456AbgBKOia (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 11 Feb 2020 09:24:37 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1581431076; h=Date: Message-Id: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=q1NnbfY5scviQ81WhVjeiiyH3xhw4C/A+lxpopfw2dM=;
- b=bjYj1LpLfJuMWFJLA7nlLRQ+rF/a3xlz2ZnLZsrZskAk6l2cYax2uWxqWfvOGmxh5BvCrhXA
- kU9+iIeAe+q20UHhYFNjz6kZDud74illPLgJNCTLR35CYoBonRS9ffrB6B02Tmp78Ef4F/iQ
- QcH903u4GpDVR80E9Qv9/LxNF3o=
-X-Mailgun-Sending-Ip: 104.130.122.26
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e42b91f.7f1e67052298-smtp-out-n03;
- Tue, 11 Feb 2020 14:24:31 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 2B510C4479D; Tue, 11 Feb 2020 14:24:31 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
-        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id E7677C43383;
-        Tue, 11 Feb 2020 14:24:28 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org E7677C43383
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        Tue, 11 Feb 2020 09:38:30 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
+        s=20121; t=1581431909;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=alXXpeg4h5DCs5MS4faLwqKOeDYEwnExF55kCS7NnCY=;
+        b=u9pCI2r2fBeEte66ZBga6j6KbJpXU5AO8JnmXEcL72awgFVDH+rx63ZXUrB1jrZN/3hnAw
+        gGD9WO5wSEprT/k4izmp0/U4UAWCYuxhIxBrMi+w1qXsbMDqfBtP+MX49jHUvz/FsVzgIs
+        GsjZzcXz7vMgNnOfW6HL0FAaeTzqVJg=
+From:   Sven Eckelmann <sven@narfation.org>
+To:     ath11k@lists.infradead.org
+Cc:     Kalle Valo <kvalo@codeaurora.org>, John Crispin <john@phrozen.org>,
+        linux-wireless@vger.kernel.org
+Subject: Re: [RESEND V2 3/4] ath11k: switch to using ieee80211_tx_status_ext()
+Date:   Tue, 11 Feb 2020 15:38:22 +0100
+Message-ID: <4744821.iAptAJfnkX@bentobox>
+In-Reply-To: <87h7zxxob7.fsf@kamboji.qca.qualcomm.com>
+References: <20200204151135.25302-1-john@phrozen.org> <20200204151135.25302-3-john@phrozen.org> <87h7zxxob7.fsf@kamboji.qca.qualcomm.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] ath11k: Silence clang -Wsometimes-uninitialized in
- ath11k_update_per_peer_stats_from_txcompl
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20200130015905.18610-1-natechancellor@gmail.com>
-References: <20200130015905.18610-1-natechancellor@gmail.com>
-To:     Nathan Chancellor <natechancellor@gmail.com>
-Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        clang-built-linux@googlegroups.com,
-        Nathan Chancellor <natechancellor@gmail.com>,
-        ci_notify@linaro.org
-User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20200211142431.2B510C4479D@smtp.codeaurora.org>
-Date:   Tue, 11 Feb 2020 14:24:31 +0000 (UTC)
+Content-Type: multipart/signed; boundary="nextPart2107701.dEEGrNscTW"; micalg="pgp-sha512"; protocol="application/pgp-signature"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Nathan Chancellor <natechancellor@gmail.com> wrote:
+--nextPart2107701.dEEGrNscTW
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 
-> Clang warns a few times (trimmed for brevity):
+On Tuesday, 11 February 2020 14:10:04 CET Kalle Valo wrote:
+[...]
+> > diff --git a/drivers/net/wireless/ath/ath11k/dp_tx.c b/drivers/net/wireless/ath/ath11k/dp_tx.c
+> > index 7b532bf9acd8..66a6cfd54ad9 100644
+> > --- a/drivers/net/wireless/ath/ath11k/dp_tx.c
+> > +++ b/drivers/net/wireless/ath/ath11k/dp_tx.c
+> > @@ -357,9 +357,12 @@ static void ath11k_dp_tx_complete_msdu(struct ath11k *ar,
+> >  				       struct sk_buff *msdu,
+> >  				       struct hal_tx_status *ts)
+> >  {
+> > +	struct ieee80211_tx_status status = { 0 };
 > 
-> ../drivers/net/wireless/ath/ath11k/debugfs_sta.c:185:7: warning:
-> variable 'rate_idx' is used uninitialized whenever 'if' condition is
-> false [-Wsometimes-uninitialized]
+> This adds a sparse warning:
 > 
-> It is not wrong, rate_idx is only initialized in the first if block.
-> However, this is not necessarily an issue in practice because rate_idx
-> will only be used when initialized because
-> ath11k_accumulate_per_peer_tx_stats only uses rate_idx when flags is not
-> set to RATE_INFO_FLAGS_HE_MCS, RATE_INFO_FLAGS_VHT_MCS, or
-> RATE_INFO_FLAGS_MCS. Still, it is not good to stick uninitialized values
-> into another function so initialize it to zero to prevent any issues
-> down the line.
+> drivers/net/wireless/ath/ath11k/dp_tx.c:350:47: warning: Using plain integer as NULL pointer
 > 
-> Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
-> Link: https://github.com/ClangBuiltLinux/linux/issues/832
-> Reported-by: ci_notify@linaro.org
-> Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
-> Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
-> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+> Seems like a false warning, no? But not sure how to shut up the warning,
+> using '{ NULL }' would do that but just feels wrong. Any opinions?
 
-Patch applied to ath-next branch of ath.git, thanks.
+Why is this a false warning? The structure is following:
 
-df57acc415b1 ath11k: Silence clang -Wsometimes-uninitialized in ath11k_update_per_peer_stats_from_txcompl
+    struct ieee80211_tx_status {
+    	struct ieee80211_sta *sta;
+    	struct ieee80211_tx_info *info;
+    	struct sk_buff *skb;
+    	struct rate_info *rate;
+    };
 
--- 
-https://patchwork.kernel.org/patch/11357331/
+And this is a pre-C99 initializer. The equal C99-Initializer would be
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+    struct ieee80211_tx_status status = {
+    	.sta = NULL,
+	};
+
+So it is initializing status.sta with 0. But status.sta is a pointer
+and we should use NULL for pointers instead of plain 0. If you want
+to initialize the object on stack to zero but not initialize each 
+member then just use {}.
+
+Kind regards,
+	Sven
+--nextPart2107701.dEEGrNscTW
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEF10rh2Elc9zjMuACXYcKB8Eme0YFAl5CvF4ACgkQXYcKB8Em
+e0ayUBAAjXc/3uYA9x/45bbvY7vVF41gDZSUj8P5uvnLXQJL5gfeAsKuNuPQno03
+EdzxluMQWyKXjHo11T1IfwXo6hkHueYFschLpwnnBu2w6Rw6UeOWClpaAA4wWUfu
+L3yf95F217nKVT05UvAIoyafHNuptIKBv9sDMydIaRfUF5v2Ywcb0RGesp6ICgqo
+W8tFQzy9aRs9KSnDTlClZ/s+loSegRecUxEPN2/xPeNfKtmuSNngG1x+PDy/MFOX
+mQWJI2M+GbPPPUEihK/KWsZ8Y4UJgLXsAE9vqZs2Df/WPlTLDN0UmlbOEM749ZVU
+o+1zz+kkeA3JhSN0CCq941APt7axma2xNsAgfwaG1Vzfw2sVVUPun/QhAecqdcwK
+8gbj8ecsyo1WQa4QJTifXetl6Kfl+hbBMQg8gH3vmUVVsG5brvtn4gdKHFNTlkdI
+VbqWDGnq2FM+k6ydDtPeSGKNUyn0SigDcMJZr+8J4A3PvQVOaGGZ+/Bzwr3K4Ofk
+plhUudyoCP8XGFiB+ZQuLioph8Fc4nXMRSp5lboi2xyPVlQD1OjlU4a016YreqAo
+qziI8rFbxt89Xfx6j6zczALo+z+PHd+gjSXKuP/LwJvm9HaRCGd5dFSNrvgtEL7k
+qRqm9A4zM6Tr5eKuQ6lrbiA8tqWY9KI0ZLNutiWhTEGOMjB/uho=
+=bRu5
+-----END PGP SIGNATURE-----
+
+--nextPart2107701.dEEGrNscTW--
+
+
+
