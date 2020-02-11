@@ -2,113 +2,100 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 77179158A30
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Feb 2020 08:04:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 49315158B91
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Feb 2020 09:59:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727572AbgBKHDz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 11 Feb 2020 02:03:55 -0500
-Received: from mail-pf1-f193.google.com ([209.85.210.193]:36684 "EHLO
-        mail-pf1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727481AbgBKHDy (ORCPT
+        id S1727818AbgBKI7t (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 11 Feb 2020 03:59:49 -0500
+Received: from mail25.static.mailgun.info ([104.130.122.25]:11377 "EHLO
+        mail25.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727608AbgBKI7t (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 11 Feb 2020 02:03:54 -0500
-Received: by mail-pf1-f193.google.com with SMTP id 185so5027826pfv.3
-        for <linux-wireless@vger.kernel.org>; Mon, 10 Feb 2020 23:03:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=YZSoX/T69rQ+Ck7xhZRWSOsSLw5fJMwxFZcL7ir96Rw=;
-        b=Kmc4/Zl1GoI41XIC0TSseAU7S8vIfxo0vToR33StTc/YtOEm4UcyLFr7oE/U2EkjH0
-         O8vAUNitWCeXAWfBiSYBsugXJCz9qun5wY76Rv7jjZThu5eddak8bMSwHIbfJo6kwY4w
-         tI+jd3g6u1+nobglsNbL8UX4l9qbQcFXbe81Y=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=YZSoX/T69rQ+Ck7xhZRWSOsSLw5fJMwxFZcL7ir96Rw=;
-        b=t72rhDBDqXFC4JigCKtDhNWcXb6oLKAZkqux7C1jfs9hFgOxVVyJnC0fqVkWtieQC/
-         iG2XuvDLUFN2RUzhELw/GaVrsQjIC4RgcnKVEYPAZ+Oy1BOuvVNperlkH8sUK9sDcSVo
-         KvqU6fR/1k1hIxHkNOP3gY/DFuD2FRJRObBs4JaU7AOTz0GkdQUJJK3FJP3CXsl887al
-         QtC75hEARGFxTik4uVTMSpPtgqF9KsVdKl8IMFHBcT30PY73I9qcK57N46/XrfA/l3ml
-         qzFYf6nXMI5rBWIDv8omdLVF1ajx6fvZzQk6ldDbQZJHFErbmX5REIupDrHPD6lN28KE
-         aGJA==
-X-Gm-Message-State: APjAAAVKqES0VC+yxInsbTg8DFoPwedshyPTIzvTbpOjhGbtW9UUjUAm
-        WLH8X7cSqHD3Y4UXBQopjeSBuvzAcHZF4A==
-X-Google-Smtp-Source: APXvYqxixAyN5h2Jo4CX6YxMuAHF3JVKqsZrJj2xcehzsd8p5iogyxGRKyJOY3qvdpJ4Gsgaj5fVIw==
-X-Received: by 2002:a63:7c4d:: with SMTP id l13mr5498898pgn.275.1581404633807;
-        Mon, 10 Feb 2020 23:03:53 -0800 (PST)
-Received: from pihsun-z840.tpe.corp.google.com ([2401:fa00:1:10:70db:a5:26c3:9423])
-        by smtp.gmail.com with ESMTPSA id k1sm2791653pfg.66.2020.02.10.23.03.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 10 Feb 2020 23:03:53 -0800 (PST)
-Subject: Re: [PATCH v8 1/4] ath10k: disable TX complete indication of htt for
- sdio
-To:     Wen Gong <wgong@codeaurora.org>, ath10k@lists.infradead.org
+        Tue, 11 Feb 2020 03:59:49 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1581411588; h=Message-Id: Date: Subject: Cc: To: From:
+ Sender; bh=naIQn2hB0n/P5Vs4krn5QFMSJuLxTMUW9SG3/BdcJfE=; b=DVfPhH7NSiFyiKzffur2GSRbQNaWNuC9xaryTZN89hUY03KWNnhZ9zt758Rdi2ZbA1qOi1iN
+ 1sNZKxnFRtg1g3VJuSkvMS9QizYxyhCxCkvyKSTlhzb8UW0+nMKKLN5+qIGOW5L1vlqShsoU
+ Hhsm14R1H/utsCebwoTftIUfzPA=
+X-Mailgun-Sending-Ip: 104.130.122.25
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5e426d00.7f291b8ca880-smtp-out-n03;
+ Tue, 11 Feb 2020 08:59:44 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 4A60BC4479C; Tue, 11 Feb 2020 08:59:43 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 87E03C43383;
+        Tue, 11 Feb 2020 08:59:41 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 87E03C43383
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     ath10k@lists.infradead.org
 Cc:     linux-wireless@vger.kernel.org
-References: <20191128103030.6429-1-wgong@codeaurora.org>
- <0101016eb1903db0-ef7063b4-0f42-4a01-8886-327541e6c1a4-000000@us-west-2.amazonses.com>
-From:   Pi-Hsun Shih <pihsun@chromium.org>
-Message-ID: <76bce8e3-e05b-ace6-3edd-54f522be3fe6@chromium.org>
-Date:   Tue, 11 Feb 2020 15:03:51 +0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
-MIME-Version: 1.0
-In-Reply-To: <0101016eb1903db0-ef7063b4-0f42-4a01-8886-327541e6c1a4-000000@us-west-2.amazonses.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
+Subject: [PATCH] ath10k: fix few checkpatch warnings
+Date:   Tue, 11 Feb 2020 10:59:38 +0200
+Message-Id: <1581411578-26388-1-git-send-email-kvalo@codeaurora.org>
+X-Mailer: git-send-email 2.7.4
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+Fix warnings which were recently introduced:
 
-On 11/28/19 6:30 PM, Wen Gong wrote:
-> ...
-> diff --git a/drivers/net/wireless/ath/ath10k/htt_tx.c b/drivers/net/wireless/ath/ath10k/htt_tx.c
-> index a182c0944cc7..c6c4b2a4d20f 100644
-> --- a/drivers/net/wireless/ath/ath10k/htt_tx.c
-> +++ b/drivers/net/wireless/ath/ath10k/htt_tx.c
-> @@ -543,7 +543,35 @@ void ath10k_htt_tx_free(struct ath10k_htt *htt)
->   
->   void ath10k_htt_htc_tx_complete(struct ath10k *ar, struct sk_buff *skb)
->   {
-> +	struct ath10k_htt *htt = &ar->htt;
-> +	struct htt_tx_done tx_done = {0};
-> +	struct htt_cmd_hdr *htt_hdr;
-> +	struct htt_data_tx_desc *desc_hdr;
-> +	u16 flags1;
-> +
->   	dev_kfree_skb_any(skb);
-> +
-> +	if (!htt->disable_tx_comp)
-> +		return;
-> +
-> +	htt_hdr = (struct htt_cmd_hdr *)skb->data;
+drivers/net/wireless/ath/ath10k/ahb.c:462: Alignment should match open parenthesis
+drivers/net/wireless/ath/ath10k/ahb.c:470: Alignment should match open parenthesis
+drivers/net/wireless/ath/ath10k/sdio.c:697: space prohibited before that close parenthesis ')'
 
-skb is already freed on the above line (dev_kfree_skb_any) but is still 
-used here, should the dev_kfree_skb_any be moved to the end of this 
-function?
+Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+---
+ drivers/net/wireless/ath/ath10k/ahb.c  | 4 ++--
+ drivers/net/wireless/ath/ath10k/sdio.c | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-> +	if (htt_hdr->msg_type != HTT_H2T_MSG_TYPE_TX_FRM)
-> +		return;
-> +
-> +	desc_hdr = (struct htt_data_tx_desc *)
-> +		(skb->data + sizeof(*htt_hdr));
-> +	flags1 = __le16_to_cpu(desc_hdr->flags1);
-> +
-> +	ath10k_dbg(ar, ATH10K_DBG_HTT,
-> +		   "htt tx complete msdu id:%u ,flags1:%x\n",
-> +		   __le16_to_cpu(desc_hdr->id), flags1);
-> +
-> +	if (flags1 & HTT_DATA_TX_DESC_FLAGS1_TX_COMPLETE)
-> +		return;
-> +
-> +	tx_done.status = HTT_TX_COMPL_STATE_ACK;
-> +	tx_done.msdu_id = __le16_to_cpu(desc_hdr->id);
-> +	ath10k_txrx_tx_unref(&ar->htt, &tx_done);
->   }
->   
+diff --git a/drivers/net/wireless/ath/ath10k/ahb.c b/drivers/net/wireless/ath/ath10k/ahb.c
+index ed87bc00f2aa..342a7e58018a 100644
+--- a/drivers/net/wireless/ath/ath10k/ahb.c
++++ b/drivers/net/wireless/ath/ath10k/ahb.c
+@@ -459,7 +459,7 @@ static int ath10k_ahb_resource_init(struct ath10k *ar)
+ 	ar_ahb->mem_len = resource_size(res);
+ 
+ 	ar_ahb->gcc_mem = ioremap(ATH10K_GCC_REG_BASE,
+-					  ATH10K_GCC_REG_SIZE);
++				  ATH10K_GCC_REG_SIZE);
+ 	if (!ar_ahb->gcc_mem) {
+ 		ath10k_err(ar, "gcc mem ioremap error\n");
+ 		ret = -ENOMEM;
+@@ -467,7 +467,7 @@ static int ath10k_ahb_resource_init(struct ath10k *ar)
+ 	}
+ 
+ 	ar_ahb->tcsr_mem = ioremap(ATH10K_TCSR_REG_BASE,
+-					   ATH10K_TCSR_REG_SIZE);
++				   ATH10K_TCSR_REG_SIZE);
+ 	if (!ar_ahb->tcsr_mem) {
+ 		ath10k_err(ar, "tcsr mem ioremap error\n");
+ 		ret = -ENOMEM;
+diff --git a/drivers/net/wireless/ath/ath10k/sdio.c b/drivers/net/wireless/ath/ath10k/sdio.c
+index e5316b911e1d..2e9d78222153 100644
+--- a/drivers/net/wireless/ath/ath10k/sdio.c
++++ b/drivers/net/wireless/ath/ath10k/sdio.c
+@@ -694,7 +694,7 @@ static int ath10k_sdio_mbox_rx_fetch_bundle(struct ath10k *ar)
+ 		htc_hdr = (struct ath10k_htc_hdr *)(ar_sdio->vsg_buffer + pkt_offset);
+ 		pkt->act_len = le16_to_cpu(htc_hdr->len) + sizeof(*htc_hdr);
+ 
+-		if (pkt->act_len > pkt->alloc_len ) {
++		if (pkt->act_len > pkt->alloc_len) {
+ 			ret = -EINVAL;
+ 			goto err;
+ 		}
+-- 
+2.7.4
