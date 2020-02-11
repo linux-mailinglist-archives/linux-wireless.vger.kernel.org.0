@@ -2,75 +2,56 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 25A4B1598D2
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Feb 2020 19:36:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BF133159994
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Feb 2020 20:18:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730619AbgBKSg3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 11 Feb 2020 13:36:29 -0500
-Received: from mail26.static.mailgun.info ([104.130.122.26]:37697 "EHLO
-        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728725AbgBKSg3 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 11 Feb 2020 13:36:29 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1581446188; h=Date: Message-Id: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=q3qC0u38uWvEvCPBrSDihtZpWQNVqoFcQm8J7M1dZu8=;
- b=jWww/lnFAaXGbRXMr64qvxjzR1aKrvK9DOnb/3W1ARi9P05XJ7R4PL2EopGd4SPiyiZQXATr
- zTlENc1ZonficyheCV7kwlElWdydGQRXTNowocAk13/ZSFB0+ajyM2lFIq6QBd13qBmdkwEh
- 2UzPZNcU/FB9/WwCUqxXc9Ksyx0=
-X-Mailgun-Sending-Ip: 104.130.122.26
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e42f42b.7fa73263c9d0-smtp-out-n01;
- Tue, 11 Feb 2020 18:36:27 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id EE2C1C4479C; Tue, 11 Feb 2020 18:36:26 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
-        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        id S1731595AbgBKTSw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 11 Feb 2020 14:18:52 -0500
+Received: from mail.kernel.org ([198.145.29.99]:36826 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1731593AbgBKTSw (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 11 Feb 2020 14:18:52 -0500
+Received: from localhost (unknown [104.133.9.100])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 8671FC43383;
-        Tue, 11 Feb 2020 18:36:25 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 8671FC43383
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        by mail.kernel.org (Postfix) with ESMTPSA id B5E682465D;
+        Tue, 11 Feb 2020 19:18:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1581448731;
+        bh=uxU2G69SlfJsblD0NM3KbWn/+UtaxJOgDCSgqIzYh04=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=xzKBNkpl06kgI1nz698PoytpM9DVyZsB3TDwC6A9ilwBwLfMNS0dgdGor3VgWckZ0
+         9cdFGx7UUPKhRBtmYA6QwZFAI6BV2vhUMxICya7dntPcdQMnS4ohGZNzlPACdzhpD0
+         1/m8Wa/GM3u7/nChU7c/CjJfR3+JMNuNu6OL8dSY=
+Date:   Tue, 11 Feb 2020 11:18:51 -0800
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Ajay.Kathat@microchip.com
+Cc:     linux-wireless@vger.kernel.org, devel@driverdev.osuosl.org,
+        johannes@sipsolutions.net, Adham.Abozaeid@microchip.com
+Subject: Re: [PATCH v2 3/3] staging: wilc1000: refactor p2p action frames
+ handling API's
+Message-ID: <20200211191851.GA1959566@kroah.com>
+References: <20200211152802.6096-1-ajay.kathat@microchip.com>
+ <20200211152802.6096-3-ajay.kathat@microchip.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] ath11k: fix incorrect peer stats counters update
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <1580891730-23868-1-git-send-email-vnaralas@codeaurora.org>
-References: <1580891730-23868-1-git-send-email-vnaralas@codeaurora.org>
-To:     Venkateswara Rao Naralasetty <vnaralas@codeaurora.org>
-Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        Venkateswara Naralasetty <vnaralas@codeaurora.org>
-User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20200211183626.EE2C1C4479C@smtp.codeaurora.org>
-Date:   Tue, 11 Feb 2020 18:36:26 +0000 (UTC)
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20200211152802.6096-3-ajay.kathat@microchip.com>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Venkateswara Rao Naralasetty <vnaralas@codeaurora.org> wrote:
-
-> Convert mac80211 bw to ath11k bw before updating peer stats
-> bw counters, which fixes incorrect peer stats counters update.
+On Tue, Feb 11, 2020 at 09:57:10AM +0000, Ajay.Kathat@microchip.com wrote:
+> From: Ajay Singh <ajay.kathat@microchip.com>
 > 
-> Signed-off-by: Venkateswara Naralasetty <vnaralas@codeaurora.org>
-> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+> Refactor handling of P2P specific action frames. Make use of 'struct' to
+> handle the P2P frames instead of manipulating using 'buf' pointer.
+> 
+> Signed-off-by: Ajay Singh <ajay.kathat@microchip.com>
+> ---
+>  v2: corrected 'while' condition by adding 'struct' size as suggested by Dan.
 
-Patch applied to ath-next branch of ath.git, thanks.
+This patch doesn't apply to my tree :(
 
-92bacd1c165c ath11k: fix incorrect peer stats counters update
-
--- 
-https://patchwork.kernel.org/patch/11365883/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
