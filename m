@@ -2,84 +2,70 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 10A6515921D
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Feb 2020 15:43:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 643EA1594D5
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Feb 2020 17:25:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728810AbgBKOnx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 11 Feb 2020 09:43:53 -0500
-Received: from nbd.name ([46.4.11.11]:39786 "EHLO nbd.name"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727728AbgBKOnx (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 11 Feb 2020 09:43:53 -0500
-Received: from [2a04:4540:1401:2a00:cab8:b5b3:a1b1:af79]
-        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.89)
-        (envelope-from <john@phrozen.org>)
-        id 1j1WlP-0002NF-1t; Tue, 11 Feb 2020 15:43:47 +0100
-Subject: Re: [RESEND V2 3/4] ath11k: switch to using ieee80211_tx_status_ext()
-To:     Sven Eckelmann <sven@narfation.org>, ath11k@lists.infradead.org
-Cc:     Kalle Valo <kvalo@codeaurora.org>, linux-wireless@vger.kernel.org
-References: <20200204151135.25302-1-john@phrozen.org>
- <20200204151135.25302-3-john@phrozen.org>
- <87h7zxxob7.fsf@kamboji.qca.qualcomm.com> <4744821.iAptAJfnkX@bentobox>
-From:   John Crispin <john@phrozen.org>
-Message-ID: <94d0da89-6b48-0433-7a01-275af1a99ca1@phrozen.org>
-Date:   Tue, 11 Feb 2020 15:43:46 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.2
+        id S1730007AbgBKQZN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 11 Feb 2020 11:25:13 -0500
+Received: from mr85p00im-zteg06021601.me.com ([17.58.23.187]:47749 "EHLO
+        mr85p00im-zteg06021601.me.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1729000AbgBKQZN (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 11 Feb 2020 11:25:13 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=me.com; s=1a1hai;
+        t=1581438313; bh=zH3XvUf4Gwnfly5C3NsxYvl9HPUhovFyyHO7111umzE=;
+        h=From:To:Subject:Date:Message-Id;
+        b=OO0RlHQJ3lgyT+MHIBwjbcXObOAArjxyabjUzcbS/V1kTHfKFqoZmIVlVgpFPLD3o
+         CPx3ZQ6mLQwXT1mdv0pBoHwqLEGSXIBq0w/2wgUUfmP4MYjKuWaHDP/KvOOR8xVri6
+         frqXTiIpv6oXnIdbkM8EoFJaLSVoH63I2poiilqvWRH3IEAZDT1jKT+4CBhhWcZeq5
+         om0QWhpIMZDhDqemtKHZBt81rsWWF43V7vJvOsqqXKRtURt3j0vCTydqVuMIKKj+n+
+         9eCYtEaeOv1Ga9RcUJJzroHQ6/8Z6aUlw/tLUhBHbBrWWYL5R5v8vwNhdK6eTjQX9s
+         kpvzl3b1pkBiw==
+Received: from stitch.danm.net (c-73-98-236-45.hsd1.ut.comcast.net [73.98.236.45])
+        by mr85p00im-zteg06021601.me.com (Postfix) with ESMTPSA id B31FF4010D8;
+        Tue, 11 Feb 2020 16:25:12 +0000 (UTC)
+From:   Dan Moulding <dmoulding@me.com>
+To:     dmoulding@me.com
+Cc:     emmanuel.grumbach@intel.com, johannes.berg@intel.com,
+        linux-wireless@vger.kernel.org, linuxwifi@intel.com,
+        luciano.coelho@intel.com
+Subject: Re: [PATCH v2 5.5] iwlwifi: mvm: Do not require PHY_SKU NVM section for 3168 devices
+Date:   Tue, 11 Feb 2020 09:24:50 -0700
+Message-Id: <20200211162450.2493-1-dmoulding@me.com>
+X-Mailer: git-send-email 2.24.1
+In-Reply-To: <20200128093107.9740-1-dmoulding@me.com>
+References: <20200128093107.9740-1-dmoulding@me.com>
 MIME-Version: 1.0
-In-Reply-To: <4744821.iAptAJfnkX@bentobox>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2020-02-11_05:,,
+ signatures=0
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 clxscore=1015 mlxscore=0
+ mlxlogscore=730 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1908290000 definitions=main-2002110119
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 11/02/2020 15:38, Sven Eckelmann wrote:
-> On Tuesday, 11 February 2020 14:10:04 CET Kalle Valo wrote:
-> [...]
->>> diff --git a/drivers/net/wireless/ath/ath11k/dp_tx.c b/drivers/net/wireless/ath/ath11k/dp_tx.c
->>> index 7b532bf9acd8..66a6cfd54ad9 100644
->>> --- a/drivers/net/wireless/ath/ath11k/dp_tx.c
->>> +++ b/drivers/net/wireless/ath/ath11k/dp_tx.c
->>> @@ -357,9 +357,12 @@ static void ath11k_dp_tx_complete_msdu(struct ath11k *ar,
->>>   				       struct sk_buff *msdu,
->>>   				       struct hal_tx_status *ts)
->>>   {
->>> +	struct ieee80211_tx_status status = { 0 };
->>
->> This adds a sparse warning:
->>
->> drivers/net/wireless/ath/ath11k/dp_tx.c:350:47: warning: Using plain integer as NULL pointer
->>
->> Seems like a false warning, no? But not sure how to shut up the warning,
->> using '{ NULL }' would do that but just feels wrong. Any opinions?
-> 
-> Why is this a false warning? The structure is following:
-> 
->      struct ieee80211_tx_status {
->      	struct ieee80211_sta *sta;
->      	struct ieee80211_tx_info *info;
->      	struct sk_buff *skb;
->      	struct rate_info *rate;
->      };
-> 
-> And this is a pre-C99 initializer. The equal C99-Initializer would be
-> 
->      struct ieee80211_tx_status status = {
->      	.sta = NULL,
-> 	};
-> 
-> So it is initializing status.sta with 0. But status.sta is a pointer
-> and we should use NULL for pointers instead of plain 0. If you want
-> to initialize the object on stack to zero but not initialize each
-> member then just use {}.
-> 
-> Kind regards,
-> 	Sven
-> 
+This is just a friendly reminder that this patch has been submitted,
+for what looks like a fairly major regression in iwlwifi that impacts
+(as far as I can tell) *all* 3168 devices. The regression is in the
+v5.5.x series and was for a while back-ported to the stable trees, but
+luckily was noticed before the releases were made.
 
-yup, i just need to drop the 0 and use {}. I'll respin/send
-	John
+There are at least a few bug reports for this regression:
+
+https://bugzilla.kernel.org/show_bug.cgi?id=206329
+https://bugs.gentoo.org/706810
+https://lkml.org/lkml/2020/2/7/811
+https://bbs.archlinux.org/viewtopic.php?id=252603
+
+The Gentoo maintainers have already applied this patch to their Linux
+sources and marked their bug report "fixed". But it would be really
+nice if we could get this regression fixed in the next stable v5.5.x
+release.
+
+Thanks for your attention!
+
+-- Dan
