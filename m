@@ -2,91 +2,113 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BFEB0158A2B
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Feb 2020 07:59:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 77179158A30
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Feb 2020 08:04:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728066AbgBKG7K (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 11 Feb 2020 01:59:10 -0500
-Received: from userp2120.oracle.com ([156.151.31.85]:44970 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728063AbgBKG7K (ORCPT
+        id S1727572AbgBKHDz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 11 Feb 2020 02:03:55 -0500
+Received: from mail-pf1-f193.google.com ([209.85.210.193]:36684 "EHLO
+        mail-pf1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727481AbgBKHDy (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 11 Feb 2020 01:59:10 -0500
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 01B6x4IL175665;
-        Tue, 11 Feb 2020 06:59:04 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2020-01-29;
- bh=3/RgUTylOj363dbYQdeISiquGp5Fp3ARSlcrIMOOwRY=;
- b=SfBU9j5jq7OMa5GLHJ7NqdGjhC/cpzLXsAl/Su/PW3cccKpWIBXBPRX1n8VmWa+6rLuQ
- hq8vbNg6m4GZ8mR/lY1s3ydgZTjUro4mT+BO86o3JUSmm19yvQhguLGKneG2TYaABVJi
- jU4qFDRA1+ug26V3q3DXz8dJc6yWS5MO/BDWgrKNnVFqw/esEpKAwiH2CSpk9xFs1LNX
- 6Br2XEhlBKEK/jw6lPp6y9myVXk2vuSWdn8LH615DdS3WZKIPJrCcETPviHOKBQkghVK
- MboIdpZVGn4l0FykTjQbI4b13OU/dGtpE/kTQ3Ix1D+OsGhvAGqx/f2YkIDgztKglcTx AQ== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by userp2120.oracle.com with ESMTP id 2y2p3s96bu-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 11 Feb 2020 06:59:04 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 01B6wk0k139430;
-        Tue, 11 Feb 2020 06:59:04 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by userp3020.oracle.com with ESMTP id 2y26q0qfkf-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 11 Feb 2020 06:59:04 +0000
-Received: from abhmp0009.oracle.com (abhmp0009.oracle.com [141.146.116.15])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 01B6x3DX007303;
-        Tue, 11 Feb 2020 06:59:03 GMT
-Received: from kadam (/129.205.23.165)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 10 Feb 2020 22:59:02 -0800
-Date:   Tue, 11 Feb 2020 09:58:56 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Ajay.Kathat@microchip.com
-Cc:     devel@driverdev.osuosl.org, gregkh@linuxfoundation.org,
-        johannes@sipsolutions.net, linux-wireless@vger.kernel.org,
-        Adham.Abozaeid@microchip.com
-Subject: Re: [PATCH 3/3] staging: wilc1000: refactor p2p action frames
- handling API's
-Message-ID: <20200211065856.GD1778@kadam>
-References: <20200211000652.4781-1-ajay.kathat@microchip.com>
- <20200211000652.4781-3-ajay.kathat@microchip.com>
- <20200211065101.GC1778@kadam>
+        Tue, 11 Feb 2020 02:03:54 -0500
+Received: by mail-pf1-f193.google.com with SMTP id 185so5027826pfv.3
+        for <linux-wireless@vger.kernel.org>; Mon, 10 Feb 2020 23:03:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=YZSoX/T69rQ+Ck7xhZRWSOsSLw5fJMwxFZcL7ir96Rw=;
+        b=Kmc4/Zl1GoI41XIC0TSseAU7S8vIfxo0vToR33StTc/YtOEm4UcyLFr7oE/U2EkjH0
+         O8vAUNitWCeXAWfBiSYBsugXJCz9qun5wY76Rv7jjZThu5eddak8bMSwHIbfJo6kwY4w
+         tI+jd3g6u1+nobglsNbL8UX4l9qbQcFXbe81Y=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=YZSoX/T69rQ+Ck7xhZRWSOsSLw5fJMwxFZcL7ir96Rw=;
+        b=t72rhDBDqXFC4JigCKtDhNWcXb6oLKAZkqux7C1jfs9hFgOxVVyJnC0fqVkWtieQC/
+         iG2XuvDLUFN2RUzhELw/GaVrsQjIC4RgcnKVEYPAZ+Oy1BOuvVNperlkH8sUK9sDcSVo
+         KvqU6fR/1k1hIxHkNOP3gY/DFuD2FRJRObBs4JaU7AOTz0GkdQUJJK3FJP3CXsl887al
+         QtC75hEARGFxTik4uVTMSpPtgqF9KsVdKl8IMFHBcT30PY73I9qcK57N46/XrfA/l3ml
+         qzFYf6nXMI5rBWIDv8omdLVF1ajx6fvZzQk6ldDbQZJHFErbmX5REIupDrHPD6lN28KE
+         aGJA==
+X-Gm-Message-State: APjAAAVKqES0VC+yxInsbTg8DFoPwedshyPTIzvTbpOjhGbtW9UUjUAm
+        WLH8X7cSqHD3Y4UXBQopjeSBuvzAcHZF4A==
+X-Google-Smtp-Source: APXvYqxixAyN5h2Jo4CX6YxMuAHF3JVKqsZrJj2xcehzsd8p5iogyxGRKyJOY3qvdpJ4Gsgaj5fVIw==
+X-Received: by 2002:a63:7c4d:: with SMTP id l13mr5498898pgn.275.1581404633807;
+        Mon, 10 Feb 2020 23:03:53 -0800 (PST)
+Received: from pihsun-z840.tpe.corp.google.com ([2401:fa00:1:10:70db:a5:26c3:9423])
+        by smtp.gmail.com with ESMTPSA id k1sm2791653pfg.66.2020.02.10.23.03.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 10 Feb 2020 23:03:53 -0800 (PST)
+Subject: Re: [PATCH v8 1/4] ath10k: disable TX complete indication of htt for
+ sdio
+To:     Wen Gong <wgong@codeaurora.org>, ath10k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org
+References: <20191128103030.6429-1-wgong@codeaurora.org>
+ <0101016eb1903db0-ef7063b4-0f42-4a01-8886-327541e6c1a4-000000@us-west-2.amazonses.com>
+From:   Pi-Hsun Shih <pihsun@chromium.org>
+Message-ID: <76bce8e3-e05b-ace6-3edd-54f522be3fe6@chromium.org>
+Date:   Tue, 11 Feb 2020 15:03:51 +0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200211065101.GC1778@kadam>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9527 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 bulkscore=0 spamscore=0
- mlxscore=0 adultscore=0 suspectscore=1 mlxlogscore=999 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2001150001
- definitions=main-2002110050
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9527 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxscore=0 malwarescore=0
- suspectscore=1 mlxlogscore=999 priorityscore=1501 clxscore=1015
- impostorscore=0 lowpriorityscore=0 phishscore=0 adultscore=0 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2001150001
- definitions=main-2002110050
+In-Reply-To: <0101016eb1903db0-ef7063b4-0f42-4a01-8886-327541e6c1a4-000000@us-west-2.amazonses.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Feb 11, 2020 at 09:51:01AM +0300, Dan Carpenter wrote:
-> On Mon, Feb 10, 2020 at 06:36:01PM +0000, Ajay.Kathat@microchip.com wrote:
-> > +	if (sta_ch == WILC_INVALID_CHANNEL)
-> > +		return;
-> >  
-> >  	while (index < len) {
-> 
-> This range checking was there in the original code, but it's not
-> correct.  index and len are in terms of bytes so we know that we can
-> read one byte from &buf[index] but we are reading a wilc_attr_entry
-> struct which is larger than a type.  The struct is actually flexibly
-                                ^^^^
-I meant byte.
+Hi,
 
-regards,
-dan carpenter
+On 11/28/19 6:30 PM, Wen Gong wrote:
+> ...
+> diff --git a/drivers/net/wireless/ath/ath10k/htt_tx.c b/drivers/net/wireless/ath/ath10k/htt_tx.c
+> index a182c0944cc7..c6c4b2a4d20f 100644
+> --- a/drivers/net/wireless/ath/ath10k/htt_tx.c
+> +++ b/drivers/net/wireless/ath/ath10k/htt_tx.c
+> @@ -543,7 +543,35 @@ void ath10k_htt_tx_free(struct ath10k_htt *htt)
+>   
+>   void ath10k_htt_htc_tx_complete(struct ath10k *ar, struct sk_buff *skb)
+>   {
+> +	struct ath10k_htt *htt = &ar->htt;
+> +	struct htt_tx_done tx_done = {0};
+> +	struct htt_cmd_hdr *htt_hdr;
+> +	struct htt_data_tx_desc *desc_hdr;
+> +	u16 flags1;
+> +
+>   	dev_kfree_skb_any(skb);
+> +
+> +	if (!htt->disable_tx_comp)
+> +		return;
+> +
+> +	htt_hdr = (struct htt_cmd_hdr *)skb->data;
+
+skb is already freed on the above line (dev_kfree_skb_any) but is still 
+used here, should the dev_kfree_skb_any be moved to the end of this 
+function?
+
+> +	if (htt_hdr->msg_type != HTT_H2T_MSG_TYPE_TX_FRM)
+> +		return;
+> +
+> +	desc_hdr = (struct htt_data_tx_desc *)
+> +		(skb->data + sizeof(*htt_hdr));
+> +	flags1 = __le16_to_cpu(desc_hdr->flags1);
+> +
+> +	ath10k_dbg(ar, ATH10K_DBG_HTT,
+> +		   "htt tx complete msdu id:%u ,flags1:%x\n",
+> +		   __le16_to_cpu(desc_hdr->id), flags1);
+> +
+> +	if (flags1 & HTT_DATA_TX_DESC_FLAGS1_TX_COMPLETE)
+> +		return;
+> +
+> +	tx_done.status = HTT_TX_COMPL_STATE_ACK;
+> +	tx_done.msdu_id = __le16_to_cpu(desc_hdr->id);
+> +	ath10k_txrx_tx_unref(&ar->htt, &tx_done);
+>   }
+>   
