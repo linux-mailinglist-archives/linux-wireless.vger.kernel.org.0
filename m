@@ -2,143 +2,93 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9DE3C158BDD
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Feb 2020 10:28:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AD8DA158C08
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Feb 2020 10:46:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727665AbgBKJ2D (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 11 Feb 2020 04:28:03 -0500
-Received: from esa5.microchip.iphmx.com ([216.71.150.166]:24633 "EHLO
-        esa5.microchip.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727579AbgBKJ2D (ORCPT
+        id S1727975AbgBKJqe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 11 Feb 2020 04:46:34 -0500
+Received: from mail26.static.mailgun.info ([104.130.122.26]:14006 "EHLO
+        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727947AbgBKJqe (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 11 Feb 2020 04:28:03 -0500
-Received-SPF: Pass (esa5.microchip.iphmx.com: domain of
-  Ajay.Kathat@microchip.com designates 198.175.253.82 as
-  permitted sender) identity=mailfrom;
-  client-ip=198.175.253.82; receiver=esa5.microchip.iphmx.com;
-  envelope-from="Ajay.Kathat@microchip.com";
-  x-sender="Ajay.Kathat@microchip.com"; x-conformance=spf_only;
-  x-record-type="v=spf1"; x-record-text="v=spf1 mx
-  a:ushub1.microchip.com a:smtpout.microchip.com
-  -exists:%{i}.spf.microchip.iphmx.com include:servers.mcsv.net
-  include:mktomail.com include:spf.protection.outlook.com ~all"
-Received-SPF: None (esa5.microchip.iphmx.com: no sender
-  authenticity information available from domain of
-  postmaster@email.microchip.com) identity=helo;
-  client-ip=198.175.253.82; receiver=esa5.microchip.iphmx.com;
-  envelope-from="Ajay.Kathat@microchip.com";
-  x-sender="postmaster@email.microchip.com";
-  x-conformance=spf_only
-Authentication-Results: esa5.microchip.iphmx.com; spf=Pass smtp.mailfrom=Ajay.Kathat@microchip.com; spf=None smtp.helo=postmaster@email.microchip.com; dmarc=pass (p=none dis=none) d=microchip.com
-IronPort-SDR: wY1vGb3L6tStC306pDIM1yeuoOvzxeXFqaNl9QZQ1El+ca3TWE9PVnw6wQAtI8kb8/JMP5ch5N
- 2jbbvtCvPt/dwGGlqAv92oTSCpC1yYudxRkk7wu8RViI/b1+Qo+7mHrDFiBQRsX0+4jP+c75OV
- xsL2srTuqD951fH/Eq6y6TLqPS61t+G6QZRnWAQJGKSpaRNofdvdlbxK3cFe4otENpPQ5+1fwW
- kL0t2/Uxvq+r8Bkiy73tqSEv9FyOliw8ljXHIV5oQa9hl7fNJspMSEDuk88Cc/tGY5q86uv27Y
- +os=
-X-IronPort-AV: E=Sophos;i="5.70,428,1574146800"; 
-   d="scan'208";a="64948113"
-Received: from smtpout.microchip.com (HELO email.microchip.com) ([198.175.253.82])
-  by esa5.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 11 Feb 2020 02:28:03 -0700
-Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
- chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1713.5; Tue, 11 Feb 2020 02:28:01 -0700
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (10.10.215.89) by
- email.microchip.com (10.10.87.151) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1713.5
- via Frontend Transport; Tue, 11 Feb 2020 02:28:01 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=bdUra4VxKZnSe8gw2q6wBp/gJTQthrf+GFGAN8wfJWlHerGfQp2PsipS44sSUGRUkfGYK/CwBT6vUji5ptaRIcjqua8eqVdJBQFuUxZgvaN4nKojaqATllm+U/gPtUmkliPIxi7GHdn0zSCUrcHpZ+6Q+hexELL+/Ez+Z5su9ndGVJE+12ODTFcYranRp1V4wcwLtJy7Gmse07V+3dGBx+5c/X8XamDvIrZ0NZEvVYXEgRRU9GlLuKlH/aqRvmDtrCJ1CErkxl64KA4d2AZaj0WxANrf/WPOlPrsccv64dYiZZHb6/TfQCXRhnHswH7prz4XKIjhxFFxpAKkEAsaHg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=aY7PYmvxEaagE/+gCFrxAiExanC15tNLLFFpGTWswlg=;
- b=NxBg5mdZLVCoLwVWuE+XP0lL8IQ1mHzaX0tjcOPwm17zWUM8rd2KjsA+Ih2doWrlFIEUc+P183qZ85jW+RhicxGc0/ibiE60rL/lVfuzZ1V25/oGESg6gqgcK0OJfOkEFiTh+Y4/6g6W4a81p7PE7nT3AWn12nSFjU5G+Mby3xWNhTFvh9Jop3mnyFKvnCO8M51Tt5nv9cNJWRcpmoiNCypeCie1wl0mh3PbkHIYum1ZLBt4bqaRBxa78XOS3Nv1XcIb7dncLsCzlOScAK85iXTUr2+vTiTo6mHgv1L2Siv3paWw0UzibAf9J9f2qUJ0v3IefLf+G+JFRnFiqhwsjg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=microchip.com; dmarc=pass action=none
- header.from=microchip.com; dkim=pass header.d=microchip.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=microchiptechnology.onmicrosoft.com;
- s=selector2-microchiptechnology-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=aY7PYmvxEaagE/+gCFrxAiExanC15tNLLFFpGTWswlg=;
- b=sP2wW/lMUKNR+y2n5Oh93ODu228C8QMpOlOt+KFj+0sa35vds1SoQUWicoSy8GYKHg4AM7WMHJ6RHpSNSuay7yQldcuSVozzhnEwWjc9qD+/kXlXqk3iPWEabXESSNcvG/+VRdkqDA36vd8jDW1xKrMU2h5DZeFaVMmKKdYWV+c=
-Received: from DM6PR11MB3996.namprd11.prod.outlook.com (20.176.125.206) by
- DM6PR11MB2954.namprd11.prod.outlook.com (20.177.216.145) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2707.29; Tue, 11 Feb 2020 09:28:00 +0000
-Received: from DM6PR11MB3996.namprd11.prod.outlook.com
- ([fe80::75b4:bb0c:c245:4392]) by DM6PR11MB3996.namprd11.prod.outlook.com
- ([fe80::75b4:bb0c:c245:4392%5]) with mapi id 15.20.2707.030; Tue, 11 Feb 2020
- 09:28:00 +0000
-From:   <Ajay.Kathat@microchip.com>
-To:     <dan.carpenter@oracle.com>
-CC:     <linux-wireless@vger.kernel.org>, <devel@driverdev.osuosl.org>,
-        <gregkh@linuxfoundation.org>, <johannes@sipsolutions.net>,
-        <Adham.Abozaeid@microchip.com>
-Subject: Re: [PATCH 3/3] staging: wilc1000: refactor p2p action frames
- handling API's
-Thread-Topic: [PATCH 3/3] staging: wilc1000: refactor p2p action frames
- handling API's
-Thread-Index: AQHV4EDxsHh/P/Va7E+9rDOtcLPc66gVjryAgACIVwA=
-Date:   Tue, 11 Feb 2020 09:28:00 +0000
-Message-ID: <563331bc-b892-90e8-a8c2-69e9367527cd@microchip.com>
-References: <20200211000652.4781-1-ajay.kathat@microchip.com>
- <20200211000652.4781-3-ajay.kathat@microchip.com>
- <20200211065101.GC1778@kadam>
-In-Reply-To: <20200211065101.GC1778@kadam>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [121.244.27.38]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 0f1f3205-6181-4cd5-7caf-08d7aed4afd8
-x-ms-traffictypediagnostic: DM6PR11MB2954:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <DM6PR11MB2954C86FD0F380DFABE4D4C0E3180@DM6PR11MB2954.namprd11.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:9508;
-x-forefront-prvs: 0310C78181
-x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(39860400002)(346002)(376002)(366004)(136003)(396003)(189003)(199004)(64756008)(31686004)(66446008)(66556008)(478600001)(66476007)(6506007)(53546011)(107886003)(4326008)(71200400001)(76116006)(91956017)(8936002)(6512007)(66946007)(54906003)(5660300002)(186003)(81156014)(81166006)(316002)(8676002)(4744005)(36756003)(2906002)(2616005)(6916009)(86362001)(31696002)(6486002)(26005);DIR:OUT;SFP:1101;SCL:1;SRVR:DM6PR11MB2954;H:DM6PR11MB3996.namprd11.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-received-spf: None (protection.outlook.com: microchip.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: MwBSKL++DFgdnfQ7pPkAZxBC4NQN7rls7qd7sqgZKBI6igf2dRDgCA4snEKkS01533zYDiRdk0lsQpwN2wAMKV2koKEINeImex7yMvVDieJlanYAdYALdFOndkSL4lIywpp78q6KvLDokzTw1Hd9obYJkcdMqM3SPtE3gmCblWBmpmtXetMyQkAdhprSU2reo4ucDbo9Eg6JehEbGhOHzxKbvIQpVZBEBG3hXHQlasKS1w537XzUnSk8lNAZwJspnDsu4PlTuepPQZtT9El+x6l+t+IocfOV6oQxxqTdZh7adUQErEvhdIL/oJxraIItZn7Ef6YCzbX9e06zoXIaXBGe8658zcRZPUGeH4hWJqd0ffuh82rXlfWZEWZRRf4egiVLQe4hf/q8mram+pA5+wFs6MrPgwPyZazosh2C4rNil5NYOpaarS3CdtkMbJSM
-x-ms-exchange-antispam-messagedata: TY1PZORVBuvHtYbPP+pLfgq7aC8OMEr+SJE1+KlJuFSRruGoi+PeWEfVXwjJ5fl9fzGhyQmOTZ21IrxJSIosX1kCZF46nNWfaXP8S9sRO5QSqKZlOSU2R1IzSP3cDF9u4Pk0JdcS9xGXhj7wxR4f7w==
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <9293884B59771A47AB3874C9D1C854FA@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+        Tue, 11 Feb 2020 04:46:34 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1581414393; h=Message-ID: References: In-Reply-To: Subject:
+ Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Sender; bh=XmbfhDgeU7lpSNpemQsNQ8B28yn5AsMpAGvUsIt06vc=;
+ b=ERdc9qfK6NgB2liV0czwZpdrEWQThsmSmYyZp+wLJz2eb8DqHGlCz2lCKU2/C/jRc3JQ7c6O
+ M5YVMvwg0LyPrJ4+bXi8DkvbqbmiDIjz9ZqYOOc++MExd82HkHq0vSR3HBIPJuuXtMaHBou6
+ i2VogTgx2xoEw+gJvCG1kTZziJ8=
+X-Mailgun-Sending-Ip: 104.130.122.26
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5e4277f2.7ff3e053d538-smtp-out-n03;
+ Tue, 11 Feb 2020 09:46:26 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 22B96C4479D; Tue, 11 Feb 2020 09:46:26 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: wgong)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id C0A01C43383;
+        Tue, 11 Feb 2020 09:46:25 +0000 (UTC)
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0f1f3205-6181-4cd5-7caf-08d7aed4afd8
-X-MS-Exchange-CrossTenant-originalarrivaltime: 11 Feb 2020 09:28:00.1515
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 3f4057f3-b418-4d4e-ba84-d55b4e897d88
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: RsvQcox74jfXpcrOqQgL2a119G4DFc6Y8W3CqhRQ+JJt+0a8W/vdN5u1gaRvcIgYjhA9UtjjyBPE/zxeNCL0+Y8hP9VE6O/WV/92tmQ46lo=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR11MB2954
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Tue, 11 Feb 2020 17:46:25 +0800
+From:   Wen Gong <wgong@codeaurora.org>
+To:     Pi-Hsun Shih <pihsun@chromium.org>
+Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH v8 1/4] ath10k: disable TX complete indication of htt for
+ sdio
+In-Reply-To: <76bce8e3-e05b-ace6-3edd-54f522be3fe6@chromium.org>
+References: <20191128103030.6429-1-wgong@codeaurora.org>
+ <0101016eb1903db0-ef7063b4-0f42-4a01-8886-327541e6c1a4-000000@us-west-2.amazonses.com>
+ <76bce8e3-e05b-ace6-3edd-54f522be3fe6@chromium.org>
+Message-ID: <25fd4f59b39c56b2fee208713c7cbc57@codeaurora.org>
+X-Sender: wgong@codeaurora.org
+User-Agent: Roundcube Webmail/1.3.9
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-SGkgRGFuLA0KDQpPbiAxMS8wMi8yMCAxMjoyMSBwbSwgRGFuIENhcnBlbnRlciB3cm90ZToNCj4g
-RVhURVJOQUwgRU1BSUw6IERvIG5vdCBjbGljayBsaW5rcyBvciBvcGVuIGF0dGFjaG1lbnRzIHVu
-bGVzcyB5b3Uga25vdyB0aGUgY29udGVudCBpcyBzYWZlDQo+IA0KPiBPbiBNb24sIEZlYiAxMCwg
-MjAyMCBhdCAwNjozNjowMVBNICswMDAwLCBBamF5LkthdGhhdEBtaWNyb2NoaXAuY29tIHdyb3Rl
-Og0KPj4gKyAgICAgaWYgKHN0YV9jaCA9PSBXSUxDX0lOVkFMSURfQ0hBTk5FTCkNCj4+ICsgICAg
-ICAgICAgICAgcmV0dXJuOw0KPj4NCj4+ICAgICAgIHdoaWxlIChpbmRleCA8IGxlbikgew0KPiAN
-Cj4gVGhpcyByYW5nZSBjaGVja2luZyB3YXMgdGhlcmUgaW4gdGhlIG9yaWdpbmFsIGNvZGUsIGJ1
-dCBpdCdzIG5vdA0KPiBjb3JyZWN0LiAgaW5kZXggYW5kIGxlbiBhcmUgaW4gdGVybXMgb2YgYnl0
-ZXMgc28gd2Uga25vdyB0aGF0IHdlIGNhbg0KPiByZWFkIG9uZSBieXRlIGZyb20gJmJ1ZltpbmRl
-eF0gYnV0IHdlIGFyZSByZWFkaW5nIGEgd2lsY19hdHRyX2VudHJ5DQo+IHN0cnVjdCB3aGljaCBp
-cyBsYXJnZXIgdGhhbiBhIHR5cGUuICBUaGUgc3RydWN0IGlzIGFjdHVhbGx5IGZsZXhpYmx5DQo+
-IHNpemVkIHNvIHRoaXMgc2hvdWxkIGJlIHNvbWV0aGluZyBsaWtlOg0KPiANCj4gICAgICAgICB3
-aGlsZSAoaW5kZXggKyBzaXplb2Yoc3RydWN0IHdpbGNfYXR0cl9lbnRyeSkgPD0gbGVuKSB7DQo+
-ICAgICAgICAgICAgICAgICBlID0gKHN0cnVjdCB3aWxjX2F0dHJfZW50cnkgKikmYnVmW2luZGV4
-XTsNCj4gICAgICAgICAgICAgICAgIGlmIChpbmRleCArIHNpemVvZihzdHJ1Y3Qgd2lsY19hdHRy
-X2VudHJ5KSArDQo+ICAgICAgICAgICAgICAgICAgICAgbGUxNl90b19jcHUoZS0+YXR0cl9sZW4p
-ID4gbGVuKQ0KPiAgICAgICAgICAgICAgICAgICAgICAgICBicmVhazsNCj4gDQoNCkFncmVlLiBJ
-IHdpbGwgY29ycmVjdCB0aGUgJ3doaWxlJyBsb29wIGNvbmRpdGlvbiBhbmQgc3VibWl0IHRoZSB2
-MiBwYXRjaA0Kc2VyaWVzLg0KDQpSZWdhcmRzLA0KQWpheQ==
+On 2020-02-11 15:03, Pi-Hsun Shih wrote:
+> Hi,
+> 
+> On 11/28/19 6:30 PM, Wen Gong wrote:
+>> ...
+>> diff --git a/drivers/net/wireless/ath/ath10k/htt_tx.c 
+>> b/drivers/net/wireless/ath/ath10k/htt_tx.c
+>> index a182c0944cc7..c6c4b2a4d20f 100644
+>> --- a/drivers/net/wireless/ath/ath10k/htt_tx.c
+>> +++ b/drivers/net/wireless/ath/ath10k/htt_tx.c
+>> @@ -543,7 +543,35 @@ void ath10k_htt_tx_free(struct ath10k_htt *htt)
+>>     void ath10k_htt_htc_tx_complete(struct ath10k *ar, struct sk_buff 
+>> *skb)
+>>   {
+>> +	struct ath10k_htt *htt = &ar->htt;
+>> +	struct htt_tx_done tx_done = {0};
+>> +	struct htt_cmd_hdr *htt_hdr;
+>> +	struct htt_data_tx_desc *desc_hdr;
+>> +	u16 flags1;
+>> +
+>>   	dev_kfree_skb_any(skb);
+>> +
+>> +	if (!htt->disable_tx_comp)
+>> +		return;
+>> +
+>> +	htt_hdr = (struct htt_cmd_hdr *)skb->data;
+> 
+> skb is already freed on the above line (dev_kfree_skb_any) but is
+> still used here, should the dev_kfree_skb_any be moved to the end of
+> this function?
+> 
+skb will not freed on the above line, please see this patch
+https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/drivers/net/wireless/ath/ath10k?h=ath-next&id=30382dd1cf3a141bfaa568ee183c1892090fa79a
