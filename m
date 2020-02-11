@@ -2,91 +2,135 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 88879159003
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Feb 2020 14:34:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6881915903B
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Feb 2020 14:47:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729207AbgBKNei (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 11 Feb 2020 08:34:38 -0500
-Received: from mail25.static.mailgun.info ([104.130.122.25]:39650 "EHLO
-        mail25.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1729120AbgBKNeh (ORCPT
+        id S1728933AbgBKNre (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 11 Feb 2020 08:47:34 -0500
+Received: from mail-lj1-f194.google.com ([209.85.208.194]:38840 "EHLO
+        mail-lj1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728921AbgBKNre (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 11 Feb 2020 08:34:37 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1581428076; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=DCm1dmFf/tnARUKiqpFNAp0JunUgKPiMRXdckXqP5Yw=; b=GGHbyggmzkC/MaF2XJPoSL6XlGM/SGDZWcgtphjJIk4gK+r3Qilfnq9fMwlcFIUOC31Vla1w
- UzPgeO4jU4T16RVGuoP55bVSJFU9lZ8BFI9KUL00sUqQ6Gw4tWS2TYHQMraBXO+Rh8qlMBWV
- fWDHihOZJfGwGVKe0C3cPkMf6KM=
-X-Mailgun-Sending-Ip: 104.130.122.25
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e42ad66.7ff552f82490-smtp-out-n01;
- Tue, 11 Feb 2020 13:34:30 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id EA72CC447A2; Tue, 11 Feb 2020 13:34:29 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 4946AC447A0;
-        Tue, 11 Feb 2020 13:34:28 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 4946AC447A0
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>
-Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH 1/2] ath11k: add thermal cooling device support
-References: <1580860830-12696-1-git-send-email-pradeepc@codeaurora.org>
-Date:   Tue, 11 Feb 2020 15:34:25 +0200
-In-Reply-To: <1580860830-12696-1-git-send-email-pradeepc@codeaurora.org>
-        (Pradeep Kumar Chitrapu's message of "Wed, 5 Feb 2020 05:30:29 +0530")
-Message-ID: <874kvxxn6m.fsf@kamboji.qca.qualcomm.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        Tue, 11 Feb 2020 08:47:34 -0500
+Received: by mail-lj1-f194.google.com with SMTP id w1so11663203ljh.5
+        for <linux-wireless@vger.kernel.org>; Tue, 11 Feb 2020 05:47:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=DZfNH6ANolZKnDhKv27VDyVWZJo5+0w3vd5xrrKIEEw=;
+        b=RAx9kjyYZTKvZKO7aHhSMqL1ePGIRzx8cd3NcZNn6hUs/oOk7O8swnYn7qRjJnb2sO
+         Uyl3Rqd+8buzEns7c+ShlagBk1icyMYJuIAv5wf4FrhbhGhzE1DOGgVoJBg0fvtuw54V
+         Feww94VFsLfwWsUtCZaLrY8uKz9HmYy3cuk754LXtDxNlbie8rIXLXt18vQfRoXQ5+x/
+         z7VHxphOQqcS/Vu0xvJJgQdjeGfuYjIlO7AVPXBpQAcW/MfpHp5K5jEgKI9G5GlPd4SW
+         CXDpXC96FD17DrDDiqb+0NPEGj9OnKqfLv7Y4Y15fO9lzzyBF+qkd3ZYRnA7y1jviJD0
+         zl4Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=DZfNH6ANolZKnDhKv27VDyVWZJo5+0w3vd5xrrKIEEw=;
+        b=lZEk/CGbeBuqj+HzJxZszsqxSegwybYBV6bLlOqsZ/SrDsEFihfbJvujFFdnK6fr8c
+         0NySYOr/Lc3NhZfvKnIHjnf9SNY6lm/A7rjL9eHh9LImlNbY14gDKLl4LTNj5+V1266e
+         OKQojr08rkx9CEKS13zsm0JYXlWuXxts4+M74RAzbC+zPGhxPNPD81rVeRIv0Ea57xKh
+         7G79mnEH8m0k+IPJAIv9X0UnjDHlym/MmncfiCS2FFq0qQW8xYiLrvCg1JYo7Jv06ToZ
+         lBGjN5+4nNFQslXjDSV+iJnukq1ocUlYos6tbqpI5mSXuVMiJ5823Nc7Kk1H8nKopKP8
+         jMkQ==
+X-Gm-Message-State: APjAAAW4GDlPY0NT0PRTZMY/iDP4aeyCbCrxWvaMP8+W38rBiJfjffId
+        hMRVksggAyFVkZnFIJwfGav1KLi5gbudvgXhUMU=
+X-Google-Smtp-Source: APXvYqy5/R8ZV50qNQJCg8/764Ua3uzTlcItYiizvKUJjTJzzWxCb75QoNSxxyCLOuRmmgVCTiw0n3q2oswR98VQzgY=
+X-Received: by 2002:a2e:8916:: with SMTP id d22mr4607570lji.19.1581428851840;
+ Tue, 11 Feb 2020 05:47:31 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20200211114502.4250-1-markus.theil@tu-ilmenau.de>
+In-Reply-To: <20200211114502.4250-1-markus.theil@tu-ilmenau.de>
+From:   Julian Calaby <julian.calaby@gmail.com>
+Date:   Wed, 12 Feb 2020 00:47:20 +1100
+Message-ID: <CAGRGNgXVpqsv8YTG5=5ifGZ-duZNoUdsXXx7DjNZcekVJX94+Q@mail.gmail.com>
+Subject: Re: [RFC PATCH] iw: add clang-based fuzzer for scan IEs
+To:     Markus Theil <markus.theil@tu-ilmenau.de>
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Pradeep Kumar Chitrapu <pradeepc@codeaurora.org> writes:
+Hi Markus,
 
-> Thermal cooling device support is added to control the temperature by
-> throttling the data transmission for the given duration. Throttling is
-> done by suspending all data tx queues by given percentage of time. The
-> thermal device allows user to configure duty cycle.
+On Tue, Feb 11, 2020 at 11:42 PM Markus Theil
+<markus.theil@tu-ilmenau.de> wrote:
 >
-> Throttling can be disabled by setting the duty cycle to 0. The cooling
-> device can be found under /sys/class/thermal/cooling_deviceX/.
-> Corresponding soft link to this device can be found under phy folder.
+> This patch is not ready for inclusion into the repo, but only useful for
+> testing purposes.
 >
-> /sys/class/ieee80211/phy*/device/cooling_device.
+> Signed-off-by: Markus Theil <markus.theil@tu-ilmenau.de>
+
+A couple of minor comments:
+
+> ---
+>  Makefile    | 24 ++++++++++++++++++++----
+>  fuzz.sh     |  5 +++++
+>  fuzz_scan.c |  6 ++++++
+>  iw.c        |  4 ++++
+>  4 files changed, 35 insertions(+), 4 deletions(-)
+>  create mode 100755 fuzz.sh
+>  create mode 100644 fuzz_scan.c
 >
-> To set duty cycle as 40%,
+> diff --git a/Makefile b/Makefile
+> index 90f2251..4ba2daf 100644
+> --- a/Makefile
+> +++ b/Makefile
+> @@ -16,9 +16,9 @@ CFLAGS_EVAL := $(call cc-option,-Wstringop-overflow=4)
+>  CFLAGS ?= -O2 -g
+>  CFLAGS += -Wall -Wextra -Wundef -Wstrict-prototypes -Wno-trigraphs -fno-strict-aliasing -fno-common \
+>           -Werror-implicit-function-declaration -Wsign-compare -Wno-unused-parameter \
+> -         $(CFLAGS_EVAL)
+> +         $(CFLAGS_EVAL) $(EXTRA_CFLAGS)
 >
-> echo 40 >/sys/class/ieee80211/phy*/device/cooling_device/cur_state
+> -_OBJS := $(sort $(patsubst %.c,%.o,$(wildcard *.c)))
+> +_OBJS := $(filter-out iw.o fuzz_scan.o, $(sort $(patsubst %.c,%.o,$(wildcard *.c))))
+>  VERSION_OBJS := $(filter-out version.o, $(_OBJS))
+>  OBJS := $(VERSION_OBJS) version.o
 >
-> Signed-off-by: Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>
+> @@ -102,12 +102,28 @@ nl80211-commands.inc: nl80211.h
+>         @$(NQ) ' CC  ' $@
+>         $(Q)$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
+>
+> +iw_main.o: iw.c iw.h nl80211.h nl80211-commands.inc
+> +       @$(NQ) ' CC  ' $@
+> +       $(Q)$(CC) $(CFLAGS) -DIW_MAIN=1 $(CPPFLAGS) -c -o $@ $<
+> +
+> +iw_no_main.o: iw.c iw.h nl80211.h nl80211-commands.inc
+> +       @$(NQ) ' CC  ' $@
+> +       $(Q)$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
+> +
+>  ifeq ($(IW_ANDROID_BUILD),)
+> -iw:    $(OBJS)
+> +iw:    $(OBJS) iw_main.o
+>         @$(NQ) ' CC  ' iw
+> -       $(Q)$(CC) $(LDFLAGS) $(OBJS) $(LIBS) -o iw
+> +       $(Q)$(CC) $(LDFLAGS) $(OBJS) iw_main.o $(LIBS) -o iw
 
-[...]
+You can use "$^" to get the full list of prerequisites instead of
+spelling it out in both the rule definition and command.
 
-> +++ b/drivers/net/wireless/ath/ath11k/thermal.h
-> @@ -0,0 +1,40 @@
-> +// SPDX-License-Identifier: BSD-3-Clause-Clear
+I.e.
 
-This had a warning:
+$(Q)$(CC) $(LDFLAGS) $^ $(LIBS) -o iw
 
-drivers/net/wireless/ath/ath11k/thermal.h:1: Improper SPDX comment style for 'drivers/net/wireless/ath/ath11k/thermal.h', please use '/*' instead
-drivers/net/wireless/ath/ath11k/thermal.h:1: Missing or malformed SPDX-License-Identifier tag in line 1
 
-I fixed that in the pending branch.
+There's a tool I'm aware of: https://github.com/google/AFL
+
+Which does fuzzing by instrumenting the code under test and iterating
+on input data. I'm not sure if it'll get you anything that LLVM's
+built-in one won't, but it might be worth a try.
+
+Thanks,
 
 -- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Julian Calaby
+
+Email: julian.calaby@gmail.com
+Profile: http://www.google.com/profiles/julian.calaby/
