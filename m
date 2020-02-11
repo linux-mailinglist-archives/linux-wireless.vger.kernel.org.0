@@ -2,77 +2,165 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1DB84159B14
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Feb 2020 22:26:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 11F3B159D8A
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Feb 2020 00:40:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727665AbgBKV0I (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 11 Feb 2020 16:26:08 -0500
-Received: from mail.kernel.org ([198.145.29.99]:49866 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726968AbgBKV0I (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 11 Feb 2020 16:26:08 -0500
-Received: from lore-desk-wlan.redhat.com (unknown [151.48.137.85])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id BD0BA20842;
-        Tue, 11 Feb 2020 21:21:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1581456067;
-        bh=TgdbI0uZGIxxQY8njoFx4hGGwLIdN082SbQg3ORrcZY=;
-        h=From:To:Cc:Subject:Date:From;
-        b=zXw59Basdlt+sBwrZsH+9YLQFcu6aMIEIRusOnFCdS+DK1cYhCg/wWN/wt/Iq0j6c
-         zki9Pk/l23USC2lBpRVACUQFxkssy8cDzZTqXtkrdwchnHoC7V53HyH/zQAYI9zmk6
-         a4ZbT41Slyht2YMQwIp1kzcI1ayaJRzG3sJQaffM=
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org
-Subject: [PATCH] mt76: mt7615: remove rx_mask in mt7615_eeprom_parse_hw_cap
-Date:   Tue, 11 Feb 2020 22:20:54 +0100
-Message-Id: <496a58e997ab842d912c5b5352fa6593dc7cc00f.1581455625.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.24.1
+        id S1728223AbgBKXkM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 11 Feb 2020 18:40:12 -0500
+Received: from cloudserver094114.home.pl ([79.96.170.134]:59099 "EHLO
+        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728069AbgBKXis (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 11 Feb 2020 18:38:48 -0500
+Received: from 79.184.254.199.ipv4.supernova.orange.pl (79.184.254.199) (HELO kreacher.localnet)
+ by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.341)
+ id 5033a46d26c3f379; Wed, 12 Feb 2020 00:38:44 +0100
+From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To:     Linux PM <linux-pm@vger.kernel.org>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        Amit Kucheria <amit.kucheria@linaro.org>,
+        Jeff Kirsher <jeffrey.t.kirsher@intel.com>,
+        intel-wired-lan@lists.osuosl.org,
+        Kalle Valo <kvalo@codeaurora.org>,
+        linux-wireless@vger.kernel.org
+Subject: [PATCH 20/28] drivers: net: Call cpu_latency_qos_*() instead of pm_qos_*()
+Date:   Wed, 12 Feb 2020 00:24:36 +0100
+Message-ID: <10624145.o336LLEsho@kreacher>
+In-Reply-To: <1654227.8mz0SueHsU@kreacher>
+References: <1654227.8mz0SueHsU@kreacher>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Get rid of rx_mask in mt7615_eeprom_parse_hw_cap routine since it is not
-actually used
+From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
-This patch is based on 'mt76: mt7615: fix max_nss in
-mt7615_eeprom_parse_hw_cap'
----
- drivers/net/wireless/mediatek/mt76/mt7615/eeprom.c | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+Call cpu_latency_qos_add/update/remove_request() instead of
+pm_qos_add/update/remove_request(), respectively, because the
+latter are going to be dropped.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.c b/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.c
-index ecf0f4458575..5220c18e711f 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.c
-@@ -94,7 +94,7 @@ static int mt7615_check_eeprom(struct mt76_dev *dev)
- static void mt7615_eeprom_parse_hw_cap(struct mt7615_dev *dev)
- {
- 	u8 *eeprom = dev->mt76.eeprom.data;
--	u8 tx_mask, rx_mask, max_nss;
-+	u8 tx_mask, max_nss;
- 	u32 val;
+No intentional functional impact.
+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+---
+ drivers/net/ethernet/intel/e1000e/netdev.c   | 13 ++++++-------
+ drivers/net/wireless/ath/ath10k/core.c       |  4 ++--
+ drivers/net/wireless/intel/ipw2x00/ipw2100.c | 10 +++++-----
+ 3 files changed, 13 insertions(+), 14 deletions(-)
+
+diff --git a/drivers/net/ethernet/intel/e1000e/netdev.c b/drivers/net/ethernet/intel/e1000e/netdev.c
+index db4ea58bac82..0f02c7a5ee9b 100644
+--- a/drivers/net/ethernet/intel/e1000e/netdev.c
++++ b/drivers/net/ethernet/intel/e1000e/netdev.c
+@@ -3280,10 +3280,10 @@ static void e1000_configure_rx(struct e1000_adapter *adapter)
  
- 	val = FIELD_GET(MT_EE_NIC_WIFI_CONF_BAND_SEL,
-@@ -119,11 +119,6 @@ static void mt7615_eeprom_parse_hw_cap(struct mt7615_dev *dev)
- 	val = mt76_rr(dev, MT_TOP_STRAP_STA);
- 	max_nss = val & MT_TOP_3NSS ? 3 : 4;
+ 		dev_info(&adapter->pdev->dev,
+ 			 "Some CPU C-states have been disabled in order to enable jumbo frames\n");
+-		pm_qos_update_request(&adapter->pm_qos_req, lat);
++		cpu_latency_qos_update_request(&adapter->pm_qos_req, lat);
+ 	} else {
+-		pm_qos_update_request(&adapter->pm_qos_req,
+-				      PM_QOS_DEFAULT_VALUE);
++		cpu_latency_qos_update_request(&adapter->pm_qos_req,
++					       PM_QOS_DEFAULT_VALUE);
+ 	}
  
--	rx_mask =  FIELD_GET(MT_EE_NIC_CONF_RX_MASK,
--			     eeprom[MT_EE_NIC_CONF_0]);
--	if (!rx_mask || rx_mask > max_nss)
--		rx_mask = max_nss;
--
- 	tx_mask =  FIELD_GET(MT_EE_NIC_CONF_TX_MASK,
- 			     eeprom[MT_EE_NIC_CONF_0]);
- 	if (!tx_mask || tx_mask > max_nss)
+ 	/* Enable Receives */
+@@ -4636,8 +4636,7 @@ int e1000e_open(struct net_device *netdev)
+ 		e1000_update_mng_vlan(adapter);
+ 
+ 	/* DMA latency requirement to workaround jumbo issue */
+-	pm_qos_add_request(&adapter->pm_qos_req, PM_QOS_CPU_DMA_LATENCY,
+-			   PM_QOS_DEFAULT_VALUE);
++	cpu_latency_qos_add_request(&adapter->pm_qos_req, PM_QOS_DEFAULT_VALUE);
+ 
+ 	/* before we allocate an interrupt, we must be ready to handle it.
+ 	 * Setting DEBUG_SHIRQ in the kernel makes it fire an interrupt
+@@ -4679,7 +4678,7 @@ int e1000e_open(struct net_device *netdev)
+ 	return 0;
+ 
+ err_req_irq:
+-	pm_qos_remove_request(&adapter->pm_qos_req);
++	cpu_latency_qos_remove_request(&adapter->pm_qos_req);
+ 	e1000e_release_hw_control(adapter);
+ 	e1000_power_down_phy(adapter);
+ 	e1000e_free_rx_resources(adapter->rx_ring);
+@@ -4743,7 +4742,7 @@ int e1000e_close(struct net_device *netdev)
+ 	    !test_bit(__E1000_TESTING, &adapter->state))
+ 		e1000e_release_hw_control(adapter);
+ 
+-	pm_qos_remove_request(&adapter->pm_qos_req);
++	cpu_latency_qos_remove_request(&adapter->pm_qos_req);
+ 
+ 	pm_runtime_put_sync(&pdev->dev);
+ 
+diff --git a/drivers/net/wireless/ath/ath10k/core.c b/drivers/net/wireless/ath/ath10k/core.c
+index 5ec16ce19b69..a202a4eea76a 100644
+--- a/drivers/net/wireless/ath/ath10k/core.c
++++ b/drivers/net/wireless/ath/ath10k/core.c
+@@ -1052,11 +1052,11 @@ static int ath10k_download_fw(struct ath10k *ar)
+ 	}
+ 
+ 	memset(&latency_qos, 0, sizeof(latency_qos));
+-	pm_qos_add_request(&latency_qos, PM_QOS_CPU_DMA_LATENCY, 0);
++	cpu_latency_qos_add_request(&latency_qos, 0);
+ 
+ 	ret = ath10k_bmi_fast_download(ar, address, data, data_len);
+ 
+-	pm_qos_remove_request(&latency_qos);
++	cpu_latency_qos_remove_request(&latency_qos);
+ 
+ 	return ret;
+ }
+diff --git a/drivers/net/wireless/intel/ipw2x00/ipw2100.c b/drivers/net/wireless/intel/ipw2x00/ipw2100.c
+index 536cd729c086..5dfcce77d094 100644
+--- a/drivers/net/wireless/intel/ipw2x00/ipw2100.c
++++ b/drivers/net/wireless/intel/ipw2x00/ipw2100.c
+@@ -1730,7 +1730,7 @@ static int ipw2100_up(struct ipw2100_priv *priv, int deferred)
+ 	/* the ipw2100 hardware really doesn't want power management delays
+ 	 * longer than 175usec
+ 	 */
+-	pm_qos_update_request(&ipw2100_pm_qos_req, 175);
++	cpu_latency_qos_update_request(&ipw2100_pm_qos_req, 175);
+ 
+ 	/* If the interrupt is enabled, turn it off... */
+ 	spin_lock_irqsave(&priv->low_lock, flags);
+@@ -1875,7 +1875,8 @@ static void ipw2100_down(struct ipw2100_priv *priv)
+ 	ipw2100_disable_interrupts(priv);
+ 	spin_unlock_irqrestore(&priv->low_lock, flags);
+ 
+-	pm_qos_update_request(&ipw2100_pm_qos_req, PM_QOS_DEFAULT_VALUE);
++	cpu_latency_qos_update_request(&ipw2100_pm_qos_req,
++				       PM_QOS_DEFAULT_VALUE);
+ 
+ 	/* We have to signal any supplicant if we are disassociating */
+ 	if (associated)
+@@ -6566,8 +6567,7 @@ static int __init ipw2100_init(void)
+ 	printk(KERN_INFO DRV_NAME ": %s, %s\n", DRV_DESCRIPTION, DRV_VERSION);
+ 	printk(KERN_INFO DRV_NAME ": %s\n", DRV_COPYRIGHT);
+ 
+-	pm_qos_add_request(&ipw2100_pm_qos_req, PM_QOS_CPU_DMA_LATENCY,
+-			   PM_QOS_DEFAULT_VALUE);
++	cpu_latency_qos_add_request(&ipw2100_pm_qos_req, PM_QOS_DEFAULT_VALUE);
+ 
+ 	ret = pci_register_driver(&ipw2100_pci_driver);
+ 	if (ret)
+@@ -6594,7 +6594,7 @@ static void __exit ipw2100_exit(void)
+ 			   &driver_attr_debug_level);
+ #endif
+ 	pci_unregister_driver(&ipw2100_pci_driver);
+-	pm_qos_remove_request(&ipw2100_pm_qos_req);
++	cpu_latency_qos_remove_request(&ipw2100_pm_qos_req);
+ }
+ 
+ module_init(ipw2100_init);
 -- 
-2.24.1
+2.16.4
+
+
+
+
 
