@@ -2,98 +2,98 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1BEA8159DA6
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Feb 2020 00:48:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B8E9159F35
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Feb 2020 03:53:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727985AbgBKXsK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 11 Feb 2020 18:48:10 -0500
-Received: from mga06.intel.com ([134.134.136.31]:29089 "EHLO mga06.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727955AbgBKXsK (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 11 Feb 2020 18:48:10 -0500
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by orsmga104.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 11 Feb 2020 15:48:09 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.70,428,1574150400"; 
-   d="asc'?scan'208";a="233621554"
-Received: from jtkirshe-desk1.jf.intel.com ([134.134.177.74])
-  by orsmga003.jf.intel.com with ESMTP; 11 Feb 2020 15:48:09 -0800
-Message-ID: <43c9336e1c0c23e374420586868052e947b75126.camel@intel.com>
-Subject: Re: [PATCH 20/28] drivers: net: Call cpu_latency_qos_*() instead of
- pm_qos_*()
-From:   Jeff Kirsher <jeffrey.t.kirsher@intel.com>
-Reply-To: jeffrey.t.kirsher@intel.com
-To:     "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Linux PM <linux-pm@vger.kernel.org>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Amit Kucheria <amit.kucheria@linaro.org>,
-        intel-wired-lan@lists.osuosl.org,
-        Kalle Valo <kvalo@codeaurora.org>,
-        linux-wireless@vger.kernel.org
-Date:   Tue, 11 Feb 2020 15:48:09 -0800
-In-Reply-To: <10624145.o336LLEsho@kreacher>
-References: <1654227.8mz0SueHsU@kreacher> <10624145.o336LLEsho@kreacher>
-Organization: Intel
-Content-Type: multipart/signed; micalg="pgp-sha256";
-        protocol="application/pgp-signature"; boundary="=-GaZoanpPv4L3uFpFpUoG"
-User-Agent: Evolution 3.34.3 (3.34.3-1.fc31) 
+        id S1727595AbgBLCxW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 11 Feb 2020 21:53:22 -0500
+Received: from mail-ot1-f67.google.com ([209.85.210.67]:42634 "EHLO
+        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727565AbgBLCxW (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 11 Feb 2020 21:53:22 -0500
+Received: by mail-ot1-f67.google.com with SMTP id 66so438087otd.9
+        for <linux-wireless@vger.kernel.org>; Tue, 11 Feb 2020 18:53:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=endlessm-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=9JVHyMRshJXOKEjCgmkdQivIrJqGf+AawLdHBhC7AJw=;
+        b=T9HPV29XEidbB8MdWjbXFEiTqDJTv/vAiDb7QVPAP4HAULyM3argQ6Acc0VnMva2xH
+         JOYY/IB1glXlBe9S3BQL45QnlZwJTktuim6Kqou52+wPWojIbEadnxmVhsAdaXl1Mka4
+         OPINu5IuFV3E1KKCv6W39fGYqnsP9EV2MdKETggIblSgGPmWJKKKcEXFOJn+5hg5pIbI
+         m9lppal0hdHUSHMkcdIMMddD1V5ZYr5RSg89zRfbg6+qW4/XhDr+HEhGjF506gpW09o3
+         V2TeIRJigR54xCbGKQU/5si5nUbfVwunTME+WAW2GZ/BsjEILWTibBuRF7iq8hvucFR4
+         EPjA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=9JVHyMRshJXOKEjCgmkdQivIrJqGf+AawLdHBhC7AJw=;
+        b=hBYeuVGo/77kWEHy7NmdV2pUZbLr4SSmQNXGgabkKogGOKWe1flqwRLfn0lo3kJp8k
+         FHb76tf9k3d05LQ0bctg0hgoH6TkheWbIVrqA0ZsX1wAxsvu73/3nHrvocVrIXI14ewe
+         DAa+vqYx9h3uXP7TzY5CyqOvFN3MG2WfQrVMJ11YtIMuhJezHzuxjS8nK1+MoPRyLIKM
+         isEQqX2obwaduB4bs2fYGaNp6EClmfLk4CjdmW/4sknfLqPK5sL/7vfI5f7XkI3FnER4
+         knFRGJa8nJ3OcFE0/Qv4eiIir59bBobKB7lYeIR3TXekpjgZK7OfBkCdhKZUxlW9cP2h
+         tPJA==
+X-Gm-Message-State: APjAAAWW8YjMMjBdSiAkZrzEsr77NDOsJ/cScJluQAZYqIxHGewa5yyg
+        dMRKrMpLGcR+4hwNfjKueR8fWKOscLVOe3+WzzdNUQ==
+X-Google-Smtp-Source: APXvYqzMSEdApsyStboWvYJN9PDbepQ/B8z1oZa9bKiHzf3j6URnONDRJfCVJ9V80y2KK93CxAb9u43ZCy5+kMw3OIM=
+X-Received: by 2002:a9d:2dea:: with SMTP id g97mr7670904otb.33.1581476000364;
+ Tue, 11 Feb 2020 18:53:20 -0800 (PST)
 MIME-Version: 1.0
+References: <20200205070858.15386-1-yhchuang@realtek.com> <20200205070858.15386-2-yhchuang@realtek.com>
+In-Reply-To: <20200205070858.15386-2-yhchuang@realtek.com>
+From:   Chris Chiu <chiu@endlessm.com>
+Date:   Wed, 12 Feb 2020 10:53:09 +0800
+Message-ID: <CAB4CAwcGBszyKVqhnyFOOZXUVe27f-YPorqV1G8ifKQUPj_MHw@mail.gmail.com>
+Subject: Re: [PATCH 1/7] rtw88: remove unused parameter vif in rtw_lps_pg_info_get()
+To:     Tony Chuang <yhchuang@realtek.com>
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Brian Norris <briannorris@chromium.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-
---=-GaZoanpPv4L3uFpFpUoG
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-On Wed, 2020-02-12 at 00:24 +0100, Rafael J. Wysocki wrote:
-> From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
->=20
-> Call cpu_latency_qos_add/update/remove_request() instead of
-> pm_qos_add/update/remove_request(), respectively, because the
-> latter are going to be dropped.
->=20
-> No intentional functional impact.
->=20
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-
-Acked-by: Jeff Kirsher <jeffrey.t.kirsher@intel.com
-
-For the e1000e changes
-
+On Wed, Feb 5, 2020 at 3:09 PM <yhchuang@realtek.com> wrote:
+>
+> From: Yan-Hsuan Chuang <yhchuang@realtek.com>
+>
+> vif is not used, remove it
+>
+> Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
 > ---
->  drivers/net/ethernet/intel/e1000e/netdev.c   | 13 ++++++-------
->  drivers/net/wireless/ath/ath10k/core.c       |  4 ++--
->  drivers/net/wireless/intel/ipw2x00/ipw2100.c | 10 +++++-----
->  3 files changed, 13 insertions(+), 14 deletions(-)
+Reviewed-by: Chris Chiu <chiu@endlessm.com>
 
-
---=-GaZoanpPv4L3uFpFpUoG
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-Content-Transfer-Encoding: 7bit
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEiTyZWz+nnTrOJ1LZ5W/vlVpL7c4FAl5DPTkACgkQ5W/vlVpL
-7c4a3g//SCBWhCZ3vnz6qb26ASH5pK5fgz/l9o0FmD/sOn6jHfXbGmD3C8zTo6ic
-j1pQ488wAXMKm+Ay6CNyy3tqC3l9Lg1GKu6wQ4R/evm7cCk38Mwg7+sHa5aNdjwo
-6+KmMvHD9aY3Ya+QzsrJg5ZztvW/CWP69SJ1J2JfM9a401S0Us5MX/O2WmdyYo/9
-nXRGTYYj3Aekg1Ghs2JdWkYyiPGUDTic1R8psB8I7rDHZV5zmrrBferSMz8jB9Gk
-ReQE43h5rF0CZKQevMws/J6gO2Ndfbre5BZoXA7wydzs4kkV2O98u0aTc/HBP16l
-q8vf//TZ0cJy+rTEexxKIlWsfdIKQbYsWIenY6GEjR7W0n/chJYQZw40wGODisMd
-Et4ZZwL7fVpWxLxVtSrhlAieD2RpAYyCYl6l9s46lcmHSf59kbx1EyN/EmwrpEIn
-N9wCiCX9s1Nj4kH1CQAdTXhK8InLFKxKdApKSbACTwXyKuxMB/Pk65fbh4BVGTGo
-kX0PZgKNIFo4+YvZZUwin+rioyBGQopgfbgy5z4StXQ2Rd0jEpwrMIu0mxXy39PG
-X9A0+gUBAlsWDr+Jv8NCXpw5Q74vbSzHuUZwi4wpDbwnjqb6WO2yXv9mJXJCgR+b
-xJA8RDrjt9XmBr4zk43EzPZqqPlp5w2oiPH3e7cJ84sDSG7H9Sc=
-=6ivJ
------END PGP SIGNATURE-----
-
---=-GaZoanpPv4L3uFpFpUoG--
-
+>  drivers/net/wireless/realtek/rtw88/fw.c | 5 ++---
+>  1 file changed, 2 insertions(+), 3 deletions(-)
+>
+> diff --git a/drivers/net/wireless/realtek/rtw88/fw.c b/drivers/net/wireless/realtek/rtw88/fw.c
+> index 243441453ead..b765b26b6926 100644
+> --- a/drivers/net/wireless/realtek/rtw88/fw.c
+> +++ b/drivers/net/wireless/realtek/rtw88/fw.c
+> @@ -819,8 +819,7 @@ static struct sk_buff *rtw_lps_pg_dpk_get(struct ieee80211_hw *hw)
+>         return skb;
+>  }
+>
+> -static struct sk_buff *rtw_lps_pg_info_get(struct ieee80211_hw *hw,
+> -                                          struct ieee80211_vif *vif)
+> +static struct sk_buff *rtw_lps_pg_info_get(struct ieee80211_hw *hw)
+>  {
+>         struct rtw_dev *rtwdev = hw->priv;
+>         struct rtw_chip_info *chip = rtwdev->chip;
+> @@ -876,7 +875,7 @@ static struct sk_buff *rtw_get_rsvd_page_skb(struct ieee80211_hw *hw,
+>                 skb_new = rtw_lps_pg_dpk_get(hw);
+>                 break;
+>         case RSVD_LPS_PG_INFO:
+> -               skb_new = rtw_lps_pg_info_get(hw, vif);
+> +               skb_new = rtw_lps_pg_info_get(hw);
+>                 break;
+>         case RSVD_PROBE_REQ:
+>                 ssid = (struct cfg80211_ssid *)rsvd_pkt->ssid;
+> --
+> 2.17.1
+>
