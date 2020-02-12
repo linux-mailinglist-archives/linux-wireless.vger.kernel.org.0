@@ -2,91 +2,119 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D95DA159F41
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Feb 2020 03:56:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A8B6C159FDC
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Feb 2020 05:16:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727775AbgBLC4K (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 11 Feb 2020 21:56:10 -0500
-Received: from rtits2.realtek.com ([211.75.126.72]:55831 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727565AbgBLC4K (ORCPT
+        id S1727912AbgBLEQc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 11 Feb 2020 23:16:32 -0500
+Received: from mail-oi1-f196.google.com ([209.85.167.196]:36159 "EHLO
+        mail-oi1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727602AbgBLEQc (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 11 Feb 2020 21:56:10 -0500
-Authenticated-By: 
-X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID 01C2tvYI029249, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (RTEXMB06.realtek.com.tw[172.21.6.99])
-        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id 01C2tvYI029249
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 12 Feb 2020 10:55:57 +0800
-Received: from RTEXMB04.realtek.com.tw (172.21.6.97) by
- RTEXMB06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Wed, 12 Feb 2020 10:55:57 +0800
-Received: from RTEXMB04.realtek.com.tw (172.21.6.97) by
- RTEXMB04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Wed, 12 Feb 2020 10:55:56 +0800
-Received: from RTEXMB04.realtek.com.tw ([fe80::d9c5:a079:495e:b999]) by
- RTEXMB04.realtek.com.tw ([fe80::d9c5:a079:495e:b999%6]) with mapi id
- 15.01.1779.005; Wed, 12 Feb 2020 10:55:56 +0800
-From:   Tony Chuang <yhchuang@realtek.com>
-To:     Justin Capella <justincapella@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>
-CC:     Brian Norris <briannorris@chromium.org>,
-        Chris Chiu <chiu@endlessm.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>
-Subject: RE: [PATCH] rtw88: disable TX-AMSDU on 2.4G band
-Thread-Topic: [PATCH] rtw88: disable TX-AMSDU on 2.4G band
-Thread-Index: AQHV21OHHItZDat19kepRGReIXwWz6gOfeMAgAEiYICAABDUgIAAAkOAgAABKwCAAWSY3YAAaeIAgAVjDSA=
-Date:   Wed, 12 Feb 2020 02:55:56 +0000
-Message-ID: <2c91e4e7b36d42a8abad6ae356c2869c@realtek.com>
-References: <20200204120614.28861-1-yhchuang@realtek.com>
- <CAB4CAwdFez_WbRQb2jZQtqspSkO5ujL31ZLt4XshNcWiSqHByA@mail.gmail.com>
- <CAMrEMU_KJbwAK-onH0sRUgUPxDuZtD5bPJN6XmF=a9NqpfeJ+g@mail.gmail.com>
- <CA+ASDXPHWNN+TvrJFi_6w+ep_TBtLJ0refKenNb0tc8Vs+YjgQ@mail.gmail.com>
- <CAMrEMU93LScySw4mpidAC5pVHV_NOShP1_GMMsvsAk1QBhdJjQ@mail.gmail.com>
- <CA+ASDXPHXFquF2iXvdxZXhkkLPndkACgenLJwMR_9ON7zZZM3w@mail.gmail.com>
- <87wo8xxueg.fsf@kamboji.qca.qualcomm.com>
- <CAMrEMU-nM1O_iJPVgGg2pL6JYWMdRKdPGe5N2rkfOihdmTeMaw@mail.gmail.com>
-In-Reply-To: <CAMrEMU-nM1O_iJPVgGg2pL6JYWMdRKdPGe5N2rkfOihdmTeMaw@mail.gmail.com>
-Accept-Language: zh-TW, en-US
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.68.175]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        Tue, 11 Feb 2020 23:16:32 -0500
+Received: by mail-oi1-f196.google.com with SMTP id c16so782409oic.3
+        for <linux-wireless@vger.kernel.org>; Tue, 11 Feb 2020 20:16:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=endlessm-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=29Uh+kMpMAjpJIWcFLeIZR24KwnCsHLITYC7GDjpcIw=;
+        b=hzr7KIScne9CXB1YxC0sofe2FfFAt3PQZZz4VQncX4cxCjSrfK4j/tGNByz33fu+t3
+         Y/lfALjhdRcM6sj3bwknBhmH+p0wQDd1CXZPrkyQtmozARkEmD6u3tj1TMmES4ws7XBG
+         uInYbYN2na0VTTRSfZtd0XxZrsvK2pAu9DbCFeRL6uRFYVihpOk7csnp2XB5fS2Rx0RV
+         pnKTk0+c12rL5zuYF6Q/zkDiGFzkt04iaTRJ+Rw9FTQLJ6WrxVdW92aHcoqXTkdBAQ7g
+         ydtqUVAE0eQWF4dVpYhm+evnAntWveUKwERHKcdor/PSeqW0VWFJK5b5Jg76gPXR7Tkn
+         rf+w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=29Uh+kMpMAjpJIWcFLeIZR24KwnCsHLITYC7GDjpcIw=;
+        b=fmfe/8I7NCJI2tlii7hhB8IX5ZXL/sbZPtSLD8IHpF8b94ZwISNePr/c20s8AnSsnK
+         TWZGXE8HL+bUchr1W+g5wgHRaWmdiRaD1WcC/0J+E83XN228VbuUg478YnCxtEMJgz5O
+         9RI1eovi87hUeLLVmzP+pH+L+rCrHPnPoqbBN4x1tfdZnX8pLxZYKwETLb79Za3kGSsW
+         na3LVV+ldHbAbzPgVj8sxtjrlYAeXKI/3WInqE53sz3Y64Zrjv7z9WRC0dPBDl2PcJ9Y
+         gp9hqRpQWJIUO50S8Rcb/d9QsMU7xBfRhScZMKwvw5K2ELXEq6w2dSSdjLH1LPJvQ/li
+         9zlw==
+X-Gm-Message-State: APjAAAW6BzKhSh3iQ3//hid05HS9iB8b3XZlDRrWcc1Ih2NskQE659A2
+        mJbF7LIHAgqE1lc+GszM4pAF2OzMcommbEdg/bUBiA==
+X-Google-Smtp-Source: APXvYqx9TTQc7/6ZuCOTHktbhb3vSrrjvSLCeHOVXbuBIgCnyfBr6X77nUV46Xajx1BzjQVmp00Fc4X1uVskozd5vjU=
+X-Received: by 2002:aca:ab53:: with SMTP id u80mr4890311oie.94.1581480990050;
+ Tue, 11 Feb 2020 20:16:30 -0800 (PST)
 MIME-Version: 1.0
+References: <20200205070858.15386-1-yhchuang@realtek.com> <20200205070858.15386-5-yhchuang@realtek.com>
+In-Reply-To: <20200205070858.15386-5-yhchuang@realtek.com>
+From:   Chris Chiu <chiu@endlessm.com>
+Date:   Wed, 12 Feb 2020 12:16:19 +0800
+Message-ID: <CAB4CAweOc=BWhE3eUaVh3t4QZeAMF7nPxJWzv5j0tFd2nVphZA@mail.gmail.com>
+Subject: Re: [PATCH 4/7] rtw88: move rtw_enter_ips() to the last when config
+To:     Tony Chuang <yhchuang@realtek.com>
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Brian Norris <briannorris@chromium.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-DQo+IFdvdWxkIHNvbWUgb3RoZXIgcGllY2Ugb2YgdGhlIHN0YWNrIGNvdWxkIGRlY2lkZSB0byB1
-c2Ugb3Igbm90IHVzZSBhZ2dyZWdhdGlvbiBmb3IgYSBnaXZlbiBiYW5kL3ZpZi9zdGE/IE1heWJl
-IGp1c3Qgc2VtYW50aWNzIGJ1dCBteSB0aG91Z2h0IHdhcyB0aGUgZHJpdmVyIHJldHVybmluZyBm
-YWxzZSBtYWtlcyBpdCBzZWVtIGluY2FwYWJsZSBvZiBpdC4NCj4gSSBhZ3JlZSBhYm91dCBub3Qg
-cG9sbHV0aW5nIHRoZSBtb2R1bGUgcGFyYW1ldGVycy4gSSdsbCBoYXZlIGEgbG9vayBhdCB0aGUg
-b3V0IG9mIHRyZWUgc3R1ZmYuIFRob3VnaHRzIG9uIGRlYnVnZnMga25vYnMsIG5vdCBuZWNlc3Nh
-cmlseSBwYXRjaCBzcGVjaWZpYyBqdXN0IGluIGdlbmVyYWw/wqANCg0KPiBPbiBTYXQsIEZlYiA4
-LCAyMDIwLCAyOjA5IEFNIEthbGxlIFZhbG8gPGt2YWxvQGNvZGVhdXJvcmEub3JnPiB3cm90ZToN
-Cj4+IEJyaWFuIE5vcnJpcyA8YnJpYW5ub3JyaXNAY2hyb21pdW0ub3JnPiB3cml0ZXM6DQo+Pj4g
-T24gRnJpLCBGZWIgNywgMjAyMCBhdCAxMjo0OCBQTSBKdXN0aW4gQ2FwZWxsYSA8anVzdGluY2Fw
-ZWxsYUBnbWFpbC5jb20+IHdyb3RlOg0KPj4+PiBJIHVuZGVyc3RhbmQsIEknbSBzdWdnZXN0aW5n
-IGRpc2FibGUgYnkgZGVmYXVsdCBidXQgb3B0aW9uIHRvIHJlLWVuYWJsZQ0KPj4+DQo+Pj4gQWgs
-IE9LLiBTZWVtcyByZWFzb25hYmxlLCBJIHN1cHBvc2UsIGFsdGhvdWdoIEkgZG9uJ3QgcmVjYWxs
-IEthbGxlDQo+Pj4gaGF2aW5nIGEgcGFydGljdWxhcmx5LWhpZ2ggb3BpbmlvbiBvZiBtb2R1bGUg
-cGFyYW1ldGVycyBmb3IgdHdlYWtpbmcNCj4+PiBjb3JlIDgwMi4xMSBwcm90b2NvbCBiZWhhdmlv
-cnMuDQoNCj4+IFllYWgsIGV4YWN0bHkuIEFuZCB0aGUgbnVtYmVyIG9mIG1vZHVsZSBwYXJhbWV0
-ZXJzIGEgZHJpdmVyIGhhcyBzaG91bGQNCj4+IGJlIG1pbmltaXNlZC4gSSBrbm93IG91dC1vZi10
-cmVlIHZlbmRvciBkcml2ZXJzIGhhdmUgaW5pIGZpbGVzIHdpdGggMTAwDQo+PiBkaWZmZXJlbnQg
-a25vYnMsIGJ1dCBJIGRvbid0IHRoaW5rIG1vZHVsZSBwYXJhbWV0ZXJzIHNob3VsZCBiZQ0KPj4g
-ZXF1aXZhbGVudCB0byBpbmkgZmlsZXMuDQoNCk1vZHVsZSBwYXJhbWV0ZXJzIGFyZSByZWFsbHkg
-Z29vZCBmb3IgbWUsIHRvby4gQnV0IHdlJ3ZlIGhhZCBkaXNjdXNzaW9uDQpiZWZvcmUgd2l0aCBL
-YWxsZSBhbmQgQnJpYW4sIHRoZXkgYm90aCB3ZXJlIHRyeWluZyBoYXJkIHRvIGF2b2lkIG1vZHVs
-ZQ0KcGFyYW1ldGVycy4NCg0KU28sIEkgdGhpbmsgS2FsbGUgYW5kIEJyaWFuIGRvbid0IHJlY29t
-bWVuZCB1c2luZyBtb2R1bGUgcGFyYW1ldGVycy4NCkFuZCBJIHRoaW5rIGp1c3QgZGlzYWJsZSBp
-dCBvbiAyLjRHIGlzIE9LLCB0aGVyZSdzIG5vIG5lZWQgdG8gZW5hYmxlIGl0IGZvcg0KdGhvc2Ug
-c3VwcG9ydGVkIDJ4MiBkZXZpY2VzLCB1bmxlc3Mgd2UgYXJlIGdvaW5nIHRvIHN1cHBvcnQgM3gz
-LzR4NA0KZGV2aWNlcy4gSWYgdGhhdCBoYXBwZW5zLCB3ZSBjYW4gYWRkIGNvbmRpdGlvbnMgZm9y
-IHRob3NlIDN4My80eDQuDQoNCllhbi1Ic3Vhbg0K
+On Wed, Feb 5, 2020 at 3:09 PM <yhchuang@realtek.com> wrote:
+>
+> From: Ping-Ke Shih <pkshih@realtek.com>
+>
+> When driver is coming up, mac80211 will set changed as ~0 (0xffffffff),
+> and driver could enter IDLE state (power off) before switching channel or
+> other config event. So move rtw_enter_ips() to the last, to make sure the
+> driver completed the config events before going to IDLE state.
+>
+> So, moves leave/enter IPS config to be first/last one according to flag
+> IEEE80211_CONF_IDLE. If there're more configureations we want to add in
+> the future, they must locate between leave/enter IPS.
+>
+> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+> Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
+> ---
+Reviewed-by: Chris Chiu <chiu@endlessm.com>
+>  drivers/net/wireless/realtek/rtw88/mac80211.c | 19 ++++++++++---------
+>  1 file changed, 10 insertions(+), 9 deletions(-)
+>
+> diff --git a/drivers/net/wireless/realtek/rtw88/mac80211.c b/drivers/net/wireless/realtek/rtw88/mac80211.c
+> index 6fc33e11d08c..8742b3f2b5c1 100644
+> --- a/drivers/net/wireless/realtek/rtw88/mac80211.c
+> +++ b/drivers/net/wireless/realtek/rtw88/mac80211.c
+> @@ -75,15 +75,12 @@ static int rtw_ops_config(struct ieee80211_hw *hw, u32 changed)
+>
+>         rtw_leave_lps_deep(rtwdev);
+>
+> -       if (changed & IEEE80211_CONF_CHANGE_IDLE) {
+> -               if (hw->conf.flags & IEEE80211_CONF_IDLE) {
+> -                       rtw_enter_ips(rtwdev);
+> -               } else {
+> -                       ret = rtw_leave_ips(rtwdev);
+> -                       if (ret) {
+> -                               rtw_err(rtwdev, "failed to leave idle state\n");
+> -                               goto out;
+> -                       }
+> +       if ((changed & IEEE80211_CONF_CHANGE_IDLE) &&
+> +           !(hw->conf.flags & IEEE80211_CONF_IDLE)) {
+> +               ret = rtw_leave_ips(rtwdev);
+> +               if (ret) {
+> +                       rtw_err(rtwdev, "failed to leave idle state\n");
+> +                       goto out;
+>                 }
+>         }
+>
+> @@ -99,6 +96,10 @@ static int rtw_ops_config(struct ieee80211_hw *hw, u32 changed)
+>         if (changed & IEEE80211_CONF_CHANGE_CHANNEL)
+>                 rtw_set_channel(rtwdev);
+>
+> +       if ((changed & IEEE80211_CONF_CHANGE_IDLE) &&
+> +           (hw->conf.flags & IEEE80211_CONF_IDLE))
+> +               rtw_enter_ips(rtwdev);
+> +
+>  out:
+>         mutex_unlock(&rtwdev->mutex);
+>         return ret;
+> --
+> 2.17.1
+>
