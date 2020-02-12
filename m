@@ -2,171 +2,102 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EEE2A15A2C6
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Feb 2020 09:05:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8101315A2EA
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Feb 2020 09:09:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728443AbgBLIEq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 12 Feb 2020 03:04:46 -0500
-Received: from mail27.static.mailgun.info ([104.130.122.27]:40827 "EHLO
-        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728192AbgBLIEq (ORCPT
+        id S1728290AbgBLIJV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 12 Feb 2020 03:09:21 -0500
+Received: from mail26.static.mailgun.info ([104.130.122.26]:59919 "EHLO
+        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728250AbgBLIJV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 12 Feb 2020 03:04:46 -0500
+        Wed, 12 Feb 2020 03:09:21 -0500
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1581494686; h=Content-Transfer-Encoding: MIME-Version:
- References: In-Reply-To: Message-Id: Date: Subject: Cc: To: From:
- Sender; bh=6poM4dm4uToDAQPiW0YCOn1TJy+Syg0wP/wDwPtovWA=; b=f0HdjxelBSi4+uoyZzlOrwvz3gp6qB3XKLiWk2DIAjCpoNPrgfitWUwlfIBeJvYbLfTMm6Hi
- +WVcFn9fHuT4Re+u0N5ne9gRBX2c4q89ei7ch8fSFw8/ARCMAlv+zYoZhD0I5LS9asccv0hG
- XXejEw2usl64MjiOxnLYZkvo+Vc=
-X-Mailgun-Sending-Ip: 104.130.122.27
+ s=smtp; t=1581494960; h=Message-ID: References: In-Reply-To: Subject:
+ Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Sender; bh=Dko3IMtvmDqNwXyp+RJBrIiwa098FR4wnLSFnSuXW/Q=;
+ b=Yl2Wi84FOiln3H8UXD2gAP4KD2y3BvAxTKqhrkTYlBR0XibuqUqj+wfWpTXRCamstqT56n+I
+ nexNMMViGvE8UjeagfQ4LEgbjTUAklagX9v5ggWPZBOdU4iI5WAcXpnrVqUvI6bBKj3XDRrq
+ 8pfz5YlfVUKfjGLbivEpmhLGSq4=
+X-Mailgun-Sending-Ip: 104.130.122.26
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e43b198.7fd60ef50960-smtp-out-n02;
- Wed, 12 Feb 2020 08:04:40 -0000 (UTC)
+ by mxa.mailgun.org with ESMTP id 5e43b2b0.7fa9d5d96b90-smtp-out-n01;
+ Wed, 12 Feb 2020 08:09:20 -0000 (UTC)
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 34FD1C4479C; Wed, 12 Feb 2020 08:04:40 +0000 (UTC)
+        id 28EDEC433A2; Wed, 12 Feb 2020 08:09:20 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE,
-        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from wgong-HP-Z240-SFF-Workstation.qca.qualcomm.com (unknown [180.166.53.21])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: wgong)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 860AFC43383;
-        Wed, 12 Feb 2020 08:04:37 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 860AFC43383
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=wgong@codeaurora.org
-From:   Wen Gong <wgong@codeaurora.org>
-To:     ath10k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org, wgong@codeaurora.org
-Subject: [PATCH v9 4/4] ath10k: enable alt data of TX path for sdio
-Date:   Wed, 12 Feb 2020 16:04:15 +0800
-Message-Id: <20200212080415.31265-5-wgong@codeaurora.org>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20200212080415.31265-1-wgong@codeaurora.org>
-References: <20200212080415.31265-1-wgong@codeaurora.org>
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id CA590C43383;
+        Wed, 12 Feb 2020 08:09:19 +0000 (UTC)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Wed, 12 Feb 2020 16:09:19 +0800
+From:   Wen Gong <wgong@codeaurora.org>
+To:     Pi-Hsun Shih <pihsun@chromium.org>
+Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH v8 1/4] ath10k: disable TX complete indication of htt for
+ sdio
+In-Reply-To: <CANdKZ0dTwO7XQQjJ+NKO5jO4qBRJxZPNQu=-UEQOiRPc+dpd=A@mail.gmail.com>
+References: <20191128103030.6429-1-wgong@codeaurora.org>
+ <0101016eb1903db0-ef7063b4-0f42-4a01-8886-327541e6c1a4-000000@us-west-2.amazonses.com>
+ <76bce8e3-e05b-ace6-3edd-54f522be3fe6@chromium.org>
+ <25fd4f59b39c56b2fee208713c7cbc57@codeaurora.org>
+ <CANdKZ0eWJtSuOdZp6Djne21maoBtmSsEm9Rmq9HbLfriY1goWw@mail.gmail.com>
+ <47925cde59e1b94766720d20ddbb4191@codeaurora.org>
+ <CANdKZ0dtnvL66jps41UC+dkybuXA0NMEu=9p2N2T08YDLHb2UQ@mail.gmail.com>
+ <222dd9c33e2afa94cd1ee80c03c7b00d@codeaurora.org>
+ <CANdKZ0fOEZ-Ng1p4FUy6WDC2DKGUMmTQE+JhcTwrf9TjACborA@mail.gmail.com>
+ <e2afd62c108d66fdb3aa590f5ded61a4@codeaurora.org>
+ <CANdKZ0dTwO7XQQjJ+NKO5jO4qBRJxZPNQu=-UEQOiRPc+dpd=A@mail.gmail.com>
+Message-ID: <1d529a7a40379f3244bb655e241e09e2@codeaurora.org>
+X-Sender: wgong@codeaurora.org
+User-Agent: Roundcube Webmail/1.3.9
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The default credit size is 1792 bytes, but the IP mtu is 1500 bytes,
-then it has about 290 bytes's waste for each data packet on sdio
-transfer path for TX bundle, it will reduce the transmission utilization
-ratio for data packet.
-
-This patch enable the small credit size in firmware, firmware will use
-the new credit size 1556 bytes, it will increase the transmission
-utilization ratio for data packet on TX patch. It results in significant
-performance improvement on TX path.
-
-This patch only effect sdio chip, it will not effect PCI, SNOC etc.
-
-Tested with QCA6174 SDIO with firmware
-WLAN.RMH.4.4.1-00017-QCARMSWP-1.
-
-Signed-off-by: Wen Gong <wgong@codeaurora.org>
----
- drivers/net/wireless/ath/ath10k/core.c |  8 ++++----
- drivers/net/wireless/ath/ath10k/htc.c  | 12 ++++++++++--
- drivers/net/wireless/ath/ath10k/htc.h  | 13 +++++++++++--
- 3 files changed, 25 insertions(+), 8 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath10k/core.c b/drivers/net/wireless/ath/ath10k/core.c
-index 8663abaa71d1..91f131b87efc 100644
---- a/drivers/net/wireless/ath/ath10k/core.c
-+++ b/drivers/net/wireless/ath/ath10k/core.c
-@@ -698,10 +698,10 @@ static int ath10k_init_sdio(struct ath10k *ar, enum ath10k_firmware_mode mode)
- 
- 	param |= HI_ACS_FLAGS_SDIO_REDUCE_TX_COMPL_SET;
- 
--	/* Alternate credit size of 1544 as used by SDIO firmware is
--	 * not big enough for mac80211 / native wifi frames. disable it
--	 */
--	param &= ~HI_ACS_FLAGS_ALT_DATA_CREDIT_SIZE;
-+	if (mode == ATH10K_FIRMWARE_MODE_NORMAL)
-+		param |= HI_ACS_FLAGS_ALT_DATA_CREDIT_SIZE;
-+	else
-+		param &= ~HI_ACS_FLAGS_ALT_DATA_CREDIT_SIZE;
- 
- 	if (mode == ATH10K_FIRMWARE_MODE_UTF)
- 		param &= ~HI_ACS_FLAGS_SDIO_SWAP_MAILBOX_SET;
-diff --git a/drivers/net/wireless/ath/ath10k/htc.c b/drivers/net/wireless/ath/ath10k/htc.c
-index cc6a8cb6db77..78fc1695ec37 100644
---- a/drivers/net/wireless/ath/ath10k/htc.c
-+++ b/drivers/net/wireless/ath/ath10k/htc.c
-@@ -957,12 +957,16 @@ int ath10k_htc_wait_target(struct ath10k_htc *htc)
- 	 */
- 	if (htc->control_resp_len >=
- 	    sizeof(msg->hdr) + sizeof(msg->ready_ext)) {
-+		htc->alt_data_credit_size =
-+			__le16_to_cpu(msg->ready_ext.reserved) &
-+			ATH10K_HTC_MSG_READY_EXT_ALT_DATA_MASK;
- 		htc->max_msgs_per_htc_bundle =
- 			min_t(u8, msg->ready_ext.max_msgs_per_htc_bundle,
- 			      HTC_HOST_MAX_MSG_PER_RX_BUNDLE);
- 		ath10k_dbg(ar, ATH10K_DBG_HTC,
--			   "Extended ready message. RX bundle size: %d\n",
--			   htc->max_msgs_per_htc_bundle);
-+			   "Extended ready message. RX bundle size: %d, alt size:%d\n",
-+			   htc->max_msgs_per_htc_bundle,
-+			   htc->alt_data_credit_size);
- 	}
- 
- 	INIT_WORK(&ar->bundle_tx_work, ath10k_htc_bundle_tx_work);
-@@ -1114,6 +1118,10 @@ int ath10k_htc_connect_service(struct ath10k_htc *htc,
- 	ep->tx_credits = tx_alloc;
- 	ep->tx_credit_size = htc->target_credit_size;
- 
-+	if (conn_req->service_id == ATH10K_HTC_SVC_ID_HTT_DATA_MSG &&
-+	    htc->alt_data_credit_size != 0)
-+		ep->tx_credit_size = htc->alt_data_credit_size;
-+
- 	/* copy all the callbacks */
- 	ep->ep_ops = conn_req->ep_ops;
- 
-diff --git a/drivers/net/wireless/ath/ath10k/htc.h b/drivers/net/wireless/ath/ath10k/htc.h
-index d045dbc42158..0d180faf3b77 100644
---- a/drivers/net/wireless/ath/ath10k/htc.h
-+++ b/drivers/net/wireless/ath/ath10k/htc.h
-@@ -119,6 +119,8 @@ enum ath10k_htc_conn_flags {
- #define ATH10K_HTC_CONN_FLAGS_RECV_ALLOC_LSB  8
- };
- 
-+#define ATH10K_HTC_MSG_READY_EXT_ALT_DATA_MASK 0xFFF
-+
- enum ath10k_htc_conn_svc_status {
- 	ATH10K_HTC_CONN_SVC_STATUS_SUCCESS      = 0,
- 	ATH10K_HTC_CONN_SVC_STATUS_NOT_FOUND    = 1,
-@@ -155,8 +157,14 @@ struct ath10k_htc_ready_extended {
- 	struct ath10k_htc_ready base;
- 	u8 htc_version; /* @enum ath10k_htc_version */
- 	u8 max_msgs_per_htc_bundle;
--	u8 pad0;
--	u8 pad1;
-+	union {
-+		__le16 reserved;
-+		struct {
-+			u8 pad0;
-+			u8 pad1;
-+		} __packed;
-+	} __packed;
-+
- } __packed;
- 
- struct ath10k_htc_conn_svc {
-@@ -393,6 +401,7 @@ struct ath10k_htc {
- 	int total_transmit_credits;
- 	int target_credit_size;
- 	u8 max_msgs_per_htc_bundle;
-+	int alt_data_credit_size;
- };
- 
- int ath10k_htc_init(struct ath10k *ar);
--- 
-2.23.0
+On 2020-02-12 15:45, Pi-Hsun Shih wrote:
+> On Wed, Feb 12, 2020 at 3:31 PM Wen Gong <wgong@codeaurora.org> wrote:
+>> 
+>> On 2020-02-12 15:08, Pi-Hsun Shih wrote:
+>> > Tested that the patch fix the kernel panic, thanks.
+>> >
+>> > For the fixed version:
+>> > Tested-by: Pi-Hsun Shih <pihsun@chromium.org>
+>> >
+>> Thanks Pi-Hsun's quick test,
+>> could you also give me the message log:
+>> dmesg | grep ath
+> 
+> [   11.462398] ath10k_sdio mmc1:0001:1: qca6174 hw3.2 sdio target
+> 0x05030000 chip_id 0x00000000 sub 0000:0000
+> [   11.472131] ath10k_sdio mmc1:0001:1: kconfig debug 1 debugfs 1
+> tracing 1 dfs 0 testmode 1
+> [   11.481490] ath10k_sdio mmc1:0001:1: firmware ver
+> WLAN.RMH.4.4.1-00042 api 6 features wowlan,ignore-otp crc32 ac2d4918
+> [   11.667020] ath10k_sdio mmc1:0001:1: board_file api 2 bmi_id 0:4
+> crc32 e74847dc
+> [   12.035056] ath10k_sdio mmc1:0001:1: msg_type: 0
+> [   12.036919] ath10k_sdio mmc1:0001:1: htt-ver 3.73 wmi-op 4 htt-op 3
+> cal otp max-sta 32 raw 0 hwcrypto 1
+> [   12.039878] ath10k_sdio mmc1:0001:1: msg_type: 2
+> [   12.053816] ath10k_sdio mmc1:0001:1: msg_type: 5
+> [   12.235403] ath: EEPROM regdomain: 0x6c
+> [   12.239895] ath: EEPROM indicates we should expect a direct regpair 
+> map
+> [   12.247223] ath: Country alpha2 being used: 00
+> [   12.251973] ath: Regpair used: 0x6c
+Thanks.
+new patch sent:
+https://patchwork.kernel.org/patch/11377827/
