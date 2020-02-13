@@ -2,75 +2,79 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0887015B8C9
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Feb 2020 06:08:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F6FA15B90E
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Feb 2020 06:27:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726098AbgBMFIh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 13 Feb 2020 00:08:37 -0500
-Received: from rtits2.realtek.com ([211.75.126.72]:45605 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725446AbgBMFIh (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 13 Feb 2020 00:08:37 -0500
-Authenticated-By: 
-X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID 01D58O7E014906, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (RTEXMB06.realtek.com.tw[172.21.6.99])
-        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id 01D58O7E014906
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 13 Feb 2020 13:08:24 +0800
-Received: from RTEXMB04.realtek.com.tw (172.21.6.97) by
- RTEXMB06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Thu, 13 Feb 2020 13:08:24 +0800
-Received: from localhost.localdomain (172.21.68.128) by
- RTEXMB04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Thu, 13 Feb 2020 13:08:24 +0800
-From:   <yhchuang@realtek.com>
-To:     <kvalo@codeaurora.org>
-CC:     <linux-wireless@vger.kernel.org>, <briannorris@chromium.org>,
-        <anbeltra@microsoft.com>
-Subject: [PATCH] rtw88: set WIPHY_FLAG_HAS_REMAIN_ON_CHANNEL, mac80211 supports it
-Date:   Thu, 13 Feb 2020 13:08:19 +0800
-Message-ID: <20200213050819.13467-1-yhchuang@realtek.com>
-X-Mailer: git-send-email 2.17.1
+        id S1726098AbgBMF10 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 13 Feb 2020 00:27:26 -0500
+Received: from 220-134-220-36.HINET-IP.hinet.net ([220.134.220.36]:57196 "EHLO
+        ns.kevlo.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726030AbgBMF10 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 13 Feb 2020 00:27:26 -0500
+X-Greylist: delayed 329 seconds by postgrey-1.27 at vger.kernel.org; Thu, 13 Feb 2020 00:27:25 EST
+Received: from ns.kevlo.org (localhost [127.0.0.1])
+        by ns.kevlo.org (8.15.2/8.15.2) with ESMTPS id 01D5K11u015681
+        (version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+        Thu, 13 Feb 2020 13:20:02 +0800 (CST)
+        (envelope-from kevlo@ns.kevlo.org)
+Received: (from kevlo@localhost)
+        by ns.kevlo.org (8.15.2/8.15.2/Submit) id 01D5K1bS015680;
+        Thu, 13 Feb 2020 13:20:01 +0800 (CST)
+        (envelope-from kevlo)
+Date:   Thu, 13 Feb 2020 13:20:00 +0800
+From:   Kevin Lo <kevlo@kevlo.org>
+To:     Yan-Hsuan Chuang <yhchuang@realtek.com>
+Cc:     linux-wireless@vger.kernel.org
+Subject: [PATCH] rtw88: remove unneeded variable
+Message-ID: <20200213052000.GA15671@ns.kevlo.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [172.21.68.128]
-X-ClientProxiedBy: RTEXMB02.realtek.com.tw (172.21.6.95) To
- RTEXMB04.realtek.com.tw (172.21.6.97)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.8.0 (2017-02-23)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Yan-Hsuan Chuang <yhchuang@realtek.com>
+Remove unneeded fab_version variable in rtw_chip_parameter_setup().
+Some of the checks being made were nonsense.
 
-Set wiphy flag WIPHY_FLAG_HAS_REMAIN_ON_CHANNEL, because mac80211
-actually supports it. With the flag set, driver can accept ROC
-event from wpa_supplicant or some other user space tools.
-
-Do note that driver is most used to run a station mode vif and is
-using sw_scan instead of use_chan_ctx. So, if the driver is going
-to use chan_ctx or hw_scan, must make sure that ROC can work.
-
-Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
+Signed-off-by: Kevin Lo <kevlo@kevlo.org>
 ---
- drivers/net/wireless/realtek/rtw88/main.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
-index 2845d2838f7b..38c77678fa5b 100644
---- a/drivers/net/wireless/realtek/rtw88/main.c
-+++ b/drivers/net/wireless/realtek/rtw88/main.c
-@@ -1484,6 +1484,7 @@ int rtw_register_hw(struct rtw_dev *rtwdev, struct ieee80211_hw *hw)
- 				     BIT(NL80211_IFTYPE_MESH_POINT);
+diff d49f2c5063fdd00f896e408a1c1fa63e6d94a767 /home/kevlo/wireless-drivers-next
+blob - 2f73820cd9ba542ebb632267a9460ea87ddcc2a5
+file + drivers/net/wireless/realtek/rtw88/main.c
+--- drivers/net/wireless/realtek/rtw88/main.c
++++ drivers/net/wireless/realtek/rtw88/main.c
+@@ -1118,7 +1118,6 @@ static int rtw_chip_parameter_setup(struct rtw_dev *rt
+ 	}
  
- 	hw->wiphy->flags |= WIPHY_FLAG_SUPPORTS_TDLS |
-+			    WIPHY_FLAG_HAS_REMAIN_ON_CHANNEL |
- 			    WIPHY_FLAG_TDLS_EXTERNAL_SETUP;
+ 	hal->chip_version = rtw_read32(rtwdev, REG_SYS_CFG1);
+-	hal->fab_version = BIT_GET_VENDOR_ID(hal->chip_version) >> 2;
+ 	hal->cut_version = BIT_GET_CHIP_VER(hal->chip_version);
+ 	hal->mp_chip = (hal->chip_version & BIT_RTL_ID) ? 0 : 1;
+ 	if (hal->chip_version & BIT_RF_TYPE_ID) {
+@@ -1132,11 +1131,6 @@ static int rtw_chip_parameter_setup(struct rtw_dev *rt
+ 		hal->antenna_tx = BB_PATH_A;
+ 		hal->antenna_rx = BB_PATH_A;
+ 	}
+-
+-	if (hal->fab_version == 2)
+-		hal->fab_version = 1;
+-	else if (hal->fab_version == 1)
+-		hal->fab_version = 2;
  
- 	hw->wiphy->features |= NL80211_FEATURE_SCAN_RANDOM_MAC_ADDR;
--- 
-2.17.1
-
+ 	efuse->physical_size = chip->phy_efuse_size;
+ 	efuse->logical_size = chip->log_efuse_size;
+blob - c074cef22120a222948cfab03ca0bd25baa80844
+file + drivers/net/wireless/realtek/rtw88/main.h
+--- drivers/net/wireless/realtek/rtw88/main.h
++++ drivers/net/wireless/realtek/rtw88/main.h
+@@ -1527,7 +1527,6 @@ struct rtw_hal {
+ 	u32 rcr;
+ 
+ 	u32 chip_version;
+-	u8 fab_version;
+ 	u8 cut_version;
+ 	u8 mp_chip;
+ 	u8 oem_id;
