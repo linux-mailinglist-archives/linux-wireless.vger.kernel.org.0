@@ -2,79 +2,74 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CBA3315C010
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Feb 2020 15:09:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 85F5515C02B
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Feb 2020 15:14:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730036AbgBMOJC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 13 Feb 2020 09:09:02 -0500
-Received: from mail.bitwise.fi ([109.204.228.163]:48348 "EHLO mail.bitwise.fi"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729957AbgBMOJC (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 13 Feb 2020 09:09:02 -0500
-Received: from localhost (localhost [127.0.0.1])
-        by mail.bitwise.fi (Postfix) with ESMTP id 2392060084;
-        Thu, 13 Feb 2020 16:09:00 +0200 (EET)
-X-Virus-Scanned: Debian amavisd-new at mail.bitwise.fi
-Received: from mail.bitwise.fi ([127.0.0.1])
-        by localhost (mail.bitwise.fi [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id c6A4FDPQcPQt; Thu, 13 Feb 2020 16:08:57 +0200 (EET)
-Received: from [192.168.5.238] (fw1.dmz.bitwise.fi [192.168.69.1])
-        (using TLSv1 with cipher ECDHE-RSA-AES128-SHA (128/128 bits))
+        id S1730124AbgBMOOT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 13 Feb 2020 09:14:19 -0500
+Received: from mail27.static.mailgun.info ([104.130.122.27]:51157 "EHLO
+        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1730079AbgBMOOT (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 13 Feb 2020 09:14:19 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1581603258; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=kyo3XbEx2hGjWaSk+8F9Bsjztqgo2ckJ7k/zktGDo/c=; b=oB75kYBAfzgIpBGYojP/dg4s6oi1G+0/LYaSdjCA5gOVYfzbcowwdB/VTeblcZQ2WRzEJqzk
+ o5B+7tSwjgijly04AmoxmLwVpRGM36O1TZbz8HAZXL3vw7z2+PBdrwUL8SxbuBdWpY7Oz10o
+ yUEWp036dYCWfRQpDI73Ecywb8M=
+X-Mailgun-Sending-Ip: 104.130.122.27
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5e4559a5.7fb481f95228-smtp-out-n03;
+ Thu, 13 Feb 2020 14:13:57 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id A6032C4479C; Thu, 13 Feb 2020 14:13:56 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from x230.qca.qualcomm.com (85-76-96-17-nat.elisa-mobile.fi [85.76.96.17])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        (Authenticated sender: anssiha)
-        by mail.bitwise.fi (Postfix) with ESMTPSA id 126266001C;
-        Thu, 13 Feb 2020 16:08:57 +0200 (EET)
-Subject: Re: rtl8xxxu does not handle ampdu_action properly
-From:   Anssi Hannula <anssi.hannula@bitwise.fi>
-To:     Jes Sorensen <jes.sorensen@gmail.com>
-Cc:     linux-wireless@vger.kernel.org
-References: <4c668c56-1c77-102e-2e33-8ea77f9dc57c@bitwise.fi>
-Message-ID: <a58eedd2-3bea-0783-f7ba-cda8f92dd6c7@bitwise.fi>
-Date:   Thu, 13 Feb 2020 16:08:56 +0200
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.2
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 043F0C43383;
+        Thu, 13 Feb 2020 14:13:53 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 043F0C43383
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Maharaja Kennadyrajan <mkenna@codeaurora.org>
+Cc:     ath10k@lists.infradead.org, Vikas Patel <vikpatel@codeaurora.org>,
+        linux-wireless@vger.kernel.org
+Subject: Re: [PATCH] ath10k: avoid consecutive OTP download to reduce boot time
+References: <1578378195-25780-1-git-send-email-mkenna@codeaurora.org>
+        <f1b4007f9d7e882c4ed2db67dc64cc96@codeaurora.org>
+Date:   Thu, 13 Feb 2020 16:13:51 +0200
+In-Reply-To: <f1b4007f9d7e882c4ed2db67dc64cc96@codeaurora.org> (Maharaja
+        Kennadyrajan's message of "Tue, 07 Jan 2020 12:30:19 +0530")
+Message-ID: <87pnei7exs.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-In-Reply-To: <4c668c56-1c77-102e-2e33-8ea77f9dc57c@bitwise.fi>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Content-Language: en-GB
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 13.2.2020 12.41, Anssi Hannula wrote:
-> Hi!
->
-> Just a quick note that I noticed that rtl8xxxu does not seem to handle
-> ampdu_action properly.
->
-> The driver should react to a IEEE80211_AMPDU_TX_START by either calling
-> ieee80211_start_tx_ba_cb_irqsafe() or by returning
-> IEEE80211_AMPDU_TX_START_IMMEDIATE [1] or by just returning a failure
-> (ath10k, ath11k, wlcore do so for "fw-managed" case), but rtl8xxxu
-> simply sets ampdu_factor and ampdu_density via register writes and then
-> returns 0.
-> I didn't look through the agg-tx code thoroughly on what the end effect
-> of this is but looks like at least ieee80211_agg_tx_operational() will
-> never be called.
+Maharaja Kennadyrajan <mkenna@codeaurora.org> writes:
 
-Looking slightly further, there is a commented-out check for
-(tx_info->flags & IEEE80211_TX_CTL_AMPDU) in rtl8xxxu_tx(). Commenting
-that out may be working around (by always enabling ampdu?) the issue of
-ieee80211_agg_tx_operational() call never having been made.
+> On 2020-01-07 11:53, Maharaja Kennadyrajan wrote:
+>
+> [Maha]: Please ignore/drop this duplicate patch as I sent it already.
+> Regret for inconvenience caused.
 
-> There is a similar issue with IEEE80211_AMPDU_TX_STOP_CONT and
-> ieee80211_stop_tx_ba_cb_irqsafe().
->
-> Quick grepping suggests all other drivers handle these properly.
->
-> [1]
-> https://www.kernel.org/doc/html/latest/driver-api/80211/mac80211-advanced.html?highlight=mac80211#c.ieee80211_ampdu_mlme_action
->
-
+Are you sure I should drop this? In the first patch I think you forgot
+to CC linux-wireless and that's why I didn't see it. But this second
+patch was CCed to linux-wireless and I see it on patchwork. So my plan
+is to put this back to my queue, please let me know if I have
+misunderstood.
 
 -- 
-Anssi Hannula / Bitwise Oy
-+358 503803997
-
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
