@@ -2,79 +2,73 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F6FA15B90E
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Feb 2020 06:27:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5347B15B991
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Feb 2020 07:27:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726098AbgBMF10 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 13 Feb 2020 00:27:26 -0500
-Received: from 220-134-220-36.HINET-IP.hinet.net ([220.134.220.36]:57196 "EHLO
-        ns.kevlo.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726030AbgBMF10 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 13 Feb 2020 00:27:26 -0500
-X-Greylist: delayed 329 seconds by postgrey-1.27 at vger.kernel.org; Thu, 13 Feb 2020 00:27:25 EST
-Received: from ns.kevlo.org (localhost [127.0.0.1])
-        by ns.kevlo.org (8.15.2/8.15.2) with ESMTPS id 01D5K11u015681
-        (version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-        Thu, 13 Feb 2020 13:20:02 +0800 (CST)
-        (envelope-from kevlo@ns.kevlo.org)
-Received: (from kevlo@localhost)
-        by ns.kevlo.org (8.15.2/8.15.2/Submit) id 01D5K1bS015680;
-        Thu, 13 Feb 2020 13:20:01 +0800 (CST)
-        (envelope-from kevlo)
-Date:   Thu, 13 Feb 2020 13:20:00 +0800
-From:   Kevin Lo <kevlo@kevlo.org>
-To:     Yan-Hsuan Chuang <yhchuang@realtek.com>
-Cc:     linux-wireless@vger.kernel.org
-Subject: [PATCH] rtw88: remove unneeded variable
-Message-ID: <20200213052000.GA15671@ns.kevlo.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.8.0 (2017-02-23)
+        id S1729383AbgBMG1y (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 13 Feb 2020 01:27:54 -0500
+Received: from mail26.static.mailgun.info ([104.130.122.26]:39606 "EHLO
+        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726144AbgBMG1y (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 13 Feb 2020 01:27:54 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1581575273; h=Message-Id: Date: Subject: Cc: To: From:
+ Sender; bh=WOciJxsbOtP7DrKFkMKDj7TwpDa2ZDD5O2ypu1OCZlQ=; b=BCAJ/COBZ7S5YDftcWdDaAjfimqID4W3mT5ohoHra+NT1rmSoaHTM+9zXKTi4grCVBiOa9Vb
+ anu6eMfjcg83RVp4+giZo3EjpsjujSmKsjjTV8+B168f+ndWZHFPSvSC1eBfHcbf+tb9yQ78
+ hYtOTnDgpZtX6ZNWGIUOc9Qbe6U=
+X-Mailgun-Sending-Ip: 104.130.122.26
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5e44ec62.7f964620cab0-smtp-out-n01;
+ Thu, 13 Feb 2020 06:27:46 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 3B931C43383; Thu, 13 Feb 2020 06:27:46 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from ybzhao-HP-Z230-SFF-Workstation.ap.qualcomm.com (unknown [180.166.53.21])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: yiboz)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id D3CE4C433A2;
+        Thu, 13 Feb 2020 06:27:43 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org D3CE4C433A2
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=yiboz@codeaurora.org
+From:   Yibo Zhao <yiboz@codeaurora.org>
+To:     ath10k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org, Yibo Zhao <yiboz@codeaurora.org>
+Subject: [PATCH] Allow qca988x family to support ack rssi of tx data packets.
+Date:   Thu, 13 Feb 2020 14:30:51 +0800
+Message-Id: <1581575451-948-1-git-send-email-yiboz@codeaurora.org>
+X-Mailer: git-send-email 1.9.1
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Remove unneeded fab_version variable in rtw_chip_parameter_setup().
-Some of the checks being made were nonsense.
+Hardwares tested : QCA9887
+Firmwares tested : 10.4-3.9.0.1-00036
 
-Signed-off-by: Kevin Lo <kevlo@kevlo.org>
+Signed-off-by: Yibo Zhao <yiboz@codeaurora.org>
 ---
-diff d49f2c5063fdd00f896e408a1c1fa63e6d94a767 /home/kevlo/wireless-drivers-next
-blob - 2f73820cd9ba542ebb632267a9460ea87ddcc2a5
-file + drivers/net/wireless/realtek/rtw88/main.c
---- drivers/net/wireless/realtek/rtw88/main.c
-+++ drivers/net/wireless/realtek/rtw88/main.c
-@@ -1118,7 +1118,6 @@ static int rtw_chip_parameter_setup(struct rtw_dev *rt
- 	}
+ drivers/net/wireless/ath/ath10k/hw.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/net/wireless/ath/ath10k/hw.c b/drivers/net/wireless/ath/ath10k/hw.c
+index 2451e0f..57c58af 100644
+--- a/drivers/net/wireless/ath/ath10k/hw.c
++++ b/drivers/net/wireless/ath/ath10k/hw.c
+@@ -1131,6 +1131,7 @@ static int ath10k_get_htt_tx_data_rssi_pad(struct htt_resp *resp)
  
- 	hal->chip_version = rtw_read32(rtwdev, REG_SYS_CFG1);
--	hal->fab_version = BIT_GET_VENDOR_ID(hal->chip_version) >> 2;
- 	hal->cut_version = BIT_GET_CHIP_VER(hal->chip_version);
- 	hal->mp_chip = (hal->chip_version & BIT_RTL_ID) ? 0 : 1;
- 	if (hal->chip_version & BIT_RF_TYPE_ID) {
-@@ -1132,11 +1131,6 @@ static int rtw_chip_parameter_setup(struct rtw_dev *rt
- 		hal->antenna_tx = BB_PATH_A;
- 		hal->antenna_rx = BB_PATH_A;
- 	}
--
--	if (hal->fab_version == 2)
--		hal->fab_version = 1;
--	else if (hal->fab_version == 1)
--		hal->fab_version = 2;
+ const struct ath10k_hw_ops qca988x_ops = {
+ 	.set_coverage_class = ath10k_hw_qca988x_set_coverage_class,
++	.is_rssi_enable = ath10k_htt_tx_rssi_enable,
+ };
  
- 	efuse->physical_size = chip->phy_efuse_size;
- 	efuse->logical_size = chip->log_efuse_size;
-blob - c074cef22120a222948cfab03ca0bd25baa80844
-file + drivers/net/wireless/realtek/rtw88/main.h
---- drivers/net/wireless/realtek/rtw88/main.h
-+++ drivers/net/wireless/realtek/rtw88/main.h
-@@ -1527,7 +1527,6 @@ struct rtw_hal {
- 	u32 rcr;
- 
- 	u32 chip_version;
--	u8 fab_version;
- 	u8 cut_version;
- 	u8 mp_chip;
- 	u8 oem_id;
+ static int ath10k_qca99x0_rx_desc_get_l3_pad_bytes(struct htt_rx_desc *rxd)
+-- 
+1.9.1
