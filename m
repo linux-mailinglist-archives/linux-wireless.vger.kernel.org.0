@@ -2,35 +2,35 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E8F4715E185
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 Feb 2020 17:19:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 58F2415E1D1
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 Feb 2020 17:20:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404928AbgBNQTE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 14 Feb 2020 11:19:04 -0500
-Received: from mail.kernel.org ([198.145.29.99]:52036 "EHLO mail.kernel.org"
+        id S2392906AbgBNQUv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 14 Feb 2020 11:20:51 -0500
+Received: from mail.kernel.org ([198.145.29.99]:54846 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2404922AbgBNQTD (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 14 Feb 2020 11:19:03 -0500
+        id S2392806AbgBNQUu (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 14 Feb 2020 11:20:50 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 24EB124709;
-        Fri, 14 Feb 2020 16:19:02 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id E82812473D;
+        Fri, 14 Feb 2020 16:20:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1581697142;
-        bh=5ZhS83xKSd69Gd6diFUVn9rulU3syIPi3/tE+VyKn6o=;
+        s=default; t=1581697249;
+        bh=ZDuLrSCJOFSSpKWX6MNOS1abnctVLaODKY4DGqUkhfY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=l0o7HKWseF90c1/VyH/Al4+l6Ib0DLpPxpYwXTzGS49tCSCkK4ZAkViR19YqWuXXc
-         p8UNOkndzmr7Jd0CkJQhSB6nRsozCYekbuJcxytBXxzOJimbmi+h8RDB0QEeMGffmY
-         2fc4GJ2Sm54GN1Nvlxbv8409+WQMM0+/UYOg6LZA=
+        b=kigJa74ND/u7HPje7YkDhhu4gyi+qNzlsaoBs0lT6RiCC9O1BfG41v+mcsZjb3b4H
+         alLRXdd7KSVTKvAfI/io9LpnnZt0OifqF+Miqe77b4VSMfD058M8HBlYbM83g6OGSQ
+         ZiirxU8TguwBWrIo3hlmQefB5bXB7AzpCHXFfcZ8=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Aditya Pakki <pakki001@umn.edu>, Kalle Valo <kvalo@codeaurora.org>,
+Cc:     Qing Xu <m1s5p6688@gmail.com>, Kalle Valo <kvalo@codeaurora.org>,
         Sasha Levin <sashal@kernel.org>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 083/186] orinoco: avoid assertion in case of NULL pointer
-Date:   Fri, 14 Feb 2020 11:15:32 -0500
-Message-Id: <20200214161715.18113-83-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 167/186] mwifiex: Fix possible buffer overflows in mwifiex_cmd_append_vsie_tlv()
+Date:   Fri, 14 Feb 2020 11:16:56 -0500
+Message-Id: <20200214161715.18113-167-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20200214161715.18113-1-sashal@kernel.org>
 References: <20200214161715.18113-1-sashal@kernel.org>
@@ -43,35 +43,41 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Aditya Pakki <pakki001@umn.edu>
+From: Qing Xu <m1s5p6688@gmail.com>
 
-[ Upstream commit c705f9fc6a1736dcf6ec01f8206707c108dca824 ]
+[ Upstream commit b70261a288ea4d2f4ac7cd04be08a9f0f2de4f4d ]
 
-In ezusb_init, if upriv is NULL, the code crashes. However, the caller
-in ezusb_probe can handle the error and print the failure message.
-The patch replaces the BUG_ON call to error return.
+mwifiex_cmd_append_vsie_tlv() calls memcpy() without checking
+the destination size may trigger a buffer overflower,
+which a local user could use to cause denial of service
+or the execution of arbitrary code.
+Fix it by putting the length check before calling memcpy().
 
-Signed-off-by: Aditya Pakki <pakki001@umn.edu>
+Signed-off-by: Qing Xu <m1s5p6688@gmail.com>
 Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intersil/orinoco/orinoco_usb.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/wireless/marvell/mwifiex/scan.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/net/wireless/intersil/orinoco/orinoco_usb.c b/drivers/net/wireless/intersil/orinoco/orinoco_usb.c
-index 95015d74b1c0e..5a64674a5c8da 100644
---- a/drivers/net/wireless/intersil/orinoco/orinoco_usb.c
-+++ b/drivers/net/wireless/intersil/orinoco/orinoco_usb.c
-@@ -1364,7 +1364,8 @@ static int ezusb_init(struct hermes *hw)
- 	int retval;
- 
- 	BUG_ON(in_interrupt());
--	BUG_ON(!upriv);
-+	if (!upriv)
-+		return -EINVAL;
- 
- 	upriv->reply_count = 0;
- 	/* Write the MAGIC number on the simulated registers to keep
+diff --git a/drivers/net/wireless/marvell/mwifiex/scan.c b/drivers/net/wireless/marvell/mwifiex/scan.c
+index c013c94fbf15f..0071c40afe81b 100644
+--- a/drivers/net/wireless/marvell/mwifiex/scan.c
++++ b/drivers/net/wireless/marvell/mwifiex/scan.c
+@@ -2890,6 +2890,13 @@ mwifiex_cmd_append_vsie_tlv(struct mwifiex_private *priv,
+ 			vs_param_set->header.len =
+ 				cpu_to_le16((((u16) priv->vs_ie[id].ie[1])
+ 				& 0x00FF) + 2);
++			if (le16_to_cpu(vs_param_set->header.len) >
++				MWIFIEX_MAX_VSIE_LEN) {
++				mwifiex_dbg(priv->adapter, ERROR,
++					    "Invalid param length!\n");
++				break;
++			}
++
+ 			memcpy(vs_param_set->ie, priv->vs_ie[id].ie,
+ 			       le16_to_cpu(vs_param_set->header.len));
+ 			*buffer += le16_to_cpu(vs_param_set->header.len) +
 -- 
 2.20.1
 
