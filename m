@@ -2,40 +2,40 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B33B15E27F
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 Feb 2020 17:24:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2CA3515E2D9
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 Feb 2020 17:25:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2405765AbgBNQX6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 14 Feb 2020 11:23:58 -0500
-Received: from mail.kernel.org ([198.145.29.99]:60514 "EHLO mail.kernel.org"
+        id S2406075AbgBNQZW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 14 Feb 2020 11:25:22 -0500
+Received: from mail.kernel.org ([198.145.29.99]:34864 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2405756AbgBNQX4 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 14 Feb 2020 11:23:56 -0500
+        id S2406065AbgBNQZV (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 14 Feb 2020 11:25:21 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 203032477E;
-        Fri, 14 Feb 2020 16:23:55 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 8C3A7247B1;
+        Fri, 14 Feb 2020 16:25:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1581697436;
-        bh=NifAf0h26zH6D6CNPvJCP6MoQzO4tqRvgabs6pItoNw=;
+        s=default; t=1581697521;
+        bh=Su6IFIGirrLOUgdlL/sRKT0JfpP+Dg+DC1+yPwb5HTk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=H4LeelStkU6YYJNGgpcIWWy7vrfAPGJhz9ahj1TfiTZ+VcDTAt+U2wHSUhy86Ps1f
-         8LrGoVedD6h+23apqYga3GlLDWnHUfP5CRLflbB65OttsUIbr/OjKeDZXRQIP6AjbD
-         Kidkc6EX7nddBmSrict87O4fjv5AFyhXb/zwSEJU=
+        b=uX45Sz2OgBgKbTgWVPN+yaEORQWJZ28fOtWMh0Mkdm3ViGlz7etjiK0rSdq6Ui5Bu
+         VaxSNfHhj1k8udEKhCBBlR+Aw9SECxhOpnLQV0df1BsP9ufIeZCZPsZ2w4miKC260k
+         vv9Q2sm17IkV8a+T9Z6ZexnY21fNoeKnNsbzTurg=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Colin Ian King <colin.king@canonical.com>,
-        Stanislaw Gruszka <stf_xl@wp.pl>,
+Cc:     Phong Tran <tranmanphong@gmail.com>,
+        Kees Cook <keescook@chromium.org>,
         Kalle Valo <kvalo@codeaurora.org>,
         Sasha Levin <sashal@kernel.org>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.9 122/141] iwlegacy: ensure loop counter addr does not wrap and cause an infinite loop
-Date:   Fri, 14 Feb 2020 11:21:02 -0500
-Message-Id: <20200214162122.19794-122-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.4 045/100] iwlegacy: Fix -Wcast-function-type
+Date:   Fri, 14 Feb 2020 11:23:29 -0500
+Message-Id: <20200214162425.21071-45-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200214162122.19794-1-sashal@kernel.org>
-References: <20200214162122.19794-1-sashal@kernel.org>
+In-Reply-To: <20200214162425.21071-1-sashal@kernel.org>
+References: <20200214162425.21071-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -45,39 +45,70 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+From: Phong Tran <tranmanphong@gmail.com>
 
-[ Upstream commit c2f9a4e4a5abfc84c01b738496b3fd2d471e0b18 ]
+[ Upstream commit da5e57e8a6a3e69dac2937ba63fa86355628fbb2 ]
 
-The loop counter addr is a u16 where as the upper limit of the loop
-is an int. In the unlikely event that the il->cfg->eeprom_size is
-greater than 64K then we end up with an infinite loop since addr will
-wrap around an never reach upper loop limit. Fix this by making addr
-an int.
+correct usage prototype of callback in tasklet_init().
+Report by https://github.com/KSPP/linux/issues/20
 
-Addresses-Coverity: ("Infinite loop")
-Fixes: be663ab67077 ("iwlwifi: split the drivers for agn and legacy devices 3945/4965")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
-Acked-by: Stanislaw Gruszka <stf_xl@wp.pl>
+Signed-off-by: Phong Tran <tranmanphong@gmail.com>
+Reviewed-by: Kees Cook <keescook@chromium.org>
 Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlegacy/common.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/iwlegacy/3945-mac.c | 5 +++--
+ drivers/net/wireless/iwlegacy/4965-mac.c | 5 +++--
+ 2 files changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlegacy/common.c b/drivers/net/wireless/intel/iwlegacy/common.c
-index 140b6ea8f7cc4..db2373fe8ac32 100644
---- a/drivers/net/wireless/intel/iwlegacy/common.c
-+++ b/drivers/net/wireless/intel/iwlegacy/common.c
-@@ -717,7 +717,7 @@ il_eeprom_init(struct il_priv *il)
- 	u32 gp = _il_rd(il, CSR_EEPROM_GP);
- 	int sz;
- 	int ret;
--	u16 addr;
-+	int addr;
+diff --git a/drivers/net/wireless/iwlegacy/3945-mac.c b/drivers/net/wireless/iwlegacy/3945-mac.c
+index af1b3e6839fa6..775f5e7791d48 100644
+--- a/drivers/net/wireless/iwlegacy/3945-mac.c
++++ b/drivers/net/wireless/iwlegacy/3945-mac.c
+@@ -1399,8 +1399,9 @@ il3945_dump_nic_error_log(struct il_priv *il)
+ }
  
- 	/* allocate eeprom */
- 	sz = il->cfg->eeprom_size;
+ static void
+-il3945_irq_tasklet(struct il_priv *il)
++il3945_irq_tasklet(unsigned long data)
+ {
++	struct il_priv *il = (struct il_priv *)data;
+ 	u32 inta, handled = 0;
+ 	u32 inta_fh;
+ 	unsigned long flags;
+@@ -3432,7 +3433,7 @@ il3945_setup_deferred_work(struct il_priv *il)
+ 	setup_timer(&il->watchdog, il_bg_watchdog, (unsigned long)il);
+ 
+ 	tasklet_init(&il->irq_tasklet,
+-		     (void (*)(unsigned long))il3945_irq_tasklet,
++		     il3945_irq_tasklet,
+ 		     (unsigned long)il);
+ }
+ 
+diff --git a/drivers/net/wireless/iwlegacy/4965-mac.c b/drivers/net/wireless/iwlegacy/4965-mac.c
+index 04b0349a6ad9f..b1925bdb11718 100644
+--- a/drivers/net/wireless/iwlegacy/4965-mac.c
++++ b/drivers/net/wireless/iwlegacy/4965-mac.c
+@@ -4361,8 +4361,9 @@ il4965_synchronize_irq(struct il_priv *il)
+ }
+ 
+ static void
+-il4965_irq_tasklet(struct il_priv *il)
++il4965_irq_tasklet(unsigned long data)
+ {
++	struct il_priv *il = (struct il_priv *)data;
+ 	u32 inta, handled = 0;
+ 	u32 inta_fh;
+ 	unsigned long flags;
+@@ -6257,7 +6258,7 @@ il4965_setup_deferred_work(struct il_priv *il)
+ 	setup_timer(&il->watchdog, il_bg_watchdog, (unsigned long)il);
+ 
+ 	tasklet_init(&il->irq_tasklet,
+-		     (void (*)(unsigned long))il4965_irq_tasklet,
++		     il4965_irq_tasklet,
+ 		     (unsigned long)il);
+ }
+ 
 -- 
 2.20.1
 
