@@ -2,36 +2,38 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 324BE15DE13
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 Feb 2020 17:03:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B4C5A15DE8E
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 Feb 2020 17:05:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389202AbgBNQBz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 14 Feb 2020 11:01:55 -0500
-Received: from mail.kernel.org ([198.145.29.99]:47730 "EHLO mail.kernel.org"
+        id S2389783AbgBNQDy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 14 Feb 2020 11:03:54 -0500
+Received: from mail.kernel.org ([198.145.29.99]:51438 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2389195AbgBNQBy (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 14 Feb 2020 11:01:54 -0500
+        id S2389771AbgBNQDx (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 14 Feb 2020 11:03:53 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 52EBE2082F;
-        Fri, 14 Feb 2020 16:01:53 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 2A9312082F;
+        Fri, 14 Feb 2020 16:03:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1581696114;
-        bh=ySzhj8c70C8x5NMMk9F+nbbW1KMpZZRpt6qN/z686dI=;
+        s=default; t=1581696232;
+        bh=mhrvYHx10N0wbmHbF+nYPvCSAlLYueoEr/8yc7/phfA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vjjmxWS0WM+UDHCKvFJyuJWQ8lJLarjIXji39xY9CHGIcGCctAP7/iYXv9bTEdupT
-         EbYAVgHq1zSjnQ3uUASpMMlO3CUtxEPraM4un+hV/A75ZAtp4YpO77SGhzFPNX6ln+
-         ydk0Vikj5xFW2j7hkWB3Idok35CL7QpLFdZ6p0VI=
+        b=iEIvUq9jRyEkL5ucZqjo9ZgLjzBt7qa38jpZEE+zdHkFqE606/YZ4qPVE+brKtG7/
+         rCh2oeAL0iT9Ei/foCzmAE8AX8SYu/sdtV+8TgbdgUyMQOxK7mZ9EAUXAGvly/VUhq
+         yNPno4NThR0Glt/fudECaVWg2Ui2coPsnleJH/KY=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Jeffrey Hugo <jeffrey.l.hugo@gmail.com>,
+Cc:     Ping-Ke Shih <pkshih@realtek.com>,
+        Yan-Hsuan Chuang <yhchuang@realtek.com>,
+        Chris Chiu <chiu@endlessm.com>,
         Kalle Valo <kvalo@codeaurora.org>,
-        Sasha Levin <sashal@kernel.org>, ath10k@lists.infradead.org,
+        Sasha Levin <sashal@kernel.org>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 003/459] ath10k: Fix qmi init error handling
-Date:   Fri, 14 Feb 2020 10:54:13 -0500
-Message-Id: <20200214160149.11681-3-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 093/459] rtw88: fix rate mask for 1SS chip
+Date:   Fri, 14 Feb 2020 10:55:43 -0500
+Message-Id: <20200214160149.11681-93-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20200214160149.11681-1-sashal@kernel.org>
 References: <20200214160149.11681-1-sashal@kernel.org>
@@ -44,47 +46,66 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Jeffrey Hugo <jeffrey.l.hugo@gmail.com>
+From: Ping-Ke Shih <pkshih@realtek.com>
 
-[ Upstream commit f8a595a87e93a33a10879f4b856be818d2f53c84 ]
+[ Upstream commit 35a68fa5f96a80797e11b6952a47c5a84939a7bf ]
 
-When ath10k_qmi_init() fails, the error handling does not free the irq
-resources, which causes an issue if we EPROBE_DEFER as we'll attempt to
-(re-)register irqs which are already registered.
+The rate mask is used to tell firmware the supported rate depends on
+negotiation. We loop 2 times for all VHT/HT 2SS rate mask first, and then
+only keep the part according to chip's NSS.
 
-Fix this by doing a power off since we just powered on the hardware, and
-freeing the irqs as error handling.
+This commit fixes the logic error of '&' operations for VHT/HT rate, and
+we should run this logic before adding legacy rate.
 
-Fixes: ba94c753ccb4 ("ath10k: add QMI message handshake for wcn3990 client")
-Signed-off-by: Jeffrey Hugo <jeffrey.l.hugo@gmail.com>
+To access HT MCS map, index 0/1 represent MCS 0-7/8-15 respectively. Use
+NL80211_BAND_xxx is incorrect, so fix it as well.
+
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
+Reviewed-by: Chris Chiu <chiu@endlessm.com>
 Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath10k/snoc.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtw88/main.c | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath10k/snoc.c b/drivers/net/wireless/ath/ath10k/snoc.c
-index fc15a0037f0e6..63607c3b8e818 100644
---- a/drivers/net/wireless/ath/ath10k/snoc.c
-+++ b/drivers/net/wireless/ath/ath10k/snoc.c
-@@ -1729,13 +1729,16 @@ static int ath10k_snoc_probe(struct platform_device *pdev)
- 	ret = ath10k_qmi_init(ar, msa_size);
- 	if (ret) {
- 		ath10k_warn(ar, "failed to register wlfw qmi client: %d\n", ret);
--		goto err_core_destroy;
-+		goto err_power_off;
+diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
+index 806af37192bc2..88e2252bf8a2b 100644
+--- a/drivers/net/wireless/realtek/rtw88/main.c
++++ b/drivers/net/wireless/realtek/rtw88/main.c
+@@ -556,8 +556,8 @@ void rtw_update_sta_info(struct rtw_dev *rtwdev, struct rtw_sta_info *si)
+ 		if (sta->vht_cap.cap & IEEE80211_VHT_CAP_SHORT_GI_80)
+ 			is_support_sgi = true;
+ 	} else if (sta->ht_cap.ht_supported) {
+-		ra_mask |= (sta->ht_cap.mcs.rx_mask[NL80211_BAND_5GHZ] << 20) |
+-			   (sta->ht_cap.mcs.rx_mask[NL80211_BAND_2GHZ] << 12);
++		ra_mask |= (sta->ht_cap.mcs.rx_mask[1] << 20) |
++			   (sta->ht_cap.mcs.rx_mask[0] << 12);
+ 		if (sta->ht_cap.cap & IEEE80211_HT_CAP_RX_STBC)
+ 			stbc_en = HT_STBC_EN;
+ 		if (sta->ht_cap.cap & IEEE80211_HT_CAP_LDPC_CODING)
+@@ -567,6 +567,9 @@ void rtw_update_sta_info(struct rtw_dev *rtwdev, struct rtw_sta_info *si)
+ 			is_support_sgi = true;
  	}
  
- 	ath10k_dbg(ar, ATH10K_DBG_SNOC, "snoc probe\n");
- 
- 	return 0;
- 
-+err_power_off:
-+	ath10k_hw_power_off(ar);
++	if (efuse->hw_cap.nss == 1)
++		ra_mask &= RA_MASK_VHT_RATES_1SS | RA_MASK_HT_RATES_1SS;
 +
- err_free_irq:
- 	ath10k_snoc_free_irq(ar);
+ 	if (hal->current_band_type == RTW_BAND_5G) {
+ 		ra_mask |= (u64)sta->supp_rates[NL80211_BAND_5GHZ] << 4;
+ 		if (sta->vht_cap.vht_supported) {
+@@ -600,11 +603,6 @@ void rtw_update_sta_info(struct rtw_dev *rtwdev, struct rtw_sta_info *si)
+ 		wireless_set = 0;
+ 	}
  
+-	if (efuse->hw_cap.nss == 1) {
+-		ra_mask &= RA_MASK_VHT_RATES_1SS;
+-		ra_mask &= RA_MASK_HT_RATES_1SS;
+-	}
+-
+ 	switch (sta->bandwidth) {
+ 	case IEEE80211_STA_RX_BW_80:
+ 		bw_mode = RTW_CHANNEL_WIDTH_80;
 -- 
 2.20.1
 
