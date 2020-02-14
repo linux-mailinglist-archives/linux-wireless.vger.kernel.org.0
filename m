@@ -2,141 +2,97 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B6C7D15D44B
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 Feb 2020 10:04:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 73FD715D44A
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 Feb 2020 10:03:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729008AbgBNJEA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 14 Feb 2020 04:04:00 -0500
-Received: from rtits2.realtek.com ([211.75.126.72]:35653 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728522AbgBNJEA (ORCPT
+        id S1728895AbgBNJDm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 14 Feb 2020 04:03:42 -0500
+Received: from s3.sipsolutions.net ([144.76.43.62]:38960 "EHLO
+        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726179AbgBNJDl (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 14 Feb 2020 04:04:00 -0500
-Authenticated-By: 
-X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID 01E93qYX032387, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (RTEXMB06.realtek.com.tw[172.21.6.99])
-        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id 01E93qYX032387
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 14 Feb 2020 17:03:52 +0800
-Received: from RTEXMB04.realtek.com.tw (172.21.6.97) by
- RTEXMB06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Fri, 14 Feb 2020 17:03:52 +0800
-Received: from localhost.localdomain (172.21.68.128) by
- RTEXMB04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Fri, 14 Feb 2020 17:03:51 +0800
-From:   <yhchuang@realtek.com>
-To:     <kvalo@codeaurora.org>
-CC:     <linux-wireless@vger.kernel.org>, <briannorris@chromium.org>
-Subject: [PATCH 2/2] rtw88: add a debugfs entry to enable/disable coex mechanism
-Date:   Fri, 14 Feb 2020 17:03:34 +0800
-Message-ID: <20200214090334.330-3-yhchuang@realtek.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200214090334.330-1-yhchuang@realtek.com>
-References: <20200214090334.330-1-yhchuang@realtek.com>
+        Fri, 14 Feb 2020 04:03:41 -0500
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.93)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1j2Wst-00BCvZ-HS; Fri, 14 Feb 2020 10:03:39 +0100
+Message-ID: <d6fdf3419a323bdf5008bcd51c36b92977f5b872.camel@sipsolutions.net>
+Subject: Re: [PATCH V2 1/3] nl80211: add support for setting fixed HE
+ rate/gi/ltf
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     John Crispin <john@phrozen.org>, Kalle Valo <kvalo@codeaurora.org>
+Cc:     linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
+        Miles Hu <milehu@codeaurora.org>
+Date:   Fri, 14 Feb 2020 10:03:38 +0100
+In-Reply-To: <20200204103514.18111-1-john@phrozen.org>
+References: <20200204103514.18111-1-john@phrozen.org>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.34.2 (3.34.2-1.fc31) 
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [172.21.68.128]
-X-ClientProxiedBy: RTEXMB03.realtek.com.tw (172.21.6.96) To
- RTEXMB04.realtek.com.tw (172.21.6.97)
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Yan-Hsuan Chuang <yhchuang@realtek.com>
+On Tue, 2020-02-04 at 11:35 +0100, John Crispin wrote:
+> 
+> +	[NL80211_TXRATE_HE] = {
+> +		.type = NLA_EXACT_LEN,
+> +		.len = sizeof(struct nl80211_txrate_he),
+> +	},
+> +	[NL80211_TXRATE_HE_GI] =  NLA_POLICY_RANGE(NLA_U8,
+> +						   NL80211_RATE_INFO_HE_GI_0_8,
+> +						   NL80211_RATE_INFO_HE_GI_3_2),
+> +	[NL80211_TXRATE_HE_LTF] = NLA_POLICY_RANGE(NLA_U8,
+> +						   NL80211_RATE_INFO_HE_1XLTF,
+> +						   NL80211_RATE_INFO_HE_4XLTF),
+>  };
 
-Sometimes we need to stop the coex mechanism to debug, so that we
-can manually control the device through various outer commands.
-Hence, add a new debugfs coex_enable to allow us to enable/disable
-the coex mechanism when driver is running.
+Thanks for this :-)
 
-To disable coex
-echo 0 > /sys/kernel/debug/ieee80211/phyX/rtw88/coex_enable
+> +		if (tb[NL80211_TXRATE_HE]) {
+> +			if (!he_set_mcs_mask(info, sband, nla_data(tb[NL80211_TXRATE_HE]),
+> +					     mask->control[band].he_mcs))
+> +				return -EINVAL;
 
-To enable coex
-echo 1 > /sys/kernel/debug/ieee80211/phyX/rtw88/coex_enable
+Maybe unify these into a single condition?
 
-To check coex dm is enabled or not
-cat /sys/kernel/debug/ieee80211/phyX/rtw88/coex_enable
+if (tb[...] &&
+    he_set_...
+	return -EINVAL;
 
-Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
----
- drivers/net/wireless/realtek/rtw88/debug.c | 46 ++++++++++++++++++++++
- 1 file changed, 46 insertions(+)
+Seems nicer to me. Especially with the lines already being so long.
 
-diff --git a/drivers/net/wireless/realtek/rtw88/debug.c b/drivers/net/wireless/realtek/rtw88/debug.c
-index b2d264270752..b00eee68b3fb 100644
---- a/drivers/net/wireless/realtek/rtw88/debug.c
-+++ b/drivers/net/wireless/realtek/rtw88/debug.c
-@@ -706,6 +706,46 @@ static int rtw_debugfs_get_coex_info(struct seq_file *m, void *v)
- 	return 0;
- }
- 
-+static ssize_t rtw_debugfs_set_coex_enable(struct file *filp,
-+					   const char __user *buffer,
-+					   size_t count, loff_t *loff)
-+{
-+	struct seq_file *seqpriv = (struct seq_file *)filp->private_data;
-+	struct rtw_debugfs_priv *debugfs_priv = seqpriv->private;
-+	struct rtw_dev *rtwdev = debugfs_priv->rtwdev;
-+	struct rtw_coex *coex = &rtwdev->coex;
-+	char tmp[32 + 1];
-+	u32 enable;
-+	int num;
-+
-+	rtw_debugfs_copy_from_user(tmp, sizeof(tmp), buffer, count, 2);
-+
-+	num = sscanf(tmp, "%d", &enable);
-+
-+	if (num != 1) {
-+		rtw_warn(rtwdev, "invalid arguments\n");
-+		return num;
-+	}
-+
-+	mutex_lock(&rtwdev->mutex);
-+	coex->stop_dm = enable == 0;
-+	mutex_unlock(&rtwdev->mutex);
-+
-+	return count;
-+}
-+
-+static int rtw_debugfs_get_coex_enable(struct seq_file *m, void *v)
-+{
-+	struct rtw_debugfs_priv *debugfs_priv = m->private;
-+	struct rtw_dev *rtwdev = debugfs_priv->rtwdev;
-+	struct rtw_coex *coex = &rtwdev->coex;
-+
-+	seq_printf(m, "coex mechanism %s\n",
-+		   coex->stop_dm ? "disabled" : "enabled");
-+
-+	return 0;
-+}
-+
- #define rtw_debug_impl_mac(page, addr)				\
- static struct rtw_debugfs_priv rtw_debug_priv_mac_ ##page = {	\
- 	.cb_read = rtw_debug_get_mac_page,			\
-@@ -796,6 +836,11 @@ static struct rtw_debugfs_priv rtw_debug_priv_phy_info = {
- 	.cb_read = rtw_debugfs_get_phy_info,
- };
- 
-+static struct rtw_debugfs_priv rtw_debug_priv_coex_enable = {
-+	.cb_write = rtw_debugfs_set_coex_enable,
-+	.cb_read = rtw_debugfs_get_coex_enable,
-+};
-+
- static struct rtw_debugfs_priv rtw_debug_priv_coex_info = {
- 	.cb_read = rtw_debugfs_get_coex_info,
- };
-@@ -831,6 +876,7 @@ void rtw_debugfs_init(struct rtw_dev *rtwdev)
- 	rtw_debugfs_add_rw(rsvd_page);
- 	rtw_debugfs_add_r(phy_info);
- 	rtw_debugfs_add_r(coex_info);
-+	rtw_debugfs_add_rw(coex_enable);
- 	rtw_debugfs_add_r(mac_0);
- 	rtw_debugfs_add_r(mac_1);
- 	rtw_debugfs_add_r(mac_2);
--- 
-2.17.1
+> +		}
+> +		if (tb[NL80211_TXRATE_HE_GI]) {
+> +			mask->control[band].he_gi =
+> +				nla_get_u8(tb[NL80211_TXRATE_HE_GI]);
+> +			if (mask->control[band].he_gi > NL80211_RATE_INFO_HE_GI_3_2)
+> +				return -EINVAL;
+
+This is not needed with the policy, is it?
+
+> +		}
+> +		if (tb[NL80211_TXRATE_HE_LTF]) {
+> +			mask->control[band].he_ltf =
+> +				nla_get_u8(tb[NL80211_TXRATE_HE_LTF]);
+> +			if (mask->control[band].he_ltf > NL80211_RATE_INFO_HE_4XLTF)
+> +				return -EINVAL;
+
+Same here.
+
+>  			if (!(rdev->wiphy.bands[band]->ht_cap.ht_supported ||
+> -			      rdev->wiphy.bands[band]->vht_cap.vht_supported))
+> +			      rdev->wiphy.bands[band]->vht_cap.vht_supported ||
+> +			      (rdev->wiphy.bands[band]->iftype_data &&
+> +			       rdev->wiphy.bands[band]->iftype_data->he_cap.has_he)))
+>  				return -EINVAL;
+
+And now we get to why I replied at all and didn't just fix it up ;-)
+
+That can't be right, iftype_data is an array of pointers, you're
+basically always taking the first one?
+
+johannes
 
