@@ -2,39 +2,40 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A677015E305
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 Feb 2020 17:26:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 83B0815E859
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 Feb 2020 17:59:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2406336AbgBNQ0M (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 14 Feb 2020 11:26:12 -0500
-Received: from mail.kernel.org ([198.145.29.99]:36622 "EHLO mail.kernel.org"
+        id S2392670AbgBNQQx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 14 Feb 2020 11:16:53 -0500
+Received: from mail.kernel.org ([198.145.29.99]:47900 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2405805AbgBNQ0L (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 14 Feb 2020 11:26:11 -0500
+        id S2404337AbgBNQQw (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 14 Feb 2020 11:16:52 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D528E2469C;
-        Fri, 14 Feb 2020 16:26:09 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 45742246AA;
+        Fri, 14 Feb 2020 16:16:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1581697570;
-        bh=Msyk1cdC74gCUwFHsL3d+mXMPBLRt4kqfz6pcAzPmww=;
+        s=default; t=1581697012;
+        bh=EaFYSLWwD9gekvKvQ2KakS9kbGL/UANEAU+960lU688=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SSzYdirpBYtdaB3B5TtRjF8wEsQacaBI8yx9V/MOV2j0BFUj1NieBk9gOwpZn2WzG
-         j79bITZKYqJfZ9tEj7ycUL/C6g1VSaLuytG+Kbub64kLVE+aqSdB/ecct7BoiFdxOK
-         Y4+0rdsflRo4iW4asZ7AtCEZClBka+F0YIe3sZpY=
+        b=dL4WgqyxlRpbHCaiSBhEX8C4azTb+cLjpSv+frnl2E4ND+gMjngzA5tvXy2eul5NA
+         4/2hr3U/xqDWDIb/OGm5acaQCL1beQnznV/PS9VVzEeYtyo2vaGvDmwvq2fLFrf7+s
+         CSKVmHchXOYJ9T2dljpUjHFvSluqepOu/MP1GiZQ=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     YueHaibing <yuehaibing@huawei.com>, Hulk Robot <hulkci@huawei.com>,
+Cc:     Andrei Otcheretianski <andrei.otcheretianski@intel.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
         Kalle Valo <kvalo@codeaurora.org>,
         Sasha Levin <sashal@kernel.org>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.4 085/100] rtlwifi: rtl8192ee: remove unused variables
-Date:   Fri, 14 Feb 2020 11:24:09 -0500
-Message-Id: <20200214162425.21071-85-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 242/252] iwlwifi: mvm: Fix thermal zone registration
+Date:   Fri, 14 Feb 2020 11:11:37 -0500
+Message-Id: <20200214161147.15842-242-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200214162425.21071-1-sashal@kernel.org>
-References: <20200214162425.21071-1-sashal@kernel.org>
+In-Reply-To: <20200214161147.15842-1-sashal@kernel.org>
+References: <20200214161147.15842-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -44,156 +45,62 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: YueHaibing <yuehaibing@huawei.com>
+From: Andrei Otcheretianski <andrei.otcheretianski@intel.com>
 
-[ Upstream commit 253e5aba937973fd29bd5c559d21e35d0642242e ]
+[ Upstream commit baa6cf8450b72dcab11f37c47efce7c5b9b8ad0f ]
 
-drivers/net/wireless/realtek/rtlwifi/rtl8192ee/dm.c:15:18:
- warning: ofdmswing_table defined but not used [-Wunused-const-variable=]
-drivers/net/wireless/realtek/rtlwifi/rtl8192ee/dm.c:61:17:
- warning: cckswing_table_ch1ch13 defined but not used [-Wunused-const-variable=]
-drivers/net/wireless/realtek/rtlwifi/rtl8192ee/dm.c:97:17:
- warning: cckswing_table_ch14 defined but not used [-Wunused-const-variable=]
+Use a unique name when registering a thermal zone. Otherwise, with
+multiple NICS, we hit the following warning during the unregistration.
 
-These variable is never used, so remove them.
+WARNING: CPU: 2 PID: 3525 at fs/sysfs/group.c:255
+ RIP: 0010:sysfs_remove_group+0x80/0x90
+ Call Trace:
+  dpm_sysfs_remove+0x57/0x60
+  device_del+0x5a/0x350
+  ? sscanf+0x4e/0x70
+  device_unregister+0x1a/0x60
+  hwmon_device_unregister+0x4a/0xa0
+  thermal_remove_hwmon_sysfs+0x175/0x1d0
+  thermal_zone_device_unregister+0x188/0x1e0
+  iwl_mvm_thermal_exit+0xe7/0x100 [iwlmvm]
+  iwl_op_mode_mvm_stop+0x27/0x180 [iwlmvm]
+  _iwl_op_mode_stop.isra.3+0x2b/0x50 [iwlwifi]
+  iwl_opmode_deregister+0x90/0xa0 [iwlwifi]
+  __exit_compat+0x10/0x2c7 [iwlmvm]
+  __x64_sys_delete_module+0x13f/0x270
+  do_syscall_64+0x5a/0x110
+  entry_SYSCALL_64_after_hwframe+0x44/0xa9
 
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+Signed-off-by: Andrei Otcheretianski <andrei.otcheretianski@intel.com>
+Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../wireless/realtek/rtlwifi/rtl8192ee/dm.c   | 118 ------------------
- 1 file changed, 118 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/tt.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/dm.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/dm.c
-index 459f3d0efa2f7..7c3cbca0883d6 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/dm.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/dm.c
-@@ -34,124 +34,6 @@
- #include "fw.h"
- #include "trx.h"
- 
--static const u32 ofdmswing_table[OFDM_TABLE_SIZE] = {
--	0x7f8001fe,		/* 0, +6.0dB */
--	0x788001e2,		/* 1, +5.5dB */
--	0x71c001c7,		/* 2, +5.0dB */
--	0x6b8001ae,		/* 3, +4.5dB */
--	0x65400195,		/* 4, +4.0dB */
--	0x5fc0017f,		/* 5, +3.5dB */
--	0x5a400169,		/* 6, +3.0dB */
--	0x55400155,		/* 7, +2.5dB */
--	0x50800142,		/* 8, +2.0dB */
--	0x4c000130,		/* 9, +1.5dB */
--	0x47c0011f,		/* 10, +1.0dB */
--	0x43c0010f,		/* 11, +0.5dB */
--	0x40000100,		/* 12, +0dB */
--	0x3c8000f2,		/* 13, -0.5dB */
--	0x390000e4,		/* 14, -1.0dB */
--	0x35c000d7,		/* 15, -1.5dB */
--	0x32c000cb,		/* 16, -2.0dB */
--	0x300000c0,		/* 17, -2.5dB */
--	0x2d4000b5,		/* 18, -3.0dB */
--	0x2ac000ab,		/* 19, -3.5dB */
--	0x288000a2,		/* 20, -4.0dB */
--	0x26000098,		/* 21, -4.5dB */
--	0x24000090,		/* 22, -5.0dB */
--	0x22000088,		/* 23, -5.5dB */
--	0x20000080,		/* 24, -6.0dB */
--	0x1e400079,		/* 25, -6.5dB */
--	0x1c800072,		/* 26, -7.0dB */
--	0x1b00006c,		/* 27. -7.5dB */
--	0x19800066,		/* 28, -8.0dB */
--	0x18000060,		/* 29, -8.5dB */
--	0x16c0005b,		/* 30, -9.0dB */
--	0x15800056,		/* 31, -9.5dB */
--	0x14400051,		/* 32, -10.0dB */
--	0x1300004c,		/* 33, -10.5dB */
--	0x12000048,		/* 34, -11.0dB */
--	0x11000044,		/* 35, -11.5dB */
--	0x10000040,		/* 36, -12.0dB */
--	0x0f00003c,		/* 37, -12.5dB */
--	0x0e400039,		/* 38, -13.0dB */
--	0x0d800036,		/* 39, -13.5dB */
--	0x0cc00033,		/* 40, -14.0dB */
--	0x0c000030,		/* 41, -14.5dB */
--	0x0b40002d,		/* 42, -15.0dB */
--};
--
--static const u8 cckswing_table_ch1ch13[CCK_TABLE_SIZE][8] = {
--	{0x36, 0x35, 0x2e, 0x25, 0x1c, 0x12, 0x09, 0x04}, /* 0, +0dB */
--	{0x33, 0x32, 0x2b, 0x23, 0x1a, 0x11, 0x08, 0x04}, /* 1, -0.5dB */
--	{0x30, 0x2f, 0x29, 0x21, 0x19, 0x10, 0x08, 0x03}, /* 2, -1.0dB */
--	{0x2d, 0x2d, 0x27, 0x1f, 0x18, 0x0f, 0x08, 0x03}, /* 3, -1.5dB */
--	{0x2b, 0x2a, 0x25, 0x1e, 0x16, 0x0e, 0x07, 0x03}, /* 4, -2.0dB */
--	{0x28, 0x28, 0x22, 0x1c, 0x15, 0x0d, 0x07, 0x03}, /* 5, -2.5dB */
--	{0x26, 0x25, 0x21, 0x1b, 0x14, 0x0d, 0x06, 0x03}, /* 6, -3.0dB */
--	{0x24, 0x23, 0x1f, 0x19, 0x13, 0x0c, 0x06, 0x03}, /* 7, -3.5dB */
--	{0x22, 0x21, 0x1d, 0x18, 0x11, 0x0b, 0x06, 0x02}, /* 8, -4.0dB */
--	{0x20, 0x20, 0x1b, 0x16, 0x11, 0x08, 0x05, 0x02}, /* 9, -4.5dB */
--	{0x1f, 0x1e, 0x1a, 0x15, 0x10, 0x0a, 0x05, 0x02}, /* 10, -5.0dB */
--	{0x1d, 0x1c, 0x18, 0x14, 0x0f, 0x0a, 0x05, 0x02}, /* 11, -5.5dB */
--	{0x1b, 0x1a, 0x17, 0x13, 0x0e, 0x09, 0x04, 0x02}, /* 12, -6.0dB */
--	{0x1a, 0x19, 0x16, 0x12, 0x0d, 0x09, 0x04, 0x02}, /* 13, -6.5dB */
--	{0x18, 0x17, 0x15, 0x11, 0x0c, 0x08, 0x04, 0x02}, /* 14, -7.0dB */
--	{0x17, 0x16, 0x13, 0x10, 0x0c, 0x08, 0x04, 0x02}, /* 15, -7.5dB */
--	{0x16, 0x15, 0x12, 0x0f, 0x0b, 0x07, 0x04, 0x01}, /* 16, -8.0dB */
--	{0x14, 0x14, 0x11, 0x0e, 0x0b, 0x07, 0x03, 0x02}, /* 17, -8.5dB */
--	{0x13, 0x13, 0x10, 0x0d, 0x0a, 0x06, 0x03, 0x01}, /* 18, -9.0dB */
--	{0x12, 0x12, 0x0f, 0x0c, 0x09, 0x06, 0x03, 0x01}, /* 19, -9.5dB */
--	{0x11, 0x11, 0x0f, 0x0c, 0x09, 0x06, 0x03, 0x01}, /* 20, -10.0dB */
--	{0x10, 0x10, 0x0e, 0x0b, 0x08, 0x05, 0x03, 0x01}, /* 21, -10.5dB */
--	{0x0f, 0x0f, 0x0d, 0x0b, 0x08, 0x05, 0x03, 0x01}, /* 22, -11.0dB */
--	{0x0e, 0x0e, 0x0c, 0x0a, 0x08, 0x05, 0x02, 0x01}, /* 23, -11.5dB */
--	{0x0d, 0x0d, 0x0c, 0x0a, 0x07, 0x05, 0x02, 0x01}, /* 24, -12.0dB */
--	{0x0d, 0x0c, 0x0b, 0x09, 0x07, 0x04, 0x02, 0x01}, /* 25, -12.5dB */
--	{0x0c, 0x0c, 0x0a, 0x09, 0x06, 0x04, 0x02, 0x01}, /* 26, -13.0dB */
--	{0x0b, 0x0b, 0x0a, 0x08, 0x06, 0x04, 0x02, 0x01}, /* 27, -13.5dB */
--	{0x0b, 0x0a, 0x09, 0x08, 0x06, 0x04, 0x02, 0x01}, /* 28, -14.0dB */
--	{0x0a, 0x0a, 0x09, 0x07, 0x05, 0x03, 0x02, 0x01}, /* 29, -14.5dB */
--	{0x0a, 0x09, 0x08, 0x07, 0x05, 0x03, 0x02, 0x01}, /* 30, -15.0dB */
--	{0x09, 0x09, 0x08, 0x06, 0x05, 0x03, 0x01, 0x01}, /* 31, -15.5dB */
--	{0x09, 0x08, 0x07, 0x06, 0x04, 0x03, 0x01, 0x01}  /* 32, -16.0dB */
--};
--
--static const u8 cckswing_table_ch14[CCK_TABLE_SIZE][8] = {
--	{0x36, 0x35, 0x2e, 0x1b, 0x00, 0x00, 0x00, 0x00}, /* 0, +0dB */
--	{0x33, 0x32, 0x2b, 0x19, 0x00, 0x00, 0x00, 0x00}, /* 1, -0.5dB */
--	{0x30, 0x2f, 0x29, 0x18, 0x00, 0x00, 0x00, 0x00}, /* 2, -1.0dB */
--	{0x2d, 0x2d, 0x17, 0x17, 0x00, 0x00, 0x00, 0x00}, /* 3, -1.5dB */
--	{0x2b, 0x2a, 0x25, 0x15, 0x00, 0x00, 0x00, 0x00}, /* 4, -2.0dB */
--	{0x28, 0x28, 0x24, 0x14, 0x00, 0x00, 0x00, 0x00}, /* 5, -2.5dB */
--	{0x26, 0x25, 0x21, 0x13, 0x00, 0x00, 0x00, 0x00}, /* 6, -3.0dB */
--	{0x24, 0x23, 0x1f, 0x12, 0x00, 0x00, 0x00, 0x00}, /* 7, -3.5dB */
--	{0x22, 0x21, 0x1d, 0x11, 0x00, 0x00, 0x00, 0x00}, /* 8, -4.0dB */
--	{0x20, 0x20, 0x1b, 0x10, 0x00, 0x00, 0x00, 0x00}, /* 9, -4.5dB */
--	{0x1f, 0x1e, 0x1a, 0x0f, 0x00, 0x00, 0x00, 0x00}, /* 10, -5.0dB */
--	{0x1d, 0x1c, 0x18, 0x0e, 0x00, 0x00, 0x00, 0x00}, /* 11, -5.5dB */
--	{0x1b, 0x1a, 0x17, 0x0e, 0x00, 0x00, 0x00, 0x00}, /* 12, -6.0dB */
--	{0x1a, 0x19, 0x16, 0x0d, 0x00, 0x00, 0x00, 0x00}, /* 13, -6.5dB */
--	{0x18, 0x17, 0x15, 0x0c, 0x00, 0x00, 0x00, 0x00}, /* 14, -7.0dB */
--	{0x17, 0x16, 0x13, 0x0b, 0x00, 0x00, 0x00, 0x00}, /* 15, -7.5dB */
--	{0x16, 0x15, 0x12, 0x0b, 0x00, 0x00, 0x00, 0x00}, /* 16, -8.0dB */
--	{0x14, 0x14, 0x11, 0x0a, 0x00, 0x00, 0x00, 0x00}, /* 17, -8.5dB */
--	{0x13, 0x13, 0x10, 0x0a, 0x00, 0x00, 0x00, 0x00}, /* 18, -9.0dB */
--	{0x12, 0x12, 0x0f, 0x09, 0x00, 0x00, 0x00, 0x00}, /* 19, -9.5dB */
--	{0x11, 0x11, 0x0f, 0x09, 0x00, 0x00, 0x00, 0x00}, /* 20, -10.0dB */
--	{0x10, 0x10, 0x0e, 0x08, 0x00, 0x00, 0x00, 0x00}, /* 21, -10.5dB */
--	{0x0f, 0x0f, 0x0d, 0x08, 0x00, 0x00, 0x00, 0x00}, /* 22, -11.0dB */
--	{0x0e, 0x0e, 0x0c, 0x07, 0x00, 0x00, 0x00, 0x00}, /* 23, -11.5dB */
--	{0x0d, 0x0d, 0x0c, 0x07, 0x00, 0x00, 0x00, 0x00}, /* 24, -12.0dB */
--	{0x0d, 0x0c, 0x0b, 0x06, 0x00, 0x00, 0x00, 0x00}, /* 25, -12.5dB */
--	{0x0c, 0x0c, 0x0a, 0x06, 0x00, 0x00, 0x00, 0x00}, /* 26, -13.0dB */
--	{0x0b, 0x0b, 0x0a, 0x06, 0x00, 0x00, 0x00, 0x00}, /* 27, -13.5dB */
--	{0x0b, 0x0a, 0x09, 0x05, 0x00, 0x00, 0x00, 0x00}, /* 28, -14.0dB */
--	{0x0a, 0x0a, 0x09, 0x05, 0x00, 0x00, 0x00, 0x00}, /* 29, -14.5dB */
--	{0x0a, 0x09, 0x08, 0x05, 0x00, 0x00, 0x00, 0x00}, /* 30, -15.0dB */
--	{0x09, 0x09, 0x08, 0x05, 0x00, 0x00, 0x00, 0x00}, /* 31, -15.5dB */
--	{0x09, 0x08, 0x07, 0x04, 0x00, 0x00, 0x00, 0x00}  /* 32, -16.0dB */
--};
--
- static void rtl92ee_dm_false_alarm_counter_statistics(struct ieee80211_hw *hw)
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/tt.c b/drivers/net/wireless/intel/iwlwifi/mvm/tt.c
+index 1232f63278eb6..319103f4b432e 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/tt.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/tt.c
+@@ -739,7 +739,8 @@ static  struct thermal_zone_device_ops tzone_ops = {
+ static void iwl_mvm_thermal_zone_register(struct iwl_mvm *mvm)
  {
- 	u32 ret_value;
+ 	int i;
+-	char name[] = "iwlwifi";
++	char name[16];
++	static atomic_t counter = ATOMIC_INIT(0);
+ 
+ 	if (!iwl_mvm_is_tt_in_fw(mvm)) {
+ 		mvm->tz_device.tzone = NULL;
+@@ -749,6 +750,7 @@ static void iwl_mvm_thermal_zone_register(struct iwl_mvm *mvm)
+ 
+ 	BUILD_BUG_ON(ARRAY_SIZE(name) >= THERMAL_NAME_LENGTH);
+ 
++	sprintf(name, "iwlwifi_%u", atomic_inc_return(&counter) & 0xFF);
+ 	mvm->tz_device.tzone = thermal_zone_device_register(name,
+ 							IWL_MAX_DTS_TRIPS,
+ 							IWL_WRITABLE_TRIPS_MSK,
 -- 
 2.20.1
 
