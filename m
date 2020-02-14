@@ -2,85 +2,177 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BA6AE15D538
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 Feb 2020 11:07:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1462815D677
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 Feb 2020 12:20:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729198AbgBNKHK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 14 Feb 2020 05:07:10 -0500
-Received: from mail26.static.mailgun.info ([104.130.122.26]:11763 "EHLO
-        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1729007AbgBNKHJ (ORCPT
+        id S1729102AbgBNLTz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 14 Feb 2020 06:19:55 -0500
+Received: from s3.sipsolutions.net ([144.76.43.62]:43012 "EHLO
+        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728864AbgBNLTz (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 14 Feb 2020 05:07:09 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1581674829; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=Eo7YKUPx35g+SU/GalvQpdatVLjLaWnjOwyhAovi/ZU=; b=TXJQJKyp7Cwwfy/u2tHjIotYhoviz1hxaYX2msbEKG3Jyo8acxaQke4FQ2quxO+nMlECXDM8
- FX0sVj27qGbhUl6zyvffyNE68dXpZOrYj/J/GvQS5DKKS/bikVncfmhyqlW64bqlpCqAm9BI
- 6s4/spoUCAYa5j0nzdlOmPDBdK0=
-X-Mailgun-Sending-Ip: 104.130.122.26
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e467141.7f7ab5f20500-smtp-out-n02;
- Fri, 14 Feb 2020 10:06:57 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 6E0ECC4479D; Fri, 14 Feb 2020 10:06:57 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 47314C433A2;
-        Fri, 14 Feb 2020 10:06:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 47314C433A2
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Felix Fietkau <nbd@nbd.name>
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>
-Subject: Re: pull request: mt76 2019-02-14
-References: <923dcdff-f205-ebd8-4e58-36ba466ef740@nbd.name>
-Date:   Fri, 14 Feb 2020 12:06:53 +0200
-In-Reply-To: <923dcdff-f205-ebd8-4e58-36ba466ef740@nbd.name> (Felix Fietkau's
-        message of "Fri, 14 Feb 2020 10:25:14 +0100")
-Message-ID: <87tv3tqy82.fsf@kamboji.qca.qualcomm.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        Fri, 14 Feb 2020 06:19:55 -0500
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.93)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1j2Z0i-00BUEg-PQ; Fri, 14 Feb 2020 12:19:52 +0100
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     netdev@vger.kernel.org
+Cc:     linux-wireless@vger.kernel.org
+Subject: pull-request: mac80211-next next-2020-02-14
+Date:   Fri, 14 Feb 2020 12:19:46 +0100
+Message-Id: <20200214111947.55727-1-johannes@sipsolutions.net>
+X-Mailer: git-send-email 2.24.1
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Felix Fietkau <nbd@nbd.name> writes:
+Hi,
 
-> Hi Kalle,
->
-> here's my first pull request for 5.7
->
-> - Felix
->
-> The following changes since commit aa7619a39acef91c5a6904f3ada7d0f20e2ad25e:
->
->   rtw88: Fix incorrect beamformee role setting (2020-02-13 12:07:25 +0200)
->
-> are available in the Git repository at:
->
->   https://github.com/nbd168/wireless tags/mt76-for-kvalo-2020-02-14
->
-> for you to fetch changes up to 0987295750574adc59999b8fb9890834574bc4e2:
->
->   mt76: Introduce mt76_mcu data structure (2020-02-14 10:17:46 +0100)
->
-> ----------------------------------------------------------------
-> mt76 patches for 5.6
+And also for net-next, some updates. I have more in the
+queue, but want to get these in first, then forward my
+tree, and then get the others to avoid conflicts etc.
 
-The tag mention 5.6 but I think you meant 5.7. I don't have a problem
-with that, just mentioning in case it bothers you :)
+Please pull and let me know if there's any problem.
 
--- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Thanks,
+johannes
+
+
+
+The following changes since commit fe23d63422c83cd7c8154dc7faef6af97be4b948:
+
+  Merge branch '1GbE' of git://git.kernel.org/pub/scm/linux/kernel/git/jkirsher/next-queue (2019-12-31 21:43:31 -0800)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211-next.git tags/mac80211-next-for-net-next-2020-02-14
+
+for you to fetch changes up to 1f6e0baa703d31002c312c3e423c108b04325df0:
+
+  mac80211: allow setting queue_len for drivers not using wake_tx_queue (2020-02-14 09:59:35 +0100)
+
+----------------------------------------------------------------
+A few big new things:
+ * 802.11 frame encapsulation offload support
+ * more HE (802.11ax) support, including some for 6 GHz band
+ * powersave in hwsim, for better testing
+
+Of course as usual there are various cleanups and small fixes.
+
+----------------------------------------------------------------
+Aditya Pakki (1):
+      mac80211: Remove redundant assertion
+
+Andrei Otcheretianski (1):
+      mac80211: Accept broadcast probe responses on 6GHz band
+
+Ben Greear (1):
+      mac80211: Fix setting txpower to zero
+
+Daniel Gabay (1):
+      mac80211: update condition for HE disablement
+
+Haim Dreyfuss (2):
+      cfg80211: add no HE indication to the channel flag
+      mac80211: check whether HE connection is allowed by the reg domain
+
+Ilan Peer (3):
+      mac80211: Handle SMPS mode changes only in AP mode
+      mac80211: Remove support for changing AP SMPS mode
+      cfg80211/mac80211: Allow user space to register for station Rx authentication
+
+Johannes Berg (7):
+      Merge remote-tracking branch 'net-next/master' into mac80211-next
+      mac80211_hwsim: remove maximum TX power
+      mac80211: simplify and improve HT/VHT/HE disable code
+      mac80211: refactor extended element parsing
+      mac80211: allow changing TX-related netdev features
+      mac80211: remove supported channels element in 6 GHz if ECSA support
+      mac80211: set station bandwidth from HE capability
+
+John Crispin (6):
+      trivial: mac80211: fix indentation
+      mac80211: add 802.11 encapsulation offloading support
+      nl80211: add handling for BSS color
+      mac80211: add handling for BSS color
+      mac80211: fix 11w when using encapsulation offloading
+      mac80211: allow setting queue_len for drivers not using wake_tx_queue
+
+Lorenzo Bianconi (1):
+      mac80211: debugfs: improve airtime_flags handler readability
+
+Luca Coelho (1):
+      mac80211: make ieee80211_wep_init() return void
+
+Markus Theil (3):
+      mac80211: fix tx status for no ack cases
+      nl80211: add src and dst addr attributes for control port tx/rx
+      mac80211: support NL80211_EXT_FEATURE_CONTROL_PORT_OVER_NL80211_MAC_ADDRS
+
+Pi-Hsun Shih (1):
+      wireless: Use offsetof instead of custom macro.
+
+Sergey Matyukevich (1):
+      ieee80211: add WPA3 OWE AKM suite selector
+
+Shaul Triebitz (1):
+      mac80211: parse also the RSNXE IE
+
+Thomas Pedersen (2):
+      mac80211_hwsim: add power save support
+      mac80211: add ieee80211_is_any_nullfunc()
+
+Toke Høiland-Jørgensen (1):
+      mac80211: Always show airtime debugfs file when TXQs are enabled
+
+Tova Mussai (1):
+      mac80211: HE: set RX NSS
+
+Veerendranath Jakkam (1):
+      cfg80211: Enhance the AKM advertizement to support per interface.
+
+Zvika Yehudai (1):
+      ieee80211: fix 'the' doubling in comments
+
+ drivers/net/wireless/ath/ath10k/mac.c             |   3 +-
+ drivers/net/wireless/ath/ath9k/main.c             |   3 +
+ drivers/net/wireless/ath/ath9k/xmit.c             |   7 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c |   2 +-
+ drivers/net/wireless/mac80211_hwsim.c             |  11 +-
+ include/linux/ieee80211.h                         |  26 +++-
+ include/net/cfg80211.h                            |  63 +++++++-
+ include/net/mac80211.h                            |  40 ++++-
+ include/uapi/linux/nl80211.h                      |  80 +++++++++-
+ include/uapi/linux/wireless.h                     |   5 +-
+ net/mac80211/cfg.c                                | 106 +------------
+ net/mac80211/debugfs.c                            |  56 ++++++-
+ net/mac80211/debugfs_netdev.c                     |  13 +-
+ net/mac80211/debugfs_sta.c                        |   6 +-
+ net/mac80211/he.c                                 |   4 +
+ net/mac80211/ht.c                                 |  64 +++-----
+ net/mac80211/ieee80211_i.h                        |  28 +++-
+ net/mac80211/iface.c                              |  82 +++++++++-
+ net/mac80211/key.c                                |  19 ++-
+ net/mac80211/main.c                               |  33 ++--
+ net/mac80211/mlme.c                               | 139 +++++++++++------
+ net/mac80211/rx.c                                 |  14 +-
+ net/mac80211/sta_info.c                           |  16 +-
+ net/mac80211/status.c                             |  91 ++++++++++-
+ net/mac80211/tx.c                                 | 177 +++++++++++++++++++++-
+ net/mac80211/util.c                               |  83 ++++++----
+ net/mac80211/vht.c                                |  58 ++++++-
+ net/mac80211/wep.c                                |   4 +-
+ net/mac80211/wep.h                                |   2 +-
+ net/wireless/core.h                               |   2 +-
+ net/wireless/mlme.c                               |  33 +++-
+ net/wireless/nl80211.c                            | 109 ++++++++++++-
+ net/wireless/rdev-ops.h                           |   8 +-
+ net/wireless/reg.c                                |   2 +
+ net/wireless/trace.h                              |  27 ++--
+ 35 files changed, 1078 insertions(+), 338 deletions(-)
+
