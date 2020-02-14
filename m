@@ -2,39 +2,37 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 96E2015E63E
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 Feb 2020 17:47:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A82C515E5CC
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 Feb 2020 17:44:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389144AbgBNQqJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 14 Feb 2020 11:46:09 -0500
-Received: from mail.kernel.org ([198.145.29.99]:56156 "EHLO mail.kernel.org"
+        id S2394034AbgBNQnh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 14 Feb 2020 11:43:37 -0500
+Received: from mail.kernel.org ([198.145.29.99]:56992 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2392966AbgBNQVb (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 14 Feb 2020 11:21:31 -0500
+        id S2393153AbgBNQWA (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 14 Feb 2020 11:22:00 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 37118246A6;
-        Fri, 14 Feb 2020 16:21:29 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 77D73246B7;
+        Fri, 14 Feb 2020 16:21:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1581697290;
-        bh=djrylqynmlxVfb1NigsjuAumrzZme2zHlypxM5eLteM=;
+        s=default; t=1581697319;
+        bh=1ywl+QwAdgWilFw5oOkBA3uu1fQkNbjoTatcUAqUP/I=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CnKneg26fiNd4auWY0d39/PVdlc4SrkyKZGIb8jcmCDquB6oLBm0fVOFTqYlGBFz6
-         lkiimNJz059n3WiFCrnrHfin50cDuYRjsVNHhc24pm3ZD/tF53tMLjqpoV2PwKMGVM
-         LL8SL6bOzSQ7E9S0arCwWT7LLEGs0znISpclwW8s=
+        b=nJlhHNersyFIlfOLrx9DH2AYpkT3GRpBy/GnGsSI7NfWOcIUi01EHZk75wswB8XiY
+         Uw9gQ2+fWgwDwxi22p9ds40hwsgJQtzwPz0HAYRvskEDTbS3q7omh510/cZHVmHpMe
+         mVCTKZ6XPsr0haIFGr5Rw3M8828ng56jgfTSzBRw=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Franky Lin <franky.lin@broadcom.com>,
+Cc:     Nicolai Stange <nstange@suse.de>,
         Kalle Valo <kvalo@codeaurora.org>,
         Sasha Levin <sashal@kernel.org>,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        brcm80211-dev-list@cypress.com, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.9 006/141] brcmfmac: Fix use after free in brcmf_sdio_readframes()
-Date:   Fri, 14 Feb 2020 11:19:06 -0500
-Message-Id: <20200214162122.19794-6-sashal@kernel.org>
+        libertas-dev@lists.infradead.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.9 029/141] libertas: make lbs_ibss_join_existing() return error code on rates overflow
+Date:   Fri, 14 Feb 2020 11:19:29 -0500
+Message-Id: <20200214162122.19794-29-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20200214162122.19794-1-sashal@kernel.org>
 References: <20200214162122.19794-1-sashal@kernel.org>
@@ -47,39 +45,41 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Dan Carpenter <dan.carpenter@oracle.com>
+From: Nicolai Stange <nstange@suse.de>
 
-[ Upstream commit 216b44000ada87a63891a8214c347e05a4aea8fe ]
+[ Upstream commit 1754c4f60aaf1e17d886afefee97e94d7f27b4cb ]
 
-The brcmu_pkt_buf_free_skb() function frees "pkt" so it leads to a
-static checker warning:
+Commit e5e884b42639 ("libertas: Fix two buffer overflows at parsing bss
+descriptor") introduced a bounds check on the number of supplied rates to
+lbs_ibss_join_existing() and made it to return on overflow.
 
-    drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c:1974 brcmf_sdio_readframes()
-    error: dereferencing freed memory 'pkt'
+However, the aforementioned commit doesn't set the return value accordingly
+and thus, lbs_ibss_join_existing() would return with zero even though it
+failed.
 
-It looks like there was supposed to be a continue after we free "pkt".
+Make lbs_ibss_join_existing return -EINVAL in case the bounds check on the
+number of supplied rates fails.
 
-Fixes: 4754fceeb9a6 ("brcmfmac: streamline SDIO read frame routine")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-Acked-by: Franky Lin <franky.lin@broadcom.com>
+Fixes: e5e884b42639 ("libertas: Fix two buffer overflows at parsing bss descriptor")
+Signed-off-by: Nicolai Stange <nstange@suse.de>
 Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c | 1 +
+ drivers/net/wireless/marvell/libertas/cfg.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-index de52d826eb248..998a4bd6db78a 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-@@ -1921,6 +1921,7 @@ static uint brcmf_sdio_readframes(struct brcmf_sdio *bus, uint maxframes)
- 					       BRCMF_SDIO_FT_NORMAL)) {
- 				rd->len = 0;
- 				brcmu_pkt_buf_free_skb(pkt);
-+				continue;
- 			}
- 			bus->sdcnt.rx_readahead_cnt++;
- 			if (rd->len != roundup(rd_new.len, 16)) {
+diff --git a/drivers/net/wireless/marvell/libertas/cfg.c b/drivers/net/wireless/marvell/libertas/cfg.c
+index 0b61942fedd90..ece6d72cf90c8 100644
+--- a/drivers/net/wireless/marvell/libertas/cfg.c
++++ b/drivers/net/wireless/marvell/libertas/cfg.c
+@@ -1860,6 +1860,7 @@ static int lbs_ibss_join_existing(struct lbs_private *priv,
+ 		if (rates_max > MAX_RATES) {
+ 			lbs_deb_join("invalid rates");
+ 			rcu_read_unlock();
++			ret = -EINVAL;
+ 			goto out;
+ 		}
+ 		rates = cmd.bss.rates;
 -- 
 2.20.1
 
