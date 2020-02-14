@@ -2,37 +2,38 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C683E15F2E1
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 Feb 2020 19:20:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6EF6015F3D6
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 Feb 2020 19:22:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730751AbgBNPvW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 14 Feb 2020 10:51:22 -0500
-Received: from mail.kernel.org ([198.145.29.99]:56198 "EHLO mail.kernel.org"
+        id S2404576AbgBNSPt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 14 Feb 2020 13:15:49 -0500
+Received: from mail.kernel.org ([198.145.29.99]:56936 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729475AbgBNPvV (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 14 Feb 2020 10:51:21 -0500
+        id S1729475AbgBNPvr (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 14 Feb 2020 10:51:47 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 6322B2168B;
-        Fri, 14 Feb 2020 15:51:19 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id A88F524676;
+        Fri, 14 Feb 2020 15:51:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1581695480;
-        bh=laid7J5sQfr4zc5dfFYayIFp5SqBhYxHplp0Qg+Sfbc=;
+        s=default; t=1581695506;
+        bh=wKF6to/Ae7L+wJeSIQu3UCpCEcTa0xmUwfpSPCOZrZI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PoYc5f5R4gKbFNrsMMnMyd1Psdf/6tJ25XhN5wCNqfQDspxO8FBkito9wpEw0rOXq
-         oyveqnC2uit7y5FUjs3HfZ1muha7TdhKk/m7ElmK7Lq6aogllFB1nxa1FzMhGNRElR
-         FmLbOFMqgRRGpuba9NYnUoqWX3fCQXuBrXQdVoHc=
+        b=mvScXVCZZGKbdhDLBBA8Pf1/tP6aX9MO+p+8ZaCwgzXkSUkc96Hr73x+FgaAS4iqc
+         p5Qp3Ws/4Bp5FgBfZMjynkEPkUM0ZTkCvcdfilJVqVylr0uTI6L3b7ndalN9MlNgOa
+         S29QIkVTgPNXErNpIPm+NWd6v6U4hg0CSbaifSVU=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Nicolai Stange <nstange@suse.de>,
+Cc:     Lorenzo Bianconi <lorenzo@kernel.org>,
         Kalle Valo <kvalo@codeaurora.org>,
         Sasha Levin <sashal@kernel.org>,
-        libertas-dev@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.5 112/542] libertas: make lbs_ibss_join_existing() return error code on rates overflow
-Date:   Fri, 14 Feb 2020 10:41:44 -0500
-Message-Id: <20200214154854.6746-112-sashal@kernel.org>
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org
+Subject: [PATCH AUTOSEL 5.5 132/542] mt76: mt7615: fix max_nss in mt7615_eeprom_parse_hw_cap
+Date:   Fri, 14 Feb 2020 10:42:04 -0500
+Message-Id: <20200214154854.6746-132-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20200214154854.6746-1-sashal@kernel.org>
 References: <20200214154854.6746-1-sashal@kernel.org>
@@ -45,41 +46,36 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Nicolai Stange <nstange@suse.de>
+From: Lorenzo Bianconi <lorenzo@kernel.org>
 
-[ Upstream commit 1754c4f60aaf1e17d886afefee97e94d7f27b4cb ]
+[ Upstream commit d08f3010f4a32eec3c8aa771f03a1b342a1472fa ]
 
-Commit e5e884b42639 ("libertas: Fix two buffer overflows at parsing bss
-descriptor") introduced a bounds check on the number of supplied rates to
-lbs_ibss_join_existing() and made it to return on overflow.
+Fix u8 cast reading max_nss from MT_TOP_STRAP_STA register in
+mt7615_eeprom_parse_hw_cap routine
 
-However, the aforementioned commit doesn't set the return value accordingly
-and thus, lbs_ibss_join_existing() would return with zero even though it
-failed.
-
-Make lbs_ibss_join_existing return -EINVAL in case the bounds check on the
-number of supplied rates fails.
-
-Fixes: e5e884b42639 ("libertas: Fix two buffer overflows at parsing bss descriptor")
-Signed-off-by: Nicolai Stange <nstange@suse.de>
+Fixes: acf5457fd99db ("mt76: mt7615: read {tx,rx} mask from eeprom")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/marvell/libertas/cfg.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/mediatek/mt76/mt7615/eeprom.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/marvell/libertas/cfg.c b/drivers/net/wireless/marvell/libertas/cfg.c
-index 68985d7663491..4e3de684928bf 100644
---- a/drivers/net/wireless/marvell/libertas/cfg.c
-+++ b/drivers/net/wireless/marvell/libertas/cfg.c
-@@ -1786,6 +1786,7 @@ static int lbs_ibss_join_existing(struct lbs_private *priv,
- 		if (rates_max > MAX_RATES) {
- 			lbs_deb_join("invalid rates");
- 			rcu_read_unlock();
-+			ret = -EINVAL;
- 			goto out;
- 		}
- 		rates = cmd.bss.rates;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.c b/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.c
+index eccad4987ac83..17e277bf39e0f 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.c
+@@ -92,8 +92,9 @@ static int mt7615_check_eeprom(struct mt76_dev *dev)
+ 
+ static void mt7615_eeprom_parse_hw_cap(struct mt7615_dev *dev)
+ {
+-	u8 val, *eeprom = dev->mt76.eeprom.data;
++	u8 *eeprom = dev->mt76.eeprom.data;
+ 	u8 tx_mask, rx_mask, max_nss;
++	u32 val;
+ 
+ 	val = FIELD_GET(MT_EE_NIC_WIFI_CONF_BAND_SEL,
+ 			eeprom[MT_EE_WIFI_CONF]);
 -- 
 2.20.1
 
