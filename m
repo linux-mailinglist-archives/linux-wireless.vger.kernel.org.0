@@ -2,142 +2,182 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 88A8A15CD9C
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Feb 2020 22:54:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B7AD15CFD9
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 Feb 2020 03:19:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727946AbgBMVyy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 13 Feb 2020 16:54:54 -0500
-Received: from mail-wm1-f67.google.com ([209.85.128.67]:36926 "EHLO
-        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727845AbgBMVyy (ORCPT
+        id S1728261AbgBNCTJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 13 Feb 2020 21:19:09 -0500
+Received: from mail26.static.mailgun.info ([104.130.122.26]:23776 "EHLO
+        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728193AbgBNCTJ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 13 Feb 2020 16:54:54 -0500
-Received: by mail-wm1-f67.google.com with SMTP id a6so8481400wme.2;
-        Thu, 13 Feb 2020 13:54:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=cc:references:subject:to:date:mime-version
-         :content-transfer-encoding:from:message-id:in-reply-to:user-agent;
-        bh=/H25Ntzq5GhZEzxDEWAUk2cWpXoHsQi11PWiKlH9h+Q=;
-        b=XIiVq9sNfiYBWhXPTTeOa3mYbejzfH7yYAutDvrsHNEnutkNt7xRJTbj8dw1e54jc+
-         Bu7ps6byEMh/oKpRo7PRH8jaC92i5V3dn+cu8EDfJUXaLK8pAeFZerZULXNQTMgc0cPU
-         SDR6OCQFjdSWNEXqeHbSEU9Oh4ka2EWhB64frK701HPWWfxc5oXi13oZtG0FHMZx91y4
-         mlesPlyk6jxf29dyfo/RrVnt5k2vykmvfZHi4HX3sh+VsxQR46jth8O1aQr1KD/IZOhN
-         8QPx8d47FliACI/KeJcEC43OLzGKBthKQn8tBc/RT30BtbVQv9tO9FqI7T2cMObVz02W
-         Fvjg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:cc:references:subject:to:date:mime-version
-         :content-transfer-encoding:from:message-id:in-reply-to:user-agent;
-        bh=/H25Ntzq5GhZEzxDEWAUk2cWpXoHsQi11PWiKlH9h+Q=;
-        b=lZybpdNvnfs5VFJiErWZF/FqXoA71yjAGvPQjSxSk17ZACYzusSrePiiERi08JIqPe
-         FXQp/2pXoayQmThDWHbPYr+XpvtCWXaFykKP8NAj0QJmkEvQuaIBdVErp4pGi6oM4EU4
-         rOuQi6418BXcCUQchKuwZktZOF3nlMw9bsqrRVnWhB2+Pwd2ux65vSG0dCTDjAXfC2Jd
-         2v8fXiCKYzJp39MbYLW155DhWUl++jVYI7lEQF15xTjVq1USNiJRESB55gdXFRDtg/hh
-         l2lcs9FRhb1qoq4ytgnWM94mKx/C4j7oW+57hUUp3RM6ChAUmZ2u+9NaBgZ9GxpsD30r
-         3zLQ==
-X-Gm-Message-State: APjAAAVcacbIcLPGsQa7VmPXa0PLUMy+GdHnM37GGamzhMOz+wP7ouPC
-        0lvZP3NIorQ6mBslEGehXno=
-X-Google-Smtp-Source: APXvYqyVMW6smrU7FD6oXdtce0CP9biKgdLpKNSQz+uQRf7dSWWgjiJm71lhuPW7eYKvWtgD3yw2AQ==
-X-Received: by 2002:a7b:cb97:: with SMTP id m23mr117151wmi.37.1581630892601;
-        Thu, 13 Feb 2020 13:54:52 -0800 (PST)
-Received: from supervisor.net28 ([46.53.250.234])
-        by smtp.gmail.com with ESMTPSA id s139sm4805306wme.35.2020.02.13.13.54.51
-        (version=TLS1 cipher=AES128-SHA bits=128/128);
-        Thu, 13 Feb 2020 13:54:52 -0800 (PST)
-Content-Type: text/plain; charset=utf-8; format=flowed; delsp=yes
-Cc:     linux-bluetooth@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-wireless@vger.kernel.org
-References: <op.0fudjzcyhxa7s4@supervisor.net28>
- <20200211214705.GD16391@atomide.com> <op.0fuie5cdhxa7s4@supervisor.net28>
- <20200211232425.GE16391@atomide.com> <op.0fu85owhhxa7s4@supervisor.net28>
- <20200212150722.GF16391@atomide.com> <20200212162131.GI16391@atomide.com>
- <op.0fwkyxvihxa7s4@supervisor.net28> <20200213041112.GL16391@atomide.com>
- <op.0fw0oas5hxa7s4@supervisor.net28> <20200213161157.GN16391@atomide.com>
-Subject: Droid 4 WiFi firmware loading error
-To:     sre@kernel.org
-Date:   Fri, 14 Feb 2020 00:54:50 +0300
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From:   "Arthur D." <spinal.by@gmail.com>
-Message-ID: <op.0fx4hozhhxa7s4@supervisor.net28>
-In-Reply-To: <20200213161157.GN16391@atomide.com>
-User-Agent: Opera Mail/12.16 (Linux)
+        Thu, 13 Feb 2020 21:19:09 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1581646748; h=Message-Id: Date: Subject: Cc: To: From:
+ Sender; bh=+HxkQdsTCXATviJnL//XWBLKBXvbK4ggK5lI1KkfSzw=; b=Y1Dv9LEldCUvHujjVNZyUKBd41F68WBgn0b/DvRgjSuQSGV+qgfFmPUXcE9cFJ0TD4RtSeq+
+ ZtT9440qPX2ivC34UliXtBBZeAFVkd1c6vO23GnC9SI7eIuQ9Ee2i4Gq1gcZ4ZfBzhb4ItDI
+ X9Po0fl7qyEgzERIv9vuo+aWlVM=
+X-Mailgun-Sending-Ip: 104.130.122.26
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5e46039b.7f635c6fe998-smtp-out-n03;
+ Fri, 14 Feb 2020 02:19:07 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 89CBEC433A2; Fri, 14 Feb 2020 02:19:07 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE,
+        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from cheath10p342229-lin.qca.qualcomm.com (blr-c-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.19.19])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: tamizhr)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id ADAADC43383;
+        Fri, 14 Feb 2020 02:19:04 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org ADAADC43383
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=tamizhr@codeaurora.org
+From:   Tamizh Chelvam <tamizhr@codeaurora.org>
+To:     ath11k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org,
+        Govindaraj Saminathan <gsamin@codeaurora.org>,
+        Tamizh Chelvam <tamizhr@codeaurora.org>
+Subject: [PATCH] ath11k: config reorder queue for all tids during peer setup
+Date:   Fri, 14 Feb 2020 07:48:44 +0530
+Message-Id: <1581646724-23098-1-git-send-email-tamizhr@codeaurora.org>
+X-Mailer: git-send-email 1.9.1
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello.
+From: Govindaraj Saminathan <gsamin@codeaurora.org>
 
-Some users have reported that they have issues with WiFi firmware
-loading on Droid 4. The fragment of dmesg for the issue follows
-at the bottom of this mail.
+Currently rx tid setup is happening for TID 0 and TID 16
+during peer setup. And if other TID packets received for
+the peer it will be redirected to rx error ring and not through
+reo ring. And this rx tid configuration cannot be done
+in the rx error ring path since it is a atomic context.
+So moving the rx tid setup for all tids during the peer setup.
+This is required to enable PN offload functionality to route
+all packets through reo ring.
 
-With the help of Tony Lindgren I have found that the root of the
-issue was Bluetooth firmware loaded before WiFi driver (wlcore).
+Co-developed-by: Tamizh Chelvam <tamizhr@codeaurora.org>
+Signed-off-by: Tamizh Chelvam <tamizhr@codeaurora.org>
+Signed-off-by: Govindaraj Saminathan <gsamin@codeaurora.org>
+---
+ drivers/net/wireless/ath/ath11k/dp.c    | 41 ++++++++++++++++++++++-----------
+ drivers/net/wireless/ath/ath11k/dp.h    |  2 +-
+ drivers/net/wireless/ath/ath11k/dp_rx.c |  4 ++--
+ drivers/net/wireless/ath/ath11k/dp_rx.h |  2 ++
+ 4 files changed, 32 insertions(+), 17 deletions(-)
 
-Now we need to change the kernel to make it load Bluetooth firmware
-only after WiFi firmware is loaded. So the bug will not be triggered.
-
-Any ideas on how it should be done?
-
-P.S. When I do "rmmod hci_uart" on Droid 4 device, I get something
-like endless loop of error reporting from kernel. The fragment of
-dmesg can be downloaded from https://dropmefiles.com/wCPMF
-I'm not sure where to report this one.
-
---
-Best regards, Arthur D.
-
-
-[   15.951904] ------------[ cut here ]------------
-[   16.028137] WARNING: CPU: 1 PID: 23 at
-drivers/net/wireless/ti/wlcore/sdio.c:78 wl12xx_sdio_raw_read+0xcc/0x15c
-[wlcore_sdio]
-[   16.211669] Modules linked in: omapdrm drm_kms_helper cfbfillrect
-syscopyarea cfbimgblt sysfillrect sysimgblt fb_sys_fops cfbcopyarea
-snd_soc_omap_hdmi wl12xx wlcore mac80211 panel_dsi_cm libarc4
-sha256_generic libsha256 sha256_arm cfg80211 joydev mousedev evdev
-pwm_vibra snd_soc_audio_graph_card ff_memless phy_generic
-snd_soc_simple_card_utils phy_mapphone_mdm6600(+) led_bl cpufreq_dt
-gpio_keys pwm_omap_dmtimer connector_hdmi omapdss omapdss_base
-omap4_keypad drm matrix_keymap drm_panel_orientation_quirks cec
-omap_mailbox omap_sham omap_aes_driver omap2430 ohci_platform ohci_hcd
-ehci_omap ehci_hcd st_accel_spi st_sensors_spi st_accel_i2c st_sensors_i2c
-st_accel st_sensors industrialio_triggered_buffer kfifo_buf omap_des
-libdes crypto_engine omap_crypto wlcore_sdio omap_hdq wire cn
-phy_cpcap_usb musb_hdrc cpcap_adc udc_core cpcap_battery usbcore
-usb_common rtc_cpcap cpcap_pwrbutton cpcap_charger phy_omap_usb2
-industrialio snd_soc_cpcap leds_cpcap atmel_mxt_ts hci_uart btbcm lm75
-[   16.211669]  leds_lm3532
-[   16.226989] systemd-journald[105]: Compressed data object 989 -> 808
-using LZ4
-[   17.050018]  hwmon led_class bluetooth ecdh_generic ecc libaes
-motorola_mdm n_gsm snd_soc_omap_mcbsp snd_soc_ti_sdma snd_soc_core
-snd_pcm_dmaengine snd_pcm snd_timer omap_wdt watchdog snd soundcore autofs4
-[   17.144073] phy-mapphone-mdm6600 usb-phy@1: Waiting for power up
-request to complete..
-[   17.255035] CPU: 1 PID: 23 Comm: kworker/1:1 Tainted: G
-W         5.5.0-00039-gadd2f906e747-dirty #23
-[   17.657806] Hardware name: Generic OMAP4 (Flattened Device Tree)
-[   17.657867] Workqueue: events request_firmware_work_func
-[   17.861297] [<c0112b88>] (unwind_backtrace) from [<c010cafc>]
-(show_stack+0x10/0x14)
-[   17.861297] [<c010cafc>] (show_stack) from [<c090753c>]
-(dump_stack+0xb4/0xd0)
-[   17.861450] [<c090753c>] (dump_stack) from [<c013aaf0>]
-(__warn+0xd0/0xf8)
-[   17.861450] [<c013aaf0>] (__warn) from [<c013abbc>]
-(warn_slowpath_fmt+0xa4/0xb4)
-[   17.861450] [<c013abbc>] (warn_slowpath_fmt) from [<bf1bf418>]
-(wl12xx_sdio_raw_read+0xcc/0x15c [wlcore_sdio])
-[   17.861633] [<bf1bf418>] (wl12xx_sdio_raw_read [wlcore_sdio]) from
-[<bf525074>] (wl12xx_get_mac+0x150/0x324 [wl12xx])
-[   17.861938] [<bf525074>] (wl12xx_get_mac [wl12xx]) from [<bf410380>]
-(wlcore_nvs_cb+0x250/0xad8 [wlcore])
-[   17.862121] [<bf410380>] (wlcore_nvs_cb [wlcore]) from [<eccfdb00>]
-(0xeccfdb00)
-[   17.868988] ---[ end trace b49285f1f3a91e50 ]---
-[   17.868988] wl1271_sdio mmc4:0001:2: sdio read failed (-110)
-[   17.869079] wlcore: ERROR couldn't get hw info
+diff --git a/drivers/net/wireless/ath/ath11k/dp.c b/drivers/net/wireless/ath/ath11k/dp.c
+index b112825..ce76341 100644
+--- a/drivers/net/wireless/ath/ath11k/dp.c
++++ b/drivers/net/wireless/ath/ath11k/dp.c
+@@ -39,8 +39,9 @@ void ath11k_dp_peer_cleanup(struct ath11k *ar, int vdev_id, const u8 *addr)
+ int ath11k_dp_peer_setup(struct ath11k *ar, int vdev_id, const u8 *addr)
+ {
+ 	struct ath11k_base *ab = ar->ab;
++	struct ath11k_peer *peer;
+ 	u32 reo_dest;
+-	int ret;
++	int ret = 0, tid;
+ 
+ 	/* NOTE: reo_dest ring id starts from 1 unlike mac_id which starts from 0 */
+ 	reo_dest = ar->dp.mac_id + 1;
+@@ -54,24 +55,36 @@ int ath11k_dp_peer_setup(struct ath11k *ar, int vdev_id, const u8 *addr)
+ 		return ret;
+ 	}
+ 
+-	ret = ath11k_peer_rx_tid_setup(ar, addr, vdev_id,
+-				       HAL_DESC_REO_NON_QOS_TID, 1, 0);
+-	if (ret) {
+-		ath11k_warn(ab, "failed to setup rxd tid queue for non-qos tid %d\n",
+-			    ret);
+-		return ret;
+-	}
+-
+-	ret = ath11k_peer_rx_tid_setup(ar, addr, vdev_id, 0, 1, 0);
+-	if (ret) {
+-		ath11k_warn(ab, "failed to setup rxd tid queue for tid 0 %d\n",
+-			    ret);
+-		return ret;
++	for (tid = 0; tid <= IEEE80211_NUM_TIDS; tid++) {
++		ret = ath11k_peer_rx_tid_setup(ar, addr, vdev_id,
++					       tid, 1, 0);
++		if (ret) {
++			ath11k_warn(ab, "failed to setup rxd tid queue for tid %d: %d\n",
++				    tid, ret);
++			goto peer_clean;
++		}
+ 	}
+ 
+ 	/* TODO: Setup other peer specific resource used in data path */
+ 
+ 	return 0;
++
++peer_clean:
++	spin_lock_bh(&ab->base_lock);
++
++	peer = ath11k_peer_find(ab, vdev_id, addr);
++	if (!peer) {
++		ath11k_warn(ab, "failed to find the peer to del rx tid\n");
++		spin_unlock_bh(&ab->base_lock);
++		return -ENOENT;
++	}
++
++	for (; tid >= 0; tid--)
++		ath11k_peer_rx_tid_delete(ar, peer, tid);
++
++	spin_unlock_bh(&ab->base_lock);
++
++	return ret;
+ }
+ 
+ void ath11k_dp_srng_cleanup(struct ath11k_base *ab, struct dp_srng *ring)
+diff --git a/drivers/net/wireless/ath/ath11k/dp.h b/drivers/net/wireless/ath/ath11k/dp.h
+index 3592c39..4f9e4ce 100644
+--- a/drivers/net/wireless/ath/ath11k/dp.h
++++ b/drivers/net/wireless/ath/ath11k/dp.h
+@@ -168,7 +168,7 @@ struct ath11k_pdev_dp {
+ #define DP_RX_RELEASE_RING_SIZE		1024
+ #define DP_REO_EXCEPTION_RING_SIZE	128
+ #define DP_REO_CMD_RING_SIZE		128
+-#define DP_REO_STATUS_RING_SIZE		256
++#define DP_REO_STATUS_RING_SIZE		2048
+ #define DP_RXDMA_BUF_RING_SIZE		4096
+ #define DP_RXDMA_REFILL_RING_SIZE	2048
+ #define DP_RXDMA_ERR_DST_RING_SIZE	1024
+diff --git a/drivers/net/wireless/ath/ath11k/dp_rx.c b/drivers/net/wireless/ath/ath11k/dp_rx.c
+index 6dfaea1..dc7881b 100644
+--- a/drivers/net/wireless/ath/ath11k/dp_rx.c
++++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
+@@ -633,8 +633,8 @@ static void ath11k_dp_rx_tid_del_func(struct ath11k_dp *dp, void *ctx,
+ 	kfree(rx_tid->vaddr);
+ }
+ 
+-static void ath11k_peer_rx_tid_delete(struct ath11k *ar,
+-				      struct ath11k_peer *peer, u8 tid)
++void ath11k_peer_rx_tid_delete(struct ath11k *ar,
++			       struct ath11k_peer *peer, u8 tid)
+ {
+ 	struct ath11k_hal_reo_cmd cmd = {0};
+ 	struct dp_rx_tid *rx_tid = &peer->rx_tid[tid];
+diff --git a/drivers/net/wireless/ath/ath11k/dp_rx.h b/drivers/net/wireless/ath/ath11k/dp_rx.h
+index eec5dea..1b08b7d 100644
+--- a/drivers/net/wireless/ath/ath11k/dp_rx.h
++++ b/drivers/net/wireless/ath/ath11k/dp_rx.h
+@@ -44,6 +44,8 @@ int ath11k_dp_rx_ampdu_start(struct ath11k *ar,
+ int ath11k_dp_rx_ampdu_stop(struct ath11k *ar,
+ 			    struct ieee80211_ampdu_params *params);
+ void ath11k_peer_rx_tid_cleanup(struct ath11k *ar, struct ath11k_peer *peer);
++void ath11k_peer_rx_tid_delete(struct ath11k *ar,
++			       struct ath11k_peer *peer, u8 tid);
+ int ath11k_peer_rx_tid_setup(struct ath11k *ar, const u8 *peer_mac, int vdev_id,
+ 			     u8 tid, u32 ba_win_sz, u16 ssn);
+ void ath11k_dp_htt_htc_t2h_msg_handler(struct ath11k_base *ab,
+-- 
+1.9.1
