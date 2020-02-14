@@ -2,49 +2,49 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D02DF15D0B5
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 Feb 2020 04:42:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F6B915D0C5
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 Feb 2020 04:56:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728332AbgBNDmp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 13 Feb 2020 22:42:45 -0500
-Received: from mail27.static.mailgun.info ([104.130.122.27]:53981 "EHLO
+        id S1728374AbgBND43 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 13 Feb 2020 22:56:29 -0500
+Received: from mail27.static.mailgun.info ([104.130.122.27]:28943 "EHLO
         mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728336AbgBNDmp (ORCPT
+        by vger.kernel.org with ESMTP id S1728242AbgBND43 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 13 Feb 2020 22:42:45 -0500
+        Thu, 13 Feb 2020 22:56:29 -0500
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1581651764; h=Content-Transfer-Encoding: MIME-Version:
+ s=smtp; t=1581652588; h=Content-Transfer-Encoding: MIME-Version:
  Message-Id: Date: Subject: Cc: To: From: Sender;
- bh=E6XByG/l52AE/t751HZ9NT33hH85WV1cAsaMGGqcnPI=; b=P+jmwCAyue2/+8QTXfHG5k9komNEfS+dd6bdNs1pztEuxj9d6SMbL+ZLhcJPUCG1mchwPIOK
- pBXajAzSwqXovrSM9MI9MtJ1AlN4/oyP1buU1RsPy13L9JkBhxpNy3AG6hsgraL/kJQMqykm
- kPEf+VPd/RQhJtX9bcWLvgqFCqw=
+ bh=tVtPtPyxo7xHAoMpw/E8tVhShR3B9Zdc816oVViSjCY=; b=C7yg0hOpNsl7EleokhRlBqK+GZwF5Acv1cvXtwL1rD3Wohqg2AEzaTtmRaOYUZtMLcVZUwv9
+ iDPiBWb957d8hV2XJ24teVi4zllP1w4SeENxvSQ4KL7AxQHhaIdBkpqx5pIjUfF4+T9cG2WE
+ hi3YhOoke8e+lXetfaKUCK2fpR8=
 X-Mailgun-Sending-Ip: 104.130.122.27
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e46172a.7f0ec865fb20-smtp-out-n02;
- Fri, 14 Feb 2020 03:42:34 -0000 (UTC)
+ by mxa.mailgun.org with ESMTP id 5e461a6c.7f5db3bf8ae8-smtp-out-n02;
+ Fri, 14 Feb 2020 03:56:28 -0000 (UTC)
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 02DB7C43383; Fri, 14 Feb 2020 03:42:34 +0000 (UTC)
+        id 37269C4479D; Fri, 14 Feb 2020 03:56:27 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
 X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.0
+        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from wgong-HP-Z240-SFF-Workstation.qca.qualcomm.com (unknown [180.166.53.21])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: wgong)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 95AADC433A2;
-        Fri, 14 Feb 2020 03:42:32 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 95AADC433A2
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 3D21FC43383;
+        Fri, 14 Feb 2020 03:56:25 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 3D21FC43383
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=wgong@codeaurora.org
 From:   Wen Gong <wgong@codeaurora.org>
 To:     ath10k@lists.infradead.org
 Cc:     linux-wireless@vger.kernel.org, wgong@codeaurora.org
-Subject: [PATCH] ath10k: use kzalloc to read for ath10k_sdio_hif_diag_read
-Date:   Fri, 14 Feb 2020 11:42:18 +0800
-Message-Id: <20200214034218.24624-1-wgong@codeaurora.org>
+Subject: [RFC] ath10k: change to do napi_enable and napi_disable when insmod and rmmod for sdio
+Date:   Fri, 14 Feb 2020 11:55:55 +0800
+Message-Id: <20200214035555.24762-1-wgong@codeaurora.org>
 X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -53,134 +53,174 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-When use command to read values, it crashed.
+It happened "Kernel panic - not syncing: hung_task: blocked tasks" when
+test simulate crash and ifconfig down/rmmod meanwhile.
 
-command:
-dd if=/sys/kernel/debug/ieee80211/phy0/ath10k/mem_value count=1 bs=4 skip=$((0x100233))
+Test steps:
 
-It will call to ath10k_sdio_hif_diag_read with address = 0x4008cc and buf_len = 4.
+1.Test commands
+echo soft > /sys/kernel/debug/ieee80211/phy0/ath10k/simulate_fw_crash;sleep 0.05;ifconfig wlan0 down
+echo soft > /sys/kernel/debug/ieee80211/phy0/ath10k/simulate_fw_crash;rmmod ath10k_sdio
 
-Then system crash:
-[ 1786.013258] Unable to handle kernel paging request at virtual address ffffffc00bd45000
-[ 1786.013273] Mem abort info:
-[ 1786.013281]   ESR = 0x96000045
-[ 1786.013291]   Exception class = DABT (current EL), IL = 32 bits
-[ 1786.013299]   SET = 0, FnV = 0
-[ 1786.013307]   EA = 0, S1PTW = 0
-[ 1786.013314] Data abort info:
-[ 1786.013322]   ISV = 0, ISS = 0x00000045
-[ 1786.013330]   CM = 0, WnR = 1
-[ 1786.013342] swapper pgtable: 4k pages, 39-bit VAs, pgdp = 000000008542a60e
-[ 1786.013350] [ffffffc00bd45000] pgd=0000000000000000, pud=0000000000000000
-[ 1786.013368] Internal error: Oops: 96000045 [#1] PREEMPT SMP
-[ 1786.013609] Process swapper/0 (pid: 0, stack limit = 0x0000000084b153c6)
-[ 1786.013623] CPU: 0 PID: 0 Comm: swapper/0 Not tainted 4.19.86 #137
-[ 1786.013631] Hardware name: MediaTek krane sku176 board (DT)
-[ 1786.013643] pstate: 80000085 (Nzcv daIf -PAN -UAO)
-[ 1786.013662] pc : __memcpy+0x94/0x180
-[ 1786.013678] lr : swiotlb_tbl_unmap_single+0x84/0x150
-[ 1786.013686] sp : ffffff8008003c60
-[ 1786.013694] x29: ffffff8008003c90 x28: ffffffae96411f80
-[ 1786.013708] x27: ffffffae960d2018 x26: ffffff8019a4b9a8
-[ 1786.013721] x25: 0000000000000000 x24: 0000000000000001
-[ 1786.013734] x23: ffffffae96567000 x22: 00000000000051d4
-[ 1786.013747] x21: 0000000000000000 x20: 00000000fe6e9000
-[ 1786.013760] x19: 0000000000000004 x18: 0000000000000020
-[ 1786.013773] x17: 0000000000000001 x16: 0000000000000000
-[ 1786.013787] x15: 00000000ffffffff x14: 00000000000044c0
-[ 1786.013800] x13: 0000000000365ba4 x12: 0000000000000000
-[ 1786.013813] x11: 0000000000000001 x10: 00000037be6e9000
-[ 1786.013826] x9 : ffffffc940000000 x8 : 000000000bd45000
-[ 1786.013839] x7 : 0000000000000000 x6 : ffffffc00bd45000
-[ 1786.013852] x5 : 0000000000000000 x4 : 0000000000000000
-[ 1786.013865] x3 : 0000000000000c00 x2 : 0000000000000004
-[ 1786.013878] x1 : fffffff7be6e9004 x0 : ffffffc00bd45000
-[ 1786.013891] Call trace:
-[ 1786.013903]  __memcpy+0x94/0x180
-[ 1786.013914]  unmap_single+0x6c/0x84
-[ 1786.013925]  swiotlb_unmap_sg_attrs+0x54/0x80
-[ 1786.013938]  __swiotlb_unmap_sg_attrs+0x8c/0xa4
-[ 1786.013952]  msdc_unprepare_data+0x6c/0x84
-[ 1786.013963]  msdc_request_done+0x58/0x84
-[ 1786.013974]  msdc_data_xfer_done+0x1a0/0x1c8
-[ 1786.013985]  msdc_irq+0x12c/0x17c
-[ 1786.013996]  __handle_irq_event_percpu+0xe4/0x250
-[ 1786.014006]  handle_irq_event_percpu+0x28/0x68
-[ 1786.014015]  handle_irq_event+0x48/0x78
-[ 1786.014026]  handle_fasteoi_irq+0xd0/0x1a0
-[ 1786.014039]  __handle_domain_irq+0x84/0xc4
-[ 1786.014050]  gic_handle_irq+0x124/0x1a4
-[ 1786.014059]  el1_irq+0xb0/0x128
-[ 1786.014072]  cpuidle_enter_state+0x298/0x328
-[ 1786.014082]  cpuidle_enter+0x30/0x40
-[ 1786.014094]  do_idle+0x190/0x268
-[ 1786.014104]  cpu_startup_entry+0x24/0x28
-[ 1786.014116]  rest_init+0xd4/0xe0
-[ 1786.014126]  start_kernel+0x30c/0x38c
-[ 1786.014139] Code: f8408423 f80084c3 36100062 b8404423 (b80044c3)
-[ 1786.014150] ---[ end trace 3b02ddb698ea69ee ]---
-[ 1786.015415] Kernel panic - not syncing: Fatal exception in interrupt
-[ 1786.015433] SMP: stopping secondary CPUs
-[ 1786.015447] Kernel Offset: 0x2e8d200000 from 0xffffff8008000000
-[ 1786.015458] CPU features: 0x0,2188200c
-[ 1786.015466] Memory Limit: none
+2. dmesg:
+[ 5622.548630] ath10k_sdio mmc1:0001:1: simulating soft firmware crash
+[ 5622.655995] ieee80211 phy0: Hardware restart was requested
+[ 5776.355164] INFO: task shill:1572 blocked for more than 122 seconds.
+[ 5776.355687] INFO: task kworker/1:2:24437 blocked for more than 122 seconds.
+[ 5776.359812] Kernel panic - not syncing: hung_task: blocked tasks
+[ 5776.359836] CPU: 1 PID: 55 Comm: khungtaskd Tainted: G        W         4.19.86 #137
+[ 5776.359846] Hardware name: MediaTek krane sku176 board (DT)
+[ 5776.359855] Call trace:
+[ 5776.359868]  dump_backtrace+0x0/0x170
+[ 5776.359881]  show_stack+0x20/0x2c
+[ 5776.359896]  dump_stack+0xd4/0x10c
+[ 5776.359916]  panic+0x12c/0x29c
+[ 5776.359937]  hung_task_panic+0x0/0x50
+[ 5776.359953]  kthread+0x120/0x130
+[ 5776.359965]  ret_from_fork+0x10/0x18
+[ 5776.359986] SMP: stopping secondary CPUs
+[ 5776.360012] Kernel Offset: 0x141ea00000 from 0xffffff8008000000
+[ 5776.360026] CPU features: 0x0,2188200c
+[ 5776.360035] Memory Limit: none
 
-For sdio chip, it need the memory which is kmalloc, if it is
-vmalloc from ath10k_mem_value_read, then it have a memory error.
-kzalloc of ath10k_sdio_hif_diag_read32 is the correct type, so
-add kzalloc in ath10k_sdio_hif_diag_read to replace the buffer
-which is vmalloc from ath10k_mem_value_read.
+command "ifconfig wlan0 down" or "rmmod ath10k_sdio" will be blocked
+callstack of ifconfig:
+[<0>] __switch_to+0x120/0x13c
+[<0>] msleep+0x28/0x38
+[<0>] ath10k_sdio_hif_stop+0x24c/0x294 [ath10k_sdio]
+[<0>] ath10k_core_stop+0x50/0x78 [ath10k_core]
+[<0>] ath10k_halt+0x120/0x178 [ath10k_core]
+[<0>] ath10k_stop+0x4c/0x8c [ath10k_core]
+[<0>] drv_stop+0xe0/0x1e4 [mac80211]
+[<0>] ieee80211_stop_device+0x48/0x54 [mac80211]
+[<0>] ieee80211_do_stop+0x678/0x6f8 [mac80211]
+[<0>] ieee80211_stop+0x20/0x30 [mac80211]
+[<0>] __dev_close_many+0xb8/0x11c
+[<0>] __dev_change_flags+0xe0/0x1d0
+[<0>] dev_change_flags+0x30/0x6c
+[<0>] devinet_ioctl+0x370/0x564
+[<0>] inet_ioctl+0xdc/0x304
+[<0>] sock_do_ioctl+0x50/0x288
+[<0>] compat_sock_ioctl+0x1b4/0x1aac
+[<0>] __se_compat_sys_ioctl+0x100/0x26fc
+[<0>] __arm64_compat_sys_ioctl+0x20/0x2c
+[<0>] el0_svc_common+0xa4/0x154
+[<0>] el0_svc_compat_handler+0x2c/0x38
+[<0>] el0_svc_compat+0x8/0x18
+[<0>] 0xffffffffffffffff
 
-This patch only effect sdio chip.
+callstack of rmmod:
+[<0>] __switch_to+0x120/0x13c
+[<0>] msleep+0x28/0x38
+[<0>] ath10k_sdio_hif_stop+0x294/0x31c [ath10k_sdio]
+[<0>] ath10k_core_stop+0x50/0x78 [ath10k_core]
+[<0>] ath10k_halt+0x120/0x178 [ath10k_core]
+[<0>] ath10k_stop+0x4c/0x8c [ath10k_core]
+[<0>] drv_stop+0xe0/0x1e4 [mac80211]
+[<0>] ieee80211_stop_device+0x48/0x54 [mac80211]
+[<0>] ieee80211_do_stop+0x678/0x6f8 [mac80211]
+[<0>] ieee80211_stop+0x20/0x30 [mac80211]
+[<0>] __dev_close_many+0xb8/0x11c
+[<0>] dev_close_many+0x70/0x100
+[<0>] dev_close+0x4c/0x80
+[<0>] cfg80211_shutdown_all_interfaces+0x50/0xcc [cfg80211]
+[<0>] ieee80211_remove_interfaces+0x58/0x1a0 [mac80211]
+[<0>] ieee80211_unregister_hw+0x40/0x100 [mac80211]
+[<0>] ath10k_mac_unregister+0x1c/0x44 [ath10k_core]
+[<0>] ath10k_core_unregister+0x38/0x7c [ath10k_core]
+[<0>] ath10k_sdio_remove+0x8c/0xd0 [ath10k_sdio]
+[<0>] sdio_bus_remove+0x48/0x108
+[<0>] device_release_driver_internal+0x138/0x1ec
+[<0>] driver_detach+0x6c/0xa8
+[<0>] bus_remove_driver+0x78/0xa8
+[<0>] driver_unregister+0x30/0x50
+[<0>] sdio_unregister_driver+0x28/0x34
+[<0>] cleanup_module+0x14/0x6bc [ath10k_sdio]
+[<0>] __arm64_sys_delete_module+0x1e0/0x22c
+[<0>] el0_svc_common+0xa4/0x154
+[<0>] el0_svc_compat_handler+0x2c/0x38
+[<0>] el0_svc_compat+0x8/0x18
+[<0>] 0xffffffffffffffff
 
-Tested with QCA6174 SDIO with firmware WLAN.RMH.4.4.1-00029.
+The test command run simulate_fw_crash firstly and it call into
+ath10k_sdio_hif_stop from ath10k_core_restart, then napi_disable
+is called and bit NAPI_STATE_SCHED is set. After that, function
+ath10k_sdio_hif_stop is called again from ath10k_stop by command
+"ifconfig wlan0 down" or "rmmod ath10k_sdio", then command blocked.
+
+It is blocked by napi_synchronize, napi_disable will set bit with
+NAPI_STATE_SCHED, and then napi_synchronize will enter dead loop
+becuase bit NAPI_STATE_SCHED is set by napi_disable.
+
+function of napi_synchronize
+static inline void napi_synchronize(const struct napi_struct *n)
+{
+	if (IS_ENABLED(CONFIG_SMP))
+		while (test_bit(NAPI_STATE_SCHED, &n->state))
+			msleep(1);
+	else
+		barrier();
+}
+
+function of napi_disable
+void napi_disable(struct napi_struct *n)
+{
+	might_sleep();
+	set_bit(NAPI_STATE_DISABLE, &n->state);
+
+	while (test_and_set_bit(NAPI_STATE_SCHED, &n->state))
+		msleep(1);
+	while (test_and_set_bit(NAPI_STATE_NPSVC, &n->state))
+		msleep(1);
+
+	hrtimer_cancel(&n->timer);
+
+	clear_bit(NAPI_STATE_DISABLE, &n->state);
+}
+
+Tested with QCA6174 SDIO with firmware WLAN.RMH.4.4.1-00042.
 
 Signed-off-by: Wen Gong <wgong@codeaurora.org>
 ---
- drivers/net/wireless/ath/ath10k/sdio.c | 18 ++++++++++++++----
- 1 file changed, 14 insertions(+), 4 deletions(-)
+ drivers/net/wireless/ath/ath10k/sdio.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/net/wireless/ath/ath10k/sdio.c b/drivers/net/wireless/ath/ath10k/sdio.c
-index 7b894dcaad2e..5b9bc72f4895 100644
+index 7b894dcaad2e..b71499b171c6 100644
 --- a/drivers/net/wireless/ath/ath10k/sdio.c
 +++ b/drivers/net/wireless/ath/ath10k/sdio.c
-@@ -1635,23 +1635,33 @@ static int ath10k_sdio_hif_diag_read(struct ath10k *ar, u32 address, void *buf,
- 				     size_t buf_len)
- {
+@@ -1756,8 +1756,6 @@ static int ath10k_sdio_hif_start(struct ath10k *ar)
+ 	struct ath10k_sdio *ar_sdio = ath10k_sdio_priv(ar);
  	int ret;
-+	void *mem;
-+
-+	mem = kzalloc(buf_len, GFP_KERNEL);
-+	if (!mem)
-+		return -ENOMEM;
  
- 	/* set window register to start read cycle */
- 	ret = ath10k_sdio_write32(ar, MBOX_WINDOW_READ_ADDR_ADDRESS, address);
- 	if (ret) {
- 		ath10k_warn(ar, "failed to set mbox window read address: %d", ret);
--		return ret;
-+		goto out;
- 	}
+-	napi_enable(&ar->napi);
+-
+ 	/* Sleep 20 ms before HIF interrupts are disabled.
+ 	 * This will give target plenty of time to process the BMI done
+ 	 * request before interrupts are disabled.
+@@ -1884,7 +1882,6 @@ static void ath10k_sdio_hif_stop(struct ath10k *ar)
+ 	spin_unlock_bh(&ar_sdio->wr_async_lock);
  
- 	/* read the data */
--	ret = ath10k_sdio_read(ar, MBOX_WINDOW_DATA_ADDRESS, buf, buf_len);
-+	ret = ath10k_sdio_read(ar, MBOX_WINDOW_DATA_ADDRESS, mem, buf_len);
- 	if (ret) {
- 		ath10k_warn(ar, "failed to read from mbox window data address: %d\n",
- 			    ret);
--		return ret;
-+		goto out;
- 	}
- 
--	return 0;
-+	memcpy(buf, mem, buf_len);
-+
-+out:
-+	kfree(mem);
-+
-+	return ret;
+ 	napi_synchronize(&ar->napi);
+-	napi_disable(&ar->napi);
  }
  
- static int ath10k_sdio_hif_diag_read32(struct ath10k *ar, u32 address,
+ #ifdef CONFIG_PM
+@@ -2121,6 +2118,7 @@ static int ath10k_sdio_probe(struct sdio_func *func,
+ 
+ 	netif_napi_add(&ar->napi_dev, &ar->napi, ath10k_sdio_napi_poll,
+ 		       ATH10K_NAPI_BUDGET);
++	napi_enable(&ar->napi);
+ 
+ 	ath10k_dbg(ar, ATH10K_DBG_BOOT,
+ 		   "sdio new func %d vendor 0x%x device 0x%x block 0x%x/0x%x\n",
+@@ -2235,6 +2233,7 @@ static void ath10k_sdio_remove(struct sdio_func *func)
+ 
+ 	ath10k_core_unregister(ar);
+ 
++	napi_disable(&ar->napi);
+ 	netif_napi_del(&ar->napi);
+ 
+ 	ath10k_core_destroy(ar);
 -- 
 2.23.0
