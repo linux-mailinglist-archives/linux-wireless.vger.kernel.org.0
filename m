@@ -2,92 +2,85 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A332315D466
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 Feb 2020 10:12:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B715E15D46C
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 Feb 2020 10:14:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387419AbgBNJMM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 14 Feb 2020 04:12:12 -0500
-Received: from nbd.name ([46.4.11.11]:41280 "EHLO nbd.name"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2387402AbgBNJML (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 14 Feb 2020 04:12:11 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-         s=20160729; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
-        Message-Id:Date:Subject:To:From:Sender:Reply-To:Cc:Content-Type:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=baDV0Xglh5+EFZY7RK+FaytXPWqDLTzBBzrfR/NZABM=; b=JwHE37AYlgmBIqD7HxqF5MP76v
-        XfncoDG9tFIfiSHeVPBOkI8tvZXCjEFpYbGhzgk8TVgh+ehDIvh/62038jF14MhkvIBOX5H7ebKMk
-        3z9Vby4n/gUKkGsuA13/opVu4puU1E3hjgkho9lsrvOGsn6kxAsXlN+J8je4fIBYW7kU=;
-Received: from [80.255.7.100] (helo=maeck.local)
-        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.89)
-        (envelope-from <nbd@nbd.name>)
-        id 1j2X17-0006Ms-S3
-        for linux-wireless@vger.kernel.org; Fri, 14 Feb 2020 10:12:09 +0100
-Received: by maeck.local (Postfix, from userid 501)
-        id D2DA27C8211E; Fri, 14 Feb 2020 10:12:08 +0100 (CET)
-From:   Felix Fietkau <nbd@nbd.name>
-To:     linux-wireless@vger.kernel.org
-Subject: [PATCH 3/3] mt76: do not set HOST_BROADCAST_PS_BUFFERING for mt7615
-Date:   Fri, 14 Feb 2020 10:12:08 +0100
-Message-Id: <20200214091208.59619-3-nbd@nbd.name>
-X-Mailer: git-send-email 2.24.0
-In-Reply-To: <20200214091208.59619-1-nbd@nbd.name>
-References: <20200214091208.59619-1-nbd@nbd.name>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        id S1728522AbgBNJOg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 14 Feb 2020 04:14:36 -0500
+Received: from mail27.static.mailgun.info ([104.130.122.27]:49290 "EHLO
+        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728422AbgBNJOg (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 14 Feb 2020 04:14:36 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1581671675; h=Message-Id: Date: Subject: Cc: To: From:
+ Sender; bh=AsDt1N/J1En5U8PS2kP07ps4Z84XLY3P+4N/lQq6UF8=; b=LRRqaaA30TTBPJeWigYwafuEl7MugZYHZJV0f7i/CF5X25DKA/J9K9YiFXNjYcLwKTd0Sva6
+ YwADjxIGSVGnuIZ54oXhmhFKzMKwYAeqNx8wN6SDSC4gT9cj7os3q8UejdjQoAu1McD2Y8hk
+ +kl21bR0ovflNREr638qkXe6sdk=
+X-Mailgun-Sending-Ip: 104.130.122.27
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5e4664f4.7f54d1372c70-smtp-out-n01;
+ Fri, 14 Feb 2020 09:14:28 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id BC0FCC433A2; Fri, 14 Feb 2020 09:14:28 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from vnaralas-linux.qualcomm.com (blr-c-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.19.19])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: mpubbise)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 08D89C43383;
+        Fri, 14 Feb 2020 09:14:26 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 08D89C43383
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=mpubbise@codeaurora.org
+From:   Manikanta Pubbisetty <mpubbise@codeaurora.org>
+To:     ath11k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org,
+        Manikanta Pubbisetty <mpubbise@codeaurora.org>
+Subject: [PATCH 0/2] ath11k: offload PN verification to the HW
+Date:   Fri, 14 Feb 2020 14:44:10 +0530
+Message-Id: <1581671652-8115-1-git-send-email-mpubbise@codeaurora.org>
+X-Mailer: git-send-email 2.7.4
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-mt7615 handles powersave buffering in firmware
+This patch series enables PN validation in the HW thereby
+reducing CPU cycles spent in the host CPU. It also is the
+basis for other performance improvement patches that follow
+this series.
 
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
----
- drivers/net/wireless/mediatek/mt76/mac80211.c     | 1 -
- drivers/net/wireless/mediatek/mt76/mt7603/init.c  | 1 +
- drivers/net/wireless/mediatek/mt76/mt76x02_util.c | 1 +
- 3 files changed, 2 insertions(+), 1 deletion(-)
+TSC (TKIP sequence counter) validation is also offloaded.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/wireless/mediatek/mt76/mac80211.c
-index f74fc7130ed2..bcba1fefd723 100644
---- a/drivers/net/wireless/mediatek/mt76/mac80211.c
-+++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
-@@ -295,7 +295,6 @@ mt76_phy_init(struct mt76_dev *dev, struct ieee80211_hw *hw)
- 
- 	ieee80211_hw_set(hw, SIGNAL_DBM);
- 	ieee80211_hw_set(hw, PS_NULLFUNC_STACK);
--	ieee80211_hw_set(hw, HOST_BROADCAST_PS_BUFFERING);
- 	ieee80211_hw_set(hw, AMPDU_AGGREGATION);
- 	ieee80211_hw_set(hw, SUPPORTS_RC_TABLE);
- 	ieee80211_hw_set(hw, SUPPORT_FAST_XMIT);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/init.c b/drivers/net/wireless/mediatek/mt76/mt7603/init.c
-index 182ce5a86f65..9e40e81bcc29 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7603/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7603/init.c
-@@ -557,6 +557,7 @@ int mt7603_register_device(struct mt7603_dev *dev)
- 	wiphy->n_iface_combinations = ARRAY_SIZE(if_comb);
- 
- 	ieee80211_hw_set(hw, TX_STATUS_NO_AMPDU_LEN);
-+	ieee80211_hw_set(hw, HOST_BROADCAST_PS_BUFFERING);
- 
- 	/* init led callbacks */
- 	if (IS_ENABLED(CONFIG_MT76_LEDS)) {
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_util.c b/drivers/net/wireless/mediatek/mt76/mt76x02_util.c
-index 48da4f3a17db..b7a120b0856d 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x02_util.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x02_util.c
-@@ -181,6 +181,7 @@ void mt76x02_init_device(struct mt76x02_dev *dev)
- 	hw->vif_data_size = sizeof(struct mt76x02_vif);
- 
- 	ieee80211_hw_set(hw, SUPPORTS_HT_CCK_RATES);
-+	ieee80211_hw_set(hw, HOST_BROADCAST_PS_BUFFERING);
- 
- 	dev->mt76.global_wcid.idx = 255;
- 	dev->mt76.global_wcid.hw_key_idx = -1;
+Hardware validates PN/TSC only for unicast packets;
+for group addressed packets, PN validation is done
+in mac80211.
+
+This patchset is dependent on the following patch:
+"ath11k: config reorder queue for all tids during peer setup"
+
+Manikanta Pubbisetty (2):
+  ath11k: handle RX fragments
+  ath11k: enable PN offload
+
+ drivers/net/wireless/ath/ath11k/Kconfig   |   1 +
+ drivers/net/wireless/ath/ath11k/core.h    |   2 +
+ drivers/net/wireless/ath/ath11k/dp.c      |  12 +-
+ drivers/net/wireless/ath/ath11k/dp.h      |  12 +
+ drivers/net/wireless/ath/ath11k/dp_rx.c   | 870 ++++++++++++++++++++++++++----
+ drivers/net/wireless/ath/ath11k/dp_rx.h   |   8 +-
+ drivers/net/wireless/ath/ath11k/hal.h     |   2 +-
+ drivers/net/wireless/ath/ath11k/hal_rx.c  |  14 +-
+ drivers/net/wireless/ath/ath11k/mac.c     |  41 +-
+ drivers/net/wireless/ath/ath11k/peer.h    |   7 +
+ drivers/net/wireless/ath/ath11k/rx_desc.h |   2 +-
+ 11 files changed, 865 insertions(+), 106 deletions(-)
+
 -- 
-2.24.0
-
+2.7.4
