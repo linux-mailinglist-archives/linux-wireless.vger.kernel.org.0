@@ -2,36 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A5E7915EE7F
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 Feb 2020 18:41:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AC36C15EE7B
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 Feb 2020 18:40:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388411AbgBNRks (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 14 Feb 2020 12:40:48 -0500
-Received: from mail.kernel.org ([198.145.29.99]:51366 "EHLO mail.kernel.org"
+        id S1730964AbgBNRkj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 14 Feb 2020 12:40:39 -0500
+Received: from mail.kernel.org ([198.145.29.99]:51482 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2389346AbgBNQDv (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 14 Feb 2020 11:03:51 -0500
+        id S2389781AbgBNQDy (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 14 Feb 2020 11:03:54 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id DE0BA24676;
-        Fri, 14 Feb 2020 16:03:49 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id DDC3524689;
+        Fri, 14 Feb 2020 16:03:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1581696230;
-        bh=9DNciYPHzmTAb0suRZ1bKJM0a/Lj+lrMt65xfQTFY2M=;
+        s=default; t=1581696234;
+        bh=a/JbiaU6A10GtmsEI/rx+V/8XXumfKNN7zGs8yipPCQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0DIrGNnaVqmp6oaaOlcwgE8WWkHefoIxZUwhgSe9l80K65M2eGGeF34bKNh6i+nFg
-         9FRKFgmbNr7X24hEp+Ow6cQHJUsuvF9RaIzB5xHgZXUuU7ImNKS6uD3Yd9+/n2S3Z2
-         kg3j8hgUvSHAW4J8G02os1xJYDiGy3lV29nQCbz8=
+        b=GISB1S0Db7cORtA/F+17Z0uWV/CjeqVINHODJjtOgIdcvSJDE6ldNLfXua+hhho1x
+         +208bxbVp2faC5LRQ9Ak+NeF9StrniEklxOdJN55Z6vlRZsK2PaH5MIsNwBCFpTiz1
+         F/KR5y4TXZoBUSF0L7bcy5jq2830wxVyOoFf21K0=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Rakesh Pillai <pillair@codeaurora.org>,
+Cc:     Jean-Philippe Brucker <jean-philippe@linaro.org>,
+        Arend van Spriel <arend.vanspriel@broadcom.com>,
         Kalle Valo <kvalo@codeaurora.org>,
-        Sasha Levin <sashal@kernel.org>, ath10k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 092/459] ath10k: Correct the DMA direction for management tx buffers
-Date:   Fri, 14 Feb 2020 10:55:42 -0500
-Message-Id: <20200214160149.11681-92-sashal@kernel.org>
+        Sasha Levin <sashal@kernel.org>,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        brcm80211-dev-list@cypress.com, netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 094/459] brcmfmac: sdio: Fix OOB interrupt initialization on brcm43362
+Date:   Fri, 14 Feb 2020 10:55:44 -0500
+Message-Id: <20200214160149.11681-94-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20200214160149.11681-1-sashal@kernel.org>
 References: <20200214160149.11681-1-sashal@kernel.org>
@@ -44,55 +47,65 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Rakesh Pillai <pillair@codeaurora.org>
+From: Jean-Philippe Brucker <jean-philippe@linaro.org>
 
-[ Upstream commit 6ba8b3b6bd772f575f7736c8fd893c6981fcce16 ]
+[ Upstream commit 8c8e60fb86a90a30721bbd797f58f96b3980dcc1 ]
 
-The management packets, send to firmware via WMI, are
-mapped using the direction DMA_TO_DEVICE. Currently in
-case of wmi cleanup, these buffers are being unmapped
-using an incorrect DMA direction. This can cause unwanted
-behavior when the host driver is handling a restart
-of the wlan firmware.
+Commit 262f2b53f679 ("brcmfmac: call brcmf_attach() just before calling
+brcmf_bus_started()") changed the initialization order of the brcmfmac
+SDIO driver. Unfortunately since brcmf_sdiod_intr_register() is now
+called before the sdiodev->bus_if initialization, it reads the wrong
+chip ID and fails to initialize the GPIO on brcm43362. Thus the chip
+cannot send interrupts and fails to probe:
 
-We might see a trace like below
+[   12.517023] brcmfmac: brcmf_sdio_bus_rxctl: resumed on timeout
+[   12.531214] ieee80211 phy0: brcmf_bus_started: failed: -110
+[   12.536976] ieee80211 phy0: brcmf_attach: dongle is not responding: err=-110
+[   12.566467] brcmfmac: brcmf_sdio_firmware_callback: brcmf_attach failed
 
-[<ffffff8008098b18>] __dma_inv_area+0x28/0x58
-[<ffffff8001176734>] ath10k_wmi_mgmt_tx_clean_up_pending+0x60/0xb0 [ath10k_core]
-[<ffffff80088c7c50>] idr_for_each+0x78/0xe4
-[<ffffff80011766a4>] ath10k_wmi_detach+0x4c/0x7c [ath10k_core]
-[<ffffff8001163d7c>] ath10k_core_stop+0x58/0x68 [ath10k_core]
-[<ffffff800114fb74>] ath10k_halt+0xec/0x13c [ath10k_core]
-[<ffffff8001165110>] ath10k_core_restart+0x11c/0x1a8 [ath10k_core]
-[<ffffff80080c36bc>] process_one_work+0x16c/0x31c
+Initialize the bus interface earlier to ensure that
+brcmf_sdiod_intr_register() properly sets up the OOB interrupt.
 
-Fix the incorrect DMA direction during the wmi
-management tx buffer cleanup.
-
-Tested HW: WCN3990
-Tested FW: WLAN.HL.3.1-00784-QCAHLSWMTPLZ-1
-
-Fixes: dc405152bb6 ("ath10k: handle mgmt tx completion event")
-Signed-off-by: Rakesh Pillai <pillair@codeaurora.org>
+BugLink: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=908438
+Fixes: 262f2b53f679 ("brcmfmac: call brcmf_attach() just before calling brcmf_bus_started()")
+Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+Reviewed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
 Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath10k/wmi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../net/wireless/broadcom/brcm80211/brcmfmac/sdio.c  | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath10k/wmi.c b/drivers/net/wireless/ath/ath10k/wmi.c
-index 4f707c6394bba..90f1197a6ad84 100644
---- a/drivers/net/wireless/ath/ath10k/wmi.c
-+++ b/drivers/net/wireless/ath/ath10k/wmi.c
-@@ -9422,7 +9422,7 @@ static int ath10k_wmi_mgmt_tx_clean_up_pending(int msdu_id, void *ptr,
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+index 1dea0178832ea..a935993a3c514 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+@@ -4226,6 +4226,12 @@ static void brcmf_sdio_firmware_callback(struct device *dev, int err,
+ 	}
  
- 	msdu = pkt_addr->vaddr;
- 	dma_unmap_single(ar->dev, pkt_addr->paddr,
--			 msdu->len, DMA_FROM_DEVICE);
-+			 msdu->len, DMA_TO_DEVICE);
- 	ieee80211_free_txskb(ar->hw, msdu);
+ 	if (err == 0) {
++		/* Assign bus interface call back */
++		sdiod->bus_if->dev = sdiod->dev;
++		sdiod->bus_if->ops = &brcmf_sdio_bus_ops;
++		sdiod->bus_if->chip = bus->ci->chip;
++		sdiod->bus_if->chiprev = bus->ci->chiprev;
++
+ 		/* Allow full data communication using DPC from now on. */
+ 		brcmf_sdiod_change_state(bus->sdiodev, BRCMF_SDIOD_DATA);
  
- 	return 0;
+@@ -4242,12 +4248,6 @@ static void brcmf_sdio_firmware_callback(struct device *dev, int err,
+ 
+ 	sdio_release_host(sdiod->func1);
+ 
+-	/* Assign bus interface call back */
+-	sdiod->bus_if->dev = sdiod->dev;
+-	sdiod->bus_if->ops = &brcmf_sdio_bus_ops;
+-	sdiod->bus_if->chip = bus->ci->chip;
+-	sdiod->bus_if->chiprev = bus->ci->chiprev;
+-
+ 	err = brcmf_alloc(sdiod->dev, sdiod->settings);
+ 	if (err) {
+ 		brcmf_err("brcmf_alloc failed\n");
 -- 
 2.20.1
 
