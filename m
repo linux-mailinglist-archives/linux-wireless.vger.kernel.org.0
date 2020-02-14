@@ -2,53 +2,73 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8272115D424
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 Feb 2020 09:54:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D38D15D44C
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 Feb 2020 10:04:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728994AbgBNIyI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 14 Feb 2020 03:54:08 -0500
-Received: from s3.sipsolutions.net ([144.76.43.62]:38790 "EHLO
-        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726004AbgBNIyI (ORCPT
+        id S1728522AbgBNJEA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 14 Feb 2020 04:04:00 -0500
+Received: from rtits2.realtek.com ([211.75.126.72]:35655 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726179AbgBNJEA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 14 Feb 2020 03:54:08 -0500
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.93)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1j2WjX-00BBhB-E8; Fri, 14 Feb 2020 09:53:59 +0100
-Message-ID: <57a23c8b569ff0c9268252f93902c81c0b90a21c.camel@sipsolutions.net>
-Subject: Re: [PATCH] [PATCH] mac80211: fix wrong 160/80+80 Mhz setting
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Shay Bar <shay.bar@celeno.com>
-Cc:     linux-wireless@vger.kernel.org, aviad.brikman@celeno.com
-Date:   Fri, 14 Feb 2020 09:53:58 +0100
-In-Reply-To: <20200210130728.23674-1-shay.bar@celeno.com> (sfid-20200210_140754_468849_45E94991)
-References: <20200209152818.4630-1-shay.bar@celeno.com>
-         <20200210130728.23674-1-shay.bar@celeno.com>
-         (sfid-20200210_140754_468849_45E94991)
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.2 (3.34.2-1.fc31) 
+        Fri, 14 Feb 2020 04:04:00 -0500
+Authenticated-By: 
+X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID 01E93p2c032383, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (RTEXMB06.realtek.com.tw[172.21.6.99])
+        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id 01E93p2c032383
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 14 Feb 2020 17:03:51 +0800
+Received: from RTEXMB04.realtek.com.tw (172.21.6.97) by
+ RTEXMB06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Fri, 14 Feb 2020 17:03:51 +0800
+Received: from localhost.localdomain (172.21.68.128) by
+ RTEXMB04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Fri, 14 Feb 2020 17:03:51 +0800
+From:   <yhchuang@realtek.com>
+To:     <kvalo@codeaurora.org>
+CC:     <linux-wireless@vger.kernel.org>, <briannorris@chromium.org>
+Subject: [PATCH 0/2] rtw88: add coex related debugfs
+Date:   Fri, 14 Feb 2020 17:03:32 +0800
+Message-ID: <20200214090334.330-1-yhchuang@realtek.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
+X-Originating-IP: [172.21.68.128]
+X-ClientProxiedBy: RTEXMB03.realtek.com.tw (172.21.6.96) To
+ RTEXMB04.realtek.com.tw (172.21.6.97)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+From: Yan-Hsuan Chuang <yhchuang@realtek.com>
 
-On Mon, 2020-02-10 at 15:07 +0200, Shay Bar wrote:
-> Before this patch, STA's would set new width of 160/80+80 Mhz based on AP capability only.
-> This is wrong because STA may not support > 80Mhz BW.
-> Fix is to verify STA has 160/80+80 Mhz capability before increasing its width to > 80Mhz.
+Sometimes WiFi/BT coexistence problems are difficult to debug. There
+are many factors that can influence the coex. Such the different
+scenarios of BT's profile, or the environment. So it is very useful
+to have some tools to know the current status for WiFi and BT, so that
+we can check if the decision made by the coex mechanism is good for
+the current situation.
 
-Oh, good catch.
+Also we can stop the coex mechanism to stop making any decisions, and
+send some commands through user space, to help us check that specific
+strategies are good for the current situation.
 
-> +	vht_cap = hw->wiphy->bands[chandef->chan->band]->vht_cap.cap;
 
-But I think this is possibly wrong, we might have VHT capa overrides?
+Yan-Hsuan Chuang (2):
+  rtw88: add a debugfs entry to dump coex's info
+  rtw88: add a debugfs entry to enable/disable coex mechanism
 
-Anyway, I've applied this as a fix now - we can fix it more later.
+ drivers/net/wireless/realtek/rtw88/coex.c     | 497 ++++++++++++++++++
+ drivers/net/wireless/realtek/rtw88/coex.h     |  10 +
+ drivers/net/wireless/realtek/rtw88/debug.c    |  63 +++
+ drivers/net/wireless/realtek/rtw88/main.h     |  18 +
+ drivers/net/wireless/realtek/rtw88/rtw8822b.c |  30 ++
+ drivers/net/wireless/realtek/rtw88/rtw8822c.c |  28 +
+ 6 files changed, 646 insertions(+)
 
-johannes
+-- 
+2.17.1
 
