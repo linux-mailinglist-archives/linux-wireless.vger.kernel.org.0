@@ -2,38 +2,38 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A42415EF54
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 Feb 2020 18:47:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BF42B15EF37
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 Feb 2020 18:46:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389213AbgBNQB5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 14 Feb 2020 11:01:57 -0500
-Received: from mail.kernel.org ([198.145.29.99]:47788 "EHLO mail.kernel.org"
+        id S2389306AbgBNQCT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 14 Feb 2020 11:02:19 -0500
+Received: from mail.kernel.org ([198.145.29.99]:48562 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2389204AbgBNQB4 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 14 Feb 2020 11:01:56 -0500
+        id S2389297AbgBNQCS (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 14 Feb 2020 11:02:18 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 9C2BB2467D;
-        Fri, 14 Feb 2020 16:01:54 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 177BD206CC;
+        Fri, 14 Feb 2020 16:02:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1581696115;
-        bh=D16FOP0LatLu1py7M1wt/ReSX/H32Uopazlzwfr6bX0=;
+        s=default; t=1581696138;
+        bh=iuyIbYzgZDi9u7sIMIx8Fd9TnuJLfU1RqCaPaTF+SmE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=eiyRfK3mCp2axTQgSO1JgUHnUrmSUYgTVr47syi7TY5dgJQfazPbUrpcpZz2PgCno
-         rS5S0JshSeAVIJToWXWXYvFhDGJXZxi25Xi/djaEaZxcDPbDpX27+1ICPufpDL9MA9
-         6U/UkxIcDlc1EYOIZGgHGTcg1+DHw0KmSpAN2gFU=
+        b=IcbUZAkTQQpRHQ/lg1xTU4ST5QWLvQNsspfHIAhGDrIO7mEfN4lCdu7CGmIR1sgu5
+         Rr6M0j20U49MatjSgcHNltroa3JTX/sKNwlqyDg8fbuNXvKTo7BJ5LrkdcuO22r50B
+         EzA+Ow2oAByzH38awFN4fLecFOZjJrAfsUWa2CFg=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Colin Ian King <colin.king@canonical.com>,
-        Maya Erez <merez@codeaurora.org>,
+Cc:     Navid Emamdoost <navid.emamdoost@gmail.com>,
         Kalle Valo <kvalo@codeaurora.org>,
         Sasha Levin <sashal@kernel.org>,
-        linux-wireless@vger.kernel.org, wil6210@qti.qualcomm.com,
-        netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 004/459] wil6210: fix break that is never reached because of zero'ing of a retry counter
-Date:   Fri, 14 Feb 2020 10:54:14 -0500
-Message-Id: <20200214160149.11681-4-sashal@kernel.org>
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        brcm80211-dev-list@cypress.com, netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 020/459] brcmfmac: Fix memory leak in brcmf_p2p_create_p2pdev()
+Date:   Fri, 14 Feb 2020 10:54:30 -0500
+Message-Id: <20200214160149.11681-20-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20200214160149.11681-1-sashal@kernel.org>
 References: <20200214160149.11681-1-sashal@kernel.org>
@@ -46,48 +46,37 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+From: Navid Emamdoost <navid.emamdoost@gmail.com>
 
-[ Upstream commit 5b1413f00b5beb9f5fed94e43ea0c497d5db9633 ]
+[ Upstream commit 5cc509aa83c6acd2c5cd94f99065c39d2bd0a490 ]
 
-There is a check on the retry counter invalid_buf_id_retry that is always
-false because invalid_buf_id_retry is initialized to zero on each iteration
-of a while-loop.  Fix this by initializing the retry counter before the
-while-loop starts.
+In the implementation of brcmf_p2p_create_p2pdev() the allocated memory
+for p2p_vif is leaked when the mac address is the same as primary
+interface. To fix this, go to error path to release p2p_vif via
+brcmf_free_vif().
 
-Addresses-Coverity: ("Logically dead code")
-Fixes: b4a967b7d0f5 ("wil6210: reset buff id in status message after completion")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
-Reviewed-by: Maya Erez <merez@codeaurora.org>
+Fixes: cb746e47837a ("brcmfmac: check p2pdev mac address uniqueness")
+Signed-off-by: Navid Emamdoost <navid.emamdoost@gmail.com>
 Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/wil6210/txrx_edma.c | 3 ++-
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c | 3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/wil6210/txrx_edma.c b/drivers/net/wireless/ath/wil6210/txrx_edma.c
-index 04d576deae72c..6cb0d7bcfe765 100644
---- a/drivers/net/wireless/ath/wil6210/txrx_edma.c
-+++ b/drivers/net/wireless/ath/wil6210/txrx_edma.c
-@@ -880,6 +880,7 @@ static struct sk_buff *wil_sring_reap_rx_edma(struct wil6210_priv *wil,
- 	u8 data_offset;
- 	struct wil_rx_status_extended *s;
- 	u16 sring_idx = sring - wil->srings;
-+	int invalid_buff_id_retry;
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c
+index 7ba9f6a686459..1f5deea5a288e 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c
+@@ -2092,7 +2092,8 @@ static struct wireless_dev *brcmf_p2p_create_p2pdev(struct brcmf_p2p_info *p2p,
+ 	/* firmware requires unique mac address for p2pdev interface */
+ 	if (addr && ether_addr_equal(addr, pri_ifp->mac_addr)) {
+ 		bphy_err(drvr, "discovery vif must be different from primary interface\n");
+-		return ERR_PTR(-EINVAL);
++		err = -EINVAL;
++		goto fail;
+ 	}
  
- 	BUILD_BUG_ON(sizeof(struct wil_rx_status_extended) > sizeof(skb->cb));
- 
-@@ -893,9 +894,9 @@ static struct sk_buff *wil_sring_reap_rx_edma(struct wil6210_priv *wil,
- 	/* Extract the buffer ID from the status message */
- 	buff_id = le16_to_cpu(wil_rx_status_get_buff_id(msg));
- 
-+	invalid_buff_id_retry = 0;
- 	while (!buff_id) {
- 		struct wil_rx_status_extended *s;
--		int invalid_buff_id_retry = 0;
- 
- 		wil_dbg_txrx(wil,
- 			     "buff_id is not updated yet by HW, (swhead 0x%x)\n",
+ 	brcmf_p2p_generate_bss_mac(p2p, addr);
 -- 
 2.20.1
 
