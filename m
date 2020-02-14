@@ -2,112 +2,344 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A2E915EF18
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 Feb 2020 18:45:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5FE1A15F0DE
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 Feb 2020 18:59:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388782AbgBNRpx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 14 Feb 2020 12:45:53 -0500
-Received: from muru.com ([72.249.23.125]:55312 "EHLO muru.com"
+        id S1730954AbgBNR5i (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 14 Feb 2020 12:57:38 -0500
+Received: from nbd.name ([46.4.11.11]:50390 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2389513AbgBNRpw (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 14 Feb 2020 12:45:52 -0500
-Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 4AF4780E7;
-        Fri, 14 Feb 2020 17:46:35 +0000 (UTC)
-Date:   Fri, 14 Feb 2020 09:45:48 -0800
-From:   Tony Lindgren <tony@atomide.com>
-To:     Sebastian Reichel <sre@kernel.org>
-Cc:     "Arthur D." <spinal.by@gmail.com>, linux-bluetooth@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-wireless@vger.kernel.org
-Subject: Re: Droid 4 WiFi firmware loading error
-Message-ID: <20200214174548.GC64767@atomide.com>
-References: <20200211232425.GE16391@atomide.com>
- <op.0fu85owhhxa7s4@supervisor.net28>
- <20200212150722.GF16391@atomide.com>
- <20200212162131.GI16391@atomide.com>
- <op.0fwkyxvihxa7s4@supervisor.net28>
- <20200213041112.GL16391@atomide.com>
- <op.0fw0oas5hxa7s4@supervisor.net28>
- <20200213161157.GN16391@atomide.com>
- <op.0fx4hozhhxa7s4@supervisor.net28>
- <20200214161100.b7aqb6wwsrxmx4ab@earth.universe>
+        id S2387591AbgBNR51 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 14 Feb 2020 12:57:27 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
+        Message-ID:Cc:To:Subject:From:Sender:Reply-To:Content-ID:Content-Description:
+        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=Nu6ZbpjJeTeJ4AjhFfe5KV8psYozflQQJ9uC9mZRkso=; b=r443XOzzuFRwksYgUDsvhUBwN7
+        o8nBwhRxqr+SwawUk/8HI3/NvQRqR1NhQiC+/lUen8d/Y53d14L4IzB5dHksS18jeZjXsogpbyjOK
+        TzStfEGn5Qdq4tQbKc1zqsdZ+z/FRXzVanRn/qwEdLW25kFe6Ke2dZiYhXl+S73pjlHk=;
+Received: from [80.255.7.100] (helo=nf.local)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1j2fDQ-0000t0-MB; Fri, 14 Feb 2020 18:57:24 +0100
+From:   Felix Fietkau <nbd@nbd.name>
+Subject: pull request: mt76 2019-02-14 v2
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>
+Autocrypt: addr=nbd@nbd.name; prefer-encrypt=mutual; keydata=
+ xsDiBEah5CcRBADIY7pu4LIv3jBlyQ/2u87iIZGe6f0f8pyB4UjzfJNXhJb8JylYYRzIOSxh
+ ExKsdLCnJqsG1PY1mqTtoG8sONpwsHr2oJ4itjcGHfn5NJSUGTbtbbxLro13tHkGFCoCr4Z5
+ Pv+XRgiANSpYlIigiMbOkide6wbggQK32tC20QxUIwCg4k6dtV/4kwEeiOUfErq00TVqIiEE
+ AKcUi4taOuh/PQWx/Ujjl/P1LfJXqLKRPa8PwD4j2yjoc9l+7LptSxJThL9KSu6gtXQjcoR2
+ vCK0OeYJhgO4kYMI78h1TSaxmtImEAnjFPYJYVsxrhay92jisYc7z5R/76AaELfF6RCjjGeP
+ wdalulG+erWju710Bif7E1yjYVWeA/9Wd1lsOmx6uwwYgNqoFtcAunDaMKi9xVQW18FsUusM
+ TdRvTZLBpoUAy+MajAL+R73TwLq3LnKpIcCwftyQXK5pEDKq57OhxJVv1Q8XkA9Dn1SBOjNB
+ l25vJDFAT9ntp9THeDD2fv15yk4EKpWhu4H00/YX8KkhFsrtUs69+vZQwc0cRmVsaXggRmll
+ dGthdSA8bmJkQG5iZC5uYW1lPsJgBBMRAgAgBQJGoeQnAhsjBgsJCAcDAgQVAggDBBYCAwEC
+ HgECF4AACgkQ130UHQKnbvXsvgCgjsAIIOsY7xZ8VcSm7NABpi91yTMAniMMmH7FRenEAYMa
+ VrwYTIThkTlQzsFNBEah5FQQCACMIep/hTzgPZ9HbCTKm9xN4bZX0JjrqjFem1Nxf3MBM5vN
+ CYGBn8F4sGIzPmLhl4xFeq3k5irVg/YvxSDbQN6NJv8o+tP6zsMeWX2JjtV0P4aDIN1pK2/w
+ VxcicArw0VYdv2ZCarccFBgH2a6GjswqlCqVM3gNIMI8ikzenKcso8YErGGiKYeMEZLwHaxE
+ Y7mTPuOTrWL8uWWRL5mVjhZEVvDez6em/OYvzBwbkhImrryF29e3Po2cfY2n7EKjjr3/141K
+ DHBBdgXlPNfDwROnA5ugjjEBjwkwBQqPpDA7AYPvpHh5vLbZnVGu5CwG7NAsrb2isRmjYoqk
+ wu++3117AAMFB/9S0Sj7qFFQcD4laADVsabTpNNpaV4wAgVTRHKV/kC9luItzwDnUcsZUPdQ
+ f3MueRJ3jIHU0UmRBG3uQftqbZJj3ikhnfvyLmkCNe+/hXhPu9sGvXyi2D4vszICvc1KL4RD
+ aLSrOsROx22eZ26KqcW4ny7+va2FnvjsZgI8h4sDmaLzKczVRIiLITiMpLFEU/VoSv0m1F4B
+ FtRgoiyjFzigWG0MsTdAN6FJzGh4mWWGIlE7o5JraNhnTd+yTUIPtw3ym6l8P+gbvfoZida0
+ TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabwkkE
+ GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCfTKx80VvCR/PvsUlrvdOLsIgeRGAAn1ee
+ RjMaxwtSdaCKMw3j33ZbsWS4
+Message-ID: <fa565f39-c10d-4b94-ba92-3cab33f77322@nbd.name>
+Date:   Fri, 14 Feb 2020 18:57:23 +0100
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:68.0)
+ Gecko/20100101 Thunderbird/68.4.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200214161100.b7aqb6wwsrxmx4ab@earth.universe>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-* Sebastian Reichel <sre@kernel.org> [200214 17:20]:
-> Hi,
-> 
-> WTF :(
-> 
-> Right now the BT driver and the WiFi driver are no aware of
-> each other. Actually the kernel is not even aware, that both
-> drivers are using the same chip. Unfortunately this will be
-> tricky to solve properly. Since a system may have two WiLink
-> devices, the only solution coming to my mind would be adding
-> a link from the BT device to the WiFi device in device tree.
-> Additionally we would need something in the WiLink driver to
-> check if driver has been initialized properly for a given DT
-> node.
+Hi Kalle,
 
-Yeah exactly.. I think the best way would be to export something
-like wlcore_register_bt/wlcore_unregister_bt.. And then have
-wlcore_register_bt return -EAGAIN until wlcore is up.
+here's v2 of my first pull request for 5.7. Fixed the version number
+in the tag, otherwise unchanged.
 
-> On Fri, Feb 14, 2020 at 12:54:50AM +0300, Arthur D. wrote:
-> > Hello.
-> > 
-> > Some users have reported that they have issues with WiFi firmware
-> > loading on Droid 4. The fragment of dmesg for the issue follows
-> > at the bottom of this mail.
-> > 
-> > With the help of Tony Lindgren I have found that the root of the
-> > issue was Bluetooth firmware loaded before WiFi driver (wlcore).
-> > 
-> > Now we need to change the kernel to make it load Bluetooth firmware
-> > only after WiFi firmware is loaded. So the bug will not be triggered.
-> > 
-> > Any ideas on how it should be done?
-> > 
-> > P.S. When I do "rmmod hci_uart" on Droid 4 device, I get something
-> > like endless loop of error reporting from kernel. The fragment of
-> > dmesg can be downloaded from https://dropmefiles.com/wCPMF
-> > I'm not sure where to report this one.
+- Felix
 
-Yup I've seen rmmod hci_uart produce kernel oops, but I just tried
-to reproduce it again on v5.5 and it just took a long time to rmmod
-with no oops.
+The following changes since commit aa7619a39acef91c5a6904f3ada7d0f20e2ad25e:
 
-Regards,
+  rtw88: Fix incorrect beamformee role setting (2020-02-13 12:07:25 +0200)
 
-Tony
+are available in the Git repository at:
 
-8< ---------------
-# dmesg -C; modprobe hci_uart; sleep 5; rmmod hci_uart; dmesg -c
-[  616.926422] Bluetooth: HCI UART driver ver 2.3
-[  616.926422] Bluetooth: HCI UART protocol H4 registered
-[  616.926422] Bluetooth: HCI UART protocol BCSP registered
-[  616.926513] Bluetooth: HCI UART protocol LL registered
-[  616.926635] Bluetooth: HCI UART protocol Three-wire (H5) registered
-[  616.927185] Bluetooth: HCI UART protocol Broadcom registered
-[  616.927764] hci-ti serial1-0: GPIO lookup for consumer enable
-[  616.927764] hci-ti serial1-0: using device tree for GPIO lookup
-[  616.927856] of_get_named_gpiod_flags: parsed 'enable-gpios' property of node '/ocp/interconnect@48000000/segment@0/target-module@6e000/serial@0/bluetooth[0]' - status (0)
-[  616.927886] gpio gpiochip6: Persistence not supported for GPIO 14
-[  624.002838] Bluetooth: hci0: command 0xff05 tx timeout
-[  632.572662] Bluetooth: hci0: send command failed
-[  632.572814] Bluetooth: hci0: download firmware failed, retrying...
-[  634.722991] Bluetooth: hci0: command 0x1001 tx timeout
-[  642.812652] Bluetooth: hci0: Reading TI version information failed (-110)
-[  642.812652] Bluetooth: hci0: download firmware failed, retrying...
-[  644.962707] Bluetooth: hci0: command 0x1001 tx timeout
-[  653.043151] Bluetooth: hci0: Reading TI version information failed (-110)
-[  653.043182] Bluetooth: hci0: download firmware failed, retrying...
-[  655.203582] Bluetooth: hci0: command 0x1001 tx timeout
-[  663.294372] Bluetooth: hci0: Reading TI version information failed (-110)
-[  663.294464] Bluetooth: hci0: download firmware failed, retrying...
+  https://github.com/nbd168/wireless tags/mt76-for-kvalo-2020-02-14
+
+for you to fetch changes up to 0987295750574adc59999b8fb9890834574bc4e2:
+
+  mt76: Introduce mt76_mcu data structure (2020-02-14 10:17:46 +0100)
+
+----------------------------------------------------------------
+mt76 patches for 5.7
+
+* dual-band concurrent support for MT7615
+* fixes for rx path race conditions
+* EEPROM fixes
+* MAC address handling fixes
+* coverage class support for MT7615
+* beacon fixes for USB devices
+* MT7615 LED support
+* minor cleanups/fixes for all drivers
+* set_antenna support for MT7615
+* tracing improvements
+* preparation for supporting new USB devices
+* tx power fixes
+
+----------------------------------------------------------------
+Felix Fietkau (68):
+      mt76: move initialization of some struct members to mt76_alloc_device
+      mt76: introduce struct mt76_phy
+      mt76: add support for an extra wiphy in the rx path
+      mt76: add support for an extra wiphy in the main tx path
+      mt76: add support for an extra wiphy in the tx status path
+      mt76: add support for an extra wiphy in mt76_sta_state()
+      mt76: move channel state to struct mt76_phy
+      mt76: keep a set of software tx queues per phy
+      mt76: move state from struct mt76_dev to mt76_phy
+      mt76: move chainmask back to driver specific structs
+      mt76: move txpower_conf back to driver specific structs
+      mt76: move txpower and antenna mask to struct mt76_phy
+      mt76: add multiple wiphy support to mt76_get_min_avg_rssi
+      mt76: add priv pointer to struct mt76_phy
+      mt76: add function for allocating an extra wiphy
+      mt76: add ext_phy field to struct mt76_wcid
+      mt76: move ampdu_ref from mt76_dev to driver struct
+      mt76: mt7615: add dual-phy support for mac80211 ops
+      mt76: mt7615: add multiple wiphy support for smart carrier sense
+      mt76: mt7615: add missing register init for dual-wiphy support
+      mt76: mt7615: remove useless MT_HW_RDD0/1 enum
+      mt76: mt7615: add multiple wiphy support to the dfs support code
+      mt76: mt7615: rework chainmask handling
+      mt76: mt7615: add multiple wiphy support to the rx path
+      mt76: mt7615: initialize dbdc settings on interface add
+      mt76: mt7615: move radio/mac initialization to .start/stop callbacks
+      mt76: mt7615: select the correct tx queue for frames sent to the second phy
+      mt76: mt7615: add support for registering a second wiphy via debugfs
+      mt76: mt7615: update beacon contents on BSS_CHANGED_BEACON
+      mt76: mt7615: defer mcu initialization via workqueue
+      mt7615: replace sta_state callback with sta_add/sta_remove
+      mt76: fix rx dma ring descriptor state on reset
+      mt76: disable bh in mt76_dma_rx_poll
+      mt76: mt7615: measure channel noise and report it via survey
+      mt76: mt7615: increase MCU command timeout
+      mt76: mt7603: fix input validation issues for powersave-filtered frames
+      mt76: clear skb pointers from rx aggregation reorder buffer during cleanup
+      mt76: set dma-done flag for flushed descriptors
+      mt76: fix handling full tx queues in mt76_dma_tx_queue_skb_raw
+      mt76: dma: do not write cpu_idx on rx queue reset until after refill
+      mt76: mt7603: increase dma mcu rx ring size
+      mt76: enable Airtime Queue Limit support
+      dt-bindings: net: wireless: mt76: document bindings for MT7622
+      mt76: mt7615: add __aligned(4) to txp structs
+      mt76: mt7615: move mmio related code from pci.c to mmio.c
+      mt76: mt7615: split up firmware loading functions
+      mt76: mt7615: store N9 firmware version instead of CR4
+      mt76: mt7615: fix MT_INT_TX_DONE_ALL definition for MT7622
+      mt76: mt7615: add dma and tx queue initialization for MT7622
+      mt76: mt7615: add eeprom support for MT7622
+      mt76: mt7615: add calibration free support for MT7622
+      mt76: mt7615: disable 5 GHz on MT7622
+      mt76: mt7615: implement probing and firmware loading on MT7622
+      mt76: mt7615: implement DMA support for MT7622
+      mt76: mt7615: decrease rx ring size for MT7622
+      mt76: mt7615: disable DBDC on MT7622
+      mt76: mt7615: add Kconfig entry for MT7622
+      mt76: mt7615: fix and rework tx power handling
+      mt76: mt7615: report firmware log event messages
+      mt76: mt7615: implement hardware reset support
+      mt76: mt7615: add support for testing hardware reset
+      mt76: mt7615: fix adding active monitor interfaces
+      mt76: mt7615: fix monitor mode on second PHY
+      mt76: avoid extra RCU synchronization on station removal
+      mt76: mt76x2: avoid starting the MAC too early
+      mt76: fix rounding issues on converting per-chain and combined txpower
+      mt76: mt7615: rework rx phy index handling
+      mt76: do not set HOST_BROADCAST_PS_BUFFERING for mt7615
+
+Lorenzo Bianconi (42):
+      mt76: mt7603: reset STA_CCA counter setting the channel
+      mt76: eeprom: add support for big endian eeprom partition
+      dt-bindings: net: wireless: mt76: introduce big-endian property
+      mt76: mt7615: report firmware version using ethtool
+      mt76: mt76x02: fix coverage_class type
+      mt76: mt7603: set 0 as min coverage_class value
+      mt76: mt7615: add set_coverage class support
+      mt76: mt7615: introduce LED support
+      mt76: mt76x02: simplify led reg definitions
+      mt76: mt7603: simplify led reg definitions
+      mt76: fix compilation warning in mt76_eeprom_override()
+      mt76: move dev_irq tracepoint in mt76 module
+      mt76: move mac_txdone tracepoint in mt76 module
+      mt76: mt7615: add tracing support
+      mt76: mt76x2: get rid of leftover target
+      mt76: mt7615: initialize radar specs from host driver
+      mt76: move WIPHY_FLAG_HAS_CHANNEL_SWITCH in mt76_phy_init
+      mt76: mt7615: remove leftover routine declaration
+      mt76: rely on mac80211 utility routines to compute airtime
+      mt76: mt76x02u: avoid overwrite max_tx_fragments
+      mt76: mt76u: check tx_status_data pointer in mt76u_tx_tasklet
+      mt76: mt76u: add mt76u_process_rx_queue utility routine
+      mt76: mt76u: add mt76_queue to mt76u_get_next_rx_entry signature
+      mt76: mt76u: add mt76_queue to mt76u_refill_rx signature
+      mt76: mt76u: use mt76_queue as mt76u_complete_rx context
+      mt76: mt76u: add queue id parameter to mt76u_submit_rx_buffers
+      mt76: mt76u: move mcu buffer allocation in mt76x02u drivers
+      mt76: mt76u: introduce mt76u_free_rx_queue utility routine
+      mt76: mt76u: stop/free all possible rx queues
+      mt76: mt76u: add mt76u_alloc_rx_queue utility routine
+      mt76: mt76u: add queue parameter to mt76u_rx_urb_alloc
+      mt76: mt76u: resume all rx queue in mt76u_resume_rx
+      mt76: mt76u: introduce mt76u_alloc_mcu_queue utility routine
+      mt76: mt76u: add {read/write}_extended utility routines
+      mt76: mt76u: take into account different queue mapping for 7663
+      mt76: mt76u: introduce mt76u_skb_dma_info routine
+      mt76: mt76u: add endpoint to mt76u_bulk_msg signature
+      mt76: mt76u: introduce MT_DRV_RX_DMA_HDR flag
+      mt76: mt7615: rely on mt76_queues_read for mt7622
+      mt76: mt76u: rename stat_wq in wq
+      mt76: mt7615: remove rx_mask in mt7615_eeprom_parse_hw_cap
+      mt76: Introduce mt76_mcu data structure
+
+Markus Theil (7):
+      mt76: use AC specific reorder timeout
+      mt76: mt76x02: omit beacon slot clearing
+      mt76: mt76x02: split beaconing
+      mt76: mt76x02: add check for invalid vif idx
+      mt76: mt76x02: remove a copy call for usb speedup
+      mt76: speed up usb bulk copy
+      mt76: mt76x02: add channel switch support for usb interfaces
+
+Pablo Greco (1):
+      mt76: mt7615: Fix build with older compilers
+
+Ryder Lee (15):
+      mt76: mt7615: fix MT7615_CFEND_RATE_DEFAULT value
+      mt76: mt7615: add missing settings for simultaneous dual-band support
+      mt76: mt7615: rework set_channel function
+      mt76: mt7615: add set_antenna callback
+      mt76: mt7615: report TSF information
+      mt76: mt7615: add per-phy mib statistics
+      mt76: mt7615: add a get_stats() callback
+      mt76: mt7615: fix endianness in mt7615_mcu_set_eeprom
+      mt76: mt7615: simplify mcu_set_bmc flow
+      mt76: mt7615: simplify mcu_set_sta flow
+      mt76: mt7615: add a helper to encapsulate sta_rec operation
+      mt76: mt7615: add starec operating flow for firmware v2
+      mt76: mt7615: use new tag sta_rec_wtbl
+      mt76: mt7615: switch mt7615_mcu_set_tx_ba to v2 format
+      mt76: mt7615: switch mt7615_mcu_set_rx_ba to v2 format
+
+Sean Wang (1):
+      mt76: mt76u: extend RX scatter gather number
+
+Shayne Chen (2):
+      mt76: do not overwrite max_tx_fragments if it has been set
+      mt76: fix possible undetected invalid MAC address
+
+Stanislaw Gruszka (3):
+      mt76: usb: use max packet length for m76u_copy
+      mt76: mt76x02u: do not set NULL beacons
+      mt76: mt76x02: minor mt76x02_mac_set_beacon optimization
+
+ Documentation/devicetree/bindings/net/wireless/mediatek,mt76.txt |   29 ++-
+ drivers/net/wireless/mediatek/mt76/Makefile                      |    2 +-
+ drivers/net/wireless/mediatek/mt76/agg-rx.c                      |   17 +-
+ drivers/net/wireless/mediatek/mt76/airtime.c                     |  326 --------------------------
+ drivers/net/wireless/mediatek/mt76/dma.c                         |   49 ++--
+ drivers/net/wireless/mediatek/mt76/eeprom.c                      |   20 +-
+ drivers/net/wireless/mediatek/mt76/mac80211.c                    |  392 ++++++++++++++++++++-----------
+ drivers/net/wireless/mediatek/mt76/mcu.c                         |   12 +-
+ drivers/net/wireless/mediatek/mt76/mmio.c                        |    3 -
+ drivers/net/wireless/mediatek/mt76/mt76.h                        |  165 ++++++++++----
+ drivers/net/wireless/mediatek/mt76/mt7603/core.c                 |    5 +-
+ drivers/net/wireless/mediatek/mt76/mt7603/dma.c                  |   21 +-
+ drivers/net/wireless/mediatek/mt76/mt7603/init.c                 |   22 +-
+ drivers/net/wireless/mediatek/mt76/mt7603/mac.c                  |   39 ++--
+ drivers/net/wireless/mediatek/mt76/mt7603/main.c                 |   25 +-
+ drivers/net/wireless/mediatek/mt76/mt7603/mcu.c                  |   22 +-
+ drivers/net/wireless/mediatek/mt76/mt7603/mt7603.h               |    7 +-
+ drivers/net/wireless/mediatek/mt76/mt7603/regs.h                 |   15 +-
+ drivers/net/wireless/mediatek/mt76/mt7615/Kconfig                |   11 +
+ drivers/net/wireless/mediatek/mt76/mt7615/Makefile               |    7 +-
+ drivers/net/wireless/mediatek/mt76/mt7615/debugfs.c              |  120 +++++++++-
+ drivers/net/wireless/mediatek/mt76/mt7615/dma.c                  |  178 ++++++++++-----
+ drivers/net/wireless/mediatek/mt76/mt7615/eeprom.c               |   38 +++-
+ drivers/net/wireless/mediatek/mt76/mt7615/eeprom.h               |    3 +-
+ drivers/net/wireless/mediatek/mt76/mt7615/init.c                 |  350 ++++++++++++++++++++--------
+ drivers/net/wireless/mediatek/mt76/mt7615/mac.c                  |  991 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++------------------
+ drivers/net/wireless/mediatek/mt76/mt7615/mac.h                  |   77 ++++++-
+ drivers/net/wireless/mediatek/mt76/mt7615/main.c                 |  380 +++++++++++++++++++++++--------
+ drivers/net/wireless/mediatek/mt76/mt7615/mcu.c                  | 1051 ++++++++++++++++++++++++++++++++++++++++++++++++++++--------------------------------
+ drivers/net/wireless/mediatek/mt76/mt7615/mcu.h                  |  126 +++++++++-
+ drivers/net/wireless/mediatek/mt76/mt7615/mmio.c                 |  115 ++++++++++
+ drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h               |  203 +++++++++++++----
+ drivers/net/wireless/mediatek/mt76/mt7615/mt7615_trace.h         |   56 +++++
+ drivers/net/wireless/mediatek/mt76/mt7615/pci.c                  |   98 +-------
+ drivers/net/wireless/mediatek/mt76/mt7615/regs.h                 |  163 ++++++++++---
+ drivers/net/wireless/mediatek/mt76/mt7615/soc.c                  |   77 +++++++
+ drivers/net/wireless/mediatek/mt76/mt7615/trace.c                |   12 +
+ drivers/net/wireless/mediatek/mt76/mt76x0/eeprom.c               |    4 +-
+ drivers/net/wireless/mediatek/mt76/mt76x0/init.c                 |    6 +-
+ drivers/net/wireless/mediatek/mt76/mt76x0/main.c                 |    8 +-
+ drivers/net/wireless/mediatek/mt76/mt76x0/pci.c                  |    9 +-
+ drivers/net/wireless/mediatek/mt76/mt76x0/pci_mcu.c              |    2 +-
+ drivers/net/wireless/mediatek/mt76/mt76x0/phy.c                  |   32 +--
+ drivers/net/wireless/mediatek/mt76/mt76x0/usb.c                  |   31 +--
+ drivers/net/wireless/mediatek/mt76/mt76x0/usb_mcu.c              |    2 +-
+ drivers/net/wireless/mediatek/mt76/mt76x02.h                     |   13 +-
+ drivers/net/wireless/mediatek/mt76/mt76x02_beacon.c              |   91 ++------
+ drivers/net/wireless/mediatek/mt76/mt76x02_dfs.c                 |   14 +-
+ drivers/net/wireless/mediatek/mt76/mt76x02_mac.c                 |   43 ++--
+ drivers/net/wireless/mediatek/mt76/mt76x02_mac.h                 |    5 +-
+ drivers/net/wireless/mediatek/mt76/mt76x02_mcu.c                 |   10 +-
+ drivers/net/wireless/mediatek/mt76/mt76x02_mmio.c                |   31 ++-
+ drivers/net/wireless/mediatek/mt76/mt76x02_phy.c                 |    4 +-
+ drivers/net/wireless/mediatek/mt76/mt76x02_phy.h                 |    4 +-
+ drivers/net/wireless/mediatek/mt76/mt76x02_regs.h                |   12 +-
+ drivers/net/wireless/mediatek/mt76/mt76x02_trace.h               |   46 ----
+ drivers/net/wireless/mediatek/mt76/mt76x02_txrx.c                |    7 +-
+ drivers/net/wireless/mediatek/mt76/mt76x02_usb_core.c            |   61 ++---
+ drivers/net/wireless/mediatek/mt76/mt76x02_usb_mcu.c             |   34 +--
+ drivers/net/wireless/mediatek/mt76/mt76x02_util.c                |   28 +--
+ drivers/net/wireless/mediatek/mt76/mt76x2/Makefile               |    2 -
+ drivers/net/wireless/mediatek/mt76/mt76x2/eeprom.c               |    4 +-
+ drivers/net/wireless/mediatek/mt76/mt76x2/eeprom.h               |    2 +-
+ drivers/net/wireless/mediatek/mt76/mt76x2/init.c                 |    2 +-
+ drivers/net/wireless/mediatek/mt76/mt76x2/mcu.c                  |    2 +-
+ drivers/net/wireless/mediatek/mt76/mt76x2/mt76x2.h               |    2 +-
+ drivers/net/wireless/mediatek/mt76/mt76x2/pci_init.c             |    6 +-
+ drivers/net/wireless/mediatek/mt76/mt76x2/pci_main.c             |   25 +-
+ drivers/net/wireless/mediatek/mt76/mt76x2/pci_phy.c              |    8 +-
+ drivers/net/wireless/mediatek/mt76/mt76x2/phy.c                  |   26 +--
+ drivers/net/wireless/mediatek/mt76/mt76x2/usb.c                  |    4 +-
+ drivers/net/wireless/mediatek/mt76/mt76x2/usb_init.c             |   20 +-
+ drivers/net/wireless/mediatek/mt76/mt76x2/usb_mac.c              |    2 +-
+ drivers/net/wireless/mediatek/mt76/mt76x2/usb_main.c             |   19 +-
+ drivers/net/wireless/mediatek/mt76/mt76x2/usb_phy.c              |    6 +-
+ drivers/net/wireless/mediatek/mt76/trace.c                       |    3 +
+ drivers/net/wireless/mediatek/mt76/trace.h                       |   54 ++++-
+ drivers/net/wireless/mediatek/mt76/tx.c                          |   85 ++++---
+ drivers/net/wireless/mediatek/mt76/usb.c                         |  455 +++++++++++++++++++++++++-----------
+ drivers/net/wireless/mediatek/mt76/util.c                        |    8 +-
+ drivers/net/wireless/mediatek/mt76/util.h                        |   14 +-
+ 81 files changed, 4286 insertions(+), 2187 deletions(-)
+ delete mode 100644 drivers/net/wireless/mediatek/mt76/airtime.c
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7615/mmio.c
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7615/mt7615_trace.h
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7615/soc.c
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7615/trace.c
