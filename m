@@ -2,39 +2,42 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id ED10F15E756
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 Feb 2020 17:53:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BB27D15E677
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 Feb 2020 17:49:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2393472AbgBNQxN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 14 Feb 2020 11:53:13 -0500
-Received: from mail.kernel.org ([198.145.29.99]:51988 "EHLO mail.kernel.org"
+        id S2405251AbgBNQUl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 14 Feb 2020 11:20:41 -0500
+Received: from mail.kernel.org ([198.145.29.99]:54598 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2404918AbgBNQTC (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 14 Feb 2020 11:19:02 -0500
+        id S2405243AbgBNQUk (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 14 Feb 2020 11:20:40 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 126DB2470C;
-        Fri, 14 Feb 2020 16:19:00 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 3E27324736;
+        Fri, 14 Feb 2020 16:20:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1581697141;
-        bh=3gwgFUqvJ8N/VlvUVeaLWqEWpiO5LJUZARXPEDPwzPU=;
+        s=default; t=1581697240;
+        bh=cOC9Nsj09tLFpckuFZxqt7bE5XPufJsAsVuPtG2dnfc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=anHR6wYtnoIEch78Ms4jA2JGcMZP22cR6OgDDFGRMvUYKz7iI15cs9QA80m+P8qmz
-         cyg3CB7c2LI9Vu6+aQ2oqhjJNGz4iQ58QwWR2q/zut30/tSPFDAyptt7RD2Quf+osB
-         mro8nn0QCsNZNiK3gVsJBbSBedAfwfUjBrv+Oprw=
+        b=11QmphQ4X5Xb7p+2pn3mowJm5bv7/cO+GPkPaRY8MCLjxWTWdE3IqjUVCpbB6U5RX
+         FqvM900+wD1TdDMmDmLfYCS0HPdDuXG4O9MOJ5czDbJSR+WyqHZtoctu0Dw6hvOgfX
+         Jp0MimJ2557KoicYvdNPNmCnJu5SCNfSPB8mtGag=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     yu kuai <yukuai3@huawei.com>, Kalle Valo <kvalo@codeaurora.org>,
-        Sasha Levin <sashal@kernel.org>, linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 082/186] bcma: remove set but not used variable 'sizel'
-Date:   Fri, 14 Feb 2020 11:15:31 -0500
-Message-Id: <20200214161715.18113-82-sashal@kernel.org>
+Cc:     Nathan Chancellor <natechancellor@gmail.com>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Sasha Levin <sashal@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        clang-built-linux@googlegroups.com
+Subject: [PATCH AUTOSEL 4.14 160/186] hostap: Adjust indentation in prism2_hostapd_add_sta
+Date:   Fri, 14 Feb 2020 11:16:49 -0500
+Message-Id: <20200214161715.18113-160-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20200214161715.18113-1-sashal@kernel.org>
 References: <20200214161715.18113-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
@@ -43,54 +46,50 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: yu kuai <yukuai3@huawei.com>
+From: Nathan Chancellor <natechancellor@gmail.com>
 
-[ Upstream commit f427939391f290cbeabe0231eb8a116429d823f0 ]
+[ Upstream commit b61156fba74f659d0bc2de8f2dbf5bad9f4b8faf ]
 
-Fixes gcc '-Wunused-but-set-variable' warning:
+Clang warns:
 
-drivers/bcma/scan.c: In function ‘bcma_erom_get_addr_desc’:
+../drivers/net/wireless/intersil/hostap/hostap_ap.c:2511:3: warning:
+misleading indentation; statement is not part of the previous 'if'
+[-Wmisleading-indentation]
+        if (sta->tx_supp_rates & WLAN_RATE_5M5)
+        ^
+../drivers/net/wireless/intersil/hostap/hostap_ap.c:2509:2: note:
+previous statement is here
+        if (sta->tx_supp_rates & WLAN_RATE_2M)
+        ^
+1 warning generated.
 
-drivers/bcma/scan.c:222:20: warning: variable ‘sizel’ set but
-not used [-Wunused-but-set-variable]
+This warning occurs because there is a space before the tab on this
+line. Remove it so that the indentation is consistent with the Linux
+kernel coding style and clang no longer warns.
 
-It is never used, and so can be removed.
-
-Fixes: 8369ae33b705 ("bcma: add Broadcom specific AMBA bus driver")
-Signed-off-by: yu kuai <yukuai3@huawei.com>
+Fixes: ff1d2767d5a4 ("Add HostAP wireless driver.")
+Link: https://github.com/ClangBuiltLinux/linux/issues/813
+Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
+Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
 Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bcma/scan.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ drivers/net/wireless/intersil/hostap/hostap_ap.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/bcma/scan.c b/drivers/bcma/scan.c
-index 4a2d1b235fb5a..1f2de714b4017 100644
---- a/drivers/bcma/scan.c
-+++ b/drivers/bcma/scan.c
-@@ -219,7 +219,7 @@ static s32 bcma_erom_get_mst_port(struct bcma_bus *bus, u32 __iomem **eromptr)
- static u32 bcma_erom_get_addr_desc(struct bcma_bus *bus, u32 __iomem **eromptr,
- 				  u32 type, u8 port)
- {
--	u32 addrl, addrh, sizel, sizeh = 0;
-+	u32 addrl, addrh, sizeh = 0;
- 	u32 size;
- 
- 	u32 ent = bcma_erom_get_ent(bus, eromptr);
-@@ -239,12 +239,9 @@ static u32 bcma_erom_get_addr_desc(struct bcma_bus *bus, u32 __iomem **eromptr,
- 
- 	if ((ent & SCAN_ADDR_SZ) == SCAN_ADDR_SZ_SZD) {
- 		size = bcma_erom_get_ent(bus, eromptr);
--		sizel = size & SCAN_SIZE_SZ;
- 		if (size & SCAN_SIZE_SG32)
- 			sizeh = bcma_erom_get_ent(bus, eromptr);
--	} else
--		sizel = SCAN_ADDR_SZ_BASE <<
--				((ent & SCAN_ADDR_SZ) >> SCAN_ADDR_SZ_SHIFT);
-+	}
- 
- 	return addrl;
- }
+diff --git a/drivers/net/wireless/intersil/hostap/hostap_ap.c b/drivers/net/wireless/intersil/hostap/hostap_ap.c
+index 1a8d8db80b054..486ca1ee306ed 100644
+--- a/drivers/net/wireless/intersil/hostap/hostap_ap.c
++++ b/drivers/net/wireless/intersil/hostap/hostap_ap.c
+@@ -2568,7 +2568,7 @@ static int prism2_hostapd_add_sta(struct ap_data *ap,
+ 		sta->supported_rates[0] = 2;
+ 	if (sta->tx_supp_rates & WLAN_RATE_2M)
+ 		sta->supported_rates[1] = 4;
+- 	if (sta->tx_supp_rates & WLAN_RATE_5M5)
++	if (sta->tx_supp_rates & WLAN_RATE_5M5)
+ 		sta->supported_rates[2] = 11;
+ 	if (sta->tx_supp_rates & WLAN_RATE_11M)
+ 		sta->supported_rates[3] = 22;
 -- 
 2.20.1
 
