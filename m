@@ -2,119 +2,79 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CB08A15D794
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 Feb 2020 13:44:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8602515D949
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 Feb 2020 15:19:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728427AbgBNMoW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 14 Feb 2020 07:44:22 -0500
-Received: from mail27.static.mailgun.info ([104.130.122.27]:40876 "EHLO
-        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727822AbgBNMoW (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 14 Feb 2020 07:44:22 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1581684261; h=Date: Message-Id: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=+Y5h6QDo8Oc94LScKBPp12Fcw839PLjczUL5n8w+4qE=;
- b=qGsIRKlyW4o1keczD2kzD91R4effCNjf85ForAnBbzy2bNr55DqRW7xgi3jE3h81cfd/MWgP
- 5YjlKu2eAMJD6pCxtcvz0aLf6ucO8cuDKQgyrSH91q15aQFn0znuHW73w3sixN15cgrhEVVd
- aLM/M7awrw1Lo+Pqv75n0xC+ZqA=
-X-Mailgun-Sending-Ip: 104.130.122.27
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e469624.7f63eced7ca8-smtp-out-n01;
- Fri, 14 Feb 2020 12:44:20 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id D3ABEC4479D; Fri, 14 Feb 2020 12:44:20 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
-        MISSING_MID,SPF_NONE,URIBL_BLOCKED autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 6686AC43383;
-        Fri, 14 Feb 2020 12:44:19 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 6686AC43383
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        id S1729314AbgBNOTp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 14 Feb 2020 09:19:45 -0500
+Received: from 220-134-220-36.HINET-IP.hinet.net ([220.134.220.36]:63084 "EHLO
+        ns.kevlo.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726191AbgBNOTp (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 14 Feb 2020 09:19:45 -0500
+Received: from ns.kevlo.org (localhost [127.0.0.1])
+        by ns.kevlo.org (8.15.2/8.15.2) with ESMTPS id 01EEGlqJ026360
+        (version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+        Fri, 14 Feb 2020 22:17:02 +0800 (CST)
+        (envelope-from kevlo@ns.kevlo.org)
+Received: (from kevlo@localhost)
+        by ns.kevlo.org (8.15.2/8.15.2/Submit) id 01EEGlcC026359;
+        Fri, 14 Feb 2020 22:16:47 +0800 (CST)
+        (envelope-from kevlo)
+Date:   Fri, 14 Feb 2020 22:16:45 +0800
+From:   Kevin Lo <kevlo@kevlo.org>
+To:     Yan-Hsuan Chuang <yhchuang@realtek.com>
+Cc:     linux-wireless@vger.kernel.org
+Subject: [PATCH v2] rtw88: remove unused member of struct rtw_hal
+Message-ID: <20200214141645.GA26343@ns.kevlo.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] rtw88: remove unneeded variable
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20200213052000.GA15671@ns.kevlo.org>
-References: <20200213052000.GA15671@ns.kevlo.org>
-To:     Kevin Lo <kevlo@kevlo.org>
-Cc:     Yan-Hsuan Chuang <yhchuang@realtek.com>,
-        linux-wireless@vger.kernel.org
-User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20200214124420.D3ABEC4479D@smtp.codeaurora.org>
-Date:   Fri, 14 Feb 2020 12:44:20 +0000 (UTC)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.8.0 (2017-02-23)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Kevin Lo <kevlo@kevlo.org> wrote:
+Remove unused fab_version member from struct rtw_hal.
+Some of the checks being made were nonsense.
 
-> Remove unneeded fab_version variable in rtw_chip_parameter_setup().
-> Some of the checks being made were nonsense.
-> 
-> Signed-off-by: Kevin Lo <kevlo@kevlo.org>
-> 
-> diff d49f2c5063fdd00f896e408a1c1fa63e6d94a767 /home/kevlo/wireless-drivers-next
-> blob - 2f73820cd9ba542ebb632267a9460ea87ddcc2a5
-> file + drivers/net/wireless/realtek/rtw88/main.c
-> --- drivers/net/wireless/realtek/rtw88/main.c
-> +++ drivers/net/wireless/realtek/rtw88/main.c
-> @@ -1118,7 +1118,6 @@ static int rtw_chip_parameter_setup(struct rtw_dev *rt
->  	}
->  
->  	hal->chip_version = rtw_read32(rtwdev, REG_SYS_CFG1);
-> -	hal->fab_version = BIT_GET_VENDOR_ID(hal->chip_version) >> 2;
->  	hal->cut_version = BIT_GET_CHIP_VER(hal->chip_version);
->  	hal->mp_chip = (hal->chip_version & BIT_RTL_ID) ? 0 : 1;
->  	if (hal->chip_version & BIT_RF_TYPE_ID) {
-> @@ -1132,11 +1131,6 @@ static int rtw_chip_parameter_setup(struct rtw_dev *rt
->  		hal->antenna_tx = BB_PATH_A;
->  		hal->antenna_rx = BB_PATH_A;
->  	}
-> -
-> -	if (hal->fab_version == 2)
-> -		hal->fab_version = 1;
-> -	else if (hal->fab_version == 1)
-> -		hal->fab_version = 2;
->  
->  	efuse->physical_size = chip->phy_efuse_size;
->  	efuse->logical_size = chip->log_efuse_size;
-> blob - c074cef22120a222948cfab03ca0bd25baa80844
-> file + drivers/net/wireless/realtek/rtw88/main.h
-> --- drivers/net/wireless/realtek/rtw88/main.h
-> +++ drivers/net/wireless/realtek/rtw88/main.h
-> @@ -1527,7 +1527,6 @@ struct rtw_hal {
->  	u32 rcr;
->  
->  	u32 chip_version;
-> -	u8 fab_version;
->  	u8 cut_version;
->  	u8 mp_chip;
->  	u8 oem_id;
-
-Failed to apply, please rebase on top of wireless-drivers-next.
-
-fatal: sha1 information is lacking or useless (net/wireless/realtek/rtw88/main.c).
-error: could not build fake ancestor
-Applying: rtw88: remove unneeded variable
-Patch failed at 0001 rtw88: remove unneeded variable
-The copy of the patch that failed is found in: .git/rebase-apply/patch
-
-Patch set to Changes Requested.
-
--- 
-https://patchwork.kernel.org/patch/11379873/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Signed-off-by: Kevin Lo <kevlo@kevlo.org>
+---
+v2: rebase on top of master
+---
+diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
+index 2f73820cd9ba..dc93a4d04f25 100644
+--- a/drivers/net/wireless/realtek/rtw88/main.c
++++ b/drivers/net/wireless/realtek/rtw88/main.c
+@@ -1118,7 +1118,6 @@ static int rtw_chip_parameter_setup(struct rtw_dev *rtwdev)
+ 	}
+ 
+ 	hal->chip_version = rtw_read32(rtwdev, REG_SYS_CFG1);
+-	hal->fab_version = BIT_GET_VENDOR_ID(hal->chip_version) >> 2;
+ 	hal->cut_version = BIT_GET_CHIP_VER(hal->chip_version);
+ 	hal->mp_chip = (hal->chip_version & BIT_RTL_ID) ? 0 : 1;
+ 	if (hal->chip_version & BIT_RF_TYPE_ID) {
+@@ -1133,11 +1132,6 @@ static int rtw_chip_parameter_setup(struct rtw_dev *rtwdev)
+ 		hal->antenna_rx = BB_PATH_A;
+ 	}
+ 
+-	if (hal->fab_version == 2)
+-		hal->fab_version = 1;
+-	else if (hal->fab_version == 1)
+-		hal->fab_version = 2;
+-
+ 	efuse->physical_size = chip->phy_efuse_size;
+ 	efuse->logical_size = chip->log_efuse_size;
+ 	efuse->protect_size = chip->ptct_efuse_size;
+diff --git a/drivers/net/wireless/realtek/rtw88/main.h b/drivers/net/wireless/realtek/rtw88/main.h
+index c074cef22120..201ed8870754 100644
+--- a/drivers/net/wireless/realtek/rtw88/main.h
++++ b/drivers/net/wireless/realtek/rtw88/main.h
+@@ -1527,7 +1527,6 @@ struct rtw_hal {
+ 	u32 rcr;
+ 
+ 	u32 chip_version;
+-	u8 fab_version;
+ 	u8 cut_version;
+ 	u8 mp_chip;
+ 	u8 oem_id;
