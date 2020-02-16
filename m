@@ -2,82 +2,76 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D1BF1600BD
-	for <lists+linux-wireless@lfdr.de>; Sat, 15 Feb 2020 22:52:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D58016042D
+	for <lists+linux-wireless@lfdr.de>; Sun, 16 Feb 2020 14:40:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727362AbgBOVwF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 15 Feb 2020 16:52:05 -0500
-Received: from mail-qk1-f178.google.com ([209.85.222.178]:38422 "EHLO
-        mail-qk1-f178.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726734AbgBOVwE (ORCPT
+        id S1726560AbgBPNkV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 16 Feb 2020 08:40:21 -0500
+Received: from mail.schafweide.org ([185.45.112.52]:50692 "EHLO
+        mail.schafweide.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726171AbgBPNkU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 15 Feb 2020 16:52:04 -0500
-Received: by mail-qk1-f178.google.com with SMTP id z19so12734969qkj.5
-        for <linux-wireless@vger.kernel.org>; Sat, 15 Feb 2020 13:52:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu-com.20150623.gappssmtp.com; s=20150623;
-        h=to:cc:from:subject:message-id:date:user-agent:mime-version
-         :content-language:content-transfer-encoding;
-        bh=hmW9uUExBD5bXGwCqUZfBGtN7UxUxJa7T9gal2J1nMw=;
-        b=lro82BIjIt71jSDjx5dHHbzh9O7aWp2UMOhqlTodsz9vML6UAGUeWuq66gk4vMa1KM
-         wB7ttSJCtBHspGgnZPdTVXtbh9eZFi0tBEOSohR7w9BHcNOEAS9P0JocqitohUb0uj2n
-         hdDVVINV98Ki8IBwknAUb+57kO5dnP4TazBiZ7vvMdlExyyaxuF+5j33v+mXAqoSeDvk
-         I5DmHX0aLCXHGqiYXMRxF1G4Ye7Y778xR4Qg/0LMzfopYYsNXICdUhvZZrQa4E91qOV+
-         iRKVQIGb6GSQs6Y2gLetjtuksfSzS/MioAjxvOaX6XRJsXg/8XmH8IptWavD0VTLAslc
-         TUaQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:to:cc:from:subject:message-id:date:user-agent
-         :mime-version:content-language:content-transfer-encoding;
-        bh=hmW9uUExBD5bXGwCqUZfBGtN7UxUxJa7T9gal2J1nMw=;
-        b=dk0vINeZCmdDtx6MOr6JGn5MpAZsQX3HzjkhoZ4TtiMnovbpI6gUupqcJnn8dzf0GI
-         NQ5slpo9zwJVTMC4w5MqOMkjCb+UMDxchXWSAbbhyBqp3PsFoAJp8ApB4UIXK2VeQoDa
-         zKb1p03/o/kUjGyD2bRdl6+RMtLpMK5Xg3LHwMagFM41UVQpuumhvLZCPdsP47fYL5Pc
-         9DmtTrFs6JYb9SW6sOY5NGqalgHhuoUZhgeNoAKckpyMcRlJhUs9TlXSNwMRjUAeuws8
-         3++yG7HYHb/0g3hhYP+nR4mE6zFdAKdrnVvdrcTg2wG1M1mf5SdsgerZFbvRXrgQyIQh
-         6tfg==
-X-Gm-Message-State: APjAAAXxluJnOGFjKFpH0f4nQmXcRkt0wSyEvF2wHfaH5TLVwGMxvxpz
-        BwotOvkdtrt4EwgDVWmRnJ9nPQ==
-X-Google-Smtp-Source: APXvYqxoANsLhigIQHncTXQO+p9XZM6WRd9+aMZr6+BLHAH7am9ZHGovaz09CyjBIK2DzMSZVwOwpg==
-X-Received: by 2002:a37:3c5:: with SMTP id 188mr8428230qkd.312.1581803522429;
-        Sat, 15 Feb 2020 13:52:02 -0800 (PST)
-Received: from [192.168.43.235] ([204.48.77.136])
-        by smtp.googlemail.com with ESMTPSA id o17sm6004607qtq.93.2020.02.15.13.52.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 15 Feb 2020 13:52:01 -0800 (PST)
-To:     people <people@netdevconf.info>
-Cc:     prog-committee-0x14@netdevconf.info, speakers-0x14@netdevconf.info,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>, lwn@lwn.net,
-        netfilter-devel@vger.kernel.org,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        lartc@vger.kernel.org, Christie Geldart <christie@ambedia.com>
-From:   Jamal Hadi Salim <jhs@mojatatu.com>
-Subject: 0x14: Schedule out!
-Message-ID: <c8d8a7be-834e-1bab-9c6e-fa6f39ea6040@mojatatu.com>
-Date:   Sat, 15 Feb 2020 16:52:00 -0500
+        Sun, 16 Feb 2020 08:40:20 -0500
+Received: from [IPv6:2a07:59c6:eeff:20:d66:7892:f4ef:c5b1] (unknown [IPv6:2a07:59c6:eeff:20:d66:7892:f4ef:c5b1])
+        by mail.schafweide.org (Postfix) with ESMTPSA id 570978340103;
+        Sun, 16 Feb 2020 14:40:18 +0100 (CET)
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=schafweide.org;
+        s=default; t=1581860418;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=JLwRLkDUYX0Lt+0jUJ5aVSHs8JY8u20Kwqfd3joHZuA=;
+        b=WCeG8+SfBDSPNe3doy2iQXeuLnC3hIyIsrVagwfupt1PQTnsvUJnRcZ8MZSq6lrc9zn0NP
+        v4rwckq525tTmpDg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=schafweide.org;
+        s=rsa; t=1581860418;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=JLwRLkDUYX0Lt+0jUJ5aVSHs8JY8u20Kwqfd3joHZuA=;
+        b=ZAODn44n/3r+osaXlYaMUcpkxXM0LAyFzsbXGg2gXnnyViXPROdFfxFqZSpmd2aNIHU5tY
+        WBcFMvuemogZl/WHXqsUXbtvYD/33pNWw6+itYgNt97AQnBjeHGoD5e76R0vNPf7PRISWY
+        LRLnZZThr/vQbtnzHXaWvOnRImJ9aio=
+Subject: Re: [rtw88] Linux 5.6-rc1 / RTL8822BE WiFi adapter
+To:     Larry Finger <Larry.Finger@lwfinger.net>
+Cc:     Tobias Predel <tobias.predel@gmail.com>,
+        linux-wireless@vger.kernel.org
+References: <20200214214134.GA12764@t2b3>
+ <c76d37cc-2cab-a8f2-e570-a444c06ad020@schafweide.org>
+ <028ea5d3-1459-b37e-f996-72958be0ff4c@lwfinger.net>
+From:   Bjoern Franke <bjo@schafweide.org>
+Message-ID: <dcd22888-4a60-59f4-3a8e-0b1a49b1e922@schafweide.org>
+Date:   Sun, 16 Feb 2020 14:40:17 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.2
+ Thunderbird/68.5.0
 MIME-Version: 1.0
+In-Reply-To: <028ea5d3-1459-b37e-f996-72958be0ff4c@lwfinger.net>
 Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-GB
+Content-Language: de-DE
 Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Hi Larry,
 
-We are pleased to announce the tentative schedule
-for 0x14. There may be some minor changes
-going forward - but the overall theme will remain.
+> I deliberately stay behind the official kernel repo so as to avoid implementing
+> any regressions. As you are the one with the problem, you need to perform a
+> bisection to discover which change to rtw88 introduces your difficulty!!
 
-For the schedule and logistics please see:
-https://netdevconf.info/0x14/news.html?schedule-up
+Somebody commented the DKMS-package for your rtw88-branch with
 
-Come one, come all!
-Again, as a reminder - 2 days to go for end of
-early bird registration. See:
-https://netdevconf.info/0x14/registration.html
+"Thank you so much for this ! After kernel 5.5, that's the only way i 
+can get functional wifi on my machine. (RTL8822BE) Deeply appreciate it."
 
-cheers,
-jamal
+So I assume I'm not the only one experiencing this issue.
+
+But I can do a bisect if I find some time.
+
+Regards
+Bjoern
+
+[1]https://aur.archlinux.org/packages/rtlwifi_new-rtw88-dkms/
