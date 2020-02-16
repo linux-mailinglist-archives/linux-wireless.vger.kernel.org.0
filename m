@@ -2,50 +2,132 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A460160457
-	for <lists+linux-wireless@lfdr.de>; Sun, 16 Feb 2020 15:37:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 09D2216049C
+	for <lists+linux-wireless@lfdr.de>; Sun, 16 Feb 2020 16:52:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727952AbgBPOgm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 16 Feb 2020 09:36:42 -0500
-Received: from webmail.newmedia-net.de ([185.84.6.166]:45703 "EHLO
-        webmail.newmedia-net.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727691AbgBPOgm (ORCPT
+        id S1728383AbgBPPwk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 16 Feb 2020 10:52:40 -0500
+Received: from mail26.static.mailgun.info ([104.130.122.26]:33885 "EHLO
+        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728367AbgBPPwk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 16 Feb 2020 09:36:42 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=newmedia-net.de; s=mikd;
-        h=Content-Transfer-Encoding:Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject; bh=lF1H11A4xL3IUsMYRIBxDsrUXUH8yfHXn7YDFVEYpQs=;
-        b=vpFcs00O/dphvOFx2eCniSx05u8D+v4jVIs3g3mOshpFLrHI65h3kiI08FtKaq8fT/49YW+gu5hIAMYKTVKkwCWRhC4ZzeP1oVqxI6jwJUKW3UybxOFtottijJiPdsLDdoowPRwinE3httW0rgXRb1tfVagZmlr9PV4aldiRtxc=;
-Subject: wireless regdb issue
-To:     Seth Forshee <seth.forshee@canonical.com>
-Cc:     wireless-regdb@lists.infradead.org, linux-wireless@vger.kernel.org
-References: <1567189484-27536-1-git-send-email-hanipouspilot@gmail.com>
- <20191029144815.GR30813@ubuntu-xps13> <20200127042500.GE3730@ubuntu-xps13>
-From:   Sebastian Gottschall <s.gottschall@newmedia-net.de>
-Message-ID: <1c1bda62-fec8-b30d-5300-79fbe08fc517@newmedia-net.de>
-Date:   Sun, 16 Feb 2020 15:36:33 +0100
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+        Sun, 16 Feb 2020 10:52:40 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1581868359; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=mTPpxjIgsi8/gxj4KKOu5w05+hJqvJScCCYGAArHYzI=; b=HoxXQ82YVT/h2+frm5Cf9L0hKpytv0uPNfX/b2g0Y+Hv8jq70SdPeOq6P7vfEwSPHM6C249a
+ IrnjTS5Cu6bnYHrLJKjCDUBPyh7tXCyfSWcpfBv8yiXX4qTvAYnFg8gOPjz+Rx/Zb3utLR9n
+ ySQuf2SNrzLMFeo0loXCNSjAnCE=
+X-Mailgun-Sending-Ip: 104.130.122.26
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5e496546.7f59f49b2b90-smtp-out-n02;
+ Sun, 16 Feb 2020 15:52:38 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id E65FDC4479F; Sun, 16 Feb 2020 15:52:37 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from tynnyri.adurom.net (tynnyri.adurom.net [51.15.11.48])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 81D30C43383;
+        Sun, 16 Feb 2020 15:52:35 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 81D30C43383
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Cc:     David Miller <davem@davemloft.net>, dcbw@redhat.com,
+        kuba@kernel.org, bjorn.andersson@linaro.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-wireless@vger.kernel.org
+Subject: Re: [PATCH 0/2] Migrate QRTR Nameservice to Kernel
+References: <20200213091427.13435-1-manivannan.sadhasivam@linaro.org>
+        <34daecbeb05d31e30ef11574f873553290c29d16.camel@redhat.com>
+        <20200213153007.GA26254@mani>
+        <20200213.074755.849728173103010425.davem@davemloft.net>
+        <20200214091156.GD6419@Mani-XPS-13-9360>
+Date:   Sun, 16 Feb 2020 17:52:33 +0200
+In-Reply-To: <20200214091156.GD6419@Mani-XPS-13-9360> (Manivannan Sadhasivam's
+        message of "Fri, 14 Feb 2020 14:41:56 +0530")
+Message-ID: <87zhdiv8am.fsf@tynnyri.adurom.net>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-In-Reply-To: <20200127042500.GE3730@ubuntu-xps13>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Received:  from [2003:c9:3f10:df00:5ae:8058:a679:cdb8]
-        by webmail.newmedia-net.de with esmtpsa (TLSv1:AES128-SHA:128)
-        (Exim 4.72)
-        (envelope-from <s.gottschall@newmedia-net.de>)
-        id 1j3Kzq-0006Rt-CU; Sun, 16 Feb 2020 15:34:10 +0100
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-i have found something very strange in the regdb. according to various 
-sheets and document. channel 165 is not compatible with vht80
-in the fcc area. but the regdb doesnt cover this rule. the whole range 
-from 5735 - 5835 is set to vht80.
++ linux-wireless
 
-so what is correct?
+Hi Dave & Dan,
 
+Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org> writes:
 
-Sebastian
+> On Thu, Feb 13, 2020 at 07:47:55AM -0800, David Miller wrote:
+>> From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+>> Date: Thu, 13 Feb 2020 21:00:08 +0530
+>> 
+>> > The primary motivation is to eliminate the need for installing and starting
+>> > a userspace tool for the basic WiFi usage. This will be critical for the
+>> > Qualcomm WLAN devices deployed in x86 laptops.
+>> 
+>> I can't even remember it ever being the case that wifi would come up without
+>> the help of a userspace component of some sort to initiate the scan and choose
+>> and AP to associate with.
+>> 
+>> And from that perspective your argument doesn't seem valid at all.
+>
+> For the WiFi yes, but I should have added that this QRTR nameservice is being
+> used by modems, DSPs and some other co-processors for some offloading tasks.
+> So currently, they all depend on userspace ns tool for working. So migrating
+> it to kernel can benefit them all.
 
+So the background of this is to get QCA6390[1] (a Qualcomm Wi-Fi 6 PCI
+device) supported in ath11k without additional dependencies to user
+space. Currently Bjorn's QRTR user space daemon[2] needs to be running
+for ath11k to even be able to boot the firmware on the device.
+
+In my opinion a wireless driver should be "self contained", meaning that
+it should be enough just to update the kernel and install the firmware
+images to /lib/firmware and nothing else should be needed. But without
+Mani's patches a user with QCA6390 on her laptop would need to fetch and
+install the QRTR daemon (as I doubt distros have it pre-installed)
+before getting Wi-Fi working on the laptop. But without Wi-Fi trying to
+fetch anything from the internet is annoying, so not a very smooth user
+experience.
+
+I assume Dave above refers to iw, wpasupplicant and hostapd but I
+consider them very different from QRTR. iw, wpasupplicant and hostapd
+are generic wireless user space components using the generic
+nl80211/wext interfaces and they work with _all_ upstream drivers. They
+are also pre-installed by distros so it's basically plug and go for the
+user to get Wi-Fi running.
+
+Also from high level design point of view I don't like the idea that
+wireless drivers would start to having vendor specific user components,
+like Qualcomm, Marvell, Intel and other vendors having their own daemons
+running in addition of generic wireless components (iw/wpas/hostapd).
+That would be a quite mess trying to handle backwards compatibility and
+all other stable kernel/user space interface requirements.
+
+So to have a smooth out of box experience for ath11k users, I consider
+that we need QRTR in the kernel and that's why need Mani's patches[3].
+
+[1] https://www.qualcomm.com/products/fastconnect-6800
+
+[2] https://github.com/andersson/qrtr/
+
+[3] https://patchwork.ozlabs.org/cover/1237353/
+
+    https://patchwork.ozlabs.org/patch/1237355/
+
+    https://patchwork.ozlabs.org/patch/1237354/
+    
+-- 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
