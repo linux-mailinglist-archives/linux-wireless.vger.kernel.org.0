@@ -2,76 +2,50 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D58016042D
-	for <lists+linux-wireless@lfdr.de>; Sun, 16 Feb 2020 14:40:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A460160457
+	for <lists+linux-wireless@lfdr.de>; Sun, 16 Feb 2020 15:37:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726560AbgBPNkV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 16 Feb 2020 08:40:21 -0500
-Received: from mail.schafweide.org ([185.45.112.52]:50692 "EHLO
-        mail.schafweide.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726171AbgBPNkU (ORCPT
+        id S1727952AbgBPOgm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 16 Feb 2020 09:36:42 -0500
+Received: from webmail.newmedia-net.de ([185.84.6.166]:45703 "EHLO
+        webmail.newmedia-net.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727691AbgBPOgm (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 16 Feb 2020 08:40:20 -0500
-Received: from [IPv6:2a07:59c6:eeff:20:d66:7892:f4ef:c5b1] (unknown [IPv6:2a07:59c6:eeff:20:d66:7892:f4ef:c5b1])
-        by mail.schafweide.org (Postfix) with ESMTPSA id 570978340103;
-        Sun, 16 Feb 2020 14:40:18 +0100 (CET)
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=schafweide.org;
-        s=default; t=1581860418;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=JLwRLkDUYX0Lt+0jUJ5aVSHs8JY8u20Kwqfd3joHZuA=;
-        b=WCeG8+SfBDSPNe3doy2iQXeuLnC3hIyIsrVagwfupt1PQTnsvUJnRcZ8MZSq6lrc9zn0NP
-        v4rwckq525tTmpDg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=schafweide.org;
-        s=rsa; t=1581860418;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=JLwRLkDUYX0Lt+0jUJ5aVSHs8JY8u20Kwqfd3joHZuA=;
-        b=ZAODn44n/3r+osaXlYaMUcpkxXM0LAyFzsbXGg2gXnnyViXPROdFfxFqZSpmd2aNIHU5tY
-        WBcFMvuemogZl/WHXqsUXbtvYD/33pNWw6+itYgNt97AQnBjeHGoD5e76R0vNPf7PRISWY
-        LRLnZZThr/vQbtnzHXaWvOnRImJ9aio=
-Subject: Re: [rtw88] Linux 5.6-rc1 / RTL8822BE WiFi adapter
-To:     Larry Finger <Larry.Finger@lwfinger.net>
-Cc:     Tobias Predel <tobias.predel@gmail.com>,
-        linux-wireless@vger.kernel.org
-References: <20200214214134.GA12764@t2b3>
- <c76d37cc-2cab-a8f2-e570-a444c06ad020@schafweide.org>
- <028ea5d3-1459-b37e-f996-72958be0ff4c@lwfinger.net>
-From:   Bjoern Franke <bjo@schafweide.org>
-Message-ID: <dcd22888-4a60-59f4-3a8e-0b1a49b1e922@schafweide.org>
-Date:   Sun, 16 Feb 2020 14:40:17 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+        Sun, 16 Feb 2020 09:36:42 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=newmedia-net.de; s=mikd;
+        h=Content-Transfer-Encoding:Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject; bh=lF1H11A4xL3IUsMYRIBxDsrUXUH8yfHXn7YDFVEYpQs=;
+        b=vpFcs00O/dphvOFx2eCniSx05u8D+v4jVIs3g3mOshpFLrHI65h3kiI08FtKaq8fT/49YW+gu5hIAMYKTVKkwCWRhC4ZzeP1oVqxI6jwJUKW3UybxOFtottijJiPdsLDdoowPRwinE3httW0rgXRb1tfVagZmlr9PV4aldiRtxc=;
+Subject: wireless regdb issue
+To:     Seth Forshee <seth.forshee@canonical.com>
+Cc:     wireless-regdb@lists.infradead.org, linux-wireless@vger.kernel.org
+References: <1567189484-27536-1-git-send-email-hanipouspilot@gmail.com>
+ <20191029144815.GR30813@ubuntu-xps13> <20200127042500.GE3730@ubuntu-xps13>
+From:   Sebastian Gottschall <s.gottschall@newmedia-net.de>
+Message-ID: <1c1bda62-fec8-b30d-5300-79fbe08fc517@newmedia-net.de>
+Date:   Sun, 16 Feb 2020 15:36:33 +0100
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
  Thunderbird/68.5.0
 MIME-Version: 1.0
-In-Reply-To: <028ea5d3-1459-b37e-f996-72958be0ff4c@lwfinger.net>
+In-Reply-To: <20200127042500.GE3730@ubuntu-xps13>
 Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: de-DE
 Content-Transfer-Encoding: 7bit
+X-Received:  from [2003:c9:3f10:df00:5ae:8058:a679:cdb8]
+        by webmail.newmedia-net.de with esmtpsa (TLSv1:AES128-SHA:128)
+        (Exim 4.72)
+        (envelope-from <s.gottschall@newmedia-net.de>)
+        id 1j3Kzq-0006Rt-CU; Sun, 16 Feb 2020 15:34:10 +0100
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Larry,
+i have found something very strange in the regdb. according to various 
+sheets and document. channel 165 is not compatible with vht80
+in the fcc area. but the regdb doesnt cover this rule. the whole range 
+from 5735 - 5835 is set to vht80.
 
-> I deliberately stay behind the official kernel repo so as to avoid implementing
-> any regressions. As you are the one with the problem, you need to perform a
-> bisection to discover which change to rtw88 introduces your difficulty!!
+so what is correct?
 
-Somebody commented the DKMS-package for your rtw88-branch with
 
-"Thank you so much for this ! After kernel 5.5, that's the only way i 
-can get functional wifi on my machine. (RTL8822BE) Deeply appreciate it."
+Sebastian
 
-So I assume I'm not the only one experiencing this issue.
-
-But I can do a bisect if I find some time.
-
-Regards
-Bjoern
-
-[1]https://aur.archlinux.org/packages/rtlwifi_new-rtw88-dkms/
