@@ -2,132 +2,302 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 09D2216049C
-	for <lists+linux-wireless@lfdr.de>; Sun, 16 Feb 2020 16:52:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C8331160663
+	for <lists+linux-wireless@lfdr.de>; Sun, 16 Feb 2020 21:42:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728383AbgBPPwk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 16 Feb 2020 10:52:40 -0500
-Received: from mail26.static.mailgun.info ([104.130.122.26]:33885 "EHLO
-        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728367AbgBPPwk (ORCPT
+        id S1726234AbgBPUm4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 16 Feb 2020 15:42:56 -0500
+Received: from mail-wr1-f68.google.com ([209.85.221.68]:37168 "EHLO
+        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726020AbgBPUm4 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 16 Feb 2020 10:52:40 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1581868359; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=mTPpxjIgsi8/gxj4KKOu5w05+hJqvJScCCYGAArHYzI=; b=HoxXQ82YVT/h2+frm5Cf9L0hKpytv0uPNfX/b2g0Y+Hv8jq70SdPeOq6P7vfEwSPHM6C249a
- IrnjTS5Cu6bnYHrLJKjCDUBPyh7tXCyfSWcpfBv8yiXX4qTvAYnFg8gOPjz+Rx/Zb3utLR9n
- ySQuf2SNrzLMFeo0loXCNSjAnCE=
-X-Mailgun-Sending-Ip: 104.130.122.26
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e496546.7f59f49b2b90-smtp-out-n02;
- Sun, 16 Feb 2020 15:52:38 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id E65FDC4479F; Sun, 16 Feb 2020 15:52:37 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from tynnyri.adurom.net (tynnyri.adurom.net [51.15.11.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 81D30C43383;
-        Sun, 16 Feb 2020 15:52:35 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 81D30C43383
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Cc:     David Miller <davem@davemloft.net>, dcbw@redhat.com,
-        kuba@kernel.org, bjorn.andersson@linaro.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Sun, 16 Feb 2020 15:42:56 -0500
+Received: by mail-wr1-f68.google.com with SMTP id w15so17235861wru.4
+        for <linux-wireless@vger.kernel.org>; Sun, 16 Feb 2020 12:42:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=XyPwpmFnM6nIxcbDj+9/XVwqPfkQ/ZJUQm32q7IvYuE=;
+        b=HR14qXV00/D+2x1BBlcuFq4U9FKxCbZKGX8juZ5RDJtauXB5HTsaFXNh9VNHUZscfc
+         lm7Rl/6bFOJcKN2gCXuW5sbyJzUCNBbPy2c+3DQTcOk2sSkiyPn/uo50sbqlzj8ZCkQw
+         fI9LoB5SKwhcGRvHjtKu8VG3QTRbEjJbHjms1FkTnDHq6nCzDBwAcL5kCy24jP1u3fM5
+         nK2GGHJsm9Kv/zYn89I4Q7LfQohSEHtTRCzGyRDWK3+Jxrh/gRQlAopC+31RxDngVJDZ
+         YfUbsOxb45MsX6c+wcYxedOJyxAk2OLca3xBq6lfOrJ4xFDNEOBrCKYHPRtdG7MWmpqk
+         V0+A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=XyPwpmFnM6nIxcbDj+9/XVwqPfkQ/ZJUQm32q7IvYuE=;
+        b=HzNahEuVQTTIEBJsvz6JYhzW/LR+yzGj/vsrZ3am0Axpw5FcxQTitV/QidBT3Bndg3
+         gktQSv3rOTYl5QGrlcb2Kg4FSVuazvnS56Ou1DyzNa5TxlpLkYRcapNS0GuNW5ThYEuZ
+         I6ef78aXKY2zIjgl6eKNaD39BFds6hzPljCf0KqB5YnQE0P66vaLZOyPgkLoBrsrt4a/
+         jE5YkkTFU9eRM+S2hcLRijgFHTm4r2etmD4Ci68XT+B9kflOChNhLXIrcFvt9jfAh2Eu
+         dJ9CTzsUbJe6enqzSAgG3ubA7q1ctI+bWjV+RTdPDK6SrZ4NwhElm74fWipa83T0Va9F
+         PCWw==
+X-Gm-Message-State: APjAAAXSNVyYGu5URO+qA5/JUp4fLM7eclrtgvxv9FTHL+TSGZnBTZIk
+        e9R8xx8wG9sOVk6sR28feczMIZ6g8JzRVA==
+X-Google-Smtp-Source: APXvYqwGud5jf2LTR8l4MYMo2Nj3nEG5FIF4NYSeKs6gUdFOnmlL/M56wT8SMLcVqre9kqVsje8eXA==
+X-Received: by 2002:adf:f20b:: with SMTP id p11mr16355292wro.195.1581885772886;
+        Sun, 16 Feb 2020 12:42:52 -0800 (PST)
+Received: from t2b3 ([109.175.107.56])
+        by smtp.gmail.com with ESMTPSA id l131sm17986888wmf.31.2020.02.16.12.42.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 16 Feb 2020 12:42:52 -0800 (PST)
+Date:   Sun, 16 Feb 2020 21:42:50 +0100
+From:   Tobias Predel <tobias.predel@gmail.com>
+To:     Bjoern Franke <bjo@schafweide.org>
+Cc:     Larry Finger <Larry.Finger@lwfinger.net>,
         linux-wireless@vger.kernel.org
-Subject: Re: [PATCH 0/2] Migrate QRTR Nameservice to Kernel
-References: <20200213091427.13435-1-manivannan.sadhasivam@linaro.org>
-        <34daecbeb05d31e30ef11574f873553290c29d16.camel@redhat.com>
-        <20200213153007.GA26254@mani>
-        <20200213.074755.849728173103010425.davem@davemloft.net>
-        <20200214091156.GD6419@Mani-XPS-13-9360>
-Date:   Sun, 16 Feb 2020 17:52:33 +0200
-In-Reply-To: <20200214091156.GD6419@Mani-XPS-13-9360> (Manivannan Sadhasivam's
-        message of "Fri, 14 Feb 2020 14:41:56 +0530")
-Message-ID: <87zhdiv8am.fsf@tynnyri.adurom.net>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+Subject: Re: [rtw88] Linux 5.6-rc1 / RTL8822BE WiFi adapter
+Message-ID: <20200216204250.GA2065@t2b3>
+References: <20200214214134.GA12764@t2b3>
+ <c76d37cc-2cab-a8f2-e570-a444c06ad020@schafweide.org>
+ <028ea5d3-1459-b37e-f996-72958be0ff4c@lwfinger.net>
+ <dcd22888-4a60-59f4-3a8e-0b1a49b1e922@schafweide.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <dcd22888-4a60-59f4-3a8e-0b1a49b1e922@schafweide.org>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-+ linux-wireless
 
-Hi Dave & Dan,
+On Sun, Feb 16, 2020 at 02:40:17PM +0100, Bjoern Franke wrote:
+> Hi Larry,
+> 
+> > I deliberately stay behind the official kernel repo so as to avoid implementing
+> > any regressions. As you are the one with the problem, you need to perform a
+> > bisection to discover which change to rtw88 introduces your difficulty!!
+> 
+> Somebody commented the DKMS-package for your rtw88-branch with
+> 
+> "Thank you so much for this ! After kernel 5.5, that's the only way i can
+> get functional wifi on my machine. (RTL8822BE) Deeply appreciate it."
+> 
+> So I assume I'm not the only one experiencing this issue.
+> 
+> But I can do a bisect if I find some time.
+> 
+> Regards
+> Bjoern
+> 
+> [1]https://aur.archlinux.org/packages/rtlwifi_new-rtw88-dkms/
 
-Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org> writes:
+Hello,
 
-> On Thu, Feb 13, 2020 at 07:47:55AM -0800, David Miller wrote:
->> From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
->> Date: Thu, 13 Feb 2020 21:00:08 +0530
->> 
->> > The primary motivation is to eliminate the need for installing and starting
->> > a userspace tool for the basic WiFi usage. This will be critical for the
->> > Qualcomm WLAN devices deployed in x86 laptops.
->> 
->> I can't even remember it ever being the case that wifi would come up without
->> the help of a userspace component of some sort to initiate the scan and choose
->> and AP to associate with.
->> 
->> And from that perspective your argument doesn't seem valid at all.
->
-> For the WiFi yes, but I should have added that this QRTR nameservice is being
-> used by modems, DSPs and some other co-processors for some offloading tasks.
-> So currently, they all depend on userspace ns tool for working. So migrating
-> it to kernel can benefit them all.
+no success so far with git bisecting. But maybe ripgrep and git blame
+comes to rescue.
 
-So the background of this is to get QCA6390[1] (a Qualcomm Wi-Fi 6 PCI
-device) supported in ath11k without additional dependencies to user
-space. Currently Bjorn's QRTR user space daemon[2] needs to be running
-for ath11k to even be able to boot the firmware on the device.
+Commit 1131ad7fe57541b78db92d1332c69158e13762dc (rtw88: flush hardware
+tx queues) introduced that warning I see a lot ("timed out to flush queue X"), 
+so maybe that's suspicious, especially when packages could be dropped because the queue
+is flushed. 
 
-In my opinion a wireless driver should be "self contained", meaning that
-it should be enough just to update the kernel and install the firmware
-images to /lib/firmware and nothing else should be needed. But without
-Mani's patches a user with QCA6390 on her laptop would need to fetch and
-install the QRTR daemon (as I doubt distros have it pre-installed)
-before getting Wi-Fi working on the laptop. But without Wi-Fi trying to
-fetch anything from the internet is annoying, so not a very smooth user
-experience.
+diff --git a/drivers/net/wireless/realtek/rtw88/mac.c b/drivers/net/wireless/realtek/rtw88/mac.c
+index d8c5da342b11..f40877bc9c9a 100644
+--- a/drivers/net/wireless/realtek/rtw88/mac.c
++++ b/drivers/net/wireless/realtek/rtw88/mac.c
+@@ -719,6 +719,93 @@ int rtw_download_firmware(struct rtw_dev *rtwdev, struct rtw_fw_state *fw)
+ 	return ret;
+ }
+ 
++static u32 get_priority_queues(struct rtw_dev *rtwdev, u32 queues)
++{
++	struct rtw_rqpn *rqpn = rtwdev->fifo.rqpn;
++	u32 prio_queues = 0;
++
++	if (queues & BIT(IEEE80211_AC_VO))
++		prio_queues |= BIT(rqpn->dma_map_vo);
++	if (queues & BIT(IEEE80211_AC_VI))
++		prio_queues |= BIT(rqpn->dma_map_vi);
++	if (queues & BIT(IEEE80211_AC_BE))
++		prio_queues |= BIT(rqpn->dma_map_be);
++	if (queues & BIT(IEEE80211_AC_BK))
++		prio_queues |= BIT(rqpn->dma_map_bk);
++
++	return prio_queues;
++}
++
++static void __rtw_mac_flush_prio_queue(struct rtw_dev *rtwdev,
++				       u32 prio_queue, bool drop)
++{
++	u32 addr;
++	u16 avail_page, rsvd_page;
++	int i;
++
++	switch (prio_queue) {
++	case RTW_DMA_MAPPING_EXTRA:
++		addr = REG_FIFOPAGE_INFO_4;
++		break;
++	case RTW_DMA_MAPPING_LOW:
++		addr = REG_FIFOPAGE_INFO_2;
++		break;
++	case RTW_DMA_MAPPING_NORMAL:
++		addr = REG_FIFOPAGE_INFO_3;
++		break;
++	case RTW_DMA_MAPPING_HIGH:
++		addr = REG_FIFOPAGE_INFO_1;
++		break;
++	default:
++		return;
++	}
++
++	/* check if all of the reserved pages are available for 100 msecs */
++	for (i = 0; i < 5; i++) {
++		rsvd_page = rtw_read16(rtwdev, addr);
++		avail_page = rtw_read16(rtwdev, addr + 2);
++		if (rsvd_page == avail_page)
++			return;
++
++		msleep(20);
++	}
++
++	/* priority queue is still not empty, throw a warning,
++	 *
++	 * Note that if we want to flush the tx queue when having a lot of
++	 * traffic (ex, 100Mbps up), some of the packets could be dropped.
++	 * And it requires like ~2secs to flush the full priority queue.
++	 */
++	if (!drop)
++		rtw_warn(rtwdev, "timed out to flush queue %d\n", prio_queue);
++}
++
++static void rtw_mac_flush_prio_queues(struct rtw_dev *rtwdev,
++				      u32 prio_queues, bool drop)
++{
++	u32 q;
++
++	for (q = 0; q < RTW_DMA_MAPPING_MAX; q++)
++		if (prio_queues & BIT(q))
++			__rtw_mac_flush_prio_queue(rtwdev, q, drop);
++}
++
++void rtw_mac_flush_queues(struct rtw_dev *rtwdev, u32 queues, bool drop)
++{
++	u32 prio_queues = 0;
++
++	/* If all of the hardware queues are requested to flush,
++	 * or the priority queues are not mapped yet,
++	 * flush all of the priority queues
++	 */
++	if (queues == BIT(rtwdev->hw->queues) - 1 || !rtwdev->fifo.rqpn)
++		prio_queues = BIT(RTW_DMA_MAPPING_MAX) - 1;
++	else
++		prio_queues = get_priority_queues(rtwdev, queues);
++
++	rtw_mac_flush_prio_queues(rtwdev, prio_queues, drop);
++}
++
+ static int txdma_queue_mapping(struct rtw_dev *rtwdev)
+ {
+ 	struct rtw_chip_info *chip = rtwdev->chip;
+@@ -743,6 +830,7 @@ static int txdma_queue_mapping(struct rtw_dev *rtwdev)
+ 		return -EINVAL;
+ 	}
+ 
++	rtwdev->fifo.rqpn = rqpn;
+ 	txdma_pq_map |= BIT_TXDMA_HIQ_MAP(rqpn->dma_map_hi);
+ 	txdma_pq_map |= BIT_TXDMA_MGQ_MAP(rqpn->dma_map_mg);
+ 	txdma_pq_map |= BIT_TXDMA_BKQ_MAP(rqpn->dma_map_bk);
+diff --git a/drivers/net/wireless/realtek/rtw88/mac.h b/drivers/net/wireless/realtek/rtw88/mac.h
+index efe6f731f240..a67fa82973e4 100644
+--- a/drivers/net/wireless/realtek/rtw88/mac.h
++++ b/drivers/net/wireless/realtek/rtw88/mac.h
+@@ -31,5 +31,6 @@ int rtw_mac_power_on(struct rtw_dev *rtwdev);
+ void rtw_mac_power_off(struct rtw_dev *rtwdev);
+ int rtw_download_firmware(struct rtw_dev *rtwdev, struct rtw_fw_state *fw);
+ int rtw_mac_init(struct rtw_dev *rtwdev);
++void rtw_mac_flush_queues(struct rtw_dev *rtwdev, u32 queues, bool drop);
+ 
+ #endif
+diff --git a/drivers/net/wireless/realtek/rtw88/mac80211.c b/drivers/net/wireless/realtek/rtw88/mac80211.c
+index 9c77c86d3021..cb7436949ff6 100644
+--- a/drivers/net/wireless/realtek/rtw88/mac80211.c
++++ b/drivers/net/wireless/realtek/rtw88/mac80211.c
+@@ -589,6 +589,19 @@ static void rtw_ops_sta_statistics(struct ieee80211_hw *hw,
+ 	sinfo->filled |= BIT_ULL(NL80211_STA_INFO_TX_BITRATE);
+ }
+ 
++static void rtw_ops_flush(struct ieee80211_hw *hw,
++			  struct ieee80211_vif *vif,
++			  u32 queues, bool drop)
++{
++	struct rtw_dev *rtwdev = hw->priv;
++
++	mutex_lock(&rtwdev->mutex);
++	rtw_leave_lps_deep(rtwdev);
++
++	rtw_mac_flush_queues(rtwdev, queues, drop);
++	mutex_unlock(&rtwdev->mutex);
++}
++
+ const struct ieee80211_ops rtw_ops = {
+ 	.tx			= rtw_ops_tx,
+ 	.wake_tx_queue		= rtw_ops_wake_tx_queue,
+@@ -608,5 +621,6 @@ const struct ieee80211_ops rtw_ops = {
+ 	.mgd_prepare_tx		= rtw_ops_mgd_prepare_tx,
+ 	.set_rts_threshold	= rtw_ops_set_rts_threshold,
+ 	.sta_statistics		= rtw_ops_sta_statistics,
++	.flush			= rtw_ops_flush,
+ };
+ EXPORT_SYMBOL(rtw_ops);
+diff --git a/drivers/net/wireless/realtek/rtw88/main.h b/drivers/net/wireless/realtek/rtw88/main.h
+index cd34d4d77b52..00d2cf07a176 100644
+--- a/drivers/net/wireless/realtek/rtw88/main.h
++++ b/drivers/net/wireless/realtek/rtw88/main.h
+@@ -780,6 +780,7 @@ enum rtw_dma_mapping {
+ 	RTW_DMA_MAPPING_NORMAL	= 2,
+ 	RTW_DMA_MAPPING_HIGH	= 3,
+ 
++	RTW_DMA_MAPPING_MAX,
+ 	RTW_DMA_MAPPING_UNDEF,
+ };
+ 
+@@ -1286,7 +1287,7 @@ struct rtw_fifo_conf {
+ 	u16 rsvd_cpu_instr_addr;
+ 	u16 rsvd_fw_txbuf_addr;
+ 	u16 rsvd_csibuf_addr;
+-	enum rtw_dma_mapping pq_map[RTW_PQ_MAP_NUM];
++	struct rtw_rqpn *rqpn;
+ };
+ 
+ struct rtw_fw_state {
 
-I assume Dave above refers to iw, wpasupplicant and hostapd but I
-consider them very different from QRTR. iw, wpasupplicant and hostapd
-are generic wireless user space components using the generic
-nl80211/wext interfaces and they work with _all_ upstream drivers. They
-are also pre-installed by distros so it's basically plug and go for the
-user to get Wi-Fi running.
+I stick with commit 127eef1d46f80056fe9f18406c6eab38778d8a06 (rtw88: add
+TX-AMSDU support) before 1131ad7fe57541b78db92d1332c69158e13762dc
+(rtw88: flush hardware tx queues), and that has been working without any problem so far.
 
-Also from high level design point of view I don't like the idea that
-wireless drivers would start to having vendor specific user components,
-like Qualcomm, Marvell, Intel and other vendors having their own daemons
-running in addition of generic wireless components (iw/wpas/hostapd).
-That would be a quite mess trying to handle backwards compatibility and
-all other stable kernel/user space interface requirements.
+Maybe I'll find time to test further.
 
-So to have a smooth out of box experience for ath11k users, I consider
-that we need QRTR in the kernel and that's why need Mani's patches[3].
+Regards,
+Tobias
 
-[1] https://www.qualcomm.com/products/fastconnect-6800
-
-[2] https://github.com/andersson/qrtr/
-
-[3] https://patchwork.ozlabs.org/cover/1237353/
-
-    https://patchwork.ozlabs.org/patch/1237355/
-
-    https://patchwork.ozlabs.org/patch/1237354/
-    
 -- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Bitte denken Sie an die Umwelt, bevor Sie diese E-Mail ausdrucken.
+On Sun, Feb 16, 2020 at 02:40:17PM +0100, Bjoern Franke wrote:
+> Hi Larry,
+> 
+> > I deliberately stay behind the official kernel repo so as to avoid implementing
+> > any regressions. As you are the one with the problem, you need to perform a
+> > bisection to discover which change to rtw88 introduces your difficulty!!
+> 
+> Somebody commented the DKMS-package for your rtw88-branch with
+> 
+> "Thank you so much for this ! After kernel 5.5, that's the only way i can
+> get functional wifi on my machine. (RTL8822BE) Deeply appreciate it."
+> 
+> So I assume I'm not the only one experiencing this issue.
+> 
+> But I can do a bisect if I find some time.
+> 
+> Regards
+> Bjoern
+> 
+> [1]https://aur.archlinux.org/packages/rtlwifi_new-rtw88-dkms/
+
+-- 
+Bitte denken Sie an die Umwelt, bevor Sie diese E-Mail ausdrucken.
