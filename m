@@ -2,267 +2,123 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D3749160884
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Feb 2020 04:12:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 41314161197
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Feb 2020 13:07:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726786AbgBQDMc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 16 Feb 2020 22:12:32 -0500
-Received: from mail26.static.mailgun.info ([104.130.122.26]:39042 "EHLO
-        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726560AbgBQDMc (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 16 Feb 2020 22:12:32 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1581909151; h=Message-Id: Date: Subject: Cc: To: From:
- Sender; bh=C78ruADmLfzwrKYOjDqmnpdLOIBYKlNAS8ytv39uM1U=; b=l/+Pz//6Ge/AMsXA5iWZoL4bIysW1jQxKpJWtDc06+UhQk4/OuFijozo/HpvQZF2AOg798/1
- 8VC2exHiU06UilcCwvxoqAEJpT4bKh/SYW6Y+TVnttE1tzjwZNaKGF+Blwj1L1tK0BhkECbn
- 75Ju5N1hkOcoOaAfFDmd4i4jxvk=
-X-Mailgun-Sending-Ip: 104.130.122.26
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e4a0499.7efb906e11b8-smtp-out-n02;
- Mon, 17 Feb 2020 03:12:25 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 1B7BDC43383; Mon, 17 Feb 2020 03:12:25 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from checstp253621-lin.qualcomm.com (blr-c-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.19.19])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: srirrama)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 9D38FC433A2;
-        Mon, 17 Feb 2020 03:12:21 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 9D38FC433A2
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=srirrama@codeaurora.org
-From:   Sriram R <srirrama@codeaurora.org>
-To:     ath11k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org,
-        Vikas Patel <vikpatel@codeaurora.org>,
-        Sriram R <srirrama@codeaurora.org>
-Subject: [PATCHv2] ath11k: Supporting RX ring backpressure HTT event and stats handling
-Date:   Mon, 17 Feb 2020 08:42:08 +0530
-Message-Id: <1581909128-14861-1-git-send-email-srirrama@codeaurora.org>
-X-Mailer: git-send-email 2.7.4
+        id S1729144AbgBQMHG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 17 Feb 2020 07:07:06 -0500
+Received: from mail-eopbgr760125.outbound.protection.outlook.com ([40.107.76.125]:13376
+        "EHLO NAM02-CY1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1728898AbgBQMHF (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 17 Feb 2020 07:07:05 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Wah7Ko6PE2oIl/znQ4J0icctG1w+0hhXFqkUnF9hrYG/zdKLgwC6BwF0FW13uLFspj1+isfytb88nV26yAb1xwvbfBSK5IwRw8whZTa4gcfLdXKvAxcMLdml7A/GCYot7k2qzdZWnidMuMyO6yfdW/94x9Yobu3vT8WTLPplPKGbjEFlPW8bUf+qGRIV2rSjt/DMXImpr7jmmtOyRseTHiFhhnGe5kIXlL50uvZmduKFL34zkdsA5gRy31jjGdYSvNO7JSRgvLhL/f+TGDd/cltPtM0ttFY9pr2hesO/Se4fIp7RlvHgSOydYgrc4p5Jv/TRUaQoMhlHPvDIzItelg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=eBa0Hc4804LDgbrH7cYCmUkSCWQUGjf1L6xO7v5+5Mo=;
+ b=kNN+kixBf4LU2F5fBqDyj9xf5cGbAMUU3MHYqm2r7lNkV/u2w2cu7yXF2SUQiNo4Y8TGe/eanSgExtyxjmMjufQ3Jb/lavJP/u7jEZhTp6AOq7g9C3REdM9kALxt3SCc0/Ii7V/hUwg38WlQpTiL8sutkCIdYdRg+IB23ZJWbgdtTRaB+DyVg9I9Rv27mYja21oQpDLeT2PCibf2MyjfeXpTxYWlwcWJnHZl3NKOx8doVn0SF9C9QmPlbzVBChF2ZNO24aD/GDKISd3kKxVd3VOzbJCcdRb4NvC5q6cbG7cVtBaFIj+PmozyHHc2cA9mQzXvdvAH+ZYfWfIzadJPiQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=cypress.com; dmarc=pass action=none header.from=cypress.com;
+ dkim=pass header.d=cypress.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cypress.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=eBa0Hc4804LDgbrH7cYCmUkSCWQUGjf1L6xO7v5+5Mo=;
+ b=kb34a23SA+yELiwEr0Y+5ih+22tVCy4KUrP9v7EY2e6FydiQc1OEOFKTR/Lgp3f3qNEWkNtySamWgQdWoK/XOSJIx1tE2KIMfwYTKcRvdVL7ETjOxYhhKILWjoLQiF0WpQB4iywDW2yytgo1XwVlpHcHHx+uziSzFYC4CvgvX+U=
+Authentication-Results: spf=none (sender IP is )
+ smtp.mailfrom=Chi-Hsien.Lin@cypress.com; 
+Received: from BYAPR06MB4901.namprd06.prod.outlook.com (20.177.184.30) by
+ BYAPR06MB5429.namprd06.prod.outlook.com (20.178.53.214) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2729.31; Mon, 17 Feb 2020 12:07:02 +0000
+Received: from BYAPR06MB4901.namprd06.prod.outlook.com
+ ([fe80::61cf:307a:df0a:c031]) by BYAPR06MB4901.namprd06.prod.outlook.com
+ ([fe80::61cf:307a:df0a:c031%3]) with mapi id 15.20.2729.025; Mon, 17 Feb 2020
+ 12:07:02 +0000
+Reply-To: chi-hsien.lin@cypress.com
+Subject: Re: [PATCH 5/6] brcmfmac: add USB autosuspend feature support
+To:     Arend Van Spriel <arend.vanspriel@broadcom.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Cc:     "brcm80211-dev-list@broadcom.com" <brcm80211-dev-list@broadcom.com>,
+        brcm80211-dev-list <brcm80211-dev-list@cypress.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Wright Feng <Wright.Feng@cypress.com>,
+        Kalle Valo <kvalo@codeaurora.org>
+References: <1581583476-60155-1-git-send-email-chi-hsien.lin@cypress.com>
+ <1581583476-60155-6-git-send-email-chi-hsien.lin@cypress.com>
+ <6c7ab88b-658c-369e-7290-57f0c9bbb03f@broadcom.com>
+From:   Chi-Hsien Lin <chi-hsien.lin@cypress.com>
+Message-ID: <3b6f11ea-d466-6fb0-256c-4beb847df903@cypress.com>
+Date:   Mon, 17 Feb 2020 20:06:57 +0800
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
+In-Reply-To: <6c7ab88b-658c-369e-7290-57f0c9bbb03f@broadcom.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BYAPR11CA0104.namprd11.prod.outlook.com
+ (2603:10b6:a03:f4::45) To BYAPR06MB4901.namprd06.prod.outlook.com
+ (2603:10b6:a03:7a::30)
+MIME-Version: 1.0
+Received: from [10.9.112.143] (61.222.14.99) by BYAPR11CA0104.namprd11.prod.outlook.com (2603:10b6:a03:f4::45) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2729.23 via Frontend Transport; Mon, 17 Feb 2020 12:06:59 +0000
+X-Originating-IP: [61.222.14.99]
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-HT: Tenant
+X-MS-Office365-Filtering-Correlation-Id: 2232421f-fca7-4f6f-44de-08d7b3a1e4ef
+X-MS-TrafficTypeDiagnostic: BYAPR06MB5429:|BYAPR06MB5429:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <BYAPR06MB5429C2DC4520DF55DE202412BB160@BYAPR06MB5429.namprd06.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:4714;
+X-Forefront-PRVS: 0316567485
+X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10019020)(396003)(136003)(376002)(366004)(39860400002)(346002)(199004)(189003)(4326008)(2616005)(956004)(31686004)(81156014)(81166006)(4744005)(16576012)(8676002)(66556008)(31696002)(66476007)(54906003)(66946007)(110136005)(86362001)(478600001)(52116002)(5660300002)(3450700001)(316002)(53546011)(6486002)(2906002)(16526019)(186003)(36756003)(8936002)(26005);DIR:OUT;SFP:1102;SCL:1;SRVR:BYAPR06MB5429;H:BYAPR06MB4901.namprd06.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+Received-SPF: None (protection.outlook.com: cypress.com does not designate
+ permitted sender hosts)
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: ztoq4GWTYQhG7ldTrqTIpG72jv8Ao7nhlyAHqKTfFtfUqSkJU4qMRRl4BbRMjYGSm3yOxcQ0YIEeHpEQWdHYERXy0Z7DEVIeyf1nYRVKLmxXSumC7VTM26xRS/ttB9+AMUGVjf5MF1pV+lfmBfMi5gl1lxXVW/gvyWZTh2FdHB5HbvFwaqzPG81cHCUAqFGfsDGw8L7Fzo4vjg3twC+MdpTv1R1xeTM0WLU3H7o5uiuikdVMN4WKfLX9hZIZSLp5mZQO86lnhbj7XwiLa+mmcldkHDRGIM1YSphc5YWEzhOn/4buu2WcKAKC/EcVqR7rQ1NBUNlh+1a4HupvEvRW9kRMtSJkYHMZJ9+V5Mf5jO3WkL8/+p3ZOdcqfc96k8OMAs5g0Ca8Qlb3ZmO0d06b3jEccYMJZZkIXKfM2JAZQK9DrWyPhCPgEfHePshDxDbp
+X-MS-Exchange-AntiSpam-MessageData: 9ZtwVtPRJOj+jvj5UvBGPFhRE5R+6PVwnpw43DJaQZdAWwRQ1DgcN2GHX5+fASnwgmCQLpObQUzvaVTrMSNPmyJuoVXgZHIMqofl645En+cLF/vySt7Hi4orFGeIrR9oCFOEHTEYmV5I1vikTxBwKA==
+X-OriginatorOrg: cypress.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2232421f-fca7-4f6f-44de-08d7b3a1e4ef
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Feb 2020 12:07:02.6726
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 011addfc-2c09-450d-8938-e0bbc2dd2376
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 4KPRFqkvJ09gqpYwrPDaRKwmOj/FWi0jxk/IVDwIODycH/pVhr0RqPK/iweRTbAbFHHdI0cLGoZNV6QC3HXF0A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR06MB5429
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Vikas Patel <vikpatel@codeaurora.org>
 
-The Firmware sends HTT event to host whenever there is a
-backpressure on RX rings, Handling such event and dumping
-info on the console under the "ATH11K_DBG_DP_HTT"  debug level.
 
-Fetching RX ring backpressure histogram from FW via htt_stats debugfs.
+On 02/13/2020 5:36, Arend Van Spriel wrote:
+> On 2/13/2020 9:44 AM, Chi-Hsien Lin wrote:
+>> From: Wright Feng <wright.feng@cypress.com>
+>>
+>> We add enable dynamic suspend(autosuspend) support in host driver. It
+>> can let platform cut down idle power consumption. To support autosuspend
+>> feature in host driver. Kernel need to be build with CONFIG_USB_SUSPEND
+>> and autosuspend need to be turn on.
+> 
+> You really have to explain why you are killing WOWL here!? I can come up
+> with a reason, but better you do the explaining ;-)
 
- #echo "24" > /sys/kernel/debug/ath11k/macX/htt_stats_type
- #cat /sys/kernel/debug/ath11k/macX/htt_stats
+Hi Arend,
 
-Signed-off-by: Vikas Patel <vikpatel@codeaurora.org>
-Signed-off-by: Sriram R <srirrama@codeaurora.org>
----
-v2: Including linux-wireless
+Thanks for reviewing. It was because WOWL keeps waking up the host 
+during autosuspend, but you're right, WOWL shouldn't be killed. We will 
+explore if we can use "needs_remote_wakeup" feature to allow support for 
+both.
 
- drivers/net/wireless/ath/ath11k/debug.h       |  2 +
- .../net/wireless/ath/ath11k/debug_htt_stats.c | 44 +++++++++++++++++++
- .../net/wireless/ath/ath11k/debug_htt_stats.h | 28 ++++++++++++
- drivers/net/wireless/ath/ath11k/dp.h          |  8 ++++
- drivers/net/wireless/ath/ath11k/dp_rx.c       | 26 +++++++++++
- 5 files changed, 108 insertions(+)
+Regards,
+Chi-hsien Lin
 
-diff --git a/drivers/net/wireless/ath/ath11k/debug.h b/drivers/net/wireless/ath/ath11k/debug.h
-index a317a7bdb9a2..012ed37cf704 100644
---- a/drivers/net/wireless/ath/ath11k/debug.h
-+++ b/drivers/net/wireless/ath/ath11k/debug.h
-@@ -53,6 +53,8 @@ enum ath11k_dbg_htt_ext_stats_type {
- 	ATH11K_DBG_HTT_EXT_STATS_TWT_SESSIONS               =  20,
- 	ATH11K_DBG_HTT_EXT_STATS_REO_RESOURCE_STATS         =  21,
- 	ATH11K_DBG_HTT_EXT_STATS_TX_SOUNDING_INFO           =  22,
-+	ATH11K_DBG_HTT_EXT_STATS_PDEV_OBSS_PD_STATS	    =  23,
-+	ATH11K_DBG_HTT_EXT_STATS_RING_BACKPRESSURE_STATS    =  24,
- 
- 	/* keep this last */
- 	ATH11K_DBG_HTT_NUM_EXT_STATS,
-diff --git a/drivers/net/wireless/ath/ath11k/debug_htt_stats.c b/drivers/net/wireless/ath/ath11k/debug_htt_stats.c
-index 090fffa5e53c..8accfb973044 100644
---- a/drivers/net/wireless/ath/ath11k/debug_htt_stats.c
-+++ b/drivers/net/wireless/ath/ath11k/debug_htt_stats.c
-@@ -3715,6 +3715,47 @@ htt_print_pdev_obss_pd_stats_tlv_v(const void *tag_buf,
- 	stats_req->buf_len = len;
- }
- 
-+static inline void htt_print_backpressure_stats_tlv_v(const u32 *tag_buf,
-+						      u8 *data)
-+{
-+	struct debug_htt_stats_req *stats_req =
-+			(struct debug_htt_stats_req *)data;
-+	struct htt_ring_backpressure_stats_tlv *htt_stats_buf =
-+			(struct htt_ring_backpressure_stats_tlv *)tag_buf;
-+	int i;
-+	u8 *buf = stats_req->buf;
-+	u32 len = stats_req->buf_len;
-+	u32 buf_len = ATH11K_HTT_STATS_BUF_SIZE;
-+
-+	len += HTT_DBG_OUT(buf + len, buf_len - len, "pdev_id = %u",
-+			   htt_stats_buf->pdev_id);
-+	len += HTT_DBG_OUT(buf + len, buf_len - len, "current_head_idx = %u",
-+			   htt_stats_buf->current_head_idx);
-+	len += HTT_DBG_OUT(buf + len, buf_len - len, "current_tail_idx = %u",
-+			   htt_stats_buf->current_tail_idx);
-+	len += HTT_DBG_OUT(buf + len, buf_len - len, "num_htt_msgs_sent = %u",
-+			   htt_stats_buf->num_htt_msgs_sent);
-+	len += HTT_DBG_OUT(buf + len, buf_len - len,
-+			   "backpressure_time_ms = %u",
-+			   htt_stats_buf->backpressure_time_ms);
-+
-+	for (i = 0; i < 5; i++)
-+		len += HTT_DBG_OUT(buf + len, buf_len - len,
-+				   "backpressure_hist_%u = %u",
-+				   i + 1, htt_stats_buf->backpressure_hist[i]);
-+
-+	len += HTT_DBG_OUT(buf + len, buf_len - len,
-+			   "============================");
-+
-+	if (len >= buf_len) {
-+		buf[buf_len - 1] = 0;
-+		stats_req->buf_len = buf_len - 1;
-+	} else {
-+		buf[len] = 0;
-+		stats_req->buf_len = len;
-+	}
-+}
-+
- static inline void htt_htt_stats_debug_dump(const u32 *tag_buf,
- 					    struct debug_htt_stats_req *stats_req)
- {
-@@ -4107,6 +4148,9 @@ static int ath11k_dbg_htt_ext_stats_parse(struct ath11k_base *ab,
- 	case HTT_STATS_PDEV_OBSS_PD_TAG:
- 		htt_print_pdev_obss_pd_stats_tlv_v(tag_buf, stats_req);
- 		break;
-+	case HTT_STATS_RING_BACKPRESSURE_STATS_TAG:
-+		htt_print_backpressure_stats_tlv_v(tag_buf, user_data);
-+		break;
- 	default:
- 		break;
- 	}
-diff --git a/drivers/net/wireless/ath/ath11k/debug_htt_stats.h b/drivers/net/wireless/ath/ath11k/debug_htt_stats.h
-index 618f1946bf49..23ac03221ac8 100644
---- a/drivers/net/wireless/ath/ath11k/debug_htt_stats.h
-+++ b/drivers/net/wireless/ath/ath11k/debug_htt_stats.h
-@@ -100,6 +100,8 @@ enum htt_tlv_tag_t {
- 	HTT_STATS_SCHED_TXQ_SCHED_ORDER_SU_TAG              = 86,
- 	HTT_STATS_SCHED_TXQ_SCHED_INELIGIBILITY_TAG         = 87,
- 	HTT_STATS_PDEV_OBSS_PD_TAG                          = 88,
-+	HTT_STATS_HW_WAR_TAG				    = 89,
-+	HTT_STATS_RING_BACKPRESSURE_STATS_TAG		    = 90,
- 
- 	HTT_STATS_MAX_TAG,
- };
-@@ -1617,4 +1619,30 @@ struct htt_pdev_obss_pd_stats_tlv {
- };
- 
- void ath11k_debug_htt_stats_init(struct ath11k *ar);
-+
-+struct htt_ring_backpressure_stats_tlv {
-+	u32 pdev_id;
-+	u32 current_head_idx;
-+	u32 current_tail_idx;
-+	u32 num_htt_msgs_sent;
-+	/* Time in milliseconds for which the ring has been in
-+	 * its current backpressure condition
-+	 */
-+	u32 backpressure_time_ms;
-+	/* backpressure_hist - histogram showing how many times
-+	 * different degrees of backpressure duration occurred:
-+	 * Index 0 indicates the number of times ring was
-+	 * continuously in backpressure state for 100 - 200ms.
-+	 * Index 1 indicates the number of times ring was
-+	 * continuously in backpressure state for 200 - 300ms.
-+	 * Index 2 indicates the number of times ring was
-+	 * continuously in backpressure state for 300 - 400ms.
-+	 * Index 3 indicates the number of times ring was
-+	 * continuously in backpressure state for 400 - 500ms.
-+	 * Index 4 indicates the number of times ring was
-+	 * continuously in backpressure state beyond 500ms.
-+	 */
-+	u32 backpressure_hist[5];
-+};
-+
- #endif
-diff --git a/drivers/net/wireless/ath/ath11k/dp.h b/drivers/net/wireless/ath/ath11k/dp.h
-index 2f0980f2c762..97dacdd6793a 100644
---- a/drivers/net/wireless/ath/ath11k/dp.h
-+++ b/drivers/net/wireless/ath/ath11k/dp.h
-@@ -916,6 +916,7 @@ enum htt_t2h_msg_type {
- 	HTT_T2H_MSG_TYPE_PEER_UNMAP	= 0x1f,
- 	HTT_T2H_MSG_TYPE_PPDU_STATS_IND = 0x1d,
- 	HTT_T2H_MSG_TYPE_EXT_STATS_CONF = 0x1c,
-+	HTT_T2H_MSG_TYPE_BKPRESSURE_EVENT_IND = 0x24,
- };
- 
- #define HTT_TARGET_VERSION_MAJOR 3
-@@ -964,6 +965,13 @@ struct htt_resp_msg {
- 	};
- } __packed;
- 
-+#define HTT_BACKPRESSURE_EVENT_PDEV_ID_M GENMASK(15, 8)
-+#define HTT_BACKPRESSURE_EVENT_RING_TYPE_M GENMASK(23, 16)
-+#define HTT_BACKPRESSURE_EVENT_RING_ID_M GENMASK(31, 24)
-+
-+#define HTT_BACKPRESSURE_EVENT_HP_M GENMASK(15, 0)
-+#define HTT_BACKPRESSURE_EVENT_TP_M GENMASK(31, 16)
-+
- /* ppdu stats
-  *
-  * @details
-diff --git a/drivers/net/wireless/ath/ath11k/dp_rx.c b/drivers/net/wireless/ath/ath11k/dp_rx.c
-index 3a3dc7680622..40c56c3826c7 100644
---- a/drivers/net/wireless/ath/ath11k/dp_rx.c
-+++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
-@@ -1330,6 +1330,29 @@ static void ath11k_htt_pktlog(struct ath11k_base *ab, struct sk_buff *skb)
- 	trace_ath11k_htt_pktlog(ar, data->payload, len);
- }
- 
-+static void ath11k_htt_backpressure_event_handler(struct ath11k_base *ab,
-+						  struct sk_buff *skb)
-+{
-+	u32 *data = (u32 *)skb->data;
-+	u8 pdev_id, ring_type, ring_id;
-+	u16 hp, tp;
-+	u32 backpressure_time;
-+
-+	pdev_id = FIELD_GET(HTT_BACKPRESSURE_EVENT_PDEV_ID_M, *data);
-+	ring_type = FIELD_GET(HTT_BACKPRESSURE_EVENT_RING_TYPE_M, *data);
-+	ring_id = FIELD_GET(HTT_BACKPRESSURE_EVENT_RING_ID_M, *data);
-+	++data;
-+
-+	hp = FIELD_GET(HTT_BACKPRESSURE_EVENT_HP_M, *data);
-+	tp = FIELD_GET(HTT_BACKPRESSURE_EVENT_TP_M, *data);
-+	++data;
-+
-+	backpressure_time = *data;
-+
-+	ath11k_dbg(ab, ATH11K_DBG_DP_HTT, "htt backpressure event, pdev %d, ring type %d,ring id %d, hp %d tp %d, backpressure time %d\n",
-+		   pdev_id, ring_type, ring_id, hp, tp, backpressure_time);
-+}
-+
- void ath11k_dp_htt_htc_t2h_msg_handler(struct ath11k_base *ab,
- 				       struct sk_buff *skb)
- {
-@@ -1379,6 +1402,9 @@ void ath11k_dp_htt_htc_t2h_msg_handler(struct ath11k_base *ab,
- 	case HTT_T2H_MSG_TYPE_PKTLOG:
- 		ath11k_htt_pktlog(ab, skb);
- 		break;
-+	case HTT_T2H_MSG_TYPE_BKPRESSURE_EVENT_IND:
-+		ath11k_htt_backpressure_event_handler(ab, skb);
-+		break;
- 	default:
- 		ath11k_warn(ab, "htt event %d not handled\n", type);
- 		break;
--- 
-2.23.0
+> 
+> Regards,
+> Arend
+> 
