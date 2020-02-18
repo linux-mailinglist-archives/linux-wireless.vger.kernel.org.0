@@ -2,104 +2,111 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1072F1620AC
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Feb 2020 07:09:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 93485162101
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 Feb 2020 07:37:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726074AbgBRGJR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 18 Feb 2020 01:09:17 -0500
-Received: from mail26.static.mailgun.info ([104.130.122.26]:56797 "EHLO
-        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726065AbgBRGJQ (ORCPT
+        id S1726252AbgBRGh4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 18 Feb 2020 01:37:56 -0500
+Received: from mail-ed1-f45.google.com ([209.85.208.45]:42000 "EHLO
+        mail-ed1-f45.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726065AbgBRGh4 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 18 Feb 2020 01:09:16 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1582006156; h=Content-Transfer-Encoding: Content-Type:
- MIME-Version: Message-ID: Date: Subject: Cc: To: From: Sender;
- bh=jvUIftSI+puVhxeOsI6JCjPKuws+jgLNARRv+Ta2j9Q=; b=n5MS4s1D5ve3gAy3fMlkNj7v9NdWeDkLLwMaJWAWIqVfdlyvxkn7Eu8mCgWcdOd7a5obxmBb
- 7axoqdU4UydJHTKh/k3TBX/C6UXdV4SojymGT//cnUbnFFxEY2hOgsmLfVfBKpBsN+SSyp/H
- 8A8ehvH2rfs1+VzIGdtjwvZurP0=
-X-Mailgun-Sending-Ip: 104.130.122.26
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e4b7f8b.7fb6066db500-smtp-out-n01;
- Tue, 18 Feb 2020 06:09:15 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 958F1C4479C; Tue, 18 Feb 2020 06:09:15 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from MURUGANA (blr-c-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.19.19])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: murugana)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 42CA1C43383;
-        Tue, 18 Feb 2020 06:09:12 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 42CA1C43383
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=murugana@codeaurora.org
-From:   "Sathishkumar Muruganandam" <murugana@codeaurora.org>
-To:     "'Luca Coelho'" <luciano.coelho@intel.com>,
-        "'Johannes Berg'" <johannes@sipsolutions.net>
-Cc:     <linux-wireless@vger.kernel.org>
-Subject: 4addr NDP in HE mode
-Date:   Tue, 18 Feb 2020 11:39:09 +0530
-Message-ID: <006501d5e621$f21f3b60$d65db220$@codeaurora.org>
+        Tue, 18 Feb 2020 01:37:56 -0500
+Received: by mail-ed1-f45.google.com with SMTP id e10so23501183edv.9
+        for <linux-wireless@vger.kernel.org>; Mon, 17 Feb 2020 22:37:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=WefOljf8fdhmjWPE5xhjjCetqPi5nsbB6AvHzk0HJ3g=;
+        b=milyCRdePcZEV76StfhQxZv1SbR0Ww9badKvRcFCd0+FJEm9oZCLy97bqi/fVapN7q
+         C5N8iatUtbzCVRDNk/0bGzngNS1eWXOugNnzwqSpwJ2bFAhnBW2oiwzmZDFWUmlltZSO
+         T6UZpx5bmPWJr0hbyQTq1F8P/3qjwL2uQMDwNLeznwmfwPaVa/WZZGrokxCrz1t5NqpV
+         zbfIU0Lsn4VDV0LH/JH5MV+TEWWHMcKk4HWFFun33IDvx6iUeBq0RBfxQ2ySPeeXXjtr
+         lxXjD5kdu4IJOb/cY6p5IvDBZOtl+Fr/fEVaSGUWtWh68RT7Vdr2yCEVWL9dLr7MiZvb
+         qlRg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=WefOljf8fdhmjWPE5xhjjCetqPi5nsbB6AvHzk0HJ3g=;
+        b=t581umJ4//i+Myhmpu0nbf9asgRsxm61o3opm8Ryy+XUC+SQtYrC1NN7CFI+scRnjA
+         Ec1ozk2Axhi2zwTJL/aLhmB1QNamI56wZ4nClDVwv9JUGOkzomu7B77+20fjmWOZ6GE9
+         Z3fW2y7KBQvttJ3G7yhWMJDiNsynU/nH7Tu05ZmzU1LUqJFCA3h6tsGBdVRsyXlkCOak
+         NdYfsYYaFZ8cwRlWObHe6VVd2HC8ueOJ1dzwUXw0wk/zSGYanGDbgbh1+eG8xhZebSVV
+         o7wdvjjoHTL99bCFTcE1BUsOBmGHSjtSDPcKbAK3zVGXlycvEVisITNu1U7h0P7sXd4s
+         AkFg==
+X-Gm-Message-State: APjAAAUhayROpToWE0CX6Y+qjqsE4B/7lyScXDJ8niFr40nkjkinHzia
+        joikfoFeFmnFParnLNCBUmL3FRwZrZQJnCq2Dbo=
+X-Google-Smtp-Source: APXvYqzoTQoAxeXWAJlgpBBzqpoJGTz4kgwTP7iOZv+FJnkh+V75pB+m7sIHaMLuXtf5bQt1b9HzU4KEmfCFtK8sDxo=
+X-Received: by 2002:a50:ab5b:: with SMTP id t27mr17383922edc.229.1582007872419;
+ Mon, 17 Feb 2020 22:37:52 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-X-Mailer: Microsoft Outlook 16.0
-Thread-Index: AdXmIW6IXqNgMYNsTGuVGA+jdzZjxw==
-Content-Language: en-us
+References: <CAA=hcWTDqhJEE7MXFY9rvN93nf8=nWvshLoXKF3EMXYGLmZGbA@mail.gmail.com>
+In-Reply-To: <CAA=hcWTDqhJEE7MXFY9rvN93nf8=nWvshLoXKF3EMXYGLmZGbA@mail.gmail.com>
+From:   Belisko Marek <marek.belisko@gmail.com>
+Date:   Tue, 18 Feb 2020 07:37:41 +0100
+Message-ID: <CAAfyv34yO7bSR9GBod1bXpD0sFnsSETsJQAzcmSgyY0orGtfcg@mail.gmail.com>
+Subject: Re: [yocto] Change RO rootfs failed RF Kill Switch Status and Failed
+ to start Run pending postinsts
+To:     JH <jupiter.hce@gmail.com>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
+        Yocto discussion list <yocto@yoctoproject.org>,
+        Patches and discussions about the oe-core layer 
+        <openembedded-core@lists.openembedded.org>,
+        linux-mtd <linux-mtd@lists.infradead.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Luca, Johannes,
+Hi,
 
-We see that HE STA in 4addr mode is not able to pass traffic since 4addr NDP
-frame after successful association is blocked in below commit. There is no
-AP/VLAN interface created on the 4addr AP side as well.
+On Tue, Feb 18, 2020 at 2:00 AM JH <jupiter.hce@gmail.com> wrote:
+>
+> Hi,
+>
+> Apologize for the cross posting.
+>
+> I am running kernel 4.19.75 on iMX6 customized device with WiFi and 4G
+> LTE, it was running well in an RW rootfs. After I have just changed
+> rootfs to RO UBIFS partition, it failed RF Kill and postinsts I
+> suspect both try write to the RO and failed, any advice how to fix it?
+> Despite it failed RF Kill and postinsts, it was still working.
+>
+> [    6.097762] UBIFS (ubi0:2): UBIFS: mounted UBI device 0, volume 2,
+> name "rootfs-volume", R/O mode
+> ..............
+> [    6.151932] VFS: Mounted root (ubifs filesystem) readonly on device 0:13.
+> .................
+> [  OK  ] Listening on Load/Save RF Kill Switch Status /dev/rfkill Watch.
+>          Starting Load/Save RF Kill Switch Status...
+> [FAILED] Failed to start Load/Save RF Kill Switch Status.
+> See 'systemctl status systemd-rfkill.service' for details.
+Can you pls provide output of systemctl status systemd-rfkill
+There should be some more info what issue is.
+>
+> [FAILED] Failed to start Run pending postinsts.
+> See 'systemctl status run-postinsts.service' for details.
+Pls this one also: systemctl status run-postinsts
+> ...............
+> root#
+>
+> Thank you.
+>
+> Kind regards,
+>
+> - jh
+> -=-=-=-=-=-=-=-=-=-=-=-
+> Links: You receive all messages sent to this group.
+>
+> View/Reply Online (#48463): https://lists.yoctoproject.org/g/yocto/message/48463
+> Mute This Topic: https://lists.yoctoproject.org/mt/71363457/900721
+> Group Owner: yocto+owner@lists.yoctoproject.org
+> Unsubscribe: https://lists.yoctoproject.org/g/yocto/unsub  [marek.belisko@gmail.com]
+> -=-=-=-=-=-=-=-=-=-=-=-
 
-commit 41cbb0f5a29592874355 "mac80211: add support for HE"
+BR,
 
-@@ -929,6 +1020,10 @@ static void ieee80211_send_4addr_nullfunc(struct
-ieee80211_local *local,
-        if (WARN_ON(sdata->vif.type != NL80211_IFTYPE_STATION))
-                return;
-
-+       /* Don't send NDPs when connected HE */
-+       if (!(sdata->u.mgd.flags & IEEE80211_STA_DISABLE_HE))
-+               return;
-+
-        skb = dev_alloc_skb(local->hw.extra_tx_headroom + 30);
-        if (!skb)
-                return;
-
-Since ieee80211_send_4addr_nullfunc() is only called for successful
-association of 4addr STA, shall we allow below case alone for HE ?
-
-static bool ieee80211_assoc_success(struct ieee80211_sub_if_data *sdata,
-                                    struct cfg80211_bss *cbss,
-                                    struct ieee80211_mgmt *mgmt, size_t len,
-                                    struct ieee802_11_elems *elems)
-{
-..
-  /*
-         * If we're using 4-addr mode, let the AP know that we're
-         * doing so, so that it can create the STA VLAN on its side
-         */
-        if (ifmgd->use_4addr)
-                ieee80211_send_4addr_nullfunc(local, sdata);
-..
-
-Whether this 4addr NDP in HE mode will affect any UL-MIMO from the 4addr STA
-? Please comment.
-
-Thanks,
-Sathishkumar
-
-
+marek
