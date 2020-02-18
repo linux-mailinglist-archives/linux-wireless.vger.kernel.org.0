@@ -2,96 +2,89 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 411C516186F
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Feb 2020 18:04:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4424B161E58
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 Feb 2020 02:00:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728723AbgBQREW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 17 Feb 2020 12:04:22 -0500
-Received: from mail-ot1-f45.google.com ([209.85.210.45]:33075 "EHLO
-        mail-ot1-f45.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728142AbgBQREV (ORCPT
+        id S1726338AbgBRBA2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 17 Feb 2020 20:00:28 -0500
+Received: from mail-il1-f173.google.com ([209.85.166.173]:36552 "EHLO
+        mail-il1-f173.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726293AbgBRBA1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 17 Feb 2020 12:04:21 -0500
-Received: by mail-ot1-f45.google.com with SMTP id w6so7556788otk.0
-        for <linux-wireless@vger.kernel.org>; Mon, 17 Feb 2020 09:04:21 -0800 (PST)
+        Mon, 17 Feb 2020 20:00:27 -0500
+Received: by mail-il1-f173.google.com with SMTP id b15so15836981iln.3
+        for <linux-wireless@vger.kernel.org>; Mon, 17 Feb 2020 17:00:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=sender:subject:references:to:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=0/xxRBl7pU0HhSR7AIon3C3McZaEohoofaOPRsNAJOw=;
-        b=JBcUGkk/dhq/qxb7zpmtgnC5o3aqKKTBNfGHmCtdhbxqWlce3Lz2rEAXe+FNyenSQd
-         +Hs1ItP6gdzzbt74THHThuFXftWLqCY6hWB7IsvBgvTwj4j2c9iYOFINPrNFzfczgFZ3
-         Uy2Pn/8WKlMV6uZFlR4PYVDZfNK1EQZWtQZDey49HcG6vDS5vAi/16cpzKHoyRPX6+6y
-         7AWeLUT7v0uAop/ITDVFZM0TZy3/hJMyGwV7ssdoexq7L0DWtfd4jfJC7tppvxWMWaLP
-         TGYZDcNnSK3iWDRkLxVWtij1tYYIjUy7TJ8BY2yXxMAya//YEGOESXoRyM+SYyrO9O8D
-         7vwA==
+        h=mime-version:from:date:message-id:subject:to:cc;
+        bh=EW0Fnf3YXcKqFSs9Rd2Yv4JlQlGtDQ8qmQpioAEqqNQ=;
+        b=o8xISoHVFvsGKN7hdqImys+64pMBHCeQ1CASu2QFHTAqtO9RLOzdvjhEH/xFa1OwT7
+         zrXmmTDF+Hiks2bCzV9SEdQU3f/fn592SPj3Di3IzTNTWYr6brACj+mEyNHvncm9ikz1
+         tPzlPBk5NTtX5UIpJ/dl9H1NcJyBJF9N0CgrgKToej+YJnH7bxd7QqCxQtuCy1j/XJo6
+         y4t/RSSR7krC5GSDjcTpbRvZBeYWeAf2WTg9Yesbw3CEwhaYRv9XpUm4nttrQjYFDl8A
+         4VC3ZPWLfnBNb7PNvgkBIRTk3UuAqt1iPkOSP4sgU3BL0xpaXJaIK+G5CPG0GRkWvFJE
+         bpQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:subject:references:to:from:message-id
-         :date:user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=0/xxRBl7pU0HhSR7AIon3C3McZaEohoofaOPRsNAJOw=;
-        b=rm3B7yXGlY7v0aWZeW4/JGpXtTPyCSjywWPedgw5PEqP3s+28g42NhzL3drUGeLoE6
-         CcXX7ZZsnOsIgIonIZdMDdsh3ApJhVDMUwN5Jd4TCSNjBJoR+ezLCwyhrURWexrmNID8
-         ryjK//dtbXbt2Km6OZ/BPE1k+ZjRW6l/NTz3gLFCJnwSAPkYRIHaN7PqoicpCrIsKw79
-         /PGlgJJNAZmxnqGeCdYkrRvjCN4wNRbNv2OQyFnlmPSf0kqcLNLJ+mcbOz1dFCE0XCKq
-         GMFUIIIN0BiS9mP17n0w9HlDHrVToU/3hc1tzgRmg01s0NTZu43E9B/bviUGbr4LN8XP
-         m+Uw==
-X-Gm-Message-State: APjAAAUW+cTHA0GPODrmBQbb2Jr7DKeuIgOmwmQv3MIr4tNLY1bqYJKf
-        dokFLLb8y5XGxgrZ0oL48ZhzsJnl
-X-Google-Smtp-Source: APXvYqzviLHEiBOZXGxVStmXRzhpdOHxH8vXRT8LYhk7lmp1unCj2OqU9yoMxE8ehP0MFkS/jAKRSw==
-X-Received: by 2002:a9d:545:: with SMTP id 63mr13291966otw.285.1581959059617;
-        Mon, 17 Feb 2020 09:04:19 -0800 (PST)
-Received: from [192.168.1.120] (cpe-24-31-245-230.kc.res.rr.com. [24.31.245.230])
-        by smtp.gmail.com with ESMTPSA id r23sm291223oij.38.2020.02.17.09.04.18
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 17 Feb 2020 09:04:19 -0800 (PST)
-Subject: Fwd: Re: [torvalds/linux] rtlwifi: rtl8188ee: Remove local
- configuration variable (d1d1a96)
-References: <torvalds/linux/commit/d1d1a96bdb4408d02e2bfcb32b71aba165458a80/37332689@github.com>
-To:     linux-wireless <linux-wireless@vger.kernel.org>
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-X-Forwarded-Message-Id: <torvalds/linux/commit/d1d1a96bdb4408d02e2bfcb32b71aba165458a80/37332689@github.com>
-Message-ID: <ce9385fe-69a7-dd46-eb57-e272262f52c6@lwfinger.net>
-Date:   Mon, 17 Feb 2020 11:04:18 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
+        bh=EW0Fnf3YXcKqFSs9Rd2Yv4JlQlGtDQ8qmQpioAEqqNQ=;
+        b=hsbeLYvYhpHNoxTvpvNo3dKhSSiREGMHaVZIq+rVeB4Jg0/Pyh9ND1Ir9kCd/FfElD
+         C+/r9r31R7e3jnaJm/iC46ZYkoacT5FT14V9Oif2zNpcI+H1uWgHuI4u4g7MJuHPhvAG
+         nrHfZLqqhDM4DpZW4p4AcMbGUu1j5q7OUBJ9fU1ZmEzirBZcm6BkAmsnEhKQSkOJQE3z
+         DHzRW9pZlfyfgrsfJhnadDiC28mkAMG/w651NoLw2kPQBdafv/X5j+s3a6cqHXHUzxAF
+         Hw8n7Re9nxH9+/ZvmUAiFSnyVpUnuM4PW45AICVV8nH7kVz8PLq22EG/c+4ZmqJz63nW
+         1kZQ==
+X-Gm-Message-State: APjAAAVctLbmPDnKqvQkaZJxLsvwydY5vtP+Y21Jw3MKLKI/R7WUllC6
+        UfkBBUPbUV2tzvlVTEWXkLiTZr5Tp6hhWthTZpohXgG5
+X-Google-Smtp-Source: APXvYqxqBP5yqr87WaOZEro0sPSkzN9aQ6pTx8HGV4BQdS10MoRw74Wew2HcyTITvRBanvaJvt+snKpR0VRYIT1T2h4=
+X-Received: by 2002:a92:216:: with SMTP id 22mr16818493ilc.53.1581987626912;
+ Mon, 17 Feb 2020 17:00:26 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <torvalds/linux/commit/d1d1a96bdb4408d02e2bfcb32b71aba165458a80/37332689@github.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Received: by 2002:ad5:5d0d:0:0:0:0:0 with HTTP; Mon, 17 Feb 2020 17:00:26
+ -0800 (PST)
+From:   JH <jupiter.hce@gmail.com>
+Date:   Tue, 18 Feb 2020 12:00:26 +1100
+Message-ID: <CAA=hcWTDqhJEE7MXFY9rvN93nf8=nWvshLoXKF3EMXYGLmZGbA@mail.gmail.com>
+Subject: Change RO rootfs failed RF Kill Switch Status and Failed to start Run
+ pending postinsts
+To:     linux-wireless <linux-wireless@vger.kernel.org>
+Cc:     Yocto discussion list <yocto@yoctoproject.org>,
+        Patches and discussions about the oe-core layer 
+        <openembedded-core@lists.openembedded.org>,
+        linux-mtd <linux-mtd@lists.infradead.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Hi,
 
+Apologize for the cross posting.
 
+I am running kernel 4.19.75 on iMX6 customized device with WiFi and 4G
+LTE, it was running well in an RW rootfs. After I have just changed
+rootfs to RO UBIFS partition, it failed RF Kill and postinsts I
+suspect both try write to the RO and failed, any advice how to fix it?
+Despite it failed RF Kill and postinsts, it was still working.
 
--------- Forwarded Message --------
-Subject: 	Re: [torvalds/linux] rtlwifi: rtl8188ee: Remove local configuration 
-variable (d1d1a96)
-Date: 	Mon, 17 Feb 2020 15:12:57 +0000 (UTC)
-From: 	ashish-yadav11 <notifications@github.com>
-Reply-To: 	torvalds/linux 
-<reply+AA6SEZMYZ2I4LECYN5DENHF4K7P7REVBMPHAEONG2E@reply.github.com>
-To: 	torvalds/linux <linux@noreply.github.com>
-CC: 	lwfinger <Larry.Finger@lwfinger.net>, Author <author@noreply.github.com>
+[    6.097762] UBIFS (ubi0:2): UBIFS: mounted UBI device 0, volume 2,
+name "rootfs-volume", R/O mode
+..............
+[    6.151932] VFS: Mounted root (ubifs filesystem) readonly on device 0:13.
+.................
+[  OK  ] Listening on Load/Save RF Kill Switch Status /dev/rfkill Watch.
+         Starting Load/Save RF Kill Switch Status...
+[FAILED] Failed to start Load/Save RF Kill Switch Status.
+See 'systemctl status systemd-rfkill.service' for details.
 
+[FAILED] Failed to start Run pending postinsts.
+See 'systemctl status run-postinsts.service' for details.
+...............
+root#
 
+Thank you.
 
-This commit causes problems when connecting to institute's public wifi. I am not 
-able to connect to that wifi after this commit. Reverting this module to 
-previous version in latest kernel solves the issue. So the problem is with this 
-commit.
-The journalctl output is at http://ix.io/28IX <url>.
+Kind regards,
 
-—
-You are receiving this because you authored the thread.
-Reply to this email directly, view it on GitHub 
-<https://github.com/torvalds/linux/commit/d1d1a96bdb4408d02e2bfcb32b71aba165458a80?email_source=notifications&email_token=AA6SEZKQB4G2KKKXUWRHCJDRDKSPRA5CNFSM4KWTSC52YY3PNVWWK3TUL52HS4DFVVBW63LNNF2EG33NNVSW45FKMNXW23LFNZ2F62LEZYBDTJWR#commitcomment-37332689>, 
-or unsubscribe 
-<https://github.com/notifications/unsubscribe-auth/AA6SEZIGALWUGXRCN7ALTIDRDKSPRANCNFSM4KWTSC5Q>.
-
+- jh
