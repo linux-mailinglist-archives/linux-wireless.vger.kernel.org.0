@@ -2,66 +2,63 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D5FF16449A
-	for <lists+linux-wireless@lfdr.de>; Wed, 19 Feb 2020 13:47:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BA86A16455B
+	for <lists+linux-wireless@lfdr.de>; Wed, 19 Feb 2020 14:25:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727338AbgBSMrO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 19 Feb 2020 07:47:14 -0500
-Received: from mail.kernel.org ([198.145.29.99]:50220 "EHLO mail.kernel.org"
+        id S1727916AbgBSNZl convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 19 Feb 2020 08:25:41 -0500
+Received: from scm.imp.edu.mx ([132.247.16.103]:53009 "EHLO scm.imp.edu.mx"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726491AbgBSMrN (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 19 Feb 2020 07:47:13 -0500
-Received: from paulmck-ThinkPad-P72.home (50-39-105-78.bvtn.or.frontiernet.net [50.39.105.78])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 454C024654;
-        Wed, 19 Feb 2020 12:47:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1582116433;
-        bh=78L7q3X7/Zxk9esBo61a/shxQzMYU6nTCnPnkYfB+2E=;
-        h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
-        b=hdwT7jwDCL5ZqQeaRjVdSYu3jP9wC7ywHEszxyECjNhODNCOWO/jdTrdN/TGO8Kw/
-         iNKq3SBrMzxKe4QcElRQHoD8SJkqLj6UKXd0KzIZM+iwcWfLUOy2jOAHx9O46Ma8Ny
-         OcmmNN29hL1xJorshLjE+GHcL7gPtAHmxirgx1EY=
-Received: by paulmck-ThinkPad-P72.home (Postfix, from userid 1000)
-        id 1E9FE35229ED; Wed, 19 Feb 2020 04:47:13 -0800 (PST)
-Date:   Wed, 19 Feb 2020 04:47:13 -0800
-From:   "Paul E. McKenney" <paulmck@kernel.org>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     Amol Grover <frextrite@gmail.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        linux-kernel-mentees@lists.linuxfoundation.org,
-        Joel Fernandes <joel@joelfernandes.org>,
-        Madhuparna Bhowmik <madhuparnabhowmik10@gmail.com>
-Subject: Re: [PATCH] cfg80211: Pass lockdep expression to RCU lists
-Message-ID: <20200219124713.GU2935@paulmck-ThinkPad-P72>
-Reply-To: paulmck@kernel.org
-References: <20200219091102.10709-1-frextrite@gmail.com>
- <ff8a005c68e512cb3f338b7381853e6b3a3ab293.camel@sipsolutions.net>
+        id S1727786AbgBSNZk (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 19 Feb 2020 08:25:40 -0500
+Received: from localhost (localhost [127.0.0.1])
+        by scm.imp.edu.mx (Postfix) with ESMTP id 2330B187FA8;
+        Wed, 19 Feb 2020 06:11:30 -0600 (CST)
+X-Virus-Scanned: by SpamTitan at imp.edu.mx
+Received: from scm.imp.edu.mx (localhost [127.0.0.1])
+        by scm.imp.edu.mx (Postfix) with ESMTP id 5A14D1880A5;
+        Wed, 19 Feb 2020 04:51:49 -0600 (CST)
+Authentication-Results: scm.imp.edu.mx; none
+Received: from imp.edu.mx (unknown [10.249.93.105])
+        by scm.imp.edu.mx (Postfix) with ESMTP id 4DC2018DA05;
+        Wed, 19 Feb 2020 04:51:45 -0600 (CST)
+Received: from localhost (localhost [127.0.0.1])
+        by imp.edu.mx (Postfix) with ESMTP id 358EC180635F48;
+        Wed, 19 Feb 2020 04:51:46 -0600 (CST)
+Received: from imp.edu.mx ([127.0.0.1])
+        by localhost (imp.edu.mx [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id UIsgs9D7FS9M; Wed, 19 Feb 2020 04:51:46 -0600 (CST)
+Received: from localhost (localhost [127.0.0.1])
+        by imp.edu.mx (Postfix) with ESMTP id 15E38180635F44;
+        Wed, 19 Feb 2020 04:51:46 -0600 (CST)
+X-Virus-Scanned: amavisd-new at imp.edu.mx
+Received: from imp.edu.mx ([127.0.0.1])
+        by localhost (imp.edu.mx [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id W32SBc03HzNt; Wed, 19 Feb 2020 04:51:46 -0600 (CST)
+Received: from [45.147.4.119] (unknown [45.147.4.119])
+        by imp.edu.mx (Postfix) with ESMTPSA id AC97D180635F4B;
+        Wed, 19 Feb 2020 04:51:44 -0600 (CST)
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ff8a005c68e512cb3f338b7381853e6b3a3ab293.camel@sipsolutions.net>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: 19-02-2020
+To:     Recipients <mucios@imp.edu.mx>
+From:   "urs portmann" <mucios@imp.edu.mx>
+Date:   Wed, 19 Feb 2020 21:51:42 +1100
+Reply-To: onube@qq.com
+Message-Id: <20200219105144.AC97D180635F4B@imp.edu.mx>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Feb 19, 2020 at 10:13:36AM +0100, Johannes Berg wrote:
-> On Wed, 2020-02-19 at 14:41 +0530, Amol Grover wrote:
-> >  
-> > -	WARN_ON_ONCE(!rcu_read_lock_held() && !lockdep_rtnl_is_held());
-> > -
-> > -	list_for_each_entry_rcu(pos, &rdev->sched_scan_req_list, list) {
-> > +	list_for_each_entry_rcu(pos, &rdev->sched_scan_req_list, list,
-> > +				lockdep_rtnl_is_held()) {
-> 
-> Huh, I didn't even know you _could_ do that :)
+Guten Morgen,
+                                          19-02-2020
+Wir haben versucht, Sie zu erreichen und haben noch nichts von Ihnen gehört. Haben Sie unsere letzte E-Mail über Ihre S.p.e.n.d.e erhalten? Wenn nicht, melden Sie sich bitte bei uns, um weitere Informationen zu erhalten.
 
-It is a fairly recent addition, courtesy of Joel Fernandes.  ;-)
+Wir warten darauf, von Ihnen zu hören, sobald Sie diese Nachricht erhalten, die Sie bei der weiteren Vorgehensweise unterstützt.
 
-							Thanx, Paul
+Mfg
+urs portmann
