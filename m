@@ -2,78 +2,93 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3101C163A28
-	for <lists+linux-wireless@lfdr.de>; Wed, 19 Feb 2020 03:29:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4281A163BF9
+	for <lists+linux-wireless@lfdr.de>; Wed, 19 Feb 2020 05:16:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728139AbgBSC33 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 18 Feb 2020 21:29:29 -0500
-Received: from zmail.nuczu.edu.ua ([91.234.43.158]:35046 "EHLO
-        zmail.nuczu.edu.ua" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726595AbgBSC33 (ORCPT
+        id S1726467AbgBSEQF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 18 Feb 2020 23:16:05 -0500
+Received: from mail-pl1-f196.google.com ([209.85.214.196]:45654 "EHLO
+        mail-pl1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726439AbgBSEQF (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 18 Feb 2020 21:29:29 -0500
-X-Greylist: delayed 5718 seconds by postgrey-1.27 at vger.kernel.org; Tue, 18 Feb 2020 21:29:28 EST
-Received: from localhost (localhost [127.0.0.1])
-        by zmail.nuczu.edu.ua (Postfix) with ESMTP id E30044FF191;
-        Wed, 19 Feb 2020 00:09:34 +0200 (EET)
-Received: from zmail.nuczu.edu.ua ([127.0.0.1])
-        by localhost (zmail.nuczu.edu.ua [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id wUv6TiJaxjEo; Wed, 19 Feb 2020 00:09:34 +0200 (EET)
-Received: from localhost (localhost [127.0.0.1])
-        by zmail.nuczu.edu.ua (Postfix) with ESMTP id 7B5B54FB5F9;
-        Tue, 18 Feb 2020 22:33:03 +0200 (EET)
-DKIM-Filter: OpenDKIM Filter v2.10.3 zmail.nuczu.edu.ua 7B5B54FB5F9
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nuczu.edu.ua;
-        s=A52E72AE-E4EF-11E9-9906-53CE3145A657; t=1582057984;
-        bh=o+H3O7n1+zJcXo0FhJs7spyf8HmE4ClnBa/Y2Gk0DL0=;
-        h=MIME-Version:To:From:Date:Message-Id;
-        b=Tj1DDkXjzOpsK4Zb7dCiK9HOzan7pLWE+PQYTdIx3e2ZxQ8Bz51WKE6AckUdP8vfQ
-         CWe6c9vBRYtt2E7XHNysnP48ZxLnpedzUenekW7ZJhv/TCwkhyXmW+vDAO+58jl/bU
-         j+3/8NZ5YvPW/jFI9mJTTgzwUM/N2q8ar4XPe9aurWURTlJHrVz39qUP3q8MtjsU+g
-         vFQllxRkCsSHZzaMCFGHGvoO8vMDp5bJkJiK+U5wCJRW+ky+Fk1aWUhXubNAScwMBo
-         vKjNVe3U7501kYAfAAfvw2gxMnzlFqqJ6rcJe2xJ7sq8RFwIgB1qnUjndDzOn1eCvr
-         dlixYWT6kPn0g==
-X-Virus-Scanned: amavisd-new at nuczu.edu.ua
-Received: from zmail.nuczu.edu.ua ([127.0.0.1])
-        by localhost (zmail.nuczu.edu.ua [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id 5AOvQrU6MQvk; Tue, 18 Feb 2020 22:33:00 +0200 (EET)
-Received: from [10.109.183.140] (unknown [105.12.3.161])
-        by zmail.nuczu.edu.ua (Postfix) with ESMTPSA id 57F354FB60F;
-        Tue, 18 Feb 2020 21:49:07 +0200 (EET)
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: =?utf-8?q?Wohlt=C3=A4tigkeitsspende_von_2=2E000=2E000_Euro?=
-To:     Recipients <dushkin@nuczu.edu.ua>
-From:   ''Michael weirsky'' <dushkin@nuczu.edu.ua>
-Date:   Tue, 18 Feb 2020 21:48:57 +0200
-Reply-To: mikeweirskyspende@gmail.com
-Message-Id: <20200218194908.57F354FB60F@zmail.nuczu.edu.ua>
+        Tue, 18 Feb 2020 23:16:05 -0500
+Received: by mail-pl1-f196.google.com with SMTP id b22so8987821pls.12
+        for <linux-wireless@vger.kernel.org>; Tue, 18 Feb 2020 20:16:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=H5s84nZe09LEygazx+9zYHkBioooKXZ48/ls3AZTwNo=;
+        b=sXaNni8hNvrlu2JabbxBr+U2UvIQCh/uJTUDTlriUSPs5hnN1ZiU3F+gNTn8rh8anX
+         U7MKjCjKjLxdYUUeivIa7H5T8OsyjinlUCKaCqo4eUSh3vOpO4iRsfwa0H9tzahAL5+R
+         pYIdtfahHGVvUm+g53tiLTgjAYY8Ws94wjGhRBMAOv5vLedb9Dgl8Fu8XjaOp/XM45b4
+         yVdLXEqexgtLIsejKJQy0ShG8n8Mfmsurh3eCEb7NcJj/w74ug31e0dbUHOP401Gwq9q
+         rcIocFOzMHzfF+K6GUOBJkb80YFfbcJ1dKYVHZx3CGYyq3jpuP6wGHyU8R92ye83WIvU
+         dlgQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=H5s84nZe09LEygazx+9zYHkBioooKXZ48/ls3AZTwNo=;
+        b=VDerCLvcBFfboUf/Pfr8AdgtwIW01jAIT+E3t5CnIZ/gwoTaJug6wB1F6uYmCvlYld
+         Q9HlgMT5AnXtY47xiNBkjXkbzXg1i4q39r3ECvoSQXAUZAOGXyGdS5CcZQeUeKBxl7le
+         FAWfbEWDZ+hvYB14RFOG8BdrHZQEde2FswT7NoPVJzl3QHEtgWhFJjuDFaPhqtgJ7XyQ
+         QPs/suZo8TiHtIAgFUAUTXW82nc4pylSylc6QqlM1M5gOQvL5mVAWWiwbg6nhwMt8qg4
+         vky0/dESM/hzfytTJ457ogWg4SBgVjcv6MIv5eOaLeIm8Pvdqpn0YsCUUa+FvsOPC3XM
+         meRA==
+X-Gm-Message-State: APjAAAXftH5AAyWNEc1DM3Q4fykAFdW+qz1QX+xsRmPWp2ZnZouF4Lv4
+        OrPYYD7W2JoYVC5YvQXB0z0=
+X-Google-Smtp-Source: APXvYqyky4/vFL+WsbTkF+tGUtZqVgC52PrW/+DgGiIICaiq8pZbX5zw1WTPwenoUorf5FE9Kj8Qlg==
+X-Received: by 2002:a17:90a:804a:: with SMTP id e10mr6853463pjw.41.1582085764323;
+        Tue, 18 Feb 2020 20:16:04 -0800 (PST)
+Received: from localhost ([43.224.245.179])
+        by smtp.gmail.com with ESMTPSA id m12sm465947pjf.25.2020.02.18.20.16.03
+        (version=TLS1_2 cipher=AES128-SHA bits=128/128);
+        Tue, 18 Feb 2020 20:16:03 -0800 (PST)
+From:   qiwuchen55@gmail.com
+To:     Larry.Finger@lwfinger.net, kvalo@codeaurora.org,
+        davem@davemloft.net
+Cc:     linux-wireless@vger.kernel.org, b43-dev@lists.infradead.org,
+        chenqiwu <chenqiwu@xiaomi.com>
+Subject: [PATCH] b43legacy/sysfs.c: replace simple_strtol() with kstrtoint()
+Date:   Wed, 19 Feb 2020 12:15:59 +0800
+Message-Id: <1582085759-17998-1-git-send-email-qiwuchen55@gmail.com>
+X-Mailer: git-send-email 1.9.1
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Lieber Freund,
+From: chenqiwu <chenqiwu@xiaomi.com>
 
-Ich bin Herr Mike Weirsky, New Jersey, Vereinigte Staaten von Amerika, der =
-Mega-Gewinner von $ 273million In Mega Millions Jackpot, spende ich an 5 zu=
-f=C3=A4llige Personen, wenn Sie diese E-Mail erhalten, dann wurde Ihre E-Ma=
-il nach einem Spinball ausgew=C3=A4hlt.Ich habe den gr=C3=B6=C3=9Ften Teil =
-meines Verm=C3=B6gens auf eine Reihe von Wohlt=C3=A4tigkeitsorganisationen =
-und Organisationen verteilt.Ich habe mich freiwillig dazu entschieden, die =
-Summe von =E2=82=AC 2.000.000,00 an Sie als eine der ausgew=C3=A4hlten 5 zu=
- spenden, um meine Gewinne zu =C3=BCberpr=C3=BCfen.
-Das ist dein Spendencode: [MW530342019]
-www.youtube.com/watch?v=3Dun8yRTmrYMY
+The simple_strtol() function is deprecated since it does not
+check for the range overflow. Use kstrtoint() instead.
 
-Antworten Sie mit dem SPENDE-CODE an diese =
+Signed-off-by: chenqiwu <chenqiwu@xiaomi.com>
+---
+ drivers/net/wireless/broadcom/b43legacy/sysfs.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
+diff --git a/drivers/net/wireless/broadcom/b43legacy/sysfs.c b/drivers/net/wireless/broadcom/b43legacy/sysfs.c
+index 9312c1d..eec087c 100644
+--- a/drivers/net/wireless/broadcom/b43legacy/sysfs.c
++++ b/drivers/net/wireless/broadcom/b43legacy/sysfs.c
+@@ -25,13 +25,15 @@
+ static int get_integer(const char *buf, size_t count)
+ {
+ 	char tmp[10 + 1] = { 0 };
+-	int ret = -EINVAL;
++	int ret = -EINVAL, res;
+ 
+ 	if (count == 0)
+ 		goto out;
+ 	count = min_t(size_t, count, 10);
+ 	memcpy(tmp, buf, count);
+-	ret = simple_strtol(tmp, NULL, 10);
++	ret = kstrtoint(tmp, 10, &res);
++	if (!ret)
++		return res;
+ out:
+ 	return ret;
+ }
+-- 
+1.9.1
 
-E-Mail:mikeweirskyspende@gmail.com
-
-Ich hoffe, Sie und Ihre Familie gl=C3=BCcklich zu machen.
-
-Gr=C3=BC=C3=9Fe
-Herr Mike Weirsky
