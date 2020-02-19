@@ -2,93 +2,76 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4281A163BF9
-	for <lists+linux-wireless@lfdr.de>; Wed, 19 Feb 2020 05:16:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B080163FD0
+	for <lists+linux-wireless@lfdr.de>; Wed, 19 Feb 2020 09:55:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726467AbgBSEQF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 18 Feb 2020 23:16:05 -0500
-Received: from mail-pl1-f196.google.com ([209.85.214.196]:45654 "EHLO
-        mail-pl1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726439AbgBSEQF (ORCPT
+        id S1726297AbgBSIzl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 19 Feb 2020 03:55:41 -0500
+Received: from mail-pg1-f174.google.com ([209.85.215.174]:42240 "EHLO
+        mail-pg1-f174.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726260AbgBSIzl (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 18 Feb 2020 23:16:05 -0500
-Received: by mail-pl1-f196.google.com with SMTP id b22so8987821pls.12
-        for <linux-wireless@vger.kernel.org>; Tue, 18 Feb 2020 20:16:04 -0800 (PST)
+        Wed, 19 Feb 2020 03:55:41 -0500
+Received: by mail-pg1-f174.google.com with SMTP id w21so12370627pgl.9
+        for <linux-wireless@vger.kernel.org>; Wed, 19 Feb 2020 00:55:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=H5s84nZe09LEygazx+9zYHkBioooKXZ48/ls3AZTwNo=;
-        b=sXaNni8hNvrlu2JabbxBr+U2UvIQCh/uJTUDTlriUSPs5hnN1ZiU3F+gNTn8rh8anX
-         U7MKjCjKjLxdYUUeivIa7H5T8OsyjinlUCKaCqo4eUSh3vOpO4iRsfwa0H9tzahAL5+R
-         pYIdtfahHGVvUm+g53tiLTgjAYY8Ws94wjGhRBMAOv5vLedb9Dgl8Fu8XjaOp/XM45b4
-         yVdLXEqexgtLIsejKJQy0ShG8n8Mfmsurh3eCEb7NcJj/w74ug31e0dbUHOP401Gwq9q
-         rcIocFOzMHzfF+K6GUOBJkb80YFfbcJ1dKYVHZx3CGYyq3jpuP6wGHyU8R92ye83WIvU
-         dlgQ==
+        d=students-iiserpune-ac-in.20150623.gappssmtp.com; s=20150623;
+        h=to:from:subject:message-id:date:user-agent:mime-version
+         :content-transfer-encoding:content-language;
+        bh=hL/O7b8SoX5WCDYIKKY7lQQed0gmaDD1fYBCQeMr9ic=;
+        b=fEvsTQcPu/O/yqUQnHG76+JhwfenCAB8KTCWRa3Z8WajjbHc02D6kZV679o9/Di2cN
+         hbLV4tLZkJ/mx0jp/tU3deCkdWoCAZxKFl+zO/Q1YHaY7o5ah8gdEiS1MKlIdToChEK6
+         qsUHwqRaZ3JRLLGS7RHZHBKeGmhqC1wfq4a7T8YvHOrLua6w5wQwa/Im7QbwJeKG8Xft
+         /0ZWz5mwfpDmqrzvQVSZcUfNAgN2gtdAZqnbtTAEVD2TkOoWtfJBDFvEqkUPeyG3KsF1
+         kjHyQfPBVltRkpFWv7ggY+JnmGvNtj/iPrGjRpvdusjw9C1UyUIpQiu5F4NvSXvOKvOf
+         tNMA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=H5s84nZe09LEygazx+9zYHkBioooKXZ48/ls3AZTwNo=;
-        b=VDerCLvcBFfboUf/Pfr8AdgtwIW01jAIT+E3t5CnIZ/gwoTaJug6wB1F6uYmCvlYld
-         Q9HlgMT5AnXtY47xiNBkjXkbzXg1i4q39r3ECvoSQXAUZAOGXyGdS5CcZQeUeKBxl7le
-         FAWfbEWDZ+hvYB14RFOG8BdrHZQEde2FswT7NoPVJzl3QHEtgWhFJjuDFaPhqtgJ7XyQ
-         QPs/suZo8TiHtIAgFUAUTXW82nc4pylSylc6QqlM1M5gOQvL5mVAWWiwbg6nhwMt8qg4
-         vky0/dESM/hzfytTJ457ogWg4SBgVjcv6MIv5eOaLeIm8Pvdqpn0YsCUUa+FvsOPC3XM
-         meRA==
-X-Gm-Message-State: APjAAAXftH5AAyWNEc1DM3Q4fykAFdW+qz1QX+xsRmPWp2ZnZouF4Lv4
-        OrPYYD7W2JoYVC5YvQXB0z0=
-X-Google-Smtp-Source: APXvYqyky4/vFL+WsbTkF+tGUtZqVgC52PrW/+DgGiIICaiq8pZbX5zw1WTPwenoUorf5FE9Kj8Qlg==
-X-Received: by 2002:a17:90a:804a:: with SMTP id e10mr6853463pjw.41.1582085764323;
-        Tue, 18 Feb 2020 20:16:04 -0800 (PST)
-Received: from localhost ([43.224.245.179])
-        by smtp.gmail.com with ESMTPSA id m12sm465947pjf.25.2020.02.18.20.16.03
-        (version=TLS1_2 cipher=AES128-SHA bits=128/128);
-        Tue, 18 Feb 2020 20:16:03 -0800 (PST)
-From:   qiwuchen55@gmail.com
-To:     Larry.Finger@lwfinger.net, kvalo@codeaurora.org,
-        davem@davemloft.net
-Cc:     linux-wireless@vger.kernel.org, b43-dev@lists.infradead.org,
-        chenqiwu <chenqiwu@xiaomi.com>
-Subject: [PATCH] b43legacy/sysfs.c: replace simple_strtol() with kstrtoint()
-Date:   Wed, 19 Feb 2020 12:15:59 +0800
-Message-Id: <1582085759-17998-1-git-send-email-qiwuchen55@gmail.com>
-X-Mailer: git-send-email 1.9.1
+        h=x-gm-message-state:to:from:subject:message-id:date:user-agent
+         :mime-version:content-transfer-encoding:content-language;
+        bh=hL/O7b8SoX5WCDYIKKY7lQQed0gmaDD1fYBCQeMr9ic=;
+        b=OtqZcpP0XPb2neYkXNjLTujlbCBQPT4iLGouzllEF/Kzv6mjaC+8A7DRZUcWGkgeTO
+         ZuVQ732nRRuxZuhbHmmRxMdIagHa/smfizLg/AaBH0tBoPPQHxHAkrQG5PMu2jj3DPkv
+         67GgK/shl2zZH9xLexrF058UqfiebrXFSWDzcvDRLcJuGF+U5t1Pn+obs2u1tHbHjZyW
+         dWEyIikdQ8f03PLs8jaye8dJKmRgBT1esc98CdM3w6KOQ/ws3yuELaOEMWpnRDiBUHbH
+         ticzcKT38l+BvkokdYToDeS7wN/ox331Mx/x9uwXTXP/zNf0MZdx86/D6EZLl+SreInX
+         ueGA==
+X-Gm-Message-State: APjAAAUjfRajUh015xjhTwNAVbO8R84Sm+epjIJWjcw/AlwOBFGFBY01
+        ZSghXRyh6T7h5pnQ8cPwBKXjJ7MOEbs=
+X-Google-Smtp-Source: APXvYqwlFtMS8frQ4S4bZLui98fFk1kdQt7pZLx9o8/6O+DWvpLAHF7NZqi3unNfkEeR7GZZbXNzJQ==
+X-Received: by 2002:aa7:8587:: with SMTP id w7mr25954192pfn.39.1582102539483;
+        Wed, 19 Feb 2020 00:55:39 -0800 (PST)
+Received: from [10.10.3.36] ([14.139.123.36])
+        by smtp.gmail.com with ESMTPSA id u3sm1649262pjv.32.2020.02.19.00.55.38
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Wed, 19 Feb 2020 00:55:38 -0800 (PST)
+To:     linux-wireless@vger.kernel.org
+From:   Ashish <ashishkumar.yadav@students.iiserpune.ac.in>
+Subject: Commit d1d1a96 in rtl8188ee module causes issues when connecting to
+ my institute's wifi
+Message-ID: <4830c992-1a09-9989-ab29-ea403b910551@students.iiserpune.ac.in>
+Date:   Wed, 19 Feb 2020 14:25:28 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.5.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-Cyberoam-smtpxy-version: 1.0.6.3
+X-Cyberoam-AV-Policy: default
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: chenqiwu <chenqiwu@xiaomi.com>
+The commit d1d1a96 (at 
+https://github.com/torvalds/linux/commit/d1d1a96bdb4408d02e2bfcb32b71aba165458a80?diff=unified) 
+in rtl8188ee module causes problems while connecting to my institute's 
+wifi. I am not able to connect to that wifi after this commit. The 
+journalctl output is at http://ix.io/28IX (look for "AP off, try to 
+reconnect now").
 
-The simple_strtol() function is deprecated since it does not
-check for the range overflow. Use kstrtoint() instead.
-
-Signed-off-by: chenqiwu <chenqiwu@xiaomi.com>
----
- drivers/net/wireless/broadcom/b43legacy/sysfs.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/wireless/broadcom/b43legacy/sysfs.c b/drivers/net/wireless/broadcom/b43legacy/sysfs.c
-index 9312c1d..eec087c 100644
---- a/drivers/net/wireless/broadcom/b43legacy/sysfs.c
-+++ b/drivers/net/wireless/broadcom/b43legacy/sysfs.c
-@@ -25,13 +25,15 @@
- static int get_integer(const char *buf, size_t count)
- {
- 	char tmp[10 + 1] = { 0 };
--	int ret = -EINVAL;
-+	int ret = -EINVAL, res;
- 
- 	if (count == 0)
- 		goto out;
- 	count = min_t(size_t, count, 10);
- 	memcpy(tmp, buf, count);
--	ret = simple_strtol(tmp, NULL, 10);
-+	ret = kstrtoint(tmp, 10, &res);
-+	if (!ret)
-+		return res;
- out:
- 	return ret;
- }
--- 
-1.9.1
+The problem is with removal of the struct. Adding the struct back in 
+trx.h solves the issue.
 
