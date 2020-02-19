@@ -2,185 +2,174 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 20455164BCB
-	for <lists+linux-wireless@lfdr.de>; Wed, 19 Feb 2020 18:21:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C27A4164C8C
+	for <lists+linux-wireless@lfdr.de>; Wed, 19 Feb 2020 18:51:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726613AbgBSRVh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 19 Feb 2020 12:21:37 -0500
-Received: from mail-pf1-f195.google.com ([209.85.210.195]:40746 "EHLO
-        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726518AbgBSRVg (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 19 Feb 2020 12:21:36 -0500
-Received: by mail-pf1-f195.google.com with SMTP id b185so382828pfb.7
-        for <linux-wireless@vger.kernel.org>; Wed, 19 Feb 2020 09:21:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=reply-to:subject:from:to:references:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=KYEZ4MbknLv5iTf+an/G8/X9viBPaQav3+JngX0l2Kc=;
-        b=ZL0wo2E7pIkAE0fTURvHCqEdoclpKhBaSK6d4uhBVqA2CMWxoW8Q7rTpikwKKOIo0v
-         VAYBGu7lQOARumRulFn4jJWz5EWUfItSAgjDPjzeIkt9k/QPNIl8uM2F7NgjZc+JxKAB
-         aHoucoJ1ryXUOSmiviapJjff87ficfEWXC+wYQLT5KS3fPJEBA89GAUlMDfDL1t4szqx
-         4vADZ7XhfFE6R/HOX6vpz6gM6RzR1JfZRY0r2lzJ9e35J3gFZPRxoAnQfOuRs5lbrxKH
-         s/22W0A4Y/jF5ppXkpzk13gn0HWQufUAelgoUR3m8v9rcFgV9wqaEjQ+EtSdeSK0+4Et
-         pMqg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:reply-to:subject:from:to:references:message-id
-         :date:user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=KYEZ4MbknLv5iTf+an/G8/X9viBPaQav3+JngX0l2Kc=;
-        b=oTNs5Gmq62qw8SpmQEQtX9XyYU7fiDlgnVgeMewrKbVt1yXEJ1yotnn5nMncU9z0Q2
-         HQSEgQhzGrWhpqx2k1Tewoa6Mttuj3HojDME+9LCtpvTARQ/toX9WpmaoTf6oIf+QVTh
-         A5lb96H6cmJR9z3EoIlx4aOBtE4/SKvF5d2D4yyzLy3Ry8Miu81jSUq7YuIRDvkoyLQK
-         aEKsGDt7xpx3Dh7dt3sj2mDycxG6c8/vsgxRrvln4rnhWExONItxmq197vjlY7dVCXRc
-         h8ndZndiZ53xp0awYx8K0w+Yh76cfm4KfVn3vr2RKmFpgt9w1fQRaVl7WbK1j5om+Ies
-         ED0Q==
-X-Gm-Message-State: APjAAAVdYZ9zLC0rd0TzIPabxNbLKzTMt4sfoRfIfz8aGYlTTO9KY2rz
-        UEQWS2cUSjfjZQtTYmUWG4BfBpL7
-X-Google-Smtp-Source: APXvYqx9yh41kb4OCQ6Uate6nX65MZnTYDeiyMoR9FoAjOJFVdUA79wkeIHEIqUykToCv810fT2EJA==
-X-Received: by 2002:a65:621a:: with SMTP id d26mr28099927pgv.151.1582132895531;
-        Wed, 19 Feb 2020 09:21:35 -0800 (PST)
-Received: from mua.localhost (99-7-172-215.lightspeed.snmtca.sbcglobal.net. [99.7.172.215])
-        by smtp.gmail.com with ESMTPSA id x4sm185714pff.143.2020.02.19.09.21.34
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 19 Feb 2020 09:21:34 -0800 (PST)
-Reply-To: pgnet.dev@gmail.com
-Subject: Re: unable to explicitly set wifi regulatory domain = US; defaults to
- =CN ?
-From:   PGNet Dev <pgnet.dev@gmail.com>
-To:     linux-wireless@vger.kernel.org
-References: <584c4f03-a904-fdf1-5f42-5e3c1c0bde71@gmail.com>
-Message-ID: <efad195f-fd67-d645-600a-a9ec936f5058@gmail.com>
-Date:   Wed, 19 Feb 2020 09:21:33 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
-MIME-Version: 1.0
-In-Reply-To: <584c4f03-a904-fdf1-5f42-5e3c1c0bde71@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+        id S1726668AbgBSRvF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 19 Feb 2020 12:51:05 -0500
+Received: from mail.kernel.org ([198.145.29.99]:49980 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726539AbgBSRvF (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 19 Feb 2020 12:51:05 -0500
+Received: from localhost.localdomain (unknown [194.230.155.125])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 0A9F7206DB;
+        Wed, 19 Feb 2020 17:50:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1582134663;
+        bh=HVHQjGSEocd9AVyWevt6joEF+d2PPbwr8+8k6h+A34M=;
+        h=From:To:Cc:Subject:Date:From;
+        b=PxIaHkLn5XTar1EPyISd4vtwzk0Yb8ho6/2/5bpHXPVckPViPmh7xJy5CDKknCISe
+         aVweOki+hxup4Tb6Es9L3KhQ8BxFokAKuut29izMLGuhQbvVvdmhKIAJt21HDJ6Icz
+         WQ/bI2EQHItOjyTVPfGGfciGRDULmeQrq4s9rqPA=
+From:   Krzysztof Kozlowski <krzk@kernel.org>
+To:     Richard Henderson <rth@twiddle.net>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        Alexey Brodkin <abrodkin@synopsys.com>,
+        Vineet Gupta <vgupta@synopsys.com>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        Dave Airlie <airlied@redhat.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Ben Skeggs <bskeggs@redhat.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Jiri Slaby <jirislaby@gmail.com>,
+        Nick Kossifidis <mickflemm@gmail.com>,
+        Luis Chamberlain <mcgrof@kernel.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Dave Jiang <dave.jiang@intel.com>,
+        Jon Mason <jdmason@kudzu.us>, Allen Hubbe <allenbh@gmail.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        Jason Wang <jasowang@redhat.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-snps-arc@lists.infradead.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, nouveau@lists.freedesktop.org,
+        linux-media@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-ntb@googlegroups.com,
+        virtualization@lists.linux-foundation.org,
+        linux-arch@vger.kernel.org
+Cc:     Krzysztof Kozlowski <krzk@kernel.org>
+Subject: [RESEND PATCH v2 0/9] iomap: Constify ioreadX() iomem argument
+Date:   Wed, 19 Feb 2020 18:49:58 +0100
+Message-Id: <20200219175007.13627-1-krzk@kernel.org>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Anyone with some guidance on this?
-Or, is there a more appropriate forum for this question?
+Hi,
 
 
-On 2/9/20 10:42 AM, PGNet Dev wrote:
-> on
-> 
-> 	uname -rm
-> 		5.5.2-25.g994cf1f-default x86_64
-> 
-> i'm trying to set my wifi's regulatory domain.
-> 
-> currently, with
-> 
-> 	cat /etc/modprobe.d/wifi.conf
-> 		options iwlwifi lar_disable=1
-> 		softdep ath pre: cfg80211
-> 		options cfg80211 ieee80211_regdom=US
-> 
-> 	cat /etc/modules-load.d/wifi.conf
-> 		iwlwifi
-> 		ath
-> 		cfg80211
-> 
-> 	lsmod | egrep "ath|cfg"
-> 		ath9k_htc              81920  0
-> 		ath9k_common           20480  1 ath9k_htc
-> 		ath9k_hw              499712  2 ath9k_htc,ath9k_common
-> 		mac80211              991232  4 ath9k_htc,rt2x00lib,rt2x00usb,rt2800lib
-> 		usbcore               315392  6 ath9k_htc,xhci_hcd,rt2800usb,usbhid,xhci_pci,rt2x00usb
-> 		ath                    36864  3 ath9k_htc,ath9k_common,ath9k_hw
-> 		cfg80211              835584  6 ath9k_htc,ath9k_common,rt2x00lib,ath,iwlwifi,mac80211
-> 		rfkill                 28672  6 rfkill_gpio,cfg80211
-> 
-> it's
-> 
-> 	iw reg get
-> 		global
-> 		country 00: DFS-UNSET
-> 		        (2402 - 2472 @ 40), (6, 20), (N/A)
-> 		        (2457 - 2482 @ 20), (6, 20), (N/A), AUTO-BW, PASSIVE-SCAN
-> 		        (2474 - 2494 @ 20), (6, 20), (N/A), NO-OFDM, PASSIVE-SCAN
-> 		        (5170 - 5250 @ 80), (6, 20), (N/A), AUTO-BW, PASSIVE-SCAN
-> 		        (5250 - 5330 @ 80), (6, 20), (0 ms), DFS, AUTO-BW, PASSIVE-SCAN
-> 		        (5490 - 5730 @ 160), (6, 20), (0 ms), DFS, PASSIVE-SCAN
-> 		        (5735 - 5835 @ 80), (6, 20), (N/A), PASSIVE-SCAN
-> 		        (57240 - 63720 @ 2160), (N/A, 0), (N/A)
-> 
-> i want to set it explicitly to = US
-> 
-> crda's apparently no longer the method,
-> 
-> 	git clone git://git.kernel.org/pub/scm/linux/kernel/git/mcgrof/crda.git
-> 	cat crda/README
-> 		...
-> 		CRDA is no longer needed as of kernel v4.15 since commit 007f6c5e6eb45
-> 		("cfg80211: support loading regulatory database as firmware file") added
-> 		support to use the kernel's firmware request API which looks for the
-> 		firmware on /lib/firmware. Because of this CRDA is legacy software for
-> 		older kernels. It will continue to be maintained.
-> 		...
-> 
-> attempt to SET with `iw` fails
-> 
-> 	iw reg set --debug US
-> 		not a valid ISO/IEC 3166-1 alpha2
-> 		Special non-alpha2 usable entries:
-> 		        00      World Regulatory domain
-> 
-> boot logs show,
-> 
-> 	dmesg | egrep "cfg|ath|wlp|wlan|iwl"
-> 		[    6.817013] cfg80211: Loading compiled-in X.509 certificates for regulatory database
-> 		[    6.817976] cfg80211: Loaded X.509 cert 'sforshee: 00b28ddf47aef9cea7'
-> 		[    6.818043] cfg80211: failed to load regulatory.db
-> 		[    6.835635] iwlwifi: unknown parameter 'lar_disable' ignored
-> 		[    6.835967] systemd-modules-load[221]: Inserted module 'iwlwifi'
-> 		[    6.838745] systemd-modules-load[221]: Inserted module 'ath'
-> 		[   15.210473] usb 1-1.2: ath9k_htc: Firmware ath9k_htc/htc_9271-1.4.0.fw requested
-> 		[   15.210661] usbcore: registered new interface driver ath9k_htc
-> 		[   15.401056] rt2800usb 1-1.1:1.0 wlp0s20u1u1: renamed from wlan0
-> 		[   15.705527] usb 1-1.2: ath9k_htc: Transferred FW: ath9k_htc/htc_9271-1.4.0.fw, size: 51008
-> 		[   15.957604] ath9k_htc 1-1.2:1.0: ath9k_htc: HTC initialized with 33 credits
-> 		[   16.240624] ath9k_htc 1-1.2:1.0: ath9k_htc: FW Version: 1.4
-> 		[   16.240630] ath9k_htc 1-1.2:1.0: FW RMW support: On
-> 		[   16.240634] ath: EEPROM regdomain: 0x809c
-> 		[   16.240635] ath: EEPROM indicates we should expect a country code
-> 		[   16.240637] ath: doing EEPROM country->regdmn map search
-> 		[   16.240640] ath: country maps to regdmn code: 0x52
-> 		[   16.240642] ath: Country alpha2 being used: CN
-> 		[   16.240644] ath: Regpair used: 0x52
-> 		[   16.253506] ath9k_htc 1-1.2:1.0 wlp0s20u1u2: renamed from wlan0
-> 		[  177.266555] ath: phy1: Short RX data len, dropping (dlen: 4)
-> 		[  403.015547] ath: phy1: Short RX data len, dropping (dlen: 9)
-> 		[  456.510042] ath: phy1: Short RX data len, dropping (dlen: 4)
-> 		[  466.037072] ath: phy1: Short RX data len, dropping (dlen: 4)
-> 		[  764.111764] ath: phy1: Short RX data len, dropping (dlen: 4)
-> 		[  916.805596] ath: phy1: Short RX data len, dropping (dlen: 4)
-> 		[  944.127381] ath: phy1: Short RX data len, dropping (dlen: 4)
-> 
-> 
-> note,
-> 
-> there's discussion here
-> 
-> 	https://bugzilla.kernel.org/show_bug.cgi?id=205695
-> 
-> about rm'ing lar_disable options 'vs' being unable to set the reg dom,
-> 
-> 	https://unix.stackexchange.com/questions/286258/intel-wireless-7265d-iw-shows-wrong-regulatory-information
-> 
-> not clear what to _do_ abt that, here.
-> 
-> what's the correct/current config+method for setting the wifi intfc's reg domain?
-> 
-> 
+Changes since v1
+================
+https://lore.kernel.org/lkml/1578415992-24054-1-git-send-email-krzk@kernel.org/
+1. Constify also ioreadX_rep() and mmio_insX(),
+2. Squash lib+alpha+powerpc+parisc+sh into one patch for bisectability,
+3. Add acks and reviews,
+4. Re-order patches so all optional driver changes are at the end.
+
+
+Description
+===========
+The ioread8/16/32() and others have inconsistent interface among the
+architectures: some taking address as const, some not.
+
+It seems there is nothing really stopping all of them to take
+pointer to const.
+
+Patchset was only compile tested on affected architectures.  No real
+testing.
+
+
+volatile
+========
+There is still interface inconsistency between architectures around
+"volatile" qualifier:
+ - include/asm-generic/io.h:static inline u32 ioread32(const volatile void __iomem *addr)
+ - include/asm-generic/iomap.h:extern unsigned int ioread32(const void __iomem *);
+
+This is still discussed and out of scope of this patchset.
+
+
+Merging
+=======
+Multiple architectures are affected in first patch so acks are welcomed.
+
+1. All patches depend on first patch,
+2. Patches 2-4 unify the interface also in few drivers,
+3. PAtches 5-9 are optional cleanup, without actual impact.
+
+
+Best regards,
+Krzysztof
+
+
+Krzysztof Kozlowski (9):
+  iomap: Constify ioreadX() iomem argument (as in generic
+    implementation)
+  rtl818x: Constify ioreadX() iomem argument (as in generic
+    implementation)
+  ntb: intel: Constify ioreadX() iomem argument (as in generic
+    implementation)
+  virtio: pci: Constify ioreadX() iomem argument (as in generic
+    implementation)
+  arc: Constify ioreadX() iomem argument (as in generic implementation)
+  drm/mgag200: Constify ioreadX() iomem argument (as in generic
+    implementation)
+  drm/nouveau: Constify ioreadX() iomem argument (as in generic
+    implementation)
+  media: fsl-viu: Constify ioreadX() iomem argument (as in generic
+    implementation)
+  ath5k: Constify ioreadX() iomem argument (as in generic
+    implementation)
+
+ arch/alpha/include/asm/core_apecs.h           |  6 +-
+ arch/alpha/include/asm/core_cia.h             |  6 +-
+ arch/alpha/include/asm/core_lca.h             |  6 +-
+ arch/alpha/include/asm/core_marvel.h          |  4 +-
+ arch/alpha/include/asm/core_mcpcia.h          |  6 +-
+ arch/alpha/include/asm/core_t2.h              |  2 +-
+ arch/alpha/include/asm/io.h                   | 12 ++--
+ arch/alpha/include/asm/io_trivial.h           | 16 ++---
+ arch/alpha/include/asm/jensen.h               |  2 +-
+ arch/alpha/include/asm/machvec.h              |  6 +-
+ arch/alpha/kernel/core_marvel.c               |  2 +-
+ arch/alpha/kernel/io.c                        | 12 ++--
+ arch/arc/plat-axs10x/axs10x.c                 |  4 +-
+ arch/parisc/include/asm/io.h                  |  4 +-
+ arch/parisc/lib/iomap.c                       | 72 +++++++++----------
+ arch/powerpc/kernel/iomap.c                   | 28 ++++----
+ arch/sh/kernel/iomap.c                        | 22 +++---
+ drivers/gpu/drm/mgag200/mgag200_drv.h         |  4 +-
+ drivers/gpu/drm/nouveau/nouveau_bo.c          |  2 +-
+ drivers/media/platform/fsl-viu.c              |  2 +-
+ drivers/net/wireless/ath/ath5k/ahb.c          | 10 +--
+ .../realtek/rtl818x/rtl8180/rtl8180.h         |  6 +-
+ drivers/ntb/hw/intel/ntb_hw_gen1.c            |  2 +-
+ drivers/ntb/hw/intel/ntb_hw_gen3.h            |  2 +-
+ drivers/ntb/hw/intel/ntb_hw_intel.h           |  2 +-
+ drivers/virtio/virtio_pci_modern.c            |  6 +-
+ include/asm-generic/iomap.h                   | 28 ++++----
+ include/linux/io-64-nonatomic-hi-lo.h         |  4 +-
+ include/linux/io-64-nonatomic-lo-hi.h         |  4 +-
+ lib/iomap.c                                   | 30 ++++----
+ 30 files changed, 156 insertions(+), 156 deletions(-)
+
+-- 
+2.17.1
 
