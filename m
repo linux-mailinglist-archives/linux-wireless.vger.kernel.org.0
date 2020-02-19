@@ -2,76 +2,99 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B080163FD0
-	for <lists+linux-wireless@lfdr.de>; Wed, 19 Feb 2020 09:55:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BD9D7164007
+	for <lists+linux-wireless@lfdr.de>; Wed, 19 Feb 2020 10:12:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726297AbgBSIzl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 19 Feb 2020 03:55:41 -0500
-Received: from mail-pg1-f174.google.com ([209.85.215.174]:42240 "EHLO
-        mail-pg1-f174.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726260AbgBSIzl (ORCPT
+        id S1726671AbgBSJMd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 19 Feb 2020 04:12:33 -0500
+Received: from mail-pg1-f195.google.com ([209.85.215.195]:33578 "EHLO
+        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726385AbgBSJMd (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 19 Feb 2020 03:55:41 -0500
-Received: by mail-pg1-f174.google.com with SMTP id w21so12370627pgl.9
-        for <linux-wireless@vger.kernel.org>; Wed, 19 Feb 2020 00:55:40 -0800 (PST)
+        Wed, 19 Feb 2020 04:12:33 -0500
+Received: by mail-pg1-f195.google.com with SMTP id 6so12419478pgk.0;
+        Wed, 19 Feb 2020 01:12:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=students-iiserpune-ac-in.20150623.gappssmtp.com; s=20150623;
-        h=to:from:subject:message-id:date:user-agent:mime-version
-         :content-transfer-encoding:content-language;
-        bh=hL/O7b8SoX5WCDYIKKY7lQQed0gmaDD1fYBCQeMr9ic=;
-        b=fEvsTQcPu/O/yqUQnHG76+JhwfenCAB8KTCWRa3Z8WajjbHc02D6kZV679o9/Di2cN
-         hbLV4tLZkJ/mx0jp/tU3deCkdWoCAZxKFl+zO/Q1YHaY7o5ah8gdEiS1MKlIdToChEK6
-         qsUHwqRaZ3JRLLGS7RHZHBKeGmhqC1wfq4a7T8YvHOrLua6w5wQwa/Im7QbwJeKG8Xft
-         /0ZWz5mwfpDmqrzvQVSZcUfNAgN2gtdAZqnbtTAEVD2TkOoWtfJBDFvEqkUPeyG3KsF1
-         kjHyQfPBVltRkpFWv7ggY+JnmGvNtj/iPrGjRpvdusjw9C1UyUIpQiu5F4NvSXvOKvOf
-         tNMA==
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Mn4zsjlzynntfOs5YFb07oY3dWpb5D0zaBJYwASVQWY=;
+        b=G6gHGceS0yAmiHRQ/TMZbsluyMQ1XzeYXax7LBY7adHSvicxi2bo/GVfPp7ucUV/TS
+         LyMb5uocPPTHdhXzuKMCff0rZI8EupnzAxxLE8h/rrp/k7yaj6Wl0WOA9pnVuBuW6vp4
+         aNJ/sEFRM5pTwAlDWEcwnD8935Eupw7rX2OXFD1XOaZQsxliVpzCfUzSgZGrghz9uYOb
+         +Gqgkll4YMjV9s8GQQAtbnxLrj2kaRdYec4FTp8H4hN49EYjKtjIneSIxvCqAzEyVWQV
+         VU5TxIj93vH1Q4l5DWndMunaR1aWkNIBzz0sCRk9B+n4AozUTdy72qyCXUpXaWODLbcS
+         ZPTw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:to:from:subject:message-id:date:user-agent
-         :mime-version:content-transfer-encoding:content-language;
-        bh=hL/O7b8SoX5WCDYIKKY7lQQed0gmaDD1fYBCQeMr9ic=;
-        b=OtqZcpP0XPb2neYkXNjLTujlbCBQPT4iLGouzllEF/Kzv6mjaC+8A7DRZUcWGkgeTO
-         ZuVQ732nRRuxZuhbHmmRxMdIagHa/smfizLg/AaBH0tBoPPQHxHAkrQG5PMu2jj3DPkv
-         67GgK/shl2zZH9xLexrF058UqfiebrXFSWDzcvDRLcJuGF+U5t1Pn+obs2u1tHbHjZyW
-         dWEyIikdQ8f03PLs8jaye8dJKmRgBT1esc98CdM3w6KOQ/ws3yuELaOEMWpnRDiBUHbH
-         ticzcKT38l+BvkokdYToDeS7wN/ox331Mx/x9uwXTXP/zNf0MZdx86/D6EZLl+SreInX
-         ueGA==
-X-Gm-Message-State: APjAAAUjfRajUh015xjhTwNAVbO8R84Sm+epjIJWjcw/AlwOBFGFBY01
-        ZSghXRyh6T7h5pnQ8cPwBKXjJ7MOEbs=
-X-Google-Smtp-Source: APXvYqwlFtMS8frQ4S4bZLui98fFk1kdQt7pZLx9o8/6O+DWvpLAHF7NZqi3unNfkEeR7GZZbXNzJQ==
-X-Received: by 2002:aa7:8587:: with SMTP id w7mr25954192pfn.39.1582102539483;
-        Wed, 19 Feb 2020 00:55:39 -0800 (PST)
-Received: from [10.10.3.36] ([14.139.123.36])
-        by smtp.gmail.com with ESMTPSA id u3sm1649262pjv.32.2020.02.19.00.55.38
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Wed, 19 Feb 2020 00:55:38 -0800 (PST)
-To:     linux-wireless@vger.kernel.org
-From:   Ashish <ashishkumar.yadav@students.iiserpune.ac.in>
-Subject: Commit d1d1a96 in rtl8188ee module causes issues when connecting to
- my institute's wifi
-Message-ID: <4830c992-1a09-9989-ab29-ea403b910551@students.iiserpune.ac.in>
-Date:   Wed, 19 Feb 2020 14:25:28 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Mn4zsjlzynntfOs5YFb07oY3dWpb5D0zaBJYwASVQWY=;
+        b=aCyrPmvHV9hcN56TYWKqdBIhaHxT52+50eoju82wfGHvYAsFeKbr9E+okEpOktng1U
+         t9g3Qy1A67N9gzwLBDytPh9qnHBix7HxYFMAo5Hgl1JpbswPDaafhKU7b3C7vfqznQnj
+         SdfIrN24u3J760///MLtofXu0uVQAQTDdb0S/0+zgRx1MS9NFjXiLtJQNv4lzMxGeccm
+         poJAhEX135nrPzG7dmdiJsi2oa2JNo8wGXBhM5p5fBxzeBNpHlA6Tglr0WZ+VKhSWh1Q
+         cMsuZtoaLWFmreDcVgeCN9ANjhZ+b/slZupxqld7+tFTPU8j9Hpb0N20TPXm7TZduVF4
+         C8oQ==
+X-Gm-Message-State: APjAAAX4rg72YVasKgh7u/hDNpmDyJDBHKi/xqZvHDbsMKmFfUOl7wUC
+        geKBIDZuXQxCyr/5qDWN5+0=
+X-Google-Smtp-Source: APXvYqysCxVXMoTrskLDknj6A+zYSggTxDmnhSSnVmwhyNIO6fwm//kfNy0Yb6rVqHQj9Fsr5aKc2Q==
+X-Received: by 2002:a65:5281:: with SMTP id y1mr26294515pgp.327.1582103552650;
+        Wed, 19 Feb 2020 01:12:32 -0800 (PST)
+Received: from localhost.localdomain ([146.196.37.220])
+        by smtp.googlemail.com with ESMTPSA id b18sm2074688pfb.116.2020.02.19.01.12.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 19 Feb 2020 01:12:32 -0800 (PST)
+From:   Amol Grover <frextrite@gmail.com>
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        linux-kernel-mentees@lists.linuxfoundation.org,
+        Joel Fernandes <joel@joelfernandes.org>,
+        Madhuparna Bhowmik <madhuparnabhowmik10@gmail.com>,
+        "Paul E . McKenney" <paulmck@kernel.org>,
+        Amol Grover <frextrite@gmail.com>
+Subject: [PATCH] cfg80211: Pass lockdep expression to RCU lists
+Date:   Wed, 19 Feb 2020 14:41:04 +0530
+Message-Id: <20200219091102.10709-1-frextrite@gmail.com>
+X-Mailer: git-send-email 2.24.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-Cyberoam-smtpxy-version: 1.0.6.3
-X-Cyberoam-AV-Policy: default
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The commit d1d1a96 (at 
-https://github.com/torvalds/linux/commit/d1d1a96bdb4408d02e2bfcb32b71aba165458a80?diff=unified) 
-in rtl8188ee module causes problems while connecting to my institute's 
-wifi. I am not able to connect to that wifi after this commit. The 
-journalctl output is at http://ix.io/28IX (look for "AP off, try to 
-reconnect now").
+rdev->sched_scan_req_list maybe traversed using list_for_each_entry_rcu
+outside an RCU read-side critical section but under the protection
+of rtnl_mutex.
 
-The problem is with removal of the struct. Adding the struct back in 
-trx.h solves the issue.
+Hence, add corresponding lockdep expression to silence false-positive
+warnings, and harden RCU lists.
+
+Signed-off-by: Amol Grover <frextrite@gmail.com>
+---
+ net/wireless/scan.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
+
+diff --git a/net/wireless/scan.c b/net/wireless/scan.c
+index aef240fdf8df..7f1af8f347b1 100644
+--- a/net/wireless/scan.c
++++ b/net/wireless/scan.c
+@@ -556,9 +556,8 @@ cfg80211_find_sched_scan_req(struct cfg80211_registered_device *rdev, u64 reqid)
+ {
+ 	struct cfg80211_sched_scan_request *pos;
+ 
+-	WARN_ON_ONCE(!rcu_read_lock_held() && !lockdep_rtnl_is_held());
+-
+-	list_for_each_entry_rcu(pos, &rdev->sched_scan_req_list, list) {
++	list_for_each_entry_rcu(pos, &rdev->sched_scan_req_list, list,
++				lockdep_rtnl_is_held()) {
+ 		if (pos->reqid == reqid)
+ 			return pos;
+ 	}
+-- 
+2.24.1
 
