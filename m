@@ -2,132 +2,93 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id ED484164CFE
-	for <lists+linux-wireless@lfdr.de>; Wed, 19 Feb 2020 18:52:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D3E22164F66
+	for <lists+linux-wireless@lfdr.de>; Wed, 19 Feb 2020 21:01:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727187AbgBSRwu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 19 Feb 2020 12:52:50 -0500
-Received: from mail.kernel.org ([198.145.29.99]:52088 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726558AbgBSRwt (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 19 Feb 2020 12:52:49 -0500
-Received: from localhost.localdomain (unknown [194.230.155.125])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id AB78B2467A;
-        Wed, 19 Feb 2020 17:52:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1582134768;
-        bh=p4+U61rOL8UqXw+zdGS8TsO+9JmLa5Y9WBdlRelZRu8=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=O8OazZxyMRidM7JJBXHHLPQaABxyydxjwKdDR5AfvFme3mNglX8t8m7XQbcjO7Q80
-         fuLH1inydzj4U4OQuJz8BKePXKeLovvgITXtVLPQwS8S3JtPQlrzu0nrehc1XwUIv9
-         FR3oL176lbNuZt7akF7YTj7Kw+33X2n8/AiGORiM=
-From:   Krzysztof Kozlowski <krzk@kernel.org>
-To:     Richard Henderson <rth@twiddle.net>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
-        Alexey Brodkin <abrodkin@synopsys.com>,
-        Vineet Gupta <vgupta@synopsys.com>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Dave Airlie <airlied@redhat.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Ben Skeggs <bskeggs@redhat.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Jiri Slaby <jirislaby@gmail.com>,
-        Nick Kossifidis <mickflemm@gmail.com>,
-        Luis Chamberlain <mcgrof@kernel.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Dave Jiang <dave.jiang@intel.com>,
-        Jon Mason <jdmason@kudzu.us>, Allen Hubbe <allenbh@gmail.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        Jason Wang <jasowang@redhat.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-snps-arc@lists.infradead.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, nouveau@lists.freedesktop.org,
-        linux-media@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-ntb@googlegroups.com,
-        virtualization@lists.linux-foundation.org,
-        linux-arch@vger.kernel.org
-Cc:     Krzysztof Kozlowski <krzk@kernel.org>
-Subject: [RESEND PATCH v2 9/9] ath5k: Constify ioreadX() iomem argument (as in generic implementation)
-Date:   Wed, 19 Feb 2020 18:50:07 +0100
-Message-Id: <20200219175007.13627-10-krzk@kernel.org>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200219175007.13627-1-krzk@kernel.org>
-References: <20200219175007.13627-1-krzk@kernel.org>
+        id S1727184AbgBSUAz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 19 Feb 2020 15:00:55 -0500
+Received: from mail-ot1-f68.google.com ([209.85.210.68]:40905 "EHLO
+        mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727125AbgBSUAz (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 19 Feb 2020 15:00:55 -0500
+Received: by mail-ot1-f68.google.com with SMTP id i6so1371172otr.7;
+        Wed, 19 Feb 2020 12:00:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=rbzfhK/jC2Hjx/QQwW0R0PHP4IE39wXwzL8O28H7Mr0=;
+        b=XVi9HI1VtC7aXIwiJ5lk6mAXxUs+laaTiYTxGwrTWIdajFJvHEoLW+6oId1R7++FR8
+         OLvtCjYKBj3x2ZEv+WJ8/t9RxdFU9kzlugrA4Sr4fOkNCrvrgB+4ZtA27kqOkc4BdSay
+         S658CcqS4bA3UHL/wawr4VuIuySY3yUr5BjSXXeCU8Q0Yc0+pqBsnSKIAav8D+OknVG+
+         0xxaUjMAS/LSuQDLC0tRwTdDbSaR14l8UsKs6oGIUVS8IXaNNVr+TgWIIJASUXhXynmC
+         VdHhud7N879Hj1hiIvG+YMLpIF1Jl4o4Qnk1XZFws9iit0X006oTLzfV6ZSCW8QlK+JP
+         DuMQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
+         :mime-version:content-transfer-encoding;
+        bh=rbzfhK/jC2Hjx/QQwW0R0PHP4IE39wXwzL8O28H7Mr0=;
+        b=KbzqZm6YaOT7dOEhth+FNxNFQgdx3goP5Ms5uDxNDlD/EJksCsx4ZEk8Ukc0OSTkSP
+         DnH89ZQMI/EZwr241GFUHd84qd1gSN3MRrn31GnP18aYkaR7VuOYzvHJjKMePXKyTpNb
+         QfUnbsDHdRRaklxC4W9Cr9TX9cgZYcSuymqsw76d4DCZJqaaRtrzPcZDwr5emllTn2lu
+         PQ/sH8SbIkaS3Xl+2T1NPCIDRli2EjzOw7cQ6G+zX8Gdc0Mh4cYZhRWLFGqEcaYyr0/j
+         c71nz8WU8QTb+JQedei+x9JLRXz169cuOYIe/GyV9tOSjOZMHiJr5PIaNAt5ml564tOb
+         FmSA==
+X-Gm-Message-State: APjAAAUE4jDAGBw7AIqlE2pRdnJNGfo9r/4ryU9w5LRn/ygun3SCesvU
+        PXEAQFxL+8VUh6GjXwkCaYA=
+X-Google-Smtp-Source: APXvYqzNBukV1WVRxTaJfoM3IHZcCL/ybKeKF5Zn14V8vYauuFz5sEVdkeokCjd3wcs++SVooXr+0A==
+X-Received: by 2002:a05:6830:1353:: with SMTP id r19mr21370236otq.288.1582142453608;
+        Wed, 19 Feb 2020 12:00:53 -0800 (PST)
+Received: from localhost.localdomain (cpe-24-31-245-230.kc.res.rr.com. [24.31.245.230])
+        by smtp.gmail.com with ESMTPSA id m19sm254578otn.47.2020.02.19.12.00.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 19 Feb 2020 12:00:53 -0800 (PST)
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+To:     kvalo@codeaurora.org
+Cc:     linux-wireless@vger.kernel.org, pkshih@realtek.com,
+        Larry Finger <Larry.Finger@lwfinger.net>,
+        Stable <stable@vger.kernel.org>,
+        Ashish <ashishkumar.yadav@students.iiserpune.ac.in>
+Subject: [PATCH] rtlwifi: rtl8188ee: Fix regression due to commit d1d1a96bdb44
+Date:   Wed, 19 Feb 2020 14:00:41 -0600
+Message-Id: <20200219200041.22279-1-Larry.Finger@lwfinger.net>
+X-Mailer: git-send-email 2.25.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The ioreadX() helpers have inconsistent interface.  On some architectures
-void *__iomem address argument is a pointer to const, on some not.
+For some unexplained reason, commit d1d1a96bdb44 ("rtlwifi: rtl8188ee:
+Remove local configuration variable") broke at least one system. As
+the only net effect of the change was to remove 2 bytes from the start
+of struct phy_status_rpt, this patch adds 2 bytes of padding at the
+beginning of the struct.
 
-Implementations of ioreadX() do not modify the memory under the address
-so they can be converted to a "const" version for const-safety and
-consistency among architectures.
-
-Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
-Acked-by: Kalle Valo <kvalo@codeaurora.org>
+Fixes: d1d1a96bdb44 ("rtlwifi: rtl8188ee: Remove local configuration variable")
+Cc: Stable <stable@vger.kernel.org>  # V5.4+
+Reported-by: Ashish <ashishkumar.yadav@students.iiserpune.ac.in>
+Tested-by: Ashish <ashishkumar.yadav@students.iiserpune.ac.in>
+Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
 ---
- drivers/net/wireless/ath/ath5k/ahb.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/net/wireless/realtek/rtlwifi/rtl8188ee/trx.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/ath/ath5k/ahb.c b/drivers/net/wireless/ath/ath5k/ahb.c
-index 2c9cec8b53d9..8bd01df369fb 100644
---- a/drivers/net/wireless/ath/ath5k/ahb.c
-+++ b/drivers/net/wireless/ath/ath5k/ahb.c
-@@ -138,18 +138,18 @@ static int ath_ahb_probe(struct platform_device *pdev)
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/trx.h b/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/trx.h
+index 917729807514..e17f70b4d199 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/trx.h
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/trx.h
+@@ -561,6 +561,7 @@ static inline void clear_pci_tx_desc_content(__le32 *__pdesc, int _size)
+ 	 rxmcs == DESC92C_RATE11M)
  
- 	if (bcfg->devid >= AR5K_SREV_AR2315_R6) {
- 		/* Enable WMAC AHB arbitration */
--		reg = ioread32((void __iomem *) AR5K_AR2315_AHB_ARB_CTL);
-+		reg = ioread32((const void __iomem *) AR5K_AR2315_AHB_ARB_CTL);
- 		reg |= AR5K_AR2315_AHB_ARB_CTL_WLAN;
- 		iowrite32(reg, (void __iomem *) AR5K_AR2315_AHB_ARB_CTL);
- 
- 		/* Enable global WMAC swapping */
--		reg = ioread32((void __iomem *) AR5K_AR2315_BYTESWAP);
-+		reg = ioread32((const void __iomem *) AR5K_AR2315_BYTESWAP);
- 		reg |= AR5K_AR2315_BYTESWAP_WMAC;
- 		iowrite32(reg, (void __iomem *) AR5K_AR2315_BYTESWAP);
- 	} else {
- 		/* Enable WMAC DMA access (assuming 5312 or 231x*/
- 		/* TODO: check other platforms */
--		reg = ioread32((void __iomem *) AR5K_AR5312_ENABLE);
-+		reg = ioread32((const void __iomem *) AR5K_AR5312_ENABLE);
- 		if (to_platform_device(ah->dev)->id == 0)
- 			reg |= AR5K_AR5312_ENABLE_WLAN0;
- 		else
-@@ -202,12 +202,12 @@ static int ath_ahb_remove(struct platform_device *pdev)
- 
- 	if (bcfg->devid >= AR5K_SREV_AR2315_R6) {
- 		/* Disable WMAC AHB arbitration */
--		reg = ioread32((void __iomem *) AR5K_AR2315_AHB_ARB_CTL);
-+		reg = ioread32((const void __iomem *) AR5K_AR2315_AHB_ARB_CTL);
- 		reg &= ~AR5K_AR2315_AHB_ARB_CTL_WLAN;
- 		iowrite32(reg, (void __iomem *) AR5K_AR2315_AHB_ARB_CTL);
- 	} else {
- 		/*Stop DMA access */
--		reg = ioread32((void __iomem *) AR5K_AR5312_ENABLE);
-+		reg = ioread32((const void __iomem *) AR5K_AR5312_ENABLE);
- 		if (to_platform_device(ah->dev)->id == 0)
- 			reg &= ~AR5K_AR5312_ENABLE_WLAN0;
- 		else
+ struct phy_status_rpt {
++	u8	padding[2];
+ 	u8	ch_corr[2];
+ 	u8	cck_sig_qual_ofdm_pwdb_all;
+ 	u8	cck_agc_rpt_ofdm_cfosho_a;
 -- 
-2.17.1
+2.25.0
 
