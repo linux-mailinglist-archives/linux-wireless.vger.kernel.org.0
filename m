@@ -2,54 +2,77 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A19B16400D
-	for <lists+linux-wireless@lfdr.de>; Wed, 19 Feb 2020 10:14:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 57D7116404E
+	for <lists+linux-wireless@lfdr.de>; Wed, 19 Feb 2020 10:24:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726610AbgBSJNr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 19 Feb 2020 04:13:47 -0500
-Received: from s3.sipsolutions.net ([144.76.43.62]:48842 "EHLO
-        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726539AbgBSJNr (ORCPT
+        id S1726496AbgBSJYM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 19 Feb 2020 04:24:12 -0500
+Received: from sonic313-13.consmr.mail.bf2.yahoo.com ([74.6.133.123]:35704
+        "EHLO sonic313-13.consmr.mail.bf2.yahoo.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726453AbgBSJYL (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 19 Feb 2020 04:13:47 -0500
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.93)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1j4LQK-008lC9-EI; Wed, 19 Feb 2020 10:13:40 +0100
-Message-ID: <ff8a005c68e512cb3f338b7381853e6b3a3ab293.camel@sipsolutions.net>
-Subject: Re: [PATCH] cfg80211: Pass lockdep expression to RCU lists
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Amol Grover <frextrite@gmail.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        linux-kernel-mentees@lists.linuxfoundation.org,
-        Joel Fernandes <joel@joelfernandes.org>,
-        Madhuparna Bhowmik <madhuparnabhowmik10@gmail.com>,
-        "Paul E . McKenney" <paulmck@kernel.org>
-Date:   Wed, 19 Feb 2020 10:13:36 +0100
-In-Reply-To: <20200219091102.10709-1-frextrite@gmail.com> (sfid-20200219_101235_133080_876B0E75)
-References: <20200219091102.10709-1-frextrite@gmail.com>
-         (sfid-20200219_101235_133080_876B0E75)
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.2 (3.34.2-1.fc31) 
+        Wed, 19 Feb 2020 04:24:11 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aol.com; s=a2048; t=1582104250; bh=KB5k1+sCGpSRd9pTKc0P9/4ZGPy9ZVtmix5g8Hf7Eac=; h=Date:From:Reply-To:Subject:References:From:Subject; b=b9WEKpkhlinmHq+39VYH4BbD7FBsdXr7u15bY30noVqPvDs1Np8+YjX61EuqeQD+3oHvJ0aQnFUaHADtBoP29waIc7fZAqq5BVogPBpQ7+6ttReE6dBCk4+2I3yrLtyOLHiOT+zYiuwo2gicI60lGXgMK8dhMZguhkQvtce4Tuv+j0El6Wo+Wt2CkxhhXoWFlq9tI0B3jRBTaOmkoZP4UX4HoVjV4iwwBtPM7F+xUVxtBsz7a3CQmtAve4SuWhWaK18+BcQFVqzbOUzgzaF0VQrzxQPlZxhApz1gNtcIcx/2iPwpheUApM/ichOWUkReyhaQ333nu8CEq3S3bE8wXQ==
+X-YMail-OSG: P_eaQMwVM1ndgGfWMKl0vZhRfXnooeWl9SIU1FWQxGiVGRrWoyist_EZtpeDjIJ
+ UCnQ3SRm9qb55gS9_h0ULrGOPxs0pnd6FQf95yjwfJCSORsIQRy_1qvM7daPM4UUF_WJ2.kuaZhr
+ YY5uAstAoZ2JKmXyvB9dcS7AsiuAovmPHn.kVuAEstK0xcleBgneho6RTQ2g09tkM.dLiOMhWTGA
+ 9p1VExg__XIzv8daoL5nH3Vr5PkXVaR2QGJImSfYs6ZrFw2OVEYo3_As_vRdeUYjVMYnQJMBwAoo
+ 4SwDHvwg6aM.gG.wmyFN9qJNvAKucdi4fiYHafenYBgOJaiS61pqtG4YpjeKM8me131aR.P0UBlW
+ SAxjKWr5p1E2XTMWFu3YXHi7d7VM.clNyxpWLynaSojF.fnWQ_N_gnrBJ00ErooQHvz0G4RIytqz
+ wSIuyOOTRgD060w6iSxSeiXTkg0B4gHfsiBrg1MoHda0_zePEQ97zLpOe0Fnfts2_bI5c56dAUOm
+ uE164FFyvVVaRYDk1_OKGrZTbLxfYyPNVsqpYZUKEujgPuLHGDo7NDWi7PCcDyNZl.B2OUbBcFXC
+ CWD3tUti4rRQ.vqVdNtnAQDHbpg9_rM9Bk9GA7HvTfG4MWBnIpY786.ZbCyu49rqpOyPUHyoMzys
+ HhUadHxqlYbD43XW9z6UVuXA6QpYpgPn7doUHijBx0bUv_zVaaYAgm1gxuAlzudTYR5gT_mnkVZn
+ u.F7upSib7TbaBxZ7xhNUWX4Anozag7e2P0e4E8AUJ428ydDuWgpBQQCBz0EX8.eHvhZoNMsr4FD
+ kDBuvtQ0_p3Vbu53F6GzvobMJnD8VUbPyL15FPsccUMfN64FFTXT5DDJJnsPbCojpkCzeLrHW5C5
+ 5FqC79gHVEW_YBIIjX93i8jFQUsHuyKmcpo55XZHg8kZPJzaa4_AXuggJEBnq1voRJsdfICjfQsw
+ D_22J.5UFqwz.i.BSCTJ0zYRi4UsxIQXy6nPvub.D07RZTCnaK14ONqbYbHCjpqpW6POx7GJP78n
+ 2oEdMV..KPmpKO0_d9BpLG3qMX3TRbsPZfniH4hWLsZLkAjPcm4ayBEWdUH4MXV6SR7IbSBQcvmE
+ .AU9qshmoGfKSEhuNwsiWV2kN67uCFcTkBr3khFkVPOI6VvcKRzU7LAdfkUS9XZ6taOSY2oyLe.4
+ IvQZBSUrFf8YjkLeD5kvYm4i3rB2bqhMC2VfBbnB.pHWt1PWiy_ENmMwaFDz960Sn13dovT80GIn
+ l37oZSrFqwHIQBRaQ6LXDuJunj9mvq5q3cWlp8xO98EKwYXLlxt0rwZfEuWTRICDoTtlwcXA6Hwc
+ -
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic313.consmr.mail.bf2.yahoo.com with HTTP; Wed, 19 Feb 2020 09:24:10 +0000
+Date:   Wed, 19 Feb 2020 09:24:06 +0000 (UTC)
+From:   jerom Njitap <jeromenjitap10@aol.com>
+Reply-To: jeromenjitap100@gmail.com
+Message-ID: <2017596654.3644647.1582104246363@mail.yahoo.com>
+Subject: SESAME SEED SUPPLY BURKINA FASO
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+References: <2017596654.3644647.1582104246363.ref@mail.yahoo.com>
+X-Mailer: WebService/1.1.15199 YMailNodin Mozilla/5.0 (Windows NT 6.3; Win64; x64; rv:73.0) Gecko/20100101 Firefox/73.0
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 2020-02-19 at 14:41 +0530, Amol Grover wrote:
->  
-> -	WARN_ON_ONCE(!rcu_read_lock_held() && !lockdep_rtnl_is_held());
-> -
-> -	list_for_each_entry_rcu(pos, &rdev->sched_scan_req_list, list) {
-> +	list_for_each_entry_rcu(pos, &rdev->sched_scan_req_list, list,
-> +				lockdep_rtnl_is_held()) {
+Dear Sir,
 
-Huh, I didn't even know you _could_ do that :)
+This is to bring to your notice that we can supply your needs for
+quality Sesame seeds and other products listed below :
 
-johannes
 
+Cashew nut
+Raw cotton
+Sesame seed
+Copper cathode
+Copper wire scraps
+Mazut 100 oil,D6
+Used rails
+HMS 1/2
+
+
+We offer the best quality at reasonable prices both on CIF and FOB,
+depending on the nature of your offer. Our company has been in this
+line of business for over a decade so you you can expect nothing but a
+top-notch professional touch and guarantee when you deal or trade with
+us.all communication should be through this email address for
+confidencial purpose(jeromenjitap100@gmail.com)and your whatsaap number.
+
+Look forward to your response.
+
+Regards
+Mr Jerome
