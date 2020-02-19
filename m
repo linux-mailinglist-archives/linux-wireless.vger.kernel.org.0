@@ -2,63 +2,79 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BA86A16455B
-	for <lists+linux-wireless@lfdr.de>; Wed, 19 Feb 2020 14:25:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7EDA3164B89
+	for <lists+linux-wireless@lfdr.de>; Wed, 19 Feb 2020 18:07:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727916AbgBSNZl convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 19 Feb 2020 08:25:41 -0500
-Received: from scm.imp.edu.mx ([132.247.16.103]:53009 "EHLO scm.imp.edu.mx"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727786AbgBSNZk (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 19 Feb 2020 08:25:40 -0500
-Received: from localhost (localhost [127.0.0.1])
-        by scm.imp.edu.mx (Postfix) with ESMTP id 2330B187FA8;
-        Wed, 19 Feb 2020 06:11:30 -0600 (CST)
-X-Virus-Scanned: by SpamTitan at imp.edu.mx
-Received: from scm.imp.edu.mx (localhost [127.0.0.1])
-        by scm.imp.edu.mx (Postfix) with ESMTP id 5A14D1880A5;
-        Wed, 19 Feb 2020 04:51:49 -0600 (CST)
-Authentication-Results: scm.imp.edu.mx; none
-Received: from imp.edu.mx (unknown [10.249.93.105])
-        by scm.imp.edu.mx (Postfix) with ESMTP id 4DC2018DA05;
-        Wed, 19 Feb 2020 04:51:45 -0600 (CST)
-Received: from localhost (localhost [127.0.0.1])
-        by imp.edu.mx (Postfix) with ESMTP id 358EC180635F48;
-        Wed, 19 Feb 2020 04:51:46 -0600 (CST)
-Received: from imp.edu.mx ([127.0.0.1])
-        by localhost (imp.edu.mx [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id UIsgs9D7FS9M; Wed, 19 Feb 2020 04:51:46 -0600 (CST)
-Received: from localhost (localhost [127.0.0.1])
-        by imp.edu.mx (Postfix) with ESMTP id 15E38180635F44;
-        Wed, 19 Feb 2020 04:51:46 -0600 (CST)
-X-Virus-Scanned: amavisd-new at imp.edu.mx
-Received: from imp.edu.mx ([127.0.0.1])
-        by localhost (imp.edu.mx [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id W32SBc03HzNt; Wed, 19 Feb 2020 04:51:46 -0600 (CST)
-Received: from [45.147.4.119] (unknown [45.147.4.119])
-        by imp.edu.mx (Postfix) with ESMTPSA id AC97D180635F4B;
-        Wed, 19 Feb 2020 04:51:44 -0600 (CST)
-Content-Type: text/plain; charset="iso-8859-1"
+        id S1726558AbgBSRHh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 19 Feb 2020 12:07:37 -0500
+Received: from webmail.newmedia-net.de ([185.84.6.166]:44246 "EHLO
+        webmail.newmedia-net.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726539AbgBSRHh (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 19 Feb 2020 12:07:37 -0500
+X-Greylist: delayed 1032 seconds by postgrey-1.27 at vger.kernel.org; Wed, 19 Feb 2020 12:07:36 EST
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=dd-wrt.com; s=mikd;
+        h=Content-Transfer-Encoding:Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:To:Subject; bh=jfq8UvnZJuTZ8vevahCGDMf60ZB6TPKgjdk5IIPKZCM=;
+        b=JQMzAeGVRfANsFfYYi1Nkydb7aBbbIp4kqNccEeTGs8IQhTsCeeyM8R6koLWBMmnTFHUd9BqLYapTzLV99VrfchJQsvw39vQLLOghoNjw3tNLQKR/ucoO8CVvD3RKEERd9HvVqpt7TNDExljBg9cyS/QGjkMmdv99o1QJZBOnRI=;
+Subject: Re: [PATCH 5/5] mt76: enable Airtime Queue Limit support
+To:     =?UTF-8?Q?Toke_H=c3=b8iland-J=c3=b8rgensen?= <toke@redhat.com>,
+        Felix Fietkau <nbd@nbd.name>, linux-wireless@vger.kernel.org
+References: <20200127181754.2810-1-nbd@nbd.name>
+ <20200127181754.2810-5-nbd@nbd.name> <875zgqfoqu.fsf@toke.dk>
+From:   Sebastian Gottschall <s.gottschall@dd-wrt.com>
+Message-ID: <aca37dcb-c76d-d239-0d0e-61b73afc5d8f@dd-wrt.com>
+Date:   Wed, 19 Feb 2020 17:50:21 +0100
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
+ Thunderbird/68.5.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: 19-02-2020
-To:     Recipients <mucios@imp.edu.mx>
-From:   "urs portmann" <mucios@imp.edu.mx>
-Date:   Wed, 19 Feb 2020 21:51:42 +1100
-Reply-To: onube@qq.com
-Message-Id: <20200219105144.AC97D180635F4B@imp.edu.mx>
+In-Reply-To: <875zgqfoqu.fsf@toke.dk>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Received:  from [2a01:7700:8040:a100:bc98:54af:e24d:41b5]
+        by webmail.newmedia-net.de with esmtpsa (TLSv1:AES128-SHA:128)
+        (Exim 4.72)
+        (envelope-from <s.gottschall@dd-wrt.com>)
+        id 1j4SVq-00077O-6h; Wed, 19 Feb 2020 17:47:50 +0100
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Guten Morgen,
-                                          19-02-2020
-Wir haben versucht, Sie zu erreichen und haben noch nichts von Ihnen geh�rt. Haben Sie unsere letzte E-Mail �ber Ihre S.p.e.n.d.e erhalten? Wenn nicht, melden Sie sich bitte bei uns, um weitere Informationen zu erhalten.
+nope (iperf3 with 32 parallel streams after 5 seconds of running)
 
-Wir warten darauf, von Ihnen zu h�ren, sobald Sie diese Nachricht erhalten, die Sie bei der weiteren Vorgehensweise unterst�tzt.
+STA 30:24:32💿f9:c4 AC 2 txq pending airtime underflow: 4294967208, 88
+Modules linked in: fast_classifier mt7615e mt76 mac80211 compat
+CPU: 3 PID: 1890 Comm: hostapd Not tainted 4.14.171 #187
+Stack : 00000000 00000001 00000040 8007e454 80490000 8048bc8c 80610000 
+805aee78
+         8058850c 8770b864 870f289c 805f07a7 80582204 00000001 8770b808 
+805f60a8
+         00000000 00000000 80650000 00000000 81147bb8 0000011e 00000007 
+00000000
+         00000000 80660000 80660000 68203a6d 80000000 80610000 00000000 
+873079ec
+         873a4654 00000775 00000000 00000001 00000000 80230b88 0000000c 
+8065000c
+         ...
+Call Trace:
+[<800153a0>] show_stack+0x58/0x100
+[<80438c54>] dump_stack+0xa4/0xe0
+[<80035050>] __warn+0xe4/0x144
+[<80034c8c>] warn_slowpath_fmt+0x30/0x3c
+[<873079ec>] _616+0x110/0x214 [mac80211]
+[<87301ce0>] _535+0x15c/0x4f8 [mac80211]
+[<804224f0>] br_handle_frame_finish+0x4e0/0x524
+[<873d5160>] _49+0x50/0xa4 [mt76]
+[<87606e30>] _61+0x1e8/0x224 [mt7615e]
 
-Mfg
-urs portmann
+Am 01.02.2020 um 13:58 schrieb Toke Høiland-Jørgensen:
+> Felix Fietkau <nbd@nbd.name> writes:
+>
+>> It is supported by all drivers
+>>
+>> Signed-off-by: Felix Fietkau <nbd@nbd.name>
+> Nice!
+>
+> Acked-by: Toke Høiland-Jørgensen <toke@redhat.com>
+>
+>
