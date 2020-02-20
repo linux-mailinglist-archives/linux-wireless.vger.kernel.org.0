@@ -2,84 +2,97 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4242916643C
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Feb 2020 18:20:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AB1A61666CC
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Feb 2020 20:04:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728217AbgBTRUs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 20 Feb 2020 12:20:48 -0500
-Received: from webmail.newmedia-net.de ([185.84.6.166]:53073 "EHLO
-        webmail.newmedia-net.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726959AbgBTRUs (ORCPT
+        id S1728841AbgBTTEs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 20 Feb 2020 14:04:48 -0500
+Received: from mail-lj1-f195.google.com ([209.85.208.195]:43795 "EHLO
+        mail-lj1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728618AbgBTTEs (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 20 Feb 2020 12:20:48 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=dd-wrt.com; s=mikd;
-        h=Content-Transfer-Encoding:Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:To:Subject; bh=pLg11MpBdtv80mP5P7vLIVBzKAWjn0k1OQfLluRsXzs=;
-        b=flIuMP91ySCNDrb6Jjf0UlpO21LpiZivv1h4UiFpNplGZ9EZBuD7XnOH905fA7WUfsIiFuBreirIh6jkhY5230Y68cj3+ySXZ/ufImDzQ2feAgWiCCSJveDhEydFGm+dOM5yIASmEOgGawcsf7ni3SHWcprB+6LLZhGIUgeSFi0=;
-Subject: Re: [PATCH 5/5] mt76: enable Airtime Queue Limit support
-To:     =?UTF-8?Q?Toke_H=c3=b8iland-J=c3=b8rgensen?= <toke@redhat.com>,
-        Felix Fietkau <nbd@nbd.name>, linux-wireless@vger.kernel.org
-References: <20200127181754.2810-1-nbd@nbd.name>
- <20200127181754.2810-5-nbd@nbd.name> <875zgqfoqu.fsf@toke.dk>
- <aca37dcb-c76d-d239-0d0e-61b73afc5d8f@dd-wrt.com> <87lfoyw71d.fsf@toke.dk>
-From:   Sebastian Gottschall <s.gottschall@dd-wrt.com>
-Message-ID: <02e9c960-44ba-c879-be65-d9a9a840543d@dd-wrt.com>
-Date:   Thu, 20 Feb 2020 18:20:44 +0100
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+        Thu, 20 Feb 2020 14:04:48 -0500
+Received: by mail-lj1-f195.google.com with SMTP id a13so5338284ljm.10
+        for <linux-wireless@vger.kernel.org>; Thu, 20 Feb 2020 11:04:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=btPbVb9LTvfKfkjVuG7h/W/SC/NNGezLdh26ebvWUx0=;
+        b=a5gENgPw92EpGlvptDKBir+OMUlH/d/zBkWYpX0A7q9d9hC065ef8w6nQ0QBhDOgIA
+         elAgr+R9f0bF/q+KfZLWQbi7KFnV7oKYUpjn8DcaKWta8p7jPAYp19MFd3Peh7u5M5+L
+         ywU8OT6O0NYCFpe+g1esqNDDCHbTrhsRvRQuA=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=btPbVb9LTvfKfkjVuG7h/W/SC/NNGezLdh26ebvWUx0=;
+        b=p1dviyMigVWG+7E5rA4CJ6k+ozU0PFsOp6H7W7jNW9P4pqiJy/+7BKLCRm3cdXA4Z1
+         sbWMSuhz1or5rdgMm9nKZIagdo8BjRVrrc9xOf2s1W7z6izKnDXJmV3p3kK6mRa7G57u
+         AhhOMaI7wsAzYEg4ZT0XQgTJ4VcBYQBPHirKyIcu2mmzaboO/zIMhUsQ4qFCzyC9Uym+
+         LNq3r/ANJe103S0u4Ph5pRE1xkjW/QNSSsZRIDaHg3Lmi4dks9tngP2IAPjd+RqEXpdb
+         HZSVv07Hs++V326ydiOKPKaeIq9FLkgfnSdae+GkgMNy3L0XcG7kZo34u+dmycE+FpYA
+         7uGA==
+X-Gm-Message-State: APjAAAUN17AzDszXmqxMc9jegI3F6DYWmheAcDJJ73gJr3c4U1WIFVjs
+        kG66rMOLvzhR9jRWh4Dh+46Hffrp9rs=
+X-Google-Smtp-Source: APXvYqyAFQsBir6caxA3SjG6uFZxTEtGXeaR8QdZL/wQqwPnpinIFB3MgEuda/Vk998JLo53LkeE4w==
+X-Received: by 2002:a2e:8755:: with SMTP id q21mr20095357ljj.156.1582225486023;
+        Thu, 20 Feb 2020 11:04:46 -0800 (PST)
+Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com. [209.85.167.47])
+        by smtp.gmail.com with ESMTPSA id r15sm192840ljh.11.2020.02.20.11.04.44
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 20 Feb 2020 11:04:44 -0800 (PST)
+Received: by mail-lf1-f47.google.com with SMTP id s23so1999930lfs.10
+        for <linux-wireless@vger.kernel.org>; Thu, 20 Feb 2020 11:04:44 -0800 (PST)
+X-Received: by 2002:a05:6512:3f6:: with SMTP id n22mr17795383lfq.59.1582225484193;
+ Thu, 20 Feb 2020 11:04:44 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <87lfoyw71d.fsf@toke.dk>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Received:  from [2a01:7700:8040:a100:c145:97bf:237a:a332]
-        by webmail.newmedia-net.de with esmtpsa (TLSv1:AES128-SHA:128)
-        (Exim 4.72)
-        (envelope-from <s.gottschall@dd-wrt.com>)
-        id 1j4pSl-0002KY-Qj; Thu, 20 Feb 2020 18:18:11 +0100
+References: <20200204120614.28861-1-yhchuang@realtek.com> <CAB4CAwdFez_WbRQb2jZQtqspSkO5ujL31ZLt4XshNcWiSqHByA@mail.gmail.com>
+ <CAMrEMU_KJbwAK-onH0sRUgUPxDuZtD5bPJN6XmF=a9NqpfeJ+g@mail.gmail.com>
+ <CA+ASDXPHWNN+TvrJFi_6w+ep_TBtLJ0refKenNb0tc8Vs+YjgQ@mail.gmail.com>
+ <CAMrEMU93LScySw4mpidAC5pVHV_NOShP1_GMMsvsAk1QBhdJjQ@mail.gmail.com>
+ <CA+ASDXPHXFquF2iXvdxZXhkkLPndkACgenLJwMR_9ON7zZZM3w@mail.gmail.com>
+ <87wo8xxueg.fsf@kamboji.qca.qualcomm.com> <CAMrEMU-nM1O_iJPVgGg2pL6JYWMdRKdPGe5N2rkfOihdmTeMaw@mail.gmail.com>
+ <2c91e4e7b36d42a8abad6ae356c2869c@realtek.com>
+In-Reply-To: <2c91e4e7b36d42a8abad6ae356c2869c@realtek.com>
+From:   Brian Norris <briannorris@chromium.org>
+Date:   Thu, 20 Feb 2020 11:04:31 -0800
+X-Gmail-Original-Message-ID: <CA+ASDXMjx8oQzK61rNHwpkKykgS2v_o+HTUyXujY9VXYNiNfxQ@mail.gmail.com>
+Message-ID: <CA+ASDXMjx8oQzK61rNHwpkKykgS2v_o+HTUyXujY9VXYNiNfxQ@mail.gmail.com>
+Subject: Re: [PATCH] rtw88: disable TX-AMSDU on 2.4G band
+To:     Tony Chuang <yhchuang@realtek.com>
+Cc:     Justin Capella <justincapella@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Chris Chiu <chiu@endlessm.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-the interface is bridged to a bridge named br0 and owns the local lan ip.
-its a typical setup. lan switch is bridged together with ap interface
-iperf was not running on the device itself needs to be mentioned. i was 
-running iperf -s on a device which was  connected by ethernet to this 
-device.
-my client was a simple lenovo p52 laptop with a iwlwifi 9560 card wich 
-was using iperf -c x.x.x.x -P 32 -i 1
+On Tue, Feb 11, 2020 at 6:56 PM Tony Chuang <yhchuang@realtek.com> wrote:
+> Module parameters are really good for me, too. But we've had discussion
+> before with Kalle and Brian, they both were trying hard to avoid module
+> parameters.
 
-Am 19.02.2020 um 23:23 schrieb Toke Høiland-Jørgensen:
-> Sebastian Gottschall <s.gottschall@dd-wrt.com> writes:
->
->> nope (iperf3 with 32 parallel streams after 5 seconds of running)
->>
->> STA 30:24:32💿f9:c4 AC 2 txq pending airtime underflow: 4294967208, 88
->> Modules linked in: fast_classifier mt7615e mt76 mac80211 compat
->> CPU: 3 PID: 1890 Comm: hostapd Not tainted 4.14.171 #187
->> Stack : 00000000 00000001 00000040 8007e454 80490000 8048bc8c 80610000
->> 805aee78
->>           8058850c 8770b864 870f289c 805f07a7 80582204 00000001 8770b808
->> 805f60a8
->>           00000000 00000000 80650000 00000000 81147bb8 0000011e 00000007
->> 00000000
->>           00000000 80660000 80660000 68203a6d 80000000 80610000 00000000
->> 873079ec
->>           873a4654 00000775 00000000 00000001 00000000 80230b88 0000000c
->> 8065000c
->>           ...
->> Call Trace:
->> [<800153a0>] show_stack+0x58/0x100
->> [<80438c54>] dump_stack+0xa4/0xe0
->> [<80035050>] __warn+0xe4/0x144
->> [<80034c8c>] warn_slowpath_fmt+0x30/0x3c
->> [<873079ec>] _616+0x110/0x214 [mac80211]
->> [<87301ce0>] _535+0x15c/0x4f8 [mac80211]
->> [<804224f0>] br_handle_frame_finish+0x4e0/0x524
->> [<873d5160>] _49+0x50/0xa4 [mt76]
->> [<87606e30>] _61+0x1e8/0x224 [mt7615e]
-> Huh, why is there a bridge function name in there in the middle of the
-> callstack?
->
-> -Toke
->
->
+My personal preference is to avoid module parameters when you can fix
+the defaults, and that module parameters should never be a workaround
+for fixing the default behavior.
+
+I don't think my above preference precludes module parameters: they
+can be useful as "extra debug knobs."
+
+But Kalle had a little more nuanced opinion here -- he didn't even
+want "debug knobs" for core 802.11 functionality, because (I may be
+paraphrasing) one person's "debug knob" easily becomes the next
+person's "required knob." Additionally, a mess of disorganized knobs
+can make maintenance difficult -- one can't really expect the average
+distribution to make a good selection on 100 different parameters; and
+for those that do tweak the parameters, it now creates a combinatoric
+mess to debug and triage user reports of "it's broken". I can respect
+all of those reasons too.
+
+Regards,
+Brian
