@@ -2,26 +2,26 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A512416799A
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Feb 2020 10:41:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B8461679A3
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Feb 2020 10:44:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727036AbgBUJlu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 21 Feb 2020 04:41:50 -0500
-Received: from s3.sipsolutions.net ([144.76.43.62]:55386 "EHLO
+        id S1727966AbgBUJo6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 21 Feb 2020 04:44:58 -0500
+Received: from s3.sipsolutions.net ([144.76.43.62]:55504 "EHLO
         sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726535AbgBUJlu (ORCPT
+        with ESMTP id S1727592AbgBUJo6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 21 Feb 2020 04:41:50 -0500
+        Fri, 21 Feb 2020 04:44:58 -0500
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.93)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1j54oe-00EtWM-54; Fri, 21 Feb 2020 10:41:48 +0100
+        id 1j54rf-00Etw4-0W; Fri, 21 Feb 2020 10:44:55 +0100
 From:   Johannes Berg <johannes@sipsolutions.net>
 To:     linux-wireless@vger.kernel.org
 Cc:     Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH] nl80211: fix potential leak in AP start
-Date:   Fri, 21 Feb 2020 10:41:43 +0100
-Message-Id: <20200221104142.835aba4cdd14.I1923b55ba9989c57e13978f91f40bfdc45e60cbd@changeid>
+Subject: [PATCH] cfg80211: check reg_rule for NULL in handle_channel_custom()
+Date:   Fri, 21 Feb 2020 10:44:50 +0100
+Message-Id: <20200221104449.3b558a50201c.I4ad3725c4dacaefd2d18d3cc65ba6d18acd5dbfe@changeid>
 X-Mailer: git-send-email 2.24.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -32,37 +32,28 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-If nl80211_parse_he_obss_pd() fails, we leak the previously
-allocated ACL memory. Free it in this case.
+We may end up with a NULL reg_rule after the loop in
+handle_channel_custom() if the bandwidth didn't fit,
+check if this is the case and bail out if so.
 
-Fixes: 796e90f42b7e ("cfg80211: add support for parsing OBBS_PD attributes")
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- net/wireless/nl80211.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/wireless/reg.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index cedf17d4933f..46be40e19e7f 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -4800,8 +4800,7 @@ static int nl80211_start_ap(struct sk_buff *skb, struct genl_info *info)
- 		err = nl80211_parse_he_obss_pd(
- 					info->attrs[NL80211_ATTR_HE_OBSS_PD],
- 					&params.he_obss_pd);
--		if (err)
--			return err;
-+		goto out;
+diff --git a/net/wireless/reg.c b/net/wireless/reg.c
+index 173a7d7a7003..d476d4da0d09 100644
+--- a/net/wireless/reg.c
++++ b/net/wireless/reg.c
+@@ -2278,7 +2278,7 @@ static void handle_channel_custom(struct wiphy *wiphy,
+ 			break;
  	}
  
- 	nl80211_calculate_ap_params(&params);
-@@ -4823,6 +4822,7 @@ static int nl80211_start_ap(struct sk_buff *skb, struct genl_info *info)
- 	}
- 	wdev_unlock(wdev);
- 
-+out:
- 	kfree(params.acl);
- 
- 	return err;
+-	if (IS_ERR(reg_rule)) {
++	if (IS_ERR_OR_NULL(reg_rule)) {
+ 		pr_debug("Disabling freq %d MHz as custom regd has no rule that fits it\n",
+ 			 chan->center_freq);
+ 		if (wiphy->regulatory_flags & REGULATORY_WIPHY_SELF_MANAGED) {
 -- 
 2.24.1
 
