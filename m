@@ -2,34 +2,34 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CA3D6166B53
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Feb 2020 01:08:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A66C0166B54
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Feb 2020 01:08:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729456AbgBUAIT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 20 Feb 2020 19:08:19 -0500
-Received: from mail.kernel.org ([198.145.29.99]:38788 "EHLO mail.kernel.org"
+        id S1729464AbgBUAIX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 20 Feb 2020 19:08:23 -0500
+Received: from mail.kernel.org ([198.145.29.99]:38828 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729410AbgBUAIT (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 20 Feb 2020 19:08:19 -0500
+        id S1729435AbgBUAIW (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 20 Feb 2020 19:08:22 -0500
 Received: from localhost.localdomain (unknown [151.48.137.85])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 2F44E2071E;
-        Fri, 21 Feb 2020 00:08:17 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id C21122071E;
+        Fri, 21 Feb 2020 00:08:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1582243698;
-        bh=yPjQWKKEmwSRkHni04jZO/dnsyHMaJaeCV45jMEsGic=;
+        s=default; t=1582243702;
+        bh=kTEjIW868BPQMg4I3lqZdwcZJVtFMS/KRV6Ipp0tQA8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xYRwiHQotlg7Y3Dduq4u5/ReGqnrPOsk8/kBf+rrKuAklbdRH3nAETZOWx37DyEk4
-         2yk9OGAhYVDuXIYqEpMA28WttC5CkudS6UhsrMWZr2qYSDZiTCCP/HtszHKGv0TjkM
-         Yqf7yjOWU2q+qIHf9gUUdl6vZiqwkSTlSyv8eDG0=
+        b=Hh57Ad135wvbam6iCBZZpKmqLtzmZt9RXFRjvsuij1yAJ3+oTk2eHObkouJB8phIi
+         YxL6QSUI30nqcNNbinJmQYOsvbgJ9MkaJjh0QufQZ4rkiJkU7w0OuUGFwpH3WHSugH
+         +jvESS8DxQyvzw3QC6t1AwxjYGvi+9+bAsw0WASQ=
 From:   Lorenzo Bianconi <lorenzo@kernel.org>
 To:     nbd@nbd.name
 Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
         sean.wang@mediatek.com, ryder.lee@mediatek.com
-Subject: [PATCH 7/8] mt76: mt7615: introduce mt7615_init_mac_chain routine
-Date:   Fri, 21 Feb 2020 01:07:34 +0100
-Message-Id: <a7562c1e8e95e463e7c4cfde148aeab9a658be9f.1582243031.git.lorenzo@kernel.org>
+Subject: [PATCH 8/8] mt76: mt7615: introduce mt7663e support
+Date:   Fri, 21 Feb 2020 01:07:35 +0100
+Message-Id: <0abe2a425288b0dc24910d144b511ab52fb8a06c.1582243031.git.lorenzo@kernel.org>
 X-Mailer: git-send-email 2.24.1
 In-Reply-To: <cover.1582243031.git.lorenzo@kernel.org>
 References: <cover.1582243031.git.lorenzo@kernel.org>
@@ -40,156 +40,600 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Introduce mt7615_init_mac_chain routine to configure per band mac
-register since new devices (e.g. mt7663e) do not support dbdc
+Introduce support for mt7663e 802.11ac 2x2:2 chipset to mt7615 driver.
 
+Co-developed-by: Sean Wang <sean.wang@mediatek.com>
+Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+Co-developed-by: Ryder Lee <ryder.lee@mediatek.com>
+Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
 Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- .../net/wireless/mediatek/mt76/mt7615/init.c  | 118 +++++++++---------
- 1 file changed, 62 insertions(+), 56 deletions(-)
+ .../net/wireless/mediatek/mt76/mt7615/dma.c   |  45 ++++-
+ .../wireless/mediatek/mt76/mt7615/eeprom.c    |  18 +-
+ .../net/wireless/mediatek/mt76/mt7615/init.c  |  18 +-
+ .../net/wireless/mediatek/mt76/mt7615/mac.c   |   6 +
+ .../net/wireless/mediatek/mt76/mt7615/mac.h   |   7 +
+ .../net/wireless/mediatek/mt76/mt7615/mcu.c   | 154 +++++++++++++++++-
+ .../net/wireless/mediatek/mt76/mt7615/mmio.c  |  28 ++++
+ .../wireless/mediatek/mt76/mt7615/mt7615.h    |   4 +
+ .../net/wireless/mediatek/mt76/mt7615/pci.c   |  11 +-
+ .../net/wireless/mediatek/mt76/mt7615/regs.h  |  12 +-
+ 10 files changed, 287 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/init.c b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
-index 889eb72ad6bd..cbb9c63737aa 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
-@@ -18,27 +18,66 @@ static void mt7615_phy_init(struct mt7615_dev *dev)
- 	mt76_set(dev, MT_WF_PHY_WF2_RFCTRL0(1), MT_WF_PHY_WF2_RFCTRL0_LPBCN_EN);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/dma.c b/drivers/net/wireless/mediatek/mt76/mt7615/dma.c
+index 1bc71f5081ce..f5c10bf5564b 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/dma.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/dma.c
+@@ -186,6 +186,41 @@ static void mt7622_dma_sched_init(struct mt7615_dev *dev)
+ 	mt76_wr(dev, reg + MT_DMASHDL_SCHED_SET1, 0xedcba987);
  }
  
--static void mt7615_mac_init(struct mt7615_dev *dev)
-+static void
-+mt7615_init_mac_chain(struct mt7615_dev *dev, int chain)
- {
- 	u32 val, mask, set;
--	int i;
-+
-+	if (!chain)
-+		val = MT_CFG_CCR_MAC_D0_1X_GC_EN | MT_CFG_CCR_MAC_D0_2X_GC_EN;
-+	else
-+		val = MT_CFG_CCR_MAC_D1_1X_GC_EN | MT_CFG_CCR_MAC_D1_2X_GC_EN;
- 
- 	/* enable band 0/1 clk */
--	mt76_set(dev, MT_CFG_CCR,
--		 MT_CFG_CCR_MAC_D0_1X_GC_EN | MT_CFG_CCR_MAC_D0_2X_GC_EN |
--		 MT_CFG_CCR_MAC_D1_1X_GC_EN | MT_CFG_CCR_MAC_D1_2X_GC_EN);
--
--	val = mt76_rmw(dev, MT_TMAC_TRCR(0),
--		       MT_TMAC_TRCR_CCA_SEL | MT_TMAC_TRCR_SEC_CCA_SEL,
--		       FIELD_PREP(MT_TMAC_TRCR_CCA_SEL, 2) |
--		       FIELD_PREP(MT_TMAC_TRCR_SEC_CCA_SEL, 0));
--	mt76_wr(dev, MT_TMAC_TRCR(1), val);
--
--	val = MT_AGG_ACR_PKT_TIME_EN | MT_AGG_ACR_NO_BA_AR_RULE |
--	      FIELD_PREP(MT_AGG_ACR_CFEND_RATE, MT7615_CFEND_RATE_DEFAULT) |
--	      FIELD_PREP(MT_AGG_ACR_BAR_RATE, MT7615_BAR_RATE_DEFAULT);
--	mt76_wr(dev, MT_AGG_ACR(0), val);
--	mt76_wr(dev, MT_AGG_ACR(1), val);
-+	mt76_set(dev, MT_CFG_CCR, val);
-+
-+	mt76_rmw(dev, MT_TMAC_TRCR(chain),
-+		 MT_TMAC_TRCR_CCA_SEL | MT_TMAC_TRCR_SEC_CCA_SEL,
-+		 FIELD_PREP(MT_TMAC_TRCR_CCA_SEL, 2) |
-+		 FIELD_PREP(MT_TMAC_TRCR_SEC_CCA_SEL, 0));
-+
-+	mt76_wr(dev, MT_AGG_ACR(chain),
-+		MT_AGG_ACR_PKT_TIME_EN | MT_AGG_ACR_NO_BA_AR_RULE |
-+		FIELD_PREP(MT_AGG_ACR_CFEND_RATE, MT7615_CFEND_RATE_DEFAULT) |
-+		FIELD_PREP(MT_AGG_ACR_BAR_RATE, MT7615_BAR_RATE_DEFAULT));
-+
-+	mt76_wr(dev, MT_AGG_ARUCR(chain),
-+		FIELD_PREP(MT_AGG_ARxCR_LIMIT(0), 7) |
-+		FIELD_PREP(MT_AGG_ARxCR_LIMIT(1), 2) |
-+		FIELD_PREP(MT_AGG_ARxCR_LIMIT(2), 2) |
-+		FIELD_PREP(MT_AGG_ARxCR_LIMIT(3), 2) |
-+		FIELD_PREP(MT_AGG_ARxCR_LIMIT(4), 1) |
-+		FIELD_PREP(MT_AGG_ARxCR_LIMIT(5), 1) |
-+		FIELD_PREP(MT_AGG_ARxCR_LIMIT(6), 1) |
-+		FIELD_PREP(MT_AGG_ARxCR_LIMIT(7), 1));
-+
-+	mt76_wr(dev, MT_AGG_ARDCR(chain),
-+		FIELD_PREP(MT_AGG_ARxCR_LIMIT(0), MT7615_RATE_RETRY - 1) |
-+		FIELD_PREP(MT_AGG_ARxCR_LIMIT(1), MT7615_RATE_RETRY - 1) |
-+		FIELD_PREP(MT_AGG_ARxCR_LIMIT(2), MT7615_RATE_RETRY - 1) |
-+		FIELD_PREP(MT_AGG_ARxCR_LIMIT(3), MT7615_RATE_RETRY - 1) |
-+		FIELD_PREP(MT_AGG_ARxCR_LIMIT(4), MT7615_RATE_RETRY - 1) |
-+		FIELD_PREP(MT_AGG_ARxCR_LIMIT(5), MT7615_RATE_RETRY - 1) |
-+		FIELD_PREP(MT_AGG_ARxCR_LIMIT(6), MT7615_RATE_RETRY - 1) |
-+		FIELD_PREP(MT_AGG_ARxCR_LIMIT(7), MT7615_RATE_RETRY - 1));
-+
-+	mask = MT_DMA_RCFR0_MCU_RX_MGMT |
-+	       MT_DMA_RCFR0_MCU_RX_CTL_NON_BAR |
-+	       MT_DMA_RCFR0_MCU_RX_CTL_BAR |
-+	       MT_DMA_RCFR0_MCU_RX_BYPASS |
-+	       MT_DMA_RCFR0_RX_DROPPED_UCAST |
-+	       MT_DMA_RCFR0_RX_DROPPED_MCAST;
-+	set = FIELD_PREP(MT_DMA_RCFR0_RX_DROPPED_UCAST, 2) |
-+	      FIELD_PREP(MT_DMA_RCFR0_RX_DROPPED_MCAST, 2);
-+	mt76_rmw(dev, MT_DMA_RCFR0(chain), mask, set);
-+}
-+
-+static void mt7615_mac_init(struct mt7615_dev *dev)
++static void mt7663_dma_sched_init(struct mt7615_dev *dev)
 +{
 +	int i;
 +
-+	mt7615_init_mac_chain(dev, 0);
-+	mt7615_init_mac_chain(dev, 1);
++	mt76_rmw(dev, MT_DMA_SHDL(MT_DMASHDL_PKT_MAX_SIZE),
++		 MT_DMASHDL_PKT_MAX_SIZE_PLE | MT_DMASHDL_PKT_MAX_SIZE_PSE,
++		 FIELD_PREP(MT_DMASHDL_PKT_MAX_SIZE_PLE, 1) |
++		 FIELD_PREP(MT_DMASHDL_PKT_MAX_SIZE_PSE, 8));
++
++	/* enable refill control group 0, 1, 2, 4, 5 */
++	mt76_wr(dev, MT_DMA_SHDL(MT_DMASHDL_REFILL), 0xffc80000);
++	/* enable group 0, 1, 2, 4, 5, 15 */
++	mt76_wr(dev, MT_DMA_SHDL(MT_DMASHDL_OPTIONAL), 0x70068037);
++
++	/* each group min quota must larger then PLE_PKT_MAX_SIZE_NUM */
++	for (i = 0; i < 5; i++)
++		mt76_wr(dev, MT_DMA_SHDL(MT_DMASHDL_GROUP_QUOTA(i)),
++			FIELD_PREP(MT_DMASHDL_GROUP_QUOTA_MIN, 0x40) |
++			FIELD_PREP(MT_DMASHDL_GROUP_QUOTA_MAX, 0x800));
++	mt76_wr(dev, MT_DMA_SHDL(MT_DMASHDL_GROUP_QUOTA(5)),
++		FIELD_PREP(MT_DMASHDL_GROUP_QUOTA_MIN, 0x40) |
++		FIELD_PREP(MT_DMASHDL_GROUP_QUOTA_MAX, 0x40));
++	mt76_wr(dev, MT_DMA_SHDL(MT_DMASHDL_GROUP_QUOTA(15)),
++		FIELD_PREP(MT_DMASHDL_GROUP_QUOTA_MIN, 0x20) |
++		FIELD_PREP(MT_DMASHDL_GROUP_QUOTA_MAX, 0x20));
++
++	mt76_wr(dev, MT_DMA_SHDL(MT_DMASHDL_Q_MAP(0)), 0x42104210);
++	mt76_wr(dev, MT_DMA_SHDL(MT_DMASHDL_Q_MAP(1)), 0x42104210);
++	mt76_wr(dev, MT_DMA_SHDL(MT_DMASHDL_Q_MAP(2)), 0x00050005);
++	mt76_wr(dev, MT_DMA_SHDL(MT_DMASHDL_Q_MAP(3)), 0);
++	/* ALTX0 and ALTX1 QID mapping to group 5 */
++	mt76_wr(dev, MT_DMA_SHDL(MT_DMASHDL_SCHED_SET0), 0x6012345f);
++	mt76_wr(dev, MT_DMA_SHDL(MT_DMASHDL_SCHED_SET1), 0xedcba987);
++}
++
+ int mt7615_dma_init(struct mt7615_dev *dev)
+ {
+ 	int rx_ring_size = MT7615_RX_RING_SIZE;
+@@ -198,10 +233,6 @@ int mt7615_dma_init(struct mt7615_dev *dev)
+ 		MT_WPDMA_GLO_CFG_FIFO_LITTLE_ENDIAN |
+ 		MT_WPDMA_GLO_CFG_OMIT_TX_INFO);
+ 
+-	if (!is_mt7622(&dev->mt76))
+-		mt76_set(dev, MT_WPDMA_GLO_CFG,
+-			 MT_WPDMA_GLO_CFG_FIRST_TOKEN_ONLY);
+-
+ 	mt76_rmw_field(dev, MT_WPDMA_GLO_CFG,
+ 		       MT_WPDMA_GLO_CFG_TX_BT_SIZE_BIT0, 0x1);
+ 
+@@ -215,6 +246,9 @@ int mt7615_dma_init(struct mt7615_dev *dev)
+ 		       MT_WPDMA_GLO_CFG_MULTI_DMA_EN, 0x3);
+ 
+ 	if (is_mt7615(&dev->mt76)) {
++		mt76_set(dev, MT_WPDMA_GLO_CFG,
++			 MT_WPDMA_GLO_CFG_FIRST_TOKEN_ONLY);
++
+ 		mt76_wr(dev, MT_WPDMA_GLO_CFG1, 0x1);
+ 		mt76_wr(dev, MT_WPDMA_TX_PRE_CFG, 0xf0000);
+ 		mt76_wr(dev, MT_WPDMA_RX_PRE_CFG, 0xf7f0000);
+@@ -271,6 +305,9 @@ int mt7615_dma_init(struct mt7615_dev *dev)
+ 	if (is_mt7622(&dev->mt76))
+ 		mt7622_dma_sched_init(dev);
+ 
++	if (is_mt7663(&dev->mt76))
++		mt7663_dma_sched_init(dev);
++
+ 	return 0;
+ }
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.c b/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.c
+index b1091694569e..8cefe13e64c2 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.c
+@@ -136,6 +136,8 @@ static void mt7615_eeprom_parse_hw_cap(struct mt7615_dev *dev)
+ 	/* read tx-rx mask from eeprom */
+ 	val = mt76_rr(dev, MT_TOP_STRAP_STA);
+ 	max_nss = val & MT_TOP_3NSS ? 3 : 4;
++	if (is_mt7663(&dev->mt76))
++		max_nss = max_nss / 2;
+ 
+ 	tx_mask =  FIELD_GET(MT_EE_NIC_CONF_TX_MASK,
+ 			     eeprom[MT_EE_NIC_CONF_0]);
+@@ -247,6 +249,18 @@ static void mt7622_apply_cal_free_data(struct mt7615_dev *dev)
+ 	}
+ }
+ 
++static void mt7615_cal_free_data(struct mt7615_dev *dev)
++{
++	switch (mt76_chip(&dev->mt76)) {
++	case 0x7622:
++		mt7622_apply_cal_free_data(dev);
++		break;
++	case 0x7615:
++		mt7615_apply_cal_free_data(dev);
++		break;
++	}
++}
++
+ int mt7615_eeprom_init(struct mt7615_dev *dev)
+ {
+ 	int ret;
+@@ -259,10 +273,8 @@ int mt7615_eeprom_init(struct mt7615_dev *dev)
+ 	if (ret && dev->mt76.otp.data)
+ 		memcpy(dev->mt76.eeprom.data, dev->mt76.otp.data,
+ 		       MT7615_EEPROM_SIZE);
+-	else if (is_mt7622(&dev->mt76))
+-		mt7622_apply_cal_free_data(dev);
+ 	else
+-		mt7615_apply_cal_free_data(dev);
++		mt7615_cal_free_data(dev);
+ 
+ 	mt7615_eeprom_parse_hw_cap(dev);
+ 	memcpy(dev->mt76.macaddr, dev->mt76.eeprom.data + MT_EE_MAC_ADDR,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/init.c b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
+index cbb9c63737aa..3f9d87ebed8c 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
+@@ -4,6 +4,7 @@
+  * Author: Roy Luo <royluo@google.com>
+  *         Ryder Lee <ryder.lee@mediatek.com>
+  *         Felix Fietkau <nbd@nbd.name>
++ *         Lorenzo Bianconi <lorenzo@kernel.org>
+  */
+ 
+ #include <linux/etherdevice.h>
+@@ -77,7 +78,6 @@ static void mt7615_mac_init(struct mt7615_dev *dev)
+ 	int i;
+ 
+ 	mt7615_init_mac_chain(dev, 0);
+-	mt7615_init_mac_chain(dev, 1);
  
  	mt76_rmw_field(dev, MT_TMAC_CTCR0,
  		       MT_TMAC_CTCR0_INS_DDLMT_REFTIME, 0x3f);
-@@ -56,47 +95,14 @@ static void mt7615_mac_init(struct mt7615_dev *dev)
- 	mt76_rmw(dev, MT_AGG_SCR, MT_AGG_SCR_NLNAV_MID_PTEC_DIS,
- 		 MT_AGG_SCR_NLNAV_MID_PTEC_DIS);
+@@ -101,15 +101,25 @@ static void mt7615_mac_init(struct mt7615_dev *dev)
+ 		FIELD_PREP(MT_AGG_ARCR_RATE_DOWN_RATIO, 1) |
+ 		FIELD_PREP(MT_AGG_ARCR_RATE_UP_EXTRA_TH, 4));
  
 -	mt76_wr(dev, MT_DMA_DCR0, MT_DMA_DCR0_RX_VEC_DROP |
 -		FIELD_PREP(MT_DMA_DCR0_MAX_RX_LEN, 3072));
 -
--	val = FIELD_PREP(MT_AGG_ARxCR_LIMIT(0), 7) |
--	      FIELD_PREP(MT_AGG_ARxCR_LIMIT(1), 2) |
--	      FIELD_PREP(MT_AGG_ARxCR_LIMIT(2), 2) |
--	      FIELD_PREP(MT_AGG_ARxCR_LIMIT(3), 2) |
--	      FIELD_PREP(MT_AGG_ARxCR_LIMIT(4), 1) |
--	      FIELD_PREP(MT_AGG_ARxCR_LIMIT(5), 1) |
--	      FIELD_PREP(MT_AGG_ARxCR_LIMIT(6), 1) |
--	      FIELD_PREP(MT_AGG_ARxCR_LIMIT(7), 1);
--	mt76_wr(dev, MT_AGG_ARUCR(0), val);
--	mt76_wr(dev, MT_AGG_ARUCR(1), val);
--
--	val = FIELD_PREP(MT_AGG_ARxCR_LIMIT(0), MT7615_RATE_RETRY - 1) |
--	      FIELD_PREP(MT_AGG_ARxCR_LIMIT(1), MT7615_RATE_RETRY - 1) |
--	      FIELD_PREP(MT_AGG_ARxCR_LIMIT(2), MT7615_RATE_RETRY - 1) |
--	      FIELD_PREP(MT_AGG_ARxCR_LIMIT(3), MT7615_RATE_RETRY - 1) |
--	      FIELD_PREP(MT_AGG_ARxCR_LIMIT(4), MT7615_RATE_RETRY - 1) |
--	      FIELD_PREP(MT_AGG_ARxCR_LIMIT(5), MT7615_RATE_RETRY - 1) |
--	      FIELD_PREP(MT_AGG_ARxCR_LIMIT(6), MT7615_RATE_RETRY - 1) |
--	      FIELD_PREP(MT_AGG_ARxCR_LIMIT(7), MT7615_RATE_RETRY - 1);
--	mt76_wr(dev, MT_AGG_ARDCR(0), val);
--	mt76_wr(dev, MT_AGG_ARDCR(1), val);
--
- 	mt76_wr(dev, MT_AGG_ARCR,
--		(FIELD_PREP(MT_AGG_ARCR_RTS_RATE_THR, 2) |
--		 MT_AGG_ARCR_RATE_DOWN_RATIO_EN |
--		 FIELD_PREP(MT_AGG_ARCR_RATE_DOWN_RATIO, 1) |
--		 FIELD_PREP(MT_AGG_ARCR_RATE_UP_EXTRA_TH, 4)));
-+		FIELD_PREP(MT_AGG_ARCR_RTS_RATE_THR, 2) |
-+		MT_AGG_ARCR_RATE_DOWN_RATIO_EN |
-+		FIELD_PREP(MT_AGG_ARCR_RATE_DOWN_RATIO, 1) |
-+		FIELD_PREP(MT_AGG_ARCR_RATE_UP_EXTRA_TH, 4));
- 
--	mask = MT_DMA_RCFR0_MCU_RX_MGMT |
--	       MT_DMA_RCFR0_MCU_RX_CTL_NON_BAR |
--	       MT_DMA_RCFR0_MCU_RX_CTL_BAR |
--	       MT_DMA_RCFR0_MCU_RX_BYPASS |
--	       MT_DMA_RCFR0_RX_DROPPED_UCAST |
--	       MT_DMA_RCFR0_RX_DROPPED_MCAST;
--	set = FIELD_PREP(MT_DMA_RCFR0_RX_DROPPED_UCAST, 2) |
--	      FIELD_PREP(MT_DMA_RCFR0_RX_DROPPED_MCAST, 2);
--	mt76_rmw(dev, MT_DMA_RCFR0(0), mask, set);
--	mt76_rmw(dev, MT_DMA_RCFR0(1), mask, set);
-+	mt76_wr(dev, MT_DMA_DCR0, MT_DMA_DCR0_RX_VEC_DROP |
-+		FIELD_PREP(MT_DMA_DCR0_MAX_RX_LEN, 3072));
- 
  	for (i = 0; i < MT7615_WTBL_SIZE; i++)
  		mt7615_mac_wtbl_update(dev, i,
+ 				       MT_WTBL_UPDATE_ADM_COUNT_CLEAR);
+ 
+ 	mt76_set(dev, MT_WF_RMAC_MIB_TIME0, MT_WF_RMAC_MIB_RXTIME_EN);
+ 	mt76_set(dev, MT_WF_RMAC_MIB_AIRTIME0, MT_WF_RMAC_MIB_RXTIME_EN);
++
++	/* disable hdr translation and hw AMSDU */
++	mt76_wr(dev, MT_DMA_DCR0,
++		FIELD_PREP(MT_DMA_DCR0_MAX_RX_LEN, 3072) |
++		MT_DMA_DCR0_RX_VEC_DROP);
++	if (is_mt7663(&dev->mt76)) {
++		mt76_wr(dev, MT_CSR(0x010), 0x8208);
++		mt76_wr(dev, 0x44064, 0x2000000);
++		mt76_wr(dev, MT_WF_AGG(0x160), 0x5c341c02);
++		mt76_wr(dev, MT_WF_AGG(0x164), 0x70708040);
++	} else {
++		mt7615_init_mac_chain(dev, 1);
++	}
+ }
+ 
+ bool mt7615_wait_for_mcu_init(struct mt7615_dev *dev)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
+index cb576df9a561..c5244006cd9c 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
+@@ -1524,6 +1524,9 @@ void mt7615_mac_set_scs(struct mt7615_dev *dev, bool enable)
+ 	if (dev->scs_en == enable)
+ 		goto out;
+ 
++	if (is_mt7663(&dev->mt76))
++		goto out;
++
+ 	if (enable) {
+ 		mt76_set(dev, MT_WF_PHY_MIN_PRI_PWR(0),
+ 			 MT_WF_PHY_PD_BLK(0));
+@@ -1555,6 +1558,9 @@ void mt7615_mac_enable_nf(struct mt7615_dev *dev, bool ext_phy)
+ {
+ 	u32 rxtd;
+ 
++	if (is_mt7663(&dev->mt76))
++		return;
++
+ 	if (ext_phy)
+ 		rxtd = MT_WF_PHY_RXTD2(10);
+ 	else
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mac.h b/drivers/net/wireless/mediatek/mt76/mt7615/mac.h
+index 6fa7e3dd6a3a..2e052f6d9761 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.h
+@@ -229,8 +229,15 @@ enum tx_phy_bandwidth {
+ #define MT_TXD6_FIXED_BW		BIT(2)
+ #define MT_TXD6_BW			GENMASK(1, 0)
+ 
++/* MT7663 DW7 HW-AMSDU */
++#define MT_TXD7_HW_AMSDU_CAP		BIT(30)
+ #define MT_TXD7_TYPE			GENMASK(21, 20)
+ #define MT_TXD7_SUB_TYPE		GENMASK(19, 16)
++#define MT_TXD7_SPE_IDX			GENMASK(15, 11)
++#define MT_TXD7_SPE_IDX_SLE		BIT(10)
++
++#define MT_TXD8_L_TYPE			GENMASK(5, 4)
++#define MT_TXD8_L_SUB_TYPE		GENMASK(3, 0)
+ 
+ #define MT_TX_RATE_STBC			BIT(11)
+ #define MT_TX_RATE_NSS			GENMASK(10, 9)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+index fbf892750e2c..89f679c16a71 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+@@ -29,8 +29,37 @@ struct mt7615_fw_trailer {
+ 	__le32 len;
+ } __packed;
+ 
++#define FW_V3_COMMON_TAILER_SIZE	36
++#define FW_V3_REGION_TAILER_SIZE	40
++#define FW_START_OVERRIDE		BIT(0)
++#define FW_START_DLYCAL                 BIT(1)
++#define FW_START_WORKING_PDA_CR4	BIT(2)
++
++struct mt7663_fw_trailer {
++	u8 chip_id;
++	u8 eco_code;
++	u8 n_region;
++	u8 format_ver;
++	u8 format_flag;
++	u8 reserv[2];
++	char fw_ver[10];
++	char build_date[15];
++	u32 crc;
++} __packed;
++
++struct mt7663_fw_buf {
++	u32 crc;
++	u32 d_img_size;
++	u32 block_size;
++	u8 rsv[4];
++	u32 img_dest_addr;
++	u32 img_size;
++	u8 feature_set;
++};
++
+ #define MT7615_PATCH_ADDRESS		0x80000
+ #define MT7622_PATCH_ADDRESS		0x9c000
++#define MT7663_PATCH_ADDRESS		0xdc000
+ 
+ #define N9_REGION_NUM			2
+ #define CR4_REGION_NUM			1
+@@ -44,6 +73,7 @@ struct mt7615_fw_trailer {
+ #define DL_MODE_KEY_IDX			GENMASK(2, 1)
+ #define DL_MODE_RESET_SEC_IV		BIT(3)
+ #define DL_MODE_WORKING_PDA_CR4		BIT(4)
++#define DL_MODE_VALID_RAM_ENTRY         BIT(5)
+ #define DL_MODE_NEED_RSP		BIT(31)
+ 
+ #define FW_START_OVERRIDE		BIT(0)
+@@ -691,6 +721,119 @@ int mt7615_mcu_fw_log_2_host(struct mt7615_dev *dev, u8 ctrl)
+ 				   &data, sizeof(data), true);
+ }
+ 
++static int mt7663_load_n9(struct mt7615_dev *dev, const char *name)
++{
++	u32 offset = 0, override_addr = 0, flag = 0;
++	const struct mt7663_fw_trailer *hdr;
++	const struct mt7663_fw_buf *buf;
++	const struct firmware *fw;
++	const u8 *base_addr;
++	int i, ret;
++
++	ret = request_firmware(&fw, name, dev->mt76.dev);
++	if (ret)
++		return ret;
++
++	if (!fw || !fw->data || fw->size < FW_V3_COMMON_TAILER_SIZE) {
++		dev_err(dev->mt76.dev, "Invalid firmware\n");
++		ret = -EINVAL;
++		goto out;
++	}
++
++	hdr = (const struct mt7663_fw_trailer *)(fw->data + fw->size -
++						 FW_V3_COMMON_TAILER_SIZE);
++
++	dev_info(dev->mt76.dev, "N9 Firmware Version: %.10s, Build Time: %.15s\n",
++		 hdr->fw_ver, hdr->build_date);
++	dev_info(dev->mt76.dev, "Region number: 0x%x\n", hdr->n_region);
++
++	base_addr = fw->data + fw->size - FW_V3_COMMON_TAILER_SIZE;
++	for (i = 0; i < hdr->n_region; i++) {
++		u32 shift = (hdr->n_region - i) * FW_V3_REGION_TAILER_SIZE;
++		u32 len, addr, mode;
++
++		dev_info(dev->mt76.dev, "Parsing tailer Region: %d\n", i);
++
++		buf = (const struct mt7663_fw_buf *)(base_addr - shift);
++		mode = mt7615_mcu_gen_dl_mode(buf->feature_set, false);
++		addr = le32_to_cpu(buf->img_dest_addr);
++		len = le32_to_cpu(buf->img_size);
++
++		ret = mt7615_mcu_init_download(dev, addr, len, mode);
++		if (ret) {
++			dev_err(dev->mt76.dev, "Download request failed\n");
++			goto out;
++		}
++
++		ret = mt7615_mcu_send_firmware(dev, fw->data + offset, len);
++		if (ret) {
++			dev_err(dev->mt76.dev, "Failed to send firmware\n");
++			goto out;
++		}
++
++		offset += buf->img_size;
++		if (buf->feature_set & DL_MODE_VALID_RAM_ENTRY) {
++			override_addr = le32_to_cpu(buf->img_dest_addr);
++			dev_info(dev->mt76.dev, "Region %d, override_addr = 0x%08x\n",
++				 i, override_addr);
++		}
++	}
++
++	if (is_mt7663(&dev->mt76)) {
++		flag |= FW_START_DLYCAL;
++		if (override_addr)
++			flag |= FW_START_OVERRIDE;
++
++		dev_info(dev->mt76.dev, "override_addr = 0x%08x, option = %d\n",
++			 override_addr, flag);
++	}
++
++	ret = mt7615_mcu_start_firmware(dev, override_addr, flag);
++	if (ret)
++		dev_err(dev->mt76.dev, "Failed to start N9 firmware\n");
++
++out:
++	release_firmware(fw);
++
++	return ret;
++}
++
++static int mt7663_load_firmware(struct mt7615_dev *dev)
++{
++	int ret;
++
++	mt76_set(dev, MT_WPDMA_GLO_CFG, MT_WPDMA_GLO_CFG_BYPASS_TX_SCH);
++
++	ret = mt76_get_field(dev, MT_CONN_ON_MISC, MT_TOP_MISC2_FW_N9_RDY);
++	if (ret) {
++		dev_dbg(dev->mt76.dev, "Firmware is already download\n");
++		return -EIO;
++	}
++
++	ret = mt7615_load_patch(dev, MT7663_PATCH_ADDRESS, MT7663_ROM_PATCH);
++	if (ret)
++		return ret;
++
++	dev->fw_ver = MT7615_FIRMWARE_V2;
++	ret = mt7663_load_n9(dev, MT7663_FIRMWARE_N9);
++	if (ret)
++		return ret;
++
++	if (!mt76_poll_msec(dev, MT_CONN_ON_MISC, MT_TOP_MISC2_FW_N9_RDY,
++			    MT_TOP_MISC2_FW_N9_RDY, 1500)) {
++		ret = mt76_get_field(dev, MT_CONN_ON_MISC,
++				     MT7663_TOP_MISC2_FW_STATE);
++		dev_err(dev->mt76.dev, "Timeout for initializing firmware\n");
++		return -EIO;
++	}
++
++	mt76_clear(dev, MT_WPDMA_GLO_CFG, MT_WPDMA_GLO_CFG_BYPASS_TX_SCH);
++
++	dev_dbg(dev->mt76.dev, "Firmware init done\n");
++
++	return 0;
++}
++
+ int mt7615_mcu_init(struct mt7615_dev *dev)
+ {
+ 	static const struct mt76_mcu_ops mt7615_mcu_ops = {
+@@ -705,10 +848,17 @@ int mt7615_mcu_init(struct mt7615_dev *dev)
+ 	if (ret)
+ 		return ret;
+ 
+-	if (is_mt7622(&dev->mt76))
++	switch (mt76_chip(&dev->mt76)) {
++	case 0x7622:
+ 		ret = mt7622_load_firmware(dev);
+-	else
++		break;
++	case 0x7663:
++		ret = mt7663_load_firmware(dev);
++		break;
++	default:
+ 		ret = mt7615_load_firmware(dev);
++		break;
++	}
+ 	if (ret)
+ 		return ret;
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mmio.c b/drivers/net/wireless/mediatek/mt76/mt7615/mmio.c
+index 43c8b29020f5..d2eff5442824 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mmio.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mmio.c
+@@ -10,6 +10,7 @@ const u32 mt7615e_reg_map[] = {
+ 	[MT_TOP_CFG_BASE]	= 0x01000,
+ 	[MT_HW_BASE]		= 0x01000,
+ 	[MT_PCIE_REMAP_2]	= 0x02504,
++	[MT_ARB_BASE]		= 0x20c00,
+ 	[MT_HIF_BASE]		= 0x04000,
+ 	[MT_CSR_BASE]		= 0x07000,
+ 	[MT_PHY_BASE]		= 0x10000,
+@@ -28,6 +29,30 @@ const u32 mt7615e_reg_map[] = {
+ 	[MT_EFUSE_ADDR_BASE]	= 0x81070000,
+ };
+ 
++const u32 mt7663e_reg_map[] = {
++	[MT_TOP_CFG_BASE]	= 0x01000,
++	[MT_HW_BASE]		= 0x02000,
++	[MT_DMA_SHDL_BASE]	= 0x06000,
++	[MT_PCIE_REMAP_2]	= 0x0700c,
++	[MT_ARB_BASE]		= 0x20c00,
++	[MT_HIF_BASE]		= 0x04000,
++	[MT_CSR_BASE]		= 0x07000,
++	[MT_PHY_BASE]		= 0x10000,
++	[MT_CFG_BASE]		= 0x20000,
++	[MT_AGG_BASE]		= 0x22000,
++	[MT_TMAC_BASE]		= 0x24000,
++	[MT_RMAC_BASE]		= 0x25000,
++	[MT_DMA_BASE]		= 0x27000,
++	[MT_WTBL_BASE_ON]	= 0x29000,
++	[MT_WTBL_BASE_OFF]	= 0x29800,
++	[MT_LPON_BASE]		= 0x2b000,
++	[MT_MIB_BASE]		= 0x2d000,
++	[MT_WTBL_BASE_ADDR]	= 0x30000,
++	[MT_PCIE_REMAP_BASE2]	= 0x90000,
++	[MT_TOP_MISC_BASE]	= 0xc0000,
++	[MT_EFUSE_ADDR_BASE]	= 0x78011000,
++};
++
+ u32 mt7615_reg_map(struct mt7615_dev *dev, u32 addr)
+ {
+ 	u32 base, offset;
+@@ -135,6 +160,9 @@ int mt7615_mmio_probe(struct device *pdev, void __iomem *mem_base,
+ 	if (ret)
+ 		goto error;
+ 
++	if (is_mt7663(mdev))
++		mt76_wr(dev, MT_PCIE_IRQ_ENABLE, 1);
++
+ 	ret = mt7615_register_device(dev);
+ 	if (ret)
+ 		goto error;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
+index 7d07e2b05b38..7bf31ac2797e 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
+@@ -39,6 +39,9 @@
+ #define MT7615_FIRMWARE_V1		1
+ #define MT7615_FIRMWARE_V2		2
+ 
++#define MT7663_ROM_PATCH		"mediatek/mt7663pr2h_rebb.bin"
++#define MT7663_FIRMWARE_N9              "mediatek/mt7663_n9_rebb.bin"
++
+ #define MT7615_EEPROM_SIZE		1024
+ #define MT7615_TOKEN_SIZE		4096
+ 
+@@ -259,6 +262,7 @@ mt7615_ext_phy(struct mt7615_dev *dev)
+ 
+ extern const struct ieee80211_ops mt7615_ops;
+ extern const u32 mt7615e_reg_map[__MT_BASE_MAX];
++extern const u32 mt7663e_reg_map[__MT_BASE_MAX];
+ extern struct pci_driver mt7615_pci_driver;
+ extern struct platform_driver mt7622_wmac_driver;
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/pci.c b/drivers/net/wireless/mediatek/mt76/mt7615/pci.c
+index d20db968c7ec..191adb88c0c6 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/pci.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/pci.c
+@@ -13,12 +13,15 @@
+ 
+ static const struct pci_device_id mt7615_pci_device_table[] = {
+ 	{ PCI_DEVICE(0x14c3, 0x7615) },
++	{ PCI_DEVICE(0x14c3, 0x7663) },
+ 	{ },
+ };
+ 
+ static int mt7615_pci_probe(struct pci_dev *pdev,
+ 			    const struct pci_device_id *id)
+ {
++	const u32 *map;
++	u64 mask;
+ 	int ret;
+ 
+ 	ret = pcim_enable_device(pdev);
+@@ -31,12 +34,14 @@ static int mt7615_pci_probe(struct pci_dev *pdev,
+ 
+ 	pci_set_master(pdev);
+ 
+-	ret = pci_set_dma_mask(pdev, DMA_BIT_MASK(32));
++	mask = id->device == 0x7663 ? DMA_BIT_MASK(36) : DMA_BIT_MASK(32);
++	ret = pci_set_dma_mask(pdev, mask);
+ 	if (ret)
+ 		return ret;
+ 
++	map = id->device == 0x7663 ? mt7663e_reg_map : mt7615e_reg_map;
+ 	return mt7615_mmio_probe(&pdev->dev, pcim_iomap_table(pdev)[0],
+-				 pdev->irq, mt7615e_reg_map);
++				 pdev->irq, map);
+ }
+ 
+ static void mt7615_pci_remove(struct pci_dev *pdev)
+@@ -58,3 +63,5 @@ MODULE_DEVICE_TABLE(pci, mt7615_pci_device_table);
+ MODULE_FIRMWARE(MT7615_FIRMWARE_CR4);
+ MODULE_FIRMWARE(MT7615_FIRMWARE_N9);
+ MODULE_FIRMWARE(MT7615_ROM_PATCH);
++MODULE_FIRMWARE(MT7663_FIRMWARE_N9);
++MODULE_FIRMWARE(MT7663_ROM_PATCH);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/regs.h b/drivers/net/wireless/mediatek/mt76/mt7615/regs.h
+index 928e5a841885..1e0d95b917e1 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/regs.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/regs.h
+@@ -7,7 +7,9 @@
+ enum mt7615_reg_base {
+ 	MT_TOP_CFG_BASE,
+ 	MT_HW_BASE,
++	MT_DMA_SHDL_BASE,
+ 	MT_PCIE_REMAP_2,
++	MT_ARB_BASE,
+ 	MT_HIF_BASE,
+ 	MT_CSR_BASE,
+ 	MT_PHY_BASE,
+@@ -40,6 +42,8 @@ enum mt7615_reg_base {
+ #define MT_TOP_MISC2			((dev)->reg_map[MT_TOP_CFG_BASE] + 0x134)
+ #define MT_TOP_MISC2_FW_STATE		GENMASK(2, 0)
+ 
++#define MT7663_TOP_MISC2_FW_STATE	GENMASK(3, 1)
++
+ #define MT_MCU_BASE			0x2000
+ #define MT_MCU(ofs)			(MT_MCU_BASE + (ofs))
+ 
+@@ -58,6 +62,10 @@ enum mt7615_reg_base {
+ #define MT7663_MCU_PCIE_REMAP_2_OFFSET	GENMASK(15, 0)
+ #define MT7663_MCU_PCIE_REMAP_2_BASE	GENMASK(31, 16)
+ 
++#define MT_HIF2_BASE			0xf0000
++#define MT_HIF2(ofs)			(MT_HIF2_BASE + (ofs))
++#define MT_PCIE_IRQ_ENABLE		MT_HIF2(0x188)
++
+ #define MT_CFG_LPCR_HOST		MT_HIF(0x1f0)
+ #define MT_CFG_LPCR_HOST_FW_OWN		BIT(0)
+ #define MT_CFG_LPCR_HOST_DRV_OWN	BIT(1)
+@@ -209,7 +217,7 @@ enum mt7615_reg_base {
+ #define MT_AGG_SCR			MT_WF_AGG(0x0fc)
+ #define MT_AGG_SCR_NLNAV_MID_PTEC_DIS	BIT(3)
+ 
+-#define MT_WF_ARB_BASE			0x20c00
++#define MT_WF_ARB_BASE			((dev)->reg_map[MT_ARB_BASE])
+ #define MT_WF_ARB(ofs)			(MT_WF_ARB_BASE + (ofs))
+ 
+ #define MT_ARB_SCR			MT_WF_ARB(0x080)
+@@ -400,6 +408,8 @@ enum mt7615_reg_base {
+ 
+ #define MT_TX_AGG_CNT(n)		MT_WF_MIB(0xa8 + ((n) << 2))
+ 
++#define MT_DMA_SHDL(ofs)		(dev->reg_map[MT_DMA_SHDL_BASE] + (ofs))
++
+ #define MT_DMASHDL_BASE			0x5000a000
+ #define MT_DMASHDL_OPTIONAL		0x008
+ #define MT_DMASHDL_PAGE			0x00c
 -- 
 2.24.1
 
