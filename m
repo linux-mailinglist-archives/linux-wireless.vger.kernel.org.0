@@ -2,80 +2,140 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 56E59168F18
-	for <lists+linux-wireless@lfdr.de>; Sat, 22 Feb 2020 14:27:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7291A168F2E
+	for <lists+linux-wireless@lfdr.de>; Sat, 22 Feb 2020 14:39:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727230AbgBVN1Y (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 22 Feb 2020 08:27:24 -0500
-Received: from mail27.static.mailgun.info ([104.130.122.27]:52818 "EHLO
-        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726839AbgBVN1Y (ORCPT
+        id S1727357AbgBVNjj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 22 Feb 2020 08:39:39 -0500
+Received: from mail-pf1-f194.google.com ([209.85.210.194]:33470 "EHLO
+        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727046AbgBVNji (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 22 Feb 2020 08:27:24 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1582378043; h=Content-Transfer-Encoding: MIME-Version:
- References: In-Reply-To: Message-Id: Date: Subject: Cc: To: From:
- Sender; bh=lm/s0o/uficKeoKuo4iCsIN6R6Bp586AJ7wf/WKuJ+k=; b=AK4IVuSUDqaW1ydxS27OBD5C4pYgStj7Rdn90nJpU2aJznRPmq4YoACaaWYljtd3KAM6OuMu
- WAAfqQz/mAR7nnSEeWDo4yBb2u3NCgXx5r+cCVxUeJfBadP8F+TSaoElbidAzsZpgJSSHK5O
- W32fvqphD4xLpsvu7I6o+XUWB8g=
-X-Mailgun-Sending-Ip: 104.130.122.27
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e512c3b.7f6e3a9d49d0-smtp-out-n01;
- Sat, 22 Feb 2020 13:27:23 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 0EC48C433A2; Sat, 22 Feb 2020 13:27:23 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from jouni.codeaurora.org (176-93-35-56.bb.dnainternet.fi [176.93.35.56])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: jouni)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 94277C43383;
-        Sat, 22 Feb 2020 13:27:21 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 94277C43383
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=jouni@codeaurora.org
-From:   Jouni Malinen <jouni@codeaurora.org>
+        Sat, 22 Feb 2020 08:39:38 -0500
+Received: by mail-pf1-f194.google.com with SMTP id n7so2839381pfn.0;
+        Sat, 22 Feb 2020 05:39:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:date:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=vpxT9jClDrKoKxPt0kmgtgiiuZoHxIxpAJPkebvXON0=;
+        b=GXLKlRfcHhBTYgl1ilH4o6mibl1xTvcNCPXZFQNec8/NOTrpQtsfA1JP8KaNs3aYYg
+         IKfHktkagA44VixY1m/yaksXVZI5mnnwvskjvQ1JJWZKSVnvNsI/JcinID87RR5f7yjq
+         rHGb0hKXst4/I4k0njMJlneWTL1tuJdQbyMx/seEwj0Zf3U4AsBFvjnM2hGQyFL6APOV
+         TtrndIYAHC20+ueeYgIK9XVKf6e1xpCSPWecjH8LXHahEI3yc98+initYn99IdzOFo27
+         yid+lJqWR0oJoKtaGJcH7Tp8DfuMUG4Vdg6vkiq9v8McSlvmfVPiknC3XDMcYiyKlgA6
+         ASdQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:date:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=vpxT9jClDrKoKxPt0kmgtgiiuZoHxIxpAJPkebvXON0=;
+        b=mr+7nvDcu/+zJwSEOSpAms3QJdZJ4/bXNBfYJf5Ne5yrHhuKxFEF/U0zgz5/fv67uC
+         2uAv05UOdF7hyFPUc9p1Bs+jWCtKguincnNl8ZSsJfHfU1cQ+P5DBG96AqzKndc3da7i
+         9CC4EkRo7KzDGM8cUBMzsmdhLJp7YFmpzNWr+5SO76X3NGHnR+vxt0x5gqjX7zFg09r4
+         vFq7wbKjB4lJ7BpigwXOARjmp75wOS19vVYuceTxFNtXtiSqTKVhYbGuaspB+wAOugBe
+         XQyUfXTIs7NhrqRTp0A9LclFU/SBmNUjfaCMJKc97xWEU+aCMhnkMXlLH8CLG9RNrtmu
+         AGeg==
+X-Gm-Message-State: APjAAAUkLars2E33PNLm6aqvtFeiAaXMNdhJe2Qhm8OtPa1dRqpXlsHN
+        FdtjVXS92p6ayZPgYhPT3Q==
+X-Google-Smtp-Source: APXvYqwEKQ41EVLj6CR4+LTHf/M95sWALC35qShHEDBl/TpwOUcje2MB0Kb3HNksVa1H25ZDOgRBJg==
+X-Received: by 2002:a62:f243:: with SMTP id y3mr43858640pfl.146.1582378776499;
+        Sat, 22 Feb 2020 05:39:36 -0800 (PST)
+Received: from madhuparna-HP-Notebook ([42.109.145.199])
+        by smtp.gmail.com with ESMTPSA id b12sm6517235pfr.26.2020.02.22.05.39.31
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Sat, 22 Feb 2020 05:39:35 -0800 (PST)
+From:   Madhuparna Bhowmik <madhuparnabhowmik10@gmail.com>
+X-Google-Original-From: Madhuparna Bhowmik <change_this_user_name@gmail.com>
+Date:   Sat, 22 Feb 2020 19:09:28 +0530
 To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org,
-        Jouni Malinen <jouni@codeaurora.org>
-Subject: [PATCH 7/7] mac80211: Enable Beacon protection
-Date:   Sat, 22 Feb 2020 15:25:48 +0200
-Message-Id: <20200222132548.20835-7-jouni@codeaurora.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200222132548.20835-1-jouni@codeaurora.org>
-References: <20200222132548.20835-1-jouni@codeaurora.org>
+Cc:     madhuparnabhowmik10@gmail.com, davem@davemloft.net,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, joel@joelfernandes.org,
+        frextrite@gmail.com,
+        linux-kernel-mentees@lists.linuxfoundation.org, paulmck@kernel.org
+Subject: Re: [PATCH] net: mac80211: rx.c: Use built-in RCU list checking
+Message-ID: <20200222133928.GA10397@madhuparna-HP-Notebook>
+References: <20200222101831.8001-1-madhuparnabhowmik10@gmail.com>
+ <f1913847671d0b7e19aaa9bef1e1eb89febfa942.camel@sipsolutions.net>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f1913847671d0b7e19aaa9bef1e1eb89febfa942.camel@sipsolutions.net>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Now that there is support for BIGTK configuration and AP/STA
-functionality for using BIP with Beacon frames, indicate support for the
-Beacon protection functionality.
+On Sat, Feb 22, 2020 at 01:53:25PM +0100, Johannes Berg wrote:
+> On Sat, 2020-02-22 at 15:48 +0530, madhuparnabhowmik10@gmail.com wrote:
+> > From: Madhuparna Bhowmik <madhuparnabhowmik10@gmail.com>
+> > 
+> > list_for_each_entry_rcu() has built-in RCU and lock checking.
+> > 
+> > Pass cond argument to list_for_each_entry_rcu() to silence
+> > false lockdep warning when CONFIG_PROVE_RCU_LIST is enabled
+> > by default.
+> 
+> Umm. What warning?
+>
+If list_for_each_entry_rcu() is called from non rcu protection
+i.e without holding rcu_read_lock, but under the protection of
+a different lock then we can pass that as the condition for lockdep checking
+because otherwise lockdep will complain if list_for_each_entry_rcu()
+is used without rcu protection. So, if we do not pass this argument
+(cond) it may lead to false lockdep warnings.
 
-Signed-off-by: Jouni Malinen <jouni@codeaurora.org>
----
- net/mac80211/main.c | 1 +
- 1 file changed, 1 insertion(+)
+> > +++ b/net/mac80211/rx.c
+> > @@ -3547,7 +3547,8 @@ static void ieee80211_rx_cooked_monitor(struct ieee80211_rx_data *rx,
+> >  	skb->pkt_type = PACKET_OTHERHOST;
+> >  	skb->protocol = htons(ETH_P_802_2);
+> >  
+> > -	list_for_each_entry_rcu(sdata, &local->interfaces, list) {
+> > +	list_for_each_entry_rcu(sdata, &local->interfaces, list,
+> > +				lockdep_is_held(&rx->local->rx_path_lock)) {
+> >  		if (!ieee80211_sdata_running(sdata))
+> >  			continue;
+> 
+> This is not related at all.
 
-diff --git a/net/mac80211/main.c b/net/mac80211/main.c
-index cae3a34d3503..b32cacb83053 100644
---- a/net/mac80211/main.c
-+++ b/net/mac80211/main.c
-@@ -591,6 +591,7 @@ struct ieee80211_hw *ieee80211_alloc_hw_nm(size_t priv_data_len,
- 			      NL80211_EXT_FEATURE_CONTROL_PORT_OVER_NL80211);
- 	wiphy_ext_feature_set(wiphy,
- 			      NL80211_EXT_FEATURE_CONTROL_PORT_OVER_NL80211_MAC_ADDRS);
-+	wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_BEACON_PROTECTION);
- 
- 	if (!ops->hw_scan) {
- 		wiphy->features |= NL80211_FEATURE_LOW_PRIORITY_SCAN |
--- 
-2.20.1
+I analysed the following traces:
+ieee80211_rx_handlers() -> ieee80211_rx_handlers_result() -> ieee80211_rx_cooked_monitor()
+
+here ieee80211_rx_handlers() is holding the rx->local->rx_path_lock and
+therefore I used this for the cond argument.
+
+ If this is not right, can you help me in figuring out that which other
+ lock is held?
+
+and 
+__ieee80211_rx_handle_packet() -> ieee80211_prepare_and_rx_handle() -> ieee80211_invoke_rx_handlers() -> 
+ieee80211_rx_handlers_result() -> ieee80211_rx_cooked_monitor()
+
+Here __ieee80211_rx_handle_packet() should be called under
+rcu_read_lock protection.
+So this trace seems okay and no need to pass any cond.
+
+I may have missed something, please correct me in that case.
+
+> > @@ -4114,7 +4115,8 @@ void __ieee80211_check_fast_rx_iface(struct ieee80211_sub_if_data *sdata)
+> >  
+> >  	lockdep_assert_held(&local->sta_mtx);
+> >  
+> > -	list_for_each_entry_rcu(sta, &local->sta_list, list) {
+> > +	list_for_each_entry_rcu(sta, &local->sta_list, list,
+> > +				lockdep_is_held(&local->sta_mtx)) {
+> 
+> And this isn't even a real RCU iteration, since we _must_ hold the mutex
+> here.
+>
+Yeah exactly, dropping _rcu (use list_for_each_entry()) would be a good option in this case.
+Let me know if that is alright and I will send a new patch with all the
+changes required.
+
+Thank you,
+Madhuparna
+
+> johannes
+> 
