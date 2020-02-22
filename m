@@ -2,70 +2,55 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EE5CA168F43
-	for <lists+linux-wireless@lfdr.de>; Sat, 22 Feb 2020 15:13:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 12150169035
+	for <lists+linux-wireless@lfdr.de>; Sat, 22 Feb 2020 17:17:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727184AbgBVONz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 22 Feb 2020 09:13:55 -0500
-Received: from mail.kernel.org ([198.145.29.99]:53668 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726883AbgBVONz (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 22 Feb 2020 09:13:55 -0500
-Received: from localhost (unknown [137.135.114.1])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id EFA18206D7;
-        Sat, 22 Feb 2020 14:13:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1582380835;
-        bh=Sj50+WKbpeOFdpdWCe9jgIEfPwoTqzVxQrce7HHxHyY=;
-        h=Date:From:To:To:To:Cc:Cc:Cc:Subject:In-Reply-To:References:From;
-        b=G+B97beEoQXDyzIFLtgTAP565qscNbUaUpmkA0pLIBvlkW2PgeYkiX9Ik5D8IMlz+
-         qAlP7yQ+0H2svycTluQIQDjcJxynCvXWKRazBzEzKgJk+fMcOU4ma2mB4fC2icNAPX
-         aG47vH265KF3ypC/7uf3io6PAV5/5A0x/VrS8j4M=
-Date:   Sat, 22 Feb 2020 14:13:53 +0000
-From:   Sasha Levin <sashal@kernel.org>
-To:     Sasha Levin <sashal@kernel.org>
-To:     Felix Fietkau <nbd@nbd.name>
-To:     linux-wireless@vger.kernel.org
-Cc:     kvalo@codeaurora.org, stable@vger.kernel.org
-Cc:     stable@vger.kernel.org
-Cc:     stable@vger.kernel.org
-Subject: Re: [PATCH 5.6] mt76: fix array overflow on receiving too many fragments for a packet
-In-Reply-To: <20200220114139.46508-1-nbd@nbd.name>
-References: <20200220114139.46508-1-nbd@nbd.name>
-Message-Id: <20200222141354.EFA18206D7@mail.kernel.org>
+        id S1726562AbgBVQRr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 22 Feb 2020 11:17:47 -0500
+Received: from s3.sipsolutions.net ([144.76.43.62]:34096 "EHLO
+        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726310AbgBVQRr (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 22 Feb 2020 11:17:47 -0500
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.93)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1j5XTN-0015Y5-O0; Sat, 22 Feb 2020 17:17:45 +0100
+Message-ID: <8a1516685201cc25cdcb8ac0016e0b5f30401f2f.camel@sipsolutions.net>
+Subject: Re: [PATCH 1/7] cfg80211: More error messages for key addition
+ failures
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Jouni Malinen <jouni@codeaurora.org>
+Cc:     linux-wireless@vger.kernel.org
+Date:   Sat, 22 Feb 2020 17:17:44 +0100
+In-Reply-To: <20200222132548.20835-1-jouni@codeaurora.org>
+References: <20200222132548.20835-1-jouni@codeaurora.org>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.34.2 (3.34.2-1.fc31) 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+On Sat, 2020-02-22 at 15:25 +0200, Jouni Malinen wrote:
+> 
+> -	if (!err)
+> +	if (err)
+> +		GENL_SET_ERR_MSG(info, "key not allowed");
+> +	if (!err) {
+>  		err = rdev_add_key(rdev, dev, key.idx,
 
-[This is an automated email]
+[...]
 
-This commit has been processed because it contains a -stable tag.
-The stable tag indicates that it's relevant for the following trees: all
+Had to read this twice, but I don't see any reason not to put an else
+there? :)
 
-The bot has tested the following trees: v5.5.5, v5.4.21, v4.19.105, v4.14.171, v4.9.214, v4.4.214.
+I can fix it up later when I apply it.
 
-v5.5.5: Build OK!
-v5.4.21: Build OK!
-v4.19.105: Build OK!
-v4.14.171: Failed to apply! Possible dependencies:
-    17f1de56df05 ("mt76: add common code shared between multiple chipsets")
+Thanks, btw, BIGTK was definitely something we were also looking into
+now.
 
-v4.9.214: Failed to apply! Possible dependencies:
-    17f1de56df05 ("mt76: add common code shared between multiple chipsets")
+johannes
 
-v4.4.214: Failed to apply! Possible dependencies:
-    17f1de56df05 ("mt76: add common code shared between multiple chipsets")
-
-
-NOTE: The patch will not be queued to stable trees until it is upstream.
-
-How should we proceed with this patch?
-
--- 
-Thanks,
-Sasha
