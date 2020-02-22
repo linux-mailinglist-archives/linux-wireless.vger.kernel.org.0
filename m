@@ -2,90 +2,70 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 24B49168F3F
-	for <lists+linux-wireless@lfdr.de>; Sat, 22 Feb 2020 14:55:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EE5CA168F43
+	for <lists+linux-wireless@lfdr.de>; Sat, 22 Feb 2020 15:13:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727689AbgBVNzD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 22 Feb 2020 08:55:03 -0500
-Received: from s3.sipsolutions.net ([144.76.43.62]:59284 "EHLO
-        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726839AbgBVNzD (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 22 Feb 2020 08:55:03 -0500
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.93)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1j5VF2-000nAx-QM; Sat, 22 Feb 2020 14:54:48 +0100
-Message-ID: <229913c0b0481c3572032b2f64ce0202f5c66c23.camel@sipsolutions.net>
-Subject: Re: [PATCH] net: mac80211: rx.c: Use built-in RCU list checking
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Madhuparna Bhowmik <madhuparnabhowmik10@gmail.com>
-Cc:     davem@davemloft.net, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        joel@joelfernandes.org, frextrite@gmail.com,
-        linux-kernel-mentees@lists.linuxfoundation.org, paulmck@kernel.org
-Date:   Sat, 22 Feb 2020 14:54:47 +0100
-In-Reply-To: <20200222133928.GA10397@madhuparna-HP-Notebook> (sfid-20200222_143938_994762_F2980624)
-References: <20200222101831.8001-1-madhuparnabhowmik10@gmail.com>
-         <f1913847671d0b7e19aaa9bef1e1eb89febfa942.camel@sipsolutions.net>
-         <20200222133928.GA10397@madhuparna-HP-Notebook>
-         (sfid-20200222_143938_994762_F2980624)
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.2 (3.34.2-1.fc31) 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+        id S1727184AbgBVONz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 22 Feb 2020 09:13:55 -0500
+Received: from mail.kernel.org ([198.145.29.99]:53668 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726883AbgBVONz (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 22 Feb 2020 09:13:55 -0500
+Received: from localhost (unknown [137.135.114.1])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id EFA18206D7;
+        Sat, 22 Feb 2020 14:13:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1582380835;
+        bh=Sj50+WKbpeOFdpdWCe9jgIEfPwoTqzVxQrce7HHxHyY=;
+        h=Date:From:To:To:To:Cc:Cc:Cc:Subject:In-Reply-To:References:From;
+        b=G+B97beEoQXDyzIFLtgTAP565qscNbUaUpmkA0pLIBvlkW2PgeYkiX9Ik5D8IMlz+
+         qAlP7yQ+0H2svycTluQIQDjcJxynCvXWKRazBzEzKgJk+fMcOU4ma2mB4fC2icNAPX
+         aG47vH265KF3ypC/7uf3io6PAV5/5A0x/VrS8j4M=
+Date:   Sat, 22 Feb 2020 14:13:53 +0000
+From:   Sasha Levin <sashal@kernel.org>
+To:     Sasha Levin <sashal@kernel.org>
+To:     Felix Fietkau <nbd@nbd.name>
+To:     linux-wireless@vger.kernel.org
+Cc:     kvalo@codeaurora.org, stable@vger.kernel.org
+Cc:     stable@vger.kernel.org
+Cc:     stable@vger.kernel.org
+Subject: Re: [PATCH 5.6] mt76: fix array overflow on receiving too many fragments for a packet
+In-Reply-To: <20200220114139.46508-1-nbd@nbd.name>
+References: <20200220114139.46508-1-nbd@nbd.name>
+Message-Id: <20200222141354.EFA18206D7@mail.kernel.org>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Hi,
 
-> If list_for_each_entry_rcu() is called from non rcu protection
-> i.e without holding rcu_read_lock, but under the protection of
-> a different lock then we can pass that as the condition for lockdep checking
-> because otherwise lockdep will complain if list_for_each_entry_rcu()
-> is used without rcu protection. So, if we do not pass this argument
-> (cond) it may lead to false lockdep warnings.
+[This is an automated email]
 
-Sure. But what's the specific warning you see?
+This commit has been processed because it contains a -stable tag.
+The stable tag indicates that it's relevant for the following trees: all
 
-> > > -	list_for_each_entry_rcu(sdata, &local->interfaces, list) {
-> > > +	list_for_each_entry_rcu(sdata, &local->interfaces, list,
-> > > +				lockdep_is_held(&rx->local->rx_path_lock)) {
-> > >  		if (!ieee80211_sdata_running(sdata))
-> > >  			continue;
-> > 
-> > This is not related at all.
-> 
-> I analysed the following traces:
-> ieee80211_rx_handlers() -> ieee80211_rx_handlers_result() -> ieee80211_rx_cooked_monitor()
-> 
-> here ieee80211_rx_handlers() is holding the rx->local->rx_path_lock and
-> therefore I used this for the cond argument.
-> 
->  If this is not right, can you help me in figuring out that which other
->  lock is held?
+The bot has tested the following trees: v5.5.5, v5.4.21, v4.19.105, v4.14.171, v4.9.214, v4.4.214.
 
-It's _clearly_ not right, that's the RX spinlock, it has nothing to do
-with the interface list.
+v5.5.5: Build OK!
+v5.4.21: Build OK!
+v4.19.105: Build OK!
+v4.14.171: Failed to apply! Possible dependencies:
+    17f1de56df05 ("mt76: add common code shared between multiple chipsets")
 
-But I'd have to see the warning. Perhaps the driver you're using is
-wrongly calling something in the stack.
+v4.9.214: Failed to apply! Possible dependencies:
+    17f1de56df05 ("mt76: add common code shared between multiple chipsets")
 
-> > >  	lockdep_assert_held(&local->sta_mtx);
-> > >  
-> > > -	list_for_each_entry_rcu(sta, &local->sta_list, list) {
-> > > +	list_for_each_entry_rcu(sta, &local->sta_list, list,
-> > > +				lockdep_is_held(&local->sta_mtx)) {
-> > 
-> > And this isn't even a real RCU iteration, since we _must_ hold the mutex
-> > here.
-> > 
-> Yeah exactly, dropping _rcu (use list_for_each_entry()) would be a good option in this case.
-> Let me know if that is alright and I will send a new patch with all the
-> changes required.
+v4.4.214: Failed to apply! Possible dependencies:
+    17f1de56df05 ("mt76: add common code shared between multiple chipsets")
 
-Seems fine, also better to split the patches anyway.
 
-johannes
+NOTE: The patch will not be queued to stable trees until it is upstream.
 
+How should we proceed with this patch?
+
+-- 
+Thanks,
+Sasha
