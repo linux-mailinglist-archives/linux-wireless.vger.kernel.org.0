@@ -2,108 +2,89 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E98B516946B
-	for <lists+linux-wireless@lfdr.de>; Sun, 23 Feb 2020 03:30:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9479F169818
+	for <lists+linux-wireless@lfdr.de>; Sun, 23 Feb 2020 15:33:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728809AbgBWCXr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 22 Feb 2020 21:23:47 -0500
-Received: from mail.kernel.org ([198.145.29.99]:53442 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728793AbgBWCXr (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 22 Feb 2020 21:23:47 -0500
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8ED7122464;
-        Sun, 23 Feb 2020 02:23:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1582424626;
-        bh=XScb1HpWRssczpAA1YStAmkjyi8I91uCzovYRdXowjM=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ulKE9AKAoGAsKJnSiI+jfqNyOmOAKKzXf5NEeC6blFC9pZWu20OxH+qARmrK3XZM7
-         74QI1qREq7OnImybnwdNL1jdEscvuAbWK4vVObeLAt5cLbsPsGTKAO/JT+YKCWqZXw
-         u1tSb/0KT1ziLUp4bcvyGHoEkLszHWJWvADPuDDM=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Johannes Berg <johannes.berg@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Sasha Levin <sashal@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 05/25] mac80211: consider more elements in parsing CRC
-Date:   Sat, 22 Feb 2020 21:23:19 -0500
-Message-Id: <20200223022339.1885-5-sashal@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200223022339.1885-1-sashal@kernel.org>
-References: <20200223022339.1885-1-sashal@kernel.org>
-MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+        id S1727030AbgBWOdj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 23 Feb 2020 09:33:39 -0500
+Received: from mail-pg1-f195.google.com ([209.85.215.195]:37123 "EHLO
+        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726490AbgBWOdi (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 23 Feb 2020 09:33:38 -0500
+Received: by mail-pg1-f195.google.com with SMTP id z12so3634809pgl.4;
+        Sun, 23 Feb 2020 06:33:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=69Yk8P/qFbghht4lzUdI2eecmMcH8qqFHN3OCd/EKwg=;
+        b=Tzd5nWYAGM+SEbceVpNuxrtzJNBo6OWJtbzTWSSb8B6JOQDE7q1k4sST0MYxVD2+xs
+         2iK7yNmaAAJtAzhb1bgTlS1WZ4XjfBFpo3NlirNP4b0eRhFmiCw1NxM4QfbzBmSqlZJk
+         Nb0HQa24AlWfm19Z0ZNXNxlXn4yHYtK0VCGI+gDXvCsvN25LlU0CiYt8OawGL8tWGWmT
+         M7XkNiOBJMZ2MQ84PWQPVccL31kGSP1XWGwUHPD+wiVQt9FzCkCaujuYVdGiM3r4q0ea
+         B9Ywz1Kd2d2Q1ub9oZJDGE2XXcwTXdv5KNtSN+iXmrFEYuY0VFFFLCQU6qGRlaoLSvgE
+         4HAQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=69Yk8P/qFbghht4lzUdI2eecmMcH8qqFHN3OCd/EKwg=;
+        b=S/lSxKBKN4AdSf9gH1zgGt629mnIBGyf7fPu+tyFdPMLpuGLrDJcGz6xfsfyBKxO/L
+         LS3FAzdQ2cpPh8jDBej+hyalI4K1/ZeZeX+qg895ptGu3giLS6q/9P95o9V0O2IAbLuD
+         prm4PhQK5uUQvkUyApVlWyHgZZDHU4sfJQ4anMc7xXwKUHlwSHYyrm2kk104hMemgbZD
+         2QUyfRxwe35HoE0Ax/nU8HGpIr4XUUMA62OuscdUk1ISttKtZaiJsBCleFV4Am26kLwT
+         vxaJla8RTfSrNVJPE7pKq4s1sHOI9eufNq1/w30fMN1izwCZjz9dH7vjryvjuX9DWyUT
+         7S6w==
+X-Gm-Message-State: APjAAAXhRwX9Eta+EG26aCaXHqROEV5mIUImfwmb89NDiJ5cf4k9AJJM
+        EdeXJ0FywbyR9x1lNXmIIg==
+X-Google-Smtp-Source: APXvYqyuMpfNWCcshVyT4hEGm5SAscjVG1tHFK7wvKEg/Dned1vNx6tuY0HjyvEZJtwbMpUFvuJAVg==
+X-Received: by 2002:a62:7945:: with SMTP id u66mr47940144pfc.82.1582468418248;
+        Sun, 23 Feb 2020 06:33:38 -0800 (PST)
+Received: from madhuparna-HP-Notebook.nitk.ac.in ([2402:3a80:1ee1:fa2c:caf:386d:b081:f71d])
+        by smtp.gmail.com with ESMTPSA id y2sm9576879pff.139.2020.02.23.06.33.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 23 Feb 2020 06:33:37 -0800 (PST)
+From:   madhuparnabhowmik10@gmail.com
+To:     johannes@sipsolutions.net, davem@davemloft.net
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, joel@joelfernandes.org,
+        linux-kernel-mentees@lists.linuxfoundation.org,
+        frextrite@gmail.com,
+        Madhuparna Bhowmik <madhuparnabhowmik10@gmail.com>
+Subject: [PATCH] net: mac80211: rx.c: Avoid RCU list traversal under mutex
+Date:   Sun, 23 Feb 2020 20:03:02 +0530
+Message-Id: <20200223143302.15390-1-madhuparnabhowmik10@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Madhuparna Bhowmik <madhuparnabhowmik10@gmail.com>
 
-[ Upstream commit a04564c99bb4a92f805a58e56b2d22cc4978f152 ]
+local->sta_mtx is held in __ieee80211_check_fast_rx_iface().
+No need to use list_for_each_entry_rcu() as it also requires
+a cond argument to avoid false lockdep warnings when not used in
+RCU read-side section (with CONFIG_PROVE_RCU_LIST).
+Therefore use list_for_each_entry();
 
-We only use the parsing CRC for checking if a beacon changed,
-and elements with an ID > 63 cannot be represented in the
-filter. Thus, like we did before with WMM and Cisco vendor
-elements, just statically add these forgotten items to the
-CRC:
- - WLAN_EID_VHT_OPERATION
- - WLAN_EID_OPMODE_NOTIF
-
-I guess that in most cases when VHT/HE operation change, the HT
-operation also changed, and so the change was picked up, but we
-did notice that pure operating mode notification changes were
-ignored.
-
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
-Link: https://lore.kernel.org/r/20200131111300.891737-22-luca@coelho.fi
-[restrict to VHT for the mac80211 branch]
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Madhuparna Bhowmik <madhuparnabhowmik10@gmail.com>
 ---
- net/mac80211/util.c | 18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+ net/mac80211/rx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/mac80211/util.c b/net/mac80211/util.c
-index f101a6460b44b..7fa9871b1db9f 100644
---- a/net/mac80211/util.c
-+++ b/net/mac80211/util.c
-@@ -945,16 +945,22 @@ u32 ieee802_11_parse_elems_crc(const u8 *start, size_t len, bool action,
- 				elem_parse_failed = true;
- 			break;
- 		case WLAN_EID_VHT_OPERATION:
--			if (elen >= sizeof(struct ieee80211_vht_operation))
-+			if (elen >= sizeof(struct ieee80211_vht_operation)) {
- 				elems->vht_operation = (void *)pos;
--			else
--				elem_parse_failed = true;
-+				if (calc_crc)
-+					crc = crc32_be(crc, pos - 2, elen + 2);
-+				break;
-+			}
-+			elem_parse_failed = true;
- 			break;
- 		case WLAN_EID_OPMODE_NOTIF:
--			if (elen > 0)
-+			if (elen > 0) {
- 				elems->opmode_notif = pos;
--			else
--				elem_parse_failed = true;
-+				if (calc_crc)
-+					crc = crc32_be(crc, pos - 2, elen + 2);
-+				break;
-+			}
-+			elem_parse_failed = true;
- 			break;
- 		case WLAN_EID_MESH_ID:
- 			elems->mesh_id = pos;
+diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
+index 0e05ff037672..0ba98ad9bc85 100644
+--- a/net/mac80211/rx.c
++++ b/net/mac80211/rx.c
+@@ -4114,7 +4114,7 @@ void __ieee80211_check_fast_rx_iface(struct ieee80211_sub_if_data *sdata)
+ 
+ 	lockdep_assert_held(&local->sta_mtx);
+ 
+-	list_for_each_entry_rcu(sta, &local->sta_list, list) {
++	list_for_each_entry(sta, &local->sta_list, list) {
+ 		if (sdata != sta->sdata &&
+ 		    (!sta->sdata->bss || sta->sdata->bss != sdata->bss))
+ 			continue;
 -- 
-2.20.1
+2.17.1
 
