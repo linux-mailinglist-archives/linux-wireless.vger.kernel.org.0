@@ -2,103 +2,132 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7150516AF74
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Feb 2020 19:41:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 21ABF16AF41
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Feb 2020 19:34:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728039AbgBXSli (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 24 Feb 2020 13:41:38 -0500
-Received: from mail-ot1-f65.google.com ([209.85.210.65]:36437 "EHLO
-        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727756AbgBXSli (ORCPT
+        id S1727709AbgBXSev (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 24 Feb 2020 13:34:51 -0500
+Received: from s3.sipsolutions.net ([144.76.43.62]:41994 "EHLO
+        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726652AbgBXSev (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 24 Feb 2020 13:41:38 -0500
-Received: by mail-ot1-f65.google.com with SMTP id j20so9693093otq.3
-        for <linux-wireless@vger.kernel.org>; Mon, 24 Feb 2020 10:41:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=SXQ23Qr+I74q0vmU9rxCtm/ASvQdqjaJ1Y8tx0MnwbI=;
-        b=UtA7Z7ubCU2DNjyZlKo1Raqagm/lfI0e9XFBC6tCL3h7ybBKOOBdjQ1Lh7r7L8kYDM
-         uWBp147PTTfChnaLzv8y0B3va0GMNBc5zAdqQdnevLJKoVXfNi0c7L5l0vfYY7G2q2e0
-         ZPMJTcue4PL+jZ8jFv5S5EwLPn8S0bvmvqkZtNUIxdY2V9PgbnBN80fd1Flds5l54CE3
-         UBh+w6NuXn6UE67TYV4ARGea7EZ6A8EGDDs431CwvB9Lda9/vZNE1cl3lDwoKxRviF5z
-         JCNgHnAmus1yO3Thl34NRNJYqzmxd7x6Q0Qb4tfoYQHLtGyC6BUkfMms9+3xoQw5rasR
-         QLIQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=SXQ23Qr+I74q0vmU9rxCtm/ASvQdqjaJ1Y8tx0MnwbI=;
-        b=huXyDVnlNRcrhg+CfaYYD4GiDqJ/fIxe/mqg7nrACh9oPESrL1VTmUs+MptoWtU5mM
-         /XP0YGIdcpQJkdVzMDFXh4d6xx11tTREPMNjVovy72UmVsh/jDJtRhWMl5zyd5ufcztO
-         Iy1RwdWqg7G6YvnTRlBJX8KrOALH4Qr2uhmbd7FDFsA6z95Ap1Dm1qJ9Sku1fcJgQMwA
-         SoGksAgI72KMpnV/f2F9dHdJ9rNbnmux9ypsr5NMu7gRrACXw6BQetXhvQAbi9Zq+AGp
-         MKaOsaEjJ3OK+GAWbIGOqdOfcPp25nFGa9Vmzq0bh5cMAlSoB7yWQoGuiA2Xvl775lD9
-         T2tg==
-X-Gm-Message-State: APjAAAXxkYw90CmGIO2l0c3/aVFZkVABHsFjo60UQGWFO5P1lKQTyIvv
-        wUOaJBcYCbGzjsMDxI2h7NHs23ps
-X-Google-Smtp-Source: APXvYqw0gA1o52ujp2gjC80nvk3tqNLkDfOllM2n7sRRXVxTtudl0b/69jzqbLW+MOEdXbzLfOflBA==
-X-Received: by 2002:a9d:22:: with SMTP id 31mr38820361ota.173.1582569695953;
-        Mon, 24 Feb 2020 10:41:35 -0800 (PST)
-Received: from [192.168.1.249] (cpe-70-114-247-242.austin.res.rr.com. [70.114.247.242])
-        by smtp.googlemail.com with ESMTPSA id x135sm4304022oix.20.2020.02.24.10.41.34
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 24 Feb 2020 10:41:35 -0800 (PST)
-Subject: Re: [PATCH 1/2] Revert "mac80211: support
- NL80211_EXT_FEATURE_CONTROL_PORT_OVER_NL80211_MAC_ADDRS"
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless@vger.kernel.org
-Cc:     Markus Theil <markus.theil@tu-ilmenau.de>
-References: <20200224101910.b87da63a3cd6.Ic94bc51a370c4aa7d19fbca9b96d90ab703257dc@changeid>
- <c9fba32a-6959-a93a-3119-23915053538c@gmail.com>
- <53190ece697ab7d9e83fdd667eaf9e05a4418193.camel@sipsolutions.net>
-From:   Denis Kenzior <denkenz@gmail.com>
-Message-ID: <6e723a78-db68-8ffb-986a-4a3961107f72@gmail.com>
-Date:   Mon, 24 Feb 2020 12:26:05 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        Mon, 24 Feb 2020 13:34:51 -0500
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.93)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1j6IZ6-007NT1-Ei; Mon, 24 Feb 2020 19:34:48 +0100
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     netdev@vger.kernel.org
+Cc:     linux-wireless@vger.kernel.org
+Subject: pull-request: mac80211-next next-2020-02-24
+Date:   Mon, 24 Feb 2020 19:34:41 +0100
+Message-Id: <20200224183442.82066-1-johannes@sipsolutions.net>
+X-Mailer: git-send-email 2.24.1
 MIME-Version: 1.0
-In-Reply-To: <53190ece697ab7d9e83fdd667eaf9e05a4418193.camel@sipsolutions.net>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Johannes,
+Hi,
 
-On 2/24/20 12:26 PM, Johannes Berg wrote:
-> On Mon, 2020-02-24 at 10:56 -0600, Denis Kenzior wrote:
-> 
->> So to me this patch set seemed like a good idea...  We (iwd) don't have
->> plans to support pre-auth in AP mode in the near future, so this revert
->> doesn't really affect us.  I do wonder what is the actual concern to
->> warrant a revert?
-> 
-> These are two entirely different things, preauth is simply real data as
-> far as the local system is concerned. It's not related to controlled
-> port operation at all, which this nl80211 API is about.
+Some new updates - initial beacon protection support and TID
+configuration are the interesting parts, but need drivers to
+fill in, so that'll come from Kalle later :)
 
-I can understand this argument, but from what I remember, one of the 
-goals of the control port API was to make this legacy 'special data 
-packet' processing unnecessary for userspace.  In other words userspace 
-wouldn't need to establish raw sockets.  Hence my question, what is the 
-actual concern here?
+Please pull and let me know if there's any problem.
 
-> 
-> FWIW, you may have seen Markus's patch to remove preauth from the RX as
-> well, this won't work as is, but I'm still a bit on the fence as to
-> whether I'll force you into the right model or not (i.e. clear the
-> existing capability bit in mac80211, and introduce a new one that
-> doesn't report preauth over nl80211). For RX, however, the difference
-> isn't really that much of a big deal, so maybe just make it optional.
+Thanks,
+johannes
 
-We're actually quite happy with the current model.  So I'd like to keep 
-things as they are.
 
-Regards,
--Denis
+
+The following changes since commit 92df9f8a745ee9b8cc250514272345cb2e74e7ef:
+
+  Merge branch 'mvneta-xdp-ethtool-stats' (2020-02-16 20:04:42 -0800)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211-next.git tags/mac80211-next-for-net-next-2020-02-24
+
+for you to fetch changes up to 370f51d5edac83bfdb9a078d7098f06403dfa4bc:
+
+  mac80211: Add api to support configuring TID specific configuration (2020-02-24 14:07:01 +0100)
+
+----------------------------------------------------------------
+A new set of changes:
+ * lots of small documentation fixes, from Jérôme Pouiller
+ * beacon protection (BIGTK) support from Jouni Malinen
+ * some initial code for TID configuration, from Tamizh chelvam
+ * I reverted some new API before it's actually used, because
+   it's wrong to mix controlled port and preauth
+ * a few other cleanups/fixes
+
+----------------------------------------------------------------
+Amol Grover (1):
+      cfg80211: Pass lockdep expression to RCU lists
+
+Emmanuel Grumbach (1):
+      cfg80211: remove support for adjacent channel compensation
+
+Johannes Berg (4):
+      mac80211: check vif pointer before airtime calculation
+      Revert "mac80211: support NL80211_EXT_FEATURE_CONTROL_PORT_OVER_NL80211_MAC_ADDRS"
+      Revert "nl80211: add src and dst addr attributes for control port tx/rx"
+      nl80211: modify TID-config API
+
+Jouni Malinen (7):
+      cfg80211: More error messages for key addition failures
+      cfg80211: Support key configuration for Beacon protection (BIGTK)
+      mac80211: Support BIGTK configuration for Beacon protection
+      mac80211: Update BIP to support Beacon frames
+      mac80211: Beacon protection using the new BIGTK (AP)
+      mac80211: Beacon protection using the new BIGTK (STA)
+      mac80211_hwsim: enable Beacon protection
+
+Jérôme Pouiller (9):
+      cfg80211: drop duplicated documentation of field "probe_resp_offload"
+      cfg80211: drop duplicated documentation of field "privid"
+      cfg80211: drop duplicated documentation of field "registered"
+      cfg80211: drop duplicated documentation of field "_net"
+      cfg80211: drop duplicated documentation of field "perm_addr"
+      cfg80211: drop duplicated documentation of field "reg_notifier"
+      cfg80211: merge documentations of field "debugfsdir"
+      cfg80211: merge documentations of field "dev"
+      cfg80211: fix indentation errors
+
+Tamizh chelvam (5):
+      nl80211: Add NL command to support TID speicific configurations
+      nl80211: Add support to configure TID specific retry configuration
+      nl80211: Add support to configure TID specific AMPDU configuration
+      nl80211: Add support to configure TID specific RTSCTS configuration
+      mac80211: Add api to support configuring TID specific configuration
+
+ drivers/net/wireless/mac80211_hwsim.c |   1 +
+ include/net/cfg80211.h                | 122 +++++++++-----
+ include/net/mac80211.h                |  10 ++
+ include/uapi/linux/nl80211.h          | 114 +++++++++++--
+ net/mac80211/aes_cmac.c               |  21 ++-
+ net/mac80211/aes_gmac.c               |  24 ++-
+ net/mac80211/cfg.c                    |  71 +++++++-
+ net/mac80211/debugfs_key.c            |  31 ++++
+ net/mac80211/debugfs_key.h            |  10 ++
+ net/mac80211/driver-ops.h             |  27 +++
+ net/mac80211/ieee80211_i.h            |   9 +-
+ net/mac80211/key.c                    |  40 ++++-
+ net/mac80211/key.h                    |   3 +
+ net/mac80211/main.c                   |   2 -
+ net/mac80211/rx.c                     |  79 +++++++--
+ net/mac80211/scan.c                   |   3 +-
+ net/mac80211/sta_info.h               |   4 +-
+ net/mac80211/tx.c                     |  35 +++-
+ net/wireless/nl80211.c                | 298 ++++++++++++++++++++++++++++++----
+ net/wireless/rdev-ops.h               |  45 ++++-
+ net/wireless/scan.c                   |  11 +-
+ net/wireless/sme.c                    |  11 +-
+ net/wireless/trace.h                  |  81 +++++++--
+ net/wireless/util.c                   |   7 +-
+ 24 files changed, 909 insertions(+), 150 deletions(-)
+
