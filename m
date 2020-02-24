@@ -2,70 +2,33 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C99516B008
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Feb 2020 20:13:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 33DE116B04D
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Feb 2020 20:33:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727470AbgBXTMv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 24 Feb 2020 14:12:51 -0500
-Received: from mail-ot1-f68.google.com ([209.85.210.68]:36940 "EHLO
-        mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727393AbgBXTMs (ORCPT
+        id S1727237AbgBXTdO convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 24 Feb 2020 14:33:14 -0500
+Received: from coyote.holtmann.net ([212.227.132.17]:38548 "EHLO
+        mail.holtmann.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725860AbgBXTdN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 24 Feb 2020 14:12:48 -0500
-Received: by mail-ot1-f68.google.com with SMTP id b3so9753014otp.4
-        for <linux-wireless@vger.kernel.org>; Mon, 24 Feb 2020 11:12:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=INJqEsdng3yWnhB/nbmHjB0zOhD8msYYqWSspAAo1nw=;
-        b=F8PfG/B3XTnjo+TBBLbcaW91WnC4DRMysl8u41UjH1bJuxRUf5yI547TStsaUNpzVl
-         Z9eSlsDYpOlpLEZXq3j+T6gAysgmR308qOzbaQL/VweI09P8IVpk/IiF96Zb6gXByNRe
-         kTay/p4/uX3p+sM+1MJoBRDRAZ2ku1x0lB2BqbCD6TT10zURal93z7bKtp8CCrkgW1m6
-         bGRPjow+6tg94UAX9WbWp0BO3YuCthqYf6Gb2Z9C6QGpRbNzE4kZ6CNkC2E3jEObdU0e
-         TGuPQ/T7WH5rHMJRAD95XGrJnxz+R2ZPTADp/dGzjsL3ge2DmtUF33xZMoD/bGGz3vL4
-         e+0g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=INJqEsdng3yWnhB/nbmHjB0zOhD8msYYqWSspAAo1nw=;
-        b=aAUgLGAxR569BB/FxTk2mytpsvnItyVhyjapmmNxvTlLlMo2FnH5oTieDaZmf4Rgt+
-         VUPC09EB6nNipeHb/W1bfM5nh74s3J1N3ON9fPn3mAEOnwKoUrfYZdB83lIUKZdbnmNz
-         d7yVjph6UmFMCqcM11D25zvPT37HbFb26MVyJ3XEKVV/UQep8cGbm0mFKk2NCA4XYDGs
-         iEb7rW9xmMSzDGjlDP+c5tHMOZwmJm1LF8xSOJRjP81UJD133/vSdb5x6MoFAUVLxA8o
-         peEL+xoW3zpk4QV8kf4Ed+WNgtVF/71fXbthxow76jqbj+HN+CSD10UALhkfqZiYV+HD
-         wkVA==
-X-Gm-Message-State: APjAAAVngZxP0YP7OhwAWvjN//jsWm1T3GQamsiR41Sh+crpK0OzjqNh
-        iDJ5r2h6cmOXYze+zLvPtwsQFUlq
-X-Google-Smtp-Source: APXvYqzjh3qD8OSoPbmw+w2HiJ7xtSaPhnsGspmkQvSryMZMWxftPcUxKYQFTG1HMD5gUnlW+sID2w==
-X-Received: by 2002:a9d:6290:: with SMTP id x16mr39710578otk.343.1582571566043;
-        Mon, 24 Feb 2020 11:12:46 -0800 (PST)
-Received: from [192.168.1.249] (cpe-70-114-247-242.austin.res.rr.com. [70.114.247.242])
-        by smtp.googlemail.com with ESMTPSA id t20sm4311984oij.19.2020.02.24.11.12.44
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 24 Feb 2020 11:12:45 -0800 (PST)
-Subject: Re: [PATCH 1/2] Revert "mac80211: support
- NL80211_EXT_FEATURE_CONTROL_PORT_OVER_NL80211_MAC_ADDRS"
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless@vger.kernel.org
-Cc:     Markus Theil <markus.theil@tu-ilmenau.de>
-References: <20200224101910.b87da63a3cd6.Ic94bc51a370c4aa7d19fbca9b96d90ab703257dc@changeid>
- <c9fba32a-6959-a93a-3119-23915053538c@gmail.com>
- <53190ece697ab7d9e83fdd667eaf9e05a4418193.camel@sipsolutions.net>
- <6e723a78-db68-8ffb-986a-4a3961107f72@gmail.com>
- <1a56c641eaa03c99dc9a90208902d8bb1ca1b0aa.camel@sipsolutions.net>
-From:   Denis Kenzior <denkenz@gmail.com>
-Message-ID: <048b81db-8e92-7fe0-1f5c-3b6f9ea1a1f1@gmail.com>
-Date:   Mon, 24 Feb 2020 12:57:14 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
-MIME-Version: 1.0
-In-Reply-To: <1a56c641eaa03c99dc9a90208902d8bb1ca1b0aa.camel@sipsolutions.net>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+        Mon, 24 Feb 2020 14:33:13 -0500
+Received: from marcel-macpro.fritz.box (p4FEFC5A7.dip0.t-ipconnect.de [79.239.197.167])
+        by mail.holtmann.org (Postfix) with ESMTPSA id 33C80CED24;
+        Mon, 24 Feb 2020 20:42:38 +0100 (CET)
+Content-Type: text/plain;
+        charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 13.0 \(3608.60.0.2.5\))
+Subject: Re: pull-request: mac80211-next next-2020-02-24
+From:   Marcel Holtmann <marcel@holtmann.org>
+In-Reply-To: <20200224183442.82066-1-johannes@sipsolutions.net>
+Date:   Mon, 24 Feb 2020 20:33:12 +0100
+Cc:     netdev <netdev@vger.kernel.org>, linux-wireless@vger.kernel.org
+Content-Transfer-Encoding: 8BIT
+Message-Id: <BCCC37CB-FA6D-433C-B772-EC46EF734FED@holtmann.org>
+References: <20200224183442.82066-1-johannes@sipsolutions.net>
+To:     Johannes Berg <johannes@sipsolutions.net>
+X-Mailer: Apple Mail (2.3608.60.0.2.5)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
@@ -73,29 +36,53 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 Hi Johannes,
 
-> That's a question of how you define "special data packet processing"...
-> You're defining it purely in terms of the mechanics of how you handle
-> them, but that's not really the point.
-
-Why isn't it the point?  These are the only data packets userspace 
-management daemon(s) actually care about and has to setup raw sockets + 
-bpf filters for every interface it manages.  The current control port 
-makes all of that unnecessary.
-
-So from a holistic point of view, taking kernel + userspace into 
-account, what is wrong with letting control port transport preauth 
-frames if that saves a bunch of resources (and possibly wakeups if the 
-bpf is setup badly) on the system?
-
-Also, the question is what changed your mind?  I asked you specifically 
-if preauth should be included in the control port API and you thought it 
-was a good idea at the time?
-
+> Some new updates - initial beacon protection support and TID
+> configuration are the interesting parts, but need drivers to
+> fill in, so that'll come from Kalle later :)
 > 
-> Preauth frames are _not_ special. They're entirely regular data packets
-> as far as wifi is concerned.
+> Please pull and let me know if there's any problem.
+> 
+> Thanks,
+> johannes
+> 
+> 
+> 
+> The following changes since commit 92df9f8a745ee9b8cc250514272345cb2e74e7ef:
+> 
+>  Merge branch 'mvneta-xdp-ethtool-stats' (2020-02-16 20:04:42 -0800)
+> 
+> are available in the Git repository at:
+> 
+>  git://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211-next.git tags/mac80211-next-for-net-next-2020-02-24
+> 
+> for you to fetch changes up to 370f51d5edac83bfdb9a078d7098f06403dfa4bc:
+> 
+>  mac80211: Add api to support configuring TID specific configuration (2020-02-24 14:07:01 +0100)
+> 
+> ----------------------------------------------------------------
+> A new set of changes:
+> * lots of small documentation fixes, from Jérôme Pouiller
+> * beacon protection (BIGTK) support from Jouni Malinen
+> * some initial code for TID configuration, from Tamizh chelvam
+> * I reverted some new API before it's actually used, because
+>   it's wrong to mix controlled port and preauth
+> * a few other cleanups/fixes
+> 
+> ----------------------------------------------------------------
+> Amol Grover (1):
+>      cfg80211: Pass lockdep expression to RCU lists
+> 
+> Emmanuel Grumbach (1):
+>      cfg80211: remove support for adjacent channel compensation
+> 
+> Johannes Berg (4):
+>      mac80211: check vif pointer before airtime calculation
+>      Revert "mac80211: support NL80211_EXT_FEATURE_CONTROL_PORT_OVER_NL80211_MAC_ADDRS"
+>      Revert "nl80211: add src and dst addr attributes for control port tx/rx"
 
-Sure.  I already conceded this point if this wasn't clear earlier.
+so I am bit concerned if these reverts are pushed so quickly without allowing ample time to discuss or review them on the mailing list. I for one, don’t agree with the assessment made to justify these reverts.
 
-Regards,
--Denis
+Regards
+
+Marcel
+
