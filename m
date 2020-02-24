@@ -2,70 +2,57 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 13B5316AEE3
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Feb 2020 19:24:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ECB7916AF00
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Feb 2020 19:26:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728043AbgBXSY4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 24 Feb 2020 13:24:56 -0500
-Received: from mail.kernel.org ([198.145.29.99]:33760 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728033AbgBXSYz (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 24 Feb 2020 13:24:55 -0500
-Received: from localhost.localdomain (unknown [194.230.155.125])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 9E3842084E;
-        Mon, 24 Feb 2020 18:24:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1582568694;
-        bh=Tez6VX6xj5AysVwOY/ouD5bKxQQHd3DxSyG5pRnK4MM=;
-        h=From:To:Cc:Subject:Date:From;
-        b=FMc+w+gf7P1GiCySSc4erFIiTujZ4kop3vcHYUX2gFuUS170V31br0JigVd3d2RER
-         gpwMOJYYXJc+Wx26QDuxVUWkyHqE1diK/dAw51lHwsz9HOjPF1uuJeSIIcumBtKlJO
-         Z+Cib+3BU7Vvofl1MkoVIt67u9WQVNTs9mlNNNe0=
-From:   Krzysztof Kozlowski <krzk@kernel.org>
-To:     Jiri Slaby <jirislaby@gmail.com>,
-        Nick Kossifidis <mickflemm@gmail.com>,
-        Luis Chamberlain <mcgrof@kernel.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     Krzysztof Kozlowski <krzk@kernel.org>
-Subject: [PATCH] ath5k: Add proper dependency for ATH5K_AHB
-Date:   Mon, 24 Feb 2020 19:24:47 +0100
-Message-Id: <20200224182447.4054-1-krzk@kernel.org>
-X-Mailer: git-send-email 2.17.1
+        id S1727745AbgBXS0w (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 24 Feb 2020 13:26:52 -0500
+Received: from s3.sipsolutions.net ([144.76.43.62]:41740 "EHLO
+        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727426AbgBXS0w (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 24 Feb 2020 13:26:52 -0500
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.93)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1j6IRO-007MRm-5Q; Mon, 24 Feb 2020 19:26:50 +0100
+Message-ID: <53190ece697ab7d9e83fdd667eaf9e05a4418193.camel@sipsolutions.net>
+Subject: Re: [PATCH 1/2] Revert "mac80211: support
+ NL80211_EXT_FEATURE_CONTROL_PORT_OVER_NL80211_MAC_ADDRS"
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Denis Kenzior <denkenz@gmail.com>, linux-wireless@vger.kernel.org
+Cc:     Markus Theil <markus.theil@tu-ilmenau.de>
+Date:   Mon, 24 Feb 2020 19:26:48 +0100
+In-Reply-To: <c9fba32a-6959-a93a-3119-23915053538c@gmail.com> (sfid-20200224_181217_804461_2C765211)
+References: <20200224101910.b87da63a3cd6.Ic94bc51a370c4aa7d19fbca9b96d90ab703257dc@changeid>
+         <c9fba32a-6959-a93a-3119-23915053538c@gmail.com>
+         (sfid-20200224_181217_804461_2C765211)
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.34.2 (3.34.2-1.fc31) 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The CONFIG_ATH5K_AHB could be enabled on ATH25 system without enabling
-ATH5K driver itself.  This does not make sense because CONFIG_ATH5K_AHB
-controls object build within drivers/net/wireless/ath/ath5k/ so enabling
-it without CONFIG_ATH5K brings nothing.
+On Mon, 2020-02-24 at 10:56 -0600, Denis Kenzior wrote:
 
-Add proper dependency to CONFIG_ATH5K_AHB.
+> So to me this patch set seemed like a good idea...  We (iwd) don't have 
+> plans to support pre-auth in AP mode in the near future, so this revert 
+> doesn't really affect us.  I do wonder what is the actual concern to 
+> warrant a revert?
 
-Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
----
- drivers/net/wireless/ath/ath5k/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+These are two entirely different things, preauth is simply real data as
+far as the local system is concerned. It's not related to controlled
+port operation at all, which this nl80211 API is about.
 
-diff --git a/drivers/net/wireless/ath/ath5k/Kconfig b/drivers/net/wireless/ath/ath5k/Kconfig
-index 802f8f87773a..96010d4b00e7 100644
---- a/drivers/net/wireless/ath/ath5k/Kconfig
-+++ b/drivers/net/wireless/ath/ath5k/Kconfig
-@@ -54,7 +54,7 @@ config ATH5K_TRACER
- 
- config ATH5K_AHB
- 	bool "Atheros 5xxx AHB bus support"
--	depends on ATH25
-+	depends on ATH25 && ATH5K
- 	---help---
- 	  This adds support for WiSoC type chipsets of the 5xxx Atheros
- 	  family.
--- 
-2.17.1
+FWIW, you may have seen Markus's patch to remove preauth from the RX as
+well, this won't work as is, but I'm still a bit on the fence as to
+whether I'll force you into the right model or not (i.e. clear the
+existing capability bit in mac80211, and introduce a new one that
+doesn't report preauth over nl80211). For RX, however, the difference
+isn't really that much of a big deal, so maybe just make it optional.
+
+johannes
 
