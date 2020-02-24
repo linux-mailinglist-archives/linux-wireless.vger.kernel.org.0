@@ -2,80 +2,83 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E5A816AF72
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Feb 2020 19:41:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0DFC516AFA0
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Feb 2020 19:47:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728072AbgBXSlO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 24 Feb 2020 13:41:14 -0500
-Received: from s3.sipsolutions.net ([144.76.43.62]:42230 "EHLO
+        id S1728068AbgBXSrd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 24 Feb 2020 13:47:33 -0500
+Received: from s3.sipsolutions.net ([144.76.43.62]:42446 "EHLO
         sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728039AbgBXSlN (ORCPT
+        with ESMTP id S1727797AbgBXSrd (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 24 Feb 2020 13:41:13 -0500
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        Mon, 24 Feb 2020 13:47:33 -0500
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.93)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1j6IfH-007OIg-Sq; Mon, 24 Feb 2020 19:41:11 +0100
+        id 1j6IlP-007P93-3k; Mon, 24 Feb 2020 19:47:31 +0100
+Message-ID: <1a56c641eaa03c99dc9a90208902d8bb1ca1b0aa.camel@sipsolutions.net>
+Subject: Re: [PATCH 1/2] Revert "mac80211: support
+ NL80211_EXT_FEATURE_CONTROL_PORT_OVER_NL80211_MAC_ADDRS"
 From:   Johannes Berg <johannes@sipsolutions.net>
-To:     netdev@vger.kernel.org
-Cc:     linux-wireless@vger.kernel.org
-Subject: pull-request: mac80211 2020-02-24
-Date:   Mon, 24 Feb 2020 19:41:07 +0100
-Message-Id: <20200224184108.82737-1-johannes@sipsolutions.net>
-X-Mailer: git-send-email 2.24.1
+To:     Denis Kenzior <denkenz@gmail.com>, linux-wireless@vger.kernel.org
+Cc:     Markus Theil <markus.theil@tu-ilmenau.de>
+Date:   Mon, 24 Feb 2020 19:47:29 +0100
+In-Reply-To: <6e723a78-db68-8ffb-986a-4a3961107f72@gmail.com> (sfid-20200224_194137_572776_5E2EB1D1)
+References: <20200224101910.b87da63a3cd6.Ic94bc51a370c4aa7d19fbca9b96d90ab703257dc@changeid>
+         <c9fba32a-6959-a93a-3119-23915053538c@gmail.com>
+         <53190ece697ab7d9e83fdd667eaf9e05a4418193.camel@sipsolutions.net>
+         <6e723a78-db68-8ffb-986a-4a3961107f72@gmail.com>
+         (sfid-20200224_194137_572776_5E2EB1D1)
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.34.2 (3.34.2-1.fc31) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Dave,
+On Mon, 2020-02-24 at 12:26 -0600, Denis Kenzior wrote:
 
-And in addition, I also have a couple of fixes for net.
+> > These are two entirely different things, preauth is simply real data as
+> > far as the local system is concerned. It's not related to controlled
+> > port operation at all, which this nl80211 API is about.
+> 
+> I can understand this argument, but from what I remember, one of the 
+> goals of the control port API was to make this legacy 'special data 
+> packet' processing unnecessary for userspace.  In other words userspace 
+> wouldn't need to establish raw sockets.  Hence my question, what is the 
+> actual concern here?
 
-Please pull and let me know if there's any problem.
+That's a question of how you define "special data packet processing"...
+You're defining it purely in terms of the mechanics of how you handle
+them, but that's not really the point.
 
-Thanks,
+Preauth frames are _not_ special. They're entirely regular data packets
+as far as wifi is concerned.
+
+What _is_ special is EAPOL packets, because you may need to control
+their encryption, know if they were ACKed, etc.
+
+> > FWIW, you may have seen Markus's patch to remove preauth from the RX as
+> > well, this won't work as is, but I'm still a bit on the fence as to
+> > whether I'll force you into the right model or not (i.e. clear the
+> > existing capability bit in mac80211, and introduce a new one that
+> > doesn't report preauth over nl80211). For RX, however, the difference
+> > isn't really that much of a big deal, so maybe just make it optional.
+> 
+> We're actually quite happy with the current model.  So I'd like to keep 
+> things as they are.
+
+I concede that on RX, there isn't actually really a _problem_, although
+it's really strange to transport what really is just data frames (from a
+wifi POV) over a control path ...
+
+Depending on how much complexity it adds in the kernel (I've not tried
+to fix that today) I guess we can keep this. I'd _prefer_ not to, but I
+guess I cannot convince you that the preauth model is wrong, and -
+mostly as a sign of how much you've worn me down - I'll probably just
+keep it.
+
 johannes
-
-
-
-The following changes since commit 36a44bcdd8df092d76c11bc213e81c5817d4e302:
-
-  Merge branch 'bnxt_en-shutdown-and-kexec-kdump-related-fixes' (2020-02-20 16:05:42 -0800)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211.git tags/mac80211-for-net-2020-02-24
-
-for you to fetch changes up to 253216ffb2a002a682c6f68bd3adff5b98b71de8:
-
-  mac80211: rx: avoid RCU list traversal under mutex (2020-02-24 10:42:38 +0100)
-
-----------------------------------------------------------------
-A few fixes:
- * remove a double mutex-unlock
- * fix a leak in an error path
- * NULL pointer check
- * include if_vlan.h where needed
- * avoid RCU list traversal when not under RCU
-
-----------------------------------------------------------------
-Andrei Otcheretianski (1):
-      mac80211: Remove a redundant mutex unlock
-
-Johannes Berg (3):
-      nl80211: fix potential leak in AP start
-      cfg80211: check reg_rule for NULL in handle_channel_custom()
-      nl80211: explicitly include if_vlan.h
-
-Madhuparna Bhowmik (1):
-      mac80211: rx: avoid RCU list traversal under mutex
-
- net/mac80211/mlme.c    | 6 +-----
- net/mac80211/rx.c      | 2 +-
- net/wireless/nl80211.c | 5 +++--
- net/wireless/reg.c     | 2 +-
- 4 files changed, 6 insertions(+), 9 deletions(-)
 
