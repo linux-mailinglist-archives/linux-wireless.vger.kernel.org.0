@@ -2,54 +2,89 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 56F8916A6DA
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Feb 2020 14:07:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6157C16ACBA
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Feb 2020 18:12:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727501AbgBXNHp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 24 Feb 2020 08:07:45 -0500
-Received: from s3.sipsolutions.net ([144.76.43.62]:33830 "EHLO
-        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726778AbgBXNHp (ORCPT
+        id S1727460AbgBXRMS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 24 Feb 2020 12:12:18 -0500
+Received: from mail-oi1-f194.google.com ([209.85.167.194]:44493 "EHLO
+        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727359AbgBXRMS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 24 Feb 2020 08:07:45 -0500
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.93)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1j6DSZ-006e6Y-An; Mon, 24 Feb 2020 14:07:43 +0100
-Message-ID: <4b59dd1ea3e84b6508f625fe8479c9aa634658eb.camel@sipsolutions.net>
-Subject: Re: [PATCHv10 0/6] cfg80211/mac80211: Add support for TID specific
- configuration
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Tamizh Chelvam <tamizhr@codeaurora.org>
-Cc:     linux-wireless@vger.kernel.org
-Date:   Mon, 24 Feb 2020 14:07:42 +0100
-In-Reply-To: <b4771f673d785d7c73564f30a272062860b9d7c6.camel@sipsolutions.net> (sfid-20200224_135827_644822_9A3B179E)
-References: <1579506687-18296-1-git-send-email-tamizhr@codeaurora.org>
-         <b4771f673d785d7c73564f30a272062860b9d7c6.camel@sipsolutions.net>
-         (sfid-20200224_135827_644822_9A3B179E)
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.2 (3.34.2-1.fc31) 
+        Mon, 24 Feb 2020 12:12:18 -0500
+Received: by mail-oi1-f194.google.com with SMTP id d62so9622672oia.11
+        for <linux-wireless@vger.kernel.org>; Mon, 24 Feb 2020 09:12:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=D+GNuxHUjS1OhTeWUDOCxGd3U/53gljl7oUhXw24H0I=;
+        b=f7fb43DqDz9qnbeVe2H2n/FsvSMFdvJjNW1n2odYLX2kcji3SPgifqGCSTBvCjR1v0
+         HSzeBsGRgxiNJehbEBJghJ21Pd9DoyKENjpOeiWKg5VgMQRACjn+HgvmR52soISMcPCr
+         7ANvwhfgp31sMKpHA87aylRX7CuSKwCWXYx08JjlJfjbnRh8cND2jb35/WMLClXRp/UB
+         p8A7UpqPqY5SesIMH2ad+HY3nHfLPE6cB7SyXuRTdmxI/B5Qi4UZf0Exm0GVe9oaVGXu
+         bfApgwd+l4sOLxLaovGgiHkvlWoXRa4rQbPYxzKxs0tQ/QpR758tQwv+T5GXA/EcGBCt
+         qEGw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=D+GNuxHUjS1OhTeWUDOCxGd3U/53gljl7oUhXw24H0I=;
+        b=uI0igyoU0ZHMqoeULIm1OtYd2lS0HoXkRbQ3kNjAsphuiB0LiXZUD5KbpDZ6Yq2S7d
+         RYG2qi6VLhCuFCztnBzWeqlU+UjmdEf73QVBaV/k1KQ9Loy6BOyCdnTefD+KY5Ii7dwN
+         IAmAjjTf6TG674qwZhuStxafnQpZxinHxMGPpgbC7og/qtOX9NfMkYqlGiBAA9Tt/lfk
+         VjEhn/8rPO4SCUJ6Q7k2gQfYnRVJWW2oPx7BqxFSgVkG1y1H9+iWAFcDmCZ58Xw6XmtL
+         qYb8ZWwYugLHx+Cw3VSomzDtMwO6RUU+Fnrh7W1+CVI4Gcj42JIFeiEl+uP+TMWXURni
+         83yg==
+X-Gm-Message-State: APjAAAW7BTdNwTUyR4rpuOF62O4x2Dp6AxeEEsKKyd1VqmdCT/vwxUf6
+        nQB2ofMWMCTihJbrZMDnQIJ/d2ZO
+X-Google-Smtp-Source: APXvYqyvZ4yPOrCoCNYLWrOF1mkqenY2K3UNiKzNTbX4I7B6mTS64dSwLqLBR3jD51oM/0jee+E0RQ==
+X-Received: by 2002:aca:120e:: with SMTP id 14mr26880ois.135.1582564336069;
+        Mon, 24 Feb 2020 09:12:16 -0800 (PST)
+Received: from [192.168.1.249] (cpe-70-114-247-242.austin.res.rr.com. [70.114.247.242])
+        by smtp.googlemail.com with ESMTPSA id w20sm4593482otj.21.2020.02.24.09.12.14
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 24 Feb 2020 09:12:15 -0800 (PST)
+Subject: Re: [PATCH 1/2] Revert "mac80211: support
+ NL80211_EXT_FEATURE_CONTROL_PORT_OVER_NL80211_MAC_ADDRS"
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless@vger.kernel.org
+Cc:     Markus Theil <markus.theil@tu-ilmenau.de>,
+        Johannes Berg <johannes.berg@intel.com>
+References: <20200224101910.b87da63a3cd6.Ic94bc51a370c4aa7d19fbca9b96d90ab703257dc@changeid>
+From:   Denis Kenzior <denkenz@gmail.com>
+Message-ID: <c9fba32a-6959-a93a-3119-23915053538c@gmail.com>
+Date:   Mon, 24 Feb 2020 10:56:43 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
+In-Reply-To: <20200224101910.b87da63a3cd6.Ic94bc51a370c4aa7d19fbca9b96d90ab703257dc@changeid>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 2020-02-24 at 13:58 +0100, Johannes Berg wrote:
-> Hi,
-> 
-> I've finally applied most of this.
-> 
-> However, I made some significant changes to how the feature is
-> advertised to userspace to simplify the code; I also made some other
-> changes all over, please check the patch I inserted in the middle and
-> the rebase of the others.
-> 
-> I also didn't apply the last patch 
+Hi Johannes,
 
-Oops, I meant patch 5, the last of the new features.
+On 2/24/20 3:19 AM, Johannes Berg wrote:
+> As Jouni points out, there's really no need for this, since the
+> RSN pre-authentication frames are normal data frames, not port
+> control frames (locally).
 
-johannes
+Using control port for pre-auth frame TX/RX allows userspace to skip 
+setting up a raw socket and associated bpf filters.  This greatly 
+simplifies the rx/tx path and uses less resources as well.
+
+So to me this patch set seemed like a good idea...  We (iwd) don't have 
+plans to support pre-auth in AP mode in the near future, so this revert 
+doesn't really affect us.  I do wonder what is the actual concern to 
+warrant a revert?
+
+Regards,
+-Denis
 
 
