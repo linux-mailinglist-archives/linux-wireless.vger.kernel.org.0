@@ -2,23 +2,23 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BF20B16B781
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Feb 2020 03:04:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B5F6A16B7BA
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Feb 2020 03:27:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728583AbgBYCEL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 24 Feb 2020 21:04:11 -0500
-Received: from gateway20.websitewelcome.com ([192.185.67.41]:31809 "EHLO
-        gateway20.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728011AbgBYCEK (ORCPT
+        id S1728843AbgBYC1U (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 24 Feb 2020 21:27:20 -0500
+Received: from gateway21.websitewelcome.com ([192.185.45.38]:27937 "EHLO
+        gateway21.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726962AbgBYC1T (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 24 Feb 2020 21:04:10 -0500
-X-Greylist: delayed 1500 seconds by postgrey-1.27 at vger.kernel.org; Mon, 24 Feb 2020 21:04:10 EST
+        Mon, 24 Feb 2020 21:27:19 -0500
+X-Greylist: delayed 1550 seconds by postgrey-1.27 at vger.kernel.org; Mon, 24 Feb 2020 21:27:18 EST
 Received: from cm12.websitewelcome.com (cm12.websitewelcome.com [100.42.49.8])
-        by gateway20.websitewelcome.com (Postfix) with ESMTP id 3C2C5400C4CF2
-        for <linux-wireless@vger.kernel.org>; Mon, 24 Feb 2020 18:00:07 -0600 (CST)
+        by gateway21.websitewelcome.com (Postfix) with ESMTP id 82547400CCC78
+        for <linux-wireless@vger.kernel.org>; Mon, 24 Feb 2020 20:01:28 -0600 (CST)
 Received: from gator4166.hostgator.com ([108.167.133.22])
         by cmsmtp with SMTP
-        id 6OnljjJs7vBMd6OnljfSbj; Mon, 24 Feb 2020 19:14:21 -0600
+        id 6PXMjk2SvvBMd6PXMjgAn6; Mon, 24 Feb 2020 20:01:28 -0600
 X-Authority-Reason: nr=8
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=embeddedor.com; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
@@ -26,26 +26,30 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
         :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
         List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=mgdZsrA1WaP1VFkgXWleWTQSkyBW12WU43wlKGK1Mek=; b=MzQWfuTDQ8qn/8fc6G5HG31Hqj
-        a3i4dkHukioCThB0n3AGbMFj6r5SKwNVG0mCcHBMWzS7XHpnlC/6HLl7vz7TAusR8acrIilDNYiu+
-        Jl7joiIHUEDok6C0JdOX0m0tKetJG7QpsqErmrAPk3yJweMpv8KgzgCRyC16dGbB3nV8eBBfSvjpU
-        LElPIek4Q0kEWLlh69NpxpRruq/EMvPeDfbcf0DgJA99IDJvb35E5x3fFEEbsOPnKywdwUNnQx8wi
-        jSk3kb1QY3JJ7pd1n9CY7u2h5hTFiQBfWXg44T4kZ9AQYwcLWBtePmrKKwi0hU7lIdlpPdBXJN6kc
-        W+zf4xeQ==;
-Received: from [201.166.190.58] (port=58548 helo=embeddedor)
+        bh=CAn5pDJV+AMTxsAdNdv7kJ+v+KzqRtAypQ/6vJnaxYE=; b=m/153pWvdVNLv1zr5ddardWVm0
+        tuQ0DfFixZxbnmEfvh6CrgntJWM1xsleuJWAvdFXXoqb5CRsf59OJcUFJNM9SLHHkHnYapFPHdt2b
+        CSTAdeooKq7voKjhGPr6BxNYrqrTitLzDEtpoz0G/5+fLQ5CEIBm+65Wo6gdWzQTcl8pybFbeeIl9
+        AmT5M6TcbBJAf/JWs2+5EitCap4fAI1c1bMPUUYilV1UARxXDfxRQwhw2yOAibN42zLXGS/7BMFZX
+        wgfuJyYGzTviXWuBf9F4YQS/Lvd+0xdbiKKzMDiFXWofyW/+0M0tEBcMpZJdDvfj8OiBueVMpCPSz
+        /ra9HvKg==;
+Received: from [201.166.191.17] (port=60526 helo=embeddedor)
         by gator4166.hostgator.com with esmtpa (Exim 4.92)
         (envelope-from <gustavo@embeddedor.com>)
-        id 1j6Onk-002tqM-5a; Mon, 24 Feb 2020 19:14:20 -0600
-Date:   Mon, 24 Feb 2020 19:17:09 -0600
+        id 1j6PXI-003Ffv-5c; Mon, 24 Feb 2020 20:01:25 -0600
+Date:   Mon, 24 Feb 2020 20:04:13 -0600
 From:   "Gustavo A. R. Silva" <gustavo@embeddedor.com>
 To:     Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>
-Cc:     libertas-dev@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        "David S. Miller" <davem@davemloft.net>,
+        Amitkumar Karwar <amitkarwar@gmail.com>,
+        Ganapathi Bhat <ganapathi.bhat@nxp.com>,
+        Xinming Hu <huxinming820@gmail.com>,
+        Lennert Buytenhek <buytenh@wantstofly.org>
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
         "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-Subject: [PATCH][next] libertas: Replace zero-length array with
+Subject: [PATCH][next] wireless: marvell: Replace zero-length array with
  flexible-array member
-Message-ID: <20200225011709.GA601@embeddedor>
+Message-ID: <20200225020413.GA8057@embeddedor>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -56,15 +60,15 @@ X-AntiAbuse: Original Domain - vger.kernel.org
 X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
 X-AntiAbuse: Sender Address Domain - embeddedor.com
 X-BWhitelist: no
-X-Source-IP: 201.166.190.58
+X-Source-IP: 201.166.191.17
 X-Source-L: No
-X-Exim-ID: 1j6Onk-002tqM-5a
+X-Exim-ID: 1j6PXI-003Ffv-5c
 X-Source: 
 X-Source-Args: 
 X-Source-Dir: 
-X-Source-Sender: (embeddedor) [201.166.190.58]:58548
+X-Source-Sender: (embeddedor) [201.166.191.17]:60526
 X-Source-Auth: gustavo@embeddedor.com
-X-Email-Count: 15
+X-Email-Count: 7
 X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
 X-Local-Domain: yes
 Sender: linux-wireless-owner@vger.kernel.org
@@ -102,65 +106,16 @@ This issue was found with the help of Coccinelle.
 
 Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
 ---
- drivers/net/wireless/marvell/libertas/host.h    | 4 ++--
- drivers/net/wireless/marvell/libertas/if_sdio.c | 2 +-
- drivers/net/wireless/marvell/libertas/if_spi.c  | 2 +-
- drivers/net/wireless/marvell/libertas/if_usb.h  | 2 +-
- 4 files changed, 5 insertions(+), 5 deletions(-)
+ .../net/wireless/marvell/libertas_tf/if_usb.h |  2 +-
+ drivers/net/wireless/marvell/mwifiex/fw.h     | 40 +++++++++----------
+ drivers/net/wireless/marvell/mwl8k.c          |  6 +--
+ 3 files changed, 24 insertions(+), 24 deletions(-)
 
-diff --git a/drivers/net/wireless/marvell/libertas/host.h b/drivers/net/wireless/marvell/libertas/host.h
-index a4fc3f79bb17..dfa22468b14a 100644
---- a/drivers/net/wireless/marvell/libertas/host.h
-+++ b/drivers/net/wireless/marvell/libertas/host.h
-@@ -461,7 +461,7 @@ struct cmd_ds_802_11_scan {
- 
- 	uint8_t bsstype;
- 	uint8_t bssid[ETH_ALEN];
--	uint8_t tlvbuffer[0];
-+	uint8_t tlvbuffer[];
- } __packed;
- 
- struct cmd_ds_802_11_scan_rsp {
-@@ -469,7 +469,7 @@ struct cmd_ds_802_11_scan_rsp {
- 
- 	__le16 bssdescriptsize;
- 	uint8_t nr_sets;
--	uint8_t bssdesc_and_tlvbuffer[0];
-+	uint8_t bssdesc_and_tlvbuffer[];
- } __packed;
- 
- struct cmd_ds_802_11_get_log {
-diff --git a/drivers/net/wireless/marvell/libertas/if_sdio.c b/drivers/net/wireless/marvell/libertas/if_sdio.c
-index 30f1025ecb9b..acf61b93b782 100644
---- a/drivers/net/wireless/marvell/libertas/if_sdio.c
-+++ b/drivers/net/wireless/marvell/libertas/if_sdio.c
-@@ -103,7 +103,7 @@ MODULE_FIRMWARE("sd8688.bin");
- struct if_sdio_packet {
- 	struct if_sdio_packet	*next;
- 	u16			nb;
--	u8			buffer[0] __attribute__((aligned(4)));
-+	u8			buffer[] __aligned(4);
- };
- 
- struct if_sdio_card {
-diff --git a/drivers/net/wireless/marvell/libertas/if_spi.c b/drivers/net/wireless/marvell/libertas/if_spi.c
-index d07fe82c557e..3625baa66d3e 100644
---- a/drivers/net/wireless/marvell/libertas/if_spi.c
-+++ b/drivers/net/wireless/marvell/libertas/if_spi.c
-@@ -35,7 +35,7 @@
- struct if_spi_packet {
- 	struct list_head		list;
- 	u16				blen;
--	u8				buffer[0] __attribute__((aligned(4)));
-+	u8				buffer[] __aligned(4);
- };
- 
- struct if_spi_card {
-diff --git a/drivers/net/wireless/marvell/libertas/if_usb.h b/drivers/net/wireless/marvell/libertas/if_usb.h
-index 8dc14bec3e16..7d0daeb33c3f 100644
---- a/drivers/net/wireless/marvell/libertas/if_usb.h
-+++ b/drivers/net/wireless/marvell/libertas/if_usb.h
-@@ -91,7 +91,7 @@ struct fwheader {
+diff --git a/drivers/net/wireless/marvell/libertas_tf/if_usb.h b/drivers/net/wireless/marvell/libertas_tf/if_usb.h
+index 585ad36f9055..f6dd7373b09e 100644
+--- a/drivers/net/wireless/marvell/libertas_tf/if_usb.h
++++ b/drivers/net/wireless/marvell/libertas_tf/if_usb.h
+@@ -81,7 +81,7 @@ struct fwheader {
  struct fwdata {
  	struct fwheader hdr;
  	__le32 seqnum;
@@ -168,7 +123,212 @@ index 8dc14bec3e16..7d0daeb33c3f 100644
 +	uint8_t data[];
  };
  
- /* fwsyncheader */
+ /** fwsyncheader */
+diff --git a/drivers/net/wireless/marvell/mwifiex/fw.h b/drivers/net/wireless/marvell/mwifiex/fw.h
+index 4dfdf928f705..a415d73a73e6 100644
+--- a/drivers/net/wireless/marvell/mwifiex/fw.h
++++ b/drivers/net/wireless/marvell/mwifiex/fw.h
+@@ -846,7 +846,7 @@ struct mwifiex_ie_types_random_mac {
+ 
+ struct mwifiex_ietypes_chanstats {
+ 	struct mwifiex_ie_types_header header;
+-	struct mwifiex_fw_chan_stats chanstats[0];
++	struct mwifiex_fw_chan_stats chanstats[];
+ } __packed;
+ 
+ struct mwifiex_ie_types_wildcard_ssid_params {
+@@ -1082,7 +1082,7 @@ struct host_cmd_ds_get_hw_spec {
+ 	__le32 reserved_6;
+ 	__le32 dot_11ac_dev_cap;
+ 	__le32 dot_11ac_mcs_support;
+-	u8 tlvs[0];
++	u8 tlvs[];
+ } __packed;
+ 
+ struct host_cmd_ds_802_11_rssi_info {
+@@ -1140,7 +1140,7 @@ struct ieee_types_assoc_rsp {
+ 	__le16 cap_info_bitmap;
+ 	__le16 status_code;
+ 	__le16 a_id;
+-	u8 ie_buffer[0];
++	u8 ie_buffer[];
+ } __packed;
+ 
+ struct host_cmd_ds_802_11_associate_rsp {
+@@ -1455,7 +1455,7 @@ struct host_cmd_ds_chan_rpt_event {
+ 	__le32 result;
+ 	__le64 start_tsf;
+ 	__le32 duration;
+-	u8 tlvbuf[0];
++	u8 tlvbuf[];
+ } __packed;
+ 
+ struct host_cmd_sdio_sp_rx_aggr_cfg {
+@@ -1625,7 +1625,7 @@ struct host_cmd_ds_802_11_bg_scan_config {
+ 	__le32 reserved2;
+ 	__le32 report_condition;
+ 	__le16 reserved3;
+-	u8 tlv[0];
++	u8 tlv[];
+ } __packed;
+ 
+ struct host_cmd_ds_802_11_bg_scan_query {
+@@ -1720,7 +1720,7 @@ struct mwifiex_ie_types_sta_info {
+ 
+ struct host_cmd_ds_sta_list {
+ 	__le16 sta_count;
+-	u8 tlv[0];
++	u8 tlv[];
+ } __packed;
+ 
+ struct mwifiex_ie_types_pwr_capability {
+@@ -1743,7 +1743,7 @@ struct mwifiex_ie_types_wmm_param_set {
+ struct mwifiex_ie_types_mgmt_frame {
+ 	struct mwifiex_ie_types_header header;
+ 	__le16 frame_control;
+-	u8 frame_contents[0];
++	u8 frame_contents[];
+ };
+ 
+ struct mwifiex_ie_types_wmm_queue_status {
+@@ -1861,7 +1861,7 @@ struct mwifiex_ie_types_2040bssco {
+ 
+ struct mwifiex_ie_types_extcap {
+ 	struct mwifiex_ie_types_header header;
+-	u8 ext_capab[0];
++	u8 ext_capab[];
+ } __packed;
+ 
+ struct host_cmd_ds_mem_access {
+@@ -1918,12 +1918,12 @@ struct mwifiex_assoc_event {
+ 	__le16 frame_control;
+ 	__le16 cap_info;
+ 	__le16 listen_interval;
+-	u8 data[0];
++	u8 data[];
+ } __packed;
+ 
+ struct host_cmd_ds_sys_config {
+ 	__le16 action;
+-	u8 tlv[0];
++	u8 tlv[];
+ };
+ 
+ struct host_cmd_11ac_vht_cfg {
+@@ -1956,7 +1956,7 @@ struct host_cmd_tlv_gwk_cipher {
+ 
+ struct host_cmd_tlv_passphrase {
+ 	struct mwifiex_ie_types_header header;
+-	u8 passphrase[0];
++	u8 passphrase[];
+ } __packed;
+ 
+ struct host_cmd_tlv_wep_key {
+@@ -1978,12 +1978,12 @@ struct host_cmd_tlv_encrypt_protocol {
+ 
+ struct host_cmd_tlv_ssid {
+ 	struct mwifiex_ie_types_header header;
+-	u8 ssid[0];
++	u8 ssid[];
+ } __packed;
+ 
+ struct host_cmd_tlv_rates {
+ 	struct mwifiex_ie_types_header header;
+-	u8 rates[0];
++	u8 rates[];
+ } __packed;
+ 
+ struct mwifiex_ie_types_bssid_list {
+@@ -2100,13 +2100,13 @@ struct mwifiex_fw_mef_entry {
+ 	u8 mode;
+ 	u8 action;
+ 	__le16 exprsize;
+-	u8 expr[0];
++	u8 expr[];
+ } __packed;
+ 
+ struct host_cmd_ds_mef_cfg {
+ 	__le32 criteria;
+ 	__le16 num_entries;
+-	struct mwifiex_fw_mef_entry mef_entry[0];
++	struct mwifiex_fw_mef_entry mef_entry[];
+ } __packed;
+ 
+ #define CONNECTION_TYPE_INFRA   0
+@@ -2169,7 +2169,7 @@ struct mwifiex_radar_det_event {
+ struct mwifiex_ie_types_multi_chan_info {
+ 	struct mwifiex_ie_types_header header;
+ 	__le16 status;
+-	u8 tlv_buffer[0];
++	u8 tlv_buffer[];
+ } __packed;
+ 
+ struct mwifiex_ie_types_mc_group_info {
+@@ -2185,7 +2185,7 @@ struct mwifiex_ie_types_mc_group_info {
+ 		u8 usb_ep_num;
+ 	} hid_num;
+ 	u8 intf_num;
+-	u8 bss_type_numlist[0];
++	u8 bss_type_numlist[];
+ } __packed;
+ 
+ struct meas_rpt_map {
+@@ -2250,13 +2250,13 @@ struct coalesce_receive_filt_rule {
+ 	u8 num_of_fields;
+ 	u8 pkt_type;
+ 	__le16 max_coalescing_delay;
+-	struct coalesce_filt_field_param params[0];
++	struct coalesce_filt_field_param params[];
+ } __packed;
+ 
+ struct host_cmd_ds_coalesce_cfg {
+ 	__le16 action;
+ 	__le16 num_of_rules;
+-	struct coalesce_receive_filt_rule rule[0];
++	struct coalesce_receive_filt_rule rule[];
+ } __packed;
+ 
+ struct host_cmd_ds_multi_chan_policy {
+@@ -2295,7 +2295,7 @@ struct host_cmd_ds_pkt_aggr_ctrl {
+ 
+ struct host_cmd_ds_sta_configure {
+ 	__le16 action;
+-	u8 tlv_buffer[0];
++	u8 tlv_buffer[];
+ } __packed;
+ 
+ struct host_cmd_ds_command {
+diff --git a/drivers/net/wireless/marvell/mwl8k.c b/drivers/net/wireless/marvell/mwl8k.c
+index d55f229abeea..47fb4b3ea004 100644
+--- a/drivers/net/wireless/marvell/mwl8k.c
++++ b/drivers/net/wireless/marvell/mwl8k.c
+@@ -592,7 +592,7 @@ struct mwl8k_cmd_pkt {
+ 	__u8	seq_num;
+ 	__u8	macid;
+ 	__le16	result;
+-	char	payload[0];
++	char	payload[];
+ } __packed;
+ 
+ /*
+@@ -806,7 +806,7 @@ static int mwl8k_load_firmware(struct ieee80211_hw *hw)
+ struct mwl8k_dma_data {
+ 	__le16 fwlen;
+ 	struct ieee80211_hdr wh;
+-	char data[0];
++	char data[];
+ } __packed;
+ 
+ /* Routines to add/remove DMA header from skb.  */
+@@ -2955,7 +2955,7 @@ mwl8k_cmd_rf_antenna(struct ieee80211_hw *hw, int antenna, int mask)
+ struct mwl8k_cmd_set_beacon {
+ 	struct mwl8k_cmd_pkt header;
+ 	__le16 beacon_len;
+-	__u8 beacon[0];
++	__u8 beacon[];
+ };
+ 
+ static int mwl8k_cmd_set_beacon(struct ieee80211_hw *hw,
 -- 
 2.25.0
 
