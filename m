@@ -2,55 +2,62 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 37EF516EE86
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Feb 2020 20:00:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 66F2916EF2E
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Feb 2020 20:40:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731227AbgBYTAf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 25 Feb 2020 14:00:35 -0500
-Received: from shards.monkeyblade.net ([23.128.96.9]:48664 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730080AbgBYTAf (ORCPT
+        id S1730953AbgBYTkU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 25 Feb 2020 14:40:20 -0500
+Received: from s3.sipsolutions.net ([144.76.43.62]:45628 "EHLO
+        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729510AbgBYTkU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 25 Feb 2020 14:00:35 -0500
-Received: from localhost (unknown [IPv6:2601:601:9f00:477::3d5])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 6A63413B3AC16;
-        Tue, 25 Feb 2020 11:00:34 -0800 (PST)
-Date:   Tue, 25 Feb 2020 11:00:33 -0800 (PST)
-Message-Id: <20200225.110033.2078372349210559509.davem@davemloft.net>
-To:     johannes@sipsolutions.net
+        Tue, 25 Feb 2020 14:40:20 -0500
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.93)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1j6g3y-00AX5g-Jj; Tue, 25 Feb 2020 20:40:14 +0100
+Message-ID: <c80d2bbae9606ae09746ad0d382b0b555f9987e3.camel@sipsolutions.net>
+Subject: Re: [RFC] wwan: add a new WWAN subsystem
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     David Miller <davem@davemloft.net>
 Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
         elder@linaro.org, m.chetan.kumar@intel.com, dcbw@redhat.com,
-        bjorn.andersson@linaro.org, johannes.berg@intel.com
-Subject: Re: [RFC] wwan: add a new WWAN subsystem
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20200225105149.59963c95aa29.Id0e40565452d0d5bb9ce5cc00b8755ec96db8559@changeid>
+        bjorn.andersson@linaro.org
+Date:   Tue, 25 Feb 2020 20:40:12 +0100
+In-Reply-To: <20200225.110033.2078372349210559509.davem@davemloft.net>
 References: <20200225100053.16385-1-johannes@sipsolutions.net>
-        <20200225105149.59963c95aa29.Id0e40565452d0d5bb9ce5cc00b8755ec96db8559@changeid>
-X-Mailer: Mew version 6.8 on Emacs 26.1
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+         <20200225105149.59963c95aa29.Id0e40565452d0d5bb9ce5cc00b8755ec96db8559@changeid>
+         <20200225.110033.2078372349210559509.davem@davemloft.net>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.34.2 (3.34.2-1.fc31) 
+MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Tue, 25 Feb 2020 11:00:34 -0800 (PST)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes@sipsolutions.net>
-Date: Tue, 25 Feb 2020 11:00:53 +0100
+On Tue, 2020-02-25 at 11:00 -0800, David Miller wrote:
+> From: Johannes Berg <johannes@sipsolutions.net>
+> Date: Tue, 25 Feb 2020 11:00:53 +0100
+> 
+> > +static struct wwan_device *wwan_create(struct device *dev)
+> > +{
+> > +     struct wwan_device *wwan = kzalloc(sizeof(*wwan), GFP_KERNEL);
+> > +     u32 id = ++wwan_id_counter;
+> > +     int err;
+> > +
+> > +     lockdep_assert_held(&wwan_mtx);
+> > +
+> > +     if (WARN_ON(!id))
+> > +             return ERR_PTR(-ENOSPC);
+> 
+> This potentially leaks 'wwan'.
 
-> +static struct wwan_device *wwan_create(struct device *dev)
-> +{
-> +	struct wwan_device *wwan = kzalloc(sizeof(*wwan), GFP_KERNEL);
-> +	u32 id = ++wwan_id_counter;
-> +	int err;
-> +
-> +	lockdep_assert_held(&wwan_mtx);
-> +
-> +	if (WARN_ON(!id))
-> +		return ERR_PTR(-ENOSPC);
+Eagle eyes ... thanks! :)
 
-This potentially leaks 'wwan'.
+I suppose this will be totally different if I can integrate with the
+component device stuff somehow, will see.
+
+johannes
+
