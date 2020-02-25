@@ -2,22 +2,23 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4261016B6A3
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Feb 2020 01:25:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A9B316B6ED
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Feb 2020 01:53:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728464AbgBYAZC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 24 Feb 2020 19:25:02 -0500
-Received: from gateway32.websitewelcome.com ([192.185.145.122]:49100 "EHLO
-        gateway32.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726751AbgBYAZB (ORCPT
+        id S1728669AbgBYAxc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 24 Feb 2020 19:53:32 -0500
+Received: from gateway36.websitewelcome.com ([192.185.196.23]:46933 "EHLO
+        gateway36.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727696AbgBYAxc (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 24 Feb 2020 19:25:01 -0500
-Received: from cm13.websitewelcome.com (cm13.websitewelcome.com [100.42.49.6])
-        by gateway32.websitewelcome.com (Postfix) with ESMTP id 62DD76983C6
-        for <linux-wireless@vger.kernel.org>; Mon, 24 Feb 2020 18:25:00 -0600 (CST)
+        Mon, 24 Feb 2020 19:53:32 -0500
+X-Greylist: delayed 1321 seconds by postgrey-1.27 at vger.kernel.org; Mon, 24 Feb 2020 19:53:31 EST
+Received: from cm16.websitewelcome.com (cm16.websitewelcome.com [100.42.49.19])
+        by gateway36.websitewelcome.com (Postfix) with ESMTP id 709BA400CA6FE
+        for <linux-wireless@vger.kernel.org>; Mon, 24 Feb 2020 17:46:13 -0600 (CST)
 Received: from gator4166.hostgator.com ([108.167.133.22])
         by cmsmtp with SMTP
-        id 6O20jhq5hRP4z6O20j6xHb; Mon, 24 Feb 2020 18:25:00 -0600
+        id 6O8Hjbw5H8vkB6O8HjXPhh; Mon, 24 Feb 2020 18:31:29 -0600
 X-Authority-Reason: nr=8
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=embeddedor.com; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
@@ -25,29 +26,26 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
         :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
         List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=StD8K7B/IbLHb+7gq2AVQ24d9PrxX4zRAlmjceGLxBI=; b=cef/4pH9Y7gkNa2Rujz7TwrUuz
-        ao2dsiqnIm0nORidRrr4/fvQ8RILopsIHSo7ARSdrOk05VwGXag8B6MtXnfeaaYqLBgD6djtps/0c
-        A/LJQv9eO0E6TXTo9JCPFPyzXu4ZHczCKsIh7pgRpnmHMn53qfYJ7iSXtaJc6mW/ZZpbR0d2El6sF
-        VstH3V3fOY61qg7nprMZvqzVNVkf54FB4jQZYVNSEBvw342NRGtX9uLSCu1HA2sG4g8FXvnwh4W0D
-        c4yBXY3CfKPmfJs0m5q+yJFguVmCdxz2EBJ8WcXBlHT3q57lZlQjW8quMCujZpGm5iRTuUpVJJU08
-        llHgKSIw==;
-Received: from [201.166.191.153] (port=54744 helo=embeddedor)
+        bh=+57+TZ+YS4fZoiEVbZiT3ANzLG4Ir1hQoUxGBfOF4M4=; b=sh51uhl5baRoJtHSTmrspjD2QJ
+        Ru1DDAERaQUgtBRxZld32WPyJwVT46uq1l+8Dm7ktFw8/+cR+HBNcpQqTrmfxn/I7t8b/mXhyebJh
+        gHHyc1h5/ES31UlOe69t8dHj7i/t766pPjoJY2KCBztNdeP5FMnuGwWJBon6cuWTa6vl0t2xkGhb3
+        VHzUpTqGZNbl8aF9+WAYd83VcHLdE71nAgWU6i6cs57sVllG1ntZZay8LOLuE6mz2ccNZ47wjYEbZ
+        EVVIFs/ZL+DpxGZcMFGxs1buz+JD2OegK3gY2/nautdm4Pg8ePmI1I8vKKNe7mSzWqzDCbaBQl6i+
+        rFBfrZIw==;
+Received: from [201.166.191.211] (port=54920 helo=embeddedor)
         by gator4166.hostgator.com with esmtpa (Exim 4.92)
         (envelope-from <gustavo@embeddedor.com>)
-        id 1j6O1x-002VtX-VX; Mon, 24 Feb 2020 18:24:58 -0600
-Date:   Mon, 24 Feb 2020 18:27:46 -0600
+        id 1j6O8F-002YvY-IY; Mon, 24 Feb 2020 18:31:27 -0600
+Date:   Mon, 24 Feb 2020 18:34:08 -0600
 From:   "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-To:     Jes Sorensen <Jes.Sorensen@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Ping-Ke Shih <pkshih@realtek.com>,
-        Yan-Hsuan Chuang <yhchuang@realtek.com>
+To:     Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>
 Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         linux-kernel@vger.kernel.org,
         "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-Subject: [PATCH][next] wireless: realtek: Replace zero-length array with
+Subject: [PATCH][next] wireless: ti: Replace zero-length array with
  flexible-array member
-Message-ID: <20200225002746.GA26789@embeddedor>
+Message-ID: <20200225003408.GA28675@embeddedor>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -58,15 +56,15 @@ X-AntiAbuse: Original Domain - vger.kernel.org
 X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
 X-AntiAbuse: Sender Address Domain - embeddedor.com
 X-BWhitelist: no
-X-Source-IP: 201.166.191.153
+X-Source-IP: 201.166.191.211
 X-Source-L: No
-X-Exim-ID: 1j6O1x-002VtX-VX
+X-Exim-ID: 1j6O8F-002YvY-IY
 X-Source: 
 X-Source-Args: 
 X-Source-Dir: 
-X-Source-Sender: (embeddedor) [201.166.191.153]:54744
+X-Source-Sender: (embeddedor) [201.166.191.211]:54920
 X-Source-Auth: gustavo@embeddedor.com
-X-Email-Count: 38
+X-Email-Count: 43
 X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
 X-Local-Domain: yes
 Sender: linux-wireless-owner@vger.kernel.org
@@ -104,80 +102,115 @@ This issue was found with the help of Coccinelle.
 
 Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
 ---
- drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h | 2 +-
- drivers/net/wireless/realtek/rtlwifi/wifi.h      | 6 +++---
- drivers/net/wireless/realtek/rtw88/fw.h          | 2 +-
- drivers/net/wireless/realtek/rtw88/main.h        | 2 +-
- 4 files changed, 6 insertions(+), 6 deletions(-)
+ drivers/net/wireless/ti/wl1251/cmd.h          | 4 ++--
+ drivers/net/wireless/ti/wl1251/wl12xx_80211.h | 2 +-
+ drivers/net/wireless/ti/wlcore/acx.h          | 2 +-
+ drivers/net/wireless/ti/wlcore/boot.h         | 2 +-
+ drivers/net/wireless/ti/wlcore/cmd.h          | 2 +-
+ drivers/net/wireless/ti/wlcore/conf.h         | 2 +-
+ drivers/net/wireless/ti/wlcore/wl12xx_80211.h | 2 +-
+ 7 files changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-index 6598c8d786ea..440d164443bc 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-@@ -627,7 +627,7 @@ struct rtl8xxxu_firmware_header {
- 	u32	reserved4;
- 	u32	reserved5;
+diff --git a/drivers/net/wireless/ti/wl1251/cmd.h b/drivers/net/wireless/ti/wl1251/cmd.h
+index 1c1a591c6055..e5874186f9d7 100644
+--- a/drivers/net/wireless/ti/wl1251/cmd.h
++++ b/drivers/net/wireless/ti/wl1251/cmd.h
+@@ -90,7 +90,7 @@ struct wl1251_cmd_header {
+ 	u16 id;
+ 	u16 status;
+ 	/* payload */
+-	u8 data[0];
++	u8 data[];
+ } __packed;
  
--	u8	data[0];
-+	u8	data[];
- };
+ struct  wl1251_command {
+@@ -281,7 +281,7 @@ struct wl1251_cmd_packet_template {
+ 	struct wl1251_cmd_header header;
  
- /*
-diff --git a/drivers/net/wireless/realtek/rtlwifi/wifi.h b/drivers/net/wireless/realtek/rtlwifi/wifi.h
-index 1cff9f07c9e9..13421cf2d201 100644
---- a/drivers/net/wireless/realtek/rtlwifi/wifi.h
-+++ b/drivers/net/wireless/realtek/rtlwifi/wifi.h
-@@ -1051,13 +1051,13 @@ struct rtl_hdr_3addr {
- 	u8 addr2[ETH_ALEN];
- 	u8 addr3[ETH_ALEN];
+ 	__le16 size;
+-	u8 data[0];
++	u8 data[];
+ } __packed;
+ 
+ #define TIM_ELE_ID    5
+diff --git a/drivers/net/wireless/ti/wl1251/wl12xx_80211.h b/drivers/net/wireless/ti/wl1251/wl12xx_80211.h
+index 7fabe702c4cc..7e28fe435b43 100644
+--- a/drivers/net/wireless/ti/wl1251/wl12xx_80211.h
++++ b/drivers/net/wireless/ti/wl1251/wl12xx_80211.h
+@@ -65,7 +65,7 @@ struct ieee80211_header {
+ 	u8 sa[ETH_ALEN];
+ 	u8 bssid[ETH_ALEN];
  	__le16 seq_ctl;
 -	u8 payload[0];
 +	u8 payload[];
  } __packed;
  
- struct rtl_info_element {
- 	u8 id;
- 	u8 len;
+ struct wl12xx_ie_header {
+diff --git a/drivers/net/wireless/ti/wlcore/acx.h b/drivers/net/wireless/ti/wlcore/acx.h
+index a265fba0cb4c..c725f5855c13 100644
+--- a/drivers/net/wireless/ti/wlcore/acx.h
++++ b/drivers/net/wireless/ti/wlcore/acx.h
+@@ -938,7 +938,7 @@ struct acx_rx_filter_cfg {
+ 	u8 action;
+ 
+ 	u8 num_fields;
+-	u8 fields[0];
++	u8 fields[];
+ } __packed;
+ 
+ struct acx_roaming_stats {
+diff --git a/drivers/net/wireless/ti/wlcore/boot.h b/drivers/net/wireless/ti/wlcore/boot.h
+index 14b367e98dce..24a2dfcb41ea 100644
+--- a/drivers/net/wireless/ti/wlcore/boot.h
++++ b/drivers/net/wireless/ti/wlcore/boot.h
+@@ -26,7 +26,7 @@ struct wl1271_static_data {
+ 	u8 fw_version[WL1271_FW_VERSION_MAX_LEN];
+ 	u32 hw_version;
+ 	u8 tx_power_table[WL1271_NO_SUBBANDS][WL1271_NO_POWER_LEVELS];
+-	u8 priv[0];
++	u8 priv[];
+ };
+ 
+ /* number of times we try to read the INIT interrupt */
+diff --git a/drivers/net/wireless/ti/wlcore/cmd.h b/drivers/net/wireless/ti/wlcore/cmd.h
+index bfad7b5a1ac6..f2609d5b6bf7 100644
+--- a/drivers/net/wireless/ti/wlcore/cmd.h
++++ b/drivers/net/wireless/ti/wlcore/cmd.h
+@@ -209,7 +209,7 @@ struct wl1271_cmd_header {
+ 	__le16 id;
+ 	__le16 status;
+ 	/* payload */
 -	u8 data[0];
 +	u8 data[];
  } __packed;
  
- struct rtl_probe_rsp {
-@@ -1068,7 +1068,7 @@ struct rtl_probe_rsp {
- 	/*SSID, supported rates, FH params, DS params,
- 	 * CF params, IBSS params, TIM (if beacon), RSN
- 	 */
--	struct rtl_info_element info_element[0];
-+	struct rtl_info_element info_element[];
+ #define WL1271_CMD_MAX_PARAMS 572
+diff --git a/drivers/net/wireless/ti/wlcore/conf.h b/drivers/net/wireless/ti/wlcore/conf.h
+index 6116383ee248..31be425f2332 100644
+--- a/drivers/net/wireless/ti/wlcore/conf.h
++++ b/drivers/net/wireless/ti/wlcore/conf.h
+@@ -1150,7 +1150,7 @@ struct wlcore_conf {
+ struct wlcore_conf_file {
+ 	struct wlcore_conf_header header;
+ 	struct wlcore_conf core;
+-	u8 priv[0];
++	u8 priv[];
  } __packed;
  
- /*LED related.*/
-diff --git a/drivers/net/wireless/realtek/rtw88/fw.h b/drivers/net/wireless/realtek/rtw88/fw.h
-index ccd27bd45775..414827800a5f 100644
---- a/drivers/net/wireless/realtek/rtw88/fw.h
-+++ b/drivers/net/wireless/realtek/rtw88/fw.h
-@@ -36,7 +36,7 @@ enum rtw_c2h_cmd_id_ext {
- struct rtw_c2h_cmd {
- 	u8 id;
- 	u8 seq;
+ #endif
+diff --git a/drivers/net/wireless/ti/wlcore/wl12xx_80211.h b/drivers/net/wireless/ti/wlcore/wl12xx_80211.h
+index 181be725eff8..1dd7ecc11f86 100644
+--- a/drivers/net/wireless/ti/wlcore/wl12xx_80211.h
++++ b/drivers/net/wireless/ti/wlcore/wl12xx_80211.h
+@@ -66,7 +66,7 @@ struct ieee80211_header {
+ 	u8 sa[ETH_ALEN];
+ 	u8 bssid[ETH_ALEN];
+ 	__le16 seq_ctl;
 -	u8 payload[0];
 +	u8 payload[];
  } __packed;
  
- enum rtw_rsvd_packet_type {
-diff --git a/drivers/net/wireless/realtek/rtw88/main.h b/drivers/net/wireless/realtek/rtw88/main.h
-index c074cef22120..46c0ebceb177 100644
---- a/drivers/net/wireless/realtek/rtw88/main.h
-+++ b/drivers/net/wireless/realtek/rtw88/main.h
-@@ -1641,7 +1641,7 @@ struct rtw_dev {
- 	struct rtw_wow_param wow;
- 
- 	/* hci related data, must be last */
--	u8 priv[0] __aligned(sizeof(void *));
-+	u8 priv[] __aligned(sizeof(void *));
- };
- 
- #include "hci.h"
+ struct wl12xx_ie_header {
 -- 
 2.25.0
 
