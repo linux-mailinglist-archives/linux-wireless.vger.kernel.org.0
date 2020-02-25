@@ -2,82 +2,58 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EFA4416E9C3
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Feb 2020 16:15:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5155D16EA20
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Feb 2020 16:31:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730846AbgBYPPZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 25 Feb 2020 10:15:25 -0500
-Received: from vps0.lunn.ch ([185.16.172.187]:33522 "EHLO vps0.lunn.ch"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729947AbgBYPPY (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 25 Feb 2020 10:15:24 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-        s=20171124; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
-        Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=235GHztb3ZNOQxme0xDo0Q30x3nKhI4zYzStHwg/A0A=; b=dD5grdHzj3m/hBmempTfmNNKXn
-        lHAdbbhkzvC2w6FP7AcGck4A/wXgg26Tvm5PkT/JVsIxYJo4/u8VKODphVo5O53q6i+wxg+UdpMbG
-        kuWi7j1L8dti7QD4IdSN/rsroOmS+x8kMxI60iMwzWfDmkzw9vqjXAl4qAA30geKSTFc=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.93)
-        (envelope-from <andrew@lunn.ch>)
-        id 1j6bvd-0007r0-Aq; Tue, 25 Feb 2020 16:15:21 +0100
-Date:   Tue, 25 Feb 2020 16:15:21 +0100
-From:   Andrew Lunn <andrew@lunn.ch>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        Alex Elder <elder@linaro.org>, m.chetan.kumar@intel.com,
-        Dan Williams <dcbw@redhat.com>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Johannes Berg <johannes.berg@intel.com>
-Subject: Re: [RFC] wwan: add a new WWAN subsystem
-Message-ID: <20200225151521.GA7663@lunn.ch>
-References: <20200225100053.16385-1-johannes@sipsolutions.net>
- <20200225105149.59963c95aa29.Id0e40565452d0d5bb9ce5cc00b8755ec96db8559@changeid>
+        id S1731107AbgBYPbO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 25 Feb 2020 10:31:14 -0500
+Received: from mail-io1-f66.google.com ([209.85.166.66]:37187 "EHLO
+        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731104AbgBYPbO (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 25 Feb 2020 10:31:14 -0500
+Received: by mail-io1-f66.google.com with SMTP id c17so44280ioc.4
+        for <linux-wireless@vger.kernel.org>; Tue, 25 Feb 2020 07:31:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+        b=AVryYaBc4dyOQOKwUM+q9a7N+kMoqgKc1XgpganZNOYELR1zazgtaRZ/lDJlv3puVZ
+         jxD54s5kF07j27Z/RAWWFC+CYEDhmoAbfKvkPu9qLfve+YI4p44Q8LtvOzloZWiuGufj
+         Srpf14yJ9zjHmtEZT1crFAlIRkY+t9t5bdx+RXeIOt91dAHqIUj8IGEc05UGMooGePDj
+         Q5oQHr25gI4HkoPCb5BivFeWbY+es/8qIJOLcpBYOoHCNKz+shgRY3R9YckGDAWpZl5J
+         qF8dMvPiC9tKgpl75SyNeo+dOZj56l+h8Iy5q/NHgpw5tcdfqaqazjs6Ze7fcEAK0puU
+         2u+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+        b=gFqaEooeQGtcG7I+KTocmVW4diwIP/7eKeljh2+7mERQAKTLZG0YXJNfV3fS44vQWb
+         shrgKyl6GzGF/4AIzW/0Z3pjXXpb7XVmqRMyPXjH6NOU1vuNiWFVaxCt4QBiT+yQf3Se
+         hHTnhS9k+TjxmmhEI9sx0CMrW6Jw5IulOrVfUIuOhyAeXXw49oKs0gUHWEX+iiWWfbZu
+         SuZdLyzIWKHdMuI67H3FNVDyqWeEk1kaKTmV87EzZWTKB5Q4aRP7jb2JbOZEyR84ZhDH
+         zDUwXKrIIdbMyhfroleYwOuvlGBUkexVh1ecgx4iaSzOg6ZOAx/iZxLpDxu7KuwGH3a7
+         JIUA==
+X-Gm-Message-State: APjAAAVE4H68foAQoujhwcyuxkCpZidSwoZxcYHIAMPCtLu3SiujxWnz
+        4FXOUonUMzR8hGD4qJmG1TF79XvK0C+cz+Swt5Y=
+X-Google-Smtp-Source: APXvYqzhfm/supBXK6U2Juu/av2AjISxO0M1oXPFCpSsnOISqybwponx7NtVWObfsH3Nv10jzGPkPR1hfzcmxz7ADjM=
+X-Received: by 2002:a6b:f404:: with SMTP id i4mr60965029iog.175.1582644671121;
+ Tue, 25 Feb 2020 07:31:11 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200225105149.59963c95aa29.Id0e40565452d0d5bb9ce5cc00b8755ec96db8559@changeid>
+Received: by 2002:a5d:84d1:0:0:0:0:0 with HTTP; Tue, 25 Feb 2020 07:31:10
+ -0800 (PST)
+Reply-To: mrdavidkekeli01@gmail.com
+From:   "Mr.David Keller" <joykekeli4@gmail.com>
+Date:   Tue, 25 Feb 2020 15:31:10 +0000
+Message-ID: <CAO4V9UEe2QVdkN374oGzJu6-p4krTKs_ajUQGZkEzp+Wk-fqTw@mail.gmail.com>
+Subject: Please what is going on, I sent you a Urgent letter Did you receive
+ it I need to know and get back to me
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-> One issue in comining up with the notion of a "WWAN device" is that
-> a typical WWAN device (especially USB ones) is not composed of just
-> a single function, but may have one or multiple network functions,
-> some TTYs for control, etc. These are actually not even seen by a
-> single driver in Linux, but various. An additional wrinkle is that
-> each of those drivers will not be aware of the others, and also be
-> a driver for a generic network or TTY device (for example), so by
-> itself it cannot even know it's dealing with a unified WWAN device.
-> 
-> To still achieve a unified model, we allow each WWAN device to be
-> composed of "component devices". Each component device can offer a
-> certain subset of the overall functionality (which is shown in the
-> struct wwan_component_device_ops). This isn't implemented right now,
-> but ultimately it will allow us to have a "tentative" state, where
-> a number component drivers register their component, but the full
-> WWAN device is only formed if any one of them says that it indeed
-> knows for sure that it's a piece of a WWAN device, or perhaps by
-> some other heuristic.
 
-Hi Johannes
-
-Looking at it bottom up, is the WWAN device itself made up of multiple
-devices? Are the TTYs separate drivers to the packet moving engines?
-They have there own USB end points, and could just be standard CDC
-ACM?
-
-driver/base/component.c could be useful for bringing together these
-individual devices to form the whole WWAN device. This is often used
-for graphics drivers, where there can be i2c devices, display pipeline
-devices, acceleration drivers etc, which each probe separately, but
-need to be brought together to form a gpu driver as a whole.
-
-Plus you need to avoid confusion by not adding another "component
-framework" which means something totally different to the existing
-component framework.
-
-	   Andrew
