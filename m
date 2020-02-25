@@ -2,22 +2,22 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 845EE16B708
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Feb 2020 02:11:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1BAA316B717
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Feb 2020 02:17:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728489AbgBYBL3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 24 Feb 2020 20:11:29 -0500
-Received: from gateway32.websitewelcome.com ([192.185.145.178]:11873 "EHLO
-        gateway32.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728011AbgBYBL3 (ORCPT
+        id S1728696AbgBYBRX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 24 Feb 2020 20:17:23 -0500
+Received: from gateway33.websitewelcome.com ([192.185.145.23]:15017 "EHLO
+        gateway33.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728226AbgBYBRW (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 24 Feb 2020 20:11:29 -0500
-Received: from cm14.websitewelcome.com (cm14.websitewelcome.com [100.42.49.7])
-        by gateway32.websitewelcome.com (Postfix) with ESMTP id 36BA51BB089
-        for <linux-wireless@vger.kernel.org>; Mon, 24 Feb 2020 19:11:28 -0600 (CST)
+        Mon, 24 Feb 2020 20:17:22 -0500
+Received: from cm10.websitewelcome.com (cm10.websitewelcome.com [100.42.49.4])
+        by gateway33.websitewelcome.com (Postfix) with ESMTP id 09DFC7A568
+        for <linux-wireless@vger.kernel.org>; Mon, 24 Feb 2020 19:17:21 -0600 (CST)
 Received: from gator4166.hostgator.com ([108.167.133.22])
         by cmsmtp with SMTP
-        id 6OkyjPc0CXVkQ6OkyjlD6J; Mon, 24 Feb 2020 19:11:28 -0600
+        id 6OqfjF4XsEfyq6OqfjLMaB; Mon, 24 Feb 2020 19:17:21 -0600
 X-Authority-Reason: nr=8
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=embeddedor.com; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
@@ -25,26 +25,27 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
         :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
         List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=rzMLcS2/ZUpYVpdJI43BRpgzSfEuuyjXrY5HzICY5lU=; b=ZP4B0m1M6tm079nzgpmYt0ILyG
-        5Pybfw+yRZIJ15oHp4SO0AwAHczetoTrQ48NxdpDGb6sL/+/GdP9UJ5HQYEDaNT91J4/DHIlPVnyq
-        GAZqMVydJBxNvDSVxxWkiKhhtzPnmFdxoQkrIc3/Rj0wPBz4y0zuufu+yCqDA9UYhr/nOEw09VkyJ
-        H2Wnpt/2NW10dEU2hH1bBcMb0CinWZAYChiW88tyGTLFYTof+Kyfy92pbzJBB1dkYI9IZIUlYDntt
-        7YtgeVjuUbU0Jlg6798SX21xl+tSImTvq6oTVXnhwVLVgMjYxM+YPozm0IbjOXf93w0O9UReeVO09
-        0PBXnLSA==;
-Received: from [201.166.191.54] (port=58506 helo=embeddedor)
+        bh=8PuKkfXcmVyx3upImaxoOPndGOZW+wA+Sy4Sih/Rb3U=; b=fNVAqJz/DRQv+OOERZb352EIG2
+        c41NMqpOz2CQ44CATBGzKrFbwtNxw1WK6PZewR66YgVClYxFBgohbKBIE1fRdHE+rsGdmmM8sI6Cx
+        uqlTZGaE3XJWFq4+c39PBtxKOmaHDa/YQpyj1CAY7dapnHIXmrncAuu4MaHxh3RLNi9XYR609Pz+B
+        6UHaC3Ak3feP3RO/Uqdv2d0kJgjdtu05UYAZUONpbbfLSjQqwvcRg7YZkaTMK00txwHpSh5oBEUTZ
+        VboH0gquje3vTf8J4TjcGVHlVdazQsUQPRY5bt0Hp9VlstlgWNYGiK3U/S9drUzHSO47/axkGoPYn
+        YsIED7HQ==;
+Received: from [201.166.191.50] (port=58608 helo=embeddedor)
         by gator4166.hostgator.com with esmtpa (Exim 4.92)
         (envelope-from <gustavo@embeddedor.com>)
-        id 1j6Okw-002sYf-D4; Mon, 24 Feb 2020 19:11:26 -0600
-Date:   Mon, 24 Feb 2020 19:14:15 -0600
+        id 1j6Oqd-002v0R-6d; Mon, 24 Feb 2020 19:17:19 -0600
+Date:   Mon, 24 Feb 2020 19:20:08 -0600
 From:   "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-To:     Kalle Valo <kvalo@codeaurora.org>,
+To:     Luis Chamberlain <mcgrof@kernel.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
         "David S. Miller" <davem@davemloft.net>
 Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         linux-kernel@vger.kernel.org,
         "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-Subject: [PATCH][next] orinoco: Replace zero-length array with flexible-array
+Subject: [PATCH][next] prism54: Replace zero-length array with flexible-array
  member
-Message-ID: <20200225011415.GA31868@embeddedor>
+Message-ID: <20200225012008.GA4309@embeddedor>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -55,15 +56,15 @@ X-AntiAbuse: Original Domain - vger.kernel.org
 X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
 X-AntiAbuse: Sender Address Domain - embeddedor.com
 X-BWhitelist: no
-X-Source-IP: 201.166.191.54
+X-Source-IP: 201.166.191.50
 X-Source-L: No
-X-Exim-ID: 1j6Okw-002sYf-D4
+X-Exim-ID: 1j6Oqd-002v0R-6d
 X-Source: 
 X-Source-Args: 
 X-Source-Dir: 
-X-Source-Sender: (embeddedor) [201.166.191.54]:58506
+X-Source-Sender: (embeddedor) [201.166.191.50]:58608
 X-Source-Auth: gustavo@embeddedor.com
-X-Email-Count: 9
+X-Email-Count: 27
 X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
 X-Local-Domain: yes
 Sender: linux-wireless-owner@vger.kernel.org
@@ -101,82 +102,60 @@ This issue was found with the help of Coccinelle.
 
 Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
 ---
- drivers/net/wireless/intersil/orinoco/fw.c          | 2 +-
- drivers/net/wireless/intersil/orinoco/hermes.h      | 2 +-
- drivers/net/wireless/intersil/orinoco/hermes_dld.c  | 6 +++---
- drivers/net/wireless/intersil/orinoco/orinoco_usb.c | 2 +-
- 4 files changed, 6 insertions(+), 6 deletions(-)
+ drivers/net/wireless/intersil/prism54/isl_oid.h    | 8 ++++----
+ drivers/net/wireless/intersil/prism54/islpci_mgt.h | 2 +-
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/wireless/intersil/orinoco/fw.c b/drivers/net/wireless/intersil/orinoco/fw.c
-index 400a35217644..015af782881b 100644
---- a/drivers/net/wireless/intersil/orinoco/fw.c
-+++ b/drivers/net/wireless/intersil/orinoco/fw.c
-@@ -49,7 +49,7 @@ struct orinoco_fw_header {
- 	__le32 pdr_offset;      /* Offset to PDR data from eof header */
- 	__le32 pri_offset;      /* Offset to primary plug data */
- 	__le32 compat_offset;   /* Offset to compatibility data*/
--	char signature[0];      /* FW signature length headersize-20 */
-+	char signature[];      /* FW signature length headersize-20 */
- } __packed;
- 
- /* Check the range of various header entries. Return a pointer to a
-diff --git a/drivers/net/wireless/intersil/orinoco/hermes.h b/drivers/net/wireless/intersil/orinoco/hermes.h
-index 121fdd8e5da2..9f668185b7d2 100644
---- a/drivers/net/wireless/intersil/orinoco/hermes.h
-+++ b/drivers/net/wireless/intersil/orinoco/hermes.h
-@@ -341,7 +341,7 @@ struct agere_ext_scan_info {
- 	__le64	timestamp;
- 	__le16	beacon_interval;
- 	__le16	capabilities;
--	u8	data[0];
-+	u8	data[];
- } __packed;
- 
- #define HERMES_LINKSTATUS_NOT_CONNECTED   (0x0000)
-diff --git a/drivers/net/wireless/intersil/orinoco/hermes_dld.c b/drivers/net/wireless/intersil/orinoco/hermes_dld.c
-index 4a10b7aca043..dbeadfcfefe2 100644
---- a/drivers/net/wireless/intersil/orinoco/hermes_dld.c
-+++ b/drivers/net/wireless/intersil/orinoco/hermes_dld.c
-@@ -64,7 +64,7 @@
- struct dblock {
- 	__le32 addr;		/* adapter address where to write the block */
- 	__le16 len;		/* length of the data only, in bytes */
--	char data[0];		/* data to be written */
-+	char data[];		/* data to be written */
- } __packed;
- 
- /*
-@@ -76,7 +76,7 @@ struct pdr {
- 	__le32 id;		/* record ID */
- 	__le32 addr;		/* adapter address where to write the data */
- 	__le32 len;		/* expected length of the data, in bytes */
--	char next[0];		/* next PDR starts here */
-+	char next[];		/* next PDR starts here */
- } __packed;
- 
- /*
-@@ -87,7 +87,7 @@ struct pdr {
- struct pdi {
- 	__le16 len;		/* length of ID and data, in words */
- 	__le16 id;		/* record ID */
--	char data[0];		/* plug data */
-+	char data[];		/* plug data */
- } __packed;
- 
- /*** FW data block access functions ***/
-diff --git a/drivers/net/wireless/intersil/orinoco/orinoco_usb.c b/drivers/net/wireless/intersil/orinoco/orinoco_usb.c
-index e753f43e0162..a77bbcd544d6 100644
---- a/drivers/net/wireless/intersil/orinoco/orinoco_usb.c
-+++ b/drivers/net/wireless/intersil/orinoco/orinoco_usb.c
-@@ -202,7 +202,7 @@ struct ezusb_packet {
- 	__le16 crc;		/* CRC up to here */
- 	__le16 hermes_len;
- 	__le16 hermes_rid;
+diff --git a/drivers/net/wireless/intersil/prism54/isl_oid.h b/drivers/net/wireless/intersil/prism54/isl_oid.h
+index 5441c1f9f2fc..1afc2ccf94ca 100644
+--- a/drivers/net/wireless/intersil/prism54/isl_oid.h
++++ b/drivers/net/wireless/intersil/prism54/isl_oid.h
+@@ -37,7 +37,7 @@ struct obj_mlmeex {
+ 	u16 state;
+ 	u16 code;
+ 	u16 size;
 -	u8 data[0];
 +	u8 data[];
  } __packed;
  
- /* Table of devices that work or may work with this driver */
+ struct obj_buffer {
+@@ -68,12 +68,12 @@ struct obj_bss {
+ 
+ struct obj_bsslist {
+ 	u32 nr;
+-	struct obj_bss bsslist[0];
++	struct obj_bss bsslist[];
+ } __packed;
+ 
+ struct obj_frequencies {
+ 	u16 nr;
+-	u16 mhz[0];
++	u16 mhz[];
+ } __packed;
+ 
+ struct obj_attachment {
+@@ -81,7 +81,7 @@ struct obj_attachment {
+ 	char reserved;
+ 	short id;
+ 	short size;
+-	char data[0];
++	char data[];
+ } __packed;
+ 
+ /*
+diff --git a/drivers/net/wireless/intersil/prism54/islpci_mgt.h b/drivers/net/wireless/intersil/prism54/islpci_mgt.h
+index d6bbbac46b4a..1f87d0aea60c 100644
+--- a/drivers/net/wireless/intersil/prism54/islpci_mgt.h
++++ b/drivers/net/wireless/intersil/prism54/islpci_mgt.h
+@@ -99,7 +99,7 @@ struct islpci_mgmtframe {
+ 	pimfor_header_t *header;      /* payload header, points into buf */
+ 	void *data;		      /* payload ex header, points into buf */
+         struct work_struct ws;	      /* argument for schedule_work() */
+-	char buf[0];		      /* fragment buffer */
++	char buf[];		      /* fragment buffer */
+ };
+ 
+ int
 -- 
 2.25.0
 
