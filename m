@@ -2,58 +2,69 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5155D16EA20
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Feb 2020 16:31:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C7C4816EA43
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Feb 2020 16:39:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731107AbgBYPbO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 25 Feb 2020 10:31:14 -0500
-Received: from mail-io1-f66.google.com ([209.85.166.66]:37187 "EHLO
-        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731104AbgBYPbO (ORCPT
+        id S1729673AbgBYPjJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 25 Feb 2020 10:39:09 -0500
+Received: from s3.sipsolutions.net ([144.76.43.62]:41762 "EHLO
+        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728065AbgBYPjJ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 25 Feb 2020 10:31:14 -0500
-Received: by mail-io1-f66.google.com with SMTP id c17so44280ioc.4
-        for <linux-wireless@vger.kernel.org>; Tue, 25 Feb 2020 07:31:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-        b=AVryYaBc4dyOQOKwUM+q9a7N+kMoqgKc1XgpganZNOYELR1zazgtaRZ/lDJlv3puVZ
-         jxD54s5kF07j27Z/RAWWFC+CYEDhmoAbfKvkPu9qLfve+YI4p44Q8LtvOzloZWiuGufj
-         Srpf14yJ9zjHmtEZT1crFAlIRkY+t9t5bdx+RXeIOt91dAHqIUj8IGEc05UGMooGePDj
-         Q5oQHr25gI4HkoPCb5BivFeWbY+es/8qIJOLcpBYOoHCNKz+shgRY3R9YckGDAWpZl5J
-         qF8dMvPiC9tKgpl75SyNeo+dOZj56l+h8Iy5q/NHgpw5tcdfqaqazjs6Ze7fcEAK0puU
-         2u+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-        b=gFqaEooeQGtcG7I+KTocmVW4diwIP/7eKeljh2+7mERQAKTLZG0YXJNfV3fS44vQWb
-         shrgKyl6GzGF/4AIzW/0Z3pjXXpb7XVmqRMyPXjH6NOU1vuNiWFVaxCt4QBiT+yQf3Se
-         hHTnhS9k+TjxmmhEI9sx0CMrW6Jw5IulOrVfUIuOhyAeXXw49oKs0gUHWEX+iiWWfbZu
-         SuZdLyzIWKHdMuI67H3FNVDyqWeEk1kaKTmV87EzZWTKB5Q4aRP7jb2JbOZEyR84ZhDH
-         zDUwXKrIIdbMyhfroleYwOuvlGBUkexVh1ecgx4iaSzOg6ZOAx/iZxLpDxu7KuwGH3a7
-         JIUA==
-X-Gm-Message-State: APjAAAVE4H68foAQoujhwcyuxkCpZidSwoZxcYHIAMPCtLu3SiujxWnz
-        4FXOUonUMzR8hGD4qJmG1TF79XvK0C+cz+Swt5Y=
-X-Google-Smtp-Source: APXvYqzhfm/supBXK6U2Juu/av2AjISxO0M1oXPFCpSsnOISqybwponx7NtVWObfsH3Nv10jzGPkPR1hfzcmxz7ADjM=
-X-Received: by 2002:a6b:f404:: with SMTP id i4mr60965029iog.175.1582644671121;
- Tue, 25 Feb 2020 07:31:11 -0800 (PST)
-MIME-Version: 1.0
-Received: by 2002:a5d:84d1:0:0:0:0:0 with HTTP; Tue, 25 Feb 2020 07:31:10
- -0800 (PST)
-Reply-To: mrdavidkekeli01@gmail.com
-From:   "Mr.David Keller" <joykekeli4@gmail.com>
-Date:   Tue, 25 Feb 2020 15:31:10 +0000
-Message-ID: <CAO4V9UEe2QVdkN374oGzJu6-p4krTKs_ajUQGZkEzp+Wk-fqTw@mail.gmail.com>
-Subject: Please what is going on, I sent you a Urgent letter Did you receive
- it I need to know and get back to me
-To:     undisclosed-recipients:;
+        Tue, 25 Feb 2020 10:39:09 -0500
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.93)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1j6cIX-00A0J7-Hm; Tue, 25 Feb 2020 16:39:01 +0100
+Message-ID: <983917b5637ce1d9948c94f638d857d37a2ab808.camel@sipsolutions.net>
+Subject: Re: [RFC] wwan: add a new WWAN subsystem
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Andrew Lunn <andrew@lunn.ch>
+Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+        Alex Elder <elder@linaro.org>, m.chetan.kumar@intel.com,
+        Dan Williams <dcbw@redhat.com>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>
+Date:   Tue, 25 Feb 2020 16:39:00 +0100
+In-Reply-To: <20200225151521.GA7663@lunn.ch>
+References: <20200225100053.16385-1-johannes@sipsolutions.net>
+         <20200225105149.59963c95aa29.Id0e40565452d0d5bb9ce5cc00b8755ec96db8559@changeid>
+         <20200225151521.GA7663@lunn.ch>
 Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.34.2 (3.34.2-1.fc31) 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On Tue, 2020-02-25 at 16:15 +0100, Andrew Lunn wrote:
+
+> Looking at it bottom up, is the WWAN device itself made up of multiple
+> devices? Are the TTYs separate drivers to the packet moving engines?
+
+Possibly, yes, it depends a bit.
+
+> They have there own USB end points, and could just be standard CDC
+> ACM?
+
+Yeah, for a lot of USB devices that's indeed the case.
+
+> driver/base/component.c could be useful for bringing together these
+> individual devices to form the whole WWAN device.
+
+Huh, I was unaware of this, I'll take a look!
+
+A very brief look suggests that it wants to have a driver for the whole
+thing in the end, which isn't really true here, but perhaps we could
+"make one up" and have that implement the userspace API. I need to take
+a closer look, thanks for the pointer.
+
+> Plus you need to avoid confusion by not adding another "component
+> framework" which means something totally different to the existing
+> component framework.
+
+:)
+
+johannes
 
