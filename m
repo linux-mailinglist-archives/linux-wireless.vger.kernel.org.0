@@ -2,111 +2,103 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 89F281714BD
-	for <lists+linux-wireless@lfdr.de>; Thu, 27 Feb 2020 11:07:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A70D1714D4
+	for <lists+linux-wireless@lfdr.de>; Thu, 27 Feb 2020 11:17:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728681AbgB0KHg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 27 Feb 2020 05:07:36 -0500
-Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:25021 "EHLO
+        id S1728698AbgB0KRQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 27 Feb 2020 05:17:16 -0500
+Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:60846 "EHLO
         us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1728454AbgB0KHg (ORCPT
+        with ESMTP id S1728680AbgB0KRQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 27 Feb 2020 05:07:36 -0500
+        Thu, 27 Feb 2020 05:17:16 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1582798055;
+        s=mimecast20190719; t=1582798634;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=gNmqYYh8IkvOzoThAYHg0T+VuNTkTQWybQ70SZPEJMM=;
-        b=S3/dJ6WgN6MhIe4KrwIQYCVyP/y83waklKdg/86UI6dTSc4tcOXc0gJYvDQlCS640PpPgg
-        vVErqo6Kcl9U5Fl/XZcbj/pjNz6QbKt1ea6nz2OVCGnwYbo9qKMf2QYQeeDqCd2Gwmwq2Z
-        DReOGoO615wpY1UszcKoox83F1iZjAw=
-Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
- [209.85.208.199]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-108-2zsUyVFNN4u6sqbe3spPYA-1; Thu, 27 Feb 2020 05:07:33 -0500
-X-MC-Unique: 2zsUyVFNN4u6sqbe3spPYA-1
-Received: by mail-lj1-f199.google.com with SMTP id k25so729177lji.4
-        for <linux-wireless@vger.kernel.org>; Thu, 27 Feb 2020 02:07:33 -0800 (PST)
+        bh=6cHViURCnyaA04HbDOwPN4x7F/IzyCt5NThZd0ymuHg=;
+        b=IiFx8UaH//aG2x1uZ7wa2SgJaDoVIoG8vSuNAx+c4MzBOz7dfJEg+BdPtXe4/V2+9orSNv
+        fSYIXEZqtFfARamKcTa702ZZdJRjOXOI6Y47h8zKfau4eLAGlGZmEz5/6ioe90dLrdR25L
+        mH+Rp8Xymvp+EtVcR+pu6K603syChAc=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-53-1ajPdoT0OpGVoVRvwiH0sA-1; Thu, 27 Feb 2020 05:17:08 -0500
+X-MC-Unique: 1ajPdoT0OpGVoVRvwiH0sA-1
+Received: by mail-wr1-f71.google.com with SMTP id 72so1107067wrc.6
+        for <linux-wireless@vger.kernel.org>; Thu, 27 Feb 2020 02:17:08 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
-         :message-id:mime-version:content-transfer-encoding;
-        bh=gNmqYYh8IkvOzoThAYHg0T+VuNTkTQWybQ70SZPEJMM=;
-        b=r+sNSyYQcrGzboWn0t24nChJ+UITi3gO20Tca7tIMeRCzUaQ0KGSErNMXn03wzFjVq
-         Rl2Jo+R4Ci66aX7Bau/olidvs91XoK2aIJd5NhSFrGPncvsfpE96YQu4ogrrm5m/sHnx
-         YchsDe0jX6z1g70Oy51h0c0xBGqjxtyS0Kyd0mPqjSwssCD2DOVQ9FuVcAb5zHMRRB8T
-         IQjM+gO0FnQufBc5gOFlHkqLBAlFw8RMlrykbiWCkCJ/wNtQy7UT4wzZyslvu6gdo03u
-         ewNFrVRa4njqk7sZF4pJlcQqbWWnNVL9nx8oGhTNxnsogDhdoJxcMa4XF4qVgKNTH8J0
-         e0lg==
-X-Gm-Message-State: ANhLgQ3YGNVLBsOCYfAIIxeufK1+nlZ5OUi9u4YiMmxZu/0KfrxdgGew
-        /WHlFoFVylFl3T93Ldest+vymPgYnjbRdPCA0nXYtEpve1sup3qheQxkDu9oT8NA2rHTlKjER3X
-        uX0w+pVwwQKjHgzT1/kh+2JLCUBI=
-X-Received: by 2002:ac2:4467:: with SMTP id y7mr1765208lfl.167.1582798051197;
-        Thu, 27 Feb 2020 02:07:31 -0800 (PST)
-X-Google-Smtp-Source: ADFU+vsgXzP7lGW2gpvb3qLFRp1BhIv/wjC1Y4iIdVaqOc7roMwNM3xAQGYBq/T/10hhj1aEUeDNsw==
-X-Received: by 2002:ac2:4467:: with SMTP id y7mr1765195lfl.167.1582798050898;
-        Thu, 27 Feb 2020 02:07:30 -0800 (PST)
+         :message-id:mime-version;
+        bh=6cHViURCnyaA04HbDOwPN4x7F/IzyCt5NThZd0ymuHg=;
+        b=U5jYM0EYIlU2hTwb7tgSxd4A4ZJBSOfjAx/MZeolVY/hZy4OPD8c3srjcehkTyq9F8
+         Aa6riz2ghGL6iRCnf7xB6L+Sx3FpRwq6go1/VfkJAtjPzjSzM8NJJboUPQTUGZDErJn0
+         GZsj18Lowm+M+P7/CsywPDRdJ5hWNJMka46VNGv1TsPF66INAzi9SlCIGg+NOIrtxhdS
+         XxodRIvA2UCIOj/zp5PsF9Ci6h7X2hRtekK1mB+ygoLNwCjvK39VtqTemOA/E5zjs+ox
+         bEe7jfCSYQ5ypFNs4m4rKMO5Uiy8eYzcSzoCAQ9++IaQTFvUZcEZtCoWHONxBaExpDAE
+         MZtg==
+X-Gm-Message-State: APjAAAUPdec0YymgtBXhugI3geYR+XhUG0cEk+I9gZVXNrmzwOU9BLs7
+        ZFTNSSbAV4dpFTUGlaj8wDKpIYBZ7afHld5ezYC35iccq1hxnqnVqrUwmMbaVPzhhJ6uLgJCjSM
+        HRv2B8tjoijE0xyw+sc5H3wwzGn8=
+X-Received: by 2002:a1c:38c7:: with SMTP id f190mr4256837wma.94.1582798627390;
+        Thu, 27 Feb 2020 02:17:07 -0800 (PST)
+X-Google-Smtp-Source: APXvYqyr76tDTisRMWVLc1Qqj9VVSwpf7gt3eGTCEoI9WVe0SmI/2My10BjYcOOGXcrjYURxfYTVeg==
+X-Received: by 2002:a1c:38c7:: with SMTP id f190mr4256808wma.94.1582798627098;
+        Thu, 27 Feb 2020 02:17:07 -0800 (PST)
 Received: from alrua-x1.borgediget.toke.dk ([45.145.92.2])
-        by smtp.gmail.com with ESMTPSA id n132sm2974879lfd.81.2020.02.27.02.07.30
+        by smtp.gmail.com with ESMTPSA id q3sm7043082wmj.38.2020.02.27.02.17.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 Feb 2020 02:07:30 -0800 (PST)
+        Thu, 27 Feb 2020 02:17:06 -0800 (PST)
 Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-        id 72690180362; Thu, 27 Feb 2020 11:07:29 +0100 (CET)
+        id E10FB180362; Thu, 27 Feb 2020 11:17:05 +0100 (CET)
 From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-To:     Felix Fietkau <nbd@nbd.name>, Kan Yan <kyan@google.com>,
-        johannes@sipsolutions.net
-Cc:     linux-wireless@vger.kernel.org,
-        make-wifi-fast@lists.bufferbloat.net, yiboz@codeaurora.org,
-        john@phrozen.org, lorenzo@kernel.org, rmanohar@codeaurora.org,
-        kevinhayes@google.com
+To:     Justin Capella <justincapella@gmail.com>
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        make-wifi-fast@lists.bufferbloat.net, nbd@nbd.name,
+        Yibo Zhao <yiboz@codeaurora.org>,
+        John Crispin <john@phrozen.org>, lorenzo@kernel.org,
+        rmanohar@codeaurora.org, kevinhayes@google.com,
+        Kan Yan <kyan@google.com>
 Subject: Re: [PATCH v11 4/4] mac80211: Use Airtime-based Queue Limits (AQL) on packet dequeue
-In-Reply-To: <829b6b28-99cd-ea9d-fea3-603a10eae401@nbd.name>
-References: <20191119060610.76681-1-kyan@google.com> <20191119060610.76681-5-kyan@google.com> <789d592c-5b1b-b785-6d9c-86b7cc7d57f4@nbd.name> <87k149xbb4.fsf@toke.dk> <829b6b28-99cd-ea9d-fea3-603a10eae401@nbd.name>
+In-Reply-To: <CAMrEMU8FkUkoTB95K8cbBgcrUBPmE0cy6yUcROLTw1_BuSCKuQ@mail.gmail.com>
+References: <20191119060610.76681-1-kyan@google.com> <20191119060610.76681-5-kyan@google.com> <CAMrEMU8FkUkoTB95K8cbBgcrUBPmE0cy6yUcROLTw1_BuSCKuQ@mail.gmail.com>
 X-Clacks-Overhead: GNU Terry Pratchett
-Date:   Thu, 27 Feb 2020 11:07:29 +0100
-Message-ID: <875zfsxs0u.fsf@toke.dk>
+Date:   Thu, 27 Feb 2020 11:17:05 +0100
+Message-ID: <8736awxrku.fsf@toke.dk>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Felix Fietkau <nbd@nbd.name> writes:
+Justin Capella <justincapella@gmail.com> writes:
 
-> On 2020-02-26 22:56, Toke H=C3=B8iland-J=C3=B8rgensen wrote:
->> Felix Fietkau <nbd@nbd.name> writes:
->>> - We need an API that allows the driver to change the pending airtime
->>> values, e.g. subtract estimated tx time for a packet.
->>> mt76 an ath9k can queue packets inside the driver that are not currently
->>> in the hardware queues. Typically if the txqs have more data than what
->>> gets put into the hardware queue, both drivers will pull an extra frame
->>> and queue it in its private txq struct. This frame will get used on the
->>> next txq scheduling round for that particular station.
->>> If you have lots of stations doing traffic (or having driver buffered
->>> frames in powersave mode), this could use up a sizable chunk of the AQL
->>> budget.
->>=20
->> I'm a bit more skeptical about this. If the driver buffers a bunch of
->> packets that are not accounted that will hurt that station due to extra
->> latency when it wakes up. For ath9k, this is the retry_q you're talking
->> about, right? The number of packets queued on that is fairly limited,
->> isn't it? What kind of powersave buffering is the driver doing, and why
->> can't it leave the packets on the TXQ? That would allow them to be
->> scheduled along with any new ones that might have arrived in the
->> meantime, which would be a benefit for latency.
-> For mt76 there should be max. 1 frame in the retry queue, it's just a
-> frame that was pulled from the txq in a transmission attempt but that it
-> couldn't put in the hw queue because it didn't fit in the current
-> aggregate batch.
+>> ieee80211_report_used_skb(). As an optimisation, we also subtract the
+>> airtime on regular TX completion, zeroing out the value stored in the
+>> packet afterwards, to avoid having to do an expensive lookup of the station
+>> from the packet data on every packet.
+>>
+>> This patch does *not* include any mechanism to wake a throttled TXQ again,
+>> on the assumption that this will happen anyway as a side effect of whatever
+>> freed the skb (most commonly a TX completion).
+>
+> I recall a recent patch for ath10k sdio that disabled tx
+> acknowledgement for performance gains and am wondering if that will be
+> problematic? Presumably not since it would be caught at the dequeue,
+> but thought I'd ask-- wondering what the effect of failed tx's or
+> block acknowledgement is on this stuff I'll need to study the code
+> some more
+>
+> https://lore.kernel.org/linux-wireless/0101016eb1903db0-ef7063b4-0f42-4a01-8886-327541e6c1a4-000000@us-west-2.amazonses.com/T/#t
 
-Wait, if it's only a single frame that is queued in the driver, how is
-this causing problems? We deliberately set the limit so there was a bit
-of slack above the size of an aggregate for things like this. Could you
-please describe in a bit more detail what symptoms you are seeing of
-this problem? :)
+It looks like that patch will just end up disabling AQL (because packets
+will be immediately completed as far as mac80211 is concerned) and
+replace it with whatever that credit-based scheme does? No idea how that
+will impact latency; you should go ask the developers of that series! As
+usual, the patch description only mentions throughput numbers :/
 
 -Toke
 
