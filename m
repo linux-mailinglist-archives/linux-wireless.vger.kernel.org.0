@@ -2,119 +2,107 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DA186170B4F
-	for <lists+linux-wireless@lfdr.de>; Wed, 26 Feb 2020 23:15:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E64B170CEE
+	for <lists+linux-wireless@lfdr.de>; Thu, 27 Feb 2020 01:05:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727851AbgBZWPD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 26 Feb 2020 17:15:03 -0500
-Received: from us-smtp-2.mimecast.com ([207.211.31.81]:47185 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1727715AbgBZWPD (ORCPT
+        id S1728022AbgB0AF1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 26 Feb 2020 19:05:27 -0500
+Received: from mail-pl1-f193.google.com ([209.85.214.193]:44859 "EHLO
+        mail-pl1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726413AbgB0AF1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 26 Feb 2020 17:15:03 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1582755302;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=BpZS5KpF2EgyTb06d65Ogcl15EGk9qadh3W5g3HMimw=;
-        b=MY9PGHVoPlxzPZQho6Xzuo598xXzDloYdWAekRiLrjyuFSbMb4Syts4L0Yl/XJAmZnKO+L
-        2sGElGOp93eEwX2p+N3ineHIaOiD55dCNnDt+gdbO6TQRpjoqts+cyIblKGvtcLaP9mLVV
-        TtpGdvYmP5AyG/50kcA0mR3znFC5h0k=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-41-_xyZB9j8PcewRMhx476I6Q-1; Wed, 26 Feb 2020 17:15:00 -0500
-X-MC-Unique: _xyZB9j8PcewRMhx476I6Q-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id B193E800D5A;
-        Wed, 26 Feb 2020 22:14:58 +0000 (UTC)
-Received: from ovpn-112-57.rdu2.redhat.com (ovpn-112-57.rdu2.redhat.com [10.10.112.57])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 3727E60BE2;
-        Wed, 26 Feb 2020 22:14:56 +0000 (UTC)
-Message-ID: <bd04741b8a8f07e1f1b622cf28ac1ed89d964509.camel@redhat.com>
-Subject: Re: [RFC] wwan: add a new WWAN subsystem
-From:   Dan Williams <dcbw@redhat.com>
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        Andrew Lunn <andrew@lunn.ch>
-Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        Alex Elder <elder@linaro.org>, m.chetan.kumar@intel.com,
-        Bjorn Andersson <bjorn.andersson@linaro.org>
-Date:   Wed, 26 Feb 2020 16:15:53 -0600
-In-Reply-To: <983917b5637ce1d9948c94f638d857d37a2ab808.camel@sipsolutions.net>
-References: <20200225100053.16385-1-johannes@sipsolutions.net>
-         <20200225105149.59963c95aa29.Id0e40565452d0d5bb9ce5cc00b8755ec96db8559@changeid>
-         <20200225151521.GA7663@lunn.ch>
-         <983917b5637ce1d9948c94f638d857d37a2ab808.camel@sipsolutions.net>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.32.5 (3.32.5-1.fc30) 
+        Wed, 26 Feb 2020 19:05:27 -0500
+Received: by mail-pl1-f193.google.com with SMTP id d9so345384plo.11
+        for <linux-wireless@vger.kernel.org>; Wed, 26 Feb 2020 16:05:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=RhYHdaC+npN1RSDyAo/2yjjolxZ1CEpp4Vwu9UTJs58=;
+        b=BtaDxmvBZDIW4bF1ZefkJXPPUhBWJEqoWrekfB0e8eQNOLLixbuZF3y7pT8Xq/7jj+
+         E/yJ1YqIHk5zKX4HCFBcbR5ppwvqHF9p6pEecQatHy6v7xA8lhungE9d2UcOHy+Ov38p
+         RW+zoFuXALkXALlIDPG9w1gce5K2b47ku18YI=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=RhYHdaC+npN1RSDyAo/2yjjolxZ1CEpp4Vwu9UTJs58=;
+        b=PxVZ+3GSqW2aaoicSZA6VrrVd8z1rrt2n02G1D0Q63WMTJ/G9T1SYwneqHLDX19AkP
+         k1b4xI82YTbtvEuWa0W/hhpfSUaa35VMJ/lIAEMr/BWNyMDtfw10TPKXDQtwRjiNBV4m
+         j+rmDhxBRsmOWf0//+KS8UD+WT+17SFiNhZwthHXcLYQ3fkCefGmdTzHkv65kRdu4G4w
+         vlo/2tu2vVhafYK/sVf9VEJHhTh0no1XcPX3iUYEOsqj8DSSBSFUBcK0tTLpLA7y9zNX
+         hrBN/Z5zR5si16sBOIcKtfsgeBWEVEbd0dLleRgZm1huPbmc41WlJRAmrY2gKwLRNH5v
+         X4TA==
+X-Gm-Message-State: APjAAAXmxL3RsnVBanRK8TLUL0vuuG+fsSDHlSmkRykPkYlwxfDTZdUn
+        C3gV/E83GfqnzHqVd45XSIsfaC19Cag=
+X-Google-Smtp-Source: APXvYqxdXAggPnSsxeYaGs+h1PAi2Zz+wyxxWNmf1O/8MMGfcnT/SLcQmq0Hs/QrK99fQEbOujjCMw==
+X-Received: by 2002:a17:902:7c8f:: with SMTP id y15mr910432pll.55.1582761926183;
+        Wed, 26 Feb 2020 16:05:26 -0800 (PST)
+Received: from smtp.gmail.com ([2620:15c:202:1:534:b7c0:a63c:460c])
+        by smtp.gmail.com with ESMTPSA id 196sm4307849pfy.86.2020.02.26.16.05.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 26 Feb 2020 16:05:25 -0800 (PST)
+From:   Brian Norris <briannorris@chromium.org>
+To:     linux-wireless@vger.kernel.org
+Cc:     <linux-kernel@vger.kernel.org>,
+        Ganapathi Bhat <ganapathi.bhat@nxp.com>,
+        Nishant Sarmukadam <nishants@marvell.com>,
+        Amitkumar Karwar <amitkarwar@gmail.com>,
+        Xinming Hu <huxinming820@gmail.com>,
+        Arend Van Spriel <arend@broadcom.com>,
+        Brian Norris <briannorris@chromium.org>
+Subject: [PATCH] mwifiex: set needed_headroom, not hard_header_len
+Date:   Wed, 26 Feb 2020 16:05:11 -0800
+Message-Id: <20200227000511.256055-1-briannorris@chromium.org>
+X-Mailer: git-send-email 2.25.0.265.gbab2e86ba0-goog
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 2020-02-25 at 16:39 +0100, Johannes Berg wrote:
-> On Tue, 2020-02-25 at 16:15 +0100, Andrew Lunn wrote:
-> 
-> > Looking at it bottom up, is the WWAN device itself made up of
-> > multiple
-> > devices? Are the TTYs separate drivers to the packet moving
-> > engines?
-> 
-> Possibly, yes, it depends a bit.
-> 
-> > They have there own USB end points, and could just be standard CDC
-> > ACM?
-> 
-> Yeah, for a lot of USB devices that's indeed the case.
+hard_header_len provides limitations for things like AF_PACKET, such
+that we don't allow transmitting packets smaller than this.
 
-For exmaple, the most common non-embedded case is USB WWAN cards
-(whether sticks or M.2/PCIe minicard):
+needed_headroom provides a suggested minimum headroom for SKBs, so that
+we can trivally add our headers to the front.
 
-* one or more "control" ports, either CDC-ACM that speak AT commands or
-CDC-WDM that speak QMI, AT, or MBIM. Exposed by drivers like cdc-acm,
-cdc-wdm, option, qcserial, qcaux, hso, sierra, etc.
+The latter is the correct field to use in this case, while the former
+mostly just prevents sending small AF_PACKET frames.
 
-* one or more "data" ports that are exposed by USB network drivers.
-Exposed by drivers like cdc-ether, cdc-ncm, qmi-wwan, sierra-net, hso,
-etc.
+In any case, mwifiex already does its own bounce buffering [1] if we
+don't have enough headroom, so hints (not hard limits) are all that are
+needed.
 
-In most cases the data port needs to be configured using specific
-commands from the control ports to be useful and pass traffic. They are
-logically the same device, but use totally separate kernel drivers and
-sometimes buses.
+This is the essentially the same bug (and fix) that brcmfmac had, fixed
+in commit cb39288fd6bb ("brcmfmac: use ndev->needed_headroom to reserve
+additional header space").
 
-But that's only for USB. Qualcomm embedded stuff will use a different
-bus, other devices use PCI, some have both platform serial and USB
-connections. But I don't think we need a perfect solution, just
-something that handles a bunch of the cases that we can improve over
-time.
+[1] mwifiex_hard_start_xmit():
+	if (skb_headroom(skb) < MWIFIEX_MIN_DATA_HEADER_LEN) {
+	[...]
+		/* Insufficient skb headroom - allocate a new skb */
 
-Dan
+Fixes: 5e6e3a92b9a4 ("wireless: mwifiex: initial commit for Marvell mwifiex driver")
+Signed-off-by: Brian Norris <briannorris@chromium.org>
+---
+ drivers/net/wireless/marvell/mwifiex/cfg80211.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> > driver/base/component.c could be useful for bringing together these
-> > individual devices to form the whole WWAN device.
-> 
-> Huh, I was unaware of this, I'll take a look!
-> 
-> A very brief look suggests that it wants to have a driver for the
-> whole
-> thing in the end, which isn't really true here, but perhaps we could
-> "make one up" and have that implement the userspace API. I need to
-> take
-> a closer look, thanks for the pointer.
-> 
-> > Plus you need to avoid confusion by not adding another "component
-> > framework" which means something totally different to the existing
-> > component framework.
-> 
-> :)
-> 
-> johannes
-> 
+diff --git a/drivers/net/wireless/marvell/mwifiex/cfg80211.c b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
+index 0a6da6fe2f89..1566d2197906 100644
+--- a/drivers/net/wireless/marvell/mwifiex/cfg80211.c
++++ b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
+@@ -3052,7 +3052,7 @@ struct wireless_dev *mwifiex_add_virtual_intf(struct wiphy *wiphy,
+ 
+ 	dev->flags |= IFF_BROADCAST | IFF_MULTICAST;
+ 	dev->watchdog_timeo = MWIFIEX_DEFAULT_WATCHDOG_TIMEOUT;
+-	dev->hard_header_len += MWIFIEX_MIN_DATA_HEADER_LEN;
++	dev->needed_headroom = MWIFIEX_MIN_DATA_HEADER_LEN;
+ 	dev->ethtool_ops = &mwifiex_ethtool_ops;
+ 
+ 	mdev_priv = netdev_priv(dev);
+-- 
+2.25.0.265.gbab2e86ba0-goog
 
