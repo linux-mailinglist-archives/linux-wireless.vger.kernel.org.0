@@ -2,34 +2,34 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BA8B3173857
-	for <lists+linux-wireless@lfdr.de>; Fri, 28 Feb 2020 14:30:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 37F0B173858
+	for <lists+linux-wireless@lfdr.de>; Fri, 28 Feb 2020 14:30:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726673AbgB1N3n (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 28 Feb 2020 08:29:43 -0500
-Received: from mail.kernel.org ([198.145.29.99]:42752 "EHLO mail.kernel.org"
+        id S1726824AbgB1N3p (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 28 Feb 2020 08:29:45 -0500
+Received: from mail.kernel.org ([198.145.29.99]:42774 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726791AbgB1N3m (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 28 Feb 2020 08:29:42 -0500
+        id S1726791AbgB1N3o (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 28 Feb 2020 08:29:44 -0500
 Received: from lore-desk-wlan.redhat.com (unknown [151.48.128.122])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 492CC2469D;
-        Fri, 28 Feb 2020 13:29:41 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 1C92F246A3;
+        Fri, 28 Feb 2020 13:29:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1582896582;
-        bh=eFXuwgL2JUlj9Srb5XrYRHWTaOwfqpKP0ndosEzvAII=;
+        s=default; t=1582896584;
+        bh=ueRno9wU2ahuD234sm4+J9KY4nKcWSDVStSvZRzy9lI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=S5tuZs2GwXiSPdjnkVtWUF+f42wzx6mkPHBFV2/bIAnm7yf8OO4s5VfVGw9KLc9iD
-         ptaM2Ma87M0lT80T7hgTZQedaddQlRt9UR5Y53Clq9AoA5h835TW619BQ8RqLl5aCW
-         eKJS8Z+sAvua+Iq/RAfhHaZqSQLXwmUUOGcLx7TE=
+        b=wGD05IUSKBqdOO9G5aRu5joFlfEMQ8Dmcx6Ea7sPvYcvHjbo0YJWw09yLLGYOojUE
+         6OX0wc+PPMNYFqn8tJT9zV3RxQ2Hlbc3zrFq4KmaEksHo5+dSqnrjutL53EQOsyZJp
+         WpSQSW6UbBU2dHcgfgjCBwVNp68xSvosJrd19T3c=
 From:   Lorenzo Bianconi <lorenzo@kernel.org>
 To:     nbd@nbd.name
 Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
         sean.wang@mediatek.com
-Subject: [PATCH 5/6] mt76: mt7615: introduce mt7615_init_device routine
-Date:   Fri, 28 Feb 2020 14:29:26 +0100
-Message-Id: <2de10b1a8249e3eb32a0d7ad305b930207276a09.1582893136.git.lorenzo@kernel.org>
+Subject: [PATCH 6/6] mt76: mt7615: move mt7615_mac_wtbl_addr in mac.h
+Date:   Fri, 28 Feb 2020 14:29:27 +0100
+Message-Id: <aa1b3a566fe014718d7ab4de7207f3bf8bf88bdc.1582893136.git.lorenzo@kernel.org>
 X-Mailer: git-send-email 2.24.1
 In-Reply-To: <cover.1582893136.git.lorenzo@kernel.org>
 References: <cover.1582893136.git.lorenzo@kernel.org>
@@ -40,88 +40,44 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Add mt7615_init_device routine to configure the mt76 device adding
-usb support to mt7615 driver
+Move mt7615_mac_wtbl_addr in mac.h to reuse it in mt7663u driver
 
 Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- .../net/wireless/mediatek/mt76/mt7615/init.c  | 27 +++++++++++--------
- .../wireless/mediatek/mt76/mt7615/mt7615.h    |  1 +
- 2 files changed, 17 insertions(+), 11 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7615/mac.c | 5 -----
+ drivers/net/wireless/mediatek/mt76/mt7615/mac.h | 5 +++++
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/init.c b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
-index 3f9d87ebed8c..23cda1378770 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
-@@ -441,11 +441,9 @@ void mt7615_unregister_ext_phy(struct mt7615_dev *dev)
- 	ieee80211_free_hw(mphy->hw);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
+index a14ca0825582..dcd1141792d6 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
+@@ -707,11 +707,6 @@ void mt7615_txp_skb_unmap(struct mt76_dev *dev,
+ 		mt7615_txp_skb_unmap_hw(dev, &txp->hw);
  }
  
+-static u32 mt7615_mac_wtbl_addr(struct mt7615_dev *dev, int wcid)
+-{
+-	return MT_WTBL_BASE(dev) + wcid * MT_WTBL_ENTRY_SIZE;
+-}
 -
--int mt7615_register_device(struct mt7615_dev *dev)
-+void mt7615_init_device(struct mt7615_dev *dev)
+ bool mt7615_mac_wtbl_update(struct mt7615_dev *dev, int idx, u32 mask)
  {
- 	struct ieee80211_hw *hw = mt76_hw(dev);
--	int ret;
+ 	mt76_rmw(dev, MT_WTBL_UPDATE, MT_WTBL_UPDATE_WLAN_IDX,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mac.h b/drivers/net/wireless/mediatek/mt76/mt7615/mac.h
+index 5fe6a0e667a9..0fb9c0b2bca4 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.h
+@@ -405,4 +405,9 @@ mt7615_txwi_to_txp(struct mt76_dev *dev, struct mt76_txwi_cache *t)
+ 	return (struct mt7615_txp_common *)(txwi + MT_TXD_SIZE);
+ }
  
- 	dev->phy.dev = dev;
- 	dev->phy.mt76 = &dev->mt76.phy;
-@@ -456,14 +454,6 @@ int mt7615_register_device(struct mt7615_dev *dev)
- 	init_waitqueue_head(&dev->reset_wait);
- 	INIT_WORK(&dev->reset_work, mt7615_mac_reset_work);
- 
--	ret = mt7622_wmac_init(dev);
--	if (ret)
--		return ret;
--
--	ret = mt7615_init_hardware(dev);
--	if (ret)
--		return ret;
--
- 	mt7615_init_wiphy(hw);
- 	dev->mphy.sband_2g.sband.ht_cap.cap |= IEEE80211_HT_CAP_LDPC_CODING;
- 	dev->mphy.sband_5g.sband.ht_cap.cap |= IEEE80211_HT_CAP_LDPC_CODING;
-@@ -472,6 +462,13 @@ int mt7615_register_device(struct mt7615_dev *dev)
- 			IEEE80211_VHT_CAP_MAX_A_MPDU_LENGTH_EXPONENT_MASK;
- 	mt7615_cap_dbdc_disable(dev);
- 	dev->phy.dfs_state = -1;
++static inline u32 mt7615_mac_wtbl_addr(struct mt7615_dev *dev, int wcid)
++{
++	return MT_WTBL_BASE(dev) + wcid * MT_WTBL_ENTRY_SIZE;
 +}
 +
-+int mt7615_register_device(struct mt7615_dev *dev)
-+{
-+	int ret;
-+
-+	mt7615_init_device(dev);
- 
- 	/* init led callbacks */
- 	if (IS_ENABLED(CONFIG_MT76_LEDS)) {
-@@ -479,6 +476,14 @@ int mt7615_register_device(struct mt7615_dev *dev)
- 		dev->mt76.led_cdev.blink_set = mt7615_led_set_blink;
- 	}
- 
-+	ret = mt7622_wmac_init(dev);
-+	if (ret)
-+		return ret;
-+
-+	ret = mt7615_init_hardware(dev);
-+	if (ret)
-+		return ret;
-+
- 	ret = mt76_register_device(&dev->mt76, true, mt7615_rates,
- 				   ARRAY_SIZE(mt7615_rates));
- 	if (ret)
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
-index 1614a0b8ecb8..cb8d2ed72e4d 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
-@@ -279,6 +279,7 @@ int mt7615_mmio_probe(struct device *pdev, void __iomem *mem_base,
- 		      int irq, const u32 *map);
- u32 mt7615_reg_map(struct mt7615_dev *dev, u32 addr);
- 
-+void mt7615_init_device(struct mt7615_dev *dev);
- int mt7615_register_device(struct mt7615_dev *dev);
- void mt7615_unregister_device(struct mt7615_dev *dev);
- int mt7615_register_ext_phy(struct mt7615_dev *dev);
+ #endif
 -- 
 2.24.1
 
