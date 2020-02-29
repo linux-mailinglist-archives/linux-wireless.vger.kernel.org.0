@@ -2,56 +2,56 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B445F1748E1
-	for <lists+linux-wireless@lfdr.de>; Sat, 29 Feb 2020 20:30:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 464D1174933
+	for <lists+linux-wireless@lfdr.de>; Sat, 29 Feb 2020 21:34:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727327AbgB2T37 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 29 Feb 2020 14:29:59 -0500
-Received: from mail-wm1-f67.google.com ([209.85.128.67]:35730 "EHLO
-        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727102AbgB2T37 (ORCPT
+        id S1727442AbgB2Ud7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 29 Feb 2020 15:33:59 -0500
+Received: from mail-wr1-f66.google.com ([209.85.221.66]:42510 "EHLO
+        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727412AbgB2Ud6 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 29 Feb 2020 14:29:59 -0500
-Received: by mail-wm1-f67.google.com with SMTP id m3so6970332wmi.0
-        for <linux-wireless@vger.kernel.org>; Sat, 29 Feb 2020 11:29:58 -0800 (PST)
+        Sat, 29 Feb 2020 15:33:58 -0500
+Received: by mail-wr1-f66.google.com with SMTP id p18so7579478wre.9
+        for <linux-wireless@vger.kernel.org>; Sat, 29 Feb 2020 12:33:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=to:cc:from:subject:message-id:date:user-agent:mime-version
          :content-language:content-transfer-encoding;
-        bh=w5vEkyoOl+Ezm0+zDepgiNeDHkQLkere0DjeAVL4ezA=;
-        b=qcqOA5nLHXm1JkABeNn0ekmYYuqGlo4k81IVZZ5/9FpQ8u2e0XpCUU6IiD78VSfjYC
-         uNeWjgI8HXjkHBjYNMjq5XPNA4JvUyQ/Q5FpIv470NBEebOx7tp1suzW5HkaahEHO7x/
-         pI4w59xE7LJ1+O9wbed3oqOvHUF11IP7xdyob4cp1Wy8jquT8qQ7hh0NvXb9yZWfqsZz
-         Ti8jdLCey+i4mlj7oNoiXou/CwtFhlSHJh5wzwOLAqEMjv3t05YxK0XJkhfVmqwP5BSI
-         8LtBZub52KqOrGzUS4GjoKYy6WCA8tw5mzEuQQGJPqVxL1Bguzh4nnEmltPU1PCLLAKD
-         25Xw==
+        bh=Zt3dq1OUkMEUcUXW65qyxooApGG+qBeaodqKhZlMmPE=;
+        b=JbBDTY++uSsVrcYM05asL6cIXEST1QQi6vSxyskSsjGDkrsnZGvIJcvG/XPIPBnqKp
+         PFrt7L1A0B0Hy99+rv8yAw8SEE5sPCtfVHnHb4pj7Nnlwxu6AoaDbNrozSJ61KZOmvNd
+         JFi3S1nTzfTvXGmssIJVRK0MySvv3RtvGCxdAIgBK7taVUakmntRsp2oHat26dfDy43l
+         7TRmgM9WFxH0wjV8XJKA+74DEEIllSN8Gvb3IGoJz9EZ6TMgbOC0l+sTZnW0YORtqGAo
+         uTYo9o0OLtSw6SFzznqxP20u6VmHOOAriwO9hP+gdKQqma65k7Lw4sB6DU4lNOLvw3ax
+         2hcQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:to:cc:from:subject:message-id:date:user-agent
          :mime-version:content-language:content-transfer-encoding;
-        bh=w5vEkyoOl+Ezm0+zDepgiNeDHkQLkere0DjeAVL4ezA=;
-        b=iVsvM6/3Kglu9/Kr23nHUF6jyT1ZfNVeXQFNBsHVBXNYXYApwD/8akJFl7Xy6AGS4d
-         o09JNxwN27eMZm97BqIbVZoLlkOyqFlV5cWZTuQpQcPVoxIEzJfJP/I4iwTbby5nGMgm
-         ZqaIqP2b0fIP0KbrtWcIkgGwcryt6mjTxjbVMx0x4JU23d47Mm5khTu6r7+X96yca9ur
-         8MOaS42Ng0PDI39nYr4ndk05W3qJAf/QgfzA+BefMRy2FKR/et4mGcmWMR/5o0UREaq0
-         260VVgIATSE3mu9jttQwW06dz1ecoYbHOkehC9nzNSGXVVZTSDf45q3ph3ppORWC6FFY
-         Z0fQ==
-X-Gm-Message-State: APjAAAVcLkQ993O6APTwIaacj3YKwh9K40sW3zhbds0x6iT122iMv3X5
-        hibksf+vLZs6Rlrr/qYPYxLyr1FN
-X-Google-Smtp-Source: APXvYqzzZj/9nZgbdTCuloJJo+oYheRSlsRXmgCMX3q1dAwqW8FSaVAVaAZSXzOWj1B5SGlTg5Cneg==
-X-Received: by 2002:a05:600c:294a:: with SMTP id n10mr11074048wmd.11.1583004597738;
-        Sat, 29 Feb 2020 11:29:57 -0800 (PST)
+        bh=Zt3dq1OUkMEUcUXW65qyxooApGG+qBeaodqKhZlMmPE=;
+        b=syYt91BAYCOAnazfWm9WIuki/dR1mM3GFDirmbrqPFYQPhb+ZcBpJzw1D+REeLhvtZ
+         eM0B8/TH6ySWYcQdrO57TQbKEkhXio5i3GMjkdFkuUVdmphjwQVTbpHrA0X19kRuBt8W
+         P6VcIn4a19w0DEKfkWVAwnL4+UW6+sd40u2ePaRMS7B+mC70a6rwFeUYNLBw2CHhVnYF
+         5YV6oiGLeQcprq2HlL1f+sxoZfemaCS3B816kCho5AnuKD6gVxeyfysK0aGGSfMPCDms
+         Rjel/e7vZ94Jtz42cWNy9UCpaitff9y+6TtDj7LPwQU/1itgX+CIugD/1VaawFVznAna
+         iMKQ==
+X-Gm-Message-State: APjAAAVxOueoL+w0GYctz3Tcaa+6HL6PmdDURcCeqx+hKtgeZ1siBcfv
+        xnaImt+eHzK0G1Tf1RJoR/esNaSX
+X-Google-Smtp-Source: APXvYqxzp+Dj+OvCiZn/aP2YmRrI+t1wRiYoB6g1TCn+nuk3NEGo5KZXit5wv97r9XkPXnV3L3VIMw==
+X-Received: by 2002:adf:9282:: with SMTP id 2mr12657562wrn.124.1583008436742;
+        Sat, 29 Feb 2020 12:33:56 -0800 (PST)
 Received: from [192.168.43.18] (94.197.121.166.threembb.co.uk. [94.197.121.166])
-        by smtp.gmail.com with ESMTPSA id o9sm19369573wrw.20.2020.02.29.11.29.56
+        by smtp.gmail.com with ESMTPSA id a9sm19644051wrn.3.2020.02.29.12.33.55
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 29 Feb 2020 11:29:57 -0800 (PST)
+        Sat, 29 Feb 2020 12:33:56 -0800 (PST)
 To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc:     "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>,
         linux-wireless@vger.kernel.org
 From:   Malcolm Priestley <tvboxspy@gmail.com>
-Subject: [PATCH] staging: vt6656: Remove STATUS enums from TX path
-Message-ID: <21bf299b-63e0-9f65-c7db-6e0b72e0f1d8@gmail.com>
-Date:   Sat, 29 Feb 2020 19:29:55 +0000
+Subject: [PATCH 1/2] staging: vt6656: use vnt_vt3184_agc array directly
+Message-ID: <4b455ee4-7ac7-e1ff-4a10-2d99f2e30714@gmail.com>
+Date:   Sat, 29 Feb 2020 20:33:54 +0000
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.5.0
 MIME-Version: 1.0
@@ -63,79 +63,75 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Returning standard error code or status variable.
+vnt_vt3184_agc is always the same regardless of rf type
+so use the array directly removing from stack buffer.
 
 Signed-off-by: Malcolm Priestley <tvboxspy@gmail.com>
 ---
- drivers/staging/vt6656/device.h  | 9 ---------
- drivers/staging/vt6656/rxtx.c    | 4 ++--
- drivers/staging/vt6656/usbpipe.c | 5 ++---
- 3 files changed, 4 insertions(+), 14 deletions(-)
+ drivers/staging/vt6656/baseband.c | 15 ++-------------
+ 1 file changed, 2 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/staging/vt6656/device.h b/drivers/staging/vt6656/device.h
-index da868adba7c9..5c9991415432 100644
---- a/drivers/staging/vt6656/device.h
-+++ b/drivers/staging/vt6656/device.h
-@@ -256,15 +256,6 @@ struct vnt_interrupt_buffer {
- 	bool in_use;
- };
+diff --git a/drivers/staging/vt6656/baseband.c b/drivers/staging/vt6656/baseband.c
+index f18e059ce66b..48a624bf00c0 100644
+--- a/drivers/staging/vt6656/baseband.c
++++ b/drivers/staging/vt6656/baseband.c
+@@ -367,8 +367,6 @@ int vnt_vt3184_init(struct vnt_private *priv)
+ 	int ret = 0;
+ 	u16 length;
+ 	u8 *addr;
+-	u8 *agc;
+-	u16 length_agc;
+ 	u8 array[256];
+ 	u8 data;
  
--/*++ NDIS related */
+@@ -386,8 +384,6 @@ int vnt_vt3184_init(struct vnt_private *priv)
+ 		priv->bb_rx_conf = vnt_vt3184_al2230[10];
+ 		length = sizeof(vnt_vt3184_al2230);
+ 		addr = vnt_vt3184_al2230;
+-		agc = vnt_vt3184_agc;
+-		length_agc = sizeof(vnt_vt3184_agc);
+ 
+ 		priv->bb_vga[0] = 0x1C;
+ 		priv->bb_vga[1] = 0x10;
+@@ -398,8 +394,6 @@ int vnt_vt3184_init(struct vnt_private *priv)
+ 		priv->bb_rx_conf = vnt_vt3184_al2230[10];
+ 		length = sizeof(vnt_vt3184_al2230);
+ 		addr = vnt_vt3184_al2230;
+-		agc = vnt_vt3184_agc;
+-		length_agc = sizeof(vnt_vt3184_agc);
+ 
+ 		addr[0xd7] = 0x06;
+ 
+@@ -413,8 +407,6 @@ int vnt_vt3184_init(struct vnt_private *priv)
+ 		priv->bb_rx_conf = vnt_vt3184_vt3226d0[10];
+ 		length = sizeof(vnt_vt3184_vt3226d0);
+ 		addr = vnt_vt3184_vt3226d0;
+-		agc = vnt_vt3184_agc;
+-		length_agc = sizeof(vnt_vt3184_agc);
+ 
+ 		priv->bb_vga[0] = 0x20;
+ 		priv->bb_vga[1] = 0x10;
+@@ -430,8 +422,6 @@ int vnt_vt3184_init(struct vnt_private *priv)
+ 		priv->bb_rx_conf = vnt_vt3184_vt3226d0[10];
+ 		length = sizeof(vnt_vt3184_vt3226d0);
+ 		addr = vnt_vt3184_vt3226d0;
+-		agc = vnt_vt3184_agc;
+-		length_agc = sizeof(vnt_vt3184_agc);
+ 
+ 		priv->bb_vga[0] = 0x20;
+ 		priv->bb_vga[1] = 0x10;
+@@ -454,10 +444,9 @@ int vnt_vt3184_init(struct vnt_private *priv)
+ 	if (ret)
+ 		goto end;
+ 
+-	memcpy(array, agc, length_agc);
 -
--enum {
--	STATUS_SUCCESS = 0,
--	STATUS_FAILURE,
--	STATUS_RESOURCES,
--	STATUS_PENDING,
--};
--
- /* flags for options */
- #define DEVICE_FLAGS_UNPLUG		0
- #define DEVICE_FLAGS_DISCONNECTED	1
-diff --git a/drivers/staging/vt6656/rxtx.c b/drivers/staging/vt6656/rxtx.c
-index 1003808ac4ad..9439d190f431 100644
---- a/drivers/staging/vt6656/rxtx.c
-+++ b/drivers/staging/vt6656/rxtx.c
-@@ -704,7 +704,7 @@ int vnt_tx_packet(struct vnt_private *priv, struct sk_buff *skb)
+ 	ret = vnt_control_out(priv, MESSAGE_TYPE_WRITE, 0,
+-			      MESSAGE_REQUEST_BBAGC, length_agc, array);
++			      MESSAGE_REQUEST_BBAGC,
++			      sizeof(vnt_vt3184_agc), vnt_vt3184_agc);
+ 	if (ret)
+ 		goto end;
  
- 	spin_lock_irqsave(&priv->lock, flags);
- 
--	if (vnt_tx_context(priv, tx_context) != STATUS_PENDING) {
-+	if (vnt_tx_context(priv, tx_context)) {
- 		spin_unlock_irqrestore(&priv->lock, flags);
- 		return -EIO;
- 	}
-@@ -797,7 +797,7 @@ static int vnt_beacon_xmit(struct vnt_private *priv, struct sk_buff *skb)
- 
- 	spin_lock_irqsave(&priv->lock, flags);
- 
--	if (vnt_tx_context(priv, context) != STATUS_PENDING)
-+	if (vnt_tx_context(priv, context))
- 		ieee80211_free_txskb(priv->hw, context->skb);
- 
- 	spin_unlock_irqrestore(&priv->lock, flags);
-diff --git a/drivers/staging/vt6656/usbpipe.c b/drivers/staging/vt6656/usbpipe.c
-index 7bfccc48a366..e93c2175543f 100644
---- a/drivers/staging/vt6656/usbpipe.c
-+++ b/drivers/staging/vt6656/usbpipe.c
-@@ -317,7 +317,7 @@ int vnt_tx_context(struct vnt_private *priv,
- 
- 	if (test_bit(DEVICE_FLAGS_DISCONNECTED, &priv->flags)) {
- 		context->in_use = false;
--		return STATUS_RESOURCES;
-+		return -ENODEV;
- 	}
- 
- 	usb_fill_bulk_urb(urb,
-@@ -333,8 +333,7 @@ int vnt_tx_context(struct vnt_private *priv,
- 		dev_dbg(&priv->usb->dev, "Submit Tx URB failed %d\n", status);
- 
- 		context->in_use = false;
--		return STATUS_FAILURE;
- 	}
- 
--	return STATUS_PENDING;
-+	return status;
- }
 -- 
 2.25.1
