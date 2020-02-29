@@ -2,84 +2,84 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 01ABA173B5E
-	for <lists+linux-wireless@lfdr.de>; Fri, 28 Feb 2020 16:26:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E71711747DA
+	for <lists+linux-wireless@lfdr.de>; Sat, 29 Feb 2020 17:05:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727049AbgB1P0m (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 28 Feb 2020 10:26:42 -0500
-Received: from mail2.candelatech.com ([208.74.158.173]:58818 "EHLO
-        mail3.candelatech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726951AbgB1P0m (ORCPT
+        id S1727257AbgB2QFA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 29 Feb 2020 11:05:00 -0500
+Received: from relay10.mail.gandi.net ([217.70.178.230]:44099 "EHLO
+        relay10.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727164AbgB2QE7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 28 Feb 2020 10:26:42 -0500
-Received: from [192.168.254.4] (unknown [50.46.151.58])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail3.candelatech.com (Postfix) with ESMTPSA id D03E7137595;
-        Fri, 28 Feb 2020 07:26:41 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com D03E7137595
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1582903602;
-        bh=VRC4ydjF3rfGbXZ5RwzngvxF78BWMJyyIvT1hy/9z7Q=;
-        h=Subject:To:References:From:Date:In-Reply-To:From;
-        b=ZdUYmNBlj+7KQFzzjC1qBZ3SE9Q0vUJEWIybyScIddJj4RJxcEjA7LLS54WFqOzKq
-         W7GL4al+y8HnZSrDV46jDwFNxKGeHZFcXv8+8Fh8oTzHdLVareaV8v2rsv92ak9Rr8
-         ocaECaIQQNodDNYEZHgdmZUXNkMf3/1clMrc5DWk=
-Subject: Re: Any reason AID is not in the NL80211_STA_INFO enumeration?
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-References: <5E4B39B2.8050905@candelatech.com>
- <3fcaaf0ba9ed726c863f9f1e7c5d61c08ca40795.camel@sipsolutions.net>
-From:   Ben Greear <greearb@candelatech.com>
-Message-ID: <29006a9e-4de2-1733-1a8a-a5aae686fd42@candelatech.com>
-Date:   Fri, 28 Feb 2020 07:26:40 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
- Thunderbird/45.8.0
+        Sat, 29 Feb 2020 11:04:59 -0500
+Received: from localhost (lfbn-ren-1-591-115.w81-53.abo.wanadoo.fr [81.53.169.115])
+        (Authenticated sender: repk@triplefau.lt)
+        by relay10.mail.gandi.net (Postfix) with ESMTPSA id 7B566240003;
+        Sat, 29 Feb 2020 16:04:56 +0000 (UTC)
+From:   Remi Pommarel <repk@triplefau.lt>
+To:     Lorenzo Bianconi <lorenzo@kernel.org>,
+        Kalle Valo <kvalo@codeaurora.org>
+Cc:     QCA ath9k Development <ath9k-devel@qca.qualcomm.com>,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Remi Pommarel <repk@triplefau.lt>, stable@vger.kernel.org
+Subject: [PATCH] ath9k: Handle txpower changes even when TPC is disabled
+Date:   Sat, 29 Feb 2020 17:13:47 +0100
+Message-Id: <20200229161347.31341-1-repk@triplefau.lt>
+X-Mailer: git-send-email 2.25.0
 MIME-Version: 1.0
-In-Reply-To: <3fcaaf0ba9ed726c863f9f1e7c5d61c08ca40795.camel@sipsolutions.net>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+When TPC is disabled IEEE80211_CONF_CHANGE_POWER event can be handled to
+reconfigure HW's maximum txpower.
 
+This fixes 0dBm txpower setting when user attaches to an interface for
+the first time with the following scenario:
 
-On 02/28/2020 02:06 AM, Johannes Berg wrote:
-> On Mon, 2020-02-17 at 17:11 -0800, Ben Greear wrote:
->> To sniff /AX stations, it is helpful to know their AID.  So, any problems
->> with adding it to 'iw station dump' output?
->
-> No, no problem at all. I guess it was just never added because it
-> originally comes from userspace (hostapd), and so didn't really need to
-> be sent back. But yeah, we have trivial infrastructure to send it back,
-> so sure, why not.
+ieee80211_do_open()
+    ath9k_add_interface()
+        ath9k_set_txpower() /* Set TX power with not yet initialized
+                               sc->hw->conf.power_level */
 
-Ok, thanks for the response.
+    ieee80211_hw_config() /* Iniatilize sc->hw->conf.power_level and
+                             raise IEEE80211_CONF_CHANGE_POWER */
 
- From looking at debugfs for a station device, there is the netdev AID:
+    ath9k_config() /* IEEE80211_CONF_CHANGE_POWER is ignored */
 
-cat /debug/ieee80211/wiphy0/netdev\:wlan0/aid
-1
+This issue can be reproduced with the following:
 
-And there is a peer AID:
+  $ modprobe -r ath9k
+  $ modprobe ath9k
+  $ wpa_supplicant -i wlan0 -c /tmp/wpa.conf &
+  $ iw dev /* Here TX power is either 0 or 3 depending on RF chain */
+  $ killall wpa_supplicant
+  $ iw dev /* TX power goes back to calibrated value and subsequent
+              calls will be fine */
 
-cat /debug/ieee80211/wiphy0/netdev\:wlan0/stations/04\:f0\:21\:c2\:fd\:b0/aid
-0
+Fixes: 283dd11994cde ("ath9k: add per-vif TX power capability")
+Cc: stable@vger.kernel.org
+Signed-off-by: Remi Pommarel <repk@triplefau.lt>
+---
+ drivers/net/wireless/ath/ath9k/main.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-For sniffing AX, I'd need to use '1' here as far as I can tell.  Maybe for station
-devices the peer is always zero?  And for AP devices, the peer IDs are what is useful
-and the netdev AID is not?
-
-
-Thanks,
-Ben
-
->
-> johannes
->
-
+diff --git a/drivers/net/wireless/ath/ath9k/main.c b/drivers/net/wireless/ath/ath9k/main.c
+index 0548aa3702e3..ef2b856670e1 100644
+--- a/drivers/net/wireless/ath/ath9k/main.c
++++ b/drivers/net/wireless/ath/ath9k/main.c
+@@ -1457,6 +1457,9 @@ static int ath9k_config(struct ieee80211_hw *hw, u32 changed)
+ 		ath_chanctx_set_channel(sc, ctx, &hw->conf.chandef);
+ 	}
+ 
++	if (changed & IEEE80211_CONF_CHANGE_POWER)
++		ath9k_set_txpower(sc, NULL);
++
+ 	mutex_unlock(&sc->mutex);
+ 	ath9k_ps_restore(sc);
+ 
 -- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
+2.25.0
+
