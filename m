@@ -2,84 +2,120 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E71711747DA
-	for <lists+linux-wireless@lfdr.de>; Sat, 29 Feb 2020 17:05:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 69DDE1748D2
+	for <lists+linux-wireless@lfdr.de>; Sat, 29 Feb 2020 20:01:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727257AbgB2QFA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 29 Feb 2020 11:05:00 -0500
-Received: from relay10.mail.gandi.net ([217.70.178.230]:44099 "EHLO
-        relay10.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727164AbgB2QE7 (ORCPT
+        id S1727397AbgB2TBx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 29 Feb 2020 14:01:53 -0500
+Received: from relay12.mail.gandi.net ([217.70.178.232]:48961 "EHLO
+        relay12.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727341AbgB2TBx (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 29 Feb 2020 11:04:59 -0500
-Received: from localhost (lfbn-ren-1-591-115.w81-53.abo.wanadoo.fr [81.53.169.115])
-        (Authenticated sender: repk@triplefau.lt)
-        by relay10.mail.gandi.net (Postfix) with ESMTPSA id 7B566240003;
-        Sat, 29 Feb 2020 16:04:56 +0000 (UTC)
-From:   Remi Pommarel <repk@triplefau.lt>
-To:     Lorenzo Bianconi <lorenzo@kernel.org>,
-        Kalle Valo <kvalo@codeaurora.org>
-Cc:     QCA ath9k Development <ath9k-devel@qca.qualcomm.com>,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Remi Pommarel <repk@triplefau.lt>, stable@vger.kernel.org
-Subject: [PATCH] ath9k: Handle txpower changes even when TPC is disabled
-Date:   Sat, 29 Feb 2020 17:13:47 +0100
-Message-Id: <20200229161347.31341-1-repk@triplefau.lt>
-X-Mailer: git-send-email 2.25.0
+        Sat, 29 Feb 2020 14:01:53 -0500
+Received: from classic (mon69-7-83-155-44-161.fbx.proxad.net [83.155.44.161])
+        (Authenticated sender: hadess@hadess.net)
+        by relay12.mail.gandi.net (Postfix) with ESMTPSA id 48E20200002;
+        Sat, 29 Feb 2020 19:01:50 +0000 (UTC)
+Message-ID: <869a61437edb52d60721ac8b2a7cccc43e3b0fb4.camel@hadess.net>
+Subject: [PATCH v2] rtl8188eu: Add rtw_led_enable module parameter
+From:   Bastien Nocera <hadess@hadess.net>
+To:     linux-wireless@vger.kernel.org
+Cc:     Larry Finger <Larry.Finger@lwfinger.net>
+Date:   Sat, 29 Feb 2020 20:01:49 +0100
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.35.91 (3.35.91-1.fc32) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-When TPC is disabled IEEE80211_CONF_CHANGE_POWER event can be handled to
-reconfigure HW's maximum txpower.
+Make it possible to disable the LED, as it can be pretty annoying
+depending on where it's located.
 
-This fixes 0dBm txpower setting when user attaches to an interface for
-the first time with the following scenario:
+See also https://github.com/lwfinger/rtl8188eu/pull/304 for the
+out-of-tree version.
 
-ieee80211_do_open()
-    ath9k_add_interface()
-        ath9k_set_txpower() /* Set TX power with not yet initialized
-                               sc->hw->conf.power_level */
-
-    ieee80211_hw_config() /* Iniatilize sc->hw->conf.power_level and
-                             raise IEEE80211_CONF_CHANGE_POWER */
-
-    ath9k_config() /* IEEE80211_CONF_CHANGE_POWER is ignored */
-
-This issue can be reproduced with the following:
-
-  $ modprobe -r ath9k
-  $ modprobe ath9k
-  $ wpa_supplicant -i wlan0 -c /tmp/wpa.conf &
-  $ iw dev /* Here TX power is either 0 or 3 depending on RF chain */
-  $ killall wpa_supplicant
-  $ iw dev /* TX power goes back to calibrated value and subsequent
-              calls will be fine */
-
-Fixes: 283dd11994cde ("ath9k: add per-vif TX power capability")
-Cc: stable@vger.kernel.org
-Signed-off-by: Remi Pommarel <repk@triplefau.lt>
+Signed-off-by: Bastien Nocera <hadess@hadess.net>
 ---
- drivers/net/wireless/ath/ath9k/main.c | 3 +++
- 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath9k/main.c b/drivers/net/wireless/ath/ath9k/main.c
-index 0548aa3702e3..ef2b856670e1 100644
---- a/drivers/net/wireless/ath/ath9k/main.c
-+++ b/drivers/net/wireless/ath/ath9k/main.c
-@@ -1457,6 +1457,9 @@ static int ath9k_config(struct ieee80211_hw *hw, u32 changed)
- 		ath_chanctx_set_channel(sc, ctx, &hw->conf.chandef);
- 	}
+Changes since v1:
+- added snippet about the out-of-tree version
+- resend
+
+ drivers/staging/rtl8188eu/core/rtw_led.c      | 6 ++++++
+ drivers/staging/rtl8188eu/include/drv_types.h | 2 ++
+ drivers/staging/rtl8188eu/os_dep/os_intfs.c   | 5 +++++
+ 3 files changed, 13 insertions(+)
+
+diff --git a/drivers/staging/rtl8188eu/core/rtw_led.c
+b/drivers/staging/rtl8188eu/core/rtw_led.c
+index d1406cc99768..75a859accb7e 100644
+--- a/drivers/staging/rtl8188eu/core/rtw_led.c
++++ b/drivers/staging/rtl8188eu/core/rtw_led.c
+@@ -467,10 +467,16 @@ void blink_handler(struct LED_871x *pLed)
  
-+	if (changed & IEEE80211_CONF_CHANGE_POWER)
-+		ath9k_set_txpower(sc, NULL);
+ void led_control_8188eu(struct adapter *padapter, enum LED_CTL_MODE
+LedAction)
+ {
++	struct registry_priv *registry_par;
 +
- 	mutex_unlock(&sc->mutex);
- 	ath9k_ps_restore(sc);
+ 	if (padapter->bSurpriseRemoved || padapter->bDriverStopped ||
+ 	    !padapter->hw_init_completed)
+ 		return;
  
--- 
-2.25.0
++	registry_par = &padapter->registrypriv;
++	if (!registry_par->led_enable)
++		return;
++
+ 	if ((padapter->pwrctrlpriv.rf_pwrstate != rf_on &&
+ 	     padapter->pwrctrlpriv.rfoff_reason > RF_CHANGE_BY_PS) &&
+ 	    (LedAction == LED_CTL_TX || LedAction == LED_CTL_RX ||
+diff --git a/drivers/staging/rtl8188eu/include/drv_types.h
+b/drivers/staging/rtl8188eu/include/drv_types.h
+index 35c0946bc65d..4ca828141d3f 100644
+--- a/drivers/staging/rtl8188eu/include/drv_types.h
++++ b/drivers/staging/rtl8188eu/include/drv_types.h
+@@ -67,6 +67,8 @@ struct registry_priv {
+ 	u8	wmm_enable;
+ 	u8	uapsd_enable;
+ 
++	u8	led_enable;
++
+ 	struct wlan_bssid_ex    dev_network;
+ 
+ 	u8	ht_enable;
+diff --git a/drivers/staging/rtl8188eu/os_dep/os_intfs.c
+b/drivers/staging/rtl8188eu/os_dep/os_intfs.c
+index 8907bf6bb7ff..ba55ae741215 100644
+--- a/drivers/staging/rtl8188eu/os_dep/os_intfs.c
++++ b/drivers/staging/rtl8188eu/os_dep/os_intfs.c
+@@ -47,6 +47,8 @@ static int rtw_acm_method;/*  0:By SW 1:By HW. */
+ static int rtw_wmm_enable = 1;/*  default is set to enable the wmm. */
+ static int rtw_uapsd_enable;
+ 
++static int rtw_led_enable = 1;
++
+ static int rtw_ht_enable = 1;
+ /* 0 :disable, bit(0): enable 2.4g, bit(1): enable 5g */
+ static int rtw_cbw40_enable = 3;
+@@ -98,6 +100,7 @@ module_param(rtw_channel, int, 0644);
+ module_param(rtw_wmm_enable, int, 0644);
+ module_param(rtw_vrtl_carrier_sense, int, 0644);
+ module_param(rtw_vcs_type, int, 0644);
++module_param(rtw_led_enable, int, 0644);
+ module_param(rtw_ht_enable, int, 0644);
+ module_param(rtw_cbw40_enable, int, 0644);
+ module_param(rtw_ampdu_enable, int, 0644);
+@@ -162,6 +165,8 @@ static void loadparam(struct adapter *padapter,
+struct net_device *pnetdev)
+ 	registry_par->wmm_enable = (u8)rtw_wmm_enable;
+ 	registry_par->uapsd_enable = (u8)rtw_uapsd_enable;
+ 
++	registry_par->led_enable = (u8)rtw_led_enable;
++
+ 	registry_par->ht_enable = (u8)rtw_ht_enable;
+ 	registry_par->cbw40_enable = (u8)rtw_cbw40_enable;
+ 	registry_par->ampdu_enable = (u8)rtw_ampdu_enable;
 
