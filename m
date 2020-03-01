@@ -2,98 +2,119 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A73A17494A
-	for <lists+linux-wireless@lfdr.de>; Sat, 29 Feb 2020 21:37:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C69DE174AA4
+	for <lists+linux-wireless@lfdr.de>; Sun,  1 Mar 2020 02:20:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727412AbgB2Uhp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 29 Feb 2020 15:37:45 -0500
-Received: from mail-wr1-f68.google.com ([209.85.221.68]:45256 "EHLO
-        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727252AbgB2Uhp (ORCPT
+        id S1727242AbgCABUb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 29 Feb 2020 20:20:31 -0500
+Received: from mail-io1-f67.google.com ([209.85.166.67]:45548 "EHLO
+        mail-io1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726786AbgCABUa (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 29 Feb 2020 15:37:45 -0500
-Received: by mail-wr1-f68.google.com with SMTP id v2so7545201wrp.12
-        for <linux-wireless@vger.kernel.org>; Sat, 29 Feb 2020 12:37:44 -0800 (PST)
+        Sat, 29 Feb 2020 20:20:30 -0500
+Received: by mail-io1-f67.google.com with SMTP id w9so7703216iob.12
+        for <linux-wireless@vger.kernel.org>; Sat, 29 Feb 2020 17:20:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
+        d=mojatatu-com.20150623.gappssmtp.com; s=20150623;
         h=to:cc:from:subject:message-id:date:user-agent:mime-version
          :content-language:content-transfer-encoding;
-        bh=l56A/14PXkqGHLE8YMBNeU8cv7OpOINY7Us8P01pWEE=;
-        b=MO2KphJIj8hI5R88Gmx0Gw2qjjdCiav9FlUhpY1aqLoMGZl1QkFTGZ3iz5gffN96oU
-         bBGNA6Z79h5IeTF1VW5ZOru6p1u50ifOp1/ticiSPwxDx7nJC/OrlxnAR9RZlXcee85k
-         u+Mz8/012JjFwXBcRPsxZ3sol82QY/iAZblG4KzlTTwil9ECebkMrs7WenJ9gOsENb1P
-         j+ruhdDbP826ZJ9w/llk/VXDqW/gDWmiz7lcXDfh+3NfcEIgJ1fGWaVPB49LiI6vdWno
-         FMKbVYUoHrbFz6qnZz9PZk23lnHVb4pSElMS/bfP/4g6H7URw+dWybdfIZzt+CNnLHo1
-         B3Mg==
+        bh=f5z/QHLt0ozKh8TBMNaXq75e8pU1iIjqJ84SSwXEoK8=;
+        b=pgN9DHDxvMFugos3J1zQYwXDXgQkB2NadYUXSJxcmai16ygF7AjY5tWa11y9wxk3EL
+         PrNqPWgM8E00RH2jy1HEYqjfFAJojxP/aNm4YuddYFsuyL9QXuPeicEyMmYjH/jVESJY
+         WSFQrDAaPsN8PyxBDSPwEcSWcmtYQFxVLXzaNQi04n+zB0F8GaIa8soXwFcCJKIopt/M
+         4avs59GWlude8fbn3pksmM30EcO5p2sRbEDR+toiRPFKwHRUCJBGGQafJ1NJqIMqpkdQ
+         v+Rz4SAHNL5tYW+XTwHZkDIFgGWgjIDEW4mR6AzeLSay6TPzSxhYWuP/kzPEMtCOPgsH
+         E3Sw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:to:cc:from:subject:message-id:date:user-agent
          :mime-version:content-language:content-transfer-encoding;
-        bh=l56A/14PXkqGHLE8YMBNeU8cv7OpOINY7Us8P01pWEE=;
-        b=lwHMsAl5c4SPkM+GzCR+O2ZuOepXUuHiBUNKJAE0AgJY5YuJaBPzD9t1UiAeBi1CPQ
-         n7puUljcNYavX15an9hvSwnwCRPmx5ZMQ2PBLImpjKbuK0oTFdp1esb6+IGmJqADNmhR
-         DVS5VNvnIUAdF9vcmOe/U0YRQen64hmoxERN1VdlMZH0XigZCYIQdOJ9UH9SJz0XlNzB
-         ReFma56WJ6LewTbZCWq4M734r7/rXmidqWcKDauqoW2ki4bnUAQSJwbbfZvX4qoidK02
-         XteR8Zsg0ZtC6UcEtli09Sh9HtF8JwHVkinEdfDkNLCcQdzZzU2+2ZCAW0L7gq3yaAKS
-         ZxhA==
-X-Gm-Message-State: APjAAAXEVoM0ibVOCWZNrTgHKerLM+RhbnOxCyfC3/ez8rtGmWU1L5sZ
-        ZfcbRwrYpkRRea94BRRm46wri3As
-X-Google-Smtp-Source: APXvYqyUwQEDtNilxtgNPnUsu8tsFDjgOhgZ1G3ZWAF+6VctctdlipuzAfGqQVaThsjBWldBYIyrGQ==
-X-Received: by 2002:adf:de09:: with SMTP id b9mr11826474wrm.160.1583008663505;
-        Sat, 29 Feb 2020 12:37:43 -0800 (PST)
-Received: from [192.168.43.18] (94.197.121.166.threembb.co.uk. [94.197.121.166])
-        by smtp.gmail.com with ESMTPSA id b186sm7771432wmb.40.2020.02.29.12.37.42
+        bh=f5z/QHLt0ozKh8TBMNaXq75e8pU1iIjqJ84SSwXEoK8=;
+        b=PZDThyWdOa9DV3zRZJYCzadb75lHgNFTSkGfXN/5f78QvHKsHQmggbXcDfwyQN2TUd
+         ySDckhaNvEAbB9ddZpOfyOSSKoV6nxHgSvXd1H6ERsgDiwtFxpgVPvZwxeYeuvTEkgdw
+         iU2yssLuDQHeMMbONeFK9M70CbQeh1NH1LyHxFE4Xj+cL5yKB6jji5MRAnpsN46xZHts
+         o3gRW5USgJfw2DETkhbRg0tVvNQYPST3l/RpTXpP5G3dvcy0ZRPIhiSofgKNRnULuD66
+         u7yiJdXfZf/VXHg+Zpfl7NIq0LNT/grLSnEMgNkvHIhU4aK6GvYCXwnYjiOef5Xk4dPC
+         eh2A==
+X-Gm-Message-State: APjAAAWK/B/mMW7bnj/2dx5FbJpMaGLbBcagSyk8XDfhnSFniC+efPXU
+        T5GU5QRRVzBOV67Vn+IclUkqDD3FOdt2Pg==
+X-Google-Smtp-Source: APXvYqzCi/pc1mv8Enojrol0zk7FwZLd9rmYRooOm10UownUsG/vBKwss+EUwjQ4agh94Y8xI6w+0w==
+X-Received: by 2002:a6b:740c:: with SMTP id s12mr9022219iog.108.1583025629987;
+        Sat, 29 Feb 2020 17:20:29 -0800 (PST)
+Received: from [10.0.0.194] ([64.26.149.125])
+        by smtp.googlemail.com with ESMTPSA id k12sm2402743ioa.36.2020.02.29.17.20.28
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 29 Feb 2020 12:37:43 -0800 (PST)
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>,
-        linux-wireless@vger.kernel.org
-From:   Malcolm Priestley <tvboxspy@gmail.com>
-Subject: [PATCH 2/2] staging: vt6656: vnt_vt3184_init remove stack copy to
- array.
-Message-ID: <49f34764-c90c-8c5f-b4f2-a3668b13e519@gmail.com>
-Date:   Sat, 29 Feb 2020 20:37:40 +0000
+        Sat, 29 Feb 2020 17:20:29 -0800 (PST)
+To:     people <people@netdevconf.org>
+Cc:     speakers-0x14@netdevconf.info,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        prog-committee-0x14@netdevconf.info,
+        Kimberley Jeffries <kimberleyjeffries@gmail.com>,
+        Christie Geldart <christie@ambedia.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        netfilter-devel@vger.kernel.org, lartc@vger.kernel.org,
+        pjwaskiewicz@gmail.com, arunvn@juniper.net,
+        vikram.siwach@mobiledgex.com, gnu@toad.com, steve@meter.com,
+        lwn@lwn.net
+From:   Jamal Hadi Salim <jhs@mojatatu.com>
+Subject: 0x14: COVID-19 update, postponement of Netdev conf 0x14
+Message-ID: <73dce759-8006-b8fb-5dea-3805a5d8a69c@mojatatu.com>
+Date:   Sat, 29 Feb 2020 20:20:28 -0500
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.5.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-GB
 Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-use u8 pointer addr directly and remove stack array.
 
-Signed-off-by: Malcolm Priestley <tvboxspy@gmail.com>
----
- drivers/staging/vt6656/baseband.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+Hi,
 
-diff --git a/drivers/staging/vt6656/baseband.c b/drivers/staging/vt6656/baseband.c
-index 48a624bf00c0..74b620b4261e 100644
---- a/drivers/staging/vt6656/baseband.c
-+++ b/drivers/staging/vt6656/baseband.c
-@@ -367,7 +367,6 @@ int vnt_vt3184_init(struct vnt_private *priv)
- 	int ret = 0;
- 	u16 length;
- 	u8 *addr;
--	u8 array[256];
- 	u8 data;
- 
- 	ret = vnt_control_in(priv, MESSAGE_TYPE_READ, 0, MESSAGE_REQUEST_EEPROM,
-@@ -437,10 +436,8 @@ int vnt_vt3184_init(struct vnt_private *priv)
- 		goto end;
- 	}
- 
--	memcpy(array, addr, length);
--
- 	ret = vnt_control_out_blocks(priv, VNT_REG_BLOCK_SIZE,
--				     MESSAGE_REQUEST_BBREG, length, array);
-+				     MESSAGE_REQUEST_BBREG, length, addr);
- 	if (ret)
- 		goto end;
- 
--- 
-2.25.1
+After much deliberation, due to the Coronavirus outbreak
+(COVID-19) the NetDev Society board has decided to
+postpone the conference scheduled to happen in Vancouver,
+BC March 17th-20, 2020. Netdev Society has been consulting
+with attendees and sponsors, monitoring health
+organizations, and trying to work with government and
+corporate imposed restrictions on travel and event
+attendance. The conclusion reached is that for the health
+and wellbeing of the community, it is best to postpone the
+conference at this time. We understand that this is an
+unfortunate situation for everyone, and very much
+appreciate your understanding and cooperation in this
+matter.
+
+The new tentative date for Netdev conference is June 16
+to 19th, 2020 at the same location. Please note that this
+date is tentative due to the unpredictability of the
+Coronavirus.
+
+What happens to registration:
+         1. If you are already registered then no action is needed.
+         All registrations are applied to the new date for the
+         conference.
+
+         2. If you cannot make the new date for the conference, you
+         can cancel registration for a refund minus a 7% processing
+         fee. To cancel registration please send a request to
+         registrar@netdevconf.info.
+
+         3. Conference registration will remain open. If you have
+         not registered and intend to attend the conference for the
+         new date you may do so at current rates. Details are at:
+         https://netdevconf.info/0x14/register.html.
+
+
+For any questions or points of clarification, please email:
+registrar@netdevconf.info
+
+We will be updating the conference web site in the next few days.
+Please see https://netdevconf.info/0x14 for the latest conference
+information.
+
+Thanks,
+Jamal on behalf Netdev Society
