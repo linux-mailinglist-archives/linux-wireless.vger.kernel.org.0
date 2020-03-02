@@ -2,298 +2,178 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6253C175FFA
-	for <lists+linux-wireless@lfdr.de>; Mon,  2 Mar 2020 17:35:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C62C176164
+	for <lists+linux-wireless@lfdr.de>; Mon,  2 Mar 2020 18:44:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727365AbgCBQfM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 2 Mar 2020 11:35:12 -0500
-Received: from esa3.microchip.iphmx.com ([68.232.153.233]:42837 "EHLO
-        esa3.microchip.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727308AbgCBQfM (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 2 Mar 2020 11:35:12 -0500
-Received-SPF: Pass (esa3.microchip.iphmx.com: domain of
-  Ajay.Kathat@microchip.com designates 198.175.253.82 as
-  permitted sender) identity=mailfrom;
-  client-ip=198.175.253.82; receiver=esa3.microchip.iphmx.com;
-  envelope-from="Ajay.Kathat@microchip.com";
-  x-sender="Ajay.Kathat@microchip.com"; x-conformance=spf_only;
-  x-record-type="v=spf1"; x-record-text="v=spf1 mx
-  a:ushub1.microchip.com a:smtpout.microchip.com
-  -exists:%{i}.spf.microchip.iphmx.com include:servers.mcsv.net
-  include:mktomail.com include:spf.protection.outlook.com ~all"
-Received-SPF: None (esa3.microchip.iphmx.com: no sender
-  authenticity information available from domain of
-  postmaster@email.microchip.com) identity=helo;
-  client-ip=198.175.253.82; receiver=esa3.microchip.iphmx.com;
-  envelope-from="Ajay.Kathat@microchip.com";
-  x-sender="postmaster@email.microchip.com";
-  x-conformance=spf_only
-Authentication-Results: esa3.microchip.iphmx.com; spf=Pass smtp.mailfrom=Ajay.Kathat@microchip.com; spf=None smtp.helo=postmaster@email.microchip.com; dmarc=pass (p=none dis=none) d=microchip.com
-IronPort-SDR: WCyfsUoj6Zu50aUJVNePWyNfPnkICY16bsU3/yuCrrnVIaE1+MFpAG48NxQa6DgxDOQolTm04G
- P9WVKxOaMMnxOQ1cN8dneq/+Fa+oHJ9Jmb4wdD62KN0z2VF863i3MuzvAcMX492IXRhiW1wmzj
- yfpibBQrWvVgVAIdLFVVq7awBCacPMI2Oh8EjU0br2H4xjTVUDH+G/7qCR5BtRu/0zPwOjvocG
- NoYJ+dTcdYg+kYZa2aCObaTBz402n5QUE541OEzeAY6UpE6W/RNONqMMNX2vVIXY2L50lCa5dc
- hPs=
-X-IronPort-AV: E=Sophos;i="5.70,507,1574146800"; 
-   d="scan'208";a="68544284"
-Received: from smtpout.microchip.com (HELO email.microchip.com) ([198.175.253.82])
-  by esa3.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 02 Mar 2020 09:34:46 -0700
-Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
- chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1713.5; Mon, 2 Mar 2020 09:34:44 -0700
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (10.10.215.89) by
- email.microchip.com (10.10.87.152) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1713.5
- via Frontend Transport; Mon, 2 Mar 2020 09:34:44 -0700
+        id S1727152AbgCBRow (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 2 Mar 2020 12:44:52 -0500
+Received: from mail-am6eur05on2137.outbound.protection.outlook.com ([40.107.22.137]:60641
+        "EHLO EUR05-AM6-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726997AbgCBRow (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 2 Mar 2020 12:44:52 -0500
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=dlbtotgPahO//NRzYRO/9E+MtHEch+3qXdfqiv+0OEl+VQOumoJl4PtAWRzZ1bwhllps8UQ2tRsW26SZp5QNGuvOsyJXNtb9JL2RR6qqg9E++wkrFofEwjHFIVXQtAE2ddIAANtVcJJN/jmqUydGEDBzv9Nphn03JXoxLIYWuSwtWfiR+yrX/ILudA6DM977FN41tSxwWS9s6p/Yd1GfPF4AAK2hFo5wX3la6787Ku7vWSufpXioKfztb73IwfOwU/rqMm+2jW6Q1lXX/Wq/43OQc1tOkD6YMiDA1dT6r9eMIqpVB5mzcuq4anEBYwsuAWJpplXJ3pzzZ3dcgrVs6Q==
+ b=DfYMbZqwEHfiiXjx6hBnlQkjcYC2AxtB01SJZYT17aUJybK8+M7HV7TjAZx8tmgH2WBwncrYP1oL1zPyrkv5qpafiHhOTn38BcN6PtN/ZxvX+nRyPID6TsaJy1Vr74fGI/Yi7vDdUVBAgYus0vEOiu2mrrqUuP+1vw5g5eB0nFTPrBWCK+CoGwO9Pekp/T1j/J1GtbAGQkk4eHqcJHkKGzl4iGpJDy3VN1gIKrOSJBw35tc2sXYeaTku6tJ4E6eMS57u2B9rNRgreRHUh5yYZn0uYzROjQXKObhqmjvYECUA2fHPPACTtssKuTF+lwztP+l5ct+XlvQxl1H1d/q5TQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=SVpx+4/LdVizlZOqNSkBGWRM9tUnSIFoY5jmtsSCed8=;
- b=XsFZ4jKZBV5KVf3wWCxcxxfOdcrk9isxf7YFH2jwceNgATVgZ4lk8jKSeM4pECpFmWdpffysZnk8fByKAcPL3TXuL+Eg3zJUitH08MYzrGz4ifbqrlufHF1XmjHprk/+f2zmuc62HBUbZQ9/sFZQYF7Wl60hbBZlxnhIhGIB6hwGp1QPnZ+EGVbpCnV9ahYbdu+4w4tuXvWZIVszXQP7/CXK5Ds9SAj0rBYpllJo6MG7nEU1QTKvEHsXSpXSIpVK5Xmi2WNPXWw2zSNCKPOWtyIs3jUasLmVoW7jhs9Cqe2smTyVaZaZsllv2GTH+upNu18OG+2MtliEojx99asfIw==
+ bh=jJmRO8wry4CS086wzkBnoxcKMOC9t594bVnzb5cj3Ko=;
+ b=dCX5bAKqufYXcGDmXnn6L8eZXD3KYUYtAQCwkb1IL3dSJYIGBVSqerfpjlLkgGJM+3igBhKTjSIFCw7A3BU3v2TjXQ1k1glE1ll9TEc0Fw93CkiUpdJn88jAbFNWrDr5ZmsvSe3RmDqtbDONXJEoI6KdN4mZzFasBxj+IbnwaWQkWlJW4lc1AyI4pGYNJRquuq8gvNWDXL/hR5+JHWUX8zfd+ypVNH1EK/YZY6hzmfrS48gWPWfWkMVcKl5Hh71aKlfS8e1uS3trpbn6oQxi/TEkIvJGPA4UPOBvTIDBU1RRi7BBzxOM45bbFcbVVb6ZoZboXMq/EOIT4CDv/gp//Q==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=microchip.com; dmarc=pass action=none
- header.from=microchip.com; dkim=pass header.d=microchip.com; arc=none
+ smtp.mailfrom=acksys.fr; dmarc=pass action=none header.from=acksys.fr;
+ dkim=pass header.d=acksys.fr; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=microchiptechnology.onmicrosoft.com;
- s=selector2-microchiptechnology-onmicrosoft-com;
+ d=ACKSYS.onmicrosoft.com; s=selector2-ACKSYS-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=SVpx+4/LdVizlZOqNSkBGWRM9tUnSIFoY5jmtsSCed8=;
- b=OK23eob1/SoBWxPwoA2uqOLWyhjuEJ6MB70C3+nLcgsBRKDySjxj11Lr0Le9eSPOrPU48ttTgy/SfdYzKcnLzWZfUDVOKYK2FKu78V3wXg2Lhgs7NLL6Vn3ezgOcDOfVrUab88LaTpH0mbzUKSrPasq9viP8jcQqOkfh0vKqxj4=
-Received: from BN6PR11MB3985.namprd11.prod.outlook.com (2603:10b6:405:7b::14)
- by BN6PR11MB4098.namprd11.prod.outlook.com (2603:10b6:405:7f::36) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2772.18; Mon, 2 Mar
- 2020 16:34:41 +0000
-Received: from BN6PR11MB3985.namprd11.prod.outlook.com
- ([fe80::ec62:e7fd:f17c:dfd4]) by BN6PR11MB3985.namprd11.prod.outlook.com
- ([fe80::ec62:e7fd:f17c:dfd4%3]) with mapi id 15.20.2772.019; Mon, 2 Mar 2020
- 16:34:41 +0000
-From:   <Ajay.Kathat@microchip.com>
-To:     <linux-wireless@vger.kernel.org>
-CC:     <devel@driverdev.osuosl.org>, <devicetree@vger.kernel.org>,
-        <gregkh@linuxfoundation.org>, <johannes@sipsolutions.net>,
-        <Adham.Abozaeid@microchip.com>, <Nicolas.Ferre@microchip.com>,
-        <Claudiu.Beznea@microchip.com>, <Venkateswara.Kaja@microchip.com>,
-        <Ajay.Kathat@microchip.com>
-Subject: [PATCH v4 18/18] wilc1000: add Makefile and Kconfig files for
- wilc1000 compilation
-Thread-Topic: [PATCH v4 18/18] wilc1000: add Makefile and Kconfig files for
- wilc1000 compilation
-Thread-Index: AQHV8LB5xGU60tG2HUSrU+o9veURfA==
-Date:   Mon, 2 Mar 2020 16:34:41 +0000
-Message-ID: <20200302163414.4342-19-ajay.kathat@microchip.com>
-References: <20200302163414.4342-1-ajay.kathat@microchip.com>
-In-Reply-To: <20200302163414.4342-1-ajay.kathat@microchip.com>
-Accept-Language: en-US
-Content-Language: en-US
+ bh=jJmRO8wry4CS086wzkBnoxcKMOC9t594bVnzb5cj3Ko=;
+ b=e+vRe3TRhdsmaTXz201XIkyqxBo0R3bydM/J1dgsC4HQDUAwBeqdg+V3pZ+MofnTcc4bNcxc0p8KMPV/T2hZNo8Riq2EZeN6+Keh311Dz83zhr4wj+eowUkhicDGegf/e/B+jFWBZl+ani6jatzIWaZp1QjsBmAvRchbOAGLfGQ=
+Received: from DB8PR01MB5529.eurprd01.prod.exchangelabs.com (10.255.170.96) by
+ DB8PR01MB6121.eurprd01.prod.exchangelabs.com (10.255.17.150) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2772.15; Mon, 2 Mar 2020 17:44:47 +0000
+Received: from DB8PR01MB5529.eurprd01.prod.exchangelabs.com
+ ([fe80::8955:bf34:da1e:cdb1]) by DB8PR01MB5529.eurprd01.prod.exchangelabs.com
+ ([fe80::8955:bf34:da1e:cdb1%3]) with mapi id 15.20.2772.019; Mon, 2 Mar 2020
+ 17:44:47 +0000
+From:   Cedric VONCKEN <cedric.voncken@acksys.fr>
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        Steve deRosier <derosier@gmail.com>
+CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: RE: [mac80211]: wds link and Radius authentication issue
+Thread-Topic: [mac80211]: wds link and Radius authentication issue
+Thread-Index: AdXth2dk69/BCqj0R+ekTWaEqaibqgACfSLgAAC+e3AAEHP8gAARId9oAJQ+JWAAD5TH4AADmZyg
+Date:   Mon, 2 Mar 2020 17:44:46 +0000
+Message-ID: <DB8PR01MB55298F5D3E6D1A111EB5AE6C90E70@DB8PR01MB5529.eurprd01.prod.exchangelabs.com>
+References: <DB8PR01MB5529DDE77726C997EAAC3F3C90EB0@DB8PR01MB5529.eurprd01.prod.exchangelabs.com>
+         <DB8PR01MB55290E6894E532ABA3748A5590EB0@DB8PR01MB5529.eurprd01.prod.exchangelabs.com>
+         <DB8PR01MB5529D69C90706C78D3B66BA490EB0@DB8PR01MB5529.eurprd01.prod.exchangelabs.com>
+         <CALLGbRJYAfa=5t46UTj8GT6yhMVUZkCeD6pqF+XVhLSdmoJ5wg@mail.gmail.com>
+         (sfid-20200228_022737_077710_BB93474D)
+ <a7df3def1f3bbd80bf96ffb74f2da365ff578df7.camel@sipsolutions.net>
+ <DB8PR01MB552911EB44BBFD569694FF1990E70@DB8PR01MB5529.eurprd01.prod.exchangelabs.com>
+ <DB8PR01MB55292C768759D14699CC5BAE90E70@DB8PR01MB5529.eurprd01.prod.exchangelabs.com>
+In-Reply-To: <DB8PR01MB55292C768759D14699CC5BAE90E70@DB8PR01MB5529.eurprd01.prod.exchangelabs.com>
+Accept-Language: fr-FR, en-US
+Content-Language: fr-FR
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
-x-mailer: git-send-email 2.17.1
-x-originating-ip: [121.244.27.38]
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=cedric.voncken@acksys.fr; 
+x-originating-ip: [81.255.64.235]
 x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 90aca1c4-c05f-4637-c6ee-08d7bec79bde
-x-ms-traffictypediagnostic: BN6PR11MB4098:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <BN6PR11MB4098903979C1FB2A8DD41FC6E3E70@BN6PR11MB4098.namprd11.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:4941;
+x-ms-office365-filtering-correlation-id: b5aa388b-62f6-4bcc-da61-08d7bed1665a
+x-ms-traffictypediagnostic: DB8PR01MB6121:
+x-microsoft-antispam-prvs: <DB8PR01MB6121F3430E13108E4C6D60AA90E70@DB8PR01MB6121.eurprd01.prod.exchangelabs.com>
+x-ms-oob-tlc-oobclassifiers: OLM:8882;
 x-forefront-prvs: 033054F29A
-x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(376002)(396003)(39860400002)(136003)(366004)(346002)(199004)(189003)(316002)(6916009)(86362001)(6512007)(2616005)(478600001)(71200400001)(54906003)(4326008)(64756008)(186003)(107886003)(66446008)(5660300002)(91956017)(76116006)(8676002)(66476007)(66946007)(6486002)(6506007)(66556008)(26005)(81156014)(81166006)(2906002)(1076003)(36756003)(8936002);DIR:OUT;SFP:1101;SCL:1;SRVR:BN6PR11MB4098;H:BN6PR11MB3985.namprd11.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
-received-spf: None (protection.outlook.com: microchip.com does not designate
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(396003)(39830400003)(136003)(366004)(346002)(42606007)(376002)(189003)(199004)(2906002)(316002)(26005)(110136005)(4326008)(66476007)(66556008)(64756008)(66446008)(53546011)(6506007)(33656002)(5660300002)(71200400001)(86362001)(52536014)(55016002)(76116006)(9686003)(8676002)(2940100002)(81166006)(81156014)(8936002)(7696005)(66946007)(186003)(508600001)(66574012);DIR:OUT;SFP:1102;SCL:1;SRVR:DB8PR01MB6121;H:DB8PR01MB5529.eurprd01.prod.exchangelabs.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+received-spf: None (protection.outlook.com: acksys.fr does not designate
  permitted sender hosts)
 x-ms-exchange-senderadcheck: 1
 x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: UiJ8iUeOOrrjhgY21lwk0LUlKAdsa3zKaDmTb1t7oy4Tfk9iwka9w3KNWZI5vKSNdWGm34n/DghdYq57NGK0l3Wp0kWlziAcGhcF62lYVHzUdNlmW7gIyfQluPuKj0euzx3O6zko/ZTJ2Ks/rdkhmd4Cq+6o+ZGChhgVYmcDpT16gUyY9WZKFN9ibpJ4HXuqYl+lTtUOCFnI9X/bPWkBVJfg63QOnJXOukpRLJ6e1HZMAvZYcRBtHnyxgnwhRRiyShgIOMfupp7ukqRsiTqiW5BczWH+WbAcldfGQrXB1iecK1PkJOLZlROH6jNSfyXQ/AE+YDV7ItnV5CSprtuNE38HmNyGqhMWiGftRqlu+JGNdEmBc1OnLUXshqu9QPF17S05PbFzlFB8M56O94IUk8Uy3u86RhSJLKNDeIUKG1J78USGs+ssQXpuuqimdISG
-x-ms-exchange-antispam-messagedata: QCxks+pzcYh66I2Mds5EcY1gWwisMx9rCWtwfKUajE5hoU0/uRqObrh2vjvKRjokn+8+nuoSa8GjVlOkwoedwfYw2AVKk2nS1lpyp5t3ni8W0EYNvNoqJbZZvcCveoj+VZTBq/6v8DypDb9DrFRaLQ==
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+x-microsoft-antispam-message-info: T8ew0BFT2tEHMVC6N1jhQHnV1BjTGEhSeVKmSOI9CFKFmFRKbYF29qMa7pa8lWv0Yuy6dR5uCGjFd747qrNSTPgiYf50fU+2GcGnnNzFGlKlN260lnKPkIEgpjxosDNuNIF+Ok6T2S+A+NYbflD9PcBnAwMo3X3K65HhVwoENch17udva0DMeqak796NVGeR7rWsiCcMs2uU0etkISlbE/Mq/XTtSSpku7pgaK/p6v7i3WBFQZwsoHCvwbGkWtTP0HTmTq8vKEHER47F+GSAa9fyNAiKogSqmL5a0ZSFL4BSe4YZ8o4dkR6BmvjNRmApHZxH4OTqdCViqB2QsXGDGb4nw9NoJ8cJoYjWfUCWVzCAFwCcYL4/Nw9iT/b4ALvHzuyOyD2bJ/hTuiRWGzWJKJwKFUEfuDmZsx/mpfNoALlH73yLeugG4G+lRiUmuWhd
+x-ms-exchange-antispam-messagedata: b+u4bKhYQlOWTkvJzC6K47LvJ65RnuaNfEQq29IGV6e/3z62ZzQpROQ1wYrc0IFYUtCIYTYdgkICKuQRtEH4b/vpWKNWalZM8C49JjKfjj8mVqweKHuh8yb+O1mh7KmxEnc7QetrxxsQBZFPQQJ/Mg==
+x-ms-exchange-transport-forked: True
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-Network-Message-Id: 90aca1c4-c05f-4637-c6ee-08d7bec79bde
-X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Mar 2020 16:34:41.6973
+X-OriginatorOrg: acksys.fr
+X-MS-Exchange-CrossTenant-Network-Message-Id: b5aa388b-62f6-4bcc-da61-08d7bed1665a
+X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Mar 2020 17:44:46.9287
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 3f4057f3-b418-4d4e-ba84-d55b4e897d88
+X-MS-Exchange-CrossTenant-id: f18a6414-d5f3-4b5c-9345-f30c01d87e32
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 9NSc+vLmMa8d5y0imIEWL/YHGlC2BpEXVynVY8X1qLPXFzr5k7QJBBCuQSZ52OjHDF/ub+2BlREmiyU3jNmNKrnOGYktCJFY4bCdqmjkFyM=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN6PR11MB4098
+X-MS-Exchange-CrossTenant-userprincipalname: /bcZz8wLDOeS2Ft7bwwiL27SqRzU2Yp9TsZOtDjzDBOCf5YdftG1QMvaLPI5bDD2C1SU9Tg5+Y1TgTvMJqa1xzN0WNMa9P4Et9eOl3vRgIs=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR01MB6121
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Ajay Singh <ajay.kathat@microchip.com>
-
-Added Makefile and Kconfig files for compiling wilc1000 module from
-'drivers/net/wireless/microchip/'.
-
-Signed-off-by: Ajay Singh <ajay.kathat@microchip.com>
----
- drivers/net/wireless/Kconfig                  |  1 +
- drivers/net/wireless/Makefile                 |  1 +
- drivers/net/wireless/microchip/Kconfig        | 15 +++++++
- drivers/net/wireless/microchip/Makefile       |  2 +
- .../net/wireless/microchip/wilc1000/Kconfig   | 42 +++++++++++++++++++
- .../net/wireless/microchip/wilc1000/Makefile  | 14 +++++++
- drivers/staging/Kconfig                       |  2 -
- drivers/staging/Makefile                      |  1 -
- 8 files changed, 75 insertions(+), 3 deletions(-)
- create mode 100644 drivers/net/wireless/microchip/Kconfig
- create mode 100644 drivers/net/wireless/microchip/Makefile
- create mode 100644 drivers/net/wireless/microchip/wilc1000/Kconfig
- create mode 100644 drivers/net/wireless/microchip/wilc1000/Makefile
-
-diff --git a/drivers/net/wireless/Kconfig b/drivers/net/wireless/Kconfig
-index 1c98d781ae49..86faf8f3d9b0 100644
---- a/drivers/net/wireless/Kconfig
-+++ b/drivers/net/wireless/Kconfig
-@@ -47,6 +47,7 @@ source "drivers/net/wireless/st/Kconfig"
- source "drivers/net/wireless/ti/Kconfig"
- source "drivers/net/wireless/zydas/Kconfig"
- source "drivers/net/wireless/quantenna/Kconfig"
-+source "drivers/net/wireless/microchip/Kconfig"
-=20
- config PCMCIA_RAYCS
- 	tristate "Aviator/Raytheon 2.4GHz wireless support"
-diff --git a/drivers/net/wireless/Makefile b/drivers/net/wireless/Makefile
-index 6cfe74515c95..f9a51c2889ca 100644
---- a/drivers/net/wireless/Makefile
-+++ b/drivers/net/wireless/Makefile
-@@ -19,6 +19,7 @@ obj-$(CONFIG_WLAN_VENDOR_ST) +=3D st/
- obj-$(CONFIG_WLAN_VENDOR_TI) +=3D ti/
- obj-$(CONFIG_WLAN_VENDOR_ZYDAS) +=3D zydas/
- obj-$(CONFIG_WLAN_VENDOR_QUANTENNA) +=3D quantenna/
-+obj-$(CONFIG_WLAN_VENDOR_MICROCHIP) +=3D microchip/
-=20
- # 16-bit wireless PCMCIA client drivers
- obj-$(CONFIG_PCMCIA_RAYCS)	+=3D ray_cs.o
-diff --git a/drivers/net/wireless/microchip/Kconfig b/drivers/net/wireless/=
-microchip/Kconfig
-new file mode 100644
-index 000000000000..a6b46fb6b1ec
---- /dev/null
-+++ b/drivers/net/wireless/microchip/Kconfig
-@@ -0,0 +1,15 @@
-+# SPDX-License-Identifier: GPL-2.0
-+config WLAN_VENDOR_MICROCHIP
-+	bool "Microchip devices"
-+	default y
-+	help
-+	If you have a wireless card belonging to this class, say Y.
-+
-+	Note that the answer to this question doesn't directly affect the
-+	kernel: saying N will just cause the configurator to skip all the
-+	questions about these cards. If you say Y, you will be asked for
-+	your specific card in the following questions.
-+
-+if WLAN_VENDOR_MICROCHIP
-+source "drivers/net/wireless/microchip/wilc1000/Kconfig"
-+endif # WLAN_VENDOR_MICROCHIP
-diff --git a/drivers/net/wireless/microchip/Makefile b/drivers/net/wireless=
-/microchip/Makefile
-new file mode 100644
-index 000000000000..73b763c7393e
---- /dev/null
-+++ b/drivers/net/wireless/microchip/Makefile
-@@ -0,0 +1,2 @@
-+# SPDX-License-Identifier: GPL-2.0
-+obj-$(CONFIG_WILC1000)		+=3D wilc1000/
-diff --git a/drivers/net/wireless/microchip/wilc1000/Kconfig b/drivers/net/=
-wireless/microchip/wilc1000/Kconfig
-new file mode 100644
-index 000000000000..59e58550d139
---- /dev/null
-+++ b/drivers/net/wireless/microchip/wilc1000/Kconfig
-@@ -0,0 +1,42 @@
-+# SPDX-License-Identifier: GPL-2.0
-+config WILC1000
-+	tristate
-+	help
-+	  This module only support IEEE 802.11n WiFi.
-+
-+config WILC1000_SDIO
-+	tristate "Atmel WILC1000 SDIO (WiFi only)"
-+	depends on CFG80211 && INET && MMC
-+	select WILC1000
-+	help
-+	  This module adds support for the SDIO interface of adapters using
-+	  WILC1000 chipset. The Atmel WILC1000 SDIO is a full speed interface.
-+	  It meets SDIO card specification version 2.0. The interface supports
-+	  the 1-bit/4-bit SD transfer mode at the clock range of 0-50 MHz.
-+	  The host can use this interface to read and write from any register
-+	  within the chip as well as configure the WILC1000 for data DMA.
-+	  To use this interface, pin9 (SDIO_SPI_CFG) must be grounded. Select
-+	  this if your platform is using the SDIO bus.
-+
-+config WILC1000_SPI
-+	tristate "Atmel WILC1000 SPI (WiFi only)"
-+	depends on CFG80211 && INET && SPI
-+	select WILC1000
-+	help
-+	  This module adds support for the SPI interface of adapters using
-+	  WILC1000 chipset. The Atmel WILC1000 has a Serial Peripheral
-+	  Interface (SPI) that operates as a SPI slave. This SPI interface can
-+	  be used for control and for serial I/O of 802.11 data. The SPI is a
-+	  full-duplex slave synchronous serial interface that is available
-+	  immediately following reset when pin 9 (SDIO_SPI_CFG) is tied to
-+	  VDDIO. Select this if your platform is using the SPI bus.
-+
-+config WILC1000_HW_OOB_INTR
-+	bool "WILC1000 out of band interrupt"
-+	depends on WILC1000_SDIO
-+	help
-+	  This option enables out-of-band interrupt support for the WILC1000
-+	  chipset. This OOB interrupt is intended to provide a faster interrupt
-+	  mechanism for SDIO host controllers that don't support SDIO interrupt.
-+	  Select this option If the SDIO host controller in your platform
-+	  doesn't support SDIO time devision interrupt.
-diff --git a/drivers/net/wireless/microchip/wilc1000/Makefile b/drivers/net=
-/wireless/microchip/wilc1000/Makefile
-new file mode 100644
-index 000000000000..a3305a0a888a
---- /dev/null
-+++ b/drivers/net/wireless/microchip/wilc1000/Makefile
-@@ -0,0 +1,14 @@
-+# SPDX-License-Identifier: GPL-2.0
-+obj-$(CONFIG_WILC1000) +=3D wilc1000.o
-+
-+ccflags-y +=3D -DFIRMWARE_1002=3D\"atmel/wilc1002_firmware.bin\" \
-+		-DFIRMWARE_1003=3D\"atmel/wilc1003_firmware.bin\"
-+
-+wilc1000-objs :=3D cfg80211.o netdev.o mon.o \
-+			hif.o wlan_cfg.o wlan.o
-+
-+obj-$(CONFIG_WILC1000_SDIO) +=3D wilc1000-sdio.o
-+wilc1000-sdio-objs +=3D sdio.o
-+
-+obj-$(CONFIG_WILC1000_SPI) +=3D wilc1000-spi.o
-+wilc1000-spi-objs +=3D spi.o
-diff --git a/drivers/staging/Kconfig b/drivers/staging/Kconfig
-index baccd7c883cc..ef5e62e46704 100644
---- a/drivers/staging/Kconfig
-+++ b/drivers/staging/Kconfig
-@@ -80,8 +80,6 @@ source "drivers/staging/fbtft/Kconfig"
-=20
- source "drivers/staging/fsl-dpaa2/Kconfig"
-=20
--source "drivers/staging/wilc1000/Kconfig"
--
- source "drivers/staging/most/Kconfig"
-=20
- source "drivers/staging/ks7010/Kconfig"
-diff --git a/drivers/staging/Makefile b/drivers/staging/Makefile
-index fdd03fd6e704..4db5165cb08b 100644
---- a/drivers/staging/Makefile
-+++ b/drivers/staging/Makefile
-@@ -30,7 +30,6 @@ obj-$(CONFIG_UNISYSSPAR)	+=3D unisys/
- obj-$(CONFIG_COMMON_CLK_XLNX_CLKWZRD)	+=3D clocking-wizard/
- obj-$(CONFIG_FB_TFT)		+=3D fbtft/
- obj-$(CONFIG_FSL_DPAA2)		+=3D fsl-dpaa2/
--obj-$(CONFIG_WILC1000)		+=3D wilc1000/
- obj-$(CONFIG_MOST)		+=3D most/
- obj-$(CONFIG_KS7010)		+=3D ks7010/
- obj-$(CONFIG_GREYBUS)		+=3D greybus/
---=20
-2.24.0
+SSBjb250aW51ZSBteSBpbnZlc3RpZ2F0aW9uLCBhbmQgSSB0aGluayBJIGZvdW5kIGFuIGludGVy
+ZXN0aW5nIHBvaW50Lg0KDQoJTXkgQVAgaGF2ZSAzIGJzc2lkLCB0aGUgd2xhbjAgaXMgc2V0IGlu
+IFdQQS1FQVAsIHRoZSB3bGFuMF8xIGlzIHNldCBpbiBXUEEtUFNLIGFuZCB0aGUgbGF0ZXN0IHds
+YW4wXzIgaXMgd2l0aG91dCBzZWN1cml0eS4gSXQgaXMgdXNlZnVsIGZvciBteSB0ZXN0LCBJIG9u
+bHkgbmVlZCB0byBjaGFuZ2UgdGhlIHN0YSBjb25maWd1cmF0aW9uLg0KDQoJSSBhZGRlZCBzb21l
+IGRlYnVnIGluICBuZXQvbWFjODAyMTEvdHguYw0KDQoJV2hlbiBJIHVzZSB0aGUgQlNTSUQgc2V0
+IGluIFdQQS1QU0sgKHRoaXMgY2FzZSB3b3JrcyksIHRoZSBicm9hZGNhc3QgZnJhbWVzIGFyZSBz
+ZW50IHRocm91Z2ggdGhlIG5ldGRldiB3bGFuMF8xLnN0YTEuDQoJV2hlbiBJIHVzZSB0aGUgQlNT
+SUQgc2V0IGluIFdQQS1FQVAgKHRoaXMgY2FzZSBkb2Vzbid0IHdvcmspIHRoZSBicm9hZGNhc3Qg
+ZnJhbWVzIGFyZSBzZW50IHRocm91Z2ggdGhlIG5ldGRldiB3bGFuMCAodXNlIGZhc3RfeG1pdCBw
+YXRoKS4gQnV0IHRoZSB3bGFuMC5zdGExIG5ldGRldiBpcyBjcmVhdGVkIGluIHRoZSBzeXN0ZW0s
+IGFkZGVkIHRvIHRoZSBicmlkZ2UsIGFuZCByZWNlaXZlZCB0aGUgZnJhbWUgZnJvbSB0aGUgYnJp
+ZGdlLiBCdXQgaW4gdGhpcyBjYXNlIHRoZSBmdW5jdGlvbiBpZWVlODAyMTFfbG9va3VwX3JhX3N0
+YSAgcmV0dXJuIEVOT0xJTksgZm9yIHdsYW4wLnN0YTEgYW5kIHRoZSBmcmFtZSBpcyBkcm9wcGVk
+Lg0KDQoJU28gSSB0aGluayB0aGUgaXNzdWUgaXMgaW4gdHJhbnNtaXQgc2lkZSwgSSBkb24ndCB3
+aHksIGJ1dCB3aXRoIFdQQS1FQVAgdGhlIG1hYzgwMjExIHN0YXRlIHNlZW0gZGlmZmVyZW50IGFu
+ZCB0aGUgV0RTIGRvZXNuJ3Qgd29yay4NCg0KCURvIHlvdSBoYXZlIGFueSBleHBsYW5hdGlvbiBv
+ciBpZGVhIHRvIGxvY2F0ZSB0aGUgb3JpZ2luID8NCg0KCVJlZ2FyZHMuIA0KDQotLS0tLU1lc3Nh
+Z2UgZCdvcmlnaW5lLS0tLS0NCkRlwqA6IENlZHJpYyBWT05DS0VOIDxjZWRyaWMudm9uY2tlbkBh
+Y2tzeXMuZnI+IA0KRW52b3nDqcKgOiBsdW5kaSAyIG1hcnMgMjAyMCAxNzowOA0Kw4DCoDogQ2Vk
+cmljIFZPTkNLRU4gPGNlZHJpYy52b25ja2VuQGFja3N5cy5mcj47IEpvaGFubmVzIEJlcmcgPGpv
+aGFubmVzQHNpcHNvbHV0aW9ucy5uZXQ+OyBTdGV2ZSBkZVJvc2llciA8ZGVyb3NpZXJAZ21haWwu
+Y29tPg0KQ2PCoDogbGludXgtd2lyZWxlc3NAdmdlci5rZXJuZWwub3JnDQpPYmpldMKgOiBbbWFj
+ODAyMTFdOiB3ZHMgbGluayBhbmQgUmFkaXVzIGF1dGhlbnRpY2F0aW9uIGlzc3VlDQoNCglTb3Jy
+eSBJIGRpZCBzb21lIG1pc3Rha2UgaW4gbXkgY29uZmlndXJhdGlvbi4NCg0KCVRoZSBzdGEgd2Fz
+IG5vdCBpbmNsdWRlIGluIHRoZSBicmlkZ2UsIGJlY2F1c2UgbXkgY29uZmlndXJhdGlvbiB3YXMg
+d3JvbmcuDQoNCglOb3cgTXkgY29uZmlndXJhdGlvbiBpcyBjb3JyZWN0Lg0KCQlJJ20gcnVubmlu
+ZyBtYWM4MDIxMSBiYWNrcG9ydCA1LjQtcmM4LTEgb24gQVAgYW5kIHN0YSAoY2xpZW50KQ0KCQlJ
+IHdhcyBzZXQgdGhlIFdEUyBmZWF0dXJlIG9uIHN0YSAodGhlIEFQIGFjY2VwdCB0aGUgd2RzIHN0
+YSwgYW5kIGF1dG9tYXRpY2FsbHkgcHV0IGl0IGluIG15IGJyaWRnZSkNCgkJSSBicmlkZ2VkIHRo
+ZSBzdGEgd2l0aCBteSBFVEgwDQoJCVRoZSBzZWN1cml0eSBwb2xpY3kgd2FzIHNldCB0byBXUEEt
+RUFQIChJIHRlc3RlZCBQRUFQLU1TQ0hBUFYyIGFuZCBFQVAtVExTKQ0KDQoJV2l0aCB0aGlzIHNl
+dHRpbmdzLCB0aGUgYXV0aGVudGljYXRpb24gaXMgc3VjY2Vzc2Z1bCBidXQgSSBjYW4ndCBwaW5n
+IHRoZSBBUCBmcm9tIHN0YSwgYW5kIEkgY2FuJ3QgcGluZyB0aGUgc3RhIGZyb20gQVAuDQoNCglU
+aGUgb3JpZ2luIG9mIHRoaXMgaXNzdWUgaXMgdGhlIGJyb2FkY2FzdCBmcmFtZSBmb3JtYXQuIFRo
+ZXNlIGZyYW1lcyBhcmUgc2VudCBpbiAzIGFkZHIgbW9kZSwgYW5kIHRoZSB0ZXN0IGluIHJ4LmMg
+ZnJvbSBkcml2ZXIvbmV0L21hYzgwMjExLiBJbiBmdW5jdGlvbiBfX2llZWU4MDIxMV9kYXRhX3Rv
+XzgwMjMgZHJvcCB0aGVzZSBmcmFtZS4NCglJIGF0dGFjaCBhIHBjYXAgZmlsZSwgeW91IGNhbiBz
+ZWUgdGhlIGF1dGhlbnRpY2F0aW9uLCBXUEEgZXhjaGFuZ2UuIFRoZSBmcmFtZSAjMjA1LCAjMjA4
+LCAjMjEzIC4uIGFyZSBhIGJyb2FkY2FzdC9tdWx0aWNhc3QgZnJhbWUgc2VudCBmcm9tIG15IEFQ
+LiBUaGVzZSBmcmFtZSBhcmUgaW4gMyBhZGRyIGZvcm1hdCAoVE8gRFMgYW5kIEZST00gRFMgYXJl
+IG5vdCBzZXQgdG8gMSkuDQoNCglJbiBvbGRlciB2ZXJzaW9uIHRoZXNlIGZyYW1lcyBhcmUgc2Vu
+dCBpbiA0YWRkciBmb3JtYXQgKGJ1dCBzZW50IG9uZSB0aW1lIHBlciBzdGF0aW9uKS4NCg0KCVNv
+IG5vdyB3aGVyZSBzaG91bGQgSSBtYWtlIGEgZml4Og0KCQktIEluIHRyYW5zbWl0IHNpZGUsIEkg
+c2hvdWxkIGNoYW5nZSB0aGUgY29kZSB0byBzZW5kIHRoZSBmcmFtZSBpbiA0YWRkciBmb3JtYXQs
+IGJ1dCB0aGF0IGNhbiBicmVhayBhbm90aGVyIHdvcmsgKGJlY2F1c2UgSSB3aWxsIHNlbmQgb25l
+IGZyYW1lIHBlciBzdGEpLg0KCQktIEluIFJ4IHNpZGUsIEkgc2hvdWxkIGFjY2VwdCB0aGUgYnJv
+YWRjYXN0IGZyYW1lIGluIDNhZGRyIGlmIHRoZSB0cmFuc21pdHRlciBhZGRyZXNzIGlzIG15IHBl
+ZXIgKHRoZSBzdGEgb3IgdGhlIGJzc2lkKS4NCg0KCUkgbmVlZCB5b3VyIGhlbHAgdG8gZml4IHRo
+aXMgaXNzdWUuDQoNCglUaGFua3MNCg0KQ2VkcmljIFZvbmNrZW4uDQotLS0tLU1lc3NhZ2UgZCdv
+cmlnaW5lLS0tLS0NCkRlwqA6IGxpbnV4LXdpcmVsZXNzLW93bmVyQHZnZXIua2VybmVsLm9yZyA8
+bGludXgtd2lyZWxlc3Mtb3duZXJAdmdlci5rZXJuZWwub3JnPiBEZSBsYSBwYXJ0IGRlIENlZHJp
+YyBWT05DS0VOIEVudm95w6nCoDogbHVuZGkgMiBtYXJzIDIwMjAgMDk6Mjkgw4DCoDogSm9oYW5u
+ZXMgQmVyZyA8am9oYW5uZXNAc2lwc29sdXRpb25zLm5ldD47IFN0ZXZlIGRlUm9zaWVyIDxkZXJv
+c2llckBnbWFpbC5jb20+IENjwqA6IGxpbnV4LXdpcmVsZXNzQHZnZXIua2VybmVsLm9yZyBPYmpl
+dMKgOiBSRTogW21hYzgwMjExXTogd2RzIGxpbmsgYW5kIFJhZGl1cyBhdXRoZW50aWNhdGlvbiBp
+c3N1ZSBZZXMgSSdtIHJ1bm5pbmcgbWFjODAyMTEgb24gYm90aCBzaWRlLg0KDQpJIHByb2dyZXNz
+IGluIHVuZGVyc3RhbmRpbmcgdG8gdGhpcyBpc3N1ZS4gQWZ0ZXIgY2hlY2tlZCwgdGhlIGlzc3Vl
+IGlzIGRpZmZlcmVudCB3aXRoIGRpZmZlcmVudCBtYWM4MDIxMSB2ZXJzaW9uLiBXaXRoIHRoZSBi
+YWNrcG9ydCA1LjQtcmM4LTEsIHRoZSBkcml2ZXIgbGV2ZWwgc2VlbSB3b3JrZWQgY29ycmVjdGx5
+LiBUaGUgaG9zdGFwZCAoaW4gQVAgc2lkZSkgZGlkbid0IGluY2x1ZGUgdGhlIHN0YSBpbiB0aGUg
+YnJpZGdlIHdoZW4gdGhlIHNlY3VyaXR5IHBvbGljeSBpcyBXUEEtUFNLIG9yIFdQQS1FQVAuIFdp
+dGggbm9uZSBwb2xpY3kgdGhlIHN0YSBpcyBjb3JyZWN0bHkgaW5jbHVkZWQuDQoNCk5vdyBJJ20g
+c2VhcmNoaW5nIGluIGhvc3RwYWQuDQoNCi0tLS0tTWVzc2FnZSBkJ29yaWdpbmUtLS0tLQ0KRGXC
+oDogSm9oYW5uZXMgQmVyZyA8am9oYW5uZXNAc2lwc29sdXRpb25zLm5ldD4gRW52b3nDqcKgOiB2
+ZW5kcmVkaSAyOCBmw6l2cmllciAyMDIwIDEwOjM3IMOAwqA6IFN0ZXZlIGRlUm9zaWVyIDxkZXJv
+c2llckBnbWFpbC5jb20+OyBDZWRyaWMgVk9OQ0tFTiA8Y2VkcmljLnZvbmNrZW5AYWNrc3lzLmZy
+PiBDY8KgOiBsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmcgT2JqZXTCoDogUmU6IFttYWM4
+MDIxMV06IHdkcyBsaW5rIGFuZCBSYWRpdXMgYXV0aGVudGljYXRpb24gaXNzdWUNCg0KT24gVGh1
+LCAyMDIwLTAyLTI3IGF0IDE3OjI2IC0wODAwLCBTdGV2ZSBkZVJvc2llciB3cm90ZToNCj4gT24g
+VGh1LCBGZWIgMjcsIDIwMjAgYXQgOTozNyBBTSBDZWRyaWMgVk9OQ0tFTiA8Y2VkcmljLnZvbmNr
+ZW5AYWNrc3lzLmZyPiB3cm90ZToNCj4gPiBXaGVyZSBjYW4gSSBmb3VuZCBzb21lIGluZm9ybWF0
+aW9uIG9uIGhvdyB0aGUgd2RzIHN5c3RlbSBzaG91bGQgDQo+ID4gd29yaz8gSSBsb29rZWQgaW4g
+ODAyLjExLTIwMTIgc3RhbmRhcmQgYW5kIEkgZGlkbid0IGZvdW5kIGFueSANCj4gPiBpbmZvcm1h
+dGlvbnMuDQo+ID4gDQo+IA0KPiBJIHRoaW5rIFdpa2lwZWRpYSBzYXlzIGl0IGJlc3Q6DQo+ICJX
+RFMgbWF5IGJlIGluY29tcGF0aWJsZSBiZXR3ZWVuIGRpZmZlcmVudCBwcm9kdWN0cyAoZXZlbiBv
+Y2Nhc2lvbmFsbHkgDQo+IGZyb20gdGhlIHNhbWUgdmVuZG9yKSBzaW5jZSB0aGUgSUVFRSA4MDIu
+MTEtMTk5OSBzdGFuZGFyZCBkb2VzIG5vdCANCj4gZGVmaW5lIGhvdyB0byBjb25zdHJ1Y3QgYW55
+IHN1Y2ggaW1wbGVtZW50YXRpb25zIG9yIGhvdyBzdGF0aW9ucyANCj4gaW50ZXJhY3QgdG8gYXJy
+YW5nZSBmb3IgZXhjaGFuZ2luZyBmcmFtZXMgb2YgdGhpcyBmb3JtYXQuIFRoZSBJRUVFDQo+IDgw
+Mi4xMS0xOTk5IHN0YW5kYXJkIG1lcmVseSBkZWZpbmVzIHRoZSA0LWFkZHJlc3MgZnJhbWUgZm9y
+bWF0IHRoYXQgDQo+IG1ha2VzIGl0IHBvc3NpYmxlLiINCg0KSSB0aGluayByZWFsbHkgd2hhdCBD
+ZWRyaWMgaXMgYXNraW5nIGlzIGhvdyB0aGlzIGlzL3Nob3VsZCBiZSBkb25lIHdpdGggbWFjODAy
+MTEncyA0LWFkZHIgY2xpZW50L0FQIG1vZGUocyk/DQoNCkNlZHJpYywgYXJlIHlvdSBydW5uaW5n
+IG1hYzgwMjExIG9uIGJvdGggc2lkZXMgb2YgdGhlIGxpbmssIHRoZSBBUCBhbmQgdGhlICg0LWFk
+ZHIpIGNsaWVudD8NCg0Kam9oYW5uZXMNCg0K
