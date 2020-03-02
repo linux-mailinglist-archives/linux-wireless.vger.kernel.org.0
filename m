@@ -2,85 +2,98 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 001A8176492
-	for <lists+linux-wireless@lfdr.de>; Mon,  2 Mar 2020 21:03:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2BAF61765A9
+	for <lists+linux-wireless@lfdr.de>; Mon,  2 Mar 2020 22:13:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726917AbgCBUDx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 2 Mar 2020 15:03:53 -0500
-Received: from s3.sipsolutions.net ([144.76.43.62]:36000 "EHLO
-        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725781AbgCBUDx (ORCPT
+        id S1726747AbgCBVNd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 2 Mar 2020 16:13:33 -0500
+Received: from mail-wm1-f65.google.com ([209.85.128.65]:55329 "EHLO
+        mail-wm1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726368AbgCBVNc (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 2 Mar 2020 15:03:53 -0500
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.93)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1j8rI5-00AguX-Ty; Mon, 02 Mar 2020 21:03:50 +0100
-Message-ID: <ad70a65c0c113f86ee7d5f12b8483ab2bfa32257.camel@sipsolutions.net>
-Subject: Re: [mac80211]: wds link and Radius authentication issue
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Cedric VONCKEN <cedric.voncken@acksys.fr>,
-        Steve deRosier <derosier@gmail.com>
-Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Date:   Mon, 02 Mar 2020 21:03:48 +0100
-In-Reply-To: <DB8PR01MB55298F5D3E6D1A111EB5AE6C90E70@DB8PR01MB5529.eurprd01.prod.exchangelabs.com>
-References: <DB8PR01MB5529DDE77726C997EAAC3F3C90EB0@DB8PR01MB5529.eurprd01.prod.exchangelabs.com>
-         <DB8PR01MB55290E6894E532ABA3748A5590EB0@DB8PR01MB5529.eurprd01.prod.exchangelabs.com>
-         <DB8PR01MB5529D69C90706C78D3B66BA490EB0@DB8PR01MB5529.eurprd01.prod.exchangelabs.com>
-         <CALLGbRJYAfa=5t46UTj8GT6yhMVUZkCeD6pqF+XVhLSdmoJ5wg@mail.gmail.com>
-         (sfid-20200228_022737_077710_BB93474D) <a7df3def1f3bbd80bf96ffb74f2da365ff578df7.camel@sipsolutions.net>
-         <DB8PR01MB552911EB44BBFD569694FF1990E70@DB8PR01MB5529.eurprd01.prod.exchangelabs.com>
-         <DB8PR01MB55292C768759D14699CC5BAE90E70@DB8PR01MB5529.eurprd01.prod.exchangelabs.com>
-         <DB8PR01MB55298F5D3E6D1A111EB5AE6C90E70@DB8PR01MB5529.eurprd01.prod.exchangelabs.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.2 (3.34.2-1.fc31) 
+        Mon, 2 Mar 2020 16:13:32 -0500
+Received: by mail-wm1-f65.google.com with SMTP id 6so632200wmi.5
+        for <linux-wireless@vger.kernel.org>; Mon, 02 Mar 2020 13:13:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=to:cc:from:subject:message-id:date:user-agent:mime-version
+         :content-language:content-transfer-encoding;
+        bh=/+jAgbqODV6zfZn8QYllJrAWqpbAilb+ByG1dEQFoTI=;
+        b=Z57J+9Mw7IFmL3JLrP8T7LAr056lkwB99n9qv4N2C/H7ReTKRNDU8nGtCvcQRo3cdN
+         tjYtQd+nxYBpgYK6b1fUn6oJ0DVZWL17pZinObzpI/Dfe6HPKT7pwvVxYTnEqzbph6Vn
+         MW6ZzN77hvb1STkpoDqMdR0XbNHDhwQF335RcwEiny6EtaWwFosxvNsUWiyOt0zzHBaZ
+         3sa7RUOvRvma6ILhlFvg5KzNePYzEgxWGy6xOoFBCYpnf22HkVC8TlxCRW7uESAuHPv7
+         5s8P04i8esgi+LA5D1RtOmiqLug//1+J3ZMVsxAAVD/nNiwVQsdgB1N4JAhQ0jGYBrDq
+         a+4w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:to:cc:from:subject:message-id:date:user-agent
+         :mime-version:content-language:content-transfer-encoding;
+        bh=/+jAgbqODV6zfZn8QYllJrAWqpbAilb+ByG1dEQFoTI=;
+        b=W4jsKlQjbT29usPBhLo5OMVNK9uO+iWIheOfnCUw9uEeiAV/0Wu7CI2rJ0US6E7h+1
+         p08wq6Tf9oEFpN1tRd5lWzufKtdGHBNWQ1NV2DboAKdyJusUVHqbzYE5ZPLyfU+8hvQ/
+         QNXiJtZ5/7MUQh3ihuFhkUQESKDSTWFZmxdHDL6cW2ijo45IhnpDRQ/4imaZ3r+fp0P+
+         jvCVqS7/xxveq5ToKn5ZTWdLDtiGLMQOnq+fRbRj1ZdjxVV9bg08EOcJ3+8qyol+UAns
+         8i6IgjoN7NN86sHpBKKNswljLpm6gCnQeLVvv9/3S1yo9MS/oZ9JXOaCjSbrWMQGn4Zv
+         /P6g==
+X-Gm-Message-State: ANhLgQ11kr/ZKI8UY/BAesjFXAm1f6rEgmswpMETMofJaeIi6C96+8jf
+        b1H8zTCZLLH5v+aiLZnEHYF/jdr8
+X-Google-Smtp-Source: ADFU+vuuRMJ6xQ1KS3gBLcSlUwjC/P74kdqs4m4AOK9sIi0L/9TBRhkATI2dk94eYER9Oi2Nm0XmiA==
+X-Received: by 2002:a7b:cd8c:: with SMTP id y12mr335113wmj.5.1583183610759;
+        Mon, 02 Mar 2020 13:13:30 -0800 (PST)
+Received: from [192.168.43.18] (94.197.120.139.threembb.co.uk. [94.197.120.139])
+        by smtp.gmail.com with ESMTPSA id u1sm11501634wrt.78.2020.03.02.13.13.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 02 Mar 2020 13:13:30 -0800 (PST)
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>,
+        linux-wireless@vger.kernel.org
+From:   Malcolm Priestley <tvboxspy@gmail.com>
+Subject: [PATCH 1/3] staging: vt6656: vnt_int_start_interrupt remove spin
+ lock.
+Message-ID: <871a78d4-6d3e-f34b-d0ae-6123803c6faf@gmail.com>
+Date:   Mon, 2 Mar 2020 21:13:28 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.5.0
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 2020-03-02 at 17:44 +0000, Cedric VONCKEN wrote:
-> I continue my investigation, and I think I found an interesting point.
-> 
-> 	My AP have 3 bssid, the wlan0 is set in WPA-EAP, the wlan0_1 is
-> set in WPA-PSK and the latest wlan0_2 is without security. It is
-> useful for my test, I only need to change the sta configuration.
-> 
-> 	I added some debug in  net/mac80211/tx.c
-> 
-> 	When I use the BSSID set in WPA-PSK (this case works), the
-> broadcast frames are sent through the netdev wlan0_1.sta1.
-> 	When I use the BSSID set in WPA-EAP (this case doesn't work) the
-> broadcast frames are sent through the netdev wlan0 (use fast_xmit
-> path). But the wlan0.sta1 netdev is created in the system, added to
-> the bridge, and received the frame from the bridge. But in this case
-> the function ieee80211_lookup_ra_sta  return ENOLINK for wlan0.sta1
-> and the frame is dropped.
-> 
-> 	So I think the issue is in transmit side, I don't why, but with
-> WPA-EAP the mac80211 state seem different and the WDS doesn't work.
-> 
-> 	Do you have any explanation or idea to locate the origin ?
+This formed part of the legacy driver and potentially multi
+users.
 
-Not really. The code there is just
+The driver now has only one user mac80211 remove this lock.
 
-        switch (sdata->vif.type) {
-        case NL80211_IFTYPE_AP_VLAN:
-                sta = rcu_dereference(sdata->u.vlan.sta);
-                if (sta) {
-                        *sta_out = sta;
-                        return 0;
-                } else if (sdata->wdev.use_4addr) {
-                        return -ENOLINK;
-                }
+Signed-off-by: Malcolm Priestley <tvboxspy@gmail.com>
+---
+ drivers/staging/vt6656/int.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-as far as I can tell, right?
-
-So if you got into the -ENOLINK case, then it means that userspace
-didn't add the right station to the 4-addr VLAN interface, which I guess
-was "wlan0.sta1"? Not sure how that'd happen.
-
-johannes
-
+diff --git a/drivers/staging/vt6656/int.c b/drivers/staging/vt6656/int.c
+index 3fa61c368464..fcf92cd1234b 100644
+--- a/drivers/staging/vt6656/int.c
++++ b/drivers/staging/vt6656/int.c
+@@ -26,16 +26,11 @@
+ int vnt_int_start_interrupt(struct vnt_private *priv)
+ {
+ 	int ret = 0;
+-	unsigned long flags;
+ 
+ 	dev_dbg(&priv->usb->dev, "---->Interrupt Polling Thread\n");
+ 
+-	spin_lock_irqsave(&priv->lock, flags);
+-
+ 	ret = vnt_start_interrupt_urb(priv);
+ 
+-	spin_unlock_irqrestore(&priv->lock, flags);
+-
+ 	return ret;
+ }
+ 
+-- 
+2.25.1
