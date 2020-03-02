@@ -2,16 +2,16 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 15897175FF1
-	for <lists+linux-wireless@lfdr.de>; Mon,  2 Mar 2020 17:35:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2844C175FED
+	for <lists+linux-wireless@lfdr.de>; Mon,  2 Mar 2020 17:35:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727464AbgCBQfC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 2 Mar 2020 11:35:02 -0500
-Received: from esa5.microchip.iphmx.com ([216.71.150.166]:64455 "EHLO
+        id S1727451AbgCBQe7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 2 Mar 2020 11:34:59 -0500
+Received: from esa5.microchip.iphmx.com ([216.71.150.166]:64432 "EHLO
         esa5.microchip.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727181AbgCBQfA (ORCPT
+        with ESMTP id S1727181AbgCBQe7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 2 Mar 2020 11:35:00 -0500
+        Mon, 2 Mar 2020 11:34:59 -0500
 Received-SPF: Pass (esa5.microchip.iphmx.com: domain of
   Ajay.Kathat@microchip.com designates 198.175.253.82 as
   permitted sender) identity=mailfrom;
@@ -30,30 +30,30 @@ Received-SPF: None (esa5.microchip.iphmx.com: no sender
   x-sender="postmaster@email.microchip.com";
   x-conformance=spf_only
 Authentication-Results: esa5.microchip.iphmx.com; spf=Pass smtp.mailfrom=Ajay.Kathat@microchip.com; spf=None smtp.helo=postmaster@email.microchip.com; dmarc=pass (p=none dis=none) d=microchip.com
-IronPort-SDR: hoc7p0mUIxPEfDAWO0MAmeIKvi5t/06MdK+vThntvbqqh2nr/EAspJKNtDT8UFGkl/uYw3qkcA
- XFw0G1Lhx2KFuhFrSAi+DiPLVtWnDRk3SghK0sG9M32BrV3b43b75MTz8O5WyPdEPs+0/nJhJL
- lEGm2FeBY8nd1iiDD3Y3AArHy/CqONdlD12cTYK8EVNGKJbfQfFrsSCDz9ED5f12zvVp/S6Zfj
- X5Yg5gsQiVgpbkmEmMhrbquPUa9yYtiYsVVL/mEEqPldxeJ8A3g32BLxWxUrrRBo1uyL8Xm6PH
- sIo=
+IronPort-SDR: 1872EfD4NiFyAeGTmP87FjLIiZD1o4FJbsSzH0yYF+03hwyRC/Fq9+DWnVbC9FEVSF3vee9tXC
+ teo7u4Gc/XBGCZSogJ7ImBLchIilyaDVNqeQxK1zzzFTAxtHO0+wsDDsR2d7N3iMFTa43BE0zx
+ qHTlbcHpwZ2xaH0Lg4nrtsFOa/dOp+jUawGVQYa+xr6/DEesZ4SSFxhMZuxSzABl2vgWPshOFg
+ n5xocU3VPkxrG6GG9+CdUcroV/z5GLsY6LQvZfGAKLAqwVqzZ+nzawZT7cqqSuaEbGfnutFrLg
+ JYY=
 X-IronPort-AV: E=Sophos;i="5.70,507,1574146800"; 
-   d="scan'208";a="67327275"
+   d="scan'208";a="67327272"
 Received: from smtpout.microchip.com (HELO email.microchip.com) ([198.175.253.82])
-  by esa5.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 02 Mar 2020 09:34:44 -0700
-Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
+  by esa5.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 02 Mar 2020 09:34:43 -0700
+Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
  chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1713.5; Mon, 2 Mar 2020 09:34:41 -0700
+ 15.1.1713.5; Mon, 2 Mar 2020 09:34:40 -0700
 Received: from NAM10-DM6-obe.outbound.protection.outlook.com (10.10.215.89) by
- email.microchip.com (10.10.87.151) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1713.5
- via Frontend Transport; Mon, 2 Mar 2020 09:34:40 -0700
+ email.microchip.com (10.10.87.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1713.5 via Frontend
+ Transport; Mon, 2 Mar 2020 09:34:40 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Z9TyNSwEiubROJlBDXpw1VHm77XTxzW73ZGFHlGMlRVWmjudEU9mEWbz6+R5KYaj/wPipAm0Xr2+myxLdvVuOc5ztVuMg21Fh5iIxet0O4L8kw5M9KgPkWwiRzEgvddtgO78tycpJLsPNx8o4Fdf4ZM34k/3ARkpQiiFwp4RheOnjthqGJbcwtJInuikzoYidA8++z7i7cELFndMIcrUVmKOiRx9g6X5h1hrHjcG2JtPVp4CO1Sx18RVoEtx9Hs2J4dY4XMZYmto/yOCPmwQjdh0vgtcS0thjZ76w0CRxBDzHJWScComqXGXV/Hn+dWP8X6KhM1lvB+dmL2hQ+mipQ==
+ b=WPgSSzExU5gvSStPTfMlaGIYnS/wo2vd2B4mdsw10/jRprMcVJyVhuabcXxWJy3q7jijq2f7+4ta77bH1dhdScllwZPw6fOi8Af6/XSGcmVAOfYl8HBb/FOTDSqZs3ErjQhYYopRAyiv92viWoMkIpbWICkt/BmGZSh9Ics5huKj3+iAq5p/R3oDsiEvDRetGLnnKSXW3LzvfcmUs2CbdDAcpkFsKZaGoBOlKvzUhpUeT+xWxezVP41wBK1H4KrRYpNDylqbNkGQ3wtHAd5PTzOzIJef2euKF+qgaOlaGgKZaqgX4HMG0D1ZpLJKfNN1mB9XofN/oOOxkArn0xzDiA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=p/IyTwV2sVKrtS3aavHM3u2ax+2r3DjWRFc5gsVflkw=;
- b=VhBmZTFMZ0PyQxyEOkhdx3Wi+3czil9zt5nOWxoTeuba0+z0g6bLqryQgvTMvaR2no0ONREWtGybk/SKm59sAPM3KHlATJKj1ixT2LqMY++0f6FAxhDhoQuJ34UXuGfJf2FfOT8dMJmyi6/ADVpuo0L3BEgXAKbHa8VMU0WftDBP/6LmfvgZE2soEIiGi0QakYrQdv+WOQLKjgR6zf9BgEXgozkt1M4CrAX9mq4XXINDt9tubwBEvsvnKNCe3+qa2kaIZ5f8aMOn4SPPH3yz+XnuP77VsaYlzBCe1gbE8wUp+1ZdDyD12DnuVPgAyCZjl5RBeJok8gw6eJVK7PZOAA==
+ bh=xJ629ULqFp2gJsHxeuie4Uwn4UZt6Elh81EK7u/nmR8=;
+ b=ke0WTL1q6mt8CXfJ3spyDHDQd5fca9yQpxhJSTmwDLO8nSza4OxvH5zQ/Vsx1GZDRFJ+OC9MQu3sGAhC3hHG/cZHAqJ6pvdb6otfv9wbuAegOIcajmAxS8y/6Ckob2b2tyUwDum/29H7P6FuweVMFYVQ1rb1wqiYVoCBWACDkX7xksaukgMKltqwUsOd1ZzVGpWg2obHm6ETxCXHkk5rQXUahAkgpOfpjsjSO4dfjQym9eLulxhfhFmqDJ1bkZXVdhO8ECiUAj5wIzHsp7h8A2r1u8pNrxSJ/L3nx68ROxNnJYfh+b5Db5JrMy7I+1imRNQyT+5rZopKJR3xrGjL+A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=microchip.com; dmarc=pass action=none
  header.from=microchip.com; dkim=pass header.d=microchip.com; arc=none
@@ -61,17 +61,17 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=microchiptechnology.onmicrosoft.com;
  s=selector2-microchiptechnology-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=p/IyTwV2sVKrtS3aavHM3u2ax+2r3DjWRFc5gsVflkw=;
- b=nKKxxMhMXq1YAgwRVoZpUBZStkRLhBECY0kjthquapdbxkczba/bzTpOIQBY2zuWGNJgyuuR2jHL71YVXDKCBTIUAkVBqPINEJxsnO3kkrsxUXg4caFN8GEudgV1DNHY/Sjo2gkPBOlwZXWclXg20UEOvj08GB93O8NyG/E0iSA=
+ bh=xJ629ULqFp2gJsHxeuie4Uwn4UZt6Elh81EK7u/nmR8=;
+ b=RXHXqDk6T0pgxr1nrAlZNcyo/i3ftSis3zngDC2UxkqGh+3Cy5i3ffFJqt2+NMTT0hwY/nDF6hepgLc1M3ojFf/elbptKYOjud7vlV1ZaBNgGEDFBon0LvZJhw1wJcXQ9XEDcicz9HwQXskwgsYf2r0lSn+y25QlJMS3yOaDQGw=
 Received: from BN6PR11MB3985.namprd11.prod.outlook.com (2603:10b6:405:7b::14)
  by BN6PR11MB4098.namprd11.prod.outlook.com (2603:10b6:405:7f::36) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2772.18; Mon, 2 Mar
- 2020 16:34:38 +0000
+ 2020 16:34:37 +0000
 Received: from BN6PR11MB3985.namprd11.prod.outlook.com
  ([fe80::ec62:e7fd:f17c:dfd4]) by BN6PR11MB3985.namprd11.prod.outlook.com
  ([fe80::ec62:e7fd:f17c:dfd4%3]) with mapi id 15.20.2772.019; Mon, 2 Mar 2020
- 16:34:38 +0000
+ 16:34:37 +0000
 From:   <Ajay.Kathat@microchip.com>
 To:     <linux-wireless@vger.kernel.org>
 CC:     <devel@driverdev.osuosl.org>, <devicetree@vger.kernel.org>,
@@ -79,11 +79,11 @@ CC:     <devel@driverdev.osuosl.org>, <devicetree@vger.kernel.org>,
         <Adham.Abozaeid@microchip.com>, <Nicolas.Ferre@microchip.com>,
         <Claudiu.Beznea@microchip.com>, <Venkateswara.Kaja@microchip.com>,
         <Ajay.Kathat@microchip.com>
-Subject: [PATCH v4 12/18] wilc1000: add wlan.h
-Thread-Topic: [PATCH v4 12/18] wilc1000: add wlan.h
-Thread-Index: AQHV8LB3UNsETTix2UyCEgd2aLZHgg==
+Subject: [PATCH v4 11/18] wilc1000: add spi.c
+Thread-Topic: [PATCH v4 11/18] wilc1000: add spi.c
+Thread-Index: AQHV8LB2ceXQBA4DE0CI7njzmQAQsQ==
 Date:   Mon, 2 Mar 2020 16:34:37 +0000
-Message-ID: <20200302163414.4342-13-ajay.kathat@microchip.com>
+Message-ID: <20200302163414.4342-12-ajay.kathat@microchip.com>
 References: <20200302163414.4342-1-ajay.kathat@microchip.com>
 In-Reply-To: <20200302163414.4342-1-ajay.kathat@microchip.com>
 Accept-Language: en-US
@@ -93,29 +93,29 @@ X-MS-TNEF-Correlator:
 x-mailer: git-send-email 2.17.1
 x-originating-ip: [121.244.27.38]
 x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: a3d141b3-e774-4be9-8014-08d7bec79997
+x-ms-office365-filtering-correlation-id: 4b92da86-aa5a-4829-992c-08d7bec7993e
 x-ms-traffictypediagnostic: BN6PR11MB4098:
 x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <BN6PR11MB409855AEBD525CC5F36CD4C5E3E70@BN6PR11MB4098.namprd11.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:338;
+x-microsoft-antispam-prvs: <BN6PR11MB4098E37A2D5FD433450BEEAFE3E70@BN6PR11MB4098.namprd11.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:208;
 x-forefront-prvs: 033054F29A
-x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(376002)(396003)(39860400002)(136003)(366004)(346002)(199004)(189003)(316002)(6916009)(86362001)(6512007)(30864003)(2616005)(478600001)(71200400001)(54906003)(4326008)(64756008)(186003)(107886003)(66446008)(5660300002)(91956017)(76116006)(8676002)(66476007)(66946007)(6486002)(6506007)(66556008)(26005)(81156014)(81166006)(2906002)(1076003)(36756003)(8936002);DIR:OUT;SFP:1101;SCL:1;SRVR:BN6PR11MB4098;H:BN6PR11MB3985.namprd11.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(376002)(396003)(39860400002)(136003)(366004)(346002)(199004)(189003)(316002)(6916009)(86362001)(6512007)(30864003)(2616005)(478600001)(71200400001)(54906003)(4326008)(64756008)(186003)(107886003)(66446008)(5660300002)(91956017)(76116006)(8676002)(66476007)(66946007)(6486002)(6506007)(66556008)(26005)(81156014)(81166006)(2906002)(1076003)(36756003)(8936002)(579004);DIR:OUT;SFP:1101;SCL:1;SRVR:BN6PR11MB4098;H:BN6PR11MB3985.namprd11.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
 received-spf: None (protection.outlook.com: microchip.com does not designate
  permitted sender hosts)
 x-ms-exchange-senderadcheck: 1
 x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: S/wGt+5ML+rehNvtB7VyxSXiLKuRde6+YlbTX57Y4y+K2MEbJXzHkbYW+dlY5efJPPB7LOExYoaYhxu4LEeydvZj+Js/k8ttmJOp051Qc1Xf74JQN1Lod3dGzyvgPDd7GU9wWOAfrllyQOMyYk49VBsRmJ0GoBcfZb2wY18zJ44OFZk9VpgrbsWQr0yWuPHtRDhrEG5CDzccC6wx2fdjCwWpzjw5FpW4YwivsAZtK4nCjGEu8MHDsrAgrwR+HBRGKE7Dd61B7dZVt/ufkd+b83YeJZMiZMny0SpewCoKK79G7SistnSKAutHqkMaLkzm4GzU/KG9NCXrt8O92d8c0MlAWRMLMV21GuBK1iYdAQuL+cU9ls0MrW9xWfizVF0+xQQcTaL0OptSgRzgI2rh+qCwRI6DdAfeU1slLm5oUXVKGpuT3+wv44S8lgREhEXg
-x-ms-exchange-antispam-messagedata: r7sLaHy893dNmfMKP6Rve3BA5sjWrHFcT6dRyIPIbX1xzvo2xeZjDVIoRd2WxY3JmbpbpQBQ8AuRWawTrZ3uhx7nLJej6k0ax/NW94IkUOnuLd0yPtzJfoe82aPdyRehmf8hOZmbSugo/mlWM8qdaw==
+x-microsoft-antispam-message-info: J47o0bggkeV8hLq3nPloiK/g1cOZAR5YvKCGvlB2IHQ81Xq1qS7ghAK9mrOk2CHEiDJwLpFd/OU6/WmII60l8QT9FMg29aCLwM2dCOrcGHGVaqWPFTBD3C2TfgfBlv2PTH7fvi8ya50sX3HsZXHbWFCX9ArG/TCkEvvmBadGrYLRZe45RSUJgu6TSHF4lHvMLn6sWV4rMnFbcNt0Cje18274GRByDSKHcUgN54SoyY3y/EYR+ASw9lxwt9timpHX5UiTXObtC/HZEphBVQN6lOD5W/3ec+gXwfp7zLWMroxT85Va8JWHnOjd1e/KEUoEdsyr5cZG2o1+hKTrJxy+q4U2z96OQ0j3+HOkKGyfQwAcESJPhgmkm1fQJMc/MhArw1gdGxnCAqiAs2Gk0DdYbU3fegCjYDFr1Ek1S99PbVdeeH/JFDd084Mh+sw+CH/Z
+x-ms-exchange-antispam-messagedata: avraQOLcfNbjnaG5ygMU1ktv4T67dLs1zzlfUlNN44fFF1JgVtHtVhnbQm3FJQOao5i6Txl6WusHoMSJS0Q3DogkMndIc+pGTZOdOh7WCrLwwzg0RiJxwHEyD5LPSfsYRF/rUqiKqbtfqGBpnWbe6Q==
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-Network-Message-Id: a3d141b3-e774-4be9-8014-08d7bec79997
-X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Mar 2020 16:34:37.8867
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4b92da86-aa5a-4829-992c-08d7bec7993e
+X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Mar 2020 16:34:37.2461
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 3f4057f3-b418-4d4e-ba84-d55b4e897d88
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: FWvLxLrd5Up40UfWmexC943ltOvE+v+MkBNn0+QEvKrC4rvRkYW3oRTQ9VQocdhBy3Irqn4UQDC6vXGwIv2XipFsBJQdiKcDs528xhyEMt0=
+X-MS-Exchange-CrossTenant-userprincipalname: DODypCmF1ojd46Xb44wdk+zAF2Turut3DQm840AjXsurEirJukz23gy4tGk6DqqShbSSPELETicnbjZPlBYAaQvBxDZY21L3No/NZmXLwl0=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN6PR11MB4098
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
@@ -124,424 +124,1027 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Ajay Singh <ajay.kathat@microchip.com>
 
-Moved 'drivers/staging/wilc1000/wlan.h' to
-'drivers/net/wireless/microchip/wilc1000/wlan.h'.
+Moved 'drivers/staging/wilc1000/spi.c' to
+'drivers/net/wireless/microchip/wilc1000/spi.c'.
 
 Signed-off-by: Ajay Singh <ajay.kathat@microchip.com>
 ---
- .../net/wireless/microchip/wilc1000/wlan.h    | 398 ++++++++++++++++++
- 1 file changed, 398 insertions(+)
- create mode 100644 drivers/net/wireless/microchip/wilc1000/wlan.h
+ drivers/net/wireless/microchip/wilc1000/spi.c | 1001 +++++++++++++++++
+ 1 file changed, 1001 insertions(+)
+ create mode 100644 drivers/net/wireless/microchip/wilc1000/spi.c
 
-diff --git a/drivers/net/wireless/microchip/wilc1000/wlan.h b/drivers/net/w=
-ireless/microchip/wilc1000/wlan.h
+diff --git a/drivers/net/wireless/microchip/wilc1000/spi.c b/drivers/net/wi=
+reless/microchip/wilc1000/spi.c
 new file mode 100644
-index 000000000000..5999c5490ea5
+index 000000000000..dfd25df75780
 --- /dev/null
-+++ b/drivers/net/wireless/microchip/wilc1000/wlan.h
-@@ -0,0 +1,398 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
++++ b/drivers/net/wireless/microchip/wilc1000/spi.c
+@@ -0,0 +1,1001 @@
++// SPDX-License-Identifier: GPL-2.0
 +/*
 + * Copyright (c) 2012 - 2018 Microchip Technology Inc., and its subsidiari=
 es.
 + * All rights reserved.
 + */
 +
-+#ifndef WILC_WLAN_H
-+#define WILC_WLAN_H
++#include <linux/clk.h>
++#include <linux/spi/spi.h>
 +
-+#include <linux/types.h>
-+#include <linux/bitfield.h>
++#include "netdev.h"
++#include "cfg80211.h"
 +
-+/********************************************
-+ *
-+ *      Mac eth header length
-+ *
-+ ********************************************/
-+#define MAX_MAC_HDR_LEN			26 /* QOS_MAC_HDR_LEN */
-+#define SUB_MSDU_HEADER_LENGTH		14
-+#define SNAP_HDR_LEN			8
-+#define ETHERNET_HDR_LEN		14
-+#define WORD_ALIGNMENT_PAD		0
-+
-+#define ETH_ETHERNET_HDR_OFFSET		(MAX_MAC_HDR_LEN + \
-+					 SUB_MSDU_HEADER_LENGTH + \
-+					 SNAP_HDR_LEN - \
-+					 ETHERNET_HDR_LEN + \
-+					 WORD_ALIGNMENT_PAD)
-+
-+#define HOST_HDR_OFFSET			4
-+#define ETHERNET_HDR_LEN		14
-+#define IP_HDR_LEN			20
-+#define IP_HDR_OFFSET			ETHERNET_HDR_LEN
-+#define UDP_HDR_OFFSET			(IP_HDR_LEN + IP_HDR_OFFSET)
-+#define UDP_HDR_LEN			8
-+#define UDP_DATA_OFFSET			(UDP_HDR_OFFSET + UDP_HDR_LEN)
-+#define ETH_CONFIG_PKT_HDR_LEN		UDP_DATA_OFFSET
-+
-+#define ETH_CONFIG_PKT_HDR_OFFSET	(ETH_ETHERNET_HDR_OFFSET + \
-+					 ETH_CONFIG_PKT_HDR_LEN)
-+
-+/********************************************
-+ *
-+ *      Register Defines
-+ *
-+ ********************************************/
-+#define WILC_PERIPH_REG_BASE		0x1000
-+#define WILC_CHANGING_VIR_IF		0x108c
-+#define WILC_CHIPID			WILC_PERIPH_REG_BASE
-+#define WILC_GLB_RESET_0		(WILC_PERIPH_REG_BASE + 0x400)
-+#define WILC_PIN_MUX_0			(WILC_PERIPH_REG_BASE + 0x408)
-+#define WILC_HOST_TX_CTRL		(WILC_PERIPH_REG_BASE + 0x6c)
-+#define WILC_HOST_RX_CTRL_0		(WILC_PERIPH_REG_BASE + 0x70)
-+#define WILC_HOST_RX_CTRL_1		(WILC_PERIPH_REG_BASE + 0x74)
-+#define WILC_HOST_VMM_CTL		(WILC_PERIPH_REG_BASE + 0x78)
-+#define WILC_HOST_RX_CTRL		(WILC_PERIPH_REG_BASE + 0x80)
-+#define WILC_HOST_RX_EXTRA_SIZE		(WILC_PERIPH_REG_BASE + 0x84)
-+#define WILC_HOST_TX_CTRL_1		(WILC_PERIPH_REG_BASE + 0x88)
-+#define WILC_MISC			(WILC_PERIPH_REG_BASE + 0x428)
-+#define WILC_INTR_REG_BASE		(WILC_PERIPH_REG_BASE + 0xa00)
-+#define WILC_INTR_ENABLE		WILC_INTR_REG_BASE
-+#define WILC_INTR2_ENABLE		(WILC_INTR_REG_BASE + 4)
-+
-+#define WILC_INTR_POLARITY		(WILC_INTR_REG_BASE + 0x10)
-+#define WILC_INTR_TYPE			(WILC_INTR_REG_BASE + 0x20)
-+#define WILC_INTR_CLEAR			(WILC_INTR_REG_BASE + 0x30)
-+#define WILC_INTR_STATUS		(WILC_INTR_REG_BASE + 0x40)
-+
-+#define WILC_RF_REVISION_ID		0x13f4
-+
-+#define WILC_VMM_TBL_SIZE		64
-+#define WILC_VMM_TX_TBL_BASE		0x150400
-+#define WILC_VMM_RX_TBL_BASE		0x150500
-+
-+#define WILC_VMM_BASE			0x150000
-+#define WILC_VMM_CORE_CTL		WILC_VMM_BASE
-+#define WILC_VMM_TBL_CTL		(WILC_VMM_BASE + 0x4)
-+#define WILC_VMM_TBL_ENTRY		(WILC_VMM_BASE + 0x8)
-+#define WILC_VMM_TBL0_SIZE		(WILC_VMM_BASE + 0xc)
-+#define WILC_VMM_TO_HOST_SIZE		(WILC_VMM_BASE + 0x10)
-+#define WILC_VMM_CORE_CFG		(WILC_VMM_BASE + 0x14)
-+#define WILC_VMM_TBL_ACTIVE		(WILC_VMM_BASE + 040)
-+#define WILC_VMM_TBL_STATUS		(WILC_VMM_BASE + 0x44)
-+
-+#define WILC_SPI_REG_BASE		0xe800
-+#define WILC_SPI_CTL			WILC_SPI_REG_BASE
-+#define WILC_SPI_MASTER_DMA_ADDR	(WILC_SPI_REG_BASE + 0x4)
-+#define WILC_SPI_MASTER_DMA_COUNT	(WILC_SPI_REG_BASE + 0x8)
-+#define WILC_SPI_SLAVE_DMA_ADDR		(WILC_SPI_REG_BASE + 0xc)
-+#define WILC_SPI_SLAVE_DMA_COUNT	(WILC_SPI_REG_BASE + 0x10)
-+#define WILC_SPI_TX_MODE		(WILC_SPI_REG_BASE + 0x20)
-+#define WILC_SPI_PROTOCOL_CONFIG	(WILC_SPI_REG_BASE + 0x24)
-+#define WILC_SPI_INTR_CTL		(WILC_SPI_REG_BASE + 0x2c)
-+#define WILC_SPI_INT_STATUS		(WILC_SPI_REG_BASE + 0x40)
-+#define WILC_SPI_INT_CLEAR		(WILC_SPI_REG_BASE + 0x44)
-+
-+#define WILC_SPI_WAKEUP_REG		0x1
-+#define WILC_SPI_WAKEUP_BIT		BIT(1)
-+
-+#define WILC_SPI_PROTOCOL_OFFSET	(WILC_SPI_PROTOCOL_CONFIG - \
-+					 WILC_SPI_REG_BASE)
-+
-+#define WILC_SPI_CLOCKLESS_ADDR_LIMIT	0x30
-+
-+/* Functions IO enables bits */
-+#define WILC_SDIO_CCCR_IO_EN_FUNC1	BIT(1)
-+
-+/* Function/Interrupt enables bits */
-+#define WILC_SDIO_CCCR_IEN_MASTER	BIT(0)
-+#define WILC_SDIO_CCCR_IEN_FUNC1	BIT(1)
-+
-+/* Abort CCCR register bits */
-+#define WILC_SDIO_CCCR_ABORT_RESET	BIT(3)
-+
-+/* Vendor specific CCCR registers */
-+#define WILC_SDIO_WAKEUP_REG		0xf0
-+#define WILC_SDIO_WAKEUP_BIT		BIT(0)
-+
-+#define WILC_SDIO_CLK_STATUS_REG	0xf1
-+#define WILC_SDIO_CLK_STATUS_BIT	BIT(0)
-+
-+#define WILC_SDIO_INTERRUPT_DATA_SZ_REG	0xf2 /* Read size (2 bytes) */
-+
-+#define WILC_SDIO_VMM_TBL_CTRL_REG	0xf6
-+#define WILC_SDIO_IRQ_FLAG_REG		0xf7
-+#define WILC_SDIO_IRQ_CLEAR_FLAG_REG	0xf8
-+
-+#define WILC_SDIO_HOST_TO_FW_REG	0xfa
-+#define WILC_SDIO_HOST_TO_FW_BIT	BIT(0)
-+
-+#define WILC_SDIO_FW_TO_HOST_REG	0xfc
-+#define WILC_SDIO_FW_TO_HOST_BIT	BIT(0)
-+
-+/* Function 1 specific FBR register */
-+#define WILC_SDIO_FBR_CSA_REG		0x10C /* CSA pointer (3 bytes) */
-+#define WILC_SDIO_FBR_DATA_REG		0x10F
-+
-+#define WILC_SDIO_F1_DATA_REG		0x0
-+#define WILC_SDIO_EXT_IRQ_FLAG_REG	0x4
-+
-+#define WILC_AHB_DATA_MEM_BASE		0x30000
-+#define WILC_AHB_SHARE_MEM_BASE		0xd0000
-+
-+#define WILC_VMM_TBL_RX_SHADOW_BASE	WILC_AHB_SHARE_MEM_BASE
-+#define WILC_VMM_TBL_RX_SHADOW_SIZE	256
-+
-+#define WILC_FW_HOST_COMM		0x13c0
-+#define WILC_GP_REG_0			0x149c
-+#define WILC_GP_REG_1			0x14a0
-+
-+#define WILC_HAVE_SDIO_IRQ_GPIO		BIT(0)
-+#define WILC_HAVE_USE_PMU		BIT(1)
-+#define WILC_HAVE_SLEEP_CLK_SRC_RTC	BIT(2)
-+#define WILC_HAVE_SLEEP_CLK_SRC_XO	BIT(3)
-+#define WILC_HAVE_EXT_PA_INV_TX_RX	BIT(4)
-+#define WILC_HAVE_LEGACY_RF_SETTINGS	BIT(5)
-+#define WILC_HAVE_XTAL_24		BIT(6)
-+#define WILC_HAVE_DISABLE_WILC_UART	BIT(7)
-+#define WILC_HAVE_USE_IRQ_AS_HOST_WAKE	BIT(8)
-+
-+#define WILC_CORTUS_INTERRUPT_BASE	0x10A8
-+#define WILC_CORTUS_INTERRUPT_1		(WILC_CORTUS_INTERRUPT_BASE + 0x4)
-+#define WILC_CORTUS_INTERRUPT_2		(WILC_CORTUS_INTERRUPT_BASE + 0x8)
-+
-+/* tx control register 1 to 4 for RX */
-+#define WILC_REG_4_TO_1_RX		0x1e1c
-+
-+/* tx control register 1 to 4 for TX Bank_0 */
-+#define WILC_REG_4_TO_1_TX_BANK0	0x1e9c
-+
-+#define WILC_CORTUS_RESET_MUX_SEL	0x1118
-+#define WILC_CORTUS_BOOT_REGISTER	0xc0000
-+
-+#define WILC_CORTUS_BOOT_FROM_IRAM	0x71
-+
-+#define WILC_1000_BASE_ID		0x100000
-+
-+#define WILC_1000_BASE_ID_2A		0x1002A0
-+#define WILC_1000_BASE_ID_2A_REV1	(WILC_1000_BASE_ID_2A + 1)
-+
-+#define WILC_1000_BASE_ID_2B		0x1002B0
-+#define WILC_1000_BASE_ID_2B_REV1	(WILC_1000_BASE_ID_2B + 1)
-+#define WILC_1000_BASE_ID_2B_REV2	(WILC_1000_BASE_ID_2B + 2)
-+
-+#define WILC_CHIP_REV_FIELD		GENMASK(11, 0)
-+
-+/********************************************
-+ *
-+ *      Wlan Defines
-+ *
-+ ********************************************/
-+#define WILC_CFG_PKT		1
-+#define WILC_NET_PKT		0
-+#define WILC_MGMT_PKT		2
-+
-+#define WILC_CFG_SET		1
-+#define WILC_CFG_QUERY		0
-+
-+#define WILC_CFG_RSP		1
-+#define WILC_CFG_RSP_STATUS	2
-+#define WILC_CFG_RSP_SCAN	3
-+
-+#define WILC_ABORT_REQ_BIT		BIT(31)
-+
-+#define WILC_RX_BUFF_SIZE	(96 * 1024)
-+#define WILC_TX_BUFF_SIZE	(64 * 1024)
-+
-+#define MODALIAS		"WILC_SPI"
-+#define GPIO_NUM		0x44
-+
-+#define WILC_PKT_HDR_CONFIG_FIELD	BIT(31)
-+#define WILC_PKT_HDR_OFFSET_FIELD	GENMASK(30, 22)
-+#define WILC_PKT_HDR_TOTAL_LEN_FIELD	GENMASK(21, 11)
-+#define WILC_PKT_HDR_LEN_FIELD		GENMASK(10, 0)
-+
-+#define WILC_INTERRUPT_DATA_SIZE	GENMASK(14, 0)
-+
-+#define WILC_VMM_BUFFER_SIZE		GENMASK(9, 0)
-+
-+#define WILC_VMM_HDR_TYPE		BIT(31)
-+#define WILC_VMM_HDR_MGMT_FIELD		BIT(30)
-+#define WILC_VMM_HDR_PKT_SIZE		GENMASK(29, 15)
-+#define WILC_VMM_HDR_BUFF_SIZE		GENMASK(14, 0)
-+
-+#define WILC_VMM_ENTRY_COUNT		GENMASK(8, 3)
-+#define WILC_VMM_ENTRY_AVAILABLE	BIT(2)
-+/*******************************************/
-+/*        E0 and later Interrupt flags.    */
-+/*******************************************/
-+/*******************************************/
-+/*        E0 and later Interrupt flags.    */
-+/*           IRQ Status word               */
-+/* 15:0 =3D DMA count in words.              */
-+/* 16: INT0 flag                           */
-+/* 17: INT1 flag                           */
-+/* 18: INT2 flag                           */
-+/* 19: INT3 flag                           */
-+/* 20: INT4 flag                           */
-+/* 21: INT5 flag                           */
-+/*******************************************/
-+#define IRG_FLAGS_OFFSET	16
-+#define IRQ_DMA_WD_CNT_MASK	GENMASK(IRG_FLAGS_OFFSET - 1, 0)
-+#define INT_0			BIT(IRG_FLAGS_OFFSET)
-+#define INT_1			BIT(IRG_FLAGS_OFFSET + 1)
-+#define INT_2			BIT(IRG_FLAGS_OFFSET + 2)
-+#define INT_3			BIT(IRG_FLAGS_OFFSET + 3)
-+#define INT_4			BIT(IRG_FLAGS_OFFSET + 4)
-+#define INT_5			BIT(IRG_FLAGS_OFFSET + 5)
-+#define MAX_NUM_INT		5
-+#define IRG_FLAGS_MASK		GENMASK(IRG_FLAGS_OFFSET + MAX_NUM_INT, \
-+					IRG_FLAGS_OFFSET)
-+
-+/*******************************************/
-+/*        E0 and later Interrupt flags.    */
-+/*           IRQ Clear word                */
-+/* 0: Clear INT0                           */
-+/* 1: Clear INT1                           */
-+/* 2: Clear INT2                           */
-+/* 3: Clear INT3                           */
-+/* 4: Clear INT4                           */
-+/* 5: Clear INT5                           */
-+/* 6: Select VMM table 1                   */
-+/* 7: Select VMM table 2                   */
-+/* 8: Enable VMM                           */
-+/*******************************************/
-+#define CLR_INT0		BIT(0)
-+#define CLR_INT1		BIT(1)
-+#define CLR_INT2		BIT(2)
-+#define CLR_INT3		BIT(3)
-+#define CLR_INT4		BIT(4)
-+#define CLR_INT5		BIT(5)
-+#define SEL_VMM_TBL0		BIT(6)
-+#define SEL_VMM_TBL1		BIT(7)
-+#define EN_VMM			BIT(8)
-+
-+#define DATA_INT_EXT		INT_0
-+#define ALL_INT_EXT		DATA_INT_EXT
-+#define NUM_INT_EXT		1
-+#define UNHANDLED_IRQ_MASK	GENMASK(MAX_NUM_INT - 1, NUM_INT_EXT)
-+
-+#define DATA_INT_CLR		CLR_INT0
-+
-+#define ENABLE_RX_VMM		(SEL_VMM_TBL1 | EN_VMM)
-+#define ENABLE_TX_VMM		(SEL_VMM_TBL0 | EN_VMM)
-+/* time for expiring the completion of cfg packets */
-+#define WILC_CFG_PKTS_TIMEOUT	msecs_to_jiffies(2000)
-+
-+#define IS_MANAGMEMENT		0x100
-+#define IS_MANAGMEMENT_CALLBACK	0x080
-+#define IS_MGMT_STATUS_SUCCES	0x040
-+
-+#define WILC_WID_TYPE		GENMASK(15, 12)
-+#define WILC_VMM_ENTRY_FULL_RETRY	1
-+/********************************************
-+ *
-+ *      Tx/Rx Queue Structure
-+ *
-+ ********************************************/
-+
-+struct txq_entry_t {
-+	struct list_head list;
-+	int type;
-+	int ack_idx;
-+	u8 *buffer;
-+	int buffer_size;
-+	void *priv;
-+	int status;
-+	struct wilc_vif *vif;
-+	void (*tx_complete_func)(void *priv, int status);
++struct wilc_spi {
++	int crc_off;
 +};
 +
-+struct rxq_entry_t {
-+	struct list_head list;
-+	u8 *buffer;
-+	int buffer_size;
-+};
++static const struct wilc_hif_func wilc_hif_spi;
 +
 +/********************************************
 + *
-+ *      Host IF Structure
++ *      Crc7
 + *
 + ********************************************/
-+struct wilc;
-+struct wilc_hif_func {
-+	int (*hif_init)(struct wilc *wilc, bool resume);
-+	int (*hif_deinit)(struct wilc *wilc);
-+	int (*hif_read_reg)(struct wilc *wilc, u32 addr, u32 *data);
-+	int (*hif_write_reg)(struct wilc *wilc, u32 addr, u32 data);
-+	int (*hif_block_rx)(struct wilc *wilc, u32 addr, u8 *buf, u32 size);
-+	int (*hif_block_tx)(struct wilc *wilc, u32 addr, u8 *buf, u32 size);
-+	int (*hif_read_int)(struct wilc *wilc, u32 *int_status);
-+	int (*hif_clear_int_ext)(struct wilc *wilc, u32 val);
-+	int (*hif_read_size)(struct wilc *wilc, u32 *size);
-+	int (*hif_block_tx_ext)(struct wilc *wilc, u32 addr, u8 *buf, u32 size);
-+	int (*hif_block_rx_ext)(struct wilc *wilc, u32 addr, u8 *buf, u32 size);
-+	int (*hif_sync_ext)(struct wilc *wilc, int nint);
-+	int (*enable_interrupt)(struct wilc *nic);
-+	void (*disable_interrupt)(struct wilc *nic);
++
++static const u8 crc7_syndrome_table[256] =3D {
++	0x00, 0x09, 0x12, 0x1b, 0x24, 0x2d, 0x36, 0x3f,
++	0x48, 0x41, 0x5a, 0x53, 0x6c, 0x65, 0x7e, 0x77,
++	0x19, 0x10, 0x0b, 0x02, 0x3d, 0x34, 0x2f, 0x26,
++	0x51, 0x58, 0x43, 0x4a, 0x75, 0x7c, 0x67, 0x6e,
++	0x32, 0x3b, 0x20, 0x29, 0x16, 0x1f, 0x04, 0x0d,
++	0x7a, 0x73, 0x68, 0x61, 0x5e, 0x57, 0x4c, 0x45,
++	0x2b, 0x22, 0x39, 0x30, 0x0f, 0x06, 0x1d, 0x14,
++	0x63, 0x6a, 0x71, 0x78, 0x47, 0x4e, 0x55, 0x5c,
++	0x64, 0x6d, 0x76, 0x7f, 0x40, 0x49, 0x52, 0x5b,
++	0x2c, 0x25, 0x3e, 0x37, 0x08, 0x01, 0x1a, 0x13,
++	0x7d, 0x74, 0x6f, 0x66, 0x59, 0x50, 0x4b, 0x42,
++	0x35, 0x3c, 0x27, 0x2e, 0x11, 0x18, 0x03, 0x0a,
++	0x56, 0x5f, 0x44, 0x4d, 0x72, 0x7b, 0x60, 0x69,
++	0x1e, 0x17, 0x0c, 0x05, 0x3a, 0x33, 0x28, 0x21,
++	0x4f, 0x46, 0x5d, 0x54, 0x6b, 0x62, 0x79, 0x70,
++	0x07, 0x0e, 0x15, 0x1c, 0x23, 0x2a, 0x31, 0x38,
++	0x41, 0x48, 0x53, 0x5a, 0x65, 0x6c, 0x77, 0x7e,
++	0x09, 0x00, 0x1b, 0x12, 0x2d, 0x24, 0x3f, 0x36,
++	0x58, 0x51, 0x4a, 0x43, 0x7c, 0x75, 0x6e, 0x67,
++	0x10, 0x19, 0x02, 0x0b, 0x34, 0x3d, 0x26, 0x2f,
++	0x73, 0x7a, 0x61, 0x68, 0x57, 0x5e, 0x45, 0x4c,
++	0x3b, 0x32, 0x29, 0x20, 0x1f, 0x16, 0x0d, 0x04,
++	0x6a, 0x63, 0x78, 0x71, 0x4e, 0x47, 0x5c, 0x55,
++	0x22, 0x2b, 0x30, 0x39, 0x06, 0x0f, 0x14, 0x1d,
++	0x25, 0x2c, 0x37, 0x3e, 0x01, 0x08, 0x13, 0x1a,
++	0x6d, 0x64, 0x7f, 0x76, 0x49, 0x40, 0x5b, 0x52,
++	0x3c, 0x35, 0x2e, 0x27, 0x18, 0x11, 0x0a, 0x03,
++	0x74, 0x7d, 0x66, 0x6f, 0x50, 0x59, 0x42, 0x4b,
++	0x17, 0x1e, 0x05, 0x0c, 0x33, 0x3a, 0x21, 0x28,
++	0x5f, 0x56, 0x4d, 0x44, 0x7b, 0x72, 0x69, 0x60,
++	0x0e, 0x07, 0x1c, 0x15, 0x2a, 0x23, 0x38, 0x31,
++	0x46, 0x4f, 0x54, 0x5d, 0x62, 0x6b, 0x70, 0x79
 +};
 +
-+#define WILC_MAX_CFG_FRAME_SIZE		1468
++static u8 crc7_byte(u8 crc, u8 data)
++{
++	return crc7_syndrome_table[(crc << 1) ^ data];
++}
 +
-+struct tx_complete_data {
-+	int size;
-+	void *buff;
-+	struct sk_buff *skb;
-+};
++static u8 crc7(u8 crc, const u8 *buffer, u32 len)
++{
++	while (len--)
++		crc =3D crc7_byte(crc, *buffer++);
++	return crc;
++}
 +
-+struct wilc_cfg_cmd_hdr {
++static u8 wilc_get_crc7(u8 *buffer, u32 len)
++{
++	return crc7(0x7f, (const u8 *)buffer, len) << 1;
++}
++
++/********************************************
++ *
++ *      Spi protocol Function
++ *
++ ********************************************/
++
++#define CMD_DMA_WRITE				0xc1
++#define CMD_DMA_READ				0xc2
++#define CMD_INTERNAL_WRITE			0xc3
++#define CMD_INTERNAL_READ			0xc4
++#define CMD_TERMINATE				0xc5
++#define CMD_REPEAT				0xc6
++#define CMD_DMA_EXT_WRITE			0xc7
++#define CMD_DMA_EXT_READ			0xc8
++#define CMD_SINGLE_WRITE			0xc9
++#define CMD_SINGLE_READ				0xca
++#define CMD_RESET				0xcf
++
++#define DATA_PKT_SZ_256				256
++#define DATA_PKT_SZ_512				512
++#define DATA_PKT_SZ_1K				1024
++#define DATA_PKT_SZ_4K				(4 * 1024)
++#define DATA_PKT_SZ_8K				(8 * 1024)
++#define DATA_PKT_SZ				DATA_PKT_SZ_8K
++
++#define USE_SPI_DMA				0
++
++#define WILC_SPI_COMMAND_STAT_SUCCESS		0
++#define WILC_GET_RESP_HDR_START(h)		(((h) >> 4) & 0xf)
++
++struct wilc_spi_cmd {
 +	u8 cmd_type;
-+	u8 seq_no;
-+	__le16 total_len;
-+	__le32 driver_handler;
++	union {
++		struct {
++			u8 addr[3];
++			u8 crc[];
++		} __packed simple_cmd;
++		struct {
++			u8 addr[3];
++			u8 size[2];
++			u8 crc[];
++		} __packed dma_cmd;
++		struct {
++			u8 addr[3];
++			u8 size[3];
++			u8 crc[];
++		} __packed dma_cmd_ext;
++		struct {
++			u8 addr[2];
++			__be32 data;
++			u8 crc[];
++		} __packed internal_w_cmd;
++		struct {
++			u8 addr[3];
++			__be32 data;
++			u8 crc[];
++		} __packed w_cmd;
++	} u;
++} __packed;
++
++struct wilc_spi_read_rsp_data {
++	u8 rsp_cmd_type;
++	u8 status;
++	u8 resp_header;
++	u8 resp_data[4];
++	u8 crc[];
++} __packed;
++
++struct wilc_spi_rsp_data {
++	u8 rsp_cmd_type;
++	u8 status;
++} __packed;
++
++static int wilc_bus_probe(struct spi_device *spi)
++{
++	int ret;
++	struct wilc *wilc;
++	struct gpio_desc *gpio;
++	struct wilc_spi *spi_priv;
++
++	spi_priv =3D kzalloc(sizeof(*spi_priv), GFP_KERNEL);
++	if (!spi_priv)
++		return -ENOMEM;
++
++	gpio =3D gpiod_get(&spi->dev, "irq", GPIOD_IN);
++	if (IS_ERR(gpio)) {
++		/* get the GPIO descriptor from hardcode GPIO number */
++		gpio =3D gpio_to_desc(GPIO_NUM);
++		if (!gpio)
++			dev_err(&spi->dev, "failed to get the irq gpio\n");
++	}
++
++	ret =3D wilc_cfg80211_init(&wilc, &spi->dev, WILC_HIF_SPI, &wilc_hif_spi)=
+;
++	if (ret) {
++		kfree(spi_priv);
++		return ret;
++	}
++
++	spi_set_drvdata(spi, wilc);
++	wilc->dev =3D &spi->dev;
++	wilc->bus_data =3D spi_priv;
++	wilc->gpio_irq =3D gpio;
++
++	wilc->rtc_clk =3D devm_clk_get(&spi->dev, "rtc_clk");
++	if (PTR_ERR_OR_ZERO(wilc->rtc_clk) =3D=3D -EPROBE_DEFER)
++		return -EPROBE_DEFER;
++	else if (!IS_ERR(wilc->rtc_clk))
++		clk_prepare_enable(wilc->rtc_clk);
++
++	return 0;
++}
++
++static int wilc_bus_remove(struct spi_device *spi)
++{
++	struct wilc *wilc =3D spi_get_drvdata(spi);
++
++	/* free the GPIO in module remove */
++	if (wilc->gpio_irq)
++		gpiod_put(wilc->gpio_irq);
++
++	if (!IS_ERR(wilc->rtc_clk))
++		clk_disable_unprepare(wilc->rtc_clk);
++
++	wilc_netdev_cleanup(wilc);
++	return 0;
++}
++
++static const struct of_device_id wilc_of_match[] =3D {
++	{ .compatible =3D "microchip,wilc1000-spi", },
++	{ /* sentinel */ }
 +};
++MODULE_DEVICE_TABLE(of, wilc_of_match);
 +
-+struct wilc_cfg_frame {
-+	struct wilc_cfg_cmd_hdr hdr;
-+	u8 frame[WILC_MAX_CFG_FRAME_SIZE];
++static struct spi_driver wilc_spi_driver =3D {
++	.driver =3D {
++		.name =3D MODALIAS,
++		.of_match_table =3D wilc_of_match,
++	},
++	.probe =3D  wilc_bus_probe,
++	.remove =3D wilc_bus_remove,
 +};
++module_spi_driver(wilc_spi_driver);
++MODULE_LICENSE("GPL");
 +
-+struct wilc_cfg_rsp {
-+	u8 type;
-+	u8 seq_no;
-+};
++static int wilc_spi_tx(struct wilc *wilc, u8 *b, u32 len)
++{
++	struct spi_device *spi =3D to_spi_device(wilc->dev);
++	int ret;
++	struct spi_message msg;
 +
-+struct wilc;
-+struct wilc_vif;
++	if (len > 0 && b) {
++		struct spi_transfer tr =3D {
++			.tx_buf =3D b,
++			.len =3D len,
++			.delay_usecs =3D 0,
++		};
++		char *r_buffer =3D kzalloc(len, GFP_KERNEL);
 +
-+int wilc_wlan_firmware_download(struct wilc *wilc, const u8 *buffer,
-+				u32 buffer_size);
-+int wilc_wlan_start(struct wilc *wilc);
-+int wilc_wlan_stop(struct wilc *wilc, struct wilc_vif *vif);
-+int wilc_wlan_txq_add_net_pkt(struct net_device *dev, void *priv, u8 *buff=
-er,
-+			      u32 buffer_size,
-+			      void (*tx_complete_fn)(void *, int));
-+int wilc_wlan_handle_txq(struct wilc *wl, u32 *txq_count);
-+void wilc_handle_isr(struct wilc *wilc);
-+void wilc_wlan_cleanup(struct net_device *dev);
-+int wilc_wlan_cfg_set(struct wilc_vif *vif, int start, u16 wid, u8 *buffer=
++		if (!r_buffer)
++			return -ENOMEM;
++
++		tr.rx_buf =3D r_buffer;
++		dev_dbg(&spi->dev, "Request writing %d bytes\n", len);
++
++		memset(&msg, 0, sizeof(msg));
++		spi_message_init(&msg);
++		msg.spi =3D spi;
++		msg.is_dma_mapped =3D USE_SPI_DMA;
++		spi_message_add_tail(&tr, &msg);
++
++		ret =3D spi_sync(spi, &msg);
++		if (ret < 0)
++			dev_err(&spi->dev, "SPI transaction failed\n");
++
++		kfree(r_buffer);
++	} else {
++		dev_err(&spi->dev,
++			"can't write data with the following length: %d\n",
++			len);
++		ret =3D -EINVAL;
++	}
++
++	return ret;
++}
++
++static int wilc_spi_rx(struct wilc *wilc, u8 *rb, u32 rlen)
++{
++	struct spi_device *spi =3D to_spi_device(wilc->dev);
++	int ret;
++
++	if (rlen > 0) {
++		struct spi_message msg;
++		struct spi_transfer tr =3D {
++			.rx_buf =3D rb,
++			.len =3D rlen,
++			.delay_usecs =3D 0,
++
++		};
++		char *t_buffer =3D kzalloc(rlen, GFP_KERNEL);
++
++		if (!t_buffer)
++			return -ENOMEM;
++
++		tr.tx_buf =3D t_buffer;
++
++		memset(&msg, 0, sizeof(msg));
++		spi_message_init(&msg);
++		msg.spi =3D spi;
++		msg.is_dma_mapped =3D USE_SPI_DMA;
++		spi_message_add_tail(&tr, &msg);
++
++		ret =3D spi_sync(spi, &msg);
++		if (ret < 0)
++			dev_err(&spi->dev, "SPI transaction failed\n");
++		kfree(t_buffer);
++	} else {
++		dev_err(&spi->dev,
++			"can't read data with the following length: %u\n",
++			rlen);
++		ret =3D -EINVAL;
++	}
++
++	return ret;
++}
++
++static int wilc_spi_tx_rx(struct wilc *wilc, u8 *wb, u8 *rb, u32 rlen)
++{
++	struct spi_device *spi =3D to_spi_device(wilc->dev);
++	int ret;
++
++	if (rlen > 0) {
++		struct spi_message msg;
++		struct spi_transfer tr =3D {
++			.rx_buf =3D rb,
++			.tx_buf =3D wb,
++			.len =3D rlen,
++			.bits_per_word =3D 8,
++			.delay_usecs =3D 0,
++
++		};
++
++		memset(&msg, 0, sizeof(msg));
++		spi_message_init(&msg);
++		msg.spi =3D spi;
++		msg.is_dma_mapped =3D USE_SPI_DMA;
++
++		spi_message_add_tail(&tr, &msg);
++		ret =3D spi_sync(spi, &msg);
++		if (ret < 0)
++			dev_err(&spi->dev, "SPI transaction failed\n");
++	} else {
++		dev_err(&spi->dev,
++			"can't read data with the following length: %u\n",
++			rlen);
++		ret =3D -EINVAL;
++	}
++
++	return ret;
++}
++
++static int spi_data_write(struct wilc *wilc, u8 *b, u32 sz)
++{
++	struct spi_device *spi =3D to_spi_device(wilc->dev);
++	struct wilc_spi *spi_priv =3D wilc->bus_data;
++	int ix, nbytes;
++	int result =3D 0;
++	u8 cmd, order, crc[2] =3D {0};
++
++	/*
++	 * Data
++	 */
++	ix =3D 0;
++	do {
++		if (sz <=3D DATA_PKT_SZ) {
++			nbytes =3D sz;
++			order =3D 0x3;
++		} else {
++			nbytes =3D DATA_PKT_SZ;
++			if (ix =3D=3D 0)
++				order =3D 0x1;
++			else
++				order =3D 0x02;
++		}
++
++		/*
++		 * Write command
++		 */
++		cmd =3D 0xf0;
++		cmd |=3D order;
++
++		if (wilc_spi_tx(wilc, &cmd, 1)) {
++			dev_err(&spi->dev,
++				"Failed data block cmd write, bus error...\n");
++			result =3D -EINVAL;
++			break;
++		}
++
++		/*
++		 * Write data
++		 */
++		if (wilc_spi_tx(wilc, &b[ix], nbytes)) {
++			dev_err(&spi->dev,
++				"Failed data block write, bus error...\n");
++			result =3D -EINVAL;
++			break;
++		}
++
++		/*
++		 * Write Crc
++		 */
++		if (!spi_priv->crc_off) {
++			if (wilc_spi_tx(wilc, crc, 2)) {
++				dev_err(&spi->dev, "Failed data block crc write, bus error...\n");
++				result =3D -EINVAL;
++				break;
++			}
++		}
++
++		/*
++		 * No need to wait for response
++		 */
++		ix +=3D nbytes;
++		sz -=3D nbytes;
++	} while (sz);
++
++	return result;
++}
++
++/********************************************
++ *
++ *      Spi Internal Read/Write Function
++ *
++ ********************************************/
++static int wilc_spi_single_read(struct wilc *wilc, u8 cmd, u32 adr, void *=
+b,
++				u8 clockless)
++{
++	struct spi_device *spi =3D to_spi_device(wilc->dev);
++	struct wilc_spi *spi_priv =3D wilc->bus_data;
++	u8 wb[32], rb[32];
++	int cmd_len, resp_len;
++	u8 crc[2];
++	struct wilc_spi_cmd *c;
++	struct wilc_spi_read_rsp_data *r;
++
++	memset(wb, 0x0, sizeof(wb));
++	memset(rb, 0x0, sizeof(rb));
++	c =3D (struct wilc_spi_cmd *)wb;
++	c->cmd_type =3D cmd;
++	if (cmd =3D=3D CMD_SINGLE_READ) {
++		c->u.simple_cmd.addr[0] =3D adr >> 16;
++		c->u.simple_cmd.addr[1] =3D adr >> 8;
++		c->u.simple_cmd.addr[2] =3D adr;
++	} else if (cmd =3D=3D CMD_INTERNAL_READ) {
++		c->u.simple_cmd.addr[0] =3D adr >> 8;
++		if (clockless =3D=3D 1)
++			c->u.simple_cmd.addr[0] |=3D BIT(7);
++		c->u.simple_cmd.addr[1] =3D adr;
++		c->u.simple_cmd.addr[2] =3D 0x0;
++	} else {
++		dev_err(&spi->dev, "cmd [%x] not supported\n", cmd);
++		return -EINVAL;
++	}
++
++	cmd_len =3D offsetof(struct wilc_spi_cmd, u.simple_cmd.crc);
++	resp_len =3D sizeof(*r);
++	if (!spi_priv->crc_off) {
++		c->u.simple_cmd.crc[0] =3D wilc_get_crc7(wb, cmd_len);
++		cmd_len +=3D 1;
++		resp_len +=3D 2;
++	}
++
++	if (cmd_len + resp_len > ARRAY_SIZE(wb)) {
++		dev_err(&spi->dev,
++			"spi buffer size too small (%d) (%d) (%zu)\n",
++			cmd_len, resp_len, ARRAY_SIZE(wb));
++		return -EINVAL;
++	}
++
++	if (wilc_spi_tx_rx(wilc, wb, rb, cmd_len + resp_len)) {
++		dev_err(&spi->dev, "Failed cmd write, bus error...\n");
++		return -EINVAL;
++	}
++
++	r =3D (struct wilc_spi_read_rsp_data *)&rb[cmd_len];
++	if (r->rsp_cmd_type !=3D cmd) {
++		dev_err(&spi->dev,
++			"Failed cmd response, cmd (%02x), resp (%02x)\n",
++			cmd, r->rsp_cmd_type);
++		return -EINVAL;
++	}
++
++	if (r->status !=3D WILC_SPI_COMMAND_STAT_SUCCESS) {
++		dev_err(&spi->dev, "Failed cmd state response state (%02x)\n",
++			r->status);
++		return -EINVAL;
++	}
++
++	if (WILC_GET_RESP_HDR_START(r->resp_header) !=3D 0xf) {
++		dev_err(&spi->dev, "Error, data read response (%02x)\n",
++			r->resp_header);
++		return -EINVAL;
++	}
++
++	if (b)
++		memcpy(b, r->resp_data, 4);
++
++	if (!spi_priv->crc_off)
++		memcpy(crc, r->crc, 2);
++
++	return 0;
++}
++
++static int wilc_spi_write_cmd(struct wilc *wilc, u8 cmd, u32 adr, u32 data=
 ,
-+		      u32 buffer_size, int commit, u32 drv_handler);
-+int wilc_wlan_cfg_get(struct wilc_vif *vif, int start, u16 wid, int commit=
-,
-+		      u32 drv_handler);
-+int wilc_wlan_txq_add_mgmt_pkt(struct net_device *dev, void *priv, u8 *buf=
-fer,
-+			       u32 buffer_size, void (*func)(void *, int));
-+void wilc_enable_tcp_ack_filter(struct wilc_vif *vif, bool value);
-+int wilc_wlan_get_num_conn_ifcs(struct wilc *wilc);
-+netdev_tx_t wilc_mac_xmit(struct sk_buff *skb, struct net_device *dev);
++			      u8 clockless)
++{
++	struct spi_device *spi =3D to_spi_device(wilc->dev);
++	struct wilc_spi *spi_priv =3D wilc->bus_data;
++	u8 wb[32], rb[32];
++	int cmd_len, resp_len;
++	struct wilc_spi_cmd *c;
++	struct wilc_spi_rsp_data *r;
 +
-+void wilc_wfi_p2p_rx(struct wilc_vif *vif, u8 *buff, u32 size);
-+void host_wakeup_notify(struct wilc *wilc);
-+void host_sleep_notify(struct wilc *wilc);
-+void chip_allow_sleep(struct wilc *wilc);
-+void chip_wakeup(struct wilc *wilc);
-+int wilc_send_config_pkt(struct wilc_vif *vif, u8 mode, struct wid *wids,
-+			 u32 count);
-+int wilc_wlan_init(struct net_device *dev);
-+u32 wilc_get_chipid(struct wilc *wilc, bool update);
-+#endif
++	memset(wb, 0x0, sizeof(wb));
++	memset(rb, 0x0, sizeof(rb));
++	c =3D (struct wilc_spi_cmd *)wb;
++	c->cmd_type =3D cmd;
++	if (cmd =3D=3D CMD_INTERNAL_WRITE) {
++		c->u.internal_w_cmd.addr[0] =3D adr >> 8;
++		if (clockless =3D=3D 1)
++			c->u.internal_w_cmd.addr[0] |=3D BIT(7);
++
++		c->u.internal_w_cmd.addr[1] =3D adr;
++		c->u.internal_w_cmd.data =3D cpu_to_be32(data);
++		cmd_len =3D offsetof(struct wilc_spi_cmd, u.internal_w_cmd.crc);
++		if (!spi_priv->crc_off)
++			c->u.internal_w_cmd.crc[0] =3D wilc_get_crc7(wb, cmd_len);
++	} else if (cmd =3D=3D CMD_SINGLE_WRITE) {
++		c->u.w_cmd.addr[0] =3D adr >> 16;
++		c->u.w_cmd.addr[1] =3D adr >> 8;
++		c->u.w_cmd.addr[2] =3D adr;
++		c->u.w_cmd.data =3D cpu_to_be32(data);
++		cmd_len =3D offsetof(struct wilc_spi_cmd, u.w_cmd.crc);
++		if (!spi_priv->crc_off)
++			c->u.w_cmd.crc[0] =3D wilc_get_crc7(wb, cmd_len);
++	} else {
++		dev_err(&spi->dev, "write cmd [%x] not supported\n", cmd);
++		return -EINVAL;
++	}
++
++	if (!spi_priv->crc_off)
++		cmd_len +=3D 1;
++
++	resp_len =3D sizeof(*r);
++
++	if (cmd_len + resp_len > ARRAY_SIZE(wb)) {
++		dev_err(&spi->dev,
++			"spi buffer size too small (%d) (%d) (%zu)\n",
++			cmd_len, resp_len, ARRAY_SIZE(wb));
++		return -EINVAL;
++	}
++
++	if (wilc_spi_tx_rx(wilc, wb, rb, cmd_len + resp_len)) {
++		dev_err(&spi->dev, "Failed cmd write, bus error...\n");
++		return -EINVAL;
++	}
++
++	r =3D (struct wilc_spi_rsp_data *)&rb[cmd_len];
++	if (r->rsp_cmd_type !=3D cmd) {
++		dev_err(&spi->dev,
++			"Failed cmd response, cmd (%02x), resp (%02x)\n",
++			cmd, r->rsp_cmd_type);
++		return -EINVAL;
++	}
++
++	if (r->status !=3D WILC_SPI_COMMAND_STAT_SUCCESS) {
++		dev_err(&spi->dev, "Failed cmd state response state (%02x)\n",
++			r->status);
++		return -EINVAL;
++	}
++
++	return 0;
++}
++
++static int wilc_spi_dma_rw(struct wilc *wilc, u8 cmd, u32 adr, u8 *b, u32 =
+sz)
++{
++	struct spi_device *spi =3D to_spi_device(wilc->dev);
++	struct wilc_spi *spi_priv =3D wilc->bus_data;
++	u8 wb[32], rb[32];
++	int cmd_len, resp_len;
++	int retry, ix =3D 0;
++	u8 crc[2];
++	struct wilc_spi_cmd *c;
++	struct wilc_spi_rsp_data *r;
++
++	memset(wb, 0x0, sizeof(wb));
++	memset(rb, 0x0, sizeof(rb));
++	c =3D (struct wilc_spi_cmd *)wb;
++	c->cmd_type =3D cmd;
++	if (cmd =3D=3D CMD_DMA_WRITE || cmd =3D=3D CMD_DMA_READ) {
++		c->u.dma_cmd.addr[0] =3D adr >> 16;
++		c->u.dma_cmd.addr[1] =3D adr >> 8;
++		c->u.dma_cmd.addr[2] =3D adr;
++		c->u.dma_cmd.size[0] =3D sz >> 8;
++		c->u.dma_cmd.size[1] =3D sz;
++		cmd_len =3D offsetof(struct wilc_spi_cmd, u.dma_cmd.crc);
++		if (!spi_priv->crc_off)
++			c->u.dma_cmd.crc[0] =3D wilc_get_crc7(wb, cmd_len);
++	} else if (cmd =3D=3D CMD_DMA_EXT_WRITE || cmd =3D=3D CMD_DMA_EXT_READ) {
++		c->u.dma_cmd_ext.addr[0] =3D adr >> 16;
++		c->u.dma_cmd_ext.addr[1] =3D adr >> 8;
++		c->u.dma_cmd_ext.addr[2] =3D adr;
++		c->u.dma_cmd_ext.size[0] =3D sz >> 16;
++		c->u.dma_cmd_ext.size[1] =3D sz >> 8;
++		c->u.dma_cmd_ext.size[2] =3D sz;
++		cmd_len =3D offsetof(struct wilc_spi_cmd, u.dma_cmd_ext.crc);
++		if (!spi_priv->crc_off)
++			c->u.dma_cmd_ext.crc[0] =3D wilc_get_crc7(wb, cmd_len);
++	} else {
++		dev_err(&spi->dev, "dma read write cmd [%x] not supported\n",
++			cmd);
++		return -EINVAL;
++	}
++	if (!spi_priv->crc_off)
++		cmd_len +=3D 1;
++
++	resp_len =3D sizeof(*r);
++
++	if (cmd_len + resp_len > ARRAY_SIZE(wb)) {
++		dev_err(&spi->dev, "spi buffer size too small (%d)(%d) (%zu)\n",
++			cmd_len, resp_len, ARRAY_SIZE(wb));
++		return -EINVAL;
++	}
++
++	if (wilc_spi_tx_rx(wilc, wb, rb, cmd_len + resp_len)) {
++		dev_err(&spi->dev, "Failed cmd write, bus error...\n");
++		return -EINVAL;
++	}
++
++	r =3D (struct wilc_spi_rsp_data *)&rb[cmd_len];
++	if (r->rsp_cmd_type !=3D cmd) {
++		dev_err(&spi->dev,
++			"Failed cmd response, cmd (%02x), resp (%02x)\n",
++			cmd, r->rsp_cmd_type);
++		return -EINVAL;
++	}
++
++	if (r->status !=3D WILC_SPI_COMMAND_STAT_SUCCESS) {
++		dev_err(&spi->dev, "Failed cmd state response state (%02x)\n",
++			r->status);
++		return -EINVAL;
++	}
++
++	if (cmd =3D=3D CMD_DMA_WRITE || cmd =3D=3D CMD_DMA_EXT_WRITE)
++		return 0;
++
++	while (sz > 0) {
++		int nbytes;
++		u8 rsp;
++
++		if (sz <=3D DATA_PKT_SZ)
++			nbytes =3D sz;
++		else
++			nbytes =3D DATA_PKT_SZ;
++
++		/*
++		 * Data Response header
++		 */
++		retry =3D 100;
++		do {
++			if (wilc_spi_rx(wilc, &rsp, 1)) {
++				dev_err(&spi->dev,
++					"Failed resp read, bus err\n");
++				return -EINVAL;
++			}
++			if (WILC_GET_RESP_HDR_START(rsp) =3D=3D 0xf)
++				break;
++		} while (retry--);
++
++		/*
++		 * Read bytes
++		 */
++		if (wilc_spi_rx(wilc, &b[ix], nbytes)) {
++			dev_err(&spi->dev,
++				"Failed block read, bus err\n");
++			return -EINVAL;
++		}
++
++		/*
++		 * Read Crc
++		 */
++		if (!spi_priv->crc_off && wilc_spi_rx(wilc, crc, 2)) {
++			dev_err(&spi->dev,
++				"Failed block crc read, bus err\n");
++			return -EINVAL;
++		}
++
++		ix +=3D nbytes;
++		sz -=3D nbytes;
++	}
++	return 0;
++}
++
++static int wilc_spi_read_reg(struct wilc *wilc, u32 addr, u32 *data)
++{
++	struct spi_device *spi =3D to_spi_device(wilc->dev);
++	int result;
++	u8 cmd =3D CMD_SINGLE_READ;
++	u8 clockless =3D 0;
++
++	if (addr < WILC_SPI_CLOCKLESS_ADDR_LIMIT) {
++		/* Clockless register */
++		cmd =3D CMD_INTERNAL_READ;
++		clockless =3D 1;
++	}
++
++	result =3D wilc_spi_single_read(wilc, cmd, addr, data, clockless);
++	if (result) {
++		dev_err(&spi->dev, "Failed cmd, read reg (%08x)...\n", addr);
++		return result;
++	}
++
++	le32_to_cpus(data);
++
++	return 0;
++}
++
++static int wilc_spi_read(struct wilc *wilc, u32 addr, u8 *buf, u32 size)
++{
++	struct spi_device *spi =3D to_spi_device(wilc->dev);
++	int result;
++
++	if (size <=3D 4)
++		return -EINVAL;
++
++	result =3D wilc_spi_dma_rw(wilc, CMD_DMA_EXT_READ, addr, buf, size);
++	if (result) {
++		dev_err(&spi->dev, "Failed cmd, read block (%08x)...\n", addr);
++		return result;
++	}
++
++	return 0;
++}
++
++static int spi_internal_write(struct wilc *wilc, u32 adr, u32 dat)
++{
++	struct spi_device *spi =3D to_spi_device(wilc->dev);
++	int result;
++
++	result =3D wilc_spi_write_cmd(wilc, CMD_INTERNAL_WRITE, adr, dat, 0);
++	if (result) {
++		dev_err(&spi->dev, "Failed internal write cmd...\n");
++		return result;
++	}
++
++	return 0;
++}
++
++static int spi_internal_read(struct wilc *wilc, u32 adr, u32 *data)
++{
++	struct spi_device *spi =3D to_spi_device(wilc->dev);
++	int result;
++
++	result =3D wilc_spi_single_read(wilc, CMD_INTERNAL_READ, adr, data, 0);
++	if (result) {
++		dev_err(&spi->dev, "Failed internal read cmd...\n");
++		return result;
++	}
++
++	le32_to_cpus(data);
++
++	return 0;
++}
++
++/********************************************
++ *
++ *      Spi interfaces
++ *
++ ********************************************/
++
++static int wilc_spi_write_reg(struct wilc *wilc, u32 addr, u32 data)
++{
++	struct spi_device *spi =3D to_spi_device(wilc->dev);
++	int result;
++	u8 cmd =3D CMD_SINGLE_WRITE;
++	u8 clockless =3D 0;
++
++	if (addr < WILC_SPI_CLOCKLESS_ADDR_LIMIT) {
++		/* Clockless register */
++		cmd =3D CMD_INTERNAL_WRITE;
++		clockless =3D 1;
++	}
++
++	result =3D wilc_spi_write_cmd(wilc, cmd, addr, data, clockless);
++	if (result) {
++		dev_err(&spi->dev, "Failed cmd, write reg (%08x)...\n", addr);
++		return result;
++	}
++
++	return 0;
++}
++
++static int wilc_spi_write(struct wilc *wilc, u32 addr, u8 *buf, u32 size)
++{
++	struct spi_device *spi =3D to_spi_device(wilc->dev);
++	int result;
++
++	/*
++	 * has to be greated than 4
++	 */
++	if (size <=3D 4)
++		return -EINVAL;
++
++	result =3D wilc_spi_dma_rw(wilc, CMD_DMA_EXT_WRITE, addr, NULL, size);
++	if (result) {
++		dev_err(&spi->dev,
++			"Failed cmd, write block (%08x)...\n", addr);
++		return result;
++	}
++
++	/*
++	 * Data
++	 */
++	result =3D spi_data_write(wilc, buf, size);
++	if (result) {
++		dev_err(&spi->dev, "Failed block data write...\n");
++		return result;
++	}
++
++	return 0;
++}
++
++/********************************************
++ *
++ *      Bus interfaces
++ *
++ ********************************************/
++
++static int wilc_spi_deinit(struct wilc *wilc)
++{
++	/*
++	 * TODO:
++	 */
++	return 0;
++}
++
++static int wilc_spi_init(struct wilc *wilc, bool resume)
++{
++	struct spi_device *spi =3D to_spi_device(wilc->dev);
++	struct wilc_spi *spi_priv =3D wilc->bus_data;
++	u32 reg;
++	u32 chipid;
++	static int isinit;
++	int ret;
++
++	if (isinit) {
++		ret =3D wilc_spi_read_reg(wilc, WILC_CHIPID, &chipid);
++		if (ret)
++			dev_err(&spi->dev, "Fail cmd read chip id...\n");
++
++		return ret;
++	}
++
++	/*
++	 * configure protocol
++	 */
++
++	/*
++	 * TODO: We can remove the CRC trials if there is a definite
++	 * way to reset
++	 */
++	/* the SPI to it's initial value. */
++	ret =3D spi_internal_read(wilc, WILC_SPI_PROTOCOL_OFFSET, &reg);
++	if (ret) {
++		/*
++		 * Read failed. Try with CRC off. This might happen when module
++		 * is removed but chip isn't reset
++		 */
++		spi_priv->crc_off =3D 1;
++		dev_err(&spi->dev,
++			"Failed read with CRC on, retrying with CRC off\n");
++		ret =3D spi_internal_read(wilc, WILC_SPI_PROTOCOL_OFFSET, &reg);
++		if (ret) {
++			/*
++			 * Read failed with both CRC on and off,
++			 * something went bad
++			 */
++			dev_err(&spi->dev, "Failed internal read protocol\n");
++			return ret;
++		}
++	}
++	if (spi_priv->crc_off =3D=3D 0) {
++		reg &=3D ~0xc; /* disable crc checking */
++		reg &=3D ~0x70;
++		reg |=3D (0x5 << 4);
++		ret =3D spi_internal_write(wilc, WILC_SPI_PROTOCOL_OFFSET, reg);
++		if (ret) {
++			dev_err(&spi->dev,
++				"[wilc spi %d]: Failed internal write reg\n",
++				__LINE__);
++			return ret;
++		}
++		spi_priv->crc_off =3D 1;
++	}
++
++	/*
++	 * make sure can read back chip id correctly
++	 */
++	ret =3D wilc_spi_read_reg(wilc, WILC_CHIPID, &chipid);
++	if (ret) {
++		dev_err(&spi->dev, "Fail cmd read chip id...\n");
++		return ret;
++	}
++
++	isinit =3D 1;
++
++	return 0;
++}
++
++static int wilc_spi_read_size(struct wilc *wilc, u32 *size)
++{
++	int ret;
++
++	ret =3D spi_internal_read(wilc,
++				WILC_SPI_INT_STATUS - WILC_SPI_REG_BASE, size);
++	*size =3D FIELD_GET(IRQ_DMA_WD_CNT_MASK, *size);
++
++	return ret;
++}
++
++static int wilc_spi_read_int(struct wilc *wilc, u32 *int_status)
++{
++	return spi_internal_read(wilc, WILC_SPI_INT_STATUS - WILC_SPI_REG_BASE,
++				 int_status);
++}
++
++static int wilc_spi_clear_int_ext(struct wilc *wilc, u32 val)
++{
++	return spi_internal_write(wilc, WILC_SPI_INT_CLEAR - WILC_SPI_REG_BASE,
++				  val);
++}
++
++static int wilc_spi_sync_ext(struct wilc *wilc, int nint)
++{
++	struct spi_device *spi =3D to_spi_device(wilc->dev);
++	u32 reg;
++	int ret, i;
++
++	if (nint > MAX_NUM_INT) {
++		dev_err(&spi->dev, "Too many interrupts (%d)...\n", nint);
++		return -EINVAL;
++	}
++
++	/*
++	 * interrupt pin mux select
++	 */
++	ret =3D wilc_spi_read_reg(wilc, WILC_PIN_MUX_0, &reg);
++	if (ret) {
++		dev_err(&spi->dev, "Failed read reg (%08x)...\n",
++			WILC_PIN_MUX_0);
++		return ret;
++	}
++	reg |=3D BIT(8);
++	ret =3D wilc_spi_write_reg(wilc, WILC_PIN_MUX_0, reg);
++	if (ret) {
++		dev_err(&spi->dev, "Failed write reg (%08x)...\n",
++			WILC_PIN_MUX_0);
++		return ret;
++	}
++
++	/*
++	 * interrupt enable
++	 */
++	ret =3D wilc_spi_read_reg(wilc, WILC_INTR_ENABLE, &reg);
++	if (ret) {
++		dev_err(&spi->dev, "Failed read reg (%08x)...\n",
++			WILC_INTR_ENABLE);
++		return ret;
++	}
++
++	for (i =3D 0; (i < 5) && (nint > 0); i++, nint--)
++		reg |=3D (BIT((27 + i)));
++
++	ret =3D wilc_spi_write_reg(wilc, WILC_INTR_ENABLE, reg);
++	if (ret) {
++		dev_err(&spi->dev, "Failed write reg (%08x)...\n",
++			WILC_INTR_ENABLE);
++		return ret;
++	}
++	if (nint) {
++		ret =3D wilc_spi_read_reg(wilc, WILC_INTR2_ENABLE, &reg);
++		if (ret) {
++			dev_err(&spi->dev, "Failed read reg (%08x)...\n",
++				WILC_INTR2_ENABLE);
++			return ret;
++		}
++
++		for (i =3D 0; (i < 3) && (nint > 0); i++, nint--)
++			reg |=3D BIT(i);
++
++		ret =3D wilc_spi_read_reg(wilc, WILC_INTR2_ENABLE, &reg);
++		if (ret) {
++			dev_err(&spi->dev, "Failed write reg (%08x)...\n",
++				WILC_INTR2_ENABLE);
++			return ret;
++		}
++	}
++
++	return 0;
++}
++
++/* Global spi HIF function table */
++static const struct wilc_hif_func wilc_hif_spi =3D {
++	.hif_init =3D wilc_spi_init,
++	.hif_deinit =3D wilc_spi_deinit,
++	.hif_read_reg =3D wilc_spi_read_reg,
++	.hif_write_reg =3D wilc_spi_write_reg,
++	.hif_block_rx =3D wilc_spi_read,
++	.hif_block_tx =3D wilc_spi_write,
++	.hif_read_int =3D wilc_spi_read_int,
++	.hif_clear_int_ext =3D wilc_spi_clear_int_ext,
++	.hif_read_size =3D wilc_spi_read_size,
++	.hif_block_tx_ext =3D wilc_spi_write,
++	.hif_block_rx_ext =3D wilc_spi_read,
++	.hif_sync_ext =3D wilc_spi_sync_ext,
++};
 --=20
 2.24.0
