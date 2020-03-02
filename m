@@ -2,120 +2,199 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 31FBE1755FD
-	for <lists+linux-wireless@lfdr.de>; Mon,  2 Mar 2020 09:28:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CE4181756F0
+	for <lists+linux-wireless@lfdr.de>; Mon,  2 Mar 2020 10:24:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727138AbgCBI2n (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 2 Mar 2020 03:28:43 -0500
-Received: from mail-eopbgr80135.outbound.protection.outlook.com ([40.107.8.135]:22022
-        "EHLO EUR04-VI1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726887AbgCBI2m (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 2 Mar 2020 03:28:42 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=JiV8i3KUcrySPMzC5I+vsHQKtoged0QRMmgUQWGJ4GMaGZjOXnetHcksPmOzep/CG8vT/P2onS2Lp5EM5KgCJoYK17pfst84aY+Ifezi0yO15TNX7o6pVNagzHh/6Wg4z+xkRCCa7hzMvf2xAIdyEHgihGPrLiIz9JI3pAG1WpNi3MKI6OimR4D8G9uzswcRxIF9JSvQqux38y+tx2iubpPvD1h3D0lH+oV6ANnuKG/YgV9jfYSgOpf1c3abhfRaS4OzCLyIUUjvsR4Jr0ZtdEpSk+E+gnd40803KqZvISbrB94gOlUn1ie3h3ykzy/7luqlsePxzd9+v/4kD5D42A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Lpiku/yNV8G8UoRRtdYTa58+lHacdf1bb+WP19up8HI=;
- b=WiJp84CV1dEMLs3n2pkZrtVWU/yl1wjm+Xoin6fvf649t6F0Vh+2Skl6yFHGIFuKj/cyu61t62PlnAiU9ss5FgHYdYq49srHmCOjMbOTwdWKwjKq9JhgFjExMHbPXmTBntmJDA/XfRHSYQEnf9OPp6+XZYgsz0X1RQlsHxX/7+FC4pJaYs4nIYzqQoOFug7o31fQD3+geOkLtqeVkQCfolVNoxLoxS/ac29mphqD2+p8j6iipsA32W7xKukqdocQI2M1pOja+vIWodZmjZ0fGYUoaOc4qHGWpYkQFP38R7F2F3hje23fJSo8swoYedcGEDgzfs2wZqwGyMctLaXdUA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=acksys.fr; dmarc=pass action=none header.from=acksys.fr;
- dkim=pass header.d=acksys.fr; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ACKSYS.onmicrosoft.com; s=selector2-ACKSYS-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Lpiku/yNV8G8UoRRtdYTa58+lHacdf1bb+WP19up8HI=;
- b=G2mksFVNhjBfWShOuuf9ZsNKJhWxKb/CZHIf7e0T+rhtDjpzwcbd9FqKXFbvaIO0wIBxyo3QKBeEpAmsP1pAlnkLc1OAcdwCLM7to3oaxW70HzZPXwo/xdiBkWFtqhg/vmifhVw6H+EtRS8xWnQ3G51/c6byCW7NwfeGg8LfYn4=
-Received: from DB8PR01MB5529.eurprd01.prod.exchangelabs.com (10.255.170.96) by
- DB8PR01MB6215.eurprd01.prod.exchangelabs.com (20.180.1.200) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2772.18; Mon, 2 Mar 2020 08:28:37 +0000
-Received: from DB8PR01MB5529.eurprd01.prod.exchangelabs.com
- ([fe80::8955:bf34:da1e:cdb1]) by DB8PR01MB5529.eurprd01.prod.exchangelabs.com
- ([fe80::8955:bf34:da1e:cdb1%3]) with mapi id 15.20.2772.019; Mon, 2 Mar 2020
- 08:28:37 +0000
-From:   Cedric VONCKEN <cedric.voncken@acksys.fr>
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        Steve deRosier <derosier@gmail.com>
-CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: RE: [mac80211]: wds link and Radius authentication issue
-Thread-Topic: [mac80211]: wds link and Radius authentication issue
-Thread-Index: AdXth2dk69/BCqj0R+ekTWaEqaibqgACfSLgAAC+e3AAEHP8gAARId9oAJQ+JWA=
-Date:   Mon, 2 Mar 2020 08:28:37 +0000
-Message-ID: <DB8PR01MB552911EB44BBFD569694FF1990E70@DB8PR01MB5529.eurprd01.prod.exchangelabs.com>
-References: <DB8PR01MB5529DDE77726C997EAAC3F3C90EB0@DB8PR01MB5529.eurprd01.prod.exchangelabs.com>
-         <DB8PR01MB55290E6894E532ABA3748A5590EB0@DB8PR01MB5529.eurprd01.prod.exchangelabs.com>
-         <DB8PR01MB5529D69C90706C78D3B66BA490EB0@DB8PR01MB5529.eurprd01.prod.exchangelabs.com>
-         <CALLGbRJYAfa=5t46UTj8GT6yhMVUZkCeD6pqF+XVhLSdmoJ5wg@mail.gmail.com>
-         (sfid-20200228_022737_077710_BB93474D)
- <a7df3def1f3bbd80bf96ffb74f2da365ff578df7.camel@sipsolutions.net>
-In-Reply-To: <a7df3def1f3bbd80bf96ffb74f2da365ff578df7.camel@sipsolutions.net>
-Accept-Language: fr-FR, en-US
-Content-Language: fr-FR
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=cedric.voncken@acksys.fr; 
-x-originating-ip: [81.255.64.235]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: cb2c9c04-0ef9-4ce0-f953-08d7be83b4a0
-x-ms-traffictypediagnostic: DB8PR01MB6215:
-x-microsoft-antispam-prvs: <DB8PR01MB621597F2B3E5CEEDC318479190E70@DB8PR01MB6215.eurprd01.prod.exchangelabs.com>
-x-ms-oob-tlc-oobclassifiers: OLM:7691;
-x-forefront-prvs: 033054F29A
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(376002)(346002)(39830400003)(366004)(136003)(42606007)(396003)(189003)(199004)(5660300002)(86362001)(66574012)(52536014)(2906002)(66446008)(66946007)(71200400001)(64756008)(66556008)(66476007)(7696005)(55016002)(9686003)(316002)(76116006)(4326008)(508600001)(26005)(81156014)(8676002)(81166006)(6506007)(33656002)(186003)(53546011)(8936002)(110136005);DIR:OUT;SFP:1102;SCL:1;SRVR:DB8PR01MB6215;H:DB8PR01MB5529.eurprd01.prod.exchangelabs.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-received-spf: None (protection.outlook.com: acksys.fr does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: JpvbGzUYe+x8Hyzwp1y7hjqaNZEoOzgqNAnK7a/CJb8NOoz1R2/rzaNSOfSeNPDLImUCE03WIeRAojtWsLwBd7P6ZBeeQ1Xy6HRWj/yhtQYy53l5F8Gc5JB0RAJ0mP1ni++QRJxRIL4trOO3F0b/IUGok7rqDjDTrKXzGRp0mgH4RohkqPvMlItBaplLNhraprX7bz/Dw8WeDHFxfdXV8UQP4wMJqToyVMjni6NuA1Cs3fmCMg/pc2xqkqEGcIyJXoCr/z5TpReHG2Kp3NrqJN8t1yRcxnMdVpA0W0sLzV64kA4Y9XsJDe2TbvFeRFlSRZNWmO+mXyDWQ+777mHirgSftogmTqNxFTpTL9HVBWvydcn9nQAJxe0arUL27cbV250+VF9aVD12b5vFnr53GQgLF7YAgrqWR+nZAFDdxVDrheinaIrLWoG1bfu7f4TG
-x-ms-exchange-antispam-messagedata: 38WR4BZf1e2DrBrKhhY8EwhJ6oncBaDe8zVRoOyBE+PVNcar6G9Ej+fURw14ulUpI56eM5hRf+7O32pYHS7LaeclnxmQdK0TqLRw3xEhXRldZL9DhiIeUrx4IqC1vlwsp3TXe0M4L72oB/YPot/Thw==
-x-ms-exchange-transport-forked: True
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        id S1726694AbgCBJYO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 2 Mar 2020 04:24:14 -0500
+Received: from aserp2120.oracle.com ([141.146.126.78]:42172 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726382AbgCBJYO (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 2 Mar 2020 04:24:14 -0500
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0229O47w115727;
+        Mon, 2 Mar 2020 09:24:04 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2020-01-29;
+ bh=L5s/2KkDnKUQeUzW5nA0QlVvM5PRywVEFDW/9xkZqu0=;
+ b=vwz+88AVmnLeBh9tg06tbIxapFTTr4jkPmjIlTiT/9Nl6ezB+jHa0NgZZRM3M5y2Egyq
+ ieMlYV6eE9isVKwlOTBxwrTHrurU+OCspxirawvJ/2Vz2bds3meZNzfGW6AI4433iu1j
+ 7qmGvx8hxmxDT97jj4N0/aoAfee5TYlhXCAAgcB23vMq9MfyQhoWDa5d2sp4EcD7HYAg
+ f5O/5thS+gecYABLk+thRzW/V4sOz1NzWA4VAHNUy8vfKcWOIp1AOAaLmZ5WYz2u45Ok
+ aIgwWapxoRUPeSJxE+y6RwN4G7l5zCuYIS7ngmELBO9tQFy7PVGgexMG80n7dE3q4+Ju NQ== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by aserp2120.oracle.com with ESMTP id 2yffwqee52-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 02 Mar 2020 09:24:04 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0229IijF189919;
+        Mon, 2 Mar 2020 09:24:01 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by userp3020.oracle.com with ESMTP id 2yg1p18qbn-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 02 Mar 2020 09:24:01 +0000
+Received: from abhmp0002.oracle.com (abhmp0002.oracle.com [141.146.116.8])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 0229O04u019668;
+        Mon, 2 Mar 2020 09:24:00 GMT
+Received: from kadam (/129.205.23.165)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 02 Mar 2020 01:23:56 -0800
+Date:   Mon, 2 Mar 2020 12:23:46 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Ajay.Kathat@microchip.com
+Cc:     linux-wireless@vger.kernel.org, devel@driverdev.osuosl.org,
+        devicetree@vger.kernel.org, Venkateswara.Kaja@microchip.com,
+        gregkh@linuxfoundation.org, Nicolas.Ferre@microchip.com,
+        Adham.Abozaeid@microchip.com, johannes@sipsolutions.net
+Subject: Re: [PATCH v3 00/18] wilc1000: move out of staging
+Message-ID: <20200302092346.GA24308@kadam>
+References: <20200225074105.7740-1-ajay.kathat@microchip.com>
 MIME-Version: 1.0
-X-OriginatorOrg: acksys.fr
-X-MS-Exchange-CrossTenant-Network-Message-Id: cb2c9c04-0ef9-4ce0-f953-08d7be83b4a0
-X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Mar 2020 08:28:37.5736
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: f18a6414-d5f3-4b5c-9345-f30c01d87e32
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: EvjYvKnpxmMMIuvqEWr8EPFjzFQcQLivvMZsPBiGjK5ieHnQ0s6zK9T+yd57ZnWD6N5ZY5HQa/CXN52Do5/Y9ICaFYWvrBNjgqAn01qck7Q=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR01MB6215
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200225074105.7740-1-ajay.kathat@microchip.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9547 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 malwarescore=0
+ mlxlogscore=999 mlxscore=0 spamscore=0 adultscore=0 bulkscore=0
+ suspectscore=1 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2001150001 definitions=main-2003020073
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9547 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 lowpriorityscore=0 spamscore=0
+ impostorscore=0 malwarescore=0 mlxlogscore=999 mlxscore=0 suspectscore=1
+ phishscore=0 clxscore=1011 bulkscore=0 adultscore=0 priorityscore=1501
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2001150001
+ definitions=main-2003020073
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-WWVzIEknbSBydW5uaW5nIG1hYzgwMjExIG9uIGJvdGggc2lkZS4NCg0KSSBwcm9ncmVzcyBpbiB1
-bmRlcnN0YW5kaW5nIHRvIHRoaXMgaXNzdWUuIEFmdGVyIGNoZWNrZWQsIHRoZSBpc3N1ZSBpcyBk
-aWZmZXJlbnQgd2l0aCBkaWZmZXJlbnQgbWFjODAyMTEgdmVyc2lvbi4gV2l0aCB0aGUgYmFja3Bv
-cnQgNS40LXJjOC0xLCB0aGUgZHJpdmVyIGxldmVsIHNlZW0gd29ya2VkIGNvcnJlY3RseS4gVGhl
-IGhvc3RhcGQgKGluIEFQIHNpZGUpIGRpZG4ndCBpbmNsdWRlIHRoZSBzdGEgaW4gdGhlIGJyaWRn
-ZSB3aGVuIHRoZSBzZWN1cml0eSBwb2xpY3kgaXMgV1BBLVBTSyBvciBXUEEtRUFQLiBXaXRoIG5v
-bmUgcG9saWN5IHRoZSBzdGEgaXMgY29ycmVjdGx5IGluY2x1ZGVkLg0KDQpOb3cgSSdtIHNlYXJj
-aGluZyBpbiBob3N0cGFkLg0KDQotLS0tLU1lc3NhZ2UgZCdvcmlnaW5lLS0tLS0NCkRlwqA6IEpv
-aGFubmVzIEJlcmcgPGpvaGFubmVzQHNpcHNvbHV0aW9ucy5uZXQ+IA0KRW52b3nDqcKgOiB2ZW5k
-cmVkaSAyOCBmw6l2cmllciAyMDIwIDEwOjM3DQrDgMKgOiBTdGV2ZSBkZVJvc2llciA8ZGVyb3Np
-ZXJAZ21haWwuY29tPjsgQ2VkcmljIFZPTkNLRU4gPGNlZHJpYy52b25ja2VuQGFja3N5cy5mcj4N
-CkNjwqA6IGxpbnV4LXdpcmVsZXNzQHZnZXIua2VybmVsLm9yZw0KT2JqZXTCoDogUmU6IFttYWM4
-MDIxMV06IHdkcyBsaW5rIGFuZCBSYWRpdXMgYXV0aGVudGljYXRpb24gaXNzdWUNCg0KT24gVGh1
-LCAyMDIwLTAyLTI3IGF0IDE3OjI2IC0wODAwLCBTdGV2ZSBkZVJvc2llciB3cm90ZToNCj4gT24g
-VGh1LCBGZWIgMjcsIDIwMjAgYXQgOTozNyBBTSBDZWRyaWMgVk9OQ0tFTiA8Y2VkcmljLnZvbmNr
-ZW5AYWNrc3lzLmZyPiB3cm90ZToNCj4gPiBXaGVyZSBjYW4gSSBmb3VuZCBzb21lIGluZm9ybWF0
-aW9uIG9uIGhvdyB0aGUgd2RzIHN5c3RlbSBzaG91bGQgDQo+ID4gd29yaz8gSSBsb29rZWQgaW4g
-ODAyLjExLTIwMTIgc3RhbmRhcmQgYW5kIEkgZGlkbid0IGZvdW5kIGFueSANCj4gPiBpbmZvcm1h
-dGlvbnMuDQo+ID4gDQo+IA0KPiBJIHRoaW5rIFdpa2lwZWRpYSBzYXlzIGl0IGJlc3Q6DQo+ICJX
-RFMgbWF5IGJlIGluY29tcGF0aWJsZSBiZXR3ZWVuIGRpZmZlcmVudCBwcm9kdWN0cyAoZXZlbiBv
-Y2Nhc2lvbmFsbHkgDQo+IGZyb20gdGhlIHNhbWUgdmVuZG9yKSBzaW5jZSB0aGUgSUVFRSA4MDIu
-MTEtMTk5OSBzdGFuZGFyZCBkb2VzIG5vdCANCj4gZGVmaW5lIGhvdyB0byBjb25zdHJ1Y3QgYW55
-IHN1Y2ggaW1wbGVtZW50YXRpb25zIG9yIGhvdyBzdGF0aW9ucyANCj4gaW50ZXJhY3QgdG8gYXJy
-YW5nZSBmb3IgZXhjaGFuZ2luZyBmcmFtZXMgb2YgdGhpcyBmb3JtYXQuIFRoZSBJRUVFDQo+IDgw
-Mi4xMS0xOTk5IHN0YW5kYXJkIG1lcmVseSBkZWZpbmVzIHRoZSA0LWFkZHJlc3MgZnJhbWUgZm9y
-bWF0IHRoYXQgDQo+IG1ha2VzIGl0IHBvc3NpYmxlLiINCg0KSSB0aGluayByZWFsbHkgd2hhdCBD
-ZWRyaWMgaXMgYXNraW5nIGlzIGhvdyB0aGlzIGlzL3Nob3VsZCBiZSBkb25lIHdpdGggbWFjODAy
-MTEncyA0LWFkZHIgY2xpZW50L0FQIG1vZGUocyk/DQoNCkNlZHJpYywgYXJlIHlvdSBydW5uaW5n
-IG1hYzgwMjExIG9uIGJvdGggc2lkZXMgb2YgdGhlIGxpbmssIHRoZSBBUCBhbmQgdGhlICg0LWFk
-ZHIpIGNsaWVudD8NCg0Kam9oYW5uZXMNCg0K
+There are a few static checker warnings from Friday's linux-next.  Only
+the first one is important.  (Not all these Smatch warnings have been
+published).
+
+drivers/staging/wilc1000/hif.c:804 wilc_hif_pack_sta_param() warn: '&params->ht_capa' sometimes too small '8' size = 29
+
+drivers/staging/wilc1000/hif.c
+   787  static void wilc_hif_pack_sta_param(u8 *cur_byte, const u8 *mac,
+   788                                      struct station_parameters *params)
+   789  {
+   790          ether_addr_copy(cur_byte, mac);
+   791          cur_byte += ETH_ALEN;
+   792  
+   793          put_unaligned_le16(params->aid, cur_byte);
+   794          cur_byte += 2;
+   795  
+   796          *cur_byte++ = params->supported_rates_len;
+   797          if (params->supported_rates_len > 0)
+   798                  memcpy(cur_byte, params->supported_rates,
+   799                         params->supported_rates_len);
+   800          cur_byte += params->supported_rates_len;
+   801  
+   802          if (params->ht_capa) {
+   803                  *cur_byte++ = true;
+   804                  memcpy(cur_byte, &params->ht_capa,
+                                         ^^^^^^^^^^^^^^^^
+This is copying the wrong data.  The "&" is wrong.
+
+   805                         sizeof(struct ieee80211_ht_cap));
+   806          } else {
+   807                  *cur_byte++ = false;
+   808          }
+   809          cur_byte += sizeof(struct ieee80211_ht_cap);
+   810  
+   811          put_unaligned_le16(params->sta_flags_mask, cur_byte);
+   812          cur_byte += 2;
+   813          put_unaligned_le16(params->sta_flags_set, cur_byte);
+   814  }
+
+
+drivers/staging/wilc1000/cfg80211.c:904 del_pmksa() warn: 'i < priv->pmkid_list.numpmkid' 'true' implies 'priv->pmkid_list.numpmkid > 0' is 'true'
+
+drivers/staging/wilc1000/cfg80211.c
+   887  static int del_pmksa(struct wiphy *wiphy, struct net_device *netdev,
+   888                       struct cfg80211_pmksa *pmksa)
+   889  {
+   890          u32 i;
+   891          int ret = 0;
+   892          struct wilc_vif *vif = netdev_priv(netdev);
+   893          struct wilc_priv *priv = &vif->priv;
+   894  
+   895          for (i = 0; i < priv->pmkid_list.numpmkid; i++) {
+   896                  if (!memcmp(pmksa->bssid, priv->pmkid_list.pmkidlist[i].bssid,
+   897                              ETH_ALEN)) {
+   898                          memset(&priv->pmkid_list.pmkidlist[i], 0,
+   899                                 sizeof(struct wilc_pmkid));
+   900                          break;
+   901                  }
+   902          }
+   903  
+   904          if (i < priv->pmkid_list.numpmkid && priv->pmkid_list.numpmkid > 0) {
+                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+This part of the condition is a given (must be true).  Delete it.  It's
+better to reverse the test and say:
+
+	if (i == priv->pmkid_list.numpmkid)
+		return -EINVAL;
+
+   905                  for (; i < (priv->pmkid_list.numpmkid - 1); i++) {
+   906                          memcpy(priv->pmkid_list.pmkidlist[i].bssid,
+   907                                 priv->pmkid_list.pmkidlist[i + 1].bssid,
+   908                                 ETH_ALEN);
+   909                          memcpy(priv->pmkid_list.pmkidlist[i].pmkid,
+   910                                 priv->pmkid_list.pmkidlist[i + 1].pmkid,
+   911                                 WLAN_PMKID_LEN);
+   912                  }
+   913                  priv->pmkid_list.numpmkid--;
+   914          } else {
+   915                  ret = -EINVAL;
+   916          }
+   917  
+   918          return ret;
+   919  }
+
+
+drivers/staging/wilc1000/wlan.c:706 wilc_wlan_handle_rx_buff() warn: 'pkt_len' 'true' implies 'pkt_len > 0' is 'true'
+
+drivers/staging/wilc1000/wlan.c
+   686          int is_cfg_packet;
+   687          u8 *buff_ptr;
+   688  
+   689          do {
+   690                  buff_ptr = buffer + offset;
+   691                  header = get_unaligned_le32(buff_ptr);
+   692  
+   693                  is_cfg_packet = FIELD_GET(WILC_PKT_HDR_CONFIG_FIELD, header);
+   694                  pkt_offset = FIELD_GET(WILC_PKT_HDR_OFFSET_FIELD, header);
+   695                  tp_len = FIELD_GET(WILC_PKT_HDR_TOTAL_LEN_FIELD, header);
+   696                  pkt_len = FIELD_GET(WILC_PKT_HDR_LEN_FIELD, header);
+   697  
+   698                  if (pkt_len == 0 || tp_len == 0)
+                            ^^^^^^^^^^^^
+
+   699                          break;
+   700  
+   701                  if (pkt_offset & IS_MANAGMEMENT) {
+   702                          buff_ptr += HOST_HDR_OFFSET;
+   703                          wilc_wfi_mgmt_rx(wilc, buff_ptr, pkt_len);
+   704                  } else {
+   705                          if (!is_cfg_packet) {
+   706                                  if (pkt_len > 0) {
+                                            ^^^^^^^^^^^
+Delete.
+
+   707                                          wilc_frmw_to_host(wilc, buff_ptr,
+   708                                                            pkt_len, pkt_offset);
+   709                                  }
+   710                          } else {
+   711                                  struct wilc_cfg_rsp rsp;
+   712  
+   713                                  buff_ptr += pkt_offset;
+   714  
+
+regards,
+dan carpenter
+
