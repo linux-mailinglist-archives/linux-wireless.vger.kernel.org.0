@@ -2,64 +2,67 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 97977177FE8
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Mar 2020 19:59:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B4AA317825F
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Mar 2020 20:03:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732395AbgCCRxf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 3 Mar 2020 12:53:35 -0500
-Received: from mail.kernel.org ([198.145.29.99]:34206 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1732391AbgCCRxf (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 3 Mar 2020 12:53:35 -0500
-Received: from kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com (unknown [163.114.132.128])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8D4AB206D5;
-        Tue,  3 Mar 2020 17:53:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1583258014;
-        bh=EpRhqg1t2E2K0Or7CHeACcbTjwjBa3cBLkyGEK5sBw0=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=mPFoltkybB7GKFwqM7aa9nrG3QKhQCSTLz1AtKCRK3tvTsGitjsupuZowCR+UCHzu
-         xr8SteCXaHMu1JgG3D2dW0DzkZdiUi4J0oL1LqJy76cXFmyiy/Ezr7V6WcFMIBHH84
-         Is68busg2NQv+208JliSqp3StByr8QOR13CDKxdc=
-Date:   Tue, 3 Mar 2020 09:53:32 -0800
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        kvalo@codeaurora.org
-Subject: Re: [PATCH wireless 0/3] nl80211: add missing attribute validation
-Message-ID: <20200303095332.138ce9b7@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-In-Reply-To: <e5d88e0dbca9cc445caa95cfe32edda52f6b193d.camel@sipsolutions.net>
-References: <20200303051058.4089398-1-kuba@kernel.org>
-        <e5d88e0dbca9cc445caa95cfe32edda52f6b193d.camel@sipsolutions.net>
+        id S2388130AbgCCSKj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 3 Mar 2020 13:10:39 -0500
+Received: from mail-vs1-f65.google.com ([209.85.217.65]:34201 "EHLO
+        mail-vs1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732553AbgCCSKh (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 3 Mar 2020 13:10:37 -0500
+Received: by mail-vs1-f65.google.com with SMTP id y204so3044888vsy.1
+        for <linux-wireless@vger.kernel.org>; Tue, 03 Mar 2020 10:10:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=42VRx4KA+cD1ZZnhz/34yl/kjJSKnU+ahvHX6e7S6BM=;
+        b=QgZ4x7PUdJhcFxdGWxh4RMwvEJmeyeUD6keuap/gp+PwzmAgU26fGsg0okAGhB9RBw
+         u9HURaooHBL0Sv1XuCDTpyenkb4Q/klxbcgfM4FAkQyxXBhtAbr7hOFvaCTaHn8FPYNh
+         Mkm+rCw00LbI88EnG4Zid+qOnSUQhMwja4aG9nlwin+kJdRGuRR8NSzP4OYXPmJrXi5e
+         xEOFCEpv0QnSabO5dkMuNWC8Vj7ofkyu7TLr+6dp9FCB6AwCbg5MLH4sOWFvqnLlnpf5
+         iBL7xpfRup3b2Fj/b5GTjFIK4lE9dy0LTiKDtPB4hUojqycTnum445mgvFqqbe8Kn8RY
+         LJ0g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=42VRx4KA+cD1ZZnhz/34yl/kjJSKnU+ahvHX6e7S6BM=;
+        b=CXk8cwEGbbCIFa0DD819kj6ZxrIVKbbtkKfyzIxuQXoWexgxMznUBEeeIBh2VpIUOt
+         M/f2Co06xcVqIsyAGSNThrNS7990XtZKYdu7elLXxfqWrcT4zQiUY6jGlg0Xf9jdxkoJ
+         uWdL3bNkVYAM4mylbBQCgyxpDcUAH6cTB9FAllgc0zLsK/YQM8F1fLJFrqD/PYBZZjRw
+         sjSrNE8AdO7YpVIhNMKY8Il1rQ4o9MyNq7R/W4b9jVrx2CN9NNJK3MRkiDeO/iOJ8qKh
+         jvKL7cjpUUCcKpFd4pzHmKDGDTj1knT46Q7IQ+sRXgUiBowteoeHWYmD/B5j9PUk+51F
+         uxaw==
+X-Gm-Message-State: ANhLgQ3UiW0RNo5HXPR+HfCQWu9+z4+W7Lc6VggkeTYyuu+7K4coOlRy
+        iEkGJK/lHoaRSO2rbfN8ciznLuasbLbaiJTeBmQ=
+X-Google-Smtp-Source: ADFU+vuAiA7TM8Z089v799AMLs03xboD3MQMi8U8VH4beI28hatwiwdCtvi16KzveHKYP5OCPAZme71JCk4ifTuHwz8=
+X-Received: by 2002:a05:6102:2268:: with SMTP id v8mr1783717vsd.90.1583259036519;
+ Tue, 03 Mar 2020 10:10:36 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Received: by 2002:ab0:2a59:0:0:0:0:0 with HTTP; Tue, 3 Mar 2020 10:10:34 -0800 (PST)
+Reply-To: dr.challynoah@gmail.com
+From:   DR CHALLY NOAH <official.dhlexpress@gmail.com>
+Date:   Tue, 3 Mar 2020 19:10:34 +0100
+Message-ID: <CAJ-5BZF=yupAt--dinnuyRosfGk2tZ_5Q1t-FwOUrdQ+XUXafg@mail.gmail.com>
+Subject: Hello Dear
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 03 Mar 2020 08:29:46 +0100 Johannes Berg wrote:
-> Hi Jakub,
-> 
-> > Wireless seems to be missing a handful of netlink policy entries.  
-> 
-> Yep, these look good to me.
-> 
-> Here's a
-> 
-> Reviewed-by: Johannes Berg <johannes@sipsolutions.net>
-> 
-> if you want to apply them directly? 
-
-Up to Dave, I only put a maintainer hat to cover for Dave when he's
-away :)
-
-> I can take them, but you said later you might want to pick them into
-> stable, so maybe you have some more direct plan there?
-
-No real plan, but the autoselection bot will very likely pick those up
-even if we don't do anything, so given the very limited testing I was
-cautious with refactoring.
+Hello Dear,
+What Have Kept You Waiting To Claim Your $600,000.00 USD Compensation Award?
+This said fund was issued out by the UNITED NATIONS To compensate
+you.Please If You Have Not Claim Your Fund (Award),Kindly contact me
+at   DR.CHALLYNOAH@GMAIL.COM   for further details on how to proceed your
+fund (award)release to you or better still reply back Immediately You
+Receive This Information For An Urgent Confirmation And Release Of Your
+Fund To You Without Delays, as your email was listed among those to be
+compensated this year.Congratulations..
+Best Regards,
+Dr Chally Noah.
+Minister Of Finance On Foreign Remittance:
