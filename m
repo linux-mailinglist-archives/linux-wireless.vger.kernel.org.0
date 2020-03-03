@@ -2,103 +2,78 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C33F4177A6F
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Mar 2020 16:29:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B75F177A76
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Mar 2020 16:31:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729934AbgCCP3p (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 3 Mar 2020 10:29:45 -0500
-Received: from mail26.static.mailgun.info ([104.130.122.26]:23865 "EHLO
+        id S1729936AbgCCPa5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 3 Mar 2020 10:30:57 -0500
+Received: from mail26.static.mailgun.info ([104.130.122.26]:64117 "EHLO
         mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728952AbgCCP3o (ORCPT
+        by vger.kernel.org with ESMTP id S1729855AbgCCPa5 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 3 Mar 2020 10:29:44 -0500
+        Tue, 3 Mar 2020 10:30:57 -0500
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1583249384; h=Date: Message-Id: Cc: To: References:
+ s=smtp; t=1583249456; h=Date: Message-Id: Cc: To: References:
  In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=DGm1tyLTMS++kedpz+qyweZ6Iu5ZVMUBPPMKBo/asTk=;
- b=D5JkWfw3j/hNLmRe9GpLOg3GwTe7QMKsL6M5mELT3gVbn/aP43///P2km52iUBITk9QKWWLF
- MDVlmgdJltRq7as5oH6eH1L/cC8XvNRkMUZA9zJRpUSD2U8WnRr9oInR5BtVINvaxZeLQnmP
- sDx9ku8CU043QR32gXKJ+aUwwBI=
+ Content-Type: Sender; bh=3BxebRKEMOAjMUrBvm+Lh7nAfMlbm486WARWBwD2ECo=;
+ b=FfJK5yGDPJxpDaZEsiUBprcN4XxTMu7gkaD2NUXbvrQSiEeL77H0ftijRvaQA36rM5s0uqKy
+ YtBeHiZZbpnsjWY6KjMrNrBIAeTY6gbVvFHpZTJQgs1sqxL4nk2zDHg0Dmz3O4XRSMxxqoPb
+ 8OUyB6fJGHRdWCTHlHOA7sickSw=
 X-Mailgun-Sending-Ip: 104.130.122.26
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e5e77d6.7fae349aa0a0-smtp-out-n01;
- Tue, 03 Mar 2020 15:29:26 -0000 (UTC)
+ by mxa.mailgun.org with ESMTP id 5e5e7828.7f4a201e8848-smtp-out-n01;
+ Tue, 03 Mar 2020 15:30:48 -0000 (UTC)
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 4C552C4479C; Tue,  3 Mar 2020 15:29:25 +0000 (UTC)
+        id 15991C4479D; Tue,  3 Mar 2020 15:30:48 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
 X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
-        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
+        MISSING_MID,SPF_NONE,URIBL_BLOCKED autolearn=no autolearn_force=no
+        version=3.4.0
 Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id A491FC43383;
-        Tue,  3 Mar 2020 15:29:22 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org A491FC43383
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id E8CEBC43383;
+        Tue,  3 Mar 2020 15:30:46 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org E8CEBC43383
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] iwlwifi: pcie: restore support for Killer Qu C0 NICs
+Subject: Re: [PATCH 5.6] mt76: fix array overflow on receiving too many
+ fragments for a packet
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20191224051639.6904-1-jan.steffens@gmail.com>
-References: <20191224051639.6904-1-jan.steffens@gmail.com>
-To:     "Jan Alexander Steffens (heftig)" <jan.steffens@gmail.com>
-Cc:     Johannes Berg <johannes.berg@intel.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Intel Linux Wireless <linuxwifi@intel.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        "Jan Alexander Steffens (heftig)" <jan.steffens@gmail.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
+In-Reply-To: <20200220114139.46508-1-nbd@nbd.name>
+References: <20200220114139.46508-1-nbd@nbd.name>
+To:     Felix Fietkau <nbd@nbd.name>
+Cc:     linux-wireless@vger.kernel.org, stable@vger.kernel.org
 User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20200303152925.4C552C4479C@smtp.codeaurora.org>
-Date:   Tue,  3 Mar 2020 15:29:25 +0000 (UTC)
+Message-Id: <20200303153048.15991C4479D@smtp.codeaurora.org>
+Date:   Tue,  3 Mar 2020 15:30:48 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-"Jan Alexander Steffens (heftig)" <jan.steffens@gmail.com> wrote:
+Felix Fietkau <nbd@nbd.name> wrote:
 
-> Commit 809805a820c6 ("iwlwifi: pcie: move some cfg mangling from
-> trans_pcie_alloc to probe") refactored the cfg mangling. Unfortunately,
-> in this process the lines which picked the right cfg for Killer Qu C0
-> NICs after C0 detection were lost. These lines were added by commit
-> b9500577d361 ("iwlwifi: pcie: handle switching killer Qu B0 NICs to
-> C0").
+> If the hardware receives an oversized packet with too many rx fragments,
+> skb_shinfo(skb)->frags can overflow and corrupt memory of adjacent pages.
+> This becomes especially visible if it corrupts the freelist pointer of
+> a slab page.
 > 
-> I suspect this is more of the "merge damage" which commit 7cded5658329
-> ("iwlwifi: pcie: fix merge damage on making QnJ exclusive") talks about.
-> 
-> Restore the missing lines so the driver loads the right firmware for
-> these NICs.
-> 
-> Fixes: 809805a820c6 ("iwlwifi: pcie: move some cfg mangling from trans_pcie_alloc to probe")
-> Signed-off-by: Jan Alexander Steffens (heftig) <jan.steffens@gmail.com>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Felix Fietkau <nbd@nbd.name>
 
-As Luca said, this fails to apply to wireless-drivers. Please rebase and
-resend as v2.
+Patch applied to wireless-drivers.git, thanks.
 
-Recorded preimage for 'drivers/net/wireless/intel/iwlwifi/pcie/drv.c'
-error: Failed to merge in the changes.
-Applying: iwlwifi: pcie: restore support for Killer Qu C0 NICs
-Using index info to reconstruct a base tree...
-M	drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-Falling back to patching base and 3-way merge...
-Auto-merging drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-CONFLICT (content): Merge conflict in drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-Patch failed at 0001 iwlwifi: pcie: restore support for Killer Qu C0 NICs
-The copy of the patch that failed is found in: .git/rebase-apply/patch
-
-Patch set to Changes Requested.
+b102f0c522cf mt76: fix array overflow on receiving too many fragments for a packet
 
 -- 
-https://patchwork.kernel.org/patch/11309095/
+https://patchwork.kernel.org/patch/11393869/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
