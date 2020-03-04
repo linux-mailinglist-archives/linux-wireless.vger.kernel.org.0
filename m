@@ -2,75 +2,117 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 06F6517906C
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Mar 2020 13:31:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DE0D8179071
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Mar 2020 13:32:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387761AbgCDMb2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 4 Mar 2020 07:31:28 -0500
-Received: from mga01.intel.com ([192.55.52.88]:3078 "EHLO mga01.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729273AbgCDMb1 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 4 Mar 2020 07:31:27 -0500
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 04 Mar 2020 04:31:27 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.70,514,1574150400"; 
-   d="scan'208";a="243934693"
-Received: from mtosmanx-mobl.amr.corp.intel.com ([10.249.254.162])
-  by orsmga006.jf.intel.com with ESMTP; 04 Mar 2020 04:31:23 -0800
-Message-ID: <292a5e4477ce3069950ee513d207e70ae218af9f.camel@intel.com>
-Subject: Re: Non-working Web site URL in MAINTAINERS
-From:   Luciano Coelho <luciano.coelho@intel.com>
-To:     Paul Menzel <pmenzel@molgen.mpg.de>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Intel Linux Wireless <linuxwifi@intel.com>
-Cc:     linux-wireless@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>
-Date:   Wed, 04 Mar 2020 14:31:22 +0200
-In-Reply-To: <b5cfc13d-8d26-65e3-0377-8d53979c0096@molgen.mpg.de>
-References: <b5cfc13d-8d26-65e3-0377-8d53979c0096@molgen.mpg.de>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.1-4 
+        id S2387954AbgCDMce (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 4 Mar 2020 07:32:34 -0500
+Received: from smail.rz.tu-ilmenau.de ([141.24.186.67]:36902 "EHLO
+        smail.rz.tu-ilmenau.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728953AbgCDMce (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 4 Mar 2020 07:32:34 -0500
+Received: from [192.168.2.98] (unknown [141.24.207.101])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by smail.rz.tu-ilmenau.de (Postfix) with ESMTPSA id DDA2C580074;
+        Wed,  4 Mar 2020 13:32:31 +0100 (CET)
+Subject: Re: [PATCH] nl80211: fix tx_control_port trace point
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless@vger.kernel.org
+References: <20200304114952.1827-1-markus.theil@tu-ilmenau.de>
+ <5c542c4ce1b5373e8fe280913b74926f4d36e2d1.camel@sipsolutions.net>
+From:   Markus Theil <markus.theil@tu-ilmenau.de>
+Autocrypt: addr=markus.theil@tu-ilmenau.de; keydata=
+ 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
+ sGZPq8zmOtvOyZtafA==
+Message-ID: <1073945b-ec01-7303-0bfb-92456e1ca7a5@tu-ilmenau.de>
+Date:   Wed, 4 Mar 2020 13:32:31 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.5.0
 MIME-Version: 1.0
+In-Reply-To: <5c542c4ce1b5373e8fe280913b74926f4d36e2d1.camel@sipsolutions.net>
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Paul,
 
-Thanks for your report and sorry for the delay in responding (I was on
-vacations).
+On 3/4/20 1:16 PM, Johannes Berg wrote:
+> On Wed, 2020-03-04 at 12:49 +0100, Markus Theil wrote:
+>> Endianess conversion should not happen when writing out the string,
+>> instead convert proto endiannes when creating the trace point data,
+>> like its already done for control port rx.
+>>
+>> Without this patch, trace looks like:
+>> <...>-53819 [000] 12957.654875: rdev_tx_control_port: [FAILED TO PARSE]
+>>   wiphy_name=phy0 name=wlan0 ifindex=3 dest=ARRAY[dc, 7b, 94, a5, bb, 3e]
+>>   proto=36488 unencrypted=1
+>>
+>> After applying this patch:
+>> wpa_supplicant-553   [001]   121.211264: rdev_tx_control_port: phy0,
+>>   netdev:wlan0(3), dc:7b:94:a5:bb:3e, proto: 0x888e, unencrypted: true
+> This is from trace-cmd? That just means it doesn't know about the endian
+> conversion, but I don't really see any reason to change this - big
+> endian is a perfectly valid format for trace points?
+Yes, its trace-cmd output. Without this patch, the print fmt in the
+trace data file looks like this:
+print fmt: "%s, netdev:%s(%d), %pM, proto: 0x%x, unencrypted: %s",
+REC->wiphy_name, REC->name, REC->ifindex, (REC->dest),
+(__u16)__builtin_bswap16((__u16)(( __u16)(__be16)(REC->proto))),
+(REC->unencrypted) ? "true" : "false"
 
-I'm working with our IT department to change the URL this domain is
-forwarded to.  But I will also change the MAINTAINERS file so that it
-points directly to the correct URL, namely:
+With the patch, the builtin_bswap16 does not get placed there:
+print fmt: "%s, netdev:%s(%d), %pM, proto: 0x%x, unencrypted: %s",
+REC->wiphy_name, REC->name, REC->ifindex, (REC->dest), REC->proto,
+(REC->unencrypted) ? "true" : "false"
 
-https://wireless.wiki.kernel.org/en/users/drivers/iwlwifi
-
---
-Cheers,
-Luca.
-
-
-On Sat, 2020-02-15 at 11:40 +0100, Paul Menzel wrote:
-> Dear Linux folks,
-> 
-> 
-> http://intellinuxwireless.org redirects to [1], and that page is not 
-> found (404 error).
-> 
-> If you fix this, maybe you can also set up HTTPS.
-> 
-> 
-> Kind regards,
-> 
-> Paul
-> 
-> 
-> [1]: http://wireless.kernel.org/en/users/Drivers/iwlwifi
-
+Markus
+> Maybe teach trace-cmd to understand it? We already did that for
+> __le16_to_cpu().
+>
+> johannes
+>
