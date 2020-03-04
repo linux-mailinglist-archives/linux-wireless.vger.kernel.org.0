@@ -2,27 +2,29 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 14F13178D73
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Mar 2020 10:30:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AEB90178D82
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Mar 2020 10:34:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728779AbgCDJao convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 4 Mar 2020 04:30:44 -0500
-Received: from smail.rz.tu-ilmenau.de ([141.24.186.67]:35984 "EHLO
+        id S1729198AbgCDJeK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 4 Mar 2020 04:34:10 -0500
+Received: from smail.rz.tu-ilmenau.de ([141.24.186.67]:36004 "EHLO
         smail.rz.tu-ilmenau.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728301AbgCDJan (ORCPT
+        with ESMTP id S1727734AbgCDJeK (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 4 Mar 2020 04:30:43 -0500
+        Wed, 4 Mar 2020 04:34:10 -0500
 Received: from [192.168.2.97] (unknown [141.24.207.101])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by smail.rz.tu-ilmenau.de (Postfix) with ESMTPSA id B5D9B580074;
-        Wed,  4 Mar 2020 10:30:40 +0100 (CET)
+        by smail.rz.tu-ilmenau.de (Postfix) with ESMTPSA id 92DBE580074;
+        Wed,  4 Mar 2020 10:34:07 +0100 (CET)
 Subject: Re: [PATCH 1/3] nl80211: add monitor mode scan feature
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org, nbd@nbd.name, lorenzo@kernel.org
+To:     Steve deRosier <derosier@gmail.com>,
+        Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>, nbd@nbd.name,
+        lorenzo@kernel.org
 References: <20200303115017.9845-1-markus.theil@tu-ilmenau.de>
  <8445336f5d71533acf17b6c53fcc88e7faeab3bf.camel@sipsolutions.net>
+ <CALLGbRKPCSZW8PFQXat+_=+iD_ED81j16vNtTbF=KW-B-tTWPQ@mail.gmail.com>
 From:   Markus Theil <markus.theil@tu-ilmenau.de>
 Autocrypt: addr=markus.theil@tu-ilmenau.de; keydata=
  mQINBFcopAYBEADBcwd5L8+T0zgqq4kYY4nQt6CYh5sOalHdI3zNE6fWbRbzQwViIlC9Q0q/
@@ -67,64 +69,54 @@ Autocrypt: addr=markus.theil@tu-ilmenau.de; keydata=
  q9141nbyLRYAhUXxiqajb+Zocp2Am4BF19rBUa1C78ooye9XShhuQvDTB6tZuiYWc24tiyqb
  IjR1hmG/zg8APhURAv/zUubaf4IA7v5YHVQqAbpUfb6ePlPVJBtVw2CwXFrGwnqDFh82La8D
  sGZPq8zmOtvOyZtafA==
-Message-ID: <91e4b8c4-5fc3-536f-9209-124b0cfc230f@tu-ilmenau.de>
-Date:   Wed, 4 Mar 2020 10:30:40 +0100
+Message-ID: <fe471ae5-bebf-a673-48ee-f06c47f3721d@tu-ilmenau.de>
+Date:   Wed, 4 Mar 2020 10:34:07 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.5.0
 MIME-Version: 1.0
-In-Reply-To: <8445336f5d71533acf17b6c53fcc88e7faeab3bf.camel@sipsolutions.net>
+In-Reply-To: <CALLGbRKPCSZW8PFQXat+_=+iD_ED81j16vNtTbF=KW-B-tTWPQ@mail.gmail.com>
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8BIT
+Content-Transfer-Encoding: 7bit
 Content-Language: en-US
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 3/3/20 10:27 PM, Johannes Berg wrote:
-> On Tue, 2020-03-03 at 12:50 +0100, Markus Theil wrote:
->> Back in 2007 "mac80211: don't allow scanning in monitor mode"
->> (f27b62d3e7ec) disabled scanning in monitor mode, because hw
->> controlled by the zd1211rw driver got confused during this operation.
+
+On 3/3/20 10:59 PM, Steve deRosier wrote:
+> On Tue, Mar 3, 2020 at 1:28 PM Johannes Berg <johannes@sipsolutions.net> wrote:
+>> On Tue, 2020-03-03 at 12:50 +0100, Markus Theil wrote:
+>>> Back in 2007 "mac80211: don't allow scanning in monitor mode"
+>>> (f27b62d3e7ec) disabled scanning in monitor mode, because hw
+>>> controlled by the zd1211rw driver got confused during this operation.
+>>>
+>>> Nevertheless, it can be useful to scan in monitor mode, e.g.
+>>> when building a tool which processes scans, channel surveys and
+>>> monitors the channel passively in monitor mode.
+>> Hmm. I'm not really sure that this makes sense.
 >>
->> Nevertheless, it can be useful to scan in monitor mode, e.g.
->> when building a tool which processes scans, channel surveys and
->> monitors the channel passively in monitor mode.
-> Hmm. I'm not really sure that this makes sense.
+>> You're in monitor mode, so you won't get any scan processing as such
+>> (you will not be able to use nl80211 to retrieve the results!), and
+>> there will be a lot of confusion over sending probe requests (the code
+>> now looks like it would in fact attempt to do so ... but how?).
+>>
+> Additionally, I don't see what this solves for sure.  At least on an
+> ath10k device I've been using, I can have two interfaces on one phy
+> (phy0), wlan0 and mon0, and I can issue a `iw wlan0 scan` and it works
+> famously and then capture fine on mon0. Granted, I haven't tried doing
+> a scan while at the same time am actively capturing, but I wonder of
+> the meaning of that anyway as the capturing radio would have to then
+> go off channel and issue probe requests etc., sort of screwing up my
+> capture for that time period.  But anyway, can you not do this on your
+> radio?
 >
-> You're in monitor mode, so you won't get any scan processing as such
-> (you will not be able to use nl80211 to retrieve the results!),
-I used this patchset for some time to build a combined monitoring and
-channel survey tool.
-A mt76 based USB dongle is used, because mt76 supports the channel
-survey cmd which yields the channel's busy time.
-At the same time, the tool listens for beacons over the monitor
-interface to log available networks and their RSSI to the user.
-When the user changes into heatmap mode, he can issue active scan
-requests at different points on the floor plan. All of this this
-can be done with a single interface in monitor mode. I change the
-frequency of the monitoring interface periodically to passively listen
-at other channels.
+> - Steve
 
-nl80211 is able to receive scan results in my setup. "iw dev $MON_IF
-scan" also works as expected.
+I was not able to use this combination of interfaces, when only interested in monitoring networks.
+The STA VIF can only scan when its put up, but then I cannot choose the operating frequency of the
+monitor interface freely. Sure, I can build workarounds, like changing the interface type when I need
+an active scan and chaning it back to monitor mode afterwards, but this also seems not very clean.
 
-A combination of an unassociated STA VIF and a monitor VIF (scan on STA
-VIF, receive Wi-Fi frames on monitor VIF) does not work, because
-I cannot freely set the channel on an unassociated STA VIF. Trying to
-set the operating frequency on the monitor VIF also fails, when the STA
-VIF is up.
-Bringing the STA VIF up would be needed for scanning on it.
-
-Therefore this patches solved my solely monitoring-oriented use-case.
-
->  and
-> there will be a lot of confusion over sending probe requests (the code
-> now looks like it would in fact attempt to do so ... but how?).
-Yes, the code now uses the kernel mechanisms to send probe requests.
->
-> johannes
->
 Markus
-
 
