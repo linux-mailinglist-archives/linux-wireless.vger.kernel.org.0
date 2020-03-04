@@ -2,85 +2,122 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6BDA5178B1F
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Mar 2020 08:10:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 935CC178B9C
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Mar 2020 08:43:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728244AbgCDHKa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 4 Mar 2020 02:10:30 -0500
-Received: from mga18.intel.com ([134.134.136.126]:11960 "EHLO mga18.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725773AbgCDHKa (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 4 Mar 2020 02:10:30 -0500
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by orsmga106.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 03 Mar 2020 23:10:29 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.70,513,1574150400"; 
-   d="scan'208";a="440905257"
-Received: from mtosmanx-mobl.amr.corp.intel.com ([10.249.254.162])
-  by fmsmga006.fm.intel.com with ESMTP; 03 Mar 2020 23:10:25 -0800
-Message-ID: <4e26c715b81fdea7d10e19ca46ffd2645cbe78f9.camel@intel.com>
-Subject: Re: [PATCH] iwlwifi: pcie: restore support for Killer Qu C0 NICs
-From:   Luciano Coelho <luciano.coelho@intel.com>
-To:     Kalle Valo <kvalo@codeaurora.org>,
-        "Jan Alexander Steffens (heftig)" <jan.steffens@gmail.com>
-Cc:     Johannes Berg <johannes.berg@intel.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Intel Linux Wireless <linuxwifi@intel.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Date:   Wed, 04 Mar 2020 09:10:24 +0200
-In-Reply-To: <20200303152925.6BCA8C4479F@smtp.codeaurora.org>
-References: <20191224051639.6904-1-jan.steffens@gmail.com>
-         <20200303152925.6BCA8C4479F@smtp.codeaurora.org>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.1-4 
+        id S1728499AbgCDHna (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 4 Mar 2020 02:43:30 -0500
+Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:5244 "EHLO
+        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726275AbgCDHna (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 4 Mar 2020 02:43:30 -0500
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 0247euEU022873;
+        Wed, 4 Mar 2020 02:43:26 -0500
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+        by mx0a-00128a01.pphosted.com with ESMTP id 2ygm52a6t6-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 04 Mar 2020 02:43:26 -0500
+Received: from ASHBMBX9.ad.analog.com (ashbmbx9.ad.analog.com [10.64.17.10])
+        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 0247hP7r026691
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
+        Wed, 4 Mar 2020 02:43:25 -0500
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1779.2; Wed, 4 Mar 2020
+ 02:43:24 -0500
+Received: from zeus.spd.analog.com (10.64.82.11) by ASHBMBX9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
+ Transport; Wed, 4 Mar 2020 02:43:24 -0500
+Received: from analog.ad.analog.com ([10.48.65.180])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 0247hLKZ014964;
+        Wed, 4 Mar 2020 02:43:22 -0500
+From:   Sergiu Cuciurean <sergiu.cuciurean@analog.com>
+To:     <linux-kernel@vger.kernel.org>, <devel@driverdev.osuosl.org>,
+        <linux-wireless@vger.kernel.org>, <gregkh@linuxfoundation.org>,
+        <ajay.kathat@microchip.com>, <adham.abozaeid@microchip.com>
+CC:     Sergiu Cuciurean <sergiu.cuciurean@analog.com>
+Subject: [PATCH v2] staging: wilc1000: spi: Use new structure for SPI transfer delays
+Date:   Wed, 4 Mar 2020 09:43:19 +0200
+Message-ID: <20200304074319.22107-1-sergiu.cuciurean@analog.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20200227145054.24567-1-sergiu.cuciurean@analog.com>
+References: <20200227145054.24567-1-sergiu.cuciurean@analog.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
+X-ADIRoutedOnPrem: True
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.572
+ definitions=2020-03-04_01:2020-03-03,2020-03-04 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ mlxlogscore=999 mlxscore=0 lowpriorityscore=0 clxscore=1015 adultscore=0
+ impostorscore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2001150001 definitions=main-2003040059
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 2020-03-03 at 15:29 +0000, Kalle Valo wrote:
-> "Jan Alexander Steffens (heftig)" <jan.steffens@gmail.com> wrote:
-> 
-> > Commit 809805a820c6 ("iwlwifi: pcie: move some cfg mangling from
-> > trans_pcie_alloc to probe") refactored the cfg mangling. Unfortunately,
-> > in this process the lines which picked the right cfg for Killer Qu C0
-> > NICs after C0 detection were lost. These lines were added by commit
-> > b9500577d361 ("iwlwifi: pcie: handle switching killer Qu B0 NICs to
-> > C0").
-> > 
-> > I suspect this is more of the "merge damage" which commit 7cded5658329
-> > ("iwlwifi: pcie: fix merge damage on making QnJ exclusive") talks about.
-> > 
-> > Restore the missing lines so the driver loads the right firmware for
-> > these NICs.
-> > 
-> > Fixes: 809805a820c6 ("iwlwifi: pcie: move some cfg mangling from trans_pcie_alloc to probe")
-> > Signed-off-by: Jan Alexander Steffens (heftig) <jan.steffens@gmail.com>
-> 
-> As Luca said, this fails to apply to wireless-drivers. Please rebase and
-> resend as v2.
+In a recent change to the SPI subsystem in commit <bebcfd272df6>
+("spi: introduce `delay` field for `spi_transfer` +
+spi_transfer_delay_exec()"), a new `delay` struct was added
+to replace the `delay_usecs`. This change replaces the current
+`delay_usecs` with `delay` for this driver.
 
-Hmmm, sorry, I confused things a bit.  I missed the fact that wireless-
-drivers is already at v5.6.
+The `spi_transfer_delay_exec()` function [in the SPI framework] makes sure
+that both `delay_usecs` & `delay` are used (in this order to preserve
+backwards compatibility).
 
-This patch is not needed in v5.6-rc* because another patch has done a
-similar change.  There was some refactoring in this area, so the patch
-that is in v5.6 doesn't apply in v5.5, so Jan's patch has to be sent to
-stable v5.5 and not be applied in wireless-drivers.
+Signed-off-by: Sergiu Cuciurean <sergiu.cuciurean@analog.com>
+---
 
-Jan, if you want this to be fixed in v5.5, can you please send it to 
-stable@vger.kernel.org with an explanation of why it has to be there
-even though it's not in the mainline? Or just send it and CC me, so
-I'll reply with an explanation of the issue.
+Changelog v1->v2:
+*Removed footnote from the commit description
 
---
-Cheers,
-Luca.
+ drivers/staging/wilc1000/spi.c | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/staging/wilc1000/spi.c b/drivers/staging/wilc1000/spi.c
+index 11653ac118cd..a3779d967a24 100644
+--- a/drivers/staging/wilc1000/spi.c
++++ b/drivers/staging/wilc1000/spi.c
+@@ -228,7 +228,10 @@ static int wilc_spi_tx(struct wilc *wilc, u8 *b, u32 len)
+ 		struct spi_transfer tr = {
+ 			.tx_buf = b,
+ 			.len = len,
+-			.delay_usecs = 0,
++			.delay = {
++				.value = 0,
++				.unit = SPI_DELAY_UNIT_USECS
++			},
+ 		};
+ 		char *r_buffer = kzalloc(len, GFP_KERNEL);
+ 
+@@ -269,7 +272,10 @@ static int wilc_spi_rx(struct wilc *wilc, u8 *rb, u32 rlen)
+ 		struct spi_transfer tr = {
+ 			.rx_buf = rb,
+ 			.len = rlen,
+-			.delay_usecs = 0,
++			.delay = {
++				.value = 0,
++				.unit = SPI_DELAY_UNIT_USECS
++			},
+ 
+ 		};
+ 		char *t_buffer = kzalloc(rlen, GFP_KERNEL);
+@@ -311,7 +317,10 @@ static int wilc_spi_tx_rx(struct wilc *wilc, u8 *wb, u8 *rb, u32 rlen)
+ 			.tx_buf = wb,
+ 			.len = rlen,
+ 			.bits_per_word = 8,
+-			.delay_usecs = 0,
++			.delay = {
++				.value = 0,
++				.unit = SPI_DELAY_UNIT_USECS
++			},
+ 
+ 		};
+ 
+-- 
+2.17.1
 
