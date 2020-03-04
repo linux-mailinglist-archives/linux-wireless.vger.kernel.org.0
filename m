@@ -2,73 +2,75 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 60AB6179026
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Mar 2020 13:19:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 06F6517906C
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Mar 2020 13:31:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387799AbgCDMTq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 4 Mar 2020 07:19:46 -0500
-Received: from szxga05-in.huawei.com ([45.249.212.191]:10723 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1729118AbgCDMTq (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 4 Mar 2020 07:19:46 -0500
-Received: from DGGEMS408-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id BB74A70B5BC42A7D5B3D;
-        Wed,  4 Mar 2020 20:19:38 +0800 (CST)
-Received: from euler.huawei.com (10.175.104.193) by
- DGGEMS408-HUB.china.huawei.com (10.3.19.208) with Microsoft SMTP Server id
- 14.3.439.0; Wed, 4 Mar 2020 20:19:30 +0800
-From:   Chen Wandun <chenwandun@huawei.com>
-To:     <nbd@nbd.name>, <lorenzo.bianconi83@gmail.com>,
-        <ryder.lee@mediatek.com>, <linux-wireless@vger.kernel.org>,
-        <netdev@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-        <linux-mediatek@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>
-CC:     <chenwandun@huawei.com>
-Subject: [PATCH] mt76: remove variable 'val' set but not used
-Date:   Wed, 4 Mar 2020 20:34:11 +0800
-Message-ID: <20200304123411.33499-1-chenwandun@huawei.com>
-X-Mailer: git-send-email 2.17.1
+        id S2387761AbgCDMb2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 4 Mar 2020 07:31:28 -0500
+Received: from mga01.intel.com ([192.55.52.88]:3078 "EHLO mga01.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729273AbgCDMb1 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 4 Mar 2020 07:31:27 -0500
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 04 Mar 2020 04:31:27 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.70,514,1574150400"; 
+   d="scan'208";a="243934693"
+Received: from mtosmanx-mobl.amr.corp.intel.com ([10.249.254.162])
+  by orsmga006.jf.intel.com with ESMTP; 04 Mar 2020 04:31:23 -0800
+Message-ID: <292a5e4477ce3069950ee513d207e70ae218af9f.camel@intel.com>
+Subject: Re: Non-working Web site URL in MAINTAINERS
+From:   Luciano Coelho <luciano.coelho@intel.com>
+To:     Paul Menzel <pmenzel@molgen.mpg.de>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Intel Linux Wireless <linuxwifi@intel.com>
+Cc:     linux-wireless@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>
+Date:   Wed, 04 Mar 2020 14:31:22 +0200
+In-Reply-To: <b5cfc13d-8d26-65e3-0377-8d53979c0096@molgen.mpg.de>
+References: <b5cfc13d-8d26-65e3-0377-8d53979c0096@molgen.mpg.de>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.34.1-4 
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.175.104.193]
-X-CFilter-Loop: Reflected
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fixes gcc '-Wunused-but-set-variable' warning:
+Hi Paul,
 
-drivers/net/wireless/mediatek/mt76/mt76x0/phy.c: In function mt76x0_phy_rf_init:
-drivers/net/wireless/mediatek/mt76/mt76x0/phy.c:1158:5: warning: variable val set but not used [-Wunused-but-set-variable]
+Thanks for your report and sorry for the delay in responding (I was on
+vacations).
 
-Fixes: 10de7a8b4ab9 ("mt76x0: phy files")
-Signed-off-by: Chen Wandun <chenwandun@huawei.com>
----
- drivers/net/wireless/mediatek/mt76/mt76x0/phy.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+I'm working with our IT department to change the URL this domain is
+forwarded to.  But I will also change the MAINTAINERS file so that it
+points directly to the correct URL, namely:
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x0/phy.c b/drivers/net/wireless/mediatek/mt76/mt76x0/phy.c
-index b56397c05218..09f34deb6ba1 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x0/phy.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x0/phy.c
-@@ -1155,7 +1155,6 @@ static void mt76x0_rf_patch_reg_array(struct mt76x02_dev *dev,
- static void mt76x0_phy_rf_init(struct mt76x02_dev *dev)
- {
- 	int i;
--	u8 val;
- 
- 	mt76x0_rf_patch_reg_array(dev, mt76x0_rf_central_tab,
- 				  ARRAY_SIZE(mt76x0_rf_central_tab));
-@@ -1188,7 +1187,7 @@ static void mt76x0_phy_rf_init(struct mt76x02_dev *dev)
- 	 */
- 	mt76x0_rf_wr(dev, MT_RF(0, 22),
- 		     min_t(u8, dev->cal.rx.freq_offset, 0xbf));
--	val = mt76x0_rf_rr(dev, MT_RF(0, 22));
-+	mt76x0_rf_rr(dev, MT_RF(0, 22));
- 
- 	/* Reset procedure DAC during power-up:
- 	 * - set B0.R73<7>
--- 
-2.17.1
+https://wireless.wiki.kernel.org/en/users/drivers/iwlwifi
+
+--
+Cheers,
+Luca.
+
+
+On Sat, 2020-02-15 at 11:40 +0100, Paul Menzel wrote:
+> Dear Linux folks,
+> 
+> 
+> http://intellinuxwireless.org redirects to [1], and that page is not 
+> found (404 error).
+> 
+> If you fix this, maybe you can also set up HTTPS.
+> 
+> 
+> Kind regards,
+> 
+> Paul
+> 
+> 
+> [1]: http://wireless.kernel.org/en/users/Drivers/iwlwifi
 
