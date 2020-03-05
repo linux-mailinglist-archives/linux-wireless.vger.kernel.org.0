@@ -2,84 +2,150 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7472617A444
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 Mar 2020 12:30:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4476117A448
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Mar 2020 12:31:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727322AbgCEL3t (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 5 Mar 2020 06:29:49 -0500
-Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:37370 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1725897AbgCEL3t (ORCPT
+        id S1727030AbgCELbT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 5 Mar 2020 06:31:19 -0500
+Received: from gateway34.websitewelcome.com ([192.185.148.140]:26083 "EHLO
+        gateway34.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725897AbgCELbS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 5 Mar 2020 06:29:49 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1583407788;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=bWmZYuBqFe4P6NKv7YNOQnNI/DTRjEGt3iV2gL4Rqx0=;
-        b=Li+6lDK9ddzEHnCVpulG+pr+rTJ9TfX+QtNda3COaLgFZ4xYeyU6pJXEAWV0YZkfKeJ06i
-        mJewXL54DBb76rOO0fq4ceeH0LDQli7oRRLyiAL7E5TsgOYso17wiKLMFUkFxfWMBiQle7
-        NP5zkAa3+cRdncH0FvGhkB2aNeIBJNI=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-48-NuP4xlpXMVesm7ygN31waQ-1; Thu, 05 Mar 2020 06:29:47 -0500
-X-MC-Unique: NuP4xlpXMVesm7ygN31waQ-1
-Received: by mail-wm1-f69.google.com with SMTP id b23so1967058wmj.3
-        for <linux-wireless@vger.kernel.org>; Thu, 05 Mar 2020 03:29:46 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:subject:in-reply-to:references:date
-         :message-id:mime-version;
-        bh=bWmZYuBqFe4P6NKv7YNOQnNI/DTRjEGt3iV2gL4Rqx0=;
-        b=jpC3zphfkSnAfZ/2mdPxyprg7yNDlHY4BZtcdqSCgOuv353/8Hxaglx6Q2e9in4GI6
-         non5yXGBbwlmen6iKHq+8tzcaG7gopKPnBh5lHjiiwXytl8BJHRdoAqdd4VkD/drRzZ7
-         90yUF+dS5C4qPCu3kFpmN0FSD6DQXsEZoVfKEzvZ288+uMPXF8MVipTIjx8uae/0ZV6i
-         3kyfwtgXRb3qNGSYYtZ2kfD9rxMSC1GOYNDxPW5ARjgnWx2rbF2kkVPhguyqSjmBqOKs
-         emMqvpt9NAmIzGwW8sAtCqm3Gsj30KHvPl4c4VO+Gx//KahOc3Dqplat0WdZUZva5vcs
-         DLTw==
-X-Gm-Message-State: ANhLgQ0DaurQVFeBf6F0UEXJZWFQB4lH90SMeHdqSNn/OMiLRhFLzP5e
-        eW9SEG5Nknh5pQ+6K6G3QyZ9/OLzH5yoKkC/Hi5w3ndAIpyS+m5ffgfwTb24A4+dtt8qc4dV5tq
-        PRFPRrNLGlRbeAh4yvxxJ4PAt1VY=
-X-Received: by 2002:a05:600c:24d2:: with SMTP id 18mr9089743wmu.149.1583407785559;
-        Thu, 05 Mar 2020 03:29:45 -0800 (PST)
-X-Google-Smtp-Source: ADFU+vtJKuEKZWiHcJZJ6a7d1lHkK1Ffk5FLY5/J6xDfuGQjlQkCrR8JkRKPoN1KVBQvGpu/KYmJkg==
-X-Received: by 2002:a05:600c:24d2:: with SMTP id 18mr9089730wmu.149.1583407785392;
-        Thu, 05 Mar 2020 03:29:45 -0800 (PST)
-Received: from alrua-x1.borgediget.toke.dk ([2a0c:4d80:42:443::2])
-        by smtp.gmail.com with ESMTPSA id z11sm8662608wmd.47.2020.03.05.03.29.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Mar 2020 03:29:44 -0800 (PST)
-Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-        id 1214218034F; Thu,  5 Mar 2020 12:29:43 +0100 (CET)
-From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-To:     Wei Liu <wei.liu1011@gmail.com>, linux-wireless@vger.kernel.org,
-        linuxwifi@intel.com
-Subject: Re: Precise time synchronization via wifi interface (intel AX201 iwlwifi driver)
-In-Reply-To: <032f07e2-2771-619b-52b4-a25c8cd10f86@gmail.com>
-References: <032f07e2-2771-619b-52b4-a25c8cd10f86@gmail.com>
-X-Clacks-Overhead: GNU Terry Pratchett
-Date:   Thu, 05 Mar 2020 12:29:43 +0100
-Message-ID: <87r1y72g60.fsf@toke.dk>
+        Thu, 5 Mar 2020 06:31:18 -0500
+X-Greylist: delayed 1326 seconds by postgrey-1.27 at vger.kernel.org; Thu, 05 Mar 2020 06:31:18 EST
+Received: from cm11.websitewelcome.com (cm11.websitewelcome.com [100.42.49.5])
+        by gateway34.websitewelcome.com (Postfix) with ESMTP id 7FFD627486
+        for <linux-wireless@vger.kernel.org>; Thu,  5 Mar 2020 05:09:12 -0600 (CST)
+Received: from gator4166.hostgator.com ([108.167.133.22])
+        by cmsmtp with SMTP
+        id 9oNMjQEfgSl8q9oNMj2hNe; Thu, 05 Mar 2020 05:09:12 -0600
+X-Authority-Reason: nr=8
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=embeddedor.com; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
+        Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=P2Op+mBXz77ucWJILHHJw8eByoBg+MewO1F656lbx2E=; b=ji17C/Vaif3YLuwY5Eupaw96C3
+        UkR/HtBh0rxG6oqJeCoxCqvqpi8ybYvNhPQZc4u4PspBum9K9otRdwHGpp+z6kQ1uO9p92AV+U9o7
+        cw9NCmRgwQgYR6IKYvyO4Pn0kx2NMJLQKHNufslluDwqCrWy57oC1/EufE58QHrSsbRocu4B48Kql
+        vv2w6FXCFADmLqKzJGTHjOyf5h6EC1YVaRTCLN7T8DrqS+2XhYCUtytm54y3AwCZv0MZ78p/tN7i3
+        OdDZH28+0ahQ1sIeoZbD9r6KcdhTMUJXEzFN69oODHqCrukUWxVQX3K/N+6C4WecmGUZzLpD+tbP8
+        M6etCAWw==;
+Received: from [201.166.169.220] (port=30902 helo=embeddedor)
+        by gator4166.hostgator.com with esmtpa (Exim 4.92)
+        (envelope-from <gustavo@embeddedor.com>)
+        id 1j9oNK-003q3G-0k; Thu, 05 Mar 2020 05:09:10 -0600
+Date:   Thu, 5 Mar 2020 05:12:16 -0600
+From:   "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+To:     Daniel Drake <dsd@gentoo.org>, Ulrich Kunitz <kune@deine-taler.de>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+Subject: [PATCH][next] zd1211rw/zd_usb.h: Replace zero-length array with
+ flexible-array member
+Message-ID: <20200305111216.GA24982@embeddedor>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - embeddedor.com
+X-BWhitelist: no
+X-Source-IP: 201.166.169.220
+X-Source-L: No
+X-Exim-ID: 1j9oNK-003q3G-0k
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: (embeddedor) [201.166.169.220]:30902
+X-Source-Auth: gustavo@embeddedor.com
+X-Email-Count: 9
+X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
+X-Local-Domain: yes
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Wei Liu <wei.liu1011@gmail.com> writes:
+The current codebase makes use of the zero-length array language
+extension to the C90 standard, but the preferred mechanism to declare
+variable-length types such as these ones is a flexible array member[1][2],
+introduced in C99:
 
-> Hi,
->
-> I am trying to achieve precise time synchronization via wifi
-> interface.
+struct foo {
+        int stuff;
+        struct boo array[];
+};
 
-Erm, good luck with that? :)
+By making use of the mechanism above, we will get a compiler warning
+in case the flexible array does not occur last in the structure, which
+will help us prevent some kind of undefined behavior bugs from being
+inadvertently introduced[3] to the codebase from now on.
 
-You do realise that there's a whole bunch of stuff going on below the
-driver level (listen-before-send, etc) that makes 'precise' timing (as
-in microsecond-accuracy like ptp)... shall we just say challenging?
+Also, notice that, dynamic memory allocations won't be affected by
+this change:
 
--Toke
+"Flexible array members have incomplete type, and so the sizeof operator
+may not be applied. As a quirk of the original implementation of
+zero-length arrays, sizeof evaluates to zero."[1]
+
+This issue was found with the help of Coccinelle.
+
+[1] https://gcc.gnu.org/onlinedocs/gcc/Zero-Length.html
+[2] https://github.com/KSPP/linux/issues/21
+[3] commit 76497732932f ("cxgb3/l2t: Fix undefined behaviour")
+
+Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
+---
+ drivers/net/wireless/zydas/zd1211rw/zd_usb.h | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/net/wireless/zydas/zd1211rw/zd_usb.h b/drivers/net/wireless/zydas/zd1211rw/zd_usb.h
+index a52ee323a142..8f03b09a602c 100644
+--- a/drivers/net/wireless/zydas/zd1211rw/zd_usb.h
++++ b/drivers/net/wireless/zydas/zd1211rw/zd_usb.h
+@@ -69,7 +69,7 @@ enum control_requests {
+ 
+ struct usb_req_read_regs {
+ 	__le16 id;
+-	__le16 addr[0];
++	__le16 addr[];
+ } __packed;
+ 
+ struct reg_data {
+@@ -79,7 +79,7 @@ struct reg_data {
+ 
+ struct usb_req_write_regs {
+ 	__le16 id;
+-	struct reg_data reg_writes[0];
++	struct reg_data reg_writes[];
+ } __packed;
+ 
+ enum {
+@@ -95,7 +95,7 @@ struct usb_req_rfwrite {
+ 	/* 2: other (default) */
+ 	__le16 bits;
+ 	/* RF2595: 24 */
+-	__le16 bit_values[0];
++	__le16 bit_values[];
+ 	/* (ZD_CR203 & ~(RF_IF_LE | RF_CLK | RF_DATA)) | (bit ? RF_DATA : 0) */
+ } __packed;
+ 
+@@ -118,7 +118,7 @@ struct usb_int_header {
+ 
+ struct usb_int_regs {
+ 	struct usb_int_header hdr;
+-	struct reg_data regs[0];
++	struct reg_data regs[];
+ } __packed;
+ 
+ struct usb_int_retry_fail {
+-- 
+2.25.0
 
