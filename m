@@ -2,70 +2,63 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 560FE17A718
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 Mar 2020 15:04:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A15C217A715
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Mar 2020 15:04:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726436AbgCEOEl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 5 Mar 2020 09:04:41 -0500
-Received: from mailext.lri.fr ([129.175.15.10]:48416 "HELO mailext.lri.fr"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with SMTP
-        id S1726222AbgCEOEl (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 5 Mar 2020 09:04:41 -0500
-Received: from [129.175.15.10] (mailext.lri.fr [129.175.15.10])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mailext.lri.fr (Postfix) with ESMTPSA id B782FC0F9E;
-        Thu,  5 Mar 2020 14:58:02 +0100 (CET)
-From:   Nicolas Cavallari <cavallar@lri.fr>
-To:     linux-wireless@vger.kernel.org
-Cc:     Johannes Berg <johannes@sipsolutions.com>
-Subject: [PATCH v3 2/2] mac80211: Allow deleting stations in ibss mode to reset their state
-Date:   Thu,  5 Mar 2020 14:57:54 +0100
-Message-Id: <20200305135754.12094-2-cavallar@lri.fr>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200305135754.12094-1-cavallar@lri.fr>
-References: <20200305135754.12094-1-cavallar@lri.fr>
+        id S1726183AbgCEOEG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 5 Mar 2020 09:04:06 -0500
+Received: from s3.sipsolutions.net ([144.76.43.62]:34708 "EHLO
+        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726143AbgCEOEG (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 5 Mar 2020 09:04:06 -0500
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.93)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1j9r6V-001D9F-Rk; Thu, 05 Mar 2020 15:03:59 +0100
+Message-ID: <c5319f6630be431c8680051fd4c33d59524683a2.camel@sipsolutions.net>
+Subject: Re: [PATCH] mac80211_hwsim: add frame transmission support over
+ virtio
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Marcel Holtmann <marcel@holtmann.org>
+Cc:     linux-wireless@vger.kernel.org
+Date:   Thu, 05 Mar 2020 15:03:57 +0100
+In-Reply-To: <2F7ADB4C-8C2C-4DEC-80AF-9E2D6B55CA88@holtmann.org>
+References: <20200305143212.c6e4c87d225b.I7ce60bf143e863dcdf0fb8040aab7168ba549b99@changeid>
+         <2F7ADB4C-8C2C-4DEC-80AF-9E2D6B55CA88@holtmann.org>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.34.2 (3.34.2-1.fc31) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Nicolas Cavallari <nicolas.cavallari@green-communications.fr>
+Hi Marcel,
+> 
+> > This allows communication with external entities.
+> > 
+> > It also required fixing up the netlink policy, since NLA_UNSPEC
+> > attributes are no longer accepted.
+> > 
+> > Signed-off-by: Erel Geron <erelx.geron@intel.com>
+> > [port to backports, inline the ID, use 29 as the ID as requested,
+> > drop != NULL checks, reduce ifdefs]
+> > Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+> 
+> since the module now can auto-load, don’t you want to change radios = 2 to radio = 0?
 
-Set the NL80211_EXT_FEATURE_DEL_IBSS_STA if the interface support IBSS
-mode, so that stations can be reset from user space.
+Hmm. I didn't really want to change the behaviour there, and the auto-
+loading is *highly* unlikely, you need to specifically set up a vhost-
+user wmediumd (which I'm in the process of publishing).
 
-mac80211 already deletes stations by itself, so mac80211 drivers must
-already support this.
+And even then, you still need to have the radios, they just don't
+communicate directly with each other but will go into wmediumd over the
+virtio when you actually have virtio.
 
-This has been successfully tested with ath9k.
+I'm not principally opposed to changing the default, but I'm not
+convinced it'd be related to this patch in any way.
 
-Signed-off-by: Nicolas Cavallari <nicolas.cavallari@green-communications.=
-fr>
-
----
-v3: spelling fixes in commit message.
----
- net/mac80211/main.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/net/mac80211/main.c b/net/mac80211/main.c
-index 944e86da5c65..bc7fd67dc987 100644
---- a/net/mac80211/main.c
-+++ b/net/mac80211/main.c
-@@ -1081,6 +1081,10 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
- 				      NL80211_EXT_FEATURE_EXT_KEY_ID);
- 	}
-=20
-+	if (local->hw.wiphy->interface_modes & BIT(NL80211_IFTYPE_ADHOC))
-+		wiphy_ext_feature_set(local->hw.wiphy,
-+				      NL80211_EXT_FEATURE_DEL_IBSS_STA);
-+
- 	/*
- 	 * Calculate scan IE length -- we need this to alloc
- 	 * memory and to subtract from the driver limit. It
---=20
-2.25.1
+johannes
 
