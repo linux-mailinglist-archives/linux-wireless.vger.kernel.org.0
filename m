@@ -2,61 +2,85 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0EF7917AAC4
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 Mar 2020 17:44:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 90AB417ACEB
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Mar 2020 18:23:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726009AbgCEQoi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 5 Mar 2020 11:44:38 -0500
-Received: from paleale.coelho.fi ([176.9.41.70]:60768 "EHLO
-        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1725944AbgCEQoh (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 5 Mar 2020 11:44:37 -0500
-Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa)
-        by farmhouse.coelho.fi with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.92.2)
-        (envelope-from <luca@coelho.fi>)
-        id 1j9tbv-0005UW-Af; Thu, 05 Mar 2020 18:44:35 +0200
-Message-ID: <39c51b932b8a5588ea6ec8a040255fb56b498214.camel@coelho.fi>
-From:   Luca Coelho <luca@coelho.fi>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     linux-wireless@vger.kernel.org
-Date:   Thu, 05 Mar 2020 18:44:33 +0200
-In-Reply-To: <87ftemq2ik.fsf@kamboji.qca.qualcomm.com>
-References: <iwlwifi.20200305142622.3b1f9018cd2e.Iccbce3e78befd4ac39735b26617cfb6a12a2ae5a@changeid>
-         <87ftemq2ik.fsf@kamboji.qca.qualcomm.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.1-4 
+        id S1727308AbgCERNn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 5 Mar 2020 12:13:43 -0500
+Received: from mail.kernel.org ([198.145.29.99]:39338 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727273AbgCERNn (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 5 Mar 2020 12:13:43 -0500
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id DE87A20870;
+        Thu,  5 Mar 2020 17:13:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1583428422;
+        bh=idOIMTE6Zyt3F86aW3sP2PcOyQAZyqAKYQdsQE9Lt9w=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=X8Tp3upoFmuRv1ugDhkgiZW2F8u/saKXPTQeJTfnVOOF7Vm6IVRMJhsUwJoc/XeP2
+         E1xa9BaACFu65GHOvdN1/gmdgKZQMv6EFMbI3GDSPuN2lJRNYO/dyXQj3jhgIJtL9+
+         UJSvW2PjD21U52otrJ0p37sfrEKIz2/dsY9Kg5Xc=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Johannes Berg <johannes.berg@intel.com>,
+        Sasha Levin <sashal@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.5 24/67] nl80211: fix potential leak in AP start
+Date:   Thu,  5 Mar 2020 12:12:25 -0500
+Message-Id: <20200305171309.29118-24-sashal@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20200305171309.29118-1-sashal@kernel.org>
+References: <20200305171309.29118-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on farmhouse.coelho.fi
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
-        TVD_RCVD_IP,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.2
-Subject: Re: [PATCH] MAINTAINERS: update web URL for iwlwifi
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, 2020-03-05 at 16:50 +0200, Kalle Valo wrote:
-> Luca Coelho <luca@coelho.fi> writes:
-> 
-> > From: Luca Coelho <luciano.coelho@intel.com>
-> > 
-> > The current URL mentioned in iwlwifi's W entry is outdated and
-> > currently pointing to a dead link.  Change it so that it points to the
-> > correct Wiki page directly.
-> > 
-> > Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
-> 
-> I'll queue this for v5.6, ok?
+From: Johannes Berg <johannes.berg@intel.com>
 
-Sure, if you think it's worth it.  TBH my main goal to send this one by
-itself was to test my "Link:"-adding setup (with Johannes' scripts). ;)
+[ Upstream commit 9951ebfcdf2b97dbb28a5d930458424341e61aa2 ]
 
---
-Cheers,
-Luca.
+If nl80211_parse_he_obss_pd() fails, we leak the previously
+allocated ACL memory. Free it in this case.
+
+Fixes: 796e90f42b7e ("cfg80211: add support for parsing OBBS_PD attributes")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Link: https://lore.kernel.org/r/20200221104142.835aba4cdd14.I1923b55ba9989c57e13978f91f40bfdc45e60cbd@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ net/wireless/nl80211.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 1e97ac5435b23..6032f1cce9416 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -4799,8 +4799,7 @@ static int nl80211_start_ap(struct sk_buff *skb, struct genl_info *info)
+ 		err = nl80211_parse_he_obss_pd(
+ 					info->attrs[NL80211_ATTR_HE_OBSS_PD],
+ 					&params.he_obss_pd);
+-		if (err)
+-			return err;
++		goto out;
+ 	}
+ 
+ 	nl80211_calculate_ap_params(&params);
+@@ -4822,6 +4821,7 @@ static int nl80211_start_ap(struct sk_buff *skb, struct genl_info *info)
+ 	}
+ 	wdev_unlock(wdev);
+ 
++out:
+ 	kfree(params.acl);
+ 
+ 	return err;
+-- 
+2.20.1
 
