@@ -2,23 +2,22 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4476117A448
+	by mail.lfdr.de (Postfix) with ESMTP id BCBA417A449
 	for <lists+linux-wireless@lfdr.de>; Thu,  5 Mar 2020 12:31:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727030AbgCELbT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        id S1727273AbgCELbT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
         Thu, 5 Mar 2020 06:31:19 -0500
-Received: from gateway34.websitewelcome.com ([192.185.148.140]:26083 "EHLO
+Received: from gateway34.websitewelcome.com ([192.185.148.140]:24201 "EHLO
         gateway34.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725897AbgCELbS (ORCPT
+        by vger.kernel.org with ESMTP id S1725912AbgCELbT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 5 Mar 2020 06:31:18 -0500
-X-Greylist: delayed 1326 seconds by postgrey-1.27 at vger.kernel.org; Thu, 05 Mar 2020 06:31:18 EST
-Received: from cm11.websitewelcome.com (cm11.websitewelcome.com [100.42.49.5])
-        by gateway34.websitewelcome.com (Postfix) with ESMTP id 7FFD627486
-        for <linux-wireless@vger.kernel.org>; Thu,  5 Mar 2020 05:09:12 -0600 (CST)
+        Thu, 5 Mar 2020 06:31:19 -0500
+Received: from cm17.websitewelcome.com (cm17.websitewelcome.com [100.42.49.20])
+        by gateway34.websitewelcome.com (Postfix) with ESMTP id 606C13C8DD
+        for <linux-wireless@vger.kernel.org>; Thu,  5 Mar 2020 05:10:57 -0600 (CST)
 Received: from gator4166.hostgator.com ([108.167.133.22])
         by cmsmtp with SMTP
-        id 9oNMjQEfgSl8q9oNMj2hNe; Thu, 05 Mar 2020 05:09:12 -0600
+        id 9oP3juImnAGTX9oP3j2BKu; Thu, 05 Mar 2020 05:10:57 -0600
 X-Authority-Reason: nr=8
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=embeddedor.com; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
@@ -26,27 +25,27 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
         :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
         List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=P2Op+mBXz77ucWJILHHJw8eByoBg+MewO1F656lbx2E=; b=ji17C/Vaif3YLuwY5Eupaw96C3
-        UkR/HtBh0rxG6oqJeCoxCqvqpi8ybYvNhPQZc4u4PspBum9K9otRdwHGpp+z6kQ1uO9p92AV+U9o7
-        cw9NCmRgwQgYR6IKYvyO4Pn0kx2NMJLQKHNufslluDwqCrWy57oC1/EufE58QHrSsbRocu4B48Kql
-        vv2w6FXCFADmLqKzJGTHjOyf5h6EC1YVaRTCLN7T8DrqS+2XhYCUtytm54y3AwCZv0MZ78p/tN7i3
-        OdDZH28+0ahQ1sIeoZbD9r6KcdhTMUJXEzFN69oODHqCrukUWxVQX3K/N+6C4WecmGUZzLpD+tbP8
-        M6etCAWw==;
-Received: from [201.166.169.220] (port=30902 helo=embeddedor)
+        bh=/PmmIcka33M6DCpffXgPTbzuHdS7VrmxxyOXeOtKOCc=; b=BEr2mtWCniGS2h7uzC5+yZXgzV
+        CYD7FwHzciKYdIXJhAIuibexDfR3Fx5/fqoCunXL2mGYlkodttzp3B2D6tqtJvXP8TkiUVb/L4wTF
+        MxRckg1ebX5hOVhLYGS+YM+drBjKAYq/sJFcInsKn8OHwefe3227uKWiL6kXNS9P6f1jBeulfC+7I
+        ebXryUGcRQsBer2ejFkY+MWxbxthshurmq4XB1QS5MucVjILwqnj2Ph3D18C0uhXJOA+svFSPK8d2
+        J2W/71Ib1TzEJhC96th7OuZeFqXOUuna/FmIMpg8h6+5ufcRFFjiEn/YLKlndsob7K9CND2RGuowq
+        wKJGFleg==;
+Received: from [201.166.169.220] (port=24188 helo=embeddedor)
         by gator4166.hostgator.com with esmtpa (Exim 4.92)
         (envelope-from <gustavo@embeddedor.com>)
-        id 1j9oNK-003q3G-0k; Thu, 05 Mar 2020 05:09:10 -0600
-Date:   Thu, 5 Mar 2020 05:12:16 -0600
+        id 1j9oP1-003r7m-BW; Thu, 05 Mar 2020 05:10:55 -0600
+Date:   Thu, 5 Mar 2020 05:14:01 -0600
 From:   "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-To:     Daniel Drake <dsd@gentoo.org>, Ulrich Kunitz <kune@deine-taler.de>,
+To:     Solomon Peachy <pizza@shaftnet.org>,
         Kalle Valo <kvalo@codeaurora.org>,
         "David S. Miller" <davem@davemloft.net>
 Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         linux-kernel@vger.kernel.org,
         "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-Subject: [PATCH][next] zd1211rw/zd_usb.h: Replace zero-length array with
+Subject: [PATCH][next] cw1200/wsm.h: Replace zero-length array with
  flexible-array member
-Message-ID: <20200305111216.GA24982@embeddedor>
+Message-ID: <20200305111401.GA25126@embeddedor>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -59,13 +58,13 @@ X-AntiAbuse: Sender Address Domain - embeddedor.com
 X-BWhitelist: no
 X-Source-IP: 201.166.169.220
 X-Source-L: No
-X-Exim-ID: 1j9oNK-003q3G-0k
+X-Exim-ID: 1j9oP1-003r7m-BW
 X-Source: 
 X-Source-Args: 
 X-Source-Dir: 
-X-Source-Sender: (embeddedor) [201.166.169.220]:30902
+X-Source-Sender: (embeddedor) [201.166.169.220]:24188
 X-Source-Auth: gustavo@embeddedor.com
-X-Email-Count: 9
+X-Email-Count: 15
 X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
 X-Local-Domain: yes
 Sender: linux-wireless-owner@vger.kernel.org
@@ -103,49 +102,22 @@ This issue was found with the help of Coccinelle.
 
 Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
 ---
- drivers/net/wireless/zydas/zd1211rw/zd_usb.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/wireless/st/cw1200/wsm.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/zydas/zd1211rw/zd_usb.h b/drivers/net/wireless/zydas/zd1211rw/zd_usb.h
-index a52ee323a142..8f03b09a602c 100644
---- a/drivers/net/wireless/zydas/zd1211rw/zd_usb.h
-+++ b/drivers/net/wireless/zydas/zd1211rw/zd_usb.h
-@@ -69,7 +69,7 @@ enum control_requests {
- 
- struct usb_req_read_regs {
- 	__le16 id;
--	__le16 addr[0];
-+	__le16 addr[];
+diff --git a/drivers/net/wireless/st/cw1200/wsm.h b/drivers/net/wireless/st/cw1200/wsm.h
+index ddea57f8c8ab..1ffa47994bb9 100644
+--- a/drivers/net/wireless/st/cw1200/wsm.h
++++ b/drivers/net/wireless/st/cw1200/wsm.h
+@@ -1623,7 +1623,7 @@ struct wsm_p2p_device_info {
+ 	u8 local_devname[D11_MAX_SSID_LEN];
+ 	u8 reserved2[3];
+ 	u8 num_secdev_supported;
+-	struct wsm_p2p_device_type secdevs[0];
++	struct wsm_p2p_device_type secdevs[];
  } __packed;
  
- struct reg_data {
-@@ -79,7 +79,7 @@ struct reg_data {
- 
- struct usb_req_write_regs {
- 	__le16 id;
--	struct reg_data reg_writes[0];
-+	struct reg_data reg_writes[];
- } __packed;
- 
- enum {
-@@ -95,7 +95,7 @@ struct usb_req_rfwrite {
- 	/* 2: other (default) */
- 	__le16 bits;
- 	/* RF2595: 24 */
--	__le16 bit_values[0];
-+	__le16 bit_values[];
- 	/* (ZD_CR203 & ~(RF_IF_LE | RF_CLK | RF_DATA)) | (bit ? RF_DATA : 0) */
- } __packed;
- 
-@@ -118,7 +118,7 @@ struct usb_int_header {
- 
- struct usb_int_regs {
- 	struct usb_int_header hdr;
--	struct reg_data regs[0];
-+	struct reg_data regs[];
- } __packed;
- 
- struct usb_int_retry_fail {
+ /* 4.36 SetWCDMABand - WO */
 -- 
 2.25.0
 
