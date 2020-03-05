@@ -2,36 +2,36 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3981117AC71
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 Mar 2020 18:21:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9413817AC57
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Mar 2020 18:20:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728300AbgCERUp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 5 Mar 2020 12:20:45 -0500
-Received: from mail.kernel.org ([198.145.29.99]:41196 "EHLO mail.kernel.org"
+        id S1727369AbgCERT6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 5 Mar 2020 12:19:58 -0500
+Received: from mail.kernel.org ([198.145.29.99]:41508 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727805AbgCEROs (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 5 Mar 2020 12:14:48 -0500
+        id S1727899AbgCERO7 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 5 Mar 2020 12:14:59 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 802B021744;
-        Thu,  5 Mar 2020 17:14:46 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 06B192146E;
+        Thu,  5 Mar 2020 17:14:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1583428487;
-        bh=/y4YRKLmqcpeFP+pPVW27yC67xqccznREWtav/5wFDA=;
+        s=default; t=1583428498;
+        bh=LijBeT8ghRz4OhfDqJrmVw3kAoNl4ItiK+qJNyWxjHs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Ok14nVaT8DJ+SFU9ym2AqHcKd7ih1gLG4ddwdar9wIIu6TgFMSNwaCj2iS5udR0B8
-         R9V9pqVIO6KMZ8t2az3McEI/EjwSmsysseE1nMVna6J5KjriuL7QD1J4HC5nB+Ea7B
-         SwTcZ+Zcw3T0sEhwZkv6Y2vWU7vDNiKqSN4vjkpA=
+        b=wv3bw6XzrC/lntlHndNfDM/OrYZGsQ8xBVY/x6UhKQbDOaXMGzN/76xZb89LAoGqk
+         j6F+bI9dcR90IB28CVGE0/UZTA6y7NGgBGgPNGx/PRXCakTzgTnaVn1An8aD6mhGpB
+         QbOO/M4sA4bhtDZxMpEgxMLP/SalYgKLo0CsPl8k=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Andrei Otcheretianski <andrei.otcheretianski@intel.com>,
+Cc:     Madhuparna Bhowmik <madhuparnabhowmik10@gmail.com>,
         Johannes Berg <johannes.berg@intel.com>,
         Sasha Levin <sashal@kernel.org>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 22/58] mac80211: Remove a redundant mutex unlock
-Date:   Thu,  5 Mar 2020 12:13:43 -0500
-Message-Id: <20200305171420.29595-22-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 30/58] mac80211: rx: avoid RCU list traversal under mutex
+Date:   Thu,  5 Mar 2020 12:13:51 -0500
+Message-Id: <20200305171420.29595-30-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20200305171420.29595-1-sashal@kernel.org>
 References: <20200305171420.29595-1-sashal@kernel.org>
@@ -44,50 +44,37 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Andrei Otcheretianski <andrei.otcheretianski@intel.com>
+From: Madhuparna Bhowmik <madhuparnabhowmik10@gmail.com>
 
-[ Upstream commit 0daa63ed4c6c4302790ce67b7a90c0997ceb7514 ]
+[ Upstream commit 253216ffb2a002a682c6f68bd3adff5b98b71de8 ]
 
-The below-mentioned commit changed the code to unlock *inside*
-the function, but previously the unlock was *outside*. It failed
-to remove the outer unlock, however, leading to double unlock.
+local->sta_mtx is held in __ieee80211_check_fast_rx_iface().
+No need to use list_for_each_entry_rcu() as it also requires
+a cond argument to avoid false lockdep warnings when not used in
+RCU read-side section (with CONFIG_PROVE_RCU_LIST).
+Therefore use list_for_each_entry();
 
-Fix this.
-
-Fixes: 33483a6b88e4 ("mac80211: fix missing unlock on error in ieee80211_mark_sta_auth()")
-Signed-off-by: Andrei Otcheretianski <andrei.otcheretianski@intel.com>
-Link: https://lore.kernel.org/r/20200221104719.cce4741cf6eb.I671567b185c8a4c2409377e483fd149ce590f56d@changeid
-[rewrite commit message to better explain what happened]
+Signed-off-by: Madhuparna Bhowmik <madhuparnabhowmik10@gmail.com>
+Link: https://lore.kernel.org/r/20200223143302.15390-1-madhuparnabhowmik10@gmail.com
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/mlme.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ net/mac80211/rx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index 1e3b9d34aaa46..c7d8044ff0fa6 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -2959,7 +2959,7 @@ static void ieee80211_rx_mgmt_auth(struct ieee80211_sub_if_data *sdata,
- 	    (auth_transaction == 2 &&
- 	     ifmgd->auth_data->expected_transaction == 2)) {
- 		if (!ieee80211_mark_sta_auth(sdata, bssid))
--			goto out_err;
-+			return; /* ignore frame -- wait for timeout */
- 	} else if (ifmgd->auth_data->algorithm == WLAN_AUTH_SAE &&
- 		   auth_transaction == 2) {
- 		sdata_info(sdata, "SAE peer confirmed\n");
-@@ -2967,10 +2967,6 @@ static void ieee80211_rx_mgmt_auth(struct ieee80211_sub_if_data *sdata,
- 	}
+diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
+index 0e05ff0376726..0ba98ad9bc854 100644
+--- a/net/mac80211/rx.c
++++ b/net/mac80211/rx.c
+@@ -4114,7 +4114,7 @@ void __ieee80211_check_fast_rx_iface(struct ieee80211_sub_if_data *sdata)
  
- 	cfg80211_rx_mlme_mgmt(sdata->dev, (u8 *)mgmt, len);
--	return;
-- out_err:
--	mutex_unlock(&sdata->local->sta_mtx);
--	/* ignore frame -- wait for timeout */
- }
+ 	lockdep_assert_held(&local->sta_mtx);
  
- #define case_WLAN(type) \
+-	list_for_each_entry_rcu(sta, &local->sta_list, list) {
++	list_for_each_entry(sta, &local->sta_list, list) {
+ 		if (sdata != sta->sdata &&
+ 		    (!sta->sdata->bss || sta->sdata->bss != sdata->bss))
+ 			continue;
 -- 
 2.20.1
 
