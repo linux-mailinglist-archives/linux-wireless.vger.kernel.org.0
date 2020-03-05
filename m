@@ -2,122 +2,64 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BCBA417A449
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 Mar 2020 12:31:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BD4C617A537
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Mar 2020 13:26:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727273AbgCELbT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 5 Mar 2020 06:31:19 -0500
-Received: from gateway34.websitewelcome.com ([192.185.148.140]:24201 "EHLO
-        gateway34.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725912AbgCELbT (ORCPT
+        id S1725965AbgCEM0h (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 5 Mar 2020 07:26:37 -0500
+Received: from paleale.coelho.fi ([176.9.41.70]:60694 "EHLO
+        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1725880AbgCEM0h (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 5 Mar 2020 06:31:19 -0500
-Received: from cm17.websitewelcome.com (cm17.websitewelcome.com [100.42.49.20])
-        by gateway34.websitewelcome.com (Postfix) with ESMTP id 606C13C8DD
-        for <linux-wireless@vger.kernel.org>; Thu,  5 Mar 2020 05:10:57 -0600 (CST)
-Received: from gator4166.hostgator.com ([108.167.133.22])
-        by cmsmtp with SMTP
-        id 9oP3juImnAGTX9oP3j2BKu; Thu, 05 Mar 2020 05:10:57 -0600
-X-Authority-Reason: nr=8
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=embeddedor.com; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
-        Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=/PmmIcka33M6DCpffXgPTbzuHdS7VrmxxyOXeOtKOCc=; b=BEr2mtWCniGS2h7uzC5+yZXgzV
-        CYD7FwHzciKYdIXJhAIuibexDfR3Fx5/fqoCunXL2mGYlkodttzp3B2D6tqtJvXP8TkiUVb/L4wTF
-        MxRckg1ebX5hOVhLYGS+YM+drBjKAYq/sJFcInsKn8OHwefe3227uKWiL6kXNS9P6f1jBeulfC+7I
-        ebXryUGcRQsBer2ejFkY+MWxbxthshurmq4XB1QS5MucVjILwqnj2Ph3D18C0uhXJOA+svFSPK8d2
-        J2W/71Ib1TzEJhC96th7OuZeFqXOUuna/FmIMpg8h6+5ufcRFFjiEn/YLKlndsob7K9CND2RGuowq
-        wKJGFleg==;
-Received: from [201.166.169.220] (port=24188 helo=embeddedor)
-        by gator4166.hostgator.com with esmtpa (Exim 4.92)
-        (envelope-from <gustavo@embeddedor.com>)
-        id 1j9oP1-003r7m-BW; Thu, 05 Mar 2020 05:10:55 -0600
-Date:   Thu, 5 Mar 2020 05:14:01 -0600
-From:   "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-To:     Solomon Peachy <pizza@shaftnet.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-Subject: [PATCH][next] cw1200/wsm.h: Replace zero-length array with
- flexible-array member
-Message-ID: <20200305111401.GA25126@embeddedor>
+        Thu, 5 Mar 2020 07:26:37 -0500
+Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa.ger.corp.intel.com)
+        by farmhouse.coelho.fi with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.92.2)
+        (envelope-from <luca@coelho.fi>)
+        id 1j9paF-0005Nb-J7; Thu, 05 Mar 2020 14:26:36 +0200
+From:   Luca Coelho <luca@coelho.fi>
+To:     kvalo@codeaurora.org
+Cc:     linux-wireless@vger.kernel.org
+Date:   Thu,  5 Mar 2020 14:26:22 +0200
+Message-Id: <iwlwifi.20200305142622.3b1f9018cd2e.Iccbce3e78befd4ac39735b26617cfb6a12a2ae5a@changeid>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - embeddedor.com
-X-BWhitelist: no
-X-Source-IP: 201.166.169.220
-X-Source-L: No
-X-Exim-ID: 1j9oP1-003r7m-BW
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: (embeddedor) [201.166.169.220]:24188
-X-Source-Auth: gustavo@embeddedor.com
-X-Email-Count: 15
-X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
-X-Local-Domain: yes
+Content-Transfer-Encoding: 8bit
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on farmhouse.coelho.fi
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+        TVD_RCVD_IP,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.2
+Subject: [PATCH] MAINTAINERS: update web URL for iwlwifi
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The current codebase makes use of the zero-length array language
-extension to the C90 standard, but the preferred mechanism to declare
-variable-length types such as these ones is a flexible array member[1][2],
-introduced in C99:
+From: Luca Coelho <luciano.coelho@intel.com>
 
-struct foo {
-        int stuff;
-        struct boo array[];
-};
+The current URL mentioned in iwlwifi's W entry is outdated and
+currently pointing to a dead link.  Change it so that it points to the
+correct Wiki page directly.
 
-By making use of the mechanism above, we will get a compiler warning
-in case the flexible array does not occur last in the structure, which
-will help us prevent some kind of undefined behavior bugs from being
-inadvertently introduced[3] to the codebase from now on.
-
-Also, notice that, dynamic memory allocations won't be affected by
-this change:
-
-"Flexible array members have incomplete type, and so the sizeof operator
-may not be applied. As a quirk of the original implementation of
-zero-length arrays, sizeof evaluates to zero."[1]
-
-This issue was found with the help of Coccinelle.
-
-[1] https://gcc.gnu.org/onlinedocs/gcc/Zero-Length.html
-[2] https://github.com/KSPP/linux/issues/21
-[3] commit 76497732932f ("cxgb3/l2t: Fix undefined behaviour")
-
-Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
+Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 ---
- drivers/net/wireless/st/cw1200/wsm.h | 2 +-
+ MAINTAINERS | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/st/cw1200/wsm.h b/drivers/net/wireless/st/cw1200/wsm.h
-index ddea57f8c8ab..1ffa47994bb9 100644
---- a/drivers/net/wireless/st/cw1200/wsm.h
-+++ b/drivers/net/wireless/st/cw1200/wsm.h
-@@ -1623,7 +1623,7 @@ struct wsm_p2p_device_info {
- 	u8 local_devname[D11_MAX_SSID_LEN];
- 	u8 reserved2[3];
- 	u8 num_secdev_supported;
--	struct wsm_p2p_device_type secdevs[0];
-+	struct wsm_p2p_device_type secdevs[];
- } __packed;
- 
- /* 4.36 SetWCDMABand - WO */
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 38fe2f3f7b6f..95089499876f 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -8684,7 +8684,7 @@ M:	Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+ M:	Luca Coelho <luciano.coelho@intel.com>
+ M:	Intel Linux Wireless <linuxwifi@intel.com>
+ L:	linux-wireless@vger.kernel.org
+-W:	http://intellinuxwireless.org
++W:	https://wireless.wiki.kernel.org/en/users/drivers/iwlwifi
+ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/iwlwifi.git
+ S:	Supported
+ F:	drivers/net/wireless/intel/iwlwifi/
 -- 
-2.25.0
+2.25.1
 
