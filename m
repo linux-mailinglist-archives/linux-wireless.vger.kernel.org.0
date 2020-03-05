@@ -2,109 +2,87 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C76B817A203
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 Mar 2020 10:08:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1514217A3E6
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Mar 2020 12:16:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727002AbgCEJHc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 5 Mar 2020 04:07:32 -0500
-Received: from mail-wr1-f44.google.com ([209.85.221.44]:34392 "EHLO
-        mail-wr1-f44.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725897AbgCEJHc (ORCPT
+        id S1727423AbgCELQT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 5 Mar 2020 06:16:19 -0500
+Received: from ulan.pagasa.dost.gov.ph ([202.90.128.205]:47754 "EHLO
+        mailgw.pagasa.dost.gov.ph" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1725880AbgCELQQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 5 Mar 2020 04:07:32 -0500
-Received: by mail-wr1-f44.google.com with SMTP id z15so6029794wrl.1
-        for <linux-wireless@vger.kernel.org>; Thu, 05 Mar 2020 01:07:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=to:from:subject:message-id:date:user-agent:mime-version
-         :content-transfer-encoding:content-language;
-        bh=pveQNqjQrDxjxctTRbcArEI0/9cLLRZ+RHHbjAxefrg=;
-        b=Rtmnhz4nM7wCRYWgwrg9LX3V/n2xMK6NPTNst09JDb3miyVqOdoUt7TLwaY37mP53A
-         jI0zz0OaLai4A8nPkMB0Qz1r/QZeQWANHegF04voHF6f8c+ZvrXWJ8tCxkp6E36wsD/n
-         Lgh5pj4k8+6RiPf1BD4OLwcoSU1cljz57F3Evw11g61eaoeCDwXeCpmQi/acz1er8NiZ
-         dgIcDnwT+HABn/q7jnkzWqWROblmmDg9Rpmjx1xt6a7ftWh8lGzT0zqo8Baku1C36jLk
-         Y2J8bUe3WGbi66S2C1utsJhXuuC4y/YBU9DChgkd2Ym+ZJmBKN8d5mgITJaKX+FU/Bmn
-         YU3w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:to:from:subject:message-id:date:user-agent
-         :mime-version:content-transfer-encoding:content-language;
-        bh=pveQNqjQrDxjxctTRbcArEI0/9cLLRZ+RHHbjAxefrg=;
-        b=tTI7pxwmmFhfiPThPKY9JoigCMzcokUcySTmfbUh6tPNNP/6/VyM59TrPfPPppPkvN
-         AhSdu6NYqtF9JYyh4adJN9OAVDODUKzUS92M7F4NdQQtz/uDNj4/x8EjCtsXLz/a6Xjz
-         SUxRghBgjl/4rslRj07dlSTtro/fWW71KbPI2/O9kxWKOAxakfeOvE6TzNZbQ/wbf4NJ
-         7ryIMoc8IMQHnePB4E2ClIik85xLR1980hUM9k/oTeZ75/BDp+vTg+XJGMu5Pjr4wsF+
-         ldZHsnhWrYXxlfHIDU0zp9Otm0aiHhfkBbXY3qIULIYiPD/59E0oCpBQYfVKnENZ3WX/
-         R10Q==
-X-Gm-Message-State: ANhLgQ2rRGjWIDUrRSSiWt4OQW28xk/crOATk2nxAR0I/kccKnNdB3Pk
-        chtwsAErZxFMcu9nZ3M2C7Y=
-X-Google-Smtp-Source: ADFU+vuunH6rG3DQkxMXaASoBBl/PXwhAMwYFEbF/SllIj51RhGKJed7TKVp+UIRmg4UuAOkMts+aA==
-X-Received: by 2002:adf:b317:: with SMTP id j23mr77835wrd.413.1583399250014;
-        Thu, 05 Mar 2020 01:07:30 -0800 (PST)
-Received: from [192.168.0.240] (178-117-183-57.access.telenet.be. [178.117.183.57])
-        by smtp.gmail.com with ESMTPSA id f127sm8639116wma.4.2020.03.05.01.07.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 05 Mar 2020 01:07:29 -0800 (PST)
-To:     linux-wireless@vger.kernel.org, linuxwifi@intel.com
-From:   Wei Liu <wei.liu1011@gmail.com>
-Subject: Precise time synchronization via wifi interface (intel AX201 iwlwifi
- driver)
-Message-ID: <032f07e2-2771-619b-52b4-a25c8cd10f86@gmail.com>
-Date:   Thu, 5 Mar 2020 10:07:29 +0100
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+        Thu, 5 Mar 2020 06:16:16 -0500
+X-Greylist: delayed 1274 seconds by postgrey-1.27 at vger.kernel.org; Thu, 05 Mar 2020 06:16:06 EST
+Received: from webmail.pagasa.dost.int ([10.10.11.8])
+        by mailgw.pagasa.dost.gov.ph  with ESMTP id 025AseSK006737-025AseSM006737
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+        Thu, 5 Mar 2020 18:54:40 +0800
+Received: from localhost (localhost [127.0.0.1])
+        by webmail.pagasa.dost.int (Postfix) with ESMTP id 2FB4F2981A90;
+        Thu,  5 Mar 2020 18:46:49 +0800 (PST)
+Received: from webmail.pagasa.dost.int ([127.0.0.1])
+        by localhost (webmail.pagasa.dost.int [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id r7J1A0N3aHYl; Thu,  5 Mar 2020 18:46:48 +0800 (PST)
+Received: from localhost (localhost [127.0.0.1])
+        by webmail.pagasa.dost.int (Postfix) with ESMTP id 2232C2981A4C;
+        Thu,  5 Mar 2020 18:46:48 +0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.10.3 webmail.pagasa.dost.int 2232C2981A4C
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pagasa.dost.gov.ph;
+        s=96B9A03E-48B0-11EA-A7E8-92F42F537CE2; t=1583405208;
+        bh=RC75T5p3JPNk7JUNB+lH0UfaFQO1Ac584gPL3SIL6h8=;
+        h=Date:From:Message-ID:MIME-Version;
+        b=vwxX3L8Z7uHnDJPZBIix9IBQi0XMBiY4sLQTc/9+h6pT2FHeTz61v6B+3f3w6WhXh
+         jUdnW3+FuZCvkf1pcG3LkjpsYvCQO7zO587a10BanpMqFFL6zPGTaTUsrqnCnsqpAd
+         CtN8Atz3iXBEFHZeiXsfNfnWSfk0n7tqEffbmBy8=
+X-Virus-Scanned: amavisd-new at pagasa.dost.int
+Received: from webmail.pagasa.dost.int ([127.0.0.1])
+        by localhost (webmail.pagasa.dost.int [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id WT2tTJV-1oie; Thu,  5 Mar 2020 18:46:47 +0800 (PST)
+Received: from webmail.pagasa.dost.int (webmail.pagasa.dost.int [10.11.1.8])
+        by webmail.pagasa.dost.int (Postfix) with ESMTP id 5119729819D2;
+        Thu,  5 Mar 2020 18:46:46 +0800 (PST)
+Date:   Thu, 5 Mar 2020 18:46:46 +0800 (PST)
+From:   "Juanito S. Galang" <juanito.galang@pagasa.dost.gov.ph>
+Message-ID: <1980644409.3575157.1583405206290.JavaMail.zimbra@pagasa.dost.gov.ph>
+Subject: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Mailer: Zimbra 8.8.15_GA_3899 (ZimbraWebClient - GC79 (Win)/8.8.15_GA_3895)
+Thread-Index: lWYDQbv6QI/eIWKrWUD3NPCXqIIr9A==
+Thread-Topic: 
+X-FEAS-DKIM: Valid
+Authentication-Results: mailgw.pagasa.dost.gov.ph;
+        dkim=pass header.i=@pagasa.dost.gov.ph
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
 
-I am trying to achieve precise time synchronization via wifi interface.
 
-I used intel AX201 card, certified with TimeSync, 802.11v, mc. So I 
-assume it has the capability to do hardware time stamp when running 
-applications like linux ptp (http://linuxptp.sourceforge.net/) and gptp 
-(https://github.com/Avnu/gptp). However I get error that seems to 
-suggest the timestamp mode is not supported.
-
-After reading some source code, I discover that the /ptp4l/ application, 
-or /gptp/, or /ethtool/ /-T/ , they all use a system call /ioctl/, which 
-uses ethtool_ops call back to determine whether the hardware can do 
-software/hardware timestamp.
-
-However when searching in the driver/net/wireless/iwlwifi directory, I 
-don't see anywhere /ethtool_ops/ is being implemented in the driver. So 
-this most likely is why all user space tools I tried seem to determine 
-the card cannot do hardware and also software (driver level) transmit 
-timestamp.
-
-Can someone tell me how I could run ptp like application to fully make 
-use of the Timesync feature of intel card?
-
-Some more details below:
-
-root@localhost:/debug/tracing# ethtool -i wlp2s0
-driver: iwlwifi
-version: 5.4.6-050406-generic
-firmware-version: 48.4fa0041f.0
-expansion-rom-version:
-bus-info: 0000:02:00.0
-supports-statistics: yes
-supports-test: no
-supports-eeprom-access: no
-supports-register-dump: no
-supports-priv-flags: no
-
-root@localhost:/debug/tracing# ethtool -T wlp2s0
-Time stamping parameters for wlp2s0:
-Capabilities:
-         software-receive      (SOF_TIMESTAMPING_RX_SOFTWARE)
-         software-system-clock (SOF_TIMESTAMPING_SOFTWARE)
-PTP Hardware Clock: none
-Hardware Transmit Timestamp Modes: none
-Hardware Receive Filter Modes: none
+Herzlichen Gl=C3=BCckwunsch Lieber Beg=C3=BCnstigter,Sie erhalten diese E-M=
+ail von der Robert Bailey Foundation. Ich bin ein pensionierter Regierungsa=
+ngestellter aus Harlem und ein Gewinner des Powerball Lottery Jackpot im We=
+rt von 343,8 Millionen US-Dollar. Ich bin der gr=C3=B6=C3=9Fte Jackpot-Gewi=
+nner in der Geschichte der New Yorker Lotterie im US-Bundesstaat Amerika. I=
+ch habe diese Lotterie am 27. Oktober 2018 gewonnen und m=C3=B6chte Sie dar=
+=C3=BCber informieren, dass Google in Zusammenarbeit mit Microsoft Ihre "E-=
+Mail-Adresse" auf meine Bitte, einen Spendenbetrag von 3.000.000,00 Million=
+en Euro zu erhalten, =C3=BCbermittelt hat. Ich spende diese 3 Millionen Eur=
+o an Sie, um den Wohlt=C3=A4tigkeitsheimen und armen Menschen in Ihrer Geme=
+inde zu helfen, damit wir die Welt f=C3=BCr alle verbessern k=C3=B6nnen.Wei=
+tere Informationen finden Sie auf der folgenden Website, damit Sie nicht sk=
+eptisch sind
+Diese Spende von 3 Mio. EUR.https://nypost.com/2018/11/14/meet-the-winner-o=
+f-the-biggest-lottery-jackpot-in-new-york-history/Sie k=C3=B6nnen auch mein=
+ YouTube f=C3=BCr mehr Best=C3=A4tigung aufpassen:
+https://www.youtube.com/watch?v=3DH5vT18Ysavc
+Bitte beachten Sie, dass alle Antworten an (robertdonation7@gmail.com=C2=A0=
+ ) gesendet werden, damit wir das k=C3=B6nnen
+Fahren Sie fort, um das gespendete Geld an Sie zu =C3=BCberweisen.E-Mail: r=
+obertdonation7@gmail.comFreundliche Gr=C3=BC=C3=9Fe,
+Robert Bailey
+* * * * * * * * * * * * * * * *
+Powerball Jackpot Gewinner
