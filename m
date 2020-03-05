@@ -2,89 +2,61 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7597317AA34
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 Mar 2020 17:10:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0EF7917AAC4
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Mar 2020 17:44:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726563AbgCEQKh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 5 Mar 2020 11:10:37 -0500
-Received: from mail26.static.mailgun.info ([104.130.122.26]:58440 "EHLO
-        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726143AbgCEQKg (ORCPT
+        id S1726009AbgCEQoi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 5 Mar 2020 11:44:38 -0500
+Received: from paleale.coelho.fi ([176.9.41.70]:60768 "EHLO
+        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1725944AbgCEQoh (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 5 Mar 2020 11:10:36 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1583424635; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=xa/KmK6WhNV8Qaik/yPOJqorbsfZDM0+aKqi1AIQrfk=; b=kfG0bbbfvutRCH3sYLer5Mx+9lmoCUvqzn9hT+5zJs0l51E6yzFPsvl6FIVvFvaWQBfNyDo6
- 71Ve5HAb82218jlR/QXRCbMgUclbSiAY3lEIbkuDlvADLped1eptvh04L+IdyzY4uOEcB7Cn
- cqH+QKcefbbsz1zDDN0L1C7xwpk=
-X-Mailgun-Sending-Ip: 104.130.122.26
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e61246a.7fb780057d18-smtp-out-n03;
- Thu, 05 Mar 2020 16:10:18 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 208C8C4479F; Thu,  5 Mar 2020 16:10:17 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE,
-        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 5937AC43383;
-        Thu,  5 Mar 2020 16:10:13 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 5937AC43383
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Joe Perches <joe@perches.com>
-Cc:     "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
-        Daniel Drake <dsd@gentoo.org>,
-        Ulrich Kunitz <kune@deine-taler.de>,
-        "David S. Miller" <davem@davemloft.net>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] zd1211rw/zd_usb.h: Replace zero-length array with flexible-array member
-References: <20200305111216.GA24982@embeddedor>
-        <87k13yq2jo.fsf@kamboji.qca.qualcomm.com>
-        <256881484c5db07e47c611a56550642a6f6bd8e9.camel@perches.com>
-Date:   Thu, 05 Mar 2020 18:10:10 +0200
-In-Reply-To: <256881484c5db07e47c611a56550642a6f6bd8e9.camel@perches.com> (Joe
-        Perches's message of "Thu, 05 Mar 2020 07:20:04 -0800")
-Message-ID: <87blpapyu5.fsf@kamboji.qca.qualcomm.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        Thu, 5 Mar 2020 11:44:37 -0500
+Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa)
+        by farmhouse.coelho.fi with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.92.2)
+        (envelope-from <luca@coelho.fi>)
+        id 1j9tbv-0005UW-Af; Thu, 05 Mar 2020 18:44:35 +0200
+Message-ID: <39c51b932b8a5588ea6ec8a040255fb56b498214.camel@coelho.fi>
+From:   Luca Coelho <luca@coelho.fi>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     linux-wireless@vger.kernel.org
+Date:   Thu, 05 Mar 2020 18:44:33 +0200
+In-Reply-To: <87ftemq2ik.fsf@kamboji.qca.qualcomm.com>
+References: <iwlwifi.20200305142622.3b1f9018cd2e.Iccbce3e78befd4ac39735b26617cfb6a12a2ae5a@changeid>
+         <87ftemq2ik.fsf@kamboji.qca.qualcomm.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.34.1-4 
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on farmhouse.coelho.fi
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+        TVD_RCVD_IP,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.2
+Subject: Re: [PATCH] MAINTAINERS: update web URL for iwlwifi
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Joe Perches <joe@perches.com> writes:
+On Thu, 2020-03-05 at 16:50 +0200, Kalle Valo wrote:
+> Luca Coelho <luca@coelho.fi> writes:
+> 
+> > From: Luca Coelho <luciano.coelho@intel.com>
+> > 
+> > The current URL mentioned in iwlwifi's W entry is outdated and
+> > currently pointing to a dead link.  Change it so that it points to the
+> > correct Wiki page directly.
+> > 
+> > Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+> 
+> I'll queue this for v5.6, ok?
 
-> On Thu, 2020-03-05 at 16:50 +0200, Kalle Valo wrote:
->> "Gustavo A. R. Silva" <gustavo@embeddedor.com> writes:
-> []
->> >  drivers/net/wireless/zydas/zd1211rw/zd_usb.h | 8 ++++----
->> >  1 file changed, 4 insertions(+), 4 deletions(-)
->> 
->> "zd1211rw: " is enough, no need to have the filename in the title.
+Sure, if you think it's worth it.  TBH my main goal to send this one by
+itself was to test my "Link:"-adding setup (with Johannes' scripts). ;)
 
->> But I asked this already in an earlier patch, who prefers this format?
->> It already got opposition so I'm not sure what to do.
->
-> I think it doesn't matter.
->
-> Trivial inconsistencies in patch subject and word choice
-> don't have much overall impact.
+--
+Cheers,
+Luca.
 
-I wrote in a confusing way, my question above was about the actual patch
-and not the the title. For example, Jes didn't like this style change:
-
-https://patchwork.kernel.org/patch/11402315/
-
--- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
