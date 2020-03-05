@@ -2,96 +2,100 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F9C717A6A0
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 Mar 2020 14:46:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5983C17A6DA
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Mar 2020 14:57:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726094AbgCENqY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 5 Mar 2020 08:46:24 -0500
-Received: from mail26.static.mailgun.info ([104.130.122.26]:11078 "EHLO
-        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725977AbgCENqY (ORCPT
+        id S1726351AbgCEN5m (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 5 Mar 2020 08:57:42 -0500
+Received: from mail-wr1-f49.google.com ([209.85.221.49]:33352 "EHLO
+        mail-wr1-f49.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726300AbgCEN5m (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 5 Mar 2020 08:46:24 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1583415984; h=Date: Message-Id: Cc: To: Subject: From:
- Content-Transfer-Encoding: MIME-Version: Content-Type: Sender;
- bh=6M8jWC6mGhWG7UiUmW7fOkC2U1o9pzyFGE7QTMdPJhE=; b=tYlpKYV6MIEF4WMlDkDnaKpXo/FttbuER4phzNPcTES/BKgmcu0+eue6LTxqDjjDJF7K2Hi5
- z4kbo/b0Q6RvxqsVBUXUdNXF1EQiCdgF3Gwcr8502r532kySIlJaIPQGCvSLSWRHSLr8KxuT
- Y/bH2wgzJ2f/t3m/sXKrKuHAm/Y=
-X-Mailgun-Sending-Ip: 104.130.122.26
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e61029c.7f60ae435c70-smtp-out-n05;
- Thu, 05 Mar 2020 13:46:04 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 734F2C433A2; Thu,  5 Mar 2020 13:46:03 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
-        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 99EF3C43383;
-        Thu,  5 Mar 2020 13:46:02 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 99EF3C43383
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        Thu, 5 Mar 2020 08:57:42 -0500
+Received: by mail-wr1-f49.google.com with SMTP id x7so7157841wrr.0
+        for <linux-wireless@vger.kernel.org>; Thu, 05 Mar 2020 05:57:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:references:from:message-id:date:user-agent:mime-version
+         :in-reply-to:content-transfer-encoding:content-language;
+        bh=F+r0wTvmPFxz4yHrWQPROI0nReD205HCjjqgusQeKxo=;
+        b=MDxSg9cEHpfqDTQnA91aApBNwE3vJ2gj6FZE42UytrraTYt1psuxEUimZbs7zbMHCh
+         pG2lsw192cvpLc056JLFuaFHO2RhA45fyeYvOGE8l/nGEgXnyPWONHUQozU+SYniXryy
+         tfHaGLp6Uf8aGlzTxUY28FSP7wLLW2wHMaPo5oiSH3Y6mXlHnJ58AbWlsaIiPrTG8sK/
+         onj0wHYWI07uWkVgTYw9Dq0WV6zPHEoSKBcZsywMvAo9lR4H/P2GyLg9Ah539tlswJP8
+         a8uCvNZVtFfFMd638BCfekDO1I5PkR5PIg8LGh2v6R/ttENn1PGbtypNfiBSBLOdyNKK
+         2Vvw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding
+         :content-language;
+        bh=F+r0wTvmPFxz4yHrWQPROI0nReD205HCjjqgusQeKxo=;
+        b=sOCB9NtPp0VcKE5Msp1g7ZzwuSxoFE8oYqz+/kZSohXwhLSOB5FV6CUMw6iNz+KN/j
+         xjDLzeTYMPXN0EaSL2I4rya1Nrou/3d50VaYLt4zcYv4CMzxt+azp/D0R/0NTle/uFHv
+         qJyrSgdU2jt13mCyW7jSffYFr4BVAWt3pmMt5kUxSz3DkiN1y0Bhpbb0ax1fOxpbZNJA
+         NHZu/6Bpg12/GLVpZVRZ/svzcJffpfJOa6vfv3Uqve8WuYOgKjFQRYzQZON1VRfBsFY4
+         3eJaBPjkhNqd9wk5j0IFWK0yZv1X/pu4FthQlUCMyl49ziqC7+4N51vLllesHPt2FzFK
+         lxgg==
+X-Gm-Message-State: ANhLgQ0yBHjJs6G+dWjIC9nAAeRehzCDqc/+YdWIPySX7rOEKCZOKDSE
+        WsIZ5ivzvIE3xD4/z1YaeB0o1sWdNCRO7A==
+X-Google-Smtp-Source: ADFU+vvOWNxU6HsxdedlG47P0kKdKegx2LLR86hwGXHe+h22OfHcmPFL+MtwCGTeUIC+wQaNI9ukhQ==
+X-Received: by 2002:a05:6000:4a:: with SMTP id k10mr9925942wrx.381.1583416660434;
+        Thu, 05 Mar 2020 05:57:40 -0800 (PST)
+Received: from ?IPv6:2a02:1811:e422:ad00:5027:3352:e346:d5f0? (ptr-eiyd620mf51u7z4p88g.18120a2.ip6.access.telenet.be. [2a02:1811:e422:ad00:5027:3352:e346:d5f0])
+        by smtp.gmail.com with ESMTPSA id c14sm30803621wro.36.2020.03.05.05.57.38
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 05 Mar 2020 05:57:39 -0800 (PST)
+Subject: Re: Precise time synchronization via wifi interface (intel AX201
+ iwlwifi driver)
+To:     =?UTF-8?Q?Toke_H=c3=b8iland-J=c3=b8rgensen?= <toke@redhat.com>,
+        linux-wireless@vger.kernel.org, linuxwifi@intel.com
+References: <032f07e2-2771-619b-52b4-a25c8cd10f86@gmail.com>
+ <87r1y72g60.fsf@toke.dk>
+From:   Wei Liu <wei.liu1011@gmail.com>
+Message-ID: <627ba0df-e4c6-7fe6-0d1a-e3d77d35c564@gmail.com>
+Date:   Thu, 5 Mar 2020 14:57:37 +0100
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.5.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From:   Kalle Valo <kvalo@codeaurora.org>
-Subject: pull-request: wireless-drivers-2020-03-05
-To:     netdev@vger.kernel.org
-Cc:     linux-wireless@vger.kernel.org
-Message-Id: <20200305134603.734F2C433A2@smtp.codeaurora.org>
-Date:   Thu,  5 Mar 2020 13:46:03 +0000 (UTC)
+In-Reply-To: <87r1y72g60.fsf@toke.dk>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+Hi Toke,
 
-here's a pull request to net tree, more info below. Please let me know if there
-are any problems.
+Yes, it is challenging, but IEEE802.1AS already takes consideration of 
+IEEE802.11 MAC. So I count on the standardization to take care of the 
+challenge :)
 
-Kalle
+Point being that the Intel AX201 card claims Timesync feature 
+(https://www.mouser.com/pdfDocs/wi-fi-6-ax201-module-brief.pdf), which 
+is based on IEEE802.1AS. So there must be some way to run gptp like 
+application on the AX201 intel card.
 
-The following changes since commit bb6d3fb354c5ee8d6bde2d576eb7220ea09862b9:
+I appreciate any help here if someone has relevant experiences.
 
-  Linux 5.6-rc1 (2020-02-09 16:08:48 -0800)
+Best,
 
-are available in the git repository at:
+Wei
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers.git tags/wireless-drivers-2020-03-05
-
-for you to fetch changes up to b102f0c522cf668c8382c56a4f771b37d011cda2:
-
-  mt76: fix array overflow on receiving too many fragments for a packet (2020-03-03 17:30:25 +0200)
-
-----------------------------------------------------------------
-wireless-drivers fixes for v5.6
-
-Second set of fixes for v5.6. Only two small fixes this time.
-
-iwlwifi
-
-* fix another initialisation regression with 3168 devices
-
-mt76
-
-* fix memory corruption with too many rx fragments
-
-----------------------------------------------------------------
-Dan Moulding (1):
-      iwlwifi: mvm: Do not require PHY_SKU NVM section for 3168 devices
-
-Felix Fietkau (1):
-      mt76: fix array overflow on receiving too many fragments for a packet
-
- drivers/net/wireless/intel/iwlwifi/mvm/nvm.c | 3 ++-
- drivers/net/wireless/mediatek/mt76/dma.c     | 9 ++++++---
- 2 files changed, 8 insertions(+), 4 deletions(-)
+On 3/5/2020 12:29 PM, Toke Høiland-Jørgensen wrote:
+> Wei Liu <wei.liu1011@gmail.com> writes:
+>
+>> Hi,
+>>
+>> I am trying to achieve precise time synchronization via wifi
+>> interface.
+> Erm, good luck with that? :)
+>
+> You do realise that there's a whole bunch of stuff going on below the
+> driver level (listen-before-send, etc) that makes 'precise' timing (as
+> in microsecond-accuracy like ptp)... shall we just say challenging?
+>
+> -Toke
+>
