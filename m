@@ -2,145 +2,126 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 12272179935
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Mar 2020 20:46:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 91565179E74
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Mar 2020 05:02:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387869AbgCDTqG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 4 Mar 2020 14:46:06 -0500
-Received: from mail-wr1-f68.google.com ([209.85.221.68]:38315 "EHLO
-        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387861AbgCDTqG (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 4 Mar 2020 14:46:06 -0500
-Received: by mail-wr1-f68.google.com with SMTP id t11so3973386wrw.5
-        for <linux-wireless@vger.kernel.org>; Wed, 04 Mar 2020 11:46:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=to:cc:from:subject:message-id:date:user-agent:mime-version
-         :content-language:content-transfer-encoding;
-        bh=yQqOnaNgqo9/pU61x9cE5W84q/MMvrOFd9j49w+kVT8=;
-        b=oQkubaaCUXECeIMHdsEZ5kDdHWZI1vfkAkbD/bGVQTtzD0hECYz3g1mfG7NgAVOwA+
-         RM7FzQUhX0MrzpDR6AyAnF99AyvbX0QA9m4gTgrc3+kzwdvb7waG7C5AmWdo5dABvW9E
-         swObt4kml8Buz8sldjwIIb9unhu17/SFqTxoMjGwhXsByqinrrnfQE/IR4GHWADmSR/9
-         YyqBoCYiVplGBt4mMRK2z1WfynEk1ynh+DTNgL0ynzP2p0rp21ZGzfMCLezpfaKfKRAG
-         ECmOxv7ZcigrF4h+JN6eJGKpVRhNhgVcLMB95zkNeXEbmYDB/Hfl5HFQGLUa2r9btTUI
-         d7Qg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:to:cc:from:subject:message-id:date:user-agent
-         :mime-version:content-language:content-transfer-encoding;
-        bh=yQqOnaNgqo9/pU61x9cE5W84q/MMvrOFd9j49w+kVT8=;
-        b=ZyZROnu0CAgkUm4USnWu4AEhmP7E9BnEO1Y/GSYh+xofof6he3lOs2VAV4txSqOV3X
-         8uxrcBUrOEJ8ySTGfk+ED09kjeBCjpUNx+ls9kwCi8UO8KcSnt59FHslP1+CeT0J8E+P
-         /Qb780F8HXPzdvxyE7G2PQj6yzNA88PXRkXloeKVTf3EiEeLRehWe6Ds5YYQE81aCNw5
-         rCdF1Ltojyx0P0ZJdpHWVe8mg34h48Vkfo/IDMhA23uy2YeTCEF2EXo1WB15PYfdmsob
-         5Fc8v8a1Zt5n+fsKkpP4s/hVhnL2K8t3EEanXTwklQfW3tBYlY6Zf6bTYF9Rfxejipbi
-         Lo+Q==
-X-Gm-Message-State: ANhLgQ1H/MznOav0hHqJxj5roRdXfNkYrc3dx4vQATxo8FhQJQLf2gF3
-        kx0GWvFSR+2o5IzNas+XCOrh0cBS
-X-Google-Smtp-Source: ADFU+vunlK+a37LieRWJlBzMTqmN8oDYgcLLYkHvqowrVp7siNYRP3fKIYbkjJy2iuf6t3M5Zba3sQ==
-X-Received: by 2002:a5d:4e8b:: with SMTP id e11mr2502804wru.136.1583351164403;
-        Wed, 04 Mar 2020 11:46:04 -0800 (PST)
-Received: from [192.168.43.18] (92.40.168.8.threembb.co.uk. [92.40.168.8])
-        by smtp.gmail.com with ESMTPSA id a7sm5327252wmj.12.2020.03.04.11.46.03
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 04 Mar 2020 11:46:04 -0800 (PST)
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>,
-        linux-wireless@vger.kernel.org
-From:   Malcolm Priestley <tvboxspy@gmail.com>
-Subject: [PATCH 2/2] staging: vt6656: struct vnt_rcb remove unused in_use.
-Message-ID: <130a4078-2502-a381-46c4-b473815e153b@gmail.com>
-Date:   Wed, 4 Mar 2020 19:46:02 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+        id S1725938AbgCEEAr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 4 Mar 2020 23:00:47 -0500
+Received: from mail-eopbgr140073.outbound.protection.outlook.com ([40.107.14.73]:32993
+        "EHLO EUR01-VE1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725861AbgCEEAr (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 4 Mar 2020 23:00:47 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=BLoeN+VZteZfNaEHCCUshV4qwZWXJWUIcOMcEY/oxxpVyVY/ipv5LxN2rCgIL+AhkiZrmaEGkRUY9y0wKtYux/AAbK7de5qdsDAesxvmT4bfHgaZVwmPVsyqEDFqVVQ+W5hxZUwRcRoM0cV6ZSmlS/TLBphzoCZzS9mo4DdD4RVrHvnjsxkl0Nd//9iaIG1JbIWC68/6Slcpu27EK8C52kqUTL9fmEfg1jIEXbeW3x0iDlx8yNEA2PWnCfJoJau8brxLOo5da7OxcKi0Pe/tVKY/9a2MAiHNNxoqHyr/KTbH95KogE97+yJIElLCTe7wKGRD/JzQIE2GyVMl3DB9SA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=CQUGsxgKNOvtd+TTjLBPopO1eqpmapYRk+tsspgpm/Y=;
+ b=RQlR8jue6Gbql3ZdVmHIYkPBqQZsIgGkerxfz7JsugNvY2Oe1zgPOMd/kxoZTDOxcJygBUe9ySlIr2z8l5/9PlwC5E2xXNtvoaPCsuS8eCh9j5Dl8Q9LLMIs5SXiXaFkplPYB0cz0DCvU1M2pWC9nj5WIemsNO7HboPdM8WasnZENlyKpHF0iksRlm76K1FIHgsZJyw9T72lSG6uK7N43CMQ/Y+ZfbXg2mGfIPrqJXOaxnGp4WVqdNcwUGkYzFVguqXpGbl3qndE8SeTXGzUmuZl75MmY9piVT1UMuX0FN32mroOZ2kL2LHoW5M6YeaC+vAJnNuVh0hkMTUbLy91tg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=CQUGsxgKNOvtd+TTjLBPopO1eqpmapYRk+tsspgpm/Y=;
+ b=Z0xxfUaaBNUfAWNLGeiNmwykSqZ8vVg7J8vbRXlmgiPB8rXIH10Vgb1ecaaFvVRuFqrcg8FvhXSJ3DitW0FV57MpDLqKQPzZMqIYkqfuzwOjenU9hv3bFr2Z68U4FcuOmbi3S5bKdHXfZHzclW5mFr9hGsHAaDBH/z1tXVZySIw=
+Received: from DB7PR04MB5242.eurprd04.prod.outlook.com (20.176.234.25) by
+ DB7PR04MB3977.eurprd04.prod.outlook.com (52.135.129.15) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2772.19; Thu, 5 Mar 2020 04:00:42 +0000
+Received: from DB7PR04MB5242.eurprd04.prod.outlook.com
+ ([fe80::d55c:9106:6fb2:cc34]) by DB7PR04MB5242.eurprd04.prod.outlook.com
+ ([fe80::d55c:9106:6fb2:cc34%4]) with mapi id 15.20.2772.019; Thu, 5 Mar 2020
+ 04:00:42 +0000
+From:   Ganapathi Bhat <ganapathi.bhat@nxp.com>
+To:     Brian Norris <briannorris@chromium.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Nishant Sarmukadam <nishants@marvell.com>,
+        Amitkumar Karwar <amitkarwar@gmail.com>,
+        Xinming Hu <huxinming820@gmail.com>,
+        Arend Van Spriel <arend@broadcom.com>
+Subject: RE: [EXT] [PATCH] mwifiex: set needed_headroom, not hard_header_len
+Thread-Topic: [EXT] [PATCH] mwifiex: set needed_headroom, not hard_header_len
+Thread-Index: AQHV7QGefb0w+LZbCU2BNI3eE64ugag5ZweQ
+Date:   Thu, 5 Mar 2020 04:00:42 +0000
+Message-ID: <DB7PR04MB524240B38FF6603D89D694538FE20@DB7PR04MB5242.eurprd04.prod.outlook.com>
+References: <20200227000511.256055-1-briannorris@chromium.org>
+In-Reply-To: <20200227000511.256055-1-briannorris@chromium.org>
+Accept-Language: en-US
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=ganapathi.bhat@nxp.com; 
+x-originating-ip: [115.112.95.158]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-ht: Tenant
+x-ms-office365-filtering-correlation-id: 18e32537-b7ae-4ca3-e870-08d7c0b9c640
+x-ms-traffictypediagnostic: DB7PR04MB3977:
+x-microsoft-antispam-prvs: <DB7PR04MB3977D3E57E5020D46B152F698FE20@DB7PR04MB3977.eurprd04.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:2582;
+x-forefront-prvs: 03333C607F
+x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(4636009)(376002)(346002)(39860400002)(136003)(396003)(366004)(189003)(199004)(7696005)(54906003)(110136005)(66446008)(64756008)(66946007)(5660300002)(66556008)(81166006)(44832011)(8936002)(6506007)(9686003)(52536014)(4326008)(316002)(81156014)(478600001)(186003)(26005)(8676002)(66476007)(55016002)(71200400001)(76116006)(2906002)(33656002)(86362001)(55236004);DIR:OUT;SFP:1101;SCL:1;SRVR:DB7PR04MB3977;H:DB7PR04MB5242.eurprd04.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+received-spf: None (protection.outlook.com: nxp.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: K1JcY9oRHzzJdAAroY+Pr8EujgussB+fb388ZYLWYyA1z0aUXCAcnGr8YyZjQ0iO8Ej5EW4uu7ytj4CDbv/682jfy+tOlBzV6zCzvCivet390ncilAIGC3iAG04rcaG2zpQdsuxcEFgQ/hwMJjb5OXcI5dvVwxnyatXGP6bmNBEyXPecffqvpT1gBwlRmfXX0e51JHaklhpi4e4y3z18NsPB9CEop8ftvJbwBZINS4FthsI76HrUZWuG/P8clZaYQKtpG/5AlkhoGcmBQTMBXfWnQGIdI3XAkE7JfQJS3voAmhnt837A6Mp9jJjNsRedYsWcpiPLck6psTzFphEbg2tQDyzpbeE3FLf/hSxFa9AUBU90VetELnXTzIiJGCdjGSnilTvB9TTdZylzjdkZrpEClYKPc4as0Y1GZYKPQcFKaAfQPFOf2iCD2lIJN5jJ
+x-ms-exchange-antispam-messagedata: XZSs09H/p7Vq62fiHWdJ8BD0MaLcq15Jx1LuV/FvNbxrexfGlO9EYpCkAoO4xyLLuo+KTHNAiJiTwz/3FNWgOXHdTyyzoopnGz4dMs0oHUJo8kvlll19PwahmPB/VshvinLKTB8oqG4OZVm8Fv7NdQ==
+x-ms-exchange-transport-forked: True
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 18e32537-b7ae-4ca3-e870-08d7c0b9c640
+X-MS-Exchange-CrossTenant-originalarrivaltime: 05 Mar 2020 04:00:42.2160
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 9rNofqnpgZASrhbFcTWgBuoIcyt1IqD6dB6nNLxuWxNMQybkJUAxQLKLQYZE30IBb8kE4Ddher+Q20PpTrcdyA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB7PR04MB3977
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The variable merely toggles true to false and is unused.
+Hi Brian,
+=20
+> hard_header_len provides limitations for things like AF_PACKET, such that
+> we don't allow transmitting packets smaller than this.
 
-Signed-off-by: Malcolm Priestley <tvboxspy@gmail.com>
----
- drivers/staging/vt6656/device.h   |  1 -
- drivers/staging/vt6656/main_usb.c |  3 ---
- drivers/staging/vt6656/usbpipe.c  | 16 +++-------------
- 3 files changed, 3 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/staging/vt6656/device.h b/drivers/staging/vt6656/device.h
-index e94df4685b25..98793e15e80f 100644
---- a/drivers/staging/vt6656/device.h
-+++ b/drivers/staging/vt6656/device.h
-@@ -227,7 +227,6 @@ struct vnt_rcb {
- 	void *priv;
- 	struct urb *urb;
- 	struct sk_buff *skb;
--	int in_use;
- };
- 
- /* used to track bulk out irps */
-diff --git a/drivers/staging/vt6656/main_usb.c b/drivers/staging/vt6656/main_usb.c
-index 41edadc74389..56f81785a118 100644
---- a/drivers/staging/vt6656/main_usb.c
-+++ b/drivers/staging/vt6656/main_usb.c
-@@ -478,9 +478,6 @@ static int vnt_alloc_bufs(struct vnt_private *priv)
- 			ret = -ENOMEM;
- 			goto free_rx_tx;
- 		}
--
--		rcb->in_use = false;
--
- 		/* submit rx urb */
- 		ret = vnt_submit_rx_urb(priv, rcb);
- 		if (ret)
-diff --git a/drivers/staging/vt6656/usbpipe.c b/drivers/staging/vt6656/usbpipe.c
-index fd2c9d9d6eb4..eae211e5860f 100644
---- a/drivers/staging/vt6656/usbpipe.c
-+++ b/drivers/staging/vt6656/usbpipe.c
-@@ -393,10 +393,8 @@ static void vnt_submit_rx_urb_complete(struct urb *urb)
- 	if (urb->actual_length) {
- 		if (vnt_rx_data(priv, rcb, urb->actual_length)) {
- 			rcb->skb = dev_alloc_skb(priv->rx_buf_sz);
--			if (!rcb->skb) {
--				rcb->in_use = false;
-+			if (!rcb->skb)
- 				return;
--			}
- 		} else {
- 			skb_push(rcb->skb, skb_headroom(rcb->skb));
- 			skb_trim(rcb->skb, 0);
-@@ -406,11 +404,8 @@ static void vnt_submit_rx_urb_complete(struct urb *urb)
- 					       skb_tailroom(rcb->skb));
- 	}
- 
--	if (usb_submit_urb(urb, GFP_ATOMIC)) {
-+	if (usb_submit_urb(urb, GFP_ATOMIC))
- 		dev_dbg(&priv->usb->dev, "Failed to re submit rx skb\n");
--
--		rcb->in_use = false;
--	}
- }
- 
- int vnt_submit_rx_urb(struct vnt_private *priv, struct vnt_rcb *rcb)
-@@ -433,13 +428,8 @@ int vnt_submit_rx_urb(struct vnt_private *priv, struct vnt_rcb *rcb)
- 			  rcb);
- 
- 	ret = usb_submit_urb(urb, GFP_ATOMIC);
--	if (ret) {
-+	if (ret)
- 		dev_dbg(&priv->usb->dev, "Submit Rx URB failed %d\n", ret);
--		goto end;
--	}
--
--	rcb->in_use = true;
--
- end:
- 	return ret;
- }
--- 
-2.25.1
+OK; However, are we not supposed to mention hard_header_len also?
+
+>=20
+> needed_headroom provides a suggested minimum headroom for SKBs, so
+> that we can trivally add our headers to the front.
+>=20
+> The latter is the correct field to use in this case, while the former mos=
+tly just
+> prevents sending small AF_PACKET frames.
+>=20
+> In any case, mwifiex already does its own bounce buffering [1] if we don'=
+t
+> have enough headroom, so hints (not hard limits) are all that are needed.
+>=20
+> This is the essentially the same bug (and fix) that brcmfmac had, fixed i=
+n
+> commit cb39288fd6bb ("brcmfmac: use ndev->needed_headroom to reserve
+> additional header space").
+
+OK; I read this commit:
+
+"... According to definition of LL_RESERVED_SPACE() and hard_header_len, we=
+ should use hard_header_len to reserve for L2 header, like ethernet header(=
+ETH_HLEN) in our case and use needed_headroom for the additional headroom n=
+eeded by hardware..."
+
+So, does it mean, hard_header_len is already considered by upper layer?
+
+
+Regards,
+Ganapathi
