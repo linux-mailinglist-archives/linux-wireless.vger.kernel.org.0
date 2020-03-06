@@ -2,81 +2,85 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 88B8417B6C0
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 Mar 2020 07:34:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2FF8317B71A
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 Mar 2020 07:58:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725935AbgCFGeO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 6 Mar 2020 01:34:14 -0500
-Received: from mail26.static.mailgun.info ([104.130.122.26]:18135 "EHLO
-        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725847AbgCFGeO (ORCPT
+        id S1725966AbgCFG60 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 6 Mar 2020 01:58:26 -0500
+Received: from ivanoab7.miniserver.com ([37.128.132.42]:50624 "EHLO
+        www.kot-begemot.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725905AbgCFG60 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 6 Mar 2020 01:34:14 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1583476454; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=Xa2/rGglSjQqLiBjNfmyOdtgMqNZ1rc/kYTlcrSKm6A=; b=LBp26aA/VmLJ1rL7lxq7JsfDzLp417BedntX23A3Sxhuow9OiqxD13LKG7U+n4H4no5+WdHp
- NS5/zoTZLOZSghAY7E0MErcI3vRS6kyjQIIIj/pLGh6lOw+c/vU6OwW14WzIOn2ILt28uzlm
- hfreAienQcmStnbPPQEowNQ3ioc=
-X-Mailgun-Sending-Ip: 104.130.122.26
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e61eedb.7f2ecc2a3260-smtp-out-n02;
- Fri, 06 Mar 2020 06:34:03 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id B74FEC4479F; Fri,  6 Mar 2020 06:34:03 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 3B845C43383;
-        Fri,  6 Mar 2020 06:33:57 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 3B845C43383
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Jakub Kicinski <kuba@kernel.org>
-Cc:     davem@davemloft.net, jdike@addtoit.com, richard@nod.at,
-        anton.ivanov@cambridgegreys.com, linux-um@lists.infradead.org,
+        Fri, 6 Mar 2020 01:58:26 -0500
+Received: from tun252.jain.kot-begemot.co.uk ([192.168.18.6] helo=jain.kot-begemot.co.uk)
+        by www.kot-begemot.co.uk with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <anton.ivanov@cambridgegreys.com>)
+        id 1jA6vx-00052L-Va; Fri, 06 Mar 2020 06:58:10 +0000
+Received: from sleer.kot-begemot.co.uk ([192.168.3.72])
+        by jain.kot-begemot.co.uk with esmtps (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.92)
+        (envelope-from <anton.ivanov@cambridgegreys.com>)
+        id 1jA6vv-0004hT-MA; Fri, 06 Mar 2020 06:58:09 +0000
+Subject: Re: [PATCH net-next 1/7] um: reject unsupported coalescing params
+To:     Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net
+Cc:     jdike@addtoit.com, richard@nod.at, linux-um@lists.infradead.org,
         dledford@redhat.com, jgg@ziepe.ca, leon@kernel.org,
         linux-rdma@vger.kernel.org, edumazet@google.com,
         jasowang@redhat.com, mkubecek@suse.cz, hayeswang@realtek.com,
         doshir@vmware.com, pv-drivers@vmware.com, manishc@marvell.com,
         GR-Linux-NIC-Dev@marvell.com, gregkh@linuxfoundation.org,
-        merez@codeaurora.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org
-Subject: Re: [PATCH net-next 7/7] wil6210: reject unsupported coalescing params
+        merez@codeaurora.org, kvalo@codeaurora.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
 References: <20200306010602.1620354-1-kuba@kernel.org>
-        <20200306010602.1620354-8-kuba@kernel.org>
-Date:   Fri, 06 Mar 2020 08:33:55 +0200
-In-Reply-To: <20200306010602.1620354-8-kuba@kernel.org> (Jakub Kicinski's
-        message of "Thu, 5 Mar 2020 17:06:02 -0800")
-Message-ID: <8736amouuk.fsf@kamboji.qca.qualcomm.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+ <20200306010602.1620354-2-kuba@kernel.org>
+From:   Anton Ivanov <anton.ivanov@cambridgegreys.com>
+Organization: Cambridge Greys
+Message-ID: <fd59e667-38cb-6b16-8a27-311c7da523d0@cambridgegreys.com>
+Date:   Fri, 6 Mar 2020 06:58:07 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.5.0
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <20200306010602.1620354-2-kuba@kernel.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Spam-Score: -1.0
+X-Spam-Score: -1.0
+X-Clacks-Overhead: GNU Terry Pratchett
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Jakub Kicinski <kuba@kernel.org> writes:
-
+On 06/03/2020 01:05, Jakub Kicinski wrote:
 > Set ethtool_ops->supported_coalesce_params to let
 > the core reject unsupported coalescing parameters.
->
+> 
 > This driver did not previously reject unsupported parameters.
->
+> 
 > Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> ---
+>   arch/um/drivers/vector_kern.c | 1 +
+>   1 file changed, 1 insertion(+)
+> 
+> diff --git a/arch/um/drivers/vector_kern.c b/arch/um/drivers/vector_kern.c
+> index 0ff86391f77d..e98304d0219e 100644
+> --- a/arch/um/drivers/vector_kern.c
+> +++ b/arch/um/drivers/vector_kern.c
+> @@ -1508,6 +1508,7 @@ static int vector_set_coalesce(struct net_device *netdev,
+>   }
+>   
+>   static const struct ethtool_ops vector_net_ethtool_ops = {
+> +	.supported_coalesce_params = ETHTOOL_COALESCE_TX_USECS,
+>   	.get_drvinfo	= vector_net_get_drvinfo,
+>   	.get_link	= ethtool_op_get_link,
+>   	.get_ts_info	= ethtool_op_get_ts_info,
+> 
 
-As this goes to net-next:
-
-Acked-by: Kalle Valo <kvalo@codeaurora.org>
+Acked-by: Anton Ivanov <anton.ivanov@cambridgegreys.com>
 
 -- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Anton R. Ivanov
+Cambridgegreys Limited. Registered in England. Company Number 10273661
+https://www.cambridgegreys.com/
