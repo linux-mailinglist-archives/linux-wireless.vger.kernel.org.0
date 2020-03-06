@@ -2,73 +2,81 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F7E517B380
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 Mar 2020 02:07:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CA7E317B6A9
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 Mar 2020 07:27:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726956AbgCFBG4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 5 Mar 2020 20:06:56 -0500
-Received: from mail.kernel.org ([198.145.29.99]:59594 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726243AbgCFBGz (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 5 Mar 2020 20:06:55 -0500
-Received: from kicinski-fedora-PC1C0HJN.thefacebook.com (unknown [163.114.132.128])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        id S1725867AbgCFG1z (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 6 Mar 2020 01:27:55 -0500
+Received: from mail26.static.mailgun.info ([104.130.122.26]:16554 "EHLO
+        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725829AbgCFG1y (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 6 Mar 2020 01:27:54 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1583476074; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=OVQJmYtvpMtsQkLA1AznKeLEBf/lzh6TSc5k9bWmwhw=; b=o8+WrO0GEWd53sAwqrI0T1m/fi/WHs3dpmbl6OtUfD5ur+Qeu8Gt+F7fJpaOO21Fe8QHi+LG
+ pAhYGgHGnSobR6xa7I7U8sXR61IsEevcDd05BmzSxxkKF5t2nvxTu5X2QGNjqP+hSHZ9Xyzb
+ /NFM9vfFPmT7lZXXgvSXikKlQ4k=
+X-Mailgun-Sending-Ip: 104.130.122.26
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5e61ed61.7f935b606500-smtp-out-n03;
+ Fri, 06 Mar 2020 06:27:45 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 66B61C433A2; Fri,  6 Mar 2020 06:27:44 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 4CF9021739;
-        Fri,  6 Mar 2020 01:06:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1583456815;
-        bh=OTtKcRFqA0dHpMGNL6+t5z24seiqfljjuZjgBBCPLfY=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=o6Qjy9P01UiS3cRTUVa8SYuYa2qHdRq6ENqFXfERy7JrO+v0Vys+zs489/8ajnsxC
-         I5LvmiqAv3c7weaJqnT614MpmnsuCGQMJu31+Fjek+tI9ZN9gIzZhH/5GvaQLIRR/p
-         U1iHGRWr1Yw9Y2FZ5yV2ky8AL9hLDWygp4IJXWs4=
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     davem@davemloft.net
-Cc:     jdike@addtoit.com, richard@nod.at, anton.ivanov@cambridgegreys.com,
-        linux-um@lists.infradead.org, dledford@redhat.com, jgg@ziepe.ca,
-        leon@kernel.org, linux-rdma@vger.kernel.org, edumazet@google.com,
-        jasowang@redhat.com, mkubecek@suse.cz, hayeswang@realtek.com,
-        doshir@vmware.com, pv-drivers@vmware.com, manishc@marvell.com,
-        GR-Linux-NIC-Dev@marvell.com, gregkh@linuxfoundation.org,
-        merez@codeaurora.org, kvalo@codeaurora.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH net-next 7/7] wil6210: reject unsupported coalescing params
-Date:   Thu,  5 Mar 2020 17:06:02 -0800
-Message-Id: <20200306010602.1620354-8-kuba@kernel.org>
-X-Mailer: git-send-email 2.24.1
-In-Reply-To: <20200306010602.1620354-1-kuba@kernel.org>
-References: <20200306010602.1620354-1-kuba@kernel.org>
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 1866DC43383;
+        Fri,  6 Mar 2020 06:27:42 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 1866DC43383
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Luca Coelho <luca@coelho.fi>
+Cc:     linux-wireless@vger.kernel.org
+Subject: Re: [PATCH] MAINTAINERS: update web URL for iwlwifi
+References: <iwlwifi.20200305142622.3b1f9018cd2e.Iccbce3e78befd4ac39735b26617cfb6a12a2ae5a@changeid>
+        <87ftemq2ik.fsf@kamboji.qca.qualcomm.com>
+        <39c51b932b8a5588ea6ec8a040255fb56b498214.camel@coelho.fi>
+Date:   Fri, 06 Mar 2020 08:27:40 +0200
+In-Reply-To: <39c51b932b8a5588ea6ec8a040255fb56b498214.camel@coelho.fi> (Luca
+        Coelho's message of "Thu, 05 Mar 2020 18:44:33 +0200")
+Message-ID: <877dzyov4z.fsf@kamboji.qca.qualcomm.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Set ethtool_ops->supported_coalesce_params to let
-the core reject unsupported coalescing parameters.
+Luca Coelho <luca@coelho.fi> writes:
 
-This driver did not previously reject unsupported parameters.
+> On Thu, 2020-03-05 at 16:50 +0200, Kalle Valo wrote:
+>> Luca Coelho <luca@coelho.fi> writes:
+>> 
+>> > From: Luca Coelho <luciano.coelho@intel.com>
+>> > 
+>> > The current URL mentioned in iwlwifi's W entry is outdated and
+>> > currently pointing to a dead link.  Change it so that it points to the
+>> > correct Wiki page directly.
+>> > 
+>> > Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+>> 
+>> I'll queue this for v5.6, ok?
+>
+> Sure, if you think it's worth it.
 
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
----
- drivers/net/wireless/ath/wil6210/ethtool.c | 1 +
- 1 file changed, 1 insertion(+)
+I usually try to get changes to MAINTAINERS file to Linus as fast as
+possible to avoid any conflicts.
 
-diff --git a/drivers/net/wireless/ath/wil6210/ethtool.c b/drivers/net/wireless/ath/wil6210/ethtool.c
-index fef10886ca4a..e481674485c2 100644
---- a/drivers/net/wireless/ath/wil6210/ethtool.c
-+++ b/drivers/net/wireless/ath/wil6210/ethtool.c
-@@ -95,6 +95,7 @@ static int wil_ethtoolops_set_coalesce(struct net_device *ndev,
- }
- 
- static const struct ethtool_ops wil_ethtool_ops = {
-+	.supported_coalesce_params = ETHTOOL_COALESCE_USECS,
- 	.get_drvinfo	= cfg80211_get_drvinfo,
- 	.get_coalesce	= wil_ethtoolops_get_coalesce,
- 	.set_coalesce	= wil_ethtoolops_set_coalesce,
 -- 
-2.24.1
-
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
