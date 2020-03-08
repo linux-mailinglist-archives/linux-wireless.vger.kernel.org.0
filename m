@@ -2,90 +2,119 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A887D17D345
-	for <lists+linux-wireless@lfdr.de>; Sun,  8 Mar 2020 11:45:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C9D717D3BE
+	for <lists+linux-wireless@lfdr.de>; Sun,  8 Mar 2020 13:44:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726298AbgCHKp1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 8 Mar 2020 06:45:27 -0400
-Received: from mail.kernel.org ([198.145.29.99]:46746 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726270AbgCHKp1 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 8 Mar 2020 06:45:27 -0400
-Received: from localhost.localdomain (unknown [151.48.128.122])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 87B5720828;
-        Sun,  8 Mar 2020 10:45:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1583664326;
-        bh=WGdDIBGuU3N8rWh1UPzFFG/pix8qDgCrcgHS/kJQE8k=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=pOJEH2mWFguJ8FkrUOvLs0oyla2C4PN1Dv+nQ7OA/sETftp748LDoO93WC6rYkQNU
-         v6djolIeQDvrrkSFXEuEgRmkaalmCFEAa5tWiGM+woZUWRfpPr3qi9iiXVVZsWb9fj
-         XlhfChC1SKfxzShGaDEI64qeaZ5llTZ93VDnIbTQ=
-Date:   Sun, 8 Mar 2020 11:45:25 +0100
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
-        sean.wang@mediatek.com
-Subject: Re: [PATCH 0/6] mt7663u preparation series
-Message-ID: <20200308104525.GB1579745@localhost.localdomain>
-References: <cover.1582893136.git.lorenzo@kernel.org>
+        id S1726279AbgCHMoP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 8 Mar 2020 08:44:15 -0400
+Received: from mail-wr1-f47.google.com ([209.85.221.47]:35709 "EHLO
+        mail-wr1-f47.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726260AbgCHMoO (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 8 Mar 2020 08:44:14 -0400
+Received: by mail-wr1-f47.google.com with SMTP id r7so7700804wro.2
+        for <linux-wireless@vger.kernel.org>; Sun, 08 Mar 2020 05:44:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=wOh1qUUVnR8SdAU+BUkdObJe8zqZ9QD+giXo3CmNXvo=;
+        b=fnL0PTxzvn7Gzlzu08V0EjADystsFNkPy3kv5WjxQzvWsGDg4s7/CojA32cS0tk4PJ
+         yJOuUCmiqSLVCAbyBS2D/Dhjn37X4LuY2VQMFAE8f+QrjuDk02O8HWGQBcLwh4KIj1Vy
+         8lp6JmMycPU4p+OpCQEhy37Z1AdGwRx6uqCRb4rUZ8dyhy3g5dMs/h1H66Q4sDjgE57P
+         cKa/vevMWcS9Y3loQtM800HUQwZfek52gmFPSev+7diYl9k6qpAIi3u9+jr5IMMiXkJs
+         2JhVcyUIQY+1uRypejxVdIQK8SlIt5EHQOvC4x0SYEFbviNHLNjdAKKxnOVNCa8g2nLU
+         B5Zw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=wOh1qUUVnR8SdAU+BUkdObJe8zqZ9QD+giXo3CmNXvo=;
+        b=kjIGSxclBZeECdlk3Ds/fjUgkRbB1WFRgwqK4i3MOUggyoapGLZn4TgQy+UZyDc7tJ
+         GtLHJZK0mRIQFPbqgKCWl/EcaqZVoB/tURnJUrZ4ZQW26WbouG24352kxcN0ov9avNHB
+         i36216qbAEJWqslSv7Crf3m/qMhJ7y2H6hbj2h98gOUoSYdCp1vsIca76ZxtUkfwyTl8
+         +ibIHNuTYknbVEKmCBMcszQc7c6OEo6NSD68ysq32Ija81bLsZTOUjYEL2SWdWGWme09
+         4IV9AJTDBXCdnAgQmrDgpTnXFUe2xpzPu2qCENiic/5uILiuklpk8JA/TnejcZuEqfoX
+         82Bw==
+X-Gm-Message-State: ANhLgQ13IJVUpXrqfONwHr/0i0MV8KN/72BYOAXKWFcF787bwPyToZTl
+        NPAJ9Avx8jB/u5p/e/Dy7nE=
+X-Google-Smtp-Source: ADFU+vtBqzg5Q8sjlMTz5C0BvD3s9bp/LVNAJyW85HvWffjRIbvye240wqsTygKunpWv7i6eGc7I9A==
+X-Received: by 2002:adf:9501:: with SMTP id 1mr15338142wrs.426.1583671452566;
+        Sun, 08 Mar 2020 05:44:12 -0700 (PDT)
+Received: from t2b3 ([109.175.104.3])
+        by smtp.gmail.com with ESMTPSA id g206sm21583174wme.46.2020.03.08.05.44.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 08 Mar 2020 05:44:11 -0700 (PDT)
+Date:   Sun, 8 Mar 2020 13:44:07 +0100
+From:   Tobias Predel <tobias.predel@gmail.com>
+To:     yhchuang@realtek.com, Bjoern Franke <bjo@schafweide.org>
+Cc:     Larry Finger <Larry.Finger@lwfinger.net>,
+        linux-wireless@vger.kernel.org
+Subject: Re: [rtw88] Linux 5.6-rc1 / RTL8822BE WiFi adapter
+Message-ID: <20200308124407.GA1447@t2b3>
+References: <20200214214134.GA12764@t2b3>
+ <c76d37cc-2cab-a8f2-e570-a444c06ad020@schafweide.org>
+ <028ea5d3-1459-b37e-f996-72958be0ff4c@lwfinger.net>
+ <dcd22888-4a60-59f4-3a8e-0b1a49b1e922@schafweide.org>
+ <20200218094514.GA13937@t2b3>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="kORqDWCi7qDJ0mEj"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <cover.1582893136.git.lorenzo@kernel.org>
+In-Reply-To: <20200218094514.GA13937@t2b3>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Hello,
 
---kORqDWCi7qDJ0mEj
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+well, now I get troubles back with Network controller: 
+Realtek Semiconductor Co., Ltd. RTL8822BE 802.11a/b/g/n/ac WiFi adapter,
+still on 5.6.0-rc2-next-20200217.
 
-> This is the first series to rework mt7615 code for mt7663u
-> driver integration.
-> This series is based on "Introduce mt7663e support to mt7615 driver"
-> https://patchwork.kernel.org/cover/11395095/
+Are there any *other* firmware files for testing or update?
 
-Please drop this series, I will post an updated version soon.
+I get a lot of timed out to flush queue 1 and
+firmware failed to restore hardware setting together with poor performance,
+100 kbps and so on. Not a router issue, because tethering with smartphone 
+works fine (800 kbps).
 
-Regards,
-Lorenzo
+So this might be a firmware issue?
 
->=20
-> Lorenzo Bianconi (6):
->   mt76: mt7615: introduce mt7663u support to mt7615_write_txwi
->   mt76: mt7615: introduce mt7615_mcu_fill_msg
->   mt76: mt7615: introduce mt7615_mcu_wait_response
->   mt76: mt7615: cleanup fw queue just for mmio devices
->   mt76: mt7615: introduce mt7615_init_device routine
->   mt76: mt7615: move mt7615_mac_wtbl_addr in mac.h
->=20
->  .../net/wireless/mediatek/mt76/mt7615/init.c  | 27 ++++----
->  .../net/wireless/mediatek/mt76/mt7615/mac.c   | 17 +++--
->  .../net/wireless/mediatek/mt76/mt7615/mac.h   |  6 ++
->  .../net/wireless/mediatek/mt76/mt7615/mcu.c   | 62 ++++++++++++-------
->  .../wireless/mediatek/mt76/mt7615/mt7615.h    |  3 +
->  5 files changed, 72 insertions(+), 43 deletions(-)
->=20
-> --=20
-> 2.24.1
->=20
+Kind regards,
+Tobias
 
---kORqDWCi7qDJ0mEj
-Content-Type: application/pgp-signature; name="signature.asc"
+On Tue, Feb 18, 2020 at 10:45:14AM +0100, Tobias Predel wrote:
+> Hi,
+> 
+> I withdraw my issue. Linux-next has been working well so far.
+> 
+> Regards
+> Tobias
+> 
+> On Sun, Feb 16, 2020 at 02:40:17PM +0100, Bjoern Franke wrote:
+> > Hi Larry,
+> > 
+> > > I deliberately stay behind the official kernel repo so as to avoid implementing
+> > > any regressions. As you are the one with the problem, you need to perform a
+> > > bisection to discover which change to rtw88 introduces your difficulty!!
+> > 
+> > Somebody commented the DKMS-package for your rtw88-branch with
+> > 
+> > "Thank you so much for this ! After kernel 5.5, that's the only way i can
+> > get functional wifi on my machine. (RTL8822BE) Deeply appreciate it."
+> > 
+> > So I assume I'm not the only one experiencing this issue.
+> > 
+> > But I can do a bisect if I find some time.
+> > 
+> > Regards
+> > Bjoern
+> > 
+> > [1]https://aur.archlinux.org/packages/rtlwifi_new-rtw88-dkms/
+> 
+> -- 
+> Bitte denken Sie an die Umwelt, bevor Sie diese E-Mail ausdrucken.
 
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCXmTMwAAKCRA6cBh0uS2t
-rDAcAQDXn6AlpQBPoMbj+kZvXu42yuoDVY9rXTeuMR8MYNpokAEAlX5FrJBj+wHm
-8JVq+s4qiPVy2WtJxowivr/OAGF1rgM=
-=2/IM
------END PGP SIGNATURE-----
-
---kORqDWCi7qDJ0mEj--
+-- 
+Bitte denken Sie an die Umwelt, bevor Sie diese E-Mail ausdrucken.
