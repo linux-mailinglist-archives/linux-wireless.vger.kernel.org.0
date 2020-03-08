@@ -2,70 +2,60 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8332E17CFEA
-	for <lists+linux-wireless@lfdr.de>; Sat,  7 Mar 2020 21:07:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C96417D206
+	for <lists+linux-wireless@lfdr.de>; Sun,  8 Mar 2020 07:14:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726168AbgCGUHZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 7 Mar 2020 15:07:25 -0500
-Received: from sonic302-3.consmr.mail.bf2.yahoo.com ([74.6.135.42]:46852 "EHLO
-        sonic302-3.consmr.mail.bf2.yahoo.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726109AbgCGUHZ (ORCPT
+        id S1725904AbgCHGOo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 8 Mar 2020 01:14:44 -0500
+Received: from mail-vs1-f54.google.com ([209.85.217.54]:39979 "EHLO
+        mail-vs1-f54.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725819AbgCHGOo (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 7 Mar 2020 15:07:25 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aol.com; s=a2048; t=1583611644; bh=iacnFiNuwClBuBYRq2lTmctydZVIx7u3n0jKyEZOUEk=; h=Date:From:Reply-To:Subject:References:From:Subject; b=EtA1c4yoUgJHsTf3GXIO9LYmy75ZABDt7ltu2JCU+t1i2Xmc+SMZOq6WplLOB9w7NyN3mpGiSADqcLaGO9NTVMySimDlAkhZ9RR3F3pAhsfWJe/NBVNpOunIqIVzBHGJ6rX/bn9pUOueyXRYzUiigxNDEgiIeF8znNkKfaG681pq3jj5A5YX9GBZQSReZYH5OItsFG2q3RGeZEWm7SeqVcdCZ3KLkgvW4G5HBpd1QACXI02Z/ZRepQntrjsWRfl/27cm3qNQXbrVgWAjOxFWFHeU3MGhV+Yoevu2yVQlsLrYNUW8ohN2jqXHp3aO+WUSfH9izvhyHEZFsmLjSOmZnw==
-X-YMail-OSG: jQOhAycVM1m00Cs9iIv9P7V0Sho4iyZ8ppV2MYffDAZBaRyWLDMD_y7g5CQX_Kh
- LehaBWPA1kdrCzZcqeNqnI7oAcWgus40VnsNTT5NJ1z7Oa.70CcxsE764oPtTe9mhA1iEMQ6J4nC
- kmNWRi1CZO3ydCLMXrLZGFFBfcJxZro9HSxdg3Nk70jyAu3eE3SnLfr5jIaiARHf_zBmX.255wo1
- SmGhDKO.zbvqxBhURdOKWiJO7icqTB90t6Of7lmHVHqO3h1sFkRtLgtwdTUpMRt2Fga2dLB26pH_
- kX_UTAYiX4k7lvrFJMisBNI6.cMiokV6RcoVLVOEjIz79rSstsEvqOjmVuzkKGK1Tdly2EHFeKOz
- 0mNggEMZgtI7JnS3Msm5sy5WnGYkLg_2oAGj8t9KqN.bSpkXdicsjfe6X1TaTlX.oSUjZM3zMFEi
- umgha58S50gWGRsnUdRpRWaAlN0fPpAcd28dmC5hQjtsZl7xW8zsk48ohEvYvre.eda7qQgP_HDu
- LDUg6nQy6O0nn0EWfpquutDoKMpGpR1aOLv6de.rf0dInvoqj3ES7vwswWr1V4x3DY6V8ltYhpsq
- bY0pG5UJ5Ft9PawtWIaOxYox7knXvy0_T9Tcu8Osfx._pPFUfKspV4SOiIr0x8FkCABBnvGaoE7L
- GB7K6UBnkkk192Pq45soXKP5M9nECDxRgz9r02WqTcMAlorH0TEye_WpbShJy48CekJG9u0pg.LM
- 2OufXCWcWs1VQvYDRXzDJl9ChQec7EDYFp634MzaP4jjMKjVo4rzJf0gyRPaleuM5t79ay7IFW2O
- jqFSEQ3JqxpWg2SLQtd0C85QB.xb7q3AHi410G1EhyFX084kxj.F8q2iIxAE.bSjAjMsTt68d_7.
- fOdLXEnEsnBtRBbu2tgZKf7ZPdbVtdflqXHkAFF1cnh.se4pujwTeU.b9b36F.155ITTOO6Gqjir
- bdYTLVjO9nbDJzX8jMhsF1VCCEwBPBOnJjF32NHBIqZfL_hWG7rnxkIujzk636RmOWCVZ8ueO_Ov
- GwTq8J4rv.cUwfAyoAsbC0Vy5uZ_kLVrTuNc8y1a76pAyXbL5qRRmbRmLEuH4H8E0G0KZIbAdKgj
- dwH_MktOPHzVJc22I2SlhyKSlSySUiuxSmJ.qd7E62Hd1WtEv4UHlob94W00oQRfx8F9lqH1mcPg
- VvKPbDNoTWLbCQvDwk6xCIZoOHf78nNwwxulAgXhdurufJi9dsS.cISVLuBklfRq3Qo.ziTDyIiw
- 5TqmyMipxy27h8yk2PFv9GY3XO0lncm2X7OZF6L.u1bvcEqwVGFU_KwZCAZlLrDJJHng-
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic302.consmr.mail.bf2.yahoo.com with HTTP; Sat, 7 Mar 2020 20:07:24 +0000
-Date:   Sat, 7 Mar 2020 20:07:22 +0000 (UTC)
-From:   ABDUL MAJID <majidabdul55@aol.com>
-Reply-To: majidabdul70@aol.com
-Message-ID: <602307896.959161.1583611642415@mail.yahoo.com>
-Subject: Hello Dear.
+        Sun, 8 Mar 2020 01:14:44 -0500
+Received: by mail-vs1-f54.google.com with SMTP id c18so4123653vsq.7
+        for <linux-wireless@vger.kernel.org>; Sat, 07 Mar 2020 22:14:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to:cc;
+        bh=ZqeRJppyR4X7IWp+u7jYSDUzXVvmsDxdEb+Dt8/kZsE=;
+        b=IxCr2m/pP4NZtELgoIXliDE+Isw4q7qF8vnw23ZTXaQ766RGKaivF5e+JwYtFo6ZLL
+         uJKeilvNxX5z7rZBKrBOSRIESY3Iv1d3mkbZTkj/ffVgBW/kPx6yZKB9DukKhzGIfpsQ
+         ncqVRiZd539TNYTUWXXWi/vO5DnwcBdVU4btcGUzxZ5ekRwy/IR6B3B5kuu/PXLZfq9o
+         FEuK2FKyAyi3KtmB6fUyiN9CCLEtF07hC+UidKkwcJ2A308CrLyvs8zqq7Ho9PaHxzZ5
+         2DbetxTyTnzare8dSqFbY2c3P58L35L3076D8xHMx2Cn6bUgC575rc5dF3czWXuJa+HC
+         U4fw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
+        bh=ZqeRJppyR4X7IWp+u7jYSDUzXVvmsDxdEb+Dt8/kZsE=;
+        b=X+hpWFimNqX7vBdWx4ZfpbcMKkzHLt60sVmKdkWB8yIiYgE284D6gBdwUh9ToM7BFf
+         cUysiCcrJc2DQAbHvNRP/nzV9sBxKzj3vq7lsei7tpXvgal7Y5aDoih4BUOauBfoR/gD
+         a4EG5IgOd8zmQmX3sN0IoOuGeqyx0LsPUDvGVSl94hp5hOzzvfvLeItncB7wMXhI1/k1
+         zzEooMPwgixmfG67xi1deH/bGOJyQ7g7D/wv/UdX4VxCNM3vMfHywSHSooNwUtpeTbSI
+         BR7l6HRNJom2OxN/feAjl9knLjYQ55kx+qPnlNcPQOEsk/sWzLILDwg/mQzkSR+FYYy/
+         RWtg==
+X-Gm-Message-State: ANhLgQ2NmbeNsQV8BNOgCnz5uCRGMCohLsLJQj/ZO6k8VywNs8uoMQuB
+        MJ07XM8UAAAi4oJ6K6sbjYCWPF63wmRoQOoXKdd3GHmu
+X-Google-Smtp-Source: ADFU+vsvs7lLQ4pCULe2OAv2YUH+Mysp7mFJkaHZoQ38gSpYCUFphafOeF8dDt7iLefvOsfpWpQeqQmdc6EIjA+auc0=
+X-Received: by 2002:a67:870b:: with SMTP id j11mr595823vsd.39.1583648083465;
+ Sat, 07 Mar 2020 22:14:43 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-References: <602307896.959161.1583611642415.ref@mail.yahoo.com>
-X-Mailer: WebService/1.1.15342 YMailNodin Mozilla/5.0 (Windows NT 6.2; Win64; x64; rv:73.0) Gecko/20100101 Firefox/73.0
-To:     unlisted-recipients:; (no To-header on input)
+From:   Justin Capella <justincapella@gmail.com>
+Date:   Sat, 7 Mar 2020 22:16:19 -0800
+Message-ID: <CAMrEMU-8A5scsr-sXdKYa9fO+AGVDWafMz2km5KnAu2R31H5rw@mail.gmail.com>
+Subject: Re: ath10k: add QCA9377 sdio hw_param item
+To:     "erik.stromdahl@gmail.com" <erik.stromdahl@gmail.com>
+Cc:     ath10k <ath10k@lists.infradead.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-DR.ABDUL MAJID
-AUDITING AND ACCOUNTING MANAGER,
-AFRICAN DEVELOPMENT BANK
-50-54 RUE DE THOMPSON,
-OUAGADOUGOU, BURKINA FASO, WEST AFRICA
- 
-Dear Friend,
- 
-Greetings and how are you doing?
- 
-I want you to be my partner in the transfer of the sum of $38.6
-Million dollars discovered in my department in a Bank here in West
-Africa and I will give you more details on this when I get your reply
-but be rest assured that I will give you 40% of the total sum once the
-transfer is completed but you have to maintain secrecy of this deal if
-you are ready to work with me.
- 
-Yours Sincerely,
- 
-Dr.Abdul Majid
-Auditing and Accounting Manager.
+> >> +            .hw_ops = &qca6174_ops,
+> >> +            .hw_clk = qca6174_clk,
+
+
+Would it be worthwhile to refactor / rename these? I also recall there
+being a qca6174_sdio_ops
