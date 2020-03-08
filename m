@@ -2,135 +2,86 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E37B617D2AF
-	for <lists+linux-wireless@lfdr.de>; Sun,  8 Mar 2020 09:39:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E9A2D17D344
+	for <lists+linux-wireless@lfdr.de>; Sun,  8 Mar 2020 11:44:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726296AbgCHIjF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 8 Mar 2020 04:39:05 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:32892 "EHLO
-        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1725306AbgCHIjE (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 8 Mar 2020 04:39:04 -0400
-Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa)
-        by farmhouse.coelho.fi with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.92.2)
-        (envelope-from <luca@coelho.fi>)
-        id 1jArSd-0006mi-Ds; Sun, 08 Mar 2020 10:39:02 +0200
-Message-ID: <1ba480ddb338627ef453e32d03a238ffcdff6068.camel@coelho.fi>
-From:   Luca Coelho <luca@coelho.fi>
-To:     kvalo@codeaurora.org
-Cc:     linux-wireless@vger.kernel.org, linuxwifi@intel.com
-Date:   Sun, 08 Mar 2020 10:38:57 +0200
-Content-Type: multipart/signed; micalg="pgp-sha512";
-        protocol="application/pgp-signature"; boundary="=-f2sNoMlo2IBWg1LTEQSG"
-User-Agent: Evolution 3.34.1-4 
+        id S1726267AbgCHKoB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 8 Mar 2020 06:44:01 -0400
+Received: from mail.kernel.org ([198.145.29.99]:45718 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726210AbgCHKoB (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 8 Mar 2020 06:44:01 -0400
+Received: from localhost.localdomain (unknown [151.48.128.122])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 0C68420828;
+        Sun,  8 Mar 2020 10:43:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1583664241;
+        bh=hqlA6lSMLWbnz9BF/e9pOQBqFmdVb8XeWhql/dME254=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=jlPxdi/GpM2Dwg56AnTEXt59lM5Mj2hczLOFe9ZZQYBEft9doubJqdrdIMFlL0nu3
+         IO5VVaEq9fbRkShCtERldTuzPUg0/Fm3wQS2Jlu6B5eshJ2DB6bWupgdQiIiXVeiKQ
+         UB69jukyMsGAKqT3QkUFkOsmTrjjXQTNO0er2YI4=
+Date:   Sun, 8 Mar 2020 11:43:59 +0100
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org,
+        ryder.lee@mediatek.com
+Subject: Re: [PATCH 0/4] use proper size for mt7615 sta mcu commands
+Message-ID: <20200308104359.GA1579745@localhost.localdomain>
+References: <cover.1583066508.git.lorenzo@kernel.org>
 MIME-Version: 1.0
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on farmhouse.coelho.fi
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
-        TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.2
-Subject: pull-request: iwlwifi-fixes for v5.6 2020-03-08
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="PNTmBPCT7hxwcZjr"
+Content-Disposition: inline
+In-Reply-To: <cover.1583066508.git.lorenzo@kernel.org>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
 
---=-f2sNoMlo2IBWg1LTEQSG
-Content-Type: text/plain; charset="UTF-8"
+--PNTmBPCT7hxwcZjr
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-Hi Kalle,
+> Use proper buffer size for mcu messages in mt7615_mcu_set_sta since
+> MT7615_WTBL_UPDATE_MAX_SIZE takes into account just wtbl headers while
+> the mcu message contains even sta related headers.
+> Use proper buffer size for mcu messages in mt7615_mcu_set_rx_ba,
+> mt7615_mcu_set_tx_ba and mt7615_mcu_set_bmc routines
+>=20
+> Lorenzo Bianconi (4):
+>   mt76: mt7615: use proper size for mcu msg in mt7615_mcu_set_tx_ba
+>   mt76: mt7615: use proper size for mcu msg in mt7615_mcu_set_rx_ba
+>   mt76: mt7615: use proper size for mcu msg in mt7615_mcu_set_sta
+>   mt76: mt7615: use proper size for mcu msg in mt7615_mcu_set_bmc
+>=20
 
-Here's the first batch of fixes intended for v5.6.  This includes the
-patch series I sent a couple of days ago.  More details about the
-contents in the tag description.
+Please drop this series, I will post an update version soon.
 
-I pushed this to my pending branch but didn't get any results from
-kbuildbot yet.
+Regards,
+Lorenzo
 
-Please let me know if there are any issues.
+>  .../net/wireless/mediatek/mt76/mt7615/mcu.c   | 354 ++++++++++--------
+>  .../net/wireless/mediatek/mt76/mt7615/mcu.h   |  20 +
+>  2 files changed, 213 insertions(+), 161 deletions(-)
+>=20
+> --=20
+> 2.24.1
+>=20
 
-Cheers,
-Luca.
-
-
-The following changes since commit b102f0c522cf668c8382c56a4f771b37d011cda2=
-:
-
-  mt76: fix array overflow on receiving too many fragments for a packet (20=
-20-03-03 17:30:25 +0200)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/iwlwifi-fixes.git t=
-ags/iwlwifi-for-kalle-2020-03-08
-
-for you to fetch changes up to 9352ed0165ff4313ab340c979446c3d64c531f7a:
-
-  iwlwifi: cfg: use antenna diversity with all AX101 devices (2020-03-06 15=
-:26:33 +0200)
-
-----------------------------------------------------------------
-First batch of fixes intended for v5.6
-
-* Fix a locking issue in time events handling;
-* A fix in rate-scaling;
-* Fix for a potential NULL pointer deref;
-* Enable antenna diversity in some devices that were erroneously not
-  doing it;
-* Allow FW dumps to continue when the FW is stuck;
-* A fix in the HE capabilities handling;
-* Another fix for FW dumps where we were reading wrong addresses.
-
-----------------------------------------------------------------
-Avraham Stern (1):
-      iwlwifi: mvm: take the required lock when clearing time event data
-
-Ilan Peer (1):
-      iwlwifi: mvm: Fix rate scale NSS configuration
-
-Luca Coelho (3):
-      iwlwifi: check allocated pointer when allocating conf_tlvs
-      iwlwifi: dbg: don't abort if sending DBGC_SUSPEND_RESUME fails
-      iwlwifi: cfg: use antenna diversity with all AX101 devices
-
-Mordechay Goodstein (2):
-      iwlwifi: consider HE capability when setting LDPC
-      iwlwifi: yoyo: don't add TLV offset when reading FIFOs
-
- drivers/net/wireless/intel/iwlwifi/cfg/22000.c      |  2 ++
- drivers/net/wireless/intel/iwlwifi/fw/dbg.c         | 25 ++++++++---------=
---------
- drivers/net/wireless/intel/iwlwifi/fw/dbg.h         |  6 +++---
- drivers/net/wireless/intel/iwlwifi/iwl-drv.c        |  2 +-
- drivers/net/wireless/intel/iwlwifi/mvm/rs-fw.c      | 35 +++++++++++++++++=
-+++++++++---------
- drivers/net/wireless/intel/iwlwifi/mvm/time-event.c |  4 ++++
- 6 files changed, 44 insertions(+), 30 deletions(-)
-
---=-f2sNoMlo2IBWg1LTEQSG
+--PNTmBPCT7hxwcZjr
 Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-Content-Transfer-Encoding: 7bit
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCgAdFiEEF3LNfgb2BPWm68smoUecoho8xfoFAl5kryEACgkQoUecoho8
-xfoXwg//d4MNtbuSA4fXTIa3QRX8hxqLHBbDOhPfKUJgfjUOtTuhCtygwQorBqHu
-3bXLpQXTvLgZ01CWWjDaib2Tmiu1ObCZDOB1mwceA6FUoUb1GeTcYzORPDETYhgI
-QKX6pLCYk4OUlIaW+I2dsl400cjCSXOp0rzwi6Jf8MDCgpiEKBWw/awoqOFawBob
-ANRAiGhtabNPpCmDlPDfqySl24FrAtOdlZCOhJjLEedZeIWYPOnwqRkgHlnv8T1W
-wEA7Gn6blLCnhTCXD+eGpW7tu/lke2v3dUkEoXeJr3haeNYdxR/isr81hx2rt4Gj
-tCG/vV9Kx+4kWFfiWFzeECo+4AZGXN9cVKX3VyMJ0IAr09Hy+kqrlZwZ42vXTe78
-lZfRb/E1n92igQMgny6/kPcAyw4SWo6Ku++n5zVPTyPQdQbQ1WQtvf7lHgB2wNPy
-STeFmuHOCiqBxr7TwMzn8BVqnSCIN/sYN1kOnYiwDeGiOWzJQXmCEoHZ1QdX6TQe
-sO2gUMxaeNygpiBTHMyiOD1NQgxsrEoYULv7YOhx+pwC/uc6dPg34u1En6d+UbfE
-6dEcMkKXEKUs/EChHM53hWsQcmhPw5XvqvBQ5/+B2nwhBTpOhh+UnacItOf/RvVP
-tqUZ3ZIJYnawbA1kcYPuvzINCP/nvuJoKXYZZnXZHLtQQ1RkxyU=
-=poy7
+iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCXmTMagAKCRA6cBh0uS2t
+rGwlAPwMKLfwDgNdE37Ticfa4bG6N1YTZpJMBJwfwuvYnT4vHAEApWxGe0vJ3qrK
+AMlDOWDBC0557gaZv/vcM6gPQGr+pg4=
+=aWKf
 -----END PGP SIGNATURE-----
 
---=-f2sNoMlo2IBWg1LTEQSG--
-
+--PNTmBPCT7hxwcZjr--
