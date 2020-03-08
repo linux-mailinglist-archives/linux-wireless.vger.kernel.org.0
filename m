@@ -2,56 +2,56 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C9D717D3BE
-	for <lists+linux-wireless@lfdr.de>; Sun,  8 Mar 2020 13:44:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B28F17D42F
+	for <lists+linux-wireless@lfdr.de>; Sun,  8 Mar 2020 15:29:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726279AbgCHMoP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 8 Mar 2020 08:44:15 -0400
-Received: from mail-wr1-f47.google.com ([209.85.221.47]:35709 "EHLO
-        mail-wr1-f47.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726260AbgCHMoO (ORCPT
+        id S1726279AbgCHO3H (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 8 Mar 2020 10:29:07 -0400
+Received: from mail-wr1-f44.google.com ([209.85.221.44]:33670 "EHLO
+        mail-wr1-f44.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726259AbgCHO3H (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 8 Mar 2020 08:44:14 -0400
-Received: by mail-wr1-f47.google.com with SMTP id r7so7700804wro.2
-        for <linux-wireless@vger.kernel.org>; Sun, 08 Mar 2020 05:44:13 -0700 (PDT)
+        Sun, 8 Mar 2020 10:29:07 -0400
+Received: by mail-wr1-f44.google.com with SMTP id a25so4066673wrd.0
+        for <linux-wireless@vger.kernel.org>; Sun, 08 Mar 2020 07:29:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to;
-        bh=wOh1qUUVnR8SdAU+BUkdObJe8zqZ9QD+giXo3CmNXvo=;
-        b=fnL0PTxzvn7Gzlzu08V0EjADystsFNkPy3kv5WjxQzvWsGDg4s7/CojA32cS0tk4PJ
-         yJOuUCmiqSLVCAbyBS2D/Dhjn37X4LuY2VQMFAE8f+QrjuDk02O8HWGQBcLwh4KIj1Vy
-         8lp6JmMycPU4p+OpCQEhy37Z1AdGwRx6uqCRb4rUZ8dyhy3g5dMs/h1H66Q4sDjgE57P
-         cKa/vevMWcS9Y3loQtM800HUQwZfek52gmFPSev+7diYl9k6qpAIi3u9+jr5IMMiXkJs
-         2JhVcyUIQY+1uRypejxVdIQK8SlIt5EHQOvC4x0SYEFbviNHLNjdAKKxnOVNCa8g2nLU
-         B5Zw==
+        bh=LGCJ5Fv9cMVy5gUfr0I8ksC/X/tEsiH1YY8JTBHu1sY=;
+        b=lXZPalEslWW34ITNJgFKGGnM8dFE+TCoH2fiVjYyJR+D1gbKmKKQNfDvK/joaERSk9
+         W9kayzUz1YNyecheHjFnV1pnuawAeK1ZxwvOkXE3/Q7Svo/RGPJj6azQ+Qwnb3ze/QlB
+         mm4j1w3CA1D3ogHEvFMsiH05ghctGkQ6BzMVnw9MxujE6d0qICA+aMgaS2C3n5DQbYxV
+         4CwCcgVxIH3f6ZwNMWErY2Bb3pxS+7xvKreQxX6SBp+EEz80jHeopg3AcAPJegS9QAAc
+         /ZM52RgzFm0DGlaRBahm5Z4F7n94tT2OSedJ024as60MV74oADlQPSwPr4PXXTkYlZGk
+         LgVg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=wOh1qUUVnR8SdAU+BUkdObJe8zqZ9QD+giXo3CmNXvo=;
-        b=kjIGSxclBZeECdlk3Ds/fjUgkRbB1WFRgwqK4i3MOUggyoapGLZn4TgQy+UZyDc7tJ
-         GtLHJZK0mRIQFPbqgKCWl/EcaqZVoB/tURnJUrZ4ZQW26WbouG24352kxcN0ov9avNHB
-         i36216qbAEJWqslSv7Crf3m/qMhJ7y2H6hbj2h98gOUoSYdCp1vsIca76ZxtUkfwyTl8
-         +ibIHNuTYknbVEKmCBMcszQc7c6OEo6NSD68ysq32Ija81bLsZTOUjYEL2SWdWGWme09
-         4IV9AJTDBXCdnAgQmrDgpTnXFUe2xpzPu2qCENiic/5uILiuklpk8JA/TnejcZuEqfoX
-         82Bw==
-X-Gm-Message-State: ANhLgQ13IJVUpXrqfONwHr/0i0MV8KN/72BYOAXKWFcF787bwPyToZTl
-        NPAJ9Avx8jB/u5p/e/Dy7nE=
-X-Google-Smtp-Source: ADFU+vtBqzg5Q8sjlMTz5C0BvD3s9bp/LVNAJyW85HvWffjRIbvye240wqsTygKunpWv7i6eGc7I9A==
-X-Received: by 2002:adf:9501:: with SMTP id 1mr15338142wrs.426.1583671452566;
-        Sun, 08 Mar 2020 05:44:12 -0700 (PDT)
+        bh=LGCJ5Fv9cMVy5gUfr0I8ksC/X/tEsiH1YY8JTBHu1sY=;
+        b=A26fluxCwvSu1n96W6+046hfyaDKE1+SVW/ECwe1dOxuwYyH3zJJqi86I0Uh6oF1WJ
+         unGdXhicQwQ+yhUhxA5YIGuQ3IZlYjE3JTrZwcf1MVF3O2lkTXnVXmKEfbTrRyJgDBS5
+         xkrE36OaqUN5qXm/KMHjRFAIgCHyN3QdEGCeO/6YYj7qH4yELVCGW/ZGa283KirabS6k
+         P757szJ+AiVv1hJvO4XpVs5Z71DmJBGflq2elMq5TCnuzVSvKRaRSQkLUP5ApHB1r0MP
+         6r6j4uqxNvXaCfyzHOPu0cdv8c7qTus6alaTFOGTmR6ZP4FwT4LpYpKIXf58WbsIiPQ3
+         WyuA==
+X-Gm-Message-State: ANhLgQ13YI7e6CdXZ3qyk/I7W1OR7aPFBA7r8t9RCFLZtOdXk+7WlH1i
+        kcdEBoUSK7WyfWYqCjP1b+I=
+X-Google-Smtp-Source: ADFU+vuQPjsrj0zPnuo1mCBYgobXqx+ZS44jD1HI0iTtJFqSeHZA3d70u8sAbcLIo3Hxf0V2ejOZnw==
+X-Received: by 2002:adf:8b1b:: with SMTP id n27mr15720073wra.324.1583677745303;
+        Sun, 08 Mar 2020 07:29:05 -0700 (PDT)
 Received: from t2b3 ([109.175.104.3])
-        by smtp.gmail.com with ESMTPSA id g206sm21583174wme.46.2020.03.08.05.44.10
+        by smtp.gmail.com with ESMTPSA id q1sm15571036wrx.19.2020.03.08.07.29.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 08 Mar 2020 05:44:11 -0700 (PDT)
-Date:   Sun, 8 Mar 2020 13:44:07 +0100
+        Sun, 08 Mar 2020 07:29:04 -0700 (PDT)
+Date:   Sun, 8 Mar 2020 15:29:03 +0100
 From:   Tobias Predel <tobias.predel@gmail.com>
 To:     yhchuang@realtek.com, Bjoern Franke <bjo@schafweide.org>
 Cc:     Larry Finger <Larry.Finger@lwfinger.net>,
         linux-wireless@vger.kernel.org
 Subject: Re: [rtw88] Linux 5.6-rc1 / RTL8822BE WiFi adapter
-Message-ID: <20200308124407.GA1447@t2b3>
+Message-ID: <20200308142903.GA8798@t2b3>
 References: <20200214214134.GA12764@t2b3>
  <c76d37cc-2cab-a8f2-e570-a444c06ad020@schafweide.org>
  <028ea5d3-1459-b37e-f996-72958be0ff4c@lwfinger.net>
@@ -71,6 +71,8 @@ Hello,
 well, now I get troubles back with Network controller: 
 Realtek Semiconductor Co., Ltd. RTL8822BE 802.11a/b/g/n/ac WiFi adapter,
 still on 5.6.0-rc2-next-20200217.
+
+Using HP ProBook 430 g5, connected to 802.11n/g AP in 2.4 GHz band.
 
 Are there any *other* firmware files for testing or update?
 
