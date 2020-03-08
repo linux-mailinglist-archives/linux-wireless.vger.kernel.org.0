@@ -2,34 +2,34 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5580A17D6A5
-	for <lists+linux-wireless@lfdr.de>; Sun,  8 Mar 2020 23:09:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 82B6617D6A6
+	for <lists+linux-wireless@lfdr.de>; Sun,  8 Mar 2020 23:09:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726391AbgCHWJP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 8 Mar 2020 18:09:15 -0400
-Received: from mail.kernel.org ([198.145.29.99]:39398 "EHLO mail.kernel.org"
+        id S1726428AbgCHWJR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 8 Mar 2020 18:09:17 -0400
+Received: from mail.kernel.org ([198.145.29.99]:39432 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726352AbgCHWJP (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 8 Mar 2020 18:09:15 -0400
+        id S1726352AbgCHWJR (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 8 Mar 2020 18:09:17 -0400
 Received: from localhost.localdomain (unknown [151.48.128.122])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 20BB82083E;
-        Sun,  8 Mar 2020 22:09:13 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id A8BF320848;
+        Sun,  8 Mar 2020 22:09:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1583705355;
-        bh=0sP3xQJnSSPWdJPq59NoY8TpyORlbZzrCx0XGTjsAaw=;
+        s=default; t=1583705356;
+        bh=cUnOmIT5EXyOr1ej+HzSCw1RnxE5kvobRb+D7MrnwQs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=utPrhzYL8J0uWCvPGwYtuUmGpunUJHJFw4ItxNmjFK5tYeaDz5ULUw8e1+k1iZoGo
-         taXRgR/ww8FjuAWWSgdEu6gKXJ04BHpXIm/N6NvxNaw/v5t20qyR0K6gwQWSAXpIIh
-         YUdCKZ99ucHMPOsPVQ1ZL3IZY+n4G2IlJxI/sV9Q=
+        b=VIPpRo1RGIGZJc92NPL7L1cbjUb1muFER5plKwjU86BlJtYO/G88EigsBGPgabPqg
+         U6fZqkQyreiGAOdma+ED49rKaaCZ8ewd+4ckoie26o+BSmuNyRg0iU5QmfdaObyfWN
+         SIZBhnoCqCoPUgO/JL0QkSlQDLOGonRNxINQynrA=
 From:   Lorenzo Bianconi <lorenzo@kernel.org>
 To:     nbd@nbd.name
 Cc:     lorenzo.bianconi@redhat.com, sean.wang@mediatek.com,
         linux-wireless@vger.kernel.org, ryder.lee@mediatek.com
-Subject: [PATCH v2 05/25] mt76: always init to 0 mcu messages
-Date:   Sun,  8 Mar 2020 23:08:17 +0100
-Message-Id: <491494d2a8a084ee3e418d7d9a8d3e610cfcb1fd.1583705012.git.lorenzo@kernel.org>
+Subject: [PATCH v2 06/25] mt76: mt7615: introduce mt7615_mcu_send_message routine
+Date:   Sun,  8 Mar 2020 23:08:18 +0100
+Message-Id: <207931883fc4cf8236ccf40d2cce861b9cafb7fc.1583705012.git.lorenzo@kernel.org>
 X-Mailer: git-send-email 2.24.1
 In-Reply-To: <cover.1583705012.git.lorenzo@kernel.org>
 References: <cover.1583705012.git.lorenzo@kernel.org>
@@ -40,63 +40,91 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Always initialize to 0 mcu messages since if they are not propely
-configured they could hang the firmware.
+Introduce mt7615_mcu_send_message routine in order to allocate mcu skb
+out of mcu sending routine. This approach is useful when the mcu
+message is complicated and it is convenient to rely on skb buffer API
 
 Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mcu.c        | 6 ++++--
- drivers/net/wireless/mediatek/mt76/mt7603/mcu.c | 1 -
- drivers/net/wireless/mediatek/mt76/mt7615/mcu.c | 1 -
- 3 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt76.h     |  4 ++++
+ .../net/wireless/mediatek/mt76/mt7615/mcu.c   | 23 +++++++++++++------
+ 2 files changed, 20 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mcu.c b/drivers/net/wireless/mediatek/mt76/mcu.c
-index 633ad948c21d..4048f446e3ee 100644
---- a/drivers/net/wireless/mediatek/mt76/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mcu.c
-@@ -9,14 +9,16 @@ struct sk_buff *
- mt76_mcu_msg_alloc(const void *data, int head_len,
- 		   int data_len, int tail_len)
- {
-+	int length = head_len + data_len + tail_len;
- 	struct sk_buff *skb;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
+index aca477434858..8e4759bc8f59 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76.h
+@@ -139,6 +139,8 @@ struct mt76_sw_queue {
+ struct mt76_mcu_ops {
+ 	int (*mcu_send_msg)(struct mt76_dev *dev, int cmd, const void *data,
+ 			    int len, bool wait_resp);
++	int (*mcu_skb_send_msg)(struct mt76_dev *dev, struct sk_buff *skb,
++				int cmd, bool wait_resp);
+ 	int (*mcu_wr_rp)(struct mt76_dev *dev, u32 base,
+ 			 const struct mt76_reg_pair *rp, int len);
+ 	int (*mcu_rd_rp)(struct mt76_dev *dev, u32 base,
+@@ -588,7 +590,9 @@ enum mt76_phy_type {
+ #define mt76_rd_rp(dev, ...)	(dev)->mt76.bus->rd_rp(&((dev)->mt76), __VA_ARGS__)
  
--	skb = alloc_skb(head_len + data_len + tail_len,
--			GFP_KERNEL);
-+	skb = alloc_skb(length, GFP_KERNEL);
- 	if (!skb)
- 		return NULL;
- 
-+	memset(skb->head, 0, length);
- 	skb_reserve(skb, head_len);
+ #define mt76_mcu_send_msg(dev, ...)	(dev)->mt76.mcu_ops->mcu_send_msg(&((dev)->mt76), __VA_ARGS__)
 +
- 	if (data && data_len)
- 		skb_put_data(skb, data, data_len);
+ #define __mt76_mcu_send_msg(dev, ...)	(dev)->mcu_ops->mcu_send_msg((dev), __VA_ARGS__)
++#define __mt76_mcu_skb_send_msg(dev, ...)	(dev)->mcu_ops->mcu_skb_send_msg((dev), __VA_ARGS__)
+ #define mt76_mcu_restart(dev, ...)	(dev)->mt76.mcu_ops->mcu_restart(&((dev)->mt76))
+ #define __mt76_mcu_restart(dev, ...)	(dev)->mcu_ops->mcu_restart((dev))
  
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7603/mcu.c
-index b466b3ab8a2c..77985d81c447 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7603/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7603/mcu.c
-@@ -27,7 +27,6 @@ __mt7603_mcu_msg_send(struct mt7603_dev *dev, struct sk_buff *skb,
- 		seq = ++mdev->mcu.msg_seq & 0xf;
- 
- 	txd = (struct mt7603_mcu_txd *)skb_push(skb, hdrlen);
--	memset(txd, 0, hdrlen);
- 
- 	txd->len = cpu_to_le16(skb->len);
- 	if (cmd == -MCU_CMD_FW_SCATTER)
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-index b24240f90a7d..b94b1b73fd1a 100644
+index b94b1b73fd1a..eb6867a316b1 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-@@ -62,7 +62,6 @@ void mt7615_mcu_fill_msg(struct mt7615_dev *dev, struct sk_buff *skb,
- 		seq = ++dev->mt76.mcu.msg_seq & 0xf;
+@@ -166,17 +166,12 @@ int mt7615_mcu_wait_response(struct mt7615_dev *dev, int cmd, int seq)
+ }
  
- 	mcu_txd = (struct mt7615_mcu_txd *)skb_push(skb, sizeof(*mcu_txd));
--	memset(mcu_txd, 0, sizeof(*mcu_txd));
+ static int
+-mt7615_mcu_msg_send(struct mt76_dev *mdev, int cmd, const void *data,
+-		    int len, bool wait_resp)
++mt7615_mcu_send_message(struct mt76_dev *mdev, struct sk_buff *skb,
++			int cmd, bool wait_resp)
+ {
+ 	struct mt7615_dev *dev = container_of(mdev, struct mt7615_dev, mt76);
+-	struct sk_buff *skb;
+ 	int ret, seq;
  
- 	if (cmd != -MCU_CMD_FW_SCATTER) {
- 		q_idx = MT_TX_MCU_PORT_RX_Q0;
+-	skb = mt7615_mcu_msg_alloc(data, len);
+-	if (!skb)
+-		return -ENOMEM;
+-
+ 	mutex_lock(&mdev->mcu.mutex);
+ 
+ 	ret = __mt7615_mcu_msg_send(dev, skb, cmd, &seq);
+@@ -192,6 +187,19 @@ mt7615_mcu_msg_send(struct mt76_dev *mdev, int cmd, const void *data,
+ 	return ret;
+ }
+ 
++static int
++mt7615_mcu_msg_send(struct mt76_dev *mdev, int cmd, const void *data,
++		    int len, bool wait_resp)
++{
++	struct sk_buff *skb;
++
++	skb = mt7615_mcu_msg_alloc(data, len);
++	if (!skb)
++		return -ENOMEM;
++
++	return __mt76_mcu_skb_send_msg(mdev, skb, cmd, wait_resp);
++}
++
+ static void
+ mt7615_mcu_csa_finish(void *priv, u8 *mac, struct ieee80211_vif *vif)
+ {
+@@ -704,6 +712,7 @@ int mt7615_mcu_fw_log_2_host(struct mt7615_dev *dev, u8 ctrl)
+ int mt7615_mcu_init(struct mt7615_dev *dev)
+ {
+ 	static const struct mt76_mcu_ops mt7615_mcu_ops = {
++		.mcu_skb_send_msg = mt7615_mcu_send_message,
+ 		.mcu_send_msg = mt7615_mcu_msg_send,
+ 		.mcu_restart = mt7615_mcu_restart,
+ 	};
 -- 
 2.24.1
 
