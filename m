@@ -2,202 +2,80 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 15339180BD2
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Mar 2020 23:45:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 972BE180B92
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Mar 2020 23:30:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727729AbgCJWpP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 10 Mar 2020 18:45:15 -0400
-Received: from gateway33.websitewelcome.com ([192.185.146.85]:23967 "EHLO
-        gateway33.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726325AbgCJWpO (ORCPT
+        id S1727591AbgCJWag (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 10 Mar 2020 18:30:36 -0400
+Received: from smtprelay0206.hostedemail.com ([216.40.44.206]:44498 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726273AbgCJWag (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 10 Mar 2020 18:45:14 -0400
-X-Greylist: delayed 1353 seconds by postgrey-1.27 at vger.kernel.org; Tue, 10 Mar 2020 18:45:14 EDT
-Received: from cm16.websitewelcome.com (cm16.websitewelcome.com [100.42.49.19])
-        by gateway33.websitewelcome.com (Postfix) with ESMTP id A10998F9F72
-        for <linux-wireless@vger.kernel.org>; Tue, 10 Mar 2020 17:21:53 -0500 (CDT)
-Received: from gator4166.hostgator.com ([108.167.133.22])
-        by cmsmtp with SMTP
-        id BnG5jqggC8vkBBnG5jjKtw; Tue, 10 Mar 2020 17:21:53 -0500
-X-Authority-Reason: nr=8
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=41Tj2XlH5TbhpR/J2ek3eO22cPzrnxQN6EC+pTU4jo8=; b=ZYOZodowhuXUL05dCUtPBabCzD
-        frvvp4OKMasqUSsP2bqLfMpg9Uuz44WTPpvYoLsMozl1UO7pzpWUlKKwh605aAEoO2IG5gqOGoce/
-        SImBR3osnAKnYqzEk6kRScpZA+s9naxCpyJkcGYLTFIIK8I6X3sLjDBIMo/lhl09S6DHdhxZ0mPeS
-        MBTgYKSE+FsEmDffVc+t8AGpufWw+I1iJCt88SCfdYsyd5Onaveke1OjC/aO0/cF60mh3krh2YtbT
-        jmp0rPX9Vwf3XfCc6WfngI3yDoo0U1hvYPdx60ron+nO9G85tmyRNb2uOnDypvr5lEW7VJUndcJ/i
-        4aSqxNSw==;
-Received: from 187-162-252-62.static.axtel.net ([187.162.252.62]:46884 helo=[192.168.0.140])
-        by gator4166.hostgator.com with esmtpsa (TLSv1.2:ECDHE-RSA-AES128-GCM-SHA256:128)
-        (Exim 4.92)
-        (envelope-from <gustavo@embeddedor.com>)
-        id 1jBnG5-002TYx-4r; Tue, 10 Mar 2020 17:21:53 -0500
+        Tue, 10 Mar 2020 18:30:36 -0400
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay01.hostedemail.com (Postfix) with ESMTP id 28BDA100F9379;
+        Tue, 10 Mar 2020 22:30:35 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:973:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1539:1593:1594:1711:1730:1747:1777:1792:2198:2199:2393:2559:2562:2828:3138:3139:3140:3141:3142:3352:3622:3865:3866:3867:3871:3872:3873:3874:4321:5007:6119:7903:10004:10400:10848:11232:11658:11914:12297:12740:12760:12895:13069:13161:13229:13255:13311:13357:13439:14659:21080:21627:30012:30054:30070:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:1,LUA_SUMMARY:none
+X-HE-Tag: cable45_3f2046163eb28
+X-Filterd-Recvd-Size: 2301
+Received: from XPS-9350.home (unknown [47.151.143.254])
+        (Authenticated sender: joe@perches.com)
+        by omf14.hostedemail.com (Postfix) with ESMTPA;
+        Tue, 10 Mar 2020 22:30:33 +0000 (UTC)
+Message-ID: <8b6213e51131deacbdac29a8d9c088ae49933724.camel@perches.com>
 Subject: Re: [PATCH][next] zd1211rw/zd_usb.h: Replace zero-length array with
  flexible-array member
-To:     Joe Perches <joe@perches.com>,
+From:   Joe Perches <joe@perches.com>
+To:     "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
         Jes Sorensen <jes.sorensen@gmail.com>,
         Kalle Valo <kvalo@codeaurora.org>
 Cc:     Daniel Drake <dsd@gentoo.org>, Ulrich Kunitz <kune@deine-taler.de>,
         "David S. Miller" <davem@davemloft.net>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         linux-kernel@vger.kernel.org
+Date:   Tue, 10 Mar 2020 15:28:52 -0700
+In-Reply-To: <c2aa4d8d-1c39-1903-2b49-382f2143e181@embeddedor.com>
 References: <20200305111216.GA24982@embeddedor>
- <87k13yq2jo.fsf@kamboji.qca.qualcomm.com>
- <256881484c5db07e47c611a56550642a6f6bd8e9.camel@perches.com>
- <87blpapyu5.fsf@kamboji.qca.qualcomm.com>
- <1bb7270f-545b-23ca-aa27-5b3c52fba1be@embeddedor.com>
- <87r1y0nwip.fsf@kamboji.qca.qualcomm.com>
- <48ff1333-0a14-36d8-9565-a7f13a06c974@embeddedor.com>
- <021d1125-3ffd-39ef-395a-b796c527bde4@gmail.com>
- <fb3395d7-e932-10ac-1feb-ab2ceb63424e@embeddedor.com>
- <937b0b529509ec1641453ef7c13f38e2d7cc813e.camel@perches.com>
-From:   "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-Openpgp: preference=signencrypt
-Autocrypt: addr=gustavo@embeddedor.com; keydata=
- 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
- VtSixD1uOgytAP7RWS474w==
-Message-ID: <c2aa4d8d-1c39-1903-2b49-382f2143e181@embeddedor.com>
-Date:   Tue, 10 Mar 2020 17:21:52 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+         <87k13yq2jo.fsf@kamboji.qca.qualcomm.com>
+         <256881484c5db07e47c611a56550642a6f6bd8e9.camel@perches.com>
+         <87blpapyu5.fsf@kamboji.qca.qualcomm.com>
+         <1bb7270f-545b-23ca-aa27-5b3c52fba1be@embeddedor.com>
+         <87r1y0nwip.fsf@kamboji.qca.qualcomm.com>
+         <48ff1333-0a14-36d8-9565-a7f13a06c974@embeddedor.com>
+         <021d1125-3ffd-39ef-395a-b796c527bde4@gmail.com>
+         <fb3395d7-e932-10ac-1feb-ab2ceb63424e@embeddedor.com>
+         <937b0b529509ec1641453ef7c13f38e2d7cc813e.camel@perches.com>
+         <c2aa4d8d-1c39-1903-2b49-382f2143e181@embeddedor.com>
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.34.1-2 
 MIME-Version: 1.0
-In-Reply-To: <937b0b529509ec1641453ef7c13f38e2d7cc813e.camel@perches.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - embeddedor.com
-X-BWhitelist: no
-X-Source-IP: 187.162.252.62
-X-Source-L: No
-X-Exim-ID: 1jBnG5-002TYx-4r
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: 187-162-252-62.static.axtel.net ([192.168.0.140]) [187.162.252.62]:46884
-X-Source-Auth: gustavo@embeddedor.com
-X-Email-Count: 16
-X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
-X-Local-Domain: yes
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-
-
-On 3/10/20 5:15 PM, Joe Perches wrote:
-> On Tue, 2020-03-10 at 17:13 -0500, Gustavo A. R. Silva wrote:
->>
->> On 3/10/20 5:07 PM, Jes Sorensen wrote:
->>> On 3/10/20 5:52 PM, Gustavo A. R. Silva wrote:
->>>>
->>>> On 3/10/20 8:56 AM, Kalle Valo wrote:
->>>>> + jes
->>>>>
->>>>> "Gustavo A. R. Silva" <gustavo@embeddedor.com> writes:
->>>>>>> I wrote in a confusing way, my question above was about the actual patch
->>>>>>> and not the the title. For example, Jes didn't like this style change:
->>>>>>>
->>>>>>> https://patchwork.kernel.org/patch/11402315/
->>>>>>>
->>>>>>
->>>>>> It doesn't seem that that comment adds a lot to the conversation. The only
->>>>>> thing that it says is literally "fix the compiler". By the way, more than
->>>>>> a hundred patches have already been applied to linux-next[1] and he seems
->>>>>> to be the only person that has commented such a thing.
->>>>>
->>>>> But I also asked who prefers this format in that thread, you should not
->>>>> ignore questions from two maintainers (me and Jes).
->>>>>
->>>>
->>>> I'm sorry. I thought the changelog text had already the proper information.
->>>> In the changelog text I'm quoting the GCC documentation below:
->>>>
->>>> "The preferred mechanism to declare variable-length types like struct line
->>>> above is the ISO C99 flexible array member..." [1]
->>>>
->>>> I'm also including a link to the following KSPP open issue:
->>>>
->>>> https://github.com/KSPP/linux/issues/21
->>>>
->>>> The issue above mentions the following:
->>>>
->>>> "Both cases (0-byte and 1-byte arrays) pose confusion for things like sizeof(),
->>>> CONFIG_FORTIFY_SOURCE."
->>>>
->>>> sizeof(flexible-array-member) triggers a warning because flexible array members have
->>>> incomplete type[1]. There are some instances of code in which the sizeof operator
->>>> is being incorrectly/erroneously applied to zero-length arrays and the result is zero.
->>>> Such instances may be hiding some bugs. So, the idea is also to get completely rid
->>>> of those sorts of issues.
->>>
->>> As I stated in my previous answer, this seems more code churn than an
->>> actual fix. If this is a real problem, shouldn't the work be put into
->>> fixing the compiler to handle foo[0] instead? It seems that is where the
->>> real value would be.
->>>
->>
->> Yeah. But, unfortunately, I'm not a compiler guy, so I'm not able to fix the
->> compiler as you suggest. And I honestly don't see what is so annoying/disturbing
->> about applying a patch that removes the 0 from foo[0] when it brings benefit
->> to the whole codebase.
+On Tue, 2020-03-10 at 17:21 -0500, Gustavo A. R. Silva wrote:
+> On 3/10/20 5:15 PM, Joe Perches wrote:
+> > As far as I can tell, it doesn't actually make a difference as
+> > all the compilers produce the same object code with either form.
+> > 
 > 
-> As far as I can tell, it doesn't actually make a difference as
-> all the compilers produce the same object code with either form.
-> 
+> That's precisely why we can implement these changes, cleanly(the fact
+> that the compiler produces the same object code). So, the resulting
+> object code is not the point here.
 
-That's precisely why we can implement these changes, cleanly(the fact
-that the compiler produces the same object code). So, the resulting
-object code is not the point here.
+You are making Jes' point.
 
---
-Gustavo
+There's nothing wrong with making changes just for consistent
+style across the kernel.
+
+This change is exactly that.
+
+I have no objection to this patch.
+
+Jes does, though Jes is not a maintainer of this file.
+
+I think "churn" arguments are overstated.
+
