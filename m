@@ -2,23 +2,23 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CDF8D180BD5
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Mar 2020 23:47:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 29FE1180C3D
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Mar 2020 00:21:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727642AbgCJWrC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 10 Mar 2020 18:47:02 -0400
-Received: from gateway36.websitewelcome.com ([50.116.125.2]:37814 "EHLO
-        gateway36.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726315AbgCJWrC (ORCPT
+        id S1727659AbgCJXVX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 10 Mar 2020 19:21:23 -0400
+Received: from gateway20.websitewelcome.com ([192.185.48.38]:25742 "EHLO
+        gateway20.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726899AbgCJXVW (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 10 Mar 2020 18:47:02 -0400
-X-Greylist: delayed 620 seconds by postgrey-1.27 at vger.kernel.org; Tue, 10 Mar 2020 18:47:01 EDT
-Received: from cm12.websitewelcome.com (cm12.websitewelcome.com [100.42.49.8])
-        by gateway36.websitewelcome.com (Postfix) with ESMTP id 4495D40862ADE
-        for <linux-wireless@vger.kernel.org>; Tue, 10 Mar 2020 17:02:35 -0500 (CDT)
+        Tue, 10 Mar 2020 19:21:22 -0400
+X-Greylist: delayed 1500 seconds by postgrey-1.27 at vger.kernel.org; Tue, 10 Mar 2020 19:21:21 EDT
+Received: from cm13.websitewelcome.com (cm13.websitewelcome.com [100.42.49.6])
+        by gateway20.websitewelcome.com (Postfix) with ESMTP id A514C400D007C
+        for <linux-wireless@vger.kernel.org>; Tue, 10 Mar 2020 16:18:56 -0500 (CDT)
 Received: from gator4166.hostgator.com ([108.167.133.22])
         by cmsmtp with SMTP
-        id BnePjI54F1s2xBnePj24Om; Tue, 10 Mar 2020 17:47:01 -0500
+        id BnRljwo3KRP4zBnRljJ4pK; Tue, 10 Mar 2020 17:33:57 -0500
 X-Authority-Reason: nr=8
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
@@ -26,17 +26,17 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
         Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
         List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=UsqxYLWLXKnLJ3c6VQJ3e9hzgKr1x3F1ADDL6grOKPI=; b=YyHoh/0Xsgyn9+zhrEj6JxNffD
-        w4WINQIvgYuo4flUxZBn27eoCLBP7zzbeYoUCGixjj3yEQKSPzxx76ADlLnV+P9n92JxZBVpotxIU
-        yizrAm9JHIyu9TLEBDA5BOcEAwXOxXgYvfUpLzqzemQlqP29s7U5R/jfnjZ/9lPLFS6fn5N9+KPuN
-        l2TxrizmjM3gMEaZBc8qotaCLcDaJL7068ex0/q3n1TyzWJcjrEK8i48Kt3R5Gp3x1cneEdKGrfsa
-        7m3XLpM12wmulBkUvmDlwP3avZw/pN8viBdo5y6XyeMBH6XBrGP+fj5DYKWz0KZOSa8HTsVjk9br8
-        7PbUvx/A==;
-Received: from 187-162-252-62.static.axtel.net ([187.162.252.62]:47200 helo=[192.168.0.140])
+        bh=PYjNfqYboGPdXKJH/VEDoHUQTUvW2ep9xjORuPJJc40=; b=b/WquNw8ZttITQ2stpkWHrkjsC
+        haa/54/07i3AQLJaZRjQ4St5432O7ISX3/wT2c+N+O9NPf+zwAUU2kEeSTwHJx+a178i/XGhych31
+        dWa5lZGZReYG9dlLIdzU0Tdpg14FOUpd7TsRH34xhZEcFnAdaQh+6yObsb+8bVfmRk54nXBovvIN3
+        qrlu2iv0/8WWAfdwSnfgtIctI5wT3apcN3XY8V/xaAmm9nt09IOIFzE85TWk+ypYMw13MsNnUjAJn
+        yWJekRyqjBWBsYlgbdxbrq0Gbjf6OKeADFumOR3y1Su1ie3rboOC+WHmtbXtPT/eHpeHncXmR3xZS
+        M9Zm5B8A==;
+Received: from 187-162-252-62.static.axtel.net ([187.162.252.62]:47078 helo=[192.168.0.140])
         by gator4166.hostgator.com with esmtpsa (TLSv1.2:ECDHE-RSA-AES128-GCM-SHA256:128)
         (Exim 4.92)
         (envelope-from <gustavo@embeddedor.com>)
-        id 1jBneO-002f2q-V7; Tue, 10 Mar 2020 17:47:01 -0500
+        id 1jBnRl-002Yyz-5R; Tue, 10 Mar 2020 17:33:57 -0500
 Subject: Re: [PATCH][next] zd1211rw/zd_usb.h: Replace zero-length array with
  flexible-array member
 To:     Joe Perches <joe@perches.com>,
@@ -58,8 +58,6 @@ References: <20200305111216.GA24982@embeddedor>
  <937b0b529509ec1641453ef7c13f38e2d7cc813e.camel@perches.com>
  <c2aa4d8d-1c39-1903-2b49-382f2143e181@embeddedor.com>
  <8b6213e51131deacbdac29a8d9c088ae49933724.camel@perches.com>
- <e65fd08d-984f-0bdc-5fbf-6abceacf819a@gmail.com>
- <ac0ab948aabd201360d9330c206dd72df14847ae.camel@perches.com>
 From:   "Gustavo A. R. Silva" <gustavo@embeddedor.com>
 Openpgp: preference=signencrypt
 Autocrypt: addr=gustavo@embeddedor.com; keydata=
@@ -105,12 +103,12 @@ Autocrypt: addr=gustavo@embeddedor.com; keydata=
  YJWH93PN+ZUh6i6Rd2U/i8jH5WvzR57UeWxE4P8bQc0hNGrUsHQH6bpHV2lbuhDdqo+cM9eh
  GZEO3+gCDFmKrjspZjkJbB5Gadzvts5fcWGOXEvuT8uQSvl+vEL0g6vczsyPBtqoBLa9SNrS
  VtSixD1uOgytAP7RWS474w==
-Message-ID: <75c0c37a-82bf-507e-d6ea-89cd56add8a7@embeddedor.com>
-Date:   Tue, 10 Mar 2020 17:46:59 -0500
+Message-ID: <fc753612-6a5a-4dd4-61e6-17613eabba50@embeddedor.com>
+Date:   Tue, 10 Mar 2020 17:33:54 -0500
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.9.0
 MIME-Version: 1.0
-In-Reply-To: <ac0ab948aabd201360d9330c206dd72df14847ae.camel@perches.com>
+In-Reply-To: <8b6213e51131deacbdac29a8d9c088ae49933724.camel@perches.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -122,13 +120,13 @@ X-AntiAbuse: Sender Address Domain - embeddedor.com
 X-BWhitelist: no
 X-Source-IP: 187.162.252.62
 X-Source-L: No
-X-Exim-ID: 1jBneO-002f2q-V7
+X-Exim-ID: 1jBnRl-002Yyz-5R
 X-Source: 
 X-Source-Args: 
 X-Source-Dir: 
-X-Source-Sender: 187-162-252-62.static.axtel.net ([192.168.0.140]) [187.162.252.62]:47200
+X-Source-Sender: 187-162-252-62.static.axtel.net ([192.168.0.140]) [187.162.252.62]:47078
 X-Source-Auth: gustavo@embeddedor.com
-X-Email-Count: 54
+X-Email-Count: 35
 X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
 X-Local-Domain: yes
 Sender: linux-wireless-owner@vger.kernel.org
@@ -138,23 +136,35 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 
 
-On 3/10/20 5:41 PM, Joe Perches wrote:
-> On Tue, 2020-03-10 at 18:33 -0400, Jes Sorensen wrote:
->> Again, the changes are not harmful to the code, but add no value.
+On 3/10/20 5:28 PM, Joe Perches wrote:
+> On Tue, 2020-03-10 at 17:21 -0500, Gustavo A. R. Silva wrote:
+>> On 3/10/20 5:15 PM, Joe Perches wrote:
+>>> As far as I can tell, it doesn't actually make a difference as
+>>> all the compilers produce the same object code with either form.
+>>>
+>>
+>> That's precisely why we can implement these changes, cleanly(the fact
+>> that the compiler produces the same object code). So, the resulting
+>> object code is not the point here.
 > 
-> That argument asserts that style consistency is value-free.
-> I generally disagree with that argument.
-> 
-
-If this is a matter of style, then I have already proved (this is in
-the changelog text) that the [] style is better than the [0] style:
-
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=76497732932f15e7323dc805e8ea8dc11bb587cf
-
-> But then again, it's likely we will have to agree to disagree.
+> You are making Jes' point.
 > 
 
-That's a healthy thing. :)
+Please, see my other reply.
+
+> There's nothing wrong with making changes just for consistent
+> style across the kernel.
+> 
+> This change is exactly that.
+> 
+> I have no objection to this patch.
+> 
+> Jes does, though Jes is not a maintainer of this file.
+> 
+> I think "churn" arguments are overstated.
+> 
+
+I agree.
 
 Thanks
 --
