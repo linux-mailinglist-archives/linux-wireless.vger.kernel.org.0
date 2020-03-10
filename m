@@ -2,128 +2,69 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 43E9F180BA5
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Mar 2020 23:34:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A897180BCB
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Mar 2020 23:43:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727878AbgCJWef (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 10 Mar 2020 18:34:35 -0400
-Received: from mail-qt1-f195.google.com ([209.85.160.195]:39070 "EHLO
-        mail-qt1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726273AbgCJWef (ORCPT
+        id S1726380AbgCJWnY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 10 Mar 2020 18:43:24 -0400
+Received: from smtprelay0023.hostedemail.com ([216.40.44.23]:46894 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726293AbgCJWnY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 10 Mar 2020 18:34:35 -0400
-Received: by mail-qt1-f195.google.com with SMTP id e13so180115qts.6;
-        Tue, 10 Mar 2020 15:34:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:subject:to:cc:references:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=YSxID0kX3bC1b3w0Sg3Xa0CKPJNgWfyLpSTsnQfgRFM=;
-        b=RwuHZ6e/LEGZBHVQQrIKU4Bs+BCJrUihr8pYHkFI11hGRrZ1O8ducLJQLvecI7G1DF
-         uEOYsBRwJXNavy8olCebLK9320WDFuhxal1tSSclwMHpY500Ylw8MqE47T3rLaQVRAu6
-         94J+qUrDSQT29b4WTgu3L3FkdF4kzUdhMNO2PCxL/YhC6/Zm7Fku/Q1uOdK/SGADEl6G
-         WmZtK/fPNIcNZIkYyUVPg+kEHPhDNvtyuOTA18FuJQ4TAjtKDvDghpXKrhbBYFjMUX24
-         VZMnNSaghZN84u6Onj/DBcjL3iUdf6GK1+xw457ItkMPBsA9lzAMWaXy+j8aQp68lwb3
-         RkIQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:subject:to:cc:references:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=YSxID0kX3bC1b3w0Sg3Xa0CKPJNgWfyLpSTsnQfgRFM=;
-        b=oRduizE6ly4+CoI9R5TJybDJo7OiIxjQf2DFshbkKvVlUZKpXLcDVL+mydg65/qCSk
-         40nwzXrbnFwWygqdP62VC3rOWOD4hzgARr9e9AzpO1DfGoFlcqn4VVDHiiGXH9HxBMBH
-         e8IhcO4wIIJeYyMyGBxLc9S3Ulvp2XA8ElcoqPiqPjQ7UF+sh6SZ0wZ4d+qPlL1Jcqkk
-         XRHH/bwyfoxJaDp7Sy2NQimm9we06IUBROXweU9/PWebhCZY7c8AdQOH89VMlSG3obsZ
-         UVgJnqcaeSL4tzkRWW5FmlFCpA26QBM8cLMsKXKHhHc/tOp3ZxA4VRl9NLPa3UEfO8vO
-         TklQ==
-X-Gm-Message-State: ANhLgQ1nFxK2tFRaJRbKWXxdEBErm2AtDYzS8JnM9JjjWeczV59DoB9l
-        S4oEQhgjOBEnMLirVNmMd4E=
-X-Google-Smtp-Source: ADFU+vvfjeD3AbUyfTO5V9xree1iypXjvaxyxdA8UoTTbv/mAO6oWR6Gq4fF60KxsiOVb+A+sIjJkA==
-X-Received: by 2002:ac8:16b8:: with SMTP id r53mr188708qtj.7.1583879672690;
-        Tue, 10 Mar 2020 15:34:32 -0700 (PDT)
-Received: from ?IPv6:2620:10d:c0a8:11d1::111b? ([2620:10d:c091:480::fee])
-        by smtp.gmail.com with ESMTPSA id j1sm21787091qtd.66.2020.03.10.15.34.31
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 10 Mar 2020 15:34:32 -0700 (PDT)
-From:   Jes Sorensen <jes.sorensen@gmail.com>
-X-Google-Original-From: Jes Sorensen <Jes.Sorensen@gmail.com>
+        Tue, 10 Mar 2020 18:43:24 -0400
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay02.hostedemail.com (Postfix) with ESMTP id 406F0815F;
+        Tue, 10 Mar 2020 22:43:23 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:966:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1537:1566:1593:1594:1711:1714:1730:1747:1777:1792:2110:2196:2199:2393:2559:2562:2693:2828:3138:3139:3140:3141:3142:3622:3865:3867:3871:3872:3874:4321:4385:5007:10004:10400:10848:11232:11658:11914:12297:12740:12760:12895:13069:13255:13311:13357:13439:14659:14721:21080:21627:21990:30012:30054:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:1,LUA_SUMMARY:none
+X-HE-Tag: pot45_1d56460630d0c
+X-Filterd-Recvd-Size: 1994
+Received: from XPS-9350.home (unknown [47.151.143.254])
+        (Authenticated sender: joe@perches.com)
+        by omf01.hostedemail.com (Postfix) with ESMTPA;
+        Tue, 10 Mar 2020 22:43:21 +0000 (UTC)
+Message-ID: <ac0ab948aabd201360d9330c206dd72df14847ae.camel@perches.com>
 Subject: Re: [PATCH][next] zd1211rw/zd_usb.h: Replace zero-length array with
  flexible-array member
-To:     "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
+From:   Joe Perches <joe@perches.com>
+To:     Jes Sorensen <jes.sorensen@gmail.com>,
+        "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
         Kalle Valo <kvalo@codeaurora.org>
-Cc:     Joe Perches <joe@perches.com>, Ulrich Kunitz <kune@deine-taler.de>,
+Cc:     Daniel Drake <dsd@gentoo.org>, Ulrich Kunitz <kune@deine-taler.de>,
         "David S. Miller" <davem@davemloft.net>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Kees Cook <keescook@chromium.org>
+        linux-kernel@vger.kernel.org
+Date:   Tue, 10 Mar 2020 15:41:39 -0700
+In-Reply-To: <e65fd08d-984f-0bdc-5fbf-6abceacf819a@gmail.com>
 References: <20200305111216.GA24982@embeddedor>
- <87k13yq2jo.fsf@kamboji.qca.qualcomm.com>
- <256881484c5db07e47c611a56550642a6f6bd8e9.camel@perches.com>
- <87blpapyu5.fsf@kamboji.qca.qualcomm.com>
- <1bb7270f-545b-23ca-aa27-5b3c52fba1be@embeddedor.com>
- <87r1y0nwip.fsf@kamboji.qca.qualcomm.com>
- <48ff1333-0a14-36d8-9565-a7f13a06c974@embeddedor.com>
- <021d1125-3ffd-39ef-395a-b796c527bde4@gmail.com>
- <fb3395d7-e932-10ac-1feb-ab2ceb63424e@embeddedor.com>
- <361da904-5adf-eb0c-e937-c5d2f69ac8be@gmail.com>
- <e4cfda6c-37f0-3c28-f50b-32200a67d856@embeddedor.com>
-Message-ID: <9700b2c9-1029-60b0-c5d2-684bdcede354@gmail.com>
-Date:   Tue, 10 Mar 2020 18:34:31 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+         <87k13yq2jo.fsf@kamboji.qca.qualcomm.com>
+         <256881484c5db07e47c611a56550642a6f6bd8e9.camel@perches.com>
+         <87blpapyu5.fsf@kamboji.qca.qualcomm.com>
+         <1bb7270f-545b-23ca-aa27-5b3c52fba1be@embeddedor.com>
+         <87r1y0nwip.fsf@kamboji.qca.qualcomm.com>
+         <48ff1333-0a14-36d8-9565-a7f13a06c974@embeddedor.com>
+         <021d1125-3ffd-39ef-395a-b796c527bde4@gmail.com>
+         <fb3395d7-e932-10ac-1feb-ab2ceb63424e@embeddedor.com>
+         <937b0b529509ec1641453ef7c13f38e2d7cc813e.camel@perches.com>
+         <c2aa4d8d-1c39-1903-2b49-382f2143e181@embeddedor.com>
+         <8b6213e51131deacbdac29a8d9c088ae49933724.camel@perches.com>
+         <e65fd08d-984f-0bdc-5fbf-6abceacf819a@gmail.com>
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.34.1-2 
 MIME-Version: 1.0
-In-Reply-To: <e4cfda6c-37f0-3c28-f50b-32200a67d856@embeddedor.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 3/10/20 6:31 PM, Gustavo A. R. Silva wrote:
-> 
-> 
-> On 3/10/20 5:20 PM, Jes Sorensen wrote:
->> On 3/10/20 6:13 PM, Gustavo A. R. Silva wrote:
->>>
->>>
->>> On 3/10/20 5:07 PM, Jes Sorensen wrote:
->>>> As I stated in my previous answer, this seems more code churn than an
->>>> actual fix. If this is a real problem, shouldn't the work be put into
->>>> fixing the compiler to handle foo[0] instead? It seems that is where the
->>>> real value would be.
->>>
->>> Yeah. But, unfortunately, I'm not a compiler guy, so I'm not able to fix the
->>> compiler as you suggest. And I honestly don't see what is so annoying/disturbing
->>> about applying a patch that removes the 0 from foo[0] when it brings benefit
->>> to the whole codebase.
->>
->> My point is that it adds what seems like unnecessary churn, which is not
->> a benefit, and it doesn't improve the generated code.
->>
-> 
-> As an example of one of the benefits of this is that the compiler won't trigger
-> a warning in the following case:
-> 
-> struct boo {
-> 	int stuff;
-> 	struct foo array[0];
-> 	int morestuff;
-> };
-> 
-> The result of the code above is an undefined behavior.
-> 
-> On the other hand in the case below, the compiles does trigger a warning:
-> 
-> struct boo {
-> 	int stuff;
-> 	struct foo array[];
-> 	int morestuff;
-> };
+On Tue, 2020-03-10 at 18:33 -0400, Jes Sorensen wrote:
+> Again, the changes are not harmful to the code, but add no value.
 
-Right, this just underlines my prior argument, that this should be fixed
-in the compiler.
+That argument asserts that style consistency is value-free.
+I generally disagree with that argument.
 
-Jes
+But then again, it's likely we will have to agree to disagree.
+
+cheers, Joe
 
