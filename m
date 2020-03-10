@@ -2,23 +2,22 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 29FE1180C3D
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Mar 2020 00:21:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D7E9C180BF9
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Mar 2020 00:01:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727659AbgCJXVX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 10 Mar 2020 19:21:23 -0400
-Received: from gateway20.websitewelcome.com ([192.185.48.38]:25742 "EHLO
-        gateway20.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726899AbgCJXVW (ORCPT
+        id S1727614AbgCJXBI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 10 Mar 2020 19:01:08 -0400
+Received: from gateway36.websitewelcome.com ([50.116.125.2]:37546 "EHLO
+        gateway36.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726325AbgCJXBI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 10 Mar 2020 19:21:22 -0400
-X-Greylist: delayed 1500 seconds by postgrey-1.27 at vger.kernel.org; Tue, 10 Mar 2020 19:21:21 EDT
-Received: from cm13.websitewelcome.com (cm13.websitewelcome.com [100.42.49.6])
-        by gateway20.websitewelcome.com (Postfix) with ESMTP id A514C400D007C
-        for <linux-wireless@vger.kernel.org>; Tue, 10 Mar 2020 16:18:56 -0500 (CDT)
+        Tue, 10 Mar 2020 19:01:08 -0400
+Received: from cm16.websitewelcome.com (cm16.websitewelcome.com [100.42.49.19])
+        by gateway36.websitewelcome.com (Postfix) with ESMTP id E41EB40230204
+        for <linux-wireless@vger.kernel.org>; Tue, 10 Mar 2020 16:52:14 -0500 (CDT)
 Received: from gator4166.hostgator.com ([108.167.133.22])
         by cmsmtp with SMTP
-        id BnRljwo3KRP4zBnRljJ4pK; Tue, 10 Mar 2020 17:33:57 -0500
+        id BnUPjquiZ8vkBBnUPjjYpu; Tue, 10 Mar 2020 17:36:41 -0500
 X-Authority-Reason: nr=8
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
@@ -26,23 +25,22 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
         Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
         List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=PYjNfqYboGPdXKJH/VEDoHUQTUvW2ep9xjORuPJJc40=; b=b/WquNw8ZttITQ2stpkWHrkjsC
-        haa/54/07i3AQLJaZRjQ4St5432O7ISX3/wT2c+N+O9NPf+zwAUU2kEeSTwHJx+a178i/XGhych31
-        dWa5lZGZReYG9dlLIdzU0Tdpg14FOUpd7TsRH34xhZEcFnAdaQh+6yObsb+8bVfmRk54nXBovvIN3
-        qrlu2iv0/8WWAfdwSnfgtIctI5wT3apcN3XY8V/xaAmm9nt09IOIFzE85TWk+ypYMw13MsNnUjAJn
-        yWJekRyqjBWBsYlgbdxbrq0Gbjf6OKeADFumOR3y1Su1ie3rboOC+WHmtbXtPT/eHpeHncXmR3xZS
-        M9Zm5B8A==;
-Received: from 187-162-252-62.static.axtel.net ([187.162.252.62]:47078 helo=[192.168.0.140])
+        bh=KG9npqDNvNL0nWJrwiRj2aZsbizoObHAFhshQC8xR7E=; b=oF3wtI6lPK8UukLiMJlIl/3Eim
+        bKHuKTiCJqjzMoVHaDxamp4upOrqlftJ/IUUuXkMi81AR0DGINbJJeGQaiD/f+1xp4jEztI9jI1aJ
+        EJJDmD91lJVdxlYTC1u2jv3dnm1gul+v/ub8LG9clYGsitVrvxzCFSWrKwVng7MXumjh8FfFSQ4cd
+        9NPIn6a2DNz9u1sl0kbLw0rohvm/9REAt5RcWMVNw5T96erwgbye6s05yRFgQO5j6nqtpXUpgdc9P
+        9d56K5vzEybiVKe6T3GzcfVY7BLN+JBZUaH0JtcnoEpUVhAr2MArEjlfNW8ZMveHZhID4X+VOsJfZ
+        Lv3++6hw==;
+Received: from 187-162-252-62.static.axtel.net ([187.162.252.62]:47142 helo=[192.168.0.140])
         by gator4166.hostgator.com with esmtpsa (TLSv1.2:ECDHE-RSA-AES128-GCM-SHA256:128)
         (Exim 4.92)
         (envelope-from <gustavo@embeddedor.com>)
-        id 1jBnRl-002Yyz-5R; Tue, 10 Mar 2020 17:33:57 -0500
+        id 1jBnUO-002aEt-Nl; Tue, 10 Mar 2020 17:36:40 -0500
 Subject: Re: [PATCH][next] zd1211rw/zd_usb.h: Replace zero-length array with
  flexible-array member
-To:     Joe Perches <joe@perches.com>,
-        Jes Sorensen <jes.sorensen@gmail.com>,
+To:     Jes Sorensen <jes.sorensen@gmail.com>,
         Kalle Valo <kvalo@codeaurora.org>
-Cc:     Daniel Drake <dsd@gentoo.org>, Ulrich Kunitz <kune@deine-taler.de>,
+Cc:     Joe Perches <joe@perches.com>, Ulrich Kunitz <kune@deine-taler.de>,
         "David S. Miller" <davem@davemloft.net>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         linux-kernel@vger.kernel.org, Kees Cook <keescook@chromium.org>
@@ -55,9 +53,9 @@ References: <20200305111216.GA24982@embeddedor>
  <48ff1333-0a14-36d8-9565-a7f13a06c974@embeddedor.com>
  <021d1125-3ffd-39ef-395a-b796c527bde4@gmail.com>
  <fb3395d7-e932-10ac-1feb-ab2ceb63424e@embeddedor.com>
- <937b0b529509ec1641453ef7c13f38e2d7cc813e.camel@perches.com>
- <c2aa4d8d-1c39-1903-2b49-382f2143e181@embeddedor.com>
- <8b6213e51131deacbdac29a8d9c088ae49933724.camel@perches.com>
+ <361da904-5adf-eb0c-e937-c5d2f69ac8be@gmail.com>
+ <e4cfda6c-37f0-3c28-f50b-32200a67d856@embeddedor.com>
+ <9700b2c9-1029-60b0-c5d2-684bdcede354@gmail.com>
 From:   "Gustavo A. R. Silva" <gustavo@embeddedor.com>
 Openpgp: preference=signencrypt
 Autocrypt: addr=gustavo@embeddedor.com; keydata=
@@ -103,12 +101,12 @@ Autocrypt: addr=gustavo@embeddedor.com; keydata=
  YJWH93PN+ZUh6i6Rd2U/i8jH5WvzR57UeWxE4P8bQc0hNGrUsHQH6bpHV2lbuhDdqo+cM9eh
  GZEO3+gCDFmKrjspZjkJbB5Gadzvts5fcWGOXEvuT8uQSvl+vEL0g6vczsyPBtqoBLa9SNrS
  VtSixD1uOgytAP7RWS474w==
-Message-ID: <fc753612-6a5a-4dd4-61e6-17613eabba50@embeddedor.com>
-Date:   Tue, 10 Mar 2020 17:33:54 -0500
+Message-ID: <948ec681-c4ee-3479-8d8b-5aa1e358ec04@embeddedor.com>
+Date:   Tue, 10 Mar 2020 17:36:39 -0500
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.9.0
 MIME-Version: 1.0
-In-Reply-To: <8b6213e51131deacbdac29a8d9c088ae49933724.camel@perches.com>
+In-Reply-To: <9700b2c9-1029-60b0-c5d2-684bdcede354@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -120,13 +118,13 @@ X-AntiAbuse: Sender Address Domain - embeddedor.com
 X-BWhitelist: no
 X-Source-IP: 187.162.252.62
 X-Source-L: No
-X-Exim-ID: 1jBnRl-002Yyz-5R
+X-Exim-ID: 1jBnUO-002aEt-Nl
 X-Source: 
 X-Source-Args: 
 X-Source-Dir: 
-X-Source-Sender: 187-162-252-62.static.axtel.net ([192.168.0.140]) [187.162.252.62]:47078
+X-Source-Sender: 187-162-252-62.static.axtel.net ([192.168.0.140]) [187.162.252.62]:47142
 X-Source-Auth: gustavo@embeddedor.com
-X-Email-Count: 35
+X-Email-Count: 44
 X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
 X-Local-Domain: yes
 Sender: linux-wireless-owner@vger.kernel.org
@@ -136,35 +134,53 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 
 
-On 3/10/20 5:28 PM, Joe Perches wrote:
-> On Tue, 2020-03-10 at 17:21 -0500, Gustavo A. R. Silva wrote:
->> On 3/10/20 5:15 PM, Joe Perches wrote:
->>> As far as I can tell, it doesn't actually make a difference as
->>> all the compilers produce the same object code with either form.
+On 3/10/20 5:34 PM, Jes Sorensen wrote:
+> On 3/10/20 6:31 PM, Gustavo A. R. Silva wrote:
+>>
+>>
+>> On 3/10/20 5:20 PM, Jes Sorensen wrote:
+>>> On 3/10/20 6:13 PM, Gustavo A. R. Silva wrote:
+>>>>
+>>>>
+>>>> On 3/10/20 5:07 PM, Jes Sorensen wrote:
+>>>>> As I stated in my previous answer, this seems more code churn than an
+>>>>> actual fix. If this is a real problem, shouldn't the work be put into
+>>>>> fixing the compiler to handle foo[0] instead? It seems that is where the
+>>>>> real value would be.
+>>>>
+>>>> Yeah. But, unfortunately, I'm not a compiler guy, so I'm not able to fix the
+>>>> compiler as you suggest. And I honestly don't see what is so annoying/disturbing
+>>>> about applying a patch that removes the 0 from foo[0] when it brings benefit
+>>>> to the whole codebase.
+>>>
+>>> My point is that it adds what seems like unnecessary churn, which is not
+>>> a benefit, and it doesn't improve the generated code.
 >>>
 >>
->> That's precisely why we can implement these changes, cleanly(the fact
->> that the compiler produces the same object code). So, the resulting
->> object code is not the point here.
+>> As an example of one of the benefits of this is that the compiler won't trigger
+>> a warning in the following case:
+>>
+>> struct boo {
+>> 	int stuff;
+>> 	struct foo array[0];
+>> 	int morestuff;
+>> };
+>>
+>> The result of the code above is an undefined behavior.
+>>
+>> On the other hand in the case below, the compiles does trigger a warning:
+>>
+>> struct boo {
+>> 	int stuff;
+>> 	struct foo array[];
+>> 	int morestuff;
+>> };
 > 
-> You are making Jes' point.
+> Right, this just underlines my prior argument, that this should be fixed
+> in the compiler.
 > 
 
-Please, see my other reply.
-
-> There's nothing wrong with making changes just for consistent
-> style across the kernel.
-> 
-> This change is exactly that.
-> 
-> I have no objection to this patch.
-> 
-> Jes does, though Jes is not a maintainer of this file.
-> 
-> I think "churn" arguments are overstated.
-> 
-
-I agree.
+In the meantime it's not at all harmful to do something about it in the codebase.
 
 Thanks
 --
