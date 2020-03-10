@@ -2,119 +2,81 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B29F17FF9A
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Mar 2020 14:57:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5FB1218008F
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Mar 2020 15:48:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726824AbgCJN5E (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 10 Mar 2020 09:57:04 -0400
-Received: from mail26.static.mailgun.info ([104.130.122.26]:52947 "EHLO
-        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726380AbgCJN5E (ORCPT
+        id S1727317AbgCJOsN convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 10 Mar 2020 10:48:13 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:33838 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726546AbgCJOsN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 10 Mar 2020 09:57:04 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1583848623; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=7SNDskvdVEd15DtsrwRPuJkE2EW0gXby/GtBo14LN2E=; b=oNFyO5YQbgnpaJo75eMbGsojNoccOAqJ5tao5X7ig8KSKKixAhW+u4Trfy9awtqqH+3rMkiL
- Spiuj9o6BgM4+gYyghgMxLqjfEDre2wfoedNaY296WwCU4Om1y3x0z2UQdkwTdAzg6uOyZQF
- AGUoOW8SHs/Rrx7CZq0GVCUZi9Y=
-X-Mailgun-Sending-Ip: 104.130.122.26
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e679ca5.7fd1a5e56378-smtp-out-n01;
- Tue, 10 Mar 2020 13:56:53 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 16700C43637; Tue, 10 Mar 2020 13:56:52 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id DAF9AC433CB;
-        Tue, 10 Mar 2020 13:56:48 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org DAF9AC433CB
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-Cc:     Joe Perches <joe@perches.com>, Daniel Drake <dsd@gentoo.org>,
-        Ulrich Kunitz <kune@deine-taler.de>,
-        "David S. Miller" <davem@davemloft.net>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Jes.Sorensen@gmail.com
-Subject: Re: [PATCH][next] zd1211rw/zd_usb.h: Replace zero-length array with flexible-array member
-References: <20200305111216.GA24982@embeddedor>
-        <87k13yq2jo.fsf@kamboji.qca.qualcomm.com>
-        <256881484c5db07e47c611a56550642a6f6bd8e9.camel@perches.com>
-        <87blpapyu5.fsf@kamboji.qca.qualcomm.com>
-        <1bb7270f-545b-23ca-aa27-5b3c52fba1be@embeddedor.com>
-Date:   Tue, 10 Mar 2020 15:56:46 +0200
-In-Reply-To: <1bb7270f-545b-23ca-aa27-5b3c52fba1be@embeddedor.com> (Gustavo A.
-        R. Silva's message of "Thu, 5 Mar 2020 12:28:27 -0600")
-Message-ID: <87r1y0nwip.fsf@kamboji.qca.qualcomm.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        Tue, 10 Mar 2020 10:48:13 -0400
+Received: from bigeasy by Galois.linutronix.de with local (Exim 4.80)
+        (envelope-from <bigeasy@linutronix.de>)
+        id 1jBgB0-0004ju-3h; Tue, 10 Mar 2020 15:48:10 +0100
+Date:   Tue, 10 Mar 2020 15:48:09 +0100
+From:   Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To:     Larry Finger <Larry.Finger@lwfinger.net>
+Cc:     linux-wireless@vger.kernel.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: Re: Support for RTL8188FU
+Message-ID: <20200310144809.se2oqvlnnh55fhfd@linutronix.de>
+References: <20191001160305.qrl4nt2jmdsogaaz@linutronix.de>
+ <3af284c7-ee46-dd42-9549-de55feae2528@lwfinger.net>
+ <20191001174612.4kj3mt3h5epidyyk@linutronix.de>
+ <b958b669-a683-d7cd-6bbf-bfe3e674f62d@lwfinger.net>
+ <20200304102152.a25cczvat2mujxwa@linutronix.de>
+ <9c6717de-5ffc-47dc-6db7-7e070cbc41b9@lwfinger.net>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8BIT
+In-Reply-To: <9c6717de-5ffc-47dc-6db7-7e070cbc41b9@lwfinger.net>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-+ jes
+On 2020-03-04 12:16:54 [-0600], Larry Finger wrote:
+> 
+> I have no further advice. There are quite likely a number of routines that
+> will differ as the 8188FU chip is quite likely a lot different from the
+> 8188EU, even though both are 802.11n devices.
 
-"Gustavo A. R. Silva" <gustavo@embeddedor.com> writes:
+That is more complicated than I assumed. Even the "generic" hal layer is
+different. Sometimes there are additional bits, sometimes the bits are
+moved (to/from the HW-specific hal layer), sometimes the bits the are
+different (like BIT0|BIT1 vs BIT1). Without having any kind of
+documentation I can't even tell how essential the difference is.
 
-> Hi,
->
-> On 3/5/20 10:10, Kalle Valo wrote:
->> Joe Perches <joe@perches.com> writes:
->> 
->>> On Thu, 2020-03-05 at 16:50 +0200, Kalle Valo wrote:
->>>> "Gustavo A. R. Silva" <gustavo@embeddedor.com> writes:
->>> []
->>>>>  drivers/net/wireless/zydas/zd1211rw/zd_usb.h | 8 ++++----
->>>>>  1 file changed, 4 insertions(+), 4 deletions(-)
->>>>
->>>> "zd1211rw: " is enough, no need to have the filename in the title.
->> 
->>>> But I asked this already in an earlier patch, who prefers this format?
->>>> It already got opposition so I'm not sure what to do.
->>>
->>> I think it doesn't matter.
->>>
->>> Trivial inconsistencies in patch subject and word choice
->>> don't have much overall impact.
->> 
->> I wrote in a confusing way, my question above was about the actual patch
->> and not the the title. For example, Jes didn't like this style change:
->> 
->> https://patchwork.kernel.org/patch/11402315/
->> 
->
-> It doesn't seem that that comment adds a lot to the conversation. The only
-> thing that it says is literally "fix the compiler". By the way, more than
-> a hundred patches have already been applied to linux-next[1] and he seems
-> to be the only person that has commented such a thing.
+Right now I went function by function and compared the code and *hoped*
+that I didn't miss anything. I get USB errors later and I can't tell if
+there is something that I missed/did wrong _or_ did not yet modify. I'm
+worried that by the time I'm done, I did something wrong and no idea
+where to look for the bug.
 
-But I also asked who prefers this format in that thread, you should not
-ignore questions from two maintainers (me and Jes).
+I stumbled over the version define:
+The driver on github is
+|include/rtw_version.h:#define DRIVERVERSION "v5.2.2.4_25483.20171222"
 
-> Qemu guys are adopting this format, too[2][3].
->
-> On the other hand, the changelog text explains the reasons why we are
-> implementing this change all across the kernel tree. :)
->
-> [1]
-> https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/log/?qt=grep&q=flexible-array
-> [2] https://lists.nongnu.org/archive/html/qemu-s390x/2020-03/msg00019.html
-> [3] https://lists.nongnu.org/archive/html/qemu-s390x/2020-03/msg00020.html
+and mine is
+|include/rtw_version.h:#define DRIVERVERSION "v5.7.4_33085.20190419"
 
-TBH I was leaning more on Jes side on this, but I guess these patches
-are ok if they are so widely accepted. Unless anyone objects?
+Going by the date, they are more than a year apart. (Side note: the
+driver in staging is from 2013.)
 
--- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Is it possible to obtain a more recent version of the 8188EU driver from
+realtek? That should ease the integration of the "two" drivers since the
+generic bits should be the same…
+
+What would be the challenges to get the 8188f Realtek driver upstream?
+Looking at the todo list for the staging driver, it is mostly clean up
+and checkpatch kind of thing. The more difficult/non mechanic task is to
+convince the driver to use lib80211/mac80211 layer.
+
+> Larry
+
+Sebastian
