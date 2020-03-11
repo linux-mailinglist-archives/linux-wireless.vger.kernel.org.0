@@ -2,75 +2,98 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 22754181C2F
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Mar 2020 16:21:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 26099181D9B
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Mar 2020 17:18:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729880AbgCKPVO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 11 Mar 2020 11:21:14 -0400
-Received: from mail-qv1-f43.google.com ([209.85.219.43]:36150 "EHLO
-        mail-qv1-f43.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729408AbgCKPVO (ORCPT
+        id S1730166AbgCKQR7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 11 Mar 2020 12:17:59 -0400
+Received: from mail26.static.mailgun.info ([104.130.122.26]:62409 "EHLO
+        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1730052AbgCKQR7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 11 Mar 2020 11:21:14 -0400
-Received: by mail-qv1-f43.google.com with SMTP id r15so1038963qve.3
-        for <linux-wireless@vger.kernel.org>; Wed, 11 Mar 2020 08:21:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bobcopeland-com.20150623.gappssmtp.com; s=20150623;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=y/5uCc6iDiMl1s7i8RtXL7ftP3Qn2dNas9sWS9jP7Rs=;
-        b=PlhUay0kFtxmxxAYYbX4vTXfO1BLewdLbSnKEIlDSVeZAuxKjP/ol/5gOhh+TTvi1k
-         vHfGWrd/CqY7wAvAGqkgyDJOT8v+GePaiNLqdSm5x16pxVQMlasXH7vNfdao8qMX71qm
-         pyzTd1sx4Dr42KVKuD6NsBJ5CXDrwlGXj5m7E7yF/snDLNk0LAHf0DRLxzqLJTDSPcjG
-         AA6OEuFtMw1sOAC3iQcViWutjKax3Jk/a8ZG99Pk/k8xMFDaAX/g0IZrW/gSBzrErzrg
-         uT3manopB3Vr6SeQaxoeFKNXfli5Q8EsUOpyjXNx+VbwD3EzwRjjctQow9YCKhcD8kMx
-         CoYQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=y/5uCc6iDiMl1s7i8RtXL7ftP3Qn2dNas9sWS9jP7Rs=;
-        b=XIW91ODgrmxjf37SMktQV72+dbqU6TQCJoNnBMczDc6OY0uc7F/BxnarTbGuymdbB4
-         M2+E21Yq4muk3i83IE7KZ0vRfa1Ob5A5VY6e7Gbv0kOVh3HQxq0pVotvQbLWqqKB+Gf/
-         qy/Mhga0xdgHb768bi/AJaN9xVoxJIS5XDjRRZNv3TAp7+BsxM9eRJKioeD3X3p9zuCK
-         UuV8PQpYZNXPIpx5yfSANLpVtboWQTuj7ypsnzsRyvEoYAeVUgIW4voILrgOE0ET3Ddv
-         1owi4W04e7YCOkRiEc0O9yTwUrCG/B5jUdsp/7/+tx8/tAjKYWz2D9m32CsGJeqqEBjM
-         Pldw==
-X-Gm-Message-State: ANhLgQ09L1wtUu6ICPIJQFaZHQRaSu0qKZsLUZ84p1kNFByWL/ZBDQDq
-        qQCce8TTacXJKlDHa/tov8svdY9kgwM=
-X-Google-Smtp-Source: ADFU+vswVRh4pOMkphii0YtXHr/5lk9J4Sq0UsqEpBvklF7MXD2k6M+NdvgRI54W2L0u6Q9blWpjVw==
-X-Received: by 2002:a05:6214:5b2:: with SMTP id by18mr869156qvb.92.1583940071871;
-        Wed, 11 Mar 2020 08:21:11 -0700 (PDT)
-Received: from elrond.bobcopeland.com ([2607:fea8:5ac0:1bf2:91a5:cfde:3bfc:7446])
-        by smtp.gmail.com with ESMTPSA id o14sm5987631qtq.12.2020.03.11.08.21.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Mar 2020 08:21:10 -0700 (PDT)
-Received: by elrond.bobcopeland.com (Postfix, from userid 1000)
-        id D055BFC0086; Wed, 11 Mar 2020 11:21:09 -0400 (EDT)
-Date:   Wed, 11 Mar 2020 11:21:09 -0400
-From:   Bob Copeland <me@bobcopeland.com>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org
-Subject: Re: [PATCH 0/4] wmediumd vhost-user
-Message-ID: <20200311152109.GA12125@bobcopeland.com>
-References: <20200305145655.67427-1-johannes@sipsolutions.net>
+        Wed, 11 Mar 2020 12:17:59 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1583943478; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=A4S8vhG4vJWdvWAwY8Q7gjpUv9pC8Paapqg5gbTuHv8=;
+ b=baiZIfAOiQOV6pirq76eNFAJ9sEKVHldN3qC/K1xsemjYLYjzRzqGkvfNV6EY6LgzMT/RzKr
+ i/ePoLXzQsM5yaS8jLu8Hmrz+1dea76Bvvg862k9SoVC5T7G8VP1ubUGIuGyBC0yckervXuy
+ TorfQznsYScSbAWhHkpnUeB/l7I=
+X-Mailgun-Sending-Ip: 104.130.122.26
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5e690f22.7f9b50c03a40-smtp-out-n02;
+ Wed, 11 Mar 2020 16:17:38 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id BE683C43636; Wed, 11 Mar 2020 16:17:38 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
+        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 2BE16C433CB;
+        Wed, 11 Mar 2020 16:17:36 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 2BE16C433CB
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200305145655.67427-1-johannes@sipsolutions.net>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCHv2 2/2] ath11k: Perform per-msdu rx processing
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <1581908873-14749-3-git-send-email-srirrama@codeaurora.org>
+References: <1581908873-14749-3-git-send-email-srirrama@codeaurora.org>
+To:     Sriram R <srirrama@codeaurora.org>
+Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        Sriram R <srirrama@codeaurora.org>,
+        Tamizh Chelvam Raja <tamizhr@codeaurora.org>
+User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
+Message-Id: <20200311161738.BE683C43636@smtp.codeaurora.org>
+Date:   Wed, 11 Mar 2020 16:17:38 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Mar 05, 2020 at 03:56:51PM +0100, Johannes Berg wrote:
-> Hi,
-> 
-> This adds vhost-user support, to match the hwsim code I
-> just sent to the list.
+Sriram R <srirrama@codeaurora.org> wrote:
 
-Thanks!  Applied.
+> As Hash based reo destination selection is configured,
+> the decapped packets reach different reo destintion rings
+> based on the destintaion ring selected for the computed hash (based on
+> the 5-tuple {ip src/ip dst/src port/dst port/protocol}) by hw and
+> as configured by driver.
+> 
+> Hence the current implementation of amsdu list based processing after all
+> the subframes of amsdu are received (since all msdu's for a pdev are
+> received in same reo dest ring), is not applicable here and hence is
+> replaced with per msdu based handling as these subframes
+> can be received in different reo dest rings.
+> 
+> Also, as some of the rx descriptor fields might be valid only for the
+> first msdu (for ex. received 80211 header, encryption type, etc),
+> it might not be useful now as we cannot sync between different
+> subframes received in different rings. Hence do not rely on those
+> fields and replace them with fieds valid only on per msdu descriptors.
+> Also cache other details such as encryption type for a peer so that
+> it can be reused when a packet is received from it.
+> 
+> Co-developed-by: Tamizh Chelvam Raja <tamizhr@codeaurora.org>
+> Signed-off-by: Tamizh Chelvam Raja <tamizhr@codeaurora.org>
+> Signed-off-by: Sriram R <srirrama@codeaurora.org>
+> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+
+New warnings:
+
+drivers/net/wireless/ath/ath11k/dp_rx.c:2010: multiple assignments should be avoided
+drivers/net/wireless/ath/ath11k/dp_rx.c:2160: Please don't use multiple blank lines
+
+Fixed in the pending branch.
 
 -- 
-Bob Copeland %% https://bobcopeland.com/
+https://patchwork.kernel.org/patch/11385033/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
