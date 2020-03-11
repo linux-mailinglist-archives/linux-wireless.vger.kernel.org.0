@@ -2,40 +2,32 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3FB2F1814EF
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Mar 2020 10:34:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CAFA01814FB
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Mar 2020 10:34:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728873AbgCKJbz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 11 Mar 2020 05:31:55 -0400
-Received: from s3.sipsolutions.net ([144.76.43.62]:45590 "EHLO
+        id S1728668AbgCKJdk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 11 Mar 2020 05:33:40 -0400
+Received: from s3.sipsolutions.net ([144.76.43.62]:45608 "EHLO
         sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728753AbgCKJbz (ORCPT
+        with ESMTP id S1728349AbgCKJdk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 11 Mar 2020 05:31:55 -0400
+        Wed, 11 Mar 2020 05:33:40 -0400
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.93)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1jBxiR-000vTt-GU; Wed, 11 Mar 2020 10:31:51 +0100
-Message-ID: <f230965a23ee69341a402dff15efb67c7c221bde.camel@sipsolutions.net>
-Subject: Re: [PATCH 1/2] Revert "mac80211: support
- NL80211_EXT_FEATURE_CONTROL_PORT_OVER_NL80211_MAC_ADDRS"
+        id 1jBxkA-000vje-Br; Wed, 11 Mar 2020 10:33:38 +0100
+Message-ID: <3673cbf5c5779f5909bf677ceab89db08f2c0f25.camel@sipsolutions.net>
+Subject: Re: [PATCH] nl80211: fix tx_control_port trace point
 From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Markus Theil <markus.theil@tu-ilmenau.de>,
-        Denis Kenzior <denkenz@gmail.com>, Jouni Malinen <j@w1.fi>
+To:     Markus Theil <markus.theil@tu-ilmenau.de>
 Cc:     linux-wireless@vger.kernel.org
-Date:   Wed, 11 Mar 2020 10:31:50 +0100
-In-Reply-To: <ed6047dd-e71d-0cff-3c1f-5a11a53c6d8c@tu-ilmenau.de>
-References: <20200224101910.b87da63a3cd6.Ic94bc51a370c4aa7d19fbca9b96d90ab703257dc@changeid>
-         <c9fba32a-6959-a93a-3119-23915053538c@gmail.com>
-         <53190ece697ab7d9e83fdd667eaf9e05a4418193.camel@sipsolutions.net>
-         <6e723a78-db68-8ffb-986a-4a3961107f72@gmail.com>
-         <1a56c641eaa03c99dc9a90208902d8bb1ca1b0aa.camel@sipsolutions.net>
-         <048b81db-8e92-7fe0-1f5c-3b6f9ea1a1f1@gmail.com>
-         <366b1599374240ef194bf7eb6e1e47a8b675f474.camel@sipsolutions.net>
-         <978dab89-343a-3fc9-dbdb-7acf87d735ca@gmail.com>
-         <20200225110018.GA7561@w1.fi>
-         <957c6850-b26b-4cfd-5bc9-d77400e621b3@gmail.com>
-         <ed6047dd-e71d-0cff-3c1f-5a11a53c6d8c@tu-ilmenau.de>
+Date:   Wed, 11 Mar 2020 10:33:37 +0100
+In-Reply-To: <720231bf-8ae0-409d-039e-bc27f3d46fff@tu-ilmenau.de>
+References: <20200304114952.1827-1-markus.theil@tu-ilmenau.de>
+         <5c542c4ce1b5373e8fe280913b74926f4d36e2d1.camel@sipsolutions.net>
+         <1073945b-ec01-7303-0bfb-92456e1ca7a5@tu-ilmenau.de>
+         <7e3d534a42bf119c92d9e81145940fb02dbc676e.camel@sipsolutions.net>
+         <720231bf-8ae0-409d-039e-bc27f3d46fff@tu-ilmenau.de>
 Content-Type: text/plain; charset="UTF-8"
 User-Agent: Evolution 3.34.2 (3.34.2-1.fc31) 
 MIME-Version: 1.0
@@ -45,18 +37,35 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 2020-03-04 at 17:24 +0100, Markus Theil wrote:
+On Wed, 2020-03-04 at 17:17 +0100, Markus Theil wrote:
 
-> Is there any consensus on how to move on in this discussion? In my
-> opinion a pragmatic way would be to make rx forwarding of pre-auth
-> frames optional with a flag which can be set whenever
-> NL80211_ATTR_CONTROL_PORT_OVER_NL80211 is included, like Denis has
-> already proposed. We could call this flag for example
-> NL80211_ATTR_CONTROL_PORT_NO_PREAUTH.
+> Should cfg80211_rx_control_port then also adopt this behavior?
+> It currently does the conversion in the way I changed
+> cfg80211_tx_control port to.
+[...]
+> TRACE_EVENT(cfg80211_rx_control_port,
+> ...
+>     __entry->proto = be16_to_cpu(skb->protocol);
+>         __entry->unencrypted = unencrypted;
+>     ),
+>     TP_printk(NETDEV_PR_FMT ", len=%d, " MAC_PR_FMT ", proto: 0x%x,
+> unencrypted: %s",
+>           NETDEV_PR_ARG, __entry->len, MAC_PR_ARG(from),
+>           __entry->proto, BOOL_TO_STR(__entry->unencrypted))
 
-Yeah, that seems right.
+Great ...
 
-Do you want to make the patch?
+I dunno. I guess I don't like touching these so much, because it may be
+that somebody is relying on them for some kind of tooling?
+
+But I guess that's actually unlikely and we can just try, but then I'd
+rather change this one to BE than the other way around.
+
+> IMHO, as long as the trace events are just printed, it is cleaner to
+> do the endiannes conversion already in the kernel.
+
+But they aren't just printed, trace-cmd can record them in binary form,
+and you can have python plugin code to consume that, for example.
 
 johannes
 
