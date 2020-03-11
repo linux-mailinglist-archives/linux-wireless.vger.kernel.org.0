@@ -2,30 +2,30 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 70187181E48
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Mar 2020 17:52:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6DB3C181E56
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Mar 2020 17:54:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730055AbgCKQwZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 11 Mar 2020 12:52:25 -0400
+        id S1730330AbgCKQxj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 11 Mar 2020 12:53:39 -0400
 Received: from mail27.static.mailgun.info ([104.130.122.27]:47447 "EHLO
         mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1729646AbgCKQwZ (ORCPT
+        by vger.kernel.org with ESMTP id S1730019AbgCKQxi (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 11 Mar 2020 12:52:25 -0400
+        Wed, 11 Mar 2020 12:53:38 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1583945544; h=Date: Message-Id: Cc: To: References:
+ s=smtp; t=1583945618; h=Date: Message-Id: Cc: To: References:
  In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=13ER7EC6tNsem5IUYhvbU5i7rUU+ucV6ONkTZXwQszY=;
- b=FtM/2Ngt2bw6VE2HxnBC+p7zEeUZl/4kSxXWlV7sL0lG4rPnQgBlc4ynlTghIEhV5KL/url9
- GW3FWeXgMptOEKECTrZEOxtbtupUdff1rCq9qWQ2WIRRsSgUF/2ZUeoN16Z+spRKcaZks75c
- lRHrfIAjfr7LBJQKdlHXbZ1GnJw=
+ Content-Type: Sender; bh=ubLoWCp3h01mj32RDpUyl192zHsOqVXscIZcMtW7IbI=;
+ b=G02+HbKVrWv/IrJlJx9MbNO4bHmYUUsSpQVn6zB1heIw8vxoMCXfAFxKCfzdRzdxfygJwqk1
+ 3V8IZXxGgxYFoyXV9MQ2p5cTyCaRpYPz9pJzsCYnmQKy+c/AirjHUCC8gMg343qZVivksk6k
+ atnbtxzF4LfXCMFOT6Sfpf1fG8M=
 X-Mailgun-Sending-Ip: 104.130.122.27
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e69173f.7fa8321f8340-smtp-out-n02;
- Wed, 11 Mar 2020 16:52:15 -0000 (UTC)
+ by mxa.mailgun.org with ESMTP id 5e69178a.7fc3b35dc500-smtp-out-n01;
+ Wed, 11 Mar 2020 16:53:30 -0000 (UTC)
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 4AE34C433CB; Wed, 11 Mar 2020 16:52:15 +0000 (UTC)
+        id 7184BC433D2; Wed, 11 Mar 2020 16:53:30 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -35,50 +35,69 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id D0E1FC433CB;
-        Wed, 11 Mar 2020 16:52:12 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org D0E1FC433CB
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id E469BC433CB;
+        Wed, 11 Mar 2020 16:53:27 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org E469BC433CB
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] ath5k: Add proper dependency for ATH5K_AHB
+Subject: Re: [PATCH] ath9k: Handle txpower changes even when TPC is disabled
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20200224182447.4054-1-krzk@kernel.org>
-References: <20200224182447.4054-1-krzk@kernel.org>
-To:     Krzysztof Kozlowski <krzk@kernel.org>
-Cc:     Jiri Slaby <jirislaby@gmail.com>,
-        Nick Kossifidis <mickflemm@gmail.com>,
-        Luis Chamberlain <mcgrof@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Krzysztof Kozlowski <krzk@kernel.org>
+In-Reply-To: <20200229161347.31341-1-repk@triplefau.lt>
+References: <20200229161347.31341-1-repk@triplefau.lt>
+To:     Remi Pommarel <repk@triplefau.lt>
+Cc:     Lorenzo Bianconi <lorenzo@kernel.org>,
+        QCA ath9k Development <ath9k-devel@qca.qualcomm.com>,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Remi Pommarel <repk@triplefau.lt>, stable@vger.kernel.org
 User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20200311165215.4AE34C433CB@smtp.codeaurora.org>
-Date:   Wed, 11 Mar 2020 16:52:15 +0000 (UTC)
+Message-Id: <20200311165330.7184BC433D2@smtp.codeaurora.org>
+Date:   Wed, 11 Mar 2020 16:53:30 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Krzysztof Kozlowski <krzk@kernel.org> wrote:
+Remi Pommarel <repk@triplefau.lt> wrote:
 
-> The CONFIG_ATH5K_AHB could be enabled on ATH25 system without enabling
-> ATH5K driver itself.  This does not make sense because CONFIG_ATH5K_AHB
-> controls object build within drivers/net/wireless/ath/ath5k/ so enabling
-> it without CONFIG_ATH5K brings nothing.
+> When TPC is disabled IEEE80211_CONF_CHANGE_POWER event can be handled to
+> reconfigure HW's maximum txpower.
 > 
-> Add proper dependency to CONFIG_ATH5K_AHB.
+> This fixes 0dBm txpower setting when user attaches to an interface for
+> the first time with the following scenario:
 > 
-> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+> ieee80211_do_open()
+>     ath9k_add_interface()
+>         ath9k_set_txpower() /* Set TX power with not yet initialized
+>                                sc->hw->conf.power_level */
+> 
+>     ieee80211_hw_config() /* Iniatilize sc->hw->conf.power_level and
+>                              raise IEEE80211_CONF_CHANGE_POWER */
+> 
+>     ath9k_config() /* IEEE80211_CONF_CHANGE_POWER is ignored */
+> 
+> This issue can be reproduced with the following:
+> 
+>   $ modprobe -r ath9k
+>   $ modprobe ath9k
+>   $ wpa_supplicant -i wlan0 -c /tmp/wpa.conf &
+>   $ iw dev /* Here TX power is either 0 or 3 depending on RF chain */
+>   $ killall wpa_supplicant
+>   $ iw dev /* TX power goes back to calibrated value and subsequent
+>               calls will be fine */
+> 
+> Fixes: 283dd11994cde ("ath9k: add per-vif TX power capability")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Remi Pommarel <repk@triplefau.lt>
 > Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 
 Patch applied to ath-next branch of ath.git, thanks.
 
-c98cdaef931c ath5k: Add proper dependency for ATH5K_AHB
+968ae2caad07 ath9k: Handle txpower changes even when TPC is disabled
 
 -- 
-https://patchwork.kernel.org/patch/11401313/
+https://patchwork.kernel.org/patch/11413917/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
