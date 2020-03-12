@@ -2,173 +2,91 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E36C6182E5A
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2020 11:56:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CA0381830F3
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2020 14:13:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726892AbgCLK4E (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 12 Mar 2020 06:56:04 -0400
-Received: from ozlabs.org ([203.11.71.1]:35749 "EHLO ozlabs.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725978AbgCLK4D (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 12 Mar 2020 06:56:03 -0400
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        id S1727273AbgCLNNM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 12 Mar 2020 09:13:12 -0400
+Received: from mail27.static.mailgun.info ([104.130.122.27]:17778 "EHLO
+        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725978AbgCLNNM (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 12 Mar 2020 09:13:12 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1584018791; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=sp/8obL+bhnREsmyOeW5ju8x5iMeFqwv51tjor1PSX8=;
+ b=A6wlH9YjSn8xhs2Z2vJExLYJB7YmaFlC3nwImqkMln5c4RN0OpM82+3DrcbscsHZhMTHk1kt
+ MyI6CBe5bxONTuIMVyBeRnWDJrsbVq/wvN8uDyxWsbueJR+Tw/blJCQ+8Sf5YuZ0QJpdkYaR
+ jb9EVaM33ePMM3tiJXs4HZL7HjI=
+X-Mailgun-Sending-Ip: 104.130.122.27
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5e6a3564.7f52d9ace6f8-smtp-out-n01;
+ Thu, 12 Mar 2020 13:13:08 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 7D828C43636; Thu, 12 Mar 2020 13:13:08 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
+        MISSING_MID,SPF_NONE,URIBL_BLOCKED autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.ozlabs.org (Postfix) with ESMTPSA id 48dQjL3pfwz9sPF;
-        Thu, 12 Mar 2020 21:55:50 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
-        s=201909; t=1584010558;
-        bh=72/MkVf9VVMOXQXQBCEOJd5iIUWgKkmEQGqh1LToq2c=;
-        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-        b=kjtDKke2a24ahWnaI2Uj0G4Fe2Y+Jmmv/GYwuEOLFEW9uRKLJ/Eh8hY/uIvPOkWOq
-         hSpbFhZ+nkMkq9HnJFD5n60KJODzNOkbfNQ2xKBvxmtGjcLFu/cP0AF6WyLXOSMULb
-         6fFjUvKvb8/nZ+iPRU20W0VkcxW1QK6SeQvdds5ZfmEH3nf/wYggGS/dPu8fp0XU/0
-         5piT2dBaqMVbWuvgxSVjBFiUYMtS2zI6exgAeql41Nme4eoBMZr+hItq7bW8gr3rM3
-         jCRuhb1gAjdGh5ftRaRGO6Z5fFXzHCOWGuRXdE2RxOkjZdMiy8L8pyOPyQMC+hwaj9
-         VAqGftLnfpYYg==
-From:   Michael Ellerman <mpe@ellerman.id.au>
-To:     Krzysztof Kozlowski <krzk@kernel.org>,
-        Richard Henderson <rth@twiddle.net>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
-        Alexey Brodkin <abrodkin@synopsys.com>,
-        Vineet Gupta <vgupta@synopsys.com>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Dave Airlie <airlied@redhat.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Ben Skeggs <bskeggs@redhat.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Jiri Slaby <jirislaby@gmail.com>,
-        Nick Kossifidis <mickflemm@gmail.com>,
-        Luis Chamberlain <mcgrof@kernel.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Dave Jiang <dave.jiang@intel.com>,
-        Jon Mason <jdmason@kudzu.us>, Allen Hubbe <allenbh@gmail.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        Jason Wang <jasowang@redhat.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-snps-arc@lists.infradead.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, nouveau@lists.freedesktop.org,
-        linux-media@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-ntb@googlegroups.com,
-        virtualization@lists.linux-foundation.org,
-        linux-arch@vger.kernel.org
-Cc:     Krzysztof Kozlowski <krzk@kernel.org>
-Subject: Re: [RESEND PATCH v2 1/9] iomap: Constify ioreadX() iomem argument (as in generic implementation)
-In-Reply-To: <20200219175007.13627-2-krzk@kernel.org>
-References: <20200219175007.13627-1-krzk@kernel.org> <20200219175007.13627-2-krzk@kernel.org>
-Date:   Thu, 12 Mar 2020 21:55:44 +1100
-Message-ID: <87ftedj0zz.fsf@mpe.ellerman.id.au>
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 1C4C9C433CB;
+        Thu, 12 Mar 2020 13:13:06 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 1C4C9C433CB
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCHv2 1/2] ath11k: Configure hash based reo destination ring
+ selection
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <1581908873-14749-2-git-send-email-srirrama@codeaurora.org>
+References: <1581908873-14749-2-git-send-email-srirrama@codeaurora.org>
+To:     Sriram R <srirrama@codeaurora.org>
+Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        Sriram R <srirrama@codeaurora.org>
+User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
+Message-Id: <20200312131308.7D828C43636@smtp.codeaurora.org>
+Date:   Thu, 12 Mar 2020 13:13:08 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Krzysztof Kozlowski <krzk@kernel.org> writes:
-> diff --git a/arch/powerpc/kernel/iomap.c b/arch/powerpc/kernel/iomap.c
-> index 5ac84efc6ede..9fe4fb3b08aa 100644
-> --- a/arch/powerpc/kernel/iomap.c
-> +++ b/arch/powerpc/kernel/iomap.c
-> @@ -15,23 +15,23 @@
->   * Here comes the ppc64 implementation of the IOMAP 
->   * interfaces.
->   */
-> -unsigned int ioread8(void __iomem *addr)
-> +unsigned int ioread8(const void __iomem *addr)
->  {
->  	return readb(addr);
->  }
-> -unsigned int ioread16(void __iomem *addr)
-> +unsigned int ioread16(const void __iomem *addr)
->  {
->  	return readw(addr);
->  }
-> -unsigned int ioread16be(void __iomem *addr)
-> +unsigned int ioread16be(const void __iomem *addr)
->  {
->  	return readw_be(addr);
->  }
-> -unsigned int ioread32(void __iomem *addr)
-> +unsigned int ioread32(const void __iomem *addr)
->  {
->  	return readl(addr);
->  }
-> -unsigned int ioread32be(void __iomem *addr)
-> +unsigned int ioread32be(const void __iomem *addr)
->  {
->  	return readl_be(addr);
->  }
-> @@ -41,27 +41,27 @@ EXPORT_SYMBOL(ioread16be);
->  EXPORT_SYMBOL(ioread32);
->  EXPORT_SYMBOL(ioread32be);
->  #ifdef __powerpc64__
-> -u64 ioread64(void __iomem *addr)
-> +u64 ioread64(const void __iomem *addr)
->  {
->  	return readq(addr);
->  }
-> -u64 ioread64_lo_hi(void __iomem *addr)
-> +u64 ioread64_lo_hi(const void __iomem *addr)
->  {
->  	return readq(addr);
->  }
-> -u64 ioread64_hi_lo(void __iomem *addr)
-> +u64 ioread64_hi_lo(const void __iomem *addr)
->  {
->  	return readq(addr);
->  }
-> -u64 ioread64be(void __iomem *addr)
-> +u64 ioread64be(const void __iomem *addr)
->  {
->  	return readq_be(addr);
->  }
-> -u64 ioread64be_lo_hi(void __iomem *addr)
-> +u64 ioread64be_lo_hi(const void __iomem *addr)
->  {
->  	return readq_be(addr);
->  }
-> -u64 ioread64be_hi_lo(void __iomem *addr)
-> +u64 ioread64be_hi_lo(const void __iomem *addr)
->  {
->  	return readq_be(addr);
->  }
-> @@ -139,15 +139,15 @@ EXPORT_SYMBOL(iowrite64be_hi_lo);
->   * FIXME! We could make these do EEH handling if we really
->   * wanted. Not clear if we do.
->   */
-> -void ioread8_rep(void __iomem *addr, void *dst, unsigned long count)
-> +void ioread8_rep(const void __iomem *addr, void *dst, unsigned long count)
->  {
->  	readsb(addr, dst, count);
->  }
-> -void ioread16_rep(void __iomem *addr, void *dst, unsigned long count)
-> +void ioread16_rep(const void __iomem *addr, void *dst, unsigned long count)
->  {
->  	readsw(addr, dst, count);
->  }
-> -void ioread32_rep(void __iomem *addr, void *dst, unsigned long count)
-> +void ioread32_rep(const void __iomem *addr, void *dst, unsigned long count)
->  {
->  	readsl(addr, dst, count);
->  }
+Sriram R <srirrama@codeaurora.org> wrote:
 
-This looks OK to me.
+> Current implementation of pdev based reo destination ring
+> selection is replaced by hash based ring selection so as to
+> ensure all the available rings are utilized for better performance.
+> 
+> The 4 reo destination rings are selected by the HW based on the
+> hash value computed from the received packet based on the 5 tuple
+> {ip src/ip dst/src port/dst port/protocol}. Out of the 32 hash values
+> used by the hw, the driver assigns 8 values per reo destination ring
+> to each of the 4 reo destination rings.
+> 
+> Signed-off-by: Sriram R <srirrama@codeaurora.org>
 
-Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
+I had some problems in the pending branch and these fail to apply
+now. Please fix the two warnings I reported and rebase.
 
-cheers
+error: patch failed: drivers/net/wireless/ath/ath11k/hal.h:850
+error: drivers/net/wireless/ath/ath11k/hal.h: patch does not apply
+stg import: Diff does not apply cleanly
+
+2 patches set to Changes Requested.
+
+11385031 [PATCHv2,1/2] ath11k: Configure hash based reo destination ring selection
+11385033 [PATCHv2,2/2] ath11k: Perform per-msdu rx processing
+
+-- 
+https://patchwork.kernel.org/patch/11385031/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
