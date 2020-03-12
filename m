@@ -2,90 +2,86 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4EA81183298
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2020 15:15:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A48B18329A
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2020 15:15:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727512AbgCLOOz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 12 Mar 2020 10:14:55 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:50180 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727208AbgCLOOz (ORCPT
+        id S1727436AbgCLOPQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 12 Mar 2020 10:15:16 -0400
+Received: from mail26.static.mailgun.info ([104.130.122.26]:30687 "EHLO
+        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727208AbgCLOPQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 12 Mar 2020 10:14:55 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 02CEAeqZ002776;
-        Thu, 12 Mar 2020 14:14:43 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- content-transfer-encoding : in-reply-to; s=corp-2020-01-29;
- bh=ukYai0Szp9GbgbGil4JNjUKZcGVTXYPk+TiQREDrQQI=;
- b=ZE2YueL7kEDUoiyOZ7Yp7RhxSxIUXXNkgNPFtW0NnLgrMLhY7bic3Y0u90vHBtuwnRN7
- DA1MW47Q8uC9bl6DeZ/qJlvbm+kmdoFuaDQ1HLH2jdxz+6/x44dUDQ0AFKNYeHLQmUb5
- bnLRgvjECxK/3R6y3nBrFlGDeYao3oGWZ0D3N0iLDm0doZuqOtPOI3BSFNY10xGsz7AK
- nb8bt68BYyNmVbhus+CGDaXCFDKvJvAQA/wlS5NiVNk8EjpOjQUzYUz/U7OdvXrf9MQW
- 5qsHTTdUN410j759b/FKy/LZeYRZtGAwYGWGP7G10sADpaLE3NhdWlRNDu6rSpra+/ZL ig== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by userp2130.oracle.com with ESMTP id 2ym31usttq-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 12 Mar 2020 14:14:43 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 02CE85WW090900;
-        Thu, 12 Mar 2020 14:14:43 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by userp3020.oracle.com with ESMTP id 2yqgvd117b-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 12 Mar 2020 14:14:42 +0000
-Received: from abhmp0005.oracle.com (abhmp0005.oracle.com [141.146.116.11])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 02CEEfQO031130;
-        Thu, 12 Mar 2020 14:14:41 GMT
-Received: from kadam (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Thu, 12 Mar 2020 07:14:40 -0700
-Date:   Thu, 12 Mar 2020 17:14:35 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Jerome Pouiller <Jerome.Pouiller@silabs.com>
-Cc:     devel@driverdev.osuosl.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Kalle Valo <kvalo@codeaurora.org>
-Subject: Re: [PATCH 2/5] staging: wfx: fix lines ending with a comma instead
- of a semicolon
-Message-ID: <20200312141435.GM11561@kadam>
-References: <20200310101356.182818-1-Jerome.Pouiller@silabs.com>
- <20200310101356.182818-3-Jerome.Pouiller@silabs.com>
+        Thu, 12 Mar 2020 10:15:16 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1584022515; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=C9nSJfUTspKlSKDWoHkgbVZpuyu3orbRd82Ye52j2/o=; b=xEAV8x3yZcq8VFjX2/ZFNaqrd8oaLGG01VSehXaGP1utiqDjj2TmfGS6lBCKTKFvFZjKAC/w
+ xlo5OmOfQpFOHuwHE5bVAT+xFtlSn/am8hYCCvi43+cZ1eCt1xwDxmjET0ujq3GJihc2hv9n
+ l8Gwsrw5kuhgrlI/e695UyxkrGM=
+X-Mailgun-Sending-Ip: 104.130.122.26
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5e6a43f0.7f8b3fa483b0-smtp-out-n05;
+ Thu, 12 Mar 2020 14:15:12 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id D1DABC432C2; Thu, 12 Mar 2020 14:15:11 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE,
+        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from x230.qca.qualcomm.com (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 28D28C433D2;
+        Thu, 12 Mar 2020 14:15:09 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 28D28C433D2
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Bastien Nocera <hadess@hadess.net>
+Cc:     linux-wireless@vger.kernel.org,
+        Larry Finger <Larry.Finger@lwfinger.net>
+Subject: Re: [PATCH v2] rtl8188eu: Add rtw_led_enable module parameter
+References: <869a61437edb52d60721ac8b2a7cccc43e3b0fb4.camel@hadess.net>
+        <20200312133800.096EDC433CB@smtp.codeaurora.org>
+        <8834172fd48be85552a201c6252fcc135492b16e.camel@hadess.net>
+Date:   Thu, 12 Mar 2020 16:15:08 +0200
+In-Reply-To: <8834172fd48be85552a201c6252fcc135492b16e.camel@hadess.net>
+        (Bastien Nocera's message of "Thu, 12 Mar 2020 14:46:41 +0100")
+Message-ID: <87r1xx64nn.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20200310101356.182818-3-Jerome.Pouiller@silabs.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9557 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 malwarescore=0 adultscore=0
- phishscore=0 bulkscore=0 mlxlogscore=999 suspectscore=0 spamscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2001150001
- definitions=main-2003120076
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9557 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 lowpriorityscore=0
- spamscore=0 priorityscore=1501 impostorscore=0 bulkscore=0 suspectscore=0
- phishscore=0 mlxlogscore=999 mlxscore=0 malwarescore=0 clxscore=1015
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2001150001
- definitions=main-2003120076
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Mar 10, 2020 at 11:13:53AM +0100, Jerome Pouiller wrote:
-> From: Jérôme Pouiller <jerome.pouiller@silabs.com>
-> 
-> Obviously introduced by mistake.
-> 
+Bastien Nocera <hadess@hadess.net> writes:
 
-I have a Smatch check for when people use a comma instead of semi-colon,
-but I have never published it because it seems totally harmless.  I
-can't think of a reason why we should use semi-colons instead of commas.
+> On Thu, 2020-03-12 at 13:38 +0000, Kalle Valo wrote:
+>> Bastien Nocera <hadess@hadess.net> wrote:
+>> 
+>> > Make it possible to disable the LED, as it can be pretty annoying
+>> > depending on where it's located.
+>> > 
+>> > See also https://github.com/lwfinger/rtl8188eu/pull/304 for the
+>> > out-of-tree version.
+>> > 
+>> > Signed-off-by: Bastien Nocera <hadess@hadess.net>
+>> 
+>> Please use "staging: " prefix for staging patches, easier for me to
+>> filter that
+>> way.
+>
+> Do you want me to resend it, or will you amend this patch?
 
-regards,
-dan carpenter
+Greg applies staging patches so it's up to him. Ah, only noticed now tha
+you didn't CC him so he didn't see this patch. You should check how
+staging patches are supposed to be sent, I don't know that subsystem
+exactly works.
 
+-- 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
