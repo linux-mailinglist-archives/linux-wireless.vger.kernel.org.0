@@ -2,92 +2,102 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 137B818338D
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2020 15:45:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EB0081835B4
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2020 17:02:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727731AbgCLOpP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 12 Mar 2020 10:45:15 -0400
-Received: from mail-pg1-f195.google.com ([209.85.215.195]:36670 "EHLO
-        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727515AbgCLOpP (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 12 Mar 2020 10:45:15 -0400
-Received: by mail-pg1-f195.google.com with SMTP id c7so3194834pgw.3;
-        Thu, 12 Mar 2020 07:45:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=NZ+lJhCu+QsrJxpFxMMQK0Jj5InEr2JGA1/rRMiktCw=;
-        b=vFy3soi/FJEG3hhUZVnTAacj/qTv0/ajDulbQHpYmZU5DJ+HWkwZ4LyY1m542FWYt8
-         e5p1pRZvwy7dEYZKNAffQuil0MqFa7fbWh5X6y4wc2hrisEvyNRX+XFCqmzwUZQib91b
-         YtwctbXRBb2SHZ0qoQWGpz6JL8BpC/JfjoBwspyBGh9kp+sxkDYLpP7JFlkkKRn8KclL
-         DLGJacYzv7nNJeSzr7lLyqvVs+64yHSh6BErBS2aRRRqhBswrb94jlysH9z0sskFxcrJ
-         OTtVe4VhsUj2PFuVOKYl5VHKx/RyK+J9mmA3wnPT848ZnXZ51Lmk1DHhrg8aPo1zYGaj
-         vM3Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=NZ+lJhCu+QsrJxpFxMMQK0Jj5InEr2JGA1/rRMiktCw=;
-        b=FQDp1HVHGSGFZu+yD6PtLvj470zsEchN9TL9cCJ4WFfFq+x/cekemR2GazQ3orDHCL
-         3Z8stxtIyWBJ5w8NlaBRCo6D0W6ygQSPcJp2TXMC6+cl8/4dZf+5HvaTuI+NnGhjLfKq
-         ZnIISERJHmHh56L3XDybwgJFVu0HFF5gNDNwnVwXnWWngmca0QS/laV3JYptPl0Kocqe
-         kyiBu6ruqhiwubCqjeXt4UP3T9klLk275o3MKHj2l1CQ95U93QcqYbRk5dANdCEm51is
-         Mg1wvt1r4cW+mcl/DVDJRlm3bWjhCe65pOMsjh7qa25k9EuCjUfum5wzrd/PUnY9Qkue
-         3jaQ==
-X-Gm-Message-State: ANhLgQ0W9Kw1o+YQaqtHa0ecAUqRBmZjAsoazXgJQYxcjd60dDjBvDs0
-        uATH69aPJoGg/BbmlgxvY5M=
-X-Google-Smtp-Source: ADFU+vur3iR4ikxB3azR1uDq7JVjwFVFlOsseNiwW3RAzJ56iuTJvW23yByzLVpOFe0EbsQoZV+Fng==
-X-Received: by 2002:a62:15cc:: with SMTP id 195mr6665778pfv.276.1584024313952;
-        Thu, 12 Mar 2020 07:45:13 -0700 (PDT)
-Received: from localhost ([40.83.99.199])
-        by smtp.gmail.com with ESMTPSA id s12sm31424855pgv.73.2020.03.12.07.45.13
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 12 Mar 2020 07:45:13 -0700 (PDT)
-From:   Qiujun Huang <hqjagain@gmail.com>
-To:     johannes@sipsolutions.net
-Cc:     davem@davemloft.net, kuba@kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Qiujun Huang <hqjagain@gmail.com>
-Subject: [PATCH] mac80211: update documentation about tx power
-Date:   Thu, 12 Mar 2020 22:44:24 +0800
-Message-Id: <20200312144424.3023-1-hqjagain@gmail.com>
-X-Mailer: git-send-email 2.17.1
+        id S1727774AbgCLQCo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 12 Mar 2020 12:02:44 -0400
+Received: from mail.kernel.org ([198.145.29.99]:57060 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727624AbgCLQCo (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 12 Mar 2020 12:02:44 -0400
+Received: from lore-desk-wlan.redhat.com (unknown [151.48.128.122])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id DFFE8206F1;
+        Thu, 12 Mar 2020 16:02:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1584028964;
+        bh=euRJn0mOOJd00VYcOTmDdNvfx80mwqpiK69DIWPE0cQ=;
+        h=From:To:Cc:Subject:Date:From;
+        b=eL+d2HP6nX4FdL+AKV8y5avSbBje25UDT2EPo0ZdW/aZnIZhocsdvPjyZMzJEXVHf
+         6hL3mYVRvHMLhxWAwenHgnBuwPhYCi7YvrSinSUZuL33YtWHw0ahUom/TZ3vTJ9gaa
+         sA++xRf0xncWYJfZ3tRXUZHiAWn9DqlsE4AzmPpw=
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     lorenzo.bianconi@redhat.com, sean.wang@mediatek.com,
+        ryder.lee@mediatek.com, linux-wireless@vger.kernel.org
+Subject: [PATCH v3 00/25] Introduce mt7663e support to mt7615 driver
+Date:   Thu, 12 Mar 2020 17:02:10 +0100
+Message-Id: <cover.1584028319.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.24.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The structure member added at some point, but the kernel-doc was not
-updated.
+Introduce support for mt7663e 802.11ac 2x2:2 chipset to mt7615 driver.
+Introduce mt7615e_reg_map and mt7663e_regmap to reuse mt7615 code.
+MCU code refactoring.
+Introduce UNI MCU commands.
 
-Signed-off-by: Qiujun Huang <hqjagain@gmail.com>
----
- include/net/mac80211.h | 5 +++++
- 1 file changed, 5 insertions(+)
+Changes since v2:
+- fix nss configuration
+- remove mt7615_mcu_uni_set_state routine
 
-diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index 77e6b5a83b06..3acc5afb11f1 100644
---- a/include/net/mac80211.h
-+++ b/include/net/mac80211.h
-@@ -1984,6 +1984,7 @@ struct ieee80211_sta_txpwr {
-  * @support_p2p_ps: indicates whether the STA supports P2P PS mechanism or not.
-  * @max_rc_amsdu_len: Maximum A-MSDU size in bytes recommended by rate control.
-  * @max_tid_amsdu_len: Maximum A-MSDU size in bytes for this TID
-+ * @txpwr: the station tx power configuration
-  * @txq: per-TID data TX queues (if driver uses the TXQ abstraction); note that
-  *	the last entry (%IEEE80211_NUM_TIDS) is used for non-data frames
-  */
-@@ -3448,6 +3449,10 @@ enum ieee80211_reconfig_type {
-  *	in AP mode, this callback will not be called when the flag
-  *	%IEEE80211_HW_AP_LINK_PS is set. Must be atomic.
-  *
-+ * @sta_set_txpwr: Configure the station tx power. This callback set the tx
-+ *	power for the station.
-+ *	This callback can sleep.
-+ *
-  * @sta_state: Notifies low level driver about state transition of a
-  *	station (which can be the AP, a client, IBSS/WDS/mesh peer etc.)
-  *	This callback is mutually exclusive with @sta_add/@sta_remove.
+Changes since v1:
+- MCU code refactoring
+- Introduce UNI MCU commands for firmware v3
+- add firmware v3 support
+
+Lorenzo Bianconi (25):
+  mt76: mt7615: introduce mt7615_mcu_fill_msg
+  mt76: mt7615: introduce mt7615_mcu_wait_response
+  mt76: mt7615: cleanup fw queue just for mmio devices
+  mt76: mt7615: introduce mt7615_init_device routine
+  mt76: always init to 0 mcu messages
+  mt76: mt7615: introduce mt7615_mcu_send_message routine
+  mt76: mt7615: add mt7615_mcu_ops data structure
+  mt76: mt7615: move mt7615_mcu_set_bmc to mt7615_mcu_ops
+  mt76: mt7615: move mt7615_mcu_set_sta in mt7615_mcu_ops
+  mt76: mt7615: rely on skb API for mt7615_mcu_set_eeprom
+  mt76: mt7615: rework mt7615_mcu_set_bss_info using skb APIs
+  mt76: mt7615: move more mcu commands in mt7615_mcu_ops data structure
+  mt76: mt7615: introduce MCU_FW_PREFIX for fw mcu commands
+  mt76: mt7615: introduce mt7615_register_map
+  mt76: mt7615: add mt7663e support to mt7615_reg_map
+  mt76: mt7615: add mt7663e support to mt7615_{driver,firmware}_own
+  mt76: mt7615: add mt7663e support to mt7615_mcu_set_eeprom
+  mt76: mt7615: introduce mt7615_eeprom_parse_hw_band_cap routine
+  mt76: mt7615: introduce mt7615_init_mac_chain routine
+  mt76: mt7615: introduce uni cmd command types
+  mt76: mt7615: introduce set_bmc and st_sta for uni commands
+  mt76: mt7615: add more uni mcu commands
+  mt76: mt7615: introduce set_ba uni command
+  mt76: mt7615: get rid of sta_rec_wtbl data structure
+  mt76: mt7615: introduce mt7663e support
+
+ drivers/net/wireless/mediatek/mt76/mcu.c      |    6 +-
+ drivers/net/wireless/mediatek/mt76/mt76.h     |    4 +
+ .../net/wireless/mediatek/mt76/mt7603/mcu.c   |    1 -
+ .../net/wireless/mediatek/mt76/mt7615/dma.c   |   50 +-
+ .../wireless/mediatek/mt76/mt7615/eeprom.c    |   66 +-
+ .../wireless/mediatek/mt76/mt7615/eeprom.h    |    2 +
+ .../net/wireless/mediatek/mt76/mt7615/init.c  |  157 +-
+ .../net/wireless/mediatek/mt76/mt7615/mac.c   |   23 +-
+ .../net/wireless/mediatek/mt76/mt7615/mac.h   |   11 +-
+ .../net/wireless/mediatek/mt76/mt7615/main.c  |   36 +-
+ .../net/wireless/mediatek/mt76/mt7615/mcu.c   | 2745 ++++++++++-------
+ .../net/wireless/mediatek/mt76/mt7615/mcu.h   |   93 +-
+ .../net/wireless/mediatek/mt76/mt7615/mmio.c  |   67 +-
+ .../wireless/mediatek/mt76/mt7615/mt7615.h    |   63 +-
+ .../net/wireless/mediatek/mt76/mt7615/pci.c   |    8 +-
+ .../net/wireless/mediatek/mt76/mt7615/regs.h  |   87 +-
+ .../net/wireless/mediatek/mt76/mt7615/soc.c   |    2 +-
+ 17 files changed, 2134 insertions(+), 1287 deletions(-)
+
 -- 
-2.17.1
+2.24.1
 
