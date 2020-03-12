@@ -2,132 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 96F7418331A
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2020 15:31:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 137B818338D
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2020 15:45:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727564AbgCLOaf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 12 Mar 2020 10:30:35 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:39002 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727412AbgCLOaf (ORCPT
+        id S1727731AbgCLOpP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 12 Mar 2020 10:45:15 -0400
+Received: from mail-pg1-f195.google.com ([209.85.215.195]:36670 "EHLO
+        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727515AbgCLOpP (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 12 Mar 2020 10:30:35 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 02CEOXTS128041;
-        Thu, 12 Mar 2020 14:30:27 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- content-transfer-encoding : in-reply-to; s=corp-2020-01-29;
- bh=e+tMMkMgf3MCOE4jrlZHK/XcEXUQhd/9T6GE0jTowew=;
- b=o8Alk+mrQWZE8S7fatgSRg4N395IURruMp/rnqUbD7lN7gw14Tp2R/fiFPyhlFtpa2dB
- 6v4Tgi3LzhY9ChxapZjjrBvOaWcf25Qlx0pN3gO4+M8NgMzBARbLPU+vqX7PA5VdEC7m
- 6nylhNiI1dNn2kbYNekgTqhHw7Ve5nooMcPt9q2Wz91nsgm3l1/3WvQjHytIDDxewpiQ
- 5mdJfypHevWQfS+uiUA8fsB0xHoSo6rB/R2dzcl2HBGca8u1v0SjmUDos6zjDMJ9cs1n
- c5iHKGShTRppZY4fyo6AexU32EIPKPqGBRkew/EazuI4yta+ou30cZ6bw/uUVcr1Elwg BA== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by userp2130.oracle.com with ESMTP id 2ym31uswt2-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 12 Mar 2020 14:30:27 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 02CEM679063104;
-        Thu, 12 Mar 2020 14:30:27 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by userp3020.oracle.com with ESMTP id 2yqgvd1pgp-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 12 Mar 2020 14:30:26 +0000
-Received: from abhmp0004.oracle.com (abhmp0004.oracle.com [141.146.116.10])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 02CEUPjE018237;
-        Thu, 12 Mar 2020 14:30:25 GMT
-Received: from kadam (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Thu, 12 Mar 2020 07:30:24 -0700
-Date:   Thu, 12 Mar 2020 17:30:19 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Jerome Pouiller <Jerome.Pouiller@silabs.com>
-Cc:     devel@driverdev.osuosl.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Kalle Valo <kvalo@codeaurora.org>
-Subject: Re: [PATCH 3/5] staging: wfx: make warning about pending frame less
- scary
-Message-ID: <20200312143019.GN11561@kadam>
-References: <20200310101356.182818-1-Jerome.Pouiller@silabs.com>
- <20200310101356.182818-4-Jerome.Pouiller@silabs.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20200310101356.182818-4-Jerome.Pouiller@silabs.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9557 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 malwarescore=0 adultscore=0
- phishscore=0 bulkscore=0 mlxlogscore=999 suspectscore=0 spamscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2001150001
- definitions=main-2003120078
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9557 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 lowpriorityscore=0
- spamscore=0 priorityscore=1501 impostorscore=0 bulkscore=0 suspectscore=0
- phishscore=0 mlxlogscore=999 mlxscore=0 malwarescore=0 clxscore=1015
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2001150001
- definitions=main-2003120078
+        Thu, 12 Mar 2020 10:45:15 -0400
+Received: by mail-pg1-f195.google.com with SMTP id c7so3194834pgw.3;
+        Thu, 12 Mar 2020 07:45:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=NZ+lJhCu+QsrJxpFxMMQK0Jj5InEr2JGA1/rRMiktCw=;
+        b=vFy3soi/FJEG3hhUZVnTAacj/qTv0/ajDulbQHpYmZU5DJ+HWkwZ4LyY1m542FWYt8
+         e5p1pRZvwy7dEYZKNAffQuil0MqFa7fbWh5X6y4wc2hrisEvyNRX+XFCqmzwUZQib91b
+         YtwctbXRBb2SHZ0qoQWGpz6JL8BpC/JfjoBwspyBGh9kp+sxkDYLpP7JFlkkKRn8KclL
+         DLGJacYzv7nNJeSzr7lLyqvVs+64yHSh6BErBS2aRRRqhBswrb94jlysH9z0sskFxcrJ
+         OTtVe4VhsUj2PFuVOKYl5VHKx/RyK+J9mmA3wnPT848ZnXZ51Lmk1DHhrg8aPo1zYGaj
+         vM3Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=NZ+lJhCu+QsrJxpFxMMQK0Jj5InEr2JGA1/rRMiktCw=;
+        b=FQDp1HVHGSGFZu+yD6PtLvj470zsEchN9TL9cCJ4WFfFq+x/cekemR2GazQ3orDHCL
+         3Z8stxtIyWBJ5w8NlaBRCo6D0W6ygQSPcJp2TXMC6+cl8/4dZf+5HvaTuI+NnGhjLfKq
+         ZnIISERJHmHh56L3XDybwgJFVu0HFF5gNDNwnVwXnWWngmca0QS/laV3JYptPl0Kocqe
+         kyiBu6ruqhiwubCqjeXt4UP3T9klLk275o3MKHj2l1CQ95U93QcqYbRk5dANdCEm51is
+         Mg1wvt1r4cW+mcl/DVDJRlm3bWjhCe65pOMsjh7qa25k9EuCjUfum5wzrd/PUnY9Qkue
+         3jaQ==
+X-Gm-Message-State: ANhLgQ0W9Kw1o+YQaqtHa0ecAUqRBmZjAsoazXgJQYxcjd60dDjBvDs0
+        uATH69aPJoGg/BbmlgxvY5M=
+X-Google-Smtp-Source: ADFU+vur3iR4ikxB3azR1uDq7JVjwFVFlOsseNiwW3RAzJ56iuTJvW23yByzLVpOFe0EbsQoZV+Fng==
+X-Received: by 2002:a62:15cc:: with SMTP id 195mr6665778pfv.276.1584024313952;
+        Thu, 12 Mar 2020 07:45:13 -0700 (PDT)
+Received: from localhost ([40.83.99.199])
+        by smtp.gmail.com with ESMTPSA id s12sm31424855pgv.73.2020.03.12.07.45.13
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Thu, 12 Mar 2020 07:45:13 -0700 (PDT)
+From:   Qiujun Huang <hqjagain@gmail.com>
+To:     johannes@sipsolutions.net
+Cc:     davem@davemloft.net, kuba@kernel.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Qiujun Huang <hqjagain@gmail.com>
+Subject: [PATCH] mac80211: update documentation about tx power
+Date:   Thu, 12 Mar 2020 22:44:24 +0800
+Message-Id: <20200312144424.3023-1-hqjagain@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Mar 10, 2020 at 11:13:54AM +0100, Jerome Pouiller wrote:
-> From: Jérôme Pouiller <jerome.pouiller@silabs.com>
-> 
-> Removing station while some traffic is in progress may happen.
-> 
+The structure member added at some point, but the kernel-doc was not
+updated.
 
-You're doing this in every commit where you start the commit message in
-the subject and then just keep writing.  Take a look at your patch in
-this URL.  Try to find the subject.
+Signed-off-by: Qiujun Huang <hqjagain@gmail.com>
+---
+ include/net/mac80211.h | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-https://marc.info/?l=linux-driver-devel&m=158383526527951&w=2
-
-The subject is far separated from the body of the commit message.  I
-normally read the patch first, then I read the commit message and I
-don't read the subject at all.  Or sometimes I only read the subject.
-
-https://www.designershumor.com/2019/09/30/you-will-read-this-first-meme/
-
-So it really helps me if the commit message restates the subject.  The
-truth is that I don't really even like the advice that Josh wrote in
-the howto about patch descriptions.  I normally start by explaining the
-problem then how I solved it.  But I try not to be a pedant, so long as
-I can understand the problem and the patch that's fine.  So how I would
-write this commit message is:
-
-    The warning message about releasing a station while Tx is in
-    progress will trigger a stack trace, possibly a reboot depending
-    on the configuration, and a syzbot email.  It's not necessarily
-    a big deal that transmission is still in process so let's make the
-    warning less scary.
-
-> Signed-off-by: Jérôme Pouiller <jerome.pouiller@silabs.com>
-> ---
->  drivers/staging/wfx/sta.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/staging/wfx/sta.c b/drivers/staging/wfx/sta.c
-> index 03d0f224ffdb..010e13bcd33e 100644
-> --- a/drivers/staging/wfx/sta.c
-> +++ b/drivers/staging/wfx/sta.c
-> @@ -605,7 +605,9 @@ int wfx_sta_remove(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
->  	int i;
->  
->  	for (i = 0; i < ARRAY_SIZE(sta_priv->buffered); i++)
-> -		WARN(sta_priv->buffered[i], "release station while Tx is in progress");
-> +		if (sta_priv->buffered[i])
-> +			dev_warn(wvif->wdev->dev, "release station while %d pending frame on queue %d",
-> +				 sta_priv->buffered[i], i);
-
-Why print a warning message at all if this is a normal situation?  Just
-delete the whole thing.
-
-regards,
-dan carpenter
+diff --git a/include/net/mac80211.h b/include/net/mac80211.h
+index 77e6b5a83b06..3acc5afb11f1 100644
+--- a/include/net/mac80211.h
++++ b/include/net/mac80211.h
+@@ -1984,6 +1984,7 @@ struct ieee80211_sta_txpwr {
+  * @support_p2p_ps: indicates whether the STA supports P2P PS mechanism or not.
+  * @max_rc_amsdu_len: Maximum A-MSDU size in bytes recommended by rate control.
+  * @max_tid_amsdu_len: Maximum A-MSDU size in bytes for this TID
++ * @txpwr: the station tx power configuration
+  * @txq: per-TID data TX queues (if driver uses the TXQ abstraction); note that
+  *	the last entry (%IEEE80211_NUM_TIDS) is used for non-data frames
+  */
+@@ -3448,6 +3449,10 @@ enum ieee80211_reconfig_type {
+  *	in AP mode, this callback will not be called when the flag
+  *	%IEEE80211_HW_AP_LINK_PS is set. Must be atomic.
+  *
++ * @sta_set_txpwr: Configure the station tx power. This callback set the tx
++ *	power for the station.
++ *	This callback can sleep.
++ *
+  * @sta_state: Notifies low level driver about state transition of a
+  *	station (which can be the AP, a client, IBSS/WDS/mesh peer etc.)
+  *	This callback is mutually exclusive with @sta_add/@sta_remove.
+-- 
+2.17.1
 
