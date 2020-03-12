@@ -2,95 +2,99 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 151B9183117
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2020 14:19:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ED913183134
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2020 14:24:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727083AbgCLNTF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 12 Mar 2020 09:19:05 -0400
-Received: from mail26.static.mailgun.info ([104.130.122.26]:62249 "EHLO
-        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726299AbgCLNTF (ORCPT
+        id S1727461AbgCLNYR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 12 Mar 2020 09:24:17 -0400
+Received: from mail27.static.mailgun.info ([104.130.122.27]:40782 "EHLO
+        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727411AbgCLNYP (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 12 Mar 2020 09:19:05 -0400
+        Thu, 12 Mar 2020 09:24:15 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1584019144; h=Date: Message-Id: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=DETF0M10FLSFL3LogYoK1OvN3svaN69cKtPXVH0o0Iw=;
- b=luEJswFT9gFnqhnoC/74EKMgjRUvbJomqZ+SZ+nSpe3pp9rMtet0gHL8PMlFZwxOMVqjNoLV
- uMQhvjvg6MTHOxqStXUb4miq/18kg9xKNRHasTc3Wtdv8coFo7cHChifl+n0cFE0ZKw3D22C
- Ms/dR0V+1mrR+6HKb9cUkrgQKmo=
-X-Mailgun-Sending-Ip: 104.130.122.26
+ s=smtp; t=1584019455; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=y2Nrd4GyBfOP/8FCc56U5mNrqRcV/gnnD6px0fRpIBE=; b=EFUeJklXpu3r/fGcB5kXdH5LraFNj8s3JUwCROEkCxsIJMDT5LOSNEd+X62YFCsWhJWglx8i
+ 0oXG8jkL5fcg2ba2q0guo1k2u5ko+WApDJUldTP8iNQD1+Q6RExfk+1TwgokvT4y9Mx2ZC8I
+ tf/Nj29RwuAK4FjhuuQINCd9W6A=
+X-Mailgun-Sending-Ip: 104.130.122.27
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e6a36b4.7f1afdf57340-smtp-out-n02;
- Thu, 12 Mar 2020 13:18:44 -0000 (UTC)
+ by mxa.mailgun.org with ESMTP id 5e6a37f8.7fba80408c38-smtp-out-n01;
+ Thu, 12 Mar 2020 13:24:08 -0000 (UTC)
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 5D2F8C432C2; Thu, 12 Mar 2020 13:18:44 +0000 (UTC)
+        id 7BAA8C433CB; Thu, 12 Mar 2020 13:24:08 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
-        MISSING_MID,SPF_NONE,URIBL_BLOCKED autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE,
+        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from tynnyri.adurom.net (tynnyri.adurom.net [51.15.11.48])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id AE638C433D2;
-        Thu, 12 Mar 2020 13:18:41 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org AE638C433D2
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id DA1EDC433CB;
+        Thu, 12 Mar 2020 13:24:05 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org DA1EDC433CB
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 1/6] brcmfmac: Fix driver crash on USB control transfer
- timeout
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <1581583476-60155-2-git-send-email-chi-hsien.lin@cypress.com>
-References: <1581583476-60155-2-git-send-email-chi-hsien.lin@cypress.com>
-To:     Chi-Hsien Lin <chi-hsien.lin@cypress.com>
-Cc:     linux-wireless@vger.kernel.org, brcm80211-dev-list@broadcom.com,
-        brcm80211-dev-list@cypress.com,
-        Arend van Spriel <arend.vanspriel@broadcom.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Wright Feng <wright.feng@cypress.com>,
-        Raveendran Somu <raveendran.somu@cypress.com>,
-        Chi-hsien Lin <chi-hsien.lin@cypress.com>
-User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20200312131844.5D2F8C432C2@smtp.codeaurora.org>
-Date:   Thu, 12 Mar 2020 13:18:44 +0000 (UTC)
+To:     Chris Chiu <chiu@endlessm.com>
+Cc:     Tony Chuang <yhchuang@realtek.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Brian Norris <briannorris@chromium.org>
+Subject: Re: [PATCH v2 1/2] rtw88: add a debugfs entry to dump coex's info
+References: <20200309075852.11454-1-yhchuang@realtek.com>
+        <20200309075852.11454-2-yhchuang@realtek.com>
+        <CAB4CAwe5kmOOPiw-WBzLMKsXteNgnGzVPsH3pyakg6NfB57Emw@mail.gmail.com>
+Date:   Thu, 12 Mar 2020 15:23:59 +0200
+In-Reply-To: <CAB4CAwe5kmOOPiw-WBzLMKsXteNgnGzVPsH3pyakg6NfB57Emw@mail.gmail.com>
+        (Chris Chiu's message of "Wed, 11 Mar 2020 17:31:48 +0800")
+Message-ID: <87blp1u2og.fsf@tynnyri.adurom.net>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Chi-Hsien Lin <chi-hsien.lin@cypress.com> wrote:
+Chris Chiu <chiu@endlessm.com> writes:
 
-> From: Raveendran Somu <raveendran.somu@cypress.com>
-> 
-> When the control transfer gets timed out, the error status
-> was returned without killing that urb, this leads to using
-> the same urb. This issue causes the kernel crash as the same
-> urb is sumbitted multiple times. The fix is to kill the
-> urb for timeout transfer before returning error
-> 
-> Signed-off-by: Raveendran Somu <raveendran.somu@cypress.com>
-> Signed-off-by: Chi-hsien Lin <chi-hsien.lin@cypress.com>
+> On Mon, Mar 9, 2020 at 3:59 PM <yhchuang@realtek.com> wrote:
+>>
+>> From: Yan-Hsuan Chuang <yhchuang@realtek.com>
+>>
+>> Add a new entry "coex_info" in debugfs to dump coex's states for
+>> us to debug on coex's issues.
+>>
+>> The basic concept for co-existence (coex, usually for WiFi + BT)
+>> is to decide a strategy based on the current status of WiFi and
+>> BT. So, it means the WiFi driver requires to gather information
+>> from BT side and choose a strategy (TDMA/table/HW settings).
+>>
+>> Althrough we can easily check the current status of WiFi, e.g.,
+>> from kernel log or just dump the hardware registers, it is still
+>> very difficult for us to gather so many different types of WiFi
+>> states (such as RFE config, antenna, channel/band, TRX, Power
+>> save). Also we will need BT's information that is stored in
+>> "struct rtw_coex". So it is necessary for us to have a debugfs
+>> that can dump all of the WiFi/BT information required.
+>>
+>> Note that to debug on coex related issues, we usually need a
+>> longer period of time of coex_info dump every 2 seconds (for
+>> example, 30 secs, so we should have 15 times of coex_info's
+>> dump).
+>>
+>> Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
 
-I assume there will be v2 based on comments.
+[...]
 
-6 patches set to Changes Requested.
+> Looks good to me. But I strongly suggest using scnprintf instead of
+> snprintf to prevent potential buffer overflow.
 
-11380001 [1/6] brcmfmac: Fix driver crash on USB control transfer timeout
-11380003 [2/6] brcmfmac: Fix double freeing in the fmac usb data path
-11380005 [3/6] brcmfmac: fix the incorrect return value in brcmf_inform_single_bss().
-11380007 [4/6] brcmfmac: increase max hanger slots from 1K to 3K in fws layer
-11380009 [5/6] brcmfmac: add USB autosuspend feature support
-11380011 [6/6] brcmfmac: To support printing USB console messages
+Yup, please fix that.
 
 -- 
-https://patchwork.kernel.org/patch/11380001/
-
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
