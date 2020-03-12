@@ -2,30 +2,30 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AA9E31831C8
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2020 14:41:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A87A1831CC
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2020 14:41:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727208AbgCLNlE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 12 Mar 2020 09:41:04 -0400
-Received: from mail27.static.mailgun.info ([104.130.122.27]:47056 "EHLO
-        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727194AbgCLNlE (ORCPT
+        id S1727302AbgCLNlk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 12 Mar 2020 09:41:40 -0400
+Received: from mail26.static.mailgun.info ([104.130.122.26]:34557 "EHLO
+        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727170AbgCLNlk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 12 Mar 2020 09:41:04 -0400
+        Thu, 12 Mar 2020 09:41:40 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1584020464; h=Date: Message-Id: Cc: To: References:
+ s=smtp; t=1584020500; h=Date: Message-Id: Cc: To: References:
  In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=OW811nEQHKGfc/7AlbAVoyMbjsDCL3uRBlX6m0NFH6U=;
- b=OiLKb6QxjevJ8TpyxgKSPJ+4VqjTcoZ33v0tOWjrV/adbA+1hpMtGEaFndsAo8qHBkZC2YOU
- zxHrxcDQxQhnWBYbUVuuhhd7Pa5dOsD3po3ojfvwZes+gedBRIQ81W0YxJ/dUGLr/+acOkLi
- CmsL8tMjnahy4ZRBGSF58AenGe4=
-X-Mailgun-Sending-Ip: 104.130.122.27
+ Content-Type: Sender; bh=kxoYFrKaH3QjFdJNKDoikz6gYrpuvqBs9DEBfaq2kGA=;
+ b=o3RKeN9F4+sCaR6iL85+DYNisNU3FszPtR/BSV/FJ4nge70TDMg+iYmuLrDRA+GoLDzglWsi
+ QuPv/TaKmiQndh7oFhdLIlW8hJuYK3qyCeNVjdF7niY0dLHPbYuUloR/kzndFlA9MP6fiZTM
+ illcnTII/4SL/xnFgv56JHAGGj4=
+X-Mailgun-Sending-Ip: 104.130.122.26
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e6a3bef.7fa82de146f8-smtp-out-n02;
- Thu, 12 Mar 2020 13:41:03 -0000 (UTC)
+ by mxa.mailgun.org with ESMTP id 5e6a3c13.7fafbb167848-smtp-out-n02;
+ Thu, 12 Mar 2020 13:41:39 -0000 (UTC)
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id D99DFC433BA; Thu, 12 Mar 2020 13:41:02 +0000 (UTC)
+        id 86707C433CB; Thu, 12 Mar 2020 13:41:39 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -36,44 +36,41 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 11D8DC433D2;
-        Thu, 12 Mar 2020 13:41:00 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 11D8DC433D2
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 96255C433D2;
+        Thu, 12 Mar 2020 13:41:37 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 96255C433D2
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] b43legacy: replace simple_strtol() with kstrtoint()
+Subject: Re: [PATCH] iwlegacy: Remove unneeded variable ret
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <1582085759-17998-1-git-send-email-qiwuchen55@gmail.com>
-References: <1582085759-17998-1-git-send-email-qiwuchen55@gmail.com>
-To:     qiwuchen55@gmail.com
-Cc:     Larry.Finger@lwfinger.net, davem@davemloft.net,
-        linux-wireless@vger.kernel.org, b43-dev@lists.infradead.org,
-        chenqiwu <chenqiwu@xiaomi.com>
+In-Reply-To: <20200221104303.3901-1-vulab@iscas.ac.cn>
+References: <20200221104303.3901-1-vulab@iscas.ac.cn>
+To:     Xu Wang <vulab@iscas.ac.cn>
+Cc:     stf_xl@wp.pl, davem@davemloft.net, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org
 User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20200312134102.D99DFC433BA@smtp.codeaurora.org>
-Date:   Thu, 12 Mar 2020 13:41:02 +0000 (UTC)
+Message-Id: <20200312134139.86707C433CB@smtp.codeaurora.org>
+Date:   Thu, 12 Mar 2020 13:41:39 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-qiwuchen55@gmail.com wrote:
+Xu Wang <vulab@iscas.ac.cn> wrote:
 
-> From: chenqiwu <chenqiwu@xiaomi.com>
+> Remove unneeded variable ret used to store return value.
 > 
-> The simple_strtol() function is deprecated since it does not
-> check for the range overflow. Use kstrtoint() instead.
-> 
-> Signed-off-by: chenqiwu <chenqiwu@xiaomi.com>
+> Signed-off-by: Xu Wang <vulab@iscas.ac.cn>
+> Acked-by: Stanislaw Gruszka <stf_xl@wp.pl>
 
 Patch applied to wireless-drivers-next.git, thanks.
 
-871b4b48cdbf b43legacy: replace simple_strtol() with kstrtoint()
+310443268b29 iwlegacy: Remove unneeded variable ret
 
 -- 
-https://patchwork.kernel.org/patch/11390321/
+https://patchwork.kernel.org/patch/11396229/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
