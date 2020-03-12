@@ -2,28 +2,28 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BD40D182C12
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2020 10:11:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C0AC182C14
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Mar 2020 10:11:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726599AbgCLJLF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 12 Mar 2020 05:11:05 -0400
-Received: from smail.rz.tu-ilmenau.de ([141.24.186.67]:42637 "EHLO
+        id S1726636AbgCLJLH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 12 Mar 2020 05:11:07 -0400
+Received: from smail.rz.tu-ilmenau.de ([141.24.186.67]:42640 "EHLO
         smail.rz.tu-ilmenau.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725268AbgCLJLF (ORCPT
+        with ESMTP id S1726099AbgCLJLH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 12 Mar 2020 05:11:05 -0400
+        Thu, 12 Mar 2020 05:11:07 -0400
 Received: from isengard.tu-ilmenau.de (unknown [141.24.111.112])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by smail.rz.tu-ilmenau.de (Postfix) with ESMTPSA id 832A658006C;
+        by smail.rz.tu-ilmenau.de (Postfix) with ESMTPSA id 8D54158006E;
         Thu, 12 Mar 2020 10:11:03 +0100 (CET)
 From:   Markus Theil <markus.theil@tu-ilmenau.de>
 To:     johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org,
         Markus Theil <markus.theil@tu-ilmenau.de>
-Subject: [PATCH 1/3] nl80211: add no pre-auth attribute and ext. feature flag for ctrl. port
-Date:   Thu, 12 Mar 2020 10:10:53 +0100
-Message-Id: <20200312091055.54257-2-markus.theil@tu-ilmenau.de>
+Subject: [PATCH 2/3] mac80211: handle no-preauth flag for control port
+Date:   Thu, 12 Mar 2020 10:10:54 +0100
+Message-Id: <20200312091055.54257-3-markus.theil@tu-ilmenau.de>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200312091055.54257-1-markus.theil@tu-ilmenau.de>
 References: <20200312091055.54257-1-markus.theil@tu-ilmenau.de>
@@ -34,92 +34,129 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-If the nl80211 control port is used before this patch, pre-auth frames
-(0x88c7) are send to userspace uncoditionally. While this enables userspace
-to only use nl80211 on the station side, it is not always useful for APs.
-Furthermore, pre-auth frames are ordinary data frames and not related to
-the control port. Therefore it should for example be possible for pre-auth
-frames to be bridged onto a wired network on AP side without touching
-userspace.
-
-For backwards compatibility to code already using pre-auth over nl80211,
-this patch adds a feature flag to disable this behavior, while it remains
-enabled by default. An additional ext. feature flag is added to detect this
-from userspace.
-
-Thanks to Jouni for pointing out, that pre-auth frames should be handled as
-ordinary data frames.
+This patch adds support for disabling pre-auth rx over the nl80211 control
+port for mac80211.
 
 Signed-off-by: Markus Theil <markus.theil@tu-ilmenau.de>
 ---
- include/uapi/linux/nl80211.h | 13 ++++++++++++-
- net/wireless/nl80211.c       |  1 +
- 2 files changed, 13 insertions(+), 1 deletion(-)
+ include/net/cfg80211.h     | 1 +
+ net/mac80211/cfg.c         | 4 ++++
+ net/mac80211/ieee80211_i.h | 1 +
+ net/mac80211/iface.c       | 4 ++++
+ net/mac80211/mlme.c        | 2 ++
+ net/mac80211/rx.c          | 3 ++-
+ net/wireless/nl80211.c     | 3 +++
+ 7 files changed, 17 insertions(+), 1 deletion(-)
 
-diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-index b002ef2060fa..66fffc30bb73 100644
---- a/include/uapi/linux/nl80211.h
-+++ b/include/uapi/linux/nl80211.h
-@@ -1632,7 +1632,8 @@ enum nl80211_commands {
-  *	flag is included, then control port frames are sent over NL80211 instead
-  *	using %CMD_CONTROL_PORT_FRAME.  If control port routing over NL80211 is
-  *	to be used then userspace must also use the %NL80211_ATTR_SOCKET_OWNER
-- *	flag.
-+ *	flag. When used with %NL80211_ATTR_CONTROL_PORT_NO_PREAUTH, pre-auth
-+ *	frames are not forwared over the control port.
-  *
-  * @NL80211_ATTR_TESTDATA: Testmode data blob, passed through to the driver.
-  *	We recommend using nested, driver-specific attributes within this.
-@@ -2442,6 +2443,9 @@ enum nl80211_commands {
-  *	on output (in wiphy attributes) it contains only the feature sub-
-  *	attributes.
-  *
-+ * @NL80211_ATTR_CONTROL_PORT_NO_PREAUTH: disable preauth frame rx on control
-+ *	port in order to forward/receive them as ordinary data frames.
-+ *
-  * @NUM_NL80211_ATTR: total number of nl80211_attrs available
-  * @NL80211_ATTR_MAX: highest attribute number currently defined
-  * @__NL80211_ATTR_AFTER_LAST: internal use
-@@ -2912,6 +2916,8 @@ enum nl80211_attrs {
+diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+index e511b225be29..329044c31220 100644
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -924,6 +924,7 @@ struct cfg80211_crypto_settings {
+ 	__be16 control_port_ethertype;
+ 	bool control_port_no_encrypt;
+ 	bool control_port_over_nl80211;
++	bool control_port_no_preauth;
+ 	struct key_params *wep_keys;
+ 	int wep_tx_key;
+ 	const u8 *psk;
+diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+index 7b654d2b8bb2..be22beece2bc 100644
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -1034,6 +1034,8 @@ static int ieee80211_start_ap(struct wiphy *wiphy, struct net_device *dev,
+ 	sdata->control_port_no_encrypt = params->crypto.control_port_no_encrypt;
+ 	sdata->control_port_over_nl80211 =
+ 				params->crypto.control_port_over_nl80211;
++	sdata->control_port_no_preauth =
++				params->crypto.control_port_no_preauth;
+ 	sdata->encrypt_headroom = ieee80211_cs_headroom(sdata->local,
+ 							&params->crypto,
+ 							sdata->vif.type);
+@@ -1045,6 +1047,8 @@ static int ieee80211_start_ap(struct wiphy *wiphy, struct net_device *dev,
+ 			params->crypto.control_port_no_encrypt;
+ 		vlan->control_port_over_nl80211 =
+ 			params->crypto.control_port_over_nl80211;
++		vlan->control_port_no_preauth =
++			params->crypto.control_port_no_preauth;
+ 		vlan->encrypt_headroom =
+ 			ieee80211_cs_headroom(sdata->local,
+ 					      &params->crypto,
+diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
+index de39f9ca9935..f8ed4f621f7f 100644
+--- a/net/mac80211/ieee80211_i.h
++++ b/net/mac80211/ieee80211_i.h
+@@ -912,6 +912,7 @@ struct ieee80211_sub_if_data {
+ 	u16 sequence_number;
+ 	__be16 control_port_protocol;
+ 	bool control_port_no_encrypt;
++	bool control_port_no_preauth;
+ 	bool control_port_over_nl80211;
+ 	int encrypt_headroom;
  
- 	NL80211_ATTR_TID_CONFIG,
+diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
+index 128b3468d13e..d069825705d6 100644
+--- a/net/mac80211/iface.c
++++ b/net/mac80211/iface.c
+@@ -519,6 +519,8 @@ int ieee80211_do_open(struct wireless_dev *wdev, bool coming_up)
+ 			master->control_port_no_encrypt;
+ 		sdata->control_port_over_nl80211 =
+ 			master->control_port_over_nl80211;
++		sdata->control_port_no_preauth =
++			master->control_port_no_preauth;
+ 		sdata->vif.cab_queue = master->vif.cab_queue;
+ 		memcpy(sdata->vif.hw_queue, master->vif.hw_queue,
+ 		       sizeof(sdata->vif.hw_queue));
+@@ -1463,6 +1465,8 @@ static void ieee80211_setup_sdata(struct ieee80211_sub_if_data *sdata,
  
-+	NL80211_ATTR_CONTROL_PORT_NO_PREAUTH,
-+
- 	/* add attributes here, update the policy in nl80211.c */
+ 	sdata->control_port_protocol = cpu_to_be16(ETH_P_PAE);
+ 	sdata->control_port_no_encrypt = false;
++	sdata->control_port_over_nl80211 = false;
++	sdata->control_port_no_preauth = false;
+ 	sdata->encrypt_headroom = IEEE80211_ENCRYPT_HEADROOM;
+ 	sdata->vif.bss_conf.idle = true;
+ 	sdata->vif.bss_conf.txpower = INT_MIN; /* unset */
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index 9ab0842a7c37..959a0f034ba8 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -5462,6 +5462,8 @@ int ieee80211_mgd_assoc(struct ieee80211_sub_if_data *sdata,
+ 	sdata->control_port_no_encrypt = req->crypto.control_port_no_encrypt;
+ 	sdata->control_port_over_nl80211 =
+ 					req->crypto.control_port_over_nl80211;
++	sdata->control_port_no_preauth =
++					req->crypto.control_port_no_preauth;
+ 	sdata->encrypt_headroom = ieee80211_cs_headroom(local, &req->crypto,
+ 							sdata->vif.type);
  
- 	__NL80211_ATTR_AFTER_LAST,
-@@ -5642,6 +5648,10 @@ enum nl80211_feature_flags {
-  * @NL80211_EXT_FEATURE_BEACON_PROTECTION: The driver supports Beacon protection
-  *	and can receive key configuration for BIGTK using key indexes 6 and 7.
-  *
-+ * @NL80211_EXT_FEATURE_CONTROL_PORT_NO_PREAUTH: The driver can disable the
-+ *	forwarding of preauth frames over the control port. They are then
-+ *	handled as ordinary data frames.
-+ *
-  * @NUM_NL80211_EXT_FEATURES: number of extended features.
-  * @MAX_NL80211_EXT_FEATURES: highest extended feature index.
-  */
-@@ -5690,6 +5700,7 @@ enum nl80211_ext_feature_index {
- 	NL80211_EXT_FEATURE_VLAN_OFFLOAD,
- 	NL80211_EXT_FEATURE_AQL,
- 	NL80211_EXT_FEATURE_BEACON_PROTECTION,
-+	NL80211_EXT_FEATURE_CONTROL_PORT_NO_PREAUTH,
+diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
+index 6bd24123456d..7bbc77605cce 100644
+--- a/net/mac80211/rx.c
++++ b/net/mac80211/rx.c
+@@ -2497,7 +2497,8 @@ static void ieee80211_deliver_skb_to_local_stack(struct sk_buff *skb,
+ 	struct net_device *dev = sdata->dev;
  
- 	/* add new features before the definition below */
- 	NUM_NL80211_EXT_FEATURES,
+ 	if (unlikely((skb->protocol == sdata->control_port_protocol ||
+-		      skb->protocol == cpu_to_be16(ETH_P_PREAUTH)) &&
++		     (skb->protocol == cpu_to_be16(ETH_P_PREAUTH) &&
++		     !sdata->control_port_no_preauth)) &&
+ 		     sdata->control_port_over_nl80211)) {
+ 		struct ieee80211_rx_status *status = IEEE80211_SKB_RXCB(skb);
+ 		bool noencrypt = !(status->flag & RX_FLAG_DECRYPTED);
 diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 59f233790686..0f91e02a77c6 100644
+index 0f91e02a77c6..d9af4468e528 100644
 --- a/net/wireless/nl80211.c
 +++ b/net/wireless/nl80211.c
-@@ -652,6 +652,7 @@ const struct nla_policy nl80211_policy[NUM_NL80211_ATTR] = {
- 	[NL80211_ATTR_HE_BSS_COLOR] = NLA_POLICY_NESTED(he_bss_color_policy),
- 	[NL80211_ATTR_TID_CONFIG] =
- 		NLA_POLICY_NESTED_ARRAY(nl80211_tid_config_attr_policy),
-+	[NL80211_ATTR_CONTROL_PORT_NO_PREAUTH] = { .type = NLA_FLAG },
- };
+@@ -9301,6 +9301,9 @@ static int nl80211_crypto_settings(struct cfg80211_registered_device *rdev,
+ 			return r;
  
- /* policy for the key attributes */
+ 		settings->control_port_over_nl80211 = true;
++
++		if (info->attrs[NL80211_ATTR_CONTROL_PORT_NO_PREAUTH])
++			settings->control_port_no_preauth = true;
+ 	}
+ 
+ 	if (info->attrs[NL80211_ATTR_CIPHER_SUITES_PAIRWISE]) {
 -- 
 2.25.1
 
