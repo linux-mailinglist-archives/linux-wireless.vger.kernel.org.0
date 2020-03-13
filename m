@@ -2,42 +2,42 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A6ED8184544
-	for <lists+linux-wireless@lfdr.de>; Fri, 13 Mar 2020 11:51:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A5E7E184545
+	for <lists+linux-wireless@lfdr.de>; Fri, 13 Mar 2020 11:51:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726495AbgCMKvL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 13 Mar 2020 06:51:11 -0400
-Received: from mail-dm6nam12on2096.outbound.protection.outlook.com ([40.107.243.96]:56545
+        id S1726613AbgCMKvN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 13 Mar 2020 06:51:13 -0400
+Received: from mail-dm6nam12on2102.outbound.protection.outlook.com ([40.107.243.102]:56420
         "EHLO NAM12-DM6-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726414AbgCMKvK (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 13 Mar 2020 06:51:10 -0400
+        id S1726414AbgCMKvM (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 13 Mar 2020 06:51:12 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Ah1jOqkaoKlvH3h8/D8dg1AXmywPSW5hyNo4TB+WbzmveooLgy9EvI86Ia4riZkBDxPzv/qih5hsmg7uXh8rsVRcE5xASNzW4ErACw/Ib9vvDlac7JzHkuSMUERI9Fkt4HWZrQY97tma2SDeDqIHGqQo6pl7eHmMz3Er82jjGJDICesgd8tUiFxGHfcrkjEjdgzteMZi4aaUNrlZHCiLYbVpL6P29sIptDAyY+f+eL+juXYjW73P+gmokL+/4T7UZv3jEg0DM5AnLhemyz98QVYz1WOIXzM9iYFJIQg3/6Y+U0FTN0SEYDDo/o131PsWTrDOF/MObbDoo2ENigHjNA==
+ b=JERAecs64pb2DMsKgYYPpJcXJP3YOBR5ZuuSMAvD4HlP3Q1+ZhAvSe4WOMtl2FxcKoskewJC6J2ukcbGCMjKVFoDqTfjVC/yuh+oRG6XsklCAmsOaaSW37trLEqEn7vrcnxj7+naJMynE3GNK7hpgPqNPXdWptZ/QJ2eJoltl21FKbShqQt/wT6q8/wVSqhwWX6vauO/0ZKOCMooaECZb2dZ8qN3OxYzg4fFodGsH6UN0LUde0RN+Hp9t8JUP6wQLc9sTisSQ1akPv67GcKOiMbF5XoYC7ce6Vf1+K0pLPxBs1/LcfKVNR80fd9UQkcVd0vjnHu9ERd6GvH9TvT7/Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=tp/XWRTwvr80437RcBtCuvYDovgnHn+kzgYBZ3/mbyk=;
- b=dQ6Ut8Ra/KSFJUE7GjWK9rz0zqaiol/UBmX5pS66cscaudSX4aU3lwy/MVdejJDBvFa48Wbl7LPSzyxqa7ULgI4tMIQEQze3c5t3LSAwYzqSvHNvyBtPN3saR6/ormTV4O8xB7NVIb/Pm2gIGJxBkNYw4avThqTJJXZCsPnZpWevkuhIUdnfg7aIX1dAK0iwtxvdgSDcJqgk4aRlKPVZaLGgj1j+o7WCorDjZG1AQhVGg3cSuDL4BX6hQiLx8fR9ALDhI8plhM2xxB3m3lISGaX0uAhZewBDHR1KBmvPsmKbqj8/4B5day5whBfRpIXotwxvANanw4htQfiBnhyr9w==
+ bh=wVwKgTRJ+ZGENUgkjH6k1eLuK8rNyFEdHOaSWhrh/ZY=;
+ b=RXsMxhQjJtrp5GgT2Qgksh60E+nx1hFasD0hjCkDIZ2dEQ6ZvjfNQQgP0gtgBUtdyL+mYZQ5UBtK0tdyfO4+D0Xh78YhD9zbiwxVcjLQ2x+ZL4TvnyO8u/F+e9/fotD+yFU5Uleeq+NYpDLuH8fAUuPZJMEBlhH0x7Fw9POxp6TdHFhgXB1dNkjbPpK7BHVj3/JtxsvT69A5cV0JniQWOOLBMxqzr1wLozSz8i4dCRLu8jhhq8t6LnWQbR3DCGKqQaMTjdzdbNZKEimr+bqjgUo3iI6dAHVggowoWi8mB1y0J03RppZx97T6oceXJZSgrCwPgc8AylVCXADz8KRNtA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=cypress.com; dmarc=pass action=none header.from=cypress.com;
  dkim=pass header.d=cypress.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cypress.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=tp/XWRTwvr80437RcBtCuvYDovgnHn+kzgYBZ3/mbyk=;
- b=D7rMb3zEc04v5oL6alBVrnqR6aD/cQUyuh+sJfnEt9QzOv8JJjE9F0paBwjwi6tqL7DwkfdgiIuF9KQMsWbS89eroYx6cHUuxJSOm0EETNNSosxRci6nMlN681aJaCACLebV8b6RyubeXV0kDk4JSA9eLokyYcdgweDohEnmhF4=
+ bh=wVwKgTRJ+ZGENUgkjH6k1eLuK8rNyFEdHOaSWhrh/ZY=;
+ b=VlmlSkhx5+UYu2CJK2QRuXghnpODr9GU0+HuYagB2rRbPKFYn1yoXtoKsib2D5TzA8di3TvVqOd3hymsxWwDeSgFEjA+j2afldJj3u/IPlg3NXwYPbHbZQmkijjUeel6m40OWTxfpY8jaNfxW257DRthWJZInOVe5luMPwF65rM=
 Authentication-Results: spf=none (sender IP is )
  smtp.mailfrom=Chi-Hsien.Lin@cypress.com; 
 Received: from BYAPR06MB4901.namprd06.prod.outlook.com (2603:10b6:a03:7a::30)
  by BYAPR06MB5303.namprd06.prod.outlook.com (2603:10b6:a03:cf::16) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2793.17; Fri, 13 Mar
- 2020 10:51:08 +0000
+ 2020 10:51:10 +0000
 Received: from BYAPR06MB4901.namprd06.prod.outlook.com
  ([fe80::3cc3:7b1a:bd7b:a0a9]) by BYAPR06MB4901.namprd06.prod.outlook.com
  ([fe80::3cc3:7b1a:bd7b:a0a9%5]) with mapi id 15.20.2793.021; Fri, 13 Mar 2020
- 10:51:08 +0000
+ 10:51:10 +0000
 From:   Chi-Hsien Lin <chi-hsien.lin@cypress.com>
 To:     linux-wireless@vger.kernel.org
 Cc:     brcm80211-dev-list@broadcom.com, brcm80211-dev-list@cypress.com,
@@ -46,11 +46,12 @@ Cc:     brcm80211-dev-list@broadcom.com, brcm80211-dev-list@cypress.com,
         Hante Meuleman <hante.meuleman@broadcom.com>,
         Wright Feng <wright.feng@cypress.com>,
         Kalle Valo <kvalo@codeaurora.org>,
-        Raveendran Somu <raveendran.somu@cypress.com>,
+        Madhan Mohan R <MadhanMohan.R@cypress.com>,
+        Madhan Mohan R <madhanmohan.r@cypress.com>,
         Chi-hsien Lin <chi-hsien.lin@cypress.com>
-Subject: [PATCH V2 3/6] brcmfmac: fix the incorrect return value in brcmf_inform_single_bss().
-Date:   Fri, 13 Mar 2020 05:50:17 -0500
-Message-Id: <1584096620-101123-4-git-send-email-chi-hsien.lin@cypress.com>
+Subject: [PATCH V2 4/6] brcmfmac: increase max hanger slots from 1K to 3K in fws layer
+Date:   Fri, 13 Mar 2020 05:50:18 -0500
+Message-Id: <1584096620-101123-5-git-send-email-chi-hsien.lin@cypress.com>
 X-Mailer: git-send-email 2.1.0
 In-Reply-To: <1584096620-101123-1-git-send-email-chi-hsien.lin@cypress.com>
 References: <1584096620-101123-1-git-send-email-chi-hsien.lin@cypress.com>
@@ -60,68 +61,63 @@ X-ClientProxiedBy: BL0PR02CA0054.namprd02.prod.outlook.com
  (2603:10b6:a03:7a::30)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from aremote02.aus.cypress.com (12.110.209.245) by BL0PR02CA0054.namprd02.prod.outlook.com (2603:10b6:207:3d::31) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2793.17 via Frontend Transport; Fri, 13 Mar 2020 10:51:06 +0000
+Received: from aremote02.aus.cypress.com (12.110.209.245) by BL0PR02CA0054.namprd02.prod.outlook.com (2603:10b6:207:3d::31) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2793.17 via Frontend Transport; Fri, 13 Mar 2020 10:51:08 +0000
 X-Mailer: git-send-email 2.1.0
 X-Originating-IP: [12.110.209.245]
 X-MS-PublicTrafficType: Email
 X-MS-Office365-Filtering-HT: Tenant
-X-MS-Office365-Filtering-Correlation-Id: e3c678c7-debf-4dc9-9ba6-08d7c73c6f5b
+X-MS-Office365-Filtering-Correlation-Id: cc41ef87-4fab-4b65-b588-08d7c73c709b
 X-MS-TrafficTypeDiagnostic: BYAPR06MB5303:|BYAPR06MB5303:
 X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <BYAPR06MB530335115F7366B4154C2A7BBBFA0@BYAPR06MB5303.namprd06.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:10000;
+X-Microsoft-Antispam-PRVS: <BYAPR06MB530377969BCE87E6E1FD630FBBFA0@BYAPR06MB5303.namprd06.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:3826;
 X-Forefront-PRVS: 034119E4F6
 X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10019020)(346002)(39860400002)(376002)(396003)(366004)(136003)(199004)(6486002)(2906002)(54906003)(107886003)(4326008)(5660300002)(6666004)(316002)(2616005)(66946007)(66556008)(956004)(66476007)(6916009)(8936002)(81156014)(8676002)(81166006)(478600001)(26005)(36756003)(86362001)(52116002)(7696005)(186003)(16526019);DIR:OUT;SFP:1102;SCL:1;SRVR:BYAPR06MB5303;H:BYAPR06MB4901.namprd06.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;
 Received-SPF: None (protection.outlook.com: cypress.com does not designate
  permitted sender hosts)
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: mG2F4QG571QrG5oIcZ1YjLPAfed3OjYVuVTO+8ngUgtWWyJwChMVZjqr9RahzLxL3tM+VFyChNARB9II6hDxJpABVpsHPKOuY0A0+fgHTfPD9+PRM8sGnfN+2cS7Lb7dOnSsSvd5oodD2P5AWc63GdEpaIlDk5UDojZ6SUcjhzETiUf7Z9iam4xOq9k+BDPESPOsj9fTZzpkRxOmHyy7CnLdwQeTwBrbq3OFrTbc/sElAsjECyRWaiyagqp2NBbhh1KOqf1RKYxsuYM/hJ+aCqiwLMNH2JrzKaMUO7FXvVc0Yo5AFRik9q2CaBnWoTcWjvndcJT0ifwp1MMAKjHZWAgVexnvDM5awxZjDC1F3bi0blHDHl0RpqFOa9rJ89ubgYmfSFLJf5SaAhn5jJHcvouh5R/ATeqUjUG7W3xwb1/E/fElo6WF5O3yyKWqziTl
-X-MS-Exchange-AntiSpam-MessageData: BmGUrwlM3zIiKZeX5aT6nR5nWU83F36PeghlRa4C9o0v1HXlKV7MejuXl8gcfIlfZFWy5o0oaXZtjKqX2FOQJUT0vNjRbWdjX6BrzFKyKnydfybRL/yE1RNJQ/RydZK0MEoDWrL+tYBL91++Zrzm5A==
+X-Microsoft-Antispam-Message-Info: pkj8xQdt4gzXD4jh93Eh3jI+Rq1jRVahW0CYsnelpbqKvfjqbAa2rGS71Y8GmsT3/FDLzB0elz93bSUuAedm+dxsWoUWKooqLlllG/9UBzzWDVD64/Wh6oolwjLODIer/iKeVi+8injhPs7xz3mcXv41PtEAJPYcZe8Hv59NG2k4EUCo2yMqJgJw3CRlE9qn0v/LQfM3LJ5MLt//DQ0j8zlGZVCp8NEohYlrcNbagcKPBsxpphX+D+9b2FOk9b6mfHQ8C/rlNgmYbLTR2eQAK8S98wBfrmDjU43HPpc32GZBifeA9XedgtN9Gh3YjsnCodfCb6YJwpkr4nAEzl6BG+SnSuxd2DPA1ebqGzDphtWuNYkkh8YZ3GBktgdxXN2AUgGFtsmpWQvudoQ9/7RjIC237l7FjMhRzFHSDBb53PS24Ncr/6UpBVq3eCvGSTPH
+X-MS-Exchange-AntiSpam-MessageData: Ty/B2zfmbsuZCw8mZvU5oV9cih71lfaLFIR0Y6hCIk2hLTAAe5bwXCc1SXwOzfmG0dtgPTvhLb4VaTWGgMCmLcRhie9Fn1sVPGvr/TyaBFIUaTOcX3IPL0hbwaOqqMgGoV/LtDkN/8qlHhM3qQcJug==
 X-OriginatorOrg: cypress.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e3c678c7-debf-4dc9-9ba6-08d7c73c6f5b
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Mar 2020 10:51:08.1511
+X-MS-Exchange-CrossTenant-Network-Message-Id: cc41ef87-4fab-4b65-b588-08d7c73c709b
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Mar 2020 10:51:10.1919
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 011addfc-2c09-450d-8938-e0bbc2dd2376
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: XXuyK7ZbVfMIb1kmTZRgpZ1BOCMxyO3uC3OS1TI3fD+Gzid0plahuZdebB1cVAQGUo6u+/G0a+7xp3YX2KVYHA==
+X-MS-Exchange-CrossTenant-UserPrincipalName: c2vMu++tPblok3uEA528NtrWp7/lonrDk/cLF2kzF7vBN8f7eAApFyqFvK9gaXSls8NZoo/JJeMvNETVAyKuWQ==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR06MB5303
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Raveendran Somu <raveendran.somu@cypress.com>
+From: Madhan Mohan R <MadhanMohan.R@cypress.com>
 
-The function brcmf_inform_single_bss returns the value as success,
-even when the length exceeds the maximum value.
-The fix is to send appropriate code on this error.
-This issue is observed when Cypress test group reported random fmac
-crashes when running their tests and the path was identified from the
-crash logs. With this fix the random failure issue in Cypress test group
-was resolved.
+Will enable FMAC to push more packets to bus tx queue and help
+improve throughput when fws queuing is enabled. This change is
+required to tune the throughput for passing WMM CERT tests.
 
-Reviewed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-Signed-off-by: Raveendran Somu <raveendran.somu@cypress.com>
+Signed-off-by: Madhan Mohan R <madhanmohan.r@cypress.com>
 Signed-off-by: Chi-hsien Lin <chi-hsien.lin@cypress.com>
 ---
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c | 2 +-
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwsignal.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-index a2328d3eee03..2ba165330038 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-@@ -2953,7 +2953,7 @@ static s32 brcmf_inform_single_bss(struct brcmf_cfg80211_info *cfg,
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwsignal.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwsignal.c
+index 10022c765354..8cc52935fd41 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwsignal.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwsignal.c
+@@ -404,7 +404,7 @@ struct brcmf_fws_mac_descriptor {
+ 	u8 traffic_lastreported_bmp;
+ };
  
- 	if (le32_to_cpu(bi->length) > WL_BSS_INFO_MAX) {
- 		bphy_err(drvr, "Bss info is larger than buffer. Discarding\n");
--		return 0;
-+		return -EINVAL;
- 	}
+-#define BRCMF_FWS_HANGER_MAXITEMS	1024
++#define BRCMF_FWS_HANGER_MAXITEMS	3072
  
- 	if (!bi->ctl_ch) {
+ /**
+  * enum brcmf_fws_hanger_item_state - state of hanger item.
 -- 
 2.1.0
 
