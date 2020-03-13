@@ -2,185 +2,153 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 656EC1847D6
-	for <lists+linux-wireless@lfdr.de>; Fri, 13 Mar 2020 14:17:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CF1A3184AD6
+	for <lists+linux-wireless@lfdr.de>; Fri, 13 Mar 2020 16:35:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726674AbgCMNRx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 13 Mar 2020 09:17:53 -0400
-Received: from mout.web.de ([212.227.17.12]:43835 "EHLO mout.web.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726550AbgCMNRx (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 13 Mar 2020 09:17:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1584105458;
-        bh=s17YN6zBvUkf8m+IR4qkLbONDJ8Rl5iogNahwfY04L0=;
-        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=EkroZexSqNRhgu/n7QEI7Qb3xRC9C1nnKzEUwMq4CASb5XasHgRZK3O16owX+G86E
-         qaRKlkFwMQvGkX/tl/pYkfCztvOFqhK4kVhGOIXlouy05da2BLzOwnskQAklX6CbxH
-         NyxkRZ2T+ZZdxZfXAYrUjjYq57zwriTChnC6uCNs=
-X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.23] ([77.191.109.216]) by smtp.web.de (mrweb102
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0MRUBA-1ikG0g1dv6-00SjQl; Fri, 13
- Mar 2020 14:17:38 +0100
-Subject: Re: [PATCH v2 0/9] brcmfmac: add support for BCM4359 SDIO chipset
-To:     chi-hsien.lin@cypress.com,
-        =?UTF-8?Q?Heiko_St=c3=bcbner?= <heiko@sntech.de>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        brcm80211-dev-list.pdl@broadcom.com, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-rockchip@lists.infradead.org, brcm80211-dev-list@cypress.com,
-        linux-arm-kernel@lists.infradead.org
-References: <20191211235253.2539-1-smoch@web.de>
- <1daadfe0-5964-db9b-818c-6e4c75ac6a69@web.de>
- <22526722-1ae8-a018-0e24-81d7ad7512dd@web.de> <2685733.IzV8dBlDb2@diego>
- <d7b05a6c-dfba-c8e0-b5fb-f6f7f5a6c1b7@cypress.com>
-From:   Soeren Moch <smoch@web.de>
-Message-ID: <09d6c2d7-b632-3dd1-2c9d-736ccc18d4a9@web.de>
-Date:   Fri, 13 Mar 2020 14:17:37 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
-MIME-Version: 1.0
-In-Reply-To: <d7b05a6c-dfba-c8e0-b5fb-f6f7f5a6c1b7@cypress.com>
-Content-Type: text/plain; charset=utf-8
+        id S1726982AbgCMPfA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 13 Mar 2020 11:35:00 -0400
+Received: from mail-co1nam11on2040.outbound.protection.outlook.com ([40.107.220.40]:6132
+        "EHLO NAM11-CO1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726446AbgCMPe7 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 13 Mar 2020 11:34:59 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=LBpUja6u9YtOEpIogQu36NBpoRZFCqToRoLdDCdMC+oHr/dcRfnwEyV0/23YSAKVYRBKVx7KoB9A0uaPWLaAKTLVYsLvXq0mFZvYhzpAcqFWqzAlY1MpicJZoh6kTAaxHUS5iV/x2SP+wlr6rmejZ168d5Um0epafGj3iWQVuPsjzJkh7Du8MlYObsQEDiWxx+pzXYhlDE/XxQG1lAO+rAybH2vvz/j/mdthpGG3remmOXl/90t4iJj2BoTWYfU0ISMSjnPH9mBraxJ/IOFD2xYFjFo6kCcIM+m3LiI69Jq8pUg4J4kvas/xuwQW+ztZjGl3IVuSIi9PGSfCQUD7bA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=1QrJXH34Af3wy3eOaPZ8mFRizX/izUQ397oGXnT4LNc=;
+ b=AoLkyIDOBUP47bi/60h6ou6ySxQVPTxhP1qHPSp6EevqvyJl5smFHkV5Dlmp2Gp/tPKMMaYOw9p1Dufq0fCc/pXt6xUJJGw5h6r/OPkHyjZ6VUvKMkJyf9lG0qDnAf0s86Z7T/Wp77v0AiXgVPY0N7SWjFdordakt/9eHdbqVnOLJ+Y87Dma3K1fw2NPp0cdbIBrnnALzSxK1FFGuhaTuHUSHvB075x3+3gF3KfTE7ledla6woVho362FQabd2xXFQ0rNFKpepFpA00kfg5VKeZ1EaxsH0Kf8ZWnmLVGeX32Yo0uVSP6JfCDBlaxvzQcqSeXPSIAYcpaSLfqS0Icqg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=silabs.com; dmarc=pass action=none header.from=silabs.com;
+ dkim=pass header.d=silabs.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=silabs.onmicrosoft.com; s=selector2-silabs-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=1QrJXH34Af3wy3eOaPZ8mFRizX/izUQ397oGXnT4LNc=;
+ b=hhG9YDXAhCx9iWmRGbE6g46Dxwz5C/+4pRZXwwWZ5DkaPZSdm3b0x0V7+b3JKsV2FRGGbApo3hxT3yw+xAE1xlKf34LpIYUDrPhFt+7T5Qwg+FCcV0PxtcBjPhwR1sTULuio0+4jBQ9wv9/xqL4tTqwcq8nZf3f6rdW2eUShSl0=
+Received: from MN2PR11MB4063.namprd11.prod.outlook.com (2603:10b6:208:13f::22)
+ by MN2PR11MB3550.namprd11.prod.outlook.com (2603:10b6:208:ee::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2793.17; Fri, 13 Mar
+ 2020 15:34:43 +0000
+Received: from MN2PR11MB4063.namprd11.prod.outlook.com
+ ([fe80::ade4:5702:1c8b:a2b3]) by MN2PR11MB4063.namprd11.prod.outlook.com
+ ([fe80::ade4:5702:1c8b:a2b3%7]) with mapi id 15.20.2814.018; Fri, 13 Mar 2020
+ 15:34:43 +0000
+From:   =?iso-8859-1?Q?J=E9r=F4me_Pouiller?= <Jerome.Pouiller@silabs.com>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+CC:     "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Kalle Valo <kvalo@codeaurora.org>
+Subject: Re: [PATCH 3/5] staging: wfx: make warning about pending frame less
+ scary
+Thread-Topic: [PATCH 3/5] staging: wfx: make warning about pending frame less
+ scary
+Thread-Index: AQHV9sSohBK2XnsHaUKZ+zJWfUL/nqhFB/mAgAGkUgA=
+Date:   Fri, 13 Mar 2020 15:34:43 +0000
+Message-ID: <6287924.ghGFUMk3OD@pc-42>
+References: <20200310101356.182818-1-Jerome.Pouiller@silabs.com>
+ <20200310101356.182818-4-Jerome.Pouiller@silabs.com>
+ <20200312143019.GN11561@kadam>
+In-Reply-To: <20200312143019.GN11561@kadam>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=Jerome.Pouiller@silabs.com; 
+x-originating-ip: [37.71.187.125]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 7b3fa763-bf0c-469d-3911-08d7c7640dce
+x-ms-traffictypediagnostic: MN2PR11MB3550:
+x-microsoft-antispam-prvs: <MN2PR11MB35508EA16C5337AEFC184BA993FA0@MN2PR11MB3550.namprd11.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:206;
+x-forefront-prvs: 034119E4F6
+x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(7916004)(366004)(396003)(39850400004)(136003)(346002)(376002)(199004)(186003)(81166006)(8936002)(71200400001)(26005)(54906003)(316002)(2906002)(8676002)(4326008)(478600001)(81156014)(64756008)(6916009)(6506007)(6486002)(91956017)(76116006)(66446008)(66476007)(6512007)(66574012)(33716001)(9686003)(66946007)(5660300002)(66556008)(86362001)(39026012);DIR:OUT;SFP:1101;SCL:1;SRVR:MN2PR11MB3550;H:MN2PR11MB4063.namprd11.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;
+received-spf: None (protection.outlook.com: silabs.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: KeC1LVAD8/qlYhyNhaOUUhCqk0Qc0pmYWhiXpyGAGS7wkE2/ykWOmfNqMQv7ofFF+3ZT5PjWd4b+LBaQ5jwJx6Rmp+AyAy9ChJAcWJafvc4sBdIHD622aSnxb+U5hAdcO5gi77reTkmIFZz2C0BXqP35wnADOBW8/InXqeR1c0y09LnGycH38cmzi1v9eUA0J4V4dD8GdI/LescuIy14SE5hxhuRD4qUntQUgutCojLtNbO/vwXX1tgaA5wQz47C9+MYcggltJ+d0X71CB+X4Y8+AEESxqB9Vm3W/mjdducLnCKIlksU/o6Q0Yns4UgdnOgPiyhzXZpy+l8e1mxkYpLMoQuzQ73IrUvwXvRXErqYmJUrJbHt6dqpVa/VX3nQuBS//PCKUeAJXPOqhza5MvSIpJO4w9GeKdWDkd7C0SpRpCI50Ia6CpFZrHUXmd0tJdPbtg0SNGGgTq0HUGsNnWgo4PUCYhIC/O6OqLK5IztGkQWhICNZ8qjXpHY+5W3E
+x-ms-exchange-antispam-messagedata: HAJtEkw55bCDqxWPYO8URB915Y2BB5R6hkTGiMViiMBjXh+xymQyqu6yKuNe8s+Yy1GtjruX5LZbs3AuMrGt99Axvp/lc873tP4zJemSKH/aLE2xnrm4IojEtkRCP1rKNMAHIEKMexV9HawCz0fV5w==
+x-ms-exchange-transport-forked: True
+Content-Type: text/plain; charset="iso-8859-1"
+Content-ID: <6C67A06F0BF48A49A32F1DC4F83F5FCB@namprd11.prod.outlook.com>
 Content-Transfer-Encoding: quoted-printable
-Content-Language: en-GB
-X-Provags-ID: V03:K1:BnRPO9/yoBVzD9397yrzsC8frrT9NO6N1rg6fxEL1s/TpY8gBJs
- T9I7UAKzTjLELxaKIyjGe4GEWi8ZkMmTnESd2jeac7rlL2ZyPKZ02neSX55SjVbwuo6WZYg
- uue+4wWpOcKLpRTUf1vrqytHX5qZ7ikSaSBkHWE8K0Dn1QdvlCt/InOde3CWsVhw0ll2H4Q
- 0punPCQeAhK0y2UZ5p8ow==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:cF3WspyrK0M=:BijzAxOqvZo5FBsY8cbBzu
- a9X5D3QrhmpNrUWUmjpCUCyFBXDwC+zY/LMJtVlbMaqzBphnWmw8WQvOJ3GzwtnSPB7xOnQLg
- Nr6LZhF4y+o4mryN5gJiYkLLlRQYCgF6IUMRlufYfT6NZCjTlEmpR0e07oiH3NCYViB+HLj/W
- qeSaMlsVIFLwAumQrWH5ZjLX3+Bo2nzT+GiplMlyXd21Z9AzW1A7q5aMJLjPpwI/zNloCCD2C
- c+I7khkLyH8lAoYYG16MfMpmkzgEvVqnHOnccExVO43dsSNAxPuMCypRZxjUfhV2F5I3q5nEV
- Yqoq8tbxzXWKDHglQeZs26m/UVHzUn2Yunnzzy3LlHXKA5KnlB9dkiYlQfa6DTbFfGqPTjTW0
- /LNfPfslrrKgp/EI3kupTNu/qlc1tlMmqXXkJOYDRn3sewSQy95UefK5S8s65xM5qqa1gf79C
- MegkN5FQy1Xnuv2KIX8jrxErcBYzJjBicevZxyMtZE+IAhm+sxijzQahlBl8SD3rgKwoJZCzk
- OAMN1N5xyRQ7QOmlMlfn06UMS5s4wHFSDvDbcXpZE0b1nqIxC+CQHvdAVLfAZABsi1JItZdx6
- gZIxoVmJKMul/nzAE3vIodRcVlAX92BvW5k591I6juSFQGW/SDnHndPK0Svp6jc4eJOfcJo4D
- 3Wy3GC9oh5UUXG0dRz4U6SToxK6eksE1F8YH4//Qav6ikGVrK1XbENms0c5biat/xL32hmAMq
- hUg3/fLQpp+dwU9mdtsPfrVGjQrd3RPoKDA8mKpHQZJFgnauU81px2MHSEP+bQwr7Bp4nOp7M
- wY5Wytbfga3y/p66R0ypwIsQB56u7AyJ6mpjI7BrKQ4dR9CdpfhuQmB+mavsn+8eukBhXf2E9
- GH48TUquQya1jShqcWnIhwhBNEl8WXo0mTjeFNZvECDBN3NYb138fScLh6lV9n3CK0aM6NSkY
- qwsp8jzWe35yVdZOYJWjCYrpg3vTpyba0o0tYVevRyUB2OBRBAFL+MTBzs1zpLJn0FZVgBsZg
- WLl06i7fmBD24hFbJVGLeiU00OD78uS3Wq3B+V0Gj4eFEOJlREoPCwTDiGnhwv9iEn8D1fMsG
- XmM8fG1qeZfGh3edCLl8RofIkFvhvRAFVCxNO7NJD/6iBYXmSSq3Rb/PYsXbEBW/LwXhtyYDB
- B0labZIm6rEcYDGPl5Ijx3JZqLQGwaJvc/J+AqCnkX5RRoESOR08F/Wi8T9+X+zYoAFc3k/LH
- uybn9eMmp2+5GIPBU
+MIME-Version: 1.0
+X-OriginatorOrg: silabs.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7b3fa763-bf0c-469d-3911-08d7c7640dce
+X-MS-Exchange-CrossTenant-originalarrivaltime: 13 Mar 2020 15:34:43.6451
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 54dbd822-5231-4b20-944d-6f4abcd541fb
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: Cg0qYDQrOFu3VX4FyV//cEciTGTtF4voQG5B3NxdK99t1nOPuZX1JLrT79t+0b/FsCiso/sHCZPe2/mf4fGeAA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR11MB3550
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On Thursday 12 March 2020 15:30:19 CET Dan Carpenter wrote:
+> On Tue, Mar 10, 2020 at 11:13:54AM +0100, Jerome Pouiller wrote:
+[...]
+> So it really helps me if the commit message restates the subject.  The
+> truth is that I don't really even like the advice that Josh wrote in
+> the howto about patch descriptions.  I normally start by explaining the
+> problem then how I solved it.  But I try not to be a pedant, so long as
+> I can understand the problem and the patch that's fine.  So how I would
+> write this commit message is:
+>=20
+>     The warning message about releasing a station while Tx is in
+>     progress will trigger a stack trace, possibly a reboot depending
+>     on the configuration, and a syzbot email.  It's not necessarily
+>     a big deal that transmission is still in process so let's make the
+>     warning less scary.
 
-On 13.03.20 12:03, Chi-Hsien Lin wrote:
-> On 12/16/2019 7:43, Heiko St=C3=BCbner wrote:
->> Hi Soeren,
->>
->> Am Sonntag, 15. Dezember 2019, 22:24:10 CET schrieb Soeren Moch:
->>> On 12.12.19 11:59, Soeren Moch wrote:
->>>> On 12.12.19 10:42, Kalle Valo wrote:
->>>>> Soeren Moch <smoch@web.de> writes:
->>>>>
->>>>>> Add support for the BCM4359 chipset with SDIO interface and RSDB
->>>>>> support
->>>>>> to the brcmfmac wireless network driver in patches 1-7.
->>>>>>
->>>>>> Enhance devicetree of the RockPro64 arm64/rockchip board to use an
->>>>>> AP6359SA based wifi/bt combo module with this chipset in patches
->>>>>> 8-9.
->>>>>>
->>>>>>
->>>>>> Chung-Hsien Hsu (1):
->>>>>> =C2=A0=C2=A0 brcmfmac: set F2 blocksize and watermark for 4359
->>>>>>
->>>>>> Soeren Moch (5):
->>>>>> =C2=A0=C2=A0 brcmfmac: fix rambase for 4359/9
->>>>>> =C2=A0=C2=A0 brcmfmac: make errors when setting roaming parameters =
-non-fatal
->>>>>> =C2=A0=C2=A0 brcmfmac: add support for BCM4359 SDIO chipset
->>>>>> =C2=A0=C2=A0 arm64: dts: rockchip: RockPro64: enable wifi module at=
- sdio0
->>>>>> =C2=A0=C2=A0 arm64: dts: rockchip: RockPro64: hook up bluetooth at =
-uart0
->>>>>>
->>>>>> Wright Feng (3):
->>>>>> =C2=A0=C2=A0 brcmfmac: reset two D11 cores if chip has two D11 core=
-s
->>>>>> =C2=A0=C2=A0 brcmfmac: add RSDB condition when setting interface co=
-mbinations
->>>>>> =C2=A0=C2=A0 brcmfmac: not set mbss in vif if firmware does not sup=
-port MBSS
->>>>>>
->>>>>> =C2=A0 .../boot/dts/rockchip/rk3399-rockpro64.dts=C2=A0=C2=A0=C2=A0=
- | 50 +++++++++++---
->>>>>> =C2=A0 .../broadcom/brcm80211/brcmfmac/bcmsdh.c=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0 |=C2=A0 8 ++-
->>>>>> =C2=A0 .../broadcom/brcm80211/brcmfmac/cfg80211.c=C2=A0=C2=A0=C2=A0=
- | 68
->>>>>> +++++++++++++++----
->>>>>> =C2=A0 .../broadcom/brcm80211/brcmfmac/chip.c=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 | 54 ++++++++++++++-
->>>>>> =C2=A0 .../broadcom/brcm80211/brcmfmac/chip.h=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 1 +
->>>>>> =C2=A0 .../broadcom/brcm80211/brcmfmac/pcie.c=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 2 +-
->>>>>> =C2=A0 .../broadcom/brcm80211/brcmfmac/sdio.c=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 | 17 +++++
->>>>>> =C2=A0 include/linux/mmc/sdio_ids.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=
-=C2=A0 2 +
->>>>>> =C2=A0 8 files changed, 176 insertions(+), 26 deletions(-)
->>>>> Just to make sure we are on the same page, I will apply patches
->>>>> 1-7 to
->>>>> wireless-drivers-next and patches 8-9 go to some other tree? And
->>>>> there
->>>>> are no dependencies between the brcmfmac patches and dts patches?
->>>>>
->>>> Yes, this also is my understanding. I'm glad if you are fine with
->>>> patches 1-7.
->>>> Heiko will pick up patches 8-9 later for linux-rockchip independently=
-.
->>>> And if we need another round of review for patches 8-9, I think we
->>>> don't
->>>> need to bother linux-wireless with this.
->>>
->>> Heiko,
->>>
->>> is this OK for you when patches 1-7 are merged now in wireless-drivers=
-,
->>> and then I send a v3 for patches 8-9 only for you to merge in
->>> linux-rockchip later? Or do you prefer a full v3 for the whole series
->>> with only this pending clock name update in patch 9?
->>
->> Nope, merging 1-7 from this v2 and then getting a v3 with only the dts
->> stuff is perfectly fine :-)
->
-> Soeren,
->
-> I suppose patch 1-7 from this serious are all good for merging. Is
-> that right? If so, could you please create a rebased V3?
-Chi-hsien,
+Indeed, my idea was the reviewers start by reading subjects and then read
+the body of the commit. I will care now.
 
-Thanks for asking, but these patches are already merged in
-torvalds/v5.6-rc1 as commits
-1b8d2e0a9e42..2635853ce4ab
 
-So everything already fine with this.
+> > Signed-off-by: J=E9r=F4me Pouiller <jerome.pouiller@silabs.com>
+> > ---
+> >  drivers/staging/wfx/sta.c | 4 +++-
+> >  1 file changed, 3 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/staging/wfx/sta.c b/drivers/staging/wfx/sta.c
+> > index 03d0f224ffdb..010e13bcd33e 100644
+> > --- a/drivers/staging/wfx/sta.c
+> > +++ b/drivers/staging/wfx/sta.c
+> > @@ -605,7 +605,9 @@ int wfx_sta_remove(struct ieee80211_hw *hw, struct =
+ieee80211_vif *vif,
+> >       int i;
+> >
+> >       for (i =3D 0; i < ARRAY_SIZE(sta_priv->buffered); i++)
+> > -             WARN(sta_priv->buffered[i], "release station while Tx is =
+in progress");
+> > +             if (sta_priv->buffered[i])
+> > +                     dev_warn(wvif->wdev->dev, "release station while =
+%d pending frame on queue %d",
+> > +                              sta_priv->buffered[i], i);
+>=20
+> Why print a warning message at all if this is a normal situation?  Just
+> delete the whole thing.
 
-Thanks,
-Soeren
+I saw cases where it happened and it seems harmless. In add, this code
+is going to be released with 5.6. So, the WARN have to be removed.
 
->
->
-> Regards,
-> Chi-hsien Lin
->
->>
->> Heiko
->>
->>
->> .
->>
+However, I think it is not normal. Even if it is harmless, it is the
+symptom of something unclean.
+
+So, I think that dev_warn() is the correct level of notification.
+
+(I should have included that in the commit log)
+
+--=20
+J=E9r=F4me Pouiller
 
