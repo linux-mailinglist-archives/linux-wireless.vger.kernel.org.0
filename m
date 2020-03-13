@@ -2,92 +2,89 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CBE2F18444F
-	for <lists+linux-wireless@lfdr.de>; Fri, 13 Mar 2020 11:05:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E21751844F7
+	for <lists+linux-wireless@lfdr.de>; Fri, 13 Mar 2020 11:33:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726477AbgCMKFc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 13 Mar 2020 06:05:32 -0400
-Received: from mail-qt1-f195.google.com ([209.85.160.195]:42266 "EHLO
-        mail-qt1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726393AbgCMKFb (ORCPT
+        id S1726475AbgCMKdi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 13 Mar 2020 06:33:38 -0400
+Received: from mail26.static.mailgun.info ([104.130.122.26]:34581 "EHLO
+        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726055AbgCMKdi (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 13 Mar 2020 06:05:31 -0400
-Received: by mail-qt1-f195.google.com with SMTP id g16so6948549qtp.9
-        for <linux-wireless@vger.kernel.org>; Fri, 13 Mar 2020 03:05:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=wH89Ibe/vkawOmsrfwNRHbw0PbtQ6P4s7dsLFgWLgfQ=;
-        b=SWLxTPE4DlWbhnKplRm1DQ5U8+UpFulrtVrz/bkf7XEgXgTYRcf8pqzs0LKHGHFd7Y
-         TjRWtRDganKPEfXwECv9oy91D1+c0oq/hyqm9W2s2uLj3XuIZS9enYTMR8zb4a4cmOZ/
-         11cHOhsoiHh8sRs0rd35AmI8dS5zUf8HIwzg2ZJzP7HM9o+w9OX8NUKHCmKA/Tz90uWN
-         F0WfpNNkmpgXMZnnCAfk5mBo5YFQWzjm9sBb3uIoKslg1BhnmIgdIUeZ/cF7+U+SXZZt
-         d+JqstSSc4WJkvq986l7dut8aZ/T3aF28A4q2PnP6MBs4QFnnc7ZA2ymPryMiQuLE3eP
-         uVtQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:content-transfer-encoding;
-        bh=wH89Ibe/vkawOmsrfwNRHbw0PbtQ6P4s7dsLFgWLgfQ=;
-        b=sgj72u+TD89Aj4kunZo48R/HX54R2r7rfvUQfPQrfZvFe98Irwt7PEIXCQWj3XfeGC
-         Q/7eh8UCKnw+Y60i3aNLrDlouj0OglQ1lu50l/meNQtBiStnKQiUxnICiYUFt1lfojjr
-         ML8Am/QzkSUlCWU65nGSS7t6u3wrNmCdZUld5B8sjNg+LGgt46F8GIFKDHhimrAxKLLl
-         ppSx4VKoCUht0ZKxNTRHN86c8BcMNYA+dMcb+pGmiaO21NIc3XgksAd+2FL8BQvF+cMD
-         ZQ8ShWmR+ouYdftBD442onweUUnN24P016Hw8ZDcHlW3RJbEN0uRBJCF3UPkvECzlY+S
-         Jlkw==
-X-Gm-Message-State: ANhLgQ1YZ7G20pkeSYR1TDhP8GUeGsA2Vq1NwCJZBRmDkGf1DiTRFjPW
-        jU6ehJhc7Wjzu2rLEwC5PKgrzvGN1V9rtVKnupsloHBV
-X-Google-Smtp-Source: ADFU+vuicUlBP4Ncv0tpBEx3e071e/E2tQGoLsyyLP6ip8btfn8WiT5JYJjFKCkZhVEKBztEuEu2a8lHtETlSh2YZTs=
-X-Received: by 2002:aed:35b1:: with SMTP id c46mr11527972qte.74.1584093930698;
- Fri, 13 Mar 2020 03:05:30 -0700 (PDT)
+        Fri, 13 Mar 2020 06:33:38 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1584095618; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=X7JgTLVJSb3w2MgQ8TIVswg89owBNyVmDZy/Ps2jmYY=; b=IgLtidEMlSO22faOw3N5bjYhliHbVbHPhYnN1PWgMvi9EvgFRosHlfss8+lLAY3scqsK5V9w
+ HB8fKWCMsg8WfpzNeeiQK1SZFQPnmVn0cNnezlF6/lzAjZU8WBZBtg+Dm28cFk9BqGybXHLv
+ d6vjsp63lXjMZkbbGYM9VfGu3TI=
+X-Mailgun-Sending-Ip: 104.130.122.26
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5e6b616d.7fb83714f2d0-smtp-out-n01;
+ Fri, 13 Mar 2020 10:33:17 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id BCAD2C433BA; Fri, 13 Mar 2020 10:33:17 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id D0E65C433D2;
+        Fri, 13 Mar 2020 10:33:15 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org D0E65C433D2
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     <yhchuang@realtek.com>
+Cc:     <linux-wireless@vger.kernel.org>, <briannorris@chromium.org>
+Subject: Re: [PATCH] rtw88: add debugfs to fix tx rate
+References: <20200313065114.23433-1-yhchuang@realtek.com>
+Date:   Fri, 13 Mar 2020 12:33:13 +0200
+In-Reply-To: <20200313065114.23433-1-yhchuang@realtek.com>
+        (yhchuang@realtek.com's message of "Fri, 13 Mar 2020 14:51:14 +0800")
+Message-ID: <87eetwo87q.fsf@kamboji.qca.qualcomm.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-References: <CAFb4eQ=Y8XUGsE2c2tur4EPTC=81Ck3tRPF9Uf+6zBnA47j-Dw@mail.gmail.com>
-In-Reply-To: <CAFb4eQ=Y8XUGsE2c2tur4EPTC=81Ck3tRPF9Uf+6zBnA47j-Dw@mail.gmail.com>
-From:   Equipe Soft <equipe.soft.isere@gmail.com>
-Date:   Fri, 13 Mar 2020 11:05:00 +0100
-Message-ID: <CAFb4eQkFGM1rhrccExu6B5_5-3g60nDD_aRt3JDA2qT9FVbDig@mail.gmail.com>
-Subject: Re: Is iwlwifi-9260-th-b0-jf-b0-46.ucode a debug firmware?
-To:     linuxwifi@intel.com, linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello, do you have any news about the issue?
-Best regards.
-@team
-Le ven. 6 mars 2020 =C3=A0 10:33, Equipe Soft <equipe.soft.isere@gmail.com>=
- a =C3=A9crit :
+<yhchuang@realtek.com> writes:
+
+> From: Yan-Hsuan Chuang <yhchuang@realtek.com>
 >
-> Hello,
-> we are using backport-iwlwifi core45 drivers and latest AC9260
-> firmware binary blob:
-> latest firmware available in Intel iwlwifi firmware fork:
-> https://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/linux-firmware.gi=
-t/commit/iwlwifi-9260-th-b0-jf-b0-46.ucode?id=3D4bebf45872a9818a17e20791185=
-00030a8fa377a
-> 2019-11-28 iwlwifi: update FWs to core47-142 release
+> It is useful to fix the bit rate of TX packets. For example, if
+> someone is measuring the TX power, or debugging with the issues
+> of the TX throughput on the field.
 >
-> At runtime, we noticed these log traces:
-> iwlwifi 0000:01:00.0: Found debug destination: EXTERNAL_DRAM
-> iwlwifi 0000:01:00.0: Found debug configuration: 0
-> iwlwifi 0000:01:00.0: Allocated 0x00400000 bytes for firmware monitor.
-> So it seems that it is a debug firmware...
+> To set the value of fixed rate, one should input corresponding
+> desc rate index (ex, 0x0b for DESC_RATE54M to fix at 54 Mbps).
+> Set a value larger than DESC_RATE_MAX will disable fix rate, so
+> the rate adaptive mechanism can resume to work.
 >
-> Q0) can you please confirm that we can safely use this debug firmware
-> in our product ?
-> Q1) is debug mode deliberately enabled in newer firmware or is it an
-> error (maybe like forgotten to disable it) ?
-> Q2) is there an impact on performance with this debug firmware ? WiFi
-> speed/throughput may be reduced or not ?
-> Q3) moreover, can you please confirm whether or not WoWLAN (aka
-> Wake-on-WLAN) is working with this debug firmware ?
-> Q4) is WoWLAN working with any AC9260 firmware version ? and any
-> iwlwifi driver version ?
+> Example,
+>   To fix rate at MCS 1:
+>   echo 0x0d > /sys/kernel/debug/ieee80211/phy0/rtw88/fix_rate
 >
-> Thanks for your help,
+>   To not to fix rate:
+>   echo 0xff > /sys/kernel/debug/ieee80211/phy0/rtw88/fix_rate
 >
-> @team
+>   To know which rate was fixed at:
+>   cat /sys/kernel/debug/ieee80211/phy0/rtw88/fix_rate
+>
+> Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
+
+No way, debugfs is not a method for working around nl80211 and doing
+whatever idea you come up with. The goal is that we have a generic
+nl80211 command for all generic actions, like this one. And I think we
+already have an nl80211 command for fixing the tx rate, right?
+
+-- 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
