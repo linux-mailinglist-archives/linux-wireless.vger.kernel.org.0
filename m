@@ -2,89 +2,120 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E21751844F7
-	for <lists+linux-wireless@lfdr.de>; Fri, 13 Mar 2020 11:33:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A25F9184541
+	for <lists+linux-wireless@lfdr.de>; Fri, 13 Mar 2020 11:51:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726475AbgCMKdi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 13 Mar 2020 06:33:38 -0400
-Received: from mail26.static.mailgun.info ([104.130.122.26]:34581 "EHLO
-        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726055AbgCMKdi (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 13 Mar 2020 06:33:38 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1584095618; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=X7JgTLVJSb3w2MgQ8TIVswg89owBNyVmDZy/Ps2jmYY=; b=IgLtidEMlSO22faOw3N5bjYhliHbVbHPhYnN1PWgMvi9EvgFRosHlfss8+lLAY3scqsK5V9w
- HB8fKWCMsg8WfpzNeeiQK1SZFQPnmVn0cNnezlF6/lzAjZU8WBZBtg+Dm28cFk9BqGybXHLv
- d6vjsp63lXjMZkbbGYM9VfGu3TI=
-X-Mailgun-Sending-Ip: 104.130.122.26
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e6b616d.7fb83714f2d0-smtp-out-n01;
- Fri, 13 Mar 2020 10:33:17 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id BCAD2C433BA; Fri, 13 Mar 2020 10:33:17 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id D0E65C433D2;
-        Fri, 13 Mar 2020 10:33:15 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org D0E65C433D2
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     <yhchuang@realtek.com>
-Cc:     <linux-wireless@vger.kernel.org>, <briannorris@chromium.org>
-Subject: Re: [PATCH] rtw88: add debugfs to fix tx rate
-References: <20200313065114.23433-1-yhchuang@realtek.com>
-Date:   Fri, 13 Mar 2020 12:33:13 +0200
-In-Reply-To: <20200313065114.23433-1-yhchuang@realtek.com>
-        (yhchuang@realtek.com's message of "Fri, 13 Mar 2020 14:51:14 +0800")
-Message-ID: <87eetwo87q.fsf@kamboji.qca.qualcomm.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
-MIME-Version: 1.0
+        id S1726488AbgCMKvG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 13 Mar 2020 06:51:06 -0400
+Received: from mail-dm6nam12on2096.outbound.protection.outlook.com ([40.107.243.96]:56545
+        "EHLO NAM12-DM6-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726475AbgCMKvG (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 13 Mar 2020 06:51:06 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=dgVC7P1qw+gouAkgr37Ci8oZ3Pd5k/tkFLOxwSs7am7Ih2p2l68/qfiam5/jglaRzGgA+aL234TdeoZsplThwZNMvqZp1VaM82AXwd7EpLMR6AGJ0iYbgj0XqQC+U/Y9p96UJhB/NuNtyGH4K5ObIziopdEIrPc2df4w/+uteL+Dc+wbmoAPPKTMm9SgjWt1JGAazhXSMPUFD6/G2xgdBY3UMxGHR44p4f5W9GIARbHnhgXsF0viUIQEWteYEISyqrz97/cpPdDJGqsEGjrYcu1HGimxMlqNgi5RsedHKASqzQry3Mm8kucSDb1kuvucXGWgHQ5RpwVHZG8qrrbaYA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=eMOADgwEHr/o4qrHCXzqhAVsWAo4Sm2+s6G9bztl8tM=;
+ b=kqwemOToTbp2u8rEyfezojE4ltoeVl2hUx6s/mRRLGQe46/CRPbKgsy7R1lBegej0es/se2k0h72A8RZKPt+2DDevuaZ6c1wSR3E7a3asczLhPm+EuOqLURom6yOU3PkQP4XP8IpcydHzE9NuOLn8R1FVT7KMdAhzaEq74b8IQVWn+rlEfeP14ZpAjBg799Mzy97NQFMr6ZPHO2zk1QcelntyDgwqLfYGz11TVH9K2dElIDDICMYb/P4Z/sdRkDt3P0Kra+sFi9iicm7DzXo4A32AnKPMTi5RIwj+hZPDkmGGR7UvS9uHwhpZ652IHAK41ldQzG6lnOsCaCFB3RGBQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=cypress.com; dmarc=pass action=none header.from=cypress.com;
+ dkim=pass header.d=cypress.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cypress.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=eMOADgwEHr/o4qrHCXzqhAVsWAo4Sm2+s6G9bztl8tM=;
+ b=odONraWPYhTuiJ2lQLQoxkImlAdsaICchK8XwUPJd+575GMWXC8flT27gFfqvAG8/UiRPuYOzjF7hKgSFVzNgYhK/I6UDdhUtE05pp/zHyTQW2brRKqzO7i8X2ZyUocnWuc5Zx+zPeoSEITn3eY2QsbaA4LcQZMkG9ox5H2u3Mo=
+Authentication-Results: spf=none (sender IP is )
+ smtp.mailfrom=Chi-Hsien.Lin@cypress.com; 
+Received: from BYAPR06MB4901.namprd06.prod.outlook.com (2603:10b6:a03:7a::30)
+ by BYAPR06MB5303.namprd06.prod.outlook.com (2603:10b6:a03:cf::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2793.17; Fri, 13 Mar
+ 2020 10:51:02 +0000
+Received: from BYAPR06MB4901.namprd06.prod.outlook.com
+ ([fe80::3cc3:7b1a:bd7b:a0a9]) by BYAPR06MB4901.namprd06.prod.outlook.com
+ ([fe80::3cc3:7b1a:bd7b:a0a9%5]) with mapi id 15.20.2793.021; Fri, 13 Mar 2020
+ 10:51:02 +0000
+From:   Chi-Hsien Lin <chi-hsien.lin@cypress.com>
+To:     linux-wireless@vger.kernel.org
+Cc:     brcm80211-dev-list@broadcom.com, brcm80211-dev-list@cypress.com,
+        Arend van Spriel <arend.vanspriel@broadcom.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Wright Feng <wright.feng@cypress.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Chi-Hsien Lin <chi-hsien.lin@cypress.com>
+Subject: [PATCH V2 0/6] brcmfmac: USB change series
+Date:   Fri, 13 Mar 2020 05:50:14 -0500
+Message-Id: <1584096620-101123-1-git-send-email-chi-hsien.lin@cypress.com>
+X-Mailer: git-send-email 2.1.0
 Content-Type: text/plain
+X-ClientProxiedBy: BL0PR02CA0054.namprd02.prod.outlook.com
+ (2603:10b6:207:3d::31) To BYAPR06MB4901.namprd06.prod.outlook.com
+ (2603:10b6:a03:7a::30)
+MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from aremote02.aus.cypress.com (12.110.209.245) by BL0PR02CA0054.namprd02.prod.outlook.com (2603:10b6:207:3d::31) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2793.17 via Frontend Transport; Fri, 13 Mar 2020 10:51:00 +0000
+X-Mailer: git-send-email 2.1.0
+X-Originating-IP: [12.110.209.245]
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-HT: Tenant
+X-MS-Office365-Filtering-Correlation-Id: 13ac9d47-e6a3-4524-edfc-08d7c73c6ba2
+X-MS-TrafficTypeDiagnostic: BYAPR06MB5303:|BYAPR06MB5303:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <BYAPR06MB5303653FD38ADB08C18A2CB2BBFA0@BYAPR06MB5303.namprd06.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:913;
+X-Forefront-PRVS: 034119E4F6
+X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10019020)(346002)(39860400002)(376002)(396003)(366004)(136003)(199004)(6486002)(2906002)(54906003)(107886003)(4326008)(5660300002)(6666004)(316002)(2616005)(66946007)(66556008)(956004)(66476007)(6916009)(8936002)(81156014)(8676002)(81166006)(478600001)(26005)(36756003)(86362001)(52116002)(7696005)(186003)(16526019);DIR:OUT;SFP:1102;SCL:1;SRVR:BYAPR06MB5303;H:BYAPR06MB4901.namprd06.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;
+Received-SPF: None (protection.outlook.com: cypress.com does not designate
+ permitted sender hosts)
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: tIFUKuvtvui0E5xFdgR+4auxgrX4SKjgF5ZrRLsX5eSB6AiR+KL9+/uNQJbyblUY1r3wBnunGh6jR6YHzSzcyTKVh1j0QbmtEmcudHAefOAvcWm+FO7bfBVnzuNnUVUz/LkOxBmABjcN7P+voOI5Clnkvkjk7U1pcVpb0QwgvpmehQdtJPQxstfdd/5Vc7SfCmamnIBQoseWNLfVlF21rWc2uGoh8B74HA9SjMHwThkprBvmqD8c9Llnu5FhjcUFrQOGng3E3eRer5BJMN/+YA0m+48SMsexxoms8ttW2YSFQOFaDI720VZb5hjb8slNQepl3sZ5EZmPSL2QoIT+eHhUOQzrOOhhDC6mTN9vk1Lz/Pd2NmiOaI5LEcr1gbuCqbxYcj2ltNaMkDKj+7M0Aq6m+3owvj9K0QE7fe2o17YnqD9nRLxVi/anKidzf+rL
+X-MS-Exchange-AntiSpam-MessageData: gV+Gzz1lVIUzypJvoU5JthPyMRVhVvMYk0piCbEbJl5aci33dusP+q5ZaM7/09eILtyGGfky6M3en3Yb7cAXn02Gymx6K1HHYdoOvdeC8OYPDxjdlVByqBs2U7vqD2DK9ZoF/89GMO8AmsoVdUAwzw==
+X-OriginatorOrg: cypress.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 13ac9d47-e6a3-4524-edfc-08d7c73c6ba2
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Mar 2020 10:51:01.9436
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 011addfc-2c09-450d-8938-e0bbc2dd2376
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: i7mAGmXPQzpkZt4HyWE+Bue/kJIIdx9mGbmYNc/wH6stVf0Bpmf79aOd/4B3u5qd7jRpAeiFuYkFSDxJBNxrLg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR06MB5303
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-<yhchuang@realtek.com> writes:
+USB runtime PM and console print support added, alone with several of bug fixes for usb devices.
 
-> From: Yan-Hsuan Chuang <yhchuang@realtek.com>
->
-> It is useful to fix the bit rate of TX packets. For example, if
-> someone is measuring the TX power, or debugging with the issues
-> of the TX throughput on the field.
->
-> To set the value of fixed rate, one should input corresponding
-> desc rate index (ex, 0x0b for DESC_RATE54M to fix at 54 Mbps).
-> Set a value larger than DESC_RATE_MAX will disable fix rate, so
-> the rate adaptive mechanism can resume to work.
->
-> Example,
->   To fix rate at MCS 1:
->   echo 0x0d > /sys/kernel/debug/ieee80211/phy0/rtw88/fix_rate
->
->   To not to fix rate:
->   echo 0xff > /sys/kernel/debug/ieee80211/phy0/rtw88/fix_rate
->
->   To know which rate was fixed at:
->   cat /sys/kernel/debug/ieee80211/phy0/rtw88/fix_rate
->
-> Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
+Changes in V2:
+ - Clarify "SVT" meaning in patch 03 commit message.
+ - Add explanation for wowl usage in patch 05 commit message.
 
-No way, debugfs is not a method for working around nl80211 and doing
-whatever idea you come up with. The goal is that we have a generic
-nl80211 command for all generic actions, like this one. And I think we
-already have an nl80211 command for fixing the tx rate, right?
+Madhan Mohan R (1):
+  brcmfmac: increase max hanger slots from 1K to 3K in fws layer
+
+Raveendran Somu (4):
+  brcmfmac: Fix driver crash on USB control transfer timeout
+  brcmfmac: Fix double freeing in the fmac usb data path
+  brcmfmac: fix the incorrect return value in brcmf_inform_single_bss().
+  brcmfmac: To support printing USB console messages
+
+Wright Feng (1):
+  brcmfmac: add USB autosuspend feature support
+
+ .../net/wireless/broadcom/brcm80211/brcmfmac/bus.h |   1 +
+ .../broadcom/brcm80211/brcmfmac/cfg80211.c         |   2 +-
+ .../wireless/broadcom/brcm80211/brcmfmac/core.c    |   8 ++
+ .../wireless/broadcom/brcm80211/brcmfmac/debug.c   |  82 ++++++++++++
+ .../wireless/broadcom/brcm80211/brcmfmac/debug.h   |  24 ++++
+ .../broadcom/brcm80211/brcmfmac/fwsignal.c         |   5 +-
+ .../net/wireless/broadcom/brcm80211/brcmfmac/usb.c | 140 +++++++++++++--------
+ 7 files changed, 206 insertions(+), 56 deletions(-)
 
 -- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+2.1.0
+
