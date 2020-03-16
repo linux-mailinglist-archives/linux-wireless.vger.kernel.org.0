@@ -2,82 +2,104 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 03DE118600A
-	for <lists+linux-wireless@lfdr.de>; Sun, 15 Mar 2020 22:30:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 96E2A186174
+	for <lists+linux-wireless@lfdr.de>; Mon, 16 Mar 2020 03:14:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729235AbgCOV37 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 15 Mar 2020 17:29:59 -0400
-Received: from us-smtp-1.mimecast.com ([205.139.110.61]:31068 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1729202AbgCOV37 (ORCPT
+        id S1729332AbgCPCN5 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 15 Mar 2020 22:13:57 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:32771 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729301AbgCPCN5 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 15 Mar 2020 17:29:59 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1584307798;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=nCZjjXhZtIZTco2GVuY9U8dtD4rKbgr/KTIhT3OsK/I=;
-        b=MTniCmoK8te0pj45YyeqTCV3YSQ5yLUYxEuonWQv263mTR4lQv+A9e28nIRp49NFs02EsV
-        4oHNqPvN4AhVRUmESBZEiGQXEOp1gDEC65jg8Vizu8Ypt4sm7W/9Ff8cqTM1DAnkTYcT+n
-        bHibl88nLQlYqmTS3K0huKNTihQFD34=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-476-4bSSCoquNZ2P3989GY5_Pg-1; Sun, 15 Mar 2020 17:29:54 -0400
-X-MC-Unique: 4bSSCoquNZ2P3989GY5_Pg-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id E82BA800D50;
-        Sun, 15 Mar 2020 21:29:52 +0000 (UTC)
-Received: from elisabeth (ovpn-200-18.brq.redhat.com [10.40.200.18])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id B737B60BFB;
-        Sun, 15 Mar 2020 21:29:46 +0000 (UTC)
-Date:   Sun, 15 Mar 2020 22:29:38 +0100
-From:   Stefano Brivio <sbrivio@redhat.com>
-To:     Shreeya Patel <shreeya.patel23498@gmail.com>
-Cc:     adham.abozaeid@microchip.com, ajay.kathat@microchip.com,
-        linux-wireless@vger.kernel.org, gregkh@linuxfoundation.org,
-        devel@driverdev.osuosl.org, linux-kernel@vger.kernel.org,
-        outreachy-kernel@googlegroups.com, daniel.baluta@gmail.com,
-        nramas@linux.microsoft.com, hverkuil@xs4all.nl
-Subject: Re: [Outreachy kernel] [PATCH] Staging: wilc1000: cfg80211: Use
- kmemdup instead of kmalloc and memcpy
-Message-ID: <20200315222938.23a9faec@elisabeth>
-In-Reply-To: <20200313112451.25610-1-shreeya.patel23498@gmail.com>
-References: <20200313112451.25610-1-shreeya.patel23498@gmail.com>
-Organization: Red Hat
+        Sun, 15 Mar 2020 22:13:57 -0400
+Authenticated-By: 
+X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID 02G2DUmh014280, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (RTEXMB06.realtek.com.tw[172.21.6.99])
+        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id 02G2DUmh014280
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 16 Mar 2020 10:13:31 +0800
+Received: from RTEXDAG01.realtek.com.tw (172.21.6.100) by
+ RTEXMB06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Mon, 16 Mar 2020 10:13:30 +0800
+Received: from RTEXMB04.realtek.com.tw (172.21.6.97) by
+ RTEXDAG01.realtek.com.tw (172.21.6.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Mon, 16 Mar 2020 10:13:30 +0800
+Received: from RTEXMB04.realtek.com.tw ([fe80::d9c5:a079:495e:b999]) by
+ RTEXMB04.realtek.com.tw ([fe80::d9c5:a079:495e:b999%6]) with mapi id
+ 15.01.1779.005; Mon, 16 Mar 2020 10:13:30 +0800
+From:   Tony Chuang <yhchuang@realtek.com>
+To:     Kalle Valo <kvalo@codeaurora.org>
+CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "briannorris@chromium.org" <briannorris@chromium.org>,
+        Arend Van Spriel <arend.vanspriel@broadcom.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        "tamizhr@codeaurora.org" <tamizhr@codeaurora.org>
+Subject: RE: [PATCH v2 2/2] rtw88: add a debugfs entry to enable/disable coex mechanism
+Thread-Topic: [PATCH v2 2/2] rtw88: add a debugfs entry to enable/disable coex
+ mechanism
+Thread-Index: AQHV9eid5DTKsHzIFkaU/75iZgvikahFRc8AgAEbR4CABCO1UA==
+Date:   Mon, 16 Mar 2020 02:13:30 +0000
+Message-ID: <a3ca1019daf343ef9388bc7ea3349fa9@realtek.com>
+References: <20200309075852.11454-1-yhchuang@realtek.com>
+        <20200309075852.11454-3-yhchuang@realtek.com>
+        <877dzpu2lt.fsf@tynnyri.adurom.net>
+        <33d4904b71a04ed8b0226ce07b037e05@realtek.com>
+ <87a74ko66i.fsf@kamboji.qca.qualcomm.com>
+In-Reply-To: <87a74ko66i.fsf@kamboji.qca.qualcomm.com>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.68.175]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 13 Mar 2020 16:54:51 +0530
-Shreeya Patel <shreeya.patel23498@gmail.com> wrote:
+Kalle Valo <kvalo@codeaurora.org> writes:
 
-> Replace calls to kmalloc followed by a memcpy with a direct call to
-> kmemdup.
+> Tony Chuang <yhchuang@realtek.com> writes:
 > 
-> The Coccinelle semantic patch used to make this change is as follows:
-> @@
-> expression from,to,size,flag;
-> statement S;
-> @@
+> > Kalle Valo <kvalo@codeaurora.org> :
+> >
+> >> <yhchuang@realtek.com> writes:
+> >>
+> >> > From: Yan-Hsuan Chuang <yhchuang@realtek.com>
+> >> >
+> >> > Sometimes we need to stop the coex mechanism to debug, so that we
+> >> > can manually control the device through various outer commands.
+> >> > Hence, add a new debugfs coex_enable to allow us to enable/disable
+> >> > the coex mechanism when driver is running.
+> >> >
+> >> > To disable coex
+> >> > echo 0 > /sys/kernel/debug/ieee80211/phyX/rtw88/coex_enable
+> >> >
+> >> > To enable coex
+> >> > echo 1 > /sys/kernel/debug/ieee80211/phyX/rtw88/coex_enable
+> >> >
+> >> > To check coex dm is enabled or not
+> >> > cat /sys/kernel/debug/ieee80211/phyX/rtw88/coex_enable
+> >>
+> >> I forgot, did we add a command to nl80211 for managing btcoex? At least
+> >> we have talking about that for years. Please check that first before
+> >> adding a debugfs interface for this.
+> >>
+> >
+> > Yes, I found there was a thread [1] talking about adding a callback to
+> > enable/disable btcoex, but it seems not get applied eventually.
 > 
-> -  to = \(kmalloc\|kzalloc\)(size,flag);
-> +  to = kmemdup(from,size,flag);
->    if (to==NULL || ...) S
-> -  memcpy(to, from, size);
+> Too bad, I really think we should have at least enable/disable
+> functionality in nl80211. But if it's not there, I guess it's ok to have
+> yet another driver custom debugfs file :/
 > 
-> Signed-off-by: Shreeya Patel <shreeya.patel23498@gmail.com>
 
-Reviewed-by: Stefano Brivio <sbrivio@redhat.com>
+Yes, so please take this ;)
 
--- 
-Stefano
-
+Thanks
+Yen-Hsuan
