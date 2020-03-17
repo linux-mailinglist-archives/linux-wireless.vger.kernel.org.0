@@ -2,108 +2,93 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 05E65187E9A
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Mar 2020 11:46:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 23A68188254
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Mar 2020 12:37:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726084AbgCQKqd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 17 Mar 2020 06:46:33 -0400
-Received: from mail-oi1-f195.google.com ([209.85.167.195]:41350 "EHLO
-        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726066AbgCQKqd (ORCPT
+        id S1726399AbgCQLh0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 17 Mar 2020 07:37:26 -0400
+Received: from mail27.static.mailgun.info ([104.130.122.27]:24295 "EHLO
+        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725794AbgCQLh0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 17 Mar 2020 06:46:33 -0400
-Received: by mail-oi1-f195.google.com with SMTP id b17so6232260oic.8
-        for <linux-wireless@vger.kernel.org>; Tue, 17 Mar 2020 03:46:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=endlessm-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=vdGwLrwNJVDuHZvvQQ7o6KAi1K5yrwhUhx/4ly7EpxY=;
-        b=0asw0SApftOnYJuL8k58n30deisQlSeUxQdW5clNZe/P+162Hv00jdRXZoO6aklAoZ
-         5l/kL+WPrIowMswM6L5mrJiEw9YKIEGnli0jPnEjmfSRppHzbJBRA8wpS+YCrF7JfnZo
-         KZZpcbUUP2pHpJjRCvl33a7nwNW5w+ohhxjJV0jVwOMpNjdlMc0M0nFyA3xPpaJYeqtI
-         FG87PM4p8bn98UZrCUNHunIvTnfM5OhwkRzX0ZahOrGjJxlPMZGzf5s/mChCGUvRW6pe
-         Bn3565NsQq2lz4je9cRvYJ+5QVi33Sa7P0ISgWOBsHoWlL+F34NAHN8IgJweJZqR5xwA
-         QfQQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=vdGwLrwNJVDuHZvvQQ7o6KAi1K5yrwhUhx/4ly7EpxY=;
-        b=lTpMbQGj+Z8KZ/ZAoqQimF36WcI3Obn0TPkFf3oPNo/cq1smDHM3pc9vqXQoC5IrAL
-         gd/Wk0AMNrja4eteMA2UKEDUZ8awjRC+wfOH0ZDifuuc4TMZGCUOrW5H5ZEk5gTMsb6N
-         HSJLz9/B/XWuc6DE9VmOY1kwwxyixsqrAn9ztrcheG1Q0SNZHJ6blHi3FwHevtk4kHYJ
-         BfYPni5+fJpjAqK7PcgnpGUf3det0E71rltNsGrZiKKj8qAIEmypYHtiRM/A3h4umvY0
-         Lir0uuGARyRF/8QibewhSXqBaOU76kiTZ1DpLGa7X3aPuXCE8fGgCui7w3IKlDWgBr+N
-         W/rw==
-X-Gm-Message-State: ANhLgQ2YL0yGsHOl4jsjDzCDYEzFFfwcvsbuj15/idGUHYPpcrsMD/Sh
-        CUrGsVNmltL77XKOil580N2FiraH54uYgSuBbBCBnw==
-X-Google-Smtp-Source: ADFU+vs24v9wVmKXF57oWpAQ14JjBOKRu0OW/f8b3KbzKqja+p/QyrEmZ8l1LwKVoMPkoRznP9SxXLosS78ECQHuGl0=
-X-Received: by 2002:aca:c6ca:: with SMTP id w193mr2844227oif.165.1584441991996;
- Tue, 17 Mar 2020 03:46:31 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200313033008.20070-1-yhchuang@realtek.com> <20200313033008.20070-2-yhchuang@realtek.com>
-In-Reply-To: <20200313033008.20070-2-yhchuang@realtek.com>
-From:   Chris Chiu <chiu@endlessm.com>
-Date:   Tue, 17 Mar 2020 18:46:20 +0800
-Message-ID: <CAB4CAwfxM8fVjK_UOKHvA5RfGJ10fYfZWygkQFFyM80m4NutwA@mail.gmail.com>
-Subject: Re: [PATCH v3 1/2] rtw88: add a debugfs entry to dump coex's info
-To:     Tony Chuang <yhchuang@realtek.com>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Brian Norris <briannorris@chromium.org>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        arend.vanspriel@broadcom.com, tamizhr@codeaurora.org
-Content-Type: text/plain; charset="UTF-8"
+        Tue, 17 Mar 2020 07:37:26 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1584445045; h=Message-Id: Date: Subject: Cc: To: From:
+ Sender; bh=cbsv/sUVRfI608+x6RodMTAma5IsBTv39YdbuPmjgoQ=; b=gN8PE+g6Y5OK3MVjPguP6sb251pjnmkhiAcJe1jrOpgIa5KUEbfzoijSQyHyXPWo/VjGn4lP
+ JIECV800AYBbUxm6tj/bdXMvqH/NLAanw/319ra7uMaX+nmZ15sUTpaC+Zy6a/2oOUFq/ebn
+ +hZsCmJxOMlw58jx5Hv/v6D9S6c=
+X-Mailgun-Sending-Ip: 104.130.122.27
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5e70b66f.7fc1b7a3c8f0-smtp-out-n04;
+ Tue, 17 Mar 2020 11:37:19 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id C421DC433D2; Tue, 17 Mar 2020 11:37:18 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.0
+Received: from checstp253621-lin.qualcomm.com (blr-c-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.19.19])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: srirrama)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 2FC10C433CB;
+        Tue, 17 Mar 2020 11:37:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 2FC10C433CB
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=srirrama@codeaurora.org
+From:   Sriram R <srirrama@codeaurora.org>
+To:     ath11k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org, Sriram R <srirrama@codeaurora.org>
+Subject: [PATCHv4,0/2] Support hash based reo destination ring selection
+Date:   Tue, 17 Mar 2020 17:07:01 +0530
+Message-Id: <1584445023-17384-1-git-send-email-srirrama@codeaurora.org>
+X-Mailer: git-send-email 2.7.4
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Mar 13, 2020 at 11:30 AM <yhchuang@realtek.com> wrote:
->
-> From: Yan-Hsuan Chuang <yhchuang@realtek.com>
->
-> Add a new entry "coex_info" in debugfs to dump coex's states for
-> us to debug on coex's issues.
->
-> The basic concept for co-existence (coex, usually for WiFi + BT)
-> is to decide a strategy based on the current status of WiFi and
-> BT. So, it means the WiFi driver requires to gather information
-> from BT side and choose a strategy (TDMA/table/HW settings).
->
-> Althrough we can easily check the current status of WiFi, e.g.,
-> from kernel log or just dump the hardware registers, it is still
-> very difficult for us to gather so many different types of WiFi
-> states (such as RFE config, antenna, channel/band, TRX, Power
-> save). Also we will need BT's information that is stored in
-> "struct rtw_coex". So it is necessary for us to have a debugfs
-> that can dump all of the WiFi/BT information required.
->
-> Note that to debug on coex related issues, we usually need a
-> longer period of time of coex_info dump every 2 seconds (for
-> example, 30 secs, so we should have 15 times of coex_info's
-> dump).
->
-> Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
-> ---
-Reviewed-by: Chris Chiu <chiu@endlessm.com>
->
-> v1 -> v2
->   * don't ignore "ignore wlan command"
->
-> v2 -> v3
->   * use scnprintf() instead of snprintf()
->   * enclose debug only static functions within CONFIG_RTW88_DEBUGFS
->
->  drivers/net/wireless/realtek/rtw88/coex.c     | 492 ++++++++++++++++++
->  drivers/net/wireless/realtek/rtw88/coex.h     |  10 +
->  drivers/net/wireless/realtek/rtw88/debug.c    |  17 +
->  drivers/net/wireless/realtek/rtw88/main.h     |  18 +
->  drivers/net/wireless/realtek/rtw88/rtw8822b.c |  30 ++
->  drivers/net/wireless/realtek/rtw88/rtw8822c.c |  28 +
->  6 files changed, 595 insertions(+)
->
-> --
-> 2.17.1
->
+Currently, reo destination ring selection is based on pdev,
+i.e each pdev is allocated a static reo destintaion ring and
+rx packets for the pdev is always received on the ring.
+This allows use of only 3 out of 4 reo destination rings at the
+max when all pdev's are active and when only one pdev is active
+we utilize only one ring and other 3 rings remain idle.
+To make effective use of all the reo rings, this patchset enables
+hash based reo destination ring selection where the hash is computed
+based on the 5-tuple ( src/dst ip, src/dst port, protocol) info
+from each packet and is used by hw for destination ring selection.
+
+Also, current implementation of amsdu list based processing is replaced
+with per msdu based handling since the received subframe could be
+pushed to different rings after decap based on hash value computed.
+
+This patchset is based on patchset "ath11k: offload PN verification to the HW"
+
+v4: Rebased on top of latest master
+
+Sriram R (2):
+  ath11k: Configure hash based reo destination ring selection
+  ath11k: Perform per-msdu rx processing
+
+ drivers/net/wireless/ath/ath11k/ahb.c    |   5 -
+ drivers/net/wireless/ath/ath11k/core.h   |   5 +-
+ drivers/net/wireless/ath/ath11k/dp.c     |  35 ++-
+ drivers/net/wireless/ath/ath11k/dp.h     |   4 +-
+ drivers/net/wireless/ath/ath11k/dp_rx.c  | 513 +++++++++++++------------------
+ drivers/net/wireless/ath/ath11k/dp_rx.h  |   4 +-
+ drivers/net/wireless/ath/ath11k/dp_tx.c  |   2 +-
+ drivers/net/wireless/ath/ath11k/hal.h    |  12 +-
+ drivers/net/wireless/ath/ath11k/hal_rx.c |  15 +-
+ drivers/net/wireless/ath/ath11k/mac.c    |  12 +-
+ drivers/net/wireless/ath/ath11k/mac.h    |   1 +
+ drivers/net/wireless/ath/ath11k/peer.c   |   3 +
+ drivers/net/wireless/ath/ath11k/peer.h   |   2 +
+ drivers/net/wireless/ath/ath11k/wmi.c    |  35 +++
+ drivers/net/wireless/ath/ath11k/wmi.h    |  14 +-
+ 15 files changed, 339 insertions(+), 323 deletions(-)
+
+-- 
+2.7.4
