@@ -2,74 +2,234 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B4745187689
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Mar 2020 01:11:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 88B0F187807
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Mar 2020 04:16:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733050AbgCQALg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 16 Mar 2020 20:11:36 -0400
-Received: from mail.uic.edu.hk ([61.143.62.86]:48808 "EHLO umgp.uic.edu.hk"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1733019AbgCQALg (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 16 Mar 2020 20:11:36 -0400
-X-IronPort-AV: E=Sophos;i="5.43,368,1503331200"; 
-   d="scan'208";a="17243146"
-Received: from unknown (HELO zpmail.uic.edu.hk) ([192.168.111.249])
-  by umgp.uic.edu.hk with ESMTP; 17 Mar 2020 08:11:34 +0800
-Received: from zpmail.uic.edu.hk (localhost [127.0.0.1])
-        by zpmail.uic.edu.hk (Postfix) with ESMTPS id 6B16441C05AE;
-        Tue, 17 Mar 2020 08:11:32 +0800 (CST)
-Received: from localhost (localhost [127.0.0.1])
-        by zpmail.uic.edu.hk (Postfix) with ESMTP id DB58341C0980;
-        Tue, 17 Mar 2020 08:11:31 +0800 (CST)
-DKIM-Filter: OpenDKIM Filter v2.10.3 zpmail.uic.edu.hk DB58341C0980
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uic.edu.hk;
-        s=6465647E-9D7B-11E8-B17B-42130C7FA3B9; t=1584403892;
-        bh=Wn2BcVyAdGxyDvB/5AnVfCr/iJTzisyuX4dwKssec6E=;
-        h=Date:From:Message-ID:MIME-Version;
-        b=N1pNhkd2l8zz69kDtEsPH5n7SDL70Ak/Rgb/NYqC0+ZCBZFg/G0QkldxXmMRPmztz
-         HwkJ6HHAibMur3rytYhnqKeG349hpGDQCbhvoJdZWkvkFCa93STWbitRqMynzR+Wj5
-         wLEdN7i9CyVDDhspocQMykx6lSGq645dTckJSCrsFHg+uR95rTW6kz2/3F5tST7+Uo
-         ELvvW8oTRw+C3DdE82L8ao85KfwNAx6BRhhB+sNBssPbo3CqQ69/PO1/J9gy3aGO+s
-         FwDrxpCEm2RIo68N7oaYrAjY/FUGCbKk/MsqrV+VDqizldOqfTDFamlvQc82rVkjYy
-         rx6v80NBgwdtg==
-Received: from zpmail.uic.edu.hk ([127.0.0.1])
-        by localhost (zpmail.uic.edu.hk [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id sXqq4gziPQtZ; Tue, 17 Mar 2020 08:11:31 +0800 (CST)
-Received: from zpmail.uic.edu.hk (zpmail.uic.edu.hk [192.168.111.249])
-        by zpmail.uic.edu.hk (Postfix) with ESMTP id 1549641C058D;
-        Tue, 17 Mar 2020 08:11:27 +0800 (CST)
-Date:   Tue, 17 Mar 2020 08:11:26 +0800 (CST)
-From:   David Ibe <ylawrence@uic.edu.hk>
-Reply-To: David Ibe <davidibe718@gmail.com>
-Message-ID: <2065446646.63699156.1584403886963.JavaMail.zimbra@uic.edu.hk>
-Subject: 
+        id S1726860AbgCQDQN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 16 Mar 2020 23:16:13 -0400
+Received: from mga11.intel.com ([192.55.52.93]:61912 "EHLO mga11.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726803AbgCQDQN (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 16 Mar 2020 23:16:13 -0400
+IronPort-SDR: lfwZEzT/bSUzbP/fliyEjyKu8EEK84+BQafQkD6L+XJ7fgv6DH3VCa9OI1I4UnW2eY3MfvVL/z
+ t+iCS+3ZXS8g==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Mar 2020 20:16:12 -0700
+IronPort-SDR: ClnsI+fwBk3oJhHnrMBPZudILLiyzERrJoGgnDBcVmovEsU54z2Cf92g9cuiPc/NXZnVSdBpKB
+ 6guXcX7L/e3g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.70,562,1574150400"; 
+   d="scan'208";a="279257308"
+Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
+  by fmsmga002.fm.intel.com with ESMTP; 16 Mar 2020 20:16:11 -0700
+Received: from kbuild by lkp-server01 with local (Exim 4.89)
+        (envelope-from <lkp@intel.com>)
+        id 1jE2iA-000Cps-OS; Tue, 17 Mar 2020 11:16:10 +0800
+Date:   Tue, 17 Mar 2020 11:15:41 +0800
+From:   kbuild test robot <lkp@intel.com>
+To:     Johannes Berg <johannes.berg@intel.com>
+Cc:     linux-wireless@vger.kernel.org
+Subject: [mac80211-next:master] BUILD SUCCESS
+ 2786ad5fb23416eb894d47b6b0ef9ac8ed701d37
+Message-ID: <5e7040dd.pqhar1h4sIbPHUAH%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.111.160]
-X-Mailer: Zimbra 8.8.15_GA_3829 (ZimbraWebClient - GC80 (Win)/8.8.15_GA_3829)
-Thread-Index: 8IMjdxPQWBZshE+F+QJEttpRaFVxcQ==
-Thread-Topic: 
-To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211-next.git  master
+branch HEAD: 2786ad5fb23416eb894d47b6b0ef9ac8ed701d37  cfg80211: fix documentation format
 
+elapsed time: 480m
 
-Good Day,                
+configs tested: 175
+configs skipped: 14
 
-I am Mr. David Ibe, I work with the International Standards on Auditing, I have seen on records, that several times people has divert your funds into their own personal accounts.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-Now I am writing to you in respect of the amount which I have been able to send to you through our International United Nations accredited and approved Diplomat, who has arrived Africa, I want you to know that the diplomat would deliver the funds which I have packaged as a diplomatic compensation to you and the amount in the consignment is  $10,000,000.00 United State Dollars.
+arm                              allmodconfig
+arm                               allnoconfig
+arm                              allyesconfig
+arm64                            allmodconfig
+arm64                             allnoconfig
+arm64                            allyesconfig
+arm                           efm32_defconfig
+arm                         at91_dt_defconfig
+arm                        shmobile_defconfig
+arm64                               defconfig
+arm                          exynos_defconfig
+arm                        multi_v5_defconfig
+arm                           sunxi_defconfig
+arm                        multi_v7_defconfig
+sparc                            allyesconfig
+um                                  defconfig
+i386                              allnoconfig
+i386                             alldefconfig
+i386                             allyesconfig
+i386                                defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                              allnoconfig
+ia64                             allyesconfig
+ia64                             alldefconfig
+c6x                              allyesconfig
+c6x                        evmc6678_defconfig
+nios2                         10m50_defconfig
+nios2                         3c120_defconfig
+openrisc                    or1ksim_defconfig
+openrisc                 simple_smp_defconfig
+xtensa                       common_defconfig
+xtensa                          iss_defconfig
+alpha                               defconfig
+csky                                defconfig
+nds32                             allnoconfig
+nds32                               defconfig
+h8300                     edosk2674_defconfig
+h8300                    h8300h-sim_defconfig
+h8300                       h8s-sim_defconfig
+m68k                             allmodconfig
+m68k                       m5475evb_defconfig
+m68k                          multi_defconfig
+m68k                           sun3_defconfig
+arc                              allyesconfig
+arc                                 defconfig
+microblaze                      mmu_defconfig
+microblaze                    nommu_defconfig
+powerpc                           allnoconfig
+powerpc                             defconfig
+powerpc                       ppc64_defconfig
+powerpc                          rhel-kconfig
+mips                           32r2_defconfig
+mips                         64r6el_defconfig
+mips                             allmodconfig
+mips                              allnoconfig
+mips                             allyesconfig
+mips                      fuloong2e_defconfig
+mips                      malta_kvm_defconfig
+parisc                            allnoconfig
+parisc                           allyesconfig
+parisc                generic-32bit_defconfig
+parisc                generic-64bit_defconfig
+x86_64               randconfig-a001-20200316
+x86_64               randconfig-a002-20200316
+x86_64               randconfig-a003-20200316
+i386                 randconfig-a001-20200316
+i386                 randconfig-a002-20200316
+i386                 randconfig-a003-20200316
+alpha                randconfig-a001-20200316
+m68k                 randconfig-a001-20200316
+mips                 randconfig-a001-20200316
+nds32                randconfig-a001-20200316
+parisc               randconfig-a001-20200316
+riscv                randconfig-a001-20200316
+c6x                  randconfig-a001-20200316
+h8300                randconfig-a001-20200316
+microblaze           randconfig-a001-20200316
+nios2                randconfig-a001-20200316
+sparc64              randconfig-a001-20200316
+c6x                  randconfig-a001-20200317
+h8300                randconfig-a001-20200317
+microblaze           randconfig-a001-20200317
+nios2                randconfig-a001-20200317
+sparc64              randconfig-a001-20200317
+csky                 randconfig-a001-20200316
+openrisc             randconfig-a001-20200316
+s390                 randconfig-a001-20200316
+sh                   randconfig-a001-20200316
+xtensa               randconfig-a001-20200316
+x86_64               randconfig-b001-20200316
+x86_64               randconfig-b002-20200316
+x86_64               randconfig-b003-20200316
+i386                 randconfig-b001-20200316
+i386                 randconfig-b002-20200316
+i386                 randconfig-b003-20200316
+x86_64               randconfig-c001-20200316
+x86_64               randconfig-c002-20200316
+x86_64               randconfig-c003-20200316
+i386                 randconfig-c001-20200316
+i386                 randconfig-c002-20200316
+i386                 randconfig-c003-20200316
+x86_64               randconfig-d001-20200317
+x86_64               randconfig-d002-20200317
+x86_64               randconfig-d003-20200317
+i386                 randconfig-d001-20200317
+i386                 randconfig-d002-20200317
+i386                 randconfig-d003-20200317
+x86_64               randconfig-d001-20200316
+x86_64               randconfig-d002-20200316
+x86_64               randconfig-d003-20200316
+i386                 randconfig-d001-20200316
+i386                 randconfig-d002-20200316
+i386                 randconfig-d003-20200316
+x86_64               randconfig-e001-20200316
+x86_64               randconfig-e002-20200316
+x86_64               randconfig-e003-20200316
+i386                 randconfig-e001-20200316
+i386                 randconfig-e002-20200316
+i386                 randconfig-e003-20200316
+x86_64               randconfig-f001-20200316
+x86_64               randconfig-f002-20200316
+x86_64               randconfig-f003-20200316
+i386                 randconfig-f001-20200316
+i386                 randconfig-f002-20200316
+i386                 randconfig-f003-20200316
+x86_64               randconfig-g001-20200316
+x86_64               randconfig-g002-20200316
+x86_64               randconfig-g003-20200316
+i386                 randconfig-g001-20200316
+i386                 randconfig-g002-20200316
+i386                 randconfig-g003-20200316
+x86_64               randconfig-h001-20200316
+x86_64               randconfig-h002-20200316
+x86_64               randconfig-h003-20200316
+i386                 randconfig-h001-20200316
+i386                 randconfig-h002-20200316
+i386                 randconfig-h003-20200316
+arc                  randconfig-a001-20200316
+arm                  randconfig-a001-20200316
+arm64                randconfig-a001-20200316
+ia64                 randconfig-a001-20200316
+powerpc              randconfig-a001-20200316
+sparc                randconfig-a001-20200316
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+s390                             alldefconfig
+s390                             allmodconfig
+s390                              allnoconfig
+s390                             allyesconfig
+s390                          debug_defconfig
+s390                                defconfig
+s390                       zfcpdump_defconfig
+sh                               allmodconfig
+sh                                allnoconfig
+sh                          rsk7269_defconfig
+sh                  sh7785lcr_32bit_defconfig
+sh                            titan_defconfig
+sparc                               defconfig
+sparc64                          allmodconfig
+sparc64                           allnoconfig
+sparc64                          allyesconfig
+sparc64                             defconfig
+um                             i386_defconfig
+um                           x86_64_defconfig
+x86_64                              fedora-25
+x86_64                                  kexec
+x86_64                                    lkp
+x86_64                                   rhel
+x86_64                         rhel-7.2-clear
+x86_64                               rhel-7.6
 
-I did not disclose the contents to the diplomat, but I told him that it is your compensation from the Auditing Corporate Governance and Stewardship, Auditing and Assurance Standards Board. I want you to know that these funds would help with your financial status as I have seen in records that you have spent a lot trying to receive these funds and I am not demanding so much from you but only 30% for my stress and logistics.
-
-I would like you to get back to me with your personal contact details, so that I can give you the contact information's of the diplomat who has arrived Africa and has been waiting to get your details so that he can proceed with the delivery to you.
-
-Yours Sincerely,
-Kindly forward your details to: mrdavidibe966@gmail.com
-Mr. David Ibe
-International Auditor,
-Corporate Governance and Stewardship
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
