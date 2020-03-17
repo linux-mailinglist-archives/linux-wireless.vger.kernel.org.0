@@ -2,155 +2,85 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 12E2118896C
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Mar 2020 16:49:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 06DD61889B8
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Mar 2020 17:04:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726646AbgCQPth (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 17 Mar 2020 11:49:37 -0400
-Received: from mail2.candelatech.com ([208.74.158.173]:60066 "EHLO
-        mail3.candelatech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726016AbgCQPtg (ORCPT
+        id S1726760AbgCQQDx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 17 Mar 2020 12:03:53 -0400
+Received: from mail-qt1-f195.google.com ([209.85.160.195]:43660 "EHLO
+        mail-qt1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726019AbgCQQDx (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 17 Mar 2020 11:49:36 -0400
-Received: from [192.168.100.195] (50-251-239-81-static.hfc.comcastbusiness.net [50.251.239.81])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail3.candelatech.com (Postfix) with ESMTPSA id 2353E13C344;
-        Tue, 17 Mar 2020 08:49:36 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 2353E13C344
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1584460176;
-        bh=2cUhwfw+SkkrbYReOItECee1wB78xjadHwnsOU7E2Hw=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=WVGm2aGJTV3tj/T934WUPExMznF/w6JtAOZhyGUD3Y56tZ+pPcJOKpSofLH0gZVPM
-         8sCUSUl+u7QVC3z32yYIKBub9P8MmsXDRWHLe4sWf16aRon2mYjyXRjX+x4NnlrYGN
-         MoHW8M5La/f8TA+dWhTKSEjAov8bIF59xHD7a/JA=
-Subject: Re: [PATCH] rtw88: add debugfs to fix tx rate
-To:     Kalle Valo <kvalo@codeaurora.org>,
-        Tony Chuang <yhchuang@realtek.com>
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "briannorris@chromium.org" <briannorris@chromium.org>
-References: <20200313065114.23433-1-yhchuang@realtek.com>
- <87eetwo87q.fsf@kamboji.qca.qualcomm.com>
- <2e492e530d744713871f885e324106ef@realtek.com>
- <87eetrlanb.fsf@kamboji.qca.qualcomm.com>
- <ce990869ebf0478d98cd7e8416b36289@realtek.com>
- <875zf3kn05.fsf@kamboji.qca.qualcomm.com>
-From:   Ben Greear <greearb@candelatech.com>
-Organization: Candela Technologies
-Message-ID: <f4e7401c-c86b-8b2f-9e93-865322f71945@candelatech.com>
-Date:   Tue, 17 Mar 2020 08:49:35 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.2
+        Tue, 17 Mar 2020 12:03:53 -0400
+Received: by mail-qt1-f195.google.com with SMTP id l13so17850247qtv.10;
+        Tue, 17 Mar 2020 09:03:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:user-agent:in-reply-to:references:mime-version
+         :content-transfer-encoding:subject:to:cc:from:message-id;
+        bh=1cq61pMKrXnE/8ZgHPZoRI5nasAc/Gz5oZHWr1Wic8E=;
+        b=sCqQM4hmv6145mTEPmet3o0Tv8fHUfT2SJ2jUgYxjyqHesDKwMrZMju/OqsGJ0KkUy
+         Zb8goI+G07BzcmChJSPGxgc0JO1adCIwbLtyLmrdlfP+y69SolfWTYipGyNYJWZngUgo
+         9/fFLBnjNH+njW6YDJY4ELS80/jIqjhJircFhujElwB6HiuMs/UJgZzrDyw90jrMNgyV
+         72LtRXZvRNBQLqAzZbwUBqPrxAI4hHj2pbSEzixtYzJfJF7ntJ3zDWg3GxEhDE5wOges
+         DMuWktybl8vpQKEWR25hXv2ITdLUyW2kck/j2ahjPVwdeWs9RM1Bu4bbe8v8HWhRBf5d
+         sxyg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:user-agent:in-reply-to:references
+         :mime-version:content-transfer-encoding:subject:to:cc:from
+         :message-id;
+        bh=1cq61pMKrXnE/8ZgHPZoRI5nasAc/Gz5oZHWr1Wic8E=;
+        b=g4wriJL2WGl97qBIJJ2UbFu5NpMo/Q9wfuMuRDyw6m0bxB2PwhnPHDQvX8PwKXcgSu
+         /nlDshhLdG8dXgJFL0xb/cTHsTJ5fkYUqIPtF0BgD2Rb4DcKs2vRnvzyOKDwM8fCx2OR
+         YhcBV5S2jgz7T87D3pxNoaHl1KYntNCaVkQywiO2bzayOcV03hd6kyCIXQIyuVjUDhgm
+         fAytFwz7/tBoDsOzqcJcx7zqac99Mxbo28Qz9NbX/SidZxEcIoixlfPWasmae9yBPXAa
+         hSODuYAOjUu7aJ6HtaZAOMHNQmS9mqV+lVozSyxdgJBhutXmWtMTlrL039FLvRyxSQYD
+         QihA==
+X-Gm-Message-State: ANhLgQ1qoOQVZyn86uSOztWxSopYQOISeRkC50oRSZW9qFSu73kLeHBH
+        KUmdYBmCPe0a9QRHhZzAzCA=
+X-Google-Smtp-Source: ADFU+vt7FKNB0A6TEbsFTVfek3+MsRk98Sx7N8uZNFeebxxE9XulpOQvjLTKwJGXOtQ+xV1zLn8qEQ==
+X-Received: by 2002:ac8:3671:: with SMTP id n46mr6298448qtb.33.1584461031859;
+        Tue, 17 Mar 2020 09:03:51 -0700 (PDT)
+Received: from ?IPv6:2620:cc:8000:1c83:c194:7ea1:d9a4:fef8? ([2620:cc:8000:1c83:c194:7ea1:d9a4:fef8])
+        by smtp.gmail.com with ESMTPSA id 31sm2418634qta.56.2020.03.17.09.03.50
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 17 Mar 2020 09:03:51 -0700 (PDT)
+Date:   Tue, 17 Mar 2020 12:03:48 -0400
+User-Agent: K-9 Mail for Android
+In-Reply-To: <9ae33061-1595-4387-5767-79437b2ff2ae@lwfinger.net>
+References: <C9F34A4B-E3F3-4D7A-B870-058C8D4871B9@gmail.com> <9ae33061-1595-4387-5767-79437b2ff2ae@lwfinger.net>
 MIME-Version: 1.0
-In-Reply-To: <875zf3kn05.fsf@kamboji.qca.qualcomm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: PROBLEM: 5.6.0-rc6 + Realtek RTL8188CUS wifi dongle: 8051 reset failed!
+To:     Larry Finger <Larry.Finger@lwfinger.net>,
+        Ping-Ke Shih <pkshih@realtek.com>,
+        Jes Sorensen <Jes.Sorensen@gmail.com>,
+        linux-wireless@vger.kernel.org
+CC:     kernel list <linux-kernel@vger.kernel.org>
+From:   AC <achirvasub@gmail.com>
+Message-ID: <0B600F12-BD49-446B-9B4B-F6E873FB91B0@gmail.com>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 3/17/20 8:40 AM, Kalle Valo wrote:
-> Tony Chuang <yhchuang@realtek.com> writes:
-> 
->> // Add Johannes for commenting on adding another nl80211 commands
->>
->> Kalle Valo <kvalo@codeaurora.org> writes:>
->>
->>> Tony Chuang <yhchuang@realtek.com> writes:
->>>
->>>> Kalle Valo <kvalo@codeaurora.org> writes:
->>>>
->>>>> <yhchuang@realtek.com> writes:
->>>>>
->>>>>> From: Yan-Hsuan Chuang <yhchuang@realtek.com>
->>>>>>
->>>>>> It is useful to fix the bit rate of TX packets. For example, if
->>>>>> someone is measuring the TX power, or debugging with the issues
->>>>>> of the TX throughput on the field.
->>>>>>
->>>>>> To set the value of fixed rate, one should input corresponding
->>>>>> desc rate index (ex, 0x0b for DESC_RATE54M to fix at 54 Mbps).
->>>>>> Set a value larger than DESC_RATE_MAX will disable fix rate, so
->>>>>> the rate adaptive mechanism can resume to work.
->>>>>>
->>>>>> Example,
->>>>>>    To fix rate at MCS 1:
->>>>>>    echo 0x0d > /sys/kernel/debug/ieee80211/phy0/rtw88/fix_rate
->>>>>>
->>>>>>    To not to fix rate:
->>>>>>    echo 0xff > /sys/kernel/debug/ieee80211/phy0/rtw88/fix_rate
->>>>>>
->>>>>>    To know which rate was fixed at:
->>>>>>    cat /sys/kernel/debug/ieee80211/phy0/rtw88/fix_rate
->>>>>>
->>>>>> Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
->>>>>
->>>>> No way, debugfs is not a method for working around nl80211 and doing
->>>>> whatever idea you come up with. The goal is that we have a generic
->>>>> nl80211 command for all generic actions, like this one. And I think we
->>>>> already have an nl80211 command for fixing the tx rate, right?
->>>>>
->>>>
->>>> No, as I can see, there's no suitable nl80211 command that can achieve
->>>> what I want. If you are saying about
->>> NL80211_CMD_SET_TX_BITRATE_MASK,
->>>> it's used to allow some rates. But actually the firmware has its own rate
->>>> adaptive mechanism, so mask out the other rates does not mean the rate
->>>> left will be chosen. Moreover, the hardware will choose a lower bit rate
->>>> when retry, then the TX rate is not fixed at all. So the debugfs can disable
->>>> the firmware's RA mechanism, also disable the TX rate fall back when retry.
->>>> Both of them cannot be done by setting TX bitrate mask.
->>>
->>> I'm confused, here you talk about firmware implementation etc but I'm
->>> just talking about replacing the fix_rate debugfs file to an nl80211
->>> command (for providing the fix_rate value). Can you clarify more why you
->>> think nl80211 is not suitable?
->>
->> Oops, I thought that you wanted me to use the existing nl80211
->> command.
-> 
-> Either use an existing nl80211 command or add a new one if needed. For
-> me most important is that we don't add hacks to debugfs just for
-> avoiding using nl80211.
-> 
->> Now I know that you think we can add a new nl80211 command to help
->> drivers to fix the TX bitrate if necessary. If adding another nl80211
->> command for that is acceptable, I can work on this. But I need
->> Johannes's comment if it's better to add a new nl80211 command or to
->> expand the existing command (ex. NL80211_CMD_SET_TX_BITRATE_MASK).
-> 
-> _Why_ is NL80211_CMD_SET_TX_BITRATE_MASK not suitable for you? You keep
-> saying that but I have still figured out why exactly you think so.
-> Please clarify this in detail.
-> 
->> It looks like that adding a new nl80211 command will be better for me
->> as expanding the existing one would have great impact on the already
->> distributed drivers/user-tools.
-> 
-> What kind of great impact are you talking about? Please be specific so
-> that we don't need to guess.
 
-At least with ath10k, the issues I found were that nl80211 doesn't like it
-when you try to disable all legacy rates (and force frames out at 54Mbps
-encoding, for instance).
 
-I'm not even sure upstream ath10k will even let you set a single rate
-using normal API now.  Have you tried it?
+On March 17, 2020 10:52:14 AM EDT, Larry Finger <Larry=2EFinger@lwfinger=
+=2Enet> wrote:
+>
+>Please bisect this problem=2E No one else has reported it, thus it may
+>depend on=20
+>some specific configuration of your system=2E
+>
 
-Another problem is that to keep a connection alive, you probably want mgt
-and null-func frames to go out normal and only have the firmware use a particular MCS
-for data frames.
+I will try=2E
 
-Lots of reasons to want a low-level hack for this sort of thing.
+>Was 5=2E6=2E0-rc5 OK?
+>
 
-Thanks,
-Ben
-
--- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
+rc5 showed the same dmesg noise=2E
 
