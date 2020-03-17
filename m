@@ -2,86 +2,123 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C1D90188C2D
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Mar 2020 18:34:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 01882188DF3
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Mar 2020 20:26:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726157AbgCQReD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 17 Mar 2020 13:34:03 -0400
-Received: from mail-lj1-f181.google.com ([209.85.208.181]:33087 "EHLO
-        mail-lj1-f181.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726130AbgCQReD (ORCPT
+        id S1726494AbgCQT0U (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 17 Mar 2020 15:26:20 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:34592 "EHLO
+        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726294AbgCQT0U (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 17 Mar 2020 13:34:03 -0400
-Received: by mail-lj1-f181.google.com with SMTP id f13so23913785ljp.0
-        for <linux-wireless@vger.kernel.org>; Tue, 17 Mar 2020 10:34:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=kqsxGBu7vnlJqdIewMPUB2U9Yeu9F8tzYUHTHQJYpko=;
-        b=CHwplsTpENT+WpQzzqVxqGIKVYKXOkeddYShp1dYeQaL3aluOrvXDG7N4LtqZVMchp
-         EsemGRcrykubwC8g8sOvU05NNuTydmN+juWS7dGFmomhptkVyCOOXj3LbbQApCMiKkL8
-         hnXGXxX89tFfVmQRJelCgl59pk40ThF1ctmJ8=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=kqsxGBu7vnlJqdIewMPUB2U9Yeu9F8tzYUHTHQJYpko=;
-        b=XwgmwFyNiSo5zDrakpXYcHuFQaAbVFjK7e8XrLgmwPaJahWHzNVKM8ATSLOPnFmDuH
-         xpObQP/2PwoB7CUO/YVm/d592APLxgimTC3fbqoYp9TKPc4lMNsQQeLIfm6EVjajTB/i
-         QtkVO/n1kDVHSK65Glx7cgUspgToNnbBtIsfurMLTVJnuT8jy4X4Nl6yaipiFQOG8OUT
-         b1fWB5xo8vxfuTn+omeEGIqWiCz+5TrVU2VRoEd56HKmkxIVVS315rBjxZ+xb8mR8DFo
-         k6XPoZ1pSi6CXtnNbtAE/8YR4AOhA6OqSJH+VpmYXEsJiT75ZqiNlY/jnH0Aubq6IsuV
-         TR0g==
-X-Gm-Message-State: ANhLgQ1/0X5AtGdqxGv0iJzZnI1aDDBuTJlwzw3BwF3msU/2LhLYyg3x
-        ftWkdWuYVMqcVVQKLw+JhETnKIaTv8g=
-X-Google-Smtp-Source: ADFU+vvftUm+h6ofiL3WEdPYfIebSls6huIQhua91xUImMihXoViLCsEY6eEtTymRI002zQEfgPhIQ==
-X-Received: by 2002:a2e:9797:: with SMTP id y23mr3498874lji.183.1584466440639;
-        Tue, 17 Mar 2020 10:34:00 -0700 (PDT)
-Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com. [209.85.208.169])
-        by smtp.gmail.com with ESMTPSA id a22sm2822425ljp.96.2020.03.17.10.33.59
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 17 Mar 2020 10:33:59 -0700 (PDT)
-Received: by mail-lj1-f169.google.com with SMTP id w1so23912857ljh.5
-        for <linux-wireless@vger.kernel.org>; Tue, 17 Mar 2020 10:33:59 -0700 (PDT)
-X-Received: by 2002:a05:651c:204:: with SMTP id y4mr3382199ljn.280.1584466439036;
- Tue, 17 Mar 2020 10:33:59 -0700 (PDT)
+        Tue, 17 Mar 2020 15:26:20 -0400
+Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa)
+        by farmhouse.coelho.fi with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.92.2)
+        (envelope-from <luca@coelho.fi>)
+        id 1jEHqz-0003kD-8N; Tue, 17 Mar 2020 21:26:18 +0200
+Message-ID: <9940614e4051cc054569033ca7c127f3339469e6.camel@coelho.fi>
+From:   Luca Coelho <luca@coelho.fi>
+To:     kvalo@codeaurora.org
+Cc:     linux-wireless@vger.kernel.org, linuxwifi@intel.com
+Date:   Tue, 17 Mar 2020 21:26:16 +0200
+Content-Type: multipart/signed; micalg="pgp-sha512";
+        protocol="application/pgp-signature"; boundary="=-I+iWIk54QQCJaTcjUJ/h"
+User-Agent: Evolution 3.34.1-4 
 MIME-Version: 1.0
-References: <20200317091837.GA18001@mwanda>
-In-Reply-To: <20200317091837.GA18001@mwanda>
-From:   Brian Norris <briannorris@chromium.org>
-Date:   Tue, 17 Mar 2020 10:33:48 -0700
-X-Gmail-Original-Message-ID: <CA+ASDXP80wMrWyc+WZNoGt=DK0EjFjNSjqCi4NGpJgc1mGK3sg@mail.gmail.com>
-Message-ID: <CA+ASDXP80wMrWyc+WZNoGt=DK0EjFjNSjqCi4NGpJgc1mGK3sg@mail.gmail.com>
-Subject: Re: [bug report] wireless: mwifiex: initial commit for Marvell
- mwifiex driver
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Amitkumar Karwar <amitkarwar@gmail.com>,
-        Ganapathi Bhat <ganapathi.bhat@nxp.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on farmhouse.coelho.fi
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+        TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.2
+Subject: pull-request: iwlwifi-next 2020-03-17
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Mar 17, 2020 at 2:18 AM Dan Carpenter <dan.carpenter@oracle.com> wrote:
->
-> [ This is old, but maybe the driver is still really actively maintained
->   so maybe someone knows the answer.  - dan ]
 
-I'm not sure what your definition of "active" is :) I also don't claim
-to know "the" answer, but I'll provide one:
+--=-I+iWIk54QQCJaTcjUJ/h
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
->    499              mwifiex_is_tx_ba_stream_ptr_valid(priv, tx_ba_tsr_tbl))
->                                                             ^^^^^^^^^^^^^
-> Which is passed to here.  So maybe the NULL check is reversed?
+Hi Kalle,
 
-Maybe, but it also looks like this validity check has always been dead
-code, and only serves a redundant purpose (to check that the list
-entry is *really* part of the list that we're trying to delete from?).
-That sounds like we should just delete
-mwifiex_is_tx_ba_stream_ptr_valid().
+Here's the fist batch of patches intended for v5.7.  This includes
+the last patchset I sent out.  Usual development work.  More details
+about the contents in the tag description.
 
-Brian
+Please let me know if there are any issues.
+
+Cheers,
+Luca.
+
+
+The following changes since commit 377c0a94ad1cf005c47d7a502d1f8e46fbcf747a=
+:
+
+  Merge ath-next from git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/a=
+th.git (2020-03-16 07:29:55 +0200)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/iwlwifi-next.git ta=
+gs/iwlwifi-next-for-kalle-2020-03-17
+
+for you to fetch changes up to 5e003982b07ae351cadef4c252b3279b3424bf0d:
+
+  iwlwifi: move AX200 devices to the new table (2020-03-17 21:10:47 +0200)
+
+----------------------------------------------------------------
+First set of iwlwifi patches intended for v5.7
+
+* Refactoring of the device selection algorithms;
+
+----------------------------------------------------------------
+Luca Coelho (13):
+      iwlwifi: move the remaining 0x2526 configs to the new table
+      iwlwifi: combine 9260 cfgs that only change names
+      iwlwifi: add mac/rf types and 160MHz to the device tables
+      iwlwifi: add GNSS differentiation to the device tables
+      iwlwifi: add Pu/PnJ/Th device values to differentiate them
+      iwlwifi: map 9461 and 9462 using RF type and RF ID
+      iwlwifi: move TH1 devices to the new table
+      iwlwifi: convert the 9260-1x1 device to use the new parameters
+      iwlwifi: remove 9260 devices with 0x1010 and 0x1210 subsytem IDs
+      iwlwifi: move pu devices to new table
+      iwlwifi: move shared clock entries to new table
+      iwlwifi: remove trans entries from COMMON 9260 macro
+      iwlwifi: move AX200 devices to the new table
+
+ drivers/net/wireless/intel/iwlwifi/cfg/22000.c  |  47 +++++---------
+ drivers/net/wireless/intel/iwlwifi/cfg/9000.c   | 161 +++++---------------=
+--------------------------
+ drivers/net/wireless/intel/iwlwifi/iwl-config.h |  59 ++++++++++++++---
+ drivers/net/wireless/intel/iwlwifi/pcie/drv.c   | 355 ++++++++++++++++++++=
++++++++++++++++++++++++++--------------------------------------------------=
+------
+ 4 files changed, 241 insertions(+), 381 deletions(-)
+
+--=-I+iWIk54QQCJaTcjUJ/h
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEF3LNfgb2BPWm68smoUecoho8xfoFAl5xJFgACgkQoUecoho8
+xfpyNw//fA0PW5ZRv+c2sseoZFsLrxzVvV1gz6neSNb86h/M6AwbME+0XJmvwpze
+VM6JI5990ys/aVg3Kst0l5JwVknLyfem/EZd3oaHq0f9ugrLRki+ikkUUnSmwajx
+oIUrHuYHqDnJh/wkngpa7Wjc8xItk16IXTeeCMtPa6Nbl6Kvls2MlK7Soe7hh6lO
+Ax+vlpUFqbR9bzCESykwlnsZY6apBtO5IPRrzO7R+f6FaGXi5yVr6VcGBiBC1Jxw
+4DxvvAiFJKhA5YWJLiTi/Laynt4MqESL4gcq02H8MO6gDNR5zWZX729WBVlxCaqs
+PGLuKce7WlgyTwNa6IBuBOQh5kEfdg7futYMN37zXnc5cI/yoXP9o6ppRRzHXV1h
+A4QvOZ+8LsvdcaW1V6rlthfT82BZZOPtsNwnHhEyvJCmB+0llFegsMmqFIGTjv4x
+4NSOxl3lFg3sPUcN6LhUZrCpfftBUjtuxBQibkd8xLjw6dpd/eDl58EpSnJ9WP1X
+qhaXtT3cM/xkk7SNeyuiw4nyrR/3U38GrGBBPu/u/ETERCSF940yEPMMR2o8QdGi
+gMg82zh+zc2iBuz4PMdks5Y9p49nlNflMG5QVTFnkYr342wuylp/2TF40sa/9ll4
+UoLpPWNJEQ4Rh5gVI6ov8QrvDfizWuDxGPpgVV9HQkhDtma5Ees=
+=mgsR
+-----END PGP SIGNATURE-----
+
+--=-I+iWIk54QQCJaTcjUJ/h--
+
