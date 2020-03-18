@@ -2,92 +2,77 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B8401189BA2
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Mar 2020 13:06:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 71FF0189BAA
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Mar 2020 13:09:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726747AbgCRMG5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 18 Mar 2020 08:06:57 -0400
-Received: from mail26.static.mailgun.info ([104.130.122.26]:62026 "EHLO
-        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726631AbgCRMG5 (ORCPT
+        id S1726638AbgCRMJs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 18 Mar 2020 08:09:48 -0400
+Received: from mail-qk1-f178.google.com ([209.85.222.178]:39281 "EHLO
+        mail-qk1-f178.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726530AbgCRMJs (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 18 Mar 2020 08:06:57 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1584533217; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=slLmtbswgk6dT89rTFhcmPBFr7EqjQwUTpcuDJEcfJU=; b=Hi+CTxib/WPUsDdn/ytTgm0PcEN4IflI8syXxnuSuAKFTD+39YomKvziNeS5PkNdqe3UUewY
- O9uiHFJszjMzwGyznsZWDURo/HJuFWIWXdKv2TW7q4UotHYIftgc6XPHLEY7DA3X9T45wCSO
- 4fOmt5TTDesgR6nOp/1K4hf7Auc=
-X-Mailgun-Sending-Ip: 104.130.122.26
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e720ed0.7f8b3efab1b8-smtp-out-n05;
- Wed, 18 Mar 2020 12:06:40 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 84A25C433CB; Wed, 18 Mar 2020 12:06:39 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE,
-        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 70FCBC433D2;
-        Wed, 18 Mar 2020 12:06:37 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 70FCBC433D2
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Luca Coelho <luca@coelho.fi>
-Cc:     linux-wireless@vger.kernel.org, linuxwifi@intel.com
-Subject: Re: pull-request: iwlwifi-next 2020-03-17
-References: <9940614e4051cc054569033ca7c127f3339469e6.camel@coelho.fi>
-Date:   Wed, 18 Mar 2020 14:06:35 +0200
-In-Reply-To: <9940614e4051cc054569033ca7c127f3339469e6.camel@coelho.fi> (Luca
-        Coelho's message of "Tue, 17 Mar 2020 21:26:16 +0200")
-Message-ID: <87sgi5kgtw.fsf@kamboji.qca.qualcomm.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        Wed, 18 Mar 2020 08:09:48 -0400
+Received: by mail-qk1-f178.google.com with SMTP id t17so16430878qkm.6
+        for <linux-wireless@vger.kernel.org>; Wed, 18 Mar 2020 05:09:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=tomaszubiri-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=exM5rHuPAvT1r9I19f8wjfTyrdyCTzHnnyoaIeIH93A=;
+        b=U6zEZB+KYNB+jkBuzQMRWaDuErTyoTL1CvTWzHCFCT/WcOf/OvWeDDthD/mwlQXe52
+         bc1SylWTyWOqAoMBaWgfT9aAuqGHgZXR/GMJW8rQ3Kn0VoUrAKIiEqpzUJmbWNwDLFjw
+         bC7iiDB3KCPtHY1apgiDMtAReQcja41ussj9nFJVjvkbhMoL5U6BSqYH0CaHYSjb5c42
+         H2XtmBFBb7szS8MOEDgdLvOChETAl8dLpDgoyQP7Gy9Nl/fekTdhuHgTXZm3YYkoqeMu
+         UoCggRfeVWQfmv66J6bMTjANBccanQio4YHer/3aFacKCjgu7diUnKoLfMwASX/Kv/VS
+         wkPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=exM5rHuPAvT1r9I19f8wjfTyrdyCTzHnnyoaIeIH93A=;
+        b=ecKzUCH0R7RM4WwPYUcQ8qmBAvmokLCMYVFOw/v5Ua+sM4edVMzPBpidDufslW4wqU
+         TLtFVdQMDhFwc3HwID51MTTNRe7qhZbRgklwip6i+zEebfjAZWY0ekIxEkxF79x9myqL
+         l1C+hq0QXMhem4QthR9OuHphoZEz8WDmqam9dmDop3eAqP2kS0vUR94zaujTpK61fyHP
+         pbvjV0FM6Blwkb28RhLyh1MoHe+euMgsNrvWSVMSDx6kCM/PhoV6MD4M/v0B1TvmKriD
+         7GTZmsrSeIlFmlD32txB5LougybhXw6A2OU2OfYzgXnI/gQPvnD3uhXTLJLaxFzx/Ian
+         uOPg==
+X-Gm-Message-State: ANhLgQ12fY/U8CDnSuRA98dsWbm5hXbGwn7UmbyqpsOtFlJupCU7rwpc
+        6kuySXp8wl+Kg5IXSD5fJB4ltUQOdt71NTY/mTCO+Q==
+X-Google-Smtp-Source: ADFU+vv/3Ch0Yi7GpqCDlN2Qu3nA9Yr2og+pQJay5/2Ywr4dbmU4mDS4f+pX52wvOulahilIFOijVFjo9k3FJYj4qmo=
+X-Received: by 2002:a37:8707:: with SMTP id j7mr3591041qkd.394.1584533387262;
+ Wed, 18 Mar 2020 05:09:47 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
+From:   Tomas Zubiri <me@tomaszubiri.com>
+Date:   Wed, 18 Mar 2020 09:09:36 -0300
+Message-ID: <CAE3VKEqUGmzh6X6kZYsBcCpQMGL-xQZXW1Zfpr-n5Ku8HsDMAw@mail.gmail.com>
+Subject: Broken wireless documentation urls
+To:     linux-doc@vger.kernel.org, linux-wireless@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Luca Coelho <luca@coelho.fi> writes:
+Hello, I'm writing to let you know that there are some links to the
+wireless documentation that stopped working. This is important because
+other documentation might link to the kernel docs.
 
-> Here's the fist batch of patches intended for v5.7.  This includes
-> the last patchset I sent out.  Usual development work.  More details
-> about the contents in the tag description.
->
-> Please let me know if there are any issues.
->
-> Cheers,
-> Luca.
->
->
-> The following changes since commit 377c0a94ad1cf005c47d7a502d1f8e46fbcf747a:
->
->   Merge ath-next from git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git (2020-03-16 07:29:55 +0200)
->
-> are available in the Git repository at:
->
->   git://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/iwlwifi-next.git tags/iwlwifi-next-for-kalle-2020-03-17
->
-> for you to fetch changes up to 5e003982b07ae351cadef4c252b3279b3424bf0d:
->
->   iwlwifi: move AX200 devices to the new table (2020-03-17 21:10:47 +0200)
->
-> ----------------------------------------------------------------
-> First set of iwlwifi patches intended for v5.7
->
-> * Refactoring of the device selection algorithms;
->
-> ----------------------------------------------------------------
+Take this url for example:
 
-Pulled, thanks Luca.
+https://wireless.kernel.org/en/users/Documentation/acs
 
--- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Which is linked by:
+
+https://w1.fi/cgit/hostap/plain/hostapd/hostapd.conf
+
+
+It appears the wireless document moved to
+https://wireless.wiki.kernel.org/en/users/Documentation/acs
+
+I think the best solution in this case would be to add a DNS record
+for wireless.kernel.org to point to the same ip
+wireless.wiki.kernel.org does. If this can't happen due to
+wireless.kernel.org being used for other purposes, a server HTTP 301
+redirect would be next best.
+
+Thank you
+
+Tomas Zubiri
