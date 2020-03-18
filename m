@@ -2,64 +2,184 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E898B188EC6
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Mar 2020 21:15:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D9DAB189595
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Mar 2020 07:13:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726476AbgCQUPA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 17 Mar 2020 16:15:00 -0400
-Received: from mga14.intel.com ([192.55.52.115]:25758 "EHLO mga14.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726388AbgCQUPA (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 17 Mar 2020 16:15:00 -0400
-IronPort-SDR: zWwipJxgAWbumsWX2wvMO9u2B1T5KVkY7xjxg6kClkNE961vt8pUDDKdM1bhyFAV/cH5v0gv8P
- W2t1/NZYtd8A==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2020 13:15:00 -0700
-IronPort-SDR: SNOcLY15WTwcEsXIWvUOD63/kjkXnIKBv2pK7+hFugrkz9xMkQOZXeaQgzSHXJad0WhZMbctZ5
- abNYl9PfzuzQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.70,565,1574150400"; 
-   d="scan'208";a="355473795"
-Received: from aericson-mobl.ger.corp.intel.com ([10.249.254.163])
-  by fmsmga001.fm.intel.com with ESMTP; 17 Mar 2020 13:14:59 -0700
-Message-ID: <3d90288f0b8c41bfcd5f44781e82eb9f62a3e48d.camel@intel.com>
-Subject: Re: [PATCH] iwlwifi: set 'free_queue' to the loop variable, not a
- meaningless bool
-From:   Luciano Coelho <luciano.coelho@intel.com>
-To:     Mark Asselstine <asselsm@gmail.com>, johannes.berg@intel.com,
-        linux-wireless <linux-wireless@vger.kernel.org>
-Date:   Tue, 17 Mar 2020 22:14:58 +0200
-In-Reply-To: <CAPuovEJWzAvCwWQq0E5MACxo=1Dk5pK4YyjH+d0W-bspAMJJQA@mail.gmail.com>
-References: <20200313030545.9184-1-mark.asselstine@windriver.com>
-         <CAPuovEJWzAvCwWQq0E5MACxo=1Dk5pK4YyjH+d0W-bspAMJJQA@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.1-4 
+        id S1726802AbgCRGNE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 18 Mar 2020 02:13:04 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:34612 "EHLO
+        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726553AbgCRGNE (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 18 Mar 2020 02:13:04 -0400
+Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=localhost.localdomain)
+        by farmhouse.coelho.fi with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.92.2)
+        (envelope-from <luca@coelho.fi>)
+        id 1jERwr-0003wu-It; Wed, 18 Mar 2020 08:13:02 +0200
+From:   Luca Coelho <luca@coelho.fi>
+To:     kvalo@codeaurora.org
+Cc:     linux-wireless@vger.kernel.org, lenb@kernel.org, noodles@earth.li
+Date:   Wed, 18 Mar 2020 08:12:54 +0200
+Message-Id: <iwlwifi.20200318081237.46db40617cc6.Id5cf852ec8c5dbf20ba86bad7b165a0c828f8b2e@changeid>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on farmhouse.coelho.fi
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+        TVD_RCVD_IP,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.2
+Subject: [PATCH v5.6] iwlwifi: don't send GEO_TX_POWER_LIMIT if no wgds table
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 2020-03-17 at 16:12 -0400, Mark Asselstine wrote:
-> Luca,
-> 
-> This is my first time sending a fix for iwlwifi and I haven't seen any
-> feedback or seen the code merged. Should I have sent this somewhere
-> else?
+From: Golan Ben Ami <golan.ben.ami@intel.com>
 
-Hi Mark,
+The GEO_TX_POWER_LIMIT command was sent although
+there is no wgds table, so the fw got wrong SAR values
+from the driver.
 
-I'm sorry, I have a huge backlog of work and I'm trying to catch up.  I
-will review your patch and apply it to our internal tree and then
-upstream it according to our usual process asap.
+Fix this by avoiding sending the command if no wgds
+tables are available.
 
-Thanks for your patch!
+Signed-off-by: Golan Ben Ami <golan.ben.ami@intel.com>
+Fixes: 39c1a9728f93 ("iwlwifi: refactor the SAR tables from mvm to acpi")
+Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+---
+ drivers/net/wireless/intel/iwlwifi/fw/acpi.c | 14 ++++++++------
+ drivers/net/wireless/intel/iwlwifi/fw/acpi.h | 14 ++++++++------
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c  |  9 ++++++++-
+ 3 files changed, 24 insertions(+), 13 deletions(-)
 
---
-Cheers,
-Luca.
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/acpi.c b/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
+index 48d375a86d86..ba2aff3af0fe 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
+@@ -6,7 +6,7 @@
+  * GPL LICENSE SUMMARY
+  *
+  * Copyright(c) 2017        Intel Deutschland GmbH
+- * Copyright (C) 2019 Intel Corporation
++ * Copyright (C) 2019 - 2020 Intel Corporation
+  *
+  * This program is free software; you can redistribute it and/or modify
+  * it under the terms of version 2 of the GNU General Public License as
+@@ -27,7 +27,7 @@
+  * BSD LICENSE
+  *
+  * Copyright(c) 2017        Intel Deutschland GmbH
+- * Copyright (C) 2019 Intel Corporation
++ * Copyright (C) 2019 - 2020 Intel Corporation
+  * All rights reserved.
+  *
+  * Redistribution and use in source and binary forms, with or without
+@@ -491,13 +491,13 @@ int iwl_validate_sar_geo_profile(struct iwl_fw_runtime *fwrt,
+ }
+ IWL_EXPORT_SYMBOL(iwl_validate_sar_geo_profile);
+ 
+-void iwl_sar_geo_init(struct iwl_fw_runtime *fwrt,
+-		      struct iwl_per_chain_offset_group *table)
++int iwl_sar_geo_init(struct iwl_fw_runtime *fwrt,
++		     struct iwl_per_chain_offset_group *table)
+ {
+ 	int ret, i, j;
+ 
+ 	if (!iwl_sar_geo_support(fwrt))
+-		return;
++		return -EOPNOTSUPP;
+ 
+ 	ret = iwl_sar_get_wgds_table(fwrt);
+ 	if (ret < 0) {
+@@ -505,7 +505,7 @@ void iwl_sar_geo_init(struct iwl_fw_runtime *fwrt,
+ 				"Geo SAR BIOS table invalid or unavailable. (%d)\n",
+ 				ret);
+ 		/* we don't fail if the table is not available */
+-		return;
++		return -ENOENT;
+ 	}
+ 
+ 	BUILD_BUG_ON(ACPI_NUM_GEO_PROFILES * ACPI_WGDS_NUM_BANDS *
+@@ -530,5 +530,7 @@ void iwl_sar_geo_init(struct iwl_fw_runtime *fwrt,
+ 					i, j, value[1], value[2], value[0]);
+ 		}
+ 	}
++
++	return 0;
+ }
+ IWL_EXPORT_SYMBOL(iwl_sar_geo_init);
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/acpi.h b/drivers/net/wireless/intel/iwlwifi/fw/acpi.h
+index 4a6e8262974b..5590e5cc8fbb 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/acpi.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/acpi.h
+@@ -6,7 +6,7 @@
+  * GPL LICENSE SUMMARY
+  *
+  * Copyright(c) 2017        Intel Deutschland GmbH
+- * Copyright(c) 2018 - 2019        Intel Corporation
++ * Copyright(c) 2018 - 2020        Intel Corporation
+  *
+  * This program is free software; you can redistribute it and/or modify
+  * it under the terms of version 2 of the GNU General Public License as
+@@ -27,7 +27,7 @@
+  * BSD LICENSE
+  *
+  * Copyright(c) 2017        Intel Deutschland GmbH
+- * Copyright(c) 2018 - 2019       Intel Corporation
++ * Copyright(c) 2018 - 2020       Intel Corporation
+  * All rights reserved.
+  *
+  * Redistribution and use in source and binary forms, with or without
+@@ -171,8 +171,9 @@ bool iwl_sar_geo_support(struct iwl_fw_runtime *fwrt);
+ int iwl_validate_sar_geo_profile(struct iwl_fw_runtime *fwrt,
+ 				 struct iwl_host_cmd *cmd);
+ 
+-void iwl_sar_geo_init(struct iwl_fw_runtime *fwrt,
+-		      struct iwl_per_chain_offset_group *table);
++int iwl_sar_geo_init(struct iwl_fw_runtime *fwrt,
++		     struct iwl_per_chain_offset_group *table);
++
+ #else /* CONFIG_ACPI */
+ 
+ static inline void *iwl_acpi_get_object(struct device *dev, acpi_string method)
+@@ -243,9 +244,10 @@ static inline int iwl_validate_sar_geo_profile(struct iwl_fw_runtime *fwrt,
+ 	return -ENOENT;
+ }
+ 
+-static inline void iwl_sar_geo_init(struct iwl_fw_runtime *fwrt,
+-				    struct iwl_per_chain_offset_group *table)
++static inline int iwl_sar_geo_init(struct iwl_fw_runtime *fwrt,
++				   struct iwl_per_chain_offset_group *table)
+ {
++	return -ENOENT;
+ }
+ 
+ #endif /* CONFIG_ACPI */
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+index 54c094e88474..98263cd37944 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+@@ -762,10 +762,17 @@ static int iwl_mvm_sar_geo_init(struct iwl_mvm *mvm)
+ 	u16 cmd_wide_id =  WIDE_ID(PHY_OPS_GROUP, GEO_TX_POWER_LIMIT);
+ 	union geo_tx_power_profiles_cmd cmd;
+ 	u16 len;
++	int ret;
+ 
+ 	cmd.geo_cmd.ops = cpu_to_le32(IWL_PER_CHAIN_OFFSET_SET_TABLES);
+ 
+-	iwl_sar_geo_init(&mvm->fwrt, cmd.geo_cmd.table);
++	ret = iwl_sar_geo_init(&mvm->fwrt, cmd.geo_cmd.table);
++	/*
++	 * It is a valid scenario to not support SAR, or miss wgds table,
++	 * but in that case there is no need to send the command.
++	 */
++	if (ret)
++		return 0;
+ 
+ 	cmd.geo_cmd.table_revision = cpu_to_le32(mvm->fwrt.geo_rev);
+ 
+-- 
+2.25.1
 
