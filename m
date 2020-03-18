@@ -2,91 +2,80 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 23DFA18A3DE
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Mar 2020 21:42:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0489618A436
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Mar 2020 21:48:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726856AbgCRUmD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 18 Mar 2020 16:42:03 -0400
-Received: from mail-ot1-f67.google.com ([209.85.210.67]:44608 "EHLO
-        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726647AbgCRUmD (ORCPT
+        id S1726821AbgCRUrR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 18 Mar 2020 16:47:17 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:58398 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726647AbgCRUrR (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 18 Mar 2020 16:42:03 -0400
-Received: by mail-ot1-f67.google.com with SMTP id a49so19362otc.11
-        for <linux-wireless@vger.kernel.org>; Wed, 18 Mar 2020 13:42:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=pQRsiCryPl6V3NAo7sXN37tpmxbYeh89CI/87fyojnk=;
-        b=CMuxrgL2erpmegOomT+Tn0hIhYhoeGJVizIyJb2mQSZidCn+ThKAqtg/WQgvB0wJxi
-         1CsHMP3LoiPjfB7iyTgXs9WE60pRP9K+y9DNeEsgdTiheBArbvIZeh2gOt7RUID+jMUS
-         A8m+snoKdFq/ifIWmOIvGV01aYPxiDgzBUDjko1A4kHDSjeNABA1G5GwohHH6velO8ZT
-         IbQBz3u0nczwx4il4nvpRkx8HUZgBnyKaDdELQnm5nKwR1t2QWhJ7Ivuhy8ZqALzrPtQ
-         /BBeccoGa3VZ+MzlCG389nLlywnUPz8IXJypBXVDrWqW/K+HpUUs9GuOiIHWOOM1BKFc
-         BLmw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=pQRsiCryPl6V3NAo7sXN37tpmxbYeh89CI/87fyojnk=;
-        b=iVIVl3Xncv7VT2DLcdviRk/XpVuCtlhbBo4ZeQK/UPg/iktE39p8H5e+C0UjPBaXsr
-         nteis6QFi8GbkxH86l/fTGguIukJ5gtkD0iD/YeuM5c7BDT2HQtGNZMczuh8SJT9O9zB
-         yMTLnNLP2phb0GSuYQdJVBzX9Y/sY+gOb3ssodSyfZj4kJkiWl/7Sw/B2psBEzSzZySR
-         j+OQNcIXAd0GVID53zYAJsZ2Ip8KknmffSXh9Z+OT43cCbHwVc3DmjOqJx/cUV8SDlii
-         rNVWbDQLhFUH3kOUBckLYc7dzfLwJalD0CsahEI+sMUI8MjOMcV0lLoTTS/JForlLAme
-         QZsA==
-X-Gm-Message-State: ANhLgQ27NcwdMnA3jUBsxLuZy2jzliuassL4YI+M5ZZB5gt93fYsWsFy
-        0VcvlGUZe/AkUB0kbqrEn2/7bEwtb6QWNG2eoGg=
-X-Google-Smtp-Source: ADFU+vs2BITNC0ZQReLbOhpag2laBd61Jj/bxVA1ezKScEjxPAYqSwTUonv6J3BbGwNDbvO3iNyulxqrdUdDwnbj3Nw=
-X-Received: by 2002:a9d:2c69:: with SMTP id f96mr5320817otb.62.1584564122685;
- Wed, 18 Mar 2020 13:42:02 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200313030545.9184-1-mark.asselstine@windriver.com>
- <CAPuovEJWzAvCwWQq0E5MACxo=1Dk5pK4YyjH+d0W-bspAMJJQA@mail.gmail.com> <3d90288f0b8c41bfcd5f44781e82eb9f62a3e48d.camel@intel.com>
-In-Reply-To: <3d90288f0b8c41bfcd5f44781e82eb9f62a3e48d.camel@intel.com>
-From:   Mark Asselstine <asselsm@gmail.com>
-Date:   Wed, 18 Mar 2020 16:41:51 -0400
-Message-ID: <CAPuovELQ3UG1nUjd4boKrxM2zGChJVquV3X-0baO2L7sfXs6_A@mail.gmail.com>
-Subject: Re: [PATCH] iwlwifi: set 'free_queue' to the loop variable, not a
- meaningless bool
-To:     Luciano Coelho <luciano.coelho@intel.com>
-Cc:     johannes.berg@intel.com,
-        linux-wireless <linux-wireless@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        Wed, 18 Mar 2020 16:47:17 -0400
+Received: from p5de0bf0b.dip0.t-ipconnect.de ([93.224.191.11] helo=nanos.tec.linutronix.de)
+        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
+        (Exim 4.80)
+        (envelope-from <tglx@linutronix.de>)
+        id 1jEfaG-00065g-VF; Wed, 18 Mar 2020 21:46:37 +0100
+Received: from nanos.tec.linutronix.de (localhost [IPv6:::1])
+        by nanos.tec.linutronix.de (Postfix) with ESMTP id 0CF59101161;
+        Wed, 18 Mar 2020 21:46:35 +0100 (CET)
+Message-Id: <20200318204302.693307984@linutronix.de>
+User-Agent: quilt/0.65
+Date:   Wed, 18 Mar 2020 21:43:02 +0100
+From:   Thomas Gleixner <tglx@linutronix.de>
+To:     LKML <linux-kernel@vger.kernel.org>
+Cc:     Peter Zijlstra <peterz@infradead.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Ingo Molnar <mingo@kernel.org>, Will Deacon <will@kernel.org>,
+        "Paul E . McKenney" <paulmck@kernel.org>,
+        Joel Fernandes <joel@joelfernandes.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Logan Gunthorpe <logang@deltatee.com>,
+        Kurt Schwemmer <kurt.schwemmer@microsemi.com>,
+        Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org,
+        Felipe Balbi <balbi@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-usb@vger.kernel.org, Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        Oleg Nesterov <oleg@redhat.com>,
+        Davidlohr Bueso <dave@stgolabs.net>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Arnd Bergmann <arnd@arndb.de>, linuxppc-dev@lists.ozlabs.org
+Subject: [patch V2 00/15] Lock ordering documentation and annotation for lockdep
+X-Linutronix-Spam-Score: -1.0
+X-Linutronix-Spam-Level: -
+X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Mar 17, 2020 at 4:15 PM Luciano Coelho <luciano.coelho@intel.com> wrote:
->
-> On Tue, 2020-03-17 at 16:12 -0400, Mark Asselstine wrote:
-> > Luca,
-> >
-> > This is my first time sending a fix for iwlwifi and I haven't seen any
-> > feedback or seen the code merged. Should I have sent this somewhere
-> > else?
->
-> Hi Mark,
->
-> I'm sorry, I have a huge backlog of work and I'm trying to catch up.  I
-> will review your patch and apply it to our internal tree and then
-> upstream it according to our usual process asap.
->
-> Thanks for your patch!
+This is the second version of this work. The first one can be found here:
 
-Thanks Luca,
+   https://lore.kernel.org/r/20200313174701.148376-1-bigeasy@linutronix.de
 
-I appreciate the work maintainers do and how busy you can get, so I
-completely understand. Normally I would have just waited, but again
-this is not an area I have worked in so just wanted to double check I
-didn't screw up. Thanks for the response.
+Changes since V1:
 
-Mark
+  - Split the PCI/switchtec patch (picked up the fix from Logan) and
+    reworked the change log.
 
->
-> --
-> Cheers,
-> Luca.
->
+  - Addressed Linus feedback vs. completions.
+
+    Most of the places which had open coded completion variants have been
+    analysed and fixed up to use the regular interfaces.
+
+    The PS3 one got converted by Peter Zijlstra to rcu_wait().
+
+    Add explanation in the change log why swait actually fits the
+    completion semantics.
+
+  - Addressed Randys feedback on documentation
+
+Thanks,
+
+	tglx
+
