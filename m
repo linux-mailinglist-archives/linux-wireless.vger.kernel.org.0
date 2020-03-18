@@ -2,248 +2,102 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A5DD6189DA7
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Mar 2020 15:16:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F950189DC2
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Mar 2020 15:25:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726832AbgCROQA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 18 Mar 2020 10:16:00 -0400
-Received: from mail27.static.mailgun.info ([104.130.122.27]:13929 "EHLO
-        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726623AbgCROQA (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 18 Mar 2020 10:16:00 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1584540959; h=Message-Id: Date: Subject: Cc: To: From:
- Sender; bh=ALhBlwQdt8msXN5SZ5c/l4N6rNanTeStt4rRWmVca2o=; b=XSIbXi9gQ1OfBcbrNzdw2TUNFz0KsKbOIBcHHe4EVPLQ3g+AbkHJJOSTQ4saZfNaRNFqTsRL
- blKJ9f3YqsFS45jjr1w2LiIHsuAhf4UBjJkxPZUoJT+qph/IPJu837Sv8kvxNCa0jXySNZ4p
- VNGPkLqI29NtYZsBAXpqQp+oaT4=
-X-Mailgun-Sending-Ip: 104.130.122.27
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e722d19.7efb59be3d18-smtp-out-n01;
- Wed, 18 Mar 2020 14:15:53 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id DCB11C433D2; Wed, 18 Mar 2020 14:15:52 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE,
-        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from c-gseset-linux.qualcomm.com (blr-c-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.19.19])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: ssreeela)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 7C1EDC433CB;
-        Wed, 18 Mar 2020 14:15:50 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 7C1EDC433CB
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=ssreeela@codeaurora.org
-From:   Sowmiya Sree Elavalagan <ssreeela@codeaurora.org>
-To:     ath10k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org,
-        Yingying Tang <yintang@codeaurora.org>,
-        Sowmiya Sree Elavalagan <ssreeela@codeaurora.org>
-Subject: [PATCH v2] ath10k: Fill GCMP MIC length for PMF
-Date:   Wed, 18 Mar 2020 19:45:11 +0530
-Message-Id: <1584540911-4267-1-git-send-email-ssreeela@codeaurora.org>
-X-Mailer: git-send-email 1.9.1
+        id S1727069AbgCROZg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 18 Mar 2020 10:25:36 -0400
+Received: from mail-vi1eur05on2074.outbound.protection.outlook.com ([40.107.21.74]:1088
+        "EHLO EUR05-VI1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726730AbgCROZf (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 18 Mar 2020 10:25:35 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=HzgWLZnoTXDkSOdTxH3mAkwQiOKnEcfmicDuH37jP9CeG40YJTY3Vmo7o8pqySELazb+4ccKysxizoDx5NvM1ROZZgA2Y7kFMSphPkqFHFbk8EE7NXDBxkxudb4J53Qj3utBO4K89GQGmn/n8E1dabr78yR081GPMB1OkIfgBkeXk8v0nxMnBspSVqUFHK4ghpV64KrjFVDFEvZYKAUMcvIUXgP0DKUyqL6js4w2zjsIqYlxp51OXXMVHBqgwtWWDBdVnc4qxbvM9x05VWYMwY5QckH6VUa+vdcy70v3csOffk3E70oHpLHFdQeEZJ//IsQ2q+mzs6EZH4FCnAhpEA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=y6HeLJ53CxD9633odJinRZFe2ssu8XVJLLg3jmXGaSQ=;
+ b=SLaXqreu2+gzdZ2f1VSZAbeAJKNGFWP/77BXVIsmcNBSCqxMaU2eSyAWk8wuGyvFW2fV6j/FTjjJ02SSHdyUa4OVDDg0jqvlHrDsQG0ydIJGOmMdBi1TkI37j+WpE1HLBrQrizcKFBBqKd7WFLmOlNGoswLsxyEnR7KfnKbm41E3aWlF5oGDnWYl7ZzxXCJO8m+Zd5fbCMrgJssKZo7rZECm8YoPxPVDYbmhbl+6cyLVpOQnEiJWen8WyqkINuC3sJih1uUYN+HFBdIjkCMKfOYEqSO3dVW1vVOsIwsWexgm00JQY5o2uVqVwPw2NEdd2dHHG9/+qhxwclEdSIDYqw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=y6HeLJ53CxD9633odJinRZFe2ssu8XVJLLg3jmXGaSQ=;
+ b=NOzKBSwRdlp0Q+ysy2CKhiqinCgsVU2tiPthVgi2HrBfqPbC7U8Hw5meX4xjSrqSY6h54oy9HBx5i2RrBtZ4iFa6BBbzoEUEPiJYgLztqM8aSq7ov/YEExXn1h2+gxBx8G/6TKl0QmopVf6lALyUrUpIHFIj75/dU6uEGOwxdxQ=
+Received: from DB7PR04MB5242.eurprd04.prod.outlook.com (20.176.234.25) by
+ DB7PR04MB4522.eurprd04.prod.outlook.com (52.135.138.24) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2835.18; Wed, 18 Mar 2020 14:25:32 +0000
+Received: from DB7PR04MB5242.eurprd04.prod.outlook.com
+ ([fe80::5467:de53:6e5f:8692]) by DB7PR04MB5242.eurprd04.prod.outlook.com
+ ([fe80::5467:de53:6e5f:8692%3]) with mapi id 15.20.2814.025; Wed, 18 Mar 2020
+ 14:25:32 +0000
+From:   Ganapathi Bhat <ganapathi.bhat@nxp.com>
+To:     Brian Norris <briannorris@chromium.org>,
+        Dan Carpenter <dan.carpenter@oracle.com>
+CC:     Amitkumar Karwar <amitkarwar@gmail.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>
+Subject: RE: [EXT] Re: [bug report] wireless: mwifiex: initial commit for
+ Marvell mwifiex driver
+Thread-Topic: [EXT] Re: [bug report] wireless: mwifiex: initial commit for
+ Marvell mwifiex driver
+Thread-Index: AQHV/IJAQVQtkEHJM0iCqvFWOg5T0KhOZ/4Q
+Date:   Wed, 18 Mar 2020 14:25:32 +0000
+Message-ID: <DB7PR04MB52429DE16439F690857070A78FF70@DB7PR04MB5242.eurprd04.prod.outlook.com>
+References: <20200317091837.GA18001@mwanda>
+ <CA+ASDXP80wMrWyc+WZNoGt=DK0EjFjNSjqCi4NGpJgc1mGK3sg@mail.gmail.com>
+In-Reply-To: <CA+ASDXP80wMrWyc+WZNoGt=DK0EjFjNSjqCi4NGpJgc1mGK3sg@mail.gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=ganapathi.bhat@nxp.com; 
+x-originating-ip: [115.112.95.158]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-ht: Tenant
+x-ms-office365-filtering-correlation-id: 6334957b-0df5-4fe0-7cbd-08d7cb483755
+x-ms-traffictypediagnostic: DB7PR04MB4522:
+x-microsoft-antispam-prvs: <DB7PR04MB45228A6D1A4DB4E13C79A09A8FF70@DB7PR04MB4522.eurprd04.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:6108;
+x-forefront-prvs: 03468CBA43
+x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(4636009)(396003)(376002)(136003)(346002)(39860400002)(366004)(199004)(2906002)(52536014)(55016002)(71200400001)(33656002)(5660300002)(9686003)(4744005)(186003)(81156014)(8676002)(8936002)(81166006)(316002)(54906003)(55236004)(4326008)(44832011)(110136005)(86362001)(66556008)(76116006)(6506007)(66446008)(66476007)(66946007)(64756008)(478600001)(26005)(7696005);DIR:OUT;SFP:1101;SCL:1;SRVR:DB7PR04MB4522;H:DB7PR04MB5242.eurprd04.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;
+received-spf: None (protection.outlook.com: nxp.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: 6bYnocWtaqJvqbf/CkRKn2ESfG92vmSBtPvORJ81lrb45GCkc2MOXmlyBjV6EmMSgvKCdCxqm+J9FPr6dyOj2iMJQm7FOjBeEcuj+jGo95sDzuy5JLgF2JqQ5HUon9WsfrzrnFR5bcLkrVp5jUDqw3wFSoqdKam+8bFwd74CpMOvXLpxSViKETNF7udSpc2JxSrZKBmsDR8iswbPjfn9pGoPt7dVmPlQWHhgwcidzK7D9+T3k6kHx20XP1QK2vRQB6He4bXoRdlky9nTTrmTH9S7al0RM6VzqJK8GhvvVGCJGZlCf0TJDZDQjQkFDyWPVX8ryFj6SFBB3gSuCq5S4UT0D5xABY0ScY2I5fCL0LXWdenttH4AdALFq1OwaU4VpGG52MIKBagjvfZ5xXq65wXcdkVoHvDQHqHVYp1oURZ5Fy0tvyikvlUh5MF2TmgQ
+x-ms-exchange-antispam-messagedata: H0YQGWpXkzkV9XbQQw8bvYQkWH+mYFM1yfHorlgEzivPweorgr/ttWbYtC4dwCjRuRDhQFRC/imCE2DTLUyjnYfh/E6wBT1A+oJU7uQGGc6si+J56JHWfpWaSoKPNb98Cnun+xT2QeCEvQQ55lWUYQ==
+x-ms-exchange-transport-forked: True
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6334957b-0df5-4fe0-7cbd-08d7cb483755
+X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Mar 2020 14:25:32.1568
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: Fit5LBq824zhsiLoXTf7AM2ETCeiU6FZMIa4pCx5Aa/OlgQ3LHlqgQzJ8hSUApDdEFijMMtGzDv6KASXlfUTdQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB7PR04MB4522
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Yingying Tang <yintang@codeaurora.org>
-
-GCMP MIC length is not filled for GCMP/GCMP-256 cipher suites in
-PMF enabled case. Due to mismatch in MIC length, deauth/disassoc frames
-are unencrypted.
-This patch fills proper MIC length for GCMP/GCMP-256 cipher suites.
-
-Tested HW: QCA9984, QCA9888
-Tested FW: 10.4-3.6-00104
-
-Signed-off-by: Yingying Tang <yintang@codeaurora.org>
-Co-developed-by: Sowmiya Sree Elavalagan <ssreeela@codeaurora.org>
-Signed-off-by: Sowmiya Sree Elavalagan <ssreeela@codeaurora.org>
----
- drivers/net/wireless/ath/ath10k/core.h   |  2 ++
- drivers/net/wireless/ath/ath10k/htt_tx.c | 12 +++++++++++-
- drivers/net/wireless/ath/ath10k/mac.c    | 25 ++++++++++++++++++++-----
- drivers/net/wireless/ath/ath10k/wmi.c    | 17 +++++++++++++++--
- 4 files changed, 48 insertions(+), 8 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath10k/core.h b/drivers/net/wireless/ath/ath10k/core.h
-index edf314e..bd8ef57 100644
---- a/drivers/net/wireless/ath/ath10k/core.h
-+++ b/drivers/net/wireless/ath/ath10k/core.h
-@@ -119,6 +119,7 @@ struct ath10k_skb_cb {
- 	u16 airtime_est;
- 	struct ieee80211_vif *vif;
- 	struct ieee80211_txq *txq;
-+	u32 ucast_cipher;
- } __packed;
- 
- struct ath10k_skb_rxcb {
-@@ -504,6 +505,7 @@ struct ath10k_sta {
- 	struct work_struct update_wk;
- 	u64 rx_duration;
- 	struct ath10k_htt_tx_stats *tx_stats;
-+	u32 ucast_cipher;
- 
- #ifdef CONFIG_MAC80211_DEBUGFS
- 	/* protected by conf_mutex */
-diff --git a/drivers/net/wireless/ath/ath10k/htt_tx.c b/drivers/net/wireless/ath/ath10k/htt_tx.c
-index a182c09..e9d12ea 100644
---- a/drivers/net/wireless/ath/ath10k/htt_tx.c
-+++ b/drivers/net/wireless/ath/ath10k/htt_tx.c
-@@ -1163,6 +1163,7 @@ int ath10k_htt_mgmt_tx(struct ath10k_htt *htt, struct sk_buff *msdu)
- 	int len = 0;
- 	int msdu_id = -1;
- 	int res;
-+	const u8 *peer_addr;
- 	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)msdu->data;
- 
- 	len += sizeof(cmd->hdr);
-@@ -1178,7 +1179,16 @@ int ath10k_htt_mgmt_tx(struct ath10k_htt *htt, struct sk_buff *msdu)
- 	     ieee80211_is_deauth(hdr->frame_control) ||
- 	     ieee80211_is_disassoc(hdr->frame_control)) &&
- 	     ieee80211_has_protected(hdr->frame_control)) {
--		skb_put(msdu, IEEE80211_CCMP_MIC_LEN);
-+		peer_addr = hdr->addr1;
-+		if (is_multicast_ether_addr(peer_addr)) {
-+			skb_put(msdu, sizeof(struct ieee80211_mmie_16));
-+		} else {
-+			if (skb_cb->ucast_cipher == WLAN_CIPHER_SUITE_GCMP ||
-+			    skb_cb->ucast_cipher == WLAN_CIPHER_SUITE_GCMP_256)
-+				skb_put(msdu, IEEE80211_GCMP_MIC_LEN);
-+			else
-+				skb_put(msdu, IEEE80211_CCMP_MIC_LEN);
-+		}
- 	}
- 
- 	txdesc = ath10k_htc_alloc_skb(ar, len);
-diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
-index 23d9830..2d03b8d 100644
---- a/drivers/net/wireless/ath/ath10k/mac.c
-+++ b/drivers/net/wireless/ath/ath10k/mac.c
-@@ -258,6 +258,7 @@ static int ath10k_send_key(struct ath10k_vif *arvif,
- 	case WLAN_CIPHER_SUITE_GCMP:
- 	case WLAN_CIPHER_SUITE_GCMP_256:
- 		arg.key_cipher = ar->wmi_key_cipher[WMI_CIPHER_AES_GCM];
-+		key->flags |= IEEE80211_KEY_FLAG_GENERATE_IV_MGMT;
- 		break;
- 	case WLAN_CIPHER_SUITE_BIP_GMAC_128:
- 	case WLAN_CIPHER_SUITE_BIP_GMAC_256:
-@@ -3576,6 +3577,7 @@ static void ath10k_tx_h_add_p2p_noa_ie(struct ath10k *ar,
- static void ath10k_mac_tx_h_fill_cb(struct ath10k *ar,
- 				    struct ieee80211_vif *vif,
- 				    struct ieee80211_txq *txq,
-+				    struct ieee80211_sta *sta,
- 				    struct sk_buff *skb, u16 airtime)
- {
- 	struct ieee80211_hdr *hdr = (void *)skb->data;
-@@ -3583,6 +3585,7 @@ static void ath10k_mac_tx_h_fill_cb(struct ath10k *ar,
- 	const struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
- 	bool is_data = ieee80211_is_data(hdr->frame_control) ||
- 			ieee80211_is_data_qos(hdr->frame_control);
-+	struct ath10k_sta *arsta;
- 
- 	cb->flags = 0;
- 	if (!ath10k_tx_h_use_hwcrypto(vif, skb))
-@@ -3607,6 +3610,12 @@ static void ath10k_mac_tx_h_fill_cb(struct ath10k *ar,
- 	cb->vif = vif;
- 	cb->txq = txq;
- 	cb->airtime_est = airtime;
-+	if (sta) {
-+		arsta = (struct ath10k_sta *)sta->drv_priv;
-+		spin_lock_bh(&ar->data_lock);
-+		cb->ucast_cipher = arsta->ucast_cipher;
-+		spin_unlock_bh(&ar->data_lock);
-+	}
- }
- 
- bool ath10k_mac_tx_frm_has_freq(struct ath10k *ar)
-@@ -4078,7 +4087,7 @@ int ath10k_mac_tx_push_txq(struct ieee80211_hw *hw,
- 	}
- 
- 	airtime = ath10k_mac_update_airtime(ar, txq, skb);
--	ath10k_mac_tx_h_fill_cb(ar, vif, txq, skb, airtime);
-+	ath10k_mac_tx_h_fill_cb(ar, vif, txq, sta, skb, airtime);
- 
- 	skb_len = skb->len;
- 	txmode = ath10k_mac_tx_h_get_txmode(ar, vif, sta, skb);
-@@ -4348,7 +4357,7 @@ static void ath10k_mac_op_tx(struct ieee80211_hw *hw,
- 	u16 airtime;
- 
- 	airtime = ath10k_mac_update_airtime(ar, txq, skb);
--	ath10k_mac_tx_h_fill_cb(ar, vif, txq, skb, airtime);
-+	ath10k_mac_tx_h_fill_cb(ar, vif, txq, sta, skb, airtime);
- 
- 	txmode = ath10k_mac_tx_h_get_txmode(ar, vif, sta, skb);
- 	txpath = ath10k_mac_tx_h_get_txpath(ar, skb, txmode);
-@@ -6197,6 +6206,7 @@ static int ath10k_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
- {
- 	struct ath10k *ar = hw->priv;
- 	struct ath10k_vif *arvif = (void *)vif->drv_priv;
-+	struct ath10k_sta *arsta;
- 	struct ath10k_peer *peer;
- 	const u8 *peer_addr;
- 	bool is_wep = key->cipher == WLAN_CIPHER_SUITE_WEP40 ||
-@@ -6221,12 +6231,17 @@ static int ath10k_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
- 
- 	mutex_lock(&ar->conf_mutex);
- 
--	if (sta)
-+	if (sta) {
-+		arsta = (struct ath10k_sta *)sta->drv_priv;
- 		peer_addr = sta->addr;
--	else if (arvif->vdev_type == WMI_VDEV_TYPE_STA)
-+		spin_lock_bh(&ar->data_lock);
-+		arsta->ucast_cipher = key->cipher;
-+		spin_unlock_bh(&ar->data_lock);
-+	} else if (arvif->vdev_type == WMI_VDEV_TYPE_STA) {
- 		peer_addr = vif->bss_conf.bssid;
--	else
-+	} else {
- 		peer_addr = vif->addr;
-+	}
- 
- 	key->hw_key_idx = key->keyidx;
- 
-diff --git a/drivers/net/wireless/ath/ath10k/wmi.c b/drivers/net/wireless/ath/ath10k/wmi.c
-index e76e365..2ea77bb 100644
---- a/drivers/net/wireless/ath/ath10k/wmi.c
-+++ b/drivers/net/wireless/ath/ath10k/wmi.c
-@@ -1926,6 +1926,7 @@ int ath10k_wmi_cmd_send(struct ath10k *ar, struct sk_buff *skb, u32 cmd_id)
- 	u32 vdev_id;
- 	u32 buf_len = msdu->len;
- 	u16 fc;
-+	const u8 *peer_addr;
- 
- 	hdr = (struct ieee80211_hdr *)msdu->data;
- 	fc = le16_to_cpu(hdr->frame_control);
-@@ -1946,8 +1947,20 @@ int ath10k_wmi_cmd_send(struct ath10k *ar, struct sk_buff *skb, u32 cmd_id)
- 	     ieee80211_is_deauth(hdr->frame_control) ||
- 	     ieee80211_is_disassoc(hdr->frame_control)) &&
- 	     ieee80211_has_protected(hdr->frame_control)) {
--		len += IEEE80211_CCMP_MIC_LEN;
--		buf_len += IEEE80211_CCMP_MIC_LEN;
-+		peer_addr = hdr->addr1;
-+		if (is_multicast_ether_addr(peer_addr)) {
-+			len += sizeof(struct ieee80211_mmie_16);
-+			buf_len += sizeof(struct ieee80211_mmie_16);
-+		} else {
-+			if (cb->ucast_cipher == WLAN_CIPHER_SUITE_GCMP ||
-+			    cb->ucast_cipher == WLAN_CIPHER_SUITE_GCMP_256) {
-+				len += IEEE80211_GCMP_MIC_LEN;
-+				buf_len += IEEE80211_GCMP_MIC_LEN;
-+			} else {
-+				len += IEEE80211_CCMP_MIC_LEN;
-+				buf_len += IEEE80211_CCMP_MIC_LEN;
-+			}
-+		}
- 	}
- 
- 	len = round_up(len, 4);
--- 
-1.9.1
+SGkgRGFuL0JyaWFuDQoNCj4gICAgNDk1ICB2b2lkIG13aWZpZXhfMTFuX2RlbGV0ZV90eF9iYV9z
+dHJlYW1fdGJsX2VudHJ5KHN0cnVjdA0KPiBtd2lmaWV4X3ByaXZhdGUgKnByaXYsDQo+ICAgIDQ5
+NiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzdHJ1Y3QgbXdpZmlleF90eF9iYV9z
+dHJlYW1fdGJsICp0eF9iYV90c3JfdGJsKQ0KPiAgICA0OTcgIHsNCj4gICAgNDk4ICAgICAgICAg
+IGlmICghdHhfYmFfdHNyX3RibCAmJg0KPiAgICAgICAgICAgICAgICAgICAgICBeXl5eXl5eXl5e
+Xl5eDQo+IENoZWNrIGZvciBOVUxMDQo+IA0KPiAgICA0OTkgICAgICAgICAgICAgIG13aWZpZXhf
+aXNfdHhfYmFfc3RyZWFtX3B0cl92YWxpZChwcml2LCB0eF9iYV90c3JfdGJsKSkNCj4gICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXl5e
+Xl5eXl5eXl5eXiBXaGljaCBpcyBwYXNzZWQgdG8gaGVyZS4gIFNvDQo+IG1heWJlIHRoZSBOVUxM
+IGNoZWNrIGlzIHJldmVyc2VkPw0KDQpJIHRoaW5rLCBpdCBzaG91bGQgaGF2ZSBiZWVuIGxpa2Ug
+YmVsb3c6IA0KDQppZiAoIXR4X2JhX3Rzcl90YmwgfHwgIW13aWZpZXhfaXNfdHhfYmFfc3RyZWFt
+X3B0cl92YWxpZChwcml2LCB0eF9iYV90c3JfdGJsKSkgLiAuIC4gDQoNCg0KUmVnYXJkcywNCkdh
+bmFwYXRoaQ0K
