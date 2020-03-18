@@ -2,243 +2,169 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C829189703
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Mar 2020 09:27:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AB83718978E
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Mar 2020 10:03:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726994AbgCRI1X (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 18 Mar 2020 04:27:23 -0400
-Received: from mail-pj1-f68.google.com ([209.85.216.68]:53163 "EHLO
-        mail-pj1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727351AbgCRI1Q (ORCPT
+        id S1727502AbgCRJDP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 18 Mar 2020 05:03:15 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:46110 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726523AbgCRJDP (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 18 Mar 2020 04:27:16 -0400
-Received: by mail-pj1-f68.google.com with SMTP id ng8so1015072pjb.2
-        for <linux-wireless@vger.kernel.org>; Wed, 18 Mar 2020 01:27:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=endlessm-com.20150623.gappssmtp.com; s=20150623;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=q67Jyo84FepUkmWaE2l8NSTdFx5oALdllapMnZWigOw=;
-        b=wHavSO3dYWfl8aL69jLUhaa20mvMeN5gq65qxD00+zKON5m2BDMlFYBJIKejkHQT5d
-         j87RoCEVWiPjqj4LMYZo2t0KyrYu0ME88f3cfVO0aJuaRtkz1gTosPNTzcsi3TSf5Gfb
-         NEUxLdLi/BUiOv8AWH0ISIMvf+JfgjYJ1L5jqM47FbX302UU0xMdaCvzMR47pHxPzKvM
-         esUYSGbNR1cot3O/3gxiTWJdidYafGQkr5fyxK2UPGv60YswB4m9JduicFRB3CifQHvN
-         WZjDLT5oO0Wqjrzy6pP6Tv/PkZ4xaX364PxxnLugVt9nEUFwGvk4me/n/cr2byJLcdHB
-         825Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=q67Jyo84FepUkmWaE2l8NSTdFx5oALdllapMnZWigOw=;
-        b=kYPE1GFebPxVOSP1pKOIExkseoO2zKdEW1hPDBgksbFyEx0rsXqgYTG0fFty9PwqRv
-         I5xPUk4CAgoeA/TPuE9IjUZDSwouIx8w9asszfiLCNt5CAeoC6eQu8swpKw3V2P/QTmo
-         rSUzhr2jVxvo3SRF6xKfw4K8lZiDhNL49nA7P2nmJBB1+Vi9WbL1JlYfXU14LOAv1/ka
-         kY9w/JA043RK/uwrreMwC5KnsDo87a50k20yeKFNbSLEPoDZcq5JgdkthHTC7+QW+zWj
-         2sCswCl+AgIE7mw59WQXXMERDm5IyllDZSED9ZNT4kIVknYMq1eq7MUSiyh3OxM2ZQmB
-         PP+A==
-X-Gm-Message-State: ANhLgQ1wuY51Ri6ASmZ58w9Nl5DQ8WgfXG0RbDn9vecrpo5hU4Bh3smK
-        pguqyI6aQ4CQ/7+7NYGtM8XH82UJUT4=
-X-Google-Smtp-Source: ADFU+vv2OTPgHhQTQt1hhMqYhaFSeGVb5tFFleZIVG/GUUbGBVVXxMBNdJQBOh55SIWNsHqiVtnBaQ==
-X-Received: by 2002:a17:90a:1946:: with SMTP id 6mr405387pjh.42.1584520034178;
-        Wed, 18 Mar 2020 01:27:14 -0700 (PDT)
-Received: from localhost.localdomain (59-127-47-126.HINET-IP.hinet.net. [59.127.47.126])
-        by smtp.gmail.com with ESMTPSA id 18sm5492148pfj.140.2020.03.18.01.27.11
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 18 Mar 2020 01:27:13 -0700 (PDT)
-From:   Chris Chiu <chiu@endlessm.com>
-To:     Jes.Sorensen@gmail.com, kvalo@codeaurora.org, davem@davemloft.net
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux@endlessm.com
-Subject: [PATCH 2/2] rtl8xxxu: Feed current txrate information for mac80211
-Date:   Wed, 18 Mar 2020 16:27:00 +0800
-Message-Id: <20200318082700.71875-3-chiu@endlessm.com>
-X-Mailer: git-send-email 2.21.1 (Apple Git-122.3)
-In-Reply-To: <20200318082700.71875-1-chiu@endlessm.com>
-References: <20200318082700.71875-1-chiu@endlessm.com>
+        Wed, 18 Mar 2020 05:03:15 -0400
+Authenticated-By: 
+X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID 02I92tmi000412, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (RTEXMB06.realtek.com.tw[172.21.6.99])
+        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id 02I92tmi000412
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 18 Mar 2020 17:02:56 +0800
+Received: from RTEXMB04.realtek.com.tw (172.21.6.97) by
+ RTEXMB06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Wed, 18 Mar 2020 17:02:55 +0800
+Received: from RTEXMB04.realtek.com.tw (172.21.6.97) by
+ RTEXMB04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Wed, 18 Mar 2020 17:02:55 +0800
+Received: from RTEXMB04.realtek.com.tw ([fe80::d9c5:a079:495e:b999]) by
+ RTEXMB04.realtek.com.tw ([fe80::d9c5:a079:495e:b999%6]) with mapi id
+ 15.01.1779.005; Wed, 18 Mar 2020 17:02:55 +0800
+From:   Tony Chuang <yhchuang@realtek.com>
+To:     Ben Greear <greearb@candelatech.com>,
+        Kalle Valo <kvalo@codeaurora.org>
+CC:     Johannes Berg <johannes@sipsolutions.net>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "briannorris@chromium.org" <briannorris@chromium.org>
+Subject: RE: [PATCH] rtw88: add debugfs to fix tx rate
+Thread-Topic: [PATCH] rtw88: add debugfs to fix tx rate
+Thread-Index: AQHV+QPS9h9ZLy9E5U2M/GVMmM07xahGU7JUgAQrRBCAAeVFp4AANj0wgABYekb//3w6gIABoSZA
+Date:   Wed, 18 Mar 2020 09:02:55 +0000
+Message-ID: <fbab3328d183406c923b30381389841f@realtek.com>
+References: <20200313065114.23433-1-yhchuang@realtek.com>
+ <87eetwo87q.fsf@kamboji.qca.qualcomm.com>
+ <2e492e530d744713871f885e324106ef@realtek.com>
+ <87eetrlanb.fsf@kamboji.qca.qualcomm.com>
+ <ce990869ebf0478d98cd7e8416b36289@realtek.com>
+ <875zf3kn05.fsf@kamboji.qca.qualcomm.com>
+ <f4e7401c-c86b-8b2f-9e93-865322f71945@candelatech.com>
+In-Reply-To: <f4e7401c-c86b-8b2f-9e93-865322f71945@candelatech.com>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.68.175]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The nl80211 commands such as 'iw link' can't get current txrate
-information from the driver. This commit fills in the tx rate
-information from the C2H RA report in the sta_statistics function.
-
-Signed-off-by: Chris Chiu <chiu@endlessm.com>
----
- .../net/wireless/realtek/rtl8xxxu/rtl8xxxu.h  | 12 ++-
- .../wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 75 ++++++++++++++++++-
- 2 files changed, 85 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-index 86d1d50511a8..e6fd1ecaca9c 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-@@ -1183,13 +1183,16 @@ struct rtl8723bu_c2h {
- 		} __packed bt_info;
- 		struct {
- 			u8 rate:7;
--			u8 dummy0_0:1;
-+			u8 sgi:1;
- 			u8 macid;
- 			u8 ldpc:1;
- 			u8 txbf:1;
- 			u8 noisy_state:1;
- 			u8 dummy2_0:5;
- 			u8 dummy3_0;
-+			u8 dummy4_0;
-+			u8 dummy5_0;
-+			u8 bw;
- 		} __packed ra_report;
- 	};
- };
-@@ -1269,6 +1272,12 @@ struct rtl8xxxu_btcoex {
- #define RTL8XXXU_SNR_THRESH_HIGH	50
- #define RTL8XXXU_SNR_THRESH_LOW	20
- 
-+struct rtl8xxxu_ra_report {
-+	struct rate_info txrate;
-+	u32 bit_rate;
-+	u8 desc_rate;
-+};
-+
- struct rtl8xxxu_priv {
- 	struct ieee80211_hw *hw;
- 	struct usb_device *udev;
-@@ -1384,6 +1393,7 @@ struct rtl8xxxu_priv {
- 	struct sk_buff_head c2hcmd_queue;
- 	spinlock_t c2hcmd_lock;
- 	struct rtl8xxxu_btcoex bt_coex;
-+	struct rtl8xxxu_ra_report ra_report;
- };
- 
- struct rtl8xxxu_rx_urb {
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-index 511a3b4ed72a..49dfa32b572a 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-@@ -5389,6 +5389,35 @@ void rtl8723bu_handle_bt_info(struct rtl8xxxu_priv *priv)
- 	}
- }
- 
-+static struct ieee80211_rate rtl8xxxu_legacy_ratetable[] = {
-+	{.bitrate = 10, .hw_value = 0x00,},
-+	{.bitrate = 20, .hw_value = 0x01,},
-+	{.bitrate = 55, .hw_value = 0x02,},
-+	{.bitrate = 110, .hw_value = 0x03,},
-+	{.bitrate = 60, .hw_value = 0x04,},
-+	{.bitrate = 90, .hw_value = 0x05,},
-+	{.bitrate = 120, .hw_value = 0x06,},
-+	{.bitrate = 180, .hw_value = 0x07,},
-+	{.bitrate = 240, .hw_value = 0x08,},
-+	{.bitrate = 360, .hw_value = 0x09,},
-+	{.bitrate = 480, .hw_value = 0x0a,},
-+	{.bitrate = 540, .hw_value = 0x0b,},
-+};
-+
-+void rtl8xxxu_desc_to_mcsrate(u16 rate, u8 *mcs, u8 *nss)
-+{
-+	if (rate <= DESC_RATE_54M)
-+		return;
-+
-+	if (rate >= DESC_RATE_MCS0 && rate <= DESC_RATE_MCS15) {
-+		if (rate < DESC_RATE_MCS8)
-+			*nss = 1;
-+		else
-+			*nss = 2;
-+		*mcs = rate - DESC_RATE_MCS0;
-+	}
-+}
-+
- static void rtl8xxxu_c2hcmd_callback(struct work_struct *work)
- {
- 	struct rtl8xxxu_priv *priv;
-@@ -5397,9 +5426,14 @@ static void rtl8xxxu_c2hcmd_callback(struct work_struct *work)
- 	unsigned long flags;
- 	u8 bt_info = 0;
- 	struct rtl8xxxu_btcoex *btcoex;
-+	struct rtl8xxxu_ra_report *rarpt;
-+	u8 rate, sgi, bw;
-+	u32 bit_rate;
-+	u8 mcs = 0, nss = 0;
- 
- 	priv = container_of(work, struct rtl8xxxu_priv, c2hcmd_work);
- 	btcoex = &priv->bt_coex;
-+	rarpt = &priv->ra_report;
- 
- 	if (priv->rf_paths > 1)
- 		goto out;
-@@ -5422,6 +5456,34 @@ static void rtl8xxxu_c2hcmd_callback(struct work_struct *work)
- 			}
- 			rtl8723bu_handle_bt_info(priv);
- 			break;
-+		case C2H_8723B_RA_REPORT:
-+			rarpt->txrate.flags = 0;
-+			rate = c2h->ra_report.rate;
-+			sgi = c2h->ra_report.sgi;
-+			bw = c2h->ra_report.bw;
-+
-+			if (rate < DESC_RATE_MCS0) {
-+				rarpt->txrate.legacy =
-+					rtl8xxxu_legacy_ratetable[rate].bitrate;
-+			} else {
-+				rtl8xxxu_desc_to_mcsrate(rate, &mcs, &nss);
-+				rarpt->txrate.flags |= RATE_INFO_FLAGS_MCS;
-+
-+				rarpt->txrate.mcs = mcs;
-+				rarpt->txrate.nss = nss;
-+
-+				if (sgi) {
-+					rarpt->txrate.flags |=
-+						RATE_INFO_FLAGS_SHORT_GI;
-+				}
-+
-+				if (bw == RATE_INFO_BW_20)
-+					rarpt->txrate.bw |= RATE_INFO_BW_20;
-+			}
-+			bit_rate = cfg80211_calculate_bitrate(&rarpt->txrate);
-+			rarpt->bit_rate = bit_rate;
-+			rarpt->desc_rate = rate;
-+			break;
- 		default:
- 			break;
- 		}
-@@ -5465,7 +5527,7 @@ static void rtl8723bu_handle_c2h(struct rtl8xxxu_priv *priv,
- 	case C2H_8723B_RA_REPORT:
- 		dev_dbg(dev,
- 			"C2H RA RPT: rate %02x, unk %i, macid %02x, noise %i\n",
--			c2h->ra_report.rate, c2h->ra_report.dummy0_0,
-+			c2h->ra_report.rate, c2h->ra_report.sgi,
- 			c2h->ra_report.macid, c2h->ra_report.noisy_state);
- 		break;
- 	default:
-@@ -6069,6 +6131,16 @@ rtl8xxxu_ampdu_action(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 	return 0;
- }
- 
-+static void
-+rtl8xxxu_sta_statistics(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
-+			struct ieee80211_sta *sta, struct station_info *sinfo)
-+{
-+	struct rtl8xxxu_priv *priv = hw->priv;
-+
-+	sinfo->txrate = priv->ra_report.txrate;
-+	sinfo->filled |= BIT_ULL(NL80211_STA_INFO_TX_BITRATE);
-+}
-+
- static u8 rtl8xxxu_signal_to_snr(int signal)
- {
- 	if (signal < RTL8XXXU_NOISE_FLOOR_MIN)
-@@ -6371,6 +6443,7 @@ static const struct ieee80211_ops rtl8xxxu_ops = {
- 	.sw_scan_complete = rtl8xxxu_sw_scan_complete,
- 	.set_key = rtl8xxxu_set_key,
- 	.ampdu_action = rtl8xxxu_ampdu_action,
-+	.sta_statistics = rtl8xxxu_sta_statistics,
- };
- 
- static int rtl8xxxu_parse_usb(struct rtl8xxxu_priv *priv,
--- 
-2.20.1
-
+QmVuIEdyZWVhciA8Z3JlZWFyYkBjYW5kZWxhdGVjaC5jb20+IHdyaXRlczoNCg0KPiBPbiAzLzE3
+LzIwIDg6NDAgQU0sIEthbGxlIFZhbG8gd3JvdGU6DQo+PiBUb255IENodWFuZyA8eWhjaHVhbmdA
+cmVhbHRlay5jb20+IHdyaXRlczoNCj4+DQo+Pj4gLy8gQWRkIEpvaGFubmVzIGZvciBjb21tZW50
+aW5nIG9uIGFkZGluZyBhbm90aGVyIG5sODAyMTEgY29tbWFuZHMNCj4+Pg0KPj4+IEthbGxlIFZh
+bG8gPGt2YWxvQGNvZGVhdXJvcmEub3JnPiB3cml0ZXM6Pg0KPj4+DQo+Pj4+IFRvbnkgQ2h1YW5n
+IDx5aGNodWFuZ0ByZWFsdGVrLmNvbT4gd3JpdGVzOg0KPj4+Pg0KPj4+Pj4gS2FsbGUgVmFsbyA8
+a3ZhbG9AY29kZWF1cm9yYS5vcmc+IHdyaXRlczoNCj4+Pj4+DQo+Pj4+Pj4gPHloY2h1YW5nQHJl
+YWx0ZWsuY29tPiB3cml0ZXM6DQo+Pj4+Pj4NCj4+Pj4+Pj4gRnJvbTogWWFuLUhzdWFuIENodWFu
+ZyA8eWhjaHVhbmdAcmVhbHRlay5jb20+DQo+Pj4+Pj4+DQo+Pj4+Pj4+IEl0IGlzIHVzZWZ1bCB0
+byBmaXggdGhlIGJpdCByYXRlIG9mIFRYIHBhY2tldHMuIEZvciBleGFtcGxlLCBpZg0KPj4+Pj4+
+PiBzb21lb25lIGlzIG1lYXN1cmluZyB0aGUgVFggcG93ZXIsIG9yIGRlYnVnZ2luZyB3aXRoIHRo
+ZSBpc3N1ZXMNCj4+Pj4+Pj4gb2YgdGhlIFRYIHRocm91Z2hwdXQgb24gdGhlIGZpZWxkLg0KPj4+
+Pj4+Pg0KPj4+Pj4+PiBUbyBzZXQgdGhlIHZhbHVlIG9mIGZpeGVkIHJhdGUsIG9uZSBzaG91bGQg
+aW5wdXQgY29ycmVzcG9uZGluZw0KPj4+Pj4+PiBkZXNjIHJhdGUgaW5kZXggKGV4LCAweDBiIGZv
+ciBERVNDX1JBVEU1NE0gdG8gZml4IGF0IDU0IE1icHMpLg0KPj4+Pj4+PiBTZXQgYSB2YWx1ZSBs
+YXJnZXIgdGhhbiBERVNDX1JBVEVfTUFYIHdpbGwgZGlzYWJsZSBmaXggcmF0ZSwgc28NCj4+Pj4+
+Pj4gdGhlIHJhdGUgYWRhcHRpdmUgbWVjaGFuaXNtIGNhbiByZXN1bWUgdG8gd29yay4NCj4+Pj4+
+Pj4NCj4+Pj4+Pj4gRXhhbXBsZSwNCj4+Pj4+Pj4gICAgVG8gZml4IHJhdGUgYXQgTUNTIDE6DQo+
+Pj4+Pj4+ICAgIGVjaG8gMHgwZCA+IC9zeXMva2VybmVsL2RlYnVnL2llZWU4MDIxMS9waHkwL3J0
+dzg4L2ZpeF9yYXRlDQo+Pj4+Pj4+DQo+Pj4+Pj4+ICAgIFRvIG5vdCB0byBmaXggcmF0ZToNCj4+
+Pj4+Pj4gICAgZWNobyAweGZmID4gL3N5cy9rZXJuZWwvZGVidWcvaWVlZTgwMjExL3BoeTAvcnR3
+ODgvZml4X3JhdGUNCj4+Pj4+Pj4NCj4+Pj4+Pj4gICAgVG8ga25vdyB3aGljaCByYXRlIHdhcyBm
+aXhlZCBhdDoNCj4+Pj4+Pj4gICAgY2F0IC9zeXMva2VybmVsL2RlYnVnL2llZWU4MDIxMS9waHkw
+L3J0dzg4L2ZpeF9yYXRlDQo+Pj4+Pj4+DQo+Pj4+Pj4+IFNpZ25lZC1vZmYtYnk6IFlhbi1Ic3Vh
+biBDaHVhbmcgPHloY2h1YW5nQHJlYWx0ZWsuY29tPg0KPj4+Pj4+DQo+Pj4+Pj4gTm8gd2F5LCBk
+ZWJ1Z2ZzIGlzIG5vdCBhIG1ldGhvZCBmb3Igd29ya2luZyBhcm91bmQgbmw4MDIxMSBhbmQNCj5k
+b2luZw0KPj4+Pj4+IHdoYXRldmVyIGlkZWEgeW91IGNvbWUgdXAgd2l0aC4gVGhlIGdvYWwgaXMg
+dGhhdCB3ZSBoYXZlIGEgZ2VuZXJpYw0KPj4+Pj4+IG5sODAyMTEgY29tbWFuZCBmb3IgYWxsIGdl
+bmVyaWMgYWN0aW9ucywgbGlrZSB0aGlzIG9uZS4gQW5kIEkgdGhpbmsgd2UNCj4+Pj4+PiBhbHJl
+YWR5IGhhdmUgYW4gbmw4MDIxMSBjb21tYW5kIGZvciBmaXhpbmcgdGhlIHR4IHJhdGUsIHJpZ2h0
+Pw0KPj4+Pj4+DQo+Pj4+Pg0KPj4+Pj4gTm8sIGFzIEkgY2FuIHNlZSwgdGhlcmUncyBubyBzdWl0
+YWJsZSBubDgwMjExIGNvbW1hbmQgdGhhdCBjYW4gYWNoaWV2ZQ0KPj4+Pj4gd2hhdCBJIHdhbnQu
+IElmIHlvdSBhcmUgc2F5aW5nIGFib3V0DQo+Pj4+IE5MODAyMTFfQ01EX1NFVF9UWF9CSVRSQVRF
+X01BU0ssDQo+Pj4+PiBpdCdzIHVzZWQgdG8gYWxsb3cgc29tZSByYXRlcy4gQnV0IGFjdHVhbGx5
+IHRoZSBmaXJtd2FyZSBoYXMgaXRzIG93biByYXRlDQo+Pj4+PiBhZGFwdGl2ZSBtZWNoYW5pc20s
+IHNvIG1hc2sgb3V0IHRoZSBvdGhlciByYXRlcyBkb2VzIG5vdCBtZWFuIHRoZQ0KPiByYXRlDQo+
+Pj4+PiBsZWZ0IHdpbGwgYmUgY2hvc2VuLiBNb3Jlb3ZlciwgdGhlIGhhcmR3YXJlIHdpbGwgY2hv
+b3NlIGEgbG93ZXIgYml0IHJhdGUNCj4+Pj4+IHdoZW4gcmV0cnksIHRoZW4gdGhlIFRYIHJhdGUg
+aXMgbm90IGZpeGVkIGF0IGFsbC4gU28gdGhlIGRlYnVnZnMgY2FuDQo+IGRpc2FibGUNCj4+Pj4+
+IHRoZSBmaXJtd2FyZSdzIFJBIG1lY2hhbmlzbSwgYWxzbyBkaXNhYmxlIHRoZSBUWCByYXRlIGZh
+bGwgYmFjayB3aGVuDQo+IHJldHJ5Lg0KPj4+Pj4gQm90aCBvZiB0aGVtIGNhbm5vdCBiZSBkb25l
+IGJ5IHNldHRpbmcgVFggYml0cmF0ZSBtYXNrLg0KDQoNClRoaXMgaXMgdGhlIHJlYXNvbiB0aGUg
+bmw4MDIxMSBjb21tYW5kIGlzIG5vdCBzdWl0YWJsZSBmb3IgbWUuDQoNCg0KPj4+Pg0KPj4+PiBJ
+J20gY29uZnVzZWQsIGhlcmUgeW91IHRhbGsgYWJvdXQgZmlybXdhcmUgaW1wbGVtZW50YXRpb24g
+ZXRjIGJ1dCBJJ20NCj4+Pj4ganVzdCB0YWxraW5nIGFib3V0IHJlcGxhY2luZyB0aGUgZml4X3Jh
+dGUgZGVidWdmcyBmaWxlIHRvIGFuIG5sODAyMTENCj4+Pj4gY29tbWFuZCAoZm9yIHByb3ZpZGlu
+ZyB0aGUgZml4X3JhdGUgdmFsdWUpLiBDYW4geW91IGNsYXJpZnkgbW9yZSB3aHkNCj4geW91DQo+
+Pj4+IHRoaW5rIG5sODAyMTEgaXMgbm90IHN1aXRhYmxlPw0KPj4+DQo+Pj4gT29wcywgSSB0aG91
+Z2h0IHRoYXQgeW91IHdhbnRlZCBtZSB0byB1c2UgdGhlIGV4aXN0aW5nIG5sODAyMTENCj4+PiBj
+b21tYW5kLg0KPj4NCj4+IEVpdGhlciB1c2UgYW4gZXhpc3Rpbmcgbmw4MDIxMSBjb21tYW5kIG9y
+IGFkZCBhIG5ldyBvbmUgaWYgbmVlZGVkLiBGb3INCj4+IG1lIG1vc3QgaW1wb3J0YW50IGlzIHRo
+YXQgd2UgZG9uJ3QgYWRkIGhhY2tzIHRvIGRlYnVnZnMganVzdCBmb3INCj4+IGF2b2lkaW5nIHVz
+aW5nIG5sODAyMTEuDQo+Pg0KPj4+IE5vdyBJIGtub3cgdGhhdCB5b3UgdGhpbmsgd2UgY2FuIGFk
+ZCBhIG5ldyBubDgwMjExIGNvbW1hbmQgdG8gaGVscA0KPj4+IGRyaXZlcnMgdG8gZml4IHRoZSBU
+WCBiaXRyYXRlIGlmIG5lY2Vzc2FyeS4gSWYgYWRkaW5nIGFub3RoZXIgbmw4MDIxMQ0KPj4+IGNv
+bW1hbmQgZm9yIHRoYXQgaXMgYWNjZXB0YWJsZSwgSSBjYW4gd29yayBvbiB0aGlzLiBCdXQgSSBu
+ZWVkDQo+Pj4gSm9oYW5uZXMncyBjb21tZW50IGlmIGl0J3MgYmV0dGVyIHRvIGFkZCBhIG5ldyBu
+bDgwMjExIGNvbW1hbmQgb3IgdG8NCj4+PiBleHBhbmQgdGhlIGV4aXN0aW5nIGNvbW1hbmQgKGV4
+Lg0KPiBOTDgwMjExX0NNRF9TRVRfVFhfQklUUkFURV9NQVNLKS4NCj4+DQo+PiBfV2h5XyBpcyBO
+TDgwMjExX0NNRF9TRVRfVFhfQklUUkFURV9NQVNLIG5vdCBzdWl0YWJsZSBmb3IgeW91PyBZb3UN
+Cj4ga2VlcA0KPj4gc2F5aW5nIHRoYXQgYnV0IEkgaGF2ZSBzdGlsbCBmaWd1cmVkIG91dCB3aHkg
+ZXhhY3RseSB5b3UgdGhpbmsgc28uDQo+PiBQbGVhc2UgY2xhcmlmeSB0aGlzIGluIGRldGFpbC4N
+Cg0KSSB0aGluayBJJ3ZlIHRhbGtlZCBhYm91dCBpdCBpbiBteSBwcmV2aW91cyBtYWlsLCBzZWUg
+YWJvdmUuDQoNClRoaXMgY29tbWFuZCBqdXN0IG1hc2sgb3V0IHNvbWUgb2YgcmF0ZXMgdGhhdCBh
+cmUgbm90IGFsbG93ZWQuIEJ1dCB0aGUNCmZpcm13YXJlIGhhcyBpdHMgb3duIHJhdGUgYWRhcHRp
+dmUgbWVjaGFuaXNtIHRvIGNob29zZSB0aGUgcmF0ZXMuIFNvIG1hc2sNCm91dCBhbGwgb2YgdGhl
+IG90aGVyIHJhdGUgZG9lc24ndCBtYWtlIHN1cmUgdGhlIHBhY2tldHMgd2lsbCBiZSB0cmFuc21p
+dHRlZCBieQ0KdGhlIG9ubHkgcmF0ZSB0aGF0IHdhcyBub3QgbWFza2VkLiBUaGUgaGFyZHdhcmUv
+ZmlybXdhcmUgd2lsbCB0cnkgdG8gY2hvb3NlDQphIGJldHRlciByYXRlIChleC4gMU1icHMgb3Ig
+Nk1icHMpIGlmIHRoZXkgdGhpbmsgaXQncyBuZWNlc3NhcnkuIEFsc28gdGhlIGRldmljZQ0Kd2ls
+bCBmYWxsYmFjayB0aGUgcmF0ZXMgdG8gdHJ5IHRvIGZpbmQgYSBiZXR0ZXIgcmF0ZSB0byB0cmFu
+c2ZlciBkYXRhIHRvIHRoZSBwZWVyLg0KDQo+Pg0KPj4+IEl0IGxvb2tzIGxpa2UgdGhhdCBhZGRp
+bmcgYSBuZXcgbmw4MDIxMSBjb21tYW5kIHdpbGwgYmUgYmV0dGVyIGZvciBtZQ0KPj4+IGFzIGV4
+cGFuZGluZyB0aGUgZXhpc3Rpbmcgb25lIHdvdWxkIGhhdmUgZ3JlYXQgaW1wYWN0IG9uIHRoZSBh
+bHJlYWR5DQo+Pj4gZGlzdHJpYnV0ZWQgZHJpdmVycy91c2VyLXRvb2xzLg0KPj4NCj4+IFdoYXQg
+a2luZCBvZiBncmVhdCBpbXBhY3QgYXJlIHlvdSB0YWxraW5nIGFib3V0PyBQbGVhc2UgYmUgc3Bl
+Y2lmaWMgc28NCj4+IHRoYXQgd2UgZG9uJ3QgbmVlZCB0byBndWVzcy4NCg0KV2UgcHJvYmFibHkg
+aGF2ZSB0byBtb2RpZnkgdGhlIGNvbW1hbmQgcGFyc2VyLCBmcm9tIHVzZXItc3BhY2UgYW5kIHRo
+ZQ0Kbmw4MDIxMSBkb21haW4sIGJlY2F1c2UgYXMgZmFyIEkgZG9uJ3Qgc2VlIGEgZ29vZCB3YXkg
+dG8gYWRkIGZpeCByYXRlDQpvcHRpb24gb24gdGhlIE5MODAyMTFfQ01EX1NFVF9UWF9CSVRSQVRF
+X01BU0sgd2l0aG91dCBjaGFuZ2luZw0KdGhlIGV4aXN0aW5nIG1lY2hhbmlzbS4gSWYgdGhlIG1l
+Y2hhbmlzbSBpcyBjaGFuZ2VkLCB0aGVuIHRoZSAib2xkIiBkcml2ZXJzDQp3aWxsIGZhaWwgdG8g
+aW50ZXJwcmV0IHRoZSBubDgwMjExIGF0dHJpYnV0ZXMuIFNvIEkgdGhpbmsgYWRkIGEgbmV3IG9u
+ZSwgd2hpY2gNCmNhbiBmaXggdGhlIFRYIHJhdGUsIGRpc2FibGUgdGhlIHJhdGUgYWRhcHRpdmUs
+IGV0Yy4sIHdpbGwgYmUgYmV0dGVyIGlmIG5lY2Vzc2FyeS4NCg0KPiANCj4gQXQgbGVhc3Qgd2l0
+aCBhdGgxMGssIHRoZSBpc3N1ZXMgSSBmb3VuZCB3ZXJlIHRoYXQgbmw4MDIxMSBkb2Vzbid0IGxp
+a2UgaXQNCj4gd2hlbiB5b3UgdHJ5IHRvIGRpc2FibGUgYWxsIGxlZ2FjeSByYXRlcyAoYW5kIGZv
+cmNlIGZyYW1lcyBvdXQgYXQgNTRNYnBzDQo+IGVuY29kaW5nLCBmb3IgaW5zdGFuY2UpLg0KPiAN
+Cj4gSSdtIG5vdCBldmVuIHN1cmUgdXBzdHJlYW0gYXRoMTBrIHdpbGwgZXZlbiBsZXQgeW91IHNl
+dCBhIHNpbmdsZSByYXRlDQo+IHVzaW5nIG5vcm1hbCBBUEkgbm93LiAgSGF2ZSB5b3UgdHJpZWQg
+aXQ/DQo+IA0KPiBBbm90aGVyIHByb2JsZW0gaXMgdGhhdCB0byBrZWVwIGEgY29ubmVjdGlvbiBh
+bGl2ZSwgeW91IHByb2JhYmx5IHdhbnQgbWd0DQo+IGFuZCBudWxsLWZ1bmMgZnJhbWVzIHRvIGdv
+IG91dCBub3JtYWwgYW5kIG9ubHkgaGF2ZSB0aGUgZmlybXdhcmUgdXNlIGENCj4gcGFydGljdWxh
+ciBNQ1MNCj4gZm9yIGRhdGEgZnJhbWVzLg0KPiANCj4gTG90cyBvZiByZWFzb25zIHRvIHdhbnQg
+YSBsb3ctbGV2ZWwgaGFjayBmb3IgdGhpcyBzb3J0IG9mIHRoaW5nLg0KDQpUaGFuayB5b3UgZm9y
+IHBvaW50IHRoZW0gb3V0LiBDb250cm9sIHRoZSBUWCByYXRlIGlzIHJlYWxseSBpbXBvcnRhbnQg
+d2hlbg0KZGVidWdnaW5nIHdpdGggaXNzdWVzIG9uIHRoZSBmaWVsZCwgZXNwZWNpYWxseSB3aGVu
+IHRoZSBhaXIgaXMgbm9pc3kgYW5kIHRoZQ0KcmF0ZSBhZGFwdGl2ZSBtZWNoYW5pc20gaXMgbm90
+IHdvcmtpbmcgd2VsbC4gQmVjYXVzZSB1c3VhbGx5IHRoZSBkZXZpY2UNCnRyaWVzIHRvIGZhbGxi
+YWNrIHRoZSByYXRlIGZvciBzdGFiaWxpdHksIHdoZW4gbG93ZXIgYml0cmF0ZSBjYW4gbWFrZSB0
+aGUgcGVlcg0KaGF2ZSBhIGhpZ2hlciBvcHBvcnR1bml0eSB0byBzdWNjZXNzZnVsbHkgcmVjZWl2
+ZSB0aGUgcGFja2V0LiBXaGVuIHRoZSByYXRlDQpmYWxsYmFja3MsIHRoZSByYXRlIGlzIG5vdCBm
+aXhlZCBhdCBhbGwuIEFuZCB3aGVuIHdlIHdhbnQgYSByYXRlIHRoYXQgaXMgImZpeGVkIiwNCndl
+IGRvbid0IHdhbnQgYW5vdGhlciByYXRlIGFwcGVhciBpbiB0aGUgYWlyLg0KDQo+IA0KPiBUaGFu
+a3MsDQo+IEJlbg0KPiANCj4gLS0NCj4gQmVuIEdyZWVhciA8Z3JlZWFyYkBjYW5kZWxhdGVjaC5j
+b20+DQo+IENhbmRlbGEgVGVjaG5vbG9naWVzIEluYyAgaHR0cDovL3d3dy5jYW5kZWxhdGVjaC5j
+b20NCj4gDQoNClllbi1Ic3Vhbg0K
