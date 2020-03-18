@@ -2,102 +2,81 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F950189DC2
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Mar 2020 15:25:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7391818A277
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Mar 2020 19:36:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727069AbgCROZg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 18 Mar 2020 10:25:36 -0400
-Received: from mail-vi1eur05on2074.outbound.protection.outlook.com ([40.107.21.74]:1088
-        "EHLO EUR05-VI1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726730AbgCROZf (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 18 Mar 2020 10:25:35 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=HzgWLZnoTXDkSOdTxH3mAkwQiOKnEcfmicDuH37jP9CeG40YJTY3Vmo7o8pqySELazb+4ccKysxizoDx5NvM1ROZZgA2Y7kFMSphPkqFHFbk8EE7NXDBxkxudb4J53Qj3utBO4K89GQGmn/n8E1dabr78yR081GPMB1OkIfgBkeXk8v0nxMnBspSVqUFHK4ghpV64KrjFVDFEvZYKAUMcvIUXgP0DKUyqL6js4w2zjsIqYlxp51OXXMVHBqgwtWWDBdVnc4qxbvM9x05VWYMwY5QckH6VUa+vdcy70v3csOffk3E70oHpLHFdQeEZJ//IsQ2q+mzs6EZH4FCnAhpEA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=y6HeLJ53CxD9633odJinRZFe2ssu8XVJLLg3jmXGaSQ=;
- b=SLaXqreu2+gzdZ2f1VSZAbeAJKNGFWP/77BXVIsmcNBSCqxMaU2eSyAWk8wuGyvFW2fV6j/FTjjJ02SSHdyUa4OVDDg0jqvlHrDsQG0ydIJGOmMdBi1TkI37j+WpE1HLBrQrizcKFBBqKd7WFLmOlNGoswLsxyEnR7KfnKbm41E3aWlF5oGDnWYl7ZzxXCJO8m+Zd5fbCMrgJssKZo7rZECm8YoPxPVDYbmhbl+6cyLVpOQnEiJWen8WyqkINuC3sJih1uUYN+HFBdIjkCMKfOYEqSO3dVW1vVOsIwsWexgm00JQY5o2uVqVwPw2NEdd2dHHG9/+qhxwclEdSIDYqw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=y6HeLJ53CxD9633odJinRZFe2ssu8XVJLLg3jmXGaSQ=;
- b=NOzKBSwRdlp0Q+ysy2CKhiqinCgsVU2tiPthVgi2HrBfqPbC7U8Hw5meX4xjSrqSY6h54oy9HBx5i2RrBtZ4iFa6BBbzoEUEPiJYgLztqM8aSq7ov/YEExXn1h2+gxBx8G/6TKl0QmopVf6lALyUrUpIHFIj75/dU6uEGOwxdxQ=
-Received: from DB7PR04MB5242.eurprd04.prod.outlook.com (20.176.234.25) by
- DB7PR04MB4522.eurprd04.prod.outlook.com (52.135.138.24) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2835.18; Wed, 18 Mar 2020 14:25:32 +0000
-Received: from DB7PR04MB5242.eurprd04.prod.outlook.com
- ([fe80::5467:de53:6e5f:8692]) by DB7PR04MB5242.eurprd04.prod.outlook.com
- ([fe80::5467:de53:6e5f:8692%3]) with mapi id 15.20.2814.025; Wed, 18 Mar 2020
- 14:25:32 +0000
-From:   Ganapathi Bhat <ganapathi.bhat@nxp.com>
-To:     Brian Norris <briannorris@chromium.org>,
-        Dan Carpenter <dan.carpenter@oracle.com>
-CC:     Amitkumar Karwar <amitkarwar@gmail.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>
-Subject: RE: [EXT] Re: [bug report] wireless: mwifiex: initial commit for
- Marvell mwifiex driver
-Thread-Topic: [EXT] Re: [bug report] wireless: mwifiex: initial commit for
- Marvell mwifiex driver
-Thread-Index: AQHV/IJAQVQtkEHJM0iCqvFWOg5T0KhOZ/4Q
-Date:   Wed, 18 Mar 2020 14:25:32 +0000
-Message-ID: <DB7PR04MB52429DE16439F690857070A78FF70@DB7PR04MB5242.eurprd04.prod.outlook.com>
-References: <20200317091837.GA18001@mwanda>
- <CA+ASDXP80wMrWyc+WZNoGt=DK0EjFjNSjqCi4NGpJgc1mGK3sg@mail.gmail.com>
-In-Reply-To: <CA+ASDXP80wMrWyc+WZNoGt=DK0EjFjNSjqCi4NGpJgc1mGK3sg@mail.gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=ganapathi.bhat@nxp.com; 
-x-originating-ip: [115.112.95.158]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-ht: Tenant
-x-ms-office365-filtering-correlation-id: 6334957b-0df5-4fe0-7cbd-08d7cb483755
-x-ms-traffictypediagnostic: DB7PR04MB4522:
-x-microsoft-antispam-prvs: <DB7PR04MB45228A6D1A4DB4E13C79A09A8FF70@DB7PR04MB4522.eurprd04.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:6108;
-x-forefront-prvs: 03468CBA43
-x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(4636009)(396003)(376002)(136003)(346002)(39860400002)(366004)(199004)(2906002)(52536014)(55016002)(71200400001)(33656002)(5660300002)(9686003)(4744005)(186003)(81156014)(8676002)(8936002)(81166006)(316002)(54906003)(55236004)(4326008)(44832011)(110136005)(86362001)(66556008)(76116006)(6506007)(66446008)(66476007)(66946007)(64756008)(478600001)(26005)(7696005);DIR:OUT;SFP:1101;SCL:1;SRVR:DB7PR04MB4522;H:DB7PR04MB5242.eurprd04.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;
-received-spf: None (protection.outlook.com: nxp.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: 6bYnocWtaqJvqbf/CkRKn2ESfG92vmSBtPvORJ81lrb45GCkc2MOXmlyBjV6EmMSgvKCdCxqm+J9FPr6dyOj2iMJQm7FOjBeEcuj+jGo95sDzuy5JLgF2JqQ5HUon9WsfrzrnFR5bcLkrVp5jUDqw3wFSoqdKam+8bFwd74CpMOvXLpxSViKETNF7udSpc2JxSrZKBmsDR8iswbPjfn9pGoPt7dVmPlQWHhgwcidzK7D9+T3k6kHx20XP1QK2vRQB6He4bXoRdlky9nTTrmTH9S7al0RM6VzqJK8GhvvVGCJGZlCf0TJDZDQjQkFDyWPVX8ryFj6SFBB3gSuCq5S4UT0D5xABY0ScY2I5fCL0LXWdenttH4AdALFq1OwaU4VpGG52MIKBagjvfZ5xXq65wXcdkVoHvDQHqHVYp1oURZ5Fy0tvyikvlUh5MF2TmgQ
-x-ms-exchange-antispam-messagedata: H0YQGWpXkzkV9XbQQw8bvYQkWH+mYFM1yfHorlgEzivPweorgr/ttWbYtC4dwCjRuRDhQFRC/imCE2DTLUyjnYfh/E6wBT1A+oJU7uQGGc6si+J56JHWfpWaSoKPNb98Cnun+xT2QeCEvQQ55lWUYQ==
-x-ms-exchange-transport-forked: True
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        id S1726958AbgCRSgF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 18 Mar 2020 14:36:05 -0400
+Received: from mail-lf1-f42.google.com ([209.85.167.42]:42458 "EHLO
+        mail-lf1-f42.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726950AbgCRSgF (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 18 Mar 2020 14:36:05 -0400
+Received: by mail-lf1-f42.google.com with SMTP id t21so21266393lfe.9
+        for <linux-wireless@vger.kernel.org>; Wed, 18 Mar 2020 11:36:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=archlinux-us.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to;
+        bh=K8lhMQtpr7hEqb1aCJvPHP2EIozqp1mLwNCJEs9rhE8=;
+        b=Dgi2Uvv8Kf18stpYA9I+2KOP3eHqdqZiJu1QZSjdofEB+S1mWtVwL6Ezmu1vTi7PeX
+         yI0n5St9/jyUpT5M5ULkcFidraWFlU84bTLpN8dzJCw+eusEe1+GIyshKyVBcZCeWcFk
+         oTUYa78i/LCTw6DT6rwJCcLOLQzFDrbqi9RG2oDkw5I649iz+SST84le/RhVuKcr357h
+         HoLFromrr5VsEvtsaWPMq5WO6HS4xoLDzNOYUcnZXDsNlfHFrmpgYhvraqTFHu/LMbFY
+         xtFPnxkYJCYeacHILrbjOQkiloP7B3+A1VI8fdhg05jqUKgs6ePXLX4DLhS17C3dk9pQ
+         JbWw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to;
+        bh=K8lhMQtpr7hEqb1aCJvPHP2EIozqp1mLwNCJEs9rhE8=;
+        b=cunxY0A0dW6i2VrcRlFEzIV/nqLETpshYa3kGNpwwy9PKXbKmTKSjuzqaU7COT589O
+         HsFIb4L1DQoIEuUw9mNsVx0AY34uKLOzNTHi37NV/G5qr4dOiLpBn0QltkqH3bjaUAxV
+         r528rZzsW/MTmjjTefvje5CyHvO4CEdQ0OV0fbEPzu+pYNM1i0kNzBCwiIaq0nSA3IKL
+         uPqEIrk9QoHbmKbNKLIy/9zsLg0YLK04N/VKVxXlLwRK4kUkJ28sPXxa1hzGgt1gRAY4
+         bQcUdNj+CoT2HagqT+BDZBgdIz5SzdHhUQCtJFgcNHyvpys4XfiDtHToWW3ZI+dRXwPp
+         9LsQ==
+X-Gm-Message-State: ANhLgQ3HEHvB5tVrymqfp1RqEMqF+jugzhpEMHo0FWq7uYu6hEglM87z
+        FPiY2zK2Z/M1wnShYiEgBZzMRnrDy/zj368rFTfMwVwLm4ss4g==
+X-Google-Smtp-Source: ADFU+vu/BsFhLB096eK6vEirXVDLyv3QcmX4xqgJvww+7RLmC0NSE6DLVjEFMR5kHd0RVFK4cuFeNnyJ6PE7zktEFXE=
+X-Received: by 2002:a05:6512:3195:: with SMTP id i21mr3783916lfe.186.1584556562469;
+ Wed, 18 Mar 2020 11:36:02 -0700 (PDT)
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6334957b-0df5-4fe0-7cbd-08d7cb483755
-X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Mar 2020 14:25:32.1568
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: Fit5LBq824zhsiLoXTf7AM2ETCeiU6FZMIa4pCx5Aa/OlgQ3LHlqgQzJ8hSUApDdEFijMMtGzDv6KASXlfUTdQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB7PR04MB4522
+References: <CAKzmTe0_fbse0Owau3rnLSfPWOeFbqC=eT5+p1FuaBXJDZYrUQ@mail.gmail.com>
+In-Reply-To: <CAKzmTe0_fbse0Owau3rnLSfPWOeFbqC=eT5+p1FuaBXJDZYrUQ@mail.gmail.com>
+From:   JM <fijam@archlinux.us>
+Date:   Wed, 18 Mar 2020 19:35:51 +0100
+Message-ID: <CAKzmTe0+Vz2FqK3X7b79xz_Er1635OZWMVeEbAC2f05h+an+Cg@mail.gmail.com>
+Subject: Re: no 5GHz band with mwifiex (w8897)
+To:     linux-wireless@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-SGkgRGFuL0JyaWFuDQoNCj4gICAgNDk1ICB2b2lkIG13aWZpZXhfMTFuX2RlbGV0ZV90eF9iYV9z
-dHJlYW1fdGJsX2VudHJ5KHN0cnVjdA0KPiBtd2lmaWV4X3ByaXZhdGUgKnByaXYsDQo+ICAgIDQ5
-NiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzdHJ1Y3QgbXdpZmlleF90eF9iYV9z
-dHJlYW1fdGJsICp0eF9iYV90c3JfdGJsKQ0KPiAgICA0OTcgIHsNCj4gICAgNDk4ICAgICAgICAg
-IGlmICghdHhfYmFfdHNyX3RibCAmJg0KPiAgICAgICAgICAgICAgICAgICAgICBeXl5eXl5eXl5e
-Xl5eDQo+IENoZWNrIGZvciBOVUxMDQo+IA0KPiAgICA0OTkgICAgICAgICAgICAgIG13aWZpZXhf
-aXNfdHhfYmFfc3RyZWFtX3B0cl92YWxpZChwcml2LCB0eF9iYV90c3JfdGJsKSkNCj4gICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXl5e
-Xl5eXl5eXl5eXiBXaGljaCBpcyBwYXNzZWQgdG8gaGVyZS4gIFNvDQo+IG1heWJlIHRoZSBOVUxM
-IGNoZWNrIGlzIHJldmVyc2VkPw0KDQpJIHRoaW5rLCBpdCBzaG91bGQgaGF2ZSBiZWVuIGxpa2Ug
-YmVsb3c6IA0KDQppZiAoIXR4X2JhX3Rzcl90YmwgfHwgIW13aWZpZXhfaXNfdHhfYmFfc3RyZWFt
-X3B0cl92YWxpZChwcml2LCB0eF9iYV90c3JfdGJsKSkgLiAuIC4gDQoNCg0KUmVnYXJkcywNCkdh
-bmFwYXRoaQ0K
+On Thu, Mar 12, 2020 at 11:03 AM JM <fijam@archlinux.us> wrote:
+>
+> Hi,
+>
+> I am struggling trying to get 802.11ac working on Marvell (now NXP)
+> W8897 (verext = w8897o-B0, RF87XX, FP68, 15.68.19.p17) using the
+> mwifiex driver. This is supposed to be a 2x2 dual band 801.11ac chip.
+>
+> This is an ARMv7 embedded device where the wifi module in accessed via
+> MMC. I am using kernel 5.4.24 with 15.68.19.p17 firmware and iw
+> version 5.4.
+>
+> Despite that, iw list only detects the 2.4GHz band https://pastebin.com/5jEQmTTt
+>
+> Is this configuration not supported? I feel like I am missing something obvious.
+
+I managed to figure this out, insofar as this is a firmware related
+issue. Using firmware version 15.68.7.p18 the 5GHz band is available:
+
+https://pastebin.com/aizmeNmn
+
+I configured 802.11ac AP with hostapd and it worked correctly.
+
+Any newer version of the firmware will report only the 2.4GHz band.
+Hopefully this saves someone some time.
+Jan
