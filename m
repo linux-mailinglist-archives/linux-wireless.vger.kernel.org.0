@@ -2,38 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 409B118A6C0
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Mar 2020 22:10:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C59118A61B
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Mar 2020 22:05:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727043AbgCRUx2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 18 Mar 2020 16:53:28 -0400
-Received: from mail.kernel.org ([198.145.29.99]:52296 "EHLO mail.kernel.org"
+        id S1728196AbgCRVFv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 18 Mar 2020 17:05:51 -0400
+Received: from mail.kernel.org ([198.145.29.99]:54676 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726894AbgCRUx0 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 18 Mar 2020 16:53:26 -0400
+        id S1727992AbgCRUyr (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 18 Mar 2020 16:54:47 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 36EC420724;
-        Wed, 18 Mar 2020 20:53:25 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 9704A208FE;
+        Wed, 18 Mar 2020 20:54:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1584564805;
-        bh=rRNLqGDe4Hh9VMNxMXiXDvn4zvX3xSXrJ2j8vKZEdL4=;
+        s=default; t=1584564887;
+        bh=7o8w++Wb1Vkov8poF0rkQiDU3EwYV55GmU8o3zPVUv8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vC4ytYBFLDVWKAqBMv1QVIPSr6hqii9qKgtApNOCWFaw+T7NxBLQcGf12oSwixEK1
-         XquXGk4+woE8W7sf5NoKd8EiYnWF6xjOjcD7g2HTler+UxC+zjHCVqp3iRiq04B6Rd
-         BthlzDu/w3U9Vt1sbPimLWfI2Bq4bAj+yFBI+If8=
+        b=pLSFx3itg7vnbR1OuP+6f9fApWDU2p/3eGSCrSmS2ZzP4hO6AWvcZqAsy6DppMpEB
+         h8i4ypxCVhcfkZ48Sm9+d1xmbCr2tS7QOpa3J6w4DBSflHAH5mT//teDKeWmLwKtoR
+         ITGzWhL8vum1zaHPcY0/7ymA8nvsu6v2ajvIZiHA=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Dan Moulding <dmoulding@me.com>, Kalle Valo <kvalo@codeaurora.org>,
+Cc:     Jakub Kicinski <kuba@kernel.org>,
+        Johannes Berg <johannes.berg@intel.com>,
         Sasha Levin <sashal@kernel.org>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.5 03/84] iwlwifi: mvm: Do not require PHY_SKU NVM section for 3168 devices
-Date:   Wed, 18 Mar 2020 16:52:00 -0400
-Message-Id: <20200318205321.16066-3-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 56/73] nl80211: add missing attribute validation for critical protocol indication
+Date:   Wed, 18 Mar 2020 16:53:20 -0400
+Message-Id: <20200318205337.16279-56-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200318205321.16066-1-sashal@kernel.org>
-References: <20200318205321.16066-1-sashal@kernel.org>
+In-Reply-To: <20200318205337.16279-1-sashal@kernel.org>
+References: <20200318205337.16279-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -43,43 +44,35 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Dan Moulding <dmoulding@me.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit a9149d243f259ad8f02b1e23dfe8ba06128f15e1 ]
+[ Upstream commit 0e1a1d853ecedc99da9d27f9f5c376935547a0e2 ]
 
-The logic for checking required NVM sections was recently fixed in
-commit b3f20e098293 ("iwlwifi: mvm: fix NVM check for 3168
-devices"). However, with that fixed the else is now taken for 3168
-devices and within the else clause there is a mandatory check for the
-PHY_SKU section. This causes the parsing to fail for 3168 devices.
+Add missing attribute validation for critical protocol fields
+to the netlink policy.
 
-The PHY_SKU section is really only mandatory for the IWL_NVM_EXT
-layout (the phy_sku parameter of iwl_parse_nvm_data is only used when
-the NVM type is IWL_NVM_EXT). So this changes the PHY_SKU section
-check so that it's only mandatory for IWL_NVM_EXT.
-
-Fixes: b3f20e098293 ("iwlwifi: mvm: fix NVM check for 3168 devices")
-Signed-off-by: Dan Moulding <dmoulding@me.com>
-Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+Fixes: 5de17984898c ("cfg80211: introduce critical protocol indication from user-space")
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://lore.kernel.org/r/20200303051058.4089398-2-kuba@kernel.org
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/nvm.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/wireless/nl80211.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/nvm.c b/drivers/net/wireless/intel/iwlwifi/mvm/nvm.c
-index 46128a2a9c6e1..e98ce380c7b91 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/nvm.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/nvm.c
-@@ -308,7 +308,8 @@ iwl_parse_nvm_sections(struct iwl_mvm *mvm)
- 		}
- 
- 		/* PHY_SKU section is mandatory in B0 */
--		if (!mvm->nvm_sections[NVM_SECTION_TYPE_PHY_SKU].data) {
-+		if (mvm->trans->cfg->nvm_type == IWL_NVM_EXT &&
-+		    !mvm->nvm_sections[NVM_SECTION_TYPE_PHY_SKU].data) {
- 			IWL_ERR(mvm,
- 				"Can't parse phy_sku in B0, empty sections\n");
- 			return NULL;
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 17514744af9e0..9ca16ca0528ac 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -530,6 +530,8 @@ const struct nla_policy nl80211_policy[NUM_NL80211_ATTR] = {
+ 	[NL80211_ATTR_MDID] = { .type = NLA_U16 },
+ 	[NL80211_ATTR_IE_RIC] = { .type = NLA_BINARY,
+ 				  .len = IEEE80211_MAX_DATA_LEN },
++	[NL80211_ATTR_CRIT_PROT_ID] = { .type = NLA_U16 },
++	[NL80211_ATTR_MAX_CRIT_PROT_DURATION] = { .type = NLA_U16 },
+ 	[NL80211_ATTR_PEER_AID] =
+ 		NLA_POLICY_RANGE(NLA_U16, 1, IEEE80211_MAX_AID),
+ 	[NL80211_ATTR_CH_SWITCH_COUNT] = { .type = NLA_U32 },
 -- 
 2.20.1
 
