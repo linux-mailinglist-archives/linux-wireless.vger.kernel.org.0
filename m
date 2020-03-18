@@ -2,264 +2,84 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6387918A6B1
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Mar 2020 22:10:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 409B118A6C0
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Mar 2020 22:10:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727177AbgCRUxh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 18 Mar 2020 16:53:37 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:58456 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727135AbgCRUxf (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 18 Mar 2020 16:53:35 -0400
-Received: from p5de0bf0b.dip0.t-ipconnect.de ([93.224.191.11] helo=nanos.tec.linutronix.de)
-        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
-        (Exim 4.80)
-        (envelope-from <tglx@linutronix.de>)
-        id 1jEfgZ-0006nD-Rx; Wed, 18 Mar 2020 21:53:08 +0100
-Received: from nanos.tec.linutronix.de (localhost [IPv6:::1])
-        by nanos.tec.linutronix.de (Postfix) with ESMTP id 93FC81040C5;
-        Wed, 18 Mar 2020 21:53:05 +0100 (CET)
-Message-Id: <20200318204408.521507446@linutronix.de>
-User-Agent: quilt/0.65
-Date:   Wed, 18 Mar 2020 21:43:13 +0100
-From:   Thomas Gleixner <tglx@linutronix.de>
-To:     LKML <linux-kernel@vger.kernel.org>
-Cc:     Peter Zijlstra <peterz@infradead.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Ingo Molnar <mingo@kernel.org>, Will Deacon <will@kernel.org>,
-        "Paul E . McKenney" <paulmck@kernel.org>,
-        Joel Fernandes <joel@joelfernandes.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Logan Gunthorpe <logang@deltatee.com>,
-        Kurt Schwemmer <kurt.schwemmer@microsemi.com>,
-        Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org,
-        Felipe Balbi <balbi@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-usb@vger.kernel.org, Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        Oleg Nesterov <oleg@redhat.com>,
-        Davidlohr Bueso <dave@stgolabs.net>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        linuxppc-dev@lists.ozlabs.org
-Subject: [patch V2 11/15] completion: Use simple wait queues
-References: <20200318204302.693307984@linutronix.de>
+        id S1727043AbgCRUx2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 18 Mar 2020 16:53:28 -0400
+Received: from mail.kernel.org ([198.145.29.99]:52296 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726894AbgCRUx0 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 18 Mar 2020 16:53:26 -0400
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 36EC420724;
+        Wed, 18 Mar 2020 20:53:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1584564805;
+        bh=rRNLqGDe4Hh9VMNxMXiXDvn4zvX3xSXrJ2j8vKZEdL4=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=vC4ytYBFLDVWKAqBMv1QVIPSr6hqii9qKgtApNOCWFaw+T7NxBLQcGf12oSwixEK1
+         XquXGk4+woE8W7sf5NoKd8EiYnWF6xjOjcD7g2HTler+UxC+zjHCVqp3iRiq04B6Rd
+         BthlzDu/w3U9Vt1sbPimLWfI2Bq4bAj+yFBI+If8=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Dan Moulding <dmoulding@me.com>, Kalle Valo <kvalo@codeaurora.org>,
+        Sasha Levin <sashal@kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.5 03/84] iwlwifi: mvm: Do not require PHY_SKU NVM section for 3168 devices
+Date:   Wed, 18 Mar 2020 16:52:00 -0400
+Message-Id: <20200318205321.16066-3-sashal@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20200318205321.16066-1-sashal@kernel.org>
+References: <20200318205321.16066-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Dan Moulding <dmoulding@me.com>
 
-completion uses a wait_queue_head_t to enqueue waiters.
+[ Upstream commit a9149d243f259ad8f02b1e23dfe8ba06128f15e1 ]
 
-wait_queue_head_t contains a spinlock_t to protect the list of waiters
-which excludes it from being used in truly atomic context on a PREEMPT_RT
-enabled kernel.
+The logic for checking required NVM sections was recently fixed in
+commit b3f20e098293 ("iwlwifi: mvm: fix NVM check for 3168
+devices"). However, with that fixed the else is now taken for 3168
+devices and within the else clause there is a mandatory check for the
+PHY_SKU section. This causes the parsing to fail for 3168 devices.
 
-The spinlock in the wait queue head cannot be replaced by a raw_spinlock
-because:
+The PHY_SKU section is really only mandatory for the IWL_NVM_EXT
+layout (the phy_sku parameter of iwl_parse_nvm_data is only used when
+the NVM type is IWL_NVM_EXT). So this changes the PHY_SKU section
+check so that it's only mandatory for IWL_NVM_EXT.
 
-  - wait queues can have custom wakeup callbacks, which acquire other
-    spinlock_t locks and have potentially long execution times
-
-  - wake_up() walks an unbounded number of list entries during the wake up
-    and may wake an unbounded number of waiters.
-
-For simplicity and performance reasons complete() should be usable on
-PREEMPT_RT enabled kernels.
-
-completions do not use custom wakeup callbacks and are usually single
-waiter, except for a few corner cases.
-
-Replace the wait queue in the completion with a simple wait queue (swait),
-which uses a raw_spinlock_t for protecting the waiter list and therefore is
-safe to use inside truly atomic regions on PREEMPT_RT.
-
-There is no semantical or functional change:
-
-  - completions use the exclusive wait mode which is what swait provides
-
-  - complete() wakes one exclusive waiter
-
-  - complete_all() wakes all waiters while holding the lock which protects
-    the wait queue against newly incoming waiters. The conversion to swait
-    preserves this behaviour.
-
-complete_all() might cause unbound latencies with a large number of waiters
-being woken at once, but most complete_all() usage sites are either in
-testing or initialization code or have only a really small number of
-concurrent waiters which for now does not cause a latency problem. Keep it
-simple for now.
-
-The fixup of the warning check in the USB gadget driver is just a straight
-forward conversion of the lockless waiter check from one waitqueue type to
-the other.
-
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: Arnd Bergmann <arnd@arndb.de>
+Fixes: b3f20e098293 ("iwlwifi: mvm: fix NVM check for 3168 devices")
+Signed-off-by: Dan Moulding <dmoulding@me.com>
+Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
-V2: Split out the orinoco and usb gadget parts and amended change log
----
- drivers/usb/gadget/function/f_fs.c |    2 +-
- include/linux/completion.h         |    8 ++++----
- kernel/sched/completion.c          |   36 +++++++++++++++++++-----------------
- 3 files changed, 24 insertions(+), 22 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/nvm.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/gadget/function/f_fs.c
-+++ b/drivers/usb/gadget/function/f_fs.c
-@@ -1703,7 +1703,7 @@ static void ffs_data_put(struct ffs_data
- 		pr_info("%s(): freeing\n", __func__);
- 		ffs_data_clear(ffs);
- 		BUG_ON(waitqueue_active(&ffs->ev.waitq) ||
--		       waitqueue_active(&ffs->ep0req_completion.wait) ||
-+		       swait_active(&ffs->ep0req_completion.wait) ||
- 		       waitqueue_active(&ffs->wait));
- 		destroy_workqueue(ffs->io_completion_wq);
- 		kfree(ffs->dev_name);
---- a/include/linux/completion.h
-+++ b/include/linux/completion.h
-@@ -9,7 +9,7 @@
-  * See kernel/sched/completion.c for details.
-  */
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/nvm.c b/drivers/net/wireless/intel/iwlwifi/mvm/nvm.c
+index 46128a2a9c6e1..e98ce380c7b91 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/nvm.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/nvm.c
+@@ -308,7 +308,8 @@ iwl_parse_nvm_sections(struct iwl_mvm *mvm)
+ 		}
  
--#include <linux/wait.h>
-+#include <linux/swait.h>
- 
- /*
-  * struct completion - structure used to maintain state for a "completion"
-@@ -25,7 +25,7 @@
-  */
- struct completion {
- 	unsigned int done;
--	wait_queue_head_t wait;
-+	struct swait_queue_head wait;
- };
- 
- #define init_completion_map(x, m) __init_completion(x)
-@@ -34,7 +34,7 @@ static inline void complete_acquire(stru
- static inline void complete_release(struct completion *x) {}
- 
- #define COMPLETION_INITIALIZER(work) \
--	{ 0, __WAIT_QUEUE_HEAD_INITIALIZER((work).wait) }
-+	{ 0, __SWAIT_QUEUE_HEAD_INITIALIZER((work).wait) }
- 
- #define COMPLETION_INITIALIZER_ONSTACK_MAP(work, map) \
- 	(*({ init_completion_map(&(work), &(map)); &(work); }))
-@@ -85,7 +85,7 @@ static inline void complete_release(stru
- static inline void __init_completion(struct completion *x)
- {
- 	x->done = 0;
--	init_waitqueue_head(&x->wait);
-+	init_swait_queue_head(&x->wait);
- }
- 
- /**
---- a/kernel/sched/completion.c
-+++ b/kernel/sched/completion.c
-@@ -29,12 +29,12 @@ void complete(struct completion *x)
- {
- 	unsigned long flags;
- 
--	spin_lock_irqsave(&x->wait.lock, flags);
-+	raw_spin_lock_irqsave(&x->wait.lock, flags);
- 
- 	if (x->done != UINT_MAX)
- 		x->done++;
--	__wake_up_locked(&x->wait, TASK_NORMAL, 1);
--	spin_unlock_irqrestore(&x->wait.lock, flags);
-+	swake_up_locked(&x->wait);
-+	raw_spin_unlock_irqrestore(&x->wait.lock, flags);
- }
- EXPORT_SYMBOL(complete);
- 
-@@ -58,10 +58,12 @@ void complete_all(struct completion *x)
- {
- 	unsigned long flags;
- 
--	spin_lock_irqsave(&x->wait.lock, flags);
-+	WARN_ON(irqs_disabled());
-+
-+	raw_spin_lock_irqsave(&x->wait.lock, flags);
- 	x->done = UINT_MAX;
--	__wake_up_locked(&x->wait, TASK_NORMAL, 0);
--	spin_unlock_irqrestore(&x->wait.lock, flags);
-+	swake_up_all_locked(&x->wait);
-+	raw_spin_unlock_irqrestore(&x->wait.lock, flags);
- }
- EXPORT_SYMBOL(complete_all);
- 
-@@ -70,20 +72,20 @@ do_wait_for_common(struct completion *x,
- 		   long (*action)(long), long timeout, int state)
- {
- 	if (!x->done) {
--		DECLARE_WAITQUEUE(wait, current);
-+		DECLARE_SWAITQUEUE(wait);
- 
--		__add_wait_queue_entry_tail_exclusive(&x->wait, &wait);
- 		do {
- 			if (signal_pending_state(state, current)) {
- 				timeout = -ERESTARTSYS;
- 				break;
- 			}
-+			__prepare_to_swait(&x->wait, &wait);
- 			__set_current_state(state);
--			spin_unlock_irq(&x->wait.lock);
-+			raw_spin_unlock_irq(&x->wait.lock);
- 			timeout = action(timeout);
--			spin_lock_irq(&x->wait.lock);
-+			raw_spin_lock_irq(&x->wait.lock);
- 		} while (!x->done && timeout);
--		__remove_wait_queue(&x->wait, &wait);
-+		__finish_swait(&x->wait, &wait);
- 		if (!x->done)
- 			return timeout;
- 	}
-@@ -100,9 +102,9 @@ static inline long __sched
- 
- 	complete_acquire(x);
- 
--	spin_lock_irq(&x->wait.lock);
-+	raw_spin_lock_irq(&x->wait.lock);
- 	timeout = do_wait_for_common(x, action, timeout, state);
--	spin_unlock_irq(&x->wait.lock);
-+	raw_spin_unlock_irq(&x->wait.lock);
- 
- 	complete_release(x);
- 
-@@ -291,12 +293,12 @@ bool try_wait_for_completion(struct comp
- 	if (!READ_ONCE(x->done))
- 		return false;
- 
--	spin_lock_irqsave(&x->wait.lock, flags);
-+	raw_spin_lock_irqsave(&x->wait.lock, flags);
- 	if (!x->done)
- 		ret = false;
- 	else if (x->done != UINT_MAX)
- 		x->done--;
--	spin_unlock_irqrestore(&x->wait.lock, flags);
-+	raw_spin_unlock_irqrestore(&x->wait.lock, flags);
- 	return ret;
- }
- EXPORT_SYMBOL(try_wait_for_completion);
-@@ -322,8 +324,8 @@ bool completion_done(struct completion *
- 	 * otherwise we can end up freeing the completion before complete()
- 	 * is done referencing it.
- 	 */
--	spin_lock_irqsave(&x->wait.lock, flags);
--	spin_unlock_irqrestore(&x->wait.lock, flags);
-+	raw_spin_lock_irqsave(&x->wait.lock, flags);
-+	raw_spin_unlock_irqrestore(&x->wait.lock, flags);
- 	return true;
- }
- EXPORT_SYMBOL(completion_done);
+ 		/* PHY_SKU section is mandatory in B0 */
+-		if (!mvm->nvm_sections[NVM_SECTION_TYPE_PHY_SKU].data) {
++		if (mvm->trans->cfg->nvm_type == IWL_NVM_EXT &&
++		    !mvm->nvm_sections[NVM_SECTION_TYPE_PHY_SKU].data) {
+ 			IWL_ERR(mvm,
+ 				"Can't parse phy_sku in B0, empty sections\n");
+ 			return NULL;
+-- 
+2.20.1
 
