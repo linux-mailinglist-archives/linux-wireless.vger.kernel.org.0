@@ -2,78 +2,117 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C745318A510
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Mar 2020 21:58:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0AD1918A6A9
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Mar 2020 22:09:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728258AbgCRU6p (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 18 Mar 2020 16:58:45 -0400
-Received: from mail.kernel.org ([198.145.29.99]:58442 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728756AbgCRU5A (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 18 Mar 2020 16:57:00 -0400
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D955F208FE;
-        Wed, 18 Mar 2020 20:56:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1584565019;
-        bh=VZtQ570IgtuXtdl8BoiCwvfb4bxuN8ufWPzTwgYnKX0=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RxAu5mkRqs3lQaDtmuy9qmtfhSjUdwfMqancNOCL3aJ6qARDHWtURb/PMLccj3qZt
-         Min8g/Y2BgAsNMmYIlFqMur2P0nqNLIjVrQhtHwJ/SV2PxhHT6WXFetRoTMy4jTw6k
-         c6SOHhNYF1Td2pZyn2/nOpcESCxtOqWiCpPZGovc=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Nicolas Cavallari <nicolas.cavallari@green-communications.fr>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Sasha Levin <sashal@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.4 09/12] mac80211: Do not send mesh HWMP PREQ if HWMP is disabled
-Date:   Wed, 18 Mar 2020 16:56:45 -0400
-Message-Id: <20200318205648.17937-9-sashal@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200318205648.17937-1-sashal@kernel.org>
-References: <20200318205648.17937-1-sashal@kernel.org>
+        id S1727223AbgCRUxk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 18 Mar 2020 16:53:40 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:58457 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727175AbgCRUxi (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 18 Mar 2020 16:53:38 -0400
+Received: from p5de0bf0b.dip0.t-ipconnect.de ([93.224.191.11] helo=nanos.tec.linutronix.de)
+        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
+        (Exim 4.80)
+        (envelope-from <tglx@linutronix.de>)
+        id 1jEfgZ-0006nB-PS; Wed, 18 Mar 2020 21:53:08 +0100
+Received: from nanos.tec.linutronix.de (localhost [IPv6:::1])
+        by nanos.tec.linutronix.de (Postfix) with ESMTP id 5B0BB101161;
+        Wed, 18 Mar 2020 21:53:05 +0100 (CET)
+Message-Id: <20200318204408.428468767@linutronix.de>
+User-Agent: quilt/0.65
+Date:   Wed, 18 Mar 2020 21:43:12 +0100
+From:   Thomas Gleixner <tglx@linutronix.de>
+To:     LKML <linux-kernel@vger.kernel.org>
+Cc:     Peter Zijlstra <peterz@infradead.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Ingo Molnar <mingo@kernel.org>, Will Deacon <will@kernel.org>,
+        "Paul E . McKenney" <paulmck@kernel.org>,
+        Joel Fernandes <joel@joelfernandes.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Logan Gunthorpe <logang@deltatee.com>,
+        Kurt Schwemmer <kurt.schwemmer@microsemi.com>,
+        Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org,
+        Felipe Balbi <balbi@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-usb@vger.kernel.org, Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        Oleg Nesterov <oleg@redhat.com>,
+        Davidlohr Bueso <dave@stgolabs.net>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Arnd Bergmann <arnd@arndb.de>, linuxppc-dev@lists.ozlabs.org
+Subject: [patch V2 10/15] sched/swait: Prepare usage in completions
+References: <20200318204302.693307984@linutronix.de>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=UTF-8
+X-Linutronix-Spam-Score: -1.0
+X-Linutronix-Spam-Level: -
+X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Nicolas Cavallari <nicolas.cavallari@green-communications.fr>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-[ Upstream commit ba32679cac50c38fdf488296f96b1f3175532b8e ]
+As a preparation to use simple wait queues for completions:
 
-When trying to transmit to an unknown destination, the mesh code would
-unconditionally transmit a HWMP PREQ even if HWMP is not the current
-path selection algorithm.
+  - Provide swake_up_all_locked() to support complete_all()
+  - Make __prepare_to_swait() public available
 
-Signed-off-by: Nicolas Cavallari <nicolas.cavallari@green-communications.fr>
-Link: https://lore.kernel.org/r/20200305140409.12204-1-cavallar@lri.fr
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This is done to enable the usage of complete() within truly atomic contexts
+on a PREEMPT_RT enabled kernel.
+
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 ---
- net/mac80211/mesh_hwmp.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+V2: Add comment to swake_up_all_locked()
+---
+ kernel/sched/sched.h |    3 +++
+ kernel/sched/swait.c |   15 ++++++++++++++-
+ 2 files changed, 17 insertions(+), 1 deletion(-)
 
-diff --git a/net/mac80211/mesh_hwmp.c b/net/mac80211/mesh_hwmp.c
-index 466922f09d048..43edcba6d67b7 100644
---- a/net/mac80211/mesh_hwmp.c
-+++ b/net/mac80211/mesh_hwmp.c
-@@ -1112,7 +1112,8 @@ int mesh_nexthop_resolve(struct ieee80211_sub_if_data *sdata,
- 		}
- 	}
+--- a/kernel/sched/sched.h
++++ b/kernel/sched/sched.h
+@@ -2492,3 +2492,6 @@ static inline bool is_per_cpu_kthread(st
+ 	return true;
+ }
+ #endif
++
++void swake_up_all_locked(struct swait_queue_head *q);
++void __prepare_to_swait(struct swait_queue_head *q, struct swait_queue *wait);
+--- a/kernel/sched/swait.c
++++ b/kernel/sched/swait.c
+@@ -32,6 +32,19 @@ void swake_up_locked(struct swait_queue_
+ }
+ EXPORT_SYMBOL(swake_up_locked);
  
--	if (!(mpath->flags & MESH_PATH_RESOLVING))
-+	if (!(mpath->flags & MESH_PATH_RESOLVING) &&
-+	    mesh_path_sel_is_hwmp(sdata))
- 		mesh_queue_preq(mpath, PREQ_Q_F_START);
++/*
++ * Wake up all waiters. This is an interface which is solely exposed for
++ * completions and not for general usage.
++ *
++ * It is intentionally different from swake_up_all() to allow usage from
++ * hard interrupt context and interrupt disabled regions.
++ */
++void swake_up_all_locked(struct swait_queue_head *q)
++{
++	while (!list_empty(&q->task_list))
++		swake_up_locked(q);
++}
++
+ void swake_up_one(struct swait_queue_head *q)
+ {
+ 	unsigned long flags;
+@@ -69,7 +82,7 @@ void swake_up_all(struct swait_queue_hea
+ }
+ EXPORT_SYMBOL(swake_up_all);
  
- 	if (skb_queue_len(&mpath->frame_queue) >= MESH_FRAME_QUEUE_LEN)
--- 
-2.20.1
+-static void __prepare_to_swait(struct swait_queue_head *q, struct swait_queue *wait)
++void __prepare_to_swait(struct swait_queue_head *q, struct swait_queue *wait)
+ {
+ 	wait->task = current;
+ 	if (list_empty(&wait->task_list))
 
