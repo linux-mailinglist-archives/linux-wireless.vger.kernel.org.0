@@ -2,77 +2,123 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3AEA5189881
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Mar 2020 10:52:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A7EB118990D
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Mar 2020 11:16:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727355AbgCRJwe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 18 Mar 2020 05:52:34 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:48681 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726786AbgCRJwd (ORCPT
+        id S1727564AbgCRKQg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 18 Mar 2020 06:16:36 -0400
+Received: from mail26.static.mailgun.info ([104.130.122.26]:23576 "EHLO
+        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726733AbgCRKQg (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 18 Mar 2020 05:52:33 -0400
-Authenticated-By: 
-X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID 02I9qQtk011197, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (RTEXMB06.realtek.com.tw[172.21.6.99])
-        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id 02I9qQtk011197
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 18 Mar 2020 17:52:26 +0800
-Received: from RTEXMB04.realtek.com.tw (172.21.6.97) by
- RTEXMB06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Wed, 18 Mar 2020 17:52:26 +0800
-Received: from localhost.localdomain (172.21.68.128) by
- RTEXMB04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Wed, 18 Mar 2020 17:52:26 +0800
-From:   <yhchuang@realtek.com>
-To:     <kvalo@codeaurora.org>
-CC:     <linux-wireless@vger.kernel.org>, <briannorris@chromium.org>
-Subject: [PATCH] rtw88: 8822c: config RF table path B before path A
-Date:   Wed, 18 Mar 2020 17:52:24 +0800
-Message-ID: <20200318095224.12940-1-yhchuang@realtek.com>
-X-Mailer: git-send-email 2.17.1
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [172.21.68.128]
-X-ClientProxiedBy: RTEXMB02.realtek.com.tw (172.21.6.95) To
- RTEXMB04.realtek.com.tw (172.21.6.97)
+        Wed, 18 Mar 2020 06:16:36 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1584526595; h=Message-Id: Date: Subject: Cc: To: From:
+ Sender; bh=O0d05UCJjVD4xSTI3MM3+2mZGIiEeIDQjqFaMpz2WIo=; b=nDg/lMn0WEgRUxzVsBrjpPggx10in86AMaCRP/Mf/C7/3R0aux8Bwigfu5iebVcIVGb35Ye+
+ x7XFI51KgTdcE7CIEMmkhMq8Ww4BYw/3lksA7qH5IyKxyTJv1w0Nz73XPySnxsX+1zXtyIB2
+ eKdzZ98gmSKSNaA8OU4qI+3Spw8=
+X-Mailgun-Sending-Ip: 104.130.122.26
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5e71f4f6.7f82f5770c70-smtp-out-n03;
+ Wed, 18 Mar 2020 10:16:22 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 98B0AC432C2; Wed, 18 Mar 2020 10:16:22 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.0
+Received: from c-gsamin-linux.qualcomm.com (blr-c-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.19.19])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: seevalam)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id E4E72C433CB;
+        Wed, 18 Mar 2020 10:16:20 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org E4E72C433CB
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=seevalam@codeaurora.org
+From:   Seevalamuthu Mariappan <seevalam@codeaurora.org>
+To:     johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org,
+        Seevalamuthu Mariappan <seevalam@codeaurora.org>
+Subject: [PATCH] mac80211: Read rx_stats with perCPU pointers
+Date:   Wed, 18 Mar 2020 15:45:55 +0530
+Message-Id: <1584526555-25960-1-git-send-email-seevalam@codeaurora.org>
+X-Mailer: git-send-email 1.9.1
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Yan-Hsuan Chuang <yhchuang@realtek.com>
+Use perCPU pointers to get rx_stats in sta_set_sinfo
+when RSS is enabled
 
-After MAC switched power, the hardware's RF registers will have
-its default value, but the default value for path B is incorrect.
-So, load RF path B first, to decrease the period between MAC on
-and RF path B config.
-
-By test, if we load path A first, then there's ~300ms that the
-path B is incorrect, it could lead to BT coex's A2DP glitch.
-But if we configure path B first, there will only have ~3ms,
-significantly lower possibility to have A2DP sound glitch.
-
-Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
+Signed-off-by: Seevalamuthu Mariappan <seevalam@codeaurora.org>
 ---
- drivers/net/wireless/realtek/rtw88/rtw8822c.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/mac80211/sta_info.c | 35 +++++++++++++++++++++++++++++------
+ 1 file changed, 29 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822c.c b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-index 146f693c7592..d2469f91976b 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-@@ -4128,7 +4128,7 @@ struct rtw_chip_info rtw8822c_hw_spec = {
- 	.agc_tbl = &rtw8822c_agc_tbl,
- 	.bb_tbl = &rtw8822c_bb_tbl,
- 	.rfk_init_tbl = &rtw8822c_array_mp_cal_init_tbl,
--	.rf_tbl = {&rtw8822c_rf_a_tbl, &rtw8822c_rf_b_tbl},
-+	.rf_tbl = {&rtw8822c_rf_b_tbl, &rtw8822c_rf_a_tbl},
- 	.rfe_defs = rtw8822c_rfe_defs,
- 	.rfe_defs_size = ARRAY_SIZE(rtw8822c_rfe_defs),
- 	.en_dis_dpd = true,
+diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
+index f357156..8989a94 100644
+--- a/net/mac80211/sta_info.c
++++ b/net/mac80211/sta_info.c
+@@ -2150,19 +2150,41 @@ static int sta_set_rate_info_rx(struct sta_info *sta, struct rate_info *rinfo)
+ 	return 0;
+ }
+ 
++static inline u64 sta_get_tidstats_msdu(struct ieee80211_sta_rx_stats *rxstats,
++					int tid)
++{
++	unsigned int start;
++	u64 value;
++
++	do {
++		start = u64_stats_fetch_begin(&rxstats->syncp);
++		value = rxstats->msdu[tid];
++	} while (u64_stats_fetch_retry(&rxstats->syncp, start));
++
++	return value;
++}
++
+ static void sta_set_tidstats(struct sta_info *sta,
+ 			     struct cfg80211_tid_stats *tidstats,
+ 			     int tid)
+ {
+ 	struct ieee80211_local *local = sta->local;
++	int cpu;
+ 
+ 	if (!(tidstats->filled & BIT(NL80211_TID_STATS_RX_MSDU))) {
+-		unsigned int start;
++		if (!ieee80211_hw_check(&local->hw, USES_RSS))
++			tidstats->rx_msdu +=
++				sta_get_tidstats_msdu(&sta->rx_stats, tid);
+ 
+-		do {
+-			start = u64_stats_fetch_begin(&sta->rx_stats.syncp);
+-			tidstats->rx_msdu = sta->rx_stats.msdu[tid];
+-		} while (u64_stats_fetch_retry(&sta->rx_stats.syncp, start));
++		if (sta->pcpu_rx_stats) {
++			for_each_possible_cpu(cpu) {
++				struct ieee80211_sta_rx_stats *cpurxs;
++
++				cpurxs = per_cpu_ptr(sta->pcpu_rx_stats, cpu);
++				tidstats->rx_msdu +=
++					sta_get_tidstats_msdu(cpurxs, tid);
++			}
++		}
+ 
+ 		tidstats->filled |= BIT(NL80211_TID_STATS_RX_MSDU);
+ 	}
+@@ -2266,7 +2288,8 @@ void sta_set_sinfo(struct sta_info *sta, struct station_info *sinfo,
+ 
+ 	if (!(sinfo->filled & (BIT_ULL(NL80211_STA_INFO_RX_BYTES64) |
+ 			       BIT_ULL(NL80211_STA_INFO_RX_BYTES)))) {
+-		sinfo->rx_bytes += sta_get_stats_bytes(&sta->rx_stats);
++		if (!ieee80211_hw_check(&local->hw, USES_RSS))
++			sinfo->rx_bytes += sta_get_stats_bytes(&sta->rx_stats);
+ 
+ 		if (sta->pcpu_rx_stats) {
+ 			for_each_possible_cpu(cpu) {
 -- 
-2.17.1
-
+1.9.1
