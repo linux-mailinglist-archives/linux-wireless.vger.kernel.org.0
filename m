@@ -2,84 +2,117 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E0E418AE4D
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Mar 2020 09:28:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 615F518AE79
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Mar 2020 09:41:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725787AbgCSI2L (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 19 Mar 2020 04:28:11 -0400
-Received: from mail-wr1-f68.google.com ([209.85.221.68]:33028 "EHLO
-        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725767AbgCSI2L (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 19 Mar 2020 04:28:11 -0400
-Received: by mail-wr1-f68.google.com with SMTP id a25so1602641wrd.0
-        for <linux-wireless@vger.kernel.org>; Thu, 19 Mar 2020 01:28:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=BfODBdhJNRdEMXGL905qRE8sbBR5iK6Bp9OR3WIPZjo=;
-        b=fanlmFpc+PKu0Yg3XY6h4osltTXyrkNluL28H+X4HCGZ217A2s9reVFpaR6vd9e/Wi
-         onE1qcwq150K36KD+sbO1LjHxqHuB1c5soLGZSCw3bB4+v46R7bqcEzo0kYBeZwxKctT
-         DE+T/EEA3GKi7U0EgZnInjZSoXIDMxsOOTg0c=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=BfODBdhJNRdEMXGL905qRE8sbBR5iK6Bp9OR3WIPZjo=;
-        b=jc6IAikDL9ymA0wEOnnC7zAIwNtvAUTzPekIuaK3YD5frQbIKzybBmhV68KgTs2jxO
-         8hQTBxKSyG+A2OaJbuiA0FVXQt73fDn/BIzwKFRb4oOOedM10rK7y08UITv/s2E3ZYe5
-         ApqFVV1agPZ37/6kH8FUuBywt68AsJKDBToP3prhZlF62h4/sQUMkqPmsq8lPRfJ1FKw
-         14454njksl+F3x66U9xJtBp+8mfgEqc2uJxEZcugRjv/0EteqdSlU+2NUrgz5Ib3VzlB
-         2RXqXoqmShLt/GOHVvR6pjfTCPMK6gnFxl91eVfE2TNGIszybkVljGIJ0UjaUnJZ18bS
-         vH8g==
-X-Gm-Message-State: ANhLgQ1Ercos/NRrFI9a7pxrb5k3zNun4+avc1U8GmEoxsb4e3KTa5I5
-        Lb7D4gT/qbx8zY0mg/D1KAXxFg==
-X-Google-Smtp-Source: ADFU+vu7lhCdvfmXUtY+8+iKadpcjrYS3ZtJUy7Cn1dinzbOBZMnwMigZL1FNR4tjeW2ulTbClwB4A==
-X-Received: by 2002:adf:f3c8:: with SMTP id g8mr230179wrp.351.1584606489389;
-        Thu, 19 Mar 2020 01:28:09 -0700 (PDT)
-Received: from [10.230.41.113] ([192.19.215.251])
-        by smtp.gmail.com with ESMTPSA id w81sm2107146wmg.19.2020.03.19.01.28.08
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 19 Mar 2020 01:28:08 -0700 (PDT)
-Subject: Re: [PATCH 2/3] brcmfmac: make firmware eap_restrict a module
- parameter
-To:     Wright Feng <wright.feng@cypress.com>, franky.lin@broadcom.com,
-        hante.meuleman@broadcom.com, kvalo@codeaurora.org,
-        chi-hsien.lin@cypress.com
-Cc:     linux-wireless@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com
-References: <1584604406-15452-1-git-send-email-wright.feng@cypress.com>
- <1584604406-15452-3-git-send-email-wright.feng@cypress.com>
-From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
-Message-ID: <aa29c77c-cfe4-3d71-1860-f9bcb9e0282b@broadcom.com>
-Date:   Thu, 19 Mar 2020 09:28:06 +0100
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+        id S1726840AbgCSIk5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 19 Mar 2020 04:40:57 -0400
+Received: from mail.kernel.org ([198.145.29.99]:55948 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725601AbgCSIk5 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 19 Mar 2020 04:40:57 -0400
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 3A53D20724;
+        Thu, 19 Mar 2020 08:40:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1584607255;
+        bh=dHtJENXjO0z7ELO16+oHxTUd6KSiGYOo+FAU1g3r1L8=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=XAF/A62c4v2KZMa+b7MNCvt5Okc6ArSh27nZ6WmkbKaRhYOcWXD+8cWrAPcz+Oxd5
+         GcEJnnmipmcEEfVQKgD3elLE172vOeV5zt61gPiItbhWXmp1y4AT19XvauDwP8kAkL
+         YnG/UNS29vEd98MwDnk+VTNPMtTHoyQsUCF7HqAk=
+Date:   Thu, 19 Mar 2020 09:40:53 +0100
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Thomas Gleixner <tglx@linutronix.de>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Ingo Molnar <mingo@kernel.org>, Will Deacon <will@kernel.org>,
+        "Paul E . McKenney" <paulmck@kernel.org>,
+        Joel Fernandes <joel@joelfernandes.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        Logan Gunthorpe <logang@deltatee.com>,
+        Kurt Schwemmer <kurt.schwemmer@microsemi.com>,
+        Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org,
+        Felipe Balbi <balbi@kernel.org>, linux-usb@vger.kernel.org,
+        Oleg Nesterov <oleg@redhat.com>,
+        Davidlohr Bueso <dave@stgolabs.net>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Arnd Bergmann <arnd@arndb.de>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [patch V2 04/15] orinoco_usb: Use the regular completion
+ interfaces
+Message-ID: <20200319084053.GA3492783@kroah.com>
+References: <20200318204302.693307984@linutronix.de>
+ <20200318204407.793899611@linutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <1584604406-15452-3-git-send-email-wright.feng@cypress.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200318204407.793899611@linutronix.de>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 3/19/2020 8:53 AM, Wright Feng wrote:
-> When eap_restrict is enabled, firmware will toss non-802.1x frames from
-> tx/rx data path if station not yet authorized.
-> Internal firmware eap_restrict is disabled by default. This patch makes
-> it possible to enable firmware eap_restrict by specifying
-> eap_restrict=1 as module parameter.
-
-What is the reason for not having this toss behavior as default? Don't 
-see much reason for having the module parameter.
-
-> Signed-off-by: Wright Feng <wright.feng@cypress.com>
-> Signed-off-by: Chi-hsien Lin <chi-hsien.lin@cypress.com>
+On Wed, Mar 18, 2020 at 09:43:06PM +0100, Thomas Gleixner wrote:
+> From: Thomas Gleixner <tglx@linutronix.de>
+> 
+> The completion usage in this driver is interesting:
+> 
+>   - it uses a magic complete function which according to the comment was
+>     implemented by invoking complete() four times in a row because
+>     complete_all() was not exported at that time.
+> 
+>   - it uses an open coded wait/poll which checks completion:done. Only one wait
+>     side (device removal) uses the regular wait_for_completion() interface.
+> 
+> The rationale behind this is to prevent that wait_for_completion() consumes
+> completion::done which would prevent that all waiters are woken. This is not
+> necessary with complete_all() as that sets completion::done to UINT_MAX which
+> is left unmodified by the woken waiters.
+> 
+> Replace the magic complete function with complete_all() and convert the
+> open coded wait/poll to regular completion interfaces.
+> 
+> This changes the wait to exclusive wait mode. But that does not make any
+> difference because the wakers use complete_all() which ignores the
+> exclusive mode.
+> 
+> Reported-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Kalle Valo <kvalo@codeaurora.org>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: linux-wireless@vger.kernel.org
+> Cc: netdev@vger.kernel.org
 > ---
->   drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c | 9 +++++++++
->   drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c   | 5 +++++
->   drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.h   | 2 ++
->   3 files changed, 16 insertions(+)
+> V2: New patch to avoid conversion to swait functions later.
+> ---
+>  drivers/net/wireless/intersil/orinoco/orinoco_usb.c |   21 ++++----------------
+>  1 file changed, 5 insertions(+), 16 deletions(-)
+> 
+> --- a/drivers/net/wireless/intersil/orinoco/orinoco_usb.c
+> +++ b/drivers/net/wireless/intersil/orinoco/orinoco_usb.c
+> @@ -365,17 +365,6 @@ static struct request_context *ezusb_all
+>  	return ctx;
+>  }
+>  
+> -
+> -/* Hopefully the real complete_all will soon be exported, in the mean
+> - * while this should work. */
+> -static inline void ezusb_complete_all(struct completion *comp)
+> -{
+> -	complete(comp);
+> -	complete(comp);
+> -	complete(comp);
+> -	complete(comp);
+> -}
+
+That's so funny... :(
+
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
