@@ -2,69 +2,81 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C1CD18B145
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Mar 2020 11:27:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CF5EA18B934
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Mar 2020 15:20:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727016AbgCSK0w (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 19 Mar 2020 06:26:52 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:60268 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726802AbgCSK0w (ORCPT
+        id S1727168AbgCSOTy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 19 Mar 2020 10:19:54 -0400
+Received: from sender11-op-o12.zoho.eu ([31.186.226.226]:17427 "EHLO
+        sender11-op-o12.zoho.eu" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726817AbgCSOTy (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 19 Mar 2020 06:26:52 -0400
-Received: from bigeasy by Galois.linutronix.de with local (Exim 4.80)
-        (envelope-from <bigeasy@linutronix.de>)
-        id 1jEsNR-0005K1-NA; Thu, 19 Mar 2020 11:26:13 +0100
-Date:   Thu, 19 Mar 2020 11:26:13 +0100
-From:   Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To:     Christoph Hellwig <hch@infradead.org>
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        linux-pci@vger.kernel.org, netdev@vger.kernel.org,
-        Joel Fernandes <joel@joelfernandes.org>,
-        Will Deacon <will@kernel.org>, Ingo Molnar <mingo@kernel.org>,
-        Davidlohr Bueso <dave@stgolabs.net>,
-        "Paul E . McKenney" <paulmck@kernel.org>,
-        Logan Gunthorpe <logang@deltatee.com>,
-        Arnd Bergmann <arnd@arndb.de>, linuxppc-dev@lists.ozlabs.org,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Kurt Schwemmer <kurt.schwemmer@microsemi.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Felipe Balbi <balbi@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-usb@vger.kernel.org, linux-wireless@vger.kernel.org,
-        Oleg Nesterov <oleg@redhat.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: Re: [patch V2 07/15] powerpc/ps3: Convert half completion to rcuwait
-Message-ID: <20200319102613.hbwax7zrrvgcde4x@linutronix.de>
-References: <20200318204302.693307984@linutronix.de>
- <20200318204408.102694393@linutronix.de>
- <20200319100459.GA18506@infradead.org>
+        Thu, 19 Mar 2020 10:19:54 -0400
+Received: from [100.109.44.175] (163.114.130.4 [163.114.130.4]) by mx.zoho.eu
+        with SMTPS id 1584627571593553.2825854778466; Thu, 19 Mar 2020 15:19:31 +0100 (CET)
+Subject: Re: [PATCH] rtl8xxxu: Fix sparse warning: cast from restricted __le16
+To:     Chris Chiu <chiu@endlessm.com>, kvalo@codeaurora.org,
+        davem@davemloft.net
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux@endlessm.com,
+        kbuild test robot <lkp@intel.com>
+References: <20200319064341.49500-1-chiu@endlessm.com>
+From:   Jes Sorensen <jes@trained-monkey.org>
+Message-ID: <fb942467-fc43-114f-3fd4-f38db90d505b@trained-monkey.org>
+Date:   Thu, 19 Mar 2020 10:19:29 -0400
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.5.0
 MIME-Version: 1.0
+In-Reply-To: <20200319064341.49500-1-chiu@endlessm.com>
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20200319100459.GA18506@infradead.org>
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-ZohoMailClient: External
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2020-03-19 03:04:59 [-0700], Christoph Hellwig wrote:
-> But I wonder how alive the whole PS3 support is to start with..
+On 3/19/20 2:43 AM, Chris Chiu wrote:
+> Fix the warning reported by sparse as:
+>  drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c:4819:17: sparse: sparse: cast from restricted __le16
+>  drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c:4892:17: sparse: sparse: cast from restricted __le16
+> 
+> Signed-off-by: Chris Chiu <chiu@endlessm.com>
+> Reported-by: kbuild test robot <lkp@intel.com>
 
-OtherOS can only be used on "old" PS3 which do not have have their
-firmware upgraded past version 3.21, released April 1, 2010 [0].
-It was not possible to install OtherOS on PS3-slim and I don't remember
-if it was a successor or a budget version (but it had lower power
-consumption as per my memory).
-*I* remember from back then that a few universities bought quite a few
-of them and used them as a computation cluster. However, whatever broke
-over the last 10 years is broken.
+Acked-by: Jes Sorensen <jes@trained-monkey.org>
 
-[0] https://en.wikipedia.org/wiki/OtherOS
 
-Sebastian
+> ---
+>  drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+> index 54a1a4ea107b..daa6ce14c68b 100644
+> --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+> +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+> @@ -4816,8 +4816,8 @@ rtl8xxxu_fill_txdesc_v1(struct ieee80211_hw *hw, struct ieee80211_hdr *hdr,
+>  		rate = tx_rate->hw_value;
+>  
+>  	if (rtl8xxxu_debug & RTL8XXXU_DEBUG_TX)
+> -		dev_info(dev, "%s: TX rate: %d, pkt size %d\n",
+> -			 __func__, rate, cpu_to_le16(tx_desc->pkt_size));
+> +		dev_info(dev, "%s: TX rate: %d, pkt size %u\n",
+> +			 __func__, rate, le16_to_cpu(tx_desc->pkt_size));
+>  
+>  	seq_number = IEEE80211_SEQ_TO_SN(le16_to_cpu(hdr->seq_ctrl));
+>  
+> @@ -4889,8 +4889,8 @@ rtl8xxxu_fill_txdesc_v2(struct ieee80211_hw *hw, struct ieee80211_hdr *hdr,
+>  		rate = tx_rate->hw_value;
+>  
+>  	if (rtl8xxxu_debug & RTL8XXXU_DEBUG_TX)
+> -		dev_info(dev, "%s: TX rate: %d, pkt size %d\n",
+> -			 __func__, rate, cpu_to_le16(tx_desc40->pkt_size));
+> +		dev_info(dev, "%s: TX rate: %d, pkt size %u\n",
+> +			 __func__, rate, le16_to_cpu(tx_desc40->pkt_size));
+>  
+>  	seq_number = IEEE80211_SEQ_TO_SN(le16_to_cpu(hdr->seq_ctrl));
+>  
+> 
+
