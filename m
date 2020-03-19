@@ -2,256 +2,234 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 893B318BE10
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Mar 2020 18:32:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 12ED718BEEB
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Mar 2020 19:03:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727034AbgCSRcY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 19 Mar 2020 13:32:24 -0400
-Received: from mail-ed1-f66.google.com ([209.85.208.66]:36198 "EHLO
-        mail-ed1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726934AbgCSRcY (ORCPT
+        id S1727668AbgCSSC4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 19 Mar 2020 14:02:56 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:33784 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727303AbgCSSC4 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 19 Mar 2020 13:32:24 -0400
-Received: by mail-ed1-f66.google.com with SMTP id b18so3767020edu.3
-        for <linux-wireless@vger.kernel.org>; Thu, 19 Mar 2020 10:32:22 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=OOb6B28amuBDk0DRY53ngvva0njG0JvSZoG7dpiTgPY=;
-        b=c3Bju27PQNdtsrtg0fwmoiDFXcg0do1jnK79C2eCudjcME3qPsetyqnYlOXQQD9Xny
-         c1pv2XOmaoMvH8KR9DLfvjR9QJno8bOJFFIeGZE/xTFe70bmtuBWUK4YwHR0hiT/D8a4
-         Rv1AKF8E6aCbgr2182LTf+l9fozwH7PcttLtoexp5LyzlFCrFS/Irc5bzkBqxhINnWBW
-         Opk5dwMp0hDvov/22YyYXR3YsYY6Det3XCwLsSX0SyKJHxhgSrrh4Ius0Tr8V2r2ZGzv
-         9zyV1lKLE1J+nM8Idp+BuQyGUcWt4dLKTyvtNyRWjk2fQgtuD5wJF2aqrlnInN/rdJ5j
-         rspA==
-X-Gm-Message-State: ANhLgQ2YUuoVUrgU17IyhMop8mOvbuCqyT0RyDOq7i+ZyZCiToIXSDFG
-        XQM1UcDyZJHE8wmF/HN/Ik9nrQYsCfPfk0KNg9U=
-X-Google-Smtp-Source: ADFU+vt/m51u4bXD8mEBg06kD6ib3mhh2a7ebjoO0pSTbIm9xrQafTo2vRb4IYIwOQX9Fv7lb3rgs4UqijNpsvsdFi0=
-X-Received: by 2002:a50:ed0f:: with SMTP id j15mr3873833eds.311.1584639141916;
- Thu, 19 Mar 2020 10:32:21 -0700 (PDT)
+        Thu, 19 Mar 2020 14:02:56 -0400
+Received: from p5de0bf0b.dip0.t-ipconnect.de ([93.224.191.11] helo=nanos.tec.linutronix.de)
+        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
+        (Exim 4.80)
+        (envelope-from <tglx@linutronix.de>)
+        id 1jEzUo-0006uF-9W; Thu, 19 Mar 2020 19:02:18 +0100
+Received: by nanos.tec.linutronix.de (Postfix, from userid 1000)
+        id 8F6F8103088; Thu, 19 Mar 2020 19:02:17 +0100 (CET)
+From:   Thomas Gleixner <tglx@linutronix.de>
+To:     paulmck@kernel.org
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Ingo Molnar <mingo@kernel.org>, Will Deacon <will@kernel.org>,
+        Joel Fernandes <joel@joelfernandes.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Logan Gunthorpe <logang@deltatee.com>,
+        Kurt Schwemmer <kurt.schwemmer@microsemi.com>,
+        Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org,
+        Felipe Balbi <balbi@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-usb@vger.kernel.org, Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        Oleg Nesterov <oleg@redhat.com>,
+        Davidlohr Bueso <dave@stgolabs.net>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Arnd Bergmann <arnd@arndb.de>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [patch V2 08/15] Documentation: Add lock ordering and nesting documentation
+In-Reply-To: <20200318223137.GW3199@paulmck-ThinkPad-P72>
+References: <20200318204302.693307984@linutronix.de> <20200318204408.211530902@linutronix.de> <20200318223137.GW3199@paulmck-ThinkPad-P72>
+Date:   Thu, 19 Mar 2020 19:02:17 +0100
+Message-ID: <874kuk5il2.fsf@nanos.tec.linutronix.de>
 MIME-Version: 1.0
-References: <iwlwifi.20200318081237.46db40617cc6.Id5cf852ec8c5dbf20ba86bad7b165a0c828f8b2e@changeid>
- <20200318213440.GO311@earth.li>
-In-Reply-To: <20200318213440.GO311@earth.li>
-From:   Len Brown <lenb@kernel.org>
-Date:   Thu, 19 Mar 2020 13:32:10 -0400
-Message-ID: <CAJvTdKmrKJQee-WrG4UCo0FYrr++Er=mftrdLKjcCuy23N+HPw@mail.gmail.com>
-Subject: Re: [PATCH v5.6] iwlwifi: don't send GEO_TX_POWER_LIMIT if no wgds table
-To:     Jonathan McDowell <noodles@earth.li>
-Cc:     Luca Coelho <luca@coelho.fi>, kvalo@codeaurora.org,
-        linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
+X-Linutronix-Spam-Score: -1.0
+X-Linutronix-Spam-Level: -
+X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Tested-by: Len Brown <len.brown@intel.com>
+Paul,
 
-on Linux-5.6-rc6 WITH this patch:
+"Paul E. McKenney" <paulmck@kernel.org> writes:
 
-[    2.923632] iwlwifi 0000:3a:00.0: enabling device (0000 -> 0002)
-[    2.933367] iwlwifi 0000:3a:00.0: loaded firmware version
-17.3216344376.0 3160-17.ucode op_mode iwlmvm
-[    3.407034] iwlwifi 0000:3a:00.0: Detected Intel(R) Dual Band
-Wireless AC 3160, REV=0x164
-[    3.428304] iwlwifi 0000:3a:00.0: base HW address: e4:02:9b:c0:4d:f1
-[    3.546341] iwlwifi 0000:3a:00.0 wlp58s0: renamed from wlan0
-
-
-Linux 5.6-rc6 WITHOUT this patch:
-
-[    2.773544] iwlwifi 0000:3a:00.0: enabling device (0000 -> 0002)
-[    2.829310] iwlwifi 0000:3a:00.0: loaded firmware version
-17.3216344376.0 3160-17.ucode op_mode iwlmvm
-[    3.348050] iwlwifi 0000:3a:00.0: Detected Intel(R) Dual Band
-Wireless AC 3160, REV=0x164
-[    3.721261] iwlwifi 0000:3a:00.0: base HW address: e4:02:9b:c0:4d:f1
-[    4.431592] iwlwifi 0000:3a:00.0 wlp58s0: renamed from wlan0
-[    5.581857] iwlwifi 0000:3a:00.0: Microcode SW error detected.
-Restarting 0x2000000.
-[    5.583340] iwlwifi 0000:3a:00.0: Start IWL Error Log Dump:
-[    5.584693] iwlwifi 0000:3a:00.0: Status: 0x00000040, count: 6
-[    5.586150] iwlwifi 0000:3a:00.0: Loaded firmware version:
-17.3216344376.0 3160-17.ucode
-[    5.587194] iwlwifi 0000:3a:00.0: 0x00000038 | BAD_COMMAND
-...
-and wifi is permanently dead...
-
-thanks!
--Len
-
-
-On Wed, Mar 18, 2020 at 5:57 PM Jonathan McDowell <noodles@earth.li> wrote:
+> On Wed, Mar 18, 2020 at 09:43:10PM +0100, Thomas Gleixner wrote:
 >
-> On Wed, Mar 18, 2020 at 08:12:54AM +0200, Luca Coelho wrote:
-> > From: Golan Ben Ami <golan.ben.ami@intel.com>
-> >
-> > The GEO_TX_POWER_LIMIT command was sent although
-> > there is no wgds table, so the fw got wrong SAR values
-> > from the driver.
-> >
-> > Fix this by avoiding sending the command if no wgds
-> > tables are available.
-> >
-> > Signed-off-by: Golan Ben Ami <golan.ben.ami@intel.com>
-> > Fixes: 39c1a9728f93 ("iwlwifi: refactor the SAR tables from mvm to acpi")
-> > Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
->
-> Thanks Luca.
->
-> Works for me on an AC 3168 with firmware 29.1044073957.0
->
-> Tested-By: Jonathan McDowell <noodles@earth.li>
-> Bugzilla: https://bugzilla.kernel.org/show_bug.cgi?id=206395
-> Cc: stable@vger.kernel.org # 5.5.10+
->
-> > ---
-> >  drivers/net/wireless/intel/iwlwifi/fw/acpi.c | 14 ++++++++------
-> >  drivers/net/wireless/intel/iwlwifi/fw/acpi.h | 14 ++++++++------
-> >  drivers/net/wireless/intel/iwlwifi/mvm/fw.c  |  9 ++++++++-
-> >  3 files changed, 24 insertions(+), 13 deletions(-)
-> >
-> > diff --git a/drivers/net/wireless/intel/iwlwifi/fw/acpi.c b/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
-> > index 48d375a86d86..ba2aff3af0fe 100644
-> > --- a/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
-> > +++ b/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
-> > @@ -6,7 +6,7 @@
-> >   * GPL LICENSE SUMMARY
-> >   *
-> >   * Copyright(c) 2017        Intel Deutschland GmbH
-> > - * Copyright (C) 2019 Intel Corporation
-> > + * Copyright (C) 2019 - 2020 Intel Corporation
-> >   *
-> >   * This program is free software; you can redistribute it and/or modify
-> >   * it under the terms of version 2 of the GNU General Public License as
-> > @@ -27,7 +27,7 @@
-> >   * BSD LICENSE
-> >   *
-> >   * Copyright(c) 2017        Intel Deutschland GmbH
-> > - * Copyright (C) 2019 Intel Corporation
-> > + * Copyright (C) 2019 - 2020 Intel Corporation
-> >   * All rights reserved.
-> >   *
-> >   * Redistribution and use in source and binary forms, with or without
-> > @@ -491,13 +491,13 @@ int iwl_validate_sar_geo_profile(struct iwl_fw_runtime *fwrt,
-> >  }
-> >  IWL_EXPORT_SYMBOL(iwl_validate_sar_geo_profile);
-> >
-> > -void iwl_sar_geo_init(struct iwl_fw_runtime *fwrt,
-> > -                   struct iwl_per_chain_offset_group *table)
-> > +int iwl_sar_geo_init(struct iwl_fw_runtime *fwrt,
-> > +                  struct iwl_per_chain_offset_group *table)
-> >  {
-> >       int ret, i, j;
-> >
-> >       if (!iwl_sar_geo_support(fwrt))
-> > -             return;
-> > +             return -EOPNOTSUPP;
-> >
-> >       ret = iwl_sar_get_wgds_table(fwrt);
-> >       if (ret < 0) {
-> > @@ -505,7 +505,7 @@ void iwl_sar_geo_init(struct iwl_fw_runtime *fwrt,
-> >                               "Geo SAR BIOS table invalid or unavailable. (%d)\n",
-> >                               ret);
-> >               /* we don't fail if the table is not available */
-> > -             return;
-> > +             return -ENOENT;
-> >       }
-> >
-> >       BUILD_BUG_ON(ACPI_NUM_GEO_PROFILES * ACPI_WGDS_NUM_BANDS *
-> > @@ -530,5 +530,7 @@ void iwl_sar_geo_init(struct iwl_fw_runtime *fwrt,
-> >                                       i, j, value[1], value[2], value[0]);
-> >               }
-> >       }
-> > +
-> > +     return 0;
-> >  }
-> >  IWL_EXPORT_SYMBOL(iwl_sar_geo_init);
-> > diff --git a/drivers/net/wireless/intel/iwlwifi/fw/acpi.h b/drivers/net/wireless/intel/iwlwifi/fw/acpi.h
-> > index 4a6e8262974b..5590e5cc8fbb 100644
-> > --- a/drivers/net/wireless/intel/iwlwifi/fw/acpi.h
-> > +++ b/drivers/net/wireless/intel/iwlwifi/fw/acpi.h
-> > @@ -6,7 +6,7 @@
-> >   * GPL LICENSE SUMMARY
-> >   *
-> >   * Copyright(c) 2017        Intel Deutschland GmbH
-> > - * Copyright(c) 2018 - 2019        Intel Corporation
-> > + * Copyright(c) 2018 - 2020        Intel Corporation
-> >   *
-> >   * This program is free software; you can redistribute it and/or modify
-> >   * it under the terms of version 2 of the GNU General Public License as
-> > @@ -27,7 +27,7 @@
-> >   * BSD LICENSE
-> >   *
-> >   * Copyright(c) 2017        Intel Deutschland GmbH
-> > - * Copyright(c) 2018 - 2019       Intel Corporation
-> > + * Copyright(c) 2018 - 2020       Intel Corporation
-> >   * All rights reserved.
-> >   *
-> >   * Redistribution and use in source and binary forms, with or without
-> > @@ -171,8 +171,9 @@ bool iwl_sar_geo_support(struct iwl_fw_runtime *fwrt);
-> >  int iwl_validate_sar_geo_profile(struct iwl_fw_runtime *fwrt,
-> >                                struct iwl_host_cmd *cmd);
-> >
-> > -void iwl_sar_geo_init(struct iwl_fw_runtime *fwrt,
-> > -                   struct iwl_per_chain_offset_group *table);
-> > +int iwl_sar_geo_init(struct iwl_fw_runtime *fwrt,
-> > +                  struct iwl_per_chain_offset_group *table);
-> > +
-> >  #else /* CONFIG_ACPI */
-> >
-> >  static inline void *iwl_acpi_get_object(struct device *dev, acpi_string method)
-> > @@ -243,9 +244,10 @@ static inline int iwl_validate_sar_geo_profile(struct iwl_fw_runtime *fwrt,
-> >       return -ENOENT;
-> >  }
-> >
-> > -static inline void iwl_sar_geo_init(struct iwl_fw_runtime *fwrt,
-> > -                                 struct iwl_per_chain_offset_group *table)
-> > +static inline int iwl_sar_geo_init(struct iwl_fw_runtime *fwrt,
-> > +                                struct iwl_per_chain_offset_group *table)
-> >  {
-> > +     return -ENOENT;
-> >  }
-> >
-> >  #endif /* CONFIG_ACPI */
-> > diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-> > index 54c094e88474..98263cd37944 100644
-> > --- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-> > +++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-> > @@ -762,10 +762,17 @@ static int iwl_mvm_sar_geo_init(struct iwl_mvm *mvm)
-> >       u16 cmd_wide_id =  WIDE_ID(PHY_OPS_GROUP, GEO_TX_POWER_LIMIT);
-> >       union geo_tx_power_profiles_cmd cmd;
-> >       u16 len;
-> > +     int ret;
-> >
-> >       cmd.geo_cmd.ops = cpu_to_le32(IWL_PER_CHAIN_OFFSET_SET_TABLES);
-> >
-> > -     iwl_sar_geo_init(&mvm->fwrt, cmd.geo_cmd.table);
-> > +     ret = iwl_sar_geo_init(&mvm->fwrt, cmd.geo_cmd.table);
-> > +     /*
-> > +      * It is a valid scenario to not support SAR, or miss wgds table,
-> > +      * but in that case there is no need to send the command.
-> > +      */
-> > +     if (ret)
-> > +             return 0;
-> >
-> >       cmd.geo_cmd.table_revision = cpu_to_le32(mvm->fwrt.geo_rev);
-> >
-> > --
-> > 2.25.1
-> >
->
-> J.
->
-> --
->      I don't know. I'm a dog.      |  .''`.  Debian GNU/Linux Developer
->                                    | : :' :  Happy to accept PGP signed
->                                    | `. `'   or encrypted mail - RSA
->                                    |   `-    key on the keyservers.
+> Mostly native-English-speaker services below, so please feel free to
+> ignore.  The one place I made a substantive change, I marked it "@@@".
+> I only did about half of this document, but should this prove useful,
+> I will do the other half later.
 
+Native speaker services are always useful and appreciated.
 
+>> +The kernel provides a variety of locking primitives which can be divided
+>> +into two categories:
+>> +
+>> + - Sleeping locks
+>> + - Spinning locks
+>> +
+>> +This document describes the lock types at least at the conceptual level and
+>> +provides rules for nesting of lock types also under the aspect of PREEMPT_RT.
+>
+> I suggest something like this:
+>
+> This document conceptually describes these lock types and provides rules
+> for their nesting, including the rules for use under PREEMPT_RT.
 
--- 
-Len Brown, Intel Open Source Technology Center
+Way better :)
+
+>> +Sleeping locks can only be acquired in preemptible task context.
+>> +
+>> +Some of the implementations allow try_lock() attempts from other contexts,
+>> +but that has to be really evaluated carefully including the question
+>> +whether the unlock can be done from that context safely as well.
+>> +
+>> +Note that some lock types change their implementation details when
+>> +debugging is enabled, so this should be really only considered if there is
+>> +no other option.
+>
+> How about something like this?
+>
+> Although implementations allow try_lock() from other contexts, it is
+> necessary to carefully evaluate the safety of unlock() as well as of
+> try_lock().  Furthermore, it is also necessary to evaluate the debugging
+> versions of these primitives.  In short, don't acquire sleeping locks
+> from other contexts unless there is no other option.
+
+Yup.
+
+>> +Sleeping lock types:
+>> +
+>> + - mutex
+>> + - rt_mutex
+>> + - semaphore
+>> + - rw_semaphore
+>> + - ww_mutex
+>> + - percpu_rw_semaphore
+>> +
+>> +On a PREEMPT_RT enabled kernel the following lock types are converted to
+>> +sleeping locks:
+>
+> On PREEMPT_RT kernels, these lock types are converted to sleeping
+> locks:
+
+Ok.
+
+>> + - spinlock_t
+>> + - rwlock_t
+>> +
+>> +Spinning locks
+>> +--------------
+>> +
+>> + - raw_spinlock_t
+>> + - bit spinlocks
+>> +
+>> +On a non PREEMPT_RT enabled kernel the following lock types are spinning
+>> +locks as well:
+>
+> On non-PREEMPT_RT kernels, these lock types are also spinning locks:
+
+Ok.
+
+>> + - spinlock_t
+>> + - rwlock_t
+>> +
+>> +Spinning locks implicitly disable preemption and the lock / unlock functions
+>> +can have suffixes which apply further protections:
+>> +
+>> + ===================  ====================================================
+>> + _bh()                Disable / enable bottom halves (soft interrupts)
+>> + _irq()               Disable / enable interrupts
+>> + _irqsave/restore()   Save and disable / restore interrupt disabled state
+>> + ===================  ====================================================
+>> +
+>> +
+>> +rtmutex
+>> +=======
+>> +
+>> +RT-mutexes are mutexes with support for priority inheritance (PI).
+>> +
+>> +PI has limitations on non PREEMPT_RT enabled kernels due to preemption and
+>> +interrupt disabled sections.
+>> +
+>> +On a PREEMPT_RT enabled kernel most of these sections are fully
+>> +preemptible. This is possible because PREEMPT_RT forces most executions
+>> +into task context, especially interrupt handlers and soft interrupts, which
+>> +allows to substitute spinlock_t and rwlock_t with RT-mutex based
+>> +implementations.
+>
+> PI clearly cannot preempt preemption-disabled or interrupt-disabled
+> regions of code, even on PREEMPT_RT kernels.  Instead, PREEMPT_RT kernels
+> execute most such regions of code in preemptible task context, especially
+> interrupt handlers and soft interrupts.  This conversion allows spinlock_t
+> and rwlock_t to be implemented via RT-mutexes.
+
+Nice.
+
+>> +
+>> +raw_spinlock_t and spinlock_t
+>> +=============================
+>> +
+>> +raw_spinlock_t
+>> +--------------
+>> +
+>> +raw_spinlock_t is a strict spinning lock implementation regardless of the
+>> +kernel configuration including PREEMPT_RT enabled kernels.
+>> +
+>> +raw_spinlock_t is to be used only in real critical core code, low level
+>> +interrupt handling and places where protecting (hardware) state is required
+>> +to be safe against preemption and eventually interrupts.
+>> +
+>> +Another reason to use raw_spinlock_t is when the critical section is tiny
+>> +to avoid the overhead of spinlock_t on a PREEMPT_RT enabled kernel in the
+>> +contended case.
+>
+> raw_spinlock_t is a strict spinning lock implementation in all kernels,
+> including PREEMPT_RT kernels.  Use raw_spinlock_t only in real critical
+> core code, low level interrupt handling and places where disabling
+> preemption or interrupts is required, for example, to safely access
+> hardware state.  raw_spinlock_t can sometimes also be used when the
+> critical section is tiny and the lock is lightly contended, thus avoiding
+> RT-mutex overhead.
+>
+> @@@  I added the point about the lock being lightly contended.
+
+Hmm, not sure. The point is that if the critical section is small the
+overhead of cross CPU boosting along with the resulting IPIs is going to
+be at least an order of magnitude larger. And on contention this is just
+pushing the raw_spinlock contention off to the raw_spinlock in the rt
+mutex plus the owning tasks pi_lock which makes things even worse.
+
+>> + - The hard interrupt related suffixes for spin_lock / spin_unlock
+>> +   operations (_irq, _irqsave / _irqrestore) do not affect the CPUs
+>                                                                   CPU's
+
+Si senor!
+
+>> +   interrupt disabled state
+>> +
+>> + - The soft interrupt related suffix (_bh()) is still disabling the
+>> +   execution of soft interrupts, but contrary to a non PREEMPT_RT enabled
+>> +   kernel, which utilizes the preemption count, this is achieved by a per
+>> +   CPU bottom half locking mechanism.
+>
+>  - The soft interrupt related suffix (_bh()) still disables softirq
+>    handlers.  However, unlike non-PREEMPT_RT kernels (which disable
+>    preemption to get this effect), PREEMPT_RT kernels use a per-CPU
+>    per-bottom-half locking mechanism.
+
+it's not per-bottom-half anymore. That turned out to be dangerous due to
+dependencies between BH types, e.g. network and timers.
+
+I hope I was able to encourage you to comment on the other half as well :)
+
+Thanks,
+
+        tglx
