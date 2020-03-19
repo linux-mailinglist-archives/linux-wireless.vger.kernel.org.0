@@ -2,123 +2,101 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C795118AED3
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Mar 2020 09:55:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 837F618AEDF
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Mar 2020 10:01:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726063AbgCSIzv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 19 Mar 2020 04:55:51 -0400
-Received: from mail-wm1-f67.google.com ([209.85.128.67]:52112 "EHLO
-        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725787AbgCSIzv (ORCPT
+        id S1726589AbgCSJBF convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 19 Mar 2020 05:01:05 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:59964 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725767AbgCSJBE (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 19 Mar 2020 04:55:51 -0400
-Received: by mail-wm1-f67.google.com with SMTP id c187so1077817wme.1
-        for <linux-wireless@vger.kernel.org>; Thu, 19 Mar 2020 01:55:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=eVjeTiEe/+Y3kUb7qbMJcMEcD/Uy3XR+Yh9sVuFlyd4=;
-        b=TwPtUfFdBD4KBGsiIuSa1xJI7B8czzFlcPomUaVkeNyOGEFYdJ13CmpFJNUoj8BPaN
-         BMWr+MI6eg9MFO+S9qGF/CFZyxkWkhCv/ckmf2Fp872hrbG8Vkrd4+XuGFQdl6v3/Sjd
-         /P81OWHtEBf3hs3RE1GLcIcekE/7m1KGB4Ujo=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=eVjeTiEe/+Y3kUb7qbMJcMEcD/Uy3XR+Yh9sVuFlyd4=;
-        b=aFSLXrwkdxuFsM+6Ul9HVdixDORb3ss/L2XSgn/HfHUfvadhyGO/8/HRYb3YUiAna5
-         GvnR7d2W6ERxlj8/2m5CENOZUIKHl53eFrf2wSk375ZGna+dXfbkUpT+68FrwhVX9vls
-         LfJK2kvp+gSn8V4qD0Dfml5Z6KPbu80NjkbPAmvKqJclspPJetpaOw9/xCz3tFHVAtRb
-         5THMjja7f5aYx9owKzjbnZmwXAFIIvRNrR3M/GI9cztRd4/psE+0uDElZ7WXltpJct8w
-         09c7sUe1MwFwdykwReF1TIdKKgy48RCvoQZrcjOSlJjKNsw7VoXbHwVhWIc6yVkKHbuv
-         UabA==
-X-Gm-Message-State: ANhLgQ3WpmjhjmwdyvPVO17DHNhLtAZgXjUiA2qiqXCG+qbuHwjVp5ed
-        c7pHFsbXWGPVG05aW8PYoj3HvQ==
-X-Google-Smtp-Source: ADFU+vtWpAArYxIef7ZNeYOmbCHwr/+U8iwOyJCyWG+P3lUjml40Em9OYLwqjdR2iUla4Jnx1VP2ow==
-X-Received: by 2002:a1c:7ec9:: with SMTP id z192mr2434340wmc.100.1584608149090;
-        Thu, 19 Mar 2020 01:55:49 -0700 (PDT)
-Received: from [10.230.41.113] ([192.19.215.251])
-        by smtp.gmail.com with ESMTPSA id i12sm2598303wro.46.2020.03.19.01.55.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 19 Mar 2020 01:55:48 -0700 (PDT)
-Subject: Re: [PATCH 3/3] brcmfmac: make setting SDIO workqueue WQ_HIGHPRI a
- module parameter
-To:     Wright Feng <wright.feng@cypress.com>, franky.lin@broadcom.com,
-        hante.meuleman@broadcom.com, kvalo@codeaurora.org,
-        chi-hsien.lin@cypress.com
-Cc:     linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com, tj@kernel.org
-References: <1584604406-15452-1-git-send-email-wright.feng@cypress.com>
- <1584604406-15452-4-git-send-email-wright.feng@cypress.com>
-From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
-Message-ID: <40e33702-d37f-085d-a5a7-7f09ae9e2629@broadcom.com>
-Date:   Thu, 19 Mar 2020 09:55:46 +0100
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+        Thu, 19 Mar 2020 05:01:04 -0400
+Received: from bigeasy by Galois.linutronix.de with local (Exim 4.80)
+        (envelope-from <bigeasy@linutronix.de>)
+        id 1jEr2O-0003WY-CF; Thu, 19 Mar 2020 10:00:24 +0100
+Date:   Thu, 19 Mar 2020 10:00:24 +0100
+From:   Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To:     Thomas Gleixner <tglx@linutronix.de>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Ingo Molnar <mingo@kernel.org>, Will Deacon <will@kernel.org>,
+        "Paul E . McKenney" <paulmck@kernel.org>,
+        Joel Fernandes <joel@joelfernandes.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Arnd Bergmann <arnd@arndb.de>, linuxppc-dev@lists.ozlabs.org,
+        Logan Gunthorpe <logang@deltatee.com>,
+        Kurt Schwemmer <kurt.schwemmer@microsemi.com>,
+        Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org,
+        Felipe Balbi <balbi@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-usb@vger.kernel.org, Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        Oleg Nesterov <oleg@redhat.com>,
+        Davidlohr Bueso <dave@stgolabs.net>
+Subject: Re: [patch V2 07/15] powerpc/ps3: Convert half completion to rcuwait
+Message-ID: <20200319090024.wbrywc77tff3ro7i@linutronix.de>
+References: <20200318204302.693307984@linutronix.de>
+ <20200318204408.102694393@linutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <1584604406-15452-4-git-send-email-wright.feng@cypress.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8BIT
+In-Reply-To: <20200318204408.102694393@linutronix.de>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-+ Tejun - regarding alloc_workqueue usage
-
-On 3/19/2020 8:53 AM, Wright Feng wrote:
-> With setting sdio_wq_highpri=1 in module parameters, tasks submitted to
-> SDIO workqueue will put at the head of the queue and run immediately.
-> This parameter is for getting higher TX/RX throughput with SDIO bus.
-> 
-> Signed-off-by: Wright Feng <wright.feng@cypress.com>
-> Signed-off-by: Chi-hsien Lin <chi-hsien.lin@cypress.com>
-> ---
->   .../wireless/broadcom/brcm80211/brcmfmac/common.c  |  5 +++++
->   .../wireless/broadcom/brcm80211/brcmfmac/common.h  |  2 ++
->   .../wireless/broadcom/brcm80211/brcmfmac/sdio.c    | 22 ++++++++++++++--------
->   3 files changed, 21 insertions(+), 8 deletions(-)
-> 
-
-[...]
-
-> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-> index 3a08252..885e8bd 100644
-> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-> @@ -4342,9 +4342,21 @@ struct brcmf_sdio *brcmf_sdio_probe(struct brcmf_sdio_dev *sdiodev)
->   	bus->txminmax = BRCMF_TXMINMAX;
->   	bus->tx_seq = SDPCM_SEQ_WRAP - 1;
->   
-> +	/* attempt to attach to the dongle */
-> +	if (!(brcmf_sdio_probe_attach(bus))) {
-> +		brcmf_err("brcmf_sdio_probe_attach failed\n");
-> +		goto fail;
-> +	}
+On 2020-03-18 21:43:09 [+0100], Thomas Gleixner wrote:
+> --- a/arch/powerpc/platforms/ps3/device-init.c
+> +++ b/arch/powerpc/platforms/ps3/device-init.c
+> @@ -725,12 +728,12 @@ static int ps3_notification_read_write(s
+>  	unsigned long flags;
+>  	int res;
+>  
+> -	init_completion(&dev->done);
+>  	spin_lock_irqsave(&dev->lock, flags);
+>  	res = write ? lv1_storage_write(dev->sbd.dev_id, 0, 0, 1, 0, lpar,
+>  					&dev->tag)
+>  		    : lv1_storage_read(dev->sbd.dev_id, 0, 0, 1, 0, lpar,
+>  				       &dev->tag);
+> +	dev->done = false;
+>  	spin_unlock_irqrestore(&dev->lock, flags);
+>  	if (res) {
+>  		pr_err("%s:%u: %s failed %d\n", __func__, __LINE__, op, res);
+> @@ -738,14 +741,10 @@ static int ps3_notification_read_write(s
+>  	}
+>  	pr_debug("%s:%u: notification %s issued\n", __func__, __LINE__, op);
+>  
+> -	res = wait_event_interruptible(dev->done.wait,
+> -				       dev->done.done || kthread_should_stop());
+> +	rcuwait_wait_event(&dev->wait, dev->done || kthread_should_stop(), TASK_IDLE);
 > +
->   	/* single-threaded workqueue */
-> -	wq = alloc_ordered_workqueue("brcmf_wq/%s", WQ_MEM_RECLAIM,
-> -				     dev_name(&sdiodev->func1->dev));
-> +	if (sdiodev->settings->sdio_wq_highpri) {
-> +		wq = alloc_workqueue("brcmf_wq/%s",
-> +				     WQ_HIGHPRI | WQ_MEM_RECLAIM | WQ_UNBOUND,
-> +				     1, dev_name(&sdiodev->func1->dev));
+…
 
-So two things changed, 1) WQ_HIGHPRI flag added *and* 2) use 
-allow_workqueue basically dropping __WQ_ORDERED. Not sure which one 
-contributes to the behavior described in the commit message.
+Not sure it matters but this struct `dev' is allocated on stack. Should
+the interrupt fire *before* rcuwait_wait_event() set wait.task to NULL
+then it is of random value on the first invocation of rcuwait_wake_up().
+->
 
-Regards,
-Arend
+diff --git a/arch/powerpc/platforms/ps3/device-init.c b/arch/powerpc/platforms/ps3/device-init.c
+index 197347c3c0b24..e87360a0fb40d 100644
+--- a/arch/powerpc/platforms/ps3/device-init.c
++++ b/arch/powerpc/platforms/ps3/device-init.c
+@@ -809,6 +809,7 @@ static int ps3_probe_thread(void *data)
+ 	}
+ 
+ 	spin_lock_init(&dev.lock);
++	rcuwait_init(&dev.wait);
+ 
+ 	res = request_irq(irq, ps3_notification_interrupt, 0,
+ 			  "ps3_notification", &dev);
 
-> +	} else {
-> +		wq = alloc_ordered_workqueue("brcmf_wq/%s", WQ_MEM_RECLAIM,
-> +					     dev_name(&sdiodev->func1->dev));
-> +	}
->   	if (!wq) {
->   		brcmf_err("insufficient memory to create txworkqueue\n");
->   		goto fail;
 
+Sebastian
