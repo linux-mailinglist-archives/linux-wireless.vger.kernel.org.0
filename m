@@ -2,122 +2,95 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 657E418AE84
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Mar 2020 09:42:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 74D9718AEA7
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Mar 2020 09:48:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726623AbgCSIms (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 19 Mar 2020 04:42:48 -0400
-Received: from mail.kernel.org ([198.145.29.99]:56754 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725601AbgCSImr (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 19 Mar 2020 04:42:47 -0400
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 9125A20724;
-        Thu, 19 Mar 2020 08:42:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1584607367;
-        bh=bc6Fify+38nZAY3Cia1aV1OdCk4gn2q4y8vjHO0jHQs=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=tziaOs8nF6qC2ZxtPxDt+NdfWpIrzDmvKzsswJgbGZoj8i6PseYVNTHnVQCWhF3l7
-         BlaCfZEzl2+/751CB3Sz2r9W2tBaPF/Ha6955QYPrXbnsfvJrB3QDPo2+ZfG4d0stK
-         TebhEBXc4YrP7M09KzptbT9OYlt0nFKptulOurBg=
-Date:   Thu, 19 Mar 2020 09:42:44 +0100
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Thomas Gleixner <tglx@linutronix.de>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Ingo Molnar <mingo@kernel.org>, Will Deacon <will@kernel.org>,
-        "Paul E . McKenney" <paulmck@kernel.org>,
-        Joel Fernandes <joel@joelfernandes.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Logan Gunthorpe <logang@deltatee.com>,
-        Kurt Schwemmer <kurt.schwemmer@microsemi.com>,
-        Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org,
-        Felipe Balbi <balbi@kernel.org>, linux-usb@vger.kernel.org,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        Oleg Nesterov <oleg@redhat.com>,
-        Davidlohr Bueso <dave@stgolabs.net>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        linuxppc-dev@lists.ozlabs.org
-Subject: Re: [patch V2 11/15] completion: Use simple wait queues
-Message-ID: <20200319084244.GC3492783@kroah.com>
-References: <20200318204302.693307984@linutronix.de>
- <20200318204408.521507446@linutronix.de>
+        id S1727116AbgCSIsg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 19 Mar 2020 04:48:36 -0400
+Received: from mail-wm1-f67.google.com ([209.85.128.67]:54254 "EHLO
+        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727234AbgCSIsO (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 19 Mar 2020 04:48:14 -0400
+Received: by mail-wm1-f67.google.com with SMTP id 25so1039448wmk.3
+        for <linux-wireless@vger.kernel.org>; Thu, 19 Mar 2020 01:48:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=IYDx/ptJGnszzUSU/93/OXR/JSdyr1OCrDuqjWjepG4=;
+        b=V9pWedQYvc2k7hjphAEHXozN3NuyMbd+eVZu5SD9BfwJpkD77qUWodVimzg9WuBUz+
+         iBcCnCR11OevH+wbWB/3rgfpVC6l77ViGEO9TCygNwEGNERoFblEwWwHHWbc73fpoYJu
+         oi2GmYpJpedds7VF9FtuN95CxdwW4ugKECRYw=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=IYDx/ptJGnszzUSU/93/OXR/JSdyr1OCrDuqjWjepG4=;
+        b=iW6KoDZdeYiTY6AoAkZOtaU43C9Q+wwSDIU7iPbpxR3rEbXYWgK/jezMp3JGkcXewG
+         /3POOAItrcPzQ9LJpG6gPiiBTbPkF+Ur6UE5/bXlMKSj8Q6K/udJh2gMgWOvMNLbRelC
+         JyOVyvwVtxJVAUlz0qDpo6AZ/0a7hE1f7d6Dx3Sqrzh4y7qFaSAhXDXvVboR3kPwlPuy
+         MO8IsDSTQoep05vJ8L+Vm0OwzQJw1w5DJty168WWPvkCTU6qN/4q6jVrSKzrxL6u4nbG
+         c2xI/LOyOOjg8ujPWFd0JNG8akTgJGYxgSyby9oK0EKY9LlxmTMwSF2GC7ooDEelDSdN
+         ysjw==
+X-Gm-Message-State: ANhLgQ2Pf2KnXXSopFsT0DTaBIuZMksn4bQorKciTaKbTeyZFcBfTS29
+        MoF6GaJXwqusOTDdAS4DAkpzIA==
+X-Google-Smtp-Source: ADFU+vvruVI0emy4HXrV7ex9XnC0hxYwqMNLeJ/cKSvgBRHAq6F3VtrztdileURLjTlC1HIHea5S6A==
+X-Received: by 2002:a7b:ca41:: with SMTP id m1mr2250238wml.127.1584607692222;
+        Thu, 19 Mar 2020 01:48:12 -0700 (PDT)
+Received: from [10.230.41.113] ([192.19.215.251])
+        by smtp.gmail.com with ESMTPSA id x17sm2178076wmi.28.2020.03.19.01.48.10
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 19 Mar 2020 01:48:11 -0700 (PDT)
+Subject: Re: [PATCH 1/3] brcmfmac: support AP isolate
+To:     Wright Feng <wright.feng@cypress.com>, franky.lin@broadcom.com,
+        hante.meuleman@broadcom.com, kvalo@codeaurora.org,
+        chi-hsien.lin@cypress.com
+Cc:     linux-wireless@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com
+References: <1584604406-15452-1-git-send-email-wright.feng@cypress.com>
+ <1584604406-15452-2-git-send-email-wright.feng@cypress.com>
+From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
+Message-ID: <32bb2e43-76f5-5c41-af20-3cec1baa7bd8@broadcom.com>
+Date:   Thu, 19 Mar 2020 09:48:09 +0100
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.5.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200318204408.521507446@linutronix.de>
+In-Reply-To: <1584604406-15452-2-git-send-email-wright.feng@cypress.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Mar 18, 2020 at 09:43:13PM +0100, Thomas Gleixner wrote:
-> From: Thomas Gleixner <tglx@linutronix.de>
+On 3/19/2020 8:53 AM, Wright Feng wrote:
+> Hostap daemon has a parameter "ap_isolate" which is used to prevent
+> low-level bridging of frames between associated stations in the BSS.
+> For driver side, we add cfg80211 ops method change_bss to support
+> setting AP isolate from user space.
 > 
-> completion uses a wait_queue_head_t to enqueue waiters.
-> 
-> wait_queue_head_t contains a spinlock_t to protect the list of waiters
-> which excludes it from being used in truly atomic context on a PREEMPT_RT
-> enabled kernel.
-> 
-> The spinlock in the wait queue head cannot be replaced by a raw_spinlock
-> because:
-> 
->   - wait queues can have custom wakeup callbacks, which acquire other
->     spinlock_t locks and have potentially long execution times
-> 
->   - wake_up() walks an unbounded number of list entries during the wake up
->     and may wake an unbounded number of waiters.
-> 
-> For simplicity and performance reasons complete() should be usable on
-> PREEMPT_RT enabled kernels.
-> 
-> completions do not use custom wakeup callbacks and are usually single
-> waiter, except for a few corner cases.
-> 
-> Replace the wait queue in the completion with a simple wait queue (swait),
-> which uses a raw_spinlock_t for protecting the waiter list and therefore is
-> safe to use inside truly atomic regions on PREEMPT_RT.
-> 
-> There is no semantical or functional change:
-> 
->   - completions use the exclusive wait mode which is what swait provides
-> 
->   - complete() wakes one exclusive waiter
-> 
->   - complete_all() wakes all waiters while holding the lock which protects
->     the wait queue against newly incoming waiters. The conversion to swait
->     preserves this behaviour.
-> 
-> complete_all() might cause unbound latencies with a large number of waiters
-> being woken at once, but most complete_all() usage sites are either in
-> testing or initialization code or have only a really small number of
-> concurrent waiters which for now does not cause a latency problem. Keep it
-> simple for now.
-> 
-> The fixup of the warning check in the USB gadget driver is just a straight
-> forward conversion of the lockless waiter check from one waitqueue type to
-> the other.
-> 
-> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Arnd Bergmann <arnd@arndb.de>
+> Signed-off-by: Wright Feng <wright.feng@cypress.com>
+> Signed-off-by: Chi-hsien Lin <chi-hsien.lin@cypress.com>
 > ---
-> V2: Split out the orinoco and usb gadget parts and amended change log
-> ---
->  drivers/usb/gadget/function/f_fs.c |    2 +-
->  include/linux/completion.h         |    8 ++++----
->  kernel/sched/completion.c          |   36 +++++++++++++++++++-----------------
->  3 files changed, 24 insertions(+), 22 deletions(-)
+>   .../wireless/broadcom/brcm80211/brcmfmac/cfg80211.c | 21 +++++++++++++++++++++
+>   1 file changed, 21 insertions(+)
+> 
+> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+> index a2328d3..eb49900 100644
+> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
 
-For USB portion:
+[...]
 
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> @@ -5421,6 +5441,7 @@ static struct cfg80211_ops brcmf_cfg80211_ops = {
+>   	.update_connect_params = brcmf_cfg80211_update_conn_params,
+>   	.set_pmk = brcmf_cfg80211_set_pmk,
+>   	.del_pmk = brcmf_cfg80211_del_pmk,
+> +	.change_bss = brcmf_cfg80211_change_bss,
+
+maybe only add this when firmware support "ap_isolate"?
+
+Regards,
+Arend
