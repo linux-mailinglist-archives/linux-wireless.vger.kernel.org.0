@@ -2,134 +2,56 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A97018C031
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Mar 2020 20:17:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6306618C0BA
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Mar 2020 20:50:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726943AbgCSTRe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 19 Mar 2020 15:17:34 -0400
-Received: from [37.49.224.149] ([37.49.224.149]:57611 "EHLO
-        walker-construction.co.uk" rhost-flags-FAIL-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726934AbgCSTRe (ORCPT
+        id S1727509AbgCSTuW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 19 Mar 2020 15:50:22 -0400
+Received: from mail-ed1-f67.google.com ([209.85.208.67]:39800 "EHLO
+        mail-ed1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725747AbgCSTuW (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 19 Mar 2020 15:17:34 -0400
-From:   "Wilson Jasper" <wilson@walker-construction.co.uk>
-To:     linux-wireless@vger.kernel.org
-Subject: RE: Walker Construction_RFQ
-Date:   19 Mar 2020 20:17:31 +0100
-Message-ID: <20200319201730.928911528E0EE3FC@walker-construction.co.uk>
+        Thu, 19 Mar 2020 15:50:22 -0400
+Received: by mail-ed1-f67.google.com with SMTP id a43so4255509edf.6
+        for <linux-wireless@vger.kernel.org>; Thu, 19 Mar 2020 12:50:20 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=MFk5i2iiXtU50QkhlM+1rTn5+B+gPnQ/5B883R6gq5U=;
+        b=VNUVm5O3V+eVH292HyWNwL1SFfbB/t1faA4Ry97i1PCmBBvjmB7btgOWJj4H687/Bb
+         5WoAvTc47P/dchzjxXYy4/xIgPD82ZQHbOm+1kjGOlmvHj5u/1hbDjmlcQtyqvQNTTOp
+         mEC3aqROdXGwPmQ8iCynj6g3Wl+mI2tWDJBFmR59VhuyByTDFI1etc/2eDf8AbICQK7W
+         zFTvksdmJ3yV39Vp0eIGLnS23Au3q98k9zHN6BW/IlmWBcRC46RnRdbv7hx0DeDAS2qb
+         X1ASja2CnpOfIktVlcmMjrMY7s2rnI5EWZqONUPYYnY9k9M2+U38Gg7hhvgC4Va02sLb
+         NX+w==
+X-Gm-Message-State: ANhLgQ1reD9/80dRdEHmgqGumIC5qAxMPDwby4a7M7TBggBAzgdt0m/1
+        eIdnh73Ta1j8pu3N8k2tIb0Hw4FRDidF99+C6mo=
+X-Google-Smtp-Source: ADFU+vvqXbxUPqNrGib6H/au8KnUJLaPorlPB/ylMwfKH4Rgb0AGqfapXk29cpLvqaEBCvY3OIxpU3utebaFpAUE0Gw=
+X-Received: by 2002:a17:906:82cd:: with SMTP id a13mr5030705ejy.70.1584647419726;
+ Thu, 19 Mar 2020 12:50:19 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
-        boundary="----=_NextPart_000_0012_0A0EACAC.48CC584F"
+References: <iwlwifi.20200318081237.46db40617cc6.Id5cf852ec8c5dbf20ba86bad7b165a0c828f8b2e@changeid>
+ <20200318213440.GO311@earth.li> <CAJvTdKmrKJQee-WrG4UCo0FYrr++Er=mftrdLKjcCuy23N+HPw@mail.gmail.com>
+In-Reply-To: <CAJvTdKmrKJQee-WrG4UCo0FYrr++Er=mftrdLKjcCuy23N+HPw@mail.gmail.com>
+From:   Len Brown <lenb@kernel.org>
+Date:   Thu, 19 Mar 2020 15:50:08 -0400
+Message-ID: <CAJvTdK=PbQh9uqN2P43p=ZYvYtf6mxZgyXveKrhgr+w3nUuBCQ@mail.gmail.com>
+Subject: Re: [PATCH v5.6] iwlwifi: don't send GEO_TX_POWER_LIMIT if no wgds table
+To:     Jonathan McDowell <noodles@earth.li>
+Cc:     Luca Coelho <luca@coelho.fi>, kvalo@codeaurora.org,
+        linux-wireless@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This is a multi-part message in MIME format.
+BTW. also verified that this patch (with a small offset) applied to
+5.5 and also fixes the problem there.
 
-------=_NextPart_000_0012_0A0EACAC.48CC584F
-Content-Type: text/plain;
-	charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+5.3 and 5.4 always worked fine not requiring any patching, as the
+regression happened in 5.5-rc1.
 
-Dear Sir/Madam,,
-
-Please confirm and give quotation as per attached,quote according=20
-to Bill of
-materials
-
-Highlighted items will be supplied in large quantity.
-
-Kind Regards.
-
-Wilson Jasper=20
-Purchase Manager
-Walker Construction (UK) Ltd
-
-
-I will like a receipt of your acknowledgment mail.
-------=_NextPart_000_0012_0A0EACAC.48CC584F
-Content-Type: application/msword; name="PO032411.doc"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="PO032411.doc"
-
-e1xydGY2ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHtcb2JqZWN0e1w5
-MDYzOTIzOTB9XG9iamxpbmt7XDkwNjM5MjM5MH1cb2Jqdzg3OTJ7XDkwNjM5MjM5MH1cb2Jq
-aDI4MHtcOTA2MzkyMzkwfXtcOTA2MzkyMzkwfXtcb2JqZGF0YQ1ccHN6NTIyODIzNTQ2XHly
-MDU5NzcyMzIwMlwnPwkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJ
-CQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJ
-CQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJ
-CQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQl7XG9iamVjdFxkbGJncHljbXdt
-cm9qWldCRUlYQkNaQ0hDRUlPVFdETDQwNzUxMjU2NzgxNDc1MzQwNDg4NDVkbGJncHljbXdt
-cm9qWldCRUlYQkNaQ0hDRUlPVFdETDUwODAxMDAzOTgxe1xhaXJqcXZqeHBtaHVkdHlwd2d1
-bnlza3JTSFFBUVFOU1BWWlFHWko5NzcwMTc5MTU1MjgzNDAwNzg0NjA4NDk2NGFpcmpxdmp4
-cG1odWR0eXB3Z3VueXNrclNIUUFRUU5TUFZaUUdaSjQwNDk2Njc5MDE0ODM2NjkwMTAzODUy
-NDUxOX19Zjk3MmIzNGIwMjAwMDAwMDBiMDAwMDAwNjU1MTc1NjE3NDY5NmY0e1xtYmVnQ2hy
-IFx7XHtcbWVuZENocn0NZTJlMzMwMDAwMDAwMDAwMDAwMDAwMDBiOTA2MDAwMDAyNjBmMWIy
-ZDVhMTAxMDhhYjFkYjg3ZWZmYzc1ZDI1M2RiZDZkODI4YjE4OGIxYmI4OWJhNGE2YzMwNTE1
-YzM5ZjNjOGIzMDUzZmZkNjA1YWM3MWQ4MTkyZDBhNzFkODE5ZmZlMGQzYjdmY2VhZWI0NDAw
-NDQ2NjIzNTZiMWI1ZTFhNjJjYTc0MDdjMDc2ZjViNGM2ZjAzNDM4NmE2NDgwYjgzNDRjMTFi
-NTljYzk4YmEyYTUwZGY2NzNlMWYyMGJkNDkzNzI2ODliYzU3YjZmMDMxMDM2NjBjN2I1Mzg0
-OTBiMmQxMmFkNTM2NjljY2NkZDBkZTE2YjczZjIwNDNjMDBkNGNjMDNjOWIxY2VmMmJjYzQ5
-MjBjZmEwZWIzM2Y5M2I4NzEyM2JhNjJiYzRiNzRiZmE2ODY1NTg2NWQwYWJjM2U5NDQwMTAw
-MDAzOWVhYzhlYmM3MGFmOWNhMmFjODk2YTk5NjI4MjViMGFlMGFiYThlY2Y3ODQyYjc0MmRl
-YmE5ZThhNGM3YTAwOWNiNzY1MTkyMDM3MzdlZWI3NDhjMTgyMmYwYjI0MjNjZTg0MTk5ZDhl
-ZDkyYTgyNWM5OWY2Njc1OWY0NzQyYTE5ZmUyNTI4ZThlZjY5ODAwMTYxYWU1ZGQ1OThiNzI2
-NGJiNmRjY2NmYzA1NDhmZTc0MmYzNzczNzY4NjQxMjczNTNlOGM5NjljYWQxMjA1ODc5M2Uz
-YjgwODRlNjIzYmE2MjM4NjlhOTY3OTFhYWIwOTFkZmYzZjYwODA2Njc0NmRmNzE3ZThiY2Y3
-YWZmY2NiNWZkYjE1NDlhZGEwZTE1ZDQ4OTM4Y2RlYjcyMTA5OWJlNGNhNGM5NTY0NWU5MzQz
-YTc0ODk5Y2I0OGMwZTE0YzQyMThmNDE2MzZmMjk4ZjFhNTg1MWQ1MzNkZGQ5OGFiMDYxOTFi
-OWFiMWFkMDEzNGQyOWUyYzQ2MjNjODNhOGFiZTFjZDFmMDY1ZGFkZmUxYmRkZWQxNzQ4Y2Nm
-ZDdiN2ZlNmYyYWVhZTZjZTQxYzVmNTk4MWZhZDA2NDQ4MjAzNTQ2NDMyNTdiZmQ5MzhhZTBk
-MWIyNWMzMjQ3NTQ4M2Y1MTQ4ZjkwOTg0NDdkNDcwOTJiN2YzODI3M2I0M2IzYjgzNzA5MmNi
-YzM2YTIzZDkxN2JjOTliZDg1NTI2YmM1N2MyODBiNzIwYjkzMzViOTI4N2MyOTQ0ZTk5Y2U1
-YWZjYmMxNzRjZWVlMTIxZGUxNTg0M2FmZTczMGUxYmRjOTAxOGNkZGFiZmMzNmU5MjEzNzY0
-M2ZlYjAzYTk3MTQzZThmNDAwMDAwMGU5ZDcwMDAwMDBlOWI4MDEwMDAwOWM1NjUyNTc5MDlj
-NTI4MWMyNjMwODAwMDA4MWVhNTgxNjAwMDA4MWMyNmIwNzAwMDA4MWMyOGM1YjAwMDA1YTlk
-OTA4MWVlNzQzMzAwMDA4MWVlOTQxNzAwMDA4MWVlZmMyNTAwMDA4MWVlMzU3MjAwMDA4MWM3
-MWM2MTAwMDA4MWMyY2UxZDAwMDA1ZjVhNWU5ZGU5ZGMwMDAwMDA4MWMxZDkwMTAwMDBlYjc5
-OWM1MDJkYjQ3NjAwMDAwNThiNWYwMDAwOGQ4MDQzNGYwMDAwMmQ0NzEyMDAwMDhkODBjMjUy
-MDAwMDA1ZDExYjAwMDA1ODlkZWIwNzY3NTlmYjdlMjk5M2U2ZTkwOTAxMDAwMGViNDk1NjVl
-OWM1MzUwOGQ5ODI2MzYwMDAwZWIwODU3NWZmZDM0NWE0OTViZDk1MjVhOGQ4M2NkNzkwMDAw
-NTc1ZmViMDdmMDUxY2RkMGI3MDQxYjgxZWI4MDU4MDAwMDgxZWJlMTU4MDAwMDhkODM0NzEx
-MDAwMDU4NWI5ZDU2NWVlOWQ2MDAwMDAwOTBlYmIyZWIzNzhkOTllYjAyMDAwMDZiYzAwMDkw
-NjljMDQ3MDdjMTQ1ZWI0NWViMWVlYjc3NTllOTVmZmZmZmZmZWIzOWViMTBmZmExY2MxZDdk
-ZWIwOTRkYzRlNDdkYzM1N2QxYTk0NmViNWJlOWJjMDAwMDAwZWJkZDljNTM4MWViOTY1NjAw
-MDA4M2ViNzI4MWViOTk2MTAwMDA4ZDliZTk2ZjAwMDA1YjlkZTkxZmZmZmZmZmViNmEwNTg1
-NTE5Nzc1ZWJiNDljNTM1NzUwODFjNzM0NWIwMDAwOGQ5ZmUyMTMwMDAwMDU4ZTQ5MDAwMDhk
-YmIyZDU0MDAwMDhkYjg3ZTBjMDAwMDU4NWY1YjlkZWIwNjMyNDYyZWYwYWQ1MzMxMDFlYjU4
-NTA1ODljNTI1MDU4OTA1MWViMDhlNTdlODc0MDJhZDY1NDBlODFjMTk5MjIwMDAwODFlOTJh
-MTQwMDAwOGQ5MTc0NzEwMDAwODFjMTJiNzYwMDAwNTk1YTlkZTkzZGZmZmZmZmViOTQ1NjVl
-ZTk1YmZlZmZmZmU5ZGZmZWZmZmZlOTQ2ZmZmZmZmZWIwNzcwZTBjYzlmMGFiZDg2ZTk3M2Zm
-ZmZmZmU5Y2NmZWZmZmY4M2MxMDRlYjA1ZTkwZGZmZmZmZjM5ZDkwZjgyMGZmZmZmZmYwNGJk
-MTc3NzY4OTBlNjk2NWQzNmZjMGE1MDk1MjNlN2I1NDk3MWVmYjgyYjg0OTg4ZDBmZjU0ZWEw
-ZDY3Mjc5ZTUwZjY5YTNlMGYwY2YyOGJkZmE1NjAzOTQ2NjdjOWY2N2FiZTAzMDBmZjBmYjBi
-YTk2MzVjMjJjOTMyNzgzNzQ1MTZjMDA2Y2QxNTJlMjc3MjljYjZlM2Y0YWY1MDZhMDZiNDc1
-MmVkMDkyNzcwZWM0ODg0N2ZhZTAyMzY3MWZkZDE0NmNhODJjZmIxZDZjMTQ3ZDQyYmM1ZDZk
-YWUyZDg2OTIzMGRmZjY0ZTc5MTFhZDUxZGJhYmU4Y2UxMmNjMDU3NjQ5ZTBlMDQwNjIwYmRk
-ZTc0ZWU1ZDBlYjZkMDIzNTMxN2Q2YzM4ZmJmYWZiMGQzZTcwYmUyMGI1MTA5ZTY1YWVjN2Zj
-ODgzODFiOTAzZGUyNTNjNzcwYWU3ODMzOTU1NmVjODhkODI4NjM3ZjZkYWJjYTg1YzAxNzU4
-NWZjNTk5NjBmNTI4ZDcwMTIzOWRkZWIwMmQxMDIwOWI0OWY1MmQyNTM3YTgyYmQzYWFjZGNm
-YmQ5ZTEyOGUwOGQwNjg2ZWQwMzdhNmUwOTYyYTAyZjdiNWQ3YjA2MjBmZDIwN2NjN2E0MjZm
-NTJlODBmNGNjMDU0ZjE0NjdjNDM1NmQyMjQ2OTM5YmU3ZmI1MGE1ZDk0OWE0MjVjYjc2NmIx
-YjUxYWNlMzFiOGMzZjBiMzhkMmZjODY2YTA2MTMyYjFlNTQ2YTQxODA4NmNiNmIxYmRiNmY5
-YmNmMGYxNTNlOTE1OTNlOTViNTg2MjNkY2VlZDg5NzVkMDQwZTU2N2M0NDUxZDU2NjJhODA4
-NzRhNTFkNGQ1NjAxOTAzZjE4ZWE3NTQwMjhhN2Y4MDYwMzlmNGRhN2JlNGZlMDFkNDk4ZmE1
-ODQyNWZhNDhjOTQ5OWI3ZGY0ZDlmODMwNzcxNmNhZDVhYTllNDg5OGI3NWRlZWFkZjFkOTNi
-ODBhZWQxZjAwNWE4NjhhZmU4ZjIwZjlhZGRhZmY5YTJkMGY1MDcwMGU1YmNmM2YxMzgxZmEx
-ZTI3OWQxMDg3MzUyY2EwZmZhMmM4MjkyNDFkZmE0NzM2MGViMjYzODBhNTQ3ODI2YWFjN2E5
-ZGNkYWQ3NjdiNjFjMmU3NGI4OGJiNDcxNmVhZmFhMzE0NTlhNWJmZTU2MmM2Mjg1ZTVlMDM0
-YTUyZWYzZjVmMjIyOWQ1YzgwNmE1NGNkMDBkYjE1MGFlM2ZmMDA0ZjAxYWIwM2EyYTU2MTlk
-NzA5NzA2MTFlMjY4ODRkYzU5MzNlMzE0NWQ5OTdmNjc3ZDE1NDBlZjY1NTkwZjhjZDYwOGZh
-MTE2ODY1YzkxYzM5Nzc0NDcyNTBkYTU3ZTBlNzAxYmUwYWI0OWE0OTQzYzc3MzVjODdkNGNj
-NjZlNGVlMzUzYTU0OGQ0N2FlMmUzNmJlZjNlZjMyOTA3MDhiOWU3Y2Y3ZDhkMzZlNmIwM2Uy
-NTE4MWY1YzVkZjI4YTYyMzg3M2M4ODgxMGRhYjUzN2NiNzYwMWMxMzNmMjJkNTc5ZmNiODhj
-YjkyODllMjhjZWFjMWFmZWVkYWI0YTY3ODVlYzJiYWIzYzRhYjZjZTk2NTE4OTU2ZGI3Y2M5
-YjBkN2NmNGVmMjk3YzUyZWIzNmYwYjQ5NTVkYTM2YTUxYjU2ZjM1M2VlNjM0ODc3YmY1NmVm
-NmExZjk0OTY4Nzg1MzU0NjhiOGNiM2NjZDc4MjU1YTVmYjczMTA1MzA3MGQxMWMyYTI5OTgz
-NjQ2ZjM2YjQwMTYwNWUwNDBiOTYzYTVjYzA0YzI4MmY1ZGQ4MWZjYjNjZmM3Mzk4ODIwOTI3
-MzI3Y2JhZGUwY2FmYmExNDJhYWE5YThjNTA1ZTkxNWU2ZDk4NDg0Nzc5NWQxYWQ4NGUxNmVm
-NDcyOWQzZGFkZGU1MTc1MDJlOTczNGU0YTYzZjZlMWEyNGUzYTg2MTAwMDAwMDAwfVxvYmp1
-cGRhdGU2MzkzNTkxMTF9fQ==
-
-------=_NextPart_000_0012_0A0EACAC.48CC584F--
+thanks,
+Len Brown, Intel Open Source Technology Center
