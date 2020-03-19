@@ -2,91 +2,83 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DE15F18A9F0
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Mar 2020 01:45:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 12E8718AA15
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Mar 2020 01:52:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726933AbgCSApN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 18 Mar 2020 20:45:13 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:59198 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726663AbgCSApM (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 18 Mar 2020 20:45:12 -0400
-Received: from p5de0bf0b.dip0.t-ipconnect.de ([93.224.191.11] helo=nanos.tec.linutronix.de)
-        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
-        (Exim 4.80)
-        (envelope-from <tglx@linutronix.de>)
-        id 1jEjIR-0005E3-Fd; Thu, 19 Mar 2020 01:44:27 +0100
-Received: by nanos.tec.linutronix.de (Postfix, from userid 1000)
-        id CFC0A103088; Thu, 19 Mar 2020 01:44:26 +0100 (CET)
-From:   Thomas Gleixner <tglx@linutronix.de>
-To:     Joel Fernandes <joel@joelfernandes.org>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Ingo Molnar <mingo@kernel.org>, Will Deacon <will@kernel.org>,
-        "Paul E . McKenney" <paulmck@kernel.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Logan Gunthorpe <logang@deltatee.com>,
-        Kurt Schwemmer <kurt.schwemmer@microsemi.com>,
-        Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org,
-        Felipe Balbi <balbi@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-usb@vger.kernel.org, Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
+        id S1727099AbgCSAwn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 18 Mar 2020 20:52:43 -0400
+Received: from mga03.intel.com ([134.134.136.65]:47453 "EHLO mga03.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726623AbgCSAwn (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 18 Mar 2020 20:52:43 -0400
+IronPort-SDR: 9PHaVMu3wjUu2Eik/Nrw/Ih0HKcWH8KMDjknwLMZ3JRKU1/Ph8kwFRVjsrSkbptzlpaI/c+Naj
+ r5ALJnIINnOw==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2020 17:52:42 -0700
+IronPort-SDR: eHBdTpIIDAbD0X9BkQOd0Zbhzapxsn9ytadHeP2hjNCnKfvuzFrOvj/zJWu+JafqSZgqI8MpEw
+ nvLAhkeegxJQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.70,569,1574150400"; 
+   d="scan'208";a="236792998"
+Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
+  by fmsmga007.fm.intel.com with ESMTP; 18 Mar 2020 17:52:39 -0700
+Received: from kbuild by lkp-server01 with local (Exim 4.89)
+        (envelope-from <lkp@intel.com>)
+        id 1jEjQN-0003Ow-A9; Thu, 19 Mar 2020 08:52:39 +0800
+Date:   Thu, 19 Mar 2020 08:52:07 +0800
+From:   kbuild test robot <lkp@intel.com>
+To:     Chris Chiu <chiu@endlessm.com>
+Cc:     kbuild-all@lists.01.org, Jes.Sorensen@gmail.com,
+        kvalo@codeaurora.org, davem@davemloft.net,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        Oleg Nesterov <oleg@redhat.com>,
-        Davidlohr Bueso <dave@stgolabs.net>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        linuxppc-dev@lists.ozlabs.org
-Subject: Re: [patch V2 11/15] completion: Use simple wait queues
-In-Reply-To: <20200319003351.GA211584@google.com>
-References: <20200318204302.693307984@linutronix.de> <20200318204408.521507446@linutronix.de> <20200319003351.GA211584@google.com>
-Date:   Thu, 19 Mar 2020 01:44:26 +0100
-Message-ID: <87a74ddvh1.fsf@nanos.tec.linutronix.de>
+        linux-kernel@vger.kernel.org, linux@endlessm.com
+Subject: Re: [PATCH 2/2] rtl8xxxu: Feed current txrate information for
+ mac80211
+Message-ID: <202003190842.5IczJPB8%lkp@intel.com>
+References: <20200318082700.71875-3-chiu@endlessm.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200318082700.71875-3-chiu@endlessm.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Joel,
+Hi Chris,
 
-Joel Fernandes <joel@joelfernandes.org> writes:
-> On Wed, Mar 18, 2020 at 09:43:13PM +0100, Thomas Gleixner wrote:
->> The spinlock in the wait queue head cannot be replaced by a raw_spinlock
->> because:
->> 
->>   - wait queues can have custom wakeup callbacks, which acquire other
->>     spinlock_t locks and have potentially long execution times
->
-> Cool, makes sense.
->
->>   - wake_up() walks an unbounded number of list entries during the wake up
->>     and may wake an unbounded number of waiters.
->
-> Just to clarify here, wake_up() will really wake up just 1 waiter if all the
-> waiters on the queue are exclusive right? So in such scenario at least, the
-> "unbounded number of waiters" would not be an issue if everything waiting was
-> exclusive and waitqueue with wake_up() was used. Please correct me if I'm
-> wrong about that though.
+Thank you for the patch! Perhaps something to improve:
 
-Correct.
+[auto build test WARNING on v5.6-rc6]
+[also build test WARNING on next-20200318]
+[cannot apply to jes/rtl8xxxu-devel]
+[if your patch is applied to the wrong git tree, please drop us a note to help
+improve the system. BTW, we also suggest to use '--base' option to specify the
+base tree in git format-patch, please see https://stackoverflow.com/a/37406982]
 
-> So the main reasons to avoid waitqueue in favor of swait (as you mentioned)
-> would be the sleep-while-atomic issue in truly atomic context on RT, and the
-> fact that callbacks can take a long time.
+url:    https://github.com/0day-ci/linux/commits/Chris-Chiu/Feed-current-txrate-information-for-mac80211/20200318-194357
+base:    fb33c6510d5595144d585aa194d377cf74d31911
+reproduce:
+        # apt-get install sparse
+        # sparse version: v0.6.1-180-g0558317d-dirty
+        make ARCH=x86_64 allmodconfig
+        make C=1 CF='-fdiagnostic-prefix -D__CHECK_ENDIAN__'
 
-Yes.
+If you fix the issue, kindly add following tag
+Reported-by: kbuild test robot <lkp@intel.com>
 
-Thanks,
 
-        tglx
+sparse warnings: (new ones prefixed by >>)
 
+   drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c:4819:17: sparse: sparse: cast from restricted __le16
+   drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c:4892:17: sparse: sparse: cast from restricted __le16
+>> drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c:5407:6: sparse: sparse: symbol 'rtl8xxxu_desc_to_mcsrate' was not declared. Should it be static?
+
+Please review and possibly fold the followup patch.
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
