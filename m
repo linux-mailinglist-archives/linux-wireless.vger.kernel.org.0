@@ -2,94 +2,123 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B87C718AECA
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Mar 2020 09:52:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C795118AED3
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Mar 2020 09:55:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726864AbgCSIwT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 19 Mar 2020 04:52:19 -0400
-Received: from mx2.suse.de ([195.135.220.15]:35642 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725601AbgCSIwT (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 19 Mar 2020 04:52:19 -0400
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id 25E85B117;
-        Thu, 19 Mar 2020 08:52:16 +0000 (UTC)
-Date:   Thu, 19 Mar 2020 01:51:09 -0700
-From:   Davidlohr Bueso <dave@stgolabs.net>
-To:     Thomas Gleixner <tglx@linutronix.de>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Ingo Molnar <mingo@kernel.org>, Will Deacon <will@kernel.org>,
-        "Paul E . McKenney" <paulmck@kernel.org>,
-        Joel Fernandes <joel@joelfernandes.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Logan Gunthorpe <logang@deltatee.com>,
-        Kurt Schwemmer <kurt.schwemmer@microsemi.com>,
-        Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org,
-        Felipe Balbi <balbi@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-usb@vger.kernel.org, Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        Oleg Nesterov <oleg@redhat.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Arnd Bergmann <arnd@arndb.de>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [patch V2 08/15] Documentation: Add lock ordering and nesting
- documentation
-Message-ID: <20200319085109.vrvmpesytul3ek3e@linux-p48b>
-References: <20200318204302.693307984@linutronix.de>
- <20200318204408.211530902@linutronix.de>
+        id S1726063AbgCSIzv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 19 Mar 2020 04:55:51 -0400
+Received: from mail-wm1-f67.google.com ([209.85.128.67]:52112 "EHLO
+        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725787AbgCSIzv (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 19 Mar 2020 04:55:51 -0400
+Received: by mail-wm1-f67.google.com with SMTP id c187so1077817wme.1
+        for <linux-wireless@vger.kernel.org>; Thu, 19 Mar 2020 01:55:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=eVjeTiEe/+Y3kUb7qbMJcMEcD/Uy3XR+Yh9sVuFlyd4=;
+        b=TwPtUfFdBD4KBGsiIuSa1xJI7B8czzFlcPomUaVkeNyOGEFYdJ13CmpFJNUoj8BPaN
+         BMWr+MI6eg9MFO+S9qGF/CFZyxkWkhCv/ckmf2Fp872hrbG8Vkrd4+XuGFQdl6v3/Sjd
+         /P81OWHtEBf3hs3RE1GLcIcekE/7m1KGB4Ujo=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=eVjeTiEe/+Y3kUb7qbMJcMEcD/Uy3XR+Yh9sVuFlyd4=;
+        b=aFSLXrwkdxuFsM+6Ul9HVdixDORb3ss/L2XSgn/HfHUfvadhyGO/8/HRYb3YUiAna5
+         GvnR7d2W6ERxlj8/2m5CENOZUIKHl53eFrf2wSk375ZGna+dXfbkUpT+68FrwhVX9vls
+         LfJK2kvp+gSn8V4qD0Dfml5Z6KPbu80NjkbPAmvKqJclspPJetpaOw9/xCz3tFHVAtRb
+         5THMjja7f5aYx9owKzjbnZmwXAFIIvRNrR3M/GI9cztRd4/psE+0uDElZ7WXltpJct8w
+         09c7sUe1MwFwdykwReF1TIdKKgy48RCvoQZrcjOSlJjKNsw7VoXbHwVhWIc6yVkKHbuv
+         UabA==
+X-Gm-Message-State: ANhLgQ3WpmjhjmwdyvPVO17DHNhLtAZgXjUiA2qiqXCG+qbuHwjVp5ed
+        c7pHFsbXWGPVG05aW8PYoj3HvQ==
+X-Google-Smtp-Source: ADFU+vtWpAArYxIef7ZNeYOmbCHwr/+U8iwOyJCyWG+P3lUjml40Em9OYLwqjdR2iUla4Jnx1VP2ow==
+X-Received: by 2002:a1c:7ec9:: with SMTP id z192mr2434340wmc.100.1584608149090;
+        Thu, 19 Mar 2020 01:55:49 -0700 (PDT)
+Received: from [10.230.41.113] ([192.19.215.251])
+        by smtp.gmail.com with ESMTPSA id i12sm2598303wro.46.2020.03.19.01.55.47
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 19 Mar 2020 01:55:48 -0700 (PDT)
+Subject: Re: [PATCH 3/3] brcmfmac: make setting SDIO workqueue WQ_HIGHPRI a
+ module parameter
+To:     Wright Feng <wright.feng@cypress.com>, franky.lin@broadcom.com,
+        hante.meuleman@broadcom.com, kvalo@codeaurora.org,
+        chi-hsien.lin@cypress.com
+Cc:     linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com, tj@kernel.org
+References: <1584604406-15452-1-git-send-email-wright.feng@cypress.com>
+ <1584604406-15452-4-git-send-email-wright.feng@cypress.com>
+From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
+Message-ID: <40e33702-d37f-085d-a5a7-7f09ae9e2629@broadcom.com>
+Date:   Thu, 19 Mar 2020 09:55:46 +0100
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.5.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20200318204408.211530902@linutronix.de>
-User-Agent: NeoMutt/20180716
+In-Reply-To: <1584604406-15452-4-git-send-email-wright.feng@cypress.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 18 Mar 2020, Thomas Gleixner wrote:
->+Owner semantics
->+===============
->+
->+Most lock types in the Linux kernel have strict owner semantics, i.e. the
->+context (task) which acquires a lock has to release it.
->+
->+There are two exceptions:
->+
->+  - semaphores
->+  - rwsems
->+
->+semaphores have no strict owner semantics for historical reasons. They are
++ Tejun - regarding alloc_workqueue usage
 
-I would rephrase this to:
+On 3/19/2020 8:53 AM, Wright Feng wrote:
+> With setting sdio_wq_highpri=1 in module parameters, tasks submitted to
+> SDIO workqueue will put at the head of the queue and run immediately.
+> This parameter is for getting higher TX/RX throughput with SDIO bus.
+> 
+> Signed-off-by: Wright Feng <wright.feng@cypress.com>
+> Signed-off-by: Chi-hsien Lin <chi-hsien.lin@cypress.com>
+> ---
+>   .../wireless/broadcom/brcm80211/brcmfmac/common.c  |  5 +++++
+>   .../wireless/broadcom/brcm80211/brcmfmac/common.h  |  2 ++
+>   .../wireless/broadcom/brcm80211/brcmfmac/sdio.c    | 22 ++++++++++++++--------
+>   3 files changed, 21 insertions(+), 8 deletions(-)
+> 
 
-semaphores have no owner semantics for historical reason, and as such
-trylock and release operations can be called from interrupt context. They
-are ...
+[...]
 
->+often used for both serialization and waiting purposes. That's generally
->+discouraged and should be replaced by separate serialization and wait
->+mechanisms.
-            ^ , such as mutexes or completions.
+> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+> index 3a08252..885e8bd 100644
+> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+> @@ -4342,9 +4342,21 @@ struct brcmf_sdio *brcmf_sdio_probe(struct brcmf_sdio_dev *sdiodev)
+>   	bus->txminmax = BRCMF_TXMINMAX;
+>   	bus->tx_seq = SDPCM_SEQ_WRAP - 1;
+>   
+> +	/* attempt to attach to the dongle */
+> +	if (!(brcmf_sdio_probe_attach(bus))) {
+> +		brcmf_err("brcmf_sdio_probe_attach failed\n");
+> +		goto fail;
+> +	}
+> +
+>   	/* single-threaded workqueue */
+> -	wq = alloc_ordered_workqueue("brcmf_wq/%s", WQ_MEM_RECLAIM,
+> -				     dev_name(&sdiodev->func1->dev));
+> +	if (sdiodev->settings->sdio_wq_highpri) {
+> +		wq = alloc_workqueue("brcmf_wq/%s",
+> +				     WQ_HIGHPRI | WQ_MEM_RECLAIM | WQ_UNBOUND,
+> +				     1, dev_name(&sdiodev->func1->dev));
 
->+
->+rwsems have grown interfaces which allow non owner release for special
->+purposes. This usage is problematic on PREEMPT_RT because PREEMPT_RT
->+substitutes all locking primitives except semaphores with RT-mutex based
->+implementations to provide priority inheritance for all lock types except
->+the truly spinning ones. Priority inheritance on ownerless locks is
->+obviously impossible.
->+
->+For now the rwsem non-owner release excludes code which utilizes it from
->+being used on PREEMPT_RT enabled kernels. In same cases this can be
->+mitigated by disabling portions of the code, in other cases the complete
->+functionality has to be disabled until a workable solution has been found.
+So two things changed, 1) WQ_HIGHPRI flag added *and* 2) use 
+allow_workqueue basically dropping __WQ_ORDERED. Not sure which one 
+contributes to the behavior described in the commit message.
 
-Thanks,
-Davidlohr
+Regards,
+Arend
+
+> +	} else {
+> +		wq = alloc_ordered_workqueue("brcmf_wq/%s", WQ_MEM_RECLAIM,
+> +					     dev_name(&sdiodev->func1->dev));
+> +	}
+>   	if (!wq) {
+>   		brcmf_err("insufficient memory to create txworkqueue\n");
+>   		goto fail;
+
