@@ -2,29 +2,36 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 21AA418CF53
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Mar 2020 14:46:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C116418CF9E
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Mar 2020 15:00:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727127AbgCTNqy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 20 Mar 2020 09:46:54 -0400
-Received: from s3.sipsolutions.net ([144.76.43.62]:46446 "EHLO
+        id S1726809AbgCTOAr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 20 Mar 2020 10:00:47 -0400
+Received: from s3.sipsolutions.net ([144.76.43.62]:46588 "EHLO
         sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726843AbgCTNqy (ORCPT
+        with ESMTP id S1726773AbgCTOAr (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 20 Mar 2020 09:46:54 -0400
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        Fri, 20 Mar 2020 10:00:47 -0400
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.93)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1jFHz9-00Ay9P-Ey; Fri, 20 Mar 2020 14:46:51 +0100
+        id 1jFICa-00Azyq-VA; Fri, 20 Mar 2020 15:00:45 +0100
+Message-ID: <fc46dc237012ee859d9c70d6198cb4ad5040564c.camel@sipsolutions.net>
+Subject: Re: [RFCv2 1/2] mac80211: add receive path for ethernet frame format
 From:   Johannes Berg <johannes@sipsolutions.net>
-To:     netdev@vger.kernel.org
-Cc:     linux-wireless@vger.kernel.org
-Subject: pull-request: mac80211-next 2020-03-20
-Date:   Fri, 20 Mar 2020 14:46:41 +0100
-Message-Id: <20200320134642.87932-1-johannes@sipsolutions.net>
-X-Mailer: git-send-email 2.25.1
+To:     Manikanta Pubbisetty <mpubbise@codeaurora.org>,
+        ath11k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org,
+        Vasanthakumar Thiagarajan <vthiagar@codeaurora.org>
+Date:   Fri, 20 Mar 2020 15:00:42 +0100
+In-Reply-To: <1582804899-12814-2-git-send-email-mpubbise@codeaurora.org> (sfid-20200227_130214_238348_6B0CDFF4)
+References: <1582804899-12814-1-git-send-email-mpubbise@codeaurora.org>
+         <1582804899-12814-2-git-send-email-mpubbise@codeaurora.org>
+         (sfid-20200227_130214_238348_6B0CDFF4)
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.34.4 (3.34.4-1.fc31) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
@@ -32,97 +39,82 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 Hi,
 
-Here's another set of changes for net-next, nothing really stands out,
-but see the description and shortlog below.
+On Thu, 2020-02-27 at 17:31 +0530, Manikanta Pubbisetty wrote:
+> From: Vasanthakumar Thiagarajan <vthiagar@codeaurora.org>
+> 
+> Implement rx path which does fewer processing on the received data
+> frame which has already gone through 802.11 header decapsulation
+> and other functionalities which require 802.11 header in the low
+> level driver or hardware. Currently this rx path is restricted
+> to AP and STA mode, but can be extended for Adhoc mode as well.
+> 
+> It is upto to the low level driver to invoke the correct API and
+> make sure if the frame that it passes is in ethernet format and
+> the sta pointer is valid.
 
-Please pull and let me know if there's any problem.
+I guess generally this seems fine...
 
-Thanks,
+
+> +static const u8 pae_group_addr[ETH_ALEN] __aligned(2) = {0x01, 0x80, 0xC2, 0x00,
+> +							 0x00, 0x03};
+
+The coding style here is a bit weird ...
+
+> +static void
+> +ieee80211_rx_handle_decap_offl(struct ieee80211_sub_if_data *sdata,
+> +			       struct sta_info *sta, struct sk_buff *skb,
+> +			       struct napi_struct *napi)
+> +{
+> +	struct ieee80211_local *local = sdata->local;
+> +	struct ieee80211_vif *vif = &sdata->vif;
+> +	struct net_device *dev = sdata->dev;
+> +	struct ieee80211_rx_status *status;
+> +	struct ieee80211_key *key = NULL;
+> +	struct ieee80211_rx_data rx;
+> +	int i;
+> +	struct ethhdr *ehdr;
+> +	struct ieee80211_sta_rx_stats *stats = &sta->rx_stats;
+> +
+> +	ehdr = (struct ethhdr *)skb->data;
+
+You need to ensure that this is actually accessible in the skb head.
+
+> +	status = IEEE80211_SKB_RXCB(skb);
+> +
+> +	if (ieee80211_hw_check(&local->hw, USES_RSS))
+> +		stats = this_cpu_ptr(sta->pcpu_rx_stats);
+> +
+> +	/* TODO: Extend ieee80211_rx_decap_offl() with bssid so that Ethernet
+> +	 * encap/decap can be supported in Adhoc interface type as well.
+> +	 * Adhoc interface depends on bssid to update last_rx.
+> +	 */
+> +	if (vif->type != NL80211_IFTYPE_STATION &&
+> +	    vif->type != NL80211_IFTYPE_AP_VLAN &&
+> +	    vif->type != NL80211_IFTYPE_AP)
+> +		goto drop;
+
+Is there any value in this TODO? Probably should even WARN_ON() here.
+
+> +	stats->bytes += skb->len;
+
+There's a bit of a mismatch here now between frames with 802.11 header
+and frames with just ethernet - I don't know if we really need to
+consider that, but it's there still?
+
+> +	/* Forcing seqno index to -1 so that tid specific stats are
+> +	 * not updated in ieee80211_deliver_skb().
+> +	 */
+> +	rx.seqno_idx = -1;
+
+I guess that means you should also not advertise them to userspace ...
+unless you're assuming that the driver would? But that seems far from
+certain, so I guess if the driver intends to use ethernet RX then we
+should remove a bunch of things in sta_set_tidstats()?
+
+
+So I guess my biggest concern is about statistics - not that they need
+to be there, but that we shouldn't show missing ones as (close to) zero,
+but rather just not have them at all in this case.
+
 johannes
-
-
-
-The following changes since commit 74522e7baae2561870ea8ddf09dc6a126458cd7b:
-
-  net: sched: set the hw_stats_type in pedit loop (2020-03-16 02:13:43 -0700)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211-next.git tags/mac80211-next-for-net-next-2020-03-20
-
-for you to fetch changes up to 8fa180bb4aceaa25233ea61032eab5b025fb522f:
-
-  mac80211: driver can remain on channel if not using chan_ctx (2020-03-20 14:42:21 +0100)
-
-----------------------------------------------------------------
-Another set of changes:
- * HE ranging (fine timing measurement) API support
- * hwsim gets virtio support, for use with wmediumd,
-   to be able to simulate with multiple machines
- * eapol-over-nl80211 improvements to exclude preauth
- * IBSS reset support, to recover connections from
-   userspace
- * and various others.
-
-----------------------------------------------------------------
-Avraham Stern (1):
-      nl80211/cfg80211: add support for non EDCA based ranging measurement
-
-Erel Geron (1):
-      mac80211_hwsim: add frame transmission support over virtio
-
-Johannes Berg (4):
-      cfg80211: fix documentation format
-      mac80211: don't leave skb->next/prev pointing to stack
-      mac80211: consider WLAN_EID_EXT_HE_OPERATION for parsing CRC
-      nl80211: clarify code in nl80211_del_station()
-
-Markus Theil (2):
-      nl80211: add no pre-auth attribute and ext. feature flag for ctrl. port
-      mac80211: handle no-preauth flag for control port
-
-Nicolas Cavallari (2):
-      cfg80211: Add support for userspace to reset stations in IBSS mode
-      mac80211: Allow deleting stations in ibss mode to reset their state
-
-Qiujun Huang (1):
-      mac80211: update documentation about tx power
-
-Seevalamuthu Mariappan (1):
-      mac80211: Read rx_stats with perCPU pointers
-
-Shaul Triebitz (3):
-      nl80211: pass HE operation element to the driver
-      mac80211: HE: set missing bss_conf fields in AP mode
-      nl80211: add PROTECTED_TWT nl80211 extended feature
-
-Taehee Yoo (1):
-      virt_wifi: implement ndo_get_iflink
-
-Veerendranath Jakkam (1):
-      cfg80211: Configure PMK lifetime and reauth threshold for PMKSA entries
-
-Yan-Hsuan Chuang (1):
-      mac80211: driver can remain on channel if not using chan_ctx
-
- drivers/net/wireless/mac80211_hwsim.c | 327 ++++++++++++++++++++++++++++++++--
- drivers/net/wireless/mac80211_hwsim.h |  21 +++
- drivers/net/wireless/virt_wifi.c      |  12 +-
- include/net/cfg80211.h                |  36 +++-
- include/net/mac80211.h                |   5 +
- include/uapi/linux/nl80211.h          |  73 +++++++-
- include/uapi/linux/virtio_ids.h       |   1 +
- net/mac80211/cfg.c                    |  16 +-
- net/mac80211/ieee80211_i.h            |   1 +
- net/mac80211/iface.c                  |   4 +
- net/mac80211/main.c                   |   8 +-
- net/mac80211/mlme.c                   |   1 +
- net/mac80211/rx.c                     |   3 +-
- net/mac80211/sta_info.c               |  35 +++-
- net/mac80211/tx.c                     |   6 +-
- net/mac80211/util.c                   |   6 +-
- net/wireless/core.c                   |   6 +
- net/wireless/nl80211.c                |  47 ++++-
- net/wireless/pmsr.c                   |  32 ++++
- 19 files changed, 596 insertions(+), 44 deletions(-)
 
