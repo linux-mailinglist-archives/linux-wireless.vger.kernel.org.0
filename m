@@ -2,102 +2,162 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2426118D4AA
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Mar 2020 17:40:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 79E1018D65B
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Mar 2020 18:59:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727527AbgCTQkK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 20 Mar 2020 12:40:10 -0400
-Received: from mail-wm1-f65.google.com ([209.85.128.65]:53469 "EHLO
-        mail-wm1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727122AbgCTQkG (ORCPT
+        id S1727273AbgCTR7Y (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 20 Mar 2020 13:59:24 -0400
+Received: from mail-il1-f195.google.com ([209.85.166.195]:45939 "EHLO
+        mail-il1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726816AbgCTR7X (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 20 Mar 2020 12:40:06 -0400
-Received: by mail-wm1-f65.google.com with SMTP id 25so7247710wmk.3
-        for <linux-wireless@vger.kernel.org>; Fri, 20 Mar 2020 09:40:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:sender:from:date:message-id:subject:to;
-        bh=gl8m333ia74OFZpNmB4o7kIcYlvQPFpoCsxlN0OXKb0=;
-        b=kNbuTShbw0IsSddVR16CskX9C06Ns3To2pv3t8zoQaDIVXEG3b70sK4t/FVJP15G5b
-         VGpDNjPP4wGCiR+EUBHVqJjOTl+8QscizeaDhWif9uTvhk1nDvdHImI1NK5AoxlnCy0j
-         n9oc49FHwt18TZouwE8SbjjPrFVevxob7LsR+s5wtun0QKcC95tIeof8wr26VPP0qnJ+
-         7DNotqBY8HmGVhlN4UEJRXGXn0hk2KXilc7f5hsUwbXbf2IYZPCNulD8iJpEOJc2oRtr
-         PtPy4rSSagV03aEH7ppWiqC5bGH9zt/GfKt8Y3sApVwh/xDe/VpU2+K8Yl8qfEakEuRI
-         ZIvw==
+        Fri, 20 Mar 2020 13:59:23 -0400
+Received: by mail-il1-f195.google.com with SMTP id m9so6401806ilq.12;
+        Fri, 20 Mar 2020 10:59:23 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:sender:from:date
-         :message-id:subject:to;
-        bh=gl8m333ia74OFZpNmB4o7kIcYlvQPFpoCsxlN0OXKb0=;
-        b=IjJ2wb7k8TSa13SmfxJzz4C07eEQRwsAN+OTjrPmkrLNvr3FkZJYHlzdDDmfOmciYU
-         Ab0DIaTeLVhSWGzXkUfXYGImGsWdTDgRtlmZwAST91/UuTFQcXkrXxEwA2IwuFGmjGfZ
-         w1B9ZAQD+PE0lvy2xQqoPZJDm1ZWHDJ4hRCwU4h/kkmQF0DNToIRnCOn2bvwtEzN3Scx
-         BK+xQGimQ69IVmOq0w5v8QGwJ2emoJDTCaig+uaB/4yPBkinS/J0+DHME8q8QAcHOcuq
-         VV++cYvjL+2hPc0KOnOHqxe5bd5WZHdaUVPPyzSmxEVle2ssnOaDuJzA4qVuy40VQn+T
-         vdjg==
-X-Gm-Message-State: ANhLgQ3YZVuk0/cNWzmu0Z7VkJni1Op0H55OkKC7htOOKZQ7NugBDxp+
-        CYfFE4AHxxQaUi0+fI9ROxnbOM+JlU5B2yYrog0=
-X-Google-Smtp-Source: ADFU+vun8LzndaAaMGSbzLFWuoHjP/a//v7fTHQFK5usPtGJwIpi6fos+vcOoC94XZ5NI01Scg+c2G5c2P2zU3JRam4=
-X-Received: by 2002:a1c:9ecb:: with SMTP id h194mr11768952wme.49.1584722403977;
- Fri, 20 Mar 2020 09:40:03 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=95Suyv4ag/UW0GMJDUqwKID1E5LJYUXds0iFnK4QjiI=;
+        b=Dpx0kyIKugARf40N5g3nCYvNuF+BhUMTYqCCk+DN2R3cu+E5r02V1R2KpeEDPTXt2n
+         bZcfDBbjfdpHIMUewmFqXlsGrZcH1yn8XF5umT6JkYo1uBCejYbOsFVvYsnjHgeGLMrD
+         jqiC1MziBsHEmXGFZ2k7YPo9bac9w2rK8DzNQb+rLkGjt6Cpbheuq6IVEohdL0kBxpS2
+         +zNDvueoY51uT2GVvJiRasumPZkLqXBN+QplTo26LY7KOfyUwkv6mMU8d3ghQ6IB1AUs
+         vrOzpmYApGJxZPbc4PhK6VCmY2fLJbGWey7ihYRgHTa59Skgs7+uuLT+Lr6lsqvwGbRA
+         Q5rA==
+X-Gm-Message-State: ANhLgQ3N8GpAY2Ol+/6pyQtGKyvmkDBxuJhfZbp9j6kbZ7fg9NebS0U5
+        B0oFpCDK6youLFYVHe2rKE+f8Ow=
+X-Google-Smtp-Source: ADFU+vt7qmPnUmzTMPbajCklZuNV66re7YCKjK/pSmVBOIAgFLPoaGoK9cfTLRSFh8EnaJJFE/KSYg==
+X-Received: by 2002:a92:b61d:: with SMTP id s29mr9370804ili.66.1584727163066;
+        Fri, 20 Mar 2020 10:59:23 -0700 (PDT)
+Received: from rob-hp-laptop ([64.188.179.250])
+        by smtp.gmail.com with ESMTPSA id u77sm2236931ili.35.2020.03.20.10.59.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 20 Mar 2020 10:59:21 -0700 (PDT)
+Received: (nullmailer pid 5880 invoked by uid 1000);
+        Fri, 20 Mar 2020 17:59:20 -0000
+Date:   Fri, 20 Mar 2020 11:59:20 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Ajay.Kathat@microchip.com
+Cc:     linux-wireless@vger.kernel.org, devel@driverdev.osuosl.org,
+        devicetree@vger.kernel.org, gregkh@linuxfoundation.org,
+        johannes@sipsolutions.net, Adham.Abozaeid@microchip.com,
+        Nicolas.Ferre@microchip.com, Claudiu.Beznea@microchip.com,
+        Venkateswara.Kaja@microchip.com
+Subject: Re: [PATCH v5 16/17] dt: bindings: net: add microchip,wilc1000.yaml
+Message-ID: <20200320175920.GA31641@bogus>
+References: <20200311121809.5610-1-ajay.kathat@microchip.com>
+ <20200311121809.5610-17-ajay.kathat@microchip.com>
 MIME-Version: 1.0
-Reply-To: amahakim52@gmail.com
-Received: by 2002:a5d:5104:0:0:0:0:0 with HTTP; Fri, 20 Mar 2020 09:40:03
- -0700 (PDT)
-From:   "Rev.Wright Watson" <azarara91@gmail.com>
-Date:   Fri, 20 Mar 2020 17:40:03 +0100
-X-Google-Sender-Auth: vJJkq6yrrjXXW3E162Z00Z9ZL0M
-Message-ID: <CAPmUj7JSQEaBW=GnFqdpU8UnP3DYHx1fggsLKxrJ=__fbQtZ9w@mail.gmail.com>
-Subject: Dear Beloved,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200311121809.5610-17-ajay.kathat@microchip.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Dear Beloved,
+On Wed, Mar 11, 2020 at 12:18:50PM +0000, Ajay.Kathat@microchip.com wrote:
+> From: Ajay Singh <ajay.kathat@microchip.com>
+> 
+> This file describes the binding details to connect wilc1000 device. It's
+> moved from staging to 'Documentation/devicetree/bindings/net/wireless'
+> path.
+> 
+> Signed-off-by: Ajay Singh <ajay.kathat@microchip.com>
+> ---
+>  .../net/wireless/microchip,wilc1000.yaml      | 72 +++++++++++++++++++
+>  1 file changed, 72 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/net/wireless/microchip,wilc1000.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/net/wireless/microchip,wilc1000.yaml b/Documentation/devicetree/bindings/net/wireless/microchip,wilc1000.yaml
+> new file mode 100644
+> index 000000000000..bc6cc5d3f347
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/net/wireless/microchip,wilc1000.yaml
+> @@ -0,0 +1,72 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/net/wireless/microchip,wilc1000.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Microchip WILC wireless devicetree bindings
+> +
+> +maintainers:
+> +  - Adham Abozaeid <adham.abozaeid@microchip.com>
+> +  - Ajay Singh <ajay.kathat@microchip.com>
+> +
+> +description:
+> +  The wilc1000 chips can be connected via SPI or SDIO. This document
+> +  describes the binding to connect wilc devices.
+> +
+> +properties:
+> +  compatible:
+> +    const: microchip,wilc1000
+> +
+> +  spi-max-frequency: true
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +  clocks:
+> +    description: phandle to the clock connected on rtc clock line.
+> +    maxItems: 1
+> +
+> +  clock-names:
+> +    const: rtc
+> +
+> +required:
+> +  - compatible
+> +  - interrupts
+> +
+> +examples:
+> +  - |
+> +    spi1: spi@fc018000 {
 
-I'm Reverend Wright Watson, I was born in USA, 1945, I was ordained
-into the Catholic Priesthood.
+spi {
 
-Please take your time to read this message, although we have never met
-before, this is no spam, It's a real message sent to you. I know also
-that you will be amazed at the level of trust that I am willing to
-place in a person that I have never seen nor spoken with. If I can
-receive favor from someone I barely know, its not bad entrusting this
-project to unknown person as long as my spirit directed me to you.
+> +      #address-cells = <1>;
+> +      #size-cells = <0>;
+> +      cs-gpios = <&pioB 21 0>;
 
-I have been a catholic priest for over 22 years. I spent about 10
-years serving at Africa, Burkina Faso to be precise, I spend most time
-in Ouagadougou Cathedral.
-Presently, I had a heart surgery on the 23-11-2018 and the Doctors
-have informed me that I cannot live longer; I had a serious bleeding
-after the operation.
-Before I left Ouagadougou to my country for the surgery, a priest
-friend of mine visited me from Netherlands with three companion, when
-they went back, one among his companion Transferred 10M$ in my
-personal account with Bank of Africa and advised that I use the money
-to help the poor, handicaps and less privileges because he saw the
-level hardship then.
+Drop this. Not relevant to the example.
 
-Because of my present health condition, I cannot live to proceed with
-the projects, therefore, I have decided to appoint you to reclaim the
-money which total sum of $10,970,000.00 (Ten million Nine Hundred and
-seventy Thousand US DOLLARS).
+> +      wifi@0 {
+> +        compatible = "microchip,wilc1000";
+> +        spi-max-frequency = <48000000>;
+> +        reg = <0>;
+> +        interrupt-parent = <&pioC>;
+> +        interrupts = <27 0>;
+> +        clocks = <&pck1>;
+> +        clock-names = "rtc";
+> +      };
+> +    };
+> +
+> +  - |
+> +    mmc1: mmc@fc000000 {
 
-I want you to use this sum to make the world a better place for the
-poor and less privileged, help the needy and also help your family
-members.
+Drop the label. Either drop the unit address or add a 'reg' property to 
+match.
 
-I took this decision because I was raised in an Orphanage so I don't
-have relatives and presently, I'm still in the hospital, where I am
-undergoing treatment. That's why I have decided to contact you so that
-you can contact my account manager in Bank of Africa, reclaim the
-money and make good use of it.
-
-then you can contact me through private email
-addres(RevWrightWatson@yandex.com)
-
-Regards,
-Rev.Wright Watson
+> +      #address-cells = <1>;
+> +      #size-cells = <0>;
+> +      pinctrl-names = "default";
+> +      pinctrl-0 = <&pinctrl_mmc1_clk_cmd_dat0 &pinctrl_mmc1_dat1_3>;
+> +      non-removable;
+> +      vmmc-supply = <&vcc_mmc1_reg>;
+> +      vqmmc-supply = <&vcc_3v3_reg>;
+> +      bus-width = <4>;
+> +      wifi@0 {
+> +        compatible = "microchip,wilc1000";
+> +        reg = <0>;
+> +        interrupt-parent = <&pioC>;
+> +        interrupts = <27 0>;
+> +        clocks = <&pck1>;
+> +        clock-names = "rtc";
+> +      };
+> +    };
+> -- 
+> 2.24.0
