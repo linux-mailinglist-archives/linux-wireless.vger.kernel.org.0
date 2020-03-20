@@ -2,30 +2,38 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A8D9A18CE38
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Mar 2020 13:58:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8BD2F18CE6F
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Mar 2020 14:06:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727493AbgCTM6q (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 20 Mar 2020 08:58:46 -0400
-Received: from s3.sipsolutions.net ([144.76.43.62]:45788 "EHLO
+        id S1727097AbgCTNGF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 20 Mar 2020 09:06:05 -0400
+Received: from s3.sipsolutions.net ([144.76.43.62]:45858 "EHLO
         sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727477AbgCTM6p (ORCPT
+        with ESMTP id S1727015AbgCTNGF (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 20 Mar 2020 08:58:45 -0400
+        Fri, 20 Mar 2020 09:06:05 -0400
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.93)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1jFHEX-00ArxK-Dx; Fri, 20 Mar 2020 13:58:41 +0100
-Message-ID: <d54ca54a2a7801b796393be3f5414f7a657773b4.camel@sipsolutions.net>
-Subject: Re: 4addr NDP in HE mode
+        id 1jFHLW-00AsrY-Hv; Fri, 20 Mar 2020 14:05:54 +0100
+Message-ID: <d45e2002e97c28acc1f9c7b9c41b5a3ba1d69452.camel@sipsolutions.net>
+Subject: Re: [PATCH] rtw88: add debugfs to fix tx rate
 From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Sathishkumar Muruganandam <murugana@codeaurora.org>,
-        'Luca Coelho' <luciano.coelho@intel.com>
-Cc:     linux-wireless@vger.kernel.org, shaul.triebitz@intel.com
-Date:   Fri, 20 Mar 2020 13:58:40 +0100
-In-Reply-To: <006501d5e621$f21f3b60$d65db220$@codeaurora.org> (sfid-20200218_070924_650739_B62973D0)
-References: <006501d5e621$f21f3b60$d65db220$@codeaurora.org>
-         (sfid-20200218_070924_650739_B62973D0)
+To:     Tony Chuang <yhchuang@realtek.com>,
+        Ben Greear <greearb@candelatech.com>,
+        Kalle Valo <kvalo@codeaurora.org>
+Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        Brian Norris <briannorris@chromium.org>
+Date:   Fri, 20 Mar 2020 14:05:53 +0100
+In-Reply-To: <fbab3328d183406c923b30381389841f@realtek.com>
+References: <20200313065114.23433-1-yhchuang@realtek.com>
+         <87eetwo87q.fsf@kamboji.qca.qualcomm.com>
+         <2e492e530d744713871f885e324106ef@realtek.com>
+         <87eetrlanb.fsf@kamboji.qca.qualcomm.com>
+         <ce990869ebf0478d98cd7e8416b36289@realtek.com>
+         <875zf3kn05.fsf@kamboji.qca.qualcomm.com>
+         <f4e7401c-c86b-8b2f-9e93-865322f71945@candelatech.com>
+         <fbab3328d183406c923b30381389841f@realtek.com>
 Content-Type: text/plain; charset="UTF-8"
 User-Agent: Evolution 3.34.4 (3.34.4-1.fc31) 
 MIME-Version: 1.0
@@ -35,36 +43,45 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 2020-02-18 at 11:39 +0530, Sathishkumar Muruganandam wrote:
-
-> Since ieee80211_send_4addr_nullfunc() is only called for successful
-> association of 4addr STA, shall we allow below case alone for HE ?
+On Wed, 2020-03-18 at 09:02 +0000, Tony Chuang wrote:
 > 
-> static bool ieee80211_assoc_success(struct ieee80211_sub_if_data *sdata,
->                                     struct cfg80211_bss *cbss,
->                                     struct ieee80211_mgmt *mgmt, size_t len,
->                                     struct ieee802_11_elems *elems)
-> {
-> ..
->   /*
->          * If we're using 4-addr mode, let the AP know that we're
->          * doing so, so that it can create the STA VLAN on its side
->          */
->         if (ifmgd->use_4addr)
->                 ieee80211_send_4addr_nullfunc(local, sdata);
-> ..
-> 
-> Whether this 4addr NDP in HE mode will affect any UL-MIMO from the 4addr STA
-> ? Please comment.
+> This command just mask out some of rates that are not allowed. But the
+> firmware has its own rate adaptive mechanism to choose the rates. So mask
+> out all of the other rate doesn't make sure the packets will be transmitted by
+> the only rate that was not masked. The hardware/firmware will try to choose
+> a better rate (ex. 1Mbps or 6Mbps) if they think it's necessary. Also the device
+> will fallback the rates to try to find a better rate to transfer data to the peer.
 
-Off the top of my head, I don't know. Adding Shaul who might have an
-idea.
+[...]
 
-Shaul, basically the NDP is used here to initialize the 4-addr
-connection as such, and if the connection is HE capable we drop it. Can
-you remind me what exactly the issue with NDP in HE was, and do you know
-how that'd be affected by 4-addr NDPs?
+> We probably have to modify the command parser, from user-space and the
+> nl80211 domain, because as far I don't see a good way to add fix rate
+> option on the NL80211_CMD_SET_TX_BITRATE_MASK without changing
+> the existing mechanism. If the mechanism is changed, then the "old" drivers
+> will fail to interpret the nl80211 attributes. So I think add a new one, which
+> can fix the TX rate, disable the rate adaptive, etc., will be better if necessary.
 
-Thanks,
+IMHO we should consider the use case here.
+
+_Why_ do you need something like this?
+
+Brian can probably comment on this - I think ChromeOS (used to) use(s)
+some kind of fixed rate at the beginning of the connection to force low
+rates? But I also remember this interacting badly with some APs that
+just don't want to enable low rates at all...
+
+
+I think we also have a similar debugfs entry in iwlwifi which literally
+forces a single rate/configuration (including antenna) for the device to
+use, to test certain things. I'm not convinced that it'd be easy and
+would make a lot of sense to add support for all these kinds of knobs to
+nl80211 since they're really just used in limited testing scenarios.
+
+
+So IMHO the "can this be put into nl80211" isn't necessarily the most
+important thing - we don't *have* to clutter that with various knobs
+that are only supported by some drivers, and then only used for testing
+...
+
 johannes
 
