@@ -2,68 +2,94 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E0D4E18C679
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Mar 2020 05:29:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D44B18C719
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Mar 2020 06:38:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726969AbgCTE3V (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 20 Mar 2020 00:29:21 -0400
-Received: from resqmta-po-10v.sys.comcast.net ([96.114.154.169]:59309 "EHLO
-        resqmta-po-10v.sys.comcast.net" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725996AbgCTE3V (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 20 Mar 2020 00:29:21 -0400
-X-Greylist: delayed 488 seconds by postgrey-1.27 at vger.kernel.org; Fri, 20 Mar 2020 00:29:21 EDT
-Received: from resomta-po-05v.sys.comcast.net ([96.114.154.229])
-        by resqmta-po-10v.sys.comcast.net with ESMTP
-        id F919jk0yP2WZ8F99ljeRkG; Fri, 20 Mar 2020 04:21:13 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=comcastmailservice.net; s=20180828_2048; t=1584678073;
-        bh=TRdmzlBZKIjp6suR+uwhZUwUF+19FuwsfRRrul9c3mY=;
-        h=Received:Received:To:From:Subject:Message-ID:Date:MIME-Version:
-         Content-Type;
-        b=buB3nxWtkq5dqHDz5UzAj1x5x+8ZoAfGWcRmRR2TCS+xPgY1rBZDYe+oLgYShHq6d
-         XJKDtX/yjKR9eAP5CuXzPRP8aH2NmPOHDp3/wU3JFHxUcF6Ypx+0yqaveG2RYXDfWq
-         XFP6APu85GfT/kJAQs2FLE/8k6qEeH4h0FpDfClyVJd/iVv979PDcxtHUrgYYTCRCB
-         UQCiKVl89qUPSnIKXiseerEy+22d3cJfflSU5srPHym/DS5WPTqgU6wk6a/xwADxgF
-         hE3jtJaCti//DGQJ+bwRUp/hpwDY+902qFV13hVcjmxMbWWjnbs9Dhg8VIpmd1XRel
-         kbhW64llDt9ZA==
-Received: from touchy.whiterc.com
- ([IPv6:2601:601:1400:7284:bb0f:f2d7:bbd9:d943])
-        by resomta-po-05v.sys.comcast.net with ESMTPSA
-        id F99kjBNiuOfMQF99kjix7e; Fri, 20 Mar 2020 04:21:12 +0000
-X-Xfinity-VMeta: sc=0.00;st=legit
-To:     linux-wireless@vger.kernel.org
-From:   Robert White <rwhite@pobox.com>
-Subject: hostapd :: Set attributes e.g. group id on created 4addr interfaces
-Message-ID: <920d4a67-a746-d9bf-d318-d9bc130bbe3a@pobox.com>
-Date:   Fri, 20 Mar 2020 04:21:12 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+        id S1726821AbgCTFiN convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 20 Mar 2020 01:38:13 -0400
+Received: from mx2.suse.de ([195.135.220.15]:52332 "EHLO mx2.suse.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726030AbgCTFiN (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 20 Mar 2020 01:38:13 -0400
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx2.suse.de (Postfix) with ESMTP id 3EF15AC42;
+        Fri, 20 Mar 2020 05:38:08 +0000 (UTC)
+Date:   Thu, 19 Mar 2020 22:36:57 -0700
+From:   Davidlohr Bueso <dave@stgolabs.net>
+To:     Thomas Gleixner <tglx@linutronix.de>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Ingo Molnar <mingo@kernel.org>, Will Deacon <will@kernel.org>,
+        "Paul E . McKenney" <paulmck@kernel.org>,
+        Joel Fernandes <joel@joelfernandes.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Oleg Nesterov <oleg@redhat.com>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Logan Gunthorpe <logang@deltatee.com>,
+        Kurt Schwemmer <kurt.schwemmer@microsemi.com>,
+        Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org,
+        Felipe Balbi <balbi@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-usb@vger.kernel.org, Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Arnd Bergmann <arnd@arndb.de>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [patch V2 06/15] rcuwait: Add @state argument to
+ rcuwait_wait_event()
+Message-ID: <20200320053657.ggvcqsjtdotmrl7p@linux-p48b>
+References: <20200318204302.693307984@linutronix.de>
+ <20200318204408.010461877@linutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=iso-8859-1; format=flowed
+Content-Disposition: inline
+Content-Transfer-Encoding: 8BIT
+In-Reply-To: <20200318204408.010461877@linutronix.de>
+User-Agent: NeoMutt/20180716
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Howdy,
+On Wed, 18 Mar 2020, Thomas Gleixner wrote:
 
-It'd be really nice if there was a global up-down hook or something in 
-hostapd that would let me set the interface group ID when a station 
-interface is created on a 4addr link.
+>--- a/include/linux/rcuwait.h
+>+++ b/include/linux/rcuwait.h
+>@@ -3,6 +3,7 @@
+> #define _LINUX_RCUWAIT_H_
+>
+> #include <linux/rcupdate.h>
+>+#include <linux/sched/signal.h>
 
-I couldn't find a hook to invoke on device creation; and invoking a 
-whole hook might be a little costly.
+So this is causing build to fail for me:
 
-I don't see a lot of relevant properties to set but group ID is really 
-helpful for firewall rules on transient interfaces. Since it can be done 
-when doing an ip link add, I'd assume setting the simpler properties 
-like this should be available at the API level.
+  CC      arch/x86/boot/compressed/cmdline.o
+arch/x86/boot/compressed/cmdline.c:5:20: error: conflicting types for ‘set_fs’
+ static inline void set_fs(unsigned long seg)
+                    ^~~~~~
+In file included from ./include/linux/uaccess.h:11:0,
+                 from ./include/linux/sched/task.h:11,
+                 from ./include/linux/sched/signal.h:9,
+                 from ./include/linux/rcuwait.h:6,
+                 from ./include/linux/percpu-rwsem.h:8,
+                 from ./include/linux/fs.h:34,
+                 from ./include/linux/proc_fs.h:9,
+                 from ./include/acpi/acpi_bus.h:83,
+                 from ./include/linux/acpi.h:32,
+                 from arch/x86/boot/compressed/misc.h:28,
+                 from arch/x86/boot/compressed/cmdline.c:2:
+./arch/x86/include/asm/uaccess.h:29:20: note: previous definition of ‘set_fs’ was here
+ static inline void set_fs(mm_segment_t fs)
+                    ^~~~~~
+make[2]: *** [scripts/Makefile.build:268: arch/x86/boot/compressed/cmdline.o] Error 1
+make[1]: *** [arch/x86/boot/Makefile:113: arch/x86/boot/compressed/vmlinux] Error 2
+make: *** [arch/x86/Makefile:285: bzImage] Error 2
 
-So being able to set that property at a minimum during device creation 
-would be really helpful, and there may be use cases for other things.
+Right now I'm not sure what the proper fix should be.
 
-I don't have the necessary skill set with hostapd to submit a sample 
-implementation at this time, so color me a demanding user (ha ha ha).
+Thanks,
+Davidlohr
