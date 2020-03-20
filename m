@@ -2,97 +2,281 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D68918CBF0
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Mar 2020 11:45:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EE05E18CCA9
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Mar 2020 12:21:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727197AbgCTKpG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 20 Mar 2020 06:45:06 -0400
-Received: from bombadil.infradead.org ([198.137.202.133]:33516 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726791AbgCTKpG (ORCPT
+        id S1727052AbgCTLVB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 20 Mar 2020 07:21:01 -0400
+Received: from us-smtp-delivery-74.mimecast.com ([216.205.24.74]:29428 "EHLO
+        us-smtp-delivery-74.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727022AbgCTLVA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 20 Mar 2020 06:45:06 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
-        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=gpF47OFbSCOaH9j5hP1QeTQDztS/I2yzYL1A8Yg/DCI=; b=m8gRkUViv+3RtA+3AN1Hq8RB2p
-        /nd8koJA7/ftGKlqVgXGyTS1/R5zs5CBqOx+xx+6K9nCiYjvgKGyw0YC0ClboDv10bRHr9uFVti5l
-        EKvrd8vTTtGuSCXjYHyBDIj5z1uJ87Gimm+Jq3l7cxSmAzKhoX5U0dufJsqNv3jrKQNIBSslh2ZBx
-        d6J4/8w72QCJsw2WMsEdzs02t4aMmq5QQ4FsVoSmBkcn0g/+PBYsMy74VM0WnvU6eDHMxJ7NO6YW7
-        oGhprUfFSJmuJzo+np93Zq4slkqAXWnt+jp4L4s7owS9q9n3ZLlPNQHf+KIrDpK7Ir2rNYPzd9bem
-        57qKm1WQ==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
-        by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1jFF8f-0006yB-F2; Fri, 20 Mar 2020 10:44:29 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 627F2300606;
-        Fri, 20 Mar 2020 11:44:26 +0100 (CET)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id 48697285E2762; Fri, 20 Mar 2020 11:44:26 +0100 (CET)
-Date:   Fri, 20 Mar 2020 11:44:26 +0100
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     Davidlohr Bueso <dave@stgolabs.net>
-Cc:     tglx@linutronix.de, arnd@arndb.de, balbi@kernel.org,
-        bhelgaas@google.com, bigeasy@linutronix.de, davem@davemloft.net,
+        Fri, 20 Mar 2020 07:21:00 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1584703259;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=+/3NXaZ2sRQX1DOuwaMBeQJLBn8vkE3WrE+NitGKiqA=;
+        b=b0m6s63SvoOQFUMtcR474SKLjefYOkwW92QYD0IGnUATNRPnbzsU1XvLRdUdoj0BAge97d
+        /ZHW03CEFv55Bhpm8AQKRjwg9SRHgI3kEqAumZixuB4CC/fmD2l3wjMVZEjz2QoFsl021T
+        S7DvUuWWpJwsELO8L3Hmk4qXTU4nYSI=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-475-H63O7avZPPyMMjNP--l5AA-1; Fri, 20 Mar 2020 07:20:57 -0400
+X-MC-Unique: H63O7avZPPyMMjNP--l5AA-1
+Received: by mail-wr1-f69.google.com with SMTP id o9so2482395wrw.14
+        for <linux-wireless@vger.kernel.org>; Fri, 20 Mar 2020 04:20:57 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=+/3NXaZ2sRQX1DOuwaMBeQJLBn8vkE3WrE+NitGKiqA=;
+        b=iPkMlBNCq7irnTDUTu3SGoL8C1RgglSwOEIHvqhxPs8HjE90re2TinFhwLTZ34STK1
+         42aT3IpyXCsEvh737q5C+bHjs/qPil6mzNdhxSNTbqAratgfMrM4WGJ2QcvniOqIl61R
+         ZG0N0n76cIMCZ50nfN92VeoM9+yjs8G009hgDkWPQ5ePaG57jDCWUqehtNijGYDidWHh
+         27oNVaXaBqZB0hHOwlKp0hQnlt1aVNyYBbJScDtM5A9fcY6rnor4gTnl6sXx4WwlCUDf
+         2401zJe7+aBDb+aqmRJeeQZaOuuyGb1fi1BFG7PZDC8qgH/7PZwh2ITMQhIjY0Zp/+G6
+         fIEg==
+X-Gm-Message-State: ANhLgQ2Kz5i9UyQ4kMJsV0nQe2bspUW0AoRh8ArbrZiOOwuOZaUQxGlG
+        /sj2whQtKD7/JER+i5B37jA4NNuRVKBMLeyfIac+IlE5mfqZDSlMpWrW0HIOHWVT9MLFLP1qAey
+        X/qfFEOgWVr2y2gZ7zbm+Blojc/c=
+X-Received: by 2002:a7b:c185:: with SMTP id y5mr9591171wmi.179.1584703256156;
+        Fri, 20 Mar 2020 04:20:56 -0700 (PDT)
+X-Google-Smtp-Source: ADFU+vuSOEQTHzVsVT/ip5Zea40OMJaocP0teB9e+S0wZpsO4/tb7JdwYPz+IBInWzuFqQnCpGnDmg==
+X-Received: by 2002:a7b:c185:: with SMTP id y5mr9591008wmi.179.1584703254449;
+        Fri, 20 Mar 2020 04:20:54 -0700 (PDT)
+Received: from [192.168.178.58] ([151.21.15.43])
+        by smtp.gmail.com with ESMTPSA id s1sm7897400wrp.41.2020.03.20.04.20.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 20 Mar 2020 04:20:53 -0700 (PDT)
+Subject: Re: [PATCH 18/15] kvm: Replace vcpu->swait with rcuwait
+To:     Davidlohr Bueso <dave@stgolabs.net>, tglx@linutronix.de
+Cc:     arnd@arndb.de, balbi@kernel.org, bhelgaas@google.com,
+        bigeasy@linutronix.de, davem@davemloft.net,
         gregkh@linuxfoundation.org, joel@joelfernandes.org,
         kurt.schwemmer@microsemi.com, kvalo@codeaurora.org,
         linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
         linux-usb@vger.kernel.org, linux-wireless@vger.kernel.org,
         linuxppc-dev@lists.ozlabs.org, logang@deltatee.com,
         mingo@kernel.org, mpe@ellerman.id.au, netdev@vger.kernel.org,
-        oleg@redhat.com, paulmck@kernel.org, rdunlap@infradead.org,
-        rostedt@goodmis.org, torvalds@linux-foundation.org,
-        will@kernel.org, Davidlohr Bueso <dbueso@suse.de>
-Subject: Re: [PATCH 17/15] rcuwait: Inform rcuwait_wake_up() users if a
- wakeup was attempted
-Message-ID: <20200320104426.GD20696@hirez.programming.kicks-ass.net>
+        oleg@redhat.com, paulmck@kernel.org, peterz@infradead.org,
+        rdunlap@infradead.org, rostedt@goodmis.org,
+        torvalds@linux-foundation.org, will@kernel.org,
+        Davidlohr Bueso <dbueso@suse.de>,
+        Paul Mackerras <paulus@ozlabs.org>
 References: <20200318204302.693307984@linutronix.de>
  <20200320085527.23861-1-dave@stgolabs.net>
- <20200320085527.23861-2-dave@stgolabs.net>
+ <20200320085527.23861-3-dave@stgolabs.net>
+From:   Paolo Bonzini <pbonzini@redhat.com>
+Message-ID: <2343d524-b600-2696-06a5-33c0d191a630@redhat.com>
+Date:   Fri, 20 Mar 2020 12:20:51 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.5.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200320085527.23861-2-dave@stgolabs.net>
+In-Reply-To: <20200320085527.23861-3-dave@stgolabs.net>
+Content-Type: text/plain; charset=windows-1252
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Mar 20, 2020 at 01:55:25AM -0700, Davidlohr Bueso wrote:
+On 20/03/20 09:55, Davidlohr Bueso wrote:
+> Only compiled and tested on x86.
 
-> diff --git a/kernel/exit.c b/kernel/exit.c
-> index 6cc6cc485d07..b0bb0a8ec4b1 100644
-> --- a/kernel/exit.c
-> +++ b/kernel/exit.c
-> @@ -234,9 +234,10 @@ void release_task(struct task_struct *p)
->  		goto repeat;
->  }
->  
-> -void rcuwait_wake_up(struct rcuwait *w)
-> +bool rcuwait_wake_up(struct rcuwait *w)
+It shows :) as the __KVM_HAVE_ARCH_WQP case is broken.  But no problem, 
+Paul and I can pick this up and fix it.
+
+This is missing:
+
+diff --git a/arch/powerpc/include/asm/kvm_book3s.h b/arch/powerpc/include/asm/kvm_book3s.h
+index 506e4df2d730..6e5d85ba588d 100644
+--- a/arch/powerpc/include/asm/kvm_book3s.h
++++ b/arch/powerpc/include/asm/kvm_book3s.h
+@@ -78,7 +78,7 @@ struct kvmppc_vcore {
+ 	struct kvm_vcpu *runnable_threads[MAX_SMT_THREADS];
+ 	struct list_head preempt_list;
+ 	spinlock_t lock;
+-	struct swait_queue_head wq;
++	struct rcuwait wait;
+ 	spinlock_t stoltb_lock;	/* protects stolen_tb and preempt_tb */
+ 	u64 stolen_tb;
+ 	u64 preempt_tb;
+diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
+index 1af96fb5dc6f..8c8122c30b89 100644
+--- a/arch/powerpc/kvm/powerpc.c
++++ b/arch/powerpc/kvm/powerpc.c
+@@ -754,7 +754,7 @@ int kvm_arch_vcpu_create(struct kvm_vcpu *vcpu)
+ 	if (err)
+ 		goto out_vcpu_uninit;
+ 
+-	vcpu->arch.wqp = &vcpu->wq;
++	vcpu->arch.waitp = &vcpu->wait;
+ 	kvmppc_create_vcpu_debugfs(vcpu, vcpu->vcpu_id);
+ 	return 0;
+ 
+
+and...
+
+> -static inline struct swait_queue_head *kvm_arch_vcpu_wq(struct kvm_vcpu *vcpu)
+> +static inline struct rcuwait *kvm_arch_vcpu_get_wait(struct kvm_vcpu *vcpu)
 >  {
->  	struct task_struct *task;
-> +	bool ret = false;
->  
->  	rcu_read_lock();
->  
-> @@ -254,10 +255,15 @@ void rcuwait_wake_up(struct rcuwait *w)
->  	smp_mb(); /* (B) */
->  
->  	task = rcu_dereference(w->task);
-> -	if (task)
-> +	if (task) {
->  		wake_up_process(task);
-> +	        ret = true;
+>  #ifdef __KVM_HAVE_ARCH_WQP
+> -	return vcpu->arch.wqp;
+> +	return vcpu->arch.wait;
 
-		ret = wake_up_process(task); ?
+... this needs to be vcpu->arch.waitp.  That should be it.
 
-> +	}
->  	rcu_read_unlock();
-> +
-> +	return ret;
+Thanks!
+
+Paolo
+
+>  #else
+> -	return &vcpu->wq;
+> +	return &vcpu->wait;
+>  #endif
 >  }
-> +EXPORT_SYMBOL_GPL(rcuwait_wake_up);
+>  
+> diff --git a/virt/kvm/arm/arch_timer.c b/virt/kvm/arm/arch_timer.c
+> index 0d9438e9de2a..4be71cb58691 100644
+> --- a/virt/kvm/arm/arch_timer.c
+> +++ b/virt/kvm/arm/arch_timer.c
+> @@ -593,7 +593,7 @@ void kvm_timer_vcpu_put(struct kvm_vcpu *vcpu)
+>  	if (map.emul_ptimer)
+>  		soft_timer_cancel(&map.emul_ptimer->hrtimer);
+>  
+> -	if (swait_active(kvm_arch_vcpu_wq(vcpu)))
+> +	if (rcu_dereference(kvm_arch_vpu_get_wait(vcpu)) != NULL)
+>  		kvm_timer_blocking(vcpu);
+>  
+>  	/*
+> diff --git a/virt/kvm/arm/arm.c b/virt/kvm/arm/arm.c
+> index eda7b624eab8..4a704866e9b6 100644
+> --- a/virt/kvm/arm/arm.c
+> +++ b/virt/kvm/arm/arm.c
+> @@ -579,16 +579,17 @@ void kvm_arm_resume_guest(struct kvm *kvm)
+>  
+>  	kvm_for_each_vcpu(i, vcpu, kvm) {
+>  		vcpu->arch.pause = false;
+> -		swake_up_one(kvm_arch_vcpu_wq(vcpu));
+> +		rcuwait_wake_up(kvm_arch_vcpu_get_wait(vcpu));
+>  	}
+>  }
+>  
+>  static void vcpu_req_sleep(struct kvm_vcpu *vcpu)
+>  {
+> -	struct swait_queue_head *wq = kvm_arch_vcpu_wq(vcpu);
+> +	struct rcuwait *wait = kvm_arch_vcpu_get_wait(vcpu);
+>  
+> -	swait_event_interruptible_exclusive(*wq, ((!vcpu->arch.power_off) &&
+> -				       (!vcpu->arch.pause)));
+> +	rcuwait_wait_event(*wait,
+> +			   (!vcpu->arch.power_off) && (!vcpu->arch.pause),
+> +			   TASK_INTERRUPTIBLE);
+>  
+>  	if (vcpu->arch.power_off || vcpu->arch.pause) {
+>  		/* Awaken to handle a signal, request we sleep again later. */
+> diff --git a/virt/kvm/async_pf.c b/virt/kvm/async_pf.c
+> index 15e5b037f92d..10b533f641a6 100644
+> --- a/virt/kvm/async_pf.c
+> +++ b/virt/kvm/async_pf.c
+> @@ -80,8 +80,7 @@ static void async_pf_execute(struct work_struct *work)
+>  
+>  	trace_kvm_async_pf_completed(addr, cr2_or_gpa);
+>  
+> -	if (swq_has_sleeper(&vcpu->wq))
+> -		swake_up_one(&vcpu->wq);
+> +	rcuwait_wake_up(&vcpu->wait);
+>  
+>  	mmput(mm);
+>  	kvm_put_kvm(vcpu->kvm);
+> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> index 70f03ce0e5c1..6b49dcb321e2 100644
+> --- a/virt/kvm/kvm_main.c
+> +++ b/virt/kvm/kvm_main.c
+> @@ -343,7 +343,7 @@ static void kvm_vcpu_init(struct kvm_vcpu *vcpu, struct kvm *kvm, unsigned id)
+>  	vcpu->kvm = kvm;
+>  	vcpu->vcpu_id = id;
+>  	vcpu->pid = NULL;
+> -	init_swait_queue_head(&vcpu->wq);
+> +	rcuwait_init(&vcpu->wait);
+>  	kvm_async_pf_vcpu_init(vcpu);
+>  
+>  	vcpu->pre_pcpu = -1;
+> @@ -2465,9 +2465,8 @@ static int kvm_vcpu_check_block(struct kvm_vcpu *vcpu)
+>  void kvm_vcpu_block(struct kvm_vcpu *vcpu)
+>  {
+>  	ktime_t start, cur;
+> -	DECLARE_SWAITQUEUE(wait);
+> -	bool waited = false;
+>  	u64 block_ns;
+> +	int block_check = -EINTR;
+>  
+>  	kvm_arch_vcpu_blocking(vcpu);
+>  
+> @@ -2487,21 +2486,14 @@ void kvm_vcpu_block(struct kvm_vcpu *vcpu)
+>  					++vcpu->stat.halt_poll_invalid;
+>  				goto out;
+>  			}
+> +
+>  			cur = ktime_get();
+>  		} while (single_task_running() && ktime_before(cur, stop));
+>  	}
+>  
+> -	for (;;) {
+> -		prepare_to_swait_exclusive(&vcpu->wq, &wait, TASK_INTERRUPTIBLE);
+> -
+> -		if (kvm_vcpu_check_block(vcpu) < 0)
+> -			break;
+> -
+> -		waited = true;
+> -		schedule();
+> -	}
+> -
+> -	finish_swait(&vcpu->wq, &wait);
+> +	rcuwait_wait_event(&vcpu->wait,
+> +			   (block_check = kvm_vcpu_check_block(vcpu)) < 0,
+> +			   TASK_INTERRUPTIBLE);
+>  	cur = ktime_get();
+>  out:
+>  	kvm_arch_vcpu_unblocking(vcpu);
+> @@ -2525,18 +2517,18 @@ void kvm_vcpu_block(struct kvm_vcpu *vcpu)
+>  		}
+>  	}
+>  
+> -	trace_kvm_vcpu_wakeup(block_ns, waited, vcpu_valid_wakeup(vcpu));
+> +	trace_kvm_vcpu_wakeup(block_ns, block_check < 0 ? false : true,
+> +			      vcpu_valid_wakeup(vcpu));
+>  	kvm_arch_vcpu_block_finish(vcpu);
+>  }
+>  EXPORT_SYMBOL_GPL(kvm_vcpu_block);
+>  
+>  bool kvm_vcpu_wake_up(struct kvm_vcpu *vcpu)
+>  {
+> -	struct swait_queue_head *wqp;
+> +	struct rcuwait *wait;
+>  
+> -	wqp = kvm_arch_vcpu_wq(vcpu);
+> -	if (swq_has_sleeper(wqp)) {
+> -		swake_up_one(wqp);
+> +	wait = kvm_arch_vcpu_get_wait(vcpu);
+> +	if (rcuwait_wake_up(wait)) {
+>  		WRITE_ONCE(vcpu->ready, true);
+>  		++vcpu->stat.halt_wakeup;
+>  		return true;
+> @@ -2678,7 +2670,8 @@ void kvm_vcpu_on_spin(struct kvm_vcpu *me, bool yield_to_kernel_mode)
+>  				continue;
+>  			if (vcpu == me)
+>  				continue;
+> -			if (swait_active(&vcpu->wq) && !vcpu_dy_runnable(vcpu))
+> +			if (rcu_dereference(vcpu->wait.task) &&
+> +			    !vcpu_dy_runnable(vcpu))
+>  				continue;
+>  			if (READ_ONCE(vcpu->preempted) && yield_to_kernel_mode &&
+>  				!kvm_arch_vcpu_in_kernel(vcpu))
+> 
+
