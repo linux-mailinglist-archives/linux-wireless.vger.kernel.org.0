@@ -2,80 +2,97 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D443D18CBCF
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Mar 2020 11:38:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D68918CBF0
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Mar 2020 11:45:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727198AbgCTKim (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 20 Mar 2020 06:38:42 -0400
-Received: from s3.sipsolutions.net ([144.76.43.62]:43416 "EHLO
-        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726704AbgCTKim (ORCPT
+        id S1727197AbgCTKpG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 20 Mar 2020 06:45:06 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:33516 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726791AbgCTKpG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 20 Mar 2020 06:38:42 -0400
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.93)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1jFF31-00AZic-8T; Fri, 20 Mar 2020 11:38:39 +0100
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     linux-wireless@vger.kernel.org
-Cc:     Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH] nl80211: clarify code in nl80211_del_station()
-Date:   Fri, 20 Mar 2020 11:38:35 +0100
-Message-Id: <20200320113834.2c51b9e8e341.I3fa5dc3f7d3cb1dbbd77191d764586f7da993f3f@changeid>
-X-Mailer: git-send-email 2.25.1
+        Fri, 20 Mar 2020 06:45:06 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=gpF47OFbSCOaH9j5hP1QeTQDztS/I2yzYL1A8Yg/DCI=; b=m8gRkUViv+3RtA+3AN1Hq8RB2p
+        /nd8koJA7/ftGKlqVgXGyTS1/R5zs5CBqOx+xx+6K9nCiYjvgKGyw0YC0ClboDv10bRHr9uFVti5l
+        EKvrd8vTTtGuSCXjYHyBDIj5z1uJ87Gimm+Jq3l7cxSmAzKhoX5U0dufJsqNv3jrKQNIBSslh2ZBx
+        d6J4/8w72QCJsw2WMsEdzs02t4aMmq5QQ4FsVoSmBkcn0g/+PBYsMy74VM0WnvU6eDHMxJ7NO6YW7
+        oGhprUfFSJmuJzo+np93Zq4slkqAXWnt+jp4L4s7owS9q9n3ZLlPNQHf+KIrDpK7Ir2rNYPzd9bem
+        57qKm1WQ==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
+        by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1jFF8f-0006yB-F2; Fri, 20 Mar 2020 10:44:29 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (Client did not present a certificate)
+        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 627F2300606;
+        Fri, 20 Mar 2020 11:44:26 +0100 (CET)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+        id 48697285E2762; Fri, 20 Mar 2020 11:44:26 +0100 (CET)
+Date:   Fri, 20 Mar 2020 11:44:26 +0100
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     Davidlohr Bueso <dave@stgolabs.net>
+Cc:     tglx@linutronix.de, arnd@arndb.de, balbi@kernel.org,
+        bhelgaas@google.com, bigeasy@linutronix.de, davem@davemloft.net,
+        gregkh@linuxfoundation.org, joel@joelfernandes.org,
+        kurt.schwemmer@microsemi.com, kvalo@codeaurora.org,
+        linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+        linux-usb@vger.kernel.org, linux-wireless@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, logang@deltatee.com,
+        mingo@kernel.org, mpe@ellerman.id.au, netdev@vger.kernel.org,
+        oleg@redhat.com, paulmck@kernel.org, rdunlap@infradead.org,
+        rostedt@goodmis.org, torvalds@linux-foundation.org,
+        will@kernel.org, Davidlohr Bueso <dbueso@suse.de>
+Subject: Re: [PATCH 17/15] rcuwait: Inform rcuwait_wake_up() users if a
+ wakeup was attempted
+Message-ID: <20200320104426.GD20696@hirez.programming.kicks-ass.net>
+References: <20200318204302.693307984@linutronix.de>
+ <20200320085527.23861-1-dave@stgolabs.net>
+ <20200320085527.23861-2-dave@stgolabs.net>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200320085527.23861-2-dave@stgolabs.net>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+On Fri, Mar 20, 2020 at 01:55:25AM -0700, Davidlohr Bueso wrote:
 
-The long if chain of interface types is hard to read,
-especially now with the additional condition after it.
-Use a switch statement to clarify this code.
+> diff --git a/kernel/exit.c b/kernel/exit.c
+> index 6cc6cc485d07..b0bb0a8ec4b1 100644
+> --- a/kernel/exit.c
+> +++ b/kernel/exit.c
+> @@ -234,9 +234,10 @@ void release_task(struct task_struct *p)
+>  		goto repeat;
+>  }
+>  
+> -void rcuwait_wake_up(struct rcuwait *w)
+> +bool rcuwait_wake_up(struct rcuwait *w)
+>  {
+>  	struct task_struct *task;
+> +	bool ret = false;
+>  
+>  	rcu_read_lock();
+>  
+> @@ -254,10 +255,15 @@ void rcuwait_wake_up(struct rcuwait *w)
+>  	smp_mb(); /* (B) */
+>  
+>  	task = rcu_dereference(w->task);
+> -	if (task)
+> +	if (task) {
+>  		wake_up_process(task);
+> +	        ret = true;
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
----
- net/wireless/nl80211.c | 22 ++++++++++++++--------
- 1 file changed, 14 insertions(+), 8 deletions(-)
+		ret = wake_up_process(task); ?
 
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index bc7d81231547..c071ea48481e 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -6285,16 +6285,22 @@ static int nl80211_del_station(struct sk_buff *skb, struct genl_info *info)
- 	if (info->attrs[NL80211_ATTR_MAC])
- 		params.mac = nla_data(info->attrs[NL80211_ATTR_MAC]);
- 
--	if (dev->ieee80211_ptr->iftype != NL80211_IFTYPE_AP &&
--	    dev->ieee80211_ptr->iftype != NL80211_IFTYPE_AP_VLAN &&
--	    dev->ieee80211_ptr->iftype != NL80211_IFTYPE_MESH_POINT &&
--	    dev->ieee80211_ptr->iftype != NL80211_IFTYPE_P2P_GO &&
--	    dev->ieee80211_ptr->iftype != NL80211_IFTYPE_ADHOC)
-+	switch (dev->ieee80211_ptr->iftype) {
-+	case NL80211_IFTYPE_AP:
-+	case NL80211_IFTYPE_AP_VLAN:
-+	case NL80211_IFTYPE_MESH_POINT:
-+	case NL80211_IFTYPE_P2P_GO:
-+		/* always accept these */
-+		break;
-+	case NL80211_IFTYPE_ADHOC;
-+		/* conditionally accept */
-+		if (wiphy_ext_feature_isset(&rdev->wiphy,
-+					    NL80211_EXT_FEATURE_DEL_IBSS_STA))
-+			break;
- 		return -EINVAL;
--	if (dev->ieee80211_ptr->iftype == NL80211_IFTYPE_ADHOC &&
--	    !wiphy_ext_feature_isset(&rdev->wiphy,
--				     NL80211_EXT_FEATURE_DEL_IBSS_STA))
-+	default:
- 		return -EINVAL;
-+	}
- 
- 	if (!rdev->ops->del_station)
- 		return -EOPNOTSUPP;
--- 
-2.25.1
-
+> +	}
+>  	rcu_read_unlock();
+> +
+> +	return ret;
+>  }
+> +EXPORT_SYMBOL_GPL(rcuwait_wake_up);
