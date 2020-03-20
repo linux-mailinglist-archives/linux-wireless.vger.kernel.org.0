@@ -2,94 +2,79 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D44B18C719
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Mar 2020 06:38:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DE70918C790
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Mar 2020 07:38:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726821AbgCTFiN convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 20 Mar 2020 01:38:13 -0400
-Received: from mx2.suse.de ([195.135.220.15]:52332 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726030AbgCTFiN (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 20 Mar 2020 01:38:13 -0400
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id 3EF15AC42;
-        Fri, 20 Mar 2020 05:38:08 +0000 (UTC)
-Date:   Thu, 19 Mar 2020 22:36:57 -0700
-From:   Davidlohr Bueso <dave@stgolabs.net>
-To:     Thomas Gleixner <tglx@linutronix.de>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Ingo Molnar <mingo@kernel.org>, Will Deacon <will@kernel.org>,
-        "Paul E . McKenney" <paulmck@kernel.org>,
-        Joel Fernandes <joel@joelfernandes.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Oleg Nesterov <oleg@redhat.com>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Logan Gunthorpe <logang@deltatee.com>,
-        Kurt Schwemmer <kurt.schwemmer@microsemi.com>,
-        Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org,
-        Felipe Balbi <balbi@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-usb@vger.kernel.org, Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Arnd Bergmann <arnd@arndb.de>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [patch V2 06/15] rcuwait: Add @state argument to
- rcuwait_wait_event()
-Message-ID: <20200320053657.ggvcqsjtdotmrl7p@linux-p48b>
-References: <20200318204302.693307984@linutronix.de>
- <20200318204408.010461877@linutronix.de>
+        id S1726657AbgCTGiv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 20 Mar 2020 02:38:51 -0400
+Received: from mail-pl1-f193.google.com ([209.85.214.193]:39040 "EHLO
+        mail-pl1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726030AbgCTGiv (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 20 Mar 2020 02:38:51 -0400
+Received: by mail-pl1-f193.google.com with SMTP id m1so2089262pll.6
+        for <linux-wireless@vger.kernel.org>; Thu, 19 Mar 2020 23:38:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=endlessm-com.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=NRVhjjDD7XDl/ETxhVS+N5qQy7f2YR4UjmY+Va7NcIg=;
+        b=k1jXwyAuASqdG4q2GMsWq8R3D3oD+CJtwwbeFsM3NNte3Tjo3tG5Fri927exJdRwAL
+         Ucd1dVzBECsE31JCm+u6WELtE0af5EZDyXmEmwLTV+J2UvBNe47Ww+o2K/eXG6pypM83
+         zkldNrNgDw8wplWNZKixLdMI15c0g/GPxxjyWwa/VxY/rEMRzqFx+fEKjup2+0g0cdYa
+         8M/YadjWpEu5Bm+7PcGkV5I9QiMQUzDkB3KnOscWkQdVF7tQEubXcu4FhtqqjYbEAD2w
+         Ip5tc0+5uOQcFmjwTov/u48CNTFF6npBneeL5Q9fX3HS+qPF82hpVWec7jf+ahf3GXOB
+         6NOA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=NRVhjjDD7XDl/ETxhVS+N5qQy7f2YR4UjmY+Va7NcIg=;
+        b=HmyGkzXDyaWWETtnM36ee0zFy0VABqc0RriguOx9L3p8QJemFIoeVai466fNszONwZ
+         wdbgIAa1R2nosg1mp5XAPu6LnI7T5F4peIDcA20Badtv7BBYMlVvrG6LO0MERgFkzDsL
+         5wnOO9WRu4sGs3O96Pk0ooc+cDfOhCnGvBVylEH0cOu5Brnn50PH7PaQSQfLMvfCUwof
+         +5SApJbpgkgZQrRcDO3YY37szhsNYZsI6D0sFL+UJbzZ/FrTBC3XB8R9EVjn7bEALp6M
+         EprAD/G6GRwo0cMHBKqVZaL91ssT7DpLuT4n+xA0I4CfXOEU4GYhb/H+IILIqRkL2mS4
+         XxCg==
+X-Gm-Message-State: ANhLgQ2VW9mYPyjNUBBnIMRHfJcuygcXcUNp++nZSA4SPdB8coSS1vVK
+        Cq97UCTf2JciDXNIPjrAMj/URw==
+X-Google-Smtp-Source: ADFU+vuAqL4vQjKPSkB3rW0832Dll8GemgDdGRZ6ZhihE6tUalFcheR5/sWW60aa9pISP4cH2vAnDg==
+X-Received: by 2002:a17:90a:240a:: with SMTP id h10mr7658748pje.123.1584686330284;
+        Thu, 19 Mar 2020 23:38:50 -0700 (PDT)
+Received: from localhost.localdomain (59-127-47-126.HINET-IP.hinet.net. [59.127.47.126])
+        by smtp.gmail.com with ESMTPSA id y3sm4370901pfy.158.2020.03.19.23.38.48
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 19 Mar 2020 23:38:49 -0700 (PDT)
+From:   Chris Chiu <chiu@endlessm.com>
+To:     Jes.Sorensen@gmail.com, kvalo@codeaurora.org, davem@davemloft.net
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux@endlessm.com
+Subject: [PATCH v2 0/2] Feed current txrate information for mac80211
+Date:   Fri, 20 Mar 2020 14:38:31 +0800
+Message-Id: <20200320063833.1058-1-chiu@endlessm.com>
+X-Mailer: git-send-email 2.21.1 (Apple Git-122.3)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1; format=flowed
-Content-Disposition: inline
-Content-Transfer-Encoding: 8BIT
-In-Reply-To: <20200318204408.010461877@linutronix.de>
-User-Agent: NeoMutt/20180716
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, 18 Mar 2020, Thomas Gleixner wrote:
+This patchset fills the txrate, sgi, bandwidth information
+in the sta_statistics function. Then the nl80211 commands
+such as 'iw link' can show the correct txrate information.
 
->--- a/include/linux/rcuwait.h
->+++ b/include/linux/rcuwait.h
->@@ -3,6 +3,7 @@
-> #define _LINUX_RCUWAIT_H_
->
-> #include <linux/rcupdate.h>
->+#include <linux/sched/signal.h>
+v2: make the rtl8xxxu_desc_to_mcsrate() static
 
-So this is causing build to fail for me:
 
-  CC      arch/x86/boot/compressed/cmdline.o
-arch/x86/boot/compressed/cmdline.c:5:20: error: conflicting types for ‘set_fs’
- static inline void set_fs(unsigned long seg)
-                    ^~~~~~
-In file included from ./include/linux/uaccess.h:11:0,
-                 from ./include/linux/sched/task.h:11,
-                 from ./include/linux/sched/signal.h:9,
-                 from ./include/linux/rcuwait.h:6,
-                 from ./include/linux/percpu-rwsem.h:8,
-                 from ./include/linux/fs.h:34,
-                 from ./include/linux/proc_fs.h:9,
-                 from ./include/acpi/acpi_bus.h:83,
-                 from ./include/linux/acpi.h:32,
-                 from arch/x86/boot/compressed/misc.h:28,
-                 from arch/x86/boot/compressed/cmdline.c:2:
-./arch/x86/include/asm/uaccess.h:29:20: note: previous definition of ‘set_fs’ was here
- static inline void set_fs(mm_segment_t fs)
-                    ^~~~~~
-make[2]: *** [scripts/Makefile.build:268: arch/x86/boot/compressed/cmdline.o] Error 1
-make[1]: *** [arch/x86/boot/Makefile:113: arch/x86/boot/compressed/vmlinux] Error 2
-make: *** [arch/x86/Makefile:285: bzImage] Error 2
+Chris Chiu (2):
+  rtl8xxxu: add enumeration for channel bandwidth
+  rtl8xxxu: Feed current txrate information for mac80211
 
-Right now I'm not sure what the proper fix should be.
+ .../net/wireless/realtek/rtl8xxxu/rtl8xxxu.h  | 21 ++++-
+ .../wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 77 ++++++++++++++++++-
+ 2 files changed, 95 insertions(+), 3 deletions(-)
 
-Thanks,
-Davidlohr
+-- 
+2.20.1
+
