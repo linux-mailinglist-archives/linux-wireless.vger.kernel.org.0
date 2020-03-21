@@ -2,55 +2,55 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A88DB18E540
-	for <lists+linux-wireless@lfdr.de>; Sat, 21 Mar 2020 23:34:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 83B2D18E546
+	for <lists+linux-wireless@lfdr.de>; Sat, 21 Mar 2020 23:39:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727039AbgCUWd7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 21 Mar 2020 18:33:59 -0400
-Received: from mx3.watchguard.com ([63.251.166.21]:7816 "EHLO
+        id S1728054AbgCUWjv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 21 Mar 2020 18:39:51 -0400
+Received: from mx3.watchguard.com ([63.251.166.21]:8404 "EHLO
         mx3.watchguard.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727700AbgCUWd7 (ORCPT
+        with ESMTP id S1726859AbgCUWjv (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 21 Mar 2020 18:33:59 -0400
+        Sat, 21 Mar 2020 18:39:51 -0400
 Received: from PRDITOMBX01.wgti.net (172.24.2.21) by PRDITOMBX01.wgti.net
  (172.24.2.21) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1531.3; Sat, 21 Mar
- 2020 15:32:52 -0700
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (104.47.56.174)
+ 2020 15:39:47 -0700
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (104.47.58.172)
  by owa.watchguard.com (172.24.2.21) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1531.3
- via Frontend Transport; Sat, 21 Mar 2020 15:32:52 -0700
+ via Frontend Transport; Sat, 21 Mar 2020 15:39:47 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=gNiFUOc+2s/2giyYLAnuHyNriLEOjVqlyWGkH7+9OOb6QiefsOfm0dUD8wHNnxxPJrgqaD7rgLhcaJSZNLhfs+ze+Fp/UOklkGms6+pXkV1uZMiwRjNo9PymsIS6wTKK1ruWzFYrxk8StaX2z/t7S9SPOIyMgiN9IiqeX4xhzdtCXTO2jceGabYI6ewGezeppdx1VzVusBrwtfJR82DkO1ju2Qt7VOf4jyiURLMWwsIZKaDntqJ0qKtA0ydUFr8KtuK6aFXd0HPPwG1FHj+foVAS79g5y/bcoJWT2ZzpKb8Ok0s0bw3iQpAdZmLnJlB+Mx3RqhyCmuu8VjCtQ42WPA==
+ b=j58zFIkF4zE+hfZV9O6GIQGTSk8Afar56ExmLH147iJDv2n7TIxCdwpXaB2UEtuQ9CfE81C9041wEPwqPxbY7rApKEMtHj02wDbnFRKraIzUyIlbfR7LW8B/z9cIJ/hYyLMN6HASmiNmVtGi3jirJE/j6KD9kfuL5w/lTpeBIlDfuNh1jJ8tFG2+W3EnVi9ZRC0Di1fXRS3bSAuuYiGjrPxpmb799CTBvmVGRN2Qh6JQxXpdNXFkHrCpBMZJEO7XgHM8ts0nO7tKNKKrlEkjAZhwo79BU4g6Bw30lqBVrxdMVgHg73ZlQ0EdMbU45btESuSo9sJ9GGem2UCfLUYGFw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jIf6W23wYdeSCh8OeMG0xwFY5ooFjF9O+QcjZbaOK6g=;
- b=RtZUBXfBTVxd5pzibNSYnop356QjSWh/y3QtA8Co5Y5Tawgsczn2+1CSexTtXvcHV7hdkanXp6FAoZnICCL/PxiZQss+JkPLzpD9vSsbFECkMQhyFKHasn5Rw5a371ubMnSop94tmVHvOYtHvXPRomWVg6ZIgcoSRP1tbNcnIaY0jX1KMOsCHeJEwIMlS0xuiw77z98/iIoh21xM3B8krTsFUo01+9Vk8Ac2F/FuKRN8+0IIoA13yLsyXWFxStsQZ9bvQsMGb0H9DqVmJUKutVhwWMKwyB0H9Lco53GR5AasATND4XY3p+h25+j7a57XMuPuJM7UaDrol4Vrv2O5Jw==
+ bh=un9nBieEaBUM+PibmBp4PPcNs7/RmFZ0YKsC5m/N0x4=;
+ b=eQfsNu6femUm1YGtcZ/olE3mTkGCkioLvSFIxo6oiVhpPjzuZr3+xHRYIajzRc7Xqaj2IbAaNTtW10KfsrsvmpeQhQsHD9nKyz5Gl/JIvZ+lnHmAPkD7XfArpoO24IA7vSZn4MIfPMp9if0WKBpPEPV2SE34CK9msOrLiYwY5eZIUGN2DwlNb9n/9it6ingDF0U7O3hLNYKQu/+SfjtkyEVT3f2ucGrvR3evbKEx3wdvR/ioRZFxZlCDQtDfXfM9VUiuOVcXos22vH9KFJ7n7cp44nIB/heP1KspCb4X0sDEob2RCG5PwPZqsyaoFD+Ch+CBuuYUh+YA8MVGLY0sNQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=watchguard.com; dmarc=pass action=none
  header.from=watchguard.com; dkim=pass header.d=watchguard.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wgt.onmicrosoft.com;
  s=selector2-wgt-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jIf6W23wYdeSCh8OeMG0xwFY5ooFjF9O+QcjZbaOK6g=;
- b=Y+L8dzvC1ZxGvMsp/1WPsSLXAo8S7lYlPbZS2O34+WYSG71zPW8/FrD4//83TuQhZClMU4aF2d1kI7xH1+axJDf+hXZqzgb/kIfzNb4ciyQpgeIWzoQY+55r0G1tlLVetOj7FQhbq7zoouUEeqUC8aCkoAwIOqU6oRcCSydm8cQ=
+ bh=un9nBieEaBUM+PibmBp4PPcNs7/RmFZ0YKsC5m/N0x4=;
+ b=eDYkFJiZHXKJlxTDpAqaJaSsWtTwAjrJ+gV40BQqXN6fFPXfdyYnbueGFPVFBA45/hqvecVKltAuf9sI+44GkvlD5x7T5TAVC1rm9wbim12A2Je0StSF3lwQYVnMPM9VRzEPTCFe1XMseDOh56Z/fnhuMuJj+IsAKuGTKsqbRAc=
 Received: from BN7PR10MB2737.namprd10.prod.outlook.com (2603:10b6:406:c5::24)
- by BN7PR10MB2657.namprd10.prod.outlook.com (2603:10b6:406:c6::24) with
+ by BN7PR10MB2497.namprd10.prod.outlook.com (2603:10b6:406:c9::32) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2835.22; Sat, 21 Mar
- 2020 22:32:48 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2835.19; Sat, 21 Mar
+ 2020 22:39:45 +0000
 Received: from BN7PR10MB2737.namprd10.prod.outlook.com
  ([fe80::ed60:6ed3:92fa:9128]) by BN7PR10MB2737.namprd10.prod.outlook.com
  ([fe80::ed60:6ed3:92fa:9128%3]) with mapi id 15.20.2835.017; Sat, 21 Mar 2020
- 22:32:48 +0000
+ 22:39:45 +0000
 From:   Ming Chen <Ming.Chen@watchguard.com>
 To:     'linux-wireless' <linux-wireless@vger.kernel.org>
 Subject: Firmware Crashed
 Thread-Topic: Firmware Crashed
-Thread-Index: AdX/0IddQlnI5ysLTPqj/1bTShZXzQ==
-Date:   Sat, 21 Mar 2020 22:32:48 +0000
-Message-ID: <BN7PR10MB27377248D2272E980A9DCD339AF20@BN7PR10MB2737.namprd10.prod.outlook.com>
+Thread-Index: AdX/0YxOsQET/+KrQn2mecR6d2iN5g==
+Date:   Sat, 21 Mar 2020 22:39:45 +0000
+Message-ID: <BN7PR10MB2737FC3E7028D66FE34351C09AF20@BN7PR10MB2737.namprd10.prod.outlook.com>
 Accept-Language: zh-CN, en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
@@ -59,30 +59,30 @@ authentication-results: spf=none (sender IP is )
  smtp.mailfrom=Ming.Chen@watchguard.com; 
 x-originating-ip: [66.235.15.95]
 x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: b821a71a-55ea-4bc6-3dbd-08d7cde7c8c6
-x-ms-traffictypediagnostic: BN7PR10MB2657:
-x-microsoft-antispam-prvs: <BN7PR10MB26578C86E3A85BB89DB38D7C9AF20@BN7PR10MB2657.namprd10.prod.outlook.com>
+x-ms-office365-filtering-correlation-id: 4d45ba56-00ef-457a-8cfe-08d7cde8c14c
+x-ms-traffictypediagnostic: BN7PR10MB2497:
+x-microsoft-antispam-prvs: <BN7PR10MB249749326200F63EC95603C09AF20@BN7PR10MB2497.namprd10.prod.outlook.com>
 x-ms-oob-tlc-oobclassifiers: OLM:8273;
 x-forefront-prvs: 034902F5BC
-x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(376002)(346002)(366004)(396003)(39840400004)(136003)(199004)(7696005)(71200400001)(316002)(2906002)(86362001)(55016002)(9686003)(7116003)(30864003)(8936002)(8676002)(81156014)(81166006)(76116006)(66556008)(186003)(52536014)(5660300002)(66476007)(64756008)(478600001)(966005)(6916009)(66946007)(26005)(6506007)(3480700007)(66446008)(33656002)(21314003);DIR:OUT;SFP:1101;SCL:1;SRVR:BN7PR10MB2657;H:BN7PR10MB2737.namprd10.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;
+x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(376002)(39830400003)(136003)(396003)(346002)(366004)(199004)(81156014)(64756008)(6506007)(55016002)(316002)(9686003)(7696005)(966005)(478600001)(66946007)(5660300002)(6916009)(66476007)(66556008)(30864003)(86362001)(76116006)(8936002)(81166006)(52536014)(66446008)(3480700007)(8676002)(26005)(71200400001)(7116003)(2906002)(33656002)(186003)(21314003);DIR:OUT;SFP:1101;SCL:1;SRVR:BN7PR10MB2497;H:BN7PR10MB2737.namprd10.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;
 received-spf: None (protection.outlook.com: watchguard.com does not designate
  permitted sender hosts)
 x-ms-exchange-senderadcheck: 1
 x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: MEQJOo22BCf1jRG88fAkf0HLdpa7yC2sk2ZRcOr5HhKeUIGttOD+oSamEoru054rQAG6xP0bu8pAVSILp3kJDZsdOmuxur5w77ST5u8F45UimTBtxmKELb+YYKgawliiquBMgyWk5oXINAFcawm+Hl42YV7yQHg4MChGp/ROEPZv0noRdgtGAMp/A2+SCVv5aRXCau9RvicKNhG7pPPHmWttYF8pLaVuydMjj6PwCB37tKsvErWk2sEQ9Y0iaWv/zRFuijrQGB1QLbmTUUh6oFrOaqeZ3h/mRKy/IQl0jF2smNwrQ2/uu2ekbU9iEFN0F+PaY2xv9ByT5NKwWqRU0Dgl2oHJv+6G3VD9b6itL7F7XXjC/lAwQurL4BC+0BrHAYnPEsEHwnfrV9uxawcwFIb4emfiRr+QDFO8f+zQvki/9bUmHfFvhCho2tEdWxqBfJEiipWwFBGjsinHBsGG6RUDMcDf3fik7PUwTmATQ33R/Sw0cK/GOZS7Vn/a11SMMNw3NuL4nhOpeZFpBG7TjC6GyhZqgSPrBm9FGWe/Av8OyOmFZZtBrxu2mMz9E93y
-x-ms-exchange-antispam-messagedata: ngOYyEFPVbsVd8YYzRzqp8xWekF7ZFSlCABrNx6/9kgtEypBrjjVJkUGaZrsQYx0J5YJNCxeAavZm6l1xb9KlEl4CDH81cXrQFHzoeQxRzVWEDqbnF6qz5inPuvKiO1uTQNUUyVQtDofqzM7OyuHsg==
+x-microsoft-antispam-message-info: OCYtJt0mkEflm6IxO65+gMkilhqk4XWwJFo4uyq66tkCFTvsfoSqgwW7xqKoUXBAZEFYaSsyaMl90PuZqaDPlP0wTowWwfbkHAX7ocyFViL/puq7sOaqpuCg8wVU/T4bgRie9AQUcg8W3LHVlcxiVraLllFkvQohmSTamcEvUuH/hIqKW1ZmnY8Icuyx5O/HIp32UjP0eJtd6htoeeX3J6DtfpdvBloub1s4f86Loe5IrIcIUKbHw1H7CZFr8R0FqZZS0HIgzlJXzTXAQrFBIISHe1ylLo+9HwD/XckExCDRVUCZcXCBkfHjunnp48Wa1t54X9YeUxMMUAkdv+ZNyFzMCjIPiZMttncwHiHirZbYI44a5INPfgJ4TkHgcqEO3vuwUytuUQtAh7lLdvw60Wall84kPs/OSm6AspFKSE+/WbnZ0YnUwI5tt2R/bni70jWegvFFuudCkcz0+fJN06CdUOGR3HgWkb2Df0aC3AnB1W08dFPnY8PDJ8L2pdxLl1kgAEaDLsS1IEPE3t8KaHOeEg9an1W6KTbQs1YJpnbZXE2IiGklC6w1TGyQyw+j
+x-ms-exchange-antispam-messagedata: +UEItfX2nB+Yr//YTLCNzM1WbpAelijK/lGaiw+58vG1VUwAstQ+xEimPxjXMRcHvS+T/SpcSBNhTschcAgIj8/BRXVATe74E7JJknqENfQI4TxBePqYOX6q4jVqAiOU35Tem6zJ5o/YGIw9GJJh+g==
 x-ms-exchange-transport-forked: True
-Content-Type: text/plain; charset="iso-8859-1"
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-Network-Message-Id: b821a71a-55ea-4bc6-3dbd-08d7cde7c8c6
-X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Mar 2020 22:32:48.3490
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4d45ba56-00ef-457a-8cfe-08d7cde8c14c
+X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Mar 2020 22:39:45.3291
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 2563c132-88f5-466f-bbb2-e83153b3c808
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: pXEqsHZfFXWqd+hBsMeMwBSX+vSl7GdfB7j/jmT13coBGAF2Shrct+VZ5SWq+8xbzUVMBlHJo24/37v3i5ILVF5o6C0xtvIseyK4TH0tKjw=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN7PR10MB2657
+X-MS-Exchange-CrossTenant-userprincipalname: An8xGpA0sFvaMgNwxkW3sm/RL5LzAOGGyhrLCo19CVOIOVHWLORnJFpsVBiAjz2n2m1Sxoj/ieIhNTSGPz1HQy3RBq411zYvz8294jNWIXY=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN7PR10MB2497
 X-OriginatorOrg: watchguard.com
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
@@ -102,8 +102,8 @@ XXX@YYY:/lib/firmware/ath10k/QCA9984/hw1.0# lspci -k
 I am using this firmware binary file(10.4-3.10-00047) and its associated bo=
 ard binary file.
 https://github.com/kvalo/ath10k-firmware/blob/master/QCA9984/hw1.0/3.10/fir=
-mware-5.bin_10.4-3.10-00047 AND =A0https://github.com/kvalo/ath10k-firmware=
-/blob/master/QCA9984/hw1.0/board-2.bin=20
+mware-5.bin_10.4-3.10-00047 AND  https://github.com/kvalo/ath10k-firmware/b=
+lob/master/QCA9984/hw1.0/board-2.bin=20
 
 But it will always report "Firmware Crashed" when I insert ath10k_pci.ko. I=
  am not sure what caused this issue. Can someone help me take a look?
@@ -171,9 +171,8 @@ base_addr c000000075e85000
 [ 2337.100970] ath10k_pci 0000:01:00.0: Enabling feature bit: 16
 [ 2337.100973] ath10k_pci 0000:01:00.0: Enabling feature bit: 17
 [ 2337.100978] ath10k_pci 0000:01:00.0: features
-[ 2337.100984] ath10k_pci 0000:01:00.0: 00000000: 00 00 00 00 00 03 70 08=
-=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
- ......p.
+[ 2337.100984] ath10k_pci 0000:01:00.0: 00000000: 00 00 00 00 00 03 70 08  =
+                        ......p.
 [ 2337.100988] ath10k_pci 0000:01:00.0: found fw ie wmi op version 6
 [ 2337.100991] ath10k_pci 0000:01:00.0: found fw ie htt op version 4
 [ 2337.100995] ath10k_pci 0000:01:00.0: found fw code swap image ie (270212=
@@ -347,30 +346,18 @@ DF0 0x00400000
 [ 2340.903008] ath10k_pci 0000:01:00.0: [56]: 0x800C383A 0x004069DC 0x00413=
 E10 0x00400000
 [ 2340.903012] ath10k_pci 0000:01:00.0: Copy Engine register dump:
-[ 2340.903021] ath10k_pci 0000:01:00.0: [00]: 0x0004a000=A0=A0 2=A0=A0 2=A0=
-=A0 3=A0=A0 2
-[ 2340.903029] ath10k_pci 0000:01:00.0: [01]: 0x0004a400=A0=A0 7=A0=A0 7=A0=
-=A0 6=A0=A0 7
-[ 2340.903038] ath10k_pci 0000:01:00.0: [02]: 0x0004a800=A0=A0 0=A0=A0 0 12=
-7=A0=A0 0
-[ 2340.903046] ath10k_pci 0000:01:00.0: [03]: 0x0004ac00=A0=A0 0=A0=A0 0=A0=
-=A0 0=A0=A0 0
-[ 2340.903054] ath10k_pci 0000:01:00.0: [04]: 0x0004b000=A0=A0 0=A0=A0 0=A0=
-=A0 0=A0=A0 0
-[ 2340.903062] ath10k_pci 0000:01:00.0: [05]: 0x0004b400=A0=A0 0=A0=A0 0=A0=
-=A0 0=A0=A0 0
-[ 2340.903070] ath10k_pci 0000:01:00.0: [06]: 0x0004b800=A0=A0 0=A0=A0 0=A0=
-=A0 0=A0=A0 0
-[ 2340.903078] ath10k_pci 0000:01:00.0: [07]: 0x0004bc00=A0=A0 1=A0=A0 1=A0=
-=A0 1=A0=A0 1
-[ 2340.903087] ath10k_pci 0000:01:00.0: [08]: 0x0004c000=A0=A0 0=A0=A0 0 12=
-7=A0=A0 0
-[ 2340.903095] ath10k_pci 0000:01:00.0: [09]: 0x0004c400=A0=A0 1=A0=A0 1=A0=
-=A0 1=A0=A0 1
-[ 2340.903103] ath10k_pci 0000:01:00.0: [10]: 0x0004c800=A0=A0 0=A0=A0 0=A0=
-=A0 0=A0=A0 0
-[ 2340.903111] ath10k_pci 0000:01:00.0: [11]: 0x0004cc00=A0=A0 0=A0=A0 0=A0=
-=A0 0=A0=A0 0
+[ 2340.903021] ath10k_pci 0000:01:00.0: [00]: 0x0004a000   2   2   3   2
+[ 2340.903029] ath10k_pci 0000:01:00.0: [01]: 0x0004a400   7   7   6   7
+[ 2340.903038] ath10k_pci 0000:01:00.0: [02]: 0x0004a800   0   0 127   0
+[ 2340.903046] ath10k_pci 0000:01:00.0: [03]: 0x0004ac00   0   0   0   0
+[ 2340.903054] ath10k_pci 0000:01:00.0: [04]: 0x0004b000   0   0   0   0
+[ 2340.903062] ath10k_pci 0000:01:00.0: [05]: 0x0004b400   0   0   0   0
+[ 2340.903070] ath10k_pci 0000:01:00.0: [06]: 0x0004b800   0   0   0   0
+[ 2340.903078] ath10k_pci 0000:01:00.0: [07]: 0x0004bc00   1   1   1   1
+[ 2340.903087] ath10k_pci 0000:01:00.0: [08]: 0x0004c000   0   0 127   0
+[ 2340.903095] ath10k_pci 0000:01:00.0: [09]: 0x0004c400   1   1   1   1
+[ 2340.903103] ath10k_pci 0000:01:00.0: [10]: 0x0004c800   0   0   0   0
+[ 2340.903111] ath10k_pci 0000:01:00.0: [11]: 0x0004cc00   0   0   0   0
 [ 2341.893166] ath10k_pci 0000:01:00.0: failed to receive control response =
 completion, polling..
 [ 2341.893176] ath10k_pci 0000:01:00.0: pci hif send complete check
