@@ -2,96 +2,84 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 32FED18E728
-	for <lists+linux-wireless@lfdr.de>; Sun, 22 Mar 2020 07:51:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B01FB18E800
+	for <lists+linux-wireless@lfdr.de>; Sun, 22 Mar 2020 11:22:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726770AbgCVGvl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 22 Mar 2020 02:51:41 -0400
-Received: from mail27.static.mailgun.info ([104.130.122.27]:15248 "EHLO
+        id S1726902AbgCVKWj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 22 Mar 2020 06:22:39 -0400
+Received: from mail27.static.mailgun.info ([104.130.122.27]:21947 "EHLO
         mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725946AbgCVGvj (ORCPT
+        by vger.kernel.org with ESMTP id S1726897AbgCVKWj (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 22 Mar 2020 02:51:39 -0400
+        Sun, 22 Mar 2020 06:22:39 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1584859899; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=NqefWYA7oKSyYiu2yGdTUR8SlVG4/Arckme8ISShSZ8=; b=Xs+5GjqhZsvOenMwDsq5GITYBWNr509kjDb2dJvdEKoq/m83YGlwY2jRvoRYUGn09gTGFxev
- jGfDoze1UrpsHuSYDJ7gsT6QyNtOIVOrTPPqYviOj3H04oq2ZTlV35sTtcTOdP67J/JlbKQz
- m1AiH8Rr6wxcCUTU8xy+PSr3mXI=
+ s=smtp; t=1584872558; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=bhceEIlhB/5Z3VaRzMEBxGOjOYuAVhiDx+9jhnKdg5w=;
+ b=jNMSEhf9oRuKL8nwIN9RGoon1qXIUwFiMwb9jUqbwjSeshpYtx9pRxQbTC/f/DpvAs3lf6hw
+ cTlyhhlPsqakuzsh+iKk0J1kof456+hbenHNzizNh6Kgn7rpC07a5tqpopkgy/cAPLNEGo9p
+ UrNxjAQ0MuiN1ukCUFC25QfAhYY=
 X-Mailgun-Sending-Ip: 104.130.122.27
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e770aee.7f43d036f1b8-smtp-out-n02;
- Sun, 22 Mar 2020 06:51:26 -0000 (UTC)
+ by mxa.mailgun.org with ESMTP id 5e773c65.7f14bf8b6340-smtp-out-n04;
+ Sun, 22 Mar 2020 10:22:29 -0000 (UTC)
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id E77C8C44795; Sun, 22 Mar 2020 06:51:24 +0000 (UTC)
+        id 5E0ADC432C2; Sun, 22 Mar 2020 10:22:28 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
+        MISSING_MID,SPF_NONE,URIBL_BLOCKED autolearn=no autolearn_force=no
+        version=3.4.0
 Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 38C5DC433D2;
-        Sun, 22 Mar 2020 06:51:17 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 38C5DC433D2
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 97DF9C433CB;
+        Sun, 22 Mar 2020 10:22:26 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 97DF9C433CB
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     "Joel Fernandes \(Google\)" <joel@joelfernandes.org>
-Cc:     linux-kernel@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
-        Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Will Deacon <will@kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Ingo Molnar <mingo@kernel.org>,
-        "Paul E . McKenney" <paulmck@kernel.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Logan Gunthorpe <logang@deltatee.com>,
-        Kurt Schwemmer <kurt.schwemmer@microsemi.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        "linux-pci\@vger.kernel.org Felipe Balbi" <balbi@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        Oleg Nesterov <oleg@redhat.com>,
-        Davidlohr Bueso <dave@stgolabs.net>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Arnd Bergmann <arnd@arndb.de>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH] Documentation: Clarify better about the rwsem non-owner release issue
-References: <20200322021938.175736-1-joel@joelfernandes.org>
-Date:   Sun, 22 Mar 2020 08:51:15 +0200
-In-Reply-To: <20200322021938.175736-1-joel@joelfernandes.org> (Joel
-        Fernandes's message of "Sat, 21 Mar 2020 22:19:38 -0400")
-Message-ID: <87a748khlo.fsf@kamboji.qca.qualcomm.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v2] ath10k: Fill GCMP MIC length for PMF
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <1584540911-4267-1-git-send-email-ssreeela@codeaurora.org>
+References: <1584540911-4267-1-git-send-email-ssreeela@codeaurora.org>
+To:     Sowmiya Sree Elavalagan <ssreeela@codeaurora.org>
+Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        Yingying Tang <yintang@codeaurora.org>,
+        Sowmiya Sree Elavalagan <ssreeela@codeaurora.org>
+User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
+Message-Id: <20200322102228.5E0ADC432C2@smtp.codeaurora.org>
+Date:   Sun, 22 Mar 2020 10:22:28 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-"Joel Fernandes (Google)" <joel@joelfernandes.org> writes:
+Sowmiya Sree Elavalagan <ssreeela@codeaurora.org> wrote:
 
-> Reword and clarify better about the rwsem non-owner release issue.
->
-> Link: https://lore.kernel.org/linux-pci/20200321212144.GA6475@google.com/
->
-> Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
+> GCMP MIC length is not filled for GCMP/GCMP-256 cipher suites in
+> PMF enabled case. Due to mismatch in MIC length, deauth/disassoc frames
+> are unencrypted.
+> This patch fills proper MIC length for GCMP/GCMP-256 cipher suites.
+> 
+> Tested HW: QCA9984, QCA9888
+> Tested FW: 10.4-3.6-00104
+> 
+> Signed-off-by: Yingying Tang <yintang@codeaurora.org>
+> Co-developed-by: Sowmiya Sree Elavalagan <ssreeela@codeaurora.org>
+> Signed-off-by: Sowmiya Sree Elavalagan <ssreeela@codeaurora.org>
+> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 
-There's something wrong with your linux-pci and linux-usb addresses:
+Patch applied to ath-next branch of ath.git, thanks.
 
-	"linux-pci@vger.kernel.org Felipe Balbi" <balbi@kernel.org>,
-
-
-	"linux-usb@vger.kernel.org Kalle Valo" <kvalo@codeaurora.org>,
-
+95a568c4a461 ath10k: Fill GCMP MIC length for PMF
 
 -- 
+https://patchwork.kernel.org/patch/11445331/
+
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
