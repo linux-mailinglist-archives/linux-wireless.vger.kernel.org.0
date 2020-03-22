@@ -2,61 +2,96 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B350418E716
-	for <lists+linux-wireless@lfdr.de>; Sun, 22 Mar 2020 07:15:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 32FED18E728
+	for <lists+linux-wireless@lfdr.de>; Sun, 22 Mar 2020 07:51:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725946AbgCVGPs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 22 Mar 2020 02:15:48 -0400
-Received: from mail-il1-f180.google.com ([209.85.166.180]:39121 "EHLO
-        mail-il1-f180.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725881AbgCVGPs (ORCPT
+        id S1726770AbgCVGvl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 22 Mar 2020 02:51:41 -0400
+Received: from mail27.static.mailgun.info ([104.130.122.27]:15248 "EHLO
+        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725946AbgCVGvj (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 22 Mar 2020 02:15:48 -0400
-Received: by mail-il1-f180.google.com with SMTP id r5so5331649ilq.6
-        for <linux-wireless@vger.kernel.org>; Sat, 21 Mar 2020 23:15:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc;
-        bh=1Dc8QYnu0Mt5l/DOa57MVk/OrasboSZuspfiudZBlxM=;
-        b=PazIYCbrbBp0FrGatBwoh7ls1YaNBaaf7/zjhfSeCaoG8NUcyE5r4qhrUMraYF7+gJ
-         LCbR/7HSKhP1OTs6WNmNCIJyIcgC+7c6Bu0jrtdDx/omp3NudafE9jxmQ+F0yeBcxTjZ
-         uRpRbgYdWYsqD/IRfVZdFkteRONwRynmL95hn2m4uyQ9BpSOUjzPY8FuyY5eMDhBgBoE
-         c0sRUzrMpULpMmPhxxbhZD9YxrzamjwfnBZQk8oG2/NBuOjJluw/wZqE1odUnbICCSj/
-         pDysU1iIVkNLFf22eJUzfBpV7BJJvgNw+W6aGa2S5UWLAah9QecRmeHRx1SB7n4qqjWU
-         j9Pg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc;
-        bh=1Dc8QYnu0Mt5l/DOa57MVk/OrasboSZuspfiudZBlxM=;
-        b=lkiSalnW6Q6a+ZdsgnmbS68cCdjBgv2q2ZSlfV97qljtAVg4BCKbm4PjSpKZSD/NTC
-         +/F3OEFwT6ydM6Cc50DMpY0gQLi9johsIvOx1xKYWJm1ThbuprPweodbmGKNIvWMl5Lh
-         KKf0fiG632LJFmk+yJqscqv5freM/S9dyk2suaNvjQAglFU43r8WOLEBXNyVAT7c0N8B
-         k7fK8y+sOhMhC4/LRDN5tqS+pu4tuKHIPmHRzS3e9Z2WLneC1Jki5sEQB2VukjjTQkoQ
-         WyWu2vJMl/5Kym+1vGEGXS/n+bEEzlgQq+NKGVGpJKKIaSMdn2ahL/nuj2vsgq6zlbJr
-         6vUQ==
-X-Gm-Message-State: ANhLgQ3g59pV+NKiTc+KaF4MxoelX0stLHQz0LzL5LjM2I+sgc7Qwynf
-        kfqSg76g0lw3D9qTsEauJKApQpT2TK/BITmS6/0nzg==
-X-Google-Smtp-Source: ADFU+vs/fWGAdA7GoSPxZXDOACKwWqiNYgZAvUuO+NracSDKYtANMgeUe632eAs+ueOgnuS1iBg8MdgG6ZFcDiONEqg=
-X-Received: by 2002:a92:d60a:: with SMTP id w10mr16293478ilm.107.1584857747697;
- Sat, 21 Mar 2020 23:15:47 -0700 (PDT)
+        Sun, 22 Mar 2020 02:51:39 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1584859899; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=NqefWYA7oKSyYiu2yGdTUR8SlVG4/Arckme8ISShSZ8=; b=Xs+5GjqhZsvOenMwDsq5GITYBWNr509kjDb2dJvdEKoq/m83YGlwY2jRvoRYUGn09gTGFxev
+ jGfDoze1UrpsHuSYDJ7gsT6QyNtOIVOrTPPqYviOj3H04oq2ZTlV35sTtcTOdP67J/JlbKQz
+ m1AiH8Rr6wxcCUTU8xy+PSr3mXI=
+X-Mailgun-Sending-Ip: 104.130.122.27
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5e770aee.7f43d036f1b8-smtp-out-n02;
+ Sun, 22 Mar 2020 06:51:26 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id E77C8C44795; Sun, 22 Mar 2020 06:51:24 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 38C5DC433D2;
+        Sun, 22 Mar 2020 06:51:17 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 38C5DC433D2
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     "Joel Fernandes \(Google\)" <joel@joelfernandes.org>
+Cc:     linux-kernel@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
+        Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Will Deacon <will@kernel.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Ingo Molnar <mingo@kernel.org>,
+        "Paul E . McKenney" <paulmck@kernel.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Logan Gunthorpe <logang@deltatee.com>,
+        Kurt Schwemmer <kurt.schwemmer@microsemi.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        "linux-pci\@vger.kernel.org Felipe Balbi" <balbi@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        Oleg Nesterov <oleg@redhat.com>,
+        Davidlohr Bueso <dave@stgolabs.net>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Arnd Bergmann <arnd@arndb.de>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH] Documentation: Clarify better about the rwsem non-owner release issue
+References: <20200322021938.175736-1-joel@joelfernandes.org>
+Date:   Sun, 22 Mar 2020 08:51:15 +0200
+In-Reply-To: <20200322021938.175736-1-joel@joelfernandes.org> (Joel
+        Fernandes's message of "Sat, 21 Mar 2020 22:19:38 -0400")
+Message-ID: <87a748khlo.fsf@kamboji.qca.qualcomm.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-Received: by 2002:a6b:7714:0:0:0:0:0 with HTTP; Sat, 21 Mar 2020 23:15:47
- -0700 (PDT)
-In-Reply-To: <BN7PR10MB2737FC3E7028D66FE34351C09AF20@BN7PR10MB2737.namprd10.prod.outlook.com>
-References: <BN7PR10MB2737FC3E7028D66FE34351C09AF20@BN7PR10MB2737.namprd10.prod.outlook.com>
-From:   Tom Psyborg <pozega.tomislav@gmail.com>
-Date:   Sun, 22 Mar 2020 07:15:47 +0100
-Message-ID: <CAKR_QVLLe2nssX3fz=xtPvM8ZQKwGpC4g=YOyUUkaniX_KB8QA@mail.gmail.com>
-Subject: Re: Firmware Crashed
-To:     Ming Chen <Ming.Chen@watchguard.com>
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-can you try to boot it in another device and using some distro that
-has 4.19 or later kernel without backports?
+"Joel Fernandes (Google)" <joel@joelfernandes.org> writes:
+
+> Reword and clarify better about the rwsem non-owner release issue.
+>
+> Link: https://lore.kernel.org/linux-pci/20200321212144.GA6475@google.com/
+>
+> Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
+
+There's something wrong with your linux-pci and linux-usb addresses:
+
+	"linux-pci@vger.kernel.org Felipe Balbi" <balbi@kernel.org>,
+
+
+	"linux-usb@vger.kernel.org Kalle Valo" <kvalo@codeaurora.org>,
+
+
+-- 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
