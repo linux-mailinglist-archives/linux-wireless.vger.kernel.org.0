@@ -2,107 +2,109 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id ED5AD18E59A
-	for <lists+linux-wireless@lfdr.de>; Sun, 22 Mar 2020 01:34:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4BDB118E5D5
+	for <lists+linux-wireless@lfdr.de>; Sun, 22 Mar 2020 02:36:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728189AbgCVAeg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 21 Mar 2020 20:34:36 -0400
-Received: from mail-pg1-f181.google.com ([209.85.215.181]:38458 "EHLO
-        mail-pg1-f181.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728120AbgCVAeg (ORCPT
+        id S1728312AbgCVBg2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 21 Mar 2020 21:36:28 -0400
+Received: from mail-qk1-f196.google.com ([209.85.222.196]:39905 "EHLO
+        mail-qk1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728288AbgCVBg2 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 21 Mar 2020 20:34:36 -0400
-Received: by mail-pg1-f181.google.com with SMTP id x7so5164449pgh.5
-        for <linux-wireless@vger.kernel.org>; Sat, 21 Mar 2020 17:34:34 -0700 (PDT)
+        Sat, 21 Mar 2020 21:36:28 -0400
+Received: by mail-qk1-f196.google.com with SMTP id b62so2202425qkf.6
+        for <linux-wireless@vger.kernel.org>; Sat, 21 Mar 2020 18:36:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=OVBiZQ81sfKb2bi7YNF134goHng4U2/KqWiVvfDRpCw=;
-        b=DbPYWoiSUNMCEuxoo9FYYSgpcOHik9zhBkdr9WmBztKey1V3AgQETHADvWp9xUNo9m
-         6EWmfbt3zGFvRjVEWBs6aaQrZKVYglrG4nY6iEoQNAOBbMcNdga8+/Tp5r5D4XdrHALR
-         dyUhebc3Q4YBlO1R/k+wk0gvW/FJAveotIoO1z33ol4XgFTknIUigeiKyiub78QlKP4x
-         G3LbU2yv9kEEmN9e7T/IHWN21eVgUYvAi368R9eK5EqrjwdN/lR1jgvcOPcfZqqDJ+2J
-         t4X4esyhQ+2SChXLLxp/I+A4p+FJBCjM9tFNmJrzjJZeyUI7lSmXboHcOuj1fXSw4FXK
-         dr2g==
+        d=joelfernandes.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=Ubq/qZnX/ujKaYfjOueGLD6Nqh5QSMEUH2vduTkKjHA=;
+        b=PL1RyTyq/WRZKZrEHqL4R/7W0dJU38ey6RtLKNXSwKxSkIN9TA8rk+1XHkXSB34Z3U
+         +hT8qUXMqZjtKTftKJLwunclFMXbCFua88wGTvXHtsD23zMsiUUWyiPeyIJ6vgtbThHW
+         gFwhM+xyJWfZ3VhmNgEQUPD4gXknbn5mHpUV8=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=OVBiZQ81sfKb2bi7YNF134goHng4U2/KqWiVvfDRpCw=;
-        b=H4Zzo2olm5o1iKdbjZgxs1oVutyJkiPnvCKr6u/5o0Rj2EXqFuRYutax7MoueXpptT
-         Q3ngtyF9e9UzR2YHIazER67oIwhFkSh3tsCUPvpPGCsEFDwy5Fda+4xIsu42Z0MWQz66
-         PVTyeRbpx5qgZGL1yKSptgTtHnt927a+gvc6K1cnTaAY9u3QDsxh0UVjjM3GV22lZF7x
-         RpK1nlfU5UcEmeBSR015xPoCR/uTSmvsC59VRYjcrapJ0KjidoTZOm59zvRxbPzwENGa
-         qg1kLzlKUpbPtJRAiDImitWyBjiomCVmt1h07sovSM7e7SpAJdCHvNDqbTbrSpH3+P82
-         J27A==
-X-Gm-Message-State: ANhLgQ3UmZcn0sWlIKrDZ8BVfujB2fOTcJzcC2tl+AZ6WarwRUTRJ0P0
-        XVqI9dzqN519QH7wggiXdRACeHqE
-X-Google-Smtp-Source: ADFU+vt74TakMqmK6eolNAZQ2i5Yikk+oVGfCLavRuorKwrouk8FxOuK3AJfoaYLfMTDQtfi4ZmOnA==
-X-Received: by 2002:aa7:947c:: with SMTP id t28mr16404956pfq.239.1584837273271;
-        Sat, 21 Mar 2020 17:34:33 -0700 (PDT)
-Received: from ?IPv6:2409:11:53c0:1f00:b04c:f0c9:bf68:24c7? ([2409:11:53c0:1f00:b04c:f0c9:bf68:24c7])
-        by smtp.gmail.com with ESMTPSA id s12sm8573088pgi.38.2020.03.21.17.34.32
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 21 Mar 2020 17:34:32 -0700 (PDT)
-Subject: Re: Simulate Radio wave interference
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org
-References: <fb4be9f4353193a789e4a6cdc4b35c096d2efd7f.camel@sipsolutions.net>
-From:   Masashi Honma <masashi.honma@gmail.com>
-Message-ID: <8f783032-8999-18aa-5980-8a87427fddd8@gmail.com>
-Date:   Sun, 22 Mar 2020 09:34:31 +0900
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=Ubq/qZnX/ujKaYfjOueGLD6Nqh5QSMEUH2vduTkKjHA=;
+        b=nKwEeCoor+rtGDo3R3dg4N33IkAmpZnrYQCYVBkAd+xsfQone5bgdO3bcKz1hOMHEp
+         WLshT9r6/0q6Khucqp4GNzqUEzV23xgoRyoTmhti9lssTgQ106ZhH+1PaEQZe5rb/rMY
+         j1zsRkdVFay9hIxc1Np5tYVCZWH/8VFT51j9fi1Ven8cEcpanM8HTpxAoWhqC30a903z
+         MNPt+LWF4X7lYilvQ7uSQhvbSwmHPOpQvqaemrKDRi0IkRy/q9u9XSwO1Oez3gWpTOnY
+         Rle0PR3K0ynU9NNsgyxw1CvOoiwXLnLBewKlQXss/jZpy8mZALXUN+GyXjOeLH3rt9uQ
+         NHoA==
+X-Gm-Message-State: ANhLgQ2iWQfm22PuGhHW47aJ/12XygdWthcWMCNRHF3dbTInAhLWD4Bb
+        PoIn9D7mAgG6hbM0dfAXHmTkaA==
+X-Google-Smtp-Source: ADFU+vu+Jf1CVw4GQOx5dNoxGTymqpn5p1dmtyWCTiwwU99STlnO5FKSrpzUOQTz2PYCKmBpD/vEgA==
+X-Received: by 2002:a37:db0a:: with SMTP id e10mr2637693qki.273.1584840985412;
+        Sat, 21 Mar 2020 18:36:25 -0700 (PDT)
+Received: from localhost ([2620:15c:6:12:9c46:e0da:efbf:69cc])
+        by smtp.gmail.com with ESMTPSA id w18sm7979664qkw.130.2020.03.21.18.36.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 21 Mar 2020 18:36:24 -0700 (PDT)
+Date:   Sat, 21 Mar 2020 21:36:24 -0400
+From:   Joel Fernandes <joel@joelfernandes.org>
+To:     Thomas Gleixner <tglx@linutronix.de>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Ingo Molnar <mingo@kernel.org>, Will Deacon <will@kernel.org>,
+        "Paul E . McKenney" <paulmck@kernel.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Logan Gunthorpe <logang@deltatee.com>,
+        Kurt Schwemmer <kurt.schwemmer@microsemi.com>,
+        Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org,
+        Felipe Balbi <balbi@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-usb@vger.kernel.org, Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        Oleg Nesterov <oleg@redhat.com>,
+        Davidlohr Bueso <dave@stgolabs.net>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Arnd Bergmann <arnd@arndb.de>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [patch V2 08/15] Documentation: Add lock ordering and nesting
+ documentation
+Message-ID: <20200322013624.GA161885@google.com>
+References: <20200318204302.693307984@linutronix.de>
+ <20200318204408.211530902@linutronix.de>
+ <20200321212144.GA6475@google.com>
+ <874kuhqsz3.fsf@nanos.tec.linutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <fb4be9f4353193a789e4a6cdc4b35c096d2efd7f.camel@sipsolutions.net>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <874kuhqsz3.fsf@nanos.tec.linutronix.de>
+User-Agent: Mutt/1.12.2 (2019-09-21)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2020/03/17 0:42, Johannes Berg wrote:
- > I don't see this - the signal strength is just taken as is, and
- > overwritten, so there's no accumulation going on?
+On Sat, Mar 21, 2020 at 10:49:04PM +0100, Thomas Gleixner wrote:
+[...] 
+> >> +rwsems have grown interfaces which allow non owner release for special
+> >> +purposes. This usage is problematic on PREEMPT_RT because PREEMPT_RT
+> >> +substitutes all locking primitives except semaphores with RT-mutex based
+> >> +implementations to provide priority inheritance for all lock types except
+> >> +the truly spinning ones. Priority inheritance on ownerless locks is
+> >> +obviously impossible.
+> >> +
+> >> +For now the rwsem non-owner release excludes code which utilizes it from
+> >> +being used on PREEMPT_RT enabled kernels.
+> >
+> > I could not parse the last sentence here, but I think you meant "For now,
+> > PREEMPT_RT enabled kernels disable code that perform a non-owner release of
+> > an rwsem". Correct me if I'm wrong.
+> 
+> Right, that's what I wanted to say :)
+> 
+> Care to send a delta patch?
 
-Right. The signal strength is not accumulated. The commit log is wrong.
-The interference model is accumulating frame duration to calculate
-probabilities. About accumulation of signal strength, it could be
-calculated as vector. I wrote about it in response to realistic
-simulation.
+Absolutely, doing that now. :-)
 
-I think I should explain the concept of this interference model.
-The interference model assumes signals which strength is under CCA
-threshold are interference signal. The model accumulates the duration
-of such signals. The model assumes (accumulated duration / time slot)
-is probability of occurrence of interference. When interference occurs,
-the model reduce the max signal strength of interfering STA from
-transmitting STA's signal strength.
+thanks,
 
-Though the implementation is not among the concept of the model. The
-signal strength from node A to B was calculated and wrongly accumulated
-to interference duration of "A to all".
+ - Joel
 
-I fixed it to "A to B" and sent a Pull Request to wmediumd.
-https://github.com/bcopeland/wmediumd/pull/22
-
- > I guess my question really is how what's actually implemented is meant
- > to map to the physical world?
-
-To get closer to real world, it is necessary to consider the phase of
-radio wave. A radio wave could be weakened by radio waves which has
-opposite phase.
-
-Calculation of radio wave phase of multi signals could be described by
-electric field created by mesh node antenna. By using this electric
-field model, we could accumulate some interference signals as vector.
-
-I have an idea of implementation. Though I need some more time to
-implement this.
-
-Regards,
-Masashi Honma.
