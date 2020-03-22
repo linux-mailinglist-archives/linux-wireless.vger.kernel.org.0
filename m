@@ -2,79 +2,97 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4439018E8B1
-	for <lists+linux-wireless@lfdr.de>; Sun, 22 Mar 2020 13:27:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C37218E960
+	for <lists+linux-wireless@lfdr.de>; Sun, 22 Mar 2020 15:30:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727068AbgCVM0t (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 22 Mar 2020 08:26:49 -0400
-Received: from mail-il1-f178.google.com ([209.85.166.178]:41674 "EHLO
-        mail-il1-f178.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727129AbgCVM0m (ORCPT
+        id S1726781AbgCVO3y (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 22 Mar 2020 10:29:54 -0400
+Received: from mail27.static.mailgun.info ([104.130.122.27]:43799 "EHLO
+        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725785AbgCVO3x (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 22 Mar 2020 08:26:42 -0400
-Received: by mail-il1-f178.google.com with SMTP id l14so10457730ilj.8
-        for <linux-wireless@vger.kernel.org>; Sun, 22 Mar 2020 05:26:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to;
-        bh=e0BbbFBjNaqWJAORJJW2eiwBf9ukrNp83gXIJkh+fsI=;
-        b=AfnNyxd4kMYhiM3PLI84DsiTJTbx+iHb43d9RoNPT1egZwTsxTPDKJxuWBsk3j8+Vc
-         k14RQ5f/Q7Z5SGOS20rG3fleibNbRtMKVqJ2wnmGaEW5BYE8rDxXnRrx9kcys5f9xlka
-         5QMSYPLfBXjzPgPSm0sz5c7lW0gwxWuKo6ZpJ1JqfUlrPMyhBQ8uC6nrBouyESiYa2YF
-         /zohsBR6qRDcJWIlGNBuo4U0/DpCLGqPKnJSraIxNGbqg3usF63mhcXZ5tYlBO3AUMN0
-         7wY0aYYKh5vL3kCqi20tGyPldeB0bIEFBN6kdh41RFtLI4TnflFygLawxSlkhQhgQ2UO
-         gAkw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to;
-        bh=e0BbbFBjNaqWJAORJJW2eiwBf9ukrNp83gXIJkh+fsI=;
-        b=SC5Wt+075AipqRDD56H8lCloRh2saIF6vCbH0Rn0Gnp1Qpc3L2E6/IK3u2DHeAQMeR
-         dVG7y0Ab0Db/P4NZhy7i5pIuHdv6U9Wogt08Q2wuVzGZgn3oHGKSaD6WKg8+RHZXS/yg
-         71Wh1qY2X2XiBOqXxec1sgSOz6rCk5JuHeG+SKOStKH4yrlBlNH4yJbMmpyU2etpB6mk
-         pAs8oIWTbTWjDTHyQO3zM9pXgRcR82hiFhtrJLHzlqxUwWUV/RLHuxNNzWVOh3CZ1oRK
-         f1utd1DLJdNbjelD/Js2mZpKRu5moXEfPo6NwesI9+DXN1sVsh9LlP0b693cQPClV1jC
-         lNzg==
-X-Gm-Message-State: ANhLgQ0V6XCSK6crpgsAwhRc5/kh5SmrgDkwv0EYZOyx/rs10PYj6fAA
-        A6F0I8FKSmsqgiQ9yjb2RiF+Qpa+oagZtXhsKGo=
-X-Google-Smtp-Source: ADFU+vtsoseSwGrqA/UVOcLQwGDSMZZApfoJL9GDohKy3gLmr/3/MOFtajjEU6e8thsLjGUW546IAQyj4WpwmgLABIg=
-X-Received: by 2002:a92:ce51:: with SMTP id a17mr1033538ilr.263.1584880002161;
- Sun, 22 Mar 2020 05:26:42 -0700 (PDT)
+        Sun, 22 Mar 2020 10:29:53 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1584887393; h=Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Message-ID: In-Reply-To: Date: References: Subject: Cc:
+ To: From: Sender; bh=uduuflPW6mRUBQt22S2/ahlaqSxY/AvKy1ZfHU/NiUs=; b=pST6Q+nIsjv2NTzvG1YE/YZoC8lFMGi2bdlsrccKd/9t5I013wQezwEeZERe7yLYZFGFaq85
+ K18FB5E57h7n0Bj7hpO1zBj+GR34v7x8bpbubNcfXcnazzMaSoUG+iotGQGk/9pI4SHz8fFC
+ FpWNtmLj6toejkFZ6WIaxNXeLCY=
+X-Mailgun-Sending-Ip: 104.130.122.27
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5e777651.7f0d3816d618-smtp-out-n04;
+ Sun, 22 Mar 2020 14:29:37 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id D9DFFC432C2; Sun, 22 Mar 2020 14:29:36 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE,
+        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 428C8C433CB;
+        Sun, 22 Mar 2020 14:29:34 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 428C8C433CB
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Wright Feng <wright.feng@cypress.com>
+Cc:     Arend Van Spriel <arend.vanspriel@broadcom.com>,
+        franky.lin@broadcom.com, hante.meuleman@broadcom.com,
+        chi-hsien.lin@cypress.com, linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com
+Subject: Re: [PATCH 2/3] brcmfmac: make firmware eap_restrict a module parameter
+References: <1584604406-15452-1-git-send-email-wright.feng@cypress.com>
+        <1584604406-15452-3-git-send-email-wright.feng@cypress.com>
+        <aa29c77c-cfe4-3d71-1860-f9bcb9e0282b@broadcom.com>
+        <9683e5c3-5f68-5632-e1cf-c31e51379673@cypress.com>
+Date:   Sun, 22 Mar 2020 16:29:31 +0200
+In-Reply-To: <9683e5c3-5f68-5632-e1cf-c31e51379673@cypress.com> (Wright Feng's
+        message of "Fri, 20 Mar 2020 16:06:11 +0800")
+Message-ID: <871rpkcvjo.fsf@kamboji.qca.qualcomm.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-Received: by 2002:ac0:8742:0:0:0:0:0 with HTTP; Sun, 22 Mar 2020 05:26:41
- -0700 (PDT)
-In-Reply-To: <CAOzgRdZ9jzhg5a5T89WVWFan=KOfxuff7qxnX9mXXv5cc-nznQ@mail.gmail.com>
-References: <CAOzgRdZ9jzhg5a5T89WVWFan=KOfxuff7qxnX9mXXv5cc-nznQ@mail.gmail.com>
-From:   youling 257 <youling257@gmail.com>
-Date:   Sun, 22 Mar 2020 20:26:41 +0800
-Message-ID: <CAOzgRdYsL6=DWxrs1KE2ktnRv36Bt_SkmZZHRoJ=TqTCqr4PTA@mail.gmail.com>
-Subject: Re: brcmfmac43430a0-sdio wifi speed only 30Mbps under 40Mhz
-To:     Arend van Spriel <arend.vanspriel@broadcom.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
-        Wright Feng <wright.feng@cypress.com>,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com, brcm80211-dev-list@cypress.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-linux kernel 5.6 rc6
+Wright Feng <wright.feng@cypress.com> writes:
 
-[13726.460088] usbcore: deregistering interface driver brcmfmac
-[13730.674252] mmc1: queuing unknown CIS tuple 0x80 (2 bytes)
-[13730.677765] mmc1: queuing unknown CIS tuple 0x80 (3 bytes)
-[13730.682114] mmc1: queuing unknown CIS tuple 0x80 (3 bytes)
-[13730.687617] mmc1: queuing unknown CIS tuple 0x80 (7 bytes)
-[13730.916588] brcmfmac: brcmf_fw_alloc_request: using
-brcm/brcmfmac43430a0-sdio for chip BCM43430/0
-[13730.916906] usbcore: registered new interface driver brcmfmac
-[13731.024690] brcmfmac: brcmf_fw_alloc_request: using
-brcm/brcmfmac43430a0-sdio for chip BCM43430/0
-[13731.024825] brcmfmac: brcmf_c_process_clm_blob: no clm_blob
-available (err=-2), device may have limited channels available
-[13731.026035] brcmfmac: brcmf_c_preinit_dcmds: Firmware: BCM43430/0
-wl0: May 29 2017 00:03:43 version 7.13.53.9 (r664949) FWID 01-130000
+> Arend Van Spriel =E6=96=BC 3/19/2020 4:28 PM =E5=AF=AB=E9=81=93:
+>> On 3/19/2020 8:53 AM, Wright Feng wrote:
+>>> When eap_restrict is enabled, firmware will toss non-802.1x frames from
+>>> tx/rx data path if station not yet authorized.
+>>> Internal firmware eap_restrict is disabled by default. This patch makes
+>>> it possible to enable firmware eap_restrict by specifying
+>>> eap_restrict=3D1 as module parameter.
+>>
+>> What is the reason for not having this toss behavior as default?
+>> Don't see much reason for having the module parameter.
+>
+> The eap_restrict feature in most of firmwares are disabled as default,
+> and refer to our experience, using eap_restrict increases roam time
+> for associations in some cases.
+
+What are these these cases exactly?
+
+> So what we do in this patch is not changing the default firmware
+> behavior but still give users a way to enable eap_resrtict feature.
+
+You should have mentioned this (ie. answer the "Why?" part) in the
+commit log in the first place.
+
+But I don't like adding module parameters unless with really good
+reasons. And in this case there's no proper documentation when and how a
+user should use the module parameter so this is nowhere near a proper
+justifiction.
+
+--=20
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
+hes
