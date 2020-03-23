@@ -2,104 +2,83 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C82D18FABA
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2020 18:02:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 87B2A18FAC6
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2020 18:05:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727560AbgCWRCD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 23 Mar 2020 13:02:03 -0400
-Received: from mail27.static.mailgun.info ([104.130.122.27]:15433 "EHLO
-        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727333AbgCWRCD (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 23 Mar 2020 13:02:03 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1584982923; h=Date: Message-Id: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=/S3FxZxwMnCPDh1zMu//EAzMLRoMSA/nuK3xKadAUaI=;
- b=i3UVtGhYDMVhQ94Cqss0CENC79K+z7yZG3IbC50oYd0EGm56NZUVIJuKHhfAtTPkJJA6WeTw
- ONYucnEnlCFBDzfMyNUBLYdKMKS+YKqV0GdY+33XDLVB2C1wS/0jS1y1RtaJwbhGaLyHzJuZ
- qqOLPyELaFqzgsTXTxObBtxoadQ=
-X-Mailgun-Sending-Ip: 104.130.122.27
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e78eb73.7f0d3ec0edc0-smtp-out-n04;
- Mon, 23 Mar 2020 17:01:39 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 544CEC44788; Mon, 23 Mar 2020 17:01:38 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
-        MISSING_MID,SPF_NONE,URIBL_BLOCKED autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 23639C433D2;
-        Mon, 23 Mar 2020 17:01:35 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 23639C433D2
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        id S1727558AbgCWRFY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 23 Mar 2020 13:05:24 -0400
+Received: from mx.sdf.org ([205.166.94.20]:51620 "EHLO mx.sdf.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727067AbgCWRFY (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 23 Mar 2020 13:05:24 -0400
+Received: from sdf.org (IDENT:lkml@sdf.lonestar.org [205.166.94.16])
+        by mx.sdf.org (8.15.2/8.14.5) with ESMTPS id 02NH5GQH000011
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits) verified NO);
+        Mon, 23 Mar 2020 17:05:17 GMT
+Received: (from lkml@localhost)
+        by sdf.org (8.15.2/8.12.8/Submit) id 02NH5GLL012023;
+        Mon, 23 Mar 2020 17:05:16 GMT
+Date:   Mon, 23 Mar 2020 17:05:16 +0000
+From:   George Spelvin <lkml@SDF.ORG>
+To:     Ajay.Kathat@microchip.com
+Cc:     Adham.Abozaeid@microchip.com, linux-wireless@vger.kernel.org,
+        lkml@sdf.org
+Subject: Re: [PATCH v2] wilc1000: Use crc7 in lib/ rather than a private copy
+Message-ID: <20200323170516.GB3769@SDF.ORG>
+References: <20200322120408.GA19411@SDF.ORG>
+ <2315a030-75ad-0383-3aa3-25528d2cd29a@microchip.com>
+ <20200323064558.GC19411@SDF.ORG>
+ <48611e28-5a55-ab05-3865-71992a5be327@microchip.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH][next] p54: Replace zero-length array with flexible-array
- member
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20200225011846.GA2773@embeddedor>
-References: <20200225011846.GA2773@embeddedor>
-To:     "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-Cc:     Christian Lamparter <chunkeey@googlemail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20200323170138.544CEC44788@smtp.codeaurora.org>
-Date:   Mon, 23 Mar 2020 17:01:38 +0000 (UTC)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <48611e28-5a55-ab05-3865-71992a5be327@microchip.com>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-"Gustavo A. R. Silva" <gustavo@embeddedor.com> wrote:
+> Earlier, I also tried to replace crc7 by using existing library but it
+> gave different results with 'crc7_be()' because I didn't modify '0x7f'
+> to '0xfe'.
 
-> The current codebase makes use of the zero-length array language
-> extension to the C90 standard, but the preferred mechanism to declare
-> variable-length types such as these ones is a flexible array member[1][2],
-> introduced in C99:
-> 
-> struct foo {
->         int stuff;
->         struct boo array[];
-> };
-> 
-> By making use of the mechanism above, we will get a compiler warning
-> in case the flexible array does not occur last in the structure, which
-> will help us prevent some kind of undefined behavior bugs from being
-> inadvertently introduced[3] to the codebase from now on.
-> 
-> Also, notice that, dynamic memory allocations won't be affected by
-> this change:
-> 
-> "Flexible array members have incomplete type, and so the sizeof operator
-> may not be applied. As a quirk of the original implementation of
-> zero-length arrays, sizeof evaluates to zero."[1]
-> 
-> This issue was found with the help of Coccinelle.
-> 
-> [1] https://gcc.gnu.org/onlinedocs/gcc/Zero-Length.html
-> [2] https://github.com/KSPP/linux/issues/21
-> [3] commit 76497732932f ("cxgb3/l2t: Fix undefined behaviour")
-> 
-> Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
+I had an afterthought that maybe documenting this in <linux/crc7.h>
+would be useful, since you're unlikely to be the last person to
+make this mistake.
 
-Patch applied to wireless-drivers-next.git, thanks.
+Something like:
 
-7b9307134058 p54: Replace zero-length array with flexible-array member
+/*
+ * Generate a CRC with the polynomial x^7 + x^3 + 1 and big-endian
+ * bit order.  (Thus, the polynomial is 0x89.)  The result is in the
+ * most-significant 7 bits of the crc variable.
+ *
+ * This is where most protocols want the CRC (the lsbit is past the
+ * end of CRC coverage and is used for something else), but differs
+ * from most example code, which computes the CRC in the lsbits and
+ * does an explicit 1-bit shift at the end.
+ *
+ * Because the state is maintained left-aligned, the common "preset
+ * to all ones" CRC variant requires the crc be preset to 0xfe.
+ * (Right-aligned example code will show a preset to 0x7f.)
+ */
 
--- 
-https://patchwork.kernel.org/patch/11402365/
+Feel free to add that to the patch (preserving my S-o-b) if you like.
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+> Thanks again for submitting the patch.
+
+Thank you for writing the whole driver!  I know it can be a real PITA;
+Linux kernel developers Really Really Want drivers in a common style
+and using existing kernel facilities as much as possible, but you're
+usually starting from some internal driver that has its own, 
+very different, support library.
+
+BTW, one thing I noticed at cfg80211.c:1132:
+	*cookie = prandom_u32();
+	priv->tx_cookie = *cookie;
+
+I don't know what the cookie is for, but I notice that *cookie
+and priv->tx_cookie are both 64-bit data types.
+
+Should that be "(u64)prandom_u32() << 32 | prandom_u32()"
+(since there is no prandom_u64())?
