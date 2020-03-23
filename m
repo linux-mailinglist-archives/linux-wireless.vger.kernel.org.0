@@ -2,66 +2,64 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 69CD318FA61
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2020 17:51:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7975318FA7E
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2020 17:54:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727668AbgCWQvv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 23 Mar 2020 12:51:51 -0400
-Received: from mail27.static.mailgun.info ([104.130.122.27]:41283 "EHLO
+        id S1727743AbgCWQyp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 23 Mar 2020 12:54:45 -0400
+Received: from mail27.static.mailgun.info ([104.130.122.27]:53994 "EHLO
         mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727579AbgCWQvv (ORCPT
+        by vger.kernel.org with ESMTP id S1727737AbgCWQyp (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 23 Mar 2020 12:51:51 -0400
+        Mon, 23 Mar 2020 12:54:45 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1584982310; h=Date: Message-Id: Cc: To: References:
+ s=smtp; t=1584982485; h=Date: Message-Id: Cc: To: References:
  In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=lbQpwFJDFERsSt1RC1aKW37CQ3Nw8XZV5frxE6kKNOw=;
- b=ObdfsNpYi/S2549T6QNy2C/C7gZTjw79nr+/OUvf2/uvtS2RaSrFN+q3VW9vruxR+xLHfi3Q
- 2a49cUbKO9Bb2Zj1IEXemycL38PjhYaqreuOerlGLi561vI5vydxRuRZ+5yqhHpGCiQdwlm1
- MnC4HW1Vvckao1pkWNPzKwV66wo=
+ Content-Type: Sender; bh=QaNi5PgBPQT7mV29wyn9uiRG2F8mlGwKl+vuakLp+88=;
+ b=xGoMjRwjgC0gO/+j3jYTuLM3pTyPbLM1KUEgE0prs+U+0CxrBb60q89eawOT1XZlzp2vGeH3
+ Hu69glHDvVW0fyinhoq3x/0/Q5q1lasfjWGMCF2D+szWTpoc9WKhzKOp+ECQwGN+HvNVQfli
+ TLOpGjdpK1spm3JULfT2Dg+hJro=
 X-Mailgun-Sending-Ip: 104.130.122.27
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e78e914.7fdfdce3d8f0-smtp-out-n03;
- Mon, 23 Mar 2020 16:51:32 -0000 (UTC)
+ by mxa.mailgun.org with ESMTP id 5e78e9d4.7fd3983289d0-smtp-out-n03;
+ Mon, 23 Mar 2020 16:54:44 -0000 (UTC)
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id ECD6AC432C2; Mon, 23 Mar 2020 16:51:30 +0000 (UTC)
+        id 71AEDC433CB; Mon, 23 Mar 2020 16:54:43 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
 X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
-        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
+        MISSING_MID,SPF_NONE,URIBL_BLOCKED autolearn=no autolearn_force=no
+        version=3.4.0
 Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 60FB9C432C2;
-        Mon, 23 Mar 2020 16:51:27 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 60FB9C432C2
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id F0667C433D2;
+        Mon, 23 Mar 2020 16:54:40 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org F0667C433D2
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH][next] wireless: intel: Replace zero-length array with
+Subject: Re: [PATCH][next] wireless: realtek: Replace zero-length array with
  flexible-array member
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20200224170907.GA9948@embeddedor>
-References: <20200224170907.GA9948@embeddedor>
+In-Reply-To: <20200225002746.GA26789@embeddedor>
+References: <20200225002746.GA26789@embeddedor>
 To:     "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-Cc:     Stanislav Yakovlev <stas.yakovlev@gmail.com>,
+Cc:     Jes Sorensen <Jes.Sorensen@gmail.com>,
         "David S. Miller" <davem@davemloft.net>,
-        Stanislaw Gruszka <stf_xl@wp.pl>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Intel Linux Wireless <linuxwifi@intel.com>,
+        Ping-Ke Shih <pkshih@realtek.com>,
+        Yan-Hsuan Chuang <yhchuang@realtek.com>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         linux-kernel@vger.kernel.org,
         "Gustavo A. R. Silva" <gustavo@embeddedor.com>
 User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20200323165130.ECD6AC432C2@smtp.codeaurora.org>
-Date:   Mon, 23 Mar 2020 16:51:30 +0000 (UTC)
+Message-Id: <20200323165443.71AEDC433CB@smtp.codeaurora.org>
+Date:   Mon, 23 Mar 2020 16:54:43 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
@@ -91,7 +89,7 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 > may not be applied. As a quirk of the original implementation of
 > zero-length arrays, sizeof evaluates to zero."[1]
 > 
-> This issue was detected with the help of Coccinelle.
+> This issue was found with the help of Coccinelle.
 > 
 > [1] https://gcc.gnu.org/onlinedocs/gcc/Zero-Length.html
 > [2] https://github.com/KSPP/linux/issues/21
@@ -99,12 +97,11 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 > 
 > Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
 
-Please split iwlwifi changes to a separate patch so that Luca can apply
-to his tree.
+Patch applied to wireless-drivers-next.git, thanks.
 
-Patch set to Changes Requested.
+a1b7714b72fd wireless: realtek: Replace zero-length array with flexible-array member
 
 -- 
-https://patchwork.kernel.org/patch/11401145/
+https://patchwork.kernel.org/patch/11402315/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
