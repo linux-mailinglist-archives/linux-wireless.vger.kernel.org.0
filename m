@@ -2,128 +2,188 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B64E418F86C
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2020 16:20:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D6D918F877
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2020 16:24:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727312AbgCWPUt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 23 Mar 2020 11:20:49 -0400
-Received: from Galois.linutronix.de ([193.142.43.55]:41746 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727127AbgCWPUs (ORCPT
+        id S1727113AbgCWPYL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 23 Mar 2020 11:24:11 -0400
+Received: from s3.sipsolutions.net ([144.76.43.62]:49266 "EHLO
+        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727099AbgCWPYL (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 23 Mar 2020 11:20:48 -0400
-Received: from bigeasy by Galois.linutronix.de with local (Exim 4.80)
-        (envelope-from <bigeasy@linutronix.de>)
-        id 1jGOsF-000148-59; Mon, 23 Mar 2020 16:20:19 +0100
-Date:   Mon, 23 Mar 2020 16:20:19 +0100
-From:   Sebastian Siewior <bigeasy@linutronix.de>
-To:     Thomas Gleixner <tglx@linutronix.de>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Ingo Molnar <mingo@kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Joel Fernandes <joel@joelfernandes.org>,
-        Oleg Nesterov <oleg@redhat.com>,
-        Davidlohr Bueso <dave@stgolabs.net>,
-        Davidlohr Bueso <dbueso@suse.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Logan Gunthorpe <logang@deltatee.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Kurt Schwemmer <kurt.schwemmer@microsemi.com>,
-        linux-pci@vger.kernel.org, Felipe Balbi <balbi@kernel.org>,
-        linux-usb@vger.kernel.org, Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        Darren Hart <dvhart@infradead.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        platform-driver-x86@vger.kernel.org,
-        Zhang Rui <rui.zhang@intel.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        linux-pm@vger.kernel.org, Len Brown <lenb@kernel.org>,
-        linux-acpi@vger.kernel.org, kbuild test robot <lkp@intel.com>,
-        Nick Hu <nickhu@andestech.com>,
-        Greentime Hu <green.hu@gmail.com>,
-        Vincent Chen <deanbo422@gmail.com>,
-        Guo Ren <guoren@kernel.org>, linux-csky@vger.kernel.org,
-        Brian Cain <bcain@codeaurora.org>,
-        linux-hexagon@vger.kernel.org, Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>, linux-ia64@vger.kernel.org,
-        Michal Simek <monstr@monstr.eu>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Geoff Levand <geoff@infradead.org>,
-        linuxppc-dev@lists.ozlabs.org,
-        "Paul E . McKenney" <paulmck@kernel.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Randy Dunlap <rdunlap@infradead.org>
-Subject: [PATCH] completion: Use lockdep_assert_RT_in_threaded_ctx() in
- complete_all()
-Message-ID: <20200323152019.4qjwluldohuh3by5@linutronix.de>
-References: <20200321112544.878032781@linutronix.de>
- <20200321113242.317954042@linutronix.de>
+        Mon, 23 Mar 2020 11:24:11 -0400
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.93)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1jGOvw-002WHu-0e; Mon, 23 Mar 2020 16:24:08 +0100
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     linux-wireless@vger.kernel.org
+Cc:     Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH] mac80211_hwsim: notify wmediumd of used MAC addresses
+Date:   Mon, 23 Mar 2020 16:24:00 +0100
+Message-Id: <20200323162358.b397b1a1acef.Ice0536e34e5d96c51f97c374ea8af9551347c7e8@changeid>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20200321113242.317954042@linutronix.de>
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The warning was intended to spot complete_all() users from hardirq
-context on PREEMPT_RT. The warning as-is will also trigger in interrupt
-handlers, which are threaded on PREEMPT_RT, which was not intended.
+From: Johannes Berg <johannes.berg@intel.com>
 
-Use lockdep_assert_RT_in_threaded_ctx() which triggers in non-preemptive
-context on PREEMPT_RT.
+Currently, wmediumd requires each used MAC address to be configured
+as a station in the virtual air, but that doesn't make sense as any
+station could have multiple MAC addresses, and even have randomized
+ones in scanning, etc.
 
-Suggested-by: Peter Zijlstra <peterz@infradead.org>
-Reported-by: kernel test robot <rong.a.chen@intel.com>
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Add some code here to tell wmediumd of used MAC addresses, binding
+them to the hardware address. Combined with a wmediumd patch that
+makes it track the addresses this allows configuring just the radio
+address (42:00:00:00:nn:00 unless the radio was manually created)
+in wmediumd as a station, and all addresses that the station uses
+are added/removed dynamically.
+
+Tested with random scan, which without this and the corresponding
+wmediumd change doesn't get anything through as the sender doesn't
+exist as far as wmediumd is concerned (it's random).
+
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- include/linux/lockdep.h   | 15 +++++++++++++++
- kernel/sched/completion.c |  2 +-
- 2 files changed, 16 insertions(+), 1 deletion(-)
+ drivers/net/wireless/mac80211_hwsim.c | 51 +++++++++++++++++++++++++++
+ drivers/net/wireless/mac80211_hwsim.h |  8 +++++
+ 2 files changed, 59 insertions(+)
 
-diff --git a/include/linux/lockdep.h b/include/linux/lockdep.h
-index 425b4ceb7cd07..206774ac69460 100644
---- a/include/linux/lockdep.h
-+++ b/include/linux/lockdep.h
-@@ -711,6 +711,21 @@ do {									\
- # define lockdep_assert_in_irq() do { } while (0)
- #endif
+diff --git a/drivers/net/wireless/mac80211_hwsim.c b/drivers/net/wireless/mac80211_hwsim.c
+index 7fe8207db6ae..4d7141d06027 100644
+--- a/drivers/net/wireless/mac80211_hwsim.c
++++ b/drivers/net/wireless/mac80211_hwsim.c
+@@ -1068,6 +1068,47 @@ static int hwsim_unicast_netgroup(struct mac80211_hwsim_data *data,
+ 	return res;
+ }
  
-+#ifdef CONFIG_PROVE_RAW_LOCK_NESTING
++static void mac80211_hwsim_config_mac_nl(struct ieee80211_hw *hw,
++					 const u8 *addr, bool add)
++{
++	struct mac80211_hwsim_data *data = hw->priv;
++	u32 _portid = READ_ONCE(data->wmediumd);
++	struct sk_buff *skb;
++	void *msg_head;
 +
-+# define lockdep_assert_RT_in_threaded_ctx() do {			\
-+		WARN_ONCE(debug_locks && !current->lockdep_recursion &&	\
-+			  current->hardirq_context &&			\
-+			  !(current->hardirq_threaded || current->irq_config),	\
-+			  "Not in threaded context on PREEMPT_RT as expected\n");	\
-+} while (0)
++	if (!_portid && !hwsim_virtio_enabled)
++		return;
 +
-+#else
++	skb = genlmsg_new(GENLMSG_DEFAULT_SIZE, GFP_ATOMIC);
++	if (!skb)
++		return;
 +
-+# define lockdep_assert_RT_in_threaded_ctx() do { } while (0)
++	msg_head = genlmsg_put(skb, 0, 0, &hwsim_genl_family, 0,
++			       add ? HWSIM_CMD_ADD_MAC_ADDR :
++				     HWSIM_CMD_DEL_MAC_ADDR);
++	if (!msg_head) {
++		pr_debug("mac80211_hwsim: problem with msg_head\n");
++		goto nla_put_failure;
++	}
 +
-+#endif
++	if (nla_put(skb, HWSIM_ATTR_ADDR_TRANSMITTER,
++		    ETH_ALEN, data->addresses[1].addr))
++		goto nla_put_failure;
 +
- #ifdef CONFIG_LOCKDEP
- void lockdep_rcu_suspicious(const char *file, const int line, const char *s);
- #else
-diff --git a/kernel/sched/completion.c b/kernel/sched/completion.c
-index f15e96164ff1e..a778554f9dad7 100644
---- a/kernel/sched/completion.c
-+++ b/kernel/sched/completion.c
-@@ -58,7 +58,7 @@ void complete_all(struct completion *x)
++	if (nla_put(skb, HWSIM_ATTR_ADDR_RECEIVER, ETH_ALEN, addr))
++		goto nla_put_failure;
++
++	genlmsg_end(skb, msg_head);
++
++	if (hwsim_virtio_enabled)
++		hwsim_tx_virtio(data, skb);
++	else
++		hwsim_unicast_netgroup(data, skb, _portid);
++	return;
++nla_put_failure:
++	nlmsg_free(skb);
++}
++
+ static inline u16 trans_tx_rate_flags_ieee2hwsim(struct ieee80211_tx_rate *rate)
  {
- 	unsigned long flags;
+ 	u16 result = 0;
+@@ -1545,6 +1586,9 @@ static int mac80211_hwsim_add_interface(struct ieee80211_hw *hw,
+ 		  vif->addr);
+ 	hwsim_set_magic(vif);
  
--	WARN_ON(irqs_disabled());
-+	lockdep_assert_RT_in_threaded_ctx();
++	if (vif->type != NL80211_IFTYPE_MONITOR)
++		mac80211_hwsim_config_mac_nl(hw, vif->addr, true);
++
+ 	vif->cab_queue = 0;
+ 	vif->hw_queue[IEEE80211_AC_VO] = 0;
+ 	vif->hw_queue[IEEE80211_AC_VI] = 1;
+@@ -1584,6 +1628,8 @@ static void mac80211_hwsim_remove_interface(
+ 		  vif->addr);
+ 	hwsim_check_magic(vif);
+ 	hwsim_clear_magic(vif);
++	if (vif->type != NL80211_IFTYPE_MONITOR)
++		mac80211_hwsim_config_mac_nl(hw, vif->addr, false);
+ }
  
- 	raw_spin_lock_irqsave(&x->wait.lock, flags);
- 	x->done = UINT_MAX;
+ static void mac80211_hwsim_tx_frame(struct ieee80211_hw *hw,
+@@ -2104,6 +2150,8 @@ static void hw_scan_work(struct work_struct *work)
+ 		hwsim->hw_scan_vif = NULL;
+ 		hwsim->tmp_chan = NULL;
+ 		mutex_unlock(&hwsim->mutex);
++		mac80211_hwsim_config_mac_nl(hwsim->hw, hwsim->scan_addr,
++					     false);
+ 		return;
+ 	}
+ 
+@@ -2177,6 +2225,7 @@ static int mac80211_hwsim_hw_scan(struct ieee80211_hw *hw,
+ 	memset(hwsim->survey_data, 0, sizeof(hwsim->survey_data));
+ 	mutex_unlock(&hwsim->mutex);
+ 
++	mac80211_hwsim_config_mac_nl(hw, hwsim->scan_addr, true);
+ 	wiphy_dbg(hw->wiphy, "hwsim hw_scan request\n");
+ 
+ 	ieee80211_queue_delayed_work(hwsim->hw, &hwsim->hw_scan, 0);
+@@ -2220,6 +2269,7 @@ static void mac80211_hwsim_sw_scan(struct ieee80211_hw *hw,
+ 	pr_debug("hwsim sw_scan request, prepping stuff\n");
+ 
+ 	memcpy(hwsim->scan_addr, mac_addr, ETH_ALEN);
++	mac80211_hwsim_config_mac_nl(hw, hwsim->scan_addr, true);
+ 	hwsim->scanning = true;
+ 	memset(hwsim->survey_data, 0, sizeof(hwsim->survey_data));
+ 
+@@ -2236,6 +2286,7 @@ static void mac80211_hwsim_sw_scan_complete(struct ieee80211_hw *hw,
+ 
+ 	pr_debug("hwsim sw_scan_complete\n");
+ 	hwsim->scanning = false;
++	mac80211_hwsim_config_mac_nl(hw, hwsim->scan_addr, false);
+ 	eth_zero_addr(hwsim->scan_addr);
+ 
+ 	mutex_unlock(&hwsim->mutex);
+diff --git a/drivers/net/wireless/mac80211_hwsim.h b/drivers/net/wireless/mac80211_hwsim.h
+index 28ade92adcb4..9dceed77c5d6 100644
+--- a/drivers/net/wireless/mac80211_hwsim.h
++++ b/drivers/net/wireless/mac80211_hwsim.h
+@@ -75,6 +75,12 @@ enum hwsim_tx_control_flags {
+  * @HWSIM_CMD_DEL_RADIO: destroy a radio, reply is multicasted
+  * @HWSIM_CMD_GET_RADIO: fetch information about existing radios, uses:
+  *	%HWSIM_ATTR_RADIO_ID
++ * @HWSIM_CMD_ADD_MAC_ADDR: add a receive MAC address (given in the
++ *	%HWSIM_ATTR_ADDR_RECEIVER attribute) to a device identified by
++ *	%HWSIM_ATTR_ADDR_TRANSMITTER. This lets wmediumd forward frames
++ *	to this receiver address for a given station.
++ * @HWSIM_CMD_DEL_MAC_ADDR: remove the MAC address again, the attributes
++ *	are the same as to @HWSIM_CMD_ADD_MAC_ADDR.
+  * @__HWSIM_CMD_MAX: enum limit
+  */
+ enum {
+@@ -85,6 +91,8 @@ enum {
+ 	HWSIM_CMD_NEW_RADIO,
+ 	HWSIM_CMD_DEL_RADIO,
+ 	HWSIM_CMD_GET_RADIO,
++	HWSIM_CMD_ADD_MAC_ADDR,
++	HWSIM_CMD_DEL_MAC_ADDR,
+ 	__HWSIM_CMD_MAX,
+ };
+ #define HWSIM_CMD_MAX (_HWSIM_CMD_MAX - 1)
 -- 
-2.26.0.rc2
+2.25.1
 
