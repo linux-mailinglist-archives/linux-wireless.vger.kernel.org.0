@@ -2,170 +2,112 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 697D318F107
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2020 09:41:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D44E18F175
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2020 10:11:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727587AbgCWIlO convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 23 Mar 2020 04:41:14 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:57544 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727477AbgCWIlO (ORCPT
+        id S1727650AbgCWJLU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 23 Mar 2020 05:11:20 -0400
+Received: from s3.sipsolutions.net ([144.76.43.62]:43406 "EHLO
+        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727637AbgCWJLU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 23 Mar 2020 04:41:14 -0400
-Authenticated-By: 
-X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID 02N8f6RW000592, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (RTEXMB06.realtek.com.tw[172.21.6.99])
-        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id 02N8f6RW000592
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 23 Mar 2020 16:41:06 +0800
-Received: from RTEXDAG01.realtek.com.tw (172.21.6.100) by
- RTEXMB06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Mon, 23 Mar 2020 16:41:06 +0800
-Received: from RTEXMB04.realtek.com.tw (172.21.6.97) by
- RTEXDAG01.realtek.com.tw (172.21.6.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Mon, 23 Mar 2020 16:41:06 +0800
-Received: from RTEXMB04.realtek.com.tw ([fe80::d9c5:a079:495e:b999]) by
- RTEXMB04.realtek.com.tw ([fe80::d9c5:a079:495e:b999%6]) with mapi id
- 15.01.1779.005; Mon, 23 Mar 2020 16:41:06 +0800
-From:   Andy Huang <tehuang@realtek.com>
-To:     Brian Norris <briannorris@chromium.org>,
-        Tony Chuang <yhchuang@realtek.com>
-CC:     "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: RE: [PATCH v5 1/2] rtw88: add regulatory process strategy for different chipset
-Thread-Topic: [PATCH v5 1/2] rtw88: add regulatory process strategy for
- different chipset
-Thread-Index: AQHV+OpgY5V9hxNNkkODhgd1sW65nKhRtBGAgAQw2LA=
-Date:   Mon, 23 Mar 2020 08:41:05 +0000
-Message-ID: <84a3e219774c48b5a976c0cb9392af51@realtek.com>
-References: <20200313034918.22222-1-yhchuang@realtek.com>
- <20200313034918.22222-2-yhchuang@realtek.com>
- <20200321001645.GA16851@google.com>
-In-Reply-To: <20200321001645.GA16851@google.com>
-Accept-Language: zh-TW, en-US
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.231]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        Mon, 23 Mar 2020 05:11:20 -0400
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.93)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1jGJ77-001kWE-Q9; Mon, 23 Mar 2020 10:11:17 +0100
+Message-ID: <1a1f5c11f51c4c2fe2a5e82e32e431986f88bddb.camel@sipsolutions.net>
+Subject: Re: Simulate Radio wave interference
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Masashi Honma <masashi.honma@gmail.com>
+Cc:     linux-wireless@vger.kernel.org
+Date:   Mon, 23 Mar 2020 10:11:15 +0100
+In-Reply-To: <8f783032-8999-18aa-5980-8a87427fddd8@gmail.com> (sfid-20200322_013435_732971_2F177BB6)
+References: <fb4be9f4353193a789e4a6cdc4b35c096d2efd7f.camel@sipsolutions.net>
+         <8f783032-8999-18aa-5980-8a87427fddd8@gmail.com>
+         (sfid-20200322_013435_732971_2F177BB6)
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.34.4 (3.34.4-1.fc31) 
 MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On Sun, 2020-03-22 at 09:34 +0900, Masashi Honma wrote:
+> On 2020/03/17 0:42, Johannes Berg wrote:
+>  > I don't see this - the signal strength is just taken as is, and
+>  > overwritten, so there's no accumulation going on?
 > 
-> Hi,
-> 
-> On Fri, Mar 13, 2020 at 11:49:17AM +0800, yhchuang@realtek.com wrote:
-> > diff --git a/drivers/net/wireless/realtek/rtw88/main.c
-> b/drivers/net/wireless/realtek/rtw88/main.c
-> > index 2f73820cd9ba..635d9964beaa 100644
-> > --- a/drivers/net/wireless/realtek/rtw88/main.c
-> > +++ b/drivers/net/wireless/realtek/rtw88/main.c
-> > @@ -1510,8 +1510,10 @@ int rtw_register_hw(struct rtw_dev *rtwdev,
-> struct ieee80211_hw *hw)
-> >  		return ret;
-> >  	}
-> >
-> > -	if (regulatory_hint(hw->wiphy, rtwdev->regd.alpha2))
-> > -		rtw_err(rtwdev, "regulatory_hint fail\n");
-> > +	if (!rtwdev->efuse.country_worldwide) {
-> > +		if (regulatory_hint(hw->wiphy, rtwdev->efuse.country_code))
-> > +			rtw_err(rtwdev, "regulatory_hint fail\n");
->  Might as well log the error code, whlie you're at it?
-> 
-> > +	}
-> >
-> >  	rtw_debugfs_init(rtwdev);
-> >
-> 
-> > diff --git a/drivers/net/wireless/realtek/rtw88/regd.c
-> b/drivers/net/wireless/realtek/rtw88/regd.c
-> > index 69744dd65968..500a02b97a9c 100644
-> > --- a/drivers/net/wireless/realtek/rtw88/regd.c
-> > +++ b/drivers/net/wireless/realtek/rtw88/regd.c
-> > @@ -7,6 +7,18 @@
-> >  #include "debug.h"
-> >  #include "phy.h"
-> >
-> > +static const struct ieee80211_regdomain rtw88_world_regdom = {
-> > +	.n_reg_rules = 5,
-> > +	.alpha2 =  "99",
-> > +	.reg_rules = {
-> > +		REG_RULE(2412 - 10, 2462 + 10, 40, 0, 20, 0),
-> > +		REG_RULE(2467 - 10, 2484 + 10, 40, 0, 20, NL80211_RRF_NO_IR),
-> > +		REG_RULE(5180 - 10, 5240 + 10, 80, 0, 20, NL80211_RRF_NO_IR),
-> > +		REG_RULE(5260 - 10, 5700 + 10, 80, 0, 20,
-> > +			 NL80211_RRF_NO_IR | NL80211_RRF_DFS),
-> > +		REG_RULE(5745 - 10, 5825 + 10, 80, 0, 20, NL80211_RRF_NO_IR),
-> > +	}
-> > +};
-> 
-> These rules look substantially identical to the default world rules
-> specified in the standard regdb, except for the fact that you're missing
-> the NO-ODFM part of this band:
-> 
->         # Channel 14. Only JP enables this and for 802.11b only
->         (2474 - 2494 @ 20), (20), NO-IR, NO-OFDM
-> 
-> So, why do you need to specify a custom one?
+> Right. The signal strength is not accumulated. The commit log is wrong.
 
-It's because the channel plan from USER could be violated when connect
-to an 802.11d AP, if we use the stack's worldwide. When the kernel scans,
-some of the passive channels could become active, and then the stack will
-intersect the channel plans because REGULATORY_STRICT_REG has been set.
-If stack's worldwide is used, the result of intersecting will come out with a
-channel plan that the passive channels became active. But if we use custom
-worldwide, it won't happen, the passive channels will remain passive.
+OK.
 
-However, after our discussion, we think it's acceptable to follow 802.11d
-setting and discard the USER setting, so we will send a fixed patch.
+> The interference model is accumulating frame duration to calculate
+> probabilities.
 
-> 
-> ...
-> 
-> >  static int rtw_regd_notifier_apply(struct rtw_dev *rtwdev,
-> >  				   struct wiphy *wiphy,
-> >  				   struct regulatory_request *request)
-> >  {
-> > -	if (request->initiator == NL80211_REGDOM_SET_BY_USER)
-> > +	if (request->initiator == NL80211_REGDOM_SET_BY_DRIVER)
-> > +		return -EINVAL;
-> > +	if (request->initiator == NL80211_REGDOM_SET_BY_USER &&
-> > +	    !IS_ENABLED(CONFIG_RTW88_REGD_USER_REG_HINTS))
-> > +		return -EINVAL;
-> > +	if (request->initiator == NL80211_REGDOM_SET_BY_COUNTRY_IE &&
-> > +	    !rtw_regd_is_ww(&rtwdev->regd))
-> > +		return -EINVAL;
-> > +	if (request->initiator == NL80211_REGDOM_SET_BY_CORE &&
-> > +	    !rtwdev->efuse.country_worldwide) {
-> > +		rtwdev->regd =
-> > +			rtw_regd_find_reg_by_name(rtwdev->efuse.country_code);
-> >  		return 0;
-> > +	}
-> 
-> None of these errors actually go anywhere; if you were planning to
-> ignore these, shouldn't they be surfaced somewhere? Or can't these be
-> encoded in your regulatory policy instead? Like
-> REGULATORY_COUNTRY_IE_IGNORE, for one.
-> 
-> And as with your WOWLAN implementation: if there's no way to surface
-> errors, you should at least log something.
+But it's doing it on the *previous* interval, and then affects the
+*next* interval, right? In terms of timing.
 
-We'll fix it.
+I don't really have any objection to this, just trying to understand it
+- mostly because I'm trying to use wmediumd for simulation and want the
+timing to be better at least in that case.
 
-Tzu-En
+> I think I should explain the concept of this interference model.
+> The interference model assumes signals which strength is under CCA
+> threshold are interference signal. The model accumulates the duration
+> of such signals. The model assumes (accumulated duration / time slot)
+> is probability of occurrence of interference. When interference occurs,
+> the model reduce the max signal strength of interfering STA from
+> transmitting STA's signal strength.
 
+Right. What threw me off was the fact that it's accumulated over a
+previous period, and then affects the current period, which seemed odd
+because I was thinking about my simulation more than just an arbitrary
+model. I guess it's fine for whatever you were trying to achieve, and
+simply doesn't fit what I'm trying to do.
+
+I'll need to figure out how to reconcile the different ways of thinking
+here.
+
+> Though the implementation is not among the concept of the model. The
+> signal strength from node A to B was calculated and wrongly accumulated
+> to interference duration of "A to all".
+
+Heh, ok.
+
+> I fixed it to "A to B" and sent a Pull Request to wmediumd.
+> https://github.com/bcopeland/wmediumd/pull/22
+
+I _really_ didn't mean to coax you into fixing anything, just trying to
+understand. That said, those changes look good to me.
+
+
+> To get closer to real world, it is necessary to consider the phase of
+> radio wave. A radio wave could be weakened by radio waves which has
+> opposite phase.
+
+While that's true, is it really necessary? Even if the signals are in
+phase, you're going to have a hard time differentiating between the two,
+and the frame will be lost either way, no?
+
+I think from a timing aspect, checking if two signals are in phase will
+be practically impossible - we're talking about less than 1us timing
+differences (0.2 at 5 GHz), if I'm doing the math correctly?
+
+> Calculation of radio wave phase of multi signals could be described by
+> electric field created by mesh node antenna. By using this electric
+> field model, we could accumulate some interference signals as vector.
 > 
-> Brian
-> 
-> >  	rtwdev->regd = rtw_regd_find_reg_by_name(request->alpha2);
-> >  	rtw_regd_apply_world_flags(wiphy, request->initiator);
-> >
-> 
-> 
+> I have an idea of implementation. Though I need some more time to
+> implement this.
+
+Again, for the record, I really just wanted to clarify that I was
+understanding things correctly! Not to coax you into implementing
+anything.
+
+Thanks for the help!
+
+johannes
+
