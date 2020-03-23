@@ -2,78 +2,81 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8899518FD4F
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2020 20:08:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8476518FD59
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2020 20:11:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727514AbgCWTIg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 23 Mar 2020 15:08:36 -0400
-Received: from mail-qv1-f41.google.com ([209.85.219.41]:41349 "EHLO
-        mail-qv1-f41.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727179AbgCWTIg (ORCPT
+        id S1727775AbgCWTLh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 23 Mar 2020 15:11:37 -0400
+Received: from mail-qk1-f196.google.com ([209.85.222.196]:35092 "EHLO
+        mail-qk1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727624AbgCWTLh (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 23 Mar 2020 15:08:36 -0400
-Received: by mail-qv1-f41.google.com with SMTP id o7so5344574qvq.8
-        for <linux-wireless@vger.kernel.org>; Mon, 23 Mar 2020 12:08:35 -0700 (PDT)
+        Mon, 23 Mar 2020 15:11:37 -0400
+Received: by mail-qk1-f196.google.com with SMTP id k13so4844793qki.2
+        for <linux-wireless@vger.kernel.org>; Mon, 23 Mar 2020 12:11:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=bobcopeland-com.20150623.gappssmtp.com; s=20150623;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to:user-agent;
-        bh=0LY/BhLfShHnuEYhbgJPvtawlRBv9CHNzcBzN7NqfmU=;
-        b=lq2HEv4YC1d+SbmeOmW38CNgSshI1SR6elOKKSBF8EfZCeA0eQi/2m/ETOYLNvL6Tx
-         LkOO4vkEMJiyhWCvr4p1tvNoyAUXsWOX0oEXtE4VpQU1j/6BdrCjUB495obrYxj5aXxm
-         wJ/NxRsbRw3IYYvVpfLEH4a+/xONcSUzK0Rn3bL9uLDw2rZdB5q11/9JPsoCLYu3p5cZ
-         JGDYK6KCG/8DKHfF73QKWZrauN7MUZq3QKcd+olBmD6eDzFb7/cpcqA3YDXvPfuDJuPr
-         l7AumjBD/0PZbj+0+NXEtxOWM1st1ThFfR8krNklqhyMR6wdz2GdZg/oDv9H3JtiY6T/
-         H4XQ==
+        bh=pq0wBQnoKNNjy/cMCLp0u8AzX+vhqO6QCI7zGhLvUtc=;
+        b=Yj+qW/h1Bg2jDGW7stnb77oVhjcqZnqYgI0jdW7AdWKDOPb8+GDc52kUjsbofpJWQG
+         Dj9N7Ljmq1uyN41kWHJReHHA8Dni9PHwhvxqyMOZEl9a9uKAFcmCNDmd3MHulJnIuA3L
+         dIwuCuL7+uPSH+r5Kd++95s0ap+rMAzDjg5L9lmgGBQfVL0k1kl4fvpjOxtdXc+Z7uQ7
+         Z3xlPiEFoptYv7uq2oroM3NJlRBK+muLZVYB2Gogvz4ge7GfkK46NZ9lmLo3W3Ocun0H
+         JQoiR9JqVwNjbBRZas8Dog89JkIqmtum9xBtFM/TpTA7UJytrPDsXRW02IgLIzvAe2lx
+         3ohA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=0LY/BhLfShHnuEYhbgJPvtawlRBv9CHNzcBzN7NqfmU=;
-        b=VRBiv5VmRBrtyMkpnF3pCH+Xsyuc/mlZC3Yqq3VaHtgZhNbzbJh/n0zRkAzGyO19/k
-         T4HpDh87Q8ZC40bwuxTQyUfs+QLcJfXEisj6t3g4RlqjO9TQGnR7VhMX7JOZ03Msgwrv
-         7apT8f5Rv1LyZI9ncXq3s0bJV++LTDEgvVzEroBfZRNrTnOZwkR6tt0WwBmVEcBMGJTs
-         2KOe0hXM3EF1FBE6wV7Wa59AaeuE8By1FvXTPVkB/dJPApIglxe28PVu0qeOaxOx1kl0
-         D9R8ICYNNlf3lUyTn1OQjpJUX6IAtKJTxojJUrq8R30Fv1fKxWVvGq7BskqJWUS6Q/Cc
-         rQEw==
-X-Gm-Message-State: ANhLgQ0g7/IHK2ZEGmp/WauEyQcZGO0IOzjgD3VqXgASIL6+NV4Ux6sC
-        /TSWl8A0yR6sK1FF3q01xYoUm5A3puQ=
-X-Google-Smtp-Source: ADFU+vu1nw3TolKPj/n9lqiDNXoaIKLrEpedy5mxr+aWtHnfBD9joUUhC5OumKKtEro0F6qx/y69IQ==
-X-Received: by 2002:a0c:e649:: with SMTP id c9mr21344103qvn.230.1584990514435;
-        Mon, 23 Mar 2020 12:08:34 -0700 (PDT)
-Received: from elrond.bobcopeland.com ([2607:fea8:5ac0:1bf2:858:b61:e782:8d89])
-        by smtp.gmail.com with ESMTPSA id l16sm12905473qtc.73.2020.03.23.12.08.32
+        bh=pq0wBQnoKNNjy/cMCLp0u8AzX+vhqO6QCI7zGhLvUtc=;
+        b=egLMDKJSRQnZ3306HOFw/VnFuIncwOMiNM7SvPFU+k/R0i4ZOaiIm/gWnItOLq/rU+
+         M/gt9/P7pbgxWrh6ngM4HO2DKeNaL5B28uKGr/VBO80j9D+S0Vu84O2QCPgXPB1s7bEP
+         emOJMyC2gQoaSKZrs573xZA4RvWYViXZOZSz6LOval5i9aRu62sWCTF8UPLvSeAt3J4h
+         Myj+tvbgWU2ttXO7TXr8GRpctn9EeQ8OVABWirXW7Np7jbweJTxpj9Pd8CdGgW/X9+wV
+         S9Tq6Q1EPrn0pwxenkEVGF8nN3nJww9hyt+yr2OmnaC7XnvR3p1BXvvlCb2Mm/RXI5Fi
+         HnJg==
+X-Gm-Message-State: ANhLgQ3QtgLd3jm40l4PVU+z1PCSpGHrOO/a/590NHo4kAkNVv9KQCmE
+        /dKVEuQ6xbVszodAM/eq4cbs9w==
+X-Google-Smtp-Source: ADFU+vv1m/5nCHVXmVZRcMNH1AvgBp3SxlZfiUeI9BSKpRZ8z+FM7bKPR7EBfcs1I+DvndftWSEr3w==
+X-Received: by 2002:a37:9a54:: with SMTP id c81mr22294183qke.185.1584990695990;
+        Mon, 23 Mar 2020 12:11:35 -0700 (PDT)
+Received: from elrond.bobcopeland.com (CPE30b5c2fb365b-CMa456cc3dfbbf.cpe.net.cable.rogers.com. [99.232.51.173])
+        by smtp.gmail.com with ESMTPSA id g2sm11572422qkb.27.2020.03.23.12.11.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Mar 2020 12:08:33 -0700 (PDT)
+        Mon, 23 Mar 2020 12:11:31 -0700 (PDT)
 Received: by elrond.bobcopeland.com (Postfix, from userid 1000)
-        id BE853FC007E; Mon, 23 Mar 2020 15:08:31 -0400 (EDT)
-Date:   Mon, 23 Mar 2020 15:08:31 -0400
+        id CD44DFC007E; Mon, 23 Mar 2020 15:11:30 -0400 (EDT)
+Date:   Mon, 23 Mar 2020 15:11:30 -0400
 From:   Bob Copeland <me@bobcopeland.com>
 To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org,
-        Johannes Berg <johannes.berg@intel.com>
-Subject: Re: [PATCH 7/7] wmediumd: don't treat management frames as noack
-Message-ID: <20200323190831.GB5207@bobcopeland.com>
+Cc:     linux-wireless@vger.kernel.org
+Subject: Re: [PATCH 0/7] more wmediumd updates
+Message-ID: <20200323191130.GA7508@bobcopeland.com>
 References: <20200323152542.68696-1-johannes@sipsolutions.net>
- <20200323162245.19716cc94db4.Ib4a8bb12802840a3b9ed7e2e9ca1748a4e77e6ee@changeid>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200323162245.19716cc94db4.Ib4a8bb12802840a3b9ed7e2e9ca1748a4e77e6ee@changeid>
+In-Reply-To: <20200323152542.68696-1-johannes@sipsolutions.net>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Mar 23, 2020 at 04:25:42PM +0100, Johannes Berg wrote:
-> From: Johannes Berg <johannes.berg@intel.com>
+On Mon, Mar 23, 2020 at 04:25:35PM +0100, Johannes Berg wrote:
+> Some of these fix my previous patches, but I also have a patch
+> for some code I just posted here:
+> https://lore.kernel.org/r/20200323162358.b397b1a1acef.Ice0536e34e5d96c51f97c374ea8af9551347c7e8@changeid
 > 
-> It's incorrect to treat management frames as noack, they're
-> retransmitted just like any other frame; fix this.
+> to make it possible to use random-scan and other stuff, adding
+> each MAC address from hwsim into the wmediumd "MAC".
+> 
+> Also sanitizer support (helped catch the use-after-free) and a
+> small fix for not treating management frames as noack, not sure
+> why that was ever done?
 
-I think it was just a hack to make mesh paths establish even
-if snr was terrible, obviously not realistic.  Thanks!
+All applied, thanks.
 
 -- 
 Bob Copeland %% https://bobcopeland.com/
