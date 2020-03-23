@@ -2,87 +2,157 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8CB62190035
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2020 22:22:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ADD881900A1
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2020 22:47:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726643AbgCWVWu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 23 Mar 2020 17:22:50 -0400
-Received: from mail-il1-f172.google.com ([209.85.166.172]:38089 "EHLO
-        mail-il1-f172.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726203AbgCWVWu (ORCPT
+        id S1727088AbgCWVrC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 23 Mar 2020 17:47:02 -0400
+Received: from mail27.static.mailgun.info ([104.130.122.27]:62383 "EHLO
+        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727047AbgCWVq7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 23 Mar 2020 17:22:50 -0400
-Received: by mail-il1-f172.google.com with SMTP id m7so10700763ilg.5
-        for <linux-wireless@vger.kernel.org>; Mon, 23 Mar 2020 14:22:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc;
-        bh=EbA8FdNJjwQMT1rHQOM610PWrPT67DNBGdbF0KgJNBw=;
-        b=WPN1yFeTFS8jk6QHxyG2r4bT+6Ake0ojqiofJXqcQ+ql1hniK+tPrvVZVJejV0t2wu
-         bqPUPNchFkvn7szCLIUyf8YXHnI8pS2uoo4SfhWwONskcCsEfCa8+LgNCUzOgE7SWehT
-         bp5CtHtj5VgYG1eYjpEUoHJIFIsTyxMolIr9JfgCB+JBLuu5FEKSzKH08UicaJb0/k7N
-         EK1vM4WADeauV3SJ+vkpB/P0+DGW2qY1YoqEMkF1KpduB2Bkc9rYQM6YKwSOZK5J7MYn
-         u9KAmdIy1Eg84tFd/F0tfgWmEU/ulHGBDvpjw1N/sLrO6wqU49pfCHJEwz6QZu6iTW0S
-         fbeQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc;
-        bh=EbA8FdNJjwQMT1rHQOM610PWrPT67DNBGdbF0KgJNBw=;
-        b=HGQ8KcyHjezTfEVN8Qp2dAMoLGy1aiVvBG7mbOHmfeF6py/Rud7GLzgJLjR/3GOrb6
-         hI//iZ8ejNkxSiYHmqrBp4Olu22AbtApcGxUQe9/FudOKaYFScydiFx0qrReGIhB1WaW
-         2LQvQrNK+7XcikkpHt2TMbTITJYEAh1D0sJDqq6z5i6xekMhrqpowSA5MMHw5U5m34Am
-         +Tgcut/KcZv4GlQbU3bMpkSI20OWfHcJZP8dj4V9R8r7HQLDrDmL0UGfIyaLsm0IIfAj
-         u0lxFvLyCVBX877HWSr9LcC/LwEjZxC3e3/teasMXAC2pRBMiLCIdaxPAH9GIeOQClbe
-         Gt7Q==
-X-Gm-Message-State: ANhLgQ39uBIJ4r09/GDaMxvBj9j3YPSZAVBFHPJYW7FvZKgF/DJ7Nv+5
-        Zh/Xg2ZZr8izs4/+2zSnmchL2oHXJKFJGvd5NjE=
-X-Google-Smtp-Source: ADFU+vsZL/BaWdRPuva+rr7KzrtLTyYm5+kQM6pKE6IU9cijtMWfbjl/03dK8Pdp01g3YXmjGWUotqBAGjWFQ+RpaRg=
-X-Received: by 2002:a92:d20a:: with SMTP id y10mr23695677ily.1.1584998567864;
- Mon, 23 Mar 2020 14:22:47 -0700 (PDT)
+        Mon, 23 Mar 2020 17:46:59 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1585000019; h=Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Message-ID: Date: Subject: In-Reply-To: References: Cc:
+ To: From: Reply-To: Sender;
+ bh=ZNpFv8n1vyNtNLXdZYwI5uo1FnppFNp10NWp9MPwYDo=; b=NeHpgcXQfwbH86gyHu9zmd4GlGP4Nzsikg9H7xzQmLZ+lMM+YhGciPy5DMaPQK5KYNjU90ru
+ 5hn/bheXlSYL1FLLJKKmp8bK7aq4sEYbOZWhO2fhExfj5ALtI/V8oD51mjtPowMgbhcS0YVW
+ rNdO8unC4h4PE/U1sSlEF9MVOhE=
+X-Mailgun-Sending-Ip: 104.130.122.27
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5e792e33.7f2b61a663b0-smtp-out-n02;
+ Mon, 23 Mar 2020 21:46:27 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 31ABCC44798; Mon, 23 Mar 2020 21:46:24 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE,
+        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from BCAIN (104-54-226-75.lightspeed.austtx.sbcglobal.net [104.54.226.75])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: bcain)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 0630CC433CB;
+        Mon, 23 Mar 2020 21:46:18 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 0630CC433CB
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=bcain@codeaurora.org
+Reply-To: <bcain@codeaurora.org>
+From:   "Brian Cain" <bcain@codeaurora.org>
+To:     "'Thomas Gleixner'" <tglx@linutronix.de>,
+        "'LKML'" <linux-kernel@vger.kernel.org>
+Cc:     "'Peter Zijlstra'" <peterz@infradead.org>,
+        "'Ingo Molnar'" <mingo@kernel.org>,
+        "'Sebastian Siewior'" <bigeasy@linutronix.de>,
+        "'Linus Torvalds'" <torvalds@linux-foundation.org>,
+        "'Joel Fernandes'" <joel@joelfernandes.org>,
+        "'Oleg Nesterov'" <oleg@redhat.com>,
+        "'Davidlohr Bueso'" <dave@stgolabs.net>,
+        "'kbuild test robot'" <lkp@intel.com>,
+        <linux-hexagon@vger.kernel.org>,
+        "'Logan Gunthorpe'" <logang@deltatee.com>,
+        "'Bjorn Helgaas'" <bhelgaas@google.com>,
+        "'Kurt Schwemmer'" <kurt.schwemmer@microsemi.com>,
+        <linux-pci@vger.kernel.org>,
+        "'Greg Kroah-Hartman'" <gregkh@linuxfoundation.org>,
+        "'Felipe Balbi'" <balbi@kernel.org>, <linux-usb@vger.kernel.org>,
+        "'Kalle Valo'" <kvalo@codeaurora.org>,
+        "'David S. Miller'" <davem@davemloft.net>,
+        <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
+        "'Darren Hart'" <dvhart@infradead.org>,
+        "'Andy Shevchenko'" <andy@infradead.org>,
+        <platform-driver-x86@vger.kernel.org>,
+        "'Zhang Rui'" <rui.zhang@intel.com>,
+        "'Rafael J. Wysocki'" <rafael.j.wysocki@intel.com>,
+        <linux-pm@vger.kernel.org>, "'Len Brown'" <lenb@kernel.org>,
+        <linux-acpi@vger.kernel.org>, "'Nick Hu'" <nickhu@andestech.com>,
+        "'Greentime Hu'" <green.hu@gmail.com>,
+        "'Vincent Chen'" <deanbo422@gmail.com>,
+        "'Guo Ren'" <guoren@kernel.org>, <linux-csky@vger.kernel.org>,
+        "'Tony Luck'" <tony.luck@intel.com>,
+        "'Fenghua Yu'" <fenghua.yu@intel.com>,
+        <linux-ia64@vger.kernel.org>, "'Michal Simek'" <monstr@monstr.eu>,
+        "'Michael Ellerman'" <mpe@ellerman.id.au>,
+        "'Arnd Bergmann'" <arnd@arndb.de>,
+        "'Geoff Levand'" <geoff@infradead.org>,
+        <linuxppc-dev@lists.ozlabs.org>,
+        "'Paul E . McKenney'" <paulmck@kernel.org>,
+        "'Jonathan Corbet'" <corbet@lwn.net>,
+        "'Randy Dunlap'" <rdunlap@infradead.org>,
+        "'Davidlohr Bueso'" <dbueso@suse.de>
+References: <20200321112544.878032781@linutronix.de> <20200321113241.531525286@linutronix.de>
+In-Reply-To: <20200321113241.531525286@linutronix.de>
+Subject: RE: [patch V3 08/20] hexagon: Remove mm.h from asm/uaccess.h
+Date:   Mon, 23 Mar 2020 16:46:17 -0500
+Message-ID: <0cc301d6015c$7e756490$7b602db0$@codeaurora.org>
 MIME-Version: 1.0
-Received: by 2002:a6b:7714:0:0:0:0:0 with HTTP; Mon, 23 Mar 2020 14:22:47
- -0700 (PDT)
-In-Reply-To: <BN7PR10MB27370353B542954AD795D77E9AF00@BN7PR10MB2737.namprd10.prod.outlook.com>
-References: <BN7PR10MB2737FC3E7028D66FE34351C09AF20@BN7PR10MB2737.namprd10.prod.outlook.com>
- <CAKR_QVLLe2nssX3fz=xtPvM8ZQKwGpC4g=YOyUUkaniX_KB8QA@mail.gmail.com> <BN7PR10MB27370353B542954AD795D77E9AF00@BN7PR10MB2737.namprd10.prod.outlook.com>
-From:   Tom Psyborg <pozega.tomislav@gmail.com>
-Date:   Mon, 23 Mar 2020 22:22:47 +0100
-Message-ID: <CAKR_QVLvQUKCORmdJCqTz8JVoeo2-TYxkvj5p2RzoLNetKY8Vg@mail.gmail.com>
-Subject: Re: Firmware Crashed
-To:     Ming Chen <Ming.Chen@watchguard.com>
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain;
+        charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: Microsoft Outlook 16.0
+Content-Language: en-us
+Thread-Index: AQHqwg4Cse+u7XkWseF638AEhQYwggGRIliZqCCrVyA=
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 23/03/2020, Ming Chen <Ming.Chen@watchguard.com> wrote:
-> No, it will be very difficult for us to upgrade the kernel.
-> This module(QCA9986 PCIe) is from the a third party company. They are using
-> the QCA driver and it works well. We are trying to integrate this module to
-> our own device(PPC-64 + Kernel 4.14.83). We don't want to upgrade the
-> kernel, since it will be a huge challenge work for us.
->
->
-> Thanks
-> Ming Chen
->
->> -----Original Message-----
->> From: Tom Psyborg <pozega.tomislav@gmail.com>
->> Sent: Saturday, March 21, 2020 11:16 PM
->> To: Ming Chen <Ming.Chen@watchguard.com>
->> Cc: linux-wireless <linux-wireless@vger.kernel.org>
->> Subject: Re: Firmware Crashed
->>
->> can you try to boot it in another device and using some distro that
->> has 4.19 or later kernel without backports?
->
+> -----Original Message-----
+> From: Thomas Gleixner <tglx@linutronix.de>
+...
+> Subject: [patch V3 08/20] hexagon: Remove mm.h from asm/uaccess.h
+> 
+> From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+> 
+> The defconfig compiles without linux/mm.h. With mm.h included the include
+> chain leands to:
+> |   CC      kernel/locking/percpu-rwsem.o
+> | In file included from include/linux/huge_mm.h:8,
+> |                  from include/linux/mm.h:567,
+> |                  from arch/hexagon/include/asm/uaccess.h:,
+> |                  from include/linux/uaccess.h:11,
+> |                  from include/linux/sched/task.h:11,
+> |                  from include/linux/sched/signal.h:9,
+> |                  from include/linux/rcuwait.h:6,
+> |                  from include/linux/percpu-rwsem.h:8,
+> |                  from kernel/locking/percpu-rwsem.c:6:
+> | include/linux/fs.h:1422:29: error: array type has incomplete element type
+> 'struct percpu_rw_semaphore'
+> |  1422 |  struct percpu_rw_semaphore rw_sem[SB_FREEZE_LEVELS];
+> 
+> once rcuwait.h includes linux/sched/signal.h.
+> 
+> Remove the linux/mm.h include.
+> 
+> Reported-by: kbuild test robot <lkp@intel.com>
+> Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Brian Cain <bcain@codeaurora.org>
+> Cc: linux-hexagon@vger.kernel.org
+> ---
+> V3: New patch
+> ---
+>  arch/hexagon/include/asm/uaccess.h | 1 -
+>  1 file changed, 1 deletion(-)
+> 
+> diff --git a/arch/hexagon/include/asm/uaccess.h
+> b/arch/hexagon/include/asm/uaccess.h
+> index 00cb38faad0c4..c1019a736ff13 100644
+> --- a/arch/hexagon/include/asm/uaccess.h
+> +++ b/arch/hexagon/include/asm/uaccess.h
+> @@ -10,7 +10,6 @@
+>  /*
+>   * User space memory access functions
+>   */
+> -#include <linux/mm.h>
+>  #include <asm/sections.h>
+> 
+>  /*
+> --
+> 2.26.0.rc2
+> 
 
-My suggestion is to try it in x86_64 PC. Then you can just use live
-linux distro with different kernel versions. If it does not work with
-any of these you may have ran into a hw bug sample. If it does work
-then you don't need to update your PPC64 kernel but find an
-architecture/device speific bug that prevents it from loading.
+Acked-by: Brian Cain <bcain@codeaurora.org>
