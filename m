@@ -2,120 +2,174 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0889A18F66D
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2020 14:56:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B9FB18F6A1
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Mar 2020 15:14:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728444AbgCWN4u (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 23 Mar 2020 09:56:50 -0400
-Received: from s3.sipsolutions.net ([144.76.43.62]:48150 "EHLO
-        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728354AbgCWN4u (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 23 Mar 2020 09:56:50 -0400
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.93)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1jGNZQ-002Kvm-9e; Mon, 23 Mar 2020 14:56:48 +0100
-Message-ID: <30484acdee4cd19078673f4f4229dfae49b17804.camel@sipsolutions.net>
-Subject: wmediumd MAC implementation/simulation
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     linux-wireless@vger.kernel.org
-Cc:     Bob Copeland <me@bobcopeland.com>,
-        Masashi Honma <masashi.honma@gmail.com>
-Date:   Mon, 23 Mar 2020 14:56:46 +0100
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.4 (3.34.4-1.fc31) 
+        id S1728601AbgCWOOs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 23 Mar 2020 10:14:48 -0400
+Received: from mx.sdf.org ([205.166.94.20]:59481 "EHLO mx.sdf.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728407AbgCWOOs (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 23 Mar 2020 10:14:48 -0400
+Received: from sdf.org (IDENT:lkml@sdf.lonestar.org [205.166.94.16])
+        by mx.sdf.org (8.15.2/8.14.5) with ESMTPS id 02NEEMir021816
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits) verified NO);
+        Mon, 23 Mar 2020 14:14:23 GMT
+Received: (from lkml@localhost)
+        by sdf.org (8.15.2/8.12.8/Submit) id 02NEEMeW015447;
+        Mon, 23 Mar 2020 14:14:22 GMT
+Date:   Mon, 23 Mar 2020 14:14:22 +0000
+From:   George Spelvin <lkml@SDF.ORG>
+To:     Ajay.Kathat@microchip.com
+Cc:     Adham.Abozaeid@microchip.com, linux-wireless@vger.kernel.org,
+        lkml@sdf.org
+Subject: [PATCH v2] wilc1000: Use crc7 in lib/ rather than a private copy
+Message-ID: <20200323141422.GA3769@SDF.ORG>
+References: <20200322120408.GA19411@SDF.ORG>
+ <2315a030-75ad-0383-3aa3-25528d2cd29a@microchip.com>
+ <20200323064558.GC19411@SDF.ORG>
+ <48611e28-5a55-ab05-3865-71992a5be327@microchip.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <48611e28-5a55-ab05-3865-71992a5be327@microchip.com>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+The code in lib/ is the desired polynomial, and even includes
+the 1-bit left shift in the table rather than needing to code
+it explicitly.
 
-Clearly, the MAC simulation in wmediumd is rather limited, basically the
-code just munges everything together:
+While I'm in Kconfig, add a description of what a WILC1000 is.
+Kconfig questions that require me to look up a data sheet to
+find out that I probably don't have one are a pet peeve.
 
-        for (i = 0; i < frame->tx_rates_count && !is_acked; i++) {
+Signed-off-by: George Spelvin <lkml@sdf.org>
+Cc: Ajay Singh <ajay.kathat@microchip.com>
+Cc: Adham Abozaeid <adham.abozaeid@microchip.com>
+Cc: linux-wireless@vger.kernel.org
+---
+v2: Rebase on staging-next tree
 
-                rate_idx = frame->tx_rates[i].idx;
+ drivers/staging/wilc1000/Kconfig |  5 +++
+ drivers/staging/wilc1000/spi.c   | 64 +++-----------------------------
+ 2 files changed, 11 insertions(+), 58 deletions(-)
 
-                /* no more rates in MRR */
-                if (rate_idx < 0)
-                        break;
+diff --git a/drivers/staging/wilc1000/Kconfig b/drivers/staging/wilc1000/Kconfig
+index 59e58550d1397..80c92e8bf8a59 100644
+--- a/drivers/staging/wilc1000/Kconfig
++++ b/drivers/staging/wilc1000/Kconfig
+@@ -2,6 +2,10 @@
+ config WILC1000
+ 	tristate
+ 	help
++	  Add support for the Atmel WILC1000 802.11 b/g/n SoC.
++	  This provides Wi-FI over an SDIO or SPI interface, and
++	  is usually found in IoT devices.
++
+ 	  This module only support IEEE 802.11n WiFi.
+ 
+ config WILC1000_SDIO
+@@ -22,6 +26,7 @@ config WILC1000_SPI
+ 	tristate "Atmel WILC1000 SPI (WiFi only)"
+ 	depends on CFG80211 && INET && SPI
+ 	select WILC1000
++	select CRC7
+ 	help
+ 	  This module adds support for the SPI interface of adapters using
+ 	  WILC1000 chipset. The Atmel WILC1000 has a Serial Peripheral
+diff --git a/drivers/staging/wilc1000/spi.c b/drivers/staging/wilc1000/spi.c
+index 8d4b8c219c2fc..3f19e3f38a397 100644
+--- a/drivers/staging/wilc1000/spi.c
++++ b/drivers/staging/wilc1000/spi.c
+@@ -6,6 +6,7 @@
+ 
+ #include <linux/clk.h>
+ #include <linux/spi/spi.h>
++#include <linux/crc7.h>
+ 
+ #include "netdev.h"
+ #include "cfg80211.h"
+@@ -16,64 +17,6 @@ struct wilc_spi {
+ 
+ static const struct wilc_hif_func wilc_hif_spi;
+ 
+-/********************************************
+- *
+- *      Crc7
+- *
+- ********************************************/
+-
+-static const u8 crc7_syndrome_table[256] = {
+-	0x00, 0x09, 0x12, 0x1b, 0x24, 0x2d, 0x36, 0x3f,
+-	0x48, 0x41, 0x5a, 0x53, 0x6c, 0x65, 0x7e, 0x77,
+-	0x19, 0x10, 0x0b, 0x02, 0x3d, 0x34, 0x2f, 0x26,
+-	0x51, 0x58, 0x43, 0x4a, 0x75, 0x7c, 0x67, 0x6e,
+-	0x32, 0x3b, 0x20, 0x29, 0x16, 0x1f, 0x04, 0x0d,
+-	0x7a, 0x73, 0x68, 0x61, 0x5e, 0x57, 0x4c, 0x45,
+-	0x2b, 0x22, 0x39, 0x30, 0x0f, 0x06, 0x1d, 0x14,
+-	0x63, 0x6a, 0x71, 0x78, 0x47, 0x4e, 0x55, 0x5c,
+-	0x64, 0x6d, 0x76, 0x7f, 0x40, 0x49, 0x52, 0x5b,
+-	0x2c, 0x25, 0x3e, 0x37, 0x08, 0x01, 0x1a, 0x13,
+-	0x7d, 0x74, 0x6f, 0x66, 0x59, 0x50, 0x4b, 0x42,
+-	0x35, 0x3c, 0x27, 0x2e, 0x11, 0x18, 0x03, 0x0a,
+-	0x56, 0x5f, 0x44, 0x4d, 0x72, 0x7b, 0x60, 0x69,
+-	0x1e, 0x17, 0x0c, 0x05, 0x3a, 0x33, 0x28, 0x21,
+-	0x4f, 0x46, 0x5d, 0x54, 0x6b, 0x62, 0x79, 0x70,
+-	0x07, 0x0e, 0x15, 0x1c, 0x23, 0x2a, 0x31, 0x38,
+-	0x41, 0x48, 0x53, 0x5a, 0x65, 0x6c, 0x77, 0x7e,
+-	0x09, 0x00, 0x1b, 0x12, 0x2d, 0x24, 0x3f, 0x36,
+-	0x58, 0x51, 0x4a, 0x43, 0x7c, 0x75, 0x6e, 0x67,
+-	0x10, 0x19, 0x02, 0x0b, 0x34, 0x3d, 0x26, 0x2f,
+-	0x73, 0x7a, 0x61, 0x68, 0x57, 0x5e, 0x45, 0x4c,
+-	0x3b, 0x32, 0x29, 0x20, 0x1f, 0x16, 0x0d, 0x04,
+-	0x6a, 0x63, 0x78, 0x71, 0x4e, 0x47, 0x5c, 0x55,
+-	0x22, 0x2b, 0x30, 0x39, 0x06, 0x0f, 0x14, 0x1d,
+-	0x25, 0x2c, 0x37, 0x3e, 0x01, 0x08, 0x13, 0x1a,
+-	0x6d, 0x64, 0x7f, 0x76, 0x49, 0x40, 0x5b, 0x52,
+-	0x3c, 0x35, 0x2e, 0x27, 0x18, 0x11, 0x0a, 0x03,
+-	0x74, 0x7d, 0x66, 0x6f, 0x50, 0x59, 0x42, 0x4b,
+-	0x17, 0x1e, 0x05, 0x0c, 0x33, 0x3a, 0x21, 0x28,
+-	0x5f, 0x56, 0x4d, 0x44, 0x7b, 0x72, 0x69, 0x60,
+-	0x0e, 0x07, 0x1c, 0x15, 0x2a, 0x23, 0x38, 0x31,
+-	0x46, 0x4f, 0x54, 0x5d, 0x62, 0x6b, 0x70, 0x79
+-};
+-
+-static u8 crc7_byte(u8 crc, u8 data)
+-{
+-	return crc7_syndrome_table[(crc << 1) ^ data];
+-}
+-
+-static u8 crc7(u8 crc, const u8 *buffer, u32 len)
+-{
+-	while (len--)
+-		crc = crc7_byte(crc, *buffer++);
+-	return crc;
+-}
+-
+-static u8 wilc_get_crc7(u8 *buffer, u32 len)
+-{
+-	return crc7(0x7f, (const u8 *)buffer, len) << 1;
+-}
+-
+ /********************************************
+  *
+  *      Spi protocol Function
+@@ -403,6 +346,11 @@ static int spi_data_write(struct wilc *wilc, u8 *b, u32 sz)
+  *      Spi Internal Read/Write Function
+  *
+  ********************************************/
++static u8 wilc_get_crc7(u8 *buffer, u32 len)
++{
++	return crc7_be(0xfe, buffer, len);
++}
++
+ static int wilc_spi_single_read(struct wilc *wilc, u8 cmd, u32 adr, void *b,
+ 				u8 clockless)
+ {
 
-                error_prob = ctx->get_error_prob(ctx, snr, rate_idx,
-                                                 frame->freq, frame->data_len,
-                                                 station, deststa);
-                for (j = 0; j < frame->tx_rates[i].count; j++) {
-                        send_time += difs + pkt_duration(frame->data_len,
-                                index_to_rate(rate_idx, frame->freq));
-
-                        retries++;
-
-                        /* skip ack/backoff/retries for noack frames */
-                        if (noack) {
-                                is_acked = true;
-                                break;
-                        }
-
-                        /* TODO TXOPs */
-
-                        /* backoff */
-                        if (j > 0) {
-                                send_time += (cw * slot_time) / 2;
-                                cw = (cw << 1) + 1;
-                                if (cw > queue->cw_max)
-                                        cw = queue->cw_max;
-                        }
-
-                        send_time += ack_time_usec;
-
-                        if (choice > error_prob) {
-                                is_acked = true;
-                                break;
-                        }
-
-                        if (!use_fixed_random_value(ctx))
-                                choice = drand48();
-                }
-        }
-
-        if (is_acked) {
-                frame->tx_rates[i-1].count = j + 1;
-                for (; i < frame->tx_rates_count; i++) {
-                        frame->tx_rates[i].idx = -1;
-                        frame->tx_rates[i].count = -1;
-                }
-                frame->flags |= HWSIM_TX_STAT_ACK;
-        }
-
-(I copy/pasted that from my version, may be slightly different than
-current upstream due to a fix bugfixes. I also know the recent fixes
-will touch this area. Anyway, that's not the point.)
-
-
-Looking at this, one thing that immediately stands out is that the ACK
-isn't actually transmitted in any way, so you cannot have a duplicate
-transmission that's actually received and get the ACK back.
-
-And the second thing, because of this, it's highly unsuitable for
-actually integrating with some other MAC.
-
-
-The way I see it, wmediumd serves a dual purpose in this code,
-implementing both
-
-1) the low-level MAC controller for hwsim, and
-2) the actual medium simulation.
-
-I wonder if this should be split, implementing a "real" MAC for hwsim,
-and then sending also the ACKs "properly", perhaps implementing RTS/CTS
-behaviour in the MAC, etc.?
-
-Or perhaps then that's too much complexity and I should just teach ns3
-the hwsim virtio interface?
-
-johannes
-
+base-commit: 3017e587e36819f87e53d3c8751afdf987c1f542
+-- 
+2.26.0.rc2
