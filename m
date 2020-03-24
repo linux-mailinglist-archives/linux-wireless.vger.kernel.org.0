@@ -2,90 +2,112 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 69ABC1905FC
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Mar 2020 08:02:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B4CF4190606
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Mar 2020 08:05:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727345AbgCXHCc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 24 Mar 2020 03:02:32 -0400
-Received: from mail26.static.mailgun.info ([104.130.122.26]:45498 "EHLO
-        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726129AbgCXHCb (ORCPT
+        id S1727351AbgCXHF0 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 24 Mar 2020 03:05:26 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:54603 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725951AbgCXHF0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 24 Mar 2020 03:02:31 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1585033350; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=nJ3chewxtuY/kHXLvF/iaS0jMEykQS+33TUuAaJ+now=; b=savUlJMPa6ZQVH8J2765sRYuYRnRh3kl9zROtYYDiYOvTaGZ4h14qBw3/2FkRRWGb98sX5tX
- QzD6ZXieZxagHM4Sp/bCO87QPEs7/NJdPxQ3vBBjh/mESGw5OvUDQuy/uTeXqixFV2BqI1f0
- rGDJL1d8p0JIIUV1IpH5M41l6Uo=
-X-Mailgun-Sending-Ip: 104.130.122.26
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e79b02b.7f0ca6b1e110-smtp-out-n02;
- Tue, 24 Mar 2020 07:00:59 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 01B42C432C2; Tue, 24 Mar 2020 07:00:59 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE,
-        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id D18EEC433CB;
-        Tue, 24 Mar 2020 07:00:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org D18EEC433CB
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Stephen Rothwell <sfr@canb.auug.org.au>
-Cc:     Wireless <linux-wireless@vger.kernel.org>,
-        Linux Next Mailing List <linux-next@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Luca Coelho <luciano.coelho@intel.com>
-Subject: Re: linux-next: manual merge of the wireless-drivers-next tree with the wireless-drivers tree
-References: <20200324111653.35c368e4@canb.auug.org.au>
-Date:   Tue, 24 Mar 2020 09:00:54 +0200
-In-Reply-To: <20200324111653.35c368e4@canb.auug.org.au> (Stephen Rothwell's
-        message of "Tue, 24 Mar 2020 11:16:53 +1100")
-Message-ID: <87wo7a8cex.fsf@kamboji.qca.qualcomm.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        Tue, 24 Mar 2020 03:05:26 -0400
+Authenticated-By: 
+X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID 02O754Df005064, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (RTEXMB06.realtek.com.tw[172.21.6.99])
+        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id 02O754Df005064
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 24 Mar 2020 15:05:04 +0800
+Received: from RTEXMB02.realtek.com.tw (172.21.6.95) by
+ RTEXMB06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Tue, 24 Mar 2020 15:05:04 +0800
+Received: from RTEXMB04.realtek.com.tw (172.21.6.97) by
+ RTEXMB02.realtek.com.tw (172.21.6.95) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Tue, 24 Mar 2020 15:05:04 +0800
+Received: from RTEXMB04.realtek.com.tw ([fe80::d9c5:a079:495e:b999]) by
+ RTEXMB04.realtek.com.tw ([fe80::d9c5:a079:495e:b999%6]) with mapi id
+ 15.01.1779.005; Tue, 24 Mar 2020 15:05:04 +0800
+From:   Tony Chuang <yhchuang@realtek.com>
+To:     Kalle Valo <kvalo@codeaurora.org>
+CC:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "briannorris@chromium.org" <briannorris@chromium.org>,
+        Arend Van Spriel <arend.vanspriel@broadcom.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        "tamizhr@codeaurora.org" <tamizhr@codeaurora.org>
+Subject: RE: [PATCH v2 2/2] rtw88: add a debugfs entry to enable/disable coex mechanism
+Thread-Topic: [PATCH v2 2/2] rtw88: add a debugfs entry to enable/disable coex
+ mechanism
+Thread-Index: AQHV9eid5DTKsHzIFkaU/75iZgvikahFRc8AgAEbR4CAEQe7sA==
+Date:   Tue, 24 Mar 2020 07:05:04 +0000
+Message-ID: <79e3276a8bfe4cc1bb2788668cfd16d2@realtek.com>
+References: <20200309075852.11454-1-yhchuang@realtek.com>
+        <20200309075852.11454-3-yhchuang@realtek.com>
+        <877dzpu2lt.fsf@tynnyri.adurom.net>
+        <33d4904b71a04ed8b0226ce07b037e05@realtek.com>
+ <87a74ko66i.fsf@kamboji.qca.qualcomm.com>
+In-Reply-To: <87a74ko66i.fsf@kamboji.qca.qualcomm.com>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.68.175]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Stephen Rothwell <sfr@canb.auug.org.au> writes:
+> Tony Chuang <yhchuang@realtek.com> writes:
+> 
+> > Kalle Valo <kvalo@codeaurora.org> :
+> >
+> >> <yhchuang@realtek.com> writes:
+> >>
+> >> > From: Yan-Hsuan Chuang <yhchuang@realtek.com>
+> >> >
+> >> > Sometimes we need to stop the coex mechanism to debug, so that we
+> >> > can manually control the device through various outer commands.
+> >> > Hence, add a new debugfs coex_enable to allow us to enable/disable
+> >> > the coex mechanism when driver is running.
+> >> >
+> >> > To disable coex
+> >> > echo 0 > /sys/kernel/debug/ieee80211/phyX/rtw88/coex_enable
+> >> >
+> >> > To enable coex
+> >> > echo 1 > /sys/kernel/debug/ieee80211/phyX/rtw88/coex_enable
+> >> >
+> >> > To check coex dm is enabled or not
+> >> > cat /sys/kernel/debug/ieee80211/phyX/rtw88/coex_enable
+> >>
+> >> I forgot, did we add a command to nl80211 for managing btcoex? At least
+> >> we have talking about that for years. Please check that first before
+> >> adding a debugfs interface for this.
+> >>
+> >
+> > Yes, I found there was a thread [1] talking about adding a callback to
+> > enable/disable btcoex, but it seems not get applied eventually.
+> 
+> Too bad, I really think we should have at least enable/disable
+> functionality in nl80211. But if it's not there, I guess it's ok to have
+> yet another driver custom debugfs file :/
+> 
+> > And there's another thread [2] talking about add a btcoex subsystem.
+> > But seems like nobody can implement it cleanly in the host.
+> >
+> > I think adding btcoex subsystem could have a lot of pain since each
+> > vendor is using different mechanism controlling the btcoex, and it
+> > usually comes with RF related design which is difficult to write a common
+> > function to deal with all kinds of them.
+> 
+> Yeah, btcoex subsystem is a big challenge.
+> 
 
-> Today's linux-next merge of the wireless-drivers-next tree got a
-> conflict in:
->
->   drivers/net/wireless/intel/iwlwifi/pcie/drv.c
->
-> between commit:
->
->   cf52c8a776d1 ("iwlwifi: pcie: add 0x2526/0x401* devices back to cfg detection")
->
-> from the wireless-drivers tree and commits:
->
->   67eb556da609 ("iwlwifi: combine 9260 cfgs that only change names")
->   d6f2134a3831 ("iwlwifi: add mac/rf types and 160MHz to the device tables")
->
-> from the wireless-drivers-next tree.
->
-> I fixed it up (I am not sure wat to do with this, so I just dropped
-> the former changes for now) and can carry the fix as necessary. This
-> is now fixed as far as linux-next is concerned, but any non trivial
-> conflicts should be mentioned to your upstream maintainer when your tree
-> is submitted for merging.  You may also want to consider cooperating
-> with the maintainer of the conflicting tree to minimise any particularly
-> complex conflicts.
+So I think we can take this patch set.
+It is really useful to debug on coex's issues.
 
-Thanks Stephen. Luca, how do you propose to fix this conflict?
-
--- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Yen-Hsuan
