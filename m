@@ -2,129 +2,99 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2221019190A
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Mar 2020 19:26:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6451E191BE8
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Mar 2020 22:26:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728094AbgCXS0D (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 24 Mar 2020 14:26:03 -0400
-Received: from mail-qk1-f195.google.com ([209.85.222.195]:46114 "EHLO
-        mail-qk1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727382AbgCXS0D (ORCPT
+        id S1727664AbgCXV0V (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 24 Mar 2020 17:26:21 -0400
+Received: from s3.sipsolutions.net ([144.76.43.62]:56734 "EHLO
+        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727023AbgCXV0V (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 24 Mar 2020 14:26:03 -0400
-Received: by mail-qk1-f195.google.com with SMTP id u4so8496367qkj.13
-        for <linux-wireless@vger.kernel.org>; Tue, 24 Mar 2020 11:26:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=joelfernandes.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=iEmpsAyt9B1Qcdkh4hlRJzHYHPiVdMatdhGGO+kX6u0=;
-        b=XviXDdgRMR3A1ee54Wowb70vIsLpggnUxurOugFzJ+rMRbEWy19ZdXhIQG8po0nuoq
-         +zQF77o09zsBvEAMrLmPfUbOj/iB/K7nHwJmK5u3waH0Ns6p9BDbathMFtZ6NE3rNO/a
-         eUJzkjun1iZzOBflcQHA8PWiD8khlP9p5A0R0=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=iEmpsAyt9B1Qcdkh4hlRJzHYHPiVdMatdhGGO+kX6u0=;
-        b=d/+70cvTfy/ako9UO/W9PuJtxEJZSt1M6hrPfdWPxBVdPq2SypQQPKVGkDTYrhZKTy
-         DISWjcPtNBpWcLVS9/tYutA6LiK6BmrFz0ZmMd1NGz8p27uFPM7wEyu5VeNH2Uy0bL0u
-         5Icg8bJV8Z6mgxFNMDUz8ovNB5tGa+GFpjhZO4oQVpJgLZIcskz27pnCLTFFiIWqTbso
-         WWXpV5o2+iYEye/bGaPGly8dRgbmKcqIp9ypMKc43Qmiqt6eNWYaAIGJXJTh1zlKThdc
-         oert5KzGn4CY8zexVRlVF6QpTnrmwGIE22tBUPMEH6v8/PNQRIeJNk4j1DdDHNK6Lg56
-         6lWw==
-X-Gm-Message-State: ANhLgQ01rcMf42+Au4GEXeI5AWTeepKOuWWBDlceRzBvi21B/NttL2Al
-        1RHvXc+arPlBRHBPY1+gomdE0w==
-X-Google-Smtp-Source: ADFU+vsDFgrzlLzo7PWHXfC4Na59e1GjR7LhLOqmWSGaiqojVW66Z6eiEsCwPhPF2x51Legtscepqg==
-X-Received: by 2002:a05:620a:1250:: with SMTP id a16mr12752127qkl.497.1585074361932;
-        Tue, 24 Mar 2020 11:26:01 -0700 (PDT)
-Received: from localhost ([2620:15c:6:12:9c46:e0da:efbf:69cc])
-        by smtp.gmail.com with ESMTPSA id y5sm14014261qkb.123.2020.03.24.11.26.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Mar 2020 11:26:01 -0700 (PDT)
-Date:   Tue, 24 Mar 2020 14:26:01 -0400
-From:   Joel Fernandes <joel@joelfernandes.org>
-To:     Will Deacon <will@kernel.org>
-Cc:     Kalle Valo <kvalo@codeaurora.org>, linux-kernel@vger.kernel.org,
-        Ingo Molnar <mingo@redhat.com>,
-        Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Ingo Molnar <mingo@kernel.org>,
-        "Paul E . McKenney" <paulmck@kernel.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Logan Gunthorpe <logang@deltatee.com>,
-        Kurt Schwemmer <kurt.schwemmer@microsemi.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        "linux-pci@vger.kernel.org Felipe Balbi" <balbi@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        Oleg Nesterov <oleg@redhat.com>,
-        Davidlohr Bueso <dave@stgolabs.net>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Arnd Bergmann <arnd@arndb.de>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH] Documentation: Clarify better about the rwsem non-owner
- release issue
-Message-ID: <20200324182601.GC257597@google.com>
-References: <20200322021938.175736-1-joel@joelfernandes.org>
- <87a748khlo.fsf@kamboji.qca.qualcomm.com>
- <20200323182349.GA203600@google.com>
- <20200324081538.GA8696@willie-the-truck>
+        Tue, 24 Mar 2020 17:26:21 -0400
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.93)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1jGr3y-006JZq-LR; Tue, 24 Mar 2020 22:26:18 +0100
+Message-ID: <3bd9fa47c45cd983334ccae06b75501f161ed45c.camel@sipsolutions.net>
+Subject: Re: wmediumd MAC implementation/simulation
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Bob Copeland <me@bobcopeland.com>
+Cc:     linux-wireless@vger.kernel.org,
+        Masashi Honma <masashi.honma@gmail.com>
+Date:   Tue, 24 Mar 2020 22:26:16 +0100
+In-Reply-To: <20200324145344.GA17278@bobcopeland.com> (sfid-20200324_155347_092664_62837DB4)
+References: <30484acdee4cd19078673f4f4229dfae49b17804.camel@sipsolutions.net>
+         <20200324145344.GA17278@bobcopeland.com>
+         (sfid-20200324_155347_092664_62837DB4)
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.34.4 (3.34.4-1.fc31) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200324081538.GA8696@willie-the-truck>
-User-Agent: Mutt/1.12.2 (2019-09-21)
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Mar 24, 2020 at 08:15:39AM +0000, Will Deacon wrote:
-> On Mon, Mar 23, 2020 at 02:23:49PM -0400, Joel Fernandes wrote:
-> > On Sun, Mar 22, 2020 at 08:51:15AM +0200, Kalle Valo wrote:
-> > > "Joel Fernandes (Google)" <joel@joelfernandes.org> writes:
-> > > 
-> > > > Reword and clarify better about the rwsem non-owner release issue.
-> > > >
-> > > > Link: https://lore.kernel.org/linux-pci/20200321212144.GA6475@google.com/
-> > > >
-> > > > Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
-> > > 
-> > > There's something wrong with your linux-pci and linux-usb addresses:
-> > > 
-> > > 	"linux-pci@vger.kernel.org Felipe Balbi" <balbi@kernel.org>,
-> > > 
-> > > 
-> > > 	"linux-usb@vger.kernel.org Kalle Valo" <kvalo@codeaurora.org>,
-> > 
-> > Not sure. It appears fine in the archive.
+On Tue, 2020-03-24 at 10:53 -0400, Bob Copeland wrote:
+> On Mon, Mar 23, 2020 at 02:56:46PM +0100, Johannes Berg wrote:
+> > I wonder if this should be split, implementing a "real" MAC for hwsim,
+> > and then sending also the ACKs "properly", perhaps implementing RTS/CTS
+> > behaviour in the MAC, etc.?
 > 
-> Hmm, I don't think it does. Here's the copy from LKML:
-> 
-> https://lore.kernel.org/lkml/20200322021938.175736-1-joel@joelfernandes.org/
-> 
-> Which works because it's in the To: correctly. But both linux-pci and
-> linux-usb were *not* CC'd:
-> 
-> "linux-usb@vger.kernel.org Kalle Valo" <kvalo@codeaurora.org>
-> "linux-pci@vger.kernel.org Felipe Balbi" <balbi@kernel.org>
-> 
-> and searching for the message in the linux-pci archives doesn't find it:
-> 
-> https://lore.kernel.org/linux-pci/?q=Reword+and+clarify+better+about+the+rwsem+non-owner+release+issue
-> 
-> So it looks like there is an issue with your mail setup.
+> The reason I did it this way was to go more for rough approximation rather
+> than fidelity to get whatever simplifications that allows.  For example,
+> loop really only considers a single frame at a time (and all of its rateset)
+> rather than all the possible stations that could be sending at a given time
+> step.  That is good enough for comparing rate controllers, and doing some
+> mesh testing with a few one-off hacks bolted on top, but nowhere near
+> complete.
 
-Hi Will and Kalle,
-Thank you for confirming it. You are right, the archive shows the issue. I
-will double check my client and see what's going on.
+Right, sure. I don't really object to this - but I realized it really
+doesn't fit my model when I tried to integrate our firmware into it :)
 
-thanks,
+And then I was left wondering if I really should even try ...
 
- - Joel
+> That said, splitting them apart and having more realistic mac layer sounds
+> reasonable -- how do you anticipate it looking?
+
+Well, it depends how deep we go, I guess? I mean, we could go all the
+way down to the PHY layer, but then we're _really_ in ns3 territory and
+it's probably not worth it... OTOH, to fully integrate the firmware, we
+probably do need this eventually. But I'd rather not reinvent ns3 here,
+obviously :)
+
+I've been trying to come up with some kind of hybrid model, where
+perhaps we simulate the bare minimum for hwsim, and provide some kind of
+"mostly the transport" bits for integrating other things. Though I may
+still decide that even that is overkill, and right now I don't even care
+about the timing accuracy at all, I just want something to work first.
+
+What I anticipate this looking like is kinda hard to say, and we'd need
+significantly more API between hwsim and its MAC too, because even to
+simulate the ACK accurately we'd need to know the basic/mandatory rate
+bitmap - right now the code just does
+
+        int ack_time_usec = pkt_duration(14, index_to_rate(0, frame->freq)) +
+                            sifs;
+
+but this is incorrect ... so arguably we need that *anyway*?
+
+I guess I'd start with actually subjecting the ACK to "channel
+conditions", but I'd actually want to be able to hook into the TX/RX in
+some way from the external MAC too ... I just don't think we need to
+treat hwsim as an external MAC because that just complicates the whole
+thing?
+
+Well, honestly, I have no idea :)
+
+
+> > Or perhaps then that's too much complexity and I should just teach ns3
+> > the hwsim virtio interface?
+> 
+> Up to you :)
+
+:)
+
+johannes
 
