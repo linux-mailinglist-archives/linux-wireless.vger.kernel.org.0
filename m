@@ -2,108 +2,130 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7EA13190D59
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Mar 2020 13:27:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A013190D8D
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Mar 2020 13:32:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727417AbgCXMZs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 24 Mar 2020 08:25:48 -0400
-Received: from mail26.static.mailgun.info ([104.130.122.26]:25717 "EHLO
-        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727332AbgCXMZs (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 24 Mar 2020 08:25:48 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1585052747; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=MBBxdSu+v22AOGbX7PgfT+8mNtaVMqonw+j86vVTlyA=; b=twM3VCWbjG4Aln1YS9tmBz+EsuCGHpvrxFyFdhmDJUEFh26/gem8ppjtRRv3eRhSRZ1mfQON
- muh0F0gNePEH9qQTX3/gGZT+3V/3BqnMFjsMU4DdSc83x2HeBE28K9zK8LuyVH+LkVkv/9+O
- y0LCaON5tO94aVagofN+ue5TBWY=
-X-Mailgun-Sending-Ip: 104.130.122.26
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e79fc3f.7fab05150e30-smtp-out-n05;
- Tue, 24 Mar 2020 12:25:35 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 6DC3DC433D2; Tue, 24 Mar 2020 12:25:35 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE,
-        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        id S1727585AbgCXMcc (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 24 Mar 2020 08:32:32 -0400
+Received: from mail.kernel.org ([198.145.29.99]:34200 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727555AbgCXMcc (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 24 Mar 2020 08:32:32 -0400
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 01E4DC433CB;
-        Tue, 24 Mar 2020 12:25:32 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 01E4DC433CB
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Wen Gong <wgong@codeaurora.org>
-Cc:     linux-wireless@vger.kernel.org, ath10k@lists.infradead.org
-Subject: Re: [PATCH v2] ath10k: add retry mechanism for ath10k_start
-References: <20200120025609.6060-1-wgong@codeaurora.org>
-        <87mu9mwwhs.fsf@kamboji.qca.qualcomm.com>
-        <576c72fed4a15a13989dde163d77ed8c@codeaurora.org>
-Date:   Tue, 24 Mar 2020 14:25:30 +0200
-In-Reply-To: <576c72fed4a15a13989dde163d77ed8c@codeaurora.org> (Wen Gong's
-        message of "Fri, 14 Feb 2020 10:41:52 +0800")
-Message-ID: <877dza7xdx.fsf@kamboji.qca.qualcomm.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        by mail.kernel.org (Postfix) with ESMTPSA id 885952070A;
+        Tue, 24 Mar 2020 12:32:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1585053152;
+        bh=I4zHov14n7M/DuZob8alhpj/TYDh+wT0gdavajXveuE=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=wzWOocarVx6V99QsL3UjWtbAlo/VPX6MGut1redIUpLxD+UMOlUcIlLo62SMW8mYB
+         6XBSNBA5647a5IOMjqbKYuqJtU1YpYq9nXxp3YphKrPIZuqoGl712aFUB+tH4U2+pF
+         yJcsN46EJyeCmn5I0+GxjEDoUK39Rwq/xMsogZg0=
+Date:   Tue, 24 Mar 2020 13:32:29 +0100
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Bastien Nocera <hadess@hadess.net>
+Cc:     devel@driverdev.osuosl.org, linux-wireless@vger.kernel.org,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Larry Finger <Larry.Finger@lwfinger.net>
+Subject: Re: [PATCH resend 3] staging: rtl8188eu: Add rtw_led_enable module
+ parameter
+Message-ID: <20200324123229.GD2348009@kroah.com>
+References: <97d2ef68a6bcb7d1ece978eef6315e95732ca39d.camel@hadess.net>
+ <20200324113840.GA2322042@kroah.com>
+ <7aa74127978a73359ae95cd193bb3092d4536118.camel@hadess.net>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <7aa74127978a73359ae95cd193bb3092d4536118.camel@hadess.net>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Wen Gong <wgong@codeaurora.org> writes:
+On Tue, Mar 24, 2020 at 12:47:01PM +0100, Bastien Nocera wrote:
+> On Tue, 2020-03-24 at 12:38 +0100, Greg Kroah-Hartman wrote:
+> > On Tue, Mar 24, 2020 at 11:36:00AM +0100, Bastien Nocera wrote:
+> > > Make it possible to disable the LED, as it can be pretty annoying
+> > > depending on where it's located.
+> > > 
+> > > See also https://github.com/lwfinger/rtl8188eu/pull/304 for the
+> > > out-of-tree version.
+> > > 
+> > > Signed-off-by: Bastien Nocera <hadess@hadess.net>
+> > > ---
+> > >  drivers/staging/rtl8188eu/core/rtw_led.c      | 6 ++++++
+> > >  drivers/staging/rtl8188eu/include/drv_types.h | 2 ++
+> > >  drivers/staging/rtl8188eu/os_dep/os_intfs.c   | 5 +++++
+> > >  3 files changed, 13 insertions(+)
+> > > 
+> > > diff --git a/drivers/staging/rtl8188eu/core/rtw_led.c
+> > > b/drivers/staging/rtl8188eu/core/rtw_led.c
+> > > index d1406cc99768..75a859accb7e 100644
+> > > --- a/drivers/staging/rtl8188eu/core/rtw_led.c
+> > > +++ b/drivers/staging/rtl8188eu/core/rtw_led.c
+> > > @@ -467,10 +467,16 @@ void blink_handler(struct LED_871x *pLed)
+> > >  
+> > >  void led_control_8188eu(struct adapter *padapter, enum
+> > > LED_CTL_MODE LedAction)
+> > >  {
+> > > +	struct registry_priv *registry_par;
+> > > +
+> > >  	if (padapter->bSurpriseRemoved || padapter->bDriverStopped ||
+> > >  	    !padapter->hw_init_completed)
+> > >  		return;
+> > >  
+> > > +	registry_par = &padapter->registrypriv;
+> > > +	if (!registry_par->led_enable)
+> > > +		return;
+> > > +
+> > >  	if ((padapter->pwrctrlpriv.rf_pwrstate != rf_on &&
+> > >  	     padapter->pwrctrlpriv.rfoff_reason > RF_CHANGE_BY_PS) &&
+> > >  	    (LedAction == LED_CTL_TX || LedAction == LED_CTL_RX ||
+> > > diff --git a/drivers/staging/rtl8188eu/include/drv_types.h
+> > > b/drivers/staging/rtl8188eu/include/drv_types.h
+> > > index 35c0946bc65d..4ca828141d3f 100644
+> > > --- a/drivers/staging/rtl8188eu/include/drv_types.h
+> > > +++ b/drivers/staging/rtl8188eu/include/drv_types.h
+> > > @@ -67,6 +67,8 @@ struct registry_priv {
+> > >  	u8	wmm_enable;
+> > >  	u8	uapsd_enable;
+> > >  
+> > > +	u8	led_enable;
+> > > +
+> > >  	struct wlan_bssid_ex    dev_network;
+> > >  
+> > >  	u8	ht_enable;
+> > > diff --git a/drivers/staging/rtl8188eu/os_dep/os_intfs.c
+> > > b/drivers/staging/rtl8188eu/os_dep/os_intfs.c
+> > > index 8907bf6bb7ff..ba55ae741215 100644
+> > > --- a/drivers/staging/rtl8188eu/os_dep/os_intfs.c
+> > > +++ b/drivers/staging/rtl8188eu/os_dep/os_intfs.c
+> > > @@ -47,6 +47,8 @@ static int rtw_acm_method;/*  0:By SW 1:By HW. */
+> > >  static int rtw_wmm_enable = 1;/*  default is set to enable the
+> > > wmm. */
+> > >  static int rtw_uapsd_enable;
+> > >  
+> > > +static int rtw_led_enable = 1;
+> > > +
+> > >  static int rtw_ht_enable = 1;
+> > >  /* 0 :disable, bit(0): enable 2.4g, bit(1): enable 5g */
+> > >  static int rtw_cbw40_enable = 3;
+> > > @@ -98,6 +100,7 @@ module_param(rtw_channel, int, 0644);
+> > >  module_param(rtw_wmm_enable, int, 0644);
+> > >  module_param(rtw_vrtl_carrier_sense, int, 0644);
+> > >  module_param(rtw_vcs_type, int, 0644);
+> > > +module_param(rtw_led_enable, int, 0644);
+> > 
+> > Ick, really?  No, no nee module parameters, this is not the 1990's.
+> > 
+> > This should be done on a per-device basis, using the correct apis.
+> 
+> What API?
 
-> On 2020-02-13 19:35, Kalle Valo wrote:
->>
->> I'm not convinved about this. ath10k assumes that SDIO bus works
->> reliably and there's no data loss. In my opinion if the SDIO is not
->> working reliably we should fail immediately with a clear error message
->> for the user, instead of having an unstable connection. And I
->> understand
->> from the logs that ath10k fails cleanly in this simulated failure.
->>
->> So what you do here is ignore the assumption that the SDIO bus should
->> always work reliably and add a workaround by trying to restart the
->> firmware multiple times, and hope that by luck it works during one
->> of 10
->> retry attempts. But then what? Isn't the WLAN connection flaky as SDIO
->> bus is not reliable? So if we were to follow that design logic,
->> shouldn't we add retries for _all_ ath10k SDIO transactions? But that
->> would make ath10k even more complex as it is.
->
-> for other SDIO transfer, like data tx/rx, if it fail, the upper stack
-> has error mechanism to handle the fail.
+Documentation/leds/index.rst should give you a good start :)
 
-Handle the fail is different from retrying. I'm all that all error cases
-need to be gracefully handled and bailed out with a clear error, but I
-have not seen any logic that mac80211 or driver should retry
-transmissions to firmware because of hardware errors. Just as an
-example, if there is data loss on the PCI/SDIO bus I don't think the
-ath10k credit handling will work for long.
+thanks,
 
-> but for ath10k_start, if it fails, especailly for recovery, then it can
-> not recovery again, because cfg80211_shutdown_all_interfaces, and it
-> need
-> to reboot system to recovery wlan by test.
->>
->> Because I think this patch makes things worse for the user, so I would
->> like to understand the real life use case this patch is trying to fix
->> and how it would help the user.
->
-> sometimes it has recovery/suspend/resume test case, it need to make sure
-> ath10k_start success, otherwise wlan will can not recovery unless reboot
-> system.
-
-If this works 99% of the time and 1% is failing then you should find the
-root cause for that 1% case and fix that. The bug might be in ath10k, in
-SDIO controller driver or maybe even somewhere else.
-
--- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+greg k-h
