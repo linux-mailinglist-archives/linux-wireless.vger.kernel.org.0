@@ -2,136 +2,77 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F362190DCD
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Mar 2020 13:39:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D95AA190DF0
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Mar 2020 13:48:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727456AbgCXMi6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 24 Mar 2020 08:38:58 -0400
-Received: from relay1-d.mail.gandi.net ([217.70.183.193]:61177 "EHLO
-        relay1-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727443AbgCXMi5 (ORCPT
+        id S1727296AbgCXMre (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 24 Mar 2020 08:47:34 -0400
+Received: from mail27.static.mailgun.info ([104.130.122.27]:52960 "EHLO
+        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727502AbgCXMre (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 24 Mar 2020 08:38:57 -0400
-X-Originating-IP: 83.155.44.161
-Received: from classic (mon69-7-83-155-44-161.fbx.proxad.net [83.155.44.161])
-        (Authenticated sender: hadess@hadess.net)
-        by relay1-d.mail.gandi.net (Postfix) with ESMTPSA id 11973240008;
-        Tue, 24 Mar 2020 12:38:53 +0000 (UTC)
-Message-ID: <9e67f1dd615b810e1725b13003fbb5d9000cd7c0.camel@hadess.net>
-Subject: Re: [PATCH resend 3] staging: rtl8188eu: Add rtw_led_enable module
- parameter
-From:   Bastien Nocera <hadess@hadess.net>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     devel@driverdev.osuosl.org, linux-wireless@vger.kernel.org,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Larry Finger <Larry.Finger@lwfinger.net>
-Date:   Tue, 24 Mar 2020 13:38:53 +0100
-In-Reply-To: <20200324123229.GD2348009@kroah.com>
-References: <97d2ef68a6bcb7d1ece978eef6315e95732ca39d.camel@hadess.net>
-         <20200324113840.GA2322042@kroah.com>
-         <7aa74127978a73359ae95cd193bb3092d4536118.camel@hadess.net>
-         <20200324123229.GD2348009@kroah.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.0 (3.36.0-1.fc32) 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+        Tue, 24 Mar 2020 08:47:34 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1585054053; h=Message-Id: Date: Subject: Cc: To: From:
+ Sender; bh=+KQN9xMVdPONR0ZqJSh7cXvXgPgruBMXlHRgc5SZ7Eo=; b=k/UC8dDXxoHp2I6rgW6qXCTY91LS2tMRAq6Ce11bdFgUhbLwhX9SM0PPqCjmE0tCoer1MnqN
+ tGbTFSkOC/vWGeZhAmHLAg+dEaI2+suCiIxEiW74u4BTUozrLSxF4V88XvxKUzIUrzHQnmAb
+ Py270sj3jgK4jB4I8mv20hTclsg=
+X-Mailgun-Sending-Ip: 104.130.122.27
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5e7a0164.7f14b33602d0-smtp-out-n04;
+ Tue, 24 Mar 2020 12:47:32 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 60997C432C2; Tue, 24 Mar 2020 12:47:31 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from pillair-linux.qualcomm.com (blr-c-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.19.19])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: pillair)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 1FD1FC433CB;
+        Tue, 24 Mar 2020 12:47:28 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 1FD1FC433CB
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=pillair@codeaurora.org
+From:   Rakesh Pillai <pillair@codeaurora.org>
+To:     ath10k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Rakesh Pillai <pillair@codeaurora.org>
+Subject: [PATCH 0/3] Add support to handle targets without TrustZone
+Date:   Tue, 24 Mar 2020 18:17:21 +0530
+Message-Id: <1585054044-18667-1-git-send-email-pillair@codeaurora.org>
+X-Mailer: git-send-email 2.7.4
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 2020-03-24 at 13:32 +0100, Greg Kroah-Hartman wrote:
-> On Tue, Mar 24, 2020 at 12:47:01PM +0100, Bastien Nocera wrote:
-> > On Tue, 2020-03-24 at 12:38 +0100, Greg Kroah-Hartman wrote:
-> > > On Tue, Mar 24, 2020 at 11:36:00AM +0100, Bastien Nocera wrote:
-> > > > Make it possible to disable the LED, as it can be pretty
-> > > > annoying
-> > > > depending on where it's located.
-> > > > 
-> > > > See also https://github.com/lwfinger/rtl8188eu/pull/304 for the
-> > > > out-of-tree version.
-> > > > 
-> > > > Signed-off-by: Bastien Nocera <hadess@hadess.net>
-> > > > ---
-> > > >  drivers/staging/rtl8188eu/core/rtw_led.c      | 6 ++++++
-> > > >  drivers/staging/rtl8188eu/include/drv_types.h | 2 ++
-> > > >  drivers/staging/rtl8188eu/os_dep/os_intfs.c   | 5 +++++
-> > > >  3 files changed, 13 insertions(+)
-> > > > 
-> > > > diff --git a/drivers/staging/rtl8188eu/core/rtw_led.c
-> > > > b/drivers/staging/rtl8188eu/core/rtw_led.c
-> > > > index d1406cc99768..75a859accb7e 100644
-> > > > --- a/drivers/staging/rtl8188eu/core/rtw_led.c
-> > > > +++ b/drivers/staging/rtl8188eu/core/rtw_led.c
-> > > > @@ -467,10 +467,16 @@ void blink_handler(struct LED_871x *pLed)
-> > > >  
-> > > >  void led_control_8188eu(struct adapter *padapter, enum
-> > > > LED_CTL_MODE LedAction)
-> > > >  {
-> > > > +	struct registry_priv *registry_par;
-> > > > +
-> > > >  	if (padapter->bSurpriseRemoved || padapter-
-> > > > >bDriverStopped ||
-> > > >  	    !padapter->hw_init_completed)
-> > > >  		return;
-> > > >  
-> > > > +	registry_par = &padapter->registrypriv;
-> > > > +	if (!registry_par->led_enable)
-> > > > +		return;
-> > > > +
-> > > >  	if ((padapter->pwrctrlpriv.rf_pwrstate != rf_on &&
-> > > >  	     padapter->pwrctrlpriv.rfoff_reason >
-> > > > RF_CHANGE_BY_PS) &&
-> > > >  	    (LedAction == LED_CTL_TX || LedAction == LED_CTL_RX
-> > > > ||
-> > > > diff --git a/drivers/staging/rtl8188eu/include/drv_types.h
-> > > > b/drivers/staging/rtl8188eu/include/drv_types.h
-> > > > index 35c0946bc65d..4ca828141d3f 100644
-> > > > --- a/drivers/staging/rtl8188eu/include/drv_types.h
-> > > > +++ b/drivers/staging/rtl8188eu/include/drv_types.h
-> > > > @@ -67,6 +67,8 @@ struct registry_priv {
-> > > >  	u8	wmm_enable;
-> > > >  	u8	uapsd_enable;
-> > > >  
-> > > > +	u8	led_enable;
-> > > > +
-> > > >  	struct wlan_bssid_ex    dev_network;
-> > > >  
-> > > >  	u8	ht_enable;
-> > > > diff --git a/drivers/staging/rtl8188eu/os_dep/os_intfs.c
-> > > > b/drivers/staging/rtl8188eu/os_dep/os_intfs.c
-> > > > index 8907bf6bb7ff..ba55ae741215 100644
-> > > > --- a/drivers/staging/rtl8188eu/os_dep/os_intfs.c
-> > > > +++ b/drivers/staging/rtl8188eu/os_dep/os_intfs.c
-> > > > @@ -47,6 +47,8 @@ static int rtw_acm_method;/*  0:By SW 1:By
-> > > > HW. */
-> > > >  static int rtw_wmm_enable = 1;/*  default is set to enable the
-> > > > wmm. */
-> > > >  static int rtw_uapsd_enable;
-> > > >  
-> > > > +static int rtw_led_enable = 1;
-> > > > +
-> > > >  static int rtw_ht_enable = 1;
-> > > >  /* 0 :disable, bit(0): enable 2.4g, bit(1): enable 5g */
-> > > >  static int rtw_cbw40_enable = 3;
-> > > > @@ -98,6 +100,7 @@ module_param(rtw_channel, int, 0644);
-> > > >  module_param(rtw_wmm_enable, int, 0644);
-> > > >  module_param(rtw_vrtl_carrier_sense, int, 0644);
-> > > >  module_param(rtw_vcs_type, int, 0644);
-> > > > +module_param(rtw_led_enable, int, 0644);
-> > > 
-> > > Ick, really?  No, no nee module parameters, this is not the
-> > > 1990's.
-> > > 
-> > > This should be done on a per-device basis, using the correct
-> > > apis.
-> > 
-> > What API?
-> 
-> Documentation/leds/index.rst should give you a good start :)
+The iommu mapping for S2 SIDs are taken care by TrustZone.
+For the targets which does not have the support of TrustZone,
+these mappings need to be created in the driver using an
+iommu domain.
 
-Given how much work it'd be, I'll give it a miss and carry on using the
-out-of-tree driver.
+Leaving these SIDs unconfigured will result in a global
+smmu fault. Hence configuring them for Non-TrustZone targets
+is mandatory.
 
-Thanks for the hint.
+Rakesh Pillai (3):
+  dt-bindings: ath10k: Add wifi-firmware subnode for wifi node
+  ath10k: Setup the msa resources before qmi init
+  ath10k: Add support for targets without trustzone
 
+ .../bindings/net/wireless/qcom,ath10k.txt          |  14 ++
+ drivers/net/wireless/ath/ath10k/core.h             |   5 +
+ drivers/net/wireless/ath/ath10k/qmi.c              |  55 +------
+ drivers/net/wireless/ath/ath10k/qmi.h              |   3 -
+ drivers/net/wireless/ath/ath10k/snoc.c             | 170 ++++++++++++++++++++-
+ drivers/net/wireless/ath/ath10k/snoc.h             |   7 +
+ 6 files changed, 200 insertions(+), 54 deletions(-)
+
+-- 
+2.7.4
