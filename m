@@ -2,156 +2,85 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BE028191292
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Mar 2020 15:14:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 59E96191350
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Mar 2020 15:36:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727848AbgCXOO0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 24 Mar 2020 10:14:26 -0400
-Received: from mail26.static.mailgun.info ([104.130.122.26]:37058 "EHLO
-        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727382AbgCXOOZ (ORCPT
+        id S1727742AbgCXOfh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 24 Mar 2020 10:35:37 -0400
+Received: from mail27.static.mailgun.info ([104.130.122.27]:43039 "EHLO
+        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727453AbgCXOfh (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 24 Mar 2020 10:14:25 -0400
+        Tue, 24 Mar 2020 10:35:37 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1585059264; h=Date: Message-Id: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=D0tDkkn7yvngL5blqt4Sx3OwfBCinbjELusDX5Nb7E0=;
- b=ffif3vYm/Qd7PrDuJWKO93gxsGlNxJZroeApJljFOI0ATRX7WGi4O/0fAYvUwiD/o3i0Xz2O
- J9Z05ih9PHoMNsfjb6uSDOzAJAJiOf8c7FYX0nAZELunWFHzPkkv808qpTLll1eLTHwE/5SA
- rNYk+3py1xfAy1Bd7CgDewHCkao=
-X-Mailgun-Sending-Ip: 104.130.122.26
+ s=smtp; t=1585060536; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=m+xTwLN7kXvmWs1klmW3KOH+aRnvxWgl729kkLtBtDM=; b=hd7+pMVuHP/PUw9m37Zyq8O9MlBz78z83EtKSt5TIxhB3p9Mici4JZ4/gfMFqJQWvLeioKBc
+ 5OOnM6dl89gNiy9vlVks8x1C+2ehtmAsKL/cK8p+l6RPS/kPTuuoG0JI7raGUuNRwj8iCz84
+ AQQkc3dtuV7SnlujY+rMucLyNtg=
+X-Mailgun-Sending-Ip: 104.130.122.27
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e7a15ad.7f3a66449b58-smtp-out-n03;
- Tue, 24 Mar 2020 14:14:05 -0000 (UTC)
+ by mxa.mailgun.org with ESMTP id 5e7a1aa5.7f7d13efe030-smtp-out-n02;
+ Tue, 24 Mar 2020 14:35:17 -0000 (UTC)
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 84AE6C433CB; Tue, 24 Mar 2020 14:14:04 +0000 (UTC)
+        id 3F3CBC433D2; Tue, 24 Mar 2020 14:35:17 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
-        MISSING_MID,SPF_NONE,URIBL_BLOCKED autolearn=no autolearn_force=no
-        version=3.4.0
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE,
+        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 928C0C433D2;
-        Tue, 24 Mar 2020 14:14:02 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 928C0C433D2
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id BCF07C433CB;
+        Tue, 24 Mar 2020 14:35:15 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org BCF07C433CB
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 1/3] dt-bindings: ath10k: Add wifi-firmware subnode for
- wifi node
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <1585054044-18667-2-git-send-email-pillair@codeaurora.org>
-References: <1585054044-18667-2-git-send-email-pillair@codeaurora.org>
-To:     Rakesh Pillai <pillair@codeaurora.org>
-Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Rakesh Pillai <pillair@codeaurora.org>
-User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20200324141404.84AE6C433CB@smtp.codeaurora.org>
-Date:   Tue, 24 Mar 2020 14:14:04 +0000 (UTC)
+To:     Yu Wang <yyuwang@codeaurora.org>
+Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] ath10k: correct legacy rate in tx stats
+References: <1574147982-3956-1-git-send-email-yyuwang@codeaurora.org>
+        <0101016e82882548-361b3da4-fd9b-4ba9-95b6-a5d782d4a1c8-000000@us-west-2.amazonses.com>
+Date:   Tue, 24 Mar 2020 16:35:13 +0200
+In-Reply-To: <0101016e82882548-361b3da4-fd9b-4ba9-95b6-a5d782d4a1c8-000000@us-west-2.amazonses.com>
+        (Yu Wang's message of "Tue, 19 Nov 2019 07:19:50 +0000")
+Message-ID: <87lfnp4y8u.fsf@kamboji.qca.qualcomm.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Rakesh Pillai <pillair@codeaurora.org> wrote:
+Yu Wang <yyuwang@codeaurora.org> writes:
 
-> Add a wifi-firmware subnode for the wifi node.
-> This wifi-firmware subnode is needed for the
-> targets which do not support TrustZone.
-> 
-> Signed-off-by: Rakesh Pillai <pillair@codeaurora.org>
+> When working in station mode, after connected to a legacy
+> AP, 11g only, for example, the tx bitrate is incorrect in
+> output of command 'iw wlan0 link'.
+>
+> That's because the legacy tx bitrate value reported by
+> firmware is not well handled:
+> For QCA6174, the value represents rate index, but treated
+> as a real rate;
+> For QCA9888, the value is real rate, with unit 'Mbps', but
+> treated as '100kbps'.
+>
+> To fix this issue:
+> 1. Translate the rate index to real rate for QCA6174;
+> 2. Translate the rate from 'Mbps' to 'kbps' for QCA9888.
+>
+> Tested with:
+> QCA6174 PCIe with firmware WLAN.RM.4.4.1.c3-00031.
+> QCA6174 SDIO with firmware WLAN.RMH.4.4.1-00029.
+> QCA9888 PCIe with firmware 10.4-3.9.0.2-00040.
 
-Fails to build and has warnings. How did you test this?
-
-drivers/net/wireless/ath/ath10k/qmi.c: In function 'ath10k_qmi_msa_mem_info_send_sync_msg':
-drivers/net/wireless/ath/ath10k/qmi.c:160:23: error: 'struct ath10k_qmi' has no member named 'msa_pa'
-  max_mapped_addr = qmi->msa_pa + qmi->msa_mem_size;
-                       ^~
-drivers/net/wireless/ath/ath10k/qmi.c:160:37: error: 'struct ath10k_qmi' has no member named 'msa_mem_size'
-  max_mapped_addr = qmi->msa_pa + qmi->msa_mem_size;
-                                     ^~
-drivers/net/wireless/ath/ath10k/qmi.c:163:41: error: 'struct ath10k_qmi' has no member named 'msa_mem_size'
-   if (resp.mem_region_info[i].size > qmi->msa_mem_size ||
-                                         ^~
-drivers/net/wireless/ath/ath10k/qmi.c:165:48: error: 'struct ath10k_qmi' has no member named 'msa_pa'
-       resp.mem_region_info[i].region_addr < qmi->msa_pa ||
-                                                ^~
-make[5]: *** [drivers/net/wireless/ath/ath10k/qmi.o] Error 1
-make[5]: *** Waiting for unfinished jobs....
-In file included from ./include/linux/byteorder/little_endian.h:5,
-                 from ./arch/x86/include/uapi/asm/byteorder.h:5,
-                 from ./include/asm-generic/bitops/le.h:6,
-                 from ./arch/x86/include/asm/bitops.h:395,
-                 from ./include/linux/bitops.h:29,
-                 from ./include/linux/kernel.h:12,
-                 from ./include/linux/clk.h:13,
-                 from drivers/net/wireless/ath/ath10k/snoc.c:6:
-drivers/net/wireless/ath/ath10k/snoc.c: In function 'ath10k_msa_dump_memory':
-drivers/net/wireless/ath/ath10k/snoc.c:1424:54: error: 'struct ath10k_qmi' has no member named 'msa_va'
-  hdr->start = cpu_to_le32((unsigned long)ar_snoc->qmi->msa_va);
-                                                      ^~
-./include/uapi/linux/byteorder/little_endian.h:33:51: note: in definition of macro '__cpu_to_le32'
- #define __cpu_to_le32(x) ((__force __le32)(__u32)(x))
-                                                   ^
-drivers/net/wireless/ath/ath10k/snoc.c:1424:15: note: in expansion of macro 'cpu_to_le32'
-  hdr->start = cpu_to_le32((unsigned long)ar_snoc->qmi->msa_va);
-               ^~~~~~~~~~~
-drivers/net/wireless/ath/ath10k/snoc.c:1425:40: error: 'struct ath10k_qmi' has no member named 'msa_mem_size'
-  hdr->length = cpu_to_le32(ar_snoc->qmi->msa_mem_size);
-                                        ^~
-./include/uapi/linux/byteorder/little_endian.h:33:51: note: in definition of macro '__cpu_to_le32'
- #define __cpu_to_le32(x) ((__force __le32)(__u32)(x))
-                                                   ^
-drivers/net/wireless/ath/ath10k/snoc.c:1425:16: note: in expansion of macro 'cpu_to_le32'
-  hdr->length = cpu_to_le32(ar_snoc->qmi->msa_mem_size);
-                ^~~~~~~~~~~
-drivers/net/wireless/ath/ath10k/snoc.c:1427:40: error: 'struct ath10k_qmi' has no member named 'msa_mem_size'
-  if (current_region->len < ar_snoc->qmi->msa_mem_size) {
-                                        ^~
-drivers/net/wireless/ath/ath10k/snoc.c:1428:27: error: 'struct ath10k_qmi' has no member named 'msa_va'
-   memcpy(buf, ar_snoc->qmi->msa_va, current_region->len);
-                           ^~
-drivers/net/wireless/ath/ath10k/snoc.c:1430:41: error: 'struct ath10k_qmi' has no member named 'msa_mem_size'
-        current_region->len, ar_snoc->qmi->msa_mem_size);
-                                         ^~
-drivers/net/wireless/ath/ath10k/snoc.c:1432:27: error: 'struct ath10k_qmi' has no member named 'msa_va'
-   memcpy(buf, ar_snoc->qmi->msa_va, ar_snoc->qmi->msa_mem_size);
-                           ^~
-drivers/net/wireless/ath/ath10k/snoc.c:1432:49: error: 'struct ath10k_qmi' has no member named 'msa_mem_size'
-   memcpy(buf, ar_snoc->qmi->msa_va, ar_snoc->qmi->msa_mem_size);
-                                                 ^~
-drivers/net/wireless/ath/ath10k/snoc.c: In function 'ath10k_fw_deinit':
-drivers/net/wireless/ath/ath10k/snoc.c:1593:14: error: assignment of read-only variable 'mapped_size'
-  mapped_size = ar_snoc->fw.mapped_mem_size;
-              ^
-drivers/net/wireless/ath/ath10k/snoc.c:1599:46: warning: format '%d' expects argument of type 'int', but argument 3 has type 'size_t' {aka 'long unsigned int'} [-Wformat=]
-   ath10k_err(ar, "failed to unmap firmware: %d\n",
-                                             ~^
-                                             %ld
-       unmapped_size);
-       ~~~~~~~~~~~~~                           
-make[5]: *** [drivers/net/wireless/ath/ath10k/snoc.o] Error 1
-make[4]: *** [drivers/net/wireless/ath/ath10k] Error 2
-make[3]: *** [drivers/net/wireless/ath] Error 2
-make[2]: *** [drivers/net/wireless] Error 2
-make[1]: *** [drivers/net] Error 2
-make: *** [drivers] Error 2
-
-3 patches set to Changes Requested.
-
-11455345 [1/3] dt-bindings: ath10k: Add wifi-firmware subnode for wifi node
-11455351 [2/3] ath10k: Setup the msa resources before qmi init
-11455353 [3/3] ath10k: Add support for targets without trustzone
+What about QCA988X and WCN3990, how do they behave? Does this patch
+break those?
 
 -- 
-https://patchwork.kernel.org/patch/11455345/
-
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
