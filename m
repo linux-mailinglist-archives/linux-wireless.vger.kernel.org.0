@@ -2,68 +2,59 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CE93A191529
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Mar 2020 16:43:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7163A19162E
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Mar 2020 17:22:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728154AbgCXPmX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 24 Mar 2020 11:42:23 -0400
-Received: from mail.kernel.org ([198.145.29.99]:37054 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727916AbgCXPmW (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 24 Mar 2020 11:42:22 -0400
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        id S1727774AbgCXQVz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 24 Mar 2020 12:21:55 -0400
+Received: from smail.rz.tu-ilmenau.de ([141.24.186.67]:44237 "EHLO
+        smail.rz.tu-ilmenau.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727755AbgCXQVy (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 24 Mar 2020 12:21:54 -0400
+Received: from sauron.fritz.box (unknown [87.147.56.179])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id AE5A820714;
-        Tue, 24 Mar 2020 15:42:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1585064542;
-        bh=iY0iQy8M8M9PlPZnJFM5YPoDv72kOb7VIAOeqRPiEr4=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=IlLuGC74jPz7CHp6TqNiqQThNKA/sJDDbmlEjIAvKxA6pA5tOSsRUyZ+zAOsV06HO
-         TRVl1xNKlH6/YSc6lMm7YGYmF+IR4zkyXm3zSS4QLK8YAR9aKJ4O+fMbYQQIUglCtk
-         HymrUB7OUvyj7O9y/47EZr41SeYXXRGs3mYuK1+0=
-Date:   Tue, 24 Mar 2020 16:42:19 +0100
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Bastien Nocera <hadess@hadess.net>
-Cc:     devel@driverdev.osuosl.org, linux-wireless@vger.kernel.org,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Larry Finger <Larry.Finger@lwfinger.net>
-Subject: Re: [PATCH resend 3] staging: rtl8188eu: Add rtw_led_enable module
- parameter
-Message-ID: <20200324154219.GB2513347@kroah.com>
-References: <97d2ef68a6bcb7d1ece978eef6315e95732ca39d.camel@hadess.net>
- <20200324152040.GA2511658@kroah.com>
- <73723ab7d2c64c7d5ce7e2ae05b857c965824168.camel@hadess.net>
+        by smail.rz.tu-ilmenau.de (Postfix) with ESMTPSA id 9F465580068;
+        Tue, 24 Mar 2020 17:21:52 +0100 (CET)
+From:   Markus Theil <markus.theil@tu-ilmenau.de>
+To:     johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org,
+        Markus Theil <markus.theil@tu-ilmenau.de>
+Subject: [PATCH] iw: event: also handle reg change on wiphy
+Date:   Tue, 24 Mar 2020 17:21:49 +0100
+Message-Id: <20200324162149.3178-1-markus.theil@tu-ilmenau.de>
+X-Mailer: git-send-email 2.26.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <73723ab7d2c64c7d5ce7e2ae05b857c965824168.camel@hadess.net>
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Mar 24, 2020 at 04:21:47PM +0100, Bastien Nocera wrote:
-> On Tue, 2020-03-24 at 16:20 +0100, Greg Kroah-Hartman wrote:
-> > On Tue, Mar 24, 2020 at 11:36:00AM +0100, Bastien Nocera wrote:
-> > > Make it possible to disable the LED, as it can be pretty annoying
-> > > depending on where it's located.
-> > > 
-> > > See also https://github.com/lwfinger/rtl8188eu/pull/304 for the
-> > > out-of-tree version.
-> > > 
-> > > Signed-off-by: Bastien Nocera <hadess@hadess.net>
-> > > ---
-> > >  drivers/staging/rtl8188eu/core/rtw_led.c      | 6 ++++++
-> > >  drivers/staging/rtl8188eu/include/drv_types.h | 2 ++
-> > >  drivers/staging/rtl8188eu/os_dep/os_intfs.c   | 5 +++++
-> > >  3 files changed, 13 insertions(+)
-> > 
-> > Why was this resent?  Didn't I just reject this?
-> 
-> It wasn't resent, it's the same mail you already answered.
+Signed-off-by: Markus Theil <markus.theil@tu-ilmenau.de>
+---
+ event.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-Ah, slow mailing lists, sorry :)
+diff --git a/event.c b/event.c
+index 51aff97..b132b17 100644
+--- a/event.c
++++ b/event.c
+@@ -931,8 +931,12 @@ static int print_event(struct nl_msg *msg, void *arg)
+ 	case NL80211_CMD_SCHED_SCAN_RESULTS:
+ 		printf("got scheduled scan results\n");
+ 		break;
++	case NL80211_CMD_WIPHY_REG_CHANGE:
+ 	case NL80211_CMD_REG_CHANGE:
+-		printf("regulatory domain change: ");
++		if(gnlh->cmd == NL80211_CMD_WIPHY_REG_CHANGE)
++			printf("regulatory domain change (phy): ");
++		else
++			printf("regulatory domain change: ");
+ 
+ 		reg_type = nla_get_u8(tb[NL80211_ATTR_REG_TYPE]);
+ 
+-- 
+2.26.0
 
-greg k-h
