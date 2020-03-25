@@ -2,248 +2,300 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D1883192685
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Mar 2020 12:02:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8436D192842
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Mar 2020 13:29:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727441AbgCYLCR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 25 Mar 2020 07:02:17 -0400
-Received: from mail26.static.mailgun.info ([104.130.122.26]:45807 "EHLO
-        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726139AbgCYLCQ (ORCPT
+        id S1727513AbgCYM2b (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 25 Mar 2020 08:28:31 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:47877 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727346AbgCYM2b (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 25 Mar 2020 07:02:16 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1585134136; h=References: In-Reply-To: Message-Id: Date:
- Subject: Cc: To: From: Sender;
- bh=YT77Y3PiLLkhZFIv48nITvZQYlTFm9I4Mzg/D8qc6B0=; b=MhnisnXrQeB4hZuinIr5Z6G0jmjhNs85M+oWJQTBAVSrq79sgeNA3RERdcHwaJZWbchCy7m1
- 5lrUzx9QpIx3Q7CuHVqlvu3GUidnwq0LvGVpZ4sW0Ia+fcAk4hXiLA4hYbSrbT4YrZV2eIzr
- msQQmdWIVuvAULeYVivtaKMhRp0=
-X-Mailgun-Sending-Ip: 104.130.122.26
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e7b3a26.7f7fd81ded18-smtp-out-n02;
- Wed, 25 Mar 2020 11:01:58 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id A08E1C433F2; Wed, 25 Mar 2020 11:01:57 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from pillair-linux.qualcomm.com (blr-c-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.19.19])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: pillair)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 19536C433D2;
-        Wed, 25 Mar 2020 11:01:54 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 19536C433D2
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=pillair@codeaurora.org
-From:   Rakesh Pillai <pillair@codeaurora.org>
-To:     ath10k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Rakesh Pillai <pillair@codeaurora.org>
-Subject: [PATCH v2 3/3] ath10k: Add support for targets without trustzone
-Date:   Wed, 25 Mar 2020 16:31:40 +0530
-Message-Id: <1585134100-5944-4-git-send-email-pillair@codeaurora.org>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1585134100-5944-1-git-send-email-pillair@codeaurora.org>
-References: <1585134100-5944-1-git-send-email-pillair@codeaurora.org>
+        Wed, 25 Mar 2020 08:28:31 -0400
+Received: from p5de0bf0b.dip0.t-ipconnect.de ([93.224.191.11] helo=nanos.tec.linutronix.de)
+        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
+        (Exim 4.80)
+        (envelope-from <tglx@linutronix.de>)
+        id 1jH58U-0001LV-Po; Wed, 25 Mar 2020 13:27:55 +0100
+Received: by nanos.tec.linutronix.de (Postfix, from userid 1000)
+        id 32D09100C51; Wed, 25 Mar 2020 13:27:49 +0100 (CET)
+From:   Thomas Gleixner <tglx@linutronix.de>
+To:     paulmck@kernel.org
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Ingo Molnar <mingo@kernel.org>,
+        Sebastian Siewior <bigeasy@linutronix.de>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Joel Fernandes <joel@joelfernandes.org>,
+        Oleg Nesterov <oleg@redhat.com>,
+        Davidlohr Bueso <dave@stgolabs.net>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Logan Gunthorpe <logang@deltatee.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Kurt Schwemmer <kurt.schwemmer@microsemi.com>,
+        linux-pci@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Felipe Balbi <balbi@kernel.org>, linux-usb@vger.kernel.org,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        platform-driver-x86@vger.kernel.org,
+        Zhang Rui <rui.zhang@intel.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        linux-pm@vger.kernel.org, Len Brown <lenb@kernel.org>,
+        linux-acpi@vger.kernel.org, kbuild test robot <lkp@intel.com>,
+        Nick Hu <nickhu@andestech.com>,
+        Greentime Hu <green.hu@gmail.com>,
+        Vincent Chen <deanbo422@gmail.com>,
+        Guo Ren <guoren@kernel.org>, linux-csky@vger.kernel.org,
+        Brian Cain <bcain@codeaurora.org>,
+        linux-hexagon@vger.kernel.org, Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>, linux-ia64@vger.kernel.org,
+        Michal Simek <monstr@monstr.eu>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Geoff Levand <geoff@infradead.org>,
+        linuxppc-dev@lists.ozlabs.org, Davidlohr Bueso <dbueso@suse.de>
+Subject: Documentation/locking/locktypes: Further clarifications and wordsmithing
+In-Reply-To: <20200325002811.GO19865@paulmck-ThinkPad-P72>
+References: <20200323025501.GE3199@paulmck-ThinkPad-P72> <87r1xhz6qp.fsf@nanos.tec.linutronix.de> <20200325002811.GO19865@paulmck-ThinkPad-P72>
+Date:   Wed, 25 Mar 2020 13:27:49 +0100
+Message-ID: <87wo78y5yy.fsf@nanos.tec.linutronix.de>
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Linutronix-Spam-Score: -1.0
+X-Linutronix-Spam-Level: -
+X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Add the support to attach and map iommu
-domain for targets which do not have the
-support of TrustZone.
+The documentation of rw_semaphores is wrong as it claims that the non-owner
+reader release is not supported by RT. That's just history biased memory
+distortion.
 
-Tested HW: WCN3990
-Tested FW: WLAN.HL.3.1-01040-QCAHLSWMTPLZ-1
+Split the 'Owner semantics' section up and add separate sections for
+semaphore and rw_semaphore to reflect reality.
 
-Signed-off-by: Rakesh Pillai <pillair@codeaurora.org>
+Aside of that the following updates are done:
+
+ - Add pseudo code to document the spinlock state preserving mechanism on
+   PREEMPT_RT
+
+ - Wordsmith the bitspinlock and lock nesting sections
+
+Co-developed-by: Paul McKenney <paulmck@kernel.org>
+Signed-off-by: Paul McKenney <paulmck@kernel.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 ---
- drivers/net/wireless/ath/ath10k/snoc.c | 118 ++++++++++++++++++++++++++++++++-
- drivers/net/wireless/ath/ath10k/snoc.h |   7 ++
- 2 files changed, 124 insertions(+), 1 deletion(-)
+ Documentation/locking/locktypes.rst |  150 +++++++++++++++++++++++-------------
+ 1 file changed, 99 insertions(+), 51 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath10k/snoc.c b/drivers/net/wireless/ath/ath10k/snoc.c
-index 3633ea5..7a7e79b 100644
---- a/drivers/net/wireless/ath/ath10k/snoc.c
-+++ b/drivers/net/wireless/ath/ath10k/snoc.c
-@@ -12,6 +12,7 @@
- #include <linux/property.h>
- #include <linux/regulator/consumer.h>
- #include <linux/of_address.h>
-+#include <linux/iommu.h>
+--- a/Documentation/locking/locktypes.rst
++++ b/Documentation/locking/locktypes.rst
+@@ -67,6 +67,17 @@ Spinning locks implicitly disable preemp
+  _irqsave/restore()   Save and disable / restore interrupt disabled state
+  ===================  ====================================================
  
- #include "ce.h"
- #include "coredump.h"
-@@ -1499,6 +1500,111 @@ static int ath10k_setup_msa_resources(struct ath10k *ar, u32 msa_size)
- 	return 0;
- }
++Owner semantics
++===============
++
++The aforementioned lock types except semaphores have strict owner
++semantics:
++
++  The context (task) that acquired the lock must release it.
++
++rw_semaphores have a special interface which allows non-owner release for
++readers.
++
  
-+static int ath10k_fw_init(struct ath10k *ar)
-+{
-+	struct ath10k_snoc *ar_snoc = ath10k_snoc_priv(ar);
-+	struct device *host_dev = &ar_snoc->dev->dev;
-+	struct platform_device_info info;
-+	struct iommu_domain *iommu_dom;
-+	struct platform_device *pdev;
-+	struct device_node *node;
-+	int ret;
-+
-+	node = of_get_child_by_name(host_dev->of_node, "wifi-firmware");
-+	if (!node) {
-+		ar_snoc->use_tz = true;
-+		return 0;
-+	}
-+
-+	memset(&info, 0, sizeof(info));
-+	info.fwnode = &node->fwnode;
-+	info.parent = host_dev;
-+	info.name = node->name;
-+	info.dma_mask = DMA_BIT_MASK(32);
-+
-+	pdev = platform_device_register_full(&info);
-+	if (IS_ERR(pdev)) {
-+		of_node_put(node);
-+		return PTR_ERR(pdev);
-+	}
-+
-+	pdev->dev.of_node = node;
-+
-+	ret = of_dma_configure(&pdev->dev, node, true);
-+	if (ret) {
-+		ath10k_err(ar, "dma configure fail: %d\n", ret);
-+		goto err_unregister;
-+	}
-+
-+	ar_snoc->fw.dev = &pdev->dev;
-+
-+	iommu_dom = iommu_domain_alloc(&platform_bus_type);
-+	if (!iommu_dom) {
-+		ath10k_err(ar, "failed to allocate iommu domain\n");
-+		ret = -ENOMEM;
-+		goto err_unregister;
-+	}
-+
-+	ret = iommu_attach_device(iommu_dom, ar_snoc->fw.dev);
-+	if (ret) {
-+		ath10k_err(ar, "could not attach device: %d\n", ret);
-+		goto err_iommu_free;
-+	}
-+
-+	ar_snoc->fw.iommu_domain = iommu_dom;
-+	ar_snoc->fw.fw_start_addr = ar->msa.paddr;
-+
-+	ret = iommu_map(iommu_dom, ar_snoc->fw.fw_start_addr,
-+			ar->msa.paddr, ar->msa.mem_size,
-+			IOMMU_READ | IOMMU_WRITE);
-+	if (ret) {
-+		ath10k_err(ar, "failed to map firmware region: %d\n", ret);
-+		goto err_iommu_detach;
-+	}
-+
-+	of_node_put(node);
-+
-+	return 0;
-+
-+err_iommu_detach:
-+	iommu_detach_device(iommu_dom, ar_snoc->fw.dev);
-+
-+err_iommu_free:
-+	iommu_domain_free(iommu_dom);
-+
-+err_unregister:
-+	platform_device_unregister(pdev);
-+	of_node_put(node);
-+
-+	return ret;
-+}
-+
-+static int ath10k_fw_deinit(struct ath10k *ar)
-+{
-+	struct ath10k_snoc *ar_snoc = ath10k_snoc_priv(ar);
-+	const size_t mapped_size = ar_snoc->fw.mapped_mem_size;
-+	struct iommu_domain *iommu;
-+	size_t unmapped_size;
-+
-+	if (ar_snoc->use_tz)
-+		return 0;
-+
-+	iommu = ar_snoc->fw.iommu_domain;
-+
-+	unmapped_size = iommu_unmap(iommu, ar_snoc->fw.fw_start_addr,
-+				    mapped_size);
-+	if (unmapped_size != mapped_size)
-+		ath10k_err(ar, "failed to unmap firmware: %zu\n",
-+			   unmapped_size);
-+
-+	iommu_detach_device(iommu, ar_snoc->fw.dev);
-+	iommu_domain_free(iommu);
-+
-+	platform_device_unregister(to_platform_device(ar_snoc->fw.dev));
-+
-+	return 0;
-+}
-+
- static const struct of_device_id ath10k_snoc_dt_match[] = {
- 	{ .compatible = "qcom,wcn3990-wifi",
- 	 .data = &drv_priv,
-@@ -1607,16 +1713,25 @@ static int ath10k_snoc_probe(struct platform_device *pdev)
- 		goto err_power_off;
- 	}
+ rtmutex
+ =======
+@@ -83,6 +94,51 @@ interrupt handlers and soft interrupts.
+ and rwlock_t to be implemented via RT-mutexes.
  
-+	ret = ath10k_fw_init(ar);
-+	if (ret) {
-+		ath10k_err(ar, "failed to initialize firmware: %d\n", ret);
-+		goto err_power_off;
-+	}
+ 
++semaphore
++=========
 +
- 	ret = ath10k_qmi_init(ar, msa_size);
- 	if (ret) {
- 		ath10k_warn(ar, "failed to register wlfw qmi client: %d\n", ret);
--		goto err_power_off;
-+		goto err_fw_deinit;
- 	}
- 
- 	ath10k_dbg(ar, ATH10K_DBG_SNOC, "snoc probe\n");
- 
- 	return 0;
- 
-+err_fw_deinit:
-+	ath10k_fw_deinit(ar);
++semaphore is a counting semaphore implementation.
 +
- err_power_off:
- 	ath10k_hw_power_off(ar);
++Semaphores are often used for both serialization and waiting, but new use
++cases should instead use separate serialization and wait mechanisms, such
++as mutexes and completions.
++
++semaphores and PREEMPT_RT
++----------------------------
++
++PREEMPT_RT does not change the semaphore implementation because counting
++semaphores have no concept of owners, thus preventing PREEMPT_RT from
++providing priority inheritance for semaphores.  After all, an unknown
++owner cannot be boosted. As a consequence, blocking on semaphores can
++result in priority inversion.
++
++
++rw_semaphore
++============
++
++rw_semaphore is a multiple readers and single writer lock mechanism.
++
++On non-PREEMPT_RT kernels the implementation is fair, thus preventing
++writer starvation.
++
++rw_semaphore complies by default with the strict owner semantics, but there
++exist special-purpose interfaces that allow non-owner release for readers.
++These work independent of the kernel configuration.
++
++rw_semaphore and PREEMPT_RT
++---------------------------
++
++PREEMPT_RT kernels map rw_semaphore to a separate rt_mutex-based
++implementation, thus changing the fairness:
++
++ Because an rw_semaphore writer cannot grant its priority to multiple
++ readers, a preempted low-priority reader will continue holding its lock,
++ thus starving even high-priority writers.  In contrast, because readers
++ can grant their priority to a writer, a preempted low-priority writer will
++ have its priority boosted until it releases the lock, thus preventing that
++ writer from starving readers.
++
++
+ raw_spinlock_t and spinlock_t
+ =============================
  
-@@ -1648,6 +1763,7 @@ static int ath10k_snoc_remove(struct platform_device *pdev)
+@@ -102,7 +158,7 @@ critical section is tiny, thus avoiding
+ spinlock_t
+ ----------
  
- 	ath10k_core_unregister(ar);
- 	ath10k_hw_power_off(ar);
-+	ath10k_fw_deinit(ar);
- 	ath10k_snoc_free_irq(ar);
- 	ath10k_snoc_release_resource(ar);
- 	ath10k_qmi_deinit(ar);
-diff --git a/drivers/net/wireless/ath/ath10k/snoc.h b/drivers/net/wireless/ath/ath10k/snoc.h
-index c05df45..18e19fb 100644
---- a/drivers/net/wireless/ath/ath10k/snoc.h
-+++ b/drivers/net/wireless/ath/ath10k/snoc.h
-@@ -55,6 +55,13 @@ struct regulator_bulk_data;
- struct ath10k_snoc {
- 	struct platform_device *dev;
- 	struct ath10k *ar;
-+	unsigned int use_tz;
-+	struct video_firmware {
-+		struct device *dev;
-+		dma_addr_t fw_start_addr;
-+		struct iommu_domain *iommu_domain;
-+		size_t mapped_mem_size;
-+	} fw;
- 	void __iomem *mem;
- 	dma_addr_t mem_pa;
- 	struct ath10k_snoc_target_info target_info;
--- 
-2.7.4
+-The semantics of spinlock_t change with the state of CONFIG_PREEMPT_RT.
++The semantics of spinlock_t change with the state of PREEMPT_RT.
+ 
+ On a non PREEMPT_RT enabled kernel spinlock_t is mapped to raw_spinlock_t
+ and has exactly the same semantics.
+@@ -140,7 +196,16 @@ On a PREEMPT_RT enabled kernel spinlock_
+    kernels leave task state untouched.  However, PREEMPT_RT must change
+    task state if the task blocks during acquisition.  Therefore, it saves
+    the current task state before blocking and the corresponding lock wakeup
+-   restores it.
++   restores it, as shown below::
++
++    task->state = TASK_INTERRUPTIBLE
++     lock()
++       block()
++         task->saved_state = task->state
++	 task->state = TASK_UNINTERRUPTIBLE
++	 schedule()
++					lock wakeup
++					  task->state = task->saved_state
+ 
+    Other types of wakeups would normally unconditionally set the task state
+    to RUNNING, but that does not work here because the task must remain
+@@ -148,7 +213,22 @@ On a PREEMPT_RT enabled kernel spinlock_
+    wakeup attempts to awaken a task blocked waiting for a spinlock, it
+    instead sets the saved state to RUNNING.  Then, when the lock
+    acquisition completes, the lock wakeup sets the task state to the saved
+-   state, in this case setting it to RUNNING.
++   state, in this case setting it to RUNNING::
++
++    task->state = TASK_INTERRUPTIBLE
++     lock()
++       block()
++         task->saved_state = task->state
++	 task->state = TASK_UNINTERRUPTIBLE
++	 schedule()
++					non lock wakeup
++					  task->saved_state = TASK_RUNNING
++
++					lock wakeup
++					  task->state = task->saved_state
++
++   This ensures that the real wakeup cannot be lost.
++
+ 
+ rwlock_t
+ ========
+@@ -228,17 +308,16 @@ while holding normal non-raw spinlocks b
+ bit spinlocks
+ -------------
+ 
+-Bit spinlocks are problematic for PREEMPT_RT as they cannot be easily
+-substituted by an RT-mutex based implementation for obvious reasons.
+-
+-The semantics of bit spinlocks are preserved on PREEMPT_RT kernels and the
+-caveats vs. raw_spinlock_t apply.
+-
+-Some bit spinlocks are substituted by regular spinlock_t for PREEMPT_RT but
+-this requires conditional (#ifdef'ed) code changes at the usage site while
+-the spinlock_t substitution is simply done by the compiler and the
+-conditionals are restricted to header files and core implementation of the
+-locking primitives and the usage sites do not require any changes.
++PREEMPT_RT cannot substitute bit spinlocks because a single bit is too
++small to accommodate an RT-mutex.  Therefore, the semantics of bit
++spinlocks are preserved on PREEMPT_RT kernels, so that the raw_spinlock_t
++caveats also apply to bit spinlocks.
++
++Some bit spinlocks are replaced with regular spinlock_t for PREEMPT_RT
++using conditional (#ifdef'ed) code changes at the usage site.  In contrast,
++usage-site changes are not needed for the spinlock_t substitution.
++Instead, conditionals in header files and the core locking implemementation
++enable the compiler to do the substitution transparently.
+ 
+ 
+ Lock type nesting rules
+@@ -254,46 +333,15 @@ Lock type nesting rules
+ 
+   - Spinning lock types can nest inside sleeping lock types.
+ 
+-These rules apply in general independent of CONFIG_PREEMPT_RT.
++These constraints apply both in PREEMPT_RT and otherwise.
+ 
+-As PREEMPT_RT changes the lock category of spinlock_t and rwlock_t from
+-spinning to sleeping this has obviously restrictions how they can nest with
+-raw_spinlock_t.
+-
+-This results in the following nest ordering:
++The fact that PREEMPT_RT changes the lock category of spinlock_t and
++rwlock_t from spinning to sleeping means that they cannot be acquired while
++holding a raw spinlock.  This results in the following nesting ordering:
+ 
+   1) Sleeping locks
+   2) spinlock_t and rwlock_t
+   3) raw_spinlock_t and bit spinlocks
+ 
+-Lockdep is aware of these constraints to ensure that they are respected.
+-
+-
+-Owner semantics
+-===============
+-
+-Most lock types in the Linux kernel have strict owner semantics, i.e. the
+-context (task) which acquires a lock has to release it.
+-
+-There are two exceptions:
+-
+-  - semaphores
+-  - rwsems
+-
+-semaphores have no owner semantics for historical reason, and as such
+-trylock and release operations can be called from any context. They are
+-often used for both serialization and waiting purposes. That's generally
+-discouraged and should be replaced by separate serialization and wait
+-mechanisms, such as mutexes and completions.
+-
+-rwsems have grown interfaces which allow non owner release for special
+-purposes. This usage is problematic on PREEMPT_RT because PREEMPT_RT
+-substitutes all locking primitives except semaphores with RT-mutex based
+-implementations to provide priority inheritance for all lock types except
+-the truly spinning ones. Priority inheritance on ownerless locks is
+-obviously impossible.
+-
+-For now the rwsem non-owner release excludes code which utilizes it from
+-being used on PREEMPT_RT enabled kernels. In same cases this can be
+-mitigated by disabling portions of the code, in other cases the complete
+-functionality has to be disabled until a workable solution has been found.
++Lockdep will complain if these constraints are violated, both in
++PREEMPT_RT and otherwise.
