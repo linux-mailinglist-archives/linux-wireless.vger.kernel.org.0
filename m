@@ -2,136 +2,114 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 74E9419202C
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Mar 2020 05:30:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F33C19205D
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Mar 2020 06:16:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725832AbgCYEaT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 25 Mar 2020 00:30:19 -0400
-Received: from mail-bn8nam12on2132.outbound.protection.outlook.com ([40.107.237.132]:10304
-        "EHLO NAM12-BN8-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725781AbgCYEaT (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 25 Mar 2020 00:30:19 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=HyuexeV4Iaxmq4fYSmf/jC8ppHQF2PYcymY0FY8kFbV6rBzhlw/lEaTK1pnxbKQwCGJCn1dJgxkmp+EZs6IxmvkbFPemeHZFbTQg7atNRgI4392Z386hEC/B+AzbOutKKBnCc4gQgf0Vn5cdurKBcKIYj+L5BnUm63DT+yo/wFBbdw8Oj2FiyHfW3gPTxkPfa6gqboUkOcMN0FSmUEKf1WIXaLgMFpFbc7mrq8KPEPIk1yoYBsIbZALO4QWMw7VTtlUU90cS3apX4Bybi3Dapslhca+XI39pUz7pQDUGqchyzNorxakDbwYlhu9qXyF4ZA5/lsnKg5SX+Bw1r82K+Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=fy+Eu0aFWdXJGP1OBpsHptVSxSQS3lCjRJoMMBs2pt0=;
- b=T8lFxUEOxFzROl3zhzJU+Dok4lCixPKJSrSLbGY/WjKYdROl1bxSImUnwTLafebW07NMkOzkpk/8gmdjfaD2EZkaWGLvOjSuwOh2UIV8+PMSRCUR9Es2u+sv9z3bKvlnoWIJ+pGkkplH8rRr4fJJeTx+bGBn+l+8K+xeMaVJeFzlO3PBWZRtb/ZFojgNJsRodHOaQdA/qsnPTcCzXmghsUMQoyEcV1t9AWkkKvsn+xq+X1uzT6zHuKQw1PpN4TYy8KItttuXpLlhgav345H9R7e7GAA8lAp61NNsYPX1p23FCDPIMjtl6Al1k7RPgEUhVsL763LGGNZ0E5gEOWtDFg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=cypress.com; dmarc=pass action=none header.from=cypress.com;
- dkim=pass header.d=cypress.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cypress.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=fy+Eu0aFWdXJGP1OBpsHptVSxSQS3lCjRJoMMBs2pt0=;
- b=OiOEAa3/mz0sVQBppjxTfH52mzKGkeAONA28WfcvtPZXsrImpNdKhFlgTXPeoS+yRmLLDcwdDndjZfKvEToXIntZORZ6Z4w8XQVOe7G78AZSHsZMtIsi4fg6+WnhejWw+xBsWD97pCUCF37XLy4VJpjA7K65bw5We/gwd7x3vgU=
-Authentication-Results: spf=none (sender IP is )
- smtp.mailfrom=Wright.Feng@cypress.com; 
-Received: from DM6PR06MB4748.namprd06.prod.outlook.com (2603:10b6:5:fd::18) by
- DM6PR06MB5644.namprd06.prod.outlook.com (2603:10b6:5:11c::32) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2856.18; Wed, 25 Mar 2020 04:30:16 +0000
-Received: from DM6PR06MB4748.namprd06.prod.outlook.com
- ([fe80::299a:b6f7:1338:e451]) by DM6PR06MB4748.namprd06.prod.outlook.com
- ([fe80::299a:b6f7:1338:e451%7]) with mapi id 15.20.2856.018; Wed, 25 Mar 2020
- 04:30:16 +0000
-Subject: Re: [PATCH 3/3] brcmfmac: make setting SDIO workqueue WQ_HIGHPRI a
- module parameter
-To:     Tejun Heo <tj@kernel.org>
-Cc:     Arend Van Spriel <arend.vanspriel@broadcom.com>,
-        franky.lin@broadcom.com, hante.meuleman@broadcom.com,
-        kvalo@codeaurora.org, chi-hsien.lin@cypress.com,
-        linux-wireless@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com
-References: <1584604406-15452-1-git-send-email-wright.feng@cypress.com>
- <1584604406-15452-4-git-send-email-wright.feng@cypress.com>
- <40e33702-d37f-085d-a5a7-7f09ae9e2629@broadcom.com>
- <241fd81b-a252-ed86-b93e-6796cf1bce23@cypress.com>
- <20200324182358.GD162390@mtj.duckdns.org>
-From:   Wright Feng <wright.feng@cypress.com>
-Message-ID: <02b42d9f-7ba3-bb7e-36a6-5e141d37d75d@cypress.com>
-Date:   Wed, 25 Mar 2020 12:29:44 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
-In-Reply-To: <20200324182358.GD162390@mtj.duckdns.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: TY2PR04CA0012.apcprd04.prod.outlook.com
- (2603:1096:404:f6::24) To DM6PR06MB4748.namprd06.prod.outlook.com
- (2603:10b6:5:fd::18)
+        id S1726074AbgCYFQo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 25 Mar 2020 01:16:44 -0400
+Received: from mail-lj1-f195.google.com ([209.85.208.195]:46577 "EHLO
+        mail-lj1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725832AbgCYFQn (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 25 Mar 2020 01:16:43 -0400
+Received: by mail-lj1-f195.google.com with SMTP id v16so1044512ljk.13
+        for <linux-wireless@vger.kernel.org>; Tue, 24 Mar 2020 22:16:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=dOtnnGLP8BipaAze8V87q8XeZApQmF75SeBJ0qM73Z0=;
+        b=QuhbA6nPAl+qc9oOk4qMaIKsDY4x8GN1kQ++ipsopE5YvFOXAzk+4xsxsHAiJc4l9X
+         eTgeIdGIyFtEp2ChzoKHN5Tm431OJTMIWUDvAwCDsbafYqLgfMlaJKrJah4xqn75OrDA
+         Cvve/E5+oNOmCG0nPuRAWgopD5Z5yx+AieGVY=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=dOtnnGLP8BipaAze8V87q8XeZApQmF75SeBJ0qM73Z0=;
+        b=YprjNhPCRcscsEbzyNYUi21MB+KgxuqQG9iIySy1bcI5vjGfxLSOccfAuNjqQ3wG8v
+         5W9Ud6L+WvFf305xrv3/PLE9QfstbfxkT6+OFYGqLhdHQIFWSIGcWJltW/gXP1LzOg4p
+         7c0XNrFc0OAchbYTqZnIJ3/NL9ka3moUPSchu24x4y1MjpPtsTEovM/utB++7r8js9dA
+         a9ASR9ZHx6pSEVPcaoIYQGneJKTLRAiZHnCuB+m7VY0AMkN9FLONE1lwH0o5XMFR4mKC
+         iJLW1QxxreI7yAoH49Z3ebbuHmOofwvBc1Op4EXj03bpaUi2I7qP5qMzi1mhbeXUn4NE
+         cp5Q==
+X-Gm-Message-State: AGi0PuYTMbJtBvmWcibiv4vUTfj5C/to/tMpCZqEAzPYrzQ1ET6abzcR
+        APl46nBXgRP13qh+T6OJV+9uCY4qopw=
+X-Google-Smtp-Source: ADFU+vuENETqb7D25LiC/JRZ+F7/bwskJsUvWd9CyC+BkTZDv7rUImtImxtos3YL4EBSaBw3/O9qlg==
+X-Received: by 2002:a2e:7807:: with SMTP id t7mr376337ljc.203.1585113400482;
+        Tue, 24 Mar 2020 22:16:40 -0700 (PDT)
+Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com. [209.85.167.48])
+        by smtp.gmail.com with ESMTPSA id q10sm1357262lfa.29.2020.03.24.22.16.39
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 24 Mar 2020 22:16:39 -0700 (PDT)
+Received: by mail-lf1-f48.google.com with SMTP id j11so719833lfg.4
+        for <linux-wireless@vger.kernel.org>; Tue, 24 Mar 2020 22:16:39 -0700 (PDT)
+X-Received: by 2002:a05:6512:203c:: with SMTP id s28mr997374lfs.49.1585113399024;
+ Tue, 24 Mar 2020 22:16:39 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from [192.168.0.17] (123.194.189.67) by TY2PR04CA0012.apcprd04.prod.outlook.com (2603:1096:404:f6::24) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2835.17 via Frontend Transport; Wed, 25 Mar 2020 04:30:13 +0000
-X-Originating-IP: [123.194.189.67]
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-HT: Tenant
-X-MS-Office365-Filtering-Correlation-Id: 95ab8a08-ecc7-49ca-06a6-08d7d075378d
-X-MS-TrafficTypeDiagnostic: DM6PR06MB5644:|DM6PR06MB5644:
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <DM6PR06MB56440B9F5B3D6F26AB9CD4CCFBCE0@DM6PR06MB5644.namprd06.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:7219;
-X-Forefront-PRVS: 0353563E2B
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10019020)(346002)(366004)(376002)(136003)(396003)(39860400002)(478600001)(8936002)(81156014)(81166006)(6486002)(8676002)(6666004)(36756003)(2906002)(52116002)(6916009)(44832011)(31696002)(956004)(2616005)(16526019)(31686004)(26005)(66946007)(66556008)(66476007)(5660300002)(4326008)(16576012)(186003)(316002)(86362001);DIR:OUT;SFP:1102;SCL:1;SRVR:DM6PR06MB5644;H:DM6PR06MB4748.namprd06.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;
-Received-SPF: None (protection.outlook.com: cypress.com does not designate
- permitted sender hosts)
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: Mu8kMFtfUQSrFlqFzgA78hmxanDQL5A9gMiNgpwHUsanzS0Jq61h4PJWt2ETRdpgf+fBJzExWW+aexngsD4mxehniKAgBllkLrxIHHm3Iur9hKWOjDOulJK6l+9YLK7fKZTG5xs2kQO3xngjweHAII23Q1pYTyf8ca64UjTGf6+1CibsjfGkg2h/TkxlK85kUIEb9+qNV9/UenMQ3xJaFsTPoVqxgHnkIm+w8q/7jvUJVXvNhlpk/+V6UAmIx/TNPRve2WHXan1gNnxQ3U7vVP5xf54+X515wkh3KWccPrF2j9HhhLZW7rM+Zil3WNKGPBnFexh2uzgk5jEnukVEiV/2q5jr9/T0qv2eoQa2i1h0ngqPoPy1byUYJJOAnY/H/Y937CtaguS6qrylE89pvFKeM3pXwKwxWEwlm8ibJUWRGFy8puzZ0wxkmMDxkUti
-X-MS-Exchange-AntiSpam-MessageData: kP6INVeYRNLhuIIdmqVZKhgZ6HptlsNKlSSt+xet4gbHUstQ4YVgdzItHgf22uYS7NyZyojURchXDRs7PTPxuxCWYyigdSR7z7uhunSy/A5Q5v4OzkO/wR3OqnWPT5pRaR5kNM06Vm7kHHoydY40BQ==
-X-OriginatorOrg: cypress.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 95ab8a08-ecc7-49ca-06a6-08d7d075378d
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Mar 2020 04:30:16.0962
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 011addfc-2c09-450d-8938-e0bbc2dd2376
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: qJC29JY5wn2v38m3ZoIO91kG2rvHx59ZvBhYJvryIFgwCl1XFVNNeEIu9tLWpVnXJG4CaUQ9iJMaaTzMwTXydQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR06MB5644
+References: <20200313065114.23433-1-yhchuang@realtek.com> <87eetwo87q.fsf@kamboji.qca.qualcomm.com>
+ <2e492e530d744713871f885e324106ef@realtek.com> <87eetrlanb.fsf@kamboji.qca.qualcomm.com>
+ <ce990869ebf0478d98cd7e8416b36289@realtek.com> <875zf3kn05.fsf@kamboji.qca.qualcomm.com>
+ <f4e7401c-c86b-8b2f-9e93-865322f71945@candelatech.com> <fbab3328d183406c923b30381389841f@realtek.com>
+ <d45e2002e97c28acc1f9c7b9c41b5a3ba1d69452.camel@sipsolutions.net>
+ <CA+ASDXM5tSmeE72+fn5K2vgR6kPE3OUbHJ_T_DVV63rFrPzv2w@mail.gmail.com> <3894907ca6bf4566b8716731492a869b@realtek.com>
+In-Reply-To: <3894907ca6bf4566b8716731492a869b@realtek.com>
+From:   Brian Norris <briannorris@chromium.org>
+Date:   Tue, 24 Mar 2020 22:16:27 -0700
+X-Gmail-Original-Message-ID: <CA+ASDXMi8BqccHdVXVXb0JOj4y0vcFBGdL6BB0YuzB78qzgQuQ@mail.gmail.com>
+Message-ID: <CA+ASDXMi8BqccHdVXVXb0JOj4y0vcFBGdL6BB0YuzB78qzgQuQ@mail.gmail.com>
+Subject: Re: [PATCH] rtw88: add debugfs to fix tx rate
+To:     Tony Chuang <yhchuang@realtek.com>
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        Ben Greear <greearb@candelatech.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On Tue, Mar 24, 2020 at 7:55 PM Tony Chuang <yhchuang@realtek.com> wrote:
+> Brian Norris <briannorris@chromium.org> writes:
+> We want to measure the TX power, and the equipment just cannot
+> detect the signal on some rates, unless we "fix" the rate exactly.
 
+I think we all understand this now.
 
-Tejun Heo 於 3/25/2020 2:23 AM 寫道:
-> Hello,
-> 
-> On Fri, Mar 20, 2020 at 04:08:47PM +0800, Wright Feng wrote:
->>> So two things changed, 1) WQ_HIGHPRI flag added *and* 2) use
->>> allow_workqueue basically dropping __WQ_ORDERED. Not sure which one
->>> contributes to the behavior described in the commit message.
->>
->> The combination of Unbound and max_active==1 implies ordered, so I suppose
->> we don't need to set __WQ_ORDERED bit in flags.
-> 
-> It doesn't on NUMA setups. If you need ordered execution, you need the flag.
-> 
-> Thanks.
->
-Hi Tejun,
-In kernel/workqueue.c, it helps set __WQ_ORDERED flag for the 
-condition(Unbound && max_active == 1) to keep the previous behavior to 
-avoid subtle breakages on NUMA.
-Does it mean we don't have to set the flags in alloc_workqueue? or I 
-misunderstand something?
-If that's incorrect, would you please give me a hint how to set 
-__WQ_ORDERED(internal use flag) and WQ_HIGHPRI flags at the same time?
+> So NL80211_CMD_SET_TX_BITRATE_MASK is not so useful for us
+> sometimes.
 
----
-/*
-  * Unbound && max_active == 1 used to imply ordered, which is no
-  * longer the case on NUMA machines due to per-node pools.  While
-  * alloc_ordered_workqueue() is the right way to create an ordered
-  * workqueue, keep the previous behavior to avoid subtle breakages
-  * on NUMA.
-  */
-if ((flags & WQ_UNBOUND) && max_active == 1)
-     flags |= __WQ_ORDERED;
----
+I'm not sure if you have directly explained why this is the case. See
+your comment earlier:
+
+"This command just mask out some of rates that are not allowed."
+
+Sure, but if you mask out all but 1 bitrate...voila! A fixed rate!
+
+And this:
+
+"But actually the firmware has its own rate
+adaptive mechanism, so mask out the other rates does not mean the rate
+left will be chosen."
+
+That's entirely your fault, not the fault of the API. If your firmware
+doesn't listen to your driver, then that's either your firmware or
+your driver's fault. If you set a mask that has exactly 1 bitrate in
+it... well, that's exactly what you should tell your firmware to do.
+Not, "use this 1 bitrate, but try something else if you feel like it."
+
+Now, there are other problems, like the others that Ben mentioned: the
+rest of the mac80211 framework doesn't like it too much if you really
+disable all but 1 rate (arguably a mac80211 bug -- but not a nl80211
+bug); or maybe you want to differentiate management frames and data
+frames (and that's not what the current
+NL80211_CMD_SET_TX_BITRATE_MASK allows for).
+
+I'm still not (personally) expecting that you *must* do this all via
+the existing CMD_SET_TX_BITRATE_MASK, but to satisfy everyone involved
+here, you at least need to be clear about why you aren't.
 
 Regards,
-Wright
-
+Brian
