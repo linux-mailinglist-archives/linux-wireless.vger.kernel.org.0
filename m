@@ -2,96 +2,150 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3DB62192BF2
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Mar 2020 16:12:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 28AC1192D6F
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Mar 2020 16:52:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727754AbgCYPMi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 25 Mar 2020 11:12:38 -0400
-Received: from mail-qk1-f195.google.com ([209.85.222.195]:39497 "EHLO
-        mail-qk1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726102AbgCYPMi (ORCPT
+        id S1727950AbgCYPwJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 25 Mar 2020 11:52:09 -0400
+Received: from mail2.candelatech.com ([208.74.158.173]:53376 "EHLO
+        mail3.candelatech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727848AbgCYPwJ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 25 Mar 2020 11:12:38 -0400
-Received: by mail-qk1-f195.google.com with SMTP id b62so2884188qkf.6
-        for <linux-wireless@vger.kernel.org>; Wed, 25 Mar 2020 08:12:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=LfshdQ//MCk6Yzdu7QZwqgCkOwmbPXFn6X37Z0DjJ4E=;
-        b=Ixl+sDr5f3IjRgbMzC85OxPpcaJWDVq1WxcDVIYGhGIfT3ZHWtp8xgI4D1R3V+QUjK
-         6ZVeB4uZ4zWeVhnNab5tOdakJAXRv9KytV6eB0bZ1QOViMEevzhJJ9C3tOhOdI3gYfQU
-         rtsEcEePs6ccUUgqSPtU6hNwX78CruU8s0fQEnwexsp6QfdeR2TF64FQxT7H+I0EGiNx
-         jM2FUoMiRHVrlJ7cfTSmFxwAYpPp3JcfRhNr4UCL1uKMxKGSgngN4eY6cb9I8F45IvGE
-         l1PpGChq66D6AELGlN7WmJ7QKAMRXzXw6diKpuWsMfCHE/j9e0I+4m1UM1Pr+cQ5L06I
-         dOwQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to;
-        bh=LfshdQ//MCk6Yzdu7QZwqgCkOwmbPXFn6X37Z0DjJ4E=;
-        b=VlpUIS/0Y/g+RmC7DfQmW1rLkkti4VbwaZbBPYILzWUf3q3uMq6a4eXmr/yugd4lJo
-         nyRVw5V6a/iDqnligfbpFGdn3BsQVgRsCecOrFYv4hldYkxlxwo0Y69mTsREtPuWfWcZ
-         Z7YssuIATkaPZHmipZwy0NXddHM8ccBR0hqBYVjsham73iyaIxRSWAvmJjz8uv+dcsqd
-         MHwiO64CDXbmeDC913OUcYBW8W+AygsbTyzwDTrlTjprsvKuHl/SVWrGHw7u/5rbSJeA
-         BicTAbmz9DZN0DJ4nKbY9wGUk6nxm2o++hsDwCJmDTjmZifDpzXOrheda0Bie35NB7jf
-         B0xg==
-X-Gm-Message-State: ANhLgQ3wkis0ZIVLnuHqqr3JfdUc997Q3wjTBBVbCH12CLaDDCmDqB0k
-        HHz4qsShqMhZK5IPaLaGyzQ=
-X-Google-Smtp-Source: ADFU+vvTkkwo3ybpz/6gpmBPqeONsyV/fmBf0vMcSF3HtEFhuCmee1/07dC9AJYi+RzKKmz33IE2jA==
-X-Received: by 2002:a37:a183:: with SMTP id k125mr3222897qke.335.1585149157385;
-        Wed, 25 Mar 2020 08:12:37 -0700 (PDT)
-Received: from localhost ([2620:10d:c091:480::d8d4])
-        by smtp.gmail.com with ESMTPSA id m92sm16838071qtd.94.2020.03.25.08.12.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Mar 2020 08:12:35 -0700 (PDT)
-Date:   Wed, 25 Mar 2020 11:12:34 -0400
-From:   Tejun Heo <tj@kernel.org>
-To:     Wright Feng <wright.feng@cypress.com>
-Cc:     Arend Van Spriel <arend.vanspriel@broadcom.com>,
-        franky.lin@broadcom.com, hante.meuleman@broadcom.com,
-        kvalo@codeaurora.org, chi-hsien.lin@cypress.com,
-        linux-wireless@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com
-Subject: Re: [PATCH 3/3] brcmfmac: make setting SDIO workqueue WQ_HIGHPRI a
- module parameter
-Message-ID: <20200325151234.GL162390@mtj.duckdns.org>
-References: <1584604406-15452-1-git-send-email-wright.feng@cypress.com>
- <1584604406-15452-4-git-send-email-wright.feng@cypress.com>
- <40e33702-d37f-085d-a5a7-7f09ae9e2629@broadcom.com>
- <241fd81b-a252-ed86-b93e-6796cf1bce23@cypress.com>
- <20200324182358.GD162390@mtj.duckdns.org>
- <02b42d9f-7ba3-bb7e-36a6-5e141d37d75d@cypress.com>
- <20200325140814.GI162390@mtj.duckdns.org>
- <171122f50d8.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
- <c1192351-6f72-6f82-bb2b-9f91266d8aab@cypress.com>
+        Wed, 25 Mar 2020 11:52:09 -0400
+Received: from [192.168.254.4] (unknown [50.34.189.10])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail3.candelatech.com (Postfix) with ESMTPSA id 8D74713C342;
+        Wed, 25 Mar 2020 08:52:07 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 8D74713C342
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+        s=default; t=1585151528;
+        bh=0aedoWyQml+RdvPqBuZm22iy6O2WCBs22INQpZBreF8=;
+        h=Subject:To:References:Cc:From:Date:In-Reply-To:From;
+        b=FduHvGBnOOU52bRJP13sHgTrfwJTh5aus6UD8+kY3J4F25/hftrfvSbLjeFFBrOj0
+         aMruhbbcrtrzieVVqq977bdY2YBiLxE+4v0NmNx3AyWxSo/aI4PJ+YM4PzQ7v3AuJJ
+         cwCw1l/IpaOXg7fHds4whXjRDgXv9ITxmJpxug4M=
+Subject: Re: [PATCH] rtw88: add debugfs to fix tx rate
+To:     Brian Norris <briannorris@chromium.org>,
+        Tony Chuang <yhchuang@realtek.com>
+References: <20200313065114.23433-1-yhchuang@realtek.com>
+ <87eetwo87q.fsf@kamboji.qca.qualcomm.com>
+ <2e492e530d744713871f885e324106ef@realtek.com>
+ <87eetrlanb.fsf@kamboji.qca.qualcomm.com>
+ <ce990869ebf0478d98cd7e8416b36289@realtek.com>
+ <875zf3kn05.fsf@kamboji.qca.qualcomm.com>
+ <f4e7401c-c86b-8b2f-9e93-865322f71945@candelatech.com>
+ <fbab3328d183406c923b30381389841f@realtek.com>
+ <d45e2002e97c28acc1f9c7b9c41b5a3ba1d69452.camel@sipsolutions.net>
+ <CA+ASDXM5tSmeE72+fn5K2vgR6kPE3OUbHJ_T_DVV63rFrPzv2w@mail.gmail.com>
+ <3894907ca6bf4566b8716731492a869b@realtek.com>
+ <CA+ASDXMi8BqccHdVXVXb0JOj4y0vcFBGdL6BB0YuzB78qzgQuQ@mail.gmail.com>
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+From:   Ben Greear <greearb@candelatech.com>
+Message-ID: <efa8c2f3-8254-8d36-20ec-9afb8ffb2339@candelatech.com>
+Date:   Wed, 25 Mar 2020 08:52:04 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+ Thunderbird/45.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <c1192351-6f72-6f82-bb2b-9f91266d8aab@cypress.com>
+In-Reply-To: <CA+ASDXMi8BqccHdVXVXb0JOj4y0vcFBGdL6BB0YuzB78qzgQuQ@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
 
-On Wed, Mar 25, 2020 at 11:06:33PM +0800, Wright Feng wrote:
-> I was trying do that, but the comment of alloc_oredered_workqueue shows that
-> only WQ_FREEZABLE and WQ_MEM_RECLAIM are meaningful, so...
-> 
-> I will measure the throughput with "alloc_ordered_workqueue(NAME,
-> WQ_HIGHPRI, ...)" to see if WQ_HIGHPRI works with alloc_ordered_workqueue.
-> Thanks for the suggestion.
-> 
-> ---
-> /**
->  * alloc_ordered_workqueue - allocate an ordered workqueue
->  * @fmt: printf format for the name of the workqueue
->  * @flags: WQ_* flags (only WQ_FREEZABLE and WQ_MEM_RECLAIM are meaningful)
->  * @args...: args for @fmt
 
-Yeah, I think the comment is outdated. If it doesn't work as expected, please
-let me know.
+On 03/24/2020 10:16 PM, Brian Norris wrote:
+> On Tue, Mar 24, 2020 at 7:55 PM Tony Chuang <yhchuang@realtek.com> wrote:
+>> Brian Norris <briannorris@chromium.org> writes:
+>> We want to measure the TX power, and the equipment just cannot
+>> detect the signal on some rates, unless we "fix" the rate exactly.
+>
+> I think we all understand this now.
+>
+>> So NL80211_CMD_SET_TX_BITRATE_MASK is not so useful for us
+>> sometimes.
+>
+> I'm not sure if you have directly explained why this is the case. See
+> your comment earlier:
+>
+> "This command just mask out some of rates that are not allowed."
+>
+> Sure, but if you mask out all but 1 bitrate...voila! A fixed rate!
+
+So, see this thread from a while back.  Has anyone even *tried* to use
+this API you are proposing?
+
+http://lists.infradead.org/pipermail/ath10k/2017-October/010291.html
+
+Here is the fix I have had in my tree for a few years to let ath10k actually
+set a single rate:
+
+[greearb@ben-dt4 linux-5.4.dev.y]$ git show cccf04cc3440ddee0760249da51026bf2532f926
+commit cccf04cc3440ddee0760249da51026bf2532f926
+Author: Ben Greear <greearb@candelatech.com>
+Date:   Tue Oct 10 13:56:29 2017 -0700
+
+     mac80211: Revert some of e8e4f5, fixes setting single rate in ath10k.
+
+     This lets us successfully set a single rate in ath10k again.
+
+     Signed-off-by: Ben Greear <greearb@candelatech.com>
+
+diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+index 78cf453cda2c..3f248ad70805 100644
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -2886,8 +2886,10 @@ static int ieee80211_set_bitrate_mask(struct wiphy *wiphy,
+                 u32 basic_rates = sdata->vif.bss_conf.basic_rates;
+                 enum nl80211_band band = sdata->vif.bss_conf.chandef.chan->band;
+
+-               if (!(mask->control[band].legacy & basic_rates))
+-                       return -EINVAL;
++               if (!(mask->control[band].legacy & basic_rates)) {
++                       pr_err("%s:  WARNING: no legacy rates for band[%d] in set-bitrate-mask.\n",
++                              sdata->dev->name, band);
++               }
+         }
+
+         if (ieee80211_hw_check(&local->hw, HAS_RATE_CONTROL)) {
+
+
+Thanks,
+Ben
+
+>
+> And this:
+>
+> "But actually the firmware has its own rate
+> adaptive mechanism, so mask out the other rates does not mean the rate
+> left will be chosen."
+>
+> That's entirely your fault, not the fault of the API. If your firmware
+> doesn't listen to your driver, then that's either your firmware or
+> your driver's fault. If you set a mask that has exactly 1 bitrate in
+> it... well, that's exactly what you should tell your firmware to do.
+> Not, "use this 1 bitrate, but try something else if you feel like it."
+>
+> Now, there are other problems, like the others that Ben mentioned: the
+> rest of the mac80211 framework doesn't like it too much if you really
+> disable all but 1 rate (arguably a mac80211 bug -- but not a nl80211
+> bug); or maybe you want to differentiate management frames and data
+> frames (and that's not what the current
+> NL80211_CMD_SET_TX_BITRATE_MASK allows for).
+>
+> I'm still not (personally) expecting that you *must* do this all via
+> the existing CMD_SET_TX_BITRATE_MASK, but to satisfy everyone involved
+> here, you at least need to be clear about why you aren't.
+>
+> Regards,
+> Brian
+>
 
 -- 
-tejun
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
