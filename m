@@ -2,150 +2,122 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 28AC1192D6F
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Mar 2020 16:52:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6DBD0192D9D
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Mar 2020 16:59:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727950AbgCYPwJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 25 Mar 2020 11:52:09 -0400
-Received: from mail2.candelatech.com ([208.74.158.173]:53376 "EHLO
-        mail3.candelatech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727848AbgCYPwJ (ORCPT
+        id S1727781AbgCYP7v (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 25 Mar 2020 11:59:51 -0400
+Received: from mailout1.w2.samsung.com ([211.189.100.11]:36781 "EHLO
+        mailout1.w2.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727538AbgCYP7v (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 25 Mar 2020 11:52:09 -0400
-Received: from [192.168.254.4] (unknown [50.34.189.10])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail3.candelatech.com (Postfix) with ESMTPSA id 8D74713C342;
-        Wed, 25 Mar 2020 08:52:07 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 8D74713C342
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1585151528;
-        bh=0aedoWyQml+RdvPqBuZm22iy6O2WCBs22INQpZBreF8=;
-        h=Subject:To:References:Cc:From:Date:In-Reply-To:From;
-        b=FduHvGBnOOU52bRJP13sHgTrfwJTh5aus6UD8+kY3J4F25/hftrfvSbLjeFFBrOj0
-         aMruhbbcrtrzieVVqq977bdY2YBiLxE+4v0NmNx3AyWxSo/aI4PJ+YM4PzQ7v3AuJJ
-         cwCw1l/IpaOXg7fHds4whXjRDgXv9ITxmJpxug4M=
-Subject: Re: [PATCH] rtw88: add debugfs to fix tx rate
-To:     Brian Norris <briannorris@chromium.org>,
-        Tony Chuang <yhchuang@realtek.com>
-References: <20200313065114.23433-1-yhchuang@realtek.com>
- <87eetwo87q.fsf@kamboji.qca.qualcomm.com>
- <2e492e530d744713871f885e324106ef@realtek.com>
- <87eetrlanb.fsf@kamboji.qca.qualcomm.com>
- <ce990869ebf0478d98cd7e8416b36289@realtek.com>
- <875zf3kn05.fsf@kamboji.qca.qualcomm.com>
- <f4e7401c-c86b-8b2f-9e93-865322f71945@candelatech.com>
- <fbab3328d183406c923b30381389841f@realtek.com>
- <d45e2002e97c28acc1f9c7b9c41b5a3ba1d69452.camel@sipsolutions.net>
- <CA+ASDXM5tSmeE72+fn5K2vgR6kPE3OUbHJ_T_DVV63rFrPzv2w@mail.gmail.com>
- <3894907ca6bf4566b8716731492a869b@realtek.com>
- <CA+ASDXMi8BqccHdVXVXb0JOj4y0vcFBGdL6BB0YuzB78qzgQuQ@mail.gmail.com>
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-From:   Ben Greear <greearb@candelatech.com>
-Message-ID: <efa8c2f3-8254-8d36-20ec-9afb8ffb2339@candelatech.com>
-Date:   Wed, 25 Mar 2020 08:52:04 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
- Thunderbird/45.8.0
+        Wed, 25 Mar 2020 11:59:51 -0400
+X-Greylist: delayed 309 seconds by postgrey-1.27 at vger.kernel.org; Wed, 25 Mar 2020 11:59:50 EDT
+Received: from uscas1p1.samsung.com (unknown [182.198.245.206])
+        by mailout1.w2.samsung.com (KnoxPortal) with ESMTP id 20200325155439usoutp01508591ffca7828a14b64ff9290636e57~-lw3cTaqr1594715947usoutp01E;
+        Wed, 25 Mar 2020 15:54:39 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w2.samsung.com 20200325155439usoutp01508591ffca7828a14b64ff9290636e57~-lw3cTaqr1594715947usoutp01E
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1585151679;
+        bh=uBgUiE+mFJd1LVOwXrKx1shwGlQmL1udUQmQHttm5gg=;
+        h=From:To:CC:Subject:Date:References:From;
+        b=Pmu389Ynsfb+mIST//8nyaeIoE2AvRGhxjV/JFMXsGTMQWms8aVnDE1P2SCIY8Z+j
+         t/OOcbLFLTbZW/pjqQ+51DsRVrNeguZW7JDNZRoZgkCUKeCQqkWh7CuP7WcPkIz5hL
+         B2PjF8Aw0l4+yEwrV022Nk8A+V/gswFVGt8HKXHA=
+Received: from ussmges2new.samsung.com (u111.gpu85.samsung.co.kr
+        [203.254.195.111]) by uscas1p2.samsung.com (KnoxPortal) with ESMTP id
+        20200325155439uscas1p29039a95c2f8ea80bf9b33ccda74278f5~-lw3LrEk22217222172uscas1p2o;
+        Wed, 25 Mar 2020 15:54:39 +0000 (GMT)
+Received: from uscas1p1.samsung.com ( [182.198.245.206]) by
+        ussmges2new.samsung.com (USCPEMTA) with SMTP id E3.65.20517.FBE7B7E5; Wed,
+        25 Mar 2020 11:54:39 -0400 (EDT)
+Received: from ussmgxs1new.samsung.com (u89.gpu85.samsung.co.kr
+        [203.254.195.89]) by uscas1p1.samsung.com (KnoxPortal) with ESMTP id
+        20200325155438uscas1p19c02d00cfd32dac911df3df7a5390eba~-lw2uZVRr0211002110uscas1p1g;
+        Wed, 25 Mar 2020 15:54:38 +0000 (GMT)
+X-AuditID: cbfec36f-5c7ff70000025025-65-5e7b7ebfc066
+Received: from SSI-EX3.ssi.samsung.com ( [105.128.2.145]) by
+        ussmgxs1new.samsung.com (USCPEXMTA) with SMTP id B5.12.59698.EBE7B7E5; Wed,
+        25 Mar 2020 11:54:38 -0400 (EDT)
+Received: from SSI-EX4.ssi.samsung.com (105.128.2.229) by
+        SSI-EX3.ssi.samsung.com (105.128.2.228) with Microsoft SMTP Server
+        (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+        15.1.1713.5; Wed, 25 Mar 2020 08:54:38 -0700
+Received: from SSI-EX4.ssi.samsung.com ([fe80::d5ff:a0cf:b920:78a4]) by
+        SSI-EX4.ssi.samsung.com ([fe80::d5ff:a0cf:b920:78a4%7]) with mapi id
+        15.01.1713.004; Wed, 25 Mar 2020 08:54:38 -0700
+From:   Geoffroy Letourneur <g.letourneur@samsung.com>
+To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "linuxwifi@intel.com" <linuxwifi@intel.com>
+CC:     Gilles Mazars <g.mazars@samsung.com>,
+        Martin Bourreau <m.bourreau@samsung.com>
+Subject: Geoffroy LETOURNEUR: Samsung AX200 system integration on Nvidia
+ Nano.
+Thread-Topic: Geoffroy LETOURNEUR: Samsung AX200 system integration on
+        Nvidia Nano.
+Thread-Index: AQHWAr2wsmsOeqOOfECn+0wE7X7A4Q==
+Date:   Wed, 25 Mar 2020 15:54:38 +0000
+Message-ID: <8096A04E-8692-4DC3-A8D0-8F85FF972799@samsung.com>
+Accept-Language: fr-FR, en-US
+Content-Language: fr-FR
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [105.128.2.176]
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <D9173ED5D62FA74294D632B07A3295E1@ssi.samsung.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-In-Reply-To: <CA+ASDXMi8BqccHdVXVXb0JOj4y0vcFBGdL6BB0YuzB78qzgQuQ@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-CFilter-Loop: Reflected
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFuplleLIzCtJLcpLzFFi42LZduzrOd39ddVxBsef8Fu8WXGH3aJz80RG
+        ByaPxXteMnl83iQXwBTFZZOSmpNZllqkb5fAlTFnx0PWghaeijfPVjM1MN7h7mLk5JAQMJH4
+        3HCduYuRi0NIYCWjxP4L/WwgCSGBViaJnb9SYYpWd29hhyhayyhx9c4FFgjnI6PEzsYVrBDO
+        AUaJizdPsoO0sAG1vOv6zAJiiwiUSLy+OAHMZhYIkfhx9SfQPg4OYYEAieaN5hAloRKXH55g
+        h7D1JPa+fA5WziKgKtFzooEZxOYVsJP4++YnWA2jgKzEtYWroUaKS3w7upIZ4lJBiUWz90DZ
+        YhL/dj1kg7AVJe5/f8kOspZZQFNi/S59CNNO4vvdcIgpihJTuh+yQ2wSlDg58wkLRKekxMEV
+        N8DelRA4wyaxcE4H1HgXiTM7XrNC2NISV69PhYq3M0oseOIK0TCFUWLr5L1MEAlriSd7TrNB
+        bOOT+PvrEeMERuVZSF6YhXDeLITzZiE5bxaS8xYwsq5iFC8tLs5NTy02ykst1ytOzC0uzUvX
+        S87P3cQITCSn/x3O38F4fknyIUYBDkYlHt4NltVxQqyJZcWVuYcYJTiYlUR4N6dWxAnxpiRW
+        VqUW5ccXleakFh9ilOZgURLnffDoZayQQHpiSWp2ampBahFMlomDU6qBMdOqKHH5dK1rDmau
+        F1pOKev+cP+xQV97v/Bp3Q/mlb8Sjk8otvcrLJ2Wv79zU+ELtaMPfHZuOxJ5rOLRVondD1l4
+        mqZ/vSG6an6PbNE8hmBptRWnv/jvmiq6e97f7iWeIvL98/snieRsSlo5IaBgfcVM1/SMq0fM
+        mFy/2+RbcHlaX5Jvlr8vosRSnJFoqMVcVJwIAOQye2MgAwAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprMIsWRmVeSWpSXmKPExsWS2cA0UXdfXXWcwZ9ePYs3K+6wW3Runsjo
+        wOSxeM9LJo/Pm+QCmKK4bFJSczLLUov07RK4MubseMha0MJT8ebZaqYGxjvcXYycHBICJhKr
+        u7ewdzFycQgJrGaU+L/gEguE85FRYtvvvVCZA4wSE85fYwVpYQNqedf1mQXEFhEokXh9cQKY
+        zSwQIvHj6k9mEFtYwE/if/snqJpQiQdfJ7ND2HoSe18+B4uzCKhK9JxoAKvnFbCT+PvmJ1gN
+        o4CsxLWFq6Fmikt8O7qSGeJUAYkle85D2aISLx//Y4WwFSXuf38J1MsBVK8psX6XPoRpJ/H9
+        bjjEFEWJKd0P2SE2CUqcnPmEBaJTUuLgihssExjFZiFZNgth0CyEQbOQDJqFZNACRtZVjOKl
+        xcW56RXFhnmp5XrFibnFpXnpesn5uZsYgVF1+t/hyB2MJ04nH2IU4GBU4uHdYFkdJ8SaWFZc
+        mXuIUYKDWUmEd3NqRZwQb0piZVVqUX58UWlOavEhRmkOFiVx3uViC6KEBNITS1KzU1MLUotg
+        skwcnFINjJzHHV0U/q44yTvRPXiacoSOtcH/hXzV5v+bShpznyWneZ7OftlzrcogavGB9fsa
+        N7875DGvhnmyx5XMa96N51ZNn3CUc6J7Wknh7dVuK2u6S2+bvdypP/fCrwmyF1aLeon51Iim
+        CzdGTJGp0ygVEuOcp9d+YCN/dq7841uBMzydXUxTPxWvUWIpzkg01GIuKk4EAIQauLCmAgAA
+X-CMS-MailID: 20200325155438uscas1p19c02d00cfd32dac911df3df7a5390eba
+CMS-TYPE: 301P
+X-CMS-RootMailID: 20200325155438uscas1p19c02d00cfd32dac911df3df7a5390eba
+References: <CGME20200325155438uscas1p19c02d00cfd32dac911df3df7a5390eba@uscas1p1.samsung.com>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-
-
-On 03/24/2020 10:16 PM, Brian Norris wrote:
-> On Tue, Mar 24, 2020 at 7:55 PM Tony Chuang <yhchuang@realtek.com> wrote:
->> Brian Norris <briannorris@chromium.org> writes:
->> We want to measure the TX power, and the equipment just cannot
->> detect the signal on some rates, unless we "fix" the rate exactly.
->
-> I think we all understand this now.
->
->> So NL80211_CMD_SET_TX_BITRATE_MASK is not so useful for us
->> sometimes.
->
-> I'm not sure if you have directly explained why this is the case. See
-> your comment earlier:
->
-> "This command just mask out some of rates that are not allowed."
->
-> Sure, but if you mask out all but 1 bitrate...voila! A fixed rate!
-
-So, see this thread from a while back.  Has anyone even *tried* to use
-this API you are proposing?
-
-http://lists.infradead.org/pipermail/ath10k/2017-October/010291.html
-
-Here is the fix I have had in my tree for a few years to let ath10k actually
-set a single rate:
-
-[greearb@ben-dt4 linux-5.4.dev.y]$ git show cccf04cc3440ddee0760249da51026bf2532f926
-commit cccf04cc3440ddee0760249da51026bf2532f926
-Author: Ben Greear <greearb@candelatech.com>
-Date:   Tue Oct 10 13:56:29 2017 -0700
-
-     mac80211: Revert some of e8e4f5, fixes setting single rate in ath10k.
-
-     This lets us successfully set a single rate in ath10k again.
-
-     Signed-off-by: Ben Greear <greearb@candelatech.com>
-
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index 78cf453cda2c..3f248ad70805 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -2886,8 +2886,10 @@ static int ieee80211_set_bitrate_mask(struct wiphy *wiphy,
-                 u32 basic_rates = sdata->vif.bss_conf.basic_rates;
-                 enum nl80211_band band = sdata->vif.bss_conf.chandef.chan->band;
-
--               if (!(mask->control[band].legacy & basic_rates))
--                       return -EINVAL;
-+               if (!(mask->control[band].legacy & basic_rates)) {
-+                       pr_err("%s:  WARNING: no legacy rates for band[%d] in set-bitrate-mask.\n",
-+                              sdata->dev->name, band);
-+               }
-         }
-
-         if (ieee80211_hw_check(&local->hw, HAS_RATE_CONTROL)) {
-
-
-Thanks,
-Ben
-
->
-> And this:
->
-> "But actually the firmware has its own rate
-> adaptive mechanism, so mask out the other rates does not mean the rate
-> left will be chosen."
->
-> That's entirely your fault, not the fault of the API. If your firmware
-> doesn't listen to your driver, then that's either your firmware or
-> your driver's fault. If you set a mask that has exactly 1 bitrate in
-> it... well, that's exactly what you should tell your firmware to do.
-> Not, "use this 1 bitrate, but try something else if you feel like it."
->
-> Now, there are other problems, like the others that Ben mentioned: the
-> rest of the mac80211 framework doesn't like it too much if you really
-> disable all but 1 rate (arguably a mac80211 bug -- but not a nl80211
-> bug); or maybe you want to differentiate management frames and data
-> frames (and that's not what the current
-> NL80211_CMD_SET_TX_BITRATE_MASK allows for).
->
-> I'm still not (personally) expecting that you *must* do this all via
-> the existing CMD_SET_TX_BITRATE_MASK, but to satisfy everyone involved
-> here, you at least need to be clear about why you aren't.
->
-> Regards,
-> Brian
->
-
--- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
+DQpIZWxsbywNCg0KSSBhbSB3b3JraW5nIG9uIEpldHNvbiBOYW5vIGJvYXJkcy4gSSB3b3VsZCBs
+aWtlIHRvIGNvbm5lY3QgdHdvIGJvYXJkcyB0b2dldGhlciB3aXRoIEFYMjAwIHdpZmkgbW9kdWxl
+Lg0KT25lIGlzIGNvbmZpZ3VyZWQgaW4gaG9zdHNwb3QgbW9kZSBhbmQgdGhlIG90aGVyIG9uZSBp
+cyB0aGUgY2xpZW50IGNvbm5lY3RlZCB0byB0aGUgaG9zdHNwb3QuDQoNCktlcm5lbCBWZXJzaW9u
+OiA0LjkuMTQwLXRlZ3JhIGFhcmNoNjQNClVidW50dSBkaXN0cmlidXRpb246IEJpb25pYw0KVGhl
+IGlkZWEgaXMgdG8gdXNlZCBob3N0YXBkIGFuZCB3cGFzdXBwbGljYW50IGRhZW1vbiB0byBzZXQg
+dXAgdGhlIG1vZHVsZSBhbmQgY29ubmVjdCB0aGUgY2FyZCB0b2dldGhlci4NCldwYV9zdXBwbGlj
+YW50IGFuZCBob3N0YXBkIHZlcnNpb24gVjIuNi4NCg0KSSBpbnN0YWxsIGFsbCB0aGUgZHJpdmVy
+cyBmcm9tIGludGVsIGFuZCBmb2xsb3cgdGhpcyB0dXRvLiBodHRwczovL3dpZmkuaHlwZXJnZWVr
+Lm5ldC95b3UtdG9vLWNhbi1oYXZlLWEtc3ViLTIwMC0xMWF4LWNsaWVudC8NClNvIEkgY2FuIHNl
+ZSB0aGUgd2xhbiBwaHkgd2l0aCBpZmNvbmZpZyBjb21tYW5kIGxpbmUuDQpXaGVuIEkgdHJ5IHRv
+IGxhdW5jaCBob3N0YXBkIGluIGF4IG1vZGUgd2l0aCB5b3VyIG1vZHVsZSBJIGhhdmUgdGhlIGZv
+bGxvd2luZyBtaXN0YWtlLg0KQUNTOiBQb3NzaWJseSBjaGFubmVsIGNvbmZpZ3VyYXRpb24gaXMg
+aW52YWxpZCwgcGxlYXNlIHJlcG9ydCB0aGlzIGFsb25nIHdpdGggeW91ciBjb25maWcgZmlsZS4g
+QUNTOiBGYWlsZWQgdG8gc3RhcnQgd2xhbjA6IEFQLURJU0FCTEVEIGhvc3RhcGRfZnJlZV9oYXBk
+X2RhdGE6IEludGVyZmFjZSB3bGFuMCB3YXNuJ3Qgc3RhcnRlZA0KDQpDb3VsZCB5b3UgaGVscCB0
+byBzZXQgdXAgY29ycmVjdGx5IGhvc3RhcGQgPw0KDQpCZXN0IFJlZ2FyZHMNCg0KLS0NCkdlb2Zm
+cm95IExFVE9VUk5FVVINCkVtYmVkZGVkIFNvZnR3YXJlIEVuZ2luZWVyLA0KU1NJQywgUGFyaXMN
+Cg0KRW1haWw6IGcubGV0b3VybmV1ckBzYW1zdW5nLmNvbTxtYWlsdG86Zy5sZXRvdXJuZXVyQHNh
+bXN1bmcuY29tPg0KVGVsOiArMzMgNiA0NSAxNCAyNCAzMg0KDQoNCg0K
