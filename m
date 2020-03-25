@@ -2,107 +2,157 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DFDCF1922E0
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Mar 2020 09:36:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 95FA81922EF
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Mar 2020 09:38:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727320AbgCYIgl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 25 Mar 2020 04:36:41 -0400
-Received: from s3.sipsolutions.net ([144.76.43.62]:41892 "EHLO
-        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726105AbgCYIgl (ORCPT
+        id S1727451AbgCYIiK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 25 Mar 2020 04:38:10 -0400
+Received: from mail-lj1-f194.google.com ([209.85.208.194]:39011 "EHLO
+        mail-lj1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726105AbgCYIiJ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 25 Mar 2020 04:36:41 -0400
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.93)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1jH1Wg-007ht6-Ca; Wed, 25 Mar 2020 09:36:38 +0100
-Message-ID: <9d314aa41f9bb094e72791187cadd945dbdfd557.camel@sipsolutions.net>
-Subject: Re: wmediumd MAC implementation/simulation
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Benjamin Beichler <Benjamin.Beichler@uni-rostock.de>,
-        Bob Copeland <me@bobcopeland.com>
-Cc:     linux-wireless@vger.kernel.org,
-        Masashi Honma <masashi.honma@gmail.com>
-Date:   Wed, 25 Mar 2020 09:36:36 +0100
-In-Reply-To: <12ddd641-1d54-7626-d177-cc2d12c2998e@uni-rostock.de>
-References: <30484acdee4cd19078673f4f4229dfae49b17804.camel@sipsolutions.net>
-         <20200324145344.GA17278@bobcopeland.com>
-         <3bd9fa47c45cd983334ccae06b75501f161ed45c.camel@sipsolutions.net>
-         <12ddd641-1d54-7626-d177-cc2d12c2998e@uni-rostock.de>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.4 (3.34.4-1.fc31) 
+        Wed, 25 Mar 2020 04:38:09 -0400
+Received: by mail-lj1-f194.google.com with SMTP id i20so1515419ljn.6;
+        Wed, 25 Mar 2020 01:38:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:from:to:cc:subject:in-reply-to:references:date:message-id
+         :mime-version;
+        bh=u1JHVU3RAXWpWzxoEBTeSB/vNLewo28StJEFtqtyLoU=;
+        b=atWEsClArOzGKdLN4osuAk7d+XSEIi82gzITfDKHYSAZ1c+WEd3Ip/J9eETstflnDX
+         LqQd2q6Qz/8hg3HTYMLWyI1r/uM72eIqZfUXxCdkYr7yZws3ErK2kSKYsVGHg9Cm/mtf
+         X32RT6WFx/DxNfiiCaK5OWiM6W7e7JeJWoOEDUpgi05XVpNAtJvKJtyzJhblBES6Z/65
+         eVjEoRNppJWoaSaLMrUSnZYRRo6sbYBlTHOOD7K3R3s4Elu3PeBJ5C7L2ulwEL9qqsKz
+         nUa//b6Qd9KEX8nStmeRXzWQurXqzw+nAWyASHspx5uRQOtfM4KAnUAZ5r+BnFZwaD/D
+         axHw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:from:to:cc:subject:in-reply-to:references
+         :date:message-id:mime-version;
+        bh=u1JHVU3RAXWpWzxoEBTeSB/vNLewo28StJEFtqtyLoU=;
+        b=UlVntKbe2jveYAAErnG5iWKhUbUaX0C/TvBgjuMlKDyQEPPkxpGN3GdsTnB65720L1
+         d5rR+NchMvMqgSFrYiYuF9jiQpLhsSVwX4bFIajSRfZ5u6X2TOV15nzk4FCaciwb7uAM
+         pzaut6vDU9Ax7BZriZz4OQG5mevW2jMd84s+Wm9GKJgoOb9T6imGzftlVxgsGYVuYzG8
+         F1GcK3sh/LeiAcc8oSMl5dpDJGWbiImiz1q3Tv6u1ub8esq+Pftx3IKJXybeS0Wo8vak
+         +tFExSslAm6150TWtYDFuhhm7HKdypD0qICRbTivdoLXHJYqQGGmmeHcF/i33cKk0Frw
+         9zKg==
+X-Gm-Message-State: ANhLgQ2IJyFH9Zyb4SesupW4iuvopgcCAPdAQ2bgb5qvMDxBeX/FEbtC
+        xD49I2AmH/9G/tEGg0NQmYs=
+X-Google-Smtp-Source: APiQypL8bMjMZDQevXNQgwWPs9QVjiJXOb2ocQYyMJ5E3G+qtV0tyxn/wNi26nCLubp8d+GA3TyEPA==
+X-Received: by 2002:a2e:9797:: with SMTP id y23mr1235851lji.183.1585125484852;
+        Wed, 25 Mar 2020 01:38:04 -0700 (PDT)
+Received: from saruman (91-155-214-58.elisa-laajakaista.fi. [91.155.214.58])
+        by smtp.gmail.com with ESMTPSA id f7sm522142ljj.4.2020.03.25.01.38.01
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Wed, 25 Mar 2020 01:38:03 -0700 (PDT)
+From:   Felipe Balbi <balbi@kernel.org>
+To:     Thomas Gleixner <tglx@linutronix.de>,
+        LKML <linux-kernel@vger.kernel.org>
+Cc:     Peter Zijlstra <peterz@infradead.org>,
+        Ingo Molnar <mingo@kernel.org>,
+        Sebastian Siewior <bigeasy@linutronix.de>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Joel Fernandes <joel@joelfernandes.org>,
+        Oleg Nesterov <oleg@redhat.com>,
+        Davidlohr Bueso <dave@stgolabs.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-usb@vger.kernel.org, Logan Gunthorpe <logang@deltatee.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Kurt Schwemmer <kurt.schwemmer@microsemi.com>,
+        linux-pci@vger.kernel.org, Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        platform-driver-x86@vger.kernel.org,
+        Zhang Rui <rui.zhang@intel.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        linux-pm@vger.kernel.org, Len Brown <lenb@kernel.org>,
+        linux-acpi@vger.kernel.org, kbuild test robot <lkp@intel.com>,
+        Nick Hu <nickhu@andestech.com>,
+        Greentime Hu <green.hu@gmail.com>,
+        Vincent Chen <deanbo422@gmail.com>,
+        Guo Ren <guoren@kernel.org>, linux-csky@vger.kernel.org,
+        Brian Cain <bcain@codeaurora.org>,
+        linux-hexagon@vger.kernel.org, Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>, linux-ia64@vger.kernel.org,
+        Michal Simek <monstr@monstr.eu>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Geoff Levand <geoff@infradead.org>,
+        linuxppc-dev@lists.ozlabs.org,
+        "Paul E . McKenney" <paulmck@kernel.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Davidlohr Bueso <dbueso@suse.de>
+Subject: Re: [patch V3 03/20] usb: gadget: Use completion interface instead of open coding it
+In-Reply-To: <20200321113241.043380271@linutronix.de>
+References: <20200321112544.878032781@linutronix.de> <20200321113241.043380271@linutronix.de>
+Date:   Wed, 25 Mar 2020 10:37:57 +0200
+Message-ID: <87blokde3e.fsf@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; boundary="=-=-=";
+        micalg=pgp-sha256; protocol="application/pgp-signature"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+--=-=-=
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
 
-> > Well, it depends how deep we go, I guess? I mean, we could go all the
-> > way down to the PHY layer, but then we're _really_ in ns3 territory and
-> > it's probably not worth it... OTOH, to fully integrate the firmware, we
-> > probably do need this eventually. But I'd rather not reinvent ns3 here,
-> > obviously :)
+Thomas Gleixner <tglx@linutronix.de> writes:
 
-> I think it's not the phy but the lower MAC layer, which at least need to
-> be adapted to the hwsim interface. Although it has no extreme
-> computational effort, its not that easy to implement. Depending on your
-> envisioned setup this might already be done in your firmware. 
+> From: Thomas Gleixner <tglx@linutronix.de>
+>
+> ep_io() uses a completion on stack and open codes the waiting with:
+>
+>   wait_event_interruptible (done.wait, done.done);
+> and
+>   wait_event (done.wait, done.done);
+>
+> This waits in non-exclusive mode for complete(), but there is no reason to
+> do so because the completion can only be waited for by the task itself and
+> complete() wakes exactly one exlusive waiter.
+>
+> Replace the open coded implementation with the corresponding
+> wait_for_completion*() functions.
+>
+> No functional change.
+>
+> Reported-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+> Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: Felipe Balbi <balbi@kernel.org>
+> Cc: linux-usb@vger.kernel.org
 
-Yeah, I think so.
+Do you want to carry it via your tree? If so:
 
-> Thy phy
-> layer will bring much higher timing precision, when the right models are
-> applied, but will greatly impact the simulation speed.
+Acked-by: Felipe Balbi <balbi@kernel.org>
 
-Right. No good for this, I think.
+Otherwise, let me know and I'll pick this patch.
 
-And anyway then we're looking at ns-3 I guess. Though I couldn't figure
-out yesterday how we could possibly integrate all this simulation setup
-into ns-3.
+=2D-=20
+balbi
 
-> >         int ack_time_usec = pkt_duration(14, index_to_rate(0, frame->freq)) +
-> >                             sifs;
-> > 
-> > but this is incorrect ... so arguably we need that *anyway*?
-> 
-> Actually you are right. Currently, we apply this by a priori knowledge.
-> Maybe a silly Idea, but could we interleave the cfg80211/nl80211
-> protocol on the virtio channel to get the configuration information?
+--=-=-=
+Content-Type: application/pgp-signature; name="signature.asc"
 
-It'd really have to be the *mac80211* protocol, which is based only on
-function calls etc. so we have to build a messaging layer around it ...
-which basically is mac80211-hwsim, right?
+-----BEGIN PGP SIGNATURE-----
 
-
-> > I guess I'd start with actually subjecting the ACK to "channel
-> > conditions", but I'd actually want to be able to hook into the TX/RX in
-> > some way from the external MAC too ... I just don't think we need to
-> > treat hwsim as an external MAC because that just complicates the whole
-> > thing?
-> > 
-> > Well, honestly, I have no idea :)
-> 
-> Mhh I don't really get what you mean by that. Why can't you hook into
-> RX/TX with a simulated ACK ?
-
-I guess I could, but then I have to worry about all kinds of MAC
-capabilities? I mean, essentially I'd end up building a MAC for hwsim,
-in some integrated fashion, which seems like it probably should've been
-done in ns-3 already or such?
-
-> > > > Or perhaps then that's too much complexity and I should just teach ns3
-> > > > the hwsim virtio interface?
-> > > Up to you :)
-> 
-> It should be definitely possible. But I'm asking my self how good that
-> interacts with your firmware simulation.
-
-Well, ns-3 *is* layered, no? Arguably then I should be able to remove
-the MAC layer and put in my own, hooking into the PHY layer signals? But
-I quickly got lost in the documentation there, and it's not really what
-I need right now anyway ...
-
-johannes
-
+iQIzBAEBCAAdFiEElLzh7wn96CXwjh2IzL64meEamQYFAl57GGUACgkQzL64meEa
+mQY/phAAyKS/jK6b1hVevAPsOBS5Zyk+RBQmkmps/3C2lTyyturSmqT3TAMZyTZo
+/HPtsvyUYn8RBI5Pa62mvcnGi+/Lmk76YzmUqn/VJRe+J8kjuFI6IoyT4uDxdUsB
+qGTiuQ5qbV7Ft3fvLoEEbuyPZeDc/pbfFyK78ajdAYec4MGS8r12tWzhRZTRyRAG
+4fb/PjPcfk8/9eTkdgnjgINZTiwT9YN7HWpEfajl3MhlYK9pZh/J7swRaYwZULBo
++eVd6a6ZYt0YLC8wVQ/kJ9Q3EttmWBwPJB4FIXMzYDkXx2Z898ZUKeIJ8IXlwKSh
+CynbYGL7rNJQ+UDpVA8/y5Mqqnu3pAht/csgfrBxm/ukjkMphIDjpzuUaODgH5W3
+Eb4EXNgvgspzEMgz6pv9INgPPh2tWRmBQex8qOLrs1xups+ZmhFSHGKCUs8hxlDj
+Zk0U6Mce6mopXiCf2iVgrv9ItHlp4myA/HwWEub+LwOJi8tCt+vCjzXloWMx4Ha+
+TNyxLHrqLaeTQoYgl1wJQMjIhmcrb9UMBaJ5FhKdaXAGfAeicPSzVqVHG/yl6nds
+Z2cTMhW5kIxJDMAOuemeYZLY8PMzXrG5xHT7Da3yOzurIOmp2rhvhjpt9TpjKDLE
+3qsBCaxpICoolHqV8bAov175RPtyVvv5zdyXWulMD/1c2kVYiiY=
+=IAgh
+-----END PGP SIGNATURE-----
+--=-=-=--
