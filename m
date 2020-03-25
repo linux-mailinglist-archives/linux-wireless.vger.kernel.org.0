@@ -2,212 +2,110 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E56A1192F7F
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Mar 2020 18:41:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6634219302E
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Mar 2020 19:15:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727719AbgCYRlV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 25 Mar 2020 13:41:21 -0400
-Received: from mail26.static.mailgun.info ([104.130.122.26]:28887 "EHLO
-        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726264AbgCYRlV (ORCPT
+        id S1727439AbgCYSPG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 25 Mar 2020 14:15:06 -0400
+Received: from mail-lj1-f195.google.com ([209.85.208.195]:39456 "EHLO
+        mail-lj1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727279AbgCYSPG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 25 Mar 2020 13:41:21 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1585158080; h=Message-Id: Date: Subject: Cc: To: From:
- Sender; bh=B5v3ApaH50C98pJ8Iz4gInkmSJGkTji9mznBIIXvY6c=; b=e/UDNywdiQvGstX8nuHM5LcFh76MJh8BfO97NpbeqiCTZfxqAQtCQHKLQTyiQokcsvicWCUk
- D2AUDFU33qK9QsJTI3c3kyNlPu/4RFNyBsGZaWeaB8rr24vv0KawBiBJC2cRkWTRdVzCPOi9
- BbyrbAZROQons04+257ygsJqDA4=
-X-Mailgun-Sending-Ip: 104.130.122.26
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e7b97c0.7f249527a8f0-smtp-out-n01;
- Wed, 25 Mar 2020 17:41:20 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 46C53C433BA; Wed, 25 Mar 2020 17:41:19 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.0
-Received: from c-gseset-linux.qualcomm.com (blr-c-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.19.19])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: ssreeela)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 49923C433F2;
-        Wed, 25 Mar 2020 17:41:17 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 49923C433F2
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=ssreeela@codeaurora.org
-From:   Sowmiya Sree Elavalagan <ssreeela@codeaurora.org>
-To:     ath10k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org, Lei Wang <leiwa@codeaurora.org>,
-        Sowmiya Sree Elavalagan <ssreeela@codeaurora.org>
-Subject: [PATCH] ath10k: enable radar detection in secondary segment
-Date:   Wed, 25 Mar 2020 23:10:41 +0530
-Message-Id: <1585158041-11740-1-git-send-email-ssreeela@codeaurora.org>
-X-Mailer: git-send-email 1.9.1
+        Wed, 25 Mar 2020 14:15:06 -0400
+Received: by mail-lj1-f195.google.com with SMTP id i20so3557525ljn.6
+        for <linux-wireless@vger.kernel.org>; Wed, 25 Mar 2020 11:15:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=CN/jGkDFewEhK4kLuF7IJJzT1GvrV70P1Bm6K0ng+Yc=;
+        b=geD7Cjf6W8588DDu7mcqREkoLQmxAdGk0uB2KBv2XSkiR0n9FjIa5RRyNZtt1kPPVx
+         xQYRVuOwVsiDazXCpkjvZPi9Z6KJC2y92qt9+0/ola5PMVhMiFfChEmTcyO+8XT2Ad6S
+         a70UjcT3JlMj7/9MYGZmdg0pQZzm96vBpcWVs=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=CN/jGkDFewEhK4kLuF7IJJzT1GvrV70P1Bm6K0ng+Yc=;
+        b=E4emyXP9oTcChAhzIfPtY6CZGtFFtcziGfKDb4o0R6T9vNUZlPmRAad+9rOe16rmng
+         9elKpZ6CIlTamZuWEbGzvcJ4ju3ztmt4vpCqxEZxkwoeWH1VSDG3UYrpMmsu4pdwVjnl
+         eMdOGKVKAybf3FptRvincpOCdjvxWYy2ZOAhN8S2NZKB1JnB+aaJhGrriqdMvTabvW6A
+         Ie5WclqwRw02I4r+VAmN37DwlewIOJatnNEdXDEwZR0dwJWWk1K8ELC98Nsm/7LnksQJ
+         wjMbLzgBM3Cw3mc4T8WF4GJQqNm58t0cym/J8sjplaPnDAjPQaD9Izf7mQef9Cwx3EOu
+         dbUA==
+X-Gm-Message-State: ANhLgQ3xujY9OS/YMn0up20cvL8bxiDVv/PVW9Y5liAvhy48Af/J//SO
+        UNuXvLELd9gxcX++WT2+UMJq3N4yH3I=
+X-Google-Smtp-Source: APiQypLxcH47bMYOgGbPsQvuAvH+nHgYlBGJzxdTTndv9xSVXPGI5R/W/wErVg5tIb6CNJE/j5HzDw==
+X-Received: by 2002:a2e:9099:: with SMTP id l25mr2829921ljg.157.1585160102451;
+        Wed, 25 Mar 2020 11:15:02 -0700 (PDT)
+Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com. [209.85.208.176])
+        by smtp.gmail.com with ESMTPSA id q8sm5456718ljj.77.2020.03.25.11.15.00
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 25 Mar 2020 11:15:01 -0700 (PDT)
+Received: by mail-lj1-f176.google.com with SMTP id g12so3579585ljj.3
+        for <linux-wireless@vger.kernel.org>; Wed, 25 Mar 2020 11:15:00 -0700 (PDT)
+X-Received: by 2002:a05:651c:50e:: with SMTP id o14mr2672414ljp.241.1585160100264;
+ Wed, 25 Mar 2020 11:15:00 -0700 (PDT)
+MIME-Version: 1.0
+References: <20200313065114.23433-1-yhchuang@realtek.com> <87eetwo87q.fsf@kamboji.qca.qualcomm.com>
+ <2e492e530d744713871f885e324106ef@realtek.com> <87eetrlanb.fsf@kamboji.qca.qualcomm.com>
+ <ce990869ebf0478d98cd7e8416b36289@realtek.com> <875zf3kn05.fsf@kamboji.qca.qualcomm.com>
+ <f4e7401c-c86b-8b2f-9e93-865322f71945@candelatech.com> <fbab3328d183406c923b30381389841f@realtek.com>
+ <d45e2002e97c28acc1f9c7b9c41b5a3ba1d69452.camel@sipsolutions.net>
+ <CA+ASDXM5tSmeE72+fn5K2vgR6kPE3OUbHJ_T_DVV63rFrPzv2w@mail.gmail.com>
+ <3894907ca6bf4566b8716731492a869b@realtek.com> <CA+ASDXMi8BqccHdVXVXb0JOj4y0vcFBGdL6BB0YuzB78qzgQuQ@mail.gmail.com>
+ <efa8c2f3-8254-8d36-20ec-9afb8ffb2339@candelatech.com>
+In-Reply-To: <efa8c2f3-8254-8d36-20ec-9afb8ffb2339@candelatech.com>
+From:   Brian Norris <briannorris@chromium.org>
+Date:   Wed, 25 Mar 2020 11:14:48 -0700
+X-Gmail-Original-Message-ID: <CA+ASDXNQxea+83+h87OQwDV-n_Sb8ENyEGx=BsJbMa3G9kkEVQ@mail.gmail.com>
+Message-ID: <CA+ASDXNQxea+83+h87OQwDV-n_Sb8ENyEGx=BsJbMa3G9kkEVQ@mail.gmail.com>
+Subject: Re: [PATCH] rtw88: add debugfs to fix tx rate
+To:     Ben Greear <greearb@candelatech.com>
+Cc:     Tony Chuang <yhchuang@realtek.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Lei Wang <leiwa@codeaurora.org>
+On Wed, Mar 25, 2020 at 8:52 AM Ben Greear <greearb@candelatech.com> wrote:
+> On 03/24/2020 10:16 PM, Brian Norris wrote:
+> > Sure, but if you mask out all but 1 bitrate...voila! A fixed rate!
+>
+> So, see this thread from a while back.  Has anyone even *tried* to use
+> this API you are proposing?
 
-Enable radar detection in secondary segment for VHT160 and VHT80+80 mode
-on DFS channels. Otherwise, when injecting radar pulse in the secondary
-segment, the DUT can't detect radar pulse.
+Yes, in fact, I have! Which is why I noted:
 
-Tested: qca9984 with firmware ver 10.4-3.10-00047
+> > Now, there are other problems, like the others that Ben mentioned: the
+> > rest of the mac80211 framework doesn't like it too much if you really
+> > disable all but 1 rate (arguably a mac80211 bug -- but not a nl80211
+> > bug)
 
-Signed-off-by: Lei Wang <leiwa@codeaurora.org>
-Signed-off-by: Sowmiya Sree Elavalagan <ssreeela@codeaurora.org>
----
- drivers/net/wireless/ath/ath10k/wmi-tlv.c |  6 ++---
- drivers/net/wireless/ath/ath10k/wmi.c     | 39 ++++++++++++++++++++++---------
- drivers/net/wireless/ath/ath10k/wmi.h     |  5 ++--
- 3 files changed, 34 insertions(+), 16 deletions(-)
+> http://lists.infradead.org/pipermail/ath10k/2017-October/010291.html
 
-diff --git a/drivers/net/wireless/ath/ath10k/wmi-tlv.c b/drivers/net/wireless/ath/ath10k/wmi-tlv.c
-index 4e68deb..e1ab900f 100644
---- a/drivers/net/wireless/ath/ath10k/wmi-tlv.c
-+++ b/drivers/net/wireless/ath/ath10k/wmi-tlv.c
-@@ -2123,7 +2123,7 @@ static int ath10k_wmi_tlv_op_get_vdev_subtype(struct ath10k *ar,
- 	tlv->tag = __cpu_to_le16(WMI_TLV_TAG_STRUCT_CHANNEL);
- 	tlv->len = __cpu_to_le16(sizeof(*ch));
- 	ch = (void *)tlv->value;
--	ath10k_wmi_put_wmi_channel(ch, &arg->channel);
-+	ath10k_wmi_put_wmi_channel(ar, ch, &arg->channel);
- 
- 	ptr += sizeof(*tlv);
- 	ptr += sizeof(*ch);
-@@ -2763,7 +2763,7 @@ static void *ath10k_wmi_tlv_put_wmm(void *ptr,
- 		tlv->len = __cpu_to_le16(sizeof(*ci));
- 		ci = (void *)tlv->value;
- 
--		ath10k_wmi_put_wmi_channel(ci, ch);
-+		ath10k_wmi_put_wmi_channel(ar, ci, ch);
- 
- 		chans += sizeof(*tlv);
- 		chans += sizeof(*ci);
-@@ -3450,7 +3450,7 @@ static u32 ath10k_wmi_tlv_prepare_peer_qos(u8 uapsd_queues, u8 sp)
- 		tlv->tag = __cpu_to_le16(WMI_TLV_TAG_STRUCT_CHANNEL);
- 		tlv->len = __cpu_to_le16(sizeof(*chan));
- 		chan = (void *)tlv->value;
--		ath10k_wmi_put_wmi_channel(chan, &chan_arg[i]);
-+		ath10k_wmi_put_wmi_channel(ar, chan, &chan_arg[i]);
- 
- 		ptr += sizeof(*tlv);
- 		ptr += sizeof(*chan);
-diff --git a/drivers/net/wireless/ath/ath10k/wmi.c b/drivers/net/wireless/ath/ath10k/wmi.c
-index db6f4c7..4a3a698 100644
---- a/drivers/net/wireless/ath/ath10k/wmi.c
-+++ b/drivers/net/wireless/ath/ath10k/wmi.c
-@@ -1694,10 +1694,11 @@
- 	.bw160 = WMI_10_2_PEER_160MHZ,
- };
- 
--void ath10k_wmi_put_wmi_channel(struct wmi_channel *ch,
-+void ath10k_wmi_put_wmi_channel(struct ath10k *ar, struct wmi_channel *ch,
- 				const struct wmi_channel_arg *arg)
- {
- 	u32 flags = 0;
-+	struct ieee80211_channel *chan = NULL;
- 
- 	memset(ch, 0, sizeof(*ch));
- 
-@@ -1717,20 +1718,36 @@ void ath10k_wmi_put_wmi_channel(struct wmi_channel *ch,
- 	ch->band_center_freq2 = 0;
- 	ch->mhz = __cpu_to_le32(arg->freq);
- 	ch->band_center_freq1 = __cpu_to_le32(arg->band_center_freq1);
--	if (arg->mode == MODE_11AC_VHT80_80)
-+	if (arg->mode == MODE_11AC_VHT80_80) {
- 		ch->band_center_freq2 = __cpu_to_le32(arg->band_center_freq2);
-+		chan = ieee80211_get_channel(ar->hw->wiphy,
-+					     arg->band_center_freq2 - 10);
-+	}
- 
- 	if (arg->mode == MODE_11AC_VHT160) {
--		if (arg->freq > arg->band_center_freq1)
--			ch->band_center_freq1 =
--				__cpu_to_le32(arg->band_center_freq1 + 40);
--		else
--			ch->band_center_freq1 =
--				__cpu_to_le32(arg->band_center_freq1 - 40);
-+		u32 band_center_freq1;
-+		u32 band_center_freq2;
-+
-+		if (arg->freq > arg->band_center_freq1) {
-+			band_center_freq1 = arg->band_center_freq1 + 40;
-+			band_center_freq2 = arg->band_center_freq1 - 40;
-+		} else {
-+			band_center_freq1 = arg->band_center_freq1 - 40;
-+			band_center_freq2 = arg->band_center_freq1 + 40;
-+		}
- 
-+		ch->band_center_freq1 =
-+					__cpu_to_le32(band_center_freq1);
-+		/* Minus 10 to get a defined 5G channel frequency*/
-+		chan = ieee80211_get_channel(ar->hw->wiphy,
-+					     band_center_freq2 - 10);
-+		/* The center frequency of the entire VHT160 */
- 		ch->band_center_freq2 = __cpu_to_le32(arg->band_center_freq1);
- 	}
- 
-+	if (chan && chan->flags & IEEE80211_CHAN_RADAR)
-+		flags |= WMI_CHAN_FLAG_DFS_CFREQ2;
-+
- 	ch->min_power = arg->min_power;
- 	ch->max_power = arg->max_power;
- 	ch->reg_power = arg->max_reg_power;
-@@ -7176,7 +7193,7 @@ void ath10k_wmi_start_scan_init(struct ath10k *ar,
- 		memcpy(cmd->ssid.ssid, arg->ssid, arg->ssid_len);
- 	}
- 
--	ath10k_wmi_put_wmi_channel(&cmd->chan, &arg->channel);
-+	ath10k_wmi_put_wmi_channel(ar, &cmd->chan, &arg->channel);
- 
- 	ath10k_dbg(ar, ATH10K_DBG_WMI,
- 		   "wmi vdev %s id 0x%x flags: 0x%0X, freq %d, mode %d, ch_flags: 0x%0X, max_power: %d\n",
-@@ -7548,7 +7565,7 @@ void ath10k_wmi_start_scan_init(struct ath10k *ar,
- 		ch = &arg->channels[i];
- 		ci = &cmd->chan_info[i];
- 
--		ath10k_wmi_put_wmi_channel(ci, ch);
-+		ath10k_wmi_put_wmi_channel(ar, ci, ch);
- 	}
- 
- 	return skb;
-@@ -8952,7 +8969,7 @@ static u32 ath10k_wmi_prepare_peer_qos(u8 uapsd_queues, u8 sp)
- 
- 	for (i = 0; i < cap->peer_chan_len; i++) {
- 		chan = (struct wmi_channel *)&peer_cap->peer_chan_list[i];
--		ath10k_wmi_put_wmi_channel(chan, &chan_arg[i]);
-+		ath10k_wmi_put_wmi_channel(ar, chan, &chan_arg[i]);
- 	}
- 
- 	ath10k_dbg(ar, ATH10K_DBG_WMI,
-diff --git a/drivers/net/wireless/ath/ath10k/wmi.h b/drivers/net/wireless/ath/ath10k/wmi.h
-index 5ba0c9a..2090707 100644
---- a/drivers/net/wireless/ath/ath10k/wmi.h
-+++ b/drivers/net/wireless/ath/ath10k/wmi.h
-@@ -2094,7 +2094,8 @@ enum wmi_channel_change_cause {
- 
- /* Indicate reason for channel switch */
- #define WMI_CHANNEL_CHANGE_CAUSE_CSA (1 << 13)
--
-+/* DFS required on channel for 2nd segment of VHT160 and VHT80+80*/
-+#define WMI_CHAN_FLAG_DFS_CFREQ2  (1 << 15)
- #define WMI_MAX_SPATIAL_STREAM        3 /* default max ss */
- 
- /* HT Capabilities*/
-@@ -7351,7 +7352,7 @@ void ath10k_wmi_put_start_scan_common(struct wmi_start_scan_common *cmn,
- 				      const struct wmi_start_scan_arg *arg);
- void ath10k_wmi_set_wmm_param(struct wmi_wmm_params *params,
- 			      const struct wmi_wmm_params_arg *arg);
--void ath10k_wmi_put_wmi_channel(struct wmi_channel *ch,
-+void ath10k_wmi_put_wmi_channel(struct ath10k *ar, struct wmi_channel *ch,
- 				const struct wmi_channel_arg *arg);
- int ath10k_wmi_start_scan_verify(const struct wmi_start_scan_arg *arg);
- 
--- 
-1.9.1
+I hadn't seen that thread. So it sounds like maybe Johannes isn't
+quite on the same page as Johannes ;)
+
+If we're going to be particular about matching the AP's basic rates,
+then this API is indeed probably not useful for the "single fixed rate
+[for debugging/testing]" use case.
+
+>      mac80211: Revert some of e8e4f5, fixes setting single rate in ath10k.
+
+Commit e8e4f5 was an unfortunate consequence of the stuff I mentioned
+earlier about how Chrome OS used to use SET_TX_BITRATE_MAX -- we
+weren't nuanced about it at all, so we might configure a set of
+bitrates that doesn't intersect at all with the AP's BasicRates. That
+does make it hard for the driver/framework to decide what to do: do we
+listen to the user, or to the AP? Incidentally, that's also one reason
+why Chrome OS no longer uses the API; it was too big of a hammer for
+what we want (initial-connection reliability), and required us to be
+more delicate about {Supported,Basic}Rates than we really wanted to.
+
+Brian
