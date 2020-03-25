@@ -2,209 +2,99 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C11C419305F
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Mar 2020 19:29:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AFCA2193176
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Mar 2020 20:57:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727485AbgCYS34 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 25 Mar 2020 14:29:56 -0400
-Received: from mga01.intel.com ([192.55.52.88]:31287 "EHLO mga01.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727027AbgCYS34 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 25 Mar 2020 14:29:56 -0400
-IronPort-SDR: Cno/tF2BM9Z1zPiDeAdzLiTmPjrU793nxDcnMEfIJ7CNT1n5EZW5n1E+M45OF2dyoGubWPR0R4
- OP1vCVIHqR7g==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Mar 2020 11:29:55 -0700
-IronPort-SDR: 8nHXFds0uyr+byOCeYniGdPyf6K6ib3KOGA/0fA4ifJlequuJg5jAKV0DAKuK4UJk2IE/ejH11
- Po/OD5pdMDCw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.72,305,1580803200"; 
-   d="scan'208";a="293415876"
-Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
-  by FMSMGA003.fm.intel.com with ESMTP; 25 Mar 2020 11:29:54 -0700
-Received: from kbuild by lkp-server01 with local (Exim 4.89)
-        (envelope-from <lkp@intel.com>)
-        id 1jHAmo-000HXW-0d; Thu, 26 Mar 2020 02:29:54 +0800
-Date:   Thu, 26 Mar 2020 02:28:59 +0800
-From:   kbuild test robot <lkp@intel.com>
-To:     Johannes Berg <johannes.berg@intel.com>
-Cc:     linux-wireless@vger.kernel.org
-Subject: [mac80211:master] BUILD SUCCESS
- 575a97acc3b7446094b0dcaf6285c7c6934c2477
-Message-ID: <5e7ba2eb.ww3RtOlVHIlCinae%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S1727357AbgCYT57 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 25 Mar 2020 15:57:59 -0400
+Received: from mail26.static.mailgun.info ([104.130.122.26]:38259 "EHLO
+        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727316AbgCYT56 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 25 Mar 2020 15:57:58 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1585166278; h=Date: Message-Id: Cc: To: Subject: From:
+ Content-Transfer-Encoding: MIME-Version: Content-Type: Sender;
+ bh=Eda64Po8xAs/zU1+KGY6e+WVIq4HnyJVSaxAH1EYzeE=; b=wpE9nOvQw1HpwH6KDlpCZ9t4BDFXydl2NY3J0Fl/u5lo5TwWCnnIARp4S7Z66NfFSuRuiaKr
+ eXcZNOiu/iGeS6hwtlMBtGvUpAa+zFi7KRkRBvRda5js3+TNmt63eeStXssl5juNSAvUi76+
+ JixQFcdwsCltlRoHq1huMLVAPpE=
+X-Mailgun-Sending-Ip: 104.130.122.26
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5e7bb7c3.7f4e8020d340-smtp-out-n05;
+ Wed, 25 Mar 2020 19:57:55 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 92C97C433D2; Wed, 25 Mar 2020 19:57:54 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
+        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id B8420C433F2;
+        Wed, 25 Mar 2020 19:57:53 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org B8420C433F2
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
+From:   Kalle Valo <kvalo@codeaurora.org>
+Subject: pull-request: wireless-drivers-2020-03-25
+To:     netdev@vger.kernel.org
+Cc:     linux-wireless@vger.kernel.org
+Message-Id: <20200325195754.92C97C433D2@smtp.codeaurora.org>
+Date:   Wed, 25 Mar 2020 19:57:54 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211.git  master
-branch HEAD: 575a97acc3b7446094b0dcaf6285c7c6934c2477  ieee80211: fix HE SPR size calculation
+Hi,
 
-elapsed time: 568m
+here's a pull request to net tree, more info below. Please let me know if there
+are any problems.
 
-configs tested: 150
-configs skipped: 0
+Kalle
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+The following changes since commit e2e57291097b289f84e05fa58ab5e6c6f30cc6e2:
 
-arm64                            allyesconfig
-arm                              allyesconfig
-arm64                            allmodconfig
-arm                              allmodconfig
-arm64                             allnoconfig
-arm                               allnoconfig
-arm                         at91_dt_defconfig
-arm                           efm32_defconfig
-arm                          exynos_defconfig
-arm                        multi_v5_defconfig
-arm                        multi_v7_defconfig
-arm                        shmobile_defconfig
-arm                           sunxi_defconfig
-arm64                               defconfig
-sparc                            allyesconfig
-mips                             allmodconfig
-xtensa                       common_defconfig
-sh                                allnoconfig
-h8300                       h8s-sim_defconfig
-m68k                           sun3_defconfig
-s390                             allyesconfig
-nds32                               defconfig
-powerpc                             defconfig
-sh                            titan_defconfig
-csky                                defconfig
-nds32                             allnoconfig
-i386                              allnoconfig
-i386                             allyesconfig
-i386                             alldefconfig
-i386                                defconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                              allnoconfig
-ia64                             allyesconfig
-ia64                             alldefconfig
-c6x                              allyesconfig
-c6x                        evmc6678_defconfig
-nios2                         10m50_defconfig
-nios2                         3c120_defconfig
-openrisc                    or1ksim_defconfig
-openrisc                 simple_smp_defconfig
-xtensa                          iss_defconfig
-h8300                     edosk2674_defconfig
-h8300                    h8300h-sim_defconfig
-m68k                             allmodconfig
-m68k                       m5475evb_defconfig
-m68k                          multi_defconfig
-powerpc                          rhel-kconfig
-arc                              allyesconfig
-arc                                 defconfig
-microblaze                      mmu_defconfig
-microblaze                    nommu_defconfig
-powerpc                           allnoconfig
-powerpc                       ppc64_defconfig
-mips                      fuloong2e_defconfig
-mips                      malta_kvm_defconfig
-mips                             allyesconfig
-mips                         64r6el_defconfig
-mips                              allnoconfig
-mips                           32r2_defconfig
-parisc                            allnoconfig
-parisc                           allyesconfig
-parisc                generic-32bit_defconfig
-parisc                generic-64bit_defconfig
-i386                 randconfig-a002-20200325
-x86_64               randconfig-a002-20200325
-i386                 randconfig-a001-20200325
-x86_64               randconfig-a001-20200325
-i386                 randconfig-a003-20200325
-x86_64               randconfig-a003-20200325
-mips                 randconfig-a001-20200325
-nds32                randconfig-a001-20200325
-m68k                 randconfig-a001-20200325
-parisc               randconfig-a001-20200325
-alpha                randconfig-a001-20200325
-riscv                randconfig-a001-20200325
-h8300                randconfig-a001-20200325
-microblaze           randconfig-a001-20200325
-nios2                randconfig-a001-20200325
-c6x                  randconfig-a001-20200325
-sparc64              randconfig-a001-20200325
-csky                 randconfig-a001-20200325
-openrisc             randconfig-a001-20200325
-s390                 randconfig-a001-20200325
-sh                   randconfig-a001-20200325
-xtensa               randconfig-a001-20200325
-x86_64               randconfig-b001-20200325
-x86_64               randconfig-b002-20200325
-x86_64               randconfig-b003-20200325
-i386                 randconfig-b001-20200325
-i386                 randconfig-b002-20200325
-i386                 randconfig-b003-20200325
-x86_64               randconfig-c003-20200325
-i386                 randconfig-c002-20200325
-x86_64               randconfig-c001-20200325
-x86_64               randconfig-c002-20200325
-i386                 randconfig-c003-20200325
-i386                 randconfig-c001-20200325
-x86_64               randconfig-e001-20200325
-x86_64               randconfig-e003-20200325
-i386                 randconfig-e002-20200325
-i386                 randconfig-e003-20200325
-x86_64               randconfig-e002-20200325
-i386                 randconfig-e001-20200325
-i386                 randconfig-f001-20200325
-i386                 randconfig-f003-20200325
-i386                 randconfig-f002-20200325
-x86_64               randconfig-f002-20200325
-x86_64               randconfig-f003-20200325
-x86_64               randconfig-f001-20200325
-x86_64               randconfig-h002-20200325
-x86_64               randconfig-h003-20200325
-i386                 randconfig-h003-20200325
-i386                 randconfig-h001-20200325
-x86_64               randconfig-h001-20200325
-i386                 randconfig-h002-20200325
-arm                  randconfig-a001-20200325
-powerpc              randconfig-a001-20200325
-arm64                randconfig-a001-20200325
-ia64                 randconfig-a001-20200325
-sparc                randconfig-a001-20200325
-arc                  randconfig-a001-20200325
-riscv                             allnoconfig
-riscv                            allyesconfig
-riscv                               defconfig
-riscv                    nommu_virt_defconfig
-riscv                          rv32_defconfig
-s390                       zfcpdump_defconfig
-s390                          debug_defconfig
-s390                              allnoconfig
-s390                             allmodconfig
-s390                             alldefconfig
-s390                                defconfig
-sh                          rsk7269_defconfig
-sh                               allmodconfig
-sh                  sh7785lcr_32bit_defconfig
-sparc                               defconfig
-sparc64                             defconfig
-sparc64                           allnoconfig
-sparc64                          allyesconfig
-sparc64                          allmodconfig
-um                                  defconfig
-um                             i386_defconfig
-um                           x86_64_defconfig
-x86_64                              fedora-25
-x86_64                                  kexec
-x86_64                                    lkp
-x86_64                                   rhel
-x86_64                         rhel-7.2-clear
-x86_64                               rhel-7.6
+  wlcore: remove stray plus sign (2020-03-12 18:48:14 +0200)
 
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+are available in the git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers.git tags/wireless-drivers-2020-03-25
+
+for you to fetch changes up to 0433ae556ec8fb588a0735ddb09d3eb9806df479:
+
+  iwlwifi: don't send GEO_TX_POWER_LIMIT if no wgds table (2020-03-23 18:38:03 +0200)
+
+----------------------------------------------------------------
+wireless-drivers fixes for v5.6
+
+Fourth, and last, set of fixes for v5.6. Just two important fixes to
+iwlwifi regressions.
+
+iwlwifi
+
+* fix GEO_TX_POWER_LIMIT command on certain devices which caused
+  firmware to crash during initialisation
+
+* add back device ids for three devices which were accidentally
+  removed
+
+----------------------------------------------------------------
+Golan Ben Ami (1):
+      iwlwifi: don't send GEO_TX_POWER_LIMIT if no wgds table
+
+Luca Coelho (1):
+      iwlwifi: pcie: add 0x2526/0x401* devices back to cfg detection
+
+ drivers/net/wireless/intel/iwlwifi/fw/acpi.c  | 14 ++++++++------
+ drivers/net/wireless/intel/iwlwifi/fw/acpi.h  | 14 ++++++++------
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c   |  9 ++++++++-
+ drivers/net/wireless/intel/iwlwifi/pcie/drv.c |  3 +++
+ 4 files changed, 27 insertions(+), 13 deletions(-)
