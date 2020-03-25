@@ -2,101 +2,175 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6ABA8191F7A
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Mar 2020 03:55:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F2BE6191F90
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Mar 2020 04:11:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727275AbgCYCzl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 24 Mar 2020 22:55:41 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:51212 "EHLO
+        id S1727275AbgCYDLk convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 24 Mar 2020 23:11:40 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:52167 "EHLO
         rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727253AbgCYCzl (ORCPT
+        with ESMTP id S1727253AbgCYDLk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 24 Mar 2020 22:55:41 -0400
+        Tue, 24 Mar 2020 23:11:40 -0400
 Authenticated-By: 
-X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID 02P2tJ10010864, This message is accepted by code: ctloc85258
+X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID 02P3BWYm015188, This message is accepted by code: ctloc85258
 Received: from mail.realtek.com (RTEXMB06.realtek.com.tw[172.21.6.99])
-        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id 02P2tJ10010864
+        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id 02P3BWYm015188
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 25 Mar 2020 10:55:19 +0800
-Received: from RTEXDAG02.realtek.com.tw (172.21.6.101) by
+        Wed, 25 Mar 2020 11:11:33 +0800
+Received: from RTEXMB04.realtek.com.tw (172.21.6.97) by
  RTEXMB06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Wed, 25 Mar 2020 10:55:19 +0800
-Received: from RTEXMB04.realtek.com.tw (172.21.6.97) by
- RTEXDAG02.realtek.com.tw (172.21.6.101) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Wed, 25 Mar 2020 10:55:18 +0800
+ 15.1.1779.2; Wed, 25 Mar 2020 11:11:32 +0800
 Received: from RTEXMB04.realtek.com.tw ([fe80::d9c5:a079:495e:b999]) by
  RTEXMB04.realtek.com.tw ([fe80::d9c5:a079:495e:b999%6]) with mapi id
- 15.01.1779.005; Wed, 25 Mar 2020 10:55:18 +0800
-From:   Tony Chuang <yhchuang@realtek.com>
+ 15.01.1779.005; Wed, 25 Mar 2020 11:11:32 +0800
+From:   Andy Huang <tehuang@realtek.com>
 To:     Brian Norris <briannorris@chromium.org>,
-        Johannes Berg <johannes@sipsolutions.net>
-CC:     Ben Greear <greearb@candelatech.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
+        Tony Chuang <yhchuang@realtek.com>
+CC:     "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
         "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: RE: [PATCH] rtw88: add debugfs to fix tx rate
-Thread-Topic: [PATCH] rtw88: add debugfs to fix tx rate
-Thread-Index: AQHV+QPS9h9ZLy9E5U2M/GVMmM07xahGU7JUgAQrRBCAAeVFp4AANj0wgABYekb//3w6gIABoSZAgALoHICABwEiAIAAsS3g
-Date:   Wed, 25 Mar 2020 02:55:18 +0000
-Message-ID: <3894907ca6bf4566b8716731492a869b@realtek.com>
-References: <20200313065114.23433-1-yhchuang@realtek.com>
- <87eetwo87q.fsf@kamboji.qca.qualcomm.com>
- <2e492e530d744713871f885e324106ef@realtek.com>
- <87eetrlanb.fsf@kamboji.qca.qualcomm.com>
- <ce990869ebf0478d98cd7e8416b36289@realtek.com>
- <875zf3kn05.fsf@kamboji.qca.qualcomm.com>
- <f4e7401c-c86b-8b2f-9e93-865322f71945@candelatech.com>
- <fbab3328d183406c923b30381389841f@realtek.com>
- <d45e2002e97c28acc1f9c7b9c41b5a3ba1d69452.camel@sipsolutions.net>
- <CA+ASDXM5tSmeE72+fn5K2vgR6kPE3OUbHJ_T_DVV63rFrPzv2w@mail.gmail.com>
-In-Reply-To: <CA+ASDXM5tSmeE72+fn5K2vgR6kPE3OUbHJ_T_DVV63rFrPzv2w@mail.gmail.com>
+Subject: RE: [PATCH v6 1/2] rtw88: add regulatory process strategy for different chipset
+Thread-Topic: [PATCH v6 1/2] rtw88: add regulatory process strategy for
+ different chipset
+Thread-Index: AQHWAbEl1VdHuwtD6ECbbBug2CjJDahXb1KAgAEZeTA=
+Date:   Wed, 25 Mar 2020 03:11:32 +0000
+Message-ID: <c17c6e7243e642679a38854e6e6cda96@realtek.com>
+References: <20200324075216.22553-1-yhchuang@realtek.com>
+ <20200324075216.22553-2-yhchuang@realtek.com>
+ <20200324165105.GA99185@google.com>
+In-Reply-To: <20200324165105.GA99185@google.com>
 Accept-Language: zh-TW, en-US
 Content-Language: zh-TW
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.68.175]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+x-originating-ip: [172.21.69.231]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-QnJpYW4gTm9ycmlzIDxicmlhbm5vcnJpc0BjaHJvbWl1bS5vcmc+IHdyaXRlczoNCg0KPiBbIFRv
-IGJlIGNsZWFyLCBJIGhhdmVuJ3QgYXNrZWQgZm9yIHRoaXMgZGVidWdmcyBrbm9iLCBhbmQgYXMg
-b2Ygbm93LA0KPiB0aGVyZSBpcyBubyBwbGFuIGZvciBDaHJvbWUgT1MgdG8gdXNlICRzdWJqZWN0
-IGZlYXR1cmUuIFBlciBzb21lIG9mDQo+IFRvbnkncyBkZXNjcmlwdGlvbnMsIEkgc3VwcG9zZSBt
-YXliZSB0aGlzIHdvdWxkIGJlIHVzZWZ1bCBmb3IgY2VydGFpbg0KPiBkZWJ1Z2dpbmcgc2NlbmFy
-aW9zLCBidXQgb25seSB0aGF0IC0tIG5vIGludGVudGlvbiBvZiB3aXJpbmcgdGhpcyB1cA0KPiAi
-aW4gcHJvZHVjdGlvbi4iIElJVUMsIGhlIENDJ2QgbWUgb25seSBiZWNhdXNlIG9mIHRoZSAibWVh
-c3VyaW5nIHRoZQ0KPiBUWCBwb3dlciIgcG9ydGlvbiBvZiB0aGUgY29tbWl0IG1lc3NhZ2UuIF0N
-Cj4gDQo+IE9uIEZyaSwgTWFyIDIwLCAyMDIwIGF0IDY6MDYgQU0gSm9oYW5uZXMgQmVyZyA8am9o
-YW5uZXNAc2lwc29sdXRpb25zLm5ldD4NCj4gd3JvdGU6DQo+ID4gQnJpYW4gY2FuIHByb2JhYmx5
-IGNvbW1lbnQgb24gdGhpcyAtIEkgdGhpbmsgQ2hyb21lT1MgKHVzZWQgdG8pIHVzZShzKQ0KPiA+
-IHNvbWUga2luZCBvZiBmaXhlZCByYXRlIGF0IHRoZSBiZWdpbm5pbmcgb2YgdGhlIGNvbm5lY3Rp
-b24gdG8gZm9yY2UgbG93DQo+ID4gcmF0ZXM/IEJ1dCBJIGFsc28gcmVtZW1iZXIgdGhpcyBpbnRl
-cmFjdGluZyBiYWRseSB3aXRoIHNvbWUgQVBzIHRoYXQNCj4gPiBqdXN0IGRvbid0IHdhbnQgdG8g
-ZW5hYmxlIGxvdyByYXRlcyBhdCBhbGwuLi4NCj4gDQoNClsuLi5dDQoNCj4gDQo+IEFzIEpvaGFu
-bmVzIG5vdGVkLCBtYXNraW5nIG9mZiB0aGVzZSByYXRlcyBjYXVzZWQgcHJvYmxlbXMgb2YgaXRz
-IG93biwNCj4gZXNwZWNpYWxseSB3aGVuIEFQcyAoZXNwLiwgZ3VpZGVkIGJ5IChtaXM/KWd1aWRl
-ZCBJLlQuIGFkbWlucyB3aG8NCj4gdGhpbmsgdGhhdCBsb3cgYml0cmF0ZXMgYXJlIGV2aWwpIHJl
-bW92ZWQgdGhlc2UgbG93IGJpdHJhdGVzIGZyb20NCj4gdGhlaXIgU3VwcG9ydGVkUmF0ZXMgZmll
-bGQuIEFwcGFyZW50bHkgdGhlc2UgQVBzIG1heSBzdGFydCB0byByZWplY3QNCj4gY2xpZW50cyBp
-ZiB0aGV5IGRvbid0IG9iZXkuDQo+IA0KPiBBZGRpdGlvbmFsbHksIHdlIGZvdW5kIG5vIGV2aWRl
-bmNlIHRoYXQgZm9yY2luZyBsb3cgYml0cmF0ZXMgbGlrZSB0aGlzDQo+IHdhcyBzdWJzdGFudGlh
-bGx5IGhlbHBmdWwgZm9yIGFueXRoaW5nIG90aGVyIHRoYW4gb2xkZXIgYXRoOWsgc3lzdGVtcy4N
-Cj4gU28gbG9uZ2VyIHN0b3J5IHNob3J0ZXIsIENocm9tZSBPUyBkb2VzIG5vdCB1c2UNCj4gTkw4
-MDIxMV9DTURfU0VUX1RYX0JJVFJBVEVfTUFTSyBhbnkgbW9yZS4NCj4gDQoNCldlIHdhbnQgdG8g
-bWVhc3VyZSB0aGUgVFggcG93ZXIsIGFuZCB0aGUgZXF1aXBtZW50IGp1c3QgY2Fubm90DQpkZXRl
-Y3QgdGhlIHNpZ25hbCBvbiBzb21lIHJhdGVzLCB1bmxlc3Mgd2UgImZpeCIgdGhlIHJhdGUgZXhh
-Y3RseS4NClNvIE5MODAyMTFfQ01EX1NFVF9UWF9CSVRSQVRFX01BU0sgaXMgbm90IHNvIHVzZWZ1
-bCBmb3IgdXMNCnNvbWV0aW1lcy4gQWxzbyB3ZSB3YW50ZWQgdG8gc2VlIG5vdCBvbmx5IHRoZSBU
-WCBwb3dlciwgYnV0IHRoZQ0Kc2lnbmFsIHF1YWxpdHkgb2YgY2VydGFpbiBtb2R1bGF0aW9ucy9j
-b2RpbmcgcmF0ZXMsIGFuZCB0aGUgZXF1aXBtZW50DQpzdGlsbCB0ZW5kcyB0byByZWNlaXZlIGZp
-eGVkIHJhdGVzLg0KDQpbLi4uXQ0KDQo+IA0KPiBPbmUgY291bGQgYWxzbyBhcmd1ZSB0aGF0LCBp
-ZiBpd2x3aWZpIGFscmVhZHkgaGFzIGEgZGVidWdmcyBrbm9iDQo+IChsb29rcyBsaWtlIHJzX3N0
-YV9kYmdmc19zY2FsZV90YWJsZV93cml0ZSgpPyksIHJ0dzg4IHNob3VsZCBiZSBhYmxlDQo+IHRv
-IGhhdmUgb25lIHRvbyA7KQ0KPiANCj4gUmVnYXJkcywNCj4gQnJpYW4NCj4gDQoNClllbi1Ic3Vh
-bg0K
+> 
+> Hi,
+> 
+> On Tue, Mar 24, 2020 at 03:52:15PM +0800, yhchuang@realtek.com wrote:
+> > --- a/drivers/net/wireless/realtek/rtw88/Kconfig
+> > +++ b/drivers/net/wireless/realtek/rtw88/Kconfig
+> > @@ -52,4 +52,14 @@ config RTW88_DEBUGFS
+> >
+> >  	  If unsure, say Y to simplify debug problems
+> >
+> > +config RTW88_REGD_USER_REG_HINTS
+> > +	bool "Realtek rtw88 user regulatory hints"
+> > +	depends on RTW88_CORE
+> > +	default n
+> > +	help
+> > +	  Enable regulatoy user hints
+> > +
+> > +	  If unsure, say N. This should only be allowed on distributions
+> > +	  that need this to correct the regulatory.
+> > +
+> 
+> I'm still not sure why rtw88 needs this, and nobody else does. I read 
+
+I think in Atheros driver, ATH_REG_DYNAMIC_USER_REG_HINTS config serves
+the same purpose.
+
+> your commit message, but that doesn't sound like something that belongs
+> in a single driver still.
+> 
+
+As our previous commit message claims, it is due to FCC publication 594280
+statement, "In particular, users must not be relied on to set a country code or
+location code to ensure compliance".
+
+> >  endif
+> > diff --git a/drivers/net/wireless/realtek/rtw88/main.c
+> b/drivers/net/wireless/realtek/rtw88/main.c
+> > index 7640e97706f5..5d43bef91a3c 100644
+> > --- a/drivers/net/wireless/realtek/rtw88/main.c
+> > +++ b/drivers/net/wireless/realtek/rtw88/main.c
+> > @@ -1501,8 +1501,9 @@ int rtw_register_hw(struct rtw_dev *rtwdev,
+> struct ieee80211_hw *hw)
+> >  		return ret;
+> >  	}
+> >
+> > -	if (regulatory_hint(hw->wiphy, rtwdev->regd.alpha2))
+> > -		rtw_err(rtwdev, "regulatory_hint fail\n");
+> > +	ret = regulatory_hint(hw->wiphy, rtwdev->efuse.country_code);
+> > +	if (ret)
+> > +		rtw_warn(rtwdev, "failed to hint regulatory: %d\n", ret);
+> 
+> I don't think this is what you want; you had it right in previous
+> revisions:
+> 
+> 	if (!rtwdev->efuse.country_worldwide) {
+> 		if (regulatory_hint(hw->wiphy, rtwdev->efuse.country_code))
+> 			rtw_err( ... );
+> 	}
+> 
+> Without the 'country_worlwide' check, you start "hinting" (even on
+> worldwide chips) that you really wanted "country" 00 only, and so we
+> *never* adapt to more strict country settings. That's not how world-wide
+> settings are supposed to work.
+> 
+
+It doesn't mean that we want country 00 only, we will get country notifies
+from stack, and we will apply it if we accept it. We don't want stack to change
+the channel plan for us.
+And this is also related to RTW88_REGD_USER_REG_HINTS config, since we
+do not want stack to change the channel plan set from user space without
+this config.
+
+> >
+> >  	rtw_debugfs_init(rtwdev);
+> >
+> > diff --git a/drivers/net/wireless/realtek/rtw88/regd.c
+> b/drivers/net/wireless/realtek/rtw88/regd.c
+> > index 69744dd65968..4cc1234bfb9a 100644
+> > --- a/drivers/net/wireless/realtek/rtw88/regd.c
+> > +++ b/drivers/net/wireless/realtek/rtw88/regd.c
+> >  static int rtw_regd_notifier_apply(struct rtw_dev *rtwdev,
+> >  				   struct wiphy *wiphy,
+> >  				   struct regulatory_request *request)
+> >  {
+> > -	if (request->initiator == NL80211_REGDOM_SET_BY_USER)
+> > +	if (request->initiator == NL80211_REGDOM_SET_BY_DRIVER)
+> 
+> Why are you ignoring SET_BY_DRIVER? That's what happens when (a few
+> lines up) you call regulatory_hint(). At a minimum, that doesn't deserve
+> a loud error print when we "fail" this function -- you should handle it
+> properly.
+> 
+> Brian
+
+Since the notification with NL80211_REGDOM_SET_BY_DRIVER flag might
+comes from an another chipset's regulatory_hint().
+
+Tzu-En
+
+> 
+> > +		return -ENOTSUPP;
+> > +
+> > +	if (request->initiator == NL80211_REGDOM_SET_BY_USER &&
+> > +	    !IS_ENABLED(CONFIG_RTW88_REGD_USER_REG_HINTS))
+> > +		return -EPERM;
+> > +
+> > +	if (request->initiator == NL80211_REGDOM_SET_BY_CORE) {
+> > +		char *country_code;
+> > +
+> > +		/* return to the efuse setting */
+> > +		country_code = rtwdev->efuse.country_code;
+> > +		rtwdev->regd = rtw_regd_find_reg_by_name(country_code);
+> >  		return 0;
+> > +	}
+> > +
+> >  	rtwdev->regd = rtw_regd_find_reg_by_name(request->alpha2);
+> >  	rtw_regd_apply_world_flags(wiphy, request->initiator);
+> >
+> 
+> ------Please consider the environment before printing this e-mail.
