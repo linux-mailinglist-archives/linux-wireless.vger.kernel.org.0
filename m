@@ -2,110 +2,209 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6634219302E
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Mar 2020 19:15:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C11C419305F
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Mar 2020 19:29:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727439AbgCYSPG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 25 Mar 2020 14:15:06 -0400
-Received: from mail-lj1-f195.google.com ([209.85.208.195]:39456 "EHLO
-        mail-lj1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727279AbgCYSPG (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 25 Mar 2020 14:15:06 -0400
-Received: by mail-lj1-f195.google.com with SMTP id i20so3557525ljn.6
-        for <linux-wireless@vger.kernel.org>; Wed, 25 Mar 2020 11:15:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=CN/jGkDFewEhK4kLuF7IJJzT1GvrV70P1Bm6K0ng+Yc=;
-        b=geD7Cjf6W8588DDu7mcqREkoLQmxAdGk0uB2KBv2XSkiR0n9FjIa5RRyNZtt1kPPVx
-         xQYRVuOwVsiDazXCpkjvZPi9Z6KJC2y92qt9+0/ola5PMVhMiFfChEmTcyO+8XT2Ad6S
-         a70UjcT3JlMj7/9MYGZmdg0pQZzm96vBpcWVs=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=CN/jGkDFewEhK4kLuF7IJJzT1GvrV70P1Bm6K0ng+Yc=;
-        b=E4emyXP9oTcChAhzIfPtY6CZGtFFtcziGfKDb4o0R6T9vNUZlPmRAad+9rOe16rmng
-         9elKpZ6CIlTamZuWEbGzvcJ4ju3ztmt4vpCqxEZxkwoeWH1VSDG3UYrpMmsu4pdwVjnl
-         eMdOGKVKAybf3FptRvincpOCdjvxWYy2ZOAhN8S2NZKB1JnB+aaJhGrriqdMvTabvW6A
-         Ie5WclqwRw02I4r+VAmN37DwlewIOJatnNEdXDEwZR0dwJWWk1K8ELC98Nsm/7LnksQJ
-         wjMbLzgBM3Cw3mc4T8WF4GJQqNm58t0cym/J8sjplaPnDAjPQaD9Izf7mQef9Cwx3EOu
-         dbUA==
-X-Gm-Message-State: ANhLgQ3xujY9OS/YMn0up20cvL8bxiDVv/PVW9Y5liAvhy48Af/J//SO
-        UNuXvLELd9gxcX++WT2+UMJq3N4yH3I=
-X-Google-Smtp-Source: APiQypLxcH47bMYOgGbPsQvuAvH+nHgYlBGJzxdTTndv9xSVXPGI5R/W/wErVg5tIb6CNJE/j5HzDw==
-X-Received: by 2002:a2e:9099:: with SMTP id l25mr2829921ljg.157.1585160102451;
-        Wed, 25 Mar 2020 11:15:02 -0700 (PDT)
-Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com. [209.85.208.176])
-        by smtp.gmail.com with ESMTPSA id q8sm5456718ljj.77.2020.03.25.11.15.00
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 25 Mar 2020 11:15:01 -0700 (PDT)
-Received: by mail-lj1-f176.google.com with SMTP id g12so3579585ljj.3
-        for <linux-wireless@vger.kernel.org>; Wed, 25 Mar 2020 11:15:00 -0700 (PDT)
-X-Received: by 2002:a05:651c:50e:: with SMTP id o14mr2672414ljp.241.1585160100264;
- Wed, 25 Mar 2020 11:15:00 -0700 (PDT)
+        id S1727485AbgCYS34 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 25 Mar 2020 14:29:56 -0400
+Received: from mga01.intel.com ([192.55.52.88]:31287 "EHLO mga01.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727027AbgCYS34 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 25 Mar 2020 14:29:56 -0400
+IronPort-SDR: Cno/tF2BM9Z1zPiDeAdzLiTmPjrU793nxDcnMEfIJ7CNT1n5EZW5n1E+M45OF2dyoGubWPR0R4
+ OP1vCVIHqR7g==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Mar 2020 11:29:55 -0700
+IronPort-SDR: 8nHXFds0uyr+byOCeYniGdPyf6K6ib3KOGA/0fA4ifJlequuJg5jAKV0DAKuK4UJk2IE/ejH11
+ Po/OD5pdMDCw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.72,305,1580803200"; 
+   d="scan'208";a="293415876"
+Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
+  by FMSMGA003.fm.intel.com with ESMTP; 25 Mar 2020 11:29:54 -0700
+Received: from kbuild by lkp-server01 with local (Exim 4.89)
+        (envelope-from <lkp@intel.com>)
+        id 1jHAmo-000HXW-0d; Thu, 26 Mar 2020 02:29:54 +0800
+Date:   Thu, 26 Mar 2020 02:28:59 +0800
+From:   kbuild test robot <lkp@intel.com>
+To:     Johannes Berg <johannes.berg@intel.com>
+Cc:     linux-wireless@vger.kernel.org
+Subject: [mac80211:master] BUILD SUCCESS
+ 575a97acc3b7446094b0dcaf6285c7c6934c2477
+Message-ID: <5e7ba2eb.ww3RtOlVHIlCinae%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-References: <20200313065114.23433-1-yhchuang@realtek.com> <87eetwo87q.fsf@kamboji.qca.qualcomm.com>
- <2e492e530d744713871f885e324106ef@realtek.com> <87eetrlanb.fsf@kamboji.qca.qualcomm.com>
- <ce990869ebf0478d98cd7e8416b36289@realtek.com> <875zf3kn05.fsf@kamboji.qca.qualcomm.com>
- <f4e7401c-c86b-8b2f-9e93-865322f71945@candelatech.com> <fbab3328d183406c923b30381389841f@realtek.com>
- <d45e2002e97c28acc1f9c7b9c41b5a3ba1d69452.camel@sipsolutions.net>
- <CA+ASDXM5tSmeE72+fn5K2vgR6kPE3OUbHJ_T_DVV63rFrPzv2w@mail.gmail.com>
- <3894907ca6bf4566b8716731492a869b@realtek.com> <CA+ASDXMi8BqccHdVXVXb0JOj4y0vcFBGdL6BB0YuzB78qzgQuQ@mail.gmail.com>
- <efa8c2f3-8254-8d36-20ec-9afb8ffb2339@candelatech.com>
-In-Reply-To: <efa8c2f3-8254-8d36-20ec-9afb8ffb2339@candelatech.com>
-From:   Brian Norris <briannorris@chromium.org>
-Date:   Wed, 25 Mar 2020 11:14:48 -0700
-X-Gmail-Original-Message-ID: <CA+ASDXNQxea+83+h87OQwDV-n_Sb8ENyEGx=BsJbMa3G9kkEVQ@mail.gmail.com>
-Message-ID: <CA+ASDXNQxea+83+h87OQwDV-n_Sb8ENyEGx=BsJbMa3G9kkEVQ@mail.gmail.com>
-Subject: Re: [PATCH] rtw88: add debugfs to fix tx rate
-To:     Ben Greear <greearb@candelatech.com>
-Cc:     Tony Chuang <yhchuang@realtek.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Mar 25, 2020 at 8:52 AM Ben Greear <greearb@candelatech.com> wrote:
-> On 03/24/2020 10:16 PM, Brian Norris wrote:
-> > Sure, but if you mask out all but 1 bitrate...voila! A fixed rate!
->
-> So, see this thread from a while back.  Has anyone even *tried* to use
-> this API you are proposing?
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211.git  master
+branch HEAD: 575a97acc3b7446094b0dcaf6285c7c6934c2477  ieee80211: fix HE SPR size calculation
 
-Yes, in fact, I have! Which is why I noted:
+elapsed time: 568m
 
-> > Now, there are other problems, like the others that Ben mentioned: the
-> > rest of the mac80211 framework doesn't like it too much if you really
-> > disable all but 1 rate (arguably a mac80211 bug -- but not a nl80211
-> > bug)
+configs tested: 150
+configs skipped: 0
 
-> http://lists.infradead.org/pipermail/ath10k/2017-October/010291.html
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-I hadn't seen that thread. So it sounds like maybe Johannes isn't
-quite on the same page as Johannes ;)
+arm64                            allyesconfig
+arm                              allyesconfig
+arm64                            allmodconfig
+arm                              allmodconfig
+arm64                             allnoconfig
+arm                               allnoconfig
+arm                         at91_dt_defconfig
+arm                           efm32_defconfig
+arm                          exynos_defconfig
+arm                        multi_v5_defconfig
+arm                        multi_v7_defconfig
+arm                        shmobile_defconfig
+arm                           sunxi_defconfig
+arm64                               defconfig
+sparc                            allyesconfig
+mips                             allmodconfig
+xtensa                       common_defconfig
+sh                                allnoconfig
+h8300                       h8s-sim_defconfig
+m68k                           sun3_defconfig
+s390                             allyesconfig
+nds32                               defconfig
+powerpc                             defconfig
+sh                            titan_defconfig
+csky                                defconfig
+nds32                             allnoconfig
+i386                              allnoconfig
+i386                             allyesconfig
+i386                             alldefconfig
+i386                                defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                              allnoconfig
+ia64                             allyesconfig
+ia64                             alldefconfig
+c6x                              allyesconfig
+c6x                        evmc6678_defconfig
+nios2                         10m50_defconfig
+nios2                         3c120_defconfig
+openrisc                    or1ksim_defconfig
+openrisc                 simple_smp_defconfig
+xtensa                          iss_defconfig
+h8300                     edosk2674_defconfig
+h8300                    h8300h-sim_defconfig
+m68k                             allmodconfig
+m68k                       m5475evb_defconfig
+m68k                          multi_defconfig
+powerpc                          rhel-kconfig
+arc                              allyesconfig
+arc                                 defconfig
+microblaze                      mmu_defconfig
+microblaze                    nommu_defconfig
+powerpc                           allnoconfig
+powerpc                       ppc64_defconfig
+mips                      fuloong2e_defconfig
+mips                      malta_kvm_defconfig
+mips                             allyesconfig
+mips                         64r6el_defconfig
+mips                              allnoconfig
+mips                           32r2_defconfig
+parisc                            allnoconfig
+parisc                           allyesconfig
+parisc                generic-32bit_defconfig
+parisc                generic-64bit_defconfig
+i386                 randconfig-a002-20200325
+x86_64               randconfig-a002-20200325
+i386                 randconfig-a001-20200325
+x86_64               randconfig-a001-20200325
+i386                 randconfig-a003-20200325
+x86_64               randconfig-a003-20200325
+mips                 randconfig-a001-20200325
+nds32                randconfig-a001-20200325
+m68k                 randconfig-a001-20200325
+parisc               randconfig-a001-20200325
+alpha                randconfig-a001-20200325
+riscv                randconfig-a001-20200325
+h8300                randconfig-a001-20200325
+microblaze           randconfig-a001-20200325
+nios2                randconfig-a001-20200325
+c6x                  randconfig-a001-20200325
+sparc64              randconfig-a001-20200325
+csky                 randconfig-a001-20200325
+openrisc             randconfig-a001-20200325
+s390                 randconfig-a001-20200325
+sh                   randconfig-a001-20200325
+xtensa               randconfig-a001-20200325
+x86_64               randconfig-b001-20200325
+x86_64               randconfig-b002-20200325
+x86_64               randconfig-b003-20200325
+i386                 randconfig-b001-20200325
+i386                 randconfig-b002-20200325
+i386                 randconfig-b003-20200325
+x86_64               randconfig-c003-20200325
+i386                 randconfig-c002-20200325
+x86_64               randconfig-c001-20200325
+x86_64               randconfig-c002-20200325
+i386                 randconfig-c003-20200325
+i386                 randconfig-c001-20200325
+x86_64               randconfig-e001-20200325
+x86_64               randconfig-e003-20200325
+i386                 randconfig-e002-20200325
+i386                 randconfig-e003-20200325
+x86_64               randconfig-e002-20200325
+i386                 randconfig-e001-20200325
+i386                 randconfig-f001-20200325
+i386                 randconfig-f003-20200325
+i386                 randconfig-f002-20200325
+x86_64               randconfig-f002-20200325
+x86_64               randconfig-f003-20200325
+x86_64               randconfig-f001-20200325
+x86_64               randconfig-h002-20200325
+x86_64               randconfig-h003-20200325
+i386                 randconfig-h003-20200325
+i386                 randconfig-h001-20200325
+x86_64               randconfig-h001-20200325
+i386                 randconfig-h002-20200325
+arm                  randconfig-a001-20200325
+powerpc              randconfig-a001-20200325
+arm64                randconfig-a001-20200325
+ia64                 randconfig-a001-20200325
+sparc                randconfig-a001-20200325
+arc                  randconfig-a001-20200325
+riscv                             allnoconfig
+riscv                            allyesconfig
+riscv                               defconfig
+riscv                    nommu_virt_defconfig
+riscv                          rv32_defconfig
+s390                       zfcpdump_defconfig
+s390                          debug_defconfig
+s390                              allnoconfig
+s390                             allmodconfig
+s390                             alldefconfig
+s390                                defconfig
+sh                          rsk7269_defconfig
+sh                               allmodconfig
+sh                  sh7785lcr_32bit_defconfig
+sparc                               defconfig
+sparc64                             defconfig
+sparc64                           allnoconfig
+sparc64                          allyesconfig
+sparc64                          allmodconfig
+um                                  defconfig
+um                             i386_defconfig
+um                           x86_64_defconfig
+x86_64                              fedora-25
+x86_64                                  kexec
+x86_64                                    lkp
+x86_64                                   rhel
+x86_64                         rhel-7.2-clear
+x86_64                               rhel-7.6
 
-If we're going to be particular about matching the AP's basic rates,
-then this API is indeed probably not useful for the "single fixed rate
-[for debugging/testing]" use case.
-
->      mac80211: Revert some of e8e4f5, fixes setting single rate in ath10k.
-
-Commit e8e4f5 was an unfortunate consequence of the stuff I mentioned
-earlier about how Chrome OS used to use SET_TX_BITRATE_MAX -- we
-weren't nuanced about it at all, so we might configure a set of
-bitrates that doesn't intersect at all with the AP's BasicRates. That
-does make it hard for the driver/framework to decide what to do: do we
-listen to the user, or to the AP? Incidentally, that's also one reason
-why Chrome OS no longer uses the API; it was too big of a hammer for
-what we want (initial-connection reliability), and required us to be
-more delicate about {Supported,Basic}Rates than we really wanted to.
-
-Brian
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
