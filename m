@@ -2,26 +2,26 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C565319221C
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Mar 2020 09:05:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 56ADD192220
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Mar 2020 09:09:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726276AbgCYIFm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 25 Mar 2020 04:05:42 -0400
-Received: from s3.sipsolutions.net ([144.76.43.62]:41418 "EHLO
+        id S1726104AbgCYIJ3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 25 Mar 2020 04:09:29 -0400
+Received: from s3.sipsolutions.net ([144.76.43.62]:41434 "EHLO
         sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725903AbgCYIFm (ORCPT
+        with ESMTP id S1725907AbgCYIJ3 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 25 Mar 2020 04:05:42 -0400
+        Wed, 25 Mar 2020 04:09:29 -0400
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.93)
         (envelope-from <johannes@sipsolutions.net>)
-        id 1jH12i-007dwW-GT; Wed, 25 Mar 2020 09:05:40 +0100
+        id 1jH16M-007ePm-Vb; Wed, 25 Mar 2020 09:09:27 +0100
 From:   Johannes Berg <johannes@sipsolutions.net>
 To:     linux-wireless@vger.kernel.org
-Cc:     Johannes Berg <johannes.berg@intel.com>, stable@vger.kernel.org
-Subject: [PATCH] nl80211: fix NL80211_ATTR_CHANNEL_WIDTH attribute type
-Date:   Wed, 25 Mar 2020 09:05:32 +0100
-Message-Id: <20200325090531.be124f0a11c7.Iedbf4e197a85471ebd729b186d5365c0343bf7a8@changeid>
+Cc:     john@phrozen.org, Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH] ieee80211: fix HE SPR size calculation
+Date:   Wed, 25 Mar 2020 09:09:19 +0100
+Message-Id: <20200325090918.dfe483b49e06.Ia53622f23b2610a2ae6ea39a199866196fe946c1@changeid>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -32,32 +32,29 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-The new opmode notification used this attribute with a u8, when
-it's documented as a u32 and indeed used in userspace as such,
-it just happens to work on little-endian systems since userspace
-isn't doing any strict size validation, and the u8 goes into the
-lower byte. Fix this.
+The he_sr_control field is just a u8, so le32_to_cpu()
+shouldn't be applied to it; this was evidently copied
+from ieee80211_he_oper_size(). Fix it.
 
-Cc: stable@vger.kernel.org
-Fixes: 466b9936bf93 ("cfg80211: Add support to notify station's opmode change to userspace")
+Fixes: ef11a931bd1c ("mac80211: HE: add Spatial Reuse element parsing support")
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- net/wireless/nl80211.c | 2 +-
+ include/linux/ieee80211.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index ec5d67794aab..f0af23c1634a 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -16416,7 +16416,7 @@ void cfg80211_sta_opmode_change_notify(struct net_device *dev, const u8 *mac,
- 		goto nla_put_failure;
+diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
+index 7d3f2ced92d1..30ef0f06dd5b 100644
+--- a/include/linux/ieee80211.h
++++ b/include/linux/ieee80211.h
+@@ -2109,7 +2109,7 @@ ieee80211_he_spr_size(const u8 *he_spr_ie)
+ 		return 0;
  
- 	if ((sta_opmode->changed & STA_OPMODE_MAX_BW_CHANGED) &&
--	    nla_put_u8(msg, NL80211_ATTR_CHANNEL_WIDTH, sta_opmode->bw))
-+	    nla_put_u32(msg, NL80211_ATTR_CHANNEL_WIDTH, sta_opmode->bw))
- 		goto nla_put_failure;
- 
- 	if ((sta_opmode->changed & STA_OPMODE_N_SS_CHANGED) &&
+ 	/* Calc required length */
+-	he_spr_params = le32_to_cpu(he_spr->he_sr_control);
++	he_spr_params = he_spr->he_sr_control;
+ 	if (he_spr_params & IEEE80211_HE_SPR_NON_SRG_OFFSET_PRESENT)
+ 		spr_len++;
+ 	if (he_spr_params & IEEE80211_HE_SPR_SRG_INFORMATION_PRESENT)
 -- 
 2.25.1
 
