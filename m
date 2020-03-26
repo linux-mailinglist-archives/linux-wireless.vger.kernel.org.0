@@ -2,67 +2,98 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B00C3193BDC
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2020 10:29:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B2F2193C12
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2020 10:42:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727855AbgCZJ34 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 26 Mar 2020 05:29:56 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:44032 "EHLO
-        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1727755AbgCZJ34 (ORCPT
+        id S1727688AbgCZJmi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 26 Mar 2020 05:42:38 -0400
+Received: from mail26.static.mailgun.info ([104.130.122.26]:59974 "EHLO
+        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726292AbgCZJmh (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 26 Mar 2020 05:29:56 -0400
-Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa)
-        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.93)
-        (envelope-from <luca@coelho.fi>)
-        id 1jHOpl-0003sI-Sv; Thu, 26 Mar 2020 11:29:54 +0200
-Message-ID: <55b28b93f7be6a326597e710a20dadac89323991.camel@coelho.fi>
-From:   Luca Coelho <luca@coelho.fi>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org
-Date:   Thu, 26 Mar 2020 11:29:52 +0200
-In-Reply-To: <a9447df7bb83222d04199eef7c804431b877e773.camel@sipsolutions.net>
-References: <20200131111300.891737-1-luca@coelho.fi>
-         <20200131111300.891737-24-luca@coelho.fi>
-         <a9447df7bb83222d04199eef7c804431b877e773.camel@sipsolutions.net>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.0-1 
+        Thu, 26 Mar 2020 05:42:37 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1585215757; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=wTCkq/fHmWJk5v+Qmt4gk0xwR53fh8nF9Wr9D7Ah75o=;
+ b=s7eapV6ceDou7gdm5GkcJk6DO1hGHeAu0qrizRv5mo9RSgljE5kP+OMy/EEqJE2pe79xx12G
+ g2t/1MY5LlRPTDjWi4tNyOF0/PPBDrXuClXkHCz4gaQIcceyJDtcVw6D9+9I7EMTtDroda3h
+ kdeRhTqiRHwq0q7xzNTOUHrGvsk=
+X-Mailgun-Sending-Ip: 104.130.122.26
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5e7c790c.7f3c272f0570-smtp-out-n01;
+ Thu, 26 Mar 2020 09:42:36 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 16403C43637; Thu, 26 Mar 2020 09:42:36 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
+        MISSING_MID,SPF_NONE,URIBL_BLOCKED autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id B2132C433D2;
+        Thu, 26 Mar 2020 09:42:33 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org B2132C433D2
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on farmhouse.coelho.fi
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
-        TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.4
-Subject: Re: [PATCH 23/23] mac80211: Properly set the SMPS mode for 6GHz
- station
+Subject: Re: [PATCH v3 1/2] rtw88: add a debugfs entry to dump coex's info
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20200313033008.20070-2-yhchuang@realtek.com>
+References: <20200313033008.20070-2-yhchuang@realtek.com>
+To:     <yhchuang@realtek.com>
+Cc:     <linux-wireless@vger.kernel.org>, <briannorris@chromium.org>,
+        <johannes@sipsolutions.net>, <arend.vanspriel@broadcom.com>,
+        <tamizhr@codeaurora.org>
+User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
+Message-Id: <20200326094236.16403C43637@smtp.codeaurora.org>
+Date:   Thu, 26 Mar 2020 09:42:36 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, 2020-02-14 at 10:06 +0100, Johannes Berg wrote:
-> On Fri, 2020-01-31 at 13:13 +0200, Luca Coelho wrote:
-> > From: Shaul Triebitz <shaul.triebitz@intel.com>
-> > 
-> > The managed interface SMPS mode was not set in the HE 6GHz
-> > capabilities IE. Set it.
-> > 
-> > Signed-off-by: Ilan Peer <ilan.peer@intel.com>
-> > Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+<yhchuang@realtek.com> wrote:
+
+> From: Yan-Hsuan Chuang <yhchuang@realtek.com>
 > 
-> This author/s-o-b chain makes no sense...
+> Add a new entry "coex_info" in debugfs to dump coex's states for
+> us to debug on coex's issues.
 > 
-> > + * @twt_protected: does this BSS support protected TWT frame
+> The basic concept for co-existence (coex, usually for WiFi + BT)
+> is to decide a strategy based on the current status of WiFi and
+> BT. So, it means the WiFi driver requires to gather information
+> from BT side and choose a strategy (TDMA/table/HW settings).
 > 
-> and this patch is not related to SMPS mode at all, Luca, what happened
-> here?!
+> Althrough we can easily check the current status of WiFi, e.g.,
+> from kernel log or just dump the hardware registers, it is still
+> very difficult for us to gather so many different types of WiFi
+> states (such as RFE config, antenna, channel/band, TRX, Power
+> save). Also we will need BT's information that is stored in
+> "struct rtw_coex". So it is necessary for us to have a debugfs
+> that can dump all of the WiFi/BT information required.
+> 
+> Note that to debug on coex related issues, we usually need a
+> longer period of time of coex_info dump every 2 seconds (for
+> example, 30 secs, so we should have 15 times of coex_info's
+> dump).
+> 
+> Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
+> Reviewed-by: Chris Chiu <chiu@endlessm.com>
 
-Ouch, sorry about this.  The wrong-commit-message bug in my script is
-still there, apparently... :(
+2 patches applied to wireless-drivers-next.git, thanks.
 
-I'll resend this patch with the correct message in a new series.
+1fe188da9de5 rtw88: add a debugfs entry to dump coex's info
+d05550936ac8 rtw88: add a debugfs entry to enable/disable coex mechanism
 
---
-Luca.
+-- 
+https://patchwork.kernel.org/patch/11435925/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
