@@ -2,145 +2,125 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2563B19355B
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2020 02:45:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B21319358B
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2020 03:04:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727598AbgCZBpf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 25 Mar 2020 21:45:35 -0400
-Received: from mail-lf1-f68.google.com ([209.85.167.68]:33099 "EHLO
-        mail-lf1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727561AbgCZBpf (ORCPT
+        id S1727612AbgCZCEU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 25 Mar 2020 22:04:20 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:55649 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727598AbgCZCET (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 25 Mar 2020 21:45:35 -0400
-Received: by mail-lf1-f68.google.com with SMTP id c20so3506242lfb.0
-        for <linux-wireless@vger.kernel.org>; Wed, 25 Mar 2020 18:45:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=DVbIGUZzmVzjAjzBPYKxAday7rRrd8gW10hEb8uhH6A=;
-        b=iInKPqb+jCE9iBp+FzkJKX23ycUfM+n/4DJSZn3jJ1nRr/JCDdnEAM4mYohQrNVW5I
-         lf7KF5+GfY1o0ATKLFORsCk0SJqmg4tChgm24sHFuJLzShl+X5h5Ksvi1H6uM6kLg5jF
-         CJU020u9izZJiXK40Bxz76UNbC8uNdCpS9yIo=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=DVbIGUZzmVzjAjzBPYKxAday7rRrd8gW10hEb8uhH6A=;
-        b=UFaew+owP5kB86EGZ504ay33it/mQSaFZFQdFzTfG1IFcBBqihscOW82+zzqP9t9oQ
-         +oEUgI6YWT0ph4GOScMom8Dgdx6RxfxSUXUsvvTge4pVhfgMU9B8tXa1Y6SO2ZVmRrxK
-         WheFjn9ILPSOim9i43Iv8GV0utTbG6291PoK/4kyp8YsoGB+IoWcqHdG7SsulhtiS/Ho
-         HrBToeXi8+GG2GTR8c1ywa6gikQ9++GqEeUSoivSTUToI7PGNmyYhKmlz7rSITTYxomq
-         KyjKz35tiM8NlP2wNb38HL5P/KrdqajTOPNq1/60UJfKEjGzqslRSM/l5BpswT6TqBY+
-         Wo8Q==
-X-Gm-Message-State: AGi0PuZVVvve3+4SEFQwM7poSwVCOYLx7+Dr52j51x+sVchXxRnjkvS1
-        vqBtqr0AiM1sgZfjHjGw4k/dki8CjG8=
-X-Google-Smtp-Source: APiQypLnPM7tEDHQRuT3ggASeX6uSP9O+ru/PLaDh0r7uhNgZbYUoev7TVOGV1bnLp/kUJyHuUwzZg==
-X-Received: by 2002:ac2:50cf:: with SMTP id h15mr429723lfm.127.1585187131677;
-        Wed, 25 Mar 2020 18:45:31 -0700 (PDT)
-Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com. [209.85.208.182])
-        by smtp.gmail.com with ESMTPSA id s10sm493185ljp.87.2020.03.25.18.45.30
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 25 Mar 2020 18:45:30 -0700 (PDT)
-Received: by mail-lj1-f182.google.com with SMTP id v16so4670099ljk.13
-        for <linux-wireless@vger.kernel.org>; Wed, 25 Mar 2020 18:45:30 -0700 (PDT)
-X-Received: by 2002:a2e:b559:: with SMTP id a25mr3465429ljn.280.1585187130419;
- Wed, 25 Mar 2020 18:45:30 -0700 (PDT)
+        Wed, 25 Mar 2020 22:04:19 -0400
+Authenticated-By: 
+X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID 02Q24BI0018692, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (RTEXMB06.realtek.com.tw[172.21.6.99])
+        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id 02Q24BI0018692
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 26 Mar 2020 10:04:11 +0800
+Received: from RTEXMB04.realtek.com.tw (172.21.6.97) by
+ RTEXMB06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Thu, 26 Mar 2020 10:04:11 +0800
+Received: from localhost.localdomain (172.21.68.128) by
+ RTEXMB04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Thu, 26 Mar 2020 10:04:10 +0800
+From:   <yhchuang@realtek.com>
+To:     <kvalo@codeaurora.org>
+CC:     <linux-wireless@vger.kernel.org>, <tehuang@realtek.com>,
+        <briannorris@chromium.org>
+Subject: [PATCH] rtw88: fix non-increase management packet sequence number
+Date:   Thu, 26 Mar 2020 10:04:08 +0800
+Message-ID: <20200326020408.25218-1-yhchuang@realtek.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-References: <20200324075216.22553-1-yhchuang@realtek.com> <20200324075216.22553-2-yhchuang@realtek.com>
- <20200324165105.GA99185@google.com> <c17c6e7243e642679a38854e6e6cda96@realtek.com>
-In-Reply-To: <c17c6e7243e642679a38854e6e6cda96@realtek.com>
-From:   Brian Norris <briannorris@chromium.org>
-Date:   Wed, 25 Mar 2020 18:45:19 -0700
-X-Gmail-Original-Message-ID: <CA+ASDXM49NW1atMoGgEgU0R7siCnhLf6eRawReGiD=PNe-hMrA@mail.gmail.com>
-Message-ID: <CA+ASDXM49NW1atMoGgEgU0R7siCnhLf6eRawReGiD=PNe-hMrA@mail.gmail.com>
-Subject: Re: [PATCH v6 1/2] rtw88: add regulatory process strategy for
- different chipset
-To:     Andy Huang <tehuang@realtek.com>
-Cc:     Tony Chuang <yhchuang@realtek.com>,
-        "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
+X-Originating-IP: [172.21.68.128]
+X-ClientProxiedBy: RTEXMB02.realtek.com.tw (172.21.6.95) To
+ RTEXMB04.realtek.com.tw (172.21.6.97)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-[ I'll preface this by saying that the more I look at the regulatory
-core, the more I realize I'm confused or wrong at times. So forgive me
-if I've made errors along the way, and please do correct me. ]
+From: Tzu-En Huang <tehuang@realtek.com>
 
-On Tue, Mar 24, 2020 at 8:11 PM Andy Huang <tehuang@realtek.com> wrote:
-> > On Tue, Mar 24, 2020 at 03:52:15PM +0800, yhchuang@realtek.com wrote:
-> > > --- a/drivers/net/wireless/realtek/rtw88/Kconfig
-> > > +++ b/drivers/net/wireless/realtek/rtw88/Kconfig
+In previous setting, management packets' sequence numbers will
+not increase and always stay at 0. Add hw sequence number support
+for mgmt packets.
+The table below shows different sequence number setting in the
+tx descriptor.
 
-> > I'm still not sure why rtw88 needs this, and nobody else does. I read
->
-> I think in Atheros driver, ATH_REG_DYNAMIC_USER_REG_HINTS config serves
-> the same purpose.
+seq num ctrl      | EN_HWSEQ | DISQSELSEL | HW_SSN_SEL
+------------------------------------------------------
+sw ctrl           |    0     |    N/A     |    N/A
+hw ctrl per MACID |    1     |     0      |    N/A
+hw ctrl per HWREG |    1     |     1      |HWREG(0/1/2/3)
 
-Ah, I forgot about that one, sorry.
+Signed-off-by: Tzu-En Huang <tehuang@realtek.com>
+Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
+---
+ drivers/net/wireless/realtek/rtw88/main.h | 3 +++
+ drivers/net/wireless/realtek/rtw88/tx.c   | 6 ++++++
+ drivers/net/wireless/realtek/rtw88/tx.h   | 6 ++++++
+ 3 files changed, 15 insertions(+)
 
-> > your commit message, but that doesn't sound like something that belongs
-> > in a single driver still.
-> >
->
-> As our previous commit message claims, it is due to FCC [...]
+diff --git a/drivers/net/wireless/realtek/rtw88/main.h b/drivers/net/wireless/realtek/rtw88/main.h
+index 279410a87141..138851a10051 100644
+--- a/drivers/net/wireless/realtek/rtw88/main.h
++++ b/drivers/net/wireless/realtek/rtw88/main.h
+@@ -562,6 +562,9 @@ struct rtw_tx_pkt_info {
+ 	bool short_gi;
+ 	bool report;
+ 	bool rts;
++	bool dis_qselseq;
++	bool en_hwseq;
++	u8 hw_ssn_sel;
+ };
+ 
+ struct rtw_rx_pkt_stat {
+diff --git a/drivers/net/wireless/realtek/rtw88/tx.c b/drivers/net/wireless/realtek/rtw88/tx.c
+index b31eb4d9664b..60989987f67b 100644
+--- a/drivers/net/wireless/realtek/rtw88/tx.c
++++ b/drivers/net/wireless/realtek/rtw88/tx.c
+@@ -58,6 +58,9 @@ void rtw_tx_fill_tx_desc(struct rtw_tx_pkt_info *pkt_info, struct sk_buff *skb)
+ 	SET_TX_DESC_SPE_RPT(txdesc, pkt_info->report);
+ 	SET_TX_DESC_SW_DEFINE(txdesc, pkt_info->sn);
+ 	SET_TX_DESC_USE_RTS(txdesc, pkt_info->rts);
++	SET_TX_DESC_DISQSELSEQ(txdesc, pkt_info->dis_qselseq);
++	SET_TX_DESC_EN_HWSEQ(txdesc, pkt_info->en_hwseq);
++	SET_TX_DESC_HW_SSN_SEL(txdesc, pkt_info->hw_ssn_sel);
+ }
+ EXPORT_SYMBOL(rtw_tx_fill_tx_desc);
+ 
+@@ -227,6 +230,9 @@ static void rtw_tx_mgmt_pkt_info_update(struct rtw_dev *rtwdev,
+ 	pkt_info->use_rate = true;
+ 	pkt_info->rate_id = 6;
+ 	pkt_info->dis_rate_fallback = true;
++	pkt_info->dis_qselseq = true;
++	pkt_info->en_hwseq = true;
++	pkt_info->hw_ssn_sel = 0;
+ }
+ 
+ static void rtw_tx_data_pkt_info_update(struct rtw_dev *rtwdev,
+diff --git a/drivers/net/wireless/realtek/rtw88/tx.h b/drivers/net/wireless/realtek/rtw88/tx.h
+index e488a2643eb3..b973de0f4dc0 100644
+--- a/drivers/net/wireless/realtek/rtw88/tx.h
++++ b/drivers/net/wireless/realtek/rtw88/tx.h
+@@ -53,6 +53,12 @@
+ 	le32p_replace_bits((__le32 *)(txdesc) + 0x02, value, BIT(19))
+ #define SET_TX_DESC_SW_DEFINE(tx_desc, value)                                  \
+ 	le32p_replace_bits((__le32 *)(txdesc) + 0x06, value, GENMASK(11, 0))
++#define SET_TX_DESC_DISQSELSEQ(txdesc, value)                                 \
++	le32p_replace_bits((__le32 *)(txdesc) + 0x00, value, BIT(31))
++#define SET_TX_DESC_EN_HWSEQ(txdesc, value)                                   \
++	le32p_replace_bits((__le32 *)(txdesc) + 0x08, value, BIT(15))
++#define SET_TX_DESC_HW_SSN_SEL(txdesc, value)                                 \
++	le32p_replace_bits((__le32 *)(txdesc) + 0x03, value, GENMASK(7, 6))
+ 
+ enum rtw_tx_desc_queue_select {
+ 	TX_DESC_QSEL_TID0	= 0,
+-- 
+2.17.1
 
-Yes, I saw that: my point was that effectively all drivers are subject
-to this FCC rule, and so this could be a common CONFIG_*. But if we
-already have the ATH_* one (I missed that, above), I guess we can have
-an rtw88 one too. It might be less confusing (and more
-straightforwardly-implemented) if we moved this stuff to the core
-someday, though.
-
-> > > +   ret = regulatory_hint(hw->wiphy, rtwdev->efuse.country_code);
-> > > +   if (ret)
-> > > +           rtw_warn(rtwdev, "failed to hint regulatory: %d\n", ret);
-> >
-> > I don't think this is what you want; you had it right in previous
-> > revisions:
-> >
-> >       if (!rtwdev->efuse.country_worldwide) {
-> >               if (regulatory_hint(hw->wiphy, rtwdev->efuse.country_code))
-> >                       rtw_err( ... );
-> >       }
-> >
-> > Without the 'country_worlwide' check, you start "hinting" (even on
-> > worldwide chips) that you really wanted "country" 00 only, and so we
-> > *never* adapt to more strict country settings. That's not how world-wide
-> > settings are supposed to work.
->
-> It doesn't mean that we want country 00 only, we will get country notifies
-> from stack, and we will apply it if we accept it. We don't want stack to change
-> the channel plan for us.
-
-I noted this to you privately, but I don't believe it's expected to
-call regulatory_hint() with "00". See the kerneldoc:
-
- * @alpha2: the ISO/IEC 3166 alpha2 the driver claims its regulatory domain
- *      should be in. If @rd is set this should be NULL. Note that if you
- *      set this to NULL you should still set rd->alpha2 to some accepted
- *      alpha2.
-
-Note that "00" is *not* actually an ISO 3166 alpha2 code.
-
-The key problem I'm seeing: once you do this, you establish a
-wiphy-specific regd, and this regd never updates its country code or
-DFS region according to IE updates. So attributes like
-NL80211_ATTR_DFS_REGION and NL80211_ATTR_REG_ALPHA2 remain unset.
-
-Your previous revision -- which for WW settings used
-wiphy_apply_custom_regulatory() and *not* regulatory_hint() -- did not
-have that problem.
-
-> > Why are you ignoring SET_BY_DRIVER?
->
-> Since the notification with NL80211_REGDOM_SET_BY_DRIVER flag might
-> comes from an another chipset's regulatory_hint().
-
-Ack.
-
-Brian
