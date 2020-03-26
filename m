@@ -2,170 +2,211 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E7BDC19497B
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2020 21:47:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 59E50194C0C
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Mar 2020 00:16:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727850AbgCZUrV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 26 Mar 2020 16:47:21 -0400
-Received: from us-smtp-delivery-74.mimecast.com ([216.205.24.74]:20653 "EHLO
-        us-smtp-delivery-74.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726296AbgCZUrU (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 26 Mar 2020 16:47:20 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1585255638;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=oBEHdLAbXLz6FzSdu8JBxHGY7mbTy71DD8uF/npGEWc=;
-        b=IIwvZ/GyMSMVl8s5AI4qaL+3nFhlG3a74SqkL3NDTiXqtu9F9glNlPKpAevYwnCGU70N9q
-        ilYnjLICz2dDmyXgiVp4yWSmv6SnpIosLS2W4JNtxTb0MdyUOAgvejorkf7cKEYvkyEvZJ
-        NUK3fqN7PraRHgqenLWpIer1a8Ca/58=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-127--zxsdm6nOLmJUfjqhN4ybw-1; Thu, 26 Mar 2020 16:47:12 -0400
-X-MC-Unique: -zxsdm6nOLmJUfjqhN4ybw-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 7C5808010E3;
-        Thu, 26 Mar 2020 20:47:09 +0000 (UTC)
-Received: from localhost.localdomain (unknown [10.10.110.57])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 463EC92F98;
-        Thu, 26 Mar 2020 20:47:05 +0000 (UTC)
-Message-ID: <4198a0421b572b9d6d36c3ff1202868df5a5c6d4.camel@redhat.com>
-Subject: Re: Geoffroy LETOURNEUR: Samsung AX200 system integration on Nvidia
- Nano.
-From:   Dan Williams <dcbw@redhat.com>
-To:     Duncan McDonald <d.mcdonald@samsung.com>,
-        Martin Bourreau <m.bourreau@samsung.com>,
-        Geoffroy Letourneur <g.letourneur@samsung.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Matthias May <matthias.may@neratec.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "linuxwifi@intel.com" <linuxwifi@intel.com>
-Cc:     Gilles Mazars <g.mazars@samsung.com>,
-        "Kitty (Xia) Lou" <kitty.lou@samsung.com>,
-        Harris Warren <harris.w@samsung.com>,
-        Raymond Chan <raymond.chan@samsung.com>,
-        "Seshu (Leela Seshu Reddy) Cheedepudi" <seshu.reddy@samsung.com>
-Date:   Thu, 26 Mar 2020 15:47:04 -0500
-In-Reply-To: <495ebf129e8846e8a6952eee37f650e2@samsung.com>
-References: <CGME20200325155438uscas1p19c02d00cfd32dac911df3df7a5390eba@uscas1p1.samsung.com>
-         <8096A04E-8692-4DC3-A8D0-8F85FF972799@samsung.com>
-         <04b77faf-2862-22a4-c7e1-1163219e76e9@neratec.com>
-         <6AA2E7A5-70C5-4A5D-A934-0D0DDCA024FD@samsung.com>
-         <1f9123cc49768db30115c364358ea4898bcfff9d.camel@sipsolutions.net>
-         <E16BF92C-B26C-4219-B09B-1DEBF96A3911@samsung.com>
-         <a70556a0cacc376826f38258156a0224d2f54b56.camel@redhat.com>
-         <ECFB8F73-CA97-4100-9B89-029B4701884A@samsung.com>
-         <495ebf129e8846e8a6952eee37f650e2@samsung.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.32.5 (3.32.5-1.fc30) 
+        id S1727122AbgCZXQW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 26 Mar 2020 19:16:22 -0400
+Received: from mga01.intel.com ([192.55.52.88]:10852 "EHLO mga01.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726296AbgCZXQV (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 26 Mar 2020 19:16:21 -0400
+IronPort-SDR: WSa0vTxDB4m762l6JCVgACasKaPCj4Gpr1Z6EYc7Ke9UWIqc0E55oLMlE1zurij7qa8hr7yKf1
+ T/QCLLb9AS7w==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2020 16:16:21 -0700
+IronPort-SDR: s4MGQw2WS2g9Dv8POGu41yC7RaVz/L6Eq5FiWfNF3nGBzyxrIHSU6vdxL4YgrHzUewbgi3kv/j
+ zcrBbnltnNvw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.72,310,1580803200"; 
+   d="scan'208";a="241125981"
+Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
+  by orsmga008.jf.intel.com with ESMTP; 26 Mar 2020 16:16:19 -0700
+Received: from kbuild by lkp-server01 with local (Exim 4.89)
+        (envelope-from <lkp@intel.com>)
+        id 1jHbjX-000AwX-4o; Fri, 27 Mar 2020 07:16:19 +0800
+Date:   Fri, 27 Mar 2020 07:16:05 +0800
+From:   kbuild test robot <lkp@intel.com>
+To:     Johannes Berg <johannes.berg@intel.com>
+Cc:     linux-wireless@vger.kernel.org
+Subject: [mac80211:master] BUILD SUCCESS
+ b95d2ccd2ccb834394d50347d0e40dc38a954e4a
+Message-ID: <5e7d37b5.B8sO65yohKibjVVV%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, 2020-03-26 at 17:45 +0000, Duncan McDonald wrote:
-> Martin,
->=20
-> Interesting. I knew there were issues for 802.11ax in the ISM band
-> outside of the ones currently used for wifi, but it seems the issues
-> extend to the current 5GHz band as well.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211.git  master
+branch HEAD: b95d2ccd2ccb834394d50347d0e40dc38a954e4a  mac80211: set IEEE80211_TX_CTRL_PORT_CTRL_PROTO for nl80211 TX
 
-To be clear, I have no idea about this specific device or case. But
-802.11h is an example of behavior required for legal/regulatory
-reasons.
+elapsed time: 497m
 
-https://www.prowesswireless.com/post/2016/05/28/dfs-80211h
-https://www.cisco.com/c/en/us/support/docs/wireless-mobility/80211/213882=
--radar-detection-in-dynamic-frequency-sel.html
+configs tested: 152
+configs skipped: 0
 
-Dan
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-> Duncan
->=20
-> -----Original Message-----
-> From: Martin Bourreau=20
-> Sent: Thursday, March 26, 2020 10:39 AM
-> To: Dan Williams <dcbw@redhat.com>; Geoffroy Letourneur <
-> g.letourneur@samsung.com>; Johannes Berg <johannes@sipsolutions.net>;
-> Matthias May <matthias.may@neratec.com>;=20
-> linux-wireless@vger.kernel.org; linuxwifi@intel.com
-> Cc: Gilles Mazars <g.mazars@samsung.com>; Kitty (Xia) Lou <
-> kitty.lou@samsung.com>; Harris Warren <harris.w@samsung.com>; Raymond
-> Chan <raymond.chan@samsung.com>; Duncan McDonald <
-> d.mcdonald@samsung.com>; Seshu (Leela Seshu Reddy) Cheedepudi <
-> seshu.reddy@samsung.com>
-> Subject: Re: Geoffroy LETOURNEUR: Samsung AX200 system integration on
-> Nvidia Nano.
->=20
-> Adding people for awareness of the conversation.=20
->=20
-> =EF=BB=BFLe 26/03/2020 15:32, =C2=AB Dan Williams =C2=BB <dcbw@redhat.c=
-om> a =C3=A9crit :
->=20
->     On Thu, 2020-03-26 at 09:27 +0000, Geoffroy Letourneur wrote:
->     > Hello Johannes,
->     >=20
->     > What you mean by regulatory restrictions?
->     > Hardware restriction ?
->     > Software restriction ?
->     > Law restriction ?
->    =20
->     There are legal restrictions on spectrum use, especially in the
-> 5Ghz
->     range. Which means additional effort must be put into both
-> hardware and
->     software to satisfy those restrictions. And perhaps that effort
-> was not
->     considered cost effective for the AX200.
->    =20
->     Dan
->    =20
->     > Best regards Geo
->     >=20
->     > --
->     > Geoffroy LETOURNEUR
->     > Embedded Software Engineer,
->     > SSIC, Paris
->     > =20
->     > Email: g.letourneur@samsung.com
->     > Tel: +33 6 45 14 24 32
->     > =20
->     > =20
->     > =20
->     >=20
->     > Le 26/03/2020 09:24, =C2=AB Johannes Berg =C2=BB <
-> johannes@sipsolutions.net> a
->     > =C3=A9crit :
->     >=20
->     >     On Thu, 2020-03-26 at 08:19 +0000, Geoffroy Letourneur
-> wrote:
->     >     > Hello Matthias,
->     >     >=20
->     >     > The AX200 module seems to support AP mode it works with
-> 2.4GHz
->     > Wifi
->     >     > 802.11n mode, I tested it. But maybe it could not support
-> this
->     > mode in
->     >     > 802.11ax.=20
->     >    =20
->     >     2.4 GHz should be OK - 5 GHz is generally limited on those
->     > devices due
->     >     to regulatory restrictions.
->     >    =20
->     >     johannes
->     >    =20
->     >    =20
->     >=20
->    =20
->    =20
->=20
+arm64                            allyesconfig
+arm                              allyesconfig
+arm64                            allmodconfig
+arm                              allmodconfig
+arm64                             allnoconfig
+arm                               allnoconfig
+arm                         at91_dt_defconfig
+arm                           efm32_defconfig
+arm                          exynos_defconfig
+arm                        multi_v5_defconfig
+arm                        multi_v7_defconfig
+arm                        shmobile_defconfig
+arm                           sunxi_defconfig
+arm64                               defconfig
+sparc                            allyesconfig
+um                             i386_defconfig
+um                           x86_64_defconfig
+xtensa                          iss_defconfig
+i386                             alldefconfig
+i386                              allnoconfig
+i386                             allyesconfig
+i386                                defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                              allnoconfig
+ia64                             allyesconfig
+ia64                             alldefconfig
+c6x                              allyesconfig
+c6x                        evmc6678_defconfig
+nios2                         10m50_defconfig
+nios2                         3c120_defconfig
+openrisc                    or1ksim_defconfig
+openrisc                 simple_smp_defconfig
+xtensa                       common_defconfig
+nds32                               defconfig
+nds32                             allnoconfig
+csky                                defconfig
+alpha                               defconfig
+h8300                       h8s-sim_defconfig
+h8300                     edosk2674_defconfig
+m68k                       m5475evb_defconfig
+m68k                             allmodconfig
+h8300                    h8300h-sim_defconfig
+m68k                           sun3_defconfig
+m68k                          multi_defconfig
+arc                                 defconfig
+arc                              allyesconfig
+powerpc                             defconfig
+powerpc                       ppc64_defconfig
+powerpc                          rhel-kconfig
+microblaze                      mmu_defconfig
+microblaze                    nommu_defconfig
+powerpc                           allnoconfig
+mips                      fuloong2e_defconfig
+mips                      malta_kvm_defconfig
+mips                             allyesconfig
+mips                         64r6el_defconfig
+mips                              allnoconfig
+mips                           32r2_defconfig
+mips                             allmodconfig
+parisc                            allnoconfig
+parisc                           allyesconfig
+parisc                generic-32bit_defconfig
+parisc                generic-64bit_defconfig
+x86_64               randconfig-a001-20200326
+x86_64               randconfig-a002-20200326
+x86_64               randconfig-a003-20200326
+i386                 randconfig-a001-20200326
+i386                 randconfig-a002-20200326
+i386                 randconfig-a003-20200326
+mips                 randconfig-a001-20200326
+nds32                randconfig-a001-20200326
+m68k                 randconfig-a001-20200326
+parisc               randconfig-a001-20200326
+alpha                randconfig-a001-20200326
+riscv                randconfig-a001-20200326
+c6x                  randconfig-a001-20200326
+h8300                randconfig-a001-20200326
+microblaze           randconfig-a001-20200326
+nios2                randconfig-a001-20200326
+sparc64              randconfig-a001-20200326
+s390                 randconfig-a001-20200326
+csky                 randconfig-a001-20200326
+xtensa               randconfig-a001-20200326
+openrisc             randconfig-a001-20200326
+sh                   randconfig-a001-20200326
+x86_64               randconfig-c001-20200326
+x86_64               randconfig-c002-20200326
+x86_64               randconfig-c003-20200326
+i386                 randconfig-c001-20200326
+i386                 randconfig-c002-20200326
+i386                 randconfig-c003-20200326
+x86_64               randconfig-e001-20200326
+x86_64               randconfig-e003-20200326
+i386                 randconfig-e002-20200326
+i386                 randconfig-e003-20200326
+i386                 randconfig-e001-20200326
+x86_64               randconfig-e002-20200326
+x86_64               randconfig-f001-20200326
+x86_64               randconfig-f002-20200326
+x86_64               randconfig-f003-20200326
+i386                 randconfig-f001-20200326
+i386                 randconfig-f002-20200326
+i386                 randconfig-f003-20200326
+x86_64               randconfig-g001-20200326
+x86_64               randconfig-g002-20200326
+x86_64               randconfig-g003-20200326
+i386                 randconfig-g001-20200326
+i386                 randconfig-g002-20200326
+i386                 randconfig-g003-20200326
+x86_64               randconfig-h001-20200326
+x86_64               randconfig-h002-20200326
+x86_64               randconfig-h003-20200326
+i386                 randconfig-h001-20200326
+i386                 randconfig-h002-20200326
+i386                 randconfig-h003-20200326
+arm                  randconfig-a001-20200326
+powerpc              randconfig-a001-20200326
+arm64                randconfig-a001-20200326
+ia64                 randconfig-a001-20200326
+arc                  randconfig-a001-20200326
+sparc                randconfig-a001-20200326
+riscv                            allmodconfig
+riscv                             allnoconfig
+riscv                            allyesconfig
+riscv                               defconfig
+riscv                    nommu_virt_defconfig
+riscv                          rv32_defconfig
+s390                             alldefconfig
+s390                             allmodconfig
+s390                              allnoconfig
+s390                             allyesconfig
+s390                          debug_defconfig
+s390                                defconfig
+s390                       zfcpdump_defconfig
+sh                               allmodconfig
+sh                                allnoconfig
+sh                          rsk7269_defconfig
+sh                  sh7785lcr_32bit_defconfig
+sh                            titan_defconfig
+sparc                               defconfig
+sparc64                          allmodconfig
+sparc64                           allnoconfig
+sparc64                          allyesconfig
+sparc64                             defconfig
+um                                  defconfig
+x86_64                              fedora-25
+x86_64                                  kexec
+x86_64                                    lkp
+x86_64                                   rhel
+x86_64                         rhel-7.2-clear
+x86_64                               rhel-7.6
 
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
