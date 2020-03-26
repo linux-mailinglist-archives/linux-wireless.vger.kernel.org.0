@@ -2,72 +2,82 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3EEB61936CC
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2020 04:25:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 147BC19387C
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2020 07:19:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727984AbgCZDZK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 25 Mar 2020 23:25:10 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:12136 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727575AbgCZDZJ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 25 Mar 2020 23:25:09 -0400
-Received: from DGGEMS414-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id 691EF89FE8A41A3FB5A4;
-        Thu, 26 Mar 2020 11:25:07 +0800 (CST)
-Received: from localhost (10.173.223.234) by DGGEMS414-HUB.china.huawei.com
- (10.3.19.214) with Microsoft SMTP Server id 14.3.487.0; Thu, 26 Mar 2020
- 11:24:58 +0800
-From:   YueHaibing <yuehaibing@huawei.com>
-To:     <j@w1.fi>, <kvalo@codeaurora.org>, <davem@davemloft.net>,
-        <yuehaibing@huawei.com>, <andriy.shevchenko@linux.intel.com>,
-        <sfr@canb.auug.org.au>, <akpm@linux-foundation.org>,
-        <adobriyan@gmail.com>
-CC:     <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: [PATCH] hostap: Convert prism2_download_aux_dump_proc_fops to prism2_download_aux_dump_proc_ops
-Date:   Thu, 26 Mar 2020 11:24:32 +0800
-Message-ID: <20200326032432.20384-1-yuehaibing@huawei.com>
-X-Mailer: git-send-email 2.10.2.windows.1
+        id S1726289AbgCZGTx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 26 Mar 2020 02:19:53 -0400
+Received: from mail26.static.mailgun.info ([104.130.122.26]:43321 "EHLO
+        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725819AbgCZGTv (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 26 Mar 2020 02:19:51 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1585203591; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=8fHBnabYixGwE4XAz5kPWWZx2CunwgyaNZeFS6vGEXM=; b=qFyDC7WTVqdqJtqGwDLTo3ASJsTNLFdDVJEbp/BEoMy8zFIgmWAAYHd6eRF7nc/01vBB4ixS
+ siV+f2AuuhhCK+5bxps4K6LO2EeUyTPmfcK5udRjQkOXsbXhHhiMwJ4gt80Yt9zIInr+gf73
+ Lm8xMf0xCo5LNnCIW1k1mnkEPKI=
+X-Mailgun-Sending-Ip: 104.130.122.26
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5e7c4983.7fd93f8b33e8-smtp-out-n01;
+ Thu, 26 Mar 2020 06:19:47 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id AD05DC433BA; Thu, 26 Mar 2020 06:19:47 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 3B4E8C433F2;
+        Thu, 26 Mar 2020 06:19:46 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 3B4E8C433F2
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     David Miller <davem@davemloft.net>
+Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org
+Subject: Re: pull-request: wireless-drivers-2020-03-25
+References: <20200325195754.92C97C433D2@smtp.codeaurora.org>
+        <20200325.131250.822565965107597577.davem@davemloft.net>
+Date:   Thu, 26 Mar 2020 08:19:43 +0200
+In-Reply-To: <20200325.131250.822565965107597577.davem@davemloft.net> (David
+        Miller's message of "Wed, 25 Mar 2020 13:12:50 -0700 (PDT)")
+Message-ID: <87sghv3af4.fsf@kamboji.qca.qualcomm.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Originating-IP: [10.173.223.234]
-X-CFilter-Loop: Reflected
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-commit 97a32539b956 ("proc: convert everything to "struct proc_ops"")
-forget do this convering for prism2_download_aux_dump_proc_fops.
+David Miller <davem@davemloft.net> writes:
 
-Fixes: 97a32539b956 ("proc: convert everything to "struct proc_ops"")
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
----
- drivers/net/wireless/intersil/hostap/hostap_download.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+> From: Kalle Valo <kvalo@codeaurora.org>
+> Date: Wed, 25 Mar 2020 19:57:54 +0000 (UTC)
+>
+>> here's a pull request to net tree, more info below. Please let me know if there
+>> are any problems.
+>
+> Pulled, thanks Kalle.
 
-diff --git a/drivers/net/wireless/intersil/hostap/hostap_download.c b/drivers/net/wireless/intersil/hostap/hostap_download.c
-index 8722000b6c27..7c6a5a6d1d45 100644
---- a/drivers/net/wireless/intersil/hostap/hostap_download.c
-+++ b/drivers/net/wireless/intersil/hostap/hostap_download.c
-@@ -232,11 +232,11 @@ static int prism2_download_aux_dump_proc_open(struct inode *inode, struct file *
- 	return ret;
- }
- 
--static const struct file_operations prism2_download_aux_dump_proc_fops = {
--	.open		= prism2_download_aux_dump_proc_open,
--	.read		= seq_read,
--	.llseek		= seq_lseek,
--	.release	= seq_release_private,
-+static const struct proc_ops prism2_download_aux_dump_proc_ops = {
-+	.proc_open		= prism2_download_aux_dump_proc_open,
-+	.proc_read		= seq_read,
-+	.proc_lseek		= seq_lseek,
-+	.proc_release		= seq_release_private,
- };
- 
- 
+Thanks. I forgot to remind in this pull request about the iwlwifi
+conflict when you merge net to net-next. Here are the instructions how
+to handle that:
+
+  To solve that just drop the changes from commit cf52c8a776d1 in
+  wireless-drivers and take the hunk from wireless-drivers-next as is.
+  The list of specific subsystem device IDs are not necessary after
+  commit d6f2134a3831 (in wireless-drivers-next) anymore, the detection
+  is based on other characteristics of the devices.
+
+  https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next.git/commit/?id=5ef8c665416b9815113042e0edebe8ff66a45e2e
+
 -- 
-2.17.1
-
-
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
