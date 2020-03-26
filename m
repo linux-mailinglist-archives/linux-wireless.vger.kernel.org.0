@@ -2,125 +2,180 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B21319358B
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2020 03:04:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F2D9C1935FF
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2020 03:40:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727612AbgCZCEU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 25 Mar 2020 22:04:20 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:55649 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727598AbgCZCET (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 25 Mar 2020 22:04:19 -0400
-Authenticated-By: 
-X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID 02Q24BI0018692, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (RTEXMB06.realtek.com.tw[172.21.6.99])
-        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id 02Q24BI0018692
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 26 Mar 2020 10:04:11 +0800
-Received: from RTEXMB04.realtek.com.tw (172.21.6.97) by
- RTEXMB06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Thu, 26 Mar 2020 10:04:11 +0800
-Received: from localhost.localdomain (172.21.68.128) by
- RTEXMB04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Thu, 26 Mar 2020 10:04:10 +0800
-From:   <yhchuang@realtek.com>
-To:     <kvalo@codeaurora.org>
-CC:     <linux-wireless@vger.kernel.org>, <tehuang@realtek.com>,
-        <briannorris@chromium.org>
-Subject: [PATCH] rtw88: fix non-increase management packet sequence number
-Date:   Thu, 26 Mar 2020 10:04:08 +0800
-Message-ID: <20200326020408.25218-1-yhchuang@realtek.com>
-X-Mailer: git-send-email 2.17.1
+        id S1727720AbgCZCkk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 25 Mar 2020 22:40:40 -0400
+Received: from mail.kernel.org ([198.145.29.99]:59496 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727560AbgCZCkj (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 25 Mar 2020 22:40:39 -0400
+Received: from paulmck-ThinkPad-P72.home (50-39-105-78.bvtn.or.frontiernet.net [50.39.105.78])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id F23B020714;
+        Thu, 26 Mar 2020 02:40:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1585190438;
+        bh=B/0A+EakHUoxJZZH8Zsz0E0Jrwx9AZ5KMhmmm4tWgAU=;
+        h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
+        b=hlvpwsdFfUlivcRX+rgOky3Qzz9W6+h3DS6rDIiFCMTcOVT/UZK7XAVPOw5xlfZmc
+         U4gWvMk+HY610Ebp67p0IXeEOlLqhqArE8W38Bn1Pstxz2UMd+wQaxLwVqwPtOGuCa
+         LHixNahpVcBZT1S+4QWNrSt9INUA9VsBP8hxz+k8=
+Received: by paulmck-ThinkPad-P72.home (Postfix, from userid 1000)
+        id C134335226B0; Wed, 25 Mar 2020 19:40:37 -0700 (PDT)
+Date:   Wed, 25 Mar 2020 19:40:37 -0700
+From:   "Paul E. McKenney" <paulmck@kernel.org>
+To:     Randy Dunlap <rdunlap@infradead.org>
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Ingo Molnar <mingo@kernel.org>,
+        Sebastian Siewior <bigeasy@linutronix.de>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Joel Fernandes <joel@joelfernandes.org>,
+        Oleg Nesterov <oleg@redhat.com>,
+        Davidlohr Bueso <dave@stgolabs.net>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Logan Gunthorpe <logang@deltatee.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Kurt Schwemmer <kurt.schwemmer@microsemi.com>,
+        linux-pci@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Felipe Balbi <balbi@kernel.org>, linux-usb@vger.kernel.org,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        platform-driver-x86@vger.kernel.org,
+        Zhang Rui <rui.zhang@intel.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        linux-pm@vger.kernel.org, Len Brown <lenb@kernel.org>,
+        linux-acpi@vger.kernel.org, kbuild test robot <lkp@intel.com>,
+        Nick Hu <nickhu@andestech.com>,
+        Greentime Hu <green.hu@gmail.com>,
+        Vincent Chen <deanbo422@gmail.com>,
+        Guo Ren <guoren@kernel.org>, linux-csky@vger.kernel.org,
+        Brian Cain <bcain@codeaurora.org>,
+        linux-hexagon@vger.kernel.org, Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>, linux-ia64@vger.kernel.org,
+        Michal Simek <monstr@monstr.eu>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Geoff Levand <geoff@infradead.org>,
+        linuxppc-dev@lists.ozlabs.org, Davidlohr Bueso <dbueso@suse.de>
+Subject: Re: [PATCH v2] Documentation/locking/locktypes: minor copy editor
+ fixes
+Message-ID: <20200326024037.GJ19865@paulmck-ThinkPad-P72>
+Reply-To: paulmck@kernel.org
+References: <20200323025501.GE3199@paulmck-ThinkPad-P72>
+ <87r1xhz6qp.fsf@nanos.tec.linutronix.de>
+ <20200325002811.GO19865@paulmck-ThinkPad-P72>
+ <87wo78y5yy.fsf@nanos.tec.linutronix.de>
+ <ac615f36-0b44-408d-aeab-d76e4241add4@infradead.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [172.21.68.128]
-X-ClientProxiedBy: RTEXMB02.realtek.com.tw (172.21.6.95) To
- RTEXMB04.realtek.com.tw (172.21.6.97)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ac615f36-0b44-408d-aeab-d76e4241add4@infradead.org>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Tzu-En Huang <tehuang@realtek.com>
+On Wed, Mar 25, 2020 at 09:58:14AM -0700, Randy Dunlap wrote:
+> From: Randy Dunlap <rdunlap@infradead.org>
+> 
+> Minor editorial fixes:
+> - add some hyphens in multi-word adjectives
+> - add some periods for consistency
+> - add "'" for possessive CPU's
+> - capitalize IRQ when it's an acronym and not part of a function name
+> 
+> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+> Cc: Paul McKenney <paulmck@kernel.org>
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Sebastian Siewior <bigeasy@linutronix.de>
+> Cc: Joel Fernandes <joel@joelfernandes.org>
+> Cc: Ingo Molnar <mingo@kernel.org>
+> Cc: Peter Zijlstra <peterz@infradead.org>
 
-In previous setting, management packets' sequence numbers will
-not increase and always stay at 0. Add hw sequence number support
-for mgmt packets.
-The table below shows different sequence number setting in the
-tx descriptor.
+Some nits below, but with or without those suggested changes:
 
-seq num ctrl      | EN_HWSEQ | DISQSELSEL | HW_SSN_SEL
-------------------------------------------------------
-sw ctrl           |    0     |    N/A     |    N/A
-hw ctrl per MACID |    1     |     0      |    N/A
-hw ctrl per HWREG |    1     |     1      |HWREG(0/1/2/3)
+Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
 
-Signed-off-by: Tzu-En Huang <tehuang@realtek.com>
-Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
----
- drivers/net/wireless/realtek/rtw88/main.h | 3 +++
- drivers/net/wireless/realtek/rtw88/tx.c   | 6 ++++++
- drivers/net/wireless/realtek/rtw88/tx.h   | 6 ++++++
- 3 files changed, 15 insertions(+)
+> ---
+>  Documentation/locking/locktypes.rst |   16 ++++++++--------
+>  1 file changed, 8 insertions(+), 8 deletions(-)
+> 
+> --- linux-next-20200325.orig/Documentation/locking/locktypes.rst
+> +++ linux-next-20200325/Documentation/locking/locktypes.rst
+> @@ -84,7 +84,7 @@ rtmutex
+>  
+>  RT-mutexes are mutexes with support for priority inheritance (PI).
+>  
+> -PI has limitations on non PREEMPT_RT enabled kernels due to preemption and
+> +PI has limitations on non-PREEMPT_RT-enabled kernels due to preemption and
 
-diff --git a/drivers/net/wireless/realtek/rtw88/main.h b/drivers/net/wireless/realtek/rtw88/main.h
-index 279410a87141..138851a10051 100644
---- a/drivers/net/wireless/realtek/rtw88/main.h
-+++ b/drivers/net/wireless/realtek/rtw88/main.h
-@@ -562,6 +562,9 @@ struct rtw_tx_pkt_info {
- 	bool short_gi;
- 	bool report;
- 	bool rts;
-+	bool dis_qselseq;
-+	bool en_hwseq;
-+	u8 hw_ssn_sel;
- };
- 
- struct rtw_rx_pkt_stat {
-diff --git a/drivers/net/wireless/realtek/rtw88/tx.c b/drivers/net/wireless/realtek/rtw88/tx.c
-index b31eb4d9664b..60989987f67b 100644
---- a/drivers/net/wireless/realtek/rtw88/tx.c
-+++ b/drivers/net/wireless/realtek/rtw88/tx.c
-@@ -58,6 +58,9 @@ void rtw_tx_fill_tx_desc(struct rtw_tx_pkt_info *pkt_info, struct sk_buff *skb)
- 	SET_TX_DESC_SPE_RPT(txdesc, pkt_info->report);
- 	SET_TX_DESC_SW_DEFINE(txdesc, pkt_info->sn);
- 	SET_TX_DESC_USE_RTS(txdesc, pkt_info->rts);
-+	SET_TX_DESC_DISQSELSEQ(txdesc, pkt_info->dis_qselseq);
-+	SET_TX_DESC_EN_HWSEQ(txdesc, pkt_info->en_hwseq);
-+	SET_TX_DESC_HW_SSN_SEL(txdesc, pkt_info->hw_ssn_sel);
- }
- EXPORT_SYMBOL(rtw_tx_fill_tx_desc);
- 
-@@ -227,6 +230,9 @@ static void rtw_tx_mgmt_pkt_info_update(struct rtw_dev *rtwdev,
- 	pkt_info->use_rate = true;
- 	pkt_info->rate_id = 6;
- 	pkt_info->dis_rate_fallback = true;
-+	pkt_info->dis_qselseq = true;
-+	pkt_info->en_hwseq = true;
-+	pkt_info->hw_ssn_sel = 0;
- }
- 
- static void rtw_tx_data_pkt_info_update(struct rtw_dev *rtwdev,
-diff --git a/drivers/net/wireless/realtek/rtw88/tx.h b/drivers/net/wireless/realtek/rtw88/tx.h
-index e488a2643eb3..b973de0f4dc0 100644
---- a/drivers/net/wireless/realtek/rtw88/tx.h
-+++ b/drivers/net/wireless/realtek/rtw88/tx.h
-@@ -53,6 +53,12 @@
- 	le32p_replace_bits((__le32 *)(txdesc) + 0x02, value, BIT(19))
- #define SET_TX_DESC_SW_DEFINE(tx_desc, value)                                  \
- 	le32p_replace_bits((__le32 *)(txdesc) + 0x06, value, GENMASK(11, 0))
-+#define SET_TX_DESC_DISQSELSEQ(txdesc, value)                                 \
-+	le32p_replace_bits((__le32 *)(txdesc) + 0x00, value, BIT(31))
-+#define SET_TX_DESC_EN_HWSEQ(txdesc, value)                                   \
-+	le32p_replace_bits((__le32 *)(txdesc) + 0x08, value, BIT(15))
-+#define SET_TX_DESC_HW_SSN_SEL(txdesc, value)                                 \
-+	le32p_replace_bits((__le32 *)(txdesc) + 0x03, value, GENMASK(7, 6))
- 
- enum rtw_tx_desc_queue_select {
- 	TX_DESC_QSEL_TID0	= 0,
--- 
-2.17.1
+Or just drop the " enabled".
 
+>  interrupt disabled sections.
+>  
+>  PI clearly cannot preempt preemption-disabled or interrupt-disabled
+> @@ -150,7 +150,7 @@ kernel configuration including PREEMPT_R
+>  
+>  raw_spinlock_t is a strict spinning lock implementation in all kernels,
+>  including PREEMPT_RT kernels.  Use raw_spinlock_t only in real critical
+> -core code, low level interrupt handling and places where disabling
+> +core code, low-level interrupt handling and places where disabling
+>  preemption or interrupts is required, for example, to safely access
+>  hardware state.  raw_spinlock_t can sometimes also be used when the
+>  critical section is tiny, thus avoiding RT-mutex overhead.
+> @@ -160,20 +160,20 @@ spinlock_t
+>  
+>  The semantics of spinlock_t change with the state of PREEMPT_RT.
+>  
+> -On a non PREEMPT_RT enabled kernel spinlock_t is mapped to raw_spinlock_t
+> +On a non-PREEMPT_RT-enabled kernel spinlock_t is mapped to raw_spinlock_t
+
+Ditto.
+
+>  and has exactly the same semantics.
+>  
+>  spinlock_t and PREEMPT_RT
+>  -------------------------
+>  
+> -On a PREEMPT_RT enabled kernel spinlock_t is mapped to a separate
+> +On a PREEMPT_RT-enabled kernel spinlock_t is mapped to a separate
+
+And here as well.
+
+>  implementation based on rt_mutex which changes the semantics:
+>  
+> - - Preemption is not disabled
+> + - Preemption is not disabled.
+>  
+>   - The hard interrupt related suffixes for spin_lock / spin_unlock
+> -   operations (_irq, _irqsave / _irqrestore) do not affect the CPUs
+> -   interrupt disabled state
+> +   operations (_irq, _irqsave / _irqrestore) do not affect the CPU's
+> +   interrupt disabled state.
+>  
+>   - The soft interrupt related suffix (_bh()) still disables softirq
+>     handlers.
+> @@ -279,7 +279,7 @@ fully preemptible context.  Instead, use
+>  spin_lock_irqsave() and their unlock counterparts.  In cases where the
+>  interrupt disabling and locking must remain separate, PREEMPT_RT offers a
+>  local_lock mechanism.  Acquiring the local_lock pins the task to a CPU,
+> -allowing things like per-CPU irq-disabled locks to be acquired.  However,
+> +allowing things like per-CPU IRQ-disabled locks to be acquired.  However,
+
+Quite a bit of text in the kernel uses "irq", lower case.  Another
+option is to spell out "interrupt".
+
+>  this approach should be used only where absolutely necessary.
+>  
+>  
+> 
