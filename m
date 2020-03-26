@@ -2,40 +2,40 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4EEE0193DFF
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2020 12:34:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C29D5193DF1
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2020 12:34:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728176AbgCZLeR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 26 Mar 2020 07:34:17 -0400
-Received: from mail-io1-f69.google.com ([209.85.166.69]:49531 "EHLO
-        mail-io1-f69.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728120AbgCZLeQ (ORCPT
+        id S1728070AbgCZLeZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 26 Mar 2020 07:34:25 -0400
+Received: from mail-io1-f71.google.com ([209.85.166.71]:50668 "EHLO
+        mail-io1-f71.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728192AbgCZLeS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 26 Mar 2020 07:34:16 -0400
-Received: by mail-io1-f69.google.com with SMTP id p14so4883515ios.16
+        Thu, 26 Mar 2020 07:34:18 -0400
+Received: by mail-io1-f71.google.com with SMTP id s2so4901907iot.17
         for <linux-wireless@vger.kernel.org>; Thu, 26 Mar 2020 04:34:16 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
-        bh=C6y3mIPzLR73ufsopJWEkr5Zr1g0mPoX0sCzPuo9kgE=;
-        b=AqaDbMCjbEm4mvC25fVqiB5RdO6Hqyl1VwcspRMgitneo9ZFFIdGpsqiWz2NQOUmCf
-         veBWeaRvP4V55gYgynurmz2cUxOUaCfd0sIg7m1nbAWtd+AEIAYFlfiRYfW1X44E2+in
-         GEqPgBbLc4vK/ZZ2hdOTirfKfXijGSmgYCdIrQAzOVrWj5EUFos46EjK62RRZM3i5d/h
-         Y8To6hFhXCI0ll2NCqQMLtMSV8rLHMOWLxzS0/NkWuenXNmedVWz88MgbUBESS/TVo96
-         zJKnA8zpQymGUDmZ4DaS+k/A+TtmiAR4V0gSQapIRmcdJGA7/8lUuGvQS3UhL4boi3Md
-         0GGQ==
-X-Gm-Message-State: ANhLgQ3Iv0y9RuXJsghHdRPHnNCTjVPAuiYr5xsDyh0RBnJz4jv4H6R/
-        NMAb/7bRTWzVLSQ3Q7qeWeCL8MbivDAN9VkKAbVS7Z7Vw+W9
-X-Google-Smtp-Source: ADFU+vtl0vK645d3im2PLzaqrxJeMAlY9qjUChu1B+bIlwDJN2zTknUFKGOjQ/cSY3xTK6hM6rc6/WQj07FZ/qJB73caM2aXesCV
+        bh=tUu5ipLqX0h3zkfeKvn8ONybl6tcgocGmca6tPedBZ0=;
+        b=Jjz8V4BYZlqe09nVzzF/0QXDHG3RzsGlEljpUz72CQckaaDRW7j3CkygpsUyfmM7a1
+         Ek29mVEuzbH5V0k481Dldd4QUSSFFaZKGC4NY2VtsIe9w7J0LDP99sQBLsIAJ433rQL3
+         cihsky+0QDWtaVrgEpD8dqdjj/HSiNxFwrt8xKt99gmwad0AP4Mk/OVLh9n7ZPdPI+y4
+         6C0Lseg8Zup0nB/VkD0orYmBWumoTNLbkjxqR065kppHp68FiIJPV8GW+mApwXDep3jc
+         HMdLtupTwUY/w7rVg6qeGdO0e2bVhH3mab33urjf9oT2xs0t8kp3Cpn9880chStBOglX
+         Z9NA==
+X-Gm-Message-State: ANhLgQ37jlmBIe8j2CSS0FEcZEbEyy5JyyO0/g5ASZVJPiW0OXa8QvBp
+        kMxAprlc+j/T3aatTZeHe9KavGM3kavzS65Kne4vI8FFmzQF
+X-Google-Smtp-Source: ADFU+vufjsMSX1K3oF5eN1nnvBpx+Ckwu2UMj8UTss4Wk2k2mnY6WJIimTmipZxTr2BHd+iCykHeg/7tCTky5POrj5DZ9bt6L/UQ
 MIME-Version: 1.0
-X-Received: by 2002:a5d:970e:: with SMTP id h14mr7083406iol.201.1585222455723;
- Thu, 26 Mar 2020 04:34:15 -0700 (PDT)
-Date:   Thu, 26 Mar 2020 04:34:15 -0700
+X-Received: by 2002:a05:6638:1248:: with SMTP id o8mr6892714jas.143.1585222456046;
+ Thu, 26 Mar 2020 04:34:16 -0700 (PDT)
+Date:   Thu, 26 Mar 2020 04:34:16 -0700
 X-Google-Appengine-App-Id: s~syzkaller
 X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <0000000000005d13df05a1c05dfb@google.com>
-Subject: KASAN: slab-out-of-bounds Write in ath9k_htc_rx_msg
-From:   syzbot <syzbot+694d40a36a6452d77f36@syzkaller.appspotmail.com>
+Message-ID: <00000000000061f8bb05a1c05def@google.com>
+Subject: KASAN: use-after-free Read in ath9k_hif_usb_rx_cb
+From:   syzbot <syzbot+89bd486af9427a9fc605@syzkaller.appspotmail.com>
 To:     andreyknvl@google.com, ath9k-devel@qca.qualcomm.com,
         davem@davemloft.net, kvalo@codeaurora.org,
         linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
@@ -53,22 +53,23 @@ syzbot found the following crash on:
 
 HEAD commit:    e17994d1 usb: core: kcov: collect coverage from usb comple..
 git tree:       https://github.com/google/kasan.git usb-fuzzer
-console output: https://syzkaller.appspot.com/x/log.txt?x=1409ca5be00000
+console output: https://syzkaller.appspot.com/x/log.txt?x=12533987e00000
 kernel config:  https://syzkaller.appspot.com/x/.config?x=5d64370c438bc60
-dashboard link: https://syzkaller.appspot.com/bug?extid=694d40a36a6452d77f36
+dashboard link: https://syzkaller.appspot.com/bug?extid=89bd486af9427a9fc605
 compiler:       gcc (GCC) 9.0.0 20181231 (experimental)
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=122d48f3e00000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=122511e5e00000
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=161978d5e00000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1509b523e00000
 
 IMPORTANT: if you fix the bug, please add the following tag to the commit:
-Reported-by: syzbot+694d40a36a6452d77f36@syzkaller.appspotmail.com
+Reported-by: syzbot+89bd486af9427a9fc605@syzkaller.appspotmail.com
 
 ==================================================================
-BUG: KASAN: slab-out-of-bounds in htc_process_conn_rsp drivers/net/wireless/ath/ath9k/htc_hst.c:131 [inline]
-BUG: KASAN: slab-out-of-bounds in ath9k_htc_rx_msg+0xa25/0xaf0 drivers/net/wireless/ath/ath9k/htc_hst.c:443
-Write of size 2 at addr ffff8881ced8a7f0 by task swapper/0/0
+BUG: KASAN: use-after-free in memcpy include/linux/string.h:381 [inline]
+BUG: KASAN: use-after-free in ath9k_hif_usb_rx_stream drivers/net/wireless/ath/ath9k/hif_usb.c:553 [inline]
+BUG: KASAN: use-after-free in ath9k_hif_usb_rx_cb+0x3be/0xf70 drivers/net/wireless/ath/ath9k/hif_usb.c:666
+Read of size 49151 at addr ffff8881ceee0000 by task swapper/1/0
 
-CPU: 0 PID: 0 Comm: swapper/0 Not tainted 5.6.0-rc5-syzkaller #0
+CPU: 1 PID: 0 Comm: swapper/1 Not tainted 5.6.0-rc5-syzkaller #0
 Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
 Call Trace:
  <IRQ>
@@ -77,12 +78,56 @@ Call Trace:
  print_address_description.constprop.0.cold+0xd3/0x314 mm/kasan/report.c:374
  __kasan_report.cold+0x37/0x77 mm/kasan/report.c:506
  kasan_report+0xe/0x20 mm/kasan/common.c:641
- htc_process_conn_rsp drivers/net/wireless/ath/ath9k/htc_hst.c:131 [inline]
- ath9k_htc_rx_msg+0xa25/0xaf0 drivers/net/wireless/ath/ath9k/htc_hst.c:443
- ath9k_hif_usb_reg_in_cb+0x1ba/0x630 drivers/net/wireless/ath/ath9k/hif_usb.c:718
+ check_memory_region_inline mm/kasan/generic.c:185 [inline]
+ check_memory_region+0x152/0x1c0 mm/kasan/generic.c:192
+ memcpy+0x20/0x50 mm/kasan/common.c:127
+ memcpy include/linux/string.h:381 [inline]
+ ath9k_hif_usb_rx_stream drivers/net/wireless/ath/ath9k/hif_usb.c:553 [inline]
+ ath9k_hif_usb_rx_cb+0x3be/0xf70 drivers/net/wireless/ath/ath9k/hif_usb.c:666
  __usb_hcd_giveback_urb+0x29a/0x550 drivers/usb/core/hcd.c:1650
  usb_hcd_giveback_urb+0x368/0x420 drivers/usb/core/hcd.c:1716
  dummy_timer+0x1258/0x32ae drivers/usb/gadget/udc/dummy_hcd.c:1966
+ call_timer_fn+0x195/0x6f0 kernel/time/timer.c:1404
+ expire_timers kernel/time/timer.c:1449 [inline]
+ __run_timers kernel/time/timer.c:1773 [inline]
+ __run_timers kernel/time/timer.c:1740 [inline]
+ run_timer_softirq+0x5f9/0x1500 kernel/time/timer.c:1786
+ __do_softirq+0x21e/0x950 kernel/softirq.c:292
+ invoke_softirq kernel/softirq.c:373 [inline]
+ irq_exit+0x178/0x1a0 kernel/softirq.c:413
+ exiting_irq arch/x86/include/asm/apic.h:546 [inline]
+ smp_apic_timer_interrupt+0x141/0x540 arch/x86/kernel/apic/apic.c:1146
+ apic_timer_interrupt+0xf/0x20 arch/x86/entry/entry_64.S:829
+ </IRQ>
+RIP: 0010:default_idle+0x28/0x300 arch/x86/kernel/process.c:696
+Code: cc cc 41 56 41 55 65 44 8b 2d 44 77 72 7a 41 54 55 53 0f 1f 44 00 00 e8 b6 62 b5 fb e9 07 00 00 00 0f 00 2d ea 0c 53 00 fb f4 <65> 44 8b 2d 20 77 72 7a 0f 1f 44 00 00 5b 5d 41 5c 41 5d 41 5e c3
+RSP: 0018:ffff8881da22fda8 EFLAGS: 00000246 ORIG_RAX: ffffffffffffff13
+RAX: 0000000000000007 RBX: ffff8881da213100 RCX: 0000000000000000
+RDX: 0000000000000000 RSI: 0000000000000006 RDI: ffff8881da21394c
+RBP: ffffed103b442620 R08: ffff8881da213100 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000001
+R13: 0000000000000001 R14: ffffffff87e607c0 R15: 0000000000000000
+ cpuidle_idle_call kernel/sched/idle.c:154 [inline]
+ do_idle+0x3e0/0x500 kernel/sched/idle.c:269
+ cpu_startup_entry+0x14/0x20 kernel/sched/idle.c:361
+ start_secondary+0x2a4/0x390 arch/x86/kernel/smpboot.c:264
+ secondary_startup_64+0xb6/0xc0 arch/x86/kernel/head_64.S:242
+
+The buggy address belongs to the page:
+page:ffffea00073bb800 refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 compound_mapcount: 0
+flags: 0x200000000010000(head)
+raw: 0200000000010000 dead000000000100 dead000000000122 0000000000000000
+raw: 0000000000000000 0000000000000000 00000001ffffffff 0000000000000000
+page dumped because: kasan: bad access detected
+
+Memory state around the buggy address:
+ ffff8881ceee7f00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+ ffff8881ceee7f80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+>ffff8881ceee8000: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+                   ^
+ ffff8881ceee8080: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+ ffff8881ceee8100: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+==================================================================
 
 
 ---
