@@ -2,94 +2,90 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2022819478A
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2020 20:38:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CAA4F1948FD
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2020 21:28:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728627AbgCZTir (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 26 Mar 2020 15:38:47 -0400
-Received: from mail27.static.mailgun.info ([104.130.122.27]:54675 "EHLO
-        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726340AbgCZTir (ORCPT
+        id S1728866AbgCZU2Z (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 26 Mar 2020 16:28:25 -0400
+Received: from mail-lj1-f196.google.com ([209.85.208.196]:40128 "EHLO
+        mail-lj1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728864AbgCZU2W (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 26 Mar 2020 15:38:47 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1585251527; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=HGer0yxP7sLj3QyFrIf54CwysnJOZjYM50OWoKj9vg0=; b=tqaN9BSYjyH2fXyr495hPcT9faWssMNRohbrgIXX5qqqGaJlVhWBT3ZqtkDi1ed+hhc6jaEg
- 6MU93iFl/cPxO/jdVTHJHpx7krgat4SefAv9lV/c0II6WoJK6QQw/zLkSrwCT6KkiuuDs2Df
- PfLwkTs2IehK55pFGNQrZx2c7zc=
-X-Mailgun-Sending-Ip: 104.130.122.27
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e7d04c6.7f611eadf928-smtp-out-n03;
- Thu, 26 Mar 2020 19:38:46 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id A0EE1C433BA; Thu, 26 Mar 2020 19:38:45 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE,
-        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id A1268C433F2;
-        Thu, 26 Mar 2020 19:38:43 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org A1268C433F2
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     David Miller <davem@davemloft.net>
-Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org
-Subject: Re: pull-request: wireless-drivers-2020-03-25
-References: <20200325195754.92C97C433D2@smtp.codeaurora.org>
-        <20200325.131250.822565965107597577.davem@davemloft.net>
-        <87sghv3af4.fsf@kamboji.qca.qualcomm.com>
-        <20200326.112927.988175486161491472.davem@davemloft.net>
-Date:   Thu, 26 Mar 2020 21:38:41 +0200
-In-Reply-To: <20200326.112927.988175486161491472.davem@davemloft.net> (David
-        Miller's message of "Thu, 26 Mar 2020 11:29:27 -0700 (PDT)")
-Message-ID: <87k1363nzy.fsf@kamboji.qca.qualcomm.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        Thu, 26 Mar 2020 16:28:22 -0400
+Received: by mail-lj1-f196.google.com with SMTP id 19so7862928ljj.7
+        for <linux-wireless@vger.kernel.org>; Thu, 26 Mar 2020 13:28:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=uIvUjlehSVigkxhw02yxSAS/Jekd0JL8sbxoZE/mhG8=;
+        b=YVNmI5X6phcrckh6RoQu9a+teygYOVbW/Bl4PBt0SBu31zUt+xwqv/EEUDu4u3Wfsu
+         TtAMZDxWg0qLC7YfdoYqGTePcdYifxTv5zTCiwpmN2rwH0DQUsnuvWw3o6apGIPLiQ0N
+         7xYGXQWrw231F4xiARaKVUUBWWvaSi0xaySIAnAAV4ZZ7vNh1QX0Y9+CMrBdEGLGg5/1
+         hrQH/A3PAiSHetLesdJtU2rEhvWLHi0tKa0CWz5LhLN6eX2CPqw6YAbgihnrT8KDqaHN
+         azF03eprFppfA+OpE8sTl5kO0H7hnhZE9nEMHe8Nzgc6wVyjru9ZWc4fMoalXU4pL6UK
+         9N/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=uIvUjlehSVigkxhw02yxSAS/Jekd0JL8sbxoZE/mhG8=;
+        b=dvf2JyoRlCQdwHq98op0dPxoILEVj7VvGrf78zygqs1hcQ/R+6IHHkAFLjh7WjqDBj
+         54OmvJWl7gSlPutnOMsFzeb33jRO3uPrwImfnvwCc4VkiNylvYpzd6T1EXxb1wdH11IW
+         nZhWZacYycsVCbvgg1WGicsu4HLdsma0uralwJeSWscIt2Y6UqcbBgWE1D98iq7I6aru
+         g6Nms+pYpV8EO/zccncDI6dy9+XoX5ghB5MuJigZZVT5FF94WJw3e4HC6vkE2AWT4uyz
+         ylQWhLVYEKzdhGiJnT0ABfPxRdlZmWMNRM9PRErrdzpk+XP9n+4EoKef6TKNApFkE0wP
+         PtYg==
+X-Gm-Message-State: AGi0PuY09GO0ijhPrtd8V9tQ8Yxnmpp2qQw5N04UI9oH8ETpcmlWLI3d
+        +HYwCms2d92Rsem6D6/xBedH/Qtz3EadjP2sgvA=
+X-Google-Smtp-Source: ADFU+vvMzR/OdU42YUFRp9s1QrUWHpyqFi8ArC68Bh588bo08Lo2bBjjUOCxvBVCfTMUD++UfiIyHVUWPsCy0PRGM7c=
+X-Received: by 2002:a2e:7307:: with SMTP id o7mr6203242ljc.118.1585254500357;
+ Thu, 26 Mar 2020 13:28:20 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
+Received: by 2002:a2e:8556:0:0:0:0:0 with HTTP; Thu, 26 Mar 2020 13:28:19
+ -0700 (PDT)
+Reply-To: officework_progress@yahoo.com
+From:   Andrew Ede <lmenkwa12@gmail.com>
+Date:   Thu, 26 Mar 2020 22:28:19 +0200
+Message-ID: <CAHPhtMDxeqYVxJC_4doKGC6fVM=pMH3-AGBCn4FA77JtRnW6fQ@mail.gmail.com>
+Subject: CAN YOU WORK WITH US?
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-David Miller <davem@davemloft.net> writes:
+Good day.
 
-> From: Kalle Valo <kvalo@codeaurora.org>
-> Date: Thu, 26 Mar 2020 08:19:43 +0200
->
->> David Miller <davem@davemloft.net> writes:
->> 
->>> From: Kalle Valo <kvalo@codeaurora.org>
->>> Date: Wed, 25 Mar 2020 19:57:54 +0000 (UTC)
->>>
->>>> here's a pull request to net tree, more info below. Please let me know if there
->>>> are any problems.
->>>
->>> Pulled, thanks Kalle.
->> 
->> Thanks. I forgot to remind in this pull request about the iwlwifi
->> conflict when you merge net to net-next. Here are the instructions how
->> to handle that:
->> 
->>   To solve that just drop the changes from commit cf52c8a776d1 in
->>   wireless-drivers and take the hunk from wireless-drivers-next as is.
->>   The list of specific subsystem device IDs are not necessary after
->>   commit d6f2134a3831 (in wireless-drivers-next) anymore, the detection
->>   is based on other characteristics of the devices.
->> 
->>   https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next.git/commit/?id=5ef8c665416b9815113042e0edebe8ff66a45e2e
->
-> I think that's what I did basically, please go take a look and double
-> check my work.
+My reason of contacting you is that I and my colleagues working in our
+country=E2=80=99s National Petroleum Corporation want to buy any existing
+modern crude oil refinery in any part of the world.
 
-Looks good to me, thanks for taking care of it.
+We are ready to buy any available land to build the Refinery or buy
+the existing one anywhere outside Africa. We will make you our foreign
+partner abroad with some percentage shareholding if you will be
+interested to work with us on this project.
 
--- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+We have the sum of ($600 Million Dollars) Six Hundred Million Dollars
+for this project.
+
+Meanwhile, this amount of ($600 Million Dollars) will be accessible
+through Foreign Contract Purchase Fund. We are going to clarify what
+we meant by Foreign Contract Purchase Fund as soon as we hear from you
+for better understanding and the way forward.
+
+However, in case you are not capable to handle this project with us,
+please kindly connect us to any capable person or company that would
+handle the project with us in order to enable us proceed at once.
+
+We hope to hear you in no distance time through this e-mail address
+at: officework_progress@yahoo.com, for immediate communication and
+more facts on how to go on.
+
+With respect
+
+Best Regards
+
+Andrew Ede and Co,,
