@@ -2,40 +2,40 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C29D5193DF1
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2020 12:34:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F404193DED
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2020 12:34:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728070AbgCZLeZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 26 Mar 2020 07:34:25 -0400
-Received: from mail-io1-f71.google.com ([209.85.166.71]:50668 "EHLO
-        mail-io1-f71.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728192AbgCZLeS (ORCPT
+        id S1728212AbgCZLeU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 26 Mar 2020 07:34:20 -0400
+Received: from mail-il1-f198.google.com ([209.85.166.198]:44771 "EHLO
+        mail-il1-f198.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728200AbgCZLeT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 26 Mar 2020 07:34:18 -0400
-Received: by mail-io1-f71.google.com with SMTP id s2so4901907iot.17
-        for <linux-wireless@vger.kernel.org>; Thu, 26 Mar 2020 04:34:16 -0700 (PDT)
+        Thu, 26 Mar 2020 07:34:19 -0400
+Received: by mail-il1-f198.google.com with SMTP id b15so1872926ilh.11
+        for <linux-wireless@vger.kernel.org>; Thu, 26 Mar 2020 04:34:17 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
-        bh=tUu5ipLqX0h3zkfeKvn8ONybl6tcgocGmca6tPedBZ0=;
-        b=Jjz8V4BYZlqe09nVzzF/0QXDHG3RzsGlEljpUz72CQckaaDRW7j3CkygpsUyfmM7a1
-         Ek29mVEuzbH5V0k481Dldd4QUSSFFaZKGC4NY2VtsIe9w7J0LDP99sQBLsIAJ433rQL3
-         cihsky+0QDWtaVrgEpD8dqdjj/HSiNxFwrt8xKt99gmwad0AP4Mk/OVLh9n7ZPdPI+y4
-         6C0Lseg8Zup0nB/VkD0orYmBWumoTNLbkjxqR065kppHp68FiIJPV8GW+mApwXDep3jc
-         HMdLtupTwUY/w7rVg6qeGdO0e2bVhH3mab33urjf9oT2xs0t8kp3Cpn9880chStBOglX
-         Z9NA==
-X-Gm-Message-State: ANhLgQ37jlmBIe8j2CSS0FEcZEbEyy5JyyO0/g5ASZVJPiW0OXa8QvBp
-        kMxAprlc+j/T3aatTZeHe9KavGM3kavzS65Kne4vI8FFmzQF
-X-Google-Smtp-Source: ADFU+vufjsMSX1K3oF5eN1nnvBpx+Ckwu2UMj8UTss4Wk2k2mnY6WJIimTmipZxTr2BHd+iCykHeg/7tCTky5POrj5DZ9bt6L/UQ
+        bh=K5OHxcR7nwCssDFon9Ku7jDNBJ2liH6ZbfsPuF6IbzA=;
+        b=XHAs3ETh3Ttf094io7MVhAfhpGAAAgLFtAihYPXsdQ1xPDAa5HI1nkclbVnvizJVt+
+         E9+qYG5Z9rObmg7KIxo0wr6CHxrtFSWr+BgblJtyxmjRxLEG/Lw7TZb+BjzbddFaxch7
+         vgucCoNrnaqJfgVCzOlsMymQYXI/WENrSQWwLN7Rrt60gUZfO0XB/rPyZKlcmf3VFsdQ
+         2M4tRxqwXFpfwrVQ333PqUjxU7A8DaMtW174GoqmEIeFGfyb5Z4a1msumMqjk85Gg+Sn
+         qiSJgJUynP8YfkUvNDhFYUl8Cb43YkEl6zOqleuTz+Eq3SgKJVLgbA5IMIiSJsNt8CNq
+         4dkg==
+X-Gm-Message-State: ANhLgQ3rT/jwuTqCv20Yi1zGTj/1ptmhusCQfY5nmFzmxnyKup+UVWfR
+        4ylFTrgNY93dsIBhXP2M0JcuwXa/UfJKRxeB2A1BwBuYHymb
+X-Google-Smtp-Source: ADFU+vvGBmcpvSWF1O7ymEe6OpN8fadgcXY91XrVN0MoBwKWg525kJS5Ywt3HexSQo87ZuGXLwbquXCxkZ4lAraVjIaf2KtwQJvq
 MIME-Version: 1.0
-X-Received: by 2002:a05:6638:1248:: with SMTP id o8mr6892714jas.143.1585222456046;
+X-Received: by 2002:a6b:760f:: with SMTP id g15mr7166798iom.56.1585222456622;
  Thu, 26 Mar 2020 04:34:16 -0700 (PDT)
 Date:   Thu, 26 Mar 2020 04:34:16 -0700
 X-Google-Appengine-App-Id: s~syzkaller
 X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <00000000000061f8bb05a1c05def@google.com>
-Subject: KASAN: use-after-free Read in ath9k_hif_usb_rx_cb
-From:   syzbot <syzbot+89bd486af9427a9fc605@syzkaller.appspotmail.com>
+Message-ID: <0000000000006ac55b05a1c05d72@google.com>
+Subject: KASAN: use-after-free Write in ath9k_htc_rx_msg
+From:   syzbot <syzbot+b1c61e5f11be5782f192@syzkaller.appspotmail.com>
 To:     andreyknvl@google.com, ath9k-devel@qca.qualcomm.com,
         davem@davemloft.net, kvalo@codeaurora.org,
         linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
@@ -53,21 +53,20 @@ syzbot found the following crash on:
 
 HEAD commit:    e17994d1 usb: core: kcov: collect coverage from usb comple..
 git tree:       https://github.com/google/kasan.git usb-fuzzer
-console output: https://syzkaller.appspot.com/x/log.txt?x=12533987e00000
+console output: https://syzkaller.appspot.com/x/log.txt?x=13a40c13e00000
 kernel config:  https://syzkaller.appspot.com/x/.config?x=5d64370c438bc60
-dashboard link: https://syzkaller.appspot.com/bug?extid=89bd486af9427a9fc605
+dashboard link: https://syzkaller.appspot.com/bug?extid=b1c61e5f11be5782f192
 compiler:       gcc (GCC) 9.0.0 20181231 (experimental)
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=161978d5e00000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1509b523e00000
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=13790f73e00000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=14ebae75e00000
 
 IMPORTANT: if you fix the bug, please add the following tag to the commit:
-Reported-by: syzbot+89bd486af9427a9fc605@syzkaller.appspotmail.com
+Reported-by: syzbot+b1c61e5f11be5782f192@syzkaller.appspotmail.com
 
 ==================================================================
-BUG: KASAN: use-after-free in memcpy include/linux/string.h:381 [inline]
-BUG: KASAN: use-after-free in ath9k_hif_usb_rx_stream drivers/net/wireless/ath/ath9k/hif_usb.c:553 [inline]
-BUG: KASAN: use-after-free in ath9k_hif_usb_rx_cb+0x3be/0xf70 drivers/net/wireless/ath/ath9k/hif_usb.c:666
-Read of size 49151 at addr ffff8881ceee0000 by task swapper/1/0
+BUG: KASAN: use-after-free in htc_process_conn_rsp drivers/net/wireless/ath/ath9k/htc_hst.c:131 [inline]
+BUG: KASAN: use-after-free in ath9k_htc_rx_msg+0xa25/0xaf0 drivers/net/wireless/ath/ath9k/htc_hst.c:443
+Write of size 2 at addr ffff8881cea291f0 by task swapper/1/0
 
 CPU: 1 PID: 0 Comm: swapper/1 Not tainted 5.6.0-rc5-syzkaller #0
 Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
@@ -78,12 +77,9 @@ Call Trace:
  print_address_description.constprop.0.cold+0xd3/0x314 mm/kasan/report.c:374
  __kasan_report.cold+0x37/0x77 mm/kasan/report.c:506
  kasan_report+0xe/0x20 mm/kasan/common.c:641
- check_memory_region_inline mm/kasan/generic.c:185 [inline]
- check_memory_region+0x152/0x1c0 mm/kasan/generic.c:192
- memcpy+0x20/0x50 mm/kasan/common.c:127
- memcpy include/linux/string.h:381 [inline]
- ath9k_hif_usb_rx_stream drivers/net/wireless/ath/ath9k/hif_usb.c:553 [inline]
- ath9k_hif_usb_rx_cb+0x3be/0xf70 drivers/net/wireless/ath/ath9k/hif_usb.c:666
+ htc_process_conn_rsp drivers/net/wireless/ath/ath9k/htc_hst.c:131 [inline]
+ ath9k_htc_rx_msg+0xa25/0xaf0 drivers/net/wireless/ath/ath9k/htc_hst.c:443
+ ath9k_hif_usb_reg_in_cb+0x1ba/0x630 drivers/net/wireless/ath/ath9k/hif_usb.c:718
  __usb_hcd_giveback_urb+0x29a/0x550 drivers/usb/core/hcd.c:1650
  usb_hcd_giveback_urb+0x368/0x420 drivers/usb/core/hcd.c:1716
  dummy_timer+0x1258/0x32ae drivers/usb/gadget/udc/dummy_hcd.c:1966
@@ -113,20 +109,61 @@ R13: 0000000000000001 R14: ffffffff87e607c0 R15: 0000000000000000
  start_secondary+0x2a4/0x390 arch/x86/kernel/smpboot.c:264
  secondary_startup_64+0xb6/0xc0 arch/x86/kernel/head_64.S:242
 
+Allocated by task 371:
+ save_stack+0x1b/0x80 mm/kasan/common.c:72
+ set_track mm/kasan/common.c:80 [inline]
+ __kasan_kmalloc mm/kasan/common.c:515 [inline]
+ __kasan_kmalloc.constprop.0+0xbf/0xd0 mm/kasan/common.c:488
+ kmalloc include/linux/slab.h:560 [inline]
+ raw_alloc_io_data drivers/usb/gadget/legacy/raw_gadget.c:556 [inline]
+ raw_alloc_io_data+0x150/0x1c0 drivers/usb/gadget/legacy/raw_gadget.c:538
+ raw_ioctl_ep0_read drivers/usb/gadget/legacy/raw_gadget.c:657 [inline]
+ raw_ioctl+0x686/0x1a70 drivers/usb/gadget/legacy/raw_gadget.c:1035
+ vfs_ioctl fs/ioctl.c:47 [inline]
+ ksys_ioctl+0x11a/0x180 fs/ioctl.c:763
+ __do_sys_ioctl fs/ioctl.c:772 [inline]
+ __se_sys_ioctl fs/ioctl.c:770 [inline]
+ __x64_sys_ioctl+0x6f/0xb0 fs/ioctl.c:770
+ do_syscall_64+0xb6/0x5a0 arch/x86/entry/common.c:294
+ entry_SYSCALL_64_after_hwframe+0x49/0xbe
+
+Freed by task 371:
+ save_stack+0x1b/0x80 mm/kasan/common.c:72
+ set_track mm/kasan/common.c:80 [inline]
+ kasan_set_free_info mm/kasan/common.c:337 [inline]
+ __kasan_slab_free+0x117/0x160 mm/kasan/common.c:476
+ slab_free_hook mm/slub.c:1444 [inline]
+ slab_free_freelist_hook mm/slub.c:1477 [inline]
+ slab_free mm/slub.c:3024 [inline]
+ kfree+0xd5/0x300 mm/slub.c:3976
+ raw_ioctl_ep_read drivers/usb/gadget/legacy/raw_gadget.c:961 [inline]
+ raw_ioctl+0x189/0x1a70 drivers/usb/gadget/legacy/raw_gadget.c:1047
+ vfs_ioctl fs/ioctl.c:47 [inline]
+ ksys_ioctl+0x11a/0x180 fs/ioctl.c:763
+ __do_sys_ioctl fs/ioctl.c:772 [inline]
+ __se_sys_ioctl fs/ioctl.c:770 [inline]
+ __x64_sys_ioctl+0x6f/0xb0 fs/ioctl.c:770
+ do_syscall_64+0xb6/0x5a0 arch/x86/entry/common.c:294
+ entry_SYSCALL_64_after_hwframe+0x49/0xbe
+
+The buggy address belongs to the object at ffff8881cea29000
+ which belongs to the cache kmalloc-2k of size 2048
+The buggy address is located 496 bytes inside of
+ 2048-byte region [ffff8881cea29000, ffff8881cea29800)
 The buggy address belongs to the page:
-page:ffffea00073bb800 refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 compound_mapcount: 0
-flags: 0x200000000010000(head)
-raw: 0200000000010000 dead000000000100 dead000000000122 0000000000000000
-raw: 0000000000000000 0000000000000000 00000001ffffffff 0000000000000000
+page:ffffea00073a8a00 refcount:1 mapcount:0 mapping:ffff8881da00c000 index:0x0 compound_mapcount: 0
+flags: 0x200000000010200(slab|head)
+raw: 0200000000010200 dead000000000100 dead000000000122 ffff8881da00c000
+raw: 0000000000000000 0000000080080008 00000001ffffffff 0000000000000000
 page dumped because: kasan: bad access detected
 
 Memory state around the buggy address:
- ffff8881ceee7f00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
- ffff8881ceee7f80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
->ffff8881ceee8000: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-                   ^
- ffff8881ceee8080: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
- ffff8881ceee8100: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+ ffff8881cea29080: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+ ffff8881cea29100: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+>ffff8881cea29180: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+                                                             ^
+ ffff8881cea29200: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+ ffff8881cea29280: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
 ==================================================================
 
 
