@@ -2,30 +2,30 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F2BA194761
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2020 20:22:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AD4BF194764
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2020 20:24:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727611AbgCZTWZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 26 Mar 2020 15:22:25 -0400
-Received: from mail27.static.mailgun.info ([104.130.122.27]:26603 "EHLO
-        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726067AbgCZTWZ (ORCPT
+        id S1727770AbgCZTYP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 26 Mar 2020 15:24:15 -0400
+Received: from mail26.static.mailgun.info ([104.130.122.26]:49608 "EHLO
+        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727026AbgCZTYO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 26 Mar 2020 15:22:25 -0400
+        Thu, 26 Mar 2020 15:24:14 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1585250545; h=Date: Message-Id: Cc: To: References:
+ s=smtp; t=1585250654; h=Date: Message-Id: Cc: To: References:
  In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=64E+nL6RpQ1sJSbBZTs5xkAxedmth9tYUmjGCvtmLQE=;
- b=JQqxQemLF7mjNPg7fL864RoAlKxZEWwWUQlUVoduJGgrSamNv8LpEXh012uzok7Qtc/8Yd/4
- wZBTeY2RHUyYuQ4EGcFeVWNF+TBI/HJiaoxiZ/LgHnco463sGbh1jY/gbOl8iXmGf3rgaCAd
- EJxShgX8PJHjyBOflrt7wtrI2c0=
-X-Mailgun-Sending-Ip: 104.130.122.27
+ Content-Type: Sender; bh=BMGoGHSXOZ233X67YkN/RH91FjPrQ4uEb9ABNdJUj+I=;
+ b=N4P2EUYlLeCLHvNLoX6nMMrUHjVpr/puSt+q3D3Wv/TOGGNVeVRW0suSvOaG8XV4aFP/79tH
+ piWuNiBeOf2Wfh0P7WkrIuX2Mv+kCLxVX2xazNeT9j8mMZq4JyBekSHPNu7jqZCIM3kTM2VG
+ kVJ1zTWe2EJmJJQWL/NwEoz91EY=
+X-Mailgun-Sending-Ip: 104.130.122.26
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e7d00f0.7f7d64b446f8-smtp-out-n04;
- Thu, 26 Mar 2020 19:22:24 -0000 (UTC)
+ by mxa.mailgun.org with ESMTP id 5e7d0150.7f7026ef9e68-smtp-out-n04;
+ Thu, 26 Mar 2020 19:24:00 -0000 (UTC)
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 1605EC4478C; Thu, 26 Mar 2020 19:22:24 +0000 (UTC)
+        id 21025C433BA; Thu, 26 Mar 2020 19:24:00 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -35,55 +35,45 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 5FE20C433BA;
-        Thu, 26 Mar 2020 19:22:22 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 5FE20C433BA
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id B7A75C433D2;
+        Thu, 26 Mar 2020 19:23:55 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org B7A75C433D2
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] rtw88: fix non-increase management packet sequence number
+Subject: Re: [PATCH] hostap: convert to struct proc_ops
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20200326020408.25218-1-yhchuang@realtek.com>
-References: <20200326020408.25218-1-yhchuang@realtek.com>
-To:     <yhchuang@realtek.com>
-Cc:     <linux-wireless@vger.kernel.org>, <tehuang@realtek.com>,
-        <briannorris@chromium.org>
+In-Reply-To: <20200326032432.20384-1-yuehaibing@huawei.com>
+References: <20200326032432.20384-1-yuehaibing@huawei.com>
+To:     YueHaibing <yuehaibing@huawei.com>
+Cc:     <j@w1.fi>, <davem@davemloft.net>, <yuehaibing@huawei.com>,
+        <andriy.shevchenko@linux.intel.com>, <sfr@canb.auug.org.au>,
+        <akpm@linux-foundation.org>, <adobriyan@gmail.com>,
+        <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
 User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20200326192224.1605EC4478C@smtp.codeaurora.org>
-Date:   Thu, 26 Mar 2020 19:22:24 +0000 (UTC)
+Message-Id: <20200326192400.21025C433BA@smtp.codeaurora.org>
+Date:   Thu, 26 Mar 2020 19:24:00 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-<yhchuang@realtek.com> wrote:
+YueHaibing <yuehaibing@huawei.com> wrote:
 
-> From: Tzu-En Huang <tehuang@realtek.com>
+> commit 97a32539b956 ("proc: convert everything to "struct proc_ops"")
+> forget do this convering for prism2_download_aux_dump_proc_fops.
 > 
-> In previous setting, management packets' sequence numbers will
-> not increase and always stay at 0. Add hw sequence number support
-> for mgmt packets.
-> The table below shows different sequence number setting in the
-> tx descriptor.
-> 
-> seq num ctrl      | EN_HWSEQ | DISQSELSEL | HW_SSN_SEL
-> ------------------------------------------------------
-> sw ctrl           |    0     |    N/A     |    N/A
-> hw ctrl per MACID |    1     |     0      |    N/A
-> hw ctrl per HWREG |    1     |     1      |HWREG(0/1/2/3)
-> 
-> Signed-off-by: Tzu-En Huang <tehuang@realtek.com>
-> Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
-> Reviewed-by: Brian Norris <briannorris@chromium.org>
-> Tested-by: Brian Norris <briannorris@chromium.org>
+> Fixes: 97a32539b956 ("proc: convert everything to "struct proc_ops"")
+> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 
 Patch applied to wireless-drivers-next.git, thanks.
 
-2542469d1258 rtw88: fix non-increase management packet sequence number
+3af4da165f48 hostap: convert to struct proc_ops
 
 -- 
-https://patchwork.kernel.org/patch/11458951/
+https://patchwork.kernel.org/patch/11459139/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
