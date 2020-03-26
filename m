@@ -2,26 +2,26 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C6DC9193F4B
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2020 13:55:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B24FB193F4C
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Mar 2020 13:55:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728187AbgCZMzV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 26 Mar 2020 08:55:21 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:44192 "EHLO
+        id S1728201AbgCZMzX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 26 Mar 2020 08:55:23 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:44198 "EHLO
         farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1728065AbgCZMzV (ORCPT
+        with ESMTP id S1728150AbgCZMzW (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 26 Mar 2020 08:55:21 -0400
+        Thu, 26 Mar 2020 08:55:22 -0400
 Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa.ger.corp.intel.com)
         by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
         (Exim 4.93)
         (envelope-from <luca@coelho.fi>)
-        id 1jHS2Z-00040Z-8m; Thu, 26 Mar 2020 14:55:19 +0200
+        id 1jHS2Z-00040Z-US; Thu, 26 Mar 2020 14:55:20 +0200
 From:   Luca Coelho <luca@coelho.fi>
 To:     kvalo@codeaurora.org
 Cc:     linux-wireless@vger.kernel.org
-Date:   Thu, 26 Mar 2020 14:54:59 +0200
-Message-Id: <iwlwifi.20200326145047.9f3f3a11ed27.Ib4d0c471da9c50d9981541a7f5926db384a0f7ce@changeid>
+Date:   Thu, 26 Mar 2020 14:55:00 +0200
+Message-Id: <iwlwifi.20200326145047.81b06bbae5ca.Ib68d4c821ebcce253b42ed0ea15881fb4e3e01da@changeid>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200326125510.621842-1-luca@coelho.fi>
 References: <20200326125510.621842-1-luca@coelho.fi>
@@ -31,99 +31,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on farmhouse.coelho.fi
 X-Spam-Level: 
 X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
         TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.4
-Subject: [PATCH 01/12] iwlwifi: mvm: add support for non EDCA based measurements
+Subject: [PATCH 02/12] iwlwifi: add support for version 2 of SOC_CONFIGURATION_CMD
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Avraham Stern <avraham.stern@intel.com>
+From: Luca Coelho <luciano.coelho@intel.com>
 
-Add support for requesting trigger-based / non trigger-based
-measurements.
+This new command is mostly backwards compatible, with the exception
+that the device_type element was changed into a bitmask.  The device
+type bit remains the same (because we only had 0 and 1 anyway), but
+when using v1 we can't set any other bits, because that would change
+the integer.
 
-Signed-off-by: Avraham Stern <avraham.stern@intel.com>
+Other than that, the struct remains the same and the driver can set
+the device_type bit in both cases, but it can only set the low_latency
+bit if VER_2 is used.
+
 Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/fw/api/location.h   | 6 ++++++
- drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c | 9 +++++++++
- drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c      | 5 ++++-
- 3 files changed, 19 insertions(+), 1 deletion(-)
+ .../net/wireless/intel/iwlwifi/fw/api/soc.h   | 24 +++++++++++--------
+ .../net/wireless/intel/iwlwifi/iwl-config.h   |  2 ++
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c   | 21 ++++++++++++----
+ 3 files changed, 32 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/location.h b/drivers/net/wireless/intel/iwlwifi/fw/api/location.h
-index a0d6802c2715..0214e553d5ae 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/api/location.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/api/location.h
-@@ -427,6 +427,9 @@ struct iwl_tof_range_req_ap_entry_v2 {
-  *	Default algo type is ML.
-  * @IWL_INITIATOR_AP_FLAGS_MCSI_REPORT: Send the MCSI for each FTM frame to the
-  *	driver.
-+ * @IWL_INITIATOR_AP_FLAGS_NON_TB: Use non trigger based flow
-+ * @IWL_INITIATOR_AP_FLAGS_TB: Use trigger based flow
-+ * @IWL_INITIATOR_AP_FLAGS_SECURED: request secured measurement
-  */
- enum iwl_initiator_ap_flags {
- 	IWL_INITIATOR_AP_FLAGS_ASAP = BIT(1),
-@@ -436,6 +439,9 @@ enum iwl_initiator_ap_flags {
- 	IWL_INITIATOR_AP_FLAGS_ALGO_LR = BIT(5),
- 	IWL_INITIATOR_AP_FLAGS_ALGO_FFT = BIT(6),
- 	IWL_INITIATOR_AP_FLAGS_MCSI_REPORT = BIT(8),
-+	IWL_INITIATOR_AP_FLAGS_NON_TB = BIT(9),
-+	IWL_INITIATOR_AP_FLAGS_TB = BIT(10),
-+	IWL_INITIATOR_AP_FLAGS_SECURED = BIT(11),
- };
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/soc.h b/drivers/net/wireless/intel/iwlwifi/fw/api/soc.h
+index 5d1fb98fe667..aadca78e9846 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/api/soc.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/api/soc.h
+@@ -8,6 +8,7 @@
+  * Copyright(c) 2012 - 2014 Intel Corporation. All rights reserved.
+  * Copyright(c) 2013 - 2015 Intel Mobile Communications GmbH
+  * Copyright(c) 2016 - 2017 Intel Deutschland GmbH
++ * Copyright(c) 2019        Intel Deutschland GmbH
+  *
+  * This program is free software; you can redistribute it and/or modify
+  * it under the terms of version 2 of the GNU General Public License as
+@@ -30,6 +31,7 @@
+  * Copyright(c) 2012 - 2014 Intel Corporation. All rights reserved.
+  * Copyright(c) 2013 - 2015 Intel Mobile Communications GmbH
+  * Copyright(c) 2016 - 2017 Intel Deutschland GmbH
++ * Copyright(c) 2019        Intel Deutschland GmbH
+  * All rights reserved.
+  *
+  * Redistribution and use in source and binary forms, with or without
+@@ -63,21 +65,23 @@
+ #ifndef __iwl_fw_api_soc_h__
+ #define __iwl_fw_api_soc_h__
+ 
+-/* type of devices for defining SOC latency */
+-enum iwl_soc_device_types {
+-	SOC_CONFIG_CMD_INTEGRATED   = 0x0,
+-	SOC_CONFIG_CMD_DISCRETE     = 0x1,
+-};
++#define SOC_CONFIG_CMD_FLAGS_DISCRETE		BIT(0)
++#define SOC_CONFIG_CMD_FLAGS_LOW_LATENCY	BIT(1)
  
  /**
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c b/drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c
-index 6e1ea921c299..9e21f5e5d364 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c
-@@ -278,6 +278,10 @@ iwl_mvm_ftm_target_chandef_v2(struct iwl_mvm *mvm,
- 		return -EINVAL;
- 	}
+  * struct iwl_soc_configuration_cmd - Set device stabilization latency
+  *
+- * @device_type: the device type as defined in &enum iwl_soc_device_types
+- * @soc_latency: time for SOC to ensure stable power & XTAL
++ * @flags: soc settings flags.  In VER_1, we can only set the DISCRETE
++ *	flag, because the FW treats the whole value as an integer. In
++ *	VER_2, we can set the bits independently.
++ * @latency: time for SOC to ensure stable power & XTAL
+  */
+ struct iwl_soc_configuration_cmd {
+-	__le32 device_type;
+-	__le32 soc_latency;
+-} __packed; /* SOC_CONFIGURATION_CMD_S_VER_1 */
++	__le32 flags;
++	__le32 latency;
++} __packed; /*
++	     * SOC_CONFIGURATION_CMD_S_VER_1 (see description above)
++	     * SOC_CONFIGURATION_CMD_S_VER_2
++	     */
  
-+	/* non EDCA based measurement must use HE preamble */
-+	if (peer->ftm.trigger_based || peer->ftm.non_trigger_based)
-+		*format_bw |= IWL_LOCATION_FRAME_FORMAT_HE;
-+
- 	*ctrl_ch_position = (peer->chandef.width > NL80211_CHAN_WIDTH_20) ?
- 		iwl_mvm_get_ctrl_pos(&peer->chandef) : 0;
- 
-@@ -349,6 +353,11 @@ iwl_mvm_ftm_put_target_common(struct iwl_mvm *mvm,
- 		FTM_PUT_FLAG(ALGO_LR);
- 	else if (IWL_MVM_FTM_INITIATOR_ALGO == IWL_TOF_ALGO_TYPE_FFT)
- 		FTM_PUT_FLAG(ALGO_FFT);
-+
-+	if (peer->ftm.trigger_based)
-+		FTM_PUT_FLAG(TB);
-+	else if (peer->ftm.non_trigger_based)
-+		FTM_PUT_FLAG(NON_TB);
- }
- 
- static int
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-index 7b6d14445f1b..c9c40965de4c 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-@@ -193,6 +193,8 @@ static const struct cfg80211_pmsr_capabilities iwl_mvm_pmsr_capa = {
- 		.non_asap = 1,
- 		.request_lci = 1,
- 		.request_civicloc = 1,
-+		.trigger_based = 1,
-+		.non_trigger_based = 1,
- 		.max_bursts_exponent = -1, /* all supported */
- 		.max_ftms_per_burst = 0, /* no limits */
- 		.bandwidths = BIT(NL80211_CHAN_WIDTH_20_NOHT) |
-@@ -201,7 +203,8 @@ static const struct cfg80211_pmsr_capabilities iwl_mvm_pmsr_capa = {
- 			      BIT(NL80211_CHAN_WIDTH_80),
- 		.preambles = BIT(NL80211_PREAMBLE_LEGACY) |
- 			     BIT(NL80211_PREAMBLE_HT) |
--			     BIT(NL80211_PREAMBLE_VHT),
-+			     BIT(NL80211_PREAMBLE_VHT) |
-+			     BIT(NL80211_PREAMBLE_HE),
- 	},
+ #endif /* __iwl_fw_api_soc_h__ */
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-config.h b/drivers/net/wireless/intel/iwlwifi/iwl-config.h
+index 8549e8a39705..3069a322ca75 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-config.h
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-config.h
+@@ -303,6 +303,7 @@ struct iwl_pwr_tx_backoff {
+  * @gen2: 22000 and on transport operation
+  * @mq_rx_supported: multi-queue rx support
+  * @integrated: discrete or integrated
++ * @low_latency_xtal: use the low latency xtal if supported
+  */
+ struct iwl_cfg_trans_params {
+ 	const struct iwl_base_params *base_params;
+@@ -315,6 +316,7 @@ struct iwl_cfg_trans_params {
+ 	    gen2:1,
+ 	    mq_rx_supported:1,
+ 	    integrated:1,
++	    low_latency_xtal:1,
+ 	    bisr_workaround:1;
  };
  
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+index 98978a475d93..bc040e9ca55f 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+@@ -90,13 +90,24 @@ struct iwl_mvm_alive_data {
+ /* set device type and latency */
+ static int iwl_set_soc_latency(struct iwl_mvm *mvm)
+ {
+-	struct iwl_soc_configuration_cmd cmd;
++	struct iwl_soc_configuration_cmd cmd = {};
+ 	int ret;
+ 
+-	cmd.device_type = (mvm->trans->trans_cfg->integrated) ?
+-		cpu_to_le32(SOC_CONFIG_CMD_INTEGRATED) :
+-		cpu_to_le32(SOC_CONFIG_CMD_DISCRETE);
+-	cmd.soc_latency = cpu_to_le32(mvm->trans->trans_cfg->xtal_latency);
++	/*
++	 * In VER_1 of this command, the discrete value is considered
++	 * an integer; In VER_2, it's a bitmask.  Since we have only 2
++	 * values in VER_1, this is backwards-compatible with VER_2,
++	 * as long as we don't set any other bits.
++	 */
++	if (!mvm->trans->trans_cfg->integrated)
++		cmd.flags = cpu_to_le32(SOC_CONFIG_CMD_FLAGS_DISCRETE);
++
++	if (iwl_mvm_lookup_cmd_ver(mvm->fw, IWL_ALWAYS_LONG_GROUP,
++				   SCAN_REQ_UMAC) >= 2 &&
++	    (mvm->trans->trans_cfg->low_latency_xtal))
++		cmd.flags |= cpu_to_le32(SOC_CONFIG_CMD_FLAGS_LOW_LATENCY);
++
++	cmd.latency = cpu_to_le32(mvm->trans->trans_cfg->xtal_latency);
+ 
+ 	ret = iwl_mvm_send_cmd_pdu(mvm, iwl_cmd_id(SOC_CONFIGURATION_CMD,
+ 						   SYSTEM_GROUP, 0), 0,
 -- 
 2.25.1
 
