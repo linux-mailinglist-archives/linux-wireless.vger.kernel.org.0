@@ -2,131 +2,286 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 26C0E1953AF
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Mar 2020 10:14:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8516B1955EF
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Mar 2020 12:04:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726640AbgC0JOx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 27 Mar 2020 05:14:53 -0400
-Received: from mail-bn8nam12on2113.outbound.protection.outlook.com ([40.107.237.113]:13537
-        "EHLO NAM12-BN8-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726096AbgC0JOx (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 27 Mar 2020 05:14:53 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=M/kQtnEkSJrNcU0jmOFijQ5m6LaxoPc/fkzpLfYn/drNmTngJuVAvD93INyGu23HUNvVgkttxueSuuntcijnQT8bkVTcDrZsvW66FkGVU3gWqLYZ2cYI/VJ4RWtYHtoCZztGxUndr6ZJ7WKFoQPx9ISDkSkVugfmjrbbmS0HPAOj/CJmM8Ej/U4qGdi6BOSo4/HAU+k6fq9P89uXHaQHMYKc7kddKbBpgtKlZVesVngN+FTJ2APR/6T5DjEZ+gdWGvOHd4/idz7424hAmXVHQB7YWBKZAzfP2umySm2ezFryq1Q9gIEJWc8mxV5zfwVchaWuHQ9aH7SODnuFOovKhw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zg7TsrNDefBu2Pyv0lbCxRmQhwRh/qTQoCXEEz3wqOU=;
- b=km+mydP+K3ntHeBHUcPyIQd/0IfF1DT+nUWm1IN+GsssBmoJ3N8dNnu98/tFQnjMj/4215VlJYyhQz16SzvN0sWHdkTVOiMrhPj8SCF1TIseP7GpVDb2SMhH2/PqEzNws7uE5hnITM/s30ankReTNagA31pKKodUBerwiFVmmypw/8xmLNDwmJuG6LIFof2TViSE+BMZxX7WFMlsT5mbGzj0ZQc9mOW6tOFsdXrY31PtlY3ktSB1iUEk5iTnbHPjCSrzQKvWHebS1NV4u9XItXxSo5+bqxWK5R9qQNuXzGrLXBT3rDSneFRKhuSkqVnuFKKT5qbF/YFvvrwMiVVUig==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=cypress.com; dmarc=pass action=none header.from=cypress.com;
- dkim=pass header.d=cypress.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cypress.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zg7TsrNDefBu2Pyv0lbCxRmQhwRh/qTQoCXEEz3wqOU=;
- b=VPuWm5LPDUv8uFWqv6MKzSrAy40/u2DCGUAQVTQpPB8OWa+M3ButXhVFQpDKOfGRzwqqlB9+Q4euDCD+oUD8t/+MjRqh1k1hqW93mqeAlgykEcs/JY0p4+kDCK3LcPXwM+fI/0+5XgYoxI404DPcTuD/W7PcSchKPHONsp5Zvt0=
-Authentication-Results: spf=none (sender IP is )
- smtp.mailfrom=Wright.Feng@cypress.com; 
-Received: from DM6PR06MB4748.namprd06.prod.outlook.com (2603:10b6:5:fd::18) by
- DM6PR06MB6316.namprd06.prod.outlook.com (2603:10b6:5:121::25) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2856.18; Fri, 27 Mar 2020 09:14:47 +0000
-Received: from DM6PR06MB4748.namprd06.prod.outlook.com
- ([fe80::299a:b6f7:1338:e451]) by DM6PR06MB4748.namprd06.prod.outlook.com
- ([fe80::299a:b6f7:1338:e451%7]) with mapi id 15.20.2856.018; Fri, 27 Mar 2020
- 09:14:46 +0000
-Subject: Re: [PATCH 3/3] brcmfmac: make setting SDIO workqueue WQ_HIGHPRI a
- module parameter
-To:     Tejun Heo <tj@kernel.org>
-Cc:     Arend Van Spriel <arend.vanspriel@broadcom.com>,
-        franky.lin@broadcom.com, hante.meuleman@broadcom.com,
-        kvalo@codeaurora.org, chi-hsien.lin@cypress.com,
-        linux-wireless@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com
-References: <1584604406-15452-1-git-send-email-wright.feng@cypress.com>
- <1584604406-15452-4-git-send-email-wright.feng@cypress.com>
- <40e33702-d37f-085d-a5a7-7f09ae9e2629@broadcom.com>
- <241fd81b-a252-ed86-b93e-6796cf1bce23@cypress.com>
- <20200324182358.GD162390@mtj.duckdns.org>
- <02b42d9f-7ba3-bb7e-36a6-5e141d37d75d@cypress.com>
- <20200325140814.GI162390@mtj.duckdns.org>
- <171122f50d8.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
- <c1192351-6f72-6f82-bb2b-9f91266d8aab@cypress.com>
- <20200325151234.GL162390@mtj.duckdns.org>
-From:   Wright Feng <wright.feng@cypress.com>
-Message-ID: <342a1c26-16e6-d824-e421-5f4785f905b8@cypress.com>
-Date:   Fri, 27 Mar 2020 17:14:29 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
-In-Reply-To: <20200325151234.GL162390@mtj.duckdns.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: TY2PR06CA0019.apcprd06.prod.outlook.com
- (2603:1096:404:42::31) To DM6PR06MB4748.namprd06.prod.outlook.com
- (2603:10b6:5:fd::18)
+        id S1726439AbgC0LEV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 27 Mar 2020 07:04:21 -0400
+Received: from mail26.static.mailgun.info ([104.130.122.26]:29994 "EHLO
+        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726215AbgC0LEV (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 27 Mar 2020 07:04:21 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1585307060; h=Date: Message-Id: Cc: To: Subject: From:
+ Content-Transfer-Encoding: MIME-Version: Content-Type: Sender;
+ bh=Zgz+I9cv0vt1kCHzBek7Brb8xia1rfWioa/XR3pNCEY=; b=kcWc6bItPGdh/YIIGLrUTFNkrvklXM5FcjzCoiBpqumMN87c9MqqS3KINzXgVymSMa/szCVX
+ 0deaTnwqCruCMACJfkTATH75gsEejZJPnoY5PI/uG/E8nIIUQepnUAIu5HypjQZOUbf4ffPF
+ B0VReGrk7hZH7KIn+7YCCmH8GCM=
+X-Mailgun-Sending-Ip: 104.130.122.26
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5e7dddb1.7fba31912b58-smtp-out-n01;
+ Fri, 27 Mar 2020 11:04:17 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 4F051C44791; Fri, 27 Mar 2020 11:04:16 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
+        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 21982C43637;
+        Fri, 27 Mar 2020 11:04:12 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 21982C43637
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from [192.168.0.17] (123.194.189.67) by TY2PR06CA0019.apcprd06.prod.outlook.com (2603:1096:404:42::31) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2856.20 via Frontend Transport; Fri, 27 Mar 2020 09:14:44 +0000
-X-Originating-IP: [123.194.189.67]
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-HT: Tenant
-X-MS-Office365-Filtering-Correlation-Id: 39aa5c2a-86fe-4ba3-18f1-08d7d22f4b5a
-X-MS-TrafficTypeDiagnostic: DM6PR06MB6316:|DM6PR06MB6316:
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <DM6PR06MB631696EF785AD97DBA995CE8FBCC0@DM6PR06MB6316.namprd06.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
-X-Forefront-PRVS: 0355F3A3AE
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR06MB4748.namprd06.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(10019020)(366004)(136003)(396003)(39860400002)(346002)(376002)(478600001)(6486002)(8676002)(8936002)(52116002)(81166006)(81156014)(6666004)(2906002)(36756003)(6916009)(31696002)(16576012)(956004)(16526019)(2616005)(186003)(31686004)(26005)(66476007)(5660300002)(4326008)(66556008)(316002)(86362001)(66946007)(44832011);DIR:OUT;SFP:1102;
-Received-SPF: None (protection.outlook.com: cypress.com does not designate
- permitted sender hosts)
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: zvs4MYECnZs2gotVFhTeVvQIRflQuHvH53dhjyvNWHmxIoy9DNO7myHMZXvLMxt+7lNwQMR4s9KqYdhucCoA6SJ/36IlHWB4CxcVC1ghB3nqd1iiBcqhCuZYMpv9D0qTUd+KP/YCOdLNgqEiIEZmtDMEm4n0C4F2LtElONKI8EEvVGtEASg7CHn17AXX2hPObQDZU4B2MuoOsZBmtv1CnmS//LKs/HaXOQJWzIurYtfVpR8NviAPHTHLzNd3PAURknsNOCxXFJw/nYNiApekecP+vpkOxT4xk5ouZ/zB98d69wLTxIVSnEIQ7bIoKI5ZvBXpx1QVjWKoMUS5vYdi6NqQadodeMzA/BOpOpDqm8UDClcI4Xmz4seYIPBNuoxwOlKPimP8qFWl2mxttUGC+3EGXKBUIOTbCBET5PGohWguotME8aHUmyxCL+hxjbHe
-X-MS-Exchange-AntiSpam-MessageData: SIXzgU14+32hYGkp8jL6fDGzNx9BAUwUT+grydb2/kYu3bePRL9/oOFO2zngW+U2N+iYSJpqTLOkUSxFXeZDPHGK/3GVCz95HhZyBXX4kUUxhNvbQ4OxCIl1McReO9si9Fj8wl6c0L3F0sq12LZSyw==
-X-OriginatorOrg: cypress.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 39aa5c2a-86fe-4ba3-18f1-08d7d22f4b5a
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Mar 2020 09:14:46.8404
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 011addfc-2c09-450d-8938-e0bbc2dd2376
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: eQFFPPm3U8IqDlIeCussKYbU0rQ17EW0kkfMOieIjkD4TA1m72EmDK+moqmY8dbdMBpeBtVWweRQD0ZchmlWQA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR06MB6316
+Content-Transfer-Encoding: 7bit
+From:   Kalle Valo <kvalo@codeaurora.org>
+Subject: pull-request: wireless-drivers-next-2020-03-27
+To:     netdev@vger.kernel.org
+Cc:     linux-wireless@vger.kernel.org
+Message-Id: <20200327110416.4F051C44791@smtp.codeaurora.org>
+Date:   Fri, 27 Mar 2020 11:04:16 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Hi,
 
+here's a pull request to net-next tree, more info below. Please let me know if
+there are any problems.
 
-Tejun Heo 於 3/25/2020 11:12 PM 寫道:
-> Hello,
-> 
-> On Wed, Mar 25, 2020 at 11:06:33PM +0800, Wright Feng wrote:
->> I was trying do that, but the comment of alloc_oredered_workqueue shows that
->> only WQ_FREEZABLE and WQ_MEM_RECLAIM are meaningful, so...
->>
->> I will measure the throughput with "alloc_ordered_workqueue(NAME,
->> WQ_HIGHPRI, ...)" to see if WQ_HIGHPRI works with alloc_ordered_workqueue.
->> Thanks for the suggestion.
->>
->> ---
->> /**
->>   * alloc_ordered_workqueue - allocate an ordered workqueue
->>   * @fmt: printf format for the name of the workqueue
->>   * @flags: WQ_* flags (only WQ_FREEZABLE and WQ_MEM_RECLAIM are meaningful)
->>   * @args...: args for @fmt
-> 
-> Yeah, I think the comment is outdated. If it doesn't work as expected, please
-> let me know.
-> 
-It works as expected. With alloc_oredered_workqueue(..., WQ_HIGHPRI, 
-...), the nice value is -20 and throughput result with 43455(11ac) on 1 
-core 1.6 Ghz platform is
-Without WQ_HIGGPRI TX/RX: 293/301 (mbps)
-With    WQ_HIGHPRI TX/RX: 293/321 (mbps)
+Kalle
 
-Regards,
-Wright
+The following changes since commit cd556e40fdf3b09e229097021a9148ecb6e7725e:
+
+  devlink: expand the devlink-info documentation (2020-03-24 16:47:33 -0700)
+
+are available in the git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git tags/wireless-drivers-next-2020-03-27
+
+for you to fetch changes up to 5988b8ec713270fa29e0535ff3d0ef26a94c8220:
+
+  Merge tag 'iwlwifi-next-for-kalle-2020-03-27' of git://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/iwlwifi-next (2020-03-27 09:20:48 +0200)
+
+----------------------------------------------------------------
+wireless-drivers-next patches for v5.7
+
+Third set of patches for v5.7. Nothing really special this time,
+business as usual.
+
+When pulling this to net-next there's again a conflict in:
+
+drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+
+To solve this drop these three lines from the conflict (the first hunk
+from "HEAD") as the whole AX200 block was moved above in the same
+file:
+
+	IWL_DEV_INFO(0x2723, 0x1653, iwl_ax200_cfg_cc, iwl_ax200_killer_1650w_name),
+	IWL_DEV_INFO(0x2723, 0x1654, iwl_ax200_cfg_cc, iwl_ax200_killer_1650x_name),
+	IWL_DEV_INFO(0x2723, IWL_CFG_ANY, iwl_ax200_cfg_cc, iwl_ax200_name),
+
+And keep all the __IWL_DEV_INFO() entries (the second hunk). In other
+words, take everything from wireless-drivers-next. When running 'git
+diff' after the resolution the output should be empty.
+
+Major changes:
+
+brcmfmac
+
+* add USB autosuspend support
+
+ath11k
+
+* handle RX fragments
+
+* enable PN offload
+
+* add support for HE BSS color
+
+iwlwifi
+
+* support new FW API version
+
+* support for EDCA measurements
+
+* new scan API features
+
+* enable new firmware debugging code
+
+----------------------------------------------------------------
+Avraham Stern (1):
+      iwlwifi: mvm: add support for non EDCA based measurements
+
+Chris Chiu (2):
+      rtl8xxxu: add enumeration for channel bandwidth
+      rtl8xxxu: Feed current txrate information for mac80211
+
+Johannes Berg (6):
+      iwlwifi: pass trans and NVM data to HE capability parsing
+      iwlwifi: mvm: rs-fw: fix some indentation
+      iwlwifi: mvm: enable SF also when we have HE
+      iwlwifi: remove IWL_FW_DBG_DOMAIN macro
+      iwlwifi: pcie: make iwl_pcie_cmdq_reclaim static
+      iwlwifi: mvm: remove newline from rs_pretty_print_rate()
+
+John Crispin (3):
+      ath11k: set queue_len to 4096
+      ath11k: add WMI calls required for handling BSS color
+      ath11k: add handling for BSS color
+
+Kalle Valo (2):
+      Merge ath-next from git://git.kernel.org/.../kvalo/ath.git
+      Merge tag 'iwlwifi-next-for-kalle-2020-03-27' of git://git.kernel.org/.../iwlwifi/iwlwifi-next
+
+Luca Coelho (15):
+      iwlwifi: yoyo: add PCI config space region type
+      iwlwifi: pcie: implement read_config32
+      iwlwifi: remove redundant iwl9560_2ac_cfg struct
+      iwlwifi: move integrated, extra_phy and soc_latency to trans_cfg
+      iwlwifi: remove some unused extern declarations from iwl-config.h
+      iwlwifi: add HW step to new cfg device table
+      iwlwifi: convert all Qu with Jf devices to the new config table
+      iwlwifi: convert QnJ with Jf devices to new config table
+      iwlwifi: remove unnecessary cfg mangling for Qu C and QuZ with Jf
+      iwlwifi: add support for version 2 of SOC_CONFIGURATION_CMD
+      iwlwifi: add trans_cfg for devices with long latency
+      iwlwifi: remove support for QnJ Hr STEP A
+      iwlwifi: remove support for QnJ HR FPGA
+      iwlwifi: yoyo: enable yoyo by default
+      iwlwifi: bump FW API to 53 for 22000 series
+
+Madhan Mohan R (1):
+      brcmfmac: increase max hanger slots from 1K to 3K in fws layer
+
+Manikanta Pubbisetty (3):
+      ath11k: handle RX fragments
+      ath11k: enable PN offload
+      ath11k: dump SRNG stats during FW assert
+
+Pravas Kumar Panda (1):
+      ath11k: Adding proper validation before accessing tx_stats
+
+Raveendran Somu (3):
+      brcmfmac: Fix driver crash on USB control transfer timeout
+      brcmfmac: Fix double freeing in the fmac usb data path
+      brcmfmac: fix the incorrect return value in brcmf_inform_single_bss().
+
+Shahar S Matityahu (2):
+      iwlwifi: mvm: add soc latency support
+      iwlwifi: scan: support scan req cmd ver 14
+
+Sriram R (3):
+      ath11k: Supporting RX ring backpressure HTT event and stats handling
+      ath11k: Configure hash based reo destination ring selection
+      ath11k: Perform per-msdu rx processing
+
+Tova Mussai (1):
+      iwlwifi: scan: support FW APIs with variable number of profiles
+
+Tzu-En Huang (1):
+      rtw88: fix non-increase management packet sequence number
+
+Venkateswara Naralasetty (1):
+      ath11k: fill channel info from rx channel
+
+Wright Feng (1):
+      brcmfmac: add USB autosuspend feature support
+
+Yan-Hsuan Chuang (2):
+      rtw88: add a debugfs entry to dump coex's info
+      rtw88: add a debugfs entry to enable/disable coex mechanism
+
+Yingying Tang (1):
+      ath10k: Fill GCMP MIC length for PMF
+
+YueHaibing (1):
+      hostap: convert to struct proc_ops
+
+rotem saado (1):
+      iwlwifi: yoyo: don't block dumping internal memory when not in SRAM mode
+
+ drivers/net/wireless/ath/ath10k/core.h             |    2 +
+ drivers/net/wireless/ath/ath10k/htt_tx.c           |   12 +-
+ drivers/net/wireless/ath/ath10k/mac.c              |   25 +-
+ drivers/net/wireless/ath/ath10k/wmi.c              |   17 +-
+ drivers/net/wireless/ath/ath11k/Kconfig            |    1 +
+ drivers/net/wireless/ath/ath11k/ahb.c              |   11 +-
+ drivers/net/wireless/ath/ath11k/ce.h               |    1 +
+ drivers/net/wireless/ath/ath11k/core.h             |    8 +-
+ drivers/net/wireless/ath/ath11k/debug.h            |    2 +
+ drivers/net/wireless/ath/ath11k/debug_htt_stats.c  |   44 +
+ drivers/net/wireless/ath/ath11k/debug_htt_stats.h  |   28 +
+ drivers/net/wireless/ath/ath11k/debugfs_sta.c      |    3 +
+ drivers/net/wireless/ath/ath11k/dp.c               |   47 +-
+ drivers/net/wireless/ath/ath11k/dp.h               |   24 +-
+ drivers/net/wireless/ath/ath11k/dp_rx.c            | 1403 ++++++++++++++------
+ drivers/net/wireless/ath/ath11k/dp_rx.h            |   12 +-
+ drivers/net/wireless/ath/ath11k/dp_tx.c            |    2 +-
+ drivers/net/wireless/ath/ath11k/hal.c              |   66 +-
+ drivers/net/wireless/ath/ath11k/hal.h              |   23 +-
+ drivers/net/wireless/ath/ath11k/hal_rx.c           |   29 +-
+ drivers/net/wireless/ath/ath11k/hw.h               |    1 +
+ drivers/net/wireless/ath/ath11k/mac.c              |   75 +-
+ drivers/net/wireless/ath/ath11k/mac.h              |    1 +
+ drivers/net/wireless/ath/ath11k/peer.c             |    3 +
+ drivers/net/wireless/ath/ath11k/peer.h             |    9 +
+ drivers/net/wireless/ath/ath11k/qmi.c              |    1 +
+ drivers/net/wireless/ath/ath11k/rx_desc.h          |    2 +-
+ drivers/net/wireless/ath/ath11k/wmi.c              |  113 ++
+ drivers/net/wireless/ath/ath11k/wmi.h              |   43 +
+ .../broadcom/brcm80211/brcmfmac/cfg80211.c         |    2 +-
+ .../broadcom/brcm80211/brcmfmac/fwsignal.c         |    5 +-
+ .../net/wireless/broadcom/brcm80211/brcmfmac/usb.c |  127 +-
+ drivers/net/wireless/intel/iwlwifi/cfg/22000.c     |  300 ++---
+ drivers/net/wireless/intel/iwlwifi/cfg/9000.c      |   32 +-
+ .../net/wireless/intel/iwlwifi/fw/api/commands.h   |    9 +-
+ .../net/wireless/intel/iwlwifi/fw/api/location.h   |    6 +
+ drivers/net/wireless/intel/iwlwifi/fw/api/scan.h   |   83 +-
+ drivers/net/wireless/intel/iwlwifi/fw/api/soc.h    |   87 ++
+ drivers/net/wireless/intel/iwlwifi/fw/dbg.c        |   47 +-
+ drivers/net/wireless/intel/iwlwifi/fw/file.h       |   11 +-
+ drivers/net/wireless/intel/iwlwifi/fw/runtime.h    |    2 -
+ drivers/net/wireless/intel/iwlwifi/iwl-config.h    |   62 +-
+ drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c   |    6 +
+ drivers/net/wireless/intel/iwlwifi/iwl-drv.c       |    3 +-
+ drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c |    8 +-
+ drivers/net/wireless/intel/iwlwifi/iwl-trans.h     |    3 +
+ drivers/net/wireless/intel/iwlwifi/mvm/d3.c        |    5 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c   |    4 +
+ .../net/wireless/intel/iwlwifi/mvm/ftm-initiator.c |    9 +
+ drivers/net/wireless/intel/iwlwifi/mvm/fw-api.h    |    1 +
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c        |   46 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c  |   10 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/mvm.h       |    7 +
+ drivers/net/wireless/intel/iwlwifi/mvm/rs-fw.c     |    3 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/rs.c        |    6 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/scan.c      |  169 ++-
+ drivers/net/wireless/intel/iwlwifi/mvm/sf.c        |    8 +-
+ drivers/net/wireless/intel/iwlwifi/pcie/drv.c      |  721 +++++-----
+ drivers/net/wireless/intel/iwlwifi/pcie/internal.h |    1 -
+ drivers/net/wireless/intel/iwlwifi/pcie/rx.c       |    2 +-
+ drivers/net/wireless/intel/iwlwifi/pcie/trans.c    |   10 +-
+ drivers/net/wireless/intel/iwlwifi/pcie/tx.c       |    2 +-
+ .../net/wireless/intersil/hostap/hostap_download.c |   10 +-
+ drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h   |   21 +-
+ .../net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c  |   77 +-
+ drivers/net/wireless/realtek/rtw88/coex.c          |  492 +++++++
+ drivers/net/wireless/realtek/rtw88/coex.h          |   10 +
+ drivers/net/wireless/realtek/rtw88/debug.c         |   62 +
+ drivers/net/wireless/realtek/rtw88/main.h          |   21 +
+ drivers/net/wireless/realtek/rtw88/rtw8822b.c      |   30 +
+ drivers/net/wireless/realtek/rtw88/rtw8822c.c      |   28 +
+ drivers/net/wireless/realtek/rtw88/tx.c            |    6 +
+ drivers/net/wireless/realtek/rtw88/tx.h            |    6 +
+ 73 files changed, 3353 insertions(+), 1215 deletions(-)
+ create mode 100644 drivers/net/wireless/intel/iwlwifi/fw/api/soc.h
