@@ -2,86 +2,184 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 22BCE195012
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Mar 2020 05:33:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C2BD1950F8
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Mar 2020 07:18:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725942AbgC0Ec5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 27 Mar 2020 00:32:57 -0400
-Received: from mail27.static.mailgun.info ([104.130.122.27]:49896 "EHLO
-        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725857AbgC0Ec5 (ORCPT
+        id S1726165AbgC0GS0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 27 Mar 2020 02:18:26 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:44528 "EHLO
+        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726027AbgC0GS0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 27 Mar 2020 00:32:57 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1585283577; h=Message-ID: References: In-Reply-To: Subject:
- Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
- MIME-Version: Sender; bh=8CXQInUnz58SrKnSyE6pMRPblAki/rGl/5dYbpFHvRg=;
- b=Vp9Ktp6wNHSnRH8as3fk/u2ei5tJYVSUcHfuIIFShXlxz/n+8ztTh2xTptbZoNhW4TpXpZh9
- c47fNk7yqjdf/mWjg7nUNlcWC4S2/WRKpZVPVEWsyibxM1Kc60sb9nztsZU4Wx45tdTQRe5c
- 2bmvN7PD1ZlefX54EFsLUr4Y2yA=
-X-Mailgun-Sending-Ip: 104.130.122.27
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e7d81f8.7f841eed9308-smtp-out-n05;
- Fri, 27 Mar 2020 04:32:56 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 4A45CC433F2; Fri, 27 Mar 2020 04:32:55 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: mkenna)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id CFFF7C433D2;
-        Fri, 27 Mar 2020 04:32:54 +0000 (UTC)
+        Fri, 27 Mar 2020 02:18:26 -0400
+Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa)
+        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.93)
+        (envelope-from <luca@coelho.fi>)
+        id 1jHiJy-0004X8-Cl; Fri, 27 Mar 2020 08:18:23 +0200
+Message-ID: <9c8b99b802532b58471eb2024de64b5dc2f5727d.camel@coelho.fi>
+From:   Luca Coelho <luca@coelho.fi>
+To:     kvalo@codeaurora.org
+Cc:     linux-wireless@vger.kernel.org, linuxwifi@intel.com
+Date:   Fri, 27 Mar 2020 08:18:20 +0200
+Content-Type: multipart/signed; micalg="pgp-sha512";
+        protocol="application/pgp-signature"; boundary="=-94uSBx/+0+cm/gLR+pTW"
+User-Agent: Evolution 3.36.0-1 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Fri, 27 Mar 2020 10:02:54 +0530
-From:   Maharaja Kennadyrajan <mkenna@codeaurora.org>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH] ath11k: add pktlog checksum in trace events to support
- pktlog
-In-Reply-To: <87k137oykt.fsf@tynnyri.adurom.net>
-References: <1585234155-30574-1-git-send-email-mkenna@codeaurora.org>
- <87k137oykt.fsf@tynnyri.adurom.net>
-Message-ID: <24d78270e4df4a336e4b9989415af7e1@codeaurora.org>
-X-Sender: mkenna@codeaurora.org
-User-Agent: Roundcube Webmail/1.3.9
+X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on farmhouse.coelho.fi
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+        TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.4
+Subject: pull-request: iwlwifi-next 2020-03-27
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2020-03-26 22:14, Kalle Valo wrote:
-> Maharaja Kennadyrajan <mkenna@codeaurora.org> writes:
-> 
->> Pktlog data are different among the chipset & chipset versions.
->> As part of enhancing the user space script to decode the pktlog
->> trace events generated, it is desirable to know which chipset or
->> which chipset version has provided the events and thereby decode
->> the pktlogs appropriately.
->> 
->> Pktlog checksum helps to determine the chipset variant which is
->> given by the firmware in the struct wmi_ready_event.
->> 
->> Pktlog checksums are computed during the firmware build.
->> So, adding that pktlog checksum in the pklog trace events.
->> 
->> Signed-off-by: Maharaja Kennadyrajan <mkenna@codeaurora.org>
-> 
-> When you send a new version please always increase the version number
-> (in this case this should be v2), even if just the email address has
-> changed. That way I can immediately see which version to take.
-> 
-> But no need to resend just because of this.
 
-[Maha]: Sure Kalle. Got it. Thanks for the clarification.
+--=-94uSBx/+0+cm/gLR+pTW
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Regards,
-Maha
+Hi Kalle,
+
+Here's the second batch of patches intended for v5.7.  This includes
+the last two patchsets I sent out.  Usual development work.  More
+details about the contents in the tag description.
+
+Please let me know if there are any issues.
+
+Cheers,
+Luca.
+
+
+The following changes since commit 3af4da165f487a3956fe5a7b4ee08b12c7a3a9af=
+:
+
+  hostap: convert to struct proc_ops (2020-03-26 21:23:28 +0200)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/iwlwifi-next.git ta=
+gs/iwlwifi-next-for-kalle-2020-03-27
+
+for you to fetch changes up to 84acc85a62a171de98706b9b2cc73a660088314a:
+
+  iwlwifi: mvm: remove newline from rs_pretty_print_rate() (2020-03-27 08:1=
+2:53 +0200)
+
+----------------------------------------------------------------
+Second set of iwlwifi patches intended for v5.7
+
+* Refactoring of the device selection algorithms continues;
+* Improvement in the initialization fo SoC-based devices;
+* Support for FW scan API;
+* Some additions to our FW debuggging capabilities;
+* More refactoring of the device selection algorithms;
+* Support new FW API version;
+* Support for EDCA measurements;
+* New scan API features;
+* Enable new debugging code;
+* Some other small fixes and clean-ups;
+
+----------------------------------------------------------------
+Avraham Stern (1):
+      iwlwifi: mvm: add support for non EDCA based measurements
+
+Johannes Berg (6):
+      iwlwifi: pass trans and NVM data to HE capability parsing
+      iwlwifi: mvm: rs-fw: fix some indentation
+      iwlwifi: mvm: enable SF also when we have HE
+      iwlwifi: remove IWL_FW_DBG_DOMAIN macro
+      iwlwifi: pcie: make iwl_pcie_cmdq_reclaim static
+      iwlwifi: mvm: remove newline from rs_pretty_print_rate()
+
+Luca Coelho (15):
+      iwlwifi: yoyo: add PCI config space region type
+      iwlwifi: pcie: implement read_config32
+      iwlwifi: remove redundant iwl9560_2ac_cfg struct
+      iwlwifi: move integrated, extra_phy and soc_latency to trans_cfg
+      iwlwifi: remove some unused extern declarations from iwl-config.h
+      iwlwifi: add HW step to new cfg device table
+      iwlwifi: convert all Qu with Jf devices to the new config table
+      iwlwifi: convert QnJ with Jf devices to new config table
+      iwlwifi: remove unnecessary cfg mangling for Qu C and QuZ with Jf
+      iwlwifi: add support for version 2 of SOC_CONFIGURATION_CMD
+      iwlwifi: add trans_cfg for devices with long latency
+      iwlwifi: remove support for QnJ Hr STEP A
+      iwlwifi: remove support for QnJ HR FPGA
+      iwlwifi: yoyo: enable yoyo by default
+      iwlwifi: bump FW API to 53 for 22000 series
+
+Shahar S Matityahu (2):
+      iwlwifi: mvm: add soc latency support
+      iwlwifi: scan: support scan req cmd ver 14
+
+Tova Mussai (1):
+      iwlwifi: scan: support FW APIs with variable number of profiles
+
+rotem saado (1):
+      iwlwifi: yoyo: don't block dumping internal memory when not in SRAM m=
+ode
+
+ drivers/net/wireless/intel/iwlwifi/cfg/22000.c         | 300 ++++++++++---=
+--------------------------
+ drivers/net/wireless/intel/iwlwifi/cfg/9000.c          |  32 +++--
+ drivers/net/wireless/intel/iwlwifi/fw/api/commands.h   |   9 +-
+ drivers/net/wireless/intel/iwlwifi/fw/api/location.h   |   6 +
+ drivers/net/wireless/intel/iwlwifi/fw/api/scan.h       |  83 +++++++++--
+ drivers/net/wireless/intel/iwlwifi/fw/api/soc.h        |  87 ++++++++++++
+ drivers/net/wireless/intel/iwlwifi/fw/dbg.c            |  47 +++++--
+ drivers/net/wireless/intel/iwlwifi/fw/file.h           |  11 +-
+ drivers/net/wireless/intel/iwlwifi/fw/runtime.h        |   2 -
+ drivers/net/wireless/intel/iwlwifi/iwl-config.h        |  62 ++++----
+ drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c       |   6 +
+ drivers/net/wireless/intel/iwlwifi/iwl-drv.c           |   3 +-
+ drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c     |   8 +-
+ drivers/net/wireless/intel/iwlwifi/iwl-trans.h         |   3 +
+ drivers/net/wireless/intel/iwlwifi/mvm/d3.c            |   5 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c       |   4 +
+ drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c |   9 ++
+ drivers/net/wireless/intel/iwlwifi/mvm/fw-api.h        |   1 +
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c            |  46 +++++-
+ drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c      |  10 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/mvm.h           |   7 +
+ drivers/net/wireless/intel/iwlwifi/mvm/rs-fw.c         |   3 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/rs.c            |   6 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/scan.c          | 169 +++++++++++++=
+++++++---
+ drivers/net/wireless/intel/iwlwifi/mvm/sf.c            |   8 +-
+ drivers/net/wireless/intel/iwlwifi/pcie/drv.c          | 721 +++++++++++++=
++++++++++++++++++++++++++++++++++------------------------------------------=
+------
+ drivers/net/wireless/intel/iwlwifi/pcie/internal.h     |   1 -
+ drivers/net/wireless/intel/iwlwifi/pcie/rx.c           |   2 +-
+ drivers/net/wireless/intel/iwlwifi/pcie/trans.c        |  10 +-
+ drivers/net/wireless/intel/iwlwifi/pcie/tx.c           |   2 +-
+ 30 files changed, 943 insertions(+), 720 deletions(-)
+ create mode 100644 drivers/net/wireless/intel/iwlwifi/fw/api/soc.h
+
+--=-94uSBx/+0+cm/gLR+pTW
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEF3LNfgb2BPWm68smoUecoho8xfoFAl59mqwACgkQoUecoho8
+xfpQaA/+NeU6l+lmYyNSTUGxNh+CplYtz83zsURrDXjEwoG7MlmpLmL1EhvJ1EnR
+XWE5xS7AlafGmE/Tbid/5fArGSS47NWR+/YWxW2V78vmWLGyKKG0HB2JLstKDnSm
+GXhFg8E61VbS3qvkxATeDv58gW56XdQwG0fmVLgckuF9qp4H2m/EbkeJm/AUnVdh
+t4kE+ki1vtu1TovG6/vCrVToleMwWjeGEN9FFyrrk5yXEkx0gd09+AquOfh4nsXy
+Ez54lnUtb5AQfb8JRWsOMrN2uuTk6ozpJPuqi/x376pEzuMtEwI5gSp5uECfqu5s
+KTksZWVw+hwnZ8go7H/oqdNB88h1dm5Qzad0CaGmVJvSr5hLKpjZC5RNeryevecm
+F5cZzvZTnftlQPWLRGivXqiKxR0UIoOiG4NZrf0vZ04Tiusfw6N1/7C5WMGIbtVd
+iSviTjJVo4NW4KLevpbeePXrN/5rdeypR7tgdz3tPZn3Go1E5oGze3YVyuW0ek/Q
+c9TCI+ybcyTB75mj3BLw76oYYZfGD3BWgF2eZYpqcdq6q58tFDLKGsIKbCuICyEc
++JN67evhfQhhz4WUgrJnI/wkbJbJBUm5bAZIRhXqlTfKfBm94Dcsvjymd0wOJCgj
+SqdSRsym4yb84T/j/I1tvLj0sOhpM4V9VjT/+7Tb0S6/MleTkko=
+=1mJQ
+-----END PGP SIGNATURE-----
+
+--=-94uSBx/+0+cm/gLR+pTW--
+
