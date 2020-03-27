@@ -2,96 +2,108 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8287A195809
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Mar 2020 14:30:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EA1F619597A
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Mar 2020 16:03:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727717AbgC0NaY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 27 Mar 2020 09:30:24 -0400
-Received: from mail-io1-f71.google.com ([209.85.166.71]:48210 "EHLO
-        mail-io1-f71.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726959AbgC0NaP (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 27 Mar 2020 09:30:15 -0400
-Received: by mail-io1-f71.google.com with SMTP id b136so8579101iof.15
-        for <linux-wireless@vger.kernel.org>; Fri, 27 Mar 2020 06:30:15 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
-        bh=n4vumiXWDS40eA/9ntKo+unPEO96iPs77sUIyblD6q8=;
-        b=cdLh+PbO/63w7r9qfXYhnQZNz0oldtdY6lJ+2DazNj8dBXnzzcviV4NdK7Xme9E5QC
-         3+QXM8uaFZKT9mc4Zev9prnOziYJqPU7BnS6renlc0eYhxzMoOQLargIJ3SQj+oMNFD1
-         QEDndFs7CnOaL5JTsCAJYmdskX8oCLVKXCOgoVPMp3sEr72uWSRIKAeMZ1zQzq1BEOce
-         vvPpmzbz8LVgvxNZwz/KBatDepiEDe+/wApE0XgQ/Yr3pME7GY0/QQDCerSXABWml7IA
-         Jsb2je0DRJy1DH6QAPALR+NGk4Z9vVBjXK/v0B2gbTcu2QSHlV/B1nN8DrFX2uhIJNNj
-         9DRQ==
-X-Gm-Message-State: ANhLgQ3W3cWA/5++vYXSVEmW0fjZdmOLUb5HGtPx3WqPBBZsWWTlM9No
-        DnvaCEnL9lkFPKRSs9k1eOOoiyRv76n+Ffn+Sr07KM4MSSp3
-X-Google-Smtp-Source: ADFU+vtsdGZ0mIf4+EJpDoxAfc6IIb4PwKVbgR0RItf2HFkpqESytj6kyz/idIh55iyZQCV/qn/E4spNJ75LiVetgXCIpzopEKJx
-MIME-Version: 1.0
-X-Received: by 2002:a05:6638:253:: with SMTP id w19mr12803116jaq.137.1585315814604;
- Fri, 27 Mar 2020 06:30:14 -0700 (PDT)
-Date:   Fri, 27 Mar 2020 06:30:14 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <000000000000fc837f05a1d619d5@google.com>
-Subject: INFO: trying to register non-static key in ath9k_htc_rx_msg
-From:   syzbot <syzbot+835e7082fea90ddd153f@syzkaller.appspotmail.com>
-To:     andreyknvl@google.com, ath9k-devel@qca.qualcomm.com,
-        davem@davemloft.net, kvalo@codeaurora.org,
-        linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+        id S1727677AbgC0PDl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 27 Mar 2020 11:03:41 -0400
+Received: from mail.kernel.org ([198.145.29.99]:43888 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726900AbgC0PDl (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 27 Mar 2020 11:03:41 -0400
+Received: from localhost (unknown [137.135.114.1])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id CC3F02074F;
+        Fri, 27 Mar 2020 15:03:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1585321420;
+        bh=Kd9WUVxxdJ8IwPViet/JxDNGiuRsM6gngbsVDBvRls0=;
+        h=Date:From:To:To:To:To:Cc:Cc:Cc:Subject:In-Reply-To:References:
+         From;
+        b=Pirx67GGHppPvQoBGwgnlJ9r/hVtfVmT0EnEoFN+GpLXd19DSEoCeLmEGTahLKqhQ
+         UWEYnWrZ1N941x3ZNDxwq7CIts7Oj08ke27jevg5i98I2aNeq0P4CerzDC8Z/qrctE
+         Vc1E3MnF7y49CquK6BAnPFN+Qd54SII/TKpycuQo=
+Date:   Fri, 27 Mar 2020 15:03:39 +0000
+From:   Sasha Levin <sashal@kernel.org>
+To:     Sasha Levin <sashal@kernel.org>
+To:     Johannes Berg <johannes@sipsolutions.net>
+To:     Johannes Berg <johannes.berg@intel.com>
+To:     linux-wireless@vger.kernel.org
+Cc:     Johannes Berg <johannes.berg@intel.com>, stable@vger.kernel.org
+Cc:     stable@vger.kernel.org
+Cc:     stable@vger.kernel.org
+Subject: Re: [PATCH 2/2] mac80211: mark station unauthorized before key removal
+In-Reply-To: <20200326155133.ccb4fb0bb356.If48f0f0504efdcf16b8921f48c6d3bb2cb763c99@changeid>
+References: <20200326155133.ccb4fb0bb356.If48f0f0504efdcf16b8921f48c6d3bb2cb763c99@changeid>
+Message-Id: <20200327150339.CC3F02074F@mail.kernel.org>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
+Hi
 
-syzbot found the following crash on:
+[This is an automated email]
 
-HEAD commit:    e17994d1 usb: core: kcov: collect coverage from usb comple..
-git tree:       https://github.com/google/kasan.git usb-fuzzer
-console output: https://syzkaller.appspot.com/x/log.txt?x=1274cdc5e00000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=5d64370c438bc60
-dashboard link: https://syzkaller.appspot.com/bug?extid=835e7082fea90ddd153f
-compiler:       gcc (GCC) 9.0.0 20181231 (experimental)
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=1415bba7e00000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=12c3316be00000
+This commit has been processed because it contains a -stable tag.
+The stable tag indicates that it's relevant for the following trees: all
 
-IMPORTANT: if you fix the bug, please add the following tag to the commit:
-Reported-by: syzbot+835e7082fea90ddd153f@syzkaller.appspotmail.com
+The bot has tested the following trees: v5.5.11, v5.4.27, v4.19.112, v4.14.174, v4.9.217, v4.4.217.
 
-INFO: trying to register non-static key.
-the code is fine but needs lockdep annotation.
-turning off the locking correctness validator.
-CPU: 0 PID: 0 Comm: swapper/0 Not tainted 5.6.0-rc5-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
-Call Trace:
- <IRQ>
- __dump_stack lib/dump_stack.c:77 [inline]
- dump_stack+0xef/0x16e lib/dump_stack.c:118
- assign_lock_key kernel/locking/lockdep.c:880 [inline]
- register_lock_class+0x1022/0x11d0 kernel/locking/lockdep.c:1189
- __lock_acquire+0xfc/0x3b60 kernel/locking/lockdep.c:3836
- lock_acquire+0x130/0x340 kernel/locking/lockdep.c:4484
- __raw_spin_lock_irqsave include/linux/spinlock_api_smp.h:110 [inline]
- _raw_spin_lock_irqsave+0x32/0x50 kernel/locking/spinlock.c:159
- complete+0x13/0x70 kernel/sched/completion.c:32
- htc_process_conn_rsp drivers/net/wireless/ath/ath9k/htc_hst.c:138 [inline]
- ath9k_htc_rx_msg+0x7c2/0xaf0 drivers/net/wireless/ath/ath9k/htc_hst.c:443
- ath9k_hif_usb_reg_in_cb+0x1ba/0x630 drivers/net/wireless/ath/ath9k/hif_usb.c:718
- __usb_hcd_giveback_urb+0x29a/0x550 drivers/usb/core/hcd.c:1650
- usb_hcd_giveback_urb+0x368/0x420 drivers/usb/core/hcd.c:1716
+v5.5.11: Build OK!
+v5.4.27: Build OK!
+v4.19.112: Failed to apply! Possible dependencies:
+    1e87fec9fa52 ("mac80211: call rate_control_send_low() internally")
+    adf8ed01e4fd ("mac80211: add an optional TXQ for other PS-buffered frames")
+    ba905bf432f6 ("mac80211: store tx power value from user to station")
+    bd718fc11d5b ("mac80211: use STA info in rate_control_send_low()")
+    edba6bdad6fe ("mac80211: allow AMSDU size limitation per-TID")
+
+v4.14.174: Failed to apply! Possible dependencies:
+    0832b603c758 ("mac80211: don't put null-data frames on the normal TXQ")
+    1e87fec9fa52 ("mac80211: call rate_control_send_low() internally")
+    7c181f4fcdc6 ("mac80211: add ieee80211_hw flag for QoS NDP support")
+    94ba92713f83 ("mac80211: Call mgd_prep_tx before transmitting deauthentication")
+    a403f3bf6390 ("mac80211: remove pointless flags=0 assignment")
+    adf8ed01e4fd ("mac80211: add an optional TXQ for other PS-buffered frames")
+    ba905bf432f6 ("mac80211: store tx power value from user to station")
+    bd718fc11d5b ("mac80211: use STA info in rate_control_send_low()")
+    e2fb1b839208 ("mac80211: enable TDLS peer buffer STA feature")
+    e552af058148 ("mac80211: limit wmm params to comply with ETSI requirements")
+    ecaf71de4143 ("iwlwifi: mvm: rs: introduce new API for rate scaling")
+    edba6bdad6fe ("mac80211: allow AMSDU size limitation per-TID")
+
+v4.9.217: Failed to apply! Possible dependencies:
+    06efdbe70f9c ("ath10k: refactor ath10k_peer_assoc_h_phymode()")
+    50f08edf9809 ("ath9k: Switch to using mac80211 intermediate software queues.")
+    63fefa050477 ("ath9k: Introduce airtime fairness scheduling between stations")
+    7f406cd16a0f ("mac80211: encode rate type (legacy, HT, VHT) with fewer bits")
+    7fdd69c5af21 ("mac80211: clean up rate encoding bits in RX status")
+    a17d93ff3a95 ("mac80211: fix legacy and invalid rx-rate report")
+    bc1efd739b61 ("ath10k: add VHT160 support")
+    da6a4352e7c8 ("mac80211: separate encoding/bandwidth from flags")
+    dcba665b1f4a ("mac80211: use bitfield macros for encoded rate")
+
+v4.4.217: Failed to apply! Possible dependencies:
+    0ead2510f8ce ("mac80211: allow the driver to send EOSP when needed")
+    311048911758 ("mac80211: allow driver to prevent two stations w/ same address")
+    412a6d800c73 ("mac80211: support hw managing reorder logic")
+    4f6b1b3daaf1 ("mac80211: fix last RX rate data consistency")
+    7f406cd16a0f ("mac80211: encode rate type (legacy, HT, VHT) with fewer bits")
+    7fdd69c5af21 ("mac80211: clean up rate encoding bits in RX status")
+    a17d93ff3a95 ("mac80211: fix legacy and invalid rx-rate report")
+    b8da6b6a99b4 ("mac80211: add separate last_ack variable")
+    bc1efd739b61 ("ath10k: add VHT160 support")
+    da6a4352e7c8 ("mac80211: separate encoding/bandwidth from flags")
+    dcba665b1f4a ("mac80211: use bitfield macros for encoded rate")
+    f59374eb427f ("mac80211: synchronize driver rx queues before removing a station")
 
 
----
-This bug is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+NOTE: The patch will not be queued to stable trees until it is upstream.
 
-syzbot will keep track of this bug report. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-syzbot can test patches for this bug, for details see:
-https://goo.gl/tpsmEJ#testing-patches
+How should we proceed with this patch?
+
+-- 
+Thanks
+Sasha
