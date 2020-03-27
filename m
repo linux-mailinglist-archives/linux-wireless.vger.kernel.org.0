@@ -2,64 +2,44 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8793D195E9A
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Mar 2020 20:26:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B068E196158
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Mar 2020 23:41:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727620AbgC0T0t (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 27 Mar 2020 15:26:49 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:39296 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727349AbgC0T0t (ORCPT
+        id S1727701AbgC0Wle (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 27 Mar 2020 18:41:34 -0400
+Received: from shards.monkeyblade.net ([23.128.96.9]:40212 "EHLO
+        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727585AbgC0Wle (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 27 Mar 2020 15:26:49 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1jHucp-0001vg-Tu; Fri, 27 Mar 2020 19:26:40 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        John Crispin <john@phrozen.org>, ath11k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] ath11k: fix error message to correctly report the command that failed
-Date:   Fri, 27 Mar 2020 19:26:39 +0000
-Message-Id: <20200327192639.363354-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.25.1
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+        Fri, 27 Mar 2020 18:41:34 -0400
+Received: from localhost (unknown [IPv6:2601:601:9f00:477::3d5])
+        (using TLSv1 with cipher AES256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id 1CE0A15BB6505;
+        Fri, 27 Mar 2020 15:41:34 -0700 (PDT)
+Date:   Fri, 27 Mar 2020 15:41:33 -0700 (PDT)
+Message-Id: <20200327.154133.281200586896043805.davem@davemloft.net>
+To:     kvalo@codeaurora.org
+Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org
+Subject: Re: pull-request: wireless-drivers-next-2020-03-27
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <20200327110416.4F051C44791@smtp.codeaurora.org>
+References: <20200327110416.4F051C44791@smtp.codeaurora.org>
+X-Mailer: Mew version 6.8 on Emacs 26.1
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Fri, 27 Mar 2020 15:41:34 -0700 (PDT)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+From: Kalle Valo <kvalo@codeaurora.org>
+Date: Fri, 27 Mar 2020 11:04:16 +0000 (UTC)
 
-Currently the error message refers to the command WMI_TWT_DIeABLE_CMDID
-which looks like a cut-n-paste mangled typo. Fix the message to match
-the command WMI_BSS_COLOR_CHANGE_ENABLE_CMDID that failed.
+> here's a pull request to net-next tree, more info below. Please let me know if
+> there are any problems.
 
-Fixes: 5a032c8d1953 ("ath11k: add WMI calls required for handling BSS color")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/net/wireless/ath/ath11k/wmi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
-index e7ce36966d6a..6fec62846279 100644
---- a/drivers/net/wireless/ath/ath11k/wmi.c
-+++ b/drivers/net/wireless/ath/ath11k/wmi.c
-@@ -2779,7 +2779,7 @@ int ath11k_wmi_send_bss_color_change_enable_cmd(struct ath11k *ar, u32 vdev_id,
- 	ret = ath11k_wmi_cmd_send(wmi, skb,
- 				  WMI_BSS_COLOR_CHANGE_ENABLE_CMDID);
- 	if (ret) {
--		ath11k_warn(ab, "Failed to send WMI_TWT_DIeABLE_CMDID");
-+		ath11k_warn(ab, "Failed to send WMI_BSS_COLOR_CHANGE_ENABLE_CMDID");
- 		dev_kfree_skb(skb);
- 	}
- 	return ret;
--- 
-2.25.1
-
+Pulled, thanks for the merge conflict resolution guidance.
