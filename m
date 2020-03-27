@@ -2,40 +2,40 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 385E019513A
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Mar 2020 07:33:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 835B119513D
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Mar 2020 07:33:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727755AbgC0Gd0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 27 Mar 2020 02:33:26 -0400
+        id S1727769AbgC0Gd1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 27 Mar 2020 02:33:27 -0400
 Received: from esa5.microchip.iphmx.com ([216.71.150.166]:49575 "EHLO
         esa5.microchip.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726418AbgC0GdZ (ORCPT
+        with ESMTP id S1727708AbgC0Gd0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 27 Mar 2020 02:33:25 -0400
-IronPort-SDR: bWrI+/1sooNlaKPB5JsYf0pb4p+GxVuYBNHp/y9ZnpA6poFL2CVsL1kvlU5A10DgkJRBGIuGgS
- vQF8221zz5EhzVC8GLq0jwWRV5P3ECoLt3vbHPu1nBX/T5fQG9Wbw8g2vLienA/ZAeM5MdLlg7
- Ul9L8ucsfv5rd0bRe7N41P19sYqPUBplLSsSMpn5L4/MWGZk5WwRVSjiXqiCYdzGkPGwmx/WbB
- gFrH0/+dznN58YRKGH3qTJ7biLmm6bsaveFVi1WCYDYCb3UUHIETqZLM9ilPzKlSWZ6yqTrDmi
- /WU=
+        Fri, 27 Mar 2020 02:33:26 -0400
+IronPort-SDR: +QAoGsY7/7jBLj8vLjLoCo1Kv85Oylz2suoHBquW0TCi4swCRbrgEhLq3hGzjCytxGhFo5LY6d
+ MzJKv7DiRhyclqmSvv06qnxQXuwjkhRe262VZ6yOCZDZTrckuPbz9Y5v6lZ4phw4ObYvcgCBWv
+ jMwHN8pTDxUWNg0VcUXOubGIi9ZHlbWilBbOnhtJP5R/fL4L+iqpifNXsXvctSMDQedrUZRznr
+ qi1Fh47EPBFF6fS9n1R3gSbdmEyousT2+gweL5/uF8z62OQPGkrlBIG1FJ6RBCQO4z6DSRlp66
+ c5Q=
 X-IronPort-AV: E=Sophos;i="5.72,311,1580799600"; 
-   d="scan'208";a="70452428"
+   d="scan'208";a="70452434"
 Received: from smtpout.microchip.com (HELO email.microchip.com) ([198.175.253.82])
-  by esa5.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 26 Mar 2020 23:33:25 -0700
+  by esa5.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 26 Mar 2020 23:33:26 -0700
 Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
  chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1713.5; Thu, 26 Mar 2020 23:33:22 -0700
+ 15.1.1713.5; Thu, 26 Mar 2020 23:33:23 -0700
 Received: from NAM12-MW2-obe.outbound.protection.outlook.com (10.10.215.89) by
  email.microchip.com (10.10.87.151) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1713.5
- via Frontend Transport; Thu, 26 Mar 2020 23:33:22 -0700
+ via Frontend Transport; Thu, 26 Mar 2020 23:33:23 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=AEBvOjvYjaqBk6OZNUXgMfovK2m9akxQW2RSvgLrbSLMG0JyJc6sAUmTauVEByFYVZg1rbUHGyax2N+P6IHkAqDxFQLHg62HXLdzCOTDCP8aGlHjRdJu0G4C9Rt76NE8XAaHnoDCvPXpeTNsVhPZTkhUjLZ6W9NBtMmRcyzGN6AqikdOaqnhvDqhn9wf+d/2r4buthy2YrJ8eukBgzS9BTvo5M1aal46gqcMGfYsHGMur3f94chsSsaPN9ZeZXytIJR5Kn7bYXNOyYrcjOBgNtcVRgljT/TwoLeDVGTVGh1AUHX3/gr2ZtpFNqDl6TNIjf5fQqAK/8Fy1sb0uj9seQ==
+ b=WUxYGG0VzEJ3IR5Bl17hsd64naCCSQpNhRR5MloGkMObLqH2YfUfSRMiaOweDwLBzkNKnVre7EJdtKC6wFPC4j6MXyYCNnRIlD2Lyy5/hUDQcjWBZmDRZ/2MJFrj0PAB8Y19ZbG7ObCWjk1wSxsDpRpgFHnpL+tmrkyITsLUYWYRfhr1mxCKol/gihgR/DNEIzhBGAZNp03Wmbh8RVz6THZwZg5iR1WrRZ1EiW1un+u5oREBGI6GastL+XNrfgFsBBDKFQaufxxhr6gtykNwWERrOgmxgpqIu70VZD76bxoAG7NU4Py8fi872f0w1ZBV/7nldwnOc+iGCE2+SFWD0g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2/BoVYXn2lq4iGPqZA1q/vKljI3Oyh5/xTCyUj+luj8=;
- b=SG6MAcsmQW/JsdcQWpyCsCfGlVYJsaYMs4DJd5BgoUmgMq9AdNjSiKOyTrBBSm8Jx8KQTWm78V5zwjFcz/cCkuIKt+GMif/WBESydhmbCCIXeGBD7bEw1UuZp+Rien2E2woBfHkwuLQDvNb99Ssd89HBgTzRbHrykwl94ZFIlVMHtzg8hDAYsk6ZlFII3S+lZwe8JUpAULE6ik2fl4KgyBrfLiBJDzmUXcLleIydsuz+xY1E0QUlLt2ZoABixgSJqiQgRCVJqHtbEOuuwhhg1fjj1nZJCLeTWVEThvadQ/ppbDuFXEPdJRpG8EDzhxwAWeXPNQ6/gFV4a7HfnFy4qA==
+ bh=v+FHaC2cDxz7we2ANw7qXo4BJsliKhNlAJAMbrj1e60=;
+ b=li7OnTa9ELPRXLPhM+ru7Jw1qEuoPE+tuilZni4Yp2w0LgJjnVy7nCHphUZ6swb3S7iClGuqtWkyTxuZeBhY6ujYDxA5H0UwX+tsDae+q3un8iE6W+SGo2qRhKS2t1m3dcLSjeBEJFx179le9da2YgI5Gu4q0AY6fUmZSqkuPxnZtWihGzT452faBYN9898JK50MjXiMHvHamcSsc8AaR3Fwp7yQ/b+b8s9//L/RLXOejCDOfD45l/B7s5cPg8q0YC+0P8XNq4WyhncDRFvCady/DmwOl5+gPa+5iQzQVVOxtEyZ7XacUc+VwgLUQ8QwUHFeYamCb5IGOC63K3o8dA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=microchip.com; dmarc=pass action=none
  header.from=microchip.com; dkim=pass header.d=microchip.com; arc=none
@@ -43,17 +43,17 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=microchiptechnology.onmicrosoft.com;
  s=selector2-microchiptechnology-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2/BoVYXn2lq4iGPqZA1q/vKljI3Oyh5/xTCyUj+luj8=;
- b=cwoqKh6Tp0m2JPsSP2GqnvuSum/f0ieTcHvChMmPaEW1hFbRElCatcg/UXl7x+h8vGky2YkIBL7k9YOrTFfB1ES9F99ecLI02ZbCqSz0Bv691foD++OMQalcnqr3grfo7/4FiPI6b8NCEsa5Z3jXtJkwcIgihU06xM5LtK3LGPY=
+ bh=v+FHaC2cDxz7we2ANw7qXo4BJsliKhNlAJAMbrj1e60=;
+ b=sOZzvyLmxfDdn8E+G7zJpDWLqn5PbxGAuwiFIo9PXwJ5qzMn+6xjabkHFSewWClKR2dNgFMl/N1aiQsZrwXEJMJMYpWAJgCjPzwz8gWmbxi/8hMNWBN5Sn9UvvCN7XHEZ/5DjXXj2Q89hMSjwNBtD8Ou7VLCcG86IgnAQgURxt4=
 Received: from BYAPR11MB3125.namprd11.prod.outlook.com (2603:10b6:a03:8e::32)
  by BYAPR11MB3397.namprd11.prod.outlook.com (2603:10b6:a03:1b::29) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2856.19; Fri, 27 Mar
- 2020 06:33:20 +0000
+ 2020 06:33:21 +0000
 Received: from BYAPR11MB3125.namprd11.prod.outlook.com
  ([fe80::c27:87cf:ca4:d86e]) by BYAPR11MB3125.namprd11.prod.outlook.com
  ([fe80::c27:87cf:ca4:d86e%4]) with mapi id 15.20.2835.021; Fri, 27 Mar 2020
- 06:33:20 +0000
+ 06:33:21 +0000
 From:   <Ajay.Kathat@microchip.com>
 To:     <linux-wireless@vger.kernel.org>
 CC:     <devel@driverdev.osuosl.org>, <devicetree@vger.kernel.org>,
@@ -61,11 +61,13 @@ CC:     <devel@driverdev.osuosl.org>, <devicetree@vger.kernel.org>,
         <Adham.Abozaeid@microchip.com>, <Nicolas.Ferre@microchip.com>,
         <Claudiu.Beznea@microchip.com>, <Venkateswara.Kaja@microchip.com>,
         <Ajay.Kathat@microchip.com>
-Subject: [PATCH v6 16/17] dt: bindings: net: add microchip,wilc1000.yaml
-Thread-Topic: [PATCH v6 16/17] dt: bindings: net: add microchip,wilc1000.yaml
-Thread-Index: AQHWBAGbUtCuPQkvaUybiSTrHN256g==
-Date:   Fri, 27 Mar 2020 06:33:20 +0000
-Message-ID: <20200327063302.20511-17-ajay.kathat@microchip.com>
+Subject: [PATCH v6 17/17] wilc1000: add Makefile and Kconfig files for
+ wilc1000 compilation
+Thread-Topic: [PATCH v6 17/17] wilc1000: add Makefile and Kconfig files for
+ wilc1000 compilation
+Thread-Index: AQHWBAGbrApgv2HB8UaaR09pNWOsRg==
+Date:   Fri, 27 Mar 2020 06:33:21 +0000
+Message-ID: <20200327063302.20511-18-ajay.kathat@microchip.com>
 References: <20200327063302.20511-1-ajay.kathat@microchip.com>
 In-Reply-To: <20200327063302.20511-1-ajay.kathat@microchip.com>
 Accept-Language: en-US
@@ -77,30 +79,30 @@ authentication-results: spf=none (sender IP is )
  smtp.mailfrom=Ajay.Kathat@microchip.com; 
 x-originating-ip: [183.82.22.58]
 x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 9e0f4392-4e02-4f26-5203-08d7d218be0c
+x-ms-office365-filtering-correlation-id: 8e79d0be-b640-41cb-1b7c-08d7d218be6a
 x-ms-traffictypediagnostic: BYAPR11MB3397:
 x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <BYAPR11MB3397FD57BCED83CD8D0C9FF4E3CC0@BYAPR11MB3397.namprd11.prod.outlook.com>
+x-microsoft-antispam-prvs: <BYAPR11MB33978611C324BD9DA0E237CCE3CC0@BYAPR11MB3397.namprd11.prod.outlook.com>
 x-bypassexternaltag: True
-x-ms-oob-tlc-oobclassifiers: OLM:3513;
+x-ms-oob-tlc-oobclassifiers: OLM:4941;
 x-forefront-prvs: 0355F3A3AE
-x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(39850400004)(136003)(376002)(346002)(366004)(396003)(81156014)(26005)(8676002)(81166006)(76116006)(66446008)(66556008)(66476007)(36756003)(6512007)(66946007)(6486002)(64756008)(91956017)(2906002)(6506007)(4326008)(71200400001)(2616005)(107886003)(966005)(186003)(86362001)(5660300002)(478600001)(1076003)(6916009)(316002)(8936002)(54906003)(142933001);DIR:OUT;SFP:1101;SCL:1;SRVR:BYAPR11MB3397;H:BYAPR11MB3125.namprd11.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;
+x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(39850400004)(136003)(376002)(346002)(366004)(396003)(81156014)(26005)(8676002)(81166006)(76116006)(66446008)(66556008)(66476007)(36756003)(6512007)(66946007)(6486002)(64756008)(91956017)(2906002)(6506007)(4326008)(71200400001)(2616005)(107886003)(186003)(86362001)(5660300002)(478600001)(1076003)(6916009)(316002)(8936002)(54906003);DIR:OUT;SFP:1101;SCL:1;SRVR:BYAPR11MB3397;H:BYAPR11MB3125.namprd11.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;
 received-spf: None (protection.outlook.com: microchip.com does not designate
  permitted sender hosts)
 x-ms-exchange-senderadcheck: 1
 x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: FIaGTH7ZoLn7F8pixBXk6CNc/zgVB0B0tZsyepCScCY8iThyiTNOPMokGvQMLemBfBevqX/I+ZM+Wx+23kJGqKxO6859k0ZnV+vs6gBTjxsFy2ANYk8FcZYD8YH/j3i7L382OmIqOfvf2DG//R0qz6O2VId8nGa9NkLbwL5gyPrFnA2swa43dVfvsooH+vOvN30a9+WivMbVPvpICNkB/gonyLi5ouFxLvEO58YJdFAhX0166tuTmVkQrof6JUArPrHvuhoGKHhrm+vNYvxMFCNMAAmxeOblCWy/U2Vn1WxDIBwGBjrDqtzfu0n/40xfEy+t0VqPrpqO6/mnlNzCuKL7wrhoW56gNm72YUz3i6/xZULJBjMnkxtSzuHCuCpHhkFRGcKJzwhre8UmfaixHp2aVX9u61c7r1Wc83J1hBKK6rWmW3ufixWtVFGLhd8cCQF3K7eY0VXgxgkCPoR22kurZUat8AdMWNoqxXrTOiU0K/dE3vfnYTo8M/BAgOXzf48zVKKdNYD/8hKNAT1h9leU4bgeV7Jp1yFvN8RTauttGholkHTh3+xzB0kCYEdf
-x-ms-exchange-antispam-messagedata: dBTGXH3u5WGK2F3YIoRexfloa0gFZfyW2M4olsTZU+hbA//VKhP59i9cVNjpAFYSYfPIqs/oR6C+xT5heGMrkwCySALRb/i8O218nloYj/Le/cC+yPBLUTWKRPhS6WEOsERy7UgnyAhFMt3AIYPqRQ==
+x-microsoft-antispam-message-info: 5+zGm9WW3TQYyh0IY+8f5hcm1sa4pXMupY90kW5Tu9GYvhKEHirXNsyL3XF14IicDX4mknZ6DbQOIsFMkYv5Sy7mDOcB3UIg43zGP2hqSY4Tns+uZBm6QtGZbVd3HGZXO+TzygPRbz/v18XfxjJRfrcbMigh2W9ZYbUJIrYX0oDyU2AtNrDjW7g2yL04zFYBh5kmyak0NqgiDcug/FK3W7tgakuAHHGiIVh9uHIexs+7SLswqny6qkEUT80lO7cNkrZKp8/xjgRxU2KrefFqoec17SiH/fud1v+hXZynfYmg36025KzZatQpBY405fSsImRHdS8fnSenw0PMnqRLR3jY4aQ+99vSyetGtoL1WbWu2f4to7whyPa1YaBTvSbSN0MuvnNmHc/eblzErPcwdGWEbNAE6v2tBiPI6AAh/1olQ2VZqbef2BIrGsa5cVEj
+x-ms-exchange-antispam-messagedata: vKO+7qDIALVVfdGp6MXvBUHAE2myxeXkuNB1EIUh/tCSo3FfGPFRlZN5qi7rQM/vb9abh09AKaItWWGDtWzNRedM3EgyxLbjuwJ6/M/aVm1ZC45s7wXaehgB6SCzSakjStk8wVqvn3qyURbhPjuGcQ==
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9e0f4392-4e02-4f26-5203-08d7d218be0c
-X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Mar 2020 06:33:20.3902
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8e79d0be-b640-41cb-1b7c-08d7d218be6a
+X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Mar 2020 06:33:21.0738
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 3f4057f3-b418-4d4e-ba84-d55b4e897d88
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: USWD4FAVvWn6R26XkLmsMEI/+TlQ9Ywlsp4kPIeALgs/7BYv/bklugTViYseKkbM2uTvS8hNyLefjKY5w7grxnjVj7g0pUSQArFHlT+vX8k=
+X-MS-Exchange-CrossTenant-userprincipalname: ACudVmYsPRTAREyCKrCX1lh2DEvtW5eK8B+ItUb15fB8ySop9zS+AceylOyq2kWp8+hp4iUFACVYbq0syNU3wUF0EEXSi7wOJjVTz5TpkSQ=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR11MB3397
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
@@ -109,96 +111,179 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Ajay Singh <ajay.kathat@microchip.com>
 
-This file describes the binding details to connect wilc1000 device. It's
-moved from staging to 'Documentation/devicetree/bindings/net/wireless'
-path.
+Added Makefile and Kconfig files for compiling wilc1000 module from
+'drivers/net/wireless/microchip/'.
 
 Signed-off-by: Ajay Singh <ajay.kathat@microchip.com>
 ---
- .../net/wireless/microchip,wilc1000.yaml      | 71 +++++++++++++++++++
- 1 file changed, 71 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/net/wireless/microchi=
-p,wilc1000.yaml
+ drivers/net/wireless/Kconfig                  |  1 +
+ drivers/net/wireless/Makefile                 |  1 +
+ drivers/net/wireless/microchip/Kconfig        | 15 ++++++
+ drivers/net/wireless/microchip/Makefile       |  2 +
+ .../net/wireless/microchip/wilc1000/Kconfig   | 47 +++++++++++++++++++
+ .../net/wireless/microchip/wilc1000/Makefile  | 14 ++++++
+ drivers/staging/Kconfig                       |  2 -
+ drivers/staging/Makefile                      |  1 -
+ 8 files changed, 80 insertions(+), 3 deletions(-)
+ create mode 100644 drivers/net/wireless/microchip/Kconfig
+ create mode 100644 drivers/net/wireless/microchip/Makefile
+ create mode 100644 drivers/net/wireless/microchip/wilc1000/Kconfig
+ create mode 100644 drivers/net/wireless/microchip/wilc1000/Makefile
 
-diff --git a/Documentation/devicetree/bindings/net/wireless/microchip,wilc1=
-000.yaml b/Documentation/devicetree/bindings/net/wireless/microchip,wilc100=
-0.yaml
+diff --git a/drivers/net/wireless/Kconfig b/drivers/net/wireless/Kconfig
+index 1c98d781ae49..86faf8f3d9b0 100644
+--- a/drivers/net/wireless/Kconfig
++++ b/drivers/net/wireless/Kconfig
+@@ -47,6 +47,7 @@ source "drivers/net/wireless/st/Kconfig"
+ source "drivers/net/wireless/ti/Kconfig"
+ source "drivers/net/wireless/zydas/Kconfig"
+ source "drivers/net/wireless/quantenna/Kconfig"
++source "drivers/net/wireless/microchip/Kconfig"
+=20
+ config PCMCIA_RAYCS
+ 	tristate "Aviator/Raytheon 2.4GHz wireless support"
+diff --git a/drivers/net/wireless/Makefile b/drivers/net/wireless/Makefile
+index 6cfe74515c95..f9a51c2889ca 100644
+--- a/drivers/net/wireless/Makefile
++++ b/drivers/net/wireless/Makefile
+@@ -19,6 +19,7 @@ obj-$(CONFIG_WLAN_VENDOR_ST) +=3D st/
+ obj-$(CONFIG_WLAN_VENDOR_TI) +=3D ti/
+ obj-$(CONFIG_WLAN_VENDOR_ZYDAS) +=3D zydas/
+ obj-$(CONFIG_WLAN_VENDOR_QUANTENNA) +=3D quantenna/
++obj-$(CONFIG_WLAN_VENDOR_MICROCHIP) +=3D microchip/
+=20
+ # 16-bit wireless PCMCIA client drivers
+ obj-$(CONFIG_PCMCIA_RAYCS)	+=3D ray_cs.o
+diff --git a/drivers/net/wireless/microchip/Kconfig b/drivers/net/wireless/=
+microchip/Kconfig
 new file mode 100644
-index 000000000000..2c320eb2a8c4
+index 000000000000..a6b46fb6b1ec
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/net/wireless/microchip,wilc1000.yam=
-l
-@@ -0,0 +1,71 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/net/wireless/microchip,wilc1000.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
++++ b/drivers/net/wireless/microchip/Kconfig
+@@ -0,0 +1,15 @@
++# SPDX-License-Identifier: GPL-2.0
++config WLAN_VENDOR_MICROCHIP
++	bool "Microchip devices"
++	default y
++	help
++	If you have a wireless card belonging to this class, say Y.
 +
-+title: Microchip WILC wireless devicetree bindings
++	Note that the answer to this question doesn't directly affect the
++	kernel: saying N will just cause the configurator to skip all the
++	questions about these cards. If you say Y, you will be asked for
++	your specific card in the following questions.
 +
-+maintainers:
-+  - Adham Abozaeid <adham.abozaeid@microchip.com>
-+  - Ajay Singh <ajay.kathat@microchip.com>
++if WLAN_VENDOR_MICROCHIP
++source "drivers/net/wireless/microchip/wilc1000/Kconfig"
++endif # WLAN_VENDOR_MICROCHIP
+diff --git a/drivers/net/wireless/microchip/Makefile b/drivers/net/wireless=
+/microchip/Makefile
+new file mode 100644
+index 000000000000..73b763c7393e
+--- /dev/null
++++ b/drivers/net/wireless/microchip/Makefile
+@@ -0,0 +1,2 @@
++# SPDX-License-Identifier: GPL-2.0
++obj-$(CONFIG_WILC1000)		+=3D wilc1000/
+diff --git a/drivers/net/wireless/microchip/wilc1000/Kconfig b/drivers/net/=
+wireless/microchip/wilc1000/Kconfig
+new file mode 100644
+index 000000000000..80c92e8bf8a5
+--- /dev/null
++++ b/drivers/net/wireless/microchip/wilc1000/Kconfig
+@@ -0,0 +1,47 @@
++# SPDX-License-Identifier: GPL-2.0
++config WILC1000
++	tristate
++	help
++	  Add support for the Atmel WILC1000 802.11 b/g/n SoC.
++	  This provides Wi-FI over an SDIO or SPI interface, and
++	  is usually found in IoT devices.
 +
-+description:
-+  The wilc1000 chips can be connected via SPI or SDIO. This document
-+  describes the binding to connect wilc devices.
++	  This module only support IEEE 802.11n WiFi.
 +
-+properties:
-+  compatible:
-+    const: microchip,wilc1000
++config WILC1000_SDIO
++	tristate "Atmel WILC1000 SDIO (WiFi only)"
++	depends on CFG80211 && INET && MMC
++	select WILC1000
++	help
++	  This module adds support for the SDIO interface of adapters using
++	  WILC1000 chipset. The Atmel WILC1000 SDIO is a full speed interface.
++	  It meets SDIO card specification version 2.0. The interface supports
++	  the 1-bit/4-bit SD transfer mode at the clock range of 0-50 MHz.
++	  The host can use this interface to read and write from any register
++	  within the chip as well as configure the WILC1000 for data DMA.
++	  To use this interface, pin9 (SDIO_SPI_CFG) must be grounded. Select
++	  this if your platform is using the SDIO bus.
 +
-+  spi-max-frequency: true
++config WILC1000_SPI
++	tristate "Atmel WILC1000 SPI (WiFi only)"
++	depends on CFG80211 && INET && SPI
++	select WILC1000
++	select CRC7
++	help
++	  This module adds support for the SPI interface of adapters using
++	  WILC1000 chipset. The Atmel WILC1000 has a Serial Peripheral
++	  Interface (SPI) that operates as a SPI slave. This SPI interface can
++	  be used for control and for serial I/O of 802.11 data. The SPI is a
++	  full-duplex slave synchronous serial interface that is available
++	  immediately following reset when pin 9 (SDIO_SPI_CFG) is tied to
++	  VDDIO. Select this if your platform is using the SPI bus.
 +
-+  interrupts:
-+    maxItems: 1
++config WILC1000_HW_OOB_INTR
++	bool "WILC1000 out of band interrupt"
++	depends on WILC1000_SDIO
++	help
++	  This option enables out-of-band interrupt support for the WILC1000
++	  chipset. This OOB interrupt is intended to provide a faster interrupt
++	  mechanism for SDIO host controllers that don't support SDIO interrupt.
++	  Select this option If the SDIO host controller in your platform
++	  doesn't support SDIO time devision interrupt.
+diff --git a/drivers/net/wireless/microchip/wilc1000/Makefile b/drivers/net=
+/wireless/microchip/wilc1000/Makefile
+new file mode 100644
+index 000000000000..a3305a0a888a
+--- /dev/null
++++ b/drivers/net/wireless/microchip/wilc1000/Makefile
+@@ -0,0 +1,14 @@
++# SPDX-License-Identifier: GPL-2.0
++obj-$(CONFIG_WILC1000) +=3D wilc1000.o
 +
-+  clocks:
-+    description: phandle to the clock connected on rtc clock line.
-+    maxItems: 1
++ccflags-y +=3D -DFIRMWARE_1002=3D\"atmel/wilc1002_firmware.bin\" \
++		-DFIRMWARE_1003=3D\"atmel/wilc1003_firmware.bin\"
 +
-+  clock-names:
-+    const: rtc
++wilc1000-objs :=3D cfg80211.o netdev.o mon.o \
++			hif.o wlan_cfg.o wlan.o
 +
-+required:
-+  - compatible
-+  - interrupts
++obj-$(CONFIG_WILC1000_SDIO) +=3D wilc1000-sdio.o
++wilc1000-sdio-objs +=3D sdio.o
 +
-+examples:
-+  - |
-+    spi {
-+      #address-cells =3D <1>;
-+      #size-cells =3D <0>;
-+      wifi@0 {
-+        compatible =3D "microchip,wilc1000";
-+        spi-max-frequency =3D <48000000>;
-+        reg =3D <0>;
-+        interrupt-parent =3D <&pioC>;
-+        interrupts =3D <27 0>;
-+        clocks =3D <&pck1>;
-+        clock-names =3D "rtc";
-+      };
-+    };
-+
-+  - |
-+    mmc {
-+      #address-cells =3D <1>;
-+      #size-cells =3D <0>;
-+      pinctrl-names =3D "default";
-+      pinctrl-0 =3D <&pinctrl_mmc1_clk_cmd_dat0 &pinctrl_mmc1_dat1_3>;
-+      non-removable;
-+      vmmc-supply =3D <&vcc_mmc1_reg>;
-+      vqmmc-supply =3D <&vcc_3v3_reg>;
-+      bus-width =3D <4>;
-+      wifi@0 {
-+        compatible =3D "microchip,wilc1000";
-+        reg =3D <0>;
-+        interrupt-parent =3D <&pioC>;
-+        interrupts =3D <27 0>;
-+        clocks =3D <&pck1>;
-+        clock-names =3D "rtc";
-+      };
-+    };
++obj-$(CONFIG_WILC1000_SPI) +=3D wilc1000-spi.o
++wilc1000-spi-objs +=3D spi.o
+diff --git a/drivers/staging/Kconfig b/drivers/staging/Kconfig
+index baccd7c883cc..ef5e62e46704 100644
+--- a/drivers/staging/Kconfig
++++ b/drivers/staging/Kconfig
+@@ -80,8 +80,6 @@ source "drivers/staging/fbtft/Kconfig"
+=20
+ source "drivers/staging/fsl-dpaa2/Kconfig"
+=20
+-source "drivers/staging/wilc1000/Kconfig"
+-
+ source "drivers/staging/most/Kconfig"
+=20
+ source "drivers/staging/ks7010/Kconfig"
+diff --git a/drivers/staging/Makefile b/drivers/staging/Makefile
+index fdd03fd6e704..4db5165cb08b 100644
+--- a/drivers/staging/Makefile
++++ b/drivers/staging/Makefile
+@@ -30,7 +30,6 @@ obj-$(CONFIG_UNISYSSPAR)	+=3D unisys/
+ obj-$(CONFIG_COMMON_CLK_XLNX_CLKWZRD)	+=3D clocking-wizard/
+ obj-$(CONFIG_FB_TFT)		+=3D fbtft/
+ obj-$(CONFIG_FSL_DPAA2)		+=3D fsl-dpaa2/
+-obj-$(CONFIG_WILC1000)		+=3D wilc1000/
+ obj-$(CONFIG_MOST)		+=3D most/
+ obj-$(CONFIG_KS7010)		+=3D ks7010/
+ obj-$(CONFIG_GREYBUS)		+=3D greybus/
 --=20
 2.24.0
