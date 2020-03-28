@@ -2,79 +2,88 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 07550196342
-	for <lists+linux-wireless@lfdr.de>; Sat, 28 Mar 2020 04:05:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B4021196575
+	for <lists+linux-wireless@lfdr.de>; Sat, 28 Mar 2020 12:04:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727163AbgC1DFq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 27 Mar 2020 23:05:46 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:12142 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726291AbgC1DFp (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 27 Mar 2020 23:05:45 -0400
-Received: from DGGEMS412-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id E9E78A342D228A8D8D03;
-        Sat, 28 Mar 2020 11:05:39 +0800 (CST)
-Received: from localhost (10.173.223.234) by DGGEMS412-HUB.china.huawei.com
- (10.3.19.212) with Microsoft SMTP Server id 14.3.487.0; Sat, 28 Mar 2020
- 11:05:30 +0800
-From:   YueHaibing <yuehaibing@huawei.com>
-To:     <yhchuang@realtek.com>, <kvalo@codeaurora.org>,
-        <davem@davemloft.net>
-CC:     <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, YueHaibing <yuehaibing@huawei.com>
-Subject: [PATCH] rtw88: Make two functions static
-Date:   Sat, 28 Mar 2020 11:05:24 +0800
-Message-ID: <20200328030524.16032-1-yuehaibing@huawei.com>
-X-Mailer: git-send-email 2.10.2.windows.1
+        id S1726291AbgC1LCy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 28 Mar 2020 07:02:54 -0400
+Received: from mail-vs1-f66.google.com ([209.85.217.66]:38131 "EHLO
+        mail-vs1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725973AbgC1LCy (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 28 Mar 2020 07:02:54 -0400
+Received: by mail-vs1-f66.google.com with SMTP id x206so7894723vsx.5
+        for <linux-wireless@vger.kernel.org>; Sat, 28 Mar 2020 04:02:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=GnodiSBQXr+6/IIW8j5azeGDTXruvDyXlMQYrI3kxI4=;
+        b=JD84yMJymY7XIMTngif1B8O4J7cbNxzy+KT3XHxttWVtZuvVkhUsWrg0pxB7nAF4NG
+         g5+PSkpF3/aDJqV+7yr0tp8IqCK41p8znPpHETtX84j96cM4qUb/x3NZnwiRnH2qQq7c
+         SENRY74evDmkoyAyGPZjEHJCE9GCOK6pmP+be1RoP4CsCrk7R7TB3twVAv0YNGZUYnmt
+         SVyZgPm3r9LnUA76nXNPVxU9he+Ch5kt1WdGiNDmLahmWbD92VJspMXZ1PLVKhU/TKF3
+         ruX9rkaAxfzSXs4wdDs7NMr6BLsY7TvOjb2XnQ2LTW44p9x1WHrCwxF9PayIsj/afsDy
+         E1pA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=GnodiSBQXr+6/IIW8j5azeGDTXruvDyXlMQYrI3kxI4=;
+        b=NAh+WDeud940S4nYxOrDuvuNHRJe6xm4bK4CZLy8o9mt4L35aUU8vNyP6/bXBNvNEO
+         0c0mEe9roHX0YdyQxYG5NDBO7IzgUWniQeRj00eMGqjwcRa0Pj+1iFq4q/sPggZnXQd3
+         3iccCqnAjhUupBmTQphvinIZq4ELue53ge+WLzhT1nrKevZHb7lLJJqkletSyDi1Axm3
+         RRoNCWQcGFkKZEXMqAW02yYfbDbvHnEbrS+ULWGzqD1KkJHYDiVlwV0UCc0XbLrnTAlW
+         QYP0zPR53BR97u58OcMlkZcsk3TDn+16iqvROIBn9zLu8n/o8QXw031qxaK2d/6NX0xM
+         GMlA==
+X-Gm-Message-State: AGi0PubkLtnsXeil6Jqq8JXHt0MBDIJjxJv5I3HRum7CmPFUUazZtG+d
+        OmvTkk2PhsURESb2KMtyHcSJuXaw9g0Cll7rMBk=
+X-Google-Smtp-Source: APiQypJWR3OoJcY3ZsiGLfhK2iZGYUsySqyVgrs4H16vnqICkNXz4paJS3sQQJ5QRA/wj7nfaMx9E4VAB+waHQ918Zo=
+X-Received: by 2002:a67:4384:: with SMTP id q126mr2335549vsa.154.1585393371691;
+ Sat, 28 Mar 2020 04:02:51 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.173.223.234]
-X-CFilter-Loop: Reflected
+References: <iwlwifi.20200318081237.46db40617cc6.Id5cf852ec8c5dbf20ba86bad7b165a0c828f8b2e@changeid>
+ <20200323163858.A1183C44788@smtp.codeaurora.org>
+In-Reply-To: <20200323163858.A1183C44788@smtp.codeaurora.org>
+From:   Felipe Contreras <felipe.contreras@gmail.com>
+Date:   Sat, 28 Mar 2020 05:02:40 -0600
+Message-ID: <CAMP44s0xmss2sOpJ7e-Vx-bq8mx+Q+pO3B-SDaaST_iEPOM_3g@mail.gmail.com>
+Subject: Re: [PATCH v5.6] iwlwifi: don't send GEO_TX_POWER_LIMIT if no wgds table
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Luca Coelho <luca@coelho.fi>,
+        linux-wireless Mailing List <linux-wireless@vger.kernel.org>,
+        Len Brown <lenb@kernel.org>, noodles@earth.li
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fix sparse warnings:
+On Mon, Mar 23, 2020 at 10:42 AM Kalle Valo <kvalo@codeaurora.org> wrote:
+>
+> Luca Coelho <luca@coelho.fi> wrote:
+>
+> > From: Golan Ben Ami <golan.ben.ami@intel.com>
+> >
+> > The GEO_TX_POWER_LIMIT command was sent although
+> > there is no wgds table, so the fw got wrong SAR values
+> > from the driver.
+> >
+> > Fix this by avoiding sending the command if no wgds
+> > tables are available.
+> >
+> > Signed-off-by: Golan Ben Ami <golan.ben.ami@intel.com>
+> > Fixes: 39c1a9728f93 ("iwlwifi: refactor the SAR tables from mvm to acpi")
+> > Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+> > Tested-By: Jonathan McDowell <noodles@earth.li>
+> > Tested-by: Len Brown <len.brown@intel.com>
+>
+> Patch applied to wireless-drivers.git, thanks.
+>
+> 0433ae556ec8 iwlwifi: don't send GEO_TX_POWER_LIMIT if no wgds table
 
-drivers/net/wireless/realtek/rtw88/fw.c:633:4: warning:
- symbol 'rtw_get_rsvd_page_probe_req_location' was not declared. Should it be static?
-drivers/net/wireless/realtek/rtw88/fw.c:650:5: warning:
- symbol 'rtw_get_rsvd_page_probe_req_size' was not declared. Should it be static?
+This should be applied to the stable tree, shouldn't it? 5.5 stable
+releases have this issue.
 
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
----
- drivers/net/wireless/realtek/rtw88/fw.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/net/wireless/realtek/rtw88/fw.c b/drivers/net/wireless/realtek/rtw88/fw.c
-index 05c430b3489c..9192ab26e39b 100644
---- a/drivers/net/wireless/realtek/rtw88/fw.c
-+++ b/drivers/net/wireless/realtek/rtw88/fw.c
-@@ -630,8 +630,8 @@ void rtw_fw_set_pg_info(struct rtw_dev *rtwdev)
- 	rtw_fw_send_h2c_command(rtwdev, h2c_pkt);
- }
- 
--u8 rtw_get_rsvd_page_probe_req_location(struct rtw_dev *rtwdev,
--					struct cfg80211_ssid *ssid)
-+static u8 rtw_get_rsvd_page_probe_req_location(struct rtw_dev *rtwdev,
-+					       struct cfg80211_ssid *ssid)
- {
- 	struct rtw_rsvd_page *rsvd_pkt;
- 	u8 location = 0;
-@@ -647,8 +647,8 @@ u8 rtw_get_rsvd_page_probe_req_location(struct rtw_dev *rtwdev,
- 	return location;
- }
- 
--u16 rtw_get_rsvd_page_probe_req_size(struct rtw_dev *rtwdev,
--				     struct cfg80211_ssid *ssid)
-+static u16 rtw_get_rsvd_page_probe_req_size(struct rtw_dev *rtwdev,
-+					    struct cfg80211_ssid *ssid)
- {
- 	struct rtw_rsvd_page *rsvd_pkt;
- 	u16 size = 0;
 -- 
-2.17.1
-
-
+Felipe Contreras
