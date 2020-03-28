@@ -2,44 +2,79 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B068E196158
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Mar 2020 23:41:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 07550196342
+	for <lists+linux-wireless@lfdr.de>; Sat, 28 Mar 2020 04:05:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727701AbgC0Wle (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 27 Mar 2020 18:41:34 -0400
-Received: from shards.monkeyblade.net ([23.128.96.9]:40212 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727585AbgC0Wle (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 27 Mar 2020 18:41:34 -0400
-Received: from localhost (unknown [IPv6:2601:601:9f00:477::3d5])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 1CE0A15BB6505;
-        Fri, 27 Mar 2020 15:41:34 -0700 (PDT)
-Date:   Fri, 27 Mar 2020 15:41:33 -0700 (PDT)
-Message-Id: <20200327.154133.281200586896043805.davem@davemloft.net>
-To:     kvalo@codeaurora.org
-Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org
-Subject: Re: pull-request: wireless-drivers-next-2020-03-27
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20200327110416.4F051C44791@smtp.codeaurora.org>
-References: <20200327110416.4F051C44791@smtp.codeaurora.org>
-X-Mailer: Mew version 6.8 on Emacs 26.1
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Fri, 27 Mar 2020 15:41:34 -0700 (PDT)
+        id S1727163AbgC1DFq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 27 Mar 2020 23:05:46 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:12142 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726291AbgC1DFp (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 27 Mar 2020 23:05:45 -0400
+Received: from DGGEMS412-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id E9E78A342D228A8D8D03;
+        Sat, 28 Mar 2020 11:05:39 +0800 (CST)
+Received: from localhost (10.173.223.234) by DGGEMS412-HUB.china.huawei.com
+ (10.3.19.212) with Microsoft SMTP Server id 14.3.487.0; Sat, 28 Mar 2020
+ 11:05:30 +0800
+From:   YueHaibing <yuehaibing@huawei.com>
+To:     <yhchuang@realtek.com>, <kvalo@codeaurora.org>,
+        <davem@davemloft.net>
+CC:     <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, YueHaibing <yuehaibing@huawei.com>
+Subject: [PATCH] rtw88: Make two functions static
+Date:   Sat, 28 Mar 2020 11:05:24 +0800
+Message-ID: <20200328030524.16032-1-yuehaibing@huawei.com>
+X-Mailer: git-send-email 2.10.2.windows.1
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Originating-IP: [10.173.223.234]
+X-CFilter-Loop: Reflected
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Kalle Valo <kvalo@codeaurora.org>
-Date: Fri, 27 Mar 2020 11:04:16 +0000 (UTC)
+Fix sparse warnings:
 
-> here's a pull request to net-next tree, more info below. Please let me know if
-> there are any problems.
+drivers/net/wireless/realtek/rtw88/fw.c:633:4: warning:
+ symbol 'rtw_get_rsvd_page_probe_req_location' was not declared. Should it be static?
+drivers/net/wireless/realtek/rtw88/fw.c:650:5: warning:
+ symbol 'rtw_get_rsvd_page_probe_req_size' was not declared. Should it be static?
 
-Pulled, thanks for the merge conflict resolution guidance.
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+---
+ drivers/net/wireless/realtek/rtw88/fw.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/net/wireless/realtek/rtw88/fw.c b/drivers/net/wireless/realtek/rtw88/fw.c
+index 05c430b3489c..9192ab26e39b 100644
+--- a/drivers/net/wireless/realtek/rtw88/fw.c
++++ b/drivers/net/wireless/realtek/rtw88/fw.c
+@@ -630,8 +630,8 @@ void rtw_fw_set_pg_info(struct rtw_dev *rtwdev)
+ 	rtw_fw_send_h2c_command(rtwdev, h2c_pkt);
+ }
+ 
+-u8 rtw_get_rsvd_page_probe_req_location(struct rtw_dev *rtwdev,
+-					struct cfg80211_ssid *ssid)
++static u8 rtw_get_rsvd_page_probe_req_location(struct rtw_dev *rtwdev,
++					       struct cfg80211_ssid *ssid)
+ {
+ 	struct rtw_rsvd_page *rsvd_pkt;
+ 	u8 location = 0;
+@@ -647,8 +647,8 @@ u8 rtw_get_rsvd_page_probe_req_location(struct rtw_dev *rtwdev,
+ 	return location;
+ }
+ 
+-u16 rtw_get_rsvd_page_probe_req_size(struct rtw_dev *rtwdev,
+-				     struct cfg80211_ssid *ssid)
++static u16 rtw_get_rsvd_page_probe_req_size(struct rtw_dev *rtwdev,
++					    struct cfg80211_ssid *ssid)
+ {
+ 	struct rtw_rsvd_page *rsvd_pkt;
+ 	u16 size = 0;
+-- 
+2.17.1
+
+
