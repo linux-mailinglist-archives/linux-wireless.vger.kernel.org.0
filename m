@@ -2,98 +2,66 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B35C9196F2A
-	for <lists+linux-wireless@lfdr.de>; Sun, 29 Mar 2020 20:16:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 47C60196FB7
+	for <lists+linux-wireless@lfdr.de>; Sun, 29 Mar 2020 21:31:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728501AbgC2SQv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 29 Mar 2020 14:16:51 -0400
-Received: from bedivere.hansenpartnership.com ([66.63.167.143]:41566 "EHLO
-        bedivere.hansenpartnership.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727506AbgC2SQv (ORCPT
+        id S1728606AbgC2Tbk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 29 Mar 2020 15:31:40 -0400
+Received: from s3.sipsolutions.net ([144.76.43.62]:35592 "EHLO
+        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727330AbgC2Tbk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 29 Mar 2020 14:16:51 -0400
-Received: from localhost (localhost [127.0.0.1])
-        by bedivere.hansenpartnership.com (Postfix) with ESMTP id 1A29F8EE3FB;
-        Sun, 29 Mar 2020 11:16:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
-        s=20151216; t=1585505810;
-        bh=rBvSkEZqenHlElaAoaY3uIGBSF/hz4P4ALj5BPOQHd8=;
-        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-        b=AwaSoiQmg6hmeQbTt1xr9B09pgLQ+Iw5OlB8ltxyEVnlGLh4SbRra2jPM9eAS1c6S
-         lfjJiFM0YxHdA2lBgT5uYEEyqRZWKIjYYyLFwYaLLc4bzYJYL9HJVgSv+NLuamKgUJ
-         dxWeLxccmARVeoKF+pAsxaPsYfGYzRPTQS4U35EA=
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
-        by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id 7D53_2EYtwap; Sun, 29 Mar 2020 11:16:49 -0700 (PDT)
-Received: from [153.66.254.194] (unknown [50.35.76.230])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 148728EE109;
-        Sun, 29 Mar 2020 11:16:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
-        s=20151216; t=1585505809;
-        bh=rBvSkEZqenHlElaAoaY3uIGBSF/hz4P4ALj5BPOQHd8=;
-        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-        b=scU+UulmbouSY9Sirt+FkSSwoV2JzDPqQb5aY8N7+68p+LrjSRWQBBN9KuxCOebLV
-         +6mt2oJZ14HHJRPk5MJFc0M9sByCZGG5CpOYWRuhMzuQ3xO0YKMOTudmKzZKFQG25Y
-         JENhpDxxEfju16KggGq6CkHEh1lNAM325v+r6Czg=
-Message-ID: <1585505807.4510.1.camel@HansenPartnership.com>
-Subject: Re: [RFC PATCH v1 13/50] Avoid some useless msecs/jiffies
- conversions
-From:   James Bottomley <James.Bottomley@HansenPartnership.com>
-To:     George Spelvin <lkml@SDF.ORG>, Takashi Iwai <tiwai@suse.de>
-Cc:     linux-kernel@vger.kernel.org, Hannes Reinecke <hare@suse.de>,
-        linux-scsi@vger.kernel.org,
-        Marek Lindner <mareklindner@neomailbox.ch>,
-        Simon Wunderlich <sw@simonwunderlich.de>,
-        Antonio Quartulli <a@unstable.cc>,
-        Sven Eckelmann <sven@narfation.org>,
-        b.a.t.m.a.n@diktynna.open-mesh.org,
-        Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless@vger.kernel.org, Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>, alsa-devel@alsa-project.org
-Date:   Sun, 29 Mar 2020 11:16:47 -0700
-In-Reply-To: <20200329175032.GE4675@SDF.ORG>
-References: <202003281643.02SGhBrh000992@sdf.org>
-         <s5ho8sfd2dk.wl-tiwai@suse.de> <20200329121129.GC11951@SDF.ORG>
-         <s5h7dz3ccea.wl-tiwai@suse.de> <20200329175032.GE4675@SDF.ORG>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.26.6 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
+        Sun, 29 Mar 2020 15:31:40 -0400
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.93)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1jIdea-003lQD-E9; Sun, 29 Mar 2020 21:31:28 +0200
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Cc:     davem@davemloft.net, j@w1.fi,
+        Johannes Berg <johannes.berg@intel.com>, stable@vger.kernel.org
+Subject: [PATCH] mac80211: fix authentication with iwlwifi/mvm
+Date:   Sun, 29 Mar 2020 21:31:18 +0200
+Message-Id: <20200329213114.0a067c2cbfdb.I9712908b102ee30fe76fa72c9ec93c92f52ab689@changeid>
+X-Mailer: git-send-email 2.25.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sun, 2020-03-29 at 17:50 +0000, George Spelvin wrote:
-> On Sun, Mar 29, 2020 at 07:13:33PM +0200, Takashi Iwai wrote:
-> > On Sun, 29 Mar 2020 14:11:29 +0200, George Spelvin wrote:
-> > > On Sun, Mar 29, 2020 at 09:52:23AM +0200, Takashi Iwai wrote:
-> > > > I thought the compiler already optimizes to the constant
-> > > > calculation
-> > > > for the above case?
-> > > 
-> > > It optimizes that if the entire argument, including "seconds", is
-> > > a compile-time constant.
-> > > 
-> > > However, given "msecs_to_jiffies(hdev->rpa_timeout * 1000);",
-> > > the computatin is non-trivial.
-> > 
-> > Fair enough.  But it's still a question whether an open code X * HZ
-> > is
-> > good at all...
-> 
-> I'm sorry, I don't understand what you mean by "good at all" here.
-> The value computed is exactly the same.
+From: Johannes Berg <johannes.berg@intel.com>
 
-I think he means what the compiler does with it.
+The original patch didn't copy the ieee80211_is_data() condition
+because on most drivers the management frames don't go through
+this path. However, they do on iwlwifi/mvm, so we do need to keep
+the condition here.
 
-We all assume that msecs_to_jiffies is properly optimized so there
-should be no need to open code it like you're proposing.  So firstly
-can you produce the assembly that shows the worse output from
-msecs_to_jiffies?  If there is a problem, then we should be fixing it
-in msecs_to_jiffies, not adding open coding.
+Cc: stable@vger.kernel.org
+Fixes: ce2e1ca70307 ("mac80211: Check port authorization in the ieee80211_tx_dequeue() case")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+---
+Dave, can you please apply this directly?
 
-James
+---
+ net/mac80211/tx.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index d9cca6dbd870..19a67f639471 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -3610,7 +3610,8 @@ struct sk_buff *ieee80211_tx_dequeue(struct ieee80211_hw *hw,
+ 		 * Drop unicast frames to unauthorised stations unless they are
+ 		 * EAPOL frames from the local station.
+ 		 */
+-		if (unlikely(!ieee80211_vif_is_mesh(&tx.sdata->vif) &&
++		if (unlikely(ieee80211_is_data(hdr->fc) &&
++			     !ieee80211_vif_is_mesh(&tx.sdata->vif) &&
+ 			     tx.sdata->vif.type != NL80211_IFTYPE_OCB &&
+ 			     !is_multicast_ether_addr(hdr->addr1) &&
+ 			     !test_sta_flag(tx.sta, WLAN_STA_AUTHORIZED) &&
+-- 
+2.25.1
 
