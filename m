@@ -2,134 +2,89 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1008D1977C7
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Mar 2020 11:23:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 041F81978A3
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 Mar 2020 12:16:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728506AbgC3JXD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 30 Mar 2020 05:23:03 -0400
-Received: from mail26.static.mailgun.info ([104.130.122.26]:53550 "EHLO
-        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727841AbgC3JXD (ORCPT
+        id S1728846AbgC3KQU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 30 Mar 2020 06:16:20 -0400
+Received: from mail27.static.mailgun.info ([104.130.122.27]:50124 "EHLO
+        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728609AbgC3KQT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 30 Mar 2020 05:23:03 -0400
+        Mon, 30 Mar 2020 06:16:19 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1585560182; h=Message-ID: References: In-Reply-To: Subject:
- Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
- MIME-Version: Sender; bh=YFBdAzzo7+yb9xd0OHuyOAoYZCtYb0OdPlc71GVj/eE=;
- b=NsM1g+gS1HKtiYfnu7+slfXZX73Xsv6NO5W/faZEY/YgW10Y4jF5saBNuEOyWUA7jQu6Q9tP
- XEkIsOo7UPIFCeM7jOnc9TIFyjFu0deYI2h9O1xYe5CAGAkRXwC94OYWc4usAN8Os2UYa6Ym
- OUjqG1tLrvsYFNUrgUp5IMPsevM=
-X-Mailgun-Sending-Ip: 104.130.122.26
+ s=smtp; t=1585563379; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=dQ1l+GSDnoNwDcUL5xl5hNd2b9ut5PAeUZvxWUY9fYw=; b=EC9tfeYCRrhyfDa//2v4hT622e/eu+QMO5DO7JJwCVzIdN/9CwnCkpBqG5qfsi8D71COAIDg
+ wS+LJsiZWtXxZfjw1GG8NgKeQCtpDLxqdzV048QYymy5olAP3M/yel+v0/O3esK9U70x3sII
+ 1yvmEQDfPeQIKiaaMenn+IdN3hg=
+X-Mailgun-Sending-Ip: 104.130.122.27
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e81ba6e.7f90c35cb928-smtp-out-n04;
- Mon, 30 Mar 2020 09:22:54 -0000 (UTC)
+ by mxa.mailgun.org with ESMTP id 5e81c6f2.7f961592a030-smtp-out-n05;
+ Mon, 30 Mar 2020 10:16:18 -0000 (UTC)
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 19E94C433BA; Mon, 30 Mar 2020 09:22:54 +0000 (UTC)
+        id 8E885C44788; Mon, 30 Mar 2020 10:16:18 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
         autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+Received: from x230.qca.qualcomm.com (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        (Authenticated sender: ssreeela)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 3FA49C433F2;
-        Mon, 30 Mar 2020 09:22:53 +0000 (UTC)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 088BFC433F2;
+        Mon, 30 Mar 2020 10:16:14 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 088BFC433F2
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Jaehoon Chung <jh80.chung@samsung.com>,
+        "open list\:TI WILINK WIRELES..." <linux-wireless@vger.kernel.org>,
+        "open list\:BROADCOM BRCM80211 IEEE802.11n WIRELESS DRIVER" 
+        <brcm80211-dev-list.pdl@broadcom.com>,
+        brcm80211-dev-list@cypress.com,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Arend van Spriel <arend.vanspriel@broadcom.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
+        Wright Feng <wright.feng@cypress.com>
+Subject: Re: [PATCH] brcmfmac: fix wrong location to get firmware feature
+References: <CGME20200330052521epcas1p1eedc926d4b11513f8502cf0c90ecf433@epcas1p1.samsung.com>
+        <20200330052528.10503-1-jh80.chung@samsung.com>
+        <CAHp75Vey9VUSAT6j6NTSXqNUK1vwSqY=aSx3-WPoXgxCK33SDg@mail.gmail.com>
+Date:   Mon, 30 Mar 2020 13:16:12 +0300
+In-Reply-To: <CAHp75Vey9VUSAT6j6NTSXqNUK1vwSqY=aSx3-WPoXgxCK33SDg@mail.gmail.com>
+        (Andy Shevchenko's message of "Mon, 30 Mar 2020 12:08:27 +0300")
+Message-ID: <87r1xaf8r7.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-Date:   Mon, 30 Mar 2020 14:52:53 +0530
-From:   ssreeela@codeaurora.org
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     Lei Wang <leiwa@codeaurora.org>, Rick Wu <rwu@codeaurora.org>,
-        linux-wireless@vger.kernel.org,
-        Sebastian Gottschall <s.gottschall@dd-wrt.com>,
-        ath10k@lists.infradead.org
-Subject: Re: [PATCH] ath10k: enable VHT160 and VHT80+80 modes
-In-Reply-To: <87bloi2g6h.fsf@kamboji.qca.qualcomm.com>
-References: <1585148169-2320-1-git-send-email-ssreeela@codeaurora.org>
- <20200326095907.5326BC433BA@smtp.codeaurora.org>
- <812e84a585ed3aeda9aa54f7d2b14e93@codeaurora.org>
- <87bloi2g6h.fsf@kamboji.qca.qualcomm.com>
-Message-ID: <158d2bdf5027a494d14cfdd6134b9c6f@codeaurora.org>
-X-Sender: ssreeela@codeaurora.org
-User-Agent: Roundcube Webmail/1.3.9
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2020-03-27 16:55, Kalle Valo wrote:
-> ssreeela@codeaurora.org writes:
-> 
->> On 2020-03-26 15:29, Kalle Valo wrote:
->>> Sowmiya Sree Elavalagan <ssreeela@codeaurora.org> wrote:
->>> 
->>>> From: Lei Wang <leiwa@codeaurora.org>
->>>> 
->>>> Set right channel frequencies in VHT160 mode according to the VHT160
->>>> interoperability workaround added as part of IEEE Std 802.11™-2016 
->>>> in
->>>> "Table 9-252—VHT Operation Information subfields", band_center_freq2
->>>> corresponds to CCFS1 in Table 9-253. Previous implementation
->>>> (band_center_freq2 = 0 for VHT160) is only deprecated.
->>>> 
->>>> Enable VHT80+80 mode and set the proper peer RX nss value for
->>>> VHT160 and
->>>> VHT80+80 mode.
->>>> 
->>>> Based on patches by Sebastian Gottschall:
->>>> 
->>>> https://lkml.kernel.org/r/20180704095444.662-1-s.gottschall@dd-wrt.com
->>>> 
->>>> https://lkml.kernel.org/r/20180704120519.6479-1-s.gottschall@dd-wrt.com
->>>> 
->>>> Tested: qca9984 with firmware ver 10.4-3.10-00047
->>>> 
->>>> Co-developed-by: Sebastian Gottschall <s.gottschall@dd-wrt.com>
->>>> Signed-off-by: Sebastian Gottschall <s.gottschall@dd-wrt.com>
->>>> Co-developed-by: Rick Wu <rwu@codeaurora.org>
->>>> Signed-off-by: Rick Wu <rwu@codeaurora.org>
->>>> Signed-off-by: Lei Wang <leiwa@codeaurora.org>
->>>> Signed-off-by: Sowmiya Sree Elavalagan <ssreeela@codeaurora.org>
->>> 
->>> Fails to build on GCC 8.1. Did you test this?
->>> 
->>> In file included from ./include/asm-generic/bug.h:5,
->>>                  from ./arch/x86/include/asm/bug.h:83,
->>>                  from ./include/linux/bug.h:5,
->>>                  from ./include/net/mac80211.h:16,
->>>                  from drivers/net/wireless/ath/ath10k/mac.h:10,
->>>                  from drivers/net/wireless/ath/ath10k/mac.c:8:
->>> In function 'ath10k_peer_assoc_h_vht',
->>>     inlined from 'ath10k_peer_assoc_prepare' at
->>> drivers/net/wireless/ath/ath10k/mac.c:2790:2:
->>> ./include/linux/compiler.h:350:38: error: call to
->>> '__compiletime_assert_2631' declared with attribute error:
-> 
-> [...]
-> 
->> I checked the build. Build was successful with GCC version 4.8.
->> Will fix the error and update the patch.
-> 
-> Great, thanks. Here's how I installed GCC 8.1 from crosstool:
-> 
-> listings: https://www.kernel.org/pub/tools/crosstool/
-> 
-> wget
-> https://www.kernel.org/pub/tools/crosstool/files/bin/x86_64/8.1.0/x86_64-gcc-8.1.0-nolibc-x86_64-linux.tar.xz
-> pushd /opt/cross/
-> tar -xf ~/tmp/crosstool/x86_64-gcc-8.1.0-nolibc-x86_64-linux.tar.xz
-> 
-> In top level create GNUMakefile:
-> 
-> CROSS_COMPILE=/opt/cross/gcc-8.1.0-nolibc/x86_64-linux/bin/x86_64-linux-
-> include Makefile
+Andy Shevchenko <andy.shevchenko@gmail.com> writes:
 
-Thanks for the info. Will check the build with GCC 8.1 and resend.
+> On Mon, Mar 30, 2020 at 8:26 AM Jaehoon Chung <jh80.chung@samsung.com> wrote:
+>>
+>> sup_wpa feature is getting after setting feature_disable flag.
+>> If firmware is supported sup_wpa feature,  it's always enabled
+>> regardless of feature_disable flag.
+>>
+>
+>> Fixes: b8a64f0e96c2 ("brcmfmac: support 4-way handshake offloading for WPA/WPA2-PSK")
+>>
+>> Signed-off-by: Jaehoon Chung <jh80.chung@samsung.com>
+>
+> No blank line in between. (Dunno if you need to resend, just wait what
+> maintainer says)
 
-Regards,
-Sowmiya Sree
+I can fix that during commit, no need to resend because of this.
+
+-- 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
