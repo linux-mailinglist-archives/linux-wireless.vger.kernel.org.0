@@ -2,43 +2,99 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 19BD919808C
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Mar 2020 18:09:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 973CE198342
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 Mar 2020 20:21:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729912AbgC3QJj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 30 Mar 2020 12:09:39 -0400
-Received: from host10-96-61-217.static.arubacloud.com ([217.61.96.10]:58776
-        "EHLO mail.richermoren.tk" rhost-flags-OK-FAIL-OK-OK)
-        by vger.kernel.org with ESMTP id S1727890AbgC3QJi (ORCPT
+        id S1726981AbgC3SVQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 30 Mar 2020 14:21:16 -0400
+Received: from mail-io1-f72.google.com ([209.85.166.72]:45111 "EHLO
+        mail-io1-f72.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726017AbgC3SVQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 30 Mar 2020 12:09:38 -0400
-Received: by mail.richermoren.tk (Postfix, from userid 48)
-        id A506454910; Mon, 30 Mar 2020 11:55:14 -0400 (EDT)
-To:     linux-wireless@vger.kernel.org
-Subject: Trial Order 3/30/2020
-X-PHP-Originating-Script: 0:agregesa.php
-From:   Julian Smith <juliansmith2014@mail.ru>
-Reply-To: juliansmith2014@outlook.com
+        Mon, 30 Mar 2020 14:21:16 -0400
+Received: by mail-io1-f72.google.com with SMTP id h76so16895285iof.12
+        for <linux-wireless@vger.kernel.org>; Mon, 30 Mar 2020 11:21:15 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
+        bh=mxdVwodbRk0ry9cYchDSp6TDUK7eyG3uOBp8XYyeWXQ=;
+        b=t/UFEojpYl1TVDyE86tA1fh6ceevEMFSstkqUIBy8k5XGcgDqEAxKUWnimxeFCrDXe
+         T7EvQuWL/3aT0BezY1OYaNLXk7CF7gex2YuK+B92M1X92ovmpRwH3pO2qrNhYvL+Tb7e
+         8cZq3kQbfCDPHMZ/cFIirC4YcDBqmJxPkLOc0SIeBz6UFl77dwWoM//bTpi4rB8SVgOv
+         A9xKSG7uTgcXgAnHN1ytZnG+AKDr1A+EKoBhrT7ws6FJmwFauQfbvyhJzRZYpwGOAacm
+         JxEPIee1J18szvhD2QViI0A2EyJ4OBaYzE03NaosQHlcZh6J59ZI20MtS/3sZRuyfCOt
+         MHsA==
+X-Gm-Message-State: ANhLgQ2x/08nvw9fHdpou+82fweA0W4uJYi2Gs2/X727CcApbDIsPOls
+        HN65uxAaA+SUgf1Ai/h3BZk3o672DgYa/GA75HjH/Vm5Y0Gx
+X-Google-Smtp-Source: ADFU+vsIuf/CRCbVNmWwvv47oJ3aX+xLSoAbjEEvYN1cOGPVqg4ocu5AJueeTvpVtrNksrrMv07+chcb+0xTt8sflyPG/O6cBYve
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-Message-Id: <20200330155514.A506454910@mail.richermoren.tk>
-Date:   Mon, 30 Mar 2020 11:55:14 -0400 (EDT)
+X-Received: by 2002:a92:9f13:: with SMTP id u19mr12634271ili.111.1585592475153;
+ Mon, 30 Mar 2020 11:21:15 -0700 (PDT)
+Date:   Mon, 30 Mar 2020 11:21:15 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <0000000000003d7c1505a2168418@google.com>
+Subject: KASAN: stack-out-of-bounds Write in ath9k_hif_usb_rx_cb
+From:   syzbot <syzbot+d403396d4df67ad0bd5f@syzkaller.appspotmail.com>
+To:     andreyknvl@google.com, ath9k-devel@qca.qualcomm.com,
+        davem@davemloft.net, kvalo@codeaurora.org,
+        linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello friend,
+Hello,
 
-This is Julian Smith and i am purchasing manager from Sinara Group Co.,LTD in Russia.
-We are glad to know about your company from the web and we are interested in your products.
-Could you kindly send us your Latest catalog and price list for our trial order.
+syzbot found the following crash on:
 
-Thanks and Best Regards,
+HEAD commit:    0fa84af8 Merge tag 'usb-serial-5.7-rc1' of https://git.ker..
+git tree:       https://github.com/google/kasan.git usb-fuzzer
+console output: https://syzkaller.appspot.com/x/log.txt?x=159a0583e00000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=a782c087b1f425c6
+dashboard link: https://syzkaller.appspot.com/bug?extid=d403396d4df67ad0bd5f
+compiler:       gcc (GCC) 9.0.0 20181231 (experimental)
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=177a266de00000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1579f947e00000
 
-Ms. Julian Smith
-Purchasing Manager
-Sinara Group Co.,LTD
+IMPORTANT: if you fix the bug, please add the following tag to the commit:
+Reported-by: syzbot+d403396d4df67ad0bd5f@syzkaller.appspotmail.com
+
+==================================================================
+BUG: KASAN: stack-out-of-bounds in ath9k_hif_usb_rx_stream drivers/net/wireless/ath/ath9k/hif_usb.c:626 [inline]
+BUG: KASAN: stack-out-of-bounds in ath9k_hif_usb_rx_cb+0xdf6/0xf70 drivers/net/wireless/ath/ath9k/hif_usb.c:666
+Write of size 8 at addr ffff8881db309a28 by task swapper/1/0
+
+CPU: 1 PID: 0 Comm: swapper/1 Not tainted 5.6.0-rc7-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
+Call Trace:
+ <IRQ>
+ __dump_stack lib/dump_stack.c:77 [inline]
+ dump_stack+0xef/0x16e lib/dump_stack.c:118
+ print_address_description.constprop.0.cold+0xd3/0x314 mm/kasan/report.c:374
+ __kasan_report.cold+0x37/0x77 mm/kasan/report.c:506
+ kasan_report+0xe/0x20 mm/kasan/common.c:641
+ ath9k_hif_usb_rx_stream drivers/net/wireless/ath/ath9k/hif_usb.c:626 [inline]
+ ath9k_hif_usb_rx_cb+0xdf6/0xf70 drivers/net/wireless/ath/ath9k/hif_usb.c:666
+ __usb_hcd_giveback_urb+0x1f2/0x470 drivers/usb/core/hcd.c:1648
+ usb_hcd_giveback_urb+0x368/0x420 drivers/usb/core/hcd.c:1713
+ dummy_timer+0x1258/0x32ae drivers/usb/gadget/udc/dummy_hcd.c:1966
+ call_timer_fn+0x195/0x6f0 kernel/time/timer.c:1404
+ expire_timers kernel/time/timer.c:1449 [inline]
+ __run_timers kernel/time/timer.c:1773 [inline]
+ __run_timers kernel/time/timer.c:1740 [inline]
+ run_timer_softirq+0x5f9/0x1500 kernel/time/timer.c:1786
 
 
+---
+This bug is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this bug report. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+syzbot can test patches for this bug, for details see:
+https://goo.gl/tpsmEJ#testing-patches
