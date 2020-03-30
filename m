@@ -2,68 +2,58 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 43207197A0B
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Mar 2020 13:00:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F35C0197A3E
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 Mar 2020 13:01:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729442AbgC3LAY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 30 Mar 2020 07:00:24 -0400
-Received: from smail.rz.tu-ilmenau.de ([141.24.186.67]:40240 "EHLO
-        smail.rz.tu-ilmenau.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729401AbgC3LAY (ORCPT
+        id S1729825AbgC3LB2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 30 Mar 2020 07:01:28 -0400
+Received: from mail.11d01.mspz7.gob.ec ([190.152.145.91]:53606 "EHLO
+        mail.11d01.mspz7.gob.ec" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729497AbgC3LBM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 30 Mar 2020 07:00:24 -0400
-Received: from sauron.tu-ilmenau.de (unknown [141.24.16.100])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by smail.rz.tu-ilmenau.de (Postfix) with ESMTPSA id 7D3B6580068;
-        Mon, 30 Mar 2020 13:00:22 +0200 (CEST)
-From:   Markus Theil <markus.theil@tu-ilmenau.de>
-To:     johannes@sipsolutions.net
-Cc:     linux-wireless@vger.kernel.org,
-        Markus Theil <markus.theil@tu-ilmenau.de>
-Subject: [PATCH] iw: event: log rssi value for cqm
-Date:   Mon, 30 Mar 2020 13:00:27 +0200
-Message-Id: <20200330110027.21541-1-markus.theil@tu-ilmenau.de>
-X-Mailer: git-send-email 2.26.0
+        Mon, 30 Mar 2020 07:01:12 -0400
+Received: from localhost (localhost [127.0.0.1])
+        by mail.11d01.mspz7.gob.ec (Postfix) with ESMTP id 5D9FD2F6F5A1;
+        Mon, 30 Mar 2020 04:16:33 -0500 (-05)
+Received: from mail.11d01.mspz7.gob.ec ([127.0.0.1])
+        by localhost (mail.11d01.mspz7.gob.ec [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id vYATl8-zP0Ve; Mon, 30 Mar 2020 04:16:32 -0500 (-05)
+Received: from localhost (localhost [127.0.0.1])
+        by mail.11d01.mspz7.gob.ec (Postfix) with ESMTP id BB9162F6F5DB;
+        Mon, 30 Mar 2020 04:16:32 -0500 (-05)
+DKIM-Filter: OpenDKIM Filter v2.9.2 mail.11d01.mspz7.gob.ec BB9162F6F5DB
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=11d01.mspz7.gob.ec;
+        s=50CBC7E4-8BED-11E9-AF6C-F1A741A224D3; t=1585559792;
+        bh=cLQbOHa1aY+/FyDjaDQOZOnnnlZDxMu+rBX/cg5yps8=;
+        h=Content-Type:MIME-Version:Content-Transfer-Encoding:Subject:To:
+         From:Date:Reply-To:Message-Id;
+        b=ShxVLxxMtR9/wtJwTytPwnwDZmW73XZBYvFYxhD1XqscsEhSKn5k+zJSJpBuxx0fi
+         EurwhHpzefrmwBgDcS7FYj73zQM99vckv4inFO5ixcKJKX7bB21dBWDvC64RrORsZ1
+         QZgw/QNge5NQjPfeosHvynlDr4E5xWg9xh42iHWY=
+X-Virus-Scanned: amavisd-new at 11d01.mspz7.gob.ec
+Received: from mail.11d01.mspz7.gob.ec ([127.0.0.1])
+        by localhost (mail.11d01.mspz7.gob.ec [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id 9_B0NvO60Gi4; Mon, 30 Mar 2020 04:16:32 -0500 (-05)
+Received: from [10.121.152.251] (unknown [105.12.0.10])
+        by mail.11d01.mspz7.gob.ec (Postfix) with ESMTPSA id 80C722F6F595;
+        Mon, 30 Mar 2020 04:16:22 -0500 (-05)
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: spende von 2.000.000,00 Euro
+To:     Recipients <luis.sanchez@11d01.mspz7.gob.ec>
+From:   "Manuel Franco" <luis.sanchez@11d01.mspz7.gob.ec>
+Date:   Mon, 30 Mar 2020 11:47:36 +0200
+Reply-To: manuelfrancospende11@gmail.com
+Message-Id: <20200330091622.80C722F6F595@mail.11d01.mspz7.gob.ec>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Signed-off-by: Markus Theil <markus.theil@tu-ilmenau.de>
----
- event.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+Ich bin Manuel Franco, ich spende Ihnen 2.000.000,00 Euro. Kontaktieren Sie=
+ mich jetzt, damit wir fortfahren k=F6nnen.
 
-diff --git a/event.c b/event.c
-index b132b17..02e4593 100644
---- a/event.c
-+++ b/event.c
-@@ -122,17 +122,20 @@ static void parse_cqm_event(struct nlattr **attrs)
- 
- 	if (cqm[NL80211_ATTR_CQM_RSSI_THRESHOLD_EVENT]) {
- 		enum nl80211_cqm_rssi_threshold_event rssi_event;
-+		int32_t rssi_level = -1;
- 		bool found_one = false;
- 
- 		rssi_event = nla_get_u32(cqm[NL80211_ATTR_CQM_RSSI_THRESHOLD_EVENT]);
-+		if(cqm[NL80211_ATTR_CQM_RSSI_LEVEL])
-+			rssi_level = nla_get_u32(cqm[NL80211_ATTR_CQM_RSSI_LEVEL]);
- 
- 		switch (rssi_event) {
- 		case NL80211_CQM_RSSI_THRESHOLD_EVENT_HIGH:
--			printf("RSSI went above threshold\n");
-+			printf("RSSI (%i dBm) went above threshold\n", rssi_level);
- 			found_one = true;
- 			break;
- 		case NL80211_CQM_RSSI_THRESHOLD_EVENT_LOW:
--			printf("RSSI went below threshold\n");
-+			printf("RSSI (%i dBm) went below threshold\n", rssi_level);
- 			found_one = true;
- 			break;
- 		case NL80211_CQM_RSSI_BEACON_LOSS_EVENT:
--- 
-2.26.0
-
+I am Manuel Franco, I donate to you 2,000,000.00 euros. Contact me now so w=
+e can proceed.
