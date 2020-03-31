@@ -2,51 +2,51 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 711DB199543
-	for <lists+linux-wireless@lfdr.de>; Tue, 31 Mar 2020 13:22:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7EB5C199570
+	for <lists+linux-wireless@lfdr.de>; Tue, 31 Mar 2020 13:40:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730426AbgCaLVy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 31 Mar 2020 07:21:54 -0400
-Received: from mail-il1-f193.google.com ([209.85.166.193]:45815 "EHLO
-        mail-il1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729925AbgCaLVx (ORCPT
+        id S1730490AbgCaLkK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 31 Mar 2020 07:40:10 -0400
+Received: from mail-io1-f66.google.com ([209.85.166.66]:34490 "EHLO
+        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730343AbgCaLkK (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 31 Mar 2020 07:21:53 -0400
-Received: by mail-il1-f193.google.com with SMTP id x16so19018129ilp.12;
-        Tue, 31 Mar 2020 04:21:51 -0700 (PDT)
+        Tue, 31 Mar 2020 07:40:10 -0400
+Received: by mail-io1-f66.google.com with SMTP id h131so21322731iof.1;
+        Tue, 31 Mar 2020 04:40:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=qKDkpoJr7FT+xSnuAXXrL+5r38BtzQdjQKiZus21QDE=;
-        b=De49afrrOSEAE6d16LJHXttNzo3rRRZMfRBePwOMyj6Zz8IeO3du2R+ksJfiwpNOgJ
-         +FMHm16y/a02jaI0SjMRzbLs4Hk/ImJqEw1Fjp/7iWYUUIeySx1NRiCNoJ6I8QzcicqI
-         H60p/wDBGYpXAaJbqmWxOOQBELIx4/B5vxEVKM906pmwdKz1VJ+GG4ho79Lc/wZ3LBaC
-         JTFN7N8DQw6Uaku8DXQBvqoF1VEPVFyS77tGIVgO4uik3bG6kVAhEWVT3VHnzxUtFSjN
-         MdGyJwksUJ+5kPD2YxdZcqodMgVnKQ98zGRCbwy0Iv3/M9usgBxoqmkdv6FFR6lox/4X
-         +Fxw==
+        bh=GvfMZgwwya4ZSH2OS8e5IKouh92EbNGvwaXpIPfmMZU=;
+        b=HS3MXxUze51pqFaHc52OMaPkf+JHkR9fOcDmckzaIhHmhnG6RnivzmAx7X/1bSOW7W
+         TXGjPqGU+CeKwCa9KP9JhXaNOngahNLeHUdjTKYEU+t+gQ8IdNiGf5ode1Wy7nMe5uF+
+         41LboL1lOLWLZqPTsVX6AxSFLxYY8AtfPQla33L1MOLcI9Yv5U+riazFwhaoZvE45dCY
+         ICXrPXX0mpGK+r4dPIh9Y2i4onsrVUIY9vTsvhTpaWbI6ciOnL1jF6Wrme2dCsW2THEp
+         a4cf57cgiJpybFo/ihMtVg7qOU2gMZZT696Dm5dBxbpX7tz+BBsLUkJpcdjI0d1Hjog9
+         qpiw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=qKDkpoJr7FT+xSnuAXXrL+5r38BtzQdjQKiZus21QDE=;
-        b=QV8CehD8oh5qWr13qVhrOI/jeOq7K7OaomY38Mk20IAj59jQC9aZygLSkMsuVr2KEw
-         3pRap9W0Em1gDtS4rmjXGf3o65IVhHQogx4nCAOPl+z8ftubx8the8q/gaxUbe3QHYD5
-         vbAakQCzqBrmL8gysoGIooIR29ZtILSnaOwSU28BJ3o22QOhw/XAujmz/v3ikJTuY/h9
-         morF7qsAOIqQ2xeWwS5IuxxrDR2a9i02Y6X/3DPc6BaoaPdyZsd2M7X/gjhtdpNPtCyi
-         6dacQrdgowSXfn5CUJn6LraKZ0Dei6uCvc9slZUb6didjoRyaq0Tns1ARRajw98JbazH
-         Tx+w==
-X-Gm-Message-State: ANhLgQ2M8lhL/RkUIdZPduWhBPC0/CDoOCsgoiNIi32q+yun0dsyZ2jL
-        STrsPFDK9uyzPie0gQdOhjV94OE32DNiTsD78q3o1GlLF0w=
-X-Google-Smtp-Source: ADFU+vtGPEg8G50KWWMKJaz5WV8TmjAedD99biDTTwbWYJRszva9IlMSkgggoXwqdJIdIsnLOfH3Qr5QTA18gJEf7ok=
-X-Received: by 2002:a92:77c2:: with SMTP id s185mr15455250ilc.297.1585653711555;
- Tue, 31 Mar 2020 04:21:51 -0700 (PDT)
+        bh=GvfMZgwwya4ZSH2OS8e5IKouh92EbNGvwaXpIPfmMZU=;
+        b=QiUYWDgq/me77eGel8HsZRzStH2GROMyprkFl8brXHIwWmwmJAuscFzaMzXU2LqbyN
+         MyDpLP2bEK+scIAK9h9C+OxPXB/m+XSlgHLCsNYcEqjRgBEymoKs3+SrMkssKs/Qw2zA
+         +4ETx9cx2us1hBR741WYBGVxpmF5sJP/dSTm3LpEcb/PzzFOHwxHiuAtxV3FZZMhMTt9
+         9mzIyBYw6oi7lffCzUMBNFeiwS7ZPkjKsGr3pMvJ4xblb2aUlrOAgXQ0Tr7HEGvIVhLt
+         ze8PWy1ndkdb95U8QCFtX/NuvjWn3NlfqkpVS8GGgybDEsbvQcc34DyCbbUiqsmsgYoY
+         S8bA==
+X-Gm-Message-State: ANhLgQ2fX+z5yGsWml7LbAQSq5NXTw7TxZfiU82KX05BdtBuEt3tE+AL
+        9+W8/KClkCi7JicdCK2MXsuMPT2IWVgEO2dvFuw=
+X-Google-Smtp-Source: ADFU+vsF87hpVW35ufXfPeeeySR9ePWlx1H9GQn0Al/KxFVH01m9lLLgTtl4tDNU9Fb00y4+Wa1QAd+Wi9lSCqiwRDo=
+X-Received: by 2002:a5d:984b:: with SMTP id p11mr1163615ios.175.1585654808716;
+ Tue, 31 Mar 2020 04:40:08 -0700 (PDT)
 MIME-Version: 1.0
 References: <1585625296-31013-1-git-send-email-hqjagain@gmail.com> <87bloc23d1.fsf@kamboji.qca.qualcomm.com>
 In-Reply-To: <87bloc23d1.fsf@kamboji.qca.qualcomm.com>
 From:   Qiujun Huang <hqjagain@gmail.com>
-Date:   Tue, 31 Mar 2020 19:21:33 +0800
-Message-ID: <CAJRQjofn+kMqueK+CuoJgdV-_Y6ChM2cCaGKOBJ=uVBDPpYKxA@mail.gmail.com>
+Date:   Tue, 31 Mar 2020 19:39:51 +0800
+Message-ID: <CAJRQjodOEoP-H7x_XjB5MxCFfgLeb1Bt=XfDT_rhLcBdyt=mQg@mail.gmail.com>
 Subject: Re: [PATCH] ath9k: fix stack-out-of-bounds Write in ath9k_hif_usb_rx_cb
 To:     Kalle Valo <kvalo@codeaurora.org>
 Cc:     ath9k-devel@qca.qualcomm.com,
@@ -83,13 +83,13 @@ On Tue, Mar 31, 2020 at 7:03 PM Kalle Valo <kvalo@codeaurora.org> wrote:
 > > +                             dev_err(&hif_dev->udev->dev,
 > > +                                     "ath9k_htc: over RX MAX_PKT_NUM\n");
 > > +                             goto err;
+the  barrier ensure pool_index <= MAX_PKT_NUM_IN_TRANSFER
 > > +                     }
 >
 > What about 'pool_index >= MAX_PKT_NUM_IN_TRANSFER' just to be on the
 > safe side? Ah, but then error handling won't work:
-
-Get that.
-
+It looks ok?
+it can handle the case: pool_index == MAX_PKT_NUM_IN_TRANSFER
 >
 > err:
 >         for (i = 0; i < pool_index; i++) {
@@ -101,9 +101,6 @@ Get that.
 >
 > Maybe that should use 'min(pool_index, MAX_PKT_NUM_IN_TRANSFER - 1)' or
 > something? Or maybe it's just overengineerin, dunno.
-
-I will take a deeper look, thanks.
-
 >
 > --
 > https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
