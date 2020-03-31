@@ -2,126 +2,73 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 84E32198C8E
-	for <lists+linux-wireless@lfdr.de>; Tue, 31 Mar 2020 08:51:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D1FD198EBC
+	for <lists+linux-wireless@lfdr.de>; Tue, 31 Mar 2020 10:41:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729950AbgCaGvx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 31 Mar 2020 02:51:53 -0400
-Received: from mailgw01.mediatek.com ([210.61.82.183]:19038 "EHLO
-        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1729894AbgCaGvx (ORCPT
+        id S1726488AbgCaIlu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 31 Mar 2020 04:41:50 -0400
+Received: from sonic305-1.consmr.mail.bf2.yahoo.com ([74.6.133.40]:37837 "EHLO
+        sonic305-1.consmr.mail.bf2.yahoo.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726299AbgCaIlt (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 31 Mar 2020 02:51:53 -0400
-X-UUID: f96a06c592ec4bf490eccf4997795cb4-20200331
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Transfer-Encoding:Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=BEGm8TOdfxoqxw2nTZ7/51DdBklePLir3Hb8tr9Ohts=;
-        b=G95y/rz9f0eyxNUTCYjzKuCZWZXUq7Gq9FHmm0pacprzfm+MErTbv7Oh2Uv1VjtIiH43/39NEB29cBotK+FX/g2C5KLbjk8wnQdm2UnJCRJuCuqwPArCI3irZyawLZxChTymUpboZVIsfmoTKGTILNLtVm959cq9Q0pFePi5po0=;
-X-UUID: f96a06c592ec4bf490eccf4997795cb4-20200331
-Received: from mtkexhb01.mediatek.inc [(172.21.101.102)] by mailgw01.mediatek.com
-        (envelope-from <ryder.lee@mediatek.com>)
-        (Cellopoint E-mail Firewall v4.1.10 Build 0809 with TLS)
-        with ESMTP id 1905343760; Tue, 31 Mar 2020 14:51:42 +0800
-Received: from mtkcas07.mediatek.inc (172.21.101.84) by
- mtkmbs08n2.mediatek.inc (172.21.101.56) with Microsoft SMTP Server (TLS) id
- 15.0.1395.4; Tue, 31 Mar 2020 14:51:40 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas07.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1395.4 via Frontend
- Transport; Tue, 31 Mar 2020 14:51:39 +0800
-From:   Ryder Lee <ryder.lee@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-CC:     Shayne Chen <shayne.chen@mediatek.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>,
-        Ryder Lee <ryder.lee@mediatek.com>
-Subject: [PATCH 4/4] mt76: mt7615: add more useful Tx mib counters
-Date:   Tue, 31 Mar 2020 14:51:38 +0800
-Message-ID: <68061edaaf2ce7040c776b72baf4ea49ece2f4fe.1585636614.git.ryder.lee@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <1fc90ec2a64d062ac7264aaa3dd158f2282ad7b8.1585636614.git.ryder.lee@mediatek.com>
-References: <1fc90ec2a64d062ac7264aaa3dd158f2282ad7b8.1585636614.git.ryder.lee@mediatek.com>
+        Tue, 31 Mar 2020 04:41:49 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1585644107; bh=NajTNMrfMLb6UXcjRhYpYerQX8PtVBLz0oFgaMINSWY=; h=Date:From:Reply-To:Subject:References:From:Subject; b=dCbcCfrWHaSHWW+Z7sIkoJlnUCbNAI8HpaePpxEUrPyvLUiOyaJL5oQB4AAowoYKxDTHK0fjahBTH//uQDHwByDrdBDp6CfqHp4SawZEDDi4vaPAjsRDTfzzTDDkNwLhkrHnLO1iieDRf+za3nz02x1awqL8l2aqtx9frUbH0TVDeqRls+s+G6JxsS5Ave9ciS0UnCDjJQbdW71eD5UuupCvexKefZ4Ydn7LR2mlRuKfttN0f0oWcHxzx9Ck2xn8fVftDf9r2w8gFEOc4sAeGBCpwE/wztWfGnznCZwcNdz69QuFub822l0w4AWfVjTrBGn2rcHnsllaoTCcekYH6g==
+X-YMail-OSG: EDdxICQVM1n.cXw02ESCPzHcKo_g7gSpVnVdDsajyajOODPFgbMyz2KGvW2yPIo
+ O4kcePdIM7Jx7j2aZLR5nFfG5h2_99OArj_3evo69xxNW7uO0Z.Xqxfg8ncE179d0PPPcb_NZ3rc
+ xr2POYGONu1jDckZYcSzFWB_.FrQ0dkXQFQwHz6ywjWPBbnwc5EyQHKK9thQPfbR0ybwF3L5Ujfp
+ k_8rhQh.3CRPBNPc3.EsX7YaKbu3dIMF2hK8JXcwqEbm5o719cb_NZA42JTFEN03KqSs1ODhL0ZT
+ P8bNS1tvrXoXfGWvuiYtdE5P7wSFPhYvOU3zGgZ0idwbiGZMRVLq4_K4P2hHEi.MIga..PpSWgix
+ GDB4zCq69bGjhoWMO..mVjRTx8a6P6_vpRME0o.MqojfV62lv32m.NhVUcafLfNt_yVV7r7zOcwG
+ cSZ0FqEfZHQuY9cYou0Op004jV934rz.XYpRjBACtiG2HQ0ikHcmbhi1bqZlKdS_4E8s_9Bhv4cd
+ 95RaFZk0cq3.1XdFvnMmxPZiOh_94tsRhHIUrv_KankgWQ4lAptw4zjc6fuRszFKah1tIMCDdazB
+ Y1BlcUyRXV9sc3cH7NAoepxLbgmvtMBiANGA2_TZGZmVBw18rQtGjtGcRpyzXaX4D5qayWgLx3Nj
+ v__oEyADDdIuNjpDZh3iP7t7kjixD4Xqul8Tuyzpl79an03z1em5ro9pHETlW02iNOuQFxjfP6Fk
+ JPX7.AbZvAXy3H9g_kVwtdAIx5SqRQGtw3zfm4K671S_rbcv1IwHAS_wEBIErOWwuB6UB7B9kwPx
+ pT3bjqECjOoL.jtBw9xo_So1qAqDkxTCbwN.9Dj_OJvCHbFMmbu2a0u1Iqeu5ocphVYGM57FliTx
+ HuOGgHRB8Z3pUnDOrxFDGvhkJY3jnyOdnhm_xExVVJhxrvKI0XQkwHGLw_P2fMsaDpOuOwW8.xX0
+ FaKABKKQtCZj9ACl9pfWq4kzza4kUwUiKr7V52UfifbtalfcYwKdh0EvK5H4peoVN3Y_N4rkmKp0
+ Hqj0DMoC97NADoUOff_DqtTQMYl9NL8h8.N9szU7ih15w8lA5XqydzwnkY7L_842B9DvRLgGTiEy
+ 2uMO3ingA36ZXI8T_kwpdbtkgd7_abPjkzMmiBHmy9HyFAfL8Uz8mZbAmEcmJ5RrKZFIaYPr_MLG
+ 4KLLCgPRu.D6h41tRvuSZKO7GoXUex_ABgS8foPiKpfMfboeZ4S4Y4_jDD0wCNv3vAUjI1Ar8vFQ
+ MqcAikkrEGEa1h40bB7QGeVupqEVlD.NfzNjOevkiAcsjgLhkUUlQ9llSHQN.BGOq5ZxmcoQ-
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic305.consmr.mail.bf2.yahoo.com with HTTP; Tue, 31 Mar 2020 08:41:47 +0000
+Date:   Tue, 31 Mar 2020 08:41:43 +0000 (UTC)
+From:   Ms lisa Hugh <lisahugh531@gmail.com>
+Reply-To: ms.lisahugh000@gmail.com
+Message-ID: <3971412.1036975.1585644103007@mail.yahoo.com>
+Subject: BUSINESS CO-OPERATION OPPORTUNITY.
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-SNTS-SMTP: 2FFE9D262EE1C7BC71824A48A7D94EB7465B25DF7BD6B4CB822FE229BF026FE12000:8
-X-MTK:  N
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+References: <3971412.1036975.1585644103007.ref@mail.yahoo.com>
+X-Mailer: WebService/1.1.15555 YMailNodin Mozilla/5.0 (Windows NT 6.1; rv:74.0) Gecko/20100101 Firefox/74.0
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-QWRkIGJhX21pc3NfY250IGFuZCBhbXBkdV9wZXIgaW4gbWliX3N0YXRzLg0KDQpTaWduZWQtb2Zm
-LWJ5OiBSeWRlciBMZWUgPHJ5ZGVyLmxlZUBtZWRpYXRlay5jb20+DQotLS0NCiAuLi4vd2lyZWxl
-c3MvbWVkaWF0ZWsvbXQ3Ni9tdDc2MTUvZGVidWdmcy5jICAgfCAgNCArKysrDQogLi4uL25ldC93
-aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzYxNS9tYWMuYyAgIHwgMjAgKysrKysrKysrKysrKyst
-LS0tLQ0KIC4uLi93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzYxNS9tdDc2MTUuaCAgICB8ICAy
-ICsrDQogLi4uL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzYxNS9yZWdzLmggIHwgIDcg
-KysrKysrKw0KIDQgZmlsZXMgY2hhbmdlZCwgMjggaW5zZXJ0aW9ucygrKSwgNSBkZWxldGlvbnMo
-LSkNCg0KZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3
-NjE1L2RlYnVnZnMuYyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3NjE1
-L2RlYnVnZnMuYw0KaW5kZXggOTgwZTdlM2NmMzdlLi42NDFiZmFkYTU3NTYgMTAwNjQ0DQotLS0g
-YS9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzYxNS9kZWJ1Z2ZzLmMNCisr
-KyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3NjE1L2RlYnVnZnMuYw0K
-QEAgLTE1MCw2ICsxNTAsMTAgQEAgbXQ3NjE1X2FtcGR1X3N0YXRfcmVhZF9waHkoc3RydWN0IG10
-NzYxNV9waHkgKnBoeSwNCiAJZm9yIChpID0gMDsgaSA8IEFSUkFZX1NJWkUoYm91bmQpOyBpKysp
-DQogCQlzZXFfcHJpbnRmKGZpbGUsICIlOGQgfCAiLCBkZXYtPm10NzYuYWdncl9zdGF0c1tpICsg
-cmFuZ2VdKTsNCiAJc2VxX3B1dHMoZmlsZSwgIlxuIik7DQorDQorCXNlcV9wcmludGYoZmlsZSwg
-IkJBIG1pc3MgY291bnQ6ICVkXG4iLCBwaHktPm1pYi5iYV9taXNzX2NudCk7DQorCXNlcV9wcmlu
-dGYoZmlsZSwgIlBFUjogJWxkLiUxbGQlJVxuIiwNCisJCSAgIHBoeS0+bWliLmFnZ3JfcGVyIC8g
-MTAsIHBoeS0+bWliLmFnZ3JfcGVyICUgMTApOw0KIH0NCiANCiBzdGF0aWMgaW50DQpkaWZmIC0t
-Z2l0IGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc2MTUvbWFjLmMgYi9k
-cml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzYxNS9tYWMuYw0KaW5kZXggZjMw
-ZGMwMTVlODhlLi41NDUxYzBiOGM5ZjIgMTAwNjQ0DQotLS0gYS9kcml2ZXJzL25ldC93aXJlbGVz
-cy9tZWRpYXRlay9tdDc2L210NzYxNS9tYWMuYw0KKysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3Mv
-bWVkaWF0ZWsvbXQ3Ni9tdDc2MTUvbWFjLmMNCkBAIC0xNzU0LDIwICsxNzU0LDMwIEBAIG10NzYx
-NV9tYWNfdXBkYXRlX21pYl9zdGF0cyhzdHJ1Y3QgbXQ3NjE1X3BoeSAqcGh5KQ0KIAlzdHJ1Y3Qg
-bWliX3N0YXRzICptaWIgPSAmcGh5LT5taWI7DQogCWJvb2wgZXh0X3BoeSA9IHBoeSAhPSAmZGV2
-LT5waHk7DQogCWludCBpLCBhZ2dyOw0KKwl1MzIgdmFsLCB2YWwyOw0KIA0KIAltZW1zZXQobWli
-LCAwLCBzaXplb2YoKm1pYikpOw0KIA0KIAltaWItPmZjc19lcnJfY250ID0gbXQ3Nl9nZXRfZmll
-bGQoZGV2LCBNVF9NSUJfU0RSMyhleHRfcGh5KSwNCiAJCQkJCSAgTVRfTUlCX1NEUjNfRkNTX0VS
-Ul9NQVNLKTsNCiANCisJdmFsID0gbXQ3Nl9nZXRfZmllbGQoZGV2LCBNVF9NSUJfU0RSMTQoZXh0
-X3BoeSksDQorCQkJICAgICBNVF9NSUJfQU1QRFVfTVBEVV9DT1VOVCk7DQorCXZhbDIgPSBtdDc2
-X2dldF9maWVsZChkZXYsIE1UX01JQl9TRFIxNShleHRfcGh5KSwNCisJCQkgICAgICBNVF9NSUJf
-QU1QRFVfQUNLX0NPVU5UKTsNCisJbWliLT5hZ2dyX3BlciA9IDEwMDAgKiAodmFsIC0gdmFsMikg
-LyB2YWw7DQorDQogCWFnZ3IgPSBleHRfcGh5ID8gQVJSQVlfU0laRShkZXYtPm10NzYuYWdncl9z
-dGF0cykgLyAyIDogMDsNCiAJZm9yIChpID0gMDsgaSA8IDQ7IGkrKykgew0KLQkJdTMyIHZhbCwg
-dmFsMjsNCisJCXZhbCA9IG10NzZfcnIoZGV2LCBNVF9NSUJfTUJfU0RSMShleHRfcGh5LCBpKSk7
-DQorDQorCQl2YWwyID0gRklFTERfR0VUKE1UX01JQl9BQ0tfRkFJTF9DT1VOVF9NQVNLLCB2YWwp
-Ow0KKwkJaWYgKHZhbDIgPiBtaWItPmFja19mYWlsX2NudCkNCisJCQltaWItPmFja19mYWlsX2Nu
-dCA9IHZhbDI7DQogDQotCQl2YWwgPSBtdDc2X2dldF9maWVsZChkZXYsIE1UX01JQl9NQl9TRFIx
-KGV4dF9waHksIGkpLA0KLQkJCQkgICAgIE1UX01JQl9BQ0tfRkFJTF9DT1VOVF9NQVNLKTsNCi0J
-CWlmICh2YWwgPiBtaWItPmFja19mYWlsX2NudCkNCi0JCQltaWItPmFja19mYWlsX2NudCA9IHZh
-bDsNCisJCXZhbDIgPSBGSUVMRF9HRVQoTVRfTUlCX0JBX01JU1NfQ09VTlRfTUFTSywgdmFsKTsN
-CisJCWlmICh2YWwyID4gbWliLT5iYV9taXNzX2NudCkNCisJCQltaWItPmJhX21pc3NfY250ID0g
-dmFsMjsNCiANCiAJCXZhbCA9IG10NzZfcnIoZGV2LCBNVF9NSUJfTUJfU0RSMChleHRfcGh5LCBp
-KSk7DQogCQl2YWwyID0gRklFTERfR0VUKE1UX01JQl9SVFNfUkVUUklFU19DT1VOVF9NQVNLLCB2
-YWwpOw0KZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3
-NjE1L210NzYxNS5oIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc2MTUv
-bXQ3NjE1LmgNCmluZGV4IDAwMDA3MDc2OTIxNy4uMDUyMDMxZDI1ZjM4IDEwMDY0NA0KLS0tIGEv
-ZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc2MTUvbXQ3NjE1LmgNCisrKyBi
-L2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3NjE1L210NzYxNS5oDQpAQCAt
-MTE3LDYgKzExNyw4IEBAIHN0cnVjdCBtaWJfc3RhdHMgew0KIAl1MTYgZmNzX2Vycl9jbnQ7DQog
-CXUxNiBydHNfY250Ow0KIAl1MTYgcnRzX3JldHJpZXNfY250Ow0KKwl1MTYgYmFfbWlzc19jbnQ7
-DQorCXVuc2lnbmVkIGxvbmcgYWdncl9wZXI7DQogfTsNCiANCiBzdHJ1Y3QgbXQ3NjE1X3BoeSB7
-DQpkaWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc2MTUv
-cmVncy5oIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc2MTUvcmVncy5o
-DQppbmRleCA1OGFhYTU3ZmI0NTEuLjI5YzU2YjA3MjNjZCAxMDA2NDQNCi0tLSBhL2RyaXZlcnMv
-bmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3NjE1L3JlZ3MuaA0KKysrIGIvZHJpdmVycy9u
-ZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc2MTUvcmVncy5oDQpAQCAtMzg5LDYgKzM4OSwx
-MiBAQCBlbnVtIG10NzYxNV9yZWdfYmFzZSB7DQogI2RlZmluZSBNVF9NSUJfU0RSOShfYmFuZCkJ
-CU1UX1dGX01JQihfYmFuZCwgMHgwMmMpDQogI2RlZmluZSBNVF9NSUJfU0RSOV9CVVNZX01BU0sJ
-CUdFTk1BU0soMjMsIDApDQogDQorI2RlZmluZSBNVF9NSUJfU0RSMTQoX2JhbmQpCQlNVF9XRl9N
-SUIoX2JhbmQsIDB4MDQwKQ0KKyNkZWZpbmUgTVRfTUlCX0FNUERVX01QRFVfQ09VTlQJCUdFTk1B
-U0soMjMsIDApDQorDQorI2RlZmluZSBNVF9NSUJfU0RSMTUoX2JhbmQpCQlNVF9XRl9NSUIoX2Jh
-bmQsIDB4MDQ0KQ0KKyNkZWZpbmUgTVRfTUlCX0FNUERVX0FDS19DT1VOVAkJR0VOTUFTSygyMywg
-MCkNCisNCiAjZGVmaW5lIE1UX01JQl9TRFIxNihfYmFuZCkJCU1UX1dGX01JQihfYmFuZCwgMHgw
-NDgpDQogI2RlZmluZSBNVF9NSUJfU0RSMTZfQlVTWV9NQVNLCQlHRU5NQVNLKDIzLCAwKQ0KIA0K
-QEAgLTQwMiw2ICs0MDgsNyBAQCBlbnVtIG10NzYxNV9yZWdfYmFzZSB7DQogI2RlZmluZSBNVF9N
-SUJfUlRTX0NPVU5UX01BU0sJCUdFTk1BU0soMTUsIDApDQogDQogI2RlZmluZSBNVF9NSUJfTUJf
-U0RSMShfYmFuZCwgbikJTVRfV0ZfTUlCKF9iYW5kLCAweDEwNCArICgobikgPDwgNCkpDQorI2Rl
-ZmluZSBNVF9NSUJfQkFfTUlTU19DT1VOVF9NQVNLCUdFTk1BU0soMTUsIDApDQogI2RlZmluZSBN
-VF9NSUJfQUNLX0ZBSUxfQ09VTlRfTUFTSwlHRU5NQVNLKDMxLCAxNikNCiANCiAjZGVmaW5lIE1U
-X1RYX0FHR19DTlQoX2JhbmQsIG4pCQlNVF9XRl9NSUIoX2JhbmQsIDB4YTggKyAoKG4pIDw8IDIp
-KQ0KLS0gDQoyLjE4LjANCg==
 
+
+Dear Friend,
+
+I am Ms Lisa hugh, work with the department of Audit and accounting manager here in the Bank(B.O.A).
+
+Please i need your assistance for the transferring of thIs fund to your bank account for both of us benefit for life time investment, amount (US$4.5M DOLLARS).
+
+I have every inquiry details to make the bank believe you and release the fund in within 5 banking working days with your full co-operation with me for success.
+
+Note/ 50% for you why 50% for me after success of the transfer to your bank account.
+
+Below information is what i need from you so will can be reaching each other
+
+1)Full name ...
+2)Private telephone number...
+3)Age...
+4)Nationality...
+5)Occupation ...
+
+
+Thanks.
+
+Ms Lisa hugh.
