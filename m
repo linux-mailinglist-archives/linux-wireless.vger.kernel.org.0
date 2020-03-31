@@ -2,85 +2,84 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 43E19198A7B
-	for <lists+linux-wireless@lfdr.de>; Tue, 31 Mar 2020 05:28:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B2DA198C8C
+	for <lists+linux-wireless@lfdr.de>; Tue, 31 Mar 2020 08:51:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729013AbgCaD2Z (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 30 Mar 2020 23:28:25 -0400
-Received: from mail-pl1-f193.google.com ([209.85.214.193]:34554 "EHLO
-        mail-pl1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727358AbgCaD2Z (ORCPT
+        id S1729834AbgCaGvt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 31 Mar 2020 02:51:49 -0400
+Received: from mailgw01.mediatek.com ([210.61.82.183]:19038 "EHLO
+        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726299AbgCaGvt (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 30 Mar 2020 23:28:25 -0400
-Received: by mail-pl1-f193.google.com with SMTP id a23so7600626plm.1;
-        Mon, 30 Mar 2020 20:28:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=WhvIKiAZ62YDlD1oWveLP+fNPkAUs0qLIZB4yIs6/dg=;
-        b=bNf3rzkgLVBSncpOONhhDp4K7PRzDa+Yzl/FsqGoGmv/dtEwZ+P6HsEA2KCXF2aYXa
-         7goBcZk1N5lG2V4WWL/qySJ4mMKAsVew3ufGxgJuAa5QYsaQjC/iVmk5GzSPBpINeSaK
-         KiANoTI9nZgMqUTbjDYTVTDH+b9AbfMixl60l5p+MfJWnpPZQUQqTIF+6p79iBSPcnEf
-         Xjt9GYxR7t5eVyK8nxLrsiK/SbilC3xQ2XN1yaG4mgyhulinoYUxS9x+7V1Ktwu4dP/p
-         TNfbOD8FEXqZdXDqV34tjsug9RwixqmxgExoWEPWQYdtwANAXDC60t4Sxi71Ym9IE6ak
-         66LA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=WhvIKiAZ62YDlD1oWveLP+fNPkAUs0qLIZB4yIs6/dg=;
-        b=P5LS8wg8gDkCNrPYzO9ASrwsXcXiCu5BrkcfS4IUVceqaoB/v4hDpc9LOzloW/XPgW
-         38FCXUso1UQWWwhw/MDkgseqqGMZpIFxKNARiu0sadcPOOZCi0IpUl4dBtZwEyT/6HZx
-         hZm6Kc+6iDESKy5GlYnv4PRYvJd0yrUljGKihtDa0O7Wixm5p5+RB6h2K6CXoyqOREni
-         IfQZKyAPZnbE3WNT9FzSMHPXJUdh/BE5iIv7nl0ZIx/vO70QAI2Sb6LwODSHku54I8eF
-         iPhepnOrLgWrMhiCfZclfWcnevaQOAlIDieaVdwWT57uEiZWj2N8pvxypFvZWkszb3Mw
-         A2EQ==
-X-Gm-Message-State: ANhLgQ2ZVBIptdxvMj2mYh+SRgIirA/PKO4VpNu/Rv/cCFZPQ+WPZVGz
-        bAYoVYO/4B6CUOnW6E64lJga8O7M
-X-Google-Smtp-Source: ADFU+vs1bNwqTVCuFgh6LE546VHpMUSdu5Q9jb1K8Wh8hI7LsW3Q99gMy03oWAW0Bf9aW5kCaNsUww==
-X-Received: by 2002:a17:902:aa97:: with SMTP id d23mr15465999plr.244.1585625302223;
-        Mon, 30 Mar 2020 20:28:22 -0700 (PDT)
-Received: from VM_0_35_centos.localdomain ([150.109.62.251])
-        by smtp.gmail.com with ESMTPSA id v59sm761223pjb.26.2020.03.30.20.28.19
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 30 Mar 2020 20:28:21 -0700 (PDT)
-From:   Qiujun Huang <hqjagain@gmail.com>
-To:     ath9k-devel@qca.qualcomm.com, kvalo@codeaurora.org
-Cc:     davem@davemloft.net, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        anenbupt@gmail.com, Qiujun Huang <hqjagain@gmail.com>
-Subject: [PATCH] ath9k: fix stack-out-of-bounds Write in ath9k_hif_usb_rx_cb
-Date:   Tue, 31 Mar 2020 11:28:16 +0800
-Message-Id: <1585625296-31013-1-git-send-email-hqjagain@gmail.com>
-X-Mailer: git-send-email 1.8.3.1
+        Tue, 31 Mar 2020 02:51:49 -0400
+X-UUID: e0a15d4555984197a1dbd54ca4458438-20200331
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+        h=Content-Transfer-Encoding:Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=u13/otOsZwQRNSYopzBCUAzrteMoNJLZU3KM9kEkgXI=;
+        b=tuQugvTRNlpEBYwK7607rkL/75D+tLtPgynY0DeE9qLED17rLnHRThAQFZ9SnbtFoV9CnLsAmxvaKsiYaxfTH/cKaj2Jk7I4mTNf9jiOVosBg47Bkhnzafjttqby9rc7OwR9iaYV2byHJTHzKej4Zl5pIIovQIlGeSFPih4plU8=;
+X-UUID: e0a15d4555984197a1dbd54ca4458438-20200331
+Received: from mtkcas09.mediatek.inc [(172.21.101.178)] by mailgw01.mediatek.com
+        (envelope-from <ryder.lee@mediatek.com>)
+        (Cellopoint E-mail Firewall v4.1.10 Build 0809 with TLS)
+        with ESMTP id 729634148; Tue, 31 Mar 2020 14:51:39 +0800
+Received: from mtkcas07.mediatek.inc (172.21.101.84) by
+ mtkmbs06n1.mediatek.inc (172.21.101.129) with Microsoft SMTP Server (TLS) id
+ 15.0.1395.4; Tue, 31 Mar 2020 14:51:39 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas07.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1395.4 via Frontend
+ Transport; Tue, 31 Mar 2020 14:51:37 +0800
+From:   Ryder Lee <ryder.lee@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+CC:     Shayne Chen <shayne.chen@mediatek.com>,
+        Sean Wang <sean.wang@mediatek.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>,
+        Ryder Lee <ryder.lee@mediatek.com>
+Subject: [PATCH 1/4] mt76: mt7615: modify mt7615_ampdu_stat_read for each phy
+Date:   Tue, 31 Mar 2020 14:51:35 +0800
+Message-ID: <1fc90ec2a64d062ac7264aaa3dd158f2282ad7b8.1585636614.git.ryder.lee@mediatek.com>
+X-Mailer: git-send-email 2.18.0
+MIME-Version: 1.0
+Content-Type: text/plain
+X-MTK:  N
+Content-Transfer-Encoding: base64
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Add barrier to accessing the stack array skb_pool.
-
-Reported-by: syzbot+d403396d4df67ad0bd5f@syzkaller.appspotmail.com
-Signed-off-by: Qiujun Huang <hqjagain@gmail.com>
----
- drivers/net/wireless/ath/ath9k/hif_usb.c | 5 +++++
- 1 file changed, 5 insertions(+)
-
-diff --git a/drivers/net/wireless/ath/ath9k/hif_usb.c b/drivers/net/wireless/ath/ath9k/hif_usb.c
-index dd0c323..c4a2b72 100644
---- a/drivers/net/wireless/ath/ath9k/hif_usb.c
-+++ b/drivers/net/wireless/ath/ath9k/hif_usb.c
-@@ -612,6 +612,11 @@ static void ath9k_hif_usb_rx_stream(struct hif_device_usb *hif_dev,
- 			hif_dev->remain_skb = nskb;
- 			spin_unlock(&hif_dev->rx_lock);
- 		} else {
-+			if (pool_index == MAX_PKT_NUM_IN_TRANSFER) {
-+				dev_err(&hif_dev->udev->dev,
-+					"ath9k_htc: over RX MAX_PKT_NUM\n");
-+				goto err;
-+			}
- 			nskb = __dev_alloc_skb(pkt_len + 32, GFP_ATOMIC);
- 			if (!nskb) {
- 				dev_err(&hif_dev->udev->dev,
--- 
-1.8.3.1
+VGhpcyBpcyBhIHByZWxpbWluYXJ5IHBhdGNoIHRvIGFkZCBtb3JlIFR4IGNvdW50ZXJzLg0KDQpT
+aWduZWQtb2ZmLWJ5OiBSeWRlciBMZWUgPHJ5ZGVyLmxlZUBtZWRpYXRlay5jb20+DQotLS0NCiAu
+Li4vd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc2MTUvZGVidWdmcy5jICAgfCAyMCArKysrKysr
+KysrKysrKysrKy0tDQogMSBmaWxlIGNoYW5nZWQsIDE4IGluc2VydGlvbnMoKyksIDIgZGVsZXRp
+b25zKC0pDQoNCmRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2
+L210NzYxNS9kZWJ1Z2ZzLmMgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210
+NzYxNS9kZWJ1Z2ZzLmMNCmluZGV4IGI0ZDA3OTUxNTRlMy4uOWZkNDBkNzIzMjAxIDEwMDY0NA0K
+LS0tIGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc2MTUvZGVidWdmcy5j
+DQorKysgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzYxNS9kZWJ1Z2Zz
+LmMNCkBAIC0xMjAsMTIgKzEyMCwxNyBAQCBtdDc2MTVfcmVzZXRfdGVzdF9zZXQodm9pZCAqZGF0
+YSwgdTY0IHZhbCkNCiBERUZJTkVfREVCVUdGU19BVFRSSUJVVEUoZm9wc19yZXNldF90ZXN0LCBO
+VUxMLA0KIAkJCSBtdDc2MTVfcmVzZXRfdGVzdF9zZXQsICIlbGxkXG4iKTsNCiANCi1zdGF0aWMg
+aW50DQotbXQ3NjE1X2FtcGR1X3N0YXRfcmVhZChzdHJ1Y3Qgc2VxX2ZpbGUgKmZpbGUsIHZvaWQg
+KmRhdGEpDQorc3RhdGljIHZvaWQNCittdDc2MTVfYW1wZHVfc3RhdF9yZWFkX3BoeShzdHJ1Y3Qg
+bXQ3NjE1X3BoeSAqcGh5LA0KKwkJCSAgIHN0cnVjdCBzZXFfZmlsZSAqZmlsZSkNCiB7DQogCXN0
+cnVjdCBtdDc2MTVfZGV2ICpkZXYgPSBmaWxlLT5wcml2YXRlOw0KKwlib29sIGV4dF9waHkgPSBw
+aHkgIT0gJmRldi0+cGh5Ow0KIAlpbnQgYm91bmRbN10sIGksIHJhbmdlOw0KIA0KKwlpZiAoIXBo
+eSkNCisJCXJldHVybjsNCisNCiAJcmFuZ2UgPSBtdDc2X3JyKGRldiwgTVRfQUdHX0FTUkNSMCk7
+DQogCWZvciAoaSA9IDA7IGkgPCA0OyBpKyspDQogCQlib3VuZFtpXSA9IE1UX0FHR19BU1JDUl9S
+QU5HRShyYW5nZSwgaSkgKyAxOw0KQEAgLTEzMyw2ICsxMzgsOCBAQCBtdDc2MTVfYW1wZHVfc3Rh
+dF9yZWFkKHN0cnVjdCBzZXFfZmlsZSAqZmlsZSwgdm9pZCAqZGF0YSkNCiAJZm9yIChpID0gMDsg
+aSA8IDM7IGkrKykNCiAJCWJvdW5kW2kgKyA0XSA9IE1UX0FHR19BU1JDUl9SQU5HRShyYW5nZSwg
+aSkgKyAxOw0KIA0KKwlzZXFfcHJpbnRmKGZpbGUsICJcblBoeSAlZFxuIiwgZXh0X3BoeSk7DQor
+DQogCXNlcV9wcmludGYoZmlsZSwgIkxlbmd0aDogJThkIHwgIiwgYm91bmRbMF0pOw0KIAlmb3Ig
+KGkgPSAwOyBpIDwgQVJSQVlfU0laRShib3VuZCkgLSAxOyBpKyspDQogCQlzZXFfcHJpbnRmKGZp
+bGUsICIlM2QgLSUzZCB8ICIsDQpAQCAtMTQxLDYgKzE0OCwxNSBAQCBtdDc2MTVfYW1wZHVfc3Rh
+dF9yZWFkKHN0cnVjdCBzZXFfZmlsZSAqZmlsZSwgdm9pZCAqZGF0YSkNCiAJZm9yIChpID0gMDsg
+aSA8IEFSUkFZX1NJWkUoYm91bmQpOyBpKyspDQogCQlzZXFfcHJpbnRmKGZpbGUsICIlOGQgfCAi
+LCBkZXYtPm10NzYuYWdncl9zdGF0c1tpXSk7DQogCXNlcV9wdXRzKGZpbGUsICJcbiIpOw0KK30N
+CisNCitzdGF0aWMgaW50DQorbXQ3NjE1X2FtcGR1X3N0YXRfcmVhZChzdHJ1Y3Qgc2VxX2ZpbGUg
+KmZpbGUsIHZvaWQgKmRhdGEpDQorew0KKwlzdHJ1Y3QgbXQ3NjE1X2RldiAqZGV2ID0gZmlsZS0+
+cHJpdmF0ZTsNCisNCisJbXQ3NjE1X2FtcGR1X3N0YXRfcmVhZF9waHkoJmRldi0+cGh5LCBmaWxl
+KTsNCisJbXQ3NjE1X2FtcGR1X3N0YXRfcmVhZF9waHkobXQ3NjE1X2V4dF9waHkoZGV2KSwgZmls
+ZSk7DQogDQogCXJldHVybiAwOw0KIH0NCi0tIA0KMi4xOC4wDQo=
 
