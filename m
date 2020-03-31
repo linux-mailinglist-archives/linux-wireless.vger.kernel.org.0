@@ -2,141 +2,419 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 773D9198A0F
-	for <lists+linux-wireless@lfdr.de>; Tue, 31 Mar 2020 04:38:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D6CCB198A21
+	for <lists+linux-wireless@lfdr.de>; Tue, 31 Mar 2020 04:45:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729703AbgCaCil (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 30 Mar 2020 22:38:41 -0400
-Received: from mail-ua1-f67.google.com ([209.85.222.67]:44419 "EHLO
-        mail-ua1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729658AbgCaCil (ORCPT
+        id S1729739AbgCaCpG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 30 Mar 2020 22:45:06 -0400
+Received: from mail-io1-f71.google.com ([209.85.166.71]:51564 "EHLO
+        mail-io1-f71.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729471AbgCaCpF (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 30 Mar 2020 22:38:41 -0400
-Received: by mail-ua1-f67.google.com with SMTP id r47so7119120uad.11;
-        Mon, 30 Mar 2020 19:38:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=lQkNuHfdbFfCrISunCbd5HE6GiAQV73qbHuCCjJGU+Q=;
-        b=P9OR+DCNnGZCC8QKXk7qtERH2e/a6DlXVss0LKQpzu5ViaB4T2UH5YEYbWe/NYoxSN
-         hlda1Zp9XlzNN87pVQ4X2emIKM0oz7W08fvm2bq+ZUGHAKJMvj8eRi8VrPte+RPsMjbF
-         bFyyz0K+EWz/QEnKEtzV9BcC+Mjgz/Lpem5Hk7zQbN60seN5Jf2GlkCU5VaDpbpg6Tgu
-         0juzcZOgGj522fd+AyTyADUd97z69OpMjkrU0fJRwrCQHK0YczS+hOJFCIx9G4uCEyBg
-         VchFPczefuqsD7aUAt8FWGTEAhZJuA0SFj1GsEoOzNafbCAB8p5uk7J7qUIjf17stdtc
-         B6Dw==
+        Mon, 30 Mar 2020 22:45:05 -0400
+Received: by mail-io1-f71.google.com with SMTP id m3so17963651ioj.18
+        for <linux-wireless@vger.kernel.org>; Mon, 30 Mar 2020 19:45:03 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=lQkNuHfdbFfCrISunCbd5HE6GiAQV73qbHuCCjJGU+Q=;
-        b=GVph2CJl5gVUbRyUmEjjusqVPvMAWJgelAG8SYLScEqMVlHRLss9fvYZ+cZGjc8dTu
-         XMyhlK7pEdO8yB2WLZ2+J8YIiyilnkQ8sT1XbZyc1ODPXKII7cFVKaxdAHyqlonuxQGm
-         wjNgq+plFTH+uVarLEnD8V0Cb5V5hdAYRj+hLaipgRFvOHTDf01h6LoTmLW9qm3HTmpn
-         nL6NUeO4vueexNYOyyyGfsv+DBuXspLzorXwXVNrMq/ZcS+2a8Q+HYEp1w0PTjuMobNq
-         +taXXuy1l4fIXWCdGBPaTVV/BowQBQjd8jYx/u5F3ShnAi+CIItPzwcMPN3nWratHqJO
-         7FJQ==
-X-Gm-Message-State: AGi0PubeCEHDFaDrYq/fggRP0BAOrIwoB639Qqe5XIjmtkpK9GcBsbuu
-        +3I+gZhXeclolyeQNUBvx7DsNByDZ9z11jT1HPU=
-X-Google-Smtp-Source: APiQypIydMRa8jN5Ea+TWdh9b6HfG5Jo/9+sicel9yiAw+Dkxl7k6OiISRTly3cd4Euc+eYwWxkH0C6wvmibFm7TuUM=
-X-Received: by 2002:ab0:7406:: with SMTP id r6mr1669634uap.22.1585622319702;
- Mon, 30 Mar 2020 19:38:39 -0700 (PDT)
+        h=x-gm-message-state:mime-version:date:in-reply-to:message-id:subject
+         :from:to;
+        bh=36a8ZMwdVlBtz8gcVwheDNG6RwX+THxk9wo2rPRq/wo=;
+        b=qlKhjFtXo0J+ODY6Y2z3alF/prm6zf7c9n3GtdD0D9TNXSmpmpA60dpVP7njM3SAct
+         bR/fuUXZp7bapwcc3Vm5ZKNlal9HLoW3hX/Lle3HQZ59V+A6gj3+e6ywwgLzr8VtKciA
+         7LFRsWqkUABMzwquZUpsw3JpS645AAfjR+MYmGz9MAxXevI1H4gYwiKFvhz0NPKvmliP
+         x6kPKnnLKLjDMOAmdUfTclvxozxho12zHSAkygbYhzPF3iKeYI1SMXWrSsxba6NeBDjd
+         gRR7tYk9PJgeUxH1z+CPPGgi/5s/q01hWgPHVmgpPIqGxiAnt5itkQp8sCj9xpu4VnwG
+         b3yw==
+X-Gm-Message-State: ANhLgQ3MOujmCMkBqcVCzPmLbv/ea4bLdvKS/zcBoCwhZKPlBce0jhpC
+        HCLq/qIX60xeqCtsmbDcwFVax3uQhKXf+QQgu/jslQh15E4/
+X-Google-Smtp-Source: ADFU+vtQEJtMZJdn5OG0vbSOyM51ErApYe8IR5ioTwgcoWpmBmDd76ZEvJuNWvadCsgVDW4IDbLJ9OZ92Ccswfe7J6YamT3s4SdB
 MIME-Version: 1.0
-References: <0000000000003d7c1505a2168418@google.com>
-In-Reply-To: <0000000000003d7c1505a2168418@google.com>
-From:   Qiujun Huang <anenbupt@gmail.com>
-Date:   Tue, 31 Mar 2020 10:38:28 +0800
-Message-ID: <CADG63jD_VnBJ-fHfStVq5=4ceAT=nwqkXdWzJPcfu1U=fF657A@mail.gmail.com>
+X-Received: by 2002:a02:5ec2:: with SMTP id h185mr2085793jab.2.1585622702653;
+ Mon, 30 Mar 2020 19:45:02 -0700 (PDT)
+Date:   Mon, 30 Mar 2020 19:45:02 -0700
+In-Reply-To: <CADG63jD_VnBJ-fHfStVq5=4ceAT=nwqkXdWzJPcfu1U=fF657A@mail.gmail.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <000000000000f0858405a21d8d1f@google.com>
 Subject: Re: KASAN: stack-out-of-bounds Write in ath9k_hif_usb_rx_cb
-To:     syzbot <syzbot+d403396d4df67ad0bd5f@syzkaller.appspotmail.com>
-Cc:     Andrey Konovalov <andreyknvl@google.com>,
+From:   syzbot <syzbot+d403396d4df67ad0bd5f@syzkaller.appspotmail.com>
+To:     andreyknvl@google.com, anenbupt@gmail.com,
         ath9k-devel@qca.qualcomm.com, davem@davemloft.net,
-        kvalo@codeaurora.org, LKML <linux-kernel@vger.kernel.org>,
-        USB list <linux-usb@vger.kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        syzkaller-bugs <syzkaller-bugs@googlegroups.com>
-Content-Type: multipart/mixed; boundary="0000000000001d68c405a21d7706"
+        kvalo@codeaurora.org, linux-kernel@vger.kernel.org,
+        linux-usb@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---0000000000001d68c405a21d7706
-Content-Type: text/plain; charset="UTF-8"
+Hello,
 
-#syz test: https://github.com/google/kasan.git usb-fuzzer
+syzbot tried to test the proposed patch but build/boot failed:
 
-On Tue, Mar 31, 2020 at 2:21 AM syzbot
-<syzbot+d403396d4df67ad0bd5f@syzkaller.appspotmail.com> wrote:
->
-> Hello,
->
-> syzbot found the following crash on:
->
-> HEAD commit:    0fa84af8 Merge tag 'usb-serial-5.7-rc1' of https://git.ker..
-> git tree:       https://github.com/google/kasan.git usb-fuzzer
-> console output: https://syzkaller.appspot.com/x/log.txt?x=159a0583e00000
-> kernel config:  https://syzkaller.appspot.com/x/.config?x=a782c087b1f425c6
-> dashboard link: https://syzkaller.appspot.com/bug?extid=d403396d4df67ad0bd5f
-> compiler:       gcc (GCC) 9.0.0 20181231 (experimental)
-> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=177a266de00000
-> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1579f947e00000
->
-> IMPORTANT: if you fix the bug, please add the following tag to the commit:
-> Reported-by: syzbot+d403396d4df67ad0bd5f@syzkaller.appspotmail.com
->
-> ==================================================================
-> BUG: KASAN: stack-out-of-bounds in ath9k_hif_usb_rx_stream drivers/net/wireless/ath/ath9k/hif_usb.c:626 [inline]
-> BUG: KASAN: stack-out-of-bounds in ath9k_hif_usb_rx_cb+0xdf6/0xf70 drivers/net/wireless/ath/ath9k/hif_usb.c:666
-> Write of size 8 at addr ffff8881db309a28 by task swapper/1/0
->
-> CPU: 1 PID: 0 Comm: swapper/1 Not tainted 5.6.0-rc7-syzkaller #0
-> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
-> Call Trace:
->  <IRQ>
->  __dump_stack lib/dump_stack.c:77 [inline]
->  dump_stack+0xef/0x16e lib/dump_stack.c:118
->  print_address_description.constprop.0.cold+0xd3/0x314 mm/kasan/report.c:374
->  __kasan_report.cold+0x37/0x77 mm/kasan/report.c:506
->  kasan_report+0xe/0x20 mm/kasan/common.c:641
->  ath9k_hif_usb_rx_stream drivers/net/wireless/ath/ath9k/hif_usb.c:626 [inline]
->  ath9k_hif_usb_rx_cb+0xdf6/0xf70 drivers/net/wireless/ath/ath9k/hif_usb.c:666
->  __usb_hcd_giveback_urb+0x1f2/0x470 drivers/usb/core/hcd.c:1648
->  usb_hcd_giveback_urb+0x368/0x420 drivers/usb/core/hcd.c:1713
->  dummy_timer+0x1258/0x32ae drivers/usb/gadget/udc/dummy_hcd.c:1966
->  call_timer_fn+0x195/0x6f0 kernel/time/timer.c:1404
->  expire_timers kernel/time/timer.c:1449 [inline]
->  __run_timers kernel/time/timer.c:1773 [inline]
->  __run_timers kernel/time/timer.c:1740 [inline]
->  run_timer_softirq+0x5f9/0x1500 kernel/time/timer.c:1786
->
->
-> ---
-> This bug is generated by a bot. It may contain errors.
-> See https://goo.gl/tpsmEJ for more information about syzbot.
-> syzbot engineers can be reached at syzkaller@googlegroups.com.
->
-> syzbot will keep track of this bug report. See:
-> https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-> syzbot can test patches for this bug, for details see:
-> https://goo.gl/tpsmEJ#testing-patches
+828/au0828-video.o
+  AR      drivers/media/usb/msi2500/built-in.a
+  CC      drivers/media/dvb-frontends/isl6423.o
+  CC      drivers/media/rc/keymaps/rc-nec-terratec-cinergy-xs.o
+  CC      drivers/media/usb/gspca/mars.o
+  CC      drivers/hid/hid-lg4ff.o
+  CC      drivers/gpu/drm/drm_vblank.o
+  CC      drivers/gpu/drm/drm_syncobj.o
+  CC      drivers/gpu/drm/drm_lease.o
+  AR      drivers/staging/rtl8712/built-in.a
+  CC      drivers/media/usb/dvb-usb/dw2102.o
+  AR      drivers/staging/built-in.a
+  CC      drivers/media/dvb-frontends/ec100.o
+  CC      drivers/media/dvb-frontends/ds3000.o
+  CC      drivers/media/rc/keymaps/rc-norwood.o
+  CC      drivers/media/dvb-frontends/ts2020.o
+  CC      drivers/media/usb/gspca/mr97310a.o
+  CC      drivers/media/usb/dvb-usb/dtv5100.o
+  CC      drivers/gpu/drm/drm_writeback.o
+  CC      drivers/hid/hid-lg-g15.o
+  AR      drivers/media/usb/cpia2/built-in.a
+  CC      drivers/media/usb/dvb-usb/cinergyT2-core.o
+  CC      drivers/media/usb/gspca/nw80x.o
+  CC      drivers/media/usb/pvrusb2/pvrusb2-i2c-core.o
+  CC      drivers/media/usb/usbvision/usbvision-core.o
+  CC      drivers/media/usb/stk1160/stk1160-core.o
+  CC      drivers/media/usb/stk1160/stk1160-v4l.o
+  CC      drivers/media/usb/dvb-usb/cinergyT2-fe.o
+  CC      drivers/media/usb/cx231xx/cx231xx-video.o
+  CC      drivers/media/usb/usbvision/usbvision-video.o
+  CC      drivers/media/usb/usbvision/usbvision-i2c.o
+  CC      drivers/media/usb/usbvision/usbvision-cards.o
+  CC      drivers/media/usb/au0828/au0828-vbi.o
+  CC      drivers/media/usb/au0828/au0828-input.o
+  CC      drivers/media/rc/keymaps/rc-npgtech.o
+  CC      drivers/media/usb/stk1160/stk1160-video.o
+  CC      drivers/media/usb/tm6000/tm6000-cards.o
+  CC      drivers/media/usb/tm6000/tm6000-core.o
+  CC      drivers/media/usb/tm6000/tm6000-i2c.o
+  CC      drivers/media/usb/tm6000/tm6000-video.o
+  CC      drivers/media/rc/keymaps/rc-odroid.o
+  CC      drivers/media/usb/pvrusb2/pvrusb2-audio.o
+  CC      drivers/media/usb/gspca/ov519.o
+  CC      drivers/hid/hid-logitech-dj.o
+  CC      drivers/media/usb/pvrusb2/pvrusb2-encoder.o
+  AR      drivers/media/usb/hdpvr/built-in.a
+  CC      drivers/media/usb/gspca/ov534.o
+  CC      drivers/hid/hid-logitech-hidpp.o
+  CC      drivers/media/usb/stk1160/stk1160-i2c.o
+  CC      drivers/hid/hid-magicmouse.o
+  CC      drivers/gpu/drm/i915/display/intel_crt.o
+  CC      drivers/media/rc/keymaps/rc-pctv-sedna.o
+  CC      drivers/hid/hid-mf.o
+  CC      drivers/gpu/drm/drm_client.o
+  CC      drivers/gpu/drm/drm_client_modeset.o
+  CC      drivers/gpu/drm/drm_atomic_uapi.o
+  CC      drivers/gpu/drm/drm_hdcp.o
+  CC      drivers/media/usb/tm6000/tm6000-stds.o
+  CC      drivers/media/usb/cx231xx/cx231xx-i2c.o
+  CC      drivers/media/dvb-frontends/mb86a20s.o
+  CC      drivers/media/usb/gspca/ov534_9.o
+  CC      drivers/media/usb/cx231xx/cx231xx-cards.o
+  CC      drivers/media/rc/keymaps/rc-pinnacle-color.o
+  CC      drivers/media/usb/cx231xx/cx231xx-core.o
+  CC      drivers/gpu/drm/drm_ioc32.o
+  CC      drivers/media/usb/cx231xx/cx231xx-avcore.o
+  CC      drivers/media/usb/tm6000/tm6000-input.o
+  CC      drivers/media/usb/pvrusb2/pvrusb2-video-v4l.o
+  CC      drivers/media/usb/pvrusb2/pvrusb2-eeprom.o
+  CC      drivers/media/usb/stk1160/stk1160-ac97.o
+  CC      drivers/media/usb/dvb-usb/az6027.o
+  CC      drivers/gpu/drm/drm_gem_shmem_helper.o
+  CC      drivers/gpu/drm/drm_panel.o
+  CC      drivers/media/rc/keymaps/rc-pinnacle-grey.o
+  CC      drivers/media/usb/pvrusb2/pvrusb2-main.o
+  CC      drivers/gpu/drm/drm_agpsupport.o
+  CC      drivers/hid/hid-microsoft.o
+  CC      drivers/media/usb/em28xx/em28xx-core.o
+  CC      drivers/media/usb/em28xx/em28xx-i2c.o
+  AR      drivers/media/usb/au0828/built-in.a
+  CC      drivers/media/usb/tm6000/tm6000-alsa.o
+  CC      drivers/media/usb/tm6000/tm6000-dvb.o
+  CC      drivers/gpu/drm/drm_pci.o
+  CC      drivers/media/usb/dvb-usb/technisat-usb2.o
+  CC      drivers/media/usb/em28xx/em28xx-cards.o
+  CC      drivers/media/usb/cx231xx/cx231xx-417.o
+  CC      drivers/media/rc/keymaps/rc-pinnacle-pctv-hd.o
+  AR      drivers/media/usb/stk1160/built-in.a
+  CC      drivers/gpu/drm/drm_debugfs.o
+  CC      drivers/media/usb/gspca/pac207.o
+  CC      drivers/gpu/drm/i915/display/intel_ddi.o
+  CC      drivers/media/usb/em28xx/em28xx-camera.o
+  CC      drivers/media/usb/pvrusb2/pvrusb2-hdw.o
+  CC      drivers/media/usb/usbtv/usbtv-core.o
+  CC      drivers/media/usb/go7007/go7007-v4l2.o
+  CC      drivers/media/dvb-frontends/ix2505v.o
+  CC      drivers/hid/hid-monterey.o
+  CC      drivers/gpu/drm/drm_debugfs_crc.o
+  CC      drivers/media/rc/keymaps/rc-pixelview.o
+  CC      drivers/media/usb/pvrusb2/pvrusb2-v4l2.o
+  CC      drivers/gpu/drm/drm_mipi_dsi.o
+  CC      drivers/gpu/drm/i915/display/intel_dp.o
+  CC      drivers/media/usb/pvrusb2/pvrusb2-ctrl.o
+  CC      drivers/media/usb/pvrusb2/pvrusb2-std.o
+  CC      drivers/media/dvb-frontends/cxd2820r_core.o
+  AR      drivers/media/usb/tm6000/built-in.a
+  CC      drivers/media/rc/keymaps/rc-pixelview-mk12.o
+  AR      drivers/media/usb/usbvision/built-in.a
+  CC      drivers/gpu/drm/drm_panel_orientation_quirks.o
+  CC      drivers/media/usb/em28xx/em28xx-video.o
+  CC      drivers/gpu/drm/i915/display/intel_dp_aux_backlight.o
+  CC      drivers/media/usb/usbtv/usbtv-video.o
+  CC      drivers/media/usb/cx231xx/cx231xx-pcb-cfg.o
+  CC      drivers/gpu/drm/i915/display/intel_dp_link_training.o
+  CC      drivers/media/usb/go7007/go7007-driver.o
+  CC      drivers/media/usb/cx231xx/cx231xx-vbi.o
+  AR      drivers/media/usb/dvb-usb/built-in.a
+  CC      drivers/media/rc/keymaps/rc-pixelview-002t.o
+  CC      drivers/gpu/drm/i915/display/intel_dp_mst.o
+  CC      drivers/hid/hid-multitouch.o
+  CC      drivers/media/usb/em28xx/em28xx-vbi.o
+  CC      drivers/media/usb/em28xx/em28xx-audio.o
+  CC      drivers/media/rc/keymaps/rc-pixelview-new.o
+  CC      drivers/hid/hid-nti.o
+  CC      drivers/media/usb/pvrusb2/pvrusb2-devattr.o
+  CC      drivers/media/usb/em28xx/em28xx-dvb.o
+  CC      drivers/hid/hid-ntrig.o
+  CC      drivers/media/usb/em28xx/em28xx-input.o
+  CC      drivers/media/usb/go7007/go7007-i2c.o
+  CC      drivers/media/rc/keymaps/rc-powercolor-real-angel.o
+  CC      drivers/media/rc/keymaps/rc-proteus-2309.o
+  CC      drivers/media/usb/go7007/go7007-fw.o
+  CC      drivers/media/rc/keymaps/rc-purpletv.o
+  CC      drivers/media/usb/pvrusb2/pvrusb2-context.o
+  CC      drivers/media/usb/pvrusb2/pvrusb2-io.o
+  CC      drivers/media/dvb-frontends/cxd2820r_c.o
+  CC      drivers/hid/hid-ortek.o
+  CC      drivers/hid/hid-prodikeys.o
+  CC      drivers/media/usb/as102/as102_drv.o
+  CC      drivers/media/usb/as102/as102_fw.o
+  CC      drivers/media/usb/as102/as10x_cmd.o
+  CC      drivers/media/rc/keymaps/rc-pv951.o
+  CC      drivers/media/rc/keymaps/rc-hauppauge.o
+  CC      drivers/media/usb/usbtv/usbtv-audio.o
+  CC      drivers/gpu/drm/i915/display/intel_dsi.o
+  CC      drivers/media/rc/keymaps/rc-rc6-mce.o
+  CC      drivers/hid/hid-pl.o
+  CC      drivers/gpu/drm/i915/display/intel_dsi_dcs_backlight.o
+  CC      drivers/media/usb/go7007/snd-go7007.o
+  CC      drivers/media/usb/cx231xx/cx231xx-input.o
+  CC      drivers/media/usb/gspca/pac7302.o
+  CC      drivers/media/usb/gspca/pac7311.o
+  CC      drivers/media/usb/cx231xx/cx231xx-dvb.o
+  CC      drivers/media/usb/cx231xx/cx231xx-audio.o
+  CC      drivers/media/usb/go7007/go7007-usb.o
+  CC      drivers/gpu/drm/i915/display/intel_dsi_vbt.o
+  CC      drivers/media/rc/keymaps/rc-real-audio-220-32-keys.o
+  CC      drivers/media/usb/pvrusb2/pvrusb2-ioread.o
+  CC      drivers/media/rc/keymaps/rc-reddo.o
+  CC      drivers/media/dvb-frontends/cxd2820r_t.o
+  CC      drivers/media/rc/keymaps/rc-snapstream-firefly.o
+  CC      drivers/media/usb/pulse8-cec/pulse8-cec.o
+  CC      drivers/media/usb/go7007/go7007-loader.o
+  CC      drivers/media/usb/rainshadow-cec/rainshadow-cec.o
+  CC      drivers/hid/hid-penmount.o
+  CC      drivers/hid/hid-petalynx.o
+  CC      drivers/gpu/drm/i915/display/intel_dvo.o
+  CC      drivers/hid/hid-picolcd_core.o
+  CC      drivers/media/usb/gspca/se401.o
+  CC      drivers/media/usb/as102/as10x_cmd_stream.o
+  AR      drivers/media/usb/usbtv/built-in.a
+  CC      drivers/media/rc/keymaps/rc-streamzap.o
+  CC      drivers/gpu/drm/i915/display/intel_gmbus.o
+  CC      drivers/gpu/drm/i915/display/intel_hdmi.o
+  CC      drivers/gpu/drm/i915/display/intel_lspcon.o
+  CC      drivers/media/usb/pvrusb2/pvrusb2-cx2584x-v4l.o
+  CC      drivers/media/rc/keymaps/rc-tango.o
+  CC      drivers/gpu/drm/i915/display/intel_lvds.o
+  CC      drivers/media/usb/pvrusb2/pvrusb2-wm8775.o
+  CC      drivers/media/usb/gspca/sn9c2028.o
+  CC      drivers/media/usb/go7007/s2250-board.o
+  CC      drivers/media/usb/as102/as102_usb_drv.o
+  CC      drivers/media/usb/as102/as10x_cmd_cfg.o
+  CC      drivers/media/usb/pvrusb2/pvrusb2-cs53l32a.o
+  CC      drivers/hid/hid-picolcd_fb.o
+  CC      drivers/media/usb/pvrusb2/pvrusb2-dvb.o
+  CC      drivers/media/usb/pvrusb2/pvrusb2-sysfs.o
+  CC      drivers/media/rc/keymaps/rc-tanix-tx3mini.o
+  CC      drivers/media/dvb-frontends/cxd2820r_t2.o
+  AR      drivers/media/usb/rainshadow-cec/built-in.a
+  CC      drivers/gpu/drm/i915/display/intel_panel.o
+  CC      drivers/media/rc/keymaps/rc-tanix-tx5max.o
+  CC      drivers/gpu/drm/i915/display/intel_sdvo.o
+  CC      drivers/media/dvb-frontends/cxd2841er.o
+  AR      drivers/media/usb/pulse8-cec/built-in.a
+  CC      drivers/media/rc/keymaps/rc-tbs-nec.o
+  CC      drivers/media/rc/keymaps/rc-technisat-ts35.o
+  AR      drivers/media/usb/em28xx/built-in.a
+  CC      drivers/media/rc/keymaps/rc-technisat-usb2.o
+  CC      drivers/gpu/drm/i915/display/intel_tv.o
+  CC      drivers/media/usb/gspca/sn9c20x.o
+  CC      drivers/media/usb/gspca/sonixb.o
+  CC      drivers/media/usb/gspca/sonixj.o
+  CC      drivers/media/rc/keymaps/rc-terratec-cinergy-c-pci.o
+  CC      drivers/media/rc/keymaps/rc-terratec-cinergy-s2-hd.o
+  AR      drivers/media/usb/cx231xx/built-in.a
+  CC      drivers/gpu/drm/i915/display/intel_vdsc.o
+  CC      drivers/hid/hid-picolcd_backlight.o
+  CC      drivers/hid/hid-picolcd_lcd.o
+  CC      drivers/hid/hid-picolcd_leds.o
+  CC      drivers/media/rc/keymaps/rc-terratec-cinergy-xs.o
+  AR      drivers/media/usb/as102/built-in.a
+  CC      drivers/media/rc/keymaps/rc-terratec-slim.o
+  CC      drivers/hid/hid-picolcd_cir.o
+  AR      drivers/media/usb/go7007/built-in.a
+  CC      drivers/media/rc/keymaps/rc-terratec-slim-2.o
+  CC      drivers/media/dvb-frontends/drxk_hard.o
+  CC      drivers/media/rc/keymaps/rc-tevii-nec.o
+  CC      drivers/media/rc/keymaps/rc-tivo.o
+  CC      drivers/hid/hid-picolcd_debugfs.o
+  CC      drivers/hid/hid-plantronics.o
+  CC      drivers/gpu/drm/i915/display/vlv_dsi.o
+  CC      drivers/media/rc/keymaps/rc-total-media-in-hand.o
+  CC      drivers/media/usb/gspca/spca500.o
+  CC      drivers/media/usb/gspca/spca501.o
+  CC      drivers/gpu/drm/i915/display/vlv_dsi_pll.o
+  CC      drivers/media/usb/gspca/spca505.o
+  CC      drivers/media/usb/gspca/spca506.o
+  CC      drivers/gpu/drm/i915/oa/i915_oa_hsw.o
+  CC      drivers/media/dvb-frontends/tda18271c2dd.o
+  CC      drivers/hid/hid-primax.o
+  CC      drivers/media/usb/gspca/spca508.o
+  CC      drivers/hid/hid-retrode.o
+  CC      drivers/gpu/drm/i915/oa/i915_oa_chv.o
+  CC      drivers/gpu/drm/i915/oa/i915_oa_bdw.o
+  CC      drivers/media/rc/keymaps/rc-total-media-in-hand-02.o
+  CC      drivers/media/rc/keymaps/rc-trekstor.o
+  CC      drivers/media/rc/keymaps/rc-tt-1500.o
+  CC      drivers/gpu/drm/i915/oa/i915_oa_sklgt2.o
+  CC      drivers/gpu/drm/i915/oa/i915_oa_sklgt3.o
+  CC      drivers/gpu/drm/i915/oa/i915_oa_sklgt4.o
+  CC      drivers/hid/hid-roccat.o
+  CC      drivers/media/usb/gspca/spca561.o
+  CC      drivers/media/rc/keymaps/rc-twinhan-dtv-cab-ci.o
+  CC      drivers/media/dvb-frontends/si2165.o
+  CC      drivers/media/usb/gspca/spca1528.o
+  CC      drivers/media/rc/keymaps/rc-twinhan1027.o
+  CC      drivers/media/dvb-frontends/a8293.o
+  CC      drivers/gpu/drm/i915/oa/i915_oa_bxt.o
+  CC      drivers/gpu/drm/i915/oa/i915_oa_kblgt2.o
+  CC      drivers/media/dvb-frontends/sp2.o
+  CC      drivers/hid/hid-roccat-common.o
+  CC      drivers/hid/hid-roccat-arvo.o
+  CC      drivers/hid/hid-roccat-isku.o
+  CC      drivers/hid/hid-roccat-kone.o
+  CC      drivers/hid/hid-roccat-koneplus.o
+  CC      drivers/hid/hid-roccat-konepure.o
+  CC      drivers/media/rc/keymaps/rc-vega-s9x.o
+  CC      drivers/media/usb/gspca/sq905.o
+  CC      drivers/media/dvb-frontends/tda10071.o
+  CC      drivers/media/dvb-frontends/rtl2830.o
+  CC      drivers/hid/hid-roccat-kovaplus.o
+  CC      drivers/hid/hid-roccat-lua.o
+  CC      drivers/hid/hid-roccat-pyra.o
+  CC      drivers/media/rc/keymaps/rc-videomate-m1f.o
+  CC      drivers/gpu/drm/i915/oa/i915_oa_kblgt3.o
+  CC      drivers/media/dvb-frontends/rtl2832.o
+  AR      drivers/media/usb/pvrusb2/built-in.a
+  CC      drivers/hid/hid-roccat-ryos.o
+  CC      drivers/gpu/drm/i915/oa/i915_oa_glk.o
+  CC      drivers/hid/hid-roccat-savu.o
+  CC      drivers/gpu/drm/i915/oa/i915_oa_cflgt2.o
+  CC      drivers/gpu/drm/i915/oa/i915_oa_cflgt3.o
+  CC      drivers/media/rc/keymaps/rc-videomate-s350.o
+  CC      drivers/gpu/drm/i915/oa/i915_oa_cnl.o
+  CC      drivers/media/rc/keymaps/rc-videomate-tv-pvr.o
+  CC      drivers/media/usb/gspca/sq905c.o
+  CC      drivers/media/usb/gspca/sq930x.o
+  CC      drivers/gpu/drm/i915/oa/i915_oa_icl.o
+  CC      drivers/gpu/drm/i915/oa/i915_oa_tgl.o
+  CC      drivers/hid/hid-rmi.o
+  CC      drivers/gpu/drm/i915/i915_perf.o
+  CC      drivers/media/usb/gspca/sunplus.o
+  CC      drivers/media/dvb-frontends/rtl2832_sdr.o
+  CC      drivers/hid/hid-saitek.o
+  CC      drivers/hid/hid-samsung.o
+  CC      drivers/media/dvb-frontends/m88rs2000.o
+  CC      drivers/media/dvb-frontends/af9033.o
+  CC      drivers/media/rc/keymaps/rc-wetek-hub.o
+  CC      drivers/media/usb/gspca/stk014.o
+  CC      drivers/media/rc/keymaps/rc-wetek-play2.o
+  CC      drivers/media/dvb-frontends/as102_fe.o
+  CC      drivers/gpu/drm/i915/i915_gpu_error.o
+  CC      drivers/media/dvb-frontends/tc90522.o
+  CC      drivers/media/dvb-frontends/gp8psk-fe.o
+  CC      drivers/media/rc/keymaps/rc-winfast.o
+  CC      drivers/hid/hid-sjoy.o
+  CC      drivers/hid/hid-sony.o
+  CC      drivers/gpu/drm/i915/i915_vgpu.o
+  CC      drivers/media/rc/keymaps/rc-winfast-usbii-deluxe.o
+  CC      drivers/hid/hid-speedlink.o
+  CC      drivers/media/rc/keymaps/rc-su3000.o
+  CC      drivers/media/dvb-frontends/zd1301_demod.o
+  CC      drivers/media/rc/keymaps/rc-xbox-dvd.o
+  CC      drivers/media/usb/gspca/stk1135.o
+  CC      drivers/hid/hid-steelseries.o
+  CC      drivers/hid/hid-sunplus.o
+  CC      drivers/media/usb/gspca/stv0680.o
+  CC      drivers/hid/hid-gaff.o
+  CC      drivers/hid/hid-tmff.o
+  CC      drivers/media/rc/keymaps/rc-x96max.o
+  CC      drivers/media/rc/keymaps/rc-zx-irdec.o
+  CC      drivers/hid/hid-tivo.o
+  CC      drivers/hid/hid-topseed.o
+  CC      drivers/media/usb/gspca/t613.o
+  CC      drivers/media/usb/gspca/topro.o
+  CC      drivers/media/usb/gspca/tv8532.o
+  CC      drivers/media/usb/gspca/touptek.o
+  CC      drivers/hid/hid-uclogic-core.o
+  CC      drivers/hid/hid-twinhan.o
+  CC      drivers/hid/hid-uclogic-rdesc.o
+  CC      drivers/media/usb/gspca/vc032x.o
+  CC      drivers/media/usb/gspca/xirlink_cit.o
+  CC      drivers/hid/hid-uclogic-params.o
+  CC      drivers/media/usb/gspca/vicam.o
+  CC      drivers/hid/hid-udraw-ps3.o
+  CC      drivers/hid/hid-led.o
+  CC      drivers/hid/hid-xinmo.o
+  AR      drivers/media/rc/keymaps/built-in.a
+  CC      drivers/hid/hid-zpff.o
+  AR      drivers/media/rc/built-in.a
+  CC      drivers/hid/hid-zydacron.o
+  CC      drivers/media/usb/gspca/zc3xx.o
+  CC      drivers/hid/wacom_wac.o
+  CC      drivers/hid/wacom_sys.o
+  CC      drivers/hid/hid-waltop.o
+  CC      drivers/hid/hid-wiimote-core.o
+  CC      drivers/hid/hid-wiimote-modules.o
+  CC      drivers/hid/hid-wiimote-debug.o
+  CC      drivers/hid/hid-sensor-hub.o
+  CC      drivers/hid/hid-sensor-custom.o
+  AR      drivers/media/dvb-frontends/built-in.a
+  AR      drivers/media/usb/gspca/built-in.a
+  AR      drivers/media/usb/built-in.a
+  AR      drivers/media/built-in.a
+  AR      drivers/gpu/drm/i915/built-in.a
+  AR      drivers/gpu/drm/built-in.a
+  AR      drivers/gpu/built-in.a
+  AR      drivers/hid/built-in.a
+Makefile:1683: recipe for target 'drivers' failed
+make: *** [drivers] Error 2
 
---0000000000001d68c405a21d7706
-Content-Type: application/octet-stream; name="hif_usb.patch"
-Content-Disposition: attachment; filename="hif_usb.patch"
-Content-Transfer-Encoding: base64
-Content-ID: <f_k8faiqee0>
-X-Attachment-Id: f_k8faiqee0
 
-ZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL2F0aC9hdGg5ay9oaWZfdXNiLmMgYi9k
-cml2ZXJzL25ldC93aXJlbGVzcy9hdGgvYXRoOWsvaGlmX3VzYi5jCmluZGV4IGRkMGMzMjMuLjky
-Yzk0ZmMgMTAwNjQ0Ci0tLSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL2F0aC9hdGg5ay9oaWZfdXNi
-LmMKKysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvYXRoL2F0aDlrL2hpZl91c2IuYwpAQCAtNjEy
-LDYgKzYxMiwxMCBAQCBzdGF0aWMgdm9pZCBhdGg5a19oaWZfdXNiX3J4X3N0cmVhbShzdHJ1Y3Qg
-aGlmX2RldmljZV91c2IgKmhpZl9kZXYsCiAJCQloaWZfZGV2LT5yZW1haW5fc2tiID0gbnNrYjsK
-IAkJCXNwaW5fdW5sb2NrKCZoaWZfZGV2LT5yeF9sb2NrKTsKIAkJfSBlbHNlIHsKKwkJCWlmIChw
-b29sX2luZGV4ID09IE1BWF9QS1RfTlVNX0lOX1RSQU5TRkVSKSB7CisJCQkJZGV2X2VycigiYXRo
-OWtfaHRjOiBvdmVyIFJYIE1BWF9QS1RfTlVNXG4iKTsKKwkJCQlnb3RvIGVycjsKKwkJCX0KIAkJ
-CW5za2IgPSBfX2Rldl9hbGxvY19za2IocGt0X2xlbiArIDMyLCBHRlBfQVRPTUlDKTsKIAkJCWlm
-ICghbnNrYikgewogCQkJCWRldl9lcnIoJmhpZl9kZXYtPnVkZXYtPmRldiwK
---0000000000001d68c405a21d7706--
+Error text is too large and was truncated, full error text is at:
+https://syzkaller.appspot.com/x/error.txt?x=12e89493e00000
+
+
+Tested on:
+
+commit:         0fa84af8 Merge tag 'usb-serial-5.7-rc1' of https://git.ker..
+git tree:       https://github.com/google/kasan.git usb-fuzzer
+dashboard link: https://syzkaller.appspot.com/bug?extid=d403396d4df67ad0bd5f
+compiler:       gcc (GCC) 9.0.0 20181231 (experimental)
+patch:          https://syzkaller.appspot.com/x/patch.diff?x=14aafcb7e00000
+
