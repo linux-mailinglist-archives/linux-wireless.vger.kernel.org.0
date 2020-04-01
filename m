@@ -2,133 +2,134 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E19A919A544
-	for <lists+linux-wireless@lfdr.de>; Wed,  1 Apr 2020 08:22:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 62D4119A5AE
+	for <lists+linux-wireless@lfdr.de>; Wed,  1 Apr 2020 08:54:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731839AbgDAGWI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 1 Apr 2020 02:22:08 -0400
-Received: from mail.adapt-ip.com ([173.164.178.19]:36698 "EHLO
-        web.adapt-ip.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1731741AbgDAGWI (ORCPT
+        id S1731830AbgDAGye (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 1 Apr 2020 02:54:34 -0400
+Received: from s3.sipsolutions.net ([144.76.43.62]:33406 "EHLO
+        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731741AbgDAGye (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 1 Apr 2020 02:22:08 -0400
-Received: from localhost (localhost [127.0.0.1])
-        by web.adapt-ip.com (Postfix) with ESMTP id 131214F7A5A;
-        Wed,  1 Apr 2020 06:22:07 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at web.adapt-ip.com
-Received: from web.adapt-ip.com ([127.0.0.1])
-        by localhost (web.adapt-ip.com [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id KFgPqD099bWG; Wed,  1 Apr 2020 06:22:04 +0000 (UTC)
-Received: from atlas.campbell.adapt-ip.com (gateway.adapt-ip.com [173.164.178.20])
-        (Authenticated sender: thomas@adapt-ip.com)
-        by web.adapt-ip.com (Postfix) with ESMTPSA id 739044F7A54;
-        Wed,  1 Apr 2020 06:21:53 +0000 (UTC)
-From:   Thomas Pedersen <thomas@adapt-ip.com>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
-        Thomas Pedersen <thomas@adapt-ip.com>
-Subject: [RFC 7/7] nl80211: accept scan frequencies in KHz
-Date:   Tue, 31 Mar 2020 23:21:50 -0700
-Message-Id: <20200401062150.3324-8-thomas@adapt-ip.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200401062150.3324-1-thomas@adapt-ip.com>
+        Wed, 1 Apr 2020 02:54:34 -0400
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.93)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1jJXGh-00BRTz-Oz; Wed, 01 Apr 2020 08:54:31 +0200
+Message-ID: <52850c8eb3131ca742eea30a21a7e685a3a3045b.camel@sipsolutions.net>
+Subject: Re: [RFC 2/7] cfg80211: express channels with a KHz component
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Thomas Pedersen <thomas@adapt-ip.com>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>
+Date:   Wed, 01 Apr 2020 08:54:30 +0200
+In-Reply-To: <20200401062150.3324-3-thomas@adapt-ip.com>
 References: <20200401062150.3324-1-thomas@adapt-ip.com>
+         <20200401062150.3324-3-thomas@adapt-ip.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.34.4 (3.34.4-1.fc31) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-NL80211_ATTR_SCAN_FREQUENCIES_KHZ are optional in addition
-to the MHz frequencies specified in
-NL80211_ATTR_SCAN_FREQUENCIES.
+On Tue, 2020-03-31 at 23:21 -0700, Thomas Pedersen wrote:
+> 
+> +/**
+> + * ieee80211_get_channel_khz - get channel struct from wiphy for specified
+> + * frequency
 
-Signed-off-by: Thomas Pedersen <thomas@adapt-ip.com>
----
- include/uapi/linux/nl80211.h |  2 ++
- net/wireless/nl80211.c       | 23 +++++++++++++++++------
- 2 files changed, 19 insertions(+), 6 deletions(-)
+You can't line-break there, but I think I learned a while back that you
+can do
 
-diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-index 28401f039d75..de80ae4f8aae 100644
---- a/include/uapi/linux/nl80211.h
-+++ b/include/uapi/linux/nl80211.h
-@@ -2430,6 +2430,7 @@ enum nl80211_commands {
-  * @NL80211_ATTR_WIPHY_EDMG_BW_CONFIG: Channel BW Configuration subfield encodes
-  *	the allowed channel bandwidth configurations. (u8 attribute)
-  *	Defined by IEEE P802.11ay/D4.0 section 9.4.2.251, Table 13.
-+ * @NL80211_ATTR_SCAN_FREQUENCIES_KHZ: nested attribute with frequencies (in KHz)
-  *
-  * @NL80211_ATTR_VLAN_ID: VLAN ID (1..4094) for the station and VLAN group key
-  *	(u16).
-@@ -2957,6 +2958,7 @@ enum nl80211_attrs {
+/**
+ * ieee80211_get_channel_khz -
+ * get channel ...
+
+or something like that. Maybe try?
+
+> +/**
+> + * ieee80211_chandef_to_khz - convert chandef to frequency in KHz
+> + *
+> + * @chandef: the chandef to convert
+> + *
+> + * Returns the center frequency of chandef (1st segment) in KHz.
+> + */
+> +u32 ieee80211_chandef_to_khz(const struct cfg80211_chan_def *chandef);
+
+Isn't this one trivial, and probably better inlined (mhz*1000 + khz)?
+
+> +u32 ieee80211_channel_to_freq_khz(int chan, enum nl80211_band band)
+> +{
+> +	return __ieee80211_channel_to_frequency(chan, band);
+> +}
+> +EXPORT_SYMBOL(ieee80211_channel_to_freq_khz);
+> +
+> +int ieee80211_channel_to_frequency(int chan, enum nl80211_band band)
+> +{
+> +	return KHZ_TO_MHZ(__ieee80211_channel_to_frequency(chan, band));
+> +}
+>  EXPORT_SYMBOL(ieee80211_channel_to_frequency);
+>  
+> -int ieee80211_frequency_to_channel(int freq)
+> +u32 ieee80211_channel_to_khz(const struct ieee80211_channel *chan)
+> +{
+> +	return MHZ_TO_KHZ(chan->center_freq) + chan->freq_offset;
+> +}
+> +EXPORT_SYMBOL(ieee80211_channel_to_khz);
+
+Some of these should probably be inlines? Or maybe all of them, and
+
+> +static int __ieee80211_frequency_to_channel(u32 freq)
+
+export the double-underscore helpers like this one instead? That'd still
+be less code overall, IMHO.
+
+> +int ieee80211_freq_khz_to_channel(u32 freq)
+> +{
+> +	return __ieee80211_frequency_to_channel(freq);
+> +}
+> +EXPORT_SYMBOL(ieee80211_freq_khz_to_channel);
+> +
+> +int ieee80211_frequency_to_channel(int freq)
+> +{
+> +	return __ieee80211_frequency_to_channel(MHZ_TO_KHZ(freq));
+> +}
+>  EXPORT_SYMBOL(ieee80211_frequency_to_channel);
+
+similarly here, I guess.
+
+> +struct ieee80211_channel *ieee80211_get_channel_khz(struct wiphy *wiphy,
+> +						    u32 freq)
+> +{
+> +	return __ieee80211_get_channel(wiphy, freq);
+> +}
+> +EXPORT_SYMBOL(ieee80211_get_channel_khz);
+> +
+> +struct ieee80211_channel *ieee80211_get_channel(struct wiphy *wiphy,
+> +						int freq)
+> +{
+> +	return __ieee80211_get_channel(wiphy, MHZ_TO_KHZ(freq));
+> +}
+>  EXPORT_SYMBOL(ieee80211_get_channel);
+
+And maybe here? In fact, how is __ieee80211_get_channel() even different
+from ieee80211_get_channel_khz()?
  
- 	NL80211_ATTR_WIPHY_FREQ_OFFSET,
- 	NL80211_ATTR_CENTER_FREQ1_OFFSET,
-+	NL80211_ATTR_SCAN_FREQUENCIES_KHZ,
- 
- 	/* add attributes here, update the policy in nl80211.c */
- 
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index ea9310f6d981..5a8a30282bf2 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -665,6 +665,7 @@ const struct nla_policy nl80211_policy[NUM_NL80211_ATTR] = {
- 	[NL80211_ATTR_PMK_LIFETIME] = NLA_POLICY_MIN(NLA_U32, 1),
- 	[NL80211_ATTR_PMK_REAUTH_THRESHOLD] = NLA_POLICY_RANGE(NLA_U8, 1, 100),
- 	[NL80211_ATTR_WIPHY_FREQ_OFFSET] = { .type = NLA_U32 },
-+	[NL80211_ATTR_SCAN_FREQUENCIES_KHZ] = { .type = NLA_NESTED },
- };
- 
- /* policy for the key attributes */
-@@ -7749,6 +7750,8 @@ static int nl80211_trigger_scan(struct sk_buff *skb, struct genl_info *info)
- 	struct cfg80211_registered_device *rdev = info->user_ptr[0];
- 	struct wireless_dev *wdev = info->user_ptr[1];
- 	struct cfg80211_scan_request *request;
-+	struct nlattr *scan_freqs = NULL;
-+	bool scan_freqs_khz = false;
- 	struct nlattr *attr;
- 	struct wiphy *wiphy;
- 	int err, tmp, n_ssids = 0, n_channels, i;
-@@ -7767,9 +7770,14 @@ static int nl80211_trigger_scan(struct sk_buff *skb, struct genl_info *info)
- 		goto unlock;
- 	}
- 
--	if (info->attrs[NL80211_ATTR_SCAN_FREQUENCIES]) {
--		n_channels = validate_scan_freqs(
--				info->attrs[NL80211_ATTR_SCAN_FREQUENCIES]);
-+	if (info->attrs[NL80211_ATTR_SCAN_FREQUENCIES_KHZ]) {
-+		scan_freqs = info->attrs[NL80211_ATTR_SCAN_FREQUENCIES_KHZ];
-+		scan_freqs_khz = true;
-+	} else if (info->attrs[NL80211_ATTR_SCAN_FREQUENCIES])
-+		scan_freqs = info->attrs[NL80211_ATTR_SCAN_FREQUENCIES];
-+
-+	if (scan_freqs) {
-+		n_channels = validate_scan_freqs(scan_freqs);
- 		if (!n_channels) {
- 			err = -EINVAL;
- 			goto unlock;
-@@ -7817,13 +7825,16 @@ static int nl80211_trigger_scan(struct sk_buff *skb, struct genl_info *info)
- 	}
- 
- 	i = 0;
--	if (info->attrs[NL80211_ATTR_SCAN_FREQUENCIES]) {
-+	if (scan_freqs) {
- 		/* user specified, bail out if channel not found */
--		nla_for_each_nested(attr, info->attrs[NL80211_ATTR_SCAN_FREQUENCIES], tmp) {
-+		nla_for_each_nested(attr, scan_freqs, tmp) {
- 			struct ieee80211_channel *chan;
-+			int freq = nla_get_u32(attr);
- 
--			chan = ieee80211_get_channel(wiphy, nla_get_u32(attr));
-+			if (!scan_freqs_khz)
-+				freq = MHZ_TO_KHZ(freq);
- 
-+			chan = ieee80211_get_channel_khz(wiphy, freq);
- 			if (!chan) {
- 				err = -EINVAL;
- 				goto out_free;
--- 
-2.20.1
+> @@ -1670,6 +1716,12 @@ bool ieee80211_chandef_to_operating_class(struct cfg80211_chan_def *chandef,
+>  }
+>  EXPORT_SYMBOL(ieee80211_chandef_to_operating_class);
+>  
+> +u32 ieee80211_chandef_to_khz(const struct cfg80211_chan_def *chandef)
+> +{
+> +	return MHZ_TO_KHZ(chandef->center_freq1) + chandef->freq1_offset;
+> +}
+> +EXPORT_SYMBOL(ieee80211_chandef_to_khz);
+
+That's like I thought above.
+
+I think that'd have less code overall, don't you think?
+
+johannes
 
