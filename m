@@ -2,165 +2,138 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CF5D419A969
-	for <lists+linux-wireless@lfdr.de>; Wed,  1 Apr 2020 12:21:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9067019AA03
+	for <lists+linux-wireless@lfdr.de>; Wed,  1 Apr 2020 13:05:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732039AbgDAKUI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 1 Apr 2020 06:20:08 -0400
-Received: from mailout3.samsung.com ([203.254.224.33]:48246 "EHLO
-        mailout3.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731951AbgDAKUH (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 1 Apr 2020 06:20:07 -0400
-Received: from epcas1p3.samsung.com (unknown [182.195.41.47])
-        by mailout3.samsung.com (KnoxPortal) with ESMTP id 20200401102006epoutp037f72658e5d84703524ce19eba3baabd2~BqtwgYKnS2204022040epoutp03E
-        for <linux-wireless@vger.kernel.org>; Wed,  1 Apr 2020 10:20:06 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout3.samsung.com 20200401102006epoutp037f72658e5d84703524ce19eba3baabd2~BqtwgYKnS2204022040epoutp03E
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1585736406;
-        bh=R+Qqz4SvSjIBQnrlG8V1tWDRdpWKAL9nD7564mXbppM=;
-        h=Subject:To:Cc:From:Date:In-Reply-To:References:From;
-        b=KccZaX163/Wa5oKW00i9HJbB7nY0sqAyrEXIAo/wfuSwv0jinhdE+6+fdMdBSPNCw
-         EJSAW0vtpTbpsjAy3pmGIgy/cmX3s8cucgQeGN5bZTFobW/Y4uNM6YEedrootx5fHf
-         vNtToC9EMKFHHQUHa+mzIhG/ciBfQZ0Qauh/kRQo=
-Received: from epsnrtp2.localdomain (unknown [182.195.42.163]) by
-        epcas1p3.samsung.com (KnoxPortal) with ESMTP id
-        20200401102005epcas1p3544878acb9a9d84c07b0ab212d24b265~BqtwK_Tfa2884528845epcas1p3R;
-        Wed,  1 Apr 2020 10:20:05 +0000 (GMT)
-Received: from epsmges1p5.samsung.com (unknown [182.195.40.154]) by
-        epsnrtp2.localdomain (Postfix) with ESMTP id 48shyp4krVzMqYkc; Wed,  1 Apr
-        2020 10:20:02 +0000 (GMT)
-Received: from epcas1p2.samsung.com ( [182.195.41.46]) by
-        epsmges1p5.samsung.com (Symantec Messaging Gateway) with SMTP id
-        3B.BF.04074.2DA648E5; Wed,  1 Apr 2020 19:20:02 +0900 (KST)
-Received: from epsmtrp2.samsung.com (unknown [182.195.40.14]) by
-        epcas1p2.samsung.com (KnoxPortal) with ESMTPA id
-        20200401102001epcas1p24d1f256edb0913bd1757d2b964e40068~BqtsP-Bpm1945119451epcas1p2q;
-        Wed,  1 Apr 2020 10:20:01 +0000 (GMT)
-Received: from epsmgms1p1new.samsung.com (unknown [182.195.42.41]) by
-        epsmtrp2.samsung.com (KnoxPortal) with ESMTP id
-        20200401102001epsmtrp202938eab087c2a4a8857628c28140ee0~BqtsO114z1499614996epsmtrp2Z;
-        Wed,  1 Apr 2020 10:20:01 +0000 (GMT)
-X-AuditID: b6c32a39-58bff70000000fea-21-5e846ad2f3d7
-Received: from epsmtip2.samsung.com ( [182.195.34.31]) by
-        epsmgms1p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
-        20.A5.04024.1DA648E5; Wed,  1 Apr 2020 19:20:01 +0900 (KST)
-Received: from [10.113.113.235] (unknown [10.113.113.235]) by
-        epsmtip2.samsung.com (KnoxPortal) with ESMTPA id
-        20200401102001epsmtip2dedecab0015cc44c0f76e474f57cb59f~BqtsCveMW0549205492epsmtip2E;
-        Wed,  1 Apr 2020 10:20:01 +0000 (GMT)
-Subject: Re: [PATCH] brcmfmac: fix wrong location to get firmware feature
-To:     Kalle Valo <kvalo@codeaurora.org>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     "open list:TI WILINK WIRELES..." <linux-wireless@vger.kernel.org>,
-        "open list:BROADCOM BRCM80211 IEEE802.11n WIRELESS DRIVER" 
-        <brcm80211-dev-list.pdl@broadcom.com>,
-        brcm80211-dev-list@cypress.com,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Arend van Spriel <arend.vanspriel@broadcom.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
-        Wright Feng <wright.feng@cypress.com>
-From:   Jaehoon Chung <jh80.chung@samsung.com>
-Message-ID: <40b711a5-869b-1dac-0ac9-e6e59d4bcd52@samsung.com>
-Date:   Wed, 1 Apr 2020 19:20:13 +0900
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
-        Thunderbird/60.9.0
+        id S1732368AbgDALFE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 1 Apr 2020 07:05:04 -0400
+Received: from mail-bn7nam10on2089.outbound.protection.outlook.com ([40.107.92.89]:6053
+        "EHLO NAM10-BN7-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726445AbgDALE7 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 1 Apr 2020 07:04:59 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=PP0lYD0Fou87gbvQJvrwG0NJog3OEZVqxGpPFAH1Lw3kWKiGxDA4yZNgr6Gzjjdrzp9EkIU2An50WOiH76SMeXKV9MVsKh7S1ZADf2vIFZJff+lyAPM197w1TbnhhoEI99LQbln02//3DNaRHIhXbkDVvz9rOPcq6sLpHUCuJoVuhs+J58rId9fgIUIoRRGoSjWeSPK60AqEojEeTCsCUXxNzn/RRJmFE+ZYXbQ2ujHmvdewEJ9ZHivZkl0SHWgypQekG5Hfw6lSIszO9yU1ypRI42ip8PH4mgWs+eMURXtfLpvlnUUqgken77wqIfD3QZtaXDv/J9xzLecNwtmSrw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=s8hXEBmGdi+6ggl8GNIQen6Avc3J9TdGfh1DYAKqH4Y=;
+ b=dXl3dagWDgX9HZXlGFAzxV0fHaqjkv+93u4RSnWVI4czxrbvtaGO0e4TAOroXs5ZWxvOObLGmeQxBOtM5IOAwMTjXRH/XAy6qFBBjndxe1JjUuT7HzdkdhE7fIry/oBwAWWw8gSsW51eGYuG9FoKJodkAppUzTahZ4MCQRROZ5iECmuQ2Th8u1VWOvbL0kkp1iR0vivU8Nxt2m83c/zL1kV9yuccM4EIov8HNWukJi2WK8hJ8R5A7YdxLV1ouZrri4mlUyz2Ec133p0SftbPqwJ69eVJdva9k7oxtresa86E4S1VcrE7oiDhxKVvCIKfYcTLXt8Mth1zUfba7xI6SA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=silabs.com; dmarc=pass action=none header.from=silabs.com;
+ dkim=pass header.d=silabs.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=silabs.onmicrosoft.com; s=selector2-silabs-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=s8hXEBmGdi+6ggl8GNIQen6Avc3J9TdGfh1DYAKqH4Y=;
+ b=lI2+gvsMQPhKKxhTtwhwFdRwTUWL5caBvUnPhG7z14z1W6xwkHL7DD5qQArS9MBkIJRVDQs93oMrLRtr2jtRhduq69STVKKjOqmWQzgYxgFUXwR6eGmjQ85jVHHz3vbgr3YbTsNNJDQnp8uUxGLdebv0A0e/KiDephkqsKYX4F4=
+Authentication-Results: spf=none (sender IP is )
+ smtp.mailfrom=Jerome.Pouiller@silabs.com; 
+Received: from MN2PR11MB4063.namprd11.prod.outlook.com (2603:10b6:208:13f::22)
+ by MN2PR11MB4285.namprd11.prod.outlook.com (2603:10b6:208:191::32) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2856.20; Wed, 1 Apr
+ 2020 11:04:20 +0000
+Received: from MN2PR11MB4063.namprd11.prod.outlook.com
+ ([fe80::ade4:5702:1c8b:a2b3]) by MN2PR11MB4063.namprd11.prod.outlook.com
+ ([fe80::ade4:5702:1c8b:a2b3%7]) with mapi id 15.20.2856.019; Wed, 1 Apr 2020
+ 11:04:19 +0000
+From:   Jerome Pouiller <Jerome.Pouiller@silabs.com>
+To:     devel@driverdev.osuosl.org, linux-wireless@vger.kernel.org
+Cc:     netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        =?UTF-8?q?J=C3=A9r=C3=B4me=20Pouiller?= 
+        <jerome.pouiller@silabs.com>
+Subject: [PATCH 00/32] staging: wfx: rework the Tx queue
+Date:   Wed,  1 Apr 2020 13:03:33 +0200
+Message-Id: <20200401110405.80282-1-Jerome.Pouiller@silabs.com>
+X-Mailer: git-send-email 2.25.1
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
+X-ClientProxiedBy: SN4PR0501CA0156.namprd05.prod.outlook.com
+ (2603:10b6:803:2c::34) To MN2PR11MB4063.namprd11.prod.outlook.com
+ (2603:10b6:208:13f::22)
 MIME-Version: 1.0
-In-Reply-To: <87r1xaf8r7.fsf@codeaurora.org>
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrOJsWRmVeSWpSXmKPExsWy7bCmnu6lrJY4g3s3VCxeTjjMaLF96RsW
-        i88tbUwWbyd+YLN42z6NyeLHohdsFj8e3WCxWLRyIZvF5V1z2CzerLjDbjH9x24mB26PWffP
-        snlc7utl8mhryvTYOesuu8fnTXIBrFHZNhmpiSmpRQqpecn5KZl56bZK3sHxzvGmZgaGuoaW
-        FuZKCnmJuam2Si4+AbpumTlAlykplCXmlAKFAhKLi5X07WyK8ktLUhUy8otLbJVSC1JyCiwL
-        9IoTc4tL89L1kvNzrQwNDIxMgQoTsjOOPf/IWPCbp6LlzXnmBsZTXF2MnBwSAiYSTz4uYOti
-        5OIQEtjBKLH54B5mCOcTo8S81ktMIFVCAt8YJWZdU4fpmHNgMlTRXkaJ7VMeMEI47xkl5tw+
-        wgZSJSzgKfH87D1mEFtEIETizP5nYDuYBZ4wS7z89I8FJMEmoCOx/dtxoBUcHLwCdhLzL0qC
-        hFkEVCSa310HC4sKREic/poIEuYVEJQ4OfMJWCcnUGd343qw45gFxCVuPZkPZctLbH87B+w4
-        CYFmdonH28+zQFztItFz8AcrhC0s8er4FnYIW0ri87u9bBB2tcSu5jNQzR2MEre2NTFBJIwl
-        9i+dDHYQs4CmxPpd+hBhRYmdv+cyQizmk3j3tYcVpERCgFeio00IokRF4tLrl0wwq+4++Q91
-        gofE27s72CYwKs5C8tosJO/MQvLOLITFCxhZVjGKpRYU56anFhsWmCJH9iZGcKLVstzBeOyc
-        zyFGAQ5GJR7eioyWOCHWxLLiytxDjBIczEoivLNdgEK8KYmVValF+fFFpTmpxYcYTYEBP5FZ
-        SjQ5H5gF8kriDU2NjI2NLUwMzUwNDZXEeadez4kTEkhPLEnNTk0tSC2C6WPi4JRqYNxwTn3Z
-        9BKxWQ4tB4ylF01favL2eo9rudXS3vZLH/8fb7jIvfCK85QUve7N0o+T7BoT03Jv7Nd2ajrc
-        mnVEUUWk0C+1/ZxSvdKpq+rzVod3vfD9Kyx1m0f7+leGsx0dweL7exssFodP6ou6PUNotdv8
-        raf2JXKs/K+wSY0pWL2sJOpO/YrZb5RYijMSDbWYi4oTAcFThxnKAwAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprOIsWRmVeSWpSXmKPExsWy7bCSvO7FrJY4g6dXlCxeTjjMaLF96RsW
-        i88tbUwWbyd+YLN42z6NyeLHohdsFj8e3WCxWLRyIZvF5V1z2CzerLjDbjH9x24mB26PWffP
-        snlc7utl8mhryvTYOesuu8fnTXIBrFFcNimpOZllqUX6dglcGceef2Qs+M1T0fLmPHMD4ymu
-        LkZODgkBE4k5ByYzdzFycQgJ7GaUePyxhwUiISXx+elUti5GDiBbWOLw4WKImreMEr8WPGYD
-        qREW8JR4fvYeM4gtIhAisfdNJyNIEbPAC2aJH29fsUF0/GCU2N96H2wqm4COxPZvx5lApvIK
-        2EnMvygJEmYRUJFofnedCcQWFYiQeL79BiOIzSsgKHFy5hOwVk6g1u7G9WA1zALqEn/mXWKG
-        sMUlbj2ZDxWXl9j+dg7zBEahWUjaZyFpmYWkZRaSlgWMLKsYJVMLinPTc4sNCwzzUsv1ihNz
-        i0vz0vWS83M3MYKjS0tzB+PlJfGHGAU4GJV4eCsyWuKEWBPLiitzDzFKcDArifDOdgEK8aYk
-        VlalFuXHF5XmpBYfYpTmYFES532adyxSSCA9sSQ1OzW1ILUIJsvEwSnVwJjypuygo3EDx+6J
-        li2GPBvV+QstpNsWfjS7VSFVlHB2M3Py1VLGKRItl5t/NivUH/idvGvnVKadn5SkPs8ynuCS
-        NcPf4X240fZVF3RkV18snSfv+//iVJWb92fOkjgZrr29z36DZf5Ww+D7Kyf/lWfe3KGiPG+V
-        yjqjZR6bZXleHrUta7c576vEUpyRaKjFXFScCABPJ110qgIAAA==
-X-CMS-MailID: 20200401102001epcas1p24d1f256edb0913bd1757d2b964e40068
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-Sendblock-Type: SVC_REQ_APPROVE
-CMS-TYPE: 101P
-DLP-Filter: Pass
-X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20200330052521epcas1p1eedc926d4b11513f8502cf0c90ecf433
-References: <CGME20200330052521epcas1p1eedc926d4b11513f8502cf0c90ecf433@epcas1p1.samsung.com>
-        <20200330052528.10503-1-jh80.chung@samsung.com>
-        <CAHp75Vey9VUSAT6j6NTSXqNUK1vwSqY=aSx3-WPoXgxCK33SDg@mail.gmail.com>
-        <87r1xaf8r7.fsf@codeaurora.org>
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from pc-42.silabs.com (2a01:e35:2435:66a0:1265:30ff:fefd:6e7f) by SN4PR0501CA0156.namprd05.prod.outlook.com (2603:10b6:803:2c::34) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2878.9 via Frontend Transport; Wed, 1 Apr 2020 11:04:17 +0000
+X-Mailer: git-send-email 2.25.1
+X-Originating-IP: [2a01:e35:2435:66a0:1265:30ff:fefd:6e7f]
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 49532a74-7511-4e73-c29d-08d7d62c6d1a
+X-MS-TrafficTypeDiagnostic: MN2PR11MB4285:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <MN2PR11MB4285A3A14C0E0A7D7A375D1893C90@MN2PR11MB4285.namprd11.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:6430;
+X-Forefront-PRVS: 03607C04F0
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN2PR11MB4063.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(10009020)(136003)(366004)(346002)(376002)(39850400004)(396003)(7696005)(8676002)(1076003)(16526019)(186003)(6666004)(5660300002)(86362001)(4326008)(66574012)(52116002)(478600001)(66946007)(66476007)(54906003)(36756003)(8936002)(316002)(81156014)(6486002)(2906002)(66556008)(107886003)(81166006)(2616005);DIR:OUT;SFP:1101;
+Received-SPF: None (protection.outlook.com: silabs.com does not designate
+ permitted sender hosts)
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: Yyb6IcznTq1Dw7yq4jkQmWdTJr4qTPIR9O4wzwSBJxsnB4p7jNJtK3jtXsAyGz/MeML5rj+KVUI0WihDmJFA/+WTtsg0VCYNBFfjF4v+qgn+QXntuTJUXmX/NVTXpNvycI0VK91SEsLXMObtzbRM96wxgJ8PWsj0RLuoFWuBe6zorCRR3uRnvMYh7Na8vItPoerP43O1JmTVsnm6V6B/Wzd1TJeq5S0RSF9Jyr2BmXrWJTgZ5fyupfsch2UFyjz3Dfd3feAjRiUrrVh23ot4/AeIMMJylEn3WdrxOOs3tv+h4m0uF6pcAdLo0p8+ryMIOpPB17nJl+DDcfVoo1C5CvE4UkxEmhzs6dWHsCsF0ia8hEjgKBz7wvrVOkkujkgB16ScOPJtHY2UxTt3Ly3qH/k7a4IKVroaMdV4qltmpUqxMaft/Cv5kB7A+GZGldVx
+X-MS-Exchange-AntiSpam-MessageData: WP1QgPrkITihwFKirFcqftMNhSBRd8bdN6M5odKszTynqTVeUs9IbKYBxH+3266SzC1QonsvaCzOOLDHK9XkzNaaepDbqoquD39hb6k/vozBHxF0kUFeWgX88BmG1T3tUwTMZaPKim3QRAv5kiSqBZ1RZKcuvMriFVYZYCTDOKkQho9UhvarPUIX3KizJl4zAdXCMV3WRuoiLR+KEclkog==
+X-OriginatorOrg: silabs.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 49532a74-7511-4e73-c29d-08d7d62c6d1a
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Apr 2020 11:04:19.7257
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 54dbd822-5231-4b20-944d-6f4abcd541fb
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: /6YJcgb2tVL8pA7jZuBjrK0hrdnTC4HQKBw7tAPWR66sR1y+1lpK3dzRfs2Ys1CPzCjE8cB/si2TqVew6LbCVA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR11MB4285
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 3/30/20 7:16 PM, Kalle Valo wrote:
-> Andy Shevchenko <andy.shevchenko@gmail.com> writes:
-> 
->> On Mon, Mar 30, 2020 at 8:26 AM Jaehoon Chung <jh80.chung@samsung.com> wrote:
->>>
->>> sup_wpa feature is getting after setting feature_disable flag.
->>> If firmware is supported sup_wpa feature,  it's always enabled
->>> regardless of feature_disable flag.
->>>
->>
->>> Fixes: b8a64f0e96c2 ("brcmfmac: support 4-way handshake offloading for WPA/WPA2-PSK")
->>>
->>> Signed-off-by: Jaehoon Chung <jh80.chung@samsung.com>
->>
->> No blank line in between. (Dunno if you need to resend, just wait what
->> maintainer says)
-> 
-> I can fix that during commit, no need to resend because of this.
-
-Thanks!
-
-BTW, I have a question about brcmfmac's firmware feature.
-When i have tested on RPI4, it seems that 4-way handshake offloading feature is using.
-
-If I entered the wrong password, which event is triggered from firmware? 
-And how does wpa_supplicant know about wrong key?
-
-I don't have much knowledge about this..but if my analyzing is correct.
-
-<7>[  119.278494] brcmfmac: brcmf_is_nonetwork Processing failed supplicant state: 8
-...
-<7>[  119.278525] brcmfmac: brcmf_bss_connect_done Report connect result - connection failed
-...
-<7>[  119.278726] brcmfmac: brcmf_fweh_event_worker event DEAUTH_IND (6) ifidx 0 bsscfg 0 addr 70:5d:cc:6e:b5:xx
-
-<7>[  119.280966] brcmfmac: brcmf_fweh_event_worker event DEAUTH (5) ifidx 0 bsscfg 0 addr 70:5d:cc:6e:b5:xx
-
-
-firmware is indicating DEAUTH event and driver will be controlled with it, right?
-Can someone explain to me in more detail, plz? 
-
-Best Regards,
-Jaehoon Chung
-
-
-
-> 
-
+RnJvbTogSsOpcsO0bWUgUG91aWxsZXIgPGplcm9tZS5wb3VpbGxlckBzaWxhYnMuY29tPgoKVGhp
+cyBjdXJyZW50IGltcGxlbWVudGF0aW9uIG9mIHRoZSBUeCBxdWV1ZSBpcyBmYXIgbW9yZSBjb21w
+bGV4IHRoYW4KbmVjZXNzYXJ5IGFuZCBpdHMgYmVoYXZpb3IgaXMgZHViaW91cyBvbiBzb21lIGNv
+cm5lciBjYXNlcy4gVGhpcyBzZXJpZXMKcmV3b3JrIHRoZSBUeCBxdWV1ZToKICAtIFNpbXBsaWZ5
+IHN1cHBvcnQgZm9yIFFvUyAoc2luY2UgZGV2aWNlIGFscmVhZHkgZG8gdGhlIGpvYikKICAtIFNp
+bXBsaWZ5IHN1cHBvcnQgZm9yIFBvd2VyIFNhdmluZyBzdGF0aW9ucyAoc2luY2UgbWFjODAyMTEg
+YWxyZWFkeQogICAgZG8gdGhlIGpvYikKICAtIEltcHJvdmUgc3VwcG9ydCBvZiBDb250ZW50IEFm
+dGVyIERUSU0gQmVhY29uIChDQUIpIHdoZW4gZGV2aWNlIGlzCiAgICBBUCBhbmQgc29tZSBzdGF0
+aW9uIHVzZSBwb3dlciBzYXZlLgogIC0gSW1wcm92ZSByb2J1c3RuZXNzIG9mIGZsdXNoaW5nCgoK
+SsOpcsO0bWUgUG91aWxsZXIgKDMyKToKICBzdGFnaW5nOiB3Zng6IGFkZCBzYW5pdHkgY2hlY2tz
+IHRvIGhpZl9qb2luKCkKICBzdGFnaW5nOiB3Zng6IGRvIG5vdCBzdG9wIG1hYzgwMjExIHF1ZXVl
+aW5nIGR1cmluZyB0eF9wb2xpY3kgdXBsb2FkCiAgc3RhZ2luZzogd2Z4OiB0YWtlIGFkdmFudGFn
+ZSBvZiBpZWVlODAyMTFfe3N0b3Avc3RhcnR9X3F1ZXVlcwogIHN0YWdpbmc6IHdmeDogcmVtb3Zl
+ICJidXJzdCIgbWVjaGFuaXNtCiAgc3RhZ2luZzogd2Z4OiB1bmlmb3JtaXplIHF1ZXVlX2lkIHJl
+dHJpZXZhbAogIHN0YWdpbmc6IHdmeDogZHJvcCB1c2VsZXNzIHF1ZXVlX2lkIGZpZWxkCiAgc3Rh
+Z2luZzogd2Z4OiBhdm9pZCB1c2VsZXNzIHdha2VfdXAKICBzdGFnaW5nOiB3Zng6IHNpbXBsaWZ5
+IGhpZl9oYW5kbGVfdHhfZGF0YSgpCiAgc3RhZ2luZzogd2Z4OiBzaW1wbGlmeSB3ZnhfdHhfcXVl
+dWVzX2VtcHR5KCkKICBzdGFnaW5nOiB3Zng6IGRyb3AgdW51c2VkIGFyZ3VtZW50IGluIHdmeF9n
+ZXRfcHJpb19xdWV1ZSgpCiAgc3RhZ2luZzogd2Z4OiBzaW1wbGlmeSB3ZnhfdHhfcXVldWVfbWFz
+a19nZXQoKQogIHN0YWdpbmc6IHdmeDogZHJvcCB1c2VsZXNzIHN0YV9hc2xlZXBfbWFzawogIHN0
+YWdpbmc6IHdmeDogZHJvcCBhcmd1bWVudCB0eF9hbGxvd2VkX21hc2sgc2luY2UgaXQgaXMgY29u
+c3RhbnQgbm93CiAgc3RhZ2luZzogd2Z4OiBkbyBub3QgdXNlIGxpbmtfbWFwX2NhY2hlIHRvIHRy
+YWNrIENBQgogIHN0YWdpbmc6IHdmeDogZHJvcCB1c2VsZXNzIGxpbmtfbWFwX2NhY2hlCiAgc3Rh
+Z2luZzogd2Z4OiBkbyBub3QgcmVseSBhbnltb3JlIG9uIGxpbmtfaWQgdG8gY2hvb3NlIHBhY2tl
+dCBpbiBxdWV1ZQogIHN0YWdpbmc6IHdmeDogZHJvcCB1bnVzZWQgbGlua19pZCBmaWVsZAogIHN0
+YWdpbmc6IHdmeDogZHJvcCB1bnVzZWQgcmF3X2xpbmtfaWQgZmllbGQKICBzdGFnaW5nOiB3Zng6
+IHJlbmFtZSB3ZnhfdHhfZ2V0X3Jhd19saW5rX2lkKCkKICBzdGFnaW5nOiB3Zng6IHJlcGxhY2Ug
+d2Z4X3R4X3F1ZXVlc19nZXRfYWZ0ZXJfZHRpbSgpIGJ5CiAgICB3ZnhfdHhfcXVldWVzX2hhc19j
+YWIoKQogIHN0YWdpbmc6IHdmeDogaW50cm9kdWNlIGEgY291bnRlciBvZiBwZW5kaW5nIGZyYW1l
+cwogIHN0YWdpbmc6IHdmeDogY2hhbmdlIHRoZSB3YXkgdG8gY2hvb3NlIGZyYW1lIHRvIHNlbmQK
+ICBzdGFnaW5nOiB3Zng6IGRyb3Agbm93IHVzZWxlc3MgZmllbGQgZWRjYV9wYXJhbXMKICBzdGFn
+aW5nOiB3Zng6IGRyb3Agc3RydWN0IHdmeF9xdWV1ZV9zdGF0cwogIHN0YWdpbmc6IHdmeDogc2lt
+cGxpZnkgdXNhZ2Ugb2Ygd2Z4X3R4X3F1ZXVlc19wdXQoKQogIHN0YWdpbmc6IHdmeDogaW1wcm92
+ZSBpbnRlcmZhY2UgYmV0d2VlbiBkYXRhX3R4LmMgYW5kIHF1ZXVlLmMKICBzdGFnaW5nOiB3Zng6
+IHJlbG9jYXRlIHdmeF9za2JfZHRvcigpIHByaW9yIGl0cyBjYWxsZXJzCiAgc3RhZ2luZzogd2Z4
+OiByZXBhaXIgd2Z4X2ZsdXNoKCkKICBzdGFnaW5nOiB3Zng6IHdmeF9mbHVzaCgpIGRpZCBub3Qg
+ZW5zdXJlIHRoYXQgZnJhbWVzIGFyZSBwcm9jZXNzZWQKICBzdGFnaW5nOiB3Zng6IGZpeCBwb3Rl
+bnRpYWwgZGVhZGxvY2sgaW4gd2Z4X3R4X2ZsdXNoKCkKICBzdGFnaW5nOiB3Zng6IGZpeCBjYXNl
+IHdoZXJlIEFQIHN0b3Agd2l0aCBDQUIgdHJhZmZpYyBwZW5kaW5nCiAgc3RhZ2luZzogd2Z4OiBy
+ZW1vdmUgaGFjayBhYm91dCB0eF9yYXRlIHBvbGljaWVzCgogZHJpdmVycy9zdGFnaW5nL3dmeC9i
+aC5jICAgICAgfCAgIDQgKy0KIGRyaXZlcnMvc3RhZ2luZy93ZngvZGF0YV90eC5jIHwgMTk2ICsr
+KysrLS0tLS0tLS0KIGRyaXZlcnMvc3RhZ2luZy93ZngvZGF0YV90eC5oIHwgICA1ICstCiBkcml2
+ZXJzL3N0YWdpbmcvd2Z4L2hpZl90eC5jICB8ICAgMiArCiBkcml2ZXJzL3N0YWdpbmcvd2Z4L21h
+aW4uYyAgICB8ICAgMiAtCiBkcml2ZXJzL3N0YWdpbmcvd2Z4L3F1ZXVlLmMgICB8IDUyOSArKysr
+KysrKysrKy0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCiBkcml2ZXJzL3N0YWdpbmcvd2Z4L3F1ZXVl
+LmggICB8ICAzNiArLS0KIGRyaXZlcnMvc3RhZ2luZy93Zngvc3RhLmMgICAgIHwgIDg3ICsrLS0t
+LQogZHJpdmVycy9zdGFnaW5nL3dmeC9zdGEuaCAgICAgfCAgIDIgLQogZHJpdmVycy9zdGFnaW5n
+L3dmeC93ZnguaCAgICAgfCAgIDcgKy0KIDEwIGZpbGVzIGNoYW5nZWQsIDI4MSBpbnNlcnRpb25z
+KCspLCA1ODkgZGVsZXRpb25zKC0pCgotLSAKMi4yNS4xCgo=
