@@ -2,107 +2,165 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 594F719A963
-	for <lists+linux-wireless@lfdr.de>; Wed,  1 Apr 2020 12:18:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CF5D419A969
+	for <lists+linux-wireless@lfdr.de>; Wed,  1 Apr 2020 12:21:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732343AbgDAKSg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 1 Apr 2020 06:18:36 -0400
-Received: from mail26.static.mailgun.info ([104.130.122.26]:32434 "EHLO
-        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1731396AbgDAKSg (ORCPT
+        id S1732039AbgDAKUI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 1 Apr 2020 06:20:08 -0400
+Received: from mailout3.samsung.com ([203.254.224.33]:48246 "EHLO
+        mailout3.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731951AbgDAKUH (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 1 Apr 2020 06:18:36 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1585736316; h=Message-Id: Date: Subject: Cc: To: From:
- Sender; bh=OfZiRXyl5PVeBvmkOGvR32tTRTmOR19KTl0C35AMiTI=; b=D6CF6CnPzFrN6+mCVL96GF85v2ixjy4OzdXLDo6UEFrygridoMAU7/d6nM0gHGvWfuTVwEG1
- 5k+bjM7Kmp3H5F8oZScmn11CofEGe1jr6shUPD/RHttXf8hgXymPlQFxtleUdw2NPfLgiWc6
- 7XTNsuc/kNmnDtGPT2UkdR5mADM=
-X-Mailgun-Sending-Ip: 104.130.122.26
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e846a6e.7fae497e3ca8-smtp-out-n03;
- Wed, 01 Apr 2020 10:18:22 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 528B6C44793; Wed,  1 Apr 2020 10:18:22 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from vnaralas-linux.qualcomm.com (blr-c-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.19.19])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: vnaralas)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id DA512C44788;
-        Wed,  1 Apr 2020 10:18:19 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org DA512C44788
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=vnaralas@codeaurora.org
-From:   Venkateswara Naralasetty <vnaralas@codeaurora.org>
-To:     ath10k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org,
-        Venkateswara Naralasetty <vnaralas@codeaurora.org>
-Subject: [PATCH] ath10k: fix kernel null pointer dereference
-Date:   Wed,  1 Apr 2020 15:48:10 +0530
-Message-Id: <1585736290-17661-1-git-send-email-vnaralas@codeaurora.org>
-X-Mailer: git-send-email 2.7.4
+        Wed, 1 Apr 2020 06:20:07 -0400
+Received: from epcas1p3.samsung.com (unknown [182.195.41.47])
+        by mailout3.samsung.com (KnoxPortal) with ESMTP id 20200401102006epoutp037f72658e5d84703524ce19eba3baabd2~BqtwgYKnS2204022040epoutp03E
+        for <linux-wireless@vger.kernel.org>; Wed,  1 Apr 2020 10:20:06 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout3.samsung.com 20200401102006epoutp037f72658e5d84703524ce19eba3baabd2~BqtwgYKnS2204022040epoutp03E
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1585736406;
+        bh=R+Qqz4SvSjIBQnrlG8V1tWDRdpWKAL9nD7564mXbppM=;
+        h=Subject:To:Cc:From:Date:In-Reply-To:References:From;
+        b=KccZaX163/Wa5oKW00i9HJbB7nY0sqAyrEXIAo/wfuSwv0jinhdE+6+fdMdBSPNCw
+         EJSAW0vtpTbpsjAy3pmGIgy/cmX3s8cucgQeGN5bZTFobW/Y4uNM6YEedrootx5fHf
+         vNtToC9EMKFHHQUHa+mzIhG/ciBfQZ0Qauh/kRQo=
+Received: from epsnrtp2.localdomain (unknown [182.195.42.163]) by
+        epcas1p3.samsung.com (KnoxPortal) with ESMTP id
+        20200401102005epcas1p3544878acb9a9d84c07b0ab212d24b265~BqtwK_Tfa2884528845epcas1p3R;
+        Wed,  1 Apr 2020 10:20:05 +0000 (GMT)
+Received: from epsmges1p5.samsung.com (unknown [182.195.40.154]) by
+        epsnrtp2.localdomain (Postfix) with ESMTP id 48shyp4krVzMqYkc; Wed,  1 Apr
+        2020 10:20:02 +0000 (GMT)
+Received: from epcas1p2.samsung.com ( [182.195.41.46]) by
+        epsmges1p5.samsung.com (Symantec Messaging Gateway) with SMTP id
+        3B.BF.04074.2DA648E5; Wed,  1 Apr 2020 19:20:02 +0900 (KST)
+Received: from epsmtrp2.samsung.com (unknown [182.195.40.14]) by
+        epcas1p2.samsung.com (KnoxPortal) with ESMTPA id
+        20200401102001epcas1p24d1f256edb0913bd1757d2b964e40068~BqtsP-Bpm1945119451epcas1p2q;
+        Wed,  1 Apr 2020 10:20:01 +0000 (GMT)
+Received: from epsmgms1p1new.samsung.com (unknown [182.195.42.41]) by
+        epsmtrp2.samsung.com (KnoxPortal) with ESMTP id
+        20200401102001epsmtrp202938eab087c2a4a8857628c28140ee0~BqtsO114z1499614996epsmtrp2Z;
+        Wed,  1 Apr 2020 10:20:01 +0000 (GMT)
+X-AuditID: b6c32a39-58bff70000000fea-21-5e846ad2f3d7
+Received: from epsmtip2.samsung.com ( [182.195.34.31]) by
+        epsmgms1p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
+        20.A5.04024.1DA648E5; Wed,  1 Apr 2020 19:20:01 +0900 (KST)
+Received: from [10.113.113.235] (unknown [10.113.113.235]) by
+        epsmtip2.samsung.com (KnoxPortal) with ESMTPA id
+        20200401102001epsmtip2dedecab0015cc44c0f76e474f57cb59f~BqtsCveMW0549205492epsmtip2E;
+        Wed,  1 Apr 2020 10:20:01 +0000 (GMT)
+Subject: Re: [PATCH] brcmfmac: fix wrong location to get firmware feature
+To:     Kalle Valo <kvalo@codeaurora.org>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     "open list:TI WILINK WIRELES..." <linux-wireless@vger.kernel.org>,
+        "open list:BROADCOM BRCM80211 IEEE802.11n WIRELESS DRIVER" 
+        <brcm80211-dev-list.pdl@broadcom.com>,
+        brcm80211-dev-list@cypress.com,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Arend van Spriel <arend.vanspriel@broadcom.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
+        Wright Feng <wright.feng@cypress.com>
+From:   Jaehoon Chung <jh80.chung@samsung.com>
+Message-ID: <40b711a5-869b-1dac-0ac9-e6e59d4bcd52@samsung.com>
+Date:   Wed, 1 Apr 2020 19:20:13 +0900
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+        Thunderbird/60.9.0
+MIME-Version: 1.0
+In-Reply-To: <87r1xaf8r7.fsf@codeaurora.org>
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrOJsWRmVeSWpSXmKPExsWy7bCmnu6lrJY4g3s3VCxeTjjMaLF96RsW
+        i88tbUwWbyd+YLN42z6NyeLHohdsFj8e3WCxWLRyIZvF5V1z2CzerLjDbjH9x24mB26PWffP
+        snlc7utl8mhryvTYOesuu8fnTXIBrFHZNhmpiSmpRQqpecn5KZl56bZK3sHxzvGmZgaGuoaW
+        FuZKCnmJuam2Si4+AbpumTlAlykplCXmlAKFAhKLi5X07WyK8ktLUhUy8otLbJVSC1JyCiwL
+        9IoTc4tL89L1kvNzrQwNDIxMgQoTsjOOPf/IWPCbp6LlzXnmBsZTXF2MnBwSAiYSTz4uYOti
+        5OIQEtjBKLH54B5mCOcTo8S81ktMIFVCAt8YJWZdU4fpmHNgMlTRXkaJ7VMeMEI47xkl5tw+
+        wgZSJSzgKfH87D1mEFtEIETizP5nYDuYBZ4wS7z89I8FJMEmoCOx/dtxoBUcHLwCdhLzL0qC
+        hFkEVCSa310HC4sKREic/poIEuYVEJQ4OfMJWCcnUGd343qw45gFxCVuPZkPZctLbH87B+w4
+        CYFmdonH28+zQFztItFz8AcrhC0s8er4FnYIW0ri87u9bBB2tcSu5jNQzR2MEre2NTFBJIwl
+        9i+dDHYQs4CmxPpd+hBhRYmdv+cyQizmk3j3tYcVpERCgFeio00IokRF4tLrl0wwq+4++Q91
+        gofE27s72CYwKs5C8tosJO/MQvLOLITFCxhZVjGKpRYU56anFhsWmCJH9iZGcKLVstzBeOyc
+        zyFGAQ5GJR7eioyWOCHWxLLiytxDjBIczEoivLNdgEK8KYmVValF+fFFpTmpxYcYTYEBP5FZ
+        SjQ5H5gF8kriDU2NjI2NLUwMzUwNDZXEeadez4kTEkhPLEnNTk0tSC2C6WPi4JRqYNxwTn3Z
+        9BKxWQ4tB4ylF01favL2eo9rudXS3vZLH/8fb7jIvfCK85QUve7N0o+T7BoT03Jv7Nd2ajrc
+        mnVEUUWk0C+1/ZxSvdKpq+rzVod3vfD9Kyx1m0f7+leGsx0dweL7exssFodP6ou6PUNotdv8
+        raf2JXKs/K+wSY0pWL2sJOpO/YrZb5RYijMSDbWYi4oTAcFThxnKAwAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprOIsWRmVeSWpSXmKPExsWy7bCSvO7FrJY4g6dXlCxeTjjMaLF96RsW
+        i88tbUwWbyd+YLN42z6NyeLHohdsFj8e3WCxWLRyIZvF5V1z2CzerLjDbjH9x24mB26PWffP
+        snlc7utl8mhryvTYOesuu8fnTXIBrFFcNimpOZllqUX6dglcGceef2Qs+M1T0fLmPHMD4ymu
+        LkZODgkBE4k5ByYzdzFycQgJ7GaUePyxhwUiISXx+elUti5GDiBbWOLw4WKImreMEr8WPGYD
+        qREW8JR4fvYeM4gtIhAisfdNJyNIEbPAC2aJH29fsUF0/GCU2N96H2wqm4COxPZvx5lApvIK
+        2EnMvygJEmYRUJFofnedCcQWFYiQeL79BiOIzSsgKHFy5hOwVk6g1u7G9WA1zALqEn/mXWKG
+        sMUlbj2ZDxWXl9j+dg7zBEahWUjaZyFpmYWkZRaSlgWMLKsYJVMLinPTc4sNCwzzUsv1ihNz
+        i0vz0vWS83M3MYKjS0tzB+PlJfGHGAU4GJV4eCsyWuKEWBPLiitzDzFKcDArifDOdgEK8aYk
+        VlalFuXHF5XmpBYfYpTmYFES532adyxSSCA9sSQ1OzW1ILUIJsvEwSnVwJjypuygo3EDx+6J
+        li2GPBvV+QstpNsWfjS7VSFVlHB2M3Py1VLGKRItl5t/NivUH/idvGvnVKadn5SkPs8ynuCS
+        NcPf4X240fZVF3RkV18snSfv+//iVJWb92fOkjgZrr29z36DZf5Ww+D7Kyf/lWfe3KGiPG+V
+        yjqjZR6bZXleHrUta7c576vEUpyRaKjFXFScCABPJ110qgIAAA==
+X-CMS-MailID: 20200401102001epcas1p24d1f256edb0913bd1757d2b964e40068
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-Sendblock-Type: SVC_REQ_APPROVE
+CMS-TYPE: 101P
+DLP-Filter: Pass
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20200330052521epcas1p1eedc926d4b11513f8502cf0c90ecf433
+References: <CGME20200330052521epcas1p1eedc926d4b11513f8502cf0c90ecf433@epcas1p1.samsung.com>
+        <20200330052528.10503-1-jh80.chung@samsung.com>
+        <CAHp75Vey9VUSAT6j6NTSXqNUK1vwSqY=aSx3-WPoXgxCK33SDg@mail.gmail.com>
+        <87r1xaf8r7.fsf@codeaurora.org>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Currently sta airtime is updated without any lock in case of
-host based airtime calculation. Which may result in accessing the
-invalid sta pointer in case of continuous station connect/disconnect.
+On 3/30/20 7:16 PM, Kalle Valo wrote:
+> Andy Shevchenko <andy.shevchenko@gmail.com> writes:
+> 
+>> On Mon, Mar 30, 2020 at 8:26 AM Jaehoon Chung <jh80.chung@samsung.com> wrote:
+>>>
+>>> sup_wpa feature is getting after setting feature_disable flag.
+>>> If firmware is supported sup_wpa feature,  it's always enabled
+>>> regardless of feature_disable flag.
+>>>
+>>
+>>> Fixes: b8a64f0e96c2 ("brcmfmac: support 4-way handshake offloading for WPA/WPA2-PSK")
+>>>
+>>> Signed-off-by: Jaehoon Chung <jh80.chung@samsung.com>
+>>
+>> No blank line in between. (Dunno if you need to resend, just wait what
+>> maintainer says)
+> 
+> I can fix that during commit, no need to resend because of this.
 
-This patch fix the kernel null pointer dereference by updating the
-station airtime with proper RCU lock in case of host based airtime
-calculation.
+Thanks!
 
-Proceeding with the analysis of "ARM Kernel Panic".
-The APSS crash happened due to OOPS on CPU 0.
-Crash Signature : Unable to handle kernel NULL pointer dereference
-at virtual address 00000300
-During the crash,
-PC points to "ieee80211_sta_register_airtime+0x1c/0x448 [mac80211]"
-LR points to "ath10k_txrx_tx_unref+0x17c/0x364 [ath10k_core]".
-The Backtrace obtained is as follows:
-[<bf880238>] (ieee80211_sta_register_airtime [mac80211]) from
-[<bf945a38>] (ath10k_txrx_tx_unref+0x17c/0x364 [ath10k_core])
-[<bf945a38>] (ath10k_txrx_tx_unref [ath10k_core]) from
-[<bf9428e4>] (ath10k_htt_txrx_compl_task+0xa50/0xfc0 [ath10k_core])
-[<bf9428e4>] (ath10k_htt_txrx_compl_task [ath10k_core]) from
-[<bf9b9bc8>] (ath10k_pci_napi_poll+0x50/0xf8 [ath10k_pci])
-[<bf9b9bc8>] (ath10k_pci_napi_poll [ath10k_pci]) from
-[<c059e3b0>] (net_rx_action+0xac/0x160)
-[<c059e3b0>] (net_rx_action) from [<c02329a4>] (__do_softirq+0x104/0x294)
-[<c02329a4>] (__do_softirq) from [<c0232b64>] (run_ksoftirqd+0x30/0x90)
-[<c0232b64>] (run_ksoftirqd) from [<c024e358>] (smpboot_thread_fn+0x25c/0x274)
-[<c024e358>] (smpboot_thread_fn) from [<c02482fc>] (kthread+0xd8/0xec)
+BTW, I have a question about brcmfmac's firmware feature.
+When i have tested on RPI4, it seems that 4-way handshake offloading feature is using.
 
-Tested HW: QCA9888
-Tested FW: 10.4-3.10-00047
+If I entered the wrong password, which event is triggered from firmware? 
+And how does wpa_supplicant know about wrong key?
 
-Signed-off-by: Venkateswara Naralasetty <vnaralas@codeaurora.org>
----
- drivers/net/wireless/ath/ath10k/txrx.c | 2 ++
- 1 file changed, 2 insertions(+)
+I don't have much knowledge about this..but if my analyzing is correct.
 
-diff --git a/drivers/net/wireless/ath/ath10k/txrx.c b/drivers/net/wireless/ath/ath10k/txrx.c
-index 39abf8b..f46b908 100644
---- a/drivers/net/wireless/ath/ath10k/txrx.c
-+++ b/drivers/net/wireless/ath/ath10k/txrx.c
-@@ -84,9 +84,11 @@ int ath10k_txrx_tx_unref(struct ath10k_htt *htt,
- 		wake_up(&htt->empty_tx_wq);
- 	spin_unlock_bh(&htt->tx_lock);
- 
-+	rcu_read_lock();
- 	if (txq && txq->sta && skb_cb->airtime_est)
- 		ieee80211_sta_register_airtime(txq->sta, txq->tid,
- 					       skb_cb->airtime_est, 0);
-+	rcu_read_unlock();
- 
- 	if (ar->bus_param.dev_type != ATH10K_DEV_TYPE_HL)
- 		dma_unmap_single(dev, skb_cb->paddr, msdu->len, DMA_TO_DEVICE);
--- 
-2.7.4
+<7>[  119.278494] brcmfmac: brcmf_is_nonetwork Processing failed supplicant state: 8
+...
+<7>[  119.278525] brcmfmac: brcmf_bss_connect_done Report connect result - connection failed
+...
+<7>[  119.278726] brcmfmac: brcmf_fweh_event_worker event DEAUTH_IND (6) ifidx 0 bsscfg 0 addr 70:5d:cc:6e:b5:xx
+
+<7>[  119.280966] brcmfmac: brcmf_fweh_event_worker event DEAUTH (5) ifidx 0 bsscfg 0 addr 70:5d:cc:6e:b5:xx
+
+
+firmware is indicating DEAUTH event and driver will be controlled with it, right?
+Can someone explain to me in more detail, plz? 
+
+Best Regards,
+Jaehoon Chung
+
+
+
+> 
+
