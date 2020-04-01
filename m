@@ -2,132 +2,175 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BA9BD19AA28
-	for <lists+linux-wireless@lfdr.de>; Wed,  1 Apr 2020 13:05:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5054619ADC8
+	for <lists+linux-wireless@lfdr.de>; Wed,  1 Apr 2020 16:26:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732579AbgDALFf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 1 Apr 2020 07:05:35 -0400
-Received: from mail-bn7nam10on2084.outbound.protection.outlook.com ([40.107.92.84]:6083
-        "EHLO NAM10-BN7-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1732561AbgDALFe (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 1 Apr 2020 07:05:34 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=CgZX1sVmmmsImtvIFJXGN68MmR6nkJUBC9vAOQj5pK0Tky998kAZXmmp5NlGf+mqmj2oUmAnnCiDgqLikEn5FqC5v1WfOnu6Z/Xid2U5AJaR7TZY7pTigbNDZBx3zem6M83OfnA+0G/YfMk8IqLdAQPK5LPiSOMIdWmvXo5iSzBt3lDLFS9p+6Fk+NACoG+LMO6br5pUzDivPO5nkxjLweEAfCTxEzf9jqG0fjU0nijiuAHNzo5i+k8VfXL2JcJEzX3y7KC+XtIY67ynJOAYiMK1lBP4d+tkFaWSy5h9WR4wgUXLfGZhvkC/qGc0exWU7WV7YdqW9hdnUrlbYP4Ybg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=RPrxWdWGNJvYjUT2owohbDyOyC0Vbtfc7ra7B4ROlWQ=;
- b=BR5+gGsllV6XE30EYTOXrpuesGKnj3fu7Si7rTskYWmLcpuA0CLmdxStu7Z3fKO0Y3xMhQ+VFBr/Qf48fSsnMxPI+1+yQeEdm3o1m1sYYwuJrHuE0cRjkZs1aHIMX4LT7GCAYT7JJ3fzxUUn1G+AF8qsDmVz8LeAPkwn8TK8mj2o89wUSbbktwBBIkqk4CB97vn7PbpZvuWkKk+DnJqdunRJYSEzuNiALb0HiRzsmI+Xv0ddhJ2pDJ/BpGT+GQoRnSYPl+lRfnsLfiCvNVfOIIkN6l+7P6eEjbOqlUOb/RrsC5NV8AECcHVQ9C3+4JPELQs4XvqaKppDbRlATN7gWw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=silabs.com; dmarc=pass action=none header.from=silabs.com;
- dkim=pass header.d=silabs.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=silabs.onmicrosoft.com; s=selector2-silabs-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=RPrxWdWGNJvYjUT2owohbDyOyC0Vbtfc7ra7B4ROlWQ=;
- b=Y5QjFHLSt+COTKOYugvB7uaQi6yDAfdAuLXrVGaKOYzSlFK4c5+aibM8+qvWUziGzLwJNOXlErbBHcTEupDyd5QIpj24OxqYA0Mu6XffXKlQ/EoNt8i9dnlX2nGEfYDelOyRGJ/Yq7u3O9aVRKAovM61b+WstvtNdSt1US1gJCY=
-Authentication-Results: spf=none (sender IP is )
- smtp.mailfrom=Jerome.Pouiller@silabs.com; 
-Received: from MN2PR11MB4063.namprd11.prod.outlook.com (2603:10b6:208:13f::22)
- by MN2PR11MB4285.namprd11.prod.outlook.com (2603:10b6:208:191::32) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2856.20; Wed, 1 Apr
- 2020 11:05:27 +0000
-Received: from MN2PR11MB4063.namprd11.prod.outlook.com
- ([fe80::ade4:5702:1c8b:a2b3]) by MN2PR11MB4063.namprd11.prod.outlook.com
- ([fe80::ade4:5702:1c8b:a2b3%7]) with mapi id 15.20.2856.019; Wed, 1 Apr 2020
- 11:05:27 +0000
-From:   Jerome Pouiller <Jerome.Pouiller@silabs.com>
-To:     devel@driverdev.osuosl.org, linux-wireless@vger.kernel.org
-Cc:     netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        =?UTF-8?q?J=C3=A9r=C3=B4me=20Pouiller?= 
-        <jerome.pouiller@silabs.com>
-Subject: [PATCH 32/32] staging: wfx: remove hack about tx_rate policies
-Date:   Wed,  1 Apr 2020 13:04:05 +0200
-Message-Id: <20200401110405.80282-33-Jerome.Pouiller@silabs.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200401110405.80282-1-Jerome.Pouiller@silabs.com>
-References: <20200401110405.80282-1-Jerome.Pouiller@silabs.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: base64
-X-ClientProxiedBy: SN4PR0501CA0156.namprd05.prod.outlook.com
- (2603:10b6:803:2c::34) To MN2PR11MB4063.namprd11.prod.outlook.com
- (2603:10b6:208:13f::22)
+        id S1732880AbgDAO05 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 1 Apr 2020 10:26:57 -0400
+Received: from mail27.static.mailgun.info ([104.130.122.27]:33009 "EHLO
+        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1732749AbgDAO05 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 1 Apr 2020 10:26:57 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1585751216; h=Content-Transfer-Encoding: MIME-Version:
+ Message-Id: Date: Subject: Cc: To: From: Sender;
+ bh=a//GqbAgoCNTN/XuFIY5jVPqTTuX/SP4at5TU0Dm/f8=; b=ppUY2/FVTTiymE+4sottVIDw78GKSP7G+m1dd0daZABXmwE2YITtzGbTLGZnKUUWwKn3Vegg
+ QvnZpnpc6ikKlN4fRKBqTjNRkGSx8z+gmhc8y+94Rq387zuMG2P74U6RVH8tEJGS3smfaat9
+ dEpRS7ncFAVAVhYv2xui7jNq05U=
+X-Mailgun-Sending-Ip: 104.130.122.27
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5e84a4af.7f3125df35a8-smtp-out-n03;
+ Wed, 01 Apr 2020 14:26:55 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 1920AC433D2; Wed,  1 Apr 2020 14:26:55 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from jouni.codeaurora.org (37-130-184-238.bb.dnainternet.fi [37.130.184.238])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: jouni)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 4EE72C433F2;
+        Wed,  1 Apr 2020 14:26:53 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 4EE72C433F2
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=jouni@codeaurora.org
+From:   Jouni Malinen <jouni@codeaurora.org>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless@vger.kernel.org,
+        Jouni Malinen <jouni@codeaurora.org>
+Subject: [PATCH 1/2] cfg80211: Unprotected Beacon frame RX indication
+Date:   Wed,  1 Apr 2020 17:25:47 +0300
+Message-Id: <20200401142548.6990-1-jouni@codeaurora.org>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from pc-42.silabs.com (2a01:e35:2435:66a0:1265:30ff:fefd:6e7f) by SN4PR0501CA0156.namprd05.prod.outlook.com (2603:10b6:803:2c::34) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2878.9 via Frontend Transport; Wed, 1 Apr 2020 11:05:25 +0000
-X-Mailer: git-send-email 2.25.1
-X-Originating-IP: [2a01:e35:2435:66a0:1265:30ff:fefd:6e7f]
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 32e0810a-ea3f-483a-d92f-08d7d62c953a
-X-MS-TrafficTypeDiagnostic: MN2PR11MB4285:
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <MN2PR11MB4285F5AAEB2BEA5E1389C4A193C90@MN2PR11MB4285.namprd11.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:8273;
-X-Forefront-PRVS: 03607C04F0
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN2PR11MB4063.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(10009020)(136003)(366004)(346002)(376002)(39850400004)(396003)(7696005)(8676002)(1076003)(16526019)(186003)(6666004)(5660300002)(86362001)(4326008)(52116002)(478600001)(66946007)(66476007)(54906003)(36756003)(8936002)(316002)(81156014)(6486002)(2906002)(66556008)(107886003)(81166006)(2616005);DIR:OUT;SFP:1101;
-Received-SPF: None (protection.outlook.com: silabs.com does not designate
- permitted sender hosts)
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: h1qeSPoIe//HHNak+pSUaABbmyQA0ggmemurZGzVSDHV+lsH1cpN8OAf/8aU4nhNl0W+3S0iqUzRf+2AGzPtIB8LzaAGwbi0U2IROY0z/HutS5cP1QrwhV6Bzwf2Jbgq84UJdSMBZDM/HPHK+CN2EeGiFv4X5gEndVIxxSoQPgs3zMPVtj0VtBKC+NifTRRZnUL78bUn/8KakfJc6CMldLkJ75r4hH0FV2OwO3MZ1FJw6xTCHlcAtvdgkmP3ui9VUleakgYwEaihpYz4eTr0tZOqcASrNdWYjnMImVuDpFldletzn8xt6aITj9NDg2w76doZWWs24uN0DM6NR35H/vRyNYHu+3j+zioeNVv90im0AtQu9NbXvMauWve8Il+2uogWtkVzMrnuC9W0cdl1wLy7pxk9BLl0dhYhokril2d2xDh8WaQ5c0PiS9/Vqy3T
-X-MS-Exchange-AntiSpam-MessageData: cvMgiYPn/2TlNtXfy5qZ+kggf3E9UStRlG5XJFEfPDo+64PfnBui3mS9D/ojNBsxW0L3Txg98ge5VDT8P2bdIlWbtcKymJBAyM+BBJAPG4a11S5Th6RcKlpyE4s4aYfU3cBveRbDKrKev87Fze31x51r4jwqVyqCIgCjvT1IC9CpytbrtIbDQ14EEIEkhUw/Tttaho/x7jogPwVT9usICg==
-X-OriginatorOrg: silabs.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 32e0810a-ea3f-483a-d92f-08d7d62c953a
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Apr 2020 11:05:26.9909
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 54dbd822-5231-4b20-944d-6f4abcd541fb
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: hauASE1EqdAfBmoLfcj8lpqkFGCLqgziLNRUVpvY5P57dY0ZtCHj09C+/vr5CUxg++HO6VtWmxvzV914g8KgQg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR11MB4285
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-RnJvbTogSsOpcsO0bWUgUG91aWxsZXIgPGplcm9tZS5wb3VpbGxlckBzaWxhYnMuY29tPgoKQ3Vy
-cmVudCBjb2RlIGNvbnRhaW5zIGEgd2VpcmQgaGFjayB0byBhdm9pZCBzd2l0Y2ggZnJvbSA1NE1i
-cHMgQ1RTIHRvCjFNYnBzLiBIb3dldmVyLCB3ZSBoYXZlIG5vdCBiZWVuIGFibGUgdG8gcmVwcm9k
-dWNlIHRoZSBwcm9ibGVtIGFuZApoYXJkd2FyZSB0ZWFtIGRvbid0IGtub3cgYW55IGRlZmVjdCBv
-ZiB0aGlzIGtpbmQuIFNvLCBpdCBzZWVtcyB0aGlzIGhhY2sKaXMgbm8gbW9yZSBuZWNlc3Nhcnku
-CgpTaWduZWQtb2ZmLWJ5OiBKw6lyw7RtZSBQb3VpbGxlciA8amVyb21lLnBvdWlsbGVyQHNpbGFi
-cy5jb20+Ci0tLQogZHJpdmVycy9zdGFnaW5nL3dmeC9kYXRhX3R4LmMgfCA1MyAtLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQogMSBmaWxlIGNoYW5nZWQsIDUzIGRlbGV0aW9ucygt
-KQoKZGlmZiAtLWdpdCBhL2RyaXZlcnMvc3RhZ2luZy93ZngvZGF0YV90eC5jIGIvZHJpdmVycy9z
-dGFnaW5nL3dmeC9kYXRhX3R4LmMKaW5kZXggMWQ5YTgwODlmM2QzLi45M2VkMGVkNjNiYjIgMTAw
-NjQ0Ci0tLSBhL2RyaXZlcnMvc3RhZ2luZy93ZngvZGF0YV90eC5jCisrKyBiL2RyaXZlcnMvc3Rh
-Z2luZy93ZngvZGF0YV90eC5jCkBAIC01MSw1OSArNTEsNiBAQCBzdGF0aWMgdm9pZCB3ZnhfdHhf
-cG9saWN5X2J1aWxkKHN0cnVjdCB3ZnhfdmlmICp3dmlmLCBzdHJ1Y3QgdHhfcG9saWN5ICpwb2xp
-Y3ksCiAJCWlmIChyYXRlc1tpXS5pZHggPCAwKQogCQkJYnJlYWs7CiAJY291bnQgPSBpOwotCi0J
-LyogSEFDSyEhISBEZXZpY2UgaGFzIHByb2JsZW1zIChhdCBsZWFzdCkgc3dpdGNoaW5nIGZyb20K
-LQkgKiA1NE1icHMgQ1RTIHRvIDFNYnBzLiBUaGlzIHN3aXRjaCB0YWtlcyBlbm9ybW91cyBhbW91
-bnQKLQkgKiBvZiB0aW1lICgxMDAtMjAwIG1zKSwgbGVhZGluZyB0byB2YWx1YWJsZSB0aHJvdWdo
-cHV0IGRyb3AuCi0JICogQXMgYSB3b3JrYXJvdW5kLCBhZGRpdGlvbmFsIGctcmF0ZXMgYXJlIGlu
-amVjdGVkIHRvIHRoZQotCSAqIHBvbGljeS4KLQkgKi8KLQlpZiAoY291bnQgPT0gMiAmJiAhKHJh
-dGVzWzBdLmZsYWdzICYgSUVFRTgwMjExX1RYX1JDX01DUykgJiYKLQkgICAgcmF0ZXNbMF0uaWR4
-ID4gNCAmJiByYXRlc1swXS5jb3VudCA+IDIgJiYKLQkgICAgcmF0ZXNbMV0uaWR4IDwgMikgewot
-CQlpbnQgbWlkX3JhdGUgPSAocmF0ZXNbMF0uaWR4ICsgNCkgPj4gMTsKLQotCQkvKiBEZWNyZWFz
-ZSBudW1iZXIgb2YgcmV0cmllcyBmb3IgdGhlIGluaXRpYWwgcmF0ZSAqLwotCQlyYXRlc1swXS5j
-b3VudCAtPSAyOwotCi0JCWlmIChtaWRfcmF0ZSAhPSA0KSB7Ci0JCQkvKiBLZWVwIGZhbGxiYWNr
-IHJhdGUgYXQgMU1icHMuICovCi0JCQlyYXRlc1szXSA9IHJhdGVzWzFdOwotCi0JCQkvKiBJbmpl
-Y3QgMSB0cmFuc21pc3Npb24gb24gbG93ZXN0IGctcmF0ZSAqLwotCQkJcmF0ZXNbMl0uaWR4ID0g
-NDsKLQkJCXJhdGVzWzJdLmNvdW50ID0gMTsKLQkJCXJhdGVzWzJdLmZsYWdzID0gcmF0ZXNbMV0u
-ZmxhZ3M7Ci0KLQkJCS8qIEluamVjdCAxIHRyYW5zbWlzc2lvbiBvbiBtaWQtcmF0ZSAqLwotCQkJ
-cmF0ZXNbMV0uaWR4ID0gbWlkX3JhdGU7Ci0JCQlyYXRlc1sxXS5jb3VudCA9IDE7Ci0KLQkJCS8q
-IEZhbGxiYWNrIHRvIDEgTWJwcyBpcyBhIHJlYWxseSBiYWQgdGhpbmcsCi0JCQkgKiBzbyBsZXQn
-cyB0cnkgdG8gaW5jcmVhc2UgcHJvYmFiaWxpdHkgb2YKLQkJCSAqIHN1Y2Nlc3NmdWwgdHJhbnNt
-aXNzaW9uIG9uIHRoZSBsb3dlc3QgZyByYXRlCi0JCQkgKiBldmVuIG1vcmUKLQkJCSAqLwotCQkJ
-aWYgKHJhdGVzWzBdLmNvdW50ID49IDMpIHsKLQkJCQktLXJhdGVzWzBdLmNvdW50OwotCQkJCSsr
-cmF0ZXNbMl0uY291bnQ7Ci0JCQl9Ci0KLQkJCS8qIEFkanVzdCBhbW91bnQgb2YgcmF0ZXMgZGVm
-aW5lZCAqLwotCQkJY291bnQgKz0gMjsKLQkJfSBlbHNlIHsKLQkJCS8qIEtlZXAgZmFsbGJhY2sg
-cmF0ZSBhdCAxTWJwcy4gKi8KLQkJCXJhdGVzWzJdID0gcmF0ZXNbMV07Ci0KLQkJCS8qIEluamVj
-dCAyIHRyYW5zbWlzc2lvbnMgb24gbG93ZXN0IGctcmF0ZSAqLwotCQkJcmF0ZXNbMV0uaWR4ID0g
-NDsKLQkJCXJhdGVzWzFdLmNvdW50ID0gMjsKLQotCQkJLyogQWRqdXN0IGFtb3VudCBvZiByYXRl
-cyBkZWZpbmVkICovCi0JCQljb3VudCArPSAxOwotCQl9Ci0JfQotCiAJZm9yIChpID0gMDsgaSA8
-IElFRUU4MDIxMV9UWF9NQVhfUkFURVM7ICsraSkgewogCQlpbnQgcmF0ZWlkOwogCQl1OCBjb3Vu
-dDsKLS0gCjIuMjUuMQoK
+Extend cfg80211_rx_unprot_mlme_mgmt() to cover indication of unprotected
+Beacon frames in addition to the previously used Deauthentication and
+Disassociation frames. The Beacon frame case is quite similar, but has
+couple of exceptions: this is used both with fully unprotected and also
+incorrectly protected frames and there is a rate limit on the events to
+avoid unnecessary flooding netlink events in case something goes wrong.
+
+Signed-off-by: Jouni Malinen <jouni@codeaurora.org>
+---
+ include/net/cfg80211.h       | 10 ++++++++--
+ include/uapi/linux/nl80211.h |  7 +++++++
+ net/wireless/nl80211.c       | 13 +++++++++++--
+ net/wireless/sme.c           |  2 ++
+ 4 files changed, 28 insertions(+), 4 deletions(-)
+
+diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+index c78bd4ff9e33..66da62d49876 100644
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -5111,6 +5111,8 @@ struct wireless_dev {
+ 	struct list_head pmsr_list;
+ 	spinlock_t pmsr_lock;
+ 	struct work_struct pmsr_free_wk;
++
++	unsigned long unprot_beacon_reported;
+ };
+ 
+ static inline u8 *wdev_address(struct wireless_dev *wdev)
+@@ -6125,12 +6127,16 @@ void cfg80211_tx_mlme_mgmt(struct net_device *dev, const u8 *buf, size_t len);
+ /**
+  * cfg80211_rx_unprot_mlme_mgmt - notification of unprotected mlme mgmt frame
+  * @dev: network device
+- * @buf: deauthentication frame (header + body)
++ * @buf: received management frame (header + body)
+  * @len: length of the frame data
+  *
+  * This function is called whenever a received deauthentication or dissassoc
+  * frame has been dropped in station mode because of MFP being used but the
+- * frame was not protected. This function may sleep.
++ * frame was not protected. This is also used to notify reception of a Beacon
++ * frame that was dropped because it did not include a valid MME MIC while
++ * beacon protection was enabled (BIGTK configured in station mode).
++ *
++ * This function may sleep.
+  */
+ void cfg80211_rx_unprot_mlme_mgmt(struct net_device *dev,
+ 				  const u8 *buf, size_t len);
+diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
+index 2b691161830f..afdd9802ccb8 100644
+--- a/include/uapi/linux/nl80211.h
++++ b/include/uapi/linux/nl80211.h
+@@ -1151,6 +1151,11 @@
+  * @NL80211_CMD_SET_TID_CONFIG: Data frame TID specific configuration
+  *	is passed using %NL80211_ATTR_TID_CONFIG attribute.
+  *
++ * @NL80211_CMD_UNPROT_BEACON: Unprotected or incorrectly protected Beacon
++ *	frame. This event is used to indicate that a received Beacon frame was
++ *	dropped because it did not include a valid MME MIC while beacon
++ *	protection was enabled (BIGTK configured in station mode).
++ *
+  * @NL80211_CMD_MAX: highest used command number
+  * @__NL80211_CMD_AFTER_LAST: internal use
+  */
+@@ -1377,6 +1382,8 @@ enum nl80211_commands {
+ 
+ 	NL80211_CMD_SET_TID_CONFIG,
+ 
++	NL80211_CMD_UNPROT_BEACON,
++
+ 	/* add new commands above here */
+ 
+ 	/* used to define NL80211_CMD_MAX below */
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index ad87e9db9a91..b68bc628585d 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -15544,10 +15544,19 @@ void cfg80211_rx_unprot_mlme_mgmt(struct net_device *dev, const u8 *buf,
+ 	if (WARN_ON(len < 2))
+ 		return;
+ 
+-	if (ieee80211_is_deauth(mgmt->frame_control))
++	if (ieee80211_is_deauth(mgmt->frame_control)) {
+ 		cmd = NL80211_CMD_UNPROT_DEAUTHENTICATE;
+-	else
++	} else if (ieee80211_is_disassoc(mgmt->frame_control)) {
+ 		cmd = NL80211_CMD_UNPROT_DISASSOCIATE;
++	} else if (ieee80211_is_beacon(mgmt->frame_control)) {
++		if (wdev->unprot_beacon_reported &&
++		    elapsed_jiffies_msecs(wdev->unprot_beacon_reported) < 10000)
++			return;
++		cmd = NL80211_CMD_UNPROT_BEACON;
++		wdev->unprot_beacon_reported = jiffies;
++	} else {
++		return;
++	}
+ 
+ 	trace_cfg80211_rx_unprot_mlme_mgmt(dev, buf, len);
+ 	nl80211_send_mlme_event(rdev, dev, buf, len, cmd, GFP_ATOMIC, -1,
+diff --git a/net/wireless/sme.c b/net/wireless/sme.c
+index ac3e60aa1fc8..3554c0d951f4 100644
+--- a/net/wireless/sme.c
++++ b/net/wireless/sme.c
+@@ -694,6 +694,7 @@ void __cfg80211_connect_result(struct net_device *dev,
+ 		return;
+ 	}
+ 
++	wdev->unprot_beacon_reported = 0;
+ 	nl80211_send_connect_result(wiphy_to_rdev(wdev->wiphy), dev, cr,
+ 				    GFP_KERNEL);
+ 
+@@ -921,6 +922,7 @@ void __cfg80211_roamed(struct wireless_dev *wdev,
+ 	cfg80211_hold_bss(bss_from_pub(info->bss));
+ 	wdev->current_bss = bss_from_pub(info->bss);
+ 
++	wdev->unprot_beacon_reported = 0;
+ 	nl80211_send_roamed(wiphy_to_rdev(wdev->wiphy),
+ 			    wdev->netdev, info, GFP_KERNEL);
+ 
+-- 
+2.20.1
