@@ -2,63 +2,115 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B30019B4C8
-	for <lists+linux-wireless@lfdr.de>; Wed,  1 Apr 2020 19:39:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 54D0E19B4EC
+	for <lists+linux-wireless@lfdr.de>; Wed,  1 Apr 2020 19:53:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728427AbgDARjV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 1 Apr 2020 13:39:21 -0400
-Received: from mail.adapt-ip.com ([173.164.178.19]:42172 "EHLO
-        web.adapt-ip.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726750AbgDARjU (ORCPT
+        id S1732264AbgDARxS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 1 Apr 2020 13:53:18 -0400
+Received: from s3.sipsolutions.net ([144.76.43.62]:46330 "EHLO
+        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732121AbgDARxS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 1 Apr 2020 13:39:20 -0400
-Received: from localhost (localhost [127.0.0.1])
-        by web.adapt-ip.com (Postfix) with ESMTP id 0FBDD4F7A75;
-        Wed,  1 Apr 2020 17:39:20 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at web.adapt-ip.com
-Received: from web.adapt-ip.com ([127.0.0.1])
-        by localhost (web.adapt-ip.com [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id pi99NDKvZ-PD; Wed,  1 Apr 2020 17:39:17 +0000 (UTC)
-Received: from [10.1.15.6] (gateway.adapt-ip.com [173.164.178.20])
-        (Authenticated sender: thomas@adapt-ip.com)
-        by web.adapt-ip.com (Postfix) with ESMTPSA id 6B2FC4F7A48;
-        Wed,  1 Apr 2020 17:39:17 +0000 (UTC)
-Subject: Re: [RFC 3/7] mac80211: handle channel frequency offset
-To:     Johannes Berg <johannes@sipsolutions.net>
+        Wed, 1 Apr 2020 13:53:18 -0400
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.93)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1jJhYC-00CpOp-5A; Wed, 01 Apr 2020 19:53:16 +0200
+Message-ID: <bbc12ff536862a8ca693c20b8721092979c49a36.camel@sipsolutions.net>
+Subject: Re: [RFC 2/7] cfg80211: express channels with a KHz component
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Thomas Pedersen <thomas@adapt-ip.com>
 Cc:     linux-wireless <linux-wireless@vger.kernel.org>
+Date:   Wed, 01 Apr 2020 19:53:15 +0200
+In-Reply-To: <69451a0a-4bca-36f8-4295-9a386585c244@adapt-ip.com>
 References: <20200401062150.3324-1-thomas@adapt-ip.com>
- <20200401062150.3324-4-thomas@adapt-ip.com>
- <7fc6331597f53f5d100f3aa7e29434c20cf6fe90.camel@sipsolutions.net>
-From:   Thomas Pedersen <thomas@adapt-ip.com>
-Message-ID: <7b3b34dd-882a-73e7-f857-8e581c3f7bc0@adapt-ip.com>
-Date:   Wed, 1 Apr 2020 10:39:16 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.2
+         <20200401062150.3324-3-thomas@adapt-ip.com>
+         <52850c8eb3131ca742eea30a21a7e685a3a3045b.camel@sipsolutions.net>
+         <69451a0a-4bca-36f8-4295-9a386585c244@adapt-ip.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.34.4 (3.34.4-1.fc31) 
 MIME-Version: 1.0
-In-Reply-To: <7fc6331597f53f5d100f3aa7e29434c20cf6fe90.camel@sipsolutions.net>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 3/31/20 11:59 PM, Johannes Berg wrote:
-> On Tue, 2020-03-31 at 23:21 -0700, Thomas Pedersen wrote:
->> ie. ignore
->> for mesh, ibss, HT/VHT specific stuff, TDLS, etc.
+On Wed, 2020-04-01 at 10:30 -0700, Thomas Pedersen wrote:
 > 
-> This makes sense, but I don't see that you prevent using mesh, ibss and
-> perhaps TDLS on s1g channels?
+> ---
+> .. c:function:: struct ieee80211_channel * ieee80211_get_channel (struct wiphy * wiphy, int freq)
 > 
-> Or do we not expect drivers/devices that support this, as well as S1G
-> channels?
+>    get channel struct from wiphy for specified frequency
+> 
+> **Parameters**
+> 
+> ``struct wiphy * wiphy``
+>   the struct wiphy to get the channel for
+> 
+> ``int freq``
+>   the center frequency (in MHz) of the channel
+> ---
+> 
+> Documentation/doc-guide/kernel-doc.rst says:
+> 
+> The brief description following the function name may span multiple lines, and
+> ends with an argument description, a blank comment line, or the end of the
+> comment block.
 
-Well it's really orthogonal to S1G (maybe a new 2412.5Mhz channel opens
-up :)). We should probably return an error 'if (chan->freq_offset)' or
-so for features which have not yet been tested / implemented for
-frequency offset.
+Interesting. I guess they must've fixed this at some point - at least I
+_seem_ to remember getting wrong output with it. Thanks for the
+correction!
 
--- 
-thomas
+> > > +/**
+> > > + * ieee80211_chandef_to_khz - convert chandef to frequency in KHz
+> > > + *
+> > > + * @chandef: the chandef to convert
+> > > + *
+> > > + * Returns the center frequency of chandef (1st segment) in KHz.
+> > > + */
+> > > +u32 ieee80211_chandef_to_khz(const struct cfg80211_chan_def *chandef);
+> > 
+> > Isn't this one trivial, and probably better inlined (mhz*1000 + khz)?
+> 
+> Do you mean open code the conversion? I would prefer not to. If you
+> meant make it an inline function then yes probably.
+
+Right, I meant making it an inline.
+
+> > > +static int __ieee80211_frequency_to_channel(u32 freq)
+> > 
+> > export the double-underscore helpers like this one instead? That'd still
+> > be less code overall, IMHO.
+> 
+> I didn't want to change the interface for
+> ieee80211_frequency_to_channel(). It's a little confusing that one takes
+> MHz, but the __ieee80211_frequency_to_channel() takes KHz? By giving the
+> _khz() hint in the wrapper we were trying to make it explicit. Similar
+> to below.
+
+Right. I think that's fine. I was just wondering if / thinking that it
+may be better to just export ieee80211_freq_khz_to_channel(), and
+express the other ones as inline function in terms of that?
+
+> > And maybe here? In fact, how is __ieee80211_get_channel() even different
+> > from ieee80211_get_channel_khz()?
+> 
+> It's not. I thought the _khz() hint was helpful for the reader to keep
+> the units straight.
+
+Agree, but then you don't need the double-underscore version and can
+just express the old one in terms of the _khz one?
+
+> What do you think about keeping the interfaces in place, but otherwise
+> converting them to inline functions (where it makes sense)?
+
+Yes, I think that's what I had in mind.
+
+> I'd like to avoid open coding the conversions and otherwise keep the
+> gory internals of the channel structures hidden from the caller.
+
+Agree.
+
+johannes
+
