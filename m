@@ -2,136 +2,107 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A0CBD19A640
-	for <lists+linux-wireless@lfdr.de>; Wed,  1 Apr 2020 09:31:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 594F719A963
+	for <lists+linux-wireless@lfdr.de>; Wed,  1 Apr 2020 12:18:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731958AbgDAHbQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 1 Apr 2020 03:31:16 -0400
-Received: from mail26.static.mailgun.info ([104.130.122.26]:25561 "EHLO
+        id S1732343AbgDAKSg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 1 Apr 2020 06:18:36 -0400
+Received: from mail26.static.mailgun.info ([104.130.122.26]:32434 "EHLO
         mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1731879AbgDAHbP (ORCPT
+        by vger.kernel.org with ESMTP id S1731396AbgDAKSg (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 1 Apr 2020 03:31:15 -0400
+        Wed, 1 Apr 2020 06:18:36 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1585726274; h=Content-Transfer-Encoding: Content-Type:
- MIME-Version: Message-ID: Date: Subject: In-Reply-To: References: Cc:
- To: From: Sender; bh=KosNbnHtjH3p3D7s3+9XQ5MW0eKcI46fqALRBrUF8A8=; b=M/KPFLDVZ1OmpI2nzRFMvSYzvELWtyS+NLnMlT1gI1PK26mw0+3obXK3zhx8M25MQzFUDQ/2
- 6XoVdgrQV8VEtSMhX/As0IwQRZz+OD6GOqXHF5F5aGk/sR3dh09Icex1ypb3yXRd7A3ZwBTF
- SAI8JsUJ9BgD4V5oQlsyF/0lKtY=
+ s=smtp; t=1585736316; h=Message-Id: Date: Subject: Cc: To: From:
+ Sender; bh=OfZiRXyl5PVeBvmkOGvR32tTRTmOR19KTl0C35AMiTI=; b=D6CF6CnPzFrN6+mCVL96GF85v2ixjy4OzdXLDo6UEFrygridoMAU7/d6nM0gHGvWfuTVwEG1
+ 5k+bjM7Kmp3H5F8oZScmn11CofEGe1jr6shUPD/RHttXf8hgXymPlQFxtleUdw2NPfLgiWc6
+ 7XTNsuc/kNmnDtGPT2UkdR5mADM=
 X-Mailgun-Sending-Ip: 104.130.122.26
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e844332.7f31c0ae7650-smtp-out-n05;
- Wed, 01 Apr 2020 07:30:58 -0000 (UTC)
+ by mxa.mailgun.org with ESMTP id 5e846a6e.7fae497e3ca8-smtp-out-n03;
+ Wed, 01 Apr 2020 10:18:22 -0000 (UTC)
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id DEE31C433D2; Wed,  1 Apr 2020 07:30:57 +0000 (UTC)
+        id 528B6C44793; Wed,  1 Apr 2020 10:18:22 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
 X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
         autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from Pillair (unknown [183.83.66.17])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from vnaralas-linux.qualcomm.com (blr-c-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.19.19])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
         (No client certificate requested)
-        (Authenticated sender: pillair)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 427C5C433BA;
-        Wed,  1 Apr 2020 07:30:55 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 427C5C433BA
+        (Authenticated sender: vnaralas)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id DA512C44788;
+        Wed,  1 Apr 2020 10:18:19 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org DA512C44788
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=pillair@codeaurora.org
-From:   <pillair@codeaurora.org>
-To:     "'Rob Herring'" <robh@kernel.org>
-Cc:     <ath10k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-References: <1585134100-5944-1-git-send-email-pillair@codeaurora.org> <1585134100-5944-2-git-send-email-pillair@codeaurora.org> <20200331214051.GA2053@bogus>
-In-Reply-To: <20200331214051.GA2053@bogus>
-Subject: RE: [PATCH v2 1/3] dt-bindings: ath10k: Add wifi-firmware subnode for wifi node
-Date:   Wed, 1 Apr 2020 13:00:50 +0530
-Message-ID: <002001d607f7$7bc8ebd0$735ac370$@codeaurora.org>
-MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-X-Mailer: Microsoft Outlook 16.0
-Thread-Index: AQI6fc28eknFIs45cOq24ZTPq1i0fwFvI4SMAkxWCq6nfRN3kA==
-Content-Language: en-us
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=vnaralas@codeaurora.org
+From:   Venkateswara Naralasetty <vnaralas@codeaurora.org>
+To:     ath10k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org,
+        Venkateswara Naralasetty <vnaralas@codeaurora.org>
+Subject: [PATCH] ath10k: fix kernel null pointer dereference
+Date:   Wed,  1 Apr 2020 15:48:10 +0530
+Message-Id: <1585736290-17661-1-git-send-email-vnaralas@codeaurora.org>
+X-Mailer: git-send-email 2.7.4
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Rob,
-Comments inline.
+Currently sta airtime is updated without any lock in case of
+host based airtime calculation. Which may result in accessing the
+invalid sta pointer in case of continuous station connect/disconnect.
 
-> -----Original Message-----
-> From: Rob Herring <robh@kernel.org>
-> Sent: Wednesday, April 1, 2020 3:11 AM
-> To: Rakesh Pillai <pillair@codeaurora.org>
-> Cc: ath10k@lists.infradead.org; linux-wireless@vger.kernel.org;
-> devicetree@vger.kernel.org; linux-kernel@vger.kernel.org
-> Subject: Re: [PATCH v2 1/3] dt-bindings: ath10k: Add wifi-firmware subnode
-> for wifi node
-> 
-> On Wed, Mar 25, 2020 at 04:31:38PM +0530, Rakesh Pillai wrote:
-> > Add a wifi-firmware subnode for the wifi node.
-> > This wifi-firmware subnode is needed for the
-> > targets which do not support TrustZone.
-> >
-> > Signed-off-by: Rakesh Pillai <pillair@codeaurora.org>
-> > ---
-> >  .../devicetree/bindings/net/wireless/qcom,ath10k.txt       | 14
-> ++++++++++++++
-> >  1 file changed, 14 insertions(+)
-> >
-> > diff --git
-> a/Documentation/devicetree/bindings/net/wireless/qcom,ath10k.txt
-> b/Documentation/devicetree/bindings/net/wireless/qcom,ath10k.txt
-> > index 71bf91f..65ee68e 100644
-> > --- a/Documentation/devicetree/bindings/net/wireless/qcom,ath10k.txt
-> > +++ b/Documentation/devicetree/bindings/net/wireless/qcom,ath10k.txt
-> > @@ -96,6 +96,17 @@ Optional properties:
-> >  - qcom,coexist-gpio-pin : gpio pin number  information to support coex
-> >  			  which will be used by wifi firmware.
-> >
-> > +* Subnodes
-> > +The ath10k wifi node can contain one optional firmware subnode.
-> > +Firmware subnode is needed when the platform does not have TustZone.
-> > +The firmware subnode must have:
-> > +
-> > +- iommus:
-> > +	Usage: required
-> > +	Value type: <prop-encoded-array>
-> > +	Definition: A list of phandle and IOMMU specifier pairs.
-> > +
-> > +
-> >  Example (to supply PCI based wifi block details):
-> >
-> >  In this example, the node is defined as child node of the PCI
-controller.
-> > @@ -196,4 +207,7 @@ wifi@18000000 {
-> >  		memory-region = <&wifi_msa_mem>;
-> >  		iommus = <&apps_smmu 0x0040 0x1>;
-> >  		qcom,msa-fixed-perm;
-> > +		wifi-firmware {
-> > +			iommus = <&apps_iommu 0xc22 0x1>;
-> 
-> Why can't you just add a 2nd entry to the existing 'iommus' property?
-> 
-> A driver doing of_dma_configure() is generally not the right thing to
-> do.
+This patch fix the kernel null pointer dereference by updating the
+station airtime with proper RCU lock in case of host based airtime
+calculation.
 
-The SIDs mentioned in the wifi-firmware node will be belonging to the
-firmware and not any HLOS.
-In other targets with TZ, the hypervisor takes care of configuring the SIDs
-(for its master).
-In this target (sc7180 IDP) we are not having TZ (no hypervisor), hence
-these need to be configured by HLOS.
-The wifi-firmware node is added in-order to differentiate the SID between
-driver and firmware.
+Proceeding with the analysis of "ARM Kernel Panic".
+The APSS crash happened due to OOPS on CPU 0.
+Crash Signature : Unable to handle kernel NULL pointer dereference
+at virtual address 00000300
+During the crash,
+PC points to "ieee80211_sta_register_airtime+0x1c/0x448 [mac80211]"
+LR points to "ath10k_txrx_tx_unref+0x17c/0x364 [ath10k_core]".
+The Backtrace obtained is as follows:
+[<bf880238>] (ieee80211_sta_register_airtime [mac80211]) from
+[<bf945a38>] (ath10k_txrx_tx_unref+0x17c/0x364 [ath10k_core])
+[<bf945a38>] (ath10k_txrx_tx_unref [ath10k_core]) from
+[<bf9428e4>] (ath10k_htt_txrx_compl_task+0xa50/0xfc0 [ath10k_core])
+[<bf9428e4>] (ath10k_htt_txrx_compl_task [ath10k_core]) from
+[<bf9b9bc8>] (ath10k_pci_napi_poll+0x50/0xf8 [ath10k_pci])
+[<bf9b9bc8>] (ath10k_pci_napi_poll [ath10k_pci]) from
+[<c059e3b0>] (net_rx_action+0xac/0x160)
+[<c059e3b0>] (net_rx_action) from [<c02329a4>] (__do_softirq+0x104/0x294)
+[<c02329a4>] (__do_softirq) from [<c0232b64>] (run_ksoftirqd+0x30/0x90)
+[<c0232b64>] (run_ksoftirqd) from [<c024e358>] (smpboot_thread_fn+0x25c/0x274)
+[<c024e358>] (smpboot_thread_fn) from [<c02482fc>] (kthread+0xd8/0xec)
 
-This is same as the approach followed by Venus video driver in the below
-patch
-https://patchwork.kernel.org/patch/11315765/ 
+Tested HW: QCA9888
+Tested FW: 10.4-3.10-00047
 
-> 
-> Rob
+Signed-off-by: Venkateswara Naralasetty <vnaralas@codeaurora.org>
+---
+ drivers/net/wireless/ath/ath10k/txrx.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/net/wireless/ath/ath10k/txrx.c b/drivers/net/wireless/ath/ath10k/txrx.c
+index 39abf8b..f46b908 100644
+--- a/drivers/net/wireless/ath/ath10k/txrx.c
++++ b/drivers/net/wireless/ath/ath10k/txrx.c
+@@ -84,9 +84,11 @@ int ath10k_txrx_tx_unref(struct ath10k_htt *htt,
+ 		wake_up(&htt->empty_tx_wq);
+ 	spin_unlock_bh(&htt->tx_lock);
+ 
++	rcu_read_lock();
+ 	if (txq && txq->sta && skb_cb->airtime_est)
+ 		ieee80211_sta_register_airtime(txq->sta, txq->tid,
+ 					       skb_cb->airtime_est, 0);
++	rcu_read_unlock();
+ 
+ 	if (ar->bus_param.dev_type != ATH10K_DEV_TYPE_HL)
+ 		dma_unmap_single(dev, skb_cb->paddr, msdu->len, DMA_TO_DEVICE);
+-- 
+2.7.4
