@@ -2,82 +2,142 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B10E19C3D5
-	for <lists+linux-wireless@lfdr.de>; Thu,  2 Apr 2020 16:21:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E534119C497
+	for <lists+linux-wireless@lfdr.de>; Thu,  2 Apr 2020 16:45:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387700AbgDBOSG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 2 Apr 2020 10:18:06 -0400
-Received: from mail-pf1-f195.google.com ([209.85.210.195]:40490 "EHLO
-        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1733195AbgDBOSF (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 2 Apr 2020 10:18:05 -0400
-Received: by mail-pf1-f195.google.com with SMTP id c20so1813126pfi.7;
-        Thu, 02 Apr 2020 07:18:04 -0700 (PDT)
+        id S2388381AbgDBOod (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 2 Apr 2020 10:44:33 -0400
+Received: from mail-bn7nam10on2073.outbound.protection.outlook.com ([40.107.92.73]:19071
+        "EHLO NAM10-BN7-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726927AbgDBOoc (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 2 Apr 2020 10:44:32 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=WjTAHXXLstHMZRb7xdcf5AQRuTwron/973AMdHXlSleM7I6mmF6M7Vk/ggDIfRbNha+3W0V/qRdXYnGll08nSiLQwd2fH1WX85nGmLHmjj3j5jPgcFTxZXalqt5VwdIrM9orOVfR8Xr7iRs3bPLmJNZXlIfZFqt3tSluJ0eyCz1WXjlNbPmEt4GXcB09K4UjJO6p1b2URzPDl7P8EE9+7INisUwWGZJoB6VBrTTQEnJX6o3xbbDsONjPzLDFL01HQY1/u/Q4pEPckSAxPGTb9ax0kDIYiZKvrsEY6wYhj9ly8hN3NLqlAPChy9kEGxdtJxwnJL5cWhe+zRx2lkQ3vQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=mwulQ/eypPEaHJOqvXIZmNw8VXJEFXb5KR+PxXrLmqE=;
+ b=A0dAuG96ZWJXW2pltpI1+QhBu51YwVwUt0FltSAKD+YEKhIvON6jM+j8YCkhEifC4AmeEQ7Etr0xotYSjnckJAJNH7U7mQ5+Fl4jzp9B/4nPtPpeMVRcixkSwmbOh//TsV/p8E466H1pTOnc1bsmbNrKZCONM+SFV6Gx1OeTWXWGO/Uh0zHQ1pfWyNJ1XKLa6cDkDlvKltKnX2RPVQtsW/w8JyXAc66tKOJHNc1hd9DXTDc6aNd8X2TCwxEmWgXLIc01Z3NOEi1CfqiO9d1sp1M1jxQcwN1/RgQuC9c3JUXTLj0sjWPnMwHOFcxiyyXtnsmyJu/uVyC22hclI78C/A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=silabs.com; dmarc=pass action=none header.from=silabs.com;
+ dkim=pass header.d=silabs.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=sV9tqvN+vUsyclDdwQsodCiDkYsbUmI0zD+TvEKC7qc=;
-        b=q8n6vkBIA8dUONiHy5uZswo71uL9A604LdVul9lHMn41yd5Xl1Jzvj/PQf6kq8Fdi3
-         deRNP+evO0vErW2JdOHESfh4oCrIzS7X+Or/Ryl6ada27/8kV+00c62o36YVmNm3bXAh
-         niUJKP78LuRxoXbZyJKvSiv8+O+J7rN0ZlcV58yUSf5J0Ri54PXHO8aglrSGbfTwJGNH
-         mCB6C7CTQpA1WHsbiT7wK/drP5IxUUyEU+cWICUE00vvv8HwdZjNosrg47VEPp8idvRK
-         tYBNGKqpvz+D+IQCU4wX++r+x4iKBXyp0t0izDX1ETCzZ2NMtdusDzQBbXw103jza8Vo
-         RuHA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=sV9tqvN+vUsyclDdwQsodCiDkYsbUmI0zD+TvEKC7qc=;
-        b=CY7tkgf3JQFT6vn2QfYkS0ySgGuCom7TGHBSAOgKGii2Yld2Ut0g/9yijMchQ4RX/P
-         xstm8LGRJofFF1uz88TccSlOYlqxmOmYHQ1P/b5ieWHGl6J/YHDTYo4yKyhamyiXnjmt
-         2DBmSiZz2BWFHI3NvHJxVNtDBC4cOAaRjtG2sUSMGrUTZ/y+aIzB5VhJDzlOiE0IWFpi
-         lcJAgD+CyITmLIyYsxwF+tNlG4oZaxB7VRDs1iUnI7gpwYWhBn7W2nCH3V80r2s4PsYM
-         5NehSSDh8cRzm0TvF5r9yenHMW2KgydHgD63+f2IlyqNxsXP9nKgj1wkh6i/+g1ExDWE
-         91Bw==
-X-Gm-Message-State: AGi0PubqGn3S08VASMm8y/AuFKQUL0i3beEjDz7YsIMLK4X0kyMUrJsG
-        h4BraBmSp564RB5/lIWoBjJl4/7X
-X-Google-Smtp-Source: APiQypKzNpovHvEBeYUUJnNJcVcgCL02kvy3XkA8JBR55L1Xtym3V6pWuaeOTyojCvb39rlyVeyYow==
-X-Received: by 2002:a63:29c1:: with SMTP id p184mr3613563pgp.37.1585837084468;
-        Thu, 02 Apr 2020 07:18:04 -0700 (PDT)
-Received: from VM_0_35_centos.localdomain ([150.109.62.251])
-        by smtp.gmail.com with ESMTPSA id r63sm3887237pfr.42.2020.04.02.07.18.02
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 02 Apr 2020 07:18:03 -0700 (PDT)
-From:   Qiujun Huang <hqjagain@gmail.com>
-To:     amitkarwar@gmail.com, siva8118@gmail.com, kvalo@codeaurora.org
-Cc:     davem@davemloft.net, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Qiujun Huang <hqjagain@gmail.com>
-Subject: [PATCH] rsi: fix a typo "throld" -> "threshold"
-Date:   Thu,  2 Apr 2020 22:17:58 +0800
-Message-Id: <1585837078-6149-1-git-send-email-hqjagain@gmail.com>
-X-Mailer: git-send-email 1.8.3.1
+ d=silabs.onmicrosoft.com; s=selector2-silabs-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=mwulQ/eypPEaHJOqvXIZmNw8VXJEFXb5KR+PxXrLmqE=;
+ b=jyo3dG6ufY7q2z0qkK+Rn5fyD0UdoPAiDydeP+N7MZM6mSr5HT6wZZzUkZQ6c4wxPhZJ+sVzkCgyQNAyBPKFJAIh6bgW6X/KyjRzdIZKiWdpakWJR+10gWlDei4LxSMRWb/IhJ01tPlerc/f0Sr5VDZ7XvF6fYiLAnchHI6khAQ=
+Received: from MN2PR11MB4063.namprd11.prod.outlook.com (2603:10b6:208:13f::22)
+ by MN2PR11MB4111.namprd11.prod.outlook.com (2603:10b6:208:138::32) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2856.20; Thu, 2 Apr
+ 2020 14:44:28 +0000
+Received: from MN2PR11MB4063.namprd11.prod.outlook.com
+ ([fe80::ade4:5702:1c8b:a2b3]) by MN2PR11MB4063.namprd11.prod.outlook.com
+ ([fe80::ade4:5702:1c8b:a2b3%7]) with mapi id 15.20.2856.019; Thu, 2 Apr 2020
+ 14:44:28 +0000
+From:   =?iso-8859-1?Q?J=E9r=F4me_Pouiller?= <Jerome.Pouiller@silabs.com>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+CC:     "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Kalle Valo <kvalo@codeaurora.org>
+Subject: Re: [PATCH 08/32] staging: wfx: simplify hif_handle_tx_data()
+Thread-Topic: [PATCH 08/32] staging: wfx: simplify hif_handle_tx_data()
+Thread-Index: AQHWCBVUexyIf33Hc0Wntu9/9TuZnKhl0OGAgAAZXIA=
+Date:   Thu, 2 Apr 2020 14:44:27 +0000
+Message-ID: <2302785.6C7ODC2LYm@pc-42>
+References: <20200401110405.80282-1-Jerome.Pouiller@silabs.com>
+ <20200401110405.80282-9-Jerome.Pouiller@silabs.com>
+ <20200402131338.GS2001@kadam>
+In-Reply-To: <20200402131338.GS2001@kadam>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=Jerome.Pouiller@silabs.com; 
+x-originating-ip: [82.67.86.106]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: c93d4cad-62e4-4a6d-7c7f-08d7d7145888
+x-ms-traffictypediagnostic: MN2PR11MB4111:
+x-microsoft-antispam-prvs: <MN2PR11MB4111168DF26CAD2705FBAC0693C60@MN2PR11MB4111.namprd11.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:10000;
+x-forefront-prvs: 0361212EA8
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN2PR11MB4063.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(10009020)(7916004)(346002)(136003)(39850400004)(366004)(396003)(376002)(86362001)(9686003)(66574012)(64756008)(66556008)(316002)(8936002)(66946007)(6916009)(4326008)(6506007)(71200400001)(81166006)(478600001)(54906003)(91956017)(76116006)(66476007)(8676002)(33716001)(81156014)(2906002)(66446008)(26005)(186003)(5660300002)(6486002)(6512007)(39026012);DIR:OUT;SFP:1101;
+received-spf: None (protection.outlook.com: silabs.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: QsLfHr1tSgvLzEQL8s7gzPgqBN88QEuEmar/0C6/Zm/AfA94XE6gcFpEpJii6H24fHphFIllAptfo38ugkBvO4qYr06gaI6Qczi9CsYUjaEeCNF+e5GGQX71a1wTJ5RSO2LQ7+VPufOaPXao7Me/x/Ax+wWRpu0+rELbfouyFEIo47ZTGfcTCJqZOJZD2rXgT6RtEXPzwIKHyiZxdEVwIGIgl8LPsYsv2aj6kLx0Fc+Hvo1SpsPRXygr7k6GDngn5XrI38X+BPYbjplrX8gK9w1w47qltlbbCtTq1ivab5+OHj6SINEQ7S6y5KYEhP7DULbhLqz0nqpopcE1j9I2SIvIWulKBo34DgRdl8LC/EOgLZbOXBx8VDzLo6w31ylnPVqNItZdPsrrU80WryQ8cQajPA23HGAJRl4h5RC4rMJOFdKkobdVShHfUeLb0VfqZiCt7U9AAvrd8UkLNhBrhYj+lddZLzq/NOfAu3uCMNRicckII6HiVwmCO4H3r6CJ
+x-ms-exchange-antispam-messagedata: IkXquhejaYXKoe8xG2HKfo0klBEr/1wLoKec7dre2WTMxcIFWmFM8I6sB13PcFpFNF6MJgEBbsZtnJen+oiZY2tf9u0P9xPKErAyLn3p0E1xpogMIF7O2h41xJkOiYxbLgWIGUQnC36K6grg+xVaSA==
+x-ms-exchange-transport-forked: True
+Content-Type: text/plain; charset="iso-8859-1"
+Content-ID: <E6DDB03D4B3FDC428B4A6E0D581CADF2@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-OriginatorOrg: silabs.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c93d4cad-62e4-4a6d-7c7f-08d7d7145888
+X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Apr 2020 14:44:27.9452
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 54dbd822-5231-4b20-944d-6f4abcd541fb
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: Zc8MtgB8VyizDSKBT45y0FK5Jdj7b2IbftUlDGSZyoqe0bIG8kO5Jlf+Ejx4ZL2lltNZwweSClcIH0mmxd9h+w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR11MB4111
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-There is a typo in debug message. Fix it.
-s/throld/threshold
+On Thursday 2 April 2020 15:13:39 CEST Dan Carpenter wrote:
+> On Wed, Apr 01, 2020 at 01:03:41PM +0200, Jerome Pouiller wrote:
+[...]
+> This is on the TX side so it's probably okay, but one problem I have
+> noticed is that we do this on the RX side as well with checking that
+>=20
+>         if (skb->len < sizeof(struct hif_msg))
+>                 return -EINVAL;
+>=20
+> So we could be reading beyond the end of the skb.  If we got really
+> unlucky it could lead to an Oops.
+>=20
+> regards,
+> dan carpenter
+>=20
+>=20
+Hello Dan,
 
-Signed-off-by: Qiujun Huang <hqjagain@gmail.com>
----
- drivers/net/wireless/rsi/rsi_91x_mac80211.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+The function rx_helper() in bh.c already do some sanity checks received dat=
+a:
 
-diff --git a/drivers/net/wireless/rsi/rsi_91x_mac80211.c b/drivers/net/wireless/rsi/rsi_91x_mac80211.c
-index 4400882..5c0adb0 100644
---- a/drivers/net/wireless/rsi/rsi_91x_mac80211.c
-+++ b/drivers/net/wireless/rsi/rsi_91x_mac80211.c
-@@ -832,7 +832,7 @@ static void rsi_mac80211_bss_info_changed(struct ieee80211_hw *hw,
- 		common->cqm_info.last_cqm_event_rssi = 0;
- 		common->cqm_info.rssi_thold = bss_conf->cqm_rssi_thold;
- 		common->cqm_info.rssi_hyst = bss_conf->cqm_rssi_hyst;
--		rsi_dbg(INFO_ZONE, "RSSI throld & hysteresis are: %d %d\n",
-+		rsi_dbg(INFO_ZONE, "RSSI threshold & hysteresis are: %d %d\n",
- 			common->cqm_info.rssi_thold,
- 			common->cqm_info.rssi_hyst);
- 	}
--- 
-1.8.3.1
+    60          WARN(read_len < 4, "corrupted read");
+    [...]
+    92          } else {
+    93                  computed_len =3D round_up(hif->len, 2);
+    94          }
+    95          if (computed_len !=3D read_len) {
+    96                  dev_err(wdev->dev, "inconsistent message length: %z=
+u !=3D %zu\n",
+    97                          computed_len, read_len);
+    98                  print_hex_dump(KERN_INFO, "hif: ", DUMP_PREFIX_OFFS=
+ET, 16, 1,
+    99                                 hif, read_len, true);
+   100                  goto err;
+   101          }
+
+
+However, I can improve this code:
+   - "4" should be replaced by "sizeof(struct hif_msg)" for readability=20
+   - hif->len is tested through computed_len, but I am not sure to be able
+     to prove that it covers all cases
+   - rx_helper() should recover the error if read_len < 4
+
+I add that on my TODO list.
+
+--=20
+J=E9r=F4me Pouiller
 
