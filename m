@@ -2,106 +2,81 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3990419BB64
-	for <lists+linux-wireless@lfdr.de>; Thu,  2 Apr 2020 07:40:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B16819BD7D
+	for <lists+linux-wireless@lfdr.de>; Thu,  2 Apr 2020 10:19:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726841AbgDBFkR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 2 Apr 2020 01:40:17 -0400
-Received: from mail-qk1-f193.google.com ([209.85.222.193]:34234 "EHLO
-        mail-qk1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726201AbgDBFkR (ORCPT
+        id S2387849AbgDBITX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 2 Apr 2020 04:19:23 -0400
+Received: from mail-pf1-f194.google.com ([209.85.210.194]:37997 "EHLO
+        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387716AbgDBITW (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 2 Apr 2020 01:40:17 -0400
-Received: by mail-qk1-f193.google.com with SMTP id i6so2814149qke.1;
-        Wed, 01 Apr 2020 22:40:16 -0700 (PDT)
+        Thu, 2 Apr 2020 04:19:22 -0400
+Received: by mail-pf1-f194.google.com with SMTP id c21so1417893pfo.5;
+        Thu, 02 Apr 2020 01:19:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=sender:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=Hj9hqNcME2oIKIw+5Vx3xGDXGbaFZ4ovP+thufGAVmU=;
-        b=oGgRiCyGM1NttzIOzX4lwfWaLVWlVNJVxi3p2J32f8r5BrPNarW8vx/Yl6iLZg5HU/
-         y1n7ZlChgcMzf6CBkZqbMoDBLXJcQzKXki+ZUF7JoXFN4UXXS8qJ4XMG1Dy5hJIP3D2q
-         PxIWu5Jz96mjpP+jTJdf8y6ohWWqVQYGRE+1Buh1xTTha5aNmdttUQo7vhVy+mQC//Xs
-         LEuGp+m+fJGeAswwrLaJzN9iuSErM4LRexHOGPl21AVS1fxbUL0yQWNG/9NYEI/wx1B6
-         sLOCt5cU4xBWmc99Zmu9lpWLpu4MQRIbmJsSeB8vI+u6Zhyi9W1GAygUEPh5rP6Dw1iu
-         YEvw==
+        h=from:to:cc:subject:date:message-id;
+        bh=VcLk53K2T0017oS2ltgvgf+ueg1rt2M43xBurnp4rmU=;
+        b=FW8wv0FCbof6bO/HEK7jdkaKxTVJsLvyf9QNGHnzUVj1GBkzGjEcfm3PXCCxjws053
+         3LuXI+xR4ZDOJHjjZpbt7vN0pun72MU/V0vkjic75waC0W4vPCCYdBFUJo70GqAN/jnZ
+         1C/sKkFzH2snO2jcQt6CEhxZAZudceQDXpk+HlWaycF4J8ZQ0D4flJEYU2zPVx6YUY+r
+         fTp4VdHYQO061q3WwMkn5NZ+X2/i1mEF86k+0kXKcQ6nT8KrT+8JtES3/+N49lLKxqsx
+         xgsuHKur4YfKBBjCrCOKh4lQQirzsxkoSsniI9NnYhN1rk5Gbvp97r0nMBLhOC//jsWY
+         1Isw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
-         :mime-version:content-transfer-encoding;
-        bh=Hj9hqNcME2oIKIw+5Vx3xGDXGbaFZ4ovP+thufGAVmU=;
-        b=Smif+8RHLKd1nWQ1GDTERfSIhNR7k4Z7JHxwVtF7WlQghN6KbKR3gkPWuGkSbacT3/
-         4DYz127WT4bSInQrSv+qtk+X12RjcBiMlovv5pHNelKD6i1a1aP9xZFo0LTwT860HKx1
-         y6qxIHvObx/GheS4j0u3ogus0uNzEvTnlIptNQhA3ifwvQNbDh8CuJWaeQVvNB29si1v
-         7kNV8ivhLPLpGA99IAjgA08wgROQD68QC/SpEahxG2LzEG0dITRMUeFoHAq/5YYBuBy5
-         8OxEfsR0G3SqdqLYl8qnuRFFpixh++N2XKpDhqP23Y25U3UZfVRYixxpVTGCqJhqxKWQ
-         FEQA==
-X-Gm-Message-State: AGi0PubsIirzpTp/gtfpoocLpGEqUHWZ6H4oC2JT+fOsEwWJEP7mCPKO
-        GpUyv8R62QuZ9JFioWVUj+u9Yktv
-X-Google-Smtp-Source: APiQypKYQzwTCauSCZsNzFwP7pSAbf43FjGqHiBn/lCnEhAbO+zIU1RyY8RLX9MuztxrJHSKsfzyeg==
-X-Received: by 2002:a37:4c4d:: with SMTP id z74mr1842987qka.53.1585806015666;
-        Wed, 01 Apr 2020 22:40:15 -0700 (PDT)
-Received: from localhost (c-73-74-7-9.hsd1.il.comcast.net. [73.74.7.9])
-        by smtp.gmail.com with ESMTPSA id t140sm2911459qke.48.2020.04.01.22.40.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Apr 2020 22:40:14 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by localhost (8.15.2/8.14.9) with ESMTP id 0325eAOc005904;
-        Thu, 2 Apr 2020 00:40:12 -0500
-Received: (from chris@localhost)
-        by localhost (8.15.2/8.15.2/Submit) id 03254KY3004887;
-        Thu, 2 Apr 2020 00:04:20 -0500
-From:   Chris Rorvick <chris@rorvick.com>
-To:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     Chris Rorvick <chris@rorvick.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Intel Linux Wireless <linuxwifi@intel.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: [PATCH] iwlwifi: actually check allocated conf_tlv pointer
-Date:   Thu,  2 Apr 2020 00:02:19 -0500
-Message-Id: <20200402050219.4842-1-chris@rorvick.com>
-X-Mailer: git-send-email 2.25.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=VcLk53K2T0017oS2ltgvgf+ueg1rt2M43xBurnp4rmU=;
+        b=eO8LqmzoVHjQg2cMk9SCkx7didfRlIPCFiIh1q3k4Zs+pBkTdugt+yCbmQb33UpwwG
+         XZt+ilJ20GYxGFISfNOlFO45432EjW9LgNbQsHoAgOr7a2JF3v5n+3KDhyPASd7WlzAy
+         phxHVU6i+TwmwoDQ43OjrYBJQSfOiNsTfwfFhlyVjtJgDA+8aq6WoNZsa5v3wY5KMIZO
+         XBq8FNUet7efZN73DZevF6QLtbSMtcf/Jh/9yD+WC7BF1rKd6qz7Dzed+L9TRai5i+eM
+         zhUNp3OpXboWtZZ35jFnrD/qomuR7RqzCOURKdiXs2QmuEiQbvVuHzFdzAfyZcM7ZR3V
+         Lc5w==
+X-Gm-Message-State: AGi0PuZT3yBvB+sosjCQBz7esuuHdT1ow4EafVdyE/2RovHK5Zm+WIZR
+        m9SKJdE2aTslwM9gxuj5Xew=
+X-Google-Smtp-Source: APiQypJVOLMjPtKqXIsBFtNQVMOsJ7OmBQaXkc2Dn3TNb+VYodKyJpp3n0wpXQDPrPORjG1K4AO3nw==
+X-Received: by 2002:a63:735c:: with SMTP id d28mr2335726pgn.63.1585815561779;
+        Thu, 02 Apr 2020 01:19:21 -0700 (PDT)
+Received: from VM_0_35_centos.localdomain ([150.109.62.251])
+        by smtp.gmail.com with ESMTPSA id 135sm3292353pfu.207.2020.04.02.01.19.19
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 02 Apr 2020 01:19:21 -0700 (PDT)
+From:   Qiujun Huang <hqjagain@gmail.com>
+To:     pkshih@realtek.com, kvalo@codeaurora.org
+Cc:     davem@davemloft.net, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Qiujun Huang <hqjagain@gmail.com>
+Subject: [PATCH] rtlwifi: rtl8723ae: fix spelling mistake "chang" -> "change"
+Date:   Thu,  2 Apr 2020 16:19:17 +0800
+Message-Id: <1585815557-20212-1-git-send-email-hqjagain@gmail.com>
+X-Mailer: git-send-email 1.8.3.1
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Commit 71bc0334a637 ("iwlwifi: check allocated pointer when allocating
-conf_tlvs") attempted to fix a typoe introduced by commit 17b809c9b22e
-("iwlwifi: dbg: move debug data to a struct") but does not implement the
-check correctly.
+There is a spelling mistake in a trace message. Fix it.
 
-Tweeted-by: @grsecurity
-Signed-off-by: Chris Rorvick <chris@rorvick.com>
+Signed-off-by: Qiujun Huang <hqjagain@gmail.com>
 ---
-In this wasn't picked up?
-
- drivers/net/wireless/intel/iwlwifi/iwl-drv.c | 2 +-
+ drivers/net/wireless/realtek/rtlwifi/rtl8723ae/hal_btc.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
-index ff52e69c1c80..a37f330e7bd4 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
-@@ -1465,11 +1465,11 @@ static void iwl_req_fw_callback(const struct firmware *ucode_raw, void *context)
- 		if (pieces->dbg_conf_tlv[i]) {
- 			drv->fw.dbg.conf_tlv[i] =
- 				kmemdup(pieces->dbg_conf_tlv[i],
- 					pieces->dbg_conf_tlv_len[i],
- 					GFP_KERNEL);
--			if (!pieces->dbg_conf_tlv[i])
-+			if (!drv->fw.dbg_conf_tlv[i])
- 				goto out_free_fw;
- 		}
- 	}
- 
- 	memset(&trigger_tlv_sz, 0xff, sizeof(trigger_tlv_sz));
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/hal_btc.c b/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/hal_btc.c
+index 6801982..652d8ff 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/hal_btc.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/hal_btc.c
+@@ -131,7 +131,7 @@ static bool rtl8723e_dm_bt_is_same_coexist_state(struct ieee80211_hw *hw)
+ 	    (rtlpriv->btcoexist.previous_state_h ==
+ 	     rtlpriv->btcoexist.cstate_h)) {
+ 		RT_TRACE(rtlpriv, COMP_BT_COEXIST, DBG_DMESG,
+-			 "[DM][BT], Coexist state do not chang!!\n");
++			 "[DM][BT], Coexist state do not change!!\n");
+ 		return true;
+ 	} else {
+ 		RT_TRACE(rtlpriv, COMP_BT_COEXIST, DBG_DMESG,
 -- 
-2.24.1
+1.8.3.1
 
