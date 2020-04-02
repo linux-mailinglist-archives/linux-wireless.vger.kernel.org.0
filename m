@@ -2,57 +2,56 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EA47019CBD1
-	for <lists+linux-wireless@lfdr.de>; Thu,  2 Apr 2020 22:45:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2791019CC7C
+	for <lists+linux-wireless@lfdr.de>; Thu,  2 Apr 2020 23:41:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729549AbgDBUpZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 2 Apr 2020 16:45:25 -0400
-Received: from mail-wr1-f66.google.com ([209.85.221.66]:36390 "EHLO
-        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726617AbgDBUpZ (ORCPT
+        id S1732995AbgDBVlj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 2 Apr 2020 17:41:39 -0400
+Received: from mail-wr1-f68.google.com ([209.85.221.68]:38975 "EHLO
+        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729549AbgDBVlj (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 2 Apr 2020 16:45:25 -0400
-Received: by mail-wr1-f66.google.com with SMTP id 31so5859780wrs.3
-        for <linux-wireless@vger.kernel.org>; Thu, 02 Apr 2020 13:45:24 -0700 (PDT)
+        Thu, 2 Apr 2020 17:41:39 -0400
+Received: by mail-wr1-f68.google.com with SMTP id p10so6029321wrt.6
+        for <linux-wireless@vger.kernel.org>; Thu, 02 Apr 2020 14:41:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=to:cc:from:subject:message-id:date:user-agent:mime-version
+        h=from:subject:to:cc:message-id:date:user-agent:mime-version
          :content-language:content-transfer-encoding;
-        bh=YlSD4Lk4f6lPWhUFQ2ne86biZ/yC8yucmHDeLcuroz8=;
-        b=WcH1BXGHgSoOwDNpAGxLwoMQUObcbxH48bpCbwmsD4Aje0/QKeSTyXkgBHCBQ4zgL7
-         CIM44HVSdSnj7NXv4oSdlrhyaiuTSUnvoCG9wFzuqxNEhd+hVEjdtsWxEEutxEiLOBEd
-         stSbvYVo2wBYfapMJBb+outBXc8Gmq8n9mwx3Tg91xtTzX4gbO6pYUfe0qjxe2ShMUwY
-         PSvjKeuRwl4aE459OokRwbiOkxRjQNuDsbxY5JJLP41LimY7bPFY+54qS8/Y+kUfeLhJ
-         JsjQhg/L3wxexVFuV/lu+qsI5FsgumBmgFn4/7bJ7SWD+N5c3rYqBPm4RzevTM7bS+lb
-         v98w==
+        bh=d2LuQ9+tNaM4iX/cPzhdZ44JC45KzMGRSOTVMyTga64=;
+        b=c79F/GVEsGXKxyOu7A9T1Qfohd2O5y0eRvw8sV/dT6rBmaI28MM9db9/0HN9CPuXzL
+         361BRQBo8MFfwCZr3fpIwnlZR5Mup51v4ON7YZ66/4Uo18Fa/oC3UZ8M7dFXuBLkgMmF
+         DiHM6zR0vLV2JRMww5ocIJsvGwvJjf5Nph6YIPup8ybhLWqYSVidC2iEdlYdCwruhP6u
+         ZxQZlaadfZpKkmEoyo+5KQ6BsF2nIVyUHnqcjRky61V9oqT++hDaZr7ij5cjIqLA8//C
+         8d9+HstFCYn0kV0EirNcFnc8T6Sew/u5rN7+H9fTL0NsFPuWmz/pdRo6piRwjIrEHbV1
+         i92A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:to:cc:from:subject:message-id:date:user-agent
+        h=x-gm-message-state:from:subject:to:cc:message-id:date:user-agent
          :mime-version:content-language:content-transfer-encoding;
-        bh=YlSD4Lk4f6lPWhUFQ2ne86biZ/yC8yucmHDeLcuroz8=;
-        b=GviMSSLRZh7BV9OD0AnkIHM5ucwf/pnVIU9Ti4kbBTPdUbvP0smlN+zL99GXsOYG1U
-         FsUiY0GHShDaaHoIVYB08JUC0TJBTzgTB9nLGM8+EGfTTVbgKMwhviZu4uLbnB6nzRiX
-         tt1enwGSrc+OcGdPBD9C/qxDDuR28EmJ6q6lYs1PbszjSeje1VSWFK6AR8eObcpmculM
-         ogUhyOAmfl4kOdfacnAM2EYeVPpt9QpuSAj+/EIsKcO1uEHkzBdL/5D5Mp6vpgEkBHzL
-         c2yL6UUsoerCnjpHqk8MQIQ4Uop/CYppKqqJYBjrmrLfEeJr2PXeoAoIqVCTzKEGrAwi
-         Yj5A==
-X-Gm-Message-State: AGi0PuazulOXfWmsqNmJ+TQzF8CI5wYB8Al47eBx3ywZdc0tgRbaSH34
-        hvaws6BI3x/KbIfIE1akUVuQ8z2r
-X-Google-Smtp-Source: APiQypKptHzouBDkzkNWuInsaxcIl98/BYu6yzlazLnMr8SXiVDJ1fnt5++gATFVwZI+TqFErRusmQ==
-X-Received: by 2002:adf:f3d2:: with SMTP id g18mr2672777wrp.356.1585860323399;
-        Thu, 02 Apr 2020 13:45:23 -0700 (PDT)
+        bh=d2LuQ9+tNaM4iX/cPzhdZ44JC45KzMGRSOTVMyTga64=;
+        b=pRqyuALnccqEbmnqDbKQiBBdW0bVI4qMAR2MX+jcO7YhmTWwgJGxADJV3G5od+NX+0
+         ecAh49NHGewxqQrLbrFgP3zuoAjgnpBJVq+1aJdhx+9dMz1KjH2DVdPqqt7HK/iJKOCE
+         UMHTZTl3+A9K0DrWYglC5SxyJJUo1tdblRXRx4VOR65hXyaOsj16bTWQ8n5zBiwl/n2/
+         G+eeqmF8WFsjBuJxZ9DDEDdWW5kV0uGzG6Qb6H9bM9Q6xETrkd5HsZKLZeyn/Si9Nseq
+         aaQErYUTdv/D38zKJ2JeZfZKWEsifIm8xvwlVRN0D0vrzRGczey0PC0gfymHYsLqSbt4
+         dytQ==
+X-Gm-Message-State: AGi0PuaNulblN7+5E5XMyNcAAn9+x/a80jIhDSx2t7Psq1VkQf/l1zSY
+        MmQ2K5NXrnBTbqcPnWYmPio9/Ikc
+X-Google-Smtp-Source: APiQypLTExJmoPfCrwiXbr6n2YgIiH3ReADoHv65LIhP5tC20uJdWQFk4OyVzCWisp79x/KL6F59qw==
+X-Received: by 2002:a5d:5230:: with SMTP id i16mr5423057wra.15.1585863697150;
+        Thu, 02 Apr 2020 14:41:37 -0700 (PDT)
 Received: from [192.168.43.18] (188.29.165.56.threembb.co.uk. [188.29.165.56])
-        by smtp.gmail.com with ESMTPSA id o9sm3986296wru.29.2020.04.02.13.45.22
+        by smtp.gmail.com with ESMTPSA id 91sm3123622wrf.79.2020.04.02.14.41.35
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 02 Apr 2020 13:45:22 -0700 (PDT)
+        Thu, 02 Apr 2020 14:41:36 -0700 (PDT)
+From:   Malcolm Priestley <tvboxspy@gmail.com>
+Subject: [PATCH 1/2] staging: vt6656: set all ofdm rates to default
 To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc:     "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>,
         linux-wireless@vger.kernel.org
-From:   Malcolm Priestley <tvboxspy@gmail.com>
-Subject: [PATCH] staging: vt6656: replace al2230_power_table array with
- formula.
-Message-ID: <e277409a-4509-d09c-515d-59b952f8310d@gmail.com>
-Date:   Thu, 2 Apr 2020 21:45:21 +0100
+Message-ID: <9a52d7f4-dd3e-efdc-eef8-bb794f7dea6d@gmail.com>
+Date:   Thu, 2 Apr 2020 22:41:34 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.6.0
 MIME-Version: 1.0
@@ -64,128 +63,93 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The power table can replaced with calculation 0x0404090 | (power << 12)
-removing array and length macro.
+mac80211 rate control decides which odfm rates to use so all of
+them should be set enabled at the appropriate bit rate.
 
-variable power never goes beyond the maximum setting.
+This means vnt_get_ofdm_rate is no longer required.
 
 Signed-off-by: Malcolm Priestley <tvboxspy@gmail.com>
 ---
- drivers/staging/vt6656/rf.c | 79 ++-----------------------------------
- 1 file changed, 4 insertions(+), 75 deletions(-)
+ drivers/staging/vt6656/card.c | 54 +++--------------------------------
+ 1 file changed, 4 insertions(+), 50 deletions(-)
 
-diff --git a/drivers/staging/vt6656/rf.c b/drivers/staging/vt6656/rf.c
-index 43237b7e1dbe..4f9aba0f21b0 100644
---- a/drivers/staging/vt6656/rf.c
-+++ b/drivers/staging/vt6656/rf.c
-@@ -27,7 +27,6 @@
- #include "usbpipe.h"
+diff --git a/drivers/staging/vt6656/card.c b/drivers/staging/vt6656/card.c
+index dc3ab10eb630..4abbe9b30b65 100644
+--- a/drivers/staging/vt6656/card.c
++++ b/drivers/staging/vt6656/card.c
+@@ -100,48 +100,6 @@ static u16 vnt_get_cck_rate(struct vnt_private *priv, u16 rate_idx)
+ 	return RATE_1M;
+ }
  
- #define CB_AL2230_INIT_SEQ    15
--#define AL2230_PWR_IDX_LEN    64
- 
- #define CB_AL7230_INIT_SEQ    16
- #define AL7230_PWR_IDX_LEN    64
-@@ -518,74 +517,6 @@ static u8 vt3342_channel_table1[CB_MAX_CHANNEL][3] = {
- 	{0x03, 0x00, 0x04}
- };
- 
--/* Power Table */
--static const u32 al2230_power_table[AL2230_PWR_IDX_LEN] = {
--	0x04040900,
--	0x04041900,
--	0x04042900,
--	0x04043900,
--	0x04044900,
--	0x04045900,
--	0x04046900,
--	0x04047900,
--	0x04048900,
--	0x04049900,
--	0x0404a900,
--	0x0404b900,
--	0x0404c900,
--	0x0404d900,
--	0x0404e900,
--	0x0404f900,
--	0x04050900,
--	0x04051900,
--	0x04052900,
--	0x04053900,
--	0x04054900,
--	0x04055900,
--	0x04056900,
--	0x04057900,
--	0x04058900,
--	0x04059900,
--	0x0405a900,
--	0x0405b900,
--	0x0405c900,
--	0x0405d900,
--	0x0405e900,
--	0x0405f900,
--	0x04060900,
--	0x04061900,
--	0x04062900,
--	0x04063900,
--	0x04064900,
--	0x04065900,
--	0x04066900,
--	0x04067900,
--	0x04068900,
--	0x04069900,
--	0x0406a900,
--	0x0406b900,
--	0x0406c900,
--	0x0406d900,
--	0x0406e900,
--	0x0406f900,
--	0x04070900,
--	0x04071900,
--	0x04072900,
--	0x04073900,
--	0x04074900,
--	0x04075900,
--	0x04076900,
--	0x04077900,
--	0x04078900,
--	0x04079900,
--	0x0407a900,
--	0x0407b900,
--	0x0407c900,
--	0x0407d900,
--	0x0407e900,
--	0x0407f900
--};
+-/*
+- * Description: Get OFDM mode basic rate
+- *
+- * Parameters:
+- *  In:
+- *      priv		- The adapter to be set
+- *      rate_idx	- Receiving data rate
+- *  Out:
+- *      none
+- *
+- * Return Value: response Control frame rate
+- *
+- */
+-static u16 vnt_get_ofdm_rate(struct vnt_private *priv, u16 rate_idx)
+-{
+-	u16 ui = rate_idx;
+-
+-	dev_dbg(&priv->usb->dev, "%s basic rate: %d\n",
+-		__func__,  priv->basic_rates);
+-
+-	if (!vnt_ofdm_min_rate(priv)) {
+-		dev_dbg(&priv->usb->dev, "%s (NO OFDM) %d\n",
+-			__func__, rate_idx);
+-		if (rate_idx > RATE_24M)
+-			rate_idx = RATE_24M;
+-		return rate_idx;
+-	}
+-
+-	while (ui > RATE_11M) {
+-		if (priv->basic_rates & (1 << ui)) {
+-			dev_dbg(&priv->usb->dev, "%s rate: %d\n",
+-				__func__, ui);
+-			return ui;
+-		}
+-		ui--;
+-	}
+-
+-	dev_dbg(&priv->usb->dev, "%s basic rate: 24M\n", __func__);
+-
+-	return RATE_24M;
+-}
 -
  /*
-  * Description: Write to IF/RF, by embedded programming
-  */
-@@ -685,10 +616,9 @@ int vnt_rf_set_txpower(struct vnt_private *priv, u8 power, u32 rate)
+  * Description: Calculate TxRate and RsvTime fields for RSPINF in OFDM mode.
+  *
+@@ -289,20 +247,16 @@ void vnt_set_rspinf(struct vnt_private *priv, u8 bb_type)
+ 	vnt_calculate_ofdm_rate(RATE_24M, bb_type, &tx_rate[4], &rsv_time[4]);
  
- 	switch (priv->rf_type) {
- 	case RF_AL2230:
--		if (power >= AL2230_PWR_IDX_LEN)
--			return false;
-+		power_setting = 0x0404090 | (power << 12);
+ 	/*RSPINF_a_36*/
+-	vnt_calculate_ofdm_rate(vnt_get_ofdm_rate(priv, RATE_36M),
+-				bb_type, &tx_rate[5], &rsv_time[5]);
++	vnt_calculate_ofdm_rate(RATE_36M, bb_type, &tx_rate[5], &rsv_time[5]);
  
--		ret &= vnt_rf_write_embedded(priv, al2230_power_table[power]);
-+		ret &= vnt_rf_write_embedded(priv, power_setting);
+ 	/*RSPINF_a_48*/
+-	vnt_calculate_ofdm_rate(vnt_get_ofdm_rate(priv, RATE_48M),
+-				bb_type, &tx_rate[6], &rsv_time[6]);
++	vnt_calculate_ofdm_rate(RATE_48M, bb_type, &tx_rate[6], &rsv_time[6]);
  
- 		if (rate <= RATE_11M)
- 			ret &= vnt_rf_write_embedded(priv, 0x0001b400);
-@@ -696,10 +626,9 @@ int vnt_rf_set_txpower(struct vnt_private *priv, u8 power, u32 rate)
- 			ret &= vnt_rf_write_embedded(priv, 0x0005a400);
- 		break;
- 	case RF_AL2230S:
--		if (power >= AL2230_PWR_IDX_LEN)
--			return false;
-+		power_setting = 0x0404090 | (power << 12);
+ 	/*RSPINF_a_54*/
+-	vnt_calculate_ofdm_rate(vnt_get_ofdm_rate(priv, RATE_54M),
+-				bb_type, &tx_rate[7], &rsv_time[7]);
++	vnt_calculate_ofdm_rate(RATE_54M, bb_type, &tx_rate[7], &rsv_time[7]);
  
--		ret &= vnt_rf_write_embedded(priv, al2230_power_table[power]);
-+		ret &= vnt_rf_write_embedded(priv, power_setting);
+ 	/*RSPINF_a_72*/
+-	vnt_calculate_ofdm_rate(vnt_get_ofdm_rate(priv, RATE_54M),
+-				bb_type, &tx_rate[8], &rsv_time[8]);
++	vnt_calculate_ofdm_rate(RATE_54M, bb_type, &tx_rate[8], &rsv_time[8]);
  
- 		if (rate <= RATE_11M) {
- 			ret &= vnt_rf_write_embedded(priv, 0x040c1400);
+ 	put_unaligned(phy[0].len, (u16 *)&data[0]);
+ 	data[2] = phy[0].signal;
 -- 
 2.25.1
