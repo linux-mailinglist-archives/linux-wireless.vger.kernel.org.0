@@ -2,34 +2,34 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B8F6519B9C7
-	for <lists+linux-wireless@lfdr.de>; Thu,  2 Apr 2020 03:18:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DF14019B9CA
+	for <lists+linux-wireless@lfdr.de>; Thu,  2 Apr 2020 03:18:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733250AbgDBBSV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 1 Apr 2020 21:18:21 -0400
-Received: from mail.adapt-ip.com ([173.164.178.19]:46466 "EHLO
+        id S1733265AbgDBBSX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 1 Apr 2020 21:18:23 -0400
+Received: from mail.adapt-ip.com ([173.164.178.19]:46490 "EHLO
         web.adapt-ip.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1733222AbgDBBSV (ORCPT
+        with ESMTP id S1733237AbgDBBSX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 1 Apr 2020 21:18:21 -0400
+        Wed, 1 Apr 2020 21:18:23 -0400
 Received: from localhost (localhost [127.0.0.1])
-        by web.adapt-ip.com (Postfix) with ESMTP id 6CFCB4F7AFA;
-        Thu,  2 Apr 2020 01:18:19 +0000 (UTC)
+        by web.adapt-ip.com (Postfix) with ESMTP id 47AE24F7AEB;
+        Thu,  2 Apr 2020 01:18:22 +0000 (UTC)
 X-Virus-Scanned: Debian amavisd-new at web.adapt-ip.com
 Received: from web.adapt-ip.com ([127.0.0.1])
         by localhost (web.adapt-ip.com [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id 8Rtx-2VO91xf; Thu,  2 Apr 2020 01:18:15 +0000 (UTC)
+        with ESMTP id zoMAyxFWnhxN; Thu,  2 Apr 2020 01:18:19 +0000 (UTC)
 Received: from atlas.campbell.adapt-ip.com (gateway.adapt-ip.com [173.164.178.20])
         (Authenticated sender: thomas@adapt-ip.com)
-        by web.adapt-ip.com (Postfix) with ESMTPSA id 4C38B4F7AF1;
+        by web.adapt-ip.com (Postfix) with ESMTPSA id 921084F7AF2;
         Thu,  2 Apr 2020 01:18:12 +0000 (UTC)
 From:   Thomas Pedersen <thomas@adapt-ip.com>
 To:     Johannes Berg <johannes@sipsolutions.net>
 Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
         Thomas Pedersen <thomas@adapt-ip.com>
-Subject: [PATCH 3/9] mac80211: handle channel frequency offset
-Date:   Wed,  1 Apr 2020 18:18:04 -0700
-Message-Id: <20200402011810.22947-4-thomas@adapt-ip.com>
+Subject: [PATCH 4/9] mac80211: add freq_offset to RX status
+Date:   Wed,  1 Apr 2020 18:18:05 -0700
+Message-Id: <20200402011810.22947-5-thomas@adapt-ip.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20200402011810.22947-1-thomas@adapt-ip.com>
 References: <20200402011810.22947-1-thomas@adapt-ip.com>
@@ -40,326 +40,108 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-cfg80211_chan_def and ieee80211_channel recently gained a
-frequency offset component. Handle this where it makes
-sense (potentially required by S1G channels).
-
-For IBSS, TDLS, CSA, and ROC we return -EOPNOTSUPP if a
-channel with frequency offset is passed, since they may or
-may not work. Once someone tests and verifies these
-commands work on thos types of channels, we can remove
-that error.
-
-join_ocb and join_mesh look harmless because they use a
-simple ieee80211_vif_use_channel(), which is using an
-already verified channel, so we let those through.
+RX status needs a KHz component, so add freq_offset. We
+can make ampdu_reference u16 since it is probably
+sufficient to be able to distinguish 64k different
+A-MPDUs.
 
 Signed-off-by: Thomas Pedersen <thomas@adapt-ip.com>
 
 ---
 v2:
-  simplify channel and KHz conversion helpers (Johannes)
-  return -EOPNOTSUPP for operations which may not work
+use fewer bits in ieee80211_rx_status (Johannes)
 ---
- net/mac80211/cfg.c        |  6 ++++++
- net/mac80211/chan.c       |  1 +
- net/mac80211/ibss.c       |  5 +++++
- net/mac80211/main.c       |  8 +++++---
- net/mac80211/mlme.c       | 16 +++++++++++----
- net/mac80211/offchannel.c |  4 ++++
- net/mac80211/scan.c       |  1 +
- net/mac80211/tdls.c       |  4 ++++
- net/mac80211/trace.h      | 41 +++++++++++++++++++++++++++++++--------
- 9 files changed, 71 insertions(+), 15 deletions(-)
+ include/net/mac80211.h | 10 +++++++++-
+ net/mac80211/mlme.c    |  6 ++++--
+ net/mac80211/rx.c      |  1 +
+ net/mac80211/scan.c    |  3 ++-
+ 4 files changed, 16 insertions(+), 4 deletions(-)
 
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index 0f72813fed53..7525b8dff290 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -3287,6 +3287,12 @@ __ieee80211_channel_switch(struct wiphy *wiphy, struct net_device *dev,
- 		goto out;
- 	}
+diff --git a/include/net/mac80211.h b/include/net/mac80211.h
+index b6b4de0e4b5e..25d033c3e35b 100644
+--- a/include/net/mac80211.h
++++ b/include/net/mac80211.h
+@@ -1333,6 +1333,7 @@ enum mac80211_rx_encoding {
+  * @freq: frequency the radio was tuned to when receiving this frame, in MHz
+  *	This field must be set for management frames, but isn't strictly needed
+  *	for data (other) frames - for those it only affects radiotap reporting.
++ * @freq_offset: @freq has a positive offset of 500Khz.
+  * @signal: signal strength when receiving this frame, either in dBm, in dB or
+  *	unspecified depending on the hardware capabilities flags
+  *	@IEEE80211_HW_SIGNAL_*
+@@ -1363,7 +1364,7 @@ struct ieee80211_rx_status {
+ 	u32 device_timestamp;
+ 	u32 ampdu_reference;
+ 	u32 flag;
+-	u16 freq;
++	u16 freq: 13, freq_offset: 1;
+ 	u8 enc_flags;
+ 	u8 encoding:2, bw:3, he_ru:3;
+ 	u8 he_gi:2, he_dcm:1;
+@@ -1379,6 +1380,13 @@ struct ieee80211_rx_status {
+ 	u8 zero_length_psdu_type;
+ };
  
-+	if (params->chandef.chan->freq_offset) {
-+		/* this may work, but is untested */
-+		err = -EOPNOTSUPP;
-+		goto out;
-+	}
++static inline u32
++ieee80211_rx_status_to_khz(struct ieee80211_rx_status *rx_status)
++{
++	return MHZ_TO_KHZ(rx_status->freq) +
++	       (rx_status->freq_offset ? 500 : 0);
++}
 +
- 	chanctx = container_of(conf, struct ieee80211_chanctx, conf);
- 
- 	ch_switch.timestamp = 0;
-diff --git a/net/mac80211/chan.c b/net/mac80211/chan.c
-index 9c94baaf693c..e6e192f53e4e 100644
---- a/net/mac80211/chan.c
-+++ b/net/mac80211/chan.c
-@@ -533,6 +533,7 @@ static void ieee80211_del_chanctx(struct ieee80211_local *local,
- 		struct cfg80211_chan_def *chandef = &local->_oper_chandef;
- 		chandef->width = NL80211_CHAN_WIDTH_20_NOHT;
- 		chandef->center_freq1 = chandef->chan->center_freq;
-+		chandef->freq1_offset = chandef->chan->freq_offset;
- 		chandef->center_freq2 = 0;
- 
- 		/* NOTE: Disabling radar is only valid here for
-diff --git a/net/mac80211/ibss.c b/net/mac80211/ibss.c
-index d40744903fa9..2479cd48fed0 100644
---- a/net/mac80211/ibss.c
-+++ b/net/mac80211/ibss.c
-@@ -1758,6 +1758,11 @@ int ieee80211_ibss_join(struct ieee80211_sub_if_data *sdata,
- 	int i;
- 	int ret;
- 
-+	if (params->chandef.chan->freq_offset) {
-+		/* this may work, but is untested */
-+		return -EOPNOTSUPP;
-+	}
-+
- 	ret = cfg80211_chandef_dfs_required(local->hw.wiphy,
- 					    &params->chandef,
- 					    sdata->wdev.iftype);
-diff --git a/net/mac80211/main.c b/net/mac80211/main.c
-index 8345926193de..3ee47dc2584b 100644
---- a/net/mac80211/main.c
-+++ b/net/mac80211/main.c
-@@ -104,13 +104,15 @@ static u32 ieee80211_hw_conf_chan(struct ieee80211_local *local)
- 		chandef.chan = local->tmp_channel;
- 		chandef.width = NL80211_CHAN_WIDTH_20_NOHT;
- 		chandef.center_freq1 = chandef.chan->center_freq;
-+		chandef.freq1_offset = chandef.chan->freq_offset;
- 	} else
- 		chandef = local->_oper_chandef;
- 
- 	WARN(!cfg80211_chandef_valid(&chandef),
--	     "control:%d MHz width:%d center: %d/%d MHz",
--	     chandef.chan->center_freq, chandef.width,
--	     chandef.center_freq1, chandef.center_freq2);
-+	     "control:%d.%03d MHz width:%d center: %d.%03d/%d MHz",
-+	     chandef.chan->center_freq, chandef.chan->freq_offset,
-+	     chandef.width, chandef.center_freq1, chandef.freq1_offset,
-+	     chandef.center_freq2);
- 
- 	if (!cfg80211_chandef_identical(&chandef, &local->_oper_chandef))
- 		local->hw.conf.flags |= IEEE80211_CONF_OFFCHANNEL;
+ /**
+  * struct ieee80211_vendor_radiotap - vendor radiotap data information
+  * @present: presence bitmap for this vendor namespace
 diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index 16d75da0996a..4eebee49bb7d 100644
+index 4eebee49bb7d..5c1c99217723 100644
 --- a/net/mac80211/mlme.c
 +++ b/net/mac80211/mlme.c
-@@ -162,6 +162,7 @@ ieee80211_determine_chantype(struct ieee80211_sub_if_data *sdata,
- 	chandef->chan = channel;
- 	chandef->width = NL80211_CHAN_WIDTH_20_NOHT;
- 	chandef->center_freq1 = channel->center_freq;
-+	chandef->freq1_offset = channel->freq_offset;
+@@ -3669,7 +3669,8 @@ static void ieee80211_rx_bss_info(struct ieee80211_sub_if_data *sdata,
  
- 	if (!ht_oper || !sta_ht_cap.ht_supported) {
- 		ret = IEEE80211_STA_DISABLE_HT |
-@@ -396,9 +397,12 @@ static int ieee80211_config_bw(struct ieee80211_sub_if_data *sdata,
- 		return 0;
+ 	sdata_assert_lock(sdata);
  
- 	sdata_info(sdata,
--		   "AP %pM changed bandwidth, new config is %d MHz, width %d (%d/%d MHz)\n",
--		   ifmgd->bssid, chandef.chan->center_freq, chandef.width,
--		   chandef.center_freq1, chandef.center_freq2);
-+		   "AP %pM changed bandwidth, new config is %d.%03d MHz, "
-+		   "width %d (%d.%03d/%d MHz)\n",
-+		   ifmgd->bssid, chandef.chan->center_freq,
-+		   chandef.chan->freq_offset, chandef.width,
-+		   chandef.center_freq1, chandef.freq1_offset,
-+		   chandef.center_freq2);
+-	channel = ieee80211_get_channel(local->hw.wiphy, rx_status->freq);
++	channel = ieee80211_get_channel_khz(local->hw.wiphy,
++					ieee80211_rx_status_to_khz(rx_status));
+ 	if (!channel)
+ 		return;
  
- 	if (flags != (ifmgd->flags & (IEEE80211_STA_DISABLE_HT |
- 				      IEEE80211_STA_DISABLE_VHT |
-@@ -1364,10 +1368,14 @@ ieee80211_sta_process_chanswitch(struct ieee80211_sub_if_data *sdata,
- 	if (!cfg80211_chandef_usable(local->hw.wiphy, &csa_ie.chandef,
- 				     IEEE80211_CHAN_DISABLED)) {
- 		sdata_info(sdata,
--			   "AP %pM switches to unsupported channel (%d MHz, width:%d, CF1/2: %d/%d MHz), disconnecting\n",
-+			   "AP %pM switches to unsupported channel "
-+			   "(%d.%03d MHz, width:%d, CF1/2: %d.%03d/%d MHz), "
-+			   "disconnecting\n",
- 			   ifmgd->associated->bssid,
- 			   csa_ie.chandef.chan->center_freq,
-+			   csa_ie.chandef.chan->freq_offset,
- 			   csa_ie.chandef.width, csa_ie.chandef.center_freq1,
-+			   csa_ie.chandef.freq1_offset,
- 			   csa_ie.chandef.center_freq2);
- 		ieee80211_queue_work(&local->hw,
- 				     &ifmgd->csa_connection_drop_work);
-diff --git a/net/mac80211/offchannel.c b/net/mac80211/offchannel.c
-index c710504ccf1a..db3b8bf75656 100644
---- a/net/mac80211/offchannel.c
-+++ b/net/mac80211/offchannel.c
-@@ -557,6 +557,10 @@ static int ieee80211_start_roc_work(struct ieee80211_local *local,
+@@ -3885,7 +3886,8 @@ static void ieee80211_rx_mgmt_beacon(struct ieee80211_sub_if_data *sdata,
+ 		return;
+ 	}
  
- 	lockdep_assert_held(&local->mtx);
+-	if (rx_status->freq != chanctx_conf->def.chan->center_freq) {
++	if (ieee80211_rx_status_to_khz(rx_status) !=
++	    ieee80211_channel_to_khz(chanctx_conf->def.chan)) {
+ 		rcu_read_unlock();
+ 		return;
+ 	}
+diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
+index 91a13aee4378..0b6dca4c0c7d 100644
+--- a/net/mac80211/rx.c
++++ b/net/mac80211/rx.c
+@@ -412,6 +412,7 @@ ieee80211_add_rx_radiotap_header(struct ieee80211_local *local,
+ 	pos++;
  
-+	if (channel->freq_offset)
-+		/* this may work, but is untested */
-+		return -EOPNOTSUPP;
-+
- 	if (local->use_chanctx && !local->ops->remain_on_channel)
- 		return -EOPNOTSUPP;
- 
+ 	/* IEEE80211_RADIOTAP_CHANNEL */
++	/* TODO: frequency offset in KHz */
+ 	put_unaligned_le16(status->freq, pos);
+ 	pos += 2;
+ 	if (status->bw == RATE_INFO_BW_10)
 diff --git a/net/mac80211/scan.c b/net/mac80211/scan.c
-index fdac8192a519..4d14118dddca 100644
+index 4d14118dddca..5db15996524f 100644
 --- a/net/mac80211/scan.c
 +++ b/net/mac80211/scan.c
-@@ -896,6 +896,7 @@ static void ieee80211_scan_state_set_channel(struct ieee80211_local *local,
+@@ -275,7 +275,8 @@ void ieee80211_scan_rx(struct ieee80211_local *local, struct sk_buff *skb)
+ 			return;
+ 	}
  
- 	local->scan_chandef.chan = chan;
- 	local->scan_chandef.center_freq1 = chan->center_freq;
-+	local->scan_chandef.freq1_offset = chan->freq_offset;
- 	local->scan_chandef.center_freq2 = 0;
- 	switch (scan_req->scan_width) {
- 	case NL80211_BSS_CHAN_WIDTH_5:
-diff --git a/net/mac80211/tdls.c b/net/mac80211/tdls.c
-index fca1f5477396..f4bc53d4a844 100644
---- a/net/mac80211/tdls.c
-+++ b/net/mac80211/tdls.c
-@@ -1567,6 +1567,10 @@ ieee80211_tdls_channel_switch(struct wiphy *wiphy, struct net_device *dev,
- 	u32 ch_sw_tm_ie;
- 	int ret;
+-	channel = ieee80211_get_channel(local->hw.wiphy, rx_status->freq);
++	channel = ieee80211_get_channel_khz(local->hw.wiphy,
++					ieee80211_rx_status_to_khz(rx_status));
  
-+	if (chandef->chan->freq_offset)
-+		/* this may work, but is untested */
-+		return -EOPNOTSUPP;
-+
- 	mutex_lock(&local->sta_mtx);
- 	sta = sta_info_get(sdata, addr);
- 	if (!sta) {
-diff --git a/net/mac80211/trace.h b/net/mac80211/trace.h
-index 427f51a0a994..1b4709694d2a 100644
---- a/net/mac80211/trace.h
-+++ b/net/mac80211/trace.h
-@@ -37,32 +37,42 @@
- #define VIF_PR_ARG	__get_str(vif_name), __entry->vif_type, __entry->p2p ? "/p2p" : ""
- 
- #define CHANDEF_ENTRY	__field(u32, control_freq)					\
-+			__field(u32, freq_offset)					\
- 			__field(u32, chan_width)					\
- 			__field(u32, center_freq1)					\
-+			__field(u32, freq1_offset)					\
- 			__field(u32, center_freq2)
- #define CHANDEF_ASSIGN(c)							\
- 			__entry->control_freq = (c) ? ((c)->chan ? (c)->chan->center_freq : 0) : 0;	\
-+			__entry->freq_offset = (c) ? ((c)->chan ? (c)->chan->freq_offset : 0) : 0;	\
- 			__entry->chan_width = (c) ? (c)->width : 0;			\
- 			__entry->center_freq1 = (c) ? (c)->center_freq1 : 0;		\
-+			__entry->freq1_offset = (c) ? (c)->freq1_offset : 0;		\
- 			__entry->center_freq2 = (c) ? (c)->center_freq2 : 0;
--#define CHANDEF_PR_FMT	" control:%d MHz width:%d center: %d/%d MHz"
--#define CHANDEF_PR_ARG	__entry->control_freq, __entry->chan_width,			\
--			__entry->center_freq1, __entry->center_freq2
-+#define CHANDEF_PR_FMT	" control:%d.%03d MHz width:%d center: %d.%03d/%d MHz"
-+#define CHANDEF_PR_ARG	__entry->control_freq, __entry->freq_offset, __entry->chan_width, \
-+			__entry->center_freq1, __entry->freq1_offset, __entry->center_freq2
- 
- #define MIN_CHANDEF_ENTRY								\
- 			__field(u32, min_control_freq)					\
-+			__field(u32, min_freq_offset)					\
- 			__field(u32, min_chan_width)					\
- 			__field(u32, min_center_freq1)					\
-+			__field(u32, min_freq1_offset)					\
- 			__field(u32, min_center_freq2)
- 
- #define MIN_CHANDEF_ASSIGN(c)								\
- 			__entry->min_control_freq = (c)->chan ? (c)->chan->center_freq : 0;	\
-+			__entry->min_freq_offset = (c)->chan ? (c)->chan->freq_offset : 0;	\
- 			__entry->min_chan_width = (c)->width;				\
- 			__entry->min_center_freq1 = (c)->center_freq1;			\
-+			__entry->freq1_offset = (c)->freq1_offset;			\
- 			__entry->min_center_freq2 = (c)->center_freq2;
--#define MIN_CHANDEF_PR_FMT	" min_control:%d MHz min_width:%d min_center: %d/%d MHz"
--#define MIN_CHANDEF_PR_ARG	__entry->min_control_freq, __entry->min_chan_width,	\
--			__entry->min_center_freq1, __entry->min_center_freq2
-+#define MIN_CHANDEF_PR_FMT	" min_control:%d.%03d MHz min_width:%d min_center: %d.%03d/%d MHz"
-+#define MIN_CHANDEF_PR_ARG	__entry->min_control_freq, __entry->min_freq_offset,	\
-+			__entry->min_chan_width,					\
-+			__entry->min_center_freq1, __entry->min_freq1_offset,		\
-+			__entry->min_center_freq2
- 
- #define CHANCTX_ENTRY	CHANDEF_ENTRY							\
- 			MIN_CHANDEF_ENTRY						\
-@@ -412,6 +422,7 @@ TRACE_EVENT(drv_bss_info_changed,
- 		__field(s32, cqm_rssi_hyst)
- 		__field(u32, channel_width)
- 		__field(u32, channel_cfreq1)
-+		__field(u32, channel_cfreq1_offset)
- 		__dynamic_array(u32, arp_addr_list,
- 				info->arp_addr_cnt > IEEE80211_BSS_ARP_ADDR_LIST_LEN ?
- 					IEEE80211_BSS_ARP_ADDR_LIST_LEN :
-@@ -452,6 +463,7 @@ TRACE_EVENT(drv_bss_info_changed,
- 		__entry->cqm_rssi_hyst = info->cqm_rssi_hyst;
- 		__entry->channel_width = info->chandef.width;
- 		__entry->channel_cfreq1 = info->chandef.center_freq1;
-+		__entry->channel_cfreq1_offset = info->chandef.freq1_offset;
- 		__entry->arp_addr_cnt = info->arp_addr_cnt;
- 		memcpy(__get_dynamic_array(arp_addr_list), info->arp_addr_list,
- 		       sizeof(u32) * (info->arp_addr_cnt > IEEE80211_BSS_ARP_ADDR_LIST_LEN ?
-@@ -1223,6 +1235,7 @@ TRACE_EVENT(drv_remain_on_channel,
- 		LOCAL_ENTRY
- 		VIF_ENTRY
- 		__field(int, center_freq)
-+		__field(int, freq_offset)
- 		__field(unsigned int, duration)
- 		__field(u32, type)
- 	),
-@@ -1231,14 +1244,16 @@ TRACE_EVENT(drv_remain_on_channel,
- 		LOCAL_ASSIGN;
- 		VIF_ASSIGN;
- 		__entry->center_freq = chan->center_freq;
-+		__entry->freq_offset = chan->freq_offset;
- 		__entry->duration = duration;
- 		__entry->type = type;
- 	),
- 
- 	TP_printk(
--		LOCAL_PR_FMT  VIF_PR_FMT " freq:%dMHz duration:%dms type=%d",
-+		LOCAL_PR_FMT  VIF_PR_FMT " freq:%d.%03dMHz duration:%dms type=%d",
- 		LOCAL_PR_ARG, VIF_PR_ARG,
--		__entry->center_freq, __entry->duration, __entry->type
-+		__entry->center_freq, __entry->freq_offset,
-+		__entry->duration, __entry->type
- 	)
- );
- 
-@@ -1546,8 +1561,10 @@ struct trace_vif_entry {
- 
- struct trace_chandef_entry {
- 	u32 control_freq;
-+	u32 freq_offset;
- 	u32 chan_width;
- 	u32 center_freq1;
-+	u32 freq1_offset;
- 	u32 center_freq2;
- } __packed;
- 
-@@ -1597,18 +1614,26 @@ TRACE_EVENT(drv_switch_vif_chanctx,
- 					sizeof(local_vifs[i].vif.vif_name));
- 				SWITCH_ENTRY_ASSIGN(old_chandef.control_freq,
- 						old_ctx->def.chan->center_freq);
-+				SWITCH_ENTRY_ASSIGN(old_chandef.freq_offset,
-+						old_ctx->def.chan->freq_offset);
- 				SWITCH_ENTRY_ASSIGN(old_chandef.chan_width,
- 						    old_ctx->def.width);
- 				SWITCH_ENTRY_ASSIGN(old_chandef.center_freq1,
- 						    old_ctx->def.center_freq1);
-+				SWITCH_ENTRY_ASSIGN(old_chandef.freq1_offset,
-+						    old_ctx->def.freq1_offset);
- 				SWITCH_ENTRY_ASSIGN(old_chandef.center_freq2,
- 						    old_ctx->def.center_freq2);
- 				SWITCH_ENTRY_ASSIGN(new_chandef.control_freq,
- 						new_ctx->def.chan->center_freq);
-+				SWITCH_ENTRY_ASSIGN(new_chandef.freq_offset,
-+						new_ctx->def.chan->freq_offset);
- 				SWITCH_ENTRY_ASSIGN(new_chandef.chan_width,
- 						    new_ctx->def.width);
- 				SWITCH_ENTRY_ASSIGN(new_chandef.center_freq1,
- 						    new_ctx->def.center_freq1);
-+				SWITCH_ENTRY_ASSIGN(new_chandef.freq1_offset,
-+						    new_ctx->def.freq1_offset);
- 				SWITCH_ENTRY_ASSIGN(new_chandef.center_freq2,
- 						    new_ctx->def.center_freq2);
- 			}
+ 	if (!channel || channel->flags & IEEE80211_CHAN_DISABLED)
+ 		return;
 -- 
 2.20.1
 
