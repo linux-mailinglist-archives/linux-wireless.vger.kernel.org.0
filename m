@@ -2,100 +2,120 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 18CA119BD9D
-	for <lists+linux-wireless@lfdr.de>; Thu,  2 Apr 2020 10:30:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 296A919C155
+	for <lists+linux-wireless@lfdr.de>; Thu,  2 Apr 2020 14:44:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387710AbgDBIaM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 2 Apr 2020 04:30:12 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:33948 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387682AbgDBIaL (ORCPT
+        id S2387678AbgDBMoo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 2 Apr 2020 08:44:44 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:52160 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726252AbgDBMoo (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 2 Apr 2020 04:30:11 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0328SgBg045448;
-        Thu, 2 Apr 2020 08:30:00 GMT
+        Thu, 2 Apr 2020 08:44:44 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 032Chd3N166886;
+        Thu, 2 Apr 2020 12:44:34 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2020-01-29;
- bh=U+mkRVdl27+gx6adSuTh7F2Z1TVp+AUE66YF/7kfUFw=;
- b=i5Rz+dwfHuNn9bHUu0m4m4b7e0C6i+2MDYSymVqwl2yLOYrPqG9igxh2/yLq8/w4nWbn
- BMR4aIYXbaKvzZwAxxHkcfyHNrUj/7me1EVMZK+kHOas1VImniRnmzaCEL8u2ZMH0zpi
- dr/c3TqXmDCIgTzUgQuj5g90f7cBgWieHH1Wda4ilNoGk5mPXewGCZxKMfd0v5nqya37
- tH9+nf28vOGtQODRxjTAnUTdRc6PV4+F7iuUQXlImgnKo2hovknzKuclcNAs/ta6pWMb
- Jps3cG4vkKkqRHpXCxIl+mRSNI6Xk8Q4hI8zrXqI+MEQkQIZrfR1Yyn/GQEQoBhDKUxi Uw== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by userp2120.oracle.com with ESMTP id 303aqhtbxy-1
+ content-transfer-encoding : in-reply-to; s=corp-2020-01-29;
+ bh=x0huE/mMZHIQWX72jbyNEykJLzeJMXHbcFXfDWa7dW8=;
+ b=eLhW1G3fnRko1c0gC+a4HrxWT3w6rocUTn1ahYM4d/m6x2caVtqU3KnWEbttWtFq1mJE
+ ulnN2MY701BLGRw93KKn6R8yduUz8/q5IHaZdM7W2NeDCnbelZ5CA8DmldsT7G06l8vO
+ UcwUPkbAkT5VN53GD2z+gCBTkO4xNn8mQDEH7pblzF/Jl6LcYV8xKA9sckhbbWPP60wh
+ sHGj8zh5KeACpkL9JJT2FqA0FUtaTC9KQqk2cw/je/mFA6v7LkGbDbg25lVVY4/KAsh9
+ cRblsnS/UzvlghlxdqqQOpgitxx1gV2ebAN3dXjS9GdWxpHcvzef8yECuyGPsVJ8q4BD Ng== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by aserp2120.oracle.com with ESMTP id 303yundr5r-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 02 Apr 2020 08:30:00 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0328IIxa090802;
-        Thu, 2 Apr 2020 08:27:59 GMT
+        Thu, 02 Apr 2020 12:44:34 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 032Cg8Ad064328;
+        Thu, 2 Apr 2020 12:42:33 GMT
 Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by aserp3030.oracle.com with ESMTP id 302g4v4ys2-1
+        by userp3020.oracle.com with ESMTP id 302ga2bw5k-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 02 Apr 2020 08:27:59 +0000
-Received: from abhmp0020.oracle.com (abhmp0020.oracle.com [141.146.116.26])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 0328Rr5P026828;
-        Thu, 2 Apr 2020 08:27:53 GMT
+        Thu, 02 Apr 2020 12:42:33 +0000
+Received: from abhmp0006.oracle.com (abhmp0006.oracle.com [141.146.116.12])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 032CgVxX006017;
+        Thu, 2 Apr 2020 12:42:31 GMT
 Received: from kadam (/41.57.98.10)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Thu, 02 Apr 2020 01:27:53 -0700
-Date:   Thu, 2 Apr 2020 11:27:45 +0300
+        with ESMTP ; Thu, 02 Apr 2020 05:42:31 -0700
+Date:   Thu, 2 Apr 2020 15:42:23 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Ajay.Kathat@microchip.com
-Cc:     linux-wireless@vger.kernel.org, devel@driverdev.osuosl.org,
-        gregkh@linuxfoundation.org, johannes@sipsolutions.net,
-        lkml@sdf.org, Adham.Abozaeid@microchip.com
-Subject: Re: [PATCH v3] staging: wilc1000: Use crc7 in lib/ rather than a
- private copy
-Message-ID: <20200402082745.GG2001@kadam>
-References: <20200326152251.19094-1-ajay.kathat@microchip.com>
+To:     Jerome Pouiller <Jerome.Pouiller@silabs.com>
+Cc:     devel@driverdev.osuosl.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Kalle Valo <kvalo@codeaurora.org>
+Subject: Re: [PATCH 01/32] staging: wfx: add sanity checks to hif_join()
+Message-ID: <20200402124223.GQ2001@kadam>
+References: <20200401110405.80282-1-Jerome.Pouiller@silabs.com>
+ <20200401110405.80282-2-Jerome.Pouiller@silabs.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20200326152251.19094-1-ajay.kathat@microchip.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20200401110405.80282-2-Jerome.Pouiller@silabs.com>
 User-Agent: Mutt/1.9.4 (2018-02-28)
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9578 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 bulkscore=0 suspectscore=1
- mlxscore=0 spamscore=0 malwarescore=0 mlxlogscore=889 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
- definitions=main-2004020075
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ mlxlogscore=999 bulkscore=0 mlxscore=0 spamscore=0 adultscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2004020116
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9578 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 phishscore=0 clxscore=1011
- malwarescore=0 impostorscore=0 mlxlogscore=954 spamscore=0 mlxscore=0
- priorityscore=1501 lowpriorityscore=0 adultscore=0 suspectscore=1
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 lowpriorityscore=0
+ malwarescore=0 adultscore=0 priorityscore=1501 mlxlogscore=999 bulkscore=0
+ suspectscore=0 mlxscore=0 spamscore=0 impostorscore=0 clxscore=1015
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
- definitions=main-2004020076
+ definitions=main-2004020116
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, Mar 26, 2020 at 03:23:36PM +0000, Ajay.Kathat@microchip.com wrote:
-> From: George Spelvin <lkml@SDF.ORG>
+On Wed, Apr 01, 2020 at 01:03:34PM +0200, Jerome Pouiller wrote:
+> From: Jérôme Pouiller <jerome.pouiller@silabs.com>
 > 
-> The code in lib/ is the desired polynomial, and even includes
-> the 1-bit left shift in the table rather than needing to code
-> it explicitly.
+> Add a few check on start of hif_join().
 > 
-> While I'm in Kconfig, add a description of what a WILC1000 is.
-> Kconfig questions that require me to look up a data sheet to
-> find out that I probably don't have one are a pet peeve.
-> 
-
-I don't know how this patch made it through two versions without anyone
-complaining that this paragraph should be done as a separate patch...
-
-> Cc: Adham Abozaeid <adham.abozaeid@microchip.com>
-> Cc: linux-wireless@vger.kernel.org
-> Reviewed-by: Ajay Singh <ajay.kathat@microchip.com>
-> Signed-off-by: George Spelvin <lkml@sdf.org>
+> Signed-off-by: Jérôme Pouiller <jerome.pouiller@silabs.com>
 > ---
+>  drivers/staging/wfx/hif_tx.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/drivers/staging/wfx/hif_tx.c b/drivers/staging/wfx/hif_tx.c
+> index 77bca43aca42..445906035e9d 100644
+> --- a/drivers/staging/wfx/hif_tx.c
+> +++ b/drivers/staging/wfx/hif_tx.c
+> @@ -297,6 +297,8 @@ int hif_join(struct wfx_vif *wvif, const struct ieee80211_bss_conf *conf,
+>  	struct hif_req_join *body = wfx_alloc_hif(sizeof(*body), &hif);
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+We've got an allocation here.  It's a mistake to put the allocation in
+the declaration block because you're going to forget to check for
+failure.
 
-This should have you Signed-off-by.  The Reviewed-by is kind of assumed
-so you can drop that bit.  But everyone who touches a patch needs to
-add their signed off by.
+>  
+>  	WARN_ON(!conf->basic_rates);
+> +	WARN_ON(sizeof(body->ssid) < ssidlen);
+
+Put the variable on the left.  WARN_ON(ssidlen > sizeof(body->ssid)).
+I'm not a big fan of adding this sort of debug code, just audit the
+callers to see if it's possible or not.
+
+I have audited the caller for you, and I believe that this condition
+*is possible* so we need to return -EINVAL in this situation to prevent
+memory corruption.
+
+	if (ssidlen > sizeof(body->ssid))
+		return -EINVAL;
+
+> +	WARN(!conf->ibss_joined && !ssidlen, "joining an unknown BSS");
+>  	body->infrastructure_bss_mode = !conf->ibss_joined;
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Potential NULL dererefence because of the unchecked allocation.
 
 regards,
 dan carpenter
