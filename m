@@ -2,81 +2,101 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B16819BD7D
-	for <lists+linux-wireless@lfdr.de>; Thu,  2 Apr 2020 10:19:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 18CA119BD9D
+	for <lists+linux-wireless@lfdr.de>; Thu,  2 Apr 2020 10:30:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387849AbgDBITX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 2 Apr 2020 04:19:23 -0400
-Received: from mail-pf1-f194.google.com ([209.85.210.194]:37997 "EHLO
-        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387716AbgDBITW (ORCPT
+        id S2387710AbgDBIaM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 2 Apr 2020 04:30:12 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:33948 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387682AbgDBIaL (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 2 Apr 2020 04:19:22 -0400
-Received: by mail-pf1-f194.google.com with SMTP id c21so1417893pfo.5;
-        Thu, 02 Apr 2020 01:19:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=VcLk53K2T0017oS2ltgvgf+ueg1rt2M43xBurnp4rmU=;
-        b=FW8wv0FCbof6bO/HEK7jdkaKxTVJsLvyf9QNGHnzUVj1GBkzGjEcfm3PXCCxjws053
-         3LuXI+xR4ZDOJHjjZpbt7vN0pun72MU/V0vkjic75waC0W4vPCCYdBFUJo70GqAN/jnZ
-         1C/sKkFzH2snO2jcQt6CEhxZAZudceQDXpk+HlWaycF4J8ZQ0D4flJEYU2zPVx6YUY+r
-         fTp4VdHYQO061q3WwMkn5NZ+X2/i1mEF86k+0kXKcQ6nT8KrT+8JtES3/+N49lLKxqsx
-         xgsuHKur4YfKBBjCrCOKh4lQQirzsxkoSsniI9NnYhN1rk5Gbvp97r0nMBLhOC//jsWY
-         1Isw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=VcLk53K2T0017oS2ltgvgf+ueg1rt2M43xBurnp4rmU=;
-        b=eO8LqmzoVHjQg2cMk9SCkx7didfRlIPCFiIh1q3k4Zs+pBkTdugt+yCbmQb33UpwwG
-         XZt+ilJ20GYxGFISfNOlFO45432EjW9LgNbQsHoAgOr7a2JF3v5n+3KDhyPASd7WlzAy
-         phxHVU6i+TwmwoDQ43OjrYBJQSfOiNsTfwfFhlyVjtJgDA+8aq6WoNZsa5v3wY5KMIZO
-         XBq8FNUet7efZN73DZevF6QLtbSMtcf/Jh/9yD+WC7BF1rKd6qz7Dzed+L9TRai5i+eM
-         zhUNp3OpXboWtZZ35jFnrD/qomuR7RqzCOURKdiXs2QmuEiQbvVuHzFdzAfyZcM7ZR3V
-         Lc5w==
-X-Gm-Message-State: AGi0PuZT3yBvB+sosjCQBz7esuuHdT1ow4EafVdyE/2RovHK5Zm+WIZR
-        m9SKJdE2aTslwM9gxuj5Xew=
-X-Google-Smtp-Source: APiQypJVOLMjPtKqXIsBFtNQVMOsJ7OmBQaXkc2Dn3TNb+VYodKyJpp3n0wpXQDPrPORjG1K4AO3nw==
-X-Received: by 2002:a63:735c:: with SMTP id d28mr2335726pgn.63.1585815561779;
-        Thu, 02 Apr 2020 01:19:21 -0700 (PDT)
-Received: from VM_0_35_centos.localdomain ([150.109.62.251])
-        by smtp.gmail.com with ESMTPSA id 135sm3292353pfu.207.2020.04.02.01.19.19
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 02 Apr 2020 01:19:21 -0700 (PDT)
-From:   Qiujun Huang <hqjagain@gmail.com>
-To:     pkshih@realtek.com, kvalo@codeaurora.org
-Cc:     davem@davemloft.net, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Qiujun Huang <hqjagain@gmail.com>
-Subject: [PATCH] rtlwifi: rtl8723ae: fix spelling mistake "chang" -> "change"
-Date:   Thu,  2 Apr 2020 16:19:17 +0800
-Message-Id: <1585815557-20212-1-git-send-email-hqjagain@gmail.com>
-X-Mailer: git-send-email 1.8.3.1
+        Thu, 2 Apr 2020 04:30:11 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0328SgBg045448;
+        Thu, 2 Apr 2020 08:30:00 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2020-01-29;
+ bh=U+mkRVdl27+gx6adSuTh7F2Z1TVp+AUE66YF/7kfUFw=;
+ b=i5Rz+dwfHuNn9bHUu0m4m4b7e0C6i+2MDYSymVqwl2yLOYrPqG9igxh2/yLq8/w4nWbn
+ BMR4aIYXbaKvzZwAxxHkcfyHNrUj/7me1EVMZK+kHOas1VImniRnmzaCEL8u2ZMH0zpi
+ dr/c3TqXmDCIgTzUgQuj5g90f7cBgWieHH1Wda4ilNoGk5mPXewGCZxKMfd0v5nqya37
+ tH9+nf28vOGtQODRxjTAnUTdRc6PV4+F7iuUQXlImgnKo2hovknzKuclcNAs/ta6pWMb
+ Jps3cG4vkKkqRHpXCxIl+mRSNI6Xk8Q4hI8zrXqI+MEQkQIZrfR1Yyn/GQEQoBhDKUxi Uw== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by userp2120.oracle.com with ESMTP id 303aqhtbxy-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 02 Apr 2020 08:30:00 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0328IIxa090802;
+        Thu, 2 Apr 2020 08:27:59 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by aserp3030.oracle.com with ESMTP id 302g4v4ys2-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 02 Apr 2020 08:27:59 +0000
+Received: from abhmp0020.oracle.com (abhmp0020.oracle.com [141.146.116.26])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 0328Rr5P026828;
+        Thu, 2 Apr 2020 08:27:53 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Thu, 02 Apr 2020 01:27:53 -0700
+Date:   Thu, 2 Apr 2020 11:27:45 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Ajay.Kathat@microchip.com
+Cc:     linux-wireless@vger.kernel.org, devel@driverdev.osuosl.org,
+        gregkh@linuxfoundation.org, johannes@sipsolutions.net,
+        lkml@sdf.org, Adham.Abozaeid@microchip.com
+Subject: Re: [PATCH v3] staging: wilc1000: Use crc7 in lib/ rather than a
+ private copy
+Message-ID: <20200402082745.GG2001@kadam>
+References: <20200326152251.19094-1-ajay.kathat@microchip.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200326152251.19094-1-ajay.kathat@microchip.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9578 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 bulkscore=0 suspectscore=1
+ mlxscore=0 spamscore=0 malwarescore=0 mlxlogscore=889 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
+ definitions=main-2004020075
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9578 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 phishscore=0 clxscore=1011
+ malwarescore=0 impostorscore=0 mlxlogscore=954 spamscore=0 mlxscore=0
+ priorityscore=1501 lowpriorityscore=0 adultscore=0 suspectscore=1
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
+ definitions=main-2004020076
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-There is a spelling mistake in a trace message. Fix it.
+On Thu, Mar 26, 2020 at 03:23:36PM +0000, Ajay.Kathat@microchip.com wrote:
+> From: George Spelvin <lkml@SDF.ORG>
+> 
+> The code in lib/ is the desired polynomial, and even includes
+> the 1-bit left shift in the table rather than needing to code
+> it explicitly.
+> 
+> While I'm in Kconfig, add a description of what a WILC1000 is.
+> Kconfig questions that require me to look up a data sheet to
+> find out that I probably don't have one are a pet peeve.
+> 
 
-Signed-off-by: Qiujun Huang <hqjagain@gmail.com>
----
- drivers/net/wireless/realtek/rtlwifi/rtl8723ae/hal_btc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I don't know how this patch made it through two versions without anyone
+complaining that this paragraph should be done as a separate patch...
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/hal_btc.c b/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/hal_btc.c
-index 6801982..652d8ff 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/hal_btc.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/hal_btc.c
-@@ -131,7 +131,7 @@ static bool rtl8723e_dm_bt_is_same_coexist_state(struct ieee80211_hw *hw)
- 	    (rtlpriv->btcoexist.previous_state_h ==
- 	     rtlpriv->btcoexist.cstate_h)) {
- 		RT_TRACE(rtlpriv, COMP_BT_COEXIST, DBG_DMESG,
--			 "[DM][BT], Coexist state do not chang!!\n");
-+			 "[DM][BT], Coexist state do not change!!\n");
- 		return true;
- 	} else {
- 		RT_TRACE(rtlpriv, COMP_BT_COEXIST, DBG_DMESG,
--- 
-1.8.3.1
+> Cc: Adham Abozaeid <adham.abozaeid@microchip.com>
+> Cc: linux-wireless@vger.kernel.org
+> Reviewed-by: Ajay Singh <ajay.kathat@microchip.com>
+> Signed-off-by: George Spelvin <lkml@sdf.org>
+> ---
+
+This should have you Signed-off-by.  The Reviewed-by is kind of assumed
+so you can drop that bit.  But everyone who touches a patch needs to
+add their signed off by.
+
+regards,
+dan carpenter
 
