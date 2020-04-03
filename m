@@ -2,64 +2,114 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 560EB19D324
-	for <lists+linux-wireless@lfdr.de>; Fri,  3 Apr 2020 11:09:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3368A19D33E
+	for <lists+linux-wireless@lfdr.de>; Fri,  3 Apr 2020 11:13:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389297AbgDCJJY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 3 Apr 2020 05:09:24 -0400
-Received: from mailgw01.mediatek.com ([210.61.82.183]:46679 "EHLO
-        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1727635AbgDCJJY (ORCPT
+        id S2389015AbgDCJNH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 3 Apr 2020 05:13:07 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:47766 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727854AbgDCJNG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 3 Apr 2020 05:09:24 -0400
-X-UUID: 9b543f924a994a1fa534c2d4ac509a7e-20200403
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Transfer-Encoding:Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=noTg9XcjB6G862HLpOk/NARelLKgQV8r1Sj1NFb+P00=;
-        b=Tx4nBRZ2ZnWr94w5Tu+7/nC3nrvwPGBJTqIgjE3NsOpJtE4TC9qe2mrFk//rEqUFY2mxCAOd6wU8yYlESJZtSv+PLDmwHreMEpwlbEc7qMLVjrXNnzb2V3JAlNbaqntwVojTqKkzkPvvCqOIwGYDV4LtstanBHgRMhBUl0aItNM=;
-X-UUID: 9b543f924a994a1fa534c2d4ac509a7e-20200403
-Received: from mtkcas07.mediatek.inc [(172.21.101.84)] by mailgw01.mediatek.com
-        (envelope-from <sean.wang@mediatek.com>)
-        (Cellopoint E-mail Firewall v4.1.10 Build 0809 with TLS)
-        with ESMTP id 257580661; Fri, 03 Apr 2020 17:09:19 +0800
-Received: from mtkcas08.mediatek.inc (172.21.101.126) by
- mtkmbs08n1.mediatek.inc (172.21.101.55) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Fri, 3 Apr 2020 17:09:15 +0800
-Received: from mtkswgap22.mediatek.inc (172.21.77.33) by mtkcas08.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Fri, 3 Apr 2020 17:09:15 +0800
-From:   <sean.wang@mediatek.com>
-To:     <nbd@nbd.name>, <lorenzo.bianconi@redhat.com>
-CC:     <sean.wang@mediatek.com>, <ryder.lee@mediatek.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>
-Subject: [PATCH] mt76: mt7663: correct the name of the rom patch
-Date:   Fri, 3 Apr 2020 17:09:16 +0800
-Message-ID: <e290681bc341a60575ee087d0bbd9a91ad1b1de0.1585904519.git.sean.wang@mediatek.com>
-X-Mailer: git-send-email 1.7.9.5
+        Fri, 3 Apr 2020 05:13:06 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 03399rkp019032;
+        Fri, 3 Apr 2020 09:12:41 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2020-01-29;
+ bh=byYACmK3/0xJohPsdTYhJy5m5zZAY1HnOE2pzi+zRgc=;
+ b=O50q/jGwXTa//Z9bJhlK4iyRLWNhueAV3JAXu7FYtqL9KX5jDaEX1dn1ie4up8JVqaIm
+ oecJAxwdybzx7YnoUMpY1BrYuSmbWMV+fkARFr3jIiMiDzszrdAWXF9Mz3u6qu5YlWYG
+ xgwhbYA0MWYIbzf5lKift84oj9pB8qzTjmyX8q9GrcKO5xOVl2FG/Uvnr0VLmedFDxZB
+ 7ssvlgrydwCZJ0J8pWAzvPbcSsg1UhqeLhwY4lqL1ZnNT2jgwLHQk5tE/Z6OdjxVbg4q
+ unyJFV0BlNEoJ0SYMHYmEG0pbVgXnW/ZCUH+KUXINA2WGjb8yTFw57TtqU+CI724LlBD 2w== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by aserp2120.oracle.com with ESMTP id 303yunjk82-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 03 Apr 2020 09:12:41 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0339788N136384;
+        Fri, 3 Apr 2020 09:10:40 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by userp3030.oracle.com with ESMTP id 302g2men6h-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 03 Apr 2020 09:10:40 +0000
+Received: from abhmp0019.oracle.com (abhmp0019.oracle.com [141.146.116.25])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 0339Abrw025611;
+        Fri, 3 Apr 2020 09:10:37 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Fri, 03 Apr 2020 02:10:36 -0700
+Date:   Fri, 3 Apr 2020 12:10:29 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     George Spelvin <lkml@SDF.ORG>
+Cc:     devel@driverdev.osuosl.org, Ajay.Kathat@microchip.com,
+        gregkh@linuxfoundation.org, linux-wireless@vger.kernel.org,
+        Adham.Abozaeid@microchip.com, johannes@sipsolutions.net
+Subject: Re: [PATCH v3] staging: wilc1000: Use crc7 in lib/ rather than a
+ private copy
+Message-ID: <20200403091029.GC2001@kadam>
+References: <20200326152251.19094-1-ajay.kathat@microchip.com>
+ <20200402082745.GG2001@kadam>
+ <20200402153034.GB2013@SDF.ORG>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200402153034.GB2013@SDF.ORG>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9579 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 spamscore=0 mlxscore=0
+ adultscore=0 phishscore=0 bulkscore=0 suspectscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
+ definitions=main-2004030078
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9579 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 lowpriorityscore=0
+ malwarescore=0 adultscore=0 priorityscore=1501 mlxlogscore=999 bulkscore=0
+ suspectscore=0 mlxscore=0 spamscore=0 impostorscore=0 clxscore=1015
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
+ definitions=main-2004030078
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-RnJvbTogU2VhbiBXYW5nIDxzZWFuLndhbmdAbWVkaWF0ZWsuY29tPg0KDQpSb20gcGF0Y2ggaXMg
-c2hhcmVkIGJldHdlZW4gQmx1ZXRvb3RoIGFuZCBXaWZpIGRldmljZXMsIHNvIGNvcnJlY3QgdGhl
-DQpuYW1pbmcgdG8gYWxsb3cgdHdvIGRyaXZlcnMgdG8gc2hhcmUgdGhlIHNhbWUgZmlsZS4NCg0K
-U2lnbmVkLW9mZi1ieTogU2VhbiBXYW5nIDxzZWFuLndhbmdAbWVkaWF0ZWsuY29tPg0KLS0tDQog
-ZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc2MTUvbXQ3NjE1LmggfCAyICst
-DQogMSBmaWxlIGNoYW5nZWQsIDEgaW5zZXJ0aW9uKCspLCAxIGRlbGV0aW9uKC0pDQoNCmRpZmYg
-LS1naXQgYS9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzYxNS9tdDc2MTUu
-aCBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3NjE1L210NzYxNS5oDQpp
-bmRleCA1MmQyZDFhNDFmZTAuLjIzZmMxMjY0ODU4MiAxMDA2NDQNCi0tLSBhL2RyaXZlcnMvbmV0
-L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3NjE1L210NzYxNS5oDQorKysgYi9kcml2ZXJzL25l
-dC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzYxNS9tdDc2MTUuaA0KQEAgLTQxLDcgKzQxLDcg
-QEANCiAjZGVmaW5lIE1UNzYxNV9GSVJNV0FSRV9WMgkJMg0KICNkZWZpbmUgTVQ3NjE1X0ZJUk1X
-QVJFX1YzCQkzDQogDQotI2RlZmluZSBNVDc2NjNfUk9NX1BBVENICQkibWVkaWF0ZWsvbXQ3NjYz
-cHIyaF92My5iaW4iDQorI2RlZmluZSBNVDc2NjNfUk9NX1BBVENICQkibWVkaWF0ZWsvbXQ3NjYz
-cHIyaC5iaW4iDQogI2RlZmluZSBNVDc2NjNfRklSTVdBUkVfTjkgICAgICAgICAgICAgICJtZWRp
-YXRlay9tdDc2NjNfbjlfdjMuYmluIg0KIA0KICNkZWZpbmUgTVQ3NjE1X0VFUFJPTV9TSVpFCQkx
-MDI0DQotLSANCjIuMjUuMQ0K
+On Thu, Apr 02, 2020 at 03:30:34PM +0000, George Spelvin wrote:
+> On Thu, Apr 02, 2020 at 11:27:45AM +0300, Dan Carpenter wrote:
+> > I don't know how this patch made it through two versions without anyone
+> > complaining that this paragraph should be done as a separate patch...
+> 
+> I often fold comment (and spacing/formatting) patches in to a main
+> patch, when touching adjacent code anyway and it doesn't cause
+> distracting clutter.
+> 
+> This seemed like such a case, which is why I submitted it as one.
+> But it's a bit of style thing.
+> 
+
+We're super strict in Staging.  :P  Greg is more strict than I am.
+
+> >> Cc: Adham Abozaeid <adham.abozaeid@microchip.com>
+> >> Cc: linux-wireless@vger.kernel.org
+> >> Reviewed-by: Ajay Singh <ajay.kathat@microchip.com>
+> >> Signed-off-by: George Spelvin <lkml@sdf.org>
+> >> ---
+> > 
+> > This should have you Signed-off-by.  The Reviewed-by is kind of assumed
+> > so you can drop that bit.  But everyone who touches a patch needs to
+> > add their signed off by.
+> 
+> Er... all he did was add "staging: " to the front of the title.
+> 
+> That's not a change to the code at all, and as trivial a change
+> to the commit message as adding "Reviewed-by:" to the end.
+> We don't need S-o-b for such things or we'd end up in a horrible
+> infinite recursion.
+
+You've misunderstood.  He sent the email so he has to add his
+Signed-off-by.  It's not at all related to changing anything in the
+patch.  That's how sign offs work.
+
+regards,
+dan carpenter
 
