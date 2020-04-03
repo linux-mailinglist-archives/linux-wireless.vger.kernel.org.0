@@ -2,73 +2,153 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C0A4619DC63
-	for <lists+linux-wireless@lfdr.de>; Fri,  3 Apr 2020 19:08:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6910A19DC6D
+	for <lists+linux-wireless@lfdr.de>; Fri,  3 Apr 2020 19:10:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728357AbgDCRIS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 3 Apr 2020 13:08:18 -0400
-Received: from mail2.candelatech.com ([208.74.158.173]:41448 "EHLO
-        mail3.candelatech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728069AbgDCRIS (ORCPT
+        id S1728140AbgDCRKn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 3 Apr 2020 13:10:43 -0400
+Received: from mail-ot1-f67.google.com ([209.85.210.67]:42047 "EHLO
+        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727998AbgDCRKn (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 3 Apr 2020 13:08:18 -0400
-Received: from [192.168.254.4] (unknown [50.34.219.109])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail3.candelatech.com (Postfix) with ESMTPSA id 9748C13C377;
-        Fri,  3 Apr 2020 10:08:16 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 9748C13C377
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1585933697;
-        bh=vXjSse61YM7LEVf9nGrOGe7M1dfPgEH0OAV3L6rr8WU=;
-        h=Subject:To:References:From:Date:In-Reply-To:From;
-        b=kBK0NeTkDXwNM3KXVnObUSl2tvBAyg5eT34IBZnbQUAxttB6SZgu+eX6YaeHmbCI/
-         1AK2i5ah60l+xpUJhXuV8TgOmom4vsceT8986TASAJ0GzaqjT1LJv8SkXmUERH2/fN
-         v3ZJgD8lj0GrPkveT818dqW0iVo9BkZr89qKUVXI=
-Subject: Re: restarting efforts on AQL on intel wifi, at least?
-To:     Dave Taht <dave.taht@gmail.com>,
-        Linux Kernel Network Developers <netdev@vger.kernel.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Make-Wifi-fast <make-wifi-fast@lists.bufferbloat.net>,
-        Johannes Berg <johannes@sipsolutions.net>
-References: <CAA93jw6cX48oAE=KrYOMUx_jY0zBpPc+Vg-b+7aYa7+7KRsOPA@mail.gmail.com>
-From:   Ben Greear <greearb@candelatech.com>
-Message-ID: <14f57458-a1d4-632d-7380-3c08e520f061@candelatech.com>
-Date:   Fri, 3 Apr 2020 10:08:14 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
- Thunderbird/45.8.0
+        Fri, 3 Apr 2020 13:10:43 -0400
+Received: by mail-ot1-f67.google.com with SMTP id z5so7985782oth.9
+        for <linux-wireless@vger.kernel.org>; Fri, 03 Apr 2020 10:10:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=0NQsNcZoNvhxa8sxCKT+EqRaHA5MlC6Htv2OcwjWylA=;
+        b=VITZPPjH941cELSyVbSFPnH4Z/7SewourxTaSRMglXb5VfAKoUI/GQwk6w5jAkD9bc
+         verQXEmgVceczX55j3+h7bdbVtvVxmpo7LQkd5c/954tRwkg8m5UDN6s90Ja6Yrq7R1s
+         baH0c9S8ZJGrmGXxr56YyX3rlD3buvPvjTISgTMsgNYjVrEGON1p1oj/SRwXDh3YR0Ql
+         +l3I1KZb/Jw5kePkOEtcEzXjaG4E9O9q/MMyue7sTxGZqKSpkv02qaujnLQVsK1gf9N9
+         GY+x9+6eOOftsuMIuF2sBA924ylSJ/T3Wg+xJRsHZKZ4/uV13tbeMelmTQ7j0/wHByX9
+         Fxdg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=0NQsNcZoNvhxa8sxCKT+EqRaHA5MlC6Htv2OcwjWylA=;
+        b=hHqOFLi0bayBJ2SEaxxRl3ZSC066927FHUv4trUzcm4t6q4cqPEJQPA0ZUzUygR9s/
+         f7eT8UamTA2eR0HaKXNBTNirDa6rYq1iJIZAsVhG/f0zJCzRvipzHy8pl5zcmSrbcNsb
+         64zzcSwoli9nGPhE7a9su02d1CKbNyA9xPUNV9CxS5o86o/ScdgHo5uk+ZR8AvqeHPC0
+         /NdCdlI1vQinWiCLTnhCinBuZEAP43oEbz9vaXrDATDg/Iu46VdVbzqEEmYonHRXIejf
+         u85j9JpJ83Nh3Seiin440gnBz9PGjZ7FwETA73/oG5GtOEvOCJhTJRePWJGIQLrUGjRJ
+         I79Q==
+X-Gm-Message-State: AGi0PuZvq2LslWnjyLfYPql8i6mWoQ6q7Yc55Cn87rmK10nSWAaD6J76
+        62OSWJSchMRsSlbMRXFxl3pNU3/oevmuXODIrIk=
+X-Google-Smtp-Source: APiQypJJRBYF8Oqto+dL+yaVR1yEDbQYG7yFFqqRSoXW08pNLEDr4u7RzX8DhlF9KC5eXWDFFnBJd+moAesGHkg6dHM=
+X-Received: by 2002:a9d:264a:: with SMTP id a68mr7088533otb.176.1585933842431;
+ Fri, 03 Apr 2020 10:10:42 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <CAA93jw6cX48oAE=KrYOMUx_jY0zBpPc+Vg-b+7aYa7+7KRsOPA@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20200403082955.1126339-1-luca@coelho.fi> <iwlwifi.20200403112332.0ed2f71aee7f.I3a4af6b03b87a6bc18db9b1ff9a812f397bee1fc@changeid>
+ <CAPuovEJK8AUBPeBBi=BMx-o+9krdA-_NqCJLByWHV2_q2b42Ow@mail.gmail.com>
+In-Reply-To: <CAPuovEJK8AUBPeBBi=BMx-o+9krdA-_NqCJLByWHV2_q2b42Ow@mail.gmail.com>
+From:   Mark Asselstine <asselsm@gmail.com>
+Date:   Fri, 3 Apr 2020 13:10:31 -0400
+Message-ID: <CAPuovE+Pmh71BNWdKEBJYYVhuowL3XABMyDtk6kbFTzfSR3M+g@mail.gmail.com>
+Subject: Re: [PATCH v5.7 4/8] iwlwifi: mvm: limit maximum queue appropriately
+To:     Luca Coelho <luca@coelho.fi>
+Cc:     kvalo@codeaurora.org,
+        linux-wireless <linux-wireless@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 04/03/2020 09:56 AM, Dave Taht wrote:
-> the AQL patches for the ath10k finally landed in openwrt head, and were lovely:
+On Fri, Apr 3, 2020 at 10:38 AM Mark Asselstine <asselsm@gmail.com> wrote:
 >
-> https://forum.openwrt.org/t/aql-and-the-ath10k-is-lovely/
+> On Fri, Apr 3, 2020 at 4:32 AM Luca Coelho <luca@coelho.fi> wrote:
+> >
+> > From: Johannes Berg <johannes.berg@intel.com>
+> >
+> > Due to some hardware issues, queue 32 isn't usable on devices that have
+> > 32 queues (7000, 8000, 9000 families),
+
+Is this statement really correct? All these devices have 31 queues
+according to (.num_of_queues = 31). Without a HW specification I can't
+be 100% sure but you should have this information within Intel. From
+the details of my patch and my investigation, this should be nack'd
+along with an explanation as to why my fix is not valid.
+
+Mark
+
+> > which is correctly reflected in
+> > the configuration and TX queue initialization.
 >
-> When I last looked the attempt to get at least some intel wifi chips
-> working with AQL had stalled out with
-> a variety of other problems. I've been sitting on a bunch of ax200
-> chips, and am feeling inspired to tackle those.
-
-Hello Dave,
-
-What features does a driver need to support AQL?  The 'patch' to enable
-it in ath10k-ct was just to enable a feature flag, so the underlying
-features must have gone in earlier?
-
-Thanks,
-Ben
-
+> This will not fix the issue on the 1000, 2000, 5000 and 6000 devices.
+> You need further protection on these as their are only 20
+> (IWLAGN_NUM_QUEUES) queues. I sent out a patch on March 19th with a
+> fix.
 >
-> Any news on other chips like the ath11k?
+> Mark
 >
-
--- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
+> >
+> > However, the firmware API and queue allocation code assumes that there
+> > are 32 queues, and if something actually attempts to use #31 this leads
+> > to a NULL-pointer dereference since it's not allocated.
+> >
+> > Fix this by limiting to 31 in the IWL_MVM_DQA_MAX_DATA_QUEUE, and also
+> > add some code to catch this earlier in the future, if the configuration
+> > changes perhaps.
+> >
+> > Cc: stable@vger.kernel.org # v4.9+
+> > Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+> > Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+> > ---
+> >  drivers/net/wireless/intel/iwlwifi/fw/api/txq.h | 6 +++---
+> >  drivers/net/wireless/intel/iwlwifi/mvm/sta.c    | 5 +++++
+> >  2 files changed, 8 insertions(+), 3 deletions(-)
+> >
+> > diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/txq.h b/drivers/net/wireless/intel/iwlwifi/fw/api/txq.h
+> > index 73196cbc7fbe..75d958bab0e3 100644
+> > --- a/drivers/net/wireless/intel/iwlwifi/fw/api/txq.h
+> > +++ b/drivers/net/wireless/intel/iwlwifi/fw/api/txq.h
+> > @@ -8,7 +8,7 @@
+> >   * Copyright(c) 2007 - 2014 Intel Corporation. All rights reserved.
+> >   * Copyright(c) 2013 - 2015 Intel Mobile Communications GmbH
+> >   * Copyright(c) 2016 - 2017 Intel Deutschland GmbH
+> > - * Copyright(c) 2019 Intel Corporation
+> > + * Copyright(c) 2019 - 2020 Intel Corporation
+> >   *
+> >   * This program is free software; you can redistribute it and/or modify
+> >   * it under the terms of version 2 of the GNU General Public License as
+> > @@ -31,7 +31,7 @@
+> >   * Copyright(c) 2005 - 2014 Intel Corporation. All rights reserved.
+> >   * Copyright(c) 2013 - 2015 Intel Mobile Communications GmbH
+> >   * Copyright(c) 2016 - 2017 Intel Deutschland GmbH
+> > - * Copyright(c) 2019 Intel Corporation
+> > + * Copyright(c) 2019 - 2020 Intel Corporation
+> >   * All rights reserved.
+> >   *
+> >   * Redistribution and use in source and binary forms, with or without
+> > @@ -99,7 +99,7 @@ enum iwl_mvm_dqa_txq {
+> >         IWL_MVM_DQA_MAX_MGMT_QUEUE = 8,
+> >         IWL_MVM_DQA_AP_PROBE_RESP_QUEUE = 9,
+> >         IWL_MVM_DQA_MIN_DATA_QUEUE = 10,
+> > -       IWL_MVM_DQA_MAX_DATA_QUEUE = 31,
+> > +       IWL_MVM_DQA_MAX_DATA_QUEUE = 30,
+> >  };
+> >
+> >  enum iwl_mvm_tx_fifo {
+> > diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/sta.c b/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
+> > index 64ef3f3ba23b..251d6fbb1da5 100644
+> > --- a/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
+> > +++ b/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
+> > @@ -722,6 +722,11 @@ static int iwl_mvm_find_free_queue(struct iwl_mvm *mvm, u8 sta_id,
+> >
+> >         lockdep_assert_held(&mvm->mutex);
+> >
+> > +       if (WARN(maxq >= mvm->trans->trans_cfg->base_params->num_of_queues,
+> > +                "max queue %d >= num_of_queues (%d)", maxq,
+> > +                mvm->trans->trans_cfg->base_params->num_of_queues))
+> > +               maxq = mvm->trans->trans_cfg->base_params->num_of_queues - 1;
+> > +
+> >         /* This should not be hit with new TX path */
+> >         if (WARN_ON(iwl_mvm_has_new_tx_api(mvm)))
+> >                 return -ENOSPC;
+> > --
+> > 2.25.1
+> >
