@@ -2,138 +2,163 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EC61519CC7E
-	for <lists+linux-wireless@lfdr.de>; Thu,  2 Apr 2020 23:42:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EB51519CE56
+	for <lists+linux-wireless@lfdr.de>; Fri,  3 Apr 2020 03:49:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388008AbgDBVmV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 2 Apr 2020 17:42:21 -0400
-Received: from mail-wm1-f67.google.com ([209.85.128.67]:55855 "EHLO
-        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726963AbgDBVmV (ORCPT
+        id S2390262AbgDCBta (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 2 Apr 2020 21:49:30 -0400
+Received: from mail-vs1-f65.google.com ([209.85.217.65]:41177 "EHLO
+        mail-vs1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388709AbgDCBta (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 2 Apr 2020 17:42:21 -0400
-Received: by mail-wm1-f67.google.com with SMTP id r16so5023688wmg.5
-        for <linux-wireless@vger.kernel.org>; Thu, 02 Apr 2020 14:42:19 -0700 (PDT)
+        Thu, 2 Apr 2020 21:49:30 -0400
+Received: by mail-vs1-f65.google.com with SMTP id a63so3947774vsa.8;
+        Thu, 02 Apr 2020 18:49:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=to:cc:from:subject:message-id:date:user-agent:mime-version
-         :content-language:content-transfer-encoding;
-        bh=deUrCaIYg9VqgBtDxyvSfNVjqbAj9bWkcCoGMyJST/s=;
-        b=THfwV+3EtI6U2dmE7J9hZ6dlveFN4xZx7dFH4LVuA9JOP1RqHbbisSH/XqVzDHLDHt
-         w7HgnXPEThde/sWy0nm185afUHdPIpcllMCy7wtVekiGas0/Y3ASI4wJy4x6UWgWwdZG
-         BfzvjCQTgXNaUVg3kHkLZLDpNpNedFbWyYmBF6qtQdcXOnMiO1hFQbI/nb8XgjzaODqb
-         Y0RXK/pYexQTM3rxvao6ypIvuLzlN+tncnPH4ZdQL6MB+xlENqhCEoCC9gqWJHuORhxA
-         JOP4w39hIjuQ0p5FNCR5qX6syvb6hrh+ddoCodlB6lewmi6pPTfW8ZjuTvpu0uAiw67f
-         mv2A==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=A1UgCaq/sneZWs82BMpAJ1Zb7NbqtDFIsjH2B80RJuY=;
+        b=JZMT/N2r3FJM7awaf3qHWC0KGL3LgtwX7JOODWPzwsX8LUQJOLd/ABtTMJ2ZY7N7N5
+         fZUqEEtFR9rXmnCQ3va4mJuZkiv0x48vnnNXf9UTkvuFV5xoor4IoMGwo71gK7PPc/JL
+         np8QuQgZSqYPFIuAKbJdmstuWFpZuOz5I0IZq7ejFjJ2Iv+o62h0YThLa5bzqeixjCOK
+         bc7jkXGiWyThxVU9RhtcFRZyOWUunQw40STZuEaLMdWKr3WtsmlyVm89k0WYIvhSAeko
+         IFAYM+3a2MAnxBmauUVuXN4818BdrKW6P3GA/oebUq452zxHyI4aU9CIUbt2MbMpQwgs
+         sGZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:to:cc:from:subject:message-id:date:user-agent
-         :mime-version:content-language:content-transfer-encoding;
-        bh=deUrCaIYg9VqgBtDxyvSfNVjqbAj9bWkcCoGMyJST/s=;
-        b=QXWZT0279syj6Ajldy+gXanAZWpRfR6/r9iIFRNi6pN7Sma4bEMWr+3ZZcUKFGN09a
-         SaVhh88EmdEJdQnovI77wJrVK05B7oi06kebH0pNjRl3VYSFwtZfJNSOyTBKzDniOCRN
-         P1Z4/OomMtnl28PdZ9vGgwNgWTHc5Ayj73nYHmnUM1DajLeHza2z2JhtCZdpbEkMsBve
-         b+wdJ8PxddN3t4rpIr8QwoIR6lbzyVFGRRMYGIkiifhTc4BpFqWILwHv23if5tYPNoDu
-         T47T7ZwvL92Sn4ipfs8wQy6SRP81LGtOBXw/mLB77HsSUYdzR0/UkeWBOUDjZldMa5/s
-         AhRA==
-X-Gm-Message-State: AGi0PuZvrWsbWgIS26O3IGk7EyebhOxP8P63uQhO9KVsDyzsQ1EHQBKL
-        guPsn2gi+1KZ8fYB9+8NyMbL1/Jt
-X-Google-Smtp-Source: APiQypIsy2FRWSKqb9ajTmBG7N5fBeZ6/4rovH+7z8T8Glt/MH19turvmeAu0HNKw9PumETQ/f5Xdw==
-X-Received: by 2002:a1c:51:: with SMTP id 78mr5213590wma.157.1585863738628;
-        Thu, 02 Apr 2020 14:42:18 -0700 (PDT)
-Received: from [192.168.43.18] (188.29.165.56.threembb.co.uk. [188.29.165.56])
-        by smtp.gmail.com with ESMTPSA id a145sm1050802wmd.20.2020.04.02.14.42.17
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 02 Apr 2020 14:42:18 -0700 (PDT)
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>,
-        linux-wireless@vger.kernel.org
-From:   Malcolm Priestley <tvboxspy@gmail.com>
-Subject: [PATCH 2/2] staging: vt6656: set all cck rates to default.
-Message-ID: <dec847da-5bad-1920-f275-741f7f704fb3@gmail.com>
-Date:   Thu, 2 Apr 2020 22:42:17 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=A1UgCaq/sneZWs82BMpAJ1Zb7NbqtDFIsjH2B80RJuY=;
+        b=cYMoMap+WupKT5foS7tVhfvsxy2UMgXFKOjZJIO6vwHL7gAXxYfrPwFKWG0X2KYVXa
+         5/lQLR1eryAMnxA006MqmepBk1yyvKbDI/il2oAqEUYV4XSM2pHzOC1JrcDRVkKidwQf
+         I2hqJJoUU7x1YFv1PKrDek+aK9CSOtVp8oHY56R2SIPjsn81YIbbOzeuLpSJ3zKiZpbR
+         QNRizSQzNOCHCNrxuIDX7PU2m3FHrthbZm7HbklGETeE/IYpAf2Z4ZaK45m7XwhkMz32
+         NNdXmld3YfrFwlPJK66LbHUkEi1cqDLnvjh1+1o/bMlNqjM3GA9jaZlZVSvhgVxgEPQn
+         MXfg==
+X-Gm-Message-State: AGi0PuaxX9aNBrvt5LAcEb9egu/xVAKqcLv1sdmx72idOOjuXMXzNnvD
+        vD+VfuKNhUuBidtG3z18Er5xjbynKO2ZsN/xxH4=
+X-Google-Smtp-Source: APiQypKNV7+QGS3DWHrllnUuCUKW69ratEU5FHrCnXUd1BpUhBkSgECPcL5CgcJm+ZmQiXtbLh+otd4XRNg89G8xwfY=
+X-Received: by 2002:a05:6102:1b:: with SMTP id j27mr4626105vsp.150.1585878568603;
+ Thu, 02 Apr 2020 18:49:28 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <0000000000006ac55b05a1c05d72@google.com>
+In-Reply-To: <0000000000006ac55b05a1c05d72@google.com>
+From:   Qiujun Huang <anenbupt@gmail.com>
+Date:   Fri, 3 Apr 2020 09:49:16 +0800
+Message-ID: <CADG63jC06pj4pSrKMKQeK1pedyRnjNTWWmTzg-6rNbQh5c6=Ug@mail.gmail.com>
+Subject: Re: KASAN: use-after-free Write in ath9k_htc_rx_msg
+To:     syzbot <syzbot+b1c61e5f11be5782f192@syzkaller.appspotmail.com>
+Cc:     Andrey Konovalov <andreyknvl@google.com>,
+        ath9k-devel@qca.qualcomm.com, davem@davemloft.net,
+        kvalo@codeaurora.org, LKML <linux-kernel@vger.kernel.org>,
+        USB list <linux-usb@vger.kernel.org>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        syzkaller-bugs <syzkaller-bugs@googlegroups.com>
+Content-Type: multipart/mixed; boundary="000000000000bdb0f205a25920d1"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-mac80211 rate control decides which cck rates to use so all of
-them should be set enabled at the appropriate bit rate.
+--000000000000bdb0f205a25920d1
+Content-Type: text/plain; charset="UTF-8"
 
-This means vnt_get_cck_rate is no longer required.
+#syz test: https://github.com/google/kasan.git usb-fuzzer
 
-Signed-off-by: Malcolm Priestley <tvboxspy@gmail.com>
----
- drivers/staging/vt6656/card.c | 38 ++++-------------------------------
- 1 file changed, 4 insertions(+), 34 deletions(-)
+--000000000000bdb0f205a25920d1
+Content-Type: application/octet-stream; 
+	name="0001-ath9k-fix-use-after-free-read-in-htc_connect_service.patch"
+Content-Disposition: attachment; 
+	filename="0001-ath9k-fix-use-after-free-read-in-htc_connect_service.patch"
+Content-Transfer-Encoding: base64
+Content-ID: <f_k8jj56zv0>
+X-Attachment-Id: f_k8jj56zv0
 
-diff --git a/drivers/staging/vt6656/card.c b/drivers/staging/vt6656/card.c
-index 4abbe9b30b65..97e1538a528e 100644
---- a/drivers/staging/vt6656/card.c
-+++ b/drivers/staging/vt6656/card.c
-@@ -74,32 +74,6 @@ void vnt_set_channel(struct vnt_private *priv, u32 connection_channel)
- 			   (u8)(connection_channel | 0x80));
- }
- 
--/*
-- * Description: Get CCK mode basic rate
-- *
-- * Parameters:
-- *  In:
-- *      priv		- The adapter to be set
-- *      rate_idx	- Receiving data rate
-- *  Out:
-- *      none
-- *
-- * Return Value: response Control frame rate
-- *
-- */
--static u16 vnt_get_cck_rate(struct vnt_private *priv, u16 rate_idx)
--{
--	u16 ui = rate_idx;
--
--	while (ui > RATE_1M) {
--		if (priv->basic_rates & (1 << ui))
--			return ui;
--		ui--;
--	}
--
--	return RATE_1M;
--}
--
- /*
-  * Description: Calculate TxRate and RsvTime fields for RSPINF in OFDM mode.
-  *
-@@ -216,20 +190,16 @@ void vnt_set_rspinf(struct vnt_private *priv, u8 bb_type)
- 	int i;
- 
- 	/*RSPINF_b_1*/
--	vnt_get_phy_field(priv, 14, vnt_get_cck_rate(priv, RATE_1M),
--			  PK_TYPE_11B, &phy[0]);
-+	vnt_get_phy_field(priv, 14, RATE_1M, PK_TYPE_11B, &phy[0]);
- 
- 	/*RSPINF_b_2*/
--	vnt_get_phy_field(priv, 14, vnt_get_cck_rate(priv, RATE_2M),
--			  PK_TYPE_11B, &phy[1]);
-+	vnt_get_phy_field(priv, 14, RATE_2M, PK_TYPE_11B, &phy[1]);
- 
- 	/*RSPINF_b_5*/
--	vnt_get_phy_field(priv, 14, vnt_get_cck_rate(priv, RATE_5M),
--			  PK_TYPE_11B, &phy[2]);
-+	vnt_get_phy_field(priv, 14, RATE_5M, PK_TYPE_11B, &phy[2]);
- 
- 	/*RSPINF_b_11*/
--	vnt_get_phy_field(priv, 14, vnt_get_cck_rate(priv, RATE_11M),
--			  PK_TYPE_11B, &phy[3]);
-+	vnt_get_phy_field(priv, 14, RATE_11M, PK_TYPE_11B, &phy[3]);
- 
- 	/*RSPINF_a_6*/
- 	vnt_calculate_ofdm_rate(RATE_6M, bb_type, &tx_rate[0], &rsv_time[0]);
--- 
-2.25.1
+RnJvbSA2MWE3N2JiMjE3OTJiYTIzMjMyOTk4ODBhYzRhMDdjNmZlMGI5NGEwIE1vbiBTZXAgMTcg
+MDA6MDA6MDAgMjAwMQpGcm9tOiBRaXVqdW4gSHVhbmcgPGhxamFnYWluQGdtYWlsLmNvbT4KRGF0
+ZTogVHVlLCAzMSBNYXIgMjAyMCAyMDoxODo1NiArMDgwMApTdWJqZWN0OiBbUEFUQ0hdIGF0aDlr
+OiBmaXggdXNlLWFmdGVyLWZyZWUgcmVhZCBpbiBodGNfY29ubmVjdF9zZXJ2aWNlCgooMSlUaGUg
+c2tiIGlzIGNvbnN1bWVkIGJ5IGh0Y19zZW5kX2VwaWQuCigyKWZyZWUgd21pIGxhdGVyIGFmdGVy
+IHVyYiBoYXMgYmVlbiBraWxsZWQuCigzKWNoZWNrIHRoZSBlbmRwb2ludF9pZC4KClNpZ25lZC1v
+ZmYtYnk6IFFpdWp1biBIdWFuZyA8aHFqYWdhaW5AZ21haWwuY29tPgotLS0KIGRyaXZlcnMvbmV0
+L3dpcmVsZXNzL2F0aC9hdGg5ay9oaWZfdXNiLmMgICAgICB8ICA0ICsrKy0KIGRyaXZlcnMvbmV0
+L3dpcmVsZXNzL2F0aC9hdGg5ay9odGNfZHJ2X2luaXQuYyB8ICAyICstCiBkcml2ZXJzL25ldC93
+aXJlbGVzcy9hdGgvYXRoOWsvaHRjX2hzdC5jICAgICAgfCAgNyArKysrLS0tCiBkcml2ZXJzL25l
+dC93aXJlbGVzcy9hdGgvYXRoOWsvd21pLmMgICAgICAgICAgfCAxNSArKysrKysrKysrKysrKy0K
+IGRyaXZlcnMvbmV0L3dpcmVsZXNzL2F0aC9hdGg5ay93bWkuaCAgICAgICAgICB8ICAyICsrCiA1
+IGZpbGVzIGNoYW5nZWQsIDI0IGluc2VydGlvbnMoKyksIDYgZGVsZXRpb25zKC0pCgpkaWZmIC0t
+Z2l0IGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvYXRoL2F0aDlrL2hpZl91c2IuYyBiL2RyaXZlcnMv
+bmV0L3dpcmVsZXNzL2F0aC9hdGg5ay9oaWZfdXNiLmMKaW5kZXggZGQwYzMyMzc5Mzc1Li4yNzU2
+MDdhNzQ4NDEgMTAwNjQ0Ci0tLSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL2F0aC9hdGg5ay9oaWZf
+dXNiLmMKKysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvYXRoL2F0aDlrL2hpZl91c2IuYwpAQCAt
+MTM0MSw4ICsxMzQxLDEwIEBAIHN0YXRpYyB2b2lkIGF0aDlrX2hpZl91c2JfZGlzY29ubmVjdChz
+dHJ1Y3QgdXNiX2ludGVyZmFjZSAqaW50ZXJmYWNlKQogCiAJaWYgKGhpZl9kZXYtPmZsYWdzICYg
+SElGX1VTQl9SRUFEWSkgewogCQlhdGg5a19odGNfaHdfZGVpbml0KGhpZl9kZXYtPmh0Y19oYW5k
+bGUsIHVucGx1Z2dlZCk7Ci0JCWF0aDlrX2h0Y19od19mcmVlKGhpZl9kZXYtPmh0Y19oYW5kbGUp
+OwogCQlhdGg5a19oaWZfdXNiX2Rldl9kZWluaXQoaGlmX2Rldik7CisJCXNtcF9tYigpOworCQlh
+dGg5a19kZXN0b3lfd21pKGhpZl9kZXYtPmh0Y19oYW5kbGUtPmRydl9wcml2KTsKKwkJYXRoOWtf
+aHRjX2h3X2ZyZWUoaGlmX2Rldi0+aHRjX2hhbmRsZSk7CiAJfQogCiAJdXNiX3NldF9pbnRmZGF0
+YShpbnRlcmZhY2UsIE5VTEwpOwpkaWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvYXRo
+L2F0aDlrL2h0Y19kcnZfaW5pdC5jIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvYXRoL2F0aDlrL2h0
+Y19kcnZfaW5pdC5jCmluZGV4IGQ5NjEwOTVhYjAxZi4uZDFkMGVkNmU2NTNjIDEwMDY0NAotLS0g
+YS9kcml2ZXJzL25ldC93aXJlbGVzcy9hdGgvYXRoOWsvaHRjX2Rydl9pbml0LmMKKysrIGIvZHJp
+dmVycy9uZXQvd2lyZWxlc3MvYXRoL2F0aDlrL2h0Y19kcnZfaW5pdC5jCkBAIC05ODIsNyArOTgy
+LDcgQEAgdm9pZCBhdGg5a19odGNfZGlzY29ubmVjdF9kZXZpY2Uoc3RydWN0IGh0Y190YXJnZXQg
+Kmh0Y19oYW5kbGUsIGJvb2wgaG90dW5wbHVnKQogCQkJaHRjX2hhbmRsZS0+ZHJ2X3ByaXYtPmFo
+LT5haF9mbGFncyB8PSBBSF9VTlBMVUdHRUQ7CiAKIAkJYXRoOWtfZGVpbml0X2RldmljZShodGNf
+aGFuZGxlLT5kcnZfcHJpdik7Ci0JCWF0aDlrX2RlaW5pdF93bWkoaHRjX2hhbmRsZS0+ZHJ2X3By
+aXYpOworCQlhdGg5a19zdG9wX3dtaShodGNfaGFuZGxlLT5kcnZfcHJpdik7CiAJCWllZWU4MDIx
+MV9mcmVlX2h3KGh0Y19oYW5kbGUtPmRydl9wcml2LT5odyk7CiAJfQogfQpkaWZmIC0tZ2l0IGEv
+ZHJpdmVycy9uZXQvd2lyZWxlc3MvYXRoL2F0aDlrL2h0Y19oc3QuYyBiL2RyaXZlcnMvbmV0L3dp
+cmVsZXNzL2F0aC9hdGg5ay9odGNfaHN0LmMKaW5kZXggZDA5MWM4ZWJkY2YwLi44NmNmMTE4Yzll
+NWYgMTAwNjQ0Ci0tLSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL2F0aC9hdGg5ay9odGNfaHN0LmMK
+KysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvYXRoL2F0aDlrL2h0Y19oc3QuYwpAQCAtMTE1LDYg
+KzExNSwxMCBAQCBzdGF0aWMgdm9pZCBodGNfcHJvY2Vzc19jb25uX3JzcChzdHJ1Y3QgaHRjX3Rh
+cmdldCAqdGFyZ2V0LAogCQllcGlkID0gc3ZjX3JzcG1zZy0+ZW5kcG9pbnRfaWQ7CiAJCXNlcnZp
+Y2VfaWQgPSBiZTE2X3RvX2NwdShzdmNfcnNwbXNnLT5zZXJ2aWNlX2lkKTsKIAkJbWF4X21zZ2xl
+biA9IGJlMTZfdG9fY3B1KHN2Y19yc3Btc2ctPm1heF9tc2dfbGVuKTsKKworCQlpZiAoZXBpZCA+
+PSBFTkRQT0lOVF9NQVgpCisJCQlyZXR1cm47CisKIAkJZW5kcG9pbnQgPSAmdGFyZ2V0LT5lbmRw
+b2ludFtlcGlkXTsKIAogCQlmb3IgKHRlcGlkID0gKEVORFBPSU5UX01BWCAtIDEpOyB0ZXBpZCA+
+IEVORFBPSU5UMDsgdGVwaWQtLSkgewpAQCAtMTcwLDcgKzE3NCw2IEBAIHN0YXRpYyBpbnQgaHRj
+X2NvbmZpZ19waXBlX2NyZWRpdHMoc3RydWN0IGh0Y190YXJnZXQgKnRhcmdldCkKIAl0aW1lX2xl
+ZnQgPSB3YWl0X2Zvcl9jb21wbGV0aW9uX3RpbWVvdXQoJnRhcmdldC0+Y21kX3dhaXQsIEhaKTsK
+IAlpZiAoIXRpbWVfbGVmdCkgewogCQlkZXZfZXJyKHRhcmdldC0+ZGV2LCAiSFRDIGNyZWRpdCBj
+b25maWcgdGltZW91dFxuIik7Ci0JCWtmcmVlX3NrYihza2IpOwogCQlyZXR1cm4gLUVUSU1FRE9V
+VDsKIAl9CiAKQEAgLTIwNiw3ICsyMDksNiBAQCBzdGF0aWMgaW50IGh0Y19zZXR1cF9jb21wbGV0
+ZShzdHJ1Y3QgaHRjX3RhcmdldCAqdGFyZ2V0KQogCXRpbWVfbGVmdCA9IHdhaXRfZm9yX2NvbXBs
+ZXRpb25fdGltZW91dCgmdGFyZ2V0LT5jbWRfd2FpdCwgSFopOwogCWlmICghdGltZV9sZWZ0KSB7
+CiAJCWRldl9lcnIodGFyZ2V0LT5kZXYsICJIVEMgc3RhcnQgdGltZW91dFxuIik7Ci0JCWtmcmVl
+X3NrYihza2IpOwogCQlyZXR1cm4gLUVUSU1FRE9VVDsKIAl9CiAKQEAgLTI3OSw3ICsyODEsNiBA
+QCBpbnQgaHRjX2Nvbm5lY3Rfc2VydmljZShzdHJ1Y3QgaHRjX3RhcmdldCAqdGFyZ2V0LAogCWlm
+ICghdGltZV9sZWZ0KSB7CiAJCWRldl9lcnIodGFyZ2V0LT5kZXYsICJTZXJ2aWNlIGNvbm5lY3Rp
+b24gdGltZW91dCBmb3I6ICVkXG4iLAogCQkJc2VydmljZV9jb25ucmVxLT5zZXJ2aWNlX2lkKTsK
+LQkJa2ZyZWVfc2tiKHNrYik7CiAJCXJldHVybiAtRVRJTUVET1VUOwogCX0KIApkaWZmIC0tZ2l0
+IGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvYXRoL2F0aDlrL3dtaS5jIGIvZHJpdmVycy9uZXQvd2ly
+ZWxlc3MvYXRoL2F0aDlrL3dtaS5jCmluZGV4IGNkYzE0NjA5MTE5NC4uNjE1ZTZlMzJmNjg3IDEw
+MDY0NAotLS0gYS9kcml2ZXJzL25ldC93aXJlbGVzcy9hdGgvYXRoOWsvd21pLmMKKysrIGIvZHJp
+dmVycy9uZXQvd2lyZWxlc3MvYXRoL2F0aDlrL3dtaS5jCkBAIC0xMjMsNiArMTIzLDIwIEBAIHZv
+aWQgYXRoOWtfZGVpbml0X3dtaShzdHJ1Y3QgYXRoOWtfaHRjX3ByaXYgKnByaXYpCiAJa2ZyZWUo
+cHJpdi0+d21pKTsKIH0KIAordm9pZCBhdGg5a19zdG9wX3dtaShzdHJ1Y3QgYXRoOWtfaHRjX3By
+aXYgKnByaXYpCit7CisJc3RydWN0IHdtaSAqd21pID0gcHJpdi0+d21pOworCQorCW11dGV4X2xv
+Y2soJndtaS0+b3BfbXV0ZXgpOworCXdtaS0+c3RvcHBlZCA9IHRydWU7CisJbXV0ZXhfdW5sb2Nr
+KCZ3bWktPm9wX211dGV4KTsKK30KKwordm9pZCBhdGg5a19kZXN0b3lfd21pKHN0cnVjdCBhdGg5
+a19odGNfcHJpdiAqcHJpdikKK3sKKwlrZnJlZShwcml2LT53bWkpOworfQorCiB2b2lkIGF0aDlr
+X3dtaV9ldmVudF9kcmFpbihzdHJ1Y3QgYXRoOWtfaHRjX3ByaXYgKnByaXYpCiB7CiAJdW5zaWdu
+ZWQgbG9uZyBmbGFnczsKQEAgLTMzNiw3ICszNTAsNiBAQCBpbnQgYXRoOWtfd21pX2NtZChzdHJ1
+Y3Qgd21pICp3bWksIGVudW0gd21pX2NtZF9pZCBjbWRfaWQsCiAJCWF0aF9kYmcoY29tbW9uLCBX
+TUksICJUaW1lb3V0IHdhaXRpbmcgZm9yIFdNSSBjb21tYW5kOiAlc1xuIiwKIAkJCXdtaV9jbWRf
+dG9fbmFtZShjbWRfaWQpKTsKIAkJbXV0ZXhfdW5sb2NrKCZ3bWktPm9wX211dGV4KTsKLQkJa2Zy
+ZWVfc2tiKHNrYik7CiAJCXJldHVybiAtRVRJTUVET1VUOwogCX0KIApkaWZmIC0tZ2l0IGEvZHJp
+dmVycy9uZXQvd2lyZWxlc3MvYXRoL2F0aDlrL3dtaS5oIGIvZHJpdmVycy9uZXQvd2lyZWxlc3Mv
+YXRoL2F0aDlrL3dtaS5oCmluZGV4IDM4MDE3NWQ1ZWNkNy4uYzNlMjc4Mzc3MzY1IDEwMDY0NAot
+LS0gYS9kcml2ZXJzL25ldC93aXJlbGVzcy9hdGgvYXRoOWsvd21pLmgKKysrIGIvZHJpdmVycy9u
+ZXQvd2lyZWxlc3MvYXRoL2F0aDlrL3dtaS5oCkBAIC0xODksNiArMTg5LDggQEAgaW50IGF0aDlr
+X3dtaV9jbWQoc3RydWN0IHdtaSAqd21pLCBlbnVtIHdtaV9jbWRfaWQgY21kX2lkLAogdm9pZCBh
+dGg5a193bWlfZXZlbnRfdGFza2xldCh1bnNpZ25lZCBsb25nIGRhdGEpOwogdm9pZCBhdGg5a19m
+YXRhbF93b3JrKHN0cnVjdCB3b3JrX3N0cnVjdCAqd29yayk7CiB2b2lkIGF0aDlrX3dtaV9ldmVu
+dF9kcmFpbihzdHJ1Y3QgYXRoOWtfaHRjX3ByaXYgKnByaXYpOwordm9pZCBhdGg5a19zdG9wX3dt
+aShzdHJ1Y3QgYXRoOWtfaHRjX3ByaXYgKnByaXYpOwordm9pZCBhdGg5a19kZXN0b3lfd21pKHN0
+cnVjdCBhdGg5a19odGNfcHJpdiAqcHJpdik7CiAKICNkZWZpbmUgV01JX0NNRChfd21pX2NtZCkJ
+CQkJCQlcCiAJZG8gewkJCQkJCQkJXAotLSAKMi4xNy4xCgo=
+--000000000000bdb0f205a25920d1--
