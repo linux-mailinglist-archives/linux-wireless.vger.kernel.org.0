@@ -2,52 +2,53 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A93619D947
-	for <lists+linux-wireless@lfdr.de>; Fri,  3 Apr 2020 16:39:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F77419D969
+	for <lists+linux-wireless@lfdr.de>; Fri,  3 Apr 2020 16:46:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390850AbgDCOjH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 3 Apr 2020 10:39:07 -0400
-Received: from mail-oi1-f195.google.com ([209.85.167.195]:41413 "EHLO
+        id S2403948AbgDCOqe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 3 Apr 2020 10:46:34 -0400
+Received: from mail-oi1-f195.google.com ([209.85.167.195]:36207 "EHLO
         mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728066AbgDCOjH (ORCPT
+        with ESMTP id S1727431AbgDCOqe (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 3 Apr 2020 10:39:07 -0400
-Received: by mail-oi1-f195.google.com with SMTP id k9so6251188oia.8
-        for <linux-wireless@vger.kernel.org>; Fri, 03 Apr 2020 07:39:07 -0700 (PDT)
+        Fri, 3 Apr 2020 10:46:34 -0400
+Received: by mail-oi1-f195.google.com with SMTP id k18so6315940oib.3
+        for <linux-wireless@vger.kernel.org>; Fri, 03 Apr 2020 07:46:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=Tjj6eE/ucgSL74NIFz+7heO8Ditwaaktx0ch8GqLlBo=;
-        b=KOIWjKQbVQIWTXiS/9XWZXnFniQGkQ68frwANVlEn809Fmq8d14rY6QS56q11Tu5aN
-         8ftOklEV3YRgg3jAXAomOhjKlwznoy/sgbssforjLu0mdAmomglakVxvrlXldUTxT6VO
-         5xwEM7b8sUAxLQxkIHYuP+bNxbA5Ul7vS+piw9o1+EeHNM1Q7zYYBKwV3fUN6H+gW+5t
-         GEDVPwORBMGxdKKAV3qZ2kWKKxEevrjv4sVLskToUe0O6sGfmByBfJKvXY/ji7J3Izlh
-         ROxquowFU8vL48ilV7bs49UeeJEMVp5aVVCa/QIHJtYQVNP31TietQCewutZF8mV1P8i
-         oDTQ==
+        bh=Z+9t8TVhcuRAxEqo0k+4IL+Ja/sDsNAxc03/O1ePTr8=;
+        b=OXv7AzKtQINMHqZzyeIcbAQxl9kSIhA/MC5c4NTf5TirJXYuX8zQtzBf4bGJMbMMWO
+         Oo5MafNJhGJd+heLaSGFw1h0+jwBODEJ0oz4RzMJWEma6+Y9Wi3Y0lDZxEF4RYiRPeG2
+         glOMO4P2Jw5U4AZKmMszdIMXSdKSnG5oLY7BZBHxrSA3VDkwwZcGLzYBYbotYdTdyr2l
+         feUDxEubZNwjUKzPxI9UqRYOyoC4iD/LXjuU87cS918AB8ay0+vu7c3/onrs+7VUjwFI
+         tjrXXiww/iuhpM7HcVgyQvonQLtvEeq1hKYmyJT9t4+xxVG4DSUdZPvy/j0YdyrlSKFd
+         eJlg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=Tjj6eE/ucgSL74NIFz+7heO8Ditwaaktx0ch8GqLlBo=;
-        b=duU2iTfu53NVY0T4uZK3/b31kl1Gv2XotW+gNlLc7iQ3M7cmPmKS2tgq9DPxVZfgOH
-         D+XSGEkBYpMCDr+Yl+Q2BYFUfPJpXK2SozMspqcFz6zCYzx4/jpQSnXCAC2X9fs7NCRI
-         KHTfM+Hnjq9kMLITae5+Y7Kaoc7z6Ed7GVPSkxemKViuK1DL07w7zvBF/+DKak5lqF5P
-         pHCmejJqS8aVfvEOwxyTo7SokyWr6M9yuvPoGoDSl62kMU9mVaiiK/BIIevQokgjX43w
-         +/LcC6LWjeGfgvf3EobUYjwEfrFkEH6rQm2LTVWpnybZjDMErt19SbQoDlW/fm05d8ch
-         +G7g==
-X-Gm-Message-State: AGi0PuYDy4MEVeGZER5QeOwwPLFvpvONAh7njRFP/cVD5IjpGOzjPcdE
-        0YQNiuOEzNvURTtiww81LoWC40pxbONtai7IwRfMacnV
-X-Google-Smtp-Source: APiQypLHqZafSCp3GRdCK+7jVWjSfXr/rs7w6xhbjttxER8c501BXQT8CyzMKk0lrK4lkYtDIolxonrSEgc2tnTFWMk=
-X-Received: by 2002:aca:b756:: with SMTP id h83mr3320859oif.4.1585924746613;
- Fri, 03 Apr 2020 07:39:06 -0700 (PDT)
+        bh=Z+9t8TVhcuRAxEqo0k+4IL+Ja/sDsNAxc03/O1ePTr8=;
+        b=ssL+38xy0NwPYwvj/Mel12wK9yutyjp7QFEJ8RIDmF+7UeEuB4oCziAjW525Y5UcFJ
+         C7pJOpzY1FBVKvOZqxscQS1kE+NuZCEg57nT1EoSkL2WvE/LLm/c4IQWiYChH0D/eNFO
+         SBTqzcJuwkehgUTll1RmI/h+fCJEdQzwhj/NF9syuijYz9i/rBVi9H+8PY6YfTm9Ax1e
+         T5hUpP5licPqZ1kaJuEUx6Mc0MN/gr+5BHmA09rjk0f0lRRejKlrusXdPsPza2M7RD5Y
+         OzW+tp0QwzeSq3HlOgFSercruyH6dBUpgBNUZXOmVwgEjgnUH4rS4Vys9rYdf1WamUgh
+         UPdw==
+X-Gm-Message-State: AGi0PuaHVXTvgI5UPPcxVNsieGUfJtoRXNzCNleGjHab9fxYpTkxCuJe
+        9ICzh51pF/LRKFZx69GZZEMBvAjW/I+hFBV+cm8=
+X-Google-Smtp-Source: APiQypJPDq8wpjjBKIt6x/ylbAMpbrgi1SSwdbSFWiJOq5dUzGXq3gnkuq27QrMa8zcYtcz1kZlXD2EkaDI40Btpuv4=
+X-Received: by 2002:a54:4e0e:: with SMTP id a14mr3350237oiy.88.1585925192212;
+ Fri, 03 Apr 2020 07:46:32 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200403082955.1126339-1-luca@coelho.fi> <iwlwifi.20200403112332.0ed2f71aee7f.I3a4af6b03b87a6bc18db9b1ff9a812f397bee1fc@changeid>
-In-Reply-To: <iwlwifi.20200403112332.0ed2f71aee7f.I3a4af6b03b87a6bc18db9b1ff9a812f397bee1fc@changeid>
+References: <20200403082955.1126339-1-luca@coelho.fi> <iwlwifi.20200403112332.75faaf2137f4.I9e27ccc3ee3c8855fc13682592b571581925dfbd@changeid>
+In-Reply-To: <iwlwifi.20200403112332.75faaf2137f4.I9e27ccc3ee3c8855fc13682592b571581925dfbd@changeid>
 From:   Mark Asselstine <asselsm@gmail.com>
-Date:   Fri, 3 Apr 2020 10:38:55 -0400
-Message-ID: <CAPuovEJK8AUBPeBBi=BMx-o+9krdA-_NqCJLByWHV2_q2b42Ow@mail.gmail.com>
-Subject: Re: [PATCH v5.7 4/8] iwlwifi: mvm: limit maximum queue appropriately
+Date:   Fri, 3 Apr 2020 10:46:21 -0400
+Message-ID: <CAPuovEJ7b36wEh7=8GQUx8dp_fx2AuQS4ivKb3tuHeP31HwyUQ@mail.gmail.com>
+Subject: Re: [PATCH v5.7 7/8] iwlwifi: mvm: fix inactive TID removal return
+ value usage
 To:     Luca Coelho <luca@coelho.fi>
 Cc:     kvalo@codeaurora.org,
         linux-wireless <linux-wireless@vger.kernel.org>
@@ -57,85 +58,48 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Apr 3, 2020 at 4:32 AM Luca Coelho <luca@coelho.fi> wrote:
+On Fri, Apr 3, 2020 at 4:31 AM Luca Coelho <luca@coelho.fi> wrote:
 >
 > From: Johannes Berg <johannes.berg@intel.com>
->
-> Due to some hardware issues, queue 32 isn't usable on devices that have
-> 32 queues (7000, 8000, 9000 families), which is correctly reflected in
-> the configuration and TX queue initialization.
 
-This will not fix the issue on the 1000, 2000, 5000 and 6000 devices.
-You need further protection on these as their are only 20
-(IWLAGN_NUM_QUEUES) queues. I sent out a patch on March 19th with a
-fix.
+I sent Johannes part of this fix weeks ago and heard nothing back. I
+am far from a glory hound but something is wrong with this list if
+fixes are sat on for weeks and then the fix shows up with any
+acknowledgment lost. At minimum a note saying that a fix existed and
+would be merged shortly would have been nice.
 
 Mark
 
 >
-> However, the firmware API and queue allocation code assumes that there
-> are 32 queues, and if something actually attempts to use #31 this leads
-> to a NULL-pointer dereference since it's not allocated.
+> The function iwl_mvm_remove_inactive_tids() returns bool, so we
+> should just check "if (ret)", not "if (ret >= 0)" (which would
+> do nothing useful here). We obviously therefore cannot use the
+> return value of the function for the free_queue, we need to use
+> the queue (i) we're currently dealing with instead.
 >
-> Fix this by limiting to 31 in the IWL_MVM_DQA_MAX_DATA_QUEUE, and also
-> add some code to catch this earlier in the future, if the configuration
-> changes perhaps.
->
-> Cc: stable@vger.kernel.org # v4.9+
+> Cc: stable@vger.kernel.org # v5.4+
 > Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 > Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 > ---
->  drivers/net/wireless/intel/iwlwifi/fw/api/txq.h | 6 +++---
->  drivers/net/wireless/intel/iwlwifi/mvm/sta.c    | 5 +++++
->  2 files changed, 8 insertions(+), 3 deletions(-)
+>  drivers/net/wireless/intel/iwlwifi/mvm/sta.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 >
-> diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/txq.h b/drivers/net/wireless/intel/iwlwifi/fw/api/txq.h
-> index 73196cbc7fbe..75d958bab0e3 100644
-> --- a/drivers/net/wireless/intel/iwlwifi/fw/api/txq.h
-> +++ b/drivers/net/wireless/intel/iwlwifi/fw/api/txq.h
-> @@ -8,7 +8,7 @@
->   * Copyright(c) 2007 - 2014 Intel Corporation. All rights reserved.
->   * Copyright(c) 2013 - 2015 Intel Mobile Communications GmbH
->   * Copyright(c) 2016 - 2017 Intel Deutschland GmbH
-> - * Copyright(c) 2019 Intel Corporation
-> + * Copyright(c) 2019 - 2020 Intel Corporation
->   *
->   * This program is free software; you can redistribute it and/or modify
->   * it under the terms of version 2 of the GNU General Public License as
-> @@ -31,7 +31,7 @@
->   * Copyright(c) 2005 - 2014 Intel Corporation. All rights reserved.
->   * Copyright(c) 2013 - 2015 Intel Mobile Communications GmbH
->   * Copyright(c) 2016 - 2017 Intel Deutschland GmbH
-> - * Copyright(c) 2019 Intel Corporation
-> + * Copyright(c) 2019 - 2020 Intel Corporation
->   * All rights reserved.
->   *
->   * Redistribution and use in source and binary forms, with or without
-> @@ -99,7 +99,7 @@ enum iwl_mvm_dqa_txq {
->         IWL_MVM_DQA_MAX_MGMT_QUEUE = 8,
->         IWL_MVM_DQA_AP_PROBE_RESP_QUEUE = 9,
->         IWL_MVM_DQA_MIN_DATA_QUEUE = 10,
-> -       IWL_MVM_DQA_MAX_DATA_QUEUE = 31,
-> +       IWL_MVM_DQA_MAX_DATA_QUEUE = 30,
->  };
->
->  enum iwl_mvm_tx_fifo {
 > diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/sta.c b/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
-> index 64ef3f3ba23b..251d6fbb1da5 100644
+> index 251d6fbb1da5..56ae72debb96 100644
 > --- a/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
 > +++ b/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
-> @@ -722,6 +722,11 @@ static int iwl_mvm_find_free_queue(struct iwl_mvm *mvm, u8 sta_id,
->
->         lockdep_assert_held(&mvm->mutex);
->
-> +       if (WARN(maxq >= mvm->trans->trans_cfg->base_params->num_of_queues,
-> +                "max queue %d >= num_of_queues (%d)", maxq,
-> +                mvm->trans->trans_cfg->base_params->num_of_queues))
-> +               maxq = mvm->trans->trans_cfg->base_params->num_of_queues - 1;
-> +
->         /* This should not be hit with new TX path */
->         if (WARN_ON(iwl_mvm_has_new_tx_api(mvm)))
->                 return -ENOSPC;
+> @@ -1169,9 +1169,9 @@ static int iwl_mvm_inactivity_check(struct iwl_mvm *mvm, u8 alloc_for_sta)
+>                                                    inactive_tid_bitmap,
+>                                                    &unshare_queues,
+>                                                    &changetid_queues);
+> -               if (ret >= 0 && free_queue < 0) {
+> +               if (ret && free_queue < 0) {
+>                         queue_owner = sta;
+> -                       free_queue = ret;
+> +                       free_queue = i;
+>                 }
+>                 /* only unlock sta lock - we still need the queue info lock */
+>                 spin_unlock_bh(&mvmsta->lock);
 > --
 > 2.25.1
 >
