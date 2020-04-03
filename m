@@ -2,87 +2,87 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C9C019D1B1
-	for <lists+linux-wireless@lfdr.de>; Fri,  3 Apr 2020 10:04:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C75B19D233
+	for <lists+linux-wireless@lfdr.de>; Fri,  3 Apr 2020 10:30:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390362AbgDCIEA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 3 Apr 2020 04:04:00 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:36332 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727431AbgDCID7 (ORCPT
+        id S2390348AbgDCIaG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 3 Apr 2020 04:30:06 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:45432 "EHLO
+        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1727835AbgDCIaF (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 3 Apr 2020 04:03:59 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 03383bua041820;
-        Fri, 3 Apr 2020 08:03:45 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2020-01-29;
- bh=uVaVWvGK2rRDzlNOFOUMvxplXsbxRH2vt/0XQlDzCsY=;
- b=twbeWOniMJLadbk7nycMgbesUu2TjHH3UQD7dFhYGpMwTvQ9/9/esw2i6D2PYeCt/+rn
- YeXF1WEdUoFx8+8tpT3V8D6xU9BiTlpI8XqEhOxdMMbLFaGO7GRZBkt9pkoSnD1mlpOM
- 06/sINYAp/V+WtUCiKqAjzAQ7iTzDhTtsDuOTVBCdV+cp9RtHRrXVRPVSwWJLgcgsSO1
- By9NpKzyIUa8ly2xRYd6rndixWBm8jZtuQ+1bwixTtoC94Mhn1dqsO4DWTuTEHEyz/kK
- QKo6tW/fszw6arvGThpgrG9QtZ2jhOh7PTVla1+NJw7ls8XGUuGue86WjMCqqktjZKM0 OQ== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by userp2130.oracle.com with ESMTP id 303cevfkbn-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 03 Apr 2020 08:03:45 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 03382Drn142883;
-        Fri, 3 Apr 2020 08:03:45 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by userp3020.oracle.com with ESMTP id 302ga41tmk-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 03 Apr 2020 08:03:45 +0000
-Received: from abhmp0006.oracle.com (abhmp0006.oracle.com [141.146.116.12])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 03383h3E008767;
-        Fri, 3 Apr 2020 08:03:43 GMT
-Received: from kadam (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 03 Apr 2020 01:03:43 -0700
-Date:   Fri, 3 Apr 2020 11:03:35 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Jerome Pouiller <Jerome.Pouiller@silabs.com>
-Cc:     devel@driverdev.osuosl.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Kalle Valo <kvalo@codeaurora.org>
-Subject: Re: [PATCH 00/32] staging: wfx: rework the Tx queue
-Message-ID: <20200403080335.GU2001@kadam>
-References: <20200401110405.80282-1-Jerome.Pouiller@silabs.com>
+        Fri, 3 Apr 2020 04:30:05 -0400
+Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa.ger.corp.intel.com)
+        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.93)
+        (envelope-from <luca@coelho.fi>)
+        id 1jKHiF-0008yu-GM; Fri, 03 Apr 2020 11:30:04 +0300
+From:   Luca Coelho <luca@coelho.fi>
+To:     kvalo@codeaurora.org
+Cc:     linux-wireless@vger.kernel.org
+Date:   Fri,  3 Apr 2020 11:29:47 +0300
+Message-Id: <20200403082955.1126339-1-luca@coelho.fi>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200401110405.80282-1-Jerome.Pouiller@silabs.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9579 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- mlxlogscore=999 bulkscore=0 mlxscore=0 spamscore=0 adultscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2004030068
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9579 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 adultscore=0
- clxscore=1015 phishscore=0 lowpriorityscore=0 spamscore=0 malwarescore=0
- suspectscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
- definitions=main-2004030068
+Content-Transfer-Encoding: 8bit
+X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on farmhouse.coelho.fi
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+        TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.4
+Subject: [PATCH v5.7 0/8] iwlwifi: fixes intended for v5.7 2020-04-03
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-I didn't quite finish reviewing these pathches last night.  Looks good.
-You will need a check on "ssidlen" to prevent memory corruption, as
-discussed in patch 1, but that's not a bug which was introduced by this
-patchset.  None of my other comments really applied to the patchset
-itself, just to the surrounding code.
+From: Luca Coelho <luciano.coelho@intel.com>
 
-Looks good.
+Hi,
 
-Reviewed-by: Dan Carpenter <dan.carpenter@oracle.com>
+This is my first patchset with fixes for v5.7.
 
-regards,
-dan carpenter
+The changes are:
+
+* Remove ACK enabled aggregation support flag, since we never really
+  supported it;
+* A few fixes for the queues configuration on the 9000 family of
+  devices that were causing FW hangs;
+* Fix an RCU issue;
+* A fix for the TCM statistics gathering code;
+
+
+As usual, I'm pushing this to a pending branch, for kbuild bot.  And
+since these are fixes for the rc series, feel free to take them
+directly to wireless-drivers.git.
+
+Cheers,
+Luca.
+
+
+Ilan Peer (1):
+  iwlwifi: mvm: Do not declare support for ACK Enabled Aggregation
+
+Johannes Berg (5):
+  iwlwifi: pcie: actually release queue memory in TVQM
+  iwlwifi: pcie: indicate correct RB size to device
+  iwlwifi: mvm: limit maximum queue appropriately
+  iwlwifi: mvm: fix inactive TID removal return value usage
+  iwlwifi: mvm: don't call iwl_mvm_free_inactive_queue() under RCU
+
+Mordechay Goodstein (2):
+  iwlwifi: mvm: beacon statistics shouldn't go backwards
+  iwlwifi: msix: limit max RX queues for 9000 family
+
+ .../net/wireless/intel/iwlwifi/fw/api/txq.h    |  6 +++---
+ .../net/wireless/intel/iwlwifi/iwl-nvm-parse.c |  6 ++----
+ drivers/net/wireless/intel/iwlwifi/iwl-trans.h |  1 +
+ drivers/net/wireless/intel/iwlwifi/mvm/rx.c    | 13 +++++++++++--
+ drivers/net/wireless/intel/iwlwifi/mvm/sta.c   | 17 ++++++++++-------
+ .../intel/iwlwifi/pcie/ctxt-info-gen3.c        | 18 ++++++++++++++----
+ .../net/wireless/intel/iwlwifi/pcie/trans.c    |  6 +++++-
+ .../net/wireless/intel/iwlwifi/pcie/tx-gen2.c  |  3 +++
+ 8 files changed, 49 insertions(+), 21 deletions(-)
+
+-- 
+2.25.1
 
