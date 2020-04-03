@@ -2,175 +2,87 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3AF4919D16C
-	for <lists+linux-wireless@lfdr.de>; Fri,  3 Apr 2020 09:42:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C9C019D1B1
+	for <lists+linux-wireless@lfdr.de>; Fri,  3 Apr 2020 10:04:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390296AbgDCHmz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 3 Apr 2020 03:42:55 -0400
-Received: from mail-qk1-f193.google.com ([209.85.222.193]:42177 "EHLO
-        mail-qk1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730759AbgDCHmy (ORCPT
+        id S2390362AbgDCIEA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 3 Apr 2020 04:04:00 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:36332 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727431AbgDCID7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 3 Apr 2020 03:42:54 -0400
-Received: by mail-qk1-f193.google.com with SMTP id 139so7042539qkd.9
-        for <linux-wireless@vger.kernel.org>; Fri, 03 Apr 2020 00:42:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=qFaIqoxwUe9ysWNEdvZGpWkJArIzzp/tfUXLdH5gS64=;
-        b=KcG564o4naeszHPQaCUG43TLopoLHQcXNhy55ihf4J655P1X1EX2er+7j98/34GC3H
-         yxGA4jHLR9t/ysr+9MFg7AFVOVSODpPoUZMysTDJDoTljG+COLNwQDyC9opauJPkGeRH
-         oaNjwl6yhnT2u4S/B54XjZRB1v1D8sXS1W3BL/GB7oO0yEYpR5571pe/h5pD02wsWkNw
-         3ekuRKXOXG20oha+a9fMG9Bp5qCI3rpJCdJyVjk1hOjKV7hcYSB0P1WSFtQjB7ctuAYN
-         JEkuSjE8Pf3dOu5lyeM743GMe2WJ0ZZAODO0uyL1sKm7zZ2ce8PIS2LpnzKPNoaDw2rK
-         AOPw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=qFaIqoxwUe9ysWNEdvZGpWkJArIzzp/tfUXLdH5gS64=;
-        b=OGl2y+fLS8/bpEWo26Eas8AUDN+kQfBHYdP90EFeYYHKaTO200OmbU91nl1ryD3K8Z
-         F7lRr+nBgcxcXsBCJ9t69tcchctf+NM3oSPzYRs/BEGXD1O/6/e5QImp1Lj6wSmVJn3d
-         TVf8Px09bAwdCYk7CwcWY2ApiW3c+HhxSo1daSMJk91xIXmvvebY6b7LXbOw4MtGYNGR
-         uIOEzDUWAkkHL79gZ7ynfmQX7PStFMuw6HjOHzto2Qrtdv1vlcMijWz+778btW55pAUQ
-         EKZVFka4fj7N15ihhxC7bLiJsUpPzz7DMGvXewjswIikanLB8Xk61DbEEW9+Lg0R2YLd
-         rfUA==
-X-Gm-Message-State: AGi0PubxFo+qu2Y+afjoBaLL2jwZ/dsD4Q9vryyaIpV06FlFnd8i5IzI
-        jzGAAFescNfkLX+YkZVO2hBJ/K/3QdLmAcranxc=
-X-Google-Smtp-Source: APiQypIoVU87l/ofPpIn/O8uJ2m6m/NguBlqBffg5PpVqRfayjzuHxv0pcVYqXHTezaieYgM8Hb4AF9JkGPpfzE6c0w=
-X-Received: by 2002:a37:634d:: with SMTP id x74mr7584637qkb.254.1585899772041;
- Fri, 03 Apr 2020 00:42:52 -0700 (PDT)
+        Fri, 3 Apr 2020 04:03:59 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 03383bua041820;
+        Fri, 3 Apr 2020 08:03:45 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2020-01-29;
+ bh=uVaVWvGK2rRDzlNOFOUMvxplXsbxRH2vt/0XQlDzCsY=;
+ b=twbeWOniMJLadbk7nycMgbesUu2TjHH3UQD7dFhYGpMwTvQ9/9/esw2i6D2PYeCt/+rn
+ YeXF1WEdUoFx8+8tpT3V8D6xU9BiTlpI8XqEhOxdMMbLFaGO7GRZBkt9pkoSnD1mlpOM
+ 06/sINYAp/V+WtUCiKqAjzAQ7iTzDhTtsDuOTVBCdV+cp9RtHRrXVRPVSwWJLgcgsSO1
+ By9NpKzyIUa8ly2xRYd6rndixWBm8jZtuQ+1bwixTtoC94Mhn1dqsO4DWTuTEHEyz/kK
+ QKo6tW/fszw6arvGThpgrG9QtZ2jhOh7PTVla1+NJw7ls8XGUuGue86WjMCqqktjZKM0 OQ== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2130.oracle.com with ESMTP id 303cevfkbn-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 03 Apr 2020 08:03:45 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 03382Drn142883;
+        Fri, 3 Apr 2020 08:03:45 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by userp3020.oracle.com with ESMTP id 302ga41tmk-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 03 Apr 2020 08:03:45 +0000
+Received: from abhmp0006.oracle.com (abhmp0006.oracle.com [141.146.116.12])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 03383h3E008767;
+        Fri, 3 Apr 2020 08:03:43 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Fri, 03 Apr 2020 01:03:43 -0700
+Date:   Fri, 3 Apr 2020 11:03:35 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Jerome Pouiller <Jerome.Pouiller@silabs.com>
+Cc:     devel@driverdev.osuosl.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Kalle Valo <kvalo@codeaurora.org>
+Subject: Re: [PATCH 00/32] staging: wfx: rework the Tx queue
+Message-ID: <20200403080335.GU2001@kadam>
+References: <20200401110405.80282-1-Jerome.Pouiller@silabs.com>
 MIME-Version: 1.0
-References: <CAFb4eQ=Y8XUGsE2c2tur4EPTC=81Ck3tRPF9Uf+6zBnA47j-Dw@mail.gmail.com>
- <CAFb4eQkFGM1rhrccExu6B5_5-3g60nDD_aRt3JDA2qT9FVbDig@mail.gmail.com>
- <CAFb4eQmRk8o_sR2-s0h4wUdgNW2w2tqgUjaJ4t0Ca84iZL59fQ@mail.gmail.com>
- <3abf2b162f18e41345e230301d57348ba348c09f.camel@intel.com>
- <CAFb4eQ=jTrt42a43bhfN02BtqrTmJe7HUmcDPZnxjqXztp6cxA@mail.gmail.com> <CAFb4eQkp_cCCPd6sU0jLhRnasjVSU8DGMUMudV28ZRm14HtUeg@mail.gmail.com>
-In-Reply-To: <CAFb4eQkp_cCCPd6sU0jLhRnasjVSU8DGMUMudV28ZRm14HtUeg@mail.gmail.com>
-From:   Equipe Soft <equipe.soft.isere@gmail.com>
-Date:   Fri, 3 Apr 2020 09:42:40 +0200
-Message-ID: <CAFb4eQnSAQUCyonaRgnFbi0=GAzSKsCjKCm41cx77=r7dnxyMg@mail.gmail.com>
-Subject: Re: Is iwlwifi-9260-th-b0-jf-b0-46.ucode a debug firmware?
-To:     Luciano Coelho <luciano.coelho@intel.com>
-Cc:     linuxwifi@intel.com, linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200401110405.80282-1-Jerome.Pouiller@silabs.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9579 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ mlxlogscore=999 bulkscore=0 mlxscore=0 spamscore=0 adultscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2004030068
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9579 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 adultscore=0
+ clxscore=1015 phishscore=0 lowpriorityscore=0 spamscore=0 malwarescore=0
+ suspectscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
+ definitions=main-2004030068
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi there, did you had time to look at this issue? Thanks again.
->
-> @team
->
-> Le mar. 24 mars 2020 =C3=A0 11:50, Equipe Soft <equipe.soft.isere@gmail.c=
-om> a =C3=A9crit :
->>
->> Thanks a lot Luciano for your answer.
->> However something remains a bit strange to me. So let me please ask you =
-the following questions:
->>
->> Q5) is it normal that Intel AC9260 firmware size is quite different betw=
-een "older" and "newer" versions ?  For example: API46, which includes debu=
-g information, is ~1.4MB whereas API38, without debug info, is ~2.5MB (so b=
-igger !?)
->>
->> Looking at https://wireless.wiki.kernel.org/en/users/drivers/iwlwifi/cor=
-e_release#core_release, I get: "Core43 Last version for 9260 and 9000"
->> Looking at https://wireless.wiki.kernel.org/en/users/drivers/iwlwifi/cor=
-e_release#devices_not_maintained_in_mainline, I get : " 9260 (Core43)"
->> But looking at https://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/l=
-inux-firmware.git/commit/iwlwifi-9260-th-b0-jf-b0-46.ucode?id=3D4bebf45872a=
-9818a17e2079118500030a8fa377a, I see: " iwlwifi: update FWs to core47-142 r=
-elease"
->>
->> Q6) so previous wiki page says that we shall use driver Core43 release b=
-ut we can notice that Intel AC9260 firmware is still updated for Core47 . S=
-o which driver version should be used ?
->>
->> Thanks again for your answer.
->> Best regards.
->> @team
->>
->>
->> Le lun. 23 mars 2020 =C3=A0 10:30, Luciano Coelho <luciano.coelho@intel.=
-com> a =C3=A9crit :
->>>
->>> Hi,
->>>
->>> On Mon, 2020-03-23 at 10:13 +0100, Equipe Soft wrote:
->>> > Hello, we really wonder if the version of the firmware we use is the =
-right one.
->>> > I put Luca Coelho in copy according to his activity on git about
->>> > firmware: thank you for your help Luca.
->>> > Best regards.
->>> > @team.
->>> >
->>> >
->>> > Le ven. 13 mars 2020 =C3=A0 11:05, Equipe Soft
->>> > <equipe.soft.isere@gmail.com> a =C3=A9crit :
->>> > > Hello, do you have any news about the issue?
->>> > > Best regards.
->>> > > @team
->>> > > Le ven. 6 mars 2020 =C3=A0 10:33, Equipe Soft <equipe.soft.isere@gm=
-ail.com> a =C3=A9crit :
->>> > > > Hello,
->>> > > > we are using backport-iwlwifi core45 drivers and latest AC9260
->>> > > > firmware binary blob:
->>> > > > latest firmware available in Intel iwlwifi firmware fork:
->>> > > > https://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/linux-fir=
-mware.git/commit/iwlwifi-9260-th-b0-jf-b0-46.ucode?id=3D4bebf45872a9818a17e=
-2079118500030a8fa377a
->>> > > > 2019-11-28 iwlwifi: update FWs to core47-142 release
->>> > > >
->>> > > > At runtime, we noticed these log traces:
->>> > > > iwlwifi 0000:01:00.0: Found debug destination: EXTERNAL_DRAM
->>> > > > iwlwifi 0000:01:00.0: Found debug configuration: 0
->>> > > > iwlwifi 0000:01:00.0: Allocated 0x00400000 bytes for firmware mon=
-itor.
->>> > > > So it seems that it is a debug firmware...
->>> > > >
->>> > > > Q0) can you please confirm that we can safely use this debug firm=
-ware
->>> > > > in our product ?
->>>
->>> You can use this firmware.  It's a production firmware and not a
->>> debugging version.
->>>
->>>
->>> > > > Q1) is debug mode deliberately enabled in newer firmware or is it=
- an
->>> > > > error (maybe like forgotten to disable it) ?
->>>
->>> It is deliberately enabled.  We enable some debugging options by
->>> default so they can be extracted if needed.
->>>
->>>
->>> > > > Q2) is there an impact on performance with this debug firmware ? =
-WiFi
->>> > > > speed/throughput may be reduced or not ?
->>>
->>> No, there isn't any impact on performance.
->>>
->>>
->>> > > > Q3) moreover, can you please confirm whether or not WoWLAN (aka
->>> > > > Wake-on-WLAN) is working with this debug firmware ?
->>>
->>> WoWLAN should work fine with this firmware.
->>>
->>>
->>>
->>> > > > Q4) is WoWLAN working with any AC9260 firmware version ? and any
->>> > > > iwlwifi driver version ?
->>>
->>> It has been supported for many years now.  AC9260 got support for this
->>> from the first version of the driver/FW that were publicly released.
->>>
->>> HTH.
->>>
->>> --
->>> Cheers,
->>> Luca.
->>>
+I didn't quite finish reviewing these pathches last night.  Looks good.
+You will need a check on "ssidlen" to prevent memory corruption, as
+discussed in patch 1, but that's not a bug which was introduced by this
+patchset.  None of my other comments really applied to the patchset
+itself, just to the surrounding code.
+
+Looks good.
+
+Reviewed-by: Dan Carpenter <dan.carpenter@oracle.com>
+
+regards,
+dan carpenter
+
