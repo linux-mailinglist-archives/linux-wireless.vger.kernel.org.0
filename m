@@ -2,87 +2,113 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5AC0119F66F
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 Apr 2020 15:08:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E72CD19F6B9
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 Apr 2020 15:18:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728231AbgDFNIG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 6 Apr 2020 09:08:06 -0400
-Received: from s3.sipsolutions.net ([144.76.43.62]:58226 "EHLO
-        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728154AbgDFNIF (ORCPT
+        id S1728472AbgDFNS1 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 6 Apr 2020 09:18:27 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:33490 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728468AbgDFNS1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 6 Apr 2020 09:08:05 -0400
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.93)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1jLRTq-009oJ0-Nc; Mon, 06 Apr 2020 15:07:58 +0200
-Message-ID: <ee168acb768d87776db2be4e978616f9187908d0.camel@sipsolutions.net>
-Subject: Re: [PATCH] mac80211: fix race in ieee80211_register_hw()
-From:   Johannes Berg <johannes@sipsolutions.net>
+        Mon, 6 Apr 2020 09:18:27 -0400
+Received: from mail-pl1-f199.google.com ([209.85.214.199])
+        by youngberry.canonical.com with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <kai.heng.feng@canonical.com>)
+        id 1jLRdx-0000wK-4Y
+        for linux-wireless@vger.kernel.org; Mon, 06 Apr 2020 13:18:25 +0000
+Received: by mail-pl1-f199.google.com with SMTP id m9so10993377plt.8
+        for <linux-wireless@vger.kernel.org>; Mon, 06 Apr 2020 06:18:25 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:subject:from:in-reply-to:date:cc
+         :content-transfer-encoding:message-id:references:to;
+        bh=yfh8auMdoRigiRys04NLUbX84A9moSV9U1pPae/atro=;
+        b=lj9peBmYW4wnmkPS/3ZTZTlAQ22JZDThyUGxDx9bzXasxzEceT4hYXUI8eI3l6IzzM
+         e80TVzeYuWkbzdMZa4nkGyIA0xQhFl+0ccty7J2PB8a0Ejtq3UBk+B2lhs4+zzYm4fwn
+         Gl0E6snDkgJMg7+fd7o5xy/fK1c0TYQjJ7u22d45Ecq+aeKQ8Qldust9NRzIyZk6yi7x
+         SbjAOTaCv7pveB/4ZLivPiSfL9tU5zVFkE3aG+u77dziLjwP4pIZ58uBE01Jl+eRsQh2
+         BewsVxz0L9lfKC94Kf/syS2xsPkBhoZ5nZ2GDUx5P9ciLyymmH3Tfy/z00/e5rpVkSV6
+         hH6g==
+X-Gm-Message-State: AGi0PuZp5zE0vp1YIdyP6ZLCGdme4bvLe9NFS4FST7NkV5kZ/RZBHKNJ
+        aWc7EHxe4C5Ire4Wyr/GO32KY1kv2l/CUe/u9xtcMi5QUm1BNs261MQdMcyrJL/mWFp4Uq7Qi5r
+        QlqMOf/iY4szVpybNJiK4UQgTYfLNVg3oN3CxWY/5DIwF
+X-Received: by 2002:a63:e558:: with SMTP id z24mr20646323pgj.368.1586179103759;
+        Mon, 06 Apr 2020 06:18:23 -0700 (PDT)
+X-Google-Smtp-Source: APiQypIRNNfP69Byee6DnP3oE8819ZQmmW1WafsLeF6MlX6NhlFtF3wCeXFKCIqmcsiELvOx6719nA==
+X-Received: by 2002:a63:e558:: with SMTP id z24mr20646297pgj.368.1586179103368;
+        Mon, 06 Apr 2020 06:18:23 -0700 (PDT)
+Received: from [192.168.1.208] (220-133-187-190.HINET-IP.hinet.net. [220.133.187.190])
+        by smtp.gmail.com with ESMTPSA id 135sm11948080pfu.207.2020.04.06.06.18.21
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 06 Apr 2020 06:18:22 -0700 (PDT)
+Content-Type: text/plain;
+        charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 13.4 \(3608.80.23.2.2\))
+Subject: Re: [PATCH] rtw88: Add delay on polling h2c command status bit
+From:   Kai-Heng Feng <kai.heng.feng@canonical.com>
+In-Reply-To: <87v9mczu4h.fsf@kamboji.qca.qualcomm.com>
+Date:   Mon, 6 Apr 2020 21:18:20 +0800
+Cc:     Tony Chuang <yhchuang@realtek.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        "open list:REALTEK WIRELESS DRIVER (rtw88)" 
+        <linux-wireless@vger.kernel.org>,
+        "open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>
+Content-Transfer-Encoding: 8BIT
+Message-Id: <94EAAF7E-66C5-40E2-B6A9-0787CB13A3A9@canonical.com>
+References: <20200406093623.3980-1-kai.heng.feng@canonical.com>
+ <87v9mczu4h.fsf@kamboji.qca.qualcomm.com>
 To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     Sumit Garg <sumit.garg@linaro.org>, linux-wireless@vger.kernel.org,
-        davem@davemloft.net, kuba@kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, matthias.schoepfer@ithinx.io,
-        Philipp.Berg@liebherr.com, Michael.Weitner@liebherr.com,
-        daniel.thompson@linaro.org, loic.poulain@linaro.org,
-        stable@vger.kernel.org
-Date:   Mon, 06 Apr 2020 15:07:57 +0200
-In-Reply-To: <87imiczrwm.fsf@kamboji.qca.qualcomm.com>
-References: <1586175677-3061-1-git-send-email-sumit.garg@linaro.org>
-         <87ftdgokao.fsf@tynnyri.adurom.net>
-         <1e352e2130e19aec5aa5fc42db397ad50bb4ad05.camel@sipsolutions.net>
-         <87r1x0zsgk.fsf@kamboji.qca.qualcomm.com>
-         <a7e3e8cceff1301f5de5fb2c9aac62b372922b3e.camel@sipsolutions.net>
-         <87imiczrwm.fsf@kamboji.qca.qualcomm.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.4 (3.34.4-1.fc31) 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+X-Mailer: Apple Mail (2.3608.80.23.2.2)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 2020-04-06 at 16:04 +0300, Kalle Valo wrote:
-> Johannes Berg <johannes@sipsolutions.net> writes:
-> 
-> > On Mon, 2020-04-06 at 15:52 +0300, Kalle Valo wrote:
-> > > Johannes Berg <johannes@sipsolutions.net> writes:
-> > > 
-> > > > On Mon, 2020-04-06 at 15:44 +0300, Kalle Valo wrote:
-> > > > > >     user-space  ieee80211_register_hw()  RX IRQ
-> > > > > >     +++++++++++++++++++++++++++++++++++++++++++++
-> > > > > >        |                    |             |
-> > > > > >        |<---wlan0---wiphy_register()      |
-> > > > > >        |----start wlan0---->|             |
-> > > > > >        |                    |<---IRQ---(RX packet)
-> > > > > >        |              Kernel crash        |
-> > > > > >        |              due to unallocated  |
-> > > > > >        |              workqueue.          |
-> > > > 
-> > > > [snip]
-> > > > 
-> > > > > I have understood that no frames should be received until mac80211 calls
-> > > > > struct ieee80211_ops::start:
-> > > > > 
-> > > > >  * @start: Called before the first netdevice attached to the hardware
-> > > > >  *         is enabled. This should turn on the hardware and must turn on
-> > > > >  *         frame reception (for possibly enabled monitor interfaces.)
-> > > > 
-> > > > True, but I think he's saying that you can actually add and configure an
-> > > > interface as soon as the wiphy is registered?
-> > > 
-> > > With '<---IRQ---(RX packet)' I assumed wcn36xx is delivering a frame to
-> > > mac80211 using ieee80211_rx(), but of course I'm just guessing here.
-> > 
-> > Yeah, but that could be legitimate?
-> 
-> Ah, I misunderstood then. The way I have understood is that no rx frames
-> should be delivered (= calling ieee80211_rx()_ before start() is called,
-> but if that's not the case please ignore me :)
 
-No no, that _is_ the case. But I think the "start wlan0" could end up
-calling it?
 
-johannes
+> On Apr 6, 2020, at 20:17, Kalle Valo <kvalo@codeaurora.org> wrote:
+> 
+> Kai-Heng Feng <kai.heng.feng@canonical.com> writes:
+> 
+>> On some systems we can constanly see rtw88 complains:
+>> [39584.721375] rtw_pci 0000:03:00.0: failed to send h2c command
+>> 
+>> Increase interval of each check to wait the status bit really changes.
+>> 
+>> While at it, add some helpers so we can use standarized
+>> readx_poll_timeout() macro.
+> 
+> One logical change per patch, please.
+
+Will split it into two separate patches.
+
+> 
+>> --- a/drivers/net/wireless/realtek/rtw88/hci.h
+>> +++ b/drivers/net/wireless/realtek/rtw88/hci.h
+>> @@ -253,6 +253,10 @@ rtw_write8_mask(struct rtw_dev *rtwdev, u32 addr, u32 mask, u8 data)
+>> 	rtw_write8(rtwdev, addr, set);
+>> }
+>> 
+>> +#define rr8(addr)      rtw_read8(rtwdev, addr)
+>> +#define rr16(addr)     rtw_read16(rtwdev, addr)
+>> +#define rr32(addr)     rtw_read32(rtwdev, addr)
+> 
+> For me these macros reduce code readability, not improve anything. They
+> hide the use of rtwdev variable, which is evil, and a name like rr8() is
+> just way too vague. Please keep the original function names as is.
+
+The inspiration is from another driver.
+readx_poll_timeout macro only takes one argument for the op.
+Some other drivers have their own poll_timeout implementation,
+and I guess it makes sense to make one specific for rtw88.
+
+Kai-Heng
+
+> 
+> -- 
+> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
