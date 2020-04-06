@@ -2,29 +2,29 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E408119F6DD
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 Apr 2020 15:24:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 53AB519F6EC
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 Apr 2020 15:27:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728463AbgDFNYm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 6 Apr 2020 09:24:42 -0400
-Received: from mail27.static.mailgun.info ([104.130.122.27]:64358 "EHLO
-        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728018AbgDFNYc (ORCPT
+        id S1728420AbgDFN1Z (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 6 Apr 2020 09:27:25 -0400
+Received: from mail26.static.mailgun.info ([104.130.122.26]:53166 "EHLO
+        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728284AbgDFN1Y (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 6 Apr 2020 09:24:32 -0400
+        Mon, 6 Apr 2020 09:27:24 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1586179471; h=Content-Type: MIME-Version: Message-ID:
+ s=smtp; t=1586179643; h=Content-Type: MIME-Version: Message-ID:
  In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=0huV9gCKoElhr+Kd6F/isL7651Gm8HQMAsVqnv5Vwq0=; b=cyuDCY3QsXUFOQVfSt3cdfsmh9VPuOPevHIW6hfPMSmJtt1uvbzcMzPgeoapKXWaYqbMUFDW
- FUyuYGbWW6i+7GusdenYZdR1kbh3P2/xyFscl333fyHeGsyoD0yjplmrBa0M2tkfHjugEMfL
- +dLAvMEHojxkEXh+6WTtXwaE51Y=
-X-Mailgun-Sending-Ip: 104.130.122.27
+ bh=sg0YR1A5Pef3VRnFaQiwEzT6F8DEIg+uQHeuwoU6nms=; b=SR/lzXitH5NV2kSnBo8DVuhzQOdVIi6q1CAI8b4QfzCoAFCinf2CeNEuECDV54b+Xm2Pt5Ah
+ 01YJ6PcR3Lf0BL7ZBuJmf5wl4UyrKk69EP237BxamNRtdQLbA/xc9BqtYqLj+LsneCAzt4lZ
+ StIdTm1F5j/xXLK4C6IL22SJ2DY=
+X-Mailgun-Sending-Ip: 104.130.122.26
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e8b2d8d.7ff7bd409810-smtp-out-n05;
- Mon, 06 Apr 2020 13:24:29 -0000 (UTC)
+ by mxa.mailgun.org with ESMTP id 5e8b2e2b.7fc892fc7f80-smtp-out-n02;
+ Mon, 06 Apr 2020 13:27:07 -0000 (UTC)
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 1CA2FC43636; Mon,  6 Apr 2020 13:24:29 +0000 (UTC)
+        id A120AC44788; Mon,  6 Apr 2020 13:27:06 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -34,27 +34,37 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id DE9BDC433F2;
-        Mon,  6 Apr 2020 13:24:26 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org DE9BDC433F2
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id DF11EC433BA;
+        Mon,  6 Apr 2020 13:27:02 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org DF11EC433BA
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Kai-Heng Feng <kai.heng.feng@canonical.com>
-Cc:     Tony Chuang <yhchuang@realtek.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        "open list\:REALTEK WIRELESS DRIVER \(rtw88\)" 
-        <linux-wireless@vger.kernel.org>,
-        "open list\:NETWORKING DRIVERS" <netdev@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] rtw88: Add delay on polling h2c command status bit
-References: <20200406093623.3980-1-kai.heng.feng@canonical.com>
-        <87v9mczu4h.fsf@kamboji.qca.qualcomm.com>
-        <94EAAF7E-66C5-40E2-B6A9-0787CB13A3A9@canonical.com>
-Date:   Mon, 06 Apr 2020 16:24:24 +0300
-In-Reply-To: <94EAAF7E-66C5-40E2-B6A9-0787CB13A3A9@canonical.com> (Kai-Heng
-        Feng's message of "Mon, 6 Apr 2020 21:18:20 +0800")
-Message-ID: <87zhboycfr.fsf@kamboji.qca.qualcomm.com>
+To:     Sumit Garg <sumit.garg@linaro.org>
+Cc:     Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless@vger.kernel.org,
+        "David S. Miller" <davem@davemloft.net>, kuba@kernel.org,
+        netdev@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Matthias-Peter =?utf-8?Q?Sch=C3=B6pfer?= 
+        <matthias.schoepfer@ithinx.io>,
+        "Berg Philipp \(HAU-EDS\)" <Philipp.Berg@liebherr.com>,
+        "Weitner Michael \(HAU-EDS\)" <Michael.Weitner@liebherr.com>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Loic Poulain <loic.poulain@linaro.org>, stable@vger.kernel.org
+Subject: Re: [PATCH] mac80211: fix race in ieee80211_register_hw()
+References: <1586175677-3061-1-git-send-email-sumit.garg@linaro.org>
+        <87ftdgokao.fsf@tynnyri.adurom.net>
+        <1e352e2130e19aec5aa5fc42db397ad50bb4ad05.camel@sipsolutions.net>
+        <87r1x0zsgk.fsf@kamboji.qca.qualcomm.com>
+        <a7e3e8cceff1301f5de5fb2c9aac62b372922b3e.camel@sipsolutions.net>
+        <87imiczrwm.fsf@kamboji.qca.qualcomm.com>
+        <ee168acb768d87776db2be4e978616f9187908d0.camel@sipsolutions.net>
+        <CAFA6WYOjU_iDyAn5PMGe=usg-2sPtupSQEYwcomUcHZBAPnURA@mail.gmail.com>
+Date:   Mon, 06 Apr 2020 16:27:00 +0300
+In-Reply-To: <CAFA6WYOjU_iDyAn5PMGe=usg-2sPtupSQEYwcomUcHZBAPnURA@mail.gmail.com>
+        (Sumit Garg's message of "Mon, 6 Apr 2020 18:51:04 +0530")
+Message-ID: <87v9mcycbf.fsf@kamboji.qca.qualcomm.com>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -63,36 +73,58 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Kai-Heng Feng <kai.heng.feng@canonical.com> writes:
+Sumit Garg <sumit.garg@linaro.org> writes:
 
->> On Apr 6, 2020, at 20:17, Kalle Valo <kvalo@codeaurora.org> wrote:
->> 
->> Kai-Heng Feng <kai.heng.feng@canonical.com> writes:
->> 
->>> --- a/drivers/net/wireless/realtek/rtw88/hci.h
->>> +++ b/drivers/net/wireless/realtek/rtw88/hci.h
->>> @@ -253,6 +253,10 @@ rtw_write8_mask(struct rtw_dev *rtwdev, u32
->>> addr, u32 mask, u8 data)
->>> 	rtw_write8(rtwdev, addr, set);
->>> }
->>> 
->>> +#define rr8(addr)      rtw_read8(rtwdev, addr)
->>> +#define rr16(addr)     rtw_read16(rtwdev, addr)
->>> +#define rr32(addr)     rtw_read32(rtwdev, addr)
->> 
->> For me these macros reduce code readability, not improve anything. They
->> hide the use of rtwdev variable, which is evil, and a name like rr8() is
->> just way too vague. Please keep the original function names as is.
+> On Mon, 6 Apr 2020 at 18:38, Johannes Berg <johannes@sipsolutions.net> wrote:
+>>
+>> On Mon, 2020-04-06 at 16:04 +0300, Kalle Valo wrote:
+>> > Johannes Berg <johannes@sipsolutions.net> writes:
+>> >
+>> > > On Mon, 2020-04-06 at 15:52 +0300, Kalle Valo wrote:
+>> > > > Johannes Berg <johannes@sipsolutions.net> writes:
+>> > > >
+>> > > > > On Mon, 2020-04-06 at 15:44 +0300, Kalle Valo wrote:
+>> > > > > > >     user-space  ieee80211_register_hw()  RX IRQ
+>> > > > > > >     +++++++++++++++++++++++++++++++++++++++++++++
+>> > > > > > >        |                    |             |
+>> > > > > > >        |<---wlan0---wiphy_register()      |
+>> > > > > > >        |----start wlan0---->|             |
+>> > > > > > >        |                    |<---IRQ---(RX packet)
+>> > > > > > >        |              Kernel crash        |
+>> > > > > > >        |              due to unallocated  |
+>> > > > > > >        |              workqueue.          |
+>> > > > >
+>> > > > > [snip]
+>> > > > >
+>> > > > > > I have understood that no frames should be received until mac80211 calls
+>> > > > > > struct ieee80211_ops::start:
+>> > > > > >
+>> > > > > >  * @start: Called before the first netdevice attached to the hardware
+>> > > > > >  *         is enabled. This should turn on the hardware and must turn on
+>> > > > > >  *         frame reception (for possibly enabled monitor interfaces.)
+>> > > > >
+>> > > > > True, but I think he's saying that you can actually add and configure an
+>> > > > > interface as soon as the wiphy is registered?
+>> > > >
+>> > > > With '<---IRQ---(RX packet)' I assumed wcn36xx is delivering a frame to
+>> > > > mac80211 using ieee80211_rx(), but of course I'm just guessing here.
+>> > >
+>> > > Yeah, but that could be legitimate?
+>> >
+>> > Ah, I misunderstood then. The way I have understood is that no rx frames
+>> > should be delivered (= calling ieee80211_rx()_ before start() is called,
+>> > but if that's not the case please ignore me :)
+>>
+>> No no, that _is_ the case. But I think the "start wlan0" could end up
+>> calling it?
+>>
 >
-> The inspiration is from another driver.
-> readx_poll_timeout macro only takes one argument for the op.
-> Some other drivers have their own poll_timeout implementation,
-> and I guess it makes sense to make one specific for rtw88.
+> Sorry if I wasn't clear enough via the sequence diagram. It's a common
+> RX packet that arrives via ieee80211_tasklet_handler() which is
+> enabled via call to "struct ieee80211_ops::start" api.
 
-I'm not even understanding the problem you are tying to fix with these
-macros. The upstream philosopyhy is to have the source code readable and
-maintainable, not to use minimal number of characters. There's a reason
-why we don't name our functions a(), b(), c() and so on.
+Ah sorry, I didn't realise that. So wcn36xx is not to be blamed then,
+thanks for the clarification.
 
 -- 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
