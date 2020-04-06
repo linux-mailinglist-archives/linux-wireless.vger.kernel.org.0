@@ -2,154 +2,275 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 15CCD19FD38
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 Apr 2020 20:32:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E36D419FD70
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 Apr 2020 20:47:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725887AbgDFSce (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 6 Apr 2020 14:32:34 -0400
-Received: from mail-lj1-f196.google.com ([209.85.208.196]:37597 "EHLO
-        mail-lj1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725787AbgDFSce (ORCPT
+        id S1725933AbgDFSrq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 6 Apr 2020 14:47:46 -0400
+Received: from mail-wm1-f65.google.com ([209.85.128.65]:39518 "EHLO
+        mail-wm1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725876AbgDFSrp (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 6 Apr 2020 14:32:34 -0400
-Received: by mail-lj1-f196.google.com with SMTP id r24so812734ljd.4
-        for <linux-wireless@vger.kernel.org>; Mon, 06 Apr 2020 11:32:32 -0700 (PDT)
+        Mon, 6 Apr 2020 14:47:45 -0400
+Received: by mail-wm1-f65.google.com with SMTP id y20so532589wma.4
+        for <linux-wireless@vger.kernel.org>; Mon, 06 Apr 2020 11:47:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=IHBkh6A4QmQ1QdQQaoYlIySdrjTmck6qGDvL47/amQE=;
-        b=FmOQwQfiBPsvFAmUfDhBRZcBTAF089WWQzMPjbkAlQT4qhhyExFnrLpDaplTHToeio
-         jWZQM2LyqBrl9AslEpGHT0ypYql+DCtm3yLYY70kohY0WPJefiTSTHxUa+KU/b3rDESf
-         w6vIIwZjqDAGwAAX8qsm6AlYVuhd95T1keoS8=
+        d=gmail.com; s=20161025;
+        h=to:cc:from:subject:message-id:date:user-agent:mime-version
+         :content-language:content-transfer-encoding;
+        bh=lzcBKkjxp8VNlvoc55S9INhyKVtvaQvjMFisDWaOmFc=;
+        b=o4Zp5hm1A5OMVJwq3HaaoVe/Hp6/rIZDguvsv1FczUTBbCXJ0lLy6SuwpJ2TLBtzcR
+         HWs6DsaynG8OSkjTfL3UrZ8zvPRfoixj6zSoIYVrK9e/SxRYsRv5JrZ7WeMVadTnJ6o0
+         VemPZEYzSu7OAbHvwVycndthAzG3ueht8RBHLvCYF441m6ezQBXbfrEk8CRLoQj7Fk3u
+         KfFZleagosmWEB9x0wPaYeE1/DKNLXirQsDpSBKRO5WgUQMVbiu4VELvVFqn1dOp52cj
+         s5V8ptdyQnT7aG2P20BqkZ51VEBfIi68HpHjEWInTKvxkoVyy2sb+yFyFLoLMrkEb14n
+         mChQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=IHBkh6A4QmQ1QdQQaoYlIySdrjTmck6qGDvL47/amQE=;
-        b=GXhay7kmSd97JEwkclJ2SzNeAJq/JVO/uoaJ/Q+ZDj3oj4cLWxabNUFLL8UyMY84EN
-         uOCyfO0UpJjgSc0TLuaUfH1jHWyZV1ZGOVMvBLDWcIEpmC1iBm2BK2YzGURs4nziUEcU
-         48AUnN85D8vbTO9bZ4b/7ynX+BGpKKOrNlFUV9UrGsw36oN6+JZHiWuQadNs5mTCsk82
-         6AoaQZsnOM4oyH6UPU0NH98bYiWaARCXV4ZSGi4PoypfuVQQEFPcjykOZt56NDyRcydj
-         GoH4ZF9o6LmoE59MOO8cY1iwageEUprGuxIAybUPI1rivFUOndZ3Qb1j01nrozd9AJNc
-         OvXw==
-X-Gm-Message-State: AGi0PuZ6fvzR0XTZ44Tfi3i5vJGAtRoVWXZh3Er83xTlFlRWIiYacu06
-        a+XpNLs86jwBXXSuvNX6xq+OZwg2TU8=
-X-Google-Smtp-Source: APiQypLJcXGWe1nc+uPjRuqdUGqrNiE/18CKCsmFi9iwh5cxklgoOD+i5SN7+UsF6QPaBEF4RFQMcA==
-X-Received: by 2002:a2e:7a0b:: with SMTP id v11mr359719ljc.120.1586197951406;
-        Mon, 06 Apr 2020 11:32:31 -0700 (PDT)
-Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com. [209.85.167.43])
-        by smtp.gmail.com with ESMTPSA id a26sm10226997ljn.22.2020.04.06.11.32.30
-        for <linux-wireless@vger.kernel.org>
+        h=x-gm-message-state:to:cc:from:subject:message-id:date:user-agent
+         :mime-version:content-language:content-transfer-encoding;
+        bh=lzcBKkjxp8VNlvoc55S9INhyKVtvaQvjMFisDWaOmFc=;
+        b=Zg0LlKPxIZ1+EVMUZpTFQtt6t86jak+2BvH2dP5+DylrYa/CmaKY8fiuev2bJ7jUMS
+         k/cMNYt/1t8wbkjtQwO9eKZ4M8OZD87sqBLb0SxL12mTjGIij3C2TBa5bLEySaXibxVm
+         KcZeMK+8mRXQEKx4MYPpj0LZUGxF2o5ITuU5raT3sSRHhXCzH7A9quEqUDRQhn9+/9J2
+         0FVi7AwmufZvB9+a5lGf4sSg2IRZZnnpxuNJl4sKsxoozrF5bqs72SI4dGkh79eBbbJP
+         Us4QejovlDdZoWHyayGikLPRStm9KhDoQ/xqqrm8ALhPmQH77wnEU5Ive1zwZ200dPur
+         yNOA==
+X-Gm-Message-State: AGi0Pub7WLnw8pNOxSAwEJtK6K09ZtEL/j29LG9lAa9K/v01CllHi3xL
+        oGZbUWt35H8LA9Em75YzY1z87B2k
+X-Google-Smtp-Source: APiQypIEskwnx2I6rgoRkJY8/pDXIBx7JaLmEjxKhwWKhLvk5gVbRv+/hqq4h22JUaR5eOA51Cxrog==
+X-Received: by 2002:a7b:c012:: with SMTP id c18mr459851wmb.22.1586198862626;
+        Mon, 06 Apr 2020 11:47:42 -0700 (PDT)
+Received: from [192.168.43.18] (188.29.165.56.threembb.co.uk. [188.29.165.56])
+        by smtp.gmail.com with ESMTPSA id f1sm29161144wrv.37.2020.04.06.11.47.41
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 06 Apr 2020 11:32:30 -0700 (PDT)
-Received: by mail-lf1-f43.google.com with SMTP id w145so316523lff.3
-        for <linux-wireless@vger.kernel.org>; Mon, 06 Apr 2020 11:32:30 -0700 (PDT)
-X-Received: by 2002:a19:550a:: with SMTP id n10mr6689123lfe.143.1586197949980;
- Mon, 06 Apr 2020 11:32:29 -0700 (PDT)
+        Mon, 06 Apr 2020 11:47:42 -0700 (PDT)
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>,
+        linux-wireless@vger.kernel.org
+From:   Malcolm Priestley <tvboxspy@gmail.com>
+Subject: [PATCH 1/2] staging: vt6556: vnt_rf_setpower convert to use
+ ieee80211_channel.
+Message-ID: <6e9ffe4d-a651-d17e-ebf2-2bd6f766e6dd@gmail.com>
+Date:   Mon, 6 Apr 2020 19:47:40 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
 MIME-Version: 1.0
-References: <20200406074705.25022-1-yhchuang@realtek.com>
-In-Reply-To: <20200406074705.25022-1-yhchuang@realtek.com>
-From:   Brian Norris <briannorris@chromium.org>
-Date:   Mon, 6 Apr 2020 11:32:18 -0700
-X-Gmail-Original-Message-ID: <CA+ASDXM3ZBB53LWWdZQj+adi0LZ4bN5=R1yRju4HV9K+3NLMOQ@mail.gmail.com>
-Message-ID: <CA+ASDXM3ZBB53LWWdZQj+adi0LZ4bN5=R1yRju4HV9K+3NLMOQ@mail.gmail.com>
-Subject: Re: [PATCH] rtw88: add more check for wowlan pattern
-To:     Tony Chuang <yhchuang@realtek.com>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        timlee@realtek.com, Johannes Berg <johannes@sipsolutions.net>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-+ Johannes
+ieee80211_channel contains all the necessary information to change
+power according to tx mode required.
 
-On Mon, Apr 6, 2020 at 12:47 AM <yhchuang@realtek.com> wrote:
-> Previously the mask of wowlan pattern is not checked,
-> and it may lead to wrong pattern match. We fix it and
-> add wildcard type for the pattern whose DA is not masked.
-> Besides, if user pattern is an invalid type for us,
-> show the error in kernel log, and then wowlan will
-> not work.
-...
-> --- a/drivers/net/wireless/realtek/rtw88/wow.c
-> +++ b/drivers/net/wireless/realtek/rtw88/wow.c
-> @@ -74,6 +74,9 @@ static void rtw_wow_pattern_write_cam_ent(struct rtw_dev *rtwdev, u8 id,
->         case RTW_PATTERN_UNICAST:
->                 wdata |= BIT_WKFMCAM_UC | BIT_WKFMCAM_VALID;
->                 break;
-> +       case RTW_PATTERN_WILDCARD:
-> +               wdata |= BIT_WKFMCAM_VALID;
-> +               break;
->         default:
->                 break;
+vnt_rf_setpower is moved and so that vnt_rf_set_txpower the only
+caller becomes static.
 
-I take it by the calling code, that you should never reach this
-default case, and if you do, you're programming a non-working pattern,
-right? Might it deserve a call to WARN() or similar?
+Signed-off-by: Malcolm Priestley <tvboxspy@gmail.com>
+---
+ drivers/staging/vt6656/main_usb.c | 16 ++-----
+ drivers/staging/vt6656/rf.c       | 79 +++++++++++++++----------------
+ drivers/staging/vt6656/rf.h       |  3 +-
+ drivers/staging/vt6656/wcmd.c     |  3 +-
+ 4 files changed, 43 insertions(+), 58 deletions(-)
 
->         }
-> @@ -131,17 +134,47 @@ static u16 rtw_calc_crc(u8 *pdata, int length)
->         return ~crc;
->  }
->
-> -static void rtw_wow_pattern_generate(struct rtw_dev *rtwdev,
-> -                                    struct rtw_vif *rtwvif,
-> -                                    const struct cfg80211_pkt_pattern *pkt_pattern,
-> -                                    struct rtw_wow_pattern *rtw_pattern)
-> +static int rtw_wow_pattern_get_type(struct rtw_vif *rtwvif,
-> +                                   const u8 *pattern, u8 da_mask)
-> +{
-> +       u8 da[ETH_ALEN];
-> +       u8 type;
-> +
-> +       ether_addr_copy_mask(da, pattern, da_mask);
-> +
-> +       /* Each pattern is divided into different kinds by DA address
-> +        *  a. DA is broadcast address
-> +        *  b. DA is multicast address
-> +        *  c. DA is unicast address same as dev's mac address
-> +        *  d. DA is unmasked. Also called wildcard type.
-> +        *  e. Others is invalid type.
-> +        */
-
-So I take it that (e) is "looks like unicast, but the user didn't
-provide the whole DA, or the DA isn't ours"? It feels to me like
-that's still something actionable, in some cases. Cases:
-(1) partial mask, matching
-(2) partial mask, non-matching
-(3) full mask, non-matching
-I'm not totally sure about (2) and (3), but that feels to me like
-something we don't really expect to accept anyway -- should this be
-rejected in the higher-level API?
-For (1), it seems like it would probably be reasonable to still
-interpret this as unicast? I know that might not strictly follow what
-the user asked, but it feels pretty close -- and I also don't believe
-that it's wise to mostly-silently (yes, you added kernel logging; but
-this still doesn't get fed back to the user-space caller) drop the
-wake-pattern request.
-
-Alternatively, if you're going to strictly reject stuff like this,
-then maybe you need to add a cfg80211 driver validity callback, so you
-can reject patterns up front. I think Johannes suggested this was a
-possibility before.
-
-Brian
-
-> +       if (!da_mask)
-> +               type = RTW_PATTERN_WILDCARD;
-> +       else if (is_broadcast_ether_addr(da))
-> +               type = RTW_PATTERN_BROADCAST;
-> +       else if (is_multicast_ether_addr(da))
-> +               type = RTW_PATTERN_MULTICAST;
-> +       else if (ether_addr_equal(da, rtwvif->mac_addr) &&
-> +                (da_mask == GENMASK(5, 0)))
-> +               type = RTW_PATTERN_UNICAST;
-> +       else
-> +               type = RTW_PATTERN_INVALID;
-> +
-> +       return type;
-> +}
+diff --git a/drivers/staging/vt6656/main_usb.c b/drivers/staging/vt6656/main_usb.c
+index dd89f98cc18c..3c76d3cb5bbe 100644
+--- a/drivers/staging/vt6656/main_usb.c
++++ b/drivers/staging/vt6656/main_usb.c
+@@ -685,15 +685,8 @@ static int vnt_config(struct ieee80211_hw *hw, u32 changed)
+ 			priv->bb_type = BB_TYPE_11G;
+ 	}
+ 
+-	if (changed & IEEE80211_CONF_CHANGE_POWER) {
+-		if (priv->bb_type == BB_TYPE_11B)
+-			priv->current_rate = RATE_1M;
+-		else
+-			priv->current_rate = RATE_54M;
+-
+-		vnt_rf_setpower(priv, priv->current_rate,
+-				conf->chandef.chan->hw_value);
+-	}
++	if (changed & IEEE80211_CONF_CHANGE_POWER)
++		vnt_rf_setpower(priv, conf->chandef.chan);
+ 
+ 	return 0;
+ }
+@@ -747,9 +740,8 @@ static void vnt_bss_info_changed(struct ieee80211_hw *hw,
+ 		vnt_update_pre_ed_threshold(priv, false);
+ 	}
+ 
+-	if (changed & BSS_CHANGED_TXPOWER)
+-		vnt_rf_setpower(priv, priv->current_rate,
+-				conf->chandef.chan->hw_value);
++	if (changed & (BSS_CHANGED_TXPOWER | BSS_CHANGED_BANDWIDTH))
++		vnt_rf_setpower(priv, conf->chandef.chan);
+ 
+ 	if (changed & BSS_CHANGED_BEACON_ENABLED) {
+ 		dev_dbg(&priv->usb->dev,
+diff --git a/drivers/staging/vt6656/rf.c b/drivers/staging/vt6656/rf.c
+index 4f9aba0f21b0..633e2b9aca7a 100644
+--- a/drivers/staging/vt6656/rf.c
++++ b/drivers/staging/vt6656/rf.c
+@@ -537,42 +537,6 @@ int vnt_rf_write_embedded(struct vnt_private *priv, u32 data)
+ 	return true;
+ }
+ 
+-/* Set Tx power by rate and channel number */
+-int vnt_rf_setpower(struct vnt_private *priv, u32 rate, u32 channel)
+-{
+-	u8 power = priv->cck_pwr;
+-
+-	if (channel == 0)
+-		return -EINVAL;
+-
+-	switch (rate) {
+-	case RATE_1M:
+-	case RATE_2M:
+-	case RATE_5M:
+-	case RATE_11M:
+-		channel--;
+-
+-		if (channel < sizeof(priv->cck_pwr_tbl))
+-			power = priv->cck_pwr_tbl[channel];
+-		break;
+-	case RATE_6M:
+-	case RATE_9M:
+-	case RATE_12M:
+-	case RATE_18M:
+-	case RATE_24M:
+-	case RATE_36M:
+-	case RATE_48M:
+-	case RATE_54M:
+-		if (channel > CB_MAX_CHANNEL_24G)
+-			power = priv->ofdm_a_pwr_tbl[channel - 15];
+-		else
+-			power = priv->ofdm_pwr_tbl[channel - 1];
+-		break;
+-	}
+-
+-	return vnt_rf_set_txpower(priv, power, rate);
+-}
+-
+ static u8 vnt_rf_addpower(struct vnt_private *priv)
+ {
+ 	s32 rssi = -priv->current_rssi;
+@@ -600,7 +564,8 @@ static u8 vnt_rf_addpower(struct vnt_private *priv)
+ }
+ 
+ /* Set Tx power by power level and rate */
+-int vnt_rf_set_txpower(struct vnt_private *priv, u8 power, u32 rate)
++static int vnt_rf_set_txpower(struct vnt_private *priv, u8 power,
++			      struct ieee80211_channel *ch)
+ {
+ 	u32 power_setting = 0;
+ 	int ret = true;
+@@ -620,7 +585,7 @@ int vnt_rf_set_txpower(struct vnt_private *priv, u8 power, u32 rate)
+ 
+ 		ret &= vnt_rf_write_embedded(priv, power_setting);
+ 
+-		if (rate <= RATE_11M)
++		if (ch->flags & IEEE80211_CHAN_NO_OFDM)
+ 			ret &= vnt_rf_write_embedded(priv, 0x0001b400);
+ 		else
+ 			ret &= vnt_rf_write_embedded(priv, 0x0005a400);
+@@ -630,7 +595,7 @@ int vnt_rf_set_txpower(struct vnt_private *priv, u8 power, u32 rate)
+ 
+ 		ret &= vnt_rf_write_embedded(priv, power_setting);
+ 
+-		if (rate <= RATE_11M) {
++		if (ch->flags & IEEE80211_CHAN_NO_OFDM) {
+ 			ret &= vnt_rf_write_embedded(priv, 0x040c1400);
+ 			ret &= vnt_rf_write_embedded(priv, 0x00299b00);
+ 		} else {
+@@ -640,7 +605,7 @@ int vnt_rf_set_txpower(struct vnt_private *priv, u8 power, u32 rate)
+ 		break;
+ 
+ 	case RF_AIROHA7230:
+-		if (rate <= RATE_11M)
++		if (ch->flags & IEEE80211_CHAN_NO_OFDM)
+ 			ret &= vnt_rf_write_embedded(priv, 0x111bb900);
+ 		else
+ 			ret &= vnt_rf_write_embedded(priv, 0x221bb900);
+@@ -670,8 +635,8 @@ int vnt_rf_set_txpower(struct vnt_private *priv, u8 power, u32 rate)
+ 		if (power >= VT3226_PWR_IDX_LEN)
+ 			return false;
+ 
+-		if (rate <= RATE_11M) {
+-			u16 hw_value = priv->hw->conf.chandef.chan->hw_value;
++		if (ch->flags & IEEE80211_CHAN_NO_OFDM) {
++			u16 hw_value = ch->hw_value;
+ 
+ 			power_setting = ((0x3f - power) << 20) | (0xe07 << 8);
+ 
+@@ -716,6 +681,36 @@ int vnt_rf_set_txpower(struct vnt_private *priv, u8 power, u32 rate)
+ 	return ret;
+ }
+ 
++/* Set Tx power by channel number type */
++int vnt_rf_setpower(struct vnt_private *priv,
++		    struct ieee80211_channel *ch)
++{
++	u16 channel;
++	u8 power = priv->cck_pwr;
++
++	if (!ch)
++		return -EINVAL;
++
++	/* set channel number to array number */
++	channel = ch->hw_value - 1;
++
++	if (ch->flags & IEEE80211_CHAN_NO_OFDM) {
++		if (channel < ARRAY_SIZE(priv->cck_pwr_tbl))
++			power = priv->cck_pwr_tbl[channel];
++	} else if (ch->band == NL80211_BAND_5GHZ) {
++		/* remove 14 channels to array size */
++		channel -= 14;
++
++		if (channel < ARRAY_SIZE(priv->ofdm_a_pwr_tbl))
++			power = priv->ofdm_a_pwr_tbl[channel];
++	} else {
++		if (channel < ARRAY_SIZE(priv->ofdm_a_pwr_tbl))
++			power = priv->ofdm_pwr_tbl[channel];
++	}
++
++	return vnt_rf_set_txpower(priv, power, ch);
++}
++
+ /* Convert rssi to dbm */
+ void vnt_rf_rssi_to_dbm(struct vnt_private *priv, u8 rssi, long *dbm)
+ {
+diff --git a/drivers/staging/vt6656/rf.h b/drivers/staging/vt6656/rf.h
+index 7494546d71b8..493faaf4e2b5 100644
+--- a/drivers/staging/vt6656/rf.h
++++ b/drivers/staging/vt6656/rf.h
+@@ -41,8 +41,7 @@
+ #define	VNT_RF_REG_LEN      0x17 /* 24 bit length */
+ 
+ int vnt_rf_write_embedded(struct vnt_private *priv, u32 data);
+-int vnt_rf_setpower(struct vnt_private *priv, u32 rate, u32 channel);
+-int vnt_rf_set_txpower(struct vnt_private *priv, u8 power, u32 rate);
++int vnt_rf_setpower(struct vnt_private *priv, struct ieee80211_channel *ch);
+ void vnt_rf_rssi_to_dbm(struct vnt_private *priv, u8 rssi, long *dbm);
+ int vnt_rf_table_download(struct vnt_private *priv);
+ 
+diff --git a/drivers/staging/vt6656/wcmd.c b/drivers/staging/vt6656/wcmd.c
+index 2c5250ca2801..0ccc87da394e 100644
+--- a/drivers/staging/vt6656/wcmd.c
++++ b/drivers/staging/vt6656/wcmd.c
+@@ -122,8 +122,7 @@ void vnt_run_command(struct work_struct *work)
+ 
+ 	case WLAN_CMD_SETPOWER_START:
+ 
+-		vnt_rf_setpower(priv, priv->current_rate,
+-				priv->hw->conf.chandef.chan->hw_value);
++		vnt_rf_setpower(priv, priv->hw->conf.chandef.chan);
+ 
+ 		break;
+ 
+-- 
+2.25.1
