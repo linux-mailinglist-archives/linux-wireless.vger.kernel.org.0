@@ -2,93 +2,252 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E2DF19EE5D
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 Apr 2020 00:07:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 067CB19F123
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 Apr 2020 09:47:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727724AbgDEWHP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 5 Apr 2020 18:07:15 -0400
-Received: from mail-wm1-f68.google.com ([209.85.128.68]:54000 "EHLO
-        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726887AbgDEWHP (ORCPT
+        id S1726521AbgDFHrV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 6 Apr 2020 03:47:21 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:47203 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726475AbgDFHrV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 5 Apr 2020 18:07:15 -0400
-Received: by mail-wm1-f68.google.com with SMTP id d77so12804027wmd.3
-        for <linux-wireless@vger.kernel.org>; Sun, 05 Apr 2020 15:07:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=peG3TSM125daYxWC/2EFWMDab5RxR8LW/FgCsF+8Ga0=;
-        b=awIP6QaEf0EGmnYQa88tViwXmy570MvIzQoLawJb8NYBodkLOgJNnph1X+kop60Y+s
-         jQD6PkV+0ieBs1z1RGJM3ikAgr8m/gJwCYkjBCmGHAyuzIDoMrTQUdDw0zoM4fzfB/fY
-         D7mkB857aM8jtWD27nsBqjOwfNeBgs1M2r+qPTeMEz0wD38B4A8UoTKu23ZLUf/D4OzI
-         Lvtk0mqZgbJ3iuXcSculN+e7nd8mAySsNi7JC1EZ1RMg6K4mrKbfUQjDdKIeHK5qF0KF
-         cmD06CcwG/gcHdd6pN7P4XTal6Ll4FlNFtLUwLepOVsfn1QJ0Sybk5oh9aBTfZ6oAOb3
-         TqUQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=peG3TSM125daYxWC/2EFWMDab5RxR8LW/FgCsF+8Ga0=;
-        b=d70DUQiWUYbGP3JqnJFOqCnAuPn/35RyrnZPcwlrsHHza3JGAsymvw++aG+h8W8Mdf
-         gkkbFzDsunD/15oX50OTA9iH+hjxeAFQC3GykrLw4cCJ8cOBGW3/d+gbpLIWJmH+NrsU
-         ivQtY2cGDm78H9rX3FSVSyAH4cqzgmTCqe1swJ6nfg/syFMJ2CRHQkZoqwyBmEuNpaTN
-         ghlahU6uXhNu8OfG9GRYd7tTj3S2APhKcOw2BfUW7BzTwOyELhGXKMqZ/WDEtB/0Vw+A
-         FzGxWfpH55g7dpDhHGpZcuHBtryc3yFrJFbcHT/tWgtL3SfT8BoQ/78vgg2FTH0MGSJk
-         SqrA==
-X-Gm-Message-State: AGi0PuZDOA18vrAUL2Dcoh8eGi4O04NVpQ3HwwA2BA6IDf7ymlXZRWmh
-        AJSz0beMfMZmHHAj4kkPGEIy3Bkh
-X-Google-Smtp-Source: APiQypIM0Z3Jpxu4tMQMSoqZAuo9ukOewHBACncHm2zcAN385VKgTemsh8mJoEJ387ILDJPdS/xIBA==
-X-Received: by 2002:a1c:b144:: with SMTP id a65mr20623786wmf.54.1586124432732;
-        Sun, 05 Apr 2020 15:07:12 -0700 (PDT)
-Received: from debian64.daheim (p4FD09DF8.dip0.t-ipconnect.de. [79.208.157.248])
-        by smtp.gmail.com with ESMTPSA id t12sm24106185wrm.0.2020.04.05.15.07.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 05 Apr 2020 15:07:12 -0700 (PDT)
-Received: from chuck by debian64.daheim with local (Exim 4.93)
-        (envelope-from <chunkeey@gmail.com>)
-        id 1jLDPx-000BsY-DI; Mon, 06 Apr 2020 00:07:01 +0200
-From:   Christian Lamparter <chunkeey@gmail.com>
-To:     linux-wireless@vger.kernel.org
-Cc:     Giuseppe Marco Randazzo <gmrandazzo@gmail.com>,
-        kvalo@codeaurora.org
-Subject: [PATCH] p54usb: add AirVasT USB stick device-id
-Date:   Mon,  6 Apr 2020 00:06:59 +0200
-Message-Id: <20200405220659.45621-1-chunkeey@gmail.com>
-X-Mailer: git-send-email 2.26.0
+        Mon, 6 Apr 2020 03:47:21 -0400
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.69 with qID 0367l7S71019689, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexmb06.realtek.com.tw[172.21.6.99])
+        by rtits2.realtek.com.tw (8.15.2/2.66/5.86) with ESMTPS id 0367l7S71019689
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Mon, 6 Apr 2020 15:47:07 +0800
+Received: from RTEXMB04.realtek.com.tw (172.21.6.97) by
+ RTEXMB06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Mon, 6 Apr 2020 15:47:07 +0800
+Received: from localhost.localdomain (172.21.68.128) by
+ RTEXMB04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Mon, 6 Apr 2020 15:47:07 +0800
+From:   <yhchuang@realtek.com>
+To:     <kvalo@codeaurora.org>
+CC:     <linux-wireless@vger.kernel.org>, <briannorris@chromium.org>,
+        <timlee@realtek.com>
+Subject: [PATCH] rtw88: add more check for wowlan pattern
+Date:   Mon, 6 Apr 2020 15:47:05 +0800
+Message-ID: <20200406074705.25022-1-yhchuang@realtek.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [172.21.68.128]
+X-ClientProxiedBy: RTEXMB02.realtek.com.tw (172.21.6.95) To
+ RTEXMB04.realtek.com.tw (172.21.6.97)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Giuseppe Marco Randazzo <gmrandazzo@gmail.com>
+From: Chin-Yen Lee <timlee@realtek.com>
 
-This patch adds the AirVasT USB wireless devices 124a:4026
-to the list of supported devices. It's using the ISL3886
-usb firmware. Without this modification, the wiki adapter
-is not recognized.
+Previously the mask of wowlan pattern is not checked,
+and it may lead to wrong pattern match. We fix it and
+add wildcard type for the pattern whose DA is not masked.
+Besides, if user pattern is an invalid type for us,
+show the error in kernel log, and then wowlan will
+not work.
 
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Giuseppe Marco Randazzo <gmrandazzo@gmail.com>
-Signed-off-by: Christian Lamparter <chunkeey@gmail.com> [formatted, reworded]
+Signed-off-by: Chin-Yen Lee <timlee@realtek.com>
+Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
 ---
- drivers/net/wireless/intersil/p54/p54usb.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/realtek/rtw88/wow.c | 101 +++++++++++++++++------
+ drivers/net/wireless/realtek/rtw88/wow.h |  13 ++-
+ 2 files changed, 86 insertions(+), 28 deletions(-)
 
-diff --git a/drivers/net/wireless/intersil/p54/p54usb.c b/drivers/net/wireless/intersil/p54/p54usb.c
-index b94764c88750..ff0e30c0c14c 100644
---- a/drivers/net/wireless/intersil/p54/p54usb.c
-+++ b/drivers/net/wireless/intersil/p54/p54usb.c
-@@ -61,6 +61,7 @@ static const struct usb_device_id p54u_table[] = {
- 	{USB_DEVICE(0x0db0, 0x6826)},	/* MSI UB54G (MS-6826) */
- 	{USB_DEVICE(0x107b, 0x55f2)},	/* Gateway WGU-210 (Gemtek) */
- 	{USB_DEVICE(0x124a, 0x4023)},	/* Shuttle PN15, Airvast WM168g, IOGear GWU513 */
-+	{USB_DEVICE(0x124a, 0x4026)},	/* AirVasT USB wireless device */
- 	{USB_DEVICE(0x1435, 0x0210)},	/* Inventel UR054G */
- 	{USB_DEVICE(0x15a9, 0x0002)},	/* Gemtek WUBI-100GW 802.11g */
- 	{USB_DEVICE(0x1630, 0x0005)},	/* 2Wire 802.11g USB (v1) / Z-Com */
+diff --git a/drivers/net/wireless/realtek/rtw88/wow.c b/drivers/net/wireless/realtek/rtw88/wow.c
+index 2fcdf70a3a77..d87f6b13d2a0 100644
+--- a/drivers/net/wireless/realtek/rtw88/wow.c
++++ b/drivers/net/wireless/realtek/rtw88/wow.c
+@@ -74,6 +74,9 @@ static void rtw_wow_pattern_write_cam_ent(struct rtw_dev *rtwdev, u8 id,
+ 	case RTW_PATTERN_UNICAST:
+ 		wdata |= BIT_WKFMCAM_UC | BIT_WKFMCAM_VALID;
+ 		break;
++	case RTW_PATTERN_WILDCARD:
++		wdata |= BIT_WKFMCAM_VALID;
++		break;
+ 	default:
+ 		break;
+ 	}
+@@ -131,17 +134,47 @@ static u16 rtw_calc_crc(u8 *pdata, int length)
+ 	return ~crc;
+ }
+ 
+-static void rtw_wow_pattern_generate(struct rtw_dev *rtwdev,
+-				     struct rtw_vif *rtwvif,
+-				     const struct cfg80211_pkt_pattern *pkt_pattern,
+-				     struct rtw_wow_pattern *rtw_pattern)
++static int rtw_wow_pattern_get_type(struct rtw_vif *rtwvif,
++				    const u8 *pattern, u8 da_mask)
++{
++	u8 da[ETH_ALEN];
++	u8 type;
++
++	ether_addr_copy_mask(da, pattern, da_mask);
++
++	/* Each pattern is divided into different kinds by DA address
++	 *  a. DA is broadcast address
++	 *  b. DA is multicast address
++	 *  c. DA is unicast address same as dev's mac address
++	 *  d. DA is unmasked. Also called wildcard type.
++	 *  e. Others is invalid type.
++	 */
++	if (!da_mask)
++		type = RTW_PATTERN_WILDCARD;
++	else if (is_broadcast_ether_addr(da))
++		type = RTW_PATTERN_BROADCAST;
++	else if (is_multicast_ether_addr(da))
++		type = RTW_PATTERN_MULTICAST;
++	else if (ether_addr_equal(da, rtwvif->mac_addr) &&
++		 (da_mask == GENMASK(5, 0)))
++		type = RTW_PATTERN_UNICAST;
++	else
++		type = RTW_PATTERN_INVALID;
++
++	return type;
++}
++
++static int rtw_wow_pattern_generate(struct rtw_dev *rtwdev,
++				    struct rtw_vif *rtwvif,
++				    const struct cfg80211_pkt_pattern *pkt_pattern,
++				    struct rtw_wow_pattern *rtw_pattern)
+ {
+ 	const u8 *mask;
+ 	const u8 *pattern;
+ 	u8 mask_hw[RTW_MAX_PATTERN_MASK_SIZE] = {0};
+ 	u8 content[RTW_MAX_PATTERN_SIZE] = {0};
+-	u8 mac_addr[ETH_ALEN] = {0};
+ 	u8 mask_len;
++	u8 type;
+ 	u16 count;
+ 	int len;
+ 	int i;
+@@ -149,20 +182,15 @@ static void rtw_wow_pattern_generate(struct rtw_dev *rtwdev,
+ 	pattern = pkt_pattern->pattern;
+ 	len = pkt_pattern->pattern_len;
+ 	mask = pkt_pattern->mask;
+-
+-	ether_addr_copy(mac_addr, rtwvif->mac_addr);
++	mask_len = DIV_ROUND_UP(len, 8);
+ 	memset(rtw_pattern, 0, sizeof(*rtw_pattern));
+ 
+-	mask_len = DIV_ROUND_UP(len, 8);
++	type = rtw_wow_pattern_get_type(rtwvif, pattern,
++					mask[0] & GENMASK(5, 0));
++	if (type == RTW_PATTERN_INVALID)
++		return -EPERM;
+ 
+-	if (is_broadcast_ether_addr(pattern))
+-		rtw_pattern->type = RTW_PATTERN_BROADCAST;
+-	else if (is_multicast_ether_addr(pattern))
+-		rtw_pattern->type = RTW_PATTERN_MULTICAST;
+-	else if (ether_addr_equal(pattern, mac_addr))
+-		rtw_pattern->type = RTW_PATTERN_UNICAST;
+-	else
+-		rtw_pattern->type = RTW_PATTERN_INVALID;
++	rtw_pattern->type = type;
+ 
+ 	/* translate mask from os to mask for hw
+ 	 * pattern from OS uses 'ethenet frame', like this:
+@@ -208,6 +236,35 @@ static void rtw_wow_pattern_generate(struct rtw_dev *rtwdev,
+ 	}
+ 
+ 	rtw_pattern->crc = rtw_calc_crc(content, count);
++
++	return 0;
++}
++
++static int rtw_wow_parse_patterns(struct rtw_dev *rtwdev,
++				  struct rtw_vif *rtwvif,
++				  struct cfg80211_wowlan *wowlan)
++{
++	struct rtw_wow_param *rtw_wow = &rtwdev->wow;
++	struct rtw_wow_pattern *rtw_patterns = rtw_wow->patterns;
++	int i;
++	int ret;
++
++	if (!wowlan->n_patterns || !wowlan->patterns)
++		return 0;
++
++	for (i = 0; i < wowlan->n_patterns; i++) {
++		ret = rtw_wow_pattern_generate(rtwdev, rtwvif,
++					       wowlan->patterns + i,
++					       rtw_patterns + i);
++		if (ret) {
++			rtw_err(rtwdev, "failed to generate pattern(%d)\n", i);
++			rtw_wow->pattern_cnt = 0;
++			return ret;
++		}
++	}
++	rtw_wow->pattern_cnt = wowlan->n_patterns;
++
++	return 0;
+ }
+ 
+ static void rtw_wow_pattern_clear_cam(struct rtw_dev *rtwdev)
+@@ -769,9 +826,7 @@ static int rtw_wow_set_wakeups(struct rtw_dev *rtwdev,
+ 			       struct cfg80211_wowlan *wowlan)
+ {
+ 	struct rtw_wow_param *rtw_wow = &rtwdev->wow;
+-	struct rtw_wow_pattern *rtw_patterns = rtw_wow->patterns;
+ 	struct rtw_vif *rtwvif;
+-	int i;
+ 
+ 	if (wowlan->disconnect)
+ 		set_bit(RTW_WOW_FLAG_EN_DISCONNECT, rtw_wow->flags);
+@@ -788,15 +843,7 @@ static int rtw_wow_set_wakeups(struct rtw_dev *rtwdev,
+ 		return -EPERM;
+ 
+ 	rtwvif = (struct rtw_vif *)rtw_wow->wow_vif->drv_priv;
+-	if (wowlan->n_patterns && wowlan->patterns) {
+-		rtw_wow->pattern_cnt = wowlan->n_patterns;
+-		for (i = 0; i < wowlan->n_patterns; i++)
+-			rtw_wow_pattern_generate(rtwdev, rtwvif,
+-						 wowlan->patterns + i,
+-						 rtw_patterns + i);
+-	}
+-
+-	return 0;
++	return rtw_wow_parse_patterns(rtwdev, rtwvif, wowlan);
+ }
+ 
+ static void rtw_wow_clear_wakeups(struct rtw_dev *rtwdev)
+diff --git a/drivers/net/wireless/realtek/rtw88/wow.h b/drivers/net/wireless/realtek/rtw88/wow.h
+index 289368a2cba4..bbb8cdab34c7 100644
+--- a/drivers/net/wireless/realtek/rtw88/wow.h
++++ b/drivers/net/wireless/realtek/rtw88/wow.h
+@@ -11,7 +11,7 @@ enum rtw_wow_pattern_type {
+ 	RTW_PATTERN_BROADCAST = 0,
+ 	RTW_PATTERN_MULTICAST,
+ 	RTW_PATTERN_UNICAST,
+-	RTW_PATTERN_VALID,
++	RTW_PATTERN_WILDCARD,
+ 	RTW_PATTERN_INVALID,
+ };
+ 
+@@ -52,6 +52,17 @@ static inline bool rtw_wow_no_link(struct rtw_dev *rtwdev)
+ 	return (rtwvif->net_type == RTW_NET_NO_LINK);
+ }
+ 
++static inline void ether_addr_copy_mask(u8 *dst, const u8 *src, u8 mask)
++{
++	int i;
++
++	eth_zero_addr(dst);
++	for (i = 0; i < ETH_ALEN; i++) {
++		if (mask & BIT(i))
++			dst[i] = src[i];
++	}
++}
++
+ int rtw_wow_suspend(struct rtw_dev *rtwdev, struct cfg80211_wowlan *wowlan);
+ int rtw_wow_resume(struct rtw_dev *rtwdev);
+ 
 -- 
-2.26.0
+2.17.1
 
