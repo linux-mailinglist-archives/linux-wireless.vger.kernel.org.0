@@ -2,98 +2,97 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D621919FA15
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 Apr 2020 18:26:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 34A9C19FC8A
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 Apr 2020 20:09:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729055AbgDFQ0A (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 6 Apr 2020 12:26:00 -0400
-Received: from mail27.static.mailgun.info ([104.130.122.27]:42344 "EHLO
-        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1729061AbgDFQZ7 (ORCPT
+        id S1726595AbgDFSJJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 6 Apr 2020 14:09:09 -0400
+Received: from mail-yb1-f194.google.com ([209.85.219.194]:38002 "EHLO
+        mail-yb1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726436AbgDFSJI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 6 Apr 2020 12:25:59 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1586190359; h=Date: Message-Id: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=3GqqMefz6xkh7pZzhl1Z381IcHiOKqY0rOLB278udJM=;
- b=PAI6rAUBqCG926zKFGMRI4l9GpYiOWau0PeuBS82KL6365GbkyHr0+75ncpRUOwkevvFz5KI
- 99pyoazPe1Uc4bDEGgebORpgga4vvEETfPwIX4Z7Ui5cztHZnh9rp2kAuIpAhfdmMRcEKTPb
- tVohLMqUutgdrxy0KorvaqGT9TU=
-X-Mailgun-Sending-Ip: 104.130.122.27
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e8b580c.7f3f30e4d3e8-smtp-out-n05;
- Mon, 06 Apr 2020 16:25:48 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 828ECC43637; Mon,  6 Apr 2020 16:25:48 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
-        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 3D833C433D2;
-        Mon,  6 Apr 2020 16:25:46 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 3D833C433D2
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        Mon, 6 Apr 2020 14:09:08 -0400
+Received: by mail-yb1-f194.google.com with SMTP id 204so347425ybw.5;
+        Mon, 06 Apr 2020 11:09:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=YerZdcxcQmsmPmbc7x3l9FNg9tmvbjAIdH163TSG1LM=;
+        b=C3hh1cS14KFIfA2sbb6OW61jKT6Zea0KasgKyB/5198Mh0GTyceREUQ3TXh1fJoy60
+         aqmMe+gR+t3Dt0EER1JxbS4MdKJGWi4dVaX/TUL+ye28lSgk1mgGVT9boLVvLMSx2L8y
+         Vg7uqev+kgFvU46OX16LWH2RWg9DCSCYtNvspZAVTxHu6/o2p96pmo9xBryiQ9f8cnBi
+         cNdRV359X/j2lCSFrbjMr4OIK3J6oEDoCk7sELPLvjv+2CrYfBsdar1rPFsiIknc5yVt
+         mvXiO11tk1AIye2stB2lE/Pvst7v56WhBZdW7fsmhBcbDlhew1SqVZcwOZBjlSuVaRtK
+         z1pQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=YerZdcxcQmsmPmbc7x3l9FNg9tmvbjAIdH163TSG1LM=;
+        b=Gc6UuhEVh82b4GgcaCEFs2Q+EG+rBNz8fxCaJejz06aYMI33IOgVxqASNAyh9jtGKX
+         NqOlse9IzOL879sledZqgRv2FdWKvhJXYHyg+7+KK8azzi+da8/p3pBzwqwogSU1aykM
+         i1KDh1pZsZ7NUKa4Gwn917DXvk0yHqudk+RAuogW3qAzB/Eil6i6L6HZQmqMQEi4udwm
+         3KieRfKPo3woFQvBbwMeuU+s+OxFIPOQOfa7RlmCYiTc1c3lWnDnh0QfkyP2513nHZSL
+         vqKiy6cCdtIOZ9G0zwsVHNSUeO05/Hvd+wJgnJ4h6b0g8a95EwYPkseMtLXtigl92Cnt
+         8FwA==
+X-Gm-Message-State: AGi0PuZES+9N8uB01LEkmjl0M9uNjT0rHjpSyPPmDccAViSJSG9an2wY
+        k2AO9ltIspqCHOTXt6h+tWNK4krnSol2Vvaytuc=
+X-Google-Smtp-Source: APiQypJNh0gfrRG+aUIvtwyV5pyFGfJIwXgdUOU3PFRpUCcp7aUGELXyXGkqfsUeqnbL0YixSStkauVyExmNu0ZwAhk=
+X-Received: by 2002:a25:bb0b:: with SMTP id z11mr35630837ybg.400.1586196545618;
+ Mon, 06 Apr 2020 11:09:05 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v2 1/2] ath10k: enable VHT160 and VHT80+80 modes
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <1585574792-719-1-git-send-email-ssreeela@codeaurora.org>
-References: <1585574792-719-1-git-send-email-ssreeela@codeaurora.org>
-To:     Sowmiya Sree Elavalagan <ssreeela@codeaurora.org>
-Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        Lei Wang <leiwa@codeaurora.org>,
-        Sebastian Gottschall <s.gottschall@dd-wrt.com>,
-        Rick Wu <rwu@codeaurora.org>,
-        Sowmiya Sree Elavalagan <ssreeela@codeaurora.org>
-User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20200406162548.828ECC43637@smtp.codeaurora.org>
-Date:   Mon,  6 Apr 2020 16:25:48 +0000 (UTC)
+References: <1586175677-3061-1-git-send-email-sumit.garg@linaro.org>
+ <87ftdgokao.fsf@tynnyri.adurom.net> <1e352e2130e19aec5aa5fc42db397ad50bb4ad05.camel@sipsolutions.net>
+ <87r1x0zsgk.fsf@kamboji.qca.qualcomm.com> <a7e3e8cceff1301f5de5fb2c9aac62b372922b3e.camel@sipsolutions.net>
+ <87imiczrwm.fsf@kamboji.qca.qualcomm.com> <ee168acb768d87776db2be4e978616f9187908d0.camel@sipsolutions.net>
+ <CAFA6WYOjU_iDyAn5PMGe=usg-2sPtupSQEYwcomUcHZBAPnURA@mail.gmail.com>
+ <87v9mcycbf.fsf@kamboji.qca.qualcomm.com> <CABPxzYKs3nj0AUX4L-j87Db8v3WnM4uGif9nRTGgx1m2HNN8Rg@mail.gmail.com>
+ <35cadbaff1239378c955014f9ad491bc68dda028.camel@sipsolutions.net>
+ <CABPxzY++YMBPTV4quAkYvEAMfULjMXLkVfNzwocwubno5HO2Bw@mail.gmail.com> <5575dfe84aa745a3c2a61e240c3d150dc8d9446f.camel@sipsolutions.net>
+In-Reply-To: <5575dfe84aa745a3c2a61e240c3d150dc8d9446f.camel@sipsolutions.net>
+From:   Krishna Chaitanya <chaitanya.mgit@gmail.com>
+Date:   Mon, 6 Apr 2020 23:38:54 +0530
+Message-ID: <CABPxzYJHjaLH+ozyFZx1hwXrNxdHgJaardk-kn7d72y7RC-=hw@mail.gmail.com>
+Subject: Re: [PATCH] mac80211: fix race in ieee80211_register_hw()
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        Sumit Garg <sumit.garg@linaro.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        "David S. Miller" <davem@davemloft.net>, kuba@kernel.org,
+        netdev <netdev@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        =?UTF-8?Q?Matthias=2DPeter_Sch=C3=B6pfer?= 
+        <matthias.schoepfer@ithinx.io>,
+        "Berg Philipp (HAU-EDS)" <Philipp.Berg@liebherr.com>,
+        "Weitner Michael (HAU-EDS)" <Michael.Weitner@liebherr.com>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Loic Poulain <loic.poulain@linaro.org>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Sowmiya Sree Elavalagan <ssreeela@codeaurora.org> wrote:
+On Mon, Apr 6, 2020 at 8:36 PM Johannes Berg <johannes@sipsolutions.net> wrote:
+>
+> On Mon, 2020-04-06 at 19:55 +0530, Krishna Chaitanya wrote:
+>
+> > > iw phy0 interface add wlan0 type station
+> > > ip link set wlan0 up
+> > Ah okay, got it, thanks. Very narrow window though :-) as the
+> > alloc_ordered_workqueue
+> > doesn't need RTNL and there is a long way to go to do if_add() from
+> > user and setup
+> > the driver for interrupts.
+>
+> True, I do wonder how this is hit. Maybe something with no preempt and a
+> uevent triggering things?
+Probably, it might be specific to the dragonboard410c configuration
 
-> Set right channel frequencies in VHT160 mode according to the VHT160
-> interoperability workaround added as part of IEEE Std 802.11™-2016 in
-> "Table 9-252—VHT Operation Information subfields", band_center_freq2
-> corresponds to CCFS1 in Table 9-253. Previous implementation
-> (band_center_freq2 = 0 for VHT160) is only deprecated.
-> 
-> Enable VHT80+80 mode and set the proper peer RX nss value for VHT160 and
-> VHT80+80 mode.
-> 
-> Based on patches by Sebastian Gottschall:
-> 
-> https://lkml.kernel.org/r/20180704095444.662-1-s.gottschall@dd-wrt.com
-> 
-> https://lkml.kernel.org/r/20180704120519.6479-1-s.gottschall@dd-wrt.com
-> 
-> Tested: qca9984 with firmware ver 10.4-3.10-00047
-> 
-> Co-developed-by: Sebastian Gottschall <s.gottschall@dd-wrt.com>
-> Signed-off-by: Sebastian Gottschall <s.gottschall@dd-wrt.com>
-> Co-developed-by: Rick Wu <rwu@codeaurora.org>
-> Signed-off-by: Rick Wu <rwu@codeaurora.org>
-> Signed-off-by: Lei Wang <leiwa@codeaurora.org>
-> Signed-off-by: Sowmiya Sree Elavalagan <ssreeela@codeaurora.org>
-> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+> > Again depends on the driver though, it
+> > should properly handle
+> > pending ieee80211_register_hw() with start().
 
-2 patches applied to ath-next branch of ath.git, thanks.
-
-3db24065c2c8 ath10k: enable VHT160 and VHT80+80 modes
-795def8b14ff ath10k: enable radar detection in secondary segment
-
--- 
-https://patchwork.kernel.org/patch/11465505/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+> It could, but it'd be really tricky. Much better to fix mac80211.
+Sure, anyways it is a good change.
