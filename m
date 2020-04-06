@@ -2,126 +2,69 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0278019FE7B
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 Apr 2020 21:53:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CDE551A0081
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 Apr 2020 23:56:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726428AbgDFTxG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 6 Apr 2020 15:53:06 -0400
-Received: from mail-wr1-f68.google.com ([209.85.221.68]:43010 "EHLO
-        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726220AbgDFTxF (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 6 Apr 2020 15:53:05 -0400
-Received: by mail-wr1-f68.google.com with SMTP id w15so956340wrv.10;
-        Mon, 06 Apr 2020 12:53:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:reply-to:from:date:message-id
-         :subject:to:cc;
-        bh=cLKnKuTpDDcnnvckRKd8EsE8Je/PkHgph1cfVvzxLuk=;
-        b=jJMQ7+j0gvWZrDFhqYqsdxda6c9tMvnWSTCseMEXWqiglzwpm24miH2hSvj+JeP2+h
-         3Yb1LEmu5SM/BQLHBJE7VtMJgDTnVmTpoZRf8YU/mObl+K3hO4TbqI4QU7wa2GpKD545
-         xEx0513G3lXUeQsbCmMaV5ugfSHPW6cE47ruF/YsGdCFbMVJak9kuUjZZX/Dx4bhOHGT
-         IEwrAf31+S9Wi7p7qNCacdxrkeYYiQI75tTiSmJYkjHKD6J7ygODrK/7f6P6Zb0nDMCh
-         PrjS2o2ee4d8OU43dU0zKN5iO9rn91HrSnOM+QJ2WtO/vzb5lz8yZMGrLD1RBXPgE11P
-         VkOQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:reply-to
-         :from:date:message-id:subject:to:cc;
-        bh=cLKnKuTpDDcnnvckRKd8EsE8Je/PkHgph1cfVvzxLuk=;
-        b=lG6VohdD+cKWy3ANp8LcXbv07qKi/352ELN6sG9v4gF0LiPbvBYMYqAeuHCp/wk9Ba
-         2FDv0To3D4+6Go0MaZx9+xscDVP82b2R1/7sEhyxamtRkmOIFwU34pcrbO7WOMHFPz7Q
-         2lXdTcEIX92AvjkOs21MN2JoMOc6ZOluUkeYj3BOI46GybQ4/ql47e38l7lt1G+OC9Oa
-         vT9z//bIhlLSBahYSFSa08PXnUrxIBiBPfbGkl3l/GrOtnhUcb193e722/Ieej2iij1u
-         ZMj0kK01Gn1+J06xBFgBasU+dqUdXl4cBJMVJOBfCan05hsO7B8A87zYOSg13h6t0ewe
-         /XVQ==
-X-Gm-Message-State: AGi0PuZuRMgyXIEx7I3GtWrcADoR9xCXD6nQNsu0kgXm8zD0ZL3xCoHk
-        NS7nyepja45qXZPknPY4vl5u8WClzXpB9RxOl6E9DuGqu4k=
-X-Google-Smtp-Source: APiQypLSV1ZoyA8Vopu8CC9juJ2Xs3xUcrjwFHtw9Cr0w7PDYiUVKbIb1hV7mra2/vPb2XQ2ZWP2a6vk2SDoXpf01eI=
-X-Received: by 2002:adf:b64f:: with SMTP id i15mr941499wre.351.1586202783518;
- Mon, 06 Apr 2020 12:53:03 -0700 (PDT)
+        id S1726272AbgDFV4j (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 6 Apr 2020 17:56:39 -0400
+Received: from mail.kernel.org ([198.145.29.99]:47348 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726112AbgDFV4j (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 6 Apr 2020 17:56:39 -0400
+Received: from lore-desk-wlan.redhat.com (unknown [151.48.151.50])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 19B4D20842;
+        Mon,  6 Apr 2020 21:56:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1586210199;
+        bh=cz7J06GHj8wA5T68rrWj6/Sv+02ISrlJSLYDGJBsVrI=;
+        h=From:To:Cc:Subject:Date:From;
+        b=m4h61MWXks/acJnCDmjD4FFKjV4oyXHjSKMkQPv5J6EZ7YlOlS4EMqxflpjljhtBp
+         uHsmbGYCGf8d67gPOADfTAb5WhzjxwNeE38HnY6wfsFdJoUPHhpPxaMV+8Sw/chbdc
+         4SkEpYZBomJAPcofrD0Go61/N478kavmWKqM8lWo=
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     lorenzo.bianconi@redhat.com, ryder.lee@mediatek.com,
+        linux-wireless@vger.kernel.org
+Subject: [PATCH] mt76: mt7615: fix possible division by 0 in mt7615_mac_update_mib_stats
+Date:   Mon,  6 Apr 2020 23:56:30 +0200
+Message-Id: <3cdc3a64324d0b0e860875b3960ad3e3929a7210.1586210037.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-References: <20200402050219.4842-1-chris@rorvick.com> <20200406141058.29895C43637@smtp.codeaurora.org>
-In-Reply-To: <20200406141058.29895C43637@smtp.codeaurora.org>
-Reply-To: sedat.dilek@gmail.com
-From:   Sedat Dilek <sedat.dilek@gmail.com>
-Date:   Mon, 6 Apr 2020 21:53:24 +0200
-Message-ID: <CA+icZUUOQ0KTJM6w7yfj=g3BprQqJtTQjCjiXRb9dTTeoQL8KA@mail.gmail.com>
-Subject: Re: [PATCH] iwlwifi: actually check allocated conf_tlv pointer
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     Chris Rorvick <chris@rorvick.com>, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Johannes Berg <johannes.berg@intel.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Intel Linux Wireless <linuxwifi@intel.com>,
-        "David S. Miller" <davem@davemloft.net>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Apr 6, 2020 at 4:11 PM Kalle Valo <kvalo@codeaurora.org> wrote:
->
-> Chris Rorvick <chris@rorvick.com> wrote:
->
-> > Commit 71bc0334a637 ("iwlwifi: check allocated pointer when allocating
-> > conf_tlvs") attempted to fix a typoe introduced by commit 17b809c9b22e
-> > ("iwlwifi: dbg: move debug data to a struct") but does not implement the
-> > check correctly.
-> >
-> > This can happen in OOM situations and, when it does, we will potentially try to
-> > dereference a NULL pointer.
-> >
-> > Tweeted-by: @grsecurity
-> > Signed-off-by: Chris Rorvick <chris@rorvick.com>
->
-> Fails to build, please rebase on top of wireless-drivers.
->
-> drivers/net/wireless/intel/iwlwifi/iwl-drv.c: In function 'iwl_req_fw_callback':
-> drivers/net/wireless/intel/iwlwifi/iwl-drv.c:1470:16: error: 'struct iwl_fw' has no member named 'dbg_conf_tlv'
->     if (!drv->fw.dbg_conf_tlv[i])
->                 ^
-> make[5]: *** [drivers/net/wireless/intel/iwlwifi/iwl-drv.o] Error 1
-> make[5]: *** Waiting for unfinished jobs....
-> make[4]: *** [drivers/net/wireless/intel/iwlwifi] Error 2
-> make[3]: *** [drivers/net/wireless/intel] Error 2
-> make[2]: *** [drivers/net/wireless] Error 2
-> make[1]: *** [drivers/net] Error 2
-> make[1]: *** Waiting for unfinished jobs....
-> make: *** [drivers] Error 2
->
+Check that val is not zero before aggr_per estimation in order to avoid a
+possible division by 0
 
-Should be:
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+ drivers/net/wireless/mediatek/mt76/mt7615/mac.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-$ git diff
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
-b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
-index 0481796f75bc..c24350222133 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
-@@ -1467,7 +1467,7 @@ static void iwl_req_fw_callback(const struct
-firmware *ucode_raw, void *context)
-                                kmemdup(pieces->dbg_conf_tlv[i],
-                                        pieces->dbg_conf_tlv_len[i],
-                                        GFP_KERNEL);
--                       if (!pieces->dbg_conf_tlv[i])
-+                       if (!drv->fw.dbg.conf_tlv[i])
-                                goto out_free_fw;
-                }
-        }
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
+index 596fa17a58ff..23f905dfecc7 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
+@@ -1702,9 +1702,11 @@ mt7615_mac_update_mib_stats(struct mt7615_phy *phy)
+ 
+ 	val = mt76_get_field(dev, MT_MIB_SDR14(ext_phy),
+ 			     MT_MIB_AMPDU_MPDU_COUNT);
+-	val2 = mt76_get_field(dev, MT_MIB_SDR15(ext_phy),
+-			      MT_MIB_AMPDU_ACK_COUNT);
+-	mib->aggr_per = 1000 * (val - val2) / val;
++	if (val) {
++		val2 = mt76_get_field(dev, MT_MIB_SDR15(ext_phy),
++				      MT_MIB_AMPDU_ACK_COUNT);
++		mib->aggr_per = 1000 * (val - val2) / val;
++	}
+ 
+ 	aggr = ext_phy ? ARRAY_SIZE(dev->mt76.aggr_stats) / 2 : 0;
+ 	for (i = 0; i < 4; i++) {
+-- 
+2.25.1
 
-"fw.dbg.conf" with a dot not underscore.
-
-- Sedat -
-
-
-
-> Patch set to Changes Requested.
->
-> --
-> https://patchwork.kernel.org/patch/11470125/
->
-> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
