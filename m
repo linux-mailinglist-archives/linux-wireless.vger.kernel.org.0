@@ -2,97 +2,154 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 34A9C19FC8A
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 Apr 2020 20:09:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 15CCD19FD38
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 Apr 2020 20:32:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726595AbgDFSJJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 6 Apr 2020 14:09:09 -0400
-Received: from mail-yb1-f194.google.com ([209.85.219.194]:38002 "EHLO
-        mail-yb1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726436AbgDFSJI (ORCPT
+        id S1725887AbgDFSce (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 6 Apr 2020 14:32:34 -0400
+Received: from mail-lj1-f196.google.com ([209.85.208.196]:37597 "EHLO
+        mail-lj1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725787AbgDFSce (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 6 Apr 2020 14:09:08 -0400
-Received: by mail-yb1-f194.google.com with SMTP id 204so347425ybw.5;
-        Mon, 06 Apr 2020 11:09:06 -0700 (PDT)
+        Mon, 6 Apr 2020 14:32:34 -0400
+Received: by mail-lj1-f196.google.com with SMTP id r24so812734ljd.4
+        for <linux-wireless@vger.kernel.org>; Mon, 06 Apr 2020 11:32:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
+        d=chromium.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=YerZdcxcQmsmPmbc7x3l9FNg9tmvbjAIdH163TSG1LM=;
-        b=C3hh1cS14KFIfA2sbb6OW61jKT6Zea0KasgKyB/5198Mh0GTyceREUQ3TXh1fJoy60
-         aqmMe+gR+t3Dt0EER1JxbS4MdKJGWi4dVaX/TUL+ye28lSgk1mgGVT9boLVvLMSx2L8y
-         Vg7uqev+kgFvU46OX16LWH2RWg9DCSCYtNvspZAVTxHu6/o2p96pmo9xBryiQ9f8cnBi
-         cNdRV359X/j2lCSFrbjMr4OIK3J6oEDoCk7sELPLvjv+2CrYfBsdar1rPFsiIknc5yVt
-         mvXiO11tk1AIye2stB2lE/Pvst7v56WhBZdW7fsmhBcbDlhew1SqVZcwOZBjlSuVaRtK
-         z1pQ==
+        bh=IHBkh6A4QmQ1QdQQaoYlIySdrjTmck6qGDvL47/amQE=;
+        b=FmOQwQfiBPsvFAmUfDhBRZcBTAF089WWQzMPjbkAlQT4qhhyExFnrLpDaplTHToeio
+         jWZQM2LyqBrl9AslEpGHT0ypYql+DCtm3yLYY70kohY0WPJefiTSTHxUa+KU/b3rDESf
+         w6vIIwZjqDAGwAAX8qsm6AlYVuhd95T1keoS8=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=YerZdcxcQmsmPmbc7x3l9FNg9tmvbjAIdH163TSG1LM=;
-        b=Gc6UuhEVh82b4GgcaCEFs2Q+EG+rBNz8fxCaJejz06aYMI33IOgVxqASNAyh9jtGKX
-         NqOlse9IzOL879sledZqgRv2FdWKvhJXYHyg+7+KK8azzi+da8/p3pBzwqwogSU1aykM
-         i1KDh1pZsZ7NUKa4Gwn917DXvk0yHqudk+RAuogW3qAzB/Eil6i6L6HZQmqMQEi4udwm
-         3KieRfKPo3woFQvBbwMeuU+s+OxFIPOQOfa7RlmCYiTc1c3lWnDnh0QfkyP2513nHZSL
-         vqKiy6cCdtIOZ9G0zwsVHNSUeO05/Hvd+wJgnJ4h6b0g8a95EwYPkseMtLXtigl92Cnt
-         8FwA==
-X-Gm-Message-State: AGi0PuZES+9N8uB01LEkmjl0M9uNjT0rHjpSyPPmDccAViSJSG9an2wY
-        k2AO9ltIspqCHOTXt6h+tWNK4krnSol2Vvaytuc=
-X-Google-Smtp-Source: APiQypJNh0gfrRG+aUIvtwyV5pyFGfJIwXgdUOU3PFRpUCcp7aUGELXyXGkqfsUeqnbL0YixSStkauVyExmNu0ZwAhk=
-X-Received: by 2002:a25:bb0b:: with SMTP id z11mr35630837ybg.400.1586196545618;
- Mon, 06 Apr 2020 11:09:05 -0700 (PDT)
+        bh=IHBkh6A4QmQ1QdQQaoYlIySdrjTmck6qGDvL47/amQE=;
+        b=GXhay7kmSd97JEwkclJ2SzNeAJq/JVO/uoaJ/Q+ZDj3oj4cLWxabNUFLL8UyMY84EN
+         uOCyfO0UpJjgSc0TLuaUfH1jHWyZV1ZGOVMvBLDWcIEpmC1iBm2BK2YzGURs4nziUEcU
+         48AUnN85D8vbTO9bZ4b/7ynX+BGpKKOrNlFUV9UrGsw36oN6+JZHiWuQadNs5mTCsk82
+         6AoaQZsnOM4oyH6UPU0NH98bYiWaARCXV4ZSGi4PoypfuVQQEFPcjykOZt56NDyRcydj
+         GoH4ZF9o6LmoE59MOO8cY1iwageEUprGuxIAybUPI1rivFUOndZ3Qb1j01nrozd9AJNc
+         OvXw==
+X-Gm-Message-State: AGi0PuZ6fvzR0XTZ44Tfi3i5vJGAtRoVWXZh3Er83xTlFlRWIiYacu06
+        a+XpNLs86jwBXXSuvNX6xq+OZwg2TU8=
+X-Google-Smtp-Source: APiQypLJcXGWe1nc+uPjRuqdUGqrNiE/18CKCsmFi9iwh5cxklgoOD+i5SN7+UsF6QPaBEF4RFQMcA==
+X-Received: by 2002:a2e:7a0b:: with SMTP id v11mr359719ljc.120.1586197951406;
+        Mon, 06 Apr 2020 11:32:31 -0700 (PDT)
+Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com. [209.85.167.43])
+        by smtp.gmail.com with ESMTPSA id a26sm10226997ljn.22.2020.04.06.11.32.30
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 06 Apr 2020 11:32:30 -0700 (PDT)
+Received: by mail-lf1-f43.google.com with SMTP id w145so316523lff.3
+        for <linux-wireless@vger.kernel.org>; Mon, 06 Apr 2020 11:32:30 -0700 (PDT)
+X-Received: by 2002:a19:550a:: with SMTP id n10mr6689123lfe.143.1586197949980;
+ Mon, 06 Apr 2020 11:32:29 -0700 (PDT)
 MIME-Version: 1.0
-References: <1586175677-3061-1-git-send-email-sumit.garg@linaro.org>
- <87ftdgokao.fsf@tynnyri.adurom.net> <1e352e2130e19aec5aa5fc42db397ad50bb4ad05.camel@sipsolutions.net>
- <87r1x0zsgk.fsf@kamboji.qca.qualcomm.com> <a7e3e8cceff1301f5de5fb2c9aac62b372922b3e.camel@sipsolutions.net>
- <87imiczrwm.fsf@kamboji.qca.qualcomm.com> <ee168acb768d87776db2be4e978616f9187908d0.camel@sipsolutions.net>
- <CAFA6WYOjU_iDyAn5PMGe=usg-2sPtupSQEYwcomUcHZBAPnURA@mail.gmail.com>
- <87v9mcycbf.fsf@kamboji.qca.qualcomm.com> <CABPxzYKs3nj0AUX4L-j87Db8v3WnM4uGif9nRTGgx1m2HNN8Rg@mail.gmail.com>
- <35cadbaff1239378c955014f9ad491bc68dda028.camel@sipsolutions.net>
- <CABPxzY++YMBPTV4quAkYvEAMfULjMXLkVfNzwocwubno5HO2Bw@mail.gmail.com> <5575dfe84aa745a3c2a61e240c3d150dc8d9446f.camel@sipsolutions.net>
-In-Reply-To: <5575dfe84aa745a3c2a61e240c3d150dc8d9446f.camel@sipsolutions.net>
-From:   Krishna Chaitanya <chaitanya.mgit@gmail.com>
-Date:   Mon, 6 Apr 2020 23:38:54 +0530
-Message-ID: <CABPxzYJHjaLH+ozyFZx1hwXrNxdHgJaardk-kn7d72y7RC-=hw@mail.gmail.com>
-Subject: Re: [PATCH] mac80211: fix race in ieee80211_register_hw()
-To:     Johannes Berg <johannes@sipsolutions.net>
+References: <20200406074705.25022-1-yhchuang@realtek.com>
+In-Reply-To: <20200406074705.25022-1-yhchuang@realtek.com>
+From:   Brian Norris <briannorris@chromium.org>
+Date:   Mon, 6 Apr 2020 11:32:18 -0700
+X-Gmail-Original-Message-ID: <CA+ASDXM3ZBB53LWWdZQj+adi0LZ4bN5=R1yRju4HV9K+3NLMOQ@mail.gmail.com>
+Message-ID: <CA+ASDXM3ZBB53LWWdZQj+adi0LZ4bN5=R1yRju4HV9K+3NLMOQ@mail.gmail.com>
+Subject: Re: [PATCH] rtw88: add more check for wowlan pattern
+To:     Tony Chuang <yhchuang@realtek.com>
 Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        Sumit Garg <sumit.garg@linaro.org>,
         linux-wireless <linux-wireless@vger.kernel.org>,
-        "David S. Miller" <davem@davemloft.net>, kuba@kernel.org,
-        netdev <netdev@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        =?UTF-8?Q?Matthias=2DPeter_Sch=C3=B6pfer?= 
-        <matthias.schoepfer@ithinx.io>,
-        "Berg Philipp (HAU-EDS)" <Philipp.Berg@liebherr.com>,
-        "Weitner Michael (HAU-EDS)" <Michael.Weitner@liebherr.com>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Loic Poulain <loic.poulain@linaro.org>, stable@vger.kernel.org
+        timlee@realtek.com, Johannes Berg <johannes@sipsolutions.net>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, Apr 6, 2020 at 8:36 PM Johannes Berg <johannes@sipsolutions.net> wrote:
->
-> On Mon, 2020-04-06 at 19:55 +0530, Krishna Chaitanya wrote:
->
-> > > iw phy0 interface add wlan0 type station
-> > > ip link set wlan0 up
-> > Ah okay, got it, thanks. Very narrow window though :-) as the
-> > alloc_ordered_workqueue
-> > doesn't need RTNL and there is a long way to go to do if_add() from
-> > user and setup
-> > the driver for interrupts.
->
-> True, I do wonder how this is hit. Maybe something with no preempt and a
-> uevent triggering things?
-Probably, it might be specific to the dragonboard410c configuration
++ Johannes
 
-> > Again depends on the driver though, it
-> > should properly handle
-> > pending ieee80211_register_hw() with start().
+On Mon, Apr 6, 2020 at 12:47 AM <yhchuang@realtek.com> wrote:
+> Previously the mask of wowlan pattern is not checked,
+> and it may lead to wrong pattern match. We fix it and
+> add wildcard type for the pattern whose DA is not masked.
+> Besides, if user pattern is an invalid type for us,
+> show the error in kernel log, and then wowlan will
+> not work.
+...
+> --- a/drivers/net/wireless/realtek/rtw88/wow.c
+> +++ b/drivers/net/wireless/realtek/rtw88/wow.c
+> @@ -74,6 +74,9 @@ static void rtw_wow_pattern_write_cam_ent(struct rtw_dev *rtwdev, u8 id,
+>         case RTW_PATTERN_UNICAST:
+>                 wdata |= BIT_WKFMCAM_UC | BIT_WKFMCAM_VALID;
+>                 break;
+> +       case RTW_PATTERN_WILDCARD:
+> +               wdata |= BIT_WKFMCAM_VALID;
+> +               break;
+>         default:
+>                 break;
 
-> It could, but it'd be really tricky. Much better to fix mac80211.
-Sure, anyways it is a good change.
+I take it by the calling code, that you should never reach this
+default case, and if you do, you're programming a non-working pattern,
+right? Might it deserve a call to WARN() or similar?
+
+>         }
+> @@ -131,17 +134,47 @@ static u16 rtw_calc_crc(u8 *pdata, int length)
+>         return ~crc;
+>  }
+>
+> -static void rtw_wow_pattern_generate(struct rtw_dev *rtwdev,
+> -                                    struct rtw_vif *rtwvif,
+> -                                    const struct cfg80211_pkt_pattern *pkt_pattern,
+> -                                    struct rtw_wow_pattern *rtw_pattern)
+> +static int rtw_wow_pattern_get_type(struct rtw_vif *rtwvif,
+> +                                   const u8 *pattern, u8 da_mask)
+> +{
+> +       u8 da[ETH_ALEN];
+> +       u8 type;
+> +
+> +       ether_addr_copy_mask(da, pattern, da_mask);
+> +
+> +       /* Each pattern is divided into different kinds by DA address
+> +        *  a. DA is broadcast address
+> +        *  b. DA is multicast address
+> +        *  c. DA is unicast address same as dev's mac address
+> +        *  d. DA is unmasked. Also called wildcard type.
+> +        *  e. Others is invalid type.
+> +        */
+
+So I take it that (e) is "looks like unicast, but the user didn't
+provide the whole DA, or the DA isn't ours"? It feels to me like
+that's still something actionable, in some cases. Cases:
+(1) partial mask, matching
+(2) partial mask, non-matching
+(3) full mask, non-matching
+I'm not totally sure about (2) and (3), but that feels to me like
+something we don't really expect to accept anyway -- should this be
+rejected in the higher-level API?
+For (1), it seems like it would probably be reasonable to still
+interpret this as unicast? I know that might not strictly follow what
+the user asked, but it feels pretty close -- and I also don't believe
+that it's wise to mostly-silently (yes, you added kernel logging; but
+this still doesn't get fed back to the user-space caller) drop the
+wake-pattern request.
+
+Alternatively, if you're going to strictly reject stuff like this,
+then maybe you need to add a cfg80211 driver validity callback, so you
+can reject patterns up front. I think Johannes suggested this was a
+possibility before.
+
+Brian
+
+> +       if (!da_mask)
+> +               type = RTW_PATTERN_WILDCARD;
+> +       else if (is_broadcast_ether_addr(da))
+> +               type = RTW_PATTERN_BROADCAST;
+> +       else if (is_multicast_ether_addr(da))
+> +               type = RTW_PATTERN_MULTICAST;
+> +       else if (ether_addr_equal(da, rtwvif->mac_addr) &&
+> +                (da_mask == GENMASK(5, 0)))
+> +               type = RTW_PATTERN_UNICAST;
+> +       else
+> +               type = RTW_PATTERN_INVALID;
+> +
+> +       return type;
+> +}
