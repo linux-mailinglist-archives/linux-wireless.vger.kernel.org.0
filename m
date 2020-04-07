@@ -2,86 +2,63 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BBCAA1A02B0
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Apr 2020 02:05:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D8F6B1A04B4
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Apr 2020 04:02:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727835AbgDGAFb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 6 Apr 2020 20:05:31 -0400
-Received: from mail.kernel.org ([198.145.29.99]:36994 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728090AbgDGAC2 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 6 Apr 2020 20:02:28 -0400
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 386EB207FF;
-        Tue,  7 Apr 2020 00:02:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1586217748;
-        bh=Zg0lXdbFYkI82DZL3HsOsGw1RamNs7bH/YilUYo10QM=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IE8TwNCF7jHkxwjhW0ZB51bKRVXYB1F5ZW25ZOJNebqoBS3zfkGYPY7intLkRYYL/
-         7X6dIgsJOSuL360/kA6PB9ITBiFnNKzq5HOtD8WfP+eT+zC9gBnGOAM8mRVCuu1UPW
-         bTDaNT69qw6ulugHnSo1kk+0a9t1K2uTjOgGfd5k=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Ilan Peer <ilan.peer@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Sasha Levin <sashal@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 29/32] cfg80211: Do not warn on same channel at the end of CSA
-Date:   Mon,  6 Apr 2020 20:01:47 -0400
-Message-Id: <20200407000151.16768-29-sashal@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200407000151.16768-1-sashal@kernel.org>
-References: <20200407000151.16768-1-sashal@kernel.org>
+        id S1726523AbgDGCB7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 6 Apr 2020 22:01:59 -0400
+Received: from szxga07-in.huawei.com ([45.249.212.35]:50208 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726332AbgDGCB7 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 6 Apr 2020 22:01:59 -0400
+Received: from DGGEMS401-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id C2E117F2EAD5A19040C1;
+        Tue,  7 Apr 2020 10:01:51 +0800 (CST)
+Received: from [127.0.0.1] (10.173.223.234) by DGGEMS401-HUB.china.huawei.com
+ (10.3.19.201) with Microsoft SMTP Server id 14.3.487.0; Tue, 7 Apr 2020
+ 10:01:48 +0800
+Subject: Re: [PATCH] ath11k: thermal: Fix build error without CONFIG_THERMAL
+To:     Kalle Valo <kvalo@codeaurora.org>
+References: <20200403083414.31392-1-yuehaibing@huawei.com>
+ <87mu7ozs1c.fsf@kamboji.qca.qualcomm.com>
+CC:     <davem@davemloft.net>, <pradeepc@codeaurora.org>,
+        <netdev@vger.kernel.org>, <linux-wireless@vger.kernel.org>,
+        <ath11k@lists.infradead.org>, <linux-kernel@vger.kernel.org>
+From:   Yuehaibing <yuehaibing@huawei.com>
+Message-ID: <2c636eaf-7672-353c-80b2-1649b3a94e60@huawei.com>
+Date:   Tue, 7 Apr 2020 10:01:47 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101
+ Thunderbird/45.2.0
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
+In-Reply-To: <87mu7ozs1c.fsf@kamboji.qca.qualcomm.com>
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.173.223.234]
+X-CFilter-Loop: Reflected
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Ilan Peer <ilan.peer@intel.com>
+On 2020/4/6 21:02, Kalle Valo wrote:
+> YueHaibing <yuehaibing@huawei.com> writes:
+> 
+>> drivers/net/wireless/ath/ath11k/thermal.h:45:1:
+>>  warning: no return statement in function returning non-void [-Wreturn-type]
+>> drivers/net/wireless/ath/ath11k/core.c:416:28: error:
+>>  passing argument 1 of ‘ath11k_thermal_unregister’ from incompatible pointer type [-Werror=incompatible-pointer-types]
+>>
+>> Add missing return 0 in ath11k_thermal_set_throttling,
+>> and fix ath11k_thermal_unregister param type.
+> 
+> These are warnings, no? "build error" and "compiler warning" are
+> different things, the former breaks the whole build which is super
+> critical, but I'll queue this to v5.7 nevertheless. And I'll change the
+> title to:
+> 
+> ath11k: fix compiler warning without CONFIG_THERMAL
 
-[ Upstream commit 05dcb8bb258575a8dd3499d0d78bd2db633c2b23 ]
+Ok , thanks!
 
-When cfg80211_update_assoc_bss_entry() is called, there is a
-verification that the BSS channel actually changed. As some APs use
-CSA also for bandwidth changes, this would result with a kernel
-warning.
-
-Fix this by removing the WARN_ON().
-
-Signed-off-by: Ilan Peer <ilan.peer@intel.com>
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
-Link: https://lore.kernel.org/r/iwlwifi.20200326150855.96316ada0e8d.I6710376b1b4257e5f4712fc7ab16e2b638d512aa@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- net/wireless/scan.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
-
-diff --git a/net/wireless/scan.c b/net/wireless/scan.c
-index aef240fdf8df6..328402ab64a3f 100644
---- a/net/wireless/scan.c
-+++ b/net/wireless/scan.c
-@@ -2022,7 +2022,11 @@ void cfg80211_update_assoc_bss_entry(struct wireless_dev *wdev,
- 
- 	spin_lock_bh(&rdev->bss_lock);
- 
--	if (WARN_ON(cbss->pub.channel == chan))
-+	/*
-+	 * Some APs use CSA also for bandwidth changes, i.e., without actually
-+	 * changing the control channel, so no need to update in such a case.
-+	 */
-+	if (cbss->pub.channel == chan)
- 		goto done;
- 
- 	/* use transmitting bss */
--- 
-2.20.1
+> 
 
