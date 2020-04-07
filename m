@@ -2,156 +2,81 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 688031A0606
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Apr 2020 07:01:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BF45A1A066A
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Apr 2020 07:15:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726657AbgDGFBp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 7 Apr 2020 01:01:45 -0400
-Received: from mail26.static.mailgun.info ([104.130.122.26]:58986 "EHLO
-        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726232AbgDGFBo (ORCPT
+        id S1727125AbgDGFPS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 7 Apr 2020 01:15:18 -0400
+Received: from mail-vk1-f196.google.com ([209.85.221.196]:42828 "EHLO
+        mail-vk1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727080AbgDGFPQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 7 Apr 2020 01:01:44 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1586235703; h=Date: Message-Id: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=jt0Tk8pFpcuNkX69+BRAOWUABI4M2KygUuVbL9SWXck=;
- b=amF+sEMoE9D4X8rc2f1exmy9FvcTkwcyrmdNfXkBNDWaMR5xtfm/0UhiptRiM5B+K1mDCUAC
- U9ZvyxOaxdI1d5HaCy0+pMP5Pz62gq/C7eYsYOiis4ieTS4S6F9p6eI5FTO+usZcqDaSwMGe
- WJGiSTPAblKYwexCwiIImHLbTpA=
-X-Mailgun-Sending-Ip: 104.130.122.26
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e8c0936.7f2ed250d538-smtp-out-n01;
- Tue, 07 Apr 2020 05:01:42 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 09CFAC433D2; Tue,  7 Apr 2020 05:01:42 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
-        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 947B3C433BA;
-        Tue,  7 Apr 2020 05:01:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 947B3C433BA
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        Tue, 7 Apr 2020 01:15:16 -0400
+Received: by mail-vk1-f196.google.com with SMTP id e20so509301vke.9
+        for <linux-wireless@vger.kernel.org>; Mon, 06 Apr 2020 22:15:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=38NlpNEbzNFWb7RFQtfvRASB+B576yw7dNc7pozf3pc=;
+        b=MfHDvIBIt69xqysjTBYVVNc0kV20i2uh+5pM5bA0kgqzaY38Y8DWEj01Pvo2lprKBQ
+         GeMPmsDw8mI8JPS3USlc7fo909SxPcbTvuuO8fmlDj3Epr1eVDtR360WKQPQyhZWRFR1
+         e2AVs/X8xmnpyFeBVbEpWkW/7xUX6BkoKcBNjhVPYru9i1s3MQXqsGzojyz2OPT8Gzuk
+         eAsRgBBtJfCcoxVL23nq2mmza5GNfLtG1Vewilonxc/7to20Va10m3hSWyxvaqvjeUuq
+         +R1bw/nay987q2JQWtF8qmoAYape5iyXc2fGu9oueeJmEOdg+02io2ZWkJnJglNvfVbH
+         fVHQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=38NlpNEbzNFWb7RFQtfvRASB+B576yw7dNc7pozf3pc=;
+        b=WkjYs1Y78VisDLKrVmRYVAiwaddNt/SbP7qhgt7mHTVFMY56fv5DJlCPdLizmzX+BJ
+         KGpCVDBvamvCqGcHxQ+iWd06GBm83q2htLwAh2iPA97apND0NAEm3T1ta96qnQWE0I77
+         n4NVAdGP73PHFCoBNbh9Hei3yIj+NIznzmqti0rvkNzlyLImn/Lb1dYXrWj4g5HPVgBh
+         yAqk/eSVFMvs+Vt3IlVbh+kJ1a/Q+cEBmRogPGIBN73CfooG8L+Yi/Aq5Kjjto6FEiy7
+         iHmZJtUR7KL+UVw6Kt7k0BBr9FJPN7EIxL7YYIYjw8fkc1hS7W48nbK9VkgA2QW/F4Nb
+         rhMA==
+X-Gm-Message-State: AGi0PubVP8ZIIZixjLDw/25B2/q71Yk1Kvkelq3Z1btn5rVfSavC6YPy
+        yi2WpHmRtjgFuAahYIurhSX7NPnEystWkg46yNmuYvIGmyw=
+X-Google-Smtp-Source: APiQypL+ArhsKP1HCJpJZSuqqOKzmqGe03VSBcvbyU5XLwMdkDIdNu0ELlIqojTyqMNnJA6AEodSyvd4rSFXD4DVz/E=
+X-Received: by 2002:a67:fa85:: with SMTP id f5mr495699vsq.65.1586236514277;
+ Mon, 06 Apr 2020 22:15:14 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 1/5] ath9k: Fix use-after-free Read in htc_connect_service
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20200404041838.10426-2-hqjagain@gmail.com>
-References: <20200404041838.10426-2-hqjagain@gmail.com>
-To:     Qiujun Huang <hqjagain@gmail.com>
-Cc:     ath9k-devel@qca.qualcomm.com, davem@davemloft.net,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, anenbupt@gmail.com,
-        syzkaller-bugs@googlegroups.com, Qiujun Huang <hqjagain@gmail.com>
-User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20200407050142.09CFAC433D2@smtp.codeaurora.org>
-Date:   Tue,  7 Apr 2020 05:01:42 +0000 (UTC)
+Received: by 2002:ab0:254a:0:0:0:0:0 with HTTP; Mon, 6 Apr 2020 22:15:12 -0700 (PDT)
+From:   SANDRA DEWI <sdewisandra@gmail.com>
+Date:   Tue, 7 Apr 2020 05:15:12 +0000
+Message-ID: <CALe9-EdG2aBp2yBY=t79ZuBObzzfY6nuVfAsra6+wc2BAYMhcg@mail.gmail.com>
+Subject: whether this is your correct email address or not
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Qiujun Huang <hqjagain@gmail.com> wrote:
+Dear ,Pastor
 
-> The skb is consumed by htc_send_epid, so it needn't release again.
-> 
-> The case reported by syzbot:
-> 
-> https://lore.kernel.org/linux-usb/000000000000590f6b05a1c05d15@google.com
-> usb 1-1: ath9k_htc: Firmware ath9k_htc/htc_9271-1.4.0.fw requested
-> usb 1-1: ath9k_htc: Transferred FW: ath9k_htc/htc_9271-1.4.0.fw, size:
-> 51008
-> usb 1-1: Service connection timeout for: 256
-> ==================================================================
-> BUG: KASAN: use-after-free in atomic_read
-> include/asm-generic/atomic-instrumented.h:26 [inline]
-> BUG: KASAN: use-after-free in refcount_read include/linux/refcount.h:134
-> [inline]
-> BUG: KASAN: use-after-free in skb_unref include/linux/skbuff.h:1042
-> [inline]
-> BUG: KASAN: use-after-free in kfree_skb+0x32/0x3d0 net/core/skbuff.c:692
-> Read of size 4 at addr ffff8881d0957994 by task kworker/1:2/83
-> 
-> Call Trace:
-> kfree_skb+0x32/0x3d0 net/core/skbuff.c:692
-> htc_connect_service.cold+0xa9/0x109
-> drivers/net/wireless/ath/ath9k/htc_hst.c:282
-> ath9k_wmi_connect+0xd2/0x1a0 drivers/net/wireless/ath/ath9k/wmi.c:265
-> ath9k_init_htc_services.constprop.0+0xb4/0x650
-> drivers/net/wireless/ath/ath9k/htc_drv_init.c:146
-> ath9k_htc_probe_device+0x25a/0x1d80
-> drivers/net/wireless/ath/ath9k/htc_drv_init.c:959
-> ath9k_htc_hw_init+0x31/0x60
-> drivers/net/wireless/ath/ath9k/htc_hst.c:501
-> ath9k_hif_usb_firmware_cb+0x26b/0x500
-> drivers/net/wireless/ath/ath9k/hif_usb.c:1187
-> request_firmware_work_func+0x126/0x242
-> drivers/base/firmware_loader/main.c:976
-> process_one_work+0x94b/0x1620 kernel/workqueue.c:2264
-> worker_thread+0x96/0xe20 kernel/workqueue.c:2410
-> kthread+0x318/0x420 kernel/kthread.c:255
-> ret_from_fork+0x24/0x30 arch/x86/entry/entry_64.S:352
-> 
-> Allocated by task 83:
-> kmem_cache_alloc_node+0xdc/0x330 mm/slub.c:2814
-> __alloc_skb+0xba/0x5a0 net/core/skbuff.c:198
-> alloc_skb include/linux/skbuff.h:1081 [inline]
-> htc_connect_service+0x2cc/0x840
-> drivers/net/wireless/ath/ath9k/htc_hst.c:257
-> ath9k_wmi_connect+0xd2/0x1a0 drivers/net/wireless/ath/ath9k/wmi.c:265
-> ath9k_init_htc_services.constprop.0+0xb4/0x650
-> drivers/net/wireless/ath/ath9k/htc_drv_init.c:146
-> ath9k_htc_probe_device+0x25a/0x1d80
-> drivers/net/wireless/ath/ath9k/htc_drv_init.c:959
-> ath9k_htc_hw_init+0x31/0x60
-> drivers/net/wireless/ath/ath9k/htc_hst.c:501
-> ath9k_hif_usb_firmware_cb+0x26b/0x500
-> drivers/net/wireless/ath/ath9k/hif_usb.c:1187
-> request_firmware_work_func+0x126/0x242
-> drivers/base/firmware_loader/main.c:976
-> process_one_work+0x94b/0x1620 kernel/workqueue.c:2264
-> worker_thread+0x96/0xe20 kernel/workqueue.c:2410
-> kthread+0x318/0x420 kernel/kthread.c:255
-> ret_from_fork+0x24/0x30 arch/x86/entry/entry_64.S:352
-> 
-> Freed by task 0:
-> kfree_skb+0x102/0x3d0 net/core/skbuff.c:690
-> ath9k_htc_txcompletion_cb+0x1f8/0x2b0
-> drivers/net/wireless/ath/ath9k/htc_hst.c:356
-> hif_usb_regout_cb+0x10b/0x1b0
-> drivers/net/wireless/ath/ath9k/hif_usb.c:90
-> __usb_hcd_giveback_urb+0x29a/0x550 drivers/usb/core/hcd.c:1650
-> usb_hcd_giveback_urb+0x368/0x420 drivers/usb/core/hcd.c:1716
-> dummy_timer+0x1258/0x32ae drivers/usb/gadget/udc/dummy_hcd.c:1966
-> call_timer_fn+0x195/0x6f0 kernel/time/timer.c:1404
-> expire_timers kernel/time/timer.c:1449 [inline]
-> __run_timers kernel/time/timer.c:1773 [inline]
-> __run_timers kernel/time/timer.c:1740 [inline]
-> run_timer_softirq+0x5f9/0x1500 kernel/time/timer.c:1786
-> __do_softirq+0x21e/0x950 kernel/softirq.c:292
-> 
-> Reported-and-tested-by: syzbot+9505af1ae303dabdc646@syzkaller.appspotmail.com
-> Signed-off-by: Qiujun Huang <hqjagain@gmail.com>
-> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 
-5 patches applied to ath-next branch of ath.git, thanks.
 
-ced21a4c726b ath9k: Fix use-after-free Read in htc_connect_service
-abeaa85054ff ath9k: Fix use-after-free Read in ath9k_wmi_ctrl_rx
-e4ff08a4d727 ath9k: Fix use-after-free Write in ath9k_htc_rx_msg
-19d6c375d671 ath9x: Fix stack-out-of-bounds Write in ath9k_hif_usb_rx_cb
-2bbcaaee1fcb ath9k: Fix general protection fault in ath9k_hif_usb_rx_cb
+I have a client who is an oil business man and he made a fixed deposit
+of $26 million USD in my bank, where I am the director of the branch,
+My client died with his entire family in Jordanian
 
--- 
-https://patchwork.kernel.org/patch/11474039/
+50% of the fund will be for the church  for the work of God,the
+balance 50% we share it in the ratio of 50/50. Meaning 50% to you and
+50% for me
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+intervention in the Syrian Civil War 2014 leaving behind no next of
+kin. I Propose to present you as next of kin to claim the funds, if
+interested reply me for full details and how we are to
+
+
+
+proceed to close this deal.
+
+
+
+
+Mrs. Sandra Dewi
+
+
+
+Email  mrsdewi@gmx.com
