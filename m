@@ -2,128 +2,142 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 27D641A077F
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Apr 2020 08:43:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6E4551A081D
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Apr 2020 09:20:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727003AbgDGGnJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 7 Apr 2020 02:43:09 -0400
-Received: from mail-lf1-f65.google.com ([209.85.167.65]:39608 "EHLO
-        mail-lf1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726808AbgDGGnJ (ORCPT
+        id S1727547AbgDGHUj convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 7 Apr 2020 03:20:39 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:36737 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726937AbgDGHUj (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 7 Apr 2020 02:43:09 -0400
-Received: by mail-lf1-f65.google.com with SMTP id m2so1453435lfo.6
-        for <linux-wireless@vger.kernel.org>; Mon, 06 Apr 2020 23:43:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=OivOvN/o8gD1CI0/RRvNf9QuUqmaxYvN8Wf6SB8cHhk=;
-        b=mxhMTlXaTWQOfj6UOAJK4K+XlKKUSLakafb8CAFJsq1PQC/hBcA34JiOdrRqMJnEGY
-         ZgjnmOq44EvutBSgvMEnI95N8byxPCRJrAQFbIeKRQJu/Qq7syLFZ5eeo/mkoJ0xiomK
-         sroYl33qPbntRAwCjfoihnS4GB4I3d7CCYOLRvo34xM5Vig70FEiQ06yE4gHt1fn+Qi6
-         j6YiDyx3W5KTvI6MfhE/HaT0Dh54hpqJOxM2y/n3BlNZ/SrYsHSspdl0LwTFTUtJNNyw
-         atB/jqPqTClkM282cfExVVnAxn5RwZfRtKpZKLMyq61mPupJy7ebVlNytIawKcZrxDCl
-         uS1A==
+        Tue, 7 Apr 2020 03:20:39 -0400
+Received: from mail-pg1-f200.google.com ([209.85.215.200])
+        by youngberry.canonical.com with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <kai.heng.feng@canonical.com>)
+        id 1jLiXF-0001ck-TA
+        for linux-wireless@vger.kernel.org; Tue, 07 Apr 2020 07:20:38 +0000
+Received: by mail-pg1-f200.google.com with SMTP id x16so1768588pgi.0
+        for <linux-wireless@vger.kernel.org>; Tue, 07 Apr 2020 00:20:37 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=OivOvN/o8gD1CI0/RRvNf9QuUqmaxYvN8Wf6SB8cHhk=;
-        b=kh/3pJjIsgtwRknN5RkCEL85VCMRYgO6yClYz1qyV5fn/73D4v0tBltcJyj/NELcqy
-         uygiGKaR+FwYK7gUlPViiD6Jxw8vIlhmoe4lMoD2NnuoCte7w4Hw99DY1d/7VTeLdtus
-         AjcVB79Gv9vpagpGd68mHz0BbzLI2PHmkgPRgtaXEEIl/meeMQV8c3i85P0DPW89sgnQ
-         LY5UiHmYBniNhQ5mJF2FYTRhFWuOULvQwro7VikvRv6dlpFqEw11O2OrT/dbYiVBjY1c
-         mw/trIvBJJoCY89xpGovZmeZjs3NJ5GMJsoPrOQ0qlykXM0y88QpCgXadQuQTYW9eeYk
-         gmWg==
-X-Gm-Message-State: AGi0PuYGW26NP+hv8Otto/7P/VanRxtUP4zGLerQmxqiMJrNomGyJtYN
-        QgQWD5Rae22o0P5jB8I72TPrYrIcwM1wdBoMM/8tXQ==
-X-Google-Smtp-Source: APiQypKqAs223KGZqI3lkqdz0fRZjxubri09ud5p1UeeKehXNEZpq92ZBMf2CClMn4Xvs7o3el1+N//5NbPGVdrLbJs=
-X-Received: by 2002:ac2:5c07:: with SMTP id r7mr552282lfp.160.1586241786676;
- Mon, 06 Apr 2020 23:43:06 -0700 (PDT)
-MIME-Version: 1.0
-References: <1586175677-3061-1-git-send-email-sumit.garg@linaro.org>
- <87ftdgokao.fsf@tynnyri.adurom.net> <1e352e2130e19aec5aa5fc42db397ad50bb4ad05.camel@sipsolutions.net>
- <87r1x0zsgk.fsf@kamboji.qca.qualcomm.com> <a7e3e8cceff1301f5de5fb2c9aac62b372922b3e.camel@sipsolutions.net>
- <87imiczrwm.fsf@kamboji.qca.qualcomm.com> <ee168acb768d87776db2be4e978616f9187908d0.camel@sipsolutions.net>
- <CAFA6WYOjU_iDyAn5PMGe=usg-2sPtupSQEYwcomUcHZBAPnURA@mail.gmail.com>
- <87v9mcycbf.fsf@kamboji.qca.qualcomm.com> <CABPxzYKs3nj0AUX4L-j87Db8v3WnM4uGif9nRTGgx1m2HNN8Rg@mail.gmail.com>
- <35cadbaff1239378c955014f9ad491bc68dda028.camel@sipsolutions.net>
- <CABPxzY++YMBPTV4quAkYvEAMfULjMXLkVfNzwocwubno5HO2Bw@mail.gmail.com>
- <5575dfe84aa745a3c2a61e240c3d150dc8d9446f.camel@sipsolutions.net> <CABPxzYJHjaLH+ozyFZx1hwXrNxdHgJaardk-kn7d72y7RC-=hw@mail.gmail.com>
-In-Reply-To: <CABPxzYJHjaLH+ozyFZx1hwXrNxdHgJaardk-kn7d72y7RC-=hw@mail.gmail.com>
-From:   Sumit Garg <sumit.garg@linaro.org>
-Date:   Tue, 7 Apr 2020 12:12:54 +0530
-Message-ID: <CAFA6WYP1Os46sh8-PTyDp0ztK2e6cbCoATVX5HN-ojG7bNxeOw@mail.gmail.com>
-Subject: Re: [PATCH] mac80211: fix race in ieee80211_register_hw()
-To:     Krishna Chaitanya <chaitanya.mgit@gmail.com>,
-        Johannes Berg <johannes@sipsolutions.net>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        "David S. Miller" <davem@davemloft.net>, kuba@kernel.org,
-        netdev <netdev@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        =?UTF-8?Q?Matthias=2DPeter_Sch=C3=B6pfer?= 
-        <matthias.schoepfer@ithinx.io>,
-        "Berg Philipp (HAU-EDS)" <Philipp.Berg@liebherr.com>,
-        "Weitner Michael (HAU-EDS)" <Michael.Weitner@liebherr.com>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Loic Poulain <loic.poulain@linaro.org>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+        h=x-gm-message-state:mime-version:subject:from:in-reply-to:date:cc
+         :content-transfer-encoding:message-id:references:to;
+        bh=D9wpwa0NndfexX1TCjkujJJlqtFXso1cUg7215eV4lg=;
+        b=F11Vc8Z9Eonf44EEOLrCb81EDS34AJAVZuC2wA/z0hc/En+QGY3h+uuzpPWpiVgoHs
+         zwUxxYU5ij/OWTq6GNzvERNki7lK4Hv5wnPaQD+uTZoUkbvzZv4QjrsMa0wIcDgFbnvb
+         qrpQHL+mr2R/xbjz5LULUChAPWPO/DL7XVLdeMoNyC5+OROZH8JNEJzmT5EMpemxqVdo
+         7EEpLZkfJtXMu1fR61wkEREOnGZIpbnle/BBE6l6MdrLL4SOxRQmVRVaokz8ZQ9a0Fba
+         40VM/jS8igvaxsTHlx4V/S0PYd7JcJvKxbmk4KsNr3g+bgQDcADt9mKpt07BnAbCulWq
+         /mIw==
+X-Gm-Message-State: AGi0Pub4d6WI8rT5G4X7eqofYPCNGFdjF65LkzR/9hoAdaZYS5c3Iet1
+        O4zTWf/IFefZx96zzohwrgQ8cOatgXlAACU509U9EenWh5YO2imPR6cLPIVE5FDDMIicQy9DGbP
+        bSb0GiMpXCxGMNJFrLHUjY+o0q4WtlqO10+xa+AEz4hqT
+X-Received: by 2002:a63:8442:: with SMTP id k63mr728450pgd.11.1586244036551;
+        Tue, 07 Apr 2020 00:20:36 -0700 (PDT)
+X-Google-Smtp-Source: APiQypIvttWs2PpNx5F/azwXTq270G+WVg1/eAhpUeAmVFhMz6KQT9Cf1f83uAYabfusCXHjXis5cA==
+X-Received: by 2002:a63:8442:: with SMTP id k63mr728433pgd.11.1586244036201;
+        Tue, 07 Apr 2020 00:20:36 -0700 (PDT)
+Received: from [192.168.1.208] (220-133-187-190.HINET-IP.hinet.net. [220.133.187.190])
+        by smtp.gmail.com with ESMTPSA id w138sm13528050pff.145.2020.04.07.00.20.34
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 07 Apr 2020 00:20:35 -0700 (PDT)
+Content-Type: text/plain;
+        charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 13.4 \(3608.80.23.2.2\))
+Subject: Re: [PATCH] rtw88: Add delay on polling h2c command status bit
+From:   Kai-Heng Feng <kai.heng.feng@canonical.com>
+In-Reply-To: <87k12syanf.fsf@kamboji.qca.qualcomm.com>
+Date:   Tue, 7 Apr 2020 15:20:33 +0800
+Cc:     Tony Chuang <yhchuang@realtek.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        "open list:REALTEK WIRELESS DRIVER (rtw88)" 
+        <linux-wireless@vger.kernel.org>,
+        "open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>
+Content-Transfer-Encoding: 8BIT
+Message-Id: <E3E792CF-AC1A-466E-A1B2-F1CFAE9BC673@canonical.com>
+References: <20200406093623.3980-1-kai.heng.feng@canonical.com>
+ <87v9mczu4h.fsf@kamboji.qca.qualcomm.com>
+ <94EAAF7E-66C5-40E2-B6A9-0787CB13A3A9@canonical.com>
+ <87zhboycfr.fsf@kamboji.qca.qualcomm.com>
+ <83B3A3D8-833A-42BE-9EB0-59C95B349B01@canonical.com>
+ <87k12syanf.fsf@kamboji.qca.qualcomm.com>
+To:     Kalle Valo <kvalo@codeaurora.org>
+X-Mailer: Apple Mail (2.3608.80.23.2.2)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 6 Apr 2020 at 23:39, Krishna Chaitanya <chaitanya.mgit@gmail.com> wrote:
->
-> On Mon, Apr 6, 2020 at 8:36 PM Johannes Berg <johannes@sipsolutions.net> wrote:
-> >
-> > On Mon, 2020-04-06 at 19:55 +0530, Krishna Chaitanya wrote:
-> >
-> > > > iw phy0 interface add wlan0 type station
-> > > > ip link set wlan0 up
-> > > Ah okay, got it, thanks. Very narrow window though :-) as the
-> > > alloc_ordered_workqueue
-> > > doesn't need RTNL and there is a long way to go to do if_add() from
-> > > user and setup
-> > > the driver for interrupts.
-> >
-> > True, I do wonder how this is hit. Maybe something with no preempt and a
-> > uevent triggering things?
 
-The crash is reproducible while working with iwd [1] which is
-basically a wireless daemon. It can be started as "iwd.service" during
-boot that can detect wiphy registration events and configure
-interfaces. Have a look at this text [2] from iwd manager.
 
-To have a simple reproducer, please have a look at this trigger script
-[3] from Matthias in CC. With this script I am able to reproduce the
-kernel crash with approx. frequency of 1/10 across reboots on
-dragonboard 410c.
+> On Apr 6, 2020, at 22:03, Kalle Valo <kvalo@codeaurora.org> wrote:
+> 
+> Kai-Heng Feng <kai.heng.feng@canonical.com> writes:
+> 
+>>> On Apr 6, 2020, at 21:24, Kalle Valo <kvalo@codeaurora.org> wrote:
+>>> 
+>>> Kai-Heng Feng <kai.heng.feng@canonical.com> writes:
+>>> 
+>>>>> On Apr 6, 2020, at 20:17, Kalle Valo <kvalo@codeaurora.org> wrote:
+>>>>> 
+>>>>> Kai-Heng Feng <kai.heng.feng@canonical.com> writes:
+>>>>> 
+>>>>>> --- a/drivers/net/wireless/realtek/rtw88/hci.h
+>>>>>> +++ b/drivers/net/wireless/realtek/rtw88/hci.h
+>>>>>> @@ -253,6 +253,10 @@ rtw_write8_mask(struct rtw_dev *rtwdev, u32
+>>>>>> addr, u32 mask, u8 data)
+>>>>>> 	rtw_write8(rtwdev, addr, set);
+>>>>>> }
+>>>>>> 
+>>>>>> +#define rr8(addr)      rtw_read8(rtwdev, addr)
+>>>>>> +#define rr16(addr)     rtw_read16(rtwdev, addr)
+>>>>>> +#define rr32(addr)     rtw_read32(rtwdev, addr)
+>>>>> 
+>>>>> For me these macros reduce code readability, not improve anything. They
+>>>>> hide the use of rtwdev variable, which is evil, and a name like rr8() is
+>>>>> just way too vague. Please keep the original function names as is.
+>>>> 
+>>>> The inspiration is from another driver.
+>>>> readx_poll_timeout macro only takes one argument for the op.
+>>>> Some other drivers have their own poll_timeout implementation,
+>>>> and I guess it makes sense to make one specific for rtw88.
+>>> 
+>>> I'm not even understanding the problem you are tying to fix with these
+>>> macros. The upstream philosopyhy is to have the source code readable and
+>>> maintainable, not to use minimal number of characters. There's a reason
+>>> why we don't name our functions a(), b(), c() and so on.
+>> 
+>> The current h2c polling doesn't have delay between each interval, so
+>> the polling is too fast and the following logic considers it's a
+>> timeout.
+>> The readx_poll_timeout() macro provides a generic mechanism to setup
+>> an interval delay and timeout which is what we need here.
+>> However readx_poll_timeout only accepts one parameter which usually is
+>> memory address, while we need to pass both rtwdev and address.
+>> 
+>> So if hiding rtwdev is evil, we can roll our own variant of
+>> readx_poll_timeout() to make the polling readable.
+> 
+> Can't you do:
+> 
+> ret = read_poll_timeout(rtw_read8, box_state,
+>                        !((box_state >> box) & 0x1), 100,
+>                        3000, false, rtw_dev, REG_HMETFR);
+> 
+> No ugly macros needed and it should function the same. But I did not
+> test this in any way, so no idea if it even compiles.
 
-There is nothing special like no preempt.
+Yes that will do. Didn't notice the recently added macro.
 
-[1] https://wiki.archlinux.org/index.php/Iwd
-[2] https://git.kernel.org/pub/scm/network/wireless/iwd.git/tree/src/manager.c#n563
-[3] https://github.com/DasRoteSkelett/meta-iwd/blob/master/recipes-trigger/trigger/trigger/trigger.sh
+Will send v2.
 
-> Probably, it might be specific to the dragonboard410c configuration
->
+Kai-Heng
 
-As described above, it isn't specific to any dragonboard 410c
-configuration and one should be able to reproduce it on other boards
-too using iwd depending on how long it takes to start corresponding
-wiphy device.
+> 
+> -- 
+> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
-> > > Again depends on the driver though, it
-> > > should properly handle
-> > > pending ieee80211_register_hw() with start().
->
-> > It could, but it'd be really tricky. Much better to fix mac80211.
-
-+1
-
--Sumit
-
-> Sure, anyways it is a good change.
