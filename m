@@ -2,126 +2,103 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E36D41A0E86
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Apr 2020 15:41:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 640E61A0FCE
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Apr 2020 17:01:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728768AbgDGNle (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 7 Apr 2020 09:41:34 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:48910 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728482AbgDGNle (ORCPT
+        id S1729072AbgDGPBX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 7 Apr 2020 11:01:23 -0400
+Received: from mail26.static.mailgun.info ([104.130.122.26]:20126 "EHLO
+        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728943AbgDGPBX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 7 Apr 2020 09:41:34 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 037Dd8FT116530;
-        Tue, 7 Apr 2020 13:41:23 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=2q8+oX7t5GJmfishCStEknlxBHQXmJtbJDBfRwG5N2A=;
- b=nB2/IvZK3I5sP01crIKIWrxjp3A5U6FGHdJ8SEdfFM0O1KriUo1V7/esDETP5oEpyxBM
- 6yqABobznPCdw9inxH0HWdG6z+WXtgdENbktHbLaRLkkZ0y0HTI0gEiSx2Z3Pu4Y6P+3
- JjUB2ltTZkzLtqGrmq4kbGdNRx34BnJWDAGE6zG9AC0H+bvqFpHjW4ISWg2qLWLoWiR7
- SJ/q5PDe45O/2p6ndJvCcJ0bCSGaDtEjp2AWC6MCwe38emZ1SNiqISqSWchIJMlgmrCk
- rJOhJ5Oo+dH5mqnH8/qErqnnmEYBffsoUs5VksrsV02+UqdOTn52G2UxKrvv3uzYhc0Y MQ== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by userp2120.oracle.com with ESMTP id 306jvn4yrm-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 07 Apr 2020 13:41:23 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 037DccVt093623;
-        Tue, 7 Apr 2020 13:41:22 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by userp3020.oracle.com with ESMTP id 30839tcy2f-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 07 Apr 2020 13:41:22 +0000
-Received: from abhmp0015.oracle.com (abhmp0015.oracle.com [141.146.116.21])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 037DfLKr020363;
-        Tue, 7 Apr 2020 13:41:22 GMT
-Received: from mwanda (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 07 Apr 2020 06:41:21 -0700
-Date:   Tue, 7 Apr 2020 16:41:15 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     mpubbise@codeaurora.org
-Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
-Subject: [bug report] ath11k: handle RX fragments
-Message-ID: <20200407134115.GA108129@mwanda>
+        Tue, 7 Apr 2020 11:01:23 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1586271682; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=qfPhXpbq48UCquvIdZVCgwV3ApL3LR9hDpMi14snUs4=; b=YEvyTxa0Cizol5uFGsKBA8GHYiBPSvxrGcaRP7KU95BM57JLq63CAc2dfQZmgDDqcfFlfdkf
+ x3+20VuRJeLG96DJ8i1rMmZ4NT21JYFJpqZ1mcrnuj4FViXzXW6NIq8X8EsKWnL7XVoIM7b0
+ mo1etdFFYMqL0j6dzqNVqkqmXWk=
+X-Mailgun-Sending-Ip: 104.130.122.26
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5e8c95a1.7fead9ff8e30-smtp-out-n04;
+ Tue, 07 Apr 2020 15:00:49 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id C9FCEC4478C; Tue,  7 Apr 2020 15:00:49 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 12359C433F2;
+        Tue,  7 Apr 2020 15:00:46 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 12359C433F2
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Yicong Yang <yangyicong@hisilicon.com>
+Cc:     <helgaas@kernel.org>, <linux-pci@vger.kernel.org>,
+        <mika.westerberg@linux.intel.com>, <linuxarm@huawei.com>,
+        linux-wireless@vger.kernel.org
+Subject: Re: [RFC PATCH] PCI: Use pci_pcie_find_root_port() to get root port
+References: <1586262717-23566-1-git-send-email-yangyicong@hisilicon.com>
+Date:   Tue, 07 Apr 2020 18:00:44 +0300
+In-Reply-To: <1586262717-23566-1-git-send-email-yangyicong@hisilicon.com>
+        (Yicong Yang's message of "Tue, 7 Apr 2020 20:31:57 +0800")
+Message-ID: <87zhbnuyqr.fsf@kamboji.qca.qualcomm.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9583 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 spamscore=0 malwarescore=0
- mlxscore=0 mlxlogscore=437 bulkscore=0 suspectscore=3 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
- definitions=main-2004070119
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9583 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 suspectscore=3
- mlxlogscore=484 mlxscore=0 bulkscore=0 adultscore=0 priorityscore=1501
- lowpriorityscore=0 clxscore=1011 malwarescore=0 impostorscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2004070118
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello Manikanta Pubbisetty,
++ linux-wireless
 
-The patch 243874c64c81: "ath11k: handle RX fragments" from Mar 16,
-2020, leads to the following static checker warning:
+Yicong Yang <yangyicong@hisilicon.com> writes:
 
-	drivers/net/wireless/ath/ath11k/dp_rx.c:3365 ath11k_dp_rx_frag_h_mpdu()
-	warn: missing error code here? 'ath11k_dp_rx_h_defrag()' failed. 'ret' = '0'
+> Previously we use pcie_find_root_port() to get root port from a pcie
+> device, use pci_find_pcie_root_port() to get root port from a pci
+> device, which increase the complexity.
+>
+> Unify the two functions and use pci_pcie_find_root_port() to get root
+> port from both pci device and pcie device. Then there is no need to
+> distinguish the type of the device.
+>
+> Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
+> ---
+>  drivers/net/wireless/intel/iwlwifi/pcie/trans.c |  2 +-
+>  drivers/pci/pci-acpi.c                          |  4 ++--
+>  drivers/pci/pci.c                               | 24 ------------------------
+>  drivers/pci/pcie/aer_inject.c                   |  2 +-
+>  drivers/pci/probe.c                             |  2 +-
+>  drivers/pci/quirks.c                            |  2 +-
+>  drivers/thunderbolt/switch.c                    |  4 ++--
+>  include/linux/pci.h                             | 14 +++++++-------
+>  8 files changed, 15 insertions(+), 39 deletions(-)
+>
+> diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
+> index 38d8fe2..556cb8c 100644
+> --- a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
+> +++ b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
+> @@ -158,7 +158,7 @@ void iwl_trans_pcie_dump_regs(struct iwl_trans *trans)
+>
+>  	/* Print root port AER registers */
+>  	pos = 0;
+> -	pdev = pcie_find_root_port(pdev);
+> +	pdev = pci_pcie_find_root_port(pdev);
+>  	if (pdev)
+>  		pos = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_ERR);
+>  	if (pos) {
 
-drivers/net/wireless/ath/ath11k/dp_rx.c
-  3343                                                HAL_WBM_REL_BM_ACT_PUT_IN_IDLE);
-  3344          }
-  3345  
-  3346          if (!rx_tid->last_frag_no ||
-  3347              rx_tid->rx_frag_bitmap != GENMASK(rx_tid->last_frag_no, 0)) {
-  3348                  mod_timer(&rx_tid->frag_timer, jiffies +
-  3349                                                 ATH11K_DP_RX_FRAGMENT_TIMEOUT_MS);
-  3350                  goto out_unlock;
-                        ^^^^^^^^^^^^^^^
+For the wireless change:
 
-All these gotos should probably set error codes instead of returning
-success.
+Acked-by: Kalle Valo <kvalo@codeaurora.org>
 
-  3351          }
-  3352  
-  3353          spin_unlock_bh(&ab->base_lock);
-  3354          del_timer_sync(&rx_tid->frag_timer);
-  3355          spin_lock_bh(&ab->base_lock);
-  3356  
-  3357          peer = ath11k_peer_find_by_id(ab, peer_id);
-  3358          if (!peer)
-  3359                  goto err_frags_cleanup;
-                        ^^^^^^^^^^^^^^^^^^^^^^
-Etc.
-
-  3360  
-  3361          if (!ath11k_dp_rx_h_defrag_validate_incr_pn(ar, rx_tid))
-  3362                  goto err_frags_cleanup;
-  3363  
-  3364          if (ath11k_dp_rx_h_defrag(ar, peer, rx_tid, &defrag_skb))
-  3365                  goto err_frags_cleanup;
-  3366  
-  3367          if (!defrag_skb)
-  3368                  goto err_frags_cleanup;
-  3369  
-  3370          if (ath11k_dp_rx_h_defrag_reo_reinject(ar, rx_tid, defrag_skb))
-  3371                  goto err_frags_cleanup;
-  3372  
-  3373          ath11k_dp_rx_frags_cleanup(rx_tid, false);
-  3374          goto out_unlock;
-  3375  
-  3376  err_frags_cleanup:
-  3377          dev_kfree_skb_any(defrag_skb);
-  3378          ath11k_dp_rx_frags_cleanup(rx_tid, true);
-  3379  out_unlock:
-  3380          spin_unlock_bh(&ab->base_lock);
-  3381          return ret;
-  3382  }
-
-regards,
-dan carpenter
+-- 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
