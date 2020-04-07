@@ -2,99 +2,128 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9AD601A0700
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Apr 2020 08:08:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 27D641A077F
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Apr 2020 08:43:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726635AbgDGGIw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 7 Apr 2020 02:08:52 -0400
-Received: from mail27.static.mailgun.info ([104.130.122.27]:52138 "EHLO
-        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725802AbgDGGIw (ORCPT
+        id S1727003AbgDGGnJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 7 Apr 2020 02:43:09 -0400
+Received: from mail-lf1-f65.google.com ([209.85.167.65]:39608 "EHLO
+        mail-lf1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726808AbgDGGnJ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 7 Apr 2020 02:08:52 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1586239731; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=plPh33tcSqADjZ5N/FxeriOzadskWCCkz6NB8hSkUpQ=; b=f4LflYSLDiCgkXLWCxYKzk3N+7wtoMiKiDHIVzAUNBRnT5QQe7hc4b3lQSNdtB0uh7amz9KU
- I4q3YSGAEF9SA9crJQ+x13a3CN3+xzYkPBOS1p0kU2Z+wUki/LWjW4XN8trvZp8tjCOGo0X0
- IyQes5URcz4kEYF8EA4MW+PfoKI=
-X-Mailgun-Sending-Ip: 104.130.122.27
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e8c18f2.7f686b35e8b8-smtp-out-n04;
- Tue, 07 Apr 2020 06:08:50 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 6E735C43636; Tue,  7 Apr 2020 06:08:50 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id E14EDC433D2;
-        Tue,  7 Apr 2020 06:08:48 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org E14EDC433D2
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Wen Gong <wgong@codeaurora.org>
-Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH v9 1/4] ath10k: disable TX complete indication of htt for sdio
-References: <20200212080415.31265-2-wgong@codeaurora.org>
-        <20200407054431.6B2A0C433BA@smtp.codeaurora.org>
-        <84039fe1187e3ec7546edd4f9fe5600a@codeaurora.org>
-Date:   Tue, 07 Apr 2020 09:08:46 +0300
-In-Reply-To: <84039fe1187e3ec7546edd4f9fe5600a@codeaurora.org> (Wen Gong's
-        message of "Tue, 07 Apr 2020 14:04:58 +0800")
-Message-ID: <87mu7nx1xt.fsf@kamboji.qca.qualcomm.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        Tue, 7 Apr 2020 02:43:09 -0400
+Received: by mail-lf1-f65.google.com with SMTP id m2so1453435lfo.6
+        for <linux-wireless@vger.kernel.org>; Mon, 06 Apr 2020 23:43:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=OivOvN/o8gD1CI0/RRvNf9QuUqmaxYvN8Wf6SB8cHhk=;
+        b=mxhMTlXaTWQOfj6UOAJK4K+XlKKUSLakafb8CAFJsq1PQC/hBcA34JiOdrRqMJnEGY
+         ZgjnmOq44EvutBSgvMEnI95N8byxPCRJrAQFbIeKRQJu/Qq7syLFZ5eeo/mkoJ0xiomK
+         sroYl33qPbntRAwCjfoihnS4GB4I3d7CCYOLRvo34xM5Vig70FEiQ06yE4gHt1fn+Qi6
+         j6YiDyx3W5KTvI6MfhE/HaT0Dh54hpqJOxM2y/n3BlNZ/SrYsHSspdl0LwTFTUtJNNyw
+         atB/jqPqTClkM282cfExVVnAxn5RwZfRtKpZKLMyq61mPupJy7ebVlNytIawKcZrxDCl
+         uS1A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=OivOvN/o8gD1CI0/RRvNf9QuUqmaxYvN8Wf6SB8cHhk=;
+        b=kh/3pJjIsgtwRknN5RkCEL85VCMRYgO6yClYz1qyV5fn/73D4v0tBltcJyj/NELcqy
+         uygiGKaR+FwYK7gUlPViiD6Jxw8vIlhmoe4lMoD2NnuoCte7w4Hw99DY1d/7VTeLdtus
+         AjcVB79Gv9vpagpGd68mHz0BbzLI2PHmkgPRgtaXEEIl/meeMQV8c3i85P0DPW89sgnQ
+         LY5UiHmYBniNhQ5mJF2FYTRhFWuOULvQwro7VikvRv6dlpFqEw11O2OrT/dbYiVBjY1c
+         mw/trIvBJJoCY89xpGovZmeZjs3NJ5GMJsoPrOQ0qlykXM0y88QpCgXadQuQTYW9eeYk
+         gmWg==
+X-Gm-Message-State: AGi0PuYGW26NP+hv8Otto/7P/VanRxtUP4zGLerQmxqiMJrNomGyJtYN
+        QgQWD5Rae22o0P5jB8I72TPrYrIcwM1wdBoMM/8tXQ==
+X-Google-Smtp-Source: APiQypKqAs223KGZqI3lkqdz0fRZjxubri09ud5p1UeeKehXNEZpq92ZBMf2CClMn4Xvs7o3el1+N//5NbPGVdrLbJs=
+X-Received: by 2002:ac2:5c07:: with SMTP id r7mr552282lfp.160.1586241786676;
+ Mon, 06 Apr 2020 23:43:06 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <1586175677-3061-1-git-send-email-sumit.garg@linaro.org>
+ <87ftdgokao.fsf@tynnyri.adurom.net> <1e352e2130e19aec5aa5fc42db397ad50bb4ad05.camel@sipsolutions.net>
+ <87r1x0zsgk.fsf@kamboji.qca.qualcomm.com> <a7e3e8cceff1301f5de5fb2c9aac62b372922b3e.camel@sipsolutions.net>
+ <87imiczrwm.fsf@kamboji.qca.qualcomm.com> <ee168acb768d87776db2be4e978616f9187908d0.camel@sipsolutions.net>
+ <CAFA6WYOjU_iDyAn5PMGe=usg-2sPtupSQEYwcomUcHZBAPnURA@mail.gmail.com>
+ <87v9mcycbf.fsf@kamboji.qca.qualcomm.com> <CABPxzYKs3nj0AUX4L-j87Db8v3WnM4uGif9nRTGgx1m2HNN8Rg@mail.gmail.com>
+ <35cadbaff1239378c955014f9ad491bc68dda028.camel@sipsolutions.net>
+ <CABPxzY++YMBPTV4quAkYvEAMfULjMXLkVfNzwocwubno5HO2Bw@mail.gmail.com>
+ <5575dfe84aa745a3c2a61e240c3d150dc8d9446f.camel@sipsolutions.net> <CABPxzYJHjaLH+ozyFZx1hwXrNxdHgJaardk-kn7d72y7RC-=hw@mail.gmail.com>
+In-Reply-To: <CABPxzYJHjaLH+ozyFZx1hwXrNxdHgJaardk-kn7d72y7RC-=hw@mail.gmail.com>
+From:   Sumit Garg <sumit.garg@linaro.org>
+Date:   Tue, 7 Apr 2020 12:12:54 +0530
+Message-ID: <CAFA6WYP1Os46sh8-PTyDp0ztK2e6cbCoATVX5HN-ojG7bNxeOw@mail.gmail.com>
+Subject: Re: [PATCH] mac80211: fix race in ieee80211_register_hw()
+To:     Krishna Chaitanya <chaitanya.mgit@gmail.com>,
+        Johannes Berg <johannes@sipsolutions.net>
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        "David S. Miller" <davem@davemloft.net>, kuba@kernel.org,
+        netdev <netdev@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        =?UTF-8?Q?Matthias=2DPeter_Sch=C3=B6pfer?= 
+        <matthias.schoepfer@ithinx.io>,
+        "Berg Philipp (HAU-EDS)" <Philipp.Berg@liebherr.com>,
+        "Weitner Michael (HAU-EDS)" <Michael.Weitner@liebherr.com>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Loic Poulain <loic.poulain@linaro.org>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Wen Gong <wgong@codeaurora.org> writes:
-
-> On 2020-04-07 13:44, Kalle Valo wrote:
+On Mon, 6 Apr 2020 at 23:39, Krishna Chaitanya <chaitanya.mgit@gmail.com> wrote:
 >
->> This has new warnings:
->>
->> drivers/net/wireless/ath/ath10k/htt_tx.c: In function
->> 'ath10k_htt_htc_tx_complete':
->> drivers/net/wireless/ath/ath10k/htt_tx.c:566:30: warning: 'msg_type'
->> may be used uninitialized in this function [-Wmaybe-uninitialized]
->> drivers/net/wireless/ath/ath10k/htt_tx.c:573:6: warning: 'flags1' may
->> be used uninitialized in this function [-Wmaybe-uninitialized]
->> drivers/net/wireless/ath/ath10k/htt_tx.c:577:42: warning: 'desc_hdr'
->> may be used uninitialized in this function [-Wmaybe-uninitialized]
->>
+> On Mon, Apr 6, 2020 at 8:36 PM Johannes Berg <johannes@sipsolutions.net> wrote:
+> >
+> > On Mon, 2020-04-06 at 19:55 +0530, Krishna Chaitanya wrote:
+> >
+> > > > iw phy0 interface add wlan0 type station
+> > > > ip link set wlan0 up
+> > > Ah okay, got it, thanks. Very narrow window though :-) as the
+> > > alloc_ordered_workqueue
+> > > doesn't need RTNL and there is a long way to go to do if_add() from
+> > > user and setup
+> > > the driver for interrupts.
+> >
+> > True, I do wonder how this is hit. Maybe something with no preempt and a
+> > uevent triggering things?
+
+The crash is reproducible while working with iwd [1] which is
+basically a wireless daemon. It can be started as "iwd.service" during
+boot that can detect wiphy registration events and configure
+interfaces. Have a look at this text [2] from iwd manager.
+
+To have a simple reproducer, please have a look at this trigger script
+[3] from Matthias in CC. With this script I am able to reproduce the
+kernel crash with approx. frequency of 1/10 across reboots on
+dragonboard 410c.
+
+There is nothing special like no preempt.
+
+[1] https://wiki.archlinux.org/index.php/Iwd
+[2] https://git.kernel.org/pub/scm/network/wireless/iwd.git/tree/src/manager.c#n563
+[3] https://github.com/DasRoteSkelett/meta-iwd/blob/master/recipes-trigger/trigger/trigger/trigger.sh
+
+> Probably, it might be specific to the dragonboard410c configuration
 >
-> I already run ath10k-check, but not see these warnings.
-> my gcc: gcc (Ubuntu 4.8.4-2ubuntu1~14.04.4) 4.8.4
-> so is it because my gcc too version too low?
 
-Most likely, I'm using 9.2 from crosstool:
+As described above, it isn't specific to any dragonboard 410c
+configuration and one should be able to reproduce it on other boards
+too using iwd depending on how long it takes to start corresponding
+wiphy device.
 
-x86_64-linux-gcc (GCC) 9.2.0
+> > > Again depends on the driver though, it
+> > > should properly handle
+> > > pending ieee80211_register_hw() with start().
+>
+> > It could, but it'd be really tricky. Much better to fix mac80211.
 
-crosstool is a handy way to install GCC for kernel compilations, here
-are my notes:
++1
 
-listings: https://www.kernel.org/pub/tools/crosstool/
+-Sumit
 
-wget https://www.kernel.org/pub/tools/crosstool/files/bin/x86_64/8.1.0/x86_64-gcc-8.1.0-nolibc-x86_64-linux.tar.xz
-pushd /opt/cross/
-tar -xf ~/tmp/crosstool/x86_64-gcc-8.1.0-nolibc-x86_64-linux.tar.xz
-
-In top level create GNUMakefile:
-
-CROSS_COMPILE=/opt/cross/gcc-8.1.0-nolibc/x86_64-linux/bin/x86_64-linux-
-include Makefile
-
--- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+> Sure, anyways it is a good change.
