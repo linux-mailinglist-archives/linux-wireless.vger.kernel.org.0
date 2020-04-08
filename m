@@ -2,64 +2,134 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F2B501A16C5
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Apr 2020 22:26:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C4D01A1DE1
+	for <lists+linux-wireless@lfdr.de>; Wed,  8 Apr 2020 11:07:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726407AbgDGU0D (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 7 Apr 2020 16:26:03 -0400
-Received: from mailgw02.mediatek.com ([210.61.82.184]:32963 "EHLO
-        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726380AbgDGU0D (ORCPT
+        id S1727763AbgDHJHf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 8 Apr 2020 05:07:35 -0400
+Received: from mail-wr1-f66.google.com ([209.85.221.66]:33427 "EHLO
+        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726775AbgDHJHf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 7 Apr 2020 16:26:03 -0400
-X-UUID: 92afffd9c6cb4daab415fe2e4a020d56-20200408
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Transfer-Encoding:Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=UbWFIDfpNOnnjPYw8DA44ZCVcPaW6m7bX2+v5UeLIPM=;
-        b=ERRCl8PngAo4sRR7vBacrOuOZkfDbQwFgvcsE9/EOpfxbCizu4s5hlyIzEBUySAwTY8z8LAZEfctrocJcdURVc1rbkfS7zNGoMfTEmCNdC4z4/e+MSZYmMI5zYbiAaBRLW+iyj2Jyckyq7D1feGQ4sz/jJm+MKj432yRwDxdYCc=;
-X-UUID: 92afffd9c6cb4daab415fe2e4a020d56-20200408
-Received: from mtkcas07.mediatek.inc [(172.21.101.84)] by mailgw02.mediatek.com
-        (envelope-from <sean.wang@mediatek.com>)
-        (Cellopoint E-mail Firewall v4.1.10 Build 0809 with TLS)
-        with ESMTP id 827516133; Wed, 08 Apr 2020 04:25:58 +0800
-Received: from mtkcas10.mediatek.inc (172.21.101.39) by
- mtkmbs08n2.mediatek.inc (172.21.101.56) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Wed, 8 Apr 2020 04:25:52 +0800
-Received: from mtkswgap22.mediatek.inc (172.21.77.33) by mtkcas10.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Wed, 8 Apr 2020 04:25:51 +0800
-From:   <sean.wang@mediatek.com>
-To:     <nbd@nbd.name>, <lorenzo.bianconi@redhat.com>
-CC:     <sean.wang@mediatek.com>, <ryder.lee@mediatek.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>
-Subject: [PATCH] mt76: replace consume_skb with dev_kfree_skb
-Date:   Wed, 8 Apr 2020 04:25:54 +0800
-Message-ID: <b90644567e758b5702e37e34e31f2007e3bd2c87.1586290996.git.sean.wang@mediatek.com>
-X-Mailer: git-send-email 1.7.9.5
+        Wed, 8 Apr 2020 05:07:35 -0400
+Received: by mail-wr1-f66.google.com with SMTP id a25so6950952wrd.0;
+        Wed, 08 Apr 2020 02:07:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:reply-to:from:date:message-id
+         :subject:to:cc;
+        bh=tDqXfOMMU1aiMxNa6ojUxPMtJdc9yDWPtU8wKO19sy8=;
+        b=T5U7THsUxJ6ZuuPi9pDRbPPmm+vSXjD+chynu68DULjkmf4Ijl5WDG930A+jfwScyE
+         cHK2YIEFshNZ8XVTShn/l0OchkLGExiKP/+utKuQchKCt1ZUaRiaqko0M7gHpBqKMp78
+         ALncTk314XAIoZ0yr2R4e9wO7bIJNlthy0pavCQ3hwIx552OaMmaYTZ8XfZH0IYs+I5y
+         tK8gVAOjCb7tjoJltjkXunryR+5DuxODi7VSMsI34v2iYktll2wPrP6ilwva+ec0yD62
+         VKpWKhPRayB6yIBt9HhpCWEZJplzPFqX1iOXLxZ6zdONtLphGdO24xF9lb1U1vTE9vOq
+         oLvQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:reply-to
+         :from:date:message-id:subject:to:cc;
+        bh=tDqXfOMMU1aiMxNa6ojUxPMtJdc9yDWPtU8wKO19sy8=;
+        b=hmL7bZNg4fXN/RLUcHcbFxeBWqJnnPR211PdlBP1LrhmyQhnLRnIM1bJTUim42U661
+         qRSc5j7ZuqIh8tjebf0K+ijJr8yt6lB/rbdlMjaYW4IJIreg2LCCVmKCaF1IvSKhuyU3
+         65f1E2/YPZEJvdvJsjpe+lBpBItuhALdySXycn38gkZbMnUkT0GHH2isMKVY2BwQ59sV
+         mdvPsKcYZf7KyL1uBfsXkEOSXYsyR6nKM0Sdj3Tl2nSnKOT/n2eF6StyIezli3XvZzR3
+         K1+SWYhkmyuP3hzJivm8biEGLsVatnHKnMBcqYUM7Gt1gB5Wswd0bfdXBuP67h5FmPOZ
+         wVrw==
+X-Gm-Message-State: AGi0PubAxq1xEqa7mBLBupHlJkmXA0gRU56jZCVEGOPBJFkOnN3nc7jP
+        Uor1zOcmwM3e5cPiQ1vZdM55adv4SO0xH028Q/o=
+X-Google-Smtp-Source: APiQypI2jffggddQs3H73E0fGZHKav2Zl9+DI3ND4AUGi8hLuvcj2nJAqi9tNj7kjAduovm2mQMyvi+oEVtnN1YlUkE=
+X-Received: by 2002:a05:6000:4c:: with SMTP id k12mr964994wrx.179.1586336850824;
+ Wed, 08 Apr 2020 02:07:30 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-SNTS-SMTP: F128AB51B999D028722362800A55E212DFBAC26E03CE284711BFDDF30F7DA98B2000:8
-X-MTK:  N
-Content-Transfer-Encoding: base64
+References: <20200402050219.4842-1-chris@rorvick.com> <20200406141058.29895C43637@smtp.codeaurora.org>
+ <CA+icZUUOQ0KTJM6w7yfj=g3BprQqJtTQjCjiXRb9dTTeoQL8KA@mail.gmail.com>
+In-Reply-To: <CA+icZUUOQ0KTJM6w7yfj=g3BprQqJtTQjCjiXRb9dTTeoQL8KA@mail.gmail.com>
+Reply-To: sedat.dilek@gmail.com
+From:   Sedat Dilek <sedat.dilek@gmail.com>
+Date:   Wed, 8 Apr 2020 11:07:19 +0200
+Message-ID: <CA+icZUUiY5tjxgY58383mtXGGiwsRU+t6SX+CtVUN_0cjcLJTQ@mail.gmail.com>
+Subject: Re: [PATCH] iwlwifi: actually check allocated conf_tlv pointer
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Chris Rorvick <chris@rorvick.com>, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Johannes Berg <johannes.berg@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        Intel Linux Wireless <linuxwifi@intel.com>,
+        "David S. Miller" <davem@davemloft.net>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-RnJvbTogU2VhbiBXYW5nIDxzZWFuLndhbmdAbWVkaWF0ZWsuY29tPg0KDQpjb25zdW1lX3NrYiBp
-cyBpZGVudGljYWwgdG8gZGV2X2tmcmVlX3NrYiwgc28gdGhhdCByZXBsYWNlIGNvbnN1bWVfc2ti
-IHdpdGgNCmRldl9rZnJlZV9za2IganVzdCB0byBtYWtlIGNvbnNpc3RlbnQgaW4gd2hvbGUgbXQ3
-NiBkcml2ZXIuDQoNClNpZ25lZC1vZmYtYnk6IFNlYW4gV2FuZyA8c2Vhbi53YW5nQG1lZGlhdGVr
-LmNvbT4NCi0tLQ0KIGRyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3NngwMl91
-c2JfbWN1LmMgfCAyICstDQogMSBmaWxlIGNoYW5nZWQsIDEgaW5zZXJ0aW9uKCspLCAxIGRlbGV0
-aW9uKC0pDQoNCmRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2
-L210NzZ4MDJfdXNiX21jdS5jIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9t
-dDc2eDAyX3VzYl9tY3UuYw0KaW5kZXggYTMwYmI1MzZmYzhhLi4yODU2N2UyZTRhNjUgMTAwNjQ0
-DQotLS0gYS9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzZ4MDJfdXNiX21j
-dS5jDQorKysgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzZ4MDJfdXNi
-X21jdS5jDQpAQCAtMTExLDcgKzExMSw3IEBAIF9fbXQ3NngwMnVfbWN1X3NlbmRfbXNnKHN0cnVj
-dCBtdDc2X2RldiAqZGV2LCBzdHJ1Y3Qgc2tfYnVmZiAqc2tiLA0KIAlpZiAod2FpdF9yZXNwKQ0K
-IAkJcmV0ID0gbXQ3NngwMnVfbWN1X3dhaXRfcmVzcChkZXYsIHNlcSk7DQogDQotCWNvbnN1bWVf
-c2tiKHNrYik7DQorCWRldl9rZnJlZV9za2Ioc2tiKTsNCiANCiAJcmV0dXJuIHJldDsNCiB9DQot
-LSANCjIuMjUuMQ0K
+On Mon, Apr 6, 2020 at 9:53 PM Sedat Dilek <sedat.dilek@gmail.com> wrote:
+>
+> On Mon, Apr 6, 2020 at 4:11 PM Kalle Valo <kvalo@codeaurora.org> wrote:
+> >
+> > Chris Rorvick <chris@rorvick.com> wrote:
+> >
+> > > Commit 71bc0334a637 ("iwlwifi: check allocated pointer when allocating
+> > > conf_tlvs") attempted to fix a typoe introduced by commit 17b809c9b22e
+> > > ("iwlwifi: dbg: move debug data to a struct") but does not implement the
+> > > check correctly.
+> > >
+> > > This can happen in OOM situations and, when it does, we will potentially try to
+> > > dereference a NULL pointer.
+> > >
+> > > Tweeted-by: @grsecurity
+> > > Signed-off-by: Chris Rorvick <chris@rorvick.com>
+> >
+> > Fails to build, please rebase on top of wireless-drivers.
+> >
+> > drivers/net/wireless/intel/iwlwifi/iwl-drv.c: In function 'iwl_req_fw_callback':
+> > drivers/net/wireless/intel/iwlwifi/iwl-drv.c:1470:16: error: 'struct iwl_fw' has no member named 'dbg_conf_tlv'
+> >     if (!drv->fw.dbg_conf_tlv[i])
+> >                 ^
+> > make[5]: *** [drivers/net/wireless/intel/iwlwifi/iwl-drv.o] Error 1
+> > make[5]: *** Waiting for unfinished jobs....
+> > make[4]: *** [drivers/net/wireless/intel/iwlwifi] Error 2
+> > make[3]: *** [drivers/net/wireless/intel] Error 2
+> > make[2]: *** [drivers/net/wireless] Error 2
+> > make[1]: *** [drivers/net] Error 2
+> > make[1]: *** Waiting for unfinished jobs....
+> > make: *** [drivers] Error 2
+> >
+>
+> Should be:
+>
+> $ git diff
+> diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
+> b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
+> index 0481796f75bc..c24350222133 100644
+> --- a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
+> +++ b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
+> @@ -1467,7 +1467,7 @@ static void iwl_req_fw_callback(const struct
+> firmware *ucode_raw, void *context)
+>                                 kmemdup(pieces->dbg_conf_tlv[i],
+>                                         pieces->dbg_conf_tlv_len[i],
+>                                         GFP_KERNEL);
 
+Maybe this diff is clearer:
+
+$ diff iwlwifi-actually-check-allocated-conf_tlv-pointer.patch
+iwlwifi-actually-check-allocated-conf_tlv-pointer-v2-dileks.patch
+95a96
+> Fixes: 71bc0334a637 ("iwlwifi: check allocated pointer when allocating conf_tlvs")
+99c100,104
+< In this wasn't picked up?
+---
+>
+> [ v1->v2:
+>   - Fix typo s/fw.dbg_conf_tlv/fw.dbg.conf_tlv
+>   - Add Fixes tag as suggested by Kalle
+> -dileks ]
+115c120
+< +                     if (!drv->fw.dbg_conf_tlv[i])
+---
+> +                     if (!drv->fw.dbg.conf_tlv[i])
+
+Tested on top of Linux v5.6.3.
+
+- Sedat -
