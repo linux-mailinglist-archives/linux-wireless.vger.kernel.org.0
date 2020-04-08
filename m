@@ -2,68 +2,114 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8BAE91A295B
-	for <lists+linux-wireless@lfdr.de>; Wed,  8 Apr 2020 21:34:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ED2731A2C1C
+	for <lists+linux-wireless@lfdr.de>; Thu,  9 Apr 2020 01:11:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729985AbgDHTeI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 8 Apr 2020 15:34:08 -0400
-Received: from mail-ed1-f53.google.com ([209.85.208.53]:38360 "EHLO
-        mail-ed1-f53.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728209AbgDHTeI (ORCPT
+        id S1726555AbgDHXLW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 8 Apr 2020 19:11:22 -0400
+Received: from mail-wm1-f65.google.com ([209.85.128.65]:35144 "EHLO
+        mail-wm1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726549AbgDHXLW (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 8 Apr 2020 15:34:08 -0400
-Received: by mail-ed1-f53.google.com with SMTP id e5so10229808edq.5
-        for <linux-wireless@vger.kernel.org>; Wed, 08 Apr 2020 12:34:06 -0700 (PDT)
+        Wed, 8 Apr 2020 19:11:22 -0400
+Received: by mail-wm1-f65.google.com with SMTP id r26so1922916wmh.0
+        for <linux-wireless@vger.kernel.org>; Wed, 08 Apr 2020 16:11:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=NJK0ezxcn73fywezEYO9nJSZ+DrV+nf4fJwQGx6CXHg=;
-        b=ld2zOY6qsvba7hgiNXKiMFJiVkmm2Z+s/heTlFKunqbiTcWnr4bBN4Ck4cuK1NNAa9
-         DuszJTJVPiPyhRFS3LVjX1ZPg0H0DzXe4COGvL4RiF0hvaLVifXpv6nfHwd9plccqbgE
-         jdVIVaC41IslSx7ZZftTXGeNrhya9F69S0ozmeECgy55tZr3//KGtdGvk+zFS1pll0rr
-         pu0s/Aq5zx/xZQccmRyfk8d2dGP9e7d6ECotElxcsjUt44zxY6sso0wJ/YORcgE8ieSg
-         knnlQXN03NN4fYJDBaO2Z96/Iqh6I/LY84ZOpuaeDFL2XH4NV1msdE2ADYFR395xeqQ0
-         UFEg==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=1oJI7w/Vka3nAtUJyEYq4j3ayrxFSj56nOQPqznbsEU=;
+        b=aodEKppdwsvq6DPeDnM1rPoIhSf/XnqxhKTRr2jIRwKOgmPXIbAhA+fpkH3vK3Wcf1
+         KbkYJnQMp6NNQQgAOxbGXdqgtGKpRVjutiI1HrsFOlRPEdRVIIGFzRPpIqqcb8MPCkTZ
+         Gz7OuXGpmHZ54xJENbIqgaS+y5Hi2XPdcqHCqyn6rOWC3qcryVXHP0NRqjlaE2qmnoP2
+         80hNLUzpTYasHv7e8M98i2TDKAaec8mh5M80cCa/ZGu7L60+h9bw8eq9azcpAedK4Dqc
+         imxGOJKnZ34T1fhYy/ns6Lnn27dIQwZPfXWJvrCSaHCSPV9c4Idy/Y7Mh7x2bulwnj2f
+         h6nA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=NJK0ezxcn73fywezEYO9nJSZ+DrV+nf4fJwQGx6CXHg=;
-        b=QDdcehypzeT0C2n1fH5dNUFYeTxhYrOP6KkC7o3ey1M6y9HXMvC7zvyi2sOUrLJdqW
-         XtzrMe5XuC9GX1byQIihzzOhYUdVx6OBI4mWlm0f7hWwEmlq8UHWQRJjGKh2dMKbYdiU
-         OmaPS4iIFJ0B1o/AoyJSNKiK4yl1in/k6yga2i0Lu0e+f4BhubFix3bjpQ20dKxTMOw0
-         qdMpQLQrGB0hJrLAaMRNkx8bFdZr1fZxC118MDXSaQwHxhroZrkY/Yo4tQgF2iU2RWCn
-         5M/khPU9HR576rmip1e4mUsDp78x5+eXkyE21SjI9zPfbZp4JqSSilqoCjdtcjt6xcI5
-         khQw==
-X-Gm-Message-State: AGi0PuYVr0P3D8nOvOz9Qx3jY3lwKQ4/4BMggYwsp/erl8ftJ5bMpel1
-        XKF8160Ej8ZSgbmu1JXQ+EZ7AHlWv/Ha58aro2cY2WhT
-X-Google-Smtp-Source: APiQypK6aWg7cY6ehtypc6wRUTS9hJHNxuTw/f84ldO6xRYeY0yvsxS7/8GlbJ0RvICGWkCMSYK+q4TXAYv2GK3dNxs=
-X-Received: by 2002:aa7:c641:: with SMTP id z1mr1904397edr.161.1586374445744;
- Wed, 08 Apr 2020 12:34:05 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=1oJI7w/Vka3nAtUJyEYq4j3ayrxFSj56nOQPqznbsEU=;
+        b=NN546cpMA3kuIVjBW6+E4vG5kkGyO7EXMafN1qfm4vwy1ittKKx3pDdNi1dhj9OtSB
+         FX8KJ8DOGS2rvifRglCTWoBWuXyHq6JdOM8lmbeVxGFAQSBXuHdqeHYgUbY0YxFJePSs
+         b4i6XPySZ9HVaGMA9CXwNfL7BetLy2lEca2S6zOpnu5rLJ86460ckVSw/shFaqdDD3cE
+         KFY2LsKj1oedQqi3xX2CXzDyqagMaYp4+ZpZUhvcnOJ3IDV9M8tr++THa+DWOi5sNimz
+         0QNOnjEVWr6rYi6PAdU7/Iu6BDEFfr1bhbmc3oPN7p7ZiAK8oPDzLut96c2QESVi2zae
+         qR0g==
+X-Gm-Message-State: AGi0PuYzPwQNRqK3JS1jT2vugYK57SDvG91lGOc0YWe37azgHn9TuOfK
+        yJNQ75cLBQSUUi4prrFxKcU=
+X-Google-Smtp-Source: APiQypLnmx5A45pP5UHhPZ1MnL9W8vHQCXC9FnEvALRp/GSD0DPv17mp8zYul65stbIk1b6/mocK8w==
+X-Received: by 2002:a1c:4946:: with SMTP id w67mr4729011wma.38.1586387480714;
+        Wed, 08 Apr 2020 16:11:20 -0700 (PDT)
+Received: from de0709bef958.v.cablecom.net ([45.87.212.59])
+        by smtp.gmail.com with ESMTPSA id p7sm4702492wrf.31.2020.04.08.16.11.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 08 Apr 2020 16:11:20 -0700 (PDT)
+From:   Lothar Rubusch <l.rubusch@gmail.com>
+To:     johannes@sipsolutions.net, davem@davemloft.net, kuba@kernel.org
+Cc:     linux-wireless@vger.kernel.org,
+        Lothar Rubusch <l.rubusch@gmail.com>
+Subject: [PATCH] cfg80211: fix kernel-doc notation
+Date:   Wed,  8 Apr 2020 23:10:13 +0000
+Message-Id: <20200408231013.28370-1-l.rubusch@gmail.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-From:   James Prestwood <prestwoj@gmail.com>
-Date:   Wed, 8 Apr 2020 12:33:55 -0700
-Message-ID: <CAPv5Ue5YVawMHo+o2ie8=N6R7tpKeXdS+p=K44+wjcRAVb2yZQ@mail.gmail.com>
-Subject: Is PSK offload now required on fullmac?
-To:     linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+Update missing kernel-doc annotations and fix of related warnings
+at 'make htmldocs'.
 
-I have been doing some testing on brcmfmac (using a Raspi 3) and
-cannot get PSK connections to work unless using the PSK offload
-feature. In 2018 the offload support was added to wpa_supplicant where
-it checks for the extended feature and if its set it includes ATTR_PMK
-with CMD_CONNECT. This all works and I have done a similar change to
-IWD. My question is, should this work without including ATTR_PMK and
-doing EAPoL in userspace? Or is ATTR_PMK now required on brcmfmac?
+Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
+---
+ include/net/cfg80211.h | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-When I leave out ATTR_PMK to CMD_CONNECT I get a successful connect
-event, but then get disconnected within a few seconds with an EAPoL
-timeout. This is a locally generated disconnect.
+diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+index c78bd4ff9e33..edea88510091 100644
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -905,6 +905,8 @@ struct survey_info {
+  *	protocol frames.
+  * @control_port_over_nl80211: TRUE if userspace expects to exchange control
+  *	port frames over NL80211 instead of the network interface.
++ * @control_port_no_preauth: disables pre-auth rx over the nl80211 control
++ *  port for mac80211
+  * @wep_keys: static WEP keys, if not NULL points to an array of
+  *	CFG80211_MAX_WEP_KEYS WEP keys
+  * @wep_tx_key: key index (0..3) of the default TX static WEP key
+@@ -1222,6 +1224,7 @@ struct sta_txpwr {
+  * @he_capa: HE capabilities of station
+  * @he_capa_len: the length of the HE capabilities
+  * @airtime_weight: airtime scheduler weight for this station
++ * @txpwr: transmit power for an associated station
+  */
+ struct station_parameters {
+ 	const u8 *supported_rates;
+@@ -4666,6 +4669,9 @@ struct wiphy_iftype_akm_suites {
+  * @txq_memory_limit: configuration internal TX queue memory limit
+  * @txq_quantum: configuration of internal TX queue scheduler quantum
+  *
++ * @tx_queue_len: allow setting transmit queue len for drivers not using
++ *  wake_tx_queue
++ *
+  * @support_mbssid: can HW support association with nontransmitted AP
+  * @support_only_he_mbssid: don't parse MBSSID elements if it is not
+  *	HE AP, in order to avoid compatibility issues.
+@@ -4681,6 +4687,10 @@ struct wiphy_iftype_akm_suites {
+  *	supported by the driver for each peer
+  * @tid_config_support.max_retry: maximum supported retry count for
+  *	long/short retry configuration
++ *
++ * @max_data_retry_count: maximum supported per TID retry count for
++ *  configuration through the NL80211_TID_CONFIG_ATTR_RETRY_SHORT and
++ *  NL80211_TID_CONFIG_ATTR_RETRY_LONG attributes
+  */
+ struct wiphy {
+ 	/* assign these fields before you register the wiphy */
+-- 
+2.20.1
 
-Thanks,
-James
