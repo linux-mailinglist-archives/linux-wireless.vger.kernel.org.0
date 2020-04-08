@@ -2,138 +2,114 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 31F5F1A2078
-	for <lists+linux-wireless@lfdr.de>; Wed,  8 Apr 2020 13:56:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F13F1A21AF
+	for <lists+linux-wireless@lfdr.de>; Wed,  8 Apr 2020 14:20:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728069AbgDHL45 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 8 Apr 2020 07:56:57 -0400
-Received: from mail-wm1-f66.google.com ([209.85.128.66]:35639 "EHLO
-        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727835AbgDHL44 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 8 Apr 2020 07:56:56 -0400
-Received: by mail-wm1-f66.google.com with SMTP id r26so5143571wmh.0
-        for <linux-wireless@vger.kernel.org>; Wed, 08 Apr 2020 04:56:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ncentric-com.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding:content-language;
-        bh=r//OCBfZ1wHmL364/q+AoFNYsD5AU3Cd2vuzJY7eM/w=;
-        b=a/95h4OL7QTsL64XciAm5H4wcV1BNhlqdKlA1QbQEHep2VCLNf7m1Pc90cCqhI5kvy
-         VCR1fivOz0KleplDw9cLENU+C0H/f5mAFdJ7nnD7Qq3u9JVSC+80mQdCdL9rv7VVPE1z
-         W1K2tKlKsgKxDJKuex9MbavYceM0rw+JH0t7xkWV1BpylC9et79ZhF4ISsl0u+/Rk3+Q
-         eReVvztCAA13rftfLa3Z7jBGG+XBKEYTiI5ZwlX01g2OvR4KkjcL2B7hx2sSHjFNzMSa
-         xvhImDUuMNqgPeaVFmo5F0Nw9Hli5GtDHXV2R14h8HuFVuC1+DL7cZROx4wFITuZBRzn
-         r1zQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding
-         :content-language;
-        bh=r//OCBfZ1wHmL364/q+AoFNYsD5AU3Cd2vuzJY7eM/w=;
-        b=onFCtCMGzlZr2IxK+G65EZDsbmEEpSKdo84TIEQlNoIXUyR7NGthBeJFRpz0NZeEcJ
-         8dCu/mqwxOsKuvrzq4NRBbpiLmbl2kucQaZ6HYNJqsgJNTvf6Gmc7pllQa/JVYGlLgKB
-         AzduVDFlo5NMIKfKbrppdEhQXQc5TZcnJxN5FApFAVbm4zm4YXnMf3ntMt4BiDbN+Sca
-         UBlC8mSetrvdoAELDj1nrNxvPQVOtHXeNs7+AYBXmPGHfI/sP6WBRD1aKYeeeTdyE8yg
-         ty6dFGkoNLcia57BF0bG8vzY7Y63yf+bMzREAaxuYLhPXBwqZecJjXN+F2ToqabXKLbd
-         urtg==
-X-Gm-Message-State: AGi0PuahNQUQMvgIncQiJoMKu/u5DfXZuDpsANx/IXdd3/sfFGSQQ50+
-        +nwCgA+pHd26ln70lIJJlyoKKA==
-X-Google-Smtp-Source: APiQypJPLRYhaJHu4emt8QJsikRTMFboGABsmvbTk9PFozJ/Wk44M/zxKQfkheQcmolQPbqi2PS8tw==
-X-Received: by 2002:a7b:c402:: with SMTP id k2mr4474946wmi.21.1586347014269;
-        Wed, 08 Apr 2020 04:56:54 -0700 (PDT)
-Received: from [10.202.0.7] (d5152e8e2.static.telenet.be. [81.82.232.226])
-        by smtp.gmail.com with ESMTPSA id l12sm34748847wrt.73.2020.04.08.04.56.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 08 Apr 2020 04:56:53 -0700 (PDT)
-Subject: Re: [PATCH v3 2/2] mac80211: Allow deleting stations in ibss mode to
- reset their state
-To:     Nicolas Cavallari <cavallar@lri.fr>, linux-wireless@vger.kernel.org
-Cc:     Johannes Berg <johannes@sipsolutions.com>
-References: <20200305135754.12094-1-cavallar@lri.fr>
- <20200305135754.12094-2-cavallar@lri.fr>
-From:   Koen Vandeputte <koen.vandeputte@ncentric.com>
-Message-ID: <bc2934fe-ee0b-c593-e866-692487e06d4e@ncentric.com>
-Date:   Wed, 8 Apr 2020 13:56:52 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
+        id S1728613AbgDHMUw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 8 Apr 2020 08:20:52 -0400
+Received: from mail.kernel.org ([198.145.29.99]:55616 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728604AbgDHMUv (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 8 Apr 2020 08:20:51 -0400
+Received: from lore-desk-wlan.redhat.com (unknown [151.48.151.50])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 48BDD206F7;
+        Wed,  8 Apr 2020 12:20:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1586348450;
+        bh=4ESBG9SkgQkFponzawGQ7aor+asTMiiGcIRnIU6gIiI=;
+        h=From:To:Cc:Subject:Date:From;
+        b=vVz0CgiDeZO+mnulwuYl9rOZo9aiNKHzhwIDt+lD1E70cXwqdAhva5HEdM9kxZJVQ
+         6e1tjqgkW9Rog5MS/JbwhqP76BNaAYL9EZONuHL9/6NfxVzCJ72yu6VUjqj5g3oMmq
+         AnMO+PVJDYrxDWISpzXxLiBI095aeYXmJYbSOH2E=
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
+        sean.wang@mediatek.com, ryder.lee@mediatek.com,
+        linux-mediatek@lists.infradead.org
+Subject: [PATCH] mt76: mt7663: fix aggr range entry in debugfs
+Date:   Wed,  8 Apr 2020 14:20:39 +0200
+Message-Id: <3b86a23c5ad6348cab3500935c619fba74db08ec.1586348345.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.25.2
 MIME-Version: 1.0
-In-Reply-To: <20200305135754.12094-2-cavallar@lri.fr>
-Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Language: en-US
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Fix register definitions for aggr range counter registers for mt7663
+chipset
 
-On 05.03.20 14:57, Nicolas Cavallari wrote:
-> From: Nicolas Cavallari <nicolas.cavallari@green-communications.fr>
->
-> Set the NL80211_EXT_FEATURE_DEL_IBSS_STA if the interface support IBSS
-> mode, so that stations can be reset from user space.
->
-> mac80211 already deletes stations by itself, so mac80211 drivers must
-> already support this.
->
-> This has been successfully tested with ath9k.
->
-> Signed-off-by: Nicolas Cavallari <nicolas.cavallari@green-communications.fr>
->
-> ---
-> v3: spelling fixes in commit message.
-> ---
->   net/mac80211/main.c | 4 ++++
->   1 file changed, 4 insertions(+)
->
-> diff --git a/net/mac80211/main.c b/net/mac80211/main.c
-> index 944e86da5c65..bc7fd67dc987 100644
-> --- a/net/mac80211/main.c
-> +++ b/net/mac80211/main.c
-> @@ -1081,6 +1081,10 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
->   				      NL80211_EXT_FEATURE_EXT_KEY_ID);
->   	}
->   
-> +	if (local->hw.wiphy->interface_modes & BIT(NL80211_IFTYPE_ADHOC))
-> +		wiphy_ext_feature_set(local->hw.wiphy,
-> +				      NL80211_EXT_FEATURE_DEL_IBSS_STA);
-> +
->   	/*
->   	 * Calculate scan IE length -- we need this to alloc
->   	 * memory and to subtract from the driver limit. It
+Fixes: f40ac0f3d3c0 ("mt76: mt7615: introduce mt7663e support")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+ drivers/net/wireless/mediatek/mt76/mt7615/debugfs.c | 6 ++++--
+ drivers/net/wireless/mediatek/mt76/mt7615/init.c    | 1 +
+ drivers/net/wireless/mediatek/mt76/mt7615/regs.h    | 5 +++++
+ 3 files changed, 10 insertions(+), 2 deletions(-)
 
-Hi Nicolas,
-
-
-I took these patches for a thorough spin offshore (combined with your 
-quick wpa_sup change)
-
-
-Quick test setup overview:
-
-- Device mounted on top of a vessel, sailing around in windfarms.
-- Lots of turbines are equiped with 4x 90deg sectors
-- 802.11n HT40 2x2 custom mesh over IBSS, using Dynack
-- As the vessel moves around,  IBSS links are continuously dropped and 
-re-added throughout the field
-- Output of my app, fyi:  https://pastebin.com/raw/vtZSwHC9
-
-I've made 2 identical builds, one containing your patches and one without.
-
-When your patches are used:
-
---> On devices with multiple radio's, all radio's went deaf within a few 
-minutes without any notice in logs.
-
---> Only a reboot solved the issue but everything goes deaf again within 
-a few minutes. (after dropping/adding some links)
-
-
-Any idea?
-
-
-Thanks,
-
-Koen
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7615/debugfs.c
+index 777c7f9bd760..2163a22967c7 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/debugfs.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/debugfs.c
+@@ -129,16 +129,18 @@ mt7615_ampdu_stat_read_phy(struct mt7615_phy *phy,
+ 			   struct seq_file *file)
+ {
+ 	struct mt7615_dev *dev = file->private;
++	u32 reg = is_mt7663(&dev->mt76) ? MT_MIB_ARNG(0) : MT_AGG_ASRCR0;
+ 	bool ext_phy = phy != &dev->phy;
+ 	int bound[7], i, range;
+ 
+ 	if (!phy)
+ 		return;
+ 
+-	range = mt76_rr(dev, MT_AGG_ASRCR0);
++	range = mt76_rr(dev, reg);
+ 	for (i = 0; i < 4; i++)
+ 		bound[i] = MT_AGG_ASRCR_RANGE(range, i) + 1;
+-	range = mt76_rr(dev, MT_AGG_ASRCR1);
++
++	range = mt76_rr(dev, reg + 4);
+ 	for (i = 0; i < 3; i++)
+ 		bound[i + 4] = MT_AGG_ASRCR_RANGE(range, i) + 1;
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/init.c b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
+index 6acaaf2732df..07d4b259fe8a 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
+@@ -116,6 +116,7 @@ static void mt7615_mac_init(struct mt7615_dev *dev)
+ 	mt76_wr(dev, MT_DMA_DCR0,
+ 		FIELD_PREP(MT_DMA_DCR0_MAX_RX_LEN, 3072) |
+ 		MT_DMA_DCR0_RX_VEC_DROP);
++	mt76_set(dev, MT_WF_MIB_SCR0, MT_MIB_SCR0_AGG_CNT_RANGE_EN);
+ 	if (is_mt7663(&dev->mt76)) {
+ 		mt76_wr(dev, MT_WF_AGG(0x160), 0x5c341c02);
+ 		mt76_wr(dev, MT_WF_AGG(0x164), 0x70708040);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/regs.h b/drivers/net/wireless/mediatek/mt76/mt7615/regs.h
+index 481e4d941e72..a3333f382350 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/regs.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/regs.h
+@@ -384,6 +384,9 @@ enum mt7615_reg_base {
+ #define MT_WF_MIB_BASE			(dev->reg_map[MT_MIB_BASE])
+ #define MT_WF_MIB(_band, ofs)		(MT_WF_MIB_BASE + (ofs) + (_band) * 0x200)
+ 
++#define MT_WF_MIB_SCR0			MT_WF_MIB(0, 0)
++#define MT_MIB_SCR0_AGG_CNT_RANGE_EN	BIT(21)
++
+ #define MT_MIB_M0_MISC_CR(_band)	MT_WF_MIB(_band, 0x00c)
+ 
+ #define MT_MIB_SDR3(_band)		MT_WF_MIB(_band, 0x014)
+@@ -414,6 +417,8 @@ enum mt7615_reg_base {
+ #define MT_MIB_BA_MISS_COUNT_MASK	GENMASK(15, 0)
+ #define MT_MIB_ACK_FAIL_COUNT_MASK	GENMASK(31, 16)
+ 
++#define MT_MIB_ARNG(n)			MT_WF_MIB(0, 0x4b8 + ((n) << 2))
++
+ #define MT_TX_AGG_CNT(_band, n)		MT_WF_MIB(_band, 0xa8 + ((n) << 2))
+ 
+ #define MT_DMA_SHDL(ofs)		(dev->reg_map[MT_DMA_SHDL_BASE] + (ofs))
+-- 
+2.25.2
 
