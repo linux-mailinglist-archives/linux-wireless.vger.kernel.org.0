@@ -2,77 +2,119 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8FAFC1A280D
-	for <lists+linux-wireless@lfdr.de>; Wed,  8 Apr 2020 19:41:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A7A421A28E1
+	for <lists+linux-wireless@lfdr.de>; Wed,  8 Apr 2020 20:54:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727049AbgDHRlp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 8 Apr 2020 13:41:45 -0400
-Received: from mail27.static.mailgun.info ([104.130.122.27]:47281 "EHLO
-        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727028AbgDHRlp (ORCPT
+        id S1729716AbgDHSyj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 8 Apr 2020 14:54:39 -0400
+Received: from mout.kundenserver.de ([212.227.17.10]:55225 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727963AbgDHSyj (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 8 Apr 2020 13:41:45 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1586367704; h=Content-Transfer-Encoding: MIME-Version:
- Message-Id: Date: Subject: Cc: To: From: Sender;
- bh=5YddJiy70G5Ar35+/orVqLq6pXhLSw9ddkeieOof9Vw=; b=XqLfV7M5BaOjyiGx50Dc72wodPcPRgBGVsA0/AsREjNG3hBCNYMidct0PaO8BrGs4vbHDLla
- CeAen9W5SumZRDdh8dAvGy+/FNNnrx/7u7yCrhTAjP07dsfFtFsQOoAmjBglwpyS+lysk+Ia
- cszx3thlJ2MNp2Pgc+Rp8fz7ipQ=
-X-Mailgun-Sending-Ip: 104.130.122.27
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e8e0cc6.7f210a1c6228-smtp-out-n04;
- Wed, 08 Apr 2020 17:41:26 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 123D2C433BA; Wed,  8 Apr 2020 17:41:26 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from alokad-linux.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: alokad)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 5DB59C433F2;
-        Wed,  8 Apr 2020 17:41:25 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 5DB59C433F2
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=alokad@codeaurora.org
-From:   Aloka Dixit <alokad@codeaurora.org>
-To:     ath11k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org, Aloka Dixit <alokad@codeaurora.org>
-Subject: [PATCH] ath11k: Fix TWT radio count
-Date:   Wed,  8 Apr 2020 10:41:17 -0700
-Message-Id: <20200408174117.22957-1-alokad@codeaurora.org>
-X-Mailer: git-send-email 2.25.0
+        Wed, 8 Apr 2020 14:54:39 -0400
+Received: from threadripper.lan ([149.172.19.189]) by mrelayeu.kundenserver.de
+ (mreue108 [212.227.15.145]) with ESMTPA (Nemesis) id
+ 1MOzGc-1jezXZ2dFk-00PNE2; Wed, 08 Apr 2020 20:54:17 +0200
+From:   Arnd Bergmann <arnd@arndb.de>
+To:     Yan-Hsuan Chuang <yhchuang@realtek.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Chin-Yen Lee <timlee@realtek.com>
+Cc:     Arnd Bergmann <arnd@arndb.de>,
+        "David S. Miller" <davem@davemloft.net>,
+        Brian Norris <briannorris@chromium.org>,
+        Chris Chiu <chiu@endlessm.com>,
+        Jian-Hong Pan <jian-hong@endlessm.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] rtw88: avoid unused function warnings
+Date:   Wed,  8 Apr 2020 20:53:51 +0200
+Message-Id: <20200408185413.218643-1-arnd@arndb.de>
+X-Mailer: git-send-email 2.26.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Provags-ID: V03:K1:NcxJ3QwXn+I/rIrGm23TbRtV/rSdt2ck5/p2IEg1r3CmWhFbgeo
+ b+WNMyhAX9E4KZ/3PsT3fuPrA9OgXE36y4NLKM+dm5k2yO2O/Em7jA8u0Ay7U0R93jOwpX9
+ 1f7kt/zVFU/4osp1IXY8rfOsb6NNivxBLWoOKk7hMsyCHvTdrkmQiTadkpONGGQ7QvGe3iz
+ H6OqWAFqZhyqtrZfiyQqA==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:ain4j8UjaS4=:xPFq9x2/orRVHsZe2bfhS/
+ 7Fsft5wkuKS9ipxHcAHtN7JkgqgX78LuWM0lJpIVDscesdNeq7rDetOFaYNVuHiQI0u7oYQtK
+ +F34ShN01nQGYKyPysrh8zOg18zwl7Hcpust1GxWMc/IbpH7FgbT0nszYlIfH37pP4XlmlRiw
+ dV+O8rsBgLHn1jnXS/z4hAz8nke9CYmmzdOTced58zBVEFVRTn9q+OdLLSPPBX2S0XmWyr4NW
+ snDsuSD6IcR6/ZI7U752HuqabBeTvWEjqAIwsm71Me3CjOJcQBMv9y6As0lzYLoIC7YuoBr6k
+ Zft67PebPSvYndCdQzPP3xpwOMqfDoCag/i1ev+N/Q260cIlKO8H2f4gjS0tLFCmMi1JAo9/+
+ noVCpVu+YLW4eZdAxIJwMC6V2RVL7GM8E37MD+eNGR7lSvBbOwJ12k8oMaVVbitjQaSqQUnIp
+ RffpvWf2wzYu0OH3NUC7Duy12BMHN0Q+rAllc8wuwrZEfuXAP+zCFeJmysOesdpYsQBnh/T11
+ nTTScIW5YHPQa85/8Zlr9lESMIPg1aISF5fS7+2sVKC/SqBeeYJ6oOItYjz4nPbwEUhL8OcR7
+ oz3YcfWOlnLDnzVQxNFfMlx4C07EFrz/i9uZLAo/PPJtEbyopu8tcmNI3+HCflIQdDRhO9/Jq
+ aOEhh2IgWXX+KMRxfkZSZ83yFGA8xgGLWQHT4s6WG+VV058KoSkizMuc3fEmAEwdzZ5pjCtOT
+ vD4BhwkmPJdRglybncWfi+LFTrstyEKxcto1Q+pV5bFnmLcPyDsDx2RL8+v+LsQp9SjGpRVJD
+ JZgqS1ctSqyfcF+jKHKqp6aEpk+nVc7p/v4kFK0nhGIRxBrPkU=
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-TWT feature fails on radio2 because physical device count is
-hardcoded to 2. Set value dynamically.
+The rtw88 driver defines emtpy functions with multiple indirections
+but gets one of these wrong:
 
-Signed-off-by: Aloka Dixit <alokad@codeaurora.org>
+drivers/net/wireless/realtek/rtw88/pci.c:1347:12: error: 'rtw_pci_resume' defined but not used [-Werror=unused-function]
+ 1347 | static int rtw_pci_resume(struct device *dev)
+      |            ^~~~~~~~~~~~~~
+drivers/net/wireless/realtek/rtw88/pci.c:1342:12: error: 'rtw_pci_suspend' defined but not used [-Werror=unused-function]
+ 1342 | static int rtw_pci_suspend(struct device *dev)
+
+Better simplify it to rely on the conditional reference in
+SIMPLE_DEV_PM_OPS(), and mark the functions as __maybe_unused to avoid
+warning about it.
+
+I'm not sure if these are needed at all given that the functions
+don't do anything, but they were only recently added.
+
+Fixes: 44bc17f7f5b3 ("rtw88: support wowlan feature for 8822c")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 ---
- drivers/net/wireless/ath/ath11k/wmi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtw88/pci.c | 11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
-index 973b72a0ca69..c2a972377687 100644
---- a/drivers/net/wireless/ath/ath11k/wmi.c
-+++ b/drivers/net/wireless/ath/ath11k/wmi.c
-@@ -3245,7 +3245,7 @@ int ath11k_wmi_cmd_init(struct ath11k_base *ab)
- 	config.beacon_tx_offload_max_vdev = ab->num_radios * TARGET_MAX_BCN_OFFLD;
- 	config.rx_batchmode = TARGET_RX_BATCHMODE;
- 	config.peer_map_unmap_v2_support = 1;
--	config.twt_ap_pdev_count = 2;
-+	config.twt_ap_pdev_count = ab->num_radios;
- 	config.twt_ap_sta_count = 1000;
+diff --git a/drivers/net/wireless/realtek/rtw88/pci.c b/drivers/net/wireless/realtek/rtw88/pci.c
+index e37c71495c0d..1af87eb2e53a 100644
+--- a/drivers/net/wireless/realtek/rtw88/pci.c
++++ b/drivers/net/wireless/realtek/rtw88/pci.c
+@@ -1338,22 +1338,17 @@ static void rtw_pci_phy_cfg(struct rtw_dev *rtwdev)
+ 	rtw_pci_link_cfg(rtwdev);
+ }
  
- 	memcpy(&wmi_sc->wlan_resource_config, &config, sizeof(config));
+-#ifdef CONFIG_PM
+-static int rtw_pci_suspend(struct device *dev)
++static int __maybe_unused rtw_pci_suspend(struct device *dev)
+ {
+ 	return 0;
+ }
+ 
+-static int rtw_pci_resume(struct device *dev)
++static int __maybe_unused rtw_pci_resume(struct device *dev)
+ {
+ 	return 0;
+ }
+ 
+ static SIMPLE_DEV_PM_OPS(rtw_pm_ops, rtw_pci_suspend, rtw_pci_resume);
+-#define RTW_PM_OPS (&rtw_pm_ops)
+-#else
+-#define RTW_PM_OPS NULL
+-#endif
+ 
+ static int rtw_pci_claim(struct rtw_dev *rtwdev, struct pci_dev *pdev)
+ {
+@@ -1582,7 +1577,7 @@ static struct pci_driver rtw_pci_driver = {
+ 	.id_table = rtw_pci_id_table,
+ 	.probe = rtw_pci_probe,
+ 	.remove = rtw_pci_remove,
+-	.driver.pm = RTW_PM_OPS,
++	.driver.pm = &rtw_pm_ops,
+ };
+ module_pci_driver(rtw_pci_driver);
+ 
 -- 
-2.25.0
+2.26.0
+
