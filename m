@@ -2,75 +2,138 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7520C1A1F64
-	for <lists+linux-wireless@lfdr.de>; Wed,  8 Apr 2020 13:06:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 31F5F1A2078
+	for <lists+linux-wireless@lfdr.de>; Wed,  8 Apr 2020 13:56:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728167AbgDHLGR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 8 Apr 2020 07:06:17 -0400
-Received: from mail27.static.mailgun.info ([104.130.122.27]:38507 "EHLO
-        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728000AbgDHLGR (ORCPT
+        id S1728069AbgDHL45 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 8 Apr 2020 07:56:57 -0400
+Received: from mail-wm1-f66.google.com ([209.85.128.66]:35639 "EHLO
+        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727835AbgDHL44 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 8 Apr 2020 07:06:17 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1586343976; h=Message-Id: Date: Subject: Cc: To: From:
- Sender; bh=gjFZj0re/3Zp8RkIWye5jT+SHR4n6jbucjudjP1wH/A=; b=lcI6ySQ+X3S2N699/lBT4vdALBb+nkKsomXjYRzmqtNCq9WkFKA3mKeb5TGxFppqIpqqSi4V
- 8nMjn24kY5LIUJQL4t4QL1YT4kLdZDMk8y6lXJdas64TduE+qoI1PMMKJsJir6X+Z0mZ8SER
- 8R6aKrFhJUhwjGEIpTUwB0lQySU=
-X-Mailgun-Sending-Ip: 104.130.122.27
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e8db020.7fb90b671ae8-smtp-out-n05;
- Wed, 08 Apr 2020 11:06:08 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 2C5BCC433BA; Wed,  8 Apr 2020 11:06:07 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from CHECSTP284781-LIN.qualcomm.com (blr-c-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.19.19])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: periyasa)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 61639C433D2;
-        Wed,  8 Apr 2020 11:06:05 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 61639C433D2
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=periyasa@codeaurora.org
-From:   Karthikeyan Periyasamy <periyasa@codeaurora.org>
-To:     ath11k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org,
-        Karthikeyan Periyasamy <periyasa@codeaurora.org>
-Subject: [PATCH] ath11k: Modify the interrupt timer threshold
-Date:   Wed,  8 Apr 2020 16:35:57 +0530
-Message-Id: <1586343957-21474-1-git-send-email-periyasa@codeaurora.org>
-X-Mailer: git-send-email 1.9.1
+        Wed, 8 Apr 2020 07:56:56 -0400
+Received: by mail-wm1-f66.google.com with SMTP id r26so5143571wmh.0
+        for <linux-wireless@vger.kernel.org>; Wed, 08 Apr 2020 04:56:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ncentric-com.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding:content-language;
+        bh=r//OCBfZ1wHmL364/q+AoFNYsD5AU3Cd2vuzJY7eM/w=;
+        b=a/95h4OL7QTsL64XciAm5H4wcV1BNhlqdKlA1QbQEHep2VCLNf7m1Pc90cCqhI5kvy
+         VCR1fivOz0KleplDw9cLENU+C0H/f5mAFdJ7nnD7Qq3u9JVSC+80mQdCdL9rv7VVPE1z
+         W1K2tKlKsgKxDJKuex9MbavYceM0rw+JH0t7xkWV1BpylC9et79ZhF4ISsl0u+/Rk3+Q
+         eReVvztCAA13rftfLa3Z7jBGG+XBKEYTiI5ZwlX01g2OvR4KkjcL2B7hx2sSHjFNzMSa
+         xvhImDUuMNqgPeaVFmo5F0Nw9Hli5GtDHXV2R14h8HuFVuC1+DL7cZROx4wFITuZBRzn
+         r1zQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding
+         :content-language;
+        bh=r//OCBfZ1wHmL364/q+AoFNYsD5AU3Cd2vuzJY7eM/w=;
+        b=onFCtCMGzlZr2IxK+G65EZDsbmEEpSKdo84TIEQlNoIXUyR7NGthBeJFRpz0NZeEcJ
+         8dCu/mqwxOsKuvrzq4NRBbpiLmbl2kucQaZ6HYNJqsgJNTvf6Gmc7pllQa/JVYGlLgKB
+         AzduVDFlo5NMIKfKbrppdEhQXQc5TZcnJxN5FApFAVbm4zm4YXnMf3ntMt4BiDbN+Sca
+         UBlC8mSetrvdoAELDj1nrNxvPQVOtHXeNs7+AYBXmPGHfI/sP6WBRD1aKYeeeTdyE8yg
+         ty6dFGkoNLcia57BF0bG8vzY7Y63yf+bMzREAaxuYLhPXBwqZecJjXN+F2ToqabXKLbd
+         urtg==
+X-Gm-Message-State: AGi0PuahNQUQMvgIncQiJoMKu/u5DfXZuDpsANx/IXdd3/sfFGSQQ50+
+        +nwCgA+pHd26ln70lIJJlyoKKA==
+X-Google-Smtp-Source: APiQypJPLRYhaJHu4emt8QJsikRTMFboGABsmvbTk9PFozJ/Wk44M/zxKQfkheQcmolQPbqi2PS8tw==
+X-Received: by 2002:a7b:c402:: with SMTP id k2mr4474946wmi.21.1586347014269;
+        Wed, 08 Apr 2020 04:56:54 -0700 (PDT)
+Received: from [10.202.0.7] (d5152e8e2.static.telenet.be. [81.82.232.226])
+        by smtp.gmail.com with ESMTPSA id l12sm34748847wrt.73.2020.04.08.04.56.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 08 Apr 2020 04:56:53 -0700 (PDT)
+Subject: Re: [PATCH v3 2/2] mac80211: Allow deleting stations in ibss mode to
+ reset their state
+To:     Nicolas Cavallari <cavallar@lri.fr>, linux-wireless@vger.kernel.org
+Cc:     Johannes Berg <johannes@sipsolutions.com>
+References: <20200305135754.12094-1-cavallar@lri.fr>
+ <20200305135754.12094-2-cavallar@lri.fr>
+From:   Koen Vandeputte <koen.vandeputte@ncentric.com>
+Message-ID: <bc2934fe-ee0b-c593-e866-692487e06d4e@ncentric.com>
+Date:   Wed, 8 Apr 2020 13:56:52 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
+MIME-Version: 1.0
+In-Reply-To: <20200305135754.12094-2-cavallar@lri.fr>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Modify the interrupt timer threshold param as 256 to avoid HW watchdog
-in heavy multicast traffic scenario.
 
-Signed-off-by: Karthikeyan Periyasamy <periyasa@codeaurora.org>
----
- drivers/net/wireless/ath/ath11k/hal.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On 05.03.20 14:57, Nicolas Cavallari wrote:
+> From: Nicolas Cavallari <nicolas.cavallari@green-communications.fr>
+>
+> Set the NL80211_EXT_FEATURE_DEL_IBSS_STA if the interface support IBSS
+> mode, so that stations can be reset from user space.
+>
+> mac80211 already deletes stations by itself, so mac80211 drivers must
+> already support this.
+>
+> This has been successfully tested with ath9k.
+>
+> Signed-off-by: Nicolas Cavallari <nicolas.cavallari@green-communications.fr>
+>
+> ---
+> v3: spelling fixes in commit message.
+> ---
+>   net/mac80211/main.c | 4 ++++
+>   1 file changed, 4 insertions(+)
+>
+> diff --git a/net/mac80211/main.c b/net/mac80211/main.c
+> index 944e86da5c65..bc7fd67dc987 100644
+> --- a/net/mac80211/main.c
+> +++ b/net/mac80211/main.c
+> @@ -1081,6 +1081,10 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
+>   				      NL80211_EXT_FEATURE_EXT_KEY_ID);
+>   	}
+>   
+> +	if (local->hw.wiphy->interface_modes & BIT(NL80211_IFTYPE_ADHOC))
+> +		wiphy_ext_feature_set(local->hw.wiphy,
+> +				      NL80211_EXT_FEATURE_DEL_IBSS_STA);
+> +
+>   	/*
+>   	 * Calculate scan IE length -- we need this to alloc
+>   	 * memory and to subtract from the driver limit. It
 
-diff --git a/drivers/net/wireless/ath/ath11k/hal.h b/drivers/net/wireless/ath/ath11k/hal.h
-index 7722822..780a3e1 100644
---- a/drivers/net/wireless/ath/ath11k/hal.h
-+++ b/drivers/net/wireless/ath/ath11k/hal.h
-@@ -599,7 +599,7 @@ struct hal_srng {
- /* Interrupt mitigation - timer threshold in us */
- #define HAL_SRNG_INT_TIMER_THRESHOLD_TX 1000
- #define HAL_SRNG_INT_TIMER_THRESHOLD_RX 500
--#define HAL_SRNG_INT_TIMER_THRESHOLD_OTHER 1000
-+#define HAL_SRNG_INT_TIMER_THRESHOLD_OTHER 256
- 
- /* HW SRNG configuration table */
- struct hal_srng_config {
--- 
-1.9.1
+Hi Nicolas,
+
+
+I took these patches for a thorough spin offshore (combined with your 
+quick wpa_sup change)
+
+
+Quick test setup overview:
+
+- Device mounted on top of a vessel, sailing around in windfarms.
+- Lots of turbines are equiped with 4x 90deg sectors
+- 802.11n HT40 2x2 custom mesh over IBSS, using Dynack
+- As the vessel moves around,  IBSS links are continuously dropped and 
+re-added throughout the field
+- Output of my app, fyi:  https://pastebin.com/raw/vtZSwHC9
+
+I've made 2 identical builds, one containing your patches and one without.
+
+When your patches are used:
+
+--> On devices with multiple radio's, all radio's went deaf within a few 
+minutes without any notice in logs.
+
+--> Only a reboot solved the issue but everything goes deaf again within 
+a few minutes. (after dropping/adding some links)
+
+
+Any idea?
+
+
+Thanks,
+
+Koen
+
