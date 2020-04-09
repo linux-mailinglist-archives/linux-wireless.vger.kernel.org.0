@@ -2,95 +2,88 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E37C1A3135
-	for <lists+linux-wireless@lfdr.de>; Thu,  9 Apr 2020 10:50:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0BE0C1A322A
+	for <lists+linux-wireless@lfdr.de>; Thu,  9 Apr 2020 12:00:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726659AbgDIIue (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 9 Apr 2020 04:50:34 -0400
-Received: from mail26.static.mailgun.info ([104.130.122.26]:33666 "EHLO
-        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725862AbgDIIue (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 9 Apr 2020 04:50:34 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1586422234; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=OU4Jaga5I6b7zdc3pesHpsRuwkhLu184VpmHgFHKPks=; b=wAdL0quU6N7zaNI0APRL5AryHBExv1UiS+k1iq+X38ZUEoNyKE9T65T03QdO2yDbf/C5Rkfm
- rWUUj5HFOt5JpfdBIikdxx3/aN5JVWMGhQd2Pv+mNgpgCIs8Jg4JONp4pNOngTCXf7ogjYm9
- UMyLJ2qsYP9RsDUnt4r3pIFES+Q=
-X-Mailgun-Sending-Ip: 104.130.122.26
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e8ee1d9.7f2b7239cdc0-smtp-out-n03;
- Thu, 09 Apr 2020 08:50:33 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 4EDC5C433CB; Thu,  9 Apr 2020 08:50:33 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 1235EC433D2;
-        Thu,  9 Apr 2020 08:50:30 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 1235EC433D2
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     "David S. Miller" <davem@davemloft.net>,
-        Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>,
-        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        ath11k@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] ath11k: fix ath11k_thermal_unregister() prototype
-References: <20200408190606.870098-1-arnd@arndb.de>
-        <20200408190606.870098-2-arnd@arndb.de>
-Date:   Thu, 09 Apr 2020 11:50:29 +0300
-In-Reply-To: <20200408190606.870098-2-arnd@arndb.de> (Arnd Bergmann's message
-        of "Wed, 8 Apr 2020 21:05:58 +0200")
-Message-ID: <87d08hujoq.fsf@kamboji.qca.qualcomm.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        id S1726793AbgDIKAS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 9 Apr 2020 06:00:18 -0400
+Received: from nbd.name ([46.4.11.11]:60824 "EHLO nbd.name"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726703AbgDIKAS (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 9 Apr 2020 06:00:18 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject
+        :To:From:Sender:Reply-To:Cc:Content-Type:Content-ID:Content-Description:
+        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=v/nVcghAqdih6qyBYA3nOkrPXJM2pa0tN2PRfPhCjzI=; b=DM/o4duRLbGlifbrVjXI72t8eu
+        oXrcGpdMG7X558+4UatdE2IK4nMpMjkG7gFJ+ag3F0xpnqD0n6lT8X2kdlgDRpR6HUJIyAHK35+PT
+        wwfk8uX0qdIpcV+tcfd3IMEBIE7xU4ztJ63+k2JsCcq15Q/lhmZinnl+S6mdWjReFClw=;
+Received: from p54ae91d1.dip0.t-ipconnect.de ([84.174.145.209] helo=maeck.lan)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1jMTys-000550-1V
+        for linux-wireless@vger.kernel.org; Thu, 09 Apr 2020 12:00:18 +0200
+Received: by maeck.lan (Postfix, from userid 501)
+        id 789A8828EBF5; Thu,  9 Apr 2020 12:00:17 +0200 (CEST)
+From:   Felix Fietkau <nbd@nbd.name>
+To:     linux-wireless@vger.kernel.org
+Subject: [PATCH 1/2] mt76: mt7615: set hw scan limits only for firmware with offload support
+Date:   Thu,  9 Apr 2020 12:00:16 +0200
+Message-Id: <20200409100017.92156-1-nbd@nbd.name>
+X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Arnd Bergmann <arnd@arndb.de> writes:
+They do not apply to software scan
 
-> The stub function has the wrong prototype, causing a warning:
->
-> drivers/net/wireless/ath/ath11k/core.c: In function 'ath11k_core_pdev_destroy':
-> drivers/net/wireless/ath/ath11k/core.c:416:28: error: passing argument 1 of 'ath11k_thermal_unregister' from incompatible pointer type [-Werror=incompatible-pointer-types]
->
-> Change it to take the same arguments as the normal implementation.
->
-> Fixes: 2a63bbca06b2 ("ath11k: add thermal cooling device support")
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> ---
->  drivers/net/wireless/ath/ath11k/thermal.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/net/wireless/ath/ath11k/thermal.h b/drivers/net/wireless/ath/ath11k/thermal.h
-> index f1395a14748c..ea9a58bf6a93 100644
-> --- a/drivers/net/wireless/ath/ath11k/thermal.h
-> +++ b/drivers/net/wireless/ath/ath11k/thermal.h
-> @@ -36,7 +36,7 @@ static inline int ath11k_thermal_register(struct ath11k_base *sc)
->  	return 0;
->  }
->  
-> -static inline void ath11k_thermal_unregister(struct ath11k *ar)
-> +static inline void ath11k_thermal_unregister(struct ath11k_base *ar)
->  {
->  }
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+---
+ .../net/wireless/mediatek/mt76/mt7615/init.c  | 23 +++++++++++--------
+ 1 file changed, 13 insertions(+), 10 deletions(-)
 
-Already fixed by this commit:
-
-https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers.git/commit/?id=c9be1a642a7b9ec021e3f32e084dc781b3e5216d
-
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/init.c b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
+index 07d4b259fe8a..b5d5e28b61b4 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
+@@ -349,18 +349,21 @@ mt7615_init_wiphy(struct ieee80211_hw *hw)
+ 	wiphy->n_iface_combinations = ARRAY_SIZE(if_comb);
+ 	wiphy->reg_notifier = mt7615_regd_notifier;
+ 
+-	wiphy->max_sched_scan_plan_interval = MT7615_MAX_SCHED_SCAN_INTERVAL;
+-	wiphy->max_sched_scan_ie_len = IEEE80211_MAX_DATA_LEN;
+-	wiphy->max_scan_ie_len = MT7615_SCAN_IE_LEN;
+-	wiphy->max_sched_scan_ssids = MT7615_MAX_SCHED_SCAN_SSID;
+-	wiphy->max_match_sets = MT7615_MAX_SCAN_MATCH;
+-	wiphy->max_sched_scan_reqs = 1;
+-	wiphy->max_scan_ssids = 4;
+-
+-	wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_SET_SCAN_DWELL);
++	if (mt7615_firmware_offload(phy->dev)) {
++		wiphy->max_sched_scan_plan_interval = MT7615_MAX_SCHED_SCAN_INTERVAL;
++		wiphy->max_sched_scan_ie_len = IEEE80211_MAX_DATA_LEN;
++		wiphy->max_scan_ie_len = MT7615_SCAN_IE_LEN;
++		wiphy->max_sched_scan_ssids = MT7615_MAX_SCHED_SCAN_SSID;
++		wiphy->max_match_sets = MT7615_MAX_SCAN_MATCH;
++		wiphy->max_sched_scan_reqs = 1;
++		wiphy->max_scan_ssids = 4;
++
++		wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_SET_SCAN_DWELL);
++		ieee80211_hw_set(hw, SINGLE_SCAN_ON_ALL_BANDS);
++	}
++
+ 	wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_VHT_IBSS);
+ 
+-	ieee80211_hw_set(hw, SINGLE_SCAN_ON_ALL_BANDS);
+ 	ieee80211_hw_set(hw, TX_STATUS_NO_AMPDU_LEN);
+ 
+ 	if (is_mt7615(&phy->dev->mt76))
 -- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+2.24.0
+
