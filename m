@@ -2,29 +2,29 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BB0321A364F
-	for <lists+linux-wireless@lfdr.de>; Thu,  9 Apr 2020 16:54:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1992E1A3690
+	for <lists+linux-wireless@lfdr.de>; Thu,  9 Apr 2020 17:06:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727705AbgDIOyC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 9 Apr 2020 10:54:02 -0400
-Received: from mail26.static.mailgun.info ([104.130.122.26]:37177 "EHLO
-        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726940AbgDIOyC (ORCPT
+        id S1727884AbgDIPGB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 9 Apr 2020 11:06:01 -0400
+Received: from mail27.static.mailgun.info ([104.130.122.27]:56197 "EHLO
+        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727801AbgDIPGB (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 9 Apr 2020 10:54:02 -0400
+        Thu, 9 Apr 2020 11:06:01 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1586444042; h=Content-Type: MIME-Version: Message-ID:
+ s=smtp; t=1586444761; h=Content-Type: MIME-Version: Message-ID:
  In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=8m8N/spe2Z+u0ec7luPWZFv5RMC+ATlrKjVKAVXWqrA=; b=hKb9tbLiGg8NtmVaLniGnK0hufbVzMeqIutsAGdmKd4zpedPbj0Kp9aurH0C580I4hCad6gp
- j+6YH3Fatfd8ebVnYJWQxsryRaQE4868J5TlJcsWw08u6+cjAxbYehqpae5z//3rK4qdZO3i
- bb/99xrwib0l0XPV23mxoQ239Ds=
-X-Mailgun-Sending-Ip: 104.130.122.26
+ bh=7KHDKvLbxU/THY3EFbTz9kpu3q/j3kdS9KYHkOOT2xA=; b=VNXccUG9LXQh/RtWtLA5TOJDSR1tNU1jzcIZBspHDFS0/1wV8u1ME36kl7iK7ZGYWOyyw96N
+ mNNXsujSzpAe6PMUiSvQZD8I9pZJhM5CpYlMvEnkE3fYwlX50F4vuIbiiLID1vUO8HrzzpOw
+ yFGvOAhXhZuFXWNkDZjVg8l/NG4=
+X-Mailgun-Sending-Ip: 104.130.122.27
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e8f36ee.7fcc035910a0-smtp-out-n01;
- Thu, 09 Apr 2020 14:53:34 -0000 (UTC)
+ by mxa.mailgun.org with ESMTP id 5e8f39ce.7f6ee94fcc00-smtp-out-n02;
+ Thu, 09 Apr 2020 15:05:50 -0000 (UTC)
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 170C0C433CB; Thu,  9 Apr 2020 14:53:33 +0000 (UTC)
+        id 4B0C4C43636; Thu,  9 Apr 2020 15:05:49 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -34,9 +34,9 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 26616C433D2;
-        Thu,  9 Apr 2020 14:53:30 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 26616C433D2
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id A29E4C433BA;
+        Thu,  9 Apr 2020 15:05:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org A29E4C433BA
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 From:   Kalle Valo <kvalo@codeaurora.org>
@@ -45,10 +45,10 @@ Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org
 Subject: Re: [PATCH v9 3/4] ath10k: add htt TX bundle for sdio
 References: <20200212080415.31265-1-wgong@codeaurora.org>
         <20200212080415.31265-4-wgong@codeaurora.org>
-Date:   Thu, 09 Apr 2020 17:53:29 +0300
+Date:   Thu, 09 Apr 2020 18:05:45 +0300
 In-Reply-To: <20200212080415.31265-4-wgong@codeaurora.org> (Wen Gong's message
         of "Wed, 12 Feb 2020 16:04:14 +0800")
-Message-ID: <87tv1su2vq.fsf@kamboji.qca.qualcomm.com>
+Message-ID: <87pncgu2ba.fsf@kamboji.qca.qualcomm.com>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -89,25 +89,29 @@ Wen Gong <wgong@codeaurora.org> writes:
 
 [...]
 
-> --- a/drivers/net/wireless/ath/ath10k/core.c
-> +++ b/drivers/net/wireless/ath/ath10k/core.c
-> @@ -3208,6 +3208,11 @@ struct ath10k *ath10k_core_create(size_t priv_size, struct device *dev,
->  	if (!ar->workqueue_aux)
->  		goto err_free_wq;
->  
-> +	ar->workqueue_tx_complete =
-> +		create_singlethread_workqueue("ath10k_tx_complete_wq");
-> +	if (!ar->workqueue_tx_complete)
-> +		goto err_free_aux_wq;
+> +	if (ep->tx_credits < credits) {
+> +		ath10k_dbg(ar, ATH10K_DBG_HTC,
+> +			   "htc insufficient credits ep %d required %d available %d consume %d\n",
+> +			   eid, credits, ep->tx_credits, consume);
+> +		ret = -EAGAIN;
+> +		goto unlock;
+> +	}
+> +
+> +	if (consume) {
+> +		ep->tx_credits -= credits;
+> +		ath10k_dbg(ar, ATH10K_DBG_HTC,
+> +			   "htc ep %d consumed %d credits (total %d)\n",
 
-We already have three threads:
+"htc ep %d consumed %d credits total %d\n"
 
-ath/ath10k/core.c:      ar->workqueue = create_singlethread_workqueue("ath10k_wq");
-ath/ath10k/core.c:      ar->workqueue_aux = create_singlethread_workqueue("ath10k_aux_wq");
-ath/ath10k/sdio.c:      ar_sdio->workqueue = create_singlethread_workqueue("ath10k_sdio_wq");
+[...]
 
-Do we really need a fourth one? For example, why can't we use
-ar->workqueue_aux?
+> +	ath10k_dbg(ar, ATH10K_DBG_HTC, "bundle skb: len:%d\n", bundle_skb->len);
+
+"htc bundle skb len %d\n"
+
+In other words, start with "htc" and don't use colons or parenthesis.
+This applies to most of debug messages in this patch.
 
 -- 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
