@@ -2,40 +2,38 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8EF1E1A3229
-	for <lists+linux-wireless@lfdr.de>; Thu,  9 Apr 2020 12:00:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C53DB1A3291
+	for <lists+linux-wireless@lfdr.de>; Thu,  9 Apr 2020 12:36:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726744AbgDIKAS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 9 Apr 2020 06:00:18 -0400
-Received: from nbd.name ([46.4.11.11]:60822 "EHLO nbd.name"
+        id S1726559AbgDIKg5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 9 Apr 2020 06:36:57 -0400
+Received: from nbd.name ([46.4.11.11]:34554 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726589AbgDIKAS (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 9 Apr 2020 06:00:18 -0400
+        id S1726523AbgDIKg4 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 9 Apr 2020 06:36:56 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-         s=20160729; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
-        Message-Id:Date:Subject:To:From:Sender:Reply-To:Cc:Content-Type:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+         s=20160729; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject
+        :To:From:Sender:Reply-To:Cc:Content-Type:Content-ID:Content-Description:
+        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
         List-Post:List-Owner:List-Archive;
-        bh=g8mZNT2yqdg8kxIwyON6ZnxV0RuQkpbEdvhscQICzgw=; b=ZiDEvTh8i/0XRizDdWAu5/gPiw
-        +U7+PD5MFq1LO46CsFgSTVdBSILMfG9DQKqlUfEwuZx1kzb4N/NOb3p+yWCEhmU7nKCch7fTrrtIh
-        3j9f6UjVPmKl+STDqIGx3hbi0nq2m9UrLXDLOY6YfwOl12o4OyKXIcQxpH3VezAbqW5Y=;
+        bh=TZLOxHmiLz73vpijPk3ibwC0OYFpWwcNMOAJ1jqgYiM=; b=VNyMiQAGwnPQnKzeHeirCRa/LA
+        AW1m0mCIEnJJ79Z1nMKDbWlPjXZcd/LSKNcOTCEHiX6QQhdPFQw5nKT69j9HqrSdHli12K19TZhdp
+        7qnNDSGKJr/bKEnXZvB9tSY127I15lPLz0EOpL2v2Tk/J9WqDBeQD4lWhzwtlRWtPSXc=;
 Received: from p54ae91d1.dip0.t-ipconnect.de ([84.174.145.209] helo=maeck.lan)
         by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.89)
         (envelope-from <nbd@nbd.name>)
-        id 1jMTyr-00054z-Tz
-        for linux-wireless@vger.kernel.org; Thu, 09 Apr 2020 12:00:17 +0200
+        id 1jMUYK-0006wj-5f
+        for linux-wireless@vger.kernel.org; Thu, 09 Apr 2020 12:36:56 +0200
 Received: by maeck.lan (Postfix, from userid 501)
-        id 746D3828EBF4; Thu,  9 Apr 2020 12:00:17 +0200 (CEST)
+        id C0C81828F03B; Thu,  9 Apr 2020 12:36:55 +0200 (CEST)
 From:   Felix Fietkau <nbd@nbd.name>
 To:     linux-wireless@vger.kernel.org
-Subject: [PATCH 2/2] mt76: mt7615: disable hw/sched scan ops for non-offload firmware
-Date:   Thu,  9 Apr 2020 12:00:17 +0200
-Message-Id: <20200409100017.92156-2-nbd@nbd.name>
+Subject: [PATCH v2 1/2] mt76: mt7615: disable hw/sched scan ops for non-offload firmware
+Date:   Thu,  9 Apr 2020 12:36:54 +0200
+Message-Id: <20200409103655.94536-1-nbd@nbd.name>
 X-Mailer: git-send-email 2.24.0
-In-Reply-To: <20200409100017.92156-1-nbd@nbd.name>
-References: <20200409100017.92156-1-nbd@nbd.name>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
@@ -54,7 +52,7 @@ Signed-off-by: Felix Fietkau <nbd@nbd.name>
  3 files changed, 15 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/init.c b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
-index b5d5e28b61b4..a529ec2eca7d 100644
+index 07d4b259fe8a..7f3683205b8e 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7615/init.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
 @@ -143,6 +143,13 @@ static void mt7615_init_work(struct work_struct *work)
