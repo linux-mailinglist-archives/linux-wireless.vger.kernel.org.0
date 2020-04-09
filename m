@@ -2,74 +2,96 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 457561A33CC
-	for <lists+linux-wireless@lfdr.de>; Thu,  9 Apr 2020 14:10:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D44A1A358A
+	for <lists+linux-wireless@lfdr.de>; Thu,  9 Apr 2020 16:13:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726477AbgDIMKa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 9 Apr 2020 08:10:30 -0400
-Received: from mail-wm1-f65.google.com ([209.85.128.65]:55885 "EHLO
-        mail-wm1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725971AbgDIMKa (ORCPT
+        id S1727390AbgDIONw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 9 Apr 2020 10:13:52 -0400
+Received: from mail26.static.mailgun.info ([104.130.122.26]:44095 "EHLO
+        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726552AbgDIONv (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 9 Apr 2020 08:10:30 -0400
-Received: by mail-wm1-f65.google.com with SMTP id e26so3635285wmk.5
-        for <linux-wireless@vger.kernel.org>; Thu, 09 Apr 2020 05:10:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=qqXhwO7BswN1RQtad6JgvWy+YXto6m5fjOMwAyjsWJc=;
-        b=NAr7u9VsgxgDVBjFZl4wz3LnMwxlKhS4d3GVrb1ba0pdxDBMQlC4JX8xMVGp04ziRX
-         cCjVElN4UW2bC/jzi9EeJJ32YCXRCfizk3h3z5g79xo8KLxr962evcvQNgFpBaNJvOD8
-         9/tEPuUyawb8SgW94UXdwKgIhhviLbaE2KoMFQzf9QbZYdas77pCIqVkgu6Tfvxl9l4p
-         IYU4hQv6jY+cv03NZE4a9Ho4hDN81akbBlPf6g/mlrNyTQewfrv2lEactUmt8/JZslu6
-         Jn3c9RlPvjx7CAUmq2dzCOLRJHmHm25t2K0Yx9jy0F+53UwN2OlP/Q/UhscpztzCv2Vm
-         T4cA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=qqXhwO7BswN1RQtad6JgvWy+YXto6m5fjOMwAyjsWJc=;
-        b=uHhECClewAaZpVOxVEXhuG0WG9bb8GumVbUcTIfHwDC/a4jpF4/Jb44tXkHDdSyhpC
-         CxE2lQ+GxrLsecFshyxZViCqJo4ZOgacE9iHZGC3VzidlLGBXDRdSmAZnELM+HUjI0Vs
-         wkTbcCbnbzTPLp2Jse9C86s3wP8iCN4N7BxXF+YjoVfkueWrHRVX5eLL01kACyCKUO1+
-         QiwXwXxeN0OWI/fiiG/Szuf2WcSP90bCNQ1dKrLXkEtsWuw13wUKltzIE60laZqzJWGG
-         MwWERYR0ztp5Sd00gwBgoAZ8+ue6idFWx6CeCAU2zmF8GvFovEi5VDYwYlTbrLEXagFu
-         8p+g==
-X-Gm-Message-State: AGi0PubddSSmjXs3HCAcsUrHLn1NLwuWAFaV1hhF+jPdnnpmgueoPdKX
-        KKQ6mzVLRhdDTyGYp0nanuQGH46pRILa/gbVMq8=
-X-Google-Smtp-Source: APiQypLFOOgX320qGX27hOKUtEtU3SkjdNUT6EhY/k+/9MxBkmvXgKgMK0EbGaI/kMCuLRnqdplrdes9l2RLCS3TYio=
-X-Received: by 2002:a7b:cf30:: with SMTP id m16mr3259474wmg.66.1586434227516;
- Thu, 09 Apr 2020 05:10:27 -0700 (PDT)
+        Thu, 9 Apr 2020 10:13:51 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1586441631; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=oA2QVf0tNPtlNkAxOEoOHVKhyFVXRF/JetkMbIVl7Js=; b=Mp3E+p1WxbPYII7X8uCx1nZ9AalQ7gAVe9n9+wAX8+xdTcYvdJQwfVLK3HEnKmqPpsdfT/UH
+ Zo2MC4tNscqpNowi2PlQO16L+kzQ87OrDKeAql/9oSTGnjNIdplSzZwHISHlMoiCqA8So6WH
+ iycAm/e0ZKeTur8YypJIgXG8Yag=
+X-Mailgun-Sending-Ip: 104.130.122.26
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5e8f2d98.7fdf86bc0570-smtp-out-n01;
+ Thu, 09 Apr 2020 14:13:44 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 5F8ECC433D2; Thu,  9 Apr 2020 14:13:43 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id D8EFDC433CB;
+        Thu,  9 Apr 2020 14:13:41 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org D8EFDC433CB
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Yu Wang <yyuwang@codeaurora.org>
+Cc:     linux-wireless@vger.kernel.org, ath10k@lists.infradead.org
+Subject: Re: [PATCH v2 2/2] ath10k: correct legacy rate in tx stats
+References: <1574147982-3956-1-git-send-email-yyuwang@codeaurora.org>
+        <0101016e82882548-361b3da4-fd9b-4ba9-95b6-a5d782d4a1c8-000000@us-west-2.amazonses.com>
+        <87h7yd4y0a.fsf@kamboji.qca.qualcomm.com>
+Date:   Thu, 09 Apr 2020 17:13:39 +0300
+In-Reply-To: <87h7yd4y0a.fsf@kamboji.qca.qualcomm.com> (Kalle Valo's message
+        of "Tue, 24 Mar 2020 16:40:21 +0200")
+Message-ID: <87y2r4u4q4.fsf@kamboji.qca.qualcomm.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-Received: by 2002:adf:a341:0:0:0:0:0 with HTTP; Thu, 9 Apr 2020 05:10:27 -0700 (PDT)
-Reply-To: philipmicheal809@gmail.com
-From:   philipmicheal <brianjesse401@gmail.com>
-Date:   Thu, 9 Apr 2020 13:10:27 +0100
-Message-ID: <CAJRpr_=+sEZ-xfecAj1ocvDNU45ZMzYwhZ72dkaSYf+f7cf9Mg@mail.gmail.com>
-Subject: Hl
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hallo, bitte seien Sie informiert, dass diese E-Mail, die an Ihre
-Mailbox kam, nicht ist
-ein Fehler, der jedoch speziell an Sie gerichtet wurde. UND
-Ich habe einen Vorschlag von ($ 7.500.000.00) von meinem verstorbenen
-Kunden Engineer Carlos hinterlassen
-der bei Ihnen den gleichen Namen tr=C3=A4gt, der hier in Lom=C3=A9 gearbeit=
-et
-und gelebt hat
-Gehen. Mein verstorbener Kunde und meine Familie waren in einen
-Autounfall verwickelt
-Ihr Leben. Ich kontaktiere Sie als n=C3=A4chsten Angeh=C3=B6rigen des
-Verstorbenen, also Sie
-k=C3=B6nnte die Mittel auf Anspr=C3=BCche erhalten. Auf Ihre schnelle Antwo=
-rt werde ich
-Informieren Sie mich =C3=BCber die Art und Weise der Ausf=C3=BChrung dieses
-Bundes. Kontaktieren Sie mich diesbez=C3=BCglich
-E-Mails (philipmicheal809@gmail.com)
+For some reason these comments didn't go to patchwork so resending them
+again:
+
+Kalle Valo <kvalo@codeaurora.org> writes:
+
+> Yu Wang <yyuwang@codeaurora.org> writes:
+>
+>> +	for (i = 0; i < sband->n_bitrates; i++) {
+>> +		bitrates = &sband->bitrates[i];
+>> +		if (ath10k_mac_bitrate_is_cck(bitrates->bitrate) != cck)
+>> +			continue;
+>> +
+>> +		if (bitrates->hw_value == hw_rate ||
+>> +		    (bitrates->flags & IEEE80211_RATE_SHORT_PREAMBLE &&
+>> +		     bitrates->hw_value_short == hw_rate)) {
+>> +			bitrate = bitrates->bitrate;
+>> +
+>> +			/* The bitrate will be recovered in
+>> +			 * ath10k_update_per_peer_tx_stats().
+>> +			 */
+>> +			if (bitrate == 55)
+>> +				bitrate = 60;
+>> +
+>> +			bitrate = bitrate / 10;
+>
+> Here you use magic value 60 but in ath10k_update_per_peer_tx_stats() you
+> use magic value 50:
+>
+>> +		/* from 1Mbps to 100Kbps */
+>> +		rate = rate * 10;
+>> +		if (rate == 50)
+>> +			rate = 55;
+>
+> Am I missing something or how is this supposed to work?
+
+-- 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
