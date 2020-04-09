@@ -2,94 +2,184 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B8D051A3791
-	for <lists+linux-wireless@lfdr.de>; Thu,  9 Apr 2020 17:55:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 53D0E1A379A
+	for <lists+linux-wireless@lfdr.de>; Thu,  9 Apr 2020 17:59:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728343AbgDIPzd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 9 Apr 2020 11:55:33 -0400
-Received: from mail26.static.mailgun.info ([104.130.122.26]:50937 "EHLO
-        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728287AbgDIPzc (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 9 Apr 2020 11:55:32 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1586447733; h=Message-ID: References: In-Reply-To: Subject:
- Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
- MIME-Version: Sender; bh=vKQQD+LpyQn8hyW482cb70w6C2mZNVsZk6XSSGWg0b8=;
- b=fE6c9BhNhgm2Igj7rg2GYhixlG3hAkfjL12VNpoYEo/fWFdyGAiRzdI0wUNDT8bbWuUc/nh8
- UlzGpHAZHgdrVWXT0AActyPrtS16nSzA9D9BynROLvbRiZnASGoy1WK9LRvmVVE284iBP9on
- DC0ZU1vRk1/120J4j0xd2bgbWsk=
-X-Mailgun-Sending-Ip: 104.130.122.26
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e8f455f.7f887a4e4ce0-smtp-out-n01;
- Thu, 09 Apr 2020 15:55:11 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 964ADC433BA; Thu,  9 Apr 2020 15:55:07 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED autolearn=ham
-        autolearn_force=no version=3.4.0
-Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: wgong)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 50047C433CB;
-        Thu,  9 Apr 2020 15:55:07 +0000 (UTC)
+        id S1728343AbgDIP7H (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 9 Apr 2020 11:59:07 -0400
+Received: from nbd.name ([46.4.11.11]:52322 "EHLO nbd.name"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727865AbgDIP7H (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 9 Apr 2020 11:59:07 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject
+        :Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=zQj3NkQdEmz1XJI2N1VYZtyJ3wNhfxRrJ5okzYfZiLM=; b=K7B+s05OMxW5UiYTxcKB4UEhmJ
+        7ucrRc3pN0cPQenQv7JNr9yt+kjVRbIRF+QJLkJM9JU9Tf2j3rKkoGlixy0em1jhRDjh2HHIgP2/+
+        Ow45BMLi/ZBVlO5C9sgZ/NEhuEry2iLemzfCWpFP4Q1RijrpR5E5iDo55Nq0ymfDx7eg=;
+Received: from p54ae91d1.dip0.t-ipconnect.de ([84.174.145.209] helo=maeck.lan)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1jMZa3-0000MM-Sp; Thu, 09 Apr 2020 17:59:04 +0200
+Received: by maeck.lan (Postfix, from userid 501)
+        id 4EAA4829A4CC; Thu,  9 Apr 2020 17:59:03 +0200 (CEST)
+From:   Felix Fietkau <nbd@nbd.name>
+To:     linux-wireless@vger.kernel.org
+Cc:     Soul Huang <Soul.Huang@mediatek.com>
+Subject: [PATCH] mt76: mt7615: rework IRQ handling to prepare for MSI support
+Date:   Thu,  9 Apr 2020 17:59:02 +0200
+Message-Id: <20200409155902.58185-1-nbd@nbd.name>
+X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Thu, 09 Apr 2020 23:55:07 +0800
-From:   Wen Gong <wgong@codeaurora.org>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH v9 3/4] ath10k: add htt TX bundle for sdio
-In-Reply-To: <87lfn4u0lq.fsf@kamboji.qca.qualcomm.com>
-References: <20200212080415.31265-1-wgong@codeaurora.org>
- <20200212080415.31265-4-wgong@codeaurora.org>
- <87pncgu2ba.fsf@kamboji.qca.qualcomm.com>
- <36ee3bed6f7cd200df0755209ec6bbc2@codeaurora.org>
- <87lfn4u0lq.fsf@kamboji.qca.qualcomm.com>
-Message-ID: <5b90a59dad4f40333e185397b295219d@codeaurora.org>
-X-Sender: wgong@codeaurora.org
-User-Agent: Roundcube Webmail/1.3.9
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2020-04-09 23:42, Kalle Valo wrote:
-> Wen Gong <wgong@codeaurora.org> writes:
-> 
->> On 2020-04-09 23:05, Kalle Valo wrote:
->> 
->>>> +		ep->tx_credits -= credits;
->>>> +		ath10k_dbg(ar, ATH10K_DBG_HTC,
->>>> +			   "htc ep %d consumed %d credits (total %d)\n",
->>> 
->>> "htc ep %d consumed %d credits total %d\n"
->>> 
->>> [...]
->>> 
->>>> +	ath10k_dbg(ar, ATH10K_DBG_HTC, "bundle skb: len:%d\n",
->>>> bundle_skb->len);
->>> 
->>> "htc bundle skb len %d\n"
->>> 
->>> In other words, start with "htc" and don't use colons or parenthesis.
->>> This applies to most of debug messages in this patch.
->> 
->> I will change the log and other log and sent v10.
->> but "ath10k: disable TX complete indication of htt for sdio" and
->> "ath10k: change ATH10K_SDIO_BUS_REQUEST_MAX_NUM from 64 to 1024" has
->> appied to ath-next,
->> so I only need to send the left 2 patches:
->> "ath10k: add htt TX bundle for sdio" and "ath10k: enable alt data of
->> TX path for sdio", right?
-> 
-> Correct, I already applied patches 1 and 2. But before you resend
-> patches 3-4 did you see my question about creating a new thread, is it
-> really necessary?
-already replied.
+With MSI interrupts, IRQs must not be enabled from within the IRQ handler,
+because that can lead to lost events.
+Defer IRQ processing to a tasklet, which is also responsible for enabling
+IRQs (to avoid race conditions against the handler)
+
+Co-developed-by: Soul Huang <Soul.Huang@mediatek.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+---
+ drivers/net/wireless/mediatek/mt76/mmio.c     |  3 +-
+ .../net/wireless/mediatek/mt76/mt7615/init.c  |  2 ++
+ .../net/wireless/mediatek/mt76/mt7615/mmio.c  | 30 +++++++++++++------
+ .../wireless/mediatek/mt76/mt7615/mt7615.h    |  9 +++---
+ 4 files changed, 29 insertions(+), 15 deletions(-)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/mmio.c b/drivers/net/wireless/mediatek/mt76/mmio.c
+index 7ead6620bb8b..26353b6bce97 100644
+--- a/drivers/net/wireless/mediatek/mt76/mmio.c
++++ b/drivers/net/wireless/mediatek/mt76/mmio.c
+@@ -73,7 +73,8 @@ void mt76_set_irq_mask(struct mt76_dev *dev, u32 addr,
+ 	spin_lock_irqsave(&dev->mmio.irq_lock, flags);
+ 	dev->mmio.irqmask &= ~clear;
+ 	dev->mmio.irqmask |= set;
+-	mt76_mmio_wr(dev, addr, dev->mmio.irqmask);
++	if (addr)
++		mt76_mmio_wr(dev, addr, dev->mmio.irqmask);
+ 	spin_unlock_irqrestore(&dev->mmio.irq_lock, flags);
+ }
+ EXPORT_SYMBOL_GPL(mt76_set_irq_mask);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/init.c b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
+index 96b7c6284833..cb626a2d9197 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
+@@ -561,5 +561,7 @@ void mt7615_unregister_device(struct mt7615_dev *dev)
+ 	spin_unlock_bh(&dev->token_lock);
+ 	idr_destroy(&dev->token);
+ 
++	tasklet_disable(&dev->irq_tasklet);
++
+ 	mt76_free_device(&dev->mt76);
+ }
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mmio.c b/drivers/net/wireless/mediatek/mt76/mt7615/mmio.c
+index 3849bb6b49d0..58506dc423ab 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mmio.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mmio.c
+@@ -80,30 +80,41 @@ mt7615_rx_poll_complete(struct mt76_dev *mdev, enum mt76_rxq_id q)
+ static irqreturn_t mt7615_irq_handler(int irq, void *dev_instance)
+ {
+ 	struct mt7615_dev *dev = dev_instance;
+-	u32 intr;
+-
+-	intr = mt76_rr(dev, MT_INT_SOURCE_CSR);
+-	mt76_wr(dev, MT_INT_SOURCE_CSR, intr);
+ 
+ 	if (!test_bit(MT76_STATE_INITIALIZED, &dev->mphy.state))
+ 		return IRQ_NONE;
+ 
+-	trace_dev_irq(&dev->mt76, intr, dev->mt76.mmio.irqmask);
++	mt76_wr(dev, MT_INT_MASK_CSR, 0);
++	tasklet_schedule(&dev->irq_tasklet);
+ 
++	return IRQ_HANDLED;
++}
++
++static void mt7615_irq_tasklet(unsigned long data)
++{
++	struct mt7615_dev *dev = (struct mt7615_dev *)data;
++	u32 intr, mask = 0;
++
++	mt76_wr(dev, MT_INT_MASK_CSR, 0);
++
++	intr = mt76_rr(dev, MT_INT_SOURCE_CSR);
++	mt76_wr(dev, MT_INT_SOURCE_CSR, intr);
++
++	trace_dev_irq(&dev->mt76, intr, dev->mt76.mmio.irqmask);
+ 	intr &= dev->mt76.mmio.irqmask;
+ 
+ 	if (intr & MT_INT_TX_DONE_ALL) {
+-		mt7615_irq_disable(dev, MT_INT_TX_DONE_ALL);
++		mask |= MT_INT_TX_DONE_ALL;
+ 		napi_schedule(&dev->mt76.tx_napi);
+ 	}
+ 
+ 	if (intr & MT_INT_RX_DONE(0)) {
+-		mt7615_irq_disable(dev, MT_INT_RX_DONE(0));
++		mask |= MT_INT_RX_DONE(0);
+ 		napi_schedule(&dev->mt76.napi[0]);
+ 	}
+ 
+ 	if (intr & MT_INT_RX_DONE(1)) {
+-		mt7615_irq_disable(dev, MT_INT_RX_DONE(1));
++		mask |= MT_INT_RX_DONE(1);
+ 		napi_schedule(&dev->mt76.napi[1]);
+ 	}
+ 
+@@ -117,7 +128,7 @@ static irqreturn_t mt7615_irq_handler(int irq, void *dev_instance)
+ 		}
+ 	}
+ 
+-	return IRQ_HANDLED;
++	mt76_set_irq_mask(&dev->mt76, MT_INT_MASK_CSR, mask, 0);
+ }
+ 
+ int mt7615_mmio_probe(struct device *pdev, void __iomem *mem_base,
+@@ -154,6 +165,7 @@ int mt7615_mmio_probe(struct device *pdev, void __iomem *mem_base,
+ 
+ 	dev = container_of(mdev, struct mt7615_dev, mt76);
+ 	mt76_mmio_init(&dev->mt76, mem_base);
++	tasklet_init(&dev->irq_tasklet, mt7615_irq_tasklet, (unsigned long)dev);
+ 
+ 	dev->reg_map = map;
+ 	dev->ops = ops;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
+index 4f0d29e5e595..10a98d38f77e 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
+@@ -229,6 +229,8 @@ struct mt7615_dev {
+ 		struct mt76_phy mphy;
+ 	};
+ 
++	struct tasklet_struct irq_tasklet;
++
+ 	struct mt7615_phy phy;
+ 	u32 vif_mask;
+ 	u32 omac_mask;
+@@ -404,12 +406,9 @@ static inline bool is_mt7663(struct mt76_dev *dev)
+ 
+ static inline void mt7615_irq_enable(struct mt7615_dev *dev, u32 mask)
+ {
+-	mt76_set_irq_mask(&dev->mt76, MT_INT_MASK_CSR, 0, mask);
+-}
++	mt76_set_irq_mask(&dev->mt76, 0, 0, mask);
+ 
+-static inline void mt7615_irq_disable(struct mt7615_dev *dev, u32 mask)
+-{
+-	mt76_set_irq_mask(&dev->mt76, MT_INT_MASK_CSR, mask, 0);
++	tasklet_schedule(&dev->irq_tasklet);
+ }
+ 
+ static inline bool mt7615_firmware_offload(struct mt7615_dev *dev)
+-- 
+2.24.0
+
