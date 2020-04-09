@@ -2,135 +2,74 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2076F1A3307
-	for <lists+linux-wireless@lfdr.de>; Thu,  9 Apr 2020 13:15:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 457561A33CC
+	for <lists+linux-wireless@lfdr.de>; Thu,  9 Apr 2020 14:10:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726701AbgDILPQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 9 Apr 2020 07:15:16 -0400
-Received: from mail.kernel.org ([198.145.29.99]:40904 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725972AbgDILPQ (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 9 Apr 2020 07:15:16 -0400
-Received: from lore-desk-wlan.redhat.com (unknown [151.48.151.50])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A0F7D20757;
-        Thu,  9 Apr 2020 11:15:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1586430916;
-        bh=yJAHgHVCZqNaIvQIJJLQMXI01yAcRuvJUBaigYscLr4=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=2n1J7a/kyZOJIZoPo8sOgnOTcwL0Dm6SFTkYzrCvAadDpARYCgCUbkYcR4h4kbaEZ
-         IXhtiFVb9l3iLuL/1gtOrXBk6jXalLOlfAPfYNFhGaouabTCzT2hCQ42otXLymwQap
-         4R+6cy9JUSuzNWNsgHEAD2SXx+4UDyVU3c4Yg+OA=
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
-        sean.wang@mediatek.com, ryder.lee@mediatek.com,
-        soul.huang@mediatek.com, linux-mediatek@lists.infradead.org
-Subject: [PATCH v2 2/2] mt76: mt7663: fix DMA unmap length
-Date:   Thu,  9 Apr 2020 13:14:57 +0200
-Message-Id: <ed96cf2707abdee60890f90414ffef59770d324b.1586430566.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.25.2
-In-Reply-To: <cover.1586430566.git.lorenzo@kernel.org>
-References: <cover.1586430566.git.lorenzo@kernel.org>
+        id S1726477AbgDIMKa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 9 Apr 2020 08:10:30 -0400
+Received: from mail-wm1-f65.google.com ([209.85.128.65]:55885 "EHLO
+        mail-wm1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725971AbgDIMKa (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 9 Apr 2020 08:10:30 -0400
+Received: by mail-wm1-f65.google.com with SMTP id e26so3635285wmk.5
+        for <linux-wireless@vger.kernel.org>; Thu, 09 Apr 2020 05:10:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=qqXhwO7BswN1RQtad6JgvWy+YXto6m5fjOMwAyjsWJc=;
+        b=NAr7u9VsgxgDVBjFZl4wz3LnMwxlKhS4d3GVrb1ba0pdxDBMQlC4JX8xMVGp04ziRX
+         cCjVElN4UW2bC/jzi9EeJJ32YCXRCfizk3h3z5g79xo8KLxr962evcvQNgFpBaNJvOD8
+         9/tEPuUyawb8SgW94UXdwKgIhhviLbaE2KoMFQzf9QbZYdas77pCIqVkgu6Tfvxl9l4p
+         IYU4hQv6jY+cv03NZE4a9Ho4hDN81akbBlPf6g/mlrNyTQewfrv2lEactUmt8/JZslu6
+         Jn3c9RlPvjx7CAUmq2dzCOLRJHmHm25t2K0Yx9jy0F+53UwN2OlP/Q/UhscpztzCv2Vm
+         T4cA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=qqXhwO7BswN1RQtad6JgvWy+YXto6m5fjOMwAyjsWJc=;
+        b=uHhECClewAaZpVOxVEXhuG0WG9bb8GumVbUcTIfHwDC/a4jpF4/Jb44tXkHDdSyhpC
+         CxE2lQ+GxrLsecFshyxZViCqJo4ZOgacE9iHZGC3VzidlLGBXDRdSmAZnELM+HUjI0Vs
+         wkTbcCbnbzTPLp2Jse9C86s3wP8iCN4N7BxXF+YjoVfkueWrHRVX5eLL01kACyCKUO1+
+         QiwXwXxeN0OWI/fiiG/Szuf2WcSP90bCNQ1dKrLXkEtsWuw13wUKltzIE60laZqzJWGG
+         MwWERYR0ztp5Sd00gwBgoAZ8+ue6idFWx6CeCAU2zmF8GvFovEi5VDYwYlTbrLEXagFu
+         8p+g==
+X-Gm-Message-State: AGi0PubddSSmjXs3HCAcsUrHLn1NLwuWAFaV1hhF+jPdnnpmgueoPdKX
+        KKQ6mzVLRhdDTyGYp0nanuQGH46pRILa/gbVMq8=
+X-Google-Smtp-Source: APiQypLFOOgX320qGX27hOKUtEtU3SkjdNUT6EhY/k+/9MxBkmvXgKgMK0EbGaI/kMCuLRnqdplrdes9l2RLCS3TYio=
+X-Received: by 2002:a7b:cf30:: with SMTP id m16mr3259474wmg.66.1586434227516;
+ Thu, 09 Apr 2020 05:10:27 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Received: by 2002:adf:a341:0:0:0:0:0 with HTTP; Thu, 9 Apr 2020 05:10:27 -0700 (PDT)
+Reply-To: philipmicheal809@gmail.com
+From:   philipmicheal <brianjesse401@gmail.com>
+Date:   Thu, 9 Apr 2020 13:10:27 +0100
+Message-ID: <CAJRpr_=+sEZ-xfecAj1ocvDNU45ZMzYwhZ72dkaSYf+f7cf9Mg@mail.gmail.com>
+Subject: Hl
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fix DMA unmap length for mt7663e devices in mt7615_txp_skb_unmap_hw
-
-Fixes: f40ac0f3d3c0 ("mt76: mt7615: introduce mt7663e support")
-Co-developed-by: Sean Wang <sean.wang@mediatek.com>
-Signed-off-by: Sean Wang <sean.wang@mediatek.com>
-Co-developed-by: Soul Huang <soul.huang@mediatek.com>
-Signed-off-by: Soul Huang <soul.huang@mediatek.com>
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- .../net/wireless/mediatek/mt76/mt7615/mac.c   | 20 +++++++++++++------
- .../net/wireless/mediatek/mt76/mt7615/mac.h   |  2 ++
- 2 files changed, 16 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-index b7a96d514656..c38bc395c5a3 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-@@ -686,15 +686,18 @@ mt7615_txp_skb_unmap_fw(struct mt76_dev *dev, struct mt7615_fw_txp *txp)
- static void
- mt7615_txp_skb_unmap_hw(struct mt76_dev *dev, struct mt7615_hw_txp *txp)
- {
-+	u32 last_mask;
- 	int i;
- 
-+	last_mask = is_mt7663(dev) ? MT_TXD_LEN_LAST : MT_TXD_LEN_MSDU_LAST;
-+
- 	for (i = 0; i < ARRAY_SIZE(txp->ptr); i++) {
- 		struct mt7615_txp_ptr *ptr = &txp->ptr[i];
- 		bool last;
- 		u16 len;
- 
- 		len = le16_to_cpu(ptr->len0);
--		last = len & MT_TXD_LEN_MSDU_LAST;
-+		last = len & last_mask;
- 		len &= MT_TXD_LEN_MASK;
- 		dma_unmap_single(dev->dev, le32_to_cpu(ptr->buf0), len,
- 				 DMA_TO_DEVICE);
-@@ -702,7 +705,7 @@ mt7615_txp_skb_unmap_hw(struct mt76_dev *dev, struct mt7615_hw_txp *txp)
- 			break;
- 
- 		len = le16_to_cpu(ptr->len1);
--		last = len & MT_TXD_LEN_MSDU_LAST;
-+		last = len & last_mask;
- 		len &= MT_TXD_LEN_MASK;
- 		dma_unmap_single(dev->dev, le32_to_cpu(ptr->buf1), len,
- 				 DMA_TO_DEVICE);
-@@ -1105,21 +1108,26 @@ mt7615_write_hw_txp(struct mt7615_dev *dev, struct mt76_tx_info *tx_info,
- {
- 	struct mt7615_hw_txp *txp = txp_ptr;
- 	struct mt7615_txp_ptr *ptr = &txp->ptr[0];
--	int nbuf = tx_info->nbuf - 1;
--	int i;
-+	int i, nbuf = tx_info->nbuf - 1;
-+	u32 last_mask;
- 
- 	tx_info->buf[0].len = MT_TXD_SIZE + sizeof(*txp);
- 	tx_info->nbuf = 1;
- 
- 	txp->msdu_id[0] = cpu_to_le16(id | MT_MSDU_ID_VALID);
- 
-+	if (is_mt7663(&dev->mt76))
-+		last_mask = MT_TXD_LEN_LAST;
-+	else
-+		last_mask = MT_TXD_LEN_AMSDU_LAST |
-+			    MT_TXD_LEN_MSDU_LAST;
-+
- 	for (i = 0; i < nbuf; i++) {
- 		u16 len = tx_info->buf[i + 1].len & MT_TXD_LEN_MASK;
- 		u32 addr = tx_info->buf[i + 1].addr;
- 
- 		if (i == nbuf - 1)
--			len |= MT_TXD_LEN_MSDU_LAST |
--			       MT_TXD_LEN_AMSDU_LAST;
-+			len |= last_mask;
- 
- 		if (i & 1) {
- 			ptr->buf1 = cpu_to_le32(addr);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mac.h b/drivers/net/wireless/mediatek/mt76/mt7615/mac.h
-index aab6be5f5465..eafb3b91e35a 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.h
-@@ -256,6 +256,8 @@ enum tx_phy_bandwidth {
- #define MT_TXD_LEN_MASK                 GENMASK(11, 0)
- #define MT_TXD_LEN_MSDU_LAST		BIT(14)
- #define MT_TXD_LEN_AMSDU_LAST		BIT(15)
-+/* mt7663 */
-+#define MT_TXD_LEN_LAST			BIT(15)
- 
- struct mt7615_txp_ptr {
- 	__le32 buf0;
--- 
-2.25.2
-
+Hallo, bitte seien Sie informiert, dass diese E-Mail, die an Ihre
+Mailbox kam, nicht ist
+ein Fehler, der jedoch speziell an Sie gerichtet wurde. UND
+Ich habe einen Vorschlag von ($ 7.500.000.00) von meinem verstorbenen
+Kunden Engineer Carlos hinterlassen
+der bei Ihnen den gleichen Namen tr=C3=A4gt, der hier in Lom=C3=A9 gearbeit=
+et
+und gelebt hat
+Gehen. Mein verstorbener Kunde und meine Familie waren in einen
+Autounfall verwickelt
+Ihr Leben. Ich kontaktiere Sie als n=C3=A4chsten Angeh=C3=B6rigen des
+Verstorbenen, also Sie
+k=C3=B6nnte die Mittel auf Anspr=C3=BCche erhalten. Auf Ihre schnelle Antwo=
+rt werde ich
+Informieren Sie mich =C3=BCber die Art und Weise der Ausf=C3=BChrung dieses
+Bundes. Kontaktieren Sie mich diesbez=C3=BCglich
+E-Mails (philipmicheal809@gmail.com)
