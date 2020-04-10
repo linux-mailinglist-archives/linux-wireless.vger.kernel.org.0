@@ -2,141 +2,136 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BAF8C1A48C8
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 Apr 2020 19:05:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5FC191A4C3B
+	for <lists+linux-wireless@lfdr.de>; Sat, 11 Apr 2020 00:51:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726669AbgDJRFg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 10 Apr 2020 13:05:36 -0400
-Received: from mail27.static.mailgun.info ([104.130.122.27]:47827 "EHLO
-        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726142AbgDJRFg (ORCPT
+        id S1726678AbgDJWvo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 10 Apr 2020 18:51:44 -0400
+Received: from mailgw01.mediatek.com ([210.61.82.183]:26256 "EHLO
+        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726594AbgDJWvo (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 10 Apr 2020 13:05:36 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1586538335; h=References: In-Reply-To: Message-Id: Date:
- Subject: Cc: To: From: Sender;
- bh=TI264FmlRMIEDjqWeS2Hwvh7QW6HEg4XFbSy1GYz9fQ=; b=ttndIKf/baUx+ZaGKEbs7vHMXHTWStHgk+Bbpy/X6tCyVC/aRfMY4JvXVEmf/8xUYtgmxmMM
- 77dIGOCYduzg+nJQKUXNo2Nv7/wJ6d+FsYw8gcI6i7eJY9EQiQwjGoRN73PLHn1cnNnXCw0T
- 7YtkDt2S9jH6aPUW0jtPFz7lXSg=
-X-Mailgun-Sending-Ip: 104.130.122.27
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e90a757.7f220de0aab0-smtp-out-n05;
- Fri, 10 Apr 2020 17:05:27 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 00836C432C2; Fri, 10 Apr 2020 17:05:26 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from che-swdbs-01.qca.qualcomm.com (blr-c-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.19.19])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: mkenna)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 9B542C433CB;
-        Fri, 10 Apr 2020 17:05:24 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 9B542C433CB
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=mkenna@codeaurora.org
-From:   Maharaja Kennadyrajan <mkenna@codeaurora.org>
-To:     ath11k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org,
-        Maharaja Kennadyrajan <mkenna@codeaurora.org>
-Subject: [PATCH] ath11k: Fix rx_filter flags setting for per peer rx_stats
-Date:   Fri, 10 Apr 2020 22:36:45 +0530
-Message-Id: <1586538405-16226-3-git-send-email-mkenna@codeaurora.org>
-X-Mailer: git-send-email 1.7.9.5
-In-Reply-To: <1586538405-16226-1-git-send-email-mkenna@codeaurora.org>
-References: <1586538405-16226-1-git-send-email-mkenna@codeaurora.org>
+        Fri, 10 Apr 2020 18:51:44 -0400
+X-UUID: 0b832ee3f2834a7ebc59c0a52d3f74dc-20200411
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+        h=Content-Transfer-Encoding:Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=E6T8CvMlDePTd5m09V8Ph5AJ/o4Cuco49hQVLbeEteI=;
+        b=X65FebKXikGbO/6t21XKiDx6fWiMN2ykCHKqTg6FbOOKEGBpSR4Dbr0jGivhkb2zs8S6n1L363wU3lI6DddAush4ghxfs89bNqiThWGXz1MtIG4lA0BLeP94k71wtvNKS1e02ZU2kqmv7Hsqp0+0MeZoi6SVKtsL3WoAAtTQTng=;
+X-UUID: 0b832ee3f2834a7ebc59c0a52d3f74dc-20200411
+Received: from mtkexhb02.mediatek.inc [(172.21.101.103)] by mailgw01.mediatek.com
+        (envelope-from <ryder.lee@mediatek.com>)
+        (Cellopoint E-mail Firewall v4.1.10 Build 0809 with TLS)
+        with ESMTP id 2101390690; Sat, 11 Apr 2020 06:51:39 +0800
+Received: from MTKCAS06.mediatek.inc (172.21.101.30) by
+ mtkmbs06n2.mediatek.inc (172.21.101.130) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Sat, 11 Apr 2020 06:51:37 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by MTKCAS06.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Sat, 11 Apr 2020 06:51:32 +0800
+From:   Ryder Lee <ryder.lee@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+CC:     Shayne Chen <shayne.chen@mediatek.com>,
+        YF Luo <yf.luo@mediatek.com>,
+        Yiwei Chung <yiwei.chung@mediatek.com>,
+        Chih-Min Chen <chih-min.chen@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        Sean Wang <sean.wang@mediatek.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>,
+        Ryder Lee <ryder.lee@mediatek.com>
+Subject: [PATCH v1 00/16] Add MediaTek IEEE 802.11ax devices - MT7915E
+Date:   Sat, 11 Apr 2020 06:51:15 +0800
+Message-ID: <cover.1586558901.git.ryder.lee@mediatek.com>
+X-Mailer: git-send-email 2.18.0
+MIME-Version: 1.0
+Content-Type: text/plain
+X-TM-SNTS-SMTP: DC6111F31614940DC01EC65F9A05269E44939643ADD1D0DF96176F1BA086E2D62000:8
+X-MTK:  N
+Content-Transfer-Encoding: base64
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Rx_filter flags are set with default filter flags during
-wifi up/down sequence even though the 'ext_rx_stats' debugfs
-is enabled as 1. So, that we are not getting proper per peer
-rx_stats.
-Hence, fixing this by setting the missing rx_filter when
-ext_rx_stats is already set/enabled.
+TVQ3OTE1RSBpcyB0aGUgbGF0ZXN0IGdlbmVyYXRpb24gSUVFRSA4MDIuMTFheCBOSUMgaW4gTWVk
+aWFUZWssIHdoaWNoDQpjdXJyZW50bHkgc3VwcG9ydHMgQVAsIFN0YXRpb24gYW5kIE1lc2ggbW9k
+ZS4NCg0KRXZlbiB0aG91Z2ggc29tZSBjb2RlIG9mIE1UNzkxNVsxXSBhcmUgc2ltaWxhciB0byBN
+VDc2MTUuIE5ldyBnZW5lcmF0aW9uIGhhczogDQotIEh1Z2UgYW1vdW50cyBvZiBIRSBkZWRpY2F0
+ZWQgcGFydHMuDQotIE5ldyBkZXNpZ25zIG9mIFBIWS9maXJtd2FyZS9ETUEgc2NoZW1lLg0KLSBN
+b3N0IGZpZWxkcyBvZiB0eGQvdHhzL3J4ZC9yeHYgYXJlIHJlYXJyYW5nZWQgb3IgZGVwcmVjYXRl
+ZC4NCi0gU3VwcG9ydCBtdWNoIG1vcmUgb2ZmbG9hZGluZyBzdHVmZi4NCg0KTW9zdCBpbXBvcnRh
+bnRseSwgZm9yIHRoZSBzYWtlIG9mIGNvbnZlbmllbmNlIHRvIGdldCBmYW1pbHkgZGV2aWNlcyBz
+dXBwb3J0ZWQNCmluIHRoZSBmdXR1cmUsIGl0IHdhcyBjb25jbHVkZWQgdG8gYmUgc2ltcGxlciB0
+byBoYXZlIGEgY2xlYW4gc3RhcnQgZm9yIHRoaXMNCmdlbmVyYXRpb24uIFRoaXMgbWFrZXMgbWFp
+bnRlbmFuY2UgZWFzaWVyIGFuZCBhdm9pZHMgbWFqb3IgY2hhbmdlcyBpbiBNVDc2MTUsDQp3aGlj
+aCBjdXJyZW50bHkgc2hhcmVzIHRoZSBjb2RlcyB3aXRoIGxvdyBwb3dlciBjYXBhYmxlIGRldmlj
+ZSBNVDc2NjMuIEl0IHdpbGwNCmluY3JlYXNlIHRoZSByaXNrIG9mIHJlZ3Jlc3Npb25zIGluIGV4
+aXN0aW5nIGZsb3cuDQoNCk1UNzkxNSBzdXBwb3J0cyBvbmx5IGJhc2ljIEhFIGZvciB0aGUgbW9t
+ZW50LCB3aGVyZWFzIG90aGVyIDgwMi4xMWF4IHNwZWNpZmljDQpmZWF0dXJlcywgc3VjaCBhcyBC
+U1MgY29sb3IsIFRXVCwgU1IsIERDTSBhbmQgT0ZETUEgYXJlIHdvcmsgaW4gcHJvZ3Jlc3MsDQph
+bmQgd2lsbCBiZSBncmFkdWFsbHkgYWRkZWQgaW4gdXBjb21pbmcgZGF5cy4NCg0KVGhlIGZpcm13
+YXJlcyBhcmUgYXZhaWxhYmxlIG5vdyBmcm9tIGh0dHBzOi8vZ2l0aHViLmNvbS9yeWRlcmxlZTEx
+MTAvd2lyZWxlc3MtZncgLA0KYW5kIHdpbGwgYmUgc3VibWl0dGVkIHNvb24uIEF0IGxhc3QsIHRo
+ZSBkZXZlbG9wZXJzIGFyZSBhbGwgbGlzdGVkIGluIHRoZSBzZXJpZXMuDQoNClsxXSBodHRwczov
+L3d3dy5tZWRpYXRlay5jb20vYmxvZy9tZWRpYXRlay1tdDc5MTUtd2ktZmktNi13YXZlLTEtY2hp
+cHNldC1idWlsZHMtaW4tYS1yYW5nZS1vZi1pbmR1c3RyeS1maXJzdHMgDQoNClRoYW5rcywNClJ5
+ZGVyDQoNCkNoYW5nZXMgc2luY2UgdjEgLQ0KLSBsaXN0IGEgbWlzc2luZyBkZXZlbG9wZXIuDQot
+IGRyb3AgdW51c2VkIGNvZGVzIGluIHRoZSBod190eF9hbXNkdSBwYXRjaC4NCi0gYWRkIGEgbWlz
+c2luZyBiaXR3aWR0aCBjaGFuZ2Ugb2Ygd2NpZC4NCi0gYWRkIG1vcmUgVE9ETyBpdGVtcyBpbiB0
+aGUgZHJpdmVyLg0KDQpSeWRlciBMZWUgKDE2KToNCiAgbXQ3NjogYXZvaWQgcnggcmVvcmRlciBi
+dWZmZXIgb3ZlcmZsb3cNCiAgbXQ3NjogYWRkIHN1cHBvcnQgZm9yIEhFIFJYIHJhdGUgcmVwb3J0
+aW5nDQogIG10NzY6IGFkZCBSeCBzdGF0cyBzdXBwb3J0IGZvciByYWRpb3RhcA0KICBtdDc2OiBh
+ZGp1c3Qgd2NpZCBzaXplIHRvIHN1cHBvcnQgbmV3IDgwMi4xMWF4IGdlbmVyYXRpb24NCiAgbXQ3
+NjogYWRkIEhFIHBoeSBtb2RlcyBhbmQgaGFyZHdhcmUgcXVldWUNCiAgbXQ3NjogYWRkIG1hYzgw
+MjExIGRyaXZlciBmb3IgTVQ3OTE1IFBDSWUtYmFzZWQgY2hpcHNldHMNCiAgbXQ3NjogbXQ3OTE1
+OiBpbXBsZW1lbnQgSEUgcGVyLXJhdGUgdHggcG93ZXIgc3VwcG9ydA0KICBtdDc2OiBtdDc5MTU6
+IGFkZCBvZmZsb2FkaW5nIFR4IEFNU0RVIHN1cHBvcnQNCiAgbXQ3NjogbXQ3OTE1OiByZWdpc3Rl
+ciBIRSBjYXBhYmlsaXRpZXMgZm9yIGVhY2ggaW50ZXJmYWNlDQogIG10NzY6IG10NzkxNTogYWRk
+IEhFIGJzc19jb25mIHN1cHBvcnQgZm9yIGludGVyZmFjZXMNCiAgbXQ3NjogbXQ3OTE1OiBhZGQg
+SEUgY2FwYWJpbGl0aWVzIHN1cHBvcnQgZm9yIHBlZXJzDQogIG10NzY6IG10NzkxNTogYWRkIFJ4
+IHJhZGlvdGFwIGhlYWRlciBzdXBwb3J0DQogIG10NzY6IG10NzkxNTogYWRkIC5zdGFfYWRkX2Rl
+YnVnZnMgc3VwcG9ydA0KICBtdDc2OiBtdDc5MTU6IGFkZCAuc3RhX3N0YXRpc3RpY3Mgc3VwcG9y
+dA0KICBtdDc2OiBtdDc5MTU6IHNldCBwZWVyIFR4IGZpeGVkIHJhdGUgdGhyb3VnaCBkZWJ1Z2Zz
+DQogIG10NzY6IG10NzkxNTogZW5hYmxlIGZpcm13YXJlIG1vZHVsZSBkZWJ1ZyBzdXBwb3J0DQoN
+CiBkcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L0tjb25maWcgICAgfCAgICAxICsN
+CiBkcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L01ha2VmaWxlICAgfCAgICAxICsN
+CiBkcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L2FnZy1yeC5jICAgfCAgIDEyICst
+DQogZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tYWM4MDIxMS5jIHwgICAxMCAr
+LQ0KIGRyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3Ni5oICAgICB8ICAgNDUg
+Ky0NCiAuLi4vbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1L0tjb25maWcgfCAgIDEz
+ICsNCiAuLi4vd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvTWFrZWZpbGUgICAgfCAgICA2
+ICsNCiAuLi4vd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvZGVidWdmcy5jICAgfCAgNDE1
+ICsrKw0KIC4uLi9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvZG1hLmMgICB8ICAy
+ODMgKysNCiAuLi4vd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvZWVwcm9tLmMgICAgfCAg
+MjM2ICsrDQogLi4uL3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1L2VlcHJvbS5oICAgIHwg
+IDEyNSArDQogLi4uL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzkxNS9pbml0LmMgIHwg
+IDU5MiArKysrDQogLi4uL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzkxNS9tYWMuYyAg
+IHwgMTQ2MCArKysrKysrKysNCiAuLi4vbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1
+L21hYy5oICAgfCAgMzQ2ICsrDQogLi4uL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210Nzkx
+NS9tYWluLmMgIHwgIDc4MCArKysrKw0KIC4uLi9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9t
+dDc5MTUvbWN1LmMgICB8IDI3OTggKysrKysrKysrKysrKysrKysNCiAuLi4vbmV0L3dpcmVsZXNz
+L21lZGlhdGVrL210NzYvbXQ3OTE1L21jdS5oICAgfCAxMDAzICsrKysrKw0KIC4uLi93aXJlbGVz
+cy9tZWRpYXRlay9tdDc2L210NzkxNS9tdDc5MTUuaCAgICB8ICA0NTkgKysrDQogLi4uL25ldC93
+aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzkxNS9wY2kuYyAgIHwgIDIxMyArKw0KIC4uLi9uZXQv
+d2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvcmVncy5oICB8ICAzNDQgKysNCiAyMCBmaWxl
+cyBjaGFuZ2VkLCA5MTIyIGluc2VydGlvbnMoKyksIDIwIGRlbGV0aW9ucygtKQ0KIGNyZWF0ZSBt
+b2RlIDEwMDY0NCBkcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzkxNS9LY29u
+ZmlnDQogY3JlYXRlIG1vZGUgMTAwNjQ0IGRyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210
+NzYvbXQ3OTE1L01ha2VmaWxlDQogY3JlYXRlIG1vZGUgMTAwNjQ0IGRyaXZlcnMvbmV0L3dpcmVs
+ZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1L2RlYnVnZnMuYw0KIGNyZWF0ZSBtb2RlIDEwMDY0NCBk
+cml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzkxNS9kbWEuYw0KIGNyZWF0ZSBt
+b2RlIDEwMDY0NCBkcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzkxNS9lZXBy
+b20uYw0KIGNyZWF0ZSBtb2RlIDEwMDY0NCBkcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9t
+dDc2L210NzkxNS9lZXByb20uaA0KIGNyZWF0ZSBtb2RlIDEwMDY0NCBkcml2ZXJzL25ldC93aXJl
+bGVzcy9tZWRpYXRlay9tdDc2L210NzkxNS9pbml0LmMNCiBjcmVhdGUgbW9kZSAxMDA2NDQgZHJp
+dmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvbWFjLmMNCiBjcmVhdGUgbW9k
+ZSAxMDA2NDQgZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvbWFjLmgN
+CiBjcmVhdGUgbW9kZSAxMDA2NDQgZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9t
+dDc5MTUvbWFpbi5jDQogY3JlYXRlIG1vZGUgMTAwNjQ0IGRyaXZlcnMvbmV0L3dpcmVsZXNzL21l
+ZGlhdGVrL210NzYvbXQ3OTE1L21jdS5jDQogY3JlYXRlIG1vZGUgMTAwNjQ0IGRyaXZlcnMvbmV0
+L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1L21jdS5oDQogY3JlYXRlIG1vZGUgMTAwNjQ0
+IGRyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1L210NzkxNS5oDQogY3Jl
+YXRlIG1vZGUgMTAwNjQ0IGRyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1
+L3BjaS5jDQogY3JlYXRlIG1vZGUgMTAwNjQ0IGRyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVr
+L210NzYvbXQ3OTE1L3JlZ3MuaA0KDQotLSANCjIuMTguMA0K
 
-Signed-off-by: Maharaja Kennadyrajan <mkenna@codeaurora.org>
----
- drivers/net/wireless/ath/ath11k/core.h  |  1 +
- drivers/net/wireless/ath/ath11k/debug.c |  2 ++
- drivers/net/wireless/ath/ath11k/debug.h | 10 ++++++++++
- drivers/net/wireless/ath/ath11k/mac.c   |  4 +++-
- 4 files changed, 16 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/ath/ath11k/core.h b/drivers/net/wireless/ath/ath11k/core.h
-index b4c3e041..a8ef95f 100644
---- a/drivers/net/wireless/ath/ath11k/core.h
-+++ b/drivers/net/wireless/ath/ath11k/core.h
-@@ -392,6 +392,7 @@ struct ath11k_debug {
- 	u32 pktlog_mode;
- 	u32 pktlog_peer_valid;
- 	u8 pktlog_peer_addr[ETH_ALEN];
-+	u32 rx_filter;
- };
- 
- struct ath11k_per_peer_tx_stats {
-diff --git a/drivers/net/wireless/ath/ath11k/debug.c b/drivers/net/wireless/ath/ath11k/debug.c
-index 8d48517..e479504 100644
---- a/drivers/net/wireless/ath/ath11k/debug.c
-+++ b/drivers/net/wireless/ath/ath11k/debug.c
-@@ -698,6 +698,8 @@ static ssize_t ath11k_write_extd_rx_stats(struct file *file,
- 		tlv_filter = ath11k_mac_mon_status_filter_default;
- 	}
- 
-+	ar->debug.rx_filter = tlv_filter.rx_filter;
-+
- 	ring_id = ar->dp.rx_mon_status_refill_ring.refill_buf_ring.ring_id;
- 	ret = ath11k_dp_tx_htt_rx_filter_setup(ar->ab, ring_id, ar->dp.mac_id,
- 					       HAL_RXDMA_MONITOR_STATUS,
-diff --git a/drivers/net/wireless/ath/ath11k/debug.h b/drivers/net/wireless/ath/ath11k/debug.h
-index 4a3ff82..45454fc 100644
---- a/drivers/net/wireless/ath/ath11k/debug.h
-+++ b/drivers/net/wireless/ath/ath11k/debug.h
-@@ -188,6 +188,11 @@ static inline int ath11k_debug_is_extd_rx_stats_enabled(struct ath11k *ar)
- 	return ar->debug.extd_rx_stats;
- }
- 
-+static inline int ath11k_debug_rx_filter(struct ath11k *ar)
-+{
-+	return ar->debug.rx_filter;
-+}
-+
- void ath11k_sta_add_debugfs(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 			    struct ieee80211_sta *sta, struct dentry *dir);
- void
-@@ -269,6 +274,11 @@ static inline bool ath11k_debug_is_pktlog_peer_valid(struct ath11k *ar, u8 *addr
- 	return false;
- }
- 
-+static inline int ath11k_debug_rx_filter(struct ath11k *ar)
-+{
-+	return 0;
-+}
-+
- static inline void
- ath11k_accumulate_per_peer_tx_stats(struct ath11k_sta *arsta,
- 				    struct ath11k_per_peer_tx_stats *peer_stats,
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index 9f8bc19..3665e72 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -3877,8 +3877,10 @@ static int ath11k_mac_config_mon_status_default(struct ath11k *ar, bool enable)
- 	struct htt_rx_ring_tlv_filter tlv_filter = {0};
- 	u32 ring_id;
- 
--	if (enable)
-+	if (enable) {
- 		tlv_filter = ath11k_mac_mon_status_filter_default;
-+		tlv_filter.rx_filter = ath11k_debug_rx_filter(ar);
-+	}
- 
- 	ring_id = ar->dp.rx_mon_status_refill_ring.refill_buf_ring.ring_id;
- 
--- 
-1.9.1
