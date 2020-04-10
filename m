@@ -2,189 +2,116 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E3E041A4504
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 Apr 2020 12:10:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D3B641A4652
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 Apr 2020 14:33:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726582AbgDJKKI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 10 Apr 2020 06:10:08 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:32796 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725913AbgDJKKI (ORCPT
+        id S1726092AbgDJMdQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 10 Apr 2020 08:33:16 -0400
+Received: from mail-lj1-f196.google.com ([209.85.208.196]:33066 "EHLO
+        mail-lj1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725930AbgDJMdQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 10 Apr 2020 06:10:08 -0400
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.69 with qID 03AA9xbcE027574, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexmb06.realtek.com.tw[172.21.6.99])
-        by rtits2.realtek.com.tw (8.15.2/2.66/5.86) with ESMTPS id 03AA9xbcE027574
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Fri, 10 Apr 2020 18:09:59 +0800
-Received: from RTEXMB04.realtek.com.tw (172.21.6.97) by
- RTEXMB06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Fri, 10 Apr 2020 18:09:59 +0800
-Received: from localhost.localdomain (172.21.68.128) by
- RTEXMB04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Fri, 10 Apr 2020 18:09:59 +0800
-From:   <yhchuang@realtek.com>
-To:     <kvalo@codeaurora.org>
-CC:     <linux-wireless@vger.kernel.org>, <briannorris@chromium.org>
-Subject: [PATCH 2/2] rtw88: add support for set/get antennas
-Date:   Fri, 10 Apr 2020 18:09:50 +0800
-Message-ID: <20200410100950.3199-3-yhchuang@realtek.com>
+        Fri, 10 Apr 2020 08:33:16 -0400
+Received: by mail-lj1-f196.google.com with SMTP id q22so1838535ljg.0;
+        Fri, 10 Apr 2020 05:33:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:from:to:cc:subject:date:message-id;
+        bh=oZ4mTa/knZg2c3uydTiSH3iGohdOLCMYiOTGruiDB44=;
+        b=INLqcIST63qUP2L0bEZpAvS/9RIaV7Qr6MrQkTXbpyKTxw2bckSqzVlr/UTU5vJPlV
+         V0/BMJh/wM7nRQi3FBU/Gj9zVpdevlnc6EdAE4Q7v1uG5VEFStrbYDW0fdPQFdvMzt+4
+         u0IlEl1z+syacsjqSgJtLhOpUOQuTnS5e1ggOXUIdORCvZLPKW77Bdo3WVNILoxWWuLx
+         GcoDzdSxxOwH75+8UgRtDZVrdx9aSb6m4xuGAvn0/ovmVIfggkzmNBYZ7tz6579hYP1h
+         q0YGuBtlequ5w64x2mpCl0PKJ2fMEpdABifPhEi0OZLfNV1ZArdkYh9f1znVgUdgfgam
+         9mYQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id;
+        bh=oZ4mTa/knZg2c3uydTiSH3iGohdOLCMYiOTGruiDB44=;
+        b=J3LAUvLnzqwVSfQo0+faf9EbrM74NngDUSNwTDLqs6HqsRYNxROarKwB2ykz6hIIX6
+         D+ZAgrJiBUYTCyhmkRQtRubHGAFvr3n/YCgKaFJkE7dbTJ+hhhrf15eBLP6G1BlEFuGF
+         sg6ENBOh1/EDQmQKSabMjQ5lGAuMOeRSVKmNW0PSBSJeD65wHRSDMCamOHlfDUfsNdDc
+         BwPX0vKijw1QpR/SSXorP8Xa9J0SKPaXcGs4Hb9KO4QL7mdIIImw5QO1HXTM0fPXshK+
+         7tz8EbixTrO/MffHart4vRdR/PG5M57sxUWJsptXSfaz1gM62qIfnrH6lIKhnzmp8Ons
+         sG1g==
+X-Gm-Message-State: AGi0PuasSP30BUKAweNKM1q3Mzme24sToHVtfPkNep2UXV6VR1erTSiJ
+        ajuOdyzbDvPCcsmJxwrMAkg=
+X-Google-Smtp-Source: APiQypI1WtuGNzKw6wZJX6wI33yCJEpZK1zTnaPinzEQNJpD/F835Vr6wwyW2yatQgL9RvoCtK3ivg==
+X-Received: by 2002:a2e:8745:: with SMTP id q5mr2936178ljj.157.1586521993889;
+        Fri, 10 Apr 2020 05:33:13 -0700 (PDT)
+Received: from work.bb.dnainternet.fi (dffyyyyyyyyyyyysyd4py-3.rev.dnainternet.fi. [2001:14ba:2100::1e0:1e18])
+        by smtp.gmail.com with ESMTPSA id r23sm1012619ljh.34.2020.04.10.05.33.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 10 Apr 2020 05:33:13 -0700 (PDT)
+From:   Tuomas Tynkkynen <tuomas.tynkkynen@iki.fi>
+To:     johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        syzbot+6693adf1698864d21734@syzkaller.appspotmail.com,
+        Tuomas Tynkkynen <tuomas.tynkkynen@iki.fi>, stable@kernel.org
+Subject: [PATCH] mac80211_hwsim: Use kstrndup() in place of kasprintf()
+Date:   Fri, 10 Apr 2020 15:32:57 +0300
+Message-Id: <20200410123257.14559-1-tuomas.tynkkynen@iki.fi>
 X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200410100950.3199-1-yhchuang@realtek.com>
-References: <20200410100950.3199-1-yhchuang@realtek.com>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [172.21.68.128]
-X-ClientProxiedBy: RTEXMB02.realtek.com.tw (172.21.6.95) To
- RTEXMB04.realtek.com.tw (172.21.6.97)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Yan-Hsuan Chuang <yhchuang@realtek.com>
+syzbot reports a warning:
 
-User space program such as iw can set antenna mask for the device.
-So add set antenna support by configure the trx mode.
+precision 33020 too large
+WARNING: CPU: 0 PID: 9618 at lib/vsprintf.c:2471 set_precision+0x150/0x180 lib/vsprintf.c:2471
+ vsnprintf+0xa7b/0x19a0 lib/vsprintf.c:2547
+ kvasprintf+0xb2/0x170 lib/kasprintf.c:22
+ kasprintf+0xbb/0xf0 lib/kasprintf.c:59
+ hwsim_del_radio_nl+0x63a/0x7e0 drivers/net/wireless/mac80211_hwsim.c:3625
+ genl_family_rcv_msg_doit net/netlink/genetlink.c:672 [inline]
+ ...
+ entry_SYSCALL_64_after_hwframe+0x49/0xbe
 
-This is useful for some tests want to see the output of different
-antenna configuration (e.g. path A v.s. path B).
+Thus it seems that kasprintf() with "%.*s" format can not be used for
+duplicating a string with arbitrary length. Replace it with kstrndup().
 
-Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
+Reported-by: syzbot+6693adf1698864d21734@syzkaller.appspotmail.com
+Cc: stable@kernel.org
+Signed-off-by: Tuomas Tynkkynen <tuomas.tynkkynen@iki.fi>
 ---
- drivers/net/wireless/realtek/rtw88/mac80211.c | 33 +++++++++++++++++
- drivers/net/wireless/realtek/rtw88/main.c     |  3 ++
- drivers/net/wireless/realtek/rtw88/rtw8822c.c | 35 +++++++++++++++++++
- 3 files changed, 71 insertions(+)
+Compile tested only.
+---
+ drivers/net/wireless/mac80211_hwsim.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/mac80211.c b/drivers/net/wireless/realtek/rtw88/mac80211.c
-index d7d02e4c0184..a2e6ef4ad9ee 100644
---- a/drivers/net/wireless/realtek/rtw88/mac80211.c
-+++ b/drivers/net/wireless/realtek/rtw88/mac80211.c
-@@ -754,6 +754,37 @@ static int rtw_ops_set_bitrate_mask(struct ieee80211_hw *hw,
- 	return 0;
- }
- 
-+static int rtw_ops_set_antenna(struct ieee80211_hw *hw,
-+			       u32 tx_antenna,
-+			       u32 rx_antenna)
-+{
-+	struct rtw_dev *rtwdev = hw->priv;
-+	struct rtw_chip_info *chip = rtwdev->chip;
-+	int ret;
-+
-+	if (!chip->ops->set_antenna)
-+		return -EOPNOTSUPP;
-+
-+	mutex_lock(&rtwdev->mutex);
-+	ret = chip->ops->set_antenna(rtwdev, tx_antenna, rx_antenna);
-+	mutex_unlock(&rtwdev->mutex);
-+
-+	return ret;
-+}
-+
-+static int rtw_ops_get_antenna(struct ieee80211_hw *hw,
-+			       u32 *tx_antenna,
-+			       u32 *rx_antenna)
-+{
-+	struct rtw_dev *rtwdev = hw->priv;
-+	struct rtw_hal *hal = &rtwdev->hal;
-+
-+	*tx_antenna = hal->antenna_tx;
-+	*rx_antenna = hal->antenna_rx;
-+
-+	return 0;
-+}
-+
- #ifdef CONFIG_PM
- static int rtw_ops_suspend(struct ieee80211_hw *hw,
- 			   struct cfg80211_wowlan *wowlan)
-@@ -815,6 +846,8 @@ const struct ieee80211_ops rtw_ops = {
- 	.sta_statistics		= rtw_ops_sta_statistics,
- 	.flush			= rtw_ops_flush,
- 	.set_bitrate_mask	= rtw_ops_set_bitrate_mask,
-+	.set_antenna		= rtw_ops_set_antenna,
-+	.get_antenna		= rtw_ops_get_antenna,
- #ifdef CONFIG_PM
- 	.suspend		= rtw_ops_suspend,
- 	.resume			= rtw_ops_resume,
-diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
-index 7640e97706f5..1e1d2c774287 100644
---- a/drivers/net/wireless/realtek/rtw88/main.c
-+++ b/drivers/net/wireless/realtek/rtw88/main.c
-@@ -1450,6 +1450,7 @@ EXPORT_SYMBOL(rtw_core_deinit);
- 
- int rtw_register_hw(struct rtw_dev *rtwdev, struct ieee80211_hw *hw)
- {
-+	struct rtw_hal *hal = &rtwdev->hal;
- 	int max_tx_headroom = 0;
- 	int ret;
- 
-@@ -1478,6 +1479,8 @@ int rtw_register_hw(struct rtw_dev *rtwdev, struct ieee80211_hw *hw)
- 				     BIT(NL80211_IFTYPE_AP) |
- 				     BIT(NL80211_IFTYPE_ADHOC) |
- 				     BIT(NL80211_IFTYPE_MESH_POINT);
-+	hw->wiphy->available_antennas_tx = hal->antenna_tx;
-+	hw->wiphy->available_antennas_rx = hal->antenna_rx;
- 
- 	hw->wiphy->flags |= WIPHY_FLAG_SUPPORTS_TDLS |
- 			    WIPHY_FLAG_TDLS_EXTERNAL_SETUP;
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822c.c b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-index dc07e6be38e8..c99b1de54bfc 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-@@ -1890,6 +1890,40 @@ static void rtw8822c_set_tx_power_index(struct rtw_dev *rtwdev)
+diff --git a/drivers/net/wireless/mac80211_hwsim.c b/drivers/net/wireless/mac80211_hwsim.c
+index 7fe8207db6ae..7c4b7c31d07a 100644
+--- a/drivers/net/wireless/mac80211_hwsim.c
++++ b/drivers/net/wireless/mac80211_hwsim.c
+@@ -3669,9 +3669,9 @@ static int hwsim_new_radio_nl(struct sk_buff *msg, struct genl_info *info)
  	}
- }
  
-+static int rtw8822c_set_antenna(struct rtw_dev *rtwdev,
-+				u32 antenna_tx,
-+				u32 antenna_rx)
-+{
-+	struct rtw_hal *hal = &rtwdev->hal;
-+
-+	switch (antenna_tx) {
-+	case BB_PATH_A:
-+	case BB_PATH_B:
-+	case BB_PATH_AB:
-+		break;
-+	default:
-+		rtw_info(rtwdev, "unsupport tx path 0x%x\n", antenna_tx);
-+		return -EINVAL;
-+	}
-+
-+	/* path B only is not available for RX */
-+	switch (antenna_rx) {
-+	case BB_PATH_A:
-+	case BB_PATH_AB:
-+		break;
-+	default:
-+		rtw_info(rtwdev, "unsupport rx path 0x%x\n", antenna_rx);
-+		return -EINVAL;
-+	}
-+
-+	hal->antenna_tx = antenna_tx;
-+	hal->antenna_rx = antenna_rx;
-+
-+	rtw8822c_config_trx_mode(rtwdev, antenna_tx, antenna_rx, false);
-+
-+	return 0;
-+}
-+
- static void rtw8822c_cfg_ldo25(struct rtw_dev *rtwdev, bool enable)
- {
- 	u8 ldo_pwr;
-@@ -3794,6 +3828,7 @@ static struct rtw_chip_ops rtw8822c_ops = {
- 	.read_rf		= rtw_phy_read_rf,
- 	.write_rf		= rtw_phy_write_rf_reg_mix,
- 	.set_tx_power_index	= rtw8822c_set_tx_power_index,
-+	.set_antenna		= rtw8822c_set_antenna,
- 	.cfg_ldo25		= rtw8822c_cfg_ldo25,
- 	.false_alarm_statistics	= rtw8822c_false_alarm_statistics,
- 	.dpk_track		= rtw8822c_dpk_track,
+ 	if (info->attrs[HWSIM_ATTR_RADIO_NAME]) {
+-		hwname = kasprintf(GFP_KERNEL, "%.*s",
+-				   nla_len(info->attrs[HWSIM_ATTR_RADIO_NAME]),
+-				   (char *)nla_data(info->attrs[HWSIM_ATTR_RADIO_NAME]));
++		hwname = kstrndup((char *)nla_data(info->attrs[HWSIM_ATTR_RADIO_NAME]),
++				  nla_len(info->attrs[HWSIM_ATTR_RADIO_NAME]),
++				  GFP_KERNEL);
+ 		if (!hwname)
+ 			return -ENOMEM;
+ 		param.hwname = hwname;
+@@ -3691,9 +3691,9 @@ static int hwsim_del_radio_nl(struct sk_buff *msg, struct genl_info *info)
+ 	if (info->attrs[HWSIM_ATTR_RADIO_ID]) {
+ 		idx = nla_get_u32(info->attrs[HWSIM_ATTR_RADIO_ID]);
+ 	} else if (info->attrs[HWSIM_ATTR_RADIO_NAME]) {
+-		hwname = kasprintf(GFP_KERNEL, "%.*s",
+-				   nla_len(info->attrs[HWSIM_ATTR_RADIO_NAME]),
+-				   (char *)nla_data(info->attrs[HWSIM_ATTR_RADIO_NAME]));
++		hwname = kstrndup((char *)nla_data(info->attrs[HWSIM_ATTR_RADIO_NAME]),
++				  nla_len(info->attrs[HWSIM_ATTR_RADIO_NAME]),
++				  GFP_KERNEL);
+ 		if (!hwname)
+ 			return -ENOMEM;
+ 	} else
 -- 
 2.17.1
 
