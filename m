@@ -2,108 +2,126 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 67BCE1A46E0
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 Apr 2020 15:33:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 221871A4884
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 Apr 2020 18:32:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727024AbgDJNdm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 10 Apr 2020 09:33:42 -0400
-Received: from mail-dm6nam12on2089.outbound.protection.outlook.com ([40.107.243.89]:6130
-        "EHLO NAM12-DM6-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727004AbgDJNdl (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 10 Apr 2020 09:33:41 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=YRtfLAK9MF604L0ULh5B1GidV5Vt2CeEP/WQfHQ6iw1L6wlRKds6HsNgCH9GE9sGMKCuB2l+2J4pD0obzTGBCCGiBKDm7kPhAcKz+x/PndnYo2IUyoKjTsffAGlMLzhyei7apofnjC+AbY1ix8YzFQt7LNoIXGfUFoiTsJFBOPEo1lilHv8Auh+ttVY1LwVK4RHQc0YTAkPG3NDEmD1SsPXryzvUDJ1jfRrLlGyVz6o6qRN/GIfdN2vYwxmB5xpSkQbaih3WGmrfIBgw5ueOJqQyHjgEaPemh5+BTwvZT84VJ1n3Mi/7ek4m0ObxtIpJyy0i+uBND7/9aVzLoAlthg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=BaGk8gCExtKTCjraJxOhIJhwABtKx5Qf8bQqk9FYAl8=;
- b=fNdWHiCksIhjYudsRakuwrY7ORvBqxoXmUIizLVBsgJwdURG+0iIYkIVaxkS98aH0vX23FDj+g71d4bA7U3JjlwA7P22XKlvQCTCC2t1/AybP3jhWzMM42oAlWgz8mcHA3DtXRqVBhsYHIwaM99rx+Sol/Z5D3xF+0eU0MwUOBojI7Y0Jvxg/Jct+dv/8saMrW1EhKND9wxDHsBrowvOm7ctOVl3joJAAULEQEkRuzWKVhgQxFkZgp8CaHKNCdCPMEBY/0kmSJAt7WXJsipe1t2wzU7Y5mlwZqGmowDMlRbMOE1J5FBkX++1jFfaNM8eiUusiGTEmJWgM4yZ2yT8qg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=silabs.com; dmarc=pass action=none header.from=silabs.com;
- dkim=pass header.d=silabs.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=silabs.onmicrosoft.com; s=selector2-silabs-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=BaGk8gCExtKTCjraJxOhIJhwABtKx5Qf8bQqk9FYAl8=;
- b=Qlu8cYo1PB89IL4/2Jrw6nzS+ultyPZzlDYgqma49Ix5MoxmtyPUnpFIqNBxdX5s0Wy3bHfzR/YirYaJw6fwahXiejPCMwR8bhue8t06oMmX/M/knNMWvVKOp0piAgPKmHyit7ctE26BOouMKOf91ZtUxHbZH1l6VC0VWub15u0=
-Authentication-Results: spf=none (sender IP is )
- smtp.mailfrom=Jerome.Pouiller@silabs.com; 
-Received: from MN2PR11MB4063.namprd11.prod.outlook.com (2603:10b6:208:13f::22)
- by MN2PR11MB4398.namprd11.prod.outlook.com (2603:10b6:208:18b::31) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2878.20; Fri, 10 Apr
- 2020 13:33:35 +0000
-Received: from MN2PR11MB4063.namprd11.prod.outlook.com
- ([fe80::3d0a:d9ac:3df4:8b1]) by MN2PR11MB4063.namprd11.prod.outlook.com
- ([fe80::3d0a:d9ac:3df4:8b1%6]) with mapi id 15.20.2878.021; Fri, 10 Apr 2020
- 13:33:35 +0000
-From:   Jerome Pouiller <Jerome.Pouiller@silabs.com>
-To:     devel@driverdev.osuosl.org, linux-wireless@vger.kernel.org
-Cc:     netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        =?UTF-8?q?J=C3=A9r=C3=B4me=20Pouiller?= 
-        <jerome.pouiller@silabs.com>
-Subject: [PATCH 19/19] staging: wfx: drop useless update of macaddr
-Date:   Fri, 10 Apr 2020 15:32:39 +0200
-Message-Id: <20200410133239.438347-20-Jerome.Pouiller@silabs.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200410133239.438347-1-Jerome.Pouiller@silabs.com>
-References: <20200410133239.438347-1-Jerome.Pouiller@silabs.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: base64
-X-ClientProxiedBy: DM5PR15CA0056.namprd15.prod.outlook.com
- (2603:10b6:3:ae::18) To MN2PR11MB4063.namprd11.prod.outlook.com
- (2603:10b6:208:13f::22)
+        id S1726669AbgDJQcS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 10 Apr 2020 12:32:18 -0400
+Received: from mail-il1-f198.google.com ([209.85.166.198]:45326 "EHLO
+        mail-il1-f198.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726181AbgDJQcR (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 10 Apr 2020 12:32:17 -0400
+Received: by mail-il1-f198.google.com with SMTP id p15so2975407ils.12
+        for <linux-wireless@vger.kernel.org>; Fri, 10 Apr 2020 09:32:16 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
+        bh=Y0MqekMBiePxJvjoGJydSlkklIk8o/ZxoTDbFCFFc/8=;
+        b=FiHCHto7dSNR3il82VUFtjtkbLH+hqUtJe98nCpQunbN80Q+FVgCu6Ir/BEq2+ZG/A
+         RWZA02VS/8bV7SUO8GE1c++oSA54IdzqUg8qzCgsNkl5HmT1AYM/HYC9U/nqAwn7jsaR
+         UUYUABEATIuLTzQ+3UiCXGv2dBzD3/W5mYBN7iPEsRUg12m05zVUbb7BIcr3JitLVEAW
+         Aea/Y+/vXK/DA2Mhu4BdshpCLiuW7TNm02FOO/ALJRvfd8sUUHJkUhtaMb753NRIyb7P
+         QFiND3akRet9Q++nf9y7SEuyHbI3drSd0goRuUqJeIaoQJRs8gsTozeZRzrNCn3Zv6Io
+         MINw==
+X-Gm-Message-State: AGi0PuYnGHAKojbNiObHIoZsjjwr29kp3l4wZ1VAbwKZrYpogB1tYdls
+        SPY9zdUP8SIaykujMCapuVIYLFO3DPSmgju94VPEP1mRHigQ
+X-Google-Smtp-Source: APiQypJoFJORPYVAk6VZOkifbDZzcNgG0DvutrzmItImErAaHJ1BMnD1HhnCHZ3y8txFO9fEuAWT4N/3Vz76Wki8OvV4SXXrwplb
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from pc-42.silabs.com (2a01:e35:2435:66a0:1265:30ff:fefd:6e7f) by DM5PR15CA0056.namprd15.prod.outlook.com (2603:10b6:3:ae::18) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2900.15 via Frontend Transport; Fri, 10 Apr 2020 13:33:33 +0000
-X-Mailer: git-send-email 2.25.1
-X-Originating-IP: [2a01:e35:2435:66a0:1265:30ff:fefd:6e7f]
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 898d1396-568a-4c2c-8deb-08d7dd53c4af
-X-MS-TrafficTypeDiagnostic: MN2PR11MB4398:
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <MN2PR11MB43988C717200E613E9C9798D93DE0@MN2PR11MB4398.namprd11.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:3044;
-X-Forefront-PRVS: 0369E8196C
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN2PR11MB4063.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(10009020)(366004)(346002)(396003)(136003)(39850400004)(376002)(107886003)(81156014)(54906003)(8676002)(86362001)(1076003)(4744005)(8936002)(4326008)(52116002)(66574012)(7696005)(316002)(66556008)(66946007)(186003)(478600001)(2906002)(6486002)(2616005)(66476007)(16526019)(15650500001)(5660300002)(36756003);DIR:OUT;SFP:1101;
-Received-SPF: None (protection.outlook.com: silabs.com does not designate
- permitted sender hosts)
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: o+wbhnzrBwOxY/RhEdWm7H+P1RELqU/JSenBl6tiQ0V8vz51knFIMhLt80lP3Y4wXVg8+7I8uqy9XYwyn8wvZjF8OrXNYX3xvvMG5dJuHX0i8o9fyhTk2wUggxzjyLUKWXhAdm5mprU8FAob49ZwFal/VqTO7ygqen9sfrEkYpFNQtUrWbYnj9brZBu/LqDsC8z7tr7Qcj7XWZJTMUG5I2QazdoddF+IRPk9pp49xT+9aDo9JHBJ8WT+OtZQV6fF8DWX0bZiQK+EQJZ5ku4nJr0Zse1nIuN54PXNJI7I7nwUrYv+b+QzzQUmmOmip8MaCWbtpMZZU3Mp4jGvNpHdHg2EM2jzsBT/FMvFQE1vc4swy2t+AdoQTHJDG03naoP8I31aJkT/04iMeELZppy4ltDHKgzALUM86wf+BMYS+ZRI18k0syklBiJYD/Tlkxhe
-X-MS-Exchange-AntiSpam-MessageData: 7cTXXVfPulDKbHkDf4fAls7b6LoqnjftCttoP60O9nxLNlC6DBD1EYTl0BmQcm+6e5y8lAAqyp7K28PSao+tqmXulGTiE4hcf3Hr9+ndJHQKr384en4UVYqheLOnqEOv6TqBSTKlVUu22qExsMo18Eg6W8YHOOLSmHuGXijPBRN3NfbsO5Qu6/C8dX7bsTLqhMHQW6+X+aQ4C1v5FWu5NA==
-X-OriginatorOrg: silabs.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 898d1396-568a-4c2c-8deb-08d7dd53c4af
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Apr 2020 13:33:35.1296
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 54dbd822-5231-4b20-944d-6f4abcd541fb
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: UGyz/TjxRt16Ov6FedBfQdnCPNySsSLrtJuefnPCfMgEDTOW0n0em90IGbOPvp6JA6BxizJj7lQXDRZcBtXFSg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR11MB4398
+X-Received: by 2002:a92:3408:: with SMTP id b8mr5273262ila.68.1586536336014;
+ Fri, 10 Apr 2020 09:32:16 -0700 (PDT)
+Date:   Fri, 10 Apr 2020 09:32:16 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <000000000000bb471d05a2f246d7@google.com>
+Subject: WARNING in hwsim_new_radio_nl
+From:   syzbot <syzbot+a4aee3f42d7584d76761@syzkaller.appspotmail.com>
+To:     davem@davemloft.net, johannes@sipsolutions.net,
+        kvalo@codeaurora.org, linux-kernel@vger.kernel.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-RnJvbTogSsOpcsO0bWUgUG91aWxsZXIgPGplcm9tZS5wb3VpbGxlckBzaWxhYnMuY29tPgoKTWFj
-IGFkZHJlc3MgaXMgc2V0IGluIHdmeF9hZGRfaW50ZXJmYWNlKCkgYW5kIHJlbW92ZWQgaW4Kd2Z4
-X3JlbW92ZV9pbnRlcmZhY2UoKS4KCkN1cnJlbnRseSwgdGhlcmUgaXMgYWxzbyBhbiBhZGRpdGlv
-bmFsIHVwZGF0ZSBvZiBtYWMgYWRkcmVzcyBpbgp3ZnhfZG9fdW5qb2luKCkuIEl0IGhhcyBubyBy
-YXRpb25hbGUuIE1hYyBhZGRyZXNzIGlzIGFscmVhZHkgcHJlc2VudAphbmQgbm90aGluZyBoYXMg
-Y2hhbmdlZCBpdC4gVGhlcmVmb3JlLCB3ZSBjYW4gZHJvcCBpdC4KClNpZ25lZC1vZmYtYnk6IErD
-qXLDtG1lIFBvdWlsbGVyIDxqZXJvbWUucG91aWxsZXJAc2lsYWJzLmNvbT4KLS0tCiBkcml2ZXJz
-L3N0YWdpbmcvd2Z4L3N0YS5jIHwgMSAtCiAxIGZpbGUgY2hhbmdlZCwgMSBkZWxldGlvbigtKQoK
-ZGlmZiAtLWdpdCBhL2RyaXZlcnMvc3RhZ2luZy93Zngvc3RhLmMgYi9kcml2ZXJzL3N0YWdpbmcv
-d2Z4L3N0YS5jCmluZGV4IDUzYWI5NjQ4MTg0YS4uZjFkZjc3MTdkNWY0IDEwMDY0NAotLS0gYS9k
-cml2ZXJzL3N0YWdpbmcvd2Z4L3N0YS5jCisrKyBiL2RyaXZlcnMvc3RhZ2luZy93Zngvc3RhLmMK
-QEAgLTQxNSw3ICs0MTUsNiBAQCBzdGF0aWMgdm9pZCB3ZnhfZG9fdW5qb2luKHN0cnVjdCB3Znhf
-dmlmICp3dmlmKQogCXdmeF90eF9sb2NrX2ZsdXNoKHd2aWYtPndkZXYpOwogCWhpZl9yZXNldCh3
-dmlmLCBmYWxzZSk7CiAJd2Z4X3R4X3BvbGljeV9pbml0KHd2aWYpOwotCWhpZl9zZXRfbWFjYWRk
-cih3dmlmLCB3dmlmLT52aWYtPmFkZHIpOwogCWlmICh3dmlmX2NvdW50KHd2aWYtPndkZXYpIDw9
-IDEpCiAJCWhpZl9zZXRfYmxvY2tfYWNrX3BvbGljeSh3dmlmLCAweEZGLCAweEZGKTsKIAl3Znhf
-ZnJlZV9ldmVudF9xdWV1ZSh3dmlmKTsKLS0gCjIuMjUuMQoK
+Hello,
+
+syzbot found the following crash on:
+
+HEAD commit:    5d30bcac Merge tag '9p-for-5.7-2' of git://github.com/mart..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=119383b3e00000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=65d386b867ba5289
+dashboard link: https://syzkaller.appspot.com/bug?extid=a4aee3f42d7584d76761
+compiler:       clang version 10.0.0 (https://github.com/llvm/llvm-project/ c2443155a0fb245c8f17f2c1c72b6ea391e86e81)
+
+Unfortunately, I don't have any reproducer for this crash yet.
+
+IMPORTANT: if you fix the bug, please add the following tag to the commit:
+Reported-by: syzbot+a4aee3f42d7584d76761@syzkaller.appspotmail.com
+
+------------[ cut here ]------------
+precision 33020 too large
+WARNING: CPU: 0 PID: 25816 at lib/vsprintf.c:2471 set_precision lib/vsprintf.c:2471 [inline]
+WARNING: CPU: 0 PID: 25816 at lib/vsprintf.c:2471 vsnprintf+0x1467/0x1aa0 lib/vsprintf.c:2547
+Kernel panic - not syncing: panic_on_warn set ...
+CPU: 0 PID: 25816 Comm: syz-executor.0 Not tainted 5.6.0-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
+Call Trace:
+ __dump_stack lib/dump_stack.c:77 [inline]
+ dump_stack+0x1e9/0x30e lib/dump_stack.c:118
+ panic+0x264/0x7a0 kernel/panic.c:221
+ __warn+0x209/0x210 kernel/panic.c:582
+ report_bug+0x1ac/0x2d0 lib/bug.c:195
+ fixup_bug arch/x86/kernel/traps.c:175 [inline]
+ do_error_trap+0xca/0x1c0 arch/x86/kernel/traps.c:267
+ do_invalid_op+0x32/0x40 arch/x86/kernel/traps.c:286
+ invalid_op+0x23/0x30 arch/x86/entry/entry_64.S:1027
+RIP: 0010:set_precision lib/vsprintf.c:2471 [inline]
+RIP: 0010:vsnprintf+0x1467/0x1aa0 lib/vsprintf.c:2547
+Code: f5 6e f9 48 8d 5c 24 48 e9 8e fc ff ff e8 81 f5 6e f9 c6 05 a6 4e 63 01 01 48 c7 c7 c1 69 0a 89 44 89 fe 31 c0 e8 29 09 41 f9 <0f> 0b e9 b7 f6 ff ff e8 5d f5 6e f9 c6 05 81 4e 63 01 01 48 c7 c7
+RSP: 0018:ffffc90016587780 EFLAGS: 00010246
+RAX: 2f3b2aeaadea7400 RBX: ffffc900165877c8 RCX: 0000000000040000
+RDX: ffffc90001f09000 RSI: 0000000000009177 RDI: 0000000000009178
+RBP: 80fc0000ffffff02 R08: dffffc0000000000 R09: fffffbfff162889d
+R10: fffffbfff162889d R11: 0000000000000000 R12: dffffc0000000000
+R13: 0000000000000000 R14: ffffffff88ea1fb0 R15: 00000000000080fc
+ kvasprintf+0x59/0xf0 lib/kasprintf.c:22
+ kasprintf+0x6a/0x90 lib/kasprintf.c:59
+ hwsim_new_radio_nl+0x95c/0xf30 drivers/net/wireless/mac80211_hwsim.c:3672
+ genl_family_rcv_msg_doit net/netlink/genetlink.c:673 [inline]
+ genl_family_rcv_msg net/netlink/genetlink.c:718 [inline]
+ genl_rcv_msg+0x1054/0x1530 net/netlink/genetlink.c:735
+ netlink_rcv_skb+0x190/0x3a0 net/netlink/af_netlink.c:2469
+ genl_rcv+0x24/0x40 net/netlink/genetlink.c:746
+ netlink_unicast_kernel net/netlink/af_netlink.c:1303 [inline]
+ netlink_unicast+0x786/0x940 net/netlink/af_netlink.c:1329
+ netlink_sendmsg+0xa57/0xd70 net/netlink/af_netlink.c:1918
+ sock_sendmsg_nosec net/socket.c:652 [inline]
+ sock_sendmsg net/socket.c:672 [inline]
+ ____sys_sendmsg+0x4f9/0x7c0 net/socket.c:2362
+ ___sys_sendmsg net/socket.c:2416 [inline]
+ __sys_sendmsg+0x2a6/0x360 net/socket.c:2449
+ do_syscall_64+0xf3/0x1b0 arch/x86/entry/common.c:295
+ entry_SYSCALL_64_after_hwframe+0x49/0xb3
+RIP: 0033:0x45c889
+Code: ad b6 fb ff c3 66 2e 0f 1f 84 00 00 00 00 00 66 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 0f 83 7b b6 fb ff c3 66 2e 0f 1f 84 00 00 00 00
+RSP: 002b:00007fb9e5575c78 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
+RAX: ffffffffffffffda RBX: 00007fb9e55766d4 RCX: 000000000045c889
+RDX: 0000000000000000 RSI: 0000000020000000 RDI: 0000000000000003
+RBP: 000000000076bf00 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 00000000ffffffff
+R13: 00000000000009f5 R14: 00000000004ccb09 R15: 000000000076bf0c
+Kernel Offset: disabled
+Rebooting in 86400 seconds..
+
+
+---
+This bug is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this bug report. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
