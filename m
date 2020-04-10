@@ -2,173 +2,78 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A31031A440C
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 Apr 2020 10:55:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A26841A4442
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 Apr 2020 11:10:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726680AbgDJIzV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 10 Apr 2020 04:55:21 -0400
-Received: from mailgw01.mediatek.com ([210.61.82.183]:48527 "EHLO
-        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726669AbgDJIzU (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 10 Apr 2020 04:55:20 -0400
-X-UUID: 22c41222e2b74a80a2d3598077f2f1e3-20200410
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Transfer-Encoding:Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=6Z84khGhQYyuo1cZg0hLV+dSmShOhAlIr+T5Pr4slCA=;
-        b=aQ730xjJdvp60zFTr2pL38114qUokMDF3UxonjGvLeKYzLW0gOuOXi1UhXfFKXIjMmiSgVHXxAiTtAqSMsFeT62QizJ4i3SYHLEYiDRVUyj3uZwEVRhV7rwySKj9JLcC3qYKCvSvwAK2x4GelYI62/WE0jfi+kO0/usX8zPt8Xs=;
-X-UUID: 22c41222e2b74a80a2d3598077f2f1e3-20200410
-Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw01.mediatek.com
-        (envelope-from <ryder.lee@mediatek.com>)
-        (Cellopoint E-mail Firewall v4.1.10 Build 0809 with TLS)
-        with ESMTP id 363305681; Fri, 10 Apr 2020 16:55:16 +0800
-Received: from MTKCAS06.mediatek.inc (172.21.101.30) by
- mtkmbs08n1.mediatek.inc (172.21.101.55) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Fri, 10 Apr 2020 16:55:05 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by MTKCAS06.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Fri, 10 Apr 2020 16:55:06 +0800
-From:   Ryder Lee <ryder.lee@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-CC:     Shayne Chen <shayne.chen@mediatek.com>,
-        YF Luo <yf.luo@mediatek.com>,
-        Yiwei Chung <yiwei.chung@mediatek.com>,
-        Chih-Min Chen <chih-min.chen@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>,
-        Ryder Lee <ryder.lee@mediatek.com>
-Subject: [PATCH 16/16] mt76: mt7915: enable firmware module debug support
-Date:   Fri, 10 Apr 2020 16:54:53 +0800
-Message-ID: <6b3f595b5caf8ee13776e6f5a52447df384ac4ab.1586507878.git.ryder.lee@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <cover.1586507878.git.ryder.lee@mediatek.com>
-References: <cover.1586507878.git.ryder.lee@mediatek.com>
+        id S1725955AbgDJJJy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 10 Apr 2020 05:09:54 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:12639 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725897AbgDJJJy (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 10 Apr 2020 05:09:54 -0400
+Received: from DGGEMS407-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id 58F9DD4A46EC7164605F;
+        Fri, 10 Apr 2020 17:09:53 +0800 (CST)
+Received: from huawei.com (10.175.124.28) by DGGEMS407-HUB.china.huawei.com
+ (10.3.19.207) with Microsoft SMTP Server id 14.3.487.0; Fri, 10 Apr 2020
+ 17:09:44 +0800
+From:   Jason Yan <yanaijie@huawei.com>
+To:     <arend.vanspriel@broadcom.com>, <franky.lin@broadcom.com>,
+        <hante.meuleman@broadcom.com>, <chi-hsien.lin@cypress.com>,
+        <wright.feng@cypress.com>, <kvalo@codeaurora.org>,
+        <davem@davemloft.net>, <eduardoabinader@gmail.com>,
+        <christophe.jaillet@wanadoo.fr>, <yanaijie@huawei.com>,
+        <austindh.kim@gmail.com>, <linux-wireless@vger.kernel.org>,
+        <brcm80211-dev-list.pdl@broadcom.com>,
+        <brcm80211-dev-list@cypress.com>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: [PATCH] brcmsmac: make brcms_c_set_mac() void
+Date:   Fri, 10 Apr 2020 17:08:17 +0800
+Message-ID: <20200410090817.26883-1-yanaijie@huawei.com>
+X-Mailer: git-send-email 2.17.2
 MIME-Version: 1.0
 Content-Type: text/plain
-X-MTK:  N
-Content-Transfer-Encoding: base64
+X-Originating-IP: [10.175.124.28]
+X-CFilter-Loop: Reflected
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-VGhpcyBhbGxvd3MgaG9zdCBkcml2ZXIgdG8gZ2V0IHVzZWZ1bCBpbmZvcm1hdGlvbiBvZiBzb21l
-IGltcG9ydGFudCBtb2R1bGVzLg0KDQpTaWduZWQtb2ZmLWJ5OiBSeWRlciBMZWUgPHJ5ZGVyLmxl
-ZUBtZWRpYXRlay5jb20+DQpTaWduZWQtb2ZmLWJ5OiBDaGloLU1pbiBDaGVuIDxjaGloLW1pbi5j
-aGVuQG1lZGlhdGVrLmNvbT4NCi0tLQ0KIC4uLi93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210Nzkx
-NS9kZWJ1Z2ZzLmMgICB8IDM2ICsrKysrKysrKysrKw0KIC4uLi9uZXQvd2lyZWxlc3MvbWVkaWF0
-ZWsvbXQ3Ni9tdDc5MTUvbWN1LmMgICB8IDU4ICsrKysrKysrKysrKysrKysrKysNCiAuLi4vbmV0
-L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1L21jdS5oICAgfCAgMyArDQogLi4uL3dpcmVs
-ZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1L210NzkxNS5oICAgIHwgIDIgKw0KIDQgZmlsZXMgY2hh
-bmdlZCwgOTkgaW5zZXJ0aW9ucygrKQ0KDQpkaWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQvd2lyZWxl
-c3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvZGVidWdmcy5jIGIvZHJpdmVycy9uZXQvd2lyZWxlc3Mv
-bWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvZGVidWdmcy5jDQppbmRleCAxODFmNDJmY2RlZGEuLjczMDcx
-ZGI3MDliMyAxMDA2NDQNCi0tLSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYv
-bXQ3OTE1L2RlYnVnZnMuYw0KKysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3
-Ni9tdDc5MTUvZGVidWdmcy5jDQpAQCAtNzQsNiArNzQsNDEgQEAgbXQ3OTE1X2RiZGNfZ2V0KHZv
-aWQgKmRhdGEsIHU2NCAqdmFsKQ0KIERFRklORV9ERUJVR0ZTX0FUVFJJQlVURShmb3BzX2RiZGMs
-IG10NzkxNV9kYmRjX2dldCwNCiAJCQkgbXQ3OTE1X2RiZGNfc2V0LCAiJWxsZFxuIik7DQogDQor
-c3RhdGljIGludA0KK210NzkxNV9md19kZWJ1Z19zZXQodm9pZCAqZGF0YSwgdTY0IHZhbCkNCit7
-DQorCXN0cnVjdCBtdDc5MTVfZGV2ICpkZXYgPSBkYXRhOw0KKwllbnVtIHsNCisJCURFQlVHX1RY
-Q01EID0gNjIsDQorCQlERUJVR19DTURfUlBUX1RYLA0KKwkJREVCVUdfQ01EX1JQVF9UUklHLA0K
-KwkJREVCVUdfU1BMLA0KKwkJREVCVUdfUlBUX1JYLA0KKwl9IGRlYnVnOw0KKw0KKwlkZXYtPmZ3
-X2RlYnVnID0gISF2YWw7DQorDQorCW10NzkxNV9tY3VfZndfbG9nXzJfaG9zdChkZXYsIGRldi0+
-ZndfZGVidWcgPyAyIDogMCk7DQorDQorCWZvciAoZGVidWcgPSBERUJVR19UWENNRDsgZGVidWcg
-PD0gREVCVUdfUlBUX1JYOyBkZWJ1ZysrKQ0KKwkJbXQ3OTE1X21jdV9md19kYmdfY3RybChkZXYs
-IGRlYnVnLCBkZXYtPmZ3X2RlYnVnKTsNCisNCisJcmV0dXJuIDA7DQorfQ0KKw0KK3N0YXRpYyBp
-bnQNCittdDc5MTVfZndfZGVidWdfZ2V0KHZvaWQgKmRhdGEsIHU2NCAqdmFsKQ0KK3sNCisJc3Ry
-dWN0IG10NzkxNV9kZXYgKmRldiA9IGRhdGE7DQorDQorCSp2YWwgPSBkZXYtPmZ3X2RlYnVnOw0K
-Kw0KKwlyZXR1cm4gMDsNCit9DQorDQorREVGSU5FX0RFQlVHRlNfQVRUUklCVVRFKGZvcHNfZndf
-ZGVidWcsIG10NzkxNV9md19kZWJ1Z19nZXQsDQorCQkJIG10NzkxNV9md19kZWJ1Z19zZXQsICIl
-bGxkXG4iKTsNCisNCiBzdGF0aWMgdm9pZA0KIG10NzkxNV9hbXBkdV9zdGF0X3JlYWRfcGh5KHN0
-cnVjdCBtdDc5MTVfcGh5ICpwaHksDQogCQkJICAgc3RydWN0IHNlcV9maWxlICpmaWxlKQ0KQEAg
-LTI4Nyw2ICszMjIsNyBAQCBpbnQgbXQ3OTE1X2luaXRfZGVidWdmcyhzdHJ1Y3QgbXQ3OTE1X2Rl
-diAqZGV2KQ0KIAkJCQkgICAgbXQ3OTE1X3F1ZXVlc19hY3EpOw0KIAlkZWJ1Z2ZzX2NyZWF0ZV9m
-aWxlKCJ0eF9zdGF0cyIsIDA0MDAsIGRpciwgZGV2LCAmZm9wc190eF9zdGF0cyk7DQogCWRlYnVn
-ZnNfY3JlYXRlX2ZpbGUoImRiZGMiLCAwNjAwLCBkaXIsIGRldiwgJmZvcHNfZGJkYyk7DQorCWRl
-YnVnZnNfY3JlYXRlX2ZpbGUoImZ3X2RlYnVnIiwgMDYwMCwgZGlyLCBkZXYsICZmb3BzX2Z3X2Rl
-YnVnKTsNCiAJZGVidWdmc19jcmVhdGVfdTMyKCJkZnNfaHdfcGF0dGVybiIsIDA0MDAsIGRpciwg
-JmRldi0+aHdfcGF0dGVybik7DQogCS8qIHRlc3Qga25vYnMgKi8NCiAJZGVidWdmc19jcmVhdGVf
-ZmlsZSgicmFkYXJfdHJpZ2dlciIsIDAyMDAsIGRpciwgZGV2LA0KZGlmZiAtLWdpdCBhL2RyaXZl
-cnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1L21jdS5jIGIvZHJpdmVycy9uZXQv
-d2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvbWN1LmMNCmluZGV4IGI4MGNjNWUyNDQ4Zi4u
-MmVlOWU3ZmNkN2UyIDEwMDY0NA0KLS0tIGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsv
-bXQ3Ni9tdDc5MTUvbWN1LmMNCisrKyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210
-NzYvbXQ3OTE1L21jdS5jDQpAQCAtNTAzLDYgKzUwMywyOCBAQCBtdDc5MTVfbWN1X3R4X3JhdGVf
-cmVwb3J0KHN0cnVjdCBtdDc5MTVfZGV2ICpkZXYsIHN0cnVjdCBza19idWZmICpza2IpDQogCX0N
-CiB9DQogDQorc3RhdGljIHZvaWQNCittdDc5MTVfbWN1X3J4X2xvZ19tZXNzYWdlKHN0cnVjdCBt
-dDc5MTVfZGV2ICpkZXYsIHN0cnVjdCBza19idWZmICpza2IpDQorew0KKwlzdHJ1Y3QgbXQ3OTE1
-X21jdV9yeGQgKnJ4ZCA9IChzdHJ1Y3QgbXQ3OTE1X21jdV9yeGQgKilza2ItPmRhdGE7DQorCWNv
-bnN0IGNoYXIgKmRhdGEgPSAoY2hhciAqKSZyeGRbMV07DQorCWNvbnN0IGNoYXIgKnR5cGU7DQor
-DQorCXN3aXRjaCAocnhkLT5zMmRfaW5kZXgpIHsNCisJY2FzZSAwOg0KKwkJdHlwZSA9ICJXTSI7
-DQorCQlicmVhazsNCisJY2FzZSAyOg0KKwkJdHlwZSA9ICJXQSI7DQorCQlicmVhazsNCisJZGVm
-YXVsdDoNCisJCXR5cGUgPSAidW5rbm93biI7DQorCQlicmVhazsNCisJfQ0KKw0KKwl3aXBoeV9p
-bmZvKG10NzZfaHcoZGV2KS0+d2lwaHksICIlczogJXMiLCB0eXBlLCBkYXRhKTsNCit9DQorDQog
-c3RhdGljIHZvaWQNCiBtdDc5MTVfbWN1X3J4X2V4dF9ldmVudChzdHJ1Y3QgbXQ3OTE1X2RldiAq
-ZGV2LCBzdHJ1Y3Qgc2tfYnVmZiAqc2tiKQ0KIHsNCkBAIC01MjAsNiArNTQyLDkgQEAgbXQ3OTE1
-X21jdV9yeF9leHRfZXZlbnQoc3RydWN0IG10NzkxNV9kZXYgKmRldiwgc3RydWN0IHNrX2J1ZmYg
-KnNrYikNCiAJY2FzZSBNQ1VfRVhUX0VWRU5UX1JBVEVfUkVQT1JUOg0KIAkJbXQ3OTE1X21jdV90
-eF9yYXRlX3JlcG9ydChkZXYsIHNrYik7DQogCQlicmVhazsNCisJY2FzZSBNQ1VfRVhUX0VWRU5U
-X0ZXX0xPR18yX0hPU1Q6DQorCQltdDc5MTVfbWN1X3J4X2xvZ19tZXNzYWdlKGRldiwgc2tiKTsN
-CisJCWJyZWFrOw0KIAlkZWZhdWx0Og0KIAkJYnJlYWs7DQogCX0NCkBAIC01NDUsNiArNTcwLDcg
-QEAgdm9pZCBtdDc5MTVfbWN1X3J4X2V2ZW50KHN0cnVjdCBtdDc5MTVfZGV2ICpkZXYsIHN0cnVj
-dCBza19idWZmICpza2IpDQogCXN0cnVjdCBtdDc5MTVfbWN1X3J4ZCAqcnhkID0gKHN0cnVjdCBt
-dDc5MTVfbWN1X3J4ZCAqKXNrYi0+ZGF0YTsNCiANCiAJaWYgKHJ4ZC0+ZXh0X2VpZCA9PSBNQ1Vf
-RVhUX0VWRU5UX1RIRVJNQUxfUFJPVEVDVCB8fA0KKwkgICAgcnhkLT5leHRfZWlkID09IE1DVV9F
-WFRfRVZFTlRfRldfTE9HXzJfSE9TVCB8fA0KIAkgICAgcnhkLT5leHRfZWlkID09IE1DVV9FWFRf
-RVZFTlRfQVNTRVJUX0RVTVAgfHwNCiAJICAgIHJ4ZC0+ZXh0X2VpZCA9PSBNQ1VfRVhUX0VWRU5U
-X1BTX1NZTkMgfHwNCiAJICAgIHJ4ZC0+ZXh0X2VpZCA9PSBNQ1VfRVhUX0VWRU5UX1JBVEVfUkVQ
-T1JUIHx8DQpAQCAtMjMwNCw2ICsyMzMwLDM3IEBAIHN0YXRpYyBpbnQgbXQ3OTE1X2xvYWRfZmly
-bXdhcmUoc3RydWN0IG10NzkxNV9kZXYgKmRldikNCiAJcmV0dXJuIDA7DQogfQ0KIA0KK2ludCBt
-dDc5MTVfbWN1X2Z3X2xvZ18yX2hvc3Qoc3RydWN0IG10NzkxNV9kZXYgKmRldiwgdTggY3RybCkN
-Cit7DQorCXN0cnVjdCB7DQorCQl1OCBjdHJsX3ZhbDsNCisJCXU4IHBhZFszXTsNCisJfSBkYXRh
-ID0gew0KKwkJLmN0cmxfdmFsID0gY3RybA0KKwl9Ow0KKw0KKwlyZXR1cm4gX19tdDc2X21jdV9z
-ZW5kX21zZygmZGV2LT5tdDc2LCBNQ1VfRVhUX0NNRF9GV19MT0dfMl9IT1NULA0KKwkJCQkgICAm
-ZGF0YSwgc2l6ZW9mKGRhdGEpLCB0cnVlKTsNCit9DQorDQoraW50IG10NzkxNV9tY3VfZndfZGJn
-X2N0cmwoc3RydWN0IG10NzkxNV9kZXYgKmRldiwgdTMyIG1vZHVsZSwgdTggbGV2ZWwpDQorew0K
-KwlzdHJ1Y3Qgew0KKwkJdTggdmVyOw0KKwkJdTggcGFkOw0KKwkJdTE2IGxlbjsNCisJCXU4IGxl
-dmVsOw0KKwkJdTggcnN2WzNdOw0KKwkJdTMyIG1vZHVsZV9pZHg7DQorCX0gZGF0YSA9IHsNCisJ
-CS5tb2R1bGVfaWR4ID0gY3B1X3RvX2xlMzIobW9kdWxlKSwNCisJCS5sZXZlbCA9IGxldmVsLA0K
-Kwl9Ow0KKw0KKwlyZXR1cm4gX19tdDc2X21jdV9zZW5kX21zZygmZGV2LT5tdDc2LCBNQ1VfRVhU
-X0NNRF9GV19EQkdfQ1RSTCwNCisJCQkJICAgJmRhdGEsIHNpemVvZihkYXRhKSwgZmFsc2UpOw0K
-K30NCisNCiBpbnQgbXQ3OTE1X21jdV9pbml0KHN0cnVjdCBtdDc5MTVfZGV2ICpkZXYpDQogew0K
-IAlzdGF0aWMgY29uc3Qgc3RydWN0IG10NzZfbWN1X29wcyBtdDc5MTVfbWN1X29wcyA9IHsNCkBA
-IC0yMzI1LDYgKzIzODIsNyBAQCBpbnQgbXQ3OTE1X21jdV9pbml0KHN0cnVjdCBtdDc5MTVfZGV2
-ICpkZXYpDQogCQlyZXR1cm4gcmV0Ow0KIA0KIAlzZXRfYml0KE1UNzZfU1RBVEVfTUNVX1JVTk5J
-TkcsICZkZXYtPm1waHkuc3RhdGUpOw0KKwltdDc5MTVfbWN1X2Z3X2xvZ18yX2hvc3QoZGV2LCAw
-KTsNCiANCiAJcmV0dXJuIDA7DQogfQ0KZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3dpcmVsZXNz
-L21lZGlhdGVrL210NzYvbXQ3OTE1L21jdS5oIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0
-ZWsvbXQ3Ni9tdDc5MTUvbWN1LmgNCmluZGV4IDJiMjcwODgyOGMxYS4uNDI3NjdjNTIwNGRhIDEw
-MDY0NA0KLS0tIGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvbWN1
-LmgNCisrKyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1L21jdS5o
-DQpAQCAtMzgsNiArMzgsNyBAQCBlbnVtIHsNCiAvKiBleHQgZXZlbnQgdGFibGUgKi8NCiBlbnVt
-IHsNCiAJTUNVX0VYVF9FVkVOVF9QU19TWU5DID0gMHg1LA0KKwlNQ1VfRVhUX0VWRU5UX0ZXX0xP
-R18yX0hPU1QgPSAweDEzLA0KIAlNQ1VfRVhUX0VWRU5UX1RIRVJNQUxfUFJPVEVDVCA9IDB4MjIs
-DQogCU1DVV9FWFRfRVZFTlRfQVNTRVJUX0RVTVAgPSAweDIzLA0KIAlNQ1VfRVhUX0VWRU5UX1JE
-RF9SRVBPUlQgPSAweDNhLA0KQEAgLTE5Miw2ICsxOTMsNyBAQCBlbnVtIHsNCiAJTUNVX0VYVF9D
-TURfRUZVU0VfQUNDRVNTID0gMHgwMSwNCiAJTUNVX0VYVF9DTURfUE1fU1RBVEVfQ1RSTCA9IDB4
-MDcsDQogCU1DVV9FWFRfQ01EX0NIQU5ORUxfU1dJVENIID0gMHgwOCwNCisJTUNVX0VYVF9DTURf
-RldfTE9HXzJfSE9TVCA9IDB4MTMsDQogCU1DVV9FWFRfQ01EX0VGVVNFX0JVRkZFUl9NT0RFID0g
-MHgyMSwNCiAJTUNVX0VYVF9DTURfU1RBX1JFQ19VUERBVEUgPSAweDI1LA0KIAlNQ1VfRVhUX0NN
-RF9CU1NfSU5GT19VUERBVEUgPSAweDI2LA0KQEAgLTIwNyw2ICsyMDksNyBAQCBlbnVtIHsNCiAJ
-TUNVX0VYVF9DTURfU0VUX1NFUl9UUklHR0VSID0gMHg4MSwNCiAJTUNVX0VYVF9DTURfU0NTX0NU
-UkwgPSAweDgyLA0KIAlNQ1VfRVhUX0NNRF9SQVRFX0NUUkwgPSAweDg3LA0KKwlNQ1VfRVhUX0NN
-RF9GV19EQkdfQ1RSTCA9IDB4OTUsDQogCU1DVV9FWFRfQ01EX1NFVF9SRERfVEggPSAweDlkLA0K
-IH07DQogDQpkaWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9t
-dDc5MTUvbXQ3OTE1LmggYi9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210Nzkx
-NS9tdDc5MTUuaA0KaW5kZXggYzkwMTVmYTI1MTU2Li5mYmNhMjAzZDE3MDYgMTAwNjQ0DQotLS0g
-YS9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzkxNS9tdDc5MTUuaA0KKysr
-IGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvbXQ3OTE1LmgNCkBA
-IC0zMjMsNiArMzIzLDggQEAgaW50IG10NzkxNV9tY3VfZ2V0X3JhdGVfaW5mbyhzdHJ1Y3QgbXQ3
-OTE1X2RldiAqZGV2LCB1MzIgY21kLCB1MTYgd2xhbl9pZHgpOw0KIGludCBtdDc5MTVfbWN1X2dl
-dF90ZW1wZXJhdHVyZShzdHJ1Y3QgbXQ3OTE1X2RldiAqZGV2LCBpbnQgaW5kZXgpOw0KIGludCBt
-dDc5MTVfbWN1X3JkZF9jbWQoc3RydWN0IG10NzkxNV9kZXYgKmRldiwgZW51bSBtdDc5MTVfcmRk
-X2NtZCBjbWQsDQogCQkgICAgICAgdTggaW5kZXgsIHU4IHJ4X3NlbCwgdTggdmFsKTsNCitpbnQg
-bXQ3OTE1X21jdV9md19sb2dfMl9ob3N0KHN0cnVjdCBtdDc5MTVfZGV2ICpkZXYsIHU4IGN0cmwp
-Ow0KK2ludCBtdDc5MTVfbWN1X2Z3X2RiZ19jdHJsKHN0cnVjdCBtdDc5MTVfZGV2ICpkZXYsIHUz
-MiBtb2R1bGUsIHU4IGxldmVsKTsNCiB2b2lkIG10NzkxNV9tY3VfcnhfZXZlbnQoc3RydWN0IG10
-NzkxNV9kZXYgKmRldiwgc3RydWN0IHNrX2J1ZmYgKnNrYik7DQogdm9pZCBtdDc5MTVfbWN1X2V4
-aXQoc3RydWN0IG10NzkxNV9kZXYgKmRldik7DQogDQotLSANCjIuMTguMA0K
+Fix the following coccicheck warning:
+
+drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c:3773:5-8:
+Unneeded variable: "err". Return "0" on line 3781
+
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: Jason Yan <yanaijie@huawei.com>
+---
+ drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
+
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c
+index 7f2c15c799d2..d88f8d456b94 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c
+@@ -3768,17 +3768,14 @@ static void brcms_c_set_ps_ctrl(struct brcms_c_info *wlc)
+  * Write this BSS config's MAC address to core.
+  * Updates RXE match engine.
+  */
+-static int brcms_c_set_mac(struct brcms_bss_cfg *bsscfg)
++static void brcms_c_set_mac(struct brcms_bss_cfg *bsscfg)
+ {
+-	int err = 0;
+ 	struct brcms_c_info *wlc = bsscfg->wlc;
+ 
+ 	/* enter the MAC addr into the RXE match registers */
+ 	brcms_c_set_addrmatch(wlc, RCM_MAC_OFFSET, wlc->pub->cur_etheraddr);
+ 
+ 	brcms_c_ampdu_macaddr_upd(wlc);
+-
+-	return err;
+ }
+ 
+ /* Write the BSS config's BSSID address to core (set_bssid in d11procs.tcl).
+-- 
+2.17.2
 
