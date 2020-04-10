@@ -1,59 +1,84 @@
 Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 553AE1B1AD1
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Apr 2020 02:40:30 +0200 (CEST)
+Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
+	by mail.lfdr.de (Postfix) with ESMTP id D3ADA1A40E5
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 Apr 2020 06:15:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726201AbgDUAk3 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 20 Apr 2020 20:40:29 -0400
-Received: from unallocated-static.datacentres.rogers.com ([72.142.144.38]:58656
-        "EHLO smartermail2" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726055AbgDUAk3 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 20 Apr 2020 20:40:29 -0400
-Received: from coris.com (UnknownHost [103.207.36.17]) by smartermail2 with SMTP;
-   Thu, 9 Apr 2020 23:32:25 -0400
-Reply-To: kentpace@sina.com
-From:   Kent Pace <kentpace@coris.com>
-To:     linux-wireless@vger.kernel.org
-Subject: Urgent!!!!! Please read
-Date:   09 Apr 2020 20:32:21 -0700
-Message-ID: <20200409203221.ECB3EBF908B41F18@coris.com>
+        id S1726718AbgDJDqm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 9 Apr 2020 23:46:42 -0400
+Received: from mail.kernel.org ([198.145.29.99]:56612 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726082AbgDJDqk (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 9 Apr 2020 23:46:40 -0400
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 59F4620BED;
+        Fri, 10 Apr 2020 03:46:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1586490400;
+        bh=veCBmgdRybGO47FNkFF3zVpn19J+P2jgtZGRswXSyFg=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=grMnufgF/5rJDnhlgTHbr6X8mVDtQE+5ejGB+douOLT9mqr5UWg9DLkMMXwx9Yy7i
+         xnZp8bIkODz64Mn9eIFNduUe2GfW/z+VX9LWrRZIPCTFRCeb+hi8nDPV/y9ttPQ/uT
+         JcIZpXpAPxxAzUMVQtqo/yTWO+4FhHRz/YAt5Y6k=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Ajay Singh <ajay.kathat@microchip.com>,
+        kbuild test robot <lkp@intel.com>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Sasha Levin <sashal@kernel.org>,
+        linux-wireless@vger.kernel.org, devel@driverdev.osuosl.org
+Subject: [PATCH AUTOSEL 5.6 04/68] staging: wilc1000: avoid double unlocking of 'wilc->hif_cs' mutex
+Date:   Thu,  9 Apr 2020 23:45:29 -0400
+Message-Id: <20200410034634.7731-4-sashal@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20200410034634.7731-1-sashal@kernel.org>
+References: <20200410034634.7731-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="utf-8"
-Content-Transfer-Encoding: 8BIT
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Dear Friend,
+From: Ajay Singh <ajay.kathat@microchip.com>
 
+[ Upstream commit 6c411581caef6e3b2c286871641018364c6db50a ]
 
-There is something very important I need to discuss with you.  I 
-am writing  this letter in tears and fear. In tears because I 
-will soon depart and in fear because I don't really know if you 
-will do this faithfully.
+Possible double unlocking of 'wilc->hif_cs' mutex was identified by
+smatch [1]. Removed the extra call to release_bus() in
+wilc_wlan_handle_txq() which was missed in earlier commit fdc2ac1aafc6
+("staging: wilc1000: support suspend/resume functionality").
 
+[1]. https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org/thread/NOEVW7C3GV74EWXJO3XX6VT2NKVB2HMT/
 
-I am COVID-19  patient and the doctor has already confirmed I may 
-not last for the next 7 days.
+Reported-by: kbuild test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
+Signed-off-by: Ajay Singh <ajay.kathat@microchip.com>
+Link: https://lore.kernel.org/r/20200221170120.15739-1-ajay.kathat@microchip.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/staging/wilc1000/wlan.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-I have substantial amount of money deposited in a security vault 
-around your country. It is in trunk boxes and once  I receive 
-your response and see your readiness to claim the money 
-immediately, I will forward the needed documents and the contact 
-of the security vault where the consignment is deposited,
-I am not asking you to give me anything but I want you to help 
-people that has been infected with this deadly virus with 60% of 
-the money and 40% should be for you and your family.
-
-I will disclose exact amount in the boxes as soon as I 
-receive your response.
-
-
-Regards
+diff --git a/drivers/staging/wilc1000/wlan.c b/drivers/staging/wilc1000/wlan.c
+index 601e4d1345d24..05b8adfe001da 100644
+--- a/drivers/staging/wilc1000/wlan.c
++++ b/drivers/staging/wilc1000/wlan.c
+@@ -572,7 +572,6 @@ int wilc_wlan_handle_txq(struct wilc *wilc, u32 *txq_count)
+ 				entries = ((reg >> 3) & 0x3f);
+ 				break;
+ 			}
+-			release_bus(wilc, WILC_BUS_RELEASE_ALLOW_SLEEP);
+ 		} while (--timeout);
+ 		if (timeout <= 0) {
+ 			ret = func->hif_write_reg(wilc, WILC_HOST_VMM_CTL, 0x0);
+-- 
+2.20.1
 
