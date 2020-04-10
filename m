@@ -2,34 +2,29 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A26841A4442
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 Apr 2020 11:10:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B94761A4445
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 Apr 2020 11:10:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725955AbgDJJJy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 10 Apr 2020 05:09:54 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:12639 "EHLO huawei.com"
+        id S1726184AbgDJJKa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 10 Apr 2020 05:10:30 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:12710 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725897AbgDJJJy (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 10 Apr 2020 05:09:54 -0400
-Received: from DGGEMS407-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id 58F9DD4A46EC7164605F;
-        Fri, 10 Apr 2020 17:09:53 +0800 (CST)
-Received: from huawei.com (10.175.124.28) by DGGEMS407-HUB.china.huawei.com
- (10.3.19.207) with Microsoft SMTP Server id 14.3.487.0; Fri, 10 Apr 2020
- 17:09:44 +0800
+        id S1725897AbgDJJK3 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 10 Apr 2020 05:10:29 -0400
+Received: from DGGEMS410-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id 60B0593A56FBF5BABBF2;
+        Fri, 10 Apr 2020 17:10:28 +0800 (CST)
+Received: from huawei.com (10.175.124.28) by DGGEMS410-HUB.china.huawei.com
+ (10.3.19.210) with Microsoft SMTP Server id 14.3.487.0; Fri, 10 Apr 2020
+ 17:10:18 +0800
 From:   Jason Yan <yanaijie@huawei.com>
-To:     <arend.vanspriel@broadcom.com>, <franky.lin@broadcom.com>,
-        <hante.meuleman@broadcom.com>, <chi-hsien.lin@cypress.com>,
-        <wright.feng@cypress.com>, <kvalo@codeaurora.org>,
-        <davem@davemloft.net>, <eduardoabinader@gmail.com>,
-        <christophe.jaillet@wanadoo.fr>, <yanaijie@huawei.com>,
-        <austindh.kim@gmail.com>, <linux-wireless@vger.kernel.org>,
-        <brcm80211-dev-list.pdl@broadcom.com>,
-        <brcm80211-dev-list@cypress.com>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: [PATCH] brcmsmac: make brcms_c_set_mac() void
-Date:   Fri, 10 Apr 2020 17:08:17 +0800
-Message-ID: <20200410090817.26883-1-yanaijie@huawei.com>
+To:     <stas.yakovlev@gmail.com>, <kvalo@codeaurora.org>,
+        <davem@davemloft.net>, <linux-wireless@vger.kernel.org>,
+        <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC:     Jason Yan <yanaijie@huawei.com>
+Subject: [PATCH] ipw2x00: make ipw_qos_association_resp() void
+Date:   Fri, 10 Apr 2020 17:08:50 +0800
+Message-ID: <20200410090850.27025-1-yanaijie@huawei.com>
 X-Mailer: git-send-email 2.17.2
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -42,38 +37,56 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 Fix the following coccicheck warning:
 
-drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c:3773:5-8:
-Unneeded variable: "err". Return "0" on line 3781
+drivers/net/wireless/intel/ipw2x00/ipw2200.c:7048:5-8: Unneeded
+variable: "ret". Return "0" on line 7055
 
 Reported-by: Hulk Robot <hulkci@huawei.com>
 Signed-off-by: Jason Yan <yanaijie@huawei.com>
 ---
- drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/net/wireless/intel/ipw2x00/ipw2200.c | 11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c
-index 7f2c15c799d2..d88f8d456b94 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c
-@@ -3768,17 +3768,14 @@ static void brcms_c_set_ps_ctrl(struct brcms_c_info *wlc)
-  * Write this BSS config's MAC address to core.
-  * Updates RXE match engine.
-  */
--static int brcms_c_set_mac(struct brcms_bss_cfg *bsscfg)
-+static void brcms_c_set_mac(struct brcms_bss_cfg *bsscfg)
+diff --git a/drivers/net/wireless/intel/ipw2x00/ipw2200.c b/drivers/net/wireless/intel/ipw2x00/ipw2200.c
+index 60b5e08dd6df..201a1eb0e2f6 100644
+--- a/drivers/net/wireless/intel/ipw2x00/ipw2200.c
++++ b/drivers/net/wireless/intel/ipw2x00/ipw2200.c
+@@ -7042,23 +7042,22 @@ static int ipw_qos_association(struct ipw_priv *priv,
+ * off the network from the associated setting, adjust the QoS
+ * setting
+ */
+-static int ipw_qos_association_resp(struct ipw_priv *priv,
++static void ipw_qos_association_resp(struct ipw_priv *priv,
+ 				    struct libipw_network *network)
  {
--	int err = 0;
- 	struct brcms_c_info *wlc = bsscfg->wlc;
+-	int ret = 0;
+ 	unsigned long flags;
+ 	u32 size = sizeof(struct libipw_qos_parameters);
+ 	int set_qos_param = 0;
  
- 	/* enter the MAC addr into the RXE match registers */
- 	brcms_c_set_addrmatch(wlc, RCM_MAC_OFFSET, wlc->pub->cur_etheraddr);
+ 	if ((priv == NULL) || (network == NULL) ||
+ 	    (priv->assoc_network == NULL))
+-		return ret;
++		return;
  
- 	brcms_c_ampdu_macaddr_upd(wlc);
+ 	if (!(priv->status & STATUS_ASSOCIATED))
+-		return ret;
++		return;
+ 
+ 	if ((priv->ieee->iw_mode != IW_MODE_INFRA))
+-		return ret;
++		return;
+ 
+ 	spin_lock_irqsave(&priv->ieee->lock, flags);
+ 	if (network->flags & NETWORK_HAS_QOS_PARAMETERS) {
+@@ -7088,8 +7087,6 @@ static int ipw_qos_association_resp(struct ipw_priv *priv,
+ 
+ 	if (set_qos_param == 1)
+ 		schedule_work(&priv->qos_activate);
 -
--	return err;
+-	return ret;
  }
  
- /* Write the BSS config's BSSID address to core (set_bssid in d11procs.tcl).
+ static u32 ipw_qos_get_burst_duration(struct ipw_priv *priv)
 -- 
 2.17.2
 
