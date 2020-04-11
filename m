@@ -2,191 +2,298 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B0B941A4F80
-	for <lists+linux-wireless@lfdr.de>; Sat, 11 Apr 2020 13:09:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 664E71A5370
+	for <lists+linux-wireless@lfdr.de>; Sat, 11 Apr 2020 20:44:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726171AbgDKLJN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 11 Apr 2020 07:09:13 -0400
-Received: from mail-il1-f197.google.com ([209.85.166.197]:33145 "EHLO
-        mail-il1-f197.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726054AbgDKLJM (ORCPT
+        id S1726565AbgDKSoN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 11 Apr 2020 14:44:13 -0400
+Received: from mail-wr1-f65.google.com ([209.85.221.65]:45482 "EHLO
+        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726129AbgDKSoN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 11 Apr 2020 07:09:12 -0400
-Received: by mail-il1-f197.google.com with SMTP id o17so5041361ilm.0
-        for <linux-wireless@vger.kernel.org>; Sat, 11 Apr 2020 04:09:12 -0700 (PDT)
+        Sat, 11 Apr 2020 14:44:13 -0400
+Received: by mail-wr1-f65.google.com with SMTP id v5so5789433wrp.12
+        for <linux-wireless@vger.kernel.org>; Sat, 11 Apr 2020 11:44:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=to:cc:from:subject:message-id:date:user-agent:mime-version
+         :content-language:content-transfer-encoding;
+        bh=qbAmXv4gkYEwPnYlm13uMGO26cFv1d8KW0uIxq26NJw=;
+        b=cvQQAS+swf3auT6zitPbY5XWfGIw7RnfYp7Dxseu021Xf/hURAnd731xd6ByMxVnE5
+         /5JE3mSQS8GZFCkAnWFNrpEVii3xArS3junVB5xXvd5RWMHqI30ucHBOkxnQhvD4str+
+         b8dJw9J+/lnsUfEEEa70oCPkucQ1/bCFEX6Jv2tpK3abJC0WkuwIE8J1g1xqODSdbdg5
+         6ZHLpCVQqfxPz9470trQqSuzHZYuD2Y7wV5G1XJOCgg8VCc8olFqUZi4HI2q3CHyge97
+         Jp5ezl1AQAnqiupfowBmEd6r1tjn+CWmZxK1hP3aEXPADSrwMwthS2V87qUOfeEsMyTa
+         cKWQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
-        bh=ZKqkKshdGEkt/3Yxs52uQA/cTeUPVNrJo21GVj08594=;
-        b=EYehwX+TCMhzju4OFUFW+0jgPZNU4Yba9M697tV1b34FsPHINjP4lT5vdIls8dIMsC
-         pW4PF54DaN4poKSnEw8SmD++JGIQdl3ukeJnn9ztCG/BUKFtcW+askrpcuAob7HA4nGH
-         ATA37u+b3lovPHMTjyg2E9hKH4Opi4YMlw2fEBDn54mijELSJcFYOv8Bi83u4zPWDcjj
-         z3Y423uAQcxszj5WPFF+PW5y4U0k/neAjUxaKqGLFrnNo4FF0ZUbWeBggvHRHU9CDTNt
-         D9io0WLqWXvvprNqx2p1G2yV586A5XrBzs7YJUO1DUqSwQAKQCAmYqM9efcFdJojL6BT
-         ZnSg==
-X-Gm-Message-State: AGi0PubvVsAKXbW990hoVabpdd/RRr/8Yxo9W/OhZxIM6BPGGlMsXHmB
-        ljJHO4WA2/8SNs4XVB3NtZfxaq2LEYCf79qMowMy8i0CWQsI
-X-Google-Smtp-Source: APiQypJBVyDYo+1JXCWO0fvjWsORi6tIgTf/TbJw7VxKhJxlMdEr5AGwrH2ayhYPdC/PHEsrPH/kuJCkpAXiuLodt1dxue/5YpFU
+        h=x-gm-message-state:to:cc:from:subject:message-id:date:user-agent
+         :mime-version:content-language:content-transfer-encoding;
+        bh=qbAmXv4gkYEwPnYlm13uMGO26cFv1d8KW0uIxq26NJw=;
+        b=IFW+dTi9vqYFGRt2DQk26zNl7CPR3HaxklRUkoF8zN4F/ZQVlGoMfwFNrhQmRjCLAf
+         smoGSQ7AJVg30mDVb23Ir8UJrpl9Hp8mj/6BS0acdpXJU7Lg5zMDV7TXqTJK2qXnWsCL
+         AG3uxMIZVtqHYXF9TgkmifyzsZGPNHn/4CvPlpLg54dLv7xQrzvlg1EhF9KO/JurFzce
+         Is2ArbNM+V8PUP98w3z5t1wHVrrUW7bAGsFvxoXFASyE28i8tSwG5Wxhw0wc+73JXoqx
+         ziC/C42SaFfnvruY5WfEI+Sf79Szx0LuMmJ2ZkJozmzDuCrvIDMrp34m+ebPor7Vr7Kg
+         862Q==
+X-Gm-Message-State: AGi0PuauCrNsB52WIYZLv0xv1h5wx/G5ioqBdPKIVceggn9l6ymEBuxh
+        33elZyRlCCK84+dHxbakpgU=
+X-Google-Smtp-Source: APiQypJ3zKSW2SWMJsrR6BbvGffixQ66eGbsiimoQxdXQw1I4Iew0RnzUW2XkmuNLPKkVqHQ49Zp+A==
+X-Received: by 2002:a5d:4748:: with SMTP id o8mr10538702wrs.422.1586630651762;
+        Sat, 11 Apr 2020 11:44:11 -0700 (PDT)
+Received: from [192.168.43.18] (94.197.121.102.threembb.co.uk. [94.197.121.102])
+        by smtp.gmail.com with ESMTPSA id y1sm8592049wmd.14.2020.04.11.11.44.10
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 11 Apr 2020 11:44:11 -0700 (PDT)
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>,
+        linux-wireless@vger.kernel.org, Oscar Carter <oscar.carter@gmx.com>
+From:   Malcolm Priestley <tvboxspy@gmail.com>
+Subject:  [PATCH] staging: vt6656: formulate rspinf values into tables
+Message-ID: <311b59f0-4098-b5a1-6a50-53568b81377c@gmail.com>
+Date:   Sat, 11 Apr 2020 19:44:09 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-X-Received: by 2002:a92:250e:: with SMTP id l14mr9114611ill.201.1586603352271;
- Sat, 11 Apr 2020 04:09:12 -0700 (PDT)
-Date:   Sat, 11 Apr 2020 04:09:12 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <00000000000036317b05a301e1e4@google.com>
-Subject: KASAN: use-after-free Read in ath9k_htc_txcompletion_cb
-From:   syzbot <syzbot+809d3bdcdb4650cdbc83@syzkaller.appspotmail.com>
-To:     andreyknvl@google.com, ath9k-devel@qca.qualcomm.com,
-        davem@davemloft.net, kvalo@codeaurora.org,
-        linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
+Four tables can be extracted from RSPINF_A_* based on BB_TYPE_11A or
+else being GB rates.
 
-syzbot found the following crash on:
+Preamble short or long tables from fixed size len of 14 for RSPINF_B rates.
 
-HEAD commit:    0fa84af8 Merge tag 'usb-serial-5.7-rc1' of https://git.ker..
-git tree:       https://github.com/google/kasan.git usb-fuzzer
-console output: https://syzkaller.appspot.com/x/log.txt?x=10af83b3e00000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=6b9c154b0c23aecf
-dashboard link: https://syzkaller.appspot.com/bug?extid=809d3bdcdb4650cdbc83
-compiler:       gcc (GCC) 9.0.0 20181231 (experimental)
+Remove function vnt_calculate_ofdm_rate and replace with the tables
+calling RSPINF_A and RSPINF_B separately.
 
-Unfortunately, I don't have any reproducer for this crash yet.
-
-IMPORTANT: if you fix the bug, please add the following tag to the commit:
-Reported-by: syzbot+809d3bdcdb4650cdbc83@syzkaller.appspotmail.com
-
-==================================================================
-BUG: KASAN: use-after-free in ath9k_htc_txcompletion_cb+0x285/0x2b0 drivers/net/wireless/ath/ath9k/htc_hst.c:341
-Read of size 8 at addr ffff8881d1caf488 by task kworker/0:0/24267
-
-CPU: 0 PID: 24267 Comm: kworker/0:0 Not tainted 5.6.0-rc7-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
-Workqueue: events request_firmware_work_func
-Call Trace:
- <IRQ>
- __dump_stack lib/dump_stack.c:77 [inline]
- dump_stack+0xef/0x16e lib/dump_stack.c:118
- print_address_description.constprop.0.cold+0xd3/0x314 mm/kasan/report.c:374
- __kasan_report.cold+0x37/0x77 mm/kasan/report.c:506
- kasan_report+0xe/0x20 mm/kasan/common.c:641
- ath9k_htc_txcompletion_cb+0x285/0x2b0 drivers/net/wireless/ath/ath9k/htc_hst.c:341
- hif_usb_regout_cb+0x10b/0x1b0 drivers/net/wireless/ath/ath9k/hif_usb.c:90
- __usb_hcd_giveback_urb+0x1f2/0x470 drivers/usb/core/hcd.c:1648
- usb_hcd_giveback_urb+0x368/0x420 drivers/usb/core/hcd.c:1713
- dummy_timer+0x1258/0x32ae drivers/usb/gadget/udc/dummy_hcd.c:1966
- call_timer_fn+0x195/0x6f0 kernel/time/timer.c:1404
- expire_timers kernel/time/timer.c:1449 [inline]
- __run_timers kernel/time/timer.c:1773 [inline]
- __run_timers kernel/time/timer.c:1740 [inline]
- run_timer_softirq+0x5f9/0x1500 kernel/time/timer.c:1786
- __do_softirq+0x21e/0x950 kernel/softirq.c:292
- invoke_softirq kernel/softirq.c:373 [inline]
- irq_exit+0x178/0x1a0 kernel/softirq.c:413
- exiting_irq arch/x86/include/asm/apic.h:546 [inline]
- smp_apic_timer_interrupt+0x141/0x540 arch/x86/kernel/apic/apic.c:1146
- apic_timer_interrupt+0xf/0x20 arch/x86/entry/entry_64.S:829
- </IRQ>
-RIP: 0010:arch_local_irq_restore arch/x86/include/asm/irqflags.h:85 [inline]
-RIP: 0010:console_unlock+0xa6b/0xca0 kernel/printk/printk.c:2481
-Code: 00 89 ee 48 c7 c7 60 3e 14 87 e8 10 c3 03 00 65 ff 0d c1 ed d8 7e e9 b5 f9 ff ff e8 0f 37 16 00 e8 0a 7f 1b 00 ff 74 24 30 9d <e9> fd fd ff ff e8 fb 36 16 00 48 8d 7d 08 48 89 f8 48 c1 e8 03 42
-RSP: 0018:ffff8881d9227a50 EFLAGS: 00000293 ORIG_RAX: ffffffffffffff13
-RAX: 0000000000000007 RBX: 0000000000000200 RCX: 0000000000000006
-RDX: 0000000000000000 RSI: 0000000000000008 RDI: ffff8881aba6d1cc
-RBP: 0000000000000000 R08: ffff8881aba6c980 R09: fffffbfff1266485
-R10: fffffbfff1266484 R11: ffffffff89332427 R12: ffffffff82a092b0
-R13: ffffffff874d3950 R14: 0000000000000057 R15: dffffc0000000000
- vprintk_emit+0x171/0x3d0 kernel/printk/printk.c:1996
- vprintk_func+0x75/0x113 kernel/printk/printk_safe.c:386
- printk+0xba/0xed kernel/printk/printk.c:2056
- ath9k_htc_hw_init.cold+0x17/0x2a drivers/net/wireless/ath/ath9k/htc_hst.c:502
- ath9k_hif_usb_firmware_cb+0x26b/0x500 drivers/net/wireless/ath/ath9k/hif_usb.c:1187
- request_firmware_work_func+0x126/0x242 drivers/base/firmware_loader/main.c:976
- process_one_work+0x94b/0x1620 kernel/workqueue.c:2266
- worker_thread+0x96/0xe20 kernel/workqueue.c:2412
- kthread+0x318/0x420 kernel/kthread.c:255
- ret_from_fork+0x24/0x30 arch/x86/entry/entry_64.S:352
-
-Allocated by task 24267:
- save_stack+0x1b/0x80 mm/kasan/common.c:72
- set_track mm/kasan/common.c:80 [inline]
- __kasan_kmalloc mm/kasan/common.c:515 [inline]
- __kasan_kmalloc.constprop.0+0xbf/0xd0 mm/kasan/common.c:488
- slab_post_alloc_hook mm/slab.h:584 [inline]
- slab_alloc_node mm/slub.c:2786 [inline]
- kmem_cache_alloc_node+0xdc/0x330 mm/slub.c:2822
- __alloc_skb+0xba/0x5a0 net/core/skbuff.c:198
- alloc_skb include/linux/skbuff.h:1081 [inline]
- htc_connect_service+0x2cc/0x840 drivers/net/wireless/ath/ath9k/htc_hst.c:257
- ath9k_wmi_connect+0xd2/0x1a0 drivers/net/wireless/ath/ath9k/wmi.c:265
- ath9k_init_htc_services.constprop.0+0xb4/0x650 drivers/net/wireless/ath/ath9k/htc_drv_init.c:146
- ath9k_htc_probe_device+0x25a/0x1d80 drivers/net/wireless/ath/ath9k/htc_drv_init.c:959
- ath9k_htc_hw_init+0x31/0x60 drivers/net/wireless/ath/ath9k/htc_hst.c:501
- ath9k_hif_usb_firmware_cb+0x26b/0x500 drivers/net/wireless/ath/ath9k/hif_usb.c:1187
- request_firmware_work_func+0x126/0x242 drivers/base/firmware_loader/main.c:976
- process_one_work+0x94b/0x1620 kernel/workqueue.c:2266
- worker_thread+0x96/0xe20 kernel/workqueue.c:2412
- kthread+0x318/0x420 kernel/kthread.c:255
- ret_from_fork+0x24/0x30 arch/x86/entry/entry_64.S:352
-
-Freed by task 24267:
- save_stack+0x1b/0x80 mm/kasan/common.c:72
- set_track mm/kasan/common.c:80 [inline]
- kasan_set_free_info mm/kasan/common.c:337 [inline]
- __kasan_slab_free+0x117/0x160 mm/kasan/common.c:476
- slab_free_hook mm/slub.c:1444 [inline]
- slab_free_freelist_hook mm/slub.c:1477 [inline]
- slab_free mm/slub.c:3034 [inline]
- kmem_cache_free+0x9b/0x360 mm/slub.c:3050
- kfree_skbmem net/core/skbuff.c:622 [inline]
- kfree_skbmem+0xef/0x1b0 net/core/skbuff.c:616
- __kfree_skb net/core/skbuff.c:679 [inline]
- kfree_skb net/core/skbuff.c:696 [inline]
- kfree_skb+0x102/0x3d0 net/core/skbuff.c:690
- htc_connect_service.cold+0xa9/0x109 drivers/net/wireless/ath/ath9k/htc_hst.c:282
- ath9k_wmi_connect+0xd2/0x1a0 drivers/net/wireless/ath/ath9k/wmi.c:265
- ath9k_init_htc_services.constprop.0+0xb4/0x650 drivers/net/wireless/ath/ath9k/htc_drv_init.c:146
- ath9k_htc_probe_device+0x25a/0x1d80 drivers/net/wireless/ath/ath9k/htc_drv_init.c:959
- ath9k_htc_hw_init+0x31/0x60 drivers/net/wireless/ath/ath9k/htc_hst.c:501
- ath9k_hif_usb_firmware_cb+0x26b/0x500 drivers/net/wireless/ath/ath9k/hif_usb.c:1187
- request_firmware_work_func+0x126/0x242 drivers/base/firmware_loader/main.c:976
- process_one_work+0x94b/0x1620 kernel/workqueue.c:2266
- worker_thread+0x96/0xe20 kernel/workqueue.c:2412
- kthread+0x318/0x420 kernel/kthread.c:255
- ret_from_fork+0x24/0x30 arch/x86/entry/entry_64.S:352
-
-The buggy address belongs to the object at ffff8881d1caf3c0
- which belongs to the cache skbuff_head_cache of size 224
-The buggy address is located 200 bytes inside of
- 224-byte region [ffff8881d1caf3c0, ffff8881d1caf4a0)
-The buggy address belongs to the page:
-page:ffffea0007472bc0 refcount:1 mapcount:0 mapping:ffff8881da16b400 index:0xffff8881d1caf280
-flags: 0x200000000000200(slab)
-raw: 0200000000000200 ffffea00074473c0 0000000900000009 ffff8881da16b400
-raw: ffff8881d1caf280 00000000800c000b 00000001ffffffff 0000000000000000
-page dumped because: kasan: bad access detected
-
-Memory state around the buggy address:
- ffff8881d1caf380: fc fc fc fc fc fc fc fc fb fb fb fb fb fb fb fb
- ffff8881d1caf400: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
->ffff8881d1caf480: fb fb fb fb fc fc fc fc fc fc fc fc fc fc fc fc
-                      ^
- ffff8881d1caf500: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
- ffff8881d1caf580: fb fb fb fb fb fb fb fb fb fb fb fb fc fc fc fc
-==================================================================
-
-
+Signed-off-by: Malcolm Priestley <tvboxspy@gmail.com>
 ---
-This bug is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+ drivers/staging/vt6656/card.c | 196 +++++++---------------------------
+ 1 file changed, 40 insertions(+), 156 deletions(-)
 
-syzbot will keep track of this bug report. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+diff --git a/drivers/staging/vt6656/card.c b/drivers/staging/vt6656/card.c
+index 82c775bd20d2..dedb343f3ef3 100644
+--- a/drivers/staging/vt6656/card.c
++++ b/drivers/staging/vt6656/card.c
+@@ -74,99 +74,25 @@ void vnt_set_channel(struct vnt_private *priv, u32 connection_channel)
+ 			   (u8)(connection_channel | 0x80));
+ }
+ 
+-/*
+- * Description: Calculate TxRate and RsvTime fields for RSPINF in OFDM mode.
+- *
+- * Parameters:
+- * In:
+- *	rate	- Tx Rate
+- *	bb_type	- Tx Packet type
+- * Out:
+- *	tx_rate	- pointer to RSPINF TxRate field
+- *	rsv_time- pointer to RSPINF RsvTime field
+- *
+- * Return Value: none
+- *
+- */
+-static void vnt_calculate_ofdm_rate(u16 rate, u8 bb_type,
+-				    u8 *tx_rate, u8 *rsv_time)
+-{
+-	switch (rate) {
+-	case RATE_6M:
+-		if (bb_type == BB_TYPE_11A) {
+-			*tx_rate = 0x9b;
+-			*rsv_time = 24;
+-		} else {
+-			*tx_rate = 0x8b;
+-			*rsv_time = 30;
+-		}
+-		break;
+-	case RATE_9M:
+-		if (bb_type == BB_TYPE_11A) {
+-			*tx_rate = 0x9f;
+-			*rsv_time = 16;
+-		} else {
+-			*tx_rate = 0x8f;
+-			*rsv_time = 22;
+-		}
+-		break;
+-	case RATE_12M:
+-		if (bb_type == BB_TYPE_11A) {
+-			*tx_rate = 0x9a;
+-			*rsv_time = 12;
+-		} else {
+-			*tx_rate = 0x8a;
+-			*rsv_time = 18;
+-		}
+-		break;
+-	case RATE_18M:
+-		if (bb_type == BB_TYPE_11A) {
+-			*tx_rate = 0x9e;
+-			*rsv_time = 8;
+-		} else {
+-			*tx_rate = 0x8e;
+-			*rsv_time = 14;
+-		}
+-		break;
+-	case RATE_36M:
+-		if (bb_type == BB_TYPE_11A) {
+-			*tx_rate = 0x9d;
+-			*rsv_time = 4;
+-		} else {
+-			*tx_rate = 0x8d;
+-			*rsv_time = 10;
+-		}
+-		break;
+-	case RATE_48M:
+-		if (bb_type == BB_TYPE_11A) {
+-			*tx_rate = 0x98;
+-			*rsv_time = 4;
+-		} else {
+-			*tx_rate = 0x88;
+-			*rsv_time = 10;
+-		}
+-		break;
+-	case RATE_54M:
+-		if (bb_type == BB_TYPE_11A) {
+-			*tx_rate = 0x9c;
+-			*rsv_time = 4;
+-		} else {
+-			*tx_rate = 0x8c;
+-			*rsv_time = 10;
+-		}
+-		break;
+-	case RATE_24M:
+-	default:
+-		if (bb_type == BB_TYPE_11A) {
+-			*tx_rate = 0x99;
+-			*rsv_time = 8;
+-		} else {
+-			*tx_rate = 0x89;
+-			*rsv_time = 14;
+-		}
+-		break;
+-	}
+-}
++static const u8 vnt_rspinf_b_short_table[] = {
++	0x70, 0x00, 0x00, 0x00, 0x38, 0x00, 0x09, 0x00,
++	0x15, 0x00, 0x0a, 0x00, 0x0b, 0x00, 0x0b, 0x80
++};
++
++static const u8 vnt_rspinf_b_long_table[] = {
++	0x70, 0x00, 0x00, 0x00, 0x38, 0x00, 0x01, 0x00,
++	0x15, 0x00, 0x02, 0x00, 0x0b, 0x00, 0x03, 0x80
++};
++
++static const u8 vnt_rspinf_a_table[] = {
++	0x9b, 0x1e, 0x9f, 0x16, 0x9a, 0x12, 0x9e, 0x0e, 0x99,
++	0x0e, 0x9d, 0x0a, 0x98, 0x0a, 0x9c, 0x0a, 0x9c, 0x0a
++};
++
++static const u8 vnt_rspinf_gb_table[] = {
++	0x8b, 0x1e, 0x8f, 0x16, 0x8a, 0x12, 0x8e, 0x0e, 0x89,
++	0x0e, 0x8d, 0x0a, 0x88, 0x0a, 0x8c, 0x0a, 0x8c, 0x0a
++};
+ 
+ /*
+  * Description: Set RSPINF
+@@ -183,74 +109,32 @@ static void vnt_calculate_ofdm_rate(u16 rate, u8 bb_type,
+ 
+ void vnt_set_rspinf(struct vnt_private *priv, u8 bb_type)
+ {
+-	struct vnt_phy_field phy[4];
+-	u8 tx_rate[9] = {0, 0, 0, 0, 0, 0, 0, 0, 0}; /* For OFDM */
+-	u8 rsv_time[9] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
+-	u8 data[34];
+-	int i;
+-
+-	/*RSPINF_b_1*/
+-	vnt_get_phy_field(priv, 14, RATE_1M, PK_TYPE_11B, &phy[0]);
+-
+-	/*RSPINF_b_2*/
+-	vnt_get_phy_field(priv, 14, RATE_2M, PK_TYPE_11B, &phy[1]);
+-
+-	/*RSPINF_b_5*/
+-	vnt_get_phy_field(priv, 14, RATE_5M, PK_TYPE_11B, &phy[2]);
+-
+-	/*RSPINF_b_11*/
+-	vnt_get_phy_field(priv, 14, RATE_11M, PK_TYPE_11B, &phy[3]);
+-
+-	/*RSPINF_a_6*/
+-	vnt_calculate_ofdm_rate(RATE_6M, bb_type, &tx_rate[0], &rsv_time[0]);
++	const u8 *data;
++	u16 len;
+ 
+-	/*RSPINF_a_9*/
+-	vnt_calculate_ofdm_rate(RATE_9M, bb_type, &tx_rate[1], &rsv_time[1]);
+-
+-	/*RSPINF_a_12*/
+-	vnt_calculate_ofdm_rate(RATE_12M, bb_type, &tx_rate[2], &rsv_time[2]);
+-
+-	/*RSPINF_a_18*/
+-	vnt_calculate_ofdm_rate(RATE_18M, bb_type, &tx_rate[3], &rsv_time[3]);
+-
+-	/*RSPINF_a_24*/
+-	vnt_calculate_ofdm_rate(RATE_24M, bb_type, &tx_rate[4], &rsv_time[4]);
+-
+-	/*RSPINF_a_36*/
+-	vnt_calculate_ofdm_rate(RATE_36M, bb_type, &tx_rate[5], &rsv_time[5]);
+-
+-	/*RSPINF_a_48*/
+-	vnt_calculate_ofdm_rate(RATE_48M, bb_type, &tx_rate[6], &rsv_time[6]);
+-
+-	/*RSPINF_a_54*/
+-	vnt_calculate_ofdm_rate(RATE_54M, bb_type, &tx_rate[7], &rsv_time[7]);
+-
+-	/*RSPINF_a_72*/
+-	vnt_calculate_ofdm_rate(RATE_54M, bb_type, &tx_rate[8], &rsv_time[8]);
+-
+-	put_unaligned(phy[0].len, (u16 *)&data[0]);
+-	data[2] = phy[0].signal;
+-	data[3] = phy[0].service;
+-
+-	put_unaligned(phy[1].len, (u16 *)&data[4]);
+-	data[6] = phy[1].signal;
+-	data[7] = phy[1].service;
+-
+-	put_unaligned(phy[2].len, (u16 *)&data[8]);
+-	data[10] = phy[2].signal;
+-	data[11] = phy[2].service;
++	if (priv->preamble_type) {
++		data = vnt_rspinf_b_short_table;
++		len = ARRAY_SIZE(vnt_rspinf_b_short_table);
++	} else {
++		data = vnt_rspinf_b_long_table;
++		len = ARRAY_SIZE(vnt_rspinf_b_long_table);
++	}
+ 
+-	put_unaligned(phy[3].len, (u16 *)&data[12]);
+-	data[14] = phy[3].signal;
+-	data[15] = phy[3].service;
++	 /* RSPINF_b_1 to RSPINF_b_11 */
++	vnt_control_out(priv, MESSAGE_TYPE_WRITE, MAC_REG_RSPINF_B_1,
++			MESSAGE_REQUEST_MACREG, len, data);
+ 
+-	for (i = 0; i < 9; i++) {
+-		data[16 + i * 2] = tx_rate[i];
+-		data[16 + i * 2 + 1] = rsv_time[i];
++	if (bb_type == BB_TYPE_11A) {
++		data = vnt_rspinf_a_table;
++		len = ARRAY_SIZE(vnt_rspinf_a_table);
++	} else {
++		data = vnt_rspinf_gb_table;
++		len = ARRAY_SIZE(vnt_rspinf_gb_table);
+ 	}
+ 
+-	vnt_control_out(priv, MESSAGE_TYPE_WRITE, MAC_REG_RSPINF_B_1,
+-			MESSAGE_REQUEST_MACREG, 34, &data[0]);
++	/* RSPINF_a_6 to RSPINF_a_72 */
++	vnt_control_out(priv, MESSAGE_TYPE_WRITE, MAC_REG_RSPINF_A_6,
++			MESSAGE_REQUEST_MACREG, len, data);
+ }
+ 
+ /*
+-- 
+2.25.1
