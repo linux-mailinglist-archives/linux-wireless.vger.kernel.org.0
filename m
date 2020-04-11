@@ -2,37 +2,36 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B54B1A59E8
-	for <lists+linux-wireless@lfdr.de>; Sun, 12 Apr 2020 01:39:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 282AC1A59E0
+	for <lists+linux-wireless@lfdr.de>; Sun, 12 Apr 2020 01:39:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730973AbgDKXjl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 11 Apr 2020 19:39:41 -0400
-Received: from mail.kernel.org ([198.145.29.99]:43576 "EHLO mail.kernel.org"
+        id S1730158AbgDKXja (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 11 Apr 2020 19:39:30 -0400
+Received: from mail.kernel.org ([198.145.29.99]:43694 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728673AbgDKXHe (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 11 Apr 2020 19:07:34 -0400
+        id S1728687AbgDKXHi (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 11 Apr 2020 19:07:38 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 227C3217D8;
-        Sat, 11 Apr 2020 23:07:34 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 9CC5F217D8;
+        Sat, 11 Apr 2020 23:07:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1586646455;
-        bh=MMe46zjI134depEk5VBUTl2isnIxc2CPpdG4qs8lO78=;
+        s=default; t=1586646458;
+        bh=gd10e2c/wzZb0TFnZI+DI1l+5W6eeDsygfka7Ju+dhE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ahFpr0dYlsj6F+e8z9o9fTph3ek3olVA8V4X+F3SIRrhZHFT5jHYytYtQMdfTyDPr
-         yqNZv8rpcDnQE7YymdN9sjIl7+E0t+CdWjFTJYtJwS7v3ABxeVHgRFQTOYOOHgUv/w
-         XAubIh6nmemZ5Csh0unWdlvex1QJ3m7OsA4MsN0U=
+        b=hu3seVpba3gUR6z+KzXDcd4VTEak3KH6BhcbunEU/iYoufppxVR9i+gtvL7J/o/If
+         wTqQpch3exefrM0eVgrhJf1Rx1bQAg3nbRIJ3AjJlVY0AIrEGcvCfXESA4yBJRIRFm
+         Fq0Kk1Tzuc/aT0qte5Gw5wHw1vEp18MOnIgvZo+E=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Brian Norris <briannorris@chromium.org>,
-        Ganapathi Bhat <ganapathi.gbhat@nxp.com>,
+Cc:     Yibo Zhao <yiboz@codeaurora.org>,
         Kalle Valo <kvalo@codeaurora.org>,
-        Sasha Levin <sashal@kernel.org>,
+        Sasha Levin <sashal@kernel.org>, ath10k@lists.infradead.org,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.5 024/121] mwifiex: set needed_headroom, not hard_header_len
-Date:   Sat, 11 Apr 2020 19:05:29 -0400
-Message-Id: <20200411230706.23855-24-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.5 027/121] ath10k: fix not registering airtime of 11a station with WMM disable
+Date:   Sat, 11 Apr 2020 19:05:32 -0400
+Message-Id: <20200411230706.23855-27-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20200411230706.23855-1-sashal@kernel.org>
 References: <20200411230706.23855-1-sashal@kernel.org>
@@ -45,54 +44,43 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Brian Norris <briannorris@chromium.org>
+From: Yibo Zhao <yiboz@codeaurora.org>
 
-[ Upstream commit 9454f7a895b822dd8fb4588fc55fda7c96728869 ]
+[ Upstream commit f9680c75d187f2d5b9288c02f7a432041d4447b4 ]
 
-hard_header_len provides limitations for things like AF_PACKET, such
-that we don't allow transmitting packets smaller than this.
+The tid of 11a station with WMM disable reported by FW is 0x10 in
+tx completion. The tid 16 is mapped to a NULL txq since buffer
+MMPDU capbility is not supported. Then 11a station's airtime will
+not be registered due to NULL txq check. As a results, airtime of
+11a station keeps unchanged in debugfs system.
 
-needed_headroom provides a suggested minimum headroom for SKBs, so that
-we can trivally add our headers to the front.
+Mask the tid along with IEEE80211_QOS_CTL_TID_MASK to make it in
+the valid range.
 
-The latter is the correct field to use in this case, while the former
-mostly just prevents sending small AF_PACKET frames.
+Hardwares tested : QCA9984
+Firmwares tested : 10.4-3.10-00047
 
-In any case, mwifiex already does its own bounce buffering [1] if we
-don't have enough headroom, so hints (not hard limits) are all that are
-needed.
-
-This is the essentially the same bug (and fix) that brcmfmac had, fixed
-in commit cb39288fd6bb ("brcmfmac: use ndev->needed_headroom to reserve
-additional header space").
-
-[1] mwifiex_hard_start_xmit():
-	if (skb_headroom(skb) < MWIFIEX_MIN_DATA_HEADER_LEN) {
-	[...]
-		/* Insufficient skb headroom - allocate a new skb */
-
-Fixes: 5e6e3a92b9a4 ("wireless: mwifiex: initial commit for Marvell mwifiex driver")
-Signed-off-by: Brian Norris <briannorris@chromium.org>
-Acked-by: Ganapathi Bhat <ganapathi.gbhat@nxp.com>
+Signed-off-by: Yibo Zhao <yiboz@codeaurora.org>
 Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/marvell/mwifiex/cfg80211.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath10k/htt_rx.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/cfg80211.c b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-index d896841685008..e63bc15c6e305 100644
---- a/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-+++ b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-@@ -3052,7 +3052,7 @@ struct wireless_dev *mwifiex_add_virtual_intf(struct wiphy *wiphy,
+diff --git a/drivers/net/wireless/ath/ath10k/htt_rx.c b/drivers/net/wireless/ath/ath10k/htt_rx.c
+index d95b63f133abf..c249fbc8d2dd8 100644
+--- a/drivers/net/wireless/ath/ath10k/htt_rx.c
++++ b/drivers/net/wireless/ath/ath10k/htt_rx.c
+@@ -2732,7 +2732,8 @@ static void ath10k_htt_rx_tx_compl_ind(struct ath10k *ar,
+ 			continue;
+ 		}
  
- 	dev->flags |= IFF_BROADCAST | IFF_MULTICAST;
- 	dev->watchdog_timeo = MWIFIEX_DEFAULT_WATCHDOG_TIMEOUT;
--	dev->hard_header_len += MWIFIEX_MIN_DATA_HEADER_LEN;
-+	dev->needed_headroom = MWIFIEX_MIN_DATA_HEADER_LEN;
- 	dev->ethtool_ops = &mwifiex_ethtool_ops;
+-		tid = FIELD_GET(HTT_TX_PPDU_DUR_INFO0_TID_MASK, info0);
++		tid = FIELD_GET(HTT_TX_PPDU_DUR_INFO0_TID_MASK, info0) &
++						IEEE80211_QOS_CTL_TID_MASK;
+ 		tx_duration = __le32_to_cpu(ppdu_dur->tx_duration);
  
- 	mdev_priv = netdev_priv(dev);
+ 		ieee80211_sta_register_airtime(peer->sta, tid, tx_duration, 0);
 -- 
 2.20.1
 
