@@ -2,36 +2,35 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2CD131A5AF3
-	for <lists+linux-wireless@lfdr.de>; Sun, 12 Apr 2020 01:48:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 51C371A5493
+	for <lists+linux-wireless@lfdr.de>; Sun, 12 Apr 2020 01:07:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728015AbgDKXFf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 11 Apr 2020 19:05:35 -0400
-Received: from mail.kernel.org ([198.145.29.99]:39812 "EHLO mail.kernel.org"
+        id S1728143AbgDKXFv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 11 Apr 2020 19:05:51 -0400
+Received: from mail.kernel.org ([198.145.29.99]:40510 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727960AbgDKXFc (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 11 Apr 2020 19:05:32 -0400
+        id S1728085AbgDKXFu (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 11 Apr 2020 19:05:50 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8E40F21775;
-        Sat, 11 Apr 2020 23:05:31 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 36D4A21BE5;
+        Sat, 11 Apr 2020 23:05:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1586646332;
-        bh=s4vRQIJwcxkL6l2FldF0HlhnWS37JsVCYYVOD5lTqjw=;
+        s=default; t=1586646351;
+        bh=W/yE/dUyDCwOgiZ+kx2wm6MH+IA6WOjD+VZvCvK923E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=paRSp/q0r+PEf4tf/sVB45ij3JW+71lpAlY9OkbNRgEEMt9gB17GuRHca8gXgotLh
-         VU3urQE4fhqGs1eNJmxPhJzll7YYSdZ7Ynj0DQbSrXkJSnpuISFDRo36NsISp7j58+
-         SA7Pyh1k4bi3lrOkNPQ35wcmyYQl7RwjxtZ1KXA4=
+        b=c4sEG9fkjT9fRV0kfSaB0Arcoq8AkK5Xlh39JTXEZmIgDrQ1q4aE9shNFdgn/AKqh
+         tOQkhFVxJUfVZg0MUEfrXcDjGZgmEFLZNH8M8yvvbvKTmwQPlXYdltTg3+GkRp8ynB
+         ouhwPPgYdNAFSpugmHKjEHQanvlS5EWJC7YdYBxc=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Felix Fietkau <nbd@nbd.name>, Sasha Levin <sashal@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org
-Subject: [PATCH AUTOSEL 5.6 084/149] mt76: mt7603: fix input validation issues for powersave-filtered frames
-Date:   Sat, 11 Apr 2020 19:02:41 -0400
-Message-Id: <20200411230347.22371-84-sashal@kernel.org>
+Cc:     Wen Gong <wgong@codeaurora.org>, Kalle Valo <kvalo@codeaurora.org>,
+        Sasha Levin <sashal@kernel.org>, ath10k@lists.infradead.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.6 098/149] ath10k: start recovery process when read int status fail for sdio
+Date:   Sat, 11 Apr 2020 19:02:55 -0400
+Message-Id: <20200411230347.22371-98-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20200411230347.22371-1-sashal@kernel.org>
 References: <20200411230347.22371-1-sashal@kernel.org>
@@ -44,73 +43,51 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Wen Gong <wgong@codeaurora.org>
 
-[ Upstream commit d55aa5e17461b8b423adae376978032c4a10a1d8 ]
+[ Upstream commit 37b7ecb75627699e96750db1e0c5ac56224245df ]
 
-Before extracting the tid out of the packet, check if it was qos-data.
-Only accept tid values 0-7
-Also, avoid accepting the hardware queue as skb queue mapping, it could
-lead to an overrun. Instead, derive the hardware queue from the tid number,
-in order to avoid issues with packets being filtered multiple times.
-This also fixes a mismatch between hardware and software queue indexes.
+When running simulate crash stress test, it happened
+"failed to read from address 0x800: -110".
 
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Test steps:
+1. Run command continuous
+echo soft > /sys/kernel/debug/ieee80211/phy0/ath10k/simulate_fw_crash
+
+2. error happened and it did not begin recovery for long time.
+[74377.334846] ath10k_sdio mmc1:0001:1: simulating soft firmware crash
+[74378.378217] ath10k_sdio mmc1:0001:1: failed to read from address 0x800: -110
+[74378.378371] ath10k_sdio mmc1:0001:1: failed to process pending SDIO interrupts: -110
+
+It has sdio errors since it can not read MBOX_HOST_INT_STATUS_ADDRESS,
+then it has to do recovery process to recovery ath10k.
+
+Tested with QCA6174 SDIO with firmware WLAN.RMH.4.4.1-00042.
+
+Signed-off-by: Wen Gong <wgong@codeaurora.org>
+Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/wireless/mediatek/mt76/mt7603/dma.c   | 19 +++++++++++++++----
- 1 file changed, 15 insertions(+), 4 deletions(-)
+ drivers/net/wireless/ath/ath10k/sdio.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/dma.c b/drivers/net/wireless/mediatek/mt76/mt7603/dma.c
-index a6ab73060aada..57428467fe967 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7603/dma.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7603/dma.c
-@@ -30,6 +30,16 @@ mt7603_init_tx_queue(struct mt7603_dev *dev, struct mt76_sw_queue *q,
- static void
- mt7603_rx_loopback_skb(struct mt7603_dev *dev, struct sk_buff *skb)
- {
-+	static const u8 tid_to_ac[8] = {
-+		IEEE80211_AC_BE,
-+		IEEE80211_AC_BK,
-+		IEEE80211_AC_BK,
-+		IEEE80211_AC_BE,
-+		IEEE80211_AC_VI,
-+		IEEE80211_AC_VI,
-+		IEEE80211_AC_VO,
-+		IEEE80211_AC_VO
-+	};
- 	__le32 *txd = (__le32 *)skb->data;
- 	struct ieee80211_hdr *hdr;
- 	struct ieee80211_sta *sta;
-@@ -38,7 +48,7 @@ mt7603_rx_loopback_skb(struct mt7603_dev *dev, struct sk_buff *skb)
- 	void *priv;
- 	int idx;
- 	u32 val;
--	u8 tid;
-+	u8 tid = 0;
+diff --git a/drivers/net/wireless/ath/ath10k/sdio.c b/drivers/net/wireless/ath/ath10k/sdio.c
+index 9208291aaca3d..8b640a78f7ca4 100644
+--- a/drivers/net/wireless/ath/ath10k/sdio.c
++++ b/drivers/net/wireless/ath/ath10k/sdio.c
+@@ -953,8 +953,11 @@ static int ath10k_sdio_mbox_read_int_status(struct ath10k *ar,
+ 	 */
+ 	ret = ath10k_sdio_read(ar, MBOX_HOST_INT_STATUS_ADDRESS,
+ 			       irq_proc_reg, sizeof(*irq_proc_reg));
+-	if (ret)
++	if (ret) {
++		queue_work(ar->workqueue, &ar->restart_work);
++		ath10k_warn(ar, "read int status fail, start recovery\n");
+ 		goto out;
++	}
  
- 	if (skb->len < MT_TXD_SIZE + sizeof(struct ieee80211_hdr))
- 		goto free;
-@@ -56,15 +66,16 @@ mt7603_rx_loopback_skb(struct mt7603_dev *dev, struct sk_buff *skb)
- 
- 	priv = msta = container_of(wcid, struct mt7603_sta, wcid);
- 	val = le32_to_cpu(txd[0]);
--	skb_set_queue_mapping(skb, FIELD_GET(MT_TXD0_Q_IDX, val));
--
- 	val &= ~(MT_TXD0_P_IDX | MT_TXD0_Q_IDX);
- 	val |= FIELD_PREP(MT_TXD0_Q_IDX, MT_TX_HW_QUEUE_MGMT);
- 	txd[0] = cpu_to_le32(val);
- 
- 	sta = container_of(priv, struct ieee80211_sta, drv_priv);
- 	hdr = (struct ieee80211_hdr *)&skb->data[MT_TXD_SIZE];
--	tid = *ieee80211_get_qos_ctl(hdr) & IEEE80211_QOS_CTL_TID_MASK;
-+	if (ieee80211_is_data_qos(hdr->frame_control))
-+		tid = *ieee80211_get_qos_ctl(hdr) &
-+		      IEEE80211_QOS_CTL_TAG1D_MASK;
-+	skb_set_queue_mapping(skb, tid_to_ac[tid]);
- 	ieee80211_sta_set_buffered(sta, tid, true);
- 
- 	spin_lock_bh(&dev->ps_lock);
+ 	/* Update only those registers that are enabled */
+ 	*host_int_status = irq_proc_reg->host_int_status &
 -- 
 2.20.1
 
