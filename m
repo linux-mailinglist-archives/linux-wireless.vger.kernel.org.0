@@ -2,105 +2,58 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F247F1A4CDE
-	for <lists+linux-wireless@lfdr.de>; Sat, 11 Apr 2020 02:20:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0140E1A52A9
+	for <lists+linux-wireless@lfdr.de>; Sat, 11 Apr 2020 17:55:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726867AbgDKAUV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 10 Apr 2020 20:20:21 -0400
-Received: from mail-wm1-f67.google.com ([209.85.128.67]:35983 "EHLO
-        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726839AbgDKAUT (ORCPT
+        id S1726090AbgDKPzO convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 11 Apr 2020 11:55:14 -0400
+Received: from mail.07d05.mspz7.gob.ec ([186.46.59.139]:48934 "EHLO
+        mail.07d05.mspz7.gob.ec" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726054AbgDKPzO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 10 Apr 2020 20:20:19 -0400
-Received: by mail-wm1-f67.google.com with SMTP id a201so4001464wme.1;
-        Fri, 10 Apr 2020 17:20:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=WqLpUe/3+ebAsfSyEr8eWQGQOEEyLPgemLyG5SvrhHI=;
-        b=ve00Ui45sd+mRIObqi4fVxpgDL1FPby9VCzCj4up6kJluTET85j6C/jkaFTqIiYuT2
-         1GhQGH7Sx8HCdF86m+cAKpqG94WATIWwwv3oP5hGRWQBpkyyCQxLel51jzVSK6Nd2Zai
-         lxaMJxKAfk7aEH+J5TOxzxVln/e4UL90yec+A7WY7I/6rEvheZU6yvou3zB6uqQmyrZe
-         Zlj5M8US/WwEC2BcQddcpVluxzqwGbCNosji3FGUDXv48GI6Tr/w1FUlo+a/AZOT6kQl
-         EO2vgzMWWDQKe+G9BK1TqgJccORmQo6iJZpkHulI2Mkf2LTPpZQPheRN4exbUQCIM5lc
-         pUmQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=WqLpUe/3+ebAsfSyEr8eWQGQOEEyLPgemLyG5SvrhHI=;
-        b=R8MACe4Zcce+OB2s1WOhn68taUezANBy0QkD5yknRpYWVjr2/VOGnGMtrX7QNnBKim
-         txBHmDMvbB7FfY4u5TiH8dT9ZQpOntVyF+ytFYZHe4/PZFODI0WhCjyaGC2G4hDkrZ5n
-         286n3mkdGVlYNEb4aPtZlZ9rzcuqoQX6iBhvzfY66+mNC1ogu8/e2mJVAs/Bx7eThAYV
-         D+dubES/InM9SRLgdWS1lEe18GB4RXWEs6Bo/2E+GZ0wFEhaL2g/I9Y1AuYbImoxjFKX
-         c0229AeDSmcvyNgOV2c1J6/3LNnzJrW70sNgZLNvjSi4uE8iAoE4bYeKsvqgx93Gss4X
-         /+UQ==
-X-Gm-Message-State: AGi0Pubw80t9+Pgzcck6RWFekHOVvfPazUBBV4ZIoUSGTzjWNwUw3YMw
-        ww41YqhkJBjD8qjoN+e5/zzlADmCXJMo
-X-Google-Smtp-Source: APiQypJTY6BBVpJIbEZoG4XC26odBRDzb6vOdpzxy/8sR/Td9iLmxzbhYDkcX8M+D2UiwGrPh8Pt7A==
-X-Received: by 2002:a1c:7ed7:: with SMTP id z206mr6958804wmc.64.1586564417420;
-        Fri, 10 Apr 2020 17:20:17 -0700 (PDT)
-Received: from ninjahost.lan (host-2-102-14-153.as13285.net. [2.102.14.153])
-        by smtp.gmail.com with ESMTPSA id b191sm5091594wmd.39.2020.04.10.17.20.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Apr 2020 17:20:16 -0700 (PDT)
-From:   Jules Irenge <jbi.octave@gmail.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     boqun.feng@gmail.com,
-        Arend van Spriel <arend.vanspriel@broadcom.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
-        Wright Feng <wright.feng@cypress.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Johannes Berg <johannes.berg@intel.com>,
-        linux-wireless@vger.kernel.org (open list:BROADCOM BRCM80211
-        IEEE802.11n WIRELESS DRIVER),
-        brcm80211-dev-list.pdl@broadcom.com (open list:BROADCOM BRCM80211
-        IEEE802.11n WIRELESS DRIVER),
-        brcm80211-dev-list@cypress.com (open list:BROADCOM BRCM80211
-        IEEE802.11n WIRELESS DRIVER),
-        netdev@vger.kernel.org (open list:NETWORKING DRIVERS)
-Subject: [PATCH 5/9] mac80211: Add missing annotation for brcms_down()
-Date:   Sat, 11 Apr 2020 01:19:29 +0100
-Message-Id: <20200411001933.10072-6-jbi.octave@gmail.com>
-X-Mailer: git-send-email 2.24.1
-In-Reply-To: <20200411001933.10072-1-jbi.octave@gmail.com>
-References: <0/9>
- <20200411001933.10072-1-jbi.octave@gmail.com>
+        Sat, 11 Apr 2020 11:55:14 -0400
+Received: from localhost (localhost [127.0.0.1])
+        by mail.07d05.mspz7.gob.ec (Postfix) with ESMTP id 90E7C20367E4;
+        Sat, 11 Apr 2020 06:54:19 -0500 (-05)
+Received: from mail.07d05.mspz7.gob.ec ([127.0.0.1])
+        by localhost (mail.07d05.mspz7.gob.ec [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id VU3MdSOIMuoC; Sat, 11 Apr 2020 06:54:19 -0500 (-05)
+Received: from localhost (localhost [127.0.0.1])
+        by mail.07d05.mspz7.gob.ec (Postfix) with ESMTP id 1051420306D0;
+        Sat, 11 Apr 2020 05:53:49 -0500 (-05)
+X-Virus-Scanned: amavisd-new at 07d05.mspz7.gob.ec
+Received: from mail.07d05.mspz7.gob.ec ([127.0.0.1])
+        by localhost (mail.07d05.mspz7.gob.ec [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id U6cJYE09iOie; Sat, 11 Apr 2020 05:53:49 -0500 (-05)
+Received: from [10.4.231.87] (unknown [105.0.1.50])
+        by mail.07d05.mspz7.gob.ec (Postfix) with ESMTPSA id CB74E20308D8;
+        Sat, 11 Apr 2020 05:32:33 -0500 (-05)
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: =?utf-8?q?Wohlt=C3=A4tigkeitsspende_von_2=2E000=2E000_Millionen_Euro?=
+To:     Recipients <jorge.mena@mail.07d05.mspz7.gob.ec>
+From:   ''Michael weirsky'' <jorge.mena@mail.07d05.mspz7.gob.ec>
+Date:   Sat, 11 Apr 2020 12:32:23 +0200
+Reply-To: mikeweirskyspende@gmail.com
+Message-Id: <20200411103234.CB74E20308D8@mail.07d05.mspz7.gob.ec>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Sparse reports a warning at brcms_down()
+Lieber Freund,
 
-warning: context imbalance in brcms_down()
-	- unexpected unlock
-The root cause is the missing annotation at brcms_down()
-Add the missing __must_hold(&wl->lock) annotation
+Ich bin Herr Mike Weirsky, New Jersey, Vereinigte Staaten von Amerika, der Mega-Gewinner von $ 273million In Mega Millions Jackpot, spende ich an 5 zuf&auml;llige Personen, wenn Sie diese E-Mail erhalten, dann wurde Ihre E-Mail nach einem Spinball ausgew&auml;hlt.Ich habe den gr&ouml;&szlig;ten Teil meines Verm&ouml;gens auf eine Reihe von Wohlt&auml;tigkeitsorganisationen und Organisationen verteilt.Ich habe mich freiwillig dazu entschieden, die Summe von &euro; 2.000.000,00 an Sie als eine der ausgew&auml;hlten 5 zu spenden, um meine Gewinne zu &uuml;berpr&uuml;fen.
+Das ist dein Spendencode: [MW530342019]
+www.youtube.com/watch?v=un8yRTmrYMY
 
-Signed-off-by: Jules Irenge <jbi.octave@gmail.com>
----
- drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c | 1 +
- 1 file changed, 1 insertion(+)
+Antworten Sie mit dem SPENDE-CODE an diese
+E-Mail:mikeweirskyspende@gmail.com
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c
-index c3dbeacea6ca..648efcbc819f 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c
-@@ -1431,6 +1431,7 @@ int brcms_up(struct brcms_info *wl)
-  * precondition: perimeter lock has been acquired
-  */
- void brcms_down(struct brcms_info *wl)
-+	__must_hold(&wl->lock)
- {
- 	uint callbacks, ret_val = 0;
- 
--- 
-2.24.1
+Ich hoffe, Sie und Ihre Familie gl&uuml;cklich zu machen.
 
+Gr&uuml;&szlig;e
+Herr Mike Weirsky
