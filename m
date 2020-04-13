@@ -2,79 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (unknown [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 83C3A1A632F
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Apr 2020 08:48:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A00B1A63D7
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Apr 2020 09:54:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728660AbgDMGsf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 13 Apr 2020 02:48:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.18]:53964 "EHLO
+        id S1729479AbgDMHyM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 13 Apr 2020 03:54:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.18]:37348 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727546AbgDMGsf (ORCPT
+        with ESMTP id S1727480AbgDMHyM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 13 Apr 2020 02:48:35 -0400
-Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com [IPv6:2607:f8b0:4864:20::543])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9EF91C008651
-        for <linux-wireless@vger.kernel.org>; Sun, 12 Apr 2020 23:48:34 -0700 (PDT)
-Received: by mail-pg1-x543.google.com with SMTP id w11so4066850pga.12
-        for <linux-wireless@vger.kernel.org>; Sun, 12 Apr 2020 23:48:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=V8FxIiIa/TXjm9S7utiVILgjnG/f48VqNhX4GcVaXLg=;
-        b=Ce1jEqSlokrDGvunDyR9bUnACrg2o9q4WoKw8vdKFYCfyg3g/5USrGD1A77hxvB1HP
-         omJmvefIBSa96+MPVFLzPjA/AGPrg8Bnt8bUgcveM4nSd6x/S2VF0GdiurQNp1yXH550
-         tGtDnDiBrpntUr1J9Ex2Qg+5wpzzgr+RsDibI=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=V8FxIiIa/TXjm9S7utiVILgjnG/f48VqNhX4GcVaXLg=;
-        b=CBYBgqBRag5+iIiCTUxIkI5aT5SBb3/VyKFuain7uO2WypL13rWQ632/fq70hvxg65
-         cKw0pknCiDr/fwjk3ZAsboktMYy2Jx46oQcX87OXZLGYrW1jgO86xLjyNlP14RsrJM59
-         Rsh98gGpk9d9qDOMpVRoVIl3j32VvnTqPHWSEuBvE8WbERfqED0p0pTZWjDhFtaQL4Qq
-         PaSBz54lkXholwruO8PBKWAYco1tNibXiU5hwTrD/AXGhp8JOsc0YhsO31tojP1wiwTk
-         tAQloUAUdkTGWPE3MTvnqY1ZdtBxQs+xwOCm4btSdL1RCDC1Z9LrFCDnWyyu6Yw+H2Yz
-         44pA==
-X-Gm-Message-State: AGi0Pub7LV84njA+ge52pNqIUgCHvOWiCbT06GF3Lq4TvfVhqtMge35H
-        HJsyqDCLnADMi6WWRodQXD8FCUMwcB49h7MF
-X-Google-Smtp-Source: APiQypIuKwXBc5IZrT2akRd5a0qulCuzNCYzkFYFYfzP9gKlFYaVdqhzy5UfOrYjYn0oPZPPu1K6ew==
-X-Received: by 2002:a62:164a:: with SMTP id 71mr15651380pfw.273.1586760514160;
-        Sun, 12 Apr 2020 23:48:34 -0700 (PDT)
-Received: from [192.168.178.129] (f140230.upc-f.chello.nl. [80.56.140.230])
-        by smtp.gmail.com with ESMTPSA id y126sm2703268pgy.91.2020.04.12.23.48.32
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 12 Apr 2020 23:48:33 -0700 (PDT)
-Subject: Re: [PATCH] mt76: replace consume_skb with dev_kfree_skb
-To:     sean.wang@mediatek.com, nbd@nbd.name, lorenzo.bianconi@redhat.com
-Cc:     ryder.lee@mediatek.com, linux-wireless@vger.kernel.org,
-        linux-mediatek@lists.infradead.org
-References: <b90644567e758b5702e37e34e31f2007e3bd2c87.1586290996.git.sean.wang@mediatek.com>
-From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
-Message-ID: <b1038177-4ed0-93fe-a093-a9278412dfd8@broadcom.com>
-Date:   Mon, 13 Apr 2020 08:48:30 +0200
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
+        Mon, 13 Apr 2020 03:54:12 -0400
+Received: from huawei.com (szxga04-in.huawei.com [45.249.212.190])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5286C008651;
+        Mon, 13 Apr 2020 00:54:11 -0700 (PDT)
+Received: from DGGEMS404-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id 2976A9A447D55784BA21;
+        Mon, 13 Apr 2020 15:54:09 +0800 (CST)
+Received: from huawei.com (10.175.124.28) by DGGEMS404-HUB.china.huawei.com
+ (10.3.19.204) with Microsoft SMTP Server id 14.3.487.0; Mon, 13 Apr 2020
+ 15:53:58 +0800
+From:   Jason Yan <yanaijie@huawei.com>
+To:     <kvalo@codeaurora.org>, <davem@davemloft.net>,
+        <yanaijie@huawei.com>, <libertas-dev@lists.infradead.org>,
+        <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+CC:     Hulk Robot <hulkci@huawei.com>
+Subject: [PATCH] libertas: make lbs_process_event() void
+Date:   Mon, 13 Apr 2020 16:20:22 +0800
+Message-ID: <20200413082022.22380-1-yanaijie@huawei.com>
+X-Mailer: git-send-email 2.21.1
 MIME-Version: 1.0
-In-Reply-To: <b90644567e758b5702e37e34e31f2007e3bd2c87.1586290996.git.sean.wang@mediatek.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.124.28]
+X-CFilter-Loop: Reflected
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 4/7/2020 10:25 PM, sean.wang@mediatek.com wrote:
-> From: Sean Wang <sean.wang@mediatek.com>
-> 
-> consume_skb is identical to dev_kfree_skb, so that replace consume_skb with
-> dev_kfree_skb just to make consistent in whole mt76 driver.
+Fix the following coccicheck warning:
 
-Given that dev_kfree_skb is a define that maps it to consume_skb I would 
-say the use of consume_skb() is preferred. So maybe better to get 
-consistency in the driver by replacing dev_kfree_skb with consume_skb.
+drivers/net/wireless/marvell/libertas/cmdresp.c:225:5-8: Unneeded
+variable: "ret". Return "0" on line 355
 
-Regards,
-Arend
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: Jason Yan <yanaijie@huawei.com>
+---
+ drivers/net/wireless/marvell/libertas/cmd.h     | 2 +-
+ drivers/net/wireless/marvell/libertas/cmdresp.c | 5 +----
+ 2 files changed, 2 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/net/wireless/marvell/libertas/cmd.h b/drivers/net/wireless/marvell/libertas/cmd.h
+index 80878561cb90..3c193074662b 100644
+--- a/drivers/net/wireless/marvell/libertas/cmd.h
++++ b/drivers/net/wireless/marvell/libertas/cmd.h
+@@ -76,7 +76,7 @@ void lbs_mac_event_disconnected(struct lbs_private *priv,
+ 
+ /* Events */
+ 
+-int lbs_process_event(struct lbs_private *priv, u32 event);
++void lbs_process_event(struct lbs_private *priv, u32 event);
+ 
+ 
+ /* Actual commands */
+diff --git a/drivers/net/wireless/marvell/libertas/cmdresp.c b/drivers/net/wireless/marvell/libertas/cmdresp.c
+index b73d08381398..cb515c5584c1 100644
+--- a/drivers/net/wireless/marvell/libertas/cmdresp.c
++++ b/drivers/net/wireless/marvell/libertas/cmdresp.c
+@@ -220,9 +220,8 @@ int lbs_process_command_response(struct lbs_private *priv, u8 *data, u32 len)
+ 	return ret;
+ }
+ 
+-int lbs_process_event(struct lbs_private *priv, u32 event)
++void lbs_process_event(struct lbs_private *priv, u32 event)
+ {
+-	int ret = 0;
+ 	struct cmd_header cmd;
+ 
+ 	switch (event) {
+@@ -351,6 +350,4 @@ int lbs_process_event(struct lbs_private *priv, u32 event)
+ 		netdev_alert(priv->dev, "EVENT: unknown event id %d\n", event);
+ 		break;
+ 	}
+-
+-	return ret;
+ }
+-- 
+2.21.1
+
