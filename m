@@ -1,108 +1,101 @@
 Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from vger.kernel.org (unknown [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 05DA51A63E5
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Apr 2020 09:55:17 +0200 (CEST)
+Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
+	by mail.lfdr.de (Postfix) with ESMTP id 3D6F21A654E
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Apr 2020 12:42:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729557AbgDMHzK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 13 Apr 2020 03:55:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.18]:37538 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727480AbgDMHzJ (ORCPT
+        id S1728711AbgDMKmC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 13 Apr 2020 06:42:02 -0400
+Received: from mail26.static.mailgun.info ([104.130.122.26]:33449 "EHLO
+        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727776AbgDMKl7 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 13 Apr 2020 03:55:09 -0400
-Received: from huawei.com (szxga04-in.huawei.com [45.249.212.190])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F9F7C008651;
-        Mon, 13 Apr 2020 00:55:09 -0700 (PDT)
-Received: from DGGEMS407-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id BFA22D2CD8AEAA9D66FB;
-        Mon, 13 Apr 2020 15:55:07 +0800 (CST)
-Received: from huawei.com (10.175.124.28) by DGGEMS407-HUB.china.huawei.com
- (10.3.19.207) with Microsoft SMTP Server id 14.3.487.0; Mon, 13 Apr 2020
- 15:54:58 +0800
-From:   Jason Yan <yanaijie@huawei.com>
-To:     <arend.vanspriel@broadcom.com>, <franky.lin@broadcom.com>,
-        <hante.meuleman@broadcom.com>, <chi-hsien.lin@cypress.com>,
-        <wright.feng@cypress.com>, <kvalo@codeaurora.org>,
-        <davem@davemloft.net>, <yanaijie@huawei.com>,
-        <linux-wireless@vger.kernel.org>,
-        <brcm80211-dev-list.pdl@broadcom.com>,
-        <brcm80211-dev-list@cypress.com>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-CC:     Hulk Robot <hulkci@huawei.com>
-Subject: [PATCH] brcmsmac: make brcms_c_stf_ss_update() void
-Date:   Mon, 13 Apr 2020 16:21:26 +0800
-Message-ID: <20200413082126.22572-1-yanaijie@huawei.com>
-X-Mailer: git-send-email 2.21.1
+        Mon, 13 Apr 2020 06:41:59 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1586774518; h=Message-ID: References: In-Reply-To: Subject:
+ Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Sender; bh=BLIfpS2X7n41IUOye8ElAh0Wra+ZHgzc1tlUzqOHPPg=;
+ b=i3XrGCxWFz22rhAgKVbUirb5uNBiLeIciavnbqCCRM5r+myA3uPkf1KI3D4v7neii+RCpIdk
+ Mjl3P945hvGTIL+Wzo2T9jOZLJxIZ6ByPQvgkNozJpir5Tnvkl7VIDUkBvNBG/2TYM+9Rcgi
+ N7lEuKfO3fGSws0JYXvhpl2yKOI=
+X-Mailgun-Sending-Ip: 104.130.122.26
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5e9441e7.7f5901f30e30-smtp-out-n03;
+ Mon, 13 Apr 2020 10:41:43 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 43503C433BA; Mon, 13 Apr 2020 10:41:42 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: murugana)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id E1185C433CB;
+        Mon, 13 Apr 2020 10:41:41 +0000 (UTC)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.124.28]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Mon, 13 Apr 2020 16:11:41 +0530
+From:   Sathishkumar Muruganandam <murugana@codeaurora.org>
+To:     Johannes Berg <johannes@sipsolutions.net>, shaul.triebitz@intel.com
+Cc:     'Luca Coelho' <luciano.coelho@intel.com>,
+        linux-wireless@vger.kernel.org
+Subject: Re: 4addr NDP in HE mode
+In-Reply-To: <d54ca54a2a7801b796393be3f5414f7a657773b4.camel@sipsolutions.net>
+References: <006501d5e621$f21f3b60$d65db220$@codeaurora.org>
+ (sfid-20200218_070924_650739_B62973D0)
+ <d54ca54a2a7801b796393be3f5414f7a657773b4.camel@sipsolutions.net>
+Message-ID: <1b40c00498b6e0509ddc6176a4578188@codeaurora.org>
+X-Sender: murugana@codeaurora.org
+User-Agent: Roundcube Webmail/1.3.9
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fix the following coccicheck warning:
+On 2020-03-20 18:28, Johannes Berg wrote:
+> On Tue, 2020-02-18 at 11:39 +0530, Sathishkumar Muruganandam wrote:
+> 
+>> Since ieee80211_send_4addr_nullfunc() is only called for successful
+>> association of 4addr STA, shall we allow below case alone for HE ?
+>> 
+>> static bool ieee80211_assoc_success(struct ieee80211_sub_if_data 
+>> *sdata,
+>>                                     struct cfg80211_bss *cbss,
+>>                                     struct ieee80211_mgmt *mgmt, 
+>> size_t len,
+>>                                     struct ieee802_11_elems *elems)
+>> {
+>> ..
+>>   /*
+>>          * If we're using 4-addr mode, let the AP know that we're
+>>          * doing so, so that it can create the STA VLAN on its side
+>>          */
+>>         if (ifmgd->use_4addr)
+>>                 ieee80211_send_4addr_nullfunc(local, sdata);
+>> ..
+>> 
+>> Whether this 4addr NDP in HE mode will affect any UL-MIMO from the 
+>> 4addr STA
+>> ? Please comment.
+> 
+> Off the top of my head, I don't know. Adding Shaul who might have an
+> idea.
+> 
+> Shaul, basically the NDP is used here to initialize the 4-addr
+> connection as such, and if the connection is HE capable we drop it. Can
+> you remind me what exactly the issue with NDP in HE was, and do you 
+> know
+> how that'd be affected by 4-addr NDPs?
+> 
 
-drivers/net/wireless/broadcom/brcm80211/brcmsmac/stf.c:309:5-13:
-Unneeded variable: "ret_code". Return "0" on line 328
+Shaul, awaiting your response !
 
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: Jason Yan <yanaijie@huawei.com>
----
- drivers/net/wireless/broadcom/brcm80211/brcmsmac/stf.c | 7 ++-----
- drivers/net/wireless/broadcom/brcm80211/brcmsmac/stf.h | 2 +-
- 2 files changed, 3 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/stf.c b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/stf.c
-index 0ab865de1491..79d4a7a4da8b 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/stf.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/stf.c
-@@ -304,9 +304,8 @@ int brcms_c_stf_txchain_set(struct brcms_c_info *wlc, s32 int_val, bool force)
-  * update wlc->stf->ss_opmode which represents the operational stf_ss mode
-  * we're using
-  */
--int brcms_c_stf_ss_update(struct brcms_c_info *wlc, struct brcms_band *band)
-+void brcms_c_stf_ss_update(struct brcms_c_info *wlc, struct brcms_band *band)
- {
--	int ret_code = 0;
- 	u8 prev_stf_ss;
- 	u8 upd_stf_ss;
- 
-@@ -325,7 +324,7 @@ int brcms_c_stf_ss_update(struct brcms_c_info *wlc, struct brcms_band *band)
- 				    PHY_TXC1_MODE_SISO : PHY_TXC1_MODE_CDD;
- 	} else {
- 		if (wlc->band != band)
--			return ret_code;
-+			return;
- 		upd_stf_ss = (wlc->stf->txstreams == 1) ?
- 				PHY_TXC1_MODE_SISO : band->band_stf_ss_mode;
- 	}
-@@ -333,8 +332,6 @@ int brcms_c_stf_ss_update(struct brcms_c_info *wlc, struct brcms_band *band)
- 		wlc->stf->ss_opmode = upd_stf_ss;
- 		brcms_b_band_stf_ss_set(wlc->hw, upd_stf_ss);
- 	}
--
--	return ret_code;
- }
- 
- int brcms_c_stf_attach(struct brcms_c_info *wlc)
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/stf.h b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/stf.h
-index ba9493009a33..aa4ab53bf634 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/stf.h
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/stf.h
-@@ -25,7 +25,7 @@ void brcms_c_stf_detach(struct brcms_c_info *wlc);
- void brcms_c_tempsense_upd(struct brcms_c_info *wlc);
- void brcms_c_stf_ss_algo_channel_get(struct brcms_c_info *wlc,
- 				     u16 *ss_algo_channel, u16 chanspec);
--int brcms_c_stf_ss_update(struct brcms_c_info *wlc, struct brcms_band *band);
-+void brcms_c_stf_ss_update(struct brcms_c_info *wlc, struct brcms_band *band);
- void brcms_c_stf_phy_txant_upd(struct brcms_c_info *wlc);
- int brcms_c_stf_txchain_set(struct brcms_c_info *wlc, s32 int_val, bool force);
- bool brcms_c_stf_stbc_rx_set(struct brcms_c_info *wlc, s32 int_val);
--- 
-2.21.1
-
+Thanks,
+Sathishkumar
