@@ -2,110 +2,172 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A17CD1A65E6
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Apr 2020 13:50:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EB9B31A666C
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Apr 2020 14:48:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729154AbgDMLuQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 13 Apr 2020 07:50:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43764 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729145AbgDMLtn (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 13 Apr 2020 07:49:43 -0400
-Received: from mail-il1-x133.google.com (mail-il1-x133.google.com [IPv6:2607:f8b0:4864:20::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CE93C03BC88
-        for <linux-wireless@vger.kernel.org>; Mon, 13 Apr 2020 04:41:30 -0700 (PDT)
-Received: by mail-il1-x133.google.com with SMTP id i2so7335609ils.12
-        for <linux-wireless@vger.kernel.org>; Mon, 13 Apr 2020 04:41:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=qlKWExEze9qCqlwbpw1q4+d2Zjr4ETGVa64TcX+dTlk=;
-        b=prjS9vX1/lBHBQnmn8S5eSRPyVAkL53RoKQzE5AAHbxvNYI4a2v2cjTji7kXTppOEc
-         z/YC5TVvRJiGk2ecDbuxQbDezIHvoL12TwU8A8MoLDqkPTvq0EUKN12xVXuoac5P5vPG
-         CDxQUahEZp79myUg0SW4XqnobzWbEdaMDOCEcwJOYEkU2vBAFQtTx1QiAdzIaX9heUrh
-         wXqF9HmIVWbzu+LjtyhWb9YxG3jDJu9H0/2YRuWHtIWQg0GYyRRf+7+N2+T4/5hNzYkA
-         0Td5bmAVNGOZBhXtNLv8DRN8PKs1LisEF6odwJbW1cWSeUhqmMnZAT2UKZl4iJ1E/PV6
-         qofQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=qlKWExEze9qCqlwbpw1q4+d2Zjr4ETGVa64TcX+dTlk=;
-        b=NYbm7lsOmsWbnTPZGIc1b4fE1DNkPPKuMgW9gHmQCj/F1snE1sIXXiuUsV4Ai9k0HY
-         z9MepIH+5ul48xD7hC8IQ5Cq2f/NntDToT7BrK7wjZB8zHBe7HPxR5CK5ppNPI1pqD8V
-         4uHwEp+PQzlPdFhPpEg24RKrea7svZKPj/8yL3j7GL6J4kGIjhjxKZELfozShxuSNpvd
-         fK12Cg0X+Pl8AioVBk/fKJF7aTwcUkp5tQA62JU9BePckqWkembh0ey5NFiVaZCUFwQt
-         RWUiOgEiSEgOULR1QMaeFwcdvRN+UslVWcWx0vkvLpQuQWYOD/Y37HDtN14QVtrquTL8
-         YmRg==
-X-Gm-Message-State: AGi0PubHfXzP6Ue+svD12GxEJ/WzrpToV8Gfw7GEQGLG9QcED8sY8VXD
-        HMNsl1nR1HrD1mU71cVwIXFTmFY1zx/OHuaF0Q8bY7k=
-X-Google-Smtp-Source: APiQypL8TqJIeu3sv8q1i+SGhGHI+g2m6cjavfj0dEc+5JPmC3aVP4wfZgyktqWXbHy6/UF7VoKUuS2YyJ3E1gwa7Hs=
-X-Received: by 2002:a92:cccb:: with SMTP id u11mr9656514ilq.8.1586778089638;
- Mon, 13 Apr 2020 04:41:29 -0700 (PDT)
+        id S1729533AbgDMMsE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 13 Apr 2020 08:48:04 -0400
+Received: from mx2.suse.de ([195.135.220.15]:53078 "EHLO mx2.suse.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727797AbgDMMsD (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 13 Apr 2020 08:48:03 -0400
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx2.suse.de (Postfix) with ESMTP id EADFDACA2;
+        Mon, 13 Apr 2020 12:48:00 +0000 (UTC)
+Message-ID: <bdb4170b21167cae89523fa688db6699539474bf.camel@suse.de>
+Subject: iwlwifi won't probe with linux-next
+From:   Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
+To:     Johannes Berg <johannes.berg@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Luca Coelho <luciano.coelho@intel.com>
+Cc:     Intel Linux Wireless <linuxwifi@intel.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>
+Date:   Mon, 13 Apr 2020 14:47:59 +0200
+Content-Type: multipart/signed; micalg="pgp-sha256";
+        protocol="application/pgp-signature"; boundary="=-4XXTefmifGSckgsXEWEw"
+User-Agent: Evolution 3.34.2 
 MIME-Version: 1.0
-Received: by 2002:a02:5e49:0:0:0:0:0 with HTTP; Mon, 13 Apr 2020 04:41:28
- -0700 (PDT)
-Reply-To: mgbenin903@gmail.com
-From:   Barrister Robert Richter UN-Attorney at Law Court-Benin 
-        <info.zennitbankplcnigerian@gmail.com>
-Date:   Mon, 13 Apr 2020 13:41:28 +0200
-Message-ID: <CABHzvrngm=rA5Ct9h+JGdbyDfHJmnfntceDPoyJToo8PZn+YZg@mail.gmail.com>
-Subject: I have already sent you first payment US$5000.00 this morning through
- MONEY Gram service.it is available to pick up in address now.
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-ATTN DEAR BENEFICIARY.
 
-GOOD NEWS.
+--=-4XXTefmifGSckgsXEWEw
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-I have already sent you first payment US$5000.00 this morning through
-MONEY Gram service.it is available to pick up in address now.
+Hi,
+I'm having trouble with my iwlwifi device on the latest linux-next. Essenti=
+ally
+it fails at probe:
 
-So we advise you to Contact This Money Gram office to pick up your
-transfer $US5000.00 today.
+	nico@linux-9qgx:~> dmesg | grep iwl
+	[    4.650950] iwlwifi 0000:28:00.0: enabling device (0000 -> 0002)
+	[    4.720086] iwlwifi: probe of 0000:28:00.0 failed with error -110
+
+I made some research and the timeout happens after the call to iwl_poll_bit=
+()
+in iwl_finish_nic_init().
+
+Also here is the relevant lspci output:
+
+	nico@linux-9qgx:~/c/linux> sudo lspci -s 0000:28:00.0 -vvv
+	28:00.0 Network controller: Intel Corporation Wi-Fi 6 AX200 (rev 1a)
+		DeviceName: RTL8111EPV
+		Subsystem: Intel Corporation Device 0084
+		Control: I/O- Mem+ BusMaster- SpecCycle- MemWINV- VGASnoop-
+ParErr- Stepping- SERR- FastB2B- DisINTx-
+		Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=3Dfast >TAbort-
+<TAbort- <MAbort- >SERR- <PERR- INTx-
+		Interrupt: pin A routed to IRQ 41
+		Region 0: Memory at fc600000 (64-bit, non-prefetchable)
+[size=3D16K]
+		Capabilities: [c8] Power Management version 3
+			Flags: PMEClk- DSI+ D1- D2- AuxCurrent=3D0mA PME(D0+,D1-
+,D2-,D3hot+,D3cold+)
+			Status: D0 NoSoftRst+ PME-Enable- DSel=3D0 DScale=3D0 PME-
+		Capabilities: [d0] MSI: Enable- Count=3D1/1 Maskable- 64bit+
+			Address: 0000000000000000  Data: 0000
+		Capabilities: [40] Express (v2) Endpoint, MSI 00
+			DevCap:	MaxPayload 128 bytes, PhantFunc 0, Latency L0s
+<512ns, L1 unlimited
+				ExtTag- AttnBtn- AttnInd- PwrInd- RBE+ FLReset+
+SlotPowerLimit 0.000W
+			DevCtl:	CorrErr- NonFatalErr- FatalErr- UnsupReq-
+				RlxdOrd+ ExtTag- PhantFunc- AuxPwr+ NoSnoop+
+FLReset-
+				MaxPayload 128 bytes, MaxReadReq 128 bytes
+			DevSta:	CorrErr- NonFatalErr- FatalErr- UnsupReq-
+AuxPwr+ TransPend-
+			LnkCap:	Port #6, Speed 5GT/s, Width x1, ASPM L1, Exit
+Latency L1 <8us
+				ClockPM+ Surprise- LLActRep- BwNot- ASPMOptComp+
+			LnkCtl:	ASPM Disabled; RCB 64 bytes Disabled- CommClk+
+				ExtSynch- ClockPM- AutWidDis- BWInt- AutBWInt-
+			LnkSta:	Speed 5GT/s (ok), Width x1 (ok)
+				TrErr- Train- SlotClk+ DLActive- BWMgmt-
+ABWMgmt-
+			DevCap2: Completion Timeout: Range B, TimeoutDis+,
+NROPrPrP-, LTR+
+				10BitTagComp-, 10BitTagReq-, OBFF Via WAKE#,
+ExtFmt-, EETLPPrefix-
+				EmergencyPowerReduction Not Supported,
+EmergencyPowerReductionInit-
+				FRS-, TPHComp-, ExtTPHComp-
+				AtomicOpsCap: 32bit- 64bit- 128bitCAS-
+			DevCtl2: Completion Timeout: 16ms to 55ms, TimeoutDis-,
+LTR+, OBFF Disabled
+				AtomicOpsCtl: ReqEn-
+			LnkCtl2: Target Link Speed: 5GT/s, EnterCompliance-
+SpeedDis-
+				Transmit Margin: Normal Operating Range,
+EnterModifiedCompliance- ComplianceSOS-
+				Compliance De-emphasis: -6dB
+			LnkSta2: Current De-emphasis Level: -6dB,
+EqualizationComplete-, EqualizationPhase1-
+				EqualizationPhase2-, EqualizationPhase3-,
+LinkEqualizationRequest-
+		Capabilities: [80] MSI-X: Enable- Count=3D16 Masked-
+			Vector table: BAR=3D0 offset=3D00002000
+			PBA: BAR=3D0 offset=3D00003000
+		Capabilities: [100 v1] Advanced Error Reporting
+			UESta:	DLP- SDES- TLP- FCP- CmpltTO- CmpltAbrt-
+UnxCmplt- RxOF- MalfTLP- ECRC- UnsupReq- ACSViol-
+			UEMsk:	DLP- SDES- TLP- FCP- CmpltTO- CmpltAbrt-
+UnxCmplt- RxOF- MalfTLP- ECRC- UnsupReq- ACSViol-
+			UESvrt:	DLP+ SDES+ TLP- FCP+ CmpltTO- CmpltAbrt-
+UnxCmplt- RxOF+ MalfTLP+ ECRC- UnsupReq- ACSViol-
+			CESta:	RxErr- BadTLP- BadDLLP- Rollover- Timeout-
+AdvNonFatalErr-
+			CEMsk:	RxErr- BadTLP- BadDLLP- Rollover- Timeout-
+AdvNonFatalErr+
+			AERCap:	First Error Pointer: 00, ECRCGenCap- ECRCGenEn-
+ECRCChkCap- ECRCChkEn-
+				MultHdrRecCap- MultHdrRecEn- TLPPfxPres-
+HdrLogCap-
+			HeaderLog: 00000000 00000000 00000000 00000000
+		Capabilities: [14c v1] Latency Tolerance Reporting
+			Max snoop latency: 1048576ns
+			Max no snoop latency: 1048576ns
+		Capabilities: [154 v1] L1 PM Substates
+			L1SubCap: PCI-PM_L1.2+ PCI-PM_L1.1+ ASPM_L1.2+
+ASPM_L1.1+ L1_PM_Substates+
+				 PortCommonModeRestoreTime=3D30us
+PortTPowerOnTime=3D18us
+			L1SubCtl1: PCI-PM_L1.2- PCI-PM_L1.1- ASPM_L1.2-
+ASPM_L1.1-
+				  T_CommonMode=3D0us LTR1.2_Threshold=3D32768ns
+			L1SubCtl2: T_PwrOn=3D18us
+		Kernel modules: iwlwifi
 
 
-Note that your compensation payment funds is total amount $US2.800,000
-Million Dollars.We have instructed the Money Gram Agent,Mr. James
-Gadner to keep sending the transfer to you daily, but the maximum
-amount you will be receiving everyday is US$5000.00. Contact Agent now
-to pick up your first payment $US5000.00 immediately.
+Note that I have a built kernel just for this, so I'll be happy to test
+anything. Also note that I updated my firmware to the last version availabl=
+e in
+the linux-firmware repo.
 
-Contact Person, Mr. James Gadner, Dir. Money Gram Benin.
-Email: mgbenin903@gmail.com
-Telephone Numbers: +229 62819378/ +229 98477762
+Regards,
+Nicolas
 
-HERE IS YOUR PAYMENT DETAILS FOR THE FIRST =C2=A3US5000.00 SENT TODAY.
 
-Track View Website link:
-https://secure.moneygram.com/track
-Sender=E2=80=99s First name: David
-Sender=E2=80=99s Last Name: Joiner
-Money Transfer Control Number (MTCN) (REFERENCE)# 26046856
+--=-4XXTefmifGSckgsXEWEw
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
 
-Contact the Mmoney Gram Urgent and reconfirm your address to the
-office before, they will allow you to pick up the transfer today.
+-----BEGIN PGP SIGNATURE-----
 
-HERE IS WHAT REQUIRED OF YOU.
+iQEzBAABCAAdFiEErOkkGDHCg2EbPcGjlfZmHno8x/4FAl6UX38ACgkQlfZmHno8
+x/5Prwf9Gd3FLm2eW/QFEOC3dEeBHJViGgRxZgKKwbF3LE5xvTb+E/Mwm/A2GXlN
+iWztrip++27UE4jabScLYrK4lwhKoqjoFieVX22VwststvoSCExORozFGkj0OfOp
+PvOomDphEii5XzLcS64M4t+UD1/y5Jqw8eaoUkyC8PbIYs36x1YV8djMZ277gYMM
+5Q+HXoY2zcv5AQVapToNPQ79Xlcji/LYfcBwjVVUiZg32ThN9JoSMFMj73uDGe/7
+k0MPSyVXmveRzgzK1PujxUTuCWu8OemcBoiMaWxU2BexKAgBHMH+XAhHnUwEwbOf
+13Rqj6Vs00BYYNnagqhNwWZAGRTgGQ==
+=htq9
+-----END PGP SIGNATURE-----
 
-YOUR FULL NAME---------
-ADDRESS--------------
-COUNTRY-----------------------------
-TELEPHONE NUMBERS-----------------
+--=-4XXTefmifGSckgsXEWEw--
 
-Note, I paid the transfer fee for you, but only you are required to
-send to the office is $75 only,Been Your Payment File activation fee,
-Send once you contact the office,before you can able to pick up your
-transfer today.
-
-Let me know once you pick up first payment today.
-
-Barrister Robert Richter UN-Attorney at Law Court-Benin
