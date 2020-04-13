@@ -2,172 +2,186 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EB9B31A666C
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Apr 2020 14:48:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 38C9D1A6698
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Apr 2020 14:58:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729533AbgDMMsE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 13 Apr 2020 08:48:04 -0400
-Received: from mx2.suse.de ([195.135.220.15]:53078 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727797AbgDMMsD (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 13 Apr 2020 08:48:03 -0400
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id EADFDACA2;
-        Mon, 13 Apr 2020 12:48:00 +0000 (UTC)
-Message-ID: <bdb4170b21167cae89523fa688db6699539474bf.camel@suse.de>
-Subject: iwlwifi won't probe with linux-next
-From:   Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
-To:     Johannes Berg <johannes.berg@intel.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>
-Cc:     Intel Linux Wireless <linuxwifi@intel.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>
-Date:   Mon, 13 Apr 2020 14:47:59 +0200
-Content-Type: multipart/signed; micalg="pgp-sha256";
-        protocol="application/pgp-signature"; boundary="=-4XXTefmifGSckgsXEWEw"
-User-Agent: Evolution 3.34.2 
-MIME-Version: 1.0
+        id S1727994AbgDMM6W (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 13 Apr 2020 08:58:22 -0400
+Received: from mail27.static.mailgun.info ([104.130.122.27]:47247 "EHLO
+        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727837AbgDMM6V (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 13 Apr 2020 08:58:21 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1586782700; h=Message-Id: Date: Subject: Cc: To: From:
+ Sender; bh=4+mo7/Pvr13OOsfsq2l2XFs4m3v1lIOe1HuATB7CG4M=; b=AxOnuyg/Gttysag3qEyn2QmkXyI9trMNnUgaHqcVi+CRJGdCjHXFbXC3IGZRNbNcUvjRytAo
+ Hx3gYWwzOPEIzERAU2MCGmdvnhES31U+DYCAPDEGdWUXrOShvWQwguqM0qhVbfdQLQcnpxXI
+ /ttKfZyaCoZfjKZStzGfUBMOPkc=
+X-Mailgun-Sending-Ip: 104.130.122.27
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5e9461e3.7fc5c5e732d0-smtp-out-n05;
+ Mon, 13 Apr 2020 12:58:11 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id C2E1BC433BA; Mon, 13 Apr 2020 12:58:11 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from checstp253621-lin.qualcomm.com (blr-c-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.19.19])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: srirrama)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 510CFC433F2;
+        Mon, 13 Apr 2020 12:58:07 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 510CFC433F2
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=srirrama@codeaurora.org
+From:   Sriram R <srirrama@codeaurora.org>
+To:     ath11k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org, Sriram R <srirrama@codeaurora.org>
+Subject: [PATCH] ath11k: Add dynamic tcl ring selection logic with retry mechanism
+Date:   Mon, 13 Apr 2020 18:27:02 +0530
+Message-Id: <1586782622-22570-1-git-send-email-srirrama@codeaurora.org>
+X-Mailer: git-send-email 2.7.4
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+IPQ8074 HW supports three TCL rings for tx. Currently these rings
+are mapped based on the Access categories, viz. VO, VI, BE, BK.
+In case, one of the traffic type dominates, then it could stress
+the same tcl rings. Rather, it would be optimal to make use of all
+the rings in a round robin fashion irrespective of the traffic type
+so that the load could be evenly distributed among all the rings.
+Also, in case the selected ring is busy or full, a retry mechanism
+is used to ensure other available ring is selected without dropping
+the packet.
 
---=-4XXTefmifGSckgsXEWEw
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+In SMP systems, this change avoids a single CPU from getting hogged
+when heavy traffic of same category is transmitted.
+The tx completion interrupts corresponding to the used tcl ring
+would be more which causes the assigned CPU to get hogged.
+Distribution of tx packets to different tcl rings helps balance
+this load.
 
-Hi,
-I'm having trouble with my iwlwifi device on the latest linux-next. Essenti=
-ally
-it fails at probe:
+Signed-off-by: Sriram R <srirrama@codeaurora.org>
+---
+ drivers/net/wireless/ath/ath11k/core.h  |  3 +++
+ drivers/net/wireless/ath/ath11k/dp_tx.c | 46 +++++++++++++++++++++++++++------
+ 2 files changed, 41 insertions(+), 8 deletions(-)
 
-	nico@linux-9qgx:~> dmesg | grep iwl
-	[    4.650950] iwlwifi 0000:28:00.0: enabling device (0000 -> 0002)
-	[    4.720086] iwlwifi: probe of 0000:28:00.0 failed with error -110
-
-I made some research and the timeout happens after the call to iwl_poll_bit=
-()
-in iwl_finish_nic_init().
-
-Also here is the relevant lspci output:
-
-	nico@linux-9qgx:~/c/linux> sudo lspci -s 0000:28:00.0 -vvv
-	28:00.0 Network controller: Intel Corporation Wi-Fi 6 AX200 (rev 1a)
-		DeviceName: RTL8111EPV
-		Subsystem: Intel Corporation Device 0084
-		Control: I/O- Mem+ BusMaster- SpecCycle- MemWINV- VGASnoop-
-ParErr- Stepping- SERR- FastB2B- DisINTx-
-		Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=3Dfast >TAbort-
-<TAbort- <MAbort- >SERR- <PERR- INTx-
-		Interrupt: pin A routed to IRQ 41
-		Region 0: Memory at fc600000 (64-bit, non-prefetchable)
-[size=3D16K]
-		Capabilities: [c8] Power Management version 3
-			Flags: PMEClk- DSI+ D1- D2- AuxCurrent=3D0mA PME(D0+,D1-
-,D2-,D3hot+,D3cold+)
-			Status: D0 NoSoftRst+ PME-Enable- DSel=3D0 DScale=3D0 PME-
-		Capabilities: [d0] MSI: Enable- Count=3D1/1 Maskable- 64bit+
-			Address: 0000000000000000  Data: 0000
-		Capabilities: [40] Express (v2) Endpoint, MSI 00
-			DevCap:	MaxPayload 128 bytes, PhantFunc 0, Latency L0s
-<512ns, L1 unlimited
-				ExtTag- AttnBtn- AttnInd- PwrInd- RBE+ FLReset+
-SlotPowerLimit 0.000W
-			DevCtl:	CorrErr- NonFatalErr- FatalErr- UnsupReq-
-				RlxdOrd+ ExtTag- PhantFunc- AuxPwr+ NoSnoop+
-FLReset-
-				MaxPayload 128 bytes, MaxReadReq 128 bytes
-			DevSta:	CorrErr- NonFatalErr- FatalErr- UnsupReq-
-AuxPwr+ TransPend-
-			LnkCap:	Port #6, Speed 5GT/s, Width x1, ASPM L1, Exit
-Latency L1 <8us
-				ClockPM+ Surprise- LLActRep- BwNot- ASPMOptComp+
-			LnkCtl:	ASPM Disabled; RCB 64 bytes Disabled- CommClk+
-				ExtSynch- ClockPM- AutWidDis- BWInt- AutBWInt-
-			LnkSta:	Speed 5GT/s (ok), Width x1 (ok)
-				TrErr- Train- SlotClk+ DLActive- BWMgmt-
-ABWMgmt-
-			DevCap2: Completion Timeout: Range B, TimeoutDis+,
-NROPrPrP-, LTR+
-				10BitTagComp-, 10BitTagReq-, OBFF Via WAKE#,
-ExtFmt-, EETLPPrefix-
-				EmergencyPowerReduction Not Supported,
-EmergencyPowerReductionInit-
-				FRS-, TPHComp-, ExtTPHComp-
-				AtomicOpsCap: 32bit- 64bit- 128bitCAS-
-			DevCtl2: Completion Timeout: 16ms to 55ms, TimeoutDis-,
-LTR+, OBFF Disabled
-				AtomicOpsCtl: ReqEn-
-			LnkCtl2: Target Link Speed: 5GT/s, EnterCompliance-
-SpeedDis-
-				Transmit Margin: Normal Operating Range,
-EnterModifiedCompliance- ComplianceSOS-
-				Compliance De-emphasis: -6dB
-			LnkSta2: Current De-emphasis Level: -6dB,
-EqualizationComplete-, EqualizationPhase1-
-				EqualizationPhase2-, EqualizationPhase3-,
-LinkEqualizationRequest-
-		Capabilities: [80] MSI-X: Enable- Count=3D16 Masked-
-			Vector table: BAR=3D0 offset=3D00002000
-			PBA: BAR=3D0 offset=3D00003000
-		Capabilities: [100 v1] Advanced Error Reporting
-			UESta:	DLP- SDES- TLP- FCP- CmpltTO- CmpltAbrt-
-UnxCmplt- RxOF- MalfTLP- ECRC- UnsupReq- ACSViol-
-			UEMsk:	DLP- SDES- TLP- FCP- CmpltTO- CmpltAbrt-
-UnxCmplt- RxOF- MalfTLP- ECRC- UnsupReq- ACSViol-
-			UESvrt:	DLP+ SDES+ TLP- FCP+ CmpltTO- CmpltAbrt-
-UnxCmplt- RxOF+ MalfTLP+ ECRC- UnsupReq- ACSViol-
-			CESta:	RxErr- BadTLP- BadDLLP- Rollover- Timeout-
-AdvNonFatalErr-
-			CEMsk:	RxErr- BadTLP- BadDLLP- Rollover- Timeout-
-AdvNonFatalErr+
-			AERCap:	First Error Pointer: 00, ECRCGenCap- ECRCGenEn-
-ECRCChkCap- ECRCChkEn-
-				MultHdrRecCap- MultHdrRecEn- TLPPfxPres-
-HdrLogCap-
-			HeaderLog: 00000000 00000000 00000000 00000000
-		Capabilities: [14c v1] Latency Tolerance Reporting
-			Max snoop latency: 1048576ns
-			Max no snoop latency: 1048576ns
-		Capabilities: [154 v1] L1 PM Substates
-			L1SubCap: PCI-PM_L1.2+ PCI-PM_L1.1+ ASPM_L1.2+
-ASPM_L1.1+ L1_PM_Substates+
-				 PortCommonModeRestoreTime=3D30us
-PortTPowerOnTime=3D18us
-			L1SubCtl1: PCI-PM_L1.2- PCI-PM_L1.1- ASPM_L1.2-
-ASPM_L1.1-
-				  T_CommonMode=3D0us LTR1.2_Threshold=3D32768ns
-			L1SubCtl2: T_PwrOn=3D18us
-		Kernel modules: iwlwifi
-
-
-Note that I have a built kernel just for this, so I'll be happy to test
-anything. Also note that I updated my firmware to the last version availabl=
-e in
-the linux-firmware repo.
-
-Regards,
-Nicolas
-
-
---=-4XXTefmifGSckgsXEWEw
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-Content-Transfer-Encoding: 7bit
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCAAdFiEErOkkGDHCg2EbPcGjlfZmHno8x/4FAl6UX38ACgkQlfZmHno8
-x/5Prwf9Gd3FLm2eW/QFEOC3dEeBHJViGgRxZgKKwbF3LE5xvTb+E/Mwm/A2GXlN
-iWztrip++27UE4jabScLYrK4lwhKoqjoFieVX22VwststvoSCExORozFGkj0OfOp
-PvOomDphEii5XzLcS64M4t+UD1/y5Jqw8eaoUkyC8PbIYs36x1YV8djMZ277gYMM
-5Q+HXoY2zcv5AQVapToNPQ79Xlcji/LYfcBwjVVUiZg32ThN9JoSMFMj73uDGe/7
-k0MPSyVXmveRzgzK1PujxUTuCWu8OemcBoiMaWxU2BexKAgBHMH+XAhHnUwEwbOf
-13Rqj6Vs00BYYNnagqhNwWZAGRTgGQ==
-=htq9
------END PGP SIGNATURE-----
-
---=-4XXTefmifGSckgsXEWEw--
-
+diff --git a/drivers/net/wireless/ath/ath11k/core.h b/drivers/net/wireless/ath/ath11k/core.h
+index b4c3e041..2e20faa 100644
+--- a/drivers/net/wireless/ath/ath11k/core.h
++++ b/drivers/net/wireless/ath/ath11k/core.h
+@@ -656,6 +656,9 @@ struct ath11k_base {
+ 		u32 fw_crash_counter;
+ 	} stats;
+ 	u32 pktlog_defs_checksum;
++
++	/* Round robbin based TCL ring selector */
++	atomic_t tcl_ring_selector;
+ };
+ 
+ struct ath11k_fw_stats_pdev {
+diff --git a/drivers/net/wireless/ath/ath11k/dp_tx.c b/drivers/net/wireless/ath/ath11k/dp_tx.c
+index 7aac4b0..e9a436e 100644
+--- a/drivers/net/wireless/ath/ath11k/dp_tx.c
++++ b/drivers/net/wireless/ath/ath11k/dp_tx.c
+@@ -9,10 +9,6 @@
+ #include "hw.h"
+ #include "peer.h"
+ 
+-/* NOTE: Any of the mapped ring id value must not exceed DP_TCL_NUM_RING_MAX */
+-static const u8
+-ath11k_txq_tcl_ring_map[ATH11K_HW_MAX_QUEUES] = { 0x0, 0x1, 0x2, 0x2 };
+-
+ static enum hal_tcl_encap_type
+ ath11k_dp_tx_get_encap_type(struct ath11k_vif *arvif, struct sk_buff *skb)
+ {
+@@ -84,6 +80,8 @@ int ath11k_dp_tx(struct ath11k *ar, struct ath11k_vif *arvif,
+ 	u8 pool_id;
+ 	u8 hal_ring_id;
+ 	int ret;
++	u8 ring_selector = 0, ring_map = 0;
++	bool tcl_ring_retry;
+ 
+ 	if (test_bit(ATH11K_FLAG_CRASH_FLUSH, &ar->ab->dev_flags))
+ 		return -ESHUTDOWN;
+@@ -92,7 +90,20 @@ int ath11k_dp_tx(struct ath11k *ar, struct ath11k_vif *arvif,
+ 		return -ENOTSUPP;
+ 
+ 	pool_id = skb_get_queue_mapping(skb) & (ATH11K_HW_MAX_QUEUES - 1);
+-	ti.ring_id = ath11k_txq_tcl_ring_map[pool_id];
++
++	/* Let the default ring selection be based on a round robin
++	 * fashion where one of the 3 tcl rings are selected based on
++	 * the tcl_ring_selector counter. In case that ring
++	 * is full/busy, we resort to other available rings.
++	 * If all rings are full, we drop the packet.
++	 * //TODO Add throttling logic when all rings are full
++	 */
++	ring_selector = atomic_inc_return(&ab->tcl_ring_selector);
++
++tcl_ring_sel:
++	tcl_ring_retry = false;
++	ti.ring_id = ring_selector % DP_TCL_NUM_RING_MAX;
++	ring_map |= BIT(ti.ring_id);
+ 
+ 	tx_ring = &dp->tx_ring[ti.ring_id];
+ 
+@@ -101,8 +112,14 @@ int ath11k_dp_tx(struct ath11k *ar, struct ath11k_vif *arvif,
+ 			DP_TX_IDR_SIZE - 1, GFP_ATOMIC);
+ 	spin_unlock_bh(&tx_ring->tx_idr_lock);
+ 
+-	if (ret < 0)
+-		return -ENOSPC;
++	if (ret < 0) {
++		if (ring_map == (BIT(DP_TCL_NUM_RING_MAX) - 1))
++			return -ENOSPC;
++
++		/* Check if the next ring is available */
++		ring_selector++;
++		goto tcl_ring_sel;
++	}
+ 
+ 	ti.desc_id = FIELD_PREP(DP_TX_DESC_ID_MAC_ID, ar->pdev_idx) |
+ 		     FIELD_PREP(DP_TX_DESC_ID_MSDU_ID, ret) |
+@@ -178,11 +195,21 @@ int ath11k_dp_tx(struct ath11k *ar, struct ath11k_vif *arvif,
+ 	if (!hal_tcl_desc) {
+ 		/* NOTE: It is highly unlikely we'll be running out of tcl_ring
+ 		 * desc because the desc is directly enqueued onto hw queue.
+-		 * So add tx packet throttling logic in future if required.
+ 		 */
+ 		ath11k_hal_srng_access_end(ab, tcl_ring);
+ 		spin_unlock_bh(&tcl_ring->lock);
+ 		ret = -ENOMEM;
++
++		/* Checking for available tcl descritors in another ring in
++		 * case of failure due to full tcl ring now, is better than
++		 * checking this ring earlier for each pkt tx.
++		 * Restart ring selection if some rings are not checked yet.
++		 */
++		if (ring_map != (BIT(DP_TCL_NUM_RING_MAX) - 1)) {
++			tcl_ring_retry = true;
++			ring_selector++;
++		}
++
+ 		goto fail_unmap_dma;
+ 	}
+ 
+@@ -206,6 +233,9 @@ int ath11k_dp_tx(struct ath11k *ar, struct ath11k_vif *arvif,
+ 		   FIELD_GET(DP_TX_DESC_ID_MSDU_ID, ti.desc_id));
+ 	spin_unlock_bh(&tx_ring->tx_idr_lock);
+ 
++	if (tcl_ring_retry)
++		goto tcl_ring_sel;
++
+ 	return ret;
+ }
+ 
+-- 
+2.7.4
