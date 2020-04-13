@@ -2,118 +2,261 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 31C801A6831
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Apr 2020 16:32:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 77F9B1A6844
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Apr 2020 16:43:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730808AbgDMOcZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 13 Apr 2020 10:32:25 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:26290 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1728185AbgDMOcY (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 13 Apr 2020 10:32:24 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1586788342;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=EqyFmXGGL5gH7qnh4uLURlAxbznvoOmx0g2Mhp4F6Po=;
-        b=OUL72FhdZQKHuRtqiznTDYyKd/BMhWCPZmfrgRJT0LKbKaAn3duR7vSZsUTpqkN0lRWipq
-        5jTQUi/YsmM8yNI56tQ99V5OiyisC63OfciTQdKiPQ+zAYbilIZJMYoM2m+YKa/4Lq4w3V
-        WZFhif/MFdRuYthjjAVIq4/u8CX8l3E=
-Received: from mail-ua1-f69.google.com (mail-ua1-f69.google.com
- [209.85.222.69]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-329-nkGthp4iNiql4H3xUUnA-Q-1; Mon, 13 Apr 2020 10:32:20 -0400
-X-MC-Unique: nkGthp4iNiql4H3xUUnA-Q-1
-Received: by mail-ua1-f69.google.com with SMTP id 2so2171007uav.4
-        for <linux-wireless@vger.kernel.org>; Mon, 13 Apr 2020 07:32:20 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=EqyFmXGGL5gH7qnh4uLURlAxbznvoOmx0g2Mhp4F6Po=;
-        b=XV3zj9zzSouS2U7WGg/C1g8iVqoCPJen3jVJaFN7ZX/BN4Ng3strji50/9vh6tj4P+
-         Jq4XHOQlenRZ7Rb3YtuatGou3mC5UgJd8bzunPF+GTrqTW2X3gRnM2wwfBr1paspIYCZ
-         PxX23IX2UNex3iwC69BJwMd1Bif/od8PYhOQtdc932HkAFLoaGvkczCeiI2z+WK1ueBU
-         ZIu/H4xAS08sKTa4rBS5+OU+wMBRyvNpOBy8RXmnr988UqMP7+dRbbGO/iNRJr/i//q1
-         J1BYjIQhNZ7kqVVHmG/2P32q3k9tx/ZVUKjv8Iva1pq+Zte/hF8aik0r+jjUdYzzM/aR
-         B1xg==
-X-Gm-Message-State: AGi0PuZg0OHmGwtwEJQKFw1nakaSGzJAuDwMkmZceWs/rt5jeUk7iUE6
-        RSpjMgVY/FgG/i5M4CmG69/SmkbtOkU36UfbByQD+KpyW957ubyqYEoF50Q/aymF0LabyNhK92r
-        PNPE2UO23K2+8DWZMzCtk908+zceA4Uax8/TTDjX/Y38=
-X-Received: by 2002:a67:ed14:: with SMTP id l20mr11552266vsp.233.1586788340014;
-        Mon, 13 Apr 2020 07:32:20 -0700 (PDT)
-X-Google-Smtp-Source: APiQypKzuR6Ua5fS/D+pEUWq54ijuuvcxRCg6rajTuAm7fR56pI8I+sx8N2oN9MaIiBTLp6D4yvnSaU8KiJFAq+oHk0=
-X-Received: by 2002:a67:ed14:: with SMTP id l20mr11552251vsp.233.1586788339731;
- Mon, 13 Apr 2020 07:32:19 -0700 (PDT)
-MIME-Version: 1.0
-References: <cover.1586451954.git.lorenzo@kernel.org>
-In-Reply-To: <cover.1586451954.git.lorenzo@kernel.org>
-From:   Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-Date:   Mon, 13 Apr 2020 16:33:12 +0200
-Message-ID: <CAJ0CqmXQM-NvadLJF1=vVKTABUQOiUGrwhEoVPtnK0oc=QyGMA@mail.gmail.com>
-Subject: Re: [PATCH v2 0/2] introduce usb support to mt7615 driver
-To:     Lorenzo Bianconi <lorenzo@kernel.org>
-Cc:     Felix Fietkau <nbd@nbd.name>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Sean Wang <sean.wang@mediatek.com>,
+        id S1728988AbgDMOnF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 13 Apr 2020 10:43:05 -0400
+Received: from mail.kernel.org ([198.145.29.99]:55308 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728986AbgDMOnE (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 13 Apr 2020 10:43:04 -0400
+Received: from localhost.localdomain (unknown [151.48.151.50])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id BED802072C;
+        Mon, 13 Apr 2020 14:43:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1586788983;
+        bh=dxDYfMwKP0fMk2ALGCdOq93zSItGyHo2o1q3c7WyEyI=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=yXQR3NMdBaFtjN4Liy9PUW7D0gIs9dY5xzBvrNdaZtb4P9qRHdG1WYqkTr/M6QaDR
+         KzjNZ3JBOJi6mcSN4RC6Sx8/P1bouNNi9VVPR4ZpWkXTqCzcc0HuVwA5YaFijc5cZq
+         ngQBu/yTaWBvoNoEWCpXSTnwCB4mWC1AiUN7U920=
+Date:   Mon, 13 Apr 2020 16:44:00 +0200
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     DENG Qingfang <dqfext@gmail.com>
+Cc:     linux-wireless@vger.kernel.org, Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
         Ryder Lee <ryder.lee@mediatek.com>,
-        linux-mediatek@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
+        Roy Luo <royluo@google.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        linux-mediatek@lists.infradead.org,
+        Kalle Valo <kvalo@codeaurora.org>,
+        linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH] mt76: mt7615: add support for MT7611N
+Message-ID: <20200413144400.GA118441@localhost.localdomain>
+References: <20200412155848.15506-1-dqfext@gmail.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="MGYHOYXEY6WxJCY8"
+Content-Disposition: inline
+In-Reply-To: <20200412155848.15506-1-dqfext@gmail.com>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
->
-> Introduce support for mt7663u 802.11ac 2x2:2 chipset to mt7615 driver.
-> Create mt7615-common module as container for mmio and usb shared code
->
-> Changes since v1:
-> - rebased ontop of mt76 master branch
->
-> Lorenzo Bianconi (2):
->   mt76: mt7615: move core shared code in mt7615-common module
->   mt76: mt7615: introduce mt7663u support
 
-Hi Felix,
+--MGYHOYXEY6WxJCY8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-please hold on with this series, I will post a new one rebased ontop
-of mt76 master branch
+> MT7611N is basically the same as MT7615N, except it only supports 5 GHz
+> It is used by some TP-Link and Mercury wireless routers
+>=20
+> Signed-off-by: DENG Qingfang <dqfext@gmail.com>
+> ---
+>  drivers/net/wireless/mediatek/mt76/mt7615/debugfs.c | 2 +-
+>  drivers/net/wireless/mediatek/mt76/mt7615/dma.c     | 8 ++++----
+>  drivers/net/wireless/mediatek/mt76/mt7615/eeprom.c  | 7 +++++++
+>  drivers/net/wireless/mediatek/mt76/mt7615/init.c    | 2 +-
+>  drivers/net/wireless/mediatek/mt76/mt7615/mac.c     | 8 ++++----
+>  drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h  | 5 +++++
+>  drivers/net/wireless/mediatek/mt76/mt7615/pci.c     | 1 +
+>  7 files changed, 23 insertions(+), 10 deletions(-)
+>=20
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/debugfs.c b/driver=
+s/net/wireless/mediatek/mt76/mt7615/debugfs.c
+> index b4d0795154e3..fac705e1621f 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7615/debugfs.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7615/debugfs.c
+> @@ -264,7 +264,7 @@ int mt7615_init_debugfs(struct mt7615_dev *dev)
+>  	if (!dir)
+>  		return -ENOMEM;
+> =20
+> -	if (is_mt7615(&dev->mt76))
+> +	if (is_mt7615(&dev->mt76) || is_mt7611(&dev->mt76))
+>  		debugfs_create_devm_seqfile(dev->mt76.dev, "queues", dir,
+>  					    mt7615_queues_read);
+>  	else
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/dma.c b/drivers/ne=
+t/wireless/mediatek/mt76/mt7615/dma.c
+> index b19f208e3d54..274053311749 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7615/dma.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7615/dma.c
+> @@ -74,7 +74,7 @@ mt7615_init_tx_queues(struct mt7615_dev *dev)
+>  	if (ret)
+>  		return ret;
+> =20
+> -	if (!is_mt7615(&dev->mt76))
+> +	if (!is_mt7615(&dev->mt76) && !is_mt7611(&dev->mt76))
+>  		return mt7622_init_tx_queues_multi(dev);
+> =20
+>  	ret =3D mt7615_init_tx_queue(dev, &dev->mt76.q_tx[0], 0,
+> @@ -139,7 +139,7 @@ mt7615_tx_cleanup(struct mt7615_dev *dev)
+>  	int i;
+> =20
+>  	mt76_queue_tx_cleanup(dev, MT_TXQ_MCU, false);
+> -	if (is_mt7615(&dev->mt76)) {
+> +	if (is_mt7615(&dev->mt76) || is_mt7611(&dev->mt76)) {
+>  		mt76_queue_tx_cleanup(dev, MT_TXQ_BE, false);
+>  	} else {
+>  		for (i =3D 0; i < IEEE80211_NUM_ACS; i++)
+> @@ -250,7 +250,7 @@ int mt7615_dma_init(struct mt7615_dev *dev)
+>  	mt76_rmw_field(dev, MT_WPDMA_GLO_CFG,
+>  		       MT_WPDMA_GLO_CFG_MULTI_DMA_EN, 0x3);
+> =20
+> -	if (is_mt7615(&dev->mt76)) {
+> +	if (is_mt7615(&dev->mt76) || is_mt7611(&dev->mt76)) {
+>  		mt76_set(dev, MT_WPDMA_GLO_CFG,
+>  			 MT_WPDMA_GLO_CFG_FIRST_TOKEN_ONLY);
+> =20
+> @@ -276,7 +276,7 @@ int mt7615_dma_init(struct mt7615_dev *dev)
+>  	if (ret)
+>  		return ret;
+> =20
+> -	if (!is_mt7615(&dev->mt76))
+> +	if (!is_mt7615(&dev->mt76) && !is_mt7611(&dev->mt76))
+>  	    rx_ring_size /=3D 2;
+> =20
+>  	ret =3D mt76_queue_alloc(dev, &dev->mt76.q_rx[MT_RXQ_MAIN], 0,
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.c b/drivers=
+/net/wireless/mediatek/mt76/mt7615/eeprom.c
+> index dfa9a08b896d..bb6f28305733 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.c
+> @@ -109,6 +109,12 @@ mt7615_eeprom_parse_hw_band_cap(struct mt7615_dev *d=
+ev)
+>  		return;
+>  	}
+> =20
+> +	if (is_mt7611(&dev->mt76)) {
+> +		/* 5GHz only */
+> +		dev->mt76.cap.has_5ghz =3D true;
+> +		return;
+> +	}
+
+just out of curiosity, what is the value in eeprom[MT_EE_WIFI_CONF]?
 
 Regards,
 Lorenzo
 
->
->  drivers/net/wireless/mediatek/mt76/Makefile   |   2 +-
->  drivers/net/wireless/mediatek/mt76/mt76.h     |   1 +
->  .../net/wireless/mediatek/mt76/mt7615/Kconfig |  18 +-
->  .../wireless/mediatek/mt76/mt7615/Makefile    |  10 +-
->  .../wireless/mediatek/mt76/mt7615/debugfs.c   |   1 +
->  .../net/wireless/mediatek/mt76/mt7615/dma.c   |  39 --
->  .../wireless/mediatek/mt76/mt7615/eeprom.c    |   1 +
->  .../net/wireless/mediatek/mt76/mt7615/init.c  | 192 +--------
->  .../net/wireless/mediatek/mt76/mt7615/mac.c   | 249 ++++-------
->  .../net/wireless/mediatek/mt76/mt7615/mac.h   |   5 +-
->  .../net/wireless/mediatek/mt76/mt7615/main.c  |  66 +--
->  .../net/wireless/mediatek/mt76/mt7615/mcu.c   |  18 +-
->  .../net/wireless/mediatek/mt76/mt7615/mcu.h   |   5 +
->  .../net/wireless/mediatek/mt76/mt7615/mmio.c  |  30 ++
->  .../wireless/mediatek/mt76/mt7615/mt7615.h    |  22 +-
->  .../wireless/mediatek/mt76/mt7615/pci_init.c  | 187 +++++++++
->  .../wireless/mediatek/mt76/mt7615/pci_mac.c   | 184 ++++++++
->  .../net/wireless/mediatek/mt76/mt7615/regs.h  |  26 ++
->  .../net/wireless/mediatek/mt76/mt7615/usb.c   | 396 ++++++++++++++++++
->  .../wireless/mediatek/mt76/mt7615/usb_init.c  | 144 +++++++
->  .../wireless/mediatek/mt76/mt7615/usb_mcu.c   |  93 ++++
->  21 files changed, 1257 insertions(+), 432 deletions(-)
->  create mode 100644 drivers/net/wireless/mediatek/mt76/mt7615/pci_init.c
->  create mode 100644 drivers/net/wireless/mediatek/mt76/mt7615/pci_mac.c
->  create mode 100644 drivers/net/wireless/mediatek/mt76/mt7615/usb.c
->  create mode 100644 drivers/net/wireless/mediatek/mt76/mt7615/usb_init.c
->  create mode 100644 drivers/net/wireless/mediatek/mt76/mt7615/usb_mcu.c
->
-> --
-> 2.25.2
->
+> +
+>  	val =3D FIELD_GET(MT_EE_NIC_WIFI_CONF_BAND_SEL,
+>  			eeprom[MT_EE_WIFI_CONF]);
+>  	switch (val) {
+> @@ -260,6 +266,7 @@ static void mt7615_cal_free_data(struct mt7615_dev *d=
+ev)
+>  		mt7622_apply_cal_free_data(dev);
+>  		break;
+>  	case 0x7615:
+> +	case 0x7611:
+>  		mt7615_apply_cal_free_data(dev);
+>  		break;
+>  	}
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/init.c b/drivers/n=
+et/wireless/mediatek/mt76/mt7615/init.c
+> index 03b1e56534d6..33472a2493e2 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7615/init.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
+> @@ -349,7 +349,7 @@ mt7615_init_wiphy(struct ieee80211_hw *hw)
+> =20
+>  	ieee80211_hw_set(hw, TX_STATUS_NO_AMPDU_LEN);
+> =20
+> -	if (is_mt7615(&phy->dev->mt76))
+> +	if (is_mt7615(&phy->dev->mt76) || is_mt7611(&phy->dev->mt76))
+>  		hw->max_tx_fragments =3D MT_TXP_MAX_BUF_NUM;
+>  	else
+>  		hw->max_tx_fragments =3D MT_HW_TXP_MAX_BUF_NUM;
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c b/drivers/ne=
+t/wireless/mediatek/mt76/mt7615/mac.c
+> index a27a6d164009..b5b760b081cb 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
+> @@ -427,7 +427,7 @@ void mt7615_tx_complete_skb(struct mt76_dev *mdev, en=
+um mt76_txq_id qid,
+>  		dev =3D container_of(mdev, struct mt7615_dev, mt76);
+>  		txp =3D mt7615_txwi_to_txp(mdev, e->txwi);
+> =20
+> -		if (is_mt7615(&dev->mt76))
+> +		if (is_mt7615(&dev->mt76) || is_mt7611(&dev->mt76))
+>  			token =3D le16_to_cpu(txp->fw.token);
+>  		else
+>  			token =3D le16_to_cpu(txp->hw.msdu_id[0]) &
+> @@ -697,7 +697,7 @@ void mt7615_txp_skb_unmap(struct mt76_dev *dev,
+>  	struct mt7615_txp_common *txp;
+> =20
+>  	txp =3D mt7615_txwi_to_txp(dev, t);
+> -	if (is_mt7615(dev))
+> +	if (is_mt7615(dev) || is_mt7611(dev))
+>  		mt7615_txp_skb_unmap_fw(dev, &txp->fw);
+>  	else
+>  		mt7615_txp_skb_unmap_hw(dev, &txp->hw);
+> @@ -1212,7 +1212,7 @@ int mt7615_tx_prepare_skb(struct mt76_dev *mdev, vo=
+id *txwi_ptr,
+> =20
+>  	txp =3D txwi + MT_TXD_SIZE;
+>  	memset(txp, 0, sizeof(struct mt7615_txp_common));
+> -	if (is_mt7615(&dev->mt76))
+> +	if (is_mt7615(&dev->mt76) || is_mt7611(&dev->mt76))
+>  		mt7615_write_fw_txp(dev, tx_info, txp, id);
+>  	else
+>  		mt7615_write_hw_txp(dev, tx_info, txp, id);
+> @@ -1482,7 +1482,7 @@ void mt7615_mac_tx_free(struct mt7615_dev *dev, str=
+uct sk_buff *skb)
+>  	u8 i, count;
+> =20
+>  	count =3D FIELD_GET(MT_TX_FREE_MSDU_ID_CNT, le16_to_cpu(free->ctrl));
+> -	if (is_mt7615(&dev->mt76)) {
+> +	if (is_mt7615(&dev->mt76) || is_mt7611(&dev->mt76)) {
+>  		__le16 *token =3D &free->token[0];
+> =20
+>  		for (i =3D 0; i < count; i++)
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h b/drivers=
+/net/wireless/mediatek/mt76/mt7615/mt7615.h
+> index 676ca622c35a..8daf1027de8a 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
+> @@ -353,6 +353,11 @@ static inline bool is_mt7663(struct mt76_dev *dev)
+>  	return mt76_chip(dev) =3D=3D 0x7663;
+>  }
+> =20
+> +static inline bool is_mt7611(struct mt76_dev *dev)
+> +{
+> +	return mt76_chip(dev) =3D=3D 0x7611;
+> +}
+> +
+>  static inline void mt7615_irq_enable(struct mt7615_dev *dev, u32 mask)
+>  {
+>  	mt76_set_irq_mask(&dev->mt76, MT_INT_MASK_CSR, 0, mask);
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/pci.c b/drivers/ne=
+t/wireless/mediatek/mt76/mt7615/pci.c
+> index c8d0f893a47f..54c0ea2701bd 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7615/pci.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7615/pci.c
+> @@ -14,6 +14,7 @@
+>  static const struct pci_device_id mt7615_pci_device_table[] =3D {
+>  	{ PCI_DEVICE(0x14c3, 0x7615) },
+>  	{ PCI_DEVICE(0x14c3, 0x7663) },
+> +	{ PCI_DEVICE(0x14c3, 0x7611) },
+>  	{ },
+>  };
+> =20
+> --=20
+> 2.26.0
+>=20
 
+--MGYHOYXEY6WxJCY8
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCXpR6rQAKCRA6cBh0uS2t
+rAM1AQC64iT1E4AD2fhs1V9fnBViUTNRd70ZIyG7XFKhIw/HiwD9Eq4mYjdcGAEt
+a44bR+nfIftA2l5tqvAjEkL+aY36Qg8=
+=+J/u
+-----END PGP SIGNATURE-----
+
+--MGYHOYXEY6WxJCY8--
