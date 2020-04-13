@@ -2,269 +2,118 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BD5CC1A6824
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Apr 2020 16:28:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 31C801A6831
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Apr 2020 16:32:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728062AbgDMO26 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 13 Apr 2020 10:28:58 -0400
-Received: from mail.kernel.org ([198.145.29.99]:52212 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727812AbgDMO25 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 13 Apr 2020 10:28:57 -0400
-Received: from localhost.localdomain (unknown [151.48.151.50])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A8D622073E;
-        Mon, 13 Apr 2020 14:28:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1586788136;
-        bh=hx7ToLSFqR6GefSKsnFMFt2U8Yu7gx4GWGNa/30QAqk=;
-        h=From:To:Cc:Subject:Date:From;
-        b=wyCkllMrCcKGsb8C4akbG68h6DIvg4pti1NnGQRRVpo+/z77Ip7/e6QBHGGfWnt6j
-         km4/ALzUguaLGMZT7pxhDbQLQiGJ7ufuqwC/zpwPZ4GeUeISYgAovh/79iagfQ8U7O
-         aNkJOR3Jvum+d9XE47mAtCT+2L90deJZCusnfUh8=
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     lorenzo.bianconi@redhat.com, linux-wireless@vger.kernel.org
-Subject: [PATCH] mt76: mt7615: fix possible deadlock in mt7615_stop
-Date:   Mon, 13 Apr 2020 16:28:48 +0200
-Message-Id: <08b91b37146a540fb1f0a7bdcb11bbff3073e081.1586787993.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.25.2
+        id S1730808AbgDMOcZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 13 Apr 2020 10:32:25 -0400
+Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:26290 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1728185AbgDMOcY (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 13 Apr 2020 10:32:24 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1586788342;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=EqyFmXGGL5gH7qnh4uLURlAxbznvoOmx0g2Mhp4F6Po=;
+        b=OUL72FhdZQKHuRtqiznTDYyKd/BMhWCPZmfrgRJT0LKbKaAn3duR7vSZsUTpqkN0lRWipq
+        5jTQUi/YsmM8yNI56tQ99V5OiyisC63OfciTQdKiPQ+zAYbilIZJMYoM2m+YKa/4Lq4w3V
+        WZFhif/MFdRuYthjjAVIq4/u8CX8l3E=
+Received: from mail-ua1-f69.google.com (mail-ua1-f69.google.com
+ [209.85.222.69]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-329-nkGthp4iNiql4H3xUUnA-Q-1; Mon, 13 Apr 2020 10:32:20 -0400
+X-MC-Unique: nkGthp4iNiql4H3xUUnA-Q-1
+Received: by mail-ua1-f69.google.com with SMTP id 2so2171007uav.4
+        for <linux-wireless@vger.kernel.org>; Mon, 13 Apr 2020 07:32:20 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=EqyFmXGGL5gH7qnh4uLURlAxbznvoOmx0g2Mhp4F6Po=;
+        b=XV3zj9zzSouS2U7WGg/C1g8iVqoCPJen3jVJaFN7ZX/BN4Ng3strji50/9vh6tj4P+
+         Jq4XHOQlenRZ7Rb3YtuatGou3mC5UgJd8bzunPF+GTrqTW2X3gRnM2wwfBr1paspIYCZ
+         PxX23IX2UNex3iwC69BJwMd1Bif/od8PYhOQtdc932HkAFLoaGvkczCeiI2z+WK1ueBU
+         ZIu/H4xAS08sKTa4rBS5+OU+wMBRyvNpOBy8RXmnr988UqMP7+dRbbGO/iNRJr/i//q1
+         J1BYjIQhNZ7kqVVHmG/2P32q3k9tx/ZVUKjv8Iva1pq+Zte/hF8aik0r+jjUdYzzM/aR
+         B1xg==
+X-Gm-Message-State: AGi0PuZg0OHmGwtwEJQKFw1nakaSGzJAuDwMkmZceWs/rt5jeUk7iUE6
+        RSpjMgVY/FgG/i5M4CmG69/SmkbtOkU36UfbByQD+KpyW957ubyqYEoF50Q/aymF0LabyNhK92r
+        PNPE2UO23K2+8DWZMzCtk908+zceA4Uax8/TTDjX/Y38=
+X-Received: by 2002:a67:ed14:: with SMTP id l20mr11552266vsp.233.1586788340014;
+        Mon, 13 Apr 2020 07:32:20 -0700 (PDT)
+X-Google-Smtp-Source: APiQypKzuR6Ua5fS/D+pEUWq54ijuuvcxRCg6rajTuAm7fR56pI8I+sx8N2oN9MaIiBTLp6D4yvnSaU8KiJFAq+oHk0=
+X-Received: by 2002:a67:ed14:: with SMTP id l20mr11552251vsp.233.1586788339731;
+ Mon, 13 Apr 2020 07:32:19 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <cover.1586451954.git.lorenzo@kernel.org>
+In-Reply-To: <cover.1586451954.git.lorenzo@kernel.org>
+From:   Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+Date:   Mon, 13 Apr 2020 16:33:12 +0200
+Message-ID: <CAJ0CqmXQM-NvadLJF1=vVKTABUQOiUGrwhEoVPtnK0oc=QyGMA@mail.gmail.com>
+Subject: Re: [PATCH v2 0/2] introduce usb support to mt7615 driver
+To:     Lorenzo Bianconi <lorenzo@kernel.org>
+Cc:     Felix Fietkau <nbd@nbd.name>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Sean Wang <sean.wang@mediatek.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        linux-mediatek@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-make mac_work per phy instead of per device and fix a possible deadlock
-in mt7615_stop since mt7615_mac_work runs holding mt76 mutex
+>
+> Introduce support for mt7663u 802.11ac 2x2:2 chipset to mt7615 driver.
+> Create mt7615-common module as container for mmio and usb shared code
+>
+> Changes since v1:
+> - rebased ontop of mt76 master branch
+>
+> Lorenzo Bianconi (2):
+>   mt76: mt7615: move core shared code in mt7615-common module
+>   mt76: mt7615: introduce mt7663u support
 
-Fixes: fdd2e570764c2 ("mt76: mt7615: add dual-phy support for mac80211 ops")
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- .../net/wireless/mediatek/mt76/mt7615/init.c  |  3 +-
- .../net/wireless/mediatek/mt76/mt7615/mac.c   | 58 ++++++++++---------
- .../net/wireless/mediatek/mt76/mt7615/main.c  | 19 +++---
- .../wireless/mediatek/mt76/mt7615/mt7615.h    |  4 +-
- 4 files changed, 45 insertions(+), 39 deletions(-)
+Hi Felix,
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/init.c b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
-index cb626a2d9197..f06de74d009d 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
-@@ -429,6 +429,7 @@ int mt7615_register_ext_phy(struct mt7615_dev *dev)
- 	if (phy)
- 		return 0;
- 
-+	INIT_DELAYED_WORK(&phy->mac_work, mt7615_mac_work);
- 	INIT_DELAYED_WORK(&phy->scan_work, mt7615_scan_work);
- 	skb_queue_head_init(&phy->scan_event_list);
- 
-@@ -487,7 +488,7 @@ void mt7615_init_device(struct mt7615_dev *dev)
- 	dev->phy.dev = dev;
- 	dev->phy.mt76 = &dev->mt76.phy;
- 	dev->mt76.phy.priv = &dev->phy;
--	INIT_DELAYED_WORK(&dev->mt76.mac_work, mt7615_mac_work);
-+	INIT_DELAYED_WORK(&dev->phy.mac_work, mt7615_mac_work);
- 	INIT_DELAYED_WORK(&dev->phy.scan_work, mt7615_scan_work);
- 	skb_queue_head_init(&dev->phy.scan_event_list);
- 	INIT_LIST_HEAD(&dev->sta_poll_list);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-index c38bc395c5a3..5614cd691885 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-@@ -1815,31 +1815,27 @@ mt7615_mac_update_mib_stats(struct mt7615_phy *phy)
- 
- void mt7615_mac_work(struct work_struct *work)
- {
--	struct mt7615_dev *dev;
--	struct mt7615_phy *ext_phy;
-+	struct mt7615_phy *phy;
-+	struct mt76_dev *mdev;
- 
--	dev = (struct mt7615_dev *)container_of(work, struct mt76_dev,
-+	phy = (struct mt7615_phy *)container_of(work, struct mt7615_phy,
- 						mac_work.work);
-+	mdev = &phy->dev->mt76;
- 
--	mutex_lock(&dev->mt76.mutex);
--	mt76_update_survey(&dev->mt76);
--	if (++dev->mac_work_count == 5) {
--		ext_phy = mt7615_ext_phy(dev);
--
--		mt7615_mac_update_mib_stats(&dev->phy);
--		mt7615_mac_scs_check(&dev->phy);
--		if (ext_phy) {
--			mt7615_mac_update_mib_stats(ext_phy);
--			mt7615_mac_scs_check(ext_phy);
--		}
-+	mutex_lock(&mdev->mutex);
- 
--		dev->mac_work_count = 0;
-+	mt76_update_survey(mdev);
-+	if (++phy->mac_work_count == 5) {
-+		phy->mac_work_count = 0;
-+
-+		mt7615_mac_update_mib_stats(phy);
-+		mt7615_mac_scs_check(phy);
- 	}
- 
--	mutex_unlock(&dev->mt76.mutex);
-+	mutex_unlock(&mdev->mutex);
- 
--	mt76_tx_status_check(&dev->mt76, NULL, false);
--	ieee80211_queue_delayed_work(mt76_hw(dev), &dev->mt76.mac_work,
-+	mt76_tx_status_check(mdev, NULL, false);
-+	ieee80211_queue_delayed_work(phy->mt76->hw, &phy->mac_work,
- 				     MT7615_WATCHDOG_TIME);
- }
- 
-@@ -1902,26 +1898,32 @@ mt7615_dma_reset(struct mt7615_dev *dev)
- 
- void mt7615_mac_reset_work(struct work_struct *work)
- {
-+	struct mt7615_phy *phy2;
-+	struct mt76_phy *ext_phy;
- 	struct mt7615_dev *dev;
- 
- 	dev = container_of(work, struct mt7615_dev, reset_work);
-+	ext_phy = dev->mt76.phy2;
-+	phy2 = ext_phy ? ext_phy->priv : NULL;
- 
- 	if (!(READ_ONCE(dev->reset_state) & MT_MCU_CMD_STOP_PDMA))
- 		return;
- 
- 	ieee80211_stop_queues(mt76_hw(dev));
--	if (dev->mt76.phy2)
--		ieee80211_stop_queues(dev->mt76.phy2->hw);
-+	if (ext_phy)
-+		ieee80211_stop_queues(ext_phy->hw);
- 
- 	set_bit(MT76_RESET, &dev->mphy.state);
- 	set_bit(MT76_MCU_RESET, &dev->mphy.state);
- 	wake_up(&dev->mt76.mcu.wait);
--	cancel_delayed_work_sync(&dev->mt76.mac_work);
-+	cancel_delayed_work_sync(&dev->phy.mac_work);
-+	if (phy2)
-+		cancel_delayed_work_sync(&phy2->mac_work);
- 
- 	/* lock/unlock all queues to ensure that no tx is pending */
- 	mt76_txq_schedule_all(&dev->mphy);
--	if (dev->mt76.phy2)
--		mt76_txq_schedule_all(dev->mt76.phy2);
-+	if (ext_phy)
-+		mt76_txq_schedule_all(ext_phy);
- 
- 	tasklet_disable(&dev->mt76.tx_tasklet);
- 	napi_disable(&dev->mt76.napi[0]);
-@@ -1955,8 +1957,8 @@ void mt7615_mac_reset_work(struct work_struct *work)
- 	napi_schedule(&dev->mt76.napi[1]);
- 
- 	ieee80211_wake_queues(mt76_hw(dev));
--	if (dev->mt76.phy2)
--		ieee80211_wake_queues(dev->mt76.phy2->hw);
-+	if (ext_phy)
-+		ieee80211_wake_queues(ext_phy->hw);
- 
- 	mt76_wr(dev, MT_MCU_INT_EVENT, MT_MCU_INT_EVENT_RESET_DONE);
- 	mt7615_wait_reset_state(dev, MT_MCU_CMD_NORMAL_STATE);
-@@ -1965,8 +1967,12 @@ void mt7615_mac_reset_work(struct work_struct *work)
- 
- 	mt7615_update_beacons(dev);
- 
--	ieee80211_queue_delayed_work(mt76_hw(dev), &dev->mt76.mac_work,
-+	ieee80211_queue_delayed_work(mt76_hw(dev), &dev->phy.mac_work,
- 				     MT7615_WATCHDOG_TIME);
-+	if (phy2)
-+		ieee80211_queue_delayed_work(ext_phy->hw, &phy2->mac_work,
-+					     MT7615_WATCHDOG_TIME);
-+
- }
- 
- static void mt7615_dfs_stop_radar_detector(struct mt7615_phy *phy)
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/main.c b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-index b346080458bc..33f67c7ccbf8 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-@@ -55,15 +55,12 @@ static int mt7615_start(struct ieee80211_hw *hw)
- 
- 	set_bit(MT76_STATE_RUNNING, &phy->mt76->state);
- 
--	if (running)
--		goto out;
--
--	mt7615_mac_reset_counters(dev);
--
--	ieee80211_queue_delayed_work(mt76_hw(dev), &dev->mt76.mac_work,
-+	ieee80211_queue_delayed_work(hw, &phy->mac_work,
- 				     MT7615_WATCHDOG_TIME);
- 
--out:
-+	if (!running)
-+		mt7615_mac_reset_counters(dev);
-+
- 	mutex_unlock(&dev->mt76.mutex);
- 
- 	return 0;
-@@ -74,6 +71,8 @@ static void mt7615_stop(struct ieee80211_hw *hw)
- 	struct mt7615_dev *dev = mt7615_hw_dev(hw);
- 	struct mt7615_phy *phy = mt7615_hw_phy(hw);
- 
-+	cancel_delayed_work_sync(&phy->mac_work);
-+
- 	mutex_lock(&dev->mt76.mutex);
- 
- 	clear_bit(MT76_STATE_RUNNING, &phy->mt76->state);
-@@ -85,8 +84,6 @@ static void mt7615_stop(struct ieee80211_hw *hw)
- 	}
- 
- 	if (!mt7615_dev_running(dev)) {
--		cancel_delayed_work_sync(&dev->mt76.mac_work);
--
- 		mt7615_mcu_set_pm(dev, 0, 1);
- 		mt7615_mcu_set_mac_enable(dev, 0, false);
- 	}
-@@ -245,7 +242,7 @@ static int mt7615_set_channel(struct mt7615_phy *phy)
- 	bool ext_phy = phy != &dev->phy;
- 	int ret;
- 
--	cancel_delayed_work_sync(&dev->mt76.mac_work);
-+	cancel_delayed_work_sync(&phy->mac_work);
- 
- 	mutex_lock(&dev->mt76.mutex);
- 	set_bit(MT76_RESET, &phy->mt76->state);
-@@ -276,7 +273,7 @@ static int mt7615_set_channel(struct mt7615_phy *phy)
- 	mutex_unlock(&dev->mt76.mutex);
- 
- 	mt76_txq_schedule_all(phy->mt76);
--	ieee80211_queue_delayed_work(mt76_hw(dev), &dev->mt76.mac_work,
-+	ieee80211_queue_delayed_work(phy->mt76->hw, &phy->mac_work,
- 				     MT7615_WATCHDOG_TIME);
- 	return ret;
- }
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
-index 10a98d38f77e..57c9c1ef8ffc 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
-@@ -192,6 +192,9 @@ struct mt7615_phy {
- 
- 	struct mib_stats mib;
- 
-+	struct delayed_work mac_work;
-+	u8 mac_work_count;
-+
- 	struct sk_buff_head scan_event_list;
- 	struct delayed_work scan_work;
- };
-@@ -259,7 +262,6 @@ struct mt7615_dev {
- 	} radar_pattern;
- 	u32 hw_pattern;
- 
--	u8 mac_work_count;
- 	bool fw_debug;
- 	bool flash_eeprom;
- 
--- 
-2.25.2
+please hold on with this series, I will post a new one rebased ontop
+of mt76 master branch
+
+Regards,
+Lorenzo
+
+>
+>  drivers/net/wireless/mediatek/mt76/Makefile   |   2 +-
+>  drivers/net/wireless/mediatek/mt76/mt76.h     |   1 +
+>  .../net/wireless/mediatek/mt76/mt7615/Kconfig |  18 +-
+>  .../wireless/mediatek/mt76/mt7615/Makefile    |  10 +-
+>  .../wireless/mediatek/mt76/mt7615/debugfs.c   |   1 +
+>  .../net/wireless/mediatek/mt76/mt7615/dma.c   |  39 --
+>  .../wireless/mediatek/mt76/mt7615/eeprom.c    |   1 +
+>  .../net/wireless/mediatek/mt76/mt7615/init.c  | 192 +--------
+>  .../net/wireless/mediatek/mt76/mt7615/mac.c   | 249 ++++-------
+>  .../net/wireless/mediatek/mt76/mt7615/mac.h   |   5 +-
+>  .../net/wireless/mediatek/mt76/mt7615/main.c  |  66 +--
+>  .../net/wireless/mediatek/mt76/mt7615/mcu.c   |  18 +-
+>  .../net/wireless/mediatek/mt76/mt7615/mcu.h   |   5 +
+>  .../net/wireless/mediatek/mt76/mt7615/mmio.c  |  30 ++
+>  .../wireless/mediatek/mt76/mt7615/mt7615.h    |  22 +-
+>  .../wireless/mediatek/mt76/mt7615/pci_init.c  | 187 +++++++++
+>  .../wireless/mediatek/mt76/mt7615/pci_mac.c   | 184 ++++++++
+>  .../net/wireless/mediatek/mt76/mt7615/regs.h  |  26 ++
+>  .../net/wireless/mediatek/mt76/mt7615/usb.c   | 396 ++++++++++++++++++
+>  .../wireless/mediatek/mt76/mt7615/usb_init.c  | 144 +++++++
+>  .../wireless/mediatek/mt76/mt7615/usb_mcu.c   |  93 ++++
+>  21 files changed, 1257 insertions(+), 432 deletions(-)
+>  create mode 100644 drivers/net/wireless/mediatek/mt76/mt7615/pci_init.c
+>  create mode 100644 drivers/net/wireless/mediatek/mt76/mt7615/pci_mac.c
+>  create mode 100644 drivers/net/wireless/mediatek/mt76/mt7615/usb.c
+>  create mode 100644 drivers/net/wireless/mediatek/mt76/mt7615/usb_init.c
+>  create mode 100644 drivers/net/wireless/mediatek/mt76/mt7615/usb_mcu.c
+>
+> --
+> 2.25.2
+>
 
