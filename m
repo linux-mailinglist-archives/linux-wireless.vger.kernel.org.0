@@ -2,122 +2,79 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (unknown [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 748071A62F5
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 Apr 2020 08:15:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 83C3A1A632F
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 Apr 2020 08:48:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727833AbgDMGPQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 13 Apr 2020 02:15:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.18]:48486 "EHLO
+        id S1728660AbgDMGsf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 13 Apr 2020 02:48:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.18]:53964 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727528AbgDMGPQ (ORCPT
+        with ESMTP id S1727546AbgDMGsf (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 13 Apr 2020 02:15:16 -0400
-Received: from mail-io1-f69.google.com (mail-io1-f69.google.com [209.85.166.69])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A034DC0A3BE0
-        for <linux-wireless@vger.kernel.org>; Sun, 12 Apr 2020 23:15:14 -0700 (PDT)
-Received: by mail-io1-f69.google.com with SMTP id h17so9578568ioh.20
-        for <linux-wireless@vger.kernel.org>; Sun, 12 Apr 2020 23:15:14 -0700 (PDT)
+        Mon, 13 Apr 2020 02:48:35 -0400
+Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com [IPv6:2607:f8b0:4864:20::543])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9EF91C008651
+        for <linux-wireless@vger.kernel.org>; Sun, 12 Apr 2020 23:48:34 -0700 (PDT)
+Received: by mail-pg1-x543.google.com with SMTP id w11so4066850pga.12
+        for <linux-wireless@vger.kernel.org>; Sun, 12 Apr 2020 23:48:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=V8FxIiIa/TXjm9S7utiVILgjnG/f48VqNhX4GcVaXLg=;
+        b=Ce1jEqSlokrDGvunDyR9bUnACrg2o9q4WoKw8vdKFYCfyg3g/5USrGD1A77hxvB1HP
+         omJmvefIBSa96+MPVFLzPjA/AGPrg8Bnt8bUgcveM4nSd6x/S2VF0GdiurQNp1yXH550
+         tGtDnDiBrpntUr1J9Ex2Qg+5wpzzgr+RsDibI=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:date:in-reply-to:message-id:subject
-         :from:to;
-        bh=hZnovlyZtwDPt3BKlPSdR2ANOMYrJFMgs7FxVxmw4ZY=;
-        b=TZrTaFAx7LyMzAdFAVpn8sQdlb/feBCQ5Dh3kfLLBAWbFnQ3RtWsYMcyUF9HZvV+6p
-         4XLQ2v1KABIq0rbq1fjKBGzWiT6yinTs5KoRll4zPPX1Np6NiC25fVjbBdnvPDLW8ufA
-         vXdmwyCjKZOfafMT8YpRLqLs7sYXsJZgMOBtylsrLHOT2xUgCHHjby6oRcyHve0CKo83
-         S60e4GERFqdKBYYoWoZydRtPn1JZtHfbjdn1BcOSDu+KRhgbsMmUU4WlrcY9zwX8YRtY
-         stqIFJByMNjhBXyzZ7nV4oBOKJt8YR/1eD1mzkVxeZ/KxKWOx16JvNJkKqxdFQ1FAvY1
-         IeLw==
-X-Gm-Message-State: AGi0PuZRd0yEf9zaOqQK+H2z/bQsvjsgNbsxbg6l3qQw8On56c23vknp
-        05PWR9X6kxQarfFmBa59AYtPwK+bHxd2iQyBXqIMGyDrgRGv
-X-Google-Smtp-Source: APiQypI1DX3eCch75C6Hn90dygVJhYx78BvFMSqdyOf8gzAZY8AhtRlaie/49UnEKT9YDIvxRgsPd91QzsedFygLntitGz8xkyOo
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=V8FxIiIa/TXjm9S7utiVILgjnG/f48VqNhX4GcVaXLg=;
+        b=CBYBgqBRag5+iIiCTUxIkI5aT5SBb3/VyKFuain7uO2WypL13rWQ632/fq70hvxg65
+         cKw0pknCiDr/fwjk3ZAsboktMYy2Jx46oQcX87OXZLGYrW1jgO86xLjyNlP14RsrJM59
+         Rsh98gGpk9d9qDOMpVRoVIl3j32VvnTqPHWSEuBvE8WbERfqED0p0pTZWjDhFtaQL4Qq
+         PaSBz54lkXholwruO8PBKWAYco1tNibXiU5hwTrD/AXGhp8JOsc0YhsO31tojP1wiwTk
+         tAQloUAUdkTGWPE3MTvnqY1ZdtBxQs+xwOCm4btSdL1RCDC1Z9LrFCDnWyyu6Yw+H2Yz
+         44pA==
+X-Gm-Message-State: AGi0Pub7LV84njA+ge52pNqIUgCHvOWiCbT06GF3Lq4TvfVhqtMge35H
+        HJsyqDCLnADMi6WWRodQXD8FCUMwcB49h7MF
+X-Google-Smtp-Source: APiQypIuKwXBc5IZrT2akRd5a0qulCuzNCYzkFYFYfzP9gKlFYaVdqhzy5UfOrYjYn0oPZPPu1K6ew==
+X-Received: by 2002:a62:164a:: with SMTP id 71mr15651380pfw.273.1586760514160;
+        Sun, 12 Apr 2020 23:48:34 -0700 (PDT)
+Received: from [192.168.178.129] (f140230.upc-f.chello.nl. [80.56.140.230])
+        by smtp.gmail.com with ESMTPSA id y126sm2703268pgy.91.2020.04.12.23.48.32
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 12 Apr 2020 23:48:33 -0700 (PDT)
+Subject: Re: [PATCH] mt76: replace consume_skb with dev_kfree_skb
+To:     sean.wang@mediatek.com, nbd@nbd.name, lorenzo.bianconi@redhat.com
+Cc:     ryder.lee@mediatek.com, linux-wireless@vger.kernel.org,
+        linux-mediatek@lists.infradead.org
+References: <b90644567e758b5702e37e34e31f2007e3bd2c87.1586290996.git.sean.wang@mediatek.com>
+From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
+Message-ID: <b1038177-4ed0-93fe-a093-a9278412dfd8@broadcom.com>
+Date:   Mon, 13 Apr 2020 08:48:30 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
 MIME-Version: 1.0
-X-Received: by 2002:a02:93cf:: with SMTP id z73mr14821825jah.136.1586758513747;
- Sun, 12 Apr 2020 23:15:13 -0700 (PDT)
-Date:   Sun, 12 Apr 2020 23:15:13 -0700
-In-Reply-To: <000000000000bb471d05a2f246d7@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <0000000000008e73c805a326018b@google.com>
-Subject: Re: WARNING in hwsim_new_radio_nl
-From:   syzbot <syzbot+a4aee3f42d7584d76761@syzkaller.appspotmail.com>
-To:     davem@davemloft.net, johannes@sipsolutions.net,
-        kvalo@codeaurora.org, linux-kernel@vger.kernel.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <b90644567e758b5702e37e34e31f2007e3bd2c87.1586290996.git.sean.wang@mediatek.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-syzbot has found a reproducer for the following crash on:
+On 4/7/2020 10:25 PM, sean.wang@mediatek.com wrote:
+> From: Sean Wang <sean.wang@mediatek.com>
+> 
+> consume_skb is identical to dev_kfree_skb, so that replace consume_skb with
+> dev_kfree_skb just to make consistent in whole mt76 driver.
 
-HEAD commit:    4f8a3cc1 Merge tag 'x86-urgent-2020-04-12' of git://git.ke..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=110243b3e00000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=3bfbde87e8e65624
-dashboard link: https://syzkaller.appspot.com/bug?extid=a4aee3f42d7584d76761
-compiler:       clang version 10.0.0 (https://github.com/llvm/llvm-project/ c2443155a0fb245c8f17f2c1c72b6ea391e86e81)
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=100825afe00000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=10df613fe00000
+Given that dev_kfree_skb is a define that maps it to consume_skb I would 
+say the use of consume_skb() is preferred. So maybe better to get 
+consistency in the driver by replacing dev_kfree_skb with consume_skb.
 
-IMPORTANT: if you fix the bug, please add the following tag to the commit:
-Reported-by: syzbot+a4aee3f42d7584d76761@syzkaller.appspotmail.com
-
-netlink: 98586 bytes leftover after parsing attributes in process `syz-executor425'.
-------------[ cut here ]------------
-precision 33020 too large
-WARNING: CPU: 1 PID: 6998 at lib/vsprintf.c:2471 set_precision lib/vsprintf.c:2471 [inline]
-WARNING: CPU: 1 PID: 6998 at lib/vsprintf.c:2471 vsnprintf+0x1467/0x1aa0 lib/vsprintf.c:2547
-Kernel panic - not syncing: panic_on_warn set ...
-CPU: 1 PID: 6998 Comm: syz-executor425 Not tainted 5.6.0-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
-Call Trace:
- __dump_stack lib/dump_stack.c:77 [inline]
- dump_stack+0x1e9/0x30e lib/dump_stack.c:118
- panic+0x264/0x7a0 kernel/panic.c:221
- __warn+0x209/0x210 kernel/panic.c:582
- report_bug+0x1ac/0x2d0 lib/bug.c:195
- fixup_bug arch/x86/kernel/traps.c:175 [inline]
- do_error_trap+0xca/0x1c0 arch/x86/kernel/traps.c:267
- do_invalid_op+0x32/0x40 arch/x86/kernel/traps.c:286
- invalid_op+0x23/0x30 arch/x86/entry/entry_64.S:1027
-RIP: 0010:set_precision lib/vsprintf.c:2471 [inline]
-RIP: 0010:vsnprintf+0x1467/0x1aa0 lib/vsprintf.c:2547
-Code: a6 bb fd 48 8d 5c 24 48 e9 8e fc ff ff e8 01 a6 bb fd c6 05 bf 06 b0 05 01 48 c7 c7 c1 d3 f2 88 44 89 fe 31 c0 e8 29 ba 8d fd <0f> 0b e9 b7 f6 ff ff e8 dd a5 bb fd c6 05 9a 06 b0 05 01 48 c7 c7
-RSP: 0018:ffffc90001647780 EFLAGS: 00010246
-RAX: 2f9f2ace1f35b900 RBX: ffffc900016477c8 RCX: ffff88809d86c2c0
-RDX: 0000000000000000 RSI: 0000000000000008 RDI: 0000000000000286
-RBP: 80fc0000ffffff02 R08: dffffc0000000000 R09: fffffbfff1628ea5
-R10: fffffbfff1628ea5 R11: 0000000000000000 R12: dffffc0000000000
-R13: 0000000000000000 R14: ffffffff88ea3058 R15: 00000000000080fc
- kvasprintf+0x59/0xf0 lib/kasprintf.c:22
- kasprintf+0x6a/0x90 lib/kasprintf.c:59
- hwsim_new_radio_nl+0x95c/0xf30 drivers/net/wireless/mac80211_hwsim.c:3672
- genl_family_rcv_msg_doit net/netlink/genetlink.c:673 [inline]
- genl_family_rcv_msg net/netlink/genetlink.c:718 [inline]
- genl_rcv_msg+0x1054/0x1530 net/netlink/genetlink.c:735
- netlink_rcv_skb+0x190/0x3a0 net/netlink/af_netlink.c:2469
- genl_rcv+0x24/0x40 net/netlink/genetlink.c:746
- netlink_unicast_kernel net/netlink/af_netlink.c:1303 [inline]
- netlink_unicast+0x786/0x940 net/netlink/af_netlink.c:1329
- netlink_sendmsg+0xa57/0xd70 net/netlink/af_netlink.c:1918
- sock_sendmsg_nosec net/socket.c:652 [inline]
- sock_sendmsg net/socket.c:672 [inline]
- ____sys_sendmsg+0x4f9/0x7c0 net/socket.c:2362
- ___sys_sendmsg net/socket.c:2416 [inline]
- __sys_sendmsg+0x2a6/0x360 net/socket.c:2449
- do_syscall_64+0xf3/0x1b0 arch/x86/entry/common.c:295
- entry_SYSCALL_64_after_hwframe+0x49/0xb3
-RIP: 0033:0x4401f9
-Code: 18 89 d0 c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 0f 83 fb 13 fc ff c3 66 2e 0f 1f 84 00 00 00 00
-RSP: 002b:00007ffecc373af8 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
-RAX: ffffffffffffffda RBX: 00000000004002c8 RCX: 00000000004401f9
-RDX: 0000000000000000 RSI: 0000000020000000 RDI: 0000000000000003
-RBP: 00000000006ca018 R08: 0000000000000000 R09: 00000000004002c8
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000401a80
-R13: 0000000000401b10 R14: 0000000000000000 R15: 0000000000000000
-Kernel Offset: disabled
-Rebooting in 86400 seconds..
-
+Regards,
+Arend
