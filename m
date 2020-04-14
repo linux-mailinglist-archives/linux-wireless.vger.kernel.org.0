@@ -2,121 +2,107 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0DBA31A7BDB
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Apr 2020 15:09:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DB8DC1A7E9F
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Apr 2020 15:42:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2502615AbgDNNJP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 14 Apr 2020 09:09:15 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:37539 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S2502609AbgDNNJL (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 14 Apr 2020 09:09:11 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1586869749;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=hBYiVbPBfUS+AcwD+sXBpDKSbw0tQLOGN9sYzZKYAmI=;
-        b=K7DU1TTPC9BFFT5yYLaVKQZD3drJpEDcdeUZejlRDv4R63E3f4Bb9Qa0SFdAx36JwSqWqi
-        8SxC/ZGs0Lc+K07ploaXUbYu8ErlZIoNGEI0SN7IPBGzpVwTEiq9GBkkprXg8bF6JYaRmK
-        0bzJdUHWA2/n8Jx66a0l/9jgse2PvXg=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-106-PA7uLtZsM327ACx1G3T_7g-1; Tue, 14 Apr 2020 09:07:49 -0400
-X-MC-Unique: PA7uLtZsM327ACx1G3T_7g-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 96CEA8048E4;
-        Tue, 14 Apr 2020 13:07:05 +0000 (UTC)
-Received: from warthog.procyon.org.uk (ovpn-113-129.rdu2.redhat.com [10.10.113.129])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 5AB5418A8E;
-        Tue, 14 Apr 2020 13:06:57 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-        Kingdom.
-        Registered in England and Wales under Company Registration No. 3798903
-From:   David Howells <dhowells@redhat.com>
-In-Reply-To: <20200413211550.8307-2-longman@redhat.com>
-References: <20200413211550.8307-2-longman@redhat.com> <20200413211550.8307-1-longman@redhat.com>
-To:     Waiman Long <longman@redhat.com>, herbert@gondor.apana.org.au
-cc:     Andrew Morton <akpm@linux-foundation.org>,
-        David Howells <dhowells@redhat.com>,
-        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Joe Perches <joe@perches.com>,
-        Matthew Wilcox <willy@infradead.org>,
-        David Rientjes <rientjes@google.com>, linux-mm@kvack.org,
-        keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
-        x86@kernel.org, linux-crypto@vger.kernel.org,
-        linux-s390@vger.kernel.org, linux-pm@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org,
-        linux-amlogic@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
-        virtualization@lists.linux-foundation.org, netdev@vger.kernel.org,
-        intel-wired-lan@lists.osuosl.org, linux-ppp@vger.kernel.org,
-        wireguard@lists.zx2c4.com, linux-wireless@vger.kernel.org,
-        devel@driverdev.osuosl.org, linux-scsi@vger.kernel.org,
-        target-devel@vger.kernel.org, linux-btrfs@vger.kernel.org,
-        linux-cifs@vger.kernel.org, samba-technical@lists.samba.org,
-        linux-fscrypt@vger.kernel.org, ecryptfs@vger.kernel.org,
-        kasan-dev@googlegroups.com, linux-bluetooth@vger.kernel.org,
-        linux-wpan@vger.kernel.org, linux-sctp@vger.kernel.org,
-        linux-nfs@vger.kernel.org, tipc-discussion@lists.sourceforge.net,
-        cocci@systeme.lip6.fr, linux-security-module@vger.kernel.org,
-        linux-integrity@vger.kernel.org
-Subject: Re: [PATCH 1/2] mm, treewide: Rename kzfree() to kfree_sensitive()
+        id S1732696AbgDNNmD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 14 Apr 2020 09:42:03 -0400
+Received: from mail.v3.sk ([167.172.186.51]:54832 "EHLO shell.v3.sk"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1728028AbgDNNmC (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 14 Apr 2020 09:42:02 -0400
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by zimbra.v3.sk (Postfix) with ESMTP id 27FADE03A9;
+        Tue, 14 Apr 2020 13:42:25 +0000 (UTC)
+Received: from shell.v3.sk ([127.0.0.1])
+        by localhost (zimbra.v3.sk [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id Kf1VxHPKjDDi; Tue, 14 Apr 2020 13:42:23 +0000 (UTC)
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by zimbra.v3.sk (Postfix) with ESMTP id C5C6BE043F;
+        Tue, 14 Apr 2020 13:42:23 +0000 (UTC)
+X-Virus-Scanned: amavisd-new at zimbra.v3.sk
+Received: from shell.v3.sk ([127.0.0.1])
+        by localhost (zimbra.v3.sk [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id nLR6T56V68z8; Tue, 14 Apr 2020 13:42:23 +0000 (UTC)
+Received: from localhost (unknown [109.183.109.54])
+        by zimbra.v3.sk (Postfix) with ESMTPSA id 54494E03A9;
+        Tue, 14 Apr 2020 13:42:23 +0000 (UTC)
+Date:   Tue, 14 Apr 2020 15:41:55 +0200
+From:   Lubomir Rintel <lkundrak@v3.sk>
+To:     Jason Yan <yanaijie@huawei.com>
+Cc:     kvalo@codeaurora.org, davem@davemloft.net,
+        colin.king@canonical.com, dan.carpenter@oracle.com,
+        libertas-dev@lists.infradead.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] libertas: make lbs_init_mesh() void
+Message-ID: <20200414134155.GA166011@furthur.local>
+References: <20200410090942.27239-1-yanaijie@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <3807473.1586869616.1@warthog.procyon.org.uk>
-Date:   Tue, 14 Apr 2020 14:06:56 +0100
-Message-ID: <3807474.1586869616@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200410090942.27239-1-yanaijie@huawei.com>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Waiman Long <longman@redhat.com> wrote:
+On Fri, Apr 10, 2020 at 05:09:42PM +0800, Jason Yan wrote:
+> Fix the following coccicheck warning:
+> 
+> drivers/net/wireless/marvell/libertas/mesh.c:833:5-8: Unneeded variable:
+> "ret". Return "0" on line 874
+> 
+> Reported-by: Hulk Robot <hulkci@huawei.com>
+> Signed-off-by: Jason Yan <yanaijie@huawei.com>
 
-> As said by Linus:
-> 
->   A symmetric naming is only helpful if it implies symmetries in use.
->   Otherwise it's actively misleading.
-> 
->   In "kzalloc()", the z is meaningful and an important part of what the
->   caller wants.
-> 
->   In "kzfree()", the z is actively detrimental, because maybe in the
->   future we really _might_ want to use that "memfill(0xdeadbeef)" or
->   something. The "zero" part of the interface isn't even _relevant_.
-> 
-> The main reason that kzfree() exists is to clear sensitive information
-> that should not be leaked to other future users of the same memory
-> objects.
-> 
-> Rename kzfree() to kfree_sensitive() to follow the example of the
-> recently added kvfree_sensitive() and make the intention of the API
-> more explicit. In addition, memzero_explicit() is used to clear the
-> memory to make sure that it won't get optimized away by the compiler.
-> 
-> The renaming is done by using the command sequence:
-> 
->   git grep -w --name-only kzfree |\
->   xargs sed -i 's/\bkzfree\b/kfree_sensitive/'
-> 
-> followed by some editing of the kfree_sensitive() kerneldoc and the
-> use of memzero_explicit() instead of memset().
-> 
-> Suggested-by: Joe Perches <joe@perches.com>
-> Signed-off-by: Waiman Long <longman@redhat.com>
+Reviewed-by: Lubomir Rintel <lkundrak@v3.sk>
 
-Since this changes a lot of crypto stuff, does it make sense for it to go via
-the crypto tree?
+Thank you
+Lubo
 
-Acked-by: David Howells <dhowells@redhat.com>
-
+> ---
+>  drivers/net/wireless/marvell/libertas/mesh.c | 6 +-----
+>  drivers/net/wireless/marvell/libertas/mesh.h | 2 +-
+>  2 files changed, 2 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/marvell/libertas/mesh.c b/drivers/net/wireless/marvell/libertas/mesh.c
+> index 44c8a550da4c..f5b78257d551 100644
+> --- a/drivers/net/wireless/marvell/libertas/mesh.c
+> +++ b/drivers/net/wireless/marvell/libertas/mesh.c
+> @@ -828,10 +828,8 @@ static void lbs_persist_config_remove(struct net_device *dev)
+>   * Check mesh FW version and appropriately send the mesh start
+>   * command
+>   */
+> -int lbs_init_mesh(struct lbs_private *priv)
+> +void lbs_init_mesh(struct lbs_private *priv)
+>  {
+> -	int ret = 0;
+> -
+>  	/* Determine mesh_fw_ver from fwrelease and fwcapinfo */
+>  	/* 5.0.16p0 9.0.0.p0 is known to NOT support any mesh */
+>  	/* 5.110.22 have mesh command with 0xa3 command id */
+> @@ -870,8 +868,6 @@ int lbs_init_mesh(struct lbs_private *priv)
+>  
+>  	/* Stop meshing until interface is brought up */
+>  	lbs_mesh_config(priv, CMD_ACT_MESH_CONFIG_STOP, 1);
+> -
+> -	return ret;
+>  }
+>  
+>  void lbs_start_mesh(struct lbs_private *priv)
+> diff --git a/drivers/net/wireless/marvell/libertas/mesh.h b/drivers/net/wireless/marvell/libertas/mesh.h
+> index 1561018f226f..d49717b20c09 100644
+> --- a/drivers/net/wireless/marvell/libertas/mesh.h
+> +++ b/drivers/net/wireless/marvell/libertas/mesh.h
+> @@ -16,7 +16,7 @@
+>  
+>  struct net_device;
+>  
+> -int lbs_init_mesh(struct lbs_private *priv);
+> +void lbs_init_mesh(struct lbs_private *priv);
+>  void lbs_start_mesh(struct lbs_private *priv);
+>  int lbs_deinit_mesh(struct lbs_private *priv);
+>  
+> -- 
+> 2.17.2
+> 
