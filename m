@@ -2,44 +2,145 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2176A1A8C04
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Apr 2020 22:15:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 135F41A8D1A
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Apr 2020 23:02:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2632764AbgDNUMz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 14 Apr 2020 16:12:55 -0400
-Received: from shards.monkeyblade.net ([23.128.96.9]:33766 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2632761AbgDNUMS (ORCPT
+        id S2633592AbgDNVCb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 14 Apr 2020 17:02:31 -0400
+Received: from mailgw01.mediatek.com ([210.61.82.183]:4735 "EHLO
+        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S2633559AbgDNVBd (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 14 Apr 2020 16:12:18 -0400
-Received: from localhost (unknown [IPv6:2601:601:9f00:477::3d5])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 6A1A4127FD184;
-        Tue, 14 Apr 2020 13:12:14 -0700 (PDT)
-Date:   Tue, 14 Apr 2020 13:12:09 -0700 (PDT)
-Message-Id: <20200414.131209.1108253082504989993.davem@davemloft.net>
-To:     kvalo@codeaurora.org
-Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org
-Subject: Re: pull-request: wireless-drivers-2020-04-14
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20200414153500.E59C9C432C2@smtp.codeaurora.org>
-References: <20200414153500.E59C9C432C2@smtp.codeaurora.org>
-X-Mailer: Mew version 6.8 on Emacs 26.1
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Tue, 14 Apr 2020 13:12:14 -0700 (PDT)
+        Tue, 14 Apr 2020 17:01:33 -0400
+X-UUID: 9750c5080a074e9da59372e8d4ee7dc1-20200415
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+        h=Content-Transfer-Encoding:Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=X4mXXMKcwtzAjLfTBcqOdaoCYQYElct6qWdwAR4ZP7c=;
+        b=lxipHqmeeHwfxDYy1d1GfLVncwGmLug7yVxYnuFAGVCu8GoLi1EUFUJL+lWqky6rSkwtdDT39t8Q6U0F/Ra9jG82OZkpsTm543bPcUheUbB5Yyd4pEcgOmhYe8UPtUSCszLuJJOIWMgPk/ejtqwNapk1DmyF3gD8GmNY7ave/wY=;
+X-UUID: 9750c5080a074e9da59372e8d4ee7dc1-20200415
+Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw01.mediatek.com
+        (envelope-from <ryder.lee@mediatek.com>)
+        (Cellopoint E-mail Firewall v4.1.10 Build 0809 with TLS)
+        with ESMTP id 523165876; Wed, 15 Apr 2020 05:01:19 +0800
+Received: from mtkcas07.mediatek.inc (172.21.101.84) by
+ mtkmbs06n1.mediatek.inc (172.21.101.129) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Wed, 15 Apr 2020 05:01:17 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas07.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Wed, 15 Apr 2020 05:01:16 +0800
+From:   Ryder Lee <ryder.lee@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+CC:     Shayne Chen <shayne.chen@mediatek.com>,
+        YF Luo <yf.luo@mediatek.com>,
+        Yiwei Chung <yiwei.chung@mediatek.com>,
+        Chih-Min Chen <chih-min.chen@mediatek.com>,
+        Evelyn Tsai <evelyn.tsai@mediatek.com>,
+        Sean Wang <sean.wang@mediatek.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>,
+        Ryder Lee <ryder.lee@mediatek.com>
+Subject: [PATCH v2 00/18] Add MediaTek IEEE 802.11ax devices - MT7915E
+Date:   Wed, 15 Apr 2020 05:00:58 +0800
+Message-ID: <cover.1586895593.git.ryder.lee@mediatek.com>
+X-Mailer: git-send-email 2.18.0
+MIME-Version: 1.0
+Content-Type: text/plain
+X-MTK:  N
+Content-Transfer-Encoding: base64
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Kalle Valo <kvalo@codeaurora.org>
-Date: Tue, 14 Apr 2020 15:35:00 +0000 (UTC)
+TVQ3OTE1RVsxXSBpcyBNZWRpYVRlayBsYXRlc3QgZ2VuZXJhdGlvbiBJRUVFIDgwMi4xMWF4IGRl
+dmljZSwgd2hpY2gNCmN1cnJlbnRseSBzdXBwb3J0cyBBUCwgU3RhdGlvbiBhbmQgTWVzaCBtb2Rl
+Lg0KDQpFdmVuIHRob3VnaCBzb21lIGNvZGUgb2YgTVQ3OTE1IGFyZSBzaW1pbGFyIHRvIE1UNzYx
+NS4gTmV3IGdlbmVyYXRpb24gaGFzOiANCi0gSHVnZSBhbW91bnRzIG9mIEhFIGRlZGljYXRlZCBw
+YXJ0cy4NCi0gTmV3IGRlc2lnbnMgb2YgUEhZL2Zpcm13YXJlL0RNQSBzY2hlbWUuDQotIE1vc3Qg
+ZmllbGRzIG9mIHR4ZC90eHMvcnhkL3J4diBhcmUgcmVhcnJhbmdlZCBvciBkZXByZWNhdGVkLg0K
+LSBTdXBwb3J0IG11Y2ggbW9yZSBvZmZsb2FkaW5nIHN0dWZmLg0KDQpNb3N0IGltcG9ydGFudGx5
+LCBmb3IgdGhlIHNha2Ugb2YgY29udmVuaWVuY2UgdG8gZ2V0IGZhbWlseSBkZXZpY2VzIHN1cHBv
+cnRlZA0KaW4gdGhlIGZ1dHVyZSwgaXQgd2FzIGNvbmNsdWRlZCB0byBiZSBzaW1wbGVyIHRvIGhh
+dmUgYSBjbGVhbiBzdGFydCBmb3IgdGhpcw0KZ2VuZXJhdGlvbi4gVGhpcyBtYWtlcyBtYWludGVu
+YW5jZSBlYXNpZXIgYW5kIGF2b2lkcyBtYWpvciBjaGFuZ2VzIGluIE1UNzYxNSwNCndoaWNoIGN1
+cnJlbnRseSBzaGFyZXMgdGhlIGNvZGVzIHdpdGggbG93IHBvd2VyIGNhcGFibGUgZGV2aWNlIE1U
+NzY2My4gSXQgd2lsbA0KaW5jcmVhc2UgdGhlIHJpc2sgb2YgcmVncmVzc2lvbnMgaW4gZXhpc3Rp
+bmcgZmxvdy4NCg0KTVQ3OTE1IHN1cHBvcnRzIG9ubHkgYmFzaWMgSEUgZm9yIHRoZSBtb21lbnQs
+IHdoZXJlYXMgb3RoZXIgODAyLjExYXggc3BlY2lmaWMNCmZlYXR1cmVzIGFyZSB3b3JrIGluIHBy
+b2dyZXNzLihlLmcuIEJTUyBjb2xvciwgVFdULCBTUiwgT0ZETUEgYW5kIERDTSkNClRoZXkgd2ls
+bCBiZSBncmFkdWFsbHkgYWRkZWQgaW4gdXBjb21pbmcgZGF5cy4NCg0KVGhlIGZpcm13YXJlcyBh
+cmUgYXZhaWxhYmxlIG5vdyBmcm9tIGh0dHBzOi8vZ2l0aHViLmNvbS9yeWRlcmxlZTExMTAvd2ly
+ZWxlc3MtZncgLA0KYW5kIHdpbGwgYmUgc3VibWl0dGVkLiBBdCBsYXN0LCB0aGUgZGV2ZWxvcGVy
+cyBhcmUgYWxsIGxpc3RlZCBpbiB0aGUgc2VyaWVzLg0KDQpbMV0gaHR0cHM6Ly93d3cubWVkaWF0
+ZWsuY29tL2Jsb2cvbWVkaWF0ZWstbXQ3OTE1LXdpLWZpLTYtd2F2ZS0xLWNoaXBzZXQtYnVpbGRz
+LWluLWEtcmFuZ2Utb2YtaW5kdXN0cnktZmlyc3RzIA0KDQpUaGFua3MsDQpSeWRlcg0KDQpDaGFu
+Z2VzIHNpbmNlIHYyIC0NCi0gZHJvcCBod19hbXNkdSBwYXRjaA0KLSBmaXgga2NvbmZpZyBsaWNl
+bnNlDQotIGZpeCBkZWJ1Z2ZzIHJlZ2FyZCB0byB0eHBvd2VyIGR1bXAgaXNzdWUNCi0gc3d0aWNo
+IHRvIHVzZSAicGVyLXBoeSIgdG8gc2V0IHJ1bnRpbWUgc3RyZWFtIGNhcHMgZm9yIGR1YWwgYmFu
+ZCBjb25jdXJyZW50IG9wZXJhdGlvbi4NCi0gbW92ZSBvbWFjX2lkeCB0byBtdDc5MTVfcGh5IHRv
+IG1ha2UgaXQgaW5kZXBlbmRlbnQNCi0gYWRkIC5nZXQvc2V0X3RzZiBjYWxsYmFja3MNCg0KQ2hh
+bmdlcyBzaW5jZSB2MSAtDQotIGxpc3QgYSBtaXNzaW5nIGRldmVsb3Blci4NCi0gZHJvcCB1bnVz
+ZWQgY29kZXMgaW4gdGhlIGh3X3R4X2Ftc2R1IHBhdGNoLg0KLSBhZGQgYSBtaXNzaW5nIGJpdHdp
+ZHRoIGNoYW5nZSBvZiB3Y2lkLg0KLSBhZGQgbW9yZSBUT0RPIGl0ZW1zIGluIHRoZSBkcml2ZXIu
+DQoNClJ5ZGVyIExlZSAoMTgpOg0KICBtdDc2OiBhdm9pZCByeCByZW9yZGVyIGJ1ZmZlciBvdmVy
+Zmxvdw0KICBtdDc2OiBhZGQgc3VwcG9ydCBmb3IgSEUgUlggcmF0ZSByZXBvcnRpbmcNCiAgbXQ3
+NjogYWRkIFJ4IHN0YXRzIHN1cHBvcnQgZm9yIHJhZGlvdGFwDQogIG10NzY6IGFkanVzdCB3Y2lk
+IHNpemUgdG8gc3VwcG9ydCBuZXcgODAyLjExYXggZ2VuZXJhdGlvbg0KICBtdDc2OiBhZGQgSEUg
+cGh5IG1vZGVzIGFuZCBoYXJkd2FyZSBxdWV1ZQ0KICBtdDc2OiBhZGQgbWFjODAyMTEgZHJpdmVy
+IGZvciBNVDc5MTUgUENJZS1iYXNlZCBjaGlwc2V0cw0KICBtdDc2OiBtdDc5MTU6IGVuYWJsZSBS
+eCBIRSByYXRlIHJlcG9ydGluZw0KICBtdDc2OiBtdDc5MTU6IGltcGxlbWVudCBIRSBwZXItcmF0
+ZSB0eCBwb3dlciBzdXBwb3J0DQogIG10NzY6IG10NzkxNTogcmVnaXN0ZXIgcGVyLXBoeSBIRSBj
+YXBhYmlsaXRpZXMgZm9yIGVhY2ggaW50ZXJmYWNlDQogIG10NzY6IG10NzkxNTogYWRkIEhFIGJz
+c19jb25mIHN1cHBvcnQgZm9yIGludGVyZmFjZXMNCiAgbXQ3NjogbXQ3OTE1OiBhZGQgSEUgY2Fw
+YWJpbGl0aWVzIHN1cHBvcnQgZm9yIHBlZXJzDQogIG10NzY6IG10NzkxNTogYWRkIFJ4IHJhZGlv
+dGFwIGhlYWRlciBzdXBwb3J0DQogIG10NzY6IG10NzkxNTogYWRkIC5zdGFfYWRkX2RlYnVnZnMg
+c3VwcG9ydA0KICBtdDc2OiBtdDc5MTU6IGFkZCAuc3RhX3N0YXRpc3RpY3Mgc3VwcG9ydA0KICBt
+dDc2OiBtdDc5MTU6IHNldCBwZWVyIFR4IGZpeGVkIHJhdGUgdGhyb3VnaCBkZWJ1Z2ZzDQogIG10
+NzY6IG10NzkxNTogYWRkIHRzZiByZWxhdGVkIGNhbGxiYWNrcw0KICBtdDc2OiBtdDc5MTU6IGVu
+YWJsZSBmaXJtd2FyZSBtb2R1bGUgZGVidWcgc3VwcG9ydA0KICBtdDc2OiBzZXQgcnVudGltZSBz
+dHJlYW0gY2FwcyBieSBtdDc2X3BoeQ0KDQogZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsv
+bXQ3Ni9LY29uZmlnICAgIHwgICAgMSArDQogZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsv
+bXQ3Ni9NYWtlZmlsZSAgIHwgICAgMSArDQogZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsv
+bXQ3Ni9hZ2ctcnguYyAgIHwgICAxMiArLQ0KIGRyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVr
+L210NzYvbWFjODAyMTEuYyB8ICAgMjYgKy0NCiBkcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRl
+ay9tdDc2L210NzYuaCAgICAgfCAgIDQ2ICstDQogLi4uL25ldC93aXJlbGVzcy9tZWRpYXRlay9t
+dDc2L210NzYxNS9pbml0LmMgIHwgICAgNCArLQ0KIC4uLi9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsv
+bXQ3Ni9tdDc2MTUvbWFpbi5jICB8ICAgIDIgKy0NCiAuLi4vd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3
+Ni9tdDc2eDIvcGNpX21haW4uYyAgfCAgICAyICstDQogLi4uL25ldC93aXJlbGVzcy9tZWRpYXRl
+ay9tdDc2L210NzkxNS9LY29uZmlnIHwgICAxMyArDQogLi4uL3dpcmVsZXNzL21lZGlhdGVrL210
+NzYvbXQ3OTE1L01ha2VmaWxlICAgIHwgICAgNiArDQogLi4uL3dpcmVsZXNzL21lZGlhdGVrL210
+NzYvbXQ3OTE1L2RlYnVnZnMuYyAgIHwgIDQxOCArKysNCiAuLi4vbmV0L3dpcmVsZXNzL21lZGlh
+dGVrL210NzYvbXQ3OTE1L2RtYS5jICAgfCAgMjgzICsrDQogLi4uL3dpcmVsZXNzL21lZGlhdGVr
+L210NzYvbXQ3OTE1L2VlcHJvbS5jICAgIHwgIDI0MyArKw0KIC4uLi93aXJlbGVzcy9tZWRpYXRl
+ay9tdDc2L210NzkxNS9lZXByb20uaCAgICB8ICAxMjUgKw0KIC4uLi9uZXQvd2lyZWxlc3MvbWVk
+aWF0ZWsvbXQ3Ni9tdDc5MTUvaW5pdC5jICB8ICA1ODkgKysrKw0KIC4uLi9uZXQvd2lyZWxlc3Mv
+bWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvbWFjLmMgICB8IDE0NTggKysrKysrKysrDQogLi4uL25ldC93
+aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzkxNS9tYWMuaCAgIHwgIDM0NiArKw0KIC4uLi9uZXQv
+d2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvbWFpbi5jICB8ICA4MzEgKysrKysNCiAuLi4v
+bmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1L21jdS5jICAgfCAyNzcwICsrKysrKysr
+KysrKysrKysrDQogLi4uL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzkxNS9tY3UuaCAg
+IHwgIDk4MiArKysrKysNCiAuLi4vd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvbXQ3OTE1
+LmggICAgfCAgNDYwICsrKw0KIC4uLi9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUv
+cGNpLmMgICB8ICAxOTEgKysNCiAuLi4vbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1
+L3JlZ3MuaCAgfCAgMzU1ICsrKw0KIDIzIGZpbGVzIGNoYW5nZWQsIDkxMzIgaW5zZXJ0aW9ucygr
+KSwgMzIgZGVsZXRpb25zKC0pDQogY3JlYXRlIG1vZGUgMTAwNjQ0IGRyaXZlcnMvbmV0L3dpcmVs
+ZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1L0tjb25maWcNCiBjcmVhdGUgbW9kZSAxMDA2NDQgZHJp
+dmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvTWFrZWZpbGUNCiBjcmVhdGUg
+bW9kZSAxMDA2NDQgZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvZGVi
+dWdmcy5jDQogY3JlYXRlIG1vZGUgMTAwNjQ0IGRyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVr
+L210NzYvbXQ3OTE1L2RtYS5jDQogY3JlYXRlIG1vZGUgMTAwNjQ0IGRyaXZlcnMvbmV0L3dpcmVs
+ZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1L2VlcHJvbS5jDQogY3JlYXRlIG1vZGUgMTAwNjQ0IGRy
+aXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1L2VlcHJvbS5oDQogY3JlYXRl
+IG1vZGUgMTAwNjQ0IGRyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1L2lu
+aXQuYw0KIGNyZWF0ZSBtb2RlIDEwMDY0NCBkcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9t
+dDc2L210NzkxNS9tYWMuYw0KIGNyZWF0ZSBtb2RlIDEwMDY0NCBkcml2ZXJzL25ldC93aXJlbGVz
+cy9tZWRpYXRlay9tdDc2L210NzkxNS9tYWMuaA0KIGNyZWF0ZSBtb2RlIDEwMDY0NCBkcml2ZXJz
+L25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzkxNS9tYWluLmMNCiBjcmVhdGUgbW9kZSAx
+MDA2NDQgZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvbWN1LmMNCiBj
+cmVhdGUgbW9kZSAxMDA2NDQgZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5
+MTUvbWN1LmgNCiBjcmVhdGUgbW9kZSAxMDA2NDQgZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0
+ZWsvbXQ3Ni9tdDc5MTUvbXQ3OTE1LmgNCiBjcmVhdGUgbW9kZSAxMDA2NDQgZHJpdmVycy9uZXQv
+d2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvcGNpLmMNCiBjcmVhdGUgbW9kZSAxMDA2NDQg
+ZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvcmVncy5oDQoNCi0tIA0K
+Mi4xOC4wDQo=
 
-> here's a pull request to net tree, more info below. Please let me know if there
-> are any problems.
-
-Pulled, thanks Kalle.
