@@ -2,180 +2,80 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 065D01A8069
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Apr 2020 16:52:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D91D41A80A2
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Apr 2020 17:02:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2405208AbgDNOwK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 14 Apr 2020 10:52:10 -0400
-Received: from mx2.suse.de ([195.135.220.15]:54152 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2405206AbgDNOwG (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 14 Apr 2020 10:52:06 -0400
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id 2F0F4AC7F;
-        Tue, 14 Apr 2020 14:52:03 +0000 (UTC)
-Message-ID: <6e42e11cfe24f88ae1dac2ad793f9c73751e6c7d.camel@suse.de>
-Subject: Re: iwlwifi won't probe with linux-next
-From:   Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
-To:     Johannes Berg <johannes.berg@intel.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>
-Cc:     Intel Linux Wireless <linuxwifi@intel.com>,
-        linux-wireless <linux-wireless@vger.kernel.org>
-Date:   Tue, 14 Apr 2020 16:52:01 +0200
-In-Reply-To: <bdb4170b21167cae89523fa688db6699539474bf.camel@suse.de>
-References: <bdb4170b21167cae89523fa688db6699539474bf.camel@suse.de>
-Content-Type: multipart/signed; micalg="pgp-sha256";
-        protocol="application/pgp-signature"; boundary="=-1SaTSStqTlZL7Pl6MK8z"
-User-Agent: Evolution 3.34.2 
+        id S2405574AbgDNPCY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 14 Apr 2020 11:02:24 -0400
+Received: from mail26.static.mailgun.info ([104.130.122.26]:33048 "EHLO
+        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S2405540AbgDNPCV (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 14 Apr 2020 11:02:21 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1586876540; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=tPh/QCtMa2WlnlM0NOjI2Yah/uXiqwQYCnR8HqRarxA=;
+ b=JnjA+gou5W1Dc2qL6VxI/sxpTUOnRNYihqOZb6P2sYll18f8leiCrgvka+TtTMFpYYXZMZ1T
+ AOQzqKP9vc/Mlf+3CjSraVotBmelYS76QW5RTj01n6C4wAGittSRfsrrZP64IahJH95kNEZG
+ c+o2+YBjw971cGem1JUQ1dHFgOU=
+X-Mailgun-Sending-Ip: 104.130.122.26
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5e95d063.7fd03b06cbc8-smtp-out-n03;
+ Tue, 14 Apr 2020 15:01:55 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id A6D6BC433BA; Tue, 14 Apr 2020 15:01:54 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
+        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 9FE80C433F2;
+        Tue, 14 Apr 2020 15:01:52 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 9FE80C433F2
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] rtw88: Make two functions static
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20200328030524.16032-1-yuehaibing@huawei.com>
+References: <20200328030524.16032-1-yuehaibing@huawei.com>
+To:     YueHaibing <yuehaibing@huawei.com>
+Cc:     <yhchuang@realtek.com>, <davem@davemloft.net>,
+        <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, YueHaibing <yuehaibing@huawei.com>
+User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
+Message-Id: <20200414150154.A6D6BC433BA@smtp.codeaurora.org>
+Date:   Tue, 14 Apr 2020 15:01:54 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+YueHaibing <yuehaibing@huawei.com> wrote:
 
---=-1SaTSStqTlZL7Pl6MK8z
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+> Fix sparse warnings:
+> 
+> drivers/net/wireless/realtek/rtw88/fw.c:633:4: warning:
+>  symbol 'rtw_get_rsvd_page_probe_req_location' was not declared. Should it be static?
+> drivers/net/wireless/realtek/rtw88/fw.c:650:5: warning:
+>  symbol 'rtw_get_rsvd_page_probe_req_size' was not declared. Should it be static?
+> 
+> Reported-by: Hulk Robot <hulkci@huawei.com>
+> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 
-On Mon, 2020-04-13 at 14:47 +0200, Nicolas Saenz Julienne wrote:
-> Hi,
-> I'm having trouble with my iwlwifi device on the latest linux-next.
-> Essentially
-> it fails at probe:
->=20
-> 	nico@linux-9qgx:~> dmesg | grep iwl
-> 	[    4.650950] iwlwifi 0000:28:00.0: enabling device (0000 -> 0002)
-> 	[    4.720086] iwlwifi: probe of 0000:28:00.0 failed with error -110
->=20
-> I made some research and the timeout happens after the call to iwl_poll_b=
-it()
-> in iwl_finish_nic_init().
->=20
-> Also here is the relevant lspci output:
->=20
-> 	nico@linux-9qgx:~/c/linux> sudo lspci -s 0000:28:00.0 -vvv
-> 	28:00.0 Network controller: Intel Corporation Wi-Fi 6 AX200 (rev 1a)
-> 		DeviceName: RTL8111EPV
-> 		Subsystem: Intel Corporation Device 0084
-> 		Control: I/O- Mem+ BusMaster- SpecCycle- MemWINV- VGASnoop-
-> ParErr- Stepping- SERR- FastB2B- DisINTx-
-> 		Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=3Dfast >TAbort-
-> <TAbort- <MAbort- >SERR- <PERR- INTx-
-> 		Interrupt: pin A routed to IRQ 41
-> 		Region 0: Memory at fc600000 (64-bit, non-prefetchable)
-> [size=3D16K]
-> 		Capabilities: [c8] Power Management version 3
-> 			Flags: PMEClk- DSI+ D1- D2- AuxCurrent=3D0mA PME(D0+,D1-
-> ,D2-,D3hot+,D3cold+)
-> 			Status: D0 NoSoftRst+ PME-Enable- DSel=3D0 DScale=3D0 PME-
-> 		Capabilities: [d0] MSI: Enable- Count=3D1/1 Maskable- 64bit+
-> 			Address: 0000000000000000  Data: 0000
-> 		Capabilities: [40] Express (v2) Endpoint, MSI 00
-> 			DevCap:	MaxPayload 128 bytes, PhantFunc 0, Latency L0s
-> <512ns, L1 unlimited
-> 				ExtTag- AttnBtn- AttnInd- PwrInd- RBE+ FLReset+
-> SlotPowerLimit 0.000W
-> 			DevCtl:	CorrErr- NonFatalErr- FatalErr- UnsupReq-
-> 				RlxdOrd+ ExtTag- PhantFunc- AuxPwr+ NoSnoop+
-> FLReset-
-> 				MaxPayload 128 bytes, MaxReadReq 128 bytes
-> 			DevSta:	CorrErr- NonFatalErr- FatalErr- UnsupReq-
-> AuxPwr+ TransPend-
-> 			LnkCap:	Port #6, Speed 5GT/s, Width x1, ASPM L1, Exit
-> Latency L1 <8us
-> 				ClockPM+ Surprise- LLActRep- BwNot- ASPMOptComp+
-> 			LnkCtl:	ASPM Disabled; RCB 64 bytes Disabled- CommClk+
-> 				ExtSynch- ClockPM- AutWidDis- BWInt- AutBWInt-
-> 			LnkSta:	Speed 5GT/s (ok), Width x1 (ok)
-> 				TrErr- Train- SlotClk+ DLActive- BWMgmt-
-> ABWMgmt-
-> 			DevCap2: Completion Timeout: Range B, TimeoutDis+,
-> NROPrPrP-, LTR+
-> 				10BitTagComp-, 10BitTagReq-, OBFF Via WAKE#,
-> ExtFmt-, EETLPPrefix-
-> 				EmergencyPowerReduction Not Supported,
-> EmergencyPowerReductionInit-
-> 				FRS-, TPHComp-, ExtTPHComp-
-> 				AtomicOpsCap: 32bit- 64bit- 128bitCAS-
-> 			DevCtl2: Completion Timeout: 16ms to 55ms, TimeoutDis-,
-> LTR+, OBFF Disabled
-> 				AtomicOpsCtl: ReqEn-
-> 			LnkCtl2: Target Link Speed: 5GT/s, EnterCompliance-
-> SpeedDis-
-> 				Transmit Margin: Normal Operating Range,
-> EnterModifiedCompliance- ComplianceSOS-
-> 				Compliance De-emphasis: -6dB
-> 			LnkSta2: Current De-emphasis Level: -6dB,
-> EqualizationComplete-, EqualizationPhase1-
-> 				EqualizationPhase2-, EqualizationPhase3-,
-> LinkEqualizationRequest-
-> 		Capabilities: [80] MSI-X: Enable- Count=3D16 Masked-
-> 			Vector table: BAR=3D0 offset=3D00002000
-> 			PBA: BAR=3D0 offset=3D00003000
-> 		Capabilities: [100 v1] Advanced Error Reporting
-> 			UESta:	DLP- SDES- TLP- FCP- CmpltTO- CmpltAbrt-
-> UnxCmplt- RxOF- MalfTLP- ECRC- UnsupReq- ACSViol-
-> 			UEMsk:	DLP- SDES- TLP- FCP- CmpltTO- CmpltAbrt-
-> UnxCmplt- RxOF- MalfTLP- ECRC- UnsupReq- ACSViol-
-> 			UESvrt:	DLP+ SDES+ TLP- FCP+ CmpltTO- CmpltAbrt-
-> UnxCmplt- RxOF+ MalfTLP+ ECRC- UnsupReq- ACSViol-
-> 			CESta:	RxErr- BadTLP- BadDLLP- Rollover- Timeout-
-> AdvNonFatalErr-
-> 			CEMsk:	RxErr- BadTLP- BadDLLP- Rollover- Timeout-
-> AdvNonFatalErr+
-> 			AERCap:	First Error Pointer: 00, ECRCGenCap-
-> ECRCGenEn-
-> ECRCChkCap- ECRCChkEn-
-> 				MultHdrRecCap- MultHdrRecEn- TLPPfxPres-
-> HdrLogCap-
-> 			HeaderLog: 00000000 00000000 00000000 00000000
-> 		Capabilities: [14c v1] Latency Tolerance Reporting
-> 			Max snoop latency: 1048576ns
-> 			Max no snoop latency: 1048576ns
-> 		Capabilities: [154 v1] L1 PM Substates
-> 			L1SubCap: PCI-PM_L1.2+ PCI-PM_L1.1+ ASPM_L1.2+
-> ASPM_L1.1+ L1_PM_Substates+
-> 				 PortCommonModeRestoreTime=3D30us
-> PortTPowerOnTime=3D18us
-> 			L1SubCtl1: PCI-PM_L1.2- PCI-PM_L1.1- ASPM_L1.2-
-> ASPM_L1.1-
-> 				  T_CommonMode=3D0us LTR1.2_Threshold=3D32768ns
-> 			L1SubCtl2: T_PwrOn=3D18us
-> 		Kernel modules: iwlwifi
->=20
->=20
-> Note that I have a built kernel just for this, so I'll be happy to test
-> anything. Also note that I updated my firmware to the last version availa=
-ble
-> in
-> the linux-firmware repo.
+Patch applied to wireless-drivers-next.git, thanks.
 
-Well, I updated my system's BIOS and the issue went away. Sorry for the noi=
-se.
+ca2c6881dcca rtw88: Make two functions static
 
-Regards,
-Nicolas
+-- 
+https://patchwork.kernel.org/patch/11463395/
 
-
---=-1SaTSStqTlZL7Pl6MK8z
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-Content-Transfer-Encoding: 7bit
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCAAdFiEErOkkGDHCg2EbPcGjlfZmHno8x/4FAl6VzhEACgkQlfZmHno8
-x/5KiAgAhP9336w/Lhnefi6yL5JuxazTgvhppM//W9Ma/3HE0lm2CSKrZtE/yP8f
-19jqNfOmCNbk7fr1YsFQ9mTX9klcamzkkEX4wiInFAS+5cBDry6D1GRPfKt9J/32
-Aq5+eyqFcenRFLTg4wEnrMUkUjn7Jlz+HeyUOJyxMgHhH8jiCczW1MgbUqip1qen
-ScBlGnue8sAosQlBKyEALBcfvtccPHVlG8Un1vNzHC5s7fHtYNpAPQlTvklBwmO5
-mWPm++W0kJVJ4e3nJeln6I4kwHVsyBlwapzzGT5nPjaWGB4CpR1EH40fP8Scuyqv
-MbBSdWssCJXvE4w+LRoZfFDuHYa46w==
-=hrno
------END PGP SIGNATURE-----
-
---=-1SaTSStqTlZL7Pl6MK8z--
-
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
