@@ -2,237 +2,132 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BCEC01A899A
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Apr 2020 20:31:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7FE5B1A8AE0
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Apr 2020 21:34:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2504008AbgDNSbS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 14 Apr 2020 14:31:18 -0400
-Received: from mga04.intel.com ([192.55.52.120]:15566 "EHLO mga04.intel.com"
+        id S2504889AbgDNTet (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 14 Apr 2020 15:34:49 -0400
+Received: from mx2.suse.de ([195.135.220.15]:60298 "EHLO mx2.suse.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2503999AbgDNSbO (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 14 Apr 2020 14:31:14 -0400
-IronPort-SDR: /jmE5kRIOd/MXmd7qaTyYMwSQq7V90YWG4cJe9hzo9xs5UvjDosD295e7B0Z1zstoTl6zNc5ts
- 6cm7IUGTQhQg==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Apr 2020 11:31:13 -0700
-IronPort-SDR: qHfwAI0bhTWXgZzYhRWYGAc8aRHoGh5yZojEJUe5uO5tubCfK7RkUtt3dSK8XG07d+mjdR4mbS
- P6OnRd1wonDA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.72,383,1580803200"; 
-   d="scan'208";a="256602414"
-Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
-  by orsmga006.jf.intel.com with ESMTP; 14 Apr 2020 11:31:12 -0700
-Received: from kbuild by lkp-server01 with local (Exim 4.89)
-        (envelope-from <lkp@intel.com>)
-        id 1jOQL1-000GCa-AF; Wed, 15 Apr 2020 02:31:11 +0800
-Date:   Wed, 15 Apr 2020 02:30:21 +0800
-From:   kbuild test robot <lkp@intel.com>
-To:     Johannes Berg <johannes.berg@intel.com>
-Cc:     linux-wireless@vger.kernel.org
-Subject: [mac80211-next:netlink-validation] BUILD SUCCESS
- f0f4ed691292bb1f911e840e3d3ed6c9121fc080
-Message-ID: <5e96013d.l2FYoKnrToeU0m7B%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S2504805AbgDNTdv (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 14 Apr 2020 15:33:51 -0400
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx2.suse.de (Postfix) with ESMTP id 63506AC2C;
+        Tue, 14 Apr 2020 19:16:04 +0000 (UTC)
+Date:   Tue, 14 Apr 2020 21:16:01 +0200
+From:   Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
+To:     Waiman Long <longman@redhat.com>
+Cc:     Christophe Leroy <christophe.leroy@c-s.fr>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        David Howells <dhowells@redhat.com>,
+        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Joe Perches <joe@perches.com>,
+        Matthew Wilcox <willy@infradead.org>,
+        David Rientjes <rientjes@google.com>, linux-mm@kvack.org,
+        keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
+        x86@kernel.org, linux-crypto@vger.kernel.org,
+        linux-s390@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org,
+        linux-amlogic@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+        virtualization@lists.linux-foundation.org, netdev@vger.kernel.org,
+        intel-wired-lan@lists.osuosl.org, linux-ppp@vger.kernel.org,
+        wireguard@lists.zx2c4.com, linux-wireless@vger.kernel.org,
+        devel@driverdev.osuosl.org, linux-scsi@vger.kernel.org,
+        target-devel@vger.kernel.org, linux-btrfs@vger.kernel.org,
+        linux-cifs@vger.kernel.org, samba-technical@lists.samba.org,
+        linux-fscrypt@vger.kernel.org, ecryptfs@vger.kernel.org,
+        kasan-dev@googlegroups.com, linux-bluetooth@vger.kernel.org,
+        linux-wpan@vger.kernel.org, linux-sctp@vger.kernel.org,
+        linux-nfs@vger.kernel.org, tipc-discussion@lists.sourceforge.net,
+        cocci@systeme.lip6.fr, linux-security-module@vger.kernel.org,
+        linux-integrity@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] crypto: Remove unnecessary memzero_explicit()
+Message-ID: <20200414191601.GZ25468@kitsune.suse.cz>
+References: <20200413211550.8307-1-longman@redhat.com>
+ <20200413222846.24240-1-longman@redhat.com>
+ <eca85e0b-0af3-c43a-31e4-bd5c3f519798@c-s.fr>
+ <e194a51f-a5e5-a557-c008-b08cac558572@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <e194a51f-a5e5-a557-c008-b08cac558572@redhat.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211-next.git  netlink-validation
-branch HEAD: f0f4ed691292bb1f911e840e3d3ed6c9121fc080  nl80211: link recursive netlink nested policy
+On Tue, Apr 14, 2020 at 12:24:36PM -0400, Waiman Long wrote:
+> On 4/14/20 2:08 AM, Christophe Leroy wrote:
+> >
+> >
+> > Le 14/04/2020 à 00:28, Waiman Long a écrit :
+> >> Since kfree_sensitive() will do an implicit memzero_explicit(), there
+> >> is no need to call memzero_explicit() before it. Eliminate those
+> >> memzero_explicit() and simplify the call sites. For better correctness,
+> >> the setting of keylen is also moved down after the key pointer check.
+> >>
+> >> Signed-off-by: Waiman Long <longman@redhat.com>
+> >> ---
+> >>   .../allwinner/sun8i-ce/sun8i-ce-cipher.c      | 19 +++++-------------
+> >>   .../allwinner/sun8i-ss/sun8i-ss-cipher.c      | 20 +++++--------------
+> >>   drivers/crypto/amlogic/amlogic-gxl-cipher.c   | 12 +++--------
+> >>   drivers/crypto/inside-secure/safexcel_hash.c  |  3 +--
+> >>   4 files changed, 14 insertions(+), 40 deletions(-)
+> >>
+> >> diff --git a/drivers/crypto/allwinner/sun8i-ce/sun8i-ce-cipher.c
+> >> b/drivers/crypto/allwinner/sun8i-ce/sun8i-ce-cipher.c
+> >> index aa4e8fdc2b32..8358fac98719 100644
+> >> --- a/drivers/crypto/allwinner/sun8i-ce/sun8i-ce-cipher.c
+> >> +++ b/drivers/crypto/allwinner/sun8i-ce/sun8i-ce-cipher.c
+> >> @@ -366,10 +366,7 @@ void sun8i_ce_cipher_exit(struct crypto_tfm *tfm)
+> >>   {
+> >>       struct sun8i_cipher_tfm_ctx *op = crypto_tfm_ctx(tfm);
+> >>   -    if (op->key) {
+> >> -        memzero_explicit(op->key, op->keylen);
+> >> -        kfree(op->key);
+> >> -    }
+> >> +    kfree_sensitive(op->key);
+> >>       crypto_free_sync_skcipher(op->fallback_tfm);
+> >>       pm_runtime_put_sync_suspend(op->ce->dev);
+> >>   }
+> >> @@ -391,14 +388,11 @@ int sun8i_ce_aes_setkey(struct crypto_skcipher
+> >> *tfm, const u8 *key,
+> >>           dev_dbg(ce->dev, "ERROR: Invalid keylen %u\n", keylen);
+> >>           return -EINVAL;
+> >>       }
+> >> -    if (op->key) {
+> >> -        memzero_explicit(op->key, op->keylen);
+> >> -        kfree(op->key);
+> >> -    }
+> >> -    op->keylen = keylen;
+> >> +    kfree_sensitive(op->key);
+> >>       op->key = kmemdup(key, keylen, GFP_KERNEL | GFP_DMA);
+> >>       if (!op->key)
+> >>           return -ENOMEM;
+> >> +    op->keylen = keylen;
+> >
+> > Does it matter at all to ensure op->keylen is not set when of->key is
+> > NULL ? I'm not sure.
+> >
+> > But if it does, then op->keylen should be set to 0 when freeing op->key. 
+> 
+> My thinking is that if memory allocation fails, we just don't touch
+> anything and return an error code. I will not explicitly set keylen to 0
+> in this case unless it is specified in the API documentation.
+You already freed the key by now so not touching anything is not
+possible. The key is set to NULL on allocation failure so setting keylen
+to 0 should be redundant. However, setting keylen to 0 is consisent with
+not having a key, and it avoids the possibility of leaking the length
+later should that ever cause any problem.
 
-elapsed time: 481m
+Thanks
 
-configs tested: 178
-configs skipped: 0
-
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-arm                              allmodconfig
-arm                               allnoconfig
-arm                              allyesconfig
-arm64                            allmodconfig
-arm64                             allnoconfig
-arm64                            allyesconfig
-arm                         at91_dt_defconfig
-arm                           efm32_defconfig
-arm                        multi_v5_defconfig
-arm                        multi_v7_defconfig
-arm                        shmobile_defconfig
-arm                           sunxi_defconfig
-arm64                               defconfig
-arm                          exynos_defconfig
-sparc                            allyesconfig
-ia64                             allyesconfig
-mips                      malta_kvm_defconfig
-riscv                          rv32_defconfig
-powerpc                       ppc64_defconfig
-sparc64                           allnoconfig
-s390                             allyesconfig
-microblaze                    nommu_defconfig
-parisc                generic-64bit_defconfig
-s390                              allnoconfig
-i386                              allnoconfig
-i386                             alldefconfig
-i386                             allyesconfig
-i386                              debian-10.3
-i386                                defconfig
-ia64                             alldefconfig
-ia64                             allmodconfig
-ia64                              allnoconfig
-ia64                                defconfig
-c6x                              allyesconfig
-c6x                        evmc6678_defconfig
-nios2                         10m50_defconfig
-nios2                         3c120_defconfig
-openrisc                    or1ksim_defconfig
-openrisc                 simple_smp_defconfig
-xtensa                       common_defconfig
-xtensa                          iss_defconfig
-nds32                               defconfig
-nds32                             allnoconfig
-csky                                defconfig
-alpha                               defconfig
-h8300                     edosk2674_defconfig
-h8300                    h8300h-sim_defconfig
-h8300                       h8s-sim_defconfig
-m68k                             allmodconfig
-m68k                       m5475evb_defconfig
-m68k                          multi_defconfig
-m68k                           sun3_defconfig
-arc                              allyesconfig
-arc                                 defconfig
-microblaze                      mmu_defconfig
-powerpc                           allnoconfig
-powerpc                             defconfig
-powerpc                          rhel-kconfig
-mips                           32r2_defconfig
-mips                         64r6el_defconfig
-mips                             allmodconfig
-mips                              allnoconfig
-mips                             allyesconfig
-mips                      fuloong2e_defconfig
-parisc                            allnoconfig
-parisc                generic-32bit_defconfig
-parisc                           allyesconfig
-x86_64               randconfig-a001-20200414
-x86_64               randconfig-a002-20200414
-x86_64               randconfig-a003-20200414
-i386                 randconfig-a001-20200414
-i386                 randconfig-a002-20200414
-i386                 randconfig-a003-20200414
-alpha                randconfig-a001-20200414
-m68k                 randconfig-a001-20200414
-nds32                randconfig-a001-20200414
-parisc               randconfig-a001-20200414
-riscv                randconfig-a001-20200414
-alpha                randconfig-a001-20200415
-m68k                 randconfig-a001-20200415
-nds32                randconfig-a001-20200415
-riscv                randconfig-a001-20200415
-c6x                  randconfig-a001-20200414
-h8300                randconfig-a001-20200414
-microblaze           randconfig-a001-20200414
-nios2                randconfig-a001-20200414
-sparc64              randconfig-a001-20200414
-c6x                  randconfig-a001-20200415
-h8300                randconfig-a001-20200415
-microblaze           randconfig-a001-20200415
-nios2                randconfig-a001-20200415
-sparc64              randconfig-a001-20200415
-csky                 randconfig-a001-20200414
-openrisc             randconfig-a001-20200414
-s390                 randconfig-a001-20200414
-sh                   randconfig-a001-20200414
-xtensa               randconfig-a001-20200414
-csky                 randconfig-a001-20200415
-openrisc             randconfig-a001-20200415
-s390                 randconfig-a001-20200415
-sh                   randconfig-a001-20200415
-xtensa               randconfig-a001-20200415
-x86_64               randconfig-b001-20200414
-x86_64               randconfig-b002-20200414
-x86_64               randconfig-b003-20200414
-i386                 randconfig-b001-20200414
-i386                 randconfig-b002-20200414
-i386                 randconfig-b003-20200414
-x86_64               randconfig-c001-20200414
-x86_64               randconfig-c002-20200414
-x86_64               randconfig-c003-20200414
-i386                 randconfig-c001-20200414
-i386                 randconfig-c002-20200414
-i386                 randconfig-c003-20200414
-x86_64               randconfig-d001-20200414
-x86_64               randconfig-d002-20200414
-x86_64               randconfig-d003-20200414
-i386                 randconfig-d001-20200414
-i386                 randconfig-d002-20200414
-i386                 randconfig-d003-20200414
-x86_64               randconfig-f001-20200414
-x86_64               randconfig-f002-20200414
-x86_64               randconfig-f003-20200414
-i386                 randconfig-f001-20200414
-i386                 randconfig-f002-20200414
-i386                 randconfig-f003-20200414
-x86_64               randconfig-g001-20200414
-x86_64               randconfig-g002-20200414
-x86_64               randconfig-g003-20200414
-i386                 randconfig-g001-20200414
-i386                 randconfig-g002-20200414
-i386                 randconfig-g003-20200414
-x86_64               randconfig-h001-20200414
-x86_64               randconfig-h002-20200414
-x86_64               randconfig-h003-20200414
-i386                 randconfig-h001-20200414
-i386                 randconfig-h002-20200414
-i386                 randconfig-h003-20200414
-arc                  randconfig-a001-20200414
-arm                  randconfig-a001-20200414
-arm64                randconfig-a001-20200414
-ia64                 randconfig-a001-20200414
-powerpc              randconfig-a001-20200414
-sparc                randconfig-a001-20200414
-arc                  randconfig-a001-20200415
-arm64                randconfig-a001-20200415
-ia64                 randconfig-a001-20200415
-powerpc              randconfig-a001-20200415
-sparc                randconfig-a001-20200415
-riscv                            allmodconfig
-riscv                             allnoconfig
-riscv                            allyesconfig
-riscv                               defconfig
-riscv                    nommu_virt_defconfig
-s390                             alldefconfig
-s390                             allmodconfig
-s390                          debug_defconfig
-s390                                defconfig
-s390                       zfcpdump_defconfig
-sh                               allmodconfig
-sh                                allnoconfig
-sh                          rsk7269_defconfig
-sh                  sh7785lcr_32bit_defconfig
-sh                            titan_defconfig
-sparc                               defconfig
-sparc64                          allmodconfig
-sparc64                          allyesconfig
-sparc64                             defconfig
-um                           x86_64_defconfig
-um                             i386_defconfig
-um                                  defconfig
-x86_64                              fedora-25
-x86_64                                  kexec
-x86_64                                    lkp
-x86_64                                   rhel
-x86_64                         rhel-7.2-clear
-x86_64                               rhel-7.6
-x86_64                    rhel-7.6-kselftests
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+Michal
