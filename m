@@ -2,76 +2,65 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CB5EE1A789A
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Apr 2020 12:42:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 09FA21A7903
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 Apr 2020 12:59:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2438512AbgDNKmi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 14 Apr 2020 06:42:38 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:20825 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S2438506AbgDNKm1 (ORCPT
+        id S2438865AbgDNK70 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 14 Apr 2020 06:59:26 -0400
+Received: from mail-io1-f71.google.com ([209.85.166.71]:56482 "EHLO
+        mail-io1-f71.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2438846AbgDNK7E (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 14 Apr 2020 06:42:27 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1586860945;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=XIJFty4A7/x7MXrExzV9BBal3iymPjuyPXQKR8dThbY=;
-        b=dXevArOiDz132TppQ4BiE2CkHKWJyc4ucjfNVyPstcK8r68VlJpiplZexQW5EvAUHv+JKj
-        OeqQ9Dtqapia8jGzhuXlkGWr/60IUEUOJ2YF5UQGwkCWY++rATsDP4JcKEtETaNz99wEIP
-        7cHGCqFDcyFQaTl8NB1cEY98Ja5uMsY=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-119-z82y5mbfOcmUvhsWElBrAA-1; Tue, 14 Apr 2020 06:42:22 -0400
-X-MC-Unique: z82y5mbfOcmUvhsWElBrAA-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 10154802560;
-        Tue, 14 Apr 2020 10:42:21 +0000 (UTC)
-Received: from ovpn-113-222.ams2.redhat.com (ovpn-113-222.ams2.redhat.com [10.36.113.222])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 7A13F6092D;
-        Tue, 14 Apr 2020 10:42:18 +0000 (UTC)
-Message-ID: <66c3db9b1978a384246c729034a934cc558b75a6.camel@redhat.com>
+        Tue, 14 Apr 2020 06:59:04 -0400
+Received: by mail-io1-f71.google.com with SMTP id v3so14149385iod.23
+        for <linux-wireless@vger.kernel.org>; Tue, 14 Apr 2020 03:59:04 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:date:in-reply-to:message-id:subject
+         :from:to;
+        bh=B/wMlDlQPegcALh4XzxDXP3zbriJPXSUWAjVGj5HNW0=;
+        b=jd2Hfzir+J0/nqcA+jqqXpHNJH6F3i+ivc93sXVbAsM3rc5CwQD7FHsvTnpGSyUFSw
+         UgSHcPJrNHXgsBe2pgTtlPNbf0IODVX6H2tSLNhhakPM/0OJyQfsRQYOMKn4EHjIVZHM
+         HMHLUZrL+9uvYKVso7tJidi0lGuohH8XEwII3/6s6gpbHolx9fD2qDGwkPzPTAsyaLXE
+         M5ecuLXtg8jkk48mtlrnA0CMfMlady2ZjHf1WzbYFCyoU5GDKjtsxIlDumGvVeLVWnPE
+         WRT/nNFiE5JYf7V1CCW58LkfmT8PVp7ebzgJiVHCwtV0OKUd11ErovG2oBMQQHACzI7s
+         n6gA==
+X-Gm-Message-State: AGi0PubG39Q6p5PRd97SHojNvC8IJXBR/MsHfsmCL/xD6nyVTDx7/j81
+        San1ezEb85qnanhR0iR44nl7iN5yZWxdZZ/1YtK/AQGHsMNw
+X-Google-Smtp-Source: APiQypKAhI/rash2i+SF7YvWdutz9ltcTt0CfD36FY1rEVx5Y6wMm1OewFDHN3vNTTAmI5vEiUVtkIEsNuYKCiBd0yNc3Rmw/p18
+MIME-Version: 1.0
+X-Received: by 2002:a6b:770e:: with SMTP id n14mr20446473iom.110.1586861943126;
+ Tue, 14 Apr 2020 03:59:03 -0700 (PDT)
+Date:   Tue, 14 Apr 2020 03:59:03 -0700
+In-Reply-To: <66c3db9b1978a384246c729034a934cc558b75a6.camel@redhat.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <0000000000006d7e0f05a33e163e@google.com>
 Subject: Re: WARNING in hwsim_new_radio_nl
-From:   Paolo Abeni <pabeni@redhat.com>
-To:     syzbot <syzbot+a4aee3f42d7584d76761@syzkaller.appspotmail.com>,
-        davem@davemloft.net, johannes@sipsolutions.net,
+From:   syzbot <syzbot+a4aee3f42d7584d76761@syzkaller.appspotmail.com>
+To:     davem@davemloft.net, johannes@sipsolutions.net,
         kvalo@codeaurora.org, linux-kernel@vger.kernel.org,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        syzkaller-bugs@googlegroups.com
-Date:   Tue, 14 Apr 2020 12:42:17 +0200
-In-Reply-To: <000000000000bb471d05a2f246d7@google.com>
-References: <000000000000bb471d05a2f246d7@google.com>
+        pabeni@redhat.com, syzkaller-bugs@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.32.5 (3.32.5-1.fc30) 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-#syz test git://git.kernel.org/pub/scm/linux/kernel/git/davem/net.git master
+Hello,
 
-I don't see why the bisection pointed to the MPTCP commit ?!? the
-following patch should address the issue.
----
-diff --git a/drivers/net/wireless/mac80211_hwsim.c b/drivers/net/wireless/mac80211_hwsim.c
-index 7fe8207db6ae..2082abdb08d4 100644
---- a/drivers/net/wireless/mac80211_hwsim.c
-+++ b/drivers/net/wireless/mac80211_hwsim.c
-@@ -635,7 +635,8 @@ static const struct nla_policy hwsim_genl_policy[HWSIM_ATTR_MAX + 1] = {
-        [HWSIM_ATTR_SUPPORT_P2P_DEVICE] = { .type = NLA_FLAG },
-        [HWSIM_ATTR_USE_CHANCTX] = { .type = NLA_FLAG },
-        [HWSIM_ATTR_DESTROY_RADIO_ON_CLOSE] = { .type = NLA_FLAG },
--       [HWSIM_ATTR_RADIO_NAME] = { .type = NLA_STRING },
-+       [HWSIM_ATTR_RADIO_NAME] = { .type = NLA_STRING,
-+                                   .len = NL80211_WIPHY_NAME_MAXLEN },
-        [HWSIM_ATTR_NO_VIF] = { .type = NLA_FLAG },
-        [HWSIM_ATTR_FREQ] = { .type = NLA_U32 },
-        [HWSIM_ATTR_TX_INFO_FLAGS] = { .type = NLA_BINARY },
+syzbot has tested the proposed patch and the reproducer did not trigger crash:
 
+Reported-and-tested-by: syzbot+a4aee3f42d7584d76761@syzkaller.appspotmail.com
+
+Tested on:
+
+commit:         e154659b mptcp: fix double-unlock in mptcp_poll
+git tree:       net
+kernel config:  https://syzkaller.appspot.com/x/.config?x=5af684c50f30bcb2
+dashboard link: https://syzkaller.appspot.com/bug?extid=a4aee3f42d7584d76761
+compiler:       clang version 10.0.0 (https://github.com/llvm/llvm-project/ c2443155a0fb245c8f17f2c1c72b6ea391e86e81)
+patch:          https://syzkaller.appspot.com/x/patch.diff?x=144e124fe00000
+
+Note: testing is done by a robot and is best-effort only.
