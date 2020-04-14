@@ -2,175 +2,88 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 503471A8D25
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 Apr 2020 23:03:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 641311A8E39
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Apr 2020 00:08:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2633618AbgDNVDm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 14 Apr 2020 17:03:42 -0400
-Received: from mailgw01.mediatek.com ([210.61.82.183]:3408 "EHLO
-        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S2633586AbgDNVCG (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 14 Apr 2020 17:02:06 -0400
-X-UUID: fa192159d258483983717735d0b64e53-20200415
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Transfer-Encoding:Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=XaaKZN9d4Z70hCuMtI7McsI/cjlmwE5uORGPyktd7Dk=;
-        b=ND4JLytKhg131Gw9eO7OTbvFFqB4eqz8bES+5Mbvu0U+gqNGtrbo4a+MmDCdcg8arbjQBNpu+XQwXlZ5WJ5PBF9pI83Auca/AXA4B4fOqe5URT+CMt29CDTVt9yJC1Y0RqjNqV3NdeF6tYiNH4iHMXWMFXFnMDTpzvgtBV17XJU=;
-X-UUID: fa192159d258483983717735d0b64e53-20200415
-Received: from mtkcas08.mediatek.inc [(172.21.101.126)] by mailgw01.mediatek.com
-        (envelope-from <ryder.lee@mediatek.com>)
-        (Cellopoint E-mail Firewall v4.1.10 Build 0809 with TLS)
-        with ESMTP id 1819416709; Wed, 15 Apr 2020 05:01:43 +0800
-Received: from mtkcas07.mediatek.inc (172.21.101.84) by
- mtkmbs02n2.mediatek.inc (172.21.101.101) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Wed, 15 Apr 2020 05:01:40 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas07.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Wed, 15 Apr 2020 05:01:39 +0800
-From:   Ryder Lee <ryder.lee@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-CC:     Shayne Chen <shayne.chen@mediatek.com>,
-        YF Luo <yf.luo@mediatek.com>,
-        Yiwei Chung <yiwei.chung@mediatek.com>,
-        Chih-Min Chen <chih-min.chen@mediatek.com>,
-        Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>,
-        Ryder Lee <ryder.lee@mediatek.com>
-Subject: [PATCH v2 18/18] mt76: set runtime stream caps by mt76_phy
-Date:   Wed, 15 Apr 2020 05:01:16 +0800
-Message-ID: <1c12eebe5f97f3f6d04d8da0481d49b827ef8559.1586895593.git.ryder.lee@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <cover.1586895593.git.ryder.lee@mediatek.com>
-References: <cover.1586895593.git.ryder.lee@mediatek.com>
+        id S2634136AbgDNWIj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 14 Apr 2020 18:08:39 -0400
+Received: from ozlabs.org ([203.11.71.1]:37221 "EHLO ozlabs.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729934AbgDNWIg (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 14 Apr 2020 18:08:36 -0400
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mail.ozlabs.org (Postfix) with ESMTPSA id 49204H63Clz9sSd;
+        Wed, 15 Apr 2020 08:08:31 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
+        s=201702; t=1586902112;
+        bh=WKpUgiPoFV6JdQ9oLMsXNxlqFTV0n+/7rq4xiZLMIvI=;
+        h=Date:From:To:Cc:Subject:From;
+        b=q1+fhQ7mLP/pDfQkFp3FsfppKUNn3J5a3h4xkv5EfkMDi3SIeTWdkN9FLsFjrs4qy
+         Varbn/IsROsVI+C/3KjzbXCjJRble93hU9HBIdbRvc44q3oSA2AbG0s8TBBQBxhj5l
+         yzwDMzbVGnHQ6a42agpLS02mORYUyB15wQyJX8pi/bom0RpG9v5eBIHG7s8Jeeh/z5
+         Xe/aDcpLzgVGjMeDpXfrZ6ImeenuNYQv/IOnEzTWc215G9H9TgVlY7rPyn4kxNjTs1
+         yA5NACsVmSdZdqG+QSHuaxLP3juB2jtfnykVpuoVQ1aKTCc1BGzzhktkO8e2lWrenw
+         sd/5WiBxAlyBw==
+Date:   Wed, 15 Apr 2020 08:08:27 +1000
+From:   Stephen Rothwell <sfr@canb.auug.org.au>
+To:     Kalle Valo <kvalo@codeaurora.org>,
+        Wireless <linux-wireless@vger.kernel.org>
+Cc:     Linux Next Mailing List <linux-next@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Larry Finger <Larry.Finger@lwfinger.net>
+Subject: linux-next: Fixes tag needs some work in the wireless-drivers-next
+ tree
+Message-ID: <20200415080827.30c2c9c1@canb.auug.org.au>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-SNTS-SMTP: E85A5CD85A55805BEDD5BB331F1224A12AC9FD202CA41A2BC4A44B8667CB52CF2000:8
-X-MTK:  N
-Content-Transfer-Encoding: base64
+Content-Type: multipart/signed; boundary="Sig_/9Cgl.5rAq_5Va.lomBnmNSa";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-VGhpcyBwYXRjaCBjYW4gc3VwcG9ydCBjb25jdXJyZW50IGR1YWwtYmFuZCBvcGVyYXRpb24uDQoN
-ClNpZ25lZC1vZmYtYnk6IFJ5ZGVyIExlZSA8cnlkZXIubGVlQG1lZGlhdGVrLmNvbT4NCi0tLQ0K
-IGRyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbWFjODAyMTEuYyAgICB8IDE2ICsr
-KysrKysrLS0tLS0tLS0NCiBkcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzYu
-aCAgICAgICAgfCAgMiArLQ0KIGRyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3
-NjE1L2luaXQuYyB8ICA0ICsrLS0NCiBkcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2
-L210NzYxNS9tYWluLmMgfCAgMiArLQ0KIC4uLi9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9t
-dDc2eDIvcGNpX21haW4uYyB8ICAyICstDQogZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsv
-bXQ3Ni9tdDc5MTUvaW5pdC5jIHwgIDQgKystLQ0KIGRyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlh
-dGVrL210NzYvbXQ3OTE1L21haW4uYyB8ICAyICstDQogNyBmaWxlcyBjaGFuZ2VkLCAxNiBpbnNl
-cnRpb25zKCspLCAxNiBkZWxldGlvbnMoLSkNCg0KZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3dp
-cmVsZXNzL21lZGlhdGVrL210NzYvbWFjODAyMTEuYyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21l
-ZGlhdGVrL210NzYvbWFjODAyMTEuYw0KaW5kZXggYjc2ZGVlMmM5NjMyLi4yMTc1YjVjNTA3NTEg
-MTAwNjQ0DQotLS0gYS9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L21hYzgwMjEx
-LmMNCisrKyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbWFjODAyMTEuYw0K
-QEAgLTExNiwxMiArMTE2LDEyIEBAIHN0YXRpYyB2b2lkIG10NzZfbGVkX2NsZWFudXAoc3RydWN0
-IG10NzZfZGV2ICpkZXYpDQogCWxlZF9jbGFzc2Rldl91bnJlZ2lzdGVyKCZkZXYtPmxlZF9jZGV2
-KTsNCiB9DQogDQotc3RhdGljIHZvaWQgbXQ3Nl9pbml0X3N0cmVhbV9jYXAoc3RydWN0IG10NzZf
-ZGV2ICpkZXYsDQorc3RhdGljIHZvaWQgbXQ3Nl9pbml0X3N0cmVhbV9jYXAoc3RydWN0IG10NzZf
-cGh5ICpwaHksDQogCQkJCSBzdHJ1Y3QgaWVlZTgwMjExX3N1cHBvcnRlZF9iYW5kICpzYmFuZCwN
-CiAJCQkJIGJvb2wgdmh0KQ0KIHsNCiAJc3RydWN0IGllZWU4MDIxMV9zdGFfaHRfY2FwICpodF9j
-YXAgPSAmc2JhbmQtPmh0X2NhcDsNCi0JaW50IGksIG5zdHJlYW0gPSBod2VpZ2h0OChkZXYtPnBo
-eS5hbnRlbm5hX21hc2spOw0KKwlpbnQgaSwgbnN0cmVhbSA9IGh3ZWlnaHQ4KHBoeS0+YW50ZW5u
-YV9tYXNrKTsNCiAJc3RydWN0IGllZWU4MDIxMV9zdGFfdmh0X2NhcCAqdmh0X2NhcDsNCiAJdTE2
-IG1jc19tYXAgPSAwOw0KIA0KQEAgLTE1MywxMiArMTUzLDEyIEBAIHN0YXRpYyB2b2lkIG10NzZf
-aW5pdF9zdHJlYW1fY2FwKHN0cnVjdCBtdDc2X2RldiAqZGV2LA0KIAl2aHRfY2FwLT52aHRfbWNz
-LnR4X21jc19tYXAgPSBjcHVfdG9fbGUxNihtY3NfbWFwKTsNCiB9DQogDQotdm9pZCBtdDc2X3Nl
-dF9zdHJlYW1fY2FwcyhzdHJ1Y3QgbXQ3Nl9kZXYgKmRldiwgYm9vbCB2aHQpDQordm9pZCBtdDc2
-X3NldF9zdHJlYW1fY2FwcyhzdHJ1Y3QgbXQ3Nl9waHkgKnBoeSwgYm9vbCB2aHQpDQogew0KLQlp
-ZiAoZGV2LT5jYXAuaGFzXzJnaHopDQotCQltdDc2X2luaXRfc3RyZWFtX2NhcChkZXYsICZkZXYt
-PnBoeS5zYmFuZF8yZy5zYmFuZCwgZmFsc2UpOw0KLQlpZiAoZGV2LT5jYXAuaGFzXzVnaHopDQot
-CQltdDc2X2luaXRfc3RyZWFtX2NhcChkZXYsICZkZXYtPnBoeS5zYmFuZF81Zy5zYmFuZCwgdmh0
-KTsNCisJaWYgKHBoeS0+ZGV2LT5jYXAuaGFzXzJnaHopDQorCQltdDc2X2luaXRfc3RyZWFtX2Nh
-cChwaHksICZwaHktPnNiYW5kXzJnLnNiYW5kLCBmYWxzZSk7DQorCWlmIChwaHktPmRldi0+Y2Fw
-Lmhhc181Z2h6KQ0KKwkJbXQ3Nl9pbml0X3N0cmVhbV9jYXAocGh5LCAmcGh5LT5zYmFuZF81Zy5z
-YmFuZCwgdmh0KTsNCiB9DQogRVhQT1JUX1NZTUJPTF9HUEwobXQ3Nl9zZXRfc3RyZWFtX2NhcHMp
-Ow0KIA0KQEAgLTIwMCw3ICsyMDAsNyBAQCBtdDc2X2luaXRfc2JhbmQoc3RydWN0IG10NzZfZGV2
-ICpkZXYsIHN0cnVjdCBtdDc2X3NiYW5kICptc2JhbmQsDQogCWh0X2NhcC0+YW1wZHVfZmFjdG9y
-ID0gSUVFRTgwMjExX0hUX01BWF9BTVBEVV82NEs7DQogCWh0X2NhcC0+YW1wZHVfZGVuc2l0eSA9
-IElFRUU4MDIxMV9IVF9NUERVX0RFTlNJVFlfNDsNCiANCi0JbXQ3Nl9pbml0X3N0cmVhbV9jYXAo
-ZGV2LCBzYmFuZCwgdmh0KTsNCisJbXQ3Nl9pbml0X3N0cmVhbV9jYXAoJmRldi0+cGh5LCBzYmFu
-ZCwgdmh0KTsNCiANCiAJaWYgKCF2aHQpDQogCQlyZXR1cm4gMDsNCmRpZmYgLS1naXQgYS9kcml2
-ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzYuaCBiL2RyaXZlcnMvbmV0L3dpcmVs
-ZXNzL21lZGlhdGVrL210NzYvbXQ3Ni5oDQppbmRleCBkMWFkMWYwMzU0MjYuLjZhNDk3Nzg5ZmM1
-MCAxMDA2NDQNCi0tLSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3Ni5o
-DQorKysgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzYuaA0KQEAgLTgx
-Nyw3ICs4MTcsNyBAQCB2b2lkIG10NzZfc2V0X2NoYW5uZWwoc3RydWN0IG10NzZfcGh5ICpwaHkp
-Ow0KIHZvaWQgbXQ3Nl91cGRhdGVfc3VydmV5KHN0cnVjdCBtdDc2X2RldiAqZGV2KTsNCiBpbnQg
-bXQ3Nl9nZXRfc3VydmV5KHN0cnVjdCBpZWVlODAyMTFfaHcgKmh3LCBpbnQgaWR4LA0KIAkJICAg
-IHN0cnVjdCBzdXJ2ZXlfaW5mbyAqc3VydmV5KTsNCi12b2lkIG10NzZfc2V0X3N0cmVhbV9jYXBz
-KHN0cnVjdCBtdDc2X2RldiAqZGV2LCBib29sIHZodCk7DQordm9pZCBtdDc2X3NldF9zdHJlYW1f
-Y2FwcyhzdHJ1Y3QgbXQ3Nl9waHkgKnBoeSwgYm9vbCB2aHQpOw0KIA0KIGludCBtdDc2X3J4X2Fn
-Z3Jfc3RhcnQoc3RydWN0IG10NzZfZGV2ICpkZXYsIHN0cnVjdCBtdDc2X3djaWQgKndjaWQsIHU4
-IHRpZCwNCiAJCSAgICAgICB1MTYgc3NuLCB1MTYgc2l6ZSk7DQpkaWZmIC0tZ2l0IGEvZHJpdmVy
-cy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc2MTUvaW5pdC5jIGIvZHJpdmVycy9uZXQv
-d2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc2MTUvaW5pdC5jDQppbmRleCBjYjYyNmEyZDkxOTcu
-Ljk4ZTVkMzYwZjUzZCAxMDA2NDQNCi0tLSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVr
-L210NzYvbXQ3NjE1L2luaXQuYw0KKysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsv
-bXQ3Ni9tdDc2MTUvaW5pdC5jDQpAQCAtMzk4LDcgKzM5OCw3IEBAIG10NzYxNV9jYXBfZGJkY19l
-bmFibGUoc3RydWN0IG10NzYxNV9kZXYgKmRldikNCiAJZGV2LT5waHkuY2hhaW5tYXNrID0gZGV2
-LT5tcGh5LmFudGVubmFfbWFzazsNCiAJZGV2LT5tcGh5Lmh3LT53aXBoeS0+YXZhaWxhYmxlX2Fu
-dGVubmFzX3J4ID0gZGV2LT5waHkuY2hhaW5tYXNrOw0KIAlkZXYtPm1waHkuaHctPndpcGh5LT5h
-dmFpbGFibGVfYW50ZW5uYXNfdHggPSBkZXYtPnBoeS5jaGFpbm1hc2s7DQotCW10NzZfc2V0X3N0
-cmVhbV9jYXBzKCZkZXYtPm10NzYsIHRydWUpOw0KKwltdDc2X3NldF9zdHJlYW1fY2FwcygmZGV2
-LT5tcGh5LCB0cnVlKTsNCiB9DQogDQogc3RhdGljIHZvaWQNCkBAIC00MTEsNyArNDExLDcgQEAg
-bXQ3NjE1X2NhcF9kYmRjX2Rpc2FibGUoc3RydWN0IG10NzYxNV9kZXYgKmRldikNCiAJZGV2LT5w
-aHkuY2hhaW5tYXNrID0gZGV2LT5jaGFpbm1hc2s7DQogCWRldi0+bXBoeS5ody0+d2lwaHktPmF2
-YWlsYWJsZV9hbnRlbm5hc19yeCA9IGRldi0+Y2hhaW5tYXNrOw0KIAlkZXYtPm1waHkuaHctPndp
-cGh5LT5hdmFpbGFibGVfYW50ZW5uYXNfdHggPSBkZXYtPmNoYWlubWFzazsNCi0JbXQ3Nl9zZXRf
-c3RyZWFtX2NhcHMoJmRldi0+bXQ3NiwgdHJ1ZSk7DQorCW10NzZfc2V0X3N0cmVhbV9jYXBzKCZk
-ZXYtPm1waHksIHRydWUpOw0KIH0NCiANCiBpbnQgbXQ3NjE1X3JlZ2lzdGVyX2V4dF9waHkoc3Ry
-dWN0IG10NzYxNV9kZXYgKmRldikNCmRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC93aXJlbGVzcy9t
-ZWRpYXRlay9tdDc2L210NzYxNS9tYWluLmMgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRl
-ay9tdDc2L210NzYxNS9tYWluLmMNCmluZGV4IGIzNDYwODA0NThiYy4uYjk2NTE0YmI3NmI2IDEw
-MDY0NA0KLS0tIGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc2MTUvbWFp
-bi5jDQorKysgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzYxNS9tYWlu
-LmMNCkBAIC03MjAsNyArNzIwLDcgQEAgbXQ3NjE1X3NldF9hbnRlbm5hKHN0cnVjdCBpZWVlODAy
-MTFfaHcgKmh3LCB1MzIgdHhfYW50LCB1MzIgcnhfYW50KQ0KIAl9DQogCXBoeS0+Y2hhaW5tYXNr
-ID0gdHhfYW50Ow0KIA0KLQltdDc2X3NldF9zdHJlYW1fY2FwcygmZGV2LT5tdDc2LCB0cnVlKTsN
-CisJbXQ3Nl9zZXRfc3RyZWFtX2NhcHMocGh5LT5tdDc2LCB0cnVlKTsNCiANCiAJbXV0ZXhfdW5s
-b2NrKCZkZXYtPm10NzYubXV0ZXgpOw0KIA0KZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3dpcmVs
-ZXNzL21lZGlhdGVrL210NzYvbXQ3NngyL3BjaV9tYWluLmMgYi9kcml2ZXJzL25ldC93aXJlbGVz
-cy9tZWRpYXRlay9tdDc2L210NzZ4Mi9wY2lfbWFpbi5jDQppbmRleCBhNzQ1OTlmN2Y3MjkuLjk4
-ZjRjZjM5ODMyMCAxMDA2NDQNCi0tLSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210
-NzYvbXQ3NngyL3BjaV9tYWluLmMNCisrKyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVr
-L210NzYvbXQ3NngyL3BjaV9tYWluLmMNCkBAIC0xMTksNyArMTE5LDcgQEAgc3RhdGljIGludCBt
-dDc2eDJfc2V0X2FudGVubmEoc3RydWN0IGllZWU4MDIxMV9odyAqaHcsIHUzMiB0eF9hbnQsDQog
-CWRldi0+Y2hhaW5tYXNrID0gKHR4X2FudCA9PSAzKSA/IDB4MjAyIDogMHgxMDE7DQogCWRldi0+
-bXBoeS5hbnRlbm5hX21hc2sgPSB0eF9hbnQ7DQogDQotCW10NzZfc2V0X3N0cmVhbV9jYXBzKCZk
-ZXYtPm10NzYsIHRydWUpOw0KKwltdDc2X3NldF9zdHJlYW1fY2FwcygmZGV2LT5tcGh5LCB0cnVl
-KTsNCiAJbXQ3NngyX3BoeV9zZXRfYW50ZW5uYShkZXYpOw0KIA0KIAltdXRleF91bmxvY2soJmRl
-di0+bXQ3Ni5tdXRleCk7DQpkaWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0
-ZWsvbXQ3Ni9tdDc5MTUvaW5pdC5jIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3
-Ni9tdDc5MTUvaW5pdC5jDQppbmRleCBiYjgzMjVlMmVkYmQuLjdkNTk1NzEyMTZlMyAxMDA2NDQN
-Ci0tLSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1L2luaXQuYw0K
-KysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvaW5pdC5jDQpA
-QCAtNDQzLDcgKzQ0Myw3IEBAIG10NzkxNV9jYXBfZGJkY19lbmFibGUoc3RydWN0IG10NzkxNV9k
-ZXYgKmRldikNCiAJZGV2LT5tcGh5Lmh3LT53aXBoeS0+YXZhaWxhYmxlX2FudGVubmFzX3J4ID0g
-ZGV2LT5waHkuY2hhaW5tYXNrOw0KIAlkZXYtPm1waHkuaHctPndpcGh5LT5hdmFpbGFibGVfYW50
-ZW5uYXNfdHggPSBkZXYtPnBoeS5jaGFpbm1hc2s7DQogDQotCW10NzZfc2V0X3N0cmVhbV9jYXBz
-KCZkZXYtPm10NzYsIHRydWUpOw0KKwltdDc2X3NldF9zdHJlYW1fY2FwcygmZGV2LT5tcGh5LCB0
-cnVlKTsNCiAJbXQ3OTE1X3NldF9zdHJlYW1faGVfY2FwcygmZGV2LT5waHkpOw0KIH0NCiANCkBA
-IC00NTksNyArNDU5LDcgQEAgbXQ3OTE1X2NhcF9kYmRjX2Rpc2FibGUoc3RydWN0IG10NzkxNV9k
-ZXYgKmRldikNCiAJZGV2LT5tcGh5Lmh3LT53aXBoeS0+YXZhaWxhYmxlX2FudGVubmFzX3J4ID0g
-ZGV2LT5jaGFpbm1hc2s7DQogCWRldi0+bXBoeS5ody0+d2lwaHktPmF2YWlsYWJsZV9hbnRlbm5h
-c190eCA9IGRldi0+Y2hhaW5tYXNrOw0KIA0KLQltdDc2X3NldF9zdHJlYW1fY2FwcygmZGV2LT5t
-dDc2LCB0cnVlKTsNCisJbXQ3Nl9zZXRfc3RyZWFtX2NhcHMoJmRldi0+bXBoeSwgdHJ1ZSk7DQog
-CW10NzkxNV9zZXRfc3RyZWFtX2hlX2NhcHMoJmRldi0+cGh5KTsNCiB9DQogDQpkaWZmIC0tZ2l0
-IGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvbWFpbi5jIGIvZHJp
-dmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvbWFpbi5jDQppbmRleCBlZjBj
-OTE5OTBiNDkuLjY5NzA0NWU2NWIyNCAxMDA2NDQNCi0tLSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNz
-L21lZGlhdGVrL210NzYvbXQ3OTE1L21haW4uYw0KKysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3Mv
-bWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvbWFpbi5jDQpAQCAtNzQxLDcgKzc0MSw3IEBAIG10NzkxNV9z
-ZXRfYW50ZW5uYShzdHJ1Y3QgaWVlZTgwMjExX2h3ICpodywgdTMyIHR4X2FudCwgdTMyIHJ4X2Fu
-dCkNCiAJfQ0KIAlwaHktPmNoYWlubWFzayA9IHR4X2FudDsNCiANCi0JbXQ3Nl9zZXRfc3RyZWFt
-X2NhcHMoJmRldi0+bXQ3NiwgdHJ1ZSk7DQorCW10NzZfc2V0X3N0cmVhbV9jYXBzKHBoeS0+bXQ3
-NiwgdHJ1ZSk7DQogCW10NzkxNV9zZXRfc3RyZWFtX2hlX2NhcHMocGh5KTsNCiANCiAJbXV0ZXhf
-dW5sb2NrKCZkZXYtPm10NzYubXV0ZXgpOw0KLS0gDQoyLjE4LjANCg==
+--Sig_/9Cgl.5rAq_5Va.lomBnmNSa
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
+Hi all,
+
+In commit
+
+  ec4d3e3a0545 ("b43legacy: Fix case where channel status is corrupted")
+
+Fixes tag
+
+  Fixes: 75388acd0cd8 ("add mac80211-based driver for legacy BCM43xx device=
+s")
+
+has these problem(s):
+
+  - Subject does not match target commit subject
+    Just use
+	git log -1 --format=3D'Fixes: %h ("%s")'
+
+--=20
+Cheers,
+Stephen Rothwell
+
+--Sig_/9Cgl.5rAq_5Va.lomBnmNSa
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAl6WNFsACgkQAVBC80lX
+0GwBpwf9GTBWa6briKFg+vjJrtYfiGiCz0b4KJxf4PPeMxdTy8hXYnGPLehOwvPG
+2f5wT99wXGk3DktQDM0uMxCY7JnP/RHwMAC6kBwsxCaofAV3CWzACjOFDjUFVd/2
+WaSQV98Uq87aEv9T840M4ZQulYi5gfxEqwLLTydbdDkalvGFCNdIMiIWPajo6k30
+/nieyC3q2loQtHyvjGErD0px+fZ0tThWH1FucEus97SIhY+47wHndiX6rAT0/zuv
+9gCy36TW/B+FW3mAn0sSbiZFlMc6hI/arMTxSMA5ocHkFDEJEJ3MDNbSCr0FEcp7
+X7y0UzM86qVQVnG7xDF56Mw+EJxSew==
+=m/fh
+-----END PGP SIGNATURE-----
+
+--Sig_/9Cgl.5rAq_5Va.lomBnmNSa--
