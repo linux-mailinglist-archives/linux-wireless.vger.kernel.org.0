@@ -2,62 +2,117 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3343E1AB0B2
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Apr 2020 20:28:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 901B41AB2AD
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Apr 2020 22:44:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2438105AbgDOS2O (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 15 Apr 2020 14:28:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47808 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S2438068AbgDOS2M (ORCPT
+        id S2636973AbgDOUcg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 15 Apr 2020 16:32:36 -0400
+Received: from mail.w1.fi ([212.71.239.96]:55072 "EHLO
+        li674-96.members.linode.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S2636955AbgDOUcT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 15 Apr 2020 14:28:12 -0400
-X-Greylist: delayed 80155 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 15 Apr 2020 11:28:12 PDT
-Received: from shards.monkeyblade.net (shards.monkeyblade.net [IPv6:2620:137:e000::1:9])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76A10C061A0C;
-        Wed, 15 Apr 2020 11:28:12 -0700 (PDT)
-Received: from localhost (unknown [IPv6:2601:601:9f00:477::3d5])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id BC8B6128AD8C4;
-        Wed, 15 Apr 2020 11:28:08 -0700 (PDT)
-Date:   Wed, 15 Apr 2020 11:28:05 -0700 (PDT)
-Message-Id: <20200415.112805.1849793207144816748.davem@davemloft.net>
-To:     johannes@sipsolutions.net
-Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org
-Subject: Re: pull-request: mac80211 2020-04-15
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20200415084427.31107-1-johannes@sipsolutions.net>
-References: <20200415084427.31107-1-johannes@sipsolutions.net>
-X-Mailer: Mew version 6.8 on Emacs 26.1
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Wed, 15 Apr 2020 11:28:08 -0700 (PDT)
+        Wed, 15 Apr 2020 16:32:19 -0400
+X-Greylist: delayed 502 seconds by postgrey-1.27 at vger.kernel.org; Wed, 15 Apr 2020 16:32:17 EDT
+Received: from localhost (localhost [127.0.0.1])
+        by li674-96.members.linode.com (Postfix) with ESMTP id 5FCA111D5F;
+        Wed, 15 Apr 2020 20:23:47 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at w1.fi
+Received: from li674-96.members.linode.com ([127.0.0.1])
+        by localhost (mail.w1.fi [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id GdxQDhMDuwkT; Wed, 15 Apr 2020 20:23:45 +0000 (UTC)
+Received: by jm (sSMTP sendmail emulation); Wed, 15 Apr 2020 23:22:42 +0300
+Date:   Wed, 15 Apr 2020 23:22:42 +0300
+From:   Jouni Malinen <j@w1.fi>
+To:     Janusz Dziedzic <janusz.dziedzic@gmail.com>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
+        Johannes Berg <johannes@sipsolutions.net>
+Subject: Re: ath9k/mac80211 wrong hw RX filter? - tests, dpp_pkex* failed
+Message-ID: <20200415202242.GA12825@w1.fi>
+References: <CAFED-j=LrpURGKYwHd8Pmdo633nNb9mR4XmmPGNv-dhvBZQR+w@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAFED-j=LrpURGKYwHd8Pmdo633nNb9mR4XmmPGNv-dhvBZQR+w@mail.gmail.com>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes@sipsolutions.net>
-Date: Wed, 15 Apr 2020 10:44:26 +0200
+On Sat, Mar 21, 2020 at 03:04:27PM +0100, Janusz Dziedzic wrote:
+> Just check dpp_pkex* test cases in my remote test environment (ath9k
+> devices) and seems by default fail:
+>  - supplicant using remain_on_channel here
+>  - we don't receive broadcast action frame(s) (PKEX exchange request)
+>  - I suspect HW rx filter configuration don't work correctly here
 
-> So far we only have a few fixes for wireless, nothing really
-> that important.
-> 
-> However, over Easter I found an Easter egg in the form of some
-> netlink validation and the policy export patches that I made
-> a little more than a year ago (and then evidently forgot about).
-> I'll send those once you reopen net-next, but wanted to already
-> say that they will depend on pulling the FTM responder policy
-> fix into that. Obviously this isn't at all urgent, but for that
-> I'd appreciate if you could pull net (with this pull request
-> included) into net-next at some point.
-> 
-> Please pull and let me know if there's any problem.
+Yes, that's correct and thanks for the reminder. I had this in my queue
+somewhere, but never got as far as figuring out what exactly should be
+done to resolve this.
 
-Thanks for the heads up, pulled.
+> In case will add monitor interface to the iface that ath9k station
+> using, test case always pass (we receive this action frame(s) when
+> remain-on-channel).
 
-I'll have net merged into net-next by the time I open that back
-up for sure.
+It does not actually need to be a monitor interface, i.e., any
+additional vif that is up should be sufficient.. The key point here is
+in getting ath9k to include ATH9K_RX_FILTER_MCAST_BCAST_ALL in the RX
+filter configuration. That happens if nvifs > 1 or FIF_OTHER_BSS is
+included (the former is based on multiple vifs and the latter is based
+on mesh being used).
+
+> Seems we pass this for hwsim, but I suspect we don't use hwsim filters?
+
+mac80211_hwsim does not filter out frames in the same manner as most
+hardware designs do on the RX path.
+
+> I see that wpa_supplicant register different action frames and finally
+> we configure this in mgmt_frame_register() next
+> ieee80211_mgmt_frame_register().
+> Do we miss some functionality here (in mac80211) or this is pure ath9k bug?
+
+It's more of an undefined behavior.. DPP happens to be the first (and
+currently only) used of broadcast Public Action frames and it looks like
+number of WLAN designs filter such frames at one (or even multiple)
+points in the stack since there was no need to waste power in processing
+them.
+
+We don't currently have any means for user space to indicate that it
+would be nice to be able to receive broadcast Public Action frames
+(i.e., Management frames that are sent outside the context of an
+association with A1=A3=ff:ff:ff:ff:ff:ff). Since delivery of such frames
+to upper layers may require some designs to enable promiscuous RX
+behavior, this can result in undesired use of power in some devices and
+as such, it would be nice to be able to do this only when there is a
+known user for such frames (e.g., DPP listen mode enabled). That ath9k
+case of ATH9K_RX_FILTER_MCAST_BCAST_ALL may not be that expensive, but
+other drivers might need to enable full promiscuous receive and drop
+significantly larger number of undesired frames in mac80211 to have a
+noticeable impact.
+
+If we were to add that user space registration for broadcast Public
+Action frames, we could then handle that in mac80211 by adding a new
+enum ieee80211_filter_flags value (e.g., FIF_BROADCAST_PUBLIC_ACTION)
+and have ath9k map that to ATH9K_RX_FILTER_MCAST_BCAST_ALL.
+wpa_supplicant would then use this new registration mechanism based on
+when it expects to be able to receive DPP frames (i.e., when DPP_LISTEN
+is in progress).
+
+> Interesting, that 'monitor trick' doesn't work for intel-ax200.
+
+It should be noted that the frames can be dropped at other layers as
+well. There are WLAN firmware designs that drop these frames and make
+those cases work with DPP PKEX is likely going to require a firmware
+change.. Furthermore, the exact trick depends on the driver (that nvifs
+being larger then one in case of ath9k), so it is not surprising to see
+different behavior.. As another example, AR9170/carl9170 seems to work
+without any such tricks and same is the case for ath10k with firmware
+builds that enable this case explicitly for DPP.
+
+Anyway, it would be good to add this registration mechanism for
+broadcast Public Action frame RX to fix the known cases (at least ath9k
+and ath9k_htc) and to make this details about DPP more explicitly
+documented and known for others to find and address in driver or
+firmware design for RX filtering.
+
+-- 
+Jouni Malinen                                            PGP id EFC895FA
