@@ -2,289 +2,242 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F03C21A99C2
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Apr 2020 11:59:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BF53E1AA36E
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Apr 2020 15:11:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2408507AbgDOJ70 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 15 Apr 2020 05:59:26 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:47644 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2405824AbgDOJ7Z (ORCPT
+        id S2504619AbgDONJw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 15 Apr 2020 09:09:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40054 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2897076AbgDOLfn (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 15 Apr 2020 05:59:25 -0400
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.69 with qID 03F9xF931005961, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexmb06.realtek.com.tw[172.21.6.99])
-        by rtits2.realtek.com.tw (8.15.2/2.66/5.86) with ESMTPS id 03F9xF931005961
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Wed, 15 Apr 2020 17:59:15 +0800
-Received: from RTEXMB04.realtek.com.tw (172.21.6.97) by
- RTEXMB06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Wed, 15 Apr 2020 17:59:15 +0800
-Received: from localhost.localdomain (172.21.68.128) by
- RTEXMB04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Wed, 15 Apr 2020 17:59:15 +0800
-From:   <yhchuang@realtek.com>
-To:     <kvalo@codeaurora.org>
-CC:     <linux-wireless@vger.kernel.org>, <briannorris@chromium.org>
-Subject: [PATCH] rtw88: set power trim according to efuse PG values
-Date:   Wed, 15 Apr 2020 17:59:12 +0800
-Message-ID: <20200415095912.18194-2-yhchuang@realtek.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200415095912.18194-1-yhchuang@realtek.com>
-References: <20200415095912.18194-1-yhchuang@realtek.com>
+        Wed, 15 Apr 2020 07:35:43 -0400
+Received: from mail-lj1-x244.google.com (mail-lj1-x244.google.com [IPv6:2a00:1450:4864:20::244])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C9FEC061A0E
+        for <linux-wireless@vger.kernel.org>; Wed, 15 Apr 2020 04:35:42 -0700 (PDT)
+Received: by mail-lj1-x244.google.com with SMTP id z26so3227326ljz.11
+        for <linux-wireless@vger.kernel.org>; Wed, 15 Apr 2020 04:35:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=KBpalj9lT5kvxcjd5x3o+owJyJdduvaY1jMLu6w9DYI=;
+        b=nHw/ApgLmxZUw2uFNTIAg/ctnJ7fmQ28uOV3gnu5UtZgIkXAbP43vB4FqdI4Q4eHiy
+         2VvlqpmAjlL2m4089uAWAE9xB5Ij13OPiCOtrf4qvHEmXCD8KwnyKwA0EWo8HZChlWN+
+         JP5Lx0ENlM/A4M96Hqzs+VVLySNgd7BTG9tGk1/+1/8BNdJAK0Qro1X93sr+kCJZx9YI
+         SsvZM5+XuXR4L5fiXPNooZkqV2DvAJbk2cInkjEV6Tg5dAhu5lnQsxh/ygiRSfyx5XSN
+         dx3OxqOfJ4SnxBViMHsrwgFydTWVJwl4ADXgcN5Of6iXY0A1K6+HLBQBGetTQbzJ6n/0
+         Di6A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=KBpalj9lT5kvxcjd5x3o+owJyJdduvaY1jMLu6w9DYI=;
+        b=GVXuRCmMGTiRk0MGewDTCc87e3QsCp/D+tN5fxWQJNWZOhXi3kQe2qAe1DT1TYT/fH
+         ymB6cEr0p8BZPMK5vF8QHLvDfwBWBK8N2FiDEDxuGN0pz/FMp7LaqvUA4aiWf2HwHErj
+         tAbt1ESoF/H2ca54EZQH955zB6di9xBi0VYK0qnslPrJZ5eug8dgZeR1aUnrLPF8uqyb
+         EAmlcyKk7+wnm2SbagIvkO15wLe+iqizqgSOyQecd3+DBcXlRxZnrjR9cb7wNJaKsNc2
+         DKYZbmo7g/uNlH6wTQcVsVWsoJvGuTA2SYiL2HymrbmHr6+jvSEDz5E5XDP+L8bceXvb
+         XzmQ==
+X-Gm-Message-State: AGi0PuZLBYSbq6agfHRUyafG0SRNmKIxDBsY+BAufNM6J4mVpXfFd6EA
+        PbQCaJH45CTjWpcuo23672yDZj++7APnjv53vWk4ig==
+X-Google-Smtp-Source: APiQypJk41kgiRI94BIMANGlD8TkJQffUXgc/CbpBaQcp5YFitlmaZ4ssDBWSOD5V3uSRs0pfIVRVVkAG2pELd1X3B0=
+X-Received: by 2002:a2e:b8c1:: with SMTP id s1mr3169915ljp.0.1586950540057;
+ Wed, 15 Apr 2020 04:35:40 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [172.21.68.128]
-X-ClientProxiedBy: RTEXMB02.realtek.com.tw (172.21.6.95) To
- RTEXMB04.realtek.com.tw (172.21.6.97)
+References: <1586254255-28713-1-git-send-email-sumit.garg@linaro.org>
+ <CABPxzY+hL=jD6Zy=netP3oqNXg69gDL2g0KiPe40eaXXgZBnxw@mail.gmail.com> <CAFA6WYMZAq6X5m++h33ySCa6jOQCq_tHL=8mUi-kPMcn4FH=jA@mail.gmail.com>
+In-Reply-To: <CAFA6WYMZAq6X5m++h33ySCa6jOQCq_tHL=8mUi-kPMcn4FH=jA@mail.gmail.com>
+From:   Sumit Garg <sumit.garg@linaro.org>
+Date:   Wed, 15 Apr 2020 17:05:28 +0530
+Message-ID: <CAFA6WYOW9ne0iffwC1dc48a_aSaYkkxQzyHQXTV2Wkob9KOXQg@mail.gmail.com>
+Subject: Re: [PATCH v2] mac80211: fix race in ieee80211_register_hw()
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
+        Krishna Chaitanya <chaitanya.mgit@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>, kuba@kernel.org,
+        Kalle Valo <kvalo@codeaurora.org>,
+        netdev <netdev@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        =?UTF-8?Q?Matthias=2DPeter_Sch=C3=B6pfer?= 
+        <matthias.schoepfer@ithinx.io>,
+        "Berg Philipp (HAU-EDS)" <Philipp.Berg@liebherr.com>,
+        "Weitner Michael (HAU-EDS)" <Michael.Weitner@liebherr.com>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Loic Poulain <loic.poulain@linaro.org>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Tzu-En Huang <tehuang@realtek.com>
+On Thu, 9 Apr 2020 at 10:12, Sumit Garg <sumit.garg@linaro.org> wrote:
+>
+> Hi Johannes,
+>
+> On Wed, 8 Apr 2020 at 00:55, Krishna Chaitanya <chaitanya.mgit@gmail.com> wrote:
+> >
+> > On Tue, Apr 7, 2020 at 3:41 PM Sumit Garg <sumit.garg@linaro.org> wrote:
+> > >
+> > > A race condition leading to a kernel crash is observed during invocation
+> > > of ieee80211_register_hw() on a dragonboard410c device having wcn36xx
+> > > driver built as a loadable module along with a wifi manager in user-space
+> > > waiting for a wifi device (wlanX) to be active.
+> > >
+> > > Sequence diagram for a particular kernel crash scenario:
+> > >
+> > >     user-space  ieee80211_register_hw()  ieee80211_tasklet_handler()
+> > >     ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+> > >        |                    |                 |
+> > >        |<---phy0----wiphy_register()          |
+> > >        |-----iwd if_add---->|                 |
+> > just a nitpick, a better one would be (iwd: if_add + ap_start) since
+> > we need to have 'iwctl ap start'
+> > to trigger the interrupts.
+> > >        |                    |<---IRQ----(RX packet)
+> > >        |              Kernel crash            |
+> > >        |              due to unallocated      |
+> > >        |              workqueue.              |
+> > >        |                    |                 |
+> > >        |       alloc_ordered_workqueue()      |
+> > >        |                    |                 |
+> > >        |              Misc wiphy init.        |
+> > >        |                    |                 |
+> > >        |            ieee80211_if_add()        |
+> > >        |                    |                 |
+> > >
+> > > As evident from above sequence diagram, this race condition isn't specific
+> > > to a particular wifi driver but rather the initialization sequence in
+> > > ieee80211_register_hw() needs to be fixed. So re-order the initialization
+> > > sequence and the updated sequence diagram would look like:
+> > >
+> > >     user-space  ieee80211_register_hw()  ieee80211_tasklet_handler()
+> > >     ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+> > >        |                    |                 |
+> > >        |       alloc_ordered_workqueue()      |
+> > >        |                    |                 |
+> > >        |              Misc wiphy init.        |
+> > >        |                    |                 |
+> > >        |<---phy0----wiphy_register()          |
+> > >        |-----iwd if_add---->|                 |
+> > same as above.
+> > >        |                    |<---IRQ----(RX packet)
+> > >        |                    |                 |
+> > >        |            ieee80211_if_add()        |
+> > >        |                    |                 |
+> > >
+> > > Cc: <stable@vger.kernel.org>
+> > > Signed-off-by: Sumit Garg <sumit.garg@linaro.org>
+> > > ---
+> > >
+>
+> In case we don't have any further comments, could you fix this nitpick
+> from Chaitanya while applying or would you like me to respin and send
+> v3?
 
-8822C devices have power trim, thermal and PA bias values
-programmed in efuse. Driver should configure the RF components
-according to the values.
+A gentle ping. Is this patch a good candidate for 5.7-rc2?
 
-If the power trim is not configured, then the devices might have
-distortion on the output tx power.
+-Sumit
 
-Signed-off-by: Tzu-En Huang <tehuang@realtek.com>
-Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
----
- drivers/net/wireless/realtek/rtw88/efuse.c    |  21 ++++
- drivers/net/wireless/realtek/rtw88/efuse.h    |   3 +
- drivers/net/wireless/realtek/rtw88/rtw8822c.c | 111 ++++++++++++++++++
- drivers/net/wireless/realtek/rtw88/rtw8822c.h |  28 +++++
- 4 files changed, 163 insertions(+)
-
-diff --git a/drivers/net/wireless/realtek/rtw88/efuse.c b/drivers/net/wireless/realtek/rtw88/efuse.c
-index 212c8376a8c9..f037fa586915 100644
---- a/drivers/net/wireless/realtek/rtw88/efuse.c
-+++ b/drivers/net/wireless/realtek/rtw88/efuse.c
-@@ -116,6 +116,27 @@ static int rtw_dump_physical_efuse_map(struct rtw_dev *rtwdev, u8 *map)
- 	return 0;
- }
- 
-+int rtw_read8_physical_efuse(struct rtw_dev *rtwdev, u16 addr, u8 *data)
-+{
-+	u32 efuse_ctl, cnt;
-+
-+	rtw_write32_mask(rtwdev, REG_EFUSE_CTRL, 0x3ff00, addr);
-+	rtw_write32_clr(rtwdev, REG_EFUSE_CTRL, BIT_EF_FLAG);
-+	cnt = 1000;
-+	do {
-+		mdelay(1);
-+		efuse_ctl = rtw_read32(rtwdev, REG_EFUSE_CTRL);
-+		if (--cnt == 0) {
-+			*data = EFUSE_READ_FAIL;
-+			return -EBUSY;
-+		}
-+	} while (!(efuse_ctl & BIT_EF_FLAG));
-+
-+	*data = rtw_read8(rtwdev, REG_EFUSE_CTRL);
-+
-+	return 0;
-+}
-+
- int rtw_parse_efuse_map(struct rtw_dev *rtwdev)
- {
- 	struct rtw_chip_info *chip = rtwdev->chip;
-diff --git a/drivers/net/wireless/realtek/rtw88/efuse.h b/drivers/net/wireless/realtek/rtw88/efuse.h
-index 115bbe85946a..97a51f0b0e46 100644
---- a/drivers/net/wireless/realtek/rtw88/efuse.h
-+++ b/drivers/net/wireless/realtek/rtw88/efuse.h
-@@ -10,6 +10,8 @@
- #define EFUSE_HW_CAP_SUPP_BW80		7
- #define EFUSE_HW_CAP_SUPP_BW40		6
- 
-+#define EFUSE_READ_FAIL			0xff
-+
- #define GET_EFUSE_HW_CAP_HCI(hw_cap)					       \
- 	le32_get_bits(*((__le32 *)(hw_cap) + 0x01), GENMASK(3, 0))
- #define GET_EFUSE_HW_CAP_BW(hw_cap)					       \
-@@ -22,5 +24,6 @@
- 	le32_get_bits(*((__le32 *)(hw_cap) + 0x01), GENMASK(27, 26))
- 
- int rtw_parse_efuse_map(struct rtw_dev *rtwdev);
-+int rtw_read8_physical_efuse(struct rtw_dev *rtwdev, u16 addr, u8 *data);
- 
- #endif
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822c.c b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-index c99b1de54bfc..705a48de7fa3 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-@@ -15,6 +15,7 @@
- #include "debug.h"
- #include "util.h"
- #include "bf.h"
-+#include "efuse.h"
- 
- static void rtw8822c_config_trx_mode(struct rtw_dev *rtwdev, u8 tx_path,
- 				     u8 rx_path, bool is_tx2_path);
-@@ -1000,10 +1001,120 @@ static void rtw8822c_rf_x2_check(struct rtw_dev *rtwdev)
- 	}
- }
- 
-+static void rtw8822c_set_power_trim(struct rtw_dev *rtwdev, s8 bb_gain[2][8])
-+{
-+#define RF_SET_POWER_TRIM(_path, _seq, _idx)					\
-+		do {								\
-+			rtw_write_rf(rtwdev, _path, 0x33, RFREG_MASK, _seq);	\
-+			rtw_write_rf(rtwdev, _path, 0x3f, RFREG_MASK,		\
-+				     bb_gain[_path][_idx]);			\
-+		} while (0)
-+	u8 path;
-+
-+	for (path = 0; path < rtwdev->hal.rf_path_num; path++) {
-+		rtw_write_rf(rtwdev, path, 0xee, BIT(19), 1);
-+		RF_SET_POWER_TRIM(path, 0x0, 0);
-+		RF_SET_POWER_TRIM(path, 0x1, 1);
-+		RF_SET_POWER_TRIM(path, 0x2, 2);
-+		RF_SET_POWER_TRIM(path, 0x3, 2);
-+		RF_SET_POWER_TRIM(path, 0x4, 3);
-+		RF_SET_POWER_TRIM(path, 0x5, 4);
-+		RF_SET_POWER_TRIM(path, 0x6, 5);
-+		RF_SET_POWER_TRIM(path, 0x7, 6);
-+		RF_SET_POWER_TRIM(path, 0x8, 7);
-+		RF_SET_POWER_TRIM(path, 0x9, 3);
-+		RF_SET_POWER_TRIM(path, 0xa, 4);
-+		RF_SET_POWER_TRIM(path, 0xb, 5);
-+		RF_SET_POWER_TRIM(path, 0xc, 6);
-+		RF_SET_POWER_TRIM(path, 0xd, 7);
-+		RF_SET_POWER_TRIM(path, 0xe, 7);
-+		rtw_write_rf(rtwdev, path, 0xee, BIT(19), 0);
-+	}
-+#undef RF_SET_POWER_TRIM
-+}
-+
-+static void rtw8822c_power_trim(struct rtw_dev *rtwdev)
-+{
-+	u8 pg_pwr = 0xff, i, path, idx;
-+	s8 bb_gain[2][8] = {0};
-+	u16 rf_efuse_2g[3] = {PPG_2GL_TXAB, PPG_2GM_TXAB, PPG_2GH_TXAB};
-+	u16 rf_efuse_5g[2][5] = {{PPG_5GL1_TXA, PPG_5GL2_TXA, PPG_5GM1_TXA,
-+				  PPG_5GM2_TXA, PPG_5GH1_TXA},
-+				 {PPG_5GL1_TXB, PPG_5GL2_TXB, PPG_5GM1_TXB,
-+				  PPG_5GM2_TXB, PPG_5GH1_TXB} };
-+	bool set = false;
-+
-+	for (i = 0; i < ARRAY_SIZE(rf_efuse_2g); i++) {
-+		rtw_read8_physical_efuse(rtwdev, rf_efuse_2g[i], &pg_pwr);
-+		if (pg_pwr == EFUSE_READ_FAIL)
-+			continue;
-+		set = true;
-+		bb_gain[RF_PATH_A][i] = FIELD_GET(PPG_2G_A_MASK, pg_pwr);
-+		bb_gain[RF_PATH_B][i] = FIELD_GET(PPG_2G_B_MASK, pg_pwr);
-+	}
-+
-+	for (i = 0; i < ARRAY_SIZE(rf_efuse_5g[0]); i++) {
-+		for (path = 0; path < rtwdev->hal.rf_path_num; path++) {
-+			rtw_read8_physical_efuse(rtwdev, rf_efuse_5g[path][i],
-+						 &pg_pwr);
-+			if (pg_pwr == EFUSE_READ_FAIL)
-+				continue;
-+			set = true;
-+			idx = i + ARRAY_SIZE(rf_efuse_2g);
-+			bb_gain[path][idx] = FIELD_GET(PPG_5G_MASK, pg_pwr);
-+		}
-+	}
-+	if (set)
-+		rtw8822c_set_power_trim(rtwdev, bb_gain);
-+}
-+
-+static void rtw8822c_thermal_trim(struct rtw_dev *rtwdev)
-+{
-+	u16 rf_efuse[2] = {PPG_THERMAL_A, PPG_THERMAL_B};
-+	u8 pg_therm = 0xff, thermal[2] = {0}, path;
-+
-+	for (path = 0; path < rtwdev->hal.rf_path_num; path++) {
-+		rtw_read8_physical_efuse(rtwdev, rf_efuse[path], &pg_therm);
-+		if (pg_therm == EFUSE_READ_FAIL)
-+			return;
-+		/* Efuse value of BIT(0) shall be move to BIT(3), and the value
-+		 * of BIT(1) to BIT(3) should be right shifted 1 bit.
-+		 */
-+		thermal[path] = FIELD_GET(GENMASK(3, 1), pg_therm);
-+		thermal[path] |= FIELD_PREP(BIT(3), pg_therm & BIT(0));
-+		rtw_write_rf(rtwdev, path, 0x43, RF_THEMAL_MASK, thermal[path]);
-+	}
-+}
-+
-+static void rtw8822c_pa_bias(struct rtw_dev *rtwdev)
-+{
-+	u16 rf_efuse_2g[2] = {PPG_PABIAS_2GA, PPG_PABIAS_2GB};
-+	u16 rf_efuse_5g[2] = {PPG_PABIAS_5GA, PPG_PABIAS_5GB};
-+	u8 pg_pa_bias = 0xff, path;
-+
-+	for (path = 0; path < rtwdev->hal.rf_path_num; path++) {
-+		rtw_read8_physical_efuse(rtwdev, rf_efuse_2g[path],
-+					 &pg_pa_bias);
-+		if (pg_pa_bias == EFUSE_READ_FAIL)
-+			return;
-+		pg_pa_bias = FIELD_GET(PPG_PABIAS_MASK, pg_pa_bias);
-+		rtw_write_rf(rtwdev, path, 0x60, RF_PABIAS_2G_MASK, pg_pa_bias);
-+	}
-+	for (path = 0; path < rtwdev->hal.rf_path_num; path++) {
-+		rtw_read8_physical_efuse(rtwdev, rf_efuse_5g[path],
-+					 &pg_pa_bias);
-+		pg_pa_bias = FIELD_GET(PPG_PABIAS_MASK, pg_pa_bias);
-+		rtw_write_rf(rtwdev, path, 0x60, RF_PABIAS_5G_MASK, pg_pa_bias);
-+	}
-+}
-+
- static void rtw8822c_rf_init(struct rtw_dev *rtwdev)
- {
- 	rtw8822c_rf_dac_cal(rtwdev);
- 	rtw8822c_rf_x2_check(rtwdev);
-+	rtw8822c_thermal_trim(rtwdev);
-+	rtw8822c_power_trim(rtwdev);
-+	rtw8822c_pa_bias(rtwdev);
- }
- 
- static void rtw8822c_pwrtrack_init(struct rtw_dev *rtwdev)
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822c.h b/drivers/net/wireless/realtek/rtw88/rtw8822c.h
-index dfd8662a0c0e..32b4771e04d0 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8822c.h
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8822c.h
-@@ -309,4 +309,32 @@ const struct rtw_table name ## _tbl = {			\
- #define BIT_GS_PWSF		GENMASK(27, 0)
- #define BIT_RPT_DGAIN		GENMASK(27, 16)
- #define BIT_TX_CFIR		GENMASK(31, 30)
-+
-+#define PPG_THERMAL_A 0x1ef
-+#define PPG_THERMAL_B 0x1b0
-+#define RF_THEMAL_MASK GENMASK(19, 16)
-+#define PPG_2GL_TXAB 0x1d4
-+#define PPG_2GM_TXAB 0x1ee
-+#define PPG_2GH_TXAB 0x1d2
-+#define PPG_2G_A_MASK GENMASK(3, 0)
-+#define PPG_2G_B_MASK GENMASK(7, 4)
-+#define PPG_5GL1_TXA 0x1ec
-+#define PPG_5GL2_TXA 0x1e8
-+#define PPG_5GM1_TXA 0x1e4
-+#define PPG_5GM2_TXA 0x1e0
-+#define PPG_5GH1_TXA 0x1dc
-+#define PPG_5GL1_TXB 0x1eb
-+#define PPG_5GL2_TXB 0x1e7
-+#define PPG_5GM1_TXB 0x1e3
-+#define PPG_5GM2_TXB 0x1df
-+#define PPG_5GH1_TXB 0x1db
-+#define PPG_5G_MASK GENMASK(4, 0)
-+#define PPG_PABIAS_2GA 0x1d6
-+#define PPG_PABIAS_2GB 0x1d5
-+#define PPG_PABIAS_5GA 0x1d8
-+#define PPG_PABIAS_5GB 0x1d7
-+#define PPG_PABIAS_MASK GENMASK(3, 0)
-+#define RF_PABIAS_2G_MASK GENMASK(15, 12)
-+#define RF_PABIAS_5G_MASK GENMASK(19, 16)
-+
- #endif
--- 
-2.17.1
-
+>
+> -Sumit
+>
+> > > Changes in v2:
+> > > - Move rtnl_unlock() just after ieee80211_init_rate_ctrl_alg().
+> > > - Update sequence diagrams in commit message for more clarification.
+> > >
+> > >  net/mac80211/main.c | 22 +++++++++++++---------
+> > >  1 file changed, 13 insertions(+), 9 deletions(-)
+> > >
+> > > diff --git a/net/mac80211/main.c b/net/mac80211/main.c
+> > > index 4c2b5ba..d497129 100644
+> > > --- a/net/mac80211/main.c
+> > > +++ b/net/mac80211/main.c
+> > > @@ -1051,7 +1051,7 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
+> > >                 local->hw.wiphy->signal_type = CFG80211_SIGNAL_TYPE_UNSPEC;
+> > >                 if (hw->max_signal <= 0) {
+> > >                         result = -EINVAL;
+> > > -                       goto fail_wiphy_register;
+> > > +                       goto fail_workqueue;
+> > >                 }
+> > >         }
+> > >
+> > > @@ -1113,7 +1113,7 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
+> > >
+> > >         result = ieee80211_init_cipher_suites(local);
+> > >         if (result < 0)
+> > > -               goto fail_wiphy_register;
+> > > +               goto fail_workqueue;
+> > >
+> > >         if (!local->ops->remain_on_channel)
+> > >                 local->hw.wiphy->max_remain_on_channel_duration = 5000;
+> > > @@ -1139,10 +1139,6 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
+> > >
+> > >         local->hw.wiphy->max_num_csa_counters = IEEE80211_MAX_CSA_COUNTERS_NUM;
+> > >
+> > > -       result = wiphy_register(local->hw.wiphy);
+> > > -       if (result < 0)
+> > > -               goto fail_wiphy_register;
+> > > -
+> > >         /*
+> > >          * We use the number of queues for feature tests (QoS, HT) internally
+> > >          * so restrict them appropriately.
+> > > @@ -1207,6 +1203,8 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
+> > >                 goto fail_rate;
+> > >         }
+> > >
+> > > +       rtnl_unlock();
+> > > +
+> > >         if (local->rate_ctrl) {
+> > >                 clear_bit(IEEE80211_HW_SUPPORTS_VHT_EXT_NSS_BW, hw->flags);
+> > >                 if (local->rate_ctrl->ops->capa & RATE_CTRL_CAPA_VHT_EXT_NSS_BW)
+> > > @@ -1254,6 +1252,12 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
+> > >                 local->sband_allocated |= BIT(band);
+> > >         }
+> > >
+> > > +       result = wiphy_register(local->hw.wiphy);
+> > > +       if (result < 0)
+> > > +               goto fail_wiphy_register;
+> > > +
+> > > +       rtnl_lock();
+> > > +
+> > >         /* add one default STA interface if supported */
+> > >         if (local->hw.wiphy->interface_modes & BIT(NL80211_IFTYPE_STATION) &&
+> > >             !ieee80211_hw_check(hw, NO_AUTO_VIF)) {
+> > > @@ -1293,6 +1297,8 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
+> > >  #if defined(CONFIG_INET) || defined(CONFIG_IPV6)
+> > >   fail_ifa:
+> > >  #endif
+> > > +       wiphy_unregister(local->hw.wiphy);
+> > > + fail_wiphy_register:
+> > >         rtnl_lock();
+> > >         rate_control_deinitialize(local);
+> > >         ieee80211_remove_interfaces(local);
+> > > @@ -1302,8 +1308,6 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
+> > >         ieee80211_led_exit(local);
+> > >         destroy_workqueue(local->workqueue);
+> > >   fail_workqueue:
+> > > -       wiphy_unregister(local->hw.wiphy);
+> > > - fail_wiphy_register:
+> > >         if (local->wiphy_ciphers_allocated)
+> > >                 kfree(local->hw.wiphy->cipher_suites);
+> > >         kfree(local->int_scan_req);
+> > > @@ -1353,8 +1357,8 @@ void ieee80211_unregister_hw(struct ieee80211_hw *hw)
+> > >         skb_queue_purge(&local->skb_queue_unreliable);
+> > >         skb_queue_purge(&local->skb_queue_tdls_chsw);
+> > >
+> > > -       destroy_workqueue(local->workqueue);
+> > >         wiphy_unregister(local->hw.wiphy);
+> > > +       destroy_workqueue(local->workqueue);
+> > >         ieee80211_led_exit(local);
+> > >         kfree(local->int_scan_req);
+> > >  }
+> > > --
+> > > 2.7.4
+> > >
+> >
+> >
+> > --
+> > Thanks,
+> > Regards,
+> > Chaitanya T K.
