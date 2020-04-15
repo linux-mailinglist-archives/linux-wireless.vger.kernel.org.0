@@ -2,61 +2,60 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 08E6F1AA435
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Apr 2020 15:23:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 52DDD1AA8DC
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Apr 2020 15:42:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2506304AbgDONUU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 15 Apr 2020 09:20:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56198 "EHLO
+        id S2636189AbgDONjg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 15 Apr 2020 09:39:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59280 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S2506285AbgDONTo (ORCPT
+        by vger.kernel.org with ESMTP id S2633321AbgDONjb (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 15 Apr 2020 09:19:44 -0400
-Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5EDCC061A0C;
-        Wed, 15 Apr 2020 06:19:43 -0700 (PDT)
-Received: by mail-wr1-x442.google.com with SMTP id b11so7742306wrs.6;
-        Wed, 15 Apr 2020 06:19:43 -0700 (PDT)
+        Wed, 15 Apr 2020 09:39:31 -0400
+Received: from mail-lf1-x141.google.com (mail-lf1-x141.google.com [IPv6:2a00:1450:4864:20::141])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79155C061A0C
+        for <linux-wireless@vger.kernel.org>; Wed, 15 Apr 2020 06:39:31 -0700 (PDT)
+Received: by mail-lf1-x141.google.com with SMTP id r17so2675433lff.2
+        for <linux-wireless@vger.kernel.org>; Wed, 15 Apr 2020 06:39:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:reply-to:from:date:message-id
-         :subject:to:cc;
-        bh=lfpK/xOIlDnyJhSEQBBYKy273A0qYIk6KaRxAULUFas=;
-        b=Xy0NAs50nauKNzelhrgCoZ1oAYS0by3FW/Xaw2GPXjjbxeHr7P51WtKfCf1iVTlDao
-         1cOOPmWg97iJ76qPu3Zf8K1JeiI+rzszWGk02qVHLNvlaAePVcN0Z1ZL+XQNVE5e9274
-         GYzX7MjCAThNITca93dboFwAqeKUQEJNeSp75p0d8awYnOijpfDLDm0N9I+yyxD6oci7
-         AUyJfwQuq1AqKugkFVaK5DG/Twamt2jjtWUBC/Q78V6LlzCa56wRZOhfgAQvg26w7Zfk
-         Ki+dfNNizSoeEwHuWdzLPllpRX8OzyQKILZp1EwCutUgg3ED3sqXDlxRzrDrAzQvSFX9
-         Bp/A==
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=fYbKtTdIlAS2MrOYv3ktp5ynh9zmAurxtliyxz228HM=;
+        b=kNmfCTMrncJz3Mf/q8c7XdNw/+aM367/99PvPs2dC40uoDdbWKW1e5Ka1VrjrIIXZN
+         EWKQAeD41UH7JTlXSR2Oni+zm12n4KErP+aTQMcwUQTWszpBTKmX4onmjQL50Dec0ulk
+         Oi6VJylUjzXADIznlAe70TVHYFljOlYz5pmYHnDSHHRsshUyyxJR06c+zQkapSjGMpB2
+         GtKLORJXT3ydl4ITIvKl3QV77AjyB8MZPzxUdClUdDGnVVgideHJufH3CidXt3Wct8cI
+         VK11gylh6XQ1fno/KgxM+rHfVxV2tTg4uxUIPx6NlgWkQ/s19QJrUOzUUOsOInQ5q4B/
+         ZY+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:reply-to
-         :from:date:message-id:subject:to:cc;
-        bh=lfpK/xOIlDnyJhSEQBBYKy273A0qYIk6KaRxAULUFas=;
-        b=bBHeMvd4p6pfzZqUQ5yM8GBAZuuS/BtWb31bb32ABhqN6PUzGkDYSa0oWCCDPohrxD
-         BwZ1Fdv3wskLVDfKER+qhlsWGKPFDAZUjbuOAoIUlMzgRfxb/qLPkYAH/uTq3KgwuWkK
-         k/xowWap+PdKC3DTaJ3/oTkV5KOor9wXYFVibyiWuKGmEjsBeEdFevzUvO59ikxLVHEq
-         p3ELX/MQHAWVpJZIdgpw/GoCP3kyv6+ntp3CcjWwlV4djrWj+XGwRGEBsEygVLceArz4
-         Kzl/Gw1n3H6tTPVTUcUz/9nKQ0GJ23TT0aCpa9Vzoi2u5TAyn2w+s8Mq2vhaRy17Q68a
-         4oRA==
-X-Gm-Message-State: AGi0PuZ3MSLAa2hREzCktIdd/tShzn5rlfWHKSID5unkgZN9H13bkmxR
-        ztMB5Vo1dADsOcE7JxYNc9q81JybyWGRIAqsypM=
-X-Google-Smtp-Source: APiQypIW8Pb7KI2m47zG2TSNaiw4mMtQU1+5Wz2hxAJY83V2FfpcUzk0ZWhEopuJDFTjiX0vj3fcibyWGzm0sC1HtaI=
-X-Received: by 2002:adf:ef51:: with SMTP id c17mr28624905wrp.130.1586956782339;
- Wed, 15 Apr 2020 06:19:42 -0700 (PDT)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=fYbKtTdIlAS2MrOYv3ktp5ynh9zmAurxtliyxz228HM=;
+        b=Ucdq7F9k70e4wv+f1OsxqEpU4MNhSdQ7cezyhV/nDPte3P1geWKg+j1I7nqKBWjLoR
+         21vxUeAifjf6jtbShG5wayzPILaiQOsRrXz/5XUROmr1R2pqDbfvBdg/+lSmsXlwKx1z
+         z590wCPbVZsg6vRkpcNHFm4xJeOuX12kwYtNPA1fTlB+z/i09kEA/EFuYKO/krCCubAQ
+         xJh/mVOAi/Ha0fcxkAayqim9BiRH97VKgJ7+V/ExEACZ0K+cUBbNfPk25Y/ZgN2zoYUN
+         sA7QSJ/XJhsEXiVG+gaPj/MofFEKb3udxwCVNShpYIDnlSjSYkAiYeDsrjYtabROYfEP
+         Uq1g==
+X-Gm-Message-State: AGi0PuaN7GEI5KqWtyP8dQgMf0IdLmqvgf7pr5pTTZ5+uMA5KSFpQWx3
+        rKxqHMtR3HCGCLJa2zkPv+oca/Ic0qXOrrzshc9u4A==
+X-Google-Smtp-Source: APiQypKspEOb/rj3icJNNhJ9x/jVreqO36OImyQUXuDaYRNwL1zpsCDOBI49RUO4ArSUzLvFrl5EOyBzPKgoU8LVqX4=
+X-Received: by 2002:ac2:4c34:: with SMTP id u20mr3207171lfq.40.1586957969813;
+ Wed, 15 Apr 2020 06:39:29 -0700 (PDT)
 MIME-Version: 1.0
 References: <1586254255-28713-1-git-send-email-sumit.garg@linaro.org>
  <CABPxzY+hL=jD6Zy=netP3oqNXg69gDL2g0KiPe40eaXXgZBnxw@mail.gmail.com>
- <CAFA6WYMZAq6X5m++h33ySCa6jOQCq_tHL=8mUi-kPMcn4FH=jA@mail.gmail.com> <CAFA6WYOW9ne0iffwC1dc48a_aSaYkkxQzyHQXTV2Wkob9KOXQg@mail.gmail.com>
-In-Reply-To: <CAFA6WYOW9ne0iffwC1dc48a_aSaYkkxQzyHQXTV2Wkob9KOXQg@mail.gmail.com>
-Reply-To: sedat.dilek@gmail.com
-From:   Sedat Dilek <sedat.dilek@gmail.com>
-Date:   Wed, 15 Apr 2020 15:19:30 +0200
-Message-ID: <CA+icZUUDm=WPjmwh5ikp8t+xt7dqTgghCeB8F0+czaUh-sHXxA@mail.gmail.com>
+ <CAFA6WYMZAq6X5m++h33ySCa6jOQCq_tHL=8mUi-kPMcn4FH=jA@mail.gmail.com>
+ <CAFA6WYOW9ne0iffwC1dc48a_aSaYkkxQzyHQXTV2Wkob9KOXQg@mail.gmail.com> <CA+icZUUDm=WPjmwh5ikp8t+xt7dqTgghCeB8F0+czaUh-sHXxA@mail.gmail.com>
+In-Reply-To: <CA+icZUUDm=WPjmwh5ikp8t+xt7dqTgghCeB8F0+czaUh-sHXxA@mail.gmail.com>
+From:   Sumit Garg <sumit.garg@linaro.org>
+Date:   Wed, 15 Apr 2020 19:09:18 +0530
+Message-ID: <CAFA6WYPdJMt-h=9HrV-DcHZnO7xCu74Dh9FuRMnp16qhotyo0g@mail.gmail.com>
 Subject: Re: [PATCH v2] mac80211: fix race in ieee80211_register_hw()
-To:     Sumit Garg <sumit.garg@linaro.org>
-Cc:     Johannes Berg <johannes@sipsolutions.net>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
+To:     sedat.dilek@gmail.com, Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
         Krishna Chaitanya <chaitanya.mgit@gmail.com>,
         "David S. Miller" <davem@davemloft.net>, kuba@kernel.org,
         Kalle Valo <kvalo@codeaurora.org>,
@@ -74,29 +73,42 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Apr 15, 2020 at 3:10 PM Sumit Garg <sumit.garg@linaro.org> wrote:
-
-[.. ]
-
-> > In case we don't have any further comments, could you fix this nitpick
-> > from Chaitanya while applying or would you like me to respin and send
-> > v3?
+On Wed, 15 Apr 2020 at 18:49, Sedat Dilek <sedat.dilek@gmail.com> wrote:
 >
-> A gentle ping. Is this patch a good candidate for 5.7-rc2?
+> On Wed, Apr 15, 2020 at 3:10 PM Sumit Garg <sumit.garg@linaro.org> wrote:
+>
+> [.. ]
+>
+> > > In case we don't have any further comments, could you fix this nitpick
+> > > from Chaitanya while applying or would you like me to respin and send
+> > > v3?
+> >
+> > A gentle ping. Is this patch a good candidate for 5.7-rc2?
+> >
+>
+> Hi Sumit,
+>
+> it's in [1] (see [2]) with slightly mods by Johannes but not in Linus tree.
 >
 
-Hi Sumit,
+Thanks Sedat for this information.
 
-it's in [1] (see [2]) with slightly mods by Johannes but not in Linus tree.
+> Johannes requested a pull-request means will be merged in a next step
+> in net.git and then hopefully land in Linus tree after Dave M.
+> requested a pull-request.
 
-Johannes requested a pull-request means will be merged in a next step
-in net.git and then hopefully land in Linus tree after Dave M.
-requested a pull-request.
+I didn't get this PR notification as currently I am not subscribed to
+linux-wireless ML. So apologies for the noise here.
 
-Thanks for your patch.
+BTW, thanks Johannes for picking up this patch.
 
-Regards,
-- Sedat -
+-Sumit
 
-[1] https://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211.git/tag/?h=mac80211-for-net-2020-04-15
-[2] https://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211.git/commit/?h=mac80211-for-net-2020-04-15&id=52e04b4ce5d03775b6a78f3ed1097480faacc9fd
+>
+> Thanks for your patch.
+>
+> Regards,
+> - Sedat -
+>
+> [1] https://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211.git/tag/?h=mac80211-for-net-2020-04-15
+> [2] https://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211.git/commit/?h=mac80211-for-net-2020-04-15&id=52e04b4ce5d03775b6a78f3ed1097480faacc9fd
