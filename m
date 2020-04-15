@@ -2,30 +2,30 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C071D1A970E
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Apr 2020 10:42:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F13E41A9723
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Apr 2020 10:42:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2894761AbgDOIkH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 15 Apr 2020 04:40:07 -0400
-Received: from mail27.static.mailgun.info ([104.130.122.27]:46739 "EHLO
+        id S2894856AbgDOImQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 15 Apr 2020 04:42:16 -0400
+Received: from mail27.static.mailgun.info ([104.130.122.27]:62693 "EHLO
         mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S2894738AbgDOIjz (ORCPT
+        by vger.kernel.org with ESMTP id S2894865AbgDOImO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 15 Apr 2020 04:39:55 -0400
+        Wed, 15 Apr 2020 04:42:14 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1586939995; h=Date: Message-Id: Cc: To: References:
+ s=smtp; t=1586940134; h=Date: Message-Id: Cc: To: References:
  In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=yt5GAkeWutdoRiLVjNmQh1PYnCw5y+LdfOz0sU6qfrQ=;
- b=GeFR2Mskh1cJUnaGSb3OGDuZwxF+LVQJa7qHBj53eH8H+LBeG4muSyhQcoWdjuX11FTpMcE2
- OUjUfMsXK9BkgsxhIp7pPv4T4DB2aYkZpJdFPxdQgabiYsYpN+jTnKa1KGrIqfnEjVHoUWZJ
- qhzE9JNiRQqRtYNlDG32Mkkq6uo=
+ Content-Type: Sender; bh=gnWUKVTF2Dn7tUMLJrJKql5lrfANcY6Bknq4Dhn2z3g=;
+ b=ra/c/10VJz2G0hcwW2T9stCpp7FFQkVnBhRrkFN5i6vbety944GbWu9f9sWcYRU19M90GBI/
+ QN2NOlCvcKlFGLqluW+wojXsrkIal0fu2/UFVPQozn9hXorhNGYDK5T9ROUQgpegvxPknNLq
+ obFz8kBGuDLE0e9GSyFwMlB8LHM=
 X-Mailgun-Sending-Ip: 104.130.122.27
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e96c84b.7fc81aaa5810-smtp-out-n01;
- Wed, 15 Apr 2020 08:39:39 -0000 (UTC)
+ by mxa.mailgun.org with ESMTP id 5e96c8de.7f4d421f0420-smtp-out-n05;
+ Wed, 15 Apr 2020 08:42:06 -0000 (UTC)
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 97264C4478C; Wed, 15 Apr 2020 08:39:39 +0000 (UTC)
+        id 4F2D0C432C2; Wed, 15 Apr 2020 08:42:05 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -35,48 +35,48 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 33D41C433F2;
-        Wed, 15 Apr 2020 08:39:35 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 33D41C433F2
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id A19AFC433F2;
+        Wed, 15 Apr 2020 08:42:03 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org A19AFC433F2
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] libertas: make lbs_init_mesh() void
+Subject: Re: [PATCH 1/2] rtw88: make rtw_chip_ops::set_antenna return int
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20200410090942.27239-1-yanaijie@huawei.com>
-References: <20200410090942.27239-1-yanaijie@huawei.com>
-To:     Jason Yan <yanaijie@huawei.com>
-Cc:     <davem@davemloft.net>, <colin.king@canonical.com>,
-        <yanaijie@huawei.com>, <dan.carpenter@oracle.com>,
-        <lkundrak@v3.sk>, <libertas-dev@lists.infradead.org>,
-        <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
+In-Reply-To: <20200410100950.3199-2-yhchuang@realtek.com>
+References: <20200410100950.3199-2-yhchuang@realtek.com>
+To:     <yhchuang@realtek.com>
+Cc:     <linux-wireless@vger.kernel.org>, <briannorris@chromium.org>
 User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20200415083939.97264C4478C@smtp.codeaurora.org>
-Date:   Wed, 15 Apr 2020 08:39:39 +0000 (UTC)
+Message-Id: <20200415084205.4F2D0C432C2@smtp.codeaurora.org>
+Date:   Wed, 15 Apr 2020 08:42:05 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Jason Yan <yanaijie@huawei.com> wrote:
+<yhchuang@realtek.com> wrote:
 
-> Fix the following coccicheck warning:
+> From: Yan-Hsuan Chuang <yhchuang@realtek.com>
 > 
-> drivers/net/wireless/marvell/libertas/mesh.c:833:5-8: Unneeded variable:
-> "ret". Return "0" on line 874
+> To support ieee80211_ops::set_antenna, the driver can decide if the
+> antenna mask is accepted, otherwise it can return an error code.
+> Because each chip could have different limitations, let the chip
+> check the mask and return.
 > 
-> Reported-by: Hulk Robot <hulkci@huawei.com>
-> Signed-off-by: Jason Yan <yanaijie@huawei.com>
-> Reviewed-by: Lubomir Rintel <lkundrak@v3.sk>
+> Also the antenna mask for TRX from upper space is 32-bit long.
+> Change the antenna mask for rtw_chip_ops::set_antenna from u8 to u32.
+> 
+> Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
 
-Patch applied to wireless-drivers-next.git, thanks.
+2 patches applied to wireless-drivers-next.git, thanks.
 
-2fd5fdca6a3a libertas: make lbs_init_mesh() void
+b9ed7e9505ba rtw88: make rtw_chip_ops::set_antenna return int
+297bcf8222f2 rtw88: add support for set/get antennas
 
 -- 
-https://patchwork.kernel.org/patch/11483039/
+https://patchwork.kernel.org/patch/11483097/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
