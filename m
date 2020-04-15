@@ -2,244 +2,113 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B3F471AA9A9
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 Apr 2020 16:18:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 676DA1AABA2
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 Apr 2020 17:20:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2636582AbgDOOQv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 15 Apr 2020 10:16:51 -0400
-Received: from 6.mo69.mail-out.ovh.net ([46.105.50.107]:56106 "EHLO
-        6.mo69.mail-out.ovh.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2636573AbgDOOQr (ORCPT
+        id S2393423AbgDOPQp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 15 Apr 2020 11:16:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46220 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S2389664AbgDOPQm (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 15 Apr 2020 10:16:47 -0400
-X-Greylist: delayed 945 seconds by postgrey-1.27 at vger.kernel.org; Wed, 15 Apr 2020 10:16:45 EDT
-Received: from player776.ha.ovh.net (unknown [10.108.57.95])
-        by mo69.mail-out.ovh.net (Postfix) with ESMTP id CBA7A8B998
-        for <linux-wireless@vger.kernel.org>; Wed, 15 Apr 2020 16:00:56 +0200 (CEST)
-Received: from nilsand.re (host86-180-230-78.range86-180.btcentralplus.com [86.180.230.78])
-        (Authenticated sender: nils@nilsand.re)
-        by player776.ha.ovh.net (Postfix) with ESMTPSA id 6CF17117B0194;
-        Wed, 15 Apr 2020 14:00:55 +0000 (UTC)
-Date:   Wed, 15 Apr 2020 15:00:52 +0100
-From:   Nils =?utf-8?Q?ANDR=C3=89-CHANG?= <nils@nilsand.re>
-To:     kvalo@codeaurora.org
-Cc:     linux-wireless@vger.kernel.org
-Subject: [PATCH v2] MAINTAINERS: Update URL for wireless drivers
-Message-ID: <20200415140052.2lftkixe37llmtjl@nixos>
-References: <20200412110724.6uaoqmjc3it73nzo@nixos>
+        Wed, 15 Apr 2020 11:16:42 -0400
+Received: from mail-qk1-x744.google.com (mail-qk1-x744.google.com [IPv6:2607:f8b0:4864:20::744])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34221C061A0C
+        for <linux-wireless@vger.kernel.org>; Wed, 15 Apr 2020 08:16:42 -0700 (PDT)
+Received: by mail-qk1-x744.google.com with SMTP id m67so17513970qke.12
+        for <linux-wireless@vger.kernel.org>; Wed, 15 Apr 2020 08:16:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=2qQPAGL2IMZ0eMjrwtJCIRCLqfeX6RhiXaeITvmueB4=;
+        b=PQEZoTsslxtO2VG1gZ9IEXJ+x1EGsPSa5w+d4wjTJVgOduX5sEJ6HZoJfJRBbXRsU9
+         EXHzIHgdRzFaKGGE+fT3peXwkYEIAHFi3cdXG68+ylSdKhZL8gWe9zBXPqhUeWc2cNdF
+         gsEt61yr3z2YAwQghdQbDx6ZcQjhSEnozaayKcy7LJF75jqkrlpPlsnvR009mnmOtVmq
+         rjYjjR2c7Z1XHNg9dZbS7hATI88O0Qk6m97LJX9sd2Ky24Y2RfKkcTujsfHYrgtSzudc
+         op08cFDcPhGoabbs8CyIn+yDkK6oWBZ58w+VvEJ/gPs6yUnaHhv7LTvRu4+UHccln//R
+         Fm6g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=2qQPAGL2IMZ0eMjrwtJCIRCLqfeX6RhiXaeITvmueB4=;
+        b=QYhxanjP4mgcYye6VnmeZugpy5h97OdJcpJb/ILaevIgcad5GYXF+M6V5+FydjTiGZ
+         neaK1br2Q3h1fsrQ7iSvW8sG99ZEEAP+kCz5plPXj9WtQyk3TVVc17xHJbwIV1SQAhCS
+         v2kcz88D/QVhUhwcyi1A+30ixXCP2+l/w4CqvbKm2lwMSkq3z55If/yn7ENZ3mmh+k5D
+         GqHJdTMQIKKhI5O30H7uVP2vB0FmkerfZZOc0RA/J5zbN4jqrBrQk1liufvyO0BaVFNo
+         HhfFgdDc7jxv6R5oWo4L8wurPBkfz1URxNQKjV0bcPN3Z8AVWD6FaM8LUzvsHpULwQID
+         7B2A==
+X-Gm-Message-State: AGi0PuYJ0hBTRZCtW2Dz6HtG101CGOraxmt+Bz+4K1gprEWNaRc8Rnj3
+        0Q+wX6jY5tkbiBD8EKKQAddeHTxG3I/c+1pxy3H36A==
+X-Google-Smtp-Source: APiQypJF3rrWtTJifwbFr2yPhwI9Guj+09QRJ+ZSsnlVpgr82MOSMQpPk7+ZCYHIQZ3xMrt25PXwdxnh13N+LBZi64Q=
+X-Received: by 2002:a37:8d86:: with SMTP id p128mr27408591qkd.250.1586963800654;
+ Wed, 15 Apr 2020 08:16:40 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20200412110724.6uaoqmjc3it73nzo@nixos>
-X-Ovh-Tracer-Id: 1411878484156974104
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: 0
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduhedrfeefgdeiudcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecunecujfgurhepfffhvffukfhfgggtugfgjgesthekredttddtudenucfhrhhomheppfhilhhsucetpffftfmtqdevjfetpffiuceonhhilhhssehnihhlshgrnhgurdhrvgeqnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghdpnhhonhhgnhhurdhorhhgpdhgihhthhhusgdrtghomhenucfkpheptddrtddrtddrtddpkeeirddukedtrddvfedtrdejkeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhhouggvpehsmhhtphdqohhuthdphhgvlhhopehplhgrhigvrhejjeeirdhhrgdrohhvhhdrnhgvthdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomhepnhhilhhssehnihhlshgrnhgurdhrvgdprhgtphhtthhopehlihhnuhigqdifihhrvghlvghsshesvhhgvghrrdhkvghrnhgvlhdrohhrgh
+References: <000000000000cb517b05a32c917b@google.com> <ed2b00dfda5b6ce46a2c2a33093ee56f77af6a8f.camel@sipsolutions.net>
+In-Reply-To: <ed2b00dfda5b6ce46a2c2a33093ee56f77af6a8f.camel@sipsolutions.net>
+From:   Dmitry Vyukov <dvyukov@google.com>
+Date:   Wed, 15 Apr 2020 17:16:28 +0200
+Message-ID: <CACT4Y+YtT4_An1wtzNWe3_=kMAF3Yhj+pr=GM5ZYOJ9TN3ryXA@mail.gmail.com>
+Subject: Re: WARNING in hwsim_new_radio_nl
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        syzkaller <syzkaller@googlegroups.com>
+Cc:     syzbot <syzbot+a4aee3f42d7584d76761@syzkaller.appspotmail.com>,
+        David Miller <davem@davemloft.net>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        linux-wireless@vger.kernel.org, mathew.j.martineau@linux.intel.com,
+        matthieu.baerts@tessares.net, netdev <netdev@vger.kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        syzkaller-bugs <syzkaller-bugs@googlegroups.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Previously, http://wireless.kernel.org would redirect to
-https://wireless.wiki.kernel.org, however, this is no longer the case
-and most pages return 404.
+On Tue, Apr 14, 2020 at 12:41 PM Johannes Berg
+<johannes@sipsolutions.net> wrote:
+>
+> Hi syzbot keepers,
+>
+> On Mon, 2020-04-13 at 07:05 -0700, syzbot wrote:
+> > syzbot has bisected this bug to:
+> >
+> > commit 01cacb00b35cb62b139f07d5f84bcf0eeda8eff6
+> > Author: Paolo Abeni <pabeni@redhat.com>
+> > Date:   Fri Mar 27 21:48:51 2020 +0000
+> >
+> >     mptcp: add netlink-based PM
+> >
+> > bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=10225bb3e00000
+>
+> This is, fairly obviously, incorrect. Same with the bisection for
+> 6693adf1698864d21734, which is really the same underlying problem as
+> this one (though at a different code site).
+>
+> However, it stands out that this was bisected to a commit that adds a
+> new generic netlink family in both cases.
+>
+> This makes sense - the reproducer identifies the family by *number*, but
+> that number isn't stable, generic netlink families should be identified
+> by *name*.
+>
+> Perhaps somehow syzbot could be taught that, so that the bisection is
+> stable across kernels with different generic netlink families
+> registered?
+>
+> Alternatively, we _could_ add some kind of stable ID mode, but I'm not
+> sure we really want to ... since that would mean people start hardcoding
+> IDs?
 
-https is used because http://wireless.kernel.org/* redirects to
-https://wireless.wiki.kernel.org/*
++syzkaller mailing list
 
-Signed-off-by: Nils ANDRÉ-CHANG <nils@nilsand.re>
----
-v2: Rebase on linus' branch
+Hi Johannes,
 
- MAINTAINERS | 42 +++++++++++++++++++++---------------------
- 1 file changed, 21 insertions(+), 21 deletions(-)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index e64e5db31497..81e7fcc915ec 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -189,7 +189,7 @@ F:	drivers/net/hamradio/6pack.c
- M:	Johannes Berg <johannes@sipsolutions.net>
- L:	linux-wireless@vger.kernel.org
- S:	Maintained
--W:	http://wireless.kernel.org/
-+W:	https://wireless.wiki.kernel.org/
- T:	git git://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211.git
- T:	git git://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211-next.git
- F:	Documentation/driver-api/80211/cfg80211.rst
-@@ -505,7 +505,7 @@ F:	drivers/hwmon/adm1029.c
- ADM8211 WIRELESS DRIVER
- L:	linux-wireless@vger.kernel.org
- S:	Orphan
--W:	http://wireless.kernel.org/
-+W:	https://wireless.wiki.kernel.org/
- F:	drivers/net/wireless/admtek/adm8211.*
- 
- ADP1653 FLASH CONTROLLER DRIVER
-@@ -2847,14 +2847,14 @@ M:	Nick Kossifidis <mickflemm@gmail.com>
- M:	Luis Chamberlain <mcgrof@kernel.org>
- L:	linux-wireless@vger.kernel.org
- S:	Maintained
--W:	http://wireless.kernel.org/en/users/Drivers/ath5k
-+W:	https://wireless.wiki.kernel.org/en/users/Drivers/ath5k
- F:	drivers/net/wireless/ath/ath5k/
- 
- ATHEROS ATH6KL WIRELESS DRIVER
- M:	Kalle Valo <kvalo@codeaurora.org>
- L:	linux-wireless@vger.kernel.org
- S:	Supported
--W:	http://wireless.kernel.org/en/users/Drivers/ath6kl
-+W:	https://wireless.wiki.kernel.org/en/users/Drivers/ath6kl
- T:	git git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git
- F:	drivers/net/wireless/ath/ath6kl/
- 
-@@ -3017,7 +3017,7 @@ B43 WIRELESS DRIVER
- L:	linux-wireless@vger.kernel.org
- L:	b43-dev@lists.infradead.org
- S:	Odd Fixes
--W:	http://wireless.kernel.org/en/users/Drivers/b43
-+W:	https://wireless.wiki.kernel.org/en/users/Drivers/b43
- F:	drivers/net/wireless/broadcom/b43/
- 
- B43LEGACY WIRELESS DRIVER
-@@ -3025,7 +3025,7 @@ M:	Larry Finger <Larry.Finger@lwfinger.net>
- L:	linux-wireless@vger.kernel.org
- L:	b43-dev@lists.infradead.org
- S:	Maintained
--W:	http://wireless.kernel.org/en/users/Drivers/b43
-+W:	https://wireless.wiki.kernel.org/en/users/Drivers/b43
- F:	drivers/net/wireless/broadcom/b43legacy/
- 
- BACKLIGHT CLASS/SUBSYSTEM
-@@ -3840,7 +3840,7 @@ CARL9170 LINUX COMMUNITY WIRELESS DRIVER
- M:	Christian Lamparter <chunkeey@googlemail.com>
- L:	linux-wireless@vger.kernel.org
- S:	Maintained
--W:	http://wireless.kernel.org/en/users/Drivers/carl9170
-+W:	https://wireless.wiki.kernel.org/en/users/Drivers/carl9170
- F:	drivers/net/wireless/ath/carl9170/
- 
- CAVIUM I2C DRIVER
-@@ -10063,7 +10063,7 @@ MAC80211
- M:	Johannes Berg <johannes@sipsolutions.net>
- L:	linux-wireless@vger.kernel.org
- S:	Maintained
--W:	http://wireless.kernel.org/
-+W:	https://wireless.wiki.kernel.org/
- T:	git git://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211.git
- T:	git git://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211-next.git
- F:	Documentation/networking/mac80211-injection.txt
-@@ -12644,7 +12644,7 @@ F:	fs/orangefs/
- ORINOCO DRIVER
- L:	linux-wireless@vger.kernel.org
- S:	Orphan
--W:	http://wireless.kernel.org/en/users/Drivers/orinoco
-+W:	https://wireless.wiki.kernel.org/en/users/Drivers/orinoco
- W:	http://www.nongnu.org/orinoco/
- F:	drivers/net/wireless/intersil/orinoco/
- 
-@@ -12670,7 +12670,7 @@ P54 WIRELESS DRIVER
- M:	Christian Lamparter <chunkeey@googlemail.com>
- L:	linux-wireless@vger.kernel.org
- S:	Maintained
--W:	http://wireless.kernel.org/en/users/Drivers/p54
-+W:	https://wireless.wiki.kernel.org/en/users/Drivers/p54
- F:	drivers/net/wireless/intersil/p54/
- 
- PACKING
-@@ -13591,7 +13591,7 @@ PRISM54 WIRELESS DRIVER
- M:	Luis Chamberlain <mcgrof@kernel.org>
- L:	linux-wireless@vger.kernel.org
- S:	Obsolete
--W:	http://wireless.kernel.org/en/users/Drivers/p54
-+W:	https://wireless.wiki.kernel.org/en/users/Drivers/p54
- F:	drivers/net/wireless/intersil/prism54/
- 
- PROC FILESYSTEM
-@@ -13931,7 +13931,7 @@ QUALCOMM ATHEROS ATH10K WIRELESS DRIVER
- M:	Kalle Valo <kvalo@codeaurora.org>
- L:	ath10k@lists.infradead.org
- S:	Supported
--W:	http://wireless.kernel.org/en/users/Drivers/ath10k
-+W:	https://wireless.wiki.kernel.org/en/users/Drivers/ath10k
- T:	git git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git
- F:	drivers/net/wireless/ath/ath10k/
- 
-@@ -13946,7 +13946,7 @@ QUALCOMM ATHEROS ATH9K WIRELESS DRIVER
- M:	QCA ath9k Development <ath9k-devel@qca.qualcomm.com>
- L:	linux-wireless@vger.kernel.org
- S:	Supported
--W:	http://wireless.kernel.org/en/users/Drivers/ath9k
-+W:	https://wireless.wiki.kernel.org/en/users/Drivers/ath9k
- F:	drivers/net/wireless/ath/ath9k/
- 
- QUALCOMM CAMERA SUBSYSTEM DRIVER
-@@ -14043,7 +14043,7 @@ QUALCOMM WCN36XX WIRELESS DRIVER
- M:	Kalle Valo <kvalo@codeaurora.org>
- L:	wcn36xx@lists.infradead.org
- S:	Supported
--W:	http://wireless.kernel.org/en/users/Drivers/wcn36xx
-+W:	https://wireless.wiki.kernel.org/en/users/Drivers/wcn36xx
- T:	git git://github.com/KrasnikovEugene/wcn36xx.git
- F:	drivers/net/wireless/ath/wcn36xx/
- 
-@@ -14271,7 +14271,7 @@ REALTEK WIRELESS DRIVER (rtlwifi family)
- M:	Ping-Ke Shih <pkshih@realtek.com>
- L:	linux-wireless@vger.kernel.org
- S:	Maintained
--W:	http://wireless.kernel.org/
-+W:	https://wireless.wiki.kernel.org/
- T:	git git://git.kernel.org/pub/scm/linux/kernel/git/linville/wireless-testing.git
- F:	drivers/net/wireless/realtek/rtlwifi/
- 
-@@ -14406,7 +14406,7 @@ RFKILL
- M:	Johannes Berg <johannes@sipsolutions.net>
- L:	linux-wireless@vger.kernel.org
- S:	Maintained
--W:	http://wireless.kernel.org/
-+W:	https://wireless.wiki.kernel.org/
- T:	git git://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211.git
- T:	git git://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211-next.git
- F:	Documentation/ABI/stable/sysfs-class-rfkill
-@@ -14555,7 +14555,7 @@ F:	drivers/media/dvb-frontends/rtl2832_sdr*
- RTL8180 WIRELESS DRIVER
- L:	linux-wireless@vger.kernel.org
- S:	Orphan
--W:	http://wireless.kernel.org/
-+W:	https://wireless.wiki.kernel.org/
- T:	git git://git.kernel.org/pub/scm/linux/kernel/git/linville/wireless-testing.git
- F:	drivers/net/wireless/realtek/rtl818x/rtl8180/
- 
-@@ -14565,7 +14565,7 @@ M:	Hin-Tak Leung <htl10@users.sourceforge.net>
- M:	Larry Finger <Larry.Finger@lwfinger.net>
- L:	linux-wireless@vger.kernel.org
- S:	Maintained
--W:	http://wireless.kernel.org/
-+W:	https://wireless.wiki.kernel.org/
- T:	git git://git.kernel.org/pub/scm/linux/kernel/git/linville/wireless-testing.git
- F:	drivers/net/wireless/realtek/rtl818x/rtl8187/
- 
-@@ -16920,8 +16920,8 @@ F:	drivers/media/platform/ti-vpe/
- TI WILINK WIRELESS DRIVERS
- L:	linux-wireless@vger.kernel.org
- S:	Orphan
--W:	http://wireless.kernel.org/en/users/Drivers/wl12xx
--W:	http://wireless.kernel.org/en/users/Drivers/wl1251
-+W:	https://wireless.wiki.kernel.org/en/users/Drivers/wl12xx
-+W:	https://wireless.wiki.kernel.org/en/users/Drivers/wl1251
- T:	git git://git.kernel.org/pub/scm/linux/kernel/git/luca/wl12xx.git
- F:	drivers/net/wireless/ti/
- F:	include/linux/wl12xx.h
-@@ -18203,7 +18203,7 @@ M:	Maya Erez <merez@codeaurora.org>
- L:	linux-wireless@vger.kernel.org
- L:	wil6210@qti.qualcomm.com
- S:	Supported
--W:	http://wireless.kernel.org/en/users/Drivers/wil6210
-+W:	https://wireless.wiki.kernel.org/en/users/Drivers/wil6210
- F:	drivers/net/wireless/ath/wil6210/
- 
- WIMAX STACK
--- 
-2.25.0
-
+syzkaller has a pseudo-syscall to map string genetlink family ID to
+int ID. If that syscall would have been used, then I assume it should
+have worked. However in this case, it managed to trigger the bug with
+a plain opaque blob with no knowledge about the blob contents
+whatsoever. I don't see any realistic way to preserve family ID in
+this case.
