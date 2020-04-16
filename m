@@ -2,141 +2,104 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 233541AC034
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Apr 2020 13:51:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A29F1AC136
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Apr 2020 14:27:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2506678AbgDPLvU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 16 Apr 2020 07:51:20 -0400
-Received: from mail26.static.mailgun.info ([104.130.122.26]:14078 "EHLO
+        id S2635356AbgDPM1x (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 16 Apr 2020 08:27:53 -0400
+Received: from mail26.static.mailgun.info ([104.130.122.26]:24370 "EHLO
         mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S2506666AbgDPLvN (ORCPT
+        by vger.kernel.org with ESMTP id S2439151AbgDPM1v (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 16 Apr 2020 07:51:13 -0400
+        Thu, 16 Apr 2020 08:27:51 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1587037872; h=References: In-Reply-To: Message-Id: Date:
- Subject: Cc: To: From: Sender;
- bh=miETs94i4blhgkGVoh5R5ywNSQzqvf7HXbvSF7NJ0NU=; b=m9iSADAQuRQv58cH+10OlUkRgpHwXQmTMsNDG4wcyDwtAaU2issjIewpMuHptfmCZZBAuJfp
- mA15MN3EeR8SFO3x3Rg2ot8dKU9tJwkgeTbOEQaPuyNIfarrf60WxeTuzq16nPjLG0xrRkXl
- CmrIlvApwOU5IAzOQ3XwbLQVkBU=
+ s=smtp; t=1587040070; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=k7W4GgWYMJ6R5M6bMBdI/LAF5r7KyT9fmFnm3V4dJXE=; b=FY1i6bhG3et2WmQZNeed1dnlMyQ0AAiOG116WBvA4KuoIpDgzbD7m2Ayb95IABhtJt9iU47e
+ L59KztMD56NgkFxQC8X7b8GTi472jDUko7mhBwitbZXxQFiJ4bOTCHr9JgkGExA8mi+h7U+0
+ sBuwuitxhs3qPgT0lfuLv50vG1I=
 X-Mailgun-Sending-Ip: 104.130.122.26
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e9846ad.7f33307f5420-smtp-out-n01;
- Thu, 16 Apr 2020 11:51:09 -0000 (UTC)
+ by mxa.mailgun.org with ESMTP id 5e984f37.7ff1f685d618-smtp-out-n05;
+ Thu, 16 Apr 2020 12:27:35 -0000 (UTC)
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 9D877C432C2; Thu, 16 Apr 2020 11:51:08 +0000 (UTC)
+        id BB148C433BA; Thu, 16 Apr 2020 12:27:34 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
 X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.0
+        autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 7B62DC433BA;
-        Thu, 16 Apr 2020 11:51:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 7B62DC433BA
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 4A4C1C433CB;
+        Thu, 16 Apr 2020 12:27:33 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 4A4C1C433CB
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 From:   Kalle Valo <kvalo@codeaurora.org>
-To:     ath10k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org
-Subject: [PATCH v2 4/4] ath10k: hif: make send_complete_check op optional
-Date:   Thu, 16 Apr 2020 14:50:59 +0300
-Message-Id: <1587037859-28873-5-git-send-email-kvalo@codeaurora.org>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1587037859-28873-1-git-send-email-kvalo@codeaurora.org>
-References: <1587037859-28873-1-git-send-email-kvalo@codeaurora.org>
+To:     Wen Gong <wgong@codeaurora.org>
+Cc:     linux-wireless@vger.kernel.org, ath10k@lists.infradead.org
+Subject: Re: [PATCH v9 3/4] ath10k: add htt TX bundle for sdio
+References: <20200212080415.31265-1-wgong@codeaurora.org>
+        <20200212080415.31265-4-wgong@codeaurora.org>
+        <87tv1su2vq.fsf@kamboji.qca.qualcomm.com>
+        <185d31c2e6f8792beb240f2c74d26463@codeaurora.org>
+        <87h7xmtrmv.fsf@kamboji.qca.qualcomm.com>
+Date:   Thu, 16 Apr 2020 15:27:30 +0300
+In-Reply-To: <87h7xmtrmv.fsf@kamboji.qca.qualcomm.com> (Kalle Valo's message
+        of "Tue, 14 Apr 2020 11:10:00 +0300")
+Message-ID: <87o8rrr4y5.fsf@kamboji.qca.qualcomm.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-That way we don't need to have an empty function in sdio.c.
+Kalle Valo <kvalo@codeaurora.org> writes:
 
-No functional changes, compile tested only.
+> Wen Gong <wgong@codeaurora.org> writes:
+>
+>> On 2020-04-09 22:53, Kalle Valo wrote:
+>>> Wen Gong <wgong@codeaurora.org> writes:
+>>>
+>>>> +	ar->workqueue_tx_complete =
+>>>> +		create_singlethread_workqueue("ath10k_tx_complete_wq");
+>>>> +	if (!ar->workqueue_tx_complete)
+>>>> +		goto err_free_aux_wq;
+>>>
+>>> We already have three threads:
+>>>
+>>> ath/ath10k/core.c:      ar->workqueue =
+>>> create_singlethread_workqueue("ath10k_wq");
+>>> ath/ath10k/core.c:      ar->workqueue_aux =
+>>> create_singlethread_workqueue("ath10k_aux_wq");
+>>> ath/ath10k/sdio.c:      ar_sdio->workqueue =
+>>> create_singlethread_workqueue("ath10k_sdio_wq");
+>>>
+>>> Do we really need a fourth one? For example, why can't we use
+>>> ar->workqueue_aux?
+>>
+>> For tcp test, it has 4 thread work meanwhile:
+>> tx_bundle_skbs(ar->workqueue),
+>> rx_indication(ar->workqueue_aux),
+>> sdio_async_tx_request(ar_sdio->workqueue),
+>> tx_bundle_complete(ar->workqueue_tx_complete)
+>>
+>> It has 4+ cpu/core in system, if reduced to 3 threads, then tcp
+>> throughput will drop. only when it only has 1/2/3 cpu/core in system,
+>> then reduced to 3 threads will not drop.
+>
+> How much does it drop? Please add the justification (with numbers) for
+> the new thread to the commit log, so that the reason is properly
+> documented.
 
-Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
----
- drivers/net/wireless/ath/ath10k/hif.h  |  3 ++-
- drivers/net/wireless/ath/ath10k/sdio.c | 12 ------------
- drivers/net/wireless/ath/ath10k/usb.c  | 12 ------------
- 3 files changed, 2 insertions(+), 25 deletions(-)
+I see that you already submitted v10. If you can give the numbers I can
+add them to the commit log.
 
-diff --git a/drivers/net/wireless/ath/ath10k/hif.h b/drivers/net/wireless/ath/ath10k/hif.h
-index 2c5d61d98337..9e45fd9073a6 100644
---- a/drivers/net/wireless/ath/ath10k/hif.h
-+++ b/drivers/net/wireless/ath/ath10k/hif.h
-@@ -170,7 +170,8 @@ static inline void ath10k_hif_get_default_pipe(struct ath10k *ar,
- static inline void ath10k_hif_send_complete_check(struct ath10k *ar,
- 						  u8 pipe_id, int force)
- {
--	ar->hif.ops->send_complete_check(ar, pipe_id, force);
-+	if (ar->hif.ops->send_complete_check)
-+		ar->hif.ops->send_complete_check(ar, pipe_id, force);
- }
- 
- static inline u16 ath10k_hif_get_free_queue_number(struct ath10k *ar,
-diff --git a/drivers/net/wireless/ath/ath10k/sdio.c b/drivers/net/wireless/ath/ath10k/sdio.c
-index 884e1a85e29f..e2aff2254a40 100644
---- a/drivers/net/wireless/ath/ath10k/sdio.c
-+++ b/drivers/net/wireless/ath/ath10k/sdio.c
-@@ -2101,17 +2101,6 @@ static void ath10k_sdio_hif_get_default_pipe(struct ath10k *ar,
- 	*dl_pipe = 0;
- }
- 
--/* This op is currently only used by htc_wait_target if the HTC ready
-- * message times out. It is not applicable for SDIO since there is nothing
-- * we can do if the HTC ready message does not arrive in time.
-- * TODO: Make this op non mandatory by introducing a NULL check in the
-- * hif op wrapper.
-- */
--static void ath10k_sdio_hif_send_complete_check(struct ath10k *ar,
--						u8 pipe, int force)
--{
--}
--
- static const struct ath10k_hif_ops ath10k_sdio_hif_ops = {
- 	.tx_sg			= ath10k_sdio_hif_tx_sg,
- 	.diag_read		= ath10k_sdio_hif_diag_read,
-@@ -2123,7 +2112,6 @@ static const struct ath10k_hif_ops ath10k_sdio_hif_ops = {
- 	.get_htt_tx_complete	= ath10k_sdio_get_htt_tx_complete,
- 	.map_service_to_pipe	= ath10k_sdio_hif_map_service_to_pipe,
- 	.get_default_pipe	= ath10k_sdio_hif_get_default_pipe,
--	.send_complete_check	= ath10k_sdio_hif_send_complete_check,
- 	.power_up		= ath10k_sdio_hif_power_up,
- 	.power_down		= ath10k_sdio_hif_power_down,
- #ifdef CONFIG_PM
-diff --git a/drivers/net/wireless/ath/ath10k/usb.c b/drivers/net/wireless/ath/ath10k/usb.c
-index 1e0343081be9..b7daf344d012 100644
---- a/drivers/net/wireless/ath/ath10k/usb.c
-+++ b/drivers/net/wireless/ath/ath10k/usb.c
-@@ -693,17 +693,6 @@ static int ath10k_usb_hif_map_service_to_pipe(struct ath10k *ar, u16 svc_id,
- 	return 0;
- }
- 
--/* This op is currently only used by htc_wait_target if the HTC ready
-- * message times out. It is not applicable for USB since there is nothing
-- * we can do if the HTC ready message does not arrive in time.
-- * TODO: Make this op non mandatory by introducing a NULL check in the
-- * hif op wrapper.
-- */
--static void ath10k_usb_hif_send_complete_check(struct ath10k *ar,
--					       u8 pipe, int force)
--{
--}
--
- static int ath10k_usb_hif_power_up(struct ath10k *ar,
- 				   enum ath10k_firmware_mode fw_mode)
- {
-@@ -737,7 +726,6 @@ static const struct ath10k_hif_ops ath10k_usb_hif_ops = {
- 	.stop			= ath10k_usb_hif_stop,
- 	.map_service_to_pipe	= ath10k_usb_hif_map_service_to_pipe,
- 	.get_default_pipe	= ath10k_usb_hif_get_default_pipe,
--	.send_complete_check	= ath10k_usb_hif_send_complete_check,
- 	.get_free_queue_number	= ath10k_usb_hif_get_free_queue_number,
- 	.power_up		= ath10k_usb_hif_power_up,
- 	.power_down		= ath10k_usb_hif_power_down,
 -- 
-2.7.4
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
