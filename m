@@ -2,91 +2,78 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 22BF31AC7BD
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Apr 2020 16:59:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C9B51AC577
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Apr 2020 16:21:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2898871AbgDPNys (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 16 Apr 2020 09:54:48 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:47692 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728620AbgDPNyp (ORCPT
+        id S2408948AbgDPOTu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 16 Apr 2020 10:19:50 -0400
+Received: from mail26.static.mailgun.info ([104.130.122.26]:25401 "EHLO
+        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S2407374AbgDPOTq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 16 Apr 2020 09:54:45 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 03GDruw5059005;
-        Thu, 16 Apr 2020 13:54:38 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- content-transfer-encoding : in-reply-to; s=corp-2020-01-29;
- bh=ewaUBdhOkKob9iIFy9m3K0prmwFTG1DLRzvoCPBRDmM=;
- b=WapX0vA+MMohwDAw+oFE94garCniL8tFeOp4FSxAnPznNkgWSAg/41+GMuj8l9eKgvqK
- 21eew9TudM+WsSKECzs6BsgFE+MIuGLMTEGv4UYrU9oyn2bxYrWppOcqZo3i+uTyWd37
- 7C9bJi4jeNI57koT0tk43UYO7uRK0j7ex6Aj2hMm198eaAcxS2cUw3WZqOaVadF8wPvJ
- sjpwQxYtAWA54MJC6Yz279TaH/t/nGwN4Ipp0vQRRc3dkg03edVa8RhWSPZfRUfqBKTn
- 3ekjd3Vbip0Tu7ilVugZVA/xXeT1gd64XuwTjw8OiL4cYE3NLVdHAMj494zKnOVArFS7 1Q== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by userp2120.oracle.com with ESMTP id 30emejharp-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 16 Apr 2020 13:54:38 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 03GDh7EI155474;
-        Thu, 16 Apr 2020 13:52:37 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by userp3020.oracle.com with ESMTP id 30emen3jp5-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 16 Apr 2020 13:52:37 +0000
-Received: from abhmp0012.oracle.com (abhmp0012.oracle.com [141.146.116.18])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 03GDqZF0012118;
-        Thu, 16 Apr 2020 13:52:35 GMT
-Received: from kadam (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Thu, 16 Apr 2020 06:52:35 -0700
-Date:   Thu, 16 Apr 2020 16:52:25 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Jerome Pouiller <Jerome.Pouiller@silabs.com>
-Cc:     devel@driverdev.osuosl.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Kalle Valo <kvalo@codeaurora.org>
-Subject: Re: [PATCH 12/20] staging: wfx: align semantic of beacon filter with
- other filters
-Message-ID: <20200416135225.GQ1163@kadam>
-References: <20200415161147.69738-1-Jerome.Pouiller@silabs.com>
- <20200415161147.69738-13-Jerome.Pouiller@silabs.com>
+        Thu, 16 Apr 2020 10:19:46 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1587046786; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=Y/lvftTAinlizZpdL/m+YjsZfXIvM/SvcTj+ykDUaTc=;
+ b=mR2WdSFvGUSKao0JhzOVIe5bBrj8pn+RTkWvZj1pszrMKt52MVBvDSghOJqaiiG2YGyU71ZB
+ bm5sikNBsPV+jfhrLiskvZgonlT905Mou9ehNpdJGM/AwJxEm9Biff//6sdtvTDaLnuZsh26
+ 0YTiqyQYwhpgXnkuO0uAnU05A0Y=
+X-Mailgun-Sending-Ip: 104.130.122.26
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5e98696a.7fc5c5cf4f80-smtp-out-n05;
+ Thu, 16 Apr 2020 14:19:22 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 0A56EC44791; Thu, 16 Apr 2020 14:19:22 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
+        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 69F75C433F2;
+        Thu, 16 Apr 2020 14:19:20 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 69F75C433F2
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20200415161147.69738-13-Jerome.Pouiller@silabs.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9592 signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 mlxscore=0 suspectscore=0
- mlxlogscore=999 phishscore=0 spamscore=0 bulkscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
- definitions=main-2004160098
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9592 signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 impostorscore=0
- mlxscore=0 suspectscore=0 lowpriorityscore=0 spamscore=0 mlxlogscore=999
- bulkscore=0 adultscore=0 phishscore=0 clxscore=1015 priorityscore=1501
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
- definitions=main-2004160099
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v2] rtw88: set power trim according to efuse PG values
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20200416031407.5899-1-yhchuang@realtek.com>
+References: <20200416031407.5899-1-yhchuang@realtek.com>
+To:     <yhchuang@realtek.com>
+Cc:     <linux-wireless@vger.kernel.org>, <briannorris@chromium.org>
+User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
+Message-Id: <20200416141922.0A56EC44791@smtp.codeaurora.org>
+Date:   Thu, 16 Apr 2020 14:19:22 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, Apr 15, 2020 at 06:11:39PM +0200, Jerome Pouiller wrote:
-> From: Jérôme Pouiller <jerome.pouiller@silabs.com>
+<yhchuang@realtek.com> wrote:
+
+> From: Tzu-En Huang <tehuang@realtek.com>
 > 
-> Filters provided by HIF API are sometime inclusive, sometime exclusive.
+> 8822C devices have power trim, thermal and PA bias values
+> programmed in efuse. Driver should configure the RF components
+> according to the values.
 > 
-> This patch align the behavior and name of the beacon filter with the
-> other filters. Also avoid double negation: "disable filter"
+> If the power trim is not configured, then the devices might have
+> distortion on the output tx power.
+> 
+> Signed-off-by: Tzu-En Huang <tehuang@realtek.com>
+> Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
 
-Hooray!  I have been wanting to suggest this every time I see the
-->disable_beacon_filter name, especially for patch 7/20.
+You didn't use read_poll_timeout() like Chris suggested?
 
-regards,
-dan carpenter
+-- 
+https://patchwork.kernel.org/patch/11492217/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
