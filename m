@@ -2,293 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A58921AB61B
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Apr 2020 05:14:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1662E1ABA1F
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Apr 2020 09:40:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389423AbgDPDOY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 15 Apr 2020 23:14:24 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:54385 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388679AbgDPDOW (ORCPT
+        id S2439483AbgDPHjT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 16 Apr 2020 03:39:19 -0400
+Received: from mail27.static.mailgun.info ([104.130.122.27]:29575 "EHLO
+        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S2439282AbgDPHjQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 15 Apr 2020 23:14:22 -0400
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.69 with qID 03G3EAjsC016831, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexmb06.realtek.com.tw[172.21.6.99])
-        by rtits2.realtek.com.tw (8.15.2/2.66/5.86) with ESMTPS id 03G3EAjsC016831
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Thu, 16 Apr 2020 11:14:10 +0800
-Received: from RTEXMB04.realtek.com.tw (172.21.6.97) by
- RTEXMB06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Thu, 16 Apr 2020 11:14:10 +0800
-Received: from localhost.localdomain (172.21.68.128) by
- RTEXMB04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Thu, 16 Apr 2020 11:14:10 +0800
-From:   <yhchuang@realtek.com>
-To:     <kvalo@codeaurora.org>
-CC:     <linux-wireless@vger.kernel.org>, <briannorris@chromium.org>
-Subject: [PATCH v2] rtw88: set power trim according to efuse PG values
-Date:   Thu, 16 Apr 2020 11:14:07 +0800
-Message-ID: <20200416031407.5899-1-yhchuang@realtek.com>
-X-Mailer: git-send-email 2.17.1
+        Thu, 16 Apr 2020 03:39:16 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1587022756; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=kTUwTMGt5cqrYWR5ITK2FgMxJGdYB47P8TO4nINIG3w=;
+ b=cx5nZoPTisj/TA9T+8v5spZIoOQKJqcvv6yEU2rp5MpT1ofhrz36Az0gqEKSTMKFZPMwPJ5K
+ AyCmz5r8Bqgm0HyPYsJRZgLWv0RG1hfBAxoDSxrD2SWH8l1TbiODc0ur5hF/jKU5uUrF2Vqc
+ G/avsbb4UrvWWz+BzDjA/oYZ/vI=
+X-Mailgun-Sending-Ip: 104.130.122.27
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5e980b86.7f833658f538-smtp-out-n01;
+ Thu, 16 Apr 2020 07:38:46 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 9F768C432C2; Thu, 16 Apr 2020 07:38:45 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
+        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 0A8F6C433F2;
+        Thu, 16 Apr 2020 07:38:43 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 0A8F6C433F2
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [172.21.68.128]
-X-ClientProxiedBy: RTEXMB02.realtek.com.tw (172.21.6.95) To
- RTEXMB04.realtek.com.tw (172.21.6.97)
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH 2/2] ath10k: allow dynamic SAR power limits to be
+ configured
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <1576684108-30177-3-git-send-email-kvalo@codeaurora.org>
+References: <1576684108-30177-3-git-send-email-kvalo@codeaurora.org>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org
+User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
+Message-Id: <20200416073845.9F768C432C2@smtp.codeaurora.org>
+Date:   Thu, 16 Apr 2020 07:38:45 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Tzu-En Huang <tehuang@realtek.com>
+Kalle Valo <kvalo@codeaurora.org> wrote:
 
-8822C devices have power trim, thermal and PA bias values
-programmed in efuse. Driver should configure the RF components
-according to the values.
+> From: Wen Gong <wgong@codeaurora.org>
+> 
+> Add support for a vendor command for STATION, the command
+> QCA_NL80211_VENDOR_SUBCMD_SET_SAR_LIMITS which is already defined in
+> git://w1.fi/hostap.git (src/command/qca-vendor.h). This allows user
+> space to configure power limits for 2.4 GHz and 5 GHz bands.
+> 
+> ath10k set pdev parameter WMI_PDEV_PARAM_TXPOWER_LIMIT2G and
+> WMI_PDEV_PARAM_TXPOWER_LIMIT5G to firmware, the 2 value will
+> be used as one input source to affect the tx power.
+> 
+> When QCA_NL80211_VENDOR_SUBCMD_SET_SAR_LIMITS set to ath10k, it will
+> be saved the 2.4G and 5G limit value, If STATION is connected meanwhile,
+> then the 2.4G and 5G WMI command will be set to firmware, otherwise
+> it will not set to firmware at this moment. When STATION connect
+> next time, it will set to firmware.
+> 
+> Tested with QCA6174 SDIO with firmware WLAN.RMH.4.4.1-00029.
+> 
+> Signed-off-by: Wen Gong <wgong@codeaurora.org>
+> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 
-If the power trim is not configured, then the devices might have
-distortion on the output tx power.
+I'll drop this from my queue now and will resend once there's a
+concensus on what interface to use.
 
-Signed-off-by: Tzu-En Huang <tehuang@realtek.com>
-Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
----
+Patch set to Changes Requested.
 
-v1 -> v2
-  * disable DPD low rates
-
- drivers/net/wireless/realtek/rtw88/efuse.c    |  21 ++++
- drivers/net/wireless/realtek/rtw88/efuse.h    |   3 +
- drivers/net/wireless/realtek/rtw88/rtw8822c.c | 113 ++++++++++++++++++
- drivers/net/wireless/realtek/rtw88/rtw8822c.h |  28 +++++
- 4 files changed, 165 insertions(+)
-
-diff --git a/drivers/net/wireless/realtek/rtw88/efuse.c b/drivers/net/wireless/realtek/rtw88/efuse.c
-index 212c8376a8c9..f037fa586915 100644
---- a/drivers/net/wireless/realtek/rtw88/efuse.c
-+++ b/drivers/net/wireless/realtek/rtw88/efuse.c
-@@ -116,6 +116,27 @@ static int rtw_dump_physical_efuse_map(struct rtw_dev *rtwdev, u8 *map)
- 	return 0;
- }
- 
-+int rtw_read8_physical_efuse(struct rtw_dev *rtwdev, u16 addr, u8 *data)
-+{
-+	u32 efuse_ctl, cnt;
-+
-+	rtw_write32_mask(rtwdev, REG_EFUSE_CTRL, 0x3ff00, addr);
-+	rtw_write32_clr(rtwdev, REG_EFUSE_CTRL, BIT_EF_FLAG);
-+	cnt = 1000;
-+	do {
-+		mdelay(1);
-+		efuse_ctl = rtw_read32(rtwdev, REG_EFUSE_CTRL);
-+		if (--cnt == 0) {
-+			*data = EFUSE_READ_FAIL;
-+			return -EBUSY;
-+		}
-+	} while (!(efuse_ctl & BIT_EF_FLAG));
-+
-+	*data = rtw_read8(rtwdev, REG_EFUSE_CTRL);
-+
-+	return 0;
-+}
-+
- int rtw_parse_efuse_map(struct rtw_dev *rtwdev)
- {
- 	struct rtw_chip_info *chip = rtwdev->chip;
-diff --git a/drivers/net/wireless/realtek/rtw88/efuse.h b/drivers/net/wireless/realtek/rtw88/efuse.h
-index 115bbe85946a..97a51f0b0e46 100644
---- a/drivers/net/wireless/realtek/rtw88/efuse.h
-+++ b/drivers/net/wireless/realtek/rtw88/efuse.h
-@@ -10,6 +10,8 @@
- #define EFUSE_HW_CAP_SUPP_BW80		7
- #define EFUSE_HW_CAP_SUPP_BW40		6
- 
-+#define EFUSE_READ_FAIL			0xff
-+
- #define GET_EFUSE_HW_CAP_HCI(hw_cap)					       \
- 	le32_get_bits(*((__le32 *)(hw_cap) + 0x01), GENMASK(3, 0))
- #define GET_EFUSE_HW_CAP_BW(hw_cap)					       \
-@@ -22,5 +24,6 @@
- 	le32_get_bits(*((__le32 *)(hw_cap) + 0x01), GENMASK(27, 26))
- 
- int rtw_parse_efuse_map(struct rtw_dev *rtwdev);
-+int rtw_read8_physical_efuse(struct rtw_dev *rtwdev, u16 addr, u8 *data);
- 
- #endif
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822c.c b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-index c99b1de54bfc..ee0d39135617 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-@@ -15,6 +15,7 @@
- #include "debug.h"
- #include "util.h"
- #include "bf.h"
-+#include "efuse.h"
- 
- static void rtw8822c_config_trx_mode(struct rtw_dev *rtwdev, u8 tx_path,
- 				     u8 rx_path, bool is_tx2_path);
-@@ -1000,10 +1001,122 @@ static void rtw8822c_rf_x2_check(struct rtw_dev *rtwdev)
- 	}
- }
- 
-+static void rtw8822c_set_power_trim(struct rtw_dev *rtwdev, s8 bb_gain[2][8])
-+{
-+#define RF_SET_POWER_TRIM(_path, _seq, _idx)					\
-+		do {								\
-+			rtw_write_rf(rtwdev, _path, 0x33, RFREG_MASK, _seq);	\
-+			rtw_write_rf(rtwdev, _path, 0x3f, RFREG_MASK,		\
-+				     bb_gain[_path][_idx]);			\
-+		} while (0)
-+	u8 path;
-+
-+	for (path = 0; path < rtwdev->hal.rf_path_num; path++) {
-+		rtw_write_rf(rtwdev, path, 0xee, BIT(19), 1);
-+		RF_SET_POWER_TRIM(path, 0x0, 0);
-+		RF_SET_POWER_TRIM(path, 0x1, 1);
-+		RF_SET_POWER_TRIM(path, 0x2, 2);
-+		RF_SET_POWER_TRIM(path, 0x3, 2);
-+		RF_SET_POWER_TRIM(path, 0x4, 3);
-+		RF_SET_POWER_TRIM(path, 0x5, 4);
-+		RF_SET_POWER_TRIM(path, 0x6, 5);
-+		RF_SET_POWER_TRIM(path, 0x7, 6);
-+		RF_SET_POWER_TRIM(path, 0x8, 7);
-+		RF_SET_POWER_TRIM(path, 0x9, 3);
-+		RF_SET_POWER_TRIM(path, 0xa, 4);
-+		RF_SET_POWER_TRIM(path, 0xb, 5);
-+		RF_SET_POWER_TRIM(path, 0xc, 6);
-+		RF_SET_POWER_TRIM(path, 0xd, 7);
-+		RF_SET_POWER_TRIM(path, 0xe, 7);
-+		rtw_write_rf(rtwdev, path, 0xee, BIT(19), 0);
-+	}
-+#undef RF_SET_POWER_TRIM
-+}
-+
-+static void rtw8822c_power_trim(struct rtw_dev *rtwdev)
-+{
-+	u8 pg_pwr = 0xff, i, path, idx;
-+	s8 bb_gain[2][8] = {0};
-+	u16 rf_efuse_2g[3] = {PPG_2GL_TXAB, PPG_2GM_TXAB, PPG_2GH_TXAB};
-+	u16 rf_efuse_5g[2][5] = {{PPG_5GL1_TXA, PPG_5GL2_TXA, PPG_5GM1_TXA,
-+				  PPG_5GM2_TXA, PPG_5GH1_TXA},
-+				 {PPG_5GL1_TXB, PPG_5GL2_TXB, PPG_5GM1_TXB,
-+				  PPG_5GM2_TXB, PPG_5GH1_TXB} };
-+	bool set = false;
-+
-+	for (i = 0; i < ARRAY_SIZE(rf_efuse_2g); i++) {
-+		rtw_read8_physical_efuse(rtwdev, rf_efuse_2g[i], &pg_pwr);
-+		if (pg_pwr == EFUSE_READ_FAIL)
-+			continue;
-+		set = true;
-+		bb_gain[RF_PATH_A][i] = FIELD_GET(PPG_2G_A_MASK, pg_pwr);
-+		bb_gain[RF_PATH_B][i] = FIELD_GET(PPG_2G_B_MASK, pg_pwr);
-+	}
-+
-+	for (i = 0; i < ARRAY_SIZE(rf_efuse_5g[0]); i++) {
-+		for (path = 0; path < rtwdev->hal.rf_path_num; path++) {
-+			rtw_read8_physical_efuse(rtwdev, rf_efuse_5g[path][i],
-+						 &pg_pwr);
-+			if (pg_pwr == EFUSE_READ_FAIL)
-+				continue;
-+			set = true;
-+			idx = i + ARRAY_SIZE(rf_efuse_2g);
-+			bb_gain[path][idx] = FIELD_GET(PPG_5G_MASK, pg_pwr);
-+		}
-+	}
-+	if (set)
-+		rtw8822c_set_power_trim(rtwdev, bb_gain);
-+
-+	rtw_write32_mask(rtwdev, REG_DIS_DPD, DIS_DPD_MASK, DIS_DPD_RATEALL);
-+}
-+
-+static void rtw8822c_thermal_trim(struct rtw_dev *rtwdev)
-+{
-+	u16 rf_efuse[2] = {PPG_THERMAL_A, PPG_THERMAL_B};
-+	u8 pg_therm = 0xff, thermal[2] = {0}, path;
-+
-+	for (path = 0; path < rtwdev->hal.rf_path_num; path++) {
-+		rtw_read8_physical_efuse(rtwdev, rf_efuse[path], &pg_therm);
-+		if (pg_therm == EFUSE_READ_FAIL)
-+			return;
-+		/* Efuse value of BIT(0) shall be move to BIT(3), and the value
-+		 * of BIT(1) to BIT(3) should be right shifted 1 bit.
-+		 */
-+		thermal[path] = FIELD_GET(GENMASK(3, 1), pg_therm);
-+		thermal[path] |= FIELD_PREP(BIT(3), pg_therm & BIT(0));
-+		rtw_write_rf(rtwdev, path, 0x43, RF_THEMAL_MASK, thermal[path]);
-+	}
-+}
-+
-+static void rtw8822c_pa_bias(struct rtw_dev *rtwdev)
-+{
-+	u16 rf_efuse_2g[2] = {PPG_PABIAS_2GA, PPG_PABIAS_2GB};
-+	u16 rf_efuse_5g[2] = {PPG_PABIAS_5GA, PPG_PABIAS_5GB};
-+	u8 pg_pa_bias = 0xff, path;
-+
-+	for (path = 0; path < rtwdev->hal.rf_path_num; path++) {
-+		rtw_read8_physical_efuse(rtwdev, rf_efuse_2g[path],
-+					 &pg_pa_bias);
-+		if (pg_pa_bias == EFUSE_READ_FAIL)
-+			return;
-+		pg_pa_bias = FIELD_GET(PPG_PABIAS_MASK, pg_pa_bias);
-+		rtw_write_rf(rtwdev, path, 0x60, RF_PABIAS_2G_MASK, pg_pa_bias);
-+	}
-+	for (path = 0; path < rtwdev->hal.rf_path_num; path++) {
-+		rtw_read8_physical_efuse(rtwdev, rf_efuse_5g[path],
-+					 &pg_pa_bias);
-+		pg_pa_bias = FIELD_GET(PPG_PABIAS_MASK, pg_pa_bias);
-+		rtw_write_rf(rtwdev, path, 0x60, RF_PABIAS_5G_MASK, pg_pa_bias);
-+	}
-+}
-+
- static void rtw8822c_rf_init(struct rtw_dev *rtwdev)
- {
- 	rtw8822c_rf_dac_cal(rtwdev);
- 	rtw8822c_rf_x2_check(rtwdev);
-+	rtw8822c_thermal_trim(rtwdev);
-+	rtw8822c_power_trim(rtwdev);
-+	rtw8822c_pa_bias(rtwdev);
- }
- 
- static void rtw8822c_pwrtrack_init(struct rtw_dev *rtwdev)
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822c.h b/drivers/net/wireless/realtek/rtw88/rtw8822c.h
-index dfd8662a0c0e..32b4771e04d0 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8822c.h
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8822c.h
-@@ -309,4 +309,32 @@ const struct rtw_table name ## _tbl = {			\
- #define BIT_GS_PWSF		GENMASK(27, 0)
- #define BIT_RPT_DGAIN		GENMASK(27, 16)
- #define BIT_TX_CFIR		GENMASK(31, 30)
-+
-+#define PPG_THERMAL_A 0x1ef
-+#define PPG_THERMAL_B 0x1b0
-+#define RF_THEMAL_MASK GENMASK(19, 16)
-+#define PPG_2GL_TXAB 0x1d4
-+#define PPG_2GM_TXAB 0x1ee
-+#define PPG_2GH_TXAB 0x1d2
-+#define PPG_2G_A_MASK GENMASK(3, 0)
-+#define PPG_2G_B_MASK GENMASK(7, 4)
-+#define PPG_5GL1_TXA 0x1ec
-+#define PPG_5GL2_TXA 0x1e8
-+#define PPG_5GM1_TXA 0x1e4
-+#define PPG_5GM2_TXA 0x1e0
-+#define PPG_5GH1_TXA 0x1dc
-+#define PPG_5GL1_TXB 0x1eb
-+#define PPG_5GL2_TXB 0x1e7
-+#define PPG_5GM1_TXB 0x1e3
-+#define PPG_5GM2_TXB 0x1df
-+#define PPG_5GH1_TXB 0x1db
-+#define PPG_5G_MASK GENMASK(4, 0)
-+#define PPG_PABIAS_2GA 0x1d6
-+#define PPG_PABIAS_2GB 0x1d5
-+#define PPG_PABIAS_5GA 0x1d8
-+#define PPG_PABIAS_5GB 0x1d7
-+#define PPG_PABIAS_MASK GENMASK(3, 0)
-+#define RF_PABIAS_2G_MASK GENMASK(15, 12)
-+#define RF_PABIAS_5G_MASK GENMASK(19, 16)
-+
- #endif
 -- 
-2.17.1
+https://patchwork.kernel.org/patch/11301107/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
