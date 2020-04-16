@@ -2,78 +2,84 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C9B51AC577
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 Apr 2020 16:21:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 600141AC614
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 Apr 2020 16:35:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2408948AbgDPOTu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 16 Apr 2020 10:19:50 -0400
-Received: from mail26.static.mailgun.info ([104.130.122.26]:25401 "EHLO
-        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S2407374AbgDPOTq (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 16 Apr 2020 10:19:46 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1587046786; h=Date: Message-Id: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=Y/lvftTAinlizZpdL/m+YjsZfXIvM/SvcTj+ykDUaTc=;
- b=mR2WdSFvGUSKao0JhzOVIe5bBrj8pn+RTkWvZj1pszrMKt52MVBvDSghOJqaiiG2YGyU71ZB
- bm5sikNBsPV+jfhrLiskvZgonlT905Mou9ehNpdJGM/AwJxEm9Biff//6sdtvTDaLnuZsh26
- 0YTiqyQYwhpgXnkuO0uAnU05A0Y=
-X-Mailgun-Sending-Ip: 104.130.122.26
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e98696a.7fc5c5cf4f80-smtp-out-n05;
- Thu, 16 Apr 2020 14:19:22 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 0A56EC44791; Thu, 16 Apr 2020 14:19:22 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
-        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        id S2394377AbgDPOdE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 16 Apr 2020 10:33:04 -0400
+Received: from mail.kernel.org ([198.145.29.99]:39368 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2394372AbgDPOc7 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 16 Apr 2020 10:32:59 -0400
+Received: from lore-desk.redhat.com (unknown [151.48.151.50])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 69F75C433F2;
-        Thu, 16 Apr 2020 14:19:20 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 69F75C433F2
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        by mail.kernel.org (Postfix) with ESMTPSA id D872521927;
+        Thu, 16 Apr 2020 14:32:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1587047578;
+        bh=FhD3Ty+RbHgAW6Fo2GvLifEfqRIh6qjW4sRsLYZRC2M=;
+        h=From:To:Cc:Subject:Date:From;
+        b=H16abqjI20/S3QLQZCizj/fLdGv8pjxQb4iHBwpEebURa9POO87k0PDla2KljtsGZ
+         TFKqViJN1sI/nvKO8LjonjfR/Fd/SlnKdIX1hTmGsAW9C5SWfZpmuqditVlTQUHyii
+         vQ3D/nr6a3nOlER2RnlJ+7E1ODAOksO7TBHliMXM=
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
+        sean.wang@mediatek.com, linux-mediatek@lists.infradead.org
+Subject: [PATCH v3 0/2] introduce usb support to mt7615 driver
+Date:   Thu, 16 Apr 2020 16:32:49 +0200
+Message-Id: <cover.1587047373.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.25.2
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2] rtw88: set power trim according to efuse PG values
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20200416031407.5899-1-yhchuang@realtek.com>
-References: <20200416031407.5899-1-yhchuang@realtek.com>
-To:     <yhchuang@realtek.com>
-Cc:     <linux-wireless@vger.kernel.org>, <briannorris@chromium.org>
-User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20200416141922.0A56EC44791@smtp.codeaurora.org>
-Date:   Thu, 16 Apr 2020 14:19:22 +0000 (UTC)
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-<yhchuang@realtek.com> wrote:
+Introduce support for mt7663u 802.11ac 2x2:2 chipset to mt7615 driver.
+Create mt7615-common module as container for mmio and usb shared code
 
-> From: Tzu-En Huang <tehuang@realtek.com>
-> 
-> 8822C devices have power trim, thermal and PA bias values
-> programmed in efuse. Driver should configure the RF components
-> according to the values.
-> 
-> If the power trim is not configured, then the devices might have
-> distortion on the output tx power.
-> 
-> Signed-off-by: Tzu-En Huang <tehuang@realtek.com>
-> Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
+Changes since v2:
+- rebased ontop of mt76 master branch
+- fix license
 
-You didn't use read_poll_timeout() like Chris suggested?
+Changes since v1:
+- rebased ontop of mt76 master branch
+
+Lorenzo Bianconi (2):
+  mt76: mt7615: move core shared code in mt7615-common module
+  mt76: mt7615: introduce mt7663u support
+
+ drivers/net/wireless/mediatek/mt76/Makefile   |   2 +-
+ drivers/net/wireless/mediatek/mt76/mt76.h     |   1 +
+ .../net/wireless/mediatek/mt76/mt7615/Kconfig |  18 +-
+ .../wireless/mediatek/mt76/mt7615/Makefile    |  10 +-
+ .../wireless/mediatek/mt76/mt7615/debugfs.c   |   1 +
+ .../net/wireless/mediatek/mt76/mt7615/dma.c   |  39 --
+ .../wireless/mediatek/mt76/mt7615/eeprom.c    |   1 +
+ .../net/wireless/mediatek/mt76/mt7615/init.c  | 194 +--------
+ .../net/wireless/mediatek/mt76/mt7615/mac.c   | 249 ++++-------
+ .../net/wireless/mediatek/mt76/mt7615/mac.h   |   5 +-
+ .../net/wireless/mediatek/mt76/mt7615/main.c  |  66 +--
+ .../net/wireless/mediatek/mt76/mt7615/mcu.c   |  18 +-
+ .../net/wireless/mediatek/mt76/mt7615/mcu.h   |   5 +
+ .../net/wireless/mediatek/mt76/mt7615/mmio.c  |  30 ++
+ .../wireless/mediatek/mt76/mt7615/mt7615.h    |  22 +-
+ .../wireless/mediatek/mt76/mt7615/pci_init.c  | 189 +++++++++
+ .../wireless/mediatek/mt76/mt7615/pci_mac.c   | 184 ++++++++
+ .../net/wireless/mediatek/mt76/mt7615/regs.h  |  26 ++
+ .../net/wireless/mediatek/mt76/mt7615/usb.c   | 396 ++++++++++++++++++
+ .../wireless/mediatek/mt76/mt7615/usb_init.c  | 144 +++++++
+ .../wireless/mediatek/mt76/mt7615/usb_mcu.c   |  93 ++++
+ 21 files changed, 1259 insertions(+), 434 deletions(-)
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7615/pci_init.c
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7615/pci_mac.c
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7615/usb.c
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7615/usb_init.c
+ create mode 100644 drivers/net/wireless/mediatek/mt76/mt7615/usb_mcu.c
 
 -- 
-https://patchwork.kernel.org/patch/11492217/
+2.25.2
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
