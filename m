@@ -2,62 +2,105 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 83B701ADABC
-	for <lists+linux-wireless@lfdr.de>; Fri, 17 Apr 2020 12:11:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3EA151ADADB
+	for <lists+linux-wireless@lfdr.de>; Fri, 17 Apr 2020 12:22:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728199AbgDQKLb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 17 Apr 2020 06:11:31 -0400
-Received: from mail.kernel.org ([198.145.29.99]:41600 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725830AbgDQKLb (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 17 Apr 2020 06:11:31 -0400
-Received: from lore-desk.lan (unknown [151.48.151.50])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id E8CD321D91;
-        Fri, 17 Apr 2020 10:11:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1587118290;
-        bh=f3ymiRdU1hAG285rj12OPYlx1+9KeiwDBOQNbi5H04A=;
-        h=From:To:Cc:Subject:Date:From;
-        b=l+g+HlSWY3vC8z0dJXPThQWmTFHknfWj+NHSf2zfD2ddUPeDhwpYJtaXAuZTqQHcZ
-         E4q9I6+GBTywplmQaqZWCBs0f1pOc+r93ZHIE591MF6lFURGqJV9h4OkQnmL69JijC
-         qxXg7UgAWl+E8Qe5P/GRRF1q48sRHbuFq8Xq6ghY=
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
-        sean.wang@mediatek.com
-Subject: [PATCH] mt76: mt7615: disable aspm by default
-Date:   Fri, 17 Apr 2020 12:10:54 +0200
-Message-Id: <1b577f39b5ea499a553f2d7da39940c272e11630.1587118207.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.25.2
+        id S1729009AbgDQKVv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 17 Apr 2020 06:21:51 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:56556 "EHLO
+        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1728631AbgDQKVu (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 17 Apr 2020 06:21:50 -0400
+Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa.ger.corp.intel.com)
+        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.93)
+        (envelope-from <luca@coelho.fi>)
+        id 1jPO84-000Kba-FT; Fri, 17 Apr 2020 13:21:49 +0300
+From:   Luca Coelho <luca@coelho.fi>
+To:     kvalo@codeaurora.org
+Cc:     linux-wireless@vger.kernel.org
+Date:   Fri, 17 Apr 2020 13:21:32 +0300
+Message-Id: <20200417102142.2173014-1-luca@coelho.fi>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on farmhouse.coelho.fi
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+        TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.4
+Subject: [PATCH 00/10] iwlwifi: updates intended for v5.8 2020-04-17
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Vendor SDK disable ASPM by default
+From: Luca Coelho <luciano.coelho@intel.com>
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- drivers/net/wireless/mediatek/mt76/mt7615/pci.c | 2 ++
- 1 file changed, 2 insertions(+)
+Hi,
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/pci.c b/drivers/net/wireless/mediatek/mt76/mt7615/pci.c
-index f17801c4981e..3eaa0300219c 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/pci.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/pci.c
-@@ -41,6 +41,8 @@ static int mt7615_pci_probe(struct pci_dev *pdev,
- 	if (ret)
- 		return ret;
- 
-+	mt76_pci_disable_aspm(pdev);
-+
- 	map = id->device == 0x7663 ? mt7663e_reg_map : mt7615e_reg_map;
- 	return mt7615_mmio_probe(&pdev->dev, pcim_iomap_table(pdev)[0],
- 				 pdev->irq, map);
+Here's the first set of patches intended for v5.8.  It's the usual
+development, new features, cleanups and bugfixes.
+
+The changes are:
+
+* TX queue debugfs improvements;
+* Support for a few new FW API versions;
+* Remove deprecated scan FW API version;
+* More debugging fetures;
+* Some other small fixes and clean-ups;
+
+As usual, I'm pushing this to a pending branch, for kbuild bot, and
+will send a pull-request later.
+
+Please review.
+
+Cheers,
+Luca.
+
+
+Johannes Berg (4):
+  iwlwifi: pcie: use seq_file for tx_queue debugfs file
+  iwlwifi: pcie: add n_window/ampdu to tx_queue debugfs
+  iwlwifi: pcie: gen2: minor code cleanups in byte table update
+  iwlwifi: mvm: add DCM flag to rate pretty-print
+
+Mordechay Goodstein (2):
+  iwlwifi: move API version lookup to common code
+  iwlwifi: support version 9 of WOWLAN_GET_STATUS notification
+
+Shahar S Matityahu (2):
+  iwlwifi: dbg: support multiple dumps in legacy dump flow
+  iwlwifi: yoyo: support IWL_FW_INI_TIME_POINT_HOST_ALIVE_TIMEOUT time
+    point
+
+Tova Mussai (2):
+  iwlwifi: scan: remove support for fw scan api v13
+  iwlwifi: nvm: use iwl_nl80211_band_from_channel_idx
+
+ drivers/net/wireless/intel/iwlwifi/Makefile   |   3 +-
+ .../net/wireless/intel/iwlwifi/fw/api/d3.h    |  39 ++++-
+ .../net/wireless/intel/iwlwifi/fw/api/scan.h  |  26 ----
+ drivers/net/wireless/intel/iwlwifi/fw/dbg.c   | 139 ++++++++++++------
+ drivers/net/wireless/intel/iwlwifi/fw/dbg.h   |  11 --
+ drivers/net/wireless/intel/iwlwifi/fw/img.c   | 100 +++++++++++++
+ drivers/net/wireless/intel/iwlwifi/fw/img.h   |  19 +--
+ .../net/wireless/intel/iwlwifi/fw/runtime.h   |  14 +-
+ .../wireless/intel/iwlwifi/iwl-nvm-parse.c    |   3 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/d3.c   |  29 ++--
+ .../intel/iwlwifi/mvm/ftm-initiator.c         |   4 +-
+ .../intel/iwlwifi/mvm/ftm-responder.c         |   4 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c   |   6 +-
+ .../net/wireless/intel/iwlwifi/mvm/mac80211.c |   1 -
+ drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  |   4 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/ops.c  |  24 +--
+ drivers/net/wireless/intel/iwlwifi/mvm/rs.c   |   3 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/scan.c |  44 +-----
+ .../net/wireless/intel/iwlwifi/pcie/trans.c   | 122 +++++++++++----
+ .../net/wireless/intel/iwlwifi/pcie/tx-gen2.c |   8 +-
+ 20 files changed, 375 insertions(+), 228 deletions(-)
+ create mode 100644 drivers/net/wireless/intel/iwlwifi/fw/img.c
+
 -- 
-2.25.2
+2.25.1
 
