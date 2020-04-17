@@ -2,26 +2,26 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6516E1AD6FF
+	by mail.lfdr.de (Postfix) with ESMTP id DB7A31AD700
 	for <lists+linux-wireless@lfdr.de>; Fri, 17 Apr 2020 09:08:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728746AbgDQHI1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        id S1728750AbgDQHI1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
         Fri, 17 Apr 2020 03:08:27 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:56376 "EHLO
+Received: from paleale.coelho.fi ([176.9.41.70]:56382 "EHLO
         farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1728625AbgDQHI0 (ORCPT
+        with ESMTP id S1728738AbgDQHI1 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 17 Apr 2020 03:08:26 -0400
+        Fri, 17 Apr 2020 03:08:27 -0400
 Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa.ger.corp.intel.com)
         by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
         (Exim 4.93)
         (envelope-from <luca@coelho.fi>)
-        id 1jPL6u-000KNJ-7G; Fri, 17 Apr 2020 10:08:24 +0300
+        id 1jPL6u-000KNJ-Tb; Fri, 17 Apr 2020 10:08:25 +0300
 From:   Luca Coelho <luca@coelho.fi>
 To:     kvalo@codeaurora.org
 Cc:     linux-wireless@vger.kernel.org
-Date:   Fri, 17 Apr 2020 10:08:10 +0300
-Message-Id: <iwlwifi.20200417100405.1f9142751fbc.Ifbfd0f928a0a761110b8f4f2ca5483a61fb21131@changeid>
+Date:   Fri, 17 Apr 2020 10:08:11 +0300
+Message-Id: <iwlwifi.20200417100405.ae6cd345764f.I0985c55223decf70182b9ef1d8edf4179f537853@changeid>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200417070814.2044774-1-luca@coelho.fi>
 References: <20200417070814.2044774-1-luca@coelho.fi>
@@ -31,76 +31,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on farmhouse.coelho.fi
 X-Spam-Level: 
 X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
         TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.4
-Subject: [PATCH v2 v5.7 2/6] iwlwifi: mvm: beacon statistics shouldn't go backwards
+Subject: [PATCH v2 v5.7 3/6] iwlwifi: pcie: indicate correct RB size to device
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Mordechay Goodstein <mordechay.goodstein@intel.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-We reset statistics also in case that we didn't reassoc so in
-this cases keep last beacon counter.
+In the context info, we need to indicate the correct RB size
+to the device so that it will not think we have 4k when we
+only use 2k. This seems to not have caused any issues right
+now, likely because the hardware no longer supports putting
+multiple entries into a single RB, and practically all of
+the entries should be smaller than 2k.
 
-Cc: stable@vger.kernel.org # v4.19+
-Signed-off-by: Mordechay Goodstein <mordechay.goodstein@intel.com>
+Nevertheless, it's a bug, and we must advertise the right
+size to the device.
+
+Note that right now we can only tell it 2k vs. 4k, so for
+the cases where we have more, still use 4k. This needs to
+be fixed by the firmware first.
+
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: cfdc20efebdc ("iwlwifi: pcie: use partial pages if applicable")
+Cc: stable@vger.kernel.org # v5.6
 Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/rx.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ .../intel/iwlwifi/pcie/ctxt-info-gen3.c        | 18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rx.c b/drivers/net/wireless/intel/iwlwifi/mvm/rx.c
-index 5ee33c8ae9d2..77b8def26edb 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/rx.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/rx.c
-@@ -8,7 +8,7 @@
-  * Copyright(c) 2012 - 2014 Intel Corporation. All rights reserved.
-  * Copyright(c) 2013 - 2015 Intel Mobile Communications GmbH
-  * Copyright(c) 2016 - 2017 Intel Deutschland GmbH
-- * Copyright(c) 2018 - 2019 Intel Corporation
-+ * Copyright(c) 2018 - 2020 Intel Corporation
-  *
-  * This program is free software; you can redistribute it and/or modify
-  * it under the terms of version 2 of the GNU General Public License as
-@@ -31,7 +31,7 @@
-  * Copyright(c) 2012 - 2014 Intel Corporation. All rights reserved.
-  * Copyright(c) 2013 - 2015 Intel Mobile Communications GmbH
-  * Copyright(c) 2016 - 2017 Intel Deutschland GmbH
-- * Copyright(c) 2018 - 2019 Intel Corporation
-+ * Copyright(c) 2018 - 2020 Intel Corporation
-  * All rights reserved.
-  *
-  * Redistribution and use in source and binary forms, with or without
-@@ -566,6 +566,7 @@ void iwl_mvm_rx_rx_mpdu(struct iwl_mvm *mvm, struct napi_struct *napi,
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info-gen3.c b/drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info-gen3.c
+index 01f248ba8fec..9d5b1e51b50d 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info-gen3.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info-gen3.c
+@@ -129,6 +129,18 @@ int iwl_pcie_ctxt_info_gen3_init(struct iwl_trans *trans,
+ 	int cmdq_size = max_t(u32, IWL_CMD_QUEUE_SIZE,
+ 			      trans->cfg->min_txq_size);
  
- struct iwl_mvm_stat_data {
- 	struct iwl_mvm *mvm;
-+	__le32 flags;
- 	__le32 mac_id;
- 	u8 beacon_filter_average_energy;
- 	void *general;
-@@ -606,6 +607,13 @@ static void iwl_mvm_stat_iterator(void *_data, u8 *mac,
- 			-general->beacon_average_energy[vif_id];
- 	}
- 
-+	/* make sure that beacon statistics don't go backwards with TCM
-+	 * request to clear statistics
-+	 */
-+	if (le32_to_cpu(data->flags) & IWL_STATISTICS_REPLY_FLG_CLEAR)
-+		mvmvif->beacon_stats.accu_num_beacons +=
-+			mvmvif->beacon_stats.num_beacons;
++	switch (trans_pcie->rx_buf_size) {
++	case IWL_AMSDU_DEF:
++		return -EINVAL;
++	case IWL_AMSDU_2K:
++		break;
++	case IWL_AMSDU_4K:
++	case IWL_AMSDU_8K:
++	case IWL_AMSDU_12K:
++		control_flags |= IWL_PRPH_SCRATCH_RB_SIZE_4K;
++		break;
++	}
 +
- 	if (mvmvif->id != id)
- 		return;
+ 	/* Allocate prph scratch */
+ 	prph_scratch = dma_alloc_coherent(trans->dev, sizeof(*prph_scratch),
+ 					  &trans_pcie->prph_scratch_dma_addr,
+@@ -143,10 +155,8 @@ int iwl_pcie_ctxt_info_gen3_init(struct iwl_trans *trans,
+ 		cpu_to_le16((u16)iwl_read32(trans, CSR_HW_REV));
+ 	prph_sc_ctrl->version.size = cpu_to_le16(sizeof(*prph_scratch) / 4);
  
-@@ -763,6 +771,7 @@ void iwl_mvm_handle_rx_statistics(struct iwl_mvm *mvm,
+-	control_flags = IWL_PRPH_SCRATCH_RB_SIZE_4K |
+-			IWL_PRPH_SCRATCH_MTR_MODE |
+-			(IWL_PRPH_MTR_FORMAT_256B &
+-			 IWL_PRPH_SCRATCH_MTR_FORMAT);
++	control_flags |= IWL_PRPH_SCRATCH_MTR_MODE;
++	control_flags |= IWL_PRPH_MTR_FORMAT_256B & IWL_PRPH_SCRATCH_MTR_FORMAT;
  
- 		flags = stats->flag;
- 	}
-+	data.flags = flags;
- 
- 	iwl_mvm_rx_stats_check_trigger(mvm, pkt);
- 
+ 	/* initialize RX default queue */
+ 	prph_sc_ctrl->rbd_cfg.free_rbd_addr =
 -- 
 2.25.1
 
