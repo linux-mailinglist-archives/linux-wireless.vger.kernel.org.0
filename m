@@ -2,20 +2,20 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A0581AD7BD
-	for <lists+linux-wireless@lfdr.de>; Fri, 17 Apr 2020 09:47:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 436331AD7B9
+	for <lists+linux-wireless@lfdr.de>; Fri, 17 Apr 2020 09:47:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729226AbgDQHrJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 17 Apr 2020 03:47:09 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:37005 "EHLO
+        id S1729212AbgDQHrI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 17 Apr 2020 03:47:08 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:36995 "EHLO
         rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729196AbgDQHrI (ORCPT
+        with ESMTP id S1728519AbgDQHrI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Fri, 17 Apr 2020 03:47:08 -0400
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.69 with qID 03H7l2Of9020020, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.69 with qID 03H7l2Og9020020, This message is accepted by code: ctloc85258
 Received: from mail.realtek.com (rtexmb06.realtek.com.tw[172.21.6.99])
-        by rtits2.realtek.com.tw (8.15.2/2.66/5.86) with ESMTPS id 03H7l2Of9020020
+        by rtits2.realtek.com.tw (8.15.2/2.66/5.86) with ESMTPS id 03H7l2Og9020020
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
         Fri, 17 Apr 2020 15:47:02 +0800
 Received: from RTEXMB04.realtek.com.tw (172.21.6.97) by
@@ -30,9 +30,9 @@ From:   <yhchuang@realtek.com>
 To:     <kvalo@codeaurora.org>
 CC:     <pkshih@realtek.com>, <linux-wireless@vger.kernel.org>,
         <briannorris@chromium.org>, <kevin_yang@realtek.com>
-Subject: [PATCH 07/40] rtw88: 8723d: Add new chip op efuse_grant() to control efuse access
-Date:   Fri, 17 Apr 2020 15:46:20 +0800
-Message-ID: <20200417074653.15591-8-yhchuang@realtek.com>
+Subject: [PATCH 08/40] rtw88: 8723d: Add read_efuse to recognize efuse info from map
+Date:   Fri, 17 Apr 2020 15:46:21 +0800
+Message-ID: <20200417074653.15591-9-yhchuang@realtek.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200417074653.15591-1-yhchuang@realtek.com>
 References: <20200417074653.15591-1-yhchuang@realtek.com>
@@ -48,134 +48,127 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Ping-Ke Shih <pkshih@realtek.com>
 
-8723D devices need to grant efuse access before dumping physical efuse
-map, other chips don't need it, so keep this ops as blank.
+The logical efuse map is decoded from physical map by parsing the
+header format of the physical map. And each different type of chips
+has different logical efuse layout. So add the logical map's layout
+for parsing the efuse contents.
 
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw88/efuse.c    |  4 ++++
- drivers/net/wireless/realtek/rtw88/main.h     | 13 +++++++++++++
- drivers/net/wireless/realtek/rtw88/reg.h      |  9 +++++++++
- drivers/net/wireless/realtek/rtw88/rtw8723d.c | 13 +++++++++++++
- 4 files changed, 39 insertions(+)
+ drivers/net/wireless/realtek/rtw88/rtw8723d.c | 43 +++++++++++++++++++
+ drivers/net/wireless/realtek/rtw88/rtw8723d.h | 39 +++++++++++++++++
+ 2 files changed, 82 insertions(+)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/efuse.c b/drivers/net/wireless/realtek/rtw88/efuse.c
-index 212c8376a8c9..df969d346b41 100644
---- a/drivers/net/wireless/realtek/rtw88/efuse.c
-+++ b/drivers/net/wireless/realtek/rtw88/efuse.c
-@@ -90,6 +90,8 @@ static int rtw_dump_physical_efuse_map(struct rtw_dev *rtwdev, u8 *map)
- 	u32 addr;
- 	u32 cnt;
- 
-+	rtw_chip_efuse_grant_on(rtwdev);
-+
- 	switch_efuse_bank(rtwdev);
- 
- 	/* disable 2.5V LDO */
-@@ -113,6 +115,8 @@ static int rtw_dump_physical_efuse_map(struct rtw_dev *rtwdev, u8 *map)
- 		*(map + addr) = (u8)(efuse_ctl & BIT_MASK_EF_DATA);
- 	}
- 
-+	rtw_chip_efuse_grant_off(rtwdev);
-+
- 	return 0;
- }
- 
-diff --git a/drivers/net/wireless/realtek/rtw88/main.h b/drivers/net/wireless/realtek/rtw88/main.h
-index 8f15fc113af0..74302181da53 100644
---- a/drivers/net/wireless/realtek/rtw88/main.h
-+++ b/drivers/net/wireless/realtek/rtw88/main.h
-@@ -811,6 +811,7 @@ struct rtw_chip_ops {
- 			   u32 antenna_tx,
- 			   u32 antenna_rx);
- 	void (*cfg_ldo25)(struct rtw_dev *rtwdev, bool enable);
-+	void (*efuse_grant)(struct rtw_dev *rtwdev, bool enable);
- 	void (*false_alarm_statistics)(struct rtw_dev *rtwdev);
- 	void (*phy_calibration)(struct rtw_dev *rtwdev);
- 	void (*dpk_track)(struct rtw_dev *rtwdev);
-@@ -1712,6 +1713,18 @@ static inline bool rtw_ssid_equal(struct cfg80211_ssid *a,
- 	return true;
- }
- 
-+static inline void rtw_chip_efuse_grant_on(struct rtw_dev *rtwdev)
-+{
-+	if (rtwdev->chip->ops->efuse_grant)
-+		rtwdev->chip->ops->efuse_grant(rtwdev, true);
-+}
-+
-+static inline void rtw_chip_efuse_grant_off(struct rtw_dev *rtwdev)
-+{
-+	if (rtwdev->chip->ops->efuse_grant)
-+		rtwdev->chip->ops->efuse_grant(rtwdev, false);
-+}
-+
- void rtw_get_channel_params(struct cfg80211_chan_def *chandef,
- 			    struct rtw_channel_params *ch_param);
- bool check_hw_ready(struct rtw_dev *rtwdev, u32 addr, u32 mask, u32 target);
-diff --git a/drivers/net/wireless/realtek/rtw88/reg.h b/drivers/net/wireless/realtek/rtw88/reg.h
-index 2afd547ebcc9..911d8e75db77 100644
---- a/drivers/net/wireless/realtek/rtw88/reg.h
-+++ b/drivers/net/wireless/realtek/rtw88/reg.h
-@@ -6,6 +6,7 @@
- #define __RTW_REG_DEF_H__
- 
- #define REG_SYS_FUNC_EN		0x0002
-+#define BIT_FEN_ELDR		BIT(12)
- #define BIT_FEN_CPUEN		BIT(2)
- #define BIT_FEN_BB_GLB_RST	BIT(1)
- #define BIT_FEN_BB_RSTB		BIT(0)
-@@ -15,6 +16,10 @@
- #define REG_SYS_CLK_CTRL	0x0008
- #define BIT_CPU_CLK_EN		BIT(14)
- 
-+#define REG_SYS_CLKR		0x0008
-+#define BIT_ANA8M		BIT(1)
-+#define BIT_LOADER_CLK_EN	BIT(5)
-+
- #define REG_RSV_CTRL		0x001C
- #define DISABLE_PI		0x3
- #define ENABLE_PI		0x2
-@@ -87,6 +92,10 @@
- 				 BIT_CHECK_SUM_OK)
- #define FW_READY_MASK		0xffff
- 
-+#define REG_EFUSE_ACCESS	0x00CF
-+#define EFUSE_ACCESS_ON		0x69
-+#define EFUSE_ACCESS_OFF	0x00
-+
- #define REG_WLRF1		0x00EC
- #define REG_WIFI_BT_INFO	0x00AA
- #define BIT_BT_INT_EN		BIT(15)
 diff --git a/drivers/net/wireless/realtek/rtw88/rtw8723d.c b/drivers/net/wireless/realtek/rtw88/rtw8723d.c
-index 04f8d73e4e6c..756454d69fad 100644
+index 756454d69fad..c25cabbab64d 100644
 --- a/drivers/net/wireless/realtek/rtw88/rtw8723d.c
 +++ b/drivers/net/wireless/realtek/rtw88/rtw8723d.c
-@@ -28,11 +28,24 @@ static void rtw8723d_cfg_ldo25(struct rtw_dev *rtwdev, bool enable)
- 	rtw_write8(rtwdev, REG_LDO_EFUSE_CTRL + 3, ldo_pwr);
- }
+@@ -14,6 +14,48 @@
+ #include "reg.h"
+ #include "debug.h"
  
-+static void rtw8723d_efuse_grant(struct rtw_dev *rtwdev, bool on)
++static void rtw8723de_efuse_parsing(struct rtw_efuse *efuse,
++				    struct rtw8723d_efuse *map)
 +{
-+	if (on) {
-+		rtw_write8(rtwdev, REG_EFUSE_ACCESS, EFUSE_ACCESS_ON);
-+
-+		rtw_write16_set(rtwdev, REG_SYS_FUNC_EN, BIT_FEN_ELDR);
-+		rtw_write16_set(rtwdev, REG_SYS_CLKR, BIT_LOADER_CLK_EN | BIT_ANA8M);
-+	} else {
-+		rtw_write8(rtwdev, REG_EFUSE_ACCESS, EFUSE_ACCESS_OFF);
-+	}
++	ether_addr_copy(efuse->addr, map->e.mac_addr);
 +}
 +
++static int rtw8723d_read_efuse(struct rtw_dev *rtwdev, u8 *log_map)
++{
++	struct rtw_efuse *efuse = &rtwdev->efuse;
++	struct rtw8723d_efuse *map;
++	int i;
++
++	map = (struct rtw8723d_efuse *)log_map;
++
++	efuse->rfe_option = 0;
++	efuse->rf_board_option = map->rf_board_option;
++	efuse->crystal_cap = map->xtal_k;
++	efuse->pa_type_2g = map->pa_type;
++	efuse->lna_type_2g = map->lna_type_2g[0];
++	efuse->channel_plan = map->channel_plan;
++	efuse->country_code[0] = map->country_code[0];
++	efuse->country_code[1] = map->country_code[1];
++	efuse->bt_setting = map->rf_bt_setting;
++	efuse->regd = map->rf_board_option & 0x7;
++	efuse->thermal_meter[0] = map->thermal_meter;
++	efuse->thermal_meter_k = map->thermal_meter;
++
++	for (i = 0; i < 4; i++)
++		efuse->txpwr_idx_table[i] = map->txpwr_idx_table[i];
++
++	switch (rtw_hci_type(rtwdev)) {
++	case RTW_HCI_TYPE_PCIE:
++		rtw8723de_efuse_parsing(efuse, map);
++		break;
++	default:
++		/* unsupported now */
++		return -ENOTSUPP;
++	}
++
++	return 0;
++}
++
+ static void rtw8723d_cfg_ldo25(struct rtw_dev *rtwdev, bool enable)
+ {
+ 	u8 ldo_pwr;
+@@ -41,6 +83,7 @@ static void rtw8723d_efuse_grant(struct rtw_dev *rtwdev, bool on)
+ }
+ 
  static struct rtw_chip_ops rtw8723d_ops = {
++	.read_efuse		= rtw8723d_read_efuse,
  	.read_rf		= rtw_phy_read_rf_sipi,
  	.write_rf		= rtw_phy_write_rf_reg_sipi,
  	.set_antenna		= NULL,
- 	.cfg_ldo25		= rtw8723d_cfg_ldo25,
-+	.efuse_grant		= rtw8723d_efuse_grant,
- 	.config_bfee		= NULL,
- 	.set_gid_table		= NULL,
- 	.cfg_csi_rate		= NULL,
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8723d.h b/drivers/net/wireless/realtek/rtw88/rtw8723d.h
+index 0b784cfc34c6..1939d9897a26 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8723d.h
++++ b/drivers/net/wireless/realtek/rtw88/rtw8723d.h
+@@ -5,4 +5,43 @@
+ #ifndef __RTW8723D_H__
+ #define __RTW8723D_H__
+ 
++struct rtw8723de_efuse {
++	u8 mac_addr[ETH_ALEN];		/* 0xd0 */
++	u8 vender_id[2];
++	u8 device_id[2];
++	u8 sub_vender_id[2];
++	u8 sub_device_id[2];
++};
++
++struct rtw8723d_efuse {
++	__le16 rtl_id;
++	u8 rsvd[2];
++	u8 afe;
++	u8 rsvd1[11];
++
++	/* power index for four RF paths */
++	struct rtw_txpwr_idx txpwr_idx_table[4];
++
++	u8 channel_plan;		/* 0xb8 */
++	u8 xtal_k;
++	u8 thermal_meter;
++	u8 iqk_lck;
++	u8 pa_type;			/* 0xbc */
++	u8 lna_type_2g[2];		/* 0xbd */
++	u8 lna_type_5g[2];
++	u8 rf_board_option;
++	u8 rf_feature_option;
++	u8 rf_bt_setting;
++	u8 eeprom_version;
++	u8 eeprom_customer_id;
++	u8 tx_bb_swing_setting_2g;
++	u8 res_c7;
++	u8 tx_pwr_calibrate_rate;
++	u8 rf_antenna_option;		/* 0xc9 */
++	u8 rfe_option;
++	u8 country_code[2];
++	u8 res[3];
++	struct rtw8723de_efuse e;
++};
++
+ #endif
 -- 
 2.17.1
 
