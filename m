@@ -2,136 +2,147 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DD8581ADB3D
-	for <lists+linux-wireless@lfdr.de>; Fri, 17 Apr 2020 12:37:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C6FC41ADB40
+	for <lists+linux-wireless@lfdr.de>; Fri, 17 Apr 2020 12:38:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728985AbgDQKhW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 17 Apr 2020 06:37:22 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:56652 "EHLO
-        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1728799AbgDQKhV (ORCPT
+        id S1728742AbgDQKiL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 17 Apr 2020 06:38:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55826 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726632AbgDQKiL (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 17 Apr 2020 06:37:21 -0400
-Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa.ger.corp.intel.com)
-        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        Fri, 17 Apr 2020 06:38:11 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E329C061A0C
+        for <linux-wireless@vger.kernel.org>; Fri, 17 Apr 2020 03:38:11 -0700 (PDT)
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
         (Exim 4.93)
-        (envelope-from <luca@coelho.fi>)
-        id 1jPON4-000KeT-MY; Fri, 17 Apr 2020 13:37:19 +0300
-From:   Luca Coelho <luca@coelho.fi>
-To:     kvalo@codeaurora.org
-Cc:     linux-wireless@vger.kernel.org
-Date:   Fri, 17 Apr 2020 13:37:11 +0300
-Message-Id: <iwlwifi.20200417133700.72ad25c3998b.I875d935cefd595ed7f640ddcfc7bc802627d2b7f@changeid>
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1jPONs-0072Ea-95; Fri, 17 Apr 2020 12:38:08 +0200
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     linux-wireless@vger.kernel.org
+Cc:     Johannes Berg <johannes.berg@intel.com>,
+        Felix Fietkau <nbd@nbd.name>
+Subject: [PATCH v2] mac80211: mlme: remove duplicate AID bookkeeping
+Date:   Fri, 17 Apr 2020 12:38:04 +0200
+Message-Id: <20200417123802.085d4a322b0c.I2e7a2ceceea8c6880219f9e9ee4d4ac985fd295a@changeid>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on farmhouse.coelho.fi
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
-        TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.4
-Subject: [PATCH v2 v5.7] iwlwifi: fix WGDS check when WRDS is disabled
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Luca Coelho <luciano.coelho@intel.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-In the reference BIOS implementation, WRDS can be disabled without
-disabling WGDS.  And this happens in most cases where WRDS is
-disabled, causing the WGDS without WRDS check and issue an error.
+Maintain the connection AID only in sdata->vif.bss_conf.aid, not
+also in sdata->u.mgd.aid.
 
-To avoid this issue, we change the check so that we only considered it
-an error if the WRDS entry doesn't exist.  If the entry (or the
-selected profile is disabled for any other reason), we just silently
-ignore WGDS.
+Keep setting that where we set ifmgd->aid before, which has the
+side effect of exposing the AID to the driver before the station
+entry (AP) is marked associated, in case it needs it then.
 
-Cc: stable@vger.kernel.org # 4.14+
-Bugzilla: https://bugzilla.kernel.org/show_bug.cgi?id=205513
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+Requested-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/fw/acpi.c |  9 +++++--
- drivers/net/wireless/intel/iwlwifi/mvm/fw.c  | 25 +++++++++-----------
- 2 files changed, 18 insertions(+), 16 deletions(-)
+ net/mac80211/debugfs_netdev.c | 2 +-
+ net/mac80211/ieee80211_i.h    | 2 --
+ net/mac80211/mlme.c           | 7 +++----
+ net/mac80211/tdls.c           | 3 +--
+ net/mac80211/tx.c             | 2 +-
+ 5 files changed, 6 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/acpi.c b/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
-index ba2aff3af0fe..e3a33388be70 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
-@@ -296,9 +296,14 @@ int iwl_sar_select_profile(struct iwl_fw_runtime *fwrt,
- 		if (!prof->enabled) {
- 			IWL_DEBUG_RADIO(fwrt, "SAR profile %d is disabled.\n",
- 					profs[i]);
--			/* if one of the profiles is disabled, we fail all */
--			return -ENOENT;
-+			/*
-+			 * if one of the profiles is disabled, we
-+			 * ignore all of them and return 1 to
-+			 * differentiate disabled from other failures.
-+			 */
-+			return 1;
- 		}
-+
- 		IWL_DEBUG_INFO(fwrt,
- 			       "SAR EWRD: chain %d profile index %d\n",
- 			       i, profs[i]);
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-index a4038f289ab3..e67c452fa92c 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-@@ -727,6 +727,7 @@ int iwl_mvm_sar_select_profile(struct iwl_mvm *mvm, int prof_a, int prof_b)
- 		struct iwl_dev_tx_power_cmd_v4 v4;
- 	} cmd;
+diff --git a/net/mac80211/debugfs_netdev.c b/net/mac80211/debugfs_netdev.c
+index 3dbe7c5cefd1..d7e955127d5c 100644
+--- a/net/mac80211/debugfs_netdev.c
++++ b/net/mac80211/debugfs_netdev.c
+@@ -236,7 +236,7 @@ IEEE80211_IF_FILE_R(hw_queues);
  
-+	int ret;
- 	u16 len = 0;
+ /* STA attributes */
+ IEEE80211_IF_FILE(bssid, u.mgd.bssid, MAC);
+-IEEE80211_IF_FILE(aid, u.mgd.aid, DEC);
++IEEE80211_IF_FILE(aid, vif.bss_conf.aid, DEC);
+ IEEE80211_IF_FILE(beacon_timeout, u.mgd.beacon_timeout, JIFFIES_TO_MS);
  
- 	cmd.v5.v3.set_mode = cpu_to_le32(IWL_TX_POWER_MODE_SET_CHAINS);
-@@ -741,9 +742,14 @@ int iwl_mvm_sar_select_profile(struct iwl_mvm *mvm, int prof_a, int prof_b)
- 		len = sizeof(cmd.v4.v3);
+ static int ieee80211_set_smps(struct ieee80211_sub_if_data *sdata,
+diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
+index f8ed4f621f7f..934a91bef575 100644
+--- a/net/mac80211/ieee80211_i.h
++++ b/net/mac80211/ieee80211_i.h
+@@ -450,8 +450,6 @@ struct ieee80211_if_managed {
  
+ 	u8 bssid[ETH_ALEN] __aligned(2);
  
--	if (iwl_sar_select_profile(&mvm->fwrt, cmd.v5.v3.per_chain_restriction,
--				   prof_a, prof_b))
--		return -ENOENT;
-+	ret = iwl_sar_select_profile(&mvm->fwrt,
-+				     cmd.v5.v3.per_chain_restriction,
-+				     prof_a, prof_b);
-+
-+	/* return on error or if the profile is disabled (positive number) */
-+	if (ret)
-+		return ret;
-+
- 	IWL_DEBUG_RADIO(mvm, "Sending REDUCE_TX_POWER_CMD per chain\n");
- 	return iwl_mvm_send_cmd_pdu(mvm, REDUCE_TX_POWER_CMD, 0, len, &cmd);
- }
-@@ -1034,16 +1040,7 @@ static int iwl_mvm_sar_init(struct iwl_mvm *mvm)
- 				"EWRD SAR BIOS table invalid or unavailable. (%d)\n",
- 				ret);
- 
--	ret = iwl_mvm_sar_select_profile(mvm, 1, 1);
--	/*
--	 * If we don't have profile 0 from BIOS, just skip it.  This
--	 * means that SAR Geo will not be enabled either, even if we
--	 * have other valid profiles.
--	 */
--	if (ret == -ENOENT)
--		return 1;
+-	u16 aid;
 -
--	return ret;
-+	return iwl_mvm_sar_select_profile(mvm, 1, 1);
+ 	bool powersave; /* powersave requested for this iface */
+ 	bool broken_ap; /* AP is broken -- turn off powersave */
+ 	bool have_beacon;
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index 16d75da0996a..7139335f29c0 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -3249,7 +3249,7 @@ static bool ieee80211_assoc_success(struct ieee80211_sub_if_data *sdata,
+ 		return false;
+ 	}
+ 
+-	ifmgd->aid = aid;
++	sdata->vif.bss_conf.aid = aid;
+ 	ifmgd->tdls_chan_switch_prohibited =
+ 		elems->ext_capab && elems->ext_capab_len >= 5 &&
+ 		(elems->ext_capab[4] & WLAN_EXT_CAPA5_TDLS_CH_SW_PROHIBITED);
+@@ -3521,9 +3521,8 @@ static bool ieee80211_assoc_success(struct ieee80211_sub_if_data *sdata,
+ 		bss_conf->protected_keep_alive = false;
+ 	}
+ 
+-	/* set AID and assoc capability,
++	/* set assoc capability (AID was already set earlier),
+ 	 * ieee80211_set_associated() will tell the driver */
+-	bss_conf->aid = aid;
+ 	bss_conf->assoc_capability = capab_info;
+ 	ieee80211_set_associated(sdata, cbss, changed);
+ 
+@@ -3948,7 +3947,7 @@ static void ieee80211_rx_mgmt_beacon(struct ieee80211_sub_if_data *sdata,
+ 					  mgmt->bssid, bssid);
+ 
+ 	if (ieee80211_hw_check(&local->hw, PS_NULLFUNC_STACK) &&
+-	    ieee80211_check_tim(elems.tim, elems.tim_len, ifmgd->aid)) {
++	    ieee80211_check_tim(elems.tim, elems.tim_len, bss_conf->aid)) {
+ 		if (local->hw.conf.dynamic_ps_timeout > 0) {
+ 			if (local->hw.conf.flags & IEEE80211_CONF_PS) {
+ 				local->hw.conf.flags &= ~IEEE80211_CONF_PS;
+diff --git a/net/mac80211/tdls.c b/net/mac80211/tdls.c
+index fca1f5477396..7ff22f9d6e80 100644
+--- a/net/mac80211/tdls.c
++++ b/net/mac80211/tdls.c
+@@ -226,12 +226,11 @@ static void ieee80211_tdls_add_link_ie(struct ieee80211_sub_if_data *sdata,
+ static void
+ ieee80211_tdls_add_aid(struct ieee80211_sub_if_data *sdata, struct sk_buff *skb)
+ {
+-	struct ieee80211_if_managed *ifmgd = &sdata->u.mgd;
+ 	u8 *pos = skb_put(skb, 4);
+ 
+ 	*pos++ = WLAN_EID_AID;
+ 	*pos++ = 2; /* len */
+-	put_unaligned_le16(ifmgd->aid, pos);
++	put_unaligned_le16(sdata->vif.bss_conf.aid, pos);
  }
  
- static int iwl_mvm_load_rt_fw(struct iwl_mvm *mvm)
-@@ -1272,7 +1269,7 @@ int iwl_mvm_up(struct iwl_mvm *mvm)
- 	ret = iwl_mvm_sar_init(mvm);
- 	if (ret == 0) {
- 		ret = iwl_mvm_sar_geo_init(mvm);
--	} else if (ret > 0 && !iwl_sar_get_wgds_table(&mvm->fwrt)) {
-+	} else if (ret == -ENOENT && !iwl_sar_get_wgds_table(&mvm->fwrt)) {
- 		/*
- 		 * If basic SAR is not available, we check for WGDS,
- 		 * which should *not* be available either.  If it is
+ /* translate numbering in the WMM parameter IE to the mac80211 notation */
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index 82846aca86d9..3dc1990e15c5 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -5006,7 +5006,7 @@ struct sk_buff *ieee80211_pspoll_get(struct ieee80211_hw *hw,
+ 	pspoll = skb_put_zero(skb, sizeof(*pspoll));
+ 	pspoll->frame_control = cpu_to_le16(IEEE80211_FTYPE_CTL |
+ 					    IEEE80211_STYPE_PSPOLL);
+-	pspoll->aid = cpu_to_le16(ifmgd->aid);
++	pspoll->aid = cpu_to_le16(sdata->vif.bss_conf.aid);
+ 
+ 	/* aid in PS-Poll has its two MSBs each set to 1 */
+ 	pspoll->aid |= cpu_to_le16(1 << 15 | 1 << 14);
 -- 
 2.25.1
 
