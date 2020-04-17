@@ -2,22 +2,22 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 949D41AD7E5
-	for <lists+linux-wireless@lfdr.de>; Fri, 17 Apr 2020 09:48:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 684F91AD7C7
+	for <lists+linux-wireless@lfdr.de>; Fri, 17 Apr 2020 09:48:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729475AbgDQHrq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 17 Apr 2020 03:47:46 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:36988 "EHLO
+        id S1729357AbgDQHrQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 17 Apr 2020 03:47:16 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:37000 "EHLO
         rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726382AbgDQHrJ (ORCPT
+        with ESMTP id S1729188AbgDQHrN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 17 Apr 2020 03:47:09 -0400
+        Fri, 17 Apr 2020 03:47:13 -0400
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.69 with qID 03H7l0Oi9020020, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.69 with qID 03H7l1Oh9020020, This message is accepted by code: ctloc85258
 Received: from mail.realtek.com (rtexmb06.realtek.com.tw[172.21.6.99])
-        by rtits2.realtek.com.tw (8.15.2/2.66/5.86) with ESMTPS id 03H7l0Oi9020020
+        by rtits2.realtek.com.tw (8.15.2/2.66/5.86) with ESMTPS id 03H7l1Oh9020020
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Fri, 17 Apr 2020 15:47:00 +0800
+        Fri, 17 Apr 2020 15:47:01 +0800
 Received: from RTEXMB04.realtek.com.tw (172.21.6.97) by
  RTEXMB06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
@@ -30,9 +30,9 @@ From:   <yhchuang@realtek.com>
 To:     <kvalo@codeaurora.org>
 CC:     <pkshih@realtek.com>, <linux-wireless@vger.kernel.org>,
         <briannorris@chromium.org>, <kevin_yang@realtek.com>
-Subject: [PATCH 02/40] rtw88: 8723d: add beamform wrapper functions
-Date:   Fri, 17 Apr 2020 15:46:15 +0800
-Message-ID: <20200417074653.15591-3-yhchuang@realtek.com>
+Subject: [PATCH 03/40] rtw88: 8723d: Add power sequence
+Date:   Fri, 17 Apr 2020 15:46:16 +0800
+Message-ID: <20200417074653.15591-4-yhchuang@realtek.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200417074653.15591-1-yhchuang@realtek.com>
 References: <20200417074653.15591-1-yhchuang@realtek.com>
@@ -48,149 +48,448 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Ping-Ke Shih <pkshih@realtek.com>
 
-8723D doesn't support beamform because rtw88 only supports VHT beamform
-but 8723d doesn't have VHT capability. Though 8723d doesn't support
-beamform, BSS_CHANGED_MU_GROUPS is still marked as changed when doing
-disassociation. So, add wrapper functions for all beamform ops to make
-sure they aren't NULL before calling.
+Add corresponding power sequence for 8723D devices
 
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw88/bf.c       |  7 +++---
- drivers/net/wireless/realtek/rtw88/bf.h       | 22 +++++++++++++++++++
- drivers/net/wireless/realtek/rtw88/mac80211.c |  7 ++----
- drivers/net/wireless/realtek/rtw88/main.c     |  7 +++---
- drivers/net/wireless/realtek/rtw88/rtw8723d.c |  3 +++
- 5 files changed, 33 insertions(+), 13 deletions(-)
+ drivers/net/wireless/realtek/rtw88/main.h     |   1 +
+ drivers/net/wireless/realtek/rtw88/rtw8723d.c | 403 ++++++++++++++++++
+ 2 files changed, 404 insertions(+)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/bf.c b/drivers/net/wireless/realtek/rtw88/bf.c
-index b6d1d71f4d30..a5912da327e2 100644
---- a/drivers/net/wireless/realtek/rtw88/bf.c
-+++ b/drivers/net/wireless/realtek/rtw88/bf.c
-@@ -10,7 +10,6 @@
- void rtw_bf_disassoc(struct rtw_dev *rtwdev, struct ieee80211_vif *vif,
- 		     struct ieee80211_bss_conf *bss_conf)
- {
--	struct rtw_chip_info *chip = rtwdev->chip;
- 	struct rtw_vif *rtwvif = (struct rtw_vif *)vif->drv_priv;
- 	struct rtw_bfee *bfee = &rtwvif->bfee;
- 	struct rtw_bf_info *bfinfo = &rtwdev->bf_info;
-@@ -23,7 +22,7 @@ void rtw_bf_disassoc(struct rtw_dev *rtwdev, struct ieee80211_vif *vif,
- 	else if (bfee->role == RTW_BFEE_SU)
- 		bfinfo->bfer_su_cnt--;
+diff --git a/drivers/net/wireless/realtek/rtw88/main.h b/drivers/net/wireless/realtek/rtw88/main.h
+index be74533320ad..e852ab194315 100644
+--- a/drivers/net/wireless/realtek/rtw88/main.h
++++ b/drivers/net/wireless/realtek/rtw88/main.h
+@@ -847,6 +847,7 @@ struct rtw_chip_ops {
+ #define RTW_PWR_INTF_PCI_MSK	BIT(2)
+ #define RTW_PWR_INTF_ALL_MSK	(BIT(0) | BIT(1) | BIT(2) | BIT(3))
  
--	chip->ops->config_bfee(rtwdev, rtwvif, bfee, false);
-+	rtw_chip_config_bfee(rtwdev, rtwvif, bfee, false);
- 
- 	bfee->role = RTW_BFEE_NONE;
- }
-@@ -71,7 +70,7 @@ void rtw_bf_assoc(struct rtw_dev *rtwdev, struct ieee80211_vif *vif,
- 		bfee->aid = bss_conf->aid;
- 		bfinfo->bfer_mu_cnt++;
- 
--		chip->ops->config_bfee(rtwdev, rtwvif, bfee, true);
-+		rtw_chip_config_bfee(rtwdev, rtwvif, bfee, true);
- 	} else if ((ic_vht_cap->cap & IEEE80211_VHT_CAP_SU_BEAMFORMEE_CAPABLE) &&
- 		   (vht_cap->cap & IEEE80211_VHT_CAP_SU_BEAMFORMER_CAPABLE)) {
- 		if (bfinfo->bfer_su_cnt >= chip->bfer_su_max_num) {
-@@ -97,7 +96,7 @@ void rtw_bf_assoc(struct rtw_dev *rtwdev, struct ieee80211_vif *vif,
- 			}
- 		}
- 
--		chip->ops->config_bfee(rtwdev, rtwvif, bfee, true);
-+		rtw_chip_config_bfee(rtwdev, rtwvif, bfee, true);
- 	}
- 
- out_unlock:
-diff --git a/drivers/net/wireless/realtek/rtw88/bf.h b/drivers/net/wireless/realtek/rtw88/bf.h
-index 96a8216dd11f..17855edb5006 100644
---- a/drivers/net/wireless/realtek/rtw88/bf.h
-+++ b/drivers/net/wireless/realtek/rtw88/bf.h
-@@ -89,4 +89,26 @@ void rtw_bf_set_gid_table(struct rtw_dev *rtwdev, struct ieee80211_vif *vif,
- void rtw_bf_phy_init(struct rtw_dev *rtwdev);
- void rtw_bf_cfg_csi_rate(struct rtw_dev *rtwdev, u8 rssi, u8 cur_rate,
- 			 u8 fixrate_en, u8 *new_rate);
-+static inline void rtw_chip_config_bfee(struct rtw_dev *rtwdev, struct rtw_vif *vif,
-+					struct rtw_bfee *bfee, bool enable)
-+{
-+	if (rtwdev->chip->ops->config_bfee)
-+		rtwdev->chip->ops->config_bfee(rtwdev, vif, bfee, enable);
-+}
-+
-+static inline void rtw_chip_set_gid_table(struct rtw_dev *rtwdev,
-+					  struct ieee80211_vif *vif,
-+					  struct ieee80211_bss_conf *conf)
-+{
-+	if (rtwdev->chip->ops->set_gid_table)
-+		rtwdev->chip->ops->set_gid_table(rtwdev, vif, conf);
-+}
-+
-+static inline void rtw_chip_cfg_csi_rate(struct rtw_dev *rtwdev, u8 rssi, u8 cur_rate,
-+					 u8 fixrate_en, u8 *new_rate)
-+{
-+	if (rtwdev->chip->ops->cfg_csi_rate)
-+		rtwdev->chip->ops->cfg_csi_rate(rtwdev, rssi, cur_rate,
-+						fixrate_en, new_rate);
-+}
- #endif
-diff --git a/drivers/net/wireless/realtek/rtw88/mac80211.c b/drivers/net/wireless/realtek/rtw88/mac80211.c
-index a2e6ef4ad9ee..98d2ac22f6f6 100644
---- a/drivers/net/wireless/realtek/rtw88/mac80211.c
-+++ b/drivers/net/wireless/realtek/rtw88/mac80211.c
-@@ -375,11 +375,8 @@ static void rtw_ops_bss_info_changed(struct ieee80211_hw *hw,
- 	if (changed & BSS_CHANGED_BEACON)
- 		rtw_fw_download_rsvd_page(rtwdev);
- 
--	if (changed & BSS_CHANGED_MU_GROUPS) {
--		struct rtw_chip_info *chip = rtwdev->chip;
--
--		chip->ops->set_gid_table(rtwdev, vif, conf);
--	}
-+	if (changed & BSS_CHANGED_MU_GROUPS)
-+		rtw_chip_set_gid_table(rtwdev, vif, conf);
- 
- 	if (changed & BSS_CHANGED_ERP_SLOT)
- 		rtw_conf_tx(rtwdev, rtwvif);
-diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
-index 1e1d2c774287..6dfe4895c352 100644
---- a/drivers/net/wireless/realtek/rtw88/main.c
-+++ b/drivers/net/wireless/realtek/rtw88/main.c
-@@ -137,7 +137,6 @@ struct rtw_watch_dog_iter_data {
- static void rtw_dynamic_csi_rate(struct rtw_dev *rtwdev, struct rtw_vif *rtwvif)
- {
- 	struct rtw_bf_info *bf_info = &rtwdev->bf_info;
--	struct rtw_chip_info *chip = rtwdev->chip;
- 	u8 fix_rate_enable = 0;
- 	u8 new_csi_rate_idx;
- 
-@@ -145,9 +144,9 @@ static void rtw_dynamic_csi_rate(struct rtw_dev *rtwdev, struct rtw_vif *rtwvif)
- 	    rtwvif->bfee.role != RTW_BFEE_MU)
- 		return;
- 
--	chip->ops->cfg_csi_rate(rtwdev, rtwdev->dm_info.min_rssi,
--				bf_info->cur_csi_rpt_rate,
--				fix_rate_enable, &new_csi_rate_idx);
-+	rtw_chip_cfg_csi_rate(rtwdev, rtwdev->dm_info.min_rssi,
-+			      bf_info->cur_csi_rpt_rate,
-+			      fix_rate_enable, &new_csi_rate_idx);
- 
- 	if (new_csi_rate_idx != bf_info->cur_csi_rpt_rate)
- 		bf_info->cur_csi_rpt_rate = new_csi_rate_idx;
++#define RTW_PWR_CUT_TEST_MSK	BIT(0)
+ #define RTW_PWR_CUT_A_MSK	BIT(1)
+ #define RTW_PWR_CUT_B_MSK	BIT(2)
+ #define RTW_PWR_CUT_C_MSK	BIT(3)
 diff --git a/drivers/net/wireless/realtek/rtw88/rtw8723d.c b/drivers/net/wireless/realtek/rtw88/rtw8723d.c
-index cccf05ee6807..5798a5804af3 100644
+index 5798a5804af3..5b97730f1407 100644
 --- a/drivers/net/wireless/realtek/rtw88/rtw8723d.c
 +++ b/drivers/net/wireless/realtek/rtw88/rtw8723d.c
-@@ -16,6 +16,9 @@
- 
- static struct rtw_chip_ops rtw8723d_ops = {
- 	.set_antenna		= NULL,
-+	.config_bfee		= NULL,
-+	.set_gid_table		= NULL,
-+	.cfg_csi_rate		= NULL,
+@@ -21,6 +21,407 @@ static struct rtw_chip_ops rtw8723d_ops = {
+ 	.cfg_csi_rate		= NULL,
  };
  
++static const struct rtw_pwr_seq_cmd trans_carddis_to_cardemu_8723d[] = {
++	{0x0005,
++	 RTW_PWR_CUT_ALL_MSK,
++	 RTW_PWR_INTF_ALL_MSK,
++	 RTW_PWR_ADDR_MAC,
++	 RTW_PWR_CMD_WRITE, BIT(3) | BIT(7), 0},
++	{0x0086,
++	 RTW_PWR_CUT_ALL_MSK,
++	 RTW_PWR_INTF_SDIO_MSK,
++	 RTW_PWR_ADDR_SDIO,
++	 RTW_PWR_CMD_WRITE, BIT(0), 0},
++	{0x0086,
++	 RTW_PWR_CUT_ALL_MSK,
++	 RTW_PWR_INTF_SDIO_MSK,
++	 RTW_PWR_ADDR_SDIO,
++	 RTW_PWR_CMD_POLLING, BIT(1), BIT(1)},
++	{0x004A,
++	 RTW_PWR_CUT_ALL_MSK,
++	 RTW_PWR_INTF_USB_MSK,
++	 RTW_PWR_ADDR_MAC,
++	 RTW_PWR_CMD_WRITE, BIT(0), 0},
++	{0x0005,
++	 RTW_PWR_CUT_ALL_MSK,
++	 RTW_PWR_INTF_ALL_MSK,
++	 RTW_PWR_ADDR_MAC,
++	 RTW_PWR_CMD_WRITE, BIT(3) | BIT(4), 0},
++	{0x0023,
++	 RTW_PWR_CUT_ALL_MSK,
++	 RTW_PWR_INTF_SDIO_MSK,
++	 RTW_PWR_ADDR_MAC,
++	 RTW_PWR_CMD_WRITE, BIT(4), 0},
++	{0x0301,
++	 RTW_PWR_CUT_ALL_MSK,
++	 RTW_PWR_INTF_PCI_MSK,
++	 RTW_PWR_ADDR_MAC,
++	 RTW_PWR_CMD_WRITE, 0xFF, 0},
++	{0xFFFF,
++	 RTW_PWR_CUT_ALL_MSK,
++	 RTW_PWR_INTF_ALL_MSK,
++	 0,
++	 RTW_PWR_CMD_END, 0, 0},
++};
++
++static const struct rtw_pwr_seq_cmd trans_cardemu_to_act_8723d[] = {
++	{0x0020,
++	 RTW_PWR_CUT_ALL_MSK,
++	 RTW_PWR_INTF_USB_MSK | RTW_PWR_INTF_SDIO_MSK,
++	 RTW_PWR_ADDR_MAC,
++	 RTW_PWR_CMD_WRITE, BIT(0), BIT(0)},
++	{0x0001,
++	 RTW_PWR_CUT_ALL_MSK,
++	 RTW_PWR_INTF_USB_MSK | RTW_PWR_INTF_SDIO_MSK,
++	 RTW_PWR_ADDR_MAC,
++	 RTW_PWR_CMD_DELAY, 1, RTW_PWR_DELAY_MS},
++	{0x0000,
++	 RTW_PWR_CUT_ALL_MSK,
++	 RTW_PWR_INTF_USB_MSK | RTW_PWR_INTF_SDIO_MSK,
++	 RTW_PWR_ADDR_MAC,
++	 RTW_PWR_CMD_WRITE, BIT(5), 0},
++	{0x0005,
++	 RTW_PWR_CUT_ALL_MSK,
++	 RTW_PWR_INTF_ALL_MSK,
++	 RTW_PWR_ADDR_MAC,
++	 RTW_PWR_CMD_WRITE, (BIT(4) | BIT(3) | BIT(2)), 0},
++	{0x0075,
++	 RTW_PWR_CUT_ALL_MSK,
++	 RTW_PWR_INTF_PCI_MSK,
++	 RTW_PWR_ADDR_MAC,
++	 RTW_PWR_CMD_WRITE, BIT(0), BIT(0)},
++	{0x0006,
++	 RTW_PWR_CUT_ALL_MSK,
++	 RTW_PWR_INTF_ALL_MSK,
++	 RTW_PWR_ADDR_MAC,
++	 RTW_PWR_CMD_POLLING, BIT(1), BIT(1)},
++	{0x0075,
++	 RTW_PWR_CUT_ALL_MSK,
++	 RTW_PWR_INTF_PCI_MSK,
++	 RTW_PWR_ADDR_MAC,
++	 RTW_PWR_CMD_WRITE, BIT(0), 0},
++	{0x0006,
++	 RTW_PWR_CUT_ALL_MSK,
++	 RTW_PWR_INTF_ALL_MSK,
++	 RTW_PWR_ADDR_MAC,
++	 RTW_PWR_CMD_WRITE, BIT(0), BIT(0)},
++	{0x0005,
++	 RTW_PWR_CUT_ALL_MSK,
++	 RTW_PWR_INTF_ALL_MSK,
++	 RTW_PWR_ADDR_MAC,
++	 RTW_PWR_CMD_POLLING, (BIT(1) | BIT(0)), 0},
++	{0x0005,
++	 RTW_PWR_CUT_ALL_MSK,
++	 RTW_PWR_INTF_ALL_MSK,
++	 RTW_PWR_ADDR_MAC,
++	 RTW_PWR_CMD_WRITE, BIT(7), 0},
++	{0x0005,
++	 RTW_PWR_CUT_ALL_MSK,
++	 RTW_PWR_INTF_ALL_MSK,
++	 RTW_PWR_ADDR_MAC,
++	 RTW_PWR_CMD_WRITE, (BIT(4) | BIT(3)), 0},
++	{0x0005,
++	 RTW_PWR_CUT_ALL_MSK,
++	 RTW_PWR_INTF_ALL_MSK,
++	 RTW_PWR_ADDR_MAC,
++	 RTW_PWR_CMD_WRITE, BIT(0), BIT(0)},
++	{0x0005,
++	 RTW_PWR_CUT_ALL_MSK,
++	 RTW_PWR_INTF_ALL_MSK,
++	 RTW_PWR_ADDR_MAC,
++	 RTW_PWR_CMD_POLLING, BIT(0), 0},
++	{0x0010,
++	 RTW_PWR_CUT_ALL_MSK,
++	 RTW_PWR_INTF_ALL_MSK,
++	 RTW_PWR_ADDR_MAC,
++	 RTW_PWR_CMD_WRITE, BIT(6), BIT(6)},
++	{0x0049,
++	 RTW_PWR_CUT_ALL_MSK,
++	 RTW_PWR_INTF_ALL_MSK,
++	 RTW_PWR_ADDR_MAC,
++	 RTW_PWR_CMD_WRITE, BIT(1), BIT(1)},
++	{0x0063,
++	 RTW_PWR_CUT_ALL_MSK,
++	 RTW_PWR_INTF_ALL_MSK,
++	 RTW_PWR_ADDR_MAC,
++	 RTW_PWR_CMD_WRITE, BIT(1), BIT(1)},
++	{0x0062,
++	 RTW_PWR_CUT_ALL_MSK,
++	 RTW_PWR_INTF_ALL_MSK,
++	 RTW_PWR_ADDR_MAC,
++	 RTW_PWR_CMD_WRITE, BIT(1), 0},
++	{0x0058,
++	 RTW_PWR_CUT_ALL_MSK,
++	 RTW_PWR_INTF_ALL_MSK,
++	 RTW_PWR_ADDR_MAC,
++	 RTW_PWR_CMD_WRITE, BIT(0), BIT(0)},
++	{0x005A,
++	 RTW_PWR_CUT_ALL_MSK,
++	 RTW_PWR_INTF_ALL_MSK,
++	 RTW_PWR_ADDR_MAC,
++	 RTW_PWR_CMD_WRITE, BIT(1), BIT(1)},
++	{0x0068,
++	 RTW_PWR_CUT_TEST_MSK,
++	 RTW_PWR_INTF_ALL_MSK,
++	 RTW_PWR_ADDR_MAC,
++	 RTW_PWR_CMD_WRITE, BIT(3), BIT(3)},
++	{0x0069,
++	 RTW_PWR_CUT_ALL_MSK,
++	 RTW_PWR_INTF_ALL_MSK,
++	 RTW_PWR_ADDR_MAC,
++	 RTW_PWR_CMD_WRITE, BIT(6), BIT(6)},
++	{0x001f,
++	 RTW_PWR_CUT_ALL_MSK,
++	 RTW_PWR_INTF_ALL_MSK,
++	 RTW_PWR_ADDR_MAC,
++	 RTW_PWR_CMD_WRITE, 0xFF, 0x00},
++	{0x0077,
++	 RTW_PWR_CUT_ALL_MSK,
++	 RTW_PWR_INTF_ALL_MSK,
++	 RTW_PWR_ADDR_MAC,
++	 RTW_PWR_CMD_WRITE, 0xFF, 0x00},
++	{0x001f,
++	 RTW_PWR_CUT_ALL_MSK,
++	 RTW_PWR_INTF_ALL_MSK,
++	 RTW_PWR_ADDR_MAC,
++	 RTW_PWR_CMD_WRITE, 0xFF, 0x07},
++	{0x0077,
++	 RTW_PWR_CUT_ALL_MSK,
++	 RTW_PWR_INTF_ALL_MSK,
++	 RTW_PWR_ADDR_MAC,
++	 RTW_PWR_CMD_WRITE, 0xFF, 0x07},
++	{0xFFFF,
++	 RTW_PWR_CUT_ALL_MSK,
++	 RTW_PWR_INTF_ALL_MSK,
++	 0,
++	 RTW_PWR_CMD_END, 0, 0},
++};
++
++static const struct rtw_pwr_seq_cmd *card_enable_flow_8723d[] = {
++	trans_carddis_to_cardemu_8723d,
++	trans_cardemu_to_act_8723d,
++	NULL
++};
++
++static const struct rtw_pwr_seq_cmd trans_act_to_lps_8723d[] = {
++	{0x0301,
++	 RTW_PWR_CUT_ALL_MSK,
++	 RTW_PWR_INTF_PCI_MSK,
++	 RTW_PWR_ADDR_MAC,
++	 RTW_PWR_CMD_WRITE, 0xFF, 0xFF},
++	{0x0522,
++	 RTW_PWR_CUT_ALL_MSK,
++	 RTW_PWR_INTF_ALL_MSK,
++	 RTW_PWR_ADDR_MAC,
++	 RTW_PWR_CMD_WRITE, 0xFF, 0xFF},
++	{0x05F8,
++	 RTW_PWR_CUT_ALL_MSK,
++	 RTW_PWR_INTF_ALL_MSK,
++	 RTW_PWR_ADDR_MAC,
++	 RTW_PWR_CMD_POLLING, 0xFF, 0},
++	{0x05F9,
++	 RTW_PWR_CUT_ALL_MSK,
++	 RTW_PWR_INTF_ALL_MSK,
++	 RTW_PWR_ADDR_MAC,
++	 RTW_PWR_CMD_POLLING, 0xFF, 0},
++	{0x05FA,
++	 RTW_PWR_CUT_ALL_MSK,
++	 RTW_PWR_INTF_ALL_MSK,
++	 RTW_PWR_ADDR_MAC,
++	 RTW_PWR_CMD_POLLING, 0xFF, 0},
++	{0x05FB,
++	 RTW_PWR_CUT_ALL_MSK,
++	 RTW_PWR_INTF_ALL_MSK,
++	 RTW_PWR_ADDR_MAC,
++	 RTW_PWR_CMD_POLLING, 0xFF, 0},
++	{0x0002,
++	 RTW_PWR_CUT_ALL_MSK,
++	 RTW_PWR_INTF_ALL_MSK,
++	 RTW_PWR_ADDR_MAC,
++	 RTW_PWR_CMD_WRITE, BIT(0), 0},
++	{0x0002,
++	 RTW_PWR_CUT_ALL_MSK,
++	 RTW_PWR_INTF_ALL_MSK,
++	 RTW_PWR_ADDR_MAC,
++	 RTW_PWR_CMD_DELAY, 0, RTW_PWR_DELAY_US},
++	{0x0002,
++	 RTW_PWR_CUT_ALL_MSK,
++	 RTW_PWR_INTF_ALL_MSK,
++	 RTW_PWR_ADDR_MAC,
++	 RTW_PWR_CMD_WRITE, BIT(1), 0},
++	{0x0100,
++	 RTW_PWR_CUT_ALL_MSK,
++	 RTW_PWR_INTF_ALL_MSK,
++	 RTW_PWR_ADDR_MAC,
++	 RTW_PWR_CMD_WRITE, 0xFF, 0x03},
++	{0x0101,
++	 RTW_PWR_CUT_ALL_MSK,
++	 RTW_PWR_INTF_ALL_MSK,
++	 RTW_PWR_ADDR_MAC,
++	 RTW_PWR_CMD_WRITE, BIT(1), 0},
++	{0x0093,
++	 RTW_PWR_CUT_ALL_MSK,
++	 RTW_PWR_INTF_SDIO_MSK,
++	 RTW_PWR_ADDR_MAC,
++	 RTW_PWR_CMD_WRITE, 0xFF, 0x00},
++	{0x0553,
++	 RTW_PWR_CUT_ALL_MSK,
++	 RTW_PWR_INTF_ALL_MSK,
++	 RTW_PWR_ADDR_MAC,
++	 RTW_PWR_CMD_WRITE, BIT(5), BIT(5)},
++	{0xFFFF,
++	 RTW_PWR_CUT_ALL_MSK,
++	 RTW_PWR_INTF_ALL_MSK,
++	 0,
++	 RTW_PWR_CMD_END, 0, 0},
++};
++
++static const struct rtw_pwr_seq_cmd trans_act_to_pre_carddis_8723d[] = {
++	{0x0003,
++	 RTW_PWR_CUT_ALL_MSK,
++	 RTW_PWR_INTF_ALL_MSK,
++	 RTW_PWR_ADDR_MAC,
++	 RTW_PWR_CMD_WRITE, BIT(2), 0},
++	{0x0080,
++	 RTW_PWR_CUT_ALL_MSK,
++	 RTW_PWR_INTF_ALL_MSK,
++	 RTW_PWR_ADDR_MAC,
++	 RTW_PWR_CMD_WRITE, 0xFF, 0},
++	{0xFFFF,
++	 RTW_PWR_CUT_ALL_MSK,
++	 RTW_PWR_INTF_ALL_MSK,
++	 0,
++	 RTW_PWR_CMD_END, 0, 0},
++};
++
++static const struct rtw_pwr_seq_cmd trans_act_to_cardemu_8723d[] = {
++	{0x0002,
++	 RTW_PWR_CUT_ALL_MSK,
++	 RTW_PWR_INTF_ALL_MSK,
++	 RTW_PWR_ADDR_MAC,
++	 RTW_PWR_CMD_WRITE, BIT(0), 0},
++	{0x0049,
++	 RTW_PWR_CUT_ALL_MSK,
++	 RTW_PWR_INTF_ALL_MSK,
++	 RTW_PWR_ADDR_MAC,
++	 RTW_PWR_CMD_WRITE, BIT(1), 0},
++	{0x0006,
++	 RTW_PWR_CUT_ALL_MSK,
++	 RTW_PWR_INTF_ALL_MSK,
++	 RTW_PWR_ADDR_MAC,
++	 RTW_PWR_CMD_WRITE, BIT(0), BIT(0)},
++	{0x0005,
++	 RTW_PWR_CUT_ALL_MSK,
++	 RTW_PWR_INTF_ALL_MSK,
++	 RTW_PWR_ADDR_MAC,
++	 RTW_PWR_CMD_WRITE, BIT(1), BIT(1)},
++	{0x0005,
++	 RTW_PWR_CUT_ALL_MSK,
++	 RTW_PWR_INTF_ALL_MSK,
++	 RTW_PWR_ADDR_MAC,
++	 RTW_PWR_CMD_POLLING, BIT(1), 0},
++	{0x0010,
++	 RTW_PWR_CUT_ALL_MSK,
++	 RTW_PWR_INTF_ALL_MSK,
++	 RTW_PWR_ADDR_MAC,
++	 RTW_PWR_CMD_WRITE, BIT(6), 0},
++	{0x0000,
++	 RTW_PWR_CUT_ALL_MSK,
++	 RTW_PWR_INTF_USB_MSK | RTW_PWR_INTF_SDIO_MSK,
++	 RTW_PWR_ADDR_MAC,
++	 RTW_PWR_CMD_WRITE, BIT(5), BIT(5)},
++	{0x0020,
++	 RTW_PWR_CUT_ALL_MSK,
++	 RTW_PWR_INTF_USB_MSK | RTW_PWR_INTF_SDIO_MSK,
++	 RTW_PWR_ADDR_MAC,
++	 RTW_PWR_CMD_WRITE, BIT(0), 0},
++	{0xFFFF,
++	 RTW_PWR_CUT_ALL_MSK,
++	 RTW_PWR_INTF_ALL_MSK,
++	 0,
++	 RTW_PWR_CMD_END, 0, 0},
++};
++
++static const struct rtw_pwr_seq_cmd trans_cardemu_to_carddis_8723d[] = {
++	{0x0007,
++	 RTW_PWR_CUT_ALL_MSK,
++	 RTW_PWR_INTF_SDIO_MSK,
++	 RTW_PWR_ADDR_MAC,
++	 RTW_PWR_CMD_WRITE, 0xFF, 0x20},
++	{0x0005,
++	 RTW_PWR_CUT_ALL_MSK,
++	 RTW_PWR_INTF_USB_MSK | RTW_PWR_INTF_SDIO_MSK,
++	 RTW_PWR_ADDR_MAC,
++	 RTW_PWR_CMD_WRITE, BIT(3) | BIT(4), BIT(3)},
++	{0x0005,
++	 RTW_PWR_CUT_ALL_MSK,
++	 RTW_PWR_INTF_PCI_MSK,
++	 RTW_PWR_ADDR_MAC,
++	 RTW_PWR_CMD_WRITE, BIT(2), BIT(2)},
++	{0x0005,
++	 RTW_PWR_CUT_ALL_MSK,
++	 RTW_PWR_INTF_PCI_MSK,
++	 RTW_PWR_ADDR_MAC,
++	 RTW_PWR_CMD_WRITE, BIT(3) | BIT(4), BIT(3) | BIT(4)},
++	{0x004A,
++	 RTW_PWR_CUT_ALL_MSK,
++	 RTW_PWR_INTF_USB_MSK,
++	 RTW_PWR_ADDR_MAC,
++	 RTW_PWR_CMD_WRITE, BIT(0), 1},
++	{0x0023,
++	 RTW_PWR_CUT_ALL_MSK,
++	 RTW_PWR_INTF_SDIO_MSK,
++	 RTW_PWR_ADDR_MAC,
++	 RTW_PWR_CMD_WRITE, BIT(4), BIT(4)},
++	{0x0086,
++	 RTW_PWR_CUT_ALL_MSK,
++	 RTW_PWR_INTF_SDIO_MSK,
++	 RTW_PWR_ADDR_SDIO,
++	 RTW_PWR_CMD_WRITE, BIT(0), BIT(0)},
++	{0x0086,
++	 RTW_PWR_CUT_ALL_MSK,
++	 RTW_PWR_INTF_SDIO_MSK,
++	 RTW_PWR_ADDR_SDIO,
++	 RTW_PWR_CMD_POLLING, BIT(1), 0},
++	{0xFFFF,
++	 RTW_PWR_CUT_ALL_MSK,
++	 RTW_PWR_INTF_ALL_MSK,
++	 0,
++	 RTW_PWR_CMD_END, 0, 0},
++};
++
++static const struct rtw_pwr_seq_cmd trans_act_to_post_carddis_8723d[] = {
++	{0x001D,
++	 RTW_PWR_CUT_ALL_MSK,
++	 RTW_PWR_INTF_ALL_MSK,
++	 RTW_PWR_ADDR_MAC,
++	 RTW_PWR_CMD_WRITE, BIT(0), 0},
++	{0x001D,
++	 RTW_PWR_CUT_ALL_MSK,
++	 RTW_PWR_INTF_ALL_MSK,
++	 RTW_PWR_ADDR_MAC,
++	 RTW_PWR_CMD_WRITE, BIT(0), BIT(0)},
++	{0x001C,
++	 RTW_PWR_CUT_ALL_MSK,
++	 RTW_PWR_INTF_ALL_MSK,
++	 RTW_PWR_ADDR_MAC,
++	 RTW_PWR_CMD_WRITE, 0xFF, 0x0E},
++	{0xFFFF,
++	 RTW_PWR_CUT_ALL_MSK,
++	 RTW_PWR_INTF_ALL_MSK,
++	 0,
++	 RTW_PWR_CMD_END, 0, 0},
++};
++
++static const struct rtw_pwr_seq_cmd *card_disable_flow_8723d[] = {
++	trans_act_to_lps_8723d,
++	trans_act_to_pre_carddis_8723d,
++	trans_act_to_cardemu_8723d,
++	trans_cardemu_to_carddis_8723d,
++	trans_act_to_post_carddis_8723d,
++	NULL
++};
++
  struct rtw_chip_info rtw8723d_hw_spec = {
+ 	.ops = &rtw8723d_ops,
+ 	.id = RTW_CHIP_TYPE_8723D,
+@@ -41,6 +442,8 @@ struct rtw_chip_info rtw8723d_hw_spec = {
+ 	.vht_supported = false,
+ 	.lps_deep_mode_supported = 0,
+ 	.sys_func_en = 0xFD,
++	.pwr_on_seq = card_enable_flow_8723d,
++	.pwr_off_seq = card_disable_flow_8723d,
+ };
+ EXPORT_SYMBOL(rtw8723d_hw_spec);
+ 
 -- 
 2.17.1
 
