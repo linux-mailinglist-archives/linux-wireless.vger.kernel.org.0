@@ -2,20 +2,20 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B51C31AD7D0
-	for <lists+linux-wireless@lfdr.de>; Fri, 17 Apr 2020 09:48:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F5E61AD7D1
+	for <lists+linux-wireless@lfdr.de>; Fri, 17 Apr 2020 09:48:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729406AbgDQHrX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        id S1729403AbgDQHrX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
         Fri, 17 Apr 2020 03:47:23 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:37063 "EHLO
+Received: from rtits2.realtek.com ([211.75.126.72]:37064 "EHLO
         rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729325AbgDQHrP (ORCPT
+        with ESMTP id S1729326AbgDQHrP (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Fri, 17 Apr 2020 03:47:15 -0400
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.69 with qID 03H7l7hG5020159, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.69 with qID 03H7l7hH5020159, This message is accepted by code: ctloc85258
 Received: from mail.realtek.com (rtexmb06.realtek.com.tw[172.21.6.99])
-        by rtits2.realtek.com.tw (8.15.2/2.66/5.86) with ESMTPS id 03H7l7hG5020159
+        by rtits2.realtek.com.tw (8.15.2/2.66/5.86) with ESMTPS id 03H7l7hH5020159
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
         Fri, 17 Apr 2020 15:47:07 +0800
 Received: from RTEXMB04.realtek.com.tw (172.21.6.97) by
@@ -30,9 +30,9 @@ From:   <yhchuang@realtek.com>
 To:     <kvalo@codeaurora.org>
 CC:     <pkshih@realtek.com>, <linux-wireless@vger.kernel.org>,
         <briannorris@chromium.org>, <kevin_yang@realtek.com>
-Subject: [PATCH 29/40] rtw88: 8723d: implement flush queue
-Date:   Fri, 17 Apr 2020 15:46:42 +0800
-Message-ID: <20200417074653.15591-30-yhchuang@realtek.com>
+Subject: [PATCH 30/40] rtw88: 8723d: set ltecoex register address in chip_info
+Date:   Fri, 17 Apr 2020 15:46:43 +0800
+Message-ID: <20200417074653.15591-31-yhchuang@realtek.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200417074653.15591-1-yhchuang@realtek.com>
 References: <20200417074653.15591-1-yhchuang@realtek.com>
@@ -48,202 +48,174 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Ping-Ke Shih <pkshih@realtek.com>
 
-Flush queue is used to check if queue is empty, before doing something
-else. Since 8723D uses different registers and page number of
-availabl/reserved occupy 8 bits instead of 16 bits, so use a 'wsize' field
-to discriminate which rtw_read{8,16} is adopted.
+Since 8723D use different address of ltecoex register, this commit add a
+new field in chip_info and fill proper address. Then, ltecoex_read_reg()
+and ltecoex_reg_write() can use them to access ltecoex according to chip.
 
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw88/mac.c      | 29 +++++++------------
- drivers/net/wireless/realtek/rtw88/main.h     | 11 +++++++
- drivers/net/wireless/realtek/rtw88/rtw8723d.c | 17 +++++++++++
- drivers/net/wireless/realtek/rtw88/rtw8822b.c | 17 +++++++++++
- drivers/net/wireless/realtek/rtw88/rtw8822c.c | 17 +++++++++++
- 5 files changed, 73 insertions(+), 18 deletions(-)
+ drivers/net/wireless/realtek/rtw88/main.h     |  7 +++++++
+ drivers/net/wireless/realtek/rtw88/rtw8723d.c |  7 +++++++
+ drivers/net/wireless/realtek/rtw88/rtw8723d.h |  3 +++
+ drivers/net/wireless/realtek/rtw88/rtw8822b.c |  7 +++++++
+ drivers/net/wireless/realtek/rtw88/rtw8822c.c |  7 +++++++
+ drivers/net/wireless/realtek/rtw88/util.c     | 18 ++++++++++++------
+ 6 files changed, 43 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/mac.c b/drivers/net/wireless/realtek/rtw88/mac.c
-index c42d0f681dda..d949949236a3 100644
---- a/drivers/net/wireless/realtek/rtw88/mac.c
-+++ b/drivers/net/wireless/realtek/rtw88/mac.c
-@@ -917,31 +917,24 @@ static u32 get_priority_queues(struct rtw_dev *rtwdev, u32 queues)
- static void __rtw_mac_flush_prio_queue(struct rtw_dev *rtwdev,
- 				       u32 prio_queue, bool drop)
- {
--	u32 addr;
-+	struct rtw_chip_info *chip = rtwdev->chip;
-+	const struct rtw_prioq_addr *addr;
-+	bool wsize;
- 	u16 avail_page, rsvd_page;
- 	int i;
- 
--	switch (prio_queue) {
--	case RTW_DMA_MAPPING_EXTRA:
--		addr = REG_FIFOPAGE_INFO_4;
--		break;
--	case RTW_DMA_MAPPING_LOW:
--		addr = REG_FIFOPAGE_INFO_2;
--		break;
--	case RTW_DMA_MAPPING_NORMAL:
--		addr = REG_FIFOPAGE_INFO_3;
--		break;
--	case RTW_DMA_MAPPING_HIGH:
--		addr = REG_FIFOPAGE_INFO_1;
--		break;
--	default:
-+	if (prio_queue >= RTW_DMA_MAPPING_MAX)
- 		return;
--	}
-+
-+	addr = &chip->prioq_addrs->prio[prio_queue];
-+	wsize = chip->prioq_addrs->wsize;
- 
- 	/* check if all of the reserved pages are available for 100 msecs */
- 	for (i = 0; i < 5; i++) {
--		rsvd_page = rtw_read16(rtwdev, addr);
--		avail_page = rtw_read16(rtwdev, addr + 2);
-+		rsvd_page = wsize ? rtw_read16(rtwdev, addr->rsvd) :
-+				     rtw_read8(rtwdev, addr->rsvd);
-+		avail_page = wsize ? rtw_read16(rtwdev, addr->avail) :
-+				      rtw_read8(rtwdev, addr->avail);
- 		if (rsvd_page == avail_page)
- 			return;
- 
 diff --git a/drivers/net/wireless/realtek/rtw88/main.h b/drivers/net/wireless/realtek/rtw88/main.h
-index 9421397ee444..8ba8702457f4 100644
+index 8ba8702457f4..35e2fb19ad56 100644
 --- a/drivers/net/wireless/realtek/rtw88/main.h
 +++ b/drivers/net/wireless/realtek/rtw88/main.h
-@@ -943,6 +943,16 @@ struct rtw_rqpn {
- 	enum rtw_dma_mapping dma_map_hi;
+@@ -517,6 +517,12 @@ struct rtw_hw_reg {
+ 	u32 mask;
  };
  
-+struct rtw_prioq_addr {
-+	u32 rsvd;
-+	u32 avail;
++struct rtw_ltecoex_addr {
++	u32 ctrl;
++	u32 wdata;
++	u32 rdata;
 +};
 +
-+struct rtw_prioq_addrs {
-+	struct rtw_prioq_addr prio[RTW_DMA_MAPPING_MAX];
-+	bool wsize;
-+};
-+
- struct rtw_page_table {
- 	u16 hq_num;
- 	u16 nq_num;
-@@ -1098,6 +1108,7 @@ struct rtw_chip_info {
- 	const struct rtw_pwr_seq_cmd **pwr_on_seq;
- 	const struct rtw_pwr_seq_cmd **pwr_off_seq;
- 	const struct rtw_rqpn *rqpn_table;
-+	const struct rtw_prioq_addrs *prioq_addrs;
- 	const struct rtw_page_table *page_table;
- 	const struct rtw_intf_phy_para_table *intf_table;
+ struct rtw_reg_domain {
+ 	u32 addr;
+ 	u32 mask;
+@@ -1118,6 +1124,7 @@ struct rtw_chip_info {
+ 	u32 rf_sipi_addr[2];
+ 	const struct rtw_rf_sipi_addr *rf_sipi_read_addr;
+ 	u8 fix_rf_phy_num;
++	const struct rtw_ltecoex_addr *ltecoex_addr;
  
+ 	const struct rtw_table *mac_tbl;
+ 	const struct rtw_table *agc_tbl;
 diff --git a/drivers/net/wireless/realtek/rtw88/rtw8723d.c b/drivers/net/wireless/realtek/rtw88/rtw8723d.c
-index b58915e5e1de..e93f4f0e5676 100644
+index e93f4f0e5676..27b595fd4640 100644
 --- a/drivers/net/wireless/realtek/rtw88/rtw8723d.c
 +++ b/drivers/net/wireless/realtek/rtw88/rtw8723d.c
-@@ -2281,6 +2281,22 @@ static const struct rtw_rqpn rqpn_table_8723d[] = {
- 	 RTW_DMA_MAPPING_EXTRA, RTW_DMA_MAPPING_HIGH},
+@@ -2333,6 +2333,12 @@ static const struct rtw_rf_sipi_addr rtw8723d_rf_sipi_addr[] = {
+ 			.hssi_2 = 0x82c, .lssi_read_pi = 0x8bc},
  };
  
-+static const struct rtw_prioq_addrs prioq_addrs_8723d = {
-+	.prio[RTW_DMA_MAPPING_EXTRA] = {
-+		.rsvd = REG_RQPN_NPQ + 2, .avail = REG_RQPN_NPQ + 3,
-+	},
-+	.prio[RTW_DMA_MAPPING_LOW] = {
-+		.rsvd = REG_RQPN + 1, .avail = REG_FIFOPAGE_CTRL_2 + 1,
-+	},
-+	.prio[RTW_DMA_MAPPING_NORMAL] = {
-+		.rsvd = REG_RQPN_NPQ, .avail = REG_RQPN_NPQ + 1,
-+	},
-+	.prio[RTW_DMA_MAPPING_HIGH] = {
-+		.rsvd = REG_RQPN, .avail = REG_FIFOPAGE_CTRL_2,
-+	},
-+	.wsize = false,
++static const struct rtw_ltecoex_addr rtw8723d_ltecoex_addr = {
++	.ctrl = REG_LTECOEX_CTRL,
++	.wdata = REG_LTECOEX_WRITE_DATA,
++	.rdata = REG_LTECOEX_READ_DATA,
 +};
 +
- static const struct rtw_intf_phy_para pcie_gen1_param_8723d[] = {
- 	{0x0008, 0x4a22,
- 	 RTW_IP_SEL_PHY,
-@@ -2414,6 +2430,7 @@ struct rtw_chip_info rtw8723d_hw_spec = {
- 	.pwr_off_seq = card_disable_flow_8723d,
- 	.page_table = page_table_8723d,
- 	.rqpn_table = rqpn_table_8723d,
-+	.prioq_addrs = &prioq_addrs_8723d,
- 	.intf_table = &phy_para_table_8723d,
- 	.dig = rtw8723d_dig,
- 	.dig_cck = rtw8723d_dig_cck,
+ static const struct rtw_rfe_def rtw8723d_rfe_defs[] = {
+ 	[0] = { .phy_pg_tbl	= &rtw8723d_bb_pg_tbl,
+ 		.txpwr_lmt_tbl	= &rtw8723d_txpwr_lmt_tbl,},
+@@ -2437,6 +2443,7 @@ struct rtw_chip_info rtw8723d_hw_spec = {
+ 	.rf_sipi_addr = {0x840, 0x844},
+ 	.rf_sipi_read_addr = rtw8723d_rf_sipi_addr,
+ 	.fix_rf_phy_num = 2,
++	.ltecoex_addr = &rtw8723d_ltecoex_addr,
+ 	.mac_tbl = &rtw8723d_mac_tbl,
+ 	.agc_tbl = &rtw8723d_agc_tbl,
+ 	.bb_tbl = &rtw8723d_bb_tbl,
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8723d.h b/drivers/net/wireless/realtek/rtw88/rtw8723d.h
+index a31cf9d85f69..2e20baf58530 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8723d.h
++++ b/drivers/net/wireless/realtek/rtw88/rtw8723d.h
+@@ -114,6 +114,9 @@ static inline s32 iqk_mult(s32 x, s32 y, s32 *ext)
+ 
+ #define REG_BTG_SEL		0x0067
+ #define REG_LTECOEX_PATH_CONTROL	0x0070
++#define REG_LTECOEX_CTRL	0x07c0
++#define REG_LTECOEX_WRITE_DATA	0x07c4
++#define REG_LTECOEX_READ_DATA	0x07c8
+ #define REG_PSDFN		0x0808
+ #define REG_BB_PWR_SAV1_11N	0x0874
+ #define REG_ANALOG_P4		0x088c
 diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822b.c b/drivers/net/wireless/realtek/rtw88/rtw8822b.c
-index 51b16a831162..bd6a3f4399e1 100644
+index bd6a3f4399e1..c76cd0893d12 100644
 --- a/drivers/net/wireless/realtek/rtw88/rtw8822b.c
 +++ b/drivers/net/wireless/realtek/rtw88/rtw8822b.c
-@@ -2083,6 +2083,22 @@ static const struct rtw_rqpn rqpn_table_8822b[] = {
- 	 RTW_DMA_MAPPING_EXTRA, RTW_DMA_MAPPING_HIGH},
+@@ -2057,6 +2057,12 @@ static const struct rtw_hw_reg rtw8822b_dig[] = {
+ 	[1] = { .addr = 0xe50, .mask = 0x7f },
  };
  
-+static struct rtw_prioq_addrs prioq_addrs_8822b = {
-+	.prio[RTW_DMA_MAPPING_EXTRA] = {
-+		.rsvd = REG_FIFOPAGE_INFO_4, .avail = REG_FIFOPAGE_INFO_4 + 2,
-+	},
-+	.prio[RTW_DMA_MAPPING_LOW] = {
-+		.rsvd = REG_FIFOPAGE_INFO_2, .avail = REG_FIFOPAGE_INFO_2 + 2,
-+	},
-+	.prio[RTW_DMA_MAPPING_NORMAL] = {
-+		.rsvd = REG_FIFOPAGE_INFO_3, .avail = REG_FIFOPAGE_INFO_3 + 2,
-+	},
-+	.prio[RTW_DMA_MAPPING_HIGH] = {
-+		.rsvd = REG_FIFOPAGE_INFO_1, .avail = REG_FIFOPAGE_INFO_1 + 2,
-+	},
-+	.wsize = true,
++static const struct rtw_ltecoex_addr rtw8822b_ltecoex_addr = {
++	.ctrl = LTECOEX_ACCESS_CTRL,
++	.wdata = LTECOEX_WRITE_DATA,
++	.rdata = LTECOEX_READ_DATA,
 +};
 +
- static struct rtw_chip_ops rtw8822b_ops = {
- 	.phy_set_param		= rtw8822b_phy_set_param,
- 	.read_efuse		= rtw8822b_read_efuse,
-@@ -2433,6 +2449,7 @@ struct rtw_chip_info rtw8822b_hw_spec = {
- 	.pwr_off_seq = card_disable_flow_8822b,
- 	.page_table = page_table_8822b,
- 	.rqpn_table = rqpn_table_8822b,
-+	.prioq_addrs = &prioq_addrs_8822b,
- 	.intf_table = &phy_para_table_8822b,
- 	.dig = rtw8822b_dig,
+ static const struct rtw_page_table page_table_8822b[] = {
+ 	{64, 64, 64, 64, 1},
+ 	{64, 64, 64, 64, 1},
+@@ -2455,6 +2461,7 @@ struct rtw_chip_info rtw8822b_hw_spec = {
  	.dig_cck = NULL,
+ 	.rf_base_addr = {0x2800, 0x2c00},
+ 	.rf_sipi_addr = {0xc90, 0xe90},
++	.ltecoex_addr = &rtw8822b_ltecoex_addr,
+ 	.mac_tbl = &rtw8822b_mac_tbl,
+ 	.agc_tbl = &rtw8822b_agc_tbl,
+ 	.bb_tbl = &rtw8822b_bb_tbl,
 diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822c.c b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-index b17b7cfbbe40..38e90de14a3c 100644
+index 38e90de14a3c..d2e74ac21d07 100644
 --- a/drivers/net/wireless/realtek/rtw88/rtw8822c.c
 +++ b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-@@ -3819,6 +3819,22 @@ static const struct rtw_rqpn rqpn_table_8822c[] = {
- 	 RTW_DMA_MAPPING_EXTRA, RTW_DMA_MAPPING_HIGH},
+@@ -3793,6 +3793,12 @@ static const struct rtw_hw_reg rtw8822c_dig[] = {
+ 	[1] = { .addr = 0x1d70, .mask = 0x7f00 },
  };
  
-+static struct rtw_prioq_addrs prioq_addrs_8822c = {
-+	.prio[RTW_DMA_MAPPING_EXTRA] = {
-+		.rsvd = REG_FIFOPAGE_INFO_4, .avail = REG_FIFOPAGE_INFO_4 + 2,
-+	},
-+	.prio[RTW_DMA_MAPPING_LOW] = {
-+		.rsvd = REG_FIFOPAGE_INFO_2, .avail = REG_FIFOPAGE_INFO_2 + 2,
-+	},
-+	.prio[RTW_DMA_MAPPING_NORMAL] = {
-+		.rsvd = REG_FIFOPAGE_INFO_3, .avail = REG_FIFOPAGE_INFO_3 + 2,
-+	},
-+	.prio[RTW_DMA_MAPPING_HIGH] = {
-+		.rsvd = REG_FIFOPAGE_INFO_1, .avail = REG_FIFOPAGE_INFO_1 + 2,
-+	},
-+	.wsize = true,
++static const struct rtw_ltecoex_addr rtw8822c_ltecoex_addr = {
++	.ctrl = LTECOEX_ACCESS_CTRL,
++	.wdata = LTECOEX_WRITE_DATA,
++	.rdata = LTECOEX_READ_DATA,
 +};
 +
- static struct rtw_chip_ops rtw8822c_ops = {
- 	.phy_set_param		= rtw8822c_phy_set_param,
- 	.read_efuse		= rtw8822c_read_efuse,
-@@ -4181,6 +4197,7 @@ struct rtw_chip_info rtw8822c_hw_spec = {
- 	.pwr_off_seq = card_disable_flow_8822c,
- 	.page_table = page_table_8822c,
- 	.rqpn_table = rqpn_table_8822c,
-+	.prioq_addrs = &prioq_addrs_8822c,
- 	.intf_table = &phy_para_table_8822c,
- 	.dig = rtw8822c_dig,
+ static const struct rtw_page_table page_table_8822c[] = {
+ 	{64, 64, 64, 64, 1},
+ 	{64, 64, 64, 64, 1},
+@@ -4203,6 +4209,7 @@ struct rtw_chip_info rtw8822c_hw_spec = {
  	.dig_cck = NULL,
+ 	.rf_base_addr = {0x3c00, 0x4c00},
+ 	.rf_sipi_addr = {0x1808, 0x4108},
++	.ltecoex_addr = &rtw8822c_ltecoex_addr,
+ 	.mac_tbl = &rtw8822c_mac_tbl,
+ 	.agc_tbl = &rtw8822c_agc_tbl,
+ 	.bb_tbl = &rtw8822c_bb_tbl,
+diff --git a/drivers/net/wireless/realtek/rtw88/util.c b/drivers/net/wireless/realtek/rtw88/util.c
+index 10f1117c0cfb..42cf177cd445 100644
+--- a/drivers/net/wireless/realtek/rtw88/util.c
++++ b/drivers/net/wireless/realtek/rtw88/util.c
+@@ -22,22 +22,28 @@ bool check_hw_ready(struct rtw_dev *rtwdev, u32 addr, u32 mask, u32 target)
+ 
+ bool ltecoex_read_reg(struct rtw_dev *rtwdev, u16 offset, u32 *val)
+ {
+-	if (!check_hw_ready(rtwdev, LTECOEX_ACCESS_CTRL, LTECOEX_READY, 1))
++	struct rtw_chip_info *chip = rtwdev->chip;
++	const struct rtw_ltecoex_addr *ltecoex = chip->ltecoex_addr;
++
++	if (!check_hw_ready(rtwdev, ltecoex->ctrl, LTECOEX_READY, 1))
+ 		return false;
+ 
+-	rtw_write32(rtwdev, LTECOEX_ACCESS_CTRL, 0x800F0000 | offset);
+-	*val = rtw_read32(rtwdev, LTECOEX_READ_DATA);
++	rtw_write32(rtwdev, ltecoex->ctrl, 0x800F0000 | offset);
++	*val = rtw_read32(rtwdev, ltecoex->rdata);
+ 
+ 	return true;
+ }
+ 
+ bool ltecoex_reg_write(struct rtw_dev *rtwdev, u16 offset, u32 value)
+ {
+-	if (!check_hw_ready(rtwdev, LTECOEX_ACCESS_CTRL, LTECOEX_READY, 1))
++	struct rtw_chip_info *chip = rtwdev->chip;
++	const struct rtw_ltecoex_addr *ltecoex = chip->ltecoex_addr;
++
++	if (!check_hw_ready(rtwdev, ltecoex->ctrl, LTECOEX_READY, 1))
+ 		return false;
+ 
+-	rtw_write32(rtwdev, LTECOEX_WRITE_DATA, value);
+-	rtw_write32(rtwdev, LTECOEX_ACCESS_CTRL, 0xC00F0000 | offset);
++	rtw_write32(rtwdev, ltecoex->wdata, value);
++	rtw_write32(rtwdev, ltecoex->ctrl, 0xC00F0000 | offset);
+ 
+ 	return true;
+ }
 -- 
 2.17.1
 
