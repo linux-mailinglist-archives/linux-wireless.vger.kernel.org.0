@@ -2,95 +2,83 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5031E1AD833
-	for <lists+linux-wireless@lfdr.de>; Fri, 17 Apr 2020 10:06:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C8571AD868
+	for <lists+linux-wireless@lfdr.de>; Fri, 17 Apr 2020 10:19:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729594AbgDQIGR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 17 Apr 2020 04:06:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60300 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1729495AbgDQIGR (ORCPT
+        id S1729626AbgDQITu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 17 Apr 2020 04:19:50 -0400
+Received: from mail27.static.mailgun.info ([104.130.122.27]:33974 "EHLO
+        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1729176AbgDQITt (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 17 Apr 2020 04:06:17 -0400
-Received: from mail-wm1-x344.google.com (mail-wm1-x344.google.com [IPv6:2a00:1450:4864:20::344])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1BC7C061A0C;
-        Fri, 17 Apr 2020 01:06:16 -0700 (PDT)
-Received: by mail-wm1-x344.google.com with SMTP id u127so859229wmg.1;
-        Fri, 17 Apr 2020 01:06:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:reply-to:from:date:message-id
-         :subject:to:cc;
-        bh=+kuS6BUfuBu5HQsWBXUl7gRKx/aytxpOX/9Vd+bRiDU=;
-        b=UhE3qYTId31hQmEicQpRzqVTz/HaCzfv2XHh+zezamt3bMmFiWFfIi9lnKbWmlLsxL
-         FVvrx6ojJiGisLq51N1uek+EP7NQbUZBk+AXhj0h5EJOgfk1zAdUJWN2g437P/z8QGU7
-         7bSxtaGlWCht3ouQ8krcoVnLUEh6HO9Kzflu96jOZn/vg2BLZfx3dQ8CCrvRs44kfEJ4
-         MpQbayGNRQuSvt/fYtDHNFh0CcOC4oTWYTgEoYwRjiJY1g4gQUI1FsuPTLXgF76Uyr4Y
-         /bpkdB01JJJ5rhGCXze3B080L6oRQZCtfD5HbQ/IKhQZvXHd0lfgmrRSpzNbFwLa04gT
-         QuOQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:reply-to
-         :from:date:message-id:subject:to:cc;
-        bh=+kuS6BUfuBu5HQsWBXUl7gRKx/aytxpOX/9Vd+bRiDU=;
-        b=gfR+gK9N2lw+mITu/SnzJbhxDzoDiusE1rzzLtjwq11BZKcadN8HZx1OY5lfo+4nn5
-         +r3yXbBKka7fjc/9sp3CxmDatvFn5nC3rdiuHHwYJgbG3e60OUo5soMph6BNs2QFf2Be
-         gp5jkSv6X1np7g6QPamrCzVyaI8NPzUtxoLNuUcyiVe/IJ5juKuS2vno4GI4VALrTB/w
-         yHRfukU3qzBlYvRlbKJ3T3QInDeheab/tm1vKtiRIHPl0LSREh8umsHY9XwH8SXajGeX
-         FNwBjhQPPVWR4ysW9knwYESbu6cmPFLjY2XQzl9fbMNnVmBKvLmY4aZadw3HOGwiqQbV
-         RfXw==
-X-Gm-Message-State: AGi0PuZEJcX4PkbDZKhztGrJfGo1TdCROJrEoJ3YXVYhALik15ukO4/h
-        QMxfU5suQqmXzfDbz1uc4JAM4QZvqudFfWmTqrg=
-X-Google-Smtp-Source: APiQypI2US9O1jjsCOONSDLCRDOJ6V5P1ZOIQ4Y/j+Qbd7NUwkHmokUZzSEMhs1xsBgG22ouN4nGv+P1mws7n9z3HEM=
-X-Received: by 2002:a7b:cb86:: with SMTP id m6mr1977493wmi.64.1587110775555;
- Fri, 17 Apr 2020 01:06:15 -0700 (PDT)
+        Fri, 17 Apr 2020 04:19:49 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1587111589; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=/7yKs6ysaSQ6o8f2hhWqkR0wQfyQw4kSJ38wV5CP0RY=; b=nupEI979668wpebWrSQutsiL4nzDK//yJN5YjfeQUchUQqnsLmXvLo3pXtTMIOSOGVs8Y2Ml
+ RNKi82AkYzX28qy1W+DRn6HCkDAzxLRj3rUFY0+s10Jf9SqI897TxSTia1dr6yH18275bQ5d
+ t1UOV238476zxXhbthDpC3lzX8A=
+X-Mailgun-Sending-Ip: 104.130.122.27
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5e996692.7fd03ae9d650-smtp-out-n03;
+ Fri, 17 Apr 2020 08:19:30 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id A0BC2C432C2; Fri, 17 Apr 2020 08:19:29 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id C6CC7C433CB;
+        Fri, 17 Apr 2020 08:19:27 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org C6CC7C433CB
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     <yhchuang@realtek.com>
+Cc:     <pkshih@realtek.com>, <linux-wireless@vger.kernel.org>,
+        <briannorris@chromium.org>, <kevin_yang@realtek.com>
+Subject: Re: [PATCH 00/40] rtw88: add support for 802.11n RTL8723DE devices
+References: <20200417074653.15591-1-yhchuang@realtek.com>
+Date:   Fri, 17 Apr 2020 11:19:25 +0300
+In-Reply-To: <20200417074653.15591-1-yhchuang@realtek.com>
+        (yhchuang@realtek.com's message of "Fri, 17 Apr 2020 15:46:13 +0800")
+Message-ID: <87lfmuplrm.fsf@kamboji.qca.qualcomm.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-References: <20200417074558.12316-1-sedat.dilek@gmail.com> <87pnc6pmiw.fsf@kamboji.qca.qualcomm.com>
-In-Reply-To: <87pnc6pmiw.fsf@kamboji.qca.qualcomm.com>
-Reply-To: sedat.dilek@gmail.com
-From:   Sedat Dilek <sedat.dilek@gmail.com>
-Date:   Fri, 17 Apr 2020 10:06:04 +0200
-Message-ID: <CA+icZUUuC5axCJvGm68tCgRmhNA=PG5EZ2ioNfKwiZwfpz-yDQ@mail.gmail.com>
-Subject: Re: [PATCH wireless-drivers v3] iwlwifi: actually check allocated
- conf_tlv pointer
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     Johannes Berg <johannes.berg@intel.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Intel Linux Wireless <linuxwifi@intel.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Chris Rorvick <chris@rorvick.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Apr 17, 2020 at 10:03 AM Kalle Valo <kvalo@codeaurora.org> wrote:
->
-> Sedat Dilek <sedat.dilek@gmail.com> writes:
->
-> > From: Chris Rorvick <chris@rorvick.com>
-> >
-> > Commit 71bc0334a637 ("iwlwifi: check allocated pointer when allocating
-> > conf_tlvs") attempted to fix a typoe introduced by commit 17b809c9b22e
-> > ("iwlwifi: dbg: move debug data to a struct") but does not implement the
-> > check correctly.
-> >
-> > Fixes: 71bc0334a637 ("iwlwifi: check allocated pointer when allocating conf_tlvs")
-> > Tweeted-by: @grsecurity
-> > Message-Id: <20200402050219.4842-1-chris@rorvick.com>
-> > Signed-off-by: Chris Rorvick <chris@rorvick.com>
-> > Signed-off-by: Sedat Dilek <sedat.dilek@gmail.com>
->
-> Thanks, looks good to me. I'll just remove the Message-Id tag, it's not
-> really needed in this case.
->
+<yhchuang@realtek.com> writes:
 
-Thanks for all your suggestions and taking care, Kalle.
+> From: Yan-Hsuan Chuang <yhchuang@realtek.com>
+>
+> Although RTL8723DE devices are 802.11n devices, while rtw88
+> aimed to support for 802.11ac devices, the 8723DE devices's
+> architecture is relatively close to the 802.11ac devices.
+> So, add support for them on rtw88, with some minor modifications.
 
-- Sedat -
+There's no way I'm going to review 40 patches in one go :) So I'll just
+to look at around 10 first patches and drop the rest.
 
-> --
-> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+If you want your patches reviewed smoothly submit only around 7-12
+patches per patchset. If the patches are bigger don't send more than 7
+patches. But if they smaller, or trivial patches, 12 patches is ok. But
+anything more than 12 patches and I'm sure you will get reviewers
+grumpy.
+
+But you can submit multiple patchsets, just try to throttle it down to
+avoid bufferbloat in patchwork, ie. send a new patchset every other day
+and document the dependencies in the cover letter ("this patchset
+depends on patchset B").
+
+-- 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
