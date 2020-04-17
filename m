@@ -2,52 +2,52 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D51DB1AD793
-	for <lists+linux-wireless@lfdr.de>; Fri, 17 Apr 2020 09:40:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B705F1AD7B6
+	for <lists+linux-wireless@lfdr.de>; Fri, 17 Apr 2020 09:46:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726525AbgDQHkv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 17 Apr 2020 03:40:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56344 "EHLO
+        id S1729148AbgDQHqK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 17 Apr 2020 03:46:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57162 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725768AbgDQHku (ORCPT
+        with ESMTP id S1726405AbgDQHqJ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 17 Apr 2020 03:40:50 -0400
-Received: from mail-wm1-x342.google.com (mail-wm1-x342.google.com [IPv6:2a00:1450:4864:20::342])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28792C061A0C;
-        Fri, 17 Apr 2020 00:40:50 -0700 (PDT)
-Received: by mail-wm1-x342.google.com with SMTP id h2so1880775wmb.4;
-        Fri, 17 Apr 2020 00:40:50 -0700 (PDT)
+        Fri, 17 Apr 2020 03:46:09 -0400
+Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4090BC061A0C;
+        Fri, 17 Apr 2020 00:46:09 -0700 (PDT)
+Received: by mail-wr1-x443.google.com with SMTP id h9so1885713wrc.8;
+        Fri, 17 Apr 2020 00:46:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=M6zd6QhvfNJlEwVbZDRhDx/68LHI8zgQWBMk5eF3jR0=;
-        b=FcBenMqFS5c2OoxTLCn55ksThTSSUloPM/Zc55FM/evT6+1CaYC8UMmy7FzGcra0Fl
-         VkyTyRf7ifqtgwFrnGQV574d5i51AkTBteqmekTgabH6Oz7Ka18/laSW1bXXfsUTvYLN
-         qslPQ/MTbviAHsjwiyIo0lb5UdkPgSBaKNOjFsa4N/kMzWFciQNMVrFaCPtyaTHlVg01
-         UubuxJJBZNC8UBchdmCAGde40f75hU4/lWOVq0agF5vbtKnDD4WEyQAe5PQsfVmhTPIG
-         7mhwgNeb5sECqGq3aegAmSw1JECTp5oSpiq1JziZHWrecuxS2bSfO92Vq9eKfWWYulS3
-         ZpZA==
+        bh=WVQ/+AhI0heLiMpL6qUSa1/GcjVQsFVijLYHxi226DU=;
+        b=MBSDz5mpJtaE1yIz/84PJyENirATfdTRv+ZFRD2B2Dv9EwB8I6aGfwg2P/6O9kQkBQ
+         6FJx2DYzNj9rmnbBL91o9MySgAP/Zy4Je67YtwA6IvpcA8tf8EplXLL5XBC2ByvAI926
+         MGlc+C78QovU0t0uShQaMpEnHKshauca6GXoGF6P8OcOPTNwL4qX4jinEHqI+WpE6eVV
+         yKqUW/rS9pJ/Vd7UfkZrl+bDU3x0kFFxX/phVZVrY+7AiLCTw6gVBk1k1SLwG9ZmmZwU
+         I2CFzKb2IJ/Nt7swn2FZqDeWxmFW0P7f6rp5Ao+NNvi5JKbVDmzpdwtuZmPR2JT2beFA
+         OBvA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=M6zd6QhvfNJlEwVbZDRhDx/68LHI8zgQWBMk5eF3jR0=;
-        b=HUH3qoUxEhrR6RwlHXcfy0tv2fYp7zECUo4QHPni48yYK823GxytVHr7Fbew873WeL
-         FbLEirXyZSXiAmWoYdi6Jz0lpAhsgN/qq1xA+SDrjk35AJE/d/So2JrqQ6IIM3F42I9/
-         6LtiPq03Tf7F1UkE06CvU3RFqrUT1YGjnHwJ4b2m6Cb4yZsOz84HhwkM7zuNjD4AhRPd
-         7imyshMKvzwdwzVPsBrfGUIE5lxn8e6WEQKweDPNc1AjHVTRHW74G9FlKkOLwMJBHoPx
-         ah3C1vC+4Bgc9vATUJo1PtCHJrOISRjuqYritQoRqbcEfFddg8ODKaYTU2hl7qYl+Jcd
-         acpQ==
-X-Gm-Message-State: AGi0PuZKDrlNS2VMf3l4fKFjVToQv3ppTXhtVpUYy5OB1vj/y3PjKcoO
-        oWyyZ4tU76FdW6s8GRUZGU4=
-X-Google-Smtp-Source: APiQypKN0pm4j1A38T2NDteLwArt/IZPZZVBmjJtO+MGEg1XFX2vXkZjdyxrYCpIAipEGsrTY5p4RA==
-X-Received: by 2002:a05:600c:da:: with SMTP id u26mr2051692wmm.48.1587109248784;
-        Fri, 17 Apr 2020 00:40:48 -0700 (PDT)
+        bh=WVQ/+AhI0heLiMpL6qUSa1/GcjVQsFVijLYHxi226DU=;
+        b=pOrnLfv9ZY3JtmheYvtn43+9OQ3J6S5RAlPEuodKAG6qd/jhQ7zVclglQmSkVPEBQu
+         /c8P6mgG2J3bYc6Zv/UAbdDvQ78+uyhY3uPBELAtI2pOQ3YEZtVCp9sZ3r8jeX9/WC8C
+         Pn3yKR+T74Asnhi/AFxxikb6kU8WIthfPo1ezZ95oUh9chUT6PGTcHcD/TbRKNCiKDrX
+         G57YfSFV+Ru7RU3Co6moruoDcHX2XyXmU12+YBis+0ubX7uPTxvO0JsnskV5b1x13xiO
+         5Y65sfs+xfPNfb94UMmM1172fFDBhr1hW516dcaxt7I8AfUs6XeCitH+puIcYVlTT0y6
+         H5Zw==
+X-Gm-Message-State: AGi0PubJNEsw4N/t8/IeGXgckVoDq1WUPp9ZMus2YKTcKF47irAGexsi
+        q2j3J9O5V7QZwSW0FXuuDwUkCT7ZMWU=
+X-Google-Smtp-Source: APiQypJaGbkLtt6pNYoQVWS2snH17zlJcGjRBIyl34hCnK1VQijByjh7EpfOrwXAi5vBGBPRjiIYwQ==
+X-Received: by 2002:adf:f34e:: with SMTP id e14mr2504513wrp.80.1587109568013;
+        Fri, 17 Apr 2020 00:46:08 -0700 (PDT)
 Received: from localhost.localdomain (x59cc99b1.dyn.telefonica.de. [89.204.153.177])
-        by smtp.gmail.com with ESMTPSA id a10sm30628942wrm.87.2020.04.17.00.40.47
+        by smtp.gmail.com with ESMTPSA id m1sm25398169wro.64.2020.04.17.00.46.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 Apr 2020 00:40:48 -0700 (PDT)
+        Fri, 17 Apr 2020 00:46:07 -0700 (PDT)
 From:   Sedat Dilek <sedat.dilek@gmail.com>
 To:     Johannes Berg <johannes.berg@intel.com>,
         Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
@@ -59,9 +59,9 @@ To:     Johannes Berg <johannes.berg@intel.com>,
         linux-kernel@vger.kernel.org
 Cc:     Chris Rorvick <chris@rorvick.com>,
         Sedat Dilek <sedat.dilek@gmail.com>
-Subject: [PATCH wireless-drivers v2] iwlwifi: actually check allocated conf_tlv pointer
-Date:   Fri, 17 Apr 2020 09:40:35 +0200
-Message-Id: <20200417074035.12214-1-sedat.dilek@gmail.com>
+Subject: [PATCH wireless-drivers v3] iwlwifi: actually check allocated conf_tlv pointer
+Date:   Fri, 17 Apr 2020 09:45:58 +0200
+Message-Id: <20200417074558.12316-1-sedat.dilek@gmail.com>
 X-Mailer: git-send-email 2.26.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -83,6 +83,13 @@ Message-Id: <20200402050219.4842-1-chris@rorvick.com>
 Signed-off-by: Chris Rorvick <chris@rorvick.com>
 Signed-off-by: Sedat Dilek <sedat.dilek@gmail.com>
 ---
+Changes v1->v2:
+- Fix typo s/fw.dbg_conf_tlv/fw.dbg.conf_tlv
+- Add Fixes tag as suggested by Kalle
+- v2 on top of wireless-drivers.git as suggested by Kalle
+Changes v2->v3:
+- Add Changelog
+
  drivers/net/wireless/intel/iwlwifi/iwl-drv.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
