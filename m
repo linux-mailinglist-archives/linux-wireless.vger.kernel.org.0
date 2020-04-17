@@ -2,20 +2,20 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C7BB1AD7D9
-	for <lists+linux-wireless@lfdr.de>; Fri, 17 Apr 2020 09:48:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7DD391AD7E0
+	for <lists+linux-wireless@lfdr.de>; Fri, 17 Apr 2020 09:48:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729433AbgDQHra (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 17 Apr 2020 03:47:30 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:37056 "EHLO
+        id S1729460AbgDQHrh (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 17 Apr 2020 03:47:37 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:37044 "EHLO
         rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729304AbgDQHrN (ORCPT
+        with ESMTP id S1729267AbgDQHrM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 17 Apr 2020 03:47:13 -0400
+        Fri, 17 Apr 2020 03:47:12 -0400
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.69 with qID 03H7l5oE5020081, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.69 with qID 03H7l5oG5020081, This message is accepted by code: ctloc85258
 Received: from mail.realtek.com (rtexmb06.realtek.com.tw[172.21.6.99])
-        by rtits2.realtek.com.tw (8.15.2/2.66/5.86) with ESMTPS id 03H7l5oE5020081
+        by rtits2.realtek.com.tw (8.15.2/2.66/5.86) with ESMTPS id 03H7l5oG5020081
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
         Fri, 17 Apr 2020 15:47:05 +0800
 Received: from RTEXMB04.realtek.com.tw (172.21.6.97) by
@@ -30,9 +30,9 @@ From:   <yhchuang@realtek.com>
 To:     <kvalo@codeaurora.org>
 CC:     <pkshih@realtek.com>, <linux-wireless@vger.kernel.org>,
         <briannorris@chromium.org>, <kevin_yang@realtek.com>
-Subject: [PATCH 19/40] rtw88: 8723d: Add set_channel
-Date:   Fri, 17 Apr 2020 15:46:32 +0800
-Message-ID: <20200417074653.15591-20-yhchuang@realtek.com>
+Subject: [PATCH 20/40] rtw88: handle C2H_CCX_TX_RPT to know if packet TX'ed successfully
+Date:   Fri, 17 Apr 2020 15:46:33 +0800
+Message-ID: <20200417074653.15591-21-yhchuang@realtek.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200417074653.15591-1-yhchuang@realtek.com>
 References: <20200417074653.15591-1-yhchuang@realtek.com>
@@ -48,265 +48,118 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Ping-Ke Shih <pkshih@realtek.com>
 
-Set MAC/BB/RF register according to specified channel. The function
-rtw_set_channel_mac() is used to set MAC registers, but 8723D only need
-some of them.
-
-For channel 14, we need to set different CCK DFIR values, so restore the
-values when channel 1 to 13 is selected.
-
-Spur calibration is needed in channel 13 and 14, and we do notch if spur
-is over threshold.
+TX status report of 8723D differs from 8822B/8822C, it uses
+C2H_CCX_TX_RPT (0x03) with different format. With sequence number
+and TX status, driver can know if certain packet was transmitted
+successfully.
 
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw88/mac.c      |   3 +
- drivers/net/wireless/realtek/rtw88/rtw8723d.c | 185 ++++++++++++++++++
- drivers/net/wireless/realtek/rtw88/rtw8723d.h |  12 ++
- 3 files changed, 200 insertions(+)
+ drivers/net/wireless/realtek/rtw88/fw.c |  6 +++++-
+ drivers/net/wireless/realtek/rtw88/fw.h |  7 +++++--
+ drivers/net/wireless/realtek/rtw88/tx.c | 11 ++++++++---
+ drivers/net/wireless/realtek/rtw88/tx.h |  2 +-
+ 4 files changed, 19 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/mac.c b/drivers/net/wireless/realtek/rtw88/mac.c
-index 645207a01525..c42d0f681dda 100644
---- a/drivers/net/wireless/realtek/rtw88/mac.c
-+++ b/drivers/net/wireless/realtek/rtw88/mac.c
-@@ -40,6 +40,9 @@ void rtw_set_channel_mac(struct rtw_dev *rtwdev, u8 channel, u8 bw,
- 	}
- 	rtw_write32(rtwdev, REG_WMAC_TRXPTCL_CTL, value32);
+diff --git a/drivers/net/wireless/realtek/rtw88/fw.c b/drivers/net/wireless/realtek/rtw88/fw.c
+index dde7823143ea..11fa1fc7f1cb 100644
+--- a/drivers/net/wireless/realtek/rtw88/fw.c
++++ b/drivers/net/wireless/realtek/rtw88/fw.c
+@@ -25,7 +25,7 @@ static void rtw_fw_c2h_cmd_handle_ext(struct rtw_dev *rtwdev,
  
-+	if (rtw_chip_wcpu_11n(rtwdev))
-+		return;
-+
- 	value32 = rtw_read32(rtwdev, REG_AFE_CTRL1) & ~(BIT_MAC_CLK_SEL);
- 	value32 |= (MAC_CLK_HW_DEF_80M << BIT_SHIFT_MAC_CLK_SEL);
- 	rtw_write32(rtwdev, REG_AFE_CTRL1, value32);
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8723d.c b/drivers/net/wireless/realtek/rtw88/rtw8723d.c
-index 653cfa9445fc..c619ee289561 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8723d.c
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8723d.c
-@@ -287,6 +287,190 @@ static void rtw8723d_query_rx_desc(struct rtw_dev *rtwdev, u8 *rx_desc,
- 	rtw_rx_fill_rx_status(rtwdev, pkt_stat, hdr, rx_status, phy_status);
+ 	switch (sub_cmd_id) {
+ 	case C2H_CCX_RPT:
+-		rtw_tx_report_handle(rtwdev, skb);
++		rtw_tx_report_handle(rtwdev, skb, C2H_CCX_RPT);
+ 		break;
+ 	default:
+ 		break;
+@@ -142,6 +142,9 @@ void rtw_fw_c2h_cmd_handle(struct rtw_dev *rtwdev, struct sk_buff *skb)
+ 		goto unlock;
+ 
+ 	switch (c2h->id) {
++	case C2H_CCX_TX_RPT:
++		rtw_tx_report_handle(rtwdev, skb, C2H_CCX_TX_RPT);
++		break;
+ 	case C2H_BT_INFO:
+ 		rtw_coex_bt_info_notify(rtwdev, c2h->payload, len);
+ 		break;
+@@ -155,6 +158,7 @@ void rtw_fw_c2h_cmd_handle(struct rtw_dev *rtwdev, struct sk_buff *skb)
+ 		rtw_fw_ra_report_handle(rtwdev, c2h->payload, len);
+ 		break;
+ 	default:
++		rtw_dbg(rtwdev, RTW_DBG_FW, "C2H 0x%x isn't handled\n", c2h->id);
+ 		break;
+ 	}
+ 
+diff --git a/drivers/net/wireless/realtek/rtw88/fw.h b/drivers/net/wireless/realtek/rtw88/fw.h
+index 2933ef741e53..470e1809645a 100644
+--- a/drivers/net/wireless/realtek/rtw88/fw.h
++++ b/drivers/net/wireless/realtek/rtw88/fw.h
+@@ -26,6 +26,7 @@
+ #define FW_START_ADDR_LEGACY		0x1000
+ 
+ enum rtw_c2h_cmd_id {
++	C2H_CCX_TX_RPT = 0x03,
+ 	C2H_BT_INFO = 0x09,
+ 	C2H_BT_MP_INFO = 0x0b,
+ 	C2H_RA_RPT = 0x0c,
+@@ -218,8 +219,10 @@ struct rtw_fw_hdr_legacy {
+ } __packed;
+ 
+ /* C2H */
+-#define GET_CCX_REPORT_SEQNUM(c2h_payload)	(c2h_payload[8] & 0xfc)
+-#define GET_CCX_REPORT_STATUS(c2h_payload)	(c2h_payload[9] & 0xc0)
++#define GET_CCX_REPORT_SEQNUM_V0(c2h_payload)	(c2h_payload[6] & 0xfc)
++#define GET_CCX_REPORT_STATUS_V0(c2h_payload)	(c2h_payload[0] & 0xc0)
++#define GET_CCX_REPORT_SEQNUM_V1(c2h_payload)	(c2h_payload[8] & 0xfc)
++#define GET_CCX_REPORT_STATUS_V1(c2h_payload)	(c2h_payload[9] & 0xc0)
+ 
+ #define GET_RA_REPORT_RATE(c2h_payload)		(c2h_payload[0] & 0x7f)
+ #define GET_RA_REPORT_SGI(c2h_payload)		((c2h_payload[0] & 0x80) >> 7)
+diff --git a/drivers/net/wireless/realtek/rtw88/tx.c b/drivers/net/wireless/realtek/rtw88/tx.c
+index 60989987f67b..79c42118825f 100644
+--- a/drivers/net/wireless/realtek/rtw88/tx.c
++++ b/drivers/net/wireless/realtek/rtw88/tx.c
+@@ -196,7 +196,7 @@ static void rtw_tx_report_tx_status(struct rtw_dev *rtwdev,
+ 	ieee80211_tx_status_irqsafe(rtwdev->hw, skb);
  }
  
-+static
-+bool rtw8723d_check_spur_ov_thres(struct rtw_dev *rtwdev, u8 channel, u32 thres)
-+{
-+#define DIS_3WIRE	0xccf000c0
-+#define EN_3WIRE	0xccc000c0
-+#define START_PSD	0x400000
-+#define FREQ_CH13	0xFCCD
-+#define FREQ_CH14	0xFF9A
-+
-+	u32 freq;
-+	bool ret = false;
-+
-+	if (channel == 13)
-+		freq = FREQ_CH13;
-+	else if (channel == 14)
-+		freq = FREQ_CH14;
-+	else
-+		return false;
-+
-+	rtw_write32(rtwdev, REG_ANALOG_P4, DIS_3WIRE);
-+	rtw_write32(rtwdev, REG_PSDFN, freq);
-+	rtw_write32(rtwdev, REG_PSDFN, START_PSD | freq);
-+
-+	msleep(30);
-+	if (rtw_read32(rtwdev, REG_PSDRPT) >= thres)
-+		ret = true;
-+
-+	rtw_write32(rtwdev, REG_PSDFN, freq);
-+	rtw_write32(rtwdev, REG_ANALOG_P4, EN_3WIRE);
-+
-+	return ret;
-+}
-+
-+static void rtw8723d_cfg_notch(struct rtw_dev *rtwdev, u8 channel, bool notch)
-+{
-+#define BIT_MASK_RXDSP	(BIT(28) | BIT(27) | BIT(26) | BIT(25) | BIT(24))
-+#define BIT_EN_RXDSP	BIT(9)
-+#define BIT_EN_CFOTRK	BIT(28)
-+
-+	if (!notch)
-+		goto no_notch;
-+
-+	switch (channel) {
-+	case 13:
-+		rtw_write32_mask(rtwdev, REG_OFDM0_RXDSP, BIT_MASK_RXDSP, 0xB);
-+		rtw_write32_mask(rtwdev, REG_OFDM0_RXDSP, BIT_EN_RXDSP, 0x1);
-+		rtw_write32(rtwdev, REG_OFDM1_CSI1, 0x04000000);
-+		rtw_write32(rtwdev, REG_OFDM1_CSI2, 0x00000000);
-+		rtw_write32(rtwdev, REG_OFDM1_CSI3, 0x00000000);
-+		rtw_write32(rtwdev, REG_OFDM1_CSI4, 0x00000000);
-+		rtw_write32_mask(rtwdev, REG_OFDM1_CFOTRK, BIT_EN_CFOTRK, 0x1);
-+		break;
-+	case 14:
-+		rtw_write32_mask(rtwdev, REG_OFDM0_RXDSP, BIT_MASK_RXDSP, 0x5);
-+		rtw_write32_mask(rtwdev, REG_OFDM0_RXDSP, BIT_EN_RXDSP, 0x1);
-+		rtw_write32(rtwdev, REG_OFDM1_CSI1, 0x00000000);
-+		rtw_write32(rtwdev, REG_OFDM1_CSI2, 0x00000000);
-+		rtw_write32(rtwdev, REG_OFDM1_CSI3, 0x00000000);
-+		rtw_write32(rtwdev, REG_OFDM1_CSI4, 0x00080000);
-+		rtw_write32_mask(rtwdev, REG_OFDM1_CFOTRK, BIT_EN_CFOTRK, 0x1);
-+		break;
-+	default:
-+		rtw_write32_mask(rtwdev, REG_OFDM0_RXDSP, BIT_EN_RXDSP, 0x0);
-+		rtw_write32_mask(rtwdev, REG_OFDM1_CFOTRK, BIT_EN_CFOTRK, 0x0);
-+		break;
-+	}
-+
-+	return;
-+
-+no_notch:
-+	rtw_write32_mask(rtwdev, REG_OFDM0_RXDSP, BIT_MASK_RXDSP, 0x1f);
-+	rtw_write32_mask(rtwdev, REG_OFDM0_RXDSP, BIT_EN_RXDSP, 0x0);
-+	rtw_write32(rtwdev, REG_OFDM1_CSI1, 0x00000000);
-+	rtw_write32(rtwdev, REG_OFDM1_CSI2, 0x00000000);
-+	rtw_write32(rtwdev, REG_OFDM1_CSI3, 0x00000000);
-+	rtw_write32(rtwdev, REG_OFDM1_CSI4, 0x00000000);
-+	rtw_write32_mask(rtwdev, REG_OFDM1_CFOTRK, BIT_EN_CFOTRK, 0x0);
-+}
-+
-+static void rtw8723d_spur_cal(struct rtw_dev *rtwdev, u8 channel)
-+{
-+#define SPUR_THRES	0x16
-+	bool notch = false;
-+
-+	if (channel < 13)
-+		goto do_notch;
-+
-+	notch = rtw8723d_check_spur_ov_thres(rtwdev, channel, SPUR_THRES);
-+
-+do_notch:
-+	rtw8723d_cfg_notch(rtwdev, channel, notch);
-+}
-+
-+static void rtw8723d_set_channel_rf(struct rtw_dev *rtwdev, u8 channel, u8 bw)
-+{
-+#define RFCFGCH_CHANNEL_MASK	GENMASK(7, 0)
-+#define RFCFGCH_BW_MASK		(BIT(11) | BIT(10))
-+#define RFCFGCH_BW_20M		(BIT(11) | BIT(10))
-+#define RFCFGCH_BW_40M		(BIT(10))
-+
-+	u32 rf_cfgch[2];
-+
-+	rf_cfgch[0] = rtw_read_rf(rtwdev, RF_PATH_A, RF_CFGCH, RFREG_MASK);
-+	rf_cfgch[1] = rtw_read_rf(rtwdev, RF_PATH_B, RF_CFGCH, RFREG_MASK);
-+
-+	rf_cfgch[0] &= ~RFCFGCH_CHANNEL_MASK;
-+	rf_cfgch[1] &= ~RFCFGCH_CHANNEL_MASK;
-+	rf_cfgch[0] |= (channel & RFCFGCH_CHANNEL_MASK);
-+	rf_cfgch[1] |= (channel & RFCFGCH_CHANNEL_MASK);
-+
-+	rf_cfgch[0] &= ~RFCFGCH_BW_MASK;
-+	switch (bw) {
-+	case RTW_CHANNEL_WIDTH_20:
-+		rf_cfgch[0] |= RFCFGCH_BW_20M;
-+		break;
-+	case RTW_CHANNEL_WIDTH_40:
-+		rf_cfgch[0] |= RFCFGCH_BW_40M;
-+		break;
-+	default:
-+		break;
-+	}
-+
-+	rtw_write_rf(rtwdev, RF_PATH_A, RF_CFGCH, RFREG_MASK, rf_cfgch[0]);
-+	rtw_write_rf(rtwdev, RF_PATH_B, RF_CFGCH, RFREG_MASK, rf_cfgch[1]);
-+
-+	rtw8723d_spur_cal(rtwdev, channel);
-+}
-+
-+#define CCK_DFIR_NR	3
-+static const struct rtw_backup_info cck_dfir_cfg[][CCK_DFIR_NR] = {
-+	[0] = {
-+		{ .len = 4, .reg = 0xA24, .val = 0x64B80C1C },
-+		{ .len = 4, .reg = 0xA28, .val = 0x00008810 },
-+		{ .len = 4, .reg = 0xAAC, .val = 0x01235667 },
-+	},
-+	[1] = {
-+		{ .len = 4, .reg = 0xA24, .val = 0x0000B81C },
-+		{ .len = 4, .reg = 0xA28, .val = 0x00000000 },
-+		{ .len = 4, .reg = 0xAAC, .val = 0x00003667 },
-+	},
-+};
-+
-+static void rtw8723d_set_channel_bb(struct rtw_dev *rtwdev, u8 channel, u8 bw,
-+				    u8 primary_ch_idx)
-+{
-+#define BIT_CCK_SIDE_BAND	BIT(4)
-+#define BIT_MASK_RFMOD		BIT(0)
-+#define BIT_RXBB_DFIR_EN	BIT(19)
-+#define BIT_MASK_RXBB_DFIR	(BIT(27) | BIT(26) | BIT(25) | BIT(24))
-+
-+	const struct rtw_backup_info *cck_dfir =
-+			channel <= 13 ? cck_dfir_cfg[0] : cck_dfir_cfg[1];
-+	int i;
-+
-+	for (i = 0; i < CCK_DFIR_NR; i++, cck_dfir++)
-+		rtw_write32(rtwdev, cck_dfir->reg, cck_dfir->val);
-+
-+	switch (bw) {
-+	case RTW_CHANNEL_WIDTH_20:
-+		rtw_write32_mask(rtwdev, REG_FPGA0_RFMOD, BIT_MASK_RFMOD, 0x0);
-+		rtw_write32_mask(rtwdev, REG_FPGA1_RFMOD, BIT_MASK_RFMOD, 0x0);
-+		rtw_write32_mask(rtwdev, REG_BBRX_DFIR, BIT_RXBB_DFIR_EN, 1);
-+		rtw_write32_mask(rtwdev, REG_BBRX_DFIR, BIT_MASK_RXBB_DFIR, 0xa);
-+		break;
-+	case RTW_CHANNEL_WIDTH_40:
-+		rtw_write32_mask(rtwdev, REG_FPGA0_RFMOD, BIT_MASK_RFMOD, 0x1);
-+		rtw_write32_mask(rtwdev, REG_FPGA1_RFMOD, BIT_MASK_RFMOD, 0x1);
-+		rtw_write32_mask(rtwdev, REG_BBRX_DFIR, BIT_RXBB_DFIR_EN, 0);
-+		rtw_write32_mask(rtwdev, REG_CCK0_SYS, BIT_CCK_SIDE_BAND,
-+				 (primary_ch_idx == RTW_SC_20_UPPER ? 1 : 0));
-+		break;
-+	default:
-+		break;
-+	}
-+}
-+
-+static void rtw8723d_set_channel(struct rtw_dev *rtwdev, u8 channel, u8 bw,
-+				 u8 primary_chan_idx)
-+{
-+	rtw8723d_set_channel_rf(rtwdev, channel, bw);
-+	rtw_set_channel_mac(rtwdev, channel, bw, primary_chan_idx);
-+	rtw8723d_set_channel_bb(rtwdev, channel, bw, primary_chan_idx);
-+}
-+
- #define BIT_CFENDFORM		BIT(9)
- #define BIT_WMAC_TCR_ERR0	BIT(12)
- #define BIT_WMAC_TCR_ERR1	BIT(13)
-@@ -383,6 +567,7 @@ static struct rtw_chip_ops rtw8723d_ops = {
- 	.phy_set_param		= rtw8723d_phy_set_param,
- 	.read_efuse		= rtw8723d_read_efuse,
- 	.query_rx_desc		= rtw8723d_query_rx_desc,
-+	.set_channel		= rtw8723d_set_channel,
- 	.mac_init		= rtw8723d_mac_init,
- 	.read_rf		= rtw_phy_read_rf_sipi,
- 	.write_rf		= rtw_phy_write_rf_reg_sipi,
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8723d.h b/drivers/net/wireless/realtek/rtw88/rtw8723d.h
-index 035049a29e7c..c08c351ba657 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8723d.h
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8723d.h
-@@ -66,7 +66,19 @@ struct rtw8723d_efuse {
- #define GET_PHY_STAT_P1_RXSNR_A(phy_stat)                                      \
- 	le32_get_bits(*((__le32 *)(phy_stat) + 0x06), GENMASK(7, 0))
+-void rtw_tx_report_handle(struct rtw_dev *rtwdev, struct sk_buff *skb)
++void rtw_tx_report_handle(struct rtw_dev *rtwdev, struct sk_buff *skb, int src)
+ {
+ 	struct rtw_tx_report *tx_report = &rtwdev->tx_report;
+ 	struct rtw_c2h_cmd *c2h;
+@@ -207,8 +207,13 @@ void rtw_tx_report_handle(struct rtw_dev *rtwdev, struct sk_buff *skb)
  
-+#define REG_PSDFN		0x0808
-+#define REG_ANALOG_P4		0x088c
-+#define REG_PSDRPT		0x08b4
-+#define REG_FPGA1_RFMOD		0x0900
-+#define REG_BBRX_DFIR		0x0954
-+#define REG_CCK0_SYS		0x0a00
-+#define REG_OFDM0_RXDSP		0x0c40
- #define REG_OFDM0_XAAGC1	0x0c50
- #define REG_OFDM0_XBAGC1	0x0c58
-+#define REG_OFDM1_CFOTRK	0x0d2c
-+#define REG_OFDM1_CSI1		0x0d40
-+#define REG_OFDM1_CSI2		0x0d44
-+#define REG_OFDM1_CSI3		0x0d48
-+#define REG_OFDM1_CSI4		0x0d4c
+ 	c2h = get_c2h_from_skb(skb);
  
- #endif
+-	sn = GET_CCX_REPORT_SEQNUM(c2h->payload);
+-	st = GET_CCX_REPORT_STATUS(c2h->payload);
++	if (src == C2H_CCX_TX_RPT) {
++		sn = GET_CCX_REPORT_SEQNUM_V0(c2h->payload);
++		st = GET_CCX_REPORT_STATUS_V0(c2h->payload);
++	} else {
++		sn = GET_CCX_REPORT_SEQNUM_V1(c2h->payload);
++		st = GET_CCX_REPORT_STATUS_V1(c2h->payload);
++	}
+ 
+ 	spin_lock_irqsave(&tx_report->q_lock, flags);
+ 	skb_queue_walk_safe(&tx_report->queue, cur, tmp) {
+diff --git a/drivers/net/wireless/realtek/rtw88/tx.h b/drivers/net/wireless/realtek/rtw88/tx.h
+index b973de0f4dc0..72dfd4059f03 100644
+--- a/drivers/net/wireless/realtek/rtw88/tx.h
++++ b/drivers/net/wireless/realtek/rtw88/tx.h
+@@ -95,7 +95,7 @@ void rtw_tx_pkt_info_update(struct rtw_dev *rtwdev,
+ 			    struct sk_buff *skb);
+ void rtw_tx_fill_tx_desc(struct rtw_tx_pkt_info *pkt_info, struct sk_buff *skb);
+ void rtw_tx_report_enqueue(struct rtw_dev *rtwdev, struct sk_buff *skb, u8 sn);
+-void rtw_tx_report_handle(struct rtw_dev *rtwdev, struct sk_buff *skb);
++void rtw_tx_report_handle(struct rtw_dev *rtwdev, struct sk_buff *skb, int src);
+ void rtw_rsvd_page_pkt_info_update(struct rtw_dev *rtwdev,
+ 				   struct rtw_tx_pkt_info *pkt_info,
+ 				   struct sk_buff *skb);
 -- 
 2.17.1
 
