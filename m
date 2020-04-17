@@ -2,96 +2,133 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ADBE61AD963
-	for <lists+linux-wireless@lfdr.de>; Fri, 17 Apr 2020 11:03:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 70D851AD992
+	for <lists+linux-wireless@lfdr.de>; Fri, 17 Apr 2020 11:15:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730002AbgDQJDn convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 17 Apr 2020 05:03:43 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:42651 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728419AbgDQJDn (ORCPT
+        id S1730156AbgDQJPb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 17 Apr 2020 05:15:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42890 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730145AbgDQJPb (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 17 Apr 2020 05:03:43 -0400
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.69 with qID 03H93ZckC013457, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexmb06.realtek.com.tw[172.21.6.99])
-        by rtits2.realtek.com.tw (8.15.2/2.66/5.86) with ESMTPS id 03H93ZckC013457
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Fri, 17 Apr 2020 17:03:35 +0800
-Received: from RTEXMB02.realtek.com.tw (172.21.6.95) by
- RTEXMB06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Fri, 17 Apr 2020 17:03:35 +0800
-Received: from RTEXMB04.realtek.com.tw (172.21.6.97) by
- RTEXMB02.realtek.com.tw (172.21.6.95) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Fri, 17 Apr 2020 17:03:34 +0800
-Received: from RTEXMB04.realtek.com.tw ([fe80::d9c5:a079:495e:b999]) by
- RTEXMB04.realtek.com.tw ([fe80::d9c5:a079:495e:b999%6]) with mapi id
- 15.01.1779.005; Fri, 17 Apr 2020 17:03:34 +0800
-From:   Tony Chuang <yhchuang@realtek.com>
-To:     Kalle Valo <kvalo@codeaurora.org>
-CC:     Pkshih <pkshih@realtek.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "briannorris@chromium.org" <briannorris@chromium.org>,
-        Kevin Yang <kevin_yang@realtek.com>
-Subject: RE: [PATCH 00/40] rtw88: add support for 802.11n RTL8723DE devices
-Thread-Topic: [PATCH 00/40] rtw88: add support for 802.11n RTL8723DE devices
-Thread-Index: AQHWFIyBGPvBpMHAzEi6xd36kOHEBah8+OILgAAB1puAAAlqUA==
-Date:   Fri, 17 Apr 2020 09:03:34 +0000
-Message-ID: <63bfd72cb01041ae8b6f049d49bda880@realtek.com>
-References: <20200417074653.15591-1-yhchuang@realtek.com>
-        <87lfmuplrm.fsf@kamboji.qca.qualcomm.com>
- <87zhbajz6f.fsf@tynnyri.adurom.net>
-In-Reply-To: <87zhbajz6f.fsf@tynnyri.adurom.net>
-Accept-Language: zh-TW, en-US
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.68.175]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        Fri, 17 Apr 2020 05:15:31 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23EF4C061A0C
+        for <linux-wireless@vger.kernel.org>; Fri, 17 Apr 2020 02:15:31 -0700 (PDT)
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.93)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1jPN5s-006tP6-Do; Fri, 17 Apr 2020 11:15:28 +0200
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     linux-wireless@vger.kernel.org
+Cc:     Felix Fietkau <nbd@nbd.name>,
+        Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH] mac80211: mlme: remove duplicate AID bookkeeping
+Date:   Fri, 17 Apr 2020 11:15:19 +0200
+Message-Id: <20200417111518.d3c9edb463d0.I2e7a2ceceea8c6880219f9e9ee4d4ac985fd295a@changeid>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Kalle Valo <kvalo@codeaurora.org> writes:
-> 
-> > <yhchuang@realtek.com> writes:
-> >
-> >> From: Yan-Hsuan Chuang <yhchuang@realtek.com>
-> >>
-> >> Although RTL8723DE devices are 802.11n devices, while rtw88
-> >> aimed to support for 802.11ac devices, the 8723DE devices's
-> >> architecture is relatively close to the 802.11ac devices.
-> >> So, add support for them on rtw88, with some minor modifications.
-> >
-> > There's no way I'm going to review 40 patches in one go :) So I'll just
-> > to look at around 10 first patches and drop the rest.
-> >
-> > If you want your patches reviewed smoothly submit only around 7-12
-> > patches per patchset. If the patches are bigger don't send more than 7
-> > patches. But if they smaller, or trivial patches, 12 patches is ok. But
-> > anything more than 12 patches and I'm sure you will get reviewers
-> > grumpy.
-> >
-> > But you can submit multiple patchsets, just try to throttle it down to
-> > avoid bufferbloat in patchwork, ie. send a new patchset every other day
-> > and document the dependencies in the cover letter ("this patchset
-> > depends on patchset B").
-> 
-> I added this also to the wiki:
-> 
-> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpa
-> tches#maximum_of_7-12_patches_per_patchset
-> 
+From: Johannes Berg <johannes.berg@intel.com>
 
-Actually I can send the 8723DE within 5 patches, but I thought that split
-them will be easier to review :) If too many patches is a problem, then I
-can squash them back together, because most of them are hardware
-settings. I can resend a v2.
+Maintain the connection AID only in sdata->vif.bss_conf.aid, not
+also in sdata->u.mgd.aid.
 
-Yen-Hsuan
+Keep setting that where we set ifmgd->aid before, which has the
+side effect of exposing the AID to the driver before the station
+entry (AP) is marked associated, in case it needs it then.
+
+Requested-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+---
+ net/mac80211/ieee80211_i.h | 2 --
+ net/mac80211/mlme.c        | 7 +++----
+ net/mac80211/tdls.c        | 3 +--
+ net/mac80211/tx.c          | 2 +-
+ 4 files changed, 5 insertions(+), 9 deletions(-)
+
+diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
+index f8ed4f621f7f..934a91bef575 100644
+--- a/net/mac80211/ieee80211_i.h
++++ b/net/mac80211/ieee80211_i.h
+@@ -450,8 +450,6 @@ struct ieee80211_if_managed {
+ 
+ 	u8 bssid[ETH_ALEN] __aligned(2);
+ 
+-	u16 aid;
+-
+ 	bool powersave; /* powersave requested for this iface */
+ 	bool broken_ap; /* AP is broken -- turn off powersave */
+ 	bool have_beacon;
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index 16d75da0996a..7139335f29c0 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -3249,7 +3249,7 @@ static bool ieee80211_assoc_success(struct ieee80211_sub_if_data *sdata,
+ 		return false;
+ 	}
+ 
+-	ifmgd->aid = aid;
++	sdata->vif.bss_conf.aid = aid;
+ 	ifmgd->tdls_chan_switch_prohibited =
+ 		elems->ext_capab && elems->ext_capab_len >= 5 &&
+ 		(elems->ext_capab[4] & WLAN_EXT_CAPA5_TDLS_CH_SW_PROHIBITED);
+@@ -3521,9 +3521,8 @@ static bool ieee80211_assoc_success(struct ieee80211_sub_if_data *sdata,
+ 		bss_conf->protected_keep_alive = false;
+ 	}
+ 
+-	/* set AID and assoc capability,
++	/* set assoc capability (AID was already set earlier),
+ 	 * ieee80211_set_associated() will tell the driver */
+-	bss_conf->aid = aid;
+ 	bss_conf->assoc_capability = capab_info;
+ 	ieee80211_set_associated(sdata, cbss, changed);
+ 
+@@ -3948,7 +3947,7 @@ static void ieee80211_rx_mgmt_beacon(struct ieee80211_sub_if_data *sdata,
+ 					  mgmt->bssid, bssid);
+ 
+ 	if (ieee80211_hw_check(&local->hw, PS_NULLFUNC_STACK) &&
+-	    ieee80211_check_tim(elems.tim, elems.tim_len, ifmgd->aid)) {
++	    ieee80211_check_tim(elems.tim, elems.tim_len, bss_conf->aid)) {
+ 		if (local->hw.conf.dynamic_ps_timeout > 0) {
+ 			if (local->hw.conf.flags & IEEE80211_CONF_PS) {
+ 				local->hw.conf.flags &= ~IEEE80211_CONF_PS;
+diff --git a/net/mac80211/tdls.c b/net/mac80211/tdls.c
+index fca1f5477396..7ff22f9d6e80 100644
+--- a/net/mac80211/tdls.c
++++ b/net/mac80211/tdls.c
+@@ -226,12 +226,11 @@ static void ieee80211_tdls_add_link_ie(struct ieee80211_sub_if_data *sdata,
+ static void
+ ieee80211_tdls_add_aid(struct ieee80211_sub_if_data *sdata, struct sk_buff *skb)
+ {
+-	struct ieee80211_if_managed *ifmgd = &sdata->u.mgd;
+ 	u8 *pos = skb_put(skb, 4);
+ 
+ 	*pos++ = WLAN_EID_AID;
+ 	*pos++ = 2; /* len */
+-	put_unaligned_le16(ifmgd->aid, pos);
++	put_unaligned_le16(sdata->vif.bss_conf.aid, pos);
+ }
+ 
+ /* translate numbering in the WMM parameter IE to the mac80211 notation */
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index 82846aca86d9..3dc1990e15c5 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -5006,7 +5006,7 @@ struct sk_buff *ieee80211_pspoll_get(struct ieee80211_hw *hw,
+ 	pspoll = skb_put_zero(skb, sizeof(*pspoll));
+ 	pspoll->frame_control = cpu_to_le16(IEEE80211_FTYPE_CTL |
+ 					    IEEE80211_STYPE_PSPOLL);
+-	pspoll->aid = cpu_to_le16(ifmgd->aid);
++	pspoll->aid = cpu_to_le16(sdata->vif.bss_conf.aid);
+ 
+ 	/* aid in PS-Poll has its two MSBs each set to 1 */
+ 	pspoll->aid |= cpu_to_le16(1 << 15 | 1 << 14);
+-- 
+2.25.1
+
