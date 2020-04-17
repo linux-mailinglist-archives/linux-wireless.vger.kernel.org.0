@@ -2,20 +2,20 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 749441AD7D7
-	for <lists+linux-wireless@lfdr.de>; Fri, 17 Apr 2020 09:48:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1CAE71AD7CB
+	for <lists+linux-wireless@lfdr.de>; Fri, 17 Apr 2020 09:48:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729418AbgDQHr2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 17 Apr 2020 03:47:28 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:37066 "EHLO
+        id S1729378AbgDQHrT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 17 Apr 2020 03:47:19 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:37073 "EHLO
         rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726767AbgDQHrP (ORCPT
+        with ESMTP id S1729322AbgDQHrS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 17 Apr 2020 03:47:15 -0400
+        Fri, 17 Apr 2020 03:47:18 -0400
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.69 with qID 03H7l8hI5020159, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.69 with qID 03H7l8hJ5020159, This message is accepted by code: ctloc85258
 Received: from mail.realtek.com (rtexmb06.realtek.com.tw[172.21.6.99])
-        by rtits2.realtek.com.tw (8.15.2/2.66/5.86) with ESMTPS id 03H7l8hI5020159
+        by rtits2.realtek.com.tw (8.15.2/2.66/5.86) with ESMTPS id 03H7l8hJ5020159
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
         Fri, 17 Apr 2020 15:47:08 +0800
 Received: from RTEXMB04.realtek.com.tw (172.21.6.97) by
@@ -30,9 +30,9 @@ From:   <yhchuang@realtek.com>
 To:     <kvalo@codeaurora.org>
 CC:     <pkshih@realtek.com>, <linux-wireless@vger.kernel.org>,
         <briannorris@chromium.org>, <kevin_yang@realtek.com>
-Subject: [PATCH 36/40] rtw88: extract: make 8822c an individual kernel module
-Date:   Fri, 17 Apr 2020 15:46:49 +0800
-Message-ID: <20200417074653.15591-37-yhchuang@realtek.com>
+Subject: [PATCH 37/40] rtw88: extract: make 8822b an individual kernel module
+Date:   Fri, 17 Apr 2020 15:46:50 +0800
+Message-ID: <20200417074653.15591-38-yhchuang@realtek.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200417074653.15591-1-yhchuang@realtek.com>
 References: <20200417074653.15591-1-yhchuang@realtek.com>
@@ -48,13 +48,13 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Zong-Zhe Yang <kevin_yang@realtek.com>
 
-Make objects about 8822c functions and 8822c tables,
-i.e. rtw8822c.o and rtw8822c_table.o, an individual
-kernel module called rtw88_8822c.ko.
+Make objects about 8822b functions and 8822b tables,
+i.e. rtw8822b.o and rtw8822b_table.o, an individual
+kernel module called rtw88_8822b.ko.
 
-For 8822c pcie chip, i.e. 8822CE chip, add a chip
-entry point module called rtw88_8822ce.ko which
-will depend on rtw88_8822c.ko and rtwpci.ko.
+For 8822b pcie chip, i.e. 8822BE chip, add a chip
+entry point module called rtw88_8822be.ko which
+will depend on rtw88_8822b.ko and rtwpci.ko.
 
 Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
 Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
@@ -63,89 +63,87 @@ Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
  drivers/net/wireless/realtek/rtw88/Makefile   |  7 ++++-
  drivers/net/wireless/realtek/rtw88/main.h     |  1 -
  drivers/net/wireless/realtek/rtw88/pci.c      |  3 --
- drivers/net/wireless/realtek/rtw88/rtw8822c.c |  5 ++++
- .../net/wireless/realtek/rtw88/rtw8822ce.c    | 30 +++++++++++++++++++
- .../net/wireless/realtek/rtw88/rtw8822ce.h    | 20 +++++++++++++
+ drivers/net/wireless/realtek/rtw88/rtw8822b.c |  5 ++++
+ .../net/wireless/realtek/rtw88/rtw8822be.c    | 30 +++++++++++++++++++
+ .../net/wireless/realtek/rtw88/rtw8822be.h    | 20 +++++++++++++
  7 files changed, 66 insertions(+), 6 deletions(-)
- create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8822ce.c
- create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8822ce.h
+ create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8822be.c
+ create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8822be.h
 
 diff --git a/drivers/net/wireless/realtek/rtw88/Kconfig b/drivers/net/wireless/realtek/rtw88/Kconfig
-index 7a5fa68945c4..f4dbb5914bde 100644
+index f4dbb5914bde..dd71407a06c3 100644
 --- a/drivers/net/wireless/realtek/rtw88/Kconfig
 +++ b/drivers/net/wireless/realtek/rtw88/Kconfig
-@@ -16,6 +16,9 @@ config RTW88_CORE
+@@ -16,14 +16,18 @@ config RTW88_CORE
  config RTW88_PCI
  	tristate
  
-+config RTW88_8822C
++config RTW88_8822B
 +	tristate
 +
- config RTW88_8822BE
- 	bool "Realtek 8822BE PCI wireless network adapter"
- 	depends on PCI
-@@ -27,10 +30,11 @@ config RTW88_8822BE
- 	  802.11ac PCIe wireless network adapter
+ config RTW88_8822C
+ 	tristate
  
- config RTW88_8822CE
--	bool "Realtek 8822CE PCI wireless network adapter"
-+	tristate "Realtek 8822CE PCI wireless network adapter"
+ config RTW88_8822BE
+-	bool "Realtek 8822BE PCI wireless network adapter"
++	tristate "Realtek 8822BE PCI wireless network adapter"
  	depends on PCI
  	select RTW88_CORE
  	select RTW88_PCI
-+	select RTW88_8822C
++	select RTW88_8822B
  	help
- 	  Select this option will enable support for 8822CE chipset
+ 	  Select this option will enable support for 8822BE chipset
  
 diff --git a/drivers/net/wireless/realtek/rtw88/Makefile b/drivers/net/wireless/realtek/rtw88/Makefile
-index 385facc0dd20..e45efd2deaa3 100644
+index e45efd2deaa3..0b29f07e3661 100644
 --- a/drivers/net/wireless/realtek/rtw88/Makefile
 +++ b/drivers/net/wireless/realtek/rtw88/Makefile
-@@ -19,8 +19,13 @@ rtw88-y += main.o \
+@@ -18,9 +18,14 @@ rtw88-y += main.o \
+ 	   wow.o \
  	   regd.o
  
- rtw88-$(CONFIG_RTW88_8822BE)	+= rtw8822b.o rtw8822b_table.o
--rtw88-$(CONFIG_RTW88_8822CE)	+= rtw8822c.o rtw8822c_table.o
+-rtw88-$(CONFIG_RTW88_8822BE)	+= rtw8822b.o rtw8822b_table.o
  rtw88-$(CONFIG_RTW88_8723DE)	+= rtw8723d.o rtw8723d_table.o
  
-+obj-$(CONFIG_RTW88_8822C)	+= rtw88_8822c.o
-+rtw88_8822c-objs		:= rtw8822c.o rtw8822c_table.o
++obj-$(CONFIG_RTW88_8822B)	+= rtw88_8822b.o
++rtw88_8822b-objs		:= rtw8822b.o rtw8822b_table.o
 +
-+obj-$(CONFIG_RTW88_8822CE)	+= rtw88_8822ce.o
-+rtw88_8822ce-objs		:= rtw8822ce.o
++obj-$(CONFIG_RTW88_8822BE)	+= rtw88_8822be.o
++rtw88_8822be-objs		:= rtw8822be.o
 +
- obj-$(CONFIG_RTW88_PCI)		+= rtwpci.o
- rtwpci-objs			:= pci.o
+ obj-$(CONFIG_RTW88_8822C)	+= rtw88_8822c.o
+ rtw88_8822c-objs		:= rtw8822c.o rtw8822c_table.o
+ 
 diff --git a/drivers/net/wireless/realtek/rtw88/main.h b/drivers/net/wireless/realtek/rtw88/main.h
-index 35e2fb19ad56..d5514a33b109 100644
+index d5514a33b109..a0c34c1154b6 100644
 --- a/drivers/net/wireless/realtek/rtw88/main.h
 +++ b/drivers/net/wireless/realtek/rtw88/main.h
-@@ -40,7 +40,6 @@ extern unsigned int rtw_fw_lps_deep_mode;
+@@ -39,7 +39,6 @@ extern bool rtw_bf_support;
+ extern unsigned int rtw_fw_lps_deep_mode;
  extern unsigned int rtw_debug_mask;
  extern const struct ieee80211_ops rtw_ops;
- extern struct rtw_chip_info rtw8822b_hw_spec;
--extern struct rtw_chip_info rtw8822c_hw_spec;
+-extern struct rtw_chip_info rtw8822b_hw_spec;
  extern struct rtw_chip_info rtw8723d_hw_spec;
  
  #define RTW_MAX_CHANNEL_NUM_2G 14
 diff --git a/drivers/net/wireless/realtek/rtw88/pci.c b/drivers/net/wireless/realtek/rtw88/pci.c
-index 66feaab0261e..90a6624065c1 100644
+index 90a6624065c1..25672d0a09aa 100644
 --- a/drivers/net/wireless/realtek/rtw88/pci.c
 +++ b/drivers/net/wireless/realtek/rtw88/pci.c
-@@ -1601,9 +1601,6 @@ static const struct pci_device_id rtw_pci_id_table[] = {
- #ifdef CONFIG_RTW88_8822BE
- 	{ RTK_PCI_DEVICE(PCI_VENDOR_ID_REALTEK, 0xB822, rtw8822b_hw_spec) },
- #endif
--#ifdef CONFIG_RTW88_8822CE
--	{ RTK_PCI_DEVICE(PCI_VENDOR_ID_REALTEK, 0xC822, rtw8822c_hw_spec) },
+@@ -1598,9 +1598,6 @@ void rtw_pci_shutdown(struct pci_dev *pdev)
+ EXPORT_SYMBOL(rtw_pci_shutdown);
+ 
+ static const struct pci_device_id rtw_pci_id_table[] = {
+-#ifdef CONFIG_RTW88_8822BE
+-	{ RTK_PCI_DEVICE(PCI_VENDOR_ID_REALTEK, 0xB822, rtw8822b_hw_spec) },
 -#endif
  #ifdef CONFIG_RTW88_8723DE
  	{ RTK_PCI_DEVICE(PCI_VENDOR_ID_REALTEK, 0xD723, rtw8723d_hw_spec) },
  #endif
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822c.c b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-index d2e74ac21d07..5e9a77d94ca1 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822b.c b/drivers/net/wireless/realtek/rtw88/rtw8822b.c
+index c76cd0893d12..63c209062910 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8822b.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8822b.c
 @@ -2,6 +2,7 @@
  /* Copyright(c) 2018-2019  Realtek Corporation
   */
@@ -154,19 +152,19 @@ index d2e74ac21d07..5e9a77d94ca1 100644
  #include "main.h"
  #include "coex.h"
  #include "fw.h"
-@@ -4262,3 +4263,7 @@ EXPORT_SYMBOL(rtw8822c_hw_spec);
+@@ -2505,3 +2506,7 @@ struct rtw_chip_info rtw8822b_hw_spec = {
+ EXPORT_SYMBOL(rtw8822b_hw_spec);
  
- MODULE_FIRMWARE("rtw88/rtw8822c_fw.bin");
- MODULE_FIRMWARE("rtw88/rtw8822c_wow_fw.bin");
+ MODULE_FIRMWARE("rtw88/rtw8822b_fw.bin");
 +
 +MODULE_AUTHOR("Realtek Corporation");
-+MODULE_DESCRIPTION("Realtek 802.11ac wireless 8822c driver");
++MODULE_DESCRIPTION("Realtek 802.11ac wireless 8822b driver");
 +MODULE_LICENSE("Dual BSD/GPL");
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822ce.c b/drivers/net/wireless/realtek/rtw88/rtw8822ce.c
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822be.c b/drivers/net/wireless/realtek/rtw88/rtw8822be.c
 new file mode 100644
-index 000000000000..c7d75edcaa2e
+index 000000000000..4cebfbab886d
 --- /dev/null
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8822ce.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8822be.c
 @@ -0,0 +1,30 @@
 +// SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
 +/* Copyright(c) 2018-2019  Realtek Corporation
@@ -174,42 +172,42 @@ index 000000000000..c7d75edcaa2e
 +
 +#include <linux/module.h>
 +#include <linux/pci.h>
-+#include "rtw8822ce.h"
++#include "rtw8822be.h"
 +
-+static const struct pci_device_id rtw_8822ce_id_table[] = {
++static const struct pci_device_id rtw_8822be_id_table[] = {
 +	{
-+		PCI_DEVICE(PCI_VENDOR_ID_REALTEK, 0xC822),
-+		.driver_data = (kernel_ulong_t)&rtw8822c_hw_spec
++		PCI_DEVICE(PCI_VENDOR_ID_REALTEK, 0xB822),
++		.driver_data = (kernel_ulong_t)&rtw8822b_hw_spec
 +	},
 +	{}
 +};
-+MODULE_DEVICE_TABLE(pci, rtw_8822ce_id_table);
++MODULE_DEVICE_TABLE(pci, rtw_8822be_id_table);
 +
-+static struct pci_driver rtw_8822ce_driver = {
-+	.name = "rtw_8822ce",
-+	.id_table = rtw_8822ce_id_table,
++static struct pci_driver rtw_8822be_driver = {
++	.name = "rtw_8822be",
++	.id_table = rtw_8822be_id_table,
 +	.probe = rtw_pci_probe,
 +	.remove = rtw_pci_remove,
 +	.driver.pm = RTW_PM_OPS,
 +	.shutdown = rtw_pci_shutdown,
 +};
-+module_pci_driver(rtw_8822ce_driver);
++module_pci_driver(rtw_8822be_driver);
 +
 +MODULE_AUTHOR("Realtek Corporation");
-+MODULE_DESCRIPTION("Realtek 802.11ac wireless 8822ce driver");
++MODULE_DESCRIPTION("Realtek 802.11ac wireless 8822be driver");
 +MODULE_LICENSE("Dual BSD/GPL");
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822ce.h b/drivers/net/wireless/realtek/rtw88/rtw8822ce.h
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822be.h b/drivers/net/wireless/realtek/rtw88/rtw8822be.h
 new file mode 100644
-index 000000000000..ed2eff4d5fd0
+index 000000000000..1ae4a6cbfcd8
 --- /dev/null
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8822ce.h
++++ b/drivers/net/wireless/realtek/rtw88/rtw8822be.h
 @@ -0,0 +1,20 @@
 +/* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
 +/* Copyright(c) 2018-2019  Realtek Corporation
 + */
 +
-+#ifndef __RTW_8822CE_H_
-+#define __RTW_8822CE_H_
++#ifndef __RTW_8822BE_H_
++#define __RTW_8822BE_H_
 +
 +#ifdef CONFIG_PM
 +extern const struct dev_pm_ops rtw_pci_pm;
@@ -218,7 +216,7 @@ index 000000000000..ed2eff4d5fd0
 +#define RTW_PM_OPS NULL
 +#endif
 +
-+extern struct rtw_chip_info rtw8822c_hw_spec;
++extern struct rtw_chip_info rtw8822b_hw_spec;
 +int rtw_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id);
 +void rtw_pci_remove(struct pci_dev *pdev);
 +void rtw_pci_shutdown(struct pci_dev *pdev);
