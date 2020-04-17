@@ -2,81 +2,83 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 643FF1AD802
-	for <lists+linux-wireless@lfdr.de>; Fri, 17 Apr 2020 09:52:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 09ECE1AD826
+	for <lists+linux-wireless@lfdr.de>; Fri, 17 Apr 2020 10:03:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729492AbgDQHwM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 17 Apr 2020 03:52:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58140 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729042AbgDQHwM (ORCPT
+        id S1729271AbgDQIDW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 17 Apr 2020 04:03:22 -0400
+Received: from mail26.static.mailgun.info ([104.130.122.26]:63965 "EHLO
+        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1729176AbgDQIDW (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 17 Apr 2020 03:52:12 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C935CC061A0C
-        for <linux-wireless@vger.kernel.org>; Fri, 17 Apr 2020 00:52:11 -0700 (PDT)
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.93)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1jPLnB-006kEb-EQ; Fri, 17 Apr 2020 09:52:05 +0200
-Message-ID: <cca893de1163db031f00df5ada30a7987945bc07.camel@sipsolutions.net>
-Subject: Re: [PATCH v5.7 8/8] iwlwifi: mvm: don't call
- iwl_mvm_free_inactive_queue() under RCU
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Mark Asselstine <asselsm@gmail.com>, Luca Coelho <luca@coelho.fi>
-Cc:     kvalo@codeaurora.org,
-        linux-wireless <linux-wireless@vger.kernel.org>
-Date:   Fri, 17 Apr 2020 09:52:04 +0200
-In-Reply-To: <CAPuovE+_jWPjesRZ0GFk0zjf-jLmyyqOGxwyZGcawg5DL9CbXg@mail.gmail.com> (sfid-20200403_162852_111476_08446F51)
-References: <20200403082955.1126339-1-luca@coelho.fi>
-         <iwlwifi.20200403112332.0f49448c133d.I17fd308bc4a9491859c9b112f4eb5d2c3fc18d7d@changeid>
-         <CAPuovE+_jWPjesRZ0GFk0zjf-jLmyyqOGxwyZGcawg5DL9CbXg@mail.gmail.com>
-         (sfid-20200403_162852_111476_08446F51)
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.4 (3.34.4-1.fc31) 
+        Fri, 17 Apr 2020 04:03:22 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1587110602; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=u3586iFRwcYPsbJjaSDkiDP7IdnytFfQnBeWLZSw2rs=; b=BD4q/K0JpNekcKKkr0F6eNOpajfJKz4qYulCg4xyJdpsUZADW9Zy7r3XwLsWCGyiya6aypQv
+ bTp/zJpR0n58Ga3R4E+TU3QiqmXrVW0flNP2PkmLb7yZratTTk2jqs5VQx3FuIrXJRb6Mwe7
+ b8A2n2LGqXpcToF2akJTsZ5tDOQ=
+X-Mailgun-Sending-Ip: 104.130.122.26
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5e9962bc.7fe90db55848-smtp-out-n01;
+ Fri, 17 Apr 2020 08:03:08 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 449FDC4478F; Fri, 17 Apr 2020 08:03:08 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 71443C433BA;
+        Fri, 17 Apr 2020 08:03:05 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 71443C433BA
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Sedat Dilek <sedat.dilek@gmail.com>
+Cc:     Johannes Berg <johannes.berg@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        Intel Linux Wireless <linuxwifi@intel.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Chris Rorvick <chris@rorvick.com>
+Subject: Re: [PATCH wireless-drivers v3] iwlwifi: actually check allocated conf_tlv pointer
+References: <20200417074558.12316-1-sedat.dilek@gmail.com>
+Date:   Fri, 17 Apr 2020 11:03:03 +0300
+In-Reply-To: <20200417074558.12316-1-sedat.dilek@gmail.com> (Sedat Dilek's
+        message of "Fri, 17 Apr 2020 09:45:58 +0200")
+Message-ID: <87pnc6pmiw.fsf@kamboji.qca.qualcomm.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Sorry, missed your comment.
+Sedat Dilek <sedat.dilek@gmail.com> writes:
 
-On Fri, 2020-04-03 at 10:28 -0400, Mark Asselstine wrote:
-> I was looking into this as part of
-> https://bugzilla.kernel.org/show_bug.cgi?id=206971 and had a similar
-> fix in flight. My concern was that queue_owner being used outside of
-> the RCU might be an issue
+> From: Chris Rorvick <chris@rorvick.com>
+>
+> Commit 71bc0334a637 ("iwlwifi: check allocated pointer when allocating
+> conf_tlvs") attempted to fix a typoe introduced by commit 17b809c9b22e
+> ("iwlwifi: dbg: move debug data to a struct") but does not implement the
+> check correctly.
+>
+> Fixes: 71bc0334a637 ("iwlwifi: check allocated pointer when allocating conf_tlvs")
+> Tweeted-by: @grsecurity
+> Message-Id: <20200402050219.4842-1-chris@rorvick.com>
+> Signed-off-by: Chris Rorvick <chris@rorvick.com>
+> Signed-off-by: Sedat Dilek <sedat.dilek@gmail.com>
 
-Yes, that does *look* questionable, and I missed it completely.
+Thanks, looks good to me. I'll just remove the Message-Id tag, it's not
+really needed in this case.
 
-However, that's only because the code makes weak assumptions when it's
-under much stronger guarantees. There's no reason for it to use RCU here
-for the station lookup, since it's holding the write-side lock (which is
-the mvm->mutex).
-
-IOW, we could just change
-
-sta = rcu_dereference(mvm->fw_id_to_mac_id[sta_id]);
-
-to
-
-sta = rcu_dereference_protected(mvm->fw_id_to_mac_id[sta_id], ...);
-
-and then it's clear that there's no issue.
-
-> as now you have no guaranty that the
-> eventual use of sta->txq[tid] in iwl_mvm_free_inactive_queue() is
-> going to be valid. The only way to work around this is instead of
-> storing queue_owner, store mvmtxq = iwl_mvm_txq_from_tid(sta, i), then
-> adjust iwl_mvm_free_inactive_queue(), iwl_mvm_disable_txq() and
-> whatnot to take struct iwl_mvm_txq * instead of struct ieee80211_sta
-> *. If you open the bug you will see the latest version of my work as
-> the attached patch. I am not an RCU expert so I am curious to hear
-> your thoughts.
-
-You could do that too, but it seems overly complex to me.
-
-johannes
-
+-- 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
