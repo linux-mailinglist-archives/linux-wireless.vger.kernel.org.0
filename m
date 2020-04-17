@@ -2,26 +2,26 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 323231ADADF
+	by mail.lfdr.de (Postfix) with ESMTP id 9D5BE1ADAE0
 	for <lists+linux-wireless@lfdr.de>; Fri, 17 Apr 2020 12:22:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729043AbgDQKVz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 17 Apr 2020 06:21:55 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:56582 "EHLO
+        id S1729060AbgDQKV4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 17 Apr 2020 06:21:56 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:56588 "EHLO
         farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1729022AbgDQKVy (ORCPT
+        with ESMTP id S1728346AbgDQKVz (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 17 Apr 2020 06:21:54 -0400
+        Fri, 17 Apr 2020 06:21:55 -0400
 Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa.ger.corp.intel.com)
         by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
         (Exim 4.93)
         (envelope-from <luca@coelho.fi>)
-        id 1jPO87-000Kba-Uk; Fri, 17 Apr 2020 13:21:52 +0300
+        id 1jPO88-000Kba-Qv; Fri, 17 Apr 2020 13:21:53 +0300
 From:   Luca Coelho <luca@coelho.fi>
 To:     kvalo@codeaurora.org
 Cc:     linux-wireless@vger.kernel.org
-Date:   Fri, 17 Apr 2020 13:21:36 +0300
-Message-Id: <iwlwifi.20200417131727.5be6a1923cbe.I10701236b03f66328041f2a38f5f0f22a26fd40b@changeid>
+Date:   Fri, 17 Apr 2020 13:21:37 +0300
+Message-Id: <iwlwifi.20200417131727.b02153b94c1d.Ieb6291586d60f372d5a505604b18227ef97e7202@changeid>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200417102142.2173014-1-luca@coelho.fi>
 References: <20200417102142.2173014-1-luca@coelho.fi>
@@ -31,306 +31,160 @@ X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on farmhouse.coelho.fi
 X-Spam-Level: 
 X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
         TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.4
-Subject: [PATCH 04/10] iwlwifi: dbg: support multiple dumps in legacy dump flow
+Subject: [PATCH 05/10] iwlwifi: support version 9 of WOWLAN_GET_STATUS notification
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Shahar S Matityahu <shahar.s.matityahu@intel.com>
+From: Mordechay Goodstein <mordechay.goodstein@intel.com>
 
-Support multiple debug data collection triggers in legacy flow.
-Utilize the already existing Yoyo infra so the change is rather simple.
+Add support for the new WOWLAN_GET_STATUS notification that contains a
+new element that informs the driver of TIDs whose BA sessions were
+closed during suspend.
 
-Signed-off-by: Shahar S Matityahu <shahar.s.matityahu@intel.com>
+Note that the new functionality of handling these closed sessions is not
+implemented in this patch it.  It only aligns to the new API version.
+
+Signed-off-by: Mordechay Goodstein <mordechay.goodstein@intel.com>
 Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/fw/dbg.c   | 97 ++++++++++++-------
- drivers/net/wireless/intel/iwlwifi/fw/dbg.h   | 11 ---
- .../net/wireless/intel/iwlwifi/fw/runtime.h   | 14 ++-
- .../net/wireless/intel/iwlwifi/mvm/mac80211.c |  1 -
- 4 files changed, 72 insertions(+), 51 deletions(-)
+ .../net/wireless/intel/iwlwifi/fw/api/d3.h    | 39 ++++++++++++++++++-
+ drivers/net/wireless/intel/iwlwifi/mvm/d3.c   | 29 +++++++++-----
+ 2 files changed, 58 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-index 14ac7153a3e7..8daa83cdc72c 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-@@ -818,7 +818,8 @@ static void iwl_dump_paging(struct iwl_fw_runtime *fwrt,
- 
- static struct iwl_fw_error_dump_file *
- iwl_fw_error_dump_file(struct iwl_fw_runtime *fwrt,
--		       struct iwl_fw_dump_ptrs *fw_error_dump)
-+		       struct iwl_fw_dump_ptrs *fw_error_dump,
-+		       struct iwl_fwrt_dump_data *data)
- {
- 	struct iwl_fw_error_dump_file *dump_file;
- 	struct iwl_fw_error_dump_data *dump_data;
-@@ -900,15 +901,15 @@ iwl_fw_error_dump_file(struct iwl_fw_runtime *fwrt,
- 	}
- 
- 	/* If we only want a monitor dump, reset the file length */
--	if (fwrt->dump.monitor_only) {
-+	if (data->monitor_only) {
- 		file_len = sizeof(*dump_file) + sizeof(*dump_data) * 2 +
- 			   sizeof(*dump_info) + sizeof(*dump_smem_cfg);
- 	}
- 
- 	if (iwl_fw_dbg_type_on(fwrt, IWL_FW_ERROR_DUMP_ERROR_INFO) &&
--	    fwrt->dump.desc)
-+	    data->desc)
- 		file_len += sizeof(*dump_data) + sizeof(*dump_trig) +
--			    fwrt->dump.desc->len;
-+			data->desc->len;
- 
- 	dump_file = vzalloc(file_len);
- 	if (!dump_file)
-@@ -984,19 +985,19 @@ iwl_fw_error_dump_file(struct iwl_fw_runtime *fwrt,
- 		iwl_read_radio_regs(fwrt, &dump_data);
- 
- 	if (iwl_fw_dbg_type_on(fwrt, IWL_FW_ERROR_DUMP_ERROR_INFO) &&
--	    fwrt->dump.desc) {
-+	    data->desc) {
- 		dump_data->type = cpu_to_le32(IWL_FW_ERROR_DUMP_ERROR_INFO);
- 		dump_data->len = cpu_to_le32(sizeof(*dump_trig) +
--					     fwrt->dump.desc->len);
-+					     data->desc->len);
- 		dump_trig = (void *)dump_data->data;
--		memcpy(dump_trig, &fwrt->dump.desc->trig_desc,
--		       sizeof(*dump_trig) + fwrt->dump.desc->len);
-+		memcpy(dump_trig, &data->desc->trig_desc,
-+		       sizeof(*dump_trig) + data->desc->len);
- 
- 		dump_data = iwl_fw_error_next_data(dump_data);
- 	}
- 
- 	/* In case we only want monitor dump, skip to dump trasport data */
--	if (fwrt->dump.monitor_only)
-+	if (data->monitor_only)
- 		goto out;
- 
- 	if (iwl_fw_dbg_type_on(fwrt, IWL_FW_ERROR_DUMP_MEM)) {
-@@ -2172,7 +2173,21 @@ static u32 iwl_dump_ini_file_gen(struct iwl_fw_runtime *fwrt,
- 	return le32_to_cpu(hdr->file_len);
- }
- 
--static void iwl_fw_error_dump(struct iwl_fw_runtime *fwrt)
-+static inline void iwl_fw_free_dump_desc(struct iwl_fw_runtime *fwrt,
-+					 const struct iwl_fw_dump_desc **desc)
-+{
-+	if (desc && *desc != &iwl_dump_desc_assert)
-+		kfree(*desc);
-+
-+	*desc = NULL;
-+	fwrt->dump.lmac_err_id[0] = 0;
-+	if (fwrt->smem_cfg.num_lmacs > 1)
-+		fwrt->dump.lmac_err_id[1] = 0;
-+	fwrt->dump.umac_err_id = 0;
-+}
-+
-+static void iwl_fw_error_dump(struct iwl_fw_runtime *fwrt,
-+			      struct iwl_fwrt_dump_data *dump_data)
- {
- 	struct iwl_fw_dump_ptrs fw_error_dump = {};
- 	struct iwl_fw_error_dump_file *dump_file;
-@@ -2180,11 +2195,11 @@ static void iwl_fw_error_dump(struct iwl_fw_runtime *fwrt)
- 	u32 file_len;
- 	u32 dump_mask = fwrt->fw->dbg.dump_mask;
- 
--	dump_file = iwl_fw_error_dump_file(fwrt, &fw_error_dump);
-+	dump_file = iwl_fw_error_dump_file(fwrt, &fw_error_dump, dump_data);
- 	if (!dump_file)
--		goto out;
-+		return;
- 
--	if (fwrt->dump.monitor_only)
-+	if (dump_data->monitor_only)
- 		dump_mask &= IWL_FW_ERROR_DUMP_FW_MONITOR;
- 
- 	fw_error_dump.trans_ptr = iwl_trans_dump_data(fwrt->trans, dump_mask);
-@@ -2213,9 +2228,6 @@ static void iwl_fw_error_dump(struct iwl_fw_runtime *fwrt)
- 	}
- 	vfree(fw_error_dump.fwrt_ptr);
- 	vfree(fw_error_dump.trans_ptr);
--
--out:
--	iwl_fw_free_dump_desc(fwrt);
- }
- 
- static void iwl_dump_ini_list_free(struct list_head *list)
-@@ -2244,7 +2256,7 @@ static void iwl_fw_error_ini_dump(struct iwl_fw_runtime *fwrt,
- 	u32 file_len = iwl_dump_ini_file_gen(fwrt, dump_data, &dump_list);
- 
- 	if (!file_len)
--		goto out;
-+		return;
- 
- 	sg_dump_data = alloc_sgtable(file_len);
- 	if (sg_dump_data) {
-@@ -2261,9 +2273,6 @@ static void iwl_fw_error_ini_dump(struct iwl_fw_runtime *fwrt,
- 			       GFP_KERNEL);
- 	}
- 	iwl_dump_ini_list_free(&dump_list);
--
--out:
--	iwl_fw_error_dump_data_free(dump_data);
- }
- 
- const struct iwl_fw_dump_desc iwl_dump_desc_assert = {
-@@ -2278,27 +2287,40 @@ int iwl_fw_dbg_collect_desc(struct iwl_fw_runtime *fwrt,
- 			    bool monitor_only,
- 			    unsigned int delay)
- {
-+	struct iwl_fwrt_wk_data *wk_data;
-+	unsigned long idx;
-+
- 	if (iwl_trans_dbg_ini_valid(fwrt->trans)) {
--		iwl_fw_free_dump_desc(fwrt);
-+		iwl_fw_free_dump_desc(fwrt, &desc);
- 		return 0;
- 	}
- 
--	/* use wks[0] since dump flow prior to ini does not need to support
--	 * consecutive triggers collection
-+	/*
-+	 * Check there is an available worker.
-+	 * ffz return value is undefined if no zero exists,
-+	 * so check against ~0UL first.
- 	 */
--	if (test_and_set_bit(fwrt->dump.wks[0].idx, &fwrt->dump.active_wks))
-+	if (fwrt->dump.active_wks == ~0UL)
- 		return -EBUSY;
- 
--	if (WARN_ON(fwrt->dump.desc))
--		iwl_fw_free_dump_desc(fwrt);
-+	idx = ffz(fwrt->dump.active_wks);
-+
-+	if (idx >= IWL_FW_RUNTIME_DUMP_WK_NUM ||
-+	    test_and_set_bit(fwrt->dump.wks[idx].idx, &fwrt->dump.active_wks))
-+		return -EBUSY;
-+
-+	wk_data = &fwrt->dump.wks[idx];
-+
-+	if (WARN_ON(wk_data->dump_data.desc))
-+		iwl_fw_free_dump_desc(fwrt, &wk_data->dump_data.desc);
-+
-+	wk_data->dump_data.desc = desc;
-+	wk_data->dump_data.monitor_only = monitor_only;
- 
- 	IWL_WARN(fwrt, "Collecting data: trigger %d fired.\n",
- 		 le32_to_cpu(desc->trig_desc.type));
- 
--	fwrt->dump.desc = desc;
--	fwrt->dump.monitor_only = monitor_only;
--
--	schedule_delayed_work(&fwrt->dump.wks[0].wk, usecs_to_jiffies(delay));
-+	schedule_delayed_work(&wk_data->wk, usecs_to_jiffies(delay));
- 
- 	return 0;
- }
-@@ -2504,14 +2526,14 @@ IWL_EXPORT_SYMBOL(iwl_fw_start_dbg_conf);
- static void iwl_fw_dbg_collect_sync(struct iwl_fw_runtime *fwrt, u8 wk_idx)
- {
- 	struct iwl_fw_dbg_params params = {0};
-+	struct iwl_fwrt_dump_data *dump_data =
-+		&fwrt->dump.wks[wk_idx].dump_data;
- 
- 	if (!test_bit(wk_idx, &fwrt->dump.active_wks))
- 		return;
- 
--	if (fwrt->ops && fwrt->ops->fw_running &&
--	    !fwrt->ops->fw_running(fwrt->ops_ctx)) {
--		IWL_ERR(fwrt, "Firmware not running - cannot dump error\n");
--		iwl_fw_free_dump_desc(fwrt);
-+	if (!test_bit(STATUS_DEVICE_ENABLED, &fwrt->trans->status)) {
-+		IWL_ERR(fwrt, "Device is not enabled - cannot dump error\n");
- 		goto out;
- 	}
- 
-@@ -2527,12 +2549,17 @@ static void iwl_fw_dbg_collect_sync(struct iwl_fw_runtime *fwrt, u8 wk_idx)
- 	if (iwl_trans_dbg_ini_valid(fwrt->trans))
- 		iwl_fw_error_ini_dump(fwrt, &fwrt->dump.wks[wk_idx].dump_data);
- 	else
--		iwl_fw_error_dump(fwrt);
-+		iwl_fw_error_dump(fwrt, &fwrt->dump.wks[wk_idx].dump_data);
- 	IWL_DEBUG_FW_INFO(fwrt, "WRT: Data collection done\n");
- 
- 	iwl_fw_dbg_stop_restart_recording(fwrt, &params, false);
- 
- out:
-+	if (iwl_trans_dbg_ini_valid(fwrt->trans))
-+		iwl_fw_error_dump_data_free(dump_data);
-+	else
-+		iwl_fw_free_dump_desc(fwrt, &dump_data->desc);
-+
- 	clear_bit(wk_idx, &fwrt->dump.active_wks);
- }
- 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/dbg.h b/drivers/net/wireless/intel/iwlwifi/fw/dbg.h
-index 9d3513213f5f..11558df36b94 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/dbg.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/dbg.h
-@@ -98,17 +98,6 @@ struct iwl_fw_dbg_params {
- 
- extern const struct iwl_fw_dump_desc iwl_dump_desc_assert;
- 
--static inline void iwl_fw_free_dump_desc(struct iwl_fw_runtime *fwrt)
--{
--	if (fwrt->dump.desc != &iwl_dump_desc_assert)
--		kfree(fwrt->dump.desc);
--	fwrt->dump.desc = NULL;
--	fwrt->dump.lmac_err_id[0] = 0;
--	if (fwrt->smem_cfg.num_lmacs > 1)
--		fwrt->dump.lmac_err_id[1] = 0;
--	fwrt->dump.umac_err_id = 0;
--}
--
- int iwl_fw_dbg_collect_desc(struct iwl_fw_runtime *fwrt,
- 			    const struct iwl_fw_dump_desc *desc,
- 			    bool monitor_only, unsigned int delay);
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/runtime.h b/drivers/net/wireless/intel/iwlwifi/fw/runtime.h
-index da0d90e2b537..9906d9b9bdd5 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/runtime.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/runtime.h
-@@ -98,8 +98,16 @@ struct iwl_fwrt_shared_mem_cfg {
-  * @fw_pkt: packet received from FW
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/d3.h b/drivers/net/wireless/intel/iwlwifi/fw/api/d3.h
+index 3643b6ba6385..c4562e1f8d18 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/api/d3.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/api/d3.h
+@@ -618,7 +618,7 @@ struct iwl_wowlan_status_v6 {
+  * @wake_packet_bufsize: wakeup packet buffer size
+  * @wake_packet: wakeup packet
   */
- struct iwl_fwrt_dump_data {
--	struct iwl_fw_ini_trigger_tlv *trig;
--	struct iwl_rx_packet *fw_pkt;
-+	union {
-+		struct {
-+			struct iwl_fw_ini_trigger_tlv *trig;
-+			struct iwl_rx_packet *fw_pkt;
-+		};
-+		struct {
-+			const struct iwl_fw_dump_desc *desc;
-+			bool monitor_only;
-+		};
-+	};
- };
+-struct iwl_wowlan_status {
++struct iwl_wowlan_status_v7 {
+ 	struct iwl_wowlan_gtk_status gtk[WOWLAN_GTK_KEYS_NUM];
+ 	struct iwl_wowlan_igtk_status igtk[WOWLAN_IGTK_KEYS_NUM];
+ 	__le64 replay_ctr;
+@@ -634,6 +634,43 @@ struct iwl_wowlan_status {
+ 	u8 wake_packet[]; /* can be truncated from _length to _bufsize */
+ } __packed; /* WOWLAN_STATUSES_API_S_VER_7 */
  
- /**
-@@ -162,8 +170,6 @@ struct iwl_fw_runtime {
++/**
++ * struct iwl_wowlan_status - WoWLAN status
++ * @gtk: GTK data
++ * @igtk: IGTK data
++ * @replay_ctr: GTK rekey replay counter
++ * @pattern_number: number of the matched pattern
++ * @non_qos_seq_ctr: non-QoS sequence counter to use next
++ * @qos_seq_ctr: QoS sequence counters to use next
++ * @wakeup_reasons: wakeup reasons, see &enum iwl_wowlan_wakeup_reason
++ * @num_of_gtk_rekeys: number of GTK rekeys
++ * @transmitted_ndps: number of transmitted neighbor discovery packets
++ * @received_beacons: number of received beacons
++ * @wake_packet_length: wakeup packet length
++ * @wake_packet_bufsize: wakeup packet buffer size
++ * @tid_tear_down: bit mask of tids whose BA sessions were closed
++ *		   in suspend state
++ * @reserved: unused
++ * @wake_packet: wakeup packet
++ */
++struct iwl_wowlan_status {
++	struct iwl_wowlan_gtk_status gtk[WOWLAN_GTK_KEYS_NUM];
++	struct iwl_wowlan_igtk_status igtk[WOWLAN_IGTK_KEYS_NUM];
++	__le64 replay_ctr;
++	__le16 pattern_number;
++	__le16 non_qos_seq_ctr;
++	__le16 qos_seq_ctr[8];
++	__le32 wakeup_reasons;
++	__le32 num_of_gtk_rekeys;
++	__le32 transmitted_ndps;
++	__le32 received_beacons;
++	__le32 wake_packet_length;
++	__le32 wake_packet_bufsize;
++	u8 tid_tear_down;
++	u8 reserved[3];
++	u8 wake_packet[]; /* can be truncated from _length to _bufsize */
++} __packed; /* WOWLAN_STATUSES_API_S_VER_9 */
++
+ static inline u8 iwlmvm_wowlan_gtk_idx(struct iwl_wowlan_gtk_status *gtk)
+ {
+ 	return gtk->key_flags & IWL_WOWLAN_GTK_IDX_MASK;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
+index 122ca7624073..222775714859 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
+@@ -1517,12 +1517,14 @@ static bool iwl_mvm_setup_connection_keep(struct iwl_mvm *mvm,
  
- 	/* debug */
- 	struct {
--		const struct iwl_fw_dump_desc *desc;
--		bool monitor_only;
- 		struct iwl_fwrt_wk_data wks[IWL_FW_RUNTIME_DUMP_WK_NUM];
- 		unsigned long active_wks;
+ struct iwl_wowlan_status *iwl_mvm_send_wowlan_get_status(struct iwl_mvm *mvm)
+ {
+-	struct iwl_wowlan_status *v7, *status;
++	struct iwl_wowlan_status_v7 *v7;
++	struct iwl_wowlan_status *status;
+ 	struct iwl_host_cmd cmd = {
+ 		.id = WOWLAN_GET_STATUSES,
+ 		.flags = CMD_WANT_SKB,
+ 	};
+-	int ret, len, status_size;
++	int ret, len, status_size, data_size;
++	u8 notif_ver;
  
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-index 7aa1350b093e..853ba7b8bf3f 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-@@ -1264,7 +1264,6 @@ static void iwl_mvm_mac_stop(struct ieee80211_hw *hw)
+ 	lockdep_assert_held(&mvm->mutex);
  
- 	cancel_delayed_work_sync(&mvm->cs_tx_unblock_dwork);
- 	cancel_delayed_work_sync(&mvm->scan_timeout_dwork);
--	iwl_fw_free_dump_desc(&mvm->fwrt);
+@@ -1532,13 +1534,12 @@ struct iwl_wowlan_status *iwl_mvm_send_wowlan_get_status(struct iwl_mvm *mvm)
+ 		return ERR_PTR(ret);
+ 	}
  
- 	mutex_lock(&mvm->mutex);
- 	__iwl_mvm_mac_stop(mvm);
++	len = iwl_rx_packet_payload_len(cmd.resp_pkt);
+ 	if (!fw_has_api(&mvm->fw->ucode_capa,
+ 			IWL_UCODE_TLV_API_WOWLAN_KEY_MATERIAL)) {
+ 		struct iwl_wowlan_status_v6 *v6 = (void *)cmd.resp_pkt->data;
+-		int data_size;
+ 
+ 		status_size = sizeof(*v6);
+-		len = iwl_rx_packet_payload_len(cmd.resp_pkt);
+ 
+ 		if (len < status_size) {
+ 			IWL_ERR(mvm, "Invalid WoWLAN status response!\n");
+@@ -1593,23 +1594,33 @@ struct iwl_wowlan_status *iwl_mvm_send_wowlan_get_status(struct iwl_mvm *mvm)
+ 	}
+ 
+ 	v7 = (void *)cmd.resp_pkt->data;
+-	status_size = sizeof(*v7);
+-	len = iwl_rx_packet_payload_len(cmd.resp_pkt);
++	notif_ver = iwl_fw_lookup_notif_ver(mvm->fw, LEGACY_GROUP,
++					    WOWLAN_GET_STATUSES, 0);
++
++	status_size = sizeof(*status);
++
++	if (notif_ver == IWL_FW_CMD_VER_UNKNOWN || notif_ver < 9)
++		status_size = sizeof(*v7);
+ 
+ 	if (len < status_size) {
+ 		IWL_ERR(mvm, "Invalid WoWLAN status response!\n");
+ 		status = ERR_PTR(-EIO);
+ 		goto out_free_resp;
+ 	}
++	data_size = ALIGN(le32_to_cpu(v7->wake_packet_bufsize), 4);
+ 
+-	if (len != (status_size +
+-		    ALIGN(le32_to_cpu(v7->wake_packet_bufsize), 4))) {
++	if (len != (status_size + data_size)) {
+ 		IWL_ERR(mvm, "Invalid WoWLAN status response!\n");
+ 		status = ERR_PTR(-EIO);
+ 		goto out_free_resp;
+ 	}
+ 
+-	status = kmemdup(v7, len, GFP_KERNEL);
++	status = kzalloc(sizeof(*status) + data_size, GFP_KERNEL);
++	if (!status)
++		goto out_free_resp;
++
++	memcpy(status, v7, status_size);
++	memcpy(status->wake_packet, (u8 *)v7 + status_size, data_size);
+ 
+ out_free_resp:
+ 	iwl_free_resp(&cmd);
 -- 
 2.25.1
 
