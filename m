@@ -2,86 +2,105 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D7B31AEDBD
-	for <lists+linux-wireless@lfdr.de>; Sat, 18 Apr 2020 16:02:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AB10A1AF24B
+	for <lists+linux-wireless@lfdr.de>; Sat, 18 Apr 2020 18:24:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725893AbgDROCi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 18 Apr 2020 10:02:38 -0400
-Received: from mail27.static.mailgun.info ([104.130.122.27]:27915 "EHLO
-        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725879AbgDROCi (ORCPT
+        id S1726459AbgDRQYz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 18 Apr 2020 12:24:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48610 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726331AbgDRQYy (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 18 Apr 2020 10:02:38 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1587218557; h=Message-ID: References: In-Reply-To: Subject:
- Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
- MIME-Version: Sender; bh=PtPOrt07EzuEgYcXSDgkKyOC29cvpcuzM7IRgCX/a6A=;
- b=BYGah4HouJF61k756vV+Gc+UiqsD6o6N4oYihIVll09JPW6/MtTVZYDd2CNhHoIgBxWagXZe
- 56vkoad8Ie1d7Mmye54NB+KIwkPkqz6hpw8nGBbT8MxWivkWBN3+iXd2idH3FTJqk1Y5OGSQ
- NXZmTI9/BHejmS9F7SKe8gMObTc=
-X-Mailgun-Sending-Ip: 104.130.122.27
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e9b0872.7f8633374c38-smtp-out-n02;
- Sat, 18 Apr 2020 14:02:26 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 11982C433BA; Sat, 18 Apr 2020 14:02:25 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: wgong)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 947F9C433CB;
-        Sat, 18 Apr 2020 14:02:24 +0000 (UTC)
+        Sat, 18 Apr 2020 12:24:54 -0400
+Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24B7AC061A0C;
+        Sat, 18 Apr 2020 09:24:54 -0700 (PDT)
+Received: by mail-wr1-x442.google.com with SMTP id u13so6632606wrp.3;
+        Sat, 18 Apr 2020 09:24:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=to:cc:from:subject:message-id:date:user-agent:mime-version
+         :content-language:content-transfer-encoding;
+        bh=XGEj3VJB73XMSjdKjc291NmLGevIXZKdlnrTsayg+jI=;
+        b=SIZzTwJn1Yk5or/nLv3lvJko9gK7r7meNLSAizJaXd2P+BkrneGSkZaX7F7PvWRHGx
+         tskb8uW80qPF4B1Wflmodvg1Ku2ssALa/mnOMD8UHGbC9M0bNUFmUvDgCxh1hSsv+OuC
+         NCqnDREXNCtElIaiBEXV9lOObMRnMql0d8Aiec9C6IW0u/cpOFUjFQg771wuAuTLdSgw
+         18yYusrLrPg86sbv1amNBFhJVoauC+mJqk8fmg6gEQohbqRyVOFwX0Ra/bupcedSVs58
+         2/P9WYshzBp/Jssq94je885lPDRKRsVQQK7dpP3fimazY1DB/0ByqQV0StDCVbQIu/Ml
+         gHcw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:to:cc:from:subject:message-id:date:user-agent
+         :mime-version:content-language:content-transfer-encoding;
+        bh=XGEj3VJB73XMSjdKjc291NmLGevIXZKdlnrTsayg+jI=;
+        b=uYXfLbvhLaFbpu0LOylPB92vozJTWNTWQ1P9XKk2QQCx5NcpAnu2XfW//5VubWGmtt
+         A4cgRCX6keWThDpMEjzb+zr8wMqmE3C4e5ctBmOCaVL2KYmR8PDSynnirUwzudq1lrTf
+         zF8AMp9JeQLVjtwbZXrYdXEjp+OpMAvVQcdDnxPwgyYnIEoYxc4yv0bsrwYJr14wPlP4
+         J7cG4y7mr2MXvvRG2yErLCouT0qQxtX2UM8Nvq8bCOp0Oj/oiuKpNDaf0Pom98/ZZlcv
+         nW2z2vlNikphxGsvlaSYWQk5NDwBPE57QXYXboiG3yH03nazcDFb5lADcDuyjgU4koG1
+         vuIA==
+X-Gm-Message-State: AGi0PuZKbZ89KQYlocNHZpaXHia1dff3wp0wFKudvp6p3yRT0FxbUtoN
+        Au8ThzLLDbSuZQ9PiUP3SEpei45D
+X-Google-Smtp-Source: APiQypJ6/MElbXcE0UnT48kiPNKQIpXKPuGW3gXNfoZXTy3FbSd75/GBbPf07PiHkG4fgsT381XeUQ==
+X-Received: by 2002:a5d:4447:: with SMTP id x7mr9540180wrr.299.1587227092419;
+        Sat, 18 Apr 2020 09:24:52 -0700 (PDT)
+Received: from [192.168.43.18] (188.29.165.57.threembb.co.uk. [188.29.165.57])
+        by smtp.gmail.com with ESMTPSA id x18sm35822640wrs.11.2020.04.18.09.24.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 18 Apr 2020 09:24:51 -0700 (PDT)
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>,
+        linux-wireless@vger.kernel.org,
+        Oscar Carter <oscar.carter@gmx.com>, stable@vger.kernel.org
+From:   Malcolm Priestley <tvboxspy@gmail.com>
+Subject: [PATCH] staging: vt6656: Don't set RCR_MULTICAST or RCR_BROADCAST by
+ default.
+Message-ID: <2c24c33d-68c4-f343-bd62-105422418eac@gmail.com>
+Date:   Sat, 18 Apr 2020 17:24:50 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-Date:   Sat, 18 Apr 2020 22:02:24 +0800
-From:   Wen Gong <wgong@codeaurora.org>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     linux-wireless@vger.kernel.org, ath10k@lists.infradead.org
-Subject: Re: [PATCH v9 3/4] ath10k: add htt TX bundle for sdio
-In-Reply-To: <87o8rrr4y5.fsf@kamboji.qca.qualcomm.com>
-References: <20200212080415.31265-1-wgong@codeaurora.org>
- <20200212080415.31265-4-wgong@codeaurora.org>
- <87tv1su2vq.fsf@kamboji.qca.qualcomm.com>
- <185d31c2e6f8792beb240f2c74d26463@codeaurora.org>
- <87h7xmtrmv.fsf@kamboji.qca.qualcomm.com>
- <87o8rrr4y5.fsf@kamboji.qca.qualcomm.com>
-Message-ID: <27ca9f2bf63807d501cfb29d8f55f904@codeaurora.org>
-X-Sender: wgong@codeaurora.org
-User-Agent: Roundcube Webmail/1.3.9
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2020-04-16 20:27, Kalle Valo wrote:
-> Kalle Valo <kvalo@codeaurora.org> writes:
-> 
+mac80211/users control whether multicast is on or off don't enable it by default.
 
->> How much does it drop? Please add the justification (with numbers) for
->> the new thread to the commit log, so that the reason is properly
->> documented.
-> 
-> I see that you already submitted v10. If you can give the numbers I can
-> add them to the commit log.
+Fixes an issue when multicast/broadcast is always on allowing other beacons through
+in power save.
 
-I tested for VHT80 mode for 3 thread config:
-result:
-                                      TCP-RX    TCP-TX    UDP-RX    
-UDP-TX
-use workqueue_tx_complete(Mbps)        423       357       448       412
-change it to ar->workqueue(Mbps)       410       360       449       414
-change it to ar->workqueue_aux(Mbps)   405       339       446       401
+Fixes: db8f37fa3355 ("staging: vt6656: mac80211 conversion: main_usb add functions...")
+Cc: stable <stable@vger.kernel.org>
+Signed-off-by: Malcolm Priestley <tvboxspy@gmail.com>
+---
+ drivers/staging/vt6656/main_usb.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-each thread role:
-tx_bundle_skbs(ar->workqueue),
-rx_indication(ar->workqueue_aux),
-sdio_async_tx_request(ar_sdio->workqueue),
-tx_bundle_complete(ar->workqueue_tx_complete)
+diff --git a/drivers/staging/vt6656/main_usb.c b/drivers/staging/vt6656/main_usb.c
+index 3c76d3cb5bbe..b2729d5eadfb 100644
+--- a/drivers/staging/vt6656/main_usb.c
++++ b/drivers/staging/vt6656/main_usb.c
+@@ -801,15 +801,11 @@ static void vnt_configure(struct ieee80211_hw *hw,
+ {
+ 	struct vnt_private *priv = hw->priv;
+ 	u8 rx_mode = 0;
+-	int rc;
+ 
+ 	*total_flags &= FIF_ALLMULTI | FIF_OTHER_BSS | FIF_BCN_PRBRESP_PROMISC;
+ 
+-	rc = vnt_control_in(priv, MESSAGE_TYPE_READ, MAC_REG_RCR,
+-			    MESSAGE_REQUEST_MACREG, sizeof(u8), &rx_mode);
+-
+-	if (!rc)
+-		rx_mode = RCR_MULTICAST | RCR_BROADCAST;
++	vnt_control_in(priv, MESSAGE_TYPE_READ, MAC_REG_RCR,
++		       MESSAGE_REQUEST_MACREG, sizeof(u8), &rx_mode);
+ 
+ 	dev_dbg(&priv->usb->dev, "rx mode in = %x\n", rx_mode);
+ 
+-- 
+2.25.1
