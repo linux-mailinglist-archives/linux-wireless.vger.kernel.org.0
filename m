@@ -2,26 +2,26 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1BA111AEAB1
-	for <lists+linux-wireless@lfdr.de>; Sat, 18 Apr 2020 10:09:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D086F1AEABA
+	for <lists+linux-wireless@lfdr.de>; Sat, 18 Apr 2020 10:09:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726025AbgDRIJU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        id S1726039AbgDRIJU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
         Sat, 18 Apr 2020 04:09:20 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:56746 "EHLO
+Received: from paleale.coelho.fi ([176.9.41.70]:56752 "EHLO
         farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1725969AbgDRIJT (ORCPT
+        with ESMTP id S1725970AbgDRIJT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Sat, 18 Apr 2020 04:09:19 -0400
 Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa.ger.corp.intel.com)
         by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
         (Exim 4.93)
         (envelope-from <luca@coelho.fi>)
-        id 1jPiXK-000L3r-Tm; Sat, 18 Apr 2020 11:09:15 +0300
+        id 1jPiXL-000L3r-Mn; Sat, 18 Apr 2020 11:09:16 +0300
 From:   Luca Coelho <luca@coelho.fi>
 To:     kvalo@codeaurora.org
 Cc:     linux-wireless@vger.kernel.org
-Date:   Sat, 18 Apr 2020 11:08:47 +0300
-Message-Id: <iwlwifi.20200418110539.242a8f979592.I13c77a8a8dbf1a169b5052c7af1f8401ff3991ad@changeid>
+Date:   Sat, 18 Apr 2020 11:08:48 +0300
+Message-Id: <iwlwifi.20200418110539.93860da2d12a.Ifeca3b3313e3f14330317bc3e3d62f7d991ec955@changeid>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200418080857.2232093-1-luca@coelho.fi>
 References: <20200418080857.2232093-1-luca@coelho.fi>
@@ -31,193 +31,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on farmhouse.coelho.fi
 X-Spam-Level: 
 X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
         TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.4
-Subject: [PATCH 02/12] iwlwifi: mvm: add framework for specific phy configuration
+Subject: [PATCH 03/12] iwlwifi: remove deprecated and unused iwl_mvm_keyinfo struct
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Gil Adam <gil.adam@intel.com>
+From: Luca Coelho <luciano.coelho@intel.com>
 
-Add framework for supporting specific PHY filter configuration,
-which allows for application of various FW defined PHY filters
-(one per antenna). Change phy_cfg_cmd to the new API (ver3).
-Reading of configuration from platform's ACPI tables to be added
-later when tables are defined.
+This struct hasn't been used in years and is just a remnant of an API
+support removal that missed this structured.
 
-Signed-off-by: Gil Adam <gil.adam@intel.com>
 Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 ---
- .../wireless/intel/iwlwifi/fw/api/config.h    | 39 ++++++++++++--
- .../wireless/intel/iwlwifi/mvm/constants.h    |  4 ++
- drivers/net/wireless/intel/iwlwifi/mvm/fw.c   | 54 +++++++++++++++++--
- 3 files changed, 91 insertions(+), 6 deletions(-)
+ .../net/wireless/intel/iwlwifi/fw/api/sta.h   | 26 -------------------
+ 1 file changed, 26 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/config.h b/drivers/net/wireless/intel/iwlwifi/fw/api/config.h
-index 5e88fa2e6fb7..546fa60ed9fd 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/api/config.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/api/config.h
-@@ -8,7 +8,7 @@
-  * Copyright(c) 2012 - 2014 Intel Corporation. All rights reserved.
-  * Copyright(c) 2013 - 2015 Intel Mobile Communications GmbH
-  * Copyright(c) 2016 - 2017 Intel Deutschland GmbH
-- * Copyright (C) 2018 Intel Corporation
-+ * Copyright (C) 2018 - 2019 Intel Corporation
-  *
-  * This program is free software; you can redistribute it and/or modify
-  * it under the terms of version 2 of the GNU General Public License as
-@@ -31,7 +31,7 @@
-  * Copyright(c) 2012 - 2014 Intel Corporation. All rights reserved.
-  * Copyright(c) 2013 - 2015 Intel Mobile Communications GmbH
-  * Copyright(c) 2016 - 2017 Intel Deutschland GmbH
-- * Copyright (C) 2018 Intel Corporation
-+ * Copyright (C) 2018 - 2019 Intel Corporation
-  * All rights reserved.
-  *
-  * Redistribution and use in source and binary forms, with or without
-@@ -119,16 +119,49 @@ enum iwl_calib_cfg {
- 	IWL_CALIB_CFG_AGC_IDX			= BIT(18),
- };
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/sta.h b/drivers/net/wireless/intel/iwlwifi/fw/api/sta.h
+index 970e9e508ad0..c010e6febbf4 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/api/sta.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/api/sta.h
+@@ -245,32 +245,6 @@ enum iwl_sta_sleep_flag {
+ #define STA_KEY_LEN_WEP40 (5)
+ #define STA_KEY_LEN_WEP104 (13)
  
-+/**
-+ * struct iwl_phy_specific_cfg - specific PHY filter configuration
-+ *
-+ * Sent as part of the phy configuration command (v3) to configure specific FW
-+ * defined PHY filters that can be applied to each antenna.
-+ *
-+ * @filter_cfg_chain_a: filter config id for LMAC1 chain A
-+ * @filter_cfg_chain_b: filter config id for LMAC1 chain B
-+ * @filter_cfg_chain_c: filter config id for LMAC2 chain A
-+ * @filter_cfg_chain_d: filter config id for LMAC2 chain B
-+ * values: 0 - no filter; 0xffffffff - reserved; otherwise - filter id
-+ */
-+struct iwl_phy_specific_cfg {
-+	__le32 filter_cfg_chain_a;
-+	__le32 filter_cfg_chain_b;
-+	__le32 filter_cfg_chain_c;
-+	__le32 filter_cfg_chain_d;
-+} __packed; /* PHY_SPECIFIC_CONFIGURATION_API_VER_1*/
-+
- /**
-  * struct iwl_phy_cfg_cmd - Phy configuration command
-+ *
-  * @phy_cfg: PHY configuration value, uses &enum iwl_fw_phy_cfg
-  * @calib_control: calibration control data
-  */
--struct iwl_phy_cfg_cmd {
-+struct iwl_phy_cfg_cmd_v1 {
- 	__le32	phy_cfg;
- 	struct iwl_calib_ctrl calib_control;
- } __packed;
- 
-+/**
-+ * struct iwl_phy_cfg_cmd_v3 - Phy configuration command (v3)
-+ *
-+ * @phy_cfg: PHY configuration value, uses &enum iwl_fw_phy_cfg
-+ * @calib_control: calibration control data
-+ * @phy_specific_cfg: configure predefined PHY filters
-+ */
-+struct iwl_phy_cfg_cmd_v3 {
-+	__le32	phy_cfg;
-+	struct iwl_calib_ctrl calib_control;
-+	struct iwl_phy_specific_cfg phy_specific_cfg;
-+} __packed; /* PHY_CONFIGURATION_CMD_API_S_VER_3 */
-+
- /*
-  * enum iwl_dc2dc_config_id - flag ids
-  *
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/constants.h b/drivers/net/wireless/intel/iwlwifi/mvm/constants.h
-index 58df25e2fb32..b0268f44b2ea 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/constants.h
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/constants.h
-@@ -155,5 +155,9 @@
- #define IWL_MVM_USE_TWT				false
- #define IWL_MVM_AMPDU_CONSEC_DROPS_DELBA	10
- #define IWL_MVM_USE_NSSN_SYNC			0
-+#define IWL_MVM_PHY_FILTER_CHAIN_A		0
-+#define IWL_MVM_PHY_FILTER_CHAIN_B		0
-+#define IWL_MVM_PHY_FILTER_CHAIN_C		0
-+#define IWL_MVM_PHY_FILTER_CHAIN_D		0
- 
- #endif /* __MVM_CONSTANTS_H */
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-index 8fe78ce37771..2bc15ef13bb5 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-@@ -550,10 +550,49 @@ static int iwl_run_unified_mvm_ucode(struct iwl_mvm *mvm, bool read_nvm)
- 	return ret;
- }
- 
-+#ifdef CONFIG_ACPI
-+static void iwl_mvm_phy_filter_init(struct iwl_mvm *mvm,
-+				    struct iwl_phy_specific_cfg *phy_filters)
-+{
-+	/*
-+	 * TODO: read specific phy config from BIOS
-+	 * ACPI table for this feature has not been defined yet,
-+	 * so for now we use hardcoded values.
-+	 */
-+
-+	if (IWL_MVM_PHY_FILTER_CHAIN_A) {
-+		phy_filters->filter_cfg_chain_a =
-+			cpu_to_le32(IWL_MVM_PHY_FILTER_CHAIN_A);
-+	}
-+	if (IWL_MVM_PHY_FILTER_CHAIN_B) {
-+		phy_filters->filter_cfg_chain_b =
-+			cpu_to_le32(IWL_MVM_PHY_FILTER_CHAIN_B);
-+	}
-+	if (IWL_MVM_PHY_FILTER_CHAIN_C) {
-+		phy_filters->filter_cfg_chain_c =
-+			cpu_to_le32(IWL_MVM_PHY_FILTER_CHAIN_C);
-+	}
-+	if (IWL_MVM_PHY_FILTER_CHAIN_D) {
-+		phy_filters->filter_cfg_chain_d =
-+			cpu_to_le32(IWL_MVM_PHY_FILTER_CHAIN_D);
-+	}
-+}
-+
-+#else /* CONFIG_ACPI */
-+
-+static void iwl_mvm_phy_filter_init(struct iwl_mvm *mvm,
-+				    struct iwl_phy_specific_cfg *phy_filters)
-+{
-+}
-+#endif /* CONFIG_ACPI */
-+
- static int iwl_send_phy_cfg_cmd(struct iwl_mvm *mvm)
- {
--	struct iwl_phy_cfg_cmd phy_cfg_cmd;
-+	struct iwl_phy_cfg_cmd_v3 phy_cfg_cmd;
- 	enum iwl_ucode_type ucode_type = mvm->fwrt.cur_fw_img;
-+	struct iwl_phy_specific_cfg phy_filters = {};
-+	u8 cmd_ver;
-+	size_t cmd_size;
- 
- 	if (iwl_mvm_has_unified_ucode(mvm) &&
- 	    !mvm->trans->cfg->tx_with_siso_diversity)
-@@ -580,11 +619,20 @@ static int iwl_send_phy_cfg_cmd(struct iwl_mvm *mvm)
- 	phy_cfg_cmd.calib_control.flow_trigger =
- 		mvm->fw->default_calib[ucode_type].flow_trigger;
- 
-+	cmd_ver = iwl_fw_lookup_cmd_ver(mvm->fw, IWL_ALWAYS_LONG_GROUP,
-+					PHY_CONFIGURATION_CMD);
-+	if (cmd_ver == 3) {
-+		iwl_mvm_phy_filter_init(mvm, &phy_filters);
-+		memcpy(&phy_cfg_cmd.phy_specific_cfg, &phy_filters,
-+		       sizeof(struct iwl_phy_specific_cfg));
-+	}
-+
- 	IWL_DEBUG_INFO(mvm, "Sending Phy CFG command: 0x%x\n",
- 		       phy_cfg_cmd.phy_cfg);
+-/**
+- * struct iwl_mvm_keyinfo - key information
+- * @key_flags: type &enum iwl_sta_key_flag
+- * @tkip_rx_tsc_byte2: TSC[2] for key mix ph1 detection
+- * @reserved1: reserved
+- * @tkip_rx_ttak: 10-byte unicast TKIP TTAK for Rx
+- * @key_offset: key offset in the fw's key table
+- * @reserved2: reserved
+- * @key: 16-byte unicast decryption key
+- * @tx_secur_seq_cnt: initial RSC / PN needed for replay check
+- * @hw_tkip_mic_rx_key: byte: MIC Rx Key - used for TKIP only
+- * @hw_tkip_mic_tx_key: byte: MIC Tx Key - used for TKIP only
+- */
+-struct iwl_mvm_keyinfo {
+-	__le16 key_flags;
+-	u8 tkip_rx_tsc_byte2;
+-	u8 reserved1;
+-	__le16 tkip_rx_ttak[5];
+-	u8 key_offset;
+-	u8 reserved2;
+-	u8 key[16];
+-	__le64 tx_secur_seq_cnt;
+-	__le64 hw_tkip_mic_rx_key;
+-	__le64 hw_tkip_mic_tx_key;
+-} __packed;
 -
-+	cmd_size = (cmd_ver == 3) ? sizeof(struct iwl_phy_cfg_cmd_v3) :
-+				    sizeof(struct iwl_phy_cfg_cmd_v1);
- 	return iwl_mvm_send_cmd_pdu(mvm, PHY_CONFIGURATION_CMD, 0,
--				    sizeof(phy_cfg_cmd), &phy_cfg_cmd);
-+				    cmd_size, &phy_cfg_cmd);
- }
- 
- int iwl_run_init_mvm_ucode(struct iwl_mvm *mvm, bool read_nvm)
+ #define IWL_ADD_STA_STATUS_MASK		0xFF
+ #define IWL_ADD_STA_BAID_VALID_MASK	0x8000
+ #define IWL_ADD_STA_BAID_MASK		0x7F00
 -- 
 2.25.1
 
