@@ -2,114 +2,219 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F29721AFB18
-	for <lists+linux-wireless@lfdr.de>; Sun, 19 Apr 2020 16:08:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD4FD1AFBC7
+	for <lists+linux-wireless@lfdr.de>; Sun, 19 Apr 2020 17:49:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726061AbgDSOIM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 19 Apr 2020 10:08:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50594 "EHLO
+        id S1726208AbgDSPtO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 19 Apr 2020 11:49:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37760 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725949AbgDSOIL (ORCPT
+        with ESMTP id S1725939AbgDSPtN (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 19 Apr 2020 10:08:11 -0400
-Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70598C061A0C
-        for <linux-wireless@vger.kernel.org>; Sun, 19 Apr 2020 07:08:11 -0700 (PDT)
-Received: by mail-wr1-x443.google.com with SMTP id k1so8754732wrx.4
-        for <linux-wireless@vger.kernel.org>; Sun, 19 Apr 2020 07:08:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding:content-language;
-        bh=ZLLEpCD9H8d5LRNzUZJcqAKJ3Rc0jHIalb3+VLXQypE=;
-        b=Pe3OCKEN9ryGroIfKUXdabgrE+tYzK4zFX9HdBGDpFt9QDpKlLJkxhK+6vzMpkyISA
-         bHFymdrcHOztCPJxgM0+it23eWucOwGOZqoZFkIHMSKVYMBuDJOKDBcSbYZl19Ncqc3w
-         WcVZn7yk6TlguGIZNysMtGQoof4qMlaVS39EeLYzRLU7h/BGqtNhGXksszH16Bkkmkn1
-         sU9J5jxDravCQV7zeUZX3ZqjWxdft9lSEiY9emK7CJwGV21EHQ+w2T6YW9XPMureTYUZ
-         aIID4vuIUl8JSnwb64jeqlJ2BmrTM94tXQ7fjdGEvFqOzoK6he96shQg6RlrplzEWN4M
-         RzIA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding
-         :content-language;
-        bh=ZLLEpCD9H8d5LRNzUZJcqAKJ3Rc0jHIalb3+VLXQypE=;
-        b=mqQeDOUiRtHWcJwUXr7PL248lhakxVd4oudl4CSVGXlH4E9JVugi6bZEb5GCN4CaSl
-         KV1+qQ4mT7+pDib+Y5w8jayFiW42uNIzN9HfftZfpej1tJ7YnWbDIz44mGYNm7AZXBBO
-         RqZBCSUOnoKrNyDrvU6s0J38PxjAO9/3R5YaTD9PX0poHg7SSFPkk5rZmWsDOhCWvgzG
-         aEjbLBvtlhRLeQyvs4CW9TeqpsRIrb7w5k/eoWhqUUVNu0gpc59IalRC9qCqDvPcnj2v
-         C7cE00nBlTAmHiz/ox+qUgR997f64HMXzZHbwntH2+0yhtHwoP+GXgAVsrKS9tWtlfVo
-         FWRA==
-X-Gm-Message-State: AGi0PuZ1UDWVNlN1pN44shtvnY7yMq/sDBPPb58jLegrKTQtG0LdldVp
-        zfhl1P9T8KV7Jc8pFwE=
-X-Google-Smtp-Source: APiQypKjcSRAoS8ku+R38Ww6BPe2e8hd0Cs9rRLeaZlyqUdgJK0XnkL5ach4hPcrFUljpZHgUAviKg==
-X-Received: by 2002:adf:fac8:: with SMTP id a8mr5807724wrs.311.1587305289900;
-        Sun, 19 Apr 2020 07:08:09 -0700 (PDT)
-Received: from [192.168.25.100] (ip-178-203-18-50.hsi10.unitymediagroup.de. [178.203.18.50])
-        by smtp.googlemail.com with ESMTPSA id 5sm15866212wmg.34.2020.04.19.07.08.09
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 19 Apr 2020 07:08:09 -0700 (PDT)
-Subject: Re: [Bug] carl9170 + wpa_supplicant: P2P mode doesn't work with
- separate interfaces
-To:     Christian Lamparter <chunkeey@gmail.com>
-Cc:     chunkeey@googlemail.com, j@w1.fi, linux-wireless@vger.kernel.org
-References: <3a9d86b6-744f-e670-8792-9167257edef8@googlemail.com>
- <8972271.5nXPVzACVl@debian64>
-From:   =?UTF-8?Q?Frank_Sch=c3=a4fer?= <fschaefer.oss@googlemail.com>
-Message-ID: <9fb16dd0-4dda-c3cc-7e67-686e2ad002e6@googlemail.com>
-Date:   Sun, 19 Apr 2020 16:08:23 +0200
-User-Agent: Mozilla/5.0 (X11; Linux i686; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
+        Sun, 19 Apr 2020 11:49:13 -0400
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:3201:214:fdff:fe10:1be6])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 672E4C061A0C
+        for <linux-wireless@vger.kernel.org>; Sun, 19 Apr 2020 08:49:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=xwFArNZ0LNOjTEWHEY1RpUJfSG6prp5hteZOveGvLIo=; b=YsxNO7EbcT4pt4TbciLCmvhcR
+        c9p2PKIiHNMpyDk7mjrgy7xc64yueyPLSPGS7tKCcTnPaHzXGPUAydCmUL4qxueVuY7lahIp1d+u7
+        5rO0TNrjoC4f+04S5x6FejDPTA0wvlPZ3NaNnXF9ycVCLOFeFGQZq9IJRCermZyvF6P4DaiQuR73P
+        Tngl+tWzOtbEX30TXFFodnPv0UeNgcN3t66DyXfqW2LeGY3dUbjra6k98Dfv0XuLmGciFdlXAcI6F
+        O/jzzxqrZANO4XJdiyU44NRnrenXWt1rBgb50LXSmXtOL3UArKLQr9/gN02LNB4Fsm+ZlVtVGOTUq
+        sOWMDK/Cg==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:52218)
+        by pandora.armlinux.org.uk with esmtpsa (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
+        (Exim 4.90_1)
+        (envelope-from <linux@armlinux.org.uk>)
+        id 1jQCBo-0006N8-H9; Sun, 19 Apr 2020 16:49:00 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.92)
+        (envelope-from <linux@shell.armlinux.org.uk>)
+        id 1jQCBm-0004xo-Nk; Sun, 19 Apr 2020 16:48:58 +0100
+Date:   Sun, 19 Apr 2020 16:48:58 +0100
+From:   Russell King - ARM Linux admin <linux@armlinux.org.uk>
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        Arend van Spriel <arend.vanspriel@broadcom.com>,
+        linux-wireless@vger.kernel.org
+Cc:     Jon Nettleton <jon@solid-run.com>
+Subject: Re: nl80211 / bcm4330 / hostapd fails to complete EAPOL in 5.6
+Message-ID: <20200419154858.GO5827@shell.armlinux.org.uk>
+References: <20200419082835.GV25745@shell.armlinux.org.uk>
 MIME-Version: 1.0
-In-Reply-To: <8972271.5nXPVzACVl@debian64>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: de-DE
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200419082835.GV25745@shell.armlinux.org.uk>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-
-Am 18.04.20 um 18:30 schrieb Christian Lamparter:
+On Sun, Apr 19, 2020 at 09:28:35AM +0100, Russell King - ARM Linux admin wrote:
 > Hi,
->
-> On Saturday, 18 April 2020 13:20:27 CEST Frank Schäfer wrote:
->> I'm currently testing Miraclecast
->> (https://github.com/albfan/miraclecast), an open source
->> Wifi-Display/Miracast implementation.
->> In one of my setups, I'm using a carl9170 device as sink, which fails
->> with the following debugging output:
->>
-> It's been a very long time. But I do remember meddling with P2P. Part of the
-> reason is that the carl9170 driver needed these virtual interfaces initialized
-> in a specific order.
->
-> So for P2P GO+CLIENT, you would have to initialize the P2P-GO interface first
-> and the P2P Client interface second. Which is backwards of what the wpa_supplicant
-> does.
->
-> Same is true for STA+AP (Repeater). The AP has to start first before the STA
-> can be brought up (Also the STA must not interfere with channel operations, as
-> the fast channel change feature doesn't work right on the AR9170 Hardware).
->
-> This is documented in the driver:
-> <https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/net/wireless/ath/carl9170/main.c#n625>
->
-> and was changed as part of this commit:
-> <https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/drivers/net/wireless/ath/carl9170/main.c?id=7f878b0d96e6b3bd27d736fb2fb7e3cc94b16b26>
->
-> that identifies the wpa_supplicant commit
-> ["nl80211: Automatically use concurrent P2P if possible"] as the reason.
->
-> So since this broke, something must have changed since 2012 I guess.
-> But I need more details, before I can do something.
-Please let me know what you need. :)
+> 
+> I'm seeing a problem running hostapd with a BCM4330 on a SolidRun
+> Hummingboard with 5.6 kernels - I can't get WPA2 authentication to
+> complete with any client station.  5.3 on the same hardware was
+> working fine.
+> 
+> Monitoring the wifi network using another machine, I see:
+> 
+> 02:31:53.753856 1.0 Mb/s 2412 MHz 11b -45dBm signal antenna 3 BSSID:ap:ap:ap:ap:ap:ap (oui Unknown) DA:ap:ap:ap:ap:ap:ap (oui Unknown) SA:sm:ar:tp:ho:ne:07 (oui Unknown) Authentication (Open System)-1: Successful
+> 02:31:53.754159 1.0 Mb/s 2412 MHz 11b -38dBm signal antenna 3 RA:sm:ar:tp:ho:ne:07 (oui Unknown) Acknowledgment
+> 02:31:53.754781 1.0 Mb/s 2412 MHz 11b -39dBm signal antenna 3 BSSID:ap:ap:ap:ap:ap:ap (oui Unknown) DA:sm:ar:tp:ho:ne:07 (oui Unknown) SA:ap:ap:ap:ap:ap:ap (oui Unknown) Authentication (Open System)-2:
+> 02:31:53.755097 1.0 Mb/s 2412 MHz 11b -46dBm signal antenna 3 RA:ap:ap:ap:ap:ap:ap (oui Unknown) Acknowledgment
+> 02:31:53.785688 1.0 Mb/s 2412 MHz 11b -44dBm signal antenna 3 BSSID:ap:ap:ap:ap:ap:ap (oui Unknown) DA:ap:ap:ap:ap:ap:ap (oui Unknown) SA:sm:ar:tp:ho:ne:07 (oui Unknown) Assoc Request (My-SSID) [1.0 2.0 5.5 11.0 6.0 9.0 12.0 18.0 Mbit]
+> 02:31:53.785993 1.0 Mb/s 2412 MHz 11b -38dBm signal antenna 3 RA:sm:ar:tp:ho:ne:07 (oui Unknown) Acknowledgment
+> 02:31:53.787462 1.0 Mb/s 2412 MHz 11b -39dBm signal antenna 3 BSSID:ap:ap:ap:ap:ap:ap (oui Unknown) DA:sm:ar:tp:ho:ne:07 (oui Unknown) SA:ap:ap:ap:ap:ap:ap (oui Unknown) Assoc Response AID(1) : PRIVACY : Successful
+> 02:31:53.787777 1.0 Mb/s 2412 MHz 11b -44dBm signal antenna 3 RA:ap:ap:ap:ap:ap:ap (oui Unknown) Acknowledgment
+> 02:31:53.803124 1.0 Mb/s 2412 MHz 11b -38dBm signal antenna 3 BSSID:ap:ap:ap:ap:ap:ap (oui Unknown) DA:sm:ar:tp:ho:ne:07 (oui Unknown) SA:ap:ap:ap:ap:ap:ap (oui Unknown) Action: BA ADDBA Request
+> 02:31:53.803423 1.0 Mb/s 2412 MHz 11b -44dBm signal antenna 3 RA:ap:ap:ap:ap:ap:ap (oui Unknown) Acknowledgment
+> 02:31:53.804871 1.0 Mb/s 2412 MHz 11b -37dBm signal antenna 3 CF +QoS DA:sm:ar:tp:ho:ne:07 (oui Unknown) BSSID:ap:ap:ap:ap:ap:ap (oui Unknown) SA:ap:ap:ap:ap:ap:ap (oui Unknown) LLC, dsap SNAP (0xaa) Individual, ssap SNAP (0xaa) Command, ctrl 0x03: oui Ethernet (0x000000), ethertype EAPOL (0x888e), length 99: EAPOL key (3) v2, len 95
+> 02:31:53.805181 1.0 Mb/s 2412 MHz 11b -44dBm signal antenna 3 RA:ap:ap:ap:ap:ap:ap (oui Unknown) Acknowledgment
+> 02:31:53.831347 54.0 Mb/s 2412 MHz 11g -50dBm signal antenna 3 BSSID:ap:ap:ap:ap:ap:ap (oui Unknown) SA:sm:ar:tp:ho:ne:07 (oui Unknown) DA:ap:ap:ap:ap:ap:ap (oui Unknown)
+> 02:31:53.833079 24.0 Mb/s 2412 MHz 11g -51dBm signal antenna 3 RA:sm:ar:tp:ho:ne:07 (oui Unknown) Acknowledgment
+> 02:31:53.833082 1.0 Mb/s 2412 MHz 11b -45dBm signal antenna 3 CF +QoS BSSID:ap:ap:ap:ap:ap:ap (oui Unknown) SA:sm:ar:tp:ho:ne:07 (oui Unknown) DA:ap:ap:ap:ap:ap:ap (oui Unknown) LLC, dsap SNAP (0xaa) Individual, ssap SNAP (0xaa) Command, ctrl 0x03: oui Ethernet (0x000000), ethertype EAPOL (0x888e), length 121: EAPOL key (3) v1, len 117
+> 02:31:53.833390 1.0 Mb/s 2412 MHz 11b -37dBm signal antenna 3 RA:sm:ar:tp:ho:ne:07 (oui Unknown) Acknowledgment
+> 02:31:53.833910 1.0 Mb/s 2412 MHz 11b -45dBm signal antenna 3 BSSID:ap:ap:ap:ap:ap:ap (oui Unknown) DA:ap:ap:ap:ap:ap:ap (oui Unknown) SA:sm:ar:tp:ho:ne:07 (oui Unknown) Action: BA ADDBA Response
+> 02:31:53.834222 1.0 Mb/s 2412 MHz 11b -37dBm signal antenna 3 RA:sm:ar:tp:ho:ne:07 (oui Unknown) Acknowledgment
+> 02:31:53.834646 1.0 Mb/s 2412 MHz 11b -37dBm signal antenna 3  RA:sm:ar:tp:ho:ne:07 (oui Unknown) TA:ap:ap:ap:ap:ap:ap (oui Unknown) CTL(4) SEQ(16) BAR
+> 02:31:53.835105 1.0 Mb/s 2412 MHz 11b -45dBm signal antenna 3 RA:ap:ap:ap:ap:ap:ap (oui Unknown) BA
+> 
+> 02:31:54.805391 1.0 Mb/s 2412 MHz 11b -37dBm signal antenna 3 CF +QoS DA:sm:ar:tp:ho:ne:07 (oui Unknown) BSSID:ap:ap:ap:ap:ap:ap (oui Unknown) SA:ap:ap:ap:ap:ap:ap (oui Unknown) LLC, dsap SNAP (0xaa) Individual, ssap SNAP (0xaa) Command, ctrl 0x03: oui Ethernet (0x000000), ethertype EAPOL (0x888e), length 99: EAPOL key (3) v2, len 95
+> 
+> and it repeats.
+> 
+> However, turning on debug in hostapd shows that hostapd sends the
+> EAPOL 1/4 message as expected, but never receives a response - it
+> seems the EAPOL response that we can see above in tcpdump is getting
+> dropped somewhere between the BCM4330 and hostapd.
+> 
+> nl80211: Drv Event 19 (NL80211_CMD_NEW_STATION) received for wlan0
+> nl80211: New station sm:ar:tp:ho:ne:07
+> wlan0: Event ASSOC (0) received
+> wlan0: STA sm:ar:tp:ho:ne:07 IEEE 802.11: associated
+> STA included RSN IE in (Re)AssocReq
+>   New STA
+> ap_sta_add: register ap_handle_timer timeout for sm:ar:tp:ho:ne:07 (300 seconds
+> - ap_max_inactivity)
+> nl80211: Set STA flags - ifname=wlan0 addr=sm:ar:tp:ho:ne:07 total_flags=0x60 flags_or=0x0 flags_and=0xfffffff1 authorized=0
+> wlan0: STA sm:ar:tp:ho:ne:07 WPA: event 1 notification
+> wpa_driver_nl80211_set_key: ifindex=3 (wlan0) alg=0 addr=0x20190a8 key_idx=0 set_tx=1 seq_len=0 key_len=0
+>    addr=sm:ar:tp:ho:ne:07
+> nl80211: set_key failed; err=-22 Invalid argument)
+> RSN: PTK removal from the driver failed
+> IEEE 802.1X: Ignore STA - 802.1X not enabled or forced for WPS
+> wlan0: STA sm:ar:tp:ho:ne:07 WPA: start authentication
+> WPA: sm:ar:tp:ho:ne:07 WPA_PTK entering state INITIALIZE
+> wpa_driver_nl80211_set_key: ifindex=3 (wlan0) alg=0 addr=0x20190a8 key_idx=0 set_tx=1 seq_len=0 key_len=0
+>    addr=sm:ar:tp:ho:ne:07
+> nl80211: set_key failed; err=-22 Invalid argument)
+> RSN: PTK removal from the driver failed
+> nl80211: Set STA flags - ifname=wlan0 addr=sm:ar:tp:ho:ne:07 total_flags=0x60 flags_or=0x0 flags_and=0xfffffffe authorized=0
+> wlan0: STA sm:ar:tp:ho:ne:07 IEEE 802.1X: unauthorizing port
+> WPA: sm:ar:tp:ho:ne:07 WPA_PTK_GROUP entering state IDLE
+> WPA: sm:ar:tp:ho:ne:07 WPA_PTK entering state AUTHENTICATION
+> WPA: sm:ar:tp:ho:ne:07 WPA_PTK entering state AUTHENTICATION2
+> WPA: Re-initialize GMK/Counter on first station
+> GMK - hexdump(len=32): [REMOVED]
+> Key Counter - hexdump(len=32): [REMOVED]
+> GTK - hexdump(len=16): [REMOVED]
+> wpa_driver_nl80211_set_key: ifindex=3 (wlan0) alg=3 addr=0x60a9ac key_idx=1 set_tx=1 seq_len=0 key_len=16
+> nl80211: KEY_DATA - hexdump(len=16): [REMOVED]
+>    broadcast key
+> Searching a PSK for sm:ar:tp:ho:ne:07 prev_psk=(nil)
+> Searching a PSK for sm:ar:tp:ho:ne:07 prev_psk=(nil)
+> WPA: sm:ar:tp:ho:ne:07 WPA_PTK entering state PTKSTART
+> wlan0: STA sm:ar:tp:ho:ne:07 WPA: sending 1/4 msg of 4-Way Handshake
+> WPA: Send EAPOL(version=2 secure=0 mic=0 ack=1 install=0 pairwise=1 kde_len=0 keyidx=0 encr=0)
+> WPA: Replay Counter - hexdump(len=8): 00 00 00 00 00 00 00 01
+> WPA: Use EAPOL-Key timeout of 1000 ms (retry counter 1)
+> wlan0: hostapd_new_assoc_sta: reschedule ap_handle_timer timeout for sm:ar:tp:ho:ne:07 (300 seconds - ap_max_inactivity)
+> wlan0: STA sm:ar:tp:ho:ne:07 WPA: EAPOL-Key timeout
+> WPA: sm:ar:tp:ho:ne:07 WPA_PTK entering state PTKSTART
+> wlan0: STA sm:ar:tp:ho:ne:07 WPA: sending 1/4 msg of 4-Way Handshake
+> WPA: Send EAPOL(version=2 secure=0 mic=0 ack=1 install=0 pairwise=1 kde_len=0 keyidx=0 encr=0)
+> ...
+> 
+> I'm unable to add a monitor interface on the AP itself (hardware
+> doesn't support monitor + AP).  How do I debug where the failure
+> is occuring?
 
-Regards,
-Frank
+I've wound back to 5.3, and it fails there too now, which is really
+odd - it was working for around 270 days with that kernel version,
+and I'm ensuring I'm using the same broadcom firmware.  That's
+including power cycling everything.
 
-> Regards,
-> Christian
->
+I've just updated my other AP - again, using debian stable (so same
+hostapd version), it's also on the same kernel version (as in same
+kernel binary) but that machine uses a TI WL18 chipset for its WiFi,
+and that doesn't seem to have a problem.
 
+So, the problem appears to be specific to the BCM4330 in some way.
+Except maybe not according to further debug.
+
+Enabling debug in brcmfmac:
+
+ echo 8 > /sys/module/brcmfmac/parameters/debug
+
+Shows:
+
+brcmfmac: brcmf_netdev_start_xmit Enter, bsscfgidx=0
+brcmfmac: brcmf_rx_frame Enter: mmc0:0001:1: rxp=c885cc00
+brcmfmac: brcmf_fws_hdrpull enter: ifidx 0, skblen 135, sig 0
+brcmfmac: brcmf_netif_rx rx proto=0x888E
+
+tcpdumping the wlan interface on the AP shows the EAPOL packets (both
+what we send and what is received) are present there.
+
+stracing hostapd, which is using device_ap_sme=1 use_monitor=0, I
+see:
+
+socket(AF_PACKET, SOCK_DGRAM, htons(ETH_P_PAE)) = 15
+
+So this socket is setup to receive packets of type 0x888e.  I
+can't find anything further that manipulates this socket in the
+hostapd strace.  However, I do see:
+
+write(3, "WPA: Send EAPOL(version=2 secure=0 mic=0 ack=1 install=0 pairwise=1 kde_len=0 keyidx=0 encr=0)\n", 95) = 95
+write(4, "wpas <2>: WPA: Send EAPOL(version=2 secure=0 mic=0 ack=1 install=0 pairwise=1 kde_len=0 keyidx=0 encr=0)\n", 105) = 105
+write(4, "wpas <2>: WPA: Replay Counter - hexdump(len=8): 00 00 00 00 00 00 00 01", 71) = 71
+write(3, "WPA: Replay Counter - hexdump(len=8): 00 00 00 00 00 00 00 01\n", 62)
+= 62
+sendto(13, "...", 99, 0, {sa_family=AF_PACKET, sll_protocol=htons(ETH_P_PAE), sll_ifindex=if_nametoindex("wlan0"), sll_hatype=ARPHRD_NETROM, sll_pkttype=PACKET_HOST, sll_halen=6, sll_addr=[...]}, 20) = 99
+write(3, "WPA: Use EAPOL-Key timeout of 1000 ms (retry counter 1)\n", 56) = 56
+write(4, "wpas <2>: WPA: Use EAPOL-Key timeout of 1000 ms (retry counter 1)\n", 66) = 66
+clock_gettime(CLOCK_BOOTTIME, {tv_sec=21874, tv_nsec=646076492}) = 0
+write(3, "wlan0: hostapd_new_assoc_sta: reschedule ap_handle_timer timeout for ... (300 seconds - ap_max_inactivity)\n", 121) = 121
+write(4, "wpas <2>: wlan0: hostapd_new_assoc_sta: reschedule ap_handle_timer timeout for ... (300 seconds - ap_max_inactivity)\n", 131) = 131
+clock_gettime(CLOCK_BOOTTIME, {tv_sec=21874, tv_nsec=647106886}) = 0
+clock_gettime(CLOCK_BOOTTIME, {tv_sec=21874, tv_nsec=647439906}) = 0
+_newselect(18, [5 7 9 10 11 12 15 16 17], [], [], {tv_sec=0, tv_usec=998637}) = 0 (Timeout)
+clock_gettime(CLOCK_BOOTTIME, {tv_sec=21875, tv_nsec=647977403}) = 0
+write(3, "wlan0: STA ... WPA: EAPOL-Key timeout\n", 52) = 52
+
+which clearly shows that the packets are not being received by socket
+fd 15.  According to the man page for packet(7), that socket on fd 15
+_should_ be receiving the EAPOL frame. Yet, as I say, tcpdumping wlan0
+_does_ show them, but hostapd's AF_PACKET socket is not.
+
+I have no iptables rules, I have no ebtables rules.  If I could work
+out how to use nft, I could check that as well, but it's got a most
+unhelpful command line and needs me to read the 'net every time I want
+to do anything with it - a most unfriendly program, seemingly designed
+to be very unfriendly.
+
+So, we're back to it looking like a kernel bug... yet I've no idea
+how 5.3 worked perfectly well for 270 odd days but now doesn't.
+
+Having now spent close to 12 hours time trying to get to the bottom of
+this, I think it's time to admit defeat.
+
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTC broadband for 0.8mile line in suburbia: sync at 10.2Mbps down 587kbps up
