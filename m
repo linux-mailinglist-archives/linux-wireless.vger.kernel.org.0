@@ -2,148 +2,361 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0EEB91AF8C0
-	for <lists+linux-wireless@lfdr.de>; Sun, 19 Apr 2020 10:28:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E56C91AF950
+	for <lists+linux-wireless@lfdr.de>; Sun, 19 Apr 2020 12:26:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725964AbgDSI2q (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 19 Apr 2020 04:28:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55100 "EHLO
+        id S1725923AbgDSK0K (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 19 Apr 2020 06:26:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44754 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1725446AbgDSI2q (ORCPT
+        by vger.kernel.org with ESMTP id S1725783AbgDSK0K (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 19 Apr 2020 04:28:46 -0400
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:3201:214:fdff:fe10:1be6])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95289C061A0C
-        for <linux-wireless@vger.kernel.org>; Sun, 19 Apr 2020 01:28:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=armlinux.org.uk; s=pandora-2019; h=Sender:Content-Type:MIME-Version:
-        Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-Transfer-Encoding:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=oGz0ihBLvFr3l3BzEcwEji974kLofFhxTwuD/T4H/fw=; b=ZuvdcN/GWUHsnYkwdZRfe2id0
-        exSbdjPo4KY3HJbISNW4i00B4LGEM81+XVJNcEyompmZbX+/k/PqQ7Qf1UeIchZzI9z6t0FMEklMG
-        2lWurIIIkOx8qZD6GLZGZez8GmHYzbrUjGAc7r6ASj62CQu9/SW3p9DuInesKFQes71fKFhES3P5x
-        ekoscVeqOBlpNkW9BRkR2PGoXQQbOwj0oWTxTI0msB8Ez953syeUPXDnFdEfXnG+itUloGg6VMslf
-        OWnw80nVKGjBGCJbAP77LXdAABL6bMclDWNuT8rMltf1MzxMQgDRw1fs3vvVDKfOTEOZyZVo36WuA
-        JeFwlAQrA==;
-Received: from shell.armlinux.org.uk ([2002:4e20:1eda:1:5054:ff:fe00:4ec]:47946)
-        by pandora.armlinux.org.uk with esmtpsa (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
-        (Exim 4.90_1)
-        (envelope-from <linux@armlinux.org.uk>)
-        id 1jQ5Je-0004TA-C0; Sun, 19 Apr 2020 09:28:38 +0100
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.92)
-        (envelope-from <linux@shell.armlinux.org.uk>)
-        id 1jQ5Jc-0004hs-3j; Sun, 19 Apr 2020 09:28:36 +0100
-Date:   Sun, 19 Apr 2020 09:28:36 +0100
-From:   Russell King - ARM Linux admin <linux@armlinux.org.uk>
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        Arend van Spriel <arend.vanspriel@broadcom.com>,
-        linux-wireless@vger.kernel.org
-Cc:     Jon Nettleton <jon@solid-run.com>
-Subject: nl80211 / bcm4330 / hostapd fails to complete EAPOL in 5.6
-Message-ID: <20200419082835.GV25745@shell.armlinux.org.uk>
+        Sun, 19 Apr 2020 06:26:10 -0400
+Received: from mail-wm1-x344.google.com (mail-wm1-x344.google.com [IPv6:2a00:1450:4864:20::344])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F096EC061A0C
+        for <linux-wireless@vger.kernel.org>; Sun, 19 Apr 2020 03:26:09 -0700 (PDT)
+Received: by mail-wm1-x344.google.com with SMTP id v8so8421980wma.0
+        for <linux-wireless@vger.kernel.org>; Sun, 19 Apr 2020 03:26:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=to:cc:from:subject:message-id:date:user-agent:mime-version
+         :content-language:content-transfer-encoding;
+        bh=cXlJdjHIYvgJredFxr6P4Ui/kJNSOl4LGkiNXTENQ+8=;
+        b=AquepurCmvh0bNvzbQ89ytbelJOqj6RBFaMPPkCGancdt0kAO57xpaLSws/Sh7mqDh
+         X/Hf6n3wkewETplAIRCC6SCL6ps3+5iUOqs8p0oEU2SvNElO0AYojLBfA/eUhn9q8HcG
+         RVxGZXyVj+ffbZnu1PIpsapQWwzYPVXZjlS95+GIv55sd5U9aQI52aZ3wwLWQyY9BJsP
+         1kkDZuWNJtODErs0z+nib/pu5lWiP4rFJoLRdY5KVv7pdfG8FTnGjOca1JRDNOO8D1L2
+         mSATKgZntGvv1oCqFpi1U/sIhzlJrdTRwiuk2fDQqDvMuXHRUkHWai8izO/moHHTW4ES
+         Re+Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:to:cc:from:subject:message-id:date:user-agent
+         :mime-version:content-language:content-transfer-encoding;
+        bh=cXlJdjHIYvgJredFxr6P4Ui/kJNSOl4LGkiNXTENQ+8=;
+        b=dYnAuipdmwONDQIkJq0fwCSUfmDDAL0dZww4lqodfgh2gTRW+Z3r3Ab++OF5Fr8wli
+         4Wfiib5YbvIL/aKWFlWlvhxdMukdnilD6kl1umvxKe+vUv6/pAPPTuqC1wqaGIuYY/m+
+         CjLFKOhkOFyDD7vo4QPLFg/3kLd8CEsODh/Tg2cGbpmPxhTpSFM1xai5PyD51lcIhH2A
+         tCEgcwvAkqX6Pw876je4zXYB2iZKcVVghWS9HpufdWV8Ks78KRmldf9ddUPu1NVJA8cN
+         +E9Oy16sgZq2BCKhMNvqiqW5ha7FSrvb1b3LMPUGGy1ZVRIMWFljP5ucaere1rjsP1uj
+         XJjg==
+X-Gm-Message-State: AGi0PuYDKdApmc3HawGsQ+GT29rXkOPDwb4v0I3hUfHTrHwzbAlU2SEc
+        H4S/p3sXF7vmr2NOuZMfBiY=
+X-Google-Smtp-Source: APiQypLk/yW8O5YfajOYV1Du5b/WLNvAFNPXDeZFPiaoJs0680XPcZB/mnG7mBmDB8Jgh9K15+u7Ew==
+X-Received: by 2002:a1c:6402:: with SMTP id y2mr12439639wmb.116.1587291968468;
+        Sun, 19 Apr 2020 03:26:08 -0700 (PDT)
+Received: from [192.168.43.18] (188.29.165.57.threembb.co.uk. [188.29.165.57])
+        by smtp.gmail.com with ESMTPSA id s14sm14744073wmh.18.2020.04.19.03.26.07
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 19 Apr 2020 03:26:08 -0700 (PDT)
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>,
+        linux-wireless@vger.kernel.org, Oscar Carter <oscar.carter@gmx.com>
+From:   Malcolm Priestley <tvboxspy@gmail.com>
+Subject: [PATCH] staging: vt6656: Move firmware functions into main_usb.
+Message-ID: <7b384871-826b-9365-e3ed-5717ecefd31c@gmail.com>
+Date:   Sun, 19 Apr 2020 11:26:06 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+The firmware function are not that complicated so
+move them into main_usb as static functions in callers
+visibility
 
-I'm seeing a problem running hostapd with a BCM4330 on a SolidRun
-Hummingboard with 5.6 kernels - I can't get WPA2 authentication to
-complete with any client station.  5.3 on the same hardware was
-working fine.
+Firmware definitions moved to device.h and MODULE_FIRMWARE
+move to below module_usb_driver.
 
-Monitoring the wifi network using another machine, I see:
+Signed-off-by: Malcolm Priestley <tvboxspy@gmail.com>
+---
+ drivers/staging/vt6656/Makefile   |   3 +-
+ drivers/staging/vt6656/device.h   |   4 ++
+ drivers/staging/vt6656/firmware.c | 106 ------------------------------
+ drivers/staging/vt6656/firmware.h |  25 -------
+ drivers/staging/vt6656/main_usb.c |  81 ++++++++++++++++++++++-
+ 5 files changed, 85 insertions(+), 134 deletions(-)
+ delete mode 100644 drivers/staging/vt6656/firmware.c
+ delete mode 100644 drivers/staging/vt6656/firmware.h
 
-02:31:53.753856 1.0 Mb/s 2412 MHz 11b -45dBm signal antenna 3 BSSID:ap:ap:ap:ap:ap:ap (oui Unknown) DA:ap:ap:ap:ap:ap:ap (oui Unknown) SA:sm:ar:tp:ho:ne:07 (oui Unknown) Authentication (Open System)-1: Successful
-02:31:53.754159 1.0 Mb/s 2412 MHz 11b -38dBm signal antenna 3 RA:sm:ar:tp:ho:ne:07 (oui Unknown) Acknowledgment
-02:31:53.754781 1.0 Mb/s 2412 MHz 11b -39dBm signal antenna 3 BSSID:ap:ap:ap:ap:ap:ap (oui Unknown) DA:sm:ar:tp:ho:ne:07 (oui Unknown) SA:ap:ap:ap:ap:ap:ap (oui Unknown) Authentication (Open System)-2:
-02:31:53.755097 1.0 Mb/s 2412 MHz 11b -46dBm signal antenna 3 RA:ap:ap:ap:ap:ap:ap (oui Unknown) Acknowledgment
-02:31:53.785688 1.0 Mb/s 2412 MHz 11b -44dBm signal antenna 3 BSSID:ap:ap:ap:ap:ap:ap (oui Unknown) DA:ap:ap:ap:ap:ap:ap (oui Unknown) SA:sm:ar:tp:ho:ne:07 (oui Unknown) Assoc Request (My-SSID) [1.0 2.0 5.5 11.0 6.0 9.0 12.0 18.0 Mbit]
-02:31:53.785993 1.0 Mb/s 2412 MHz 11b -38dBm signal antenna 3 RA:sm:ar:tp:ho:ne:07 (oui Unknown) Acknowledgment
-02:31:53.787462 1.0 Mb/s 2412 MHz 11b -39dBm signal antenna 3 BSSID:ap:ap:ap:ap:ap:ap (oui Unknown) DA:sm:ar:tp:ho:ne:07 (oui Unknown) SA:ap:ap:ap:ap:ap:ap (oui Unknown) Assoc Response AID(1) : PRIVACY : Successful
-02:31:53.787777 1.0 Mb/s 2412 MHz 11b -44dBm signal antenna 3 RA:ap:ap:ap:ap:ap:ap (oui Unknown) Acknowledgment
-02:31:53.803124 1.0 Mb/s 2412 MHz 11b -38dBm signal antenna 3 BSSID:ap:ap:ap:ap:ap:ap (oui Unknown) DA:sm:ar:tp:ho:ne:07 (oui Unknown) SA:ap:ap:ap:ap:ap:ap (oui Unknown) Action: BA ADDBA Request
-02:31:53.803423 1.0 Mb/s 2412 MHz 11b -44dBm signal antenna 3 RA:ap:ap:ap:ap:ap:ap (oui Unknown) Acknowledgment
-02:31:53.804871 1.0 Mb/s 2412 MHz 11b -37dBm signal antenna 3 CF +QoS DA:sm:ar:tp:ho:ne:07 (oui Unknown) BSSID:ap:ap:ap:ap:ap:ap (oui Unknown) SA:ap:ap:ap:ap:ap:ap (oui Unknown) LLC, dsap SNAP (0xaa) Individual, ssap SNAP (0xaa) Command, ctrl 0x03: oui Ethernet (0x000000), ethertype EAPOL (0x888e), length 99: EAPOL key (3) v2, len 95
-02:31:53.805181 1.0 Mb/s 2412 MHz 11b -44dBm signal antenna 3 RA:ap:ap:ap:ap:ap:ap (oui Unknown) Acknowledgment
-02:31:53.831347 54.0 Mb/s 2412 MHz 11g -50dBm signal antenna 3 BSSID:ap:ap:ap:ap:ap:ap (oui Unknown) SA:sm:ar:tp:ho:ne:07 (oui Unknown) DA:ap:ap:ap:ap:ap:ap (oui Unknown)
-02:31:53.833079 24.0 Mb/s 2412 MHz 11g -51dBm signal antenna 3 RA:sm:ar:tp:ho:ne:07 (oui Unknown) Acknowledgment
-02:31:53.833082 1.0 Mb/s 2412 MHz 11b -45dBm signal antenna 3 CF +QoS BSSID:ap:ap:ap:ap:ap:ap (oui Unknown) SA:sm:ar:tp:ho:ne:07 (oui Unknown) DA:ap:ap:ap:ap:ap:ap (oui Unknown) LLC, dsap SNAP (0xaa) Individual, ssap SNAP (0xaa) Command, ctrl 0x03: oui Ethernet (0x000000), ethertype EAPOL (0x888e), length 121: EAPOL key (3) v1, len 117
-02:31:53.833390 1.0 Mb/s 2412 MHz 11b -37dBm signal antenna 3 RA:sm:ar:tp:ho:ne:07 (oui Unknown) Acknowledgment
-02:31:53.833910 1.0 Mb/s 2412 MHz 11b -45dBm signal antenna 3 BSSID:ap:ap:ap:ap:ap:ap (oui Unknown) DA:ap:ap:ap:ap:ap:ap (oui Unknown) SA:sm:ar:tp:ho:ne:07 (oui Unknown) Action: BA ADDBA Response
-02:31:53.834222 1.0 Mb/s 2412 MHz 11b -37dBm signal antenna 3 RA:sm:ar:tp:ho:ne:07 (oui Unknown) Acknowledgment
-02:31:53.834646 1.0 Mb/s 2412 MHz 11b -37dBm signal antenna 3  RA:sm:ar:tp:ho:ne:07 (oui Unknown) TA:ap:ap:ap:ap:ap:ap (oui Unknown) CTL(4) SEQ(16) BAR
-02:31:53.835105 1.0 Mb/s 2412 MHz 11b -45dBm signal antenna 3 RA:ap:ap:ap:ap:ap:ap (oui Unknown) BA
-
-02:31:54.805391 1.0 Mb/s 2412 MHz 11b -37dBm signal antenna 3 CF +QoS DA:sm:ar:tp:ho:ne:07 (oui Unknown) BSSID:ap:ap:ap:ap:ap:ap (oui Unknown) SA:ap:ap:ap:ap:ap:ap (oui Unknown) LLC, dsap SNAP (0xaa) Individual, ssap SNAP (0xaa) Command, ctrl 0x03: oui Ethernet (0x000000), ethertype EAPOL (0x888e), length 99: EAPOL key (3) v2, len 95
-
-and it repeats.
-
-However, turning on debug in hostapd shows that hostapd sends the
-EAPOL 1/4 message as expected, but never receives a response - it
-seems the EAPOL response that we can see above in tcpdump is getting
-dropped somewhere between the BCM4330 and hostapd.
-
-nl80211: Drv Event 19 (NL80211_CMD_NEW_STATION) received for wlan0
-nl80211: New station sm:ar:tp:ho:ne:07
-wlan0: Event ASSOC (0) received
-wlan0: STA sm:ar:tp:ho:ne:07 IEEE 802.11: associated
-STA included RSN IE in (Re)AssocReq
-  New STA
-ap_sta_add: register ap_handle_timer timeout for sm:ar:tp:ho:ne:07 (300 seconds
-- ap_max_inactivity)
-nl80211: Set STA flags - ifname=wlan0 addr=sm:ar:tp:ho:ne:07 total_flags=0x60 flags_or=0x0 flags_and=0xfffffff1 authorized=0
-wlan0: STA sm:ar:tp:ho:ne:07 WPA: event 1 notification
-wpa_driver_nl80211_set_key: ifindex=3 (wlan0) alg=0 addr=0x20190a8 key_idx=0 set_tx=1 seq_len=0 key_len=0
-   addr=sm:ar:tp:ho:ne:07
-nl80211: set_key failed; err=-22 Invalid argument)
-RSN: PTK removal from the driver failed
-IEEE 802.1X: Ignore STA - 802.1X not enabled or forced for WPS
-wlan0: STA sm:ar:tp:ho:ne:07 WPA: start authentication
-WPA: sm:ar:tp:ho:ne:07 WPA_PTK entering state INITIALIZE
-wpa_driver_nl80211_set_key: ifindex=3 (wlan0) alg=0 addr=0x20190a8 key_idx=0 set_tx=1 seq_len=0 key_len=0
-   addr=sm:ar:tp:ho:ne:07
-nl80211: set_key failed; err=-22 Invalid argument)
-RSN: PTK removal from the driver failed
-nl80211: Set STA flags - ifname=wlan0 addr=sm:ar:tp:ho:ne:07 total_flags=0x60 flags_or=0x0 flags_and=0xfffffffe authorized=0
-wlan0: STA sm:ar:tp:ho:ne:07 IEEE 802.1X: unauthorizing port
-WPA: sm:ar:tp:ho:ne:07 WPA_PTK_GROUP entering state IDLE
-WPA: sm:ar:tp:ho:ne:07 WPA_PTK entering state AUTHENTICATION
-WPA: sm:ar:tp:ho:ne:07 WPA_PTK entering state AUTHENTICATION2
-WPA: Re-initialize GMK/Counter on first station
-GMK - hexdump(len=32): [REMOVED]
-Key Counter - hexdump(len=32): [REMOVED]
-GTK - hexdump(len=16): [REMOVED]
-wpa_driver_nl80211_set_key: ifindex=3 (wlan0) alg=3 addr=0x60a9ac key_idx=1 set_tx=1 seq_len=0 key_len=16
-nl80211: KEY_DATA - hexdump(len=16): [REMOVED]
-   broadcast key
-Searching a PSK for sm:ar:tp:ho:ne:07 prev_psk=(nil)
-Searching a PSK for sm:ar:tp:ho:ne:07 prev_psk=(nil)
-WPA: sm:ar:tp:ho:ne:07 WPA_PTK entering state PTKSTART
-wlan0: STA sm:ar:tp:ho:ne:07 WPA: sending 1/4 msg of 4-Way Handshake
-WPA: Send EAPOL(version=2 secure=0 mic=0 ack=1 install=0 pairwise=1 kde_len=0 keyidx=0 encr=0)
-WPA: Replay Counter - hexdump(len=8): 00 00 00 00 00 00 00 01
-WPA: Use EAPOL-Key timeout of 1000 ms (retry counter 1)
-wlan0: hostapd_new_assoc_sta: reschedule ap_handle_timer timeout for sm:ar:tp:ho:ne:07 (300 seconds - ap_max_inactivity)
-wlan0: STA sm:ar:tp:ho:ne:07 WPA: EAPOL-Key timeout
-WPA: sm:ar:tp:ho:ne:07 WPA_PTK entering state PTKSTART
-wlan0: STA sm:ar:tp:ho:ne:07 WPA: sending 1/4 msg of 4-Way Handshake
-WPA: Send EAPOL(version=2 secure=0 mic=0 ack=1 install=0 pairwise=1 kde_len=0 keyidx=0 encr=0)
-...
-
-I'm unable to add a monitor interface on the AP itself (hardware
-doesn't support monitor + AP).  How do I debug where the failure
-is occuring?
-
-Thanks.
-
+diff --git a/drivers/staging/vt6656/Makefile b/drivers/staging/vt6656/Makefile
+index 375f54e9f58b..a0f3862dea75 100644
+--- a/drivers/staging/vt6656/Makefile
++++ b/drivers/staging/vt6656/Makefile
+@@ -13,7 +13,6 @@ vt6656_stage-y +=	main_usb.o \
+ 			key.o \
+ 			rf.o \
+ 			usbpipe.o \
+-			channel.o \
+-			firmware.o
++			channel.o
+ 
+ obj-$(CONFIG_VT6656) +=	vt6656_stage.o
+diff --git a/drivers/staging/vt6656/device.h b/drivers/staging/vt6656/device.h
+index 1630d2163a23..613062ad0122 100644
+--- a/drivers/staging/vt6656/device.h
++++ b/drivers/staging/vt6656/device.h
+@@ -73,6 +73,10 @@
+ 
+ #define DEVICE_VERSION			"mac80211"
+ 
++#define FIRMWARE_VERSION		0x133		/* version 1.51 */
++#define FIRMWARE_NAME			"vntwusb.fw"
++#define FIRMWARE_CHUNK_SIZE		0x400
++
+ #define CONFIG_PATH			"/etc/vntconfiguration.dat"
+ 
+ #define MAX_UINTS			8
+diff --git a/drivers/staging/vt6656/firmware.c b/drivers/staging/vt6656/firmware.c
+deleted file mode 100644
+index 70358d427211..000000000000
+--- a/drivers/staging/vt6656/firmware.c
++++ /dev/null
+@@ -1,106 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0+
+-/*
+- * Copyright (c) 1996, 2003 VIA Networking Technologies, Inc.
+- * All rights reserved.
+- *
+- * File: baseband.c
+- *
+- * Purpose: Implement functions to access baseband
+- *
+- * Author: Yiching Chen
+- *
+- * Date: May 20, 2004
+- *
+- * Functions:
+- *
+- * Revision History:
+- *
+- */
+-
+-#include <linux/compiler.h>
+-#include "firmware.h"
+-#include "usbpipe.h"
+-
+-#define FIRMWARE_VERSION	0x133		/* version 1.51 */
+-#define FIRMWARE_NAME		"vntwusb.fw"
+-
+-#define FIRMWARE_CHUNK_SIZE	0x400
+-
+-int vnt_download_firmware(struct vnt_private *priv)
+-{
+-	struct device *dev = &priv->usb->dev;
+-	const struct firmware *fw;
+-	u16 length;
+-	int ii;
+-	int ret = 0;
+-
+-	dev_dbg(dev, "---->Download firmware\n");
+-
+-	ret = request_firmware(&fw, FIRMWARE_NAME, dev);
+-	if (ret) {
+-		dev_err(dev, "firmware file %s request failed (%d)\n",
+-			FIRMWARE_NAME, ret);
+-		goto end;
+-	}
+-
+-	for (ii = 0; ii < fw->size; ii += FIRMWARE_CHUNK_SIZE) {
+-		length = min_t(int, fw->size - ii, FIRMWARE_CHUNK_SIZE);
+-
+-		ret = vnt_control_out(priv, 0, 0x1200 + ii, 0x0000, length,
+-				      fw->data + ii);
+-		if (ret)
+-			goto free_fw;
+-
+-		dev_dbg(dev, "Download firmware...%d %zu\n", ii, fw->size);
+-	}
+-
+-free_fw:
+-	release_firmware(fw);
+-end:
+-	return ret;
+-}
+-MODULE_FIRMWARE(FIRMWARE_NAME);
+-
+-int vnt_firmware_branch_to_sram(struct vnt_private *priv)
+-{
+-	dev_dbg(&priv->usb->dev, "---->Branch to Sram\n");
+-
+-	return vnt_control_out(priv, 1, 0x1200, 0x0000, 0, NULL);
+-}
+-
+-int vnt_check_firmware_version(struct vnt_private *priv)
+-{
+-	int ret = 0;
+-
+-	ret = vnt_control_in(priv, MESSAGE_TYPE_READ, 0,
+-			     MESSAGE_REQUEST_VERSION, 2,
+-			     (u8 *)&priv->firmware_version);
+-	if (ret) {
+-		dev_dbg(&priv->usb->dev,
+-			"Could not get firmware version: %d.\n", ret);
+-		goto end;
+-	}
+-
+-	dev_dbg(&priv->usb->dev, "Firmware Version [%04x]\n",
+-		priv->firmware_version);
+-
+-	if (priv->firmware_version == 0xFFFF) {
+-		dev_dbg(&priv->usb->dev, "In Loader.\n");
+-		ret = -EINVAL;
+-		goto end;
+-	}
+-
+-	if (priv->firmware_version < FIRMWARE_VERSION) {
+-		/* branch to loader for download new firmware */
+-		ret = vnt_firmware_branch_to_sram(priv);
+-		if (ret) {
+-			dev_dbg(&priv->usb->dev,
+-				"Could not branch to SRAM: %d.\n", ret);
+-		} else {
+-			ret = -EINVAL;
+-		}
+-	}
+-
+-end:
+-	return ret;
+-}
+diff --git a/drivers/staging/vt6656/firmware.h b/drivers/staging/vt6656/firmware.h
+deleted file mode 100644
+index 161126faf396..000000000000
+--- a/drivers/staging/vt6656/firmware.h
++++ /dev/null
+@@ -1,25 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0+ */
+-/*
+- * Copyright (c) 1996, 2003 VIA Networking Technologies, Inc.
+- * All rights reserved.
+- *
+- * File: firmware.h
+- *
+- * Purpose: Version and Release Information
+- *
+- * Author: Yiching Chen
+- *
+- * Date: May 20, 2004
+- *
+- */
+-
+-#ifndef __FIRMWARE_H__
+-#define __FIRMWARE_H__
+-
+-#include "device.h"
+-
+-int vnt_download_firmware(struct vnt_private *priv);
+-int vnt_firmware_branch_to_sram(struct vnt_private *priv);
+-int vnt_check_firmware_version(struct vnt_private *priv);
+-
+-#endif /* __FIRMWARE_H__ */
+diff --git a/drivers/staging/vt6656/main_usb.c b/drivers/staging/vt6656/main_usb.c
+index b9e809ccd264..3268d86fe93b 100644
+--- a/drivers/staging/vt6656/main_usb.c
++++ b/drivers/staging/vt6656/main_usb.c
+@@ -33,7 +33,6 @@
+ #include "wcmd.h"
+ #include "rxtx.h"
+ #include "rf.h"
+-#include "firmware.h"
+ #include "usbpipe.h"
+ #include "channel.h"
+ 
+@@ -103,6 +102,84 @@ static void vnt_set_options(struct vnt_private *priv)
+ 	priv->exist_sw_net_addr = false;
+ }
+ 
++static int vnt_download_firmware(struct vnt_private *priv)
++{
++	struct device *dev = &priv->usb->dev;
++	const struct firmware *fw;
++	u16 length;
++	int ii;
++	int ret = 0;
++
++	dev_dbg(dev, "---->Download firmware\n");
++
++	ret = request_firmware(&fw, FIRMWARE_NAME, dev);
++	if (ret) {
++		dev_err(dev, "firmware file %s request failed (%d)\n",
++			FIRMWARE_NAME, ret);
++		goto end;
++	}
++
++	for (ii = 0; ii < fw->size; ii += FIRMWARE_CHUNK_SIZE) {
++		length = min_t(int, fw->size - ii, FIRMWARE_CHUNK_SIZE);
++
++		ret = vnt_control_out(priv, 0, 0x1200 + ii, 0x0000, length,
++				      fw->data + ii);
++		if (ret)
++			goto free_fw;
++
++		dev_dbg(dev, "Download firmware...%d %zu\n", ii, fw->size);
++	}
++
++free_fw:
++	release_firmware(fw);
++end:
++	return ret;
++}
++
++static int vnt_firmware_branch_to_sram(struct vnt_private *priv)
++{
++	dev_dbg(&priv->usb->dev, "---->Branch to Sram\n");
++
++	return vnt_control_out(priv, 1, 0x1200, 0x0000, 0, NULL);
++}
++
++static int vnt_check_firmware_version(struct vnt_private *priv)
++{
++	int ret = 0;
++
++	ret = vnt_control_in(priv, MESSAGE_TYPE_READ, 0,
++			     MESSAGE_REQUEST_VERSION, 2,
++			     (u8 *)&priv->firmware_version);
++	if (ret) {
++		dev_dbg(&priv->usb->dev,
++			"Could not get firmware version: %d.\n", ret);
++		goto end;
++	}
++
++	dev_dbg(&priv->usb->dev, "Firmware Version [%04x]\n",
++		priv->firmware_version);
++
++	if (priv->firmware_version == 0xFFFF) {
++		dev_dbg(&priv->usb->dev, "In Loader.\n");
++		ret = -EINVAL;
++		goto end;
++	}
++
++	if (priv->firmware_version < FIRMWARE_VERSION) {
++		/* branch to loader for download new firmware */
++		ret = vnt_firmware_branch_to_sram(priv);
++		if (ret) {
++			dev_dbg(&priv->usb->dev,
++				"Could not branch to SRAM: %d.\n", ret);
++		} else {
++			ret = -EINVAL;
++		}
++	}
++
++end:
++	return ret;
++}
++
+ /*
+  * initialization of MAC & BBP registers
+  */
+@@ -1070,3 +1147,5 @@ static struct usb_driver vt6656_driver = {
+ };
+ 
+ module_usb_driver(vt6656_driver);
++
++MODULE_FIRMWARE(FIRMWARE_NAME);
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTC broadband for 0.8mile line in suburbia: sync at 10.2Mbps down 587kbps up
+2.25.1
