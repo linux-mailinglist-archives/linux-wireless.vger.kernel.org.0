@@ -2,35 +2,30 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 38C381B08A1
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2020 13:59:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 209C91B08BC
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2020 14:06:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727000AbgDTL64 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 20 Apr 2020 07:58:56 -0400
-Received: from mail.kernel.org ([198.145.29.99]:43946 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726451AbgDTL6z (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 20 Apr 2020 07:58:55 -0400
-Received: from localhost.localdomain.com (unknown [151.48.159.126])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id E7AF22072B;
-        Mon, 20 Apr 2020 11:58:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1587383935;
-        bh=vr296BXTacwYCW7+S+TQrYUYxiozu97XI9e3sys14XY=;
-        h=From:To:Cc:Subject:Date:From;
-        b=Za8/hECa0PmiHeZTX4RPJ1kGonEEJ1JJcZmYV0j6L8LdpPk9Qg3BNdlDtFH9bstIT
-         Xcd3t7xy/XVeR7gvt2EyjiFb8qZReZUNKFq/80pIvnYy6l7YL8nGY4Sg0QzWfXgL2L
-         VUV0ye/c2IsgK6maKLpOgkRHIxLYoGLGMKP58grs=
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
-        sean.wang@mediatek.com, linux-mediatek@lists.infradead.org
-Subject: [PATCH] mt76: mt7615: parse mcu return code for unified commands
-Date:   Mon, 20 Apr 2020 13:58:44 +0200
-Message-Id: <73930f50680e6c5fb54a9eacf07003a4e22f2570.1587383612.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.25.3
+        id S1726495AbgDTMGQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 20 Apr 2020 08:06:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55406 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1725944AbgDTMGQ (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 20 Apr 2020 08:06:16 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13ABDC061A0C
+        for <linux-wireless@vger.kernel.org>; Mon, 20 Apr 2020 05:06:16 -0700 (PDT)
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.93)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1jQVBl-00CgT7-4x; Mon, 20 Apr 2020 14:06:13 +0200
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     linux-wireless@vger.kernel.org
+Cc:     j@w1.fi, Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH] nl80211: allow client-only BIGTK support
+Date:   Mon, 20 Apr 2020 14:06:00 +0200
+Message-Id: <20200420140559.6ba704053a5a.Ifeb869fb0b48e52fe0cb9c15572b93ac8a924f8d@changeid>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
@@ -38,57 +33,74 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Add return code parsing for the following unified commands:
-- MCU_UNI_CMD_DEV_INFO_UPDATE
-- MCU_UNI_CMD_BSS_INFO_UPDATE
-- MCU_UNI_CMD_STA_REC_UPDATE
+From: Johannes Berg <johannes.berg@intel.com>
 
-Co-developed-by: Sean Wang <sean.wang@mediatek.com>
-Signed-off-by: Sean Wang <sean.wang@mediatek.com>
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+The current NL80211_EXT_FEATURE_BEACON_PROTECTION feature flag
+requires both AP and client support, add a new one called
+NL80211_EXT_FEATURE_BEACON_PROTECTION_CLIENT that enables only
+support in client (and P2P-client) modes.
+
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- drivers/net/wireless/mediatek/mt76/mt7615/mcu.c | 10 ++++++++++
- drivers/net/wireless/mediatek/mt76/mt7615/mcu.h |  6 ++++++
- 2 files changed, 16 insertions(+)
+ include/uapi/linux/nl80211.h |  3 +++
+ net/wireless/nl80211.c       | 19 +++++++++++++++----
+ 2 files changed, 18 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-index 703b6996a3d8..d448bbeba1c1 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-@@ -187,6 +187,16 @@ mt7615_mcu_parse_response(struct mt7615_dev *dev, int cmd,
- 		skb_pull(skb, sizeof(*rxd));
- 		ret = le32_to_cpu(*(__le32 *)skb->data);
- 		break;
-+	case MCU_UNI_CMD_DEV_INFO_UPDATE:
-+	case MCU_UNI_CMD_BSS_INFO_UPDATE:
-+	case MCU_UNI_CMD_STA_REC_UPDATE: {
-+		struct mt7615_mcu_uni_event *event;
-+
-+		skb_pull(skb, sizeof(*rxd));
-+		event = (struct mt7615_mcu_uni_event *)skb->data;
-+		ret = le32_to_cpu(event->status);
-+		break;
-+	}
- 	default:
- 		break;
- 	}
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.h
-index 5440f24a834a..032b5f98608e 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.h
-@@ -282,6 +282,12 @@ enum {
- 	MCU_UNI_CMD_STA_REC_UPDATE = MCU_UNI_PREFIX | 0x03,
- };
+diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
+index 2b691161830f..9a7f845011f6 100644
+--- a/include/uapi/linux/nl80211.h
++++ b/include/uapi/linux/nl80211.h
+@@ -5674,6 +5674,8 @@ enum nl80211_feature_flags {
+  *
+  * @NL80211_EXT_FEATURE_BEACON_PROTECTION: The driver supports Beacon protection
+  *	and can receive key configuration for BIGTK using key indexes 6 and 7.
++ * @NL80211_EXT_FEATURE_BEACON_PROTECTION_CLIENT: The driver supports Beacon
++ *	protection as a client only and cannot transmit protected beacons.
+  *
+  * @NL80211_EXT_FEATURE_CONTROL_PORT_NO_PREAUTH: The driver can disable the
+  *	forwarding of preauth frames over the control port. They are then
+@@ -5735,6 +5737,7 @@ enum nl80211_ext_feature_index {
+ 	NL80211_EXT_FEATURE_CONTROL_PORT_NO_PREAUTH,
+ 	NL80211_EXT_FEATURE_PROTECTED_TWT,
+ 	NL80211_EXT_FEATURE_DEL_IBSS_STA,
++	NL80211_EXT_FEATURE_BEACON_PROTECTION_CLIENT,
  
-+struct mt7615_mcu_uni_event {
-+	u8 cid;
-+	u8 pad[3];
-+	__le32 status; /* 0: success, others: fail */
-+} __packed;
+ 	/* add new features before the definition below */
+ 	NUM_NL80211_EXT_FEATURES,
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 692bcd35f809..86dab4a6bfc9 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -3904,14 +3904,25 @@ static int nl80211_get_key(struct sk_buff *skb, struct genl_info *info)
+ 	};
+ 	void *hdr;
+ 	struct sk_buff *msg;
++	bool bigtk_support = false;
 +
- struct mt7615_mcu_scan_ssid {
- 	__le32 ssid_len;
- 	u8 ssid[IEEE80211_MAX_SSID_LEN];
++	if (wiphy_ext_feature_isset(&rdev->wiphy,
++				    NL80211_EXT_FEATURE_BEACON_PROTECTION))
++		bigtk_support = true;
++
++	if ((dev->ieee80211_ptr->iftype == NL80211_IFTYPE_STATION ||
++	     dev->ieee80211_ptr->iftype == NL80211_IFTYPE_P2P_CLIENT) &&
++	    wiphy_ext_feature_isset(&rdev->wiphy,
++				    NL80211_EXT_FEATURE_BEACON_PROTECTION_CLIENT))
++		bigtk_support = true;
+ 
+ 	if (info->attrs[NL80211_ATTR_KEY_IDX]) {
+ 		key_idx = nla_get_u8(info->attrs[NL80211_ATTR_KEY_IDX]);
+-		if (key_idx > 5 &&
+-		    !wiphy_ext_feature_isset(
+-			    &rdev->wiphy,
+-			    NL80211_EXT_FEATURE_BEACON_PROTECTION))
++
++		if (key_idx >= 6 && key_idx <= 7 && !bigtk_support) {
++			GENL_SET_ERR_MSG(info, "BIGTK not supported");
+ 			return -EINVAL;
++		}
+ 	}
+ 
+ 	if (info->attrs[NL80211_ATTR_MAC])
 -- 
-2.25.3
+2.25.1
 
