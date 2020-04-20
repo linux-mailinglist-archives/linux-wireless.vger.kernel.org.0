@@ -2,67 +2,65 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E5781B08C3
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2020 14:07:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0ABA41B08E9
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2020 14:10:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726287AbgDTMHv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 20 Apr 2020 08:07:51 -0400
-Received: from mail.kernel.org ([198.145.29.99]:46680 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725944AbgDTMHu (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 20 Apr 2020 08:07:50 -0400
-Received: from localhost.localdomain.com (unknown [151.48.159.126])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 1E2BB206DD;
-        Mon, 20 Apr 2020 12:07:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1587384470;
-        bh=hg6wS/HV8kcXH5ugWtUCXLzLdrfCedTehl3Md/SXsXI=;
-        h=From:To:Cc:Subject:Date:From;
-        b=diTzGR3Q54WwTDRsM5hUHE/MP4FpjLDXsjAOwvF2V1GeY8Y9nOVV73Uv+XNRD1rpW
-         /WbbhP6HzWVrCmXqhSSgSIE7sEsa15ejuIR4qbD0WIoVeaFUTX08zqdUjh5Z/ce6rh
-         kFwxEXcBGsCs4nlDyURt6EoN1Ff7UiFvclYsFUjQ=
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
-        sean.wang@mediatek.com, linux-mediatek@lists.infradead.org
-Subject: [PATCH] mt76: mt7615: fix mt7615_firmware_own for mt7663e
-Date:   Mon, 20 Apr 2020 14:07:45 +0200
-Message-Id: <0ab0cba65fe838c658dd8e9b61cda618a37ecfca.1587384173.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.25.3
+        id S1726500AbgDTMKq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 20 Apr 2020 08:10:46 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:2415 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726307AbgDTMKq (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 20 Apr 2020 08:10:46 -0400
+Received: from DGGEMS405-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id 263B7F4E03F22AA43B58;
+        Mon, 20 Apr 2020 20:10:44 +0800 (CST)
+Received: from huawei.com (10.175.124.28) by DGGEMS405-HUB.china.huawei.com
+ (10.3.19.205) with Microsoft SMTP Server id 14.3.487.0; Mon, 20 Apr 2020
+ 20:10:36 +0800
+From:   Jason Yan <yanaijie@huawei.com>
+To:     <kvalo@codeaurora.org>, <davem@davemloft.net>,
+        <srirrama@codeaurora.org>, <ath11k@lists.infradead.org>,
+        <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+CC:     Jason Yan <yanaijie@huawei.com>
+Subject: [PATCH] ath11k: remove conversion to bool in ath11k_dp_rxdesc_mpdu_valid()
+Date:   Mon, 20 Apr 2020 20:37:18 +0800
+Message-ID: <20200420123718.3384-1-yanaijie@huawei.com>
+X-Mailer: git-send-email 2.21.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.124.28]
+X-CFilter-Loop: Reflected
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Check the firmware-own configuration has been applied polling
-MT_CONN_HIF_ON_LPCTL register
+The '==' expression itself is bool, no need to convert it to bool again.
+This fixes the following coccicheck warning:
 
-Fixes: f40ac0f3d3c0 ("mt76: mt7615: introduce mt7663e support")
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+drivers/net/wireless/ath/ath11k/dp_rx.c:255:46-51: WARNING: conversion
+to bool not needed here
+
+Signed-off-by: Jason Yan <yanaijie@huawei.com>
 ---
- drivers/net/wireless/mediatek/mt76/mt7615/mcu.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/net/wireless/ath/ath11k/dp_rx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-index d448bbeba1c1..7081bc4723ee 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-@@ -1710,9 +1710,8 @@ static int mt7615_firmware_own(struct mt7615_dev *dev)
+diff --git a/drivers/net/wireless/ath/ath11k/dp_rx.c b/drivers/net/wireless/ath/ath11k/dp_rx.c
+index 203fd44ff352..bbd7da48518f 100644
+--- a/drivers/net/wireless/ath/ath11k/dp_rx.c
++++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
+@@ -252,7 +252,7 @@ static bool ath11k_dp_rxdesc_mpdu_valid(struct hal_rx_desc *rx_desc)
+ 	tlv_tag = FIELD_GET(HAL_TLV_HDR_TAG,
+ 			    __le32_to_cpu(rx_desc->mpdu_start_tag));
  
- 	mt76_wr(dev, addr, MT_CFG_LPCR_HOST_FW_OWN);
+-	return tlv_tag == HAL_RX_MPDU_START ? true : false;
++	return tlv_tag == HAL_RX_MPDU_START;
+ }
  
--	if (is_mt7622(&dev->mt76) &&
--	    !mt76_poll_msec(dev, MT_CFG_LPCR_HOST,
--			    MT_CFG_LPCR_HOST_FW_OWN,
-+	if (!is_mt7615(&dev->mt76) &&
-+	    !mt76_poll_msec(dev, addr, MT_CFG_LPCR_HOST_FW_OWN,
- 			    MT_CFG_LPCR_HOST_FW_OWN, 3000)) {
- 		dev_err(dev->mt76.dev, "Timeout for firmware own\n");
- 		return -EIO;
+ static u32 ath11k_dp_rxdesc_get_ppduid(struct hal_rx_desc *rx_desc)
 -- 
-2.25.3
+2.21.1
 
