@@ -2,98 +2,105 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C73F1B005D
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2020 06:00:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D8FD91B0130
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 Apr 2020 07:51:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726017AbgDTEA2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 20 Apr 2020 00:00:28 -0400
-Received: from szxga05-in.huawei.com ([45.249.212.191]:2805 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725681AbgDTEA2 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 20 Apr 2020 00:00:28 -0400
-Received: from DGGEMS410-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id 27E02A16B7C134081862;
-        Mon, 20 Apr 2020 12:00:25 +0800 (CST)
-Received: from huawei.com (10.175.124.28) by DGGEMS410-HUB.china.huawei.com
- (10.3.19.210) with Microsoft SMTP Server id 14.3.487.0; Mon, 20 Apr 2020
- 12:00:16 +0800
-From:   Jason Yan <yanaijie@huawei.com>
-To:     <pkshih@realtek.com>, <kvalo@codeaurora.org>,
-        <davem@davemloft.net>, <yanaijie@huawei.com>,
-        <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: [PATCH] rtlwifi: rtl8723ae: fix warning comparison to bool
-Date:   Mon, 20 Apr 2020 12:26:58 +0800
-Message-ID: <20200420042658.18733-1-yanaijie@huawei.com>
-X-Mailer: git-send-email 2.21.1
+        id S1726089AbgDTFvQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 20 Apr 2020 01:51:16 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:42177 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725872AbgDTFvP (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 20 Apr 2020 01:51:15 -0400
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.69 with qID 03K5p7T21000866, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexmb06.realtek.com.tw[172.21.6.99])
+        by rtits2.realtek.com.tw (8.15.2/2.66/5.86) with ESMTPS id 03K5p7T21000866
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Mon, 20 Apr 2020 13:51:08 +0800
+Received: from RTEXMB04.realtek.com.tw (172.21.6.97) by
+ RTEXMB06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Mon, 20 Apr 2020 13:51:07 +0800
+Received: from localhost.localdomain (172.21.68.128) by
+ RTEXMB04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Mon, 20 Apr 2020 13:51:07 +0800
+From:   <yhchuang@realtek.com>
+To:     <kvalo@codeaurora.org>
+CC:     <pkshih@realtek.com>, <linux-wireless@vger.kernel.org>
+Subject: [PATCH v2 0/8] rtw88: 8723d: add basic chip functions
+Date:   Mon, 20 Apr 2020 13:50:46 +0800
+Message-ID: <20200420055054.14592-1-yhchuang@realtek.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.124.28]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain
+X-Originating-IP: [172.21.68.128]
+X-ClientProxiedBy: RTEXMB03.realtek.com.tw (172.21.6.96) To
+ RTEXMB04.realtek.com.tw (172.21.6.97)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fix the following coccicheck warning:
+From: Yan-Hsuan Chuang <yhchuang@realtek.com>
 
-drivers/net/wireless/realtek/rtlwifi/rtl8723ae/hw.c:617:14-20: WARNING:
-Comparison to bool
-drivers/net/wireless/realtek/rtlwifi/rtl8723ae/hw.c:622:13-19: WARNING:
-Comparison to bool
-drivers/net/wireless/realtek/rtlwifi/rtl8723ae/hw.c:627:14-20: WARNING:
-Comparison to bool
-drivers/net/wireless/realtek/rtlwifi/rtl8723ae/hw.c:632:13-19: WARNING:
-Comparison to bool
-drivers/net/wireless/realtek/rtlwifi/rtl8723ae/hw.c:937:5-13: WARNING:
-Comparison to bool
+Add basic chip functions for new 802.11n devices RTL8723DE.
 
-Signed-off-by: Jason Yan <yanaijie@huawei.com>
----
- drivers/net/wireless/realtek/rtlwifi/rtl8723ae/hw.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+RTL8723DE is an 802.11n device, while rtw88 aimed to support
+802.11ac devices, the 8723DE devices' architecture is close to
+them. The PCI TRX paths are mostly the same, except that the
+8723DE does not have H2CQ for sending H2C commands. And it also
+uses a different way to download firmware, but it's not a big
+deal, as we can add a legacy firmware download routine for it.
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/hw.c b/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/hw.c
-index 655460f61bbc..7a46c6a9deae 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/hw.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/hw.c
-@@ -614,22 +614,22 @@ static bool _rtl8723e_llt_table_init(struct ieee80211_hw *hw)
- 
- 	for (i = 0; i < (txpktbuf_bndy - 1); i++) {
- 		status = _rtl8723e_llt_write(hw, i, i + 1);
--		if (true != status)
-+		if (!status)
- 			return status;
- 	}
- 
- 	status = _rtl8723e_llt_write(hw, (txpktbuf_bndy - 1), 0xFF);
--	if (true != status)
-+	if (!status)
- 		return status;
- 
- 	for (i = txpktbuf_bndy; i < maxpage; i++) {
- 		status = _rtl8723e_llt_write(hw, i, (i + 1));
--		if (true != status)
-+		if (!status)
- 			return status;
- 	}
- 
- 	status = _rtl8723e_llt_write(hw, maxpage, txpktbuf_bndy);
--	if (true != status)
-+	if (!status)
- 		return status;
- 
- 	rtl_write_byte(rtlpriv, REG_CR, 0xff);
-@@ -934,7 +934,7 @@ int rtl8723e_hw_init(struct ieee80211_hw *hw)
- 
- 	rtlpriv->intf_ops->disable_aspm(hw);
- 	rtstatus = _rtl8712e_init_mac(hw);
--	if (rtstatus != true) {
-+	if (!rtstatus) {
- 		pr_err("Init MAC failed\n");
- 		err = 1;
- 		goto exit;
+So, we can easily get 8723DE supported by rtw88. For easier
+to review them, the 8723DE implementation is split into multiple
+patches. First add the basic chip functionalities for it.
+
+To make a new type of chip work, the chip capabilities should
+be filled correctly. And it will have its own parameter tables,
+including MAC/PHY and power squence tables. Note that 8723DE
+introduces a slightly different way to access to the RF regs.
+Beamform is not supported as well, assign NULL to them, and
+check the chip_ops before we use.
+
+
+v1 -> v2
+  * make a patchset contains less patches for review
+
+
+Ping-Ke Shih (8):
+  rtw88: 8723d: Add basic chip capabilities
+  rtw88: 8723d: add beamform wrapper functions
+  rtw88: 8723d: Add power sequence
+  rtw88: 8723d: Add RF read/write ops
+  rtw88: 8723d: Add mac/bb/rf/agc/power_limit tables
+  rtw88: 8723d: Add cfg_ldo25 to control LDO25
+  rtw88: 8723d: Add new chip op efuse_grant() to control efuse access
+  rtw88: 8723d: Add read_efuse to recognize efuse info from map
+
+ drivers/net/wireless/realtek/rtw88/bf.c       |    7 +-
+ drivers/net/wireless/realtek/rtw88/bf.h       |   22 +
+ drivers/net/wireless/realtek/rtw88/efuse.c    |    4 +
+ drivers/net/wireless/realtek/rtw88/mac80211.c |    7 +-
+ drivers/net/wireless/realtek/rtw88/main.c     |   12 +-
+ drivers/net/wireless/realtek/rtw88/main.h     |   26 +
+ drivers/net/wireless/realtek/rtw88/pci.c      |    3 +
+ drivers/net/wireless/realtek/rtw88/phy.c      |   56 +-
+ drivers/net/wireless/realtek/rtw88/phy.h      |    6 +
+ drivers/net/wireless/realtek/rtw88/reg.h      |   14 +
+ drivers/net/wireless/realtek/rtw88/rtw8723d.c |  544 ++++++++
+ drivers/net/wireless/realtek/rtw88/rtw8723d.h |   47 +
+ .../wireless/realtek/rtw88/rtw8723d_table.c   | 1196 +++++++++++++++++
+ .../wireless/realtek/rtw88/rtw8723d_table.h   |   15 +
+ drivers/net/wireless/realtek/rtw88/rtw8822b.c |    2 +-
+ 15 files changed, 1943 insertions(+), 18 deletions(-)
+ create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8723d.c
+ create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8723d.h
+ create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8723d_table.c
+ create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8723d_table.h
+
 -- 
-2.21.1
+2.17.1
 
