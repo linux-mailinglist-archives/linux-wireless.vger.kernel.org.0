@@ -2,30 +2,30 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DC3CB1B264E
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Apr 2020 14:40:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 290381B2657
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Apr 2020 14:40:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728852AbgDUMk0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 21 Apr 2020 08:40:26 -0400
-Received: from mail27.static.mailgun.info ([104.130.122.27]:52963 "EHLO
-        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728804AbgDUMkP (ORCPT
+        id S1728878AbgDUMku (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 21 Apr 2020 08:40:50 -0400
+Received: from mail26.static.mailgun.info ([104.130.122.26]:61121 "EHLO
+        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728739AbgDUMkt (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 21 Apr 2020 08:40:15 -0400
+        Tue, 21 Apr 2020 08:40:49 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1587472814; h=Date: Message-Id: Cc: To: References:
+ s=smtp; t=1587472848; h=Date: Message-Id: Cc: To: References:
  In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=2BBuZ2saqY8bkiyhwsNszE8S5S8FMvxU4rRpU9yJBm8=;
- b=pua1NDB7qnFKs+hRqc4oa82FjePssiZ20q5Dx+bIiCAtaU8cvJy/PdHiJ5BTeAiXPAplq5YE
- 20LhSI9J4Y5rCWb/Lkc1Y7jBDbcw7VJCHwto+8lHuWmYjnUt+toBp4VLFSKGS3SsrBa8zy98
- lkmyO1dWiid3MIZ2crCoc3Z1knc=
-X-Mailgun-Sending-Ip: 104.130.122.27
+ Content-Type: Sender; bh=UvZWvK6qxZ1S/tC6OgSC+nwBy7kAWbfgH4Qg5vZXk0s=;
+ b=OKHlylQZUgGPJzmydZVeyeh8/1Mk7P57Tb3mrZ/UZG7sYLrCI9u5wqmjhQfA0JEfVLFzTUdw
+ s2KjfaHOm4TNmBn6UjpNqGcm3rp+8ieByO11t1U7Rsl8C2SRmvUiOnutq3c6cdKEmhzvITzC
+ U9vdlHMPCT+cdTbun9K7hVeTZ/c=
+X-Mailgun-Sending-Ip: 104.130.122.26
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e9ee9a3.7f540258fb90-smtp-out-n04;
- Tue, 21 Apr 2020 12:40:03 -0000 (UTC)
+ by mxa.mailgun.org with ESMTP id 5e9ee9cf.7efc43d96e30-smtp-out-n04;
+ Tue, 21 Apr 2020 12:40:47 -0000 (UTC)
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 81361C43636; Tue, 21 Apr 2020 12:40:02 +0000 (UTC)
+        id 27395C433BA; Tue, 21 Apr 2020 12:40:47 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -35,24 +35,23 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 6BB85C433D2;
-        Tue, 21 Apr 2020 12:40:01 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 6BB85C433D2
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 20AD5C433CB;
+        Tue, 21 Apr 2020 12:40:45 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 20AD5C433CB
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2 v5.7 1/6] iwlwifi: pcie: actually release queue memory in
- TVQM
+Subject: Re: [PATCH v2 v5.7] iwlwifi: fix WGDS check when WRDS is disabled
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <iwlwifi.20200417100405.f5f4c4193ec1.Id5feebc9b4318041913a9c89fc1378bb5454292c@changeid>
-References: <iwlwifi.20200417100405.f5f4c4193ec1.Id5feebc9b4318041913a9c89fc1378bb5454292c@changeid>
+In-Reply-To: <iwlwifi.20200417133700.72ad25c3998b.I875d935cefd595ed7f640ddcfc7bc802627d2b7f@changeid>
+References: <iwlwifi.20200417133700.72ad25c3998b.I875d935cefd595ed7f640ddcfc7bc802627d2b7f@changeid>
 To:     Luca Coelho <luca@coelho.fi>
 Cc:     linux-wireless@vger.kernel.org
 User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20200421124002.81361C43636@smtp.codeaurora.org>
-Date:   Tue, 21 Apr 2020 12:40:02 +0000 (UTC)
+Message-Id: <20200421124047.27395C433BA@smtp.codeaurora.org>
+Date:   Tue, 21 Apr 2020 12:40:47 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
@@ -60,37 +59,26 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 Luca Coelho <luca@coelho.fi> wrote:
 
-> From: Johannes Berg <johannes.berg@intel.com>
+> From: Luca Coelho <luciano.coelho@intel.com>
 > 
-> The iwl_trans_pcie_dyn_txq_free() function only releases the frames
-> that may be left on the queue by calling iwl_pcie_gen2_txq_unmap(),
-> but doesn't actually free the DMA ring or byte-count tables for the
-> queue. This leads to pretty large memory leaks (at least before my
-> queue size improvements), in particular in monitor/sniffer mode on
-> channel hopping since this happens on every channel change.
+> In the reference BIOS implementation, WRDS can be disabled without
+> disabling WGDS.  And this happens in most cases where WRDS is
+> disabled, causing the WGDS without WRDS check and issue an error.
 > 
-> This was also now more evident after the move to a DMA pool for the
-> byte count tables, showing messages such as
+> To avoid this issue, we change the check so that we only considered it
+> an error if the WRDS entry doesn't exist.  If the entry (or the
+> selected profile is disabled for any other reason), we just silently
+> ignore WGDS.
 > 
->   BUG iwlwifi:bc (...): Objects remaining in iwlwifi:bc on __kmem_cache_shutdown()
-> 
-> This fixes https://bugzilla.kernel.org/show_bug.cgi?id=206811.
-> 
-> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-> Fixes: 6b35ff91572f ("iwlwifi: pcie: introduce a000 TX queues management")
-> Cc: stable@vger.kernel.org # v4.14+
+> Cc: stable@vger.kernel.org # 4.14+
+> Bugzilla: https://bugzilla.kernel.org/show_bug.cgi?id=205513
 > Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 
-6 patches applied to wireless-drivers.git, thanks.
+Patch applied to wireless-drivers.git, thanks.
 
-b98b33d5560a iwlwifi: pcie: actually release queue memory in TVQM
-290d5e495183 iwlwifi: mvm: beacon statistics shouldn't go backwards
-d8d663970234 iwlwifi: pcie: indicate correct RB size to device
-e5b72e3bc476 iwlwifi: mvm: limit maximum queue appropriately
-38af8d5a90a8 iwlwifi: mvm: Do not declare support for ACK Enabled Aggregation
-e6d419f94331 iwlwifi: mvm: fix inactive TID removal return value usage
+1edd56e69dca iwlwifi: fix WGDS check when WRDS is disabled
 
 -- 
-https://patchwork.kernel.org/patch/11494275/
+https://patchwork.kernel.org/patch/11494719/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
