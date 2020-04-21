@@ -2,95 +2,142 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 112BF1B21BC
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Apr 2020 10:33:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DF24E1B2284
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Apr 2020 11:19:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728290AbgDUIcs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 21 Apr 2020 04:32:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49952 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726600AbgDUIcr (ORCPT
+        id S1726628AbgDUJTE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 21 Apr 2020 05:19:04 -0400
+Received: from mail26.static.mailgun.info ([104.130.122.26]:17737 "EHLO
+        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726120AbgDUJTD (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 21 Apr 2020 04:32:47 -0400
-Received: from mail-wm1-x342.google.com (mail-wm1-x342.google.com [IPv6:2a00:1450:4864:20::342])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26A0AC061A0F;
-        Tue, 21 Apr 2020 01:32:46 -0700 (PDT)
-Received: by mail-wm1-x342.google.com with SMTP id h2so2549316wmb.4;
-        Tue, 21 Apr 2020 01:32:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:reply-to:from:date:message-id
-         :subject:to:cc;
-        bh=fdZ+qw8FSd+oZ7JAfQgjqj+cDvfl7DNp/1zLFgbSM2E=;
-        b=G67UBLWEM3iK3cdE5JucXd34fvZ4Qj9biiMaVbx1Pqx6O7/CrPFKV+kc3KRhB5GEJK
-         Rxx04dnq2tne3y+9MYeQzQonNXsQdubPhMhHS9oF6UwrJdCpbHVwqMvR5VnvLAedlfgS
-         OFwTJEEkAlkUABWPjZEEUgU174ZqcboQSvg0EKrOdhh3a9byCJRLtub+ZDl1/LQ+GS0/
-         OPwgtEH50KY46m/F5+f2loTp2Vy25zS+oPpLau2Ttyrxz+6CpcseZdEIdKCs/s7B3APA
-         9Xw1IOafn+w7kzO5saXSNWjBM2hiYHhhrqxcVaDJYOTsff+AEYzoUy+OulwPZsg79zr8
-         gOBg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:reply-to
-         :from:date:message-id:subject:to:cc;
-        bh=fdZ+qw8FSd+oZ7JAfQgjqj+cDvfl7DNp/1zLFgbSM2E=;
-        b=QQo5qKPSMKk4BALyJaN0Is5Xt03bSJgji1oi3PTthNW32/+K29cZhii7NeEZrh0QIn
-         4V1ZdtRZxpdhynnZ1xApKfdm6md0lrvvtF5cqgsI5lFutkzp1nTgX2l0cFIja0un/ZcT
-         ZVMucHOo1qU9PZnZqN5pdLFPaBXXhxgsgQpZnCiqHwOuDIj2vLAiBKKoAxgLh6IrmsFe
-         fKYZhfr7qoGmMT3/4up00XeV/DFOmfwgo5xkIz8RAwv33yGMsNtgTMIkIbTH2cjf2hbp
-         XWQjCganU4qvPfL5odfaYZkndXRI7UvdhPGhz7OM6nIWa1jHbpkLiUjsdamG3N194hrr
-         npvQ==
-X-Gm-Message-State: AGi0Pub34U5LaVtSGMhMXu0UPNc1LFmsr04xL/k/a69YQ7EvliiMUaYW
-        rVceixNaYI2TmjI6e623pErbxd9gtSpz3943xQQ=
-X-Google-Smtp-Source: APiQypKu95XjFZWhNAScyNi+0tTB50gdzunIlMkUKPL7WWAHgb3OJtuJ+NG6FGMz4x9JdDKWwv5qNISk3IqSFHy1vvQ=
-X-Received: by 2002:a7b:c927:: with SMTP id h7mr3645204wml.122.1587457964786;
- Tue, 21 Apr 2020 01:32:44 -0700 (PDT)
+        Tue, 21 Apr 2020 05:19:03 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1587460742; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=H1ZvHCdisjdH46yMrRSo9RsaOp8q+peOIIJTJMYsVvA=; b=w1Cur9rBn8jQbNPDbb1htXrF+ApAd1NkUjtN9BgYADJURB1OnMKiyG4XaCGw8CtHZreXAFb0
+ UYEoEeOo10nUC5Pz9ouPiq3PYuxh9cqeem8433QDSbIJrJvH865UZzmBqrTfHAwU73tFnFTB
+ nyK6udIUg4msVdNbE0DpHBp29YY=
+X-Mailgun-Sending-Ip: 104.130.122.26
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5e9eba7c.7efdfad5cc00-smtp-out-n03;
+ Tue, 21 Apr 2020 09:18:52 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 2B8FBC433F2; Tue, 21 Apr 2020 09:18:52 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from x230.qca.qualcomm.com (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 8BD9FC433D2;
+        Tue, 21 Apr 2020 09:18:50 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 8BD9FC433D2
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Luca Coelho <luca@coelho.fi>
+Cc:     linux-wireless@vger.kernel.org
+Subject: Re: [PATCH 02/10] iwlwifi: move API version lookup to common code
+References: <20200417102142.2173014-1-luca@coelho.fi>
+        <iwlwifi.20200417131727.9c61e7e42b26.I5ede9cc25ee8de7b8d2b5c574f917a18971da734@changeid>
+Date:   Tue, 21 Apr 2020 12:18:48 +0300
+In-Reply-To: <iwlwifi.20200417131727.9c61e7e42b26.I5ede9cc25ee8de7b8d2b5c574f917a18971da734@changeid>
+        (Luca Coelho's message of "Fri, 17 Apr 2020 13:21:34 +0300")
+Message-ID: <87imhtqjrb.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-References: <20200417074558.12316-1-sedat.dilek@gmail.com> <20200421075030.E9F6AC433BA@smtp.codeaurora.org>
-In-Reply-To: <20200421075030.E9F6AC433BA@smtp.codeaurora.org>
-Reply-To: sedat.dilek@gmail.com
-From:   Sedat Dilek <sedat.dilek@gmail.com>
-Date:   Tue, 21 Apr 2020 10:32:32 +0200
-Message-ID: <CA+icZUWjmZVT-0niozgA=9rdXcAOACTT4VUXgGooLYbELvMCHg@mail.gmail.com>
-Subject: Re: [PATCH wireless-drivers v3] iwlwifi: actually check allocated
- conf_tlv pointer
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     Johannes Berg <johannes.berg@intel.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Intel Linux Wireless <linuxwifi@intel.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Chris Rorvick <chris@rorvick.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Apr 21, 2020 at 9:50 AM Kalle Valo <kvalo@codeaurora.org> wrote:
->
-> Sedat Dilek <sedat.dilek@gmail.com> wrote:
->
-> > From: Chris Rorvick <chris@rorvick.com>
-> >
-> > Commit 71bc0334a637 ("iwlwifi: check allocated pointer when allocating
-> > conf_tlvs") attempted to fix a typoe introduced by commit 17b809c9b22e
-> > ("iwlwifi: dbg: move debug data to a struct") but does not implement the
-> > check correctly.
-> >
-> > Fixes: 71bc0334a637 ("iwlwifi: check allocated pointer when allocating conf_tlvs")
-> > Tweeted-by: @grsecurity
-> > Signed-off-by: Chris Rorvick <chris@rorvick.com>
-> > Signed-off-by: Sedat Dilek <sedat.dilek@gmail.com>
->
-> Patch applied to wireless-drivers.git, thanks.
->
-> a176e114ace4 iwlwifi: actually check allocated conf_tlv pointer
->
+Luca Coelho <luca@coelho.fi> writes:
 
-Thanks, Sedat.
-
-> --
-> https://patchwork.kernel.org/patch/11494331/
+> From: Mordechay Goodstein <mordechay.goodstein@intel.com>
 >
-> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+> The API version lookup is parsed from a TLV and should be in shared code
+> make make it reusable across all opmodes.
+>
+> Also change the function names from mvm to fw, since this is not
+> mvm-specific anymore.
+>
+> Additionally, since this function is not just a single line of code, it
+> shouldn't be inline.  Convert them to actual functions.
+>
+> Signed-off-by: Mordechay Goodstein <mordechay.goodstein@intel.com>
+> Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+
+[...]
+
+> +++ b/drivers/net/wireless/intel/iwlwifi/fw/img.c
+> @@ -0,0 +1,100 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/******************************************************************************
+> + *
+> + * This file is provided under a dual BSD/GPLv2 license.  When using or
+> + * redistributing this file, you may do so under either license.
+> + *
+> + * GPL LICENSE SUMMARY
+> + *
+> + * Copyright(c) 2019 Intel Corporation
+> + *
+> + * This program is free software; you can redistribute it and/or modify
+> + * it under the terms of version 2 of the GNU General Public License as
+> + * published by the Free Software Foundation.
+> + *
+> + * This program is distributed in the hope that it will be useful, but
+> + * WITHOUT ANY WARRANTY; without even the implied warranty of
+> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+> + * General Public License for more details.
+> + *
+> + * The full GNU General Public License is included in this distribution
+> + * in the file called COPYING.
+> + *
+> + * Contact Information:
+> + *  Intel Linux Wireless <linuxwifi@intel.com>
+> + * Intel Corporation, 5200 N.E. Elam Young Parkway, Hillsboro, OR 97124-6497
+> + *
+> + * BSD LICENSE
+> + *
+> + * Copyright(c) 2019 Intel Corporation
+> + * All rights reserved.
+> + *
+> + * Redistribution and use in source and binary forms, with or without
+> + * modification, are permitted provided that the following conditions
+> + * are met:
+> + *
+> + *  * Redistributions of source code must retain the above copyright
+> + *    notice, this list of conditions and the following disclaimer.
+> + *  * Redistributions in binary form must reproduce the above copyright
+> + *    notice, this list of conditions and the following disclaimer in
+> + *    the documentation and/or other materials provided with the
+> + *    distribution.
+> + *  * Neither the name Intel Corporation nor the names of its
+> + *    contributors may be used to endorse or promote products derived
+> + *    from this software without specific prior written permission.
+> + *
+> + * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+> + * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+> + * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+> + * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+> + * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+> + * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+> + * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+> + * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+> + * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+> + * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+> + * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+> + *****************************************************************************/
+
+This doesn't look correct. You shouldn't have the actual license text if
+you have SPDX tags. Also SPDX claims this is "GPL" but the license text
+itself says "GPL or BSD" and they contradict each other.
+
+-- 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
