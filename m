@@ -2,91 +2,82 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2CC581B1E72
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Apr 2020 07:58:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E92E61B1FB1
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Apr 2020 09:23:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726573AbgDUF55 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 21 Apr 2020 01:57:57 -0400
-Received: from mailgw01.mediatek.com ([210.61.82.183]:34175 "EHLO
-        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1725901AbgDUF55 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 21 Apr 2020 01:57:57 -0400
-X-UUID: c6589aebde574df99628fa38c1032a99-20200421
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Transfer-Encoding:MIME-Version:Content-Type:References:In-Reply-To:Date:CC:To:From:Subject:Message-ID; bh=yD/NRJAM1wcixHyAPN6Ipx8fiEBnqXvyN97IIJeNFK4=;
-        b=GpRWvTy8Xrf3OtNydz++O1tSxWbi88LYSOJFhhyUQQDoPQ4RPLh6s4Is88BBh134tlYpbZYfssRSBBUyh7YPMppZIEi5hObegtAFPQkSTiUHSCYrI+LJujUbDMXJxWOqSaQzBoH+Z3CxBCLEmACoKEo9qj6+zdlmO5J+RNYkAwo=;
-X-UUID: c6589aebde574df99628fa38c1032a99-20200421
-Received: from mtkcas08.mediatek.inc [(172.21.101.126)] by mailgw01.mediatek.com
-        (envelope-from <ryder.lee@mediatek.com>)
-        (Cellopoint E-mail Firewall v4.1.10 Build 0809 with TLS)
-        with ESMTP id 1975207488; Tue, 21 Apr 2020 13:57:55 +0800
-Received: from mtkcas08.mediatek.inc (172.21.101.126) by
- mtkmbs06n1.mediatek.inc (172.21.101.129) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Tue, 21 Apr 2020 13:57:52 +0800
-Received: from [172.21.77.33] (172.21.77.33) by mtkcas08.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Tue, 21 Apr 2020 13:57:51 +0800
-Message-ID: <1587448674.12853.1.camel@mtkswgap22>
-Subject: Re: [PATCH 2/3] mt76: mt7615: add missing code for providing aid
- info to the mcu
-From:   Ryder Lee <ryder.lee@mediatek.com>
-To:     <sean.wang@mediatek.com>
-CC:     <nbd@nbd.name>, <lorenzo.bianconi@redhat.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>,
-        "Soul Huang" <Soul.Huang@mediatek.com>,
+        id S1726524AbgDUHXV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 21 Apr 2020 03:23:21 -0400
+Received: from nbd.name ([46.4.11.11]:45168 "EHLO nbd.name"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725992AbgDUHXV (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 21 Apr 2020 03:23:21 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
+        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=cnLw4h6susA6vVPQD06WRjdgF4VTGuehXV97aRJrFGk=; b=fzfuNER+oPpKuWsHkkjUJ9igxG
+        gHEq4xYGH1eB2Ne8dS5FPtVB32q0n2wARDY2qVsL7QTL6JeX8m/PqS1BuTsa5ojaSRkDHsXMhyeGT
+        +S8xJeZ8jz6VKFWzGUxMVDx+wPgcsRaOMnWxZfpzG4Y/pTt7m716PNG1kf51Ew5Uh/zw=;
+Received: from p54ae965b.dip0.t-ipconnect.de ([84.174.150.91] helo=nf.local)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1jQnFQ-0006dQ-HC; Tue, 21 Apr 2020 09:23:12 +0200
+Subject: Re: [PATCH 2/3] mt76: mt7615: add missing code for providing aid info
+ to the mcu
+To:     sean.wang@mediatek.com, lorenzo.bianconi@redhat.com
+Cc:     ryder.lee@mediatek.com, linux-wireless@vger.kernel.org,
+        linux-mediatek@lists.infradead.org,
+        Soul Huang <Soul.Huang@mediatek.com>,
         Lorenzo Bianconi <lorenzo@kernel.org>
-Date:   Tue, 21 Apr 2020 13:57:54 +0800
-In-Reply-To: <0292e088e934199434f0ea06598274f57a24f3d9.1587445885.git.sean.wang@mediatek.com>
 References: <1467d47fd111b5711fa74410833153bdc9e01b72.1587445885.git.sean.wang@mediatek.com>
-         <0292e088e934199434f0ea06598274f57a24f3d9.1587445885.git.sean.wang@mediatek.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.2.3-0ubuntu6 
+ <0292e088e934199434f0ea06598274f57a24f3d9.1587445885.git.sean.wang@mediatek.com>
+From:   Felix Fietkau <nbd@nbd.name>
+Autocrypt: addr=nbd@nbd.name; prefer-encrypt=mutual; keydata=
+ xsDiBEah5CcRBADIY7pu4LIv3jBlyQ/2u87iIZGe6f0f8pyB4UjzfJNXhJb8JylYYRzIOSxh
+ ExKsdLCnJqsG1PY1mqTtoG8sONpwsHr2oJ4itjcGHfn5NJSUGTbtbbxLro13tHkGFCoCr4Z5
+ Pv+XRgiANSpYlIigiMbOkide6wbggQK32tC20QxUIwCg4k6dtV/4kwEeiOUfErq00TVqIiEE
+ AKcUi4taOuh/PQWx/Ujjl/P1LfJXqLKRPa8PwD4j2yjoc9l+7LptSxJThL9KSu6gtXQjcoR2
+ vCK0OeYJhgO4kYMI78h1TSaxmtImEAnjFPYJYVsxrhay92jisYc7z5R/76AaELfF6RCjjGeP
+ wdalulG+erWju710Bif7E1yjYVWeA/9Wd1lsOmx6uwwYgNqoFtcAunDaMKi9xVQW18FsUusM
+ TdRvTZLBpoUAy+MajAL+R73TwLq3LnKpIcCwftyQXK5pEDKq57OhxJVv1Q8XkA9Dn1SBOjNB
+ l25vJDFAT9ntp9THeDD2fv15yk4EKpWhu4H00/YX8KkhFsrtUs69+vZQwc0cRmVsaXggRmll
+ dGthdSA8bmJkQG5iZC5uYW1lPsJgBBMRAgAgBQJGoeQnAhsjBgsJCAcDAgQVAggDBBYCAwEC
+ HgECF4AACgkQ130UHQKnbvXsvgCgjsAIIOsY7xZ8VcSm7NABpi91yTMAniMMmH7FRenEAYMa
+ VrwYTIThkTlQzsFNBEah5FQQCACMIep/hTzgPZ9HbCTKm9xN4bZX0JjrqjFem1Nxf3MBM5vN
+ CYGBn8F4sGIzPmLhl4xFeq3k5irVg/YvxSDbQN6NJv8o+tP6zsMeWX2JjtV0P4aDIN1pK2/w
+ VxcicArw0VYdv2ZCarccFBgH2a6GjswqlCqVM3gNIMI8ikzenKcso8YErGGiKYeMEZLwHaxE
+ Y7mTPuOTrWL8uWWRL5mVjhZEVvDez6em/OYvzBwbkhImrryF29e3Po2cfY2n7EKjjr3/141K
+ DHBBdgXlPNfDwROnA5ugjjEBjwkwBQqPpDA7AYPvpHh5vLbZnVGu5CwG7NAsrb2isRmjYoqk
+ wu++3117AAMFB/9S0Sj7qFFQcD4laADVsabTpNNpaV4wAgVTRHKV/kC9luItzwDnUcsZUPdQ
+ f3MueRJ3jIHU0UmRBG3uQftqbZJj3ikhnfvyLmkCNe+/hXhPu9sGvXyi2D4vszICvc1KL4RD
+ aLSrOsROx22eZ26KqcW4ny7+va2FnvjsZgI8h4sDmaLzKczVRIiLITiMpLFEU/VoSv0m1F4B
+ FtRgoiyjFzigWG0MsTdAN6FJzGh4mWWGIlE7o5JraNhnTd+yTUIPtw3ym6l8P+gbvfoZida0
+ TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabwkkE
+ GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCfTKx80VvCR/PvsUlrvdOLsIgeRGAAn1ee
+ RjMaxwtSdaCKMw3j33ZbsWS4
+Message-ID: <5f06afe8-319a-3f21-b666-45a22685ba83@nbd.name>
+Date:   Tue, 21 Apr 2020 09:23:11 +0200
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:68.0)
+ Gecko/20100101 Thunderbird/68.7.0
 MIME-Version: 1.0
-X-MTK:  N
-Content-Transfer-Encoding: base64
+In-Reply-To: <0292e088e934199434f0ea06598274f57a24f3d9.1587445885.git.sean.wang@mediatek.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-T24gVHVlLCAyMDIwLTA0LTIxIGF0IDEzOjIwICswODAwLCBzZWFuLndhbmdAbWVkaWF0ZWsuY29t
-IHdyb3RlOg0KPiBGcm9tOiBTZWFuIFdhbmcgPHNlYW4ud2FuZ0BtZWRpYXRlay5jb20+DQo+IA0K
-PiBQYXJhbWV0ZXJzIGluIHN0YXRpb24gcmVjb3JkIHNob3VsZCBiZSBrZXB0IGFzIHVwIHRvIGRh
-dGUgYXMgQlNTIGJlaW5nDQo+IHVwZGF0ZWQuDQo+IA0KPiBGaXhlczogYTkwYjRiYTFmMTM0ICgi
-bXQ3NjogbXQ3NjE1OiBwcm92aWRlIGFpZCBpbmZvIHRvIHRoZSBtY3UiKQ0KPiBTdWdnZXN0ZWQt
-Ynk6IFlGIEx1byA8WWYuTHVvQG1lZGlhdGVrLmNvbT4NCj4gU3VnZ2VzdGVkLWJ5OiBMdWN5IEhz
-dSA8THVjeS5Ic3VAbWVkaWF0ZWsuY29tPg0KPiBDby1kZXZlbG9wZWQtYnk6IFNvdWwgSHVhbmcg
-PFNvdWwuSHVhbmdAbWVkaWF0ZWsuY29tPg0KPiBTaWduZWQtb2ZmLWJ5OiBTb3VsIEh1YW5nIDxT
-b3VsLkh1YW5nQG1lZGlhdGVrLmNvbT4NCj4gQ28tZGV2ZWxvcGVkLWJ5OiBMb3JlbnpvIEJpYW5j
-b25pIDxsb3JlbnpvQGtlcm5lbC5vcmc+DQo+IFNpZ25lZC1vZmYtYnk6IExvcmVuem8gQmlhbmNv
-bmkgPGxvcmVuem9Aa2VybmVsLm9yZz4NCj4gU2lnbmVkLW9mZi1ieTogU2VhbiBXYW5nIDxzZWFu
-LndhbmdAbWVkaWF0ZWsuY29tPg0KPiAtLS0NCj4gIGRyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlh
-dGVrL210NzYvbXQ3NjE1L21haW4uYyB8IDE1ICsrKysrKysrKysrKystLQ0KPiAgMSBmaWxlIGNo
-YW5nZWQsIDEzIGluc2VydGlvbnMoKyksIDIgZGVsZXRpb25zKC0pDQo+IA0KPiBkaWZmIC0tZ2l0
-IGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc2MTUvbWFpbi5jIGIvZHJp
-dmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc2MTUvbWFpbi5jDQo+IGluZGV4IGNk
-YzhiYWJjYTg1YS4uZTUwMTJhZDY4MGJiIDEwMDY0NA0KPiAtLS0gYS9kcml2ZXJzL25ldC93aXJl
-bGVzcy9tZWRpYXRlay9tdDc2L210NzYxNS9tYWluLmMNCj4gKysrIGIvZHJpdmVycy9uZXQvd2ly
-ZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc2MTUvbWFpbi5jDQo+IEBAIC00OTcsOSArNDk3LDE5IEBA
-IHN0YXRpYyB2b2lkIG10NzYxNV9ic3NfaW5mb19jaGFuZ2VkKHN0cnVjdCBpZWVlODAyMTFfaHcg
-Kmh3LA0KPiAgDQo+ICAJbXV0ZXhfbG9jaygmZGV2LT5tdDc2Lm11dGV4KTsNCj4gIA0KPiAtCWlm
-IChjaGFuZ2VkICYgQlNTX0NIQU5HRURfQVNTT0MpDQo+ICsJaWYgKGNoYW5nZWQgJiBCU1NfQ0hB
-TkdFRF9BU1NPQykgew0KPiArCQlzdHJ1Y3QgaWVlZTgwMjExX3N0YSAqc3RhOw0KPiArDQo+ICAJ
-CW10NzYxNV9tY3VfYWRkX2Jzc19pbmZvKHBoeSwgdmlmLCBpbmZvLT5hc3NvYyk7DQo+ICANCj4g
-KwkJcmN1X3JlYWRfbG9jaygpOw0KPiArCQlzdGEgPSBpZWVlODAyMTFfZmluZF9zdGEodmlmLCB2
-aWYtPmJzc19jb25mLmJzc2lkKTsNCj4gKwkJcmN1X3JlYWRfdW5sb2NrKCk7DQo+ICsNCj4gKwkJ
-aWYgKHN0YSkNCj4gKwkJCW10NzYxNV9tY3Vfc3RhX2FkZChkZXYsIHZpZiwgc3RhLCBpbmZvLT5h
-c3NvYyk7DQo+ICsJfQ0KPiArDQpob3cgYWJvdXQgdGhpcyAtDQpodHRwczovL2dpdGh1Yi5jb20v
-cnlkZXJsZWUxMTEwL3dpcmVsZXNzL2Jsb2IvbXQ3Ni9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRp
-YXRlay9tdDc2L210NzkxNS9tYWluLmMjTDQzNA0KDQo+ICAJaWYgKGNoYW5nZWQgJiBCU1NfQ0hB
-TkdFRF9FUlBfU0xPVCkgew0KPiAgCQlpbnQgc2xvdHRpbWUgPSBpbmZvLT51c2Vfc2hvcnRfc2xv
-dCA/IDkgOiAyMDsNCj4gIA0KPiBAQCAtNTU3LDcgKzU2Nyw4IEBAIGludCBtdDc2MTVfbWFjX3N0
-YV9hZGQoc3RydWN0IG10NzZfZGV2ICptZGV2LCBzdHJ1Y3QgaWVlZTgwMjExX3ZpZiAqdmlmLA0K
-PiAgCW10NzYxNV9tYWNfd3RibF91cGRhdGUoZGV2LCBpZHgsDQo+ICAJCQkgICAgICAgTVRfV1RC
-TF9VUERBVEVfQURNX0NPVU5UX0NMRUFSKTsNCj4gIA0KPiAtCW10NzYxNV9tY3Vfc3RhX2FkZChk
-ZXYsIHZpZiwgc3RhLCB0cnVlKTsNCj4gKwlpZiAodmlmLT50eXBlICE9IE5MODAyMTFfSUZUWVBF
-X1NUQVRJT04pDQo+ICsJCW10NzYxNV9tY3Vfc3RhX2FkZChkZXYsIHZpZiwgc3RhLCB0cnVlKTsN
-Cj4gIA0KPiAgCXJldHVybiAwOw0KPiAgfQ0KDQo=
+On 2020-04-21 07:20, sean.wang@mediatek.com wrote:
+> From: Sean Wang <sean.wang@mediatek.com>
+> 
+> Parameters in station record should be kept as up to date as BSS being
+> updated.
+Why do we need this change? Johannes posted a mac80211 change that makes
+the aid available at the time the station entry is created.
 
+- Felix
