@@ -2,113 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B1E6C1B2FA0
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Apr 2020 20:57:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6601C1B30B9
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Apr 2020 21:56:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726006AbgDUS5N (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 21 Apr 2020 14:57:13 -0400
-Received: from mail26.static.mailgun.info ([104.130.122.26]:18080 "EHLO
-        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725870AbgDUS5L (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 21 Apr 2020 14:57:11 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1587495431; h=Message-Id: Date: Subject: Cc: To: From:
- Sender; bh=rLICmTBof8eKNqnysvQtRNeSf1lVpHeOKoMNOJQq6dA=; b=SjPXyMWj+9MTbqVT6lb8ksV370REGiG8E5rZzg/6EWBEoqXrXiAkL7b7RWsEn5SZaka+rWVE
- SWHmkOXGCNERf5TzEmr9l1lm/Flg5H4fyvQfrhlldPN60Dx8a7DYkO17LV88THTyy7eV+bug
- suLyZmlM9AhIU1h4b69qEBZS+x8=
-X-Mailgun-Sending-Ip: 104.130.122.26
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e9f4207.7fe20035b6f8-smtp-out-n02;
- Tue, 21 Apr 2020 18:57:11 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 08B0EC433F2; Tue, 21 Apr 2020 18:57:11 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from che-swdbs-01.qca.qualcomm.com (blr-c-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.19.19])
+        id S1726104AbgDUT4J (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 21 Apr 2020 15:56:09 -0400
+Received: from mail.kernel.org ([198.145.29.99]:47196 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725930AbgDUT4H (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 21 Apr 2020 15:56:07 -0400
+Received: from localhost (unknown [137.135.114.1])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        (Authenticated sender: mkenna)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 16DD7C433D2;
-        Tue, 21 Apr 2020 18:57:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 16DD7C433D2
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=mkenna@codeaurora.org
-From:   Maharaja Kennadyrajan <mkenna@codeaurora.org>
-To:     ath10k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org,
-        Maharaja Kennadyrajan <mkenna@codeaurora.org>
-Subject: [PATCH] ath10k: Fix the invalid tx/rx chainmask configuration
-Date:   Wed, 22 Apr 2020 00:28:32 +0530
-Message-Id: <1587495512-29813-1-git-send-email-mkenna@codeaurora.org>
-X-Mailer: git-send-email 1.7.9.5
+        by mail.kernel.org (Postfix) with ESMTPSA id 419C0206E9;
+        Tue, 21 Apr 2020 19:56:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1587498966;
+        bh=e/y1RzWTH/jAmTOq05OhNkKHqXsGv85OPvpjqcUvbQw=;
+        h=Date:From:To:To:To:To:Cc:Cc:Subject:In-Reply-To:References:From;
+        b=fB2VYdgfGec/irgcgVTEKzgTioW8tCwD9mHcUzPOtuIRskbjWDqI4cs2VC+pVXISj
+         yUN3QrxqAsNpk1iylifEaa/2xFBGechmEufgPnP1BD2gMct/hAO5RiHxJnJd83gA4a
+         plo+WNRcSgYvauqSy2ADDWq8yQNE6AMXxOTMbrr8=
+Date:   Tue, 21 Apr 2020 19:56:05 +0000
+From:   Sasha Levin <sashal@kernel.org>
+To:     Sasha Levin <sashal@kernel.org>
+To:     Luca Coelho <luca@coelho.fi>
+To:     Luca Coelho <luciano.coelho@intel.com>
+To:     kvalo@codeaurora.org
+Cc:     linux-wireless@vger.kernel.org
+Cc:     stable@vger.kernel.org
+Subject: Re: [PATCH v2 v5.7] iwlwifi: fix WGDS check when WRDS is disabled
+In-Reply-To: <iwlwifi.20200417133700.72ad25c3998b.I875d935cefd595ed7f640ddcfc7bc802627d2b7f@changeid>
+References: <iwlwifi.20200417133700.72ad25c3998b.I875d935cefd595ed7f640ddcfc7bc802627d2b7f@changeid>
+Message-Id: <20200421195606.419C0206E9@mail.kernel.org>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The driver is allowing the invalid tx/rx chainmask configuration
-(other than 1,3,7,15) set by the user. It causes the firmware
-crash due to the invalid chainmask values.
+Hi
 
-Hence, reject the invalid chainmask values in the driver by not
-sending the pdev set command to the firmware.
+[This is an automated email]
 
-Tested hardware: QCA9888
-Tested firmware: 10.4-3.10-00047
+This commit has been processed because it contains a -stable tag.
+The stable tag indicates that it's relevant for the following trees: 4.14+
 
-Signed-off-by: Maharaja Kennadyrajan <mkenna@codeaurora.org>
----
- drivers/net/wireless/ath/ath10k/mac.c | 15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
+The bot has tested the following trees: v5.6.5, v5.5.18, v5.4.33, v4.19.116, v4.14.176.
 
-diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
-index a59a7a5..a9f91a1 100644
---- a/drivers/net/wireless/ath/ath10k/mac.c
-+++ b/drivers/net/wireless/ath/ath10k/mac.c
-@@ -4529,17 +4529,18 @@ static int ath10k_get_antenna(struct ieee80211_hw *hw, u32 *tx_ant, u32 *rx_ant)
- 	return 0;
- }
- 
--static void ath10k_check_chain_mask(struct ath10k *ar, u32 cm, const char *dbg)
-+static bool ath10k_check_chain_mask(struct ath10k *ar, u32 cm, const char *dbg)
- {
- 	/* It is not clear that allowing gaps in chainmask
- 	 * is helpful.  Probably it will not do what user
- 	 * is hoping for, so warn in that case.
- 	 */
- 	if (cm == 15 || cm == 7 || cm == 3 || cm == 1 || cm == 0)
--		return;
-+		return true;
- 
--	ath10k_warn(ar, "mac %s antenna chainmask may be invalid: 0x%x.  Suggested values: 15, 7, 3, 1 or 0.\n",
-+	ath10k_warn(ar, "mac %s antenna chainmask is invalid: 0x%x.  Suggested values: 15, 7, 3, 1 or 0.\n",
- 		    dbg, cm);
-+	return false;
- }
- 
- static int ath10k_mac_get_vht_cap_bf_sts(struct ath10k *ar)
-@@ -4722,11 +4723,15 @@ static void ath10k_mac_setup_ht_vht_cap(struct ath10k *ar)
- static int __ath10k_set_antenna(struct ath10k *ar, u32 tx_ant, u32 rx_ant)
- {
- 	int ret;
-+	bool is_valid_tx_chain_mask, is_valid_rx_chain_mask;
- 
- 	lockdep_assert_held(&ar->conf_mutex);
- 
--	ath10k_check_chain_mask(ar, tx_ant, "tx");
--	ath10k_check_chain_mask(ar, rx_ant, "rx");
-+	is_valid_tx_chain_mask = ath10k_check_chain_mask(ar, tx_ant, "tx");
-+	is_valid_rx_chain_mask = ath10k_check_chain_mask(ar, rx_ant, "rx");
-+
-+	if (!is_valid_tx_chain_mask || !is_valid_rx_chain_mask)
-+		return -EINVAL;
- 
- 	ar->cfg_tx_chainmask = tx_ant;
- 	ar->cfg_rx_chainmask = rx_ant;
+v5.6.5: Build OK!
+v5.5.18: Build OK!
+v5.4.33: Failed to apply! Possible dependencies:
+    39c1a9728f93 ("iwlwifi: refactor the SAR tables from mvm to acpi")
+
+v4.19.116: Failed to apply! Possible dependencies:
+    0791c2fce3c8 ("iwlwifi: mvm: support new reduce tx power FW API.")
+    17b809c9b22e ("iwlwifi: dbg: move debug data to a struct")
+    22463857a16b ("iwlwifi: receive umac and lmac error table addresses from TLVs")
+    2d8c261511ab ("iwlwifi: add d3 debug data support")
+    39c1a9728f93 ("iwlwifi: refactor the SAR tables from mvm to acpi")
+    48e775e66e2d ("iwlwifi: mvm: add support for 32kHz external clock indication")
+    4c2f445c0f49 ("iwlwifi: mvm: skip EBS in low latency mode while fragmented scan isn't supported")
+    68025d5f9bfe ("iwlwifi: dbg: refactor dump code to improve readability")
+    8d534e96b500 ("iwlwifi: dbg_ini: create new dump flow and implement prph dump")
+    a6820511f193 ("iwlwifi: dbg: split iwl_fw_error_dump to two functions")
+    ae17404e3860 ("iwlwifi: avoid code duplication in stopping fw debug data recording")
+    c5f97542aa06 ("iwlwifi: change monitor DMA to be coherent")
+    d25eec305c97 ("iwlwifi: fw: add a restart FW debug function")
+    da7527173b18 ("iwlwifi: debug flow cleanup")
+    ea7c2bfdec6d ("Revert "iwlwifi: allow memory debug TLV to specify the memory type"")
+    f130bb75d881 ("iwlwifi: add FW recovery flow")
+
+v4.14.176: Failed to apply! Possible dependencies:
+    1184611ee88f ("iwlwifi: acpi: move code that reads SPLC to acpi")
+    1c73acf58bd6 ("iwlwifi: acpi: move ACPI method definitions to acpi.h")
+    2fa388cfeb1a ("iwlwifi: acpi: generalize iwl_mvm_sar_find_wifi_pkg()")
+    39c1a9728f93 ("iwlwifi: refactor the SAR tables from mvm to acpi")
+    45a5c6f68b26 ("iwlwifi: acpi: use iwl_acpi_get_wifi_pkg when reading reading SPLC")
+    45f65569e0d9 ("iwlwifi: acpi: move function to get mcc into acpi code")
+    48e775e66e2d ("iwlwifi: mvm: add support for 32kHz external clock indication")
+    813df5cef3bb ("iwlwifi: acpi: add common code to read from ACPI")
+    ed1a962db760 ("iwlwifi: acpi: make iwl_get_bios_mcc() use the common acpi functions")
+
+
+NOTE: The patch will not be queued to stable trees until it is upstream.
+
+How should we proceed with this patch?
+
 -- 
-1.9.1
+Thanks
+Sasha
