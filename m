@@ -2,119 +2,96 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 55FE31B2286
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 Apr 2020 11:19:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B3E4A1B2305
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 Apr 2020 11:39:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726120AbgDUJTz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 21 Apr 2020 05:19:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57168 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1725920AbgDUJTy (ORCPT
+        id S1728447AbgDUJjm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 21 Apr 2020 05:39:42 -0400
+Received: from lelv0142.ext.ti.com ([198.47.23.249]:51966 "EHLO
+        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726403AbgDUJjm (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 21 Apr 2020 05:19:54 -0400
-X-Greylist: delayed 6995 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 21 Apr 2020 02:19:54 PDT
-Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F5DBC061A0F
-        for <linux-wireless@vger.kernel.org>; Tue, 21 Apr 2020 02:19:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-         s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
-        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=Agu+e59UTJ1eH7kgr9QshH1Ld07sqWMnOvlVMqaeCE4=; b=IPX7UwZPYR6MenvL6wSpufxVCj
-        4C0vbz9sEY52k+cmM3qFD6OPOpZW7PALVQYH/Fw0JerTuzUHeQWNgXJCy0BYEtXVimRPc7wnj1cFt
-        BXni30E234FK5ryIoBfRzrS7aZI/n2m1IlUSd6ulFz1ecVQOJUNzF62DnNyrK0AQvVdw=;
-Received: from p54ae965b.dip0.t-ipconnect.de ([84.174.150.91] helo=nf.local)
-        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.89)
-        (envelope-from <nbd@nbd.name>)
-        id 1jQp4J-0003UW-Io; Tue, 21 Apr 2020 11:19:51 +0200
-Subject: Re: [PATCH 3/3] mt76: mt7663: fix up BMC entry indicated to unicmd
- firmware
-To:     sean.wang@mediatek.com, lorenzo.bianconi@redhat.com
-Cc:     ryder.lee@mediatek.com, linux-wireless@vger.kernel.org,
-        linux-mediatek@lists.infradead.org,
-        Soul Huang <Soul.Huang@mediatek.com>
-References: <1467d47fd111b5711fa74410833153bdc9e01b72.1587445885.git.sean.wang@mediatek.com>
- <99b919b29ad60437749d5f30dc8c68ccb3df89f3.1587445885.git.sean.wang@mediatek.com>
-From:   Felix Fietkau <nbd@nbd.name>
-Autocrypt: addr=nbd@nbd.name; prefer-encrypt=mutual; keydata=
- xsDiBEah5CcRBADIY7pu4LIv3jBlyQ/2u87iIZGe6f0f8pyB4UjzfJNXhJb8JylYYRzIOSxh
- ExKsdLCnJqsG1PY1mqTtoG8sONpwsHr2oJ4itjcGHfn5NJSUGTbtbbxLro13tHkGFCoCr4Z5
- Pv+XRgiANSpYlIigiMbOkide6wbggQK32tC20QxUIwCg4k6dtV/4kwEeiOUfErq00TVqIiEE
- AKcUi4taOuh/PQWx/Ujjl/P1LfJXqLKRPa8PwD4j2yjoc9l+7LptSxJThL9KSu6gtXQjcoR2
- vCK0OeYJhgO4kYMI78h1TSaxmtImEAnjFPYJYVsxrhay92jisYc7z5R/76AaELfF6RCjjGeP
- wdalulG+erWju710Bif7E1yjYVWeA/9Wd1lsOmx6uwwYgNqoFtcAunDaMKi9xVQW18FsUusM
- TdRvTZLBpoUAy+MajAL+R73TwLq3LnKpIcCwftyQXK5pEDKq57OhxJVv1Q8XkA9Dn1SBOjNB
- l25vJDFAT9ntp9THeDD2fv15yk4EKpWhu4H00/YX8KkhFsrtUs69+vZQwc0cRmVsaXggRmll
- dGthdSA8bmJkQG5iZC5uYW1lPsJgBBMRAgAgBQJGoeQnAhsjBgsJCAcDAgQVAggDBBYCAwEC
- HgECF4AACgkQ130UHQKnbvXsvgCgjsAIIOsY7xZ8VcSm7NABpi91yTMAniMMmH7FRenEAYMa
- VrwYTIThkTlQzsFNBEah5FQQCACMIep/hTzgPZ9HbCTKm9xN4bZX0JjrqjFem1Nxf3MBM5vN
- CYGBn8F4sGIzPmLhl4xFeq3k5irVg/YvxSDbQN6NJv8o+tP6zsMeWX2JjtV0P4aDIN1pK2/w
- VxcicArw0VYdv2ZCarccFBgH2a6GjswqlCqVM3gNIMI8ikzenKcso8YErGGiKYeMEZLwHaxE
- Y7mTPuOTrWL8uWWRL5mVjhZEVvDez6em/OYvzBwbkhImrryF29e3Po2cfY2n7EKjjr3/141K
- DHBBdgXlPNfDwROnA5ugjjEBjwkwBQqPpDA7AYPvpHh5vLbZnVGu5CwG7NAsrb2isRmjYoqk
- wu++3117AAMFB/9S0Sj7qFFQcD4laADVsabTpNNpaV4wAgVTRHKV/kC9luItzwDnUcsZUPdQ
- f3MueRJ3jIHU0UmRBG3uQftqbZJj3ikhnfvyLmkCNe+/hXhPu9sGvXyi2D4vszICvc1KL4RD
- aLSrOsROx22eZ26KqcW4ny7+va2FnvjsZgI8h4sDmaLzKczVRIiLITiMpLFEU/VoSv0m1F4B
- FtRgoiyjFzigWG0MsTdAN6FJzGh4mWWGIlE7o5JraNhnTd+yTUIPtw3ym6l8P+gbvfoZida0
- TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabwkkE
- GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCfTKx80VvCR/PvsUlrvdOLsIgeRGAAn1ee
- RjMaxwtSdaCKMw3j33ZbsWS4
-Message-ID: <5fe74f29-caa7-7e0e-3f31-f9d464397123@nbd.name>
-Date:   Tue, 21 Apr 2020 11:19:50 +0200
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:68.0)
- Gecko/20100101 Thunderbird/68.7.0
+        Tue, 21 Apr 2020 05:39:42 -0400
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 03L9ddjP079126;
+        Tue, 21 Apr 2020 04:39:39 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1587461979;
+        bh=1ADGHuXD5+YatpTg57bXcrj/gDTwht+GeCMqr8MI4RY=;
+        h=From:To:CC:Subject:Date;
+        b=mJ7+7tvFx65Dw4UrvoTVtI6TmAfXN19s5bW10OVfNZ4v/Gm4R1s0nUCDQ53a9dcbL
+         OUxUWSi9rzRG3l1KEjsAPVm5kX1sQqPNa7KFaZmfqUcSxqTxuNQysZiFJh5A1lvAVE
+         kMyZJmB36dB5eKx+5FE/gAuYlWqFvZ+BbQgW+/Nc=
+Received: from DLEE105.ent.ti.com (dlee105.ent.ti.com [157.170.170.35])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 03L9dd7C077863
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 21 Apr 2020 04:39:39 -0500
+Received: from ild153790.dhcp.ti.com (137.167.21.153) by DLEE105.ent.ti.com
+ (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Tue, 21
+ Apr 2020 04:39:38 -0500
+From:   Raz Bouganim <r-bouganim@ti.com>
+To:     <kvalo@codeaurora.org>
+CC:     <linux-wireless@vger.kernel.org>, <d-levy@ti.com>,
+        Raz Bouganim <r-bouganim@ti.com>
+Subject: [PATCH v2] wlcore: Adding suppoprt for IGTK key in wlcore driver
+Date:   Tue, 21 Apr 2020 12:39:06 +0300
+Message-ID: <1587461946-31727-1-git-send-email-r-bouganim@ti.com>
+X-Mailer: git-send-email 1.9.1
 MIME-Version: 1.0
-In-Reply-To: <99b919b29ad60437749d5f30dc8c68ccb3df89f3.1587445885.git.sean.wang@mediatek.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
+X-Originating-IP: [137.167.21.153]
+X-ClientProxiedBy: DLEE100.ent.ti.com (157.170.170.30) To DLEE105.ent.ti.com
+ (157.170.170.35)
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2020-04-21 07:20, sean.wang@mediatek.com wrote:
-> From: Sean Wang <sean.wang@mediatek.com>
-> 
-> BMC entry for MT7663 unicmd firmware should be a broadcast/multicast entry,
-> not a unicast entry, that is GTK rekey offload would rely on.
-> 
-> Fixes: 138860679b2a ("mt76: mt7615: add more uni mcu commands")
-> Cc: Soul Huang <Soul.Huang@mediatek.com>
-> Suggested-by: YF Luo <Yf.Luo@mediatek.com>
-> Co-developed-by: Ryder Lee <ryder.lee@mediatek.com>
-> Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
-> Signed-off-by: Sean Wang <sean.wang@mediatek.com>
-> ---
->  drivers/net/wireless/mediatek/mt76/mt7615/mcu.c | 5 ++---
->  1 file changed, 2 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-> index 045bde7f554d..e8caa2c7981e 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-> @@ -1339,7 +1339,7 @@ mt7615_mcu_uni_add_bss(struct mt7615_phy *phy,
->  			.short_st = true,
->  		},
->  	};
-> -	u8 idx, tx_wlan_idx = 0;
-> +	u8 idx, tx_wlan_idx = mvif->sta.wcid.idx;
->  	int err;
->  
->  	idx = mvif->omac_idx > EXT_BSSID_START ? HW_BSSID_0 : mvif->omac_idx;
-> @@ -1349,10 +1349,9 @@ mt7615_mcu_uni_add_bss(struct mt7615_phy *phy,
->  	case NL80211_IFTYPE_MESH_POINT:
->  	case NL80211_IFTYPE_AP:
->  		basic_req.basic.conn_type = cpu_to_le32(CONNECTION_INFRA_AP);
-> -		tx_wlan_idx = mvif->sta.wcid.idx;
->  		break;
->  	case NL80211_IFTYPE_STATION:
-> -		if (enable) {
-> +		if (enable && !is_mt7663(&dev->mt76)) {
-mt7615_mcu_uni_add_bss is only called on mt7663 with offload firmware,
-so you can simply delete the entire if (enable) { ... } code section.
+This patch adding support for new cipher suite - AES-CMAC in wlcore driver.
+This patch is required for support PMF/WPA3 connection to install IGTK key.
 
-- Felix
+Signed-off-by: Raz Bouganim <r-bouganim@ti.com>
+---
+ drivers/net/wireless/ti/wlcore/cmd.h  | 1 +
+ drivers/net/wireless/ti/wlcore/main.c | 4 ++++
+ 2 files changed, 5 insertions(+)
+
+diff --git a/drivers/net/wireless/ti/wlcore/cmd.h b/drivers/net/wireless/ti/wlcore/cmd.h
+index f2609d5..1d14bd1 100644
+--- a/drivers/net/wireless/ti/wlcore/cmd.h
++++ b/drivers/net/wireless/ti/wlcore/cmd.h
+@@ -458,6 +458,7 @@ enum wl1271_cmd_key_type {
+ 	KEY_TKIP = 2,
+ 	KEY_AES  = 3,
+ 	KEY_GEM  = 4,
++KEY_IGTK = 5,
+ };
+ 
+ struct wl1271_cmd_set_keys {
+diff --git a/drivers/net/wireless/ti/wlcore/main.c b/drivers/net/wireless/ti/wlcore/main.c
+index f140f7d..1a75959 100644
+--- a/drivers/net/wireless/ti/wlcore/main.c
++++ b/drivers/net/wireless/ti/wlcore/main.c
+@@ -3547,6 +3547,9 @@ int wlcore_set_key(struct wl1271 *wl, enum set_key_cmd cmd,
+ 	case WL1271_CIPHER_SUITE_GEM:
+ 		key_type = KEY_GEM;
+ 		break;
++case WLAN_CIPHER_SUITE_AES_CMAC:
++key_type = KEY_IGTK;
++break;
+ 	default:
+ 		wl1271_error("Unknown key algo 0x%x", key_conf->cipher);
+ 
+@@ -6214,6 +6217,7 @@ static int wl1271_init_ieee80211(struct wl1271 *wl)
+ 		WLAN_CIPHER_SUITE_TKIP,
+ 		WLAN_CIPHER_SUITE_CCMP,
+ 		WL1271_CIPHER_SUITE_GEM,
++WLAN_CIPHER_SUITE_AES_CMAC,
+ 	};
+ 
+ 	/* The tx descriptor buffer */
+-- 
+1.9.1
+
