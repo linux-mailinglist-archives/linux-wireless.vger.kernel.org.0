@@ -2,243 +2,141 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 427C21B4EB0
-	for <lists+linux-wireless@lfdr.de>; Wed, 22 Apr 2020 22:57:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DFC7E1B4EC2
+	for <lists+linux-wireless@lfdr.de>; Wed, 22 Apr 2020 23:05:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726430AbgDVU5h (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 22 Apr 2020 16:57:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49604 "EHLO
+        id S1726151AbgDVVFW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 22 Apr 2020 17:05:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50796 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726105AbgDVU5h (ORCPT
+        with ESMTP id S1725779AbgDVVFV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 22 Apr 2020 16:57:37 -0400
-Received: from mail-wm1-x344.google.com (mail-wm1-x344.google.com [IPv6:2a00:1450:4864:20::344])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F9E9C03C1A9
-        for <linux-wireless@vger.kernel.org>; Wed, 22 Apr 2020 13:57:35 -0700 (PDT)
-Received: by mail-wm1-x344.google.com with SMTP id z6so4177484wml.2
-        for <linux-wireless@vger.kernel.org>; Wed, 22 Apr 2020 13:57:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=QkZguKx2qMhctQ9ndYKOn55L/dBsg8PDGddSLgZYRyY=;
-        b=QQCipKwDXXWjr8GwcQQsaU6GhsoC5BNMKoKmBhXwZty9Mh1tZnXnS4sgDmYnBR+2mZ
-         69u0VkpPJNvwCaAkj/snKX2+stPQ7hjXkmMMu7PsPun7TNX9CKkTly/nU+2QmiNBMkM3
-         qBvHs68MEui9XCNQII5j4s38hJGvyZl1GHN+f6JLaFvTAD8uQeoexZJAbdnDMTZ+/wa9
-         GF1ULR7VRM5pKb8qpTFHpxLKPmlqUWpQy0fDaY5AaasC359+KYDQPmbm55YjGSBwlTX1
-         aSm0q23Ra3Jee85ci9rb+iXWtELBNOgrgth/I8NFSMCDnXsstYceuPCNYLSTLWMQ1H6U
-         882w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=QkZguKx2qMhctQ9ndYKOn55L/dBsg8PDGddSLgZYRyY=;
-        b=D+Jo9PzdvFJdR7KuBsmVhMgq4PflbeJ87vmnQS0uZU063sJm5KBdsipBr4SFzQDsqR
-         YjpG9KKfqEA3Qd3sWaE8WXihAtLsjdXNlyWE5OsKNncwsZ13kooZsIZSBj7TwbHg2huh
-         EzVcf3JOonuH+Q9mvid54FASZi2C7oehyNDHO4pUcVrN59a2RBTuCWqw1ADq40u0Hzpm
-         71+AN0h5KM3V7pyXbwyY1pNS/kwN4KkiG65AypmrvgegMzhA8q7oQzmJWN3mAVR8Ymg3
-         vx0G7UHWn3jvcrr0Gtrz/SCnds3q/Crc+0iolaMMs1zzN1DZC3D8URq5rsWFFlAq4ufO
-         KeDg==
-X-Gm-Message-State: AGi0PuZZEqZZDwjvaOhay5ZegxTgLmt+bwzpfg2JIVRxjWQWR6hRnKnl
-        EFG3GZlPpp5tw1IKGiMOqc0=
-X-Google-Smtp-Source: APiQypL/42QijXKaPnrdWpARWtMXlkj3n4qcFIOEq/zb4zd6Z1YWSFQRoB6yhnCuIYnkQXPpxpFK5g==
-X-Received: by 2002:a05:600c:290f:: with SMTP id i15mr316242wmd.167.1587589054055;
-        Wed, 22 Apr 2020 13:57:34 -0700 (PDT)
-Received: from t2b3 ([5.56.225.192])
-        by smtp.gmail.com with ESMTPSA id n2sm574058wrq.74.2020.04.22.13.57.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Apr 2020 13:57:33 -0700 (PDT)
-Date:   Wed, 22 Apr 2020 22:57:31 +0200
-From:   "Tobias S. Predel" <tobias.predel@gmail.com>
-To:     Kai-Heng Feng <kai.heng.feng@canonical.com>
-Cc:     Tony Chuang <yhchuang@realtek.com>,
-        Brian Norris <briannorris@chromium.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>
-Subject: Re: rtw88: BUG: scheduling while atomic:
- kworker/u16:0/33416/0x00000002
-Message-ID: <20200422205731.GA409387@t2b3>
-References: <20200421211552.GA36171@t2b3>
- <CA+ASDXN==qo2T6g5YCWpUFPXAdFgcKgww5EbmsmUTvsrSSRHug@mail.gmail.com>
- <f024b56130f7498a902dceb264a7df36@realtek.com>
- <EC470640-5835-4E4C-B0BA-BCFF3758FA0B@canonical.com>
- <20200422192524.GA35535@t2b3>
+        Wed, 22 Apr 2020 17:05:21 -0400
+X-Greylist: delayed 349 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 22 Apr 2020 14:05:21 PDT
+Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [IPv6:2001:67c:2050::465:103])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F23EC03C1A9;
+        Wed, 22 Apr 2020 14:05:21 -0700 (PDT)
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:105:465:1:1:0])
+        (using TLSv1.2 with cipher ECDHE-RSA-CHACHA20-POLY1305 (256/256 bits))
+        (No client certificate requested)
+        by mout-p-103.mailbox.org (Postfix) with ESMTPS id 496t8w65wszKmYg;
+        Wed, 22 Apr 2020 22:59:28 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at heinlein-support.de
+Received: from smtp1.mailbox.org ([80.241.60.240])
+        by hefe.heinlein-support.de (hefe.heinlein-support.de [91.198.250.172]) (amavisd-new, port 10030)
+        with ESMTP id eW-w3cpWTXrd; Wed, 22 Apr 2020 22:59:24 +0200 (CEST)
+To:     linux-wireless@vger.kernel.org, sumit.garg@linaro.org
+Cc:     Felix Fietkau <nbd@nbd.name>, stable <stable@vger.kernel.org>,
+        Johannes Berg <johannes.berg@intel.com>
+From:   Hauke Mehrtens <hauke@hauke-m.de>
+Subject: Commit "mac80211: fix race in ieee80211_register_hw()" breaks
+ mac80211 debugfs
+Autocrypt: addr=hauke@hauke-m.de; keydata=
+ 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
+Message-ID: <c304ad9c-f404-d22e-de74-9398da3ebfc3@hauke-m.de>
+Date:   Wed, 22 Apr 2020 22:59:23 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200422192524.GA35535@t2b3>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 7F6C51770
+X-Rspamd-Score: -4.70 / 15.00 / 15.00
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Kai-Heng,
+Hi,
 
-On Wed, Apr 22, 2020 at 09:25:24PM +0200, Tobias S. Predel wrote:
-> Hi Kai-Heng,
-> 
-> On Thu, Apr 23, 2020 at 12:48:55AM +0800, Kai-Heng Feng wrote:
-> > Hi Tobias,
-> > 
-> > > On Apr 22, 2020, at 10:21, Tony Chuang <yhchuang@realtek.com> wrote:
-> > > 
-> > > Brian Norris <briannorris@chromium.org> :
-> > >> 
-> > >> I'm not sure about the first half your problem, but for the
-> > >> scheduling-while-atomic:
-> > >> 
-> > >> On Tue, Apr 21, 2020 at 2:16 PM Tobias S. Predel
-> > >> <tobias.predel@gmail.com> wrote:
-> > >>> [28125.482259] BUG: scheduling while atomic:
-> > >> kworker/u16:0/33416/0x00000002
-> > >> ...
-> > >>> [28125.482436] Preemption disabled at:
-> > >>> [28125.482443] [<0000000000000000>] 0x0
-> > >> 
-> > >> ^^ This line is a bit weird -- shouldn't this have a real PC?
-> > >> 
-> > >>> [28125.482452] CPU: 5 PID: 33416 Comm: kworker/u16:0 Tainted: G
-> > >> W         5.7.0-rc2-next-20200421-1-next-git #1
-> > >>> [28125.482456] Hardware name: HP HP ProBook 430 G5/8377, BIOS Q85
-> > >> Ver. 01.09.01 10/15/2019
-> > >>> [28125.482477] Workqueue: phy0 rtw_watch_dog_work [rtw88]
-> > >>> [28125.482481] Call Trace:
-> > >>> [28125.482495]  dump_stack+0x66/0x90
-> > >>> [28125.482505]  __schedule_bug.cold+0x8e/0x9b
-> > >>> [28125.482512]  __schedule+0x686/0x7b0
-> > >>> [28125.482520]  ? _raw_spin_unlock_irqrestore+0x20/0x40
-> > >>> [28125.482525]  schedule+0x46/0xf0
-> > >>> [28125.482531]  schedule_hrtimeout_range_clock+0xa5/0x120
-> > >>> [28125.482540]  ? hrtimer_init_sleeper+0xa0/0xa0
-> > >>> [28125.482546]  usleep_range+0x67/0x90
-> > >>> [28125.482568]  rtw_fw_send_h2c_command+0xe0/0x1a0 [rtw88]
-> > >>> [28125.482590]  rtw_fw_set_pwr_mode+0x95/0xb0 [rtw88]
-> > >>> [28125.482610]  rtw_enter_lps+0xa1/0x100 [rtw88]
-> > >>> [28125.482625]  rtw_watch_dog_work+0x21c/0x230 [rtw88]
-> > >>> [28125.482635]  process_one_work+0x1da/0x3d0
-> > >>> [28125.482643]  worker_thread+0x4a/0x3d0
-> > >>> [28125.482651]  kthread+0x122/0x160
-> > >>> [28125.482658]  ? process_one_work+0x3d0/0x3d0
-> > >>> [28125.482663]  ? kthread_park+0x90/0x90
-> > >>> [28125.482670]  ret_from_fork+0x1f/0x40
-> > >> 
-> > >> This looks like it might be a regression here:
-> > >> 
-> > >> commit 6343a6d4b2130be9323f347d60af8a7ba8f7242c
-> > >> Author: Kai-Heng Feng <kai.heng.feng@canonical.com>
-> > >> Date:   Tue Apr 7 15:33:31 2020 +0800
-> > >> 
-> > >>    rtw88: Add delay on polling h2c command status bit
-> > >> 
-> > >> That poll macros is using usleep, which obviously can sleep. We need
-> > >> to be using a udelay-variant instead.
-> > >> 
-> > > 
-> > > Maybe we need an atomic version of read_poll_timeout() ?
-> > > I am not sure if this is required, but seems like it is useful for me.
-> > > Noticed much of them have its atomic version, but not for this new added one.
-> > 
-> > Tony and Brian are right. 
-> > 
-> > Tobias, can you please test the following patch:
-> > 
-> > diff --git a/drivers/net/wireless/realtek/rtw88/fw.c b/drivers/net/wireless/realtek/rtw88/fw.c
-> > index 245da96dfddc..e44767ec0532 100644
-> > --- a/drivers/net/wireless/realtek/rtw88/fw.c
-> > +++ b/drivers/net/wireless/realtek/rtw88/fw.c
-> > @@ -228,7 +228,7 @@ static void rtw_fw_send_h2c_command(struct rtw_dev *rtwdev,
-> >                 goto out;
-> >         }
-> >  
-> > -       ret = read_poll_timeout(rtw_read8, box_state,
-> > +       ret = read_poll_timeout_atomic(rtw_read8, box_state,
-> >                                 !((box_state >> box) & 0x1), 100, 3000, false,
-> >                                 rtwdev, REG_HMETFR);
-> >  
-> > diff --git a/include/linux/iopoll.h b/include/linux/iopoll.h
-> > index cb20c733b15a..bc89ac625f26 100644
-> > --- a/include/linux/iopoll.h
-> > +++ b/include/linux/iopoll.h
-> > @@ -57,6 +57,48 @@
-> >         (cond) ? 0 : -ETIMEDOUT; \
-> >  })
-> >  
-> > +/**
-> > + * read_poll_timeout_atomic - Periodically poll an address until a condition is
-> > + *                             met or a timeout occurs
-> > + * @op: accessor function (takes @addr as its only argument)
-> > + * @addr: Address to poll
-> > + * @val: Variable to read the value into
-> > + * @cond: Break condition (usually involving @val)
-> > + * @delay_us: Time to udelay between reads in us (0 tight-loops).  Should
-> > + *            be less than ~10us since udelay is used (see
-> > + *            Documentation/timers/timers-howto.rst).
-> > + * @timeout_us: Timeout in us, 0 means never timeout
-> > + * @delay_before_read: if it is true, delay @delay_us before read.
-> > + *
-> > + * Returns 0 on success and -ETIMEDOUT upon a timeout. In either
-> > + * case, the last read value at @args is stored in @val.
-> > + *
-> > + * When available, you'll probably want to use one of the specialized
-> > + * macros defined below rather than this macro directly.
-> > + */
-> > +#define read_poll_timeout_atomic(op, val, cond, delay_us, timeout_us, \
-> > +                                       delay_before_read, args...) \
-> > +({ \
-> > +       u64 __timeout_us = (timeout_us); \
-> > +       unsigned long __delay_us = (delay_us); \
-> > +       ktime_t __timeout = ktime_add_us(ktime_get(), __timeout_us); \
-> > +       if (delay_before_read && __delay_us) \
-> > +               udelay(__delay_us); \
-> > +       for (;;) { \
-> > +               (val) = op(args); \
-> > +               if (cond) \
-> > +                       break; \
-> > +               if (__timeout_us && \
-> > +                   ktime_compare(ktime_get(), __timeout) > 0) { \
-> > +                       (val) = op(args); \
-> > +                       break; \
-> > +               } \
-> > +               if (__delay_us) \
+Since commit 52e04b4ce5d0 ("mac80211: fix race in
+ieee80211_register_hw()") the debugfs entries for mac80211 drivers are
+broken.
+https://git.kernel.org/linus/52e04b4ce5d03775b6a78f3ed1097480faacc9fd
 
-Isn't there something missing here after __delay_us? 
-I got compiler error, misses ;.
+Felix reported that the file /sys/kernel/debug/ieee80211/phy0/rc is now
+located at /sys/kernel/debug/rc.
 
-> > +       } \
-> > +       (cond) ? 0 : -ETIMEDOUT; \
-> > +})
-> > +
-> >  /**
-> >   * readx_poll_timeout - Periodically poll an address until a condition is met or a timeout occurs
-> >   * @op: accessor function (takes @addr as its only argument)
-> > @@ -96,25 +138,7 @@
-> >   * macros defined below rather than this macro directly.
-> >   */
-> >  #define readx_poll_timeout_atomic(op, addr, val, cond, delay_us, timeout_us) \
-> > -({ \
-> > -       u64 __timeout_us = (timeout_us); \
-> > -       unsigned long __delay_us = (delay_us); \
-> > -       ktime_t __timeout = ktime_add_us(ktime_get(), __timeout_us); \
-> > -       for (;;) { \
-> > -               (val) = op(addr); \
-> > -               if (cond) \
-> > -                       break; \
-> > -               if (__timeout_us && \
-> > -                   ktime_compare(ktime_get(), __timeout) > 0) { \
-> > -                       (val) = op(addr); \
-> > -                       break; \
-> > -               } \
-> > -               if (__delay_us) \
-> > -                       udelay(__delay_us);     \
-> > -       } \
-> > -       (cond) ? 0 : -ETIMEDOUT; \
-> > -})
-> > -
-> > +       read_poll_timeout_atomic(op, val, cond, delay_us, timeout_us, false, addr)
-> >  
-> >  #define readb_poll_timeout(addr, val, cond, delay_us, timeout_us) \
-> >         readx_poll_timeout(readb, addr, val, cond, delay_us, timeout_us)
-> > 
-> 
+Before this commit we had the following flow:
+1. wiphy_register()
+  -> creates /sys/kernel/debug/ieee80211/phy0/
+  -> fill rdev->wiphy.debugfsdir pointer
+2. ieee80211_init_rate_ctrl_alg()
+  -> call rate_control_alloc()
+    -> use rdev->wiphy.debugfsdir pointer to
+       create /sys/kernel/debug/ieee80211/phy0/rc/
 
--- 
-Bitte denken Sie an die Umwelt, bevor Sie diese E-Mail ausdrucken.
+This works like expected.
+
+
+With the commit the flow in ieee80211_register_hw() is the other way around:
+2. ieee80211_init_rate_ctrl_alg()
+  -> call rate_control_alloc()
+    -> use rdev->wiphy.debugfsdir pointer (now NULL) to
+       create /sys/kernel/debug/rc/
+2. wiphy_register()
+  -> creates /sys/kernel/debug/ieee80211/phy0/
+  -> fill rdev->wiphy.debugfsdir pointer
+
+
+This patch was backported to multiple stable kernel versions:
+https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=linux-5.4.y&id=a8ce3412e8a22279e1bdc81c3c2bacd3785c1577
+
+Hauke
