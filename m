@@ -2,174 +2,229 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0AE4C1B4A77
-	for <lists+linux-wireless@lfdr.de>; Wed, 22 Apr 2020 18:29:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 22B421B4AD7
+	for <lists+linux-wireless@lfdr.de>; Wed, 22 Apr 2020 18:49:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726112AbgDVQ3p (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 22 Apr 2020 12:29:45 -0400
-Received: from mail.kernel.org ([198.145.29.99]:43370 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725808AbgDVQ3o (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 22 Apr 2020 12:29:44 -0400
-Received: from lore-desk-wlan.redhat.com (unknown [151.66.196.206])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B812720767;
-        Wed, 22 Apr 2020 16:29:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1587572983;
-        bh=Ooc8+iitGuGTvPIZhXQ6/DoHM2Ft979BZxMBSa2TmJU=;
-        h=From:To:Cc:Subject:Date:From;
-        b=C0qWIYaLmUCSBzwq+Bp8LNI3mJcxEzElYh9KbaXfzkHH+k7bEJDxpY6AhA2gx/tHc
-         qar/05evk+0ki7D49loFFzDh9FSG/CTwt8rO6LYc6w1s1oPxZEMOQeRhr6rWCu8Esb
-         MPRKX0Am/cdKNEaytlwU+TcPKf9oo/gZhPa6vkGs=
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
-        sean.wang@mediatek.com, linux-mediatek@lists.infradead.org
-Subject: [PATCH] mt76: enable TDLS support
-Date:   Wed, 22 Apr 2020 18:29:32 +0200
-Message-Id: <8915f055d3a78e0a27946ad2f5f8feef854fea39.1587572853.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.25.3
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        id S1726245AbgDVQtE convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 22 Apr 2020 12:49:04 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:53746 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726057AbgDVQtE (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 22 Apr 2020 12:49:04 -0400
+Received: from mail-pg1-f200.google.com ([209.85.215.200])
+        by youngberry.canonical.com with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <kai.heng.feng@canonical.com>)
+        id 1jRIYX-0002di-Cz
+        for linux-wireless@vger.kernel.org; Wed, 22 Apr 2020 16:49:01 +0000
+Received: by mail-pg1-f200.google.com with SMTP id i21so2169128pgl.19
+        for <linux-wireless@vger.kernel.org>; Wed, 22 Apr 2020 09:49:01 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:subject:from:in-reply-to:date:cc
+         :content-transfer-encoding:message-id:references:to;
+        bh=n3uKzNavhmA8LWZ9eVBRa7sx4099RYR7kdCp2l5XlVg=;
+        b=m0gQ0NCpLlIoLsXNjkwRhIsQ8HfLpHaWPjFAnkU05CNfLw/0ggm2w1oJOWtdT4SvFf
+         AZwhW3Tq32Wys4MtSW5NXTGTrdsiFCLRYS4ea/Vu4ADsI6WQtZnusI+LlYx5DZKiws14
+         4aTkIszRYqm74vnPUCHcIea42nzxl/8lVJFwni1yOAGrDO2ORwvVwveQ6BFtuWkjOicP
+         F2Nu19mFhJWf2jvuig4LEBXwhOMdFiveo54Sv5bsfu/whrG6bNnH13heN1Rl1om8PBYa
+         D2ZMTDfvS4cDPNGXhUdpMErc1WJNexBNDYNJTTFzQq4KIo/zqQsuDQIntr8cKbYJP/YN
+         bDNw==
+X-Gm-Message-State: AGi0PuZUQJY/KBH2YI900Ep5bAfI7M1LI67oZNPK/wkC0BzZDnrr2Vk0
+        j3nevsW30wuOiN4QJ2jLG79tv6UXHFHpgZpqUd2YP5XPj+GSjPzLNwGeHorRn/J4g+bmyogGVEt
+        zH25fTeUrexsK6dz2gUuj+HzpVdB8CRDrAS14j5OPPCq6
+X-Received: by 2002:a63:4c1:: with SMTP id 184mr26648132pge.156.1587574139797;
+        Wed, 22 Apr 2020 09:48:59 -0700 (PDT)
+X-Google-Smtp-Source: APiQypL0ITpWieEpRNwKJ0UjmwKw3+JQQHSaJ4rGm/Ts3vSUavz1Nfx9Uy7vFmUsnQvoU7iIRrB5Ng==
+X-Received: by 2002:a63:4c1:: with SMTP id 184mr26648100pge.156.1587574139359;
+        Wed, 22 Apr 2020 09:48:59 -0700 (PDT)
+Received: from [192.168.1.208] (220-133-187-190.HINET-IP.hinet.net. [220.133.187.190])
+        by smtp.gmail.com with ESMTPSA id v32sm2386367pgn.35.2020.04.22.09.48.57
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 22 Apr 2020 09:48:58 -0700 (PDT)
+Content-Type: text/plain;
+        charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 13.4 \(3608.80.23.2.2\))
+Subject: Re: rtw88: BUG: scheduling while atomic:
+ kworker/u16:0/33416/0x00000002
+From:   Kai-Heng Feng <kai.heng.feng@canonical.com>
+In-Reply-To: <f024b56130f7498a902dceb264a7df36@realtek.com>
+Date:   Thu, 23 Apr 2020 00:48:55 +0800
+Cc:     Tony Chuang <yhchuang@realtek.com>,
+        Brian Norris <briannorris@chromium.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>
+Content-Transfer-Encoding: 8BIT
+Message-Id: <EC470640-5835-4E4C-B0BA-BCFF3758FA0B@canonical.com>
+References: <20200421211552.GA36171@t2b3>
+ <CA+ASDXN==qo2T6g5YCWpUFPXAdFgcKgww5EbmsmUTvsrSSRHug@mail.gmail.com>
+ <f024b56130f7498a902dceb264a7df36@realtek.com>
+To:     "Tobias S. Predel" <tobias.predel@gmail.com>
+X-Mailer: Apple Mail (2.3608.80.23.2.2)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Enable mac80211 TDLS support by default. Disable TDLS hw filtering for
-mt7615 devices
+Hi Tobias,
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- drivers/net/wireless/mediatek/mt76/mac80211.c    | 3 ++-
- drivers/net/wireless/mediatek/mt76/mt7615/init.c | 3 +++
- drivers/net/wireless/mediatek/mt76/mt7615/main.c | 4 ++--
- drivers/net/wireless/mediatek/mt76/mt7615/mmio.c | 2 ++
- drivers/net/wireless/mediatek/mt76/mt7615/regs.h | 8 ++++++++
- drivers/net/wireless/mediatek/mt76/mt7615/usb.c  | 1 +
- 6 files changed, 18 insertions(+), 3 deletions(-)
+> On Apr 22, 2020, at 10:21, Tony Chuang <yhchuang@realtek.com> wrote:
+> 
+> Brian Norris <briannorris@chromium.org> :
+>> 
+>> I'm not sure about the first half your problem, but for the
+>> scheduling-while-atomic:
+>> 
+>> On Tue, Apr 21, 2020 at 2:16 PM Tobias S. Predel
+>> <tobias.predel@gmail.com> wrote:
+>>> [28125.482259] BUG: scheduling while atomic:
+>> kworker/u16:0/33416/0x00000002
+>> ...
+>>> [28125.482436] Preemption disabled at:
+>>> [28125.482443] [<0000000000000000>] 0x0
+>> 
+>> ^^ This line is a bit weird -- shouldn't this have a real PC?
+>> 
+>>> [28125.482452] CPU: 5 PID: 33416 Comm: kworker/u16:0 Tainted: G
+>> W         5.7.0-rc2-next-20200421-1-next-git #1
+>>> [28125.482456] Hardware name: HP HP ProBook 430 G5/8377, BIOS Q85
+>> Ver. 01.09.01 10/15/2019
+>>> [28125.482477] Workqueue: phy0 rtw_watch_dog_work [rtw88]
+>>> [28125.482481] Call Trace:
+>>> [28125.482495]  dump_stack+0x66/0x90
+>>> [28125.482505]  __schedule_bug.cold+0x8e/0x9b
+>>> [28125.482512]  __schedule+0x686/0x7b0
+>>> [28125.482520]  ? _raw_spin_unlock_irqrestore+0x20/0x40
+>>> [28125.482525]  schedule+0x46/0xf0
+>>> [28125.482531]  schedule_hrtimeout_range_clock+0xa5/0x120
+>>> [28125.482540]  ? hrtimer_init_sleeper+0xa0/0xa0
+>>> [28125.482546]  usleep_range+0x67/0x90
+>>> [28125.482568]  rtw_fw_send_h2c_command+0xe0/0x1a0 [rtw88]
+>>> [28125.482590]  rtw_fw_set_pwr_mode+0x95/0xb0 [rtw88]
+>>> [28125.482610]  rtw_enter_lps+0xa1/0x100 [rtw88]
+>>> [28125.482625]  rtw_watch_dog_work+0x21c/0x230 [rtw88]
+>>> [28125.482635]  process_one_work+0x1da/0x3d0
+>>> [28125.482643]  worker_thread+0x4a/0x3d0
+>>> [28125.482651]  kthread+0x122/0x160
+>>> [28125.482658]  ? process_one_work+0x3d0/0x3d0
+>>> [28125.482663]  ? kthread_park+0x90/0x90
+>>> [28125.482670]  ret_from_fork+0x1f/0x40
+>> 
+>> This looks like it might be a regression here:
+>> 
+>> commit 6343a6d4b2130be9323f347d60af8a7ba8f7242c
+>> Author: Kai-Heng Feng <kai.heng.feng@canonical.com>
+>> Date:   Tue Apr 7 15:33:31 2020 +0800
+>> 
+>>    rtw88: Add delay on polling h2c command status bit
+>> 
+>> That poll macros is using usleep, which obviously can sleep. We need
+>> to be using a udelay-variant instead.
+>> 
+> 
+> Maybe we need an atomic version of read_poll_timeout() ?
+> I am not sure if this is required, but seems like it is useful for me.
+> Noticed much of them have its atomic version, but not for this new added one.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/wireless/mediatek/mt76/mac80211.c
-index 39abedc45e4a..0e26f5dac8e8 100644
---- a/drivers/net/wireless/mediatek/mt76/mac80211.c
-+++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
-@@ -279,7 +279,8 @@ mt76_phy_init(struct mt76_dev *dev, struct ieee80211_hw *hw)
- 	SET_IEEE80211_PERM_ADDR(hw, dev->macaddr);
+Tony and Brian are right. 
+
+Tobias, can you please test the following patch:
+
+diff --git a/drivers/net/wireless/realtek/rtw88/fw.c b/drivers/net/wireless/realtek/rtw88/fw.c
+index 245da96dfddc..e44767ec0532 100644
+--- a/drivers/net/wireless/realtek/rtw88/fw.c
++++ b/drivers/net/wireless/realtek/rtw88/fw.c
+@@ -228,7 +228,7 @@ static void rtw_fw_send_h2c_command(struct rtw_dev *rtwdev,
+                goto out;
+        }
  
- 	wiphy->features |= NL80211_FEATURE_ACTIVE_MONITOR;
--	wiphy->flags |= WIPHY_FLAG_HAS_CHANNEL_SWITCH;
-+	wiphy->flags |= WIPHY_FLAG_HAS_CHANNEL_SWITCH |
-+			WIPHY_FLAG_SUPPORTS_TDLS;
+-       ret = read_poll_timeout(rtw_read8, box_state,
++       ret = read_poll_timeout_atomic(rtw_read8, box_state,
+                                !((box_state >> box) & 0x1), 100, 3000, false,
+                                rtwdev, REG_HMETFR);
  
- 	wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_CQM_RSSI_LIST);
- 	wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_AIRTIME_FAIRNESS);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/init.c b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
-index 6fc3f5aa94c0..9880643888ba 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
-@@ -63,6 +63,7 @@ mt7615_init_mac_chain(struct mt7615_dev *dev, int chain)
- 		FIELD_PREP(MT_AGG_ARxCR_LIMIT(6), MT7615_RATE_RETRY - 1) |
- 		FIELD_PREP(MT_AGG_ARxCR_LIMIT(7), MT7615_RATE_RETRY - 1));
+diff --git a/include/linux/iopoll.h b/include/linux/iopoll.h
+index cb20c733b15a..bc89ac625f26 100644
+--- a/include/linux/iopoll.h
++++ b/include/linux/iopoll.h
+@@ -57,6 +57,48 @@
+        (cond) ? 0 : -ETIMEDOUT; \
+ })
  
-+	mt76_clear(dev, MT_DMA_RCFR0(chain), MT_DMA_RCFR0_MCU_RX_TDLS);
- 	if (!mt7615_firmware_offload(dev)) {
- 		u32 mask, set;
- 
-@@ -117,6 +118,8 @@ void mt7615_mac_init(struct mt7615_dev *dev)
- 	mt76_wr(dev, MT_DMA_DCR0,
- 		FIELD_PREP(MT_DMA_DCR0_MAX_RX_LEN, 3072) |
- 		MT_DMA_DCR0_RX_VEC_DROP);
-+	/* disable TDLS filtering */
-+	mt76_clear(dev, MT_WF_PFCR, MT_WF_PFCR_TDLS_EN);
- 	mt76_set(dev, MT_WF_MIB_SCR0, MT_MIB_SCR0_AGG_CNT_RANGE_EN);
- 	if (is_mt7663(&dev->mt76)) {
- 		mt76_wr(dev, MT_WF_AGG(0x160), 0x5c341c02);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/main.c b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-index 3c35b8d0489c..4e1d162b2664 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-@@ -542,7 +542,7 @@ int mt7615_mac_sta_add(struct mt76_dev *mdev, struct ieee80211_vif *vif,
- 	msta->wcid.idx = idx;
- 	msta->wcid.ext_phy = mvif->band_idx;
- 
--	if (vif->type == NL80211_IFTYPE_STATION) {
-+	if (vif->type == NL80211_IFTYPE_STATION && !sta->tdls) {
- 		struct mt7615_phy *phy;
- 
- 		phy = mvif->band_idx ? mt7615_ext_phy(dev) : &dev->phy;
-@@ -565,7 +565,7 @@ void mt7615_mac_sta_remove(struct mt76_dev *mdev, struct ieee80211_vif *vif,
- 	mt7615_mcu_sta_add(dev, vif, sta, false);
- 	mt7615_mac_wtbl_update(dev, msta->wcid.idx,
- 			       MT_WTBL_UPDATE_ADM_COUNT_CLEAR);
--	if (vif->type == NL80211_IFTYPE_STATION) {
-+	if (vif->type == NL80211_IFTYPE_STATION && !sta->tdls) {
- 		struct mt7615_vif *mvif = (struct mt7615_vif *)vif->drv_priv;
- 		struct mt7615_phy *phy;
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mmio.c b/drivers/net/wireless/mediatek/mt76/mt7615/mmio.c
-index 26a297893da6..12bca2dee781 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mmio.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mmio.c
-@@ -21,6 +21,7 @@ const u32 mt7615e_reg_map[] = {
- 	[MT_TMAC_BASE]		= 0x21000,
- 	[MT_RMAC_BASE]		= 0x21200,
- 	[MT_DMA_BASE]		= 0x21800,
-+	[MT_PF_BASE]		= 0x22000,
- 	[MT_WTBL_BASE_ON]	= 0x23000,
- 	[MT_WTBL_BASE_OFF]	= 0x23400,
- 	[MT_LPON_BASE]		= 0x24200,
-@@ -45,6 +46,7 @@ const u32 mt7663e_reg_map[] = {
- 	[MT_TMAC_BASE]		= 0x24000,
- 	[MT_RMAC_BASE]		= 0x25000,
- 	[MT_DMA_BASE]		= 0x27000,
-+	[MT_PF_BASE]		= 0x28000,
- 	[MT_WTBL_BASE_ON]	= 0x29000,
- 	[MT_WTBL_BASE_OFF]	= 0x29800,
- 	[MT_LPON_BASE]		= 0x2b000,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/regs.h b/drivers/net/wireless/mediatek/mt76/mt7615/regs.h
-index 054831ecad68..68d30bcc087a 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/regs.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/regs.h
-@@ -18,6 +18,7 @@ enum mt7615_reg_base {
- 	MT_TMAC_BASE,
- 	MT_RMAC_BASE,
- 	MT_DMA_BASE,
-+	MT_PF_BASE,
- 	MT_WTBL_BASE_ON,
- 	MT_WTBL_BASE_OFF,
- 	MT_LPON_BASE,
-@@ -321,10 +322,17 @@ enum mt7615_reg_base {
- #define MT_DMA_RCFR0_MCU_RX_MGMT	BIT(2)
- #define MT_DMA_RCFR0_MCU_RX_CTL_NON_BAR	BIT(3)
- #define MT_DMA_RCFR0_MCU_RX_CTL_BAR	BIT(4)
-+#define MT_DMA_RCFR0_MCU_RX_TDLS	BIT(19)
- #define MT_DMA_RCFR0_MCU_RX_BYPASS	BIT(21)
- #define MT_DMA_RCFR0_RX_DROPPED_UCAST	GENMASK(25, 24)
- #define MT_DMA_RCFR0_RX_DROPPED_MCAST	GENMASK(27, 26)
- 
-+#define MT_WF_PF_BASE			((dev)->reg_map[MT_PF_BASE])
-+#define MT_WF_PF(ofs)			(MT_WF_PF_BASE + (ofs))
++/**
++ * read_poll_timeout_atomic - Periodically poll an address until a condition is
++ *                             met or a timeout occurs
++ * @op: accessor function (takes @addr as its only argument)
++ * @addr: Address to poll
++ * @val: Variable to read the value into
++ * @cond: Break condition (usually involving @val)
++ * @delay_us: Time to udelay between reads in us (0 tight-loops).  Should
++ *            be less than ~10us since udelay is used (see
++ *            Documentation/timers/timers-howto.rst).
++ * @timeout_us: Timeout in us, 0 means never timeout
++ * @delay_before_read: if it is true, delay @delay_us before read.
++ *
++ * Returns 0 on success and -ETIMEDOUT upon a timeout. In either
++ * case, the last read value at @args is stored in @val.
++ *
++ * When available, you'll probably want to use one of the specialized
++ * macros defined below rather than this macro directly.
++ */
++#define read_poll_timeout_atomic(op, val, cond, delay_us, timeout_us, \
++                                       delay_before_read, args...) \
++({ \
++       u64 __timeout_us = (timeout_us); \
++       unsigned long __delay_us = (delay_us); \
++       ktime_t __timeout = ktime_add_us(ktime_get(), __timeout_us); \
++       if (delay_before_read && __delay_us) \
++               udelay(__delay_us); \
++       for (;;) { \
++               (val) = op(args); \
++               if (cond) \
++                       break; \
++               if (__timeout_us && \
++                   ktime_compare(ktime_get(), __timeout) > 0) { \
++                       (val) = op(args); \
++                       break; \
++               } \
++               if (__delay_us) \
++       } \
++       (cond) ? 0 : -ETIMEDOUT; \
++})
 +
-+#define MT_WF_PFCR			MT_WF_PF(0x000)
-+#define MT_WF_PFCR_TDLS_EN		BIT(9)
-+
- #define MT_WTBL_BASE(dev)		((dev)->reg_map[MT_WTBL_BASE_ADDR])
- #define MT_WTBL_ENTRY_SIZE		256
+ /**
+  * readx_poll_timeout - Periodically poll an address until a condition is met or a timeout occurs
+  * @op: accessor function (takes @addr as its only argument)
+@@ -96,25 +138,7 @@
+  * macros defined below rather than this macro directly.
+  */
+ #define readx_poll_timeout_atomic(op, addr, val, cond, delay_us, timeout_us) \
+-({ \
+-       u64 __timeout_us = (timeout_us); \
+-       unsigned long __delay_us = (delay_us); \
+-       ktime_t __timeout = ktime_add_us(ktime_get(), __timeout_us); \
+-       for (;;) { \
+-               (val) = op(addr); \
+-               if (cond) \
+-                       break; \
+-               if (__timeout_us && \
+-                   ktime_compare(ktime_get(), __timeout) > 0) { \
+-                       (val) = op(addr); \
+-                       break; \
+-               } \
+-               if (__delay_us) \
+-                       udelay(__delay_us);     \
+-       } \
+-       (cond) ? 0 : -ETIMEDOUT; \
+-})
+-
++       read_poll_timeout_atomic(op, val, cond, delay_us, timeout_us, false, addr)
  
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/usb.c b/drivers/net/wireless/mediatek/mt76/mt7615/usb.c
-index eee6f820959f..bcd131969923 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/usb.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/usb.c
-@@ -31,6 +31,7 @@ static const u32 mt7663u_reg_map[] = {
- 	[MT_TMAC_BASE]		= 0x820f4000,
- 	[MT_RMAC_BASE]		= 0x820f5000,
- 	[MT_DMA_BASE]		= 0x820f7000,
-+	[MT_PF_BASE]		= 0x820f8000,
- 	[MT_WTBL_BASE_ON]	= 0x820f9000,
- 	[MT_WTBL_BASE_OFF]	= 0x820f9800,
- 	[MT_LPON_BASE]		= 0x820fb000,
--- 
-2.25.3
+ #define readb_poll_timeout(addr, val, cond, delay_us, timeout_us) \
+        readx_poll_timeout(readb, addr, val, cond, delay_us, timeout_us)
+
+
+> 
+> Yen-Hsuan
 
