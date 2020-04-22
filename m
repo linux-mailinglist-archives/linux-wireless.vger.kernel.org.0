@@ -2,35 +2,42 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 634781B42CE
-	for <lists+linux-wireless@lfdr.de>; Wed, 22 Apr 2020 13:08:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CF0281B4981
+	for <lists+linux-wireless@lfdr.de>; Wed, 22 Apr 2020 18:05:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726284AbgDVLH7 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 22 Apr 2020 07:07:59 -0400
-Received: from mail.kernel.org ([198.145.29.99]:43356 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726119AbgDVLH7 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 22 Apr 2020 07:07:59 -0400
-Received: from lore-desk-wlan.redhat.com (unknown [151.66.196.206])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8962B2076E;
-        Wed, 22 Apr 2020 11:07:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1587553678;
-        bh=ZEPR/VQvyg7OiZedkRLfWOrSsyS7UfjXMLTZZoPa4zA=;
-        h=From:To:Cc:Subject:Date:From;
-        b=WwD1fE0QKC9LcCn6dMDR/WMmsm9EZzObNRi5HV//paumvNGR8vSPrVdSnlc+lJGtA
-         2tbMHUuJpqM84UQi9B79Xm/jHfqvYZIuAD5bj0na5iX2eec7uCXDvUNRuVYH0t5WcW
-         6Q8fdsTpcy910/bYmWPAJkszmL2E01zNa/yICcec=
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
-        sean.wang@mediatek.com, linux-mediatek@lists.infradead.org
-Subject: [PATCH] mt76: mt7615: move mcu bss upload before creating the sta
-Date:   Wed, 22 Apr 2020 13:07:44 +0200
-Message-Id: <5b69c9f19314643eeb6e0ac061af4ca21aab9802.1587551460.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.25.3
+        id S1726801AbgDVQEv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 22 Apr 2020 12:04:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60562 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726850AbgDVQEn (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 22 Apr 2020 12:04:43 -0400
+Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47A00C08C5F2
+        for <linux-wireless@vger.kernel.org>; Wed, 22 Apr 2020 09:04:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject
+        :To:From:Sender:Reply-To:Cc:Content-Type:Content-ID:Content-Description:
+        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=PD2DnRFiUh11u2brxoiZ+EAM/06AKtDIb0VtWF+o4qs=; b=jlyz5oujN2q2lMXdCd3Apx+h/x
+        hSQwdjkcqzgSzUNBvf6Ptj8i6dfCAkq3d2Niboqq9RkXBU0wlqbTaz9Y3OdsPCGQHW8gh7t+vVCNg
+        6CUzjKv/jfA+DOXyAO/ihTtQGsUa0Lrv5pgDdLh7ydgTsYEcAOkyB7IEP6evnUQAyULQ=;
+Received: from p54ae965b.dip0.t-ipconnect.de ([84.174.150.91] helo=maeck.lan)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1jRHrb-00054p-5P
+        for linux-wireless@vger.kernel.org; Wed, 22 Apr 2020 18:04:39 +0200
+Received: by maeck.lan (Postfix, from userid 501)
+        id 9F3F9841962D; Wed, 22 Apr 2020 18:04:38 +0200 (CEST)
+From:   Felix Fietkau <nbd@nbd.name>
+To:     linux-wireless@vger.kernel.org
+Subject: [PATCH 1/9] mt76: mt7615: fix sta ampdu factor for VHT
+Date:   Wed, 22 Apr 2020 18:04:29 +0200
+Message-Id: <20200422160437.99466-1-nbd@nbd.name>
+X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
@@ -38,65 +45,53 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Run mt7615_mcu_add_bss_info routine before mt7615_mcu_sta_add since
-the firmware requires the bss is created before the relative sta
+If VHT has a larger A-MPDU size limit, pass it to the MCU via the wtbl_ht
+TLV element.
 
-Tested-by: Sean Wang <sean.wang@mediatek.com>
-Suggested-by: YF Luo <yf.luo@mediatek.com>
-Suggested-by: Lucy Hsu <lucy.hsu@mediatek.com>
-Co-developed-by: Soul Huang <soul.huang@mediatek.com>
-Signed-off-by: Soul Huang <soul.huang@mediatek.com>
-Co-developed-by: Sean Wang <sean.wang@mediatek.com>
-Signed-off-by: Sean Wang <sean.wang@mediatek.com>
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 ---
- .../net/wireless/mediatek/mt76/mt7615/main.c    | 17 +++++++++++++----
- 1 file changed, 13 insertions(+), 4 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7615/mcu.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/main.c b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-index 8f8ad632d6ba..3c35b8d0489c 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
-@@ -491,9 +491,6 @@ static void mt7615_bss_info_changed(struct ieee80211_hw *hw,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+index dc297856b749..24b78d10d7f7 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+@@ -924,11 +924,10 @@ mt7615_mcu_wtbl_ht_tlv(struct sk_buff *skb, struct ieee80211_sta *sta,
+ 		       void *sta_wtbl, void *wtbl_tlv)
+ {
+ 	struct tlv *tlv;
++	struct wtbl_ht *ht = NULL;
+ 	u32 flags = 0;
  
- 	mutex_lock(&dev->mt76.mutex);
- 
--	if (changed & BSS_CHANGED_ASSOC)
--		mt7615_mcu_add_bss_info(phy, vif, info->assoc);
+ 	if (sta->ht_cap.ht_supported) {
+-		struct wtbl_ht *ht;
 -
- 	if (changed & BSS_CHANGED_ERP_SLOT) {
- 		int slottime = info->use_short_slot ? 9 : 20;
+ 		tlv = mt7615_mcu_add_nested_tlv(skb, WTBL_HT, sizeof(*ht),
+ 						wtbl_tlv, sta_wtbl);
+ 		ht = (struct wtbl_ht *)tlv;
+@@ -945,6 +944,7 @@ mt7615_mcu_wtbl_ht_tlv(struct sk_buff *skb, struct ieee80211_sta *sta,
  
-@@ -545,9 +542,14 @@ int mt7615_mac_sta_add(struct mt76_dev *mdev, struct ieee80211_vif *vif,
- 	msta->wcid.idx = idx;
- 	msta->wcid.ext_phy = mvif->band_idx;
+ 	if (sta->vht_cap.vht_supported) {
+ 		struct wtbl_vht *vht;
++		u8 af;
  
-+	if (vif->type == NL80211_IFTYPE_STATION) {
-+		struct mt7615_phy *phy;
+ 		tlv = mt7615_mcu_add_nested_tlv(skb, WTBL_VHT, sizeof(*vht),
+ 						wtbl_tlv, sta_wtbl);
+@@ -952,6 +952,13 @@ mt7615_mcu_wtbl_ht_tlv(struct sk_buff *skb, struct ieee80211_sta *sta,
+ 		vht->ldpc = sta->vht_cap.cap & IEEE80211_VHT_CAP_RXLDPC,
+ 		vht->vht = 1;
+ 
++		af = (sta->vht_cap.cap &
++		      IEEE80211_VHT_CAP_MAX_A_MPDU_LENGTH_EXPONENT_MASK) >>
++		      IEEE80211_VHT_CAP_MAX_A_MPDU_LENGTH_EXPONENT_SHIFT;
 +
-+		phy = mvif->band_idx ? mt7615_ext_phy(dev) : &dev->phy;
-+		mt7615_mcu_add_bss_info(phy, vif, true);
-+	}
- 	mt7615_mac_wtbl_update(dev, idx,
- 			       MT_WTBL_UPDATE_ADM_COUNT_CLEAR);
--
- 	mt7615_mcu_sta_add(dev, vif, sta, true);
- 
- 	return 0;
-@@ -563,6 +565,13 @@ void mt7615_mac_sta_remove(struct mt76_dev *mdev, struct ieee80211_vif *vif,
- 	mt7615_mcu_sta_add(dev, vif, sta, false);
- 	mt7615_mac_wtbl_update(dev, msta->wcid.idx,
- 			       MT_WTBL_UPDATE_ADM_COUNT_CLEAR);
-+	if (vif->type == NL80211_IFTYPE_STATION) {
-+		struct mt7615_vif *mvif = (struct mt7615_vif *)vif->drv_priv;
-+		struct mt7615_phy *phy;
++		if (ht)
++		    ht->af = max(ht->af, af);
 +
-+		phy = mvif->band_idx ? mt7615_ext_phy(dev) : &dev->phy;
-+		mt7615_mcu_add_bss_info(phy, vif, false);
-+	}
- 
- 	spin_lock_bh(&dev->sta_poll_lock);
- 	if (!list_empty(&msta->poll_list))
+ 		if (sta->vht_cap.cap & IEEE80211_VHT_CAP_SHORT_GI_80)
+ 			flags |= MT_WTBL_W5_SHORT_GI_80;
+ 		if (sta->vht_cap.cap & IEEE80211_VHT_CAP_SHORT_GI_160)
 -- 
-2.25.3
+2.24.0
 
