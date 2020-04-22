@@ -2,99 +2,81 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F9CE1B3698
-	for <lists+linux-wireless@lfdr.de>; Wed, 22 Apr 2020 06:52:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0EAAD1B37A6
+	for <lists+linux-wireless@lfdr.de>; Wed, 22 Apr 2020 08:41:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726228AbgDVEv6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 22 Apr 2020 00:51:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40724 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726078AbgDVEv5 (ORCPT
+        id S1726531AbgDVGlv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 22 Apr 2020 02:41:51 -0400
+Received: from mail26.static.mailgun.info ([104.130.122.26]:27610 "EHLO
+        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726510AbgDVGlu (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 22 Apr 2020 00:51:57 -0400
-Received: from mail-wm1-x344.google.com (mail-wm1-x344.google.com [IPv6:2a00:1450:4864:20::344])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 410ECC03C1A9
-        for <linux-wireless@vger.kernel.org>; Tue, 21 Apr 2020 21:51:57 -0700 (PDT)
-Received: by mail-wm1-x344.google.com with SMTP id t63so727096wmt.3
-        for <linux-wireless@vger.kernel.org>; Tue, 21 Apr 2020 21:51:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=zdxUWMWXTEs/zs0LJh1bxLoOHpDg1k5nkLimqXptzik=;
-        b=rbRuIjvtduoe5rDmx04RZeGHXBKwqWRmrOmSv68i/zh0G7dxA9cd5BhZoNzJ9N6B2q
-         5eB51NESGTz0lJfH+OoJDDpVTo+qxXxhbnSi124B4kpTazwydRIeem0V0Rn2Gpx5AgR0
-         91NEqcfa3WVqIpxag75NoGWW8q+uGkZGsCXD6y7KSAZw3zwUWhfcRtU5JwJdpyeFBvpu
-         I/eS/Go/9Ngzu8uFpI6/iAFe+GNKuK94+IhnnbCYE3ObU/zUMmMxc5hbM6bTP89gbhB1
-         2q5YYLgiH1QtRPLQDAJanaf5afhK9Zv47Sl7DZd7niBJkxSc7pNbN0D3ID5H+5HRDiKJ
-         B/CA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=zdxUWMWXTEs/zs0LJh1bxLoOHpDg1k5nkLimqXptzik=;
-        b=hCWbxSYgsDixqydEb1jQD/9YiFVeYQdT6H9rFZs1vSmoiuKO8OlUkt7FA49jrA6Jez
-         wLuhZlL4BCnSVl6DRTIE06P0iUV6Dh/EtRP+IzAW5tQvRkJva/Zb4duRMbYT3uuP5//P
-         X+bSdYM9hEqyONdkrqwzPx37Ci7voow9c60qOCE/lEYiZT1YMsqMl2vDEkGF15WaQWSd
-         ziReu4hsQHUEPBgky1/m6xld85vB2qFMTwn4cycnfkdDmBI6RitYR3tX+jG8q9E3rGp2
-         RQrKX0LH7i95F5kxbV0AL3impPvYe092rDpz4JwI+zs0Q7+JHm0omg91GzD6R6rZ9uEB
-         ucBw==
-X-Gm-Message-State: AGi0PuZiUId5ipGLS5KIBNLz99UDKPSEMivNmXhCUpt6xBjdmKGttsl5
-        z7tGGrAjiuFcvH+poc8GjB+57JLGapcbsSHsLfg=
-X-Google-Smtp-Source: APiQypL/2Y40sQ9V2EzHiDRLKrhgwszpYu1a0Q6bQA5MqdrYj1kOd9PP/XC5k6D0HMy42i7zfiwBpsCi7b09DZy6BRw=
-X-Received: by 2002:a1c:8106:: with SMTP id c6mr8259513wmd.88.1587531115600;
- Tue, 21 Apr 2020 21:51:55 -0700 (PDT)
+        Wed, 22 Apr 2020 02:41:50 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1587537710; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=oKUumuQTcasIYWPCKuU4pWf17rQd2gOkZlK1vxrDvYQ=;
+ b=d9iymOvPI6bFFROXTWIHjuEC2pXIU/OmaPGpj+LjZ8nQAjak5rHbm0r+9dhDc0wHKk42KRKB
+ fKM3++YG+pjmfhfYgDxUGTGWGTl2cRwOkhZnczvh3VMIKuUNW23vC1LTLfEucXieMflQH/4n
+ MMBz2EeR02hl06jOOZWO15NfBsg=
+X-Mailgun-Sending-Ip: 104.130.122.26
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5e9fe718.7f0225d3f5e0-smtp-out-n03;
+ Wed, 22 Apr 2020 06:41:28 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 478D4C432C2; Wed, 22 Apr 2020 06:41:28 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
+        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id DAEFCC433BA;
+        Wed, 22 Apr 2020 06:41:17 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org DAEFCC433BA
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Received: by 2002:a5d:4f89:0:0:0:0:0 with HTTP; Tue, 21 Apr 2020 21:51:55
- -0700 (PDT)
-Reply-To: ayishagddafio@mail.ru
-From:   AISHA GADDAFI <ayishagadafi1@gmail.com>
-Date:   Tue, 21 Apr 2020 21:51:55 -0700
-Message-ID: <CAKmdXwuFimH8EYAQwUEKONYSYPzAwag3nAxBnPDHNjfMK3VCwg@mail.gmail.com>
-Subject: Lieber Freund (Assalamu Alaikum),?
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] ath11k: remove conversion to bool in
+ ath11k_dp_rxdesc_mpdu_valid()
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20200420123718.3384-1-yanaijie@huawei.com>
+References: <20200420123718.3384-1-yanaijie@huawei.com>
+To:     Jason Yan <yanaijie@huawei.com>
+Cc:     <davem@davemloft.net>, <srirrama@codeaurora.org>,
+        <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+        <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        Jason Yan <yanaijie@huawei.com>
+User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
+Message-Id: <20200422064128.478D4C432C2@smtp.codeaurora.org>
+Date:   Wed, 22 Apr 2020 06:41:28 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---=20
-Lieber Freund (Assalamu Alaikum),
+Jason Yan <yanaijie@huawei.com> wrote:
 
-Ich bin vor einer privaten Suche auf Ihren E-Mail-Kontakt gesto=C3=9Fen
-Ihre Hilfe. Mein Name ist Aisha Al-Qaddafi, eine alleinerziehende
-Mutter und eine Witwe
-mit drei Kindern. Ich bin die einzige leibliche Tochter des Sp=C3=A4tlibysc=
-hen
-Pr=C3=A4sident (verstorbener Oberst Muammar Gaddafi).
+> The '==' expression itself is bool, no need to convert it to bool again.
+> This fixes the following coccicheck warning:
+> 
+> drivers/net/wireless/ath/ath11k/dp_rx.c:255:46-51: WARNING: conversion
+> to bool not needed here
+> 
+> Signed-off-by: Jason Yan <yanaijie@huawei.com>
+> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 
-Ich habe Investmentfonds im Wert von siebenundzwanzig Millionen
-f=C3=BCnfhunderttausend
-United State Dollar ($ 27.500.000.00) und ich brauche eine
-vertrauensw=C3=BCrdige Investition
-Manager / Partner aufgrund meines aktuellen Fl=C3=BCchtlingsstatus bin ich =
-jedoch
-M=C3=B6glicherweise interessieren Sie sich f=C3=BCr die Unterst=C3=BCtzung =
-von
-Investitionsprojekten in Ihrem Land
-Von dort aus k=C3=B6nnen wir in naher Zukunft Gesch=C3=A4ftsbeziehungen auf=
-bauen.
+Patch applied to ath-next branch of ath.git, thanks.
 
-Ich bin bereit, mit Ihnen =C3=BCber das Verh=C3=A4ltnis zwischen Investitio=
-n und
-Unternehmensgewinn zu verhandeln
-Basis f=C3=BCr die zuk=C3=BCnftige Investition Gewinne zu erzielen.
+8af40902f839 ath11k: remove conversion to bool in ath11k_dp_rxdesc_mpdu_valid()
 
-Wenn Sie bereit sind, dieses Projekt in meinem Namen zu bearbeiten,
-antworten Sie bitte dringend
-Damit ich Ihnen mehr Informationen =C3=BCber die Investmentfonds geben kann=
-.
+-- 
+https://patchwork.kernel.org/patch/11498781/
 
-Ihre dringende Antwort wird gesch=C3=A4tzt. schreibe mir an diese email adr=
-esse (
-ayishagddafio@mail.ru ) zur weiteren Diskussion.
-
-Freundliche Gr=C3=BC=C3=9Fe
-Frau Aisha Al-Qaddafi
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
