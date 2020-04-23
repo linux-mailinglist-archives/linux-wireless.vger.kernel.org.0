@@ -2,94 +2,64 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 46DE81B6611
-	for <lists+linux-wireless@lfdr.de>; Thu, 23 Apr 2020 23:18:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 20F791B6A42
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 Apr 2020 02:26:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726056AbgDWVSC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 23 Apr 2020 17:18:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51468 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725877AbgDWVSC (ORCPT
+        id S1728229AbgDXAZm convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 23 Apr 2020 20:25:42 -0400
+Received: from securemail-y55.synaq.com ([196.35.198.122]:58574 "EHLO
+        securemail-y55.synaq.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728151AbgDXAZm (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 23 Apr 2020 17:18:02 -0400
-Received: from mail-wm1-x344.google.com (mail-wm1-x344.google.com [IPv6:2a00:1450:4864:20::344])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9D71C09B042
-        for <linux-wireless@vger.kernel.org>; Thu, 23 Apr 2020 14:18:01 -0700 (PDT)
-Received: by mail-wm1-x344.google.com with SMTP id y24so8364391wma.4
-        for <linux-wireless@vger.kernel.org>; Thu, 23 Apr 2020 14:18:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=to:cc:from:subject:message-id:date:user-agent:mime-version
-         :content-language:content-transfer-encoding;
-        bh=3UMfdWcimBn25JH2myhA40azE0PlplXVveJxc9S5LYk=;
-        b=uamWr4MnC2gvgpYgfAIoTG2UxaKYkmo+H+l1vvu+mlG+aJJkhnvh5nR+bkVjcBEYLx
-         NCZyuMLSdXLuMGrWhTvfRkAE1oxzj/Tex41zV2hlhGRJf77rq+JVrsbp+Nn5wbmBjSON
-         fztN2Y/voSToxjv3cnPgB+vpZ5gHTOWSQRA+aou4GYBKE66aDT+jifF5ztFBBFWwv8bb
-         O1B7qrQFjtmSCXhMigoRppHUAV3ky63ayC3zweUP9OC1TLMw/8zZGvLEGfBoX/xQ6d4v
-         cb5tDs1pMhXG3CNlb11iQzm4V9AZD6xdd4Uh7mx8p/TjlHy8MkIJVyH1lb60dPp34P/x
-         /Zzg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:to:cc:from:subject:message-id:date:user-agent
-         :mime-version:content-language:content-transfer-encoding;
-        bh=3UMfdWcimBn25JH2myhA40azE0PlplXVveJxc9S5LYk=;
-        b=LcckocWLk97agMt3V2xQtNMPRF7Wtvo+QHnxW/R7GqrAIhmoj/nP2io7IQV3XqpEHJ
-         pMWi6gph9F7DBoGsE42672365+B4cD7KmG8t+v73812JWbzbFel3axPTU9pvtIrFCNzk
-         O0GX0mzuCJv4HsRI/YXOTNnGBhQWkqG+SFb+F2gnkG01jKUFm0fEpbHzVPc+G/iB1uv9
-         zG37mKFDgOJaZFQxBDFBVtHbn/asB8e7kvmVvJ9aikr+xRR/wsVitArwPrdrX/2xhIVf
-         2at/ziO6vK3Mu/Jz1UoflvM+hzwOrRcLDDil9Bt09CcXeslXwBpWc897IiAan46BLelZ
-         WO7Q==
-X-Gm-Message-State: AGi0Pub0O9JmhH+BQiqvoTJl+c7jtTekkyTUzKbkLDCgjh2g1xdJVi0T
-        1/hxBqG09FbXAWcmKX27DsY=
-X-Google-Smtp-Source: APiQypL14SL2t3MTWCC5IqHR6QKM17e2Mz6mwndEh3M6aXyfBYq39YCccjsK43uXeZBOPEM+4ZNhbQ==
-X-Received: by 2002:a7b:c190:: with SMTP id y16mr6615537wmi.50.1587676680314;
-        Thu, 23 Apr 2020 14:18:00 -0700 (PDT)
-Received: from [192.168.43.18] (94.197.120.138.threembb.co.uk. [94.197.120.138])
-        by smtp.gmail.com with ESMTPSA id j3sm5373507wrw.28.2020.04.23.14.17.59
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 23 Apr 2020 14:17:59 -0700 (PDT)
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>,
-        linux-wireless@vger.kernel.org, Oscar Carter <oscar.carter@gmx.com>
-From:   Malcolm Priestley <tvboxspy@gmail.com>
-Subject: [PATCH 2/2] staging: vt6656: Remove preamble_type setting from
- vnt_tx_packet.
-Message-ID: <04874ae5-0859-7cb5-619a-ac96a207be5d@gmail.com>
-Date:   Thu, 23 Apr 2020 22:17:58 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+        Thu, 23 Apr 2020 20:25:42 -0400
+X-Greylist: delayed 329 seconds by postgrey-1.27 at vger.kernel.org; Thu, 23 Apr 2020 20:25:40 EDT
+Received: from [163.195.24.196] (helo=mailb.ecape.gov.za)
+        by securemail-pl-omx11.synaq.com with esmtps (TLSv1.2:DHE-RSA-AES256-GCM-SHA384:256)
+        (Exim 4.92.3)
+        (envelope-from <smbishe@ecleg.gov.za>)
+        id 1jRm4k-000d6q-9N; Fri, 24 Apr 2020 02:20:14 +0200
+Received: from [10.220.82.81] (helo=ecleg-ex01.ecleg.gov.za)
+        by mailb.ecape.gov.za with esmtp (Exim 4.92.3 (FreeBSD))
+        (envelope-from <smbishe@ecleg.gov.za>)
+        id 1jRm4U-0009zG-3w; Fri, 24 Apr 2020 02:19:58 +0200
+Received: from ECLEG-EX01.ecleg.gov.za ([::1]) by ECLEG-EX01.ecleg.gov.za
+ ([::1]) with mapi id 14.03.0382.000; Thu, 23 Apr 2020 23:35:34 +0200
+From:   "Mbishe, S" <smbishe@ecleg.gov.za>
+Subject: 
+Thread-Index: AdYZtVOzH6VHmUPQQoGzjrleGb2hmw==
+Date:   Thu, 23 Apr 2020 21:35:33 +0000
+Message-ID: <134408B197A6E74098834723FE5279160292D91614@ECLEG-EX01.ecleg.gov.za>
+Accept-Language: en-ZA, en-US
+Content-Language: en-ZA
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.191.220.73]
+x-esetresult: clean, is OK
+x-esetid: 37303A29C620A26C6D7462
+Content-Type: text/plain; charset="iso-8859-2"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+X-SYNAQ-Pinpoint-Information: Please contact SYNAQ for more information
+X-SYNAQ-Pinpoint-ID: 1jRm4k-000d6q-9N
+X-SYNAQ-Pinpoint: Found to be clean
+X-SYNAQ-Pinpoint-SpamCheck: not spam, SpamAssassin (cached, score=2.228,
+        required 9, autolearn=disabled, LOTS_OF_MONEY 0.00,
+        MISSING_HEADERS 1.21, RDNS_NONE 0.10, SPF_FAIL 0.92,
+        SPF_HELO_NONE 0.00)
+X-SYNAQ-Pinpoint-SpamScore: ss
+X-Pinpoint-From: smbishe@ecleg.gov.za
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-preamble_type is set in vnt_bss_info_changed no need to set it
-here.
+Gratulacje, zosta³e¶ wybrany z losowego e-maila przeprowadzonego wczoraj w celu uzyskania funduszy pomocowych w wysoko¶ci 1 miliona euro. W ramach odpowiedzialno¶ci spo³ecznej SwissLoto i inni partnerzy europejscy postanowili pomóc w tej pandemii, aby daæ 1 milion euro 100 zwyciêzcom na ca³ym ¶wiecie, aby pomóc w odzyskaniu si³. Aby uzyskaæ wiêcej informacji o roszczeniach, skontaktuj siê ze swisslfun2020
 
-Signed-off-by: Malcolm Priestley <tvboxspy@gmail.com>
----
- drivers/staging/vt6656/rxtx.c | 5 -----
- 1 file changed, 5 deletions(-)
+PROSZÊ PRZES£AÆ CA£¡ ODPOWIED¬ NA: swisslfun2020@gmail.com
 
-diff --git a/drivers/staging/vt6656/rxtx.c b/drivers/staging/vt6656/rxtx.c
-index 7e15534e52ff..f56a2b02fe36 100644
---- a/drivers/staging/vt6656/rxtx.c
-+++ b/drivers/staging/vt6656/rxtx.c
-@@ -729,11 +729,6 @@ int vnt_tx_packet(struct vnt_private *priv, struct sk_buff *skb)
- 	if (ieee80211_has_retry(hdr->frame_control))
- 		tx_buffer_head->fifo_ctl |= cpu_to_le16(FIFOCTL_LRETRY);
- 
--	if (tx_rate->flags & IEEE80211_TX_RC_USE_SHORT_PREAMBLE)
--		priv->preamble_type = PREAMBLE_SHORT;
--	else
--		priv->preamble_type = PREAMBLE_LONG;
--
- 	if (tx_rate->flags & IEEE80211_TX_RC_USE_RTS_CTS) {
- 		need_rts = true;
- 		tx_buffer_head->fifo_ctl |= cpu_to_le16(FIFOCTL_RTS);
--- 
-2.25.1
+
+Congratulations, you have been choosen from a random email selection conducted yesterday for the relief funds of 1 Million Euro. SwissLoto and other European Partners have decided as part of their social responsbility to assist in this pandemic to give 1 Million Euro to 100 winners across the world to help recovering. For more information on claims, contact swisslfun2020
+
+PLEASE FORWARD ALL RESPONSE TO : swisslfun2020@gmail.com
