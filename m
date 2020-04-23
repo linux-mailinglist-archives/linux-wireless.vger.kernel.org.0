@@ -2,142 +2,109 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0FDE11B57F8
-	for <lists+linux-wireless@lfdr.de>; Thu, 23 Apr 2020 11:19:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 569941B584B
+	for <lists+linux-wireless@lfdr.de>; Thu, 23 Apr 2020 11:36:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726766AbgDWJTv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 23 Apr 2020 05:19:51 -0400
-Received: from mail27.static.mailgun.info ([104.130.122.27]:42761 "EHLO
-        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726145AbgDWJTu (ORCPT
+        id S1726593AbgDWJgX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 23 Apr 2020 05:36:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54636 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725863AbgDWJgX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 23 Apr 2020 05:19:50 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1587633590; h=Content-Transfer-Encoding: MIME-Version:
- References: In-Reply-To: Message-Id: Date: Subject: Cc: To: From:
- Sender; bh=Tfky6aXdcSPof7KzEZvaKUJZlUBHb8eRh2Njk9e7Y9A=; b=PPFUCVLEkPU8zxhGj7hDsMPI7y/bgOLr/PrHxp33ATxT9PGHYv68ZJNXPnHuqyvUdrT8swuU
- m8Dr/Q94eAY9p8Nnby8KBB99aBDNjsftP4Iu1hYAqUKZT6m/UmuEbEi1zDU4AEmVF/Q/1EEq
- CXgBeMpSnjqxyAEZcdIvgxHHQlY=
-X-Mailgun-Sending-Ip: 104.130.122.27
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5ea15db5.7f267073ef80-smtp-out-n03;
- Thu, 23 Apr 2020 09:19:49 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id A1415C432C2; Thu, 23 Apr 2020 09:19:49 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from wgong-HP-Z240-SFF-Workstation.qca.qualcomm.com (unknown [180.166.53.21])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: wgong)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id F0F4BC44788;
-        Thu, 23 Apr 2020 09:19:47 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org F0F4BC44788
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=wgong@codeaurora.org
-From:   Wen Gong <wgong@codeaurora.org>
-To:     ath10k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org, wgong@codeaurora.org
-Subject: [PATCH 4/4] ath10k: correct tx bitrate of iw for SDIO
-Date:   Thu, 23 Apr 2020 17:18:56 +0800
-Message-Id: <20200423091856.24297-5-wgong@codeaurora.org>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20200423091856.24297-1-wgong@codeaurora.org>
-References: <20200423091856.24297-1-wgong@codeaurora.org>
+        Thu, 23 Apr 2020 05:36:23 -0400
+Received: from mail-lj1-x243.google.com (mail-lj1-x243.google.com [IPv6:2a00:1450:4864:20::243])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31BD3C08C5F2
+        for <linux-wireless@vger.kernel.org>; Thu, 23 Apr 2020 02:36:22 -0700 (PDT)
+Received: by mail-lj1-x243.google.com with SMTP id a21so2612745ljj.11
+        for <linux-wireless@vger.kernel.org>; Thu, 23 Apr 2020 02:36:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=TfAeV8yk12RMyli5C0sf/nIamgsKLONTz3cbB7A848o=;
+        b=eGGSkmwhU+ebYBteOxzPOclVJrKdkqgJcauqpPsi2F/beFLysiDdBYnktVDqYtJalt
+         y40LcRmW/b1KlIaJVjjEPkdfNYfaAIfpOrpaBzTUCqcX6zvSkvpXnU1LUimv2mBcyWF/
+         Gc0qvKSRJOHyPXJvpToCB5MOzyepdXuAYPYytBoIsoblH/u27KTa2MRserAmwqhbJgC8
+         f05bKuVsK9oXrPjnQh91RApu278u+Zkl9Wcyj688BQ4M93f45fuD1zMWjQi8xmExTOCC
+         ISsMrVkaHpn42PUwltinv+X6MclCZ9fbk6GUh0n2SH6R+vqRwvozT0Ejn4HkfgDajxlp
+         EqMg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=TfAeV8yk12RMyli5C0sf/nIamgsKLONTz3cbB7A848o=;
+        b=GAzYWLaH0ScDtlIbxCP/Vv+RAHjvX2PsllzJ3wZopaiESPLESKhYhjUCaRiUkN5s1e
+         3JrXEKW36IO749PVsh+cpZ7HGSQeNbADeI5bV1qY41CsZuh6XMlteg1uU/flU0jxvp1E
+         ONJc5y27aIeuPiSJbohOQMhG57pkDfAHNCiJzSta3wRWVJU8okVf7nomN38A5PwSyJ6x
+         IOg0vqJjx+7T2mcXN1v2oq3vKiRrI7xY2ybrNlLtLrnGi8KrdcTYS5k6pAbKB4F7lMBg
+         qvkEZNMOlRQr71DcPCnegmJGqZQ6+CYDtnZA4WNHy0rB21EPlT6FZvC+0OTaIyx4r8Ue
+         Fngg==
+X-Gm-Message-State: AGi0PuansqCKFjJctqvFPpWxTSon29Q5fF5XkZleMGiQ3vNPKPe4WtWK
+        URXbIcVF3xI6pOrPWBSF38G9LiHjzLyzPy36PlPocQ==
+X-Google-Smtp-Source: APiQypL2jGwxZR8TODe2Lsg0dkEG09wMhVYxOpiLJA0Xbc+xIxHa3AGUeXqT1n2ctcdpSboClAGZWk6CtrVrlQmtQr8=
+X-Received: by 2002:a05:651c:2002:: with SMTP id s2mr1672967ljo.285.1587634580596;
+ Thu, 23 Apr 2020 02:36:20 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <c304ad9c-f404-d22e-de74-9398da3ebfc3@hauke-m.de>
+ <CAFA6WYN3FbqTivGJTfXtHsMjXNPXW+P4MZWiCL14utF2sHkeYg@mail.gmail.com>
+ <885ae3bffad315445be3fc70cccade9067ee6937.camel@sipsolutions.net>
+ <CAFA6WYMYQAnW0vKm4fxNn+nA6dYXvqaungBEYDpd-wrzaavr8A@mail.gmail.com> <42e9ac2651c677e9143b019393d60c3254893ae0.camel@sipsolutions.net>
+In-Reply-To: <42e9ac2651c677e9143b019393d60c3254893ae0.camel@sipsolutions.net>
+From:   Sumit Garg <sumit.garg@linaro.org>
+Date:   Thu, 23 Apr 2020 15:06:09 +0530
+Message-ID: <CAFA6WYN5STtNPK+TJF_SwqSfO6sj8mwaJZ2zSno=pmSv2bbmdw@mail.gmail.com>
+Subject: Re: Commit "mac80211: fix race in ieee80211_register_hw()" breaks
+ mac80211 debugfs
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     Hauke Mehrtens <hauke@hauke-m.de>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Felix Fietkau <nbd@nbd.name>, stable <stable@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-For legacy mode, tx bitrate not show correct sometimes, for example:
-iw wlan0 link
-Connected to 8c:21:0a:b3:5a:64 (on wlan0)
-        SSID: tplinkgw
-        freq: 2462
-        RX: 19672 bytes (184 packets)
-        TX: 9851 bytes (87 packets)
-        signal: -51 dBm
-        rx bitrate: 54.0 MBit/s
-        tx bitrate: 2.8 MBit/s
+On Thu, 23 Apr 2020 at 14:29, Johannes Berg <johannes@sipsolutions.net> wrote:
+>
+> On Thu, 2020-04-23 at 14:27 +0530, Sumit Garg wrote:
+>
+> > > > +++ b/net/wireless/core.c
+> > > > @@ -473,6 +473,10 @@ struct wiphy *wiphy_new_nm(const struct
+> > > > cfg80211_ops *ops, int sizeof_priv,
+> > > >                 }
+> > > >         }
+> > > >
+> > > > +       /* add to debugfs */
+> > > > +       rdev->wiphy.debugfsdir = debugfs_create_dir(wiphy_name(&rdev->wiphy),
+> > > > +                                                   ieee80211_debugfs_dir);
+> > >
+> > > This cannot work, we haven't committed to the name of the wiphy yet at
+> > > this point.
+> >
+> > Maybe I am missing something, can you please elaborate here?
+> >
+> > Looking at the code, the default or requested wiphy name is configured
+> > just above this and the rename API "cfg80211_dev_rename()" takes care
+> > of renaming wiphy debugfs directory too.
+>
+> Yes, but I think wiphy_register() can still fail at this point, due to
+> name clashes or so?
+>
+> In any case, it'd be very strange to have a debugfs entry around when
+> the wiphy doesn't exist yet, and could possibly cause the same issue
+> that you fixed again, just through debugfs accesses?
+>
 
-This patch use the tx bitrate info from WMI_TLV_PEER_STATS_INFO_EVENTID
-report from firmware, and tx bitrate show correct.
+Now I understood your point. Yeah it's definitely better to expose
+debugfs after the wiphy device is registered.
 
-iw wlan0 link
-Connected to 8c:21:0a:b3:5a:64 (on wlan0)
-        SSID: tplinkgw
-        freq: 2462
-        RX: 13973 bytes (120 packets)
-        TX: 6737 bytes (57 packets)
-        signal: -52 dBm
-        rx bitrate: 54.0 MBit/s
-        tx bitrate: 54.0 MBit/s
+> Can you take a look at the patch I sent?
 
-This patch only effect SDIO chip, ath10k_mac_sta_get_peer_stats_info
-has check for bitrate_statistics of hw_params, it is enabled only for
-"qca6174 hw3.2 sdio".
+Sure I will take a look.
 
-Tested with QCA6174 SDIO with firmware WLAN.RMH.4.4.1-00042.
+-Sumit
 
-Signed-off-by: Wen Gong <wgong@codeaurora.org>
----
- drivers/net/wireless/ath/ath10k/core.h    |  2 ++
- drivers/net/wireless/ath/ath10k/mac.c     | 10 ++++++++++
- drivers/net/wireless/ath/ath10k/wmi-tlv.c |  2 ++
- 3 files changed, 14 insertions(+)
-
-diff --git a/drivers/net/wireless/ath/ath10k/core.h b/drivers/net/wireless/ath/ath10k/core.h
-index f70b256272ed..1168b70dd2e2 100644
---- a/drivers/net/wireless/ath/ath10k/core.h
-+++ b/drivers/net/wireless/ath/ath10k/core.h
-@@ -524,6 +524,8 @@ struct ath10k_sta {
- 
- 	u32 rx_rate_code;
- 	u32 rx_bitrate_kbps;
-+	u32 tx_rate_code;
-+	u32 tx_bitrate_kbps;
- 	struct work_struct update_wk;
- 	u64 rx_duration;
- 	struct ath10k_htt_tx_stats *tx_stats;
-diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
-index 4b4c81ef131b..a63f8efb4f71 100644
---- a/drivers/net/wireless/ath/ath10k/mac.c
-+++ b/drivers/net/wireless/ath/ath10k/mac.c
-@@ -8497,6 +8497,16 @@ static void ath10k_mac_sta_get_peer_stats_info(struct ath10k *ar,
- 		arsta->rx_rate_code = 0;
- 		arsta->rx_bitrate_kbps = 0;
- 	}
-+
-+	if (arsta->tx_rate_code != 0 && arsta->tx_bitrate_kbps != 0) {
-+		ath10k_mac_parse_bitrate(ar, arsta->tx_rate_code,
-+					 arsta->tx_bitrate_kbps,
-+					 &sinfo->txrate);
-+
-+		sinfo->filled |= BIT_ULL(NL80211_STA_INFO_TX_BITRATE);
-+		arsta->tx_rate_code = 0;
-+		arsta->tx_bitrate_kbps = 0;
-+	}
- }
- 
- static void ath10k_sta_statistics(struct ieee80211_hw *hw,
-diff --git a/drivers/net/wireless/ath/ath10k/wmi-tlv.c b/drivers/net/wireless/ath/ath10k/wmi-tlv.c
-index eec1f1f27dec..9187b62b331c 100644
---- a/drivers/net/wireless/ath/ath10k/wmi-tlv.c
-+++ b/drivers/net/wireless/ath/ath10k/wmi-tlv.c
-@@ -249,6 +249,8 @@ static int ath10k_wmi_tlv_parse_peer_stats_info(struct ath10k *ar, u16 tag, u16
- 	arsta = (struct ath10k_sta *)sta->drv_priv;
- 	arsta->rx_rate_code = __le32_to_cpu(stat->last_rx_rate_code);
- 	arsta->rx_bitrate_kbps = __le32_to_cpu(stat->last_rx_bitrate_kbps);
-+	arsta->tx_rate_code = __le32_to_cpu(stat->last_tx_rate_code);
-+	arsta->tx_bitrate_kbps = __le32_to_cpu(stat->last_tx_bitrate_kbps);
- 
- 	return 0;
- }
--- 
-2.23.0
+>
+> johannes
+>
