@@ -2,30 +2,45 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 083151B591A
-	for <lists+linux-wireless@lfdr.de>; Thu, 23 Apr 2020 12:23:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 923E11B5A7A
+	for <lists+linux-wireless@lfdr.de>; Thu, 23 Apr 2020 13:27:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726849AbgDWKXu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 23 Apr 2020 06:23:50 -0400
-Received: from mail.kernel.org ([198.145.29.99]:51246 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726420AbgDWKXu (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 23 Apr 2020 06:23:50 -0400
-Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        id S1727976AbgDWL1O (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 23 Apr 2020 07:27:14 -0400
+Received: from mail26.static.mailgun.info ([104.130.122.26]:59096 "EHLO
+        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727069AbgDWL1M (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 23 Apr 2020 07:27:12 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1587641232; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=sN+JVDy0DX/YotD0h69bgiRTsV8csKuY9oUAics7/XU=; b=F0KrhOau7/RBhme72x+vDXL8NwkLjE2RVfPlBi/aTm1h6ZZKuy6gljM4RhmW5C0gOFrEizIZ
+ XKfefWJgygKg1r4hAkl5MlQPO7Stag8GEiihK9H7xH3wDqAU4qLvTerec7c7PqAl+8pT8EqT
+ 4lNna9gjtTN10IXM1670n4BfyHM=
+X-Mailgun-Sending-Ip: 104.130.122.26
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5ea17b8d.7f7b5c24f068-smtp-out-n02;
+ Thu, 23 Apr 2020 11:27:09 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id E4D9DC4478C; Thu, 23 Apr 2020 11:27:07 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 5F54920704;
-        Thu, 23 Apr 2020 10:23:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1587637429;
-        bh=EFM/XUej/p55K3upUZnFJZia7Wn4UqTBYkpy2EOYyCI=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=BDF01/eomYp1HuQOisUMTc+1GEL4HUcWeCOMZWOgELPJeCggaDRRFRf9OCl6lQBKY
-         yR6UsjFCilguMxHTT0ULgGKgv6Anb47WExQ+uMenJ8457BptHgdiy3xZUwodJrxt2e
-         sUEwZ+qP5M5win1RBFH1ahX0gcYjhZLCURCgartE=
-Date:   Thu, 23 Apr 2020 11:23:47 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Kalle Valo <kvalo@codeaurora.org>
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id CC767C433CB;
+        Thu, 23 Apr 2020 11:27:04 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org CC767C433CB
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Mark Brown <broonie@kernel.org>
 Cc:     Kai-Heng Feng <kai.heng.feng@canonical.com>, yhchuang@realtek.com,
         Dejin Zheng <zhengdejin5@gmail.com>,
         "David S. Miller" <davem@davemloft.net>,
@@ -36,48 +51,34 @@ Cc:     Kai-Heng Feng <kai.heng.feng@canonical.com>, yhchuang@realtek.com,
         open list <linux-kernel@vger.kernel.org>,
         linux-wireless@vger.kernel.org
 Subject: Re: [PATCH 1/2] iopoll: Introduce read_poll_timeout_atomic macro
-Message-ID: <20200423102347.GC4808@sirena.org.uk>
 References: <20200423063811.2636-1-kai.heng.feng@canonical.com>
- <87lfmmn1fo.fsf@kamboji.qca.qualcomm.com>
+        <87lfmmn1fo.fsf@kamboji.qca.qualcomm.com>
+        <20200423102347.GC4808@sirena.org.uk>
+Date:   Thu, 23 Apr 2020 14:27:02 +0300
+In-Reply-To: <20200423102347.GC4808@sirena.org.uk> (Mark Brown's message of
+        "Thu, 23 Apr 2020 11:23:47 +0100")
+Message-ID: <87eeseigs9.fsf@kamboji.qca.qualcomm.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="ghzN8eJ9Qlbqn3iT"
-Content-Disposition: inline
-In-Reply-To: <87lfmmn1fo.fsf@kamboji.qca.qualcomm.com>
-X-Cookie: This unit... must... survive.
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Mark Brown <broonie@kernel.org> writes:
 
---ghzN8eJ9Qlbqn3iT
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+> On Thu, Apr 23, 2020 at 09:47:23AM +0300, Kalle Valo wrote:
+>
+>> I don't know who maintains iopoll.h, at least MAINTAINERS file doesn't
+>> have an entry, so not sure how to handle this patch.
+>
+> Andrew Moton often picks up things like that, or if it's used by some
+> other patch as the original message indicated then often whoever picks
+> up the user can pick up the core change as well.
 
-On Thu, Apr 23, 2020 at 09:47:23AM +0300, Kalle Valo wrote:
+Oh, ok. As patch 2 goes to my wireless-drivers-next tree would it be ok
+for everyone if I take this patch as well?
 
-> I don't know who maintains iopoll.h, at least MAINTAINERS file doesn't
-> have an entry, so not sure how to handle this patch.
-
-Andrew Moton often picks up things like that, or if it's used by some
-other patch as the original message indicated then often whoever picks
-up the user can pick up the core change as well.
-
---ghzN8eJ9Qlbqn3iT
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl6hbLIACgkQJNaLcl1U
-h9ByNAf/XAXRWSCZMcOEEcUgVNKsbO44YKIhqbh7MmExLvHSty5NYZGAHZJSxBsF
-GD0zRWxlp/s4qr23mqIkMhV1ws170DV72nml7g7An+C3dOFLRmCzfrxhFz5V/jPA
-qOQs51npOhdbcL/Duc7wyek3iJWdNLzVsLZ0EDuU4suxH7EBXKQdF+Ot0gfjC9Qh
-frpVi/hWLV3GGFHqo2U6NveplhOjdDT/Nxg6w1phpvTeX/V7bRUCI80vQmdj7LNN
-ZMTeqtPHI3vC/n4HQ/uBMPcRSidtLXxQlYi3XdCN6cg5fdKER5fk+4q2Iz6O2aUv
-c+O5hjlpM7isyIIn+BibBZ7eU6nlCw==
-=Oimp
------END PGP SIGNATURE-----
-
---ghzN8eJ9Qlbqn3iT--
+-- 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
