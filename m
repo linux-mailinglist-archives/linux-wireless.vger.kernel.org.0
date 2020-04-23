@@ -2,20 +2,20 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 82FFA1B5B6B
-	for <lists+linux-wireless@lfdr.de>; Thu, 23 Apr 2020 14:30:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 850331B5B73
+	for <lists+linux-wireless@lfdr.de>; Thu, 23 Apr 2020 14:30:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726713AbgDWMad (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 23 Apr 2020 08:30:33 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:43526 "EHLO
+        id S1728259AbgDWMai (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 23 Apr 2020 08:30:38 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:43528 "EHLO
         rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726605AbgDWMad (ORCPT
+        with ESMTP id S1726632AbgDWMad (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
         Thu, 23 Apr 2020 08:30:33 -0400
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.69 with qID 03NCUPzC4023097, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.69 with qID 03NCUPGV0023101, This message is accepted by code: ctloc85258
 Received: from mail.realtek.com (rtexmb06.realtek.com.tw[172.21.6.99])
-        by rtits2.realtek.com.tw (8.15.2/2.66/5.86) with ESMTPS id 03NCUPzC4023097
+        by rtits2.realtek.com.tw (8.15.2/2.66/5.86) with ESMTPS id 03NCUPGV0023101
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
         Thu, 23 Apr 2020 20:30:25 +0800
 Received: from RTEXMB04.realtek.com.tw (172.21.6.97) by
@@ -29,10 +29,12 @@ Received: from localhost.localdomain (172.21.68.128) by
 From:   <yhchuang@realtek.com>
 To:     <kvalo@codeaurora.org>
 CC:     <linux-wireless@vger.kernel.org>, <pkshih@realtek.com>
-Subject: [PATCH v2 0/8] rtw88: 8723d: add BB related routines
-Date:   Thu, 23 Apr 2020 20:30:14 +0800
-Message-ID: <20200423123022.10176-1-yhchuang@realtek.com>
+Subject: [PATCH v2 1/8] rtw88: 8723d: Add DIG parameter
+Date:   Thu, 23 Apr 2020 20:30:15 +0800
+Message-ID: <20200423123022.10176-2-yhchuang@realtek.com>
 X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20200423123022.10176-1-yhchuang@realtek.com>
+References: <20200423123022.10176-1-yhchuang@realtek.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [172.21.68.128]
@@ -43,46 +45,50 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Yan-Hsuan Chuang <yhchuang@realtek.com>
+From: Ping-Ke Shih <pkshih@realtek.com>
 
-Add BB related routines for 8723D.
-The BB controls the channel, RX decoding, and RX gain. So, add DIG
-parameters and RX descriptor parsing for the RX frames. And the false
-alarm statistics help the driver to choose better DIG values.
-The 8723D devices have more settings for CCK rates for DIG, mostly
-because that the 8723D is 802.11n device.
+To improve user experience in field, we need DIG to adjust RX initial gain
+depends on field situation. Since each chip has its own register address,
+this commit defines 8723d specific address.
 
-The 8723D devices cannot recieve LDPC frames, do not advertise it.
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
+---
+ drivers/net/wireless/realtek/rtw88/rtw8723d.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-
-v1 -> v2
-  * make a patchset contains less patches for review
-
-
-Ping-Ke Shih (8):
-  rtw88: 8723d: Add DIG parameter
-  rtw88: 8723d: Add query_rx_desc
-  rtw88: 8723d: Add set_channel
-  rtw88: handle C2H_CCX_TX_RPT to know if packet TX'ed successfully
-  rtw88: 8723d: 11N chips don't support LDPC
-  rtw88: 8723d: Add chip_ops::false_alarm_statistics
-  rtw88: 8723d: Set IG register for CCK rate
-  rtw88: 8723d: add interface configurations table
-
- drivers/net/wireless/realtek/rtw88/fw.c       |   6 +-
- drivers/net/wireless/realtek/rtw88/fw.h       |   7 +-
- drivers/net/wireless/realtek/rtw88/mac.c      |   3 +
- drivers/net/wireless/realtek/rtw88/main.c     |   2 +-
- drivers/net/wireless/realtek/rtw88/main.h     |   1 +
- drivers/net/wireless/realtek/rtw88/phy.c      |   4 +
- drivers/net/wireless/realtek/rtw88/rtw8723d.c | 399 ++++++++++++++++++
- drivers/net/wireless/realtek/rtw88/rtw8723d.h |  75 ++++
- drivers/net/wireless/realtek/rtw88/rtw8822b.c |   1 +
- drivers/net/wireless/realtek/rtw88/rtw8822c.c |   1 +
- drivers/net/wireless/realtek/rtw88/tx.c       |  11 +-
- drivers/net/wireless/realtek/rtw88/tx.h       |   2 +-
- 12 files changed, 504 insertions(+), 8 deletions(-)
-
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8723d.c b/drivers/net/wireless/realtek/rtw88/rtw8723d.c
+index 8ca4d5794434..52afa72caf8f 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8723d.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8723d.c
+@@ -706,6 +706,11 @@ static const struct rtw_rqpn rqpn_table_8723d[] = {
+ 	 RTW_DMA_MAPPING_EXTRA, RTW_DMA_MAPPING_HIGH},
+ };
+ 
++static const struct rtw_hw_reg rtw8723d_dig[] = {
++	[0] = { .addr = 0xc50, .mask = 0x7f },
++	[1] = { .addr = 0xc50, .mask = 0x7f },
++};
++
+ static const struct rtw_rf_sipi_addr rtw8723d_rf_sipi_addr[] = {
+ 	[RF_PATH_A] = { .hssi_1 = 0x820, .lssi_read    = 0x8a0,
+ 			.hssi_2 = 0x824, .lssi_read_pi = 0x8b8},
+@@ -738,6 +743,7 @@ struct rtw_chip_info rtw8723d_hw_spec = {
+ 	.csi_buf_pg_num = 0,
+ 	.band = RTW_BAND_2G,
+ 	.page_size = 128,
++	.dig_min = 0x20,
+ 	.ht_supported = true,
+ 	.vht_supported = false,
+ 	.lps_deep_mode_supported = 0,
+@@ -746,6 +752,7 @@ struct rtw_chip_info rtw8723d_hw_spec = {
+ 	.pwr_off_seq = card_disable_flow_8723d,
+ 	.page_table = page_table_8723d,
+ 	.rqpn_table = rqpn_table_8723d,
++	.dig = rtw8723d_dig,
+ 	.rf_sipi_addr = {0x840, 0x844},
+ 	.rf_sipi_read_addr = rtw8723d_rf_sipi_addr,
+ 	.fix_rf_phy_num = 2,
 -- 
 2.17.1
 
