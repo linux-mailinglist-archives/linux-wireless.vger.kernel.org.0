@@ -2,60 +2,60 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6395B1B6606
-	for <lists+linux-wireless@lfdr.de>; Thu, 23 Apr 2020 23:14:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 46DE81B6611
+	for <lists+linux-wireless@lfdr.de>; Thu, 23 Apr 2020 23:18:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726071AbgDWVOd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 23 Apr 2020 17:14:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50932 "EHLO
+        id S1726056AbgDWVSC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 23 Apr 2020 17:18:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51468 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725877AbgDWVOd (ORCPT
+        with ESMTP id S1725877AbgDWVSC (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 23 Apr 2020 17:14:33 -0400
-Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8609DC09B042
-        for <linux-wireless@vger.kernel.org>; Thu, 23 Apr 2020 14:14:31 -0700 (PDT)
-Received: by mail-wr1-x442.google.com with SMTP id j1so8338916wrt.1
-        for <linux-wireless@vger.kernel.org>; Thu, 23 Apr 2020 14:14:31 -0700 (PDT)
+        Thu, 23 Apr 2020 17:18:02 -0400
+Received: from mail-wm1-x344.google.com (mail-wm1-x344.google.com [IPv6:2a00:1450:4864:20::344])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9D71C09B042
+        for <linux-wireless@vger.kernel.org>; Thu, 23 Apr 2020 14:18:01 -0700 (PDT)
+Received: by mail-wm1-x344.google.com with SMTP id y24so8364391wma.4
+        for <linux-wireless@vger.kernel.org>; Thu, 23 Apr 2020 14:18:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=to:cc:from:subject:message-id:date:user-agent:mime-version
          :content-language:content-transfer-encoding;
-        bh=UqaUzhYpxz0lrWzJ6DPc0vNRY+etRrC0oeksk1Ww4Gs=;
-        b=X2cJfeRWZp0JzMd8jTTQTj/Rb9Dl4QcQ4QoXMJZVALw3/l3qK8TpKqATlP4WVHvGDl
-         N6bbd0rPPK49L39qy86FyYkc6bT8dPCdCwITha53gNhvImFyWSBpt3q1v9/xEnhNGJH7
-         hj/7pcZS9qGaeJzB1OABn7AeB2MFfNEPIbFJnL3kmntVHsZhBy4heVBXnc4HNXfEoXAk
-         V749tq9CvafXPuchZkyzNqSGFJ9IqKp6LYYOJ+hQn7LsL7BHt1kC2zgLqySoFZy5EI5h
-         ekc84s/IrDp8rzqgm5bYwCcmwHcGeM8iKifX7VnwoGrfmH4rSDxwg9fuYLnVdla4uYyV
-         bAHA==
+        bh=3UMfdWcimBn25JH2myhA40azE0PlplXVveJxc9S5LYk=;
+        b=uamWr4MnC2gvgpYgfAIoTG2UxaKYkmo+H+l1vvu+mlG+aJJkhnvh5nR+bkVjcBEYLx
+         NCZyuMLSdXLuMGrWhTvfRkAE1oxzj/Tex41zV2hlhGRJf77rq+JVrsbp+Nn5wbmBjSON
+         fztN2Y/voSToxjv3cnPgB+vpZ5gHTOWSQRA+aou4GYBKE66aDT+jifF5ztFBBFWwv8bb
+         O1B7qrQFjtmSCXhMigoRppHUAV3ky63ayC3zweUP9OC1TLMw/8zZGvLEGfBoX/xQ6d4v
+         cb5tDs1pMhXG3CNlb11iQzm4V9AZD6xdd4Uh7mx8p/TjlHy8MkIJVyH1lb60dPp34P/x
+         /Zzg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:to:cc:from:subject:message-id:date:user-agent
          :mime-version:content-language:content-transfer-encoding;
-        bh=UqaUzhYpxz0lrWzJ6DPc0vNRY+etRrC0oeksk1Ww4Gs=;
-        b=q/MMnS9zstFUXTs3M1kIW8VmQ9LGRfiGJpx+VSVHBTjEY2ul65Mf3zQoACuezzAMja
-         T71WnfMUzmaB2xdPWv6eoSetZp27XuLf03kB/mmkGKoBRJEXwfS5xERkK/9ShAjooCp1
-         /Gv3pK1orn07wtl/e32BNdX/C+d1sPXjprfn3Vs+7YbF7WyKpb/fAoNutQ3NGKkSm0PW
-         TtxXfQYHMfYVMvG01r0wb5PPoI+zSQ/UNW27Vk7WUnLgsRA+KF+Gzsg9wwlrn7Ny62Oh
-         w0oCsYp3EGdMpFAjheBBNQ/Wpv7/0MDC/Te2srxcPAzCJdEGXUwSg18M0y7uN7dh5CE+
-         GWqg==
-X-Gm-Message-State: AGi0PuZmaC+FXxlaiwDG/G86Sdi+aBVZFNrcd2sravpKTOvU5Mcz4eOZ
-        9/cqoSPkMdpUvnFe9/Flo8w=
-X-Google-Smtp-Source: APiQypLJzaiDg90Z9WoWkrOF+3EiBl2eIFduhI556E3nTfHEb6slLEJsFaZbrZWwnZWngt+HJKL13g==
-X-Received: by 2002:a5d:5085:: with SMTP id a5mr7552471wrt.394.1587676470238;
-        Thu, 23 Apr 2020 14:14:30 -0700 (PDT)
+        bh=3UMfdWcimBn25JH2myhA40azE0PlplXVveJxc9S5LYk=;
+        b=LcckocWLk97agMt3V2xQtNMPRF7Wtvo+QHnxW/R7GqrAIhmoj/nP2io7IQV3XqpEHJ
+         pMWi6gph9F7DBoGsE42672365+B4cD7KmG8t+v73812JWbzbFel3axPTU9pvtIrFCNzk
+         O0GX0mzuCJv4HsRI/YXOTNnGBhQWkqG+SFb+F2gnkG01jKUFm0fEpbHzVPc+G/iB1uv9
+         zG37mKFDgOJaZFQxBDFBVtHbn/asB8e7kvmVvJ9aikr+xRR/wsVitArwPrdrX/2xhIVf
+         2at/ziO6vK3Mu/Jz1UoflvM+hzwOrRcLDDil9Bt09CcXeslXwBpWc897IiAan46BLelZ
+         WO7Q==
+X-Gm-Message-State: AGi0Pub0O9JmhH+BQiqvoTJl+c7jtTekkyTUzKbkLDCgjh2g1xdJVi0T
+        1/hxBqG09FbXAWcmKX27DsY=
+X-Google-Smtp-Source: APiQypL14SL2t3MTWCC5IqHR6QKM17e2Mz6mwndEh3M6aXyfBYq39YCccjsK43uXeZBOPEM+4ZNhbQ==
+X-Received: by 2002:a7b:c190:: with SMTP id y16mr6615537wmi.50.1587676680314;
+        Thu, 23 Apr 2020 14:18:00 -0700 (PDT)
 Received: from [192.168.43.18] (94.197.120.138.threembb.co.uk. [94.197.120.138])
-        by smtp.gmail.com with ESMTPSA id j68sm5538616wrj.32.2020.04.23.14.14.29
+        by smtp.gmail.com with ESMTPSA id j3sm5373507wrw.28.2020.04.23.14.17.59
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 23 Apr 2020 14:14:29 -0700 (PDT)
+        Thu, 23 Apr 2020 14:17:59 -0700 (PDT)
 To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc:     "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>,
         linux-wireless@vger.kernel.org, Oscar Carter <oscar.carter@gmx.com>
 From:   Malcolm Priestley <tvboxspy@gmail.com>
-Subject: [PATCH 1/2] staging: vt6656: Remove set short time in
- vnt_init_registers.
-Message-ID: <a2bfc4f5-3f7f-3718-6056-2907a004477f@gmail.com>
-Date:   Thu, 23 Apr 2020 22:14:28 +0100
+Subject: [PATCH 2/2] staging: vt6656: Remove preamble_type setting from
+ vnt_tx_packet.
+Message-ID: <04874ae5-0859-7cb5-619a-ac96a207be5d@gmail.com>
+Date:   Thu, 23 Apr 2020 22:17:58 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.7.0
 MIME-Version: 1.0
@@ -67,37 +67,29 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The short time is set in vnt_bss_info_changed no need to set it
+preamble_type is set in vnt_bss_info_changed no need to set it
 here.
 
 Signed-off-by: Malcolm Priestley <tvboxspy@gmail.com>
 ---
- drivers/staging/vt6656/main_usb.c | 13 -------------
- 1 file changed, 13 deletions(-)
+ drivers/staging/vt6656/rxtx.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/drivers/staging/vt6656/main_usb.c b/drivers/staging/vt6656/main_usb.c
-index 4bca0b99cf45..c0545932866c 100644
---- a/drivers/staging/vt6656/main_usb.c
-+++ b/drivers/staging/vt6656/main_usb.c
-@@ -401,19 +401,6 @@ static int vnt_init_registers(struct vnt_private *priv)
- 	dev_dbg(&priv->usb->dev, "Network address = %pM\n",
- 		priv->current_net_addr);
+diff --git a/drivers/staging/vt6656/rxtx.c b/drivers/staging/vt6656/rxtx.c
+index 7e15534e52ff..f56a2b02fe36 100644
+--- a/drivers/staging/vt6656/rxtx.c
++++ b/drivers/staging/vt6656/rxtx.c
+@@ -729,11 +729,6 @@ int vnt_tx_packet(struct vnt_private *priv, struct sk_buff *skb)
+ 	if (ieee80211_has_retry(hdr->frame_control))
+ 		tx_buffer_head->fifo_ctl |= cpu_to_le16(FIFOCTL_LRETRY);
  
--	/*
--	 * set BB and packet type at the same time
--	 * set Short Slot Time, xIFS, and RSPINF
--	 */
--	if (priv->bb_type == BB_TYPE_11A)
--		priv->short_slot_time = true;
+-	if (tx_rate->flags & IEEE80211_TX_RC_USE_SHORT_PREAMBLE)
+-		priv->preamble_type = PREAMBLE_SHORT;
 -	else
--		priv->short_slot_time = false;
+-		priv->preamble_type = PREAMBLE_LONG;
 -
--	ret = vnt_set_short_slot_time(priv);
--	if (ret)
--		goto end;
--
- 	priv->radio_ctl = priv->eeprom[EEP_OFS_RADIOCTL];
- 
- 	if ((priv->radio_ctl & EEP_RADIOCTL_ENABLE) != 0) {
+ 	if (tx_rate->flags & IEEE80211_TX_RC_USE_RTS_CTS) {
+ 		need_rts = true;
+ 		tx_buffer_head->fifo_ctl |= cpu_to_le16(FIFOCTL_RTS);
 -- 
 2.25.1
