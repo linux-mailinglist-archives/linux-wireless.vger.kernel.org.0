@@ -2,388 +2,301 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D0D001B57AC
-	for <lists+linux-wireless@lfdr.de>; Thu, 23 Apr 2020 11:03:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AF6401B57E5
+	for <lists+linux-wireless@lfdr.de>; Thu, 23 Apr 2020 11:14:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726335AbgDWJDr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 23 Apr 2020 05:03:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49512 "EHLO
+        id S1726364AbgDWJOE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 23 Apr 2020 05:14:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51124 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726008AbgDWJDq (ORCPT
+        with ESMTP id S1726101AbgDWJOE (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 23 Apr 2020 05:03:46 -0400
-Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E3B9C03C1AF
-        for <linux-wireless@vger.kernel.org>; Thu, 23 Apr 2020 02:03:46 -0700 (PDT)
-Received: by mail-wr1-x442.google.com with SMTP id i10so5884314wrv.10
-        for <linux-wireless@vger.kernel.org>; Thu, 23 Apr 2020 02:03:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=mwhMFzaJdN8G/mqHXxBUMBnkZEIU6p59M9E6SfBJnOw=;
-        b=HV07EjlgqOO2d4b3shCZ83c40BCWK0m8Sw7BSrhDPtKz77FIVrW/zUzSdlDqhPmWTT
-         6s+HYtpOFJzV2pFyeW85RCMAVguz+vHgWp+KsAzW8ahCnbyaSb+0YkBQ7vDDFOWFd7wK
-         SCSbThOlJRd6th3gmQqfyBeLMaCs1rtHTiRb0lmBLnNAJ5h3amoi5qqcY7Se3t89b7Ch
-         PAWJGkDKfI4tWoilE1rYHuNgX1IuBI1K/axpudz7WbLon8163uegVCdviSgPQezSrHqx
-         irS8EXZj1tD9MpLc23s873Bc7TDUac+5qQQlnLRPx3Y0BzL1DOoM0K4yae0MAU1qLWho
-         SYFA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=mwhMFzaJdN8G/mqHXxBUMBnkZEIU6p59M9E6SfBJnOw=;
-        b=GMwe5f8+sMfr710Hc+kmxEy1TLJIjUxUzND2PlvpVn91bhGIF9jeR3v2Ni/FlwZNYF
-         Veo/vFyBTUY6GyjpbWA+E3qPgDOJTGWZWNejQBDAnfk/n1iY1FF38xN3HaINckZEx4sI
-         QCMvEJRrffi6lL9kq4Jrl1jovVqdnsS5+wQZzflg5tJ1p7Fpb+/w/9A2P8J3MXmaY0hN
-         CGFevhGMhzymBIQ4zXr0nZ228IYAx7RVcFJHXkC/GegiupFbLFego6iNDds7mtdx86HC
-         j8bUhAXVXScIBM7HTGVX3yOXL+MdNte4obyQIijB1wtqfFdahUnH9f10wou1CLE9mw2C
-         XzkA==
-X-Gm-Message-State: AGi0PuZFf5/G39TAZvDS25QUzzjPtsGZfcpbO9NzNqgW6T7Skd9pcBXD
-        GLhLMQlM2WwfDEHfSHbfGDcgVacD2UQ=
-X-Google-Smtp-Source: APiQypJOxU2lqMQy6sMPyex789eUQ+BmYlb73ji7oUAKzqKeovh4C9kqAws772d5UHcTQ8joGHCd/g==
-X-Received: by 2002:adf:dec9:: with SMTP id i9mr3700876wrn.197.1587632624915;
-        Thu, 23 Apr 2020 02:03:44 -0700 (PDT)
-Received: from t2b3 ([5.56.225.192])
-        by smtp.gmail.com with ESMTPSA id k9sm2815364wrd.17.2020.04.23.02.03.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Apr 2020 02:03:43 -0700 (PDT)
-Date:   Thu, 23 Apr 2020 11:03:39 +0200
-From:   "Tobias S. Predel" <tobias.predel@gmail.com>
-To:     Kai-Heng Feng <kai.heng.feng@canonical.com>
-Cc:     Tony Chuang <yhchuang@realtek.com>,
-        Brian Norris <briannorris@chromium.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>
-Subject: Re: rtw88: BUG: scheduling while atomic:
- kworker/u16:0/33416/0x00000002
-Message-ID: <20200423090339.GA2750@t2b3>
-References: <20200421211552.GA36171@t2b3>
- <CA+ASDXN==qo2T6g5YCWpUFPXAdFgcKgww5EbmsmUTvsrSSRHug@mail.gmail.com>
- <f024b56130f7498a902dceb264a7df36@realtek.com>
- <EC470640-5835-4E4C-B0BA-BCFF3758FA0B@canonical.com>
- <20200422192524.GA35535@t2b3>
- <20200422205731.GA409387@t2b3>
- <20200422225526.GA1605@t2b3>
- <110E6169-2516-446D-A3F4-FCD70783FB9E@canonical.com>
+        Thu, 23 Apr 2020 05:14:04 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2508C03C1AF
+        for <linux-wireless@vger.kernel.org>; Thu, 23 Apr 2020 02:13:59 -0700 (PDT)
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.93)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1jRXvh-00Emix-0t; Thu, 23 Apr 2020 11:13:57 +0200
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     linux-wireless@vger.kernel.org
+Cc:     sumit.garg@linaro.org, Johannes Berg <johannes.berg@intel.com>,
+        Jouni Malinen <j@w1.fi>,
+        kernel test robot <rong.a.chen@intel.com>,
+        Hauke Mehrtens <hauke@hauke-m.de>, Felix Fietkau <nbd@nbd.name>
+Subject: [PATCH] mac80211: populate debugfs only after cfg80211 init
+Date:   Thu, 23 Apr 2020 11:13:49 +0200
+Message-Id: <20200423111344.0e00d3346f12.Iadc76a03a55093d94391fc672e996a458702875d@changeid>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <110E6169-2516-446D-A3F4-FCD70783FB9E@canonical.com>
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+From: Johannes Berg <johannes.berg@intel.com>
 
-On Thu, Apr 23, 2020 at 01:43:05PM +0800, Kai-Heng Feng wrote:
-> Hi,
-> 
-> > On Apr 23, 2020, at 06:55, Tobias S. Predel <tobias.predel@gmail.com> wrote:
-> > 
-> > Hello,
-> > 
-> > I guessed from the deleted lines that
-> > udelay(__delay_us) was missing.
-> 
-> Yea I fail to copy that line :(
-> 
-> > 
-> > So I compiled successfully and will observe how it will work out.
-> > But for the first start on the patched kernel it's working and I will report.
-> 
-> Thanks. I'll send the patch.
+When fixing the initialization race, we neglected to account for
+the fact that debugfs is initialized in wiphy_register(), and
+some debugfs things went missing (or rather were rerooted to the
+global debugfs root).
 
-You're welcome. Thanks for your work!
-Have a nice day and stay healthy!
+Fix this by adding debugfs entries only after wiphy_register().
+This requires some changes in the rate control code since it
+currently adds debugfs at alloc time, which can no longer be
+done after the reordering.
 
-> 
-> Kai-Heng
-> 
-Kind regards,
-Tobias
+Reported-by: Jouni Malinen <j@w1.fi>
+Reported-by: kernel test robot <rong.a.chen@intel.com>
+Reported-by: Hauke Mehrtens <hauke@hauke-m.de>
+Reported-by: Felix Fietkau <nbd@nbd.name>
+Fixes: 52e04b4ce5d0 ("mac80211: fix race in ieee80211_register_hw()")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+---
+ drivers/net/wireless/intel/iwlegacy/3945-rs.c |  2 +-
+ drivers/net/wireless/intel/iwlegacy/4965-rs.c |  2 +-
+ drivers/net/wireless/intel/iwlwifi/dvm/rs.c   |  2 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/rs.c   |  2 +-
+ drivers/net/wireless/realtek/rtlwifi/rc.c     |  2 +-
+ include/net/mac80211.h                        |  4 +++-
+ net/mac80211/main.c                           |  5 ++--
+ net/mac80211/rate.c                           | 15 ++++--------
+ net/mac80211/rate.h                           | 23 +++++++++++++++++++
+ net/mac80211/rc80211_minstrel_ht.c            | 19 ++++++++++-----
+ 10 files changed, 51 insertions(+), 25 deletions(-)
 
-> > 
-> > Thanks for your patch! Patch against commit a5840f9618a90ecbe1617f7632482563c0ee307e 
-> > is attached.
-> > 
-> > Kind regards,
-> > Tobias
-> > 
-> > 
-> > diff --git a/drivers/net/wireless/realtek/rtw88/fw.c b/drivers/net/wireless/realtek/rtw88/fw.c
-> > index 245da96dfddc..e44767ec0532 100644
-> > --- a/drivers/net/wireless/realtek/rtw88/fw.c
-> > +++ b/drivers/net/wireless/realtek/rtw88/fw.c
-> > @@ -228,7 +228,7 @@ static void rtw_fw_send_h2c_command(struct rtw_dev *rtwdev,
-> > 		goto out;
-> > 	}
-> > 
-> > -	ret = read_poll_timeout(rtw_read8, box_state,
-> > +	ret = read_poll_timeout_atomic(rtw_read8, box_state,
-> > 				!((box_state >> box) & 0x1), 100, 3000, false,
-> > 				rtwdev, REG_HMETFR);
-> > 
-> > diff --git a/include/linux/iopoll.h b/include/linux/iopoll.h
-> > index cb20c733b15a..e4462712b541 100644
-> > --- a/include/linux/iopoll.h
-> > +++ b/include/linux/iopoll.h
-> > @@ -57,6 +57,49 @@
-> > 	(cond) ? 0 : -ETIMEDOUT; \
-> > })
-> > 
-> > +/**
-> > + * read_poll_timeout_atomic - Periodically poll an address until a condition is
-> > + *                             met or a timeout occurs
-> > + * @op: accessor function (takes @addr as its only argument)
-> > + * @addr: Address to poll
-> > + * @val: Variable to read the value into
-> > + * @cond: Break condition (usually involving @val)
-> > + * @delay_us: Time to udelay between reads in us (0 tight-loops).  Should
-> > + *            be less than ~10us since udelay is used (see
-> > + *            Documentation/timers/timers-howto.rst).
-> > + * @timeout_us: Timeout in us, 0 means never timeout
-> > + * @delay_before_read: if it is true, delay @delay_us before read.
-> > + *
-> > + * Returns 0 on success and -ETIMEDOUT upon a timeout. In either
-> > + * case, the last read value at @args is stored in @val.
-> > + *
-> > + * When available, you'll probably want to use one of the specialized
-> > + * macros defined below rather than this macro directly.
-> > + */
-> > +#define read_poll_timeout_atomic(op, val, cond, delay_us, timeout_us, \
-> > +				delay_before_read, args...) \
-> > +({ \
-> > +	u64 __timeout_us = (timeout_us); \
-> > +	unsigned long __delay_us = (delay_us); \
-> > +	ktime_t __timeout = ktime_add_us(ktime_get(), __timeout_us); \
-> > +	if (delay_before_read && __delay_us) \
-> > +		udelay(__delay_us); \
-> > +	for (;;) { \
-> > +		(val) = op(args); \
-> > +		if (cond) \
-> > +			break; \
-> > +		if (__timeout_us && \
-> > +		    ktime_compare(ktime_get(), __timeout) > 0) { \
-> > +			(val) = op(args); \
-> > +			 break; \
-> > +		 } \
-> > +		 if (__delay_us) \
-> > +			udelay(__delay_us); \
-> > +	} \
-> > +	(cond) ? 0 : -ETIMEDOUT; \
-> > +})
-> > +
-> > +
-> > /**
-> >  * readx_poll_timeout - Periodically poll an address until a condition is met or a timeout occurs
-> >  * @op: accessor function (takes @addr as its only argument)
-> > @@ -96,25 +139,7 @@
-> >  * macros defined below rather than this macro directly.
-> >  */
-> > #define readx_poll_timeout_atomic(op, addr, val, cond, delay_us, timeout_us) \
-> > -({ \
-> > -	u64 __timeout_us = (timeout_us); \
-> > -	unsigned long __delay_us = (delay_us); \
-> > -	ktime_t __timeout = ktime_add_us(ktime_get(), __timeout_us); \
-> > -	for (;;) { \
-> > -		(val) = op(addr); \
-> > -		if (cond) \
-> > -			break; \
-> > -		if (__timeout_us && \
-> > -		    ktime_compare(ktime_get(), __timeout) > 0) { \
-> > -			(val) = op(addr); \
-> > -			break; \
-> > -		} \
-> > -		if (__delay_us) \
-> > -			udelay(__delay_us);	\
-> > -	} \
-> > -	(cond) ? 0 : -ETIMEDOUT; \
-> > -})
-> > -
-> > +	read_poll_timeout_atomic(op, val, cond, delay_us, timeout_us, false, addr)
-> > 
-> > #define readb_poll_timeout(addr, val, cond, delay_us, timeout_us) \
-> > 	readx_poll_timeout(readb, addr, val, cond, delay_us, timeout_us)
-> > 
-> > 
-> > On Wed, Apr 22, 2020 at 10:57:31PM +0200, Tobias S. Predel wrote:
-> >> Hi Kai-Heng,
-> >> 
-> >> On Wed, Apr 22, 2020 at 09:25:24PM +0200, Tobias S. Predel wrote:
-> >>> Hi Kai-Heng,
-> >>> 
-> >>> On Thu, Apr 23, 2020 at 12:48:55AM +0800, Kai-Heng Feng wrote:
-> >>>> Hi Tobias,
-> >>>> 
-> >>>>> On Apr 22, 2020, at 10:21, Tony Chuang <yhchuang@realtek.com> wrote:
-> >>>>> 
-> >>>>> Brian Norris <briannorris@chromium.org> :
-> >>>>>> 
-> >>>>>> I'm not sure about the first half your problem, but for the
-> >>>>>> scheduling-while-atomic:
-> >>>>>> 
-> >>>>>> On Tue, Apr 21, 2020 at 2:16 PM Tobias S. Predel
-> >>>>>> <tobias.predel@gmail.com> wrote:
-> >>>>>>> [28125.482259] BUG: scheduling while atomic:
-> >>>>>> kworker/u16:0/33416/0x00000002
-> >>>>>> ...
-> >>>>>>> [28125.482436] Preemption disabled at:
-> >>>>>>> [28125.482443] [<0000000000000000>] 0x0
-> >>>>>> 
-> >>>>>> ^^ This line is a bit weird -- shouldn't this have a real PC?
-> >>>>>> 
-> >>>>>>> [28125.482452] CPU: 5 PID: 33416 Comm: kworker/u16:0 Tainted: G
-> >>>>>> W         5.7.0-rc2-next-20200421-1-next-git #1
-> >>>>>>> [28125.482456] Hardware name: HP HP ProBook 430 G5/8377, BIOS Q85
-> >>>>>> Ver. 01.09.01 10/15/2019
-> >>>>>>> [28125.482477] Workqueue: phy0 rtw_watch_dog_work [rtw88]
-> >>>>>>> [28125.482481] Call Trace:
-> >>>>>>> [28125.482495]  dump_stack+0x66/0x90
-> >>>>>>> [28125.482505]  __schedule_bug.cold+0x8e/0x9b
-> >>>>>>> [28125.482512]  __schedule+0x686/0x7b0
-> >>>>>>> [28125.482520]  ? _raw_spin_unlock_irqrestore+0x20/0x40
-> >>>>>>> [28125.482525]  schedule+0x46/0xf0
-> >>>>>>> [28125.482531]  schedule_hrtimeout_range_clock+0xa5/0x120
-> >>>>>>> [28125.482540]  ? hrtimer_init_sleeper+0xa0/0xa0
-> >>>>>>> [28125.482546]  usleep_range+0x67/0x90
-> >>>>>>> [28125.482568]  rtw_fw_send_h2c_command+0xe0/0x1a0 [rtw88]
-> >>>>>>> [28125.482590]  rtw_fw_set_pwr_mode+0x95/0xb0 [rtw88]
-> >>>>>>> [28125.482610]  rtw_enter_lps+0xa1/0x100 [rtw88]
-> >>>>>>> [28125.482625]  rtw_watch_dog_work+0x21c/0x230 [rtw88]
-> >>>>>>> [28125.482635]  process_one_work+0x1da/0x3d0
-> >>>>>>> [28125.482643]  worker_thread+0x4a/0x3d0
-> >>>>>>> [28125.482651]  kthread+0x122/0x160
-> >>>>>>> [28125.482658]  ? process_one_work+0x3d0/0x3d0
-> >>>>>>> [28125.482663]  ? kthread_park+0x90/0x90
-> >>>>>>> [28125.482670]  ret_from_fork+0x1f/0x40
-> >>>>>> 
-> >>>>>> This looks like it might be a regression here:
-> >>>>>> 
-> >>>>>> commit 6343a6d4b2130be9323f347d60af8a7ba8f7242c
-> >>>>>> Author: Kai-Heng Feng <kai.heng.feng@canonical.com>
-> >>>>>> Date:   Tue Apr 7 15:33:31 2020 +0800
-> >>>>>> 
-> >>>>>>   rtw88: Add delay on polling h2c command status bit
-> >>>>>> 
-> >>>>>> That poll macros is using usleep, which obviously can sleep. We need
-> >>>>>> to be using a udelay-variant instead.
-> >>>>>> 
-> >>>>> 
-> >>>>> Maybe we need an atomic version of read_poll_timeout() ?
-> >>>>> I am not sure if this is required, but seems like it is useful for me.
-> >>>>> Noticed much of them have its atomic version, but not for this new added one.
-> >>>> 
-> >>>> Tony and Brian are right. 
-> >>>> 
-> >>>> Tobias, can you please test the following patch:
-> >>>> 
-> >>>> diff --git a/drivers/net/wireless/realtek/rtw88/fw.c b/drivers/net/wireless/realtek/rtw88/fw.c
-> >>>> index 245da96dfddc..e44767ec0532 100644
-> >>>> --- a/drivers/net/wireless/realtek/rtw88/fw.c
-> >>>> +++ b/drivers/net/wireless/realtek/rtw88/fw.c
-> >>>> @@ -228,7 +228,7 @@ static void rtw_fw_send_h2c_command(struct rtw_dev *rtwdev,
-> >>>>                goto out;
-> >>>>        }
-> >>>> 
-> >>>> -       ret = read_poll_timeout(rtw_read8, box_state,
-> >>>> +       ret = read_poll_timeout_atomic(rtw_read8, box_state,
-> >>>>                                !((box_state >> box) & 0x1), 100, 3000, false,
-> >>>>                                rtwdev, REG_HMETFR);
-> >>>> 
-> >>>> diff --git a/include/linux/iopoll.h b/include/linux/iopoll.h
-> >>>> index cb20c733b15a..bc89ac625f26 100644
-> >>>> --- a/include/linux/iopoll.h
-> >>>> +++ b/include/linux/iopoll.h
-> >>>> @@ -57,6 +57,48 @@
-> >>>>        (cond) ? 0 : -ETIMEDOUT; \
-> >>>> })
-> >>>> 
-> >>>> +/**
-> >>>> + * read_poll_timeout_atomic - Periodically poll an address until a condition is
-> >>>> + *                             met or a timeout occurs
-> >>>> + * @op: accessor function (takes @addr as its only argument)
-> >>>> + * @addr: Address to poll
-> >>>> + * @val: Variable to read the value into
-> >>>> + * @cond: Break condition (usually involving @val)
-> >>>> + * @delay_us: Time to udelay between reads in us (0 tight-loops).  Should
-> >>>> + *            be less than ~10us since udelay is used (see
-> >>>> + *            Documentation/timers/timers-howto.rst).
-> >>>> + * @timeout_us: Timeout in us, 0 means never timeout
-> >>>> + * @delay_before_read: if it is true, delay @delay_us before read.
-> >>>> + *
-> >>>> + * Returns 0 on success and -ETIMEDOUT upon a timeout. In either
-> >>>> + * case, the last read value at @args is stored in @val.
-> >>>> + *
-> >>>> + * When available, you'll probably want to use one of the specialized
-> >>>> + * macros defined below rather than this macro directly.
-> >>>> + */
-> >>>> +#define read_poll_timeout_atomic(op, val, cond, delay_us, timeout_us, \
-> >>>> +                                       delay_before_read, args...) \
-> >>>> +({ \
-> >>>> +       u64 __timeout_us = (timeout_us); \
-> >>>> +       unsigned long __delay_us = (delay_us); \
-> >>>> +       ktime_t __timeout = ktime_add_us(ktime_get(), __timeout_us); \
-> >>>> +       if (delay_before_read && __delay_us) \
-> >>>> +               udelay(__delay_us); \
-> >>>> +       for (;;) { \
-> >>>> +               (val) = op(args); \
-> >>>> +               if (cond) \
-> >>>> +                       break; \
-> >>>> +               if (__timeout_us && \
-> >>>> +                   ktime_compare(ktime_get(), __timeout) > 0) { \
-> >>>> +                       (val) = op(args); \
-> >>>> +                       break; \
-> >>>> +               } \
-> >>>> +               if (__delay_us) \
-> >> 
-> >> Isn't there something missing here after __delay_us? 
-> >> I got compiler error, misses ;.
-> >> 
-> >>>> +       } \
-> >>>> +       (cond) ? 0 : -ETIMEDOUT; \
-> >>>> +})
-> >>>> +
-> >>>> /**
-> >>>>  * readx_poll_timeout - Periodically poll an address until a condition is met or a timeout occurs
-> >>>>  * @op: accessor function (takes @addr as its only argument)
-> >>>> @@ -96,25 +138,7 @@
-> >>>>  * macros defined below rather than this macro directly.
-> >>>>  */
-> >>>> #define readx_poll_timeout_atomic(op, addr, val, cond, delay_us, timeout_us) \
-> >>>> -({ \
-> >>>> -       u64 __timeout_us = (timeout_us); \
-> >>>> -       unsigned long __delay_us = (delay_us); \
-> >>>> -       ktime_t __timeout = ktime_add_us(ktime_get(), __timeout_us); \
-> >>>> -       for (;;) { \
-> >>>> -               (val) = op(addr); \
-> >>>> -               if (cond) \
-> >>>> -                       break; \
-> >>>> -               if (__timeout_us && \
-> >>>> -                   ktime_compare(ktime_get(), __timeout) > 0) { \
-> >>>> -                       (val) = op(addr); \
-> >>>> -                       break; \
-> >>>> -               } \
-> >>>> -               if (__delay_us) \
-> >>>> -                       udelay(__delay_us);     \
-> >>>> -       } \
-> >>>> -       (cond) ? 0 : -ETIMEDOUT; \
-> >>>> -})
-> >>>> -
-> >>>> +       read_poll_timeout_atomic(op, val, cond, delay_us, timeout_us, false, addr)
-> >>>> 
-> >>>> #define readb_poll_timeout(addr, val, cond, delay_us, timeout_us) \
-> >>>>        readx_poll_timeout(readb, addr, val, cond, delay_us, timeout_us)
-> >>>> 
-> >>> 
-> >> 
-> >> -- 
-> >> Bitte denken Sie an die Umwelt, bevor Sie diese E-Mail ausdrucken.
-> > 
-> > -- 
-> > Bitte denken Sie an die Umwelt, bevor Sie diese E-Mail ausdrucken.
-> > <0001-rtw88-Make-read_poll_timeout-atomic.patch>
-> 
-
+diff --git a/drivers/net/wireless/intel/iwlegacy/3945-rs.c b/drivers/net/wireless/intel/iwlegacy/3945-rs.c
+index 6209f85a71dd..0af9e997c9f6 100644
+--- a/drivers/net/wireless/intel/iwlegacy/3945-rs.c
++++ b/drivers/net/wireless/intel/iwlegacy/3945-rs.c
+@@ -374,7 +374,7 @@ il3945_rs_rate_init(struct il_priv *il, struct ieee80211_sta *sta, u8 sta_id)
+ }
+ 
+ static void *
+-il3945_rs_alloc(struct ieee80211_hw *hw, struct dentry *debugfsdir)
++il3945_rs_alloc(struct ieee80211_hw *hw)
+ {
+ 	return hw->priv;
+ }
+diff --git a/drivers/net/wireless/intel/iwlegacy/4965-rs.c b/drivers/net/wireless/intel/iwlegacy/4965-rs.c
+index 7c6e2c863497..0a02d8aca320 100644
+--- a/drivers/net/wireless/intel/iwlegacy/4965-rs.c
++++ b/drivers/net/wireless/intel/iwlegacy/4965-rs.c
+@@ -2474,7 +2474,7 @@ il4965_rs_fill_link_cmd(struct il_priv *il, struct il_lq_sta *lq_sta,
+ }
+ 
+ static void *
+-il4965_rs_alloc(struct ieee80211_hw *hw, struct dentry *debugfsdir)
++il4965_rs_alloc(struct ieee80211_hw *hw)
+ {
+ 	return hw->priv;
+ }
+diff --git a/drivers/net/wireless/intel/iwlwifi/dvm/rs.c b/drivers/net/wireless/intel/iwlwifi/dvm/rs.c
+index 226165db7dfd..dac809df7f1d 100644
+--- a/drivers/net/wireless/intel/iwlwifi/dvm/rs.c
++++ b/drivers/net/wireless/intel/iwlwifi/dvm/rs.c
+@@ -3019,7 +3019,7 @@ static void rs_fill_link_cmd(struct iwl_priv *priv,
+ 			cpu_to_le16(priv->lib->bt_params->agg_time_limit);
+ }
+ 
+-static void *rs_alloc(struct ieee80211_hw *hw, struct dentry *debugfsdir)
++static void *rs_alloc(struct ieee80211_hw *hw)
+ {
+ 	return hw->priv;
+ }
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rs.c b/drivers/net/wireless/intel/iwlwifi/mvm/rs.c
+index c1aba2bf73cf..00e7fdbaeb7f 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/rs.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/rs.c
+@@ -3665,7 +3665,7 @@ static void rs_fill_lq_cmd(struct iwl_mvm *mvm,
+ 			cpu_to_le16(iwl_mvm_coex_agg_time_limit(mvm, sta));
+ }
+ 
+-static void *rs_alloc(struct ieee80211_hw *hw, struct dentry *debugfsdir)
++static void *rs_alloc(struct ieee80211_hw *hw)
+ {
+ 	return hw->priv;
+ }
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rc.c b/drivers/net/wireless/realtek/rtlwifi/rc.c
+index 0c7d74902d33..4b5ea0ec9109 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rc.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rc.c
+@@ -261,7 +261,7 @@ static void rtl_rate_update(void *ppriv,
+ {
+ }
+ 
+-static void *rtl_rate_alloc(struct ieee80211_hw *hw, struct dentry *debugfsdir)
++static void *rtl_rate_alloc(struct ieee80211_hw *hw)
+ {
+ 	struct rtl_priv *rtlpriv = rtl_priv(hw);
+ 	return rtlpriv;
+diff --git a/include/net/mac80211.h b/include/net/mac80211.h
+index b6b4de0e4b5e..97fec4d310ac 100644
+--- a/include/net/mac80211.h
++++ b/include/net/mac80211.h
+@@ -6007,7 +6007,9 @@ enum rate_control_capabilities {
+ struct rate_control_ops {
+ 	unsigned long capa;
+ 	const char *name;
+-	void *(*alloc)(struct ieee80211_hw *hw, struct dentry *debugfsdir);
++	void *(*alloc)(struct ieee80211_hw *hw);
++	void (*add_debugfs)(struct ieee80211_hw *hw, void *priv,
++			    struct dentry *debugfsdir);
+ 	void (*free)(void *priv);
+ 
+ 	void *(*alloc_sta)(void *priv, struct ieee80211_sta *sta, gfp_t gfp);
+diff --git a/net/mac80211/main.c b/net/mac80211/main.c
+index 0e9ad60fb2b3..6423173bb87e 100644
+--- a/net/mac80211/main.c
++++ b/net/mac80211/main.c
+@@ -1183,8 +1183,6 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
+ 	local->tx_headroom = max_t(unsigned int , local->hw.extra_tx_headroom,
+ 				   IEEE80211_TX_STATUS_HEADROOM);
+ 
+-	debugfs_hw_add(local);
+-
+ 	/*
+ 	 * if the driver doesn't specify a max listen interval we
+ 	 * use 5 which should be a safe default
+@@ -1273,6 +1271,9 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
+ 	if (result < 0)
+ 		goto fail_wiphy_register;
+ 
++	debugfs_hw_add(local);
++	rate_control_add_debugfs(local);
++
+ 	rtnl_lock();
+ 
+ 	/* add one default STA interface if supported */
+diff --git a/net/mac80211/rate.c b/net/mac80211/rate.c
+index a1e9fc7878aa..b051f125d3af 100644
+--- a/net/mac80211/rate.c
++++ b/net/mac80211/rate.c
+@@ -214,17 +214,16 @@ static ssize_t rcname_read(struct file *file, char __user *userbuf,
+ 				       ref->ops->name, len);
+ }
+ 
+-static const struct file_operations rcname_ops = {
++const struct file_operations rcname_ops = {
+ 	.read = rcname_read,
+ 	.open = simple_open,
+ 	.llseek = default_llseek,
+ };
+ #endif
+ 
+-static struct rate_control_ref *rate_control_alloc(const char *name,
+-					    struct ieee80211_local *local)
++static struct rate_control_ref *
++rate_control_alloc(const char *name, struct ieee80211_local *local)
+ {
+-	struct dentry *debugfsdir = NULL;
+ 	struct rate_control_ref *ref;
+ 
+ 	ref = kmalloc(sizeof(struct rate_control_ref), GFP_KERNEL);
+@@ -234,13 +233,7 @@ static struct rate_control_ref *rate_control_alloc(const char *name,
+ 	if (!ref->ops)
+ 		goto free;
+ 
+-#ifdef CONFIG_MAC80211_DEBUGFS
+-	debugfsdir = debugfs_create_dir("rc", local->hw.wiphy->debugfsdir);
+-	local->debugfs.rcdir = debugfsdir;
+-	debugfs_create_file("name", 0400, debugfsdir, ref, &rcname_ops);
+-#endif
+-
+-	ref->priv = ref->ops->alloc(&local->hw, debugfsdir);
++	ref->priv = ref->ops->alloc(&local->hw);
+ 	if (!ref->priv)
+ 		goto free;
+ 	return ref;
+diff --git a/net/mac80211/rate.h b/net/mac80211/rate.h
+index 5397c6dad056..79b44d3db171 100644
+--- a/net/mac80211/rate.h
++++ b/net/mac80211/rate.h
+@@ -60,6 +60,29 @@ static inline void rate_control_add_sta_debugfs(struct sta_info *sta)
+ #endif
+ }
+ 
++extern const struct file_operations rcname_ops;
++
++static inline void rate_control_add_debugfs(struct ieee80211_local *local)
++{
++#ifdef CONFIG_MAC80211_DEBUGFS
++	struct dentry *debugfsdir;
++
++	if (!local->rate_ctrl)
++		return;
++
++	if (!local->rate_ctrl->ops->add_debugfs)
++		return;
++
++	debugfsdir = debugfs_create_dir("rc", local->hw.wiphy->debugfsdir);
++	local->debugfs.rcdir = debugfsdir;
++	debugfs_create_file("name", 0400, debugfsdir,
++			    local->rate_ctrl, &rcname_ops);
++
++	local->rate_ctrl->ops->add_debugfs(&local->hw, local->rate_ctrl->priv,
++					   debugfsdir);
++#endif
++}
++
+ void ieee80211_check_rate_mask(struct ieee80211_sub_if_data *sdata);
+ 
+ /* Get a reference to the rate control algorithm. If `name' is NULL, get the
+diff --git a/net/mac80211/rc80211_minstrel_ht.c b/net/mac80211/rc80211_minstrel_ht.c
+index 694a31978a04..5dc3e5bc4e64 100644
+--- a/net/mac80211/rc80211_minstrel_ht.c
++++ b/net/mac80211/rc80211_minstrel_ht.c
+@@ -1635,7 +1635,7 @@ minstrel_ht_init_cck_rates(struct minstrel_priv *mp)
+ }
+ 
+ static void *
+-minstrel_ht_alloc(struct ieee80211_hw *hw, struct dentry *debugfsdir)
++minstrel_ht_alloc(struct ieee80211_hw *hw)
+ {
+ 	struct minstrel_priv *mp;
+ 
+@@ -1673,7 +1673,17 @@ minstrel_ht_alloc(struct ieee80211_hw *hw, struct dentry *debugfsdir)
+ 	mp->update_interval = HZ / 10;
+ 	mp->new_avg = true;
+ 
++	minstrel_ht_init_cck_rates(mp);
++
++	return mp;
++}
++
+ #ifdef CONFIG_MAC80211_DEBUGFS
++static void minstrel_ht_add_debugfs(struct ieee80211_hw *hw, void *priv,
++				    struct dentry *debugfsdir)
++{
++	struct minstrel_priv *mp = priv;
++
+ 	mp->fixed_rate_idx = (u32) -1;
+ 	debugfs_create_u32("fixed_rate_idx", S_IRUGO | S_IWUGO, debugfsdir,
+ 			   &mp->fixed_rate_idx);
+@@ -1681,12 +1691,8 @@ minstrel_ht_alloc(struct ieee80211_hw *hw, struct dentry *debugfsdir)
+ 			   &mp->sample_switch);
+ 	debugfs_create_bool("new_avg", S_IRUGO | S_IWUSR, debugfsdir,
+ 			   &mp->new_avg);
+-#endif
+-
+-	minstrel_ht_init_cck_rates(mp);
+-
+-	return mp;
+ }
++#endif
+ 
+ static void
+ minstrel_ht_free(void *priv)
+@@ -1725,6 +1731,7 @@ static const struct rate_control_ops mac80211_minstrel_ht = {
+ 	.alloc = minstrel_ht_alloc,
+ 	.free = minstrel_ht_free,
+ #ifdef CONFIG_MAC80211_DEBUGFS
++	.add_debugfs = minstrel_ht_add_debugfs,
+ 	.add_sta_debugfs = minstrel_ht_add_sta_debugfs,
+ #endif
+ 	.get_expected_throughput = minstrel_ht_get_expected_throughput,
 -- 
-Bitte denken Sie an die Umwelt, bevor Sie diese E-Mail ausdrucken.
+2.25.1
+
