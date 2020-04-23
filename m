@@ -2,479 +2,169 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 267BE1B5090
-	for <lists+linux-wireless@lfdr.de>; Thu, 23 Apr 2020 00:55:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D49671B5284
+	for <lists+linux-wireless@lfdr.de>; Thu, 23 Apr 2020 04:28:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726087AbgDVWzf (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 22 Apr 2020 18:55:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39726 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1725839AbgDVWzf (ORCPT
+        id S1726569AbgDWC2r (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 22 Apr 2020 22:28:47 -0400
+Received: from mail27.static.mailgun.info ([104.130.122.27]:58893 "EHLO
+        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726054AbgDWC2r (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 22 Apr 2020 18:55:35 -0400
-Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3100C03C1A9
-        for <linux-wireless@vger.kernel.org>; Wed, 22 Apr 2020 15:55:33 -0700 (PDT)
-Received: by mail-wr1-x442.google.com with SMTP id i10so4578688wrv.10
-        for <linux-wireless@vger.kernel.org>; Wed, 22 Apr 2020 15:55:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=0Nau+RtMSmcVjkCADjVs1rFmIt6Oh7QnU+Ln9WKU2o0=;
-        b=qLAh/9VVvZTT9iRq2nE4yVCyNkJ9Yud5F3VOsf9wCseobQY7U6rsoUcnc7QuP+K/Xp
-         6OkBNddxTsH18AQzbXdjvd0+hVjDEa6WlZEnpQcKc8Dj01ep29z+/MescI5zWAlkY5pv
-         sjOiNOw/cFbotErD8ywnv8YFZo9dCjSadlroatXFITgrTYPe+0CrLPYLK6RusWbbgcTj
-         N33//pVexChnpKfTivOv6amkrjLiV0KcsmpRHPqJqlVSn2dd4aF9VinKsmfRDuB8DuNe
-         nM5SYYTOQsxWDCxjI2/Ou/iNnZNxh+NJ16z3V0BBDpAiQICKbX2mwoP1dwQRyCHAhcKo
-         JfNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=0Nau+RtMSmcVjkCADjVs1rFmIt6Oh7QnU+Ln9WKU2o0=;
-        b=eUS+WrG2s3M2K5UdwR8+N39FOT98pM7NGhfuCEXJUJboJijmFkMGzdwkAh71j6Ue0M
-         aQGsNogGUzptNe9lVGym6jiujYUxhRBX9eXiYhobhZ/V2SkNRruYB68EsIE+9+kpBOF3
-         FzgXS9eXS0hAgJlxkCZF80cCGui6qMcRMKu8D5PO3SEZaDwXqhDxVqGEOjJAqR6cMV7T
-         A5TdpHLoutTPXgkUgmR6X/pRToE/oe3e2GBirIEi25V5MQKyMW6Mte6pQlXx5MBI0opt
-         +0JlhcTT7jGlnSY47bYipxQ+iCkOw2vPBIxy7gWP5+zi0ozOEiuD2+8nnLn+ETzw1kkE
-         Bjuw==
-X-Gm-Message-State: AGi0PuZ1LkFPj/r9Z/C5T9ofynAk1pjDC7m79BeC37UFWylmCX/9VEjl
-        zWtR76Hinz8znrgSob0AIgPlUJpUgfE=
-X-Google-Smtp-Source: APiQypJeam6s1GmOQTZe8lwxN0svgUlRJcCadpuh5dPQOnTN3Ujf6uFJaZkueN6oKg6ll1uNEkhFAA==
-X-Received: by 2002:adf:ff82:: with SMTP id j2mr1510115wrr.96.1587596132429;
-        Wed, 22 Apr 2020 15:55:32 -0700 (PDT)
-Received: from t2b3 ([5.56.225.192])
-        by smtp.gmail.com with ESMTPSA id q143sm1081143wme.31.2020.04.22.15.55.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Apr 2020 15:55:31 -0700 (PDT)
-Date:   Thu, 23 Apr 2020 00:55:26 +0200
-From:   "Tobias S. Predel" <tobias.predel@gmail.com>
-To:     Kai-Heng Feng <kai.heng.feng@canonical.com>
-Cc:     Tony Chuang <yhchuang@realtek.com>,
-        Brian Norris <briannorris@chromium.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>
-Subject: Re: rtw88: BUG: scheduling while atomic:
- kworker/u16:0/33416/0x00000002
-Message-ID: <20200422225526.GA1605@t2b3>
-References: <20200421211552.GA36171@t2b3>
- <CA+ASDXN==qo2T6g5YCWpUFPXAdFgcKgww5EbmsmUTvsrSSRHug@mail.gmail.com>
- <f024b56130f7498a902dceb264a7df36@realtek.com>
- <EC470640-5835-4E4C-B0BA-BCFF3758FA0B@canonical.com>
- <20200422192524.GA35535@t2b3>
- <20200422205731.GA409387@t2b3>
+        Wed, 22 Apr 2020 22:28:47 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1587608926; h=Content-Transfer-Encoding: MIME-Version:
+ Message-Id: Date: Subject: Cc: To: From: Sender;
+ bh=aPpPKTGsqkL6cyzNhUhTTZSVkPYP436EodQfBMFtlas=; b=YYjc+LB4MZdGwVWKsSpOzL1FIGILz95sAKt9nzGyCi7eUfWwMWYBXF9200RwCw734IMR6xHv
+ HV0nigLw/a5L1lD/NIEvXzs+q8KlSFTzo7WIGIWiygwOHPikVRHTBB3SqxEitgqZhIWT34xi
+ vORzjoNR1G0jW/tqu61zd6ZLlhE=
+X-Mailgun-Sending-Ip: 104.130.122.27
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5ea0fd4d.7f857d6783b0-smtp-out-n05;
+ Thu, 23 Apr 2020 02:28:29 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 5B84FC433BA; Thu, 23 Apr 2020 02:28:28 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from wgong-HP-Z240-SFF-Workstation.qca.qualcomm.com (unknown [180.166.53.21])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: wgong)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id A74ACC433CB;
+        Thu, 23 Apr 2020 02:28:26 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org A74ACC433CB
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=wgong@codeaurora.org
+From:   Wen Gong <wgong@codeaurora.org>
+To:     ath10k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org, wgong@codeaurora.org
+Subject: [PATCH] ath10k: enable rx duration report default for wmi tlv
+Date:   Thu, 23 Apr 2020 10:27:58 +0800
+Message-Id: <20200423022758.5365-1-wgong@codeaurora.org>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="huq684BweRXVnRxX"
-Content-Disposition: inline
-In-Reply-To: <20200422205731.GA409387@t2b3>
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+When run command "iw dev wlan0 station dump", the rx duration is 0.
+When firmware indicate WMI_UPDATE_STATS_EVENTID, extended flag of
+statsis not set by default, so firmware do not report rx duration.
 
---huq684BweRXVnRxX
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+one sample:
+localhost # iw wlan0 station dump
+Station c4:04:15:5d:97:22 (on wlan0)
+        inactive time:  48 ms
+        rx bytes:       21670
+        rx packets:     147
+        tx bytes:       11529
+        tx packets:     100
+        tx retries:     88
+        tx failed:      36
+        beacon loss:    1
+        beacon rx:      31
+        rx drop misc:   47
+        signal:         -72 [-74, -75] dBm
+        signal avg:     -71 [-74, -75] dBm
+        beacon signal avg:      -71 dBm
+        tx bitrate:     54.0 MBit/s MCS 3 40MHz
+        rx bitrate:     1.0 MBit/s
+	rx duration:    0 us
 
-Hello,
+This patch enable firmware's extened flag of stats by setting flag
+WMI_TLV_STAT_PEER_EXTD of ar->fw_stats_req_mask which is set in
+ath10k_core_init_firmware_features via WMI_REQUEST_STATS_CMDID.
 
-I guessed from the deleted lines that
-udelay(__delay_us) was missing.
+After apply this patch, rx duration show value with the command:
+Station c4:04:15:5d:97:22 (on wlan0)
+        inactive time:  883 ms
+        rx bytes:       44289
+        rx packets:     265
+        tx bytes:       10838
+        tx packets:     93
+        tx retries:     899
+        tx failed:      103
+        beacon loss:    0
+        beacon rx:      78
+        rx drop misc:   46
+        signal:         -71 [-74, -76] dBm
+        signal avg:     -70 [-74, -76] dBm
+        beacon signal avg:      -70 dBm
+        tx bitrate:     54.0 MBit/s MCS 3 40MHz
+        rx bitrate:     1.0 MBit/s
+        rx duration:    358004 us
 
-So I compiled successfully and will observe how it will work out.
-But for the first start on the patched kernel it's working and I will report.
+This patch do not have side effect for all chips, because function
+ath10k_debug_fw_stats_request is already exported to debugfs
+"fw_stats" and WMI_REQUEST_STATS_CMDID is safely sent after condition
+checked by ath10k_peer_stats_enabled in ath10k_sta_statistics.
 
-Thanks for your patch! Patch against commit a5840f9618a90ecbe1617f7632482563c0ee307e 
-is attached.
+Tested with QCA6174 SDIO with firmware WLAN.RMH.4.4.1-00042.
 
-Kind regards,
-Tobias
-
-
-diff --git a/drivers/net/wireless/realtek/rtw88/fw.c b/drivers/net/wireless/realtek/rtw88/fw.c
-index 245da96dfddc..e44767ec0532 100644
---- a/drivers/net/wireless/realtek/rtw88/fw.c
-+++ b/drivers/net/wireless/realtek/rtw88/fw.c
-@@ -228,7 +228,7 @@ static void rtw_fw_send_h2c_command(struct rtw_dev *rtwdev,
- 		goto out;
- 	}
- 
--	ret = read_poll_timeout(rtw_read8, box_state,
-+	ret = read_poll_timeout_atomic(rtw_read8, box_state,
- 				!((box_state >> box) & 0x1), 100, 3000, false,
- 				rtwdev, REG_HMETFR);
- 
-diff --git a/include/linux/iopoll.h b/include/linux/iopoll.h
-index cb20c733b15a..e4462712b541 100644
---- a/include/linux/iopoll.h
-+++ b/include/linux/iopoll.h
-@@ -57,6 +57,49 @@
- 	(cond) ? 0 : -ETIMEDOUT; \
- })
- 
-+/**
-+ * read_poll_timeout_atomic - Periodically poll an address until a condition is
-+ *                             met or a timeout occurs
-+ * @op: accessor function (takes @addr as its only argument)
-+ * @addr: Address to poll
-+ * @val: Variable to read the value into
-+ * @cond: Break condition (usually involving @val)
-+ * @delay_us: Time to udelay between reads in us (0 tight-loops).  Should
-+ *            be less than ~10us since udelay is used (see
-+ *            Documentation/timers/timers-howto.rst).
-+ * @timeout_us: Timeout in us, 0 means never timeout
-+ * @delay_before_read: if it is true, delay @delay_us before read.
-+ *
-+ * Returns 0 on success and -ETIMEDOUT upon a timeout. In either
-+ * case, the last read value at @args is stored in @val.
-+ *
-+ * When available, you'll probably want to use one of the specialized
-+ * macros defined below rather than this macro directly.
-+ */
-+#define read_poll_timeout_atomic(op, val, cond, delay_us, timeout_us, \
-+				delay_before_read, args...) \
-+({ \
-+	u64 __timeout_us = (timeout_us); \
-+	unsigned long __delay_us = (delay_us); \
-+	ktime_t __timeout = ktime_add_us(ktime_get(), __timeout_us); \
-+	if (delay_before_read && __delay_us) \
-+		udelay(__delay_us); \
-+	for (;;) { \
-+		(val) = op(args); \
-+		if (cond) \
-+			break; \
-+		if (__timeout_us && \
-+		    ktime_compare(ktime_get(), __timeout) > 0) { \
-+			(val) = op(args); \
-+			 break; \
-+		 } \
-+		 if (__delay_us) \
-+			udelay(__delay_us); \
-+	} \
-+	(cond) ? 0 : -ETIMEDOUT; \
-+})
-+
-+
- /**
-  * readx_poll_timeout - Periodically poll an address until a condition is met or a timeout occurs
-  * @op: accessor function (takes @addr as its only argument)
-@@ -96,25 +139,7 @@
-  * macros defined below rather than this macro directly.
-  */
- #define readx_poll_timeout_atomic(op, addr, val, cond, delay_us, timeout_us) \
--({ \
--	u64 __timeout_us = (timeout_us); \
--	unsigned long __delay_us = (delay_us); \
--	ktime_t __timeout = ktime_add_us(ktime_get(), __timeout_us); \
--	for (;;) { \
--		(val) = op(addr); \
--		if (cond) \
--			break; \
--		if (__timeout_us && \
--		    ktime_compare(ktime_get(), __timeout) > 0) { \
--			(val) = op(addr); \
--			break; \
--		} \
--		if (__delay_us) \
--			udelay(__delay_us);	\
--	} \
--	(cond) ? 0 : -ETIMEDOUT; \
--})
--
-+	read_poll_timeout_atomic(op, val, cond, delay_us, timeout_us, false, addr)
- 
- #define readb_poll_timeout(addr, val, cond, delay_us, timeout_us) \
- 	readx_poll_timeout(readb, addr, val, cond, delay_us, timeout_us)
-
-
-On Wed, Apr 22, 2020 at 10:57:31PM +0200, Tobias S. Predel wrote:
-> Hi Kai-Heng,
-> 
-> On Wed, Apr 22, 2020 at 09:25:24PM +0200, Tobias S. Predel wrote:
-> > Hi Kai-Heng,
-> > 
-> > On Thu, Apr 23, 2020 at 12:48:55AM +0800, Kai-Heng Feng wrote:
-> > > Hi Tobias,
-> > > 
-> > > > On Apr 22, 2020, at 10:21, Tony Chuang <yhchuang@realtek.com> wrote:
-> > > > 
-> > > > Brian Norris <briannorris@chromium.org> :
-> > > >> 
-> > > >> I'm not sure about the first half your problem, but for the
-> > > >> scheduling-while-atomic:
-> > > >> 
-> > > >> On Tue, Apr 21, 2020 at 2:16 PM Tobias S. Predel
-> > > >> <tobias.predel@gmail.com> wrote:
-> > > >>> [28125.482259] BUG: scheduling while atomic:
-> > > >> kworker/u16:0/33416/0x00000002
-> > > >> ...
-> > > >>> [28125.482436] Preemption disabled at:
-> > > >>> [28125.482443] [<0000000000000000>] 0x0
-> > > >> 
-> > > >> ^^ This line is a bit weird -- shouldn't this have a real PC?
-> > > >> 
-> > > >>> [28125.482452] CPU: 5 PID: 33416 Comm: kworker/u16:0 Tainted: G
-> > > >> W         5.7.0-rc2-next-20200421-1-next-git #1
-> > > >>> [28125.482456] Hardware name: HP HP ProBook 430 G5/8377, BIOS Q85
-> > > >> Ver. 01.09.01 10/15/2019
-> > > >>> [28125.482477] Workqueue: phy0 rtw_watch_dog_work [rtw88]
-> > > >>> [28125.482481] Call Trace:
-> > > >>> [28125.482495]  dump_stack+0x66/0x90
-> > > >>> [28125.482505]  __schedule_bug.cold+0x8e/0x9b
-> > > >>> [28125.482512]  __schedule+0x686/0x7b0
-> > > >>> [28125.482520]  ? _raw_spin_unlock_irqrestore+0x20/0x40
-> > > >>> [28125.482525]  schedule+0x46/0xf0
-> > > >>> [28125.482531]  schedule_hrtimeout_range_clock+0xa5/0x120
-> > > >>> [28125.482540]  ? hrtimer_init_sleeper+0xa0/0xa0
-> > > >>> [28125.482546]  usleep_range+0x67/0x90
-> > > >>> [28125.482568]  rtw_fw_send_h2c_command+0xe0/0x1a0 [rtw88]
-> > > >>> [28125.482590]  rtw_fw_set_pwr_mode+0x95/0xb0 [rtw88]
-> > > >>> [28125.482610]  rtw_enter_lps+0xa1/0x100 [rtw88]
-> > > >>> [28125.482625]  rtw_watch_dog_work+0x21c/0x230 [rtw88]
-> > > >>> [28125.482635]  process_one_work+0x1da/0x3d0
-> > > >>> [28125.482643]  worker_thread+0x4a/0x3d0
-> > > >>> [28125.482651]  kthread+0x122/0x160
-> > > >>> [28125.482658]  ? process_one_work+0x3d0/0x3d0
-> > > >>> [28125.482663]  ? kthread_park+0x90/0x90
-> > > >>> [28125.482670]  ret_from_fork+0x1f/0x40
-> > > >> 
-> > > >> This looks like it might be a regression here:
-> > > >> 
-> > > >> commit 6343a6d4b2130be9323f347d60af8a7ba8f7242c
-> > > >> Author: Kai-Heng Feng <kai.heng.feng@canonical.com>
-> > > >> Date:   Tue Apr 7 15:33:31 2020 +0800
-> > > >> 
-> > > >>    rtw88: Add delay on polling h2c command status bit
-> > > >> 
-> > > >> That poll macros is using usleep, which obviously can sleep. We need
-> > > >> to be using a udelay-variant instead.
-> > > >> 
-> > > > 
-> > > > Maybe we need an atomic version of read_poll_timeout() ?
-> > > > I am not sure if this is required, but seems like it is useful for me.
-> > > > Noticed much of them have its atomic version, but not for this new added one.
-> > > 
-> > > Tony and Brian are right. 
-> > > 
-> > > Tobias, can you please test the following patch:
-> > > 
-> > > diff --git a/drivers/net/wireless/realtek/rtw88/fw.c b/drivers/net/wireless/realtek/rtw88/fw.c
-> > > index 245da96dfddc..e44767ec0532 100644
-> > > --- a/drivers/net/wireless/realtek/rtw88/fw.c
-> > > +++ b/drivers/net/wireless/realtek/rtw88/fw.c
-> > > @@ -228,7 +228,7 @@ static void rtw_fw_send_h2c_command(struct rtw_dev *rtwdev,
-> > >                 goto out;
-> > >         }
-> > >  
-> > > -       ret = read_poll_timeout(rtw_read8, box_state,
-> > > +       ret = read_poll_timeout_atomic(rtw_read8, box_state,
-> > >                                 !((box_state >> box) & 0x1), 100, 3000, false,
-> > >                                 rtwdev, REG_HMETFR);
-> > >  
-> > > diff --git a/include/linux/iopoll.h b/include/linux/iopoll.h
-> > > index cb20c733b15a..bc89ac625f26 100644
-> > > --- a/include/linux/iopoll.h
-> > > +++ b/include/linux/iopoll.h
-> > > @@ -57,6 +57,48 @@
-> > >         (cond) ? 0 : -ETIMEDOUT; \
-> > >  })
-> > >  
-> > > +/**
-> > > + * read_poll_timeout_atomic - Periodically poll an address until a condition is
-> > > + *                             met or a timeout occurs
-> > > + * @op: accessor function (takes @addr as its only argument)
-> > > + * @addr: Address to poll
-> > > + * @val: Variable to read the value into
-> > > + * @cond: Break condition (usually involving @val)
-> > > + * @delay_us: Time to udelay between reads in us (0 tight-loops).  Should
-> > > + *            be less than ~10us since udelay is used (see
-> > > + *            Documentation/timers/timers-howto.rst).
-> > > + * @timeout_us: Timeout in us, 0 means never timeout
-> > > + * @delay_before_read: if it is true, delay @delay_us before read.
-> > > + *
-> > > + * Returns 0 on success and -ETIMEDOUT upon a timeout. In either
-> > > + * case, the last read value at @args is stored in @val.
-> > > + *
-> > > + * When available, you'll probably want to use one of the specialized
-> > > + * macros defined below rather than this macro directly.
-> > > + */
-> > > +#define read_poll_timeout_atomic(op, val, cond, delay_us, timeout_us, \
-> > > +                                       delay_before_read, args...) \
-> > > +({ \
-> > > +       u64 __timeout_us = (timeout_us); \
-> > > +       unsigned long __delay_us = (delay_us); \
-> > > +       ktime_t __timeout = ktime_add_us(ktime_get(), __timeout_us); \
-> > > +       if (delay_before_read && __delay_us) \
-> > > +               udelay(__delay_us); \
-> > > +       for (;;) { \
-> > > +               (val) = op(args); \
-> > > +               if (cond) \
-> > > +                       break; \
-> > > +               if (__timeout_us && \
-> > > +                   ktime_compare(ktime_get(), __timeout) > 0) { \
-> > > +                       (val) = op(args); \
-> > > +                       break; \
-> > > +               } \
-> > > +               if (__delay_us) \
-> 
-> Isn't there something missing here after __delay_us? 
-> I got compiler error, misses ;.
-> 
-> > > +       } \
-> > > +       (cond) ? 0 : -ETIMEDOUT; \
-> > > +})
-> > > +
-> > >  /**
-> > >   * readx_poll_timeout - Periodically poll an address until a condition is met or a timeout occurs
-> > >   * @op: accessor function (takes @addr as its only argument)
-> > > @@ -96,25 +138,7 @@
-> > >   * macros defined below rather than this macro directly.
-> > >   */
-> > >  #define readx_poll_timeout_atomic(op, addr, val, cond, delay_us, timeout_us) \
-> > > -({ \
-> > > -       u64 __timeout_us = (timeout_us); \
-> > > -       unsigned long __delay_us = (delay_us); \
-> > > -       ktime_t __timeout = ktime_add_us(ktime_get(), __timeout_us); \
-> > > -       for (;;) { \
-> > > -               (val) = op(addr); \
-> > > -               if (cond) \
-> > > -                       break; \
-> > > -               if (__timeout_us && \
-> > > -                   ktime_compare(ktime_get(), __timeout) > 0) { \
-> > > -                       (val) = op(addr); \
-> > > -                       break; \
-> > > -               } \
-> > > -               if (__delay_us) \
-> > > -                       udelay(__delay_us);     \
-> > > -       } \
-> > > -       (cond) ? 0 : -ETIMEDOUT; \
-> > > -})
-> > > -
-> > > +       read_poll_timeout_atomic(op, val, cond, delay_us, timeout_us, false, addr)
-> > >  
-> > >  #define readb_poll_timeout(addr, val, cond, delay_us, timeout_us) \
-> > >         readx_poll_timeout(readb, addr, val, cond, delay_us, timeout_us)
-> > > 
-> > 
-> 
-> -- 
-> Bitte denken Sie an die Umwelt, bevor Sie diese E-Mail ausdrucken.
-
--- 
-Bitte denken Sie an die Umwelt, bevor Sie diese E-Mail ausdrucken.
-
---huq684BweRXVnRxX
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: attachment;
-	filename="0001-rtw88-Make-read_poll_timeout-atomic.patch"
-
-From 2652ea8d9120b67c79dc85a9073cc5e85d6fc2dc Mon Sep 17 00:00:00 2001
-From: Tobias Predel <tobias.predel@gmail.com>
-Date: Thu, 23 Apr 2020 00:44:15 +0200
-Subject: [PATCH] rtw88: Make read_poll_timeout atomic
-
+Signed-off-by: Wen Gong <wgong@codeaurora.org>
 ---
- drivers/net/wireless/realtek/rtw88/fw.c |  2 +-
- include/linux/iopoll.h                  | 63 +++++++++++++++++--------
- 2 files changed, 45 insertions(+), 20 deletions(-)
+ drivers/net/wireless/ath/ath10k/debug.c | 2 +-
+ drivers/net/wireless/ath/ath10k/debug.h | 8 ++++++++
+ drivers/net/wireless/ath/ath10k/mac.c   | 2 ++
+ 3 files changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/fw.c b/drivers/net/wireless/realtek/rtw88/fw.c
-index 245da96dfddc..e44767ec0532 100644
---- a/drivers/net/wireless/realtek/rtw88/fw.c
-+++ b/drivers/net/wireless/realtek/rtw88/fw.c
-@@ -228,7 +228,7 @@ static void rtw_fw_send_h2c_command(struct rtw_dev *rtwdev,
- 		goto out;
- 	}
+diff --git a/drivers/net/wireless/ath/ath10k/debug.c b/drivers/net/wireless/ath/ath10k/debug.c
+index 69139c2e6f82..e8250a665433 100644
+--- a/drivers/net/wireless/ath/ath10k/debug.c
++++ b/drivers/net/wireless/ath/ath10k/debug.c
+@@ -349,7 +349,7 @@ void ath10k_debug_fw_stats_process(struct ath10k *ar, struct sk_buff *skb)
+ 	spin_unlock_bh(&ar->data_lock);
+ }
  
--	ret = read_poll_timeout(rtw_read8, box_state,
-+	ret = read_poll_timeout_atomic(rtw_read8, box_state,
- 				!((box_state >> box) & 0x1), 100, 3000, false,
- 				rtwdev, REG_HMETFR);
- 
-diff --git a/include/linux/iopoll.h b/include/linux/iopoll.h
-index cb20c733b15a..e4462712b541 100644
---- a/include/linux/iopoll.h
-+++ b/include/linux/iopoll.h
-@@ -57,6 +57,49 @@
- 	(cond) ? 0 : -ETIMEDOUT; \
- })
- 
-+/**
-+ * read_poll_timeout_atomic - Periodically poll an address until a condition is
-+ *                             met or a timeout occurs
-+ * @op: accessor function (takes @addr as its only argument)
-+ * @addr: Address to poll
-+ * @val: Variable to read the value into
-+ * @cond: Break condition (usually involving @val)
-+ * @delay_us: Time to udelay between reads in us (0 tight-loops).  Should
-+ *            be less than ~10us since udelay is used (see
-+ *            Documentation/timers/timers-howto.rst).
-+ * @timeout_us: Timeout in us, 0 means never timeout
-+ * @delay_before_read: if it is true, delay @delay_us before read.
-+ *
-+ * Returns 0 on success and -ETIMEDOUT upon a timeout. In either
-+ * case, the last read value at @args is stored in @val.
-+ *
-+ * When available, you'll probably want to use one of the specialized
-+ * macros defined below rather than this macro directly.
-+ */
-+#define read_poll_timeout_atomic(op, val, cond, delay_us, timeout_us, \
-+				delay_before_read, args...) \
-+({ \
-+	u64 __timeout_us = (timeout_us); \
-+	unsigned long __delay_us = (delay_us); \
-+	ktime_t __timeout = ktime_add_us(ktime_get(), __timeout_us); \
-+	if (delay_before_read && __delay_us) \
-+		udelay(__delay_us); \
-+	for (;;) { \
-+		(val) = op(args); \
-+		if (cond) \
-+			break; \
-+		if (__timeout_us && \
-+		    ktime_compare(ktime_get(), __timeout) > 0) { \
-+			(val) = op(args); \
-+			 break; \
-+		 } \
-+		 if (__delay_us) \
-+			udelay(__delay_us); \
-+	} \
-+	(cond) ? 0 : -ETIMEDOUT; \
-+})
+-static int ath10k_debug_fw_stats_request(struct ath10k *ar)
++int ath10k_debug_fw_stats_request(struct ath10k *ar)
+ {
+ 	unsigned long timeout, time_left;
+ 	int ret;
+diff --git a/drivers/net/wireless/ath/ath10k/debug.h b/drivers/net/wireless/ath/ath10k/debug.h
+index 82f7eb8583d9..4cbfd9279d6f 100644
+--- a/drivers/net/wireless/ath/ath10k/debug.h
++++ b/drivers/net/wireless/ath/ath10k/debug.h
+@@ -125,6 +125,9 @@ static inline int ath10k_debug_is_extd_tx_stats_enabled(struct ath10k *ar)
+ {
+ 	return ar->debug.enable_extd_tx_stats;
+ }
 +
++int ath10k_debug_fw_stats_request(struct ath10k *ar);
 +
- /**
-  * readx_poll_timeout - Periodically poll an address until a condition is met or a timeout occurs
-  * @op: accessor function (takes @addr as its only argument)
-@@ -96,25 +139,7 @@
-  * macros defined below rather than this macro directly.
-  */
- #define readx_poll_timeout_atomic(op, addr, val, cond, delay_us, timeout_us) \
--({ \
--	u64 __timeout_us = (timeout_us); \
--	unsigned long __delay_us = (delay_us); \
--	ktime_t __timeout = ktime_add_us(ktime_get(), __timeout_us); \
--	for (;;) { \
--		(val) = op(addr); \
--		if (cond) \
--			break; \
--		if (__timeout_us && \
--		    ktime_compare(ktime_get(), __timeout) > 0) { \
--			(val) = op(addr); \
--			break; \
--		} \
--		if (__delay_us) \
--			udelay(__delay_us);	\
--	} \
--	(cond) ? 0 : -ETIMEDOUT; \
--})
--
-+	read_poll_timeout_atomic(op, val, cond, delay_us, timeout_us, false, addr)
+ #else
  
- #define readb_poll_timeout(addr, val, cond, delay_us, timeout_us) \
- 	readx_poll_timeout(readb, addr, val, cond, delay_us, timeout_us)
+ static inline int ath10k_debug_start(struct ath10k *ar)
+@@ -192,6 +195,11 @@ static inline int ath10k_debug_is_extd_tx_stats_enabled(struct ath10k *ar)
+ 	return 0;
+ }
+ 
++static inline int ath10k_debug_fw_stats_request(struct ath10k *ar)
++{
++	return 0;
++}
++
+ #define ATH10K_DFS_STAT_INC(ar, c) do { } while (0)
+ 
+ #define ath10k_debug_get_et_strings NULL
+diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
+index 6791c0035be0..ea5a26ea9b32 100644
+--- a/drivers/net/wireless/ath/ath10k/mac.c
++++ b/drivers/net/wireless/ath/ath10k/mac.c
+@@ -8306,6 +8306,8 @@ static void ath10k_sta_statistics(struct ieee80211_hw *hw,
+ 	if (!ath10k_peer_stats_enabled(ar))
+ 		return;
+ 
++	ath10k_debug_fw_stats_request(ar);
++
+ 	sinfo->rx_duration = arsta->rx_duration;
+ 	sinfo->filled |= BIT_ULL(NL80211_STA_INFO_RX_DURATION);
+ 
 -- 
-2.26.2
-
-
---huq684BweRXVnRxX--
+2.23.0
