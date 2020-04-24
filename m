@@ -2,206 +2,149 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E16C01B7295
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 Apr 2020 13:03:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B967D1B7316
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 Apr 2020 13:30:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726839AbgDXLDB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 24 Apr 2020 07:03:01 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:57812 "EHLO
-        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726489AbgDXLDB (ORCPT
+        id S1726909AbgDXLaI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 24 Apr 2020 07:30:08 -0400
+Received: from mx0a-00183b01.pphosted.com ([67.231.149.44]:47048 "EHLO
+        mx0a-00183b01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726698AbgDXLaI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 24 Apr 2020 07:03:01 -0400
-Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa)
-        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.93)
-        (envelope-from <luca@coelho.fi>)
-        id 1jRw6j-000OSN-J0; Fri, 24 Apr 2020 14:02:58 +0300
-Message-ID: <f786da13f1f1bb41e6a5c38125cde4cc8d67e91c.camel@coelho.fi>
-From:   Luca Coelho <luca@coelho.fi>
-To:     kvalo@codeaurora.org
-Cc:     linux-wireless@vger.kernel.org, linuxwifi@intel.com
-Date:   Fri, 24 Apr 2020 14:02:56 +0300
-Content-Type: multipart/signed; micalg="pgp-sha512";
-        protocol="application/pgp-signature"; boundary="=-gsyOdCPD4+numFWJNg7M"
-User-Agent: Evolution 3.36.0-1 
+        Fri, 24 Apr 2020 07:30:08 -0400
+Received: from pps.filterd (m0059812.ppops.net [127.0.0.1])
+        by m0059812.ppops.net (8.16.0.42/8.16.0.42) with SMTP id 03OBRLjU017911;
+        Fri, 24 Apr 2020 05:30:04 -0600
+Received: from nam10-mw2-obe.outbound.protection.outlook.com (mail-mw2nam10lp2104.outbound.protection.outlook.com [104.47.55.104])
+        by m0059812.ppops.net with ESMTP id 30k9gr4hw1-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 24 Apr 2020 05:30:04 -0600
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=cNDzaqbxNwUjHFtTmG/p2270dse+WrQMMLcfbc6XyUTjnNYoW+dVp7w0JLEtn1bNBC4ZLBXhhXuseWZHH9tj3jLJk6IFpgdlN4ObfxygTwnHWKHFBGcjKrkrZ9wvQPb7bT1fL3rOy1eHi1+byVeoWs0K/RMlCPbEuzP4LatZG4w8kwN3kRAUCMkS6jQsB4ZHQRUnongllU/ofbZFg+YkW0ZPgYHg+eLqTb2uFlZ0G4bTH0WBbsaYxnOca7MAsr7O9i8h1kLjsnzu/fxBTJsde4T4iVckBG8Q0wk718gV5A6lDtUZb6obxNvgnQl7+iCFx+BTHoPqn+dPWfJiVTVWAg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=dhG2WRt8//V5L0JLkLIlHpj90f+VnnFA2oHdz3pFybs=;
+ b=Jxl6iZPP3ZIotEC2gsRdo8TwP9kDEzd4O3PsPU/SbcrbeD3+a+ZT5MZecIde2r0/WxwRZgCBjpOmrfhnZxCo6uRcRwTH2I0Q7ULxp6wljwRIa8wmme11AEBaE6rprsZR1xZKu9S+StE8fWbNyo/VoB8/VWzJDfvQGGEbeyV1WGBR8/iehF2Sw36r715c/Q5+rKRq720+4BmAc9I+BRl90QuWU8E//nOHb7CCDpyU9VHcQyRbEEnDwhFad58PtX+jJnnpK+V3xunbN1Raqtkh2rmeaVrNRPG3Ipy+5wlKMrdZkwaZxT4UnutFOuqSuDxBJMAwseBmNP1z5ZR84ZHHkQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=quantenna.com; dmarc=pass action=none
+ header.from=quantenna.com; dkim=pass header.d=quantenna.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quantenna.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=dhG2WRt8//V5L0JLkLIlHpj90f+VnnFA2oHdz3pFybs=;
+ b=agITfB6hR/+SNmiGL1niOKUOQzGg2sqU0SPNI219Phnb671ot1s1V28DFzi8tEatZK0QLncok3440P9aC/BfX0czEVx33WdhI2zhQ93Hh9jpmnRWmjHj/97whoNMuUp3u3Wsp2Eyo4DBpBzt9nvTx1Q7eGLvhWYW6OjPX4f3Rzk=
+Received: from MWHPR05MB3405.namprd05.prod.outlook.com (2603:10b6:301:3f::26)
+ by MWHPR05MB2864.namprd05.prod.outlook.com (2603:10b6:300:5e::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2937.10; Fri, 24 Apr
+ 2020 11:30:02 +0000
+Received: from MWHPR05MB3405.namprd05.prod.outlook.com
+ ([fe80::acea:57b7:a007:4318]) by MWHPR05MB3405.namprd05.prod.outlook.com
+ ([fe80::acea:57b7:a007:4318%7]) with mapi id 15.20.2937.020; Fri, 24 Apr 2020
+ 11:30:02 +0000
+Received: from CY4PR05MB3558.namprd05.prod.outlook.com (2603:10b6:910:53::39)
+ by CY4PR05MB3160.namprd05.prod.outlook.com (2603:10b6:903:f2::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2937.11; Fri, 24 Apr
+ 2020 11:29:14 +0000
+Received: from CY4PR05MB3558.namprd05.prod.outlook.com
+ ([fe80::f5eb:c5ec:8fe4:e048]) by CY4PR05MB3558.namprd05.prod.outlook.com
+ ([fe80::f5eb:c5ec:8fe4:e048%6]) with mapi id 15.20.2937.012; Fri, 24 Apr 2020
+ 11:29:14 +0000
+From:   Sergey Matyukevich <sergey.matyukevich.os@quantenna.com>
+To:     linux-wireless@vger.kernel.org
+CC:     Tamizh Chelvam <tamizhr@codeaurora.org>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Sergey Matyukevich <sergey.matyukevich.os@quantenna.com>
+Subject: [RFC PATCH v2 0/5] cfg80211: updates and fixes for TID specific configuration
+Date:   Fri, 24 Apr 2020 14:29:00 +0300
+Message-ID: <20200424112905.26770-1-sergey.matyukevich.os@quantenna.com>
+X-Mailer: git-send-email 2.11.0
+Content-Type: text/plain
+X-ClientProxiedBy: AM0PR01CA0087.eurprd01.prod.exchangelabs.com
+ (2603:10a6:208:10e::28) To CY4PR05MB3558.namprd05.prod.outlook.com
+ (2603:10b6:910:53::39)
 MIME-Version: 1.0
-X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on farmhouse.coelho.fi
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
-        TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.4
-Subject: pull-request: iwlwifi-next 2020-04-24
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from bars.quantenna.com (195.182.157.78) by AM0PR01CA0087.eurprd01.prod.exchangelabs.com (2603:10a6:208:10e::28) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2937.13 via Frontend Transport; Fri, 24 Apr 2020 11:29:12 +0000
+X-Mailer: git-send-email 2.11.0
+X-Originating-IP: [195.182.157.78]
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 21ad47c9-dce4-4578-811a-08d7e842b765
+X-MS-TrafficTypeDiagnostic: CY4PR05MB3160:|MWHPR05MB2864:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <CY4PR05MB31604B613CF7B5FB8EA63669A3D00@CY4PR05MB3160.namprd05.prod.outlook.com>
+X-Moderation-Data: 4/24/2020 11:30:00 AM
+X-MS-Oob-TLC-OOBClassifiers: OLM:8273;
+X-Forefront-PRVS: 03838E948C
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MWHPR05MB3405.namprd05.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(346002)(376002)(136003)(39850400004)(396003)(366004)(2616005)(5660300002)(15650500001)(7696005)(36756003)(52116002)(54906003)(26005)(316002)(16526019)(86362001)(6666004)(186003)(956004)(2906002)(6916009)(4326008)(478600001)(66946007)(1076003)(66556008)(8936002)(6486002)(107886003)(8676002)(103116003)(81156014)(66476007);DIR:OUT;SFP:1101;
+Received-SPF: None (protection.outlook.com: quantenna.com does not designate
+ permitted sender hosts)
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: IuYcqTtvimfCwVoI8fO3lu9GKqeB6BSWmTzYKsqGK/bbFCMluFf7F7txivlrWlnbWA1BujJNU443iwwr7a79P5z//eopVZcoCP0uzcXhD6BCI+9K/5dywcoBKlhWeh44TuUUOhC7KiRMWS59yeHB2ea+P6Lv1TQnAsBCmL10t3b20GV4mDgCYGPb6ndR11dwR6x2GLtZuMccUtxkpcdLU0T1eEAILbQxDjxmmL8gkVwzFN7CDebiyS4X88bu0y7nvmY3Q5ZarWqNhvchyZ9txlgT69QmEp7dmHBoRml4MiA/faAsFrdL1j8DKw8DNn9FPMQ8QV2Evhs7dk3XOVlyeKZPCsGisVIi+VqGsx5c46qkIKM7KZ9WLQo0ODBqy0ev+3eI68Vl17sLZy1bedj+rLg0fuMsaWObmp1yAY4SVaRI7iAgix8JBhXHCfP18WRj
+X-MS-Exchange-AntiSpam-MessageData: sI6kpsxOV9mCFc/gzYILw1vank1lYKYdIoBrrWzeF/2ib/CDYI5Dw2IXKkR5hHW8M9tnXyS4vmqf4F5Z7cy6TyOfZFY2oQRBsfmrsWhrhawVvg/eYrt+cNCc3M4ZUYSi10hHiaZM6nIRuWZLUyT7MA==
+X-OriginatorOrg: quantenna.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 21ad47c9-dce4-4578-811a-08d7e842b765
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: a355dbce-62b4-4789-9446-c1d5582180ff
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: O5ffqcMOla9Bgr05Oei4iwZRuJ0N40ZvEpvLW1ANreuXeKsgFomIBvI1xp/OTo+E3aHtDHbUUGARgb4h5s1P5KNTnYbdMHXYWRAqxA7RlGDFYv5hGnku6kRWWfqkF+Lvm+34K76KVUBZF5+jVlq2rZUstTPv8XAQamKdTlHAAffTcaWpStcDMOAsz4YYZr7pZ2OJpJf50KuB5dj+A6Fxlx5Nl3KDX1Vjci4tiiuguOg=
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Apr 2020 11:30:02.8680
+ (UTC)
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR05MB2864
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.676
+ definitions=2020-04-24_04:2020-04-23,2020-04-24 signatures=0
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 suspectscore=1
+ lowpriorityscore=0 bulkscore=0 adultscore=0 impostorscore=0 mlxscore=0
+ spamscore=0 mlxlogscore=999 phishscore=0 priorityscore=1501 clxscore=1015
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
+ definitions=main-2004240091
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Hello Johannes, Tamizh, and all
 
---=-gsyOdCPD4+numFWJNg7M
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+This patch series contains several minor fixes and enhancements for TID
+specific configuration functionality. The first three patches include
+minor fixes and TID specific AMSDU configuration.
 
-Hi Kalle,
+The 4th patch is somewhat controversial, so the series is marked as RFC.
+This patch simplifies current override logic. It suggests to make no
+difference between 'specific peer' and 'all peers' cases and to apply
+new TID configuration immediately after resetting the previous one.
 
-Here's the first batch of patches intended for v5.8.  This includes
-the last two patchsets I sent out.  Usual development work.  More
-details about the contents in the tag description.
+The 5th patch enables access to new kernel functionality from iw tool.
+Note that nl80211.h changes are not included into iw. So to make this
+change work in iw , header should be updated upfront, including new
+AMSDU attribute from this patch series.
 
-Please let me know if there are any issues.
+Regards,
+Sergey
 
-Cheers,
-Luca.
+v1 -> v2
+
+- add policy for new AMSDU attribute
+- add patch for iw with support for per-tid per-node configuration
 
 
-The following changes since commit 75e69fb11b40ba1256b14f943c7050682c1f5458=
-:
+Sergey Matyukevich (5):
+  cfg80211: fix mask type in cfg80211_tid_cfg structure
+  mac80211: fix variable names in TID config methods
+  cfg80211: add support for TID specific AMSDU configuration
+  nl80211: simplify peer specific TID configuration
+  iw: add TID specific configuration command
 
-  rtw88: 8723d: initialize mac/bb/rf basic functions (2020-04-23 07:47:27 +=
-0300)
+ include/net/cfg80211.h       |  6 ++++--
+ include/uapi/linux/nl80211.h | 20 +++++++++++---------
+ net/mac80211/cfg.c           |  6 +++---
+ net/mac80211/driver-ops.h    |  4 ++--
+ net/wireless/nl80211.c       | 13 +++++++++----
+ 5 files changed, 29 insertions(+), 20 deletions(-)
 
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/iwlwifi-next.git ta=
-gs/iwlwifi-next-for-kalle-2020-04-24
-
-for you to fetch changes up to d7b14112a51a6cc9807b5c66144b71647e44fe1c:
-
-  iwlwifi: debug: set NPK buffer in context info (2020-04-24 13:30:58 +0300=
-)
-
-----------------------------------------------------------------
-First set of iwlwifi patches intended for v5.8
-
-* TX queue debugfs improvements;
-* Support for a few new FW API versions;
-* Remove deprecated scan FW API version;
-* New hw configs and other related changes;
-* Support for NPK buffers in debugging;
-* More debugging fetures;
-* Some other small fixes and clean-ups;
-
-----------------------------------------------------------------
-Emmanuel Grumbach (1):
-      iwlwifi: remove fw_monitor module parameter
-
-Gil Adam (2):
-      iwlwifi: mvm: add framework for specific phy configuration
-      iwlwifi: debug: set NPK buffer in context info
-
-Ihab Zhaika (2):
-      iwlwifi: add new cards for AX family
-      iwlwifi: update few product names in AX family
-
-Johannes Berg (6):
-      iwlwifi: pcie: use seq_file for tx_queue debugfs file
-      iwlwifi: pcie: add n_window/ampdu to tx_queue debugfs
-      iwlwifi: pcie: gen2: minor code cleanups in byte table update
-      iwlwifi: mvm: add DCM flag to rate pretty-print
-      iwlwifi: pcie: move iwl_pcie_ctxt_info_alloc_dma() to user
-      iwlwifi: mvm: tell firmware about required LTR delay
-
-Luca Coelho (4):
-      iwlwifi: remove deprecated and unused iwl_mvm_keyinfo struct
-      iwlwifi: pcie: add cfgs for SoCs with device ID 0x4FD0
-      iwlwifi: pcie: add new structure for Qu devices with medium latency
-      iwlwifi: pcie: add new structs for So devices with long latency
-
-Mordechay Goodstein (3):
-      iwlwifi: move API version lookup to common code
-      iwlwifi: support version 9 of WOWLAN_GET_STATUS notification
-      iwlwifi: acpi: read TAS table from ACPI and send it to the FW
-
-Shahar S Matityahu (2):
-      iwlwifi: dbg: support multiple dumps in legacy dump flow
-      iwlwifi: yoyo: support IWL_FW_INI_TIME_POINT_HOST_ALIVE_TIMEOUT time =
-point
-
-Tova Mussai (2):
-      iwlwifi: scan: remove support for fw scan api v13
-      iwlwifi: nvm: use iwl_nl80211_band_from_channel_idx
-
- drivers/net/wireless/intel/iwlwifi/Makefile              |   3 +-
- drivers/net/wireless/intel/iwlwifi/cfg/22000.c           |  71 +++++++++++=
-++++++++++++++++++++++++++++--------
- drivers/net/wireless/intel/iwlwifi/fw/acpi.c             |  76 +++++++++++=
-+++++++++++++++++++++++++++++++++++++++
- drivers/net/wireless/intel/iwlwifi/fw/acpi.h             |  17 +++++++++++=
-+
- drivers/net/wireless/intel/iwlwifi/fw/api/config.h       |  39 +++++++++++=
-+++++++++++++--
- drivers/net/wireless/intel/iwlwifi/fw/api/d3.h           |  39 +++++++++++=
-++++++++++++++-
- drivers/net/wireless/intel/iwlwifi/fw/api/nvm-reg.h      |  15 ++++++++++
- drivers/net/wireless/intel/iwlwifi/fw/api/scan.h         |  26 -----------=
--------
- drivers/net/wireless/intel/iwlwifi/fw/api/soc.h          |  12 +++++---
- drivers/net/wireless/intel/iwlwifi/fw/api/sta.h          |  26 -----------=
--------
- drivers/net/wireless/intel/iwlwifi/fw/dbg.c              | 139 +++++++++++=
-++++++++++++++++++++++++++++++++++++++++++++++++---------------------------=
-------
- drivers/net/wireless/intel/iwlwifi/fw/dbg.h              |  11 --------
- drivers/net/wireless/intel/iwlwifi/fw/file.h             |   1 +
- drivers/net/wireless/intel/iwlwifi/fw/img.c              | 100 +++++++++++=
-+++++++++++++++++++++++++++++++++++++++++++++++++++++++
- drivers/net/wireless/intel/iwlwifi/fw/img.h              |  19 ++---------=
---
- drivers/net/wireless/intel/iwlwifi/fw/runtime.h          |  14 +++++++---
- drivers/net/wireless/intel/iwlwifi/iwl-config.h          |  23 +++++++++++=
-+----
- drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c         |  26 +++++++++++=
-+------
- drivers/net/wireless/intel/iwlwifi/iwl-drv.c             |   4 ---
- drivers/net/wireless/intel/iwlwifi/iwl-modparams.h       |   2 --
- drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c       |   3 +-
- drivers/net/wireless/intel/iwlwifi/mvm/constants.h       |   4 +++
- drivers/net/wireless/intel/iwlwifi/mvm/d3.c              |  29 +++++++++++=
-++------
- drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c   |   4 +--
- drivers/net/wireless/intel/iwlwifi/mvm/ftm-responder.c   |   4 +--
- drivers/net/wireless/intel/iwlwifi/mvm/fw.c              | 113 +++++++++++=
-+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++----
- drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c        |   1 -
- drivers/net/wireless/intel/iwlwifi/mvm/mvm.h             |   4 +--
- drivers/net/wireless/intel/iwlwifi/mvm/ops.c             |  25 ++---------=
-------
- drivers/net/wireless/intel/iwlwifi/mvm/rs.c              |   3 +-
- drivers/net/wireless/intel/iwlwifi/mvm/scan.c            |  44 +++--------=
-------------------
- drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info-gen3.c |  47 +++++++++++=
-+++++---------------
- drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info.c      |  15 ++++++++++
- drivers/net/wireless/intel/iwlwifi/pcie/drv.c            |  34 +++++++++++=
-+++++++-----
- drivers/net/wireless/intel/iwlwifi/pcie/internal.h       |  16 -----------
- drivers/net/wireless/intel/iwlwifi/pcie/trans.c          | 137 +++++++++++=
-++++++++++++++++++++++++++++++++++++++++++++++++---------------------------=
-----
- drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c        |   8 ++++--
- 37 files changed, 800 insertions(+), 354 deletions(-)
- create mode 100644 drivers/net/wireless/intel/iwlwifi/fw/img.c
-
---=-gsyOdCPD4+numFWJNg7M
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-Content-Transfer-Encoding: 7bit
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEF3LNfgb2BPWm68smoUecoho8xfoFAl6ix2AACgkQoUecoho8
-xfrhpQ/+L3M+KjFh6pjqBJDQ7pUzAMUJqfRWAH01mM4Er/00yJrrJ6OGxeUqRwxN
-wkE5ICKSiosukieUWjZ7bFELQB/AtT1PYBzEg1+L9gPQBnhVSryqWiildcu4xoac
-xOeaKbWAK50yjiL3W+VTFNWnjSw6oppGjPqNI5A2hX7S7DHamPQK0lHe/VBseat8
-Dr5pEdoyLvKTXdeW1AUhd7PpKjZZ9JRtZuPrW8l1LKIj7Wbs5uqkA29sZQd5bp/2
-EEpzGViq2v22onXniUiBDQLbOLCtvstmlnQhz2CHuFptf2xUvl/m9QEJjtLlLbzp
-qauOhT5kKEsYIWpwQZhubEu41r0trJpDEhvXFhOu3WYKRO2hX0N4lmd9GttSkZLo
-d2sf3f0WbBe0lSpDPL/hxs7alVnvG21XZ6gB4wFK6ENExc1jfu2HoxdUf+UZ4y2+
-E8dnwd9NneVTMpHha7Q8DlFs3XP4iGC9KgxwC+O6US+HC12w12bydXsbcpO1b1oC
-KArgD9TJ0kJGUUidZkJMuiQQLZzBL5Pyt9k18lImuxRYn5++bc80yyXQq2OIliS+
-WwvuCXYKWrwt3K1SFIgtLSchvKS4RcKeNq2Gbj4oUjQScF6eNA0dVyjDj61eucSo
-VKSamS+jFEu2yD7wp4Q4kX9ced2SjMinfPC/r1gejWdje++WKN0=
-=edkU
------END PGP SIGNATURE-----
-
---=-gsyOdCPD4+numFWJNg7M--
+-- 
+2.11.0
 
