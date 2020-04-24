@@ -2,126 +2,121 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 376841B8226
-	for <lists+linux-wireless@lfdr.de>; Sat, 25 Apr 2020 00:42:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BD3231B8270
+	for <lists+linux-wireless@lfdr.de>; Sat, 25 Apr 2020 01:29:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726130AbgDXWmj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 24 Apr 2020 18:42:39 -0400
-Received: from mail27.static.mailgun.info ([104.130.122.27]:50737 "EHLO
-        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726112AbgDXWmj (ORCPT
+        id S1726059AbgDXX2x (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 24 Apr 2020 19:28:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43108 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725932AbgDXX2w (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 24 Apr 2020 18:42:39 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1587768158; h=References: In-Reply-To: Message-Id: Date:
- Subject: Cc: To: From: Sender;
- bh=agUELOV9lipNsFvH/nyiWApqAJhfdAC9LPNeRPNoYZ0=; b=pGh2eqP35DrGzLduFMhZmphrYne9e8Mo7tSPqtDVo2kyCDTtK6rMO+Si3Mq8JpORgmA4F/ys
- /JICoY6w8jZBzvc0eUM827DoO4/YWVm6kVqJNOD2FXJYyyjcYYAubZJ+GoxZG+b/+BGUB6YA
- RXy5bY8PCakV8f3YxVGs7CvU2Qo=
-X-Mailgun-Sending-Ip: 104.130.122.27
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5ea36b55.7f006ae200a0-smtp-out-n02;
- Fri, 24 Apr 2020 22:42:29 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id CD26DC433D2; Fri, 24 Apr 2020 22:42:29 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE,
-        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from rmanohar-linux.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: rmanohar)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 0F2B9C433CB;
-        Fri, 24 Apr 2020 22:42:29 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 0F2B9C433CB
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=rmanohar@codeaurora.org
-From:   Rajkumar Manoharan <rmanohar@codeaurora.org>
-To:     johannes@sipsolutions.net
-Cc:     linux-wireless@vger.kernel.org,
-        Rajkumar Manoharan <rmanohar@codeaurora.org>
-Subject: [PATCH 10/10] ath11k: build HE 6 GHz capability
-Date:   Fri, 24 Apr 2020 15:41:48 -0700
-Message-Id: <1587768108-25248-11-git-send-email-rmanohar@codeaurora.org>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1587768108-25248-1-git-send-email-rmanohar@codeaurora.org>
-References: <1587768108-25248-1-git-send-email-rmanohar@codeaurora.org>
+        Fri, 24 Apr 2020 19:28:52 -0400
+X-Greylist: delayed 1333 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 24 Apr 2020 16:28:52 PDT
+Received: from bues.ch (bues.ch [IPv6:2a01:138:9005::1:4])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F0DEC09B049;
+        Fri, 24 Apr 2020 16:28:52 -0700 (PDT)
+Received: by bues.ch with esmtpsa (Exim 4.92)
+        (envelope-from <m@bues.ch>)
+        id 1jS7P1-0005Hg-8R; Sat, 25 Apr 2020 01:06:35 +0200
+Date:   Sat, 25 Apr 2020 01:05:05 +0200
+From:   Michael =?UTF-8?B?QsO8c2No?= <m@bues.ch>
+To:     John Oldman <john.oldman@polehill.co.uk>
+Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] :ssb sprom.c: Fixed block comments coding style issues
+Message-ID: <20200425010505.586bbad4@wiggum>
+In-Reply-To: <20200424175043.16261-1-john.oldman@polehill.co.uk>
+References: <20200424175043.16261-1-john.oldman@polehill.co.uk>
+X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+MIME-Version: 1.0
+Content-Type: multipart/signed; boundary="Sig_/+Zg=N8FpeLMAEgxEZqKZX9_";
+ protocol="application/pgp-signature"; micalg=pgp-sha512
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Build 6 GHz band capability from HT and VHT capabilities reported
-by firmware.
+--Sig_/+Zg=N8FpeLMAEgxEZqKZX9_
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Rajkumar Manoharan <rmanohar@codeaurora.org>
----
- drivers/net/wireless/ath/ath11k/core.h |  1 +
- drivers/net/wireless/ath/ath11k/mac.c  | 30 ++++++++++++++++++++++++++++++
- 2 files changed, 31 insertions(+)
+On Fri, 24 Apr 2020 18:50:43 +0100
+John Oldman <john.oldman@polehill.co.uk> wrote:
 
-diff --git a/drivers/net/wireless/ath/ath11k/core.h b/drivers/net/wireless/ath/ath11k/core.h
-index 6e7b8ecd09a6..730829eaee23 100644
---- a/drivers/net/wireless/ath/ath11k/core.h
-+++ b/drivers/net/wireless/ath/ath11k/core.h
-@@ -537,6 +537,7 @@ struct ath11k_band_cap {
- 	u32 he_mcs;
- 	u32 he_cap_phy_info[PSOC_HOST_MAX_PHY_SIZE];
- 	struct ath11k_ppe_threshold he_ppet;
-+	u32 he_6ghz_cap;
- };
- 
- struct ath11k_pdev_cap {
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index 06d063274eea..eb4dc6fc4209 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -3522,6 +3522,32 @@ ath11k_mac_filter_he_cap_mesh(struct ieee80211_he_cap_elem *he_cap_elem)
- 	he_cap_elem->phy_cap_info[9] &= ~m;
- }
- 
-+static u16 ath11k_mac_setup_he_6ghz_cap(struct ath11k_pdev_cap *pcap,
-+					struct ath11k_band_cap *bcap)
-+{
-+	bcap->he_6ghz_cap = IEEE80211_HT_MPDU_DENSITY_NONE;
-+	if (bcap->ht_cap_info & WMI_HT_CAP_DYNAMIC_SMPS)
-+		bcap->he_6ghz_cap |=
-+			FIELD_PREP(IEEE80211_HE_6GHZ_CAP_SMPS_MASK,
-+				   WLAN_HT_CAP_SM_PS_DYNAMIC);
-+	bcap->he_6ghz_cap |=
-+	   FIELD_PREP(IEEE80211_HE_6GHZ_CAP_MAX_A_MPDU_LENGTH_EXPONENT_MASK,
-+		FIELD_GET(IEEE80211_VHT_CAP_MAX_A_MPDU_LENGTH_EXPONENT_MASK,
-+			  pcap->vht_cap));
-+	bcap->he_6ghz_cap |=
-+		FIELD_PREP(IEEE80211_HE_6GHZ_CAP_MAX_MPDU_LENGTH_MASK,
-+			   FIELD_GET(IEEE80211_VHT_CAP_MAX_MPDU_MASK,
-+				     pcap->vht_cap));
-+	if (pcap->vht_cap & IEEE80211_VHT_CAP_RX_ANTENNA_PATTERN)
-+		bcap->he_6ghz_cap |=
-+			IEEE80211_HE_6GHZ_CAP_RX_ANTENNA_PATTERN;
-+	if (pcap->vht_cap & IEEE80211_VHT_CAP_TX_ANTENNA_PATTERN)
-+		bcap->he_6ghz_cap |=
-+			IEEE80211_HE_6GHZ_CAP_TX_ANTENNA_PATTERN;
-+
-+	return bcap->he_6ghz_cap;
-+}
-+
- static int ath11k_mac_copy_he_cap(struct ath11k *ar,
- 				  struct ath11k_pdev_cap *cap,
- 				  struct ieee80211_sband_iftype_data *data,
-@@ -3602,6 +3628,10 @@ static int ath11k_mac_copy_he_cap(struct ath11k *ar,
- 		    IEEE80211_HE_PHY_CAP6_PPE_THRESHOLD_PRESENT)
- 			ath11k_gen_ppe_thresh(&band_cap->he_ppet,
- 					      he_cap->ppe_thres);
-+
-+		if (band == NL80211_BAND_6GHZ)
-+			he_cap->he_6ghz_cap =
-+				ath11k_mac_setup_he_6ghz_cap(cap, band_cap);
- 		idx++;
- 	}
- 
--- 
-2.7.4
+> Fixed coding style issues
+>=20
+> Signed-off-by: John Oldman <john.oldman@polehill.co.uk>
+> ---
+>  drivers/ssb/sprom.c | 12 ++++++++----
+>  1 file changed, 8 insertions(+), 4 deletions(-)
+>=20
+> diff --git a/drivers/ssb/sprom.c b/drivers/ssb/sprom.c
+> index 52d2e0f33be7..42d620cee8a9 100644
+> --- a/drivers/ssb/sprom.c
+> +++ b/drivers/ssb/sprom.c
+> @@ -78,7 +78,8 @@ ssize_t ssb_attr_sprom_show(struct ssb_bus *bus, char *=
+buf,
+> =20
+>  	/* Use interruptible locking, as the SPROM write might
+>  	 * be holding the lock for several seconds. So allow userspace
+> -	 * to cancel operation. */
+> +	 * to cancel operation.
+> +	 */
+>  	err =3D -ERESTARTSYS;
+>  	if (mutex_lock_interruptible(&bus->sprom_mutex))
+>  		goto out_kfree;
+> @@ -121,7 +122,8 @@ ssize_t ssb_attr_sprom_store(struct ssb_bus *bus,
+> =20
+>  	/* Use interruptible locking, as the SPROM write might
+>  	 * be holding the lock for several seconds. So allow userspace
+> -	 * to cancel operation. */
+> +	 * to cancel operation.
+> +	 */
+>  	err =3D -ERESTARTSYS;
+>  	if (mutex_lock_interruptible(&bus->sprom_mutex))
+>  		goto out_kfree;
+> @@ -188,9 +190,11 @@ int ssb_fill_sprom_with_fallback(struct ssb_bus *bus=
+, struct ssb_sprom *out)
+>  bool ssb_is_sprom_available(struct ssb_bus *bus)
+>  {
+>  	/* status register only exists on chipcomon rev >=3D 11 and we need che=
+ck
+> -	   for >=3D 31 only */
+> +	 * for >=3D 31 only
+> +	 */
+>  	/* this routine differs from specs as we do not access SPROM directly
+> -	   on PCMCIA */
+> +	 * on PCMCIA
+> +	 */
+>  	if (bus->bustype =3D=3D SSB_BUSTYPE_PCI &&
+>  	    bus->chipco.dev &&	/* can be unavailable! */
+>  	    bus->chipco.dev->id.revision >=3D 31)
+
+
+Acked-by: Michael B=C3=BCsch <m@bues.ch>
+
+--=20
+Michael
+
+--Sig_/+Zg=N8FpeLMAEgxEZqKZX9_
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEEihRzkKVZOnT2ipsS9TK+HZCNiw4FAl6jcKEACgkQ9TK+HZCN
+iw4GnQ/9HBXu8gdGeHKJsOxPtAxlbFVHXaPGp3qKQb7Si1i3RvA+yxwMY10SOIPJ
+gc52OhmgTqgVYrug9z9JcZu8W0FXy0ti9HTIxUm7ufOTnoL0H/k5uvi4f+UnqV2i
+JQOcH+bKOCGRIUTEq0O/V1Z44YxiNkd8aT3pmPoRzapyR9pD8qtbTTOTXShyhFvx
+wj0SQXoiEh5Tz9KtnnaZc3fR3QzQGTeUx9lZJ3hDdIuA+IyK6oEZP4992N1cBY3Z
+LihdOriotdEAFxw+2+CZX5SKvjQneLcQJM9XhiF/jEWxPas+LmCy87tyhc5TU7xP
+217PE6BpktDXAtG/mY6D0ckAwchVpkKowxzDYjqA2g6ft/TeUBQ6oerk/8GQC+MV
+AOR8HwwxB1ZB3kwpWGD0PpqWvxz3YBFl3VxW9CmVi77xoVTjDXRA7ehylHENeZHY
+WO7Jlp53DuVUUlpnWNC/E2welHvaBkwEtJW+eWb7m5vZg0kx7SxsOBSZP6hn2bK0
+4eioFb/c6qqhzshbGyF/wU+OOGufjpnYmJ8eXje3913IpXRpem8Ek8wktwSrLbdG
+zOC6UylqqHOZB3Fe+BeX42vCTjPyViRX8xpT3r9ADLTGQi3k1ghdmPJnrX4+SB0e
+Atk0L7ybsJjdOgIvokCYCpppzYllyWwzpfMyNA/YgQeJdQSO6Cw=
+=V+Rq
+-----END PGP SIGNATURE-----
+
+--Sig_/+Zg=N8FpeLMAEgxEZqKZX9_--
