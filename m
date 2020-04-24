@@ -2,39 +2,39 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D5681B7528
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 Apr 2020 14:32:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CFF6C1B74F5
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 Apr 2020 14:30:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727838AbgDXMXI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 24 Apr 2020 08:23:08 -0400
-Received: from mail.kernel.org ([198.145.29.99]:52584 "EHLO mail.kernel.org"
+        id S1728178AbgDXM35 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 24 Apr 2020 08:29:57 -0400
+Received: from mail.kernel.org ([198.145.29.99]:53926 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727825AbgDXMXH (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 24 Apr 2020 08:23:07 -0400
+        id S1728138AbgDXMXr (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 24 Apr 2020 08:23:47 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id CD69B2087E;
-        Fri, 24 Apr 2020 12:23:05 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 3A04121707;
+        Fri, 24 Apr 2020 12:23:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1587730986;
+        s=default; t=1587731027;
         bh=t6QrlUuqm7H12f/LEkP2lMqOz6UI8P+PkX2WkGbdVLQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Ce2KMzcwtR1jHYB2iMVnQZ2AWFQNnrLnW3oEUCfVZMskCTvM1nMjyERAm9QOolKfo
-         ARKRMog7pVaaZnPjDO93g9dU7LuWh5m2YcsBt8Wkv5B10s50IqjCmrkd6Z07ywy3b9
-         5+qKE9Ahx/F72Tz0mGJO2bLeuJ/HmS9H8eIT3d98=
+        b=EdOFQzMTy4FHrXKiiqVN29MZ1KijNz87++Y4O795DOCgKKErcwdXvRUQLEdi41dsC
+         hGOE+MiDKOwh9uPkIq+7zyRg8sfRnmqgiSrHBcOp+tUh5asV+Pm/B0je1YEfMlyhyG
+         X96i6ShgGOeDfjSI8Y8xBq9jmZW1Qae7K0/dpYn4=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Tamizh chelvam <tamizhr@codeaurora.org>,
         Johannes Berg <johannes.berg@intel.com>,
         Sasha Levin <sashal@kernel.org>,
         linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.6 25/38] mac80211: fix channel switch trigger from unknown mesh peer
-Date:   Fri, 24 Apr 2020 08:22:23 -0400
-Message-Id: <20200424122237.9831-25-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 20/26] mac80211: fix channel switch trigger from unknown mesh peer
+Date:   Fri, 24 Apr 2020 08:23:17 -0400
+Message-Id: <20200424122323.10194-20-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200424122237.9831-1-sashal@kernel.org>
-References: <20200424122237.9831-1-sashal@kernel.org>
+In-Reply-To: <20200424122323.10194-1-sashal@kernel.org>
+References: <20200424122323.10194-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
