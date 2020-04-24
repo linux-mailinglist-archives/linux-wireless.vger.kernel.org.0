@@ -2,59 +2,59 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C5DE1B6A79
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 Apr 2020 02:49:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 167101B6A7A
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 Apr 2020 02:49:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728397AbgDXAti (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 23 Apr 2020 20:49:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56036 "EHLO
+        id S1728350AbgDXAtj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 23 Apr 2020 20:49:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56038 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728052AbgDXAti (ORCPT
+        with ESMTP id S1728052AbgDXAtj (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 23 Apr 2020 20:49:38 -0400
-Received: from mail-lj1-x242.google.com (mail-lj1-x242.google.com [IPv6:2a00:1450:4864:20::242])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B91D5C09B042
-        for <linux-wireless@vger.kernel.org>; Thu, 23 Apr 2020 17:49:37 -0700 (PDT)
-Received: by mail-lj1-x242.google.com with SMTP id u6so8182928ljl.6
-        for <linux-wireless@vger.kernel.org>; Thu, 23 Apr 2020 17:49:37 -0700 (PDT)
+        Thu, 23 Apr 2020 20:49:39 -0400
+Received: from mail-lf1-x141.google.com (mail-lf1-x141.google.com [IPv6:2a00:1450:4864:20::141])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E88CDC09B042
+        for <linux-wireless@vger.kernel.org>; Thu, 23 Apr 2020 17:49:38 -0700 (PDT)
+Received: by mail-lf1-x141.google.com with SMTP id r17so6291862lff.2
+        for <linux-wireless@vger.kernel.org>; Thu, 23 Apr 2020 17:49:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=la2G1HCrrxK1MLNy6dIeXCgUDsqvGwugG5O298GMJH0=;
-        b=ivfmR3fxwtTtJZ7Kps8x3n0DD5etjSZuYFLSIBl+FzwgZWpQt53VX+7HgnQB6k0bXl
-         qwNvpya5UywSba9PVKj3CCJmLRwujWaVjPnUgEOzKnUeljPDQnZQ5ByNYxycRTY6Tm9T
-         4DPmcBlZTX/ZjssCSqolhpt3g4/nd5wov8O+a4TNPlyLU49SG23E7gQU4Ri6e9Bmb56V
-         gv+DMSkBCEnDQz+ijyaJSa63YlJiliQPa8G6ZvBTo1hmpElsuFWynOy+CrTqGIYY6fyl
-         j6smX9YiOtCmJHnG7tqAzXAj7TeZ+NFMoO8L5er+Hze7eVV619Jn6FAv47VZGe1vf+nY
-         cvUg==
+        bh=/b3npb6pWEyc/rTWSDgsuwKjZh16aTlDyhMtdfaza4g=;
+        b=DfVDRkxB5o1unqMkdwVEHWkdoydfqEGK3DqscgzZshy3J7HBQzXdmdS1N3GsdRJprK
+         BeByShk0tDM9eRz6+GNclRIjsEx83p4Lo9FrRBQSeFbZO7Oxo5ZXwXgKS1/cl8+2eA4p
+         NfzIZ/jzCaZR/z/x/3cQfN4o7VkQ8OIccI1JQ+KnhZMAkv9wxMtNULCmnz9Gp5DLcn5J
+         umeWpQfRTnGbPrZAx8H3qq2a7V2NJNhoN7BxYaiBHutDzXogc+Z1bsiKT6lNzL+a+g/6
+         RyYoOAGpszd/5c3ZEgrYtOnmM2gSTYYyxk+9/nwlRs4PoOXCkL+U1oStY4XzYrAI1CEU
+         ohxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=la2G1HCrrxK1MLNy6dIeXCgUDsqvGwugG5O298GMJH0=;
-        b=g0w3669QFwjUIebHoHEPVuw8y/d4DcHsKp5VmkQyKmKWNE6wOaZG3SCmPMBZIcLj+x
-         7z9cLQdsOd3DypdLlc2E8/Or1YURS2SDKqD9pLfJGOThhi8GXFTBrSk+urxcEQUZvZad
-         3tZJgPpiOzQ1F9OlVbNkLzkVl8FttDJfzO9s4fp9H0kfHGZJqWA0HzPER1TWe3rRSzOy
-         vSZgCE4jqzWGfjTyQU/FpFYA4S7V0/QfnqqxtQkrI9rGFmASSvtjJ/ABgGobGx4nBFBs
-         FCSTmd/IHkfF9koBchm3fElthsn+i12aMwSWqoKIwU0kChwgoTTw0epTFBoRq/yZZ4MO
-         q04A==
-X-Gm-Message-State: AGi0PuZEuKZQQZPtlFlul55vxZvGqGhsrazxnl5bgtB1XWfasI7lYjFl
-        3uwqCDXwNsvPKTzVOeplIb95IzHW
-X-Google-Smtp-Source: APiQypLOQn7S7ljmLV9Rd91S7f06hsLdK2yHiRPxjwAP+WbP/PX1VlbZJwMjJWMThpjb1nzJfB8Bzg==
-X-Received: by 2002:a05:651c:403:: with SMTP id 3mr3944631lja.231.1587689376268;
-        Thu, 23 Apr 2020 17:49:36 -0700 (PDT)
+        bh=/b3npb6pWEyc/rTWSDgsuwKjZh16aTlDyhMtdfaza4g=;
+        b=V8Epfr2jHAU0aODWnaTPPlNEWZBkzA/xYiP7eUnVBxXEssc8zi2mZwvCdHP47rOxIX
+         FbK8uLlHnBeW9MKb4MKVEwFMQVKn3UBcz4eWjoS0Z0yfQBO1yK5PZzmCmSINcZI5lFNr
+         s+KxrOxozCPdv0Sa0g41yoZG+4macLvlcjfLlMO4yFO/0A5DrPCO8L6kja5660BqrSAO
+         20OpUpfUeaF7/hhXnjTKAHl7kcVQyO3o5DxhiZ5Gu3LFtt372JISRmb98SBDN7SO30Xt
+         YBNetQ7q/8ZU70PnFW2910pU+H3tnrDABxEov94kBHJY3IGQ+JEDtOxZ+DPVuBcS//Sl
+         pZKA==
+X-Gm-Message-State: AGi0PuZJZqO1ODDQ3dvHPUSqeWGdesopAA2RhRgwSSGvB/Yow/nnUAMm
+        ZxlnhPw2aB5aVyb1fovhPBw=
+X-Google-Smtp-Source: APiQypJ1oR8r2M0seiVpQ9Qw7z98IuiVt34JVAyGFGzWYISlwpY7u+OFvhXkrjcb8qmqK4lwRiznwQ==
+X-Received: by 2002:a05:6512:3189:: with SMTP id i9mr4220250lfe.178.1587689377419;
+        Thu, 23 Apr 2020 17:49:37 -0700 (PDT)
 Received: from rsa-laptop.internal.lan ([217.25.229.52])
-        by smtp.gmail.com with ESMTPSA id r12sm1555056ljc.12.2020.04.23.17.49.35
+        by smtp.gmail.com with ESMTPSA id r12sm1555056ljc.12.2020.04.23.17.49.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Apr 2020 17:49:35 -0700 (PDT)
+        Thu, 23 Apr 2020 17:49:36 -0700 (PDT)
 From:   Sergey Ryazanov <ryazanov.s.a@gmail.com>
 To:     Kalle Valo <kvalo@codeaurora.org>
 Cc:     QCA ath9k Development <ath9k-devel@qca.qualcomm.com>,
         linux-wireless@vger.kernel.org
-Subject: [PATCH 1/6] ath9k: fix AR9002 ADC and NF calibrations
-Date:   Fri, 24 Apr 2020 03:49:18 +0300
-Message-Id: <20200424004923.17129-2-ryazanov.s.a@gmail.com>
+Subject: [PATCH 2/6] ath9k: remove needless NFCAL_PENDING flag setting
+Date:   Fri, 24 Apr 2020 03:49:19 +0300
+Message-Id: <20200424004923.17129-3-ryazanov.s.a@gmail.com>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200424004923.17129-1-ryazanov.s.a@gmail.com>
 References: <20200424004923.17129-1-ryazanov.s.a@gmail.com>
@@ -65,48 +65,29 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-ADC calibration is only required for a 80 MHz sampling rate (i.e. for
-40 MHz channels), when the chip utilizes the pair of ADCs in interleved
-mode. Calibration on a 20 MHz channel will never be completed.
-
-Previous channel check is trying to exclude all channels where the
-calibration will get stuck. It effectively blocks the calibration run
-for HT20 channels, but fails to exclude 20 MHz channels without HT (e.g.
-legacy mode channels).
-
-Fix this issue by reworking the channel check to explicitly allow ADCs
-gain & DC offset calibrations for HT40 channels only. Also update the
-complicated comment to make it clear that these calibrations are for
-multi-ADC mode only.
-
-Stuck ADCs calibration blocks the NF calibration, what could make it
-impossible to work in a noisy evironment: too big Rx attentuation,
-invalid RSSI value, etc. So this change is actually more of a NF
-calibration fix rather then the ADC calibration fix.
-
-Run tested with AR9220.
+The NFCAL_PENDING flag is set by the ath9k_hw_start_nfcal() routine,
+so there is no reason to set it manually after calling it during the
+AR9002 calibrations initialization.
 
 Signed-off-by: Sergey Ryazanov <ryazanov.s.a@gmail.com>
 ---
- drivers/net/wireless/ath/ath9k/ar9002_calib.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/net/wireless/ath/ath9k/ar9002_calib.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
 diff --git a/drivers/net/wireless/ath/ath9k/ar9002_calib.c b/drivers/net/wireless/ath/ath9k/ar9002_calib.c
-index fd9db8ca99d7..14eee06744ed 100644
+index 14eee06744ed..0f7c5812e5c2 100644
 --- a/drivers/net/wireless/ath/ath9k/ar9002_calib.c
 +++ b/drivers/net/wireless/ath/ath9k/ar9002_calib.c
-@@ -37,9 +37,8 @@ static bool ar9002_hw_is_cal_supported(struct ath_hw *ah,
- 		break;
- 	case ADC_GAIN_CAL:
- 	case ADC_DC_CAL:
--		/* Run ADC Gain Cal for non-CCK & non 2GHz-HT20 only */
--		if (!((IS_CHAN_2GHZ(chan) || IS_CHAN_A_FAST_CLOCK(ah, chan)) &&
--		      IS_CHAN_HT20(chan)))
-+		/* Run even/odd ADCs calibrations for HT40 channels only */
-+		if (IS_CHAN_HT40(chan))
- 			supported = true;
- 		break;
- 	}
+@@ -857,9 +857,6 @@ static bool ar9002_hw_init_cal(struct ath_hw *ah, struct ath9k_channel *chan)
+ 	ath9k_hw_loadnf(ah, chan);
+ 	ath9k_hw_start_nfcal(ah, true);
+ 
+-	if (ah->caldata)
+-		set_bit(NFCAL_PENDING, &ah->caldata->cal_flags);
+-
+ 	ah->cal_list = ah->cal_list_last = ah->cal_list_curr = NULL;
+ 
+ 	/* Enable IQ, ADC Gain and ADC DC offset CALs */
 -- 
 2.24.1
 
