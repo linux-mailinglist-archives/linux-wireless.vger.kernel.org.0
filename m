@@ -2,101 +2,69 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CFF6C1B74F5
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 Apr 2020 14:30:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 998D21B75EF
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 Apr 2020 14:51:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728178AbgDXM35 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 24 Apr 2020 08:29:57 -0400
-Received: from mail.kernel.org ([198.145.29.99]:53926 "EHLO mail.kernel.org"
+        id S1726717AbgDXMvj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 24 Apr 2020 08:51:39 -0400
+Received: from mail.kernel.org ([198.145.29.99]:48682 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728138AbgDXMXr (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 24 Apr 2020 08:23:47 -0400
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        id S1726667AbgDXMvj (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 24 Apr 2020 08:51:39 -0400
+Received: from localhost.localdomain.com (unknown [151.66.196.206])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 3A04121707;
-        Fri, 24 Apr 2020 12:23:46 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 9EAF620706;
+        Fri, 24 Apr 2020 12:51:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1587731027;
-        bh=t6QrlUuqm7H12f/LEkP2lMqOz6UI8P+PkX2WkGbdVLQ=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EdOFQzMTy4FHrXKiiqVN29MZ1KijNz87++Y4O795DOCgKKErcwdXvRUQLEdi41dsC
-         hGOE+MiDKOwh9uPkIq+7zyRg8sfRnmqgiSrHBcOp+tUh5asV+Pm/B0je1YEfMlyhyG
-         X96i6ShgGOeDfjSI8Y8xBq9jmZW1Qae7K0/dpYn4=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Tamizh chelvam <tamizhr@codeaurora.org>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Sasha Levin <sashal@kernel.org>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 20/26] mac80211: fix channel switch trigger from unknown mesh peer
-Date:   Fri, 24 Apr 2020 08:23:17 -0400
-Message-Id: <20200424122323.10194-20-sashal@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200424122323.10194-1-sashal@kernel.org>
-References: <20200424122323.10194-1-sashal@kernel.org>
+        s=default; t=1587732698;
+        bh=acTCKRQtc8GdP2hfA8pb2wBMyI3c/xByzORhk33F4+M=;
+        h=From:To:Cc:Subject:Date:From;
+        b=RwsJIdQZnBnzL7i9BruN7sIPvkKiLJgHY+CzWGCjQu6X9h1uQHytXMDkaNQR2C8wz
+         tEU1/+d8wKxw4W7O4+paBCZGkm1WJ9rh/6LUKyn4Y9tjwnG9K1G8UMGDIrVy19Qg+T
+         KBoYK+hFTZDT7QKZ+PBp/famj6Yned3Cn1emLPss=
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
+        sean.wang@mediatek.com, linux-mediatek@lists.infradead.org
+Subject: [PATCH] mt76: mt7615: fix event report in mt7615_mcu_bss_event
+Date:   Fri, 24 Apr 2020 14:51:29 +0200
+Message-Id: <19823f332eb49c3d0ab5177137e3b67c21e27a7b.1587732526.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.25.3
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Tamizh chelvam <tamizhr@codeaurora.org>
+Currently mt7663 devices do not support DBDC so fw events have no info
+about it. Fix mt7615_mcu_bss_event that wrongly use bss_idx as DBDC
+band_idx while it is vif index.
 
-[ Upstream commit 93e2d04a1888668183f3fb48666e90b9b31d29e6 ]
-
-Previously mesh channel switch happens if beacon contains
-CSA IE without checking the mesh peer info. Due to that
-channel switch happens even if the beacon is not from
-its own mesh peer. Fixing that by checking if the CSA
-originated from the same mesh network before proceeding
-for channel switch.
-
-Signed-off-by: Tamizh chelvam <tamizhr@codeaurora.org>
-Link: https://lore.kernel.org/r/1585403604-29274-1-git-send-email-tamizhr@codeaurora.org
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- net/mac80211/mesh.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7615/mcu.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/mac80211/mesh.c b/net/mac80211/mesh.c
-index d09b3c789314d..36978a0e50001 100644
---- a/net/mac80211/mesh.c
-+++ b/net/mac80211/mesh.c
-@@ -1257,15 +1257,15 @@ static void ieee80211_mesh_rx_bcn_presp(struct ieee80211_sub_if_data *sdata,
- 		    sdata->u.mesh.mshcfg.rssi_threshold < rx_status->signal)
- 			mesh_neighbour_update(sdata, mgmt->sa, &elems,
- 					      rx_status);
-+
-+		if (ifmsh->csa_role != IEEE80211_MESH_CSA_ROLE_INIT &&
-+		    !sdata->vif.csa_active)
-+			ieee80211_mesh_process_chnswitch(sdata, &elems, true);
- 	}
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+index 476f674fe2e7..aee9ee43436f 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+@@ -356,11 +356,12 @@ mt7615_mcu_bss_event(struct mt7615_dev *dev, struct sk_buff *skb)
+ {
+ 	struct mt7615_mcu_bss_event *event;
+ 	struct mt76_phy *mphy;
++	u8 band_idx = 0; /* DBDC support */
  
- 	if (ifmsh->sync_ops)
- 		ifmsh->sync_ops->rx_bcn_presp(sdata,
- 			stype, mgmt, &elems, rx_status);
--
--	if (ifmsh->csa_role != IEEE80211_MESH_CSA_ROLE_INIT &&
--	    !sdata->vif.csa_active)
--		ieee80211_mesh_process_chnswitch(sdata, &elems, true);
- }
+ 	event = (struct mt7615_mcu_bss_event *)(skb->data +
+ 						sizeof(struct mt7615_mcu_rxd));
  
- int ieee80211_mesh_finish_csa(struct ieee80211_sub_if_data *sdata)
-@@ -1373,6 +1373,9 @@ static void mesh_rx_csa_frame(struct ieee80211_sub_if_data *sdata,
- 	ieee802_11_parse_elems(pos, len - baselen, true, &elems,
- 			       mgmt->bssid, NULL);
- 
-+	if (!mesh_matches_local(sdata, &elems))
-+		return;
-+
- 	ifmsh->chsw_ttl = elems.mesh_chansw_params_ie->mesh_ttl;
- 	if (!--ifmsh->chsw_ttl)
- 		fwd_csa = false;
+-	if (event->bss_idx && dev->mt76.phy2)
++	if (band_idx && dev->mt76.phy2)
+ 		mphy = dev->mt76.phy2;
+ 	else
+ 		mphy = &dev->mt76.phy;
 -- 
-2.20.1
+2.25.3
 
