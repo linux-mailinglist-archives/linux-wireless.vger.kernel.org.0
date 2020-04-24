@@ -2,26 +2,26 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D25821B7A84
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 Apr 2020 17:48:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A18201B7A89
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 Apr 2020 17:49:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728958AbgDXPsi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 24 Apr 2020 11:48:38 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:57932 "EHLO
+        id S1728682AbgDXPsy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 24 Apr 2020 11:48:54 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:57964 "EHLO
         farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1728481AbgDXPsh (ORCPT
+        with ESMTP id S1726698AbgDXPsx (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 24 Apr 2020 11:48:37 -0400
+        Fri, 24 Apr 2020 11:48:53 -0400
 Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa.ger.corp.intel.com)
         by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
         (Exim 4.93)
         (envelope-from <luca@coelho.fi>)
-        id 1jS0Z8-000OY2-Q8; Fri, 24 Apr 2020 18:48:35 +0300
+        id 1jS0Z9-000OY2-KS; Fri, 24 Apr 2020 18:48:36 +0300
 From:   Luca Coelho <luca@coelho.fi>
 To:     kvalo@codeaurora.org
 Cc:     linux-wireless@vger.kernel.org
-Date:   Fri, 24 Apr 2020 18:48:15 +0300
-Message-Id: <iwlwifi.20200424182644.e565446a4fce.I9729d8c520d8b8bb4de9a5cdc62e01eb85168aac@changeid>
+Date:   Fri, 24 Apr 2020 18:48:16 +0300
+Message-Id: <iwlwifi.20200424182644.bc7230b74f93.I144f73cd6a797a7060429981fee62572861bc76b@changeid>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200424154818.2657602-1-luca@coelho.fi>
 References: <20200424154818.2657602-1-luca@coelho.fi>
@@ -31,96 +31,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on farmhouse.coelho.fi
 X-Spam-Level: 
 X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
         TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.4
-Subject: [PATCH 09/12] iwlwifi: avoid debug max amsdu config overwriting itself
+Subject: [PATCH 10/12] iwlwifi: mvm: set properly station flags in STA_HE_CTXT_CMD
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Mordechay Goodstein <mordechay.goodstein@intel.com>
+From: Shaul Triebitz <shaul.triebitz@intel.com>
 
-If we set amsdu_len one after another the second one overwrites
-the orig_amsdu_len so allow only moving from debug to non debug state.
+For ACK_ENABLED and 32BIT_BA_BITMAP flags check the station capabilities
+rather than bss_conf.ack_enabled and bss_conf.multi_sta_back_32bit.
+These fields are stations capabilities and should not be in bss_conf.
+Also note that the bss_conf flags are set in station mode only.
+In the next patch I will remove ack_enabled and multi_sta_back_32bit
+from the bss_conf structure.
 
-Also the TLC update check was wrong: it was checking that also the orig
-is smaller then the new updated size, which is not the case in debug
-amsdu mode.
-
-Signed-off-by: Mordechay Goodstein <mordechay.goodstein@intel.com>
-Fixes: af2984e9e625 ("iwlwifi: mvm: add a debugfs entry to set a fixed size AMSDU for all TX packets")
+Signed-off-by: Shaul Triebitz <shaul.triebitz@intel.com>
 Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c | 11 +++++++----
- drivers/net/wireless/intel/iwlwifi/mvm/rs-fw.c   | 15 ++++++++-------
- 2 files changed, 15 insertions(+), 11 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c b/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c
-index 3beef8d077b8..8fae7e707374 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c
-@@ -5,10 +5,9 @@
-  *
-  * GPL LICENSE SUMMARY
-  *
-- * Copyright(c) 2012 - 2014 Intel Corporation. All rights reserved.
-  * Copyright(c) 2013 - 2015 Intel Mobile Communications GmbH
-  * Copyright(c) 2016 - 2017 Intel Deutschland GmbH
-- * Copyright(c) 2018 - 2019 Intel Corporation
-+ * Copyright(c) 2012 - 2014, 2018 - 2020 Intel Corporation
-  *
-  * This program is free software; you can redistribute it and/or modify
-  * it under the terms of version 2 of the GNU General Public License as
-@@ -28,10 +27,9 @@
-  *
-  * BSD LICENSE
-  *
-- * Copyright(c) 2012 - 2014 Intel Corporation. All rights reserved.
-  * Copyright(c) 2013 - 2015 Intel Mobile Communications GmbH
-  * Copyright(c) 2016 - 2017 Intel Deutschland GmbH
-- * Copyright(c) 2018 - 2019 Intel Corporation
-+ * Copyright(c) 2012 - 2014, 2018 - 2020 Intel Corporation
-  * All rights reserved.
-  *
-  * Redistribution and use in source and binary forms, with or without
-@@ -481,6 +479,11 @@ static ssize_t iwl_dbgfs_amsdu_len_write(struct ieee80211_sta *sta,
- 	if (kstrtou16(buf, 0, &amsdu_len))
- 		return -EINVAL;
- 
-+	/* only change from debug set <-> debug unset */
-+	if ((amsdu_len && mvmsta->orig_amsdu_len) ||
-+	    (!!amsdu_len && mvmsta->orig_amsdu_len))
-+		return -EBUSY;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+index ee3d2ff432f7..10df77ab1a77 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+@@ -2179,6 +2179,15 @@ static void iwl_mvm_cfg_he_sta(struct iwl_mvm *mvm,
+ 			flags |= STA_CTXT_HE_PACKET_EXT;
+ 		}
+ 	}
 +
- 	if (amsdu_len) {
- 		mvmsta->orig_amsdu_len = sta->max_amsdu_len;
- 		sta->max_amsdu_len = amsdu_len;
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rs-fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/rs-fw.c
-index 15d11fb72aca..6f4d241d47e9 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/rs-fw.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/rs-fw.c
-@@ -369,14 +369,15 @@ void iwl_mvm_tlc_update_notif(struct iwl_mvm *mvm,
- 		u16 size = le32_to_cpu(notif->amsdu_size);
- 		int i;
++	if (sta->he_cap.he_cap_elem.mac_cap_info[2] &
++	    IEEE80211_HE_MAC_CAP2_32BIT_BA_BITMAP)
++		flags |= STA_CTXT_HE_32BIT_BA_BITMAP;
++
++	if (sta->he_cap.he_cap_elem.mac_cap_info[2] &
++	    IEEE80211_HE_MAC_CAP2_ACK_EN)
++		flags |= STA_CTXT_HE_ACK_ENABLED;
++
+ 	rcu_read_unlock();
  
--		/*
--		 * In debug sta->max_amsdu_len < size
--		 * so also check with orig_amsdu_len which holds the original
--		 * data before debugfs changed the value
--		 */
--		if (WARN_ON(sta->max_amsdu_len < size &&
--			    mvmsta->orig_amsdu_len < size))
-+		if (sta->max_amsdu_len < size) {
-+			/*
-+			 * In debug sta->max_amsdu_len < size
-+			 * so also check with orig_amsdu_len which holds the
-+			 * original data before debugfs changed the value
-+			 */
-+			WARN_ON(mvmsta->orig_amsdu_len < size);
- 			goto out;
-+		}
+ 	/* Mark MU EDCA as enabled, unless none detected on some AC */
+@@ -2203,11 +2212,6 @@ static void iwl_mvm_cfg_he_sta(struct iwl_mvm *mvm,
+ 			cpu_to_le16(mu_edca->mu_edca_timer);
+ 	}
  
- 		mvmsta->amsdu_enabled = le32_to_cpu(notif->amsdu_enabled);
- 		mvmsta->max_amsdu_len = size;
+-	if (vif->bss_conf.multi_sta_back_32bit)
+-		flags |= STA_CTXT_HE_32BIT_BA_BITMAP;
+-
+-	if (vif->bss_conf.ack_enabled)
+-		flags |= STA_CTXT_HE_ACK_ENABLED;
+ 
+ 	if (vif->bss_conf.uora_exists) {
+ 		flags |= STA_CTXT_HE_TRIG_RND_ALLOC;
 -- 
 2.26.2
 
