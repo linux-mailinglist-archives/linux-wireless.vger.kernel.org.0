@@ -2,97 +2,88 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B9F701B708F
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 Apr 2020 11:19:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F11811B708A
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 Apr 2020 11:19:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726758AbgDXJTQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 24 Apr 2020 05:19:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50418 "EHLO
+        id S1726729AbgDXJTM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 24 Apr 2020 05:19:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50410 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726298AbgDXJTQ (ORCPT
+        with ESMTP id S1726298AbgDXJTM (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 24 Apr 2020 05:19:16 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF1DCC09B045;
-        Fri, 24 Apr 2020 02:19:15 -0700 (PDT)
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.93)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1jRuU9-00FRAm-SI; Fri, 24 Apr 2020 11:19:01 +0200
-Message-ID: <89476ee074e782175d453038396543f193f8e5fd.camel@sipsolutions.net>
-Subject: Re: [PATCH 1/4] net: mac80211: util.c: Fix RCU list usage warnings
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     madhuparnabhowmik10@gmail.com, davem@davemloft.net, kuba@kernel.org
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, frextrite@gmail.com,
-        joel@joelfernandes.org, paulmck@kernel.org,
-        linux-kernel-mentees@lists.linuxfoundation.org
-Date:   Fri, 24 Apr 2020 11:18:59 +0200
-In-Reply-To: <20200409082822.27314-1-madhuparnabhowmik10@gmail.com> (sfid-20200409_102851_270381_8F58A5E1)
-References: <20200409082822.27314-1-madhuparnabhowmik10@gmail.com>
-         (sfid-20200409_102851_270381_8F58A5E1)
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.4 (3.34.4-1.fc31) 
+        Fri, 24 Apr 2020 05:19:12 -0400
+Received: from mail-wr1-x42f.google.com (mail-wr1-x42f.google.com [IPv6:2a00:1450:4864:20::42f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA4CAC09B045
+        for <linux-wireless@vger.kernel.org>; Fri, 24 Apr 2020 02:19:11 -0700 (PDT)
+Received: by mail-wr1-x42f.google.com with SMTP id j1so9895028wrt.1
+        for <linux-wireless@vger.kernel.org>; Fri, 24 Apr 2020 02:19:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=to:from:subject:message-id:date:user-agent:mime-version
+         :content-transfer-encoding:content-language;
+        bh=y7Rn5PX8LPsiGeZ6RWpVJHpZHhwQ1ARgPo+9NaslZaY=;
+        b=GEQkpcGO7jQJYP9XaposKMavQu43EVLjuNgbI5wYNYft0brx/E0CZ7Sjt9DAQVgIPj
+         8usJIdN/0xzybF4FWXMNXZur/84SaWNl34DKttuyJQk5fWGzeRUUCthI02E69sbGlizb
+         rDzbPTYubPpL0uNw7QJtBNmqz7kzXQBrSR/ug/VqsdfvZnfKIjqcKUgfOKNhgWR//aPO
+         Ik3TtYZs9dBvenTpTobVs9fSRRwQD5/UsFXwWfwIiQBqRry7/pjlqav7OdVuTrQ8ds1J
+         68Eke9iaBxrGC5nQTyKCLuWQj1ut0UsUpPKWv65fNIFITpwO+Z+37XJ8jfYCOe5erjVz
+         ivMA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:to:from:subject:message-id:date:user-agent
+         :mime-version:content-transfer-encoding:content-language;
+        bh=y7Rn5PX8LPsiGeZ6RWpVJHpZHhwQ1ARgPo+9NaslZaY=;
+        b=VJCvXCbnLik8UXzCDpjcIyu9Gr7srxlxtg+4PkoBa12dyTG2Kr+uN3oGYVKFq9+aP9
+         remoluxVkjIzkjrv7ACSuTKgQqZyMfxxRQ1YQK23D9Cs9zEf0xymOjsNv/XLgDdGmYJ+
+         MmLQa1WhPNdEr4PLpDkdmF6ncx1/gy352xXqaSxqSGZRvVuLykMYGus76QnpoJkFlgcN
+         T3EwT4tk1stbqxkkYYu9Tg9LhsP7WHsCdF7rf41vf1tg7DpJIAvORQlpfoc4b3SI+xQk
+         NGlpMQ6n+XLIXr4H7z8XR4QGG7AmFC72UOYui48Rv0cGlj0lOhTkriV+K+/sdF5m8zFn
+         GclA==
+X-Gm-Message-State: AGi0PuaSAHVPxo4aIa26eXFKVYqaP/GmRLDXs9hGyHbdrIy2pcBrIlWn
+        iQLJwS9PHiS6hPds1jKqn1YFr4H2+ew=
+X-Google-Smtp-Source: APiQypJZ3jP1pM8/E4zHkEjWmkHWWqL1wXbsQnT57L3l5Pw2P1ikkjkGBi0JzxUmkuo3b0vaj9Hfbg==
+X-Received: by 2002:a5d:4b04:: with SMTP id v4mr10483523wrq.358.1587719948895;
+        Fri, 24 Apr 2020 02:19:08 -0700 (PDT)
+Received: from ?IPv6:2a02:1811:e422:ad00:f58d:9165:44ce:c58b? (ptr-eiyd6234yxkksfgejd7.18120a2.ip6.access.telenet.be. [2a02:1811:e422:ad00:f58d:9165:44ce:c58b])
+        by smtp.gmail.com with ESMTPSA id u188sm1461242wmg.37.2020.04.24.02.19.07
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 24 Apr 2020 02:19:08 -0700 (PDT)
+To:     linux-wireless@vger.kernel.org
+From:   Wei Liu <wei.liu1011@gmail.com>
+Subject: Questions regarding 802.11 TM and FTM in cfg80211/mac80211
+Message-ID: <a1809833-fe87-3fac-0e7e-92a3dedeff8f@gmail.com>
+Date:   Fri, 24 Apr 2020 11:19:09 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+Dear experts,
 
-> This patch fixes the following warning (CONIG_PROVE_RCU_LIST)
-> in ieee80211_check_combinations().
+I am new to Linux kernel, and I have an ambitious goal to run ptp over 
+wireless (yes I know..  and please don't judge .. )
 
-Thanks, and sorry for the delay.
+When I browse code in mac80211, I found function start_pmsr in 
+ieee80211_ops. At this moment, this function is serving a request 
+(defined in cfg80211) to start peer measurement, and the request seems 
+rather FTM specific.
 
+Is there some code available to support the original Timing Measurement? 
+As I am not interested in localization/ranging, but interested in 
+synchronization, so the basic TM is enough for me.
 
-> +++ b/net/mac80211/util.c
-> @@ -254,7 +254,7 @@ static void __ieee80211_wake_txqs(struct ieee80211_sub_if_data *sdata, int ac)
->  
->  	sdata->vif.txqs_stopped[ac] = false;
->  
-> -	list_for_each_entry_rcu(sta, &local->sta_list, list) {
-> +	list_for_each_entry(sta, &local->sta_list, list) {
->  		if (sdata != sta->sdata)
->  			continue;
+Regarding FTM, the current cfg80211_pmsr_ftm_result does not contain the 
+ToD, ToA timestamps, it only reports the RTT. Is there a proper way to 
+expose these timestamps to the user space?
 
-In this case, for example, I don't even understand why the warning would
-happen, because certainly the only caller of this (_ieee80211_wake_txqs)
-does rcu_read_lock()?
+Thank you in advance for any guidance,
 
-I'm also not convinced that the necessary lock is actually held here,
-this comes from a tasklet that doesn't hold any locks?
- 
-I'd appreciate if you could add comments/explain why you think the
-changes were right, or ideally even add "lockdep_assert_held()"
-annotations. That would make it much easier to check this patch.
-
-> @@ -3931,7 +3932,7 @@ int ieee80211_check_combinations(struct ieee80211_sub_if_data *sdata,
->  		params.num_different_channels++;
->  	}
->  
-> -	list_for_each_entry_rcu(sdata_iter, &local->interfaces, list) {
-> +	list_for_each_entry(sdata_iter, &local->interfaces, list) {
->  		struct wireless_dev *wdev_iter;
->  
->  		wdev_iter = &sdata_iter->wdev;
-> @@ -3982,7 +3983,7 @@ int ieee80211_max_num_channels(struct ieee80211_local *local)
->  			ieee80211_chanctx_radar_detect(local, ctx);
->  	}
->  
-> -	list_for_each_entry_rcu(sdata, &local->interfaces, list)
-> +	list_for_each_entry(sdata, &local->interfaces, list)
->  		params.iftype_num[sdata->wdev.iftype]++;
-
-These changes correct, as far as I can tell, in that they rely on the
-RTNL now - but can you perhaps document that as well?
-
-There doesn't seem to be any multi-lock version of lockdep_assert_held()
-or is there? That'd be _really_ useful here, because I want to get rid
-of some RTNL reliance in the longer term, and having annotation here
-saying "either RTNL or iflist_mtx is fine" would be good.
-
-johannes
+Wei
 
