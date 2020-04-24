@@ -2,103 +2,123 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D8ADE1B6C6E
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 Apr 2020 06:09:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B87A1B6CB6
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 Apr 2020 06:34:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726078AbgDXEJG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 24 Apr 2020 00:09:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58744 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1725823AbgDXEJG (ORCPT
+        id S1726053AbgDXEd6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 24 Apr 2020 00:33:58 -0400
+Received: from mail26.static.mailgun.info ([104.130.122.26]:12493 "EHLO
+        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725967AbgDXEd5 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 24 Apr 2020 00:09:06 -0400
-Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15BB0C09B045;
-        Thu, 23 Apr 2020 21:09:06 -0700 (PDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        Fri, 24 Apr 2020 00:33:57 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1587702837; h=Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Message-ID: In-Reply-To: Date: References: Subject: Cc:
+ To: From: Sender; bh=a/cWZWil63oy2LeUPylT7nToPBhx2A8BfuTg5P7sK6o=; b=fINztLT1UYGejVqqY8P8ItnxSLd2O34hDC/6UkLo7v9lgdP8SBHI8yqKctkdMy922pk8kL0p
+ qhyJT4Yo1sd0PefUMfL5g6+5jYQHJaZS5r6tkmgqsLITzxH9P+QLj6BxnyHMiIgBdC2jBd3c
+ DtqdNSGsvSng4d7R33zmyhJhC4k=
+X-Mailgun-Sending-Ip: 104.130.122.26
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5ea26c23.7f79f87ed6c0-smtp-out-n01;
+ Fri, 24 Apr 2020 04:33:39 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 767B9C432C2; Fri, 24 Apr 2020 04:33:38 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.ozlabs.org (Postfix) with ESMTPSA id 497gf41Q18z9sSh;
-        Fri, 24 Apr 2020 14:09:00 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
-        s=201702; t=1587701344;
-        bh=3BTSk4sjDI4VDtA4QcqlpHfqwVft8oWPVuJUoLtTKek=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=peEcD9/Bx/jrDaJvgqEdcVpav38EIqqVX+s+YKbAT5kkoGuW/xPq4+kSCXgnISeFn
-         CI5Hidn4Pk65DerlY4HtBpI6ABpyKcXTrw37MuXZsJIGLHHYNMrZLTM3zB0NcYjmf6
-         WjhVpUqliNJoS2wdN6F5DRzNUE4eTN1ebklgBm0lDy9RHLeIHv/p2vsNcqRKmz+v8T
-         +Ql1Z+r53Pc7lcEqAI0NCFfCmarjNZnxdiKPQJjoBTjL8ZHbFtR2ofyYR5+s73QXNf
-         QeZUKsSRh6gIloNbM2yHq2qYoFfrwfvCNNekPdHP/PbCUdLkkYncOkwzw9E8HzMt96
-         l1DwO4qXJTeeQ==
-Date:   Fri, 24 Apr 2020 14:08:53 +1000
-From:   Stephen Rothwell <sfr@canb.auug.org.au>
-To:     Luis Chamberlain <mcgrof@kernel.org>
-Cc:     Jakub Kicinski <kubakici@wp.pl>, gregkh@linuxfoundation.org,
-        akpm@linux-foundation.org, josh@joshtriplett.org,
-        rishabhb@codeaurora.org, maco@android.com, andy.gross@linaro.org,
-        david.brown@linaro.org, bjorn.andersson@linaro.org,
-        linux-wireless@vger.kernel.org, keescook@chromium.org,
-        shuah@kernel.org, mfuzzey@parkeon.com, zohar@linux.vnet.ibm.com,
-        dhowells@redhat.com, pali.rohar@gmail.com, tiwai@suse.de,
-        arend.vanspriel@broadcom.com, zajec5@gmail.com, nbroeking@me.com,
-        markivx@codeaurora.org, broonie@kernel.org,
-        dmitry.torokhov@gmail.com, dwmw2@infradead.org,
-        torvalds@linux-foundation.org, Abhay_Salunke@dell.com,
-        jewalt@lgsinnovations.com, cantabile.desu@gmail.com, ast@fb.com,
-        andresx7@gmail.com, dan.rue@linaro.org, brendanhiggins@google.com,
-        yzaikin@google.com, linux-kernel@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, Christoph Hellwig <hch@lst.de>,
-        Randy Dunlap <rdunlap@infradead.org>
-Subject: Re: [PATCH] firmware_loader: re-export fw_fallback_config into
- firmware_loader's own namespace
-Message-ID: <20200424140853.5d001d8d@canb.auug.org.au>
-In-Reply-To: <20200424031959.GB11244@42.do-not-panic.com>
-References: <20200423203140.19510-1-mcgrof@kernel.org>
-        <20200423180544.60d12af0@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-        <20200424021420.GZ11244@42.do-not-panic.com>
-        <20200424131556.1dbe18aa@canb.auug.org.au>
-        <20200424031959.GB11244@42.do-not-panic.com>
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id DC793C433CB;
+        Fri, 24 Apr 2020 04:33:35 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org DC793C433CB
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
+        stas.yakovlev@gmail.com, davem@davemloft.net,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] ipw2x00: Remove a memory allocation failure log message
+References: <20200423075825.18206-1-christophe.jaillet@wanadoo.fr>
+        <5868418d-88b0-3694-2942-5988ab15bdcb@cogentembedded.com>
+        <3c80ef48-57a8-b414-6cf1-6c255a46f6be@wanadoo.fr>
+Date:   Fri, 24 Apr 2020 07:33:33 +0300
+In-Reply-To: <3c80ef48-57a8-b414-6cf1-6c255a46f6be@wanadoo.fr> (Christophe
+        JAILLET's message of "Thu, 23 Apr 2020 22:47:25 +0200")
+Message-ID: <87zhb1h59e.fsf@kamboji.qca.qualcomm.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/wE.85jsJZ4nTyPbO82kgXnL";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---Sig_/wE.85jsJZ4nTyPbO82kgXnL
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+Christophe JAILLET <christophe.jaillet@wanadoo.fr> writes:
 
-Hi Luis,
-
-On Fri, 24 Apr 2020 03:19:59 +0000 Luis Chamberlain <mcgrof@kernel.org> wro=
-te:
+> Le 23/04/2020 =C3=A0 11:46, Sergei Shtylyov a =C3=A9crit=C2=A0:
+>> Hello!
+>>
+>> On 23.04.2020 10:58, Christophe JAILLET wrote:
+>>
+>>> Axe a memory allocation failure log message. This message is useless and
+>>> incorrect (vmalloc is not used here for the memory allocation)
+>>>
+>>> This has been like that since the very beginning of this driver in
+>>> commit 43f66a6ce8da ("Add ipw2200 wireless driver.")
+>>>
+>>> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+>>> ---
+>>> =C2=A0 drivers/net/wireless/intel/ipw2x00/ipw2200.c | 5 ++---
+>>> =C2=A0 1 file changed, 2 insertions(+), 3 deletions(-)
+>>>
+>>> diff --git a/drivers/net/wireless/intel/ipw2x00/ipw2200.c
+>>> b/drivers/net/wireless/intel/ipw2x00/ipw2200.c
+>>> index 60b5e08dd6df..30c4f041f565 100644
+>>> --- a/drivers/net/wireless/intel/ipw2x00/ipw2200.c
+>>> +++ b/drivers/net/wireless/intel/ipw2x00/ipw2200.c
+>>> @@ -3770,10 +3770,9 @@ static int ipw_queue_tx_init(struct ipw_priv
+>>> *priv,
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct pci_dev *dev =3D priv->pci_dev;
+>>> =C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 q->txb =3D kmalloc_array(count, s=
+izeof(q->txb[0]), GFP_KERNEL);
+>>> -=C2=A0=C2=A0=C2=A0 if (!q->txb) {
+>>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 IPW_ERROR("vmalloc for auxi=
+liary BD structures failed\n");
+>>> +=C2=A0=C2=A0=C2=A0 if (!q->txb)
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return -ENOMEM;
+>>> -=C2=A0=C2=A0=C2=A0 }
+>>> +
+>>
+>> =C2=A0=C2=A0 No need for this extra empty line.
 >
-> Cool, but once merged on Linus' tree, I think it gets yet-another-commit
-> ID right? So someone looking for:
+>
+> That's right, sorry about that.
+>
+> Can it be fixed when/if the patch is applied, or should I send a V2?
 
-No, Linus merges Greg's tree directly, so all the commits remain the same.
+Please send v2.
+
+> If a V2 is required, should kcalloc be used, as pointed out by Joe Perche=
+s?
+> (personally, If the code works fine as-is, I don't think it is
+> required, but it can't hurt)
+
+There's always the risk of regressions, which happens even with cleanup
+patches so hurting is always possible :)
+
+I can take a patch changing the allocation but please do it in a
+separate patch. Though personally I wouldn't bother, ipw2x00 is an old
+driver and not being actively developed anymore.
 
 --=20
-Cheers,
-Stephen Rothwell
-
---Sig_/wE.85jsJZ4nTyPbO82kgXnL
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAl6iZlUACgkQAVBC80lX
-0GzmMwf/aZZRSQ8nx5S414xzj4iE0Cc6Ymxcx9fxaz1fG+4PEnYinI1lSIZiqtHX
-1vU1GzcYx+54L5lIfeUpUfGpVekVfUzvjVK08N5JSFbs+MSfNm21l0h3F3DRC07N
-pMzKd/YXwfil1rTlYWEDaGobkmKzVNM4XbbDT1mbNUa9zcD3QJLNy/gTiRpUKvI8
-3bIFzCEuP7wbGcK7DLJ6KpdoBSPG/T6rR7e5/fwOXT/1FEC2b94oIOy2aeofbT9p
-PiELaayXqS+8ysYVM5p9vB8hL5qskMhTFbR6G+77fc6VYqQl2yw6fjMNOi1lazdp
-yuWoF6kN2yFBV3bmD0YlpsOlyvcoDg==
-=zShb
------END PGP SIGNATURE-----
-
---Sig_/wE.85jsJZ4nTyPbO82kgXnL--
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
+hes
