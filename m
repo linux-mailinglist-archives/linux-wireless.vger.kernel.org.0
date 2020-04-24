@@ -2,63 +2,64 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F5B01B7317
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 Apr 2020 13:30:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F45A1B7318
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 Apr 2020 13:30:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726919AbgDXLaR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 24 Apr 2020 07:30:17 -0400
-Received: from mx0a-00183b01.pphosted.com ([67.231.149.44]:58030 "EHLO
+        id S1726925AbgDXLaY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 24 Apr 2020 07:30:24 -0400
+Received: from mx0a-00183b01.pphosted.com ([67.231.149.44]:49918 "EHLO
         mx0a-00183b01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726698AbgDXLaQ (ORCPT
+        by vger.kernel.org with ESMTP id S1726698AbgDXLaY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 24 Apr 2020 07:30:16 -0400
-Received: from pps.filterd (m0048105.ppops.net [127.0.0.1])
-        by mx0a-00183b01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 03OBQZQb032536;
-        Fri, 24 Apr 2020 05:30:12 -0600
-Received: from nam11-bn8-obe.outbound.protection.outlook.com (mail-bn8nam11lp2169.outbound.protection.outlook.com [104.47.58.169])
-        by mx0a-00183b01.pphosted.com with ESMTP id 30fxuf1t3y-1
+        Fri, 24 Apr 2020 07:30:24 -0400
+Received: from pps.filterd (m0048106.ppops.net [127.0.0.1])
+        by mx0a-00183b01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 03OBQAOI032281;
+        Fri, 24 Apr 2020 05:30:20 -0600
+Received: from nam02-cy1-obe.outbound.protection.outlook.com (mail-cys01nam02lp2058.outbound.protection.outlook.com [104.47.37.58])
+        by mx0a-00183b01.pphosted.com with ESMTP id 30fvd7224q-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 24 Apr 2020 05:30:12 -0600
+        Fri, 24 Apr 2020 05:30:20 -0600
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ch5p+VQzmAXKjkN63fE0uKiN6w/bTvKUJnzT95JjklPqqYrCXfM4q5+Na4e6rM3sSYvlmSjoHKww4+3o36MfvKbQZeV1Ej8rHXgvhG7oC6Gzpu/pdObt5B5mfWFyyFeFKv7zHbyJdFk0Om4fAPkT5faQ7ZKBpNtCkSgog0BTe+NLIa2HXkEK3nvZwEqewwItM3qyknKNPYe4Lp/euIQmprqSe2agodvFvbJdXcd7l7FUzyHcIynAGEXXfTtrAYsB18nvxzCB31PoaN7tKs2rf0XwwbBF9S9G3uILGqBSWkf42Ctn5DMUE3NwXVr2uxsjox9FYJ3JdBvfRs78fzs8eA==
+ b=Q7bTKHBv/MM9bMUukT6GymytWJxFyODWNMsFQsJHGrBMilUxggntrI0SbHtdi5bVX4w/9bHz6nmyxw/IEM4OhkeOZj10gkXJpXu7sN0YUKI0yLRe8/bZMGyz8uExPrhV61F3+D8bba1UszWx6aVR6pH3Tf8rRR3twYsotPRriuWqv4nuSWYIqW9vxhduRT64+/prFLG2hDUjLHJxn9AWu/DXbxuiiTiSfp6Lg1qSN9GMHqvBs18w7P2whoCVDDQPCy4vo4DOn6U6ijigozrkt29j18ltw+ymxxy3Tu1t1YX00gdUGRRFzDUG8hIRUO+RQIBHyw1diPzoFdTIpiva6g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GT9YqyX9nLsHbZ7+SvXBQ6vtQ3gfbdHPemUxqA4c/DI=;
- b=RUHMl+ITCmmqdxAkdTteN7x4lCMShLR/jXVZWm6aYt8jX7U3hyL8c/uW3rCzgXAl9oDA1O/0X8ice68mD2w4RMyxmv6MAIvUcAkBy0ZhOWisAfegvHec3kYt/pU2sjCTUsGvpXIfwneJVIG1IoTwn3VrEnAy5aIo7zCgcs00VtuBoD4S5dpBTHuKLGDxPP38zwHDZew1Tj8712KWLs3FERTXydyiIoF+hqX5PUX3tPDPeyIFUMQYty2t0CIjHIRdPgz2vp6T/uefBjOdCajXmGW7kqNp3JYFPKp4FbsARLl7W/BauFJ6dP+lJQDqOg0mvxz0O+ckf5r07IF9Xg7bGQ==
+ bh=wf3Y1vQNn+fJww7TC0rZqad9jFHn3A3G3Tu66cdOzzk=;
+ b=bKyw1gaWnHwilcshyFzRDvxks3EgukbbXr+z7Lr5GZpOqkc2Xa/rpYWqF/NbKl7lY21H7QZ2cugOlXi+OE/o/29YAylFgC8tQPz7yn5pf1aoA7bcpN0tTedzSdoPTGY1FAcOrEDu5U/OQ3DRbFYf8Hm9EKo0KS9AUaccL3jibLcyAPXPOtZePxCq1EqaZVLomet4YGq45xeRaed1kOmXOxV8ETJWu4daM1kXBh5CEeEwgM94EzwERbBFu+FCyVKHZaQDbPJK0Z+GFqPeZEycRFOuyAB3nNyns81AZOsA6JqJbiH/0VXU7lMOnCa6oqEBkpxYu9Opo/9w+266h1c3eA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=quantenna.com; dmarc=pass action=none
  header.from=quantenna.com; dkim=pass header.d=quantenna.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quantenna.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GT9YqyX9nLsHbZ7+SvXBQ6vtQ3gfbdHPemUxqA4c/DI=;
- b=RzgkqegWMxeTVLdp9vePNRIgnhd4+Ga3ij2SMIVGAMhmNDnjgaW9SVGqCS6UKPupq7xwnUQpS999ZX0LHXZIjK5UqpII3HLVMWISh23QE1bQNlcfPbJkiFVsXebe8KvbEw5Tei+XLYDb87ErACUhuzPLE1UTsg3jRpIZww3fhwM=
-Received: from DM6PR05MB4684.namprd05.prod.outlook.com (2603:10b6:5:fa::12) by
- DM6PR05MB6347.namprd05.prod.outlook.com (2603:10b6:5:132::18) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2937.6; Fri, 24 Apr 2020 11:30:10 +0000
-Received: from DM6PR05MB4684.namprd05.prod.outlook.com
- ([fe80::fc28:e348:eef6:bc06]) by DM6PR05MB4684.namprd05.prod.outlook.com
- ([fe80::fc28:e348:eef6:bc06%2]) with mapi id 15.20.2937.012; Fri, 24 Apr 2020
- 11:30:10 +0000
+ bh=wf3Y1vQNn+fJww7TC0rZqad9jFHn3A3G3Tu66cdOzzk=;
+ b=fV2WlKxa/WKB0vPDGiWz9W4QWsySTVGu8UH38a15hWYBVPHJK4rGNe7Iw/RY16i8JZPwUqmIBcfUU/qaYnSGpl66gTkkVInRlET3RUSRatTTZghIv2ZlpR8Y/aUu9Gnr5VWz3Igai7QkA4GFfTxMHlKpK9lP/EujRaM9HpX7KDg=
+Received: from SN6PR05MB5519.namprd05.prod.outlook.com (2603:10b6:805:c7::26)
+ by SN6PR05MB4813.namprd05.prod.outlook.com (2603:10b6:805:9e::26) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2937.11; Fri, 24 Apr
+ 2020 11:30:18 +0000
+Received: from SN6PR05MB5519.namprd05.prod.outlook.com
+ ([fe80::d16f:9f91:9f9d:11b6]) by SN6PR05MB5519.namprd05.prod.outlook.com
+ ([fe80::d16f:9f91:9f9d:11b6%3]) with mapi id 15.20.2937.012; Fri, 24 Apr 2020
+ 11:30:18 +0000
 Received: from CY4PR05MB3558.namprd05.prod.outlook.com (2603:10b6:910:53::39)
  by CY4PR05MB3160.namprd05.prod.outlook.com (2603:10b6:903:f2::18) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2937.11; Fri, 24 Apr
- 2020 11:29:18 +0000
+ 2020 11:29:20 +0000
 Received: from CY4PR05MB3558.namprd05.prod.outlook.com
  ([fe80::f5eb:c5ec:8fe4:e048]) by CY4PR05MB3558.namprd05.prod.outlook.com
  ([fe80::f5eb:c5ec:8fe4:e048%6]) with mapi id 15.20.2937.012; Fri, 24 Apr 2020
- 11:29:18 +0000
+ 11:29:20 +0000
 From:   Sergey Matyukevich <sergey.matyukevich.os@quantenna.com>
 To:     linux-wireless@vger.kernel.org
 CC:     Tamizh Chelvam <tamizhr@codeaurora.org>,
         Johannes Berg <johannes@sipsolutions.net>,
         Sergey Matyukevich <sergey.matyukevich.os@quantenna.com>
-Subject: [RFC PATCH v2 3/5] cfg80211: add support for TID specific AMSDU configuration
-Date:   Fri, 24 Apr 2020 14:29:03 +0300
-Message-ID: <20200424112905.26770-4-sergey.matyukevich.os@quantenna.com>
+Subject: [RFC PATCH v2 4/5] nl80211: simplify peer specific TID configuration
+Date:   Fri, 24 Apr 2020 14:29:04 +0300
+Message-ID: <20200424112905.26770-5-sergey.matyukevich.os@quantenna.com>
 X-Mailer: git-send-email 2.11.0
 In-Reply-To: <20200424112905.26770-1-sergey.matyukevich.os@quantenna.com>
 References: <20200424112905.26770-1-sergey.matyukevich.os@quantenna.com>
@@ -68,135 +69,93 @@ X-ClientProxiedBy: AM0PR01CA0087.eurprd01.prod.exchangelabs.com
  (2603:10b6:910:53::39)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from bars.quantenna.com (195.182.157.78) by AM0PR01CA0087.eurprd01.prod.exchangelabs.com (2603:10a6:208:10e::28) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2937.13 via Frontend Transport; Fri, 24 Apr 2020 11:29:17 +0000
+Received: from bars.quantenna.com (195.182.157.78) by AM0PR01CA0087.eurprd01.prod.exchangelabs.com (2603:10a6:208:10e::28) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2937.13 via Frontend Transport; Fri, 24 Apr 2020 11:29:18 +0000
 X-Mailer: git-send-email 2.11.0
 X-Originating-IP: [195.182.157.78]
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 186fb5a3-fc54-4ab9-f8ec-08d7e842ba14
-X-MS-TrafficTypeDiagnostic: CY4PR05MB3160:|DM6PR05MB6347:
+X-MS-Office365-Filtering-Correlation-Id: 99701b80-15ab-48da-8501-08d7e842baf6
+X-MS-TrafficTypeDiagnostic: CY4PR05MB3160:|SN6PR05MB4813:
 X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <CY4PR05MB3160C650AF6631E43A8092D0A3D00@CY4PR05MB3160.namprd05.prod.outlook.com>
-X-Moderation-Data: 4/24/2020 11:30:09 AM
-X-MS-Oob-TLC-OOBClassifiers: OLM:6430;
+X-Microsoft-Antispam-PRVS: <CY4PR05MB3160DD43EC19C98B480E70B7A3D00@CY4PR05MB3160.namprd05.prod.outlook.com>
+X-Moderation-Data: 4/24/2020 11:30:16 AM
+X-MS-Oob-TLC-OOBClassifiers: OLM:7691;
 X-Forefront-PRVS: 03838E948C
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR05MB4684.namprd05.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(346002)(396003)(366004)(136003)(376002)(39850400004)(6916009)(5660300002)(7696005)(107886003)(103116003)(52116002)(66556008)(36756003)(2616005)(186003)(316002)(6486002)(54906003)(478600001)(66946007)(66476007)(2906002)(4326008)(16526019)(6666004)(8936002)(8676002)(86362001)(1076003)(81156014)(26005)(956004);DIR:OUT;SFP:1101;
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR05MB5519.namprd05.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(396003)(376002)(39850400004)(136003)(366004)(346002)(4326008)(6916009)(66556008)(26005)(6666004)(66476007)(186003)(66946007)(6486002)(16526019)(103116003)(86362001)(1076003)(107886003)(81156014)(8936002)(8676002)(7696005)(52116002)(54906003)(36756003)(2616005)(478600001)(956004)(2906002)(316002)(5660300002);DIR:OUT;SFP:1101;
 Received-SPF: None (protection.outlook.com: quantenna.com does not designate
  permitted sender hosts)
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 71gi+ay/CfKIrrgX/w6GBoOaUV/3Oxvv482+23zdVqfVAo6Lxnt4flbNeSrJk1Jx5BvTXvDGZGSJDkza2qfgumg+YL1/Cw4QTQNsIhuG9jdQ81fB1aMSH8cEdo/Ew+eCtyrJuI8ErMpH+AiCBfUoCl8UzX/jhGI08amzwlV6AGB+1VK+1vTG6fGmxtAXhVjnQirPlrZ3Nv9j0ZK7xQK0q9eeInAmuQbeGjWw5sA/7EoKZtqg53eK+3JNDt68Z5jpCPMrfW5rAxu1wJtJJzRBa3JdPyicQSRhcCljVWuLLTpvX3E1/BMS/1oZlf3Ut+zorfWhh0scjxNNiSSAtRej/AlD95BMneXbR1IYxHBSIfX+RhAv2zpQk840f4HiaAytzJHmht36nZirMD57GIEnd2jFrH4NM/KHd/9sAa5uffVvOqd9peNC7OMVTBdiYPC+
-X-MS-Exchange-AntiSpam-MessageData: FqEI6HPCT+HEDmwkToA7IRehrlZkwHganRwlXH6RQeHtgcZdbMln3m+dOlDoiR7npYK4egjraZCDxRMAoPFJygpmBntAWw6+ksyS1vcs9xSaSlwIndTRI+yM09RGhc3y73B+2P+GhyeV2+mC0y1XIerHwdWNK4D4oRiRsgj32KkUdFLy8uqtMth8kDjDPtzOw4Z7SQsmtmyj444FZwAVT4O3B3gCPQ1gMU1m5FIQkS5fSexJqy2OL1i1sb49ti51glZjAtxBVBmDl8ezOJpAqElhlgxZvITD24Zj9K8iwjACPt9m6KzjfWVJjtPVvEcQwvuFJcKlhJCha85NG3KCb+lLH5OpN3VLqXKtnCXUV5rerTKfbmKeR2I5a/84uB56fB3FuCJOhMjKL3AqugN4gDf6EVCMzwObgRyY+TA2dzPszrSYWTdtr1lx2mff4gg6D6Nzq8TkVdk69m2bfeoXhI+NOFqUvwWplzSfghYA3mIwbaxZdjBM7P3dmeU7mDdESU5fGHFE8lOJ/bvGJ8SI3RWaLs23Py4YdeUtovrLq+UOqw9jpinwZUKMpMt4OvvSIEuUGLRbdDoo29s6CPM6IMdW4C/ZfhEjloPNEM4r/jsSHMuZJeVp/XeHgxGjO2S57L8Uayn1oY5P7xUKss90C13b0TOk2+2enYCP1IOLyziYwcccpDOxxEbxwywI0Gpw1gf4lfJmXom0Ntu+eGJHEAIid3acsX3ZsKNzopJB4Vv53dgtqaxgoEdW4EGhJgANCu4xGgXzvi+5DOOaoGLNoZCePij/qV4HUYHdZ1dyoek=
+X-Microsoft-Antispam-Message-Info: LPBi7/N52utuJxTHJlGGbgXvEbNJJX2GIPRryHToTu51uOUsDbJG7b32oxAeVhuqyD3vIaDnCrr6wjo/RZLO6/rngau7whVhNdivm+Xhblwu9+Da/5e/hf7KaE3QE7C4bPdh98trwXxj17A/sO1FBRprhDNzWSvpB8beTOcEYsMZOhyLng9bA4EaQBOUMZbnlXnKs1Pe9bma4zLU6YreW6jSd6NYi+uvv60bu6iSA//9pmUvvfnzqk+ovPHyWlNCIyLCeN6PcnCiNHFHyGS6Mwfq6YJ36WagQTo7pMsoaKQD2vH2nmyVgYHCOeCDPrxkUHDc89l/zenPmYEHNJ73XgapBxnvq64gQ0erGxCQjH6J0czFEFuAWSlGYE87WsbNZ7vLRnpaRn2ePr88O1FmhgvrrvYrVWUqXxRCnaq7keww5thWTC6zWhTAWxTRx06b
+X-MS-Exchange-AntiSpam-MessageData: y9Rg66k8qRdi6m+DckGS8DCd3YnqNkPSHDCEu3oZ2DiHu9X5UsShI/0FgLk7ltvZOkwxZ1L9ZgBQPDVZyEx+lA7IUvY1E1pitPxFMw+TSchnx/CnvBKFRHNLQ7+Kg8hg7Wkga+NCZZqwNAXLcZC3OA==
 X-OriginatorOrg: quantenna.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 186fb5a3-fc54-4ab9-f8ec-08d7e842ba14
+X-MS-Exchange-CrossTenant-Network-Message-Id: 99701b80-15ab-48da-8501-08d7e842baf6
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: a355dbce-62b4-4789-9446-c1d5582180ff
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: SPtiVLnmojQEabET/b872UkdVP/zH9VcEDiDaFipBmSYMNdKBDND2czLrdMXxCu2q6RDUD9Ilu6uVjUocj4N+5dAzSC9piuufelfB5sqkVWfjU1A2G0Ngf5P91EtyC8Cdg7SSQbSm+MLNfiLVqsbaLa4J4GGW+Ggtmju7v+X8DEGfRw/DiU+kOdHYXxXg/QAWOmAnC0dvFuEjmPj8M76WA==
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Apr 2020 11:30:10.8270
+X-MS-Exchange-CrossTenant-UserPrincipalName: iuqpx2gk1swiPjdLjhjWPAoaR4D3h1elASWlMh0pC5rSxhLOQWwz/NZNAoOmXItDOIfvI0+mbCfA/ZIB/Ky7Y2aWzHlSKMjNkHGb3+iJMdECucdUkNKMy4qsO8aIcI4PuoUGFRviW/akcJkNNM7zUpRkGjec+GHwwoIpAQvhOUIk2GYxKgw7FexHvirhR5eyHZE0tHimzA5egqw4PsQPHQ==
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Apr 2020 11:30:18.6481
  (UTC)
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR05MB6347
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN6PR05MB4813
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.676
  definitions=2020-04-24_04:2020-04-23,2020-04-24 signatures=0
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 malwarescore=0 adultscore=0
- spamscore=0 clxscore=1015 impostorscore=0 mlxlogscore=999
- lowpriorityscore=0 phishscore=0 bulkscore=0 suspectscore=1
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2004240091
+X-Proofpoint-Spam-Reason: safe
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This patch adds support to control per TID MSDU aggregation
-using the NL80211_TID_CONFIG_ATTR_AMSDU_CTRL attribute.
+Current rule for applying TID configuration for specific peer looks overly
+complicated. No need to reject new TID configuration when override flag is
+specified. Another call with the same TID configuration, but without
+override flag, allows to apply new configuration anyway.
+
+Use the same approach as for the 'all peers' case: if override flag is
+specified, then reset existing TID configuration and immediately
+apply a new one.
 
 Signed-off-by: Sergey Matyukevich <sergey.matyukevich.os@quantenna.com>
 ---
- include/net/cfg80211.h       |  4 +++-
- include/uapi/linux/nl80211.h | 10 +++++++---
- net/wireless/nl80211.c       |  8 ++++++++
- 3 files changed, 18 insertions(+), 4 deletions(-)
+ include/uapi/linux/nl80211.h | 10 ++++------
+ net/wireless/nl80211.c       |  5 +----
+ 2 files changed, 5 insertions(+), 10 deletions(-)
 
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index a2b2d31530a9..83148b2d4907 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -640,8 +640,9 @@ struct cfg80211_chan_def {
-  * @noack: noack configuration value for the TID
-  * @retry_long: retry count value
-  * @retry_short: retry count value
-- * @ampdu: Enable/Disable aggregation
-+ * @ampdu: Enable/Disable MPDU aggregation
-  * @rtscts: Enable/Disable RTS/CTS
-+ * @amsdu: Enable/Disable MSDU aggregation
-  */
- struct cfg80211_tid_cfg {
- 	bool config_override;
-@@ -651,6 +652,7 @@ struct cfg80211_tid_cfg {
- 	u8 retry_long, retry_short;
- 	enum nl80211_tid_config ampdu;
- 	enum nl80211_tid_config rtscts;
-+	enum nl80211_tid_config amsdu;
- };
- 
- /**
 diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-index 9679d561f7d0..1ccb0bf657ec 100644
+index 1ccb0bf657ec..d1b1d9e49887 100644
 --- a/include/uapi/linux/nl80211.h
 +++ b/include/uapi/linux/nl80211.h
-@@ -4844,12 +4844,15 @@ enum nl80211_tid_config {
-  *	&NL80211_CMD_SET_TID_CONFIG. Its type is u8, min value is 1 and
-  *	the max value is advertised by the driver in this attribute on
-  *	output in wiphy capabilities.
-- * @NL80211_TID_CONFIG_ATTR_AMPDU_CTRL: Enable/Disable aggregation for the TIDs
-- *	specified in %NL80211_TID_CONFIG_ATTR_TIDS. Its type is u8, using
-- *	the values from &nl80211_tid_config.
-+ * @NL80211_TID_CONFIG_ATTR_AMPDU_CTRL: Enable/Disable MPDU aggregation
-+ *	for the TIDs specified in %NL80211_TID_CONFIG_ATTR_TIDS.
-+ *	Its type is u8, using the values from &nl80211_tid_config.
-  * @NL80211_TID_CONFIG_ATTR_RTSCTS_CTRL: Enable/Disable RTS_CTS for the TIDs
-  *	specified in %NL80211_TID_CONFIG_ATTR_TIDS. It is u8 type, using
-  *	the values from &nl80211_tid_config.
-+ * @NL80211_TID_CONFIG_ATTR_AMSDU_CTRL: Enable/Disable MSDU aggregation
-+ *	for the TIDs specified in %NL80211_TID_CONFIG_ATTR_TIDS.
-+ *	Its type is u8, using the values from &nl80211_tid_config.
-  */
- enum nl80211_tid_config_attr {
- 	__NL80211_TID_CONFIG_ATTR_INVALID,
-@@ -4863,6 +4866,7 @@ enum nl80211_tid_config_attr {
- 	NL80211_TID_CONFIG_ATTR_RETRY_LONG,
- 	NL80211_TID_CONFIG_ATTR_AMPDU_CTRL,
- 	NL80211_TID_CONFIG_ATTR_RTSCTS_CTRL,
-+	NL80211_TID_CONFIG_ATTR_AMSDU_CTRL,
- 
- 	/* keep last */
- 	__NL80211_TID_CONFIG_ATTR_AFTER_LAST,
+@@ -4823,12 +4823,10 @@ enum nl80211_tid_config {
+  *	(%NL80211_TID_CONFIG_ATTR_TIDS, %NL80211_TID_CONFIG_ATTR_OVERRIDE).
+  * @NL80211_TID_CONFIG_ATTR_PEER_SUPP: same as the previous per-vif one, but
+  *	per peer instead.
+- * @NL80211_TID_CONFIG_ATTR_OVERRIDE: flag attribue, if no peer
+- *	is selected, if set indicates that the new configuration overrides
+- *	all previous peer configurations, otherwise previous peer specific
+- *	configurations should be left untouched. If peer is selected then
+- *	it will reset particular TID configuration of that peer and it will
+- *	not accept other TID config attributes along with peer.
++ * @NL80211_TID_CONFIG_ATTR_OVERRIDE: flag attribue, if set indicates
++ *	that the new configuration overrides all previous peer
++ *	configurations, otherwise previous peer specific configurations
++ *	should be left untouched.
+  * @NL80211_TID_CONFIG_ATTR_TIDS: a bitmask value of TIDs (bit 0 to 7)
+  *	Its type is u16.
+  * @NL80211_TID_CONFIG_ATTR_NOACK: Configure ack policy for the TID.
 diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 3d27b24c68b2..aef0dd59dd4f 100644
+index aef0dd59dd4f..31c61e8739d9 100644
 --- a/net/wireless/nl80211.c
 +++ b/net/wireless/nl80211.c
-@@ -345,6 +345,8 @@ nl80211_tid_config_attr_policy[NL80211_TID_CONFIG_ATTR_MAX + 1] = {
- 			NLA_POLICY_MAX(NLA_U8, NL80211_TID_CONFIG_DISABLE),
- 	[NL80211_TID_CONFIG_ATTR_RTSCTS_CTRL] =
- 			NLA_POLICY_MAX(NLA_U8, NL80211_TID_CONFIG_DISABLE),
-+	[NL80211_TID_CONFIG_ATTR_AMSDU_CTRL] =
-+			NLA_POLICY_MAX(NLA_U8, NL80211_TID_CONFIG_DISABLE),
- };
- 
- const struct nla_policy nl80211_policy[NUM_NL80211_ATTR] = {
-@@ -14127,6 +14129,12 @@ static int parse_tid_conf(struct cfg80211_registered_device *rdev,
- 			nla_get_u8(attrs[NL80211_TID_CONFIG_ATTR_RTSCTS_CTRL]);
- 	}
- 
-+	if (attrs[NL80211_TID_CONFIG_ATTR_AMSDU_CTRL]) {
-+		tid_conf->mask |= BIT(NL80211_TID_CONFIG_ATTR_AMSDU_CTRL);
-+		tid_conf->amsdu =
-+			nla_get_u8(attrs[NL80211_TID_CONFIG_ATTR_AMSDU_CTRL]);
-+	}
-+
- 	if (peer)
- 		mask = rdev->wiphy.tid_config_support.peer;
- 	else
+@@ -14083,10 +14083,7 @@ static int parse_tid_conf(struct cfg80211_registered_device *rdev,
+ 		if (rdev->ops->reset_tid_config) {
+ 			err = rdev_reset_tid_config(rdev, dev, peer,
+ 						    tid_conf->tids);
+-			/* If peer is there no other configuration will be
+-			 * allowed
+-			 */
+-			if (err || peer)
++			if (err)
+ 				return err;
+ 		} else {
+ 			return -EINVAL;
 -- 
 2.11.0
 
