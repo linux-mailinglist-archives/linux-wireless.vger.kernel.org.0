@@ -2,28 +2,29 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9ADA51B821C
-	for <lists+linux-wireless@lfdr.de>; Sat, 25 Apr 2020 00:42:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8098D1B821F
+	for <lists+linux-wireless@lfdr.de>; Sat, 25 Apr 2020 00:42:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726044AbgDXWmS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 24 Apr 2020 18:42:18 -0400
-Received: from mail27.static.mailgun.info ([104.130.122.27]:50737 "EHLO
+        id S1726090AbgDXWm2 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 24 Apr 2020 18:42:28 -0400
+Received: from mail27.static.mailgun.info ([104.130.122.27]:12001 "EHLO
         mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725874AbgDXWmS (ORCPT
+        by vger.kernel.org with ESMTP id S1726050AbgDXWm2 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 24 Apr 2020 18:42:18 -0400
+        Fri, 24 Apr 2020 18:42:28 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1587768137; h=Message-Id: Date: Subject: Cc: To: From:
- Sender; bh=GGE2frBgkpIRrrkHXl/XBXNSGUUe62IHDOp9Cht337c=; b=SoaWbZIHlf2V4bawgYZaUKc3w1wVRNPylJ+aXW2otaSVeNU6PTfzCtk9leszEIc96AtAoz2t
- Oz/Y6hBQEtIShN6upMoSXxubJkHa7kTMilP8Nk87z0s0hjENYDVN60gYRUs012gJDvzbX9iV
- S3//RCK+WeikBVyfTaqYPSZydBA=
+ s=smtp; t=1587768147; h=References: In-Reply-To: Message-Id: Date:
+ Subject: Cc: To: From: Sender;
+ bh=qI0MCgapxJM2yN2WArwQzjt/VfFHUH0kGqFscZOMrHg=; b=J/otxQZI/IMytDUjy5Kv09ZMa9H1PihRRfrnpfPcM3TBq22H8f45RvTR3OLcW9Rtq+SzuP5z
+ j2iasA4Y9O/xUUMNqhqiVkLnLHOPQG2B33F/BABICZL8DwaR2upiXKqCq3ZTbeM5lBSj2TWn
+ nT9ffvi8nYFzJPAymmpcV3JdbZU=
 X-Mailgun-Sending-Ip: 104.130.122.27
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5ea36b3b.7f9c70b1b6f8-smtp-out-n01;
- Fri, 24 Apr 2020 22:42:03 -0000 (UTC)
+ by mxa.mailgun.org with ESMTP id 5ea36b43.7f3d2720a4c8-smtp-out-n03;
+ Fri, 24 Apr 2020 22:42:11 -0000 (UTC)
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 81EE4C433F2; Fri, 24 Apr 2020 22:42:03 +0000 (UTC)
+        id DBF06C433F2; Fri, 24 Apr 2020 22:42:11 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -33,64 +34,104 @@ Received: from rmanohar-linux.qualcomm.com (i-global254.qualcomm.com [199.106.10
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: rmanohar)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id DC26AC433CB;
-        Fri, 24 Apr 2020 22:42:02 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org DC26AC433CB
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 15307C433CB;
+        Fri, 24 Apr 2020 22:42:11 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 15307C433CB
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=rmanohar@codeaurora.org
 From:   Rajkumar Manoharan <rmanohar@codeaurora.org>
 To:     johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org,
         Rajkumar Manoharan <rmanohar@codeaurora.org>
-Subject: [PATCH 00/10] mac80211: add 6 GHz IEs support
-Date:   Fri, 24 Apr 2020 15:41:38 -0700
-Message-Id: <1587768108-25248-1-git-send-email-rmanohar@codeaurora.org>
+Subject: [PATCH 01/10] mac80211: fix memory overlap due to variable length param
+Date:   Fri, 24 Apr 2020 15:41:39 -0700
+Message-Id: <1587768108-25248-2-git-send-email-rmanohar@codeaurora.org>
 X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1587768108-25248-1-git-send-email-rmanohar@codeaurora.org>
+References: <1587768108-25248-1-git-send-email-rmanohar@codeaurora.org>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This series includes following changes.
+As of now HE operation element in bss_conf includes variable length
+optional field followed by other HE variable. Though the optional
+field never be used, actually it is referring to next member of the
+bss_conf structure which is not correct. Fix it by declaring needed
+HE operation fields within bss_conf itself.
 
-* Add 6 GHz band capability element (IEEE 802.11ax/D6.0, 9.4.2.261)
-  in mesh beacon and assoc. request.
-* Add 6 GHz operation information in HE operation.
-* Parse 6 GHz  information elements.
-* Decouple HT/VHT capability and do not allow HT/VHT overrides in 6 GHz.
-* Determine channel information from HE information.
+Signed-off-by: Rajkumar Manoharan <rmanohar@codeaurora.org>
+---
+ drivers/net/wireless/ath/ath11k/mac.c |  3 +--
+ include/net/mac80211.h                |  7 +++++--
+ net/mac80211/he.c                     | 13 +++++--------
+ 3 files changed, 11 insertions(+), 12 deletions(-)
 
--Rajkumar
-
-Rajkumar Manoharan (10):
-  mac80211: fix memory overlap due to variable length param
-  cfg80211: validate 6 GHz chandef
-  nl80211: add HE 6 GHz Band Capability support
-  mac80211: add HE 6 GHz Band Capabilities into parse extension
-  mac80211: handle HE 6 GHz Capability in HE STA processing
-  mac80211: add HE 6 GHz Band Capability IE in assoc. request
-  mac80211: build HE operation with 6 GHz oper information
-  mac80211: do not allow HT/VHT IEs in 6 GHz mesh mode
-  mac80211: determine chantype from HE operation in 6 GHz
-  ath11k: build HE 6 GHz capability
-
- drivers/net/wireless/ath/ath11k/core.h |   1 +
- drivers/net/wireless/ath/ath11k/mac.c  |  33 ++++++-
- include/linux/ieee80211.h              |  58 +++++++++++
- include/net/cfg80211.h                 |  24 +++++
- include/net/mac80211.h                 |   7 +-
- include/uapi/linux/nl80211.h           |   6 ++
- net/mac80211/cfg.c                     |   3 +-
- net/mac80211/he.c                      |  65 ++++++++++--
- net/mac80211/ieee80211_i.h             |   8 +-
- net/mac80211/mesh.c                    |  62 +++++++++++-
- net/mac80211/mesh.h                    |   2 +
- net/mac80211/mesh_plink.c              |   7 +-
- net/mac80211/mlme.c                    |  25 ++++-
- net/mac80211/util.c                    | 174 ++++++++++++++++++++++++++++++++-
- net/wireless/chan.c                    |  46 +++++++++
- net/wireless/nl80211.c                 |  14 +++
- 16 files changed, 510 insertions(+), 25 deletions(-)
-
+diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
+index 9f8bc19cc5ae..06d063274eea 100644
+--- a/drivers/net/wireless/ath/ath11k/mac.c
++++ b/drivers/net/wireless/ath/ath11k/mac.c
+@@ -1168,8 +1168,7 @@ static void ath11k_peer_assoc_h_he(struct ath11k *ar,
+ 	       sizeof(arg->peer_he_cap_macinfo));
+ 	memcpy(&arg->peer_he_cap_phyinfo, he_cap->he_cap_elem.phy_cap_info,
+ 	       sizeof(arg->peer_he_cap_phyinfo));
+-	memcpy(&arg->peer_he_ops, &vif->bss_conf.he_operation,
+-	       sizeof(arg->peer_he_ops));
++	arg->peer_he_ops = vif->bss_conf.he_oper.params;
+ 
+ 	/* the top most byte is used to indicate BSS color info */
+ 	arg->peer_he_ops &= 0xffffff;
+diff --git a/include/net/mac80211.h b/include/net/mac80211.h
+index 97fec4d310ac..2af956bdf80c 100644
+--- a/include/net/mac80211.h
++++ b/include/net/mac80211.h
+@@ -603,7 +603,7 @@ struct ieee80211_ftm_responder_params {
+  *	nontransmitted BSSIDs
+  * @profile_periodicity: the least number of beacon frames need to be received
+  *	in order to discover all the nontransmitted BSSIDs in the set.
+- * @he_operation: HE operation information of the AP we are connected to
++ * @he_oper: HE operation information of the AP we are connected to
+  * @he_obss_pd: OBSS Packet Detection parameters.
+  * @he_bss_color: BSS coloring settings, if BSS supports HE
+  */
+@@ -666,7 +666,10 @@ struct ieee80211_bss_conf {
+ 	u8 bssid_indicator;
+ 	bool ema_ap;
+ 	u8 profile_periodicity;
+-	struct ieee80211_he_operation he_operation;
++	struct {
++		u32 params;
++		u16 nss_set;
++	} he_oper;
+ 	struct ieee80211_he_obss_pd he_obss_pd;
+ 	struct cfg80211_he_bss_color he_bss_color;
+ };
+diff --git a/net/mac80211/he.c b/net/mac80211/he.c
+index 1087f715338b..f520552b22be 100644
+--- a/net/mac80211/he.c
++++ b/net/mac80211/he.c
+@@ -57,17 +57,14 @@ ieee80211_he_cap_ie_to_sta_he_cap(struct ieee80211_sub_if_data *sdata,
+ 
+ void
+ ieee80211_he_op_ie_to_bss_conf(struct ieee80211_vif *vif,
+-			const struct ieee80211_he_operation *he_op_ie_elem)
++			const struct ieee80211_he_operation *he_op_ie)
+ {
+-	struct ieee80211_he_operation *he_operation =
+-					&vif->bss_conf.he_operation;
+-
+-	if (!he_op_ie_elem) {
+-		memset(he_operation, 0, sizeof(*he_operation));
++	memset(&vif->bss_conf.he_oper, 0, sizeof(vif->bss_conf.he_oper));
++	if (!he_op_ie)
+ 		return;
+-	}
+ 
+-	vif->bss_conf.he_operation = *he_op_ie_elem;
++	vif->bss_conf.he_oper.params = __le32_to_cpu(he_op_ie->he_oper_params);
++	vif->bss_conf.he_oper.nss_set = __le16_to_cpu(he_op_ie->he_mcs_nss_set);
+ }
+ 
+ void
 -- 
 2.7.4
