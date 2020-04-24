@@ -2,59 +2,59 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 167101B6A7A
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 Apr 2020 02:49:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A85541B6A7B
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 Apr 2020 02:50:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728350AbgDXAtj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 23 Apr 2020 20:49:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56038 "EHLO
+        id S1728458AbgDXAtl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 23 Apr 2020 20:49:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56048 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728052AbgDXAtj (ORCPT
+        with ESMTP id S1728426AbgDXAtk (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 23 Apr 2020 20:49:39 -0400
-Received: from mail-lf1-x141.google.com (mail-lf1-x141.google.com [IPv6:2a00:1450:4864:20::141])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E88CDC09B042
-        for <linux-wireless@vger.kernel.org>; Thu, 23 Apr 2020 17:49:38 -0700 (PDT)
-Received: by mail-lf1-x141.google.com with SMTP id r17so6291862lff.2
-        for <linux-wireless@vger.kernel.org>; Thu, 23 Apr 2020 17:49:38 -0700 (PDT)
+        Thu, 23 Apr 2020 20:49:40 -0400
+Received: from mail-lf1-x144.google.com (mail-lf1-x144.google.com [IPv6:2a00:1450:4864:20::144])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE83CC09B042
+        for <linux-wireless@vger.kernel.org>; Thu, 23 Apr 2020 17:49:39 -0700 (PDT)
+Received: by mail-lf1-x144.google.com with SMTP id u10so6274599lfo.8
+        for <linux-wireless@vger.kernel.org>; Thu, 23 Apr 2020 17:49:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=/b3npb6pWEyc/rTWSDgsuwKjZh16aTlDyhMtdfaza4g=;
-        b=DfVDRkxB5o1unqMkdwVEHWkdoydfqEGK3DqscgzZshy3J7HBQzXdmdS1N3GsdRJprK
-         BeByShk0tDM9eRz6+GNclRIjsEx83p4Lo9FrRBQSeFbZO7Oxo5ZXwXgKS1/cl8+2eA4p
-         NfzIZ/jzCaZR/z/x/3cQfN4o7VkQ8OIccI1JQ+KnhZMAkv9wxMtNULCmnz9Gp5DLcn5J
-         umeWpQfRTnGbPrZAx8H3qq2a7V2NJNhoN7BxYaiBHutDzXogc+Z1bsiKT6lNzL+a+g/6
-         RyYoOAGpszd/5c3ZEgrYtOnmM2gSTYYyxk+9/nwlRs4PoOXCkL+U1oStY4XzYrAI1CEU
-         ohxg==
+        bh=W2VxuGgPQg0BX0NNuAgyx42HRNt4gO8knSgu6spqd9A=;
+        b=MaoIKNM6qLCqVN74eZUoO8dQIaXg1wRugqSkdOM+P6/NJ9HeG6KjEDuUu2rNpAYgKe
+         7vtXLFhDSFebmqI1oUOQV0zkJG0kz1NXZvGZzOmT5O37G+OzzYkqbtj7apSV7QpYBCiG
+         62HsbPMYBwyK31frmAjFX7u/6m+o7Fr7caoZ7BiopfGhmCFDJ8OSsyhicSZgLDaeXxnL
+         HkyqaKEOmwRN8kAdX38s+HYwHQt+oUb1zDjbTWI/qWdpz+Dneh2S25ANezzjgr045k74
+         1Yy6p+dkWHQu8CSBr9YZXEhM+cazLdHRyNdsw6puxgz5t/ToIaZSRVpxxBGNKb4j2N8Y
+         Eweg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=/b3npb6pWEyc/rTWSDgsuwKjZh16aTlDyhMtdfaza4g=;
-        b=V8Epfr2jHAU0aODWnaTPPlNEWZBkzA/xYiP7eUnVBxXEssc8zi2mZwvCdHP47rOxIX
-         FbK8uLlHnBeW9MKb4MKVEwFMQVKn3UBcz4eWjoS0Z0yfQBO1yK5PZzmCmSINcZI5lFNr
-         s+KxrOxozCPdv0Sa0g41yoZG+4macLvlcjfLlMO4yFO/0A5DrPCO8L6kja5660BqrSAO
-         20OpUpfUeaF7/hhXnjTKAHl7kcVQyO3o5DxhiZ5Gu3LFtt372JISRmb98SBDN7SO30Xt
-         YBNetQ7q/8ZU70PnFW2910pU+H3tnrDABxEov94kBHJY3IGQ+JEDtOxZ+DPVuBcS//Sl
-         pZKA==
-X-Gm-Message-State: AGi0PuZJZqO1ODDQ3dvHPUSqeWGdesopAA2RhRgwSSGvB/Yow/nnUAMm
-        ZxlnhPw2aB5aVyb1fovhPBw=
-X-Google-Smtp-Source: APiQypJ1oR8r2M0seiVpQ9Qw7z98IuiVt34JVAyGFGzWYISlwpY7u+OFvhXkrjcb8qmqK4lwRiznwQ==
-X-Received: by 2002:a05:6512:3189:: with SMTP id i9mr4220250lfe.178.1587689377419;
-        Thu, 23 Apr 2020 17:49:37 -0700 (PDT)
+        bh=W2VxuGgPQg0BX0NNuAgyx42HRNt4gO8knSgu6spqd9A=;
+        b=pN+qWnBXWLoIoENh98qyhHPdO6jP2kTGFF7dXizS+fJL9WT+u/VqqD0rkAwbGfIlZt
+         9G6SEahlC0XU43z6+WVH3YfLcNgXXHRkK9bpCf7t3ONtJOMQrMN0zYxMs4kJSiaHauwI
+         Gk0G9/xPJWypOYdntPhFB1tZ3H3D/HqVjgKeoYukLnAQ7x8ZkFKvq1UYLNwmcWJ/nr7f
+         izgM+4AGrgemZfkQxhbTVSuOahJ5RCJJd3GlpvQUkTnLcnH0wXID8vesQW6dAy0h47R0
+         3rhFngVPQy40pgx1odr69UjGBo6zroPjSn+E4Jj5AMw5j4cT/G2LXxNBFTpsqGe7drOM
+         Rr3g==
+X-Gm-Message-State: AGi0PuaPZUlTzKYLtcN7W8eJ3UABdsII40SjGzsrbyKo7A2HFEvUNExU
+        PF+mF/93O8qkhqJM+3BS8q32RkWu
+X-Google-Smtp-Source: APiQypJW5v/1Q/Pnnlzy2KvZR94Jg9TObRBcqwOno7MSdmS817egr+/NIdI9Qj1e0/91BceROZWbKg==
+X-Received: by 2002:a19:c78d:: with SMTP id x135mr4096890lff.151.1587689378419;
+        Thu, 23 Apr 2020 17:49:38 -0700 (PDT)
 Received: from rsa-laptop.internal.lan ([217.25.229.52])
-        by smtp.gmail.com with ESMTPSA id r12sm1555056ljc.12.2020.04.23.17.49.36
+        by smtp.gmail.com with ESMTPSA id r12sm1555056ljc.12.2020.04.23.17.49.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Apr 2020 17:49:36 -0700 (PDT)
+        Thu, 23 Apr 2020 17:49:37 -0700 (PDT)
 From:   Sergey Ryazanov <ryazanov.s.a@gmail.com>
 To:     Kalle Valo <kvalo@codeaurora.org>
 Cc:     QCA ath9k Development <ath9k-devel@qca.qualcomm.com>,
         linux-wireless@vger.kernel.org
-Subject: [PATCH 2/6] ath9k: remove needless NFCAL_PENDING flag setting
-Date:   Fri, 24 Apr 2020 03:49:19 +0300
-Message-Id: <20200424004923.17129-3-ryazanov.s.a@gmail.com>
+Subject: [PATCH 3/6] ath9k: do not miss longcal on AR9002
+Date:   Fri, 24 Apr 2020 03:49:20 +0300
+Message-Id: <20200424004923.17129-4-ryazanov.s.a@gmail.com>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200424004923.17129-1-ryazanov.s.a@gmail.com>
 References: <20200424004923.17129-1-ryazanov.s.a@gmail.com>
@@ -65,29 +65,70 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The NFCAL_PENDING flag is set by the ath9k_hw_start_nfcal() routine,
-so there is no reason to set it manually after calling it during the
-AR9002 calibrations initialization.
+Each of AGC & I/Q calibrations can take a long time. Long calibration
+and NF calibration in particular are forbiden for parallel run with
+ADC & I/Q calibrations. So, the chip could not be ready to perform the
+long calibration at the time of request. And a request to perform the
+long calibration may be lost.
+
+In order to fix this, preserve the long calibration request as a
+calibration state flag and restore the long calibration request each
+time the calibration function is called again (i.e. on each subsequent
+ivocation of the short calibration).
+
+This feature will be twice useful after the next change, which will
+make it possible to start the long calibration before all ADCs & I/Q
+calibrations are completed.
+
+Run tested with AR9220.
 
 Signed-off-by: Sergey Ryazanov <ryazanov.s.a@gmail.com>
 ---
- drivers/net/wireless/ath/ath9k/ar9002_calib.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/net/wireless/ath/ath9k/ar9002_calib.c | 10 +++++++++-
+ drivers/net/wireless/ath/ath9k/hw.h           |  1 +
+ 2 files changed, 10 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/net/wireless/ath/ath9k/ar9002_calib.c b/drivers/net/wireless/ath/ath9k/ar9002_calib.c
-index 14eee06744ed..0f7c5812e5c2 100644
+index 0f7c5812e5c2..ad8db7720993 100644
 --- a/drivers/net/wireless/ath/ath9k/ar9002_calib.c
 +++ b/drivers/net/wireless/ath/ath9k/ar9002_calib.c
-@@ -857,9 +857,6 @@ static bool ar9002_hw_init_cal(struct ath_hw *ah, struct ath9k_channel *chan)
- 	ath9k_hw_loadnf(ah, chan);
- 	ath9k_hw_start_nfcal(ah, true);
+@@ -663,8 +663,13 @@ static int ar9002_hw_calibrate(struct ath_hw *ah, struct ath9k_channel *chan,
+ 	int ret;
  
+ 	nfcal = !!(REG_READ(ah, AR_PHY_AGC_CONTROL) & AR_PHY_AGC_CONTROL_NF);
 -	if (ah->caldata)
--		set_bit(NFCAL_PENDING, &ah->caldata->cal_flags);
--
- 	ah->cal_list = ah->cal_list_last = ah->cal_list_curr = NULL;
++	if (ah->caldata) {
+ 		nfcal_pending = test_bit(NFCAL_PENDING, &ah->caldata->cal_flags);
++		if (longcal)		/* Remember to not miss */
++			set_bit(LONGCAL_PENDING, &ah->caldata->cal_flags);
++		else if (test_bit(LONGCAL_PENDING, &ah->caldata->cal_flags))
++			longcal = true;	/* Respin a previous one */
++	}
  
- 	/* Enable IQ, ADC Gain and ADC DC offset CALs */
+ 	percal_pending = (currCal &&
+ 			  (currCal->calState == CAL_RUNNING ||
+@@ -700,6 +705,9 @@ static int ar9002_hw_calibrate(struct ath_hw *ah, struct ath9k_channel *chan,
+ 		}
+ 
+ 		if (longcal) {
++			if (ah->caldata)
++				clear_bit(LONGCAL_PENDING,
++					  &ah->caldata->cal_flags);
+ 			ath9k_hw_start_nfcal(ah, false);
+ 			/* Do periodic PAOffset Cal */
+ 			ar9002_hw_pa_cal(ah, false);
+diff --git a/drivers/net/wireless/ath/ath9k/hw.h b/drivers/net/wireless/ath/ath9k/hw.h
+index 2e4489700a85..c99f3c77c823 100644
+--- a/drivers/net/wireless/ath/ath9k/hw.h
++++ b/drivers/net/wireless/ath/ath9k/hw.h
+@@ -427,6 +427,7 @@ enum ath9k_cal_flags {
+ 	TXIQCAL_DONE,
+ 	TXCLCAL_DONE,
+ 	SW_PKDET_DONE,
++	LONGCAL_PENDING,
+ };
+ 
+ struct ath9k_hw_cal_data {
 -- 
 2.24.1
 
