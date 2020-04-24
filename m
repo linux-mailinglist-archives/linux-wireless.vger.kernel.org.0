@@ -2,89 +2,134 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A5C981B6D06
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 Apr 2020 07:09:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E10BB1B6DA3
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 Apr 2020 07:57:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726404AbgDXFJA (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 24 Apr 2020 01:09:00 -0400
-Received: from mail27.static.mailgun.info ([104.130.122.27]:18717 "EHLO
-        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726364AbgDXFI7 (ORCPT
+        id S1726442AbgDXF50 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 24 Apr 2020 01:57:26 -0400
+Received: from mail26.static.mailgun.info ([104.130.122.26]:64979 "EHLO
+        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726187AbgDXF50 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 24 Apr 2020 01:08:59 -0400
+        Fri, 24 Apr 2020 01:57:26 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1587704939; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=0nI7OysQJvgHWmiwkHjh4EDeXgMIoYnVdqFHq2xSfew=; b=B9gkSgUJDyvXcwl075tKGBmcZoIiJKidgJe5pZFdtCJcAKem0mxzVwZcdV0h0AvYfPtRtRng
- QnjtI1wYfk5I3Gt1QpGyWCnHNl5BPV4PuBSCPe6WVfzOS3Q5RCofBfIG68nVi/dHPmbVbMWB
- FKHfJzSAI/EuCB1Vl0L7Fl2xU0A=
-X-Mailgun-Sending-Ip: 104.130.122.27
+ s=smtp; t=1587707846; h=Date: Message-Id: Cc: To: Subject: From:
+ Content-Transfer-Encoding: MIME-Version: Content-Type: Sender;
+ bh=BYWybFeLs0RDp+yRY77K5lQIYAn/o9xP3hvYFCE3Pgc=; b=oXDmvG92MLMTNrCY5nS1U0PpnrSCxYAplPtirQT02xFnf9OoZt75tiWih5FqbIafXqNHma7d
+ PJ55VCxniPYkk0FikLy2jVIvAoQXakuJQi709uP/ojc/9ce9qc+rCm4PS4pMceMSAQf4ndlK
+ HLos+8EeDEdBKsv+i1rLVySFyaM=
+X-Mailgun-Sending-Ip: 104.130.122.26
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5ea27455.7f54fa20f110-smtp-out-n02;
- Fri, 24 Apr 2020 05:08:37 -0000 (UTC)
+ by mxa.mailgun.org with ESMTP id 5ea27fb0.7f882596fca8-smtp-out-n03;
+ Fri, 24 Apr 2020 05:57:04 -0000 (UTC)
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 1B1AAC433D2; Fri, 24 Apr 2020 05:08:37 +0000 (UTC)
+        id 805C0C433F2; Fri, 24 Apr 2020 05:57:03 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.0
-Received: from tynnyri.adurom.net (tynnyri.adurom.net [51.15.11.48])
+X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
+        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 12A95C433CB;
-        Fri, 24 Apr 2020 05:08:35 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 12A95C433CB
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 9E5CEC433CB;
+        Fri, 24 Apr 2020 05:57:02 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 9E5CEC433CB
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Brian Norris <briannorris@chromium.org>
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>
-Subject: Re: bugzilla.kernel.org / networking_wireless@kernel-bugs.osdl.org
-References: <CA+ASDXMghcm-g8uWr2rJOmAOkYocWGCvXKtqs171TQ52DZXmPw@mail.gmail.com>
-Date:   Fri, 24 Apr 2020 08:08:33 +0300
-In-Reply-To: <CA+ASDXMghcm-g8uWr2rJOmAOkYocWGCvXKtqs171TQ52DZXmPw@mail.gmail.com>
-        (Brian Norris's message of "Thu, 23 Apr 2020 15:42:34 -0700")
-Message-ID: <875zdpjwry.fsf@tynnyri.adurom.net>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+From:   Kalle Valo <kvalo@codeaurora.org>
+Subject: pull-request: wireless-drivers-2020-04-24
+To:     netdev@vger.kernel.org
+Cc:     linux-wireless@vger.kernel.org
+Message-Id: <20200424055703.805C0C433F2@smtp.codeaurora.org>
+Date:   Fri, 24 Apr 2020 05:57:03 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Brian Norris <briannorris@chromium.org> writes:
+Hi,
 
-> Does anybody actually triage/manage the Wireless component on
-> bugzilla.kernel.org?
-> https://bugzilla.kernel.org/describecomponents.cgi?product=Networking
+here's a pull request to net tree, more info below. Please let me know if there
+are any problems.
 
-To my knowledge only iwlwifi folks follow bugzilla, not much else. I
-certainly don't have time for it. I think there should be a big fat
-warning that it's not the recommended way to report bugs, just so that
-people don't have false expectations.
+Kalle
 
-> It's ostensibly managed by networking_wireless@kernel-bugs.osdl.org,
-> but I get the impression that list (and really, the entire domain...)
-> has been dead for a long time.
->
-> Related: does anybody care to fix that up? I've found a few useful bug
-> reports there recently, and it would be nice if the community could
-> proactively handle those, instead of leaving it there as the
-> equivalent of /dev/null.
->
-> If no one else volunteers, I'd probably at least try to stick my email
-> in there somewhere [1], so I can manage state (e.g., close issues that
-> are already fixed).
+The following changes since commit 2fcd80144b93ff90836a44f2054b4d82133d3a85:
 
-If you have the time go for it :)
+  Merge tag 'tag-chrome-platform-fixes-for-v5.7-rc2' of git://git.kernel.org/pub/scm/linux/kernel/git/chrome-platform/linux (2020-04-16 15:00:57 -0700)
 
-> [1] I guess I'd have to ask kernel.org admins?
+are available in the git repository at:
 
-Yeah, I suppose helpdesk@kernel.org can help with that.
+  git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers.git tags/wireless-drivers-2020-04-24
 
--- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+for you to fetch changes up to 10e41f34a019b1e4487de2c2941fbc212404c3fe:
+
+  MAINTAINERS: update mt76 reviewers (2020-04-21 15:40:55 +0300)
+
+----------------------------------------------------------------
+wireless-drivers fixes for v5.7
+
+Second set of fixes for v5.7. Quite a few iwlwifi fixes and some
+maintainers file updates.
+
+iwlwifi
+
+* fix a bug with kmemdup() error handling
+
+* fix a DMA pool warning about unfreed memory
+
+* fix beacon statistics
+
+* fix a theoritical bug in device initialisation
+
+* fix queue limit handling and inactive TID removal
+
+* disable ACK Enabled Aggregation which was enabled by accident
+
+* fix transmit power setting reading from BIOS with certain versions
+
+----------------------------------------------------------------
+Chris Rorvick (1):
+      iwlwifi: actually check allocated conf_tlv pointer
+
+Ilan Peer (1):
+      iwlwifi: mvm: Do not declare support for ACK Enabled Aggregation
+
+Johannes Berg (4):
+      iwlwifi: pcie: actually release queue memory in TVQM
+      iwlwifi: pcie: indicate correct RB size to device
+      iwlwifi: mvm: limit maximum queue appropriately
+      iwlwifi: mvm: fix inactive TID removal return value usage
+
+Luca Coelho (1):
+      iwlwifi: fix WGDS check when WRDS is disabled
+
+Mordechay Goodstein (1):
+      iwlwifi: mvm: beacon statistics shouldn't go backwards
+
+Nils ANDRÉ-CHANG (1):
+      MAINTAINERS: Update URL for wireless drivers
+
+Ryder Lee (1):
+      MAINTAINERS: update mt76 reviewers
+
+Sergey Matyukevich (1):
+      MAINTAINERS: update list of qtnfmac maintainers
+
+ MAINTAINERS                                        | 44 +++++++++++-----------
+ drivers/net/wireless/intel/iwlwifi/fw/acpi.c       |  9 ++++-
+ drivers/net/wireless/intel/iwlwifi/fw/api/txq.h    |  6 +--
+ drivers/net/wireless/intel/iwlwifi/iwl-drv.c       |  2 +-
+ drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c |  6 +--
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c        | 25 ++++++------
+ drivers/net/wireless/intel/iwlwifi/mvm/rx.c        | 13 ++++++-
+ drivers/net/wireless/intel/iwlwifi/mvm/sta.c       |  9 ++++-
+ .../wireless/intel/iwlwifi/pcie/ctxt-info-gen3.c   | 18 +++++++--
+ drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c  |  3 ++
+ 10 files changed, 80 insertions(+), 55 deletions(-)
