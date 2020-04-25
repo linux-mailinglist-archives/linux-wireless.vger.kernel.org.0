@@ -2,103 +2,92 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C8041B8614
-	for <lists+linux-wireless@lfdr.de>; Sat, 25 Apr 2020 13:15:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 298891B866B
+	for <lists+linux-wireless@lfdr.de>; Sat, 25 Apr 2020 14:11:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726053AbgDYLOz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 25 Apr 2020 07:14:55 -0400
-Received: from dvalin.narfation.org ([213.160.73.56]:39630 "EHLO
-        dvalin.narfation.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726090AbgDYLOy (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 25 Apr 2020 07:14:54 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-        s=20121; t=1587813290;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=KumF6kh56EN8JU+7POkgR7Y2ujlsA83xKr4QGN/daXg=;
-        b=d3wmTxFC0t5ZVqdKAiC+GC/Lm6Thc6opDvrFvelDyKI1DXvCx+KpYYtcjNgP9n95smB8zi
-        2N5EHiMVHUJANDnUUr77SmLF2PmdkndLm/1uNnEgso1JGbjR6n5AR5FG4LCwqBDD1I70/5
-        JxLo+0k2l3VZF+8Qpj05Lsi9Wo+mU1I=
-From:   Sven Eckelmann <sven@narfation.org>
-To:     ath10k@lists.infradead.org
-Cc:     Linus =?ISO-8859-1?Q?L=FCssing?= <linus.luessing@c0d3.blue>,
-        Simon Wunderlich <sw@simonwunderlich.de>,
-        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Ben Greear <greearb@candelatech.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Linus =?ISO-8859-1?Q?L=FCssing?= <ll@simonwunderlich.de>,
-        mail@adrianschmutzler.de
-Subject: Re: [PATCH] ath10k: increase rx buffer size to 2048
-Date:   Sat, 25 Apr 2020 13:14:42 +0200
-Message-ID: <3097447.aZuNXRJysd@sven-edge>
-In-Reply-To: <3300912.TRQvxCK2vZ@bentobox>
-References: <20200205191043.21913-1-linus.luessing@c0d3.blue> <3300912.TRQvxCK2vZ@bentobox>
+        id S1726107AbgDYMLY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 25 Apr 2020 08:11:24 -0400
+Received: from mail.kernel.org ([198.145.29.99]:39086 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725925AbgDYMLX (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 25 Apr 2020 08:11:23 -0400
+Received: from localhost.localdomain.com (unknown [151.66.196.206])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 8481D20714;
+        Sat, 25 Apr 2020 12:11:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1587816683;
+        bh=f/cPUhyoDLmiSfWVShSU2XA76c7Y0HGJoHJ4SltIYKc=;
+        h=From:To:Cc:Subject:Date:From;
+        b=rMz++46MN7wgh7oEn2cAvbalCTCPIQsjHj0RFsAdhrbD737dhGtYGUE+znFsAqaa1
+         Lspmn80gqSEVAX8mpmEXF5kwIqwWoMc9JbxctiHC54gl+eqTWCADfukM/G1QUx0I2Q
+         2J9iUJ2eIj2qLnhDz0erNFN+leyycqNnnX6p8HNU=
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com
+Subject: [PATCH] mt76: mt76x0: enable MCS 8 and MCS9
+Date:   Sat, 25 Apr 2020 14:11:09 +0200
+Message-Id: <67151a3a910f52b689d316589377333abc2be902.1587816372.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.25.3
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart9684083.LlcNlZrpYr"; micalg="pgp-sha512"; protocol="application/pgp-signature"
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---nextPart9684083.LlcNlZrpYr
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
+Enable MCS8 and MCS9 for mt76x0{u,e} devices
 
-On Wednesday, 1 April 2020 09:00:49 CEST Sven Eckelmann wrote:
-> On Wednesday, 5 February 2020 20:10:43 CEST Linus L=FCssing wrote:
-> > From: Linus L=FCssing <ll@simonwunderlich.de>
-> >=20
-> > Before, only frames with a maximum size of 1528 bytes could be
-> > transmitted between two 802.11s nodes.
-> >=20
-> > For batman-adv for instance, which adds its own header to each frame,
-> > we typically need an MTU of at least 1532 bytes to be able to transmit
-> > without fragmentation.
-> >=20
-> > This patch now increases the maxmimum frame size from 1528 to 1656
-> > bytes.
-> [...]
->=20
-> @Kalle, I saw that this patch was marked as deferred [1] but I couldn't f=
-ind=20
-> any mail why it was done so. It seems like this currently creates real wo=
-rld=20
-> problems - so would be nice if you could explain shortly what is currentl=
-y=20
-> blocking its acceptance.
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+ .../net/wireless/mediatek/mt76/mt76x0/init.c  | 26 ++++---------------
+ 1 file changed, 5 insertions(+), 21 deletions(-)
 
-Ping?
-
-Kind regards,
-	Sven
-
-> [1] https://patchwork.kernel.org/patch/11367055/
---nextPart9684083.LlcNlZrpYr
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEF10rh2Elc9zjMuACXYcKB8Eme0YFAl6kG6IACgkQXYcKB8Em
-e0blZhAAtUz1zZuJUiX3gvEu7u03vcUEh+9wxlrnYwC+XmWyXWZ0lswqB5egTyd0
-2XbsmAXldRfVz6HV/Gly3WGR2QBxVCkQPhEhDuUBDuNFnp/QL2+qnriubgRlDYSp
-lIVP1REqUJcADEM92Bec8vWub35lxIwMj3j/DpR9gQ/toJu9C/1Gnuw9i40WTF3i
-K+BMaPwR33aGAdTRDh1fK0zWcpuzRIOMGJf4HhoOgm3HU0K07P64UXC4x40uU1zi
-G7Tn6SekHgtio5DmRRualgp28QE69XK66W25mbLxaZQcvnUHuNEoMZC+bJh+kYkN
-pZiVdlUx6CM+CqSuztHCYT7Dgl3hC8KbTRAfVSY1M44NChglAIO3WXuHasyeqJHn
-n9BJ+q9+AcemX1whESG16iA10KMK/8PsRF9ynzM05W+JiwvDiTB0JbEfS0h4eur0
-dwiavSaAvnhoXV2bra4XxuqDxQWjagq11FCIpMg1U4WpuZSKit2K6hL31wHChsK7
-O03j+un9EU/UHlDRb4G2EM1UU3t6JngjUDlzPr1lNkVFCwiFO4wh4e8nm+GiRmuc
-yj1Wq7FREyBhhDbktr56SFLHoAluhshb2QRE+8yNAELZEi+mKS08kY/c6FVxPo63
-elfS4ktzDlNtkQO4agAAPAmIOijysXjj7mG8a+5A8vhX4Y+s6Ck=
-=2W59
------END PGP SIGNATURE-----
-
---nextPart9684083.LlcNlZrpYr--
-
-
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x0/init.c b/drivers/net/wireless/mediatek/mt76/mt76x0/init.c
+index 57f8d56737eb..dc8bf4c6969a 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x0/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x0/init.c
+@@ -12,24 +12,6 @@
+ #include "initvals.h"
+ #include "../mt76x02_phy.h"
+ 
+-static void mt76x0_vht_cap_mask(struct ieee80211_supported_band *sband)
+-{
+-	struct ieee80211_sta_vht_cap *vht_cap = &sband->vht_cap;
+-	u16 mcs_map = 0;
+-	int i;
+-
+-	vht_cap->cap &= ~IEEE80211_VHT_CAP_RXLDPC;
+-	for (i = 0; i < 8; i++) {
+-		if (!i)
+-			mcs_map |= (IEEE80211_VHT_MCS_SUPPORT_0_7 << (i * 2));
+-		else
+-			mcs_map |=
+-				(IEEE80211_VHT_MCS_NOT_SUPPORTED << (i * 2));
+-	}
+-	vht_cap->vht_mcs.rx_mcs_map = cpu_to_le16(mcs_map);
+-	vht_cap->vht_mcs.tx_mcs_map = cpu_to_le16(mcs_map);
+-}
+-
+ static void
+ mt76x0_set_wlan_state(struct mt76x02_dev *dev, u32 val, bool enable)
+ {
+@@ -263,9 +245,11 @@ int mt76x0_register_device(struct mt76x02_dev *dev)
+ 		return ret;
+ 
+ 	if (dev->mt76.cap.has_5ghz) {
+-		/* overwrite unsupported features */
+-		mt76x0_vht_cap_mask(&dev->mphy.sband_5g.sband);
+-		mt76x0_init_txpower(dev, &dev->mphy.sband_5g.sband);
++		struct ieee80211_supported_band *sband;
++
++		sband = &dev->mphy.sband_5g.sband;
++		sband->vht_cap.cap &= ~IEEE80211_VHT_CAP_RXLDPC;
++		mt76x0_init_txpower(dev, sband);
+ 	}
+ 
+ 	if (dev->mt76.cap.has_2ghz)
+-- 
+2.25.3
 
