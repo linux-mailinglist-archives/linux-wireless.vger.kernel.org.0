@@ -2,77 +2,80 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C03AE1B9107
-	for <lists+linux-wireless@lfdr.de>; Sun, 26 Apr 2020 17:03:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D2101B9151
+	for <lists+linux-wireless@lfdr.de>; Sun, 26 Apr 2020 17:56:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726146AbgDZPDj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 26 Apr 2020 11:03:39 -0400
-Received: from mail.kernel.org ([198.145.29.99]:54894 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725876AbgDZPDj (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 26 Apr 2020 11:03:39 -0400
-Received: from localhost (unknown [137.135.114.1])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        id S1726206AbgDZP4h (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 26 Apr 2020 11:56:37 -0400
+Received: from mail2.candelatech.com ([208.74.158.173]:56076 "EHLO
+        mail3.candelatech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726156AbgDZP4h (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 26 Apr 2020 11:56:37 -0400
+Received: from [192.168.254.4] (unknown [50.34.219.109])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B769E206D4;
-        Sun, 26 Apr 2020 15:03:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1587913418;
-        bh=i7CuN56YMVao2EEHlvF/iwomtHEgWLVGaff+VKRVhD4=;
-        h=Date:From:To:To:To:To:Cc:Cc:Subject:In-Reply-To:References:From;
-        b=N+wn6M3cH1m9myySmDhvzQBgRXj5vAwl8TK4F30F8jzlDyBhLHoZkFnmZaFaMbNH5
-         cgXfKSnEWcrUx4b5tNUAMNAYOwhhobYM4zJPEx10aMYZbHAmuSp0J3bEnINyCcgvWD
-         I9zLJw5u5L+jm3v2qBbDZMGUTBwHos8WoTxHiM2g=
-Date:   Sun, 26 Apr 2020 15:03:37 +0000
-From:   Sasha Levin <sashal@kernel.org>
-To:     Sasha Levin <sashal@kernel.org>
-To:     Luca Coelho <luca@coelho.fi>
-To:     Luca Coelho <luciano.coelho@intel.com>
-To:     kvalo@codeaurora.org
-Cc:     linux-wireless@vger.kernel.org
-Cc:     stable@vger.kernel.org
-Subject: Re: [PATCH v5.7] iwlwifi: pcie: handle QuZ configs with killer NICs as well
-In-Reply-To: <iwlwifi.20200424121518.b715acfbe211.I273a098064a22577e4fca767910fd9cf0013f5cb@changeid>
-References: <iwlwifi.20200424121518.b715acfbe211.I273a098064a22577e4fca767910fd9cf0013f5cb@changeid>
-Message-Id: <20200426150338.B769E206D4@mail.kernel.org>
+        by mail3.candelatech.com (Postfix) with ESMTPSA id A41B613C283
+        for <linux-wireless@vger.kernel.org>; Sun, 26 Apr 2020 08:56:36 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com A41B613C283
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+        s=default; t=1587916596;
+        bh=9/1w6dAGFFxWzAuGO0TNENsbBAnkOJjjdZA7wKKQvFk=;
+        h=To:From:Subject:Date:From;
+        b=Tr2opzNWvPTCwgX5v/INCCyi3Ecy3Yc8d65WDP66AWOwwvusvLaXyuh4BxkfKMk80
+         2k76r2838YObzYISM7/Ub8fhY2JoLOSGmUxLEzGUFCjRHM/UJ6erBWJ3BFpcD9KK3j
+         3KPRtO+/ug473/J9fGVuSMIKSDbn9mFxy1zC6R50=
+To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+From:   Ben Greear <greearb@candelatech.com>
+Subject: WiFi Performance issue in 5.4.25+
+Message-ID: <1a7c11e6-df88-209a-6053-17d4578c27e8@candelatech.com>
+Date:   Sun, 26 Apr 2020 08:56:35 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+ Thunderbird/45.8.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi
+Hello,
 
-[This is an automated email]
+One of my test cases is to create lots of virtual station devices, and run bi-directional
+TCP traffic between them an an Ethernet port, through an AP.  My automation is doing
+around 7 tcp flows per station vdev.
 
-This commit has been processed because it contains a "Fixes:" tag
-fixing commit: 5a8c31aa6357 ("iwlwifi: pcie: fix recognition of QuZ devices").
+This test is reliably falling apart at around 30 stations on an i7 2-core processor
+system.  Interesting to me is the perf top in this state.  The stop_queue reliably
+dominates.
 
-The bot has tested the following trees: v5.6.7, v5.4.35.
+   1   22.20%  [kernel]                            [k] __ieee80211_stop_queue
+   2    7.66%  [kernel]                            [k] __lock_acquire_lockdep.isra.36
+   3    4.46%  [kernel]                            [k] queued_spin_lock_slowpath
+   4    4.40%  [kernel]                            [k] lock_release
+   5    4.18%  [kernel]                            [k] lock_acquire
+   6    1.47%  btserver                            [.] bitfield::get
+   7    1.45%  [kernel]                            [k] sock_poll
+   8    1.32%  [kernel]                            [k] tcp_poll
+   9    1.30%  libc-2.23.so                        [.] __memset_sse2
+  10    1.26%  [kernel]                            [k] do_raw_spin_lock
+  11    1.06%  btserver                            [.] Cell<BaseEndpoint*>::next
+  12    0.85%  btserver                            [.] Endpoint::doTrafficRound
+  13
 
-v5.6.7: Failed to apply! Possible dependencies:
-    32ed101aa140 ("iwlwifi: convert all Qu with Jf devices to the new config table")
-    56ba371a5288 ("iwlwifi: move the remaining 0x2526 configs to the new table")
-    5e003982b07a ("iwlwifi: move AX200 devices to the new table")
-    67eb556da609 ("iwlwifi: combine 9260 cfgs that only change names")
-    95939551e28c ("iwlwifi: add GNSS differentiation to the device tables")
-    d6f2134a3831 ("iwlwifi: add mac/rf types and 160MHz to the device tables")
-    fe25b1518f72 ("iwlwifi: move TH1 devices to the new table")
+At 180 to 190 stations, the situation significantly improves.  At this point, there are only
+two flows per station.
 
-v5.4.35: Failed to apply! Possible dependencies:
-    32ed101aa140 ("iwlwifi: convert all Qu with Jf devices to the new config table")
-    3681021fc6af ("iwlwifi: remove IWL_DEVICE_22560/IWL_DEVICE_FAMILY_22560")
-    3b589d5624ce ("iwlwifi: dbg_ini: use new trigger TLV in dump flow")
-    593fae3e5e90 ("iwlwifi: dbg_ini: add monitor dumping support")
-    69f0e5059b09 ("iwlwifi: dbg: remove multi buffers infra")
-    bfc3e9fdbfb8 ("iwlwifi: 22000: fix some indentation")
-    c042f0c77f3d ("iwlwifi: allocate more receive buffers for HE devices")
-    c9fe75e9f347 ("iwlwifi: dbg_ini: use new region TLV in dump flow")
+If I limit to one TCP flow per station for all numbers of vdevs, then it does not have total failures like it does with more
+streams, but the stop_queue still dominates the perf top at higher numbers of stations (like 60-70).
 
+I need to do some more testing with other kernels and such, but curious if anyone
+has any suggestions as to why stop_queue is taking so much time?
 
-NOTE: The patch will not be queued to stable trees until it is upstream.
-
-How should we proceed with this patch?
+Thanks,
+Ben
 
 -- 
-Thanks
-Sasha
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
