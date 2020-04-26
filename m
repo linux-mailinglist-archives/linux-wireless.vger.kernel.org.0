@@ -2,30 +2,33 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A67F01B8E64
-	for <lists+linux-wireless@lfdr.de>; Sun, 26 Apr 2020 11:41:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B0FF61B8E69
+	for <lists+linux-wireless@lfdr.de>; Sun, 26 Apr 2020 11:42:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726373AbgDZJlS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 26 Apr 2020 05:41:18 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:2907 "EHLO huawei.com"
+        id S1726150AbgDZJli (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 26 Apr 2020 05:41:38 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:3302 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726200AbgDZJlS (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 26 Apr 2020 05:41:18 -0400
-Received: from DGGEMS411-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id 1358B4089967D5603955;
-        Sun, 26 Apr 2020 17:41:16 +0800 (CST)
-Received: from huawei.com (10.175.124.28) by DGGEMS411-HUB.china.huawei.com
- (10.3.19.211) with Microsoft SMTP Server id 14.3.487.0; Sun, 26 Apr 2020
- 17:41:09 +0800
+        id S1726122AbgDZJli (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 26 Apr 2020 05:41:38 -0400
+Received: from DGGEMS404-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id 0231D704CF33F966C3BC;
+        Sun, 26 Apr 2020 17:41:37 +0800 (CST)
+Received: from huawei.com (10.175.124.28) by DGGEMS404-HUB.china.huawei.com
+ (10.3.19.204) with Microsoft SMTP Server id 14.3.487.0; Sun, 26 Apr 2020
+ 17:41:27 +0800
 From:   Jason Yan <yanaijie@huawei.com>
-To:     <jirislaby@gmail.com>, <mickflemm@gmail.com>, <mcgrof@kernel.org>,
-        <kvalo@codeaurora.org>, <davem@davemloft.net>,
-        <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
+To:     <arend.vanspriel@broadcom.com>, <franky.lin@broadcom.com>,
+        <hante.meuleman@broadcom.com>, <chi-hsien.lin@cypress.com>,
+        <wright.feng@cypress.com>, <kvalo@codeaurora.org>,
+        <davem@davemloft.net>, <linux-wireless@vger.kernel.org>,
+        <brcm80211-dev-list.pdl@broadcom.com>,
+        <brcm80211-dev-list@cypress.com>, <netdev@vger.kernel.org>,
         <linux-kernel@vger.kernel.org>
 CC:     Jason Yan <yanaijie@huawei.com>
-Subject: [PATCH] ath5k: remove conversion to bool in ath5k_ani_calibration()
-Date:   Sun, 26 Apr 2020 17:40:37 +0800
-Message-ID: <20200426094037.23048-1-yanaijie@huawei.com>
+Subject: [PATCH] brcmfmac: remove comparison to bool in brcmf_fws_attach()
+Date:   Sun, 26 Apr 2020 17:40:53 +0800
+Message-ID: <20200426094053.23132-1-yanaijie@huawei.com>
 X-Mailer: git-send-email 2.21.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7BIT
@@ -37,30 +40,29 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The '>' expression itself is bool, no need to convert it to bool again.
-This fixes the following coccicheck warning:
+Fix the following coccicheck warning:
 
-drivers/net/wireless/ath/ath5k/ani.c:504:56-61: WARNING: conversion to
-bool not needed here
+drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwsignal.c:2359:6-40:
+WARNING: Comparison to bool
 
 Signed-off-by: Jason Yan <yanaijie@huawei.com>
 ---
- drivers/net/wireless/ath/ath5k/ani.c | 2 +-
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwsignal.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath5k/ani.c b/drivers/net/wireless/ath/ath5k/ani.c
-index 0624333f5430..850c608b43a3 100644
---- a/drivers/net/wireless/ath/ath5k/ani.c
-+++ b/drivers/net/wireless/ath/ath5k/ani.c
-@@ -501,7 +501,7 @@ ath5k_ani_calibration(struct ath5k_hw *ah)
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwsignal.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwsignal.c
+index 8cc52935fd41..2b7837887c0b 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwsignal.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwsignal.c
+@@ -2356,7 +2356,7 @@ struct brcmf_fws_info *brcmf_fws_attach(struct brcmf_pub *drvr)
+ 	fws->drvr = drvr;
+ 	fws->fcmode = drvr->settings->fcmode;
  
- 	if (as->ofdm_errors > ofdm_high || as->cck_errors > cck_high) {
- 		/* too many PHY errors - we have to raise immunity */
--		bool ofdm_flag = as->ofdm_errors > ofdm_high ? true : false;
-+		bool ofdm_flag = as->ofdm_errors > ofdm_high;
- 		ath5k_ani_raise_immunity(ah, as, ofdm_flag);
- 		ath5k_ani_period_restart(as);
- 
+-	if ((drvr->bus_if->always_use_fws_queue == false) &&
++	if (!drvr->bus_if->always_use_fws_queue &&
+ 	    (fws->fcmode == BRCMF_FWS_FCMODE_NONE)) {
+ 		fws->avoid_queueing = true;
+ 		brcmf_dbg(INFO, "FWS queueing will be avoided\n");
 -- 
 2.21.1
 
