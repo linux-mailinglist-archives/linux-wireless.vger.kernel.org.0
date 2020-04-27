@@ -2,30 +2,30 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C59AC1B9656
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Apr 2020 06:56:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E71031B965C
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Apr 2020 07:01:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726198AbgD0E4s (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 27 Apr 2020 00:56:48 -0400
-Received: from mail26.static.mailgun.info ([104.130.122.26]:59439 "EHLO
-        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726172AbgD0E4s (ORCPT
+        id S1726198AbgD0FBv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 27 Apr 2020 01:01:51 -0400
+Received: from mail27.static.mailgun.info ([104.130.122.27]:44223 "EHLO
+        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726172AbgD0FBu (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 27 Apr 2020 00:56:48 -0400
+        Mon, 27 Apr 2020 01:01:50 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1587963407; h=Date: Message-Id: Cc: To: References:
+ s=smtp; t=1587963710; h=Date: Message-Id: Cc: To: References:
  In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=bbOspBw2xPvQwAg9X7ORHUjI3DShyr/l7NDN5B7MWTM=;
- b=Fdtduca2b8Q45E/SVjBfk1IpK/tV7qHQ57bhFIoylEDFc6GP729LQu3f0+kHzh+s7eSo7WO/
- hwGsWw/ylfIWHaS5bxQj9fo20uWhth+M4JbI70k2EHLsnAF6s858NoSW42Jn79SiFOK9faAx
- HQmv5U4dSsFyh9iiTmrVDCcnl3I=
-X-Mailgun-Sending-Ip: 104.130.122.26
+ Content-Type: Sender; bh=ETHfgszYFiaBJe6H/LRYDpV2n8mr+HCLzybHaBW7Uhg=;
+ b=ggx28W8XgHA9zRYZS+Ps7xS+OlwNyQW+ApJ27numQb/gyYKsmsQVYRoraSsrpVnqzzNNRgIm
+ 3oxJcFHM1JNavltsNlyQIQb/sHeGdcOajt+rS+bamN6At0pbwchpmmRDg5Xni9XFVfLzqneb
+ wkzkhP3+jlY0bXyAqaah1V9tFXM=
+X-Mailgun-Sending-Ip: 104.130.122.27
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5ea665fa.7f2e20d08730-smtp-out-n05;
- Mon, 27 Apr 2020 04:56:26 -0000 (UTC)
+ by mxa.mailgun.org with ESMTP id 5ea66739.7fa3e0805688-smtp-out-n05;
+ Mon, 27 Apr 2020 05:01:45 -0000 (UTC)
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 23998C433F2; Mon, 27 Apr 2020 04:56:26 +0000 (UTC)
+        id 3FA72C433D2; Mon, 27 Apr 2020 05:01:45 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -35,47 +35,93 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id B9F65C433CB;
-        Mon, 27 Apr 2020 04:56:24 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org B9F65C433CB
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id DCFD9C433CB;
+        Mon, 27 Apr 2020 05:01:43 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org DCFD9C433CB
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] ath11k: fix reo flush send
+Subject: Re: [PATCH] ath10k: enable rx duration report default for wmi tlv
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <1587552378-4884-1-git-send-email-periyasa@codeaurora.org>
-References: <1587552378-4884-1-git-send-email-periyasa@codeaurora.org>
-To:     Karthikeyan Periyasamy <periyasa@codeaurora.org>
-Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        Karthikeyan Periyasamy <periyasa@codeaurora.org>
+In-Reply-To: <20200423022758.5365-1-wgong@codeaurora.org>
+References: <20200423022758.5365-1-wgong@codeaurora.org>
+To:     Wen Gong <wgong@codeaurora.org>
+Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        wgong@codeaurora.org
 User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20200427045626.23998C433F2@smtp.codeaurora.org>
-Date:   Mon, 27 Apr 2020 04:56:26 +0000 (UTC)
+Message-Id: <20200427050145.3FA72C433D2@smtp.codeaurora.org>
+Date:   Mon, 27 Apr 2020 05:01:45 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Karthikeyan Periyasamy <periyasa@codeaurora.org> wrote:
+Wen Gong <wgong@codeaurora.org> wrote:
 
-> we are sending the reo flush command for the deleted peer
-> tid after the ageout period reaches 1 second. This handling
-> causes reo ring get full when more than 128 clients are
-> disconnected continuously. so added the count for flush list
-> and reo flush command is triggered after the list count reaches
-> the threshold value, it is configured as 64 (half of the reo ring).
-> This will avoid the situation where reo ring get full.
+> When run command "iw dev wlan0 station dump", the rx duration is 0.
+> When firmware indicate WMI_UPDATE_STATS_EVENTID, extended flag of
+> statsis not set by default, so firmware do not report rx duration.
 > 
-> Signed-off-by: Karthikeyan Periyasamy <periyasa@codeaurora.org>
+> one sample:
+> localhost # iw wlan0 station dump
+> Station c4:04:15:5d:97:22 (on wlan0)
+>         inactive time:  48 ms
+>         rx bytes:       21670
+>         rx packets:     147
+>         tx bytes:       11529
+>         tx packets:     100
+>         tx retries:     88
+>         tx failed:      36
+>         beacon loss:    1
+>         beacon rx:      31
+>         rx drop misc:   47
+>         signal:         -72 [-74, -75] dBm
+>         signal avg:     -71 [-74, -75] dBm
+>         beacon signal avg:      -71 dBm
+>         tx bitrate:     54.0 MBit/s MCS 3 40MHz
+>         rx bitrate:     1.0 MBit/s
+> 	rx duration:    0 us
+> 
+> This patch enable firmware's extened flag of stats by setting flag
+> WMI_TLV_STAT_PEER_EXTD of ar->fw_stats_req_mask which is set in
+> ath10k_core_init_firmware_features via WMI_REQUEST_STATS_CMDID.
+> 
+> After apply this patch, rx duration show value with the command:
+> Station c4:04:15:5d:97:22 (on wlan0)
+>         inactive time:  883 ms
+>         rx bytes:       44289
+>         rx packets:     265
+>         tx bytes:       10838
+>         tx packets:     93
+>         tx retries:     899
+>         tx failed:      103
+>         beacon loss:    0
+>         beacon rx:      78
+>         rx drop misc:   46
+>         signal:         -71 [-74, -76] dBm
+>         signal avg:     -70 [-74, -76] dBm
+>         beacon signal avg:      -70 dBm
+>         tx bitrate:     54.0 MBit/s MCS 3 40MHz
+>         rx bitrate:     1.0 MBit/s
+>         rx duration:    358004 us
+> 
+> This patch do not have side effect for all chips, because function
+> ath10k_debug_fw_stats_request is already exported to debugfs
+> "fw_stats" and WMI_REQUEST_STATS_CMDID is safely sent after condition
+> checked by ath10k_peer_stats_enabled in ath10k_sta_statistics.
+> 
+> Tested with QCA6174 SDIO with firmware WLAN.RMH.4.4.1-00042.
+> 
+> Signed-off-by: Wen Gong <wgong@codeaurora.org>
 > Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 
 Patch applied to ath-next branch of ath.git, thanks.
 
-5cb899dd5ba4 ath11k: fix reo flush send
+4913e675630e ath10k: enable rx duration report default for wmi tlv
 
 -- 
-https://patchwork.kernel.org/patch/11503445/
+https://patchwork.kernel.org/patch/11504895/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
