@@ -2,64 +2,63 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A0561BA19C
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Apr 2020 12:45:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0FF201BA2AF
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Apr 2020 13:41:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726855AbgD0KpQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 27 Apr 2020 06:45:16 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:3350 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726721AbgD0KpP (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 27 Apr 2020 06:45:15 -0400
-Received: from DGGEMS405-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id 857609184C37FC15E13C;
-        Mon, 27 Apr 2020 18:45:12 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS405-HUB.china.huawei.com (10.3.19.205) with Microsoft SMTP Server id
- 14.3.487.0; Mon, 27 Apr 2020 18:45:01 +0800
-From:   Wei Yongjun <weiyongjun1@huawei.com>
-To:     Kalle Valo <kvalo@codeaurora.org>, John Crispin <john@phrozen.org>
-CC:     Wei Yongjun <weiyongjun1@huawei.com>, <ath11k@lists.infradead.org>,
-        <linux-wireless@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
-Subject: [PATCH net-next] ath11k: fix error return code in ath11k_dp_alloc()
-Date:   Mon, 27 Apr 2020 10:46:21 +0000
-Message-ID: <20200427104621.23752-1-weiyongjun1@huawei.com>
-X-Mailer: git-send-email 2.20.1
+        id S1727772AbgD0Llo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 27 Apr 2020 07:41:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36090 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726907AbgD0Llk (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 27 Apr 2020 07:41:40 -0400
+Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com [IPv6:2607:f8b0:4864:20::442])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5D30C0085E3
+        for <linux-wireless@vger.kernel.org>; Mon, 27 Apr 2020 04:41:35 -0700 (PDT)
+Received: by mail-pf1-x442.google.com with SMTP id f7so8877899pfa.9
+        for <linux-wireless@vger.kernel.org>; Mon, 27 Apr 2020 04:41:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=F+HbPvxQnRBlqBFKy/zn6110uxUPAWY6eSsMY6+ckPY=;
+        b=uI1U3pP4FazEZaTfkDGgaf1Qyb1hL6AlgZB9tozzlJtw0tc2p0xAeW9BNdbY4A2XuL
+         JYn8lE6gg3HqjBgRaTT8CTSOLDZ9E79yDyBM0EGnWldSdHyzrk+BT/7frJGn/PAhMIrE
+         VCZdq7yfljhgiOOYhIeLP2AIIFXvLFMREe3IREMgf/Wimn5okrCaqK4gkS0+n2Tqfq3c
+         EFYh4cYLyK3nIET0YOm2adzDe5W5QN3hsgSvwW72euh+PRPDs3oxC82+7cfg/ZGTOz8/
+         eTagf6SblJMWIJeJ59y/zg3//EVOq9RPByBfKkQCDUJB6vE62XJLcx9qUgZNIxoYrz8S
+         JAeA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=F+HbPvxQnRBlqBFKy/zn6110uxUPAWY6eSsMY6+ckPY=;
+        b=NXCavNLvQ32P3AXQH9h4EZPasRMeqFWMzfYGU+D/kt1IM7pgVtKwKOrz3FlJmMzJbs
+         AqAL7I/jCSOx+rITRLprTqMUec0XV8jul14tSoeNTwSNRjypr1iawgDqTg41EoKxYY/Y
+         Mwa5a1xfQJ8wuTa9yACzBuhJndXpHOfiJQj8bHGSPaAR53RIN6/RCLSQvV+f3mTec8Bh
+         av7jnwaX3X6v/hRqkrYusXCrtsotBhiHFr/gEqcnQREjOcvFhPuExx12fmbpdFl7cZ1j
+         4BKBVoLZf1jEbGSEPgaFzx0JPRx7/s9f68foWVOW0mt7gyQky3mE4sZe0Uou8lsFDMur
+         Obwg==
+X-Gm-Message-State: AGi0PubS/erX/zJr6X7J34kgSthvc5qxAx/rXjSJs7z7xa01esDysuAT
+        Hh5Op2e3AEmkq5NJMyHENqxMFGifWaZYB8qXhETNIbGvwAA=
+X-Google-Smtp-Source: APiQypJWdjzUZMbeRoAX94bUJV0IgwyoF5kUG7iPo3CBzKxW8lStFNsM/6tz3An/TyzRuH2Qw14DtavsVumw6JVLls0=
+X-Received: by 2002:a6b:7d4a:: with SMTP id d10mr4072296ioq.70.1587987694042;
+ Mon, 27 Apr 2020 04:41:34 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+Received: by 2002:a5d:8f89:0:0:0:0:0 with HTTP; Mon, 27 Apr 2020 04:41:33
+ -0700 (PDT)
+Reply-To: convy0090@gmail.com
+From:   Ruben CONVY <andrewboccc@gmail.com>
+Date:   Mon, 27 Apr 2020 12:41:33 +0100
+Message-ID: <CAHVC0+Ag87TMCmfNNwWbxXOFxn5166q8GG5wEfPjwtixj9=EXQ@mail.gmail.com>
+Subject: Why continued silence 2
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fix to return negative error code -ENOMEM from the error handling
-case instead of 0, as done elsewhere in this function.
-
-Fixes: d0998eb84ed3 ("ath11k: optimise ath11k_dp_tx_completion_handler")
-Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
----
- drivers/net/wireless/ath/ath11k/dp.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/ath/ath11k/dp.c b/drivers/net/wireless/ath/ath11k/dp.c
-index 50350f77b309..2f35d325f7a5 100644
---- a/drivers/net/wireless/ath/ath11k/dp.c
-+++ b/drivers/net/wireless/ath/ath11k/dp.c
-@@ -909,8 +909,10 @@ int ath11k_dp_alloc(struct ath11k_base *ab)
- 		dp->tx_ring[i].tx_status_head = 0;
- 		dp->tx_ring[i].tx_status_tail = DP_TX_COMP_RING_SIZE - 1;
- 		dp->tx_ring[i].tx_status = kmalloc(size, GFP_KERNEL);
--		if (!dp->tx_ring[i].tx_status)
-+		if (!dp->tx_ring[i].tx_status) {
-+			ret = -ENOMEM;
- 			goto fail_cmn_srng_cleanup;
-+		}
- 	}
- 
- 	for (i = 0; i < HAL_DSCP_TID_MAP_TBL_NUM_ENTRIES_MAX; i++)
-
-
-
+Did you receive my previous email regarding your family inheritance?
+Reply strictly through: convy0090@gmail.com
+Best Regards,
+Ruben CONVY
