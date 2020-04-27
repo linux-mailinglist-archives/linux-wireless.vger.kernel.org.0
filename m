@@ -2,68 +2,80 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 285BD1B95C6
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Apr 2020 06:21:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C59AC1B9656
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Apr 2020 06:56:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726237AbgD0EVr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 27 Apr 2020 00:21:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52448 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726178AbgD0EVr (ORCPT
+        id S1726198AbgD0E4s (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 27 Apr 2020 00:56:48 -0400
+Received: from mail26.static.mailgun.info ([104.130.122.26]:59439 "EHLO
+        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726172AbgD0E4s (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 27 Apr 2020 00:21:47 -0400
-Received: from mail-il1-x143.google.com (mail-il1-x143.google.com [IPv6:2607:f8b0:4864:20::143])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B02FC061A10
-        for <linux-wireless@vger.kernel.org>; Sun, 26 Apr 2020 21:21:46 -0700 (PDT)
-Received: by mail-il1-x143.google.com with SMTP id s10so15420951iln.11
-        for <linux-wireless@vger.kernel.org>; Sun, 26 Apr 2020 21:21:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=bLspSYpHKIimJS6Zp/uEGn7y8GrbBdjIhm9L26EtwFg=;
-        b=RPw/5avgA8khBdwLbEE8hL2p9Y6/E6QSiCo2NAJ4Xb1os+mWxSKbNeOtKN7xlf5j8N
-         gd4J3Nz1RZCf3wcJEKDHEk9TSvw2GyiObba9szGkGdtVIlCtBvf+IFRKZAYPvuN40tUt
-         Lz03/DkLTNws3J1IPHphZRKx494FYXwgAidTgspfP5frzOGCtVd51yv5bst/WoVDFWGQ
-         LlgCyzUv4bJzaVigbkVCswXoXFEDIifJTvsxr0rT+fao1OUx8utzp9AY1jJZy5uF1PwG
-         mlNiwZ/YHWKj7Uc2QBmVjaV7gORRfvw1UVU9CWnWUNuM4NeAxt+C9RBHZs8xDnh8fTml
-         Yduw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=bLspSYpHKIimJS6Zp/uEGn7y8GrbBdjIhm9L26EtwFg=;
-        b=pijT9YZi/gd59FgZaUnIxofX09F/jZyj8P6T0yM22nA0OqPfIeODWK9APPTR5J7zoJ
-         FSAGArOnl+DDYeN/FbteDLnp4UJKutr5ib6Njont3Ot/FrCrzFTS+tvhoRxRbTYSP7Uh
-         2JVGMeDDGRVW+a9bBjqGWvgLGV7LlFUHDJsalso88tmdEXWEu9fSiREcGQEqSeIRsMI9
-         SNfmW7Li9JuoOgBjAmfQvPy37mHR0bSOw8T66fQE8IUg0iBoE+8p0Tx4KlmjVOGSPcDu
-         4svIgMFo6bXujRy91Bz9e8w9rmWi9B/YGGaDcFf4HuSdfTtY8wPqr1JuwhHC09TO+aSe
-         Szow==
-X-Gm-Message-State: AGi0PuaCTiGiEJX4qsLcaSjfFN+ux7ds6HNm3dkRaE/5/r3L4sN3a6q/
-        5UeZESquc+VWlmh+DliuFVkCVWXbuObZsBzvWP3iUOXS
-X-Google-Smtp-Source: APiQypL7fNqlJCXIFTnkB/qD4mhPYe+Gl8u3KKVunP7tUyIL8kRfYIfcaTU4KD6CIXu/HrP+kxHc0fSOLXPeqX0xvQQ=
-X-Received: by 2002:a92:aa07:: with SMTP id j7mr182932ili.40.1587961305335;
- Sun, 26 Apr 2020 21:21:45 -0700 (PDT)
+        Mon, 27 Apr 2020 00:56:48 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1587963407; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=bbOspBw2xPvQwAg9X7ORHUjI3DShyr/l7NDN5B7MWTM=;
+ b=Fdtduca2b8Q45E/SVjBfk1IpK/tV7qHQ57bhFIoylEDFc6GP729LQu3f0+kHzh+s7eSo7WO/
+ hwGsWw/ylfIWHaS5bxQj9fo20uWhth+M4JbI70k2EHLsnAF6s858NoSW42Jn79SiFOK9faAx
+ HQmv5U4dSsFyh9iiTmrVDCcnl3I=
+X-Mailgun-Sending-Ip: 104.130.122.26
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5ea665fa.7f2e20d08730-smtp-out-n05;
+ Mon, 27 Apr 2020 04:56:26 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 23998C433F2; Mon, 27 Apr 2020 04:56:26 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
+        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id B9F65C433CB;
+        Mon, 27 Apr 2020 04:56:24 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org B9F65C433CB
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Received: by 2002:a92:a185:0:0:0:0:0 with HTTP; Sun, 26 Apr 2020 21:21:44
- -0700 (PDT)
-Reply-To: ps.a.ecowasnepad@gmail.com
-From:   Mark Boa <suwabamorg@gmail.com>
-Date:   Sun, 26 Apr 2020 21:21:44 -0700
-Message-ID: <CAC7Sc8vKX49VLocY3zj=ZBWSMt6RvnrQh8vTGGEuDVajkR+O_Q@mail.gmail.com>
-Subject: Good Day
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] ath11k: fix reo flush send
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <1587552378-4884-1-git-send-email-periyasa@codeaurora.org>
+References: <1587552378-4884-1-git-send-email-periyasa@codeaurora.org>
+To:     Karthikeyan Periyasamy <periyasa@codeaurora.org>
+Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        Karthikeyan Periyasamy <periyasa@codeaurora.org>
+User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
+Message-Id: <20200427045626.23998C433F2@smtp.codeaurora.org>
+Date:   Mon, 27 Apr 2020 04:56:26 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Soliciting Your Consent,
+Karthikeyan Periyasamy <periyasa@codeaurora.org> wrote:
 
-I am confirming if you received my previous email regarding you having
-the same Surname with my late client. Who, leaving in
-your name in his last will of testament a huge sum of money. Please
-email me for more information.
-Regards,
-Attorney Mark Boa.
-Contact Email: ps.a.ecowasnepad@gmail.com
+> we are sending the reo flush command for the deleted peer
+> tid after the ageout period reaches 1 second. This handling
+> causes reo ring get full when more than 128 clients are
+> disconnected continuously. so added the count for flush list
+> and reo flush command is triggered after the list count reaches
+> the threshold value, it is configured as 64 (half of the reo ring).
+> This will avoid the situation where reo ring get full.
+> 
+> Signed-off-by: Karthikeyan Periyasamy <periyasa@codeaurora.org>
+> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+
+Patch applied to ath-next branch of ath.git, thanks.
+
+5cb899dd5ba4 ath11k: fix reo flush send
+
+-- 
+https://patchwork.kernel.org/patch/11503445/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
