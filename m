@@ -2,91 +2,71 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D8E11B9677
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Apr 2020 07:21:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CEAB81B967C
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Apr 2020 07:27:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726246AbgD0FVd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 27 Apr 2020 01:21:33 -0400
-Received: from mail26.static.mailgun.info ([104.130.122.26]:28376 "EHLO
-        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726237AbgD0FVd (ORCPT
+        id S1726339AbgD0F0c (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 27 Apr 2020 01:26:32 -0400
+Received: from mail27.static.mailgun.info ([104.130.122.27]:37431 "EHLO
+        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726172AbgD0F0b (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 27 Apr 2020 01:21:33 -0400
+        Mon, 27 Apr 2020 01:26:31 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1587964892; h=Date: Message-Id: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=3DQ/DlFkABOYaJeRnE3dymnHF4sQARiZ6liUShqYYLg=;
- b=TKmw2pEasMxs8AxKPdw63mbeOHUfUsiObo2fGyhZenLqxBpn+z4nCkKq+voDlY2tTN+Xrcah
- E2wAQuzjGR10ffsLNSqjFE5RAUE3JpEVflI7wXoXfUv/ytRUS84pgK05KlEzFspkCETjG+PW
- +irg7+A7PWacIX+Jmws+G8vthwM=
-X-Mailgun-Sending-Ip: 104.130.122.26
+ s=smtp; t=1587965191; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=unnUbNzOiNi4DCP+2MtOogJBUgOZSGHdqUj3TJFnSdQ=; b=vdtQ94XqKRqvEtg7cJrQPzdKlqrmV0S+7bbOc9H9LlmCBehdWSDj2p8qXnQMLK2p0vrniLzY
+ nXCsEYzZZP8TyJX2kWIeWvsrj3ITaAeSQ2YfjzH72dlvLrsZbmlN6M/PyJmHl9oKw8n3N2kI
+ 73ienZz3KmMpJKSrttV6CCmTMAw=
+X-Mailgun-Sending-Ip: 104.130.122.27
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5ea66bdc.7f1e7f2d8848-smtp-out-n02;
- Mon, 27 Apr 2020 05:21:32 -0000 (UTC)
+ by mxa.mailgun.org with ESMTP id 5ea66cfb.7fa3de1a97a0-smtp-out-n05;
+ Mon, 27 Apr 2020 05:26:19 -0000 (UTC)
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 1F987C433CB; Mon, 27 Apr 2020 05:21:31 +0000 (UTC)
+        id E815CC433F2; Mon, 27 Apr 2020 05:26:18 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
-        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from tynnyri.adurom.net (tynnyri.adurom.net [51.15.11.48])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 8CEFCC433D2;
-        Mon, 27 Apr 2020 05:21:29 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 8CEFCC433D2
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 61305C433CB;
+        Mon, 27 Apr 2020 05:26:17 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 61305C433CB
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 1/4] ath10k: enable firmware peer stats info for wmi tlv
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20200423091856.24297-2-wgong@codeaurora.org>
-References: <20200423091856.24297-2-wgong@codeaurora.org>
-To:     Wen Gong <wgong@codeaurora.org>
-Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        wgong@codeaurora.org
-User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20200427052131.1F987C433CB@smtp.codeaurora.org>
-Date:   Mon, 27 Apr 2020 05:21:31 +0000 (UTC)
+To:     John Oldman <john.oldman@polehill.co.uk>
+Cc:     m@bues.ch, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] :ssb sprom.c: Fixed block comments coding style issues
+References: <20200424175043.16261-1-john.oldman@polehill.co.uk>
+Date:   Mon, 27 Apr 2020 08:26:15 +0300
+In-Reply-To: <20200424175043.16261-1-john.oldman@polehill.co.uk> (John
+        Oldman's message of "Fri, 24 Apr 2020 18:50:43 +0100")
+Message-ID: <87wo61ijns.fsf@tynnyri.adurom.net>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Wen Gong <wgong@codeaurora.org> wrote:
+John Oldman <john.oldman@polehill.co.uk> writes:
 
-> For wmi tlv type, firmware disable peer stats info by default, after
-> enable it, firmware will report WMI_TLV_PEER_STATS_INFO_EVENTID if
-> ath10k send WMI_TLV_REQUEST_PEER_STATS_INFO_CMDID to firmware.
-> 
-> Enable it will only set a flag in firmware, firmware will not report
-> it without receive request WMI command.
-> 
-> Tested with QCA6174 SDIO with firmware WLAN.RMH.4.4.1-00042.
-> 
-> Signed-off-by: Wen Gong <wgong@codeaurora.org>
+> Fixed coding style issues
+>
+> Signed-off-by: John Oldman <john.oldman@polehill.co.uk>
+> ---
+>  drivers/ssb/sprom.c | 12 ++++++++----
+>  1 file changed, 8 insertions(+), 4 deletions(-)
 
-Fails to apply, please rebase.
-
-error: patch failed: drivers/net/wireless/ath/ath10k/core.h:502
-error: drivers/net/wireless/ath/ath10k/core.h: patch does not apply
-error: patch failed: drivers/net/wireless/ath/ath10k/mac.c:8326
-error: drivers/net/wireless/ath/ath10k/mac.c: patch does not apply
-stg import: Diff does not apply cleanly
-
-4 patches set to Changes Requested.
-
-11505367 [1/4] ath10k: enable firmware peer stats info for wmi tlv
-11505377 [2/4] ath10k: add rx bitrate report for SDIO
-11505371 [3/4] ath10k: add bitrate parse for peer stats info
-11505369 [4/4] ath10k: correct tx bitrate of iw for SDIO
+The title prefix should be "ssb: ", I'll fix it during commit.
 
 -- 
-https://patchwork.kernel.org/patch/11505367/
-
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
