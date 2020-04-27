@@ -2,72 +2,60 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 519301BA00E
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 Apr 2020 11:39:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E0EEA1BA18E
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 Apr 2020 12:42:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726621AbgD0JjG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 27 Apr 2020 05:39:06 -0400
-Received: from mail26.static.mailgun.info ([104.130.122.26]:14027 "EHLO
-        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726003AbgD0JjF (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 27 Apr 2020 05:39:05 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1587980345; h=Content-Type: MIME-Version: Message-ID: Date:
- References: In-Reply-To: Subject: Cc: To: From: Sender;
- bh=fUyyyvZY5erFWNghFuz6u1lkeSrntr/X0HIwG5v1vAY=; b=dKv3MKCvrdIpXxFcSOS42HFU8RDES3YdUjoFtpLI5lkvkZ+F8JDfC/ljaTIAF9re7yXt0/vG
- u8JQZXRIvY0PvJJuG+wvy6XT2Q2bbVzEYL65mSw9ReXbWgx3vAky3yiANL8kgcOtpY4mHEOH
- pLEni3tn9Ct0PnexxWz1FA4yPGU=
-X-Mailgun-Sending-Ip: 104.130.122.26
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5ea6a820.7f730f8c8228-smtp-out-n03;
- Mon, 27 Apr 2020 09:38:40 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 2DBE6C432C2; Mon, 27 Apr 2020 09:38:40 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 7D714C433D2;
-        Mon, 27 Apr 2020 09:38:37 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 7D714C433D2
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Wei Yongjun <weiyongjun1@huawei.com>
-Cc:     Sumit Semwal <sumit.semwal@linaro.org>,
-        kernel-janitors@vger.kernel.org, linux-wireless@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
-        ath11k@lists.infradead.org, linux-media@vger.kernel.org
-Subject: Re: [PATCH net-next] ath11k: use GFP_ATOMIC under spin lock
-In-Reply-To: <20200427092417.56236-1-weiyongjun1@huawei.com> (Wei Yongjun's
-        message of "Mon, 27 Apr 2020 09:24:17 +0000")
-References: <20200427092417.56236-1-weiyongjun1@huawei.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
-Date:   Mon, 27 Apr 2020 12:38:35 +0300
-Message-ID: <877dy1gtes.fsf@kamboji.qca.qualcomm.com>
+        id S1727026AbgD0Kmm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 27 Apr 2020 06:42:42 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:3313 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726485AbgD0Kmm (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 27 Apr 2020 06:42:42 -0400
+Received: from DGGEMS409-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id C946FC3326C60500B4D3;
+        Mon, 27 Apr 2020 18:42:39 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS409-HUB.china.huawei.com (10.3.19.209) with Microsoft SMTP Server id
+ 14.3.487.0; Mon, 27 Apr 2020 18:42:28 +0800
+From:   Wei Yongjun <weiyongjun1@huawei.com>
+To:     Kalle Valo <kvalo@codeaurora.org>, Wen Gong <wgong@codeaurora.org>
+CC:     Wei Yongjun <weiyongjun1@huawei.com>, <ath10k@lists.infradead.org>,
+        <linux-wireless@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
+Subject: [PATCH net-next] ath10k: fix possible memory leak in ath10k_bmi_lz_data_large()
+Date:   Mon, 27 Apr 2020 10:43:48 +0000
+Message-ID: <20200427104348.13570-1-weiyongjun1@huawei.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Wei Yongjun <weiyongjun1@huawei.com> writes:
+'cmd' is malloced in ath10k_bmi_lz_data_large() and should be freed
+before leaving from the error handling cases, otherwise it will cause
+memory leak.
 
-> A spin lock is taken here so we should use GFP_ATOMIC.
->
-> Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
-> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+Fixes: d58f466a5dee ("ath10k: add large size for BMI download data for SDIO")
+Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+---
+ drivers/net/wireless/ath/ath10k/bmi.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Do note that ath11k patches go to my ath.git tree, not net-next. But no
-need to resend because of this.
+diff --git a/drivers/net/wireless/ath/ath10k/bmi.c b/drivers/net/wireless/ath/ath10k/bmi.c
+index ea908107581d..5b6db6e66f65 100644
+--- a/drivers/net/wireless/ath/ath10k/bmi.c
++++ b/drivers/net/wireless/ath/ath10k/bmi.c
+@@ -380,6 +380,7 @@ static int ath10k_bmi_lz_data_large(struct ath10k *ar, const void *buffer, u32 l
+ 						  NULL, NULL);
+ 		if (ret) {
+ 			ath10k_warn(ar, "unable to write to the device\n");
++			kfree(cmd);
+ 			return ret;
+ 		}
 
--- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
+
