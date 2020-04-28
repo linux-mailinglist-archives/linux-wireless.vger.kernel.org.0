@@ -2,193 +2,111 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C60E1BBFA0
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Apr 2020 15:34:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 29BC51BC128
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Apr 2020 16:27:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726923AbgD1NeU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 28 Apr 2020 09:34:20 -0400
-Received: from mail.kernel.org ([198.145.29.99]:33290 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726898AbgD1NeU (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 28 Apr 2020 09:34:20 -0400
-Received: from localhost.localdomain.com (unknown [151.66.196.206])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        id S1727840AbgD1O11 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 28 Apr 2020 10:27:27 -0400
+Received: from mail2.candelatech.com ([208.74.158.173]:56784 "EHLO
+        mail3.candelatech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726900AbgD1O11 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 28 Apr 2020 10:27:27 -0400
+Received: from [192.168.254.4] (unknown [50.34.219.109])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 13458206D6;
-        Tue, 28 Apr 2020 13:34:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1588080859;
-        bh=/lAvAVfc2XJMF76KRRCnfMzEaU/zSr3rPcqiWH0cLvE=;
-        h=From:To:Cc:Subject:Date:From;
-        b=nqQoYRa7niiyM7JYmuDkdgWmNjatj0KdZzIa0agdQTbLIsOtozbMDhr8tvpyg3uaM
-         y0BGPt194UO9PGZhivnn6ZPxx6Wtxq5x9DHP+0TRxZPNtl6xM1VZsl/yne6aQNrH+j
-         6kvNLEtPQCKn1uI5VBTmwXuZ2+r4EX4aRupvgeJg=
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     nbd@nbd.name
-Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
-        sean.wang@mediatek.com, linux-mediatek@lists.infradead.org
-Subject: [PATCH v2] mt76: mt7663: add the possibility to load firmware v2
-Date:   Tue, 28 Apr 2020 15:34:09 +0200
-Message-Id: <1b8ba4db0fd127de4ed3d07466b143f0eaac1c2c.1588080532.git.lorenzo@kernel.org>
-X-Mailer: git-send-email 2.25.4
+        by mail3.candelatech.com (Postfix) with ESMTPSA id 15B2313C283;
+        Tue, 28 Apr 2020 07:27:24 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 15B2313C283
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+        s=default; t=1588084046;
+        bh=uJfi3yqJT689k/koN7HWdgLdOqnl3VJ1ES5anj/Umb4=;
+        h=Subject:To:References:Cc:From:Date:In-Reply-To:From;
+        b=fN9YNTV5I6Omibnf0OY3BKpmE5av8OT+WHtiZg9c5deRZt+tc41d0scOzOMwQcsE1
+         1mbSWQDZN5tzgPiAi0/Jqj4JsaNr4pVg/5zKq8s8NyTSl5kP1hEWAAtX5x5x/lfBEw
+         yDb5OYYRI/biBC0TzdbjdWp4DVChOKz3ofS9HIyY=
+Subject: Re: [PATCH] ath10k: increase rx buffer size to 2048
+To:     Kalle Valo <kvalo@codeaurora.org>,
+        Sven Eckelmann <sven@narfation.org>
+References: <20200205191043.21913-1-linus.luessing@c0d3.blue>
+ <3300912.TRQvxCK2vZ@bentobox> <3097447.aZuNXRJysd@sven-edge>
+ <87blnblsyv.fsf@codeaurora.org>
+Cc:     ath10k@lists.infradead.org,
+        =?UTF-8?Q?Linus_L=c3=bcssing?= <linus.luessing@c0d3.blue>,
+        Simon Wunderlich <sw@simonwunderlich.de>,
+        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        "David S . Miller" <davem@davemloft.net>,
+        =?UTF-8?Q?Linus_L=c3=bcssing?= <ll@simonwunderlich.de>,
+        mail@adrianschmutzler.de
+From:   Ben Greear <greearb@candelatech.com>
+Message-ID: <db0f12d8-0604-70fa-81ad-5c1060eb0c6e@candelatech.com>
+Date:   Tue, 28 Apr 2020 07:27:24 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+ Thunderbird/45.8.0
 MIME-Version: 1.0
+In-Reply-To: <87blnblsyv.fsf@codeaurora.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-mt7663 firmware v2 is used for embedded devices since it has more completed
-features in AP mode.
-Add the capability to specify which firmware load first (v3 or v2)
-using prefer_offload_fw kernel parameter and fallback to the other one
-if the selected firmware fails to load
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
-Changes since v1:
-- use a kernel parameter instead of a Kconfig entry
----
- .../net/wireless/mediatek/mt76/mt7615/mcu.c   | 55 +++++++++++++++++--
- .../wireless/mediatek/mt76/mt7615/mt7615.h    |  6 +-
- .../net/wireless/mediatek/mt76/mt7615/pci.c   |  2 +
- .../net/wireless/mediatek/mt76/mt7615/usb.c   |  2 +
- 4 files changed, 57 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-index aee9ee43436f..071c29ac425f 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-@@ -11,6 +11,11 @@
- #include "mac.h"
- #include "eeprom.h"
- 
-+static bool prefer_offload_fw = true;
-+module_param(prefer_offload_fw, bool, 0644);
-+MODULE_PARM_DESC(prefer_offload_fw,
-+		 "Prefer client mode offload firmware (MT7663)");
-+
- struct mt7615_patch_hdr {
- 	char build_date[16];
- 	char platform[4];
-@@ -1728,7 +1733,7 @@ static int mt7615_load_patch(struct mt7615_dev *dev, u32 addr, const char *name)
- 		return -EAGAIN;
- 	}
- 
--	ret = request_firmware(&fw, name, dev->mt76.dev);
-+	ret = firmware_request_nowarn(&fw, name, dev->mt76.dev);
- 	if (ret)
- 		goto out;
- 
-@@ -2081,8 +2086,49 @@ static int mt7663_load_n9(struct mt7615_dev *dev, const char *name)
- 	return ret;
- }
- 
-+static int
-+mt7663_load_rom_patch(struct mt7615_dev *dev, const char **n9_firmware)
-+{
-+	const char *selected_rom, *secondary_rom = MT7663_ROM_PATCH;
-+	const char *primary_rom = MT7663_OFFLOAD_ROM_PATCH;
-+	int ret;
-+
-+	if (!prefer_offload_fw) {
-+		secondary_rom = MT7663_OFFLOAD_ROM_PATCH;
-+		primary_rom = MT7663_ROM_PATCH;
-+	}
-+	selected_rom = primary_rom;
-+
-+	ret = mt7615_load_patch(dev, MT7663_PATCH_ADDRESS, primary_rom);
-+	if (ret) {
-+		dev_info(dev->mt76.dev, "%s not found, switching to %s",
-+			 primary_rom, secondary_rom);
-+		ret = mt7615_load_patch(dev, MT7663_PATCH_ADDRESS,
-+					secondary_rom);
-+		if (ret) {
-+			dev_err(dev->mt76.dev, "failed to load %s",
-+				secondary_rom);
-+			return ret;
-+		}
-+		selected_rom = secondary_rom;
-+	}
-+
-+	if (!strcmp(selected_rom, MT7663_OFFLOAD_ROM_PATCH)) {
-+		*n9_firmware = MT7663_OFFLOAD_FIRMWARE_N9;
-+		dev->fw_ver = MT7615_FIRMWARE_V3;
-+		dev->mcu_ops = &uni_update_ops;
-+	} else {
-+		*n9_firmware = MT7663_FIRMWARE_N9;
-+		dev->fw_ver = MT7615_FIRMWARE_V2;
-+		dev->mcu_ops = &sta_update_ops;
-+	}
-+
-+	return 0;
-+}
-+
- int __mt7663_load_firmware(struct mt7615_dev *dev)
- {
-+	const char *n9_firmware;
- 	int ret;
- 
- 	ret = mt76_get_field(dev, MT_CONN_ON_MISC, MT_TOP_MISC2_FW_N9_RDY);
-@@ -2091,14 +2137,11 @@ int __mt7663_load_firmware(struct mt7615_dev *dev)
- 		return -EIO;
- 	}
- 
--	ret = mt7615_load_patch(dev, MT7663_PATCH_ADDRESS, MT7663_ROM_PATCH);
-+	ret = mt7663_load_rom_patch(dev, &n9_firmware);
- 	if (ret)
- 		return ret;
- 
--	dev->fw_ver = MT7615_FIRMWARE_V3;
--	dev->mcu_ops = &uni_update_ops;
--
--	ret = mt7663_load_n9(dev, MT7663_FIRMWARE_N9);
-+	ret = mt7663_load_n9(dev, n9_firmware);
- 	if (ret)
- 		return ret;
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
-index 44eb3d8dca78..0476b9426b03 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
-@@ -42,8 +42,10 @@
- #define MT7615_FIRMWARE_V2		2
- #define MT7615_FIRMWARE_V3		3
- 
--#define MT7663_ROM_PATCH		"mediatek/mt7663pr2h.bin"
--#define MT7663_FIRMWARE_N9              "mediatek/mt7663_n9_v3.bin"
-+#define MT7663_OFFLOAD_ROM_PATCH	"mediatek/mt7663pr2h.bin"
-+#define MT7663_OFFLOAD_FIRMWARE_N9	"mediatek/mt7663_n9_v3.bin"
-+#define MT7663_ROM_PATCH		"mediatek/mt7663pr2h_rebb.bin"
-+#define MT7663_FIRMWARE_N9		"mediatek/mt7663_n9_rebb.bin"
- 
- #define MT7615_EEPROM_SIZE		1024
- #define MT7615_TOKEN_SIZE		4096
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/pci.c b/drivers/net/wireless/mediatek/mt76/mt7615/pci.c
-index 21b3ec29aa12..f9469198cabd 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/pci.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/pci.c
-@@ -68,5 +68,7 @@ MODULE_DEVICE_TABLE(pci, mt7615_pci_device_table);
- MODULE_FIRMWARE(MT7615_FIRMWARE_CR4);
- MODULE_FIRMWARE(MT7615_FIRMWARE_N9);
- MODULE_FIRMWARE(MT7615_ROM_PATCH);
-+MODULE_FIRMWARE(MT7663_OFFLOAD_FIRMWARE_N9);
-+MODULE_FIRMWARE(MT7663_OFFLOAD_ROM_PATCH);
- MODULE_FIRMWARE(MT7663_FIRMWARE_N9);
- MODULE_FIRMWARE(MT7663_ROM_PATCH);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/usb.c b/drivers/net/wireless/mediatek/mt76/mt7615/usb.c
-index bcd131969923..9353175b139b 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/usb.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/usb.c
-@@ -386,6 +386,8 @@ mt7663u_resume(struct usb_interface *intf)
- }
- 
- MODULE_DEVICE_TABLE(usb, mt7615_device_table);
-+MODULE_FIRMWARE(MT7663_OFFLOAD_FIRMWARE_N9);
-+MODULE_FIRMWARE(MT7663_OFFLOAD_ROM_PATCH);
- MODULE_FIRMWARE(MT7663_FIRMWARE_N9);
- MODULE_FIRMWARE(MT7663_ROM_PATCH);
- 
+On 04/28/2020 05:01 AM, Kalle Valo wrote:
+> Sven Eckelmann <sven@narfation.org> writes:
+>
+>> On Wednesday, 1 April 2020 09:00:49 CEST Sven Eckelmann wrote:
+>>> On Wednesday, 5 February 2020 20:10:43 CEST Linus Lüssing wrote:
+>>>> From: Linus Lüssing <ll@simonwunderlich.de>
+>>>>
+>>>> Before, only frames with a maximum size of 1528 bytes could be
+>>>> transmitted between two 802.11s nodes.
+>>>>
+>>>> For batman-adv for instance, which adds its own header to each frame,
+>>>> we typically need an MTU of at least 1532 bytes to be able to transmit
+>>>> without fragmentation.
+>>>>
+>>>> This patch now increases the maxmimum frame size from 1528 to 1656
+>>>> bytes.
+>>> [...]
+>>>
+>>> @Kalle, I saw that this patch was marked as deferred [1] but I couldn't find
+>>> any mail why it was done so. It seems like this currently creates real world
+>>> problems - so would be nice if you could explain shortly what is currently
+>>> blocking its acceptance.
+>>
+>> Ping?
+>
+> Sorry for the delay, my plan was to first write some documentation about
+> different hardware families but haven't managed to do that yet.
+>
+> My problem with this patch is that I don't know what hardware and
+> firmware versions were tested, so it needs analysis before I feel safe
+> to apply it. The ath10k hardware families are very different that even
+> if a patch works perfectly on one ath10k hardware it could still break
+> badly on another one.
+>
+> What makes me faster to apply ath10k patches is to have comprehensive
+> analysis in the commit log. This shows me the patch author has
+> considered about all hardware families, not just the one he is testing
+> on, and that I don't need to do the analysis myself.
+
+It has been in ath10k-ct for a while, and that has some fairly wide coverage
+in OpenWrt, so likely if there were problems we would have seen it already.
+
+I did not make any specific changes to firmware to support this, so upstream
+firmware should behave similarly.
+
+Seems like upstream ath10k could really benefit from having some test beds
+so you can actually test code on different chips and have confidence
+in your changes!
+
+Thanks,
+Ben
+
 -- 
-2.25.4
-
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
