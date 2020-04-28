@@ -2,105 +2,98 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B58201BB571
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Apr 2020 06:45:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9CF661BB5AA
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Apr 2020 07:05:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726346AbgD1Epr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 28 Apr 2020 00:45:47 -0400
-Received: from mail26.static.mailgun.info ([104.130.122.26]:23503 "EHLO
+        id S1726345AbgD1FFa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 28 Apr 2020 01:05:30 -0400
+Received: from mail26.static.mailgun.info ([104.130.122.26]:53462 "EHLO
         mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726271AbgD1Epr (ORCPT
+        by vger.kernel.org with ESMTP id S1725792AbgD1FF3 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 28 Apr 2020 00:45:47 -0400
+        Tue, 28 Apr 2020 01:05:29 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1588049146; h=References: In-Reply-To: Message-Id: Date:
- Subject: Cc: To: From: Sender;
- bh=K4ffuR3n9o/BBtA/18Q3pDqmISYuCMs+XDuuxY6KKrY=; b=GNTuhiLZxPzuqQE0MaLvw3MWaouYTSiQXbirKu+MzUk7uCv1/8hNx4dpmAg9rYIPlRaHBDW9
- EWZQsLkwk6qjbZMs4zuvVaeOBhuTz58whQVt4g5S6tvP5rnWShMFU1x02w9/rEt1rleL33v6
- mG1iFdJhOPJ7eTisRd1/LcWHV/M=
+ s=smtp; t=1588050328; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=bzAUHkexuX6w2J/cf0kwzIhpJXIyV+XjlTjNfnbtK9c=; b=ZUHcdxMcvgmJtkaV96gW89F8BJcvZu0s5eg/PQX5fzWR06HI+3IDx0TY91u9rxWxpj5foafy
+ JHGvjMDEch4jyy/AP8LynfdVJkBc/jWm5EEGPBFf/p2f2rsS9Qw1jW/OHmkfFzF/6Yiiuc7c
+ 5TvXicLJUk9WSy2IidZyUq+2+Jg=
 X-Mailgun-Sending-Ip: 104.130.122.26
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5ea7b4fa.7fbb829c6650-smtp-out-n04;
- Tue, 28 Apr 2020 04:45:46 -0000 (UTC)
+ by mxa.mailgun.org with ESMTP id 5ea7b98f.7f1b77aa9d88-smtp-out-n04;
+ Tue, 28 Apr 2020 05:05:19 -0000 (UTC)
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id EAB5EC433D2; Tue, 28 Apr 2020 04:45:45 +0000 (UTC)
+        id 33416C44788; Tue, 28 Apr 2020 05:05:18 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
 X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
         autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from murugana-linux.qualcomm.com (blr-c-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.19.19])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+Received: from x230.qca.qualcomm.com (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        (Authenticated sender: murugana)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 3BEA9C433CB;
-        Tue, 28 Apr 2020 04:45:43 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 3BEA9C433CB
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 0E49BC433D2;
+        Tue, 28 Apr 2020 05:05:15 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 0E49BC433D2
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=murugana@codeaurora.org
-From:   Sathishkumar Muruganandam <murugana@codeaurora.org>
-To:     ath11k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org,
-        Sathishkumar Muruganandam <murugana@codeaurora.org>
-Subject: [PATCH v4 2/2] ath11k: add DBG_MAC prints to track vdev events
-Date:   Tue, 28 Apr 2020 10:15:26 +0530
-Message-Id: <1588049126-1490-3-git-send-email-murugana@codeaurora.org>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1588049126-1490-1-git-send-email-murugana@codeaurora.org>
-References: <1588049126-1490-1-git-send-email-murugana@codeaurora.org>
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     kbuild test robot <lkp@intel.com>
+Cc:     Jouni Malinen <jouni@codeaurora.org>, kbuild-all@lists.01.org,
+        ath9k-devel@qca.qualcomm.com, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH 2/2] ath9k_htc: Set RX filter based to allow broadcast Action frame RX
+References: <20200426084733.7889-2-jouni@codeaurora.org>
+        <202004281220.j0LQI20f%lkp@intel.com>
+Date:   Tue, 28 Apr 2020 08:05:13 +0300
+In-Reply-To: <202004281220.j0LQI20f%lkp@intel.com> (kbuild test robot's
+        message of "Tue, 28 Apr 2020 12:35:21 +0800")
+Message-ID: <87pnbskxo6.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Added DBG_MAC prints to track vdev create, delete, start and
-stop events.
+kbuild test robot <lkp@intel.com> writes:
 
-Signed-off-by: Sathishkumar Muruganandam <murugana@codeaurora.org>
----
- drivers/net/wireless/ath/ath11k/mac.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+> Hi Jouni,
+>
+> I love your patch! Yet something to improve:
+>
+> [auto build test ERROR on wireless-drivers-next/master]
+> [also build test ERROR on wireless-drivers/master ath6kl/ath-next v5.7-rc3 next-20200424]
+> [if your patch is applied to the wrong git tree, please drop us a note to help
+> improve the system. BTW, we also suggest to use '--base' option to specify the
+> base tree in git format-patch, please see https://stackoverflow.com/a/37406982]
+>
+> url:    https://github.com/0day-ci/linux/commits/Jouni-Malinen/ath9k-Set-RX-filter-based-to-allow-broadcast-Action-frame-RX/20200428-022034
+> base:   https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git master
+> config: nds32-allyesconfig (attached as .config)
+> compiler: nds32le-linux-gcc (GCC) 9.3.0
+> reproduce:
+>         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+>         chmod +x ~/bin/make.cross
+>         # save the attached .config to linux build tree
+>         COMPILER_INSTALL_PATH=$HOME/0day GCC_VERSION=9.3.0 make.cross ARCH=nds32 
+>
+> If you fix the issue, kindly add following tag as appropriate
+> Reported-by: kbuild test robot <lkp@intel.com>
+>
+> All error/warnings (new ones prefixed by >>):
+>
+>    drivers/net/wireless/ath/ath9k/htc_drv_txrx.c: In function 'ath9k_htc_calcrxfilter':
+>>> drivers/net/wireless/ath/ath9k/htc_drv_txrx.c:897:40: error:
+>>> 'FIF_MCAST_ACTION' undeclared (first use in this function)
+>      897 |      priv->rxfilter & (FIF_OTHER_BSS | FIF_MCAST_ACTION))
+>          |                                        ^~~~~~~~~~~~~~~~
 
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index 2b3a63ac216c..f33c6d714da8 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -4229,6 +4229,8 @@ static int ath11k_mac_op_add_interface(struct ieee80211_hw *hw,
- 	}
- 
- 	ar->num_created_vdevs++;
-+	ath11k_dbg(ab, ATH11K_DBG_MAC, "vdev %pM created, vdev_id %d\n",
-+		   vif->addr, arvif->vdev_id);
- 	ar->allocated_vdev_map |= 1LL << arvif->vdev_id;
- 	ab->free_vdev_map &= ~(1LL << arvif->vdev_id);
- 
-@@ -4399,6 +4401,8 @@ static void ath11k_mac_op_remove_interface(struct ieee80211_hw *hw,
- 			    arvif->vdev_id, ret);
- 
- 	ar->num_created_vdevs--;
-+	ath11k_dbg(ab, ATH11K_DBG_MAC, "vdev %pM deleted, vdev_id %d\n",
-+		   vif->addr, arvif->vdev_id);
- 	ar->allocated_vdev_map &= ~(1LL << arvif->vdev_id);
- 	ab->free_vdev_map |= 1LL << (arvif->vdev_id);
- 
-@@ -4664,6 +4668,8 @@ ath11k_mac_vdev_start_restart(struct ath11k_vif *arvif,
- 	}
- 
- 	ar->num_started_vdevs++;
-+	ath11k_dbg(ab, ATH11K_DBG_MAC,  "vdev %pM started, vdev_id %d\n",
-+		   arvif->vif->addr, arvif->vdev_id);
- 
- 	/* Enable CAC Flag in the driver by checking the channel DFS cac time,
- 	 * i.e dfs_cac_ms value which will be valid only for radar channels
-@@ -4722,6 +4728,8 @@ static int ath11k_mac_vdev_stop(struct ath11k_vif *arvif)
- 	WARN_ON(ar->num_started_vdevs == 0);
- 
- 	ar->num_started_vdevs--;
-+	ath11k_dbg(ar->ab, ATH11K_DBG_MAC, "vdev %pM stopped, vdev_id %d\n",
-+		   arvif->vif->addr, arvif->vdev_id);
- 
- 	if (test_bit(ATH11K_CAC_RUNNING, &ar->dev_flags)) {
- 		clear_bit(ATH11K_CAC_RUNNING, &ar->dev_flags);
+This is expected as the patch depends on a commit in mac80211-next:
+
+873b1cf61105 mac80211: Process multicast RX registration for Action frames
+
 -- 
-2.7.4
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
