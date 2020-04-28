@@ -2,94 +2,141 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A8EB1BC156
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Apr 2020 16:32:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 052BA1BC210
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Apr 2020 16:56:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727917AbgD1OcB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 28 Apr 2020 10:32:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34500 "EHLO
+        id S1727803AbgD1O4l (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 28 Apr 2020 10:56:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38314 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1727790AbgD1OcA (ORCPT
+        by vger.kernel.org with ESMTP id S1727108AbgD1O4l (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 28 Apr 2020 10:32:00 -0400
-Received: from mail-pj1-x1042.google.com (mail-pj1-x1042.google.com [IPv6:2607:f8b0:4864:20::1042])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D9CDC03C1AB;
-        Tue, 28 Apr 2020 07:32:00 -0700 (PDT)
-Received: by mail-pj1-x1042.google.com with SMTP id y6so1229284pjc.4;
-        Tue, 28 Apr 2020 07:32:00 -0700 (PDT)
+        Tue, 28 Apr 2020 10:56:41 -0400
+Received: from mail-qt1-x844.google.com (mail-qt1-x844.google.com [IPv6:2607:f8b0:4864:20::844])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1754C03C1AB
+        for <linux-wireless@vger.kernel.org>; Tue, 28 Apr 2020 07:56:40 -0700 (PDT)
+Received: by mail-qt1-x844.google.com with SMTP id c23so16954664qtp.11
+        for <linux-wireless@vger.kernel.org>; Tue, 28 Apr 2020 07:56:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=IhyP4f8AVV1sqnFFlCsqGqgrzMt0SiM3qURiPJRq3p8=;
-        b=aDyMaGyfZUMROiIb3/JW8nCVu4aOaUcQviH/y1F+ivZbVlOxsopjT8VcJJdfIq+XmB
-         s+RCqL1jimk8ebYGKfPVdu2rjbo8lOS8flP5Hn/rIxFoRKaTWAVAWr2MDnZGkii8mh+q
-         3wiudRc6CVIRmWNeJqBjgKzkvYCW80IW18Rqp5U2rci4AXVVJ6gggnyIuLmKwUpZt3rp
-         CJ3O56QCbFSCv4f+lFBrCrRLF2OpCyDeBJm7JWZDWeY/+FNYhMN1LQx5YMT3cWYewNxr
-         M5b7IsBC0SV3BtGH9NRfFxGrwMGXX+2R48k3r2okzHLKKyS9Xu3bUvvnnlV2iVazNfG4
-         3fjA==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=XD7fya1zNr+D/ulKl92kp8+pmc5owM8/sYXRvPaRimg=;
+        b=h3dvVWoYMCgIyCcHI4ao/qeO+JJbUsj5sJs3HL4PRCqnNFEmlvAgVcPhbthv5TDN+L
+         wtAMRwMWGPDMhUvzhX66Bj4zHYF3SUhxhtd+SmTZM0DaaKn71tNgaUsw2pW42SI11I/5
+         1X4chVPV0wNXPNKPgCp2er+qyWkaEA6Wmid6gU/4XDtVfyisg1qZW119vuCraxmsQMxg
+         BhV1sYqzNeX55P0Z9VzslVw6OLztG8abF41sGT+2nZWDAcAAbtT0W/jrphHcril4B6Q/
+         gA5lbapZ16/gR3D5i2OVtFpql9KFXoo8leHp2T3KADyqteN71h73pQQPajKycYQInzK6
+         FtCw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=IhyP4f8AVV1sqnFFlCsqGqgrzMt0SiM3qURiPJRq3p8=;
-        b=dzRsDrQVuoUD9um8JBP+syPm0s/rrJ3lf180OuWThjsBnJgW1KZuzVTrItNa53P1UQ
-         7nkrsP50/ukmbdYRg0w147NfswXhhoq33ZKJgud22+HKfDaywFHjZIwhSi7k6KOWQ/wy
-         kYXBZKYoGK4XFcWVCzlPv9Yvr0NaIq6byiNS1WqyR2Bb4RRpu47yTbxuKfUNI/Kw7mal
-         GQyEyO/GvXqzYj6uLJrjpkZ0d4eLq490B85wbMfk8TgwQ9az6cYwcS6UyNVKKlBrFSTA
-         crHtC/Ixcv+Sv6p85wN6vSKzhD4tiac/eLvC2UBUscxVCHnjlYLXSZT1F7tviVzjBmqz
-         dL3Q==
-X-Gm-Message-State: AGi0PuYNfgZbWoh4s8+1A6ZqjbPZdp1x/RSw27urGzRK4QI6CD3qmyE9
-        /oy26v3GvxdBbr1MPgd/n/U=
-X-Google-Smtp-Source: APiQypKfhzknU9mOLb2vJO4swAbCVUZu/KiJbCHayzvFpwL+Idv+LjNL8Xxm6iMN0zGwK370D7Ek5w==
-X-Received: by 2002:a17:90a:d17:: with SMTP id t23mr5749260pja.77.1588084319572;
-        Tue, 28 Apr 2020 07:31:59 -0700 (PDT)
-Received: from localhost ([89.208.244.169])
-        by smtp.gmail.com with ESMTPSA id b15sm15299195pfd.139.2020.04.28.07.31.58
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 28 Apr 2020 07:31:59 -0700 (PDT)
-From:   Dejin Zheng <zhengdejin5@gmail.com>
-To:     nbd@nbd.name, lorenzo.bianconi83@gmail.com, ryder.lee@mediatek.com,
-        royluo@google.com, kvalo@codeaurora.org, davem@davemloft.net,
-        matthias.bgg@gmail.com, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org, Dejin Zheng <zhengdejin5@gmail.com>
-Subject: [PATCH net v1] net: mt7603: remove duplicate error message
-Date:   Tue, 28 Apr 2020 22:31:52 +0800
-Message-Id: <20200428143152.3474-1-zhengdejin5@gmail.com>
-X-Mailer: git-send-email 2.25.0
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=XD7fya1zNr+D/ulKl92kp8+pmc5owM8/sYXRvPaRimg=;
+        b=mHHPjGDYbfkjcZwp5NL1hZgS9Oa7JINCs2l1+BgrREl1vfCWpqgFVG08wxXUcEsbFs
+         wPfGQA1aGBtLAg906SFhXKcNc76871JfOInssJAwjbgw5m2c+xdvDkVjVpitoIeUWj2O
+         egDm3GkAYTiq3mmrKzrjrTsIEhrosUzZ7wmf1jGVK8ozdlVEBoQyN13OSJ1HwESbYyhs
+         Q2RKExwdg8PEbNZlW9xYax0Z629JIUUtsuzUxf/HCal/fFMPotaEmYqslcykAGTfvBN0
+         A1iuEREcSvB3Tfdze9/JqXXWB+NPc7bIoyEwUB4IwWFunKZcwZqHDo14F3eiBd1p3eVQ
+         bEBg==
+X-Gm-Message-State: AGi0PuYa4wIyJqDZzSgZ2Vggv31GD9pvRu31+BNELh354R6uHwj4tnfV
+        hniYV1rxf588dsGMgs1ABkJ2TFvEd9ndyMAPNa1Szq6z
+X-Google-Smtp-Source: APiQypISM0qjYJttLqWzUmaYzo8JZZYjRg2yFHAL8eyXbqVKU0dAxho/0puYOKXiVHJmN3YKTMVZwe9DGXmIgH0yE6w=
+X-Received: by 2002:ac8:7395:: with SMTP id t21mr28856946qtp.155.1588085799693;
+ Tue, 28 Apr 2020 07:56:39 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20200427145435.13151-1-greearb@candelatech.com>
+In-Reply-To: <20200427145435.13151-1-greearb@candelatech.com>
+From:   Steve deRosier <derosier@gmail.com>
+Date:   Tue, 28 Apr 2020 07:56:03 -0700
+Message-ID: <CALLGbR+fY9w1q=6HuU56OZLD6BeP_0KkU2xeoAA0ZZXxns+i3g@mail.gmail.com>
+Subject: Re: [PATCH] ath10k: Restart xmit queues below low-water mark.
+To:     Ben Greear <greearb@candelatech.com>, dave.taht@gmail.com
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-it will print an error message by itself when
-devm_platform_ioremap_resource() goes wrong. so remove the duplicate
-error message.
+On Mon, Apr 27, 2020 at 7:54 AM <greearb@candelatech.com> wrote:
+>
+> From: Ben Greear <greearb@candelatech.com>
+>
+> While running tcp upload + download tests with ~200
+> concurrent TCP streams, 1-2 processes, and 30 station
+> vdevs, I noticed that the __ieee80211_stop_queue was taking
+> around 20% of the CPU according to perf-top, which other locking
+> taking an additional ~15%.
+>
+> I believe the issue is that the ath10k driver would unlock the
+> txqueue when a single frame could be transmitted, instead of
+> waiting for a low water mark.
+>
+> So, this patch adds a low-water mark that is 1/4 of the total
+> tx buffers allowed.
+>
+> This appears to resolve the performance problem that I saw.
+>
+> Tested with recent wave-1 ath10k-ct firmware.
+>
 
-Signed-off-by: Dejin Zheng <zhengdejin5@gmail.com>
----
- drivers/net/wireless/mediatek/mt76/mt7603/soc.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+Hey Ben,
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/soc.c b/drivers/net/wireless/mediatek/mt76/mt7603/soc.c
-index 68efb300c0d8..de170765e938 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7603/soc.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7603/soc.c
-@@ -20,10 +20,8 @@ mt76_wmac_probe(struct platform_device *pdev)
- 		return irq;
- 
- 	mem_base = devm_platform_ioremap_resource(pdev, 0);
--	if (IS_ERR(mem_base)) {
--		dev_err(&pdev->dev, "Failed to get memory resource\n");
-+	if (IS_ERR(mem_base))
- 		return PTR_ERR(mem_base);
--	}
- 
- 	mdev = mt76_alloc_device(&pdev->dev, sizeof(*dev), &mt7603_ops,
- 				 &mt7603_drv_ops);
--- 
-2.25.0
+Did you do any testing with this patch around latency?  The nature of
+the thing that you fixed makes me wonder if it was intentional with
+respect to making WiFi fast - ie getting rid of buffers as much as
+possible.  Obviously the CPU impact is likely to be an unintended
+consequence. In any case, I don't know anything for sure, it was just
+a thought that went through my head when reading this.
 
+
+> Signed-off-by: Ben Greear <greearb@candelatech.com>
+> ---
+>  drivers/net/wireless/ath/ath10k/htt.h    | 1 +
+>  drivers/net/wireless/ath/ath10k/htt_tx.c | 8 ++++++--
+>  2 files changed, 7 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/net/wireless/ath/ath10k/htt.h b/drivers/net/wireless/ath/ath10k/htt.h
+> index 31c4ddbf45cb..b5634781c0dc 100644
+> --- a/drivers/net/wireless/ath/ath10k/htt.h
+> +++ b/drivers/net/wireless/ath/ath10k/htt.h
+> @@ -1941,6 +1941,7 @@ struct ath10k_htt {
+>
+>         u8 target_version_major;
+>         u8 target_version_minor;
+> +       bool needs_unlock;
+>         struct completion target_version_received;
+>         u8 max_num_amsdu;
+>         u8 max_num_ampdu;
+> diff --git a/drivers/net/wireless/ath/ath10k/htt_tx.c b/drivers/net/wireless/ath/ath10k/htt_tx.c
+> index 9b3c3b080e92..44795d9a7c0c 100644
+> --- a/drivers/net/wireless/ath/ath10k/htt_tx.c
+> +++ b/drivers/net/wireless/ath/ath10k/htt_tx.c
+> @@ -145,8 +145,10 @@ void ath10k_htt_tx_dec_pending(struct ath10k_htt *htt)
+>         lockdep_assert_held(&htt->tx_lock);
+>
+>         htt->num_pending_tx--;
+> -       if (htt->num_pending_tx == htt->max_num_pending_tx - 1)
+> +       if ((htt->num_pending_tx <= (htt->max_num_pending_tx / 4)) && htt->needs_unlock) {
+> +               htt->needs_unlock = false;
+>                 ath10k_mac_tx_unlock(htt->ar, ATH10K_TX_PAUSE_Q_FULL);
+> +       }
+>  }
+>
+>  int ath10k_htt_tx_inc_pending(struct ath10k_htt *htt)
+> @@ -157,8 +159,10 @@ int ath10k_htt_tx_inc_pending(struct ath10k_htt *htt)
+>                 return -EBUSY;
+>
+>         htt->num_pending_tx++;
+> -       if (htt->num_pending_tx == htt->max_num_pending_tx)
+> +       if (htt->num_pending_tx == htt->max_num_pending_tx) {
+> +               htt->needs_unlock = true;
+>                 ath10k_mac_tx_lock(htt->ar, ATH10K_TX_PAUSE_Q_FULL);
+> +       }
+>
+>         return 0;
+>  }
+> --
+> 2.20.1
+>
