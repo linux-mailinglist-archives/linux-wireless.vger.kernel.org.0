@@ -2,163 +2,176 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 18BC21BCE7E
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Apr 2020 23:18:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DB4261BCE98
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Apr 2020 23:24:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726377AbgD1VSq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 28 Apr 2020 17:18:46 -0400
-Received: from mail2.candelatech.com ([208.74.158.173]:45238 "EHLO
-        mail3.candelatech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726307AbgD1VSp (ORCPT
+        id S1726274AbgD1VYg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 28 Apr 2020 17:24:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42750 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726256AbgD1VYg (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 28 Apr 2020 17:18:45 -0400
-Received: from [192.168.254.4] (unknown [50.34.219.109])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail3.candelatech.com (Postfix) with ESMTPSA id 72F0613C283;
-        Tue, 28 Apr 2020 14:18:44 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 72F0613C283
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1588108724;
-        bh=Tx1liRwgP1mL6dr1t4bO4tB1dZ+xutZhGfyNEn/NP6o=;
-        h=Subject:To:References:From:Date:In-Reply-To:From;
-        b=nvbwHF3rUbuQocipwwW6O+XlgbKhBy2xhnPl6t1EiXDgPzVTvZ0O3dP1q3bS5Yb1/
-         P0T3h/EkLes6001/PnTnut73zRbncIV/eItB3H10viVTrRFEsMcj4oIfRX7vZLWbtw
-         gleOqXsWI5vEC7NwD7DxKc63wFszhf/GQnSAUW40=
-Subject: Re: [PATCH] ath10k: Restart xmit queues below low-water mark.
-To:     =?UTF-8?Q?Toke_H=c3=b8iland-J=c3=b8rgensen?= <toke@toke.dk>,
-        linux-wireless@vger.kernel.org
-References: <20200427145435.13151-1-greearb@candelatech.com>
- <87h7x3v1tn.fsf@toke.dk>
- <d72dbba0-409f-93d7-5364-bc7ac50288b9@candelatech.com>
- <87a72vuyyn.fsf@toke.dk>
-From:   Ben Greear <greearb@candelatech.com>
-Message-ID: <e6ee8635-b45f-c5fe-d32a-1d695b3a7934@candelatech.com>
-Date:   Tue, 28 Apr 2020 14:18:42 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
- Thunderbird/45.8.0
+        Tue, 28 Apr 2020 17:24:36 -0400
+Received: from mail-qk1-x744.google.com (mail-qk1-x744.google.com [IPv6:2607:f8b0:4864:20::744])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C07F6C03C1AC
+        for <linux-wireless@vger.kernel.org>; Tue, 28 Apr 2020 14:24:35 -0700 (PDT)
+Received: by mail-qk1-x744.google.com with SMTP id t3so23442548qkg.1
+        for <linux-wireless@vger.kernel.org>; Tue, 28 Apr 2020 14:24:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=hQ48yejej/2CpQ2/euVAVFYjvaWIvTEf9J0038bBjKc=;
+        b=nDb3XX4UYrDn5DoJJz3CYcPdIDUVj8UAYBVn4vpM3/LaiQn/C4SMAIMHAcGVMKHT9x
+         Ok6w0cQHJF632btm+njg1WiLGax0xx2mLu+xiLFnCS00pBJKJjvlnzisCNljFi7Wf1Hv
+         hqUWhcDRBTZkHdML+85OZHJEDjAPtd/joI8pUdA9ks6w/KC7Tlgi2beDe8/RooVfH8Bd
+         ll4BvRuk+iHlyxz9ajGqBs+F9jgZTIonuKxLEJxn+hyn53i5BrrDQrrukSdGI9Y5HVkw
+         NrceJrc5TOHZgld42Ajkx6rRtdxWRE0rr1wv+L1pudiSwtsRpv1ZXGpGM5XzLJiwfk7/
+         cb8g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=hQ48yejej/2CpQ2/euVAVFYjvaWIvTEf9J0038bBjKc=;
+        b=H5qHgpYlqYAeOttT4qomGJvNlWTEnKyVzXpNGwXhig/W/3hlITwLWvsj1Fck7ope9r
+         aDXbZeCggCzPnzw9ZichDt9w7lISHPF7DgRSvJk7vDCuL8JdpFufBp53st5bILAQNm8u
+         VsUIR69t4e/wcSZxAlYsus0D84Mw5Mb5zSrFgnOM2+vO7tjChg0HPp6iOSNLkaxPA/i3
+         MaOV6EsMdrEvL56JonY23cr0hchEnHvXe7Ge2BDvPrISN4AxqToDIvWF+dZTLPyLBolQ
+         IKx6gny+lQ2AyLvlO4XEJb6ObDBFIhirW3yy6ImNI0Dvnqxms6IlUmgYcdGrufgiu/aK
+         qE0Q==
+X-Gm-Message-State: AGi0PuY3wycXKW0ovANSMvViqKa4GhovVna59MshKfDKHtxxjUXmeGqa
+        vTioL0EdxhQpgdXGZZuLEPLuAjYhvN+gW0PvIAlmyo3u
+X-Google-Smtp-Source: APiQypKTbVPZvStje4mrTO7Ney7rc6P2EXEhKFp0v2flJlCfS6yZT0m3HYdo0L59yMrqwtr7esOJQZc/7ERy0/zbkHk=
+X-Received: by 2002:a37:a6d1:: with SMTP id p200mr29880998qke.198.1588109074611;
+ Tue, 28 Apr 2020 14:24:34 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <87a72vuyyn.fsf@toke.dk>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <20200427145435.13151-1-greearb@candelatech.com>
+ <CALLGbR+fY9w1q=6HuU56OZLD6BeP_0KkU2xeoAA0ZZXxns+i3g@mail.gmail.com>
+ <1e1664b6-1998-5a4b-67ba-09113ec8d3a7@candelatech.com> <87k11zv1ux.fsf@toke.dk>
+ <CAA93jw7exafEx3YkvR5uaaBm5kxzYp3nw14zMfgT=2SwUjaQFg@mail.gmail.com>
+ <f0f8b69f-3c1e-2f11-77fe-5c881120cca4@candelatech.com> <874kt3uy33.fsf@toke.dk>
+In-Reply-To: <874kt3uy33.fsf@toke.dk>
+From:   Steve deRosier <derosier@gmail.com>
+Date:   Tue, 28 Apr 2020 14:23:58 -0700
+Message-ID: <CALLGbRJrZojQQF-MaUr1HYVZ0=i8CbqR=gfq14KznAc74pzUeg@mail.gmail.com>
+Subject: Re: [PATCH] ath10k: Restart xmit queues below low-water mark.
+To:     =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@toke.dk>
+Cc:     Ben Greear <greearb@candelatech.com>,
+        Dave Taht <dave.taht@gmail.com>,
+        linux-wireless <linux-wireless@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-
-
-On 04/28/2020 01:39 PM, Toke Høiland-Jørgensen wrote:
+On Tue, Apr 28, 2020 at 1:58 PM Toke H=C3=B8iland-J=C3=B8rgensen <toke@toke=
+.dk> wrote:
+>
 > Ben Greear <greearb@candelatech.com> writes:
 >
->> On 04/28/2020 12:37 PM, Toke Høiland-Jørgensen wrote:
->>> greearb@candelatech.com writes:
->>>
->>>> From: Ben Greear <greearb@candelatech.com>
->>>>
->>>> While running tcp upload + download tests with ~200
->>>> concurrent TCP streams, 1-2 processes, and 30 station
->>>> vdevs, I noticed that the __ieee80211_stop_queue was taking
->>>> around 20% of the CPU according to perf-top, which other locking
->>>> taking an additional ~15%.
->>>>
->>>> I believe the issue is that the ath10k driver would unlock the
->>>> txqueue when a single frame could be transmitted, instead of
->>>> waiting for a low water mark.
->>>>
->>>> So, this patch adds a low-water mark that is 1/4 of the total
->>>> tx buffers allowed.
->>>>
->>>> This appears to resolve the performance problem that I saw.
->>>>
->>>> Tested with recent wave-1 ath10k-ct firmware.
->>>>
->>>> Signed-off-by: Ben Greear <greearb@candelatech.com>
->>>> ---
->>>>  drivers/net/wireless/ath/ath10k/htt.h    | 1 +
->>>>  drivers/net/wireless/ath/ath10k/htt_tx.c | 8 ++++++--
->>>>  2 files changed, 7 insertions(+), 2 deletions(-)
->>>>
->>>> diff --git a/drivers/net/wireless/ath/ath10k/htt.h b/drivers/net/wireless/ath/ath10k/htt.h
->>>> index 31c4ddbf45cb..b5634781c0dc 100644
->>>> --- a/drivers/net/wireless/ath/ath10k/htt.h
->>>> +++ b/drivers/net/wireless/ath/ath10k/htt.h
->>>> @@ -1941,6 +1941,7 @@ struct ath10k_htt {
->>>>
->>>>  	u8 target_version_major;
->>>>  	u8 target_version_minor;
->>>> +	bool needs_unlock;
->>>>  	struct completion target_version_received;
->>>>  	u8 max_num_amsdu;
->>>>  	u8 max_num_ampdu;
->>>> diff --git a/drivers/net/wireless/ath/ath10k/htt_tx.c b/drivers/net/wireless/ath/ath10k/htt_tx.c
->>>> index 9b3c3b080e92..44795d9a7c0c 100644
->>>> --- a/drivers/net/wireless/ath/ath10k/htt_tx.c
->>>> +++ b/drivers/net/wireless/ath/ath10k/htt_tx.c
->>>> @@ -145,8 +145,10 @@ void ath10k_htt_tx_dec_pending(struct ath10k_htt *htt)
->>>>  	lockdep_assert_held(&htt->tx_lock);
->>>>
->>>>  	htt->num_pending_tx--;
->>>> -	if (htt->num_pending_tx == htt->max_num_pending_tx - 1)
->>>> +	if ((htt->num_pending_tx <= (htt->max_num_pending_tx / 4)) && htt->needs_unlock) {
->>>
->>> Why /4? Seems a bit arbitrary?
->>
->> Yes, arbitrary for sure. I figure restart filling the queue when 1/4
->> full so that it is unlikely to run dry. Possibly it should restart
->> sooner to keep it more full on average?
+> > On 04/28/2020 12:39 PM, Dave Taht wrote:
+> >> On Tue, Apr 28, 2020 at 12:37 PM Toke H=C3=B8iland-J=C3=B8rgensen <tok=
+e@toke.dk> wrote:
+> >>>
+> >>> Ben Greear <greearb@candelatech.com> writes:
+> >>>
+> >>>> On 04/28/2020 07:56 AM, Steve deRosier wrote:
+> >>>>> On Mon, Apr 27, 2020 at 7:54 AM <greearb@candelatech.com> wrote:
+> >>>>>>
+> >>>>>> From: Ben Greear <greearb@candelatech.com>
+> >>>>>>
+> >>>>>> While running tcp upload + download tests with ~200
+> >>>>>> concurrent TCP streams, 1-2 processes, and 30 station
+> >>>>>> vdevs, I noticed that the __ieee80211_stop_queue was taking
+> >>>>>> around 20% of the CPU according to perf-top, which other locking
+> >>>>>> taking an additional ~15%.
+> >>>>>>
+> >>>>>> I believe the issue is that the ath10k driver would unlock the
+> >>>>>> txqueue when a single frame could be transmitted, instead of
+> >>>>>> waiting for a low water mark.
+> >>>>>>
+> >>>>>> So, this patch adds a low-water mark that is 1/4 of the total
+> >>>>>> tx buffers allowed.
+> >>>>>>
+> >>>>>> This appears to resolve the performance problem that I saw.
+> >>>>>>
+> >>>>>> Tested with recent wave-1 ath10k-ct firmware.
+> >>>>>>
+> >>>>>
+> >>>>> Hey Ben,
+> >>>>>
+> >>>>> Did you do any testing with this patch around latency?  The nature =
+of
+> >>>>> the thing that you fixed makes me wonder if it was intentional with
+> >>>>> respect to making WiFi fast - ie getting rid of buffers as much as
+> >>>>> possible.  Obviously the CPU impact is likely to be an unintended
+> >>>>> consequence. In any case, I don't know anything for sure, it was ju=
+st
+> >>>>> a thought that went through my head when reading this.
+> >>>>
+> >>>> I did not, but on average my patch should make the queues be less fu=
+ll,
+> >>>> so I doubt it will hurt latency.
+> >>>
+> >>> I would tend to agree with that.
+> >>
+> >> Well, I don't, as it's dependent on right sizing the ring in the first=
+ place.
+> >
+> > My patch, barring strange issues elsewhere, can only make the firmware =
+tx queues less full on
+> > average.
+> >
+> > If you want to test with different ring sizes, you can play with the tx=
+_desc
+> > setting in the ath10k-ct driver 'fwcfg' options.
+> >
+> > http://www.candelatech.com/ath10k-10.4.php#config
+> >
+> > My testing shows that overall throughput goes down when using lots of p=
+eers
+> > if you have smaller numbers of txbuffers.  This is because the firmware
+> > will typically spread its buffers over lots of peers and have smaller a=
+mpdu
+> > chains per transmit.  An upper stack that more intelligently fed frames
+> > to the firmware could mitigate this, and it is not all bad anyway since
+> > giving everyone a 64 ampdu chains will increase burstiness at least
+> > somewhat.
 >
-> Theoretically, the "keep the queue at the lowest possible level that
-> keeps it from underflowing" is what BQL is supposed to do. The diff
-> below uses the dynamic adjustment bit (from dynamic_queue_limits.h) in
-> place of num_pending_tx. I've only compile tested it, and I'm a bit
-> skeptical that it will work right for this, but if anyone wants to give
-> it a shot, there it is.
+> Making each transmission shorter is arguably the right thing to do in
+> the "extremely congested" scenario, though. If you have to wait your
+> turn behind 100 other stations for your next TXOP you'd generally want
+> each of those other stations to only transmit (say) 1ms instead of their
+> full 4ms. Yes, this will hurt aggregate throughput somewhat, but I'd
+> argue that in most cases the overall application performance would be
+> better. You're right, though, that ideally this would be managed a bit
+> smarter than by just running out of buffers :)
 >
-> BTW, while doing that, I noticed there's a similar arbitrary limit in
-> ath10k_mac_tx_push_pending() at max_num_pending_tx/2. So if you're going
-> to keep the arbitrary limit maybe use the same one? :)
+> > I've always envisioned that the stuff you and Toke and others have been
+> > working on would help in this area, but I don't understand your stuff w=
+ell
+> > enough to know if that is true or not.
 >
->> Before my patch, the behaviour would be to try to keep it as full as
->> possible, as in restart the queues as soon as a single slot opens up
->> in the tx queue.
+> It might, although as per above I'm not quite sure what "helps" really
+> means in this context. What would you expect a good behaviour to be
+> here? I think what you're alluding to is to limit the total number of
+> stations that will be allowed to have outstanding data in the firmware
+> at the same time, right? Here it would help a bit to know some more
+> details of how the firmware manages its internal queueing, and how it
+> schedules stations (if at all)?
 >
-> Yeah, that seems somewhat misguided as well, from a latency perspective,
-> at least. But I guess that's what we're fixing with AQL. What does the
-> firmware do with the frames queued within? Do they just go on a FIFO
-> queue altogether, or something smarter?
+> BTW, are you running any of these tests with AQL enabled?
+>
 
-Sort of like a mini-mac80211 stack inside the firmware is used to
-create ampdu/amsdu chains and schedule them with its own scheduler.
+I don't know if Ben is doing so, but I will be doing so here very
+soon. I've got some unrelated things in the way to clear up first, but
+within a couple of weeks we hope to be testing AQL with ath10k-ct
+firmware and driver.
 
-For optimal throughput with 200 users steaming video,
-the ath10k driver should think that it has only a few active peers wanting
-to send data at a time (and so firmware would think the same), and the driver should
-be fed a large chunk of pkts for those peers.  And then the next few peers.
-That should let firmware send large ampdu/amsdu to each peer, increasing throughput
-over all.
+And everyone thanks for the discussion, it's been very interesting and
+useful to me. Hopefully we can improve ath10k even more with this
+information.
 
-If you feed a few frames to each of the 200 peers, then even if firmware has 2000
-tx buffers, that is only 10 frames per peer at best, leading to small ampdu/amsdu
-and thus worse over-all throughput and utilization of airtime.
-
-It would be nice to be able to set certain traffic flows to have the
-throughput optimization and others to have the latency optimization.
-For instance, high latency on a streaming download is a good trade-off
-if it increases total throughput.  The end device will have plenty of
-buffers to handle the bursts of data.
-
-And of course other traffic will benefit from lower latency.
-
-Maybe some of the AI folks training their AI to categorize cat pictures could
-instead start categorizing traffic flows and adjusting the stack realtime...
-
-And now...back to the grind for me.
-
-Thanks,
-Ben
-
-
--- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
+- Steve
