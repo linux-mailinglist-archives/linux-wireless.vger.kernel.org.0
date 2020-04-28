@@ -2,53 +2,74 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C19951BB914
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Apr 2020 10:46:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4496C1BB967
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Apr 2020 11:01:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726508AbgD1Iqp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 28 Apr 2020 04:46:45 -0400
-Received: from mail.kernel.org ([198.145.29.99]:57854 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726318AbgD1Iqp (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 28 Apr 2020 04:46:45 -0400
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
+        id S1726918AbgD1JB1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 28 Apr 2020 05:01:27 -0400
+Received: from mail27.static.mailgun.info ([104.130.122.27]:27061 "EHLO
+        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726271AbgD1JB1 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 28 Apr 2020 05:01:27 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1588064486; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=f7lCdIiB/qVorimyirKN/0oeBUQed5wtFKoPcb4m7Fs=;
+ b=PWjXZYym3nuPnkYWXZxK+zYhCqoxub7GyhjV27x3K0nXR8K8nLVxA/PwZrzIA+kH2dgxeR9t
+ 3jE4h5eJhJGfKq3BkXpZ6tuLShnP2XkZN4tW5tdTuLGGvz98u9bXow+z+DCb/xt4x8dOwxtR
+ 1/AQOxFei5UWts9Lu7yz546MQ3o=
+X-Mailgun-Sending-Ip: 104.130.122.27
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5ea7f0e5.7f6a879263e8-smtp-out-n01;
+ Tue, 28 Apr 2020 09:01:25 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 9F50CC432C2; Tue, 28 Apr 2020 09:01:25 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
+        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A2AED206B9;
-        Tue, 28 Apr 2020 08:46:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1588063605;
-        bh=FR6uldN0wEhhRMSQOfpDGFsE9p0TXsHzHOUWriICLp8=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=XvgEzo+C7Zibhc3MQRMUsjn5RyABa1c0Pxs0Bs9dr11/UbFo4UVkw6hMiDyQzVckV
-         MwzildbvXNch8K2t8HSGfwTDP3wHum+5I3BmzxKSVa38SR63+jOo5WqnM4h+jVIsbO
-         0ZyDFlqKZw0pItV//UK8J4RvOr2MQy26sJX3ooQA=
-Date:   Tue, 28 Apr 2020 10:46:42 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org, devel@driverdev.osuosl.org,
-        Johannes Berg <johannes.berg@intel.com>,
-        Sergey Matyukevich <geomatsi@gmail.com>
-Subject: Re: [PATCH 2/2] staging: wilc1000: adjust for management frame
- register API changes
-Message-ID: <20200428084642.GD996383@kroah.com>
-References: <20200428101400.ae19d651ec38.Ieb15844bb5ab93b3d7931d6561f42e3316ef8251@changeid>
- <20200428101400.bac7e94c2bf8.I6a2287b9f68f35aff5f6de409c5ffa388de760e2@changeid>
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 0F44AC433F2;
+        Tue, 28 Apr 2020 09:01:23 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 0F44AC433F2
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200428101400.bac7e94c2bf8.I6a2287b9f68f35aff5f6de409c5ffa388de760e2@changeid>
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] ssb: sprom: fix block comments coding style issues
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20200424175043.16261-1-john.oldman@polehill.co.uk>
+References: <20200424175043.16261-1-john.oldman@polehill.co.uk>
+To:     John Oldman <john.oldman@polehill.co.uk>
+Cc:     m@bues.ch, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        John Oldman <john.oldman@polehill.co.uk>
+User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
+Message-Id: <20200428090125.9F50CC432C2@smtp.codeaurora.org>
+Date:   Tue, 28 Apr 2020 09:01:25 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, Apr 28, 2020 at 10:14:03AM +0200, Johannes Berg wrote:
-> From: Johannes Berg <johannes.berg@intel.com>
-> 
-> Adjust to the API changes in cfg80211 for management frame registration.
-> 
-> Fixes: 6cd536fe62ef ("cfg80211: change internal management frame registration API")
-> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+John Oldman <john.oldman@polehill.co.uk> wrote:
 
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Fixed coding style issues
+> 
+> Signed-off-by: John Oldman <john.oldman@polehill.co.uk>
+
+Patch applied to wireless-drivers-next.git, thanks.
+
+2aad9f81d34c ssb: sprom: fix block comments coding style issues
+
+-- 
+https://patchwork.kernel.org/patch/11509841/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
