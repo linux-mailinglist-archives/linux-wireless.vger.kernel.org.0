@@ -2,111 +2,94 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 29BC51BC128
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 Apr 2020 16:27:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A8EB1BC156
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 Apr 2020 16:32:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727840AbgD1O11 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 28 Apr 2020 10:27:27 -0400
-Received: from mail2.candelatech.com ([208.74.158.173]:56784 "EHLO
-        mail3.candelatech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726900AbgD1O11 (ORCPT
+        id S1727917AbgD1OcB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 28 Apr 2020 10:32:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34500 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1727790AbgD1OcA (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 28 Apr 2020 10:27:27 -0400
-Received: from [192.168.254.4] (unknown [50.34.219.109])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail3.candelatech.com (Postfix) with ESMTPSA id 15B2313C283;
-        Tue, 28 Apr 2020 07:27:24 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 15B2313C283
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1588084046;
-        bh=uJfi3yqJT689k/koN7HWdgLdOqnl3VJ1ES5anj/Umb4=;
-        h=Subject:To:References:Cc:From:Date:In-Reply-To:From;
-        b=fN9YNTV5I6Omibnf0OY3BKpmE5av8OT+WHtiZg9c5deRZt+tc41d0scOzOMwQcsE1
-         1mbSWQDZN5tzgPiAi0/Jqj4JsaNr4pVg/5zKq8s8NyTSl5kP1hEWAAtX5x5x/lfBEw
-         yDb5OYYRI/biBC0TzdbjdWp4DVChOKz3ofS9HIyY=
-Subject: Re: [PATCH] ath10k: increase rx buffer size to 2048
-To:     Kalle Valo <kvalo@codeaurora.org>,
-        Sven Eckelmann <sven@narfation.org>
-References: <20200205191043.21913-1-linus.luessing@c0d3.blue>
- <3300912.TRQvxCK2vZ@bentobox> <3097447.aZuNXRJysd@sven-edge>
- <87blnblsyv.fsf@codeaurora.org>
-Cc:     ath10k@lists.infradead.org,
-        =?UTF-8?Q?Linus_L=c3=bcssing?= <linus.luessing@c0d3.blue>,
-        Simon Wunderlich <sw@simonwunderlich.de>,
-        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        "David S . Miller" <davem@davemloft.net>,
-        =?UTF-8?Q?Linus_L=c3=bcssing?= <ll@simonwunderlich.de>,
-        mail@adrianschmutzler.de
-From:   Ben Greear <greearb@candelatech.com>
-Message-ID: <db0f12d8-0604-70fa-81ad-5c1060eb0c6e@candelatech.com>
-Date:   Tue, 28 Apr 2020 07:27:24 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
- Thunderbird/45.8.0
+        Tue, 28 Apr 2020 10:32:00 -0400
+Received: from mail-pj1-x1042.google.com (mail-pj1-x1042.google.com [IPv6:2607:f8b0:4864:20::1042])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D9CDC03C1AB;
+        Tue, 28 Apr 2020 07:32:00 -0700 (PDT)
+Received: by mail-pj1-x1042.google.com with SMTP id y6so1229284pjc.4;
+        Tue, 28 Apr 2020 07:32:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=IhyP4f8AVV1sqnFFlCsqGqgrzMt0SiM3qURiPJRq3p8=;
+        b=aDyMaGyfZUMROiIb3/JW8nCVu4aOaUcQviH/y1F+ivZbVlOxsopjT8VcJJdfIq+XmB
+         s+RCqL1jimk8ebYGKfPVdu2rjbo8lOS8flP5Hn/rIxFoRKaTWAVAWr2MDnZGkii8mh+q
+         3wiudRc6CVIRmWNeJqBjgKzkvYCW80IW18Rqp5U2rci4AXVVJ6gggnyIuLmKwUpZt3rp
+         CJ3O56QCbFSCv4f+lFBrCrRLF2OpCyDeBJm7JWZDWeY/+FNYhMN1LQx5YMT3cWYewNxr
+         M5b7IsBC0SV3BtGH9NRfFxGrwMGXX+2R48k3r2okzHLKKyS9Xu3bUvvnnlV2iVazNfG4
+         3fjA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=IhyP4f8AVV1sqnFFlCsqGqgrzMt0SiM3qURiPJRq3p8=;
+        b=dzRsDrQVuoUD9um8JBP+syPm0s/rrJ3lf180OuWThjsBnJgW1KZuzVTrItNa53P1UQ
+         7nkrsP50/ukmbdYRg0w147NfswXhhoq33ZKJgud22+HKfDaywFHjZIwhSi7k6KOWQ/wy
+         kYXBZKYoGK4XFcWVCzlPv9Yvr0NaIq6byiNS1WqyR2Bb4RRpu47yTbxuKfUNI/Kw7mal
+         GQyEyO/GvXqzYj6uLJrjpkZ0d4eLq490B85wbMfk8TgwQ9az6cYwcS6UyNVKKlBrFSTA
+         crHtC/Ixcv+Sv6p85wN6vSKzhD4tiac/eLvC2UBUscxVCHnjlYLXSZT1F7tviVzjBmqz
+         dL3Q==
+X-Gm-Message-State: AGi0PuYNfgZbWoh4s8+1A6ZqjbPZdp1x/RSw27urGzRK4QI6CD3qmyE9
+        /oy26v3GvxdBbr1MPgd/n/U=
+X-Google-Smtp-Source: APiQypKfhzknU9mOLb2vJO4swAbCVUZu/KiJbCHayzvFpwL+Idv+LjNL8Xxm6iMN0zGwK370D7Ek5w==
+X-Received: by 2002:a17:90a:d17:: with SMTP id t23mr5749260pja.77.1588084319572;
+        Tue, 28 Apr 2020 07:31:59 -0700 (PDT)
+Received: from localhost ([89.208.244.169])
+        by smtp.gmail.com with ESMTPSA id b15sm15299195pfd.139.2020.04.28.07.31.58
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Tue, 28 Apr 2020 07:31:59 -0700 (PDT)
+From:   Dejin Zheng <zhengdejin5@gmail.com>
+To:     nbd@nbd.name, lorenzo.bianconi83@gmail.com, ryder.lee@mediatek.com,
+        royluo@google.com, kvalo@codeaurora.org, davem@davemloft.net,
+        matthias.bgg@gmail.com, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, Dejin Zheng <zhengdejin5@gmail.com>
+Subject: [PATCH net v1] net: mt7603: remove duplicate error message
+Date:   Tue, 28 Apr 2020 22:31:52 +0800
+Message-Id: <20200428143152.3474-1-zhengdejin5@gmail.com>
+X-Mailer: git-send-email 2.25.0
 MIME-Version: 1.0
-In-Reply-To: <87blnblsyv.fsf@codeaurora.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+it will print an error message by itself when
+devm_platform_ioremap_resource() goes wrong. so remove the duplicate
+error message.
 
+Signed-off-by: Dejin Zheng <zhengdejin5@gmail.com>
+---
+ drivers/net/wireless/mediatek/mt76/mt7603/soc.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-On 04/28/2020 05:01 AM, Kalle Valo wrote:
-> Sven Eckelmann <sven@narfation.org> writes:
->
->> On Wednesday, 1 April 2020 09:00:49 CEST Sven Eckelmann wrote:
->>> On Wednesday, 5 February 2020 20:10:43 CEST Linus Lüssing wrote:
->>>> From: Linus Lüssing <ll@simonwunderlich.de>
->>>>
->>>> Before, only frames with a maximum size of 1528 bytes could be
->>>> transmitted between two 802.11s nodes.
->>>>
->>>> For batman-adv for instance, which adds its own header to each frame,
->>>> we typically need an MTU of at least 1532 bytes to be able to transmit
->>>> without fragmentation.
->>>>
->>>> This patch now increases the maxmimum frame size from 1528 to 1656
->>>> bytes.
->>> [...]
->>>
->>> @Kalle, I saw that this patch was marked as deferred [1] but I couldn't find
->>> any mail why it was done so. It seems like this currently creates real world
->>> problems - so would be nice if you could explain shortly what is currently
->>> blocking its acceptance.
->>
->> Ping?
->
-> Sorry for the delay, my plan was to first write some documentation about
-> different hardware families but haven't managed to do that yet.
->
-> My problem with this patch is that I don't know what hardware and
-> firmware versions were tested, so it needs analysis before I feel safe
-> to apply it. The ath10k hardware families are very different that even
-> if a patch works perfectly on one ath10k hardware it could still break
-> badly on another one.
->
-> What makes me faster to apply ath10k patches is to have comprehensive
-> analysis in the commit log. This shows me the patch author has
-> considered about all hardware families, not just the one he is testing
-> on, and that I don't need to do the analysis myself.
-
-It has been in ath10k-ct for a while, and that has some fairly wide coverage
-in OpenWrt, so likely if there were problems we would have seen it already.
-
-I did not make any specific changes to firmware to support this, so upstream
-firmware should behave similarly.
-
-Seems like upstream ath10k could really benefit from having some test beds
-so you can actually test code on different chips and have confidence
-in your changes!
-
-Thanks,
-Ben
-
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/soc.c b/drivers/net/wireless/mediatek/mt76/mt7603/soc.c
+index 68efb300c0d8..de170765e938 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7603/soc.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7603/soc.c
+@@ -20,10 +20,8 @@ mt76_wmac_probe(struct platform_device *pdev)
+ 		return irq;
+ 
+ 	mem_base = devm_platform_ioremap_resource(pdev, 0);
+-	if (IS_ERR(mem_base)) {
+-		dev_err(&pdev->dev, "Failed to get memory resource\n");
++	if (IS_ERR(mem_base))
+ 		return PTR_ERR(mem_base);
+-	}
+ 
+ 	mdev = mt76_alloc_device(&pdev->dev, sizeof(*dev), &mt7603_ops,
+ 				 &mt7603_drv_ops);
 -- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
+2.25.0
+
