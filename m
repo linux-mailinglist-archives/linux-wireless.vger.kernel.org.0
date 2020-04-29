@@ -2,228 +2,338 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 79B391BE1CF
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Apr 2020 16:56:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A01AB1BE1D6
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 Apr 2020 16:57:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726580AbgD2O4b (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 29 Apr 2020 10:56:31 -0400
-Received: from mail.toke.dk ([45.145.95.4]:58785 "EHLO mail.toke.dk"
+        id S1726891AbgD2O51 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 29 Apr 2020 10:57:27 -0400
+Received: from nbd.name ([46.4.11.11]:60148 "EHLO nbd.name"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726456AbgD2O4a (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 29 Apr 2020 10:56:30 -0400
-From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
-        t=1588172187; bh=wjrUQRV4wIvjWzgn5HxsyO87nU1rcawMaHqFaMq/lgQ=;
-        h=From:To:Subject:In-Reply-To:References:Date:From;
-        b=ANu+lmn1+b2nZ6HLXDud+4tzGNg8pbyxU+ASFZrgDQWxNb1daqar1RU/pnSW2rXj2
-         IT/mXCfiioUX4nW1kArLP4ekYuoxY0zSdY8ZRFdA50bPXOBCPhqxk/3DepffbSWf+c
-         RzNOnk32/lEAHKi3akoR5fvFzmY9pRk6TTAyQKi4Duee7HutZo8enRffA6eB07bWY2
-         RS39VvMcSAIeexPg3ffeTWo/fZovQQMNU/sFljou1aIpEiu5feF6lPaWt3YWtQ9VgZ
-         AySwRY32I+YcsQMw+xPxRiAIw5UYHhR9h1ewdmFsG9iB7WYDpGAT4gmTUMkMK2ONEX
-         /XGi/fU1StVrA==
-To:     Ben Greear <greearb@candelatech.com>,
-        linux-wireless@vger.kernel.org
-Subject: Re: [PATCH] ath10k: Restart xmit queues below low-water mark.
-In-Reply-To: <31064453-15b4-877f-b70c-b6b9ed4ae50c@candelatech.com>
-References: <20200427145435.13151-1-greearb@candelatech.com> <87h7x3v1tn.fsf@toke.dk> <d72dbba0-409f-93d7-5364-bc7ac50288b9@candelatech.com> <87a72vuyyn.fsf@toke.dk> <e6ee8635-b45f-c5fe-d32a-1d695b3a7934@candelatech.com> <87sggmtzdg.fsf@toke.dk> <31064453-15b4-877f-b70c-b6b9ed4ae50c@candelatech.com>
-Date:   Wed, 29 Apr 2020 16:56:20 +0200
-X-Clacks-Overhead: GNU Terry Pratchett
-Message-ID: <87blnatk6j.fsf@toke.dk>
+        id S1726556AbgD2O51 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 29 Apr 2020 10:57:27 -0400
+Received: from [81.25.161.111] (helo=bertha8.datto.lan)
+        by ds12 with esmtpa (Exim 4.89)
+        (envelope-from <john@phrozen.org>)
+        id 1jTo9K-0002aB-AZ; Wed, 29 Apr 2020 16:57:22 +0200
+From:   John Crispin <john@phrozen.org>
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        Kalle Valo <kvalo@codeaurora.org>
+Cc:     linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
+        Miles Hu <milehu@codeaurora.org>,
+        John Crispin <john@phrozen.org>
+Subject: [PATCH V3 1/3] nl80211: add support for setting fixed HE rate/gi/ltf
+Date:   Wed, 29 Apr 2020 16:57:06 +0200
+Message-Id: <20200429145708.25992-1-john@phrozen.org>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Ben Greear <greearb@candelatech.com> writes:
+From: Miles Hu <milehu@codeaurora.org>
 
-> On 04/29/2020 02:28 AM, Toke H=C3=B8iland-J=C3=B8rgensen wrote:
->> Ben Greear <greearb@candelatech.com> writes:
->>
->>> On 04/28/2020 01:39 PM, Toke H=C3=B8iland-J=C3=B8rgensen wrote:
->>>> Ben Greear <greearb@candelatech.com> writes:
->>>>
->>>>> On 04/28/2020 12:37 PM, Toke H=C3=B8iland-J=C3=B8rgensen wrote:
->>>>>> greearb@candelatech.com writes:
->>>>>>
->>>>>>> From: Ben Greear <greearb@candelatech.com>
->>>>>>>
->>>>>>> While running tcp upload + download tests with ~200
->>>>>>> concurrent TCP streams, 1-2 processes, and 30 station
->>>>>>> vdevs, I noticed that the __ieee80211_stop_queue was taking
->>>>>>> around 20% of the CPU according to perf-top, which other locking
->>>>>>> taking an additional ~15%.
->>>>>>>
->>>>>>> I believe the issue is that the ath10k driver would unlock the
->>>>>>> txqueue when a single frame could be transmitted, instead of
->>>>>>> waiting for a low water mark.
->>>>>>>
->>>>>>> So, this patch adds a low-water mark that is 1/4 of the total
->>>>>>> tx buffers allowed.
->>>>>>>
->>>>>>> This appears to resolve the performance problem that I saw.
->>>>>>>
->>>>>>> Tested with recent wave-1 ath10k-ct firmware.
->>>>>>>
->>>>>>> Signed-off-by: Ben Greear <greearb@candelatech.com>
->>>>>>> ---
->>>>>>>  drivers/net/wireless/ath/ath10k/htt.h    | 1 +
->>>>>>>  drivers/net/wireless/ath/ath10k/htt_tx.c | 8 ++++++--
->>>>>>>  2 files changed, 7 insertions(+), 2 deletions(-)
->>>>>>>
->>>>>>> diff --git a/drivers/net/wireless/ath/ath10k/htt.h b/drivers/net/wi=
-reless/ath/ath10k/htt.h
->>>>>>> index 31c4ddbf45cb..b5634781c0dc 100644
->>>>>>> --- a/drivers/net/wireless/ath/ath10k/htt.h
->>>>>>> +++ b/drivers/net/wireless/ath/ath10k/htt.h
->>>>>>> @@ -1941,6 +1941,7 @@ struct ath10k_htt {
->>>>>>>
->>>>>>>  	u8 target_version_major;
->>>>>>>  	u8 target_version_minor;
->>>>>>> +	bool needs_unlock;
->>>>>>>  	struct completion target_version_received;
->>>>>>>  	u8 max_num_amsdu;
->>>>>>>  	u8 max_num_ampdu;
->>>>>>> diff --git a/drivers/net/wireless/ath/ath10k/htt_tx.c b/drivers/net=
-/wireless/ath/ath10k/htt_tx.c
->>>>>>> index 9b3c3b080e92..44795d9a7c0c 100644
->>>>>>> --- a/drivers/net/wireless/ath/ath10k/htt_tx.c
->>>>>>> +++ b/drivers/net/wireless/ath/ath10k/htt_tx.c
->>>>>>> @@ -145,8 +145,10 @@ void ath10k_htt_tx_dec_pending(struct ath10k_h=
-tt *htt)
->>>>>>>  	lockdep_assert_held(&htt->tx_lock);
->>>>>>>
->>>>>>>  	htt->num_pending_tx--;
->>>>>>> -	if (htt->num_pending_tx =3D=3D htt->max_num_pending_tx - 1)
->>>>>>> +	if ((htt->num_pending_tx <=3D (htt->max_num_pending_tx / 4)) && h=
-tt->needs_unlock) {
->>>>>>
->>>>>> Why /4? Seems a bit arbitrary?
->>>>>
->>>>> Yes, arbitrary for sure. I figure restart filling the queue when 1/4
->>>>> full so that it is unlikely to run dry. Possibly it should restart
->>>>> sooner to keep it more full on average?
->>>>
->>>> Theoretically, the "keep the queue at the lowest possible level that
->>>> keeps it from underflowing" is what BQL is supposed to do. The diff
->>>> below uses the dynamic adjustment bit (from dynamic_queue_limits.h) in
->>>> place of num_pending_tx. I've only compile tested it, and I'm a bit
->>>> skeptical that it will work right for this, but if anyone wants to give
->>>> it a shot, there it is.
->>>>
->>>> BTW, while doing that, I noticed there's a similar arbitrary limit in
->>>> ath10k_mac_tx_push_pending() at max_num_pending_tx/2. So if you're goi=
-ng
->>>> to keep the arbitrary limit maybe use the same one? :)
->>>>
->>>>> Before my patch, the behaviour would be to try to keep it as full as
->>>>> possible, as in restart the queues as soon as a single slot opens up
->>>>> in the tx queue.
->>>>
->>>> Yeah, that seems somewhat misguided as well, from a latency perspectiv=
-e,
->>>> at least. But I guess that's what we're fixing with AQL. What does the
->>>> firmware do with the frames queued within? Do they just go on a FIFO
->>>> queue altogether, or something smarter?
->>>
->>> Sort of like a mini-mac80211 stack inside the firmware is used to
->>> create ampdu/amsdu chains and schedule them with its own scheduler.
->>>
->>> For optimal throughput with 200 users steaming video,
->>> the ath10k driver should think that it has only a few active peers want=
-ing
->>> to send data at a time (and so firmware would think the same), and the =
-driver should
->>> be fed a large chunk of pkts for those peers.  And then the next few pe=
-ers.
->>> That should let firmware send large ampdu/amsdu to each peer, increasin=
-g throughput
->>> over all.
->>
->> Yes, but also increasing latency because all other stations have to wait
->> for a longer TXOP (see my other reply).
->
-> If you at most sent 4 station's worth of data to the firmware, and max
-> is 4ms per txop, then you have at most 16ms of latency. You could also
-> send just two station's worth of data at a time, as long as you can
-> quickly service the tx-queues again that should be enough to keep the
-> firmware/radio productive.
+This patch adds the nl80211 structs, definitions, policies and parsing
+code required to pass fixed HE rate, gi and ltf settings.
 
-Sure, but if you have 100 stations that are backlogged, and they each
-transmit for 4ms every time they get a chance, then on average each
-station has to wait 400 ms between each TXOP. That is way too long; so
-the maximum TXOP size should go down as the number of backlogged
-stations go up.
+Signed-off-by: Miles Hu <milehu@codeaurora.org>
+Signed-off-by: John Crispin <john@phrozen.org>
+---
+Changes in V3
+* minor cleanup based on Johannes's feedback
+* properly make use the iftype_data array
 
-AQL already does some the right thing, BTW: When the total outstanding
-data queued in the firmware exceeds 24ms (by the AQL estimation), it'll
-switch the per-station limit from 12ms to 5ms of queued data. Arguably
-that could be lower (say, 2ms for the low per-station limit).
+Changes in V2
+* add more policies
+* reoder enums
+* remove incorrect he_cap from ieee80211_supported_band
+* remove _WARN from policy
 
-> In the case where you have many users wanting lots of throughput, 8 or
-> 16ms of extra latency is a good tradeoff vs no one being able to
-> reliably get the bandwidth they need.
+ include/net/cfg80211.h       |  25 ++++++++
+ include/uapi/linux/nl80211.h |  28 +++++++++
+ net/wireless/nl80211.c       | 119 ++++++++++++++++++++++++++++++++++-
+ 3 files changed, 170 insertions(+), 2 deletions(-)
 
-Yes, 8-16ms of extra latency is likely worth it, but not much more than
-that...
+diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+index c78bd4ff9e33..deaa3668d47a 100644
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -495,6 +495,28 @@ ieee80211_get_he_iftype_cap(const struct ieee80211_supported_band *sband,
+ 	return NULL;
+ }
+ 
++/**
++ * ieee80211_get_he_cap - return the first he_cap that we find for a sband
++ * @sband: the sband that we want to check for HE support
++ *
++ * Return: return a valid he_cap or NULL
++ */
++static inline const struct ieee80211_sta_he_cap *
++ieee80211_get_he_cap(const struct ieee80211_supported_band *sband)
++{
++	int i;
++
++	for (i = 0; i < sband->n_iftype_data; i++)  {
++		const struct ieee80211_sband_iftype_data *data =
++			&sband->iftype_data[i];
++
++		if (data->he_cap.has_he)
++			return &data->he_cap;
++	}
++
++	return NULL;
++}
++
+ /**
+  * ieee80211_get_he_sta_cap - return HE capabilities for an sband's STA
+  * @sband: the sband to search for the STA on
+@@ -1006,7 +1028,10 @@ struct cfg80211_bitrate_mask {
+ 		u32 legacy;
+ 		u8 ht_mcs[IEEE80211_HT_MCS_MASK_LEN];
+ 		u16 vht_mcs[NL80211_VHT_NSS_MAX];
++		u16 he_mcs[NL80211_HE_NSS_MAX];
+ 		enum nl80211_txrate_gi gi;
++		enum nl80211_he_gi he_gi;
++		enum nl80211_he_ltf he_ltf;
+ 	} control[NUM_NL80211_BANDS];
+ };
+ 
+diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
+index 2b691161830f..966887bd654c 100644
+--- a/include/uapi/linux/nl80211.h
++++ b/include/uapi/linux/nl80211.h
+@@ -3134,6 +3134,18 @@ enum nl80211_he_gi {
+ 	NL80211_RATE_INFO_HE_GI_3_2,
+ };
+ 
++/**
++ * enum nl80211_he_ltf - HE long training field
++ * @NL80211_RATE_INFO_HE_1xLTF: 3.2 usec
++ * @NL80211_RATE_INFO_HE_2xLTF: 6.4 usec
++ * @NL80211_RATE_INFO_HE_4xLTF: 12.8 usec
++ */
++enum nl80211_he_ltf {
++	NL80211_RATE_INFO_HE_1XLTF,
++	NL80211_RATE_INFO_HE_2XLTF,
++	NL80211_RATE_INFO_HE_4XLTF,
++};
++
+ /**
+  * enum nl80211_he_ru_alloc - HE RU allocation values
+  * @NL80211_RATE_INFO_HE_RU_ALLOC_26: 26-tone RU allocation
+@@ -4653,6 +4665,10 @@ enum nl80211_key_attributes {
+  * @NL80211_TXRATE_VHT: VHT rates allowed for TX rate selection,
+  *	see &struct nl80211_txrate_vht
+  * @NL80211_TXRATE_GI: configure GI, see &enum nl80211_txrate_gi
++ * @NL80211_TXRATE_HE: HE rates allowed for TX rate selection,
++ *	see &struct nl80211_txrate_he
++ * @NL80211_TXRATE_HE_GI: configure HE GI, 0.8us, 1.6us and 3.2us.
++ * @NL80211_TXRATE_HE_LTF: configure HE LTF, 1XLTF, 2XLTF and 4XLTF.
+  * @__NL80211_TXRATE_AFTER_LAST: internal
+  * @NL80211_TXRATE_MAX: highest TX rate attribute
+  */
+@@ -4662,6 +4678,9 @@ enum nl80211_tx_rate_attributes {
+ 	NL80211_TXRATE_HT,
+ 	NL80211_TXRATE_VHT,
+ 	NL80211_TXRATE_GI,
++	NL80211_TXRATE_HE,
++	NL80211_TXRATE_HE_GI,
++	NL80211_TXRATE_HE_LTF,
+ 
+ 	/* keep last */
+ 	__NL80211_TXRATE_AFTER_LAST,
+@@ -4679,6 +4698,15 @@ struct nl80211_txrate_vht {
+ 	__u16 mcs[NL80211_VHT_NSS_MAX];
+ };
+ 
++#define NL80211_HE_NSS_MAX		8
++/**
++ * struct nl80211_txrate_he - HE MCS/NSS txrate bitmap
++ * @mcs: MCS bitmap table for each NSS (array index 0 for 1 stream, etc.)
++ */
++struct nl80211_txrate_he {
++	__u16 mcs[NL80211_HE_NSS_MAX];
++};
++
+ enum nl80211_txrate_gi {
+ 	NL80211_TXRATE_DEFAULT_GI,
+ 	NL80211_TXRATE_FORCE_SGI,
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 5fa402144cda..4bc652b904c1 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -4403,6 +4403,83 @@ static bool vht_set_mcs_mask(struct ieee80211_supported_band *sband,
+ 	return true;
+ }
+ 
++static u16 he_mcs_map_to_mcs_mask(u8 he_mcs_map)
++{
++	switch (he_mcs_map) {
++	case IEEE80211_HE_MCS_NOT_SUPPORTED:
++		return 0;
++	case IEEE80211_HE_MCS_SUPPORT_0_7:
++		return 0x00FF;
++	case IEEE80211_HE_MCS_SUPPORT_0_9:
++		return 0x03FF;
++	case IEEE80211_HE_MCS_SUPPORT_0_11:
++		return 0xFFF;
++	default:
++		break;
++	}
++	return 0;
++}
++
++static void he_build_mcs_mask(u16 he_mcs_map,
++			      u16 he_mcs_mask[NL80211_HE_NSS_MAX])
++{
++	u8 nss;
++
++	for (nss = 0; nss < NL80211_HE_NSS_MAX; nss++) {
++		he_mcs_mask[nss] = he_mcs_map_to_mcs_mask(he_mcs_map & 0x03);
++		he_mcs_map >>= 2;
++	}
++}
++
++static u16 he_get_txmcsmap(struct genl_info *info,
++			   const struct ieee80211_sta_he_cap *he_cap)
++{
++	struct net_device *dev = info->user_ptr[1];
++	struct wireless_dev *wdev = dev->ieee80211_ptr;
++
++	switch (wdev->chandef.width) {
++	case NL80211_CHAN_WIDTH_80P80:
++		return he_cap->he_mcs_nss_supp.tx_mcs_80p80;
++	case NL80211_CHAN_WIDTH_160:
++		return he_cap->he_mcs_nss_supp.tx_mcs_160;
++	default:
++		break;
++	}
++	return le16_to_cpu(he_cap->he_mcs_nss_supp.tx_mcs_80);
++}
++
++static bool he_set_mcs_mask(struct genl_info *info,
++			    struct ieee80211_supported_band *sband,
++			    struct nl80211_txrate_he *txrate,
++			    u16 mcs[NL80211_HE_NSS_MAX])
++{
++	const struct ieee80211_sta_he_cap *he_cap;
++	u16 tx_mcs_mask[NL80211_HE_NSS_MAX] = {};
++	u16 tx_mcs_map = 0;
++	u8 i;
++
++	he_cap = ieee80211_get_he_cap(sband);
++
++	if (!he_cap)
++		return false;
++
++	memset(mcs, 0, sizeof(u16) * NL80211_HE_NSS_MAX);
++
++	tx_mcs_map = he_get_txmcsmap(info, he_cap);
++
++	/* Build he_mcs_mask from HE capabilities */
++	he_build_mcs_mask(tx_mcs_map, tx_mcs_mask);
++
++	for (i = 0; i < NL80211_HE_NSS_MAX; i++) {
++		if ((tx_mcs_mask[i] & txrate->mcs[i]) == txrate->mcs[i])
++			mcs[i] = txrate->mcs[i];
++		else
++			return false;
++	}
++
++	return true;
++}
++
+ static const struct nla_policy nl80211_txattr_policy[NL80211_TXRATE_MAX + 1] = {
+ 	[NL80211_TXRATE_LEGACY] = { .type = NLA_BINARY,
+ 				    .len = NL80211_MAX_SUPP_RATES },
+@@ -4413,6 +4490,16 @@ static const struct nla_policy nl80211_txattr_policy[NL80211_TXRATE_MAX + 1] = {
+ 		.len = sizeof(struct nl80211_txrate_vht),
+ 	},
+ 	[NL80211_TXRATE_GI] = { .type = NLA_U8 },
++	[NL80211_TXRATE_HE] = {
++		.type = NLA_EXACT_LEN,
++		.len = sizeof(struct nl80211_txrate_he),
++	},
++	[NL80211_TXRATE_HE_GI] =  NLA_POLICY_RANGE(NLA_U8,
++						   NL80211_RATE_INFO_HE_GI_0_8,
++						   NL80211_RATE_INFO_HE_GI_3_2),
++	[NL80211_TXRATE_HE_LTF] = NLA_POLICY_RANGE(NLA_U8,
++						   NL80211_RATE_INFO_HE_1XLTF,
++						   NL80211_RATE_INFO_HE_4XLTF),
+ };
+ 
+ static int nl80211_parse_tx_bitrate_mask(struct genl_info *info,
+@@ -4423,11 +4510,13 @@ static int nl80211_parse_tx_bitrate_mask(struct genl_info *info,
+ 	int rem, i;
+ 	struct nlattr *tx_rates;
+ 	struct ieee80211_supported_band *sband;
+-	u16 vht_tx_mcs_map;
++	u16 vht_tx_mcs_map, he_tx_mcs_map;
+ 
+ 	memset(mask, 0, sizeof(*mask));
+ 	/* Default to all rates enabled */
+ 	for (i = 0; i < NUM_NL80211_BANDS; i++) {
++		const struct ieee80211_sta_he_cap *he_cap;
++
+ 		sband = rdev->wiphy.bands[i];
+ 
+ 		if (!sband)
+@@ -4443,6 +4532,16 @@ static int nl80211_parse_tx_bitrate_mask(struct genl_info *info,
+ 
+ 		vht_tx_mcs_map = le16_to_cpu(sband->vht_cap.vht_mcs.tx_mcs_map);
+ 		vht_build_mcs_mask(vht_tx_mcs_map, mask->control[i].vht_mcs);
++
++		he_cap = ieee80211_get_he_cap(sband);
++		if (!he_cap)
++			continue;
++
++		he_tx_mcs_map = he_get_txmcsmap(info, he_cap);
++		he_build_mcs_mask(he_tx_mcs_map, mask->control[i].he_mcs);
++
++		mask->control[i].he_gi = 0xFF;
++		mask->control[i].he_ltf = 0xFF;
+ 	}
+ 
+ 	/* if no rates are given set it back to the defaults */
+@@ -4498,13 +4597,25 @@ static int nl80211_parse_tx_bitrate_mask(struct genl_info *info,
+ 			if (mask->control[band].gi > NL80211_TXRATE_FORCE_LGI)
+ 				return -EINVAL;
+ 		}
++		if (tb[NL80211_TXRATE_HE] &&
++		    !he_set_mcs_mask(info, sband,
++				     nla_data(tb[NL80211_TXRATE_HE]),
++				     mask->control[band].he_mcs))
++			return -EINVAL;
++		if (tb[NL80211_TXRATE_HE_GI])
++			mask->control[band].he_gi =
++				nla_get_u8(tb[NL80211_TXRATE_HE_GI]);
++		if (tb[NL80211_TXRATE_HE_LTF])
++			mask->control[band].he_ltf =
++				nla_get_u8(tb[NL80211_TXRATE_HE_LTF]);
+ 
+ 		if (mask->control[band].legacy == 0) {
+ 			/* don't allow empty legacy rates if HT or VHT
+ 			 * are not even supported.
+ 			 */
+ 			if (!(rdev->wiphy.bands[band]->ht_cap.ht_supported ||
+-			      rdev->wiphy.bands[band]->vht_cap.vht_supported))
++			      rdev->wiphy.bands[band]->vht_cap.vht_supported ||
++			      ieee80211_get_he_cap(rdev->wiphy.bands[band])))
+ 				return -EINVAL;
+ 
+ 			for (i = 0; i < IEEE80211_HT_MCS_MASK_LEN; i++)
+@@ -4515,6 +4626,10 @@ static int nl80211_parse_tx_bitrate_mask(struct genl_info *info,
+ 				if (mask->control[band].vht_mcs[i])
+ 					goto out;
+ 
++			for (i = 0; i < NL80211_HE_NSS_MAX; i++)
++				if (mask->control[band].he_mcs[i])
++					goto out;
++
+ 			/* legacy and mcs rates may not be both empty */
+ 			return -EINVAL;
+ 		}
+-- 
+2.20.1
 
-> Higher priority TIDs will get precedence in ath10k firmware anyway, so
-> even if at time 0 you sent 64 frames to a peer on back-ground TID, if
-> you sent a VO frame at time 0+1, it could be transmitted first.
-
-Assuming anyone is actually using the priorities, that is; most
-appliations are not (and those that are often do it wrong). Also, using
-the VO queue hurts efficiency as well for the same reason, since it
-can't aggregate at all.
-
->>> If you feed a few frames to each of the 200 peers, then even if
->>> firmware has 2000 tx buffers, that is only 10 frames per peer at best,
->>> leading to small ampdu/amsdu and thus worse over-all throughput and
->>> utilization of airtime.
->>
->> Do you have any data on exactly how long (in time) each txop becomes in
->> these highly congested scenarios?
->
-> I didn't look at time, but avg packets-per-ampdu chain is 30+ in
-> single station tests, and with many stations it goes into the 4-8
-> range (from memory, so maybe I'm off a bit).
-
-Right; was just looking for rough numbers, so that is fine.
-
-> Here is an open-source tool that can give you those metrics by processing=
- a pcap:
->
-> https://github.com/greearb/lanforge-scripts/tree/master/wifi_diag
->
-> # Ignore the LANforge bits about creating capture files, here is an examp=
-le of how to use it:
-> https://www.candelatech.com/cookbook/wifire/wifi+diagnostic
->
->>
->>> It would be nice to be able to set certain traffic flows to have the
->>> throughput optimization and others to have the latency optimization.
->>> For instance, high latency on a streaming download is a good trade-off
->>> if it increases total throughput.
->>
->> For the individual flows to a peer, fq_codel actually does a pretty good
->> job at putting the latency-sensitive flows first. Which is why we want
->> the queueing to happen in mac80211 (where fq_codel is active) instead of
->> in the firmware.
->
-> That sounds good to me. What is needed from the driver/firmware to
-> make this work well?
-
-To queue as little as possible :)
-
-AQL is the mechanism we have to enforce this (for ath10k), by throttling
-queueing into the firmware earlier. It only does this on a per-station
-limit, though, and there's currently no mechanism to limit the total
-number of stations with outstanding data, as you're requesting. Which I
-guess means it won't help much in your case. One could imagine building
-a mechanism on top of AQL to do this, though, although I think it may
-not be quite trivial to get the interaction with the station scheduler
-right. The basic building blocks are there, though...
-
--Toke
