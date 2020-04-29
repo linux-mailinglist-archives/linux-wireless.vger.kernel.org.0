@@ -2,656 +2,263 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3BF0D1BE1D7
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Apr 2020 16:57:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D33D1BE2A9
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 Apr 2020 17:26:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726893AbgD2O52 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 29 Apr 2020 10:57:28 -0400
-Received: from nbd.name ([46.4.11.11]:60150 "EHLO nbd.name"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726456AbgD2O52 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 29 Apr 2020 10:57:28 -0400
-Received: from [81.25.161.111] (helo=bertha8.datto.lan)
-        by ds12 with esmtpa (Exim 4.89)
-        (envelope-from <john@phrozen.org>)
-        id 1jTo9K-0002aB-PX; Wed, 29 Apr 2020 16:57:22 +0200
-From:   John Crispin <john@phrozen.org>
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        Kalle Valo <kvalo@codeaurora.org>
-Cc:     linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
-        Miles Hu <milehu@codeaurora.org>,
-        John Crispin <john@phrozen.org>
-Subject: [PATCH V3 3/3] ath11k: add support for setting fixed HE rate/gi/ltf
-Date:   Wed, 29 Apr 2020 16:57:08 +0200
-Message-Id: <20200429145708.25992-3-john@phrozen.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200429145708.25992-1-john@phrozen.org>
-References: <20200429145708.25992-1-john@phrozen.org>
+        id S1726808AbgD2P0W (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 29 Apr 2020 11:26:22 -0400
+Received: from mail2.candelatech.com ([208.74.158.173]:50876 "EHLO
+        mail3.candelatech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726654AbgD2P0W (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 29 Apr 2020 11:26:22 -0400
+Received: from [192.168.254.4] (unknown [50.34.219.109])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail3.candelatech.com (Postfix) with ESMTPSA id F19F013C283;
+        Wed, 29 Apr 2020 08:26:20 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com F19F013C283
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+        s=default; t=1588173981;
+        bh=f0+2az0uMO1bF/lq7CGd7f5caT6TXBydrjhqSOMM86o=;
+        h=Subject:To:References:From:Date:In-Reply-To:From;
+        b=oW5tdv04xxAjHTTTFt9zw9wYzZwF5jVvUcopBgnzWJtMxwZ+GWmJPlE1waipdHF46
+         0fOyw0uMzA0SWGlcd67etBjpOr2h/wLf/QNhqYraQvrCXQIujKBJBKnLFAt5ge3qBS
+         SQ/bPSSRhIXKOPEOPPPhHohtaQK9AXQErZvQYkww=
+Subject: Re: [PATCH] ath10k: Restart xmit queues below low-water mark.
+To:     =?UTF-8?Q?Toke_H=c3=b8iland-J=c3=b8rgensen?= <toke@toke.dk>,
+        linux-wireless@vger.kernel.org
+References: <20200427145435.13151-1-greearb@candelatech.com>
+ <87h7x3v1tn.fsf@toke.dk>
+ <d72dbba0-409f-93d7-5364-bc7ac50288b9@candelatech.com>
+ <87a72vuyyn.fsf@toke.dk>
+ <e6ee8635-b45f-c5fe-d32a-1d695b3a7934@candelatech.com>
+ <87sggmtzdg.fsf@toke.dk>
+ <31064453-15b4-877f-b70c-b6b9ed4ae50c@candelatech.com>
+ <87blnatk6j.fsf@toke.dk>
+From:   Ben Greear <greearb@candelatech.com>
+Message-ID: <129bca4a-8fd2-faa1-975f-5cb78e8027bc@candelatech.com>
+Date:   Wed, 29 Apr 2020 08:26:20 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+ Thunderbird/45.8.0
 MIME-Version: 1.0
+In-Reply-To: <87blnatk6j.fsf@toke.dk>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Miles Hu <milehu@codeaurora.org>
 
-This patch adds ath11k support for setting fixed HE rate/gi/ltf values that
-we are now able to send to the kernel using nl80211. The added code is
-reusing parts of the existing code path already used for HT/VHT. The new
-helpers are symmetric to how we do it for HT/VHT.
 
-Signed-off-by: Miles Hu <milehu@codeaurora.org>
-Signed-off-by: John Crispin <john@phrozen.org>
----
- drivers/net/wireless/ath/ath11k/mac.c | 350 +++++++++++++++++++++++---
- drivers/net/wireless/ath/ath11k/wmi.h |   1 +
- 2 files changed, 323 insertions(+), 28 deletions(-)
+On 04/29/2020 07:56 AM, Toke Høiland-Jørgensen wrote:
+> Ben Greear <greearb@candelatech.com> writes:
+>
+>> On 04/29/2020 02:28 AM, Toke Høiland-Jørgensen wrote:
+>>> Ben Greear <greearb@candelatech.com> writes:
+>>>
+>>>> On 04/28/2020 01:39 PM, Toke Høiland-Jørgensen wrote:
+>>>>> Ben Greear <greearb@candelatech.com> writes:
+>>>>>
+>>>>>> On 04/28/2020 12:37 PM, Toke Høiland-Jørgensen wrote:
+>>>>>>> greearb@candelatech.com writes:
+>>>>>>>
+>>>>>>>> From: Ben Greear <greearb@candelatech.com>
+>>>>>>>>
+>>>>>>>> While running tcp upload + download tests with ~200
+>>>>>>>> concurrent TCP streams, 1-2 processes, and 30 station
+>>>>>>>> vdevs, I noticed that the __ieee80211_stop_queue was taking
+>>>>>>>> around 20% of the CPU according to perf-top, which other locking
+>>>>>>>> taking an additional ~15%.
+>>>>>>>>
+>>>>>>>> I believe the issue is that the ath10k driver would unlock the
+>>>>>>>> txqueue when a single frame could be transmitted, instead of
+>>>>>>>> waiting for a low water mark.
+>>>>>>>>
+>>>>>>>> So, this patch adds a low-water mark that is 1/4 of the total
+>>>>>>>> tx buffers allowed.
+>>>>>>>>
+>>>>>>>> This appears to resolve the performance problem that I saw.
+>>>>>>>>
+>>>>>>>> Tested with recent wave-1 ath10k-ct firmware.
+>>>>>>>>
+>>>>>>>> Signed-off-by: Ben Greear <greearb@candelatech.com>
+>>>>>>>> ---
+>>>>>>>>  drivers/net/wireless/ath/ath10k/htt.h    | 1 +
+>>>>>>>>  drivers/net/wireless/ath/ath10k/htt_tx.c | 8 ++++++--
+>>>>>>>>  2 files changed, 7 insertions(+), 2 deletions(-)
+>>>>>>>>
+>>>>>>>> diff --git a/drivers/net/wireless/ath/ath10k/htt.h b/drivers/net/wireless/ath/ath10k/htt.h
+>>>>>>>> index 31c4ddbf45cb..b5634781c0dc 100644
+>>>>>>>> --- a/drivers/net/wireless/ath/ath10k/htt.h
+>>>>>>>> +++ b/drivers/net/wireless/ath/ath10k/htt.h
+>>>>>>>> @@ -1941,6 +1941,7 @@ struct ath10k_htt {
+>>>>>>>>
+>>>>>>>>  	u8 target_version_major;
+>>>>>>>>  	u8 target_version_minor;
+>>>>>>>> +	bool needs_unlock;
+>>>>>>>>  	struct completion target_version_received;
+>>>>>>>>  	u8 max_num_amsdu;
+>>>>>>>>  	u8 max_num_ampdu;
+>>>>>>>> diff --git a/drivers/net/wireless/ath/ath10k/htt_tx.c b/drivers/net/wireless/ath/ath10k/htt_tx.c
+>>>>>>>> index 9b3c3b080e92..44795d9a7c0c 100644
+>>>>>>>> --- a/drivers/net/wireless/ath/ath10k/htt_tx.c
+>>>>>>>> +++ b/drivers/net/wireless/ath/ath10k/htt_tx.c
+>>>>>>>> @@ -145,8 +145,10 @@ void ath10k_htt_tx_dec_pending(struct ath10k_htt *htt)
+>>>>>>>>  	lockdep_assert_held(&htt->tx_lock);
+>>>>>>>>
+>>>>>>>>  	htt->num_pending_tx--;
+>>>>>>>> -	if (htt->num_pending_tx == htt->max_num_pending_tx - 1)
+>>>>>>>> +	if ((htt->num_pending_tx <= (htt->max_num_pending_tx / 4)) && htt->needs_unlock) {
+>>>>>>>
+>>>>>>> Why /4? Seems a bit arbitrary?
+>>>>>>
+>>>>>> Yes, arbitrary for sure. I figure restart filling the queue when 1/4
+>>>>>> full so that it is unlikely to run dry. Possibly it should restart
+>>>>>> sooner to keep it more full on average?
+>>>>>
+>>>>> Theoretically, the "keep the queue at the lowest possible level that
+>>>>> keeps it from underflowing" is what BQL is supposed to do. The diff
+>>>>> below uses the dynamic adjustment bit (from dynamic_queue_limits.h) in
+>>>>> place of num_pending_tx. I've only compile tested it, and I'm a bit
+>>>>> skeptical that it will work right for this, but if anyone wants to give
+>>>>> it a shot, there it is.
+>>>>>
+>>>>> BTW, while doing that, I noticed there's a similar arbitrary limit in
+>>>>> ath10k_mac_tx_push_pending() at max_num_pending_tx/2. So if you're going
+>>>>> to keep the arbitrary limit maybe use the same one? :)
+>>>>>
+>>>>>> Before my patch, the behaviour would be to try to keep it as full as
+>>>>>> possible, as in restart the queues as soon as a single slot opens up
+>>>>>> in the tx queue.
+>>>>>
+>>>>> Yeah, that seems somewhat misguided as well, from a latency perspective,
+>>>>> at least. But I guess that's what we're fixing with AQL. What does the
+>>>>> firmware do with the frames queued within? Do they just go on a FIFO
+>>>>> queue altogether, or something smarter?
+>>>>
+>>>> Sort of like a mini-mac80211 stack inside the firmware is used to
+>>>> create ampdu/amsdu chains and schedule them with its own scheduler.
+>>>>
+>>>> For optimal throughput with 200 users steaming video,
+>>>> the ath10k driver should think that it has only a few active peers wanting
+>>>> to send data at a time (and so firmware would think the same), and the driver should
+>>>> be fed a large chunk of pkts for those peers.  And then the next few peers.
+>>>> That should let firmware send large ampdu/amsdu to each peer, increasing throughput
+>>>> over all.
+>>>
+>>> Yes, but also increasing latency because all other stations have to wait
+>>> for a longer TXOP (see my other reply).
+>>
+>> If you at most sent 4 station's worth of data to the firmware, and max
+>> is 4ms per txop, then you have at most 16ms of latency. You could also
+>> send just two station's worth of data at a time, as long as you can
+>> quickly service the tx-queues again that should be enough to keep the
+>> firmware/radio productive.
+>
+> Sure, but if you have 100 stations that are backlogged, and they each
+> transmit for 4ms every time they get a chance, then on average each
+> station has to wait 400 ms between each TXOP. That is way too long; so
+> the maximum TXOP size should go down as the number of backlogged
+> stations go up.
 
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index e28f5a348be6..aef012912003 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -268,6 +268,18 @@ ath11k_mac_max_vht_nss(const u16 vht_mcs_mask[NL80211_VHT_NSS_MAX])
- 	return 1;
- }
- 
-+static u32
-+ath11k_mac_max_he_nss(const u16 he_mcs_mask[NL80211_HE_NSS_MAX])
-+{
-+	int nss;
-+
-+	for (nss = NL80211_HE_NSS_MAX - 1; nss >= 0; nss--)
-+		if (he_mcs_mask[nss])
-+			return nss + 1;
-+
-+	return 1;
-+}
-+
- static u8 ath11k_parse_mpdudensity(u8 mpdudensity)
- {
- /* 802.11n D2.0 defined values for "Minimum MPDU Start Spacing":
-@@ -1151,17 +1163,98 @@ static void ath11k_peer_assoc_h_vht(struct ath11k *ar,
- 	/* TODO: rxnss_override */
- }
- 
-+static int ath11k_mac_get_max_he_mcs_map(u16 mcs_map, int nss)
-+{
-+	switch ((mcs_map >> (2 * nss)) & 0x3) {
-+	case IEEE80211_HE_MCS_SUPPORT_0_7: return BIT(8) - 1;
-+	case IEEE80211_HE_MCS_SUPPORT_0_9: return BIT(10) - 1;
-+	case IEEE80211_HE_MCS_SUPPORT_0_11: return BIT(12) - 1;
-+	}
-+	return 0;
-+}
-+
-+static u16 ath11k_peer_assoc_h_he_limit(u16 tx_mcs_set,
-+					const u16 he_mcs_limit[NL80211_HE_NSS_MAX])
-+{
-+	int idx_limit;
-+	int nss;
-+	u16 mcs_map;
-+	u16 mcs;
-+
-+	for (nss = 0; nss < NL80211_HE_NSS_MAX; nss++) {
-+		mcs_map = ath11k_mac_get_max_he_mcs_map(tx_mcs_set, nss) &
-+			  he_mcs_limit[nss];
-+
-+		if (mcs_map)
-+			idx_limit = fls(mcs_map) - 1;
-+		else
-+			idx_limit = -1;
-+
-+		switch (idx_limit) {
-+		case 0 ... 7:
-+			mcs = IEEE80211_HE_MCS_SUPPORT_0_7;
-+			break;
-+		case 8:
-+		case 9:
-+			mcs = IEEE80211_HE_MCS_SUPPORT_0_9;
-+			break;
-+		case 10:
-+		case 11:
-+			mcs = IEEE80211_HE_MCS_SUPPORT_0_11;
-+			break;
-+		default:
-+			WARN_ON(1);
-+			/* fall through */
-+		case -1:
-+			mcs = IEEE80211_HE_MCS_NOT_SUPPORTED;
-+			break;
-+		}
-+
-+		tx_mcs_set &= ~(0x3 << (nss * 2));
-+		tx_mcs_set |= mcs << (nss * 2);
-+	}
-+
-+	return tx_mcs_set;
-+}
-+
-+static bool
-+ath11k_peer_assoc_h_he_masked(const u16 he_mcs_mask[NL80211_HE_NSS_MAX])
-+{
-+	int nss;
-+
-+	for (nss = 0; nss < NL80211_HE_NSS_MAX; nss++)
-+		if (he_mcs_mask[nss])
-+			return false;
-+
-+	return true;
-+}
-+
- static void ath11k_peer_assoc_h_he(struct ath11k *ar,
- 				   struct ieee80211_vif *vif,
- 				   struct ieee80211_sta *sta,
- 				   struct peer_assoc_params *arg)
- {
-+	struct ath11k_vif *arvif = (void *)vif->drv_priv;
-+	struct cfg80211_chan_def def;
- 	const struct ieee80211_sta_he_cap *he_cap = &sta->he_cap;
--	u16 v;
-+	enum nl80211_band band;
-+	const u16 *he_mcs_mask;
-+	u8 max_nss, he_mcs;
-+	__le16 he_tx_mcs = 0, v = 0;
-+	int i;
-+
-+	if (WARN_ON(ath11k_mac_vif_chan(vif, &def)))
-+		return;
- 
- 	if (!he_cap->has_he)
- 		return;
- 
-+	band = def.chan->band;
-+	he_mcs_mask = arvif->bitrate_mask.control[band].he_mcs;
-+
-+	if (ath11k_peer_assoc_h_he_masked(he_mcs_mask))
-+		return;
-+
- 	arg->he_flag = true;
- 
- 	memcpy(&arg->peer_he_cap_macinfo, he_cap->he_cap_elem.mac_cap_info,
-@@ -1218,17 +1311,22 @@ static void ath11k_peer_assoc_h_he(struct ath11k *ar,
- 			arg->peer_he_rx_mcs_set[WMI_HECAP_TXRX_MCS_NSS_IDX_80_80] = v;
- 
- 			v = le16_to_cpu(he_cap->he_mcs_nss_supp.tx_mcs_80p80);
-+			v = ath11k_peer_assoc_h_he_limit(v, he_mcs_mask);
- 			arg->peer_he_tx_mcs_set[WMI_HECAP_TXRX_MCS_NSS_IDX_80_80] = v;
- 
- 			arg->peer_he_mcs_count++;
-+			he_tx_mcs = v;
- 		}
- 		v = le16_to_cpu(he_cap->he_mcs_nss_supp.rx_mcs_160);
- 		arg->peer_he_rx_mcs_set[WMI_HECAP_TXRX_MCS_NSS_IDX_160] = v;
- 
- 		v = le16_to_cpu(he_cap->he_mcs_nss_supp.tx_mcs_160);
-+		v = ath11k_peer_assoc_h_he_limit(v, he_mcs_mask);
- 		arg->peer_he_tx_mcs_set[WMI_HECAP_TXRX_MCS_NSS_IDX_160] = v;
- 
- 		arg->peer_he_mcs_count++;
-+		if (!he_tx_mcs)
-+			he_tx_mcs = v;
- 		/* fall through */
- 
- 	default:
-@@ -1236,11 +1334,29 @@ static void ath11k_peer_assoc_h_he(struct ath11k *ar,
- 		arg->peer_he_rx_mcs_set[WMI_HECAP_TXRX_MCS_NSS_IDX_80] = v;
- 
- 		v = le16_to_cpu(he_cap->he_mcs_nss_supp.tx_mcs_80);
-+		v = ath11k_peer_assoc_h_he_limit(v, he_mcs_mask);
- 		arg->peer_he_tx_mcs_set[WMI_HECAP_TXRX_MCS_NSS_IDX_80] = v;
- 
- 		arg->peer_he_mcs_count++;
-+		if (!he_tx_mcs)
-+			he_tx_mcs = v;
- 		break;
- 	}
-+	/* Calculate peer NSS capability from HE capabilities if STA
-+	 * supports HE.
-+	 */
-+	for (i = 0, max_nss = 0, he_mcs = 0; i < NL80211_HE_NSS_MAX; i++) {
-+		he_mcs = __le16_to_cpu(he_tx_mcs) >> (2 * i) & 3;
-+
-+		if (he_mcs != IEEE80211_HE_MCS_NOT_SUPPORTED &&
-+		    he_mcs_mask[i])
-+			max_nss = i + 1;
-+	}
-+	arg->peer_nss = min(sta->rx_nss, max_nss);
-+
-+	ath11k_dbg(ar->ab, ATH11K_DBG_MAC,
-+		   "mac he peer %pM nss %d mcs cnt %d\n",
-+		   sta->addr, arg->peer_nss, arg->peer_he_mcs_count);
- }
- 
- static void ath11k_peer_assoc_h_smps(struct ieee80211_sta *sta,
-@@ -1443,6 +1559,7 @@ static void ath11k_peer_assoc_h_phymode(struct ath11k *ar,
- 	enum nl80211_band band;
- 	const u8 *ht_mcs_mask;
- 	const u16 *vht_mcs_mask;
-+	const u16 *he_mcs_mask;
- 	enum wmi_phy_mode phymode = MODE_UNKNOWN;
- 
- 	if (WARN_ON(ath11k_mac_vif_chan(vif, &def)))
-@@ -1451,10 +1568,12 @@ static void ath11k_peer_assoc_h_phymode(struct ath11k *ar,
- 	band = def.chan->band;
- 	ht_mcs_mask = arvif->bitrate_mask.control[band].ht_mcs;
- 	vht_mcs_mask = arvif->bitrate_mask.control[band].vht_mcs;
-+	he_mcs_mask = arvif->bitrate_mask.control[band].he_mcs;
- 
- 	switch (band) {
- 	case NL80211_BAND_2GHZ:
--		if (sta->he_cap.has_he) {
-+		if (sta->he_cap.has_he &&
-+		    !ath11k_peer_assoc_h_he_masked(he_mcs_mask)) {
- 			if (sta->bandwidth == IEEE80211_STA_RX_BW_80)
- 				phymode = MODE_11AX_HE80_2G;
- 			else if (sta->bandwidth == IEEE80211_STA_RX_BW_40)
-@@ -1481,7 +1600,8 @@ static void ath11k_peer_assoc_h_phymode(struct ath11k *ar,
- 		break;
- 	case NL80211_BAND_5GHZ:
- 		/* Check HE first */
--		if (sta->he_cap.has_he) {
-+		if (sta->he_cap.has_he &&
-+		    !ath11k_peer_assoc_h_he_masked(he_mcs_mask)) {
- 			phymode = ath11k_mac_get_phymode_he(ar, sta);
- 		} else if (sta->vht_cap.vht_supported &&
- 		    !ath11k_peer_assoc_h_vht_masked(vht_mcs_mask)) {
-@@ -2412,6 +2532,20 @@ ath11k_mac_bitrate_mask_num_vht_rates(struct ath11k *ar,
- 	return num_rates;
- }
- 
-+static int
-+ath11k_mac_bitrate_mask_num_he_rates(struct ath11k *ar,
-+				     enum nl80211_band band,
-+				     const struct cfg80211_bitrate_mask *mask)
-+{
-+	int num_rates = 0;
-+	int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(mask->control[band].he_mcs); i++)
-+		num_rates += hweight16(mask->control[band].he_mcs[i]);
-+
-+	return num_rates;
-+}
-+
- static int
- ath11k_mac_set_peer_vht_fixed_rate(struct ath11k_vif *arvif,
- 				   struct ieee80211_sta *sta,
-@@ -2458,6 +2592,52 @@ ath11k_mac_set_peer_vht_fixed_rate(struct ath11k_vif *arvif,
- 	return ret;
- }
- 
-+static int
-+ath11k_mac_set_peer_he_fixed_rate(struct ath11k_vif *arvif,
-+				  struct ieee80211_sta *sta,
-+				  const struct cfg80211_bitrate_mask *mask,
-+				  enum nl80211_band band)
-+{
-+	struct ath11k *ar = arvif->ar;
-+	u8 he_rate, nss;
-+	u32 rate_code;
-+	int ret, i;
-+
-+	lockdep_assert_held(&ar->conf_mutex);
-+
-+	nss = 0;
-+
-+	for (i = 0; i < ARRAY_SIZE(mask->control[band].he_mcs); i++) {
-+		if (hweight16(mask->control[band].he_mcs[i]) == 1) {
-+			nss = i + 1;
-+			he_rate = ffs(mask->control[band].he_mcs[i]) - 1;
-+		}
-+	}
-+
-+	if (!nss) {
-+		ath11k_warn(ar->ab, "No single HE Fixed rate found to set for %pM",
-+			    sta->addr);
-+		return -EINVAL;
-+	}
-+
-+	ath11k_dbg(ar->ab, ATH11K_DBG_MAC,
-+		   "Setting Fixed HE Rate for peer %pM. Device will not switch to any other selected rates",
-+		   sta->addr);
-+
-+	rate_code = ATH11K_HW_RATE_CODE(he_rate, nss - 1,
-+					WMI_RATE_PREAMBLE_HE);
-+	ret = ath11k_wmi_set_peer_param(ar, sta->addr,
-+					arvif->vdev_id,
-+					WMI_PEER_PARAM_FIXED_RATE,
-+					rate_code);
-+	if (ret)
-+		ath11k_warn(ar->ab,
-+			    "failed to update STA %pM Fixed Rate %d: %d\n",
-+			     sta->addr, rate_code, ret);
-+
-+	return ret;
-+}
-+
- static int ath11k_station_assoc(struct ath11k *ar,
- 				struct ieee80211_vif *vif,
- 				struct ieee80211_sta *sta,
-@@ -2576,8 +2756,9 @@ static void ath11k_sta_rc_update_wk(struct work_struct *wk)
- 	enum nl80211_band band;
- 	const u8 *ht_mcs_mask;
- 	const u16 *vht_mcs_mask;
-+	const u16 *he_mcs_mask;
- 	u32 changed, bw, nss, smps;
--	int err, num_vht_rates;
-+	int err, num_vht_rates,  num_he_rates;
- 	const struct cfg80211_bitrate_mask *mask;
- 	struct peer_assoc_params peer_arg;
- 
-@@ -2592,6 +2773,7 @@ static void ath11k_sta_rc_update_wk(struct work_struct *wk)
- 	band = def.chan->band;
- 	ht_mcs_mask = arvif->bitrate_mask.control[band].ht_mcs;
- 	vht_mcs_mask = arvif->bitrate_mask.control[band].vht_mcs;
-+	he_mcs_mask = arvif->bitrate_mask.control[band].he_mcs;
- 
- 	spin_lock_bh(&ar->data_lock);
- 
-@@ -2607,8 +2789,9 @@ static void ath11k_sta_rc_update_wk(struct work_struct *wk)
- 	mutex_lock(&ar->conf_mutex);
- 
- 	nss = max_t(u32, 1, nss);
--	nss = min(nss, max(ath11k_mac_max_ht_nss(ht_mcs_mask),
--			   ath11k_mac_max_vht_nss(vht_mcs_mask)));
-+	nss = min(nss, max(max(ath11k_mac_max_ht_nss(ht_mcs_mask),
-+			       ath11k_mac_max_vht_nss(vht_mcs_mask)),
-+			   ath11k_mac_max_he_nss(he_mcs_mask)));
- 
- 	if (changed & IEEE80211_RC_BW_CHANGED) {
- 		err = ath11k_wmi_set_peer_param(ar, sta->addr, arvif->vdev_id,
-@@ -2644,6 +2827,8 @@ static void ath11k_sta_rc_update_wk(struct work_struct *wk)
- 		mask = &arvif->bitrate_mask;
- 		num_vht_rates = ath11k_mac_bitrate_mask_num_vht_rates(ar, band,
- 								      mask);
-+		num_he_rates = ath11k_mac_bitrate_mask_num_he_rates(ar, band,
-+								    mask);
- 
- 		/* Peer_assoc_prepare will reject vht rates in
- 		 * bitrate_mask if its not available in range format and
-@@ -2659,6 +2844,9 @@ static void ath11k_sta_rc_update_wk(struct work_struct *wk)
- 		if (sta->vht_cap.vht_supported && num_vht_rates == 1) {
- 			ath11k_mac_set_peer_vht_fixed_rate(arvif, sta, mask,
- 							   band);
-+		} else if (sta->he_cap.has_he && num_he_rates == 1) {
-+			ath11k_mac_set_peer_he_fixed_rate(arvif, sta, mask,
-+							  band);
- 		} else {
- 			/* If the peer is non-VHT or no fixed VHT rate
- 			 * is provided in the new bitrate mask we set the
-@@ -4097,6 +4285,8 @@ static int ath11k_mac_op_add_interface(struct ieee80211_hw *hw,
- 		       sizeof(arvif->bitrate_mask.control[i].ht_mcs));
- 		memset(arvif->bitrate_mask.control[i].vht_mcs, 0xff,
- 		       sizeof(arvif->bitrate_mask.control[i].vht_mcs));
-+		memset(arvif->bitrate_mask.control[i].he_mcs, 0xff,
-+		       sizeof(arvif->bitrate_mask.control[i].he_mcs));
- 	}
- 
- 	bit = __ffs64(ab->free_vdev_map);
-@@ -5022,9 +5212,25 @@ ath11k_mac_has_single_legacy_rate(struct ath11k *ar,
- 	if (ath11k_mac_bitrate_mask_num_vht_rates(ar, band, mask))
- 		return false;
- 
-+	if (ath11k_mac_bitrate_mask_num_he_rates(ar, band, mask))
-+		return false;
-+
- 	return num_rates == 1;
- }
- 
-+u16 ath11k_mac_get_tx_mcs_map(const struct ieee80211_sta_he_cap *he_cap)
-+{
-+	if (he_cap->he_cap_elem.phy_cap_info[0] &
-+	    IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_80PLUS80_MHZ_IN_5G)
-+		return he_cap->he_mcs_nss_supp.tx_mcs_80p80;
-+
-+	if (he_cap->he_cap_elem.phy_cap_info[0] &
-+	    IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_160MHZ_IN_5G)
-+		return he_cap->he_mcs_nss_supp.tx_mcs_160;
-+
-+	return he_cap->he_mcs_nss_supp.tx_mcs_80;
-+}
-+
- static bool
- ath11k_mac_bitrate_mask_get_single_nss(struct ath11k *ar,
- 				       enum nl80211_band band,
-@@ -5033,8 +5239,10 @@ ath11k_mac_bitrate_mask_get_single_nss(struct ath11k *ar,
- {
- 	struct ieee80211_supported_band *sband = &ar->mac.sbands[band];
- 	u16 vht_mcs_map = le16_to_cpu(sband->vht_cap.vht_mcs.tx_mcs_map);
-+	u16 he_mcs_map = 0;
- 	u8 ht_nss_mask = 0;
- 	u8 vht_nss_mask = 0;
-+	u8 he_nss_mask = 0;
- 	int i;
- 
- 	/* No need to consider legacy here. Basic rates are always present
-@@ -5061,7 +5269,19 @@ ath11k_mac_bitrate_mask_get_single_nss(struct ath11k *ar,
- 			return false;
- 	}
- 
--	if (ht_nss_mask != vht_nss_mask)
-+	he_mcs_map = le16_to_cpu(ath11k_mac_get_tx_mcs_map(&sband->iftype_data->he_cap));
-+
-+	for (i = 0; i < ARRAY_SIZE(mask->control[band].he_mcs); i++) {
-+		if (mask->control[band].he_mcs[i] == 0)
-+			continue;
-+		else if (mask->control[band].he_mcs[i] ==
-+			 ath11k_mac_get_max_he_mcs_map(he_mcs_map, i))
-+			he_nss_mask |= BIT(i);
-+		else
-+			return false;
-+	}
-+
-+	if (ht_nss_mask != vht_nss_mask || ht_nss_mask != he_nss_mask)
- 		return false;
- 
- 	if (ht_nss_mask == 0)
-@@ -5109,7 +5329,8 @@ ath11k_mac_get_single_legacy_rate(struct ath11k *ar,
- }
- 
- static int ath11k_mac_set_fixed_rate_params(struct ath11k_vif *arvif,
--					    u32 rate, u8 nss, u8 sgi, u8 ldpc)
-+					    u32 rate, u8 nss, u8 sgi, u8 ldpc,
-+					    u8 he_gi, u8 he_ltf)
- {
- 	struct ath11k *ar = arvif->ar;
- 	u32 vdev_param;
-@@ -5120,15 +5341,16 @@ static int ath11k_mac_set_fixed_rate_params(struct ath11k_vif *arvif,
- 	ath11k_dbg(ar->ab, ATH11K_DBG_MAC, "mac set fixed rate params vdev %i rate 0x%02hhx nss %hhu sgi %hhu\n",
- 		   arvif->vdev_id, rate, nss, sgi);
- 
--	vdev_param = WMI_VDEV_PARAM_FIXED_RATE;
--	ret = ath11k_wmi_vdev_set_param_cmd(ar, arvif->vdev_id,
--					    vdev_param, rate);
--	if (ret) {
--		ath11k_warn(ar->ab, "failed to set fixed rate param 0x%02x: %d\n",
--			    rate, ret);
--		return ret;
-+	if (!arvif->vif->bss_conf.he_support) {
-+		vdev_param = WMI_VDEV_PARAM_FIXED_RATE;
-+		ret = ath11k_wmi_vdev_set_param_cmd(ar, arvif->vdev_id,
-+						    vdev_param, rate);
-+		if (ret) {
-+			ath11k_warn(ar->ab, "failed to set fixed rate param 0x%02x: %d\n",
-+				    rate, ret);
-+			return ret;
-+		}
- 	}
--
- 	vdev_param = WMI_VDEV_PARAM_NSS;
- 	ret = ath11k_wmi_vdev_set_param_cmd(ar, arvif->vdev_id,
- 					    vdev_param, nss);
-@@ -5138,15 +5360,6 @@ static int ath11k_mac_set_fixed_rate_params(struct ath11k_vif *arvif,
- 		return ret;
- 	}
- 
--	vdev_param = WMI_VDEV_PARAM_SGI;
--	ret = ath11k_wmi_vdev_set_param_cmd(ar, arvif->vdev_id,
--					    vdev_param, sgi);
--	if (ret) {
--		ath11k_warn(ar->ab, "failed to set sgi param %d: %d\n",
--			    sgi, ret);
--		return ret;
--	}
--
- 	vdev_param = WMI_VDEV_PARAM_LDPC;
- 	ret = ath11k_wmi_vdev_set_param_cmd(ar, arvif->vdev_id,
- 					    vdev_param, ldpc);
-@@ -5156,6 +5369,43 @@ static int ath11k_mac_set_fixed_rate_params(struct ath11k_vif *arvif,
- 		return ret;
- 	}
- 
-+	if (arvif->vif->bss_conf.he_support) {
-+		if (he_gi != 0xFF) {
-+			vdev_param = WMI_VDEV_PARAM_SGI;
-+			/* 0.8 = 0, 1.6 = 2 and 3.2 = 3. */
-+			if (he_gi)
-+				he_gi += 1;
-+			ret = ath11k_wmi_vdev_set_param_cmd(ar, arvif->vdev_id,
-+							    vdev_param, he_gi);
-+			if (ret) {
-+				ath11k_warn(ar->ab, "failed to set hegi param %d: %d\n",
-+					    sgi, ret);
-+				return ret;
-+			}
-+		}
-+		if (he_ltf != 0xFF) {
-+			vdev_param = WMI_VDEV_PARAM_HE_LTF;
-+				/* start from 1 */
-+				he_ltf += 1;
-+			ret = ath11k_wmi_vdev_set_param_cmd(ar, arvif->vdev_id,
-+							    vdev_param, he_ltf);
-+			if (ret) {
-+				ath11k_warn(ar->ab, "failed to set heltf param %d: %d\n",
-+					    he_ltf, ret);
-+					return ret;
-+			}
-+		}
-+	} else {
-+		vdev_param = WMI_VDEV_PARAM_SGI;
-+		ret = ath11k_wmi_vdev_set_param_cmd(ar, arvif->vdev_id,
-+						    vdev_param, sgi);
-+		if (ret) {
-+			ath11k_warn(ar->ab, "failed to set sgi param %d: %d\n",
-+				    sgi, ret);
-+			return ret;
-+		}
-+	}
-+
- 	return 0;
- }
- 
-@@ -5184,6 +5434,31 @@ ath11k_mac_vht_mcs_range_present(struct ath11k *ar,
- 	return true;
- }
- 
-+static bool
-+ath11k_mac_he_mcs_range_present(struct ath11k *ar,
-+				enum nl80211_band band,
-+				const struct cfg80211_bitrate_mask *mask)
-+{
-+	int i;
-+	u16 he_mcs;
-+
-+	for (i = 0; i < NL80211_HE_NSS_MAX; i++) {
-+		he_mcs = mask->control[band].he_mcs[i];
-+
-+		switch (he_mcs) {
-+		case 0:
-+		case BIT(8) - 1:
-+		case BIT(10) - 1:
-+		case BIT(12) - 1:
-+			break;
-+		default:
-+			return false;
-+		}
-+	}
-+
-+	return true;
-+}
-+
- static void ath11k_mac_set_bitrate_mask_iter(void *data,
- 					     struct ieee80211_sta *sta)
- {
-@@ -5226,6 +5501,9 @@ ath11k_mac_op_set_bitrate_mask(struct ieee80211_hw *hw,
- 	enum nl80211_band band;
- 	const u8 *ht_mcs_mask;
- 	const u16 *vht_mcs_mask;
-+	const u16 *he_mcs_mask;
-+	u8 he_ltf = 0;
-+	u8 he_gi = 0;
- 	u32 rate;
- 	u8 nss;
- 	u8 sgi;
-@@ -5240,12 +5518,16 @@ ath11k_mac_op_set_bitrate_mask(struct ieee80211_hw *hw,
- 	band = def.chan->band;
- 	ht_mcs_mask = mask->control[band].ht_mcs;
- 	vht_mcs_mask = mask->control[band].vht_mcs;
-+	he_mcs_mask = mask->control[band].he_mcs;
- 	ldpc = !!(ar->ht_cap_info & WMI_HT_CAP_LDPC);
- 
- 	sgi = mask->control[band].gi;
- 	if (sgi == NL80211_TXRATE_FORCE_LGI)
- 		return -EINVAL;
- 
-+	he_gi = mask->control[band].he_gi;
-+	he_ltf = mask->control[band].he_ltf;
-+
- 	/* mac80211 doesn't support sending a fixed HT/VHT MCS alone, rather it
- 	 * requires passing atleast one of used basic rates along with them.
- 	 * Fixed rate setting across different preambles(legacy, HT, VHT) is
-@@ -5272,8 +5554,9 @@ ath11k_mac_op_set_bitrate_mask(struct ieee80211_hw *hw,
- 	} else {
- 		rate = WMI_FIXED_RATE_NONE;
- 		nss = min_t(u32, ar->num_tx_chains,
--			    max(ath11k_mac_max_ht_nss(ht_mcs_mask),
--				ath11k_mac_max_vht_nss(vht_mcs_mask)));
-+			    max(max(ath11k_mac_max_ht_nss(ht_mcs_mask),
-+				    ath11k_mac_max_vht_nss(vht_mcs_mask)),
-+				ath11k_mac_max_he_nss(he_mcs_mask)));
- 
- 		/* If multiple rates across different preambles are given
- 		 * we can reconfigure this info with all peers using PEER_ASSOC
-@@ -5308,6 +5591,16 @@ ath11k_mac_op_set_bitrate_mask(struct ieee80211_hw *hw,
- 			return -EINVAL;
- 		}
- 
-+		num_rates = ath11k_mac_bitrate_mask_num_he_rates(ar, band,
-+								 mask);
-+
-+		if (!ath11k_mac_he_mcs_range_present(ar, band, mask) &&
-+		    num_rates > 1) {
-+			ath11k_warn(ar->ab,
-+				    "Setting more than one HE MCS Value in bitrate mask not supported\n");
-+			return -EINVAL;
-+		}
-+
- 		ieee80211_iterate_stations_atomic(ar->hw,
- 						  ath11k_mac_disable_peer_fixed_rate,
- 						  arvif);
-@@ -5324,7 +5617,8 @@ ath11k_mac_op_set_bitrate_mask(struct ieee80211_hw *hw,
- 
- 	mutex_lock(&ar->conf_mutex);
- 
--	ret = ath11k_mac_set_fixed_rate_params(arvif, rate, nss, sgi, ldpc);
-+	ret = ath11k_mac_set_fixed_rate_params(arvif, rate, nss, sgi, ldpc,
-+					       he_gi, he_ltf);
- 	if (ret) {
- 		ath11k_warn(ar->ab, "failed to set fixed rate params on vdev %i: %d\n",
- 			    arvif->vdev_id, ret);
-diff --git a/drivers/net/wireless/ath/ath11k/wmi.h b/drivers/net/wireless/ath/ath11k/wmi.h
-index 742fcd6e37a3..82929415e119 100644
---- a/drivers/net/wireless/ath/ath11k/wmi.h
-+++ b/drivers/net/wireless/ath/ath11k/wmi.h
-@@ -1008,6 +1008,7 @@ enum wmi_tlv_vdev_param {
- 	WMI_VDEV_PARAM_HE_RANGE_EXT,
- 	WMI_VDEV_PARAM_ENABLE_BCAST_PROBE_RESPONSE,
- 	WMI_VDEV_PARAM_FILS_MAX_CHANNEL_GUARD_TIME,
-+	WMI_VDEV_PARAM_HE_LTF = 0x74,
- 	WMI_VDEV_PARAM_BA_MODE = 0x7e,
- 	WMI_VDEV_PARAM_SET_HE_SOUNDING_MODE = 0x87,
- 	WMI_VDEV_PARAM_PROTOTYPE = 0x8000,
+400ms should be fine for streaming netflix, and there is no reason that
+higher priority traffic cannot jump ahead in the queue for much
+better latency.  If the frames are queued up in mac80211, then you don't
+have to depend on TID scheduling in the driver/firmware anyway.
+
+> AQL already does some the right thing, BTW: When the total outstanding
+> data queued in the firmware exceeds 24ms (by the AQL estimation), it'll
+> switch the per-station limit from 12ms to 5ms of queued data. Arguably
+> that could be lower (say, 2ms for the low per-station limit).
+
+That still should work OK for bulk transport, as 5ms is a full ampdu chain.
+
+>> In the case where you have many users wanting lots of throughput, 8 or
+>> 16ms of extra latency is a good tradeoff vs no one being able to
+>> reliably get the bandwidth they need.
+>
+> Yes, 8-16ms of extra latency is likely worth it, but not much more than
+> that...
+>
+>> Higher priority TIDs will get precedence in ath10k firmware anyway, so
+>> even if at time 0 you sent 64 frames to a peer on back-ground TID, if
+>> you sent a VO frame at time 0+1, it could be transmitted first.
+>
+> Assuming anyone is actually using the priorities, that is; most
+> appliations are not (and those that are often do it wrong). Also, using
+> the VO queue hurts efficiency as well for the same reason, since it
+> can't aggregate at all.
+
+I think ath10k aggregates VO traffic just fine, but either way, you could
+use VI instead.
+
+The kernel can adjust the TID appropriately, so the mac80211 scheduler to could
+tweak the tid so that bulk transport always goes on BK, and things needing lower
+latency goes out on VI perhaps?
+
+>
+>>>> If you feed a few frames to each of the 200 peers, then even if
+>>>> firmware has 2000 tx buffers, that is only 10 frames per peer at best,
+>>>> leading to small ampdu/amsdu and thus worse over-all throughput and
+>>>> utilization of airtime.
+>>>
+>>> Do you have any data on exactly how long (in time) each txop becomes in
+>>> these highly congested scenarios?
+>>
+>> I didn't look at time, but avg packets-per-ampdu chain is 30+ in
+>> single station tests, and with many stations it goes into the 4-8
+>> range (from memory, so maybe I'm off a bit).
+>
+> Right; was just looking for rough numbers, so that is fine.
+>
+>> Here is an open-source tool that can give you those metrics by processing a pcap:
+>>
+>> https://github.com/greearb/lanforge-scripts/tree/master/wifi_diag
+>>
+>> # Ignore the LANforge bits about creating capture files, here is an example of how to use it:
+>> https://www.candelatech.com/cookbook/wifire/wifi+diagnostic
+>>
+>>>
+>>>> It would be nice to be able to set certain traffic flows to have the
+>>>> throughput optimization and others to have the latency optimization.
+>>>> For instance, high latency on a streaming download is a good trade-off
+>>>> if it increases total throughput.
+>>>
+>>> For the individual flows to a peer, fq_codel actually does a pretty good
+>>> job at putting the latency-sensitive flows first. Which is why we want
+>>> the queueing to happen in mac80211 (where fq_codel is active) instead of
+>>> in the firmware.
+>>
+>> That sounds good to me. What is needed from the driver/firmware to
+>> make this work well?
+>
+> To queue as little as possible :)
+>
+> AQL is the mechanism we have to enforce this (for ath10k), by throttling
+> queueing into the firmware earlier. It only does this on a per-station
+> limit, though, and there's currently no mechanism to limit the total
+> number of stations with outstanding data, as you're requesting. Which I
+> guess means it won't help much in your case. One could imagine building
+> a mechanism on top of AQL to do this, though, although I think it may
+> not be quite trivial to get the interaction with the station scheduler
+> right. The basic building blocks are there, though...
+
+(I think this below is right, but it is complicated as can be so maybe I
+am wrong in places.)
+
+The ath10k wave-2 firmware has its own scheduler.  It asks the driver what
+peers need to transmit, then it requests buffers for those peers (based on
+its own idea of fairness and scheduling).  If the driver tells it all want
+to tx frames, it will queue lots and you are at the mercy of its scheduler.
+But, if the driver tells firmware only a few peers want to transmit, then
+the driver (and upper stacks) will have a lot more control over the firmware's
+queueing and scheduling.
+
+Thanks,
+Ben
+
 -- 
-2.20.1
-
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
