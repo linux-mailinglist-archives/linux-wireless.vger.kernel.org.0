@@ -2,657 +2,218 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1125A1BDF83
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Apr 2020 15:50:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 025FD1BDF9E
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 Apr 2020 15:54:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726901AbgD2Ntm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 29 Apr 2020 09:49:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55038 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726765AbgD2Ntl (ORCPT
+        id S1727093AbgD2Ny3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 29 Apr 2020 09:54:29 -0400
+Received: from mail2.candelatech.com ([208.74.158.173]:44824 "EHLO
+        mail3.candelatech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726853AbgD2Ny3 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 29 Apr 2020 09:49:41 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63B7DC03C1AD;
-        Wed, 29 Apr 2020 06:49:41 -0700 (PDT)
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.93)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1jTn5n-001vpq-Ki; Wed, 29 Apr 2020 15:49:39 +0200
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     netdev@vger.kernel.org
-Cc:     Antonio Quartulli <ordex@autistici.org>,
-        linux-wireless@vger.kernel.org,
-        Johannes Berg <johannes.berg@intel.com>
-Subject: [RFC PATCH] netlink: add infrastructure to expose policies to userspace
-Date:   Wed, 29 Apr 2020 15:49:33 +0200
-Message-Id: <20200429154933.c522b84c6f3f.Icf6f8aa515bf625608fac70eec24739433b8ebd8@changeid>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200429134843.42224-1-johannes@sipsolutions.net>
-References: <20200429134843.42224-1-johannes@sipsolutions.net>
+        Wed, 29 Apr 2020 09:54:29 -0400
+Received: from [192.168.254.4] (unknown [50.34.219.109])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail3.candelatech.com (Postfix) with ESMTPSA id 831F213C283;
+        Wed, 29 Apr 2020 06:54:28 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 831F213C283
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+        s=default; t=1588168468;
+        bh=PrYT77XzJ0Ndlpde8Mp6TDObGBodkfNUrTbakKaAeiA=;
+        h=Subject:To:References:From:Date:In-Reply-To:From;
+        b=jTyd3n2kbSNNZ4HjvavqByJKrqfOWKDvasFUNY3aoFxj0cM72p9+ucg2dbHFF/zAx
+         Qmy/fyP7iH7S4g1nfSycEyA3q2d31t2UNLxq/ts4XD4q/wpnbkGQDOd4o8l9QBgTAA
+         YJLL9Te/MuPAMgWxu6vfBvc0o1PzVOmVsPumAO5s=
+Subject: Re: [PATCH] ath10k: Restart xmit queues below low-water mark.
+To:     =?UTF-8?Q?Toke_H=c3=b8iland-J=c3=b8rgensen?= <toke@toke.dk>,
+        linux-wireless@vger.kernel.org
+References: <20200427145435.13151-1-greearb@candelatech.com>
+ <87h7x3v1tn.fsf@toke.dk>
+ <d72dbba0-409f-93d7-5364-bc7ac50288b9@candelatech.com>
+ <87a72vuyyn.fsf@toke.dk>
+ <e6ee8635-b45f-c5fe-d32a-1d695b3a7934@candelatech.com>
+ <87sggmtzdg.fsf@toke.dk>
+From:   Ben Greear <greearb@candelatech.com>
+Message-ID: <31064453-15b4-877f-b70c-b6b9ed4ae50c@candelatech.com>
+Date:   Wed, 29 Apr 2020 06:54:27 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+ Thunderbird/45.8.0
 MIME-Version: 1.0
+In-Reply-To: <87sggmtzdg.fsf@toke.dk>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
 
-Add, and use in generic netlink, helpers to dump out a netlink
-policy to userspace, including all the range validation data,
-nested policies etc.
 
-This lets userspace discover what the kernel understands.
+On 04/29/2020 02:28 AM, Toke Høiland-Jørgensen wrote:
+> Ben Greear <greearb@candelatech.com> writes:
+>
+>> On 04/28/2020 01:39 PM, Toke Høiland-Jørgensen wrote:
+>>> Ben Greear <greearb@candelatech.com> writes:
+>>>
+>>>> On 04/28/2020 12:37 PM, Toke Høiland-Jørgensen wrote:
+>>>>> greearb@candelatech.com writes:
+>>>>>
+>>>>>> From: Ben Greear <greearb@candelatech.com>
+>>>>>>
+>>>>>> While running tcp upload + download tests with ~200
+>>>>>> concurrent TCP streams, 1-2 processes, and 30 station
+>>>>>> vdevs, I noticed that the __ieee80211_stop_queue was taking
+>>>>>> around 20% of the CPU according to perf-top, which other locking
+>>>>>> taking an additional ~15%.
+>>>>>>
+>>>>>> I believe the issue is that the ath10k driver would unlock the
+>>>>>> txqueue when a single frame could be transmitted, instead of
+>>>>>> waiting for a low water mark.
+>>>>>>
+>>>>>> So, this patch adds a low-water mark that is 1/4 of the total
+>>>>>> tx buffers allowed.
+>>>>>>
+>>>>>> This appears to resolve the performance problem that I saw.
+>>>>>>
+>>>>>> Tested with recent wave-1 ath10k-ct firmware.
+>>>>>>
+>>>>>> Signed-off-by: Ben Greear <greearb@candelatech.com>
+>>>>>> ---
+>>>>>>  drivers/net/wireless/ath/ath10k/htt.h    | 1 +
+>>>>>>  drivers/net/wireless/ath/ath10k/htt_tx.c | 8 ++++++--
+>>>>>>  2 files changed, 7 insertions(+), 2 deletions(-)
+>>>>>>
+>>>>>> diff --git a/drivers/net/wireless/ath/ath10k/htt.h b/drivers/net/wireless/ath/ath10k/htt.h
+>>>>>> index 31c4ddbf45cb..b5634781c0dc 100644
+>>>>>> --- a/drivers/net/wireless/ath/ath10k/htt.h
+>>>>>> +++ b/drivers/net/wireless/ath/ath10k/htt.h
+>>>>>> @@ -1941,6 +1941,7 @@ struct ath10k_htt {
+>>>>>>
+>>>>>>  	u8 target_version_major;
+>>>>>>  	u8 target_version_minor;
+>>>>>> +	bool needs_unlock;
+>>>>>>  	struct completion target_version_received;
+>>>>>>  	u8 max_num_amsdu;
+>>>>>>  	u8 max_num_ampdu;
+>>>>>> diff --git a/drivers/net/wireless/ath/ath10k/htt_tx.c b/drivers/net/wireless/ath/ath10k/htt_tx.c
+>>>>>> index 9b3c3b080e92..44795d9a7c0c 100644
+>>>>>> --- a/drivers/net/wireless/ath/ath10k/htt_tx.c
+>>>>>> +++ b/drivers/net/wireless/ath/ath10k/htt_tx.c
+>>>>>> @@ -145,8 +145,10 @@ void ath10k_htt_tx_dec_pending(struct ath10k_htt *htt)
+>>>>>>  	lockdep_assert_held(&htt->tx_lock);
+>>>>>>
+>>>>>>  	htt->num_pending_tx--;
+>>>>>> -	if (htt->num_pending_tx == htt->max_num_pending_tx - 1)
+>>>>>> +	if ((htt->num_pending_tx <= (htt->max_num_pending_tx / 4)) && htt->needs_unlock) {
+>>>>>
+>>>>> Why /4? Seems a bit arbitrary?
+>>>>
+>>>> Yes, arbitrary for sure. I figure restart filling the queue when 1/4
+>>>> full so that it is unlikely to run dry. Possibly it should restart
+>>>> sooner to keep it more full on average?
+>>>
+>>> Theoretically, the "keep the queue at the lowest possible level that
+>>> keeps it from underflowing" is what BQL is supposed to do. The diff
+>>> below uses the dynamic adjustment bit (from dynamic_queue_limits.h) in
+>>> place of num_pending_tx. I've only compile tested it, and I'm a bit
+>>> skeptical that it will work right for this, but if anyone wants to give
+>>> it a shot, there it is.
+>>>
+>>> BTW, while doing that, I noticed there's a similar arbitrary limit in
+>>> ath10k_mac_tx_push_pending() at max_num_pending_tx/2. So if you're going
+>>> to keep the arbitrary limit maybe use the same one? :)
+>>>
+>>>> Before my patch, the behaviour would be to try to keep it as full as
+>>>> possible, as in restart the queues as soon as a single slot opens up
+>>>> in the tx queue.
+>>>
+>>> Yeah, that seems somewhat misguided as well, from a latency perspective,
+>>> at least. But I guess that's what we're fixing with AQL. What does the
+>>> firmware do with the frames queued within? Do they just go on a FIFO
+>>> queue altogether, or something smarter?
+>>
+>> Sort of like a mini-mac80211 stack inside the firmware is used to
+>> create ampdu/amsdu chains and schedule them with its own scheduler.
+>>
+>> For optimal throughput with 200 users steaming video,
+>> the ath10k driver should think that it has only a few active peers wanting
+>> to send data at a time (and so firmware would think the same), and the driver should
+>> be fed a large chunk of pkts for those peers.  And then the next few peers.
+>> That should let firmware send large ampdu/amsdu to each peer, increasing throughput
+>> over all.
+>
+> Yes, but also increasing latency because all other stations have to wait
+> for a longer TXOP (see my other reply).
 
-For families/commands other than generic netlink, the helpers
-need to be used directly in an appropriate command, or we can
-add some infrastructure (a new netlink family) that those can
-register their policies with for introspection. I'm not that
-familiar with non-generic netlink, so that's left out for now.
+If you at most sent 4 station's worth of data to the firmware, and max is 4ms per
+txop, then you have at most 16ms of latency.  You could also send just two station's
+worth of data at a time, as long as you can quickly service the tx-queues again
+that should be enough to keep the firmware/radio productive.
 
-The data exposed to userspace also includes min and max length
-for binary/string data, I've done that instead of letting the
-userspace tools figure out whether min/max is intended based
-on the type so that we can extend this later in the kernel, we
-might want to just use the range data for example.
+In the case where you have many users wanting lots of throughput, 8 or 16ms of extra
+latency is a good tradeoff vs no one being able to reliably get the bandwidth they
+need.
 
-Because of this, I opted to not directly expose the NLA_*
-values, even if some of them are already exposed via BPF, as
-with min/max length we don't need to have different types here
-for NLA_BINARY/NLA_MIN_LEN/NLA_EXACT_LEN, we just make them
-all NL_ATTR_TYPE_BINARY with min/max length optionally set.
+Higher priority TIDs will get precedence in ath10k firmware anyway, so even if at time 0
+you sent 64 frames to a peer on back-ground TID, if you sent a VO frame at time 0+1,
+it could be transmitted first.
 
-Similarly, we don't really need NLA_MSECS, and perhaps can
-remove it in the future - but not if we encode it into the
-userspace API now. It gets mapped to NL_ATTR_TYPE_U64 here.
+>
+>> If you feed a few frames to each of the 200 peers, then even if
+>> firmware has 2000 tx buffers, that is only 10 frames per peer at best,
+>> leading to small ampdu/amsdu and thus worse over-all throughput and
+>> utilization of airtime.
+>
+> Do you have any data on exactly how long (in time) each txop becomes in
+> these highly congested scenarios?
 
-Note that the exposing here corresponds to the strict policy
-interpretation, and NLA_UNSPEC items are omitted entirely.
-To get those, change them to NLA_MIN_LEN which behaves in
-exactly the same way, but is exposed.
+I didn't look at time, but avg packets-per-ampdu chain is 30+ in single station tests,
+and with many stations it goes into the 4-8 range (from memory, so maybe I'm
+off a bit).
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
----
- include/net/netlink.h          |   6 +
- include/uapi/linux/genetlink.h |   2 +
- include/uapi/linux/netlink.h   | 103 +++++++++++
- net/netlink/Makefile           |   2 +-
- net/netlink/genetlink.c        |  78 +++++++++
- net/netlink/policy.c           | 308 +++++++++++++++++++++++++++++++++
- 6 files changed, 498 insertions(+), 1 deletion(-)
- create mode 100644 net/netlink/policy.c
+Here is an open-source tool that can give you those metrics by processing a pcap:
 
-diff --git a/include/net/netlink.h b/include/net/netlink.h
-index 557b67f1db99..c0411f14fb53 100644
---- a/include/net/netlink.h
-+++ b/include/net/netlink.h
-@@ -1933,4 +1933,10 @@ void nla_get_range_unsigned(const struct nla_policy *pt,
- void nla_get_range_signed(const struct nla_policy *pt,
- 			  struct netlink_range_validation_signed *range);
- 
-+int netlink_policy_dump_start(const struct nla_policy *policy,
-+			      unsigned int maxtype,
-+			      unsigned long *state);
-+bool netlink_policy_dump_loop(unsigned long *state);
-+int netlink_policy_dump_write(struct sk_buff *skb, unsigned long state);
-+
- #endif
-diff --git a/include/uapi/linux/genetlink.h b/include/uapi/linux/genetlink.h
-index 877f7fa95466..9c0636ec2286 100644
---- a/include/uapi/linux/genetlink.h
-+++ b/include/uapi/linux/genetlink.h
-@@ -48,6 +48,7 @@ enum {
- 	CTRL_CMD_NEWMCAST_GRP,
- 	CTRL_CMD_DELMCAST_GRP,
- 	CTRL_CMD_GETMCAST_GRP, /* unused */
-+	CTRL_CMD_GETPOLICY,
- 	__CTRL_CMD_MAX,
- };
- 
-@@ -62,6 +63,7 @@ enum {
- 	CTRL_ATTR_MAXATTR,
- 	CTRL_ATTR_OPS,
- 	CTRL_ATTR_MCAST_GROUPS,
-+	CTRL_ATTR_POLICY,
- 	__CTRL_ATTR_MAX,
- };
- 
-diff --git a/include/uapi/linux/netlink.h b/include/uapi/linux/netlink.h
-index 0a4d73317759..eac8a6a648ea 100644
---- a/include/uapi/linux/netlink.h
-+++ b/include/uapi/linux/netlink.h
-@@ -249,4 +249,107 @@ struct nla_bitfield32 {
- 	__u32 selector;
- };
- 
-+/*
-+ * policy descriptions - it's specific to each family how this is used
-+ * Normally, it should be retrieved via a dump inside another attribute
-+ * specifying where it applies.
-+ */
-+
-+/**
-+ * enum netlink_attribute_type - type of an attribute
-+ * @NL_ATTR_TYPE_INVALID: unused
-+ * @NL_ATTR_TYPE_FLAG: flag attribute (present/not present)
-+ * @NL_ATTR_TYPE_U8: 8-bit unsigned attribute
-+ * @NL_ATTR_TYPE_U16: 16-bit unsigned attribute
-+ * @NL_ATTR_TYPE_U32: 32-bit unsigned attribute
-+ * @NL_ATTR_TYPE_U64: 64-bit unsigned attribute
-+ * @NL_ATTR_TYPE_S8: 8-bit signed attribute
-+ * @NL_ATTR_TYPE_S16: 16-bit signed attribute
-+ * @NL_ATTR_TYPE_S32: 32-bit signed attribute
-+ * @NL_ATTR_TYPE_S64: 64-bit signed attribute
-+ * @NL_ATTR_TYPE_BINARY: binary data, min/max length may be specified
-+ * @NL_ATTR_TYPE_STRING: string, min/max length may be specified
-+ * @NL_ATTR_TYPE_NUL_STRING: NUL-terminated string,
-+ *	min/max length may be specified
-+ * @NL_ATTR_TYPE_NESTED: nested, i.e. the content of this attribute
-+ *	consists of sub-attributes. The nested policy and maxtype
-+ *	inside may be specified.
-+ * @NL_ATTR_TYPE_NESTED_ARRAY: nested array, i.e. the content of this
-+ *	attribute contains sub-attributes whose type is irrelevant
-+ *	(just used to separate the array entries) and each such array
-+ *	entry has attributes again, the policy for those inner ones
-+ *	and the corresponding maxtype may be specified.
-+ * @NL_ATTR_TYPE_BITFIELD32: &struct nla_bitfield32 attribute
-+ */
-+enum netlink_attribute_type {
-+	NL_ATTR_TYPE_INVALID,
-+
-+	NL_ATTR_TYPE_FLAG,
-+
-+	NL_ATTR_TYPE_U8,
-+	NL_ATTR_TYPE_U16,
-+	NL_ATTR_TYPE_U32,
-+	NL_ATTR_TYPE_U64,
-+
-+	NL_ATTR_TYPE_S8,
-+	NL_ATTR_TYPE_S16,
-+	NL_ATTR_TYPE_S32,
-+	NL_ATTR_TYPE_S64,
-+
-+	NL_ATTR_TYPE_BINARY,
-+	NL_ATTR_TYPE_STRING,
-+	NL_ATTR_TYPE_NUL_STRING,
-+
-+	NL_ATTR_TYPE_NESTED,
-+	NL_ATTR_TYPE_NESTED_ARRAY,
-+
-+	NL_ATTR_TYPE_BITFIELD32,
-+};
-+
-+/**
-+ * enum netlink_policy_type_attr - policy type attributes
-+ * @NL_POLICY_TYPE_ATTR_UNSPEC: unused
-+ * @NL_POLICY_TYPE_ATTR_TYPE: type of the attribute,
-+ *	&enum netlink_attribute_type (U32)
-+ * @NL_POLICY_TYPE_ATTR_MIN_VALUE_S: minimum value for signed
-+ *	integers (S64)
-+ * @NL_POLICY_TYPE_ATTR_MAX_VALUE_S: maximum value for signed
-+ *	integers (S64)
-+ * @NL_POLICY_TYPE_ATTR_MIN_VALUE_U: minimum value for unsigned
-+ *	integers (U64)
-+ * @NL_POLICY_TYPE_ATTR_MAX_VALUE_U: maximum value for unsigned
-+ *	integers (U64)
-+ * @NL_POLICY_TYPE_ATTR_MIN_LENGTH: minimum length for binary
-+ *	attributes, no minimum if not given (U32)
-+ * @NL_POLICY_TYPE_ATTR_MAX_LENGTH: maximum length for binary
-+ *	attributes, no maximum if not given (U32)
-+ * @NL_POLICY_TYPE_ATTR_POLICY_IDX: sub policy for nested and
-+ *	nested array types (U32)
-+ * @NL_POLICY_TYPE_ATTR_POLICY_MAXTYPE: maximum sub policy
-+ *	attribute for nested and nested array types, this can
-+ *	in theory be < the size of the policy pointed to by
-+ *	the index, if limited inside the nesting (U32)
-+ * @NL_POLICY_TYPE_ATTR_BITFIELD32_MASK: valid mask for the
-+ *	bitfield32 type (U32)
-+ * @NL_POLICY_TYPE_ATTR_PAD: pad attribute for 64-bit alignment
-+ */
-+enum netlink_policy_type_attr {
-+	NL_POLICY_TYPE_ATTR_UNSPEC,
-+	NL_POLICY_TYPE_ATTR_TYPE,
-+	NL_POLICY_TYPE_ATTR_MIN_VALUE_S,
-+	NL_POLICY_TYPE_ATTR_MAX_VALUE_S,
-+	NL_POLICY_TYPE_ATTR_MIN_VALUE_U,
-+	NL_POLICY_TYPE_ATTR_MAX_VALUE_U,
-+	NL_POLICY_TYPE_ATTR_MIN_LENGTH,
-+	NL_POLICY_TYPE_ATTR_MAX_LENGTH,
-+	NL_POLICY_TYPE_ATTR_POLICY_IDX,
-+	NL_POLICY_TYPE_ATTR_POLICY_MAXTYPE,
-+	NL_POLICY_TYPE_ATTR_BITFIELD32_MASK,
-+	NL_POLICY_TYPE_ATTR_PAD,
-+
-+	/* keep last */
-+	__NL_POLICY_TYPE_ATTR_MAX,
-+	NL_POLICY_TYPE_ATTR_MAX = __NL_POLICY_TYPE_ATTR_MAX - 1
-+};
-+
- #endif /* _UAPI__LINUX_NETLINK_H */
-diff --git a/net/netlink/Makefile b/net/netlink/Makefile
-index de42df7f0068..e05202708c90 100644
---- a/net/netlink/Makefile
-+++ b/net/netlink/Makefile
-@@ -3,7 +3,7 @@
- # Makefile for the netlink driver.
- #
- 
--obj-y  				:= af_netlink.o genetlink.o
-+obj-y  				:= af_netlink.o genetlink.o policy.o
- 
- obj-$(CONFIG_NETLINK_DIAG)	+= netlink_diag.o
- netlink_diag-y			:= diag.o
-diff --git a/net/netlink/genetlink.c b/net/netlink/genetlink.c
-index 9f357aa22b94..2f049692e012 100644
---- a/net/netlink/genetlink.c
-+++ b/net/netlink/genetlink.c
-@@ -1043,6 +1043,80 @@ static int genl_ctrl_event(int event, const struct genl_family *family,
- 	return 0;
- }
- 
-+static int ctrl_dumppolicy(struct sk_buff *skb, struct netlink_callback *cb)
-+{
-+	const struct genl_family *rt;
-+	unsigned int fam_id = cb->args[0];
-+	int err;
-+
-+	if (!fam_id) {
-+		struct nlattr *tb[CTRL_ATTR_MAX + 1];
-+
-+		err = genlmsg_parse(cb->nlh, &genl_ctrl, tb,
-+				    genl_ctrl.maxattr,
-+				    genl_ctrl.policy, cb->extack);
-+		if (err)
-+			return err;
-+
-+		if (!tb[CTRL_ATTR_FAMILY_ID] && !tb[CTRL_ATTR_FAMILY_NAME])
-+			return -EINVAL;
-+
-+		if (tb[CTRL_ATTR_FAMILY_ID]) {
-+			fam_id = nla_get_u16(tb[CTRL_ATTR_FAMILY_ID]);
-+		} else {
-+			rt = genl_family_find_byname(
-+				nla_data(tb[CTRL_ATTR_FAMILY_NAME]));
-+			if (!rt)
-+				return -ENOENT;
-+			fam_id = rt->id;
-+		}
-+	}
-+
-+	rt = genl_family_find_byid(fam_id);
-+	if (!rt)
-+		return -ENOENT;
-+
-+	if (!rt->policy)
-+		return -ENODATA;
-+
-+	err = netlink_policy_dump_start(rt->policy, rt->maxattr, &cb->args[1]);
-+	if (err)
-+		return err;
-+
-+	while (netlink_policy_dump_loop(&cb->args[1])) {
-+		void *hdr;
-+		struct nlattr *nest;
-+
-+		hdr = genlmsg_put(skb, NETLINK_CB(cb->skb).portid,
-+				  cb->nlh->nlmsg_seq, &genl_ctrl,
-+				  NLM_F_MULTI, CTRL_CMD_GETPOLICY);
-+		if (!hdr)
-+			goto nla_put_failure;
-+
-+		if (nla_put_u16(skb, CTRL_ATTR_FAMILY_ID, rt->id))
-+			goto nla_put_failure;
-+
-+		nest = nla_nest_start(skb, CTRL_ATTR_POLICY);
-+		if (!nest)
-+			goto nla_put_failure;
-+
-+		if (netlink_policy_dump_write(skb, cb->args[1]))
-+			goto nla_put_failure;
-+
-+		nla_nest_end(skb, nest);
-+
-+		genlmsg_end(skb, hdr);
-+		continue;
-+
-+nla_put_failure:
-+		genlmsg_cancel(skb, hdr);
-+		break;
-+	}
-+
-+	cb->args[0] = fam_id;
-+	return skb->len;
-+}
-+
- static const struct genl_ops genl_ctrl_ops[] = {
- 	{
- 		.cmd		= CTRL_CMD_GETFAMILY,
-@@ -1050,6 +1124,10 @@ static const struct genl_ops genl_ctrl_ops[] = {
- 		.doit		= ctrl_getfamily,
- 		.dumpit		= ctrl_dumpfamily,
- 	},
-+	{
-+		.cmd		= CTRL_CMD_GETPOLICY,
-+		.dumpit		= ctrl_dumppolicy,
-+	},
- };
- 
- static const struct genl_multicast_group genl_ctrl_groups[] = {
-diff --git a/net/netlink/policy.c b/net/netlink/policy.c
-new file mode 100644
-index 000000000000..f6491853c797
---- /dev/null
-+++ b/net/netlink/policy.c
-@@ -0,0 +1,308 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * NETLINK      Policy advertisement to userspace
-+ *
-+ * 		Authors:	Johannes Berg <johannes@sipsolutions.net>
-+ *
-+ * Copyright 2019 Intel Corporation
-+ */
-+
-+#include <linux/kernel.h>
-+#include <linux/errno.h>
-+#include <linux/types.h>
-+#include <net/netlink.h>
-+
-+#define INITIAL_POLICIES_ALLOC	10
-+
-+struct nl_policy_dump {
-+	unsigned int policy_idx;
-+	unsigned int attr_idx;
-+	unsigned int n_alloc;
-+	struct {
-+		const struct nla_policy *policy;
-+		unsigned int maxtype;
-+	} policies[];
-+};
-+
-+static int add_policy(struct nl_policy_dump **statep,
-+		      const struct nla_policy *policy,
-+		      unsigned int maxtype)
-+{
-+	struct nl_policy_dump *state = *statep;
-+	unsigned int n_alloc, i;
-+
-+	if (!policy || !maxtype)
-+		return 0;
-+
-+	for (i = 0; i < state->n_alloc; i++) {
-+		if (state->policies[i].policy == policy)
-+			return 0;
-+
-+		if (!state->policies[i].policy) {
-+			state->policies[i].policy = policy;
-+			state->policies[i].maxtype = maxtype;
-+			return 0;
-+		}
-+	}
-+
-+	n_alloc = state->n_alloc + INITIAL_POLICIES_ALLOC;
-+	state = krealloc(state, struct_size(state, policies, n_alloc),
-+			 GFP_KERNEL);
-+	if (!state)
-+		return -ENOMEM;
-+
-+	state->policies[state->n_alloc].policy = policy;
-+	state->policies[state->n_alloc].maxtype = maxtype;
-+	state->n_alloc = n_alloc;
-+	*statep = state;
-+
-+	return 0;
-+}
-+
-+static unsigned int get_policy_idx(struct nl_policy_dump *state,
-+				   const struct nla_policy *policy)
-+{
-+	unsigned int i;
-+
-+	for (i = 0; i < state->n_alloc; i++) {
-+		if (state->policies[i].policy == policy)
-+			return i;
-+	}
-+
-+	WARN_ON_ONCE(1);
-+	return -1;
-+}
-+
-+int netlink_policy_dump_start(const struct nla_policy *policy,
-+			      unsigned int maxtype,
-+                              unsigned long *_state)
-+{
-+	struct nl_policy_dump *state;
-+	unsigned int policy_idx;
-+	int err;
-+
-+	/* also returns 0 if "*_state" is our ERR_PTR() end marker */
-+	if (*_state)
-+		return 0;
-+
-+	/*
-+	 * walk the policies and nested ones first, and build
-+	 * a linear list of them.
-+	 */
-+
-+	state = kzalloc(struct_size(state, policies, INITIAL_POLICIES_ALLOC),
-+			GFP_KERNEL);
-+	if (!state)
-+		return -ENOMEM;
-+	state->n_alloc = INITIAL_POLICIES_ALLOC;
-+
-+	err = add_policy(&state, policy, maxtype);
-+	if (err)
-+		return err;
-+
-+	for (policy_idx = 0;
-+	     policy_idx < state->n_alloc && state->policies[policy_idx].policy;
-+	     policy_idx++) {
-+		const struct nla_policy *policy;
-+		unsigned int type;
-+
-+		policy = state->policies[policy_idx].policy;
-+
-+		for (type = 0;
-+		     type <= state->policies[policy_idx].maxtype;
-+		     type++) {
-+			switch (policy[type].type) {
-+			case NLA_NESTED:
-+			case NLA_NESTED_ARRAY:
-+				err = add_policy(&state,
-+						 policy[type].nested_policy,
-+						 policy[type].len);
-+				if (err)
-+					return err;
-+				break;
-+			default:
-+				break;
-+			}
-+		}
-+	}
-+
-+	*_state = (unsigned long)state;
-+
-+	return 0;
-+}
-+
-+static bool netlink_policy_dump_finished(struct nl_policy_dump *state)
-+{
-+	return state->policy_idx >= state->n_alloc ||
-+	       !state->policies[state->policy_idx].policy;
-+}
-+
-+bool netlink_policy_dump_loop(unsigned long *_state)
-+{
-+	struct nl_policy_dump *state = (void *)*_state;
-+
-+	if (IS_ERR(state))
-+		return false;
-+
-+	if (netlink_policy_dump_finished(state)) {
-+		kfree(state);
-+		/* store end marker instead of freed state */
-+		*_state = (unsigned long)ERR_PTR(-ENOENT);
-+		return false;
-+	}
-+
-+	return true;
-+}
-+
-+int netlink_policy_dump_write(struct sk_buff *skb, unsigned long _state)
-+{
-+	struct nl_policy_dump *state = (void *)_state;
-+	const struct nla_policy *pt;
-+	struct nlattr *policy, *attr;
-+	enum netlink_attribute_type type;
-+	bool again;
-+
-+send_attribute:
-+	again = false;
-+
-+	pt = &state->policies[state->policy_idx].policy[state->attr_idx];
-+
-+	policy = nla_nest_start(skb, state->policy_idx);
-+	if (!policy)
-+		return -ENOBUFS;
-+
-+	attr = nla_nest_start(skb, state->attr_idx);
-+	if (!attr)
-+		goto nla_put_failure;
-+
-+	switch (pt->type) {
-+	default:
-+	case NLA_UNSPEC:
-+	case NLA_REJECT:
-+		/* skip - use NLA_MIN_LEN to advertise such */
-+		nla_nest_cancel(skb, policy);
-+		again = true;
-+		goto next;
-+	case NLA_NESTED:
-+		type = NL_ATTR_TYPE_NESTED;
-+		/* fall through */
-+	case NLA_NESTED_ARRAY:
-+		if (pt->type == NLA_NESTED_ARRAY)
-+			type = NL_ATTR_TYPE_NESTED_ARRAY;
-+		if (pt->nested_policy && pt->len &&
-+		    (nla_put_u32(skb, NL_POLICY_TYPE_ATTR_POLICY_IDX,
-+				 get_policy_idx(state, pt->nested_policy)) ||
-+		     nla_put_u32(skb, NL_POLICY_TYPE_ATTR_POLICY_MAXTYPE,
-+				 pt->len)))
-+			goto nla_put_failure;
-+		break;
-+	case NLA_U8:
-+	case NLA_U16:
-+	case NLA_U32:
-+	case NLA_U64:
-+	case NLA_MSECS: {
-+		struct netlink_range_validation range;
-+
-+		if (pt->type == NLA_U8)
-+			type = NL_ATTR_TYPE_U8;
-+		else if (pt->type == NLA_U16)
-+			type = NL_ATTR_TYPE_U16;
-+		else if (pt->type == NLA_U32)
-+			type = NL_ATTR_TYPE_U32;
-+		else
-+			type = NL_ATTR_TYPE_U64;
-+
-+		nla_get_range_unsigned(pt, &range);
-+
-+		if (nla_put_u64_64bit(skb, NL_POLICY_TYPE_ATTR_MIN_VALUE_U,
-+				      range.min, NL_POLICY_TYPE_ATTR_PAD) ||
-+		    nla_put_u64_64bit(skb, NL_POLICY_TYPE_ATTR_MAX_VALUE_U,
-+				      range.max, NL_POLICY_TYPE_ATTR_PAD))
-+			goto nla_put_failure;
-+		break;
-+	}
-+	case NLA_S8:
-+	case NLA_S16:
-+	case NLA_S32:
-+	case NLA_S64: {
-+		struct netlink_range_validation_signed range;
-+
-+		if (pt->type == NLA_S8)
-+			type = NL_ATTR_TYPE_S8;
-+		else if (pt->type == NLA_S16)
-+			type = NL_ATTR_TYPE_S16;
-+		else if (pt->type == NLA_S32)
-+			type = NL_ATTR_TYPE_S32;
-+		else
-+			type = NL_ATTR_TYPE_S64;
-+
-+		nla_get_range_signed(pt, &range);
-+
-+		if (nla_put_s64(skb, NL_POLICY_TYPE_ATTR_MIN_VALUE_S,
-+				range.min, NL_POLICY_TYPE_ATTR_PAD) ||
-+		    nla_put_s64(skb, NL_POLICY_TYPE_ATTR_MAX_VALUE_S,
-+				range.max, NL_POLICY_TYPE_ATTR_PAD))
-+			goto nla_put_failure;
-+		break;
-+	}
-+	case NLA_BITFIELD32:
-+		type = NL_ATTR_TYPE_BITFIELD32;
-+		if (nla_put_u32(skb, NL_POLICY_TYPE_ATTR_BITFIELD32_MASK,
-+				pt->bitfield32_valid))
-+			goto nla_put_failure;
-+		break;
-+	case NLA_EXACT_LEN:
-+		type = NL_ATTR_TYPE_BINARY;
-+		if (nla_put_u32(skb, NL_POLICY_TYPE_ATTR_MIN_LENGTH, pt->len) ||
-+		    nla_put_u32(skb, NL_POLICY_TYPE_ATTR_MAX_LENGTH, pt->len))
-+			goto nla_put_failure;
-+		break;
-+	case NLA_STRING:
-+	case NLA_NUL_STRING:
-+	case NLA_BINARY:
-+		if (pt->type == NLA_STRING)
-+			type = NL_ATTR_TYPE_STRING;
-+		else if (pt->type == NLA_NUL_STRING)
-+			type = NL_ATTR_TYPE_NUL_STRING;
-+		else
-+			type = NL_ATTR_TYPE_BINARY;
-+		if (pt->len && nla_put_u32(skb, NL_POLICY_TYPE_ATTR_MAX_LENGTH,
-+					   pt->len))
-+			goto nla_put_failure;
-+		break;
-+	case NLA_MIN_LEN:
-+		type = NL_ATTR_TYPE_BINARY;
-+		if (nla_put_u32(skb, NL_POLICY_TYPE_ATTR_MIN_LENGTH, pt->len))
-+			goto nla_put_failure;
-+		break;
-+	case NLA_FLAG:
-+		type = NL_ATTR_TYPE_FLAG;
-+		break;
-+	}
-+
-+	if (nla_put_u32(skb, NL_POLICY_TYPE_ATTR_TYPE, type))
-+		goto nla_put_failure;
-+
-+	/* finish and move state to next attribute */
-+	nla_nest_end(skb, attr);
-+	nla_nest_end(skb, policy);
-+
-+next:
-+	state->attr_idx += 1;
-+	if (state->attr_idx > state->policies[state->policy_idx].maxtype) {
-+		state->attr_idx = 0;
-+		state->policy_idx++;
-+	}
-+
-+	if (again) {
-+		if (netlink_policy_dump_finished(state))
-+			return -ENODATA;
-+		goto send_attribute;
-+	}
-+
-+	return 0;
-+
-+nla_put_failure:
-+	nla_nest_cancel(skb, policy);
-+	return -ENOBUFS;
-+}
+https://github.com/greearb/lanforge-scripts/tree/master/wifi_diag
+
+# Ignore the LANforge bits about creating capture files, here is an example of how to use it:
+https://www.candelatech.com/cookbook/wifire/wifi+diagnostic
+
+
+>
+>> It would be nice to be able to set certain traffic flows to have the
+>> throughput optimization and others to have the latency optimization.
+>> For instance, high latency on a streaming download is a good trade-off
+>> if it increases total throughput.
+>
+> For the individual flows to a peer, fq_codel actually does a pretty good
+> job at putting the latency-sensitive flows first. Which is why we want
+> the queueing to happen in mac80211 (where fq_codel is active) instead of
+> in the firmware.
+
+That sounds good to me.  What is needed from the driver/firmware to make
+this work well?
+
+>> Maybe some of the AI folks training their AI to categorize cat
+>> pictures could instead start categorizing traffic flows and adjusting
+>> the stack realtime...
+>
+> I know there are people trying to classify traffic with machine learning
+> (although usually for more nefarious purposes), but I'm not sure it's
+> feasible to do in a queue management algorithm (if at all). :)
+
+If you give an API (maybe using 'tc'?) that user-space can twiddle, then anyone
+doing clever things can do it at higher levels.  It could easily be that multiple
+APs would gain benefit from being coordinated together for instance, and no local
+queueing logic would be able to coordinate that by itself.
+
+Thanks,
+Ben
+
+>
+> -Toke
+>
+
 -- 
-2.25.1
-
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
