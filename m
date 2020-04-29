@@ -2,34 +2,34 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D99E91BE59A
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 Apr 2020 19:49:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E4921BE5A2
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 Apr 2020 19:52:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726524AbgD2RtE (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 29 Apr 2020 13:49:04 -0400
-Received: from mail.kernel.org ([198.145.29.99]:59692 "EHLO mail.kernel.org"
+        id S1726618AbgD2Rw3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 29 Apr 2020 13:52:29 -0400
+Received: from mail.kernel.org ([198.145.29.99]:34304 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726423AbgD2RtE (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 29 Apr 2020 13:49:04 -0400
+        id S1726481AbgD2Rw3 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 29 Apr 2020 13:52:29 -0400
 Received: from localhost.localdomain.com (unknown [151.66.196.206])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C2D4C208FE;
-        Wed, 29 Apr 2020 17:49:02 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id A0C8D21BE5;
+        Wed, 29 Apr 2020 17:52:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1588182543;
-        bh=XyaCyX6NasKY8y249zF6XaHJE8b9TcC0AsHaX8FpsQQ=;
+        s=default; t=1588182748;
+        bh=VO5hheXNVNOEpG4EtuMOBb3zy5nHCqE9xPxQDXNbwLw=;
         h=From:To:Cc:Subject:Date:From;
-        b=uNbXGPbCF6os6KOlfEmBUP+AiyaK07hzyol6EouD97lYHVtZKGny5TkH01Dsx5hBs
-         CJeACNg9nQBGm0MHD4CPTMpM/wtJtwOZC0B7/TivtJjsjS6HvIl+G9TYdiASDW6Bv5
-         jthPrT2DQq0dgxNIYACFm9JYezUMUfDXurEesCEk=
+        b=0CaqTFVkdcZtdg0ADEzDLSWMQfwAMc/mDBLZQ1SMLipAHexXdLWEmczAxItuwtpcM
+         +YvboQ45jvX38W6fzwnbqQyTLUvtczY4v+cjz0S2TID7bprcw826aAtkb9RwOzViFT
+         8rQD0zB9U1wlnBUsajJn5dukipcEC1V9ylwN3W3g=
 From:   Lorenzo Bianconi <lorenzo@kernel.org>
 To:     nbd@nbd.name
 Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
         sean.wang@mediatek.com, linux-mediatek@lists.infradead.org
-Subject: [PATCH] mt76: mt7615: fix ssid configuration in mt7615_mcu_hw_scan
-Date:   Wed, 29 Apr 2020 19:48:53 +0200
-Message-Id: <3a36f4878f8368f57b2b3f8ab396ba418e9447dd.1588182106.git.lorenzo@kernel.org>
+Subject: [PATCH] mt76: mt7615: introduce mt7615_check_offload_capability routine
+Date:   Wed, 29 Apr 2020 19:52:15 +0200
+Message-Id: <5d8ba8de8fbd384eabf48eb1899bba82e1acc80e.1588182688.git.lorenzo@kernel.org>
 X-Mailer: git-send-email 2.25.4
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -38,51 +38,127 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fix SSID configuration performing hw frequency scanning
+Introduce mt7615_check_offload_capability routine to set hw/wiphy
+offload capabilities according to the running firmware
 
 Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7615/mcu.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ .../net/wireless/mediatek/mt76/mt7615/init.c  | 26 +++++++++++++++++++
+ .../wireless/mediatek/mt76/mt7615/mt7615.h    |  1 +
+ .../wireless/mediatek/mt76/mt7615/pci_init.c  | 21 +--------------
+ .../wireless/mediatek/mt76/mt7615/usb_init.c  |  4 +--
+ 4 files changed, 29 insertions(+), 23 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-index 57794827400c..727a55abda69 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-@@ -2713,9 +2713,9 @@ int mt7615_mcu_hw_scan(struct mt7615_phy *phy, struct ieee80211_vif *vif,
- {
- 	struct mt7615_vif *mvif = (struct mt7615_vif *)vif->drv_priv;
- 	struct cfg80211_scan_request *sreq = &scan_req->req;
-+	int n_ssids = 0, err, i, duration = MT7615_SCAN_CHANNEL_TIME;
- 	int ext_channels_num = max_t(int, sreq->n_channels - 32, 0);
- 	struct ieee80211_channel **scan_list = sreq->channels;
--	int err, i, duration = MT7615_SCAN_CHANNEL_TIME;
- 	struct mt7615_dev *dev = phy->dev;
- 	bool ext_phy = phy != &dev->phy;
- 	struct mt7615_mcu_scan_channel *chan;
-@@ -2738,16 +2738,21 @@ int mt7615_mcu_hw_scan(struct mt7615_phy *phy, struct ieee80211_vif *vif,
- 	req->seq_num = mvif->scan_seq_num | ext_phy << 7;
- 	req->bss_idx = mvif->idx;
- 	req->scan_type = 1;
--	req->ssid_type = 1;
- 	req->probe_req_num = 2;
- 	req->version = 1;
- 	req->channel_type = 4;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/init.c b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
+index 9880643888ba..7da0bf425061 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
+@@ -130,6 +130,32 @@ void mt7615_mac_init(struct mt7615_dev *dev)
+ }
+ EXPORT_SYMBOL_GPL(mt7615_mac_init);
  
- 	for (i = 0; i < sreq->n_ssids; i++) {
-+		if (!sreq->ssids[i].ssid_len)
-+			continue;
++void mt7615_check_offload_capability(struct mt7615_dev *dev)
++{
++	struct ieee80211_hw *hw = mt76_hw(dev);
++	struct wiphy *wiphy = hw->wiphy;
 +
- 		req->ssids[i].ssid_len = cpu_to_le32(sreq->ssids[i].ssid_len);
- 		memcpy(req->ssids[i].ssid, sreq->ssids[i].ssid,
- 		       sreq->ssids[i].ssid_len);
-+		n_ssids++;
- 	}
-+	req->ssid_type = n_ssids ? BIT(2) : BIT(0);
-+	req->ssids_num = n_ssids;
++	if (mt7615_firmware_offload(dev)) {
++		ieee80211_hw_set(hw, SUPPORTS_PS);
++		ieee80211_hw_set(hw, SUPPORTS_DYNAMIC_PS);
++
++		wiphy->features |= NL80211_FEATURE_SCAN_RANDOM_MAC_ADDR;
++	} else {
++		dev->ops->hw_scan = NULL;
++		dev->ops->cancel_hw_scan = NULL;
++		dev->ops->sched_scan_start = NULL;
++		dev->ops->sched_scan_stop = NULL;
++
++		wiphy->max_sched_scan_plan_interval = 0;
++		wiphy->max_sched_scan_ie_len = 0;
++		wiphy->max_scan_ie_len = IEEE80211_MAX_DATA_LEN;
++		wiphy->max_sched_scan_ssids = 0;
++		wiphy->max_match_sets = 0;
++		wiphy->max_sched_scan_reqs = 0;
++	}
++}
++EXPORT_SYMBOL_GPL(mt7615_check_offload_capability);
++
+ bool mt7615_wait_for_mcu_init(struct mt7615_dev *dev)
+ {
+ 	flush_work(&dev->mcu_work);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
+index 0476b9426b03..2321a1f23ec8 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
+@@ -370,6 +370,7 @@ int mt7615_mmio_probe(struct device *pdev, void __iomem *mem_base,
+ 		      int irq, const u32 *map);
+ u32 mt7615_reg_map(struct mt7615_dev *dev, u32 addr);
  
- 	req->timeout_value = cpu_to_le16(sreq->n_channels * duration);
- 	req->channel_min_dwell_time = cpu_to_le16(duration);
++void mt7615_check_offload_capability(struct mt7615_dev *dev);
+ void mt7615_init_device(struct mt7615_dev *dev);
+ int mt7615_register_device(struct mt7615_dev *dev);
+ void mt7615_unregister_device(struct mt7615_dev *dev);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/pci_init.c b/drivers/net/wireless/mediatek/mt76/mt7615/pci_init.c
+index cd3ccafa7d11..69cba8609edf 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/pci_init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/pci_init.c
+@@ -16,7 +16,6 @@ static void mt7615_init_work(struct work_struct *work)
+ {
+ 	struct mt7615_dev *dev = container_of(work, struct mt7615_dev,
+ 					      mcu_work);
+-	struct ieee80211_hw *hw = mt76_hw(dev);
+ 
+ 	if (mt7615_mcu_init(dev))
+ 		return;
+@@ -25,25 +24,7 @@ static void mt7615_init_work(struct work_struct *work)
+ 	mt7615_mac_init(dev);
+ 	mt7615_phy_init(dev);
+ 	mt7615_mcu_del_wtbl_all(dev);
+-
+-	if (mt7615_firmware_offload(dev)) {
+-		ieee80211_hw_set(hw, SUPPORTS_PS);
+-		ieee80211_hw_set(hw, SUPPORTS_DYNAMIC_PS);
+-	} else {
+-		struct wiphy *wiphy = hw->wiphy;
+-
+-		dev->ops->hw_scan = NULL;
+-		dev->ops->cancel_hw_scan = NULL;
+-		dev->ops->sched_scan_start = NULL;
+-		dev->ops->sched_scan_stop = NULL;
+-
+-		wiphy->max_sched_scan_plan_interval = 0;
+-		wiphy->max_sched_scan_ie_len = 0;
+-		wiphy->max_scan_ie_len = IEEE80211_MAX_DATA_LEN;
+-		wiphy->max_sched_scan_ssids = 0;
+-		wiphy->max_match_sets = 0;
+-		wiphy->max_sched_scan_reqs = 0;
+-	}
++	mt7615_check_offload_capability(dev);
+ }
+ 
+ static int mt7615_init_hardware(struct mt7615_dev *dev)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/usb_init.c b/drivers/net/wireless/mediatek/mt76/mt7615/usb_init.c
+index 39642065531f..1fbc9601391d 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/usb_init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/usb_init.c
+@@ -103,6 +103,7 @@ static void mt7663u_init_work(struct work_struct *work)
+ 	mt7615_mac_init(dev);
+ 	mt7615_phy_init(dev);
+ 	mt7615_mcu_del_wtbl_all(dev);
++	mt7615_check_offload_capability(dev);
+ }
+ 
+ int mt7663u_register_device(struct mt7615_dev *dev)
+@@ -119,9 +120,6 @@ int mt7663u_register_device(struct mt7615_dev *dev)
+ 	if (err)
+ 		return err;
+ 
+-	ieee80211_hw_set(hw, SUPPORTS_PS);
+-	ieee80211_hw_set(hw, SUPPORTS_DYNAMIC_PS);
+-
+ 	hw->extra_tx_headroom += MT_USB_HDR_SIZE + MT_USB_TXD_SIZE;
+ 	/* check hw sg support in order to enable AMSDU */
+ 	hw->max_tx_fragments = dev->mt76.usb.sg_en ? MT_HW_TXP_MAX_BUF_NUM : 1;
 -- 
 2.25.4
 
