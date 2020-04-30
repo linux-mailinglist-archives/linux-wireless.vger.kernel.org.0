@@ -2,236 +2,129 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 171101BEC22
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Apr 2020 00:41:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B456B1BECD2
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Apr 2020 02:02:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727068AbgD2Wls (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 29 Apr 2020 18:41:48 -0400
-Received: from mga06.intel.com ([134.134.136.31]:49854 "EHLO mga06.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726164AbgD2Wls (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 29 Apr 2020 18:41:48 -0400
-IronPort-SDR: nh5Ds5JfR3xSRHCW2bNdPV3xNLdAnPhh3lDOs1H4PykqshAOXhEt4MIVGyHN/9p4XHCs4n0ufG
- jOVdsGnWN+3Q==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2020 15:41:47 -0700
-IronPort-SDR: 9jJ1LbdgjLiY8d6pqXpdYBA6Bg0c4DzAfv4hye3HFGHFYPhKrJZ9sJ5xBH1hdXXlYIXmlW01mY
- HJ41cV562p7g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.73,333,1583222400"; 
-   d="scan'208";a="258106094"
-Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
-  by orsmga003.jf.intel.com with ESMTP; 29 Apr 2020 15:41:46 -0700
-Received: from kbuild by lkp-server01 with local (Exim 4.89)
-        (envelope-from <lkp@intel.com>)
-        id 1jTvOj-0002ot-IT; Thu, 30 Apr 2020 06:41:45 +0800
-Date:   Thu, 30 Apr 2020 06:41:38 +0800
-From:   kbuild test robot <lkp@intel.com>
-To:     Johannes Berg <johannes.berg@intel.com>
-Cc:     linux-wireless@vger.kernel.org
-Subject: [mac80211-next:master] BUILD SUCCESS
- 60689de46c7f6a0028c8b37b6f03db68cbfad8ed
-Message-ID: <5eaa02a2.fhpa40vtLNck5XP2%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+        id S1726929AbgD3ACe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 29 Apr 2020 20:02:34 -0400
+Received: from mail27.static.mailgun.info ([104.130.122.27]:20687 "EHLO
+        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726511AbgD3ACe (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 29 Apr 2020 20:02:34 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1588204953; h=Message-ID: References: In-Reply-To: Subject:
+ Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Sender; bh=6PGUCS98u711yAY1Z9NrOcIXGDI/Ahc9ZsTpR7krXxk=;
+ b=bcHTwQjbQTjBNraQwXjB7FxTWxLDgGr3TSYK/YQx55Aar7IEraR9oA924GFgQ3nHVahsXLjr
+ 4h6licFAW+7KP85yhZrxr2ZnaQf5GwT5+aDXyuazutkUcB9WLEgHqoZaR65BXcBB4EkzWSrW
+ 3cv5cB2Vsw3mj9Hm+7nmc+k0Y5w=
+X-Mailgun-Sending-Ip: 104.130.122.27
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5eaa1592.7f04ae8ca538-smtp-out-n04;
+ Thu, 30 Apr 2020 00:02:26 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 97BABC433BA; Thu, 30 Apr 2020 00:02:25 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: rmanohar)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id B8BB8C433D2;
+        Thu, 30 Apr 2020 00:02:24 +0000 (UTC)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
 Content-Transfer-Encoding: 7bit
+Date:   Wed, 29 Apr 2020 17:02:24 -0700
+From:   Rajkumar Manoharan <rmanohar@codeaurora.org>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless@vger.kernel.org
+Subject: Re: [PATCH 02/10] cfg80211: validate 6 GHz chandef
+In-Reply-To: <73a4e63e16bffb69cd9b62fd904b926dd5278fbf.camel@sipsolutions.net>
+References: <1587768108-25248-1-git-send-email-rmanohar@codeaurora.org>
+ <1587768108-25248-3-git-send-email-rmanohar@codeaurora.org>
+ <73a4e63e16bffb69cd9b62fd904b926dd5278fbf.camel@sipsolutions.net>
+Message-ID: <f7fa5618844630a3315acad53765e5e5@codeaurora.org>
+X-Sender: rmanohar@codeaurora.org
+User-Agent: Roundcube Webmail/1.3.9
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/jberg/mac80211-next.git  master
-branch HEAD: 60689de46c7f6a0028c8b37b6f03db68cbfad8ed  mac80211: fix memory overlap due to variable length param
+On 2020-04-29 07:26, Johannes Berg wrote:
+> On Fri, 2020-04-24 at 15:41 -0700, Rajkumar Manoharan wrote:
+>> 
+>> +static inline bool
+>> +cfg80211_chandef_is_6ghz(const struct cfg80211_chan_def *chandef)
+>> +{
+>> +	return (chandef->center_freq1 > 5940 && chandef->center_freq1 < 
+>> 7105);
+>> +}
+> 
+> Seems like this
+> 
+>> +++ b/net/wireless/chan.c
+>> @@ -19,6 +19,29 @@ static bool cfg80211_valid_60g_freq(u32 freq)
+>>  	return freq >= 58320 && freq <= 70200;
+>>  }
+>> 
+>> +static bool cfg80211_is_6ghz_freq(u32 freq)
+>> +{
+>> +	return (freq > 5940 && freq < 7105);
+>> +}
+> 
+> should use this, by also exposing it, or something.
+> 
+Sure. Export this and remove the above one.
 
-elapsed time: 481m
+>> +static enum nl80211_chan_width cfg80211_chan_to_bw_6ghz(u8 idx)
+>> +{
+>> +	/* channels: 1, 5, 9, 13... */
+>> +	if ((idx & 0x3) == 0x1)
+>> +		return NL80211_CHAN_WIDTH_20;
+>> +	/* channels 3, 11, 19... */
+>> +	if ((idx & 0x7) == 0x3)
+>> +		return NL80211_CHAN_WIDTH_40;
+>> +	/* channels 7, 23, 39.. */
+>> +	if ((idx & 0xf) == 0x7)
+>> +		return NL80211_CHAN_WIDTH_80;
+>> +	/* channels 15, 47, 79...*/
+>> +	if ((idx & 0x1f) == 0xf)
+>> +		return NL80211_CHAN_WIDTH_160;
+>> +
+>> +	return NL80211_CHAN_WIDTH_20;
+>> +}
+> 
+> We haven't really done that for anything else - is that really
+> necessary?
+> 
+Hmm.. to check whether give center_freq1 chan_idx is allowed to operate 
+in given bandwidth.
+Similar to center_idx_to_bw_6ghz of hostapd, this API is used to chandef 
+bw.
 
-configs tested: 177
-configs skipped: 0
+[...]
+>> @@ -213,6 +255,10 @@ bool cfg80211_chandef_valid(const struct 
+>> cfg80211_chan_def *chandef)
+>>  	    !cfg80211_edmg_chandef_valid(chandef))
+>>  		return false;
+>> 
+>> +	if (cfg80211_chandef_is_6ghz(chandef) &&
+>> +	    !cfg80211_6ghz_chandef_valid(chandef))
+>> +		return false;
+> 
+> You only get there if it was in range ...
+> 
+> Not sure about this whole patch, it seems a bit pointless?
+> 
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Don't we have to check chandef bw? If not, I will drop the change.
 
-arm                           efm32_defconfig
-arm                         at91_dt_defconfig
-arm                        shmobile_defconfig
-arm64                               defconfig
-arm                          exynos_defconfig
-arm                        multi_v5_defconfig
-arm                           sunxi_defconfig
-arm                        multi_v7_defconfig
-arm64                            allyesconfig
-arm                              allyesconfig
-arm64                            allmodconfig
-arm                              allmodconfig
-arm64                             allnoconfig
-arm                               allnoconfig
-sparc                            allyesconfig
-s390                                defconfig
-ia64                        generic_defconfig
-m68k                          multi_defconfig
-mips                malta_kvm_guest_defconfig
-ia64                             allmodconfig
-powerpc                             defconfig
-sparc                               defconfig
-sh                  sh7785lcr_32bit_defconfig
-i386                              allnoconfig
-i386                             allyesconfig
-i386                             alldefconfig
-i386                                defconfig
-i386                              debian-10.3
-ia64                          tiger_defconfig
-ia64                                defconfig
-ia64                              allnoconfig
-ia64                         bigsur_defconfig
-ia64                             allyesconfig
-ia64                             alldefconfig
-m68k                       m5475evb_defconfig
-m68k                             allmodconfig
-m68k                       bvme6000_defconfig
-m68k                           sun3_defconfig
-nios2                         3c120_defconfig
-nios2                         10m50_defconfig
-c6x                        evmc6678_defconfig
-c6x                              allyesconfig
-openrisc                 simple_smp_defconfig
-openrisc                    or1ksim_defconfig
-nds32                               defconfig
-nds32                             allnoconfig
-csky                                defconfig
-alpha                               defconfig
-h8300                       h8s-sim_defconfig
-h8300                     edosk2674_defconfig
-xtensa                          iss_defconfig
-h8300                    h8300h-sim_defconfig
-xtensa                       common_defconfig
-arc                                 defconfig
-arc                              allyesconfig
-microblaze                      mmu_defconfig
-microblaze                    nommu_defconfig
-mips                      fuloong2e_defconfig
-mips                      malta_kvm_defconfig
-mips                            ar7_defconfig
-mips                             allyesconfig
-mips                         64r6el_defconfig
-mips                              allnoconfig
-mips                           32r2_defconfig
-mips                             allmodconfig
-mips                         tb0287_defconfig
-mips                       capcella_defconfig
-mips                           ip32_defconfig
-mips                  decstation_64_defconfig
-mips                      loongson3_defconfig
-mips                          ath79_defconfig
-mips                        bcm63xx_defconfig
-parisc                            allnoconfig
-parisc                generic-64bit_defconfig
-parisc                generic-32bit_defconfig
-parisc                           allyesconfig
-parisc                           allmodconfig
-powerpc                      chrp32_defconfig
-powerpc                       holly_defconfig
-powerpc                       ppc64_defconfig
-powerpc                          rhel-kconfig
-powerpc                           allnoconfig
-powerpc                  mpc866_ads_defconfig
-powerpc                    amigaone_defconfig
-powerpc                    adder875_defconfig
-powerpc                     ep8248e_defconfig
-powerpc                          g5_defconfig
-powerpc                     mpc512x_defconfig
-parisc               randconfig-a001-20200429
-m68k                 randconfig-a001-20200429
-alpha                randconfig-a001-20200429
-mips                 randconfig-a001-20200429
-nds32                randconfig-a001-20200429
-riscv                randconfig-a001-20200429
-parisc               randconfig-a001-20200430
-mips                 randconfig-a001-20200430
-m68k                 randconfig-a001-20200430
-riscv                randconfig-a001-20200430
-alpha                randconfig-a001-20200430
-nds32                randconfig-a001-20200430
-nios2                randconfig-a001-20200429
-h8300                randconfig-a001-20200429
-c6x                  randconfig-a001-20200429
-sparc64              randconfig-a001-20200429
-microblaze           randconfig-a001-20200429
-s390                 randconfig-a001-20200430
-xtensa               randconfig-a001-20200430
-csky                 randconfig-a001-20200430
-openrisc             randconfig-a001-20200430
-sh                   randconfig-a001-20200430
-sh                   randconfig-a001-20200429
-csky                 randconfig-a001-20200429
-s390                 randconfig-a001-20200429
-xtensa               randconfig-a001-20200429
-openrisc             randconfig-a001-20200429
-i386                 randconfig-c002-20200429
-i386                 randconfig-c001-20200429
-x86_64               randconfig-c002-20200429
-x86_64               randconfig-c001-20200429
-i386                 randconfig-c003-20200429
-x86_64               randconfig-c003-20200429
-x86_64               randconfig-d001-20200428
-i386                 randconfig-d002-20200428
-i386                 randconfig-d001-20200428
-x86_64               randconfig-d003-20200428
-i386                 randconfig-d003-20200428
-x86_64               randconfig-d001-20200429
-x86_64               randconfig-d002-20200429
-i386                 randconfig-d002-20200429
-i386                 randconfig-d001-20200429
-x86_64               randconfig-d003-20200429
-i386                 randconfig-d003-20200429
-i386                 randconfig-f002-20200429
-i386                 randconfig-f003-20200429
-x86_64               randconfig-f003-20200429
-i386                 randconfig-f001-20200429
-x86_64               randconfig-f001-20200429
-x86_64               randconfig-h001-20200429
-i386                 randconfig-h003-20200429
-x86_64               randconfig-h003-20200429
-i386                 randconfig-h002-20200429
-i386                 randconfig-h001-20200429
-sparc                randconfig-a001-20200429
-ia64                 randconfig-a001-20200429
-powerpc              randconfig-a001-20200429
-arm                  randconfig-a001-20200429
-arc                  randconfig-a001-20200429
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-s390                       zfcpdump_defconfig
-s390                          debug_defconfig
-s390                             allyesconfig
-s390                              allnoconfig
-s390                             allmodconfig
-s390                             alldefconfig
-sh                          rsk7269_defconfig
-sh                               allmodconfig
-sh                            titan_defconfig
-sh                                allnoconfig
-sparc64                             defconfig
-sparc64                           allnoconfig
-sparc64                          allyesconfig
-sparc64                          allmodconfig
-um                           x86_64_defconfig
-um                             i386_defconfig
-um                                  defconfig
-x86_64                                   rhel
-x86_64                               rhel-7.6
-x86_64                    rhel-7.6-kselftests
-x86_64                         rhel-7.2-clear
-x86_64                                    lkp
-x86_64                              fedora-25
-x86_64                                  kexec
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+-Rajkumar
