@@ -2,76 +2,75 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BDECC1C070C
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Apr 2020 21:54:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6EA221C0723
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Apr 2020 21:57:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726440AbgD3Tyn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 30 Apr 2020 15:54:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55752 "EHLO
+        id S1726762AbgD3T47 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 30 Apr 2020 15:56:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56114 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726272AbgD3Tyn (ORCPT
+        with ESMTP id S1726338AbgD3T46 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 30 Apr 2020 15:54:43 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1A67C035494
-        for <linux-wireless@vger.kernel.org>; Thu, 30 Apr 2020 12:54:42 -0700 (PDT)
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.93)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1jUFGb-002qNU-3Z; Thu, 30 Apr 2020 21:54:41 +0200
-Message-ID: <cc1a53345950c23ee1349520545c5595bbced952.camel@sipsolutions.net>
-Subject: Re: [PATCH 02/10] cfg80211: validate 6 GHz chandef
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Rajkumar Manoharan <rmanohar@codeaurora.org>
-Cc:     linux-wireless@vger.kernel.org
-Date:   Thu, 30 Apr 2020 21:54:39 +0200
-In-Reply-To: <f7fa5618844630a3315acad53765e5e5@codeaurora.org>
-References: <1587768108-25248-1-git-send-email-rmanohar@codeaurora.org>
-         <1587768108-25248-3-git-send-email-rmanohar@codeaurora.org>
-         <73a4e63e16bffb69cd9b62fd904b926dd5278fbf.camel@sipsolutions.net>
-         <f7fa5618844630a3315acad53765e5e5@codeaurora.org>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.4 (3.34.4-1.fc31) 
-MIME-Version: 1.0
+        Thu, 30 Apr 2020 15:56:58 -0400
+Received: from shards.monkeyblade.net (shards.monkeyblade.net [IPv6:2620:137:e000::1:9])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4006CC035495;
+        Thu, 30 Apr 2020 12:56:58 -0700 (PDT)
+Received: from localhost (unknown [IPv6:2601:601:9f00:477::3d5])
+        (using TLSv1 with cipher AES256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id 4DE7A1289CE3F;
+        Thu, 30 Apr 2020 12:56:55 -0700 (PDT)
+Date:   Thu, 30 Apr 2020 12:56:54 -0700 (PDT)
+Message-Id: <20200430.125654.335144341485365161.davem@davemloft.net>
+To:     mchehab+huawei@kernel.org
+Cc:     linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        corbet@lwn.net, devel@driverdev.osuosl.org, coreteam@netfilter.org,
+        netfilter-devel@vger.kernel.org, kou.ishizaki@toshiba.co.jp,
+        netdev@vger.kernel.org, paulus@samba.org,
+        linuxppc-dev@lists.ozlabs.org, marcelo.leitner@gmail.com,
+        kadlec@netfilter.org, johannes@sipsolutions.net, fw@strlen.de,
+        gregkh@linuxfoundation.org, kuba@kernel.org,
+        benh@kernel.crashing.org, linux-wireless@vger.kernel.org,
+        geoff@infradead.org, mpe@ellerman.id.au, linux-can@vger.kernel.org,
+        ioana.ciornei@nxp.com, linux-sctp@vger.kernel.org,
+        vyasevich@gmail.com, rds-devel@oss.oracle.com,
+        ruxandra.radulescu@nxp.com, dhowells@redhat.com,
+        pablo@netfilter.org, kvalo@codeaurora.org,
+        santosh.shilimkar@oracle.com, socketcan@hartkopp.net,
+        nhorman@tuxdriver.com, courmisch@gmail.com,
+        linux-rdma@vger.kernel.org, linux-afs@lists.infradead.org,
+        linux-x25@vger.kernel.org, mkl@pengutronix.de
+Subject: Re: [PATCH 00/37] net: manually convert files to ReST format -
+ part 2
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <cover.1588261997.git.mchehab+huawei@kernel.org>
+References: <cover.1588261997.git.mchehab+huawei@kernel.org>
+X-Mailer: Mew version 6.8 on Emacs 26.1
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Thu, 30 Apr 2020 12:56:56 -0700 (PDT)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Date: Thu, 30 Apr 2020 18:03:55 +0200
 
-> > > +static enum nl80211_chan_width cfg80211_chan_to_bw_6ghz(u8 idx)
-> > > +{
-> > > +	/* channels: 1, 5, 9, 13... */
-> > > +	if ((idx & 0x3) == 0x1)
-> > > +		return NL80211_CHAN_WIDTH_20;
-> > > +	/* channels 3, 11, 19... */
-> > > +	if ((idx & 0x7) == 0x3)
-> > > +		return NL80211_CHAN_WIDTH_40;
-> > > +	/* channels 7, 23, 39.. */
-> > > +	if ((idx & 0xf) == 0x7)
-> > > +		return NL80211_CHAN_WIDTH_80;
-> > > +	/* channels 15, 47, 79...*/
-> > > +	if ((idx & 0x1f) == 0xf)
-> > > +		return NL80211_CHAN_WIDTH_160;
-> > > +
-> > > +	return NL80211_CHAN_WIDTH_20;
-> > > +}
-> > 
-> > We haven't really done that for anything else - is that really
-> > necessary?
-> > 
-> Hmm.. to check whether give center_freq1 chan_idx is allowed to operate 
-> in given bandwidth.
-> Similar to center_idx_to_bw_6ghz of hostapd, this API is used to chandef 
-> bw.
+> That's the second part of my work to convert the networking
+> text files into ReST. it is based on today's linux-next (next-20200430).
+> 
+> The full series (including those ones) are at:
+> 
+> 	https://git.linuxtv.org/mchehab/experimental.git/log/?h=net-docs
+> 
+> I should be sending the remaining patches (another /38 series)
+> after getting those merged at -next.
+> 
+> The documents, converted to HTML via the building system are at:
+> 
+> 	https://www.infradead.org/~mchehab/kernel_docs/networking/
 
-Yeah, but good enough if hostapd does that check? I don't really see the
-kernel caring too much?
-
-> Don't we have to check chandef bw? If not, I will drop the change.
-
-I'm not really sure why we should, tbh.
-
-johannes
-
+Series applied to net-next, thank you.
