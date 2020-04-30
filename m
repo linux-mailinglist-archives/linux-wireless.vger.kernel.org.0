@@ -2,34 +2,34 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2503A1BED68
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Apr 2020 03:06:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 960CE1BED69
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Apr 2020 03:06:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726309AbgD3BGx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 29 Apr 2020 21:06:53 -0400
-Received: from mail.adapt-ip.com ([173.164.178.19]:58368 "EHLO
+        id S1726573AbgD3BG4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 29 Apr 2020 21:06:56 -0400
+Received: from mail.adapt-ip.com ([173.164.178.19]:58394 "EHLO
         web.adapt-ip.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726419AbgD3BGx (ORCPT
+        with ESMTP id S1726419AbgD3BG4 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 29 Apr 2020 21:06:53 -0400
+        Wed, 29 Apr 2020 21:06:56 -0400
 Received: from localhost (localhost [127.0.0.1])
-        by web.adapt-ip.com (Postfix) with ESMTP id 1161C4F8012;
-        Thu, 30 Apr 2020 01:06:52 +0000 (UTC)
+        by web.adapt-ip.com (Postfix) with ESMTP id 040584F80D6;
+        Thu, 30 Apr 2020 01:06:55 +0000 (UTC)
 X-Virus-Scanned: Debian amavisd-new at web.adapt-ip.com
 Received: from web.adapt-ip.com ([127.0.0.1])
         by localhost (web.adapt-ip.com [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id W62SyVQg8wf1; Thu, 30 Apr 2020 01:06:47 +0000 (UTC)
+        with ESMTP id msty8LS5LR5f; Thu, 30 Apr 2020 01:06:51 +0000 (UTC)
 Received: from atlas.campbell.adapt-ip.com (gateway.adapt-ip.com [173.164.178.20])
         (Authenticated sender: thomas@adapt-ip.com)
-        by web.adapt-ip.com (Postfix) with ESMTPSA id 6DA4C4F8013;
+        by web.adapt-ip.com (Postfix) with ESMTPSA id A886B4F8019;
         Thu, 30 Apr 2020 01:06:44 +0000 (UTC)
 From:   Thomas Pedersen <thomas@adapt-ip.com>
 To:     Johannes Berg <johannes@sipsolutions.net>
 Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
         Thomas Pedersen <thomas@adapt-ip.com>
-Subject: [PATCH v3 3/5] nl80211: support scan frequencies in KHz
-Date:   Wed, 29 Apr 2020 18:06:40 -0700
-Message-Id: <20200430010642.22552-4-thomas@adapt-ip.com>
+Subject: [PATCH v3 4/5] ieee80211: S1G defines
+Date:   Wed, 29 Apr 2020 18:06:41 -0700
+Message-Id: <20200430010642.22552-5-thomas@adapt-ip.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20200430010642.22552-1-thomas@adapt-ip.com>
 References: <20200430010642.22552-1-thomas@adapt-ip.com>
@@ -40,199 +40,296 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-If the driver advertises NL80211_EXT_FEATURE_SCAN_FREQ_KHZ
-userspace can omit NL80211_ATTR_SCAN_FREQUENCIES in favor
-of an NL80211_ATTR_SCAN_FREQ_KHZ. To get scan results in
-KHz userspace must also set the
-NL80211_SCAN_FLAG_FREQ_KHZ.
-
-This lets nl80211 remain compatible with older userspaces
-while not requring and sending redundant (and potentially
-incorrect) scan frequency sets.
+These are found in IEEE-802.11ah-2016.
 
 Signed-off-by: Thomas Pedersen <thomas@adapt-ip.com>
-
 ---
-v3:
-- report SCAN_FREQ_KHZ in scan results
-- advertise SCAN_FREQ_KHZ support in feature flag
-- add SCAN_FLAG_FREQ_KHZ so user can select scan result
-  frequency units
----
- include/uapi/linux/nl80211.h | 13 ++++++++-
- net/mac80211/main.c          |  2 ++
- net/wireless/nl80211.c       | 52 +++++++++++++++++++++++++++---------
- 3 files changed, 54 insertions(+), 13 deletions(-)
+ include/linux/ieee80211.h | 221 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 221 insertions(+)
 
-diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-index 0ceb4de52d9a..b6012aa5103b 100644
---- a/include/uapi/linux/nl80211.h
-+++ b/include/uapi/linux/nl80211.h
-@@ -2492,7 +2492,7 @@ enum nl80211_commands {
-  *	an %NL80211_ATTR_WIPHY_FREQ_OFFSET.
-  * @NL80211_ATTR_CENTER_FREQ1_OFFSET: Center frequency offset in KHz for the
-  *	first channel segment specified in %NL80211_ATTR_CENTER_FREQ1.
-- *
-+ * @NL80211_ATTR_SCAN_FREQ_KHZ: nested attribute with KHz frequencies
-  *
-  * @NUM_NL80211_ATTR: total number of nl80211_attrs available
-  * @NL80211_ATTR_MAX: highest attribute number currently defined
-@@ -2972,6 +2972,7 @@ enum nl80211_attrs {
- 	NL80211_ATTR_RECEIVE_MULTICAST,
- 	NL80211_ATTR_WIPHY_FREQ_OFFSET,
- 	NL80211_ATTR_CENTER_FREQ1_OFFSET,
-+	NL80211_ATTR_SCAN_FREQ_KHZ,
+diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
+index a152f7cfc8de..c2a2839411b2 100644
+--- a/include/linux/ieee80211.h
++++ b/include/linux/ieee80211.h
+@@ -105,6 +105,51 @@
  
- 	/* add attributes here, update the policy in nl80211.c */
- 
-@@ -5721,6 +5722,11 @@ enum nl80211_feature_flags {
-  * @NL80211_EXT_FEATURE_MULTICAST_REGISTRATIONS: management frame registrations
-  *	are possible for multicast frames and those will be reported properly.
-  *
-+ * @NL80211_EXT_FEATURE_SCAN_FREQ_KHZ: This driver supports receiving and
-+ *	reporting scan request with %NL80211_ATTR_SCAN_FREQ_KHZ. In order to
-+ *	report %NL80211_ATTR_SCAN_FREQ_KHZ, %NL80211_SCAN_FLAG_FREQ_KHZ must be
-+ *	included in the scan request.
-+ *
-  * @NUM_NL80211_EXT_FEATURES: number of extended features.
-  * @MAX_NL80211_EXT_FEATURES: highest extended feature index.
-  */
-@@ -5774,6 +5780,7 @@ enum nl80211_ext_feature_index {
- 	NL80211_EXT_FEATURE_DEL_IBSS_STA,
- 	NL80211_EXT_FEATURE_MULTICAST_REGISTRATIONS,
- 	NL80211_EXT_FEATURE_BEACON_PROTECTION_CLIENT,
-+	NL80211_EXT_FEATURE_SCAN_FREQ_KHZ,
- 
- 	/* add new features before the definition below */
- 	NUM_NL80211_EXT_FEATURES,
-@@ -5885,6 +5892,9 @@ enum nl80211_timeout_reason {
-  * @NL80211_SCAN_FLAG_MIN_PREQ_CONTENT: minimize probe request content to
-  *	only have supported rates and no additional capabilities (unless
-  *	added by userspace explicitly.)
-+ * @NL80211_SCAN_FLAG_FREQ_KHZ: report scan results with
-+ *	%NL80211_ATTR_SCAN_FREQ_KHZ. This also means
-+ *	%NL80211_ATTR_SCAN_FREQUENCIES will not be included.
-  */
- enum nl80211_scan_flags {
- 	NL80211_SCAN_FLAG_LOW_PRIORITY				= 1<<0,
-@@ -5900,6 +5910,7 @@ enum nl80211_scan_flags {
- 	NL80211_SCAN_FLAG_HIGH_ACCURACY				= 1<<10,
- 	NL80211_SCAN_FLAG_RANDOM_SN				= 1<<11,
- 	NL80211_SCAN_FLAG_MIN_PREQ_CONTENT			= 1<<12,
-+	NL80211_SCAN_FLAG_FREQ_KHZ				= 1<<13,
- };
- 
- /**
-diff --git a/net/mac80211/main.c b/net/mac80211/main.c
-index 06c90d360633..ac74bd780b42 100644
---- a/net/mac80211/main.c
-+++ b/net/mac80211/main.c
-@@ -596,6 +596,8 @@ struct ieee80211_hw *ieee80211_alloc_hw_nm(size_t priv_data_len,
- 			      NL80211_EXT_FEATURE_CONTROL_PORT_OVER_NL80211);
- 	wiphy_ext_feature_set(wiphy,
- 			      NL80211_EXT_FEATURE_CONTROL_PORT_NO_PREAUTH);
-+	wiphy_ext_feature_set(wiphy,
-+			      NL80211_EXT_FEATURE_SCAN_FREQ_KHZ);
- 
- 	if (!ops->hw_scan) {
- 		wiphy->features |= NL80211_FEATURE_LOW_PRIORITY_SCAN |
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index fb056613a23f..decd37fd470e 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -664,6 +664,7 @@ const struct nla_policy nl80211_policy[NUM_NL80211_ATTR] = {
- 	[NL80211_ATTR_PMK_REAUTH_THRESHOLD] = NLA_POLICY_RANGE(NLA_U8, 1, 100),
- 	[NL80211_ATTR_RECEIVE_MULTICAST] = { .type = NLA_FLAG },
- 	[NL80211_ATTR_WIPHY_FREQ_OFFSET] = NLA_POLICY_RANGE(NLA_U32, 0, 999),
-+	[NL80211_ATTR_SCAN_FREQ_KHZ] = { .type = NLA_NESTED },
- };
- 
- /* policy for the key attributes */
-@@ -7761,6 +7762,8 @@ static int nl80211_trigger_scan(struct sk_buff *skb, struct genl_info *info)
- 	struct cfg80211_registered_device *rdev = info->user_ptr[0];
- 	struct wireless_dev *wdev = info->user_ptr[1];
- 	struct cfg80211_scan_request *request;
-+	struct nlattr *scan_freqs = NULL;
-+	bool scan_freqs_khz = false;
- 	struct nlattr *attr;
- 	struct wiphy *wiphy;
- 	int err, tmp, n_ssids = 0, n_channels, i;
-@@ -7779,9 +7782,17 @@ static int nl80211_trigger_scan(struct sk_buff *skb, struct genl_info *info)
- 		goto unlock;
- 	}
- 
--	if (info->attrs[NL80211_ATTR_SCAN_FREQUENCIES]) {
--		n_channels = validate_scan_freqs(
--				info->attrs[NL80211_ATTR_SCAN_FREQUENCIES]);
-+	if (info->attrs[NL80211_ATTR_SCAN_FREQ_KHZ]) {
-+		if (!wiphy_ext_feature_isset(wiphy,
-+					     NL80211_EXT_FEATURE_SCAN_FREQ_KHZ))
-+			return -EOPNOTSUPP;
-+		scan_freqs = info->attrs[NL80211_ATTR_SCAN_FREQ_KHZ];
-+		scan_freqs_khz = true;
-+	} else if (info->attrs[NL80211_ATTR_SCAN_FREQUENCIES])
-+		scan_freqs = info->attrs[NL80211_ATTR_SCAN_FREQUENCIES];
+ /* extension, added by 802.11ad */
+ #define IEEE80211_STYPE_DMG_BEACON		0x0000
++#define IEEE80211_STYPE_S1G_BEACON		0x0010
 +
-+	if (scan_freqs) {
-+		n_channels = validate_scan_freqs(scan_freqs);
- 		if (!n_channels) {
- 			err = -EINVAL;
- 			goto unlock;
-@@ -7829,13 +7840,16 @@ static int nl80211_trigger_scan(struct sk_buff *skb, struct genl_info *info)
- 	}
++/* bits unique to S1G beacon */
++#define IEEE80211_S1G_BCN_NEXT_TBTT	0x100
++
++/* see 802.11ah-2016 9.9 NDP CMAC frames */
++#define IEEE80211_S1G_1MHZ_NDP_BITS	25
++#define IEEE80211_S1G_1MHZ_NDP_BYTES	4
++#define IEEE80211_S1G_2MHZ_NDP_BITS	37
++#define IEEE80211_S1G_2MHZ_NDP_BYTES	5
++
++#define IEEE80211_NDP_FTYPE_CTS			0
++#define IEEE80211_NDP_FTYPE_CF_END		0
++#define IEEE80211_NDP_FTYPE_PS_POLL		1
++#define IEEE80211_NDP_FTYPE_ACK			2
++#define IEEE80211_NDP_FTYPE_PS_POLL_ACK		3
++#define IEEE80211_NDP_FTYPE_BA			4
++#define IEEE80211_NDP_FTYPE_BF_REPORT_POLL	5
++#define IEEE80211_NDP_FTYPE_PAGING		6
++#define IEEE80211_NDP_FTYPE_PREQ		7
++
++#define SM64(f, v)	((((u64)v) << f##_S) & f)
++
++/* NDP CMAC frame fields */
++#define IEEE80211_NDP_FTYPE                    0x0000000000000007
++#define IEEE80211_NDP_FTYPE_S                  0x0000000000000000
++
++/* 1M Probe Request 11ah 9.9.3.1.1 */
++#define IEEE80211_NDP_1M_PREQ_ANO      0x0000000000000008
++#define IEEE80211_NDP_1M_PREQ_ANO_S                     3
++#define IEEE80211_NDP_1M_PREQ_CSSID    0x00000000000FFFF0
++#define IEEE80211_NDP_1M_PREQ_CSSID_S                   4
++#define IEEE80211_NDP_1M_PREQ_RTYPE    0x0000000000100000
++#define IEEE80211_NDP_1M_PREQ_RTYPE_S                  20
++#define IEEE80211_NDP_1M_PREQ_RSV      0x0000000001E00000
++#define IEEE80211_NDP_1M_PREQ_RSV      0x0000000001E00000
++/* 2M Probe Request 11ah 9.9.3.1.2 */
++#define IEEE80211_NDP_2M_PREQ_ANO      0x0000000000000008
++#define IEEE80211_NDP_2M_PREQ_ANO_S                     3
++#define IEEE80211_NDP_2M_PREQ_CSSID    0x0000000FFFFFFFF0
++#define IEEE80211_NDP_2M_PREQ_CSSID_S                   4
++#define IEEE80211_NDP_2M_PREQ_RTYPE    0x0000001000000000
++#define IEEE80211_NDP_2M_PREQ_RTYPE_S                  36
++
++#define IEEE80211_ANO_NETTYPE_WILD              15
  
- 	i = 0;
--	if (info->attrs[NL80211_ATTR_SCAN_FREQUENCIES]) {
-+	if (scan_freqs) {
- 		/* user specified, bail out if channel not found */
--		nla_for_each_nested(attr, info->attrs[NL80211_ATTR_SCAN_FREQUENCIES], tmp) {
-+		nla_for_each_nested(attr, scan_freqs, tmp) {
- 			struct ieee80211_channel *chan;
-+			int freq = nla_get_u32(attr);
+ /* control extension - for IEEE80211_FTYPE_CTL | IEEE80211_STYPE_CTL_EXT */
+ #define IEEE80211_CTL_EXT_POLL		0x2000
+@@ -121,6 +166,21 @@
+ #define IEEE80211_MAX_SN		IEEE80211_SN_MASK
+ #define IEEE80211_SN_MODULO		(IEEE80211_MAX_SN + 1)
  
--			chan = ieee80211_get_channel(wiphy, nla_get_u32(attr));
-+			if (!scan_freqs_khz)
-+				freq = MHZ_TO_KHZ(freq);
++
++/* PV1 Layout 11ah 9.8.3.1 */
++#define IEEE80211_PV1_FCTL_VERS		0x0003
++#define IEEE80211_PV1_FCTL_FTYPE	0x001c
++#define IEEE80211_PV1_FCTL_STYPE	0x00e0
++#define IEEE80211_PV1_FCTL_TODS		0x0100
++#define IEEE80211_PV1_FCTL_MOREFRAGS	0x0200
++#define IEEE80211_PV1_FCTL_PM		0x0400
++#define IEEE80211_PV1_FCTL_MOREDATA	0x0800
++#define IEEE80211_PV1_FCTL_PROTECTED	0x1000
++#define IEEE80211_PV1_FCTL_END_SP       0x2000
++#define IEEE80211_PV1_FCTL_RELAYED      0x4000
++#define IEEE80211_PV1_FCTL_ACK_POLICY   0x8000
++#define IEEE80211_PV1_FCTL_CTL_EXT	0x0f00
++
+ static inline bool ieee80211_sn_less(u16 sn1, u16 sn2)
+ {
+ 	return ((sn1 - sn2) & IEEE80211_SN_MASK) > (IEEE80211_SN_MODULO >> 1);
+@@ -148,6 +208,7 @@ static inline u16 ieee80211_sn_sub(u16 sn1, u16 sn2)
+ #define IEEE80211_MAX_FRAG_THRESHOLD	2352
+ #define IEEE80211_MAX_RTS_THRESHOLD	2353
+ #define IEEE80211_MAX_AID		2007
++#define IEEE80211_MAX_AID_S1G		8191
+ #define IEEE80211_MAX_TIM_LEN		251
+ #define IEEE80211_MAX_MESH_PEERINGS	63
+ /* Maximum size for the MA-UNITDATA primitive, 802.11 standard section
+@@ -371,6 +432,17 @@ static inline bool ieee80211_is_data(__le16 fc)
+ 	       cpu_to_le16(IEEE80211_FTYPE_DATA);
+ }
  
-+			chan = ieee80211_get_channel_khz(wiphy, freq);
- 			if (!chan) {
- 				err = -EINVAL;
- 				goto out_free;
-@@ -15270,14 +15284,28 @@ static int nl80211_add_scan_req(struct sk_buff *msg,
- 	}
- 	nla_nest_end(msg, nest);
++/**
++ * ieee80211_is_ext - check if type is IEEE80211_FTYPE_EXT
++ * @fc: frame control bytes in little-endian byteorder
++ */
++static inline bool ieee80211_is_ext(__le16 fc)
++{
++	return (fc & cpu_to_le16(IEEE80211_FCTL_FTYPE)) ==
++	       cpu_to_le16(IEEE80211_FTYPE_EXT);
++}
++
++
+ /**
+  * ieee80211_is_data_qos - check if type is IEEE80211_FTYPE_DATA and IEEE80211_STYPE_QOS_DATA is set
+  * @fc: frame control bytes in little-endian byteorder
+@@ -469,6 +541,18 @@ static inline bool ieee80211_is_beacon(__le16 fc)
+ 	       cpu_to_le16(IEEE80211_FTYPE_MGMT | IEEE80211_STYPE_BEACON);
+ }
  
--	nest = nla_nest_start_noflag(msg, NL80211_ATTR_SCAN_FREQUENCIES);
--	if (!nest)
--		goto nla_put_failure;
--	for (i = 0; i < req->n_channels; i++) {
--		if (nla_put_u32(msg, i, req->channels[i]->center_freq))
-+	if (req->flags & NL80211_SCAN_FLAG_FREQ_KHZ) {
-+		nest = nla_nest_start_noflag(msg,
-+					     NL80211_ATTR_SCAN_FREQ_KHZ);
-+		if (!nest)
-+			goto nla_put_failure;
-+		for (i = 0; i < req->n_channels; i++) {
-+			if (nla_put_u32(msg, i,
-+				   ieee80211_channel_to_khz(req->channels[i])))
-+				goto nla_put_failure;
-+		}
-+		nla_nest_end(msg, nest);
-+	} else {
-+		nest = nla_nest_start_noflag(msg,
-+					     NL80211_ATTR_SCAN_FREQUENCIES);
-+		if (!nest)
- 			goto nla_put_failure;
-+		for (i = 0; i < req->n_channels; i++) {
-+			if (nla_put_u32(msg, i, req->channels[i]->center_freq))
-+				goto nla_put_failure;
-+		}
-+		nla_nest_end(msg, nest);
- 	}
--	nla_nest_end(msg, nest);
++/**
++ * ieee80211_is_s1g_beacon - check if IEEE80211_FTYPE_EXT &&
++ * IEEE80211_STYPE_S1G_BEACON
++ * @fc: frame control bytes in little-endian byteorder
++ */
++static inline bool ieee80211_is_s1g_beacon(__le16 fc)
++{
++	return (fc & cpu_to_le16(IEEE80211_FCTL_FTYPE |
++				 IEEE80211_FCTL_STYPE)) ==
++	       cpu_to_le16(IEEE80211_FTYPE_EXT | IEEE80211_STYPE_S1G_BEACON);
++}
++
+ /**
+  * ieee80211_is_atim - check if IEEE80211_FTYPE_MGMT && IEEE80211_STYPE_ATIM
+  * @fc: frame control bytes in little-endian byteorder
+@@ -900,6 +984,59 @@ struct ieee80211_addba_ext_ie {
+ 	u8 data;
+ } __packed;
  
- 	if (req->ie &&
- 	    nla_put(msg, NL80211_ATTR_IE, req->ie_len, req->ie))
++/**
++ * struct ieee80211_s1g_bcn_compat_ie
++ *
++ * S1G Beacon Compatibility element
++ */
++struct ieee80211_s1g_bcn_compat_ie {
++	__le16 compat_info;
++	__le16 beacon_int;
++	__le32 tsf_completion;
++} __packed;
++
++/**
++ * struct ieee80211_s1g_oper_ie
++ *
++ * S1G Operation element
++ */
++struct ieee80211_s1g_oper_ie {
++	u8 ch_width;
++	u8 oper_class;
++	u8 primary_ch;
++	u8 oper_ch;
++	__le16 basic_mcs_nss;
++} __packed;
++
++/**
++ * struct ieee80211_aid_response_ie
++ *
++ * AID Response element
++ */
++struct ieee80211_aid_response_ie {
++	__le16 aid;
++	u8 switch_count;
++	__le16 response_int;
++} __packed;
++
++struct ieee80211_s1g_cap {
++	u8 capab_info[10];
++	u8 supp_mcs_nss[5];
++} __packed;
++
++struct ieee80211_ext {
++	__le16 frame_control;
++	__le16 duration;
++	union {
++		struct {
++			u8 sa[ETH_ALEN];
++			__le32 timestamp;
++			u8 change_seq;
++			u8 variable[0];
++		} __packed s1g_beacon;
++	} u;
++} __packed __aligned(2);
++
+ struct ieee80211_mgmt {
+ 	__le16 frame_control;
+ 	__le16 duration;
+@@ -2137,6 +2274,86 @@ ieee80211_he_spr_size(const u8 *he_spr_ie)
+ 	return spr_len;
+ }
+ 
++/* S1G Capabilities Information field */
++#define S1G_CAPAB_B0_S1G_LONG BIT(0)
++#define S1G_CAPAB_B0_SGI_1MHZ BIT(1)
++#define S1G_CAPAB_B0_SGI_2MHZ BIT(2)
++#define S1G_CAPAB_B0_SGI_4MHZ BIT(3)
++#define S1G_CAPAB_B0_SGI_8MHZ BIT(4)
++#define S1G_CAPAB_B0_SGI_16MHZ BIT(5)
++#define S1G_CAPAB_B0_SUPP_CH_WIDTH_MASK (BIT(6) | BIT(7))
++#define S1G_CAPAB_B0_SUPP_CH_WIDTH_SHIFT 6
++
++#define S1G_CAPAB_B1_RX_LDPC BIT(0)
++#define S1G_CAPAB_B1_TX_STBC BIT(1)
++#define S1G_CAPAB_B1_RX_STBC BIT(2)
++#define S1G_CAPAB_B1_SU_BFER BIT(3)
++#define S1G_CAPAB_B1_SU_BFEE BIT(4)
++#define S1G_CAPAB_B1_BFEE_STS_MASK (BIT(5) | BIT(6) | BIT(7))
++#define S1G_CAPAB_B1_BFEE_STS_SHIFT 5
++
++#define S1G_CAPAB_B2_SOUNDING_DIMENSIONS_MASK (BIT(0) | BIT(1) | BIT(2))
++#define S1G_CAPAB_B2_SOUNDING_DIMENSIONS_SHIFT 0
++#define S1G_CAPAB_B2_MU_BFER BIT(3)
++#define S1G_CAPAB_B2_MU_BFEE BIT(4)
++#define S1G_CAPAB_B2_PLUS_HTC_VHT BIT(5)
++#define S1G_CAPAB_B2_TRAVELING_PILOT_MASK (BIT(6) | BIT(7))
++#define S1G_CAPAB_B2_TRAVELING_PILOT_SHIFT 6
++
++#define S1G_CAPAB_B3_RD_RESPONDER BIT(0)
++#define S1G_CAPAB_B3_HT_DELAYED_BA BIT(1)
++#define S1G_CAPAB_B3_MAX_MPDU_LEN BIT(2)
++#define S1G_CAPAB_B3_MAX_AMPDU_LEN_EXP_MASK (BIT(3) | BIT(4))
++#define S1G_CAPAB_B3_MAX_AMPDU_LEN_EXP_SHIFT 3
++#define S1G_CAPAB_B3_MIN_MPDU_START_MASK (BIT(5) | BIT(6) | BIT(7))
++#define S1G_CAPAB_B3_MIN_MPDU_START_SHIFT 5
++
++#define S1G_CAPAB_B4_UPLINK_SYNC BIT(0)
++#define S1G_CAPAB_B4_DYNAMIC_AID BIT(1)
++#define S1G_CAPAB_B4_BAT BIT(2)
++#define S1G_CAPAB_B4_TIME_ADE BIT(3)
++#define S1G_CAPAB_B4_NON_TIM BIT(4)
++#define S1G_CAPAB_B4_GROUP_AID BIT(5)
++#define S1G_CAPAB_B4_STA_TYPE_MASK (BIT(6) | BIT(7))
++#define S1G_CAPAB_B4_STA_TYPE_SHIFT 6
++
++#define S1G_CAPAB_B5_CENT_AUTH_CONTROL BIT(0)
++#define S1G_CAPAB_B5_DIST_AUTH_CONTROL BIT(1)
++#define S1G_CAPAB_B5_AMSDU BIT(2)
++#define S1G_CAPAB_B5_AMPDU BIT(3)
++#define S1G_CAPAB_B5_ASYMMETRIC_BA BIT(4)
++#define S1G_CAPAB_B5_FLOW_CONTROL BIT(5)
++#define S1G_CAPAB_B5_SECTORIZED_BEAM_MASK (BIT(6) | BIT(7))
++#define S1G_CAPAB_B5_SECTORIZED_BEAM_SHIFT 6
++
++#define S1G_CAPAB_B6_OBSS_MITIGATION BIT(0)
++#define S1G_CAPAB_B6_FRAGMENT_BA BIT(1)
++#define S1G_CAPAB_B6_NDP_PS_POLL BIT(2)
++#define S1G_CAPAB_B6_RAW_OPERATION BIT(3)
++#define S1G_CAPAB_B6_PAGE_SLICING BIT(4)
++#define S1G_CAPAB_B6_TXOP_SHARING_IMP_ACK BIT(5)
++#define S1G_CAPAB_B6_VHT_LINK_ADAPT_MASK (BIT(6) | BIT(7))
++#define S1G_CAPAB_B6_VHT_LINK_ADAPT_SHIFT 6
++
++#define S1G_CAPAB_B7_TACK_AS_PS_POLL BIT(0)
++#define S1G_CAPAB_B7_DUP_1MHZ BIT(1)
++#define S1G_CAPAB_B7_MCS_NEGOTIATION BIT(2)
++#define S1G_CAPAB_B7_1MHZ_CTL_RESPONSE_PREAMBLE BIT(3)
++#define S1G_CAPAB_B7_NDP_BFING_REPORT_POLL BIT(4)
++#define S1G_CAPAB_B7_UNSOLICITED_DYN_AID BIT(5)
++#define S1G_CAPAB_B7_SECTOR_TRAINING_OPERATION BIT(6)
++#define S1G_CAPAB_B7_TEMP_PS_MODE_SWITCH BIT(7)
++
++#define S1G_CAPAB_B8_TWT_GROUPING BIT(0)
++#define S1G_CAPAB_B8_BDT BIT(1)
++#define S1G_CAPAB_B8_COLOR_MASK (BIT(2) | BIT(3) | BIT(4))
++#define S1G_CAPAB_B8_COLOR_SHIFT 2
++#define S1G_CAPAB_B8_TWT_REQUEST BIT(5)
++#define S1G_CAPAB_B8_TWT_RESPOND BIT(6)
++#define S1G_CAPAB_B8_PV1_FRAME BIT(7)
++
++#define S1G_CAPAB_B9_LINK_ADAPT_PER_CONTROL_RESPONSE BIT(0)
++
+ /* Authentication algorithms */
+ #define WLAN_AUTH_OPEN 0
+ #define WLAN_AUTH_SHARED_KEY 1
+@@ -2532,8 +2749,12 @@ enum ieee80211_eid {
+ 	WLAN_EID_QUIET_CHANNEL = 198,
+ 	WLAN_EID_OPMODE_NOTIF = 199,
+ 
++	WLAN_EID_S1G_BCN_COMPAT = 213,
++	WLAN_EID_S1G_SHORT_BCN_INTERVAL = 214,
++	WLAN_EID_S1G_CAPABILITIES = 217,
+ 	WLAN_EID_VENDOR_SPECIFIC = 221,
+ 	WLAN_EID_QOS_PARAMETER = 222,
++	WLAN_EID_S1G_OPERATION = 232,
+ 	WLAN_EID_CAG_NUMBER = 237,
+ 	WLAN_EID_AP_CSN = 239,
+ 	WLAN_EID_FILS_INDICATION = 240,
 -- 
 2.20.1
 
