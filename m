@@ -2,76 +2,147 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8677C1BFB25
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Apr 2020 15:58:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6AFAA1BFF74
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Apr 2020 17:02:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729304AbgD3N5y (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 30 Apr 2020 09:57:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55806 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729006AbgD3N5x (ORCPT
+        id S1726488AbgD3PCL convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 30 Apr 2020 11:02:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37686 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726421AbgD3PCL (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 30 Apr 2020 09:57:53 -0400
+        Thu, 30 Apr 2020 11:02:11 -0400
 Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3EA3CC035494
-        for <linux-wireless@vger.kernel.org>; Thu, 30 Apr 2020 06:57:53 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50CA7C035494
+        for <linux-wireless@vger.kernel.org>; Thu, 30 Apr 2020 08:02:11 -0700 (PDT)
 Received: from bigeasy by Galois.linutronix.de with local (Exim 4.80)
         (envelope-from <bigeasy@linutronix.de>)
-        id 1jU9hF-0003xy-VQ; Thu, 30 Apr 2020 15:57:50 +0200
-Date:   Thu, 30 Apr 2020 15:57:49 +0200
+        id 1jUAhS-00067K-TB; Thu, 30 Apr 2020 17:02:07 +0200
+Date:   Thu, 30 Apr 2020 17:02:06 +0200
 From:   Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 To:     yhchuang@realtek.com
 Cc:     kvalo@codeaurora.org, pkshih@realtek.com,
         linux-wireless@vger.kernel.org, briannorris@chromium.org,
         kevin_yang@realtek.com
-Subject: Re: [PATCH 25/40] rtw88: 8723d: Add LC calibration
-Message-ID: <20200430135749.pjtzrnsnvkknwjim@linutronix.de>
+Subject: Re: [PATCH 26/40] rtw88: 8723d: add IQ calibration
+Message-ID: <20200430150206.3bw7lp7wslgeuaqx@linutronix.de>
 References: <20200417074653.15591-1-yhchuang@realtek.com>
- <20200417074653.15591-26-yhchuang@realtek.com>
+ <20200417074653.15591-27-yhchuang@realtek.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20200417074653.15591-26-yhchuang@realtek.com>
+Content-Transfer-Encoding: 8BIT
+In-Reply-To: <20200417074653.15591-27-yhchuang@realtek.com>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2020-04-17 15:46:38 [+0800], yhchuang@realtek.com wrote:
-> index cf897af380c1..94784c7f0743 100644
+On 2020-04-17 15:46:39 [+0800], yhchuang@realtek.com wrote:
+> diff --git a/drivers/net/wireless/realtek/rtw88/rtw8723d.c b/drivers/net/wireless/realtek/rtw88/rtw8723d.c
+> index 94784c7f0743..b66bd969e007 100644
 > --- a/drivers/net/wireless/realtek/rtw88/rtw8723d.c
 > +++ b/drivers/net/wireless/realtek/rtw88/rtw8723d.c
-> @@ -64,6 +64,33 @@ static const struct rtw_hw_reg rtw8723d_txagc[] = {
->  #define WLAN_LTR_CTRL1		0xCB004010
->  #define WLAN_LTR_CTRL2		0x01233425
->  
-> +static void rtw8723d_lck(struct rtw_dev *rtwdev)
+…
+> +struct iqk_backup_regs {
+> +	u32 adda[IQK_ADDA_REG_NUM];
+> +	u8 mac8[IQK_MAC8_REG_NUM];
+> +	u32 mac32[IQK_MAC32_REG_NUM];
+> +	u32 bb[IQK_BB_REG_NUM];
+> +
+> +	u32 lte_path;
+> +	u32 lte_gnt;
+> +
+> +	u8 btg_sel;
+> +	u32 bb_sel_btg;
+> +
+> +	u8 igia;
+> +	u8 igib;
+
+The struct has 128 bytes. Putting btg_sel after bb_sel_btg will result
+in 124 bytes. How likely is it that it will grow? I'm asking because it
+is allocated on stack.
+
+> +};
+> +
+> +static void rtw8723d_iqk_backup_regs(struct rtw_dev *rtwdev,
+> +				     struct iqk_backup_regs *backup)
 > +{
-> +#define BIT_LCK		BIT(15)
-
-please don't add defines like this within a function.
-
-> +	u8 val_ctx;
-> +	u32 lc_cal, cnt;
+> +	int i;
 > +
-> +	val_ctx = rtw_read8(rtwdev, REG_CTX);
-> +	if ((val_ctx & BIT_MASK_CTX_TYPE) != 0)
-> +		rtw_write8(rtwdev, REG_CTX, val_ctx & ~BIT_MASK_CTX_TYPE);
-> +	else
-> +		rtw_write8(rtwdev, REG_TXPAUSE, 0xFF);
-> +	lc_cal = rtw_read_rf(rtwdev, RF_PATH_A, RF_CFGCH, RFREG_MASK);
+> +	for (i = 0; i < IQK_ADDA_REG_NUM; i++)
+> +		backup->adda[i] = rtw_read32(rtwdev, iqk_adda_regs[i]);
 > +
-> +	rtw_write_rf(rtwdev, RF_PATH_A, RF_CFGCH, RFREG_MASK, lc_cal | BIT_LCK);
-> +	for (cnt = 0; cnt < 100; cnt++) {
-> +		if (rtw_read_rf(rtwdev, RF_PATH_A, RF_CFGCH, BIT_LCK) != 0x1)
-> +			break;
-> +		mdelay(10);
+> +	for (i = 0; i < IQK_MAC8_REG_NUM; i++)
+> +		backup->mac8[i] = rtw_read8(rtwdev, iqk_mac8_regs[i]);
+> +	for (i = 0; i < IQK_MAC32_REG_NUM; i++)
+> +		backup->mac32[i] = rtw_read32(rtwdev, iqk_mac32_regs[i]);
+> +
+> +	for (i = 0; i < IQK_BB_REG_NUM; i++)
+> +		backup->bb[i] = rtw_read32(rtwdev, iqk_bb_regs[i]);
+> +
+> +	backup->igia = (u8)rtw_read32_mask(rtwdev, REG_OFDM0_XAAGC1, MASKBYTE0);
+> +	backup->igib = (u8)rtw_read32_mask(rtwdev, REG_OFDM0_XBAGC1, MASKBYTE0);
 
-Do you have any numbers on how long this takes? Like best-case, on average,
-worst case? I'm asking because if the bit does not flip on the first
-read then you busy-loop-delay here for 10ms. If it does not flip at all,
-you busy waited a whole second without any consequence. 
+igi[ab] is alreay u8, no need for cast.
 
-It looks like this context here is not atomic so msleep() would work where.
+> +
+> +	backup->bb_sel_btg = rtw_read32(rtwdev, REG_BB_SEL_BTG);
+> +}
+…
+
+> +static u8 rtw8723d_iqk_rx_path(struct rtw_dev *rtwdev,
+> +			       const struct rtw_8723d_iqk_cfg *iqk_cfg,
+> +			       const struct iqk_backup_regs *backup)
+> +{
+> +	u32 tx_x, tx_y;
+> +	u8 result = 0x00;
+
+You could avoid the explicit init of `result' (maybe even use `ret' for
+less key strokes and avoiding the confusion with the `result' array used
+by the other functions here) and then 
+
+…
+> +	rtw8723d_iqk_one_shot(rtwdev, false, iqk_cfg);
+> +	result |= rtw8723d_iqk_check_tx_failed(rtwdev, iqk_cfg);
+
+not or the returned value here. Since you don't collect it from multiple
+functions I don't see the reason for it.
+
+> +	if (!result)
+> +		goto restore;
+…
+> +	rtw8723d_iqk_one_shot(rtwdev, false, iqk_cfg);
+> +	result |= rtw8723d_iqk_check_rx_failed(rtwdev, iqk_cfg);
+
+Same here.
+
+> +restore:
+> +	rtw8723d_iqk_txrx_path_post(rtwdev, iqk_cfg, backup);
+> +
+> +	return result;
+> +}
+> +
+…
+> +
+> +static void rtw8723d_phy_calibration(struct rtw_dev *rtwdev)
+> +{
+> +	struct rtw_dm_info *dm_info = &rtwdev->dm_info;
+> +	s32 result[IQK_ROUND_SIZE][IQK_NR];
+> +	struct iqk_backup_regs backup;
+
+I don't know how deep you are in the call chain, but `result' takes 128
+bytes and `backup' as well (this could be 124).
+I'm not saying that this is bad, just that you keep an eye on it since
+those two take 256 bytes.
+
+> +	u8 i, j;
+> +	u8 final_candidate = IQK_ROUND_INVALID;
+> +	bool good;
+> +
+> +	rtw_dbg(rtwdev, RTW_DBG_RFK, "[IQK] Start!!!\n");
+> +
+> +	memset(result, 0, sizeof(result));
 
 Sebastian
