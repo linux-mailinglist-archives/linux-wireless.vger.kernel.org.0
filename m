@@ -2,72 +2,85 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7745B1BECED
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 Apr 2020 02:19:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 57B311BED65
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 Apr 2020 03:06:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726309AbgD3ATU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 29 Apr 2020 20:19:20 -0400
-Received: from mail26.static.mailgun.info ([104.130.122.26]:52568 "EHLO
-        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726279AbgD3ATT (ORCPT
+        id S1726291AbgD3BGr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 29 Apr 2020 21:06:47 -0400
+Received: from mail.adapt-ip.com ([173.164.178.19]:58322 "EHLO
+        web.adapt-ip.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726284AbgD3BGr (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 29 Apr 2020 20:19:19 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1588205959; h=Message-ID: References: In-Reply-To: Subject:
- Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
- MIME-Version: Sender; bh=EIWufjFryBx0mC1G7IJ3e7cfLptIo4Cwz24m5wcCncE=;
- b=k1wNdhmRlMEC+J7Psc385y8VLEHXw9fQF6SVGXj1D4yfK/TFuug9suQKixCF2VLzuOOx3/k5
- p5r2FvF/kPxgOtYxE3UYVdZvyN86dXeCRNcDZNZ+aZo5Gt+QO4xFSjFvCoWK9KyAsZ5Hwe6Y
- XplGUWTbAaMwbciL0/3d/NBNpsY=
-X-Mailgun-Sending-Ip: 104.130.122.26
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5eaa196e.7f721d539030-smtp-out-n03;
- Thu, 30 Apr 2020 00:18:54 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 1C505C433BA; Thu, 30 Apr 2020 00:18:53 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: rmanohar)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 7D8BFC432C2;
-        Thu, 30 Apr 2020 00:18:51 +0000 (UTC)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Wed, 29 Apr 2020 17:18:51 -0700
-From:   Rajkumar Manoharan <rmanohar@codeaurora.org>
+        Wed, 29 Apr 2020 21:06:47 -0400
+Received: from localhost (localhost [127.0.0.1])
+        by web.adapt-ip.com (Postfix) with ESMTP id 519C04F80D3;
+        Thu, 30 Apr 2020 01:06:46 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at web.adapt-ip.com
+Received: from web.adapt-ip.com ([127.0.0.1])
+        by localhost (web.adapt-ip.com [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id wL8PKa6uTtyk; Thu, 30 Apr 2020 01:06:43 +0000 (UTC)
+Received: from atlas.campbell.adapt-ip.com (gateway.adapt-ip.com [173.164.178.20])
+        (Authenticated sender: thomas@adapt-ip.com)
+        by web.adapt-ip.com (Postfix) with ESMTPSA id 61BFC4F800E;
+        Thu, 30 Apr 2020 01:06:43 +0000 (UTC)
+From:   Thomas Pedersen <thomas@adapt-ip.com>
 To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org
-Subject: Re: [PATCH 09/10] mac80211: determine chantype from HE operation in 6
- GHz
-In-Reply-To: <3b2b90685e55d3eae22171cf46340af5154bb59f.camel@sipsolutions.net>
-References: <1587768108-25248-1-git-send-email-rmanohar@codeaurora.org>
- <1587768108-25248-10-git-send-email-rmanohar@codeaurora.org>
- <3b2b90685e55d3eae22171cf46340af5154bb59f.camel@sipsolutions.net>
-Message-ID: <a5d931f074cbce8073abd8257555d3bb@codeaurora.org>
-X-Sender: rmanohar@codeaurora.org
-User-Agent: Roundcube Webmail/1.3.9
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
+        Thomas Pedersen <thomas@adapt-ip.com>
+Subject: [PATCH v3 0/5] initial S1G defines
+Date:   Wed, 29 Apr 2020 18:06:37 -0700
+Message-Id: <20200430010642.22552-1-thomas@adapt-ip.com>
+X-Mailer: git-send-email 2.20.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2020-04-29 07:34, Johannes Berg wrote:
-> On Fri, 2020-04-24 at 15:41 -0700, Rajkumar Manoharan wrote:
->> In 6 GHz band, determine chandef from 6 GHz operation information
->> of HE operation element.
-> 
-> Yeah... I had this too. Oh well.
-> 
-Thanks for feedback. Have few more changes on top this series.
-Before posting next version, would prefer to bundle with your changes. 
-thoughts?
+This patchset finishes the work to make channels work on a KHz offset,
+and includes the initial definitions for S1G (802.11ah).
 
--Rajkumar
+These patches on top of wt-2020-04-29 with hostap c54a5e96b505 gives the
+following hwsim test results:
+
+Failed even on retry:
+proxyarp_open_ebtables wpas_config_file fst_dynamic_iface_attach
+TOTAL=3531 PASS=3265 FAIL=12 SKIP=251
+
+Which is what we currently expect of HEAD.
+
+Changes from v3 are rebasing on latest wireless-testing and making the
+SCAN_FREQ_KHZ more robust so userspace can omit the MHZ-only scan
+frequencies in the request, and kernel can do the same in the results.
+
+Also some breakage introduced by patch #1 has been addressed by leaving
+the existing cfg80211 API intact.
+
+Thomas Pedersen (5):
+  cfg80211: add KHz variants of frame RX API
+  nl80211: add KHz frequency offset for most wifi commands
+  nl80211: support scan frequencies in KHz
+  ieee80211: S1G defines
+  nl80211: S1G band and channel definitions
+
+ include/linux/ieee80211.h    | 222 +++++++++++++++++++++++++++++++++++
+ include/net/cfg80211.h       |  71 ++++++++++-
+ include/uapi/linux/nl80211.h |  77 +++++++++---
+ net/mac80211/chan.c          |   7 +-
+ net/mac80211/main.c          |   2 +
+ net/mac80211/rx.c            |   8 +-
+ net/mac80211/scan.c          |   1 +
+ net/mac80211/tx.c            |   5 +
+ net/mac80211/util.c          |   5 +
+ net/wireless/chan.c          |  29 +++++
+ net/wireless/core.c          |   5 +-
+ net/wireless/mlme.c          |   8 +-
+ net/wireless/nl80211.c       | 135 +++++++++++++++------
+ net/wireless/trace.h         |  12 +-
+ net/wireless/util.c          |   8 ++
+ 15 files changed, 521 insertions(+), 74 deletions(-)
+
+-- 
+2.20.1
+
