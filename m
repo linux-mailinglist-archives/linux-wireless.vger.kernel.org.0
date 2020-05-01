@@ -2,44 +2,65 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B98A1C17DE
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 May 2020 16:36:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B7AC1C189C
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 May 2020 16:57:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728997AbgEAOgb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 1 May 2020 10:36:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33030 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728724AbgEAOga (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 1 May 2020 10:36:30 -0400
-Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88AB3C061A0C
-        for <linux-wireless@vger.kernel.org>; Fri,  1 May 2020 07:36:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-         s=20160729; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
-        Message-Id:Date:Subject:To:From:Sender:Reply-To:Cc:Content-Type:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=UZWEeaheVXI2q07E2/uU/7XnkJXnbEBkWfSb4zA0xis=; b=LUzWEBf1o29rngvlKmqxmYLeQl
-        ntaR+xScl53Ihh7iymO6njyVU4H0+piKZ9hbxWxWLQmsUoHq8uVqtP8fHFQUx/t96PsQYauBLje/6
-        4fhcpIEVwqmXva3AvLB2W9QgzOhlcsx1jIeO+K9PydC06BE4lcS6y90sVDk3+VH0KkHI=;
-Received: from p54ae9310.dip0.t-ipconnect.de ([84.174.147.16] helo=maeck.lan)
-        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.89)
-        (envelope-from <nbd@nbd.name>)
-        id 1jUWmC-000811-Uk
-        for linux-wireless@vger.kernel.org; Fri, 01 May 2020 16:36:29 +0200
-Received: by maeck.lan (Postfix, from userid 501)
-        id 27544851522E; Fri,  1 May 2020 16:36:27 +0200 (CEST)
-From:   Felix Fietkau <nbd@nbd.name>
-To:     linux-wireless@vger.kernel.org
-Subject: [PATCH 2/2] mt76: mt7615: fix getting maximum tx power from eeprom
-Date:   Fri,  1 May 2020 16:36:27 +0200
-Message-Id: <20200501143627.24523-2-nbd@nbd.name>
-X-Mailer: git-send-email 2.24.0
-In-Reply-To: <20200501143627.24523-1-nbd@nbd.name>
-References: <20200501143627.24523-1-nbd@nbd.name>
+        id S1730423AbgEAOsN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 1 May 2020 10:48:13 -0400
+Received: from mail.kernel.org ([198.145.29.99]:52646 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729352AbgEAOpI (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 1 May 2020 10:45:08 -0400
+Received: from mail.kernel.org (ip5f5ad5c5.dynamic.kabel-deutschland.de [95.90.213.197])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 13CC324959;
+        Fri,  1 May 2020 14:45:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1588344305;
+        bh=pgEeloihUJtDW9NEkL6jmFDK/ZInSPDNQO7niKknL3E=;
+        h=From:To:Cc:Subject:Date:From;
+        b=SVEs1VMhjyuHELBkXcF4/1fWlbsaS7MgiAohJ3ePux485XSRhFIw+LT9CMyjWvZFi
+         ihz7fPrKmb/CyIscv5iZo1ghZ6L6por1RndA5qbcxiN/hqpCEtOv80OoyKzd7LfsEg
+         e5L/qaobT9VXcglAQbs4CKkx5QoFsFVnzoG5mfmc=
+Received: from mchehab by mail.kernel.org with local (Exim 4.92.3)
+        (envelope-from <mchehab@kernel.org>)
+        id 1jUWuT-00FCcS-77; Fri, 01 May 2020 16:45:01 +0200
+From:   Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To:     Linux Doc Mailing List <linux-doc@vger.kernel.org>
+Cc:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+        Samuel Chessman <chessman@tux.org>, netdev@vger.kernel.org,
+        Andrew Hendry <andrew.hendry@gmail.com>,
+        Zorik Machulsky <zorik@amazon.com>,
+        Sean Tranchetti <stranche@codeaurora.org>,
+        Igor Russkikh <irusskikh@marvell.com>,
+        Jon Mason <jdmason@kudzu.us>,
+        Haiyang Zhang <haiyangz@microsoft.com>,
+        linux-x25@vger.kernel.org, Wei Liu <wei.liu@kernel.org>,
+        linux-hyperv@vger.kernel.org, Kalle Valo <kvalo@codeaurora.org>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Subash Abhinov Kasiviswanathan <subashab@codeaurora.org>,
+        David Ahern <dsahern@kernel.org>,
+        "K. Y. Srinivasan" <kys@microsoft.com>,
+        Ishizaki Kou <kou.ishizaki@toshiba.co.jp>,
+        Joerg Reuter <jreuter@yaina.de>,
+        Saeed Bishara <saeedb@amazon.com>,
+        Shrijeet Mukherjee <shrijeet@gmail.com>,
+        Netanel Belgazal <netanel@amazon.com>,
+        Stanislav Yakovlev <stas.yakovlev@gmail.com>,
+        Guy Tzalik <gtzalik@amazon.com>,
+        Maxim Krasnyansky <maxk@qti.qualcomm.com>,
+        Arthur Kiyanovski <akiyano@amazon.com>,
+        linux-wireless@vger.kernel.org, linux-hams@vger.kernel.org,
+        linux-parisc@vger.kernel.org,
+        Steffen Klassert <klassert@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Stephen Hemminger <sthemmin@microsoft.com>
+Subject: [PATCH 00/37]net: manually convert files to ReST format - part 3 (final)
+Date:   Fri,  1 May 2020 16:44:22 +0200
+Message-Id: <cover.1588344146.git.mchehab+huawei@kernel.org>
+X-Mailer: git-send-email 2.25.4
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
@@ -47,64 +68,165 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On top of the EEPROM target power, each rate can also has a power offset.
-On many devices, this power offset is used to boost the tx power of lower
-rates. Take this into account when parsing rate power.
-The assumption here is, that the first rate (OFDM 6M or CCK 1M) has the
-highest tx power
+That's the third part (and the final one) of my work to convert the networking
+text files into ReST. it is based on linux-next next-20200430 branch.
 
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
----
- drivers/net/wireless/mediatek/mt76/mt7615/eeprom.h |  6 ++++++
- drivers/net/wireless/mediatek/mt76/mt7615/init.c   | 11 +++++++++++
- 2 files changed, 17 insertions(+)
+The full series (including those ones) are at:
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.h b/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.h
-index bd2ac1e0e01a..3dd7009e5836 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.h
-@@ -32,6 +32,8 @@ enum mt7615_eeprom_field {
- 	MT_EE_TX0_2G_TARGET_POWER =		0x058,
- 	MT_EE_TX0_5G_G0_TARGET_POWER =		0x070,
- 	MT_EE_TX1_5G_G0_TARGET_POWER =		0x098,
-+	MT_EE_2G_RATE_POWER =			0x0be,
-+	MT_EE_5G_RATE_POWER =			0x0d5,
- 	MT_EE_EXT_PA_2G_TARGET_POWER =		0x0f2,
- 	MT_EE_EXT_PA_5G_TARGET_POWER =		0x0f3,
- 	MT7663_EE_TX0_2G_TARGET_POWER =		0x123,
-@@ -43,6 +45,10 @@ enum mt7615_eeprom_field {
- 	MT7663_EE_MAX =				0x400,
- };
- 
-+#define MT_EE_RATE_POWER_MASK			GENMASK(5, 0)
-+#define MT_EE_RATE_POWER_SIGN			BIT(6)
-+#define MT_EE_RATE_POWER_EN			BIT(7)
-+
- #define MT_EE_CALDATA_FLASH_TX_DPD		BIT(0)
- #define MT_EE_CALDATA_FLASH_RX_CAL		BIT(1)
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/init.c b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
-index 9880643888ba..7e201525305b 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
-@@ -198,6 +198,17 @@ void mt7615_init_txpower(struct mt7615_dev *dev,
- 	u8 *eep = (u8 *)dev->mt76.eeprom.data;
- 	enum nl80211_band band = sband->band;
- 	int delta = mt76_tx_power_nss_delta(n_chains);
-+	u8 rate_val;
-+
-+	/* assume the first rate has the highest power offset */
-+	if (band == NL80211_BAND_2GHZ)
-+		rate_val = eep[MT_EE_2G_RATE_POWER];
-+	else
-+		rate_val = eep[MT_EE_5G_RATE_POWER];
-+
-+	if ((rate_val & ~MT_EE_RATE_POWER_MASK) ==
-+	    (MT_EE_RATE_POWER_EN | MT_EE_RATE_POWER_SIGN))
-+		delta += rate_val & MT_EE_RATE_POWER_MASK;
- 
- 	target_chains = mt7615_ext_pa_enabled(dev, band) ? 1 : n_chains;
- 	for (i = 0; i < sband->n_channels; i++) {
+	https://git.linuxtv.org/mchehab/experimental.git/log/?h=net-docs
+
+The  built output documents, on html format is at:
+
+	https://www.infradead.org/~mchehab/kernel_docs/networking/
+
+
+Mauro Carvalho Chehab (37):
+  docs: networking: convert tuntap.txt to ReST
+  docs: networking: convert udplite.txt to ReST
+  docs: networking: convert vrf.txt to ReST
+  docs: networking: convert vxlan.txt to ReST
+  docs: networking: convert x25-iface.txt to ReST
+  docs: networking: convert x25.txt to ReST
+  docs: networking: convert xfrm_device.txt to ReST
+  docs: networking: convert xfrm_proc.txt to ReST
+  docs: networking: convert xfrm_sync.txt to ReST
+  docs: networking: convert xfrm_sysctl.txt to ReST
+  docs: networking: convert z8530drv.txt to ReST
+  docs: networking: device drivers: convert 3com/3c509.txt to ReST
+  docs: networking: device drivers: convert 3com/vortex.txt to ReST
+  docs: networking: device drivers: convert amazon/ena.txt to ReST
+  docs: networking: device drivers: convert aquantia/atlantic.txt to
+    ReST
+  docs: networking: device drivers: convert chelsio/cxgb.txt to ReST
+  docs: networking: device drivers: convert cirrus/cs89x0.txt to ReST
+  docs: networking: device drivers: convert davicom/dm9000.txt to ReST
+  docs: networking: device drivers: convert dec/de4x5.txt to ReST
+  docs: networking: device drivers: convert dec/dmfe.txt to ReST
+  docs: networking: device drivers: convert dlink/dl2k.txt to ReST
+  docs: networking: device drivers: convert freescale/dpaa.txt to ReST
+  docs: networking: device drivers: convert freescale/gianfar.txt to
+    ReST
+  docs: networking: device drivers: convert intel/ipw2100.txt to ReST
+  docs: networking: device drivers: convert intel/ipw2200.txt to ReST
+  docs: networking: device drivers: convert microsoft/netvsc.txt to ReST
+  docs: networking: device drivers: convert neterion/s2io.txt to ReST
+  docs: networking: device drivers: convert neterion/vxge.txt to ReST
+  docs: networking: device drivers: convert qualcomm/rmnet.txt to ReST
+  docs: networking: device drivers: convert sb1000.txt to ReST
+  docs: networking: device drivers: convert smsc/smc9.txt to ReST
+  docs: networking: device drivers: convert ti/cpsw_switchdev.txt to
+    ReST
+  docs: networking: device drivers: convert ti/cpsw.txt to ReST
+  docs: networking: device drivers: convert ti/tlan.txt to ReST
+  docs: networking: device drivers: convert toshiba/spider_net.txt to
+    ReST
+  net: docs: add page_pool.rst to index.rst
+  docs: networking: arcnet-hardware.rst: don't duplicate chapter names
+
+ Documentation/networking/arcnet-hardware.rst  |   8 +-
+ .../3com/{3c509.txt => 3c509.rst}             | 158 +++--
+ .../3com/{vortex.txt => vortex.rst}           | 223 ++++---
+ .../amazon/{ena.txt => ena.rst}               | 142 ++--
+ .../aquantia/{atlantic.txt => atlantic.rst}   | 373 ++++++-----
+ .../chelsio/{cxgb.txt => cxgb.rst}            | 183 ++++--
+ .../cirrus/{cs89x0.txt => cs89x0.rst}         | 557 ++++++++--------
+ .../davicom/{dm9000.txt => dm9000.rst}        |  24 +-
+ .../dec/{de4x5.txt => de4x5.rst}              | 105 +--
+ .../device_drivers/dec/{dmfe.txt => dmfe.rst} |  35 +-
+ .../dlink/{dl2k.txt => dl2k.rst}              | 228 ++++---
+ .../freescale/{dpaa.txt => dpaa.rst}          | 139 ++--
+ .../freescale/{gianfar.txt => gianfar.rst}    |  21 +-
+ .../networking/device_drivers/index.rst       |  24 +
+ .../intel/{ipw2100.txt => ipw2100.rst}        | 242 ++++---
+ .../intel/{ipw2200.txt => ipw2200.rst}        | 410 +++++++-----
+ .../microsoft/{netvsc.txt => netvsc.rst}      |  57 +-
+ .../device_drivers/neterion/s2io.rst          | 196 ++++++
+ .../device_drivers/neterion/s2io.txt          | 141 ----
+ .../neterion/{vxge.txt => vxge.rst}           |  60 +-
+ .../qualcomm/{rmnet.txt => rmnet.rst}         |  43 +-
+ .../networking/device_drivers/sb1000.rst      | 222 +++++++
+ .../networking/device_drivers/sb1000.txt      | 207 ------
+ .../networking/device_drivers/smsc/smc9.rst   |  49 ++
+ .../networking/device_drivers/smsc/smc9.txt   |  42 --
+ .../networking/device_drivers/ti/cpsw.rst     | 587 +++++++++++++++++
+ .../networking/device_drivers/ti/cpsw.txt     | 541 ----------------
+ ...{cpsw_switchdev.txt => cpsw_switchdev.rst} | 239 ++++---
+ .../device_drivers/ti/{tlan.txt => tlan.rst}  |  73 ++-
+ .../{spider_net.txt => spider_net.rst}        |  58 +-
+ Documentation/networking/index.rst            |  12 +
+ .../networking/{tuntap.txt => tuntap.rst}     | 200 +++---
+ .../networking/{udplite.txt => udplite.rst}   | 175 ++---
+ Documentation/networking/vrf.rst              | 451 +++++++++++++
+ Documentation/networking/vrf.txt              | 418 ------------
+ .../networking/{vxlan.txt => vxlan.rst}       |  33 +-
+ .../{x25-iface.txt => x25-iface.rst}          |  10 +-
+ Documentation/networking/{x25.txt => x25.rst} |   4 +
+ .../{xfrm_device.txt => xfrm_device.rst}      |  33 +-
+ .../{xfrm_proc.txt => xfrm_proc.rst}          |  31 +
+ .../{xfrm_sync.txt => xfrm_sync.rst}          |  66 +-
+ .../{xfrm_sysctl.txt => xfrm_sysctl.rst}      |   7 +
+ .../networking/{z8530drv.txt => z8530drv.rst} | 609 +++++++++---------
+ MAINTAINERS                                   |  30 +-
+ drivers/net/Kconfig                           |   4 +-
+ drivers/net/ethernet/3com/3c59x.c             |   4 +-
+ drivers/net/ethernet/3com/Kconfig             |   2 +-
+ drivers/net/ethernet/chelsio/Kconfig          |   2 +-
+ drivers/net/ethernet/cirrus/Kconfig           |   2 +-
+ drivers/net/ethernet/dec/tulip/Kconfig        |   4 +-
+ drivers/net/ethernet/dlink/dl2k.c             |   2 +-
+ drivers/net/ethernet/neterion/Kconfig         |   4 +-
+ drivers/net/ethernet/smsc/Kconfig             |   4 +-
+ drivers/net/ethernet/ti/Kconfig               |   2 +-
+ drivers/net/ethernet/ti/tlan.c                |   2 +-
+ drivers/net/hamradio/Kconfig                  |   4 +-
+ drivers/net/hamradio/scc.c                    |   2 +-
+ drivers/net/wireless/intel/ipw2x00/Kconfig    |   4 +-
+ drivers/net/wireless/intel/ipw2x00/ipw2100.c  |   2 +-
+ include/uapi/linux/if_x25.h                   |   2 +-
+ net/x25/Kconfig                               |   4 +-
+ 61 files changed, 4175 insertions(+), 3341 deletions(-)
+ rename Documentation/networking/device_drivers/3com/{3c509.txt => 3c509.rst} (68%)
+ rename Documentation/networking/device_drivers/3com/{vortex.txt => vortex.rst} (72%)
+ rename Documentation/networking/device_drivers/amazon/{ena.txt => ena.rst} (86%)
+ rename Documentation/networking/device_drivers/aquantia/{atlantic.txt => atlantic.rst} (63%)
+ rename Documentation/networking/device_drivers/chelsio/{cxgb.txt => cxgb.rst} (81%)
+ rename Documentation/networking/device_drivers/cirrus/{cs89x0.txt => cs89x0.rst} (61%)
+ rename Documentation/networking/device_drivers/davicom/{dm9000.txt => dm9000.rst} (92%)
+ rename Documentation/networking/device_drivers/dec/{de4x5.txt => de4x5.rst} (78%)
+ rename Documentation/networking/device_drivers/dec/{dmfe.txt => dmfe.rst} (68%)
+ rename Documentation/networking/device_drivers/dlink/{dl2k.txt => dl2k.rst} (59%)
+ rename Documentation/networking/device_drivers/freescale/{dpaa.txt => dpaa.rst} (79%)
+ rename Documentation/networking/device_drivers/freescale/{gianfar.txt => gianfar.rst} (82%)
+ rename Documentation/networking/device_drivers/intel/{ipw2100.txt => ipw2100.rst} (70%)
+ rename Documentation/networking/device_drivers/intel/{ipw2200.txt => ipw2200.rst} (64%)
+ rename Documentation/networking/device_drivers/microsoft/{netvsc.txt => netvsc.rst} (83%)
+ create mode 100644 Documentation/networking/device_drivers/neterion/s2io.rst
+ delete mode 100644 Documentation/networking/device_drivers/neterion/s2io.txt
+ rename Documentation/networking/device_drivers/neterion/{vxge.txt => vxge.rst} (80%)
+ rename Documentation/networking/device_drivers/qualcomm/{rmnet.txt => rmnet.rst} (73%)
+ create mode 100644 Documentation/networking/device_drivers/sb1000.rst
+ delete mode 100644 Documentation/networking/device_drivers/sb1000.txt
+ create mode 100644 Documentation/networking/device_drivers/smsc/smc9.rst
+ delete mode 100644 Documentation/networking/device_drivers/smsc/smc9.txt
+ create mode 100644 Documentation/networking/device_drivers/ti/cpsw.rst
+ delete mode 100644 Documentation/networking/device_drivers/ti/cpsw.txt
+ rename Documentation/networking/device_drivers/ti/{cpsw_switchdev.txt => cpsw_switchdev.rst} (51%)
+ rename Documentation/networking/device_drivers/ti/{tlan.txt => tlan.rst} (73%)
+ rename Documentation/networking/device_drivers/toshiba/{spider_net.txt => spider_net.rst} (88%)
+ rename Documentation/networking/{tuntap.txt => tuntap.rst} (58%)
+ rename Documentation/networking/{udplite.txt => udplite.rst} (65%)
+ create mode 100644 Documentation/networking/vrf.rst
+ delete mode 100644 Documentation/networking/vrf.txt
+ rename Documentation/networking/{vxlan.txt => vxlan.rst} (73%)
+ rename Documentation/networking/{x25-iface.txt => x25-iface.rst} (96%)
+ rename Documentation/networking/{x25.txt => x25.rst} (96%)
+ rename Documentation/networking/{xfrm_device.txt => xfrm_device.rst} (92%)
+ rename Documentation/networking/{xfrm_proc.txt => xfrm_proc.rst} (95%)
+ rename Documentation/networking/{xfrm_sync.txt => xfrm_sync.rst} (82%)
+ rename Documentation/networking/{xfrm_sysctl.txt => xfrm_sysctl.rst} (52%)
+ rename Documentation/networking/{z8530drv.txt => z8530drv.rst} (57%)
+
 -- 
-2.24.0
+2.25.4
+
 
