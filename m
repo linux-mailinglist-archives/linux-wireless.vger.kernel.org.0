@@ -2,137 +2,95 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 772241C110B
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 May 2020 12:43:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C9AFD1C17DF
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 May 2020 16:36:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728545AbgEAKn3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 1 May 2020 06:43:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52822 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1728513AbgEAKn2 (ORCPT
+        id S1729018AbgEAOgb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 1 May 2020 10:36:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33032 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728890AbgEAOga (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 1 May 2020 06:43:28 -0400
-Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B220C08E859
-        for <linux-wireless@vger.kernel.org>; Fri,  1 May 2020 03:43:28 -0700 (PDT)
-Received: by mail-wr1-x442.google.com with SMTP id h9so753436wrt.0
-        for <linux-wireless@vger.kernel.org>; Fri, 01 May 2020 03:43:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=to:cc:from:subject:message-id:date:user-agent:mime-version
-         :content-language:content-transfer-encoding;
-        bh=oLW9QP+uFGtsQ3xitP0v7EQjyBZf41Mp396PMAaih5A=;
-        b=lt8r7KZmIrSb+h7Kq01GabPqoAJcdIIaoL1HtjyFmdjosIaCSl4BII75tL1IYdSG3z
-         7EN+A6EfOul+LdCgtmY4htqbh6PLpJ5FXblp6djtII7DGpkVUncLLZP3/7NqznYwneLs
-         TQu1T6GB7hR1DfVm69BzA2+xRYg+sCtAQeEOXoD2rK5xzWhSdWBGvziOHCH5v5oQvA8N
-         AyGDrJGwZuBKetuzKLr+9i3/KeDsrhIIeR/TwTM+UReP4tlkOQxqH2+fL7D+aspSwrRi
-         PHzsYcZdRka/EtyyQlxS4B2JH+OHyUnd3zbLhvveOwwqug1hMWZuZMJGT/C8wcdqQ8t+
-         c9Kw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:to:cc:from:subject:message-id:date:user-agent
-         :mime-version:content-language:content-transfer-encoding;
-        bh=oLW9QP+uFGtsQ3xitP0v7EQjyBZf41Mp396PMAaih5A=;
-        b=DdZZSWSE2Q6QY/uSVCuG/UTLOtgbSalMs+e8NFA6CQcUkcKV6wTiUWH34Ap9XhIbFk
-         kIqMoQ3VIXtEE/CQ1OT/G49ERdgIlcvk9DN5DYSoHMv+ABTHnYKVPVfpeoKRzr2DBrDy
-         20GfOQKtwA9PFfv/8YYlHS7QxQbvmgpEIemSXuonu3kiu06iBUXHV/i5ME1XqGmFpJBv
-         Uz5fMymwF+GLSBvfg8f7aeZfb6ZfWTpInPFayv3o+LWjbdzOZ7qMnYqDuQ3M+JCIGEqz
-         6Klgk+0dPHsXhEFyeqW9BOocJW0+baxTQKQfhkIcozNXNB/1NYwUYw8rIpong5wEfbeV
-         eg8g==
-X-Gm-Message-State: AGi0Puby9wr+bxgnyEKLSorZN/kcKvQ59XcTpBO95i04ULs6IeEzkb0A
-        uTHNYlnrFHA619gGOIlQgjQ=
-X-Google-Smtp-Source: APiQypIwB3DpAzLiDZDKqvBs2eET4ezmu9OlTO4vA1B6CgCw90t+Q73igEikzDaW7CC6/o/IVfoslg==
-X-Received: by 2002:adf:fcc8:: with SMTP id f8mr3526222wrs.230.1588329807308;
-        Fri, 01 May 2020 03:43:27 -0700 (PDT)
-Received: from [192.168.43.18] (94.197.121.192.threembb.co.uk. [94.197.121.192])
-        by smtp.gmail.com with ESMTPSA id a24sm3336487wmb.24.2020.05.01.03.43.26
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 01 May 2020 03:43:26 -0700 (PDT)
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>,
-        linux-wireless@vger.kernel.org, Oscar Carter <oscar.carter@gmx.com>
-From:   Malcolm Priestley <malcolmpriestley@gmail.com>
-Subject: [PATCH] staging: vt6656: Return on isr0 when zero.
-Message-ID: <8dccc74d-d0bb-e8e7-df81-dfd81e3fd7d8@gmail.com>
-Date:   Fri, 1 May 2020 11:43:25 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+        Fri, 1 May 2020 10:36:30 -0400
+Received: from nbd.name (nbd.name [IPv6:2a01:4f8:221:3d45::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9143DC061A0E
+        for <linux-wireless@vger.kernel.org>; Fri,  1 May 2020 07:36:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+         s=20160729; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject
+        :To:From:Sender:Reply-To:Cc:Content-Type:Content-ID:Content-Description:
+        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=urb5Ncwd4FM7lxj1LvyXXOv2rvHnHpkxFH3TSMPJOPE=; b=JAYbUfIQH2FdvNwaMW2GqUz7OU
+        opBbsT7ZHnQncFiZVlilJ1YUhsEGhhm5CzpzC7uzs1osQEngNOayaazqvCen7AQRuvZ32x4HjdQXF
+        8NdeQB0/s77GsNd4ZUKPghUSqH4ybID98dQMETa8ClFr+mnQWHpAu8SHT61AXOrg/xLw=;
+Received: from p54ae9310.dip0.t-ipconnect.de ([84.174.147.16] helo=maeck.lan)
+        by ds12 with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.89)
+        (envelope-from <nbd@nbd.name>)
+        id 1jUWmC-000810-SI
+        for linux-wireless@vger.kernel.org; Fri, 01 May 2020 16:36:28 +0200
+Received: by maeck.lan (Postfix, from userid 501)
+        id 2C68F851522F; Fri,  1 May 2020 16:36:27 +0200 (CEST)
+From:   Felix Fietkau <nbd@nbd.name>
+To:     linux-wireless@vger.kernel.org
+Subject: [PATCH 1/2] mt76: mt7615: set spatial extension index
+Date:   Fri,  1 May 2020 16:36:26 +0200
+Message-Id: <20200501143627.24523-1-nbd@nbd.name>
+X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-When isr0 is zero there is nothing more todo so return and
-pull following code in.
+The vendor driver sets this in firmware rate control (which we don't use)
 
-Signed-off-by: Malcolm Priestley <tvboxspy@gmail.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 ---
- drivers/staging/vt6656/usbpipe.c | 47 ++++++++++++++++----------------
- 1 file changed, 23 insertions(+), 24 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7615/mac.c | 3 ++-
+ drivers/net/wireless/mediatek/mt76/mt7615/mcu.c | 6 ++++++
+ 2 files changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/staging/vt6656/usbpipe.c b/drivers/staging/vt6656/usbpipe.c
-index 91b62c3dff7b..e8efdeadb1a7 100644
---- a/drivers/staging/vt6656/usbpipe.c
-+++ b/drivers/staging/vt6656/usbpipe.c
-@@ -196,32 +196,31 @@ static void vnt_int_process_data(struct vnt_private *priv)
- 	if (int_data->tsr3 & TSR_VALID)
- 		vnt_int_report_rate(priv, int_data->pkt3, int_data->tsr3);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
+index e7a76032caff..5c09787b0d76 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
+@@ -639,7 +639,8 @@ int mt7615_mac_write_txwi(struct mt7615_dev *dev, __le32 *txwi,
+ 		txwi[3] |= cpu_to_le32(MT_TXD3_NO_ACK);
  
--	if (int_data->isr0 != 0) {
--		if (int_data->isr0 & ISR_BNTX &&
--		    priv->op_mode == NL80211_IFTYPE_AP)
--			vnt_schedule_command(priv, WLAN_CMD_BECON_SEND);
--
--		if (int_data->isr0 & ISR_TBTT &&
--		    priv->hw->conf.flags & IEEE80211_CONF_PS) {
--			if (!priv->wake_up_count)
--				priv->wake_up_count =
--					priv->hw->conf.listen_interval;
--
--			if (priv->wake_up_count)
--				--priv->wake_up_count;
--
--			/* Turn on wake up to listen next beacon */
--			if (priv->wake_up_count == 1)
--				vnt_schedule_command(priv,
--						     WLAN_CMD_TBTT_WAKEUP);
--		}
--		priv->current_tsf = le64_to_cpu(int_data->tsf);
-+	if (!int_data->isr0)
-+		return;
-+
-+	if (int_data->isr0 & ISR_BNTX && priv->op_mode == NL80211_IFTYPE_AP)
-+		vnt_schedule_command(priv, WLAN_CMD_BECON_SEND);
-+
-+	if (int_data->isr0 & ISR_TBTT &&
-+	    priv->hw->conf.flags & IEEE80211_CONF_PS) {
-+		if (!priv->wake_up_count)
-+			priv->wake_up_count = priv->hw->conf.listen_interval;
+ 	txwi[7] = FIELD_PREP(MT_TXD7_TYPE, fc_type) |
+-		  FIELD_PREP(MT_TXD7_SUB_TYPE, fc_stype);
++		  FIELD_PREP(MT_TXD7_SUB_TYPE, fc_stype) |
++		  FIELD_PREP(MT_TXD7_SPE_IDX, 0x18);
+ 	if (is_usb)
+ 		txwi[8] = FIELD_PREP(MT_TXD8_L_TYPE, fc_type) |
+ 			  FIELD_PREP(MT_TXD8_L_SUB_TYPE, fc_stype);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+index 5fd4a4ab5120..cbad854d7497 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+@@ -887,6 +887,7 @@ mt7615_mcu_wtbl_generic_tlv(struct sk_buff *skb, struct ieee80211_vif *vif,
+ 	struct mt7615_vif *mvif = (struct mt7615_vif *)vif->drv_priv;
+ 	struct wtbl_generic *generic;
+ 	struct wtbl_rx *rx;
++	struct wtbl_spe *spe;
+ 	struct tlv *tlv;
  
--		low_stats->dot11RTSSuccessCount += int_data->rts_success;
--		low_stats->dot11RTSFailureCount += int_data->rts_fail;
--		low_stats->dot11ACKFailureCount += int_data->ack_fail;
--		low_stats->dot11FCSErrorCount += int_data->fcs_err;
-+		if (priv->wake_up_count)
-+			--priv->wake_up_count;
+ 	tlv = mt7615_mcu_add_nested_tlv(skb, WTBL_GENERIC, sizeof(*generic),
+@@ -914,6 +915,11 @@ mt7615_mcu_wtbl_generic_tlv(struct sk_buff *skb, struct ieee80211_vif *vif,
+ 	rx->rca1 = sta ? vif->type != NL80211_IFTYPE_AP : 1;
+ 	rx->rca2 = 1;
+ 	rx->rv = 1;
 +
-+		/* Turn on wake up to listen next beacon */
-+		if (priv->wake_up_count == 1)
-+			vnt_schedule_command(priv, WLAN_CMD_TBTT_WAKEUP);
- 	}
-+
-+	priv->current_tsf = le64_to_cpu(int_data->tsf);
-+
-+	low_stats->dot11RTSSuccessCount += int_data->rts_success;
-+	low_stats->dot11RTSFailureCount += int_data->rts_fail;
-+	low_stats->dot11ACKFailureCount += int_data->ack_fail;
-+	low_stats->dot11FCSErrorCount += int_data->fcs_err;
++	tlv = mt7615_mcu_add_nested_tlv(skb, WTBL_SPE, sizeof(*spe),
++					wtbl_tlv, sta_wtbl);
++	spe = (struct wtbl_spe *)tlv;
++	spe->spe_idx = 24;
  }
  
- static void vnt_start_interrupt_urb_complete(struct urb *urb)
+ static void
 -- 
-2.25.1
+2.24.0
+
