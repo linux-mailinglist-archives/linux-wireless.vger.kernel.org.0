@@ -2,797 +2,311 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 445BC1C1831
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 May 2020 16:47:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C71261C1A12
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 May 2020 17:50:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729753AbgEAOpX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 1 May 2020 10:45:23 -0400
-Received: from mail.kernel.org ([198.145.29.99]:52926 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729598AbgEAOpM (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 1 May 2020 10:45:12 -0400
-Received: from mail.kernel.org (ip5f5ad5c5.dynamic.kabel-deutschland.de [95.90.213.197])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id DEAF62499F;
-        Fri,  1 May 2020 14:45:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1588344307;
-        bh=TWOT3LI8NQ4YlVM+QpDrfNl+OXQn24thtUBxAlgCXPU=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zrk38iaMvXHB74TZlZAXezcGwer8XFKrhlgcMqWqlc7JT0rd8PFrJywTiGYEpRXPs
-         uLBPFNjeKuriEGf6XJfCB20cVx39SPNYWICCyklZAlHNVh7ombcId/+ajkubUvUckD
-         5aVIk7908IMaQVg7dC45JLfYVQ8f7jc9Z4grpYHs=
-Received: from mchehab by mail.kernel.org with local (Exim 4.92.3)
-        (envelope-from <mchehab@kernel.org>)
-        id 1jUWuT-00FCeY-SQ; Fri, 01 May 2020 16:45:01 +0200
-From:   Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To:     Linux Doc Mailing List <linux-doc@vger.kernel.org>
-Cc:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Stanislav Yakovlev <stas.yakovlev@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>, netdev@vger.kernel.org,
+        id S1729748AbgEAPuk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 1 May 2020 11:50:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44622 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728865AbgEAPuj (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 1 May 2020 11:50:39 -0400
+Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com [IPv6:2607:f8b0:4864:20::443])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DB10C061A0C
+        for <linux-wireless@vger.kernel.org>; Fri,  1 May 2020 08:50:39 -0700 (PDT)
+Received: by mail-pf1-x443.google.com with SMTP id z1so1747200pfn.3
+        for <linux-wireless@vger.kernel.org>; Fri, 01 May 2020 08:50:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:references:from:message-id:date:user-agent:mime-version
+         :in-reply-to:content-language:content-transfer-encoding;
+        bh=mYnq8Qm9PU3/zIXvXQ67cTJ7ziROKFFUVDhlB1FvIRo=;
+        b=bnkH8seOBzSjDKjGL8KzbWdqWpiipEtoTQlmYSJd+CQK6z23Bci88wg0e4cerdRH0p
+         coHUP68wmv2A+CCxeWh44BkT7bqYpnAZtvmEl9k+JtPC8lK07D5zb/dkXD1KuguelGFS
+         QffAHXhgBTp0UQPu5+M33DEaG6Or1KGpQNiG2t6mfmX9CdG4na3B9V7xJdHi/rNBgCII
+         SYG1z/V1iJgbHGVgsYHGc9J1a0sbSRwGftnE8CKM1No4Z2tFZtD+ecBEkOLOHkMr3FSv
+         tO1bSvoIhVlDZK7qiMQBvgZXrZds/cWPlF54etAMd5kf3wiV8OgJDimtOrKvBkFq6YDN
+         RzLw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=mYnq8Qm9PU3/zIXvXQ67cTJ7ziROKFFUVDhlB1FvIRo=;
+        b=PxjVo/jZJ4xLYVVlJrlRSEBbrzEGj4Em9IPJix+B2Qa/Nq2SXbfqsnGZdG05LMfF1O
+         cYlLITiAzBwcsQW5TP8BqSzxjPAKyPMJhH9o4DwwZ3GkMWAUVbIaJts6lSoRwD4YiHuH
+         HyVqXeeMtukNSXQ9LRoB9n3W6Bhu0aDHD3l6SEzTVnCXDwrPkVM6cD8SsqzQcMgaEKNI
+         XRK387J65/YBlqu3wWd5N0PPORt/PxrHu1JGx6S1UDp2A+y+euFn0XKmv8fzuynjRVj2
+         RXZRd6pQ/dNkftovt/hC9kMUCGYg29rA75etkgPxAprejSO4Vn+Xx4vEkCe1xVdhDNrg
+         4uXw==
+X-Gm-Message-State: AGi0PuaK9bDPVS0UM6Nh6mn5RBal2Pf8Rp1CNr1K6FhNS0eZ+kipskIE
+        vsSW5ybGWlCRRHd4/2+yBdQQ11Bt
+X-Google-Smtp-Source: APiQypIh3R3mnn7QK7fG0PQaQSyKU+0XvLki3NTqfQLDW4foUjuJqMt1oq76Ns0awMWEw9EOuSH5lA==
+X-Received: by 2002:aa7:914f:: with SMTP id 15mr5019879pfi.176.1588348238518;
+        Fri, 01 May 2020 08:50:38 -0700 (PDT)
+Received: from [10.211.55.7] ([112.209.124.182])
+        by smtp.gmail.com with ESMTPSA id k6sm7938pju.44.2020.05.01.08.50.36
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 01 May 2020 08:50:37 -0700 (PDT)
+Subject: Re: [PATCH] ath10k: Restart xmit queues below low-water mark.
+To:     Ben Greear <greearb@candelatech.com>,
+        =?UTF-8?Q?Toke_H=c3=b8iland-J=c3=b8rgensen?= <toke@toke.dk>,
         linux-wireless@vger.kernel.org
-Subject: [PATCH 25/37] docs: networking: device drivers: convert intel/ipw2200.txt to ReST
-Date:   Fri,  1 May 2020 16:44:47 +0200
-Message-Id: <b7428138935499bec38daf284f222d13c6f4f6b0.1588344146.git.mchehab+huawei@kernel.org>
-X-Mailer: git-send-email 2.25.4
-In-Reply-To: <cover.1588344146.git.mchehab+huawei@kernel.org>
-References: <cover.1588344146.git.mchehab+huawei@kernel.org>
+References: <20200427145435.13151-1-greearb@candelatech.com>
+ <87h7x3v1tn.fsf@toke.dk>
+ <d72dbba0-409f-93d7-5364-bc7ac50288b9@candelatech.com>
+ <87a72vuyyn.fsf@toke.dk> <e49a3413-5d5e-cef7-bd31-c3a124a3bb86@gmail.com>
+ <1108576c-3bf1-fde0-8266-f8e4c4a477bf@candelatech.com>
+From:   John Deere <24601deerej@gmail.com>
+Message-ID: <61bd26ed-93cb-01d9-6912-cc683d09560a@gmail.com>
+Date:   Fri, 1 May 2020 23:50:34 +0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
+In-Reply-To: <1108576c-3bf1-fde0-8266-f8e4c4a477bf@candelatech.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-- add SPDX header;
-- adjust titles and chapters, adding proper markups;
-- comment out text-only TOC from html/pdf output;
-- use copyright symbol;
-- use :field: markup;
-- mark code blocks and literals as such;
-- mark tables as such;
-- adjust identation, whitespaces and blank lines where needed;
-- add to networking/index.rst.
 
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
----
- .../networking/device_drivers/index.rst       |   1 +
- .../intel/{ipw2200.txt => ipw2200.rst}        | 410 ++++++++++--------
- MAINTAINERS                                   |   2 +-
- drivers/net/wireless/intel/ipw2x00/Kconfig    |   2 +-
- 4 files changed, 235 insertions(+), 180 deletions(-)
- rename Documentation/networking/device_drivers/intel/{ipw2200.txt => ipw2200.rst} (64%)
 
-diff --git a/Documentation/networking/device_drivers/index.rst b/Documentation/networking/device_drivers/index.rst
-index 54ed10f3d1a7..f9ce0089ec7d 100644
---- a/Documentation/networking/device_drivers/index.rst
-+++ b/Documentation/networking/device_drivers/index.rst
-@@ -40,6 +40,7 @@ Contents:
-    freescale/dpaa
-    freescale/gianfar
-    intel/ipw2100
-+   intel/ipw2200
- 
- .. only::  subproject and html
- 
-diff --git a/Documentation/networking/device_drivers/intel/ipw2200.txt b/Documentation/networking/device_drivers/intel/ipw2200.rst
-similarity index 64%
-rename from Documentation/networking/device_drivers/intel/ipw2200.txt
-rename to Documentation/networking/device_drivers/intel/ipw2200.rst
-index b7658bed4906..0cb42d2fd7e5 100644
---- a/Documentation/networking/device_drivers/intel/ipw2200.txt
-+++ b/Documentation/networking/device_drivers/intel/ipw2200.rst
-@@ -1,8 +1,15 @@
-+.. SPDX-License-Identifier: GPL-2.0
-+.. include:: <isonum.txt>
- 
--Intel(R) PRO/Wireless 2915ABG Driver for Linux in support of:
-+==============================================
-+Intel(R) PRO/Wireless 2915ABG Driver for Linux
-+==============================================
- 
--Intel(R) PRO/Wireless 2200BG Network Connection
--Intel(R) PRO/Wireless 2915ABG Network Connection
-+
-+Support for:
-+
-+- Intel(R) PRO/Wireless 2200BG Network Connection
-+- Intel(R) PRO/Wireless 2915ABG Network Connection
- 
- Note: The Intel(R) PRO/Wireless 2915ABG Driver for Linux and Intel(R)
- PRO/Wireless 2200BG Driver for Linux is a unified driver that works on
-@@ -10,37 +17,37 @@ both hardware adapters listed above. In this document the Intel(R)
- PRO/Wireless 2915ABG Driver for Linux will be used to reference the
- unified driver.
- 
--Copyright (C) 2004-2006, Intel Corporation
-+Copyright |copy| 2004-2006, Intel Corporation
- 
- README.ipw2200
- 
--Version: 1.1.2
--Date   : March 30, 2006
-+:Version: 1.1.2
-+:Date: March 30, 2006
- 
- 
--Index
-------------------------------------------------
--0.   IMPORTANT INFORMATION BEFORE USING THIS DRIVER
--1.   Introduction
--1.1. Overview of features
--1.2. Module parameters
--1.3. Wireless Extension Private Methods
--1.4. Sysfs Helper Files
--1.5. Supported channels
--2.   Ad-Hoc Networking
--3.   Interacting with Wireless Tools
--3.1. iwconfig mode
--3.2. iwconfig sens
--4.   About the Version Numbers
--5.   Firmware installation
--6.   Support
--7.   License
-+.. Index
- 
-+    0.   IMPORTANT INFORMATION BEFORE USING THIS DRIVER
-+    1.   Introduction
-+    1.1. Overview of features
-+    1.2. Module parameters
-+    1.3. Wireless Extension Private Methods
-+    1.4. Sysfs Helper Files
-+    1.5. Supported channels
-+    2.   Ad-Hoc Networking
-+    3.   Interacting with Wireless Tools
-+    3.1. iwconfig mode
-+    3.2. iwconfig sens
-+    4.   About the Version Numbers
-+    5.   Firmware installation
-+    6.   Support
-+    7.   License
- 
--0.   IMPORTANT INFORMATION BEFORE USING THIS DRIVER
-------------------------------------------------
- 
--Important Notice FOR ALL USERS OR DISTRIBUTORS!!!! 
-+0. IMPORTANT INFORMATION BEFORE USING THIS DRIVER
-+=================================================
-+
-+Important Notice FOR ALL USERS OR DISTRIBUTORS!!!!
- 
- Intel wireless LAN adapters are engineered, manufactured, tested, and
- quality checked to ensure that they meet all necessary local and
-@@ -56,7 +63,7 @@ product is granted. Intel's wireless LAN's EEPROM, firmware, and
- software driver are designed to carefully control parameters that affect
- radio operation and to ensure electromagnetic compliance (EMC). These
- parameters include, without limitation, RF power, spectrum usage,
--channel scanning, and human exposure. 
-+channel scanning, and human exposure.
- 
- For these reasons Intel cannot permit any manipulation by third parties
- of the software provided in binary format with the wireless WLAN
-@@ -70,7 +77,7 @@ no liability, under any theory of liability for any issues associated
- with the modified products, including without limitation, claims under
- the warranty and/or issues arising from regulatory non-compliance, and
- (iii) Intel will not provide or be required to assist in providing
--support to any third parties for such modified products.  
-+support to any third parties for such modified products.
- 
- Note: Many regulatory agencies consider Wireless LAN adapters to be
- modules, and accordingly, condition system-level regulatory approval
-@@ -78,23 +85,24 @@ upon receipt and review of test data documenting that the antennas and
- system configuration do not cause the EMC and radio operation to be
- non-compliant.
- 
--The drivers available for download from SourceForge are provided as a 
--part of a development project.  Conformance to local regulatory 
--requirements is the responsibility of the individual developer.  As 
--such, if you are interested in deploying or shipping a driver as part of 
--solution intended to be used for purposes other than development, please 
-+The drivers available for download from SourceForge are provided as a
-+part of a development project.  Conformance to local regulatory
-+requirements is the responsibility of the individual developer.  As
-+such, if you are interested in deploying or shipping a driver as part of
-+solution intended to be used for purposes other than development, please
- obtain a tested driver from Intel Customer Support at:
- 
- http://support.intel.com
- 
- 
--1.   Introduction
-------------------------------------------------
--The following sections attempt to provide a brief introduction to using 
-+1. Introduction
-+===============
-+
-+The following sections attempt to provide a brief introduction to using
- the Intel(R) PRO/Wireless 2915ABG Driver for Linux.
- 
--This document is not meant to be a comprehensive manual on 
--understanding or using wireless technologies, but should be sufficient 
-+This document is not meant to be a comprehensive manual on
-+understanding or using wireless technologies, but should be sufficient
- to get you moving without wires on Linux.
- 
- For information on building and installing the driver, see the INSTALL
-@@ -102,14 +110,14 @@ file.
- 
- 
- 1.1. Overview of Features
-------------------------------------------------
-+-------------------------
- The current release (1.1.2) supports the following features:
- 
- + BSS mode (Infrastructure, Managed)
- + IBSS mode (Ad-Hoc)
- + WEP (OPEN and SHARED KEY mode)
- + 802.1x EAP via wpa_supplicant and xsupplicant
--+ Wireless Extension support 
-++ Wireless Extension support
- + Full B and G rate support (2200 and 2915)
- + Full A rate support (2915 only)
- + Transmit power control
-@@ -122,102 +130,107 @@ supported:
- + long/short preamble support
- + Monitor mode (aka RFMon)
- 
--The distinction between officially supported and enabled is a reflection 
-+The distinction between officially supported and enabled is a reflection
- on the amount of validation and interoperability testing that has been
--performed on a given feature. 
-+performed on a given feature.
- 
- 
- 
- 1.2. Command Line Parameters
-------------------------------------------------
-+----------------------------
- 
- Like many modules used in the Linux kernel, the Intel(R) PRO/Wireless
--2915ABG Driver for Linux allows configuration options to be provided 
--as module parameters.  The most common way to specify a module parameter 
--is via the command line.  
-+2915ABG Driver for Linux allows configuration options to be provided
-+as module parameters.  The most common way to specify a module parameter
-+is via the command line.
- 
--The general form is:
-+The general form is::
- 
--% modprobe ipw2200 parameter=value
-+    % modprobe ipw2200 parameter=value
- 
- Where the supported parameter are:
- 
-   associate
- 	Set to 0 to disable the auto scan-and-associate functionality of the
--	driver.  If disabled, the driver will not attempt to scan 
--	for and associate to a network until it has been configured with 
--	one or more properties for the target network, for example configuring 
-+	driver.  If disabled, the driver will not attempt to scan
-+	for and associate to a network until it has been configured with
-+	one or more properties for the target network, for example configuring
- 	the network SSID.  Default is 0 (do not auto-associate)
--	
-+
- 	Example: % modprobe ipw2200 associate=0
- 
-   auto_create
--	Set to 0 to disable the auto creation of an Ad-Hoc network 
--	matching the channel and network name parameters provided.  
-+	Set to 0 to disable the auto creation of an Ad-Hoc network
-+	matching the channel and network name parameters provided.
- 	Default is 1.
- 
-   channel
- 	channel number for association.  The normal method for setting
--        the channel would be to use the standard wireless tools
--        (i.e. `iwconfig eth1 channel 10`), but it is useful sometimes
-+	the channel would be to use the standard wireless tools
-+	(i.e. `iwconfig eth1 channel 10`), but it is useful sometimes
- 	to set this while debugging.  Channel 0 means 'ANY'
- 
-   debug
- 	If using a debug build, this is used to control the amount of debug
- 	info is logged.  See the 'dvals' and 'load' script for more info on
--	how to use this (the dvals and load scripts are provided as part 
--	of the ipw2200 development snapshot releases available from the 
-+	how to use this (the dvals and load scripts are provided as part
-+	of the ipw2200 development snapshot releases available from the
- 	SourceForge project at http://ipw2200.sf.net)
--  
-+
-   led
- 	Can be used to turn on experimental LED code.
- 	0 = Off, 1 = On.  Default is 1.
- 
-   mode
--	Can be used to set the default mode of the adapter.  
-+	Can be used to set the default mode of the adapter.
- 	0 = Managed, 1 = Ad-Hoc, 2 = Monitor
- 
- 
- 1.3. Wireless Extension Private Methods
-------------------------------------------------
-+---------------------------------------
- 
--As an interface designed to handle generic hardware, there are certain 
--capabilities not exposed through the normal Wireless Tool interface.  As 
--such, a provision is provided for a driver to declare custom, or 
--private, methods.  The Intel(R) PRO/Wireless 2915ABG Driver for Linux 
-+As an interface designed to handle generic hardware, there are certain
-+capabilities not exposed through the normal Wireless Tool interface.  As
-+such, a provision is provided for a driver to declare custom, or
-+private, methods.  The Intel(R) PRO/Wireless 2915ABG Driver for Linux
- defines several of these to configure various settings.
- 
--The general form of using the private wireless methods is:
-+The general form of using the private wireless methods is::
- 
- 	% iwpriv $IFNAME method parameters
- 
--Where $IFNAME is the interface name the device is registered with 
-+Where $IFNAME is the interface name the device is registered with
- (typically eth1, customized via one of the various network interface
- name managers, such as ifrename)
- 
- The supported private methods are:
- 
-   get_mode
--	Can be used to report out which IEEE mode the driver is 
-+	Can be used to report out which IEEE mode the driver is
- 	configured to support.  Example:
--	
-+
- 	% iwpriv eth1 get_mode
- 	eth1	get_mode:802.11bg (6)
- 
-   set_mode
--	Can be used to configure which IEEE mode the driver will 
--	support.  
-+	Can be used to configure which IEEE mode the driver will
-+	support.
-+
-+	Usage::
-+
-+	    % iwpriv eth1 set_mode {mode}
- 
--	Usage:
--	% iwpriv eth1 set_mode {mode}
- 	Where {mode} is a number in the range 1-7:
-+
-+	==	=====================
- 	1	802.11a (2915 only)
- 	2	802.11b
- 	3	802.11ab (2915 only)
--	4	802.11g 
-+	4	802.11g
- 	5	802.11ag (2915 only)
- 	6	802.11bg
- 	7	802.11abg (2915 only)
-+	==	=====================
- 
-   get_preamble
- 	Can be used to report configuration of preamble length.
-@@ -225,99 +238,123 @@ The supported private methods are:
-   set_preamble
- 	Can be used to set the configuration of preamble length:
- 
--	Usage:
--	% iwpriv eth1 set_preamble {mode}
-+	Usage::
-+
-+	    % iwpriv eth1 set_preamble {mode}
-+
- 	Where {mode} is one of:
-+
-+	==	========================================
- 	1	Long preamble only
- 	0	Auto (long or short based on connection)
--	
-+	==	========================================
- 
--1.4. Sysfs Helper Files:
-------------------------------------------------
- 
--The Linux kernel provides a pseudo file system that can be used to 
-+1.4. Sysfs Helper Files
-+-----------------------
-+
-+The Linux kernel provides a pseudo file system that can be used to
- access various components of the operating system.  The Intel(R)
- PRO/Wireless 2915ABG Driver for Linux exposes several configuration
- parameters through this mechanism.
- 
--An entry in the sysfs can support reading and/or writing.  You can 
--typically query the contents of a sysfs entry through the use of cat, 
--and can set the contents via echo.  For example:
-+An entry in the sysfs can support reading and/or writing.  You can
-+typically query the contents of a sysfs entry through the use of cat,
-+and can set the contents via echo.  For example::
- 
--% cat /sys/bus/pci/drivers/ipw2200/debug_level
-+    % cat /sys/bus/pci/drivers/ipw2200/debug_level
- 
--Will report the current debug level of the driver's logging subsystem 
-+Will report the current debug level of the driver's logging subsystem
- (only available if CONFIG_IPW2200_DEBUG was configured when the driver
- was built).
- 
--You can set the debug level via:
-+You can set the debug level via::
- 
--% echo $VALUE > /sys/bus/pci/drivers/ipw2200/debug_level
-+    % echo $VALUE > /sys/bus/pci/drivers/ipw2200/debug_level
- 
--Where $VALUE would be a number in the case of this sysfs entry.  The 
--input to sysfs files does not have to be a number.  For example, the 
--firmware loader used by hotplug utilizes sysfs entries for transferring 
-+Where $VALUE would be a number in the case of this sysfs entry.  The
-+input to sysfs files does not have to be a number.  For example, the
-+firmware loader used by hotplug utilizes sysfs entries for transferring
- the firmware image from user space into the driver.
- 
--The Intel(R) PRO/Wireless 2915ABG Driver for Linux exposes sysfs entries 
--at two levels -- driver level, which apply to all instances of the driver 
--(in the event that there are more than one device installed) and device 
-+The Intel(R) PRO/Wireless 2915ABG Driver for Linux exposes sysfs entries
-+at two levels -- driver level, which apply to all instances of the driver
-+(in the event that there are more than one device installed) and device
- level, which applies only to the single specific instance.
- 
- 
- 1.4.1 Driver Level Sysfs Helper Files
-------------------------------------------------
-+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
- 
- For the driver level files, look in /sys/bus/pci/drivers/ipw2200/
- 
--  debug_level  
--	
-+  debug_level
- 	This controls the same global as the 'debug' module parameter
- 
- 
- 
- 1.4.2 Device Level Sysfs Helper Files
-------------------------------------------------
-+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-+
-+For the device level files, look in::
- 
--For the device level files, look in
--	
- 	/sys/bus/pci/drivers/ipw2200/{PCI-ID}/
- 
--For example:
-+For example:::
-+
- 	/sys/bus/pci/drivers/ipw2200/0000:02:01.0
- 
- For the device level files, see /sys/bus/pci/drivers/ipw2200:
- 
-   rf_kill
--	read - 
--	0 = RF kill not enabled (radio on)
--	1 = SW based RF kill active (radio off)
--	2 = HW based RF kill active (radio off)
--	3 = Both HW and SW RF kill active (radio off)
-+	read -
-+
-+	==  =========================================
-+	0   RF kill not enabled (radio on)
-+	1   SW based RF kill active (radio off)
-+	2   HW based RF kill active (radio off)
-+	3   Both HW and SW RF kill active (radio off)
-+	==  =========================================
-+
- 	write -
--	0 = If SW based RF kill active, turn the radio back on
--	1 = If radio is on, activate SW based RF kill
- 
--	NOTE: If you enable the SW based RF kill and then toggle the HW
--  	based RF kill from ON -> OFF -> ON, the radio will NOT come back on
--	
--  ucode 
-+	==  ==================================================
-+	0   If SW based RF kill active, turn the radio back on
-+	1   If radio is on, activate SW based RF kill
-+	==  ==================================================
-+
-+	.. note::
-+
-+	   If you enable the SW based RF kill and then toggle the HW
-+	   based RF kill from ON -> OFF -> ON, the radio will NOT come back on
-+
-+  ucode
- 	read-only access to the ucode version number
- 
-   led
- 	read -
--	0 = LED code disabled
--	1 = LED code enabled
-+
-+	==  =================
-+	0   LED code disabled
-+	1   LED code enabled
-+	==  =================
-+
- 	write -
--	0 = Disable LED code
--	1 = Enable LED code
- 
--	NOTE: The LED code has been reported to hang some systems when 
--	running ifconfig and is therefore disabled by default.
-+	==  ================
-+	0   Disable LED code
-+	1   Enable LED code
-+	==  ================
-+
-+
-+	.. note::
-+
-+	   The LED code has been reported to hang some systems when
-+	   running ifconfig and is therefore disabled by default.
- 
- 
- 1.5. Supported channels
-------------------------------------------------
-+-----------------------
- 
- Upon loading the Intel(R) PRO/Wireless 2915ABG Driver for Linux, a
- message stating the detected geography code and the number of 802.11
-@@ -326,44 +363,59 @@ channels supported by the card will be displayed in the log.
- The geography code corresponds to a regulatory domain as shown in the
- table below.
- 
--					  Supported channels
--Code	Geography			802.11bg	802.11a
-+	+------+----------------------------+--------------------+
-+	|      |			    | Supported channels |
-+	| Code |        Geography	    +----------+---------+
-+	|      |			    | 802.11bg | 802.11a |
-+	+======+============================+==========+=========+
-+	| ---  | Restricted 		    |  11      |   0     |
-+	+------+----------------------------+----------+---------+
-+	| ZZF  | Custom US/Canada 	    |  11      |   8     |
-+	+------+----------------------------+----------+---------+
-+	| ZZD  | Rest of World 		    |  13      |   0     |
-+	+------+----------------------------+----------+---------+
-+	| ZZA  | Custom USA & Europe & High |  11      |  13     |
-+	+------+----------------------------+----------+---------+
-+	| ZZB  | Custom NA & Europe	    |  11      |  13     |
-+	+------+----------------------------+----------+---------+
-+	| ZZC  | Custom Japan 		    |  11      |   4     |
-+	+------+----------------------------+----------+---------+
-+	| ZZM  | Custom  		    |  11      |   0     |
-+	+------+----------------------------+----------+---------+
-+	| ZZE  | Europe 		    |  13      |  19     |
-+	+------+----------------------------+----------+---------+
-+	| ZZJ  | Custom Japan 		    |  14      |   4     |
-+	+------+----------------------------+----------+---------+
-+	| ZZR  | Rest of World		    |  14      |   0     |
-+	+------+----------------------------+----------+---------+
-+	| ZZH  | High Band		    |  13      |   4     |
-+	+------+----------------------------+----------+---------+
-+	| ZZG  | Custom Europe		    |  13      |   4     |
-+	+------+----------------------------+----------+---------+
-+	| ZZK  | Europe 		    |  13      |  24     |
-+	+------+----------------------------+----------+---------+
-+	| ZZL  | Europe 		    |  11      |  13     |
-+	+------+----------------------------+----------+---------+
- 
-----	Restricted			11 	 	 0
--ZZF	Custom US/Canada		11	 	 8
--ZZD	Rest of World			13	 	 0
--ZZA	Custom USA & Europe & High	11		13
--ZZB	Custom NA & Europe    		11		13
--ZZC	Custom Japan			11	 	 4
--ZZM	Custom 				11	 	 0
--ZZE	Europe				13		19
--ZZJ	Custom Japan			14	 	 4
--ZZR	Rest of World			14	 	 0
--ZZH	High Band			13	 	 4
--ZZG	Custom Europe			13	 	 4
--ZZK	Europe 				13		24
--ZZL	Europe				11		13
-+2.  Ad-Hoc Networking
-+=====================
- 
--
--2.   Ad-Hoc Networking
-------------------------------------------------
--
--When using a device in an Ad-Hoc network, it is useful to understand the 
--sequence and requirements for the driver to be able to create, join, or 
-+When using a device in an Ad-Hoc network, it is useful to understand the
-+sequence and requirements for the driver to be able to create, join, or
- merge networks.
- 
--The following attempts to provide enough information so that you can 
--have a consistent experience while using the driver as a member of an 
-+The following attempts to provide enough information so that you can
-+have a consistent experience while using the driver as a member of an
- Ad-Hoc network.
- 
- 2.1. Joining an Ad-Hoc Network
-------------------------------------------------
-+------------------------------
- 
--The easiest way to get onto an Ad-Hoc network is to join one that 
-+The easiest way to get onto an Ad-Hoc network is to join one that
- already exists.
- 
- 2.2. Creating an Ad-Hoc Network
-------------------------------------------------
-+-------------------------------
- 
- An Ad-Hoc networks is created using the syntax of the Wireless tool.
- 
-@@ -371,21 +423,21 @@ For Example:
- iwconfig eth1 mode ad-hoc essid testing channel 2
- 
- 2.3. Merging Ad-Hoc Networks
-------------------------------------------------
-+----------------------------
- 
- 
--3.  Interaction with Wireless Tools
-------------------------------------------------
-+3. Interaction with Wireless Tools
-+==================================
- 
- 3.1 iwconfig mode
-------------------------------------------------
-+-----------------
- 
- When configuring the mode of the adapter, all run-time configured parameters
- are reset to the value used when the module was loaded.  This includes
- channels, rates, ESSID, etc.
- 
- 3.2 iwconfig sens
-------------------------------------------------
-+-----------------
- 
- The 'iwconfig ethX sens XX' command will not set the signal sensitivity
- threshold, as described in iwconfig documentation, but rather the number
-@@ -394,35 +446,35 @@ to another access point. At the same time, it will set the disassociation
- threshold to 3 times the given value.
- 
- 
--4.   About the Version Numbers
-------------------------------------------------
-+4.  About the Version Numbers
-+=============================
- 
--Due to the nature of open source development projects, there are 
--frequently changes being incorporated that have not gone through 
--a complete validation process.  These changes are incorporated into 
-+Due to the nature of open source development projects, there are
-+frequently changes being incorporated that have not gone through
-+a complete validation process.  These changes are incorporated into
- development snapshot releases.
- 
--Releases are numbered with a three level scheme: 
-+Releases are numbered with a three level scheme:
- 
- 	major.minor.development
- 
- Any version where the 'development' portion is 0 (for example
--1.0.0, 1.1.0, etc.) indicates a stable version that will be made 
-+1.0.0, 1.1.0, etc.) indicates a stable version that will be made
- available for kernel inclusion.
- 
- Any version where the 'development' portion is not a 0 (for
- example 1.0.1, 1.1.5, etc.) indicates a development version that is
--being made available for testing and cutting edge users.  The stability 
-+being made available for testing and cutting edge users.  The stability
- and functionality of the development releases are not know.  We make
- efforts to try and keep all snapshots reasonably stable, but due to the
--frequency of their release, and the desire to get those releases 
-+frequency of their release, and the desire to get those releases
- available as quickly as possible, unknown anomalies should be expected.
- 
- The major version number will be incremented when significant changes
- are made to the driver.  Currently, there are no major changes planned.
- 
--5.  Firmware installation
------------------------------------------------
-+5. Firmware installation
-+========================
- 
- The driver requires a firmware image, download it and extract the
- files under /lib/firmware (or wherever your hotplug's firmware.agent
-@@ -433,40 +485,42 @@ The firmware can be downloaded from the following URL:
-     http://ipw2200.sf.net/
- 
- 
--6.  Support
-------------------------------------------------
-+6. Support
-+==========
- 
--For direct support of the 1.0.0 version, you can contact 
-+For direct support of the 1.0.0 version, you can contact
- http://supportmail.intel.com, or you can use the open source project
- support.
- 
- For general information and support, go to:
--	
-+
-     http://ipw2200.sf.net/
- 
- 
--7.  License
-------------------------------------------------
-+7. License
-+==========
- 
--  Copyright(c) 2003 - 2006 Intel Corporation. All rights reserved.
-+  Copyright |copy| 2003 - 2006 Intel Corporation. All rights reserved.
- 
--  This program is free software; you can redistribute it and/or modify it 
--  under the terms of the GNU General Public License version 2 as 
-+  This program is free software; you can redistribute it and/or modify it
-+  under the terms of the GNU General Public License version 2 as
-   published by the Free Software Foundation.
--  
--  This program is distributed in the hope that it will be useful, but WITHOUT 
--  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or 
--  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for 
-+
-+  This program is distributed in the hope that it will be useful, but WITHOUT
-+  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-+  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
-   more details.
--  
-+
-   You should have received a copy of the GNU General Public License along with
--  this program; if not, write to the Free Software Foundation, Inc., 59 
-+  this program; if not, write to the Free Software Foundation, Inc., 59
-   Temple Place - Suite 330, Boston, MA  02111-1307, USA.
--  
-+
-   The full GNU General Public License is included in this distribution in the
-   file called LICENSE.
--  
-+
-   Contact Information:
-+
-   James P. Ketrenos <ipw2100-admin@linux.intel.com>
-+
-   Intel Corporation, 5200 N.E. Elam Young Parkway, Hillsboro, OR 97124-6497
- 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 2ac9c94ff4f2..62c654308bc8 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -8763,7 +8763,7 @@ M:	Stanislav Yakovlev <stas.yakovlev@gmail.com>
- L:	linux-wireless@vger.kernel.org
- S:	Maintained
- F:	Documentation/networking/device_drivers/intel/ipw2100.rst
--F:	Documentation/networking/device_drivers/intel/ipw2200.txt
-+F:	Documentation/networking/device_drivers/intel/ipw2200.rst
- F:	drivers/net/wireless/intel/ipw2x00/
- 
- INTEL PSTATE DRIVER
-diff --git a/drivers/net/wireless/intel/ipw2x00/Kconfig b/drivers/net/wireless/intel/ipw2x00/Kconfig
-index b0b3cd6296f3..f42b3cdce611 100644
---- a/drivers/net/wireless/intel/ipw2x00/Kconfig
-+++ b/drivers/net/wireless/intel/ipw2x00/Kconfig
-@@ -78,7 +78,7 @@ config IPW2200
- 	  A driver for the Intel PRO/Wireless 2200BG and 2915ABG Network
- 	  Connection adapters.
- 
--	  See <file:Documentation/networking/device_drivers/intel/ipw2200.txt>
-+	  See <file:Documentation/networking/device_drivers/intel/ipw2200.rst>
- 	  for information on the capabilities currently enabled in this
- 	  driver and for tips for debugging issues and problems.
- 
--- 
-2.25.4
+On 5/1/20 10:16 AM, Ben Greear wrote:
+> 
+> 
+> On 04/30/2020 04:31 PM, John Deere wrote:
+>> I've just tried Toke's DQL on an Archer C7 (QCA 988X) and it errors 
+>> out with:
+>>
+>> ath10k_pci  failed to increase tx pending count: -16, dropping
+>>
+>> This is with ath10k non-ct firmware and driver on OpenWrt (w/backports 
+>> 5.4.27 & AQL). ath10k starts up but is unable to let any stations 
+>> connect.
+>>
+>> I've also tried the standalone patch by Ben and it seems to have 
+>> reduced the latencies on top of AQL by another 5 ms.
+> 
+> Hello,
+> 
+> Did you notice any throughput changes or system load changes in the test 
+> that you did with my patch?
+> 
+> Thanks,
+> Ben
+> 
 
+I have noticed that there has been a reduction in system load and memory 
+use. Whereas previously with 11 clients on one Archer C7 acting as an AP 
+only, my free memory available would be 51%, it now shows 55-56% - a 4% 
+to 5% reduction. Note, these results were obtained alongside with 
+reverting the following comit 
+https://github.com/openwrt/openwrt/commit/1e27befe63ff4c69f110c7310316f4af75ee63e9. 
+I believe that this same set of patches also are currently in use for 
+the ath10k-ct smallbuffers variant on OpenWrt.
+
+I have not had the time to conduct any meaningful throughput measurements.
+
+>>
+>> On 4/29/20 4:39 AM, Toke Høiland-Jørgensen wrote:
+>>> Ben Greear <greearb@candelatech.com> writes:
+>>>
+>>>> On 04/28/2020 12:37 PM, Toke Høiland-Jørgensen wrote:
+>>>>> greearb@candelatech.com writes:
+>>>>>
+>>>>>> From: Ben Greear <greearb@candelatech.com>
+>>>>>>
+>>>>>> While running tcp upload + download tests with ~200
+>>>>>> concurrent TCP streams, 1-2 processes, and 30 station
+>>>>>> vdevs, I noticed that the __ieee80211_stop_queue was taking
+>>>>>> around 20% of the CPU according to perf-top, which other locking
+>>>>>> taking an additional ~15%.
+>>>>>>
+>>>>>> I believe the issue is that the ath10k driver would unlock the
+>>>>>> txqueue when a single frame could be transmitted, instead of
+>>>>>> waiting for a low water mark.
+>>>>>>
+>>>>>> So, this patch adds a low-water mark that is 1/4 of the total
+>>>>>> tx buffers allowed.
+>>>>>>
+>>>>>> This appears to resolve the performance problem that I saw.
+>>>>>>
+>>>>>> Tested with recent wave-1 ath10k-ct firmware.
+>>>>>>
+>>>>>> Signed-off-by: Ben Greear <greearb@candelatech.com>
+>>>>>> ---
+>>>>>>   drivers/net/wireless/ath/ath10k/htt.h    | 1 +
+>>>>>>   drivers/net/wireless/ath/ath10k/htt_tx.c | 8 ++++++--
+>>>>>>   2 files changed, 7 insertions(+), 2 deletions(-)
+>>>>>>
+>>>>>> diff --git a/drivers/net/wireless/ath/ath10k/htt.h 
+>>>>>> b/drivers/net/wireless/ath/ath10k/htt.h
+>>>>>> index 31c4ddbf45cb..b5634781c0dc 100644
+>>>>>> --- a/drivers/net/wireless/ath/ath10k/htt.h
+>>>>>> +++ b/drivers/net/wireless/ath/ath10k/htt.h
+>>>>>> @@ -1941,6 +1941,7 @@ struct ath10k_htt {
+>>>>>>
+>>>>>>       u8 target_version_major;
+>>>>>>       u8 target_version_minor;
+>>>>>> +    bool needs_unlock;
+>>>>>>       struct completion target_version_received;
+>>>>>>       u8 max_num_amsdu;
+>>>>>>       u8 max_num_ampdu;
+>>>>>> diff --git a/drivers/net/wireless/ath/ath10k/htt_tx.c 
+>>>>>> b/drivers/net/wireless/ath/ath10k/htt_tx.c
+>>>>>> index 9b3c3b080e92..44795d9a7c0c 100644
+>>>>>> --- a/drivers/net/wireless/ath/ath10k/htt_tx.c
+>>>>>> +++ b/drivers/net/wireless/ath/ath10k/htt_tx.c
+>>>>>> @@ -145,8 +145,10 @@ void ath10k_htt_tx_dec_pending(struct 
+>>>>>> ath10k_htt *htt)
+>>>>>>       lockdep_assert_held(&htt->tx_lock);
+>>>>>>
+>>>>>>       htt->num_pending_tx--;
+>>>>>> -    if (htt->num_pending_tx == htt->max_num_pending_tx - 1)
+>>>>>> +    if ((htt->num_pending_tx <= (htt->max_num_pending_tx / 4)) && 
+>>>>>> htt->needs_unlock) {
+>>>>>
+>>>>> Why /4? Seems a bit arbitrary?
+>>>>
+>>>> Yes, arbitrary for sure. I figure restart filling the queue when 1/4
+>>>> full so that it is unlikely to run dry. Possibly it should restart
+>>>> sooner to keep it more full on average?
+>>>
+>>> Theoretically, the "keep the queue at the lowest possible level that
+>>> keeps it from underflowing" is what BQL is supposed to do. The diff
+>>> below uses the dynamic adjustment bit (from dynamic_queue_limits.h) in
+>>> place of num_pending_tx. I've only compile tested it, and I'm a bit
+>>> skeptical that it will work right for this, but if anyone wants to give
+>>> it a shot, there it is.
+>>>
+>>> BTW, while doing that, I noticed there's a similar arbitrary limit in
+>>> ath10k_mac_tx_push_pending() at max_num_pending_tx/2. So if you're going
+>>> to keep the arbitrary limit maybe use the same one? :)
+>>>
+>>>> Before my patch, the behaviour would be to try to keep it as full as
+>>>> possible, as in restart the queues as soon as a single slot opens up
+>>>> in the tx queue.
+>>>
+>>> Yeah, that seems somewhat misguided as well, from a latency perspective,
+>>> at least. But I guess that's what we're fixing with AQL. What does the
+>>> firmware do with the frames queued within? Do they just go on a FIFO
+>>> queue altogether, or something smarter?
+>>>
+>>> -Toke
+>>>
+>>>
+>>>
+>>>
+>>> diff --git a/drivers/net/wireless/ath/ath10k/core.c 
+>>> b/drivers/net/wireless/ath/ath10k/core.c
+>>> index f26cc6989dad..72771ff38a94 100644
+>>> --- a/drivers/net/wireless/ath/ath10k/core.c
+>>> +++ b/drivers/net/wireless/ath/ath10k/core.c
+>>> @@ -2497,6 +2497,10 @@ static int 
+>>> ath10k_core_init_firmware_features(struct ath10k *ar)
+>>>           return -EINVAL;
+>>>       }
+>>>   +    dql_init(&ar->htt.dql, HZ);
+>>> +    ar->htt.dql.max_limit = ar->htt.max_num_pending_tx;
+>>> +    ar->htt.dql.min_limit = 8;
+>>> +
+>>>       if (ar->hw_params.num_peers)
+>>>           ar->max_num_peers = ar->hw_params.num_peers;
+>>>       else
+>>> diff --git a/drivers/net/wireless/ath/ath10k/htt.h 
+>>> b/drivers/net/wireless/ath/ath10k/htt.h
+>>> index 4a12564fc30e..19024d063896 100644
+>>> --- a/drivers/net/wireless/ath/ath10k/htt.h
+>>> +++ b/drivers/net/wireless/ath/ath10k/htt.h
+>>> @@ -13,6 +13,7 @@
+>>>   #include <linux/dmapool.h>
+>>>   #include <linux/hashtable.h>
+>>>   #include <linux/kfifo.h>
+>>> +#include <linux/dynamic_queue_limits.h>
+>>>   #include <net/mac80211.h>
+>>>     #include "htc.h"
+>>> @@ -1965,8 +1966,8 @@ struct ath10k_htt {
+>>>       /* Protects access to pending_tx, num_pending_tx */
+>>>       spinlock_t tx_lock;
+>>>       int max_num_pending_tx;
+>>> -    int num_pending_tx;
+>>>       int num_pending_mgmt_tx;
+>>> +    struct dql dql;
+>>>       struct idr pending_tx;
+>>>       wait_queue_head_t empty_tx_wq;
+>>>   diff --git a/drivers/net/wireless/ath/ath10k/htt_tx.c 
+>>> b/drivers/net/wireless/ath/ath10k/htt_tx.c
+>>> index e9d12ea708b6..911a79470bdf 100644
+>>> --- a/drivers/net/wireless/ath/ath10k/htt_tx.c
+>>> +++ b/drivers/net/wireless/ath/ath10k/htt_tx.c
+>>> @@ -144,8 +144,8 @@ void ath10k_htt_tx_dec_pending(struct ath10k_htt 
+>>> *htt)
+>>>   {
+>>>       lockdep_assert_held(&htt->tx_lock);
+>>>   -    htt->num_pending_tx--;
+>>> -    if (htt->num_pending_tx == htt->max_num_pending_tx - 1)
+>>> +    dql_completed(&htt->dql, 1);
+>>> +    if (dql_avail(&htt->dql) > 0)
+>>>           ath10k_mac_tx_unlock(htt->ar, ATH10K_TX_PAUSE_Q_FULL);
+>>>   }
+>>>   @@ -153,11 +153,11 @@ int ath10k_htt_tx_inc_pending(struct 
+>>> ath10k_htt *htt)
+>>>   {
+>>>       lockdep_assert_held(&htt->tx_lock);
+>>>   -    if (htt->num_pending_tx >= htt->max_num_pending_tx)
+>>> +    if (dql_avail(&htt->dql) <= 0)
+>>>           return -EBUSY;
+>>>   -    htt->num_pending_tx++;
+>>> -    if (htt->num_pending_tx == htt->max_num_pending_tx)
+>>> +    dql_queued(&htt->dql, 1);
+>>> +    if (dql_avail(&htt->dql) <= 0)
+>>>           ath10k_mac_tx_lock(htt->ar, ATH10K_TX_PAUSE_Q_FULL);
+>>>         return 0;
+>>> diff --git a/drivers/net/wireless/ath/ath10k/mac.c 
+>>> b/drivers/net/wireless/ath/ath10k/mac.c
+>>> index 2d03b8dd3b8c..1fe251742b0a 100644
+>>> --- a/drivers/net/wireless/ath/ath10k/mac.c
+>>> +++ b/drivers/net/wireless/ath/ath10k/mac.c
+>>> @@ -3998,7 +3998,7 @@ static bool ath10k_mac_tx_can_push(struct 
+>>> ieee80211_hw *hw,
+>>>       if (ar->htt.tx_q_state.mode == HTT_TX_MODE_SWITCH_PUSH)
+>>>           return true;
+>>>   -    if (ar->htt.num_pending_tx < ar->htt.tx_q_state.num_push_allowed)
+>>> +    if (dql_avail(&ar->htt.dql) < ar->htt.tx_q_state.num_push_allowed)
+>>>           return true;
+>>>         if (artxq->num_fw_queued < artxq->num_push_allowed)
+>>> @@ -4159,7 +4159,7 @@ void ath10k_mac_tx_push_pending(struct ath10k *ar)
+>>>       if (ar->htt.tx_q_state.mode != HTT_TX_MODE_SWITCH_PUSH)
+>>>           return;
+>>>   -    if (ar->htt.num_pending_tx >= (ar->htt.max_num_pending_tx / 2))
+>>> +    if (dql_avail(&ar->htt.dql) < (ar->htt.dql.limit / 2))
+>>>           return;
+>>>         rcu_read_lock();
+>>> @@ -7160,7 +7160,7 @@ void ath10k_mac_wait_tx_complete(struct ath10k 
+>>> *ar)
+>>>               bool empty;
+>>>                 spin_lock_bh(&ar->htt.tx_lock);
+>>> -            empty = (ar->htt.num_pending_tx == 0);
+>>> +            empty = (ar->htt.dql.num_completed == 
+>>> ar->htt.dql.num_queued);
+>>>               spin_unlock_bh(&ar->htt.tx_lock);
+>>>                 skip = (ar->state == ATH10K_STATE_WEDGED) ||
+>>> diff --git a/drivers/net/wireless/ath/ath10k/txrx.c 
+>>> b/drivers/net/wireless/ath/ath10k/txrx.c
+>>> index 39abf8b12903..fe7cd53c2bf9 100644
+>>> --- a/drivers/net/wireless/ath/ath10k/txrx.c
+>>> +++ b/drivers/net/wireless/ath/ath10k/txrx.c
+>>> @@ -80,7 +80,7 @@ int ath10k_txrx_tx_unref(struct ath10k_htt *htt,
+>>>         ath10k_htt_tx_free_msdu_id(htt, tx_done->msdu_id);
+>>>       ath10k_htt_tx_dec_pending(htt);
+>>> -    if (htt->num_pending_tx == 0)
+>>> +    if (htt->dql.num_completed == htt->dql.num_queued)
+>>>           wake_up(&htt->empty_tx_wq);
+>>>       spin_unlock_bh(&htt->tx_lock);
+>>>
+>>
+> 
