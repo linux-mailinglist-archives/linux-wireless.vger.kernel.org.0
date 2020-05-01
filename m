@@ -2,65 +2,45 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B7AC1C189C
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 May 2020 16:57:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 49D421C182D
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 May 2020 16:47:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730423AbgEAOsN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 1 May 2020 10:48:13 -0400
-Received: from mail.kernel.org ([198.145.29.99]:52646 "EHLO mail.kernel.org"
+        id S1729713AbgEAOpW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 1 May 2020 10:45:22 -0400
+Received: from mail.kernel.org ([198.145.29.99]:52912 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729352AbgEAOpI (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 1 May 2020 10:45:08 -0400
+        id S1729582AbgEAOpM (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 1 May 2020 10:45:12 -0400
 Received: from mail.kernel.org (ip5f5ad5c5.dynamic.kabel-deutschland.de [95.90.213.197])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 13CC324959;
-        Fri,  1 May 2020 14:45:04 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id DC84A2499A;
+        Fri,  1 May 2020 14:45:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1588344305;
-        bh=pgEeloihUJtDW9NEkL6jmFDK/ZInSPDNQO7niKknL3E=;
-        h=From:To:Cc:Subject:Date:From;
-        b=SVEs1VMhjyuHELBkXcF4/1fWlbsaS7MgiAohJ3ePux485XSRhFIw+LT9CMyjWvZFi
-         ihz7fPrKmb/CyIscv5iZo1ghZ6L6por1RndA5qbcxiN/hqpCEtOv80OoyKzd7LfsEg
-         e5L/qaobT9VXcglAQbs4CKkx5QoFsFVnzoG5mfmc=
+        s=default; t=1588344307;
+        bh=bFUSU0CDHE5bMJp0MuJssCpCSNpjL04f4SSrum4JlSg=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=1HY3viXkg/ce+4Lsps7SyAbfYUV4XIK3F2wLKZtfGcTquw/WMwZfsI7Ut6yVI4+X5
+         g3Gkbhijgaj5rMGZ/osWC+mMjQ0vs2LPi9HzjpnOI5E0IS5GDZY22sE0XVdzxACBZT
+         dCHgSnZIAsrDK+aFiw5/DK/ZcoeHPI8mxZioILX4=
 Received: from mchehab by mail.kernel.org with local (Exim 4.92.3)
         (envelope-from <mchehab@kernel.org>)
-        id 1jUWuT-00FCcS-77; Fri, 01 May 2020 16:45:01 +0200
+        id 1jUWuT-00FCeS-RX; Fri, 01 May 2020 16:45:01 +0200
 From:   Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 To:     Linux Doc Mailing List <linux-doc@vger.kernel.org>
 Cc:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
         linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
-        Samuel Chessman <chessman@tux.org>, netdev@vger.kernel.org,
-        Andrew Hendry <andrew.hendry@gmail.com>,
-        Zorik Machulsky <zorik@amazon.com>,
-        Sean Tranchetti <stranche@codeaurora.org>,
-        Igor Russkikh <irusskikh@marvell.com>,
-        Jon Mason <jdmason@kudzu.us>,
-        Haiyang Zhang <haiyangz@microsoft.com>,
-        linux-x25@vger.kernel.org, Wei Liu <wei.liu@kernel.org>,
-        linux-hyperv@vger.kernel.org, Kalle Valo <kvalo@codeaurora.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Subash Abhinov Kasiviswanathan <subashab@codeaurora.org>,
-        David Ahern <dsahern@kernel.org>,
-        "K. Y. Srinivasan" <kys@microsoft.com>,
-        Ishizaki Kou <kou.ishizaki@toshiba.co.jp>,
-        Joerg Reuter <jreuter@yaina.de>,
-        Saeed Bishara <saeedb@amazon.com>,
-        Shrijeet Mukherjee <shrijeet@gmail.com>,
-        Netanel Belgazal <netanel@amazon.com>,
-        Stanislav Yakovlev <stas.yakovlev@gmail.com>,
-        Guy Tzalik <gtzalik@amazon.com>,
-        Maxim Krasnyansky <maxk@qti.qualcomm.com>,
-        Arthur Kiyanovski <akiyano@amazon.com>,
-        linux-wireless@vger.kernel.org, linux-hams@vger.kernel.org,
-        linux-parisc@vger.kernel.org,
-        Steffen Klassert <klassert@kernel.org>,
         "David S. Miller" <davem@davemloft.net>,
-        Stephen Hemminger <sthemmin@microsoft.com>
-Subject: [PATCH 00/37]net: manually convert files to ReST format - part 3 (final)
-Date:   Fri,  1 May 2020 16:44:22 +0200
-Message-Id: <cover.1588344146.git.mchehab+huawei@kernel.org>
+        Jakub Kicinski <kuba@kernel.org>,
+        Stanislav Yakovlev <stas.yakovlev@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>, netdev@vger.kernel.org,
+        linux-wireless@vger.kernel.org
+Subject: [PATCH 24/37] docs: networking: device drivers: convert intel/ipw2100.txt to ReST
+Date:   Fri,  1 May 2020 16:44:46 +0200
+Message-Id: <9f8e6ca792b65b691fadafc5a1f20de20b4f7c6f.1588344146.git.mchehab+huawei@kernel.org>
 X-Mailer: git-send-email 2.25.4
+In-Reply-To: <cover.1588344146.git.mchehab+huawei@kernel.org>
+References: <cover.1588344146.git.mchehab+huawei@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
@@ -68,165 +48,456 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-That's the third part (and the final one) of my work to convert the networking
-text files into ReST. it is based on linux-next next-20200430 branch.
+- add SPDX header;
+- adjust titles and chapters, adding proper markups;
+- comment out text-only TOC from html/pdf output;
+- use copyright symbol;
+- use :field: markup;
+- mark code blocks and literals as such;
+- mark tables as such;
+- adjust identation, whitespaces and blank lines where needed;
+- add to networking/index.rst.
 
-The full series (including those ones) are at:
-
-	https://git.linuxtv.org/mchehab/experimental.git/log/?h=net-docs
-
-The  built output documents, on html format is at:
-
-	https://www.infradead.org/~mchehab/kernel_docs/networking/
-
-
-Mauro Carvalho Chehab (37):
-  docs: networking: convert tuntap.txt to ReST
-  docs: networking: convert udplite.txt to ReST
-  docs: networking: convert vrf.txt to ReST
-  docs: networking: convert vxlan.txt to ReST
-  docs: networking: convert x25-iface.txt to ReST
-  docs: networking: convert x25.txt to ReST
-  docs: networking: convert xfrm_device.txt to ReST
-  docs: networking: convert xfrm_proc.txt to ReST
-  docs: networking: convert xfrm_sync.txt to ReST
-  docs: networking: convert xfrm_sysctl.txt to ReST
-  docs: networking: convert z8530drv.txt to ReST
-  docs: networking: device drivers: convert 3com/3c509.txt to ReST
-  docs: networking: device drivers: convert 3com/vortex.txt to ReST
-  docs: networking: device drivers: convert amazon/ena.txt to ReST
-  docs: networking: device drivers: convert aquantia/atlantic.txt to
-    ReST
-  docs: networking: device drivers: convert chelsio/cxgb.txt to ReST
-  docs: networking: device drivers: convert cirrus/cs89x0.txt to ReST
-  docs: networking: device drivers: convert davicom/dm9000.txt to ReST
-  docs: networking: device drivers: convert dec/de4x5.txt to ReST
-  docs: networking: device drivers: convert dec/dmfe.txt to ReST
-  docs: networking: device drivers: convert dlink/dl2k.txt to ReST
-  docs: networking: device drivers: convert freescale/dpaa.txt to ReST
-  docs: networking: device drivers: convert freescale/gianfar.txt to
-    ReST
-  docs: networking: device drivers: convert intel/ipw2100.txt to ReST
-  docs: networking: device drivers: convert intel/ipw2200.txt to ReST
-  docs: networking: device drivers: convert microsoft/netvsc.txt to ReST
-  docs: networking: device drivers: convert neterion/s2io.txt to ReST
-  docs: networking: device drivers: convert neterion/vxge.txt to ReST
-  docs: networking: device drivers: convert qualcomm/rmnet.txt to ReST
-  docs: networking: device drivers: convert sb1000.txt to ReST
-  docs: networking: device drivers: convert smsc/smc9.txt to ReST
-  docs: networking: device drivers: convert ti/cpsw_switchdev.txt to
-    ReST
-  docs: networking: device drivers: convert ti/cpsw.txt to ReST
-  docs: networking: device drivers: convert ti/tlan.txt to ReST
-  docs: networking: device drivers: convert toshiba/spider_net.txt to
-    ReST
-  net: docs: add page_pool.rst to index.rst
-  docs: networking: arcnet-hardware.rst: don't duplicate chapter names
-
- Documentation/networking/arcnet-hardware.rst  |   8 +-
- .../3com/{3c509.txt => 3c509.rst}             | 158 +++--
- .../3com/{vortex.txt => vortex.rst}           | 223 ++++---
- .../amazon/{ena.txt => ena.rst}               | 142 ++--
- .../aquantia/{atlantic.txt => atlantic.rst}   | 373 ++++++-----
- .../chelsio/{cxgb.txt => cxgb.rst}            | 183 ++++--
- .../cirrus/{cs89x0.txt => cs89x0.rst}         | 557 ++++++++--------
- .../davicom/{dm9000.txt => dm9000.rst}        |  24 +-
- .../dec/{de4x5.txt => de4x5.rst}              | 105 +--
- .../device_drivers/dec/{dmfe.txt => dmfe.rst} |  35 +-
- .../dlink/{dl2k.txt => dl2k.rst}              | 228 ++++---
- .../freescale/{dpaa.txt => dpaa.rst}          | 139 ++--
- .../freescale/{gianfar.txt => gianfar.rst}    |  21 +-
- .../networking/device_drivers/index.rst       |  24 +
- .../intel/{ipw2100.txt => ipw2100.rst}        | 242 ++++---
- .../intel/{ipw2200.txt => ipw2200.rst}        | 410 +++++++-----
- .../microsoft/{netvsc.txt => netvsc.rst}      |  57 +-
- .../device_drivers/neterion/s2io.rst          | 196 ++++++
- .../device_drivers/neterion/s2io.txt          | 141 ----
- .../neterion/{vxge.txt => vxge.rst}           |  60 +-
- .../qualcomm/{rmnet.txt => rmnet.rst}         |  43 +-
- .../networking/device_drivers/sb1000.rst      | 222 +++++++
- .../networking/device_drivers/sb1000.txt      | 207 ------
- .../networking/device_drivers/smsc/smc9.rst   |  49 ++
- .../networking/device_drivers/smsc/smc9.txt   |  42 --
- .../networking/device_drivers/ti/cpsw.rst     | 587 +++++++++++++++++
- .../networking/device_drivers/ti/cpsw.txt     | 541 ----------------
- ...{cpsw_switchdev.txt => cpsw_switchdev.rst} | 239 ++++---
- .../device_drivers/ti/{tlan.txt => tlan.rst}  |  73 ++-
- .../{spider_net.txt => spider_net.rst}        |  58 +-
- Documentation/networking/index.rst            |  12 +
- .../networking/{tuntap.txt => tuntap.rst}     | 200 +++---
- .../networking/{udplite.txt => udplite.rst}   | 175 ++---
- Documentation/networking/vrf.rst              | 451 +++++++++++++
- Documentation/networking/vrf.txt              | 418 ------------
- .../networking/{vxlan.txt => vxlan.rst}       |  33 +-
- .../{x25-iface.txt => x25-iface.rst}          |  10 +-
- Documentation/networking/{x25.txt => x25.rst} |   4 +
- .../{xfrm_device.txt => xfrm_device.rst}      |  33 +-
- .../{xfrm_proc.txt => xfrm_proc.rst}          |  31 +
- .../{xfrm_sync.txt => xfrm_sync.rst}          |  66 +-
- .../{xfrm_sysctl.txt => xfrm_sysctl.rst}      |   7 +
- .../networking/{z8530drv.txt => z8530drv.rst} | 609 +++++++++---------
- MAINTAINERS                                   |  30 +-
- drivers/net/Kconfig                           |   4 +-
- drivers/net/ethernet/3com/3c59x.c             |   4 +-
- drivers/net/ethernet/3com/Kconfig             |   2 +-
- drivers/net/ethernet/chelsio/Kconfig          |   2 +-
- drivers/net/ethernet/cirrus/Kconfig           |   2 +-
- drivers/net/ethernet/dec/tulip/Kconfig        |   4 +-
- drivers/net/ethernet/dlink/dl2k.c             |   2 +-
- drivers/net/ethernet/neterion/Kconfig         |   4 +-
- drivers/net/ethernet/smsc/Kconfig             |   4 +-
- drivers/net/ethernet/ti/Kconfig               |   2 +-
- drivers/net/ethernet/ti/tlan.c                |   2 +-
- drivers/net/hamradio/Kconfig                  |   4 +-
- drivers/net/hamradio/scc.c                    |   2 +-
- drivers/net/wireless/intel/ipw2x00/Kconfig    |   4 +-
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+---
+ .../networking/device_drivers/index.rst       |   1 +
+ .../intel/{ipw2100.txt => ipw2100.rst}        | 242 ++++++++++--------
+ MAINTAINERS                                   |   2 +-
+ drivers/net/wireless/intel/ipw2x00/Kconfig    |   2 +-
  drivers/net/wireless/intel/ipw2x00/ipw2100.c  |   2 +-
- include/uapi/linux/if_x25.h                   |   2 +-
- net/x25/Kconfig                               |   4 +-
- 61 files changed, 4175 insertions(+), 3341 deletions(-)
- rename Documentation/networking/device_drivers/3com/{3c509.txt => 3c509.rst} (68%)
- rename Documentation/networking/device_drivers/3com/{vortex.txt => vortex.rst} (72%)
- rename Documentation/networking/device_drivers/amazon/{ena.txt => ena.rst} (86%)
- rename Documentation/networking/device_drivers/aquantia/{atlantic.txt => atlantic.rst} (63%)
- rename Documentation/networking/device_drivers/chelsio/{cxgb.txt => cxgb.rst} (81%)
- rename Documentation/networking/device_drivers/cirrus/{cs89x0.txt => cs89x0.rst} (61%)
- rename Documentation/networking/device_drivers/davicom/{dm9000.txt => dm9000.rst} (92%)
- rename Documentation/networking/device_drivers/dec/{de4x5.txt => de4x5.rst} (78%)
- rename Documentation/networking/device_drivers/dec/{dmfe.txt => dmfe.rst} (68%)
- rename Documentation/networking/device_drivers/dlink/{dl2k.txt => dl2k.rst} (59%)
- rename Documentation/networking/device_drivers/freescale/{dpaa.txt => dpaa.rst} (79%)
- rename Documentation/networking/device_drivers/freescale/{gianfar.txt => gianfar.rst} (82%)
+ 5 files changed, 140 insertions(+), 109 deletions(-)
  rename Documentation/networking/device_drivers/intel/{ipw2100.txt => ipw2100.rst} (70%)
- rename Documentation/networking/device_drivers/intel/{ipw2200.txt => ipw2200.rst} (64%)
- rename Documentation/networking/device_drivers/microsoft/{netvsc.txt => netvsc.rst} (83%)
- create mode 100644 Documentation/networking/device_drivers/neterion/s2io.rst
- delete mode 100644 Documentation/networking/device_drivers/neterion/s2io.txt
- rename Documentation/networking/device_drivers/neterion/{vxge.txt => vxge.rst} (80%)
- rename Documentation/networking/device_drivers/qualcomm/{rmnet.txt => rmnet.rst} (73%)
- create mode 100644 Documentation/networking/device_drivers/sb1000.rst
- delete mode 100644 Documentation/networking/device_drivers/sb1000.txt
- create mode 100644 Documentation/networking/device_drivers/smsc/smc9.rst
- delete mode 100644 Documentation/networking/device_drivers/smsc/smc9.txt
- create mode 100644 Documentation/networking/device_drivers/ti/cpsw.rst
- delete mode 100644 Documentation/networking/device_drivers/ti/cpsw.txt
- rename Documentation/networking/device_drivers/ti/{cpsw_switchdev.txt => cpsw_switchdev.rst} (51%)
- rename Documentation/networking/device_drivers/ti/{tlan.txt => tlan.rst} (73%)
- rename Documentation/networking/device_drivers/toshiba/{spider_net.txt => spider_net.rst} (88%)
- rename Documentation/networking/{tuntap.txt => tuntap.rst} (58%)
- rename Documentation/networking/{udplite.txt => udplite.rst} (65%)
- create mode 100644 Documentation/networking/vrf.rst
- delete mode 100644 Documentation/networking/vrf.txt
- rename Documentation/networking/{vxlan.txt => vxlan.rst} (73%)
- rename Documentation/networking/{x25-iface.txt => x25-iface.rst} (96%)
- rename Documentation/networking/{x25.txt => x25.rst} (96%)
- rename Documentation/networking/{xfrm_device.txt => xfrm_device.rst} (92%)
- rename Documentation/networking/{xfrm_proc.txt => xfrm_proc.rst} (95%)
- rename Documentation/networking/{xfrm_sync.txt => xfrm_sync.rst} (82%)
- rename Documentation/networking/{xfrm_sysctl.txt => xfrm_sysctl.rst} (52%)
- rename Documentation/networking/{z8530drv.txt => z8530drv.rst} (57%)
 
+diff --git a/Documentation/networking/device_drivers/index.rst b/Documentation/networking/device_drivers/index.rst
+index cec3415ee459..54ed10f3d1a7 100644
+--- a/Documentation/networking/device_drivers/index.rst
++++ b/Documentation/networking/device_drivers/index.rst
+@@ -39,6 +39,7 @@ Contents:
+    dlink/dl2k
+    freescale/dpaa
+    freescale/gianfar
++   intel/ipw2100
+ 
+ .. only::  subproject and html
+ 
+diff --git a/Documentation/networking/device_drivers/intel/ipw2100.txt b/Documentation/networking/device_drivers/intel/ipw2100.rst
+similarity index 70%
+rename from Documentation/networking/device_drivers/intel/ipw2100.txt
+rename to Documentation/networking/device_drivers/intel/ipw2100.rst
+index 6f85e1d06031..d54ad522f937 100644
+--- a/Documentation/networking/device_drivers/intel/ipw2100.txt
++++ b/Documentation/networking/device_drivers/intel/ipw2100.rst
+@@ -1,31 +1,37 @@
++.. SPDX-License-Identifier: GPL-2.0
++.. include:: <isonum.txt>
+ 
+-Intel(R) PRO/Wireless 2100 Driver for Linux in support of:
++===========================================
++Intel(R) PRO/Wireless 2100 Driver for Linux
++===========================================
+ 
+-Intel(R) PRO/Wireless 2100 Network Connection
++Support for:
+ 
+-Copyright (C) 2003-2006, Intel Corporation
++- Intel(R) PRO/Wireless 2100 Network Connection
++
++Copyright |copy| 2003-2006, Intel Corporation
+ 
+ README.ipw2100
+ 
+-Version: git-1.1.5
+-Date   : January 25, 2006
++:Version: git-1.1.5
++:Date:    January 25, 2006
++
++.. Index
++
++    0. IMPORTANT INFORMATION BEFORE USING THIS DRIVER
++    1. Introduction
++    2. Release git-1.1.5 Current Features
++    3. Command Line Parameters
++    4. Sysfs Helper Files
++    5. Radio Kill Switch
++    6. Dynamic Firmware
++    7. Power Management
++    8. Support
++    9. License
++
+ 
+-Index
+------------------------------------------------
+ 0. IMPORTANT INFORMATION BEFORE USING THIS DRIVER
+-1. Introduction
+-2. Release git-1.1.5 Current Features
+-3. Command Line Parameters
+-4. Sysfs Helper Files
+-5. Radio Kill Switch
+-6. Dynamic Firmware
+-7. Power Management
+-8. Support
+-9. License
+-
+-
+-0.   IMPORTANT INFORMATION BEFORE USING THIS DRIVER
+------------------------------------------------
++=================================================
+ 
+ Important Notice FOR ALL USERS OR DISTRIBUTORS!!!!
+ 
+@@ -75,10 +81,10 @@ obtain a tested driver from Intel Customer Support at:
+ http://www.intel.com/support/wireless/sb/CS-006408.htm
+ 
+ 1. Introduction
+------------------------------------------------
++===============
+ 
+-This document provides a brief overview of the features supported by the 
+-IPW2100 driver project.  The main project website, where the latest 
++This document provides a brief overview of the features supported by the
++IPW2100 driver project.  The main project website, where the latest
+ development version of the driver can be found, is:
+ 
+ 	http://ipw2100.sourceforge.net
+@@ -89,10 +95,11 @@ for the driver project.
+ 
+ 
+ 2. Release git-1.1.5 Current Supported Features
+------------------------------------------------
++===============================================
++
+ - Managed (BSS) and Ad-Hoc (IBSS)
+ - WEP (shared key and open)
+-- Wireless Tools support 
++- Wireless Tools support
+ - 802.1x (tested with XSupplicant 1.0.1)
+ 
+ Enabled (but not supported) features:
+@@ -105,11 +112,11 @@ performed on a given feature.
+ 
+ 
+ 3. Command Line Parameters
+------------------------------------------------
++==========================
+ 
+ If the driver is built as a module, the following optional parameters are used
+ by entering them on the command line with the modprobe command using this
+-syntax:
++syntax::
+ 
+ 	modprobe ipw2100 [<option>=<VAL1><,VAL2>...]
+ 
+@@ -119,61 +126,76 @@ For example, to disable the radio on driver loading, enter:
+ 
+ The ipw2100 driver supports the following module parameters:
+ 
+-Name		Value		Example:
+-debug		0x0-0xffffffff	debug=1024
+-mode		0,1,2		mode=1   /* AdHoc */
+-channel		int		channel=3 /* Only valid in AdHoc or Monitor */
+-associate	boolean		associate=0 /* Do NOT auto associate */
+-disable		boolean		disable=1 /* Do not power the HW */
++=========	==============	============  ==============================
++Name		Value		Example       Meaning
++=========	==============	============  ==============================
++debug		0x0-0xffffffff	debug=1024    Debug level set to 1024
++mode		0,1,2		mode=1        AdHoc
++channel		int		channel=3     Only valid in AdHoc or Monitor
++associate	boolean		associate=0   Do NOT auto associate
++disable		boolean		disable=1     Do not power the HW
++=========	==============	============  ==============================
+ 
+ 
+ 4. Sysfs Helper Files
+----------------------------     
+------------------------------------------------
++=====================
+ 
+-There are several ways to control the behavior of the driver.  Many of the 
++There are several ways to control the behavior of the driver.  Many of the
+ general capabilities are exposed through the Wireless Tools (iwconfig).  There
+ are a few capabilities that are exposed through entries in the Linux Sysfs.
+ 
+ 
+------ Driver Level ------
++**Driver Level**
++
+ For the driver level files, look in /sys/bus/pci/drivers/ipw2100/
+ 
+-  debug_level  
+-	
+-	This controls the same global as the 'debug' module parameter.  For 
+-        information on the various debugging levels available, run the 'dvals'
++  debug_level
++	This controls the same global as the 'debug' module parameter.  For
++	information on the various debugging levels available, run the 'dvals'
+ 	script found in the driver source directory.
+ 
+-	NOTE:  'debug_level' is only enabled if CONFIG_IPW2100_DEBUG is turn
+-	       on.
++	.. note::
++
++	      'debug_level' is only enabled if CONFIG_IPW2100_DEBUG is turn on.
++
++**Device Level**
++
++For the device level files look in::
+ 
+------ Device Level ------
+-For the device level files look in
+-	
+ 	/sys/bus/pci/drivers/ipw2100/{PCI-ID}/
+ 
+-For example:
++For example::
++
+ 	/sys/bus/pci/drivers/ipw2100/0000:02:01.0
+ 
+ For the device level files, see /sys/bus/pci/drivers/ipw2100:
+ 
+   rf_kill
+-	read - 
+-	0 = RF kill not enabled (radio on)
+-	1 = SW based RF kill active (radio off)
+-	2 = HW based RF kill active (radio off)
+-	3 = Both HW and SW RF kill active (radio off)
+-	write -
+-	0 = If SW based RF kill active, turn the radio back on
+-	1 = If radio is on, activate SW based RF kill
+-
+-	NOTE: If you enable the SW based RF kill and then toggle the HW
+-  	based RF kill from ON -> OFF -> ON, the radio will NOT come back on
++	read
++
++	==  =========================================
++	0   RF kill not enabled (radio on)
++	1   SW based RF kill active (radio off)
++	2   HW based RF kill active (radio off)
++	3   Both HW and SW RF kill active (radio off)
++	==  =========================================
++
++	write
++
++	==  ==================================================
++	0   If SW based RF kill active, turn the radio back on
++	1   If radio is on, activate SW based RF kill
++	==  ==================================================
++
++	.. note::
++
++	   If you enable the SW based RF kill and then toggle the HW
++	   based RF kill from ON -> OFF -> ON, the radio will NOT come back on
+ 
+ 
+ 5. Radio Kill Switch
+------------------------------------------------
++====================
++
+ Most laptops provide the ability for the user to physically disable the radio.
+ Some vendors have implemented this as a physical switch that requires no
+ software to turn the radio off and on.  On other laptops, however, the switch
+@@ -186,9 +208,10 @@ on your system.
+ 
+ 
+ 6. Dynamic Firmware
+------------------------------------------------
+-As the firmware is licensed under a restricted use license, it can not be 
+-included within the kernel sources.  To enable the IPW2100 you will need a 
++===================
++
++As the firmware is licensed under a restricted use license, it can not be
++included within the kernel sources.  To enable the IPW2100 you will need a
+ firmware image to load into the wireless NIC's processors.
+ 
+ You can obtain these images from <http://ipw2100.sf.net/firmware.php>.
+@@ -197,52 +220,57 @@ See INSTALL for instructions on installing the firmware.
+ 
+ 
+ 7. Power Management
+------------------------------------------------
+-The IPW2100 supports the configuration of the Power Save Protocol 
+-through a private wireless extension interface.  The IPW2100 supports 
++===================
++
++The IPW2100 supports the configuration of the Power Save Protocol
++through a private wireless extension interface.  The IPW2100 supports
+ the following different modes:
+ 
++	===	===========================================================
+ 	off	No power management.  Radio is always on.
+ 	on	Automatic power management
+-	1-5	Different levels of power management.  The higher the 
+-		number the greater the power savings, but with an impact to 
+-		packet latencies. 
++	1-5	Different levels of power management.  The higher the
++		number the greater the power savings, but with an impact to
++		packet latencies.
++	===	===========================================================
+ 
+-Power management works by powering down the radio after a certain 
+-interval of time has passed where no packets are passed through the 
+-radio.  Once powered down, the radio remains in that state for a given 
+-period of time.  For higher power savings, the interval between last 
++Power management works by powering down the radio after a certain
++interval of time has passed where no packets are passed through the
++radio.  Once powered down, the radio remains in that state for a given
++period of time.  For higher power savings, the interval between last
+ packet processed to sleep is shorter and the sleep period is longer.
+ 
+-When the radio is asleep, the access point sending data to the station 
+-must buffer packets at the AP until the station wakes up and requests 
+-any buffered packets.  If you have an AP that does not correctly support 
+-the PSP protocol you may experience packet loss or very poor performance 
+-while power management is enabled.  If this is the case, you will need 
+-to try and find a firmware update for your AP, or disable power 
+-management (via `iwconfig eth1 power off`)
++When the radio is asleep, the access point sending data to the station
++must buffer packets at the AP until the station wakes up and requests
++any buffered packets.  If you have an AP that does not correctly support
++the PSP protocol you may experience packet loss or very poor performance
++while power management is enabled.  If this is the case, you will need
++to try and find a firmware update for your AP, or disable power
++management (via ``iwconfig eth1 power off``)
+ 
+-To configure the power level on the IPW2100 you use a combination of 
+-iwconfig and iwpriv.  iwconfig is used to turn power management on, off, 
++To configure the power level on the IPW2100 you use a combination of
++iwconfig and iwpriv.  iwconfig is used to turn power management on, off,
+ and set it to auto.
+ 
++	=========================  ====================================
+ 	iwconfig eth1 power off    Disables radio power down
+-	iwconfig eth1 power on     Enables radio power management to 
++	iwconfig eth1 power on     Enables radio power management to
+ 				   last set level (defaults to AUTO)
+-	iwpriv eth1 set_power 0    Sets power level to AUTO and enables 
+-				   power management if not previously 
++	iwpriv eth1 set_power 0    Sets power level to AUTO and enables
++				   power management if not previously
+ 				   enabled.
+-	iwpriv eth1 set_power 1-5  Set the power level as specified, 
+-				   enabling power management if not 
++	iwpriv eth1 set_power 1-5  Set the power level as specified,
++				   enabling power management if not
+ 				   previously enabled.
++	=========================  ====================================
++
++You can view the current power level setting via::
+ 
+-You can view the current power level setting via:
+-	
+ 	iwpriv eth1 get_power
+ 
+ It will return the current period or timeout that is configured as a string
+ in the form of xxxx/yyyy (z) where xxxx is the timeout interval (amount of
+-time after packet processing), yyyy is the period to sleep (amount of time to 
++time after packet processing), yyyy is the period to sleep (amount of time to
+ wait before powering the radio and querying the access point for buffered
+ packets), and z is the 'power level'.  If power management is turned off the
+ xxxx/yyyy will be replaced with 'off' -- the level reported will be the active
+@@ -250,44 +278,46 @@ level if `iwconfig eth1 power on` is invoked.
+ 
+ 
+ 8. Support
+------------------------------------------------
++==========
+ 
+ For general development information and support,
+ go to:
+-	
++
+     http://ipw2100.sf.net/
+ 
+-The ipw2100 1.1.0 driver and firmware can be downloaded from:  
++The ipw2100 1.1.0 driver and firmware can be downloaded from:
+ 
+     http://support.intel.com
+ 
+-For installation support on the ipw2100 1.1.0 driver on Linux kernels 
+-2.6.8 or greater, email support is available from:  
++For installation support on the ipw2100 1.1.0 driver on Linux kernels
++2.6.8 or greater, email support is available from:
+ 
+     http://supportmail.intel.com
+ 
+ 9. License
+------------------------------------------------
++==========
+ 
+-  Copyright(c) 2003 - 2006 Intel Corporation. All rights reserved.
++  Copyright |copy| 2003 - 2006 Intel Corporation. All rights reserved.
+ 
+-  This program is free software; you can redistribute it and/or modify it 
+-  under the terms of the GNU General Public License (version 2) as 
++  This program is free software; you can redistribute it and/or modify it
++  under the terms of the GNU General Public License (version 2) as
+   published by the Free Software Foundation.
+-  
+-  This program is distributed in the hope that it will be useful, but WITHOUT 
+-  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or 
+-  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for 
++
++  This program is distributed in the hope that it will be useful, but WITHOUT
++  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
++  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+   more details.
+-  
++
+   You should have received a copy of the GNU General Public License along with
+-  this program; if not, write to the Free Software Foundation, Inc., 59 
++  this program; if not, write to the Free Software Foundation, Inc., 59
+   Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+-  
++
+   The full GNU General Public License is included in this distribution in the
+   file called LICENSE.
+-  
++
+   License Contact Information:
++
+   James P. Ketrenos <ipw2100-admin@linux.intel.com>
++
+   Intel Corporation, 5200 N.E. Elam Young Parkway, Hillsboro, OR 97124-6497
+ 
+diff --git a/MAINTAINERS b/MAINTAINERS
+index b92568479a71..2ac9c94ff4f2 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -8762,7 +8762,7 @@ INTEL PRO/WIRELESS 2100, 2200BG, 2915ABG NETWORK CONNECTION SUPPORT
+ M:	Stanislav Yakovlev <stas.yakovlev@gmail.com>
+ L:	linux-wireless@vger.kernel.org
+ S:	Maintained
+-F:	Documentation/networking/device_drivers/intel/ipw2100.txt
++F:	Documentation/networking/device_drivers/intel/ipw2100.rst
+ F:	Documentation/networking/device_drivers/intel/ipw2200.txt
+ F:	drivers/net/wireless/intel/ipw2x00/
+ 
+diff --git a/drivers/net/wireless/intel/ipw2x00/Kconfig b/drivers/net/wireless/intel/ipw2x00/Kconfig
+index ab17903ba9f8..b0b3cd6296f3 100644
+--- a/drivers/net/wireless/intel/ipw2x00/Kconfig
++++ b/drivers/net/wireless/intel/ipw2x00/Kconfig
+@@ -16,7 +16,7 @@ config IPW2100
+ 	  A driver for the Intel PRO/Wireless 2100 Network
+ 	  Connection 802.11b wireless network adapter.
+ 
+-	  See <file:Documentation/networking/device_drivers/intel/ipw2100.txt>
++	  See <file:Documentation/networking/device_drivers/intel/ipw2100.rst>
+ 	  for information on the capabilities currently enabled in this driver
+ 	  and for tips for debugging issues and problems.
+ 
+diff --git a/drivers/net/wireless/intel/ipw2x00/ipw2100.c b/drivers/net/wireless/intel/ipw2x00/ipw2100.c
+index 97ea6e2035e6..624fe721e2b5 100644
+--- a/drivers/net/wireless/intel/ipw2x00/ipw2100.c
++++ b/drivers/net/wireless/intel/ipw2x00/ipw2100.c
+@@ -8352,7 +8352,7 @@ static int ipw2100_mod_firmware_load(struct ipw2100_fw *fw)
+ 	if (IPW2100_FW_MAJOR(h->version) != IPW2100_FW_MAJOR_VERSION) {
+ 		printk(KERN_WARNING DRV_NAME ": Firmware image not compatible "
+ 		       "(detected version id of %u). "
+-		       "See Documentation/networking/device_drivers/intel/ipw2100.txt\n",
++		       "See Documentation/networking/device_drivers/intel/ipw2100.rst\n",
+ 		       h->version);
+ 		return 1;
+ 	}
 -- 
 2.25.4
-
 
