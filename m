@@ -2,131 +2,200 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CF8B01C248C
-	for <lists+linux-wireless@lfdr.de>; Sat,  2 May 2020 12:54:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3404E1C2497
+	for <lists+linux-wireless@lfdr.de>; Sat,  2 May 2020 13:06:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727823AbgEBKxp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 2 May 2020 06:53:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53152 "EHLO
+        id S1727853AbgEBLFQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 2 May 2020 07:05:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54924 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726654AbgEBKxo (ORCPT
+        by vger.kernel.org with ESMTP id S1726741AbgEBLFP (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 2 May 2020 06:53:44 -0400
-Received: from mail-yb1-xb41.google.com (mail-yb1-xb41.google.com [IPv6:2607:f8b0:4864:20::b41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27AA1C061A0C
-        for <linux-wireless@vger.kernel.org>; Sat,  2 May 2020 03:53:43 -0700 (PDT)
-Received: by mail-yb1-xb41.google.com with SMTP id w7so6360369ybq.0
-        for <linux-wireless@vger.kernel.org>; Sat, 02 May 2020 03:53:43 -0700 (PDT)
+        Sat, 2 May 2020 07:05:15 -0400
+Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A116BC061A0C
+        for <linux-wireless@vger.kernel.org>; Sat,  2 May 2020 04:05:15 -0700 (PDT)
+Received: by mail-wr1-x442.google.com with SMTP id j1so14917157wrt.1
+        for <linux-wireless@vger.kernel.org>; Sat, 02 May 2020 04:05:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:reply-to:sender:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=Qxa3M/MvhiqYKdmf/w4n6AgdA8qRvXt1CZdlD0nn0dE=;
-        b=mYpUXyDlcFAY64z8rGRAhtH2q4RnFJjxxbJlmh/YqA5eUjpvvtXTmwbhO+PUGQZg1a
-         n5YWN43XVJwV7DoMmRLK3GTYqGjpNJSvp0XPJpGbgXf7tnwATUjevJ7XPpt6ZkKc5PtC
-         N3a1cYua6i42cWoo9bnlbzrPKb7Ohuye+1PkkYg3eer5rdXTo9y/HCJ3oSAl1Y2Nr8Eb
-         G77e04hZVUY3I1DfgfT1AuikPcXGtywztmkjePOX5lmZkRXIwQXFm5dgxcMSggp+G/cf
-         I5Z8Q6Ld8jLfk1V+Rb9b5zVnp7BI4XiEl4Uqyq4o4gy0yCnQR6FSzuAXCv3492ZqdvEz
-         vBBA==
+        h=to:cc:from:subject:message-id:date:user-agent:mime-version
+         :content-language:content-transfer-encoding;
+        bh=RMuptJbJbjulTJohKmbdW41ZrhcsbjdJdZhgU26yP3s=;
+        b=m136dddol7qXyrZQOrEVLCeoYpx/kpsFoA4iVZlO0JKs9oA1dRqqVC08BxSfcJBuSs
+         /nM2MtYbywVleLpOe+G0o5tCVFIO4eqsXXQEMEIJF91HMitDpxg1C5fHKQFT5LwG0TUb
+         tv2/P/rM31qPNX974Hjl0picqor8bET50H7XAK7Os8I7JuBZ9MXpKK4MSkSg2NHSONUu
+         kiF+MRuQsd0NnDYXq7Zk4IeWf2vtgNqwPKghynAyH4aAY9CbOBmhmD9V6a7/Ea0TA1xJ
+         oFRuRznVF0iMFWRA/YHdR83JZiT3oriSYgtW05txPKLldmdOrLJT+q2+6br6CS8HGx5s
+         BU9w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:sender:from:date
-         :message-id:subject:to:content-transfer-encoding;
-        bh=Qxa3M/MvhiqYKdmf/w4n6AgdA8qRvXt1CZdlD0nn0dE=;
-        b=Hh6kY8Hlw4Lw2Jgya8TnKQWoCKfjB//CQ+fi7/AInVJNdhvawl3MAxR461SZ36mn/B
-         qoxTol3eLtoHNWI8tc96SoAfFrEMTaaVP2u/OdDNJ9NV9geFO/KM3ecBzDjZ70Ck2Xr/
-         zRM6cMTuw2a8315nulCRtbT0oeN+VPR8MYPsvMmEd44msEhrZVULJDm/Sh7LgVwmkQHQ
-         4JUHQ+v9NO68yAp4GP4QQBWe6cMrXiHHQ9PYLqANxXtqw7vxvB6JntS3I9bRp8aIYhDg
-         rkatnMvNBfqFWh+QfZJ7jPnWIIURJj+GiUuhy4DdNcR+AlbVAweMyfM6IkzvGrZSkG+i
-         wWEA==
-X-Gm-Message-State: AGi0PubMfGm5S+KpQ+PIpdcYj3pMbyLMxMGJiIMHKwna7t4BV4Gx7WG/
-        oH85F+3hK4SNOMGQtjJ3EEiyHojiJ6fbZWzCiKrQuVNX
-X-Google-Smtp-Source: APiQypI+pzz9g5AesyiafELdYDyNxO3YLInv0+aLUGpKIVOt6ANFRJj2N10/LLnm+ga/zY2i6Tt3c/EMPOxMk3K5Wpw=
-X-Received: by 2002:a9d:112:: with SMTP id 18mr6764430otu.167.1588416506797;
- Sat, 02 May 2020 03:48:26 -0700 (PDT)
+        h=x-gm-message-state:to:cc:from:subject:message-id:date:user-agent
+         :mime-version:content-language:content-transfer-encoding;
+        bh=RMuptJbJbjulTJohKmbdW41ZrhcsbjdJdZhgU26yP3s=;
+        b=YMFwdwt7YZcaeKe6ba8F1n0ll6U/vB6q+Pxo/9jig1wNsrWqF73wKLtGXpUD9ctSZf
+         3enl+xFS1r4VKC5y+SQqbOXqnqbGax2UeomRMH4za0vZrb3P4jeZGVQPGvNi/8FCfCuW
+         vq4DcpAobx0NWVOQR+9S+Qt1fK1iNtyh/AC2w9EW7FzaHMrq5upsypjfZDJaL/Aoujw+
+         ugbu9mM801WILgJfPz7UpepL571lrzUlKgaEQqAcyqn6MimJ79FDJriTgwHsJBoVPHyY
+         kjNXoAT/6X+nyV4dYSJ4VrcxICpVfnJXi46O+xHEPauNb7tbyiRFgCco2KH2WMII34qX
+         Q+jg==
+X-Gm-Message-State: AGi0PuYceVqyETr8blkuhnSFVYe0eL5XEEDn7EaX634k+YZWjaEyc+m+
+        7wXD4GNXdAs29Cu3lKM49hJkDiTR
+X-Google-Smtp-Source: APiQypJb633Iabl5mydKD4TmXV9+wPUDtEA0xJEPHoroma1IFa6V+n6KEr9qrQgFsCXyClg0Yn12Bg==
+X-Received: by 2002:adf:8302:: with SMTP id 2mr1297910wrd.114.1588417514396;
+        Sat, 02 May 2020 04:05:14 -0700 (PDT)
+Received: from [192.168.43.18] (94.197.121.192.threembb.co.uk. [94.197.121.192])
+        by smtp.gmail.com with ESMTPSA id p6sm8374161wrt.3.2020.05.02.04.05.13
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 02 May 2020 04:05:13 -0700 (PDT)
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>,
+        linux-wireless@vger.kernel.org, Oscar Carter <oscar.carter@gmx.com>
+From:   Malcolm Priestley <tvboxspy@gmail.com>
+Subject: [PATCH ] staging: vt6656: refactor power save operation
+Message-ID: <5f32a399-bb35-2b77-7c37-a852393a9df7@gmail.com>
+Date:   Sat, 2 May 2020 12:05:12 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-Reply-To: rmst227@gmail.com
-Received: by 2002:aca:f5c1:0:0:0:0:0 with HTTP; Sat, 2 May 2020 03:48:26 -0700 (PDT)
-From:   "M.Rasheed" <rm2568590@gmail.com>
-Date:   Sat, 2 May 2020 12:48:26 +0200
-X-Google-Sender-Auth: tMe_yYnGoqPWjh9HLF3DQ04ZxoI
-Message-ID: <CAD_SncDcSpAaCz-VurH3ubMB7jqGY6QtpNrpU7S2BwE0u60DKQ@mail.gmail.com>
-Subject: Assalamualaikum My Dear Friend,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Assalamualaikum My Dear Friend,
+At present the power save wake uses the listening interval and
+the slow path to wake up.
 
-Before I introduce myself, I wish to inform you that this letter is
-not a hoax mail and I urge you to treat it serious. This letter must
-come to you as a big surprise, but I believe it is only a day that
-people meet and become great friends and business partners. Please I
-want you to read this letter very carefully and I must apologize for
-barging this message into your mail box without any formal
-introduction due to the urgency and confidentiality of this business
-and I know that this message will come to you as a surprise. Please
-this is not a joke and I will not like you to joke with it ok, with
-due respect to your person and much sincerity of purpose, I make this
-contact with you as I believe that you can be of great assistance to
-me. My name is Mr.Rasheed Umaru Mustafa, from Burkina Faso, West
-Africa. I work in Bank Of Africa United Bank for Africa (UBA) as telex
-manager, please see this as a confidential message and do not reveal
-it to another person and let me know whether you can be of assistance
-regarding my proposal below because it is top secret.
+The following using a beacon interval of 100 and
+listen interval of 5.
 
-I am about to retire from active Banking service to start a new life
-but I am skeptical to reveal this particular secret to a stranger. You
-must assure me that everything will be handled confidentially because
-we are not going to suffer again in life. It has been 10 years now
-that most of the greedy African Politicians used our bank to launder
-money overseas through the help of their Political advisers. Most of
-the funds which they transferred out of the shores of Africa were gold
-and oil money that was supposed to have been used to develop the
-continent. Their Political advisers always inflated the amounts before
-transferring to foreign accounts, so I also used the opportunity to
-divert part of the funds hence I am aware that there is no official
-trace of how much was transferred as all the accounts used for such
-transfers were being closed after transfer.I acted as the Bank Officer
-to most of the politicians and when I discovered that they were using
-me to succeed in their greedy act; I also cleaned some of their
-banking records from the Bank files and no one cared to ask me because
-the money was too much for them to control. They laundered over
-$5billion Dollars during the process.
+The TBTT set at 100 wake-up sequence;
+100 TTBT wake-up set to listen interval.
+200 TTBT
+300 TTBT
+400 TTBT --> call vnt_next_tbtt_wakeup on slow path
+	Beacon heard and passed through at the approx 500 interval.
+500 TTBT
+600 TTBT wakeup set to listen interval
 
-Before I sent this message to you, I have already diverted
-($10.5million Dollars) to an escrow account belonging to no one in the
-bank. The bank isanxious now to know who the beneficiary to the funds
-is because they have made a lot of profits with the funds. It is more
-than Eight years now and most of the politicians are no longer using
-our bank to transfer funds overseas. The ($10.5million Dollars) has
-been laying waste in our bank and I don=E2=80=99t want to retire from the b=
-ank
-without transferring the funds to a foreign account to enable me share
-the proceeds with the receiver (a foreigner). The money will be shared
-60% for me and 40% for you. There is no one coming to ask you about
-the funds because I secured everything. I only want you to assist me
-by providing a reliable bank account where the funds can be
-transferred.
+The TTBT set at 500 wake-up sequence and always listen flagged on;
+100 No TTBT
+200 No TTBT
+300 No TTBT
+400 No TTBT
+500 TTBT - beacon heard and passed through
+600 No TTBT
 
-You are not to face any difficulties or legal implications as I am
-going to handle the transfer personally. If you are capable of
-receiving the funds,
-do let me know immediately to enable me give you a detailed
-information on what to do. For me, I have not stolen the money from
-anyone because the other people that took the whole money did not face
-any problems. This is my chance to grab my own life opportunity but
-you must keep the details of the funds secret to avoid any leakages as
-no one in the bank knows about my plans. Please get back to me if you
-are interested and capable to handle this project, I shall intimate
-you on what to do when I hear from your confirmation and acceptance.
-If you are capable of being my trusted associate, do declare your
-consent to me I am looking forward to hearing from you immediately for
-further information.
+A further enhancement because the TTBT is more precise
+the dtim_period can be used instead.
 
-Thanks with my best regards.
-Mr.Rasheed.U.Mustafa.
+When Power save is off the TTBT continues to run at the listen
+interval but all the other beacons are passed.
+
+The code in vnt_int_process_data is no longer required. 
+
+Signed-off-by: Malcolm Priestley <tvboxspy@gmail.com>
+---
+ drivers/staging/vt6656/device.h   |  2 --
+ drivers/staging/vt6656/main_usb.c | 11 +++++++++--
+ drivers/staging/vt6656/power.c    | 12 ++----------
+ drivers/staging/vt6656/usbpipe.c  | 13 -------------
+ 4 files changed, 11 insertions(+), 27 deletions(-)
+
+diff --git a/drivers/staging/vt6656/device.h b/drivers/staging/vt6656/device.h
+index 4d596853a3ee..d19d802b5d4f 100644
+--- a/drivers/staging/vt6656/device.h
++++ b/drivers/staging/vt6656/device.h
+@@ -383,8 +383,6 @@ struct vnt_private {
+ 	u8 bb_pre_ed_rssi;
+ 	u8 bb_pre_ed_index;
+ 
+-	u16 wake_up_count;
+-
+ 	/* command timer */
+ 	struct delayed_work run_command_work;
+ 
+diff --git a/drivers/staging/vt6656/main_usb.c b/drivers/staging/vt6656/main_usb.c
+index 7db1e044ad26..b5790d4d7152 100644
+--- a/drivers/staging/vt6656/main_usb.c
++++ b/drivers/staging/vt6656/main_usb.c
+@@ -824,10 +824,17 @@ static void vnt_bss_info_changed(struct ieee80211_hw *hw,
+ 	if (changed & (BSS_CHANGED_ASSOC | BSS_CHANGED_BEACON_INFO) &&
+ 	    priv->op_mode != NL80211_IFTYPE_AP) {
+ 		if (conf->assoc && conf->beacon_rate) {
++			u16 ps_beacon_int = conf->beacon_int;
++
++			if (conf->dtim_period)
++				ps_beacon_int *= conf->dtim_period;
++			else if (hw->conf.listen_interval)
++				ps_beacon_int *= hw->conf.listen_interval;
++
+ 			vnt_mac_reg_bits_on(priv, MAC_REG_TFTCTL,
+ 					    TFTCTL_TSFCNTREN);
+ 
+-			vnt_mac_set_beacon_interval(priv, conf->beacon_int);
++			vnt_mac_set_beacon_interval(priv, ps_beacon_int);
+ 
+ 			vnt_reset_next_tbtt(priv, conf->beacon_int);
+ 
+@@ -835,7 +842,7 @@ static void vnt_bss_info_changed(struct ieee80211_hw *hw,
+ 				       conf->sync_tsf, priv->current_tsf);
+ 
+ 			vnt_update_next_tbtt(priv,
+-					     conf->sync_tsf, conf->beacon_int);
++					     conf->sync_tsf, ps_beacon_int);
+ 		} else {
+ 			vnt_clear_current_tsf(priv);
+ 
+diff --git a/drivers/staging/vt6656/power.c b/drivers/staging/vt6656/power.c
+index d160a0773943..2f49c870272a 100644
+--- a/drivers/staging/vt6656/power.c
++++ b/drivers/staging/vt6656/power.c
+@@ -63,16 +63,8 @@ void vnt_enable_power_saving(struct vnt_private *priv, u16 listen_interval)
+ 	 */
+ 	vnt_mac_reg_bits_on(priv, MAC_REG_PSCTL, PSCTL_GO2DOZE);
+ 
+-	if (listen_interval >= 2) {
+-		/* clear always listen beacon */
+-		vnt_mac_reg_bits_off(priv, MAC_REG_PSCTL, PSCTL_ALBCN);
+-
+-		/* first time set listen next beacon */
+-		vnt_mac_reg_bits_on(priv, MAC_REG_PSCTL, PSCTL_LNBCN);
+-	} else {
+-		/* always listen beacon */
+-		vnt_mac_reg_bits_on(priv, MAC_REG_PSCTL, PSCTL_ALBCN);
+-	}
++	/* always listen beacon */
++	vnt_mac_reg_bits_on(priv, MAC_REG_PSCTL, PSCTL_ALBCN);
+ 
+ 	dev_dbg(&priv->usb->dev,  "PS:Power Saving Mode Enable...\n");
+ }
+diff --git a/drivers/staging/vt6656/usbpipe.c b/drivers/staging/vt6656/usbpipe.c
+index e8efdeadb1a7..5603f3cbb33c 100644
+--- a/drivers/staging/vt6656/usbpipe.c
++++ b/drivers/staging/vt6656/usbpipe.c
+@@ -202,19 +202,6 @@ static void vnt_int_process_data(struct vnt_private *priv)
+ 	if (int_data->isr0 & ISR_BNTX && priv->op_mode == NL80211_IFTYPE_AP)
+ 		vnt_schedule_command(priv, WLAN_CMD_BECON_SEND);
+ 
+-	if (int_data->isr0 & ISR_TBTT &&
+-	    priv->hw->conf.flags & IEEE80211_CONF_PS) {
+-		if (!priv->wake_up_count)
+-			priv->wake_up_count = priv->hw->conf.listen_interval;
+-
+-		if (priv->wake_up_count)
+-			--priv->wake_up_count;
+-
+-		/* Turn on wake up to listen next beacon */
+-		if (priv->wake_up_count == 1)
+-			vnt_schedule_command(priv, WLAN_CMD_TBTT_WAKEUP);
+-	}
+-
+ 	priv->current_tsf = le64_to_cpu(int_data->tsf);
+ 
+ 	low_stats->dot11RTSSuccessCount += int_data->rts_success;
+-- 
+2.25.1
