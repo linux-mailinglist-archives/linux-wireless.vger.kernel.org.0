@@ -2,75 +2,118 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E6FD1C26B1
-	for <lists+linux-wireless@lfdr.de>; Sat,  2 May 2020 17:56:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F1C241C26B4
+	for <lists+linux-wireless@lfdr.de>; Sat,  2 May 2020 18:00:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728296AbgEBP4M (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 2 May 2020 11:56:12 -0400
-Received: from mail2.candelatech.com ([208.74.158.173]:57882 "EHLO
-        mail3.candelatech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728291AbgEBP4L (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 2 May 2020 11:56:11 -0400
-Received: from [192.168.254.4] (unknown [50.34.219.109])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        id S1728237AbgEBQAs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 2 May 2020 12:00:48 -0400
+Received: from mail.kernel.org ([198.145.29.99]:39568 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727897AbgEBQAs (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 2 May 2020 12:00:48 -0400
+Received: from localhost.localdomain (unknown [151.48.155.206])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail3.candelatech.com (Postfix) with ESMTPSA id 7F35613C2B0;
-        Sat,  2 May 2020 08:56:10 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 7F35613C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-        s=default; t=1588434971;
-        bh=8xsX1r8NRVw6HTzqJK90fsdwZlHJtEH5xreyNJ2NNiw=;
-        h=Subject:To:References:Cc:From:Date:In-Reply-To:From;
-        b=Feh6wI3+ChSQxukIrO+9oyxbR49Z+kz12koIYTzPyDkdtIzehcMYG8qFoZk8JHtga
-         bcxU6ciPsarPBu9S0UQybm64UXUBwUCXGJLcfE8DYjxnm4HHIi6g+s2Qg83b63QXEn
-         sWfsrbbBOvFnLvDOw+HYa2c2JwzZD3gGJQVBVRRE=
-Subject: Re: [PATCH] ath10k: Restart xmit queues below low-water mark.
-To:     John Deere <24601deerej@gmail.com>, Mark Baker <mark@e-bakers.com>
-References: <20200427145435.13151-1-greearb@candelatech.com>
- <87h7x3v1tn.fsf@toke.dk>
- <d72dbba0-409f-93d7-5364-bc7ac50288b9@candelatech.com>
- <87a72vuyyn.fsf@toke.dk> <e49a3413-5d5e-cef7-bd31-c3a124a3bb86@gmail.com>
- <1108576c-3bf1-fde0-8266-f8e4c4a477bf@candelatech.com>
- <61bd26ed-93cb-01d9-6912-cc683d09560a@gmail.com>
- <D8BAA006-A2CD-410D-8B37-08FF28A28B04@e-bakers.com>
- <11e39934-c28b-44ea-ad4e-69ff6471d177@gmail.com>
-Cc:     =?UTF-8?Q?Toke_H=c3=b8iland-J=c3=b8rgensen?= <toke@toke.dk>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-From:   Ben Greear <greearb@candelatech.com>
-Message-ID: <0454fedb-3112-74fe-3d44-65d71ab8df35@candelatech.com>
-Date:   Sat, 2 May 2020 08:56:09 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
- Thunderbird/45.8.0
+        by mail.kernel.org (Postfix) with ESMTPSA id 4377D24954;
+        Sat,  2 May 2020 16:00:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1588435247;
+        bh=qKygv4X/XmIZL+CFHgEY9V+g3eCmGKSdkVjI0VZtll8=;
+        h=From:To:Cc:Subject:Date:From;
+        b=J8CEKnx8GfhJUGWZmVzS6duIZ7fx+DIa/cQ0Sk5xL4ivQ/K30qpVLzmWAA6+kT7Dp
+         6MmEdHHV0VPNrKNlPiuoe875MwU4mi5p9F0GShZ3NjMfZpk4+ivKfO/vQE/AK6wl60
+         0R61lBeTHDqwpxnioYgdGjNVd8I1anO4ohetIARY=
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
+        sean.wang@mediatek.com, linux-mediatek@lists.infradead.org
+Subject: [PATCH] mt76: mt7615: fix ibss mode for mt7663
+Date:   Sat,  2 May 2020 18:00:41 +0200
+Message-Id: <3401e41202ef64fca89c090a227da632cd93190c.1588435127.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-In-Reply-To: <11e39934-c28b-44ea-ad4e-69ff6471d177@gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+Fix the following kernel warning adding an adhoc interface to a
+mt7663e device
 
+[  233.363394] WARNING: CPU: 0 PID: 2345 at drivers/net/wireless/mt76/mt7615/mcu.c:1449 mt7615_mcu_uni_add_bss+0x15f/0x24e [mt7615_common]
+[  233.363432] CPU: 0 PID: 2345 Comm: iw Tainted: G        W       4.14.171 #12
+[  233.363434] Hardware name: HP Meep/Meep, BIOS Google_Meep.11297.75.0 06/17/2019
+[  233.363436] task: ffff9a1a4020e3c0 task.stack: ffffb9124113c000
+[  233.363441] RIP: 0010:mt7615_mcu_uni_add_bss+0x15f/0x24e [mt7615_common]
+[  233.363443] RSP: 0018:ffffb9124113f730 EFLAGS: 00010246
+[  233.363446] RAX: 0000000000000024 RBX: ffff9a1a788c74e8 RCX: 41826d413aea9200
+[  233.363448] RDX: 0000000000000007 RSI: 0000000000000006 RDI: ffff9a1a7fc15418
+[  233.363450] RBP: ffffb9124113f7c0 R08: 0000000000000356 R09: 00000000ffff0a10
+[  233.363452] R10: 0000001000000000 R11: ffffffff93f2a4be R12: 0000000000000000
+[  233.363454] R13: ffff9a1a7383bd48 R14: ffffb9124113f77a R15: 0000000000000000
+[  233.363456] FS:  00007f203314ab80(0000) GS:ffff9a1a7fc00000(0000) knlGS:0000000000000000
+[  233.363458] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  233.363460] CR2: 00005a13d647c950 CR3: 0000000171238000 CR4: 00000000003406f0
+[  233.363462] Call Trace:
+[  233.363470]  mt7615_bss_info_changed+0x98/0xf4 [mt7615_common]
+[  233.363484]  ieee80211_bss_info_change_notify+0x139/0x1d4 [mt76_mac80211]
+[  233.363496]  ieee80211_ibss_disconnect+0x183/0x1bb [mt76_mac80211]
+[  233.363507]  ieee80211_ibss_leave+0x14/0xa0 [mt76_mac80211]
+[  233.363519]  __cfg80211_leave_ibss+0xa6/0x13a [cfg80211]
+[  233.363528]  cfg80211_netdev_notifier_call+0x8b/0x631 [cfg80211]
+[  233.363535]  ? packet_notifier+0x196/0x1a3
+[  233.363540]  raw_notifier_call_chain+0x39/0x58
+[  233.363544]  __dev_close_many+0x6b/0xf0
+[  233.363548]  dev_close_many+0x62/0xe8
+[  233.363552]  ? _raw_spin_unlock_irq+0xe/0x21
+[  233.363555]  rollback_registered_many+0xf6/0x35c
+[  233.363560]  ? __rcu_read_unlock+0x4a/0x4a
+[  233.363563]  unregister_netdevice_queue+0x7f/0x105
+[  233.363573]  ieee80211_del_iface+0x12/0x16 [mt76_mac80211]
+[  233.363582]  nl80211_del_interface+0xa8/0x124 [cfg80211]
+[  233.363588]  genl_rcv_msg+0x40b/0x481
+[  233.363592]  ? genl_unbind+0xb8/0xb8
+[  233.363595]  netlink_rcv_skb+0x85/0xf8
+[  233.363598]  genl_rcv+0x28/0x36
+[  233.363601]  netlink_unicast+0x165/0x1f8
+[  233.363604]  netlink_sendmsg+0x35f/0x3a6
+[  233.363608]  sock_sendmsg+0x38/0x48
+[  233.363611]  ___sys_sendmsg+0x1bf/0x267
+[  233.363615]  ? __inode_wait_for_writeback+0x72/0xd7
+[  233.363619]  ? dentry_kill+0x69/0x76
+[  233.363622]  ? dput+0xd1/0x170
+[  233.363624]  __sys_sendmsg+0x52/0x8f
+[  233.363628]  do_syscall_64+0x6b/0xf7
+[  233.363632]  entry_SYSCALL_64_after_hwframe+0x3d/0xa2
+[  233.363635] RIP: 0033:0x7f2032ca1264
+[  233.363637] RSP: 002b:00007ffec3668e38 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
+[  233.363639] RAX: ffffffffffffffda RBX: 000058f7175e7880 RCX: 00007f2032ca1264
+[  233.363641] RDX: 0000000000000000 RSI: 00007ffec3668e98 RDI: 0000000000000003
+[  233.363643] RBP: 00007ffec3668e70 R08: 0000000000000001 R09: 00007f2032ce1fd0
+[  233.363645] R10: 000058f7175e2010 R11: 0000000000000246 R12: 000058f7175e7740
+[  233.363646] R13: 00007ffec3668ff0 R14: 000058f7175e2350 R15: 00007ffec3668e98
 
-On 05/01/2020 10:49 PM, John Deere wrote:
->
+Fixes: f40ac0f3d3c0 ("mt76: mt7615: introduce mt7663e support")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+ drivers/net/wireless/mediatek/mt76/mt7615/mcu.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
->>>>> I've also tried the standalone patch by Ben and it seems to have reduced the latencies on top of AQL by another 5 ms.
->>>> Hello,
->>>> Did you notice any throughput changes or system load changes in the test that you did with my patch?
->
-> Hi Ben,
->
-> I've ran some basic throughput tests with iperf and it seems that there was also slight hit in throughput, but only by 5-20 mbps or so.
-
-If you are using smaller buffers anyway, maybe the 1/4 restart limit is too low.  I'm running closer to 2000 tx buffers,
-so my restart level would be at around 500 buffers.  I did not see any drop in tput in my test case, but rather saw
-improvement.
-
-Thanks,
-Ben
-
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+index d479df6a7f40..a4d90a8b347a 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+@@ -1417,6 +1417,9 @@ mt7615_mcu_uni_add_bss(struct mt7615_phy *phy, struct ieee80211_vif *vif,
+ 	case NL80211_IFTYPE_STATION:
+ 		basic_req.basic.conn_type = cpu_to_le32(CONNECTION_INFRA_STA);
+ 		break;
++	case NL80211_IFTYPE_ADHOC:
++		basic_req.basic.conn_type = cpu_to_le32(CONNECTION_IBSS_ADHOC);
++		break;
+ 	default:
+ 		WARN_ON(1);
+ 		break;
 -- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
+2.26.2
+
