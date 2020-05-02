@@ -2,98 +2,75 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 021E11C259A
-	for <lists+linux-wireless@lfdr.de>; Sat,  2 May 2020 15:16:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E6FD1C26B1
+	for <lists+linux-wireless@lfdr.de>; Sat,  2 May 2020 17:56:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727997AbgEBNQC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 2 May 2020 09:16:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47000 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727974AbgEBNQB (ORCPT
+        id S1728296AbgEBP4M (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 2 May 2020 11:56:12 -0400
+Received: from mail2.candelatech.com ([208.74.158.173]:57882 "EHLO
+        mail3.candelatech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728291AbgEBP4L (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 2 May 2020 09:16:01 -0400
-Received: from mail-oi1-x241.google.com (mail-oi1-x241.google.com [IPv6:2607:f8b0:4864:20::241])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A59EEC061A10
-        for <linux-wireless@vger.kernel.org>; Sat,  2 May 2020 06:16:01 -0700 (PDT)
-Received: by mail-oi1-x241.google.com with SMTP id a2so2319367oia.11
-        for <linux-wireless@vger.kernel.org>; Sat, 02 May 2020 06:16:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=zdxUWMWXTEs/zs0LJh1bxLoOHpDg1k5nkLimqXptzik=;
-        b=S3RbHQf/lz16sGIFdkG5ro7r7VnQo1GE/iR1VoyCwlzMbnjCXA3bBRnvmwXNT3qjuU
-         DiQV/mmOGdbxRFED3q9fuupI9nLlCRIVwfMMsCd5B2E5+mh82V8HrpRtFbicmcKA5Gb6
-         lASk1wJLV1DrTLrVU+4/EV6P2rRPZuUDBDqHBQ7V1jp+EtwEIWj1Hv2OTTdR9D5zCQRl
-         WZi7C7Nht1B3mM5f7EOhEtBgxoXs+/BfGy0taOvvrVc6AdswYmZLcDop8VlZv94k0T14
-         9s16HegjycN/gGzUILZ7sKXjAYX1YwVGD82DWa9+2gwGoBkI+HmkthuJW4Dwoyk6OXjA
-         EKtA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=zdxUWMWXTEs/zs0LJh1bxLoOHpDg1k5nkLimqXptzik=;
-        b=c7sOgwEjIKrvQUuluxhn7ocsHpvG8sQBkvadMRmhDDZoiuJ/L1rO+uKvCPkbl0ErAX
-         74pSOTs4gDH12R1rMGHfWtAThPdOsdxph008yyQfmno3UN/l7e1fBnmNRbm2zi9ich9T
-         zEGa/UOFBsht1c4wIz3T99P6fJyse9gCb+bNj1eXunrsgHZdOZCtsVGAqziDicFpd6jE
-         A6apRL0Mi/Xw4+srzXC53C+BdsDdLFbNl9LLIcO6HIxjLeibagDpzW9i5N6vEPrvUnw7
-         8AbJFB351EhQI53z9kZCnJGQ3UkaIvrQlRXdD3+fFJs1ZCf+m21fGYdxJ0E+troggVfB
-         LL4w==
-X-Gm-Message-State: AGi0PuZgoHWAduHlcOUI8FpszxY2vwOBQFVqdJSb8GBEQcomppXxZn0J
-        0dZMqfx7B5l2ulN0x5c5iEPkEZbyuilCc15Tlfo=
-X-Google-Smtp-Source: APiQypLWMPcUf10pMnydJEDKjV3hYgO/l0Pd65TU8LeNoRd9Rc3r56jfP3Gb1j3p5wLYCKScBG5gYNkHLxfzKuxnjHs=
-X-Received: by 2002:aca:31ce:: with SMTP id x197mr3091059oix.157.1588425360610;
- Sat, 02 May 2020 06:16:00 -0700 (PDT)
+        Sat, 2 May 2020 11:56:11 -0400
+Received: from [192.168.254.4] (unknown [50.34.219.109])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail3.candelatech.com (Postfix) with ESMTPSA id 7F35613C2B0;
+        Sat,  2 May 2020 08:56:10 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 7F35613C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+        s=default; t=1588434971;
+        bh=8xsX1r8NRVw6HTzqJK90fsdwZlHJtEH5xreyNJ2NNiw=;
+        h=Subject:To:References:Cc:From:Date:In-Reply-To:From;
+        b=Feh6wI3+ChSQxukIrO+9oyxbR49Z+kz12koIYTzPyDkdtIzehcMYG8qFoZk8JHtga
+         bcxU6ciPsarPBu9S0UQybm64UXUBwUCXGJLcfE8DYjxnm4HHIi6g+s2Qg83b63QXEn
+         sWfsrbbBOvFnLvDOw+HYa2c2JwzZD3gGJQVBVRRE=
+Subject: Re: [PATCH] ath10k: Restart xmit queues below low-water mark.
+To:     John Deere <24601deerej@gmail.com>, Mark Baker <mark@e-bakers.com>
+References: <20200427145435.13151-1-greearb@candelatech.com>
+ <87h7x3v1tn.fsf@toke.dk>
+ <d72dbba0-409f-93d7-5364-bc7ac50288b9@candelatech.com>
+ <87a72vuyyn.fsf@toke.dk> <e49a3413-5d5e-cef7-bd31-c3a124a3bb86@gmail.com>
+ <1108576c-3bf1-fde0-8266-f8e4c4a477bf@candelatech.com>
+ <61bd26ed-93cb-01d9-6912-cc683d09560a@gmail.com>
+ <D8BAA006-A2CD-410D-8B37-08FF28A28B04@e-bakers.com>
+ <11e39934-c28b-44ea-ad4e-69ff6471d177@gmail.com>
+Cc:     =?UTF-8?Q?Toke_H=c3=b8iland-J=c3=b8rgensen?= <toke@toke.dk>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+From:   Ben Greear <greearb@candelatech.com>
+Message-ID: <0454fedb-3112-74fe-3d44-65d71ab8df35@candelatech.com>
+Date:   Sat, 2 May 2020 08:56:09 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+ Thunderbird/45.8.0
 MIME-Version: 1.0
-Received: by 2002:ac9:5e4c:0:0:0:0:0 with HTTP; Sat, 2 May 2020 06:16:00 -0700 (PDT)
-Reply-To: ayishagddafio@mail.ru
-From:   AISHA GADDAFI <evangelicalurtheranchurch@gmail.com>
-Date:   Sat, 2 May 2020 06:16:00 -0700
-Message-ID: <CAB+rQNy0qThGAi8FPY680HqDSN+fOpwJS=-BTP+_Jv1XtRVeuQ@mail.gmail.com>
-Subject: Lieber Freund (Assalamu Alaikum),?
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <11e39934-c28b-44ea-ad4e-69ff6471d177@gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---=20
-Lieber Freund (Assalamu Alaikum),
 
-Ich bin vor einer privaten Suche auf Ihren E-Mail-Kontakt gesto=C3=9Fen
-Ihre Hilfe. Mein Name ist Aisha Al-Qaddafi, eine alleinerziehende
-Mutter und eine Witwe
-mit drei Kindern. Ich bin die einzige leibliche Tochter des Sp=C3=A4tlibysc=
-hen
-Pr=C3=A4sident (verstorbener Oberst Muammar Gaddafi).
 
-Ich habe Investmentfonds im Wert von siebenundzwanzig Millionen
-f=C3=BCnfhunderttausend
-United State Dollar ($ 27.500.000.00) und ich brauche eine
-vertrauensw=C3=BCrdige Investition
-Manager / Partner aufgrund meines aktuellen Fl=C3=BCchtlingsstatus bin ich =
-jedoch
-M=C3=B6glicherweise interessieren Sie sich f=C3=BCr die Unterst=C3=BCtzung =
-von
-Investitionsprojekten in Ihrem Land
-Von dort aus k=C3=B6nnen wir in naher Zukunft Gesch=C3=A4ftsbeziehungen auf=
-bauen.
+On 05/01/2020 10:49 PM, John Deere wrote:
+>
 
-Ich bin bereit, mit Ihnen =C3=BCber das Verh=C3=A4ltnis zwischen Investitio=
-n und
-Unternehmensgewinn zu verhandeln
-Basis f=C3=BCr die zuk=C3=BCnftige Investition Gewinne zu erzielen.
+>>>>> I've also tried the standalone patch by Ben and it seems to have reduced the latencies on top of AQL by another 5 ms.
+>>>> Hello,
+>>>> Did you notice any throughput changes or system load changes in the test that you did with my patch?
+>
+> Hi Ben,
+>
+> I've ran some basic throughput tests with iperf and it seems that there was also slight hit in throughput, but only by 5-20 mbps or so.
 
-Wenn Sie bereit sind, dieses Projekt in meinem Namen zu bearbeiten,
-antworten Sie bitte dringend
-Damit ich Ihnen mehr Informationen =C3=BCber die Investmentfonds geben kann=
-.
+If you are using smaller buffers anyway, maybe the 1/4 restart limit is too low.  I'm running closer to 2000 tx buffers,
+so my restart level would be at around 500 buffers.  I did not see any drop in tput in my test case, but rather saw
+improvement.
 
-Ihre dringende Antwort wird gesch=C3=A4tzt. schreibe mir an diese email adr=
-esse (
-ayishagddafio@mail.ru ) zur weiteren Diskussion.
+Thanks,
+Ben
 
-Freundliche Gr=C3=BC=C3=9Fe
-Frau Aisha Al-Qaddafi
+-- 
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
