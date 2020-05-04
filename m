@@ -2,106 +2,109 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B434A1C3620
-	for <lists+linux-wireless@lfdr.de>; Mon,  4 May 2020 11:50:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F392B1C369B
+	for <lists+linux-wireless@lfdr.de>; Mon,  4 May 2020 12:18:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728551AbgEDJuy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 4 May 2020 05:50:54 -0400
-Received: from mail26.static.mailgun.info ([104.130.122.26]:16408 "EHLO
-        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727108AbgEDJuy (ORCPT
+        id S1727819AbgEDKSX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 4 May 2020 06:18:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41122 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726531AbgEDKSW (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 4 May 2020 05:50:54 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1588585853; h=Date: Message-Id: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=dsoB2pXtHXtJ6z6FYDGExSBwxV7fxuDgwhHrrM4FK4Y=;
- b=VJO+bd4qX13ValEgvM9I+JRyCVFC9vUXkAY/LZkAJsXZfMiQI6rjCiWRSr2JCIpuonCm3Wx+
- M1E8zKwKfyqe1WjIGwKLA962RP55X9KRvqQ1DzhKt+8RXMJXHcxPVlBdDIvaXwJTBTnaaI8L
- kE+UzO7GTMM8QZ6eJjZHgAWn2mY=
-X-Mailgun-Sending-Ip: 104.130.122.26
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5eafe572.7f7a1c2c67d8-smtp-out-n03;
- Mon, 04 May 2020 09:50:42 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 4289CC432C2; Mon,  4 May 2020 09:50:42 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
-        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id E6E97C433CB;
-        Mon,  4 May 2020 09:50:37 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org E6E97C433CB
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        Mon, 4 May 2020 06:18:22 -0400
+Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F423BC061A0E;
+        Mon,  4 May 2020 03:18:21 -0700 (PDT)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: andrzej.p)
+        with ESMTPSA id 77A722A0E4B
+Subject: Re: [PATCH 2/6] thermal: core: delete thermal_notify_framework()
+To:     Zhang Rui <rui.zhang@intel.com>, linux-pm@vger.kernel.org
+Cc:     linux-wireless@vger.kernel.org, daniel.lezcano@linaro.org,
+        b.zolnierkie@samsung.com, luca@coelho.fi
+References: <20200430063229.6182-1-rui.zhang@intel.com>
+ <20200430063229.6182-3-rui.zhang@intel.com>
+From:   Andrzej Pietrasiewicz <andrzej.p@collabora.com>
+Message-ID: <3553b981-3aa7-b45b-85f8-21bc97f14026@collabora.com>
+Date:   Mon, 4 May 2020 12:18:18 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
+In-Reply-To: <20200430063229.6182-3-rui.zhang@intel.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] brcmfmac: no need to check return value of debugfs_create
- functions
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20200429101526.GA2094124@kroah.com>
-References: <20200429101526.GA2094124@kroah.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Arend van Spriel <arend.vanspriel@broadcom.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
-        Wright Feng <wright.feng@cypress.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        =?utf-8?b?UmFmYcWCIE1pxYJl?= =?utf-8?b?Y2tp?= <rafal@milecki.pl>,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        brcm80211-dev-list@cypress.com, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20200504095042.4289CC432C2@smtp.codeaurora.org>
-Date:   Mon,  4 May 2020 09:50:42 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+Hi Rui,
 
-> When calling debugfs functions, there is no need to ever check the
-> return value.  The function can work or not, but the code logic should
-> never do something different based on this.
+W dniu 30.04.2020 o 08:32, Zhang Rui pisze:
+> Delete thermal_notify_framework() as there is no user of it.
 > 
-> In doing this, make brcmf_debugfs_add_entry() return void as no one was
-> even paying attention to the return value.
+> Signed-off-by: Zhang Rui <rui.zhang@intel.com>
+
+Provided that PATCH 1/6 is applied:
+
+Reviewed-by: Andrzej Pietrasiewicz <andrzej.p@collabora.com>
+
+> ---
+>   drivers/thermal/thermal_core.c | 18 ------------------
+>   include/linux/thermal.h        |  4 ----
+>   2 files changed, 22 deletions(-)
 > 
-> Cc: Arend van Spriel <arend.vanspriel@broadcom.com>
-> Cc: Franky Lin <franky.lin@broadcom.com>
-> Cc: Hante Meuleman <hante.meuleman@broadcom.com>
-> Cc: Chi-Hsien Lin <chi-hsien.lin@cypress.com>
-> Cc: Wright Feng <wright.feng@cypress.com>
-> Cc: Kalle Valo <kvalo@codeaurora.org>
-> Cc: "David S. Miller" <davem@davemloft.net>
-> Cc: Pieter-Paul Giesberts <pieter-paul.giesberts@broadcom.com>
-> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Cc: "Rafał Miłecki" <rafal@milecki.pl>
-> Cc: linux-wireless@vger.kernel.org
-> Cc: brcm80211-dev-list.pdl@broadcom.com
-> Cc: brcm80211-dev-list@cypress.com
-> Cc: netdev@vger.kernel.org
-> Cc: linux-kernel@vger.kernel.org
-> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+> diff --git a/drivers/thermal/thermal_core.c b/drivers/thermal/thermal_core.c
+> index 03c4d8d..ac70545 100644
+> --- a/drivers/thermal/thermal_core.c
+> +++ b/drivers/thermal/thermal_core.c
+> @@ -532,24 +532,6 @@ void thermal_zone_device_update(struct thermal_zone_device *tz,
+>   }
+>   EXPORT_SYMBOL_GPL(thermal_zone_device_update);
+>   
+> -/**
+> - * thermal_notify_framework - Sensor drivers use this API to notify framework
+> - * @tz:		thermal zone device
+> - * @trip:	indicates which trip point has been crossed
+> - *
+> - * This function handles the trip events from sensor drivers. It starts
+> - * throttling the cooling devices according to the policy configured.
+> - * For CRITICAL and HOT trip points, this notifies the respective drivers,
+> - * and does actual throttling for other trip points i.e ACTIVE and PASSIVE.
+> - * The throttling policy is based on the configured platform data; if no
+> - * platform data is provided, this uses the step_wise throttling policy.
+> - */
+> -void thermal_notify_framework(struct thermal_zone_device *tz, int trip)
+> -{
+> -	handle_thermal_trip(tz, trip);
+> -}
+> -EXPORT_SYMBOL_GPL(thermal_notify_framework);
+> -
+>   static void thermal_zone_device_check(struct work_struct *work)
+>   {
+>   	struct thermal_zone_device *tz = container_of(work, struct
+> diff --git a/include/linux/thermal.h b/include/linux/thermal.h
+> index c789d4f..a87fbaf 100644
+> --- a/include/linux/thermal.h
+> +++ b/include/linux/thermal.h
+> @@ -420,7 +420,6 @@ int thermal_zone_get_slope(struct thermal_zone_device *tz);
+>   int thermal_zone_get_offset(struct thermal_zone_device *tz);
+>   
+>   void thermal_cdev_update(struct thermal_cooling_device *);
+> -void thermal_notify_framework(struct thermal_zone_device *, int);
+>   #else
+>   static inline struct thermal_zone_device *thermal_zone_device_register(
+>   	const char *type, int trips, int mask, void *devdata,
+> @@ -468,9 +467,6 @@ static inline int thermal_zone_get_offset(
+>   
+>   static inline void thermal_cdev_update(struct thermal_cooling_device *cdev)
+>   { }
+> -static inline void thermal_notify_framework(struct thermal_zone_device *tz,
+> -	int trip)
+> -{ }
+>   #endif /* CONFIG_THERMAL */
+>   
+>   static inline int thermal_zone_device_enable(struct thermal_zone_device *tz)
+> 
 
-Patch applied to wireless-drivers-next.git, thanks.
-
-ea1b3bc6d5ad brcmfmac: no need to check return value of debugfs_create functions
-
--- 
-https://patchwork.kernel.org/patch/11516617/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
