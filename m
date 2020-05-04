@@ -2,97 +2,114 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1AE251C4939
-	for <lists+linux-wireless@lfdr.de>; Mon,  4 May 2020 23:45:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B35691C4A70
+	for <lists+linux-wireless@lfdr.de>; Tue,  5 May 2020 01:38:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726419AbgEDVpB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 4 May 2020 17:45:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35682 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726334AbgEDVpB (ORCPT
+        id S1728476AbgEDXiP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 4 May 2020 19:38:15 -0400
+Received: from mail27.static.mailgun.info ([104.130.122.27]:18747 "EHLO
+        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728475AbgEDXiO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 4 May 2020 17:45:01 -0400
-Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com [IPv6:2607:f8b0:4864:20::443])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 367B1C061A0E
-        for <linux-wireless@vger.kernel.org>; Mon,  4 May 2020 14:45:00 -0700 (PDT)
-Received: by mail-pf1-x443.google.com with SMTP id 18so6247556pfv.8
-        for <linux-wireless@vger.kernel.org>; Mon, 04 May 2020 14:45:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=pSdUQIiDkBuYMEvnAzxNhWNRwyt6JrBctrwvIkEEK+E=;
-        b=SupGXcykkeSJajgkz3W/6SGxpcIzpcEbkumq0z+zPt13bXDkrUafxtEdY0xN3MnpuJ
-         tFyH/2TJ7M+c8Il4AVk2ns2YY8W2xNZ/45QVTCgfY/tRnnhvOz0L4xuOLCHQk3BLSR9Z
-         gpwqJdtalOpZXHgiKra6OkoHv2WRH20/IeM7NHa1zhSiz9gzFSGi97QLPJyC7XERghHf
-         DwwO8qLikNp8NwVU/7TCLzHmhYNkP9cmNzNlfXX3jLOHy7kjeAy4AsZkOUVijCs62tML
-         cvVufciXLR+oyDVBzG2Y56ecL+rxI0JATIMpPTz1aOOr3CBZ0dcEoQMP+/aZOaORDmL1
-         aksA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=pSdUQIiDkBuYMEvnAzxNhWNRwyt6JrBctrwvIkEEK+E=;
-        b=AVI9e+meDC3RtxzvsJcxCZXPaLP7VjfOTUeJ1DR2LUDSmzvfOkjj3g/6597ksLhcEm
-         iT5BDDImuAHgRJ6t+v2uyGTJJ8UAZ1BFUCuijQtXYHp9S6cwYs+TbHvhjb1cVLxGkzLM
-         A/ObE62vHm7Z9ue0GFcp+5wMslfbg1i2atWzf29EY83rOinIE4yE7wRKOe+uFJdNM11z
-         DNXuYdrzcfV26AyrdoBksVCTaTTTsekpeoP6P7g/oOlxmihvXXdXA6m0ruCNfbM2YIcE
-         SGSSRvPJ1R/qtIqQgE04cqV9BFhOWkExsgpxM5AnqmnPj6rHyCoSR34+s6UjE/giaBFk
-         SHiA==
-X-Gm-Message-State: AGi0PubDg9wlNU2/EX0zxQYZNxZ4lb/5LJxSwcm4R3nLs7KtUJOlR2Jl
-        c42ZeNDxLekjCNoIzC7NtfmTi5LcEww=
-X-Google-Smtp-Source: APiQypKx8BxTW1MJejPyV5ohW523QF0T+soVfhBr8nXI0w20mQCHIofiFPGgoOM1cKFnQ7qFhWbblg==
-X-Received: by 2002:a63:190a:: with SMTP id z10mr227757pgl.331.1588628699099;
-        Mon, 04 May 2020 14:44:59 -0700 (PDT)
-Received: from gtx1600.flets-east.jp ([2409:11:53c0:1f00:ad34:aa33:8105:3cc4])
-        by smtp.gmail.com with ESMTPSA id n3sm24749pfa.218.2020.05.04.14.44.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 May 2020 14:44:58 -0700 (PDT)
-From:   Masashi Honma <masashi.honma@gmail.com>
-To:     linux-wireless@vger.kernel.org
-Cc:     ath9k-devel@qca.qualcomm.com, pro.denis@protonmail.com,
-        Masashi Honma <masashi.honma@gmail.com>
-Subject: [PATCH] ath9k_htc: Silence undersized packet warnings
-Date:   Tue,  5 May 2020 06:44:43 +0900
-Message-Id: <20200504214443.4485-1-masashi.honma@gmail.com>
-X-Mailer: git-send-email 2.17.1
+        Mon, 4 May 2020 19:38:14 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1588635493; h=Message-ID: References: In-Reply-To: Subject:
+ Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Sender; bh=lOZ4tyU3hhbnZJSh2lBCxUEl4+xkzrxlUN3eXX+6mN8=;
+ b=ZuiOEIBsnh/4pdsy2UUCYWi4PVJVNLRt1HaHc2CGe2Rt4mlfxyX+YuJAT7DK/DefMIedgWen
+ LBjLBmrsL0FQBAvOMhlKij5GZKAVy4GwXvXyYtYqfrrskHrsDqXpKVk6mfuBjMwQhPbSRlmJ
+ Ic6ejUNaEvGh7iNtw6F5dJnUvfo=
+X-Mailgun-Sending-Ip: 104.130.122.27
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5eb0a747.7ffa973a50a0-smtp-out-n04;
+ Mon, 04 May 2020 23:37:43 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 6CFCAC4478F; Mon,  4 May 2020 23:37:42 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: rmanohar)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 91D9EC433BA;
+        Mon,  4 May 2020 23:37:41 +0000 (UTC)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Mon, 04 May 2020 16:37:41 -0700
+From:   Rajkumar Manoharan <rmanohar@codeaurora.org>
+To:     Markus Theil <markus.theil@tu-ilmenau.de>
+Cc:     linux-wireless@vger.kernel.org, kvalo@codeaurora.org,
+        ath10k@lists.infradead.org, ath11k@lists.infradead.org,
+        linux-wireless-owner@vger.kernel.org
+Subject: Re: [PATCH 2/2] ath11k: use cumulative survey statistics
+In-Reply-To: <20200504154122.91862-2-markus.theil@tu-ilmenau.de>
+References: <20200504154122.91862-1-markus.theil@tu-ilmenau.de>
+ <20200504154122.91862-2-markus.theil@tu-ilmenau.de>
+Message-ID: <85fa2d5f9183b3a12c5283b800f3750f@codeaurora.org>
+X-Sender: rmanohar@codeaurora.org
+User-Agent: Roundcube Webmail/1.3.9
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Some devices like TP-Link TL-WN722N produces this kind of messages
-frequently.
+On 2020-05-04 08:41, Markus Theil wrote:
+> ath11k currently reports survey results for the last interval between 
+> each
+> invocation of NL80211_CMD_GET_SURVEY. For concurrent invocations, this
+> can lead to unexpectedly small results, e.g. when hostapd uses survey
+> data and iw survey dump is invoked in parallel. Fix this by returning
+> cumulative results, that don't depend on the last invocation. Other
+> drivers, e.g. ath9k or mt76 also use this behavior.
+> 
+> Signed-off-by: Markus Theil <markus.theil@tu-ilmenau.de>
+> ---
+>  drivers/net/wireless/ath/ath11k/wmi.c | 20 ++++++++++----------
+>  1 file changed, 10 insertions(+), 10 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/ath/ath11k/wmi.c
+> b/drivers/net/wireless/ath/ath11k/wmi.c
+> index c2a972377687..322ddfda5bfd 100644
+> --- a/drivers/net/wireless/ath/ath11k/wmi.c
+> +++ b/drivers/net/wireless/ath/ath11k/wmi.c
+> @@ -5610,16 +5610,16 @@ ath11k_pdev_bss_chan_info_event(struct
+> ath11k_base *ab, struct sk_buff *skb)
+> 
+>  	survey = &ar->survey[idx];
+> 
+> -	survey->noise     = bss_ch_info_ev.noise_floor;
+> -	survey->time      = div_u64(total, cc_freq_hz);
+> -	survey->time_busy = div_u64(busy, cc_freq_hz);
+> -	survey->time_rx   = div_u64(rx_bss, cc_freq_hz);
+> -	survey->time_tx   = div_u64(tx, cc_freq_hz);
+> -	survey->filled   |= (SURVEY_INFO_NOISE_DBM |
+> -			     SURVEY_INFO_TIME |
+> -			     SURVEY_INFO_TIME_BUSY |
+> -			     SURVEY_INFO_TIME_RX |
+> -			     SURVEY_INFO_TIME_TX);
+> +	survey->noise      = bss_ch_info_ev.noise_floor;
+> +	survey->time      += div_u64(total, cc_freq_hz);
+> +	survey->time_busy += div_u64(busy, cc_freq_hz);
+> +	survey->time_rx   += div_u64(rx_bss, cc_freq_hz);
+> +	survey->time_tx   += div_u64(tx, cc_freq_hz);
+> +	survey->filled    |= (SURVEY_INFO_NOISE_DBM |
+> +			      SURVEY_INFO_TIME |
+> +			      SURVEY_INFO_TIME_BUSY |
+> +			      SURVEY_INFO_TIME_RX |
+> +			      SURVEY_INFO_TIME_TX);
 
-kernel: ath: phy0: Short RX data len, dropping (dlen: 4)
+Markus,
 
-This warning is useful for developers to recognize that the device
-(Wi-Fi dongle or USB hub etc) is noisy but not for general users. So
-this patch make this warning to debug message.
+It depends on type of survey request is given to firmware. In ath11k, 
+firmware reports
+accumulated values. So the above addition is wrong and report double 
+value. Have you
+tested this change?
 
-Reported-By: Denis <pro.denis@protonmail.com>
-Ref: https://bugzilla.kernel.org/show_bug.cgi?id=207539
-Fixes: cd486e627e67 ("ath9k_htc: Discard undersized packets")
-Signed-off-by: Masashi Honma <masashi.honma@gmail.com>
----
- drivers/net/wireless/ath/ath9k/htc_drv_txrx.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath9k/htc_drv_txrx.c b/drivers/net/wireless/ath/ath9k/htc_drv_txrx.c
-index 9cec5c216e1f..118e5550b10c 100644
---- a/drivers/net/wireless/ath/ath9k/htc_drv_txrx.c
-+++ b/drivers/net/wireless/ath/ath9k/htc_drv_txrx.c
-@@ -999,9 +999,9 @@ static bool ath9k_rx_prepare(struct ath9k_htc_priv *priv,
- 	 * which are not PHY_ERROR (short radar pulses have a length of 3)
- 	 */
- 	if (unlikely(!rs_datalen || (rs_datalen < 10 && !is_phyerr))) {
--		ath_warn(common,
--			 "Short RX data len, dropping (dlen: %d)\n",
--			 rs_datalen);
-+		ath_dbg(common, ANY,
-+			"Short RX data len, dropping (dlen: %d)\n",
-+			rs_datalen);
- 		goto rx_next;
- 	}
- 
--- 
-2.17.1
-
+-Rajkumar
