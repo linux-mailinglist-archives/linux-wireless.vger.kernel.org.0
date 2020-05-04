@@ -2,30 +2,30 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7555E1C3603
-	for <lists+linux-wireless@lfdr.de>; Mon,  4 May 2020 11:47:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ED4F01C3605
+	for <lists+linux-wireless@lfdr.de>; Mon,  4 May 2020 11:47:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727930AbgEDJrG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 4 May 2020 05:47:06 -0400
-Received: from mail27.static.mailgun.info ([104.130.122.27]:64875 "EHLO
-        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726625AbgEDJrG (ORCPT
+        id S1728399AbgEDJr6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 4 May 2020 05:47:58 -0400
+Received: from mail26.static.mailgun.info ([104.130.122.26]:11921 "EHLO
+        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726625AbgEDJr5 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 4 May 2020 05:47:06 -0400
+        Mon, 4 May 2020 05:47:57 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1588585625; h=Date: Message-Id: Cc: To: References:
+ s=smtp; t=1588585677; h=Date: Message-Id: Cc: To: References:
  In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=jZwrnHq2YtbLOAUBTGHaVPyvCsDNnYF2Sbt8I4X8yf8=;
- b=VizNKdkXZgUDKC7aA5/Rhbi2ZuMcrqP2T8BVvm3fsTWp034AevVGIirJu4HYkqq19iB666AN
- Kie4tyULWzP0tFyttMOlvZrC/81r2Y/LuEEDp9fkeGxfvQVrfNzQZLHu6N5NxRzdg4oy81ng
- EWWyupbGW0nz9aMHI4aUTfGvb1k=
-X-Mailgun-Sending-Ip: 104.130.122.27
+ Content-Type: Sender; bh=WM9/aRStIaPaqyNPtJJyM+h9b/Ec7TT+ctCUD/qlxj0=;
+ b=DeRnbgwnW+CNLpSyKxFyWgWvrm28zauYwJyzbQNGt0PTRC6r7aaZJfuxF0CB0Bs8vZNTHfIw
+ 7pKsSqDUHMeNAdb2oW+xBbhuKhT0m1LjDAjiB+qgj4j0dZgFElnz0A1E30clVLqIVdITZHQg
+ rgIBuvlE9wZr4QgTowH7wOZYjX8=
+X-Mailgun-Sending-Ip: 104.130.122.26
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5eafe48f.7fd359edb2d0-smtp-out-n02;
- Mon, 04 May 2020 09:46:55 -0000 (UTC)
+ by mxa.mailgun.org with ESMTP id 5eafe4c5.7f106080c4c8-smtp-out-n02;
+ Mon, 04 May 2020 09:47:49 -0000 (UTC)
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 425C0C433D2; Mon,  4 May 2020 09:46:54 +0000 (UTC)
+        id 265EFC433BA; Mon,  4 May 2020 09:47:48 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -35,44 +35,46 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 11DE3C433F2;
-        Mon,  4 May 2020 09:46:52 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 11DE3C433F2
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id E0311C433D2;
+        Mon,  4 May 2020 09:47:45 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org E0311C433D2
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] rtw88: 8822c: update phy parameter tables to v50
+Subject: Re: [PATCH][next] rtw88: fix spelling mistake "fimrware" ->
+ "firmware"
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20200424073812.26896-1-yhchuang@realtek.com>
-References: <20200424073812.26896-1-yhchuang@realtek.com>
-To:     <yhchuang@realtek.com>
-Cc:     <linux-wireless@vger.kernel.org>, <briannorris@chromium.org>
+In-Reply-To: <20200424084733.7716-1-colin.king@canonical.com>
+References: <20200424084733.7716-1-colin.king@canonical.com>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Yan-Hsuan Chuang <yhchuang@realtek.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20200504094654.425C0C433D2@smtp.codeaurora.org>
-Date:   Mon,  4 May 2020 09:46:54 +0000 (UTC)
+Message-Id: <20200504094748.265EFC433BA@smtp.codeaurora.org>
+Date:   Mon,  4 May 2020 09:47:48 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-<yhchuang@realtek.com> wrote:
+Colin King <colin.king@canonical.com> wrote:
 
-> From: Yan-Hsuan Chuang <yhchuang@realtek.com>
+> From: Colin Ian King <colin.king@canonical.com>
 > 
-> Update RTL8822C devices' phy tables to v50.
+> There are spelling mistakes in two rtw_err error messages. Fix them.
 > 
-> The new parameters introduces new RFE type 5 for some new modules.
-> Also added a new regulatory CN for power limit.
-> 
-> Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> Acked-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
 Patch applied to wireless-drivers-next.git, thanks.
 
-421ae61c1056 rtw88: 8822c: update phy parameter tables to v50
+a6336094c3ab rtw88: fix spelling mistake "fimrware" -> "firmware"
 
 -- 
-https://patchwork.kernel.org/patch/11507265/
+https://patchwork.kernel.org/patch/11507317/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
