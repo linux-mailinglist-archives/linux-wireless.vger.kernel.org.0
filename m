@@ -2,85 +2,110 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D05C21C40C3
-	for <lists+linux-wireless@lfdr.de>; Mon,  4 May 2020 19:06:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D8D91C40C6
+	for <lists+linux-wireless@lfdr.de>; Mon,  4 May 2020 19:07:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729860AbgEDRGz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 4 May 2020 13:06:55 -0400
-Received: from mail26.static.mailgun.info ([104.130.122.26]:61144 "EHLO
-        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728158AbgEDRGz (ORCPT
+        id S1729861AbgEDRHK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 4 May 2020 13:07:10 -0400
+Received: from mail27.static.mailgun.info ([104.130.122.27]:49700 "EHLO
+        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1729930AbgEDRHJ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 4 May 2020 13:06:55 -0400
+        Mon, 4 May 2020 13:07:09 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1588612014; h=Message-Id: Date: Subject: Cc: To: From:
- Sender; bh=xV9DwieOETp85uRilqJXwoKSn4Hb2ILx/AsUkH9bC8k=; b=WYZ1G7fs6/5Z4Wz2O9aTHRRBxCLJeYN/6yT+tmfyIH7ZvgodvnF9+c6+M3xgr8OtejTapjYt
- SOLqo2VcFISrs5QyrHWwUQ1j5jy7bec2WNdhPTNu1miByUDz5FljDaEOy+xHH0o9k6qRVByQ
- LqkVE/yRQmktX9rRo3/5Ctnfj6A=
-X-Mailgun-Sending-Ip: 104.130.122.26
+ s=smtp; t=1588612029; h=References: In-Reply-To: Message-Id: Date:
+ Subject: Cc: To: From: Sender;
+ bh=1v4FzGS58NB4/ttumhbZ7Z1UsATJOWCKhmmhp4YmwLU=; b=I/iqlZYlkaA2+U5SFIgov4/77fg0Qaokc4pGyeSyhXAX2GFpz/A3g6N+raXICPrvaYdn36ik
+ 4LFdTMeomU5nMa6YS6Z0L+TMU/DLZ/6sjKFpW6W0Ey+4O+o0CRn/YPfinefooDYJKn7pvi+q
+ ECrfIBtW9Ly1ZHzH+EgTMcDV0H4=
+X-Mailgun-Sending-Ip: 104.130.122.27
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5eb04bad.7fa7bade4dc0-smtp-out-n03;
- Mon, 04 May 2020 17:06:53 -0000 (UTC)
+ by mxa.mailgun.org with ESMTP id 5eb04baf.7fea8dbcc618-smtp-out-n01;
+ Mon, 04 May 2020 17:06:55 -0000 (UTC)
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id E34CDC433D2; Mon,  4 May 2020 17:06:52 +0000 (UTC)
+        id A66A1C433CB; Mon,  4 May 2020 17:06:54 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
 X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.0
+        autolearn=ham autolearn_force=no version=3.4.0
 Received: from cheath10p342229-lin.qca.qualcomm.com (blr-c-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.19.19])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: tamizhr)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 2FA95C433CB;
-        Mon,  4 May 2020 17:06:50 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 2FA95C433CB
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 189FFC432C2;
+        Mon,  4 May 2020 17:06:52 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 189FFC432C2
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=tamizhr@codeaurora.org
 From:   Tamizh Chelvam <tamizhr@codeaurora.org>
 To:     ath11k@lists.infradead.org, johannes@sipsolutions.net
 Cc:     linux-wireless@vger.kernel.org,
         Tamizh Chelvam <tamizhr@codeaurora.org>
-Subject: [PATCH 1/2] mac80211: Add new AMPDU factor macro for HE peer caps
-Date:   Mon,  4 May 2020 22:34:59 +0530
-Message-Id: <1588611900-21185-1-git-send-email-tamizhr@codeaurora.org>
+Subject: [PATCH 2/2] ath11k: Add peer max mpdu parameter in peer assoc command
+Date:   Mon,  4 May 2020 22:35:00 +0530
+Message-Id: <1588611900-21185-2-git-send-email-tamizhr@codeaurora.org>
 X-Mailer: git-send-email 1.9.1
+In-Reply-To: <1588611900-21185-1-git-send-email-tamizhr@codeaurora.org>
+References: <1588611900-21185-1-git-send-email-tamizhr@codeaurora.org>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Add IEEE80211_HE_VHT_MAX_AMPDU_FACTOR and IEEE80211_HE_HT_MAX_AMPDU_FACTOR
-as per spec to use for peer max ampdu factor.
+Add peer max mpdu length configuration support in peer_assoc_he
+parameters. Noticed low throughput for the STA which
+supports HE, HT and not VHT in MU-MIMO case without this
+configuration
 
 Signed-off-by: Tamizh Chelvam <tamizhr@codeaurora.org>
 ---
- include/linux/ieee80211.h | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/net/wireless/ath/ath11k/mac.c | 25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
-diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
-index a561db4..69e214c 100644
---- a/include/linux/ieee80211.h
-+++ b/include/linux/ieee80211.h
-@@ -1821,6 +1821,8 @@ int ieee80211_get_vht_max_nss(struct ieee80211_vht_cap *cap,
- #define IEEE80211_HE_MAC_CAP3_FLEX_TWT_SCHED			0x40
- #define IEEE80211_HE_MAC_CAP3_RX_CTRL_FRAME_TO_MULTIBSS		0x80
+diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
+index f33c6d7..88e533c 100644
+--- a/drivers/net/wireless/ath/ath11k/mac.c
++++ b/drivers/net/wireless/ath/ath11k/mac.c
+@@ -1161,6 +1161,7 @@ static void ath11k_peer_assoc_h_he(struct ath11k *ar,
+ 				   struct peer_assoc_params *arg)
+ {
+ 	const struct ieee80211_sta_he_cap *he_cap = &sta->he_cap;
++	u8  ampdu_factor;
+ 	u16 v;
  
-+#define IEEE80211_HE_MAC_CAP3_MAX_AMPDU_LEN_EXP_SHIFT		3
-+
- #define IEEE80211_HE_MAC_CAP4_BSRP_BQRP_A_MPDU_AGG		0x01
- #define IEEE80211_HE_MAC_CAP4_QTP				0x02
- #define IEEE80211_HE_MAC_CAP4_BQR				0x04
-@@ -1842,6 +1844,9 @@ int ieee80211_get_vht_max_nss(struct ieee80211_vht_cap *cap,
- #define IEEE80211_HE_MAC_CAP5_PUNCTURED_SOUNDING		0x40
- #define IEEE80211_HE_MAC_CAP5_HT_VHT_TRIG_FRAME_RX		0x80
+ 	if (!he_cap->has_he)
+@@ -1178,6 +1179,30 @@ static void ath11k_peer_assoc_h_he(struct ath11k *ar,
+ 	/* the top most byte is used to indicate BSS color info */
+ 	arg->peer_he_ops &= 0xffffff;
  
-+#define IEEE80211_HE_VHT_MAX_AMPDU_FACTOR	20
-+#define IEEE80211_HE_HT_MAX_AMPDU_FACTOR	16
++	/* As per section 26.6.1 11ax Draft5.0, if the Max AMPDU Exponent Extension
++	 * in HE cap is zero, use the arg->peer_max_mpdu as calculated while parsing
++	 * VHT caps(if VHT caps is present) or HT caps (if VHT caps is not present).
++	 *
++	 * For non-zero value of Max AMPDU Extponent Extension in HE MAC caps,
++	 * if a HE STA sends VHT cap and HE cap IE in assoc request then, use
++	 * MAX_AMPDU_LEN_FACTOR as 20 to calculate max_ampdu length.
++	 * If a HE STA that does not send VHT cap, but HE and HT cap in assoc
++	 * request, then use MAX_AMPDU_LEN_FACTOR as 16 to calculate max_ampdu
++	 * length.
++	 */
++	ampdu_factor = (he_cap->he_cap_elem.mac_cap_info[3] &
++			IEEE80211_HE_MAC_CAP3_MAX_AMPDU_LEN_EXP_MASK) >>
++			IEEE80211_HE_MAC_CAP3_MAX_AMPDU_LEN_EXP_SHIFT;
 +
- /* 802.11ax HE PHY capabilities */
- #define IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_40MHZ_IN_2G		0x02
- #define IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_40MHZ_80MHZ_IN_5G	0x04
++	if (ampdu_factor) {
++		if (sta->vht_cap.vht_supported)
++			arg->peer_max_mpdu = (1 << (IEEE80211_HE_VHT_MAX_AMPDU_FACTOR +
++						    ampdu_factor)) - 1;
++		else if (sta->ht_cap.ht_supported)
++			arg->peer_max_mpdu = (1 << (IEEE80211_HE_HT_MAX_AMPDU_FACTOR +
++						    ampdu_factor)) - 1;
++	}
++
+ 	if (he_cap->he_cap_elem.phy_cap_info[6] &
+ 	    IEEE80211_HE_PHY_CAP6_PPE_THRESHOLD_PRESENT) {
+ 		int bit = 7;
 -- 
 1.9.1
