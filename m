@@ -2,144 +2,110 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A967D1C3D28
-	for <lists+linux-wireless@lfdr.de>; Mon,  4 May 2020 16:35:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B3EAE1C3D6D
+	for <lists+linux-wireless@lfdr.de>; Mon,  4 May 2020 16:43:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729102AbgEDOfK (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 4 May 2020 10:35:10 -0400
-Received: from mail27.static.mailgun.info ([104.130.122.27]:22590 "EHLO
-        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1729091AbgEDOfK (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 4 May 2020 10:35:10 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1588602909; h=Message-Id: Date: Subject: Cc: To: From:
- Sender; bh=4OlRcGETyCmH3CyivLm0F5Fs+YC/4OSoLg+kCNZVH5w=; b=ZJnRRv8GK/1jokhaK0dSaFgP3VLGIRtn+65k7A/BQaAcDzY+nyAVVkURc6Jxps/apSSa/loY
- ierEzzxBEgq1rCSw+986Dhz5gDpegbVcRrx4awUaZvIg2fACxD/HDd/q79r+0/HsJxFKb1dz
- N4he03rVszM1sjrRmyXrYar3PSo=
-X-Mailgun-Sending-Ip: 104.130.122.27
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5eb02805.7f88f8fa1180-smtp-out-n01;
- Mon, 04 May 2020 14:34:45 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id C6FEDC433F2; Mon,  4 May 2020 14:34:45 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.0
-Received: from pillair-linux.qualcomm.com (blr-c-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.19.19])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: pillair)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id CA1A7C433D2;
-        Mon,  4 May 2020 14:34:43 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org CA1A7C433D2
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=pillair@codeaurora.org
-From:   Rakesh Pillai <pillair@codeaurora.org>
-To:     ath10k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Rakesh Pillai <pillair@codeaurora.org>
-Subject: [PATCH] ath10k: Remove msdu from idr when management pkt send fails
-Date:   Mon,  4 May 2020 20:04:39 +0530
-Message-Id: <1588602879-14098-1-git-send-email-pillair@codeaurora.org>
-X-Mailer: git-send-email 2.7.4
+        id S1728802AbgEDOni (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 4 May 2020 10:43:38 -0400
+Received: from mout.gmx.net ([212.227.15.19]:59039 "EHLO mout.gmx.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728399AbgEDOni (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 4 May 2020 10:43:38 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1588603410;
+        bh=rhIgO8knhk5KrlNGr7M8hfHM41dFa9/8X/4InpEenSg=;
+        h=X-UI-Sender-Class:Date:From:To:Cc:Subject:References:In-Reply-To;
+        b=B1gaVhmyZyPDdbVLXr5Ifrmiw46DQtjxWE99RRUd72YfouBe3BSMmMY1C1vU2PdLp
+         oKhAOPu+vEleC8Gyazt1+4k6qnww0rlStbErUggsU6lC/Lm7kcYbO9H4bPNE8ESgV2
+         O3eNQ6dXDcvKJoqGl7tlY42lri+m/NC5T17neavA=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from ubuntu ([83.52.229.196]) by mail.gmx.com (mrgmx005
+ [212.227.17.184]) with ESMTPSA (Nemesis) id 1Mqs0R-1ijcJs48NV-00mrnC; Mon, 04
+ May 2020 16:43:30 +0200
+Date:   Mon, 4 May 2020 16:43:13 +0200
+From:   Oscar Carter <oscar.carter@gmx.com>
+To:     Joe Perches <joe@perches.com>, Ajay.Kathat@microchip.com,
+        adham.abozaeid@microchip.com
+Cc:     Oscar Carter <oscar.carter@gmx.com>, gregkh@linuxfoundation.org,
+        rachel.kim@atmel.com, johnny.kim@atmel.com, chris.park@atmel.com,
+        dean.lee@atmel.com, linux-wireless@vger.kernel.org,
+        devel@driverdev.osuosl.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] staging: wilc1000: Increase the size of wid_list array
+Message-ID: <20200504144313.GA3213@ubuntu>
+References: <20200503075145.4563-1-oscar.carter@gmx.com>
+ <d75b7f64-0ba0-65e9-ea4c-cc87b3a51a10@microchip.com>
+ <d3e07dfd0efe21192d172b2e4e7d4a489a4fcc62.camel@perches.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <d3e07dfd0efe21192d172b2e4e7d4a489a4fcc62.camel@perches.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Provags-ID: V03:K1:WaZhZUrSWFeiDdnjwq+IVE7oWmd1xxkdZbdW99c6kzggZTPRiNv
+ QUdZfn0Ngh91lWlISAwTQukgGeprj/C+AQzp4OqAMeTojVIgJslagmrfBMTeyAXLgV0rBP+
+ etq6ZKEXPE8zx66U7MCDUgEcnxqrmxw3gbidHj66bcWncITAGQYh18DkHmP7D/ISkwRBkN1
+ Jvb6R15eMZeV7sJ3Hs0hA==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:53f5jrXMiwo=:9TYZyTRs4aL6kPTOUX/+in
+ 3o0rl7+SJ2oxyNkLC1uk+41FIl5A+vDAur93nDr45RJdENFhmvjiRKJkNo1xinoicPsrk6rZx
+ QvSSerQxyys4GBhXGBSLklMOLCF7CyNkz1kK7RRid7v5i58LPIfJGscy/daOmfkyi7/VNibGd
+ 2RX0JsFS1MSO3trlJgN2TkqbXgmwJYM3WYJmBJSAxdXcq6MxYZUldiSHRsiEn1L2XWFnHQba6
+ YzyjBdhu7Zq6lyezflEaGkZ95IZqL/06J/PLDYdhOMBZdzhlsWzfpBV6Q3zdDdL2q97w7YtqQ
+ DmzYpPpuvdnmhuM/WqV3hm+/FMkMNjAH0aIhkjl0btLiDqzaize10BIMw+c4h7GRO2ysU9wU2
+ mGj4GN8WxZ1I6mxEngb5DOEbADDmD5+H+Dx+INpU3IFG5LDC7w2aIYK9CEiSZWVG9bekW0f0e
+ OiobrDCazsJjqxqnmqd+3fwYxTHT0jWWkBR56fsS5J8tUaenuZPT5t4yI5Zmvtvy4s43YI97G
+ dr9imm0ob6pYq3T+5at+1HYWof9M3kzTskJG1H4ZfoT2c1T01Iyj5eTlJ+XkaYVjyq0ZNYTcJ
+ 0GZlRdUdpEkly8rnxbi8HsEC1ZPaoZVZyUQ0X+XSDXf4Yp+yXSkG8x+Flrmvh4ZTYV7PGZ0MW
+ Q7Vz+KHRBqNzd/2XFZmXVXn6BLzpmxZ2DpJz/5Jvf3xe2v2+6rCTZSIDfmfNJ3GX4Huu6RSjD
+ yGUuE7jTPTz8nqYji8wN/pem//zdC9/kJWj5VNmetqa+mBCBF8I3v429Ma5kVhY2Ktp+faAvT
+ 1FuUN0VBWgADF4ws2quAEJSa30rPI9koa0z7/cJ9FV13A1jYXIXV4hVRSegy0H90Up5N7lYr9
+ H4f7cMbDkKdMq5h7cIG0M40E9nM4LzK/oMqRVBQskB28ufQocESpIq5cfayEY77gnsYhg8vjv
+ W/NZoeGzZZy6tA9HgcC7nar8c6j36UJ32+0tV7VC73rt7yyqLUH0jNM92yKGR5iIcvcXNGzWf
+ RWKfQCHEbJPwKavEbBQa+NzcLSab6qbfmimZiir3/gC8R1pu5bY3CsI2sAjqFtdE4WzLDp2MA
+ mpsAYgyl3pXlgXf2hEJYGLCw9e9Xu8hJMB7aLyJm5pfTqwaWQKv1goAmKF/Mb2DUaw9Wy3tlt
+ YZQFnKCmQbKFVNzgKxWcK2fspbyPTZFEmZQ8qLyvBAspG1ucBAYVlcBLJ9pdY4yA40e7o19Hi
+ DqX8meZuUttwphwlu
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Currently when the sending of any management pkt
-via wmi command fails, the packet is being unmapped
-freed in the error handling. But the idr entry added,
-which is used to track these packet is not getting removed.
+On Sun, May 03, 2020 at 04:29:53PM -0700, Joe Perches wrote:
+> On Sun, 2020-05-03 at 14:52 +0000, Ajay.Kathat@microchip.com wrote:
+> > On 03/05/20 1:21 pm, Oscar Carter wrote:
+> > > EXTERNAL EMAIL: Do not click links or open attachments unless you kn=
+ow the content is safe
+> > >
+> > > Increase by one the size of wid_list array as index variable can rea=
+ch a
+> > > value of 5. If this happens, an out-of-bounds access is performed.
+> > >
+> > > Addresses-Coverity-ID: 1451981 ("Out-of-bounds access")
+> > > Fixes: f5a3cb90b802d ("staging: wilc1000: add passive scan support")
+> > > Signed-off-by: Oscar Carter <oscar.carter@gmx.com>
+> []
+> > > diff --git a/drivers/staging/wilc1000/hif.c b/drivers/staging/wilc10=
+00/hif.c
+> []
+> > > @@ -151,7 +151,7 @@ int wilc_scan(struct wilc_vif *vif, u8 scan_sour=
+ce, u8 scan_type,
+> > >               void *user_arg, struct cfg80211_scan_request *request)
+> > >  {
+> > >         int result =3D 0;
+> > > -       struct wid wid_list[5];
+> > > +       struct wid wid_list[6];
+>
+> This looks like it should be using a #define instead of
+> a hard-coded number.
 
-Hence, during unload, in wmi cleanup, all the entries
-in IDR are removed and the corresponding buffer is
-attempted to be freed. This can cause a situation where
-one packet is attempted to be freed twice.
+I agree. I will make the changes you suggested and I will resend a new ver=
+sion.
 
-Fix this error by rmeoving the msdu from the idr
-list when the sending of a management packet over
-wmi fails.
-
-Tested HW: WCN3990
-Tested FW: WLAN.HL.3.1-01040-QCAHLSWMTPLZ-1
-
-Fixes: 1807da49733e ("ath10k: wmi: add management tx by reference support over wmi")
-Signed-off-by: Rakesh Pillai <pillair@codeaurora.org>
----
- drivers/net/wireless/ath/ath10k/wmi-ops.h |  7 ++++++-
- drivers/net/wireless/ath/ath10k/wmi-tlv.c | 15 +++++++++++++++
- 2 files changed, 21 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/ath/ath10k/wmi-ops.h b/drivers/net/wireless/ath/ath10k/wmi-ops.h
-index 1491c25..de15e62 100644
---- a/drivers/net/wireless/ath/ath10k/wmi-ops.h
-+++ b/drivers/net/wireless/ath/ath10k/wmi-ops.h
-@@ -216,6 +216,7 @@ struct wmi_ops {
- 	struct sk_buff *(*gen_bb_timing)
- 			(struct ath10k *ar,
- 			 const struct wmi_bb_timing_cfg_arg *arg);
-+	int (*cleanup_mgmt_tx_send)(struct ath10k *ar, struct sk_buff *msdu);
- 
- };
- 
-@@ -457,8 +458,12 @@ ath10k_wmi_mgmt_tx_send(struct ath10k *ar, struct sk_buff *msdu,
- 
- 	ret = ath10k_wmi_cmd_send(ar, skb,
- 				  ar->wmi.cmd->mgmt_tx_send_cmdid);
--	if (ret)
-+	if (ret) {
-+		/* remove this msdu from idr tracking */
-+		if (ar->wmi.ops->cleanup_mgmt_tx_send)
-+			ar->wmi.ops->cleanup_mgmt_tx_send(ar, msdu);
- 		return ret;
-+	}
- 
- 	return 0;
- }
-diff --git a/drivers/net/wireless/ath/ath10k/wmi-tlv.c b/drivers/net/wireless/ath/ath10k/wmi-tlv.c
-index e1ab900f..b2a4a44 100644
---- a/drivers/net/wireless/ath/ath10k/wmi-tlv.c
-+++ b/drivers/net/wireless/ath/ath10k/wmi-tlv.c
-@@ -2898,6 +2898,18 @@ ath10k_wmi_tlv_op_gen_request_stats(struct ath10k *ar, u32 stats_mask)
- }
- 
- static int
-+ath10k_wmi_tlv_op_cleanup_mgmt_tx_send(struct ath10k *ar,
-+				       struct sk_buff *msdu)
-+{
-+	struct ath10k_skb_cb *cb = ATH10K_SKB_CB(msdu);
-+	struct ath10k_wmi *wmi = &ar->wmi;
-+
-+	idr_remove(&wmi->mgmt_pending_tx, cb->msdu_id);
-+
-+	return 0;
-+}
-+
-+static int
- ath10k_wmi_mgmt_tx_alloc_msdu_id(struct ath10k *ar, struct sk_buff *skb,
- 				 dma_addr_t paddr)
- {
-@@ -2971,6 +2983,8 @@ ath10k_wmi_tlv_op_gen_mgmt_tx_send(struct ath10k *ar, struct sk_buff *msdu,
- 	if (desc_id < 0)
- 		goto err_free_skb;
- 
-+	cb->msdu_id = desc_id;
-+
- 	ptr = (void *)skb->data;
- 	tlv = ptr;
- 	tlv->tag = __cpu_to_le16(WMI_TLV_TAG_STRUCT_MGMT_TX_CMD);
-@@ -4447,6 +4461,7 @@ static const struct wmi_ops wmi_tlv_ops = {
- 	.gen_echo = ath10k_wmi_tlv_op_gen_echo,
- 	.gen_vdev_spectral_conf = ath10k_wmi_tlv_op_gen_vdev_spectral_conf,
- 	.gen_vdev_spectral_enable = ath10k_wmi_tlv_op_gen_vdev_spectral_enable,
-+	.cleanup_mgmt_tx_send = ath10k_wmi_tlv_op_cleanup_mgmt_tx_send,
- };
- 
- static const struct wmi_peer_flags_map wmi_tlv_peer_flags_map = {
--- 
-2.7.4
+> > >         u32 index =3D 0;
+> > >         u32 i, scan_timeout;
+> > >         u8 *buffer;
+> > > --
+> > > 2.20.1
+>
+Thanks,
+Oscar Carter
