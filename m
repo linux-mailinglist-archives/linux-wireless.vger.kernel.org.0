@@ -2,92 +2,93 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 64BDC1C3486
-	for <lists+linux-wireless@lfdr.de>; Mon,  4 May 2020 10:34:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6AFEC1C349D
+	for <lists+linux-wireless@lfdr.de>; Mon,  4 May 2020 10:37:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728037AbgEDIev (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 4 May 2020 04:34:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53306 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1725941AbgEDIeu (ORCPT
+        id S1728228AbgEDIhm convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 4 May 2020 04:37:42 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:43812 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726796AbgEDIhl (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 4 May 2020 04:34:50 -0400
-Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com [IPv6:2607:f8b0:4864:20::544])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 968D6C061A0E;
-        Mon,  4 May 2020 01:34:50 -0700 (PDT)
-Received: by mail-pg1-x544.google.com with SMTP id d22so2983456pgk.3;
-        Mon, 04 May 2020 01:34:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=59iokotS8iIDb+gGu6n274MbuIuRWgjxTwxL1qAA8wM=;
-        b=dmetl9QONWoXGhv00gP8OPuyWeS0oeJPBBtLGuqgRYBpTTz+Z7DNQsYN5C1NttrEkx
-         aIidf/us1Aj7cPNlxo4qqIYxv9Ebn9XR/yg/07LtO/62s0FVzr5ZZ41yhanUN2ybmBIv
-         4DnlyZbMMQroW2yKPkyfCAin+/ZyHh0KerJYGvJ0X2VNa41CEwsX8VEbdBjfss/E4AOM
-         Jt7zqi3P8/p83waC6+9gtp1nJLsLhw8hR0rGKNcdj1FiKvIS1PLFxMvKN4r4tQ+S/+nX
-         WYS60PwBvKIFEEHO2J+ixAlX05UqrRylIh9RCJMh6OSOMJAsRiVn01s8KhNm7iHzroCM
-         9SPg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=59iokotS8iIDb+gGu6n274MbuIuRWgjxTwxL1qAA8wM=;
-        b=MYtP5imPNlLnAMpO1THYfkL+T1XaR3xi+ZBDze5Y1g+m0RzFHOoYm4DjDUZqP9HJqd
-         3CQoMB7IhyL/2e7+rcdc2IN+j8AKyxqaEtEddNttaH8go6Zy12/xlRbUHe9OaqS0QSbf
-         7Or9nVNBJo3ijZOg8W8Qc8RLu0wO8ThoK1HiWUwVk2x6niWPd7bqsU+hmaG6tIqu0Tkf
-         iY03Y2+zuon41OkM9kJenSxctrg1Im/D9l7mJGA0VT8rkaoYUQO6KzsOdEMW5AAuc05z
-         KLbYiqVWFyCDTEvZHTdDiDE+SH2017lzkgW2fYdGLckb6EI1bEwlqUR0Vr0Iz+9UhS+x
-         0MZg==
-X-Gm-Message-State: AGi0PuZ3/hpCQEWzwiNpMBlu+WTeIpSwQTY1yv/E4Jo3hEVbtV/Ol3DS
-        MWW1ZxB/8YA1UGMyU/RI4n4=
-X-Google-Smtp-Source: APiQypLatKpf6OjZyANdh3E9QSCOXHw4Mjs6j1NkKSePjYcjdyDDdPm34oam03X81IYGwmdbINehGQ==
-X-Received: by 2002:a63:ea18:: with SMTP id c24mr16252820pgi.62.1588581289997;
-        Mon, 04 May 2020 01:34:49 -0700 (PDT)
-Received: from localhost ([89.208.244.169])
-        by smtp.gmail.com with ESMTPSA id j5sm7252650pgi.5.2020.05.04.01.34.48
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Mon, 04 May 2020 01:34:49 -0700 (PDT)
-From:   Dejin Zheng <zhengdejin5@gmail.com>
-To:     yhchuang@realtek.com, kvalo@codeaurora.org, davem@davemloft.net,
-        sgruszka@redhat.com, briannorris@chromium.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org, Dejin Zheng <zhengdejin5@gmail.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>
-Subject: [PATCH net v1] net: rtw88: fix an issue about leak system resources
-Date:   Mon,  4 May 2020 16:34:42 +0800
-Message-Id: <20200504083442.3033-1-zhengdejin5@gmail.com>
-X-Mailer: git-send-email 2.25.0
+        Mon, 4 May 2020 04:37:41 -0400
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.69 with qID 0448bFKL1005156, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexmb06.realtek.com.tw[172.21.6.99])
+        by rtits2.realtek.com.tw (8.15.2/2.66/5.86) with ESMTPS id 0448bFKL1005156
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Mon, 4 May 2020 16:37:15 +0800
+Received: from RTEXDAG02.realtek.com.tw (172.21.6.101) by
+ RTEXMB06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Mon, 4 May 2020 16:37:15 +0800
+Received: from RTEXMB04.realtek.com.tw (172.21.6.97) by
+ RTEXDAG02.realtek.com.tw (172.21.6.101) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Mon, 4 May 2020 16:37:15 +0800
+Received: from RTEXMB04.realtek.com.tw ([fe80::8001:f5f5:a41e:f8d4]) by
+ RTEXMB04.realtek.com.tw ([fe80::8001:f5f5:a41e:f8d4%3]) with mapi id
+ 15.01.1779.005; Mon, 4 May 2020 16:37:15 +0800
+From:   Tony Chuang <yhchuang@realtek.com>
+To:     Dejin Zheng <zhengdejin5@gmail.com>,
+        "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        "sgruszka@redhat.com" <sgruszka@redhat.com>,
+        "briannorris@chromium.org" <briannorris@chromium.org>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "Andy Shevchenko" <andy.shevchenko@gmail.com>
+Subject: RE: [PATCH net v1] net: rtw88: fix an issue about leak system resources
+Thread-Topic: [PATCH net v1] net: rtw88: fix an issue about leak system
+ resources
+Thread-Index: AQHWIe7inKq7KGzTFUK74b0Sl3+N96iXmmBw
+Date:   Mon, 4 May 2020 08:37:15 +0000
+Message-ID: <88e6cc654a73472f9591fb0c6b74f768@realtek.com>
+References: <20200504083442.3033-1-zhengdejin5@gmail.com>
+In-Reply-To: <20200504083442.3033-1-zhengdejin5@gmail.com>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.68.175]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-the related system resources were not released when pci_iomap() return
-error in the rtw_pci_io_mapping() function. add pci_release_regions() to
-fix it.
-
-Fixes: e3037485c68ec1a ("rtw88: new Realtek 802.11ac driver")
-Cc: Andy Shevchenko <andy.shevchenko@gmail.com>
-Signed-off-by: Dejin Zheng <zhengdejin5@gmail.com>
----
- drivers/net/wireless/realtek/rtw88/pci.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/net/wireless/realtek/rtw88/pci.c b/drivers/net/wireless/realtek/rtw88/pci.c
-index 695c2c0d64b0..a9752c34c9d8 100644
---- a/drivers/net/wireless/realtek/rtw88/pci.c
-+++ b/drivers/net/wireless/realtek/rtw88/pci.c
-@@ -1102,6 +1102,7 @@ static int rtw_pci_io_mapping(struct rtw_dev *rtwdev,
- 	len = pci_resource_len(pdev, bar_id);
- 	rtwpci->mmap = pci_iomap(pdev, bar_id, len);
- 	if (!rtwpci->mmap) {
-+		pci_release_regions(pdev);
- 		rtw_err(rtwdev, "failed to map pci memory\n");
- 		return -ENOMEM;
- 	}
--- 
-2.25.0
+> Subject: [PATCH net v1] net: rtw88: fix an issue about leak system resources
+> 
+> the related system resources were not released when pci_iomap() return
+> error in the rtw_pci_io_mapping() function. add pci_release_regions() to
+> fix it.
+> 
+> Fixes: e3037485c68ec1a ("rtw88: new Realtek 802.11ac driver")
+> Cc: Andy Shevchenko <andy.shevchenko@gmail.com>
+> Signed-off-by: Dejin Zheng <zhengdejin5@gmail.com>
+Acked-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
+> ---
+>  drivers/net/wireless/realtek/rtw88/pci.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/net/wireless/realtek/rtw88/pci.c
+> b/drivers/net/wireless/realtek/rtw88/pci.c
+> index 695c2c0d64b0..a9752c34c9d8 100644
+> --- a/drivers/net/wireless/realtek/rtw88/pci.c
+> +++ b/drivers/net/wireless/realtek/rtw88/pci.c
+> @@ -1102,6 +1102,7 @@ static int rtw_pci_io_mapping(struct rtw_dev
+> *rtwdev,
+>  	len = pci_resource_len(pdev, bar_id);
+>  	rtwpci->mmap = pci_iomap(pdev, bar_id, len);
+>  	if (!rtwpci->mmap) {
+> +		pci_release_regions(pdev);
+>  		rtw_err(rtwdev, "failed to map pci memory\n");
+>  		return -ENOMEM;
+>  	}
+> --
+> 2.25.0
 
