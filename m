@@ -2,134 +2,165 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 116331C4735
-	for <lists+linux-wireless@lfdr.de>; Mon,  4 May 2020 21:45:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CF0F21C482C
+	for <lists+linux-wireless@lfdr.de>; Mon,  4 May 2020 22:26:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726338AbgEDTpU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 4 May 2020 15:45:20 -0400
-Received: from ns.iliad.fr ([212.27.33.1]:38952 "EHLO ns.iliad.fr"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726111AbgEDTpU (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 4 May 2020 15:45:20 -0400
-X-Greylist: delayed 317 seconds by postgrey-1.27 at vger.kernel.org; Mon, 04 May 2020 15:45:19 EDT
-Received: from ns.iliad.fr (localhost [127.0.0.1])
-        by ns.iliad.fr (Postfix) with ESMTP id 0E69A20A52
-        for <linux-wireless@vger.kernel.org>; Mon,  4 May 2020 21:40:01 +0200 (CEST)
-Received: from sakura (freebox.vlq16.iliad.fr [213.36.7.13])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ns.iliad.fr (Postfix) with ESMTPS id 015442092E
-        for <linux-wireless@vger.kernel.org>; Mon,  4 May 2020 21:40:01 +0200 (CEST)
-Date:   Mon, 4 May 2020 21:39:59 +0200
-From:   Maxime Bizon <mbizon@freebox.fr>
-To:     linux-wireless@vger.kernel.org
-Subject: Regarding .wake_tx_queue() model
-Message-ID: <20200504193959.GC26805@sakura>
+        id S1726338AbgEDUZU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 4 May 2020 16:25:20 -0400
+Received: from gateway23.websitewelcome.com ([192.185.49.177]:29088 "EHLO
+        gateway23.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728194AbgEDUZS (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 4 May 2020 16:25:18 -0400
+X-Greylist: delayed 1259 seconds by postgrey-1.27 at vger.kernel.org; Mon, 04 May 2020 16:25:17 EDT
+Received: from cm11.websitewelcome.com (cm11.websitewelcome.com [100.42.49.5])
+        by gateway23.websitewelcome.com (Postfix) with ESMTP id B86ED72E6
+        for <linux-wireless@vger.kernel.org>; Mon,  4 May 2020 15:04:17 -0500 (CDT)
+Received: from gator4166.hostgator.com ([108.167.133.22])
+        by cmsmtp with SMTP
+        id VhK5jNuZKSl8qVhK5jlY4Z; Mon, 04 May 2020 15:04:17 -0500
+X-Authority-Reason: nr=8
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=embeddedor.com; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
+        Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=V96LBizxl4+aEJIjzbcrRlhTjAqahm2dmV9MAZqHdGc=; b=L4JqgH+UVyVZV2P7eUgtXNCiOR
+        SNVfuSkG3J1W6yEXdAOSzu/7iJk37Nx6f+qmfoVr4NvirPvSMFnOuYtCT6axHGIB5OTK3Ftq6h1uF
+        F5epi927ICta8GvCWztD9SikDgk3pzeFCuu8m2P0Tgkp0oLPw0XbuCOP4fGF4NpEj8p4f/8mtQrjK
+        qxOvr9wynLQWlBrk1XRabwH7QlqyrymSub0l/rfky81DJZmckWhRkLHXJDEGs8ulU17h29TcecsVx
+        w2sRFbfjDqKtCjvHWYCsLFwN7IGezLXe7m3vfZ+Uu8DNTglqtORFixXudBRWvC206UmCzjVTiDThS
+        //HscYMg==;
+Received: from [189.207.59.248] (port=58762 helo=embeddedor)
+        by gator4166.hostgator.com with esmtpa (Exim 4.92)
+        (envelope-from <gustavo@embeddedor.com>)
+        id 1jVhK3-002Fbe-9W; Mon, 04 May 2020 15:04:15 -0500
+Date:   Mon, 4 May 2020 15:08:38 -0500
+From:   "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+To:     Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+Subject: [PATCH] ath6kl: Replace zero-length array with flexible-array
+Message-ID: <20200504200838.GA31974@embeddedor>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Virus-Scanned: ClamAV using ClamSMTP ; ns.iliad.fr ; Mon May  4 21:40:01 2020 +0200 (CEST)
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - embeddedor.com
+X-BWhitelist: no
+X-Source-IP: 189.207.59.248
+X-Source-L: No
+X-Exim-ID: 1jVhK3-002Fbe-9W
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: (embeddedor) [189.207.59.248]:58762
+X-Source-Auth: gustavo@embeddedor.com
+X-Email-Count: 3
+X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
+X-Local-Domain: yes
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+The current codebase makes use of the zero-length array language
+extension to the C90 standard, but the preferred mechanism to declare
+variable-length types such as these ones is a flexible array member[1][2],
+introduced in C99:
 
-Hello,
+struct foo {
+        int stuff;
+        struct boo array[];
+};
 
-Currently switching a driver to .wake_tx_queue() model, and I would
-appreciate some guidance over a couple of issues.
+By making use of the mechanism above, we will get a compiler warning
+in case the flexible array does not occur last in the structure, which
+will help us prevent some kind of undefined behavior bugs from being
+inadvertently introduced[3] to the codebase from now on.
 
-My hardware exposes 1 FIFO per ac, so the current driver basically
-queue skb in the correct fifo from drv_tx(), and once a FIFO is big
-"enough" (packet count or total duration), I use
-ieee80211_stop_queue(), and the corresponding ieee80211_wait_queue()
-in tx completion.
+Also, notice that, dynamic memory allocations won't be affected by
+this change:
 
-Current driver TX flow is:
- - drv_tx() => push into FIFO
- - drv_tx() => push into FIFO
- - drv_tx() => push into FIFO => FIFO full => ieee80211_stop_queue()
- - [drv_tx won't be called]
- - tx completion event => ieee80211_wake_queue()
- - drv_tx()
- [...]
+"Flexible array members have incomplete type, and so the sizeof operator
+may not be applied. As a quirk of the original implementation of
+zero-length arrays, sizeof evaluates to zero."[1]
 
+sizeof(flexible-array-member) triggers a warning because flexible array
+members have incomplete type[1]. There are some instances of code in
+which the sizeof operator is being incorrectly/erroneously applied to
+zero-length arrays and the result is zero. Such instances may be hiding
+some bugs. So, this work (flexible-array member conversions) will also
+help to get completely rid of those sorts of issues.
 
-1) drv_tx() & drv_wake_tx_queue() concurrency
+This issue was found with the help of Coccinelle.
 
-With the .wake_tx_queue model, there are now two entry points in the
-driver, how does the stack ensure that drv_tx() is not blocked forever
-if there is concurrent traffic on the same AC ?
+[1] https://gcc.gnu.org/onlinedocs/gcc/Zero-Length.html
+[2] https://github.com/KSPP/linux/issues/21
+[3] commit 76497732932f ("cxgb3/l2t: Fix undefined behaviour")
 
-for example:
+Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
+---
+ drivers/net/wireless/ath/ath6kl/core.h  | 4 ++--
+ drivers/net/wireless/ath/ath6kl/debug.c | 2 +-
+ drivers/net/wireless/ath/ath6kl/hif.h   | 2 +-
+ 3 files changed, 4 insertions(+), 4 deletions(-)
 
- - .wake_tx_queue() => ieee80211_next_txq() => ieee80211_tx_dequeue() => FIFO now full => ieee80211_stop_queue()
- - tx completion event => ieee80211_wake_queue()
- - .wake_tx_queue() => ieee80211_next_txq() => ieee80211_tx_dequeue() => FIFO now full => ieee80211_stop_queue()
- - tx completion event => ieee80211_wake_queue()
- - [...]
-
-ieee80211_wake_queue() will schedule both tx_pending_tasklet and
-wake_txqs_tasklet, but I don't think there is any guarantee in the
-call ordering.
-
-Is it the driver's duty to leave a bit of room during
-drv_wake_tx_queue() scheduling and not stop the queues from there ?
-
-
-2) ieee80211_stop_queue() vs drv_wake_tx_queue()
-
-Commit 21a5d4c3a45ca608477a083096cfbce76e449a0c made it so that
-ieee80211_tx_dequeue() will return nothing if hardware queue is
-stopped, but drv_wake_tx_queue() is still called for ac whose queue is
-stopped.
-
-
-so should I do this ?
-
- - .wake_tx_queue() => ieee80211_next_txq() => ieee80211_tx_dequeue() => FIFO now full => ieee80211_stop_queue()
- - .wake_tx_queue() => ieee80211_next_txq() => ieee80211_tx_dequeue() => NULL => return
- - tx completion event => ieee80211_wake_queue()
- - .wake_tx_queue() => ieee80211_next_txq() => ieee80211_tx_dequeue() => FIFO now full => ieee80211_stop_queue()
- - [...]
-
-or this ?
-
- - .wake_tx_queue() => ieee80211_queue_stopped() => ieee80211_next_txq() => ieee80211_tx_dequeue() => FIFO now full => ieee80211_stop_queue()
- - .wake_tx_queue() => ieee80211_queue_stopped() => return
-
-associated commit log only mentions edge cases (channel switch, DFS),
-so I'm not sure if ieee80211_stop_queue() for txqs was intended for
-"fast path", also see 3)
-
-
-3) _ieee80211_wake_txqs() looks buggy:
-
-If the cab_queue is not stopped, this loop will unconditionally wake
-up all txqs, which I guess is not what was intended:
-
-        for (i = 0; i < local->hw.queues; i++) {
-                if (local->queue_stop_reasons[i])
-                        continue;
-
-                        for (ac = 0; ac < n_acs; ac++) {
-                                int ac_queue = sdata->vif.hw_queue[ac];
-
-                                if (ac_queue == i ||
-                                    sdata->vif.cab_queue == i)
-                                        __ieee80211_wake_txqs(sdata, ac);
-                        }
-
-
-4) building aggregation in the driver:
-
-I'm doing aggregation on the host side rather than in the firmware,
-which will ends up with more or less the same code as ath9k, is there
-any on-going effort to move that code from the driver into the stack ?
-
-Thanks,
-
+diff --git a/drivers/net/wireless/ath/ath6kl/core.h b/drivers/net/wireless/ath/ath6kl/core.h
+index 0d30e762c090..77e052336eb5 100644
+--- a/drivers/net/wireless/ath/ath6kl/core.h
++++ b/drivers/net/wireless/ath/ath6kl/core.h
+@@ -160,7 +160,7 @@ enum ath6kl_fw_capability {
+ struct ath6kl_fw_ie {
+ 	__le32 id;
+ 	__le32 len;
+-	u8 data[0];
++	u8 data[];
+ };
+ 
+ enum ath6kl_hw_flags {
+@@ -406,7 +406,7 @@ struct ath6kl_mgmt_buff {
+ 	u32 id;
+ 	bool no_cck;
+ 	size_t len;
+-	u8 buf[0];
++	u8 buf[];
+ };
+ 
+ struct ath6kl_sta {
+diff --git a/drivers/net/wireless/ath/ath6kl/debug.c b/drivers/net/wireless/ath/ath6kl/debug.c
+index 54337d60f288..7506cea46f58 100644
+--- a/drivers/net/wireless/ath/ath6kl/debug.c
++++ b/drivers/net/wireless/ath/ath6kl/debug.c
+@@ -30,7 +30,7 @@ struct ath6kl_fwlog_slot {
+ 	__le32 length;
+ 
+ 	/* max ATH6KL_FWLOG_PAYLOAD_SIZE bytes */
+-	u8 payload[0];
++	u8 payload[];
+ };
+ 
+ #define ATH6KL_FWLOG_MAX_ENTRIES 20
+diff --git a/drivers/net/wireless/ath/ath6kl/hif.h b/drivers/net/wireless/ath/ath6kl/hif.h
+index dc6bd8cd9b83..aea7fea2a81e 100644
+--- a/drivers/net/wireless/ath/ath6kl/hif.h
++++ b/drivers/net/wireless/ath/ath6kl/hif.h
+@@ -199,7 +199,7 @@ struct hif_scatter_req {
+ 
+ 	u32 scat_q_depth;
+ 
+-	struct hif_scatter_item scat_list[0];
++	struct hif_scatter_item scat_list[];
+ };
+ 
+ struct ath6kl_irq_proc_registers {
 -- 
-Maxime
+2.26.2
+
