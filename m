@@ -2,129 +2,154 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C23801C3271
-	for <lists+linux-wireless@lfdr.de>; Mon,  4 May 2020 08:09:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 944901C333E
+	for <lists+linux-wireless@lfdr.de>; Mon,  4 May 2020 09:01:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726751AbgEDGJH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 4 May 2020 02:09:07 -0400
-Received: from mail-bn8nam12on2092.outbound.protection.outlook.com ([40.107.237.92]:14944
-        "EHLO NAM12-BN8-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726410AbgEDGJG (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 4 May 2020 02:09:06 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ZiuoXUjAYgC/ASVm58Skk0ID4M0lEv8Rur+n8xbdWOq2qH45YNebAjd2qF7sA+jhe4AnEJNAkYG/M9cHvHpV6/XVtAYJyG9s+uUjJ+InWsB1W6zNH/VygPn8xEBtXNB3T/WD2k/gNPgQ+FeAJvizyOq96zKA1WX0W/a/UnhLF+aTfVa7l3y3hfDHLcVRiMECNRgFKvyyH7mO4pDSCTrjVGgsRpA3og5SLrdxFqlKLclN6B4gl9ErcjE30znpGkzLInWf3tCXAlMpeYhPQiaYQl/oQp2TXz4SXcWC08bL6nGMCVLtGkmaqHTJazJ27RpgIBWoUCv7eDVo4JwdCnzWHw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Uhr+tcgIeol6CoKuWP0Igk2XuSvWYppqWZpc4IKdWlI=;
- b=AE0We/G0bbeuHFCuPuA+L2/712tB4NgfxmpT6ZxG4hEE6Imy2br/AG1rOGElhynmmSdN1POuUn2Ne+E9rZk9Qcx5hROxAtNDr0fs9z+T1N4sHb/tBVckL6EUsmHeAhE3lzIB2UhBMhACPDfgLZH+dMyUCk76z8tQ+hAlk9Fy8CKJBFbeqtbZ8cu9hXIY55nZDBHjq3gRozhxbt+mCqSIZt8F3OnuTSNED8Cv64cjq0NJo1l4RU8VOJ9jgKned1/VMu+rqdlbkaE/MAGICUJ6MVYnRvFbW4z9s2pi07IcImK5hESYt00Svjp5oaUTJzZHICsDIUhiD5dBoPckAe9Jnw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=cypress.com; dmarc=pass action=none header.from=cypress.com;
- dkim=pass header.d=cypress.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cypress.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Uhr+tcgIeol6CoKuWP0Igk2XuSvWYppqWZpc4IKdWlI=;
- b=pf16vaz/RlZuuPuKtCuBtE+6V83yUs7d5/lYoaFZ9n1CoWTzH+ynGNYZmZpYSWlIgC+uUKm7JzEzFfoLMkcpMHyrOxd22zX3Yi9hCyV4YNduOm6Ly4c8Mxr43i2KsqfEWbqISJrF7Lb+ZTZKYO35HPCdNxq+uPMa7fbnC+eeBvo=
-Authentication-Results: vger.kernel.org; dkim=none (message not signed)
- header.d=none;vger.kernel.org; dmarc=none action=none
- header.from=cypress.com;
-Received: from DM6PR06MB4748.namprd06.prod.outlook.com (2603:10b6:5:fd::18) by
- DM6PR06MB4283.namprd06.prod.outlook.com (2603:10b6:5:1e::28) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2958.29; Mon, 4 May 2020 06:09:04 +0000
-Received: from DM6PR06MB4748.namprd06.prod.outlook.com
- ([fe80::ad0b:eda4:4eb8:b8d7]) by DM6PR06MB4748.namprd06.prod.outlook.com
- ([fe80::ad0b:eda4:4eb8:b8d7%7]) with mapi id 15.20.2958.027; Mon, 4 May 2020
- 06:09:04 +0000
-From:   Wright Feng <wright.feng@cypress.com>
-To:     linux-wireless@vger.kernel.org, chi-hsien.lin@cypress.com
-Cc:     wright.feng@cypress.com, brcm80211-dev-list@broadcom.com,
-        brcm80211-dev-list@cypress.com,
-        Arend van Spriel <arend.vanspriel@broadcom.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Justin Li <Justin.Li@cypress.com>
-Subject: [PATCH 3/3] brcmfmac: Add P2P Action Frame retry delay to fix GAS Comeback Response failure issue
-Date:   Mon,  4 May 2020 01:07:33 -0500
-Message-Id: <1588572453-194663-4-git-send-email-wright.feng@cypress.com>
-X-Mailer: git-send-email 2.1.0
-In-Reply-To: <1588572453-194663-1-git-send-email-wright.feng@cypress.com>
-References: <1588572453-194663-1-git-send-email-wright.feng@cypress.com>
-Content-Type: text/plain
-X-ClientProxiedBy: MN2PR01CA0061.prod.exchangelabs.com (2603:10b6:208:23f::30)
- To DM6PR06MB4748.namprd06.prod.outlook.com (2603:10b6:5:fd::18)
+        id S1727916AbgEDHBt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 4 May 2020 03:01:49 -0400
+Received: from mailout2.w1.samsung.com ([210.118.77.12]:46679 "EHLO
+        mailout2.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727844AbgEDHBt (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 4 May 2020 03:01:49 -0400
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+        by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20200504070147euoutp02bc6b20bb4f16c7b02fe43d7593775cef~LwTCQuEFs1892918929euoutp02N
+        for <linux-wireless@vger.kernel.org>; Mon,  4 May 2020 07:01:47 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20200504070147euoutp02bc6b20bb4f16c7b02fe43d7593775cef~LwTCQuEFs1892918929euoutp02N
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1588575707;
+        bh=KoAjdM3O8P+200ngHyLuPp9w/Dq466s0GNbOpr578TI=;
+        h=Subject:To:Cc:From:Date:In-Reply-To:References:From;
+        b=bqjnXebXHxbUJJcCca7riKJ3r0UY0NIbyduSMicNLObc6LIbS/3e4isB3zSnHbdLe
+         TVkRmqFjSc+ZLJ4EaBbWsl1fv8Ae954BJW87Ix0IaxugvkXGJosNh1MqW4RsIfNQzk
+         XeyuyW6Pqjjt04SN2NelXx2Hjk+0wQz/v8FENPdY=
+Received: from eusmges1new.samsung.com (unknown [203.254.199.242]) by
+        eucas1p2.samsung.com (KnoxPortal) with ESMTP id
+        20200504070147eucas1p268a50a132aa35326888bc96a4b36e65a~LwTCDch4r3061730617eucas1p2T;
+        Mon,  4 May 2020 07:01:47 +0000 (GMT)
+Received: from eucas1p2.samsung.com ( [182.198.249.207]) by
+        eusmges1new.samsung.com (EUCPMTA) with SMTP id 39.0B.61286.BDDBFAE5; Mon,  4
+        May 2020 08:01:47 +0100 (BST)
+Received: from eusmtrp2.samsung.com (unknown [182.198.249.139]) by
+        eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+        20200504070147eucas1p2284090e7f8a4afa10b94c2089170c12a~LwTBqtsXx0448704487eucas1p2p;
+        Mon,  4 May 2020 07:01:47 +0000 (GMT)
+Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
+        eusmtrp2.samsung.com (KnoxPortal) with ESMTP id
+        20200504070147eusmtrp2ac38f8e48dde543f6bf12271e691c4a4~LwTBqH2Ua0141301413eusmtrp2W;
+        Mon,  4 May 2020 07:01:47 +0000 (GMT)
+X-AuditID: cbfec7f2-f0bff7000001ef66-b6-5eafbddbe8f3
+Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
+        eusmgms2.samsung.com (EUCPMTA) with SMTP id 3C.41.07950.BDDBFAE5; Mon,  4
+        May 2020 08:01:47 +0100 (BST)
+Received: from [106.120.51.71] (unknown [106.120.51.71]) by
+        eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+        20200504070146eusmtip2e38b228add8bc93b5256d9f8273da772~LwTBTwaqu0498004980eusmtip2D;
+        Mon,  4 May 2020 07:01:46 +0000 (GMT)
+Subject: Re: [PATCH 3/6] thermal: core: update polling after all trips
+ handled
+To:     Zhang Rui <rui.zhang@intel.com>
+Cc:     linux-pm@vger.kernel.org, linux-wireless@vger.kernel.org,
+        daniel.lezcano@linaro.org, andrzej.p@collabora.com, luca@coelho.fi
+From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Message-ID: <918bfe45-511a-e527-7950-c19a64f29f40@samsung.com>
+Date:   Mon, 4 May 2020 09:01:46 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+        Thunderbird/60.8.0
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from aremote02.aus.cypress.com (12.110.209.245) by MN2PR01CA0061.prod.exchangelabs.com (2603:10b6:208:23f::30) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2958.19 via Frontend Transport; Mon, 4 May 2020 06:09:03 +0000
-X-Mailer: git-send-email 2.1.0
-X-Originating-IP: [12.110.209.245]
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-HT: Tenant
-X-MS-Office365-Filtering-Correlation-Id: 57d846e8-bd1a-48c8-a122-08d7eff1a58a
-X-MS-TrafficTypeDiagnostic: DM6PR06MB4283:|DM6PR06MB4283:
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <DM6PR06MB42833F469379A2A642B0597DFBA60@DM6PR06MB4283.namprd06.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:8273;
-X-Forefront-PRVS: 03932714EB
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: EGfO+e2gYM7Mjf5qJxTzsKsexuyw3ez63AxAlQ+SgUY5LZxuCmKjDkdIG6SWrwS7nwL3EIJpVwla/KRpVe76XHWJ60Uun2HTJU6otjKGI4re3wTyxtTcEOcJP2UqjLdn8zxZ5useOPdliFtGJH+J/cGMF7LDwVgDdnvHZeo9YG10zxMxbk1PKLSa7pwu3YYTY902sw9dcIYhzIjn5SiUU6XTPdL4VA50c6FwGLzYNPJcbPXq+KEBPtqM2MkbckqQdhdrCVSXy+7SXPBJJklv9ykfJZkkvetxJJlPwUnpQuQUfffsrbHUsDzwJLw4WuuH7v7rVqM9o/eUm4jgFoWE4Dmd/BAHSuTjjfCn+urN30kVG9vQ4ljXjvGanmXSDqeD+aM0/qs9QNgfu0NgtoOKzJIbRYdDGbQ4gBt1uqwU3B0N01NnFew/SXE3BSJpV0cJ
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR06MB4748.namprd06.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(396003)(39860400002)(366004)(136003)(346002)(376002)(66946007)(66556008)(16526019)(186003)(66476007)(2906002)(26005)(44832011)(7696005)(36756003)(86362001)(52116002)(2616005)(107886003)(956004)(6636002)(8676002)(5660300002)(8936002)(6486002)(316002)(4326008)(54906003)(478600001)(6666004);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData: Z+aTHMGBFWB6NjX8krmHT4QUipkLiFtdPFsfreNoh6TDemEBvxz50o7+uk2rOp57hw2e0nSiDcDJRPMLXgdAJy2dXxvDcKMeSwCbDj4wtLJ16lieC4eJI6YV8ur9Kw2h9ojV3Fu1n0mQp+kIfbVV8IJxBx4U7BkxsHwdt+NC+75oZ+atP27OnOQ2qFetKsrvQY3sTwddsShH87T2OicqH7Cu1qOCHEEPMZevboUWJbYmjIfXGSPd/T+b41XZopVoh7+JYm6ljRQ/coK5RFlUncs0oDlUhrG5K1njOaTjBcgPq+1niyhnyyiuMolXxK+H0UjPPPVDb0LNvfQaSh/Aulw5Yxey3WGLH0iGRZiizWtn1jv6A8EKRVKIRy8CTzaukHs+kMAY8TF5K8v8wDzXQV5OTwxnJl+Za/A1iqP0boCYQkS6VE6wRnFzO+hu8VsjTaWgY8WF1mjuetu8SgBIbpc03o14M6/A7c6ToG0+EftnED1bFk4uuCHBe1gBlmad+/qFEz5O85505sJk+wp0YgFGuFAzoqr3ywDvSEcUmauFHPa5k1fAijy2203xXIX1IpEUpTJbktZJLbCHrmjzHfba3Dn2xLmI3WWNxTPXQ66lNQ6/Mbnb+z4pT735qG7hR88j1K5ivs2sUTExaRiBEkl/mt+XgXVtXxZIXPwZTUsupzLnu+zqZvvYav+osCagJsGvZbUMLy4IMIZ8Elaoejb67pQjFR5HbminC9RzpRNvL+SxdCDy8yB0AB4r26Yilr3ULCarRRfZfpmqcSqxYsoSc2J8lqs+efb5qZo9Hxw=
-X-OriginatorOrg: cypress.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 57d846e8-bd1a-48c8-a122-08d7eff1a58a
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 May 2020 06:09:04.3135
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 011addfc-2c09-450d-8938-e0bbc2dd2376
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 1P3RSbCon86BgEYTSFY6rG96lqbj4dJejajqeiDiZANr+6tExilEhxOQQf2SI4EcumD7zcgr+UPu10ww85K5iQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR06MB4283
+In-Reply-To: <20200430063229.6182-4-rui.zhang@intel.com>
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrMKsWRmVeSWpSXmKPExsWy7djP87q3966PM1i2SMNi2eN7LBbzPsta
+        fO49wmjxZsUddosZ52exWzx52MfmwObxcNdsNo8dd5cweize85LJ4861PWwenzfJBbBGcdmk
+        pOZklqUW6dslcGVMf3OfsaCNp+LxV/kGxo+cXYycHBICJhIH5r9j62Lk4hASWMEosfLfPlYI
+        5wujxPbDTYwgVUICnxklnhwq72LkAOvY22UBUbOcUWL+zVlQDW8ZJZ51PmIFaRAWCJB4uPAY
+        E4gtIqAssejcVrBBzAJNjBLfjxWA2GwCVhIT21eBxXkF7CRO/n0M1ssioCLx4sl5ZhBbVCBC
+        4tODw6wQNYISJ2c+YQGxOQUsJD4cPMgGMVNc4taT+UwQtrzE9rdzmEEOkhBYxy5xcPYXJog/
+        XSSuvboPZQtLvDq+hR3ClpH4vxOkGayBUeJvxwuo7u2MEssn/2ODqLKWuHPuFxvI/8wCmhLr
+        d+lDhB0lrszYzAYJFj6JG28FIY7gk5i0bTozRJhXoqNNCKJaTWLDsg1sMGu7dq5knsCoNAvJ
+        a7OQvDMLyTuzEPYuYGRZxSieWlqcm55abJiXWq5XnJhbXJqXrpecn7uJEZh0Tv87/mkH49dL
+        SYcYBTgYlXh4H3xeFyfEmlhWXJl7iFGCg1lJhHdHy/o4Id6UxMqq1KL8+KLSnNTiQ4zSHCxK
+        4rzGi17GCgmkJ5akZqemFqQWwWSZODilGhi3PhL+clH3/ddsqdTg2B9Sx1W7qks1Glh1dDR+
+        OfQumO9zQc/h16yvVpIfjjvk217KebRr7ibB9fJNj91rmb3uN+bxs2wL23e4wOGURdfxUOU6
+        0XOJ54xnt5YEPpDdwa7FcP99w7PS5pwibQWpF1GHee4ZB15Jj1h6scrtqBCL0ZYa3S0u85VY
+        ijMSDbWYi4oTAcR8qKk2AwAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrGIsWRmVeSWpSXmKPExsVy+t/xe7q3966PM3i2msti2eN7LBbzPsta
+        fO49wmjxZsUddosZ52exWzx52MfmwObxcNdsNo8dd5cweize85LJ4861PWwenzfJBbBG6dkU
+        5ZeWpCpk5BeX2CpFG1oY6RlaWugZmVjqGRqbx1oZmSrp29mkpOZklqUW6dsl6GVMf3OfsaCN
+        p+LxV/kGxo+cXYwcHBICJhJ7uyy6GLk4hASWMkq8+LOBHSIuI3F8fVkXIyeQKSzx51oXG0TN
+        a0aJxx93MYEkhAX8JBaef8EIYosIKEssOreVEaSIWaCJUeL585OsEB07GSUundnDBlLFJmAl
+        MbF9FVgHr4CdxMm/j1lBbBYBFYkXT84zg9iiAhESh3fMgqoRlDg58wkLiM0pYCHx4eBBsDnM
+        AuoSf+ZdYoawxSVuPZnPBGHLS2x/O4d5AqPQLCTts5C0zELSMgtJywJGllWMIqmlxbnpucVG
+        esWJucWleel6yfm5mxiBcbbt2M8tOxi73gUfYhTgYFTi4X3weV2cEGtiWXFl7iFGCQ5mJRHe
+        HS3r44R4UxIrq1KL8uOLSnNSiw8xmgI9N5FZSjQ5H5gC8kriDU0NzS0sDc2NzY3NLJTEeTsE
+        DsYICaQnlqRmp6YWpBbB9DFxcEo1MFawMWSvqBCcPG3izHMfF2Yy3dzoP/Exyxzx7GpXP9mT
+        Z8VCVlQua1TeeCbAlSl6cnmEX8CFbTJmrGW6LQeOWU3PUQ4I+jp12c2/s5wYXgtcjs4WnZG5
+        bepJnvoLhgrKPZlHbNLL/iZGz2VNjDnibdR3oybk/txPt3gOJvassZbLWvEue+oTKSWW4oxE
+        Qy3mouJEAP5dTBvJAgAA
+X-CMS-MailID: 20200504070147eucas1p2284090e7f8a4afa10b94c2089170c12a
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20200430062915eucas1p26bbffdc682312be36d9e1e355bde0fe0
+X-EPHeader: CA
+CMS-TYPE: 201P
+X-CMS-RootMailID: 20200430062915eucas1p26bbffdc682312be36d9e1e355bde0fe0
+References: <20200430063229.6182-1-rui.zhang@intel.com>
+        <CGME20200430062915eucas1p26bbffdc682312be36d9e1e355bde0fe0@eucas1p2.samsung.com>
+        <20200430063229.6182-4-rui.zhang@intel.com>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Justin Li <Justin.Li@cypress.com>
 
-It was observed that P2P Cert. 5.1.19: DEVUT responds to Service
-Discovery request failed due to DUT did not send GAS Comeback Response
-after receiving request from test bed P2P peer. To fix this issue,
-we need to add P2P Action Frame retry delay to enhance P2P connection
-under VSDB and noisy environment, since the peer can be in other
-channels under VSDB.
+On 4/30/20 8:32 AM, Zhang Rui wrote:
+> Move monitor_thermal_zone() from handle_thermal_trip() to
+> thermal_zone_device_update() because updating the polling timers after all
+> trips handled is sufficient.
+> 
+> Signed-off-by: Zhang Rui <rui.zhang@intel.com>
 
-Signed-off-by: Justin Li <Justin.Li@cypress.com>
-Signed-off-by: Chi-hsien Lin <chi-hsien.lin@cypress.com>
----
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c | 4 ++++
- 1 file changed, 4 insertions(+)
+Reviewed-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c
-index cb8e229..780fe21 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c
-@@ -66,6 +66,7 @@
- #define P2P_CHANNEL_SYNC_RETRY		5
- #define P2P_AF_FRM_SCAN_MAX_WAIT	msecs_to_jiffies(450)
- #define P2P_DEFAULT_SLEEP_TIME_VSDB	200
-+#define P2P_AF_RETRY_DELAY_TIME		40
- 
- /* WiFi P2P Public Action Frame OUI Subtypes */
- #define P2P_PAF_GON_REQ		0	/* Group Owner Negotiation Req */
-@@ -1806,6 +1807,9 @@ bool brcmf_p2p_send_action_frame(struct brcmf_cfg80211_info *cfg,
- 	while (!p2p->block_gon_req_tx &&
- 	       (!ack) && (tx_retry < P2P_AF_TX_MAX_RETRY) &&
- 		!dwell_overflow) {
-+		if (af_params->channel)
-+			msleep(P2P_AF_RETRY_DELAY_TIME);
-+
- 		ack = !brcmf_p2p_tx_action_frame(p2p, af_params);
- 		tx_retry++;
- 		dwell_overflow = brcmf_p2p_check_dwell_overflow(requested_dwell,
--- 
-2.1.0
+Best regards,
+--
+Bartlomiej Zolnierkiewicz
+Samsung R&D Institute Poland
+Samsung Electronics
+
+> ---
+>  drivers/thermal/thermal_core.c | 11 ++++++-----
+>  1 file changed, 6 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/thermal/thermal_core.c b/drivers/thermal/thermal_core.c
+> index ac70545..04a16a9 100644
+> --- a/drivers/thermal/thermal_core.c
+> +++ b/drivers/thermal/thermal_core.c
+> @@ -430,11 +430,6 @@ static void handle_thermal_trip(struct thermal_zone_device *tz, int trip)
+>  		handle_critical_trips(tz, trip, type);
+>  	else
+>  		handle_non_critical_trips(tz, trip);
+> -	/*
+> -	 * Alright, we handled this trip successfully.
+> -	 * So, start monitoring again.
+> -	 */
+> -	monitor_thermal_zone(tz);
+>  }
+>  
+>  static void update_temperature(struct thermal_zone_device *tz)
+> @@ -529,6 +524,12 @@ void thermal_zone_device_update(struct thermal_zone_device *tz,
+>  
+>  	for (count = 0; count < tz->trips; count++)
+>  		handle_thermal_trip(tz, count);
+> +
+> +	/*
+> +	 * Alright, we handled all the trips successfully.
+> +	 * So, start monitoring again.
+> +	 */
+> +	monitor_thermal_zone(tz);
+>  }
+>  EXPORT_SYMBOL_GPL(thermal_zone_device_update);
+>  
+
 
