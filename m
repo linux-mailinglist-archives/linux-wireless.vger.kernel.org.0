@@ -2,20 +2,20 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 76DF81C3738
-	for <lists+linux-wireless@lfdr.de>; Mon,  4 May 2020 12:50:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CCA251C3731
+	for <lists+linux-wireless@lfdr.de>; Mon,  4 May 2020 12:50:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728345AbgEDKu3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 4 May 2020 06:50:29 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:51271 "EHLO
+        id S1728260AbgEDKuV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 4 May 2020 06:50:21 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:51258 "EHLO
         rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727781AbgEDKu1 (ORCPT
+        with ESMTP id S1727916AbgEDKuU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 4 May 2020 06:50:27 -0400
+        Mon, 4 May 2020 06:50:20 -0400
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.69 with qID 044AoEeyD003119, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.69 with qID 044AoEezD003119, This message is accepted by code: ctloc85258
 Received: from mail.realtek.com (rtexmb06.realtek.com.tw[172.21.6.99])
-        by rtits2.realtek.com.tw (8.15.2/2.66/5.86) with ESMTPS id 044AoEeyD003119
+        by rtits2.realtek.com.tw (8.15.2/2.66/5.86) with ESMTPS id 044AoEezD003119
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
         Mon, 4 May 2020 18:50:14 +0800
 Received: from RTEXMB04.realtek.com.tw (172.21.6.97) by
@@ -25,14 +25,14 @@ Received: from RTEXMB04.realtek.com.tw (172.21.6.97) by
 Received: from localhost.localdomain (172.21.68.128) by
  RTEXMB04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Mon, 4 May 2020 18:50:13 +0800
+ 15.1.1779.2; Mon, 4 May 2020 18:50:14 +0800
 From:   <yhchuang@realtek.com>
 To:     <kvalo@codeaurora.org>
 CC:     <linux-wireless@vger.kernel.org>, <pkshih@realtek.com>,
         <bigeasy@linutronix.de>
-Subject: [PATCH v4 4/8] rtw88: handle C2H_CCX_TX_RPT to know if packet TX'ed successfully
-Date:   Mon, 4 May 2020 18:50:06 +0800
-Message-ID: <20200504105010.10780-5-yhchuang@realtek.com>
+Subject: [PATCH v4 5/8] rtw88: 8723d: some chips don't support LDPC
+Date:   Mon, 4 May 2020 18:50:07 +0800
+Message-ID: <20200504105010.10780-6-yhchuang@realtek.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200504105010.10780-1-yhchuang@realtek.com>
 References: <20200504105010.10780-1-yhchuang@realtek.com>
@@ -48,118 +48,115 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Ping-Ke Shih <pkshih@realtek.com>
 
-TX status report of 8723D differs from 8822B/8822C, it uses
-C2H_CCX_TX_RPT (0x03) with different format. With sequence number
-and TX status, driver can know if certain packet was transmitted
-successfully.
+Some chips are not able to receive LDPC packets. Add an attribute
+to rtw_chip_info to determine if the LDPC capability in [ht/vht]_cap
+should be advertised or not.
 
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw88/fw.c |  6 +++++-
- drivers/net/wireless/realtek/rtw88/fw.h |  7 +++++--
- drivers/net/wireless/realtek/rtw88/tx.c | 11 ++++++++---
- drivers/net/wireless/realtek/rtw88/tx.h |  2 +-
- 4 files changed, 19 insertions(+), 7 deletions(-)
+ drivers/net/wireless/realtek/rtw88/main.c     | 9 +++++++--
+ drivers/net/wireless/realtek/rtw88/main.h     | 6 ++++++
+ drivers/net/wireless/realtek/rtw88/rtw8723d.c | 1 +
+ drivers/net/wireless/realtek/rtw88/rtw8822b.c | 1 +
+ drivers/net/wireless/realtek/rtw88/rtw8822c.c | 1 +
+ 5 files changed, 16 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/fw.c b/drivers/net/wireless/realtek/rtw88/fw.c
-index dde7823143ea..11fa1fc7f1cb 100644
---- a/drivers/net/wireless/realtek/rtw88/fw.c
-+++ b/drivers/net/wireless/realtek/rtw88/fw.c
-@@ -25,7 +25,7 @@ static void rtw_fw_c2h_cmd_handle_ext(struct rtw_dev *rtwdev,
+diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
+index b0dadff0dc7b..f88a7d2370aa 100644
+--- a/drivers/net/wireless/realtek/rtw88/main.c
++++ b/drivers/net/wireless/realtek/rtw88/main.c
+@@ -933,8 +933,11 @@ static void rtw_init_ht_cap(struct rtw_dev *rtwdev,
+ 	ht_cap->cap = 0;
+ 	ht_cap->cap |= IEEE80211_HT_CAP_SGI_20 |
+ 			IEEE80211_HT_CAP_MAX_AMSDU |
+-			IEEE80211_HT_CAP_LDPC_CODING |
+ 			(1 << IEEE80211_HT_CAP_RX_STBC_SHIFT);
++
++	if (rtw_chip_has_rx_ldpc(rtwdev))
++		ht_cap->cap |= IEEE80211_HT_CAP_LDPC_CODING;
++
+ 	if (efuse->hw_cap.bw & BIT(RTW_CHANNEL_WIDTH_40))
+ 		ht_cap->cap |= IEEE80211_HT_CAP_SUP_WIDTH_20_40 |
+ 				IEEE80211_HT_CAP_DSSSCCK40 |
+@@ -968,7 +971,6 @@ static void rtw_init_vht_cap(struct rtw_dev *rtwdev,
  
- 	switch (sub_cmd_id) {
- 	case C2H_CCX_RPT:
--		rtw_tx_report_handle(rtwdev, skb);
-+		rtw_tx_report_handle(rtwdev, skb, C2H_CCX_RPT);
- 		break;
- 	default:
- 		break;
-@@ -142,6 +142,9 @@ void rtw_fw_c2h_cmd_handle(struct rtw_dev *rtwdev, struct sk_buff *skb)
- 		goto unlock;
+ 	vht_cap->vht_supported = true;
+ 	vht_cap->cap = IEEE80211_VHT_CAP_MAX_MPDU_LENGTH_11454 |
+-		       IEEE80211_VHT_CAP_RXLDPC |
+ 		       IEEE80211_VHT_CAP_SHORT_GI_80 |
+ 		       IEEE80211_VHT_CAP_TXSTBC |
+ 		       IEEE80211_VHT_CAP_RXSTBC_1 |
+@@ -981,6 +983,9 @@ static void rtw_init_vht_cap(struct rtw_dev *rtwdev,
+ 	vht_cap->cap |= (rtwdev->hal.bfee_sts_cap <<
+ 			IEEE80211_VHT_CAP_BEAMFORMEE_STS_SHIFT);
  
- 	switch (c2h->id) {
-+	case C2H_CCX_TX_RPT:
-+		rtw_tx_report_handle(rtwdev, skb, C2H_CCX_TX_RPT);
-+		break;
- 	case C2H_BT_INFO:
- 		rtw_coex_bt_info_notify(rtwdev, c2h->payload, len);
- 		break;
-@@ -155,6 +158,7 @@ void rtw_fw_c2h_cmd_handle(struct rtw_dev *rtwdev, struct sk_buff *skb)
- 		rtw_fw_ra_report_handle(rtwdev, c2h->payload, len);
- 		break;
- 	default:
-+		rtw_dbg(rtwdev, RTW_DBG_FW, "C2H 0x%x isn't handled\n", c2h->id);
- 		break;
- 	}
++	if (rtw_chip_has_rx_ldpc(rtwdev))
++		vht_cap->cap |= IEEE80211_VHT_CAP_RXLDPC;
++
+ 	mcs_map = IEEE80211_VHT_MCS_SUPPORT_0_9 << 0 |
+ 		  IEEE80211_VHT_MCS_NOT_SUPPORTED << 4 |
+ 		  IEEE80211_VHT_MCS_NOT_SUPPORTED << 6 |
+diff --git a/drivers/net/wireless/realtek/rtw88/main.h b/drivers/net/wireless/realtek/rtw88/main.h
+index 157aca641f6d..454ed4415e09 100644
+--- a/drivers/net/wireless/realtek/rtw88/main.h
++++ b/drivers/net/wireless/realtek/rtw88/main.h
+@@ -1084,6 +1084,7 @@ struct rtw_chip_info {
+ 	u8 dig_min;
+ 	u8 txgi_factor;
+ 	bool is_pwr_by_rate_dec;
++	bool rx_ldpc;
+ 	u8 max_power_index;
  
-diff --git a/drivers/net/wireless/realtek/rtw88/fw.h b/drivers/net/wireless/realtek/rtw88/fw.h
-index 2933ef741e53..470e1809645a 100644
---- a/drivers/net/wireless/realtek/rtw88/fw.h
-+++ b/drivers/net/wireless/realtek/rtw88/fw.h
-@@ -26,6 +26,7 @@
- #define FW_START_ADDR_LEGACY		0x1000
- 
- enum rtw_c2h_cmd_id {
-+	C2H_CCX_TX_RPT = 0x03,
- 	C2H_BT_INFO = 0x09,
- 	C2H_BT_MP_INFO = 0x0b,
- 	C2H_RA_RPT = 0x0c,
-@@ -218,8 +219,10 @@ struct rtw_fw_hdr_legacy {
- } __packed;
- 
- /* C2H */
--#define GET_CCX_REPORT_SEQNUM(c2h_payload)	(c2h_payload[8] & 0xfc)
--#define GET_CCX_REPORT_STATUS(c2h_payload)	(c2h_payload[9] & 0xc0)
-+#define GET_CCX_REPORT_SEQNUM_V0(c2h_payload)	(c2h_payload[6] & 0xfc)
-+#define GET_CCX_REPORT_STATUS_V0(c2h_payload)	(c2h_payload[0] & 0xc0)
-+#define GET_CCX_REPORT_SEQNUM_V1(c2h_payload)	(c2h_payload[8] & 0xfc)
-+#define GET_CCX_REPORT_STATUS_V1(c2h_payload)	(c2h_payload[9] & 0xc0)
- 
- #define GET_RA_REPORT_RATE(c2h_payload)		(c2h_payload[0] & 0x7f)
- #define GET_RA_REPORT_SGI(c2h_payload)		((c2h_payload[0] & 0x80) >> 7)
-diff --git a/drivers/net/wireless/realtek/rtw88/tx.c b/drivers/net/wireless/realtek/rtw88/tx.c
-index 60989987f67b..79c42118825f 100644
---- a/drivers/net/wireless/realtek/rtw88/tx.c
-+++ b/drivers/net/wireless/realtek/rtw88/tx.c
-@@ -196,7 +196,7 @@ static void rtw_tx_report_tx_status(struct rtw_dev *rtwdev,
- 	ieee80211_tx_status_irqsafe(rtwdev->hw, skb);
+ 	bool ht_supported;
+@@ -1742,6 +1743,11 @@ static inline bool rtw_chip_wcpu_11ac(struct rtw_dev *rtwdev)
+ 	return rtwdev->chip->wlan_cpu == RTW_WCPU_11AC;
  }
  
--void rtw_tx_report_handle(struct rtw_dev *rtwdev, struct sk_buff *skb)
-+void rtw_tx_report_handle(struct rtw_dev *rtwdev, struct sk_buff *skb, int src)
- {
- 	struct rtw_tx_report *tx_report = &rtwdev->tx_report;
- 	struct rtw_c2h_cmd *c2h;
-@@ -207,8 +207,13 @@ void rtw_tx_report_handle(struct rtw_dev *rtwdev, struct sk_buff *skb)
++static inline bool rtw_chip_has_rx_ldpc(struct rtw_dev *rtwdev)
++{
++	return rtwdev->chip->rx_ldpc;
++}
++
+ void rtw_get_channel_params(struct cfg80211_chan_def *chandef,
+ 			    struct rtw_channel_params *ch_param);
+ bool check_hw_ready(struct rtw_dev *rtwdev, u32 addr, u32 mask, u32 target);
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8723d.c b/drivers/net/wireless/realtek/rtw88/rtw8723d.c
+index 6011ca8352b3..6fe7596d6a11 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8723d.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8723d.c
+@@ -1039,6 +1039,7 @@ struct rtw_chip_info rtw8723d_hw_spec = {
+ 	.rf_tbl = {&rtw8723d_rf_a_tbl},
+ 	.rfe_defs = rtw8723d_rfe_defs,
+ 	.rfe_defs_size = ARRAY_SIZE(rtw8723d_rfe_defs),
++	.rx_ldpc = false,
+ };
+ EXPORT_SYMBOL(rtw8723d_hw_spec);
  
- 	c2h = get_c2h_from_skb(skb);
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822b.c b/drivers/net/wireless/realtek/rtw88/rtw8822b.c
+index ffee8111d145..f1019e196918 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8822b.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8822b.c
+@@ -2447,6 +2447,7 @@ struct rtw_chip_info rtw8822b_hw_spec = {
+ 	.iqk_threshold = 8,
+ 	.bfer_su_max_num = 2,
+ 	.bfer_mu_max_num = 1,
++	.rx_ldpc = true,
  
--	sn = GET_CCX_REPORT_SEQNUM(c2h->payload);
--	st = GET_CCX_REPORT_STATUS(c2h->payload);
-+	if (src == C2H_CCX_TX_RPT) {
-+		sn = GET_CCX_REPORT_SEQNUM_V0(c2h->payload);
-+		st = GET_CCX_REPORT_STATUS_V0(c2h->payload);
-+	} else {
-+		sn = GET_CCX_REPORT_SEQNUM_V1(c2h->payload);
-+		st = GET_CCX_REPORT_STATUS_V1(c2h->payload);
-+	}
+ 	.coex_para_ver = 0x19062706,
+ 	.bt_desired_ver = 0x6,
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822c.c b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
+index 8dd92136145d..008debde165e 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8822c.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
+@@ -4311,6 +4311,7 @@ struct rtw_chip_info rtw8822c_hw_spec = {
+ 	.iqk_threshold = 8,
+ 	.bfer_su_max_num = 2,
+ 	.bfer_mu_max_num = 1,
++	.rx_ldpc = true,
  
- 	spin_lock_irqsave(&tx_report->q_lock, flags);
- 	skb_queue_walk_safe(&tx_report->queue, cur, tmp) {
-diff --git a/drivers/net/wireless/realtek/rtw88/tx.h b/drivers/net/wireless/realtek/rtw88/tx.h
-index b973de0f4dc0..72dfd4059f03 100644
---- a/drivers/net/wireless/realtek/rtw88/tx.h
-+++ b/drivers/net/wireless/realtek/rtw88/tx.h
-@@ -95,7 +95,7 @@ void rtw_tx_pkt_info_update(struct rtw_dev *rtwdev,
- 			    struct sk_buff *skb);
- void rtw_tx_fill_tx_desc(struct rtw_tx_pkt_info *pkt_info, struct sk_buff *skb);
- void rtw_tx_report_enqueue(struct rtw_dev *rtwdev, struct sk_buff *skb, u8 sn);
--void rtw_tx_report_handle(struct rtw_dev *rtwdev, struct sk_buff *skb);
-+void rtw_tx_report_handle(struct rtw_dev *rtwdev, struct sk_buff *skb, int src);
- void rtw_rsvd_page_pkt_info_update(struct rtw_dev *rtwdev,
- 				   struct rtw_tx_pkt_info *pkt_info,
- 				   struct sk_buff *skb);
+ #ifdef CONFIG_PM
+ 	.wow_fw_name = "rtw88/rtw8822c_wow_fw.bin",
 -- 
 2.17.1
 
