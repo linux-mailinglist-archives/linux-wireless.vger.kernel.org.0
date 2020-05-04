@@ -2,30 +2,30 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ED4F01C3605
-	for <lists+linux-wireless@lfdr.de>; Mon,  4 May 2020 11:47:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C2C61C3613
+	for <lists+linux-wireless@lfdr.de>; Mon,  4 May 2020 11:49:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728399AbgEDJr6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 4 May 2020 05:47:58 -0400
+        id S1728166AbgEDJtr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 4 May 2020 05:49:47 -0400
 Received: from mail26.static.mailgun.info ([104.130.122.26]:11921 "EHLO
         mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726625AbgEDJr5 (ORCPT
+        by vger.kernel.org with ESMTP id S1725928AbgEDJtq (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 4 May 2020 05:47:57 -0400
+        Mon, 4 May 2020 05:49:46 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1588585677; h=Date: Message-Id: Cc: To: References:
+ s=smtp; t=1588585786; h=Date: Message-Id: Cc: To: References:
  In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=WM9/aRStIaPaqyNPtJJyM+h9b/Ec7TT+ctCUD/qlxj0=;
- b=DeRnbgwnW+CNLpSyKxFyWgWvrm28zauYwJyzbQNGt0PTRC6r7aaZJfuxF0CB0Bs8vZNTHfIw
- 7pKsSqDUHMeNAdb2oW+xBbhuKhT0m1LjDAjiB+qgj4j0dZgFElnz0A1E30clVLqIVdITZHQg
- rgIBuvlE9wZr4QgTowH7wOZYjX8=
+ Content-Type: Sender; bh=aAybSPYoOXbi8SzeNaB+OInBOq6y5Ef01bnlX8awsl0=;
+ b=lEcY1pG3LyMYUi8AtusB2m22FLl++QA2pvLSvNXJw1UnDiAGF5Z8jbEQWy6iAPB74/42WEMq
+ 0IZaa7g7Wl4Jqwm/yNZWaRbden25581rF2FJ3nyLyNhRa2xdKd4QySZGQHNpAZCFfodTIMkn
+ 87WznfT/wgLSmpdE0/KOQXTxQIE=
 X-Mailgun-Sending-Ip: 104.130.122.26
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5eafe4c5.7f106080c4c8-smtp-out-n02;
- Mon, 04 May 2020 09:47:49 -0000 (UTC)
+ by mxa.mailgun.org with ESMTP id 5eafe52d.7f88f6b2e110-smtp-out-n01;
+ Mon, 04 May 2020 09:49:33 -0000 (UTC)
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 265EFC433BA; Mon,  4 May 2020 09:47:48 +0000 (UTC)
+        id 66994C44788; Mon,  4 May 2020 09:49:33 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -35,46 +35,59 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id E0311C433D2;
-        Mon,  4 May 2020 09:47:45 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org E0311C433D2
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 9E3C2C44788;
+        Mon,  4 May 2020 09:49:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 9E3C2C44788
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH][next] rtw88: fix spelling mistake "fimrware" ->
- "firmware"
+Subject: Re: [PATCH V2 1/5] brcmfmac: keep apsta enabled when AP starts with
+ MCHAN
+ feature
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20200424084733.7716-1-colin.king@canonical.com>
-References: <20200424084733.7716-1-colin.king@canonical.com>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Yan-Hsuan Chuang <yhchuang@realtek.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <1587970803-77700-2-git-send-email-chi-hsien.lin@cypress.com>
+References: <1587970803-77700-2-git-send-email-chi-hsien.lin@cypress.com>
+To:     Chi-Hsien Lin <chi-hsien.lin@cypress.com>
+Cc:     linux-wireless@vger.kernel.org, brcm80211-dev-list@broadcom.com,
+        brcm80211-dev-list@cypress.com,
+        Arend van Spriel <arend.vanspriel@broadcom.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Wright Feng <wright.feng@cypress.com>,
+        Chi-Hsien Lin <chi-hsien.lin@cypress.com>
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20200504094748.265EFC433BA@smtp.codeaurora.org>
-Date:   Mon,  4 May 2020 09:47:48 +0000 (UTC)
+Message-Id: <20200504094933.66994C44788@smtp.codeaurora.org>
+Date:   Mon,  4 May 2020 09:49:33 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Colin King <colin.king@canonical.com> wrote:
+Chi-Hsien Lin <chi-hsien.lin@cypress.com> wrote:
 
-> From: Colin Ian King <colin.king@canonical.com>
+> From: Wright Feng <wright.feng@cypress.com>
 > 
-> There are spelling mistakes in two rtw_err error messages. Fix them.
+> When starting station mode on wlan0 and AP mode on wlan1, the apsta will
+> be disabled and cause data stall on wlan0(station). The apsta feature
+> with MCHAN(Multi-Channel Concurrent) or RSDB(Real Simultaneous
+> Dual-Band) can make STA+AP work on two bands concurrently.
+> Because of that, we keep apsta enabled if firmware supports MCHAN or
+> RSDB features
 > 
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> Acked-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+> Signed-off-by: Wright Feng <wright.feng@cypress.com>
+> Signed-off-by: Chi-Hsien Lin <chi-hsien.lin@cypress.com>
 
-Patch applied to wireless-drivers-next.git, thanks.
+5 patches applied to wireless-drivers-next.git, thanks.
 
-a6336094c3ab rtw88: fix spelling mistake "fimrware" -> "firmware"
+774965f22dc7 brcmfmac: keep apsta enabled when AP starts with MCHAN feature
+19f557a9b8d1 brcmfmac: remove arp_hostip_clear from brcmf_netdev_stop
+d524d5ce3655 brcmfmac: p2p cert 6.1.9-support GOUT handling p2p presence request
+053ac9e1438a brcmfmac: only generate random p2p address when needed
+2719afcae759 brcmfmac: add vendor ie for association responses
 
 -- 
-https://patchwork.kernel.org/patch/11507317/
+https://patchwork.kernel.org/patch/11511247/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
