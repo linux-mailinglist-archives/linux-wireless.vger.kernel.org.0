@@ -2,76 +2,106 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5777B1C3045
-	for <lists+linux-wireless@lfdr.de>; Mon,  4 May 2020 01:32:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DC3921C326D
+	for <lists+linux-wireless@lfdr.de>; Mon,  4 May 2020 08:09:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726291AbgECX35 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 3 May 2020 19:29:57 -0400
-Received: from smtprelay0203.hostedemail.com ([216.40.44.203]:49402 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1725945AbgECX35 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 3 May 2020 19:29:57 -0400
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay02.hostedemail.com (Postfix) with ESMTP id 2690716921;
-        Sun,  3 May 2020 23:29:56 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:800:960:973:978:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1541:1593:1594:1711:1730:1747:1777:1792:2194:2199:2393:2559:2562:2828:2901:3138:3139:3140:3141:3142:3352:3622:3865:3866:3871:3872:3873:4321:4605:5007:6238:7903:8603:10004:10293:10400:10848:11232:11658:11914:12043:12296:12297:12438:12555:12698:12737:12740:12760:12895:13069:13146:13230:13311:13357:13439:13870:14181:14659:14721:14777:21080:21433:21451:21627:21789:21819:21939:21990:30022:30034:30054:30070:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:1,LUA_SUMMARY:none
-X-HE-Tag: brick38_5682053cb3621
-X-Filterd-Recvd-Size: 2157
-Received: from XPS-9350.home (unknown [47.151.136.130])
-        (Authenticated sender: joe@perches.com)
-        by omf01.hostedemail.com (Postfix) with ESMTPA;
-        Sun,  3 May 2020 23:29:54 +0000 (UTC)
-Message-ID: <d3e07dfd0efe21192d172b2e4e7d4a489a4fcc62.camel@perches.com>
-Subject: Re: [PATCH v2] staging: wilc1000: Increase the size of wid_list
- array
-From:   Joe Perches <joe@perches.com>
-To:     Ajay.Kathat@microchip.com, oscar.carter@gmx.com,
-        adham.abozaeid@microchip.com
-Cc:     gregkh@linuxfoundation.org, rachel.kim@atmel.com,
-        johnny.kim@atmel.com, chris.park@atmel.com, dean.lee@atmel.com,
-        linux-wireless@vger.kernel.org, devel@driverdev.osuosl.org,
-        linux-kernel@vger.kernel.org
-Date:   Sun, 03 May 2020 16:29:53 -0700
-In-Reply-To: <d75b7f64-0ba0-65e9-ea4c-cc87b3a51a10@microchip.com>
-References: <20200503075145.4563-1-oscar.carter@gmx.com>
-         <d75b7f64-0ba0-65e9-ea4c-cc87b3a51a10@microchip.com>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.36.1-2 
+        id S1726351AbgEDGI6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 4 May 2020 02:08:58 -0400
+Received: from mail-mw2nam12on2132.outbound.protection.outlook.com ([40.107.244.132]:50810
+        "EHLO NAM12-MW2-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725928AbgEDGI6 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 4 May 2020 02:08:58 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=GOtZlLyIGZ6qnW6uu1eRu2ASF5fKQtFum22IaPT5zlIXE9GEX0A+qbd63WuHkNlFRITeX8LGNYTmrh5QHxZDBexRwrSJJSSotbW+JpPk6XFfVel93JxZKoVM8TsibPPwLGNyXNw5H4wq15X9Arcs5DzCVjomEHIVcJ4zVsEfx1M6TuP5juKYn7Hzn9Q8fzS56w1b07bp4VPCXQN55qY7++b4uvMXRraC7PSsNFkEUJbrhJpPaRbnXbZRa4hatg1CJcvt5ROq+VAxFThnhAh4ysX1l1tjIbygJ9U3CTBk0NnWv38fSlAvzpFYgWbyp1reeC24MvYhVkKl2iCBb/ahSw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=g38dBPuWEX92GT9zJ6UCo/HEPIjDmPYeLUJK82mq9+o=;
+ b=jp7IHh3MDcvcW8aRlQ4xW52ns1tlWXEtFaYeM+I6EKZ/nIY+3+8lyy6DQ9rKFmm7P6zgstbi98GdNhwgu6pYSsjFel4N83RtUpX/BjfGXpMcJC/XwUvrI8hL3jGcqGg6metuDwiRlxvay+kpkjbVQF3PA5CqI0o0tO8xg28SDnDee+ZtWWdUWYZldhDlwx3FKfxVzH+7KLcd1gH7z731dhXvbjHekNHdlJrW1b0n5OJ2tYF2X48mOihMSuOQjGynai/uFbsWi/7w/9TN5TL/0x+P+r+Z5oxs0CTGNeCbJ/acFj8pRMeneNOkP/OoD91IdbD522sXhqHnQLmjYHT7TA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=cypress.com; dmarc=pass action=none header.from=cypress.com;
+ dkim=pass header.d=cypress.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cypress.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=g38dBPuWEX92GT9zJ6UCo/HEPIjDmPYeLUJK82mq9+o=;
+ b=JPNNAnHyf6Rpe6S36O2RBvBHHqgKkT9yJNL1YBxY7XktAs0cNmwS6yX3jCXdPx4DOH2YmGZNcAn8zPwEIbdsSU+1cv+T0VZ6kL7CHVIWPcPVBY75y+Qipwst8t+cZj/meCUd9qzFPZBR2aL3Yy3zw7oGkTc0ZHWj7sDAWfw+LvY=
+Authentication-Results: vger.kernel.org; dkim=none (message not signed)
+ header.d=none;vger.kernel.org; dmarc=none action=none
+ header.from=cypress.com;
+Received: from DM6PR06MB4748.namprd06.prod.outlook.com (2603:10b6:5:fd::18) by
+ DM6PR06MB4283.namprd06.prod.outlook.com (2603:10b6:5:1e::28) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2958.29; Mon, 4 May 2020 06:08:55 +0000
+Received: from DM6PR06MB4748.namprd06.prod.outlook.com
+ ([fe80::ad0b:eda4:4eb8:b8d7]) by DM6PR06MB4748.namprd06.prod.outlook.com
+ ([fe80::ad0b:eda4:4eb8:b8d7%7]) with mapi id 15.20.2958.027; Mon, 4 May 2020
+ 06:08:55 +0000
+From:   Wright Feng <wright.feng@cypress.com>
+To:     linux-wireless@vger.kernel.org, chi-hsien.lin@cypress.com
+Cc:     wright.feng@cypress.com, brcm80211-dev-list@broadcom.com,
+        brcm80211-dev-list@cypress.com,
+        Arend van Spriel <arend.vanspriel@broadcom.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Kalle Valo <kvalo@codeaurora.org>
+Subject: [PATCH 0/3] brcmfmac: p2p fixes and the second connection support
+Date:   Mon,  4 May 2020 01:07:30 -0500
+Message-Id: <1588572453-194663-1-git-send-email-wright.feng@cypress.com>
+X-Mailer: git-send-email 2.1.0
+Content-Type: text/plain
+X-ClientProxiedBy: MN2PR01CA0061.prod.exchangelabs.com (2603:10b6:208:23f::30)
+ To DM6PR06MB4748.namprd06.prod.outlook.com (2603:10b6:5:fd::18)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from aremote02.aus.cypress.com (12.110.209.245) by MN2PR01CA0061.prod.exchangelabs.com (2603:10b6:208:23f::30) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2958.19 via Frontend Transport; Mon, 4 May 2020 06:08:54 +0000
+X-Mailer: git-send-email 2.1.0
+X-Originating-IP: [12.110.209.245]
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-HT: Tenant
+X-MS-Office365-Filtering-Correlation-Id: bcbc4de7-23b9-4603-a070-08d7eff1a055
+X-MS-TrafficTypeDiagnostic: DM6PR06MB4283:|DM6PR06MB4283:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <DM6PR06MB4283892F54B0BAAF438E65D3FBA60@DM6PR06MB4283.namprd06.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:901;
+X-Forefront-PRVS: 03932714EB
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: M+fXkHRn23FbJ5m+xftIz9HVoQgNjBB49ePtBaAyW5PHWa4Dc5bedWybzKMtm1nHjWNE57ZwtE5HgHI85x7KwGlzUlLq8/AkOQdZ92Le1M5bi8huL9FzOmI2FDaKEP9LXW8h8XBiCnfAZFI7bgrNMaw/OVSagHgwuQcnQmvhrN2cu4BuOKFlCZlb9HAmZcIW770SqXbm4l5RTkuv4LQC9OYxh+dZ68oPvpX0/R8zHVnxvXRftq9Kwd/dmvFV5yUG2nUTz++ZDGs43mFTLHKjW69FDyz6YCJI0+RjJagt3SCpxnr3DFE9aR3RRn2KvuDns8eAhGLj2Wn4gT6quRDfMgGpw6IoX9aXwbqQ++UwoC7C0FY9WHrgDOTkX74ddeDqdudXdPn1KoCYhmyEjfjeOzw4f2aNl5BeMd+O8pm1JQN0Yf2knwoDsmcIApnK/iwb
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR06MB4748.namprd06.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(396003)(39860400002)(366004)(136003)(346002)(376002)(66946007)(66556008)(16526019)(186003)(66476007)(2906002)(26005)(44832011)(7696005)(36756003)(86362001)(52116002)(2616005)(956004)(6636002)(8676002)(5660300002)(8936002)(4744005)(6486002)(316002)(4326008)(54906003)(478600001)(6666004);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData: BeD7lADcp4Xnpwgnoa0WzJDGS1+cE4C3yvvoZbTAMIU2VptFHAyf8DmpR6ojsae0ATkeDBY/At4oAnoufEzyKMArdloBk9VjSqjySpO9a+uj0K30HyPS2k7pU2LIL0NAj9CUZbh+vZ3FR/hfTbr3xx2NeZvwOijOhmzxCpOoRRqPYbu3JPCHPTtNiV16ezNce8dX1V5Lhp/JRox3hABroLwWP/MNh63Ia+MQKdv8H85gT6SLESDJoL3KOHAmE8Kd/u4XWLHggKgedducwA6yX5w1CKE+XYSFnK5zn/VgjhAportNgYEgDCoVZb4BwfMsaJPv8UA5AM9j8u2eZpkYjgpIF2+R54CG3+4anVGiQgcMVlBvdw2uHvdF5sBFDO1GXogB7idomcWLsKV3vKLhqrtWZ3DiyT0XAwdHWFpxMMk8a3Cbhs8Nejr7RVvXuuRIqlpuKLOvT6mA53FNHX+SVIy3bGy0UcNkSqwANkvXAgaUoE75mclnrp065m+BHAmZgMqHx4DaLvQPYRcS4kAtbcNLgb8s0o382V2BBTfnlT45rYObh3ZOVbCEp8ZvrpaUrR5ut0J+oJJpciqbSX+5GfH/YL2wKG4dA7OjtUyAdASc71xHIlBW2EpPJc6NTvS18eYt9jGJbRZfT5ApbF0GWvzaqZGpQOHTXKmlzDFPT/LnVdEPD7Ta9jXMJU8wuBA2dM9wBlu2+ptemcYoD6WJmFJH2r5Z22NtH3p1BptfHT7NLVjtu+4tveskMrqpLaWPuDoc/tfHSMUcFPDiDAjWj3feebWClsM2T+YzS6MdQsA=
+X-OriginatorOrg: cypress.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: bcbc4de7-23b9-4603-a070-08d7eff1a055
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 May 2020 06:08:55.6575
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 011addfc-2c09-450d-8938-e0bbc2dd2376
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 2rrerJidePHk6swu9j7jKVxtAvwAJCUkma/DSHhOsOsAHtuLXMDFlIu7W7a5adVPhpjCxWwRDWaQ/c6soBqcLA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR06MB4283
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sun, 2020-05-03 at 14:52 +0000, Ajay.Kathat@microchip.com wrote:
-> On 03/05/20 1:21 pm, Oscar Carter wrote:
-> > EXTERNAL EMAIL: Do not click links or open attachments unless you know the content is safe
-> > 
-> > Increase by one the size of wid_list array as index variable can reach a
-> > value of 5. If this happens, an out-of-bounds access is performed.
-> > 
-> > Addresses-Coverity-ID: 1451981 ("Out-of-bounds access")
-> > Fixes: f5a3cb90b802d ("staging: wilc1000: add passive scan support")
-> > Signed-off-by: Oscar Carter <oscar.carter@gmx.com>
-[]
-> > diff --git a/drivers/staging/wilc1000/hif.c b/drivers/staging/wilc1000/hif.c
-[]
-> > @@ -151,7 +151,7 @@ int wilc_scan(struct wilc_vif *vif, u8 scan_source, u8 scan_type,
-> >               void *user_arg, struct cfg80211_scan_request *request)
-> >  {
-> >         int result = 0;
-> > -       struct wid wid_list[5];
-> > +       struct wid wid_list[6];
+This patch series addresses failures seen during p2p testing and adds the
+second p2p connection support.
 
-This looks like it should be using a #define instead of
-a hard-coded number.
+Joseph Chuang (1):
+  brcmfmac: Fix P2P Group Formation failure via Go-neg method
 
-> >         u32 index = 0;
-> >         u32 i, scan_timeout;
-> >         u8 *buffer;
-> > --
-> > 2.20.1
+Justin Li (1):
+  brcmfmac: Add P2P Action Frame retry delay to fix GAS Comeback
+    Response failure issue
+
+Wright Feng (1):
+  brcmfmac: support the second p2p connection
+
+ .../net/wireless/broadcom/brcm80211/brcmfmac/p2p.c | 88 +++++++++++++++++++---
+ .../net/wireless/broadcom/brcm80211/brcmfmac/p2p.h |  9 ++-
+ 2 files changed, 84 insertions(+), 13 deletions(-)
+
+-- 
+2.1.0
 
