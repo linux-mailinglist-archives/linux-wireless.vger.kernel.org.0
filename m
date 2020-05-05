@@ -2,191 +2,95 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8DC711C5E6B
-	for <lists+linux-wireless@lfdr.de>; Tue,  5 May 2020 19:12:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BEAFB1C5EE7
+	for <lists+linux-wireless@lfdr.de>; Tue,  5 May 2020 19:32:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729488AbgEERMJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 5 May 2020 13:12:09 -0400
-Received: from mail26.static.mailgun.info ([104.130.122.26]:35974 "EHLO
+        id S1730215AbgEERcT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 5 May 2020 13:32:19 -0400
+Received: from mail26.static.mailgun.info ([104.130.122.26]:34474 "EHLO
         mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728804AbgEERMJ (ORCPT
+        by vger.kernel.org with ESMTP id S1730184AbgEERcT (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 5 May 2020 13:12:09 -0400
+        Tue, 5 May 2020 13:32:19 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1588698727; h=Message-Id: Date: Subject: Cc: To: From:
- Sender; bh=Dukm2lONyZGM3jH6Zqk0uVOmFYp2c9u684qv9nSoTw0=; b=bncziU2bS4iJzOefd19YrH08Yk2/uxFjTcRZ+LqXRP9+1lk2vqCEWnk7siO9Ki0bQ8QOF8oA
- zZ431aX60fhGFCOx/Zwxl4N34C5tBf5iWIKSOZmmDggRuo+gNwJ2PS7/O34Z5QdVNGb7W40k
- jgpIcU1q9qhzKlgQPt53iOOPnCo=
+ s=smtp; t=1588699938; h=Message-ID: References: In-Reply-To: Subject:
+ Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Sender; bh=FNnEUcIGcED2zOGUrSu/QDzHYpQ9xz/VzkKxw++slEM=;
+ b=L2nu+8qNH3xPQztASUbqmO6RN3A6sAdKix22dWG26C5Tyl31otR4AViuxx8hunYy6hMNScBH
+ cLloHy7ypyDQFbX2to+udA6iRfMdQKFJmoUPbrxmGrsLJildk1xJYC2J8oop9dQHyo7NVz1V
+ o7YA5ixPXJ+nrYEAWgQYWn93LEY=
 X-Mailgun-Sending-Ip: 104.130.122.26
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5eb19e5b.7f221ceb4810-smtp-out-n01;
- Tue, 05 May 2020 17:11:55 -0000 (UTC)
+ by mxa.mailgun.org with ESMTP id 5eb1a2de.7efd0eaad298-smtp-out-n02;
+ Tue, 05 May 2020 17:31:10 -0000 (UTC)
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 0502FC433BA; Tue,  5 May 2020 17:11:55 +0000 (UTC)
+        id C7CBCC433CB; Tue,  5 May 2020 17:31:10 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.0
-Received: from pradeepc-linux.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        (Authenticated sender: pradeepc)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 53998C433CB;
-        Tue,  5 May 2020 17:11:54 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 53998C433CB
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=pradeepc@codeaurora.org
-From:   Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>
-To:     ath11k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org,
-        Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>,
-        Miles Hu <milehu@codeaurora.org>
-Subject: [PATCH] ath11k: fix htt stats module not handle multiple skbs
-Date:   Tue,  5 May 2020 10:11:33 -0700
-Message-Id: <1588698693-6218-1-git-send-email-pradeepc@codeaurora.org>
-X-Mailer: git-send-email 1.9.1
+        (Authenticated sender: rmanohar)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 592A3C433BA;
+        Tue,  5 May 2020 17:31:10 +0000 (UTC)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Tue, 05 May 2020 10:31:10 -0700
+From:   Rajkumar Manoharan <rmanohar@codeaurora.org>
+To:     Markus Theil <markus.theil@tu-ilmenau.de>
+Cc:     linux-wireless-owner@vger.kernel.org,
+        linux-wireless@vger.kernel.org, ath10k@lists.infradead.org,
+        kvalo@codeaurora.org, ath11k@lists.infradead.org
+Subject: Re: [PATCH 2/2] ath11k: use cumulative survey statistics
+In-Reply-To: <c786e982-fcd6-2368-6b2f-f09b265654d6@tu-ilmenau.de>
+References: <20200504154122.91862-1-markus.theil@tu-ilmenau.de>
+ <20200504154122.91862-2-markus.theil@tu-ilmenau.de>
+ <85fa2d5f9183b3a12c5283b800f3750f@codeaurora.org>
+ <c786e982-fcd6-2368-6b2f-f09b265654d6@tu-ilmenau.de>
+Message-ID: <61f3dcc195fa4d877ddbd161523142ec@codeaurora.org>
+X-Sender: rmanohar@codeaurora.org
+User-Agent: Roundcube Webmail/1.3.9
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-HTT EXT stats comes in stream of TLVs spanning over multiple
-messages. Currently completion is being sent for each message
-which is creating a race where stats_req is being accessed
-for filling in second message after the memory is already
-freed in release operation. Fix this by issuing completion
-once all the messages are received and processed. Driver
-knows this info from DONE bit set in htt msg.
+On 2020-05-04 23:53, Markus Theil wrote:
+> Am 05.05.2020 um 01:37 schrieb Rajkumar Manoharan:
+>> On 2020-05-04 08:41, Markus Theil wrote:
+>>> ath11k currently reports survey results for the last interval between 
+>>> each
+>>> invocation of NL80211_CMD_GET_SURVEY. For concurrent invocations, 
+>>> this
+>>> can lead to unexpectedly small results, e.g. when hostapd uses survey
+>>> data and iw survey dump is invoked in parallel. Fix this by returning
+>>> cumulative results, that don't depend on the last invocation. Other
+>>> drivers, e.g. ath9k or mt76 also use this behavior.
+>>> 
+[...]
+>> Markus,
+>> 
+>> It depends on type of survey request is given to firmware. In ath11k, 
+>> firmware reports
+>> accumulated values. So the above addition is wrong and report double 
+>> value. Have you
+>> tested this change?
+>> 
+>> -Rajkumar
+> Ok, so please drop both of my patches. My assumptions were incomplete
+> and too humble. I just assumed, ath10k and ath11k both use incremental
+> surveys.
+> 
+Markus,
 
-Also fix locking required for htt stats.
+The ath10k driver still counts survey stats incrementally. But it should 
+be handled by sending
+appropriate survey request_type to firmware.
 
-Co-developed-by: Miles Hu <milehu@codeaurora.org>
-Signed-off-by: Miles Hu <milehu@codeaurora.org>
-Signed-off-by: Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>
----
- drivers/net/wireless/ath/ath11k/debug_htt_stats.c | 49 ++++++++++++++++++-----
- drivers/net/wireless/ath/ath11k/dp.h              |  1 +
- 2 files changed, 39 insertions(+), 11 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath11k/debug_htt_stats.c b/drivers/net/wireless/ath/ath11k/debug_htt_stats.c
-index 5db0c27de475..9722dc431173 100644
---- a/drivers/net/wireless/ath/ath11k/debug_htt_stats.c
-+++ b/drivers/net/wireless/ath/ath11k/debug_htt_stats.c
-@@ -4306,6 +4306,7 @@ void ath11k_dbg_htt_ext_stats_handler(struct ath11k_base *ab,
- 	u32 len;
- 	u64 cookie;
- 	int ret;
-+	bool send_completion = false;
- 	u8 pdev_id;
- 
- 	msg = (struct ath11k_htt_extd_stats_msg *)skb->data;
-@@ -4330,11 +4331,11 @@ void ath11k_dbg_htt_ext_stats_handler(struct ath11k_base *ab,
- 		return;
- 
- 	spin_lock_bh(&ar->debug.htt_stats.lock);
--	if (stats_req->done) {
--		spin_unlock_bh(&ar->debug.htt_stats.lock);
--		return;
--	}
--	stats_req->done = true;
-+
-+	stats_req->done = FIELD_GET(HTT_T2H_EXT_STATS_INFO1_DONE, msg->info1);
-+	if (stats_req->done)
-+		send_completion = true;
-+
- 	spin_unlock_bh(&ar->debug.htt_stats.lock);
- 
- 	len = FIELD_GET(HTT_T2H_EXT_STATS_INFO1_LENGTH, msg->info1);
-@@ -4344,7 +4345,8 @@ void ath11k_dbg_htt_ext_stats_handler(struct ath11k_base *ab,
- 	if (ret)
- 		ath11k_warn(ab, "Failed to parse tlv %d\n", ret);
- 
--	complete(&stats_req->cmpln);
-+	if (send_completion)
-+		complete(&stats_req->cmpln);
- }
- 
- static ssize_t ath11k_read_htt_stats_type(struct file *file,
-@@ -4497,28 +4499,54 @@ static int ath11k_open_htt_stats(struct inode *inode, struct file *file)
- 	if (type == ATH11K_DBG_HTT_EXT_STATS_RESET)
- 		return -EPERM;
- 
-+	mutex_lock(&ar->conf_mutex);
-+
-+	if (ar->state != ATH11K_STATE_ON) {
-+		ret = -ENETDOWN;
-+		goto err_unlock;
-+	}
-+
-+	if (ar->debug.htt_stats.stats_req) {
-+		ret = -EAGAIN;
-+		goto err_unlock;
-+	}
-+
- 	stats_req = vzalloc(sizeof(*stats_req) + ATH11K_HTT_STATS_BUF_SIZE);
--	if (!stats_req)
--		return -ENOMEM;
-+	if (!stats_req) {
-+		ret = -ENOMEM;
-+		goto err_unlock;
-+	}
- 
--	mutex_lock(&ar->conf_mutex);
- 	ar->debug.htt_stats.stats_req = stats_req;
- 	stats_req->type = type;
-+
- 	ret = ath11k_dbg_htt_stats_req(ar);
--	mutex_unlock(&ar->conf_mutex);
- 	if (ret < 0)
- 		goto out;
- 
- 	file->private_data = stats_req;
-+
-+	mutex_unlock(&ar->conf_mutex);
-+
- 	return 0;
- out:
- 	vfree(stats_req);
-+	ar->debug.htt_stats.stats_req = NULL;
-+err_unlock:
-+	mutex_unlock(&ar->conf_mutex);
-+
- 	return ret;
- }
- 
- static int ath11k_release_htt_stats(struct inode *inode, struct file *file)
- {
-+	struct ath11k *ar = inode->i_private;
-+
-+	mutex_lock(&ar->conf_mutex);
- 	vfree(file->private_data);
-+	ar->debug.htt_stats.stats_req = NULL;
-+	mutex_unlock(&ar->conf_mutex);
-+
- 	return 0;
- }
- 
-@@ -4582,7 +4610,6 @@ static ssize_t ath11k_write_htt_stats_reset(struct file *file,
- 						 0ULL);
- 	if (ret) {
- 		ath11k_warn(ar->ab, "failed to send htt stats request: %d\n", ret);
--		mutex_unlock(&ar->conf_mutex);
- 		return ret;
- 	}
- 
-diff --git a/drivers/net/wireless/ath/ath11k/dp.h b/drivers/net/wireless/ath/ath11k/dp.h
-index 222de10e4b93..058a5c1d86ff 100644
---- a/drivers/net/wireless/ath/ath11k/dp.h
-+++ b/drivers/net/wireless/ath/ath11k/dp.h
-@@ -1517,6 +1517,7 @@ struct htt_ext_stats_cfg_params {
-  *       4 bytes.
-  */
- 
-+#define HTT_T2H_EXT_STATS_INFO1_DONE	BIT(11)
- #define HTT_T2H_EXT_STATS_INFO1_LENGTH   GENMASK(31, 16)
- 
- struct ath11k_htt_extd_stats_msg {
--- 
-1.9.1
+-Rajkumar
