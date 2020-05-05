@@ -2,90 +2,93 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A51421C4F4A
-	for <lists+linux-wireless@lfdr.de>; Tue,  5 May 2020 09:38:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A3651C4F8E
+	for <lists+linux-wireless@lfdr.de>; Tue,  5 May 2020 09:49:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728114AbgEEHi0 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 5 May 2020 03:38:26 -0400
-Received: from mail27.static.mailgun.info ([104.130.122.27]:15974 "EHLO
-        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726129AbgEEHi0 (ORCPT
+        id S1727938AbgEEHtx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 5 May 2020 03:49:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44896 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726568AbgEEHtw (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 5 May 2020 03:38:26 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1588664305; h=Date: Message-Id: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=xLqqp3adaBmYusk8r3ljNFiKZHe6uvHtQ4bFrHiagnk=;
- b=BSqphwGPzussQ2bTwtc6WCQeuuIy480100H6NvlqbH9prvxE+RuhwF1oEgw9TvFSGZXHbZDQ
- ExfZdbFFG+xfClME47X7pcaCqR037OeQxZ/rbaqsj9AsYXLoO1ltqGN1VW1a90J/Gu3nZpQD
- niU2Nl2Bjc17Rc/RDDfo3xa4usI=
-X-Mailgun-Sending-Ip: 104.130.122.27
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5eb117e3.7fa95922a068-smtp-out-n05;
- Tue, 05 May 2020 07:38:11 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 33F51C433BA; Tue,  5 May 2020 07:38:11 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
-        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id E870CC433CB;
-        Tue,  5 May 2020 07:38:09 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org E870CC433CB
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        Tue, 5 May 2020 03:49:52 -0400
+X-Greylist: delayed 55215 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 05 May 2020 00:49:52 PDT
+Received: from dvalin.narfation.org (dvalin.narfation.org [IPv6:2a00:17d8:100::8b1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E571C061A0F
+        for <linux-wireless@vger.kernel.org>; Tue,  5 May 2020 00:49:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
+        s=20121; t=1588664989;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=1IWrsJBZhdCsDyfYSJJhd0QFKh2SYgRZbADR1astMwI=;
+        b=dKzclyKzpjnaFtGo6rLlMP9ke/9p0TWzxDP+nC0/7MxO3EW9HfHwdCArWZMGCfVDfnbwnk
+        lmm/+xonJ2rCn7mOPylZVwaLgPWtqhisnhioGRESPuVwvXfJKakr/8n/4ZYPfT/3LkfWVT
+        sCMjAKUGeE6wC3X2YbqE3eA9VuXuBIk=
+From:   Sven Eckelmann <sven@narfation.org>
+To:     ath11k@lists.infradead.org
+Cc:     Rajkumar Manoharan <rmanohar@codeaurora.org>,
+        linux-wireless-owner@vger.kernel.org,
+        linux-wireless@vger.kernel.org,
+        Markus Theil <markus.theil@tu-ilmenau.de>,
+        ath10k@lists.infradead.org, kvalo@codeaurora.org
+Subject: Re: [PATCH 1/2] ath10k: use cumulative survey statistics
+Date:   Tue, 05 May 2020 09:49:46 +0200
+Message-ID: <1845755.pTfhzBy2qg@bentobox>
+In-Reply-To: <2335594.cnkAv9Vaq7@bentobox>
+References: <20200504154122.91862-1-markus.theil@tu-ilmenau.de> <f772b7bf0eac31516a4e28719c1938f2@codeaurora.org> <2335594.cnkAv9Vaq7@bentobox>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] ath11k: fix resource unavailability for htt stats after
- peer
- stats display
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <1588592755-10427-1-git-send-email-ssreeela@codeaurora.org>
-References: <1588592755-10427-1-git-send-email-ssreeela@codeaurora.org>
-To:     Sowmiya Sree Elavalagan <ssreeela@codeaurora.org>
-Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        Sowmiya Sree Elavalagan <ssreeela@codeaurora.org>
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20200505073811.33F51C433BA@smtp.codeaurora.org>
-Date:   Tue,  5 May 2020 07:38:11 +0000 (UTC)
+Content-Type: multipart/signed; boundary="nextPart4024693.4Mujkspm9b"; micalg="pgp-sha512"; protocol="application/pgp-signature"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Sowmiya Sree Elavalagan <ssreeela@codeaurora.org> wrote:
+--nextPart4024693.4Mujkspm9b
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 
-> htt stats are not working after htt peer stats display
-> and also after htt peer stats reset. Trying to dump htt
-> stats shows "Resource temporarily unavailable".
-> This is because of "ar->debug.htt_stats.stats_req" member is being
-> consecutively used for all htt stats without being reset
-> during the previous usage. Hence assigning NULL to this member
-> after freeing the allocated memory fixes the issue.
+On Tuesday, 5 May 2020 09:01:34 CEST Sven Eckelmann wrote:
+> On Tuesday, 5 May 2020 01:46:12 CEST Rajkumar Manoharan wrote:
+> [...]
+> > IIRC this was fixed a while ago by below patch. Somehow it never landed 
+> > in ath.git.
+> > Simple one line change is enough.
+> > 
+> > https://patchwork.kernel.org/patch/10550707/
 > 
-> console logs below:
-> # echo 9 >/sys/kernel/debug/ath11k/ipq8074/mac1/htt_stats_type
-> # cat /sys/kernel/debug/ath11k/ipq8074/mac1/htt_stats_type
-> 9
-> # cat /sys/kernel/debug/ath11k/ipq8074/mac1/htt_stats
-> cat: can't open '/sys/kernel/debug/ath11k/ipq8074/mac1/htt_stats'
-> : Resource temporarily unavailable
+> Because it doesn't work for everything. Remember that 10.2.4.x overflows all 
+> the time (14-30s) because it used only 31 bit for the counters.
 > 
-> Signed-off-by: Sowmiya Sree Elavalagan <ssreeela@codeaurora.org>
-> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+> But feel free to point me to the firmware version which fixed this.
 
-Patch applied to ath-next branch of ath.git, thanks.
+See also https://patchwork.kernel.org/patch/9701459/
 
-52f274b51993 ath11k: fix resource unavailability for htt stats after peer stats display
+Kind regards,
+	Sven
+--nextPart4024693.4Mujkspm9b
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
 
--- 
-https://patchwork.kernel.org/patch/11525557/
+-----BEGIN PGP SIGNATURE-----
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+iQIzBAABCgAdFiEEF10rh2Elc9zjMuACXYcKB8Eme0YFAl6xGpoACgkQXYcKB8Em
+e0ZzCRAAgqYCt2mvPP4dcDSuLObeeqnrlCg1zGaJJZTOYiTbGbBOFPKRKKWoX/PG
+manCnusFGFRHSpoGC94W89wlOJ6EW9x2RMy7ylws0z15iOzziE6faiE9XNuczjQw
++NVHZthe6xgWq5iORv2+zGtVqPPjvzoVcObZyyTdWtYmnVEb/Vo5W0g713/ha42K
+IHfFLbcwdW3OjVFEd88hEt6sOaMeM86ZmZql6cox23CNzYfG76BcNUvgta7l2Tr1
+MvpLrattlWdTP+6uWabdIdJp2IDKFj9DeEQrvUUuIlQJO1lbiZSBK+/jMqv0buNS
+dImQBdrJZElVL7LW0hqgYHesekgpigVOt4gWd/mZfJlH6dtzW8hp/btxonCzecfd
+DUJchzFPJv4LfAswoWEr/Uw3MYwi7W0pdcbKCJQbzchHgMfO2mtWX6BvfdU5Pvl3
+V5tmKzNbpJIZTFUKh0mFqsceBRXU/fYWU9S3IuAuFmPzTnew4YeBKQj/xhHmduhx
+dXF6IQU69fM2hKUQWZV9NCxmCzHXhytChza4JeQpGhXKM8bQ4sH7yuMWrSlKJ7VU
+D14XlUppGsOW8uKK6VNl76DfFpWqs76bZs95npCX0u188PwTTTAGpbqaizZjXZ5q
+OWF98ErpHvU88aaLjKsYNmUOj6pXyRCfADeukZnuXHKUWSyf3jw=
+=8mIN
+-----END PGP SIGNATURE-----
+
+--nextPart4024693.4Mujkspm9b--
+
+
+
