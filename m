@@ -2,163 +2,134 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1FF471C6205
-	for <lists+linux-wireless@lfdr.de>; Tue,  5 May 2020 22:27:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 18A3A1C6243
+	for <lists+linux-wireless@lfdr.de>; Tue,  5 May 2020 22:49:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729251AbgEEU1w (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 5 May 2020 16:27:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50966 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1729205AbgEEU1u (ORCPT
+        id S1728076AbgEEUtV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 5 May 2020 16:49:21 -0400
+Received: from us-smtp-1.mimecast.com ([205.139.110.61]:33931 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726593AbgEEUtV (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 5 May 2020 16:27:50 -0400
-Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [IPv6:2001:67c:2050::465:201])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8BB96C061A0F
-        for <linux-wireless@vger.kernel.org>; Tue,  5 May 2020 13:27:50 -0700 (PDT)
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [80.241.60.240])
-        (using TLSv1.2 with cipher ECDHE-RSA-CHACHA20-POLY1305 (256/256 bits))
-        (No client certificate requested)
-        by mout-p-201.mailbox.org (Postfix) with ESMTPS id 49GrrF6yHYzQl8k;
-        Tue,  5 May 2020 22:27:41 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at heinlein-support.de
-Received: from smtp1.mailbox.org ([80.241.60.240])
-        by gerste.heinlein-support.de (gerste.heinlein-support.de [91.198.250.173]) (amavisd-new, port 10030)
-        with ESMTP id njZ1QqvCvber; Tue,  5 May 2020 22:27:38 +0200 (CEST)
-To:     backports@vger.kernel.org
+        Tue, 5 May 2020 16:49:21 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1588711759;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=CSZcp1FpfZ2SSq2zzWqOQCbfjBz8yPOF7xmSQpKc9lk=;
+        b=SQpBUrJSgFXDIOCwF1Ky091x7gXpN2li2+bgr+4AswDGAOsVqmBvG6TOOdfgf/ksPd79DI
+        AhkZKeGQH+KmwpK7ZUrGuRUvUP2F7TeQVjDQ4cQSybN1yy8lrkwv2SrWoUqw26jWVaJuF7
+        FPSxtwI+L0G+MB8H7QkO2qFqnTpT30E=
+Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
+ [209.85.167.70]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-126-RgnX4_W2M-6ASjSL7BWhjw-1; Tue, 05 May 2020 16:49:15 -0400
+X-MC-Unique: RgnX4_W2M-6ASjSL7BWhjw-1
+Received: by mail-lf1-f70.google.com with SMTP id y21so1115089lfl.10
+        for <linux-wireless@vger.kernel.org>; Tue, 05 May 2020 13:49:14 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
+         :message-id:mime-version:content-transfer-encoding;
+        bh=CSZcp1FpfZ2SSq2zzWqOQCbfjBz8yPOF7xmSQpKc9lk=;
+        b=pYWArJgNu7bO6zeaUgvHHvy084Gc1eB+Fblkz9UbI7llnJECt/w545eOr1V1dFOjHl
+         1Swrb83n2sXyOy7J7MszSInNzY+0j1jlYdGAcFUBwplK7VwgCePSegJ/MqbUlHt4VraC
+         HyeG5yNE2+YQjWPcIJJkZoRXmuOAhtkyDeOpxtofqAXAQt/pMmbEF1noCfnV0EjLKIAi
+         aRgIw3xnbZr4OSL9442JDkFhCAlhUAedCN9gPRn48NpmsAc2wMwHwcpFVnwNEaIcbqe+
+         u0NAs+0mFZLU4J6uEsg+pT4d50fycIWbryflnfHyDm/GaqiMCWol2BBiHAuqDlQR4vRD
+         ZfBA==
+X-Gm-Message-State: AGi0PuZ2d/NEZVYSXVwLNUcpwouy+03+VvYRSx1cE8a0acms9GGRMNxc
+        876TRkZkby0YMn9MLeOJ3laWlJBFtDsg+gHWbjceGhzRgRQ7aS9TX5J/OGIpTzQCO/V25gKo5cA
+        KQ8rR16gY5ynNNDw/V4BavPV6QW8=
+X-Received: by 2002:a2e:9713:: with SMTP id r19mr2946878lji.89.1588711753600;
+        Tue, 05 May 2020 13:49:13 -0700 (PDT)
+X-Google-Smtp-Source: APiQypKq91/2vTa67RN3ETjjhEGWOXkdT5QSlTdAWCQ7Vj2EojmvM8FpUVauWoqRDcvBAqGTx0JLBQ==
+X-Received: by 2002:a2e:9713:: with SMTP id r19mr2946867lji.89.1588711753309;
+        Tue, 05 May 2020 13:49:13 -0700 (PDT)
+Received: from alrua-x1.borgediget.toke.dk ([45.145.92.2])
+        by smtp.gmail.com with ESMTPSA id b1sm3017081lfb.22.2020.05.05.13.49.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 05 May 2020 13:49:12 -0700 (PDT)
+Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
+        id 9928C1804E9; Tue,  5 May 2020 22:49:11 +0200 (CEST)
+From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
+To:     Maxime Bizon <mbizon@freebox.fr>
 Cc:     linux-wireless@vger.kernel.org
-From:   Hauke Mehrtens <hauke@hauke-m.de>
-Subject: wireless backports 4.19.120-1, 5.4.36-1, 5.5.19-1, 5.6.8-1 and
- 5.7-rc3-1 released
-Autocrypt: addr=hauke@hauke-m.de; keydata=
- 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
-Message-ID: <1c2eae5e-0681-4135-1f91-ddbb017fe31f@hauke-m.de>
-Date:   Tue, 5 May 2020 22:27:33 +0200
+Subject: Re: Regarding .wake_tx_queue() model
+In-Reply-To: <20200505174947.GB2079@sakura>
+References: <20200504193959.GC26805@sakura> <878si6oabp.fsf@toke.dk> <20200505131531.GA32619@sakura> <87368eo5dn.fsf@toke.dk> <20200505152010.GA33304@sakura> <87pnbimil6.fsf@toke.dk> <20200505174947.GB2079@sakura>
+X-Clacks-Overhead: GNU Terry Pratchett
+Date:   Tue, 05 May 2020 22:49:11 +0200
+Message-ID: <87d07im7js.fsf@toke.dk>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature";
- boundary="X7L96Um1TYUErU8QDGkWKrcEDHIEZYNtz"
-X-Rspamd-Queue-Id: 951151772
-X-Rspamd-Score: -5.19 / 15.00 / 15.00
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---X7L96Um1TYUErU8QDGkWKrcEDHIEZYNtz
-Content-Type: multipart/mixed; boundary="BgHxOGDrfLhn8jg3BivLXS7NaWzypqfGk"
+Maxime Bizon <mbizon@freebox.fr> writes:
 
---BgHxOGDrfLhn8jg3BivLXS7NaWzypqfGk
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
+> On Tuesday 05 May 2020 =C3=A0 18:50:45 (+0200), Toke H=C3=B8iland-J=C3=B8=
+rgensen wrote:
+>
+>> This seems like a bad idea; we want the TXQ mechanism to decide which
+>> frame to send on wakeup.
+>
+> .release_buffered_frames() is only needed/used if STA went into
+> powersave while packets were already sitting inside txqi, that's an
+> edge case.
+>
+> In the other much more common case (STA went into sleep without any
+> traffic pending in txqi), then the "classic" ps delivery code is used:
+> frames gets pulled from ps_tx_buf queue (1 by 1 for ps poll, more for
+> uapsd), and those frames ends up being sent through drv_tx(), since
+> they have the flag IEEE80211_TX_CTRL_PS_RESPONSE so they bypass txqi.
 
-Hi
+Ah, I see, and if there are a lot of outstanding frames the client is
+supposed to wake up and resume regular operation? As I said, I really
+don't know much about how PS works; but I'm enjoying learning about it,
+so thanks! :)
 
-backports-5.7-rc3-1 was released. This is based on Linux 5.7-rc3.
-https://cdn.kernel.org/pub/linux/kernel/projects/backports/stable/v5.7-rc=
-3/backports-5.7-rc3-1.tar.xz
+> so I was just looking at removing that edge case, sending those frames
+> back to ps_tx_buf() from the driver.
 
-backports-5.6.8-1 was released. This is based on Linux 5.6.8.
-https://cdn.kernel.org/pub/linux/kernel/projects/backports/stable/v5.6.8/=
-backports-5.6.8-1.tar.xz
+Right, that makes sense. But I guess this is only something you can do
+if you never buffer frames in the driver, no? E.g., ath9k has its own
+internal retry queue, so it needs the callback to train that; and once
+the callback is there, extending it to pull from the TXQs is quite
+straight forward... So it's not necessarily a generally-applicable
+optimisation, is what I mean.
 
-backports-5.5.19-1 was released. This is based on Linux 5.5.19.
-https://cdn.kernel.org/pub/linux/kernel/projects/backports/stable/v5.5.19=
-/backports-5.5.19-1.tar.xz
+>> really is no way around having a way to instruct the driver "please use
+>> these flags for the next N frames you send" - which is what
+>> release_buffered_frames() does. What you're suggesting is basically
+>> turning off this 'pull mode' for the frames buffered during PS and have
+>> mac80211 revert to push mode for those, right? But then you lose the
+>> benefits of pull mode (the TXQs) for those frames.
+>
+> I just want to give those back to mac80211, those frames were already
+> in push mode anyway.
 
-backports-5.4.36-1 was released. This is based on Linux 5.4.36.
-https://cdn.kernel.org/pub/linux/kernel/projects/backports/stable/v5.4.36=
-/backports-5.4.36-1.tar.xz
+Gotcha.
 
-backports-4.19.120-1 was released. This is based on Linux 4.19.120.
-https://cdn.kernel.org/pub/linux/kernel/projects/backports/stable/v4.19.1=
-20/backports-4.19.120-1.tar.xz
+>> I remember Johannes talking about a 'shim layer' between the mac80211
+>> TXQs and the 'drv_tx()' hook as a way to bring the benefits of the TXQs
+>> to the 'long tail' of simple drivers that don't do any internal
+>> buffering anyway, without having to change the drivers to use 'pull
+>> mode'. Am I wrong in thinking that mwl8k may be a good candidate for
+>> such a layer? From glancing through the existing driver it looks like
+>> it's mostly just taking each frame, wrapping it in a HW descriptor, and
+>> sticking it on a TX ring?
+>
+> maybe with the current firmware interface, but with the new one
+> aggregation is done on host side, so tx path is no more that simple.
 
-There is now a updated wiki page with the releases:
-https://backports.wiki.kernel.org/index.php/Releases
+Right, OK. Is this just a different firmware that's generally available,
+or is it a new thing? I am generally a fan of moving logic out of the
+firmware like this...
 
-The source code can be found here:
-https://git.kernel.org/cgit/linux/kernel/git/backports/backports.git/
+-Toke
 
-Hauke
-
-
---BgHxOGDrfLhn8jg3BivLXS7NaWzypqfGk--
-
---X7L96Um1TYUErU8QDGkWKrcEDHIEZYNtz
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCgAdFiEEyz0/uAcd+JwXmwtD8bdnhZyy68cFAl6xzDUACgkQ8bdnhZyy
-68f99Af/b3D2UvsGw0RqSr5xC5XTU/sxJd4EeGw2wZbfV6s2C5NsiFNkrX9oIFaE
-i4CyVv/HIFnwghyiKXsHPSXFOUxulre4WouWPCffbebprAFmcukNTdB0UHsqkWG7
-i+YYSdLSy+Tf9sa4HXsLulM8mESeDlNIXLPUbrZuleC1UcnPACVKP4wGnIpAT703
-O327o6lytmujiB3mzJ7iMdokoGOHpB6DSSd6wXw+TVtJjJs0PHn5NHHm5O5TsWZq
-1C7o54gCk8+QWinFX/buPj4fsIl+Nho42abiXvvhp+Y8FaYr0pCDYlPIZDNczfm6
-HZUgfT39C0qfi3PKOUrVN3/75lRIhg==
-=Os0j
------END PGP SIGNATURE-----
-
---X7L96Um1TYUErU8QDGkWKrcEDHIEZYNtz--
