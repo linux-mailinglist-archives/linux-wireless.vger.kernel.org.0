@@ -2,134 +2,155 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 18A3A1C6243
-	for <lists+linux-wireless@lfdr.de>; Tue,  5 May 2020 22:49:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 50DA11C62B1
+	for <lists+linux-wireless@lfdr.de>; Tue,  5 May 2020 23:12:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728076AbgEEUtV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 5 May 2020 16:49:21 -0400
-Received: from us-smtp-1.mimecast.com ([205.139.110.61]:33931 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726593AbgEEUtV (ORCPT
+        id S1729054AbgEEVMJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 5 May 2020 17:12:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57946 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726350AbgEEVMI (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 5 May 2020 16:49:21 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1588711759;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=CSZcp1FpfZ2SSq2zzWqOQCbfjBz8yPOF7xmSQpKc9lk=;
-        b=SQpBUrJSgFXDIOCwF1Ky091x7gXpN2li2+bgr+4AswDGAOsVqmBvG6TOOdfgf/ksPd79DI
-        AhkZKeGQH+KmwpK7ZUrGuRUvUP2F7TeQVjDQ4cQSybN1yy8lrkwv2SrWoUqw26jWVaJuF7
-        FPSxtwI+L0G+MB8H7QkO2qFqnTpT30E=
-Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
- [209.85.167.70]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-126-RgnX4_W2M-6ASjSL7BWhjw-1; Tue, 05 May 2020 16:49:15 -0400
-X-MC-Unique: RgnX4_W2M-6ASjSL7BWhjw-1
-Received: by mail-lf1-f70.google.com with SMTP id y21so1115089lfl.10
-        for <linux-wireless@vger.kernel.org>; Tue, 05 May 2020 13:49:14 -0700 (PDT)
+        Tue, 5 May 2020 17:12:08 -0400
+Received: from mail-wm1-x342.google.com (mail-wm1-x342.google.com [IPv6:2a00:1450:4864:20::342])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C640C061A0F
+        for <linux-wireless@vger.kernel.org>; Tue,  5 May 2020 14:12:08 -0700 (PDT)
+Received: by mail-wm1-x342.google.com with SMTP id u127so59407wmg.1
+        for <linux-wireless@vger.kernel.org>; Tue, 05 May 2020 14:12:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:subject:to:cc:message-id:date:user-agent:mime-version
+         :content-language:content-transfer-encoding;
+        bh=bS/cZOt/hptvsdPV4RhZemHIC9RWIuhYXFdYJuvfz4Q=;
+        b=RiKHfoTU0lmqEt9zFwCmUgcmU8yfa3rf3uHGQLGPH6JTAPoAAww7WlKWNxNgzLDt80
+         0KV/EY6/v2KJJzFmPiBZJrBJB1xABlIEiENNLX+CsWXxJzZ9qU/f1/Go7OpFFatssXnc
+         82IvFupbR72GbV/vMzyveSa3ADB5+sIBhMNtnFer5l58/vl6IY6J9FqZBXfCvNQh949D
+         ivICHK1u3NxJn9kQRWj/Qi4hkliAZ529ooStE1z8Mf2axzq16phWAvcG42MgtbkmPUET
+         7Q+CrN15u22bamCZcs/z5Pd5RWPBL0X9Q2mGsNAr/m5KbNU7v+eCeTEOt+7VVBIZLLEV
+         ZgGQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
-         :message-id:mime-version:content-transfer-encoding;
-        bh=CSZcp1FpfZ2SSq2zzWqOQCbfjBz8yPOF7xmSQpKc9lk=;
-        b=pYWArJgNu7bO6zeaUgvHHvy084Gc1eB+Fblkz9UbI7llnJECt/w545eOr1V1dFOjHl
-         1Swrb83n2sXyOy7J7MszSInNzY+0j1jlYdGAcFUBwplK7VwgCePSegJ/MqbUlHt4VraC
-         HyeG5yNE2+YQjWPcIJJkZoRXmuOAhtkyDeOpxtofqAXAQt/pMmbEF1noCfnV0EjLKIAi
-         aRgIw3xnbZr4OSL9442JDkFhCAlhUAedCN9gPRn48NpmsAc2wMwHwcpFVnwNEaIcbqe+
-         u0NAs+0mFZLU4J6uEsg+pT4d50fycIWbryflnfHyDm/GaqiMCWol2BBiHAuqDlQR4vRD
-         ZfBA==
-X-Gm-Message-State: AGi0PuZ2d/NEZVYSXVwLNUcpwouy+03+VvYRSx1cE8a0acms9GGRMNxc
-        876TRkZkby0YMn9MLeOJ3laWlJBFtDsg+gHWbjceGhzRgRQ7aS9TX5J/OGIpTzQCO/V25gKo5cA
-        KQ8rR16gY5ynNNDw/V4BavPV6QW8=
-X-Received: by 2002:a2e:9713:: with SMTP id r19mr2946878lji.89.1588711753600;
-        Tue, 05 May 2020 13:49:13 -0700 (PDT)
-X-Google-Smtp-Source: APiQypKq91/2vTa67RN3ETjjhEGWOXkdT5QSlTdAWCQ7Vj2EojmvM8FpUVauWoqRDcvBAqGTx0JLBQ==
-X-Received: by 2002:a2e:9713:: with SMTP id r19mr2946867lji.89.1588711753309;
-        Tue, 05 May 2020 13:49:13 -0700 (PDT)
-Received: from alrua-x1.borgediget.toke.dk ([45.145.92.2])
-        by smtp.gmail.com with ESMTPSA id b1sm3017081lfb.22.2020.05.05.13.49.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 05 May 2020 13:49:12 -0700 (PDT)
-Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-        id 9928C1804E9; Tue,  5 May 2020 22:49:11 +0200 (CEST)
-From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-To:     Maxime Bizon <mbizon@freebox.fr>
-Cc:     linux-wireless@vger.kernel.org
-Subject: Re: Regarding .wake_tx_queue() model
-In-Reply-To: <20200505174947.GB2079@sakura>
-References: <20200504193959.GC26805@sakura> <878si6oabp.fsf@toke.dk> <20200505131531.GA32619@sakura> <87368eo5dn.fsf@toke.dk> <20200505152010.GA33304@sakura> <87pnbimil6.fsf@toke.dk> <20200505174947.GB2079@sakura>
-X-Clacks-Overhead: GNU Terry Pratchett
-Date:   Tue, 05 May 2020 22:49:11 +0200
-Message-ID: <87d07im7js.fsf@toke.dk>
+        h=x-gm-message-state:from:subject:to:cc:message-id:date:user-agent
+         :mime-version:content-language:content-transfer-encoding;
+        bh=bS/cZOt/hptvsdPV4RhZemHIC9RWIuhYXFdYJuvfz4Q=;
+        b=sTE3OqSSiw5E9tM563e4LPBL5hnZ7lyr2ZEoy1ZDEFmTfLcBzKHpjit5gLy0DMVElL
+         BrWDsnsxX7u9r8rmzn0HQQ6qJC5mqtV5fC0EdaJ78T9PK62HZujrPLAE/7KM8AfACcxX
+         xLpn9khg0sZ1nfKaJCNElG69F9qOcChS2i5mmdEDAWGyvPxyi8/0mscCZvzVNljpmWZ2
+         dPE3io8gjfcnhbf7HWHW9M5/0lgE60qbdsPqCG9iREtXB2p8tasFLQBfp1jS4tSdfjlL
+         O6bL1iAhobHrT4rLICIvZOEXGbKXsy8nJ03YL6x6jPrkE8Fe4Wn50VkpEUFnKfXOfp5s
+         w+VQ==
+X-Gm-Message-State: AGi0PuaTw8oQiadAKFmn5E9dWHnybpDouuHJT394KO0kfN+5vhZZzA2k
+        jEAt99bpVxa6ICpTgQv+kyc=
+X-Google-Smtp-Source: APiQypJoIVCggnHBJVTQ/nK2vRO3YfMsPgL6hAJAdn4WVKzZ9rzKYPgNvWNvmCL63P/8680u75L/lw==
+X-Received: by 2002:a7b:c390:: with SMTP id s16mr556784wmj.14.1588713127172;
+        Tue, 05 May 2020 14:12:07 -0700 (PDT)
+Received: from [192.168.43.18] (188.29.165.117.threembb.co.uk. [188.29.165.117])
+        by smtp.gmail.com with ESMTPSA id k9sm5452228wrd.17.2020.05.05.14.12.06
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 05 May 2020 14:12:06 -0700 (PDT)
+From:   Malcolm Priestley <tvboxspy@gmail.com>
+Subject: [PATCH 1/6] staging: vt6656: vnt_rxtx_rsvtime_le16 to use
+ ieee80211_generic_frame_duration.
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>,
+        linux-wireless@vger.kernel.org, Oscar Carter <oscar.carter@gmx.com>
+Message-ID: <acff7fcc-0add-652b-7d07-22001b641257@gmail.com>
+Date:   Tue, 5 May 2020 22:12:04 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Maxime Bizon <mbizon@freebox.fr> writes:
+ieee80211_generic_frame_duration is the mac80211 equivalent to
+vnt_get_rsvtime use this to get our frame time.
 
-> On Tuesday 05 May 2020 =C3=A0 18:50:45 (+0200), Toke H=C3=B8iland-J=C3=B8=
-rgensen wrote:
->
->> This seems like a bad idea; we want the TXQ mechanism to decide which
->> frame to send on wakeup.
->
-> .release_buffered_frames() is only needed/used if STA went into
-> powersave while packets were already sitting inside txqi, that's an
-> edge case.
->
-> In the other much more common case (STA went into sleep without any
-> traffic pending in txqi), then the "classic" ps delivery code is used:
-> frames gets pulled from ps_tx_buf queue (1 by 1 for ps poll, more for
-> uapsd), and those frames ends up being sent through drv_tx(), since
-> they have the flag IEEE80211_TX_CTRL_PS_RESPONSE so they bypass txqi.
+There is a change where there is rrv_time_a and rrv_time_b
+the frame duration is always the same so both are equal.
 
-Ah, I see, and if there are a lot of outstanding frames the client is
-supposed to wake up and resume regular operation? As I said, I really
-don't know much about how PS works; but I'm enjoying learning about it,
-so thanks! :)
+Signed-off-by: Malcolm Priestley <tvboxspy@gmail.com>
+---
+ drivers/staging/vt6656/rxtx.c | 32 ++++++++++++++------------------
+ 1 file changed, 14 insertions(+), 18 deletions(-)
 
-> so I was just looking at removing that edge case, sending those frames
-> back to ps_tx_buf() from the driver.
-
-Right, that makes sense. But I guess this is only something you can do
-if you never buffer frames in the driver, no? E.g., ath9k has its own
-internal retry queue, so it needs the callback to train that; and once
-the callback is there, extending it to pull from the TXQs is quite
-straight forward... So it's not necessarily a generally-applicable
-optimisation, is what I mean.
-
->> really is no way around having a way to instruct the driver "please use
->> these flags for the next N frames you send" - which is what
->> release_buffered_frames() does. What you're suggesting is basically
->> turning off this 'pull mode' for the frames buffered during PS and have
->> mac80211 revert to push mode for those, right? But then you lose the
->> benefits of pull mode (the TXQs) for those frames.
->
-> I just want to give those back to mac80211, those frames were already
-> in push mode anyway.
-
-Gotcha.
-
->> I remember Johannes talking about a 'shim layer' between the mac80211
->> TXQs and the 'drv_tx()' hook as a way to bring the benefits of the TXQs
->> to the 'long tail' of simple drivers that don't do any internal
->> buffering anyway, without having to change the drivers to use 'pull
->> mode'. Am I wrong in thinking that mwl8k may be a good candidate for
->> such a layer? From glancing through the existing driver it looks like
->> it's mostly just taking each frame, wrapping it in a HW descriptor, and
->> sticking it on a TX ring?
->
-> maybe with the current firmware interface, but with the new one
-> aggregation is done on host side, so tx path is no more that simple.
-
-Right, OK. Is this just a different firmware that's generally available,
-or is it a new thing? I am generally a fan of moving logic out of the
-firmware like this...
-
--Toke
-
+diff --git a/drivers/staging/vt6656/rxtx.c b/drivers/staging/vt6656/rxtx.c
+index 68be0fa7b201..6724b213a723 100644
+--- a/drivers/staging/vt6656/rxtx.c
++++ b/drivers/staging/vt6656/rxtx.c
+@@ -216,11 +216,16 @@ static u32 vnt_get_rsvtime(struct vnt_private *priv, u8 pkt_type,
+ 	return data_time;
+ }
+ 
+-static __le16 vnt_rxtx_rsvtime_le16(struct vnt_private *priv, u8 pkt_type,
+-				    u32 frame_length, u16 rate, int need_ack)
++static __le16 vnt_rxtx_rsvtime_le16(struct vnt_usb_send_context *context)
+ {
+-	return cpu_to_le16((u16)vnt_get_rsvtime(priv, pkt_type,
+-		frame_length, rate, need_ack));
++	struct vnt_private *priv = context->priv;
++	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(context->skb);
++	struct ieee80211_rate *rate = ieee80211_get_tx_rate(priv->hw, info);
++
++	return ieee80211_generic_frame_duration(priv->hw,
++						 info->control.vif, info->band,
++						 context->frame_len,
++						 rate);
+ }
+ 
+ static __le16 vnt_get_rtscts_rsvtime_le(struct vnt_private *priv, u8 rsv_type,
+@@ -465,7 +470,6 @@ static void vnt_rxtx_rts(struct vnt_usb_send_context *tx_context,
+ 	union vnt_tx_data_head *head = &tx_head->tx_rts.tx.head;
+ 	u32 frame_len = tx_context->frame_len;
+ 	u16 current_rate = tx_context->tx_rate;
+-	u8 need_ack = tx_context->need_ack;
+ 
+ 	buf->rts_rrv_time_aa = vnt_get_rtscts_rsvtime_le(priv, 2,
+ 			tx_context->pkt_type, frame_len, current_rate);
+@@ -474,11 +478,8 @@ static void vnt_rxtx_rts(struct vnt_usb_send_context *tx_context,
+ 	buf->rts_rrv_time_bb = vnt_get_rtscts_rsvtime_le(priv, 0,
+ 			tx_context->pkt_type, frame_len, current_rate);
+ 
+-	buf->rrv_time_a = vnt_rxtx_rsvtime_le16(priv, tx_context->pkt_type,
+-						frame_len, current_rate,
+-						need_ack);
+-	buf->rrv_time_b = vnt_rxtx_rsvtime_le16(priv, PK_TYPE_11B, frame_len,
+-					priv->top_cck_basic_rate, need_ack);
++	buf->rrv_time_a = vnt_rxtx_rsvtime_le16(tx_context);
++	buf->rrv_time_b = buf->rrv_time_a;
+ 
+ 	if (need_mic)
+ 		head = &tx_head->tx_rts.tx.mic.head;
+@@ -494,12 +495,9 @@ static void vnt_rxtx_cts(struct vnt_usb_send_context *tx_context,
+ 	union vnt_tx_data_head *head = &tx_head->tx_cts.tx.head;
+ 	u32 frame_len = tx_context->frame_len;
+ 	u16 current_rate = tx_context->tx_rate;
+-	u8 need_ack = tx_context->need_ack;
+ 
+-	buf->rrv_time_a = vnt_rxtx_rsvtime_le16(priv, tx_context->pkt_type,
+-					frame_len, current_rate, need_ack);
+-	buf->rrv_time_b = vnt_rxtx_rsvtime_le16(priv, PK_TYPE_11B,
+-				frame_len, priv->top_cck_basic_rate, need_ack);
++	buf->rrv_time_a = vnt_rxtx_rsvtime_le16(tx_context);
++	buf->rrv_time_b = buf->rrv_time_a;
+ 
+ 	buf->cts_rrv_time_ba = vnt_get_rtscts_rsvtime_le(priv, 3,
+ 			tx_context->pkt_type, frame_len, current_rate);
+@@ -519,10 +517,8 @@ static void vnt_rxtx_ab(struct vnt_usb_send_context *tx_context,
+ 	union vnt_tx_data_head *head = &tx_head->tx_ab.tx.head;
+ 	u32 frame_len = tx_context->frame_len;
+ 	u16 current_rate = tx_context->tx_rate;
+-	u8 need_ack = tx_context->need_ack;
+ 
+-	buf->rrv_time = vnt_rxtx_rsvtime_le16(priv, tx_context->pkt_type,
+-					      frame_len, current_rate, need_ack);
++	buf->rrv_time = vnt_rxtx_rsvtime_le16(tx_context);
+ 
+ 	if (need_mic)
+ 		head = &tx_head->tx_ab.tx.mic.head;
+-- 
+2.25.1
