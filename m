@@ -2,88 +2,86 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1AF271C5F3D
-	for <lists+linux-wireless@lfdr.de>; Tue,  5 May 2020 19:49:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 69F4B1C5FB1
+	for <lists+linux-wireless@lfdr.de>; Tue,  5 May 2020 20:09:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729663AbgEERtv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 5 May 2020 13:49:51 -0400
-Received: from ns.iliad.fr ([212.27.33.1]:44778 "EHLO ns.iliad.fr"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728804AbgEERtv (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 5 May 2020 13:49:51 -0400
-Received: from ns.iliad.fr (localhost [127.0.0.1])
-        by ns.iliad.fr (Postfix) with ESMTP id B4559215B5;
-        Tue,  5 May 2020 19:49:48 +0200 (CEST)
-Received: from sakura (freebox.vlq16.iliad.fr [213.36.7.13])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        id S1730475AbgEESJ3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 5 May 2020 14:09:29 -0400
+Received: from mail27.static.mailgun.info ([104.130.122.27]:57266 "EHLO
+        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1729315AbgEESJ3 (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 5 May 2020 14:09:29 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1588702168; h=Message-Id: Date: Subject: Cc: To: From:
+ Sender; bh=e+cNv4pp0MnD6PBcCuO7QvvHJHPqO4LqyJPULd9ZkI8=; b=dHUBkdW7rgBQFWK7VRNszL9UJOAKuiwqhxS3HunsfEzfncPevM3Aw8a0y86GDz6iGqF4GfZ/
+ 92xBShVgFS/eJqwU2amHl+FvkZOYw3Ev7+3n8DsHjCG4xR0Xu0UG4lhxBsHYVBjvIYObVf/k
+ 5hl3cmdIxA/+hMFfClHMkbkHv7w=
+X-Mailgun-Sending-Ip: 104.130.122.27
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5eb1abc9.7fea82f08928-smtp-out-n01;
+ Tue, 05 May 2020 18:09:13 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 5EF66C433CB; Tue,  5 May 2020 18:09:13 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from c-gsamin-linux.qualcomm.com (blr-c-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.19.19])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
         (No client certificate requested)
-        by ns.iliad.fr (Postfix) with ESMTPS id A70952156D;
-        Tue,  5 May 2020 19:49:48 +0200 (CEST)
-Date:   Tue, 5 May 2020 19:49:47 +0200
-From:   Maxime Bizon <mbizon@freebox.fr>
-To:     Toke =?iso-8859-1?Q?H=F8iland-J=F8rgensen?= <toke@redhat.com>
-Cc:     linux-wireless@vger.kernel.org
-Subject: Re: Regarding .wake_tx_queue() model
-Message-ID: <20200505174947.GB2079@sakura>
-References: <20200504193959.GC26805@sakura>
- <878si6oabp.fsf@toke.dk>
- <20200505131531.GA32619@sakura>
- <87368eo5dn.fsf@toke.dk>
- <20200505152010.GA33304@sakura>
- <87pnbimil6.fsf@toke.dk>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <87pnbimil6.fsf@toke.dk>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Virus-Scanned: ClamAV using ClamSMTP ; ns.iliad.fr ; Tue May  5 19:49:48 2020 +0200 (CEST)
+        (Authenticated sender: seevalam)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 4E1F2C433F2;
+        Tue,  5 May 2020 18:09:10 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 4E1F2C433F2
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=seevalam@codeaurora.org
+From:   Seevalamuthu Mariappan <seevalam@codeaurora.org>
+To:     johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org,
+        Seevalamuthu Mariappan <seevalam@codeaurora.org>
+Subject: [PATCH] mac80211: Fix station dump inactive time after sta connection
+Date:   Tue,  5 May 2020 23:38:46 +0530
+Message-Id: <1588702126-11364-1-git-send-email-seevalam@codeaurora.org>
+X-Mailer: git-send-email 1.9.1
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+When USES_RSS is enabled, last_rx becomes zero in first few
+minutes after sta connection in sta_get_last_rx_stats. This
+leads to inactive time showing current jiffies in msecs.
 
-On Tuesday 05 May 2020 à 18:50:45 (+0200), Toke Høiland-Jørgensen wrote:
+Station 8c:fd:f0:02:10:dd (on wlan0)
+        inactive time:  4294701656 ms
+          .
+          .
+        connected time: 2 seconds
 
-> This seems like a bad idea; we want the TXQ mechanism to decide which
-> frame to send on wakeup.
+Fix this by avoid overwriting last_rx with percpu_stat's last_rx
+if it is zero.
 
-.release_buffered_frames() is only needed/used if STA went into
-powersave while packets were already sitting inside txqi, that's an
-edge case.
+Signed-off-by: Seevalamuthu Mariappan <seevalam@codeaurora.org>
+---
+ net/mac80211/sta_info.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-In the other much more common case (STA went into sleep without any
-traffic pending in txqi), then the "classic" ps delivery code is used:
-frames gets pulled from ps_tx_buf queue (1 by 1 for ps poll, more for
-uapsd), and those frames ends up being sent through drv_tx(), since
-they have the flag IEEE80211_TX_CTRL_PS_RESPONSE so they bypass txqi.
-
-so I was just looking at removing that edge case, sending those frames
-back to ps_tx_buf() from the driver.
-
-
-> really is no way around having a way to instruct the driver "please use
-> these flags for the next N frames you send" - which is what
-> release_buffered_frames() does. What you're suggesting is basically
-> turning off this 'pull mode' for the frames buffered during PS and have
-> mac80211 revert to push mode for those, right? But then you lose the
-> benefits of pull mode (the TXQs) for those frames.
-
-I just want to give those back to mac80211, those frames were already
-in push mode anyway.
-
-> I remember Johannes talking about a 'shim layer' between the mac80211
-> TXQs and the 'drv_tx()' hook as a way to bring the benefits of the TXQs
-> to the 'long tail' of simple drivers that don't do any internal
-> buffering anyway, without having to change the drivers to use 'pull
-> mode'. Am I wrong in thinking that mwl8k may be a good candidate for
-> such a layer? From glancing through the existing driver it looks like
-> it's mostly just taking each frame, wrapping it in a HW descriptor, and
-> sticking it on a TX ring?
-
-maybe with the current firmware interface, but with the new one
-aggregation is done on host side, so tx path is no more that simple.
-
+diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
+index f8d5c25..df40c0a 100644
+--- a/net/mac80211/sta_info.c
++++ b/net/mac80211/sta_info.c
+@@ -2089,6 +2089,9 @@ u8 sta_info_tx_streams(struct sta_info *sta)
+ 
+ 		cpustats = per_cpu_ptr(sta->pcpu_rx_stats, cpu);
+ 
++		if (!cpustats->last_rx)
++			continue;
++
+ 		if (time_after(cpustats->last_rx, stats->last_rx))
+ 			stats = cpustats;
+ 	}
 -- 
-Maxime
+1.9.1
