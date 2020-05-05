@@ -2,97 +2,237 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5EF371C59B5
-	for <lists+linux-wireless@lfdr.de>; Tue,  5 May 2020 16:34:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A83871C5A6E
+	for <lists+linux-wireless@lfdr.de>; Tue,  5 May 2020 17:03:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729641AbgEEOeL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 5 May 2020 10:34:11 -0400
-Received: from mout.kundenserver.de ([217.72.192.75]:46673 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727857AbgEEOeL (ORCPT
+        id S1729654AbgEEPDo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 5 May 2020 11:03:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56656 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1729458AbgEEPDo (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 5 May 2020 10:34:11 -0400
-Received: from localhost.localdomain ([149.172.19.189]) by
- mrelayeu.kundenserver.de (mreue108 [212.227.15.145]) with ESMTPA (Nemesis) id
- 1Mof1D-1ila9N3wWf-00p29q; Tue, 05 May 2020 16:33:41 +0200
-From:   Arnd Bergmann <arnd@arndb.de>
-To:     Maya Erez <merez@codeaurora.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        Dedy Lansky <dlansky@codeaurora.org>,
-        Ahmad Masri <amasri@codeaurora.org>,
-        Alexei Avshalom Lazar <ailizaro@codeaurora.org>,
-        Tzahi Sabo <stzahi@codeaurora.org>,
-        "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
-        Lior David <liord@codeaurora.org>,
-        linux-wireless@vger.kernel.org, wil6210@qti.qualcomm.com,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] wil6210: avoid gcc-10 zero-length-bounds warning
-Date:   Tue,  5 May 2020 16:33:24 +0200
-Message-Id: <20200505143332.1398524-1-arnd@arndb.de>
-X-Mailer: git-send-email 2.26.0
+        Tue, 5 May 2020 11:03:44 -0400
+Received: from mail-wm1-x342.google.com (mail-wm1-x342.google.com [IPv6:2a00:1450:4864:20::342])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E6E1C061A0F
+        for <linux-wireless@vger.kernel.org>; Tue,  5 May 2020 08:03:43 -0700 (PDT)
+Received: by mail-wm1-x342.google.com with SMTP id z6so2732563wml.2
+        for <linux-wireless@vger.kernel.org>; Tue, 05 May 2020 08:03:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20161025;
+        h=subject:from:to:cc:references:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding:content-language;
+        bh=Eiwc8tYLjzfjAjmoBYKQ0yovicA80NE2VbHY90CxgTI=;
+        b=ZA+l2Tzp8LI4ajpr2DwU9yX7B8apoYqRcPAp1V9+RFWixa/hEP3qEQ/sicesTlVKAW
+         tdUnB009tr7QpbXEdYykWj7Gtt6XicCJTl04nStmDOsuxvQEp/Nv5TtzCV0DcqtuUoCw
+         DoVG/UpuHEHtfH/k0FInZe6QvhzPQ0NbjzuU0Gc8YtZnNv76tnxlAIO3rhmgPYmQYNdh
+         oAK/C3kIID7PKTuPnBJU2lnex/PmNfBPkvW0ctvV5WCMuAx9pGtiQrAEKvhNDWvr2Ygb
+         Yn3/em1EJRX1XCS+BS9JR1uNgifl/p2Ju6LmgukJUadPXWnLWnHoZo5vq/qf9KbV8I1z
+         OFGg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:from:to:cc:references:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding
+         :content-language;
+        bh=Eiwc8tYLjzfjAjmoBYKQ0yovicA80NE2VbHY90CxgTI=;
+        b=hCI3b+go7CV5YuXMs6KwdSnUR/UysdKUsGrFs8d041ie+DklOsdti8Gyp8Dnys232T
+         wgX5EOlQdLSO7KRVd2fmJu1fb4mxX6FS7OxBE0RTZjjTTF0FRHhsHc8wSTVY71eYR7CR
+         rcsZZsqRlVvw5qPwibHGSqmv9M9xuMs32mBwajbCZd9ynTcxDoowoSiTOT4+n0gcn5Pt
+         E+sXEBkmNcpTdEzqlvA5YYhcyCJMjpJvnT/EgqzCNzdKQY/GU8ZOV0oSgsIXpNeQEdsl
+         ND8Ks+ffwGgC3rlR0yQBiXRDlbsgd0hbzT9CFn04fDo2p5l93kKhs46vkwcQa58t02gJ
+         lU8A==
+X-Gm-Message-State: AGi0PuZ2vvvKTn8HLEmUrz4AYwBwDZbMR2P8K3cg2IHSGykNwuBFZ95H
+        1RyoMggcM0pQXLHG554=
+X-Google-Smtp-Source: APiQypICwhX3eD4e/Vt1DJJM8tksqs9g3nfILja9eipPliil/8u05Yxvg3A1JUCXw8v7k0NAFouDLA==
+X-Received: by 2002:a1c:7d15:: with SMTP id y21mr3616225wmc.57.1588691021782;
+        Tue, 05 May 2020 08:03:41 -0700 (PDT)
+Received: from [192.168.25.100] (ip-176-198-175-128.hsi05.unitymediagroup.de. [176.198.175.128])
+        by smtp.googlemail.com with ESMTPSA id f8sm3849245wrm.8.2020.05.05.08.03.40
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 05 May 2020 08:03:40 -0700 (PDT)
+Subject: Re: [Bug] carl9170 + wpa_supplicant: P2P mode doesn't work with
+ separate interfaces
+From:   =?UTF-8?Q?Frank_Sch=c3=a4fer?= <fschaefer.oss@googlemail.com>
+To:     chunkeey@googlemail.com, j@w1.fi
+Cc:     linux-wireless@vger.kernel.org
+References: <3a9d86b6-744f-e670-8792-9167257edef8@googlemail.com>
+ <71051a8e-b8fc-3289-5009-b651e6c1a409@googlemail.com>
+ <11106990-ab12-3a8b-a203-2af8528ce3a1@googlemail.com>
+Message-ID: <652b81f9-76b4-721b-6086-d958717ba1bd@googlemail.com>
+Date:   Tue, 5 May 2020 17:04:07 +0200
+User-Agent: Mozilla/5.0 (X11; Linux i686; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
+In-Reply-To: <11106990-ab12-3a8b-a203-2af8528ce3a1@googlemail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:zDD9bs6aW0JYGWHkwYbnevv//40lQsm3jQwPwrI1bBnlk/bFmpk
- kZ7UaQ0Fyi+SxjBcJf1zuSa0Sz3irK8/KXdIuShUrvRKkFNI9G4bvKnkf2cMEqIsjTTsWGc
- iK24LCQ46DyASUuYCv6y4tJNO6BTxcEh+qtZzobf576RokNG5ZI0uC1W75wjZTJqMq7GEme
- Uo4NzDp2i0EOhyU1cZHVg==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:d7gL+ZdLOB4=:eXPbZb3icMUiHmpRvU3P0f
- M/j7WeQ1Fe2vADPBhdEhyXAjOsnX7OVDvoWLybK1PrWEsAkAstoJPvhZM+RCmdRV3lv/1EsT+
- 44/Z+e+X+Da8UKYza5hXGqw/ZPGO7V4fLMakWwFuCbiXlkPQIDBT2/bqgXPimuR5d5fJC6mVP
- g9uQckF06ya8J9h4IvE9HKDN/kHNrf31RATZ5Y7xn51ELYjDvjxI6h2U/E8TcXTnS5LiUEb5/
- aDd+IdzrTqIrn0DfIhw7cYg5nsLHp/18eSWzLVcfB4Z0sD+LEOop8WnAN4zi5H/JVXQx6+lKE
- 9LQjWTnPxM+y9bZz36gnKnp0LxyPTF+H3HqKdwPnRfgWCaSjRRso7GDZfIXUeLLWN5l2djs6N
- ifckdjTpXQZ/tb1vSjeb2a0yCZlx/Tft5hB1Xpg2EDf3QVwtoVA2Y4bzT8G77zMYQAXbpo6kd
- V69z9mJgSDwSAdjeIVlsDSWI0UY/auf0jLRrIU+xpqsddEtPGchSVvGKSnsf91tP8yfhxvW4h
- jhgfu1ZAXXwd7yXViQzRgS/tj5tnBv2jk6XdmuHJjV6oZf4nrci4d65prswmwZbqF9Ix0WJAe
- D09TT3ksA0HDEGb/+OmuUsWReSvYjFdpWQIjSY/ufPnu3YW4OvUkxo0e2CLLTuIO3Q8dCSxUg
- CgMkfvEUzgMq9hhFKob5FNd02ssBqNbOf2vUpf0u0HPPPxWzilNtRh6Jm2sWxld/uy+dQpi7i
- wW7YUvshuEd78jav7rBxdQ9+Pa6RmFVEY81D1Rt8ebKSWR4+xQNb8BPOOGdxzKr1u3mpIIHoa
- ukyeR0YuBwbIWhdNrvfxDYx86WvWYTBaH24UoFOhAqbFfP8UPQ=
+Content-Language: de-DE
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-gcc-10 warns about accesses inside of a zero-length array:
 
-drivers/net/wireless/ath/wil6210/cfg80211.c: In function 'wil_cfg80211_scan':
-drivers/net/wireless/ath/wil6210/cfg80211.c:970:23: error: array subscript 255 is outside the bounds of an interior zero-length array 'struct <anonymous>[0]' [-Werror=zero-length-bounds]
-  970 |   cmd.cmd.channel_list[cmd.cmd.num_channels++].channel = ch - 1;
-      |   ~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~
-In file included from drivers/net/wireless/ath/wil6210/wil6210.h:17,
-                 from drivers/net/wireless/ath/wil6210/cfg80211.c:11:
-drivers/net/wireless/ath/wil6210/wmi.h:477:4: note: while referencing 'channel_list'
-  477 |  } channel_list[0];
-      |    ^~~~~~~~~~~~
+Christian, Jouni,
 
-Turn this into a flexible array to avoid the warning.
+I have tracked this down as far as I can get without some help.
+It would be nice if you could take a closer look at the results - see 
+questions below.
 
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
-Gustavo has a patch to do it for all arrays in this file, and that
-should get merged as well, but this simpler patch is sufficient
-to shut up the warning.
----
- drivers/net/wireless/ath/wil6210/wmi.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/wil6210/wmi.h b/drivers/net/wireless/ath/wil6210/wmi.h
-index e3558136e0c4..5bba45c1de48 100644
---- a/drivers/net/wireless/ath/wil6210/wmi.h
-+++ b/drivers/net/wireless/ath/wil6210/wmi.h
-@@ -474,7 +474,7 @@ struct wmi_start_scan_cmd {
- 	struct {
- 		u8 channel;
- 		u8 reserved;
--	} channel_list[0];
-+	} channel_list[];
- } __packed;
- 
- #define WMI_MAX_PNO_SSID_NUM	(16)
--- 
-2.26.0
+Am 29.04.20 um 18:22 schrieb Frank Schäfer:
+>
+> Am 27.04.20 um 18:53 schrieb Frank Schäfer:
+>>
+>> Am 18.04.20 um 13:20 schrieb Frank Schäfer:
+>>> Hi,
+>>>
+>>> I'm currently testing Miraclecast 
+>>> (https://github.com/albfan/miraclecast), an open source 
+>>> Wifi-Display/Miracast implementation.
+>>> In one of my setups, I'm using a carl9170 device as sink, which 
+>>> fails with the following debugging output:
+>>>
+>>> ...
+>>> TRACE: wpa: raw message: IFNAME=wlp0s2f1u8 <3>CTRL-EVENT-SCAN-STARTED
+>>> TRACE: wpa: raw message: <3>P2P-PROV-DISC-PBC-REQ 8e:79:67:11:22:33 
+>>> p2p_dev_addr=8e:79:67:11:22:33 pri_dev_type=10-0050F204-5 name='MY 
+>>> DEVICE' config_methods=0x188 dev_capab=0x25 group_capab=0x0
+>>> TRACE: wpa: raw message: <3>P2P-GO-NEG-REQUEST 8e:79:67:11:22:33 
+>>> dev_passwd_id=4 go_intent=0
+>>> DEBUG: supplicant: GO Negotiation Request from 8e:79:67:11:22:33 
+>>> (supplicant_event_p2p_go_neg_request() in 
+>>> ../../../src/wifi/wifid-supplicant.c:1065)
+>>> DEBUG: supplicant: connect to 8e:79:67:11:22:33 via pbc/(null) 
+>>> (supplicant_peer_connect() in ../../../src/wifi/wifid-supplicant.c:739)
+>>> TRACE: wpa: raw message: <3>P2P-FIND-STOPPED
+>>> DEBUG: supplicant: p2p-scanning stopped on wlp0s2f1u8 
+>>> (supplicant_event_p2p_find_stopped() in 
+>>> ../../../src/wifi/wifid-supplicant.c:904)
+>>> TRACE: wpa: raw message: OK
+>>>
+>>> TRACE: wpa: raw message: <3>P2P-GO-NEG-SUCCESS role=GO freq=2462 
+>>> ht40=0 peer_dev=8e:79:67:11:22:33 peer_iface=8e:79:67:11:22:33 
+>>> wps_method=PBC
+>>> DEBUG: supplicant: set STA-MAC for 8e:79:67:11:22:33 from <none> to 
+>>> 8e:79:67:11:22:33 (via GO-NEG-SUCCESS) 
+>>> (supplicant_event_p2p_go_neg_success() in 
+>>> ../../../src/wifi/wifid-supplicant.c:1194)
+>>> TRACE: wpa: raw message: IFNAME=p2p-0 <3>Failed to start AP 
+>>> functionality
+>>> DEBUG: supplicant: unhandled wpas-event: IFNAME=p2p-0 <3>Failed to 
+>>> start AP functionality (supplicant_event() in 
+>>> ../../../src/wifi/wifid-supplicant.c:1498)
+>>> TRACE: wpa: raw message: <3>P2P-GROUP-FORMATION-FAILURE
+>>> DEBUG: supplicant: peer MY DEVICE connection failed 
+>>> (supplicant_event_p2p_group_formation_failure() in 
+>>> ../../../src/wifi/wifid-supplicant.c:1318)
+>>> TRACE: wpa: raw message: <3>P2P-GROUP-REMOVED p2p-0 GO 
+>>> reason=FORMATION_FAILED
+>>> DEBUG: supplicant: stray P2P-GROUP-REMOVED: <3>P2P-GROUP-REMOVED 
+>>> p2p-0 GO reason=FORMATION_FAILED 
+>>> (supplicant_event_p2p_group_removed() in 
+>>> ../../../src/wifi/wifid-supplicant.c:1286)
+>>> DEBUG: supplicant: sent P2P_FIND to wpas on wlp0s2f1u8 
+>>> (supplicant_p2p_start_scan() in 
+>>> ../../../src/wifi/wifid-supplicant.c:2036)
+>>> TRACE: wpa: raw message: OK
+>>>
+>>> DEBUG: supplicant: p2p-scanning now active on wlp0s2f1u8 
+>>> (supplicant_p2p_find_fn() in ../../../src/wifi/wifid-supplicant.c:1917)
+>>> TRACE: wpa: raw message: IFNAME=wlp0s2f1u8 <3>CTRL-EVENT-SCAN-STARTED
+>>> ...
+>>>
+>>>
+>>> Searching the web for similar problems leads to the following thread:
+>>> https://marc.info/?l=hostap&m=135336063022534
+>>>
+>>> As suggested there, I have patched the Miraclecast sources to use 
+>>> the wpa_supplicant configuration parameter p2p_no_group_iface=1.
+>>> So far, this works fine.
+>>>
+>>>
+>>> Regards,
+>>> Frank Schäfer
+>>>
+>>
+>> I finally managed to create extended logs and to compare the working 
+>> ("GOOD") and non-working ("BAD") case.
+>> See attachment.
+>> If anything is missing, please let me know.
+>>
+>> Hth,
+>> Frank
+>>
+>
+> Ok, this is what I can see happening in carl9170 with regards to the 
+> interfaces:
+>
+> 1) 1 interface is added+initialized: NL80211_IFTYPE_STATION, p2p=false 
+> (when miracle-wifid is started)
+>
+> Non-working case (p2p_no_group_iface=0=default):
+> 2a) 1 interface is added: NL80211_IFTYPE_STATION, p2p=true (apparently 
+> the p2p group interface)
+> 2b) 1 interface is removed: NL80211_IFTYPE_STATION, p2p=true 
+> (apparently because setting of the interface flags failed with -EBUSY)
+> 3) 1 interface is added+initialized: NL80211_IFTYPE_AP, p2p=true
+>    => fails with -EBUSY, because main_vif->p2p is false (main.c, line 
+> 656)
+>
+> Working case (p2p_no_group_iface=1):
+> 2) 1 interface is removed: NL80211_IFTYPE_STATION, p2p=false
+> 3) 1 interface is added+initialized: NL80211_IFTYPE_AP, p2p=true
+
+UPDATE (removed some confusion due to async output to the log, added 
+disconnection/exit):
+
+1) STA non-p2p interface is added+initialized (miracle-wifid start)
+
+Connection attempt:
+
+BAD case (p2p_no_group_iface=0=default):
+2a) STA p2p interface is added (p2p group interface)
+2b) STA p2p interface is removed (p2p group interface)
+3) AP p2p interface is added: fails with -EBUSY (carl9170 main.c, line 
+654), because main_vif->p2p is false in line 648
+=> connection fails
+
+GOOD case (p2p_no_group_iface=1):
+2) STA non-p2p interface is removed
+3) AP p2p interface is added+initialized
+=> connection established, streaming
+
+Disconnection (GOOD case (p2p_no_group_iface=1)):
+4) AP p2p interface is removed
+5) STA non-p2p interface is added+initialized
+
+miracle-wifid exit:
+6) STA non-p2p is interface is removed
+
+
+So there are two things to investigate further: BAD 3) and GOOD 2)
+
+@Christian:
+Can you please check if the behavior of carl9170 (BAD 3)) is correct ?
+Reading the comments and the rest of the code in the switch 
+(main_vif->type) {} section, I wonder if the main_vif->p2p check in line 
+654 is correct/required.
+Isn't all we have to make sure, that the AP interface always becomes the 
+main interface ? Why does main_vif->p2p matter here ?
+A few lines below (660/661), STA interfaces are always added if the main 
+interface is a AP interface, no matter if any of them is p2p or not.
+
+@Jouni:
+Why does wpa_supplicant remove the STA non-p2p interface before creating 
+the AP p2p interface if p2p_no_group_iface=1, but not if 
+p2p_no_group_iface=0 ?
+That seems to be inconsistent.
+In case the driver doesn't support concurrent interfaces, the behavior 
+of p2p_no_group_iface=1 seems to make things work.
+But I don't know if there might be any disadvantages.
+In my case, the removed interface is added again later (5)) and 
+everything works fine.
+
+Regards,
+Frank
 
