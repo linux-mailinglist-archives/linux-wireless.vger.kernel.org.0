@@ -2,87 +2,94 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D63701C5B8E
-	for <lists+linux-wireless@lfdr.de>; Tue,  5 May 2020 17:37:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 204E91C5C25
+	for <lists+linux-wireless@lfdr.de>; Tue,  5 May 2020 17:45:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729464AbgEEPha (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 5 May 2020 11:37:30 -0400
-Received: from smail.rz.tu-ilmenau.de ([141.24.186.67]:36766 "EHLO
-        smail.rz.tu-ilmenau.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729317AbgEEPh3 (ORCPT
+        id S1730655AbgEEPo4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 5 May 2020 11:44:56 -0400
+Received: from mail26.static.mailgun.info ([104.130.122.26]:60585 "EHLO
+        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1730627AbgEEPoz (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 5 May 2020 11:37:29 -0400
-Received: from [192.168.178.34] (unknown [87.147.56.179])
+        Tue, 5 May 2020 11:44:55 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1588693494; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=S242E4d9Q+x3WazT0LfEblmsx0Y/I8PQEL3G5k/rxP8=; b=SMiFsUzXh4h2q5v09w6VK/z4KlFQPDbXK/TMlE/yYfm4E1NkEverc1F1ynYP/fDXe6ivG8BP
+ t1SbpUl6hptrm43o+wCtPksYoMGPhr5yPKClCNTW7mtiNNAf2fGsyllUCRzaqxVevG4yfH7Z
+ 73feyFL2CX6FS41dviYSjT31g6E=
+X-Mailgun-Sending-Ip: 104.130.122.26
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5eb189e5.7fcd01fa8c38-smtp-out-n03;
+ Tue, 05 May 2020 15:44:37 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 03FD1C44788; Tue,  5 May 2020 15:44:36 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by smail.rz.tu-ilmenau.de (Postfix) with ESMTPSA id A9725580248;
-        Tue,  5 May 2020 17:37:27 +0200 (CEST)
-Subject: Re: [PATCH 1/2] ath10k: use cumulative survey statistics
-To:     Sven Eckelmann <sven@narfation.org>, ath11k@lists.infradead.org
-Cc:     Rajkumar Manoharan <rmanohar@codeaurora.org>,
-        linux-wireless-owner@vger.kernel.org,
-        linux-wireless@vger.kernel.org, ath10k@lists.infradead.org,
-        kvalo@codeaurora.org
-References: <20200504154122.91862-1-markus.theil@tu-ilmenau.de>
- <f772b7bf0eac31516a4e28719c1938f2@codeaurora.org>
- <2335594.cnkAv9Vaq7@bentobox> <1845755.pTfhzBy2qg@bentobox>
-From:   Markus Theil <markus.theil@tu-ilmenau.de>
-Message-ID: <46ab4ffd-b512-de43-40bb-f35989d228b9@tu-ilmenau.de>
-Date:   Tue, 5 May 2020 17:37:27 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 6992FC433F2;
+        Tue,  5 May 2020 15:44:33 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 6992FC433F2
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     Maya Erez <merez@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Dedy Lansky <dlansky@codeaurora.org>,
+        Ahmad Masri <amasri@codeaurora.org>,
+        Alexei Avshalom Lazar <ailizaro@codeaurora.org>,
+        Tzahi Sabo <stzahi@codeaurora.org>,
+        "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
+        Lior David <liord@codeaurora.org>,
+        linux-wireless@vger.kernel.org, wil6210@qti.qualcomm.com,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] wil6210: avoid gcc-10 zero-length-bounds warning
+References: <20200505143332.1398524-1-arnd@arndb.de>
+Date:   Tue, 05 May 2020 18:44:31 +0300
+In-Reply-To: <20200505143332.1398524-1-arnd@arndb.de> (Arnd Bergmann's message
+        of "Tue, 5 May 2020 16:33:24 +0200")
+Message-ID: <877dxqcrog.fsf@kamboji.qca.qualcomm.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-In-Reply-To: <1845755.pTfhzBy2qg@bentobox>
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 5/5/20 9:49 AM, Sven Eckelmann wrote:
-> On Tuesday, 5 May 2020 09:01:34 CEST Sven Eckelmann wrote:
->> On Tuesday, 5 May 2020 01:46:12 CEST Rajkumar Manoharan wrote:
->> [...]
->>> IIRC this was fixed a while ago by below patch. Somehow it never landed 
->>> in ath.git.
->>> Simple one line change is enough.
->>>
->>> https://patchwork.kernel.org/patch/10550707/
->> Because it doesn't work for everything. Remember that 10.2.4.x overflows all 
->> the time (14-30s) because it used only 31 bit for the counters.
->>
->> But feel free to point me to the firmware version which fixed this.
-> See also https://patchwork.kernel.org/patch/9701459/
+Arnd Bergmann <arnd@arndb.de> writes:
+
+> gcc-10 warns about accesses inside of a zero-length array:
 >
-> Kind regards,
-> 	Sven
+> drivers/net/wireless/ath/wil6210/cfg80211.c: In function 'wil_cfg80211_scan':
+> drivers/net/wireless/ath/wil6210/cfg80211.c:970:23: error: array
+> subscript 255 is outside the bounds of an interior zero-length array
+> 'struct <anonymous>[0]' [-Werror=zero-length-bounds]
+>   970 |   cmd.cmd.channel_list[cmd.cmd.num_channels++].channel = ch - 1;
+>       |   ~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~
+> In file included from drivers/net/wireless/ath/wil6210/wil6210.h:17,
+>                  from drivers/net/wireless/ath/wil6210/cfg80211.c:11:
+> drivers/net/wireless/ath/wil6210/wmi.h:477:4: note: while referencing 'channel_list'
+>   477 |  } channel_list[0];
+>       |    ^~~~~~~~~~~~
+>
+> Turn this into a flexible array to avoid the warning.
+>
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> ---
+> Gustavo has a patch to do it for all arrays in this file, and that
+> should get merged as well, but this simpler patch is sufficient
+> to shut up the warning.
 
-This patch already fixes the problem for me. I tested it on QCA988X hw
-with firmware 10.2.4.
+I don't see Gustavo's patch yet so I'll take this one first.
 
-[   10.350919] ath10k_pci 0000:04:00.0: qca988x hw2.0 target 0x4100016c
-chip_id 0x043222ff sub 0000:0000
-[   10.350930] ath10k_pci 0000:04:00.0: kconfig debug 1 debugfs 1
-tracing 1 dfs 0 testmode 0
-[   10.351803] ath10k_pci 0000:04:00.0: firmware ver 10.2.4-1.0-00047
-api 5 features no-p2p,raw-mode,mfp,allows-mesh-bcast crc32 35bd9258
-[   10.385617] ath10k_pci 0000:04:00.0: board_file api 1 bmi_id N/A
-crc32 bebc7c08
-[   11.536818] ath10k_pci 0000:04:00.0: htt-ver 2.1 wmi-op 5 htt-op 2
-cal otp max-sta 128 raw 0 hwcrypto 1
-
-I also did not see the 31 bit overflow after a small amount of seconds.
-
-Survey data from wlp4s0
-    frequency:            2412 MHz [in use]
-    noise:                -65 dBm
-    channel active time:        5370225 ms
-    channel busy time:        924199 ms
-    channel receive time:        140 ms
-    channel transmit time:        0 ms
-
-Kind regards,
-Markus
-
+-- 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
