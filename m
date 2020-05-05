@@ -2,120 +2,166 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AE4D31C62FE
-	for <lists+linux-wireless@lfdr.de>; Tue,  5 May 2020 23:23:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 440CA1C64DD
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 May 2020 02:11:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729170AbgEEVXn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 5 May 2020 17:23:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59794 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726350AbgEEVXm (ORCPT
+        id S1729170AbgEFALJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 5 May 2020 20:11:09 -0400
+Received: from gateway32.websitewelcome.com ([192.185.145.178]:24543 "EHLO
+        gateway32.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728969AbgEFALJ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 5 May 2020 17:23:42 -0400
-Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93EF1C061A0F
-        for <linux-wireless@vger.kernel.org>; Tue,  5 May 2020 14:23:42 -0700 (PDT)
-Received: by mail-wr1-x442.google.com with SMTP id l18so4436658wrn.6
-        for <linux-wireless@vger.kernel.org>; Tue, 05 May 2020 14:23:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:subject:to:cc:message-id:date:user-agent:mime-version
-         :content-language:content-transfer-encoding;
-        bh=nU+A5TMfpnhcyGzbsuMUAVDKxSLjs8/9QIBpNm3kqMo=;
-        b=mB6xLdxBFVdspDqi17lt9VZI3EAv/VRjLHnt1uPx+R5eOLxbJZcuFCJv5w287cZh+g
-         ePaRVKxNasKWSGgwLpsw+urQwK5PDCNTHsaDFq//nvXQmtaCWAf5EZkiW+JfK6sH+v2U
-         TDh8VKYVCOtGrkJN27PSWahuAVVWMndC5KRYPYKvRGTeKMTwwvRQslv6OTK5ESPZCs93
-         Lwq2WgLB1/xUyaZq+/R/jNfwud53nHWCYbOaXDvMW62T7csiMNXSLwGd0iWvdcLX/NAx
-         uJKxayEC24igSdWhVSiLZNOVOfRfolYDhNyB58NL4riTIAcMCkKMB4+1VVfS1mt4KyEf
-         OkVQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:subject:to:cc:message-id:date:user-agent
-         :mime-version:content-language:content-transfer-encoding;
-        bh=nU+A5TMfpnhcyGzbsuMUAVDKxSLjs8/9QIBpNm3kqMo=;
-        b=rrTvGdDZbF10rD8lL3oiOkE7ZwiQ2pddApvH6U4g/p3aD+vZMHRhBZOLBH+M9oOd+Y
-         0jD0wfmnFGbsVQXt+Cs0MbQxYD0INFnFKaKnjeyVaNWSkcj1jk7vuJY2o40WH9QXrcdI
-         UHpSjsv4P98+tm0i6+F+kibvsHv9SBzcNEcm0VChux0qso6KajBkZzOJpTLSV7NW3fmt
-         dLF1RwWR35McMe2higGbvc9bXXlawuPJmqFeQ8PpqdTUqK7piLio2MXAmnRDRG8T9vKU
-         RoZUsbocEFcWxGM2YsMKTfg0Ce0H/tj+iO4mioHcJTzpWuyZKq4i8FtQRiRa1hHt+cw0
-         CTJg==
-X-Gm-Message-State: AGi0PuYlsA3MfkECPeGehOHym17yCtG+ngKopnUtebDcWQSJTRgeCIcK
-        d/vFRjL4JaR7DXakiZ7qElA=
-X-Google-Smtp-Source: APiQypLj/aYuGd1u09nc2v/HP1xojnf3KnNRLT3WwofJoP+DSQEKNLYanQZX0DDOrOTpJXyhGEwWmw==
-X-Received: by 2002:a5d:6692:: with SMTP id l18mr6125761wru.423.1588713821365;
-        Tue, 05 May 2020 14:23:41 -0700 (PDT)
-Received: from [192.168.43.18] (188.29.165.117.threembb.co.uk. [188.29.165.117])
-        by smtp.gmail.com with ESMTPSA id a9sm5573954wmm.38.2020.05.05.14.23.40
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 05 May 2020 14:23:41 -0700 (PDT)
-From:   Malcolm Priestley <tvboxspy@gmail.com>
-Subject: [PATCH 6/6] staging: vt6656: remove difs / sifs adjustments.
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>,
-        linux-wireless@vger.kernel.org, Oscar Carter <oscar.carter@gmx.com>
-Message-ID: <034e445c-b245-52c4-c855-431b9783bcff@gmail.com>
-Date:   Tue, 5 May 2020 22:23:39 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+        Tue, 5 May 2020 20:11:09 -0400
+X-Greylist: delayed 1408 seconds by postgrey-1.27 at vger.kernel.org; Tue, 05 May 2020 20:11:08 EDT
+Received: from cm12.websitewelcome.com (cm12.websitewelcome.com [100.42.49.8])
+        by gateway32.websitewelcome.com (Postfix) with ESMTP id 0739B2FF1BBF
+        for <linux-wireless@vger.kernel.org>; Tue,  5 May 2020 18:47:39 -0500 (CDT)
+Received: from gator4166.hostgator.com ([108.167.133.22])
+        by cmsmtp with SMTP
+        id W7Hmja8Rc1s2xW7Hnj9iWF; Tue, 05 May 2020 18:47:39 -0500
+X-Authority-Reason: nr=8
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=embeddedor.com; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
+        Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=KOPjXpRAEDO9gDVQmxGovICcFiqsKOmDUl+JG+lNPqw=; b=YkBgmP2mcQEg2kn3TFnvNRqZON
+        KRE3srpQZuM58jSwKcE26UGT6J4v/6H5OGCZPeOPJHti8lOK/EXnx5hlb3xh5K2WN18GM6EcY2mXJ
+        aBmy/jjw2C22bdJr56JFSOIskhf9PuefI+j5jy+kGNdBdqc3UjkyZUjL3XC3qbDJA0cmQ9FtFesJJ
+        ortTHl9lbXEcU7AhkCJSG+/KaoYXcJw0XKEHnBN/VM8XHa6wZSRDy3kxZ8bKI5y/v0tYrncaMayGZ
+        UW+zyn19zNlqrIMLg/2RlePCiXmS30vn4kdnTSVDDQWKCX5Na5jb2aCu1G81cN9pBlJ9HJvu2vilV
+        Hgb57vuA==;
+Received: from [189.207.59.248] (port=57526 helo=embeddedor)
+        by gator4166.hostgator.com with esmtpa (Exim 4.92)
+        (envelope-from <gustavo@embeddedor.com>)
+        id 1jW7Hm-003MYG-Ki; Tue, 05 May 2020 18:47:38 -0500
+Date:   Tue, 5 May 2020 18:52:05 -0500
+From:   "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+To:     Jussi Kivilinna <jussi.kivilinna@iki.fi>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+Subject: [PATCH][next] rndis_wlan: Remove logically dead code
+Message-ID: <20200505235205.GA18539@embeddedor>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - embeddedor.com
+X-BWhitelist: no
+X-Source-IP: 189.207.59.248
+X-Source-L: No
+X-Exim-ID: 1jW7Hm-003MYG-Ki
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: (embeddedor) [189.207.59.248]:57526
+X-Source-Auth: gustavo@embeddedor.com
+X-Email-Count: 4
+X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
+X-Local-Domain: yes
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Now mac89211 is doing frame timing in rxtx these vendor adjustments need
-to be removed.
+caps_buf is always of size sizeof(*caps) because
+sizeof(caps->auth_encr_pair) * 16 is always zero. Notice
+that when using zero-length arrays, sizeof evaluates to zero[1].
 
-Signed-off-by: Malcolm Priestley <tvboxspy@gmail.com>
+So, the code introduced by 
+commit 0308383f9591 ("rndis_wlan: get max_num_pmkids from device")
+is logically dead, hence is never executed and can be removed. As a
+consequence, the rest of the related code can be refactored a bit.
+
+Notice that this code has been out there since March 2010.
+
+[1] https://gcc.gnu.org/onlinedocs/gcc/Zero-Length.html
+Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
 ---
- drivers/staging/vt6656/card.c | 32 --------------------------------
- 1 file changed, 32 deletions(-)
+In case this is actually a 10-year old bug, then we might want
+calculate the size of caps_buf through the use of the struct_size
+helper:
 
-diff --git a/drivers/staging/vt6656/card.c b/drivers/staging/vt6656/card.c
-index 3cb97c4daeb8..10f3dfda83b5 100644
---- a/drivers/staging/vt6656/card.c
-+++ b/drivers/staging/vt6656/card.c
-@@ -149,38 +149,6 @@ int vnt_update_ifs(struct vnt_private *priv)
+struct_size(caps, auth_encr_pair, 16);
+
+and we might also want to allocate dynamic memory instead, as we
+cannot do u8 caps_buf[struct_size(caps, auth_encr_pair, 16)];
+due to -Wvla.
+
+Thanks
+--
+Gustavo
+
+ drivers/net/wireless/rndis_wlan.c | 24 ++++++++----------------
+ 1 file changed, 8 insertions(+), 16 deletions(-)
+
+diff --git a/drivers/net/wireless/rndis_wlan.c b/drivers/net/wireless/rndis_wlan.c
+index 52375f3e430a..8852a1832951 100644
+--- a/drivers/net/wireless/rndis_wlan.c
++++ b/drivers/net/wireless/rndis_wlan.c
+@@ -312,17 +312,11 @@ struct ndis_80211_assoc_info {
+ 	__le32 offset_resp_ies;
+ } __packed;
  
- 	priv->eifs = C_EIFS;
+-struct ndis_80211_auth_encr_pair {
+-	__le32 auth_mode;
+-	__le32 encr_mode;
+-} __packed;
+-
+ struct ndis_80211_capability {
+ 	__le32 length;
+ 	__le32 version;
+ 	__le32 num_pmkids;
+ 	__le32 num_auth_encr_pair;
+-	struct ndis_80211_auth_encr_pair auth_encr_pair[0];
+ } __packed;
  
--	switch (priv->rf_type) {
--	case RF_VT3226D0:
--		if (priv->bb_type != BB_TYPE_11B) {
--			priv->sifs -= 1;
--			priv->difs -= 1;
--			break;
--		}
--		/* fall through */
--	case RF_AIROHA7230:
--	case RF_AL2230:
--	case RF_AL2230S:
--		if (priv->bb_type != BB_TYPE_11B)
--			break;
--		/* fall through */
--	case RF_RFMD2959:
--	case RF_VT3226:
--	case RF_VT3342A0:
--		priv->sifs -= 3;
--		priv->difs -= 3;
--		break;
--	case RF_MAXIM2829:
--		if (priv->bb_type == BB_TYPE_11A) {
--			priv->sifs -= 5;
--			priv->difs -= 5;
--		} else {
--			priv->sifs -= 2;
--			priv->difs -= 2;
--		}
--
--		break;
--	}
--
- 	data[0] = (u8)priv->sifs;
- 	data[1] = (u8)priv->difs;
- 	data[2] = (u8)priv->eifs;
+ struct ndis_80211_bssid_info {
+@@ -3109,8 +3103,7 @@ static int rndis_wlan_get_caps(struct usbnet *usbdev, struct wiphy *wiphy)
+ 		__le32	num_items;
+ 		__le32	items[8];
+ 	} networks_supported;
+-	struct ndis_80211_capability *caps;
+-	u8 caps_buf[sizeof(*caps) + sizeof(caps->auth_encr_pair) * 16];
++	struct ndis_80211_capability caps;
+ 	int len, retval, i, n;
+ 	struct rndis_wlan_private *priv = get_rndis_wlan_priv(usbdev);
+ 
+@@ -3140,19 +3133,18 @@ static int rndis_wlan_get_caps(struct usbnet *usbdev, struct wiphy *wiphy)
+ 	}
+ 
+ 	/* get device 802.11 capabilities, number of PMKIDs */
+-	caps = (struct ndis_80211_capability *)caps_buf;
+-	len = sizeof(caps_buf);
++	len = sizeof(caps);
+ 	retval = rndis_query_oid(usbdev,
+ 				 RNDIS_OID_802_11_CAPABILITY,
+-				 caps, &len);
++				 &caps, &len);
+ 	if (retval >= 0) {
+ 		netdev_dbg(usbdev->net, "RNDIS_OID_802_11_CAPABILITY -> len %d, "
+ 				"ver %d, pmkids %d, auth-encr-pairs %d\n",
+-				le32_to_cpu(caps->length),
+-				le32_to_cpu(caps->version),
+-				le32_to_cpu(caps->num_pmkids),
+-				le32_to_cpu(caps->num_auth_encr_pair));
+-		wiphy->max_num_pmkids = le32_to_cpu(caps->num_pmkids);
++				le32_to_cpu(caps.length),
++				le32_to_cpu(caps.version),
++				le32_to_cpu(caps.num_pmkids),
++				le32_to_cpu(caps.num_auth_encr_pair));
++		wiphy->max_num_pmkids = le32_to_cpu(caps.num_pmkids);
+ 	} else
+ 		wiphy->max_num_pmkids = 0;
+ 
 -- 
-2.25.1
+2.26.2
+
