@@ -2,110 +2,112 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 087101C601F
-	for <lists+linux-wireless@lfdr.de>; Tue,  5 May 2020 20:31:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B72E91C6023
+	for <lists+linux-wireless@lfdr.de>; Tue,  5 May 2020 20:32:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728180AbgEESbW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 5 May 2020 14:31:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32820 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727083AbgEESbW (ORCPT
+        id S1728584AbgEEScr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 5 May 2020 14:32:47 -0400
+Received: from mail26.static.mailgun.info ([104.130.122.26]:24358 "EHLO
+        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728292AbgEEScr (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 5 May 2020 14:31:22 -0400
-Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1FCCC061A0F
-        for <linux-wireless@vger.kernel.org>; Tue,  5 May 2020 11:31:21 -0700 (PDT)
-Received: by mail-wr1-x442.google.com with SMTP id f13so3897544wrm.13
-        for <linux-wireless@vger.kernel.org>; Tue, 05 May 2020 11:31:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=havhuAu7xznQ0MuR1bzbfKCs7K2MdrTertMDkyH7tfY=;
-        b=FfQ366NL1oalpQ62x0lekBgIFkA/wxnns/r1ujkHVEVZoC5xy4IaY/vgyexgyRfMAk
-         rD42IepcjxIdKn5gOe92DgatCoZjnblhvDrgHrau5umekelSqtIJJAV3/pDSE974T2aY
-         x3KikGrF5WFmFwTdHP7KKwH2VaPhtRZYX4Sqt3zDrB5XJdDPKiGNTmlH35Yiyp9Km5VQ
-         G+GFej0QzqIPFK+HjfxXyCvR9k/0ejBgbXdAvut4VC+wf0+uJNvyh6nJgALp1jyWhMGa
-         zRuFNjLj0nzHuxnQW0qA7wBTQutkschunrCUa3ONYTeMur9ypy7euwh1JHRK4nR8AtHh
-         3/Eg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=havhuAu7xznQ0MuR1bzbfKCs7K2MdrTertMDkyH7tfY=;
-        b=aud+mI3+EiaG/p27ifxeAselairOgPWkM4lkSo1gEFnnmfSZSjQFN+FbUVDWvBLcH0
-         BS9AVZk4wOkHEFl6yz1jPD6asnVekPDqDkJjGcfV8MwcjpEP5umZrwLEuitXVpZ4V/Ad
-         XaEUaNib9ixnLnVDSORUyxsH58C3AsSdiGbm1jvzROjOy6H8Py4RtSI0Os2J+kOMDIsz
-         zDX8Vt3VwddCDRjGCbioWZa5+2Gdd4lUKSNsMgGzJK2NDStYnN2iMAUTaxp2cQM+cPiC
-         Uqyz5XkEoDBcZG2FCWrU+ghCjEOzDnwIarDfzny+hz2iOCxM6u9lyV8MA28kuEZnmjUH
-         xy/Q==
-X-Gm-Message-State: AGi0PuY9XtcJv/T3dZO9mgH2RlwB039FHFcwhfL6DNNz2oCcipbZbaHn
-        gcO2dGvHn3tBk0aigGmtR8Q=
-X-Google-Smtp-Source: APiQypLru5/bCUzwwo150/X+5AO63IsgIXCX07L0YmPRgDCKzCQEnjwMfMbpF+oI0+puOK+pgFW8Ww==
-X-Received: by 2002:adf:ce90:: with SMTP id r16mr4909729wrn.86.1588703480623;
-        Tue, 05 May 2020 11:31:20 -0700 (PDT)
-Received: from debian64.daheim ([91.13.113.85])
-        by smtp.gmail.com with ESMTPSA id i17sm5287617wml.23.2020.05.05.11.31.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 05 May 2020 11:31:11 -0700 (PDT)
-Received: from localhost.daheim ([127.0.0.1] helo=debian64.localnet)
-        by debian64.daheim with esmtp (Exim 4.93)
-        (envelope-from <chunkeey@gmail.com>)
-        id 1jW2LN-0008W4-O8; Tue, 05 May 2020 20:31:01 +0200
-From:   Christian Lamparter <chunkeey@gmail.com>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     Frank =?ISO-8859-1?Q?Sch=E4fer?= <fschaefer.oss@googlemail.com>,
-        linux-wireless@vger.kernel.org
-Subject: Re: [PATCH] carl9170: remove P2P_GO support
-Date:   Tue, 05 May 2020 20:31:01 +0200
-Message-ID: <27876964.GhbJDmQBxd@debian64>
-In-Reply-To: <87368ej1aj.fsf@tynnyri.adurom.net>
-References: <20200425092811.9494-1-chunkeey@gmail.com> <5ebf8e6d-d34b-aa92-d166-d8a5ca0b2c18@googlemail.com> <87368ej1aj.fsf@tynnyri.adurom.net>
+        Tue, 5 May 2020 14:32:47 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1588703567; h=Message-ID: References: In-Reply-To: Subject:
+ Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Sender; bh=kqcch0uCot+4dXsdXDL01hE7tWa5z9rZFO4hj6Mt8EQ=;
+ b=eMfypgiGVUqaMOuDzX8ssGrCeYFVSXL0xiT3QB1UzPJmvteSLeCQYQfyqTDQSAIbQDaRy6sO
+ lck3DaV07S4FzNlV7p7iLDmsur3JmP7Llkp9hS72dDkrKpqvL1FMfjmi5kjkHMuGHAf/iNMr
+ OxGCs4nFCZB58hCKxlin6H3pJBY=
+X-Mailgun-Sending-Ip: 104.130.122.26
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5eb1b14e.7f2b7a552260-smtp-out-n04;
+ Tue, 05 May 2020 18:32:46 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 33B75C432C2; Tue,  5 May 2020 18:32:45 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: rmanohar)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id B5241C433F2;
+        Tue,  5 May 2020 18:32:44 +0000 (UTC)
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 8bit
+Date:   Tue, 05 May 2020 11:32:44 -0700
+From:   Rajkumar Manoharan <rmanohar@codeaurora.org>
+To:     Markus Theil <markus.theil@tu-ilmenau.de>
+Cc:     Sven Eckelmann <sven@narfation.org>, ath11k@lists.infradead.org,
+        linux-wireless-owner@vger.kernel.org,
+        linux-wireless@vger.kernel.org, ath10k@lists.infradead.org,
+        kvalo@codeaurora.org
+Subject: Re: [PATCH 1/2] ath10k: use cumulative survey statistics
+In-Reply-To: <46ab4ffd-b512-de43-40bb-f35989d228b9@tu-ilmenau.de>
+References: <20200504154122.91862-1-markus.theil@tu-ilmenau.de>
+ <f772b7bf0eac31516a4e28719c1938f2@codeaurora.org>
+ <2335594.cnkAv9Vaq7@bentobox> <1845755.pTfhzBy2qg@bentobox>
+ <46ab4ffd-b512-de43-40bb-f35989d228b9@tu-ilmenau.de>
+Message-ID: <0cd75c16a8557a44e9b2c086847941a1@codeaurora.org>
+X-Sender: rmanohar@codeaurora.org
+User-Agent: Roundcube Webmail/1.3.9
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
+On 2020-05-05 08:37, Markus Theil wrote:
+> On 5/5/20 9:49 AM, Sven Eckelmann wrote:
+>> On Tuesday, 5 May 2020 09:01:34 CEST Sven Eckelmann wrote:
+>>> On Tuesday, 5 May 2020 01:46:12 CEST Rajkumar Manoharan wrote:
+>>> [...]
+>>>> IIRC this was fixed a while ago by below patch. Somehow it never 
+>>>> landed
+>>>> in ath.git.
+>>>> Simple one line change is enough.
+>>>> 
+>>>> https://patchwork.kernel.org/patch/10550707/
+>>> Because it doesn't work for everything. Remember that 10.2.4.x 
+>>> overflows all
+>>> the time (14-30s) because it used only 31 bit for the counters.
+>>> 
+>>> But feel free to point me to the firmware version which fixed this.
+>> See also https://patchwork.kernel.org/patch/9701459/
+>> 
+>> Kind regards,
+>> 	Sven
+> 
+> This patch already fixes the problem for me. I tested it on QCA988X hw
+> with firmware 10.2.4.
+> 
+> [   10.350919] ath10k_pci 0000:04:00.0: qca988x hw2.0 target 0x4100016c
+> chip_id 0x043222ff sub 0000:0000
+> [   10.350930] ath10k_pci 0000:04:00.0: kconfig debug 1 debugfs 1
+> tracing 1 dfs 0 testmode 0
+> [   10.351803] ath10k_pci 0000:04:00.0: firmware ver 10.2.4-1.0-00047
+> api 5 features no-p2p,raw-mode,mfp,allows-mesh-bcast crc32 35bd9258
+> [   10.385617] ath10k_pci 0000:04:00.0: board_file api 1 bmi_id N/A
+> crc32 bebc7c08
+> [   11.536818] ath10k_pci 0000:04:00.0: htt-ver 2.1 wmi-op 5 htt-op 2
+> cal otp max-sta 128 raw 0 hwcrypto 1
+> 
+> I also did not see the 31 bit overflow after a small amount of seconds.
+> 
+> Survey data from wlp4s0
+>     frequency:            2412 MHz [in use]
+>     noise:                -65 dBm
+>     channel active time:        5370225 ms
+>     channel busy time:        924199 ms
+>     channel receive time:        140 ms
+>     channel transmit time:        0 ms
+> 
+Great. Thanks for validating the patch. Venkat will post the patch on 
+ToT.
 
-On Tuesday, 5 May 2020 09:20:20 CEST Kalle Valo wrote:
-> Frank Sch=E4fer <fschaefer.oss@googlemail.com> writes:
-> >
-> > Am 25.04.20 um 11:28 schrieb Christian Lamparter:
-> >> This patch follows up on a bug-report by Frank Sch=E4fer that
-> >> discovered P2P GO wasn't working with wpa_supplicant.
-> >> This patch removes part of the broken P2P GO support but
-> >> keeps the vif switchover code in place.
-> >
-> > Hmm... no way to fix it ?
-> > P2P-GO seems to work fine with p2p_no_group_iface=3D1, so do you really
-> > think it's a good idea / required to remove the whole thing ?
-> >
-> >> Cc: <stable@vger.kernel.org>
-> >
-> > Are you sure about that ?
-> > People might be using it...
->=20
-> Christian, what should I do? Take the patch or drop it?
-
-Well, the way I see it: AR9170's silicon die has been cast before
-P2P was a thing. And while it was nice back in '10 then to had have
-something to test ath9k with, by todays standards the lack of features
-like separate TSF sync and the cacheless BA makes it so that it's holding
-back the performance and connection quality of all the clients which are
-connected to it.
-
-So, I think we'll just kicking down the can on that and I'm sorry that
-I gave the people  the wrong impression. There are much better chips now
-that came with P2P in mind.=20
-
-So: please take the patch.
-
-Cheers
-Christian
-
-
-
+-Rajkumar
