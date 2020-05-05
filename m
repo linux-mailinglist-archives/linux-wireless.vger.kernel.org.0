@@ -2,136 +2,137 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 200DE1C4D7A
-	for <lists+linux-wireless@lfdr.de>; Tue,  5 May 2020 06:56:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DF4D81C4E2B
+	for <lists+linux-wireless@lfdr.de>; Tue,  5 May 2020 08:16:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726635AbgEEE4Z (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 5 May 2020 00:56:25 -0400
-Received: from mail26.static.mailgun.info ([104.130.122.26]:13804 "EHLO
-        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725766AbgEEE4V (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 5 May 2020 00:56:21 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1588654580; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=PV7sEq8EmjCcuJpfW06q3OmdCQ5IpxPI2EjjZQwRIPw=; b=rgFe5dJ+dkpvCdcLwJLdPk3BJuQTuZ5qYzcYqJySGTtHvob4imSnFE78yXlMNmYvCEiN3UF8
- CFOW1/EuPSMrWp8lPIFNfJmoYfh9El7Y/LkW8Ob9dQG24ZEcXKHFnDJ6Rvo+yhJTRk55bfhw
- /apZg5Z+Rim28Lq7HmYvaMB495Q=
-X-Mailgun-Sending-Ip: 104.130.122.26
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5eb0f1ea.7f3176e90500-smtp-out-n05;
- Tue, 05 May 2020 04:56:10 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 56675C433F2; Tue,  5 May 2020 04:56:10 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 9D601C433D2;
-        Tue,  5 May 2020 04:56:05 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 9D601C433D2
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-Cc:     Arnd Bergmann <arnd@arndb.de>, linux-kernel@vger.kernel.org,
+        id S1728217AbgEEGQP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 5 May 2020 02:16:15 -0400
+Received: from mout.web.de ([217.72.192.78]:44503 "EHLO mout.web.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725766AbgEEGQO (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 5 May 2020 02:16:14 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+        s=dbaedf251592; t=1588659342;
+        bh=XmK5O44OmJ3eYVQg33Sdnbohqm5cOU1jNxpCWHBTu6A=;
+        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=FAFT/bMXb6o9udnUvj8IE/L1kcJpEvX+KRzsgKlil/cVeWWqvLzxv4xnOQ+Gw0UrO
+         MGp/YBCd84W5ns4q4eWjXK3Rt8giJ7exKL9MBhi8tVKPqeNH1Gj5bjCuJd82+2Z0o2
+         pL2gCqj36FZsO4b05mt5LKFUMmBm7OzXxE+qtEzc=
+X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
+Received: from [192.168.1.2] ([78.48.132.123]) by smtp.web.de (mrweb102
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0LuuS5-1j5Q683PyD-0101ej; Tue, 05
+ May 2020 08:15:41 +0200
+Subject: Re: net: rtw88: fix an issue about leak system resources
+To:     Dejin Zheng <zhengdejin5@gmail.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Cc:     Brian Norris <briannorris@chromium.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
         "David S. Miller" <davem@davemloft.net>,
-        Michal Kazior <michal.kazior@tieto.com>,
-        Maharaja Kennadyrajan <mkenna@codeaurora.org>,
-        Wen Gong <wgong@codeaurora.org>,
-        Erik Stromdahl <erik.stromdahl@gmail.com>,
-        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, Kees Cook <keescook@chromium.org>
-Subject: Re: [PATCH 04/15] ath10k: fix gcc-10 zero-length-bounds warnings
-References: <20200430213101.135134-1-arnd@arndb.de>
-        <20200430213101.135134-5-arnd@arndb.de>
-        <49831bca-b9cf-4b9a-1a60-f4289e9c83c0@embeddedor.com>
-        <87368flxui.fsf@codeaurora.org>
-        <69f5c551-01ab-3b90-01a1-42514cd58f60@embeddedor.com>
-Date:   Tue, 05 May 2020 07:56:03 +0300
-In-Reply-To: <69f5c551-01ab-3b90-01a1-42514cd58f60@embeddedor.com> (Gustavo A.
-        R. Silva's message of "Mon, 4 May 2020 11:09:21 -0500")
-Message-ID: <87d07jdlp8.fsf@kamboji.qca.qualcomm.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        Kalle Valo <kvalo@codeaurora.org>,
+        Stanislaw Gruszka <sgruszka@redhat.com>,
+        Yan-Hsuan Chuang <yhchuang@realtek.com>
+References: <79591cab-fe3e-0597-3126-c251d41d492b@web.de>
+ <20200504144206.GA5409@nuc8i5> <882eacd1-1cbf-6aef-06c5-3ed6d402c0f5@web.de>
+ <CA+ASDXOJ2CSzdgos4Y8Wd7iZjRUkrMN=Ma0_-ujG8bihGzPKkQ@mail.gmail.com>
+ <20200505005908.GA8464@nuc8i5>
+From:   Markus Elfring <Markus.Elfring@web.de>
+Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
+ 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 FEE=
+Message-ID: <c5890e43-4b86-eed2-4de9-caa70743255d@web.de>
+Date:   Tue, 5 May 2020 08:15:39 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <20200505005908.GA8464@nuc8i5>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
+X-Provags-ID: V03:K1:04v4GgQazZfnLBwYRDKACuz5kVWtBLeCVWNzMsfuq0kNv5Luj/1
+ g6h/n46RJVkJ1Bo0le1H0natVVECtTWfhpf4azmzAz8Ph/RoPtIYOiEB0hlQmrzZRth6qlB
+ 4qQ56bRgBHIp82HyBzy8oSLIg2fMEMnZ+9WExPiESlyc8r1Q2GfE4HcQmiT9XDBLWl5lZ3t
+ AkBzqOjof+LsTljRMeCdQ==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:lkTaNKRfqBY=:7S23YAPDfggYtmMwgw/bvY
+ Kc4o1/tOR0+mNqygGaszEAIAElITYnGEZMO36hEMyht9J+3lvx/ZrBeQg7aGElj0EplcicwMh
+ pyWBDV18J9vodPvxikdPu+MH7fN1xoWTYSkbHfAbSq/+qhfflzzm/zNVW6UtyjEsheKmyfHGq
+ ihY0pg815H7UgOr+EFb+bN7t+VakBg5EPVEomte+fKBoSN5IToaurYTHzTfC69Wm7U/HV96F7
+ xJng4QATI/XdxghhskYjU4QefXIQYwE+/TItkNT3k3bAZbHK/2j5d/ojKSpvdLDx7pYgybg7Q
+ LwhQfotmEIOD1sqBXe+cvMLiwS2n5uEhzI6yVddNawkTfhTy46updfBR42gAJ+9T52kbLuPjM
+ ueJQ8vX1RRAIlvp3FIaWG51pSzYts5OruMdJpwdwqANk+NuHkmGK1k/5O25QPSYE7ZJI/sygb
+ uuoiEqCdZClfmQ0oUV2nx4aNJbalxG0KtosoVjmuEaiTdRjxyqdB5eXo8cPBEKppoZN/SI6Bt
+ vHDtUmzQxTpjZ36/MkPSJCqxoo0UBhNR4KFSHBwBx/rUzzeU0iQZV8MtFcGlUsrPgP1qSaCUg
+ pIy2FLdI3sFQnS7xGyfO0TSXBuhqJpfrhfw9zJ6qGThXe4hdVduIKPg/FqaUJPhatsL8F6pin
+ BH8nZynXzQdi+gqj43KBgUctsMdjg+9lJmbl9aDaboYtyo6+rHPPOUO6z71R7dVsL/o6C4P3s
+ McesrJiNNri0WdYjMSYmE7vY5+/OkWIykPwN2yvwwYmjBA5IeeXQtYMyuuIOf5bsN3S+FWbrw
+ aJyLnm9wcikm43gbCREeMMDm/ulpeYk3lh7jn9rdYxDAZgPnNBk6Vi7dUnwO4BZg/tVqYYQtC
+ BKvX+8xxlq5WZrAKPUEWr01QWSK/yfHLfRxdCwq69HKSHxHB5Ce+GoqlBHoMR0B9vR3fi5F+a
+ ahQOkSyPiPR7D7l1kVtb2EpqbtL5t14I+TIcmdVGtMvaKZ1weRsRsrZRsgqG5DkO23UsFYJAh
+ yX3wQwdo0op5UIsEgyzBuko72D7thJbW9pjKNQ1XmY8mcPxudxuaK/JriYJ5sciaTHA8E6AxP
+ V70xdtg0YwRd0qOoT/IKmePidACjj7HZYle6939J1PrVPSi+F71xt7JlsTeq5PRBk047xw9Q2
+ ApHn6B1aKB2zzKa5l8jGrRitqiSq5gFoDj60vlokLxv9+LaGiI4QH1+2uLiZdMs3JwKLJAIeA
+ eAux0RSRlqt3JTBOT
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-"Gustavo A. R. Silva" <gustavo@embeddedor.com> writes:
+> Brian, Thanks very much for your reminder,
 
-> On 5/4/20 06:54, Kalle Valo wrote:
->> "Gustavo A. R. Silva" <gustavo@embeddedor.com> writes:
->> 
->>> Hi Arnd,
->>>
->>> On 4/30/20 16:30, Arnd Bergmann wrote:
->>>> gcc-10 started warning about out-of-bounds access for zero-length
->>>> arrays:
->>>>
->>>> In file included from drivers/net/wireless/ath/ath10k/core.h:18,
->>>>                  from drivers/net/wireless/ath/ath10k/htt_rx.c:8:
->>>> drivers/net/wireless/ath/ath10k/htt_rx.c: In function 'ath10k_htt_rx_tx_fetch_ind':
->>>> drivers/net/wireless/ath/ath10k/htt.h:1683:17: warning: array subscript 65535 is outside the bounds of an interior zero-length array 'struct htt_tx_fetch_record[0]' [-Wzero-length-bounds]
->>>>  1683 |  return (void *)&ind->records[le16_to_cpu(ind->num_records)];
->>>>       |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->>>> drivers/net/wireless/ath/ath10k/htt.h:1676:29: note: while referencing 'records'
->>>>  1676 |  struct htt_tx_fetch_record records[0];
->>>>       |                             ^~~~~~~
->>>>
->>>> The structure was already converted to have a flexible-array member in
->>>> the past, but there are two zero-length members in the end and only
->>>> one of them can be a flexible-array member.
->>>>
->>>> Swap the two around to avoid the warning, as 'resp_ids' is not accessed
->>>> in a way that causes a warning.
->>>>
->>>> Fixes: 3ba225b506a2 ("treewide: Replace zero-length array with flexible-array member")
->>>> Fixes: 22e6b3bc5d96 ("ath10k: add new htt definitions")
->>>> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
->>>> ---
->>>>  drivers/net/wireless/ath/ath10k/htt.h | 4 ++--
->>>>  1 file changed, 2 insertions(+), 2 deletions(-)
->>>>
->>>> diff --git a/drivers/net/wireless/ath/ath10k/htt.h b/drivers/net/wireless/ath/ath10k/htt.h
->>>> index e7096a73c6ca..7621f0a3dc77 100644
->>>> --- a/drivers/net/wireless/ath/ath10k/htt.h
->>>> +++ b/drivers/net/wireless/ath/ath10k/htt.h
->>>> @@ -1673,8 +1673,8 @@ struct htt_tx_fetch_ind {
->>>>  	__le32 token;
->>>>  	__le16 num_resp_ids;
->>>>  	__le16 num_records;
->>>> -	struct htt_tx_fetch_record records[0];
->>>> -	__le32 resp_ids[]; /* ath10k_htt_get_tx_fetch_ind_resp_ids() */
->>>> +	__le32 resp_ids[0]; /* ath10k_htt_get_tx_fetch_ind_resp_ids() */
->>>> +	struct htt_tx_fetch_record records[];
->>>>  } __packed;
->>>>  
->>>>  static inline void *
->>>>
->>>
->>> The treewide patch is an experimental change and, as this change only applies
->>> to my -next tree, I will carry this patch in it, so other people don't have
->>> to worry about this at all.
->> 
->> Gustavo, why do you have ath10k patches in your tree? I prefer that
->> ath10k patches go through my ath.git tree so that they are reviewed and
->> tested.
->> 
->
-> I just wanted to test out a mechanical change. I will remove it from my tree
-> now and will send a patch to you so you can apply it to your ath.git tree.
+Reminders can hopefully trigger positive effects.
 
-Great, thanks.
 
--- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+> These comments have always bothered me.
+
+Thanks for such information.
+
+
+> Now I can put it on my blacklist.
+
+I find it unfortunate that you choose to adjust your communication preferences
+in this direction.
+Thus I am curious if other contributors will get more chances to integrate
+another bit of advice into your software development attention.
+
+Regards,
+Markus
