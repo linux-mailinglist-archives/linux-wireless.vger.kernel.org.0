@@ -2,102 +2,136 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CA71D1C4B83
-	for <lists+linux-wireless@lfdr.de>; Tue,  5 May 2020 03:27:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 200DE1C4D7A
+	for <lists+linux-wireless@lfdr.de>; Tue,  5 May 2020 06:56:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726549AbgEEB14 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 4 May 2020 21:27:56 -0400
-Received: from mail26.static.mailgun.info ([104.130.122.26]:34459 "EHLO
+        id S1726635AbgEEE4Z (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 5 May 2020 00:56:25 -0400
+Received: from mail26.static.mailgun.info ([104.130.122.26]:13804 "EHLO
         mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726516AbgEEB14 (ORCPT
+        by vger.kernel.org with ESMTP id S1725766AbgEEE4V (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 4 May 2020 21:27:56 -0400
+        Tue, 5 May 2020 00:56:21 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1588642075; h=Message-Id: Date: Subject: Cc: To: From:
- Sender; bh=GYSaXza1LZAix+M2M6XPoWGbGirsGfyhkv5RBLqTrxc=; b=I1bqZ2jaSmNd/jzZ27TUqtTxqhao8lHs7kOTiugsaHnJsALGLfB5PFS7mNInF5+vDQyNtIqZ
- TWRSdkDjt5F2D4ygJP32+N2nU/k2DlWUVhIUM0jNxrKDjnyk7oMail/4GrrmwAwTTzXQY6sS
- wZCPQDcZkoGmPJfaGV3ep/VpjnU=
+ s=smtp; t=1588654580; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=PV7sEq8EmjCcuJpfW06q3OmdCQ5IpxPI2EjjZQwRIPw=; b=rgFe5dJ+dkpvCdcLwJLdPk3BJuQTuZ5qYzcYqJySGTtHvob4imSnFE78yXlMNmYvCEiN3UF8
+ CFOW1/EuPSMrWp8lPIFNfJmoYfh9El7Y/LkW8Ob9dQG24ZEcXKHFnDJ6Rvo+yhJTRk55bfhw
+ /apZg5Z+Rim28Lq7HmYvaMB495Q=
 X-Mailgun-Sending-Ip: 104.130.122.26
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5eb0c116.7fe699a4d3e8-smtp-out-n01;
- Tue, 05 May 2020 01:27:50 -0000 (UTC)
+ by mxa.mailgun.org with ESMTP id 5eb0f1ea.7f3176e90500-smtp-out-n05;
+ Tue, 05 May 2020 04:56:10 -0000 (UTC)
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 23533C433BA; Tue,  5 May 2020 01:27:50 +0000 (UTC)
+        id 56675C433F2; Tue,  5 May 2020 04:56:10 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
 X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
         autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from rmanohar-linux.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        (Authenticated sender: rmanohar)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 66CF1C433CB;
-        Tue,  5 May 2020 01:27:49 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 66CF1C433CB
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 9D601C433D2;
+        Tue,  5 May 2020 04:56:05 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 9D601C433D2
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=rmanohar@codeaurora.org
-From:   Rajkumar Manoharan <rmanohar@codeaurora.org>
-To:     ath11k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org, Miles Hu <milehu@codeaurora.org>,
-        Rajkumar Manoharan <rmanohar@codeaurora.org>
-Subject: [PATCH] ath11k: remove stale monitor status descriptor
-Date:   Mon,  4 May 2020 18:27:43 -0700
-Message-Id: <1588642063-6950-1-git-send-email-rmanohar@codeaurora.org>
-X-Mailer: git-send-email 2.7.4
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+Cc:     Arnd Bergmann <arnd@arndb.de>, linux-kernel@vger.kernel.org,
+        "David S. Miller" <davem@davemloft.net>,
+        Michal Kazior <michal.kazior@tieto.com>,
+        Maharaja Kennadyrajan <mkenna@codeaurora.org>,
+        Wen Gong <wgong@codeaurora.org>,
+        Erik Stromdahl <erik.stromdahl@gmail.com>,
+        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, Kees Cook <keescook@chromium.org>
+Subject: Re: [PATCH 04/15] ath10k: fix gcc-10 zero-length-bounds warnings
+References: <20200430213101.135134-1-arnd@arndb.de>
+        <20200430213101.135134-5-arnd@arndb.de>
+        <49831bca-b9cf-4b9a-1a60-f4289e9c83c0@embeddedor.com>
+        <87368flxui.fsf@codeaurora.org>
+        <69f5c551-01ab-3b90-01a1-42514cd58f60@embeddedor.com>
+Date:   Tue, 05 May 2020 07:56:03 +0300
+In-Reply-To: <69f5c551-01ab-3b90-01a1-42514cd58f60@embeddedor.com> (Gustavo A.
+        R. Silva's message of "Mon, 4 May 2020 11:09:21 -0500")
+Message-ID: <87d07jdlp8.fsf@kamboji.qca.qualcomm.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Miles Hu <milehu@codeaurora.org>
+"Gustavo A. R. Silva" <gustavo@embeddedor.com> writes:
 
-The driver is not handling monitor status descriptor whenever
-the done bit of status descriptor is not set by hardware. This leave
-a stale entry in monitor status ring and flooding warning message.
-Fix that by removing the descriptor and move forward to next one
-in monitor status ring.
+> On 5/4/20 06:54, Kalle Valo wrote:
+>> "Gustavo A. R. Silva" <gustavo@embeddedor.com> writes:
+>> 
+>>> Hi Arnd,
+>>>
+>>> On 4/30/20 16:30, Arnd Bergmann wrote:
+>>>> gcc-10 started warning about out-of-bounds access for zero-length
+>>>> arrays:
+>>>>
+>>>> In file included from drivers/net/wireless/ath/ath10k/core.h:18,
+>>>>                  from drivers/net/wireless/ath/ath10k/htt_rx.c:8:
+>>>> drivers/net/wireless/ath/ath10k/htt_rx.c: In function 'ath10k_htt_rx_tx_fetch_ind':
+>>>> drivers/net/wireless/ath/ath10k/htt.h:1683:17: warning: array subscript 65535 is outside the bounds of an interior zero-length array 'struct htt_tx_fetch_record[0]' [-Wzero-length-bounds]
+>>>>  1683 |  return (void *)&ind->records[le16_to_cpu(ind->num_records)];
+>>>>       |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>>>> drivers/net/wireless/ath/ath10k/htt.h:1676:29: note: while referencing 'records'
+>>>>  1676 |  struct htt_tx_fetch_record records[0];
+>>>>       |                             ^~~~~~~
+>>>>
+>>>> The structure was already converted to have a flexible-array member in
+>>>> the past, but there are two zero-length members in the end and only
+>>>> one of them can be a flexible-array member.
+>>>>
+>>>> Swap the two around to avoid the warning, as 'resp_ids' is not accessed
+>>>> in a way that causes a warning.
+>>>>
+>>>> Fixes: 3ba225b506a2 ("treewide: Replace zero-length array with flexible-array member")
+>>>> Fixes: 22e6b3bc5d96 ("ath10k: add new htt definitions")
+>>>> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+>>>> ---
+>>>>  drivers/net/wireless/ath/ath10k/htt.h | 4 ++--
+>>>>  1 file changed, 2 insertions(+), 2 deletions(-)
+>>>>
+>>>> diff --git a/drivers/net/wireless/ath/ath10k/htt.h b/drivers/net/wireless/ath/ath10k/htt.h
+>>>> index e7096a73c6ca..7621f0a3dc77 100644
+>>>> --- a/drivers/net/wireless/ath/ath10k/htt.h
+>>>> +++ b/drivers/net/wireless/ath/ath10k/htt.h
+>>>> @@ -1673,8 +1673,8 @@ struct htt_tx_fetch_ind {
+>>>>  	__le32 token;
+>>>>  	__le16 num_resp_ids;
+>>>>  	__le16 num_records;
+>>>> -	struct htt_tx_fetch_record records[0];
+>>>> -	__le32 resp_ids[]; /* ath10k_htt_get_tx_fetch_ind_resp_ids() */
+>>>> +	__le32 resp_ids[0]; /* ath10k_htt_get_tx_fetch_ind_resp_ids() */
+>>>> +	struct htt_tx_fetch_record records[];
+>>>>  } __packed;
+>>>>  
+>>>>  static inline void *
+>>>>
+>>>
+>>> The treewide patch is an experimental change and, as this change only applies
+>>> to my -next tree, I will carry this patch in it, so other people don't have
+>>> to worry about this at all.
+>> 
+>> Gustavo, why do you have ath10k patches in your tree? I prefer that
+>> ath10k patches go through my ath.git tree so that they are reviewed and
+>> tested.
+>> 
+>
+> I just wanted to test out a mechanical change. I will remove it from my tree
+> now and will send a patch to you so you can apply it to your ath.git tree.
 
-Co-developed-by: Rajkumar Manoharan <rmanohar@codeaurora.org>
-Signed-off-by: Rajkumar Manoharan <rmanohar@codeaurora.org>
-Signed-off-by: Miles Hu <milehu@codeaurora.org>
----
- drivers/net/wireless/ath/ath11k/dp_rx.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+Great, thanks.
 
-diff --git a/drivers/net/wireless/ath/ath11k/dp_rx.c b/drivers/net/wireless/ath/ath11k/dp_rx.c
-index 47ad3bd9e1c6..27d17b8db662 100644
---- a/drivers/net/wireless/ath/ath11k/dp_rx.c
-+++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
-@@ -2722,7 +2722,7 @@ static int ath11k_dp_rx_reap_mon_status_ring(struct ath11k_base *ab, int mac_id,
- 				ath11k_warn(ab, "rx monitor status with invalid buf_id %d\n",
- 					    buf_id);
- 				spin_unlock_bh(&rx_ring->idr_lock);
--				continue;
-+				goto move_next;
- 			}
- 
- 			idr_remove(&rx_ring->bufs_idr, buf_id);
-@@ -2741,13 +2741,16 @@ static int ath11k_dp_rx_reap_mon_status_ring(struct ath11k_base *ab, int mac_id,
- 			tlv = (struct hal_tlv_hdr *)skb->data;
- 			if (FIELD_GET(HAL_TLV_HDR_TAG, tlv->tl) !=
- 					HAL_RX_STATUS_BUFFER_DONE) {
--				ath11k_hal_srng_src_get_next_entry(ab, srng);
--				continue;
-+				ath11k_warn(ab, "mon status DONE not set %lx\n",
-+					    FIELD_GET(HAL_TLV_HDR_TAG,
-+						      tlv->tl));
-+				dev_kfree_skb_any(skb);
-+				goto move_next;
- 			}
- 
- 			__skb_queue_tail(skb_list, skb);
- 		}
--
-+move_next:
- 		skb = ath11k_dp_rx_alloc_mon_status_buf(ab, rx_ring,
- 							&buf_id, GFP_ATOMIC);
- 
 -- 
-2.7.4
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
