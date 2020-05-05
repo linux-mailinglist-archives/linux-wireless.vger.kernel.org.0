@@ -2,137 +2,110 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DF4D81C4E2B
-	for <lists+linux-wireless@lfdr.de>; Tue,  5 May 2020 08:16:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA6881C4E7F
+	for <lists+linux-wireless@lfdr.de>; Tue,  5 May 2020 08:51:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728217AbgEEGQP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 5 May 2020 02:16:15 -0400
-Received: from mout.web.de ([217.72.192.78]:44503 "EHLO mout.web.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725766AbgEEGQO (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 5 May 2020 02:16:14 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1588659342;
-        bh=XmK5O44OmJ3eYVQg33Sdnbohqm5cOU1jNxpCWHBTu6A=;
-        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=FAFT/bMXb6o9udnUvj8IE/L1kcJpEvX+KRzsgKlil/cVeWWqvLzxv4xnOQ+Gw0UrO
-         MGp/YBCd84W5ns4q4eWjXK3Rt8giJ7exKL9MBhi8tVKPqeNH1Gj5bjCuJd82+2Z0o2
-         pL2gCqj36FZsO4b05mt5LKFUMmBm7OzXxE+qtEzc=
-X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([78.48.132.123]) by smtp.web.de (mrweb102
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0LuuS5-1j5Q683PyD-0101ej; Tue, 05
- May 2020 08:15:41 +0200
-Subject: Re: net: rtw88: fix an issue about leak system resources
-To:     Dejin Zheng <zhengdejin5@gmail.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Cc:     Brian Norris <briannorris@chromium.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        id S1726568AbgEEGvp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 5 May 2020 02:51:45 -0400
+Received: from mail-co1nam11on2107.outbound.protection.outlook.com ([40.107.220.107]:36726
+        "EHLO NAM11-CO1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725320AbgEEGvo (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 5 May 2020 02:51:44 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=VxdSJJK9l8mukZBI68Vi5lUZO+KfV29ACqeJAigryoyLDMGX0WBcN25gSrDPCfkXhjPHFOeSDHX7tZIPO6qUIR50ulFakqFalqx0osDAtnwSbOuv12kl1wLe+1mC6BQUH7HS/RW1QBxjou0nNPV4+g1MTo2tTEknNVSynh+Q/GFzFBf88WJMTlf6Y8WoPDTJDRdVqaLk8Wuhcv/Ikq5/nWTQyIEndbLMhWEtv1x9UmmW89T2ToYousK6k82DHICUyo64nKldWX3KvxHAY7FYqez774Y9ZN+NakfGfQNUTlSddt6m23LLae0w7vwXLe+X4xut/r8S2Aq4DLeKLQYO7A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=/xjNEMktwC67jOqKO0/JwERJW/cqN4VP/TUkCFfKbtI=;
+ b=hbSgwtJLSyqJ1rloUtYmIntPoUqPbVuk9IVyw89sICOJi50boqCdXghFSn2FwH6bmPGLztNpFLj717ktdi4Ry0kxlkN6mq7y5Ujw96PjcQKP8rpeJRc4h04ndNBw5fQW/gpD91r3njARIeGXI68QdJmwJjckw5hJrmG9yx+0Ouq3Do+iXmL0XH4bs3xrWftnzARh5xjG0ZMot+u86jpyY/ofav7R2Y/jJAz8RZBQGWBkZta4gzMf7DkN45NTCKL+6ZbHwA7qW9Nz+LN306NuRx88ktt/WhYQXBrlMcbZ1jwHZjwEn449NuuV3IjRMSJKmuIKa2gpQIzpoaVXNudj0w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=cypress.com; dmarc=pass action=none header.from=cypress.com;
+ dkim=pass header.d=cypress.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cypress.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=/xjNEMktwC67jOqKO0/JwERJW/cqN4VP/TUkCFfKbtI=;
+ b=Cwf404KDi08fhfjieCfP6IOm5t2faG2WU4VUzIo87+e8XG4uDdIdeQlLNiQUIksvoUbCDI0TqhJos+b/7mFx8vCnkllUmBOG8cfOZlIUMeKjY//kGgUuBr2SrtSPL/kQ2Fyl5g8U3Ze6IufN/txtf29hxoLOMsPHSyItZinv0qo=
+Authentication-Results: vger.kernel.org; dkim=none (message not signed)
+ header.d=none;vger.kernel.org; dmarc=none action=none
+ header.from=cypress.com;
+Received: from BYAPR06MB4901.namprd06.prod.outlook.com (2603:10b6:a03:7a::30)
+ by BYAPR06MB6088.namprd06.prod.outlook.com (2603:10b6:a03:15b::24) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2958.20; Tue, 5 May
+ 2020 06:51:42 +0000
+Received: from BYAPR06MB4901.namprd06.prod.outlook.com
+ ([fe80::69bb:5671:e8b:74c1]) by BYAPR06MB4901.namprd06.prod.outlook.com
+ ([fe80::69bb:5671:e8b:74c1%3]) with mapi id 15.20.2958.030; Tue, 5 May 2020
+ 06:51:42 +0000
+From:   Chi-Hsien Lin <chi-hsien.lin@cypress.com>
+To:     linux-wireless@vger.kernel.org
+Cc:     brcm80211-dev-list@broadcom.com, brcm80211-dev-list@cypress.com,
+        Arend van Spriel <arend.vanspriel@broadcom.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Wright Feng <wright.feng@cypress.com>,
         Kalle Valo <kvalo@codeaurora.org>,
-        Stanislaw Gruszka <sgruszka@redhat.com>,
-        Yan-Hsuan Chuang <yhchuang@realtek.com>
-References: <79591cab-fe3e-0597-3126-c251d41d492b@web.de>
- <20200504144206.GA5409@nuc8i5> <882eacd1-1cbf-6aef-06c5-3ed6d402c0f5@web.de>
- <CA+ASDXOJ2CSzdgos4Y8Wd7iZjRUkrMN=Ma0_-ujG8bihGzPKkQ@mail.gmail.com>
- <20200505005908.GA8464@nuc8i5>
-From:   Markus Elfring <Markus.Elfring@web.de>
-Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
- 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 FEE=
-Message-ID: <c5890e43-4b86-eed2-4de9-caa70743255d@web.de>
-Date:   Tue, 5 May 2020 08:15:39 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+        Chi-Hsien Lin <chi-hsien.lin@cypress.com>
+Subject: [PATCH 0/2] WMM change series
+Date:   Tue,  5 May 2020 01:51:25 -0500
+Message-Id: <1588661487-21884-1-git-send-email-chi-hsien.lin@cypress.com>
+X-Mailer: git-send-email 2.1.0
+Content-Type: text/plain
+X-ClientProxiedBy: MN2PR07CA0008.namprd07.prod.outlook.com
+ (2603:10b6:208:1a0::18) To BYAPR06MB4901.namprd06.prod.outlook.com
+ (2603:10b6:a03:7a::30)
 MIME-Version: 1.0
-In-Reply-To: <20200505005908.GA8464@nuc8i5>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-X-Provags-ID: V03:K1:04v4GgQazZfnLBwYRDKACuz5kVWtBLeCVWNzMsfuq0kNv5Luj/1
- g6h/n46RJVkJ1Bo0le1H0natVVECtTWfhpf4azmzAz8Ph/RoPtIYOiEB0hlQmrzZRth6qlB
- 4qQ56bRgBHIp82HyBzy8oSLIg2fMEMnZ+9WExPiESlyc8r1Q2GfE4HcQmiT9XDBLWl5lZ3t
- AkBzqOjof+LsTljRMeCdQ==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:lkTaNKRfqBY=:7S23YAPDfggYtmMwgw/bvY
- Kc4o1/tOR0+mNqygGaszEAIAElITYnGEZMO36hEMyht9J+3lvx/ZrBeQg7aGElj0EplcicwMh
- pyWBDV18J9vodPvxikdPu+MH7fN1xoWTYSkbHfAbSq/+qhfflzzm/zNVW6UtyjEsheKmyfHGq
- ihY0pg815H7UgOr+EFb+bN7t+VakBg5EPVEomte+fKBoSN5IToaurYTHzTfC69Wm7U/HV96F7
- xJng4QATI/XdxghhskYjU4QefXIQYwE+/TItkNT3k3bAZbHK/2j5d/ojKSpvdLDx7pYgybg7Q
- LwhQfotmEIOD1sqBXe+cvMLiwS2n5uEhzI6yVddNawkTfhTy46updfBR42gAJ+9T52kbLuPjM
- ueJQ8vX1RRAIlvp3FIaWG51pSzYts5OruMdJpwdwqANk+NuHkmGK1k/5O25QPSYE7ZJI/sygb
- uuoiEqCdZClfmQ0oUV2nx4aNJbalxG0KtosoVjmuEaiTdRjxyqdB5eXo8cPBEKppoZN/SI6Bt
- vHDtUmzQxTpjZ36/MkPSJCqxoo0UBhNR4KFSHBwBx/rUzzeU0iQZV8MtFcGlUsrPgP1qSaCUg
- pIy2FLdI3sFQnS7xGyfO0TSXBuhqJpfrhfw9zJ6qGThXe4hdVduIKPg/FqaUJPhatsL8F6pin
- BH8nZynXzQdi+gqj43KBgUctsMdjg+9lJmbl9aDaboYtyo6+rHPPOUO6z71R7dVsL/o6C4P3s
- McesrJiNNri0WdYjMSYmE7vY5+/OkWIykPwN2yvwwYmjBA5IeeXQtYMyuuIOf5bsN3S+FWbrw
- aJyLnm9wcikm43gbCREeMMDm/ulpeYk3lh7jn9rdYxDAZgPnNBk6Vi7dUnwO4BZg/tVqYYQtC
- BKvX+8xxlq5WZrAKPUEWr01QWSK/yfHLfRxdCwq69HKSHxHB5Ce+GoqlBHoMR0B9vR3fi5F+a
- ahQOkSyPiPR7D7l1kVtb2EpqbtL5t14I+TIcmdVGtMvaKZ1weRsRsrZRsgqG5DkO23UsFYJAh
- yX3wQwdo0op5UIsEgyzBuko72D7thJbW9pjKNQ1XmY8mcPxudxuaK/JriYJ5sciaTHA8E6AxP
- V70xdtg0YwRd0qOoT/IKmePidACjj7HZYle6939J1PrVPSi+F71xt7JlsTeq5PRBk047xw9Q2
- ApHn6B1aKB2zzKa5l8jGrRitqiSq5gFoDj60vlokLxv9+LaGiI4QH1+2uLiZdMs3JwKLJAIeA
- eAux0RSRlqt3JTBOT
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from aremote02.aus.cypress.com (12.110.209.245) by MN2PR07CA0008.namprd07.prod.outlook.com (2603:10b6:208:1a0::18) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2958.19 via Frontend Transport; Tue, 5 May 2020 06:51:40 +0000
+X-Mailer: git-send-email 2.1.0
+X-Originating-IP: [12.110.209.245]
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-HT: Tenant
+X-MS-Office365-Filtering-Correlation-Id: b9f99c56-9c8a-4bd5-c660-08d7f0c0c469
+X-MS-TrafficTypeDiagnostic: BYAPR06MB6088:|BYAPR06MB6088:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <BYAPR06MB60886263368BD3E74CA9C040BBA70@BYAPR06MB6088.namprd06.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:3631;
+X-Forefront-PRVS: 0394259C80
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: jF1pGPAjdN3CZO5dENpQFy1pBFBRuQQ9ACI4tS3ZQqfcOihBnYclCM7gk5bCFIsN2s/OHGGrmLTlcsc6n3upCX9uKAUGQetB3E7BFoZHNJ8ziB881cF2Apqhg1ZAUAT+niwchm02sZzIBxD0P7yD832V12m+xEmDUfYhLjPiGa0909mZOP6WROMaLW3lRzJGNxqnXIXbk+ioTnJTA8qEQ6bavsyukJBjsbn4w2+zwhXRSIBc1JKhucOLz8P0XQi0AZ5RKt6+sOSj4QkMA0Sb1gjDTwVY6BaQGTTX4bEIhqjG1LiLCtn9gJFHS36I2tiMBnInl1SBoZXyskWQIj2D26Iw2Bu0dGXSpsm54C/nuw6gsUh8ZW+7NPv14bllkhEP8ES4piaDkKHfXcFjFdETJRhyEAST6osINIF/5rDEmi1MGJ2MziPY6+bYeJPFWIyxkcfwEEIn9CbgB9dEj+7lKQ5pvpzzs8SduHtCxQWlUsn6le6uUX46pAQuw0QpFx6WN+oMPMMJPCaMKbMcJVy9pw==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR06MB4901.namprd06.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(366004)(33430700001)(8936002)(8676002)(52116002)(36756003)(54906003)(26005)(7696005)(86362001)(498600001)(66946007)(66556008)(66476007)(6666004)(5660300002)(6916009)(4744005)(107886003)(4326008)(2906002)(186003)(2616005)(33440700001)(956004)(16526019)(6486002);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData: 4BFLCHBJQWThrsJgM1hZ/SkhShJ2dccvfZgMWqaFyKxhy6DlLZrDPEaVzi6EAYQjWfCLmC5PlaSLv8KwxX1jN6z36XlXjsKaUSglDT2oZ8SDK2gXo/ONFY0IH8m8Il7UKVeFCcfuxEr9whR5KXkmlBYqvlvNRj+nZwZlf2x/EZIatVRspl9N2hG6Y1lMrs1MF2DWqiSCsz6iXm5wWf4FNr9OAkzPyePZi0WTmJXRbF2mOFMiKxscE4Y1eXVXCfmonTds+PUDaiy1PN5IFzaRem238l7Pp6pLXjAj1/fKxLGMuTH7xGtla8cAetszvzMyod2uLnqHdFW+AgNx1EzwAhK++3ABMpfbncmshwY74o3hScFCJii0PGdQ1tdUk+X/elzC5TjAIcXSPBidw8EN2FWz9KAeGk2ohLtZ8WXv0RdwspGFAC9MmONXunfuNo8BfDLx7X5MOy7HWpuk/2exUjsOmes/BID/Z6boju4CYN8K34VL7SEuyvMDJ3jl7wAt2470i8s0DGXZ439t++eDsY5L+mk+WPEE/0/ZzQguJ8v6GY3Sw+JoVKKu2AGsQ7lx/3cfDpmnsNEUaXYEr1rCsSdsb/QSZrEPYV6zC/W3Oxm2IcBXY5oCaDcGkpegu7NeA67ocri+3V+nbewu5pqD0LwEeg73gW9KC3a2mrmZxTpvkRqwTnBSj0ZWBx9gCu5vuvayKM0TUrb3ZsbCUVewxnVs2ygHNyx2XFPAaMV6z/YOCVx+l4XUkzyDUF4kdVVcZMOAGCLiQPfiNkFRPDCWHbMVwHT3DUVY4uYR/M6BLgU=
+X-OriginatorOrg: cypress.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b9f99c56-9c8a-4bd5-c660-08d7f0c0c469
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 May 2020 06:51:42.2604
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 011addfc-2c09-450d-8938-e0bbc2dd2376
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: dqPZ5kR5Tt3EnBU1b881c0eZAq6FfpWELcOODUN9eXv3oqDVioFfoqSQoMnFdGpAzL4JccHy0ENYI8ZvzcQz/Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR06MB6088
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-> Brian, Thanks very much for your reminder,
+This series fixes 802.11 cert WMM related failures.
 
-Reminders can hopefully trigger positive effects.
+Pramod Prakash (1):
+  brcmfmac: fix 802.1d priority to ac mapping for pcie dongles
 
+Saravanan Shanmugham (1):
+  brcmfmac: map 802.1d priority to precedence level based on AP WMM
+    params
 
-> These comments have always bothered me.
+ .../broadcom/brcm80211/brcmfmac/cfg80211.c         | 152 +++++++++++++++++++++
+ .../broadcom/brcm80211/brcmfmac/cfg80211.h         |  24 ++++
+ .../wireless/broadcom/brcm80211/brcmfmac/common.h  |   4 +
+ .../broadcom/brcm80211/brcmfmac/flowring.c         |   4 +-
+ .../broadcom/brcm80211/brcmfmac/fwsignal.c         |  26 +---
+ .../broadcom/brcm80211/brcmfmac/fwsignal.h         |  23 ++++
+ .../wireless/broadcom/brcm80211/brcmfmac/sdio.c    |  17 +--
+ 7 files changed, 215 insertions(+), 35 deletions(-)
 
-Thanks for such information.
+-- 
+2.1.0
 
-
-> Now I can put it on my blacklist.
-
-I find it unfortunate that you choose to adjust your communication preferences
-in this direction.
-Thus I am curious if other contributors will get more chances to integrate
-another bit of advice into your software development attention.
-
-Regards,
-Markus
