@@ -2,53 +2,35 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E08E1C6D6C
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 May 2020 11:44:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A0831C6DAF
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 May 2020 11:54:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729094AbgEFJoa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 6 May 2020 05:44:30 -0400
-Received: from mail27.static.mailgun.info ([104.130.122.27]:57770 "EHLO
-        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1729173AbgEFJo3 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 6 May 2020 05:44:29 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1588758269; h=Content-Transfer-Encoding: MIME-Version:
- References: In-Reply-To: Message-Id: Date: Subject: Cc: To: From:
- Sender; bh=FbK27ARYToFqXc7p3XnUI+PL9RhIUciTrgQKW/FbKiA=; b=payNWQalEEfWscc6BRqISeUvPIklrbCNoDWMWHCVfUZdKf5A+dzeaOdxPfr9WXrZq/NXsvi3
- ZScaxi7OHp2m+P5rhwOpb5dz5L1wqv5FgULuoyYGX/jlj55zaHaweoZ5BVT9kTpoxb80jsws
- ZaKKsLL00YBVJ5Yll0FSPaxFhuc=
-X-Mailgun-Sending-Ip: 104.130.122.27
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5eb286ef.7f2fa15d3960-smtp-out-n02;
- Wed, 06 May 2020 09:44:15 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 2A4D2C433D2; Wed,  6 May 2020 09:44:14 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from govinds-linux.qualcomm.com (blr-c-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.19.19])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        id S1729013AbgEFJyV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 6 May 2020 05:54:21 -0400
+Received: from mail.kernel.org ([198.145.29.99]:55344 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726935AbgEFJyU (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 6 May 2020 05:54:20 -0400
+Received: from localhost.localdomain.com (unknown [151.48.155.206])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        (Authenticated sender: govinds)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 065D2C433BA;
-        Wed,  6 May 2020 09:44:11 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 065D2C433BA
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=govinds@codeaurora.org
-From:   Govind Singh <govinds@codeaurora.org>
-To:     ath11k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org,
-        Govind Singh <govinds@codeaurora.org>
-Subject: [PATCH 3/3] ath11k: Remove bus layer includes from upper layer
-Date:   Wed,  6 May 2020 15:14:00 +0530
-Message-Id: <20200506094400.4740-4-govinds@codeaurora.org>
-X-Mailer: git-send-email 2.22.0
-In-Reply-To: <20200506094400.4740-1-govinds@codeaurora.org>
-References: <20200506094400.4740-1-govinds@codeaurora.org>
+        by mail.kernel.org (Postfix) with ESMTPSA id 4166820753;
+        Wed,  6 May 2020 09:54:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1588758860;
+        bh=cMT+LnOQZwADrMUesZWSporgJBGKOdjgwOZSRIZB66Q=;
+        h=From:To:Cc:Subject:Date:From;
+        b=OiTXLs4jEP0QfulH+VOZAnUAcZiJ8LiowsvT1frEnkIsyWOsLlI+f0okYgLWbnoig
+         jnFo8t4b46i0BSaJJ7iN2VA2AxJqSVxPKGOLAP7zcaTGprtwwbzA8BRh0Cc8ueBInV
+         jwEw5jRxTfIw4FJ3o9uWFEcWrubP/Fz2YGjaNe8Y=
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     nbd@nbd.name
+Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
+        sean.wang@mediatek.com
+Subject: [PATCH] mt76: mt7663: introduce WoW with net detect support
+Date:   Wed,  6 May 2020 11:53:35 +0200
+Message-Id: <48bfe7a59ecf6cdb5f37f1eec268836a803373ad.1588758700.git.lorenzo@kernel.org>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
@@ -56,106 +38,72 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Bus level header files needs to be abstracted by upper
-layer. Remove bus layer includes by adding appropriate header
-files.
+From: Sean Wang <sean.wang@mediatek.com>
 
-Signed-off-by: Govind Singh <govinds@codeaurora.org>
+Introduce WoW with net detect support
+
+Co-developed-by: Wan-Feng Jiang <Wan-Feng.Jiang@mediatek.com>
+Signed-off-by: Wan-Feng Jiang <Wan-Feng.Jiang@mediatek.com>
+Co-developed-by: Soul Huang <Soul.Huang@mediatek.com>
+Signed-off-by: Soul Huang <Soul.Huang@mediatek.com>
+Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+Co-developed-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/core.c     | 1 -
- drivers/net/wireless/ath/ath11k/hal.c      | 1 -
- drivers/net/wireless/ath/ath11k/hal_desc.h | 2 ++
- drivers/net/wireless/ath/ath11k/hal_rx.c   | 1 -
- drivers/net/wireless/ath/ath11k/hal_tx.c   | 2 +-
- drivers/net/wireless/ath/ath11k/hal_tx.h   | 1 +
- drivers/net/wireless/ath/ath11k/htc.c      | 1 -
- 7 files changed, 4 insertions(+), 5 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7615/mcu.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
-index a91eae6a4e57..02501cc154fe 100644
---- a/drivers/net/wireless/ath/ath11k/core.c
-+++ b/drivers/net/wireless/ath/ath11k/core.c
-@@ -7,7 +7,6 @@
- #include <linux/slab.h>
- #include <linux/remoteproc.h>
- #include <linux/firmware.h>
--#include "ahb.h"
- #include "core.h"
- #include "dp_tx.h"
- #include "dp_rx.h"
-diff --git a/drivers/net/wireless/ath/ath11k/hal.c b/drivers/net/wireless/ath/ath11k/hal.c
-index 6d937674215e..d63785178afa 100644
---- a/drivers/net/wireless/ath/ath11k/hal.c
-+++ b/drivers/net/wireless/ath/ath11k/hal.c
-@@ -3,7 +3,6 @@
-  * Copyright (c) 2018-2019 The Linux Foundation. All rights reserved.
-  */
- #include <linux/dma-mapping.h>
--#include "ahb.h"
- #include "hal_tx.h"
- #include "debug.h"
- #include "hal_desc.h"
-diff --git a/drivers/net/wireless/ath/ath11k/hal_desc.h b/drivers/net/wireless/ath/ath11k/hal_desc.h
-index 5e200380cca4..ab73c813fb45 100644
---- a/drivers/net/wireless/ath/ath11k/hal_desc.h
-+++ b/drivers/net/wireless/ath/ath11k/hal_desc.h
-@@ -2,6 +2,8 @@
- /*
-  * Copyright (c) 2018-2019 The Linux Foundation. All rights reserved.
-  */
-+#include "core.h"
-+
- #ifndef ATH11K_HAL_DESC_H
- #define ATH11K_HAL_DESC_H
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+index 8ada03afe7d0..89fadff44fa4 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+@@ -1882,10 +1882,11 @@ mt7615_mcu_send_ram_firmware(struct mt7615_dev *dev,
  
-diff --git a/drivers/net/wireless/ath/ath11k/hal_rx.c b/drivers/net/wireless/ath/ath11k/hal_rx.c
-index 69b0248a7baf..129c9e1efeb9 100644
---- a/drivers/net/wireless/ath/ath11k/hal_rx.c
-+++ b/drivers/net/wireless/ath/ath11k/hal_rx.c
-@@ -3,7 +3,6 @@
-  * Copyright (c) 2018-2019 The Linux Foundation. All rights reserved.
-  */
+ static const struct wiphy_wowlan_support mt7615_wowlan_support = {
+ 	.flags = WIPHY_WOWLAN_MAGIC_PKT | WIPHY_WOWLAN_DISCONNECT |
+-		 WIPHY_WOWLAN_SUPPORTS_GTK_REKEY,
++		 WIPHY_WOWLAN_SUPPORTS_GTK_REKEY | WIPHY_WOWLAN_NET_DETECT,
+ 	.n_patterns = 1,
+ 	.pattern_min_len = 1,
+ 	.pattern_max_len = MT7615_WOW_PATTEN_MAX_LEN,
++	.max_nd_match_sets = 10,
+ };
  
--#include "ahb.h"
- #include "debug.h"
- #include "hal.h"
- #include "hal_tx.h"
-diff --git a/drivers/net/wireless/ath/ath11k/hal_tx.c b/drivers/net/wireless/ath/ath11k/hal_tx.c
-index b364c077c1f7..81937c29ffca 100644
---- a/drivers/net/wireless/ath/ath11k/hal_tx.c
-+++ b/drivers/net/wireless/ath/ath11k/hal_tx.c
-@@ -3,7 +3,7 @@
-  * Copyright (c) 2018-2019 The Linux Foundation. All rights reserved.
-  */
+ static int mt7615_load_n9(struct mt7615_dev *dev, const char *name)
+@@ -3316,10 +3317,11 @@ mt7615_mcu_set_bss_pm(struct mt7615_dev *dev, struct ieee80211_vif *vif,
+ }
  
--#include "ahb.h"
-+#include "hal_desc.h"
- #include "hal.h"
- #include "hal_tx.h"
- #include "hif.h"
-diff --git a/drivers/net/wireless/ath/ath11k/hal_tx.h b/drivers/net/wireless/ath/ath11k/hal_tx.h
-index ce48a61bfb66..d4760a20fdac 100644
---- a/drivers/net/wireless/ath/ath11k/hal_tx.h
-+++ b/drivers/net/wireless/ath/ath11k/hal_tx.h
-@@ -7,6 +7,7 @@
- #define ATH11K_HAL_TX_H
+ static int
+-mt7615_mcu_set_wow_ctrl(struct mt7615_dev *dev, struct ieee80211_vif *vif,
++mt7615_mcu_set_wow_ctrl(struct mt7615_phy *phy, struct ieee80211_vif *vif,
+ 			bool suspend, struct cfg80211_wowlan *wowlan)
+ {
+ 	struct mt7615_vif *mvif = (struct mt7615_vif *)vif->drv_priv;
++	struct mt7615_dev *dev = phy->dev;
+ 	struct {
+ 		struct {
+ 			u8 bss_idx;
+@@ -3341,6 +3343,11 @@ mt7615_mcu_set_wow_ctrl(struct mt7615_dev *dev, struct ieee80211_vif *vif,
+ 		req.wow_ctrl_tlv.trigger |= BIT(0);
+ 	if (wowlan->disconnect)
+ 		req.wow_ctrl_tlv.trigger |= BIT(2);
++	if (wowlan->nd_config) {
++		mt7615_mcu_sched_scan_req(phy, vif, wowlan->nd_config);
++		req.wow_ctrl_tlv.trigger |= BIT(5);
++	}
++	mt7615_mcu_sched_scan_enable(phy, vif, suspend);
  
- #include "hal_desc.h"
-+#include "core.h"
+ 	if (mt76_is_mmio(&dev->mt76))
+ 		req.wow_ctrl_tlv.wakeup_hif = 2;
+@@ -3461,7 +3468,7 @@ void mt7615_mcu_set_suspend_iter(void *priv, u8 *mac,
+ 	for (i = 0; i < wowlan->n_patterns; i++)
+ 		mt7615_mcu_set_wow_pattern(phy->dev, vif, i, suspend,
+ 					   &wowlan->patterns[i]);
+-	mt7615_mcu_set_wow_ctrl(phy->dev, vif, suspend, wowlan);
++	mt7615_mcu_set_wow_ctrl(phy, vif, suspend, wowlan);
+ }
  
- #define HAL_TX_ADDRX_EN			1
- #define HAL_TX_ADDRY_EN			2
-diff --git a/drivers/net/wireless/ath/ath11k/htc.c b/drivers/net/wireless/ath/ath11k/htc.c
-index 1909fc3287ba..ad13c648b679 100644
---- a/drivers/net/wireless/ath/ath11k/htc.c
-+++ b/drivers/net/wireless/ath/ath11k/htc.c
-@@ -5,7 +5,6 @@
- #include <linux/skbuff.h>
- #include <linux/ctype.h>
- 
--#include "ahb.h"
- #include "debug.h"
- #include "hif.h"
- 
+ static void
 -- 
-2.22.0
+2.26.2
+
