@@ -2,235 +2,106 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F2941C7088
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 May 2020 14:43:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A72311C7157
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 May 2020 15:05:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728290AbgEFMnP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 6 May 2020 08:43:15 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:3867 "EHLO huawei.com"
+        id S1728338AbgEFNFY (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 6 May 2020 09:05:24 -0400
+Received: from mail-eopbgr680128.outbound.protection.outlook.com ([40.107.68.128]:27010
+        "EHLO NAM04-BN3-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725887AbgEFMnP (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 6 May 2020 08:43:15 -0400
-Received: from DGGEMS401-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id 872B597135142961F3A0;
-        Wed,  6 May 2020 20:43:13 +0800 (CST)
-Received: from localhost.localdomain (10.67.165.24) by
- DGGEMS401-HUB.china.huawei.com (10.3.19.201) with Microsoft SMTP Server id
- 14.3.487.0; Wed, 6 May 2020 20:43:05 +0800
-From:   Yicong Yang <yangyicong@hisilicon.com>
-To:     <helgaas@kernel.org>, <linux-pci@vger.kernel.org>
-CC:     <kvalo@codeaurora.org>, <andreas.noever@gmail.com>,
-        <rjw@rjwysocki.net>, <linux-wireless@vger.kernel.org>,
-        <linux-usb@vger.kernel.org>, <mika.westerberg@linux.intel.com>,
-        <linuxarm@huawei.com>, <yangyicong@hisilicon.com>
-Subject: [PATCH v2] PCI: Use pci_pcie_find_root_port() to get root port
-Date:   Wed, 6 May 2020 20:42:56 +0800
-Message-ID: <1588768976-4852-1-git-send-email-yangyicong@hisilicon.com>
-X-Mailer: git-send-email 2.8.1
-MIME-Version: 1.0
+        id S1728286AbgEFNFY (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 6 May 2020 09:05:24 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=LGNTFzB/hx12Gy3iksDsEdpo+YZAuEuNBJ9y+2tG6EgeZUn8eFZvM7qfVrVoNjR5QtHZm4HGyH/X5RTpqyAa2UGbzjMjoEQYU8EIRWGmQi/WF9kFcxF6y/wwpirqZNGwjGBYtvcGlyXdb2uT9AmPUwI8nNyTm3Az+SpvP6H4M+I29AHAPMN72XPHtkcz/wGn9921DyOtbyjz8ewnqJUBcZ+dyoBkNE1Uqmz2DDGD6MsRV6pcvRHiKhWPvfj+oA4gWaNYpYia+wtgp2mFYEp9fP1gLebI1dUYejU/bYC6yd9pg/1WC6CbldCrRFShltg/dXoWM0rVWlS0lYymSuDlRw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=zJxwtK2QjcXQv8V9rcHB7yruMz1av0xGx8jz+mq5Vls=;
+ b=Pt0V5ckEXsGAejciGpmAiRyxviuB9uRMckfCEKD6dD9wL11mZMYvzzg1zx/Z1CIrB+gANAk2Nsy/KNjX8m41FlBwlCz7BD0SdvaFXiYIW8q2PDIF0Ik3YyKZQTaopi7t1kZlKgqBEhLNqp3Mpeq/6xBVlxZCELpn4j0jfHf3CXYKr1AZVaJhWBK5PHpf7GtXyUfjw+xxka5TF7FjjnitGw0F0dmqu9cr5VmeHVQ+/5S5wyxNna3DiJWKN65qtf2H1LVHBoNRvNK4iBSzHWp/mm6lFtZT6jCr/Q1nNsn4mDlkfMGZC9UBtpPR8qRXFTGwKjM8AaSogCti3Uobuh4jPg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=cypress.com; dmarc=pass action=none header.from=cypress.com;
+ dkim=pass header.d=cypress.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cypress.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=zJxwtK2QjcXQv8V9rcHB7yruMz1av0xGx8jz+mq5Vls=;
+ b=I/4iL0YPlpumExx2oPmaVvHXr6GFZxQX3t8Eht7357BRgleJ56+VqSiH+8qTaMKlvkM2o7/VfUm5kHgSLuCcjKucFrVvVqnNIZ0Ho/AuJAY/Tp3kV/lhxayqwfxAGL2JZwJwO8F7S5GXuHlB30phHNJHfieMNhT05H2tkMobowA=
+Authentication-Results: vger.kernel.org; dkim=none (message not signed)
+ header.d=none;vger.kernel.org; dmarc=none action=none
+ header.from=cypress.com;
+Received: from DM6PR06MB4748.namprd06.prod.outlook.com (2603:10b6:5:fd::18) by
+ DM6PR06MB3994.namprd06.prod.outlook.com (2603:10b6:5:87::12) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2958.19; Wed, 6 May 2020 13:05:22 +0000
+Received: from DM6PR06MB4748.namprd06.prod.outlook.com
+ ([fe80::85fb:1c0e:ce17:e7bb]) by DM6PR06MB4748.namprd06.prod.outlook.com
+ ([fe80::85fb:1c0e:ce17:e7bb%7]) with mapi id 15.20.2979.028; Wed, 6 May 2020
+ 13:05:22 +0000
+From:   Wright Feng <wright.feng@cypress.com>
+To:     linux-wireless@vger.kernel.org
+Cc:     wright.feng@cypress.com, brcm80211-dev-list@broadcom.com,
+        brcm80211-dev-list@cypress.com,
+        Arend van Spriel <arend.vanspriel@broadcom.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Kalle Valo <kvalo@codeaurora.org>, chi-hsien.lin@cypress.com
+Subject: [PATCH 0/3] brcmfmac: connection and action frame change series
+Date:   Wed,  6 May 2020 08:03:18 -0500
+Message-Id: <1588770201-54361-1-git-send-email-wright.feng@cypress.com>
+X-Mailer: git-send-email 2.1.0
 Content-Type: text/plain
-X-Originating-IP: [10.67.165.24]
-X-CFilter-Loop: Reflected
+X-ClientProxiedBy: BY3PR05CA0022.namprd05.prod.outlook.com
+ (2603:10b6:a03:254::27) To DM6PR06MB4748.namprd06.prod.outlook.com
+ (2603:10b6:5:fd::18)
+MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from aremote02.aus.cypress.com (12.110.209.245) by BY3PR05CA0022.namprd05.prod.outlook.com (2603:10b6:a03:254::27) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2979.18 via Frontend Transport; Wed, 6 May 2020 13:05:19 +0000
+X-Mailer: git-send-email 2.1.0
+X-Originating-IP: [12.110.209.245]
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-HT: Tenant
+X-MS-Office365-Filtering-Correlation-Id: 241d236f-9a3d-46cb-3ff3-08d7f1be2220
+X-MS-TrafficTypeDiagnostic: DM6PR06MB3994:|DM6PR06MB3994:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <DM6PR06MB39944620876167889E02BE89FBA40@DM6PR06MB3994.namprd06.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:2887;
+X-Forefront-PRVS: 03950F25EC
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: Rm5Ux72DeMSOO9Zd3rf4tUjrvVZuerVrpNoJZUOs9+TAFzp1eSY5cmn1AzU/2YfoMgBowF1buwmwLiXIi5fzWfszw1M/uVd5y4UnYDoTrNOigf3h4lhzd/j/T/Ju/D3F3qL4opUT/4p74c7iApDRX251gYJal04cQHGPSHYGqDqj16XwZ4CiXOhGjpo10OAsAYHjoyCkPqKbYE3bjjNsACntB97Uzgw++1e6ou6lRn4TrqCBb9KNpJQkRmRL7JpnQ9oZLxErJlyWWgDcDtCyYdmpgGvxWaxq7WALNOZtlXe6O0O9rtFOwCo7YIqz6pOQxIoU5GjcfJBgAK8kI2BW0Nfhwv1oEaIi7g4YRoIQtqsc8YHdTLg9MHsxxoHgiOyWaH/4hq1J9gFKnn5CmyKux2gD/u91f3Iie/dQmgY0H3xaZnyPmBOwtoJGErkUdCvw00V+mCfAy2zPYds+CFNDzBWacTxNP95RNFClP6wd6RoIozbnpof7Z8YDtZcg40xtq6rEtwCDyQkpwtfyjjy6sA==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR06MB4748.namprd06.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(39860400002)(376002)(366004)(346002)(136003)(396003)(33430700001)(86362001)(107886003)(2906002)(33440700001)(52116002)(7696005)(4326008)(66476007)(5660300002)(54906003)(2616005)(66556008)(26005)(186003)(44832011)(66946007)(956004)(36756003)(6486002)(316002)(478600001)(8936002)(8676002)(16526019)(4744005)(6916009);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData: tGXan9cHRR7vQO36qi4cleLU5U7eMkHCOoE+jKYVao3FB2pewYc5WZgcGebXc6oT/sYp/ONGGxINJAndayHJGhV9D6McDXq6Ht8SnuHfElNO2f3FKwdLRP0NEOo5i3pkzdpoB2s02YNa/c0MtIBLaUeIjos8ukxQ3snwb677GsSUjBUJmQT2aOwSMk4QH9ewcmY9q8a6zsn11BYLdlQnLmJ0Yk9r57oRkKGnF8ndP+/JjcJdEBa7jSUUIHc02rEDqhY5LrUM5KUg+vQ2ie/g4KRvMBJfrru8Ur9rwX7zESKeOqPM31aBm5RMqTy2qwC6gsdTPz0hD1PIGkIFyADj+N6z7wwVxFNjT4lzOprA4KOBoqLEI1ix/3IvY5yg0sYvm14zp7vo1MpngnwVMZ1/LBIGx09Onrvff+p5na3v+xD9ZQCAB8gaAiBjRsQinqfluuwhRKNiMOw5FTp2gKHu8n3Rf5MLsrAL+Loo0DcOvCVIvM6Gf0v9vMOtr4pU50VS+uvLF8xhP3/7YnHkFOH7D91BgbWPpWo7hj3jpyBU9MC2dT4FGZaFWvSFJgh4z5rAWGYfyqXQ63EKpeELjLJNc9xqmJtnvfYSs2V1mELqw33pn3ByASHFDcfH6JVw1g8fX/ERklw5C+jFv94PtblaoWyeS//+Z6T2J3BWfzCS3OkyTWD9ao0ik8K8JkuyEdaTrUDt5ZtMbVexbofNzZi5xlfJGYV1Lvh5JooW8104KLhf7cZDLM6dtX8GKrzBrBlOeHGG2rYDscYlVOhsA3udPn9NNG/t+AWCscwmf41+pW0=
+X-OriginatorOrg: cypress.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 241d236f-9a3d-46cb-3ff3-08d7f1be2220
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 May 2020 13:05:21.8941
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 011addfc-2c09-450d-8938-e0bbc2dd2376
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: XDDzpu2HkJEaqczZgeFyxBqr50q3OgH1qKf5HI0ZDWp/XmTba/hWaYpmxZNVQny7YpKWrDBLx5MOZQJZEUL98Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR06MB3994
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Previously we use pcie_find_root_port() to get root port from a pcie
-device, use pci_find_pcie_root_port() to get root port from a pci
-device, which increase the complexity.
+This series addresses encrypted connection and action frame issues
 
-Unify the two functions and use pci_pcie_find_root_port() to get root
-port from both pci device and pcie device. Then there is not need to
-distinguish the type of the device.
+Jia-Shyr Chuang (1):
+  brcmfmac: set security after reiniting interface
 
-Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
-Acked-by: Kalle Valo <kvalo@codeaurora.org> // for wireless
-Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com> // for thunderbolt
----
-Change since v1:
-- Add Mika's Ack for thunderbolt part
-- Add description for pci_pcie_find_root_port()
+Ryohei Kondo (1):
+  brcmfmac: use actframe_abort to cancel ongoing action frame
 
- drivers/net/wireless/intel/iwlwifi/pcie/trans.c |  2 +-
- drivers/pci/pci-acpi.c                          |  4 ++--
- drivers/pci/pci.c                               | 24 ------------------------
- drivers/pci/pcie/aer_inject.c                   |  2 +-
- drivers/pci/probe.c                             |  2 +-
- drivers/pci/quirks.c                            |  2 +-
- drivers/thunderbolt/switch.c                    |  4 ++--
- include/linux/pci.h                             | 17 ++++++++++-------
- 8 files changed, 18 insertions(+), 39 deletions(-)
+Soontak Lee (1):
+  brcmfmac: Use seq/seq_len and set iv_initialize when plumbing of rxiv
+    in (GTK) keys
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-index 38d8fe2..556cb8c 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-@@ -158,7 +158,7 @@ void iwl_trans_pcie_dump_regs(struct iwl_trans *trans)
+ .../broadcom/brcm80211/brcmfmac/cfg80211.c         | 101 ++++++++++++++-------
+ .../net/wireless/broadcom/brcm80211/brcmfmac/p2p.c |  34 ++++++-
+ 2 files changed, 101 insertions(+), 34 deletions(-)
 
- 	/* Print root port AER registers */
- 	pos = 0;
--	pdev = pcie_find_root_port(pdev);
-+	pdev = pci_pcie_find_root_port(pdev);
- 	if (pdev)
- 		pos = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_ERR);
- 	if (pos) {
-diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
-index 0c02d50..9316533 100644
---- a/drivers/pci/pci-acpi.c
-+++ b/drivers/pci/pci-acpi.c
-@@ -246,7 +246,7 @@ static acpi_status decode_type1_hpx_record(union acpi_object *record,
-
- static bool pcie_root_rcb_set(struct pci_dev *dev)
- {
--	struct pci_dev *rp = pcie_find_root_port(dev);
-+	struct pci_dev *rp = pci_pcie_find_root_port(dev);
- 	u16 lnkctl;
-
- 	if (!rp)
-@@ -948,7 +948,7 @@ static bool acpi_pci_bridge_d3(struct pci_dev *dev)
- 	 * Look for a special _DSD property for the root port and if it
- 	 * is set we know the hierarchy behind it supports D3 just fine.
- 	 */
--	root = pci_find_pcie_root_port(dev);
-+	root = pci_pcie_find_root_port(dev);
- 	if (!root)
- 		return false;
-
-diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index d828ca8..fc5e7b6 100644
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -695,30 +695,6 @@ struct resource *pci_find_resource(struct pci_dev *dev, struct resource *res)
- EXPORT_SYMBOL(pci_find_resource);
-
- /**
-- * pci_find_pcie_root_port - return PCIe Root Port
-- * @dev: PCI device to query
-- *
-- * Traverse up the parent chain and return the PCIe Root Port PCI Device
-- * for a given PCI Device.
-- */
--struct pci_dev *pci_find_pcie_root_port(struct pci_dev *dev)
--{
--	struct pci_dev *bridge, *highest_pcie_bridge = dev;
--
--	bridge = pci_upstream_bridge(dev);
--	while (bridge && pci_is_pcie(bridge)) {
--		highest_pcie_bridge = bridge;
--		bridge = pci_upstream_bridge(bridge);
--	}
--
--	if (pci_pcie_type(highest_pcie_bridge) != PCI_EXP_TYPE_ROOT_PORT)
--		return NULL;
--
--	return highest_pcie_bridge;
--}
--EXPORT_SYMBOL(pci_find_pcie_root_port);
--
--/**
-  * pci_wait_for_pending - wait for @mask bit(s) to clear in status word @pos
-  * @dev: the PCI device to operate on
-  * @pos: config space offset of status word
-diff --git a/drivers/pci/pcie/aer_inject.c b/drivers/pci/pcie/aer_inject.c
-index 6988fe7..c3bfc1b5 100644
---- a/drivers/pci/pcie/aer_inject.c
-+++ b/drivers/pci/pcie/aer_inject.c
-@@ -332,7 +332,7 @@ static int aer_inject(struct aer_error_inj *einj)
- 	dev = pci_get_domain_bus_and_slot(einj->domain, einj->bus, devfn);
- 	if (!dev)
- 		return -ENODEV;
--	rpdev = pcie_find_root_port(dev);
-+	rpdev = pci_pcie_find_root_port(dev);
- 	if (!rpdev) {
- 		pci_err(dev, "Root port not found\n");
- 		ret = -ENODEV;
-diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
-index 512cb43..50f7733 100644
---- a/drivers/pci/probe.c
-+++ b/drivers/pci/probe.c
-@@ -2015,7 +2015,7 @@ static void pci_configure_relaxed_ordering(struct pci_dev *dev)
- 	 * For now, we only deal with Relaxed Ordering issues with Root
- 	 * Ports. Peer-to-Peer DMA is another can of worms.
- 	 */
--	root = pci_find_pcie_root_port(dev);
-+	root = pci_pcie_find_root_port(dev);
- 	if (!root)
- 		return;
-
-diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-index 29f473e..ac62675 100644
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -4253,7 +4253,7 @@ DECLARE_PCI_FIXUP_CLASS_EARLY(PCI_VENDOR_ID_AMD, 0x1a02, PCI_CLASS_NOT_DEFINED,
-  */
- static void quirk_disable_root_port_attributes(struct pci_dev *pdev)
- {
--	struct pci_dev *root_port = pci_find_pcie_root_port(pdev);
-+	struct pci_dev *root_port = pci_pcie_find_root_port(pdev);
-
- 	if (!root_port) {
- 		pci_warn(pdev, "PCIe Completion erratum may cause device errors\n");
-diff --git a/drivers/thunderbolt/switch.c b/drivers/thunderbolt/switch.c
-index a2ce990..90844c1 100644
---- a/drivers/thunderbolt/switch.c
-+++ b/drivers/thunderbolt/switch.c
-@@ -263,7 +263,7 @@ static void nvm_authenticate_start_dma_port(struct tb_switch *sw)
- 	 * itself. To be on the safe side keep the root port in D0 during
- 	 * the whole upgrade process.
- 	 */
--	root_port = pci_find_pcie_root_port(sw->tb->nhi->pdev);
-+	root_port = pci_pcie_find_root_port(sw->tb->nhi->pdev);
- 	if (root_port)
- 		pm_runtime_get_noresume(&root_port->dev);
- }
-@@ -272,7 +272,7 @@ static void nvm_authenticate_complete_dma_port(struct tb_switch *sw)
- {
- 	struct pci_dev *root_port;
-
--	root_port = pci_find_pcie_root_port(sw->tb->nhi->pdev);
-+	root_port = pci_pcie_find_root_port(sw->tb->nhi->pdev);
- 	if (root_port)
- 		pm_runtime_put(&root_port->dev);
- }
-diff --git a/include/linux/pci.h b/include/linux/pci.h
-index 3840a54..51881a1 100644
---- a/include/linux/pci.h
-+++ b/include/linux/pci.h
-@@ -1011,7 +1011,6 @@ void pci_bus_add_device(struct pci_dev *dev);
- void pci_read_bridge_bases(struct pci_bus *child);
- struct resource *pci_find_parent_resource(const struct pci_dev *dev,
- 					  struct resource *res);
--struct pci_dev *pci_find_pcie_root_port(struct pci_dev *dev);
- u8 pci_swizzle_interrupt_pin(const struct pci_dev *dev, u8 pin);
- int pci_get_interrupt_pin(struct pci_dev *dev, struct pci_dev **bridge);
- u8 pci_common_swizzle(struct pci_dev *dev, u8 *pinp);
-@@ -2124,15 +2123,19 @@ static inline int pci_pcie_type(const struct pci_dev *dev)
- 	return (pcie_caps_reg(dev) & PCI_EXP_FLAGS_TYPE) >> 4;
- }
-
--static inline struct pci_dev *pcie_find_root_port(struct pci_dev *dev)
-+/**
-+ * pci_pcie_find_root_port - Get the PCIe root port device
-+ * @dev: PCI device
-+ *
-+ * Traverse up the parent chain and return the PCIe Root Port PCI Device
-+ * for a given PCI/PCIe Device.
-+ */
-+static inline struct pci_dev *pci_pcie_find_root_port(struct pci_dev *dev)
- {
--	while (1) {
--		if (!pci_is_pcie(dev))
--			break;
-+	dev = pci_physfn(dev);
-+	while (dev) {
- 		if (pci_pcie_type(dev) == PCI_EXP_TYPE_ROOT_PORT)
- 			return dev;
--		if (!dev->bus->self)
--			break;
- 		dev = dev->bus->self;
- 	}
- 	return NULL;
---
-2.8.1
+-- 
+2.1.0
 
