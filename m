@@ -2,108 +2,269 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6571A1C7540
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 May 2020 17:44:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1110D1C7A79
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 May 2020 21:48:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729432AbgEFPoy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 6 May 2020 11:44:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33642 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729148AbgEFPoy (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 6 May 2020 11:44:54 -0400
-Received: from mail-ed1-x535.google.com (mail-ed1-x535.google.com [IPv6:2a00:1450:4864:20::535])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0514C061A0F
-        for <linux-wireless@vger.kernel.org>; Wed,  6 May 2020 08:44:53 -0700 (PDT)
-Received: by mail-ed1-x535.google.com with SMTP id p16so2312583edm.10
-        for <linux-wireless@vger.kernel.org>; Wed, 06 May 2020 08:44:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=QJ1Dj7q218JqOirGJ81kibJBjYCQpL6+WgxDDpXtvNU=;
-        b=jn0tcVy14ike41jellt0WEslQzD9KZJWJaGUspyerG+ohDD4ciN5kGZ+YjsI0ftB07
-         dkTReUElxeOtdI3jmzR+VS0F+2sQ5bX8+jpfcmK9aB55b1i7TiX7JVqxURZji7ZqlHtX
-         8kueNPQqkmx0Nfiq83prOhK5A09A8EDzbkbsuTqlGPpmr64WVlr756gn5doTy3V98EoF
-         R7uRrVem6/MAwe7Cb7a97zWM4G8O09M7zqNaB+HiWh+H/ygA6Ev67kL6Cewt1vjN6hQt
-         RjjNVSMPk6lr0eBVivy5VWXhWYXMOsXU+8PpXHfUPW8vSUKyaAemo6fv/t7cDfN+EzjJ
-         cKMA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=QJ1Dj7q218JqOirGJ81kibJBjYCQpL6+WgxDDpXtvNU=;
-        b=h6SxaxNKUIcmOkZ2iUJQPBc5Xgcl4hycvF2//e7YoeYHcwvLVc37XZsIMS8h4wcuQa
-         75F0i40+MoJ2Mg8ItRemWBH3woNQbi5Cjmnl3JVfEW7jiA1mKwM5/EHje22vhqAdNJJc
-         BagcfodoIy5AJfReNUuEotn1lDjINcj/pOjkKkolDxKmrQE0o5mFJllUnUZnkF7Fdp+j
-         UlMRtQa9U+sDKaoa/gVoif2930a1vAyE05XnyxkA2eTe6efIX8+Iz7G0Nslfe0y7xdar
-         +l7XtfcGDky8sVbDvcOQKoez4M9ncpn2i0kvzt6mgBR9qUT3pKZpN7vruYVEuHiDHeyK
-         3lmg==
-X-Gm-Message-State: AGi0PuaT9QyITdrK4yiTUSlZIcifsGoxtB2EZ1JBDahdDrPplBKpQgQK
-        kxFplcI4gxzVDG1Q/giG0kccYCbIqS7yj/LJZjpxYhxT
-X-Google-Smtp-Source: APiQypKlhHI5BL+LlNiegGYPgciqRaR3NYUqs6QDCGYmeXiuiMo/mAx0yGQk2J9OBhF1gjDCNRwSU+a9yYdIENqpVZU=
-X-Received: by 2002:aa7:c312:: with SMTP id l18mr7873543edq.161.1588779892065;
- Wed, 06 May 2020 08:44:52 -0700 (PDT)
+        id S1728466AbgEFTsq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 6 May 2020 15:48:46 -0400
+Received: from mail.kernel.org ([198.145.29.99]:39224 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726649AbgEFTsq (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 6 May 2020 15:48:46 -0400
+Received: from localhost (mobile-166-175-190-200.mycingular.net [166.175.190.200])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id A1FB020747;
+        Wed,  6 May 2020 19:48:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1588794525;
+        bh=fAixgbf/SDTe2MwXWJsOVDkrMMpL9mIMkL98Dg4f778=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=dyEotBRVguGX6MhpwLsv0GOH1uXuUGp0Otj80NdOxzPUhYCUAwrzggPxApDdBd64z
+         srKHrN/4aOAgSpz6vg2+XdWl+Mtu1uwha/XsEdOq1hyG5QW1LAPN/ssHx5aIKk3Wfu
+         O6mbdKJs5x2DPyXHN7d0foiZxENUP8UxmM06nuos=
+Date:   Wed, 6 May 2020 14:48:42 -0500
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Yicong Yang <yangyicong@hisilicon.com>
+Cc:     linux-pci@vger.kernel.org, kvalo@codeaurora.org,
+        andreas.noever@gmail.com, rjw@rjwysocki.net,
+        linux-wireless@vger.kernel.org, linux-usb@vger.kernel.org,
+        mika.westerberg@linux.intel.com, linuxarm@huawei.com
+Subject: Re: [PATCH v2] PCI: Use pci_pcie_find_root_port() to get root port
+Message-ID: <20200506194842.GA443456@bjorn-Precision-5520>
 MIME-Version: 1.0
-From:   James Prestwood <prestwoj@gmail.com>
-Date:   Wed, 6 May 2020 08:44:41 -0700
-Message-ID: <CAPv5Ue5DY07E3=JDwjJkuad6Z3cuYtJg=dypUjy0KyBhn=JL9A@mail.gmail.com>
-Subject: Potential IBSS race
-To:     linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1588768976-4852-1-git-send-email-yangyicong@hisilicon.com>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+On Wed, May 06, 2020 at 08:42:56PM +0800, Yicong Yang wrote:
+> Previously we use pcie_find_root_port() to get root port from a pcie
+> device, use pci_find_pcie_root_port() to get root port from a pci
+> device, which increase the complexity.
+> 
+> Unify the two functions and use pci_pcie_find_root_port() to get root
+> port from both pci device and pcie device. Then there is not need to
+> distinguish the type of the device.
+> 
+> Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
+> Acked-by: Kalle Valo <kvalo@codeaurora.org> // for wireless
+> Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com> // for thunderbolt
 
-It appears that when two IBSS networks are started at the same time
-they sometimes don't pick each other up and two separate IBSS networks
-are created. I have turned on IBSS logging and see beacons coming in
-from both networks AFTER each interface creates its own IBSS, but they
-dont come soon enough for either interface to realize there is already
-an IBSS. Is there any mitigation in the kernel or anything outlined in
-802.11 that handles this case of two IBSS networks being created
-simultaneously (or close to it)? Even delaying the second network by a
-full second sometimes results in this behavior.
+When I first looked at this, I got distracted because I think many of
+the calls of these functions should go away.  That's out of scope
+right now, but I'll just mention them for the archives:
 
-[    3.915143] wlan1: sta_find_ibss (active_ibss=0)
-[    3.916022] wlan1: sta_find_ibss: did not try to join ibss
-[    3.960484] wlan0: sta_find_ibss (active_ibss=0)
-[    3.961643] wlan0: sta_find_ibss: did not try to join ibss
-[    5.798696] wlan1: sta_find_ibss (active_ibss=0)
-[    5.800526] wlan1: sta_find_ibss: did not try to join ibss
-[    5.802579] wlan0: sta_find_ibss (active_ibss=0)
-[    5.804300] wlan0: sta_find_ibss: did not try to join ibss
-[    7.782708] wlan0: sta_find_ibss (active_ibss=0)
-[    7.784529] wlan0: sta_find_ibss: did not try to join ibss
-[    7.786557] wlan0: Trigger new scan to find an IBSS to join
-[    7.788525] wlan1: sta_find_ibss (active_ibss=0)
-[    7.789132] wlan1: sta_find_ibss: did not try to join ibss
-[    7.789779] wlan1: Trigger new scan to find an IBSS to join
-[    8.471675] wlan1: sta_find_ibss (active_ibss=0)
-[    8.473610] wlan1: sta_find_ibss: did not try to join ibss
-[    8.475957] wlan0: sta_find_ibss (active_ibss=0)
-[    8.477434] wlan0: sta_find_ibss: did not try to join ibss
-[   10.790703] wlan0: sta_find_ibss (active_ibss=0)
-[   10.792698] wlan0: sta_find_ibss: did not try to join ibss
-[   10.795035] wlan0: Trigger new scan to find an IBSS to join
-[   10.796543] wlan1: sta_find_ibss (active_ibss=0)
-[   10.797125] wlan1: sta_find_ibss: did not try to join ibss
-[   10.797988] wlan1: Trigger new scan to find an IBSS to join
-[   11.480676] wlan1: sta_find_ibss (active_ibss=0)
-[   11.482586] wlan1: sta_find_ibss: did not try to join ibss
-[   11.484822] wlan1: Creating new IBSS network, BSSID 62:f3:4f:db:22:e8
-[   11.486643] wlan0: sta_find_ibss (active_ibss=0)
-[   11.487302] wlan0: sta_find_ibss: did not try to join ibss
-[   11.487995] wlan0: Creating new IBSS network, BSSID da:4d:66:a0:ca:52
-[   11.590664] wlan1: RX beacon SA=02:00:00:00:00:00
-BSSID=da:4d:66:a0:ca:52 TSF=0x5a4fc850a65c2
-[   11.592753] wlan1: BCN=0x5a4fc850a6133 diff=1167 @4294678818
-[   11.594002] wlan0: RX beacon SA=02:00:00:00:01:00
-BSSID=62:f3:4f:db:22:e8 TSF=0x5a4fc850a72cd
-[   11.595688] wlan0: BCN=0x5a4fc850a614a diff=4483 @4294678821
+  - iwl_trans_pcie_dump_regs() dumps AER registers, which should be
+    done by the PCI core, not by the driver.
 
-(beacons continue for a while until the test fails)
+  - pcie_root_rcb_set() looks up the Root Port's RCB setting, which
+    could easily be inherited.
 
-Thanks,
-James
+  - aer_inject().  I'm not convinced anybody uses this, and we have
+    the ACPI EINJ path, which should test a lot more of the path.
+
+  - acpi_pci_bridge_d3() looks up the "HotPlugSupportInD3", which
+    probably could also be inherited.
+
+  - pci_configure_relaxed_ordering() looks up the Root Port's Relaxed
+    Ordering support, which could be inherited.
+
+> ---
+> Change since v1:
+> - Add Mika's Ack for thunderbolt part
+> - Add description for pci_pcie_find_root_port()
+> 
+>  drivers/net/wireless/intel/iwlwifi/pcie/trans.c |  2 +-
+>  drivers/pci/pci-acpi.c                          |  4 ++--
+>  drivers/pci/pci.c                               | 24 ------------------------
+>  drivers/pci/pcie/aer_inject.c                   |  2 +-
+>  drivers/pci/probe.c                             |  2 +-
+>  drivers/pci/quirks.c                            |  2 +-
+>  drivers/thunderbolt/switch.c                    |  4 ++--
+>  include/linux/pci.h                             | 17 ++++++++++-------
+>  8 files changed, 18 insertions(+), 39 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
+> index 38d8fe2..556cb8c 100644
+> --- a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
+> +++ b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
+> @@ -158,7 +158,7 @@ void iwl_trans_pcie_dump_regs(struct iwl_trans *trans)
+> 
+>  	/* Print root port AER registers */
+>  	pos = 0;
+> -	pdev = pcie_find_root_port(pdev);
+> +	pdev = pci_pcie_find_root_port(pdev);
+>  	if (pdev)
+>  		pos = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_ERR);
+>  	if (pos) {
+> diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
+> index 0c02d50..9316533 100644
+> --- a/drivers/pci/pci-acpi.c
+> +++ b/drivers/pci/pci-acpi.c
+> @@ -246,7 +246,7 @@ static acpi_status decode_type1_hpx_record(union acpi_object *record,
+> 
+>  static bool pcie_root_rcb_set(struct pci_dev *dev)
+>  {
+> -	struct pci_dev *rp = pcie_find_root_port(dev);
+> +	struct pci_dev *rp = pci_pcie_find_root_port(dev);
+>  	u16 lnkctl;
+> 
+>  	if (!rp)
+> @@ -948,7 +948,7 @@ static bool acpi_pci_bridge_d3(struct pci_dev *dev)
+>  	 * Look for a special _DSD property for the root port and if it
+>  	 * is set we know the hierarchy behind it supports D3 just fine.
+>  	 */
+> -	root = pci_find_pcie_root_port(dev);
+> +	root = pci_pcie_find_root_port(dev);
+>  	if (!root)
+>  		return false;
+> 
+> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+> index d828ca8..fc5e7b6 100644
+> --- a/drivers/pci/pci.c
+> +++ b/drivers/pci/pci.c
+> @@ -695,30 +695,6 @@ struct resource *pci_find_resource(struct pci_dev *dev, struct resource *res)
+>  EXPORT_SYMBOL(pci_find_resource);
+> 
+>  /**
+> - * pci_find_pcie_root_port - return PCIe Root Port
+> - * @dev: PCI device to query
+> - *
+> - * Traverse up the parent chain and return the PCIe Root Port PCI Device
+> - * for a given PCI Device.
+> - */
+> -struct pci_dev *pci_find_pcie_root_port(struct pci_dev *dev)
+> -{
+> -	struct pci_dev *bridge, *highest_pcie_bridge = dev;
+> -
+> -	bridge = pci_upstream_bridge(dev);
+> -	while (bridge && pci_is_pcie(bridge)) {
+> -		highest_pcie_bridge = bridge;
+> -		bridge = pci_upstream_bridge(bridge);
+> -	}
+> -
+> -	if (pci_pcie_type(highest_pcie_bridge) != PCI_EXP_TYPE_ROOT_PORT)
+> -		return NULL;
+> -
+> -	return highest_pcie_bridge;
+> -}
+> -EXPORT_SYMBOL(pci_find_pcie_root_port);
+> -
+> -/**
+>   * pci_wait_for_pending - wait for @mask bit(s) to clear in status word @pos
+>   * @dev: the PCI device to operate on
+>   * @pos: config space offset of status word
+> diff --git a/drivers/pci/pcie/aer_inject.c b/drivers/pci/pcie/aer_inject.c
+> index 6988fe7..c3bfc1b5 100644
+> --- a/drivers/pci/pcie/aer_inject.c
+> +++ b/drivers/pci/pcie/aer_inject.c
+> @@ -332,7 +332,7 @@ static int aer_inject(struct aer_error_inj *einj)
+>  	dev = pci_get_domain_bus_and_slot(einj->domain, einj->bus, devfn);
+>  	if (!dev)
+>  		return -ENODEV;
+> -	rpdev = pcie_find_root_port(dev);
+> +	rpdev = pci_pcie_find_root_port(dev);
+>  	if (!rpdev) {
+>  		pci_err(dev, "Root port not found\n");
+>  		ret = -ENODEV;
+> diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
+> index 512cb43..50f7733 100644
+> --- a/drivers/pci/probe.c
+> +++ b/drivers/pci/probe.c
+> @@ -2015,7 +2015,7 @@ static void pci_configure_relaxed_ordering(struct pci_dev *dev)
+>  	 * For now, we only deal with Relaxed Ordering issues with Root
+>  	 * Ports. Peer-to-Peer DMA is another can of worms.
+>  	 */
+> -	root = pci_find_pcie_root_port(dev);
+> +	root = pci_pcie_find_root_port(dev);
+>  	if (!root)
+>  		return;
+> 
+> diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+> index 29f473e..ac62675 100644
+> --- a/drivers/pci/quirks.c
+> +++ b/drivers/pci/quirks.c
+> @@ -4253,7 +4253,7 @@ DECLARE_PCI_FIXUP_CLASS_EARLY(PCI_VENDOR_ID_AMD, 0x1a02, PCI_CLASS_NOT_DEFINED,
+>   */
+>  static void quirk_disable_root_port_attributes(struct pci_dev *pdev)
+>  {
+> -	struct pci_dev *root_port = pci_find_pcie_root_port(pdev);
+> +	struct pci_dev *root_port = pci_pcie_find_root_port(pdev);
+> 
+>  	if (!root_port) {
+>  		pci_warn(pdev, "PCIe Completion erratum may cause device errors\n");
+> diff --git a/drivers/thunderbolt/switch.c b/drivers/thunderbolt/switch.c
+> index a2ce990..90844c1 100644
+> --- a/drivers/thunderbolt/switch.c
+> +++ b/drivers/thunderbolt/switch.c
+> @@ -263,7 +263,7 @@ static void nvm_authenticate_start_dma_port(struct tb_switch *sw)
+>  	 * itself. To be on the safe side keep the root port in D0 during
+>  	 * the whole upgrade process.
+>  	 */
+> -	root_port = pci_find_pcie_root_port(sw->tb->nhi->pdev);
+> +	root_port = pci_pcie_find_root_port(sw->tb->nhi->pdev);
+>  	if (root_port)
+>  		pm_runtime_get_noresume(&root_port->dev);
+>  }
+> @@ -272,7 +272,7 @@ static void nvm_authenticate_complete_dma_port(struct tb_switch *sw)
+>  {
+>  	struct pci_dev *root_port;
+> 
+> -	root_port = pci_find_pcie_root_port(sw->tb->nhi->pdev);
+> +	root_port = pci_pcie_find_root_port(sw->tb->nhi->pdev);
+>  	if (root_port)
+>  		pm_runtime_put(&root_port->dev);
+>  }
+> diff --git a/include/linux/pci.h b/include/linux/pci.h
+> index 3840a54..51881a1 100644
+> --- a/include/linux/pci.h
+> +++ b/include/linux/pci.h
+> @@ -1011,7 +1011,6 @@ void pci_bus_add_device(struct pci_dev *dev);
+>  void pci_read_bridge_bases(struct pci_bus *child);
+>  struct resource *pci_find_parent_resource(const struct pci_dev *dev,
+>  					  struct resource *res);
+> -struct pci_dev *pci_find_pcie_root_port(struct pci_dev *dev);
+>  u8 pci_swizzle_interrupt_pin(const struct pci_dev *dev, u8 pin);
+>  int pci_get_interrupt_pin(struct pci_dev *dev, struct pci_dev **bridge);
+>  u8 pci_common_swizzle(struct pci_dev *dev, u8 *pinp);
+> @@ -2124,15 +2123,19 @@ static inline int pci_pcie_type(const struct pci_dev *dev)
+>  	return (pcie_caps_reg(dev) & PCI_EXP_FLAGS_TYPE) >> 4;
+>  }
+> 
+> -static inline struct pci_dev *pcie_find_root_port(struct pci_dev *dev)
+> +/**
+> + * pci_pcie_find_root_port - Get the PCIe root port device
+> + * @dev: PCI device
+> + *
+> + * Traverse up the parent chain and return the PCIe Root Port PCI Device
+> + * for a given PCI/PCIe Device.
+> + */
+> +static inline struct pci_dev *pci_pcie_find_root_port(struct pci_dev *dev)
+
+The point of this is to find a Root Port regardless of whether "dev"
+is PCI or PCIe.  So I think pcie_find_root_port() is sufficient; we
+don't need both "pci" and "pcie" in the name.
+
+>  {
+> -	while (1) {
+> -		if (!pci_is_pcie(dev))
+> -			break;
+> +	dev = pci_physfn(dev);
+> +	while (dev) {
+>  		if (pci_pcie_type(dev) == PCI_EXP_TYPE_ROOT_PORT)
+>  			return dev;
+> -		if (!dev->bus->self)
+> -			break;
+>  		dev = dev->bus->self;
+
+Why not use pci_upstream_bridge() here?
+
+>  	}
+>  	return NULL;
+> --
+> 2.8.1
+> 
