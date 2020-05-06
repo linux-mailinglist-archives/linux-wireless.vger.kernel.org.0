@@ -2,166 +2,71 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 440CA1C64DD
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 May 2020 02:11:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D68A1C65E7
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 May 2020 04:35:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729170AbgEFALJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 5 May 2020 20:11:09 -0400
-Received: from gateway32.websitewelcome.com ([192.185.145.178]:24543 "EHLO
-        gateway32.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728969AbgEFALJ (ORCPT
+        id S1729617AbgEFCfn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 5 May 2020 22:35:43 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:60925 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728875AbgEFCfn (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 5 May 2020 20:11:09 -0400
-X-Greylist: delayed 1408 seconds by postgrey-1.27 at vger.kernel.org; Tue, 05 May 2020 20:11:08 EDT
-Received: from cm12.websitewelcome.com (cm12.websitewelcome.com [100.42.49.8])
-        by gateway32.websitewelcome.com (Postfix) with ESMTP id 0739B2FF1BBF
-        for <linux-wireless@vger.kernel.org>; Tue,  5 May 2020 18:47:39 -0500 (CDT)
-Received: from gator4166.hostgator.com ([108.167.133.22])
-        by cmsmtp with SMTP
-        id W7Hmja8Rc1s2xW7Hnj9iWF; Tue, 05 May 2020 18:47:39 -0500
-X-Authority-Reason: nr=8
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=embeddedor.com; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
-        Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=KOPjXpRAEDO9gDVQmxGovICcFiqsKOmDUl+JG+lNPqw=; b=YkBgmP2mcQEg2kn3TFnvNRqZON
-        KRE3srpQZuM58jSwKcE26UGT6J4v/6H5OGCZPeOPJHti8lOK/EXnx5hlb3xh5K2WN18GM6EcY2mXJ
-        aBmy/jjw2C22bdJr56JFSOIskhf9PuefI+j5jy+kGNdBdqc3UjkyZUjL3XC3qbDJA0cmQ9FtFesJJ
-        ortTHl9lbXEcU7AhkCJSG+/KaoYXcJw0XKEHnBN/VM8XHa6wZSRDy3kxZ8bKI5y/v0tYrncaMayGZ
-        UW+zyn19zNlqrIMLg/2RlePCiXmS30vn4kdnTSVDDQWKCX5Na5jb2aCu1G81cN9pBlJ9HJvu2vilV
-        Hgb57vuA==;
-Received: from [189.207.59.248] (port=57526 helo=embeddedor)
-        by gator4166.hostgator.com with esmtpa (Exim 4.92)
-        (envelope-from <gustavo@embeddedor.com>)
-        id 1jW7Hm-003MYG-Ki; Tue, 05 May 2020 18:47:38 -0500
-Date:   Tue, 5 May 2020 18:52:05 -0500
-From:   "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-To:     Jussi Kivilinna <jussi.kivilinna@iki.fi>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-Subject: [PATCH][next] rndis_wlan: Remove logically dead code
-Message-ID: <20200505235205.GA18539@embeddedor>
+        Tue, 5 May 2020 22:35:43 -0400
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.69 with qID 0462ZM8D0011117, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexmb06.realtek.com.tw[172.21.6.99])
+        by rtits2.realtek.com.tw (8.15.2/2.66/5.86) with ESMTPS id 0462ZM8D0011117
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Wed, 6 May 2020 10:35:22 +0800
+Received: from RTEXMB04.realtek.com.tw (172.21.6.97) by
+ RTEXMB06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Wed, 6 May 2020 10:35:21 +0800
+Received: from RTEXMB04.realtek.com.tw ([fe80::8001:f5f5:a41e:f8d4]) by
+ RTEXMB04.realtek.com.tw ([fe80::8001:f5f5:a41e:f8d4%3]) with mapi id
+ 15.01.1779.005; Wed, 6 May 2020 10:35:21 +0800
+From:   Tony Chuang <yhchuang@realtek.com>
+To:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+CC:     "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
+        Pkshih <pkshih@realtek.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "briannorris@chromium.org" <briannorris@chromium.org>,
+        Kevin Yang <kevin_yang@realtek.com>
+Subject: RE: [PATCH 28/40] rtw88: 8723d: Add shutdown callback to disable BT USB suspend
+Thread-Topic: [PATCH 28/40] rtw88: 8723d: Add shutdown callback to disable BT
+ USB suspend
+Thread-Index: AQHWFIxwWk+IgF2xvEuU+RV8JviaE6iZH+SAgAFUOIA=
+Date:   Wed, 6 May 2020 02:35:21 +0000
+Message-ID: <c7083dc760464c1a9017888457c1718d@realtek.com>
+References: <20200417074653.15591-1-yhchuang@realtek.com>
+ <20200417074653.15591-29-yhchuang@realtek.com>
+ <20200505141455.k2mk7tmuiujfv2sh@linutronix.de>
+In-Reply-To: <20200505141455.k2mk7tmuiujfv2sh@linutronix.de>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.68.175]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - embeddedor.com
-X-BWhitelist: no
-X-Source-IP: 189.207.59.248
-X-Source-L: No
-X-Exim-ID: 1jW7Hm-003MYG-Ki
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: (embeddedor) [189.207.59.248]:57526
-X-Source-Auth: gustavo@embeddedor.com
-X-Email-Count: 4
-X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
-X-Local-Domain: yes
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-caps_buf is always of size sizeof(*caps) because
-sizeof(caps->auth_encr_pair) * 16 is always zero. Notice
-that when using zero-length arrays, sizeof evaluates to zero[1].
-
-So, the code introduced by 
-commit 0308383f9591 ("rndis_wlan: get max_num_pmkids from device")
-is logically dead, hence is never executed and can be removed. As a
-consequence, the rest of the related code can be refactored a bit.
-
-Notice that this code has been out there since March 2010.
-
-[1] https://gcc.gnu.org/onlinedocs/gcc/Zero-Length.html
-Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
----
-In case this is actually a 10-year old bug, then we might want
-calculate the size of caps_buf through the use of the struct_size
-helper:
-
-struct_size(caps, auth_encr_pair, 16);
-
-and we might also want to allocate dynamic memory instead, as we
-cannot do u8 caps_buf[struct_size(caps, auth_encr_pair, 16)];
-due to -Wvla.
-
-Thanks
---
-Gustavo
-
- drivers/net/wireless/rndis_wlan.c | 24 ++++++++----------------
- 1 file changed, 8 insertions(+), 16 deletions(-)
-
-diff --git a/drivers/net/wireless/rndis_wlan.c b/drivers/net/wireless/rndis_wlan.c
-index 52375f3e430a..8852a1832951 100644
---- a/drivers/net/wireless/rndis_wlan.c
-+++ b/drivers/net/wireless/rndis_wlan.c
-@@ -312,17 +312,11 @@ struct ndis_80211_assoc_info {
- 	__le32 offset_resp_ies;
- } __packed;
- 
--struct ndis_80211_auth_encr_pair {
--	__le32 auth_mode;
--	__le32 encr_mode;
--} __packed;
--
- struct ndis_80211_capability {
- 	__le32 length;
- 	__le32 version;
- 	__le32 num_pmkids;
- 	__le32 num_auth_encr_pair;
--	struct ndis_80211_auth_encr_pair auth_encr_pair[0];
- } __packed;
- 
- struct ndis_80211_bssid_info {
-@@ -3109,8 +3103,7 @@ static int rndis_wlan_get_caps(struct usbnet *usbdev, struct wiphy *wiphy)
- 		__le32	num_items;
- 		__le32	items[8];
- 	} networks_supported;
--	struct ndis_80211_capability *caps;
--	u8 caps_buf[sizeof(*caps) + sizeof(caps->auth_encr_pair) * 16];
-+	struct ndis_80211_capability caps;
- 	int len, retval, i, n;
- 	struct rndis_wlan_private *priv = get_rndis_wlan_priv(usbdev);
- 
-@@ -3140,19 +3133,18 @@ static int rndis_wlan_get_caps(struct usbnet *usbdev, struct wiphy *wiphy)
- 	}
- 
- 	/* get device 802.11 capabilities, number of PMKIDs */
--	caps = (struct ndis_80211_capability *)caps_buf;
--	len = sizeof(caps_buf);
-+	len = sizeof(caps);
- 	retval = rndis_query_oid(usbdev,
- 				 RNDIS_OID_802_11_CAPABILITY,
--				 caps, &len);
-+				 &caps, &len);
- 	if (retval >= 0) {
- 		netdev_dbg(usbdev->net, "RNDIS_OID_802_11_CAPABILITY -> len %d, "
- 				"ver %d, pmkids %d, auth-encr-pairs %d\n",
--				le32_to_cpu(caps->length),
--				le32_to_cpu(caps->version),
--				le32_to_cpu(caps->num_pmkids),
--				le32_to_cpu(caps->num_auth_encr_pair));
--		wiphy->max_num_pmkids = le32_to_cpu(caps->num_pmkids);
-+				le32_to_cpu(caps.length),
-+				le32_to_cpu(caps.version),
-+				le32_to_cpu(caps.num_pmkids),
-+				le32_to_cpu(caps.num_auth_encr_pair));
-+		wiphy->max_num_pmkids = le32_to_cpu(caps.num_pmkids);
- 	} else
- 		wiphy->max_num_pmkids = 0;
- 
--- 
-2.26.2
-
+PiBPbiAyMDIwLTA0LTE3IDE1OjQ2OjQxIFsrMDgwMF0sIHloY2h1YW5nQHJlYWx0ZWsuY29tIHdy
+b3RlOg0KPiA+IEZyb206IFBpbmctS2UgU2hpaCA8cGtzaGloQHJlYWx0ZWsuY29tPg0KPiA+DQo+
+ID4gV2l0aG91dCB0aGlzIHBhdGNoLCB3aWZpIGNhcmQgY2FuJ3QgaW5pdGlhbGl6ZSBwcm9wZXJs
+eSBkdWUgdG8gQlQgaW4gVVNCDQo+ID4gc3VzcGVuZCBzdGF0ZS4gU28sIHdlIGRpc2FibGUgQlQg
+VVNCIHN1c3BlbmQgKHdha2V1cCkgaW4gc2h1dGRvd24gY2FsbGJhY2sNCj4gPiB0aGF0IGlzIHRo
+ZSBtb21lbnQgYmVmb3JlIHJlYm9vdGluZy4gVG8gc2F2ZSBCVCBVU0IgcG93ZXIsIHdlIGNhbid0
+IGRvIHRoaXMNCj4gPiBpbiAncmVtb3ZlJyBjYWxsYmFjay4NCj4gDQo+IFNvIHlvdSBjYW4ndCBp
+bml0aWFsaXplIHRoZSBVU0IgcGFydCBiZWNhdXNlIGl0IGlzIGluIHN1c3BlbmQgYW5kIHRoZQ0K
+PiBvbmx5IHdheSB0byBhdm9pZCBpdCB0byBkaXNhYmxlIGl0IG9uIHRoZSBQQ0kgc2lkZS4gVGhh
+dCBtZWFucyB5b3UgZG9uJ3QNCj4gc2VlIGl0IGVudW1lcmF0ZWQgb24gdGhlIFVTQiBidXMgYXQg
+YWxsPw0KDQpZZXMsIGlmIHdlIGRvbid0IGRpc2FibGUgaXQgb24gUENJIHNpZGUsIHRoZW4gdGhl
+IFVTQiBwYXJ0IGNhbm5vdCBiZQ0KcHJvYmVkIG9uIFVTQiBidXMuDQoNCj4gDQo+ID4gU2lnbmVk
+LW9mZi1ieTogUGluZy1LZSBTaGloIDxwa3NoaWhAcmVhbHRlay5jb20+DQo+ID4gU2lnbmVkLW9m
+Zi1ieTogWWFuLUhzdWFuIENodWFuZyA8eWhjaHVhbmdAcmVhbHRlay5jb20+DQo+IA0KPiBTZWJh
+c3RpYW4NCj4gDQoNClllbi1Ic3Vhbg0K
