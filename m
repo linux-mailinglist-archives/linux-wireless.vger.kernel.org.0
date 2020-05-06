@@ -2,30 +2,30 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C44E1C6C0A
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 May 2020 10:42:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 73F311C6C12
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 May 2020 10:43:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728948AbgEFImT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 6 May 2020 04:42:19 -0400
-Received: from mail26.static.mailgun.info ([104.130.122.26]:20797 "EHLO
+        id S1728960AbgEFInS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 6 May 2020 04:43:18 -0400
+Received: from mail26.static.mailgun.info ([104.130.122.26]:33883 "EHLO
         mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728524AbgEFImS (ORCPT
+        by vger.kernel.org with ESMTP id S1728884AbgEFInS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 6 May 2020 04:42:18 -0400
+        Wed, 6 May 2020 04:43:18 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1588754538; h=Date: Message-Id: Cc: To: References:
+ s=smtp; t=1588754597; h=Date: Message-Id: Cc: To: References:
  In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=xj3E/SpCjWDvkJx+g6pYrv8tXv0DsbD4yvgEyoegG7I=;
- b=Uf6xTH1hTg2JqxOFLQBJkbgPFRkkBxjQbiZosOQDkz+y3Pudyaawi0uV+1nB1E0q31ZXGEzb
- tpt1MzqHtR9i7PfftdbExgIezjbQLf1pZh1KrX+xbOG33L3RzhVZFspIbXmM3wh1GJciWkby
- jHN1uf5+zT10RyqjTtL2Q6pCn6Y=
+ Content-Type: Sender; bh=Ruhn4TrDAa9eXV41Exn0uX4NRP+6khiDavNt/3n4Uo0=;
+ b=LqFnggqW6oLg3563h6caJHzgFeWjum6jQPuZphDtMoTmyf1HiPQwWakFxoofdU8Uxo+TLZai
+ 2lBo8NBDpbaQIF5W2IDjT42Jg/t/b7DbdS95HkjsX2cYrtZ8QCbgGD1L0/kJu72C89nSBHUl
+ aaHKOBT7p2vgE2Bk+I28tRVIrU8=
 X-Mailgun-Sending-Ip: 104.130.122.26
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5eb27864.7f4fb31c2d18-smtp-out-n03;
- Wed, 06 May 2020 08:42:12 -0000 (UTC)
+ by mxa.mailgun.org with ESMTP id 5eb27898.7fe0ad2a4b58-smtp-out-n04;
+ Wed, 06 May 2020 08:43:04 -0000 (UTC)
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 50A33C433F2; Wed,  6 May 2020 08:42:11 +0000 (UTC)
+        id 5F898C433BA; Wed,  6 May 2020 08:43:04 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -35,29 +35,25 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id D2E29C43637;
-        Wed,  6 May 2020 08:42:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org D2E29C43637
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id A0587C433F2;
+        Wed,  6 May 2020 08:43:02 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org A0587C433F2
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] brcmsmac: remove Comparison to bool in brcms_b_txstatus()
+Subject: Re: [PATCH] rtlwifi: remove comparison of 0/1 to bool variable
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20200504113357.41422-1-yanaijie@huawei.com>
-References: <20200504113357.41422-1-yanaijie@huawei.com>
+In-Reply-To: <20200429140924.7750-1-yanaijie@huawei.com>
+References: <20200429140924.7750-1-yanaijie@huawei.com>
 To:     Jason Yan <yanaijie@huawei.com>
-Cc:     <arend.vanspriel@broadcom.com>, <franky.lin@broadcom.com>,
-        <hante.meuleman@broadcom.com>, <chi-hsien.lin@cypress.com>,
-        <wright.feng@cypress.com>, <davem@davemloft.net>,
-        <yuehaibing@huawei.com>, <linux-wireless@vger.kernel.org>,
-        <brcm80211-dev-list.pdl@broadcom.com>,
-        <brcm80211-dev-list@cypress.com>, <netdev@vger.kernel.org>,
+Cc:     <pkshih@realtek.com>, <davem@davemloft.net>,
+        <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
         <linux-kernel@vger.kernel.org>, Jason Yan <yanaijie@huawei.com>
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20200506084211.50A33C433F2@smtp.codeaurora.org>
-Date:   Wed,  6 May 2020 08:42:11 +0000 (UTC)
+Message-Id: <20200506084304.5F898C433BA@smtp.codeaurora.org>
+Date:   Wed,  6 May 2020 08:43:04 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
@@ -65,18 +61,21 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 Jason Yan <yanaijie@huawei.com> wrote:
 
+> The variable 'rtlpriv->rfkill.rfkill_state' is bool and can directly
+> assigned to bool values.
+> 
 > Fix the following coccicheck warning:
 > 
-> drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c:1060:6-12:
-> WARNING: Comparison to bool
+> drivers/net/wireless/realtek/rtlwifi/core.c:1725:14-42: WARNING:
+> Comparison of 0/1 to bool variable
 > 
 > Signed-off-by: Jason Yan <yanaijie@huawei.com>
 
 Patch applied to wireless-drivers-next.git, thanks.
 
-4f5cf93395d7 brcmsmac: remove Comparison to bool in brcms_b_txstatus()
+1b56bed20212 rtlwifi: remove comparison of 0/1 to bool variable
 
 -- 
-https://patchwork.kernel.org/patch/11525541/
+https://patchwork.kernel.org/patch/11517573/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
