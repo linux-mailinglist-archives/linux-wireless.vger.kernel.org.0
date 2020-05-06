@@ -2,34 +2,34 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A0831C6DAF
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 May 2020 11:54:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 927C21C6DC0
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 May 2020 11:55:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729013AbgEFJyV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 6 May 2020 05:54:21 -0400
-Received: from mail.kernel.org ([198.145.29.99]:55344 "EHLO mail.kernel.org"
+        id S1729255AbgEFJzz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 6 May 2020 05:55:55 -0400
+Received: from mail.kernel.org ([198.145.29.99]:56574 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726935AbgEFJyU (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 6 May 2020 05:54:20 -0400
+        id S1729084AbgEFJzz (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 6 May 2020 05:55:55 -0400
 Received: from localhost.localdomain.com (unknown [151.48.155.206])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 4166820753;
-        Wed,  6 May 2020 09:54:19 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 9CB3020753;
+        Wed,  6 May 2020 09:55:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1588758860;
-        bh=cMT+LnOQZwADrMUesZWSporgJBGKOdjgwOZSRIZB66Q=;
+        s=default; t=1588758954;
+        bh=YD4DMNr1yHZPIipOrEnMm7bnXE3vfPRPPws1SqKjxyM=;
         h=From:To:Cc:Subject:Date:From;
-        b=OiTXLs4jEP0QfulH+VOZAnUAcZiJ8LiowsvT1frEnkIsyWOsLlI+f0okYgLWbnoig
-         jnFo8t4b46i0BSaJJ7iN2VA2AxJqSVxPKGOLAP7zcaTGprtwwbzA8BRh0Cc8ueBInV
-         jwEw5jRxTfIw4FJ3o9uWFEcWrubP/Fz2YGjaNe8Y=
+        b=X6mdGeI5ChUfVpxHlYonIuxM0+q19DILwq4xrzonMLQmqVPMwFfo7tNg1UYVcxOIX
+         sdILrNVDDpCSRWL9F1T7yC3gVT+19G+gX7qd4yWcSUb0kraRhaUjKFXw/VPmC231JC
+         P+MZWpQSE79/rL6gQGt50J4pqsC44rHWukakOcYM=
 From:   Lorenzo Bianconi <lorenzo@kernel.org>
 To:     nbd@nbd.name
 Cc:     linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com,
         sean.wang@mediatek.com
-Subject: [PATCH] mt76: mt7663: introduce WoW with net detect support
-Date:   Wed,  6 May 2020 11:53:35 +0200
-Message-Id: <48bfe7a59ecf6cdb5f37f1eec268836a803373ad.1588758700.git.lorenzo@kernel.org>
+Subject: [PATCH] mt76: mt7663: add support to sched scan with randomise addr
+Date:   Wed,  6 May 2020 11:55:42 +0200
+Message-Id: <9ff4b5dfa487c7d32cb46988fbcb09e0fef1e9de.1588758914.git.lorenzo@kernel.org>
 X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -40,7 +40,7 @@ X-Mailing-List: linux-wireless@vger.kernel.org
 
 From: Sean Wang <sean.wang@mediatek.com>
 
-Introduce WoW with net detect support
+Add support to sched scan with randomise addr
 
 Co-developed-by: Wan-Feng Jiang <Wan-Feng.Jiang@mediatek.com>
 Signed-off-by: Wan-Feng Jiang <Wan-Feng.Jiang@mediatek.com>
@@ -50,60 +50,61 @@ Signed-off-by: Sean Wang <sean.wang@mediatek.com>
 Co-developed-by: Lorenzo Bianconi <lorenzo@kernel.org>
 Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7615/mcu.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7615/init.c | 3 ++-
+ drivers/net/wireless/mediatek/mt76/mt7615/mcu.c  | 7 ++++++-
+ drivers/net/wireless/mediatek/mt76/mt7615/mcu.h  | 5 +++--
+ 3 files changed, 11 insertions(+), 4 deletions(-)
 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/init.c b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
+index 1d49d65d1acd..37fc70197f92 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
+@@ -139,7 +139,8 @@ void mt7615_check_offload_capability(struct mt7615_dev *dev)
+ 		ieee80211_hw_set(hw, SUPPORTS_PS);
+ 		ieee80211_hw_set(hw, SUPPORTS_DYNAMIC_PS);
+ 
+-		wiphy->features |= NL80211_FEATURE_SCAN_RANDOM_MAC_ADDR;
++		wiphy->features |= NL80211_FEATURE_SCHED_SCAN_RANDOM_MAC_ADDR |
++				   NL80211_FEATURE_SCAN_RANDOM_MAC_ADDR;
+ 	} else {
+ 		dev->ops->hw_scan = NULL;
+ 		dev->ops->cancel_hw_scan = NULL;
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-index 8ada03afe7d0..89fadff44fa4 100644
+index 89fadff44fa4..96bf39a4a3da 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-@@ -1882,10 +1882,11 @@ mt7615_mcu_send_ram_firmware(struct mt7615_dev *dev,
- 
- static const struct wiphy_wowlan_support mt7615_wowlan_support = {
- 	.flags = WIPHY_WOWLAN_MAGIC_PKT | WIPHY_WOWLAN_DISCONNECT |
--		 WIPHY_WOWLAN_SUPPORTS_GTK_REKEY,
-+		 WIPHY_WOWLAN_SUPPORTS_GTK_REKEY | WIPHY_WOWLAN_NET_DETECT,
- 	.n_patterns = 1,
- 	.pattern_min_len = 1,
- 	.pattern_max_len = MT7615_WOW_PATTEN_MAX_LEN,
-+	.max_nd_match_sets = 10,
- };
- 
- static int mt7615_load_n9(struct mt7615_dev *dev, const char *name)
-@@ -3316,10 +3317,11 @@ mt7615_mcu_set_bss_pm(struct mt7615_dev *dev, struct ieee80211_vif *vif,
- }
- 
- static int
--mt7615_mcu_set_wow_ctrl(struct mt7615_dev *dev, struct ieee80211_vif *vif,
-+mt7615_mcu_set_wow_ctrl(struct mt7615_phy *phy, struct ieee80211_vif *vif,
- 			bool suspend, struct cfg80211_wowlan *wowlan)
- {
- 	struct mt7615_vif *mvif = (struct mt7615_vif *)vif->drv_priv;
-+	struct mt7615_dev *dev = phy->dev;
- 	struct {
- 		struct {
- 			u8 bss_idx;
-@@ -3341,6 +3343,11 @@ mt7615_mcu_set_wow_ctrl(struct mt7615_dev *dev, struct ieee80211_vif *vif,
- 		req.wow_ctrl_tlv.trigger |= BIT(0);
- 	if (wowlan->disconnect)
- 		req.wow_ctrl_tlv.trigger |= BIT(2);
-+	if (wowlan->nd_config) {
-+		mt7615_mcu_sched_scan_req(phy, vif, wowlan->nd_config);
-+		req.wow_ctrl_tlv.trigger |= BIT(5);
+@@ -2907,7 +2907,12 @@ int mt7615_mcu_sched_scan_req(struct mt7615_phy *phy,
+ 	req = (struct mt7615_sched_scan_req *)skb_put(skb, sizeof(*req));
+ 	req->version = 1;
+ 	req->seq_num = mvif->scan_seq_num | ext_phy << 7;
+-	req->scan_func = !!(sreq->flags & NL80211_SCAN_FLAG_RANDOM_ADDR);
++
++	if (sreq->flags & NL80211_SCAN_FLAG_RANDOM_ADDR) {
++		get_random_mask_addr(req->random_mac, sreq->mac_addr,
++				     sreq->mac_addr_mask);
++		req->scan_func = 1;
 +	}
-+	mt7615_mcu_sched_scan_enable(phy, vif, suspend);
  
- 	if (mt76_is_mmio(&dev->mt76))
- 		req.wow_ctrl_tlv.wakeup_hif = 2;
-@@ -3461,7 +3468,7 @@ void mt7615_mcu_set_suspend_iter(void *priv, u8 *mac,
- 	for (i = 0; i < wowlan->n_patterns; i++)
- 		mt7615_mcu_set_wow_pattern(phy->dev, vif, i, suspend,
- 					   &wowlan->patterns[i]);
--	mt7615_mcu_set_wow_ctrl(phy->dev, vif, suspend, wowlan);
-+	mt7615_mcu_set_wow_ctrl(phy, vif, suspend, wowlan);
- }
+ 	req->ssids_num = sreq->n_ssids;
+ 	for (i = 0; i < req->ssids_num; i++) {
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.h
+index 737ccec6dd96..0f12e6da89af 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.h
+@@ -405,10 +405,11 @@ struct mt7615_sched_scan_req {
+ 	u8 channel_type;
+ 	u8 channels_num;
+ 	u8 intervals_num;
+-	u8 scan_func;
++	u8 scan_func; /* BIT(0) eable random mac address */
+ 	struct mt7615_mcu_scan_channel channels[64];
+ 	__le16 intervals[MT7615_MAX_SCHED_SCAN_INTERVAL];
+-	u8 pad2[64];
++	u8 random_mac[ETH_ALEN]; /* valid when BIT(0) in scan_func is set */
++	u8 pad2[58];
+ } __packed;
  
- static void
+ struct nt7615_sched_scan_done {
 -- 
 2.26.2
 
