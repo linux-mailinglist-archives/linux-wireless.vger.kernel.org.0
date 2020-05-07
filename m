@@ -2,107 +2,202 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 91F3E1C8045
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 May 2020 05:04:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1FCD41C8082
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 May 2020 05:30:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728464AbgEGDEB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 6 May 2020 23:04:01 -0400
-Received: from mail27.static.mailgun.info ([104.130.122.27]:40840 "EHLO
-        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726437AbgEGDEB (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 6 May 2020 23:04:01 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1588820640; h=Message-Id: Date: Subject: Cc: To: From:
- Sender; bh=/iMw4J9Dp1xvAAfD/nO99rvIlI2Al01EzhhJwCujE9I=; b=xcQGoge96H8MhyYUFqriYaG7Jwlb6K1JqwBL1rMNIrfAGvg291jXiejL+f/F+qkW5RJZ6yFJ
- Jr+76iDSusmg/MA7UMheb51AwSsJTZ/SQkofZbeVprNK34b3fbhrRaUml3ZRDYdOa2x9UpjD
- V3xOvVjUeaawyruRnMhlB/xXm4Y=
-X-Mailgun-Sending-Ip: 104.130.122.27
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5eb37a92.7f38d65470a0-smtp-out-n01;
- Thu, 07 May 2020 03:03:46 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 7A1E3C433BA; Thu,  7 May 2020 03:03:45 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.0
-Received: from vnaralas-linux.qualcomm.com (blr-c-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.19.19])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: vnaralas)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id CFAB4C43636;
-        Thu,  7 May 2020 03:03:43 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org CFAB4C43636
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=vnaralas@codeaurora.org
-From:   Venkateswara Naralasetty <vnaralas@codeaurora.org>
-To:     ath10k@lists.infradead.org
-Cc:     linux-wireless@vger.kernel.org,
-        Venkateswara Naralasetty <vnaralas@codeaurora.org>
-Subject: [PATCHv4] ath10k : Fix channel survey dump
-Date:   Thu,  7 May 2020 08:33:32 +0530
-Message-Id: <1588820612-15884-1-git-send-email-vnaralas@codeaurora.org>
-X-Mailer: git-send-email 2.7.4
+        id S1725869AbgEGDaW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 6 May 2020 23:30:22 -0400
+Received: from mga04.intel.com ([192.55.52.120]:8102 "EHLO mga04.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725857AbgEGDaW (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 6 May 2020 23:30:22 -0400
+IronPort-SDR: znOSPcUwQWxnbIsr1hD68dn3w18CZyqqGAFhejdjL+Q746j9N1pV8FIytZsdKTIHuaaTXUT0rF
+ XCUTZ4jxKoDg==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2020 20:30:22 -0700
+IronPort-SDR: X3/04kop1Z8P1eCYEPSQw7si7zihHbMtlrpORD6GwihYQ3aEEe57sWF48d7ps9yKwMfWcjEn3W
+ FC+tqXpZt+/A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.73,361,1583222400"; 
+   d="scan'208";a="369993268"
+Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
+  by fmsmga001.fm.intel.com with ESMTP; 06 May 2020 20:30:21 -0700
+Received: from kbuild by lkp-server01 with local (Exim 4.89)
+        (envelope-from <lkp@intel.com>)
+        id 1jWXEq-0000fb-EE; Thu, 07 May 2020 11:30:20 +0800
+Date:   Thu, 07 May 2020 11:30:17 +0800
+From:   kbuild test robot <lkp@intel.com>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     linux-wireless@vger.kernel.org
+Subject: [wireless-drivers-next:master] BUILD SUCCESS
+ 7f65f6118a53eeb3cd9baa0ceb5519b478758cd9
+Message-ID: <5eb380c9.xu93ls5losy75NT5%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Channel active/busy time are showing incorrect(less than previous or
-sometimes zero) for successive survey dump command.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git  master
+branch HEAD: 7f65f6118a53eeb3cd9baa0ceb5519b478758cd9  Merge ath-next from git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git
 
-example:
-Survey data from wlan0
-	frequency:                      5180 MHz [in use]
-	channel active time:            54995 ms
-	channel busy time:              432 ms
-	channel receive time:           0 ms
-	channel transmit time:          59 ms
-Survey data from wlan0
-	frequency:                      5180 MHz [in use]
-	channel active time:            32592 ms
-	channel busy time:              254 ms
-	channel receive time:           0 ms
-	channel transmit time:          0 ms
+elapsed time: 1093m
 
-This patch fix this issue by assigning 'wmi_bss_survey_req_type'
-as 'WMI_BSS_SURVEY_REQ_TYPE_READ' which accumulate survey data in
-FW and send survey data to driver upon the driver request. Wrap around
-is taken care by FW.
+configs tested: 143
+configs skipped: 0
 
-hardware used : QCA9984
-firmware ver  : ver 10.4-3.5.3-00057
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-hardware used : QCA988X
-firmware ver  : 10.2.4-1.0-00047
+arm64                            allyesconfig
+arm                              allyesconfig
+arm64                            allmodconfig
+arm                              allmodconfig
+arm64                             allnoconfig
+arm                               allnoconfig
+sparc                            allyesconfig
+m68k                             allyesconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+mips                             allyesconfig
+ia64                              allnoconfig
+um                               allyesconfig
+nds32                               defconfig
+ia64                             allmodconfig
+c6x                               allnoconfig
+parisc                           allyesconfig
+alpha                               defconfig
+alpha                            allyesconfig
+powerpc                           allnoconfig
+powerpc                             defconfig
+s390                             alldefconfig
+csky                                defconfig
+ia64                             alldefconfig
+um                             i386_defconfig
+um                                  defconfig
+sparc64                          allmodconfig
+microblaze                        allnoconfig
+i386                                defconfig
+s390                                defconfig
+s390                             allyesconfig
+i386                              allnoconfig
+i386                             allyesconfig
+i386                             alldefconfig
+i386                              debian-10.3
+ia64                                defconfig
+m68k                           sun3_defconfig
+m68k                          multi_defconfig
+m68k                                defconfig
+nios2                               defconfig
+nios2                            allyesconfig
+openrisc                            defconfig
+c6x                              allyesconfig
+openrisc                         allyesconfig
+nds32                             allnoconfig
+csky                             allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+h8300                            allmodconfig
+xtensa                              defconfig
+arc                                 defconfig
+arc                              allyesconfig
+microblaze                       allyesconfig
+sh                               allmodconfig
+sh                                allnoconfig
+mips                         64r6el_defconfig
+mips                              allnoconfig
+mips                           32r2_defconfig
+mips                             allmodconfig
+parisc                            allnoconfig
+parisc                           allmodconfig
+powerpc                          allyesconfig
+powerpc                          alldefconfig
+powerpc                          rhel-kconfig
+powerpc                          allmodconfig
+m68k                 randconfig-a001-20200506
+mips                 randconfig-a001-20200506
+nds32                randconfig-a001-20200506
+parisc               randconfig-a001-20200506
+alpha                randconfig-a001-20200506
+riscv                randconfig-a001-20200506
+h8300                randconfig-a001-20200506
+nios2                randconfig-a001-20200506
+microblaze           randconfig-a001-20200506
+c6x                  randconfig-a001-20200506
+sparc64              randconfig-a001-20200506
+s390                 randconfig-a001-20200506
+xtensa               randconfig-a001-20200506
+sh                   randconfig-a001-20200506
+openrisc             randconfig-a001-20200506
+csky                 randconfig-a001-20200506
+xtensa               randconfig-a001-20200507
+sh                   randconfig-a001-20200507
+openrisc             randconfig-a001-20200507
+csky                 randconfig-a001-20200507
+i386                 randconfig-b003-20200506
+i386                 randconfig-b001-20200506
+x86_64               randconfig-b001-20200506
+x86_64               randconfig-b003-20200506
+i386                 randconfig-b002-20200506
+i386                 randconfig-e003-20200506
+x86_64               randconfig-e003-20200506
+x86_64               randconfig-e001-20200506
+i386                 randconfig-e002-20200506
+i386                 randconfig-e001-20200506
+x86_64               randconfig-a003-20200506
+x86_64               randconfig-a001-20200506
+x86_64               randconfig-a002-20200506
+i386                 randconfig-a001-20200506
+i386                 randconfig-a002-20200506
+i386                 randconfig-a003-20200506
+i386                 randconfig-f003-20200506
+x86_64               randconfig-f001-20200506
+x86_64               randconfig-f003-20200506
+x86_64               randconfig-f002-20200506
+i386                 randconfig-f001-20200506
+i386                 randconfig-f002-20200506
+x86_64               randconfig-g003-20200506
+i386                 randconfig-g003-20200506
+i386                 randconfig-g002-20200506
+x86_64               randconfig-g001-20200506
+i386                 randconfig-g001-20200506
+x86_64               randconfig-g002-20200506
+i386                 randconfig-h002-20200506
+i386                 randconfig-h001-20200506
+i386                 randconfig-h003-20200506
+x86_64               randconfig-h002-20200506
+x86_64               randconfig-h003-20200506
+x86_64               randconfig-h001-20200506
+arm64                randconfig-a001-20200506
+arc                  randconfig-a001-20200506
+powerpc              randconfig-a001-20200506
+arm                  randconfig-a001-20200506
+sparc                randconfig-a001-20200506
+riscv                            allyesconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                            allmodconfig
+s390                              allnoconfig
+s390                             allmodconfig
+sparc                               defconfig
+sparc64                             defconfig
+sparc64                           allnoconfig
+sparc64                          allyesconfig
+um                               allmodconfig
+um                           x86_64_defconfig
+x86_64                                   rhel
+x86_64                               rhel-7.6
+x86_64                    rhel-7.6-kselftests
+x86_64                         rhel-7.2-clear
+x86_64                                    lkp
+x86_64                              fedora-25
+x86_64                                  kexec
 
-Tested-by: Markus Theil <markus.theil@tu-ilmenau.de>
-Signed-off-by: Venkateswara Naralasetty <vnaralas@codeaurora.org>
 ---
-v4:
- * updated signed-off-by
-
-v3:
- * Rebased on TOT and added Tested-by
-
- drivers/net/wireless/ath/ath10k/mac.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
-index a1147cc..9330b52 100644
---- a/drivers/net/wireless/ath/ath10k/mac.c
-+++ b/drivers/net/wireless/ath/ath10k/mac.c
-@@ -7275,7 +7275,7 @@ ath10k_mac_update_bss_chan_survey(struct ath10k *ar,
- 				  struct ieee80211_channel *channel)
- {
- 	int ret;
--	enum wmi_bss_survey_req_type type = WMI_BSS_SURVEY_REQ_TYPE_READ_CLEAR;
-+	enum wmi_bss_survey_req_type type = WMI_BSS_SURVEY_REQ_TYPE_READ;
- 
- 	lockdep_assert_held(&ar->conf_mutex);
- 
--- 
-2.7.4
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
