@@ -2,22 +2,22 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0CF6F1C80CD
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 May 2020 06:22:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6EFC91C80CB
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 May 2020 06:22:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725949AbgEGEWU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 7 May 2020 00:22:20 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:34093 "EHLO
+        id S1725914AbgEGEWQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 7 May 2020 00:22:16 -0400
+Received: from rtits2.realtek.com ([211.75.126.72]:34092 "EHLO
         rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725879AbgEGEWR (ORCPT
+        with ESMTP id S1725809AbgEGEWQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 7 May 2020 00:22:17 -0400
+        Thu, 7 May 2020 00:22:16 -0400
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.69 with qID 0474LubC6027269, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.69 with qID 0474LvomE027273, This message is accepted by code: ctloc85258
 Received: from mail.realtek.com (rtexmb06.realtek.com.tw[172.21.6.99])
-        by rtits2.realtek.com.tw (8.15.2/2.66/5.86) with ESMTPS id 0474LubC6027269
+        by rtits2.realtek.com.tw (8.15.2/2.66/5.86) with ESMTPS id 0474LvomE027273
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Thu, 7 May 2020 12:21:56 +0800
+        Thu, 7 May 2020 12:21:57 +0800
 Received: from RTEXMB04.realtek.com.tw (172.21.6.97) by
  RTEXMB06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
@@ -30,10 +30,12 @@ From:   <yhchuang@realtek.com>
 To:     <kvalo@codeaurora.org>
 CC:     <linux-wireless@vger.kernel.org>, <pkshih@realtek.com>,
         <bigeasy@linutronix.de>
-Subject: [PATCH v2 0/9] rtw88: 8723d: Add RF calibration and coex
-Date:   Thu, 7 May 2020 12:21:42 +0800
-Message-ID: <20200507042151.15634-1-yhchuang@realtek.com>
+Subject: [PATCH v2 1/9] rtw88: 8723d: Add LC calibration
+Date:   Thu, 7 May 2020 12:21:43 +0800
+Message-ID: <20200507042151.15634-2-yhchuang@realtek.com>
 X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20200507042151.15634-1-yhchuang@realtek.com>
+References: <20200507042151.15634-1-yhchuang@realtek.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [172.21.68.128]
@@ -44,68 +46,101 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Yan-Hsuan Chuang <yhchuang@realtek.com>
+From: Ping-Ke Shih <pkshih@realtek.com>
 
-This patch set is the last set for RTL8723D, it adds RF calibration
-routines and BT-coex mechanism. The RFK includes IQK/LCK/PowerTrack.
+LC calibration is done by hardware circuit. Driver sets the LCK bit to kick
+start, and then poll the bit to check if it's done.
 
-Unlike other 802.11ac devices, RTL8723D is not supporting doing IQK
-in firmware, which is called SW IQK. Hence more code is put in driver.
-LCK is easier, just trigger the hardware circuit, and wait until it's
-done by register polling.
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
+---
+ drivers/net/wireless/realtek/rtw88/main.h     |  1 +
+ drivers/net/wireless/realtek/rtw88/rtw8723d.c | 31 +++++++++++++++++++
+ drivers/net/wireless/realtek/rtw88/rtw8723d.h |  3 ++
+ 3 files changed, 35 insertions(+)
 
-For coex mechanisms, the driver's coex.c has implemented most of the
-routines, what 8723D should add is the chip dependent settings.
-
-For BT USB suspend, disable it when PCI shutdown. If not, the USB
-part cannot be enumarated, and the card cannot be initialised.
-
-Finally, it should be the last patch set for 8723D, so add it in
-Makefile and Kconfig. The firmware has already been applied by
-linux-firmware [1], one can found it in:
-	
-	linux-firmware/rtw88/rtw8723d_fw.bin
-
-[1] git://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git
-
-
-v1 -> v2
-  * split the patches for review
-  * move some macro to header file
-  * include coex debug info in coex support
-  * use read_poll_timeout for LCK
-  * rename 'result' to 'status' to avoid confusion in IQK
-  * drop unnecessary (u8) cast
-
-
-Ping-Ke Shih (9):
-  rtw88: 8723d: Add LC calibration
-  rtw88: 8723d: add IQ calibration
-  rtw88: 8723d: Add power tracking
-  rtw88: 8723d: Add shutdown callback to disable BT USB suspend
-  rtw88: 8723d: implement flush queue
-  rtw88: 8723d: set ltecoex register address in chip_info
-  rtw88: 8723d: Add coex support
-  rtw88: fill zeros to words 0x06 and 0x07 of security cam entry
-  rtw88: 8723d: Add 8723DE to Kconfig and Makefile
-
- drivers/net/wireless/realtek/rtw88/Kconfig    |   10 +
- drivers/net/wireless/realtek/rtw88/Makefile   |    1 +
- drivers/net/wireless/realtek/rtw88/debug.c    |    9 +-
- drivers/net/wireless/realtek/rtw88/mac.c      |   29 +-
- drivers/net/wireless/realtek/rtw88/main.h     |   36 +
- drivers/net/wireless/realtek/rtw88/pci.c      |   17 +
- drivers/net/wireless/realtek/rtw88/phy.c      |    8 +-
- drivers/net/wireless/realtek/rtw88/phy.h      |    1 +
- drivers/net/wireless/realtek/rtw88/reg.h      |   11 +
- drivers/net/wireless/realtek/rtw88/rtw8723d.c | 1605 +++++++++++++++++
- drivers/net/wireless/realtek/rtw88/rtw8723d.h |  138 ++
- drivers/net/wireless/realtek/rtw88/rtw8822b.c |   24 +
- drivers/net/wireless/realtek/rtw88/rtw8822c.c |   24 +
- drivers/net/wireless/realtek/rtw88/sec.c      |    6 +-
- drivers/net/wireless/realtek/rtw88/util.c     |   18 +-
- 15 files changed, 1907 insertions(+), 30 deletions(-)
-
+diff --git a/drivers/net/wireless/realtek/rtw88/main.h b/drivers/net/wireless/realtek/rtw88/main.h
+index e0365a70c6f7..c5046986f9af 100644
+--- a/drivers/net/wireless/realtek/rtw88/main.h
++++ b/drivers/net/wireless/realtek/rtw88/main.h
+@@ -11,6 +11,7 @@
+ #include <linux/average.h>
+ #include <linux/bitops.h>
+ #include <linux/bitfield.h>
++#include <linux/iopoll.h>
+ #include <linux/interrupt.h>
+ 
+ #include "util.h"
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8723d.c b/drivers/net/wireless/realtek/rtw88/rtw8723d.c
+index 92c742d1ce6d..0f5ddd41b019 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8723d.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8723d.c
+@@ -64,6 +64,34 @@ static const struct rtw_hw_reg rtw8723d_txagc[] = {
+ #define WLAN_LTR_CTRL1		0xCB004010
+ #define WLAN_LTR_CTRL2		0x01233425
+ 
++static void rtw8723d_lck(struct rtw_dev *rtwdev)
++{
++	u32 lc_cal;
++	u8 val_ctx, rf_val;
++	int ret;
++
++	val_ctx = rtw_read8(rtwdev, REG_CTX);
++	if ((val_ctx & BIT_MASK_CTX_TYPE) != 0)
++		rtw_write8(rtwdev, REG_CTX, val_ctx & ~BIT_MASK_CTX_TYPE);
++	else
++		rtw_write8(rtwdev, REG_TXPAUSE, 0xFF);
++	lc_cal = rtw_read_rf(rtwdev, RF_PATH_A, RF_CFGCH, RFREG_MASK);
++
++	rtw_write_rf(rtwdev, RF_PATH_A, RF_CFGCH, RFREG_MASK, lc_cal | BIT_LCK);
++
++	ret = read_poll_timeout(rtw_read_rf, rf_val, rf_val != 0x1,
++				10000, 1000000, false,
++				rtwdev, RF_PATH_A, RF_CFGCH, BIT_LCK);
++	if (ret)
++		rtw_warn(rtwdev, "failed to poll LCK status bit\n");
++
++	rtw_write_rf(rtwdev, RF_PATH_A, RF_CFGCH, RFREG_MASK, lc_cal);
++	if ((val_ctx & BIT_MASK_CTX_TYPE) != 0)
++		rtw_write8(rtwdev, REG_CTX, val_ctx);
++	else
++		rtw_write8(rtwdev, REG_TXPAUSE, 0x00);
++}
++
+ static void rtw8723d_phy_set_param(struct rtw_dev *rtwdev)
+ {
+ 	u8 xtal_cap;
+@@ -125,6 +153,9 @@ static void rtw8723d_phy_set_param(struct rtw_dev *rtwdev)
+ 	rtw_phy_init(rtwdev);
+ 
+ 	rtw_write16_set(rtwdev, REG_TXDMA_OFFSET_CHK, BIT_DROP_DATA_EN);
++
++	rtw8723d_lck(rtwdev);
++
+ 	rtw_write32_mask(rtwdev, REG_OFDM0_XAAGC1, MASKBYTE0, 0x50);
+ 	rtw_write32_mask(rtwdev, REG_OFDM0_XAAGC1, MASKBYTE0, 0x20);
+ }
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8723d.h b/drivers/net/wireless/realtek/rtw88/rtw8723d.h
+index ac66f672bec8..6a7d58992df5 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8723d.h
++++ b/drivers/net/wireless/realtek/rtw88/rtw8723d.h
+@@ -78,6 +78,7 @@ struct rtw8723d_efuse {
+ #define RFCFGCH_BW_20M		(BIT(11) | BIT(10))
+ #define RFCFGCH_BW_40M		BIT(10)
+ #define BIT_MASK_RFMOD		BIT(0)
++#define BIT_LCK			BIT(15)
+ 
+ #define REG_PSDFN		0x0808
+ #define REG_ANALOG_P4		0x088c
+@@ -115,6 +116,8 @@ struct rtw8723d_efuse {
+ #define REG_OFDM_FA_RSTD_11N	0x0d00
+ #define BIT_MASK_OFDM_FA_RST1	BIT(27)
+ #define BIT_MASK_OFDM_FA_KEEP1	BIT(31)
++#define REG_CTX			0x0d03
++#define BIT_MASK_CTX_TYPE	GENMASK(6, 4)
+ #define REG_OFDM1_CFOTRK	0x0d2c
+ #define BIT_EN_CFOTRK		BIT(28)
+ #define REG_OFDM1_CSI1		0x0d40
 -- 
 2.17.1
 
