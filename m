@@ -2,88 +2,166 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 03E481C9841
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 May 2020 19:47:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0186D1C9964
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 May 2020 20:34:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728196AbgEGRrV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 7 May 2020 13:47:21 -0400
-Received: from mail26.static.mailgun.info ([104.130.122.26]:42302 "EHLO
-        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726514AbgEGRrU (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 7 May 2020 13:47:20 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1588873640; h=Content-Transfer-Encoding: Content-Type:
- MIME-Version: Message-ID: In-Reply-To: Date: References: Subject: Cc:
- To: From: Sender; bh=QzBgMVXJ1sTXxKTX794AyS1imRQfs8NyQneN9n8UKRE=; b=itJleUa3RQ7rl3zHH2e1h0k7C1v0Ktv3ac/u5ccl9ua3lLrfnoJV9QSfGDMMQTqkEFn0DgsG
- I4EjSEtPyvFb7ibcnVetLx0TMK6/Rvt1GDlm1y8sY+UFsXqn8IK85Rcbyo7V60Q3zK9Mh/F9
- UgoD6mk5ER8FD8FmSZCUScDZ2Wo=
-X-Mailgun-Sending-Ip: 104.130.122.26
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5eb449a7.7f730b49ed18-smtp-out-n03;
- Thu, 07 May 2020 17:47:19 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id E025AC433BA; Thu,  7 May 2020 17:47:18 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.0
-Received: from x230.qca.qualcomm.com (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        id S1728131AbgEGSeo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 7 May 2020 14:34:44 -0400
+Received: from mail.kernel.org ([198.145.29.99]:35126 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726320AbgEGSen (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 7 May 2020 14:34:43 -0400
+Received: from embeddedor (unknown [189.207.59.248])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 6DD70C433D2;
-        Thu,  7 May 2020 17:47:15 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 6DD70C433D2
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Markus Elfring <Markus.Elfring@web.de>
-Cc:     Christophe Jaillet <christophe.jaillet@wanadoo.fr>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        wcn36xx@lists.infradead.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Andy Gross <andy.gross@linaro.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Marcel Holtmann <marcel@holtmann.org>
-Subject: Re: [PATCH] wcn36xx: Fix error handling path in wcn36xx_probe()
-References: <5345c72b-8d18-74ba-a6fa-bdc0f7dfb4c3@web.de>
-Date:   Thu, 07 May 2020 20:47:12 +0300
-In-Reply-To: <5345c72b-8d18-74ba-a6fa-bdc0f7dfb4c3@web.de> (Markus Elfring's
-        message of "Thu, 7 May 2020 19:39:17 +0200")
-Message-ID: <874ksr4oyn.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        by mail.kernel.org (Postfix) with ESMTPSA id A8435208E4;
+        Thu,  7 May 2020 18:34:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1588876483;
+        bh=3SC5W/DS9xdMVSxaOxekzN7vcDdtHgz+8monE4FBn5k=;
+        h=Date:From:To:Cc:Subject:From;
+        b=TIux4fwoDb9uwopErmbP9RT5patBuiE/xSW5D8ARUAr0+g78M45DYZAgw0fu1W3JR
+         Dr0Z5qOJPFF0ZD79Z7wlP2FekczbVV8B8RK+ZqhzpkeEEvYDJs1nlzlR35bq4VlGOR
+         uVe0k8xwUp2JzNkJwheufKhcxMYn7nQXtjWD2EDA=
+Date:   Thu, 7 May 2020 13:39:09 -0500
+From:   "Gustavo A. R. Silva" <gustavoars@kernel.org>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] cfg80211: Replace zero-length array with flexible-array
+Message-ID: <20200507183909.GA12993@embeddedor>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Markus Elfring <Markus.Elfring@web.de> writes:
+The current codebase makes use of the zero-length array language
+extension to the C90 standard, but the preferred mechanism to declare
+variable-length types such as these ones is a flexible array member[1][2],
+introduced in C99:
 
-> =E2=80=A6
->> +++ b/drivers/net/wireless/ath/wcn36xx/main.c
-> =E2=80=A6
->> @@ -1359,6 +1359,8 @@ static int wcn36xx_probe(struct platform_device *p=
-dev)
->>  out_unmap:
->>  	iounmap(wcn->ccu_base);
->>  	iounmap(wcn->dxe_base);
->> +out_channel:
->> +	rpmsg_destroy_ept(wcn->smd_channel);
->>  out_wq:
->>  	ieee80211_free_hw(hw);
->>  out_err:
->
-> How do you think about to use the label =E2=80=9Cout_destroy_ept=E2=80=9D?
+struct foo {
+        int stuff;
+        struct boo array[];
+};
 
-Yeah, that's better. I'll change it in the pending branch before I
-commit.
+By making use of the mechanism above, we will get a compiler warning
+in case the flexible array does not occur last in the structure, which
+will help us prevent some kind of undefined behavior bugs from being
+inadvertently introduced[3] to the codebase from now on.
 
---=20
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
-hes
+Also, notice that, dynamic memory allocations won't be affected by
+this change:
+
+"Flexible array members have incomplete type, and so the sizeof operator
+may not be applied. As a quirk of the original implementation of
+zero-length arrays, sizeof evaluates to zero."[1]
+
+sizeof(flexible-array-member) triggers a warning because flexible array
+members have incomplete type[1]. There are some instances of code in
+which the sizeof operator is being incorrectly/erroneously applied to
+zero-length arrays and the result is zero. Such instances may be hiding
+some bugs. So, this work (flexible-array member conversions) will also
+help to get completely rid of those sorts of issues.
+
+This issue was found with the help of Coccinelle.
+
+[1] https://gcc.gnu.org/onlinedocs/gcc/Zero-Length.html
+[2] https://github.com/KSPP/linux/issues/21
+[3] commit 76497732932f ("cxgb3/l2t: Fix undefined behaviour")
+
+Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+---
+ include/linux/ieee80211.h |    6 +++---
+ include/net/cfg80211.h    |    8 ++++----
+ net/wireless/core.h       |    2 +-
+ 3 files changed, 8 insertions(+), 8 deletions(-)
+
+diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
+index 16268ef1cbcc..e7d937871189 100644
+--- a/include/linux/ieee80211.h
++++ b/include/linux/ieee80211.h
+@@ -716,7 +716,7 @@ struct ieee80211_msrment_ie {
+ 	u8 token;
+ 	u8 mode;
+ 	u8 type;
+-	u8 request[0];
++	u8 request[];
+ } __packed;
+ 
+ /**
+@@ -1641,7 +1641,7 @@ struct ieee80211_he_operation {
+ 	__le32 he_oper_params;
+ 	__le16 he_mcs_nss_set;
+ 	/* Optional 0,1,3,4,5,7 or 8 bytes: depends on @he_oper_params */
+-	u8 optional[0];
++	u8 optional[];
+ } __packed;
+ 
+ /**
+@@ -1653,7 +1653,7 @@ struct ieee80211_he_operation {
+ struct ieee80211_he_spr {
+ 	u8 he_sr_control;
+ 	/* Optional 0 to 19 bytes: depends on @he_sr_control */
+-	u8 optional[0];
++	u8 optional[];
+ } __packed;
+ 
+ /**
+diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+index 70e48f66dac8..5eb776f0069d 100644
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -2029,7 +2029,7 @@ struct cfg80211_scan_request {
+ 	bool no_cck;
+ 
+ 	/* keep last */
+-	struct ieee80211_channel *channels[0];
++	struct ieee80211_channel *channels[];
+ };
+ 
+ static inline void get_random_mask_addr(u8 *buf, const u8 *addr, const u8 *mask)
+@@ -2175,7 +2175,7 @@ struct cfg80211_sched_scan_request {
+ 	struct list_head list;
+ 
+ 	/* keep last */
+-	struct ieee80211_channel *channels[0];
++	struct ieee80211_channel *channels[];
+ };
+ 
+ /**
+@@ -2297,7 +2297,7 @@ struct cfg80211_bss {
+ 	u8 bssid_index;
+ 	u8 max_bssid_indicator;
+ 
+-	u8 priv[0] __aligned(sizeof(void *));
++	u8 priv[] __aligned(sizeof(void *));
+ };
+ 
+ /**
+@@ -4829,7 +4829,7 @@ struct wiphy {
+ 
+ 	u8 max_data_retry_count;
+ 
+-	char priv[0] __aligned(NETDEV_ALIGN);
++	char priv[] __aligned(NETDEV_ALIGN);
+ };
+ 
+ static inline struct net *wiphy_net(struct wiphy *wiphy)
+diff --git a/net/wireless/core.h b/net/wireless/core.h
+index bb897a803ffe..151609b81096 100644
+--- a/net/wireless/core.h
++++ b/net/wireless/core.h
+@@ -290,7 +290,7 @@ struct cfg80211_cqm_config {
+ 	u32 rssi_hyst;
+ 	s32 last_rssi_event_value;
+ 	int n_rssi_thresholds;
+-	s32 rssi_thresholds[0];
++	s32 rssi_thresholds[];
+ };
+ 
+ void cfg80211_destroy_ifaces(struct cfg80211_registered_device *rdev);
+
