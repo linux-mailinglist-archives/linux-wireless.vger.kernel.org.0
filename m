@@ -2,73 +2,72 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B7AF61C82E9
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 May 2020 08:59:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D0B7A1C879E
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 May 2020 13:08:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725849AbgEGG72 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 7 May 2020 02:59:28 -0400
-Received: from mail27.static.mailgun.info ([104.130.122.27]:34386 "EHLO
-        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725783AbgEGG71 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 7 May 2020 02:59:27 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1588834767; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=LeUIWoVmutVvpuWX4N/QYk1z/s6WxKkdF5HJ+N/Lrls=; b=VTkjNn98sDjh9N72TkusrLoNxPI/3sAjmDy2eT2t1My0HgNIGTBUxEwcre5sGpY84JxNTxoR
- zUdD7RYwkclnEQ+1Qg9E28XLtAgWKieLlO1W8eCJnht63Made3Wj5y+A4GzDFDSPSfhPyE1T
- ZjoehsdEr9W9+AVlSDpl0v9f9QI=
-X-Mailgun-Sending-Ip: 104.130.122.27
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5eb3b1bd.7f77611ef490-smtp-out-n02;
- Thu, 07 May 2020 06:59:09 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id BA637C432C2; Thu,  7 May 2020 06:59:09 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 068BEC43636;
-        Thu,  7 May 2020 06:59:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 068BEC43636
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     <pillair@codeaurora.org>
-Cc:     <ath10k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+        id S1726946AbgEGLI3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 7 May 2020 07:08:29 -0400
+Received: from szxga06-in.huawei.com ([45.249.212.32]:49834 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725910AbgEGLI3 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 7 May 2020 07:08:29 -0400
+Received: from DGGEMS405-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id 706F79169ECFE8040AF6;
+        Thu,  7 May 2020 19:08:27 +0800 (CST)
+Received: from huawei.com (10.175.124.28) by DGGEMS405-HUB.china.huawei.com
+ (10.3.19.205) with Microsoft SMTP Server id 14.3.487.0; Thu, 7 May 2020
+ 19:08:21 +0800
+From:   Jason Yan <yanaijie@huawei.com>
+To:     <kvalo@codeaurora.org>, <davem@davemloft.net>,
+        <tglx@linutronix.de>, <linux-wireless@vger.kernel.org>,
+        <b43-dev@lists.infradead.org>, <netdev@vger.kernel.org>,
         <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2] ath10k: Remove msdu from idr when management pkt send fails
-References: <1588667015-25490-1-git-send-email-pillair@codeaurora.org>
-        <875zd88ei8.fsf@kamboji.qca.qualcomm.com>
-        <000001d62436$f253f230$d6fbd690$@codeaurora.org>
-Date:   Thu, 07 May 2020 09:59:05 +0300
-In-Reply-To: <000001d62436$f253f230$d6fbd690$@codeaurora.org>
-        (pillair@codeaurora.org's message of "Thu, 7 May 2020 11:45:42 +0530")
-Message-ID: <871rnw8c3q.fsf@kamboji.qca.qualcomm.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+CC:     Jason Yan <yanaijie@huawei.com>
+Subject: [PATCH] b43: remove dead function b43_rssinoise_postprocess()
+Date:   Thu, 7 May 2020 19:07:41 +0800
+Message-ID: <20200507110741.37757-1-yanaijie@huawei.com>
+X-Mailer: git-send-email 2.21.1
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.124.28]
+X-CFilter-Loop: Reflected
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-<pillair@codeaurora.org> writes:
+This function is dead for more than 10 years. Remove it.
 
-> Yes, The change you did is correct and better.
+Signed-off-by: Jason Yan <yanaijie@huawei.com>
+---
+ drivers/net/wireless/broadcom/b43/xmit.c | 13 -------------
+ 1 file changed, 13 deletions(-)
 
-Thanks for checking.
-
-> So should I be sending a v3 for this patch ?
-
-No need, the patch with this change is now in my pending branch and I'll
-apply it to ath-next it in the next few days.
-
+diff --git a/drivers/net/wireless/broadcom/b43/xmit.c b/drivers/net/wireless/broadcom/b43/xmit.c
+index 058745219516..55babc6d1091 100644
+--- a/drivers/net/wireless/broadcom/b43/xmit.c
++++ b/drivers/net/wireless/broadcom/b43/xmit.c
+@@ -629,19 +629,6 @@ static s8 b43_rssi_postprocess(struct b43_wldev *dev,
+ 	return (s8) tmp;
+ }
+ 
+-//TODO
+-#if 0
+-static s8 b43_rssinoise_postprocess(struct b43_wldev *dev, u8 in_rssi)
+-{
+-	struct b43_phy *phy = &dev->phy;
+-	s8 ret;
+-
+-	ret = b43_rssi_postprocess(dev, in_rssi, 0, 1, 1);
+-
+-	return ret;
+-}
+-#endif
+-
+ void b43_rx(struct b43_wldev *dev, struct sk_buff *skb, const void *_rxhdr)
+ {
+ 	struct ieee80211_rx_status status;
 -- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+2.21.1
+
