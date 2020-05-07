@@ -2,36 +2,33 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E1E231C99D6
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 May 2020 20:51:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E070F1C99FF
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 May 2020 20:54:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728514AbgEGSvN (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 7 May 2020 14:51:13 -0400
-Received: from mail.kernel.org ([198.145.29.99]:52058 "EHLO mail.kernel.org"
+        id S1727964AbgEGSym (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 7 May 2020 14:54:42 -0400
+Received: from mail.kernel.org ([198.145.29.99]:56810 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726491AbgEGSvN (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 7 May 2020 14:51:13 -0400
+        id S1726558AbgEGSym (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 7 May 2020 14:54:42 -0400
 Received: from embeddedor (unknown [189.207.59.248])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C57D424959;
-        Thu,  7 May 2020 18:51:11 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 0AB2420575;
+        Thu,  7 May 2020 18:54:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1588877472;
-        bh=oH8LQB6ff7nQSBfFV1e2P1jvW2eA3yAZZHUuknmcRH0=;
+        s=default; t=1588877681;
+        bh=uxpX8W7aK8UmLVlFFNK05ClZR+zoFt4I4ufIGsyleuA=;
         h=Date:From:To:Cc:Subject:From;
-        b=SsK1tPP7W2kSwbjdHa5jS5rf4osDLaHwaGr+e7U7/JRoj8Y1lQYdMsWQXx5hNQeoN
-         Obtx1eGFNxukn1wgIvpeSJB9grKzxdHthFm1lyJtvoJbyJeDlvZmc6zC2ZRqbeFRP6
-         3mXY2tKZgX+qSBxSL1QZ+i23/HwC86kV1RJYZ/zA=
-Date:   Thu, 7 May 2020 13:55:38 -0500
+        b=Vc7Ojvfaumf23QiCyhoZU7rgfQM7qZWnMc9F7sDKwBz5Fa8dG1rMcR7efJArM37jo
+         /glLdysDlzCdQ4oezSPYRv66bu9fsD1vtNntmkl4VB9E8u9Hsw1AD3ZMiaG9SfMDOq
+         PLyr2FzlG6QXrMwbPPjjAosGJzmdikG0983dF4tk=
+Date:   Thu, 7 May 2020 13:59:07 -0500
 From:   "Gustavo A. R. Silva" <gustavoars@kernel.org>
-To:     Johannes Berg <johannes.berg@intel.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Intel Linux Wireless <linuxwifi@intel.com>
+To:     Johannes Berg <johannes@sipsolutions.net>
 Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] iwlwifi: Replace zero-length array with flexible-array
-Message-ID: <20200507185538.GA14674@embeddedor>
+Subject: [PATCH] mac80211: Replace zero-length array with flexible-array
+Message-ID: <20200507185907.GA15102@embeddedor>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -78,130 +75,70 @@ This issue was found with the help of Coccinelle.
 
 Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/dvm/commands.h   |   12 ++++++------
- drivers/net/wireless/intel/iwlwifi/fw/api/nvm-reg.h |    4 ++--
- drivers/net/wireless/intel/iwlwifi/fw/debugfs.c     |    2 +-
- drivers/net/wireless/intel/iwlwifi/iwl-op-mode.h    |    2 +-
- drivers/net/wireless/intel/iwlwifi/iwl-trans.h      |    2 +-
- 5 files changed, 11 insertions(+), 11 deletions(-)
+ include/net/mac80211.h     |   10 +++++-----
+ net/mac80211/ieee80211_i.h |    2 +-
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/dvm/commands.h b/drivers/net/wireless/intel/iwlwifi/dvm/commands.h
-index 0f4be4be181c..fdcc1292a92b 100644
---- a/drivers/net/wireless/intel/iwlwifi/dvm/commands.h
-+++ b/drivers/net/wireless/intel/iwlwifi/dvm/commands.h
-@@ -1023,7 +1023,7 @@ struct iwl_wep_cmd {
- 	u8 global_key_type;
- 	u8 flags;
- 	u8 reserved;
--	struct iwl_wep_key key[0];
-+	struct iwl_wep_key key[];
- } __packed;
+diff --git a/include/net/mac80211.h b/include/net/mac80211.h
+index b6b4de0e4b5e..75ff87b860a4 100644
+--- a/include/net/mac80211.h
++++ b/include/net/mac80211.h
+@@ -230,7 +230,7 @@ struct ieee80211_chanctx_conf {
  
- #define WEP_KEY_WEP_TYPE 1
-@@ -1305,7 +1305,7 @@ struct iwl_tx_cmd {
- 	 * length is 26 or 30 bytes, followed by payload data
- 	 */
- 	u8 payload[0];
--	struct ieee80211_hdr hdr[0];
-+	struct ieee80211_hdr hdr[];
- } __packed;
+ 	bool radar_enabled;
  
- /*
-@@ -2380,7 +2380,7 @@ struct iwl_scan_cmd {
- 	 * for one scan to complete (i.e. receive SCAN_COMPLETE_NOTIFICATION)
- 	 * before requesting another scan.
- 	 */
--	u8 data[0];
-+	u8 data[];
- } __packed;
- 
- /* Can abort will notify by complete notification with abort status. */
-@@ -2475,7 +2475,7 @@ struct iwl_tx_beacon_cmd {
- 	__le16 tim_idx;
- 	u8 tim_size;
- 	u8 reserved1;
--	struct ieee80211_hdr frame[0];	/* beacon frame */
-+	struct ieee80211_hdr frame[];	/* beacon frame */
- } __packed;
- 
- /******************************************************************************
-@@ -3188,7 +3188,7 @@ struct iwl_calib_hdr {
- 
- struct iwl_calib_cmd {
- 	struct iwl_calib_hdr hdr;
--	u8 data[0];
-+	u8 data[];
- } __packed;
- 
- struct iwl_calib_xtal_freq_cmd {
-@@ -3216,7 +3216,7 @@ struct iwl_calib_temperature_offset_v2_cmd {
- /* IWL_PHY_CALIBRATE_CHAIN_NOISE_RESET_CMD */
- struct iwl_calib_chain_noise_reset_cmd {
- 	struct iwl_calib_hdr hdr;
--	u8 data[0];
-+	u8 data[];
+-	u8 drv_priv[0] __aligned(sizeof(void *));
++	u8 drv_priv[] __aligned(sizeof(void *));
  };
- 
- /* IWL_PHY_CALIBRATE_CHAIN_NOISE_GAIN_CMD */
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/nvm-reg.h b/drivers/net/wireless/intel/iwlwifi/fw/api/nvm-reg.h
-index 97b49843e318..397ac89a04c2 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/api/nvm-reg.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/api/nvm-reg.h
-@@ -351,7 +351,7 @@ struct iwl_mcc_update_resp_v3 {
- 	__le16 time;
- 	__le16 geo_info;
- 	__le32 n_channels;
--	__le32 channels[0];
-+	__le32 channels[];
- } __packed; /* LAR_UPDATE_MCC_CMD_RESP_S_VER_3 */
  
  /**
-@@ -380,7 +380,7 @@ struct iwl_mcc_update_resp {
- 	u8 source_id;
- 	u8 reserved[3];
- 	__le32 n_channels;
--	__le32 channels[0];
-+	__le32 channels[];
- } __packed; /* LAR_UPDATE_MCC_CMD_RESP_S_VER_4 */
+@@ -1652,7 +1652,7 @@ struct ieee80211_vif {
+ 	bool txqs_stopped[IEEE80211_NUM_ACS];
+ 
+ 	/* must be last */
+-	u8 drv_priv[0] __aligned(sizeof(void *));
++	u8 drv_priv[] __aligned(sizeof(void *));
+ };
+ 
+ static inline bool ieee80211_vif_is_mesh(struct ieee80211_vif *vif)
+@@ -1780,7 +1780,7 @@ struct ieee80211_key_conf {
+ 	s8 keyidx;
+ 	u16 flags;
+ 	u8 keylen;
+-	u8 key[0];
++	u8 key[];
+ };
+ 
+ #define IEEE80211_MAX_PN_LEN	16
+@@ -2035,7 +2035,7 @@ struct ieee80211_sta {
+ 	struct ieee80211_txq *txq[IEEE80211_NUM_TIDS + 1];
+ 
+ 	/* must be last */
+-	u8 drv_priv[0] __aligned(sizeof(void *));
++	u8 drv_priv[] __aligned(sizeof(void *));
+ };
  
  /**
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c b/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c
-index 89f74116569d..cc1d93606d9b 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c
-@@ -261,7 +261,7 @@ struct hcmd_write_data {
- 	__be32 cmd_id;
- 	__be32 flags;
- 	__be16 length;
+@@ -2081,7 +2081,7 @@ struct ieee80211_txq {
+ 	u8 ac;
+ 
+ 	/* must be last */
+-	u8 drv_priv[0] __aligned(sizeof(void *));
++	u8 drv_priv[] __aligned(sizeof(void *));
+ };
+ 
+ /**
+diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
+index f8ed4f621f7f..ea483861b743 100644
+--- a/net/mac80211/ieee80211_i.h
++++ b/net/mac80211/ieee80211_i.h
+@@ -267,7 +267,7 @@ struct probe_resp {
+ 	struct rcu_head rcu_head;
+ 	int len;
+ 	u16 csa_counter_offsets[IEEE80211_MAX_CSA_COUNTERS_NUM];
 -	u8 data[0];
 +	u8 data[];
- } __packed;
- 
- static ssize_t iwl_dbgfs_send_hcmd_write(struct iwl_fw_runtime *fwrt, char *buf,
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-op-mode.h b/drivers/net/wireless/intel/iwlwifi/iwl-op-mode.h
-index 3008a5246be8..b35b8920941b 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-op-mode.h
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-op-mode.h
-@@ -175,7 +175,7 @@ void iwl_opmode_deregister(const char *name);
- struct iwl_op_mode {
- 	const struct iwl_op_mode_ops *ops;
- 
--	char op_mode_specific[0] __aligned(sizeof(void *));
-+	char op_mode_specific[] __aligned(sizeof(void *));
  };
  
- static inline void iwl_op_mode_stop(struct iwl_op_mode *op_mode)
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-trans.h b/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
-index bba527b339b5..3fbbbac0953d 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
-@@ -878,7 +878,7 @@ struct iwl_trans {
- 
- 	/* pointer to trans specific struct */
- 	/*Ensure that this pointer will always be aligned to sizeof pointer */
--	char trans_specific[0] __aligned(sizeof(void *));
-+	char trans_specific[] __aligned(sizeof(void *));
- };
- 
- const char *iwl_get_cmd_string(struct iwl_trans *trans, u32 id);
+ struct ps_data {
 
