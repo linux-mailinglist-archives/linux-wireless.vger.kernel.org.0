@@ -2,117 +2,85 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C8F51C9AE4
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 May 2020 21:22:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4616D1C9B65
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 May 2020 21:51:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728068AbgEGTWV (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 7 May 2020 15:22:21 -0400
-Received: from mail.kernel.org ([198.145.29.99]:43186 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726320AbgEGTWV (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 7 May 2020 15:22:21 -0400
-Received: from embeddedor (unknown [189.207.59.248])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id AC549208D6;
-        Thu,  7 May 2020 19:22:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1588879341;
-        bh=cpk19YX7Aez2b3mVwHp6mHxj7I9/DZSqMJ91G22Vfuw=;
-        h=Date:From:To:Cc:Subject:From;
-        b=AIUqiOSqMD+IbcKBnyrPQHUA15R8Vwt80WMpmUWte5KgIG+EoDtDpGP8hpwpG7p75
-         ph5gkgWPo0Jf4iTdULngqZrg2xMhTx9PQq9CnclBl/j3K7H8Hk9db96tH0GEXl4E4F
-         FZZHnZDpyr0iFzrpuCxA62lxrSz5UwmVfY2nkoqs=
-Date:   Thu, 7 May 2020 14:26:47 -0500
-From:   "Gustavo A. R. Silva" <gustavoars@kernel.org>
-To:     Jussi Kivilinna <jussi.kivilinna@iki.fi>
-Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] rndis_wlan: Replace zero-length array with flexible-array
-Message-ID: <20200507192647.GA16710@embeddedor>
+        id S1726491AbgEGTvJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 7 May 2020 15:51:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42992 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726326AbgEGTvJ (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 7 May 2020 15:51:09 -0400
+Received: from mail-lf1-x143.google.com (mail-lf1-x143.google.com [IPv6:2a00:1450:4864:20::143])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B65BEC05BD43
+        for <linux-wireless@vger.kernel.org>; Thu,  7 May 2020 12:51:08 -0700 (PDT)
+Received: by mail-lf1-x143.google.com with SMTP id x73so5537017lfa.2
+        for <linux-wireless@vger.kernel.org>; Thu, 07 May 2020 12:51:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=AV2vFPjG6tmv7k34SurwqCA71K+2Dp9VcMKySZL5GeU=;
+        b=jffKVgg5T36h6xRConhsM4qWQ6O7O/m3mB7v54LSdkVnvwp5eTkzNPIHQ2sCfVZSeK
+         K0Ni8Z6JEKabqtI6qu40fsRj/eEgSUlZcmEfDh8g6xsQoojEArgEa4rM79lGnDF3X3CT
+         QaeOzLFhweGwpM1YJdfbTjqoELvXSy5BbJ0FY=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=AV2vFPjG6tmv7k34SurwqCA71K+2Dp9VcMKySZL5GeU=;
+        b=sO3hiyPbT/0wNMpllwkCNuy6TUBaG/iHJ+g6dXIWtegP/RF9cbE/VlVZmKd6QBb7eu
+         a00HNpEkimj+9nDRAMfeJNnxMQVgHd85RYSnI8QLIeUuzd+/91MMsMxnZkLHSQbk7mI6
+         JJ1JKoRV08vYTH6PVB2f+ZggWGo/5pKwpMbOjr/fZ9KlEQOu1EWh8peXdXj6ZK9Rfmma
+         Jvvf21ixIeYf2+kJK7IdvFNn/rI6FQr5ju1ES8VZ2be8uiDekYjpGD3i8Ng6I19YRpYv
+         k6bZaL2pCNmxK2v9SxvUB5kvbjAI1gYlVYjAHnndxv/mplujvpdiocL/x74mRAwJQGK+
+         1CQA==
+X-Gm-Message-State: AGi0PuYGR5/Bh27kD1NSeQHlvaeYbAmsc7h5OV7dGjSVy8DspPHWoCiF
+        RsE7wbbmFavT/g6750ZUkEeGiuR/uBw=
+X-Google-Smtp-Source: APiQypKq6SNyB7f6p/AjcvjOVSyrgWMPRZ5EUhCd/FSjxwdyzTm08G0QTHT1w4tcdF4O5vQcwjBkiQ==
+X-Received: by 2002:a19:cbcf:: with SMTP id b198mr10147530lfg.36.1588881066821;
+        Thu, 07 May 2020 12:51:06 -0700 (PDT)
+Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com. [209.85.167.54])
+        by smtp.gmail.com with ESMTPSA id q27sm4338828lfn.58.2020.05.07.12.51.05
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 07 May 2020 12:51:05 -0700 (PDT)
+Received: by mail-lf1-f54.google.com with SMTP id 188so5521879lfa.10
+        for <linux-wireless@vger.kernel.org>; Thu, 07 May 2020 12:51:05 -0700 (PDT)
+X-Received: by 2002:a19:c514:: with SMTP id w20mr10019548lfe.59.1588881065416;
+ Thu, 07 May 2020 12:51:05 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.9.4 (2018-02-28)
+References: <20200507041945.15491-1-yhchuang@realtek.com>
+In-Reply-To: <20200507041945.15491-1-yhchuang@realtek.com>
+From:   Brian Norris <briannorris@chromium.org>
+Date:   Thu, 7 May 2020 12:50:54 -0700
+X-Gmail-Original-Message-ID: <CA+ASDXOn03T6LJ9vH=rmiVxHfyPpM6KMWgt1oTB+rXNYUZy-YA@mail.gmail.com>
+Message-ID: <CA+ASDXOn03T6LJ9vH=rmiVxHfyPpM6KMWgt1oTB+rXNYUZy-YA@mail.gmail.com>
+Subject: Re: [PATCH] rtw88: update firmware information and README
+To:     Tony Chuang <yhchuang@realtek.com>
+Cc:     jwboyer@kernel.org,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        linux-firmware@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The current codebase makes use of the zero-length array language
-extension to the C90 standard, but the preferred mechanism to declare
-variable-length types such as these ones is a flexible array member[1][2],
-introduced in C99:
+On Wed, May 6, 2020 at 9:19 PM <yhchuang@realtek.com> wrote:
+> +    And note that the rtw88 driver is able to support wake-on-wireless LAN
+> +    for RTL8822C devices, after kernel v5.6+. So, make sure the firmware
+> +    rtw88/rtw8822c_wow_fw.bin is also packed, otherwise the firmware load
+> +    fail could be a problem.
 
-struct foo {
-        int stuff;
-        struct boo array[];
-};
+For the record, I think it's a bug that your driver will refuse to
+work now, when not provided the optional WoW firmware:
 
-By making use of the mechanism above, we will get a compiler warning
-in case the flexible array does not occur last in the structure, which
-will help us prevent some kind of undefined behavior bugs from being
-inadvertently introduced[3] to the codebase from now on.
+https://bugzilla.kernel.org/show_bug.cgi?id=207607
 
-Also, notice that, dynamic memory allocations won't be affected by
-this change:
+It's fine to hint to packagers that they should include both, but it's
+not very kind to kill WiFi entirely just because this features won't
+work.
 
-"Flexible array members have incomplete type, and so the sizeof operator
-may not be applied. As a quirk of the original implementation of
-zero-length arrays, sizeof evaluates to zero."[1]
-
-sizeof(flexible-array-member) triggers a warning because flexible array
-members have incomplete type[1]. There are some instances of code in
-which the sizeof operator is being incorrectly/erroneously applied to
-zero-length arrays and the result is zero. Such instances may be hiding
-some bugs. So, this work (flexible-array member conversions) will also
-help to get completely rid of those sorts of issues.
-
-This issue was found with the help of Coccinelle.
-
-[1] https://gcc.gnu.org/onlinedocs/gcc/Zero-Length.html
-[2] https://github.com/KSPP/linux/issues/21
-[3] commit 76497732932f ("cxgb3/l2t: Fix undefined behaviour")
-
-Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
----
- drivers/net/wireless/rndis_wlan.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/net/wireless/rndis_wlan.c b/drivers/net/wireless/rndis_wlan.c
-index c8f8fe5497a8..52375f3e430a 100644
---- a/drivers/net/wireless/rndis_wlan.c
-+++ b/drivers/net/wireless/rndis_wlan.c
-@@ -201,7 +201,7 @@ struct ndis_80211_pmkid_candidate {
- struct ndis_80211_pmkid_cand_list {
- 	__le32 version;
- 	__le32 num_candidates;
--	struct ndis_80211_pmkid_candidate candidate_list[0];
-+	struct ndis_80211_pmkid_candidate candidate_list[];
- } __packed;
- 
- struct ndis_80211_status_indication {
-@@ -246,12 +246,12 @@ struct ndis_80211_bssid_ex {
- 	__le32 net_infra;
- 	u8 rates[NDIS_802_11_LENGTH_RATES_EX];
- 	__le32 ie_length;
--	u8 ies[0];
-+	u8 ies[];
- } __packed;
- 
- struct ndis_80211_bssid_list_ex {
- 	__le32 num_items;
--	struct ndis_80211_bssid_ex bssid[0];
-+	struct ndis_80211_bssid_ex bssid[];
- } __packed;
- 
- struct ndis_80211_fixed_ies {
-@@ -333,7 +333,7 @@ struct ndis_80211_bssid_info {
- struct ndis_80211_pmkid {
- 	__le32 length;
- 	__le32 bssid_info_count;
--	struct ndis_80211_bssid_info bssid_info[0];
-+	struct ndis_80211_bssid_info bssid_info[];
- } __packed;
- 
- /*
-
+Brian
