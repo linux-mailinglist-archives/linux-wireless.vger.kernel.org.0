@@ -2,47 +2,76 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2FD2A1C9C3C
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 May 2020 22:23:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 045B21C9CC8
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 May 2020 22:55:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728474AbgEGUXI (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 7 May 2020 16:23:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48044 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726558AbgEGUXH (ORCPT
+        id S1726531AbgEGUzO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 7 May 2020 16:55:14 -0400
+Received: from mail27.static.mailgun.info ([104.130.122.27]:15960 "EHLO
+        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726268AbgEGUzO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 7 May 2020 16:23:07 -0400
-Received: from shards.monkeyblade.net (shards.monkeyblade.net [IPv6:2620:137:e000::1:9])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB7A4C05BD43;
-        Thu,  7 May 2020 13:23:07 -0700 (PDT)
-Received: from localhost (unknown [IPv6:2601:601:9f00:477::d71])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 9E66C1195051C;
-        Thu,  7 May 2020 13:23:07 -0700 (PDT)
-Date:   Thu, 07 May 2020 13:23:07 -0700 (PDT)
-Message-Id: <20200507.132307.1830841066147755945.davem@davemloft.net>
-To:     kvalo@codeaurora.org
-Cc:     netdev@vger.kernel.org, linux-wireless@vger.kernel.org
-Subject: Re: pull-request: wireless-drivers-next-2020-05-07
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <87sggb7uf1.fsf@kamboji.qca.qualcomm.com>
-References: <87sggb7uf1.fsf@kamboji.qca.qualcomm.com>
-X-Mailer: Mew version 6.8 on Emacs 26.3
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+        Thu, 7 May 2020 16:55:14 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1588884914; h=Message-ID: References: In-Reply-To: Subject:
+ Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Sender; bh=3xIfW2AU3J3r/H9xQJs2hT0UbPGNez6Lr+kdeQSCAm8=;
+ b=fUnrPYDUciyrUQyn4QznyXG1ez5Osqvb0WEsh673wKIkHsdJSb3ZAXkwl9vFBr4cxk01FbCJ
+ nArWhWQQEyn3HutjV8p2HQ71qIoY1Ec1uTZET3vY8RzcVBPldRbghGQJAhYiMvDKqpuhMZOS
+ XrOWZqNYhwPJXkaGai7c2LnNnAs=
+X-Mailgun-Sending-Ip: 104.130.122.27
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5eb475a1.7f3170606ea0-smtp-out-n05;
+ Thu, 07 May 2020 20:54:57 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 16C17C432C2; Thu,  7 May 2020 20:54:57 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: rmanohar)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id BB7F2C433F2;
+        Thu,  7 May 2020 20:54:56 +0000 (UTC)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
 Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Thu, 07 May 2020 13:23:07 -0700 (PDT)
+Date:   Thu, 07 May 2020 13:54:56 -0700
+From:   Rajkumar Manoharan <rmanohar@codeaurora.org>
+To:     "Gustavo A. R. Silva" <gustavoars@kernel.org>
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
+        linux-wireless-owner@vger.kernel.org
+Subject: Re: [PATCH v2] ath10k: Replace zero-length array with flexible-array
+In-Reply-To: <20200507041127.GA31587@embeddedor>
+References: <20200507041127.GA31587@embeddedor>
+Message-ID: <bbb33f11e8aaf6d482f923aee22aca39@codeaurora.org>
+X-Sender: rmanohar@codeaurora.org
+User-Agent: Roundcube Webmail/1.3.9
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Kalle Valo <kvalo@codeaurora.org>
-Date: Thu, 07 May 2020 16:21:06 +0300
+On 2020-05-06 21:11, Gustavo A. R. Silva wrote:
+[...]
+>  static inline struct htt_stats_conf_item *htt_stats_conf_next_item(
+> @@ -1674,7 +1674,7 @@ struct htt_tx_fetch_ind {
+>  	__le16 num_resp_ids;
+>  	__le16 num_records;
+>  	struct htt_tx_fetch_record records[0];
+> -	__le32 resp_ids[0]; /* ath10k_htt_get_tx_fetch_ind_resp_ids() */
+> +	__le32 resp_ids[]; /* ath10k_htt_get_tx_fetch_ind_resp_ids() */
+>  } __packed;
+> 
+Missed to handle records[0].
 
-> here's a pull request to net-next tree, more info below. Please let me know if
-> there are any problems.
-
-Pulled, thanks Kalle.
+-Rajkumar
