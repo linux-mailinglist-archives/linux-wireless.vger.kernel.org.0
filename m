@@ -2,33 +2,33 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E070F1C99FF
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 May 2020 20:54:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 430601C9A01
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 May 2020 20:54:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727964AbgEGSym (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 7 May 2020 14:54:42 -0400
-Received: from mail.kernel.org ([198.145.29.99]:56810 "EHLO mail.kernel.org"
+        id S1728285AbgEGSys (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 7 May 2020 14:54:48 -0400
+Received: from mail.kernel.org ([198.145.29.99]:56908 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726558AbgEGSym (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 7 May 2020 14:54:42 -0400
+        id S1726518AbgEGSys (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 7 May 2020 14:54:48 -0400
 Received: from embeddedor (unknown [189.207.59.248])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 0AB2420575;
-        Thu,  7 May 2020 18:54:40 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 41AB820575;
+        Thu,  7 May 2020 18:54:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1588877681;
-        bh=uxpX8W7aK8UmLVlFFNK05ClZR+zoFt4I4ufIGsyleuA=;
+        s=default; t=1588877687;
+        bh=QtFVrGNgbhGsTGWwo1/9FJde4UjuqjORF0sq8noalvg=;
         h=Date:From:To:Cc:Subject:From;
-        b=Vc7Ojvfaumf23QiCyhoZU7rgfQM7qZWnMc9F7sDKwBz5Fa8dG1rMcR7efJArM37jo
-         /glLdysDlzCdQ4oezSPYRv66bu9fsD1vtNntmkl4VB9E8u9Hsw1AD3ZMiaG9SfMDOq
-         PLyr2FzlG6QXrMwbPPjjAosGJzmdikG0983dF4tk=
-Date:   Thu, 7 May 2020 13:59:07 -0500
+        b=JXc8lvAspZIJrRDLBtWfmNr69HFQgyhX9KEX2W3+JTL3DDd41hxNZt1ne1EWEWlJ/
+         2Ftl0FgU7lXkwt5y1gdrfsv99Slkr2+yx1I7QQgkQKTIxtHKs7FrZm9jp7zEL4IXvH
+         UJe4IoQhl3v64Tloheh8PuX9lbVnX9fnEM46QgZE=
+Date:   Thu, 7 May 2020 13:59:14 -0500
 From:   "Gustavo A. R. Silva" <gustavoars@kernel.org>
-To:     Johannes Berg <johannes@sipsolutions.net>
+To:     Lennert Buytenhek <buytenh@wantstofly.org>
 Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] mac80211: Replace zero-length array with flexible-array
-Message-ID: <20200507185907.GA15102@embeddedor>
+Subject: [PATCH] mwl8k: Replace zero-length array with flexible-array
+Message-ID: <20200507185914.GA15124@embeddedor>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -75,70 +75,20 @@ This issue was found with the help of Coccinelle.
 
 Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
 ---
- include/net/mac80211.h     |   10 +++++-----
- net/mac80211/ieee80211_i.h |    2 +-
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ drivers/net/wireless/marvell/mwl8k.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index b6b4de0e4b5e..75ff87b860a4 100644
---- a/include/net/mac80211.h
-+++ b/include/net/mac80211.h
-@@ -230,7 +230,7 @@ struct ieee80211_chanctx_conf {
- 
- 	bool radar_enabled;
- 
--	u8 drv_priv[0] __aligned(sizeof(void *));
-+	u8 drv_priv[] __aligned(sizeof(void *));
+diff --git a/drivers/net/wireless/marvell/mwl8k.c b/drivers/net/wireless/marvell/mwl8k.c
+index 47fb4b3ea004..97f23f93f6e7 100644
+--- a/drivers/net/wireless/marvell/mwl8k.c
++++ b/drivers/net/wireless/marvell/mwl8k.c
+@@ -2668,7 +2668,7 @@ struct mwl8k_cmd_mac_multicast_adr {
+ 	struct mwl8k_cmd_pkt header;
+ 	__le16 action;
+ 	__le16 numaddr;
+-	__u8 addr[0][ETH_ALEN];
++	__u8 addr[][ETH_ALEN];
  };
  
- /**
-@@ -1652,7 +1652,7 @@ struct ieee80211_vif {
- 	bool txqs_stopped[IEEE80211_NUM_ACS];
- 
- 	/* must be last */
--	u8 drv_priv[0] __aligned(sizeof(void *));
-+	u8 drv_priv[] __aligned(sizeof(void *));
- };
- 
- static inline bool ieee80211_vif_is_mesh(struct ieee80211_vif *vif)
-@@ -1780,7 +1780,7 @@ struct ieee80211_key_conf {
- 	s8 keyidx;
- 	u16 flags;
- 	u8 keylen;
--	u8 key[0];
-+	u8 key[];
- };
- 
- #define IEEE80211_MAX_PN_LEN	16
-@@ -2035,7 +2035,7 @@ struct ieee80211_sta {
- 	struct ieee80211_txq *txq[IEEE80211_NUM_TIDS + 1];
- 
- 	/* must be last */
--	u8 drv_priv[0] __aligned(sizeof(void *));
-+	u8 drv_priv[] __aligned(sizeof(void *));
- };
- 
- /**
-@@ -2081,7 +2081,7 @@ struct ieee80211_txq {
- 	u8 ac;
- 
- 	/* must be last */
--	u8 drv_priv[0] __aligned(sizeof(void *));
-+	u8 drv_priv[] __aligned(sizeof(void *));
- };
- 
- /**
-diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
-index f8ed4f621f7f..ea483861b743 100644
---- a/net/mac80211/ieee80211_i.h
-+++ b/net/mac80211/ieee80211_i.h
-@@ -267,7 +267,7 @@ struct probe_resp {
- 	struct rcu_head rcu_head;
- 	int len;
- 	u16 csa_counter_offsets[IEEE80211_MAX_CSA_COUNTERS_NUM];
--	u8 data[0];
-+	u8 data[];
- };
- 
- struct ps_data {
+ #define MWL8K_ENABLE_RX_DIRECTED	0x0001
 
