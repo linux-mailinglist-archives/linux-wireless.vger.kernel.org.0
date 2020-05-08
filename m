@@ -2,29 +2,29 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6616F1CA6A5
-	for <lists+linux-wireless@lfdr.de>; Fri,  8 May 2020 10:57:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0AFC21CA6A9
+	for <lists+linux-wireless@lfdr.de>; Fri,  8 May 2020 10:59:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725784AbgEHI5l (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 8 May 2020 04:57:41 -0400
-Received: from mail27.static.mailgun.info ([104.130.122.27]:42235 "EHLO
-        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725379AbgEHI5k (ORCPT
+        id S1726641AbgEHI7P (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 8 May 2020 04:59:15 -0400
+Received: from mail26.static.mailgun.info ([104.130.122.26]:38739 "EHLO
+        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725872AbgEHI7P (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 8 May 2020 04:57:40 -0400
+        Fri, 8 May 2020 04:59:15 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1588928260; h=Content-Transfer-Encoding: Content-Type:
+ s=smtp; t=1588928354; h=Content-Transfer-Encoding: Content-Type:
  MIME-Version: Message-Id: Date: Subject: Cc: To: From: Sender;
- bh=9OGdHWwIepKK4bzY5ZRlcX5ldlaC94P2Py63FyGsZjo=; b=Tem9SYU7lAtvrhSG37i58IsFGviYtUwDlB19ZKpfiRb+HjoGg2aGF0hsqjx+pOmV/OG/JYiz
- f1Mhwl6tUDU4BpYqGlx7XTNW8/gcf6WKQpAT2qMobs9Xitq5HSHTL/7uWXn6Ih0NDObyaP1d
- AiO4aat1/wUd1LkQ96XJNKn5bdE=
-X-Mailgun-Sending-Ip: 104.130.122.27
+ bh=9OGdHWwIepKK4bzY5ZRlcX5ldlaC94P2Py63FyGsZjo=; b=jK/JGkemMSVFMzKwULIkXNrbEuCItHf9laGt5TkPLZyhZ9NQBUw/8oX0Vdkn1qoZaPgC/32H
+ a9gg0ix0DSmnHWq03wJrQ3JSYWulAJ3Yf8TDnG4V4DSYjRoRFHerG3b83nE49huZ0U9HdBjd
+ CLr4y3QM8A06oJfCR/99B8wITQs=
+X-Mailgun-Sending-Ip: 104.130.122.26
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5eb51f04.7f72de26b068-smtp-out-n03;
- Fri, 08 May 2020 08:57:40 -0000 (UTC)
+ by mxa.mailgun.org with ESMTP id 5eb51f50.7f0f91e287a0-smtp-out-n01;
+ Fri, 08 May 2020 08:58:56 -0000 (UTC)
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 15186C433F2; Fri,  8 May 2020 08:57:40 +0000 (UTC)
+        id 9AE81C433BA; Fri,  8 May 2020 08:58:55 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -34,9 +34,9 @@ Received: from govinds-linux.qualcomm.com (blr-c-bdr-fw-01_GlobalNAT_AllZones-Ou
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: govinds)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 4E0C1C433D2;
-        Fri,  8 May 2020 08:57:38 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 4E0C1C433D2
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id D780EC433F2;
+        Fri,  8 May 2020 08:58:53 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org D780EC433F2
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=govinds@codeaurora.org
 From:   Govind Singh <govinds@codeaurora.org>
@@ -44,8 +44,8 @@ To:     ath11k@lists.infradead.org
 Cc:     linux-wireless@vger.kernel.org,
         Govind Singh <govinds@codeaurora.org>
 Subject: [PATCH 0/4] Add PCI client driver for QCA6390 chipset
-Date:   Fri,  8 May 2020 14:27:26 +0530
-Message-Id: <20200508085730.23272-1-govinds@codeaurora.org>
+Date:   Fri,  8 May 2020 14:28:46 +0530
+Message-Id: <20200508085850.23363-1-govinds@codeaurora.org>
 X-Mailer: git-send-email 2.22.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
