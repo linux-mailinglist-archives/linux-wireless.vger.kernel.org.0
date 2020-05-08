@@ -2,94 +2,142 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 092051CB9B0
-	for <lists+linux-wireless@lfdr.de>; Fri,  8 May 2020 23:21:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5FB301CBAF7
+	for <lists+linux-wireless@lfdr.de>; Sat,  9 May 2020 00:53:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727110AbgEHVVa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 8 May 2020 17:21:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55980 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726950AbgEHVVa (ORCPT
+        id S1727878AbgEHWxy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 8 May 2020 18:53:54 -0400
+Received: from mail26.static.mailgun.info ([104.130.122.26]:53896 "EHLO
+        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727110AbgEHWxx (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 8 May 2020 17:21:30 -0400
-Received: from mail-oi1-x244.google.com (mail-oi1-x244.google.com [IPv6:2607:f8b0:4864:20::244])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19B12C061A0C
-        for <linux-wireless@vger.kernel.org>; Fri,  8 May 2020 14:21:29 -0700 (PDT)
-Received: by mail-oi1-x244.google.com with SMTP id t199so9706445oif.7
-        for <linux-wireless@vger.kernel.org>; Fri, 08 May 2020 14:21:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=N9PZkEvg0UqwOeul+LmDtHPrfDAfpoLi3WzZZTZO9Zs=;
-        b=QvR5r+EC/s7nKRmrIPJB9+wcnSguqIoCSuWgmQgXOJ01jjpfJHn0a7G1Qhhxv73fbz
-         OuXycRAF6lZ2ccv0KmWauNE+3TQVvXL4S3qa39JaRrx2yJ5xSre4cnHfKuW/dNqR+7uA
-         lrPQX/SGaqHH8p39Krr6H5cKL6pBla0gud6QfV6mp87kAzBHPPLW3xJgxC4jMpEX/fum
-         k/Rmo36VbitRtS5kZDIaKvOSlL/ZbgO/nTTbBsHZHsmq5e/Iv6AVPNUurJE+M10+z/ef
-         B/5LpdELvNXruz54C3LExQILVM4upf1vuDXUt5nMhy9Rnz/PiassPCw+yIB+PhF+J5Bl
-         p3Kw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=N9PZkEvg0UqwOeul+LmDtHPrfDAfpoLi3WzZZTZO9Zs=;
-        b=OTvyoiBkpgD18yYWrxCPAh4gIaxR7MkS1Effzf9TlGLI5R53v4ei8CzwCsMZ8rDcjE
-         Smih86UPil0RwyTIbG+vGAeUWSrYQ8LQH9yZCOVaUjKwliXrZOcXXunSqyXNQXWc3HLU
-         qfzf7VqDkdxnhWh5GyHan5WRfevEDe+Ab082h4NpwaWxkAFeHXfDXqFaAuZKlaPcwoIs
-         ofz2n1asaSUskcL8+R7nXVUHl89bB2fDXzRAKBYAs9amY7bxxda0yZDyi682ZrY1tBqR
-         a25m/506Z8kK5fNtKOYdUxQifaVzKVNRZf5XY7S8nPZnrlWiekQfd+YSBykJ0kIIk7/x
-         hV/A==
-X-Gm-Message-State: AGi0PuaZyNSMo0vIz+SMl5Du+XYjPRwYEtPJIzrJfhKvSg7L1MdHyqaI
-        gJCFqEleMfk3afsGfSP8eW88LenqVRaf8OiyzoNsXrd1VDY=
-X-Google-Smtp-Source: APiQypLRAFs0Ig+sdCFg7zIuocU3BjY7qhmvASooe4AopGqK4UKF+uwSHESUcAsZbRS34q37UvimIwnIhIkRz14Ql8I=
-X-Received: by 2002:a54:4f1a:: with SMTP id e26mr11975844oiy.45.1588972888535;
- Fri, 08 May 2020 14:21:28 -0700 (PDT)
+        Fri, 8 May 2020 18:53:53 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1588978433; h=Message-ID: References: In-Reply-To: Subject:
+ Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Sender; bh=ET434Jh6IAHKYzohsSbQviCIHmAVP273Lv89DYYfyn0=;
+ b=COHlTJgS+jrtIawZcClU4UKRwHvie6oV9KDzqwtqBeyC9iAx/Uglzg1kROEyExwpRKhr+4MC
+ Hg8N+87F8JCeGbBtNZveUAd5SzjebuqJf410Pzql5KZjfaXsXn//1Pai62y553/jYZyDo4pg
+ iaMpQN6WFdaswMoIgf04vfWRX+I=
+X-Mailgun-Sending-Ip: 104.130.122.26
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5eb5e2fc.7f387c199030-smtp-out-n01;
+ Fri, 08 May 2020 22:53:48 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id A4860C433BA; Fri,  8 May 2020 22:53:48 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: pradeepc)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 3368BC433D2;
+        Fri,  8 May 2020 22:53:48 +0000 (UTC)
 MIME-Version: 1.0
-References: <20200508140802.558267-1-luca@coelho.fi> <iwlwifi.20200508170402.c3e50c36c628.I991bfa662c0ef35de5be9eaf5b78ef190b67cb56@changeid>
- <CALYz8ypzgHqn+WY8KG-isYXJfymy4Jh7CSEXsg5KdiGEm+EAVQ@mail.gmail.com>
- <600179d2c1679b933e5129a3aac6c1f788a1c24f.camel@coelho.fi>
- <CALYz8yozMjWmMVy9O277162n58MyD=NTLXAb0dVkLxR4-cnRew@mail.gmail.com> <e86656c0892ead97c21ab0b4c77070bfa56336a8.camel@coelho.fi>
-In-Reply-To: <e86656c0892ead97c21ab0b4c77070bfa56336a8.camel@coelho.fi>
-From:   =?UTF-8?B?0JrQuNGA0LjQu9C7INCb0YPQutC+0L3QuNC9?= 
-        <klukonin@gmail.com>
-Date:   Sat, 9 May 2020 02:21:01 +0500
-Message-ID: <CALYz8ypyv4q9RRPeSttKSLnjQFpd=Ggj76Ck__Xm7RP_4K0w0A@mail.gmail.com>
-Subject: Re: [PATCH 01/11] iwlwifi: set NO_HE if the regulatory domain forbids it
-To:     Luca Coelho <luca@coelho.fi>
-Cc:     kvalo@codeaurora.org, linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Fri, 08 May 2020 15:53:48 -0700
+From:   Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>
+To:     Rajkumar Manoharan <rmanohar@codeaurora.org>
+Cc:     johannes@sipsolutions.net, kvalo@codeaurora.org,
+        linux-wireless@vger.kernel.org,
+        linux-wireless-owner@vger.kernel.org
+Subject: Re: [PATCH v2 10/11] mac80211: determine chantype from HE operation
+ in 6 GHz
+In-Reply-To: <1588285252-30034-10-git-send-email-rmanohar@codeaurora.org>
+References: <1588285252-30034-1-git-send-email-rmanohar@codeaurora.org>
+ <1588285252-30034-10-git-send-email-rmanohar@codeaurora.org>
+Message-ID: <29370be316eca4d5592baeeaa6c1a779@codeaurora.org>
+X-Sender: pradeepc@codeaurora.org
+User-Agent: Roundcube Webmail/1.3.9
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Yes, it's something new. Because currently there is no any country
-where 802.11ax is forbidden.
-May be this change is not so useful or useless at all.
 
-Best Regards,
-Lukonin Kirill
+> diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+> index b4dfefd482a6..9115dc9c7d78 100644
+> --- a/net/mac80211/mlme.c
+> +++ b/net/mac80211/mlme.c
+> @@ -163,6 +163,9 @@ ieee80211_determine_chantype(struct
+> ieee80211_sub_if_data *sdata,
+>  	chandef->width = NL80211_CHAN_WIDTH_20_NOHT;
+>  	chandef->center_freq1 = channel->center_freq;
+> 
+> +	if (channel->band == NL80211_BAND_6GHZ)
+> +		goto skip_ht_vht_oper;
+> +
+>  	if (!ht_oper || !sta_ht_cap.ht_supported) {
+>  		ret = IEEE80211_STA_DISABLE_HT |
+>  		      IEEE80211_STA_DISABLE_VHT |
+> @@ -263,6 +266,15 @@ ieee80211_determine_chantype(struct
+> ieee80211_sub_if_data *sdata,
+> 
+>  	*chandef = vht_chandef;
+> 
+> +skip_ht_vht_oper:
+> +	if (!ieee80211_chandef_he_oper(sdata, he_oper, chandef)) {
+> +		if (!(ifmgd->flags & IEEE80211_STA_DISABLE_HE))
+> +			sdata_info(sdata,
+> +				   "AP HE information is invalid, disable HE\n");
+> +		ret = IEEE80211_STA_DISABLE_HE;
+> +		goto out;
+> +	}
+> +
+Hi Rajkumar,
+Above is causing to disable HE in STA mode even when AP supports HE.
+Shouldn't this be done only for 6GHz band?
+something like below?
+if (channel->band == NL80211_BAND_6GHZ &&
+     !ieee80211_chandef_he_oper(sdata, he_oper, chandef))
 
-Best Regards,
-Lukonin Kirill
+>  	ret = 0;
+> 
+>  out:
+> diff --git a/net/mac80211/util.c b/net/mac80211/util.c
+> index 90b8c42b1aa8..660cf52913f1 100644
+> --- a/net/mac80211/util.c
+> +++ b/net/mac80211/util.c
+> @@ -3170,6 +3170,98 @@ bool ieee80211_chandef_vht_oper(struct 
+> ieee80211_hw *hw,
+>  	return true;
+>  }
+> 
+> +bool ieee80211_chandef_he_oper(struct ieee80211_sub_if_data *sdata,
+> +			       const struct ieee80211_he_operation *heop,
+> +			       struct cfg80211_chan_def *chandef)
+> +{
+> +	struct ieee80211_he_oper_6ghz_op_info info;
+> +	const struct ieee80211_sta_he_cap *he_cap;
+> +	struct ieee80211_supported_band *sband;
+> +	struct cfg80211_chan_def new = *chandef;
+> +	int cf0, cf1;
+> +	int ccf0, ccf1;
+> +	bool support_80_80;
+> +	bool support_160;
+> +	u8 he_phy_cap;
+> +	u8 pos = 0;
+> +
+> +	if (!heop)
+> +		return false;
+> +
+> +	sband = ieee80211_get_sband(sdata);
+> +	if (!sband)
+> +		return false;
+> +
+> +	he_cap = ieee80211_get_he_iftype_cap(sband, sdata->vif.type);
+> +	if (!he_cap)
+> +		return false;
+> +
+or return true here if band is not NL80211_BAND_6GHZ?
 
-
-=D1=81=D0=B1, 9 =D0=BC=D0=B0=D1=8F 2020 =D0=B3. =D0=B2 02:13, Luca Coelho <=
-luca@coelho.fi>:
->
-> On Sat, 2020-05-09 at 01:10 +0500, =D0=9A=D0=B8=D1=80=D0=B8=D0=BB=D0=BB =
-=D0=9B=D1=83=D0=BA=D0=BE=D0=BD=D0=B8=D0=BD wrote:
-> > Channels ON/OFF logic is OK.
-> > But I (and possibly not only me) bought a lot of ax200 cards.
-> > And now they all will work in 802.11ac mode without any reason and
-> > without any chance to avoid such behavior.
-> > That's something new, I think.
->
-> The reason is regulatory.  That may be new, but it's just part of
-> following regulations.
->
-> --
-> Cheers,
-> Luca.
->
+> +	if (!(le32_to_cpu(heop->he_oper_params) &
+> +				IEEE80211_HE_OPERATION_6GHZ_OP_INFO))
+> +		return false;
+> +
