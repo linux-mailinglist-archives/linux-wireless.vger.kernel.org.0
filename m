@@ -2,82 +2,68 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E80801CB218
-	for <lists+linux-wireless@lfdr.de>; Fri,  8 May 2020 16:42:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 430631CB453
+	for <lists+linux-wireless@lfdr.de>; Fri,  8 May 2020 18:07:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727770AbgEHOmW (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 8 May 2020 10:42:22 -0400
-Received: from smail.rz.tu-ilmenau.de ([141.24.186.67]:54269 "EHLO
-        smail.rz.tu-ilmenau.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727083AbgEHOmV (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 8 May 2020 10:42:21 -0400
-Received: from legolas.fritz.box (unknown [87.147.56.179])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        id S1726891AbgEHQHP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 8 May 2020 12:07:15 -0400
+Received: from mail.kernel.org ([198.145.29.99]:34220 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726736AbgEHQHO (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 8 May 2020 12:07:14 -0400
+Received: from localhost (mobile-166-175-190-200.mycingular.net [166.175.190.200])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by smail.rz.tu-ilmenau.de (Postfix) with ESMTPSA id 04A8658024A;
-        Fri,  8 May 2020 16:42:19 +0200 (CEST)
-From:   Markus Theil <markus.theil@tu-ilmenau.de>
-To:     johannes@sipsolutions.net
-Cc:     linux-wireless@vger.kernel.org,
-        Markus Theil <markus.theil@tu-ilmenau.de>
-Subject: [PATCH 3/3] nl80211: add feature flag for control port tx status capability
-Date:   Fri,  8 May 2020 16:42:02 +0200
-Message-Id: <20200508144202.7678-4-markus.theil@tu-ilmenau.de>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20200508144202.7678-1-markus.theil@tu-ilmenau.de>
-References: <20200508144202.7678-1-markus.theil@tu-ilmenau.de>
+        by mail.kernel.org (Postfix) with ESMTPSA id 1B65320725;
+        Fri,  8 May 2020 16:07:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1588954034;
+        bh=uLbNyI7Z14KTi1E6slPZdT0e6uxwRWlOOk93NDOTbTw=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=Vfa8MaGsNoJhb0kFwm2qNcSKwyhZThyTfoj8OtYgR5/qX5J6CxRIiqYMRCRBVWsml
+         l6ivXOBTIIOpt8oYE0DgNaIp8Ng16ySnyuA5sw1RH290pvqmH7B6JcYrCqGZTgANTw
+         EENa4s8urGyc9CgQR0pyspVhBFyx/tjagHOr1xSo=
+Date:   Fri, 8 May 2020 11:07:12 -0500
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Yicong Yang <yangyicong@hisilicon.com>
+Cc:     linux-pci@vger.kernel.org, kvalo@codeaurora.org,
+        andreas.noever@gmail.com, rjw@rjwysocki.net,
+        linux-wireless@vger.kernel.org, linux-usb@vger.kernel.org,
+        mika.westerberg@linux.intel.com, linuxarm@huawei.com
+Subject: Re: [PATCH v2] PCI: Use pci_pcie_find_root_port() to get root port
+Message-ID: <20200508160712.GA75354@bjorn-Precision-5520>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3a5ccd55-5aac-ef16-6402-75dfaeaee6bf@hisilicon.com>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This patch adds a feature flag in order to detect control port tx
-status capability.
+On Fri, May 08, 2020 at 08:40:49PM +0800, Yicong Yang wrote:
+> On 2020/5/7 3:48, Bjorn Helgaas wrote:
+> > On Wed, May 06, 2020 at 08:42:56PM +0800, Yicong Yang wrote:
 
-Signed-off-by: Markus Theil <markus.theil@tu-ilmenau.de>
----
- include/uapi/linux/nl80211.h | 4 ++++
- net/mac80211/main.c          | 2 ++
- 2 files changed, 6 insertions(+)
+> >>  {
+> >> -	while (1) {
+> >> -		if (!pci_is_pcie(dev))
+> >> -			break;
+> >> +	dev = pci_physfn(dev);
+> >> +	while (dev) {
+> >>  		if (pci_pcie_type(dev) == PCI_EXP_TYPE_ROOT_PORT)
+> >>  			return dev;
+> >> -		if (!dev->bus->self)
+> >> -			break;
+> >>  		dev = dev->bus->self;
+> > Why not use pci_upstream_bridge() here?
+> 
+> We'll judge whether the device is virtual or not every time we call
+> pci_upstream_bridge(). I think it's unnecessary and we only need to get
+> the physical function at the beginning of the traverse. It's okay to
+> use pci_upstream_bridge() here if you suggest so.
 
-diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-index e3b7a911b35c..02e1aa10f9a2 100644
---- a/include/uapi/linux/nl80211.h
-+++ b/include/uapi/linux/nl80211.h
-@@ -5713,6 +5713,9 @@ enum nl80211_feature_flags {
-  * @NL80211_EXT_FEATURE_MULTICAST_REGISTRATIONS: management frame registrations
-  *	are possible for multicast frames and those will be reported properly.
-  *
-+ * @NL80211_EXT_FEATURE_CONTROL_PORT_OVER_NL80211_TX_STATUS: The driver
-+ *	can report tx status for control port over nl80211 tx operations.
-+ *
-  * @NUM_NL80211_EXT_FEATURES: number of extended features.
-  * @MAX_NL80211_EXT_FEATURES: highest extended feature index.
-  */
-@@ -5766,6 +5769,7 @@ enum nl80211_ext_feature_index {
- 	NL80211_EXT_FEATURE_DEL_IBSS_STA,
- 	NL80211_EXT_FEATURE_MULTICAST_REGISTRATIONS,
- 	NL80211_EXT_FEATURE_BEACON_PROTECTION_CLIENT,
-+	NL80211_EXT_FEATURE_CONTROL_PORT_OVER_NL80211_TX_STATUS,
- 
- 	/* add new features before the definition below */
- 	NUM_NL80211_EXT_FEATURES,
-diff --git a/net/mac80211/main.c b/net/mac80211/main.c
-index dfcee5e462da..6381e6c1f58b 100644
---- a/net/mac80211/main.c
-+++ b/net/mac80211/main.c
-@@ -596,6 +596,8 @@ struct ieee80211_hw *ieee80211_alloc_hw_nm(size_t priv_data_len,
- 			      NL80211_EXT_FEATURE_CONTROL_PORT_OVER_NL80211);
- 	wiphy_ext_feature_set(wiphy,
- 			      NL80211_EXT_FEATURE_CONTROL_PORT_NO_PREAUTH);
-+	wiphy_ext_feature_set(wiphy,
-+			      NL80211_EXT_FEATURE_CONTROL_PORT_OVER_NL80211_TX_STATUS);
- 
- 	if (!ops->hw_scan) {
- 		wiphy->features |= NL80211_FEATURE_LOW_PRIORITY_SCAN |
--- 
-2.26.2
+I think we should use pci_upstream_bridge() consistently.  Using two
+different patterns is confusing and error-prone.
 
+Bjorn
