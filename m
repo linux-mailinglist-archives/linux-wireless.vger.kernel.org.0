@@ -2,69 +2,66 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 756DB1CA561
-	for <lists+linux-wireless@lfdr.de>; Fri,  8 May 2020 09:44:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B96E91CA56B
+	for <lists+linux-wireless@lfdr.de>; Fri,  8 May 2020 09:49:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726598AbgEHHow (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 8 May 2020 03:44:52 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:4350 "EHLO huawei.com"
+        id S1726751AbgEHHtg (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 8 May 2020 03:49:36 -0400
+Received: from szxga07-in.huawei.com ([45.249.212.35]:55152 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726036AbgEHHov (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 8 May 2020 03:44:51 -0400
-Received: from DGGEMS413-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id 2B9E19B48087109A6A1F;
-        Fri,  8 May 2020 15:44:47 +0800 (CST)
-Received: from huawei.com (10.175.124.28) by DGGEMS413-HUB.china.huawei.com
- (10.3.19.213) with Microsoft SMTP Server id 14.3.487.0; Fri, 8 May 2020
- 15:44:37 +0800
-From:   Jason Yan <yanaijie@huawei.com>
-To:     <arend.vanspriel@broadcom.com>, <franky.lin@broadcom.com>,
-        <hante.meuleman@broadcom.com>, <chi-hsien.lin@cypress.com>,
-        <wright.feng@cypress.com>, <kvalo@codeaurora.org>,
-        <davem@davemloft.net>, <linux-wireless@vger.kernel.org>,
-        <brcm80211-dev-list.pdl@broadcom.com>,
-        <brcm80211-dev-list@cypress.com>, <netdev@vger.kernel.org>
-CC:     Jason Yan <yanaijie@huawei.com>
-Subject: [PATCH v2] brcmfmac: remove Comparison to bool in brcmf_p2p_send_action_frame()
-Date:   Fri, 8 May 2020 15:43:51 +0800
-Message-ID: <20200508074351.19193-1-yanaijie@huawei.com>
-X-Mailer: git-send-email 2.21.1
+        id S1726036AbgEHHtf (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 8 May 2020 03:49:35 -0400
+Received: from DGGEMS401-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id 8D9EC4EC0E4D702EDF94;
+        Fri,  8 May 2020 15:49:33 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS401-HUB.china.huawei.com (10.3.19.201) with Microsoft SMTP Server id
+ 14.3.487.0; Fri, 8 May 2020 15:49:23 +0800
+From:   Wei Yongjun <weiyongjun1@huawei.com>
+To:     Kalle Valo <kvalo@codeaurora.org>
+CC:     Wei Yongjun <weiyongjun1@huawei.com>, <ath11k@lists.infradead.org>,
+        <linux-wireless@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
+Subject: [PATCH next] ath11k: convert to devm_platform_get_and_ioremap_resource
+Date:   Fri, 8 May 2020 07:53:23 +0000
+Message-ID: <20200508075323.81128-1-weiyongjun1@huawei.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
 Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.124.28]
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.113.25]
 X-CFilter-Loop: Reflected
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Fix the following coccicheck warning:
+Use the helper function that wraps the calls to platform_get_resource()
+and devm_ioremap_resource() together.
 
-drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c:1785:5-8:
-WARNING: Comparison to bool
-
-Signed-off-by: Jason Yan <yanaijie@huawei.com>
-Reviewed-by: Chi-hsien Lin <chi-hsien.lin@cypress.com>
+Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
 ---
- v2: Rebased on top of wireless-drivers-next and drop one already fixed line.
+ drivers/net/wireless/ath/ath11k/ahb.c | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c
-index e32c24a2670d..8cde31675dfb 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c
-@@ -1836,7 +1836,7 @@ bool brcmf_p2p_send_action_frame(struct brcmf_cfg80211_info *cfg,
- 		dwell_overflow = brcmf_p2p_check_dwell_overflow(requested_dwell,
- 								dwell_jiffies);
+diff --git a/drivers/net/wireless/ath/ath11k/ahb.c b/drivers/net/wireless/ath/ath11k/ahb.c
+index 3b2b76d602f2..d4ad99eb0e16 100644
+--- a/drivers/net/wireless/ath/ath11k/ahb.c
++++ b/drivers/net/wireless/ath/ath11k/ahb.c
+@@ -891,13 +891,7 @@ static int ath11k_ahb_probe(struct platform_device *pdev)
+ 		return -EINVAL;
  	}
--	if (ack == false) {
-+	if (!ack) {
- 		bphy_err(drvr, "Failed to send Action Frame(retry %d)\n",
- 			 tx_retry);
- 		clear_bit(BRCMF_P2P_STATUS_GO_NEG_PHASE, &p2p->status);
--- 
-2.21.1
+ 
+-	mem_res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+-	if (!mem_res) {
+-		dev_err(&pdev->dev, "failed to get IO memory resource\n");
+-		return -ENXIO;
+-	}
+-
+-	mem = devm_ioremap_resource(&pdev->dev, mem_res);
++	mem = devm_platform_get_and_ioremap_resource(pdev, 0, &mem_res);
+ 	if (IS_ERR(mem)) {
+ 		dev_err(&pdev->dev, "ioremap error\n");
+ 		return PTR_ERR(mem);
+
+
 
