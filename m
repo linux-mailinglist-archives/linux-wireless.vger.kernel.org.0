@@ -2,26 +2,26 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CC1F01CB162
-	for <lists+linux-wireless@lfdr.de>; Fri,  8 May 2020 16:08:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 504991CB163
+	for <lists+linux-wireless@lfdr.de>; Fri,  8 May 2020 16:08:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727851AbgEHOIR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 8 May 2020 10:08:17 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:60258 "EHLO
+        id S1727860AbgEHOIS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 8 May 2020 10:08:18 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:60264 "EHLO
         farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1727831AbgEHOIQ (ORCPT
+        with ESMTP id S1726736AbgEHOIR (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 8 May 2020 10:08:16 -0400
+        Fri, 8 May 2020 10:08:17 -0400
 Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa.ger.corp.intel.com)
         by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
         (Exim 4.93)
         (envelope-from <luca@coelho.fi>)
-        id 1jX3fi-000WXw-Dw; Fri, 08 May 2020 17:08:14 +0300
+        id 1jX3fj-000WXw-4X; Fri, 08 May 2020 17:08:15 +0300
 From:   Luca Coelho <luca@coelho.fi>
 To:     kvalo@codeaurora.org
 Cc:     linux-wireless@vger.kernel.org
-Date:   Fri,  8 May 2020 17:07:53 +0300
-Message-Id: <iwlwifi.20200508170402.5405db448555.Ie3c110932ebbd5b6aca99938a5e0a1e4dfbaa848@changeid>
+Date:   Fri,  8 May 2020 17:07:54 +0300
+Message-Id: <iwlwifi.20200508170402.1f826d34339e.I23182a59bfbe089a1f659742d6fee6f64d2ed08c@changeid>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200508140802.558267-1-luca@coelho.fi>
 References: <20200508140802.558267-1-luca@coelho.fi>
@@ -31,68 +31,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on farmhouse.coelho.fi
 X-Spam-Level: 
 X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
         TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.4
-Subject: [PATCH 02/11] iwlwifi: pcie: don't count on the FW to set persistence mode
+Subject: [PATCH 03/11] iwlwifi: pcie: keep trans instead of trans_pcie in iwl_txq
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Haim Dreyfuss <haim.dreyfuss@intel.com>
+From: Mordechay Goodstein <mordechay.goodstein@intel.com>
 
-Apparently the FW can't set the persistence in all flows. Don't count
-on the FW setting it in AX210 devices or above either to avoid
-potential resets on resume.
+We used both the trans and the trans_pcie structures in
+iwl_txq, so we can keep the trans structure instead.  This
+helps with the refactoring of txq code out of pcie.
 
-Signed-off-by: Haim Dreyfuss <haim.dreyfuss@intel.com>
+Signed-off-by: Mordechay Goodstein <mordechay.goodstein@intel.com>
 Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/pcie/trans.c | 12 +++---------
- 1 file changed, 3 insertions(+), 9 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/pcie/internal.h | 4 ++--
+ drivers/net/wireless/intel/iwlwifi/pcie/tx.c       | 8 ++++----
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-index 8ccfc7cc7348..3bcbc2967c88 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-@@ -5,10 +5,9 @@
-  *
-  * GPL LICENSE SUMMARY
-  *
-- * Copyright(c) 2007 - 2015 Intel Corporation. All rights reserved.
-  * Copyright(c) 2013 - 2015 Intel Mobile Communications GmbH
-  * Copyright(c) 2016 - 2017 Intel Deutschland GmbH
-- * Copyright(c) 2018 - 2019 Intel Corporation
-+ * Copyright(c) 2007 - 2015, 2018 - 2020 Intel Corporation
-  *
-  * This program is free software; you can redistribute it and/or modify
-  * it under the terms of version 2 of the GNU General Public License as
-@@ -28,10 +27,9 @@
-  *
-  * BSD LICENSE
-  *
-- * Copyright(c) 2005 - 2015 Intel Corporation. All rights reserved.
-  * Copyright(c) 2013 - 2015 Intel Mobile Communications GmbH
-  * Copyright(c) 2016 - 2017 Intel Deutschland GmbH
-- * Copyright(c) 2018 - 2019 Intel Corporation
-+ * Copyright(c) 2007 - 2015, 2018 - 2020 Intel Corporation
-  * All rights reserved.
-  *
-  * Redistribution and use in source and binary forms, with or without
-@@ -1495,14 +1493,10 @@ static int iwl_trans_pcie_d3_suspend(struct iwl_trans *trans, bool test,
- 	int ret;
- 	struct iwl_trans_pcie *trans_pcie =  IWL_TRANS_GET_PCIE_TRANS(trans);
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/internal.h b/drivers/net/wireless/intel/iwlwifi/pcie/internal.h
+index b76c0396335a..3950f5784a15 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/internal.h
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/internal.h
+@@ -332,7 +332,7 @@ struct iwl_pcie_first_tb_buf {
+  * @entries: transmit entries (driver state)
+  * @lock: queue lock
+  * @stuck_timer: timer that fires if queue gets stuck
+- * @trans_pcie: pointer back to transport (for timer)
++ * @trans: pointer back to transport (for timer)
+  * @need_update: indicates need to update read/write index
+  * @ampdu: true if this queue is an ampdu queue for an specific RA/TID
+  * @wd_timeout: queue watchdog timeout (jiffies) - per queue
+@@ -371,7 +371,7 @@ struct iwl_txq {
+ 	spinlock_t lock;
+ 	unsigned long frozen_expiry_remainder;
+ 	struct timer_list stuck_timer;
+-	struct iwl_trans_pcie *trans_pcie;
++	struct iwl_trans *trans;
+ 	bool need_update;
+ 	bool frozen;
+ 	bool ampdu;
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/tx.c b/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
+index 9ff78bca460b..757cf4e9de33 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
+@@ -183,8 +183,7 @@ void iwl_pcie_free_dma_ptr(struct iwl_trans *trans, struct iwl_dma_ptr *ptr)
+ static void iwl_pcie_txq_stuck_timer(struct timer_list *t)
+ {
+ 	struct iwl_txq *txq = from_timer(txq, t, stuck_timer);
+-	struct iwl_trans_pcie *trans_pcie = txq->trans_pcie;
+-	struct iwl_trans *trans = iwl_trans_pcie_get_trans(trans_pcie);
++	struct iwl_trans *trans = txq->trans;
  
--	/*
--	 * Family IWL_DEVICE_FAMILY_AX210 and above persist mode is set by FW.
--	 */
--	if (!reset && trans->trans_cfg->device_family < IWL_DEVICE_FAMILY_AX210) {
-+	if (!reset)
- 		/* Enable persistence mode to avoid reset */
- 		iwl_set_bit(trans, CSR_HW_IF_CONFIG_REG,
- 			    CSR_HW_IF_CONFIG_REG_PERSIST_MODE);
--	}
+ 	spin_lock(&txq->lock);
+ 	/* check if triggered erroneously */
+@@ -535,7 +534,7 @@ int iwl_pcie_txq_alloc(struct iwl_trans *trans, struct iwl_txq *txq,
+ 		tfd_sz = trans_pcie->tfd_size * slots_num;
  
- 	if (trans->trans_cfg->device_family >= IWL_DEVICE_FAMILY_AX210) {
- 		iwl_write_umac_prph(trans, UREG_DOORBELL_TO_ISR6,
+ 	timer_setup(&txq->stuck_timer, iwl_pcie_txq_stuck_timer, 0);
+-	txq->trans_pcie = trans_pcie;
++	txq->trans = trans;
+ 
+ 	txq->n_window = slots_num;
+ 
+@@ -2129,7 +2128,8 @@ static int iwl_fill_data_tbs_amsdu(struct iwl_trans *trans, struct sk_buff *skb,
+ 				   u16 tb1_len)
+ {
+ 	struct iwl_tx_cmd *tx_cmd = (void *)dev_cmd->payload;
+-	struct iwl_trans_pcie *trans_pcie = txq->trans_pcie;
++	struct iwl_trans_pcie *trans_pcie =
++		IWL_TRANS_GET_PCIE_TRANS(txq->trans);
+ 	struct ieee80211_hdr *hdr = (void *)skb->data;
+ 	unsigned int snap_ip_tcp_hdrlen, ip_hdrlen, total_len, hdr_room;
+ 	unsigned int mss = skb_shinfo(skb)->gso_size;
 -- 
 2.26.2
 
