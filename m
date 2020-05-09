@@ -2,130 +2,135 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 94AEE1CBBAA
-	for <lists+linux-wireless@lfdr.de>; Sat,  9 May 2020 02:13:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BB5071CBD8E
+	for <lists+linux-wireless@lfdr.de>; Sat,  9 May 2020 06:45:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728491AbgEIANo (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 8 May 2020 20:13:44 -0400
-Received: from mail27.static.mailgun.info ([104.130.122.27]:28790 "EHLO
-        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728399AbgEIANo (ORCPT
+        id S1726063AbgEIEpp (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 9 May 2020 00:45:45 -0400
+Received: from mail-pj1-f68.google.com ([209.85.216.68]:52441 "EHLO
+        mail-pj1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725795AbgEIEpp (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 8 May 2020 20:13:44 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1588983223; h=References: In-Reply-To: Message-Id: Date:
- Subject: Cc: To: From: Sender;
- bh=nEJzQHMkBDGR2e7BpFMdnUwSMayWOykeN29+LewEHjI=; b=c4WGpnPgJb1sth7t1BSEUzNNrdk3k4Ic7ic8O2MRpYZtFHeqbfp2zV6/nd3vYwAgL9bXWB2Y
- 7dqFzqdg1ab+leAqP/rJIN2eEN4gdZr+bdq2ClzqbXaZ7HynltvDpODdCLMUzJN8xXnNbSyL
- 2OcVsVIIXKyxYHMBHyPv6HrIq+c=
-X-Mailgun-Sending-Ip: 104.130.122.27
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5eb5f5aa.7f8aa379af48-smtp-out-n01;
- Sat, 09 May 2020 00:13:30 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 1B65DC433F2; Sat,  9 May 2020 00:13:30 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE,
-        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from rmanohar-linux.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: rmanohar)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 17DC7C43637;
-        Sat,  9 May 2020 00:13:28 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 17DC7C43637
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=rmanohar@codeaurora.org
-From:   Rajkumar Manoharan <rmanohar@codeaurora.org>
-To:     johannes@sipsolutions.net, kvalo@codeaurora.org
-Cc:     linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
-        Rajkumar Manoharan <rmanohar@codeaurora.org>
-Subject: [PATCH v3 11/11] ath11k: build HE 6 GHz capability
-Date:   Fri,  8 May 2020 17:13:05 -0700
-Message-Id: <1588983185-5741-11-git-send-email-rmanohar@codeaurora.org>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1588983185-5741-1-git-send-email-rmanohar@codeaurora.org>
-References: <1588983185-5741-1-git-send-email-rmanohar@codeaurora.org>
+        Sat, 9 May 2020 00:45:45 -0400
+Received: by mail-pj1-f68.google.com with SMTP id a5so5227716pjh.2;
+        Fri, 08 May 2020 21:45:43 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=npAHADQxLDEpywMh/GQmSV8cKhjaz9uo2pCJ37X1d7Q=;
+        b=kYhjC2EBjfqXoUxy/zTQ4+eiC42XU2VTyClMoza3b5B+lwSLp/pHM7DMgZ1a1KiBIa
+         WoK2xvFhVw2P+QNluVDvFW9Ht35ULTfrM7U9xn2QM+htptM3Wh94p0hO99VdZQ3sjLvI
+         p++9H47Rq0EhVMgiZhbQmDRxfIxnVHH9xYP9ML/S1pItRwX7KG0Obs2xRIUeQwzUzE5f
+         3gGj+m3KvZ5cDQhiYUi5f0GhfMRamsIlvh43A3TBki6sMkAry6BOyixXXv79zx59dAcv
+         iRczBExRBCPiseIjKSm/c0vXMIDUhkT3hVYjEwUxBbUX9HdADoOcOBDk/RKnbs41ZnmR
+         zR/w==
+X-Gm-Message-State: AGi0Pub57GCEKRc6UK0BEzENjDcSZ8p65ZiUhNUJpzXJfYK7snH3Tskd
+        k/Z3rxJ2biXi2joFlE2fD9E=
+X-Google-Smtp-Source: APiQypLw6+nO2U4QWAJVDVbU2UVUQLz4x2Pd3twtzhhiEU7+VFbAvujZRZehlC9onWqGj3VvwxWp/A==
+X-Received: by 2002:a17:902:ff09:: with SMTP id f9mr5748286plj.236.1588999542861;
+        Fri, 08 May 2020 21:45:42 -0700 (PDT)
+Received: from 42.do-not-panic.com (42.do-not-panic.com. [157.230.128.187])
+        by smtp.gmail.com with ESMTPSA id h13sm2547498pgm.69.2020.05.08.21.45.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 08 May 2020 21:45:41 -0700 (PDT)
+Received: by 42.do-not-panic.com (Postfix, from userid 1000)
+        id 54DB142337; Sat,  9 May 2020 04:36:01 +0000 (UTC)
+From:   Luis Chamberlain <mcgrof@kernel.org>
+To:     jeyu@kernel.org
+Cc:     akpm@linux-foundation.org, arnd@arndb.de, rostedt@goodmis.org,
+        mingo@redhat.com, aquini@redhat.com, cai@lca.pw, dyoung@redhat.com,
+        bhe@redhat.com, peterz@infradead.org, tglx@linutronix.de,
+        gpiccoli@canonical.com, pmladek@suse.com, tiwai@suse.de,
+        schlad@suse.de, andriy.shevchenko@linux.intel.com,
+        keescook@chromium.org, daniel.vetter@ffwll.ch, will@kernel.org,
+        mchehab+samsung@kernel.org, kvalo@codeaurora.org,
+        davem@davemloft.net, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>,
+        linux-wireless@vger.kernel.org, ath10k@lists.infradead.org
+Subject: [PATCH 12/15] ath10k: use new module_firmware_crashed()
+Date:   Sat,  9 May 2020 04:35:49 +0000
+Message-Id: <20200509043552.8745-13-mcgrof@kernel.org>
+X-Mailer: git-send-email 2.23.0.rc1
+In-Reply-To: <20200509043552.8745-1-mcgrof@kernel.org>
+References: <20200509043552.8745-1-mcgrof@kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Build 6 GHz band capability from HT and VHT capabilities reported
-by firmware.
+This makes use of the new module_firmware_crashed() to help
+annotate when firmware for device drivers crash. When firmware
+crashes devices can sometimes become unresponsive, and recovery
+sometimes requires a driver unload / reload and in the worst cases
+a reboot.
 
-Signed-off-by: Rajkumar Manoharan <rmanohar@codeaurora.org>
+Using a taint flag allows us to annotate when this happens clearly.
+
+Cc: linux-wireless@vger.kernel.org
+Cc: ath10k@lists.infradead.org
+Cc: Kalle Valo <kvalo@codeaurora.org>
+Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/core.h |  1 +
- drivers/net/wireless/ath/ath11k/mac.c  | 34 ++++++++++++++++++++++++++++++++++
- 2 files changed, 35 insertions(+)
+ drivers/net/wireless/ath/ath10k/pci.c  | 2 ++
+ drivers/net/wireless/ath/ath10k/sdio.c | 2 ++
+ drivers/net/wireless/ath/ath10k/snoc.c | 1 +
+ 3 files changed, 5 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath11k/core.h b/drivers/net/wireless/ath/ath11k/core.h
-index 6e7b8ecd09a6..3325e692f7fd 100644
---- a/drivers/net/wireless/ath/ath11k/core.h
-+++ b/drivers/net/wireless/ath/ath11k/core.h
-@@ -537,6 +537,7 @@ struct ath11k_band_cap {
- 	u32 he_mcs;
- 	u32 he_cap_phy_info[PSOC_HOST_MAX_PHY_SIZE];
- 	struct ath11k_ppe_threshold he_ppet;
-+	u16 he_6ghz_cap;
- };
+diff --git a/drivers/net/wireless/ath/ath10k/pci.c b/drivers/net/wireless/ath/ath10k/pci.c
+index 1d941d53fdc9..6bd0f3b518b9 100644
+--- a/drivers/net/wireless/ath/ath10k/pci.c
++++ b/drivers/net/wireless/ath/ath10k/pci.c
+@@ -1767,6 +1767,7 @@ static void ath10k_pci_fw_dump_work(struct work_struct *work)
+ 		scnprintf(guid, sizeof(guid), "n/a");
  
- struct ath11k_pdev_cap {
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index 06d063274eea..8babba45d879 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -3522,6 +3522,34 @@ ath11k_mac_filter_he_cap_mesh(struct ieee80211_he_cap_elem *he_cap_elem)
- 	he_cap_elem->phy_cap_info[9] &= ~m;
- }
+ 	ath10k_err(ar, "firmware crashed! (guid %s)\n", guid);
++	module_firmware_crashed();
+ 	ath10k_print_driver_info(ar);
+ 	ath10k_pci_dump_registers(ar, crash_data);
+ 	ath10k_ce_dump_registers(ar, crash_data);
+@@ -2837,6 +2838,7 @@ static int ath10k_pci_hif_power_up(struct ath10k *ar,
+ 	if (ret) {
+ 		if (ath10k_pci_has_fw_crashed(ar)) {
+ 			ath10k_warn(ar, "firmware crashed during chip reset\n");
++			module_firmware_crashed();
+ 			ath10k_pci_fw_crashed_clear(ar);
+ 			ath10k_pci_fw_crashed_dump(ar);
+ 		}
+diff --git a/drivers/net/wireless/ath/ath10k/sdio.c b/drivers/net/wireless/ath/ath10k/sdio.c
+index e2aff2254a40..d34ad289380f 100644
+--- a/drivers/net/wireless/ath/ath10k/sdio.c
++++ b/drivers/net/wireless/ath/ath10k/sdio.c
+@@ -794,6 +794,7 @@ static int ath10k_sdio_mbox_proc_dbg_intr(struct ath10k *ar)
  
-+static u16 ath11k_mac_setup_he_6ghz_cap(struct ath11k_pdev_cap *pcap,
-+					struct ath11k_band_cap *bcap)
-+{
-+	u8 val;
-+
-+	bcap->he_6ghz_cap = IEEE80211_HT_MPDU_DENSITY_NONE;
-+	if (bcap->ht_cap_info & WMI_HT_CAP_DYNAMIC_SMPS)
-+		bcap->he_6ghz_cap |=
-+			FIELD_PREP(IEEE80211_HE_6GHZ_CAP_SMPS_MASK,
-+				   WLAN_HT_CAP_SM_PS_DYNAMIC);
-+	val = FIELD_GET(IEEE80211_VHT_CAP_MAX_A_MPDU_LENGTH_EXPONENT_MASK,
-+			pcap->vht_cap);
-+	bcap->he_6ghz_cap |=
-+	   FIELD_PREP(IEEE80211_HE_6GHZ_CAP_MAX_A_MPDU_LENGTH_EXPONENT_MASK,
-+		      val);
-+	val = FIELD_GET(IEEE80211_VHT_CAP_MAX_MPDU_MASK, pcap->vht_cap);
-+	bcap->he_6ghz_cap |=
-+		FIELD_PREP(IEEE80211_HE_6GHZ_CAP_MAX_MPDU_LENGTH_MASK, val);
-+	if (pcap->vht_cap & IEEE80211_VHT_CAP_RX_ANTENNA_PATTERN)
-+		bcap->he_6ghz_cap |=
-+			IEEE80211_HE_6GHZ_CAP_RX_ANTENNA_PATTERN;
-+	if (pcap->vht_cap & IEEE80211_VHT_CAP_TX_ANTENNA_PATTERN)
-+		bcap->he_6ghz_cap |=
-+			IEEE80211_HE_6GHZ_CAP_TX_ANTENNA_PATTERN;
-+
-+	return bcap->he_6ghz_cap;
-+}
-+
- static int ath11k_mac_copy_he_cap(struct ath11k *ar,
- 				  struct ath11k_pdev_cap *cap,
- 				  struct ieee80211_sband_iftype_data *data,
-@@ -3602,6 +3630,12 @@ static int ath11k_mac_copy_he_cap(struct ath11k *ar,
- 		    IEEE80211_HE_PHY_CAP6_PPE_THRESHOLD_PRESENT)
- 			ath11k_gen_ppe_thresh(&band_cap->he_ppet,
- 					      he_cap->ppe_thres);
-+
-+		if (band == NL80211_BAND_6GHZ) {
-+			he_cap->has_he_6ghz = true;
-+			he_cap->he_6ghz.cap =
-+				ath11k_mac_setup_he_6ghz_cap(cap, band_cap);
-+		}
- 		idx++;
+ 	/* TODO: Add firmware crash handling */
+ 	ath10k_warn(ar, "firmware crashed\n");
++	module_firmware_crashed();
+ 
+ 	/* read counter to clear the interrupt, the debug error interrupt is
+ 	 * counter 0.
+@@ -915,6 +916,7 @@ static int ath10k_sdio_mbox_proc_cpu_intr(struct ath10k *ar)
+ 	if (cpu_int_status & MBOX_CPU_STATUS_ENABLE_ASSERT_MASK) {
+ 		ath10k_err(ar, "firmware crashed!\n");
+ 		queue_work(ar->workqueue, &ar->restart_work);
++		module_firmware_crashed();
  	}
+ 	return ret;
+ }
+diff --git a/drivers/net/wireless/ath/ath10k/snoc.c b/drivers/net/wireless/ath/ath10k/snoc.c
+index 354d49b1cd45..7cfc123c345c 100644
+--- a/drivers/net/wireless/ath/ath10k/snoc.c
++++ b/drivers/net/wireless/ath/ath10k/snoc.c
+@@ -1451,6 +1451,7 @@ void ath10k_snoc_fw_crashed_dump(struct ath10k *ar)
+ 		scnprintf(guid, sizeof(guid), "n/a");
  
+ 	ath10k_err(ar, "firmware crashed! (guid %s)\n", guid);
++	module_firmware_crashed();
+ 	ath10k_print_driver_info(ar);
+ 	ath10k_msa_dump_memory(ar, crash_data);
+ 	mutex_unlock(&ar->dump_mutex);
 -- 
-2.7.4
+2.25.1
+
