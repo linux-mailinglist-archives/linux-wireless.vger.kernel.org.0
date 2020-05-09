@@ -2,102 +2,60 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 79C0F1CC278
-	for <lists+linux-wireless@lfdr.de>; Sat,  9 May 2020 17:44:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EFF511CC284
+	for <lists+linux-wireless@lfdr.de>; Sat,  9 May 2020 18:00:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728021AbgEIPnt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 9 May 2020 11:43:49 -0400
-Received: from mail.kernel.org ([198.145.29.99]:39672 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726782AbgEIPnt (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 9 May 2020 11:43:49 -0400
-Received: from embeddedor (unknown [189.207.59.248])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id F2CEF2063A;
-        Sat,  9 May 2020 15:43:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1589039029;
-        bh=o1bX8Zql/kQ5+2VP0PxQWxTrOXX0zwKggYwZhmcqNrs=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=DAXEZFtgE82+8ztfFy+75+0SXtIGD9rjTnRytb7gq+fU+tGx4hbaaWmS2NcxsN+Pt
-         jSeaNmSSiVN2iqylQqSMRdrnQ//OygB2q713StgEDppDnCYpiSQumAGbLQaolzFh+k
-         PJ9TtJmxAEV+9tAf+Z7IF89wjHUFlaKH1C2BrKBQ=
-Date:   Sat, 9 May 2020 10:48:18 -0500
-From:   "Gustavo A. R. Silva" <gustavoars@kernel.org>
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
-        Michal Kazior <michal.kazior@tieto.com>,
-        Kalle Valo <kvalo@qca.qualcomm.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Wen Gong <wgong@codeaurora.org>,
-        Erik Stromdahl <erik.stromdahl@gmail.com>,
-        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next 1/2] ath10k: fix gcc-10 zero-length-bounds
- warnings
-Message-ID: <20200509154818.GB27779@embeddedor>
-References: <20200509120707.188595-1-arnd@arndb.de>
+        id S1727787AbgEIQAn (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 9 May 2020 12:00:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60034 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1727092AbgEIQAn (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 9 May 2020 12:00:43 -0400
+Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com [IPv6:2a00:1450:4864:20::341])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3E05C061A0C
+        for <linux-wireless@vger.kernel.org>; Sat,  9 May 2020 09:00:42 -0700 (PDT)
+Received: by mail-wm1-x341.google.com with SMTP id f134so1096425wmf.1
+        for <linux-wireless@vger.kernel.org>; Sat, 09 May 2020 09:00:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:sender:from:date:message-id:subject:to;
+        bh=qXBWf2EoWT9gmJgm/3NiogFnv3V/rxlq5ApKE+Dow4k=;
+        b=qFaPb/d/aIrkIjmA+llOq9tkBP/4eUKar2w/GKASGAMjtzo7xrrkg5S9DW6W/xwK6Q
+         DvJF/v2TURQecwO3X5puiQmrtizwgfbdEUJ6CU2WNFImAykVrtXsbaXjo8shTlG0QRfH
+         5Ucc+iwvAshLKfd32sjbGHYUb4dMbEMUlQZvY8ZQQ0cROy5+1u1RDmIyH05R0kRxZWev
+         DaNuQwAKGENd+78YhlrQEnkCU5Z324ysHoYYkttgO/cNx7hE9mzTzmHuasLejaFl3DIl
+         h2wEqLnn/2CqGBJQtul1SyR9hcZUon07rG/CYJ2nC9Am9zqp9W1ckmzjNMezJwWSkQw3
+         zHkg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:sender:from:date
+         :message-id:subject:to;
+        bh=qXBWf2EoWT9gmJgm/3NiogFnv3V/rxlq5ApKE+Dow4k=;
+        b=ZL5nFTKVCdScFkZmnZdqxO+nT2TlGIfS9zDAJBb6BAO81tUM1T31vueFMlvhzF1wNf
+         RDfCmQxEUj75e7AQleT5pngDRwQ8tni923goMTpOghcpUoz5FPtn6B6nDcxjyYS6XLIc
+         Carxb00upSifU1qDzmSjFKRnwxz9H15LWZBBaZ73AXIHgoVH/hBryyj9nb7YwlZcZJCc
+         ggugsEyBWhFdTyfuJVQP4MdMyVxeQhbohgvnqhXAQH4HmsKoIibrwyxGVCEcEPcWpMwh
+         6prdHUwk2kXq3uEnxV2MG4ddfO8iYEXaJRPs7p1d0qmUv/zctoZmRbbDnxMZc9JhaY+9
+         OcUg==
+X-Gm-Message-State: AGi0PuY0RoZsxKfX/XZIEx3IG4LvhEnvqqK56Qrva07i7sm2lz1j7Dpu
+        OkrxSY4j6zzHDru1y4y2dJyvzdS3k78vDp5PUb4=
+X-Google-Smtp-Source: APiQypJ7mdnd92OXJ/qzFT6va02BxH0hL6EYJwZAYmy2PrQcuwBX9LqlApO3VTLP/cjeQfchEpGkDN2ZG0lYk/m226w=
+X-Received: by 2002:a1c:f306:: with SMTP id q6mr21645623wmq.169.1589040041517;
+ Sat, 09 May 2020 09:00:41 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200509120707.188595-1-arnd@arndb.de>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Reply-To: prender508@gmail.com
+Received: by 2002:a1c:60d5:0:0:0:0:0 with HTTP; Sat, 9 May 2020 09:00:41 -0700 (PDT)
+From:   Pamela Render <prenderxx@gmail.com>
+Date:   Sat, 9 May 2020 16:00:41 +0000
+X-Google-Sender-Auth: 3rjEiI3EU8bgaBARQQbxCaq8neY
+Message-ID: <CAAPaKH3GTYcM=HJXUssNJfJV5fyi-=BU898cVi=5AnmO2pYgKw@mail.gmail.com>
+Subject: Re: Nice to meet you!
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Arnd,
-
-On Sat, May 09, 2020 at 02:06:32PM +0200, Arnd Bergmann wrote:
-> gcc-10 started warning about out-of-bounds access for zero-length
-> arrays:
-> 
-> In file included from drivers/net/wireless/ath/ath10k/core.h:18,
->                  from drivers/net/wireless/ath/ath10k/htt_rx.c:8:
-> drivers/net/wireless/ath/ath10k/htt_rx.c: In function 'ath10k_htt_rx_tx_fetch_ind':
-> drivers/net/wireless/ath/ath10k/htt.h:1683:17: warning: array subscript 65535 is outside the bounds of an interior zero-length array 'struct htt_tx_fetch_record[0]' [-Wzero-length-bounds]
->  1683 |  return (void *)&ind->records[le16_to_cpu(ind->num_records)];
->       |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> drivers/net/wireless/ath/ath10k/htt.h:1676:29: note: while referencing 'records'
->  1676 |  struct htt_tx_fetch_record records[0];
->       |                             ^~~~~~~
-> 
-> Make records[] a flexible array member to allow this, moving it behind
-> the other zero-length member that is not accessed in a way that gcc
-> warns about.
-> 
-> Fixes: 3ba225b506a2 ("treewide: Replace zero-length array with flexible-array member")
-
-This treewide patch no longer contains changes for ath10k. I removed them
-since Monday (05/04/2020). So, this "Fixes" tag does not apply.
-
-Thanks
---
-Gustavo
-
-> Fixes: 22e6b3bc5d96 ("ath10k: add new htt definitions")
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> ---
->  drivers/net/wireless/ath/ath10k/htt.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/wireless/ath/ath10k/htt.h b/drivers/net/wireless/ath/ath10k/htt.h
-> index 8f3710cf28f4..aa056a186402 100644
-> --- a/drivers/net/wireless/ath/ath10k/htt.h
-> +++ b/drivers/net/wireless/ath/ath10k/htt.h
-> @@ -1673,8 +1673,8 @@ struct htt_tx_fetch_ind {
->  	__le32 token;
->  	__le16 num_resp_ids;
->  	__le16 num_records;
-> -	struct htt_tx_fetch_record records[0];
->  	__le32 resp_ids[0]; /* ath10k_htt_get_tx_fetch_ind_resp_ids() */
-> +	struct htt_tx_fetch_record records[];
->  } __packed;
->  
->  static inline void *
-> -- 
-> 2.26.0
-> 
+Please do you speak english?
