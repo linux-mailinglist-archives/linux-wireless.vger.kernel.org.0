@@ -2,111 +2,174 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ABD791CBB5C
-	for <lists+linux-wireless@lfdr.de>; Sat,  9 May 2020 01:45:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 176B81CBBA2
+	for <lists+linux-wireless@lfdr.de>; Sat,  9 May 2020 02:13:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728194AbgEHXpu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 8 May 2020 19:45:50 -0400
-Received: from mail26.static.mailgun.info ([104.130.122.26]:16290 "EHLO
+        id S1728468AbgEIAN1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 8 May 2020 20:13:27 -0400
+Received: from mail26.static.mailgun.info ([104.130.122.26]:59280 "EHLO
         mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727959AbgEHXpu (ORCPT
+        by vger.kernel.org with ESMTP id S1727878AbgEIAN0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 8 May 2020 19:45:50 -0400
+        Fri, 8 May 2020 20:13:26 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1588981549; h=Message-ID: References: In-Reply-To: Subject:
- Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
- MIME-Version: Sender; bh=C4glG4DpKY0AN9bUFpM03dyggL13Kv7UgANPlRzpyvs=;
- b=mYqWlV1+83D7VLK4+VqrmTCZM5M81gT3R3/Se1ZY6s3FdX1bteumQ1P0618rn2EvoxokXS78
- f6+UnAaaM7wMljzSOsaiiXpgABXzhIAGFS54uHcDRpX70vLiD/6J+VtNR40/G3Ql3RjzY4y8
- g8WRAGHfehKaNidVnV8sV7SlGQA=
+ s=smtp; t=1588983205; h=Message-Id: Date: Subject: Cc: To: From:
+ Sender; bh=JD3H+2UIrtT/l1bJEqxT6tXQ3eAeBzabY+eu8PkbSb4=; b=anOnIAXu4xUYMtZUMt2MS/3bvEeyTxVEhwsJMUDOViBSh+TdN2S7KI/OfNJ52LjSrY0aApjQ
+ INfy1mcHPfkLJlB5JJAmqga/uU8pTBB9QSDoAdmXdwrWaL1mwbVpAcoyRUaeFSstlRqe2I1s
+ BqlUB/i1LibxxW6R98EG+Q9nHEI=
 X-Mailgun-Sending-Ip: 104.130.122.26
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5eb5ef15.7f352d825c38-smtp-out-n01;
- Fri, 08 May 2020 23:45:25 -0000 (UTC)
+ by mxa.mailgun.org with ESMTP id 5eb5f59e.7fd1ce57f378-smtp-out-n05;
+ Sat, 09 May 2020 00:13:18 -0000 (UTC)
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 34AB5C43636; Fri,  8 May 2020 23:45:24 +0000 (UTC)
+        id 14F0EC432C2; Sat,  9 May 2020 00:13:18 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE,
+        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from rmanohar-linux.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: rmanohar)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id C292BC433D2;
-        Fri,  8 May 2020 23:45:23 +0000 (UTC)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Fri, 08 May 2020 16:45:23 -0700
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id B5218C433D2;
+        Sat,  9 May 2020 00:13:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org B5218C433D2
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=rmanohar@codeaurora.org
 From:   Rajkumar Manoharan <rmanohar@codeaurora.org>
-To:     Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>
-Cc:     johannes@sipsolutions.net, kvalo@codeaurora.org,
-        linux-wireless@vger.kernel.org,
-        linux-wireless-owner@vger.kernel.org
-Subject: Re: [PATCH v2 10/11] mac80211: determine chantype from HE operation
- in 6 GHz
-In-Reply-To: <29370be316eca4d5592baeeaa6c1a779@codeaurora.org>
-References: <1588285252-30034-1-git-send-email-rmanohar@codeaurora.org>
- <1588285252-30034-10-git-send-email-rmanohar@codeaurora.org>
- <29370be316eca4d5592baeeaa6c1a779@codeaurora.org>
-Message-ID: <f25026eaf2fd718fba35b1a5cfaafd8f@codeaurora.org>
-X-Sender: rmanohar@codeaurora.org
-User-Agent: Roundcube Webmail/1.3.9
+To:     johannes@sipsolutions.net, kvalo@codeaurora.org
+Cc:     linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
+        Rajkumar Manoharan <rmanohar@codeaurora.org>,
+        Vamsi Krishna <vamsin@codeaurora.org>
+Subject: [PATCH v3 01/11] cfg80211: use only HE capability to set prohibited flags in 6 GHz
+Date:   Fri,  8 May 2020 17:12:55 -0700
+Message-Id: <1588983185-5741-1-git-send-email-rmanohar@codeaurora.org>
+X-Mailer: git-send-email 2.7.4
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2020-05-08 15:53, Pradeep Kumar Chitrapu wrote:
->> diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
->> index b4dfefd482a6..9115dc9c7d78 100644
->> --- a/net/mac80211/mlme.c
->> +++ b/net/mac80211/mlme.c
->> @@ -163,6 +163,9 @@ ieee80211_determine_chantype(struct
->> ieee80211_sub_if_data *sdata,
->>  	chandef->width = NL80211_CHAN_WIDTH_20_NOHT;
->>  	chandef->center_freq1 = channel->center_freq;
->> 
->> +	if (channel->band == NL80211_BAND_6GHZ)
->> +		goto skip_ht_vht_oper;
->> +
->>  	if (!ht_oper || !sta_ht_cap.ht_supported) {
->>  		ret = IEEE80211_STA_DISABLE_HT |
->>  		      IEEE80211_STA_DISABLE_VHT |
->> @@ -263,6 +266,15 @@ ieee80211_determine_chantype(struct
->> ieee80211_sub_if_data *sdata,
->> 
->>  	*chandef = vht_chandef;
->> 
->> +skip_ht_vht_oper:
->> +	if (!ieee80211_chandef_he_oper(sdata, he_oper, chandef)) {
->> +		if (!(ifmgd->flags & IEEE80211_STA_DISABLE_HE))
->> +			sdata_info(sdata,
->> +				   "AP HE information is invalid, disable HE\n");
->> +		ret = IEEE80211_STA_DISABLE_HE;
->> +		goto out;
->> +	}
->> +
-> Hi Rajkumar,
-> Above is causing to disable HE in STA mode even when AP supports HE.
-> Shouldn't this be done only for 6GHz band?
-> something like below?
-> if (channel->band == NL80211_BAND_6GHZ &&
->     !ieee80211_chandef_he_oper(sdata, he_oper, chandef))
-> 
-Good catch.
+The prohibited flags to determine whether configured bandwidth
+is supported by driver are validated only against HT and VHT capability.
+In 6 GHz band, Only HE capability should be validated to find out
+given chandef is usable.
 
->> +
->> +	he_cap = ieee80211_get_he_iftype_cap(sband, sdata->vif.type);
->> +	if (!he_cap)
->> +		return false;
->> +
-> or return true here if band is not NL80211_BAND_6GHZ?
-> 
-Make sense. Will address it.
+Co-developed-by: Vamsi Krishna <vamsin@codeaurora.org>
+Signed-off-by: Vamsi Krishna <vamsin@codeaurora.org>
+Signed-off-by: Rajkumar Manoharan <rmanohar@codeaurora.org>
+---
+ net/wireless/chan.c | 54 +++++++++++++++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 50 insertions(+), 4 deletions(-)
 
--Rajkumar
+diff --git a/net/wireless/chan.c b/net/wireless/chan.c
+index fcac5c6366e1..582b487576e1 100644
+--- a/net/wireless/chan.c
++++ b/net/wireless/chan.c
+@@ -19,6 +19,11 @@ static bool cfg80211_valid_60g_freq(u32 freq)
+ 	return freq >= 58320 && freq <= 70200;
+ }
+ 
++static bool cfg80211_is_6ghz_freq(u32 freq)
++{
++	return (freq > 5940 && freq < 7105);
++}
++
+ void cfg80211_chandef_create(struct cfg80211_chan_def *chandef,
+ 			     struct ieee80211_channel *chan,
+ 			     enum nl80211_channel_type chan_type)
+@@ -882,6 +887,7 @@ bool cfg80211_chandef_usable(struct wiphy *wiphy,
+ 	struct ieee80211_sta_ht_cap *ht_cap;
+ 	struct ieee80211_sta_vht_cap *vht_cap;
+ 	struct ieee80211_edmg *edmg_cap;
++	const struct ieee80211_sta_he_cap *he_cap;
+ 	u32 width, control_freq, cap;
+ 
+ 	if (WARN_ON(!cfg80211_chandef_valid(chandef)))
+@@ -890,6 +896,7 @@ bool cfg80211_chandef_usable(struct wiphy *wiphy,
+ 	ht_cap = &wiphy->bands[chandef->chan->band]->ht_cap;
+ 	vht_cap = &wiphy->bands[chandef->chan->band]->vht_cap;
+ 	edmg_cap = &wiphy->bands[chandef->chan->band]->edmg_cap;
++	he_cap = ieee80211_get_he_sta_cap(wiphy->bands[chandef->chan->band]);
+ 
+ 	if (edmg_cap->channels &&
+ 	    !cfg80211_edmg_usable(wiphy,
+@@ -919,6 +926,16 @@ bool cfg80211_chandef_usable(struct wiphy *wiphy,
+ 		break;
+ 	case NL80211_CHAN_WIDTH_40:
+ 		width = 40;
++		if (cfg80211_is_6ghz_freq(chandef->center_freq1)) {
++			if (!he_cap)
++				return false;
++			if (!he_cap->has_he_6ghz)
++				return false;
++			if (!(he_cap->he_cap_elem.phy_cap_info[0] &
++			      IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_40MHZ_80MHZ_IN_5G))
++				return false;
++			break;
++		}
+ 		if (!ht_cap->ht_supported)
+ 			return false;
+ 		if (!(ht_cap->cap & IEEE80211_HT_CAP_SUP_WIDTH_20_40) ||
+@@ -933,24 +950,53 @@ bool cfg80211_chandef_usable(struct wiphy *wiphy,
+ 		break;
+ 	case NL80211_CHAN_WIDTH_80P80:
+ 		cap = vht_cap->cap & IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_MASK;
+-		if (cap != IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160_80PLUS80MHZ)
++		if (!cfg80211_is_6ghz_freq(chandef->center_freq1) &&
++		    cap != IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160_80PLUS80MHZ)
+ 			return false;
++		if (cfg80211_is_6ghz_freq(chandef->center_freq1)) {
++			if (!he_cap)
++				return false;
++			if (!he_cap->has_he_6ghz)
++				return false;
++			if (!(he_cap->he_cap_elem.phy_cap_info[0] &
++			      IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_80PLUS80_MHZ_IN_5G))
++				return false;
++		}
+ 		/* fall through */
+ 	case NL80211_CHAN_WIDTH_80:
+-		if (!vht_cap->vht_supported)
++		if (cfg80211_is_6ghz_freq(chandef->center_freq1)) {
++			if (!he_cap)
++				return false;
++			if (!he_cap->has_he_6ghz)
++				return false;
++			if (!(he_cap->he_cap_elem.phy_cap_info[0] &
++			      IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_40MHZ_80MHZ_IN_5G))
++				return false;
++		} else if (!vht_cap->vht_supported) {
+ 			return false;
++		}
+ 		prohibited_flags |= IEEE80211_CHAN_NO_80MHZ;
+ 		width = 80;
+ 		break;
+ 	case NL80211_CHAN_WIDTH_160:
++		prohibited_flags |= IEEE80211_CHAN_NO_160MHZ;
++		width = 160;
++		if (cfg80211_is_6ghz_freq(chandef->center_freq1)) {
++			if (!he_cap)
++				return false;
++			if (!he_cap->has_he_6ghz)
++				return false;
++			if (!(he_cap->he_cap_elem.phy_cap_info[0] &
++			      IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_160MHZ_IN_5G))
++				return false;
++			break;
++		}
+ 		if (!vht_cap->vht_supported)
+ 			return false;
+ 		cap = vht_cap->cap & IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_MASK;
+ 		if (cap != IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160MHZ &&
+ 		    cap != IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160_80PLUS80MHZ)
+ 			return false;
+-		prohibited_flags |= IEEE80211_CHAN_NO_160MHZ;
+-		width = 160;
+ 		break;
+ 	default:
+ 		WARN_ON_ONCE(1);
+-- 
+2.7.4
