@@ -2,59 +2,63 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 22C201CCB97
-	for <lists+linux-wireless@lfdr.de>; Sun, 10 May 2020 16:42:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D0621CCE4C
+	for <lists+linux-wireless@lfdr.de>; Sun, 10 May 2020 23:54:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728714AbgEJOmM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sun, 10 May 2020 10:42:12 -0400
-Received: from mail3.ujk.edu.pl ([81.26.8.176]:45932 "EHLO mail3.ujk.edu.pl"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728340AbgEJOmM (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Sun, 10 May 2020 10:42:12 -0400
-X-Greylist: delayed 935 seconds by postgrey-1.27 at vger.kernel.org; Sun, 10 May 2020 10:42:11 EDT
-Received: from ujk.edu.pl (www.ujk.edu.pl [81.26.8.12])
-        by mail3.ujk.edu.pl  with ESMTP id 04AEPQ8k012187-04AEPQ8m012187
-        (version=TLSv1.2 cipher=DHE-RSA-AES256-SHA256 bits=256 verify=NO);
-        Sun, 10 May 2020 16:25:26 +0200
-Received: from www.ujk.edu.pl ([81.26.8.12]:10590 helo=ujk.edu.pl)
-        by ujk.edu.pl with esmtpa (Exim 4.80)
-        (envelope-from <tivikelis@teilar.gr>)
-        id 1jXmtS-0005lh-8Q; Sun, 10 May 2020 16:25:26 +0200
-Received: from 8h6ul9W3YM29eBqTo748ua94lH1nHFvEscAZXN8D89s=
- (m5K4Tdu2fnqKxaHXeVWxsSS73WF553zm)
- via NEKoo0OOMUmMRB0ZnKJpFJvU5AjkrORQ
- (dsGFrdcB6i327dek2kYv27oFew6JZkwA)
- by www.ujk.edu.pl
- with HTTP (HTTP/1.1 POST); Sun, 10 May 2020 16:25:26 +0200
+        id S1729412AbgEJVyR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sun, 10 May 2020 17:54:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54746 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1727771AbgEJVyR (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Sun, 10 May 2020 17:54:17 -0400
+Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D49DDC061A0C
+        for <linux-wireless@vger.kernel.org>; Sun, 10 May 2020 14:54:16 -0700 (PDT)
+Received: from bigeasy by Galois.linutronix.de with local (Exim 4.80)
+        (envelope-from <bigeasy@linutronix.de>)
+        id 1jXttl-0007SF-V9; Sun, 10 May 2020 23:54:14 +0200
+Date:   Sun, 10 May 2020 23:54:13 +0200
+From:   Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To:     Tony Chuang <yhchuang@realtek.com>
+Cc:     "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
+        Pkshih <pkshih@realtek.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "briannorris@chromium.org" <briannorris@chromium.org>,
+        Kevin Yang <kevin_yang@realtek.com>
+Subject: Re: [PATCH 28/40] rtw88: 8723d: Add shutdown callback to disable BT
+ USB suspend
+Message-ID: <20200510215413.zyeq74pwhw4zw4mt@linutronix.de>
+References: <20200417074653.15591-1-yhchuang@realtek.com>
+ <20200417074653.15591-29-yhchuang@realtek.com>
+ <20200505141455.k2mk7tmuiujfv2sh@linutronix.de>
+ <c7083dc760464c1a9017888457c1718d@realtek.com>
+ <20200506200129.suid6lfkdwuoapzl@linutronix.de>
+ <2ee629b3bb374532b0830a39b57c2389@realtek.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-Date:   Sun, 10 May 2020 07:25:26 -0700
-From:   Jackson Loan Firm <tivikelis@teilar.gr>
-To:     undisclosed-recipients:;
-Subject: =?UTF-8?Q?Z=C5=82=C3=B3=C5=BC_wniosek_o_po=C5=BCyczk=C4=99?=
-Reply-To: charlesdickson094@outlook.com
-Mail-Reply-To: charlesdickson094@outlook.com
-Message-ID: <fa7caa67c3581df2278193fa3b98dffb@ujk.edu.pl>
-X-Sender: tivikelis@teilar.gr
-User-Agent: UJK Webmail 2013
-X-Debug-ACL: acl-check-data
-X-Scan-Signature: 3bbefa40fdceec072ec0015d6b912b6a
-X-Authenticated-Sender: 85C02545B4BFE364CBA030DE03AB6931E88CBA7D
-X-Authenticated-IP: www.ujk.edu.pl:10590
-X-Authenticated-Version: 1.0.1
-X-FEAS-SPF: spf-result=soft-fail, ip=81.26.8.12, helo=ujk.edu.pl, mailFrom=tivikelis@teilar.gr
-Authentication-Results: mail3.ujk.edu.pl;
-        spf=softfail (ujk.edu.pl: domain of tivikelis@teilar.gr does not designate 81.26.8.12 as permitted sender) smtp.mailfrom=tivikelis@teilar.gr
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <2ee629b3bb374532b0830a39b57c2389@realtek.com>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On 2020-05-07 04:26:24 [+0000], Tony Chuang wrote:
+> 
+> Ping-Ke, can you please help to check on this ?
+> Looks like Kai-Heng is doing the much same thing here.
+> 
+> But it's still worth to do it in wifi side I think, because it's difficult to
+> make sure the synchronization of BT and Wifi patch.
 
+Yes. It sounds reasonable to remove the patch in BT so the device is not
+always avoiding the suspend mode.
 
--- 
-Dzień dobry, czy potrzebujesz pożyczki? Dziękuję.
+I don't remember if I asked this: Shouldn't the USB reset get the device
+out of suspend? I thought this is part of the USB test. Could this be
+fixed in BT's firmware?
 
-Pan Charles Dickson
+> Yen-Hsuan
+
+Sebastian
