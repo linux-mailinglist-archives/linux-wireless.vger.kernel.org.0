@@ -2,75 +2,99 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AF7AE1CDA25
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2020 14:38:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 008EA1CDA33
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2020 14:39:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729563AbgEKMid (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 11 May 2020 08:38:33 -0400
-Received: from mail26.static.mailgun.info ([104.130.122.26]:39827 "EHLO
-        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1729343AbgEKMid (ORCPT
+        id S1729763AbgEKMjm (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 11 May 2020 08:39:42 -0400
+Received: from mout.kundenserver.de ([217.72.192.75]:53087 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726934AbgEKMjl (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 11 May 2020 08:38:33 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1589200712; h=Date: Message-Id: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=6zHthPA67U2sDfggdSKZPI6MNAUGMdP3o7kYKcHGj6w=;
- b=vGNP1SGXqe/JCtbZZ8lELwl6zz1Q1lsElqXc2sqDJuMp0CHCXtuuzBqbU3hSyQ+fSj4mNji2
- xh/oB2MRzNVIdb2DysxZfqhnKIZr25r3h3A8zRIlgT40ppIqlvFxM7StDvBao4HZb7KzIdkf
- XFAg1Up/UvUvxKpqAi6+o7E21vg=
-X-Mailgun-Sending-Ip: 104.130.122.26
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5eb9473d.7f9bb04d8c38-smtp-out-n01;
- Mon, 11 May 2020 12:38:21 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 39658C433CB; Mon, 11 May 2020 12:38:21 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
-        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id DAC52C433BA;
-        Mon, 11 May 2020 12:38:19 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org DAC52C433BA
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        Mon, 11 May 2020 08:39:41 -0400
+Received: from mail-qv1-f52.google.com ([209.85.219.52]) by
+ mrelayeu.kundenserver.de (mreue109 [212.227.15.145]) with ESMTPSA (Nemesis)
+ id 1N0o3X-1jD1w72qKz-00wj7v; Mon, 11 May 2020 14:39:38 +0200
+Received: by mail-qv1-f52.google.com with SMTP id x13so2480304qvr.2;
+        Mon, 11 May 2020 05:39:38 -0700 (PDT)
+X-Gm-Message-State: AOAM532QioAGWDZuITaSW7oiOoIH4dW1cne4KwD3g3F6c3+GDsSZV6Vz
+        c/X6sOoJENybWLcssGEjVjlbSk+ibPAYsSV+yZY=
+X-Google-Smtp-Source: ABdhPJy3yFsBWp1nK1ImGF0MitXLs6M20wf6JJjlnmGirp/X0hBOy7mBcRbBLXQAjFiEonL+pzBlJFwyLyikux1+b14=
+X-Received: by 2002:a05:6214:2f1:: with SMTP id h17mr2676901qvu.222.1589200777391;
+ Mon, 11 May 2020 05:39:37 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] ath10k: Remove experimental tag from ath10k Kconfig
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20200507055324.15564-1-govinds@codeaurora.org>
-References: <20200507055324.15564-1-govinds@codeaurora.org>
-To:     Govind Singh <govinds@codeaurora.org>
-Cc:     ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        Govind Singh <govinds@codeaurora.org>
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20200511123821.39658C433CB@smtp.codeaurora.org>
-Date:   Mon, 11 May 2020 12:38:21 +0000 (UTC)
+References: <20200509120707.188595-1-arnd@arndb.de> <20200509120707.188595-2-arnd@arndb.de>
+ <87v9l24qz6.fsf@kamboji.qca.qualcomm.com> <87r1vq4qev.fsf@kamboji.qca.qualcomm.com>
+In-Reply-To: <87r1vq4qev.fsf@kamboji.qca.qualcomm.com>
+From:   Arnd Bergmann <arnd@arndb.de>
+Date:   Mon, 11 May 2020 14:39:21 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a2kRPcpv=xR6yYvFQ5bnFbOWAzyPyzzqufyzFmk2WW2fA@mail.gmail.com>
+Message-ID: <CAK8P3a2kRPcpv=xR6yYvFQ5bnFbOWAzyPyzzqufyzFmk2WW2fA@mail.gmail.com>
+Subject: Re: [PATCH net-next 2/2] ath10k: fix ath10k_pci struct layout
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Maharaja Kennadyrajan <mkenna@codeaurora.org>,
+        Networking <netdev@vger.kernel.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        ath10k@lists.infradead.org, "David S. Miller" <davem@davemloft.net>
+Content-Type: text/plain; charset="UTF-8"
+X-Provags-ID: V03:K1:4nh7np8KnWzZji1NSOLcEqFznUScdP31/SObguYzHTHKeLhM8dR
+ vbBNs3lYuCnlSH4508vs4sSp0Heto3UeiEC/VJDIdjgjwRrexfHZ9OSx/KX6Xu+tYBEVn1Z
+ c0KntIR4iBSjdsUWywTYTuiJ4Lgd9h+kkj/5tVZBhjL0x1vEQnv8v8s+PvESIUY9TfvI9ko
+ MFDMQa5eyhCQ1FN2xrCOg==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:N13znjD/Nx4=:nGpiXOL5OENPjtKIQ3VHnG
+ KcdQ5d1Ha/yqDoZa7svXovW36CKkgCmGQnhNI46XwRAUCmyk2G5Dc23BBucE7VIfajLtuMTsp
+ 1kf3R/BJJgQWyMhqLD7vr1wblcu7x+NKGCPaoFDeqzqyEdF04OzJzE0Rlp9B6LGu071ptZoti
+ HdMF50SshcnFgArlBIjdtJUIdDBah3vDekM4kV1VUARuL0xMm77bBNgkbVyXFPlIM1t45RYwy
+ 0GvY/IPnTnnrBLfZaA6dnZuDuYtW3FfvQRxDM6r2ArxgJ8WMOILktZl6eOKOOFfqhE0uqdBnz
+ asveuBfSCX7D2sR2+LLuHTsbrLlk/ExoDLbHiEkDAf1GZchVUbiO0BFHtL/iV2ebUXAch0NfM
+ Q/u1tAca8LnVwseS4gSXjPOboIiPxblYGRqAWmurCywHiQhZwVqR89g8yhLewciYQwD2XBUtq
+ 67GDSTk9oaAD4yr5X7D9dSTBJ6Qv2ib4IN5rqtLMFZn6CY5GN7XmPpi9uF/2ihy+g1DC4x9w+
+ XPNYL9D9afKkCf18m3m93G9nLj+uD29htrCFlEvxmArgiW8NFr88O2LPBB9YMILgmjIzJhFzH
+ Mp1Z7X5L6iYwWxA87hNrTBw7tntaZyG2c/Mhq1thblmAT5HJ57CrPpz/TmJOpgVA9aCZWnHLp
+ UehbCNoUsg+s+N8gtAXTxJItV2azc0J50ZbTQR1ubPfBrPSLemIMpLhCn0P+ZfWT2CSXRqfSS
+ Nl0aAYPTfpbj8jHURrV5MpsRhZYkEsK4THLMEgQyjDLlCYAkCviN3/ypJfkkIr3AKGY8kkhab
+ AMXYzNbyZAKnPIH0Smlpqg9Y6rO1CZnxgPVm11sMUIH7M0oqtg=
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Govind Singh <govinds@codeaurora.org> wrote:
+On Mon, May 11, 2020 at 2:17 PM Kalle Valo <kvalo@codeaurora.org> wrote:
+>
+> Kalle Valo <kvalo@codeaurora.org> writes:
+> >>
+> >> Change it to a flexible-array member and move it last again to
+> >> make it work correctly, prevent the same thing from happening
+> >> again (all compilers warn about flexible-array members in the
+> >> middle of a struct) and get it to build without warnings.
+> >
+> > Very good find, thanks! This bug would cause all sort of strange memory
+> > corruption issues.
+>
+> This motivated me to switch to using GCC 10.x and I noticed that you had
+> already upgraded crosstool so it was a trivial thing to do, awesome :)
+>
+> https://mirrors.edge.kernel.org/pub/tools/crosstool/
+>
+> I use crosstool like this using GNUmakefile:
+>
+> CROSS_COMPILE=/opt/cross/gcc-10.1.0-nolibc/x86_64-linux/bin/x86_64-linux-
+> include Makefile
 
-> ath10k(sdio/snoc) is no longer experimental. Remove experimental tag for
-> SDIO/SNOC from ath10k Kconfig.
-> 
-> Signed-off-by: Govind Singh <govinds@codeaurora.org>
-> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+Right, I have something similar (with many more additional things)
+in a local makefile here.  I mainly use that to pick the correct cross
+toolchain based on ${ARCH}, and to build multiple randconfig kernels
+in parallel with 'make -j${NR_CPUS}' for better CPU utilization.
 
-Patch applied to ath-next branch of ath.git, thanks.
+> I think it's handy trick and would be good to mention that in the
+> crosstool main page. That way I could just point people to the crosstool
+> main page when they are using ancient compilers and would need to
+> upgrade.
 
-4d0f3604c4d1 ath10k: remove experimental tag from SDIO and SNOC busses in Kconfig
+I actually started working on a script that I'd like to include the kernel
+sources to list the installed compilers, automatically pick on that
+works for the current architecture, or download one for local installation.
 
--- 
-https://patchwork.kernel.org/patch/11532477/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+      Arnd
