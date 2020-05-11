@@ -2,76 +2,108 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A0D1D1CD95F
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2020 14:08:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E28E11CD97B
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2020 14:17:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729666AbgEKMIJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 11 May 2020 08:08:09 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:60548 "EHLO
-        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1727873AbgEKMIJ (ORCPT
+        id S1729679AbgEKMRZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 11 May 2020 08:17:25 -0400
+Received: from mail26.static.mailgun.info ([104.130.122.26]:59654 "EHLO
+        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1729594AbgEKMRY (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 11 May 2020 08:08:09 -0400
-Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=[192.168.100.69])
-        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.93)
-        (envelope-from <luca@coelho.fi>)
-        id 1jY7E7-000YP2-4a; Mon, 11 May 2020 15:08:07 +0300
-Message-ID: <6ce59a07ac639402685303b0954f0dfd6faa3876.camel@coelho.fi>
-From:   Luca Coelho <luca@coelho.fi>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     linux-wireless@vger.kernel.org
-Date:   Mon, 11 May 2020 15:08:06 +0300
-In-Reply-To: <874ksm66cw.fsf@kamboji.qca.qualcomm.com>
-References: <20200508140802.558267-1-luca@coelho.fi>
-         <iwlwifi.20200508170402.37266bcfa0a8.Iac74a6ffe45aff887cea13ee1d31b100ca11e249@changeid>
-         <874ksm66cw.fsf@kamboji.qca.qualcomm.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.1-2 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on farmhouse.coelho.fi
+        Mon, 11 May 2020 08:17:24 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1589199444; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=LJkqkksPCoqKwanmP1G5QFQXBwL68pGeFkXkb/IEhLI=; b=DzkwJKvFDApos+urtqpWTX2M/OUiQLUWDoKbwL0BWTHjx1B0SFxMIYbRyvdcMugiF4jo5GuF
+ EFcmMekaI4D/Vk0Y9TFVQs+0jmLZ0jAt6aBIJbVYcHdRcDiYx5L5Tt3/lHH/Kacdt50V3yXg
+ /YwDBjKyIZSU5kNI37sS1It9490=
+X-Mailgun-Sending-Ip: 104.130.122.26
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5eb9424f.7ff7e8760b58-smtp-out-n05;
+ Mon, 11 May 2020 12:17:19 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id EBA01C432C2; Mon, 11 May 2020 12:17:17 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
-        TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.4
-Subject: Re: [PATCH 05/11] iwlwifi: acpi: evaluate dsm to enable 5.2 bands
- in Indonesia
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id F2C65C433F2;
+        Mon, 11 May 2020 12:17:14 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org F2C65C433F2
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     Maharaja Kennadyrajan <mkenna@codeaurora.org>,
+        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org, ath10k@lists.infradead.org,
+        "David S. Miller" <davem@davemloft.net>
+Subject: Re: [PATCH net-next 2/2] ath10k: fix ath10k_pci struct layout
+References: <20200509120707.188595-1-arnd@arndb.de>
+        <20200509120707.188595-2-arnd@arndb.de>
+        <87v9l24qz6.fsf@kamboji.qca.qualcomm.com>
+Date:   Mon, 11 May 2020 15:17:12 +0300
+In-Reply-To: <87v9l24qz6.fsf@kamboji.qca.qualcomm.com> (Kalle Valo's message
+        of "Mon, 11 May 2020 15:05:01 +0300")
+Message-ID: <87r1vq4qev.fsf@kamboji.qca.qualcomm.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 2020-05-11 at 14:47 +0300, Kalle Valo wrote:
-> Luca Coelho <luca@coelho.fi> writes:
-> 
-> > From: Gil Adam <gil.adam@intel.com>
-> > 
-> > Evaluate the appropriate DSM from ACPI to enable 5.15,5.35 GHz
-> > bands in Indonesia. If enabled send LARI_CONFIG_CHANGE cmd to fw.
-> > 
-> > Signed-off-by: Gil Adam <gil.adam@intel.com>
-> > Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
-> 
-> [...]
-> 
-> > +static int iwl_mvm_eval_dsm_indonesia_5g2(struct iwl_mvm *mvm)
-> > +{
-> > +	int ret = iwl_acpi_get_dsm_u8((&mvm->fwrt)->dev, 0,
-> > +				      DSM_FUNC_ENABLE_INDONESIA_5G2);
-> > +
-> > +	IWL_DEBUG_RADIO(mvm,
-> > +			"Evaluated DSM function ENABLE_INDONESIA_5G2, ret=%d\n",
-> > +			ret);
-> > +
-> > +	return ret == 1 ? 1 : 0;
-> 
-> Ugh. If it's _really_ important not to return anything bigger than 1
-> maybe "!!ret"? Or maybe even just change the function to return boolean?
+Kalle Valo <kvalo@codeaurora.org> writes:
 
-Ugh, indeed.  Guess who was not paying attention? Sorry.
+> Arnd Bergmann <arnd@arndb.de> writes:
+>
+>> gcc-10 correctly points out a bug with a zero-length array in
+>> struct ath10k_pci:
+>>
+>> drivers/net/wireless/ath/ath10k/ahb.c: In function 'ath10k_ahb_remove':
+>> drivers/net/wireless/ath/ath10k/ahb.c:30:9: error: array subscript 0
+>> is outside the bounds of an interior zero-length array 'struct
+>> ath10k_ahb[0]' [-Werror=zero-length-bounds]
+>>    30 |  return &((struct ath10k_pci *)ar->drv_priv)->ahb[0];
+>>       |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>> In file included from drivers/net/wireless/ath/ath10k/ahb.c:13:
+>> drivers/net/wireless/ath/ath10k/pci.h:185:20: note: while referencing 'ahb'
+>>   185 |  struct ath10k_ahb ahb[0];
+>>       |                    ^~~
+>>
+>> The last addition to the struct ignored the comments and added
+>> new members behind the array that must remain last.
+>>
+>> Change it to a flexible-array member and move it last again to
+>> make it work correctly, prevent the same thing from happening
+>> again (all compilers warn about flexible-array members in the
+>> middle of a struct) and get it to build without warnings.
+>
+> Very good find, thanks! This bug would cause all sort of strange memory
+> corruption issues.
 
-I'll fix it.
+This motivated me to switch to using GCC 10.x and I noticed that you had
+already upgraded crosstool so it was a trivial thing to do, awesome :)
 
---
-Luca.
+https://mirrors.edge.kernel.org/pub/tools/crosstool/
 
+I use crosstool like this using GNUmakefile:
+
+CROSS_COMPILE=/opt/cross/gcc-10.1.0-nolibc/x86_64-linux/bin/x86_64-linux-
+include Makefile
+
+I think it's handy trick and would be good to mention that in the
+crosstool main page. That way I could just point people to the crosstool
+main page when they are using ancient compilers and would need to
+upgrade.
+
+-- 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
