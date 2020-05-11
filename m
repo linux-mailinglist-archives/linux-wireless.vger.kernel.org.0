@@ -2,99 +2,118 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 858E91CD200
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2020 08:43:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC0C21CD686
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2020 12:28:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728582AbgEKGnl (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 11 May 2020 02:43:41 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:55840 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728556AbgEKGnk (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 11 May 2020 02:43:40 -0400
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.69 with qID 04B6hP5R1012387, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexmb06.realtek.com.tw[172.21.6.99])
-        by rtits2.realtek.com.tw (8.15.2/2.66/5.86) with ESMTPS id 04B6hP5R1012387
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Mon, 11 May 2020 14:43:25 +0800
-Received: from RTEXDAG01.realtek.com.tw (172.21.6.100) by
- RTEXMB06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Mon, 11 May 2020 14:43:25 +0800
-Received: from RTEXMB04.realtek.com.tw (172.21.6.97) by
- RTEXDAG01.realtek.com.tw (172.21.6.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Mon, 11 May 2020 14:43:24 +0800
-Received: from RTEXMB04.realtek.com.tw ([fe80::8001:f5f5:a41e:f8d4]) by
- RTEXMB04.realtek.com.tw ([fe80::8001:f5f5:a41e:f8d4%3]) with mapi id
- 15.01.1779.005; Mon, 11 May 2020 14:43:24 +0800
-From:   Pkshih <pkshih@realtek.com>
-To:     Tony Chuang <yhchuang@realtek.com>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-CC:     "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "briannorris@chromium.org" <briannorris@chromium.org>,
-        Kevin Yang <kevin_yang@realtek.com>
-Subject: RE: [PATCH 28/40] rtw88: 8723d: Add shutdown callback to disable BT USB suspend
-Thread-Topic: [PATCH 28/40] rtw88: 8723d: Add shutdown callback to disable BT
- USB suspend
-Thread-Index: AQHWFIxjqUfp76n5/Um/OMmxE13LEqiZH+SAgADO4ICAASRJgIAAjRMAgAb0cGA=
-Date:   Mon, 11 May 2020 06:43:24 +0000
-Message-ID: <f5a7fea0459741368ab047a4cbfab4ea@realtek.com>
-References: <20200417074653.15591-1-yhchuang@realtek.com>
- <20200417074653.15591-29-yhchuang@realtek.com>
- <20200505141455.k2mk7tmuiujfv2sh@linutronix.de>
- <c7083dc760464c1a9017888457c1718d@realtek.com>
- <20200506200129.suid6lfkdwuoapzl@linutronix.de>
- <2ee629b3bb374532b0830a39b57c2389@realtek.com>
-In-Reply-To: <2ee629b3bb374532b0830a39b57c2389@realtek.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
+        id S1729365AbgEKK2c (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 11 May 2020 06:28:32 -0400
+Received: from mail-eopbgr70134.outbound.protection.outlook.com ([40.107.7.134]:19990
+        "EHLO EUR04-HE1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725983AbgEKK2b (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 11 May 2020 06:28:31 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=HhelPFzwet37cpeh2aUit3fGazEB2anNhB5Cj/ZiYnLYO7HVuQgIAihQBrWiPN6sbUAB+bl/LJVSM37ODhg8Mal6b+Wd7WKsWN6LJIsEmaxDSuF+Q6axvW1HbjdIsh0Ivo+HM4fUTNwib5ui7un8iVqpVoz8OZB6dzndVlElPsLiCCrB//AIZonX4xbfx2pXYRarnGtgUrHnUJlDtcU16s112Q0FHp7iFPjUR6/L7hFm6SXfqauaVuvhQ1BQ5LtAb/Edyim9zSKjKxWCqbvckPoR2FP2Pq5Xty2hgXvZD1Uxj57hJYSeuoy6GNT6Q9saL1VyNBHXa7nVA3jDKej6rg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=WjrCSk96OUbxLIkk/GfSd2qz/qCr22sxdd8iFpQ2Zjo=;
+ b=CSGuTh+TFTYe8gN668ArrYhyBaqLjalKPwXV4fONFIHHoSBreQ/WFArbnVEWZIAxOK7Ybwn47qmZN9b8eN0GQ3wq8AzPg7z67LeZOKdUrjWSorZNRqSgzfgmM6DPLGha5I4X+9ZPN1tvwCV+/zKhQFNIMftDdZvoGRID0RxAAu5nZ77GaZEBtjK//QonIF12Dlw7XpNcBYHLXe3RLJRBA749c64QaC6T0MN0NAFnjmB0obauVnShs1JMtKoVyr0xjbrv1lCoIlBuQmilQI9m3114IICNDm490Sh4fwMG2H25VbLrpBsk/nLR1AsEBYNw4nikSZ2uPPIWYrWQngqY0A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=acksys.fr; dmarc=pass action=none header.from=acksys.fr;
+ dkim=pass header.d=acksys.fr; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ACKSYS.onmicrosoft.com; s=selector2-ACKSYS-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=WjrCSk96OUbxLIkk/GfSd2qz/qCr22sxdd8iFpQ2Zjo=;
+ b=cBd7AQdnFIU/Xpb3+ZRoEF043Oy4yedoQQhzkhgqPsT8Zl9HgBHwssCF47CGdbAevU+GVgmgfZB2yZRTj8OlHajByRjTI2QY7V+oEbTWI82i65cXRMSbPDvD0aygp8Y7d3gNUoiqjl9o8VGJbYGYvhnM3EKHEasdy33UiDcsLdY=
+Received: from AM0PR01MB5857.eurprd01.prod.exchangelabs.com
+ (2603:10a6:208:159::28) by AM0PR01MB4740.eurprd01.prod.exchangelabs.com
+ (2603:10a6:208:ec::13) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2979.33; Mon, 11 May
+ 2020 10:28:27 +0000
+Received: from AM0PR01MB5857.eurprd01.prod.exchangelabs.com
+ ([fe80::581:eb6b:7fd:da2f]) by AM0PR01MB5857.eurprd01.prod.exchangelabs.com
+ ([fe80::581:eb6b:7fd:da2f%6]) with mapi id 15.20.2979.033; Mon, 11 May 2020
+ 10:28:27 +0000
+From:   Cedric VONCKEN <cedric.voncken@acksys.fr>
+To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        Kalle Valo <kvalo@codeaurora.org>
+Subject: QCA9984 and MU-MIMO
+Thread-Topic: QCA9984 and MU-MIMO
+Thread-Index: AdYnfE+zusqPz5p6RaGyHneXgzEmsA==
+Date:   Mon, 11 May 2020 10:28:27 +0000
+Message-ID: <AM0PR01MB5857C81C3797C8D8FCE8DC9E90A10@AM0PR01MB5857.eurprd01.prod.exchangelabs.com>
+Accept-Language: fr-FR, en-US
+Content-Language: fr-FR
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.213]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+authentication-results: vger.kernel.org; dkim=none (message not signed)
+ header.d=none;vger.kernel.org; dmarc=none action=none header.from=acksys.fr;
+x-originating-ip: [81.255.64.235]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: b85a3397-e04d-488c-e03c-08d7f5960af2
+x-ms-traffictypediagnostic: AM0PR01MB4740:
+x-microsoft-antispam-prvs: <AM0PR01MB47401F654D1DF3612B8BFA3390A10@AM0PR01MB4740.eurprd01.prod.exchangelabs.com>
+x-ms-oob-tlc-oobclassifiers: OLM:8273;
+x-forefront-prvs: 04004D94E2
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: wcEUbhXeQphBob158XBZjIlH4ZI0YKzDFrejefAsIa1vqREy9S94T9dZcndmjLEUJMYy+ZYCKHhRUJG64mNEAbp1RVhHoHZCcjih6z4IEgWxTkjhfzTnYKR592dOreRb6TYs9diaC+aAaCVUklx+qHG+y9GrbE+ngE2C+3pxyAe2rKej4m54LP6POnJpo5HWMdaQoGmKonw74ehckT4Ji1d37G55NrkRmxPAgx9BG9a5iRCxq4pL4ZcoaS5v64LqsasW3OsPdUNPRA5eNjNOr/xmyXHIP9YQfBzUCwbjHQX2y7G/NDjPmzmHz8c+D6qmr+eI1TYqfFz/X0Dy7jpTLBMMDB6WzDBjf4TvMJ5dBVcRjPKB5Ue8m08ZO+2ceCl4lxKCR5svycF6y/mGBAKxZI3M620DjpbH3567zbN3DJkEibY7+zi1EIHskgbDPhBMOPQa0EOxHHvKIgB10EKzb5eh6/EF0vnoK7LXtQXsYQluFFORiE7/Vte2NC5V5nbcWp9enRvUBxV5LA9sn+fWog==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR01MB5857.eurprd01.prod.exchangelabs.com;PTR:;CAT:NONE;SFTY:;SFS:(346002)(366004)(376002)(39830400003)(396003)(136003)(42606007)(33430700001)(508600001)(2906002)(71200400001)(55016002)(9686003)(8936002)(33440700001)(8676002)(86362001)(33656002)(64756008)(110136005)(76116006)(6506007)(4744005)(316002)(66556008)(26005)(66946007)(66476007)(5660300002)(186003)(52536014)(7696005)(66446008);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata: fCfzaostkk8DROMFzK8HiHWUjWlAbhfWD4ijbQQCBXY5USNIjhscUmojr3UziGhpdLw/W2kZSGfU59tHzY+jLcpp/u+czctrUHSOLK6cyHO7xGVHqWL2sNgS59Wv+RcGb1UV9KdNR11y9gmAMd0+XM5S16ZxkVDPB5Ox1dd0TDIDoBadqrNKET9cRwprMesPtc7uSnN0gmgEff6fgA1L46wPFJjYGuyaZdVVve6TnviMRFHFQLyS+a9QwTsh2sNpXozi1jHlt9lfOWNWGjN3KoUDGnDwlIbBHCjkzHwn1FbkA7mf6WaxmLmdD2NzxO3Jr6Wc+P727ibiBUfqNtSIkNkK5qVe9uyQ7asI21jNPoIFRfvPmPEb8U2+Tvj1xjKqiV6IEMX88UCiVPGsogD1gKtW/0OUfh53NmnNjOmVgQPy8kwtVkWuEiLmAvGLEcyaOn8HPmbcjk2inYiTpAwp2P+6S9BvIjl3fVck1qAb6/w=
+x-ms-exchange-transport-forked: True
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
+X-OriginatorOrg: acksys.fr
+X-MS-Exchange-CrossTenant-Network-Message-Id: b85a3397-e04d-488c-e03c-08d7f5960af2
+X-MS-Exchange-CrossTenant-originalarrivaltime: 11 May 2020 10:28:27.1984
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: f18a6414-d5f3-4b5c-9345-f30c01d87e32
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: pE7sJgQySn8axAi0iNGWJZtpyBc+jadztMVSr9D5MTzbJHqzp8pFgO9UrfbOp87pjPJqX1vimzuRLKkkWT0QSgdpb6RZ8VHN5H14boiAtno=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR01MB4740
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-SGkgVG9ueSwNCg0KPiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBUb255IENo
-dWFuZw0KPiBTZW50OiBUaHVyc2RheSwgTWF5IDA3LCAyMDIwIDEyOjI2IFBNDQo+IFRvOiBTZWJh
-c3RpYW4gQW5kcnplaiBTaWV3aW9yDQo+IENjOiBrdmFsb0Bjb2RlYXVyb3JhLm9yZzsgUGtzaGlo
-OyBsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmc7IGJyaWFubm9ycmlzQGNocm9taXVtLm9y
-ZzsgS2V2aW4NCj4gWWFuZw0KPiBTdWJqZWN0OiBSRTogW1BBVENIIDI4LzQwXSBydHc4ODogODcy
-M2Q6IEFkZCBzaHV0ZG93biBjYWxsYmFjayB0byBkaXNhYmxlIEJUIFVTQiBzdXNwZW5kDQo+IA0K
-PiBTZWJhc3RpYW4gQW5kcnplaiBTaWV3aW9yIDxiaWdlYXN5QGxpbnV0cm9uaXguZGU+IHdyaXRl
-cw0KPiA+IE9uIDIwMjAtMDUtMDYgMDI6MzU6MjEgWyswMDAwXSwgVG9ueSBDaHVhbmcgd3JvdGU6
-DQo+ID4gPiA+IE9uIDIwMjAtMDQtMTcgMTU6NDY6NDEgWyswODAwXSwgeWhjaHVhbmdAcmVhbHRl
-ay5jb20gd3JvdGU6DQo+ID4gPiA+ID4gRnJvbTogUGluZy1LZSBTaGloIDxwa3NoaWhAcmVhbHRl
-ay5jb20+DQo+ID4gPiA+ID4NCj4gPiA+ID4gPiBXaXRob3V0IHRoaXMgcGF0Y2gsIHdpZmkgY2Fy
-ZCBjYW4ndCBpbml0aWFsaXplIHByb3Blcmx5IGR1ZSB0byBCVCBpbiBVU0INCj4gPiA+ID4gPiBz
-dXNwZW5kIHN0YXRlLiBTbywgd2UgZGlzYWJsZSBCVCBVU0Igc3VzcGVuZCAod2FrZXVwKSBpbiBz
-aHV0ZG93bg0KPiA+IGNhbGxiYWNrDQo+ID4gPiA+ID4gdGhhdCBpcyB0aGUgbW9tZW50IGJlZm9y
-ZSByZWJvb3RpbmcuIFRvIHNhdmUgQlQgVVNCIHBvd2VyLCB3ZSBjYW4ndCBkbw0KPiA+IHRoaXMN
-Cj4gPiA+ID4gPiBpbiAncmVtb3ZlJyBjYWxsYmFjay4NCj4gPiA+ID4NCj4gPiA+ID4gU28geW91
-IGNhbid0IGluaXRpYWxpemUgdGhlIFVTQiBwYXJ0IGJlY2F1c2UgaXQgaXMgaW4gc3VzcGVuZCBh
-bmQgdGhlDQo+ID4gPiA+IG9ubHkgd2F5IHRvIGF2b2lkIGl0IHRvIGRpc2FibGUgaXQgb24gdGhl
-IFBDSSBzaWRlLiBUaGF0IG1lYW5zIHlvdSBkb24ndA0KPiA+ID4gPiBzZWUgaXQgZW51bWVyYXRl
-ZCBvbiB0aGUgVVNCIGJ1cyBhdCBhbGw/DQo+ID4gPg0KPiA+ID4gWWVzLCBpZiB3ZSBkb24ndCBk
-aXNhYmxlIGl0IG9uIFBDSSBzaWRlLCB0aGVuIHRoZSBVU0IgcGFydCBjYW5ub3QgYmUNCj4gPiA+
-IHByb2JlZCBvbiBVU0IgYnVzLg0KPiA+DQo+ID4gV2UgdGFsayBoZXJlIGFib3V0IFVTQidzIHJ1
-bnRpbWUtc3VzcGVuZCAvIGF1dG9zdXNwZW5kPyBJZiBzbywgYXJlIHlvdQ0KPiA+IGF3YXJlIG9m
-IGNvbW1pdA0KPiA+ICAgN2VjYWNhZmMyNDA2MyAoIkJsdWV0b290aDogYnR1c2I6IERpc2FibGUg
-cnVudGltZSBzdXNwZW5kIG9uIFJlYWx0ZWsNCj4gPiBkZXZpY2VzIikNCj4gPg0KPiA+IG9yIGlz
-IHRoaXMgYW4gYXR0ZW1wdCB0byBnZXQgcmlkIG9mIHRoaXMgY2hhbmdlIGluIGZhdm91ciBvZiB0
-aGlzIG9uZQ0KPiA+IChzbyB0aGF0IHRoZSBkZXZpY2UgY2FuIGVudGVyIHN1c3BlbmQtbW9kZSk/
-DQo+ID4NCj4gDQo+IFBpbmctS2UsIGNhbiB5b3UgcGxlYXNlIGhlbHAgdG8gY2hlY2sgb24gdGhp
-cyA/DQo+IExvb2tzIGxpa2UgS2FpLUhlbmcgaXMgZG9pbmcgdGhlIG11Y2ggc2FtZSB0aGluZyBo
-ZXJlLg0KPiANCg0KVGhlIEthaS1IZW5nJ3MgcGF0Y2ggdHVybnMgb2ZmIHN1c3BlbmQgZW50aXJl
-bHksIHNvIEkgYmVsaWV2ZSBpZiB0aGUgcGF0Y2gNCmlzIGV4aXN0aW5nLCB0aGlzIHBhdGNoIGRv
-ZXNuJ3QgYWZmZWN0IHRoZSByZXN1bHQuDQpIb3dldmVyLCB0aGUgcGF0Y2ggc2VlbXMgbGlrZSBh
-IHRlbXBvcmFsIGZpeCwgc28gdGhpcyBwYXRjaCBpcyBuZWVkZWQuDQoNCg0KPiBCdXQgaXQncyBz
-dGlsbCB3b3J0aCB0byBkbyBpdCBpbiB3aWZpIHNpZGUgSSB0aGluaywgYmVjYXVzZSBpdCdzIGRp
-ZmZpY3VsdCB0bw0KPiBtYWtlIHN1cmUgdGhlIHN5bmNocm9uaXphdGlvbiBvZiBCVCBhbmQgV2lm
-aSBwYXRjaC4NCj4gDQpBZ3JlZS4NCg0KDQpUaGFuayB5b3UNClBLDQoNCg0KDQo=
+	I'm testing the MU-MIMO with QCA9984 chipset (WLE1216 from compex).
+	My test platform use 3 products with the same wifi card and the same softw=
+are. One product is an AP and the other are set in client.
+
+	The mu-mimo doesn't work when I used my AP. If I used an AP from netgear t=
+he mu-mimo work correctly. So the client side is correct.
+
+	I analysed with wireshark to check the information in the frame.
+
+	In the AP beacon the beamformer support bit is set
+	In the station, the beamformee support bit is set.
+
+	But the AP never send the null data packet (sounding frame) with mu-mimo r=
+equest.
+
+	I searched in the driver source code, and I didn't found the function in c=
+harge of the transmitting of this frame.
+
+	Who should send this frame, the driver or ath10k firmware?
+
+	Thanks for your help.
+
+	Regards.
+
+Cedric Voncken.
+
+
+
+
+
+
+
+
+
+
+
+
