@@ -2,45 +2,37 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B3FB1CDAC9
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2020 15:10:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 75BF11CDBB1
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2020 15:47:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729941AbgEKNKb (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 11 May 2020 09:10:31 -0400
-Received: from mail26.static.mailgun.info ([104.130.122.26]:49050 "EHLO
-        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1729022AbgEKNKb (ORCPT
+        id S1730105AbgEKNrk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 11 May 2020 09:47:40 -0400
+Received: from mout.kundenserver.de ([217.72.192.74]:53475 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726438AbgEKNrj (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 11 May 2020 09:10:31 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1589202630; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=gPnsrzs+plOHL0uPC+T4fD59p+rrJ4NE3BaJG3QXpe8=; b=jVzuxlIXq1+PRtwYw+EAJOvgN1KJQ6TXKvNG/9APFZezFx/FTlR2S8EUTQ8ZwqF2XFm/cacu
- B07mdAHAYASA2CspiJDN8lRmlVXtB2llqRdS7tUEBCii845/80PjKuUWHxbng/+e08wFsL2y
- 6+qM7YjKKWz3rncbTZzLHz2qwUA=
-X-Mailgun-Sending-Ip: 104.130.122.26
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5eb94eac.7f11264556f8-smtp-out-n02;
- Mon, 11 May 2020 13:10:04 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id A0B62C44788; Mon, 11 May 2020 13:10:02 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 64B36C433F2;
-        Mon, 11 May 2020 13:09:59 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 64B36C433F2
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Arnd Bergmann <arnd@arndb.de>
+        Mon, 11 May 2020 09:47:39 -0400
+Received: from mail-qk1-f173.google.com ([209.85.222.173]) by
+ mrelayeu.kundenserver.de (mreue108 [212.227.15.145]) with ESMTPSA (Nemesis)
+ id 1MryOx-1imib90FpV-00nwE1; Mon, 11 May 2020 15:47:38 +0200
+Received: by mail-qk1-f173.google.com with SMTP id f83so9698474qke.13;
+        Mon, 11 May 2020 06:47:37 -0700 (PDT)
+X-Gm-Message-State: AGi0PubghKdF/fHMp1Ks/ApJH40MMIaxLu5kLyHsulx9Xkky5F32L+S1
+        LM6qieHI5zdYi1m2qi8nI40vwtFFcnc2ilv8BOY=
+X-Google-Smtp-Source: APiQypKAmn8UHB9s5fZFUEek8MrcF9YGNPQ+XRrD/RRIOUQTXBl4yaQtpyq7H+rrJXTAzdartJwHwlybaBPVbygbULs=
+X-Received: by 2002:a37:4e08:: with SMTP id c8mr15521244qkb.286.1589204856778;
+ Mon, 11 May 2020 06:47:36 -0700 (PDT)
+MIME-Version: 1.0
+References: <20200509120707.188595-1-arnd@arndb.de> <20200509154818.GB27779@embeddedor>
+ <87zhae4r35.fsf@kamboji.qca.qualcomm.com> <CAK8P3a2i-jqY8FnY_Tu41VDxQGqHHKRCyJ5U-GQbNmrqa=n0GQ@mail.gmail.com>
+ <87mu6e4nyy.fsf@kamboji.qca.qualcomm.com>
+In-Reply-To: <87mu6e4nyy.fsf@kamboji.qca.qualcomm.com>
+From:   Arnd Bergmann <arnd@arndb.de>
+Date:   Mon, 11 May 2020 15:47:20 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a2Qu6Byo5bddd1ECwRB1qiTXpYuV55_i_2CUw+J5zqtfQ@mail.gmail.com>
+Message-ID: <CAK8P3a2Qu6Byo5bddd1ECwRB1qiTXpYuV55_i_2CUw+J5zqtfQ@mail.gmail.com>
+Subject: Re: [PATCH net-next 1/2] ath10k: fix gcc-10 zero-length-bounds warnings
+To:     Kalle Valo <kvalo@codeaurora.org>
 Cc:     "Gustavo A. R. Silva" <gustavoars@kernel.org>,
         "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
         Michal Kazior <michal.kazior@tieto.com>,
@@ -50,46 +42,55 @@ Cc:     "Gustavo A. R. Silva" <gustavoars@kernel.org>,
         ath10k@lists.infradead.org,
         linux-wireless <linux-wireless@vger.kernel.org>,
         Networking <netdev@vger.kernel.org>,
-        "linux-kernel\@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net-next 1/2] ath10k: fix gcc-10 zero-length-bounds warnings
-References: <20200509120707.188595-1-arnd@arndb.de>
-        <20200509154818.GB27779@embeddedor>
-        <87zhae4r35.fsf@kamboji.qca.qualcomm.com>
-        <CAK8P3a2i-jqY8FnY_Tu41VDxQGqHHKRCyJ5U-GQbNmrqa=n0GQ@mail.gmail.com>
-Date:   Mon, 11 May 2020 16:09:57 +0300
-In-Reply-To: <CAK8P3a2i-jqY8FnY_Tu41VDxQGqHHKRCyJ5U-GQbNmrqa=n0GQ@mail.gmail.com>
-        (Arnd Bergmann's message of "Mon, 11 May 2020 14:46:00 +0200")
-Message-ID: <87mu6e4nyy.fsf@kamboji.qca.qualcomm.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
-MIME-Version: 1.0
-Content-Type: text/plain
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Provags-ID: V03:K1:MKjPNguouTEMyLxjBKPiXJxXBXcv5XmWF2wWncSdO+Ls+e4MC/q
+ sVv7tRKRKVPsdHdIYWu+wJviSYN47FNRK9ZLH3zL/vC99sn/+wj3kE47Rn17PObekmNhyP0
+ CrkhfME1SfeohBr43HYTC1L4qpwpVzXH6UiA4pji/Rfi/XkdwfR6coBSoYElIz1VRZC9Vaq
+ tEhWWZz+3O3B/m9ZvAAmw==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:YLdioIYStU8=:KZPxhPlE+ofsSyL7xUutOw
+ T0S5YN/ziwK1R/tYL0z7K3DDY6fcsZcku8dxH0mRJn8sA3YVe8tB9wAjTB1kbMhG5nhPY2yw4
+ 4LqsP9/3C8uoWS7xl6PhMItU0hRCMa2TXSQdmJVy8dYSq/j142RfVdQHQ+aOFlcC39EPj9fhy
+ Xwh1pe4bxyIL0u9eyHUE9w67YNwOjOUujnDUvXLcIf3K2legvPLGeKr142prNArGcg7qjK9tF
+ PbxSzcQ7HFX1NB9SfbVsmE9BjMURlUp/srH6d9deditwXV6pb2K6IMV1XAuJIKTCIhzohdxmu
+ PLhNZG/GOYUeG/vZqklsyITCWW+S23W4xCOxOrUxl8pbBJhhlfU01l+hrXG4ZYnZL8mjn92LB
+ sNz7Cy4pz4aIrMtxIcl89DmFqjzqAl71Ry9S8OYseNB1ByDHI/poCLPkH7W/X9E3WhnkJkx3y
+ LV23DyC+OmV7SYTor7s+VvsL6MAjzY3XSJ010JhFFPXgBwzfhdubIsJs77sjxeC6W0C9NZo4k
+ SKCKoD6lCpQ1bpfHPkNUQoSOfNMokc0wPoizY+tlToTNM/oDRzacAmutWDIgpBBBQjkH3M2GI
+ VJ1sWwt0dm2lMsv9vgkS4fPZauYjEhVlrsXcid+AoZvSm4pzEV+lR5833bYdq8GH2QQn932Rf
+ O6+idd2Vw4K0CN+vJmw3GR3NhwAqZhrA96MUuqtUR/r7HVaUzOjzpWnMBScdLokZebiVFUULR
+ x1E/ceT3lyRck12qEQ3CT3A4Kvu91ehrBBHYJiZcCVoc/DJUZT329OVRALfqkKi70Ff/3UvSR
+ 1aWm1AehRRBwtLiYOSpNoZYfu/e25f/aEEWu45ON6hnyCU7Pts=
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Arnd Bergmann <arnd@arndb.de> writes:
-
-> On Mon, May 11, 2020 at 2:03 PM Kalle Valo <kvalo@codeaurora.org> wrote:
->> "Gustavo A. R. Silva" <gustavoars@kernel.org> writes:
+On Mon, May 11, 2020 at 3:10 PM Kalle Valo <kvalo@codeaurora.org> wrote:
 >
->> >
->> > This treewide patch no longer contains changes for ath10k. I removed them
->> > since Monday (05/04/2020). So, this "Fixes" tag does not apply.
+> Arnd Bergmann <arnd@arndb.de> writes:
 >
-> Oops, I forgot to update the changelog trext when rebasing.
+> > On Mon, May 11, 2020 at 2:03 PM Kalle Valo <kvalo@codeaurora.org> wrote:
+> >> "Gustavo A. R. Silva" <gustavoars@kernel.org> writes:
+> >
+> >> >
+> >> > This treewide patch no longer contains changes for ath10k. I removed them
+> >> > since Monday (05/04/2020). So, this "Fixes" tag does not apply.
+> >
+> > Oops, I forgot to update the changelog trext when rebasing.
+> >
+> >> Ok, I'll remove it. Also I'll take these to my ath.git tree, not to
+> >> net-next.
+> >
+> > Thanks a lot!
 >
->> Ok, I'll remove it. Also I'll take these to my ath.git tree, not to
->> net-next.
+> Weird, I had a conflict with this patch but couldn't figure out why.
+> Anyway, I fixed it in my pending branch and please double check:
 >
-> Thanks a lot!
+> https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=c3e5221f3c3ddabc76a33ff08440ff1dc664998d
 
-Weird, I had a conflict with this patch but couldn't figure out why.
-Anyway, I fixed it in my pending branch and please double check:
+Looks good to me. It may have been an artifact on my side, as I
+have applied and later reverted Gustavo's patch on the same branch.
 
-https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=c3e5221f3c3ddabc76a33ff08440ff1dc664998d
-
-At least GCC-10 is happy now.
-
--- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+     Arnd
