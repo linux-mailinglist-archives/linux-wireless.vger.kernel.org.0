@@ -2,82 +2,106 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0FD4F1CDA68
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2020 14:46:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A0BE61CDAA6
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2020 15:01:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726934AbgEKMqT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 11 May 2020 08:46:19 -0400
-Received: from mout.kundenserver.de ([217.72.192.73]:47073 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726021AbgEKMqT (ORCPT
+        id S1729993AbgEKNBR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 11 May 2020 09:01:17 -0400
+Received: from mail26.static.mailgun.info ([104.130.122.26]:26693 "EHLO
+        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1729937AbgEKNBP (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 11 May 2020 08:46:19 -0400
-Received: from mail-qt1-f170.google.com ([209.85.160.170]) by
- mrelayeu.kundenserver.de (mreue106 [212.227.15.145]) with ESMTPSA (Nemesis)
- id 1MIxmm-1jo00p2Nre-00KMIH; Mon, 11 May 2020 14:46:17 +0200
-Received: by mail-qt1-f170.google.com with SMTP id c24so1294537qtw.7;
-        Mon, 11 May 2020 05:46:17 -0700 (PDT)
-X-Gm-Message-State: AGi0PuacCc9IjKzMyUhzFkuC5SW03y1zovjtEMbiI1WVdeNrpyMgkFrC
-        R/C8SkCZAz2IqYrU4BCAc7QqQJaNuQpcdbofRHA=
-X-Google-Smtp-Source: APiQypKSzJ/nFFOsdlvHkR+heSh3jGZQCiUPW5LDnl1OaKCDIPTPHOgosmtPR+S66nwwWCLHUzRmkNbHyt4CJv33fy8=
-X-Received: by 2002:ac8:4e2c:: with SMTP id d12mr16135898qtw.204.1589201176242;
- Mon, 11 May 2020 05:46:16 -0700 (PDT)
+        Mon, 11 May 2020 09:01:15 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1589202075; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=DDYrY47HSTYss32CprtbeYo3Xm5nNQMfOh6XX4YKxGc=;
+ b=IDnyOjLhjqkdm9SdanmC1/l3M1X51HXYMnI/cLoi7c30g+4fM5mr3GDs0Ya+Y8bawNlwXBPI
+ 50/Mxo1eiWj1Q7vs/0iRsT/itnAmCY2i2E15LCogKSzeq/Xe+D8Lotb4Uor+awMV6P30fHSb
+ KXuzVdYxsjioxqUUiAznD2k3ids=
+X-Mailgun-Sending-Ip: 104.130.122.26
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5eb94c70.7f8434bba0d8-smtp-out-n03;
+ Mon, 11 May 2020 13:00:32 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 7E203C44798; Mon, 11 May 2020 13:00:32 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
+        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id E7DFCC44792;
+        Mon, 11 May 2020 13:00:30 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org E7DFCC44792
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-References: <20200509120707.188595-1-arnd@arndb.de> <20200509154818.GB27779@embeddedor>
- <87zhae4r35.fsf@kamboji.qca.qualcomm.com>
-In-Reply-To: <87zhae4r35.fsf@kamboji.qca.qualcomm.com>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Mon, 11 May 2020 14:46:00 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a2i-jqY8FnY_Tu41VDxQGqHHKRCyJ5U-GQbNmrqa=n0GQ@mail.gmail.com>
-Message-ID: <CAK8P3a2i-jqY8FnY_Tu41VDxQGqHHKRCyJ5U-GQbNmrqa=n0GQ@mail.gmail.com>
-Subject: Re: [PATCH net-next 1/2] ath10k: fix gcc-10 zero-length-bounds warnings
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
-        Michal Kazior <michal.kazior@tieto.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Wen Gong <wgong@codeaurora.org>,
-        Erik Stromdahl <erik.stromdahl@gmail.com>,
-        ath10k@lists.infradead.org,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Networking <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:ptJfG+TwRH/ZTRhKkPGAbQlLx8rP+rTu8Lc2pH2x559ex0BtEVe
- j9AASt+DulTy51xOV2Wda9mSOZ5fQ161unfARJ80G5D74/7doKcr3cvPYFIO2eneaJLO03I
- ABfB9TrDt20AgwBm6E7EdmyMbN8KbNk20FwcKX8egSe5gMpo92C/AYidTjL3pWxskS3Q94T
- hjUQVX5Kjj8Qu5oYZiJ7A==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:XkVXpEq479I=:WT2cNOneaAQyu1X5hn8N17
- vf+M4Txot7L6R2a2XROtHwl5dVwPd1te1KXQMX7yc6AFj2/TAfa4GkrVVdyS4y1xzAl68FIZB
- f2Z/IIxQTeC4ThS/OT+nGuiqbmOZ+wxkZHoABcTD4UU8IVyc03pk00EPaaAS6FAKmliI3qvFu
- IQCnFuOjvY4UX4hm2sczwZR8xzlJfHjhKs4+7T4Ac1sFnMSD7dT8dO/zKPfLckdugo9qVJf2d
- HGG2A0MJwE9Z8sOZrEaL+QWWK8j74OP00buQdYHf4RbpO2aiHnPSknotLLZisLBzN33uMoVLt
- 50bsd6vsxD98uX6e7qqludxq3VDKcbONrEkXWRsq0TuISDzf15KZ1gFHGwWV0ggR/RgUeS8Z3
- n8kWzBlqPSGEEmN1ibIUgOHxoO9D5uzflmTMujLrKdaPbySwLXk2sNYUbFJo8/U15aPnQNP/h
- CykPkwrNi35XmlByPxXDfYbzBnsJO9ocbYnJB2L8twBX7oBE7ZeSTHev25tDJBQfP4Jlt2eAq
- i1l5CXOHy3GSRMShS7YxXqddCcxcxZfIk4hOYFALho0EP55Xa4yQKJxH8h4m7gyxCDuQltz4l
- Woo3u7yjGlzIZmWIHpz/fOsojWiFS3mUokgjBrsDW7xOJyZ46SCPOSRVXT1ExTCbLIjyPefvs
- trq848RS1yMFClxxTLlpGAUSM31FWoZqJCej7q3w7+8kUkMzwwNNzDfIEbJ8o7Wt/gErRWBuy
- qEnHJXnrBVhWsW73d5Mo5rD8E8UKitbKPu0pEQMvl69DhAZ5burJTljqqJ7WytEfaOGyEiNsw
- j5BobXCKa4wm9mhLEYdxoHMidQ0HwJSWR3PVKFDmgJdB6Nb2hE=
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] carl9170: Replace zero-length array with flexible-array
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20200507185132.GA14046@embeddedor>
+References: <20200507185132.GA14046@embeddedor>
+To:     "Gustavo A. R. Silva" <gustavoars@kernel.org>
+Cc:     Christian Lamparter <chunkeey@googlemail.com>,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
+Message-Id: <20200511130032.7E203C44798@smtp.codeaurora.org>
+Date:   Mon, 11 May 2020 13:00:32 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, May 11, 2020 at 2:03 PM Kalle Valo <kvalo@codeaurora.org> wrote:
-> "Gustavo A. R. Silva" <gustavoars@kernel.org> writes:
+"Gustavo A. R. Silva" <gustavoars@kernel.org> wrote:
 
-> >
-> > This treewide patch no longer contains changes for ath10k. I removed them
-> > since Monday (05/04/2020). So, this "Fixes" tag does not apply.
+> The current codebase makes use of the zero-length array language
+> extension to the C90 standard, but the preferred mechanism to declare
+> variable-length types such as these ones is a flexible array member[1][2],
+> introduced in C99:
+> 
+> struct foo {
+>         int stuff;
+>         struct boo array[];
+> };
+> 
+> By making use of the mechanism above, we will get a compiler warning
+> in case the flexible array does not occur last in the structure, which
+> will help us prevent some kind of undefined behavior bugs from being
+> inadvertently introduced[3] to the codebase from now on.
+> 
+> Also, notice that, dynamic memory allocations won't be affected by
+> this change:
+> 
+> "Flexible array members have incomplete type, and so the sizeof operator
+> may not be applied. As a quirk of the original implementation of
+> zero-length arrays, sizeof evaluates to zero."[1]
+> 
+> sizeof(flexible-array-member) triggers a warning because flexible array
+> members have incomplete type[1]. There are some instances of code in
+> which the sizeof operator is being incorrectly/erroneously applied to
+> zero-length arrays and the result is zero. Such instances may be hiding
+> some bugs. So, this work (flexible-array member conversions) will also
+> help to get completely rid of those sorts of issues.
+> 
+> This issue was found with the help of Coccinelle.
+> 
+> [1] https://gcc.gnu.org/onlinedocs/gcc/Zero-Length.html
+> [2] https://github.com/KSPP/linux/issues/21
+> [3] commit 76497732932f ("cxgb3/l2t: Fix undefined behaviour")
+> 
+> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
 
-Oops, I forgot to update the changelog trext when rebasing.
+This was sent twice so I'm dropping this version.
 
-> Ok, I'll remove it. Also I'll take these to my ath.git tree, not to
-> net-next.
+Patch set to Superseded.
 
-Thanks a lot!
+-- 
+https://patchwork.kernel.org/patch/11534683/
 
-       Arnd
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
