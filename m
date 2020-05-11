@@ -2,182 +2,279 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 92A9B1CDFFC
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2020 18:06:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 349B81CE1A0
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 May 2020 19:23:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730648AbgEKQGx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 11 May 2020 12:06:53 -0400
-Received: from mailgw01.mediatek.com ([210.61.82.183]:36498 "EHLO
-        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1730627AbgEKQGx (ORCPT
+        id S1730215AbgEKRXs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 11 May 2020 13:23:48 -0400
+Received: from mail26.static.mailgun.info ([104.130.122.26]:27330 "EHLO
+        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1729731AbgEKRXs (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 11 May 2020 12:06:53 -0400
-X-UUID: 897331775e384ad894b44eb837e6ee49-20200512
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Transfer-Encoding:Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=W1/UYjiinWpEDX+from/u3GdmMKGv1ROBsk61OpOE/Q=;
-        b=JofN4u5VFxyH4Sg8nFwTZimn9LSRDVTPe6Yb3yLKdzp+yJH9AHLuX4yvMHES4jFRmda4WJOCo9Q7dK8pRyMdXnVXYgsP/VKFuPTFhxuM0X+wHaPbX32lS4JwHOU3LO0bjlH2sjOd50eNE2B9qef8DTwC45My0hAhSLy0VBNwKpM=;
-X-UUID: 897331775e384ad894b44eb837e6ee49-20200512
-Received: from mtkcas11.mediatek.inc [(172.21.101.40)] by mailgw01.mediatek.com
-        (envelope-from <ryder.lee@mediatek.com>)
-        (Cellopoint E-mail Firewall v4.1.10 Build 0809 with TLS)
-        with ESMTP id 1957892481; Tue, 12 May 2020 00:06:45 +0800
-Received: from mtkcas07.mediatek.inc (172.21.101.84) by
- mtkmbs06n1.mediatek.inc (172.21.101.129) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Tue, 12 May 2020 00:06:44 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas07.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Tue, 12 May 2020 00:06:41 +0800
-From:   Ryder Lee <ryder.lee@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-CC:     Shayne Chen <shayne.chen@mediatek.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>,
-        Ryder Lee <ryder.lee@mediatek.com>
-Subject: [PATCH 7/7] mt76: mt7915: fix possible deadlock in mt7915_stop
-Date:   Tue, 12 May 2020 00:06:38 +0800
-Message-ID: <2d4d7cd62e1e3ba982b43a83748d5d683cdcc81f.1589212457.git.ryder.lee@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <cover.1589212457.git.ryder.lee@mediatek.com>
-References: <cover.1589212457.git.ryder.lee@mediatek.com>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
-Content-Transfer-Encoding: base64
+        Mon, 11 May 2020 13:23:48 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1589217827; h=Message-Id: Date: Subject: Cc: To: From:
+ Sender; bh=WxGAWYe9sQovES2LJ6hQsj6et8DpZIjgrDyV160b1/0=; b=XZLd/2skMGEPC/yZa93pEYJypnoaa0+zJgtgpqZK3V4k+SJczBn56J5dfefza3idEsNgK+E/
+ nrxWNfnlPwnrpPLoDAKI/u/7OM9xcwSXMFUJ2bXUhghCtdJfqSMJ/BuEqGcQXMmev+V/v+kT
+ UFxtz5A2DZFiuSJoRQJPeQ4Nbpg=
+X-Mailgun-Sending-Ip: 104.130.122.26
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5eb98a16.7f0f316369d0-smtp-out-n01;
+ Mon, 11 May 2020 17:23:34 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 4B726C433CB; Mon, 11 May 2020 17:23:33 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 29103C433BA;
+        Mon, 11 May 2020 17:23:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 29103C433BA
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     ath11k@lists.infradead.org
+Cc:     linux-wireless@vger.kernel.org
+Subject: [PATCH] ath11k: move ring mask variables to core.c
+Date:   Mon, 11 May 2020 20:23:26 +0300
+Message-Id: <1589217806-9376-1-git-send-email-kvalo@codeaurora.org>
+X-Mailer: git-send-email 2.7.4
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-bWFrZSBtYWNfd29yayBwZXIgcGh5IGluc3RlYWQgb2YgcGVyIGRldmljZSBhbmQgZml4IGEgcG9z
-c2libGUgZGVhZGxvY2sNCmluIG10NzkxNV9zdG9wIHNpbmNlIG10NzkxNV9tYWNfd29yayBydW5z
-IGhvbGRpbmcgbXQ3NiBtdXRleA0KDQpTaWduZWQtb2ZmLWJ5OiBSeWRlciBMZWUgPHJ5ZGVyLmxl
-ZUBtZWRpYXRlay5jb20+DQotLS0NCiAuLi4vbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3
-OTE1L2luaXQuYyAgfCAgMyArLQ0KIC4uLi9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5
-MTUvbWFjLmMgICB8IDQ5ICsrKysrKysrKysrLS0tLS0tLS0NCiAuLi4vbmV0L3dpcmVsZXNzL21l
-ZGlhdGVrL210NzYvbXQ3OTE1L21haW4uYyAgfCAxOCArKystLS0tDQogLi4uL3dpcmVsZXNzL21l
-ZGlhdGVrL210NzYvbXQ3OTE1L210NzkxNS5oICAgIHwgIDQgKy0NCiA0IGZpbGVzIGNoYW5nZWQs
-IDQyIGluc2VydGlvbnMoKyksIDMyIGRlbGV0aW9ucygtKQ0KDQpkaWZmIC0tZ2l0IGEvZHJpdmVy
-cy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvaW5pdC5jIGIvZHJpdmVycy9uZXQv
-d2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvaW5pdC5jDQppbmRleCBlMmIwZWEzMzA1M2Mu
-LjZmMjAwYWIzYWMyOCAxMDA2NDQNCi0tLSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVr
-L210NzYvbXQ3OTE1L2luaXQuYw0KKysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsv
-bXQ3Ni9tdDc5MTUvaW5pdC5jDQpAQCAtNTkyLDYgKzU5Miw3IEBAIGludCBtdDc5MTVfcmVnaXN0
-ZXJfZXh0X3BoeShzdHJ1Y3QgbXQ3OTE1X2RldiAqZGV2KQ0KIAlpZiAocGh5KQ0KIAkJcmV0dXJu
-IDA7DQogDQorCUlOSVRfREVMQVlFRF9XT1JLKCZwaHktPm1hY193b3JrLCBtdDc5MTVfbWFjX3dv
-cmspOw0KIAltdDc5MTVfY2FwX2RiZGNfZW5hYmxlKGRldik7DQogCW1waHkgPSBtdDc2X2FsbG9j
-X3BoeSgmZGV2LT5tdDc2LCBzaXplb2YoKnBoeSksICZtdDc5MTVfb3BzKTsNCiAJaWYgKCFtcGh5
-KQ0KQEAgLTY0Miw3ICs2NDMsNyBAQCBpbnQgbXQ3OTE1X3JlZ2lzdGVyX2RldmljZShzdHJ1Y3Qg
-bXQ3OTE1X2RldiAqZGV2KQ0KIAlkZXYtPnBoeS5kZXYgPSBkZXY7DQogCWRldi0+cGh5Lm10NzYg
-PSAmZGV2LT5tdDc2LnBoeTsNCiAJZGV2LT5tdDc2LnBoeS5wcml2ID0gJmRldi0+cGh5Ow0KLQlJ
-TklUX0RFTEFZRURfV09SSygmZGV2LT5tdDc2Lm1hY193b3JrLCBtdDc5MTVfbWFjX3dvcmspOw0K
-KwlJTklUX0RFTEFZRURfV09SSygmZGV2LT5waHkubWFjX3dvcmssIG10NzkxNV9tYWNfd29yayk7
-DQogCUlOSVRfTElTVF9IRUFEKCZkZXYtPnN0YV9wb2xsX2xpc3QpOw0KIAlzcGluX2xvY2tfaW5p
-dCgmZGV2LT5zdGFfcG9sbF9sb2NrKTsNCiANCmRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC93aXJl
-bGVzcy9tZWRpYXRlay9tdDc2L210NzkxNS9tYWMuYyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21l
-ZGlhdGVrL210NzYvbXQ3OTE1L21hYy5jDQppbmRleCA3NTEzNjNiNGI3YTIuLjdhZDdjMmI3YWZk
-YyAxMDA2NDQNCi0tLSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1
-L21hYy5jDQorKysgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzkxNS9t
-YWMuYw0KQEAgLTExNTYsMjYgKzExNTYsMzIgQEAgbXQ3OTE1X2RtYV9yZXNldChzdHJ1Y3QgbXQ3
-OTE1X2RldiAqZGV2KQ0KIC8qIHN5c3RlbSBlcnJvciByZWNvdmVyeSAqLw0KIHZvaWQgbXQ3OTE1
-X21hY19yZXNldF93b3JrKHN0cnVjdCB3b3JrX3N0cnVjdCAqd29yaykNCiB7DQorCXN0cnVjdCBt
-dDc5MTVfcGh5ICpwaHkyOw0KKwlzdHJ1Y3QgbXQ3Nl9waHkgKmV4dF9waHk7DQogCXN0cnVjdCBt
-dDc5MTVfZGV2ICpkZXY7DQogDQogCWRldiA9IGNvbnRhaW5lcl9vZih3b3JrLCBzdHJ1Y3QgbXQ3
-OTE1X2RldiwgcmVzZXRfd29yayk7DQorCWV4dF9waHkgPSBkZXYtPm10NzYucGh5MjsNCisJcGh5
-MiA9IGV4dF9waHkgPyBleHRfcGh5LT5wcml2IDogTlVMTDsNCiANCiAJaWYgKCEoUkVBRF9PTkNF
-KGRldi0+cmVzZXRfc3RhdGUpICYgTVRfTUNVX0NNRF9TVE9QX0RNQSkpDQogCQlyZXR1cm47DQog
-DQogCWllZWU4MDIxMV9zdG9wX3F1ZXVlcyhtdDc2X2h3KGRldikpOw0KLQlpZiAoZGV2LT5tdDc2
-LnBoeTIpDQotCQlpZWVlODAyMTFfc3RvcF9xdWV1ZXMoZGV2LT5tdDc2LnBoeTItPmh3KTsNCisJ
-aWYgKGV4dF9waHkpDQorCQlpZWVlODAyMTFfc3RvcF9xdWV1ZXMoZXh0X3BoeS0+aHcpOw0KIA0K
-IAlzZXRfYml0KE1UNzZfUkVTRVQsICZkZXYtPm1waHkuc3RhdGUpOw0KIAlzZXRfYml0KE1UNzZf
-TUNVX1JFU0VULCAmZGV2LT5tcGh5LnN0YXRlKTsNCiAJd2FrZV91cCgmZGV2LT5tdDc2Lm1jdS53
-YWl0KTsNCi0JY2FuY2VsX2RlbGF5ZWRfd29ya19zeW5jKCZkZXYtPm10NzYubWFjX3dvcmspOw0K
-KwljYW5jZWxfZGVsYXllZF93b3JrX3N5bmMoJmRldi0+cGh5Lm1hY193b3JrKTsNCisJaWYgKHBo
-eTIpDQorCQljYW5jZWxfZGVsYXllZF93b3JrX3N5bmMoJnBoeTItPm1hY193b3JrKTsNCiANCiAJ
-LyogbG9jay91bmxvY2sgYWxsIHF1ZXVlcyB0byBlbnN1cmUgdGhhdCBubyB0eCBpcyBwZW5kaW5n
-ICovDQogCW10NzZfdHhxX3NjaGVkdWxlX2FsbCgmZGV2LT5tcGh5KTsNCi0JaWYgKGRldi0+bXQ3
-Ni5waHkyKQ0KLQkJbXQ3Nl90eHFfc2NoZWR1bGVfYWxsKGRldi0+bXQ3Ni5waHkyKTsNCisJaWYg
-KGV4dF9waHkpDQorCQltdDc2X3R4cV9zY2hlZHVsZV9hbGwoZXh0X3BoeSk7DQogDQogCXRhc2ts
-ZXRfZGlzYWJsZSgmZGV2LT5tdDc2LnR4X3Rhc2tsZXQpOw0KIAluYXBpX2Rpc2FibGUoJmRldi0+
-bXQ3Ni5uYXBpWzBdKTsNCkBAIC0xMjExLDggKzEyMTcsOCBAQCB2b2lkIG10NzkxNV9tYWNfcmVz
-ZXRfd29yayhzdHJ1Y3Qgd29ya19zdHJ1Y3QgKndvcmspDQogCW5hcGlfc2NoZWR1bGUoJmRldi0+
-bXQ3Ni5uYXBpWzJdKTsNCiANCiAJaWVlZTgwMjExX3dha2VfcXVldWVzKG10NzZfaHcoZGV2KSk7
-DQotCWlmIChkZXYtPm10NzYucGh5MikNCi0JCWllZWU4MDIxMV93YWtlX3F1ZXVlcyhkZXYtPm10
-NzYucGh5Mi0+aHcpOw0KKwlpZiAoZXh0X3BoeSkNCisJCWllZWU4MDIxMV93YWtlX3F1ZXVlcyhl
-eHRfcGh5LT5odyk7DQogDQogCW10NzZfd3IoZGV2LCBNVF9NQ1VfSU5UX0VWRU5ULCBNVF9NQ1Vf
-SU5UX0VWRU5UX1JFU0VUX0RPTkUpOw0KIAltdDc5MTVfd2FpdF9yZXNldF9zdGF0ZShkZXYsIE1U
-X01DVV9DTURfTk9STUFMX1NUQVRFKTsNCkBAIC0xMjIxLDggKzEyMjcsMTEgQEAgdm9pZCBtdDc5
-MTVfbWFjX3Jlc2V0X3dvcmsoc3RydWN0IHdvcmtfc3RydWN0ICp3b3JrKQ0KIA0KIAltdDc5MTVf
-dXBkYXRlX2JlYWNvbnMoZGV2KTsNCiANCi0JaWVlZTgwMjExX3F1ZXVlX2RlbGF5ZWRfd29yayht
-dDc2X2h3KGRldiksICZkZXYtPm10NzYubWFjX3dvcmssDQorCWllZWU4MDIxMV9xdWV1ZV9kZWxh
-eWVkX3dvcmsobXQ3Nl9odyhkZXYpLCAmZGV2LT5waHkubWFjX3dvcmssDQogCQkJCSAgICAgTVQ3
-OTE1X1dBVENIRE9HX1RJTUUpOw0KKwlpZiAocGh5MikNCisJCWllZWU4MDIxMV9xdWV1ZV9kZWxh
-eWVkX3dvcmsoZXh0X3BoeS0+aHcsICZwaHkyLT5tYWNfd29yaywNCisJCQkJCSAgICAgTVQ3OTE1
-X1dBVENIRE9HX1RJTUUpOw0KIH0NCiANCiBzdGF0aWMgdm9pZA0KQEAgLTEzMDcsMjUgKzEzMTYs
-MjUgQEAgdm9pZCBtdDc5MTVfbWFjX3N0YV9zdGF0c193b3JrKHN0cnVjdCB3b3JrX3N0cnVjdCAq
-d29yaykNCiANCiB2b2lkIG10NzkxNV9tYWNfd29yayhzdHJ1Y3Qgd29ya19zdHJ1Y3QgKndvcmsp
-DQogew0KLQlzdHJ1Y3QgbXQ3OTE1X2RldiAqZGV2Ow0KKwlzdHJ1Y3QgbXQ3OTE1X3BoeSAqcGh5
-Ow0KKwlzdHJ1Y3QgbXQ3Nl9kZXYgKm1kZXY7DQogDQotCWRldiA9IChzdHJ1Y3QgbXQ3OTE1X2Rl
-diAqKWNvbnRhaW5lcl9vZih3b3JrLCBzdHJ1Y3QgbXQ3Nl9kZXYsDQorCXBoeSA9IChzdHJ1Y3Qg
-bXQ3OTE1X3BoeSAqKWNvbnRhaW5lcl9vZih3b3JrLCBzdHJ1Y3QgbXQ3OTE1X3BoeSwNCiAJCQkJ
-CQltYWNfd29yay53b3JrKTsNCisJbWRldiA9ICZwaHktPmRldi0+bXQ3NjsNCiANCi0JbXV0ZXhf
-bG9jaygmZGV2LT5tdDc2Lm11dGV4KTsNCi0JbXQ3Nl91cGRhdGVfc3VydmV5KCZkZXYtPm10NzYp
-Ow0KLQlpZiAoKytkZXYtPm1hY193b3JrX2NvdW50ID09IDUpIHsNCi0JCXN0cnVjdCBtdDc5MTVf
-cGh5ICpleHRfcGh5ID0gbXQ3OTE1X2V4dF9waHkoZGV2KTsNCisJbXV0ZXhfbG9jaygmbWRldi0+
-bXV0ZXgpOw0KIA0KLQkJbXQ3OTE1X21hY191cGRhdGVfbWliX3N0YXRzKCZkZXYtPnBoeSk7DQot
-CQlpZiAoZXh0X3BoeSkNCi0JCQltdDc5MTVfbWFjX3VwZGF0ZV9taWJfc3RhdHMoZXh0X3BoeSk7
-DQorCW10NzZfdXBkYXRlX3N1cnZleShtZGV2KTsNCisJaWYgKCsrcGh5LT5tYWNfd29ya19jb3Vu
-dCA9PSA1KSB7DQorCQlwaHktPm1hY193b3JrX2NvdW50ID0gMDsNCiANCi0JCWRldi0+bWFjX3dv
-cmtfY291bnQgPSAwOw0KKwkJbXQ3OTE1X21hY191cGRhdGVfbWliX3N0YXRzKHBoeSk7DQogCX0N
-Ci0JbXV0ZXhfdW5sb2NrKCZkZXYtPm10NzYubXV0ZXgpOw0KIA0KLQlpZWVlODAyMTFfcXVldWVf
-ZGVsYXllZF93b3JrKG10NzZfaHcoZGV2KSwgJmRldi0+bXQ3Ni5tYWNfd29yaywNCisJbXV0ZXhf
-dW5sb2NrKCZtZGV2LT5tdXRleCk7DQorDQorCWllZWU4MDIxMV9xdWV1ZV9kZWxheWVkX3dvcmso
-cGh5LT5tdDc2LT5odywgJnBoeS0+bWFjX3dvcmssDQogCQkJCSAgICAgTVQ3OTE1X1dBVENIRE9H
-X1RJTUUpOw0KIH0NCiANCmRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRl
-ay9tdDc2L210NzkxNS9tYWluLmMgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2
-L210NzkxNS9tYWluLmMNCmluZGV4IDE0N2FiN2RhN2FhOS4uOTg1NjczNzRjMmM5IDEwMDY0NA0K
-LS0tIGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvbWFpbi5jDQor
-KysgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzkxNS9tYWluLmMNCkBA
-IC00NywxNCArNDcsMTIgQEAgc3RhdGljIGludCBtdDc5MTVfc3RhcnQoc3RydWN0IGllZWU4MDIx
-MV9odyAqaHcpDQogDQogCXNldF9iaXQoTVQ3Nl9TVEFURV9SVU5OSU5HLCAmcGh5LT5tdDc2LT5z
-dGF0ZSk7DQogDQotCWlmIChydW5uaW5nKQ0KLQkJZ290byBvdXQ7DQorCWllZWU4MDIxMV9xdWV1
-ZV9kZWxheWVkX3dvcmsoaHcsICZwaHktPm1hY193b3JrLA0KKwkJCQkgICAgIE1UNzkxNV9XQVRD
-SERPR19USU1FKTsNCiANCi0JbXQ3OTE1X21hY19yZXNldF9jb3VudGVycyhwaHkpOw0KKwlpZiAo
-IXJ1bm5pbmcpDQorCQltdDc5MTVfbWFjX3Jlc2V0X2NvdW50ZXJzKHBoeSk7DQogDQotCWllZWU4
-MDIxMV9xdWV1ZV9kZWxheWVkX3dvcmsobXQ3Nl9odyhkZXYpLCAmZGV2LT5tdDc2Lm1hY193b3Jr
-LA0KLQkJCQkgICAgIE1UNzkxNV9XQVRDSERPR19USU1FKTsNCi1vdXQ6DQogCW11dGV4X3VubG9j
-aygmZGV2LT5tdDc2Lm11dGV4KTsNCiANCiAJcmV0dXJuIDA7DQpAQCAtNjUsNiArNjMsOCBAQCBz
-dGF0aWMgdm9pZCBtdDc5MTVfc3RvcChzdHJ1Y3QgaWVlZTgwMjExX2h3ICpodykNCiAJc3RydWN0
-IG10NzkxNV9kZXYgKmRldiA9IG10NzkxNV9od19kZXYoaHcpOw0KIAlzdHJ1Y3QgbXQ3OTE1X3Bo
-eSAqcGh5ID0gbXQ3OTE1X2h3X3BoeShodyk7DQogDQorCWNhbmNlbF9kZWxheWVkX3dvcmtfc3lu
-YygmcGh5LT5tYWNfd29yayk7DQorDQogCW11dGV4X2xvY2soJmRldi0+bXQ3Ni5tdXRleCk7DQog
-DQogCWNsZWFyX2JpdChNVDc2X1NUQVRFX1JVTk5JTkcsICZwaHktPm10NzYtPnN0YXRlKTsNCkBA
-IC03NSw4ICs3NSw2IEBAIHN0YXRpYyB2b2lkIG10NzkxNV9zdG9wKHN0cnVjdCBpZWVlODAyMTFf
-aHcgKmh3KQ0KIAl9DQogDQogCWlmICghbXQ3OTE1X2Rldl9ydW5uaW5nKGRldikpIHsNCi0JCWNh
-bmNlbF9kZWxheWVkX3dvcmtfc3luYygmZGV2LT5tdDc2Lm1hY193b3JrKTsNCi0NCiAJCW10Nzkx
-NV9tY3Vfc2V0X3BtKGRldiwgMCwgMSk7DQogCQltdDc5MTVfbWN1X3NldF9tYWMoZGV2LCAwLCBm
-YWxzZSwgZmFsc2UpOw0KIAl9DQpAQCAtMjMwLDcgKzIyOCw3IEBAIHN0YXRpYyBpbnQgbXQ3OTE1
-X3NldF9jaGFubmVsKHN0cnVjdCBtdDc5MTVfcGh5ICpwaHkpDQogCXN0cnVjdCBtdDc5MTVfZGV2
-ICpkZXYgPSBwaHktPmRldjsNCiAJaW50IHJldDsNCiANCi0JY2FuY2VsX2RlbGF5ZWRfd29ya19z
-eW5jKCZkZXYtPm10NzYubWFjX3dvcmspOw0KKwljYW5jZWxfZGVsYXllZF93b3JrX3N5bmMoJnBo
-eS0+bWFjX3dvcmspOw0KIA0KIAltdXRleF9sb2NrKCZkZXYtPm10NzYubXV0ZXgpOw0KIAlzZXRf
-Yml0KE1UNzZfUkVTRVQsICZwaHktPm10NzYtPnN0YXRlKTsNCkBAIC0yNTQsNyArMjUyLDcgQEAg
-c3RhdGljIGludCBtdDc5MTVfc2V0X2NoYW5uZWwoc3RydWN0IG10NzkxNV9waHkgKnBoeSkNCiAJ
-bXV0ZXhfdW5sb2NrKCZkZXYtPm10NzYubXV0ZXgpOw0KIA0KIAltdDc2X3R4cV9zY2hlZHVsZV9h
-bGwocGh5LT5tdDc2KTsNCi0JaWVlZTgwMjExX3F1ZXVlX2RlbGF5ZWRfd29yayhtdDc2X2h3KGRl
-diksICZkZXYtPm10NzYubWFjX3dvcmssDQorCWllZWU4MDIxMV9xdWV1ZV9kZWxheWVkX3dvcmso
-cGh5LT5tdDc2LT5odywgJnBoeS0+bWFjX3dvcmssDQogCQkJCSAgICAgTVQ3OTE1X1dBVENIRE9H
-X1RJTUUpOw0KIA0KIAlyZXR1cm4gcmV0Ow0KZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3dpcmVs
-ZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1L210NzkxNS5oIGIvZHJpdmVycy9uZXQvd2lyZWxlc3Mv
-bWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvbXQ3OTE1LmgNCmluZGV4IDUzN2ZjMTI2Mjg5Zi4uNTM5MjI5
-MmE4MzhlIDEwMDY0NA0KLS0tIGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9t
-dDc5MTUvbXQ3OTE1LmgNCisrKyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYv
-bXQ3OTE1L210NzkxNS5oDQpAQCAtMTQxLDYgKzE0MSw5IEBAIHN0cnVjdCBtdDc5MTVfcGh5IHsN
-CiAJdTMyIGFtcGR1X3JlZjsNCiANCiAJc3RydWN0IG1pYl9zdGF0cyBtaWI7DQorDQorCXN0cnVj
-dCBkZWxheWVkX3dvcmsgbWFjX3dvcms7DQorCXU4IG1hY193b3JrX2NvdW50Ow0KIH07DQogDQog
-c3RydWN0IG10NzkxNV9kZXYgew0KQEAgLTE2OCw3ICsxNzEsNiBAQCBzdHJ1Y3QgbXQ3OTE1X2Rl
-diB7DQogDQogCXM4ICoqcmF0ZV9wb3dlcjsgLyogVE9ETzogdXNlIG10NzZfcmF0ZV9wb3dlciAq
-Lw0KIA0KLQl1OCBtYWNfd29ya19jb3VudDsNCiAJYm9vbCBmd19kZWJ1ZzsNCiB9Ow0KIA0KLS0g
-DQoyLjE4LjANCg==
+It should have been in core.c in the first place as the declarations are in
+core.h. And these are needed by both pci.c and ahb.c so there needs to be a
+common place for them.
 
+Also add ath11k_ prefix to rx_mon_status_ring_mask to make it easy add
+EXPORT_SYMBOL() later.
+
+Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+---
+ drivers/net/wireless/ath/ath11k/ahb.c  | 74 +---------------------------------
+ drivers/net/wireless/ath/ath11k/core.c | 45 +++++++++++++++++++++
+ drivers/net/wireless/ath/ath11k/core.h | 29 ++++++++++++-
+ drivers/net/wireless/ath/ath11k/dp.c   |  4 +-
+ 4 files changed, 76 insertions(+), 76 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath11k/ahb.c b/drivers/net/wireless/ath/ath11k/ahb.c
+index 30092841ac46..f14483e2a76d 100644
+--- a/drivers/net/wireless/ath/ath11k/ahb.c
++++ b/drivers/net/wireless/ath/ath11k/ahb.c
+@@ -321,78 +321,6 @@ static const char *irq_name[ATH11K_IRQ_NUM_MAX] = {
+ 	"tcl2host-status-ring",
+ };
+ 
+-#define ATH11K_TX_RING_MASK_0 0x1
+-#define ATH11K_TX_RING_MASK_1 0x2
+-#define ATH11K_TX_RING_MASK_2 0x4
+-
+-#define ATH11K_RX_RING_MASK_0 0x1
+-#define ATH11K_RX_RING_MASK_1 0x2
+-#define ATH11K_RX_RING_MASK_2 0x4
+-#define ATH11K_RX_RING_MASK_3 0x8
+-
+-#define ATH11K_RX_ERR_RING_MASK_0 0x1
+-
+-#define ATH11K_RX_WBM_REL_RING_MASK_0 0x1
+-
+-#define ATH11K_REO_STATUS_RING_MASK_0 0x1
+-
+-#define ATH11K_RXDMA2HOST_RING_MASK_0 0x1
+-#define ATH11K_RXDMA2HOST_RING_MASK_1 0x2
+-#define ATH11K_RXDMA2HOST_RING_MASK_2 0x4
+-
+-#define ATH11K_HOST2RXDMA_RING_MASK_0 0x1
+-#define ATH11K_HOST2RXDMA_RING_MASK_1 0x2
+-#define ATH11K_HOST2RXDMA_RING_MASK_2 0x4
+-
+-#define ATH11K_RX_MON_STATUS_RING_MASK_0 0x1
+-#define ATH11K_RX_MON_STATUS_RING_MASK_1 0x2
+-#define ATH11K_RX_MON_STATUS_RING_MASK_2 0x4
+-
+-const u8 ath11k_tx_ring_mask[ATH11K_EXT_IRQ_GRP_NUM_MAX] = {
+-	ATH11K_TX_RING_MASK_0,
+-	ATH11K_TX_RING_MASK_1,
+-	ATH11K_TX_RING_MASK_2,
+-};
+-
+-const u8 rx_mon_status_ring_mask[ATH11K_EXT_IRQ_GRP_NUM_MAX] = {
+-	0, 0, 0, 0,
+-	ATH11K_RX_MON_STATUS_RING_MASK_0,
+-	ATH11K_RX_MON_STATUS_RING_MASK_1,
+-	ATH11K_RX_MON_STATUS_RING_MASK_2,
+-};
+-
+-const u8 ath11k_rx_ring_mask[ATH11K_EXT_IRQ_GRP_NUM_MAX] = {
+-	0, 0, 0, 0, 0, 0, 0,
+-	ATH11K_RX_RING_MASK_0,
+-	ATH11K_RX_RING_MASK_1,
+-	ATH11K_RX_RING_MASK_2,
+-	ATH11K_RX_RING_MASK_3,
+-};
+-
+-const u8 ath11k_rx_err_ring_mask[ATH11K_EXT_IRQ_GRP_NUM_MAX] = {
+-	ATH11K_RX_ERR_RING_MASK_0,
+-};
+-
+-const u8 ath11k_rx_wbm_rel_ring_mask[ATH11K_EXT_IRQ_GRP_NUM_MAX] = {
+-	ATH11K_RX_WBM_REL_RING_MASK_0,
+-};
+-
+-const u8 ath11k_reo_status_ring_mask[ATH11K_EXT_IRQ_GRP_NUM_MAX] = {
+-	ATH11K_REO_STATUS_RING_MASK_0,
+-};
+-
+-const u8 ath11k_rxdma2host_ring_mask[ATH11K_EXT_IRQ_GRP_NUM_MAX] = {
+-	ATH11K_RXDMA2HOST_RING_MASK_0,
+-	ATH11K_RXDMA2HOST_RING_MASK_1,
+-	ATH11K_RXDMA2HOST_RING_MASK_2,
+-};
+-
+-const u8 ath11k_host2rxdma_ring_mask[ATH11K_EXT_IRQ_GRP_NUM_MAX] = {
+-	ATH11K_HOST2RXDMA_RING_MASK_0,
+-	ATH11K_HOST2RXDMA_RING_MASK_1,
+-	ATH11K_HOST2RXDMA_RING_MASK_2,
+-};
+-
+ /* enum ext_irq_num - irq numbers that can be used by external modules
+  * like datapath
+  */
+@@ -781,7 +709,7 @@ static int ath11k_ahb_ext_irq_config(struct ath11k_base *ab)
+ 						- ath11k_core_get_hw_mac_id(ab, j);
+ 				}
+ 
+-				if (rx_mon_status_ring_mask[i] & BIT(j)) {
++				if (ath11k_rx_mon_status_ring_mask[i] & BIT(j)) {
+ 					irq_grp->irqs[num_irq++] =
+ 						ppdu_end_interrupts_mac1 -
+ 						ath11k_core_get_hw_mac_id(ab, j);
+diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
+index 02501cc154fe..d6e0f172c36f 100644
+--- a/drivers/net/wireless/ath/ath11k/core.c
++++ b/drivers/net/wireless/ath/ath11k/core.c
+@@ -26,6 +26,51 @@ static const struct ath11k_hw_params ath11k_hw_params = {
+ 	},
+ };
+ 
++const u8 ath11k_tx_ring_mask[ATH11K_EXT_IRQ_GRP_NUM_MAX] = {
++	ATH11K_TX_RING_MASK_0,
++	ATH11K_TX_RING_MASK_1,
++	ATH11K_TX_RING_MASK_2,
++};
++
++const u8 ath11k_rx_mon_status_ring_mask[ATH11K_EXT_IRQ_GRP_NUM_MAX] = {
++	0, 0, 0, 0,
++	ATH11K_RX_MON_STATUS_RING_MASK_0,
++	ATH11K_RX_MON_STATUS_RING_MASK_1,
++	ATH11K_RX_MON_STATUS_RING_MASK_2,
++};
++
++const u8 ath11k_rx_ring_mask[ATH11K_EXT_IRQ_GRP_NUM_MAX] = {
++	0, 0, 0, 0, 0, 0, 0,
++	ATH11K_RX_RING_MASK_0,
++	ATH11K_RX_RING_MASK_1,
++	ATH11K_RX_RING_MASK_2,
++	ATH11K_RX_RING_MASK_3,
++};
++
++const u8 ath11k_rx_err_ring_mask[ATH11K_EXT_IRQ_GRP_NUM_MAX] = {
++	ATH11K_RX_ERR_RING_MASK_0,
++};
++
++const u8 ath11k_rx_wbm_rel_ring_mask[ATH11K_EXT_IRQ_GRP_NUM_MAX] = {
++	ATH11K_RX_WBM_REL_RING_MASK_0,
++};
++
++const u8 ath11k_reo_status_ring_mask[ATH11K_EXT_IRQ_GRP_NUM_MAX] = {
++	ATH11K_REO_STATUS_RING_MASK_0,
++};
++
++const u8 ath11k_rxdma2host_ring_mask[ATH11K_EXT_IRQ_GRP_NUM_MAX] = {
++	ATH11K_RXDMA2HOST_RING_MASK_0,
++	ATH11K_RXDMA2HOST_RING_MASK_1,
++	ATH11K_RXDMA2HOST_RING_MASK_2,
++};
++
++const u8 ath11k_host2rxdma_ring_mask[ATH11K_EXT_IRQ_GRP_NUM_MAX] = {
++	ATH11K_HOST2RXDMA_RING_MASK_0,
++	ATH11K_HOST2RXDMA_RING_MASK_1,
++	ATH11K_HOST2RXDMA_RING_MASK_2,
++};
++
+ /* Map from pdev index to hw mac index */
+ u8 ath11k_core_get_hw_mac_id(struct ath11k_base *ab, int pdev_idx)
+ {
+diff --git a/drivers/net/wireless/ath/ath11k/core.h b/drivers/net/wireless/ath/ath11k/core.h
+index e04f0e711779..161e3ae92b73 100644
+--- a/drivers/net/wireless/ath/ath11k/core.h
++++ b/drivers/net/wireless/ath/ath11k/core.h
+@@ -102,6 +102,33 @@ enum ath11k_firmware_mode {
+ #define ATH11K_EXT_IRQ_GRP_NUM_MAX 11
+ #define ATH11K_EXT_IRQ_NUM_MAX	16
+ 
++#define ATH11K_TX_RING_MASK_0 0x1
++#define ATH11K_TX_RING_MASK_1 0x2
++#define ATH11K_TX_RING_MASK_2 0x4
++
++#define ATH11K_RX_RING_MASK_0 0x1
++#define ATH11K_RX_RING_MASK_1 0x2
++#define ATH11K_RX_RING_MASK_2 0x4
++#define ATH11K_RX_RING_MASK_3 0x8
++
++#define ATH11K_RX_ERR_RING_MASK_0 0x1
++
++#define ATH11K_RX_WBM_REL_RING_MASK_0 0x1
++
++#define ATH11K_REO_STATUS_RING_MASK_0 0x1
++
++#define ATH11K_RXDMA2HOST_RING_MASK_0 0x1
++#define ATH11K_RXDMA2HOST_RING_MASK_1 0x2
++#define ATH11K_RXDMA2HOST_RING_MASK_2 0x4
++
++#define ATH11K_HOST2RXDMA_RING_MASK_0 0x1
++#define ATH11K_HOST2RXDMA_RING_MASK_1 0x2
++#define ATH11K_HOST2RXDMA_RING_MASK_2 0x4
++
++#define ATH11K_RX_MON_STATUS_RING_MASK_0 0x1
++#define ATH11K_RX_MON_STATUS_RING_MASK_1 0x2
++#define ATH11K_RX_MON_STATUS_RING_MASK_2 0x4
++
+ extern const u8 ath11k_reo_status_ring_mask[ATH11K_EXT_IRQ_GRP_NUM_MAX];
+ extern const u8 ath11k_tx_ring_mask[ATH11K_EXT_IRQ_GRP_NUM_MAX];
+ extern const u8 ath11k_rx_ring_mask[ATH11K_EXT_IRQ_GRP_NUM_MAX];
+@@ -109,7 +136,7 @@ extern const u8 ath11k_rx_err_ring_mask[ATH11K_EXT_IRQ_GRP_NUM_MAX];
+ extern const u8 ath11k_rx_wbm_rel_ring_mask[ATH11K_EXT_IRQ_GRP_NUM_MAX];
+ extern const u8 ath11k_rxdma2host_ring_mask[ATH11K_EXT_IRQ_GRP_NUM_MAX];
+ extern const u8 ath11k_host2rxdma_ring_mask[ATH11K_EXT_IRQ_GRP_NUM_MAX];
+-extern const u8 rx_mon_status_ring_mask[ATH11K_EXT_IRQ_GRP_NUM_MAX];
++extern const u8 ath11k_rx_mon_status_ring_mask[ATH11K_EXT_IRQ_GRP_NUM_MAX];
+ 
+ struct ath11k_ext_irq_grp {
+ 	struct ath11k_base *ab;
+diff --git a/drivers/net/wireless/ath/ath11k/dp.c b/drivers/net/wireless/ath/ath11k/dp.c
+index 9ae743e528af..75c177480ff4 100644
+--- a/drivers/net/wireless/ath/ath11k/dp.c
++++ b/drivers/net/wireless/ath/ath11k/dp.c
+@@ -659,9 +659,9 @@ int ath11k_dp_service_srng(struct ath11k_base *ab,
+ 			goto done;
+ 	}
+ 
+-	if (rx_mon_status_ring_mask[grp_id]) {
++	if (ath11k_rx_mon_status_ring_mask[grp_id]) {
+ 		for (i = 0; i <  ab->num_radios; i++) {
+-			if (rx_mon_status_ring_mask[grp_id] & BIT(i)) {
++			if (ath11k_rx_mon_status_ring_mask[grp_id] & BIT(i)) {
+ 				work_done =
+ 				ath11k_dp_rx_process_mon_rings(ab,
+ 							       i, napi,
+-- 
+2.7.4
