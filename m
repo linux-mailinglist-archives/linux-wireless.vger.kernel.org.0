@@ -2,40 +2,41 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DED0B1CEA63
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 May 2020 03:58:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F1F091CEA66
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 May 2020 04:00:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728557AbgELB6c (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 11 May 2020 21:58:32 -0400
-Received: from mga03.intel.com ([134.134.136.65]:19157 "EHLO mga03.intel.com"
+        id S1728301AbgELCAC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 11 May 2020 22:00:02 -0400
+Received: from mga14.intel.com ([192.55.52.115]:22635 "EHLO mga14.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726874AbgELB6c (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 11 May 2020 21:58:32 -0400
-IronPort-SDR: 64w399iFxKgVqqPMmmrzBQVUNJz4VPSORNPs36c0qdsc6HVJwPk8U5n6nUgv5POcl5fm7JMgUR
- YYOQgB3jNZ3A==
+        id S1726874AbgELCAC (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 11 May 2020 22:00:02 -0400
+IronPort-SDR: 8tjHejZxPx4H6rnaIY8fKgGBhkOjwbhVzZDkN+ukjpjo+/JCGsa5H0JEp1Z9s3EyDdEegyFvdd
+ NCE+hYtZiOMg==
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2020 18:58:31 -0700
-IronPort-SDR: /wi+FMfPtOrjVIxuhWeElC5VdPRFxcpccZVgmRFolElnJhL2nqL+MPAYXcPBkEJFme2SPdn3B7
- NtQwAgffx9oA==
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2020 19:00:01 -0700
+IronPort-SDR: KISenIb5qB5yclmk9k9YMzJWwk1y9ewHOcY+5LGqHEMCfrX4pTEKKne5MlA5t2hauGLYZ2Wxaa
+ AS400SecdXCg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.73,381,1583222400"; 
-   d="scan'208";a="286470510"
+   d="scan'208";a="279962125"
 Received: from xwang69-mobl1.ccr.corp.intel.com ([10.249.168.68])
-  by fmsmga004.fm.intel.com with ESMTP; 11 May 2020 18:58:29 -0700
-Message-ID: <4b6a9dbf43a33354c01d760f7fab3723e5882269.camel@intel.com>
-Subject: Re: [PATCH 1/6] iwlwifi: use thermal_zone_device_update() for
- temperature change
+  by orsmga002.jf.intel.com with ESMTP; 11 May 2020 18:59:58 -0700
+Message-ID: <9056a7b3be9161c1ae266ac0266bdb0ab386de66.camel@intel.com>
+Subject: Re: [PATCH 5/6] thermal: core: introduce tz_disabled() helper
+ function
 From:   Zhang Rui <rui.zhang@intel.com>
-To:     linux-pm@vger.kernel.org
-Cc:     linux-wireless@vger.kernel.org, daniel.lezcano@linaro.org,
-        andrzej.p@collabora.com, b.zolnierkie@samsung.com, luca@coelho.fi,
-        luciano.coelho@intel.com
-Date:   Tue, 12 May 2020 09:58:28 +0800
-In-Reply-To: <20200430063229.6182-2-rui.zhang@intel.com>
+To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Cc:     linux-pm@vger.kernel.org, linux-wireless@vger.kernel.org,
+        daniel.lezcano@linaro.org, andrzej.p@collabora.com, luca@coelho.fi
+Date:   Tue, 12 May 2020 09:59:57 +0800
+In-Reply-To: <4aa6fd7d-9e0c-614a-88e9-0e2637a114d4@samsung.com>
 References: <20200430063229.6182-1-rui.zhang@intel.com>
-         <20200430063229.6182-2-rui.zhang@intel.com>
+         <CGME20200430062922eucas1p288a6f222286b4293b32272a3da1166ab@eucas1p2.samsung.com>
+         <20200430063229.6182-6-rui.zhang@intel.com>
+         <4aa6fd7d-9e0c-614a-88e9-0e2637a114d4@samsung.com>
 Content-Type: text/plain; charset="UTF-8"
 X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.1 
 Mime-Version: 1.0
@@ -45,51 +46,100 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Thu, 2020-04-30 at 14:32 +0800, Zhang Rui wrote:
-> thermal_notify_framework() is an obsolete API, and iwlwifi is the
-> only
-> user of it.
-> Convert iwlwifi driver to use thermal_zone_device_update() instead.
+On Mon, 2020-05-04 at 09:09 +0200, Bartlomiej Zolnierkiewicz wrote:
+> On 4/30/20 8:32 AM, Zhang Rui wrote:
+> > Rename should_stop_polling() to tz_disabled(), and make it global.
+> > Because there are platform thermal drivers which also need this.
+> > 
+> > Signed-off-by: Zhang Rui <rui.zhang@intel.com>
+> > ---
+> >  drivers/thermal/thermal_core.c | 17 ++++++++---------
+> >  include/linux/thermal.h        |  2 ++
+> >  2 files changed, 10 insertions(+), 9 deletions(-)
+> > 
+> > diff --git a/drivers/thermal/thermal_core.c
+> > b/drivers/thermal/thermal_core.c
+> > index 5f7a867..1cd5d5d0 100644
+> > --- a/drivers/thermal/thermal_core.c
+> > +++ b/drivers/thermal/thermal_core.c
+> > @@ -305,16 +305,9 @@ static void
+> > thermal_zone_device_set_polling(struct thermal_zone_device *tz,
+> >  		cancel_delayed_work(&tz->poll_queue);
+> >  }
+> >  
+> > -static inline bool should_stop_polling(struct thermal_zone_device
+> > *tz)
+> > -{
+> > -	return thermal_zone_device_get_mode(tz) ==
+> > THERMAL_DEVICE_DISABLED;
+> > -}
+> > -
+> >  static void monitor_thermal_zone(struct thermal_zone_device *tz)
+> >  {
+> > -	bool stop;
+> > -
+> > -	stop = should_stop_polling(tz);
+> > +	bool stop = tz_disabled(tz);
+> >  
+> >  	mutex_lock(&tz->lock);
+> >  
+> > @@ -502,12 +495,18 @@ int thermal_zone_device_set_mode(struct
+> > thermal_zone_device *tz,
+> >  }
+> >  EXPORT_SYMBOL_GPL(thermal_zone_device_set_mode);
+> >  
+> > +bool tz_disabled(struct thermal_zone_device *tz)
+> > +{
+> > +	return thermal_zone_device_get_mode(tz) ==
+> > THERMAL_DEVICE_DISABLED;
+> > +}
+> > +EXPORT_SYMBOL(tz_disabled);
 > 
-> Note that, thermal_zone_device_update() is able to handle the crossed
-> threshold by comparing the current temperature with every trip point,
-> so
-> ths_crossed variant in iwl_mvm_temp_notif() is probably not needed.
-> It is still left there in this patch, in case the debug information
-> is
-> still needed.
+> Is there actual reason to not make it _GPL?
 > 
-> Signed-off-by: Zhang Rui <rui.zhang@intel.com>
+> [ all other thermal core functionality seems to be _GPL anyway ]
 
-Hi, Luca,
-
-Any comments about this patch and patch 6/6?
-
-thanks,
-rui
-
-> ---
->  drivers/net/wireless/intel/iwlwifi/mvm/tt.c | 5 ++---
->  1 file changed, 2 insertions(+), 3 deletions(-)
+Thanks for catching this, will fix in next version.
 > 
-> diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/tt.c
-> b/drivers/net/wireless/intel/iwlwifi/mvm/tt.c
-> index 418e59b..6344b6b 100644
-> --- a/drivers/net/wireless/intel/iwlwifi/mvm/tt.c
-> +++ b/drivers/net/wireless/intel/iwlwifi/mvm/tt.c
-> @@ -203,9 +203,8 @@ void iwl_mvm_temp_notif(struct iwl_mvm *mvm,
-> struct iwl_rx_cmd_buffer *rxb)
->  
->  	if (mvm->tz_device.tzone) {
->  		struct iwl_mvm_thermal_device *tz_dev = &mvm-
-> >tz_device;
-> -
-> -		thermal_notify_framework(tz_dev->tzone,
-> -					 tz_dev-
-> >fw_trips_index[ths_crossed]);
-> +		thermal_zone_device_update(tz_dev->tzone,
-> +					   THERMAL_EVENT_UNSPECIFIED);
->  	}
->  #endif /* CONFIG_THERMAL */
->  }
+> Otherwise the patch looks fine:
+> 
+> Reviewed-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+
+thanks for the review.
+
+-Rui
+> 
+> Best regards,
+> --
+> Bartlomiej Zolnierkiewicz
+> Samsung R&D Institute Poland
+> Samsung Electronics
+> 
+> > +
+> >  void thermal_zone_device_update(struct thermal_zone_device *tz,
+> >  				enum thermal_notify_event event)
+> >  {
+> >  	int count;
+> >  
+> > -	if (should_stop_polling(tz))
+> > +	if (tz_disabled(tz))
+> >  		goto update_polling;
+> >  
+> >  	if (atomic_read(&in_suspend))
+> > diff --git a/include/linux/thermal.h b/include/linux/thermal.h
+> > index a87fbaf..0bc62ee 100644
+> > --- a/include/linux/thermal.h
+> > +++ b/include/linux/thermal.h
+> > @@ -479,4 +479,6 @@ static inline int
+> > thermal_zone_device_disable(struct thermal_zone_device *tz)
+> >  	return thermal_zone_device_set_mode(tz,
+> > THERMAL_DEVICE_DISABLED);
+> >  }
+> >  
+> > +bool tz_disabled(struct thermal_zone_device *tz);
+> > +
+> >  #endif /* __THERMAL_H__ */
+> > 
+> 
+> 
 
