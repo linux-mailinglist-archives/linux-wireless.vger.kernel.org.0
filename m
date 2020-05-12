@@ -2,30 +2,30 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B0611CEF84
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 May 2020 10:53:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6780E1CEF8F
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 May 2020 10:54:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729224AbgELIxH (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 12 May 2020 04:53:07 -0400
-Received: from mail27.static.mailgun.info ([104.130.122.27]:62215 "EHLO
-        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725889AbgELIxG (ORCPT
+        id S1729266AbgELIxy (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 12 May 2020 04:53:54 -0400
+Received: from mail26.static.mailgun.info ([104.130.122.26]:61157 "EHLO
+        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725889AbgELIxy (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 12 May 2020 04:53:06 -0400
+        Tue, 12 May 2020 04:53:54 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1589273586; h=Date: Message-Id: Cc: To: References:
+ s=smtp; t=1589273633; h=Date: Message-Id: Cc: To: References:
  In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=RlONAeKjIDgENypyLGqY++0GEAekrLHoC+VkONZhBYY=;
- b=EsRgzysdVEhRpPnIjRJKi9tWWxuEIHwPabx1XVwRBfJ4DdMtY8Z52G6YrTOV9EXwLNE9Gkht
- cs/jVkFr5so7EBfAeDBn4cBULFc5ZXpnyTDZXIS+K7+qJkH1twvLCZrm6itj4yph0nQuCcmA
- ljDveq93lcYengQWmI96v2MH6sc=
-X-Mailgun-Sending-Ip: 104.130.122.27
+ Content-Type: Sender; bh=+/6p3DIC11Te8kQlt9AC+E8H68Kw1m5lGU+xJ31vemE=;
+ b=d7kxyAUZfxPmQdsZcpEc2+sz+eqF8A1zcF+NrIGzV2cyhie4KPHlEJeD3A2nrQsQbwJk2EkO
+ RgJgdj592NjFZs64CZfiRBTq1eiLLieXaUqP0jKU/hlFuFRITpkIrVA0a5RUJ+TCsdFKneDd
+ DkyHcndYbjUMCT0W+pjWkzzeBT8=
+X-Mailgun-Sending-Ip: 104.130.122.26
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5eba63e9.7f979ca34ae8-smtp-out-n01;
- Tue, 12 May 2020 08:52:57 -0000 (UTC)
+ by mxa.mailgun.org with ESMTP id 5eba6411.7fc2ed2de730-smtp-out-n05;
+ Tue, 12 May 2020 08:53:37 -0000 (UTC)
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 78FAFC433F2; Tue, 12 May 2020 08:52:56 +0000 (UTC)
+        id B8DE4C433CB; Tue, 12 May 2020 08:53:36 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -35,50 +35,53 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 7AAC0C433CB;
-        Tue, 12 May 2020 08:52:53 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 7AAC0C433CB
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 94D4FC433CB;
+        Tue, 12 May 2020 08:53:34 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 94D4FC433CB
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2] brcmfmac: remove Comparison to bool in
- brcmf_p2p_send_action_frame()
+Subject: Re: [PATCH][next] rndis_wlan: Remove logically dead code
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20200508074351.19193-1-yanaijie@huawei.com>
-References: <20200508074351.19193-1-yanaijie@huawei.com>
-To:     Jason Yan <yanaijie@huawei.com>
-Cc:     <arend.vanspriel@broadcom.com>, <franky.lin@broadcom.com>,
-        <hante.meuleman@broadcom.com>, <chi-hsien.lin@cypress.com>,
-        <wright.feng@cypress.com>, <davem@davemloft.net>,
-        <linux-wireless@vger.kernel.org>,
-        <brcm80211-dev-list.pdl@broadcom.com>,
-        <brcm80211-dev-list@cypress.com>, <netdev@vger.kernel.org>,
-        Jason Yan <yanaijie@huawei.com>
+In-Reply-To: <20200505235205.GA18539@embeddedor>
+References: <20200505235205.GA18539@embeddedor>
+To:     "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+Cc:     Jussi Kivilinna <jussi.kivilinna@iki.fi>,
+        "David S. Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        "Gustavo A. R. Silva" <gustavo@embeddedor.com>
 User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20200512085256.78FAFC433F2@smtp.codeaurora.org>
-Date:   Tue, 12 May 2020 08:52:56 +0000 (UTC)
+Message-Id: <20200512085336.B8DE4C433CB@smtp.codeaurora.org>
+Date:   Tue, 12 May 2020 08:53:36 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Jason Yan <yanaijie@huawei.com> wrote:
+"Gustavo A. R. Silva" <gustavo@embeddedor.com> wrote:
 
-> Fix the following coccicheck warning:
+> caps_buf is always of size sizeof(*caps) because
+> sizeof(caps->auth_encr_pair) * 16 is always zero. Notice
+> that when using zero-length arrays, sizeof evaluates to zero[1].
 > 
-> drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c:1785:5-8:
-> WARNING: Comparison to bool
+> So, the code introduced by 
+> commit 0308383f9591 ("rndis_wlan: get max_num_pmkids from device")
+> is logically dead, hence is never executed and can be removed. As a
+> consequence, the rest of the related code can be refactored a bit.
 > 
-> Signed-off-by: Jason Yan <yanaijie@huawei.com>
-> Reviewed-by: Chi-hsien Lin <chi-hsien.lin@cypress.com>
+> Notice that this code has been out there since March 2010.
+> 
+> [1] https://gcc.gnu.org/onlinedocs/gcc/Zero-Length.html
+> Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
 
 Patch applied to wireless-drivers-next.git, thanks.
 
-78a6fb42f67c brcmfmac: remove Comparison to bool in brcmf_p2p_send_action_frame()
+485c64be7152 rndis_wlan: Remove logically dead code
 
 -- 
-https://patchwork.kernel.org/patch/11535825/
+https://patchwork.kernel.org/patch/11530089/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
