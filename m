@@ -2,125 +2,139 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 482BE1CEE65
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 May 2020 09:44:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 580BB1CEEF9
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 May 2020 10:19:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728924AbgELHns convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 12 May 2020 03:43:48 -0400
-Received: from mail-ot1-f66.google.com ([209.85.210.66]:46193 "EHLO
-        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725823AbgELHnr (ORCPT
+        id S1728490AbgELITM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 12 May 2020 04:19:12 -0400
+Received: from mail27.static.mailgun.info ([104.130.122.27]:26019 "EHLO
+        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725823AbgELITL (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 12 May 2020 03:43:47 -0400
-Received: by mail-ot1-f66.google.com with SMTP id z25so9733775otq.13;
-        Tue, 12 May 2020 00:43:46 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=WL99cZpSCjAY9uTUemuiOdybxhEn/p8SNKkMW2pnMgk=;
-        b=UWfiuJ1JfrhBaZAuKcvb251vQMZUZxP6ntM+CasVEGUuDByMshQ4AkU7RrnO4/SlLz
-         X4oYzFb6UliokNfhYEgnBC0nnyNQpZmc+O7fGZr5amyPhr1cIIe/4rSuCm8gqlgj/FQr
-         ++kyEpzk6RO3nmTIGO0Uge5OlEHbsOKrpeHDSmItzOri1HNVpqoGdEJofGG4IAmpumTj
-         UPTpxnUFJwSNCambQMmeRTyoozBAdUSt08yoJl9zYDbQj51ZR14f1cSCR9BNXhVy1irk
-         i4U5SA/GB+/uUEvfLp0GITSwUidSTuTtLBsJXY8MztmWIbRjXsQb/HUdmHpPKshIyDnE
-         HYXA==
-X-Gm-Message-State: AGi0PuanBb5RTaSTFotTjFYhnFbmUJ66ufhnGx5DFq9u/NqaDRTOs8Dk
-        7AafZ7YqJzOjnKxR3HJPE4g5NTLs9qfmqCKOUcQ=
-X-Google-Smtp-Source: APiQypIDWmbHTXLtnOKXo30M5B3vTkf3nDlAfbBCqheKh4YZxA4lrYnndNhzQpgu3wBVeeut/IwxOF4lTFymYCLt8jo=
-X-Received: by 2002:a9d:7990:: with SMTP id h16mr15276353otm.145.1589269426183;
- Tue, 12 May 2020 00:43:46 -0700 (PDT)
+        Tue, 12 May 2020 04:19:11 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1589271551; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=JkH5Lpb6vcb0r+1iNMeKZsrfDvZIUMWw0ao4pTLgv0A=; b=pttPqlPYJen3LGv47Jb7vXpCbbgG9zTr8pr3Rljmwq3TVXuvdoXX6Fgn1vUkAQ5wD8YWFKbJ
+ GYeEadeGFsXytWXiqIWuB7T7ZBigiKiLXdhq2EOLRM/UmOgpffDpL/Q0EdlO1jQcjrggrDny
+ +lLFFU+lDCA8Zm05bPK9vBjdeiM=
+X-Mailgun-Sending-Ip: 104.130.122.27
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5eba5bfc.7fdbb30db2d0-smtp-out-n03;
+ Tue, 12 May 2020 08:19:08 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id C3B64C43636; Tue, 12 May 2020 08:19:08 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id B60A0C433CB;
+        Tue, 12 May 2020 08:19:06 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org B60A0C433CB
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Cc:     Govind Singh <govinds@codeaurora.org>,
+        linux-wireless@vger.kernel.org, ath11k@lists.infradead.org
+Subject: Re: [PATCH 4/4] ath11k: Register mhi controller device for qca6390
+References: <20200508085850.23363-1-govinds@codeaurora.org>
+        <20200508085850.23363-5-govinds@codeaurora.org>
+        <87d07a4acz.fsf@kamboji.qca.qualcomm.com>
+        <20200512071323.GI4928@Mani-XPS-13-9360>
+Date:   Tue, 12 May 2020 11:19:04 +0300
+In-Reply-To: <20200512071323.GI4928@Mani-XPS-13-9360> (Manivannan Sadhasivam's
+        message of "Tue, 12 May 2020 12:43:23 +0530")
+Message-ID: <871rnp4lc7.fsf@kamboji.qca.qualcomm.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-References: <20200511154930.190212-1-Jerome.Pouiller@silabs.com> <20200511154930.190212-14-Jerome.Pouiller@silabs.com>
-In-Reply-To: <20200511154930.190212-14-Jerome.Pouiller@silabs.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Tue, 12 May 2020 09:43:34 +0200
-Message-ID: <CAMuHMdVZxy+FZGPhDxotCBeEX3O4ZMkmGAwmVFXQE9ZoijDN5g@mail.gmail.com>
-Subject: Re: [PATCH 13/17] staging: wfx: fix endianness of the field 'len'
-To:     Jerome Pouiller <Jerome.Pouiller@silabs.com>
-Cc:     driverdevel <devel@driverdev.osuosl.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        netdev <netdev@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Jerome,
+Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org> writes:
 
-On Mon, May 11, 2020 at 5:53 PM Jerome Pouiller
-<Jerome.Pouiller@silabs.com> wrote:
-> From: Jérôme Pouiller <jerome.pouiller@silabs.com>
+> Hi Kalle,
 >
-> The struct hif_msg is received from the hardware. So, it declared as
-> little endian. However, it is also accessed from many places in the
-> driver. Sparse complains about that:
+> On Mon, May 11, 2020 at 09:03:56PM +0300, Kalle Valo wrote:
+>> 
+>> Govind Singh <govinds@codeaurora.org> writes:
+>> 
+>> >  config ATH11K_PCI
+>> >  	tristate "Qualcomm Technologies 802.11ax chipset PCI support"
+>> > -	depends on ATH11K && PCI
+>> > +	depends on ATH11K && PCI && MHI_BUS
+>> >  	---help---
+>> >  	  This module adds support for PCIE bus
+>> 
+>> Currently ATH11K_PCI is not visible if MHI_BUS is disabled, which I'm
+>> worried will confuse the users. I wonder if we should use 'select
+>> MHI_BUS' instead? That way ATH11K_PCI would be visible even if MHI_BUS
+>> is disabled.
+>> 
 >
->     drivers/staging/wfx/bh.c:88:32: warning: restricted __le16 degrades to integer
->     drivers/staging/wfx/bh.c:88:32: warning: restricted __le16 degrades to integer
->     drivers/staging/wfx/bh.c:93:32: warning: restricted __le16 degrades to integer
->     drivers/staging/wfx/bh.c:93:32: warning: cast to restricted __le16
->     drivers/staging/wfx/bh.c:93:32: warning: restricted __le16 degrades to integer
->     drivers/staging/wfx/bh.c:121:25: warning: incorrect type in argument 2 (different base types)
->     drivers/staging/wfx/bh.c:121:25:    expected unsigned int len
->     drivers/staging/wfx/bh.c:121:25:    got restricted __le16 [usertype] len
->     drivers/staging/wfx/hif_rx.c:27:22: warning: restricted __le16 degrades to integer
->     drivers/staging/wfx/hif_rx.c:347:39: warning: incorrect type in argument 7 (different base types)
->     drivers/staging/wfx/hif_rx.c:347:39:    expected unsigned int [usertype] len
->     drivers/staging/wfx/hif_rx.c:347:39:    got restricted __le16 const [usertype] len
->     drivers/staging/wfx/hif_rx.c:365:39: warning: incorrect type in argument 7 (different base types)
->     drivers/staging/wfx/hif_rx.c:365:39:    expected unsigned int [usertype] len
->     drivers/staging/wfx/hif_rx.c:365:39:    got restricted __le16 const [usertype] len
->     drivers/staging/wfx/./traces.h:195:1: warning: incorrect type in assignment (different base types)
->     drivers/staging/wfx/./traces.h:195:1:    expected int msg_len
->     drivers/staging/wfx/./traces.h:195:1:    got restricted __le16 const [usertype] len
->     drivers/staging/wfx/./traces.h:195:1: warning: incorrect type in assignment (different base types)
->     drivers/staging/wfx/./traces.h:195:1:    expected int msg_len
->     drivers/staging/wfx/./traces.h:195:1:    got restricted __le16 const [usertype] len
->     drivers/staging/wfx/debug.c:319:20: warning: restricted __le16 degrades to integer
->     drivers/staging/wfx/secure_link.c:85:27: warning: restricted __le16 degrades to integer
->     drivers/staging/wfx/secure_link.c:85:27: warning: restricted __le16 degrades to integer
+> Right, this sounds good to me.
 
-Thanks for your patch!
+Good, I added that in the pending branch.
 
-> In order to make Sparse happy and to keep access from the driver easy,
-> this patch declare 'len' with native endianness.
+>> And what about QRTR_MHI? Mani, any suggestions?
+>> 
 >
-> On reception of hardware data, this patch takes care to do byte-swap and
-> keep Sparse happy.
+> Are you asking for Kconfig dependency? If yes, then you need to select it here
+> also as you can't do much without it.
 
-Which means sparse can no longer do any checking on the field,
-and new bugs may/will creep in in the future, unnoticed.
+Ok, I added QRTR_MHI to Kconfig as well I also had to add "select MHI"
+as othwerwise I would get this warning:
 
-> --- a/drivers/staging/wfx/hif_api_general.h
-> +++ b/drivers/staging/wfx/hif_api_general.h
-> @@ -23,7 +23,10 @@
->  #define HIF_COUNTER_MAX           7
->
->  struct hif_msg {
-> -       __le16 len;
-> +       // len is in fact little endian. However, it is widely used in the
-> +       // driver, so we declare it in native byte order and we reorder just
-> +       // before/after send/receive it (see bh.c).
-> +       u16    len;
+WARNING: unmet direct dependencies detected for QRTR_MHI
+  Depends on [n]: NET [=y] && QRTR [=n] && MHI_BUS [=m]
+  Selected by [m]:
+  - ATH11K_PCI [=m] && NETDEVICES [=y] && WLAN [=y] && WLAN_VENDOR_ATH [=y] && ATH11K [=m] && PCI [=y]
 
-While there's a small penalty associated with always doing the conversion
-on big-endian platforms, it will probably be lost in the noise anyway.
+So now Kconfig looks like:
 
-Gr{oetje,eeting}s,
+config ATH11K_PCI
+	tristate "Qualcomm Technologies 802.11ax chipset PCI support (work in-progress)"
+	depends on ATH11K && PCI
+	select MHI_BUS
+	select QRTR
+	select QRTR_MHI
+	---help---
+	  This module adds support for PCIE bus
 
-                        Geert
+Govind&Mani, please check my changes in the pending branch:
+
+https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=5ebf69d1db8b027671b642e3ba0bec3d7c73acb7
+
+> Btw, I'm not CCed for the patch so I haven't looked at it.
+
+This patchset is in my pending branch, link above.
+
+> But we have made few changes to the MHI stack which will impact the
+> controller drivers.
+
+Oh, that will create problems. What kind of changes are needed in
+ath11k?
+
+> So I'd suggest you to rebase MHI controller patch on top of mhi-next
+> [1]. The proposed changes in MHI will hopefully land in 5.8.
+
+I cannot rebase on top mhi-next as my patches go through net-next. One
+option I can think of is that I'll pull (not rebase!) mhi-next to my
+tree, but I would need to check with David Miller first and I'm not sure
+if it's worth the trouble. I think easiest is that we find minimal
+possible changes needed to accommodate the new MHI interface and then
+inform Linus and Stephen when do the merges.
+
+> [1] https://git.kernel.org/pub/scm/linux/kernel/git/mani/mhi.git/log/?h=mhi-next
 
 -- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
