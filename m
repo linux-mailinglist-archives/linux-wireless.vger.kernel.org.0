@@ -2,149 +2,110 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 546DE1CEDD8
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 May 2020 09:13:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7348C1CEE0B
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 May 2020 09:33:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728837AbgELHNa (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 12 May 2020 03:13:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54464 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725813AbgELHN3 (ORCPT
+        id S1728912AbgELHdF (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 12 May 2020 03:33:05 -0400
+Received: from mail27.static.mailgun.info ([104.130.122.27]:28824 "EHLO
+        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728139AbgELHdE (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 12 May 2020 03:13:29 -0400
-Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com [IPv6:2607:f8b0:4864:20::441])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BADF3C061A0C
-        for <linux-wireless@vger.kernel.org>; Tue, 12 May 2020 00:13:29 -0700 (PDT)
-Received: by mail-pf1-x441.google.com with SMTP id b190so194338pfg.6
-        for <linux-wireless@vger.kernel.org>; Tue, 12 May 2020 00:13:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to
-         :user-agent;
-        bh=bvIBWMYCQid6N8zBsdNDHUKkIdOA7VgYY1sntddkviw=;
-        b=RecMHZRyHCdIIehdmGYZ/778gSExNRkgZEudpJwN1C+mfKGVLFFO1mZZhQk9OFmJk1
-         HBommUjIPK/53oAAkjTFenUB7nhf96GnN3zP42LybhU8ftV3L0q5ZINbqmIeVEC+pAcm
-         X6OjehnmLaJEWt1drhbjfWgnMpXV/sEHDTg/vm+GFEx0KO7N0JKRAXtVXkoUJUKAZKqV
-         RmfQ8vfP5sM3K+E/C9Lo8R4VAySOMfmM/7LO//N0Qt728VyBtXFCnPtxJM+nygsu9iEx
-         TBDzY40+3th71MLXCP1/LuqLz36YKCQbCIckG8yrxCItb1bGgok/0XJydQsnopUsiuqU
-         D50Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to:user-agent;
-        bh=bvIBWMYCQid6N8zBsdNDHUKkIdOA7VgYY1sntddkviw=;
-        b=lzHSZWQu9VhmXr9Ky5/cl0l5bIcr4nJljNo8RW8Q0zHxFEOu85jTnsiE6kFusRbkM6
-         +dptSdMWCkJdTDmFyMi9fSehnXXA1H8Ja2tlcMRZ4vzcogI5EKwiBcGxXN09ERTC4MaP
-         oAGTkq+GJS2bjFNL5n7M++PAWgWBBX9Td5oeasOyg5wFy8R2KT8KcJsA+poQE7iuCfGX
-         vjJIqS4r1uOzVDjsmCu7UyVyj6yAEb2YUBZe8kpaiMGmWT4ioWJ/KHmgSqBwv0t8H8xV
-         oEnUwsxoSQRKfLtstRV6iHzhxBftw9zvEVwST70m/PN0ucehTe7TM0VjiA7s4Z/m7pey
-         M88g==
-X-Gm-Message-State: AGi0PuaYr4nbofD5bzv2WXbGZy9NWWHwfBTsMZgE5EOu9xhzWC5sTrmV
-        iYq6G8A5DL5wInKbYpOeCfs0st2zaw==
-X-Google-Smtp-Source: APiQypLC0LQXEtnFGmt5pQE62v/wKLr3efmkuRyHauqPw2+yqydPoP28ATyNoJQbiYQyPxojJoBjrw==
-X-Received: by 2002:aa7:951b:: with SMTP id b27mr19933794pfp.2.1589267608850;
-        Tue, 12 May 2020 00:13:28 -0700 (PDT)
-Received: from Mani-XPS-13-9360 ([2409:4072:6007:2f23:5151:5dd:ea86:4678])
-        by smtp.gmail.com with ESMTPSA id l6sm11069273pfl.128.2020.05.12.00.13.26
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 12 May 2020 00:13:28 -0700 (PDT)
-Date:   Tue, 12 May 2020 12:43:23 +0530
-From:   Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     Govind Singh <govinds@codeaurora.org>, ath11k@lists.infradead.org,
-        linux-wireless@vger.kernel.org
-Subject: Re: [PATCH 4/4] ath11k: Register mhi controller device for qca6390
-Message-ID: <20200512071323.GI4928@Mani-XPS-13-9360>
-References: <20200508085850.23363-1-govinds@codeaurora.org>
- <20200508085850.23363-5-govinds@codeaurora.org>
- <87d07a4acz.fsf@kamboji.qca.qualcomm.com>
+        Tue, 12 May 2020 03:33:04 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1589268784; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=PV0ffuseEJPvIxcDvTKmfLCk6MMv4KR9on4py3/Gz28=;
+ b=umpkznfmEEr2/CnyTqxhADVreO+D86iYLd4w+DuxmvIr8VeofvDYac1QxexTWrCRw8n6IH+d
+ +Nqr/aDv7zl0dwTd+oD246o0qW9pmgLoPNS/hSj5nO8TYKvZ6XFGps9m0Ygxh2NTlXyH6lMu
+ qOOFFogwGZIsnGvGN1cCn7nNOtY=
+X-Mailgun-Sending-Ip: 104.130.122.27
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5eba5118.7fecd11f1fb8-smtp-out-n03;
+ Tue, 12 May 2020 07:32:40 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 349C9C44788; Tue, 12 May 2020 07:32:40 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
+        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id DB041C433CB;
+        Tue, 12 May 2020 07:32:37 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org DB041C433CB
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <87d07a4acz.fsf@kamboji.qca.qualcomm.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] carl9170: Replace zero-length array with flexible-array
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20200507151921.GA5083@embeddedor>
+References: <20200507151921.GA5083@embeddedor>
+To:     "Gustavo A. R. Silva" <gustavoars@kernel.org>
+Cc:     Christian Lamparter <chunkeey@googlemail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
+Message-Id: <20200512073240.349C9C44788@smtp.codeaurora.org>
+Date:   Tue, 12 May 2020 07:32:40 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi Kalle,
+"Gustavo A. R. Silva" <gustavoars@kernel.org> wrote:
 
-On Mon, May 11, 2020 at 09:03:56PM +0300, Kalle Valo wrote:
-> + mani
+> The current codebase makes use of the zero-length array language
+> extension to the C90 standard, but the preferred mechanism to declare
+> variable-length types such as these ones is a flexible array member[1][2],
+> introduced in C99:
 > 
-> Govind Singh <govinds@codeaurora.org> writes:
+> struct foo {
+>         int stuff;
+>         struct boo array[];
+> };
 > 
-> > MHI is a communication protocol to communicate with external
-> > Qualcomm modems and Wi-Fi chipsets over high speed peripheral buses. Even
-> > though MHI doesn’t dictate underlying physical layer, protocol and mhi stack
-> > is structured for PCIe based devices.
-> >
-> > Register directly with mhi core layer as a mhi device driver for
-> > firmware download.
-> >
-> > Tested QCA6390 on X86 platform.
-> > Tested firmware WLAN.HST.1.0.1.c1-00440-QCAHSTSWPLZ_V2_TO_X86-1.
-> >
-> > Signed-off-by: Govind Singh <govinds@codeaurora.org>
+> By making use of the mechanism above, we will get a compiler warning
+> in case the flexible array does not occur last in the structure, which
+> will help us prevent some kind of undefined behavior bugs from being
+> inadvertently introduced[3] to the codebase from now on.
 > 
-
-Ah,finally!
-
-> [...]
+> Also, notice that, dynamic memory allocations won't be affected by
+> this change:
 > 
-> > --- a/drivers/net/wireless/ath/ath11k/Kconfig
-> > +++ b/drivers/net/wireless/ath/ath11k/Kconfig
-> > @@ -2,7 +2,6 @@
-> >  config ATH11K
-> >  	tristate "Qualcomm Technologies 802.11ax chipset support"
-> >  	depends on MAC80211 && HAS_DMA
-> > -	depends on REMOTEPROC
-> >  	depends on CRYPTO_MICHAEL_MIC
-> >  	depends on ARCH_QCOM || COMPILE_TEST
-> >  	select ATH_COMMON
-> > @@ -15,13 +14,13 @@ config ATH11K
-> >  
-> >  config ATH11K_AHB
-> >  	tristate "Qualcomm Technologies 802.11ax chipset AHB support"
-> > -	depends on ATH11K
-> > +	depends on ATH11K && REMOTEPROC
-> >  	---help---
-> >  	  This module adds support for AHB bus
-> >  
-> >  config ATH11K_PCI
-> >  	tristate "Qualcomm Technologies 802.11ax chipset PCI support"
-> > -	depends on ATH11K && PCI
-> > +	depends on ATH11K && PCI && MHI_BUS
-> >  	---help---
-> >  	  This module adds support for PCIE bus
+> "Flexible array members have incomplete type, and so the sizeof operator
+> may not be applied. As a quirk of the original implementation of
+> zero-length arrays, sizeof evaluates to zero."[1]
 > 
-> Currently ATH11K_PCI is not visible if MHI_BUS is disabled, which I'm
-> worried will confuse the users. I wonder if we should use 'select
-> MHI_BUS' instead? That way ATH11K_PCI would be visible even if MHI_BUS
-> is disabled.
+> sizeof(flexible-array-member) triggers a warning because flexible array
+> members have incomplete type[1]. There are some instances of code in
+> which the sizeof operator is being incorrectly/erroneously applied to
+> zero-length arrays and the result is zero. Such instances may be hiding
+> some bugs. So, this work (flexible-array member conversions) will also
+> help to get completely rid of those sorts of issues.
 > 
-
-Right, this sounds good to me.
-
-> And what about QRTR_MHI? Mani, any suggestions?
+> This issue was found with the help of Coccinelle.
 > 
+> [1] https://gcc.gnu.org/onlinedocs/gcc/Zero-Length.html
+> [2] https://github.com/KSPP/linux/issues/21
+> [3] commit 76497732932f ("cxgb3/l2t: Fix undefined behaviour")
+> 
+> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 
-Are you asking for Kconfig dependency? If yes, then you need to select it here
-also as you can't do much without it.
+Patch applied to ath-next branch of ath.git, thanks.
 
-Btw, I'm not CCed for the patch so I haven't looked at it. But we have made few
-changes to the MHI stack which will impact the controller drivers. So I'd
-suggest you to rebase MHI controller patch on top of mhi-next [1]. The proposed
-changes in MHI will hopefully land in 5.8.
+103dc3dab295 carl9170: Replace zero-length array with flexible-array
 
-Thanks,
-Mani
+-- 
+https://patchwork.kernel.org/patch/11534317/
 
-[1] https://git.kernel.org/pub/scm/linux/kernel/git/mani/mhi.git/log/?h=mhi-next
-
-> -- 
-> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
