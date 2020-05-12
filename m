@@ -2,144 +2,95 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F1F091CEA66
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 May 2020 04:00:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D7C201CEC75
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 May 2020 07:31:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728301AbgELCAC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 11 May 2020 22:00:02 -0400
-Received: from mga14.intel.com ([192.55.52.115]:22635 "EHLO mga14.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726874AbgELCAC (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 11 May 2020 22:00:02 -0400
-IronPort-SDR: 8tjHejZxPx4H6rnaIY8fKgGBhkOjwbhVzZDkN+ukjpjo+/JCGsa5H0JEp1Z9s3EyDdEegyFvdd
- NCE+hYtZiOMg==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2020 19:00:01 -0700
-IronPort-SDR: KISenIb5qB5yclmk9k9YMzJWwk1y9ewHOcY+5LGqHEMCfrX4pTEKKne5MlA5t2hauGLYZ2Wxaa
- AS400SecdXCg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.73,381,1583222400"; 
-   d="scan'208";a="279962125"
-Received: from xwang69-mobl1.ccr.corp.intel.com ([10.249.168.68])
-  by orsmga002.jf.intel.com with ESMTP; 11 May 2020 18:59:58 -0700
-Message-ID: <9056a7b3be9161c1ae266ac0266bdb0ab386de66.camel@intel.com>
-Subject: Re: [PATCH 5/6] thermal: core: introduce tz_disabled() helper
- function
-From:   Zhang Rui <rui.zhang@intel.com>
-To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Cc:     linux-pm@vger.kernel.org, linux-wireless@vger.kernel.org,
-        daniel.lezcano@linaro.org, andrzej.p@collabora.com, luca@coelho.fi
-Date:   Tue, 12 May 2020 09:59:57 +0800
-In-Reply-To: <4aa6fd7d-9e0c-614a-88e9-0e2637a114d4@samsung.com>
-References: <20200430063229.6182-1-rui.zhang@intel.com>
-         <CGME20200430062922eucas1p288a6f222286b4293b32272a3da1166ab@eucas1p2.samsung.com>
-         <20200430063229.6182-6-rui.zhang@intel.com>
-         <4aa6fd7d-9e0c-614a-88e9-0e2637a114d4@samsung.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.1 
-Mime-Version: 1.0
+        id S1725892AbgELFbM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 12 May 2020 01:31:12 -0400
+Received: from mail26.static.mailgun.info ([104.130.122.26]:33766 "EHLO
+        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725776AbgELFbM (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 12 May 2020 01:31:12 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1589261471; h=Message-ID: References: In-Reply-To: Subject:
+ Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Sender; bh=W373dMi02N5ax/ku01lfJpSbK9rBHrEsf8WrQm2QZ0k=;
+ b=g20dKJexFOERiop/5gf4JQfKckeOgQduNFtXDQk3em3DbQlM4dqvuXDCJ7ent26ZOkmj8erc
+ Pft/tm/IjvxyBAHyyKDOd45a4730smWdVQrQVJTMMUgPmy6hioRzHV8LE5EIN6kdKQZHkK6O
+ vzdEgvwRrt4tJ7hYYQdW0wcRpPM=
+X-Mailgun-Sending-Ip: 104.130.122.26
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5eba349f.7f0f2a34fed8-smtp-out-n01;
+ Tue, 12 May 2020 05:31:11 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 5942DC432C2; Tue, 12 May 2020 05:31:10 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: govinds)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id E09E9C433F2;
+        Tue, 12 May 2020 05:31:09 +0000 (UTC)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
 Content-Transfer-Encoding: 7bit
+Date:   Tue, 12 May 2020 11:01:09 +0530
+From:   govinds@codeaurora.org
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     linux-wireless@vger.kernel.org, ath11k@lists.infradead.org
+Subject: Re: [PATCH 1/4] ath11k: Add PCI client driver for QCA6390 chipset
+In-Reply-To: <87h7wm4akt.fsf@kamboji.qca.qualcomm.com>
+References: <20200508085850.23363-1-govinds@codeaurora.org>
+ <20200508085850.23363-2-govinds@codeaurora.org>
+ <87h7wm4akt.fsf@kamboji.qca.qualcomm.com>
+Message-ID: <2028987516458b3145d3cd9758eafe8f@codeaurora.org>
+X-Sender: govinds@codeaurora.org
+User-Agent: Roundcube Webmail/1.3.9
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, 2020-05-04 at 09:09 +0200, Bartlomiej Zolnierkiewicz wrote:
-> On 4/30/20 8:32 AM, Zhang Rui wrote:
-> > Rename should_stop_polling() to tz_disabled(), and make it global.
-> > Because there are platform thermal drivers which also need this.
-> > 
-> > Signed-off-by: Zhang Rui <rui.zhang@intel.com>
-> > ---
-> >  drivers/thermal/thermal_core.c | 17 ++++++++---------
-> >  include/linux/thermal.h        |  2 ++
-> >  2 files changed, 10 insertions(+), 9 deletions(-)
-> > 
-> > diff --git a/drivers/thermal/thermal_core.c
-> > b/drivers/thermal/thermal_core.c
-> > index 5f7a867..1cd5d5d0 100644
-> > --- a/drivers/thermal/thermal_core.c
-> > +++ b/drivers/thermal/thermal_core.c
-> > @@ -305,16 +305,9 @@ static void
-> > thermal_zone_device_set_polling(struct thermal_zone_device *tz,
-> >  		cancel_delayed_work(&tz->poll_queue);
-> >  }
-> >  
-> > -static inline bool should_stop_polling(struct thermal_zone_device
-> > *tz)
-> > -{
-> > -	return thermal_zone_device_get_mode(tz) ==
-> > THERMAL_DEVICE_DISABLED;
-> > -}
-> > -
-> >  static void monitor_thermal_zone(struct thermal_zone_device *tz)
-> >  {
-> > -	bool stop;
-> > -
-> > -	stop = should_stop_polling(tz);
-> > +	bool stop = tz_disabled(tz);
-> >  
-> >  	mutex_lock(&tz->lock);
-> >  
-> > @@ -502,12 +495,18 @@ int thermal_zone_device_set_mode(struct
-> > thermal_zone_device *tz,
-> >  }
-> >  EXPORT_SYMBOL_GPL(thermal_zone_device_set_mode);
-> >  
-> > +bool tz_disabled(struct thermal_zone_device *tz)
-> > +{
-> > +	return thermal_zone_device_get_mode(tz) ==
-> > THERMAL_DEVICE_DISABLED;
-> > +}
-> > +EXPORT_SYMBOL(tz_disabled);
-> 
-> Is there actual reason to not make it _GPL?
-> 
-> [ all other thermal core functionality seems to be _GPL anyway ]
+Hi Kalle,
 
-Thanks for catching this, will fix in next version.
+On 2020-05-11 23:29, Kalle Valo wrote:
+> Govind Singh <govinds@codeaurora.org> writes:
 > 
-> Otherwise the patch looks fine:
+>> QCA6390 is PCI based 11ax chipset, add
+>> pci client driver for QCA6390 target.
+>> 
+>> Signed-off-by: Govind Singh <govinds@codeaurora.org>
 > 
-> Reviewed-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-
-thanks for the review.
-
--Rui
+> This patch had multiple problems, most important ones were:
 > 
-> Best regards,
-> --
-> Bartlomiej Zolnierkiewicz
-> Samsung R&D Institute Poland
-> Samsung Electronics
-> 
-> > +
-> >  void thermal_zone_device_update(struct thermal_zone_device *tz,
-> >  				enum thermal_notify_event event)
-> >  {
-> >  	int count;
-> >  
-> > -	if (should_stop_polling(tz))
-> > +	if (tz_disabled(tz))
-> >  		goto update_polling;
-> >  
-> >  	if (atomic_read(&in_suspend))
-> > diff --git a/include/linux/thermal.h b/include/linux/thermal.h
-> > index a87fbaf..0bc62ee 100644
-> > --- a/include/linux/thermal.h
-> > +++ b/include/linux/thermal.h
-> > @@ -479,4 +479,6 @@ static inline int
-> > thermal_zone_device_disable(struct thermal_zone_device *tz)
-> >  	return thermal_zone_device_set_mode(tz,
-> > THERMAL_DEVICE_DISABLED);
-> >  }
-> >  
-> > +bool tz_disabled(struct thermal_zone_device *tz);
-> > +
-> >  #endif /* __THERMAL_H__ */
-> > 
-> 
+> * a break missing in ath11k_pci_probe()
 > 
 
+My bad. Thanks for fixing same.
+
+> * it's not possible to have static variables in .h files, I fixed by
+>   moving the ring variables to core.c in a separate patch:
+> 
+>   https://patchwork.kernel.org/patch/11541355/
+> 
+> * this patch didn't link (at least when compiling as modules), I fixed
+>   those by adding missing EXPORT_SYMBOL() macros
+> 
+
+Looks, this is required after moving the ring mask from ahb to core.
+
+> Please double check my changes:
+> 
+> https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=44a28b572070f578914367dc2469cef48ece13f4
+
+Looks good to me.
+
+BR,
+Govind
