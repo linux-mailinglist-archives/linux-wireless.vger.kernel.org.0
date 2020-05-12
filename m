@@ -2,94 +2,175 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 619881CFB6A
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 May 2020 18:57:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 63E4F1CFB8C
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 May 2020 19:04:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727882AbgELQ5G (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 12 May 2020 12:57:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32960 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725851AbgELQ5F (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 12 May 2020 12:57:05 -0400
-Received: from mail-lj1-x244.google.com (mail-lj1-x244.google.com [IPv6:2a00:1450:4864:20::244])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 056C3C05BD09
-        for <linux-wireless@vger.kernel.org>; Tue, 12 May 2020 09:57:05 -0700 (PDT)
-Received: by mail-lj1-x244.google.com with SMTP id g1so8582684ljk.7
-        for <linux-wireless@vger.kernel.org>; Tue, 12 May 2020 09:57:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=soB2T7jMfJPtP5H3MNhiTe8IwYHJSi7NbmavIdokrOw=;
-        b=crUTI9DBwo1cPu+KhFehaihTnypYtCw55ruTD7lVh8znQdy9XZk/8FGzr8uT3FK2iV
-         hRIiPsNa753rxUMiEk5p3b5zJ6y4SQ9lMrHEh4BNB0f0LNwzwPRwYUux8eaG4K48fgZE
-         QLAuHslKPqD8iz0uGuPmhKPpNIIpnqwyweDz4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=soB2T7jMfJPtP5H3MNhiTe8IwYHJSi7NbmavIdokrOw=;
-        b=MWxVyfyTFKIJVE0PenmeY3aTFgdQ2+IRxjHvm243YkxK/7zaknj57fzdP+TMx8aPrO
-         +MJPs7Ovy75F0eDJVyHNc45QsCzz3exDPya2znaYg3mVli6bVxYmajEOnu1zGaJhvvA8
-         1OHmozPykRc+YO8QwiT0+nQrljU4g7JBSqnsGoF0vL414NXbCS/Ah3ybUpRFrOPMAdwr
-         o5nTD4Ux6aN25Puz1OPINkgnFt26DtYdA9FpWsEzxLoeV/9gSkRldL7hQfsRgOwLdnQO
-         /8GIr78TvWL1TDBPrsyTiBHMqLUNCysaBOr3+Sa7lr10HefLlbfO0Q9/byvbM284A8Kk
-         1qtQ==
-X-Gm-Message-State: AOAM530wX2oR+S9aFKdDgOJBLicj9bi6hPbqnhVJC9UhHv2aMX27KvOB
-        HwX6rEVlfBXQZIOwNqAtczKWWTNoEzY=
-X-Google-Smtp-Source: ABdhPJxjMPKMEoEeOkc76aMdTCkJRBiTRtsZm3lgTRQRVk13JaDceGvYGYEJ2n6PG4LvhMu8Jug2Uw==
-X-Received: by 2002:a05:651c:1131:: with SMTP id e17mr14987730ljo.79.1589302623060;
-        Tue, 12 May 2020 09:57:03 -0700 (PDT)
-Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com. [209.85.167.41])
-        by smtp.gmail.com with ESMTPSA id u12sm12985336ljo.102.2020.05.12.09.56.59
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 12 May 2020 09:57:01 -0700 (PDT)
-Received: by mail-lf1-f41.google.com with SMTP id u4so11165423lfm.7
-        for <linux-wireless@vger.kernel.org>; Tue, 12 May 2020 09:56:59 -0700 (PDT)
-X-Received: by 2002:a19:5518:: with SMTP id n24mr15139341lfe.61.1589302618801;
- Tue, 12 May 2020 09:56:58 -0700 (PDT)
+        id S1726324AbgELREB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 12 May 2020 13:04:01 -0400
+Received: from mga11.intel.com ([192.55.52.93]:3833 "EHLO mga11.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725938AbgELREB (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 12 May 2020 13:04:01 -0400
+IronPort-SDR: kfbsolv5H0MSaBSlpbLmiMYgVMpY+4ea8KrQb0o8Jmo8s+89USTnske/F+cL+cyJeVv8qWouUb
+ SGSrZskTW1Qg==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2020 10:04:00 -0700
+IronPort-SDR: GIoCj+oJEVT1F+91EjDExvG+3n+YfzaqqPCmfiihWNvPSLyLYHgdzi6CCXchet5FTSg8pGLMiB
+ bTsO/ar68rRA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.73,384,1583222400"; 
+   d="scan'208";a="409373737"
+Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
+  by orsmga004.jf.intel.com with ESMTP; 12 May 2020 10:03:58 -0700
+Received: from kbuild by lkp-server01 with local (Exim 4.89)
+        (envelope-from <lkp@intel.com>)
+        id 1jYYJy-000B1Q-0f; Wed, 13 May 2020 01:03:58 +0800
+Date:   Wed, 13 May 2020 01:03:17 +0800
+From:   kbuild test robot <lkp@intel.com>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     linux-wireless@vger.kernel.org
+Subject: [wireless-drivers-next:master] BUILD SUCCESS
+ 5bb4e125815aa769a7d2ab7dc203593925bba0ba
+Message-ID: <5ebad6d5.2TnbEXgVH5pCmWoS%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-References: <20190906185931.19288-1-navid.emamdoost@gmail.com>
-In-Reply-To: <20190906185931.19288-1-navid.emamdoost@gmail.com>
-From:   Brian Norris <briannorris@chromium.org>
-Date:   Tue, 12 May 2020 09:56:47 -0700
-X-Gmail-Original-Message-ID: <CA+ASDXMnp-GTkrT7B5O+dtopJUmGBay=Tn=-nf1LW1MtaVOr+w@mail.gmail.com>
-Message-ID: <CA+ASDXMnp-GTkrT7B5O+dtopJUmGBay=Tn=-nf1LW1MtaVOr+w@mail.gmail.com>
-Subject: Re: [PATCH] ath9k: release allocated buffer if timed out
-To:     Navid Emamdoost <navid.emamdoost@gmail.com>
-Cc:     emamd001@umn.edu, smccaman@umn.edu, Kangjie Lu <kjlu@umn.edu>,
-        QCA ath9k Development <ath9k-devel@qca.qualcomm.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        "<netdev@vger.kernel.org>" <netdev@vger.kernel.org>,
-        Linux Kernel <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, Sep 6, 2019 at 11:59 AM Navid Emamdoost
-<navid.emamdoost@gmail.com> wrote:
->
-> In ath9k_wmi_cmd, the allocated network buffer needs to be released
-> if timeout happens. Otherwise memory will be leaked.
->
-> Signed-off-by: Navid Emamdoost <navid.emamdoost@gmail.com>
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next.git  master
+branch HEAD: 5bb4e125815aa769a7d2ab7dc203593925bba0ba  ipw2x00: Fix comment for CLOCK_BOOTTIME constant
 
-I wonder, did you actually test your patches? I ask, because it seems
-that all your patches are of the same mechanical variety (produced by
-some sort of research project?), and if I look around a bit, I see
-several mistakes and regressions noted on your other patches. And
-recently, I see someone reporting a 5.4 kernel regression, which looks
-a lot like it was caused by this patch:
+elapsed time: 481m
 
-https://bugzilla.kernel.org/show_bug.cgi?id=207703#c1
+configs tested: 116
+configs skipped: 6
 
-I'll propose a revert, if there's no evidence this was actually tested
-or otherwise confirmed to fix a real bug.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-Brian
+arm                                 defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+arm                               allnoconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm64                            allmodconfig
+arm64                             allnoconfig
+sparc                            allyesconfig
+m68k                             allyesconfig
+m68k                        stmark2_defconfig
+arm                  colibri_pxa300_defconfig
+c6x                        evmc6457_defconfig
+powerpc                     powernv_defconfig
+mips                 decstation_r4k_defconfig
+arm                       aspeed_g4_defconfig
+sh                      rts7751r2d1_defconfig
+powerpc                     ep8248e_defconfig
+openrisc                    or1ksim_defconfig
+h8300                     edosk2674_defconfig
+sh                           se7751_defconfig
+i386                                defconfig
+arm                           tegra_defconfig
+sh                            hp6xx_defconfig
+arm64                            alldefconfig
+arm                        vexpress_defconfig
+m68k                        m5272c3_defconfig
+sh                             sh03_defconfig
+riscv                            allyesconfig
+arm                         lpc32xx_defconfig
+i386                              allnoconfig
+i386                             allyesconfig
+i386                              debian-10.3
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                              allnoconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                              allnoconfig
+m68k                           sun3_defconfig
+m68k                                defconfig
+nios2                               defconfig
+nios2                            allyesconfig
+openrisc                            defconfig
+c6x                              allyesconfig
+c6x                               allnoconfig
+openrisc                         allyesconfig
+nds32                               defconfig
+nds32                             allnoconfig
+csky                             allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+h8300                            allmodconfig
+xtensa                              defconfig
+arc                                 defconfig
+arc                              allyesconfig
+sh                               allmodconfig
+sh                                allnoconfig
+microblaze                        allnoconfig
+mips                             allyesconfig
+mips                              allnoconfig
+mips                             allmodconfig
+parisc                            allnoconfig
+parisc                              defconfig
+parisc                           allyesconfig
+parisc                           allmodconfig
+powerpc                             defconfig
+powerpc                          allyesconfig
+powerpc                          rhel-kconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+i386                 randconfig-a006-20200512
+i386                 randconfig-a005-20200512
+i386                 randconfig-a003-20200512
+i386                 randconfig-a001-20200512
+i386                 randconfig-a004-20200512
+i386                 randconfig-a002-20200512
+x86_64               randconfig-a016-20200512
+x86_64               randconfig-a012-20200512
+x86_64               randconfig-a015-20200512
+x86_64               randconfig-a013-20200512
+x86_64               randconfig-a014-20200512
+x86_64               randconfig-a011-20200512
+i386                 randconfig-a012-20200512
+i386                 randconfig-a016-20200512
+i386                 randconfig-a014-20200512
+i386                 randconfig-a011-20200512
+i386                 randconfig-a013-20200512
+i386                 randconfig-a015-20200512
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                            allmodconfig
+s390                             allyesconfig
+s390                              allnoconfig
+s390                             allmodconfig
+s390                                defconfig
+x86_64                              defconfig
+sparc                               defconfig
+sparc64                             defconfig
+sparc64                           allnoconfig
+sparc64                          allyesconfig
+sparc64                          allmodconfig
+um                               allmodconfig
+um                                allnoconfig
+um                               allyesconfig
+um                                  defconfig
+x86_64                                   rhel
+x86_64                               rhel-7.6
+x86_64                    rhel-7.6-kselftests
+x86_64                         rhel-7.2-clear
+x86_64                                    lkp
+x86_64                              fedora-25
+x86_64                                  kexec
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
