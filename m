@@ -2,90 +2,93 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AA6291D20DF
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 May 2020 23:23:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6FF2A1D2105
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 May 2020 23:29:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728825AbgEMVXR (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 13 May 2020 17:23:17 -0400
-Received: from mail26.static.mailgun.info ([104.130.122.26]:35215 "EHLO
-        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728778AbgEMVXQ (ORCPT
+        id S1728949AbgEMV2c (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 13 May 2020 17:28:32 -0400
+Received: from mout.kundenserver.de ([217.72.192.75]:35939 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728712AbgEMV2c (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 13 May 2020 17:23:16 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1589404995; h=Message-ID: References: In-Reply-To: Subject:
- Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
- MIME-Version: Sender; bh=kO0IqobLOJP7uxcQjGF7XV6F4ee3pL/rl3JY9Zx3Zis=;
- b=vuEIiszIh41BJR5H1GTP0l4hu25GwtX1wc7Y9O7plCrrWVfZtHdZxawXekAlFuyfUBvBFV8x
- UIBsxcAbrGP/Q2o2QRVaXHBEsV04oMcIFBBPmNHaKJcRxippUK9T1shr2JkO1A20aKW1HwMw
- pIH9v4R1Wx/xfsMy/n7WWWNpw8o=
-X-Mailgun-Sending-Ip: 104.130.122.26
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5ebc6532.7fecceed9e30-smtp-out-n03;
- Wed, 13 May 2020 21:22:58 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 7BD67C432C2; Wed, 13 May 2020 21:22:58 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: rmanohar)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 102F0C433F2;
-        Wed, 13 May 2020 21:22:58 +0000 (UTC)
+        Wed, 13 May 2020 17:28:32 -0400
+Received: from mail-qv1-f54.google.com ([209.85.219.54]) by
+ mrelayeu.kundenserver.de (mreue106 [212.227.15.145]) with ESMTPSA (Nemesis)
+ id 1MMWgb-1jqEOX29sV-00JWx3; Wed, 13 May 2020 23:28:30 +0200
+Received: by mail-qv1-f54.google.com with SMTP id 59so656025qva.13;
+        Wed, 13 May 2020 14:28:30 -0700 (PDT)
+X-Gm-Message-State: AOAM5321b145Phh9puDFsBznN+7pvPBxOMVh5XNoamWvqvWqunj0h+ko
+        e5haRB20ai1ygPXcBA+1DbJZ1QBfZUR6CX1dhOw=
+X-Google-Smtp-Source: ABdhPJw7Fuac+m5sULJtNIM3p5+cE34HdS8OeJClx/EYM0gmCRJdMFhQEEraDemX8yXHOSVi36C8UGZrQu6eSzpx+A0=
+X-Received: by 2002:a05:6214:1392:: with SMTP id g18mr1590361qvz.210.1589405305824;
+ Wed, 13 May 2020 14:28:25 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Wed, 13 May 2020 14:22:58 -0700
-From:   Rajkumar Manoharan <rmanohar@codeaurora.org>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     kvalo@codeaurora.org, davem@davemloft.net, pradeepc@codeaurora.org,
-        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
-        linux-wireless-owner@vger.kernel.org
-Subject: Re: [PATCH] ath11k: Fix some resource leaks in error path in
- 'ath11k_thermal_register()'
-In-Reply-To: <20200513201454.258111-1-christophe.jaillet@wanadoo.fr>
-References: <20200513201454.258111-1-christophe.jaillet@wanadoo.fr>
-Message-ID: <8ee716c797a547165132c179c1909404@codeaurora.org>
-X-Sender: rmanohar@codeaurora.org
-User-Agent: Roundcube Webmail/1.3.9
+References: <20200509120707.188595-1-arnd@arndb.de> <20200509120707.188595-2-arnd@arndb.de>
+ <87v9l24qz6.fsf@kamboji.qca.qualcomm.com> <87r1vq4qev.fsf@kamboji.qca.qualcomm.com>
+ <87d078tjl0.fsf_-_@kamboji.qca.qualcomm.com> <20200513154847.GA158356@rani.riverdale.lan>
+In-Reply-To: <20200513154847.GA158356@rani.riverdale.lan>
+From:   Arnd Bergmann <arnd@arndb.de>
+Date:   Wed, 13 May 2020 23:28:09 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a3KpM91+jv6+7KSKFRpwLqf38Lz1wbGhkFFyfDb9oahgA@mail.gmail.com>
+Message-ID: <CAK8P3a3KpM91+jv6+7KSKFRpwLqf38Lz1wbGhkFFyfDb9oahgA@mail.gmail.com>
+Subject: Re: gcc-10: kernel stack is corrupted and fails to boot
+To:     Arvind Sankar <nivedita@alum.mit.edu>
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        "the arch/x86 maintainers" <x86@kernel.org>,
+        Borislav Petkov <bp@suse.de>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Kees Cook <keescook@chromium.org>,
+        Thomas Gleixner <tglx@linutronix.de>
+Content-Type: text/plain; charset="UTF-8"
+X-Provags-ID: V03:K1:pkOP+/jQ/sNrzZEtohi05sbnFfLH2DPLUwNFPATJkbEXqE2G5l8
+ F95mM/bwaHv2MdggK0o/efvEabe+h7yVeaOQGwgLxtzZxIDK1wICTDKFX2qIDmvCuBC2EbZ
+ +/fucECA3N9MIs7uajeskFytmKi2yzWtnGbqO/ybhO3RdT9dF5eWOECmBUsYJTGE/7x5Wze
+ G8uVPKOG7XA+wSbcT2LRA==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:UpZ1x5f9cYE=:8WsnjyT0kgPzQ7tz/iEYWL
+ tfETaL9rjy/vLoqEYHIUqfbFVorzRQ2f+smRnu1WBRXItleYfuXMxhrGNASgv+ZpeQwQgTu+e
+ HE4s2x3OkanORZOLuapZoZavPUxCoxhhwJ02K55c56fw3qhZ9wLCu3hxv1KJ3iEyOk3sFvx/x
+ mTvQSnQjmBw0xpwaELZ1vl8fiUyg4H/1CSxwF8Im1x050nFalU6j6dqFWp2wfy54Xdtom8CV5
+ bA8mXHWNNk7wCYsXyNXy8kqf/c1FLGx3pPXgelpI7UmXIBARxw7CE15urxJ79ZI3mBSlbjidf
+ F8iWTHMTCx6d2FJNql4SA2ofbbeczaHZ3bAEAmveHHoTHs8T7bAqkegML6YYcMdyRobtjdqBW
+ WDi36Ch2/TFo/wudRJlPqZnVcVXTZn08IPZF6l9uDDQ4/k1G+Cy6WOkgHcGahHmgxoYN8hGOP
+ TXhQ1HF5ivpBzAFRZLt+oiB3Bxs6WBerAiMPQDijKj9b/ld71kv+4O7F5cIKf1UYrDYxW9JLz
+ xZFoqhlrXzOaoUDr5dM1MUm8aNfX5d10xX4rvFAxNeKoG7PKy2dkHoTOYM6ZuuQVth0k3eXKn
+ +L+ADA98AukjCltKZdNo/khQPvVWdZcscSKaUsZBdsL3tIBtqyefTnH1m8kQHvZJIYVU/mON4
+ KxkciFv30wxKXjO0xVRTHlAcLI5XKX42i9LkNr8jTq032iRYsOo8mtAlifFVgB+E5sNnqZfUK
+ DlzaBwwgKsSlOxuGfkoxvvUipbUaOvdRGJHf9Jb3soC9MhM9cpenU7tu1jeAzMZVmj8v/Qf3M
+ Vm2s2ZNBY2+f8XF/Rs5+zCjLSIW79nT1fOpkBpP7gdZnqC8igE=
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On 2020-05-13 13:14, Christophe JAILLET wrote:
-> If 'thermal_cooling_device_register()' fails, we must undo what has 
-> been
-> allocated so far. So we must go to 'err_thermal_destroy' instead of
-> returning directly
-> 
-> In case of error in 'ath11k_thermal_register()', the previous
-> 'thermal_cooling_device_register()' call must also be undone. Move the
-> 'ar->thermal.cdev = cdev' a few lines above in order for this to be 
-> done
-> in 'ath11k_thermal_unregister()' which is called in the error handling
-> path.
-> 
-> Fixes: 2a63bbca06b2 ("ath11k: add thermal cooling device support")
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-> ---
-> I'm not 100% confident with this patch.
-> 
-> - When calling 'ath11k_thermal_unregister()', we try to release some
->   resources that have not been allocated yet. I don't know if it can be 
-> an
->   issue or not.
-> - I think that we should propagate the error code, instead of forcing
->   -EINVAL.
-> 
-Good catch.
+On Wed, May 13, 2020 at 5:48 PM Arvind Sankar <nivedita@alum.mit.edu> wrote:
+>
+> On Wed, May 13, 2020 at 09:50:03AM +0300, Kalle Valo wrote:
 
--Rajkumar
+> > And now I have a problem :) I first noticed that my x86 testbox is not
+> > booting when I compile the kernel with GCC 10.1.0 from crosstool. I
+> > didn't get any error messages so I just downgraded the compiler and the
+> > kernel was booting fine again. Next I decided to try GCC 10.1 with my
+> > x86 laptop and it also failed to boot, but this time I got kernel logs
+> > and saw this:
+> >
+> > Kernel panic - not syncing: stack-protector: Kernel stack is corrupted in: start_secodary+0x178/0x180
+> >
+>
+> See https://lore.kernel.org/lkml/20200423161126.GD26021@zn.tnic/
+
+Thanks!
+
+I see the patch in linux-next but not in mainline. I suppose we want it in v5.7
+and backported to stable kernels so they can boot when built with gcc-10?
+
+I suppose the only reason that the other architectures don't run into the
+problem is that they don't call boot_init_stack_canary() in start_secondary()
+though they probably should?
+
+      Arnd
