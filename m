@@ -2,55 +2,59 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 93D361D08FA
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 May 2020 08:50:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DF8551D097B
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 May 2020 09:05:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729621AbgEMGuZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 13 May 2020 02:50:25 -0400
-Received: from mail27.static.mailgun.info ([104.130.122.27]:13235 "EHLO
+        id S1730444AbgEMHFM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 13 May 2020 03:05:12 -0400
+Received: from mail27.static.mailgun.info ([104.130.122.27]:42656 "EHLO
         mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1729410AbgEMGuZ (ORCPT
+        by vger.kernel.org with ESMTP id S1730123AbgEMHFL (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 13 May 2020 02:50:25 -0400
+        Wed, 13 May 2020 03:05:11 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1589352624; h=Content-Type: MIME-Version: Message-ID:
+ s=smtp; t=1589353510; h=Content-Type: MIME-Version: Message-ID:
  In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=RWGNo+h1F7wmSA2OG3rwpi2qn7Oa+PH+QB/t0CyZYE4=; b=M8op78x5nWcP54PpD9fslXNkrMpNtwfsiLijEzimy3T9RekOcmng6n1IWTaISSDzJXMSIc6g
- mi4faGtbHosO1ZJs204K9JEjVsKY2v2HtpaxhS/wfbdTb/01WcmhjX70y+QFGrAVNHI5f2xc
- sdpaEYO9cw8UxiOc2Iyo6c6vkAI=
+ bh=5BY6ILWQbBBP5bzYtCeFue+FX7NC/WAICZFymNd3smM=; b=THhKTt+Zv+BvZlj3v+rsoULUlQdq70WCZHUONwoniRrKDuRLscp9zvP2mRSZLvRx7xDRL+r/
+ dlDb0qYTfL+KWd3MiF6cV6tJGByi+k5lEXdp0lE6zKG3PRuan57Vet2hfzqbhofiHqrzqWw7
+ BY4B8VMHDRzggq3trsYQpTu1Upo=
 X-Mailgun-Sending-Ip: 104.130.122.27
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5ebb98a0.7fbb800a6ea0-smtp-out-n04;
- Wed, 13 May 2020 06:50:08 -0000 (UTC)
+ by mxa.mailgun.org with ESMTP id 5ebb9c23.7f7e4566c3e8-smtp-out-n03;
+ Wed, 13 May 2020 07:05:07 -0000 (UTC)
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 8A2DFC433D2; Wed, 13 May 2020 06:50:08 +0000 (UTC)
+        id CA574C432C2; Wed, 13 May 2020 07:05:06 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 87360C433F2;
-        Wed, 13 May 2020 06:50:06 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 87360C433F2
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 4317FC433D2;
+        Wed, 13 May 2020 07:05:03 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 4317FC433D2
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: gcc-10: kernel stack is corrupted and fails to boot
-References: <20200509120707.188595-1-arnd@arndb.de>
-        <20200509120707.188595-2-arnd@arndb.de>
-        <87v9l24qz6.fsf@kamboji.qca.qualcomm.com>
-        <87r1vq4qev.fsf@kamboji.qca.qualcomm.com>
-Date:   Wed, 13 May 2020 09:50:03 +0300
-In-Reply-To: <87r1vq4qev.fsf@kamboji.qca.qualcomm.com> (Kalle Valo's message
-        of "Mon, 11 May 2020 15:17:12 +0300")
-Message-ID: <87d078tjl0.fsf_-_@kamboji.qca.qualcomm.com>
+To:     Brian Norris <briannorris@chromium.org>
+Cc:     Navid Emamdoost <navid.emamdoost@gmail.com>, emamd001@umn.edu,
+        smccaman@umn.edu, Kangjie Lu <kjlu@umn.edu>,
+        QCA ath9k Development <ath9k-devel@qca.qualcomm.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        "\<netdev\@vger.kernel.org\>" <netdev@vger.kernel.org>,
+        Linux Kernel <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] ath9k: release allocated buffer if timed out
+References: <20190906185931.19288-1-navid.emamdoost@gmail.com>
+        <CA+ASDXMnp-GTkrT7B5O+dtopJUmGBay=Tn=-nf1LW1MtaVOr+w@mail.gmail.com>
+Date:   Wed, 13 May 2020 10:05:00 +0300
+In-Reply-To: <CA+ASDXMnp-GTkrT7B5O+dtopJUmGBay=Tn=-nf1LW1MtaVOr+w@mail.gmail.com>
+        (Brian Norris's message of "Tue, 12 May 2020 09:56:47 -0700")
+Message-ID: <878shwtiw3.fsf@kamboji.qca.qualcomm.com>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -59,77 +63,34 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-(trimming CC, changing title)
+Brian Norris <briannorris@chromium.org> writes:
 
-Kalle Valo <kvalo@codeaurora.org> writes:
-
-> Kalle Valo <kvalo@codeaurora.org> writes:
->
->> Arnd Bergmann <arnd@arndb.de> writes:
+> On Fri, Sep 6, 2019 at 11:59 AM Navid Emamdoost
+> <navid.emamdoost@gmail.com> wrote:
 >>
->>> gcc-10 correctly points out a bug with a zero-length array in
->>> struct ath10k_pci:
->>>
->>> drivers/net/wireless/ath/ath10k/ahb.c: In function 'ath10k_ahb_remove':
->>> drivers/net/wireless/ath/ath10k/ahb.c:30:9: error: array subscript 0
->>> is outside the bounds of an interior zero-length array 'struct
->>> ath10k_ahb[0]' [-Werror=zero-length-bounds]
->>>    30 |  return &((struct ath10k_pci *)ar->drv_priv)->ahb[0];
->>>       |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->>> In file included from drivers/net/wireless/ath/ath10k/ahb.c:13:
->>> drivers/net/wireless/ath/ath10k/pci.h:185:20: note: while referencing 'ahb'
->>>   185 |  struct ath10k_ahb ahb[0];
->>>       |                    ^~~
->>>
->>> The last addition to the struct ignored the comments and added
->>> new members behind the array that must remain last.
->>>
->>> Change it to a flexible-array member and move it last again to
->>> make it work correctly, prevent the same thing from happening
->>> again (all compilers warn about flexible-array members in the
->>> middle of a struct) and get it to build without warnings.
+>> In ath9k_wmi_cmd, the allocated network buffer needs to be released
+>> if timeout happens. Otherwise memory will be leaked.
 >>
->> Very good find, thanks! This bug would cause all sort of strange memory
->> corruption issues.
+>> Signed-off-by: Navid Emamdoost <navid.emamdoost@gmail.com>
 >
-> This motivated me to switch to using GCC 10.x and I noticed that you had
-> already upgraded crosstool so it was a trivial thing to do, awesome :)
+> I wonder, did you actually test your patches? I ask, because it seems
+> that all your patches are of the same mechanical variety (produced by
+> some sort of research project?), and if I look around a bit, I see
+> several mistakes and regressions noted on your other patches. And
+> recently, I see someone reporting a 5.4 kernel regression, which looks
+> a lot like it was caused by this patch:
 >
-> https://mirrors.edge.kernel.org/pub/tools/crosstool/
+> https://bugzilla.kernel.org/show_bug.cgi?id=207703#c1
+>
+> I'll propose a revert, if there's no evidence this was actually tested
+> or otherwise confirmed to fix a real bug.
 
-And now I have a problem :) I first noticed that my x86 testbox is not
-booting when I compile the kernel with GCC 10.1.0 from crosstool. I
-didn't get any error messages so I just downgraded the compiler and the
-kernel was booting fine again. Next I decided to try GCC 10.1 with my
-x86 laptop and it also failed to boot, but this time I got kernel logs
-and saw this:
+Actually it's already reverted in -next, nobody just realised that it's
+a regression from commit 728c1e2a05e4:
 
-Kernel panic - not syncing: stack-protector: Kernel stack is corrupted in: start_secodary+0x178/0x180
+ced21a4c726b ath9k: Fix use-after-free Read in htc_connect_service
 
-Call Trace:
-dump_stack
-panic
-? _raw_spin_unlock_irqrestore
-? start_secondary
-__stack_chk_fail
-start_secondary
-secondary_startup
-
-(I wrote the above messages manually from a picture so expect typos)
-
-Then also on my x86 laptop I downgraded the compiler to GCC 8.1.0 (from
-crosstool), rebuilt the exactly same kernel version and the kernel
-booted without issues.
-
-I'm using 5.7.0-rc4-wt-ath+ which is basically v5.7-rc4 plus latest
-wireless patches, and I doubt the wireless patches are making any
-difference this early in the boot. All compilers I use are prebuilt
-binaries from kernel.org crosstool repo[1] with addition of ccache
-v3.4.1 to speed up my builds.
-
-Any ideas? How should I debug this further?
-
-[1] https://mirrors.edge.kernel.org/pub/tools/crosstool/
+v5.8-rc1 should be the first release having the fix.
 
 -- 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
