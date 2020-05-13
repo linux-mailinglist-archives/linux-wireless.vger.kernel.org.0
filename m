@@ -2,174 +2,155 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 84D091D1F8E
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 May 2020 21:45:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ACDB51D1F8A
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 May 2020 21:45:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390735AbgEMTph (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 13 May 2020 15:45:37 -0400
+        id S2390625AbgEMTpX (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 13 May 2020 15:45:23 -0400
 Received: from mail26.static.mailgun.info ([104.130.122.26]:33374 "EHLO
         mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S2390696AbgEMTph (ORCPT
+        by vger.kernel.org with ESMTP id S2387616AbgEMTpX (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 13 May 2020 15:45:37 -0400
+        Wed, 13 May 2020 15:45:23 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1589399137; h=Message-Id: Date: Subject: Cc: To: From:
- Sender; bh=JD3H+2UIrtT/l1bJEqxT6tXQ3eAeBzabY+eu8PkbSb4=; b=XTPbmbzIDlbm79XA5PUNFyAnePyPSdg8rcG1z4T1OqUp5Uoe4YBMSokIYOybTF1UfTo3xI/s
- nne3wkXCoZAMnbALxhxQdS4dWVSM1aPgvfp7vm/o/io37GAZyLhDra+E37nqA6fu3erPu3Wl
- BN58k4ghqYpWFyiUNCnvYiJ8RXw=
+ s=smtp; t=1589399122; h=References: In-Reply-To: Message-Id: Date:
+ Subject: Cc: To: From: Sender;
+ bh=hiGeAG8v37l3WG8lFHQP4B3vaVMogqoRQFmN8YZJCY8=; b=myFZ7vY8vnDb0aWoOIOSnwWMHzi9P7OjgeY7rU/5nM02hnM4vLcBTFi9Fw/DV1cLzniASIWj
+ ZJZWfvFEbTOEtI6TohgsHKQfmFa49zHV/MFTwJCUQAqiHA2Wr/9UyTUWLglEuIKREIjLkGvD
+ gxivnEXCs3ZfeydnuswUBHAyPv8=
 X-Mailgun-Sending-Ip: 104.130.122.26
 X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5ebc4e4e.7f501de4b110-smtp-out-n03;
- Wed, 13 May 2020 19:45:18 -0000 (UTC)
+ by mxa.mailgun.org with ESMTP id 5ebc4e51.7f903a0d45a8-smtp-out-n03;
+ Wed, 13 May 2020 19:45:21 -0000 (UTC)
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id F33B8C433BA; Wed, 13 May 2020 19:45:17 +0000 (UTC)
+        id 7612BC433F2; Wed, 13 May 2020 19:45:20 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
 X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.0
+        autolearn=ham autolearn_force=no version=3.4.0
 Received: from rmanohar-linux.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: rmanohar)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id E4A8DC433F2;
-        Wed, 13 May 2020 19:45:16 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org E4A8DC433F2
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id C8CE1C433BA;
+        Wed, 13 May 2020 19:45:19 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org C8CE1C433BA
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=rmanohar@codeaurora.org
 From:   Rajkumar Manoharan <rmanohar@codeaurora.org>
 To:     johannes@sipsolutions.net, kvalo@codeaurora.org
 Cc:     linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
-        Rajkumar Manoharan <rmanohar@codeaurora.org>,
-        Vamsi Krishna <vamsin@codeaurora.org>
-Subject: [PATCH v3 01/11] cfg80211: use only HE capability to set prohibited flags in 6 GHz
-Date:   Wed, 13 May 2020 12:44:55 -0700
-Message-Id: <1589399105-25472-1-git-send-email-rmanohar@codeaurora.org>
+        Rajkumar Manoharan <rmanohar@codeaurora.org>
+Subject: [PATCH v3 02/11] cfg80211: handle 6 GHz capability of new station
+Date:   Wed, 13 May 2020 12:44:56 -0700
+Message-Id: <1589399105-25472-2-git-send-email-rmanohar@codeaurora.org>
 X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1589399105-25472-1-git-send-email-rmanohar@codeaurora.org>
+References: <1589399105-25472-1-git-send-email-rmanohar@codeaurora.org>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The prohibited flags to determine whether configured bandwidth
-is supported by driver are validated only against HT and VHT capability.
-In 6 GHz band, Only HE capability should be validated to find out
-given chandef is usable.
+Handle 6 GHz HE capability while adding new station. It will be used
+later in mac80211 station processing.
 
-Co-developed-by: Vamsi Krishna <vamsin@codeaurora.org>
-Signed-off-by: Vamsi Krishna <vamsin@codeaurora.org>
 Signed-off-by: Rajkumar Manoharan <rmanohar@codeaurora.org>
 ---
- net/wireless/chan.c | 54 +++++++++++++++++++++++++++++++++++++++++++++++++----
- 1 file changed, 50 insertions(+), 4 deletions(-)
+ include/net/cfg80211.h       |  2 ++
+ include/uapi/linux/nl80211.h |  6 ++++++
+ net/wireless/nl80211.c       | 12 ++++++++++++
+ 3 files changed, 20 insertions(+)
 
-diff --git a/net/wireless/chan.c b/net/wireless/chan.c
-index fcac5c6366e1..582b487576e1 100644
---- a/net/wireless/chan.c
-+++ b/net/wireless/chan.c
-@@ -19,6 +19,11 @@ static bool cfg80211_valid_60g_freq(u32 freq)
- 	return freq >= 58320 && freq <= 70200;
- }
+diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+index 70e48f66dac8..0797a296c083 100644
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -1225,6 +1225,7 @@ struct sta_txpwr {
+  * @he_capa_len: the length of the HE capabilities
+  * @airtime_weight: airtime scheduler weight for this station
+  * @txpwr: transmit power for an associated station
++ * @he_6ghz_capa: HE 6 GHz Band capabilities of station
+  */
+ struct station_parameters {
+ 	const u8 *supported_rates;
+@@ -1257,6 +1258,7 @@ struct station_parameters {
+ 	u8 he_capa_len;
+ 	u16 airtime_weight;
+ 	struct sta_txpwr txpwr;
++	const struct ieee80211_he_6ghz_band_cap *he_6ghz_capa;
+ };
  
-+static bool cfg80211_is_6ghz_freq(u32 freq)
-+{
-+	return (freq > 5940 && freq < 7105);
-+}
+ /**
+diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
+index 2b691161830f..9c0a912f1684 100644
+--- a/include/uapi/linux/nl80211.h
++++ b/include/uapi/linux/nl80211.h
+@@ -2470,6 +2470,9 @@ enum nl80211_commands {
+  *	no roaming occurs between the reauth threshold and PMK expiration,
+  *	disassociation is still forced.
+  *
++ * @NL80211_ATTR_HE_6GHZ_CAPABILITY: HE 6 GHz Band Capability element (from
++ *	association request when used with NL80211_CMD_NEW_STATION).
++ *
+  * @NUM_NL80211_ATTR: total number of nl80211_attrs available
+  * @NL80211_ATTR_MAX: highest attribute number currently defined
+  * @__NL80211_ATTR_AFTER_LAST: internal use
+@@ -2945,6 +2948,8 @@ enum nl80211_attrs {
+ 	NL80211_ATTR_PMK_LIFETIME,
+ 	NL80211_ATTR_PMK_REAUTH_THRESHOLD,
+ 
++	NL80211_ATTR_HE_6GHZ_CAPABILITY,
 +
- void cfg80211_chandef_create(struct cfg80211_chan_def *chandef,
- 			     struct ieee80211_channel *chan,
- 			     enum nl80211_channel_type chan_type)
-@@ -882,6 +887,7 @@ bool cfg80211_chandef_usable(struct wiphy *wiphy,
- 	struct ieee80211_sta_ht_cap *ht_cap;
- 	struct ieee80211_sta_vht_cap *vht_cap;
- 	struct ieee80211_edmg *edmg_cap;
-+	const struct ieee80211_sta_he_cap *he_cap;
- 	u32 width, control_freq, cap;
+ 	/* add attributes here, update the policy in nl80211.c */
  
- 	if (WARN_ON(!cfg80211_chandef_valid(chandef)))
-@@ -890,6 +896,7 @@ bool cfg80211_chandef_usable(struct wiphy *wiphy,
- 	ht_cap = &wiphy->bands[chandef->chan->band]->ht_cap;
- 	vht_cap = &wiphy->bands[chandef->chan->band]->vht_cap;
- 	edmg_cap = &wiphy->bands[chandef->chan->band]->edmg_cap;
-+	he_cap = ieee80211_get_he_sta_cap(wiphy->bands[chandef->chan->band]);
+ 	__NL80211_ATTR_AFTER_LAST,
+@@ -2998,6 +3003,7 @@ enum nl80211_attrs {
+ #define NL80211_HE_MAX_CAPABILITY_LEN           54
+ #define NL80211_MAX_NR_CIPHER_SUITES		5
+ #define NL80211_MAX_NR_AKM_SUITES		2
++#define NL80211_HE_6GHZ_CAPABILITY_LEN		2
  
- 	if (edmg_cap->channels &&
- 	    !cfg80211_edmg_usable(wiphy,
-@@ -919,6 +926,16 @@ bool cfg80211_chandef_usable(struct wiphy *wiphy,
- 		break;
- 	case NL80211_CHAN_WIDTH_40:
- 		width = 40;
-+		if (cfg80211_is_6ghz_freq(chandef->center_freq1)) {
-+			if (!he_cap)
-+				return false;
-+			if (!he_cap->has_he_6ghz)
-+				return false;
-+			if (!(he_cap->he_cap_elem.phy_cap_info[0] &
-+			      IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_40MHZ_80MHZ_IN_5G))
-+				return false;
-+			break;
-+		}
- 		if (!ht_cap->ht_supported)
- 			return false;
- 		if (!(ht_cap->cap & IEEE80211_HT_CAP_SUP_WIDTH_20_40) ||
-@@ -933,24 +950,53 @@ bool cfg80211_chandef_usable(struct wiphy *wiphy,
- 		break;
- 	case NL80211_CHAN_WIDTH_80P80:
- 		cap = vht_cap->cap & IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_MASK;
--		if (cap != IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160_80PLUS80MHZ)
-+		if (!cfg80211_is_6ghz_freq(chandef->center_freq1) &&
-+		    cap != IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160_80PLUS80MHZ)
- 			return false;
-+		if (cfg80211_is_6ghz_freq(chandef->center_freq1)) {
-+			if (!he_cap)
-+				return false;
-+			if (!he_cap->has_he_6ghz)
-+				return false;
-+			if (!(he_cap->he_cap_elem.phy_cap_info[0] &
-+			      IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_80PLUS80_MHZ_IN_5G))
-+				return false;
-+		}
- 		/* fall through */
- 	case NL80211_CHAN_WIDTH_80:
--		if (!vht_cap->vht_supported)
-+		if (cfg80211_is_6ghz_freq(chandef->center_freq1)) {
-+			if (!he_cap)
-+				return false;
-+			if (!he_cap->has_he_6ghz)
-+				return false;
-+			if (!(he_cap->he_cap_elem.phy_cap_info[0] &
-+			      IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_40MHZ_80MHZ_IN_5G))
-+				return false;
-+		} else if (!vht_cap->vht_supported) {
- 			return false;
-+		}
- 		prohibited_flags |= IEEE80211_CHAN_NO_80MHZ;
- 		width = 80;
- 		break;
- 	case NL80211_CHAN_WIDTH_160:
-+		prohibited_flags |= IEEE80211_CHAN_NO_160MHZ;
-+		width = 160;
-+		if (cfg80211_is_6ghz_freq(chandef->center_freq1)) {
-+			if (!he_cap)
-+				return false;
-+			if (!he_cap->has_he_6ghz)
-+				return false;
-+			if (!(he_cap->he_cap_elem.phy_cap_info[0] &
-+			      IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_160MHZ_IN_5G))
-+				return false;
-+			break;
-+		}
- 		if (!vht_cap->vht_supported)
- 			return false;
- 		cap = vht_cap->cap & IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_MASK;
- 		if (cap != IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160MHZ &&
- 		    cap != IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160_80PLUS80MHZ)
- 			return false;
--		prohibited_flags |= IEEE80211_CHAN_NO_160MHZ;
--		width = 160;
- 		break;
- 	default:
- 		WARN_ON_ONCE(1);
+ #define NL80211_MIN_REMAIN_ON_CHANNEL_TIME	10
+ 
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 692bcd35f809..bcd7a452e8b1 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -661,6 +661,10 @@ const struct nla_policy nl80211_policy[NUM_NL80211_ATTR] = {
+ 	[NL80211_ATTR_CONTROL_PORT_NO_PREAUTH] = { .type = NLA_FLAG },
+ 	[NL80211_ATTR_PMK_LIFETIME] = NLA_POLICY_MIN(NLA_U32, 1),
+ 	[NL80211_ATTR_PMK_REAUTH_THRESHOLD] = NLA_POLICY_RANGE(NLA_U8, 1, 100),
++	[NL80211_ATTR_HE_6GHZ_CAPABILITY] = {
++		.type = NLA_EXACT_LEN,
++		.len = NL80211_HE_6GHZ_CAPABILITY_LEN,
++	},
+ };
+ 
+ /* policy for the key attributes */
+@@ -6129,6 +6133,10 @@ static int nl80211_new_station(struct sk_buff *skb, struct genl_info *info)
+ 			return -EINVAL;
+ 	}
+ 
++	if (info->attrs[NL80211_ATTR_HE_6GHZ_CAPABILITY])
++		params.he_6ghz_capa =
++			nla_data(info->attrs[NL80211_ATTR_HE_6GHZ_CAPABILITY]);
++
+ 	if (info->attrs[NL80211_ATTR_OPMODE_NOTIF]) {
+ 		params.opmode_notif_used = true;
+ 		params.opmode_notif =
+@@ -6177,6 +6185,10 @@ static int nl80211_new_station(struct sk_buff *skb, struct genl_info *info)
+ 			return -EINVAL;
+ 	}
+ 
++	/* Ensure that HT/VHT capabilities are not set for 6 GHz HE STA */
++	if (params.he_6ghz_capa && (params.ht_capa || params.vht_capa))
++		return -EINVAL;
++
+ 	/* When you run into this, adjust the code below for the new flag */
+ 	BUILD_BUG_ON(NL80211_STA_FLAG_MAX != 7);
+ 
 -- 
 2.7.4
