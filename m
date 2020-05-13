@@ -2,92 +2,121 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3285F1D19DA
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 May 2020 17:48:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 80EDE1D19DF
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 May 2020 17:48:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389336AbgEMPs3 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 13 May 2020 11:48:29 -0400
-Received: from mail26.static.mailgun.info ([104.130.122.26]:59183 "EHLO
-        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S2389178AbgEMPs2 (ORCPT
+        id S2389344AbgEMPsv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 13 May 2020 11:48:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48856 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730745AbgEMPsu (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 13 May 2020 11:48:28 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1589384908; h=Date: Message-Id: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=erXaHco75fJTxrMeOsFqv16ZcSBhLgGjXVCw9EInTJo=;
- b=cTyFS/9rZMH+PKRzpFl2xvQiZ2DfCE0e8C8+uJiuODHUnm85oxIyqFhFMCAcaF+s9MBdpbaU
- 8EQsmu7iNv3+R4VkoMN95+LdzFfxgMTHuuMhxalHV86uAhi641Mmr0pErKHZgZ+wHul6cJNt
- EP/ora3kW2+Za3eXurhvdohi5hU=
-X-Mailgun-Sending-Ip: 104.130.122.26
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5ebc16bc.7fb563215a40-smtp-out-n02;
- Wed, 13 May 2020 15:48:12 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 25A04C433D2; Wed, 13 May 2020 15:48:12 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
-        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id A1A0EC433F2;
-        Wed, 13 May 2020 15:48:09 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org A1A0EC433F2
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        Wed, 13 May 2020 11:48:50 -0400
+Received: from mail-qt1-x841.google.com (mail-qt1-x841.google.com [IPv6:2607:f8b0:4864:20::841])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD760C061A0C;
+        Wed, 13 May 2020 08:48:50 -0700 (PDT)
+Received: by mail-qt1-x841.google.com with SMTP id p12so145695qtn.13;
+        Wed, 13 May 2020 08:48:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:from:date:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=a4M2yE/LvZzKzcdH/Vo/rs9OEGWzJq6qycWPQYwHrqc=;
+        b=nsrZe/81FgA86nEtwq4HUuET2fgc4F0lgzeft+Vo0sFy2ULv5AnbdSf1l0U7mPmmt+
+         Zoh8R6KZbRFsq8II4Gzgg415hdtj70YW7rogr8Bb1OF/FG89HcWVqAkY49y5NhEZ0hkW
+         Qo3lTtemuQ4K5V6e7iPD63PPDgLpvunp+LEiarwew7fowa6hUkuGUB9QJgO+MjHrmefv
+         z7GtyW3JcT+q2pQE1rHww0h/FHbnTjK5CC086hRV+7I7zKbA3TvFZnXbVNqq3+0eYOuL
+         xTAZV0LSYJTvqaYA85YJ2ClpwRUrklrzAiZFYe07hMYhq8eDZDYs4q3FCDgJFX9fS1md
+         TIqA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:from:date:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to;
+        bh=a4M2yE/LvZzKzcdH/Vo/rs9OEGWzJq6qycWPQYwHrqc=;
+        b=f7oU2lfJHFzZIj9R3ivamyZxlPE3/j4WsX3M0dSQi3UUgXkeKKX/5M0Q+oAIaUncF1
+         5G9wjlYxmtdjnopgcRy9qO+OoHySIid+jMuM3jaa6HohvXKMS8RvdlZwd3wRjF3oxRyA
+         XzgaIpC+tQHziokL1p45CoYQ5PRuM1D6F63EpftGhT32cN1kuXdgXvXjocCAG6Um/AAU
+         g7ir2CwAzFXdMOCzDkqJ20cUvaDTu3G/T9WPHemOH/uQxHuqFJXjcQ1YZNTe8Cah4r+5
+         +xWoV2rYf8CHdCBWxQGvkxc78zQQ0tLzn+M/BdqU2/NDSMNWaDRcMj7gOKZrj7a1JQRP
+         BbEQ==
+X-Gm-Message-State: AGi0PuZ4EdbbPz5H3PWGTGPWRyhlxRHVkYWBET7LjIdtrVda+/KtgL1Y
+        3WGqSLMpPL4Yo8DMQGnb3OyQkS05uQA=
+X-Google-Smtp-Source: APiQypIsMUb5rg7kG03tZ/dd/Uii9pE6b9tqrAxaZZQbFYehQxT9OqSxQQSOin0jFmmu+h/4TaILeA==
+X-Received: by 2002:aed:30ad:: with SMTP id 42mr27709261qtf.88.1589384929906;
+        Wed, 13 May 2020 08:48:49 -0700 (PDT)
+Received: from rani.riverdale.lan ([2001:470:1f07:5f3::b55f])
+        by smtp.gmail.com with ESMTPSA id n123sm175213qkf.23.2020.05.13.08.48.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 13 May 2020 08:48:49 -0700 (PDT)
+From:   Arvind Sankar <nivedita@alum.mit.edu>
+X-Google-Original-From: Arvind Sankar <arvind@rani.riverdale.lan>
+Date:   Wed, 13 May 2020 11:48:47 -0400
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Arnd Bergmann <arnd@arndb.de>, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: gcc-10: kernel stack is corrupted and fails to boot
+Message-ID: <20200513154847.GA158356@rani.riverdale.lan>
+References: <20200509120707.188595-1-arnd@arndb.de>
+ <20200509120707.188595-2-arnd@arndb.de>
+ <87v9l24qz6.fsf@kamboji.qca.qualcomm.com>
+ <87r1vq4qev.fsf@kamboji.qca.qualcomm.com>
+ <87d078tjl0.fsf_-_@kamboji.qca.qualcomm.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] brcmfmac: fix WPA/WPA2-PSK 4-way handshake offload and
- SAE
- offload failures
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <1589277788-119966-1-git-send-email-chi-hsien.lin@cypress.com>
-References: <1589277788-119966-1-git-send-email-chi-hsien.lin@cypress.com>
-To:     Chi-Hsien Lin <chi-hsien.lin@cypress.com>
-Cc:     linux-wireless@vger.kernel.org, brcm80211-dev-list@broadcom.com,
-        brcm80211-dev-list@cypress.com,
-        Arend van Spriel <arend.vanspriel@broadcom.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Wright Feng <wright.feng@cypress.com>,
-        Chung-Hsien Hsu <stanley.hsu@cypress.com>,
-        Chi-Hsien Lin <chi-hsien.lin@cypress.com>
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20200513154812.25A04C433D2@smtp.codeaurora.org>
-Date:   Wed, 13 May 2020 15:48:12 +0000 (UTC)
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <87d078tjl0.fsf_-_@kamboji.qca.qualcomm.com>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Chi-Hsien Lin <chi-hsien.lin@cypress.com> wrote:
-
-> From: Chung-Hsien Hsu <stanley.hsu@cypress.com>
+On Wed, May 13, 2020 at 09:50:03AM +0300, Kalle Valo wrote:
+> (trimming CC, changing title)
 > 
-> An incorrect value of use_fwsup is set for 4-way handshake offload for
-> WPA//WPA2-PSK, caused by commit 3b1e0a7bdfee ("brcmfmac: add support for
-> SAE authentication offload"). It results in missing bit
-> BRCMF_VIF_STATUS_EAP_SUCCESS set in brcmf_is_linkup() and causes the
-> failure. This patch correct the value for the case.
+> Kalle Valo <kvalo@codeaurora.org> writes:
 > 
-> Also setting bit BRCMF_VIF_STATUS_EAP_SUCCESS for SAE offload case in
-> brcmf_is_linkup() to fix SAE offload failure.
+> > Kalle Valo <kvalo@codeaurora.org> writes:
+> >
+> >> Arnd Bergmann <arnd@arndb.de> writes:
+> >>
+> >>> gcc-10 correctly points out a bug with a zero-length array in
+> >>> struct ath10k_pci:
+> >>>
+> >>> drivers/net/wireless/ath/ath10k/ahb.c: In function 'ath10k_ahb_remove':
+> >>> drivers/net/wireless/ath/ath10k/ahb.c:30:9: error: array subscript 0
+> >>> is outside the bounds of an interior zero-length array 'struct
+> >>> ath10k_ahb[0]' [-Werror=zero-length-bounds]
+> >>>    30 |  return &((struct ath10k_pci *)ar->drv_priv)->ahb[0];
+> >>>       |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> >>> In file included from drivers/net/wireless/ath/ath10k/ahb.c:13:
+> >>> drivers/net/wireless/ath/ath10k/pci.h:185:20: note: while referencing 'ahb'
+> >>>   185 |  struct ath10k_ahb ahb[0];
+> >>>       |                    ^~~
+> >>>
+> >>> The last addition to the struct ignored the comments and added
+> >>> new members behind the array that must remain last.
+> >>>
+> >>> Change it to a flexible-array member and move it last again to
+> >>> make it work correctly, prevent the same thing from happening
+> >>> again (all compilers warn about flexible-array members in the
+> >>> middle of a struct) and get it to build without warnings.
+> >>
+> >> Very good find, thanks! This bug would cause all sort of strange memory
+> >> corruption issues.
+> >
+> > This motivated me to switch to using GCC 10.x and I noticed that you had
+> > already upgraded crosstool so it was a trivial thing to do, awesome :)
+> >
+> > https://mirrors.edge.kernel.org/pub/tools/crosstool/
 > 
-> Fixes: 3b1e0a7bdfee ("brcmfmac: add support for SAE authentication offload")
-> Signed-off-by: Chung-Hsien Hsu <stanley.hsu@cypress.com>
-> Signed-off-by: Chi-Hsien Lin <chi-hsien.lin@cypress.com>
+> And now I have a problem :) I first noticed that my x86 testbox is not
+> booting when I compile the kernel with GCC 10.1.0 from crosstool. I
+> didn't get any error messages so I just downgraded the compiler and the
+> kernel was booting fine again. Next I decided to try GCC 10.1 with my
+> x86 laptop and it also failed to boot, but this time I got kernel logs
+> and saw this:
+> 
+> Kernel panic - not syncing: stack-protector: Kernel stack is corrupted in: start_secodary+0x178/0x180
+> 
 
-Patch applied to wireless-drivers-next.git, thanks.
-
-b2fe11f07773 brcmfmac: fix WPA/WPA2-PSK 4-way handshake offload and SAE offload failures
-
--- 
-https://patchwork.kernel.org/patch/11542809/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+See https://lore.kernel.org/lkml/20200423161126.GD26021@zn.tnic/
