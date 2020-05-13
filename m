@@ -2,128 +2,108 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A1971D098E
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 May 2020 09:08:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 03A611D0A82
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 May 2020 10:08:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730376AbgEMHIP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 13 May 2020 03:08:15 -0400
-Received: from mail-il1-f199.google.com ([209.85.166.199]:45221 "EHLO
-        mail-il1-f199.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729647AbgEMHIO (ORCPT
+        id S1729438AbgEMIIO (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 13 May 2020 04:08:14 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:42674 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726092AbgEMIIO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 13 May 2020 03:08:14 -0400
-Received: by mail-il1-f199.google.com with SMTP id t10so15506342ilf.12
-        for <linux-wireless@vger.kernel.org>; Wed, 13 May 2020 00:08:13 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
-        bh=4QBNP2HR3gpc8LrPnQK6peZDQZdUtluaIGBLQtNra78=;
-        b=FsS8yo//ikhUrpCsWJQ/byTCz09mztqmic4uyCIzKh1XNuDFDjFNtG07Q/EbB/v14J
-         8zG6MA/9e0fWGvTfqhY4fWGbQM4HBfwaoQZAKNv8CubxfAgeyi0Dxftd0DHCCOgauIDV
-         oHYNrJso4JtJTysCMjoj87urH7YZAouwFKRq4mugTkBOWWcfNm2LXKoEkR5DtCjknMpw
-         ux8JnxhNYszCi0LriZsaF7whg42zsr5cyhI2CMbWK2P1SW6T/uU6fHao9TmpEvpLkvYk
-         rJYL4qHtsBEri8keKNBFodVVFoSPkT8xNFGmMJpgYCwjt53miGS7dNHUNMv9PSS8wOYQ
-         qsKA==
-X-Gm-Message-State: AGi0PuZ6kLfXk/pkT/P1gbKmKR6uqx3jCdwDxwbHmjXGaBqoHvqOBUz5
-        yIU0+HhmTmU4AcN3tf9ckUEmsFZRnWGFbhoXEFcIGTa2K1u+
-X-Google-Smtp-Source: APiQypLP0LNvw//Am9YDhcfBkp/su2qZOVPUWsaX+yXrrHireJ83TAFbcTVPzbJ28ZGsP7fsJVILtpmiMGJgNjNbDqe9EvEYhVeK
+        Wed, 13 May 2020 04:08:14 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04D876Ma052232;
+        Wed, 13 May 2020 08:08:08 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2020-01-29;
+ bh=Pim3IyZEqDINjfDwlBqdtARzuZVxKAN42pmXSwBLfzc=;
+ b=fqxicfpJPqKPb1RSyJQloP3G7RhXuxG/kifLy0qlydEukyx8rJ4TSthyDlPvFsbnSWrf
+ w+A9UYSpPQHiEQxF5CGlH4Y+uIGIVEEY0iaOnhWD9yXRkpYWamm5mxpzkDt8rKgptTAw
+ V9TCLDqGVFCi6fsCmfBmUQ+PBOQAQ+aVTNNvADN0wpCD6Is9dnJxwx9IGA9FHdGMK7wb
+ +j703FTqToS13eDX27Rj4cgG96GLAZpYnKMfAfN3ihuxzZLyvOcfBsmhSGwVFhpOSt1F
+ RtFcwGc1D5xvNny7jusDSnEw7HiCbxICBeQUIHIsypKPpjz5DkWbC7FSL2qW6X1qOyS/ JQ== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by aserp2120.oracle.com with ESMTP id 3100xwap3c-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 13 May 2020 08:08:08 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04D881FK161746;
+        Wed, 13 May 2020 08:08:07 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by userp3030.oracle.com with ESMTP id 3100ye32gt-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 13 May 2020 08:08:07 +0000
+Received: from abhmp0017.oracle.com (abhmp0017.oracle.com [141.146.116.23])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 04D884Gv003480;
+        Wed, 13 May 2020 08:08:05 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Wed, 13 May 2020 01:08:04 -0700
+Date:   Wed, 13 May 2020 11:07:58 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Malcolm Priestley <tvboxspy@gmail.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>,
+        Oscar Carter <oscar.carter@gmx.com>,
+        linux-wireless@vger.kernel.org
+Subject: Re: [PATCH 2/6] staging: vt6656: vnt_get_rtscts_duration_le use
+ ieee80211_rts_duration
+Message-ID: <20200513080758.GB2078@kadam>
+References: <377a4cc3-cfe3-91aa-cf71-1063f311426a@gmail.com>
 MIME-Version: 1.0
-X-Received: by 2002:a6b:c706:: with SMTP id x6mr23750484iof.112.1589353693496;
- Wed, 13 May 2020 00:08:13 -0700 (PDT)
-Date:   Wed, 13 May 2020 00:08:13 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <00000000000052cae405a5823e68@google.com>
-Subject: general protection fault in cfg80211_dev_rename
-From:   syzbot <syzbot+fd5332e429401bf42d18@syzkaller.appspotmail.com>
-To:     davem@davemloft.net, johannes@sipsolutions.net, kuba@kernel.org,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <377a4cc3-cfe3-91aa-cf71-1063f311426a@gmail.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9619 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 malwarescore=0 bulkscore=0
+ phishscore=0 suspectscore=0 adultscore=0 mlxscore=0 mlxlogscore=999
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2005130075
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9619 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 lowpriorityscore=0
+ suspectscore=0 mlxlogscore=999 clxscore=1015 cotscore=-2147483648
+ mlxscore=0 phishscore=0 adultscore=0 impostorscore=0 bulkscore=0
+ malwarescore=0 priorityscore=1501 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2004280000 definitions=main-2005130075
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hello,
+On Tue, May 05, 2020 at 10:13:54PM +0100, Malcolm Priestley wrote:
+> diff --git a/drivers/staging/vt6656/rxtx.c b/drivers/staging/vt6656/rxtx.c
+> index 6724b213a723..48fe16c27d3f 100644
+> --- a/drivers/staging/vt6656/rxtx.c
+> +++ b/drivers/staging/vt6656/rxtx.c
+> @@ -285,28 +285,18 @@ static __le16 vnt_get_rtscts_duration_le(struct vnt_usb_send_context *context,
+>  					 u8 dur_type, u8 pkt_type, u16 rate)
+>  {
+>  	struct vnt_private *priv = context->priv;
+> -	u32 cts_time = 0, dur_time = 0;
+> +	u32 dur_time = 0;
+>  	u32 frame_length = context->frame_len;
+>  	u8 need_ack = context->need_ack;
+> +	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(context->skb);
+>  
+>  	switch (dur_type) {
+> +	/* fall through */
+>  	case RTSDUR_BB:
+>  	case RTSDUR_BA:
 
-syzbot found the following crash on:
+This fall through annotation shouldn't be necessary.  It's not preceded
+by a case statement.  Also you don't need /* fall through */ for empty
+case statements.  In other words you only need it for stuff like this:
 
-HEAD commit:    2b6c6f07 bpf, i386: Remove unneeded conversion to bool
-git tree:       bpf-next
-console output: https://syzkaller.appspot.com/x/log.txt?x=142a6eec100000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=da7097535df759be
-dashboard link: https://syzkaller.appspot.com/bug?extid=fd5332e429401bf42d18
-compiler:       gcc (GCC) 9.0.0 20181231 (experimental)
+	case FOO:
+	case BAR:
+		frob();
+		frob();
+		/* fall through */
+	case BAZ:
 
-Unfortunately, I don't have any reproducer for this crash yet.
+regards,
+dan carpenter
 
-IMPORTANT: if you fix the bug, please add the following tag to the commit:
-Reported-by: syzbot+fd5332e429401bf42d18@syzkaller.appspotmail.com
-
-general protection fault, probably for non-canonical address 0xdffffc0000000006: 0000 [#1] PREEMPT SMP KASAN
-KASAN: null-ptr-deref in range [0x0000000000000030-0x0000000000000037]
-CPU: 1 PID: 17548 Comm: syz-executor.2 Not tainted 5.7.0-rc2-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
-RIP: 0010:cfg80211_dev_rename+0x12b/0x210 net/wireless/core.c:146
-Code: ef 00 00 00 4c 8b b5 10 0c 00 00 4d 85 f6 74 36 e8 0a 6f 20 fa 49 8d 7e 48 48 b8 00 00 00 00 00 fc ff df 48 89 fa 48 c1 ea 03 <80> 3c 02 00 0f 85 c9 00 00 00 49 8b 7e 48 4c 89 e9 4c 89 f6 48 89
-RSP: 0018:ffffc900055774e0 EFLAGS: 00010207
-RAX: dffffc0000000000 RBX: ffffc90005577748 RCX: ffffc90010d1f000
-RDX: 0000000000000006 RSI: ffffffff8752bd86 RDI: 0000000000000037
-RBP: ffff888088b40000 R08: ffff8880624a85c0 R09: fffffbfff185d748
-R10: ffffffff8c2eba3f R11: fffffbfff185d747 R12: 0000000000000000
-R13: ffffc90005e19018 R14: ffffffffffffffef R15: ffff888088b40000
-FS:  00007fce5b9b5700(0000) GS:ffff8880ae700000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 000000000048a140 CR3: 0000000097525000 CR4: 00000000001406e0
-DR0: 0000000020000900 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000600
-Call Trace:
- nl80211_set_wiphy+0x29d/0x2b70 net/wireless/nl80211.c:3009
- genl_family_rcv_msg_doit net/netlink/genetlink.c:673 [inline]
- genl_family_rcv_msg net/netlink/genetlink.c:718 [inline]
- genl_rcv_msg+0x627/0xdf0 net/netlink/genetlink.c:735
- netlink_rcv_skb+0x15a/0x410 net/netlink/af_netlink.c:2469
- genl_rcv+0x24/0x40 net/netlink/genetlink.c:746
- netlink_unicast_kernel net/netlink/af_netlink.c:1303 [inline]
- netlink_unicast+0x537/0x740 net/netlink/af_netlink.c:1329
- netlink_sendmsg+0x882/0xe10 net/netlink/af_netlink.c:1918
- sock_sendmsg_nosec net/socket.c:652 [inline]
- sock_sendmsg+0xcf/0x120 net/socket.c:672
- ____sys_sendmsg+0x6bf/0x7e0 net/socket.c:2362
- ___sys_sendmsg+0x100/0x170 net/socket.c:2416
- __sys_sendmsg+0xec/0x1b0 net/socket.c:2449
- do_syscall_64+0xf6/0x7d0 arch/x86/entry/common.c:295
- entry_SYSCALL_64_after_hwframe+0x49/0xb3
-RIP: 0033:0x45c829
-Code: 0d b7 fb ff c3 66 2e 0f 1f 84 00 00 00 00 00 66 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 0f 83 db b6 fb ff c3 66 2e 0f 1f 84 00 00 00 00
-RSP: 002b:00007fce5b9b4c78 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
-RAX: ffffffffffffffda RBX: 0000000000500b20 RCX: 000000000045c829
-RDX: 0000000000000000 RSI: 0000000020000000 RDI: 0000000000000003
-RBP: 000000000078bf00 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 00000000ffffffff
-R13: 00000000000009fd R14: 00000000004ccb59 R15: 00007fce5b9b56d4
-Modules linked in:
----[ end trace 90c3adb6c5fb6794 ]---
-RIP: 0010:cfg80211_dev_rename+0x12b/0x210 net/wireless/core.c:146
-Code: ef 00 00 00 4c 8b b5 10 0c 00 00 4d 85 f6 74 36 e8 0a 6f 20 fa 49 8d 7e 48 48 b8 00 00 00 00 00 fc ff df 48 89 fa 48 c1 ea 03 <80> 3c 02 00 0f 85 c9 00 00 00 49 8b 7e 48 4c 89 e9 4c 89 f6 48 89
-RSP: 0018:ffffc900055774e0 EFLAGS: 00010207
-RAX: dffffc0000000000 RBX: ffffc90005577748 RCX: ffffc90010d1f000
-RDX: 0000000000000006 RSI: ffffffff8752bd86 RDI: 0000000000000037
-RBP: ffff888088b40000 R08: ffff8880624a85c0 R09: fffffbfff185d748
-R10: ffffffff8c2eba3f R11: fffffbfff185d747 R12: 0000000000000000
-R13: ffffc90005e19018 R14: ffffffffffffffef R15: ffff888088b40000
-FS:  00007fce5b9b5700(0000) GS:ffff8880ae600000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000001b3103e000 CR3: 0000000097525000 CR4: 00000000001406f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000600
-
-
----
-This bug is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this bug report. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
