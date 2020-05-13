@@ -2,100 +2,85 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 79B991D1A1C
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 May 2020 18:00:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 32E001D1A79
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 May 2020 18:03:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732251AbgEMQAs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 13 May 2020 12:00:48 -0400
-Received: from mout.kundenserver.de ([212.227.126.134]:48945 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389213AbgEMQAr (ORCPT
+        id S1730657AbgEMQD1 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 13 May 2020 12:03:27 -0400
+Received: from mail27.static.mailgun.info ([104.130.122.27]:50547 "EHLO
+        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1730291AbgEMQD0 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 13 May 2020 12:00:47 -0400
-Received: from mail-qk1-f177.google.com ([209.85.222.177]) by
- mrelayeu.kundenserver.de (mreue011 [212.227.15.129]) with ESMTPSA (Nemesis)
- id 1Mz9lL-1jDuow2pff-00wETk; Wed, 13 May 2020 18:00:45 +0200
-Received: by mail-qk1-f177.google.com with SMTP id y22so5235973qki.3;
-        Wed, 13 May 2020 09:00:45 -0700 (PDT)
-X-Gm-Message-State: AOAM530TWWgtQd3MWuR/mWzg/tWNLb2ym9vJ15jV23+wkGRtcbLyKf+P
-        BIjZwKh9b/Q9L4lhQ6Er8xmM8gyU06CCoDkqI0Q=
-X-Google-Smtp-Source: ABdhPJyKpZv03jMaYhNeTLejY16uvPcQQJcVwZSNjzCLBox/lZ1uZ2BacyGU3669//YQxo34VT7WHEyTtCXmXt0P9SQ=
-X-Received: by 2002:a37:aa82:: with SMTP id t124mr336651qke.3.1589385644498;
- Wed, 13 May 2020 09:00:44 -0700 (PDT)
+        Wed, 13 May 2020 12:03:26 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1589385806; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=IBcvEQR1Lr6n5Ys8KKpqQ3yJ5ww8Rfql4MzxV2zjol8=;
+ b=GyeuYrQHGFXA2FYlvBzgz4ecwAak7endtsthBf/ZpPPOgGR8C/I/Bhhw2bWkV9aujpcQqYL7
+ pYplXbJDcUYUG6IA8ypY7JzAeOwCuhnS/kHLAdNxj/fwcfgo5yNkprvYUi3+OKnWplj3PYlU
+ 21pBgCzedhzB1/Z9MHdic/wxzN4=
+X-Mailgun-Sending-Ip: 104.130.122.27
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5ebc1a02.7f1cb31d5ed8-smtp-out-n01;
+ Wed, 13 May 2020 16:02:10 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 8CABBC433BA; Wed, 13 May 2020 16:02:09 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
+        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 92CB0C433BA;
+        Wed, 13 May 2020 16:02:07 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 92CB0C433BA
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-References: <20200509120707.188595-1-arnd@arndb.de> <20200509120707.188595-2-arnd@arndb.de>
- <87v9l24qz6.fsf@kamboji.qca.qualcomm.com> <87r1vq4qev.fsf@kamboji.qca.qualcomm.com>
- <87d078tjl0.fsf_-_@kamboji.qca.qualcomm.com> <CAK8P3a1dxJAHCZ19=sPUkDi5wLWeJ6KKtD09Wmjqkz27TQN6Xw@mail.gmail.com>
- <87zhacrokl.fsf@kamboji.qca.qualcomm.com> <CAK8P3a1mMcpVE5kLv-krjL_ZjqfRXDK4e3fChzuom_QFRtTJqw@mail.gmail.com>
- <87v9kzsvg8.fsf@kamboji.qca.qualcomm.com>
-In-Reply-To: <87v9kzsvg8.fsf@kamboji.qca.qualcomm.com>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Wed, 13 May 2020 18:00:28 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a2eKoOL0KF4CmyEtk-3309f2_D+daQbe=Bj5vCkvD_khA@mail.gmail.com>
-Message-ID: <CAK8P3a2eKoOL0KF4CmyEtk-3309f2_D+daQbe=Bj5vCkvD_khA@mail.gmail.com>
-Subject: Re: gcc-10: kernel stack is corrupted and fails to boot
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:+VE9yS/pAW+yc+VzMjlxwbU4QPNhvwBr7uzsjKiP4jHozKXQQ8e
- vosSuGKW2rXE97XSAORxJoimUmj9iqGNWFhUqeKb5H4cBs9A7yx+giq4ln1Vc7YAYnewQFh
- DwCFBMomOPZcDFamRC6mL8Vm+aBmya3+6MtcnFCWnmfinWN2sqcog7rK8vXAZ2MRrh/D8jn
- bTQ6B8cQ5/S4lf0aCeviQ==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:PMJX7kXZ+GU=:bgMye9IGk2BuNpgPRc9KfH
- K0FITDaUwXfW2GvURva76cgqIUvnc6VC5YzT3cotryl4iPUzS4HVmv24caKQUHolDTmwsnwdu
- tAieTtIRV31nwvcABvUZHogcASu2yif6m8sUB3h2LsIf0uvnHrYe2aYyt959UpnsfdqsxNbBf
- 4lBPed+CjqjhWHisgPZC2EkRDDNRkDXA4znqUtd6rBmXFJj7TLuwp1/M6VwNkqsx6knOmSwwu
- Bq0VvctT7Uom/ZLls76W+ATCYvV3AYgzRc7bec2M+MILFRUi1Tm8JbVd/QvRNzgLSfctXmIIL
- zWzYtI43BclOSR1coIuKkJKGKuGfgCXIZza3tr1UEjkY6j1Jc06Y8c3UbggPkcHQxQXa8Xy/L
- wI0Cl4cRRVnsX9AhHjaC8n3m7lS6I4gj/+o8KCUURJ/Mgs/4ViQyV9jYjLLWynJlm1DsLFzjI
- QE+lg/2zUMAeutoYARP8/G4PAeRCKFLCDTEaexWiYO7arQJXcLa0y3n0uut7+iWsu6CzwkFiQ
- HyWBBgrRt5kPWApA69oq93L4pm8s4JexyaC8CMhEDD4F4JjAExncau5N6cXue7i1GDVnWv4EC
- GUIl7rsvtmpXX4BU4ESXpilQ0qkXXRRfqoWvhBfJU/dvUD7KNF5ff+yPpnraYR4MRvSUQRf/Z
- wt2/uI8xikt3u0biJcwqYDzwHZAwhdMXZuzmM2sIpPR4FUskOJqcuTYmkZgW8TsYP++JsPlVk
- Ek7XS3DUhhLPTBSHOtO2z5uAOdWMpZGjCWYZl/YgApqzbyyS8VX7jBzWQZWQ2wk4mdxb1UVwS
- 5p09Hm36l0neidSNpVi9H6yKTSL63drBaZv+beswf9X2fcRs7o=
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v2] ath11k: fix htt stats module not handle multiple skbs
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <1589221074-28778-1-git-send-email-pradeepc@codeaurora.org>
+References: <1589221074-28778-1-git-send-email-pradeepc@codeaurora.org>
+To:     Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>
+Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>,
+        Miles Hu <milehu@codeaurora.org>
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
+Message-Id: <20200513160209.8CABBC433BA@smtp.codeaurora.org>
+Date:   Wed, 13 May 2020 16:02:09 +0000 (UTC)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, May 13, 2020 at 5:31 PM Kalle Valo <kvalo@codeaurora.org> wrote:
-> Arnd Bergmann <arnd@arndb.de> writes:
-> > On Wed, May 13, 2020 at 2:57 PM Kalle Valo <kvalo@codeaurora.org> wrote:
-> >>
-> >> Arnd Bergmann <arnd@arndb.de> writes:
-> >>
-> >> > If you share your .config, I can try reproducing with that as well.
-> >> > Once there is a reproducer in qemu, it should be trivial to step
-> >> > through it using gdb.
-> >>
-> >> I have attached the .config I used with GCC 10.1. If you are able to
-> >> test it please do let me know how it went.
-> >
-> > Yes, I see the same problem now, but have not investigated
-> > any further.
->
-> Great, so it's not a problem due to my setup.
+Pradeep Kumar Chitrapu <pradeepc@codeaurora.org> wrote:
 
-I investigated a little more: This does happen with 'defconfig'
-after all, in my first try I must have missed the '-smp 2' argument
-to qemu, and it ended up working correctly with just one CPU
-but fails now.
+> HTT EXT stats comes in stream of TLVs spanning over multiple
+> messages. Currently completion is being sent for each message
+> which is creating a race where stats_req is being accessed
+> for filling in second message after the memory is already
+> freed in release operation. Fix this by issuing completion
+> once all the messages are received and processed. Driver
+> knows this info from DONE bit set in htt msg.
+> 
+> Also fix locking required for htt stats.
+> 
+> Co-developed-by: Miles Hu <milehu@codeaurora.org>
+> Signed-off-by: Miles Hu <milehu@codeaurora.org>
+> Signed-off-by: Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>
+> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 
-Stepping through the boot process, I see where it crashes
-in start_secondary:
+Patch applied to ath-next branch of ath.git, thanks.
 
-|        /* to prevent fake stack check failure in clock setup */
-|        boot_init_stack_canary();
-|
-|        x86_cpuinit.setup_percpu_clockev();
-|
-|        wmb();
-|        cpu_startup_entry(CPUHP_AP_ONLINE_IDLE);
+012f81456818 ath11k: fix htt stats module not handle multiple skbs
 
-The call to cpu_startup_entry() does not succeed, instead
-it jumps to __stack_chk_fail() from there.
+-- 
+https://patchwork.kernel.org/patch/11541413/
 
-      Arnd
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
