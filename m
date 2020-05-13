@@ -2,84 +2,100 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C0221D19FC
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 May 2020 17:55:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 79B991D1A1C
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 May 2020 18:00:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731894AbgEMPzZ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 13 May 2020 11:55:25 -0400
-Received: from mail27.static.mailgun.info ([104.130.122.27]:50638 "EHLO
-        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728490AbgEMPzY (ORCPT
+        id S1732251AbgEMQAs (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 13 May 2020 12:00:48 -0400
+Received: from mout.kundenserver.de ([212.227.126.134]:48945 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2389213AbgEMQAr (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 13 May 2020 11:55:24 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1589385324; h=Date: Message-Id: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=zqNr7VfmY3S8iKilXp9gzEx8lUCpq3JPYp1lZP9vKiA=;
- b=xPt57sFeBja8qdfWkHBJGGN7tgVh/T7RhDqTx5jtQP1y7FzI0TjUv0gGt0RQ0Fafif1+Tpgd
- i+ZvDnZAce1S09zPIgC71B/6zn5aLC5ZkVDHVnOKtp/WUhsNTJpHnLU4L8aKV4i9q8ZCX1hY
- aKfvrkvsIoxDJgp+Z2nWXVBPQ3A=
-X-Mailgun-Sending-Ip: 104.130.122.27
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5ebc185d.7fe0ab504b90-smtp-out-n04;
- Wed, 13 May 2020 15:55:09 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 1740BC433F2; Wed, 13 May 2020 15:55:09 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
-        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id A0889C433F2;
-        Wed, 13 May 2020 15:55:05 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org A0889C433F2
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        Wed, 13 May 2020 12:00:47 -0400
+Received: from mail-qk1-f177.google.com ([209.85.222.177]) by
+ mrelayeu.kundenserver.de (mreue011 [212.227.15.129]) with ESMTPSA (Nemesis)
+ id 1Mz9lL-1jDuow2pff-00wETk; Wed, 13 May 2020 18:00:45 +0200
+Received: by mail-qk1-f177.google.com with SMTP id y22so5235973qki.3;
+        Wed, 13 May 2020 09:00:45 -0700 (PDT)
+X-Gm-Message-State: AOAM530TWWgtQd3MWuR/mWzg/tWNLb2ym9vJ15jV23+wkGRtcbLyKf+P
+        BIjZwKh9b/Q9L4lhQ6Er8xmM8gyU06CCoDkqI0Q=
+X-Google-Smtp-Source: ABdhPJyKpZv03jMaYhNeTLejY16uvPcQQJcVwZSNjzCLBox/lZ1uZ2BacyGU3669//YQxo34VT7WHEyTtCXmXt0P9SQ=
+X-Received: by 2002:a37:aa82:: with SMTP id t124mr336651qke.3.1589385644498;
+ Wed, 13 May 2020 09:00:44 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH -next v2] rtl8187: Remove unused variable
- rtl8225z2_tx_power_ofdm
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20200513011754.28432-1-chentao107@huawei.com>
-References: <20200513011754.28432-1-chentao107@huawei.com>
-To:     ChenTao <chentao107@huawei.com>
-Cc:     <mark@fasheh.com>, <herton@canonical.com>,
-        <htl10@users.sourceforge.net>, <Larry.Finger@lwfinger.net>,
-        <davem@davemloft.net>, <linux-wireless@vger.kernel.org>,
-        <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <chentao107@huawei.com>
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.5.2
-Message-Id: <20200513155509.1740BC433F2@smtp.codeaurora.org>
-Date:   Wed, 13 May 2020 15:55:09 +0000 (UTC)
+References: <20200509120707.188595-1-arnd@arndb.de> <20200509120707.188595-2-arnd@arndb.de>
+ <87v9l24qz6.fsf@kamboji.qca.qualcomm.com> <87r1vq4qev.fsf@kamboji.qca.qualcomm.com>
+ <87d078tjl0.fsf_-_@kamboji.qca.qualcomm.com> <CAK8P3a1dxJAHCZ19=sPUkDi5wLWeJ6KKtD09Wmjqkz27TQN6Xw@mail.gmail.com>
+ <87zhacrokl.fsf@kamboji.qca.qualcomm.com> <CAK8P3a1mMcpVE5kLv-krjL_ZjqfRXDK4e3fChzuom_QFRtTJqw@mail.gmail.com>
+ <87v9kzsvg8.fsf@kamboji.qca.qualcomm.com>
+In-Reply-To: <87v9kzsvg8.fsf@kamboji.qca.qualcomm.com>
+From:   Arnd Bergmann <arnd@arndb.de>
+Date:   Wed, 13 May 2020 18:00:28 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a2eKoOL0KF4CmyEtk-3309f2_D+daQbe=Bj5vCkvD_khA@mail.gmail.com>
+Message-ID: <CAK8P3a2eKoOL0KF4CmyEtk-3309f2_D+daQbe=Bj5vCkvD_khA@mail.gmail.com>
+Subject: Re: gcc-10: kernel stack is corrupted and fails to boot
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Provags-ID: V03:K1:+VE9yS/pAW+yc+VzMjlxwbU4QPNhvwBr7uzsjKiP4jHozKXQQ8e
+ vosSuGKW2rXE97XSAORxJoimUmj9iqGNWFhUqeKb5H4cBs9A7yx+giq4ln1Vc7YAYnewQFh
+ DwCFBMomOPZcDFamRC6mL8Vm+aBmya3+6MtcnFCWnmfinWN2sqcog7rK8vXAZ2MRrh/D8jn
+ bTQ6B8cQ5/S4lf0aCeviQ==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:PMJX7kXZ+GU=:bgMye9IGk2BuNpgPRc9KfH
+ K0FITDaUwXfW2GvURva76cgqIUvnc6VC5YzT3cotryl4iPUzS4HVmv24caKQUHolDTmwsnwdu
+ tAieTtIRV31nwvcABvUZHogcASu2yif6m8sUB3h2LsIf0uvnHrYe2aYyt959UpnsfdqsxNbBf
+ 4lBPed+CjqjhWHisgPZC2EkRDDNRkDXA4znqUtd6rBmXFJj7TLuwp1/M6VwNkqsx6knOmSwwu
+ Bq0VvctT7Uom/ZLls76W+ATCYvV3AYgzRc7bec2M+MILFRUi1Tm8JbVd/QvRNzgLSfctXmIIL
+ zWzYtI43BclOSR1coIuKkJKGKuGfgCXIZza3tr1UEjkY6j1Jc06Y8c3UbggPkcHQxQXa8Xy/L
+ wI0Cl4cRRVnsX9AhHjaC8n3m7lS6I4gj/+o8KCUURJ/Mgs/4ViQyV9jYjLLWynJlm1DsLFzjI
+ QE+lg/2zUMAeutoYARP8/G4PAeRCKFLCDTEaexWiYO7arQJXcLa0y3n0uut7+iWsu6CzwkFiQ
+ HyWBBgrRt5kPWApA69oq93L4pm8s4JexyaC8CMhEDD4F4JjAExncau5N6cXue7i1GDVnWv4EC
+ GUIl7rsvtmpXX4BU4ESXpilQ0qkXXRRfqoWvhBfJU/dvUD7KNF5ff+yPpnraYR4MRvSUQRf/Z
+ wt2/uI8xikt3u0biJcwqYDzwHZAwhdMXZuzmM2sIpPR4FUskOJqcuTYmkZgW8TsYP++JsPlVk
+ Ek7XS3DUhhLPTBSHOtO2z5uAOdWMpZGjCWYZl/YgApqzbyyS8VX7jBzWQZWQ2wk4mdxb1UVwS
+ 5p09Hm36l0neidSNpVi9H6yKTSL63drBaZv+beswf9X2fcRs7o=
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-ChenTao <chentao107@huawei.com> wrote:
+On Wed, May 13, 2020 at 5:31 PM Kalle Valo <kvalo@codeaurora.org> wrote:
+> Arnd Bergmann <arnd@arndb.de> writes:
+> > On Wed, May 13, 2020 at 2:57 PM Kalle Valo <kvalo@codeaurora.org> wrote:
+> >>
+> >> Arnd Bergmann <arnd@arndb.de> writes:
+> >>
+> >> > If you share your .config, I can try reproducing with that as well.
+> >> > Once there is a reproducer in qemu, it should be trivial to step
+> >> > through it using gdb.
+> >>
+> >> I have attached the .config I used with GCC 10.1. If you are able to
+> >> test it please do let me know how it went.
+> >
+> > Yes, I see the same problem now, but have not investigated
+> > any further.
+>
+> Great, so it's not a problem due to my setup.
 
-> Fix the following warning:
-> 
-> drivers/net/wireless/realtek/rtl818x/rtl8187/rtl8225.c:609:17: warning:
-> ‘rtl8225z2_tx_power_ofdm’ defined but not used
->  static const u8 rtl8225z2_tx_power_ofdm[] = {
-> 
-> Acked-by: Hin-Tak Leung <htl10@users.sourceforge.net>
-> Acked-by: Larry Finger <Larry.Finger@lwfinger.net>
-> Reported-by: Hulk Robot <hulkci@huawei.com>
-> Signed-off-by: ChenTao <chentao107@huawei.com>
+I investigated a little more: This does happen with 'defconfig'
+after all, in my first try I must have missed the '-smp 2' argument
+to qemu, and it ended up working correctly with just one CPU
+but fails now.
 
-Patch applied to wireless-drivers-next.git, thanks.
+Stepping through the boot process, I see where it crashes
+in start_secondary:
 
-b6ba5761faad rtl8187: Remove unused variable rtl8225z2_tx_power_ofdm
+|        /* to prevent fake stack check failure in clock setup */
+|        boot_init_stack_canary();
+|
+|        x86_cpuinit.setup_percpu_clockev();
+|
+|        wmb();
+|        cpu_startup_entry(CPUHP_AP_ONLINE_IDLE);
 
--- 
-https://patchwork.kernel.org/patch/11544493/
+The call to cpu_startup_entry() does not succeed, instead
+it jumps to __stack_chk_fail() from there.
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+      Arnd
