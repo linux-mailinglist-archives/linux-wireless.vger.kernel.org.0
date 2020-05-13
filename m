@@ -2,95 +2,128 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DF8551D097B
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 May 2020 09:05:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A1971D098E
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 May 2020 09:08:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730444AbgEMHFM (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 13 May 2020 03:05:12 -0400
-Received: from mail27.static.mailgun.info ([104.130.122.27]:42656 "EHLO
-        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1730123AbgEMHFL (ORCPT
+        id S1730376AbgEMHIP (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 13 May 2020 03:08:15 -0400
+Received: from mail-il1-f199.google.com ([209.85.166.199]:45221 "EHLO
+        mail-il1-f199.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729647AbgEMHIO (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 13 May 2020 03:05:11 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1589353510; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=5BY6ILWQbBBP5bzYtCeFue+FX7NC/WAICZFymNd3smM=; b=THhKTt+Zv+BvZlj3v+rsoULUlQdq70WCZHUONwoniRrKDuRLscp9zvP2mRSZLvRx7xDRL+r/
- dlDb0qYTfL+KWd3MiF6cV6tJGByi+k5lEXdp0lE6zKG3PRuan57Vet2hfzqbhofiHqrzqWw7
- BY4B8VMHDRzggq3trsYQpTu1Upo=
-X-Mailgun-Sending-Ip: 104.130.122.27
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5ebb9c23.7f7e4566c3e8-smtp-out-n03;
- Wed, 13 May 2020 07:05:07 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id CA574C432C2; Wed, 13 May 2020 07:05:06 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 4317FC433D2;
-        Wed, 13 May 2020 07:05:03 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 4317FC433D2
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Brian Norris <briannorris@chromium.org>
-Cc:     Navid Emamdoost <navid.emamdoost@gmail.com>, emamd001@umn.edu,
-        smccaman@umn.edu, Kangjie Lu <kjlu@umn.edu>,
-        QCA ath9k Development <ath9k-devel@qca.qualcomm.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        "\<netdev\@vger.kernel.org\>" <netdev@vger.kernel.org>,
-        Linux Kernel <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] ath9k: release allocated buffer if timed out
-References: <20190906185931.19288-1-navid.emamdoost@gmail.com>
-        <CA+ASDXMnp-GTkrT7B5O+dtopJUmGBay=Tn=-nf1LW1MtaVOr+w@mail.gmail.com>
-Date:   Wed, 13 May 2020 10:05:00 +0300
-In-Reply-To: <CA+ASDXMnp-GTkrT7B5O+dtopJUmGBay=Tn=-nf1LW1MtaVOr+w@mail.gmail.com>
-        (Brian Norris's message of "Tue, 12 May 2020 09:56:47 -0700")
-Message-ID: <878shwtiw3.fsf@kamboji.qca.qualcomm.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        Wed, 13 May 2020 03:08:14 -0400
+Received: by mail-il1-f199.google.com with SMTP id t10so15506342ilf.12
+        for <linux-wireless@vger.kernel.org>; Wed, 13 May 2020 00:08:13 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
+        bh=4QBNP2HR3gpc8LrPnQK6peZDQZdUtluaIGBLQtNra78=;
+        b=FsS8yo//ikhUrpCsWJQ/byTCz09mztqmic4uyCIzKh1XNuDFDjFNtG07Q/EbB/v14J
+         8zG6MA/9e0fWGvTfqhY4fWGbQM4HBfwaoQZAKNv8CubxfAgeyi0Dxftd0DHCCOgauIDV
+         oHYNrJso4JtJTysCMjoj87urH7YZAouwFKRq4mugTkBOWWcfNm2LXKoEkR5DtCjknMpw
+         ux8JnxhNYszCi0LriZsaF7whg42zsr5cyhI2CMbWK2P1SW6T/uU6fHao9TmpEvpLkvYk
+         rJYL4qHtsBEri8keKNBFodVVFoSPkT8xNFGmMJpgYCwjt53miGS7dNHUNMv9PSS8wOYQ
+         qsKA==
+X-Gm-Message-State: AGi0PuZ6kLfXk/pkT/P1gbKmKR6uqx3jCdwDxwbHmjXGaBqoHvqOBUz5
+        yIU0+HhmTmU4AcN3tf9ckUEmsFZRnWGFbhoXEFcIGTa2K1u+
+X-Google-Smtp-Source: APiQypLP0LNvw//Am9YDhcfBkp/su2qZOVPUWsaX+yXrrHireJ83TAFbcTVPzbJ28ZGsP7fsJVILtpmiMGJgNjNbDqe9EvEYhVeK
 MIME-Version: 1.0
-Content-Type: text/plain
+X-Received: by 2002:a6b:c706:: with SMTP id x6mr23750484iof.112.1589353693496;
+ Wed, 13 May 2020 00:08:13 -0700 (PDT)
+Date:   Wed, 13 May 2020 00:08:13 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <00000000000052cae405a5823e68@google.com>
+Subject: general protection fault in cfg80211_dev_rename
+From:   syzbot <syzbot+fd5332e429401bf42d18@syzkaller.appspotmail.com>
+To:     davem@davemloft.net, johannes@sipsolutions.net, kuba@kernel.org,
+        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Brian Norris <briannorris@chromium.org> writes:
+Hello,
 
-> On Fri, Sep 6, 2019 at 11:59 AM Navid Emamdoost
-> <navid.emamdoost@gmail.com> wrote:
->>
->> In ath9k_wmi_cmd, the allocated network buffer needs to be released
->> if timeout happens. Otherwise memory will be leaked.
->>
->> Signed-off-by: Navid Emamdoost <navid.emamdoost@gmail.com>
->
-> I wonder, did you actually test your patches? I ask, because it seems
-> that all your patches are of the same mechanical variety (produced by
-> some sort of research project?), and if I look around a bit, I see
-> several mistakes and regressions noted on your other patches. And
-> recently, I see someone reporting a 5.4 kernel regression, which looks
-> a lot like it was caused by this patch:
->
-> https://bugzilla.kernel.org/show_bug.cgi?id=207703#c1
->
-> I'll propose a revert, if there's no evidence this was actually tested
-> or otherwise confirmed to fix a real bug.
+syzbot found the following crash on:
 
-Actually it's already reverted in -next, nobody just realised that it's
-a regression from commit 728c1e2a05e4:
+HEAD commit:    2b6c6f07 bpf, i386: Remove unneeded conversion to bool
+git tree:       bpf-next
+console output: https://syzkaller.appspot.com/x/log.txt?x=142a6eec100000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=da7097535df759be
+dashboard link: https://syzkaller.appspot.com/bug?extid=fd5332e429401bf42d18
+compiler:       gcc (GCC) 9.0.0 20181231 (experimental)
 
-ced21a4c726b ath9k: Fix use-after-free Read in htc_connect_service
+Unfortunately, I don't have any reproducer for this crash yet.
 
-v5.8-rc1 should be the first release having the fix.
+IMPORTANT: if you fix the bug, please add the following tag to the commit:
+Reported-by: syzbot+fd5332e429401bf42d18@syzkaller.appspotmail.com
 
--- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+general protection fault, probably for non-canonical address 0xdffffc0000000006: 0000 [#1] PREEMPT SMP KASAN
+KASAN: null-ptr-deref in range [0x0000000000000030-0x0000000000000037]
+CPU: 1 PID: 17548 Comm: syz-executor.2 Not tainted 5.7.0-rc2-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
+RIP: 0010:cfg80211_dev_rename+0x12b/0x210 net/wireless/core.c:146
+Code: ef 00 00 00 4c 8b b5 10 0c 00 00 4d 85 f6 74 36 e8 0a 6f 20 fa 49 8d 7e 48 48 b8 00 00 00 00 00 fc ff df 48 89 fa 48 c1 ea 03 <80> 3c 02 00 0f 85 c9 00 00 00 49 8b 7e 48 4c 89 e9 4c 89 f6 48 89
+RSP: 0018:ffffc900055774e0 EFLAGS: 00010207
+RAX: dffffc0000000000 RBX: ffffc90005577748 RCX: ffffc90010d1f000
+RDX: 0000000000000006 RSI: ffffffff8752bd86 RDI: 0000000000000037
+RBP: ffff888088b40000 R08: ffff8880624a85c0 R09: fffffbfff185d748
+R10: ffffffff8c2eba3f R11: fffffbfff185d747 R12: 0000000000000000
+R13: ffffc90005e19018 R14: ffffffffffffffef R15: ffff888088b40000
+FS:  00007fce5b9b5700(0000) GS:ffff8880ae700000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 000000000048a140 CR3: 0000000097525000 CR4: 00000000001406e0
+DR0: 0000000020000900 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000600
+Call Trace:
+ nl80211_set_wiphy+0x29d/0x2b70 net/wireless/nl80211.c:3009
+ genl_family_rcv_msg_doit net/netlink/genetlink.c:673 [inline]
+ genl_family_rcv_msg net/netlink/genetlink.c:718 [inline]
+ genl_rcv_msg+0x627/0xdf0 net/netlink/genetlink.c:735
+ netlink_rcv_skb+0x15a/0x410 net/netlink/af_netlink.c:2469
+ genl_rcv+0x24/0x40 net/netlink/genetlink.c:746
+ netlink_unicast_kernel net/netlink/af_netlink.c:1303 [inline]
+ netlink_unicast+0x537/0x740 net/netlink/af_netlink.c:1329
+ netlink_sendmsg+0x882/0xe10 net/netlink/af_netlink.c:1918
+ sock_sendmsg_nosec net/socket.c:652 [inline]
+ sock_sendmsg+0xcf/0x120 net/socket.c:672
+ ____sys_sendmsg+0x6bf/0x7e0 net/socket.c:2362
+ ___sys_sendmsg+0x100/0x170 net/socket.c:2416
+ __sys_sendmsg+0xec/0x1b0 net/socket.c:2449
+ do_syscall_64+0xf6/0x7d0 arch/x86/entry/common.c:295
+ entry_SYSCALL_64_after_hwframe+0x49/0xb3
+RIP: 0033:0x45c829
+Code: 0d b7 fb ff c3 66 2e 0f 1f 84 00 00 00 00 00 66 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 0f 83 db b6 fb ff c3 66 2e 0f 1f 84 00 00 00 00
+RSP: 002b:00007fce5b9b4c78 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
+RAX: ffffffffffffffda RBX: 0000000000500b20 RCX: 000000000045c829
+RDX: 0000000000000000 RSI: 0000000020000000 RDI: 0000000000000003
+RBP: 000000000078bf00 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 00000000ffffffff
+R13: 00000000000009fd R14: 00000000004ccb59 R15: 00007fce5b9b56d4
+Modules linked in:
+---[ end trace 90c3adb6c5fb6794 ]---
+RIP: 0010:cfg80211_dev_rename+0x12b/0x210 net/wireless/core.c:146
+Code: ef 00 00 00 4c 8b b5 10 0c 00 00 4d 85 f6 74 36 e8 0a 6f 20 fa 49 8d 7e 48 48 b8 00 00 00 00 00 fc ff df 48 89 fa 48 c1 ea 03 <80> 3c 02 00 0f 85 c9 00 00 00 49 8b 7e 48 4c 89 e9 4c 89 f6 48 89
+RSP: 0018:ffffc900055774e0 EFLAGS: 00010207
+RAX: dffffc0000000000 RBX: ffffc90005577748 RCX: ffffc90010d1f000
+RDX: 0000000000000006 RSI: ffffffff8752bd86 RDI: 0000000000000037
+RBP: ffff888088b40000 R08: ffff8880624a85c0 R09: fffffbfff185d748
+R10: ffffffff8c2eba3f R11: fffffbfff185d747 R12: 0000000000000000
+R13: ffffc90005e19018 R14: ffffffffffffffef R15: ffff888088b40000
+FS:  00007fce5b9b5700(0000) GS:ffff8880ae600000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000001b3103e000 CR3: 0000000097525000 CR4: 00000000001406f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000600
+
+
+---
+This bug is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this bug report. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
