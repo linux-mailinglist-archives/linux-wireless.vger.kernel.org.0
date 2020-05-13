@@ -2,306 +2,121 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A6251D0A96
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 May 2020 10:14:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 204821D0B3B
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 May 2020 10:50:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730358AbgEMIOB (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 13 May 2020 04:14:01 -0400
-Received: from mail27.static.mailgun.info ([104.130.122.27]:24664 "EHLO
-        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726092AbgEMIOB (ORCPT
+        id S1732434AbgEMItv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 13 May 2020 04:49:51 -0400
+Received: from mout.kundenserver.de ([212.227.126.131]:52797 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730237AbgEMItu (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 13 May 2020 04:14:01 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1589357639; h=Message-Id: Date: Subject: Cc: To: From:
- Sender; bh=lCnfalO4J+zN/r8Zq54RplN4M6Qd+WJOcoSbXTRe1sw=; b=HEoeBoxsTvAIRLf5fbVAwlV2I8p3L2s7nJTwZL7bOTpE4ZF4tGsLQg4ePhqi1xXtNKWXFgwi
- iscmmmTuduNqT73jJ/fgT+phmg2h6OneFWAx2srlNmxOmJrqUJHHA7udkoAzGOHLnMU1jIqj
- 9XDIHdaChBuEbWp+iH35ve4eAig=
-X-Mailgun-Sending-Ip: 104.130.122.27
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5ebbac35.7f72dd9e6110-smtp-out-n03;
- Wed, 13 May 2020 08:13:41 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 90CD9C433F2; Wed, 13 May 2020 08:13:41 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE,
-        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from cheath10p342229-lin.qca.qualcomm.com (blr-c-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.19.19])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: tamizhr)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 903A0C433D2;
-        Wed, 13 May 2020 08:13:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 903A0C433D2
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=tamizhr@codeaurora.org
-From:   Tamizh Chelvam <tamizhr@codeaurora.org>
-To:     johannes@sipsolutions.net
-Cc:     linux-wireless@vger.kernel.org,
-        Tamizh Chelvam <tamizhr@codeaurora.org>
-Subject: [PATCHv2] nl80211: Add support to configure TID specific Tx rate configuration
-Date:   Wed, 13 May 2020 13:41:44 +0530
-Message-Id: <1589357504-10175-1-git-send-email-tamizhr@codeaurora.org>
-X-Mailer: git-send-email 1.9.1
+        Wed, 13 May 2020 04:49:50 -0400
+Received: from mail-qt1-f176.google.com ([209.85.160.176]) by
+ mrelayeu.kundenserver.de (mreue012 [212.227.15.129]) with ESMTPSA (Nemesis)
+ id 1Mf3yk-1isIb847q6-00gapj; Wed, 13 May 2020 10:49:49 +0200
+Received: by mail-qt1-f176.google.com with SMTP id v4so12611970qte.3;
+        Wed, 13 May 2020 01:49:48 -0700 (PDT)
+X-Gm-Message-State: AGi0PuZZjMlN5xkIYcIaxdIlLzEhcSdL9WjPMH+i+gyzPVDjn3TYJTq/
+        tdDEk68tTH7Yi+V207U5LNoxtkIif6BvQmmdSlQ=
+X-Google-Smtp-Source: APiQypK6RUzPiElv+0LgA+6SydZJEi9vK6ik3U1AQWnKjKYzEXjlb1LdHL6niV9xcSMp8+HKBSU6JwsHgY+K4sDw6LY=
+X-Received: by 2002:aed:2441:: with SMTP id s1mr19473552qtc.304.1589359787721;
+ Wed, 13 May 2020 01:49:47 -0700 (PDT)
+MIME-Version: 1.0
+References: <20200509120707.188595-1-arnd@arndb.de> <20200509120707.188595-2-arnd@arndb.de>
+ <87v9l24qz6.fsf@kamboji.qca.qualcomm.com> <87r1vq4qev.fsf@kamboji.qca.qualcomm.com>
+ <87d078tjl0.fsf_-_@kamboji.qca.qualcomm.com>
+In-Reply-To: <87d078tjl0.fsf_-_@kamboji.qca.qualcomm.com>
+From:   Arnd Bergmann <arnd@arndb.de>
+Date:   Wed, 13 May 2020 10:49:31 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a1dxJAHCZ19=sPUkDi5wLWeJ6KKtD09Wmjqkz27TQN6Xw@mail.gmail.com>
+Message-ID: <CAK8P3a1dxJAHCZ19=sPUkDi5wLWeJ6KKtD09Wmjqkz27TQN6Xw@mail.gmail.com>
+Subject: Re: gcc-10: kernel stack is corrupted and fails to boot
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Provags-ID: V03:K1:JJN1tmrdOdKjQ3HrZDQA1NwEQzGoEDIMifl3gugwcCK/5A9NvPU
+ Z6afJTIDF7hHiBwR5E/92B1Zq+p4oA9EDm0fajQhaP8vz2CpV/oCrYnv77QYN08zMCHHPrd
+ 4C5Y7mf0FtszIIHTcEy5zH85sM79TrZBgdOfaFppJdcyNErZg/XPqipmlhmTHa+aRx8JTeu
+ dbYLmXNpeJa3FbYk5bxDw==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:xB2cQ7s5EkM=:CSwT9l9HTeEag2TifN23jU
+ a9Mk3QM9Y95IwL2nffX7VzcejIdnze2zGM2cz6L19jVufModHEAhQdlKp+bHI7IXpwdwflDon
+ rEKabKvAVW0rnoftejcRQ0OqEVvEfLXFZVeUzuaLtYvkKEKJpmIkha+Tq9WaWoJ650dbDa5jK
+ XZbjThAe5TKm/WrW6aIyMSE76j/VeaQxhZPJL7OBsD2PRU+cZRoxmYm1MlG3fjILHFqXzU1HS
+ UFR4mKurcI34ADv/ZMrJznEqazP5oSaE+Y8mornSZFjcf3h+atun30JrkAvgxrrcUUCAddyTh
+ MeMWm/hcwUX3JCYEyXWPzb7XBuY9U4PTy/XFcWNfNryehRbzRgbsJOqQQ+viZI58k2fubMMn3
+ DZNYlLr6YYR92zS7ZdS3vtcQc9WvuFqHN4x2ikXLhFsXOAJi8Hnh1C4iZEJAxE8ltcesGkJ22
+ MaYQjAIg51pkG9OHcubMFfKB3+pbhwEpnJUgyKuXEli+NgAGHs4KhPYbFW2Lvcl2QgKtEI/Dc
+ zNGK/j+8mdJrZTx15REgBWoMdSzzb1CvInpNktYq6Q1kqg7lp5CmcvmOG2OSZy+6rfXHyX07z
+ lW7rTYzK8JJcgAYg18hBwDVwonpAUeijHFTdkuGwdMuLorv+hok2kthcqIwcKeQq4fPHlY4M/
+ 1nw9+c2XuUCdZukHdESBGqOEJCQ+ca0S/wLs6bxX4y4yd18fRspNUJNLyY+NVRlTV4JDByzo+
+ rwhMXhY6UWkTtTPGbUxEVnhIj3xa7gfxXaoAtsaW6BxCivmUSUvO5MQAoAf2pNyppOpiUnY+K
+ 4E2LLAt9wbfjjtPbHh5JnOf6YXg5tsDJuOatOx3jgjcplzON4k=
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-This patch adds support to configure per TID Tx Rate configuration
-through NL80211_TID_CONFIG_ATTR_TX_RATE* attributes. And it uses
-nl80211_parse_tx_bitrate_mask api to validate the Tx rate mask.
+On Wed, May 13, 2020 at 8:50 AM Kalle Valo <kvalo@codeaurora.org> wrote:
+>
+> Kalle Valo <kvalo@codeaurora.org> writes:
+>
+> > This motivated me to switch to using GCC 10.x and I noticed that you had
+> > already upgraded crosstool so it was a trivial thing to do, awesome :)
+> >
+> > https://mirrors.edge.kernel.org/pub/tools/crosstool/
+>
+> And now I have a problem :) I first noticed that my x86 testbox is not
+> booting when I compile the kernel with GCC 10.1.0 from crosstool. I
+> didn't get any error messages so I just downgraded the compiler and the
+> kernel was booting fine again. Next I decided to try GCC 10.1 with my
+> x86 laptop and it also failed to boot, but this time I got kernel logs
+> and saw this:
+>
+> Kernel panic - not syncing: stack-protector: Kernel stack is corrupted in: start_secodary+0x178/0x180
+>
+> Call Trace:
+> dump_stack
+> panic
+> ? _raw_spin_unlock_irqrestore
+> ? start_secondary
+> __stack_chk_fail
+> start_secondary
+> secondary_startup
+>
+> (I wrote the above messages manually from a picture so expect typos)
+>
+> Then also on my x86 laptop I downgraded the compiler to GCC 8.1.0 (from
+> crosstool), rebuilt the exactly same kernel version and the kernel
+> booted without issues.
+>
+> I'm using 5.7.0-rc4-wt-ath+ which is basically v5.7-rc4 plus latest
+> wireless patches, and I doubt the wireless patches are making any
+> difference this early in the boot. All compilers I use are prebuilt
+> binaries from kernel.org crosstool repo[1] with addition of ccache
+> v3.4.1 to speed up my builds.
+>
+> Any ideas? How should I debug this further?
 
-Signed-off-by: Tamizh Chelvam <tamizhr@codeaurora.org>
----
-v2:
- * Added documentation for new parameters in struct cfg80211_tid_cfg
+At least if it fails reproducibly, it's probably not too hard to drill
+down further. Some ideas:
 
- include/net/cfg80211.h       |   29 +++++++++++--------
- include/uapi/linux/nl80211.h |   21 ++++++++++++++
- net/wireless/nl80211.c       |   64 +++++++++++++++++++++++++++++++-----------
- 3 files changed, 85 insertions(+), 29 deletions(-)
+* I'd first try to reproduce it in qemu. Since you don't even need
+  any user space or modules, I would simply try
+  $ qemu-system-x86_64 -nographic -monitor none -append
+"console=ttyS0" -serial stdio -smp 4 -kernel arch/x86/boot/bzImage
+  I tried it here with an x86 defconfig linux-next kernel but did not
+  run into the problem you described. If you share your .config,
+  I can try reproducing with that as well. Once there is a reproducer
+  in qemu, it should be trivial to step through it using gdb.
 
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index a82fc59..7c3bf98 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -630,6 +630,19 @@ struct cfg80211_chan_def {
- 	u16 freq1_offset;
- };
- 
-+/*
-+ * cfg80211_bitrate_mask - masks for bitrate control
-+ */
-+struct cfg80211_bitrate_mask {
-+	struct {
-+		u32 legacy;
-+		u8 ht_mcs[IEEE80211_HT_MCS_MASK_LEN];
-+		u16 vht_mcs[NL80211_VHT_NSS_MAX];
-+		enum nl80211_txrate_gi gi;
-+	} control[NUM_NL80211_BANDS];
-+};
-+
-+
- /**
-  * struct cfg80211_tid_cfg - TID specific configuration
-  * @config_override: Flag to notify driver to reset TID configuration
-@@ -642,6 +655,8 @@ struct cfg80211_chan_def {
-  * @retry_short: retry count value
-  * @ampdu: Enable/Disable aggregation
-  * @rtscts: Enable/Disable RTS/CTS
-+ * @txrate_type: Tx bitrate mask type
-+ * @txrate_mask: Tx bitrate to be applied for the TID
-  */
- struct cfg80211_tid_cfg {
- 	bool config_override;
-@@ -651,6 +666,8 @@ struct cfg80211_tid_cfg {
- 	u8 retry_long, retry_short;
- 	enum nl80211_tid_config ampdu;
- 	enum nl80211_tid_config rtscts;
-+	enum nl80211_tx_rate_setting txrate_type;
-+	struct cfg80211_bitrate_mask txrate_mask;
- };
- 
- /**
-@@ -1005,18 +1022,6 @@ struct cfg80211_acl_data {
- 	struct mac_address mac_addrs[];
- };
- 
--/*
-- * cfg80211_bitrate_mask - masks for bitrate control
-- */
--struct cfg80211_bitrate_mask {
--	struct {
--		u32 legacy;
--		u8 ht_mcs[IEEE80211_HT_MCS_MASK_LEN];
--		u16 vht_mcs[NL80211_VHT_NSS_MAX];
--		enum nl80211_txrate_gi gi;
--	} control[NUM_NL80211_BANDS];
--};
--
- /**
-  * enum cfg80211_ap_settings_flags - AP settings flags
-  *
-diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-index 9679d561..8fe0d27 100644
---- a/include/uapi/linux/nl80211.h
-+++ b/include/uapi/linux/nl80211.h
-@@ -4816,6 +4816,17 @@ enum nl80211_tid_config {
- 	NL80211_TID_CONFIG_DISABLE,
- };
- 
-+/* enum nl80211_tx_rate_setting - TX rate configuration type
-+ * @NL80211_TX_RATE_AUTOMATIC: automatically determine TX rate
-+ * @NL80211_TX_RATE_LIMITED: limit the TX rate by the TX rate parameter
-+ * @NL80211_TX_RATE_FIXED: fix TX rate to the TX rate parameter
-+ */
-+enum nl80211_tx_rate_setting {
-+	NL80211_TX_RATE_AUTOMATIC,
-+	NL80211_TX_RATE_LIMITED,
-+	NL80211_TX_RATE_FIXED,
-+};
-+
- /* enum nl80211_tid_config_attr - TID specific configuration.
-  * @NL80211_TID_CONFIG_ATTR_PAD: pad attribute for 64-bit values
-  * @NL80211_TID_CONFIG_ATTR_VIF_SUPP: a bitmap (u64) of attributes supported
-@@ -4850,6 +4861,14 @@ enum nl80211_tid_config {
-  * @NL80211_TID_CONFIG_ATTR_RTSCTS_CTRL: Enable/Disable RTS_CTS for the TIDs
-  *	specified in %NL80211_TID_CONFIG_ATTR_TIDS. It is u8 type, using
-  *	the values from &nl80211_tid_config.
-+ * @NL80211_TID_CONFIG_ATTR_TX_RATE_TYPE: This attribute will be useful
-+ *	to notfiy the driver that what type of txrate should be used
-+ *	for the TIDs specified in %NL80211_TID_CONFIG_ATTR_TIDS. using
-+ *	the values form &nl80211_tx_rate_setting.
-+ * @NL80211_TID_CONFIG_ATTR_TX_RATE: Data frame TX rate mask should be applied
-+ *	with the parameters passed through %NL80211_ATTR_TX_RATES.
-+ *	configuration is applied to the data frame for the tid to that connected
-+ *	station.
-  */
- enum nl80211_tid_config_attr {
- 	__NL80211_TID_CONFIG_ATTR_INVALID,
-@@ -4863,6 +4882,8 @@ enum nl80211_tid_config_attr {
- 	NL80211_TID_CONFIG_ATTR_RETRY_LONG,
- 	NL80211_TID_CONFIG_ATTR_AMPDU_CTRL,
- 	NL80211_TID_CONFIG_ATTR_RTSCTS_CTRL,
-+	NL80211_TID_CONFIG_ATTR_TX_RATE_TYPE,
-+	NL80211_TID_CONFIG_ATTR_TX_RATE,
- 
- 	/* keep last */
- 	__NL80211_TID_CONFIG_ATTR_AFTER_LAST,
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 3d27b24..1759569 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -331,6 +331,18 @@ static int validate_ie_attr(const struct nlattr *attr,
- 	[NL80211_HE_BSS_COLOR_ATTR_PARTIAL] = { .type = NLA_FLAG },
- };
- 
-+static const struct nla_policy nl80211_txattr_policy[NL80211_TXRATE_MAX + 1] = {
-+	[NL80211_TXRATE_LEGACY] = { .type = NLA_BINARY,
-+				    .len = NL80211_MAX_SUPP_RATES },
-+	[NL80211_TXRATE_HT] = { .type = NLA_BINARY,
-+				.len = NL80211_MAX_SUPP_HT_RATES },
-+	[NL80211_TXRATE_VHT] = {
-+		.type = NLA_EXACT_LEN_WARN,
-+		.len = sizeof(struct nl80211_txrate_vht),
-+	},
-+	[NL80211_TXRATE_GI] = { .type = NLA_U8 },
-+};
-+
- static const struct nla_policy
- nl80211_tid_config_attr_policy[NL80211_TID_CONFIG_ATTR_MAX + 1] = {
- 	[NL80211_TID_CONFIG_ATTR_VIF_SUPP] = { .type = NLA_U64 },
-@@ -345,6 +357,10 @@ static int validate_ie_attr(const struct nlattr *attr,
- 			NLA_POLICY_MAX(NLA_U8, NL80211_TID_CONFIG_DISABLE),
- 	[NL80211_TID_CONFIG_ATTR_RTSCTS_CTRL] =
- 			NLA_POLICY_MAX(NLA_U8, NL80211_TID_CONFIG_DISABLE),
-+	[NL80211_TID_CONFIG_ATTR_TX_RATE_TYPE] =
-+			NLA_POLICY_MAX(NLA_U8, NL80211_TX_RATE_FIXED),
-+	[NL80211_TID_CONFIG_ATTR_TX_RATE] =
-+			NLA_POLICY_NESTED(nl80211_txattr_policy),
- };
- 
- const struct nla_policy nl80211_policy[NUM_NL80211_ATTR] = {
-@@ -4413,19 +4429,9 @@ static bool vht_set_mcs_mask(struct ieee80211_supported_band *sband,
- 	return true;
- }
- 
--static const struct nla_policy nl80211_txattr_policy[NL80211_TXRATE_MAX + 1] = {
--	[NL80211_TXRATE_LEGACY] = { .type = NLA_BINARY,
--				    .len = NL80211_MAX_SUPP_RATES },
--	[NL80211_TXRATE_HT] = { .type = NLA_BINARY,
--				.len = NL80211_MAX_SUPP_HT_RATES },
--	[NL80211_TXRATE_VHT] = {
--		.type = NLA_EXACT_LEN_WARN,
--		.len = sizeof(struct nl80211_txrate_vht),
--	},
--	[NL80211_TXRATE_GI] = { .type = NLA_U8 },
--};
--
- static int nl80211_parse_tx_bitrate_mask(struct genl_info *info,
-+					 struct nlattr *attrs[],
-+					 enum nl80211_attrs attr,
- 					 struct cfg80211_bitrate_mask *mask)
- {
- 	struct nlattr *tb[NL80211_TXRATE_MAX + 1];
-@@ -4456,14 +4462,14 @@ static int nl80211_parse_tx_bitrate_mask(struct genl_info *info,
- 	}
- 
- 	/* if no rates are given set it back to the defaults */
--	if (!info->attrs[NL80211_ATTR_TX_RATES])
-+	if (!attrs[attr])
- 		goto out;
- 
- 	/* The nested attribute uses enum nl80211_band as the index. This maps
- 	 * directly to the enum nl80211_band values used in cfg80211.
- 	 */
- 	BUILD_BUG_ON(NL80211_MAX_SUPP_HT_RATES > IEEE80211_HT_MCS_MASK_LEN * 8);
--	nla_for_each_nested(tx_rates, info->attrs[NL80211_ATTR_TX_RATES], rem) {
-+	nla_for_each_nested(tx_rates, attrs[attr], rem) {
- 		enum nl80211_band band = nla_type(tx_rates);
- 		int err;
- 
-@@ -4968,7 +4974,9 @@ static int nl80211_start_ap(struct sk_buff *skb, struct genl_info *info)
- 		return -EINVAL;
- 
- 	if (info->attrs[NL80211_ATTR_TX_RATES]) {
--		err = nl80211_parse_tx_bitrate_mask(info, &params.beacon_rate);
-+		err = nl80211_parse_tx_bitrate_mask(info, info->attrs,
-+						    NL80211_ATTR_TX_RATES,
-+						    &params.beacon_rate);
- 		if (err)
- 			return err;
- 
-@@ -10749,7 +10757,8 @@ static int nl80211_set_tx_bitrate_mask(struct sk_buff *skb,
- 	if (!rdev->ops->set_bitrate_mask)
- 		return -EOPNOTSUPP;
- 
--	err = nl80211_parse_tx_bitrate_mask(info, &mask);
-+	err = nl80211_parse_tx_bitrate_mask(info, info->attrs,
-+					    NL80211_ATTR_TX_RATES, &mask);
- 	if (err)
- 		return err;
- 
-@@ -11355,7 +11364,9 @@ static int nl80211_join_mesh(struct sk_buff *skb, struct genl_info *info)
- 	}
- 
- 	if (info->attrs[NL80211_ATTR_TX_RATES]) {
--		err = nl80211_parse_tx_bitrate_mask(info, &setup.beacon_rate);
-+		err = nl80211_parse_tx_bitrate_mask(info, info->attrs,
-+						    NL80211_ATTR_TX_RATES,
-+						    &setup.beacon_rate);
- 		if (err)
- 			return err;
- 
-@@ -14127,6 +14138,25 @@ static int parse_tid_conf(struct cfg80211_registered_device *rdev,
- 			nla_get_u8(attrs[NL80211_TID_CONFIG_ATTR_RTSCTS_CTRL]);
- 	}
- 
-+	if (attrs[NL80211_TID_CONFIG_ATTR_TX_RATE_TYPE]) {
-+		int idx;
-+		enum nl80211_attrs attr;
-+
-+		idx = NL80211_TID_CONFIG_ATTR_TX_RATE_TYPE;
-+		tid_conf->txrate_type = nla_get_u8(attrs[idx]);
-+		if (tid_conf->txrate_type != NL80211_TX_RATE_AUTOMATIC) {
-+			attr =
-+			(enum nl80211_attrs)NL80211_TID_CONFIG_ATTR_TX_RATE;
-+			err = nl80211_parse_tx_bitrate_mask(info, attrs, attr,
-+						    &tid_conf->txrate_mask);
-+			if (err)
-+				return err;
-+
-+			tid_conf->mask |= BIT(NL80211_TID_CONFIG_ATTR_TX_RATE);
-+		}
-+		tid_conf->mask |= BIT(NL80211_TID_CONFIG_ATTR_TX_RATE_TYPE);
-+	}
-+
- 	if (peer)
- 		mask = rdev->wiphy.tid_config_support.peer;
- 	else
--- 
-1.7.9.5
+* There are still two prerelease compiler versions on kernel.org,
+  from February and from April. You can try each one to see
+  if this was a recent regression. It's also possible that there is
+  a problem with my specific builds of gcc-10.1, and that the
+  compiler is actually fine for others.The gcc-10 packages in
+  Fedora/Debian/Ubuntu are probably better tested.
+
+       Arnd
