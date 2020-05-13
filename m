@@ -2,90 +2,228 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ADB311D1FE8
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 May 2020 22:15:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1DDC31D202F
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 May 2020 22:29:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390671AbgEMUPL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Wed, 13 May 2020 16:15:11 -0400
-Received: from smtp05.smtpout.orange.fr ([80.12.242.127]:18327 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2390158AbgEMUPK (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Wed, 13 May 2020 16:15:10 -0400
-Received: from localhost.localdomain ([93.22.149.176])
-        by mwinf5d52 with ME
-        id eLEy2200C3obZW503LEzLB; Wed, 13 May 2020 22:15:07 +0200
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Wed, 13 May 2020 22:15:07 +0200
-X-ME-IP: 93.22.149.176
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     kvalo@codeaurora.org, davem@davemloft.net, pradeepc@codeaurora.org
-Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] ath11k: Fix some resource leaks in error path in 'ath11k_thermal_register()'
-Date:   Wed, 13 May 2020 22:14:54 +0200
-Message-Id: <20200513201454.258111-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.25.1
+        id S1726813AbgEMU3P (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Wed, 13 May 2020 16:29:15 -0400
+Received: from mail.kernel.org ([198.145.29.99]:45148 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725977AbgEMU3P (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Wed, 13 May 2020 16:29:15 -0400
+Received: from localhost (mobile-166-175-190-200.mycingular.net [166.175.190.200])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 729C220575;
+        Wed, 13 May 2020 20:29:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1589401754;
+        bh=E77L7wM+6LvumoFVm59xuqtanywSO/210sLZygV9BkM=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=i0Fr017z5WgdC8ST7rhISOZ1biC29d1lh2opjDhS4f87x/LRSSP/rCdlZUFE22kqS
+         MBmsXUZEh2thWjqkAE9NUq+w8GbAhzl00Kbc0nGhC0qY+uHz6sSp5EfbbFa5AEImu2
+         B8Bh7ROGJHI/ZuzG2AnVQpuYhjuyzjiufDV5w/Wo=
+Date:   Wed, 13 May 2020 15:29:12 -0500
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Yicong Yang <yangyicong@hisilicon.com>
+Cc:     linux-pci@vger.kernel.org, kvalo@codeaurora.org,
+        andreas.noever@gmail.com, rjw@rjwysocki.net,
+        mika.westerberg@linux.intel.com, linux-wireless@vger.kernel.org,
+        linux-usb@vger.kernel.org, linuxarm@huawei.com
+Subject: Re: [PATCH v3] PCI: Use pcie_find_root_port() to get root port of
+ both PCI/PCIe device
+Message-ID: <20200513202912.GA344050@bjorn-Precision-5520>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1589019568-5216-1-git-send-email-yangyicong@hisilicon.com>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-If 'thermal_cooling_device_register()' fails, we must undo what has been
-allocated so far. So we must go to 'err_thermal_destroy' instead of
-returning directly
+On Sat, May 09, 2020 at 06:19:28PM +0800, Yicong Yang wrote:
+> Previously we use pcie_find_root_port() to get root port from a pcie
+> device, use pci_find_pcie_root_port() to get root port from a pci
+> device, which increase the complexity.
+> 
+> Unify the two functions and use pcie_find_root_port() to get root
+> port from both pci device and pcie device. Then there is no need to
+> distinguish the type of the device.
+> 
+> The callers of the function list below, they'll get no functional
+> change:
+> - iwl_trans_pcie_dump_regs()
+> - pcie_root_rcb_set()
+> - aer_inject()
+> - acpi_pci_bridge_d3()
+> - pci_configure_relaxed_ordering()
+> 
+> Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
+> Acked-by: Kalle Valo <kvalo@codeaurora.org> // for wireless
+> Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com> // for thunderbolt
 
-In case of error in 'ath11k_thermal_register()', the previous
-'thermal_cooling_device_register()' call must also be undone. Move the
-'ar->thermal.cdev = cdev' a few lines above in order for this to be done
-in 'ath11k_thermal_unregister()' which is called in the error handling
-path.
+Applied to pci/misc for v5.8, thanks!
 
-Fixes: 2a63bbca06b2 ("ath11k: add thermal cooling device support")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
-I'm not 100% confident with this patch.
-
-- When calling 'ath11k_thermal_unregister()', we try to release some
-  resources that have not been allocated yet. I don't know if it can be an
-  issue or not.
-- I think that we should propagate the error code, instead of forcing
-  -EINVAL.
----
- drivers/net/wireless/ath/ath11k/thermal.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath11k/thermal.c b/drivers/net/wireless/ath/ath11k/thermal.c
-index 259dddbda2c7..5a7e150c621b 100644
---- a/drivers/net/wireless/ath/ath11k/thermal.c
-+++ b/drivers/net/wireless/ath/ath11k/thermal.c
-@@ -174,9 +174,12 @@ int ath11k_thermal_register(struct ath11k_base *sc)
- 		if (IS_ERR(cdev)) {
- 			ath11k_err(sc, "failed to setup thermal device result: %ld\n",
- 				   PTR_ERR(cdev));
--			return -EINVAL;
-+			ret = -EINVAL;
-+			goto err_thermal_destroy;
- 		}
- 
-+		ar->thermal.cdev = cdev;
-+
- 		ret = sysfs_create_link(&ar->hw->wiphy->dev.kobj, &cdev->device.kobj,
- 					"cooling_device");
- 		if (ret) {
-@@ -184,7 +187,6 @@ int ath11k_thermal_register(struct ath11k_base *sc)
- 			goto err_thermal_destroy;
- 		}
- 
--		ar->thermal.cdev = cdev;
- 		if (!IS_REACHABLE(CONFIG_HWMON))
- 			return 0;
- 
--- 
-2.25.1
-
+> ---
+> Change since v2:
+> - archive the callers in the commit message
+> - rename pci_pcie_find_root_port() as pcie_find_root_port()
+> - use pci_upstream_bridge() to traverse the chain
+> Link: https://lore.kernel.org/linux-pci/1588768976-4852-1-git-send-email-yangyicong@hisilicon.com/
+> 
+> Change since v1:
+> - Add Mika's Ack for thunderbolt part
+> - Add description for pci_pcie_find_root_port()
+> 
+>  drivers/pci/pci-acpi.c       |  2 +-
+>  drivers/pci/pci.c            | 24 ------------------------
+>  drivers/pci/probe.c          |  2 +-
+>  drivers/pci/quirks.c         |  2 +-
+>  drivers/thunderbolt/switch.c |  4 ++--
+>  include/linux/pci.h          | 23 ++++++++++++++---------
+>  6 files changed, 19 insertions(+), 38 deletions(-)
+> 
+> diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
+> index 0c02d50..d401370 100644
+> --- a/drivers/pci/pci-acpi.c
+> +++ b/drivers/pci/pci-acpi.c
+> @@ -948,7 +948,7 @@ static bool acpi_pci_bridge_d3(struct pci_dev *dev)
+>  	 * Look for a special _DSD property for the root port and if it
+>  	 * is set we know the hierarchy behind it supports D3 just fine.
+>  	 */
+> -	root = pci_find_pcie_root_port(dev);
+> +	root = pcie_find_root_port(dev);
+>  	if (!root)
+>  		return false;
+> 
+> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+> index d828ca8..fc5e7b6 100644
+> --- a/drivers/pci/pci.c
+> +++ b/drivers/pci/pci.c
+> @@ -695,30 +695,6 @@ struct resource *pci_find_resource(struct pci_dev *dev, struct resource *res)
+>  EXPORT_SYMBOL(pci_find_resource);
+> 
+>  /**
+> - * pci_find_pcie_root_port - return PCIe Root Port
+> - * @dev: PCI device to query
+> - *
+> - * Traverse up the parent chain and return the PCIe Root Port PCI Device
+> - * for a given PCI Device.
+> - */
+> -struct pci_dev *pci_find_pcie_root_port(struct pci_dev *dev)
+> -{
+> -	struct pci_dev *bridge, *highest_pcie_bridge = dev;
+> -
+> -	bridge = pci_upstream_bridge(dev);
+> -	while (bridge && pci_is_pcie(bridge)) {
+> -		highest_pcie_bridge = bridge;
+> -		bridge = pci_upstream_bridge(bridge);
+> -	}
+> -
+> -	if (pci_pcie_type(highest_pcie_bridge) != PCI_EXP_TYPE_ROOT_PORT)
+> -		return NULL;
+> -
+> -	return highest_pcie_bridge;
+> -}
+> -EXPORT_SYMBOL(pci_find_pcie_root_port);
+> -
+> -/**
+>   * pci_wait_for_pending - wait for @mask bit(s) to clear in status word @pos
+>   * @dev: the PCI device to operate on
+>   * @pos: config space offset of status word
+> diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
+> index 512cb43..554cdca 100644
+> --- a/drivers/pci/probe.c
+> +++ b/drivers/pci/probe.c
+> @@ -2015,7 +2015,7 @@ static void pci_configure_relaxed_ordering(struct pci_dev *dev)
+>  	 * For now, we only deal with Relaxed Ordering issues with Root
+>  	 * Ports. Peer-to-Peer DMA is another can of worms.
+>  	 */
+> -	root = pci_find_pcie_root_port(dev);
+> +	root = pcie_find_root_port(dev);
+>  	if (!root)
+>  		return;
+> 
+> diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+> index 29f473e..7aeeda5 100644
+> --- a/drivers/pci/quirks.c
+> +++ b/drivers/pci/quirks.c
+> @@ -4253,7 +4253,7 @@ DECLARE_PCI_FIXUP_CLASS_EARLY(PCI_VENDOR_ID_AMD, 0x1a02, PCI_CLASS_NOT_DEFINED,
+>   */
+>  static void quirk_disable_root_port_attributes(struct pci_dev *pdev)
+>  {
+> -	struct pci_dev *root_port = pci_find_pcie_root_port(pdev);
+> +	struct pci_dev *root_port = pcie_find_root_port(pdev);
+> 
+>  	if (!root_port) {
+>  		pci_warn(pdev, "PCIe Completion erratum may cause device errors\n");
+> diff --git a/drivers/thunderbolt/switch.c b/drivers/thunderbolt/switch.c
+> index a2ce990..d92c755 100644
+> --- a/drivers/thunderbolt/switch.c
+> +++ b/drivers/thunderbolt/switch.c
+> @@ -263,7 +263,7 @@ static void nvm_authenticate_start_dma_port(struct tb_switch *sw)
+>  	 * itself. To be on the safe side keep the root port in D0 during
+>  	 * the whole upgrade process.
+>  	 */
+> -	root_port = pci_find_pcie_root_port(sw->tb->nhi->pdev);
+> +	root_port = pcie_find_root_port(sw->tb->nhi->pdev);
+>  	if (root_port)
+>  		pm_runtime_get_noresume(&root_port->dev);
+>  }
+> @@ -272,7 +272,7 @@ static void nvm_authenticate_complete_dma_port(struct tb_switch *sw)
+>  {
+>  	struct pci_dev *root_port;
+> 
+> -	root_port = pci_find_pcie_root_port(sw->tb->nhi->pdev);
+> +	root_port = pcie_find_root_port(sw->tb->nhi->pdev);
+>  	if (root_port)
+>  		pm_runtime_put(&root_port->dev);
+>  }
+> diff --git a/include/linux/pci.h b/include/linux/pci.h
+> index 3840a54..98fb495 100644
+> --- a/include/linux/pci.h
+> +++ b/include/linux/pci.h
+> @@ -1011,7 +1011,6 @@ void pci_bus_add_device(struct pci_dev *dev);
+>  void pci_read_bridge_bases(struct pci_bus *child);
+>  struct resource *pci_find_parent_resource(const struct pci_dev *dev,
+>  					  struct resource *res);
+> -struct pci_dev *pci_find_pcie_root_port(struct pci_dev *dev);
+>  u8 pci_swizzle_interrupt_pin(const struct pci_dev *dev, u8 pin);
+>  int pci_get_interrupt_pin(struct pci_dev *dev, struct pci_dev **bridge);
+>  u8 pci_common_swizzle(struct pci_dev *dev, u8 *pinp);
+> @@ -2124,17 +2123,23 @@ static inline int pci_pcie_type(const struct pci_dev *dev)
+>  	return (pcie_caps_reg(dev) & PCI_EXP_FLAGS_TYPE) >> 4;
+>  }
+> 
+> +/**
+> + * pcie_find_root_port - Get the PCIe root port device
+> + * @dev: PCI device
+> + *
+> + * Traverse up the parent chain and return the PCIe Root Port PCI Device
+> + * for a given PCI/PCIe Device.
+> + */
+>  static inline struct pci_dev *pcie_find_root_port(struct pci_dev *dev)
+>  {
+> -	while (1) {
+> -		if (!pci_is_pcie(dev))
+> -			break;
+> -		if (pci_pcie_type(dev) == PCI_EXP_TYPE_ROOT_PORT)
+> -			return dev;
+> -		if (!dev->bus->self)
+> -			break;
+> -		dev = dev->bus->self;
+> +	struct pci_dev *root_port = pci_upstream_bridge(dev);
+> +
+> +	while (root_port) {
+> +		if (pci_pcie_type(root_port) == PCI_EXP_TYPE_ROOT_PORT)
+> +			return root_port;
+> +		root_port = pci_upstream_bridge(root_port);
+>  	}
+> +
+>  	return NULL;
+>  }
+> 
+> --
+> 2.8.1
+> 
