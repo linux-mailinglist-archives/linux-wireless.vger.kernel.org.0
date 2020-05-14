@@ -2,60 +2,30 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B3551D26A2
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 May 2020 07:22:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EEC231D29BE
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 May 2020 10:11:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725847AbgENFWi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 14 May 2020 01:22:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34652 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1725794AbgENFWi (ORCPT
+        id S1725976AbgENILQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 14 May 2020 04:11:16 -0400
+Received: from eu-smtp-delivery-151.mimecast.com ([207.82.80.151]:51400 "EHLO
+        eu-smtp-delivery-151.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725886AbgENILQ (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 14 May 2020 01:22:38 -0400
-Received: from mail-qk1-x744.google.com (mail-qk1-x744.google.com [IPv6:2607:f8b0:4864:20::744])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DEBEFC061A0C;
-        Wed, 13 May 2020 22:22:37 -0700 (PDT)
-Received: by mail-qk1-x744.google.com with SMTP id z80so1917923qka.0;
-        Wed, 13 May 2020 22:22:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:from:date:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=z5uk4NHfluyoyKinmPhsA3PHI6OfQ+bSBmaBzpScwmw=;
-        b=ALjXcdekUDYnKCo9mbwP5NFpsZBLyExdioIUHbsWFR8MvK+SCWzM66peJ68x5i+6NS
-         TOOmRrj2tY83DX/ZtNXk+3bhZU5HSUuOQ0esn6RurOlg0teBADPC7yOfburIc4urfb6n
-         7n4JUkBeyLzl5VU5TiQ+C9scW2ttMORwDnmtP2+RkkBZhynOF49DvkJt2mCxSuY656Hz
-         G4yxgAxZOpC1i11vUkWVYXkRDMqkFtrbD3tDUp/5DopauJdPN7PH2VHfnB654FNKNREa
-         HWij1DcReST74ph02PNPwYOVxAoWSQckdWt159yP8xOOeQ8GdV3mDIHqeqpxDGM/K/yw
-         TJ2Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:from:date:to:cc:subject:message-id
-         :references:mime-version:content-disposition
-         :content-transfer-encoding:in-reply-to;
-        bh=z5uk4NHfluyoyKinmPhsA3PHI6OfQ+bSBmaBzpScwmw=;
-        b=m2IyCz5IKq4XHaRFM2UK6Mikp0a4IQjMX6vEX+bI7Z7x3876oeIu/R4Pa4RPyfkzP8
-         6xqV2yktp1gXeDpc+Ye3eyyEhDU43xu5iy8/GM23hKCUufMQzvv3d0rGVXh8BA5gvBGq
-         POsf0H8D/9fqOmIpmFIqJWUjqPEDNmbz4vF0N4FgsGkGWGrbCkyaJcZhJNX+hOdRSxX4
-         SgDwszU84DGR9VGd9R2R99QYhZagBeerWWbav9ISBAX0AX4dApzjZA6XhuJXJQpa8cHd
-         mxR0qwHgXzRCe+Ohgptv9K9/fwSbEqxKT8dCG7vAhZHUnYpB+xgd8NseiKAPn3kgv7j4
-         GfIQ==
-X-Gm-Message-State: AOAM531ObIRjK8BM4RyDZBt4hqlfbq8DfkpE3VFOSLmoSYB7gQMPmZlM
-        K5Qa8aLgcu+KlJg+AXOVPmUPGqnfNqY=
-X-Google-Smtp-Source: ABdhPJx3cdcn2+IV1zWsDjnGUc1Ywq5IEr5xgbyPAyNB5MNO81FbwGCmd9L8GBv5+A/27y4N235s7g==
-X-Received: by 2002:ae9:e858:: with SMTP id a85mr3191511qkg.478.1589433756973;
-        Wed, 13 May 2020 22:22:36 -0700 (PDT)
-Received: from rani.riverdale.lan ([2001:470:1f07:5f3::b55f])
-        by smtp.gmail.com with ESMTPSA id x19sm1813380qkb.136.2020.05.13.22.22.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 May 2020 22:22:36 -0700 (PDT)
-From:   Arvind Sankar <nivedita@alum.mit.edu>
-X-Google-Original-From: Arvind Sankar <arvind@rani.riverdale.lan>
-Date:   Thu, 14 May 2020 01:22:34 -0400
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Andy Lutomirski <luto@amacapital.net>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Borislav Petkov <bp@suse.de>, Arnd Bergmann <arnd@arndb.de>,
+        Thu, 14 May 2020 04:11:16 -0400
+Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
+ TLS) by relay.mimecast.com with ESMTP id
+ uk-mta-94-pPKAQ0JRPGmhyT1OD-2rfA-1; Thu, 14 May 2020 09:11:13 +0100
+X-MC-Unique: pPKAQ0JRPGmhyT1OD-2rfA-1
+Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) by
+ AcuMS.aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) with Microsoft SMTP
+ Server (TLS) id 15.0.1347.2; Thu, 14 May 2020 09:11:12 +0100
+Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
+ AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000;
+ Thu, 14 May 2020 09:11:12 +0100
+From:   David Laight <David.Laight@ACULAB.COM>
+To:     'Linus Torvalds' <torvalds@linux-foundation.org>,
+        Nick Desaulniers <ndesaulniers@google.com>
+CC:     Borislav Petkov <bp@suse.de>, Arnd Bergmann <arnd@arndb.de>,
         Arvind Sankar <nivedita@alum.mit.edu>,
         Kalle Valo <kvalo@codeaurora.org>,
         linux-wireless <linux-wireless@vger.kernel.org>,
@@ -63,9 +33,18 @@ Cc:     Andy Lutomirski <luto@amacapital.net>,
         the arch/x86 maintainers <x86@kernel.org>,
         Kees Cook <keescook@chromium.org>,
         Thomas Gleixner <tglx@linutronix.de>
-Subject: Re: gcc-10: kernel stack is corrupted and fails to boot
-Message-ID: <20200514052234.GA1894416@rani.riverdale.lan>
-References: <20200513214128.GB6733@zn.tnic>
+Subject: RE: gcc-10: kernel stack is corrupted and fails to boot
+Thread-Topic: gcc-10: kernel stack is corrupted and fails to boot
+Thread-Index: AQHWKZY6Y215XsBMzU2jywoKX8cjPqinObQQ
+Date:   Thu, 14 May 2020 08:11:12 +0000
+Message-ID: <d907ef9d30bc4169bf1e923fb066f7a1@AcuMS.aculab.com>
+References: <20200509120707.188595-2-arnd@arndb.de>
+ <87v9l24qz6.fsf@kamboji.qca.qualcomm.com>
+ <87r1vq4qev.fsf@kamboji.qca.qualcomm.com>
+ <87d078tjl0.fsf_-_@kamboji.qca.qualcomm.com>
+ <20200513154847.GA158356@rani.riverdale.lan>
+ <CAK8P3a3KpM91+jv6+7KSKFRpwLqf38Lz1wbGhkFFyfDb9oahgA@mail.gmail.com>
+ <20200513214128.GB6733@zn.tnic>
  <CAK8P3a3XPCyNM7s3vbn8JYK6swA3ZpPtTWB+uhmAE3YEX-nmig@mail.gmail.com>
  <20200513222038.GC6733@zn.tnic>
  <CAHk-=wgybuOF+Jp2XYWqM7Xn1CW6szWQw_FgVoFh5jx_4YoCVw@mail.gmail.com>
@@ -73,51 +52,52 @@ References: <20200513214128.GB6733@zn.tnic>
  <CAHk-=wjZXFe08MiNRevJFGDvX0O6kcQTiK8GFBS7hwUAzB+LQw@mail.gmail.com>
  <CAKwvOd=o_wuiVpw5KVzLEt25W-A9Ah9fzftPZLG+yutqJmWbOg@mail.gmail.com>
  <CAHk-=wg6G+p1RRjR6UZBEuSCDs9=iWBsxrDPTEwqh+y5RayqKA@mail.gmail.com>
- <CALCETrUYA60fWu+=MviKx0NmW+_ppsOcv-ShUXdbyM4EjyfzHQ@mail.gmail.com>
- <CAHk-=wgiGxRgJGS-zyer1C_x2MQUVo6iZn0=aJyuFTqJWk-mpA@mail.gmail.com>
+In-Reply-To: <CAHk-=wg6G+p1RRjR6UZBEuSCDs9=iWBsxrDPTEwqh+y5RayqKA@mail.gmail.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAHk-=wgiGxRgJGS-zyer1C_x2MQUVo6iZn0=aJyuFTqJWk-mpA@mail.gmail.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Wed, May 13, 2020 at 09:52:07PM -0700, Linus Torvalds wrote:
-> On Wed, May 13, 2020, 20:50 Andy Lutomirski <luto@amacapital.net> wrote:
-> 
-> >
-> > LTO isn’t a linker taking regular .o files full of regular machine
-> > code and optimizing it. That’s nuts.
-> >
-> 
-> Yeah, you're right. I wear originally thinking just an optimizing
-> assembler, and then started thinking about link-time optimizations in that
-> sense, but it was wrong to then go from that to LTO which has a very
-> specific meaning.
-> 
-> We do have assemblers that do some optimizations, but they tend to all be
-> at the single instruction level (eg things like turning "add $128" into
-> "sub $-128" which fits in a byte constant).
-> 
->     Linus
-> 
-> >
+RnJvbTogTGludXMgVG9ydmFsZHMNCj4gU2VudDogMTQgTWF5IDIwMjAgMDM6MjANCj4gT24gV2Vk
+LCBNYXkgMTMsIDIwMjAgYXQgNTo1MSBQTSBOaWNrIERlc2F1bG5pZXJzDQo+IDxuZGVzYXVsbmll
+cnNAZ29vZ2xlLmNvbT4gd3JvdGU6DQo+ID4NCj4gPiBBcmUgeW91IHN1cmUgTFRPIHRyZWF0cyBl
+bXB0eSBhc20gc3RhdGVtZW50cyBkaWZmZXJlbnRseSB0aGFuIGZ1bGwNCj4gPiBtZW1vcnkgYmFy
+cmllcnMgaW4gcmVnYXJkcyB0byBwcmV2ZW50aW5nIHRhaWwgY2FsbHM/DQo+IA0KPiBJdCBoYWQg
+YmV0dGVyLg0KPiANCj4gQXQgbGluay10aW1lLCB0aGVyZSBpcyBub3RoaW5nIGxlZnQgb2YgYW4g
+ZW1wdHkgYXNtIHN0YXRlbWVudC4gU28gYnkNCj4gdGhlIHRpbWUgdGhlIGxpbmtlciBydW5zLCBp
+dCBvbmx5IHNlZXMNCj4gDQo+ICAgICBjYWxsIHh5eg0KPiAgICAgcmV0DQo+IA0KPiBpbiB0aGUg
+b2JqZWN0IGNvZGUuIEF0IHRoYXQgcG9pbnQsIGl0J3Mgc29tZXdoYXQgcmVhc29uYWJsZSBmb3Ig
+YW55DQo+IGxpbmstdGltZSBvcHRpbWl6ZXIgKG9yIGFuIG9wdGltaXppbmcgYXNzZW1ibGVyLCBm
+b3IgdGhhdCBtYXR0ZXIpIHRvDQo+IHNheSAiSSdsbCBqdXN0IHR1cm4gdGhhdCBzZXF1ZW5jZSBp
+bnRvIGEgc2ltcGxlICdqbXAgeHl6JyBpbnN0ZWFkIi4NCg0KRXhjZXB0IGlzIHNlZXM6DQoJY2Fs
+bCB4eXoNCgljYW5hcnlfY2hlY2tfY29kZQ0KCXJldA0KDQpUaGVyZSdzIGFsc28gYWxtb3N0IGNl
+cnRhaW5seSBzb21lIHN0YWNrIGZyYW1lIHRpZHl1cC4NCldoaWNoIGl0IHdvdWxkIGhhdmUgdG8g
+ZGV0ZWN0IGFuZCBjb252ZXJ0Lg0KQW5kLCBpbiBwcmluY2lwbGUsIHRoZSBmdW5jdGlvbiBpcyBh
+bGxvd2VkIHRvIGFjY2VzcyB0aGUNCnN0YWNrIHNwYWNlIHRoYW4gY29udGFpbnMgdGhlIGNhbmFy
+eS4NCg0KPiBOb3csIGRvbid0IGdldCBtZSB3cm9uZyAtIEknbSBub3QgY29udmluY2VkIGFueSBl
+eGlzdGluZyBMVE8gZG9lcw0KPiB0aGF0LiBCdXQgSSdkIGFsc28gbm90IGJlIHNob2NrZWQgYnkg
+c29tZXRoaW5nIGxpa2UgdGhhdC4NCj4gDQo+IEluIGNvbnRyYXN0LCBpZiBpdCdzIGEgcmVhbCBt
+YigpLCB0aGUgbGlua2VyIHdvbid0IHNlZSBqdXN0IGENCj4gJ2NhbGwrcmV0IiBzZXF1ZW5jZS4g
+SXQgd2lsbCBzZWUgc29tZXRoaW5nIGxpa2UNCj4gDQo+ICAgICBjYWxsIHh5eg0KPiAgICAgbWZl
+bmNlDQo+ICAgICByZXQNCj4gDQo+IChvaywgdGhlIG1mZW5jZSBtYXkgYWN0dWFsbHkgYmUgc29t
+ZXRoaW5nIGVsc2UsIGFuZCB3ZSdsbCBoYXZlIGEgbGFiZWwNCj4gb24gaXQgYW5kIGFuIGFsdGVy
+bmF0aXZlcyB0YWJsZSBwb2ludGluZyB0byBpdCwgYnV0IHRoZSBwb2ludCBpcywNCj4gdW5saWtl
+IGFuIGVtcHR5IGFzbSwgdGhlcmUncyBzb21ldGhpbmcgX3RoZXJlXykuDQoNCk5vdCBpZiB5b3Un
+dmUgYW4gYXJjaGl0ZWN0dXJlIHRoYXQgZG9lc24ndCBoYXZlIGFueSBtZW1vcnkgYmFycmllcnMu
+DQpJbiB0aGF0IGNhc2UgbWIoKSBtYXkgbm90IGV2ZW4gYmUgYXNtKCIiKS4NCihhbHRob3VnaCBp
+dCBtaWdodCBoYXZlIHRvIGJlIGFzbSAoIiI6OjptZW1vcnkpKS4NCg0KCURhdmlkDQoNCi0NClJl
+Z2lzdGVyZWQgQWRkcmVzcyBMYWtlc2lkZSwgQnJhbWxleSBSb2FkLCBNb3VudCBGYXJtLCBNaWx0
+b24gS2V5bmVzLCBNSzEgMVBULCBVSw0KUmVnaXN0cmF0aW9uIE5vOiAxMzk3Mzg2IChXYWxlcykN
+Cg==
 
-The gcc docs [1,2] at least don't inspire much confidence that this will
-continue working with plain asm("") though:
-
-"Note that GCC’s optimizers can move asm statements relative to other
-code, including across jumps."
-...
-"Note that the compiler can move even volatile asm instructions relative
-to other code, including across jump instructions."
-
-Even if we don't include an instruction in it I think it should at least
-have a memory clobber, to stop the compiler from deciding that it can be
-moved before the call so it can do the tail-call optimization.
-
-[1] https://gcc.gnu.org/onlinedocs/gcc/Basic-Asm.html#Basic-Asm
-[2] https://gcc.gnu.org/onlinedocs/gcc/Extended-Asm.html#Volatile
