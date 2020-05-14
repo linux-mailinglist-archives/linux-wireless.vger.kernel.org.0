@@ -2,112 +2,235 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 196791D308C
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 May 2020 15:02:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 82D891D3137
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 May 2020 15:27:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726051AbgENNC4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 14 May 2020 09:02:56 -0400
-Received: from mail27.static.mailgun.info ([104.130.122.27]:62250 "EHLO
-        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726011AbgENNC4 (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 14 May 2020 09:02:56 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1589461376; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=KUxBtgC8ifr9L7kVAsD9YPmEDY1ZfgX6B1uu1BYe5gc=; b=Zv4x+efQMEQTT5UB3J38xCjbGx3yI/uwBDqaH6W+iibaqU79gV3XkkoPcVjXRj0/7b0VZAET
- ofUSkT7WEgUrbQhI2WMmF2z3TA75impLZjWfk4iwESS3A7Av6SoOmN8dxuUqiMWMSVZuAroh
- NVkjk5zeWt/0l/0N0KYAWiDU9ZM=
-X-Mailgun-Sending-Ip: 104.130.122.27
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n04.prod.us-east-1.postgun.com with SMTP id
- 5ebd41778ebbf95ecb6e4278 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 14 May 2020 13:02:47
- GMT
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 4F27FC432C2; Thu, 14 May 2020 13:02:46 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        id S1726087AbgENN1O (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 14 May 2020 09:27:14 -0400
+Received: from mail.skyhub.de ([5.9.137.197]:43670 "EHLO mail.skyhub.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726011AbgENN1O (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Thu, 14 May 2020 09:27:14 -0400
+Received: from zn.tnic (p200300EC2F0BBD00DC45039F589BC722.dip0.t-ipconnect.de [IPv6:2003:ec:2f0b:bd00:dc45:39f:589b:c722])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 152DCC433D2;
-        Thu, 14 May 2020 13:02:44 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 152DCC433D2
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Felix Fietkau <nbd@nbd.name>
-Cc:     linux-wireless <linux-wireless@vger.kernel.org>
-Subject: Re: pull request: mt76 2019-05-14
-References: <f49dab4e-5dfc-a8fd-db7e-de22ff01ded1@nbd.name>
-Date:   Thu, 14 May 2020 16:02:42 +0300
-In-Reply-To: <f49dab4e-5dfc-a8fd-db7e-de22ff01ded1@nbd.name> (Felix Fietkau's
-        message of "Thu, 14 May 2020 12:12:19 +0200")
-Message-ID: <87ftc2r7nx.fsf@kamboji.qca.qualcomm.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 2CDB61EC0377;
+        Thu, 14 May 2020 15:27:12 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1589462832;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=/gUNpFf2J8YxXc2dc4jvcIV4nSmrVfwfJRbIw3Hp9zA=;
+        b=Cw5b4Kt0phDez6vovuoDcELNE1rn2Rb0qgYhKo7jNCZmoqvQWGaDSBduPb+thltajNRdgz
+        clbAbfOLrwUM+npRa7Mj3sXbe/4A5yzpF3a2wAUbHKrmt81x2u4t6MumqmAMrvvvAgBfPN
+        765zESrOT7yfhbY4p4wvG2NH/A7RFEk=
+Date:   Thu, 14 May 2020 15:27:06 +0200
+From:   Borislav Petkov <bp@alien8.de>
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     Arvind Sankar <nivedita@alum.mit.edu>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Andy Lutomirski <luto@amacapital.net>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        the arch/x86 maintainers <x86@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Michael Matz <matz@suse.de>,
+        Martin =?utf-8?B?TGnFoWth?= <mliska@suse.cz>,
+        Jakub Jelinek <jakub@redhat.com>
+Subject: [PATCH] x86: Fix early boot crash on gcc-10, third try
+Message-ID: <20200514132706.GB9266@zn.tnic>
+References: <20200513222038.GC6733@zn.tnic>
+ <CAHk-=wgybuOF+Jp2XYWqM7Xn1CW6szWQw_FgVoFh5jx_4YoCVw@mail.gmail.com>
+ <20200513233616.GD6733@zn.tnic>
+ <CAHk-=wjZXFe08MiNRevJFGDvX0O6kcQTiK8GFBS7hwUAzB+LQw@mail.gmail.com>
+ <CAKwvOd=o_wuiVpw5KVzLEt25W-A9Ah9fzftPZLG+yutqJmWbOg@mail.gmail.com>
+ <CAHk-=wg6G+p1RRjR6UZBEuSCDs9=iWBsxrDPTEwqh+y5RayqKA@mail.gmail.com>
+ <CALCETrUYA60fWu+=MviKx0NmW+_ppsOcv-ShUXdbyM4EjyfzHQ@mail.gmail.com>
+ <CAHk-=wgiGxRgJGS-zyer1C_x2MQUVo6iZn0=aJyuFTqJWk-mpA@mail.gmail.com>
+ <20200514052234.GA1894416@rani.riverdale.lan>
+ <CAK8P3a1Cfzu7L30bFP-Sf2_GbkN_10CCJsbefTXyfnGF16uHMA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAK8P3a1Cfzu7L30bFP-Sf2_GbkN_10CCJsbefTXyfnGF16uHMA@mail.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Felix Fietkau <nbd@nbd.name> writes:
+Ok,
 
-> Hi Kalle,
->
-> here's my first pull request for 5.8.
->
-> - Felix
->
-> The following changes since commit 5bb4e125815aa769a7d2ab7dc203593925bba0ba:
->
->   ipw2x00: Fix comment for CLOCK_BOOTTIME constant (2020-05-12 11:57:26 +0300)
->
-> are available in the Git repository at:
->
->   https://github.com/nbd168/wireless tags/mt76-for-kvalo-2020-05-14
->
-> for you to fetch changes up to 12a87174accd29ff943d4c5fb735e1541b92630b:
->
->   mt76: mt7615: fix typo defining ps work (2020-05-14 11:08:19 +0200)
->
-> ----------------------------------------------------------------
-> mt76 patches for 5.8
->
-> * new devices for mt76x0/mt76x2
-> * mt7615 fixes
-> * mt7663 fixes
-> * support for non-offload firmware on mt7663
-> * hw/sched scan support for mt7663
-> * mt7615/mt7663 MSI support
-> * TDLS support
-> * mt7603/mt7615 rate control fixes
-> * new driver for mt7915
-> * wowlan support for mt7663
-> * suspend/resume support for mt7663
->
-> ----------------------------------------------------------------
+here's the new version. Changes are:
 
-With gcc-10 I see a new warning:
+- It does mb() now (Linus).
+- I've added a call to prevent_tail_call_optimization() in init/main.c
+  because it does generate the stack canary there too. This is a
+  future-proof thing. (Arvind).
+- Dropped Reviewed-by tags.
+- Dropped compiler checking from the branch (Linus).
+- Added Cc:stable because gcc10 has released already, apparently.
 
-drivers/net/wireless/mediatek/mt76/mt7915/mac.c: In function 'mt7915_mac_decode_he_radiotap':
-drivers/net/wireless/mediatek/mt76/mt7915/mac.c:229:1: warning: offset '6' outside bounds of constant string [-Warray-bounds]
-  229 | mt7915_mac_decode_he_radiotap(struct sk_buff *skb,
-      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-drivers/net/wireless/mediatek/mt76/mt7915/mac.c:234:44: note: 'known' declared here
-  234 |  static const struct ieee80211_radiotap_he known = {
-      |                                            ^~~~~
+Testing with gcc10 passes after making sure that without it it would
+cause the tailcall optimization and fail stack check.
 
-Please fix that and send it as a followup patch (no need to resend the
-pull request because of this).
+Plan is to send it to Linus on the weekend so that it makes it into 5.7.
+
+Thx.
+
+---
+From: Borislav Petkov <bp@suse.de>
+
+... or the odyssey of trying to disable the stack protector for the
+function which generates the stack canary value.
+
+The whole story started with Sergei reporting a boot crash with a kernel
+built with gcc-10:
+
+  Kernel panic — not syncing: stack-protector: Kernel stack is corrupted in: start_secondary
+  CPU: 1 PID: 0 Comm: swapper/1 Not tainted 5.6.0-rc5—00235—gfffb08b37df9 #139
+  Hardware name: Gigabyte Technology Co., Ltd. To be filled by O.E.M./H77M—D3H, BIOS F12 11/14/2013
+  Call Trace:
+    dump_stack
+    panic
+    ? start_secondary
+    __stack_chk_fail
+    start_secondary
+    secondary_startup_64
+  -—-[ end Kernel panic — not syncing: stack—protector: Kernel stack is corrupted in: start_secondary
+
+This happens because gcc-10 tail-call optimizes the last function call
+in start_secondary() - cpu_startup_entry() - and thus emits a stack
+canary check which fails because the canary value changes after the
+boot_init_stack_canary() call.
+
+To fix that, the initial attempt was to mark the one function which
+generates the stack canary with:
+
+  __attribute__((optimize("-fno-stack-protector"))) ... start_secondary(void *unused)
+
+however, using the optimize attribute doesn't work cumulatively
+as the attribute does not add to but rather replaces previously
+supplied optimization options - roughly all -fxxx options.
+
+The key one among them being -fno-omit-frame-pointer and thus leading to
+not present frame pointer - frame pointer which the kernel needs.
+
+The next attempt to prevent compilers from tail-call optimizing
+the last function call cpu_startup_entry(), shy of carving out
+start_secondary() into a separate compilation unit and building it with
+-fno-stack-protector, was to add an empty asm("").
+
+This current solution was short and sweet, and reportedly, is supported
+by both compilers but we didn't get very far this time: future (LTO?)
+optimization passes could potentially eliminate this, which leads us
+to the third attempt: having an actual memory barrier there which the
+compiler cannot ignore or move around etc.
+
+That should hold for a long time, but hey we said that about the other
+two solutions too so...
+
+Reported-by: Sergei Trofimovich <slyfox@gentoo.org>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Cc: <stable@vger.kernel.org>
+Link: https://lkml.kernel.org/r/20200314164451.346497-1-slyfox@gentoo.org
+---
+ arch/x86/include/asm/stackprotector.h | 7 ++++++-
+ arch/x86/kernel/smpboot.c             | 8 ++++++++
+ arch/x86/xen/smp_pv.c                 | 1 +
+ include/linux/compiler.h              | 6 ++++++
+ init/main.c                           | 2 ++
+ 5 files changed, 23 insertions(+), 1 deletion(-)
+
+diff --git a/arch/x86/include/asm/stackprotector.h b/arch/x86/include/asm/stackprotector.h
+index 91e29b6a86a5..9804a7957f4e 100644
+--- a/arch/x86/include/asm/stackprotector.h
++++ b/arch/x86/include/asm/stackprotector.h
+@@ -55,8 +55,13 @@
+ /*
+  * Initialize the stackprotector canary value.
+  *
+- * NOTE: this must only be called from functions that never return,
++ * NOTE: this must only be called from functions that never return
+  * and it must always be inlined.
++ *
++ * In addition, it should be called from a compilation unit for which
++ * stack protector is disabled. Alternatively, the caller should not end
++ * with a function call which gets tail-call optimized as that would
++ * lead to checking a modified canary value.
+  */
+ static __always_inline void boot_init_stack_canary(void)
+ {
+diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
+index fe3ab9632f3b..4f275ac7830b 100644
+--- a/arch/x86/kernel/smpboot.c
++++ b/arch/x86/kernel/smpboot.c
+@@ -266,6 +266,14 @@ static void notrace start_secondary(void *unused)
+ 
+ 	wmb();
+ 	cpu_startup_entry(CPUHP_AP_ONLINE_IDLE);
++
++	/*
++	 * Prevent tail call to cpu_startup_entry() because the stack protector
++	 * guard has been changed a couple of function calls up, in
++	 * boot_init_stack_canary() and must not be checked before tail calling
++	 * another function.
++	 */
++	prevent_tail_call_optimization();
+ }
+ 
+ /**
+diff --git a/arch/x86/xen/smp_pv.c b/arch/x86/xen/smp_pv.c
+index 8fb8a50a28b4..f2adb63b2d7c 100644
+--- a/arch/x86/xen/smp_pv.c
++++ b/arch/x86/xen/smp_pv.c
+@@ -93,6 +93,7 @@ asmlinkage __visible void cpu_bringup_and_idle(void)
+ 	cpu_bringup();
+ 	boot_init_stack_canary();
+ 	cpu_startup_entry(CPUHP_AP_ONLINE_IDLE);
++	prevent_tail_call_optimization();
+ }
+ 
+ void xen_smp_intr_free_pv(unsigned int cpu)
+diff --git a/include/linux/compiler.h b/include/linux/compiler.h
+index 034b0a644efc..448c91bf543b 100644
+--- a/include/linux/compiler.h
++++ b/include/linux/compiler.h
+@@ -356,4 +356,10 @@ static inline void *offset_to_ptr(const int *off)
+ /* &a[0] degrades to a pointer: a different type from an array */
+ #define __must_be_array(a)	BUILD_BUG_ON_ZERO(__same_type((a), &(a)[0]))
+ 
++/*
++ * This is needed in functions which generate the stack canary, see
++ * arch/x86/kernel/smpboot.c::start_secondary() for an example.
++ */
++#define prevent_tail_call_optimization()	mb()
++
+ #endif /* __LINUX_COMPILER_H */
+diff --git a/init/main.c b/init/main.c
+index a48617f2e5e5..74ac7e48ce02 100644
+--- a/init/main.c
++++ b/init/main.c
+@@ -1001,6 +1001,8 @@ asmlinkage __visible void __init start_kernel(void)
+ 
+ 	/* Do the rest non-__init'ed, we're now alive */
+ 	arch_call_rest_init();
++
++	prevent_tail_call_optimization();
+ }
+ 
+ /* Call all constructor functions linked into the kernel. */
+-- 
+2.21.0
 
 -- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
