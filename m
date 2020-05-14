@@ -2,84 +2,106 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E41F21D3226
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 May 2020 16:07:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D5741D3361
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 May 2020 16:46:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727802AbgENOHq (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 14 May 2020 10:07:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60210 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726011AbgENOHp (ORCPT
+        id S1728128AbgENOqJ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 14 May 2020 10:46:09 -0400
+Received: from mail27.static.mailgun.info ([104.130.122.27]:53068 "EHLO
+        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727050AbgENOqG (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 14 May 2020 10:07:45 -0400
-Received: from mail-io1-xd2d.google.com (mail-io1-xd2d.google.com [IPv6:2607:f8b0:4864:20::d2d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C988DC061A0C
-        for <linux-wireless@vger.kernel.org>; Thu, 14 May 2020 07:07:45 -0700 (PDT)
-Received: by mail-io1-xd2d.google.com with SMTP id e18so2490347iog.9
-        for <linux-wireless@vger.kernel.org>; Thu, 14 May 2020 07:07:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu-com.20150623.gappssmtp.com; s=20150623;
-        h=from:subject:to:cc:message-id:date:user-agent:mime-version
-         :content-language:content-transfer-encoding;
-        bh=a5TpeT3R8kSC6vDxpfYUpcyfDnMdVpU9ivHQmQuNncM=;
-        b=Div3duxAwWZBjre4FLiRGrdHK2+0XXX8e8owlNzARvHyHue0FDEAAvxg0cBpvXtm2N
-         b3HkEr989uteCzEvXJUPPeaIFB1tpjNrrevADahkVG262tj+D1WuS5Vk+F6nGRY7Jvc1
-         +QqRw+EowIc7+YX/eX353x/+J+53aMGv0Qdkz9P3L3XVGuKLsCJA4o4tDWiL6I8mnX7O
-         df3B+7DhATMYFtaBC3MBBbKmo8ULAEzxf9aOkTEQ5SvWUSNYe6B6eHAg8YsvhzICATWM
-         gEFIZv1+/0S+w+oSZ0OwK7H+KUayTST6Pqy8MT+Diacd/KQO9N11OHy0UizVpAxIGujX
-         tZYw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:subject:to:cc:message-id:date:user-agent
-         :mime-version:content-language:content-transfer-encoding;
-        bh=a5TpeT3R8kSC6vDxpfYUpcyfDnMdVpU9ivHQmQuNncM=;
-        b=tpVSRTd/7dMCFsniAqjUlsfLZkBW4ivq4M+wVStV+ncNw32wMUa0kkqqs6HlUrVkHG
-         ndxkeF0/rCV7kqwVDRJ80u2Nkw7ackL1MyfMs/qMwE5D7bsxJUckqBVL3MqCeeKBXUhx
-         oaq0LY0mrGjADcvTx62KztTnv+hWudNEb1uEbeL+VVeOXH6eo0m9cp4UpVqicwvsoMns
-         WujQRPvLePtFvadMoQ9uelS60Bzw4vflgCUWjYSQAwmMS8M3x0G3hEabD0iu863Xc1p6
-         ovZsr58lwakRoUc34zrPuIDAavRWfqgJ0HPYXyMvm7NPCE9iJxBumVoobUX9TCmPeBwj
-         zFIA==
-X-Gm-Message-State: AOAM532ol+i+hSz730ATfJGDldmj0RZlt4BeUkDwGi11+SYQGq4o2EmG
-        /tXso3mk9ZGMzgkw5Y7zBs1Tk1n4kVfR7Q==
-X-Google-Smtp-Source: ABdhPJxAecCy/0UmE7Oo/ss6Wjvhd7B+NSqGrp4g/1uaVzI9FhiBNg4GlU5zjobx/OJ0NgAirK2xoQ==
-X-Received: by 2002:a5d:8d1a:: with SMTP id p26mr4192627ioj.131.1589465265150;
-        Thu, 14 May 2020 07:07:45 -0700 (PDT)
-Received: from [10.0.0.248] (23-233-27-60.cpe.pppoe.ca. [23.233.27.60])
-        by smtp.googlemail.com with ESMTPSA id m89sm1174886ill.40.2020.05.14.07.07.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 14 May 2020 07:07:44 -0700 (PDT)
-From:   Jamal Hadi Salim <jhs@mojatatu.com>
-Subject: Netdev conf 0x14 update
-To:     people <people@netdevconf.org>
-Cc:     Christie Geldart <christie@ambedia.com>,
-        Kimberley Jeffries <kimberleyjeffries@gmail.com>,
-        prog-committee-0x14@netdevconf.info,
-        attendees-0x14@netdevconf.info, lwn@lwn.net,
+        Thu, 14 May 2020 10:46:06 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1589467565; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=X9eeOaMY30WtouQV4/0fc/7J6rSEn2W5kR2k0EBq61Y=; b=wwHJdn63Og7ASmehjzd2RYGIhv0IvJOxiVncD1Tv84Byjs7LVvorJ6i9LyDxGPe6w5XDRo6N
+ 7V64p3O6kq4f7jM5IaePaLsOmUZh+/fv4srAt28eJZZVe8xBVcSRmLH3BuuW0swqwVh7++V5
+ 0g2J9Q9oAvpsukd5BDM4/v8DS+4=
+X-Mailgun-Sending-Ip: 104.130.122.27
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5ebd59a5.7fe0a526b378-smtp-out-n04;
+ Thu, 14 May 2020 14:45:57 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 38A42C44791; Thu, 14 May 2020 14:45:57 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 9E651C432C2;
+        Thu, 14 May 2020 14:45:52 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 9E651C432C2
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Borislav Petkov <bp@alien8.de>
+Cc:     Arnd Bergmann <arnd@arndb.de>,
+        Arvind Sankar <nivedita@alum.mit.edu>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Andy Lutomirski <luto@amacapital.net>,
+        Nick Desaulniers <ndesaulniers@google.com>,
         linux-wireless <linux-wireless@vger.kernel.org>,
-        netfilter@vger.kernel.org,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Message-ID: <69564296-2b54-ed57-deff-eb809dbfb8cc@mojatatu.com>
-Date:   Thu, 14 May 2020 10:07:34 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
+        "linux-kernel\@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        the arch/x86 maintainers <x86@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Michael Matz <matz@suse.de>,
+        Martin =?utf-8?Q?Li=C5=A1ka?= <mliska@suse.cz>,
+        Jakub Jelinek <jakub@redhat.com>
+Subject: Re: [PATCH] x86: Fix early boot crash on gcc-10, third try
+References: <20200513222038.GC6733@zn.tnic>
+        <CAHk-=wgybuOF+Jp2XYWqM7Xn1CW6szWQw_FgVoFh5jx_4YoCVw@mail.gmail.com>
+        <20200513233616.GD6733@zn.tnic>
+        <CAHk-=wjZXFe08MiNRevJFGDvX0O6kcQTiK8GFBS7hwUAzB+LQw@mail.gmail.com>
+        <CAKwvOd=o_wuiVpw5KVzLEt25W-A9Ah9fzftPZLG+yutqJmWbOg@mail.gmail.com>
+        <CAHk-=wg6G+p1RRjR6UZBEuSCDs9=iWBsxrDPTEwqh+y5RayqKA@mail.gmail.com>
+        <CALCETrUYA60fWu+=MviKx0NmW+_ppsOcv-ShUXdbyM4EjyfzHQ@mail.gmail.com>
+        <CAHk-=wgiGxRgJGS-zyer1C_x2MQUVo6iZn0=aJyuFTqJWk-mpA@mail.gmail.com>
+        <20200514052234.GA1894416@rani.riverdale.lan>
+        <CAK8P3a1Cfzu7L30bFP-Sf2_GbkN_10CCJsbefTXyfnGF16uHMA@mail.gmail.com>
+        <20200514132706.GB9266@zn.tnic>
+Date:   Thu, 14 May 2020 17:45:50 +0300
+In-Reply-To: <20200514132706.GB9266@zn.tnic> (Borislav Petkov's message of
+        "Thu, 14 May 2020 15:27:06 +0200")
+Message-ID: <87blmqr2w1.fsf@kamboji.qca.qualcomm.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Hi,
+Borislav Petkov <bp@alien8.de> writes:
 
-Apologies for taking longer than promised to provide an
-update on the conference.
+> Ok,
+>
+> here's the new version. Changes are:
+>
+> - It does mb() now (Linus).
+> - I've added a call to prevent_tail_call_optimization() in init/main.c
+>   because it does generate the stack canary there too. This is a
+>   future-proof thing. (Arvind).
+> - Dropped Reviewed-by tags.
+> - Dropped compiler checking from the branch (Linus).
+> - Added Cc:stable because gcc10 has released already, apparently.
+>
+> Testing with gcc10 passes after making sure that without it it would
+> cause the tailcall optimization and fail stack check.
+>
+> Plan is to send it to Linus on the weekend so that it makes it into 5.7.
 
-We finally have a decision - the conference is going fully
-virtual. For details please see:
+This fixed my boot issue, thanks!
 
-https://netdevconf.info/0x14/news.html?virtual-netdev-0x14
+Tested-by: Kalle Valo <kvalo@codeaurora.org>
 
-cheers,
-jamal
+[    0.000000] Linux version 5.7.0-rc4-wt-ath+ (gcc version 10.1.0 (GCC), GNU ld (GNU Binutils) 2.34) #11 SMP Thu May 14 17:28:35 EEST 2020
+
+-- 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
