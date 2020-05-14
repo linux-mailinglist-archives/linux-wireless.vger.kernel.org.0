@@ -2,83 +2,89 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 320BC1D25A3
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 May 2020 06:03:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EDCB01D25A4
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 May 2020 06:03:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725878AbgENEDU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 14 May 2020 00:03:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50648 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725765AbgENEDU (ORCPT
+        id S1725946AbgENEDw (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 14 May 2020 00:03:52 -0400
+Received: from mail27.static.mailgun.info ([104.130.122.27]:62872 "EHLO
+        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725765AbgENEDv (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 14 May 2020 00:03:20 -0400
-Received: from mail-il1-x12f.google.com (mail-il1-x12f.google.com [IPv6:2607:f8b0:4864:20::12f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E31F1C061A0C
-        for <linux-wireless@vger.kernel.org>; Wed, 13 May 2020 21:03:19 -0700 (PDT)
-Received: by mail-il1-x12f.google.com with SMTP id j2so639287ilr.5
-        for <linux-wireless@vger.kernel.org>; Wed, 13 May 2020 21:03:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=bEFjjYkZmq/f1odNJLbLiFARlwVSY8mRNc/9WqwFTek=;
-        b=e+W1uKmOJLD3HzeMH9THUJ/75VtfsizthKdEp4+xkS1PY7KGIzP5psayHHa0GHb6nj
-         L8dIXNthUGYYrLjznWMDT76s+aJAcMwSko+Viox1b+BvyWnjtUjkNuR7/Fa05I34YNJx
-         ce1SUdAHS4zc6CMqCfVLzjVDImXnZA+vBSrDCcgFGFGsysnohwEtgj7xtGm3vXOiaMlS
-         cQGWDtmDP166QnGeznRcs8kuQe0DgBh8Mh671lFl2E+BoJ/EQmc4i+8gbOQqrTTcfIuL
-         kQ7HevZ+Qm46F5oFVomKL2kfZTHCWJpTzw90YAn1DmcCt4t0Ke6aiE2LMdwkodqDzF7U
-         FjOg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:content-transfer-encoding;
-        bh=bEFjjYkZmq/f1odNJLbLiFARlwVSY8mRNc/9WqwFTek=;
-        b=bLfQE93vdRQJlOAdGqK3PTSgk3WPgETMhYVw2WhDkqpq1K6kNdWRAfwTeqFSX9w5ac
-         n3NkoBJiP2kjygF93XioBhzGOtfzChwzF00Reo3za7nY7wSJYlVbTuza4GI6rOhY8GBN
-         rbTJGP72rys9aoc4xhaS1sOi3iLQNomcg4haboljOq6/8X/GbPpXaLFZu0YEnEzqvc8t
-         I1pnjCgofHbKErZKE+Y0SiG/GSCQLPutxXeHq76AppmQdnx5dRwXrY8S7WuG4q/Kfi+K
-         9LV+HNlLJYNqiSDRP3nE1TvBJ4S8Se3gA2vb5Elo9VeGrcJi8Gc4lYw/Gkwm37pQv4j4
-         +RUg==
-X-Gm-Message-State: AOAM530jN4ljPkv8V48YTTKm5XfwFauJCx3/DfIawlVITPAfVmZZ5Q93
-        /GfZo+FGznvL0XYbCq9RY9vjFGMsp87H6i8T6CZVvw==
-X-Google-Smtp-Source: ABdhPJw7AJXqvAHc/iWySXYDI/gE2sPQa+do/w4EzI1FM+ZRYfMVWw5zSADQV2wJTShQmJYzcr5WwKKY1Q7gSs1nQxs=
-X-Received: by 2002:a92:d188:: with SMTP id z8mr2679190ilz.60.1589428999119;
- Wed, 13 May 2020 21:03:19 -0700 (PDT)
+        Thu, 14 May 2020 00:03:51 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1589429031; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=6VUV2jxiudy46M2bnqN6cSym4Gnd8QGBTUIh+5yEfeE=; b=mu7w4lg9OADkhpj9AUr2zUHAiXeCZwgnNiX0/8/kM5QiN486US9Doa+PupwJn63sVVxAtFbj
+ FztV3ml+jyRuug6hsywLU2fBx9VN4r4/pluHW3rG1cYAOBGQXV4Mnegos+DYTBNRDWv+KHaW
+ 7RG1Ern3y/ELQXwSYuQX55aVRDs=
+X-Mailgun-Sending-Ip: 104.130.122.27
+X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5ebcc326.7fd92b53f0d8-smtp-out-n05;
+ Thu, 14 May 2020 04:03:50 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 2989EC433D2; Thu, 14 May 2020 04:03:50 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from tynnyri.adurom.net (tynnyri.adurom.net [51.15.11.48])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 878FCC433F2;
+        Thu, 14 May 2020 04:03:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 878FCC433F2
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Jakub Kicinski <kubakici@wp.pl>
+Cc:     Felix Fietkau <nbd@nbd.name>, Ryder Lee <ryder.lee@mediatek.com>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Sean Wang <sean.wang@mediatek.com>,
+        linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org,
+        Stanislaw Gruszka <sgruszka@redhat.com>
+Subject: Re: [PATCH] mt76: fix different licenses in same driver
+References: <3a5cb822eb4cd81d32b5480f1235c992ea4fbe06.1587193872.git.ryder.lee@mediatek.com>
+        <d32134a6-9673-521f-22ee-871aa2284af0@nbd.name>
+        <20200507100246.1e902bc8@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+Date:   Thu, 14 May 2020 07:03:45 +0300
+In-Reply-To: <20200507100246.1e902bc8@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+        (Jakub Kicinski's message of "Thu, 7 May 2020 10:02:46 -0700")
+Message-ID: <87pnb7go2m.fsf@tynnyri.adurom.net>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-References: <CAFSR4cuy-jj=L1Vf4mmZQWALzrFGE19bODa81KnnJ3MkX6jbtg@mail.gmail.com>
-In-Reply-To: <CAFSR4cuy-jj=L1Vf4mmZQWALzrFGE19bODa81KnnJ3MkX6jbtg@mail.gmail.com>
-From:   Dongyang Zhan <zdyzztq@gmail.com>
-Date:   Thu, 14 May 2020 12:03:11 +0800
-Message-ID: <CAFSR4cvAPkKzkNUOrifc8_TGno-+GYJ_DxJ5LKu0pt5M-o5HVA@mail.gmail.com>
-Subject: Fwd: Potential memory leak bug in rtl8xxxu_tx() by triggering
- usb_submit_urb() failures
-To:     linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
----------- Forwarded message ---------
-=E5=8F=91=E4=BB=B6=E4=BA=BA=EF=BC=9A Dongyang Zhan <zdyzztq@gmail.com>
-Date: 2020=E5=B9=B45=E6=9C=883=E6=97=A5=E5=91=A8=E6=97=A5 =E4=B8=8B=E5=8D=
-=882:45
-Subject: Potential memory leak bug in rtl8xxxu_tx() by triggering
-usb_submit_urb() failures
-To: <linux-wireless@vger.kernel.org>
+Jakub Kicinski <kubakici@wp.pl> writes:
 
+> On Thu, 7 May 2020 15:30:24 +0200 Felix Fietkau wrote:
+>> Hi Ryder,
+>> 
+>> I think for this patch we need an explicit ACK from Stanislaw Gruszka
+>> and Jakub Kicinski (both Cc'd), because mt76x0 was licensed under GPL.
+>
+> Thanks, yes, you definitely need an ack, especially from folks who have
+> their copyright on the files :/
+>
+> My personal preference for the license was expressed clearly when the
+> code was written and it is GPL-only. Felix, if you prefer the clean up
+> I'm happy to ack, but I see no reason to downgrade the license at
+> vendor's request.
 
-Hi,
+I think it would be unfortunate to have different licenses in the same
+driver. For example think of copying a function from one file to
+another, how would we handle that? So my strong recommendation is to use
+the same license throughout the driver. And in this case I consider mt76
+directory and it's subdirectories as being one driver, please correct me
+if that's not the case.
 
-I am a security researcher, my name is Dongyang Zhan. I found a potential b=
-ug in
-
-/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c in Linux
-4.10.17. I hope you can help me to confirm it.
-
-If usb_submit_urb() fails, usb_unanchor_urb cannot free tx_urb->urb,
-causing memory consumption bug. This bug is similar with
-CVE-2019-19068, which adds usb_free_urb() as bug fix.
-
-Thank you.
+-- 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
