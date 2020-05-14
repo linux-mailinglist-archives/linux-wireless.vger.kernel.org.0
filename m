@@ -2,100 +2,69 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 78E8B1D2AB5
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 May 2020 10:54:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 897551D2B0A
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 May 2020 11:13:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725955AbgENIyi (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Thu, 14 May 2020 04:54:38 -0400
-Received: from mail27.static.mailgun.info ([104.130.122.27]:51061 "EHLO
-        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725925AbgENIyh (ORCPT
+        id S1726067AbgENJNU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Thu, 14 May 2020 05:13:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42556 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1725935AbgENJNU (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Thu, 14 May 2020 04:54:37 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1589446477; h=Message-Id: Date: Subject: Cc: To: From:
- Sender; bh=6I003CpuY/pBMpQ63jSyy4e+Gdlel0wuWlUP+Z6PqGs=; b=gIm/qPT+daxO0KsJ4m4qfi23uATHvn9yVrn4gr5/Sn4EKl2wrpjIBK2wWrXxnOhjv2YcS/Dr
- Y+MtGGOzFZ3tHUc4QORide8yyB+fUc4kRjSTkYjWjcKPnPRTnXKEFKnVbs/pSv+wR8PgnbR+
- SaIIubuNII3k4K6HzyS42zRuSHE=
-X-Mailgun-Sending-Ip: 104.130.122.27
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5ebd074b.7f4d2af02650-smtp-out-n01;
- Thu, 14 May 2020 08:54:35 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 6EEB2C433BA; Thu, 14 May 2020 08:54:35 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.0
-Received: from LIANGWEI1.qualcomm.com (unknown [112.64.61.234])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: liangwei)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id D252FC433D2;
-        Thu, 14 May 2020 08:54:33 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org D252FC433D2
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=liangwei@codeaurora.org
-From:   Liangwei Dong <liangwei@codeaurora.org>
-To:     johannes@sipsolutions.net
-Cc:     linux-wireless@vger.kernel.org, liangwei@codeaurora.org
-Subject: [PATCH] nl80211: fix p2p go mgmt send failure on DFS channel
-Date:   Thu, 14 May 2020 16:54:31 +0800
-Message-Id: <1589446471-208-1-git-send-email-liangwei@codeaurora.org>
-X-Mailer: git-send-email 1.9.1
+        Thu, 14 May 2020 05:13:20 -0400
+Received: from smtp.domeneshop.no (smtp.domeneshop.no [IPv6:2a01:5b40:0:3005::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA09DC061A0C;
+        Thu, 14 May 2020 02:13:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=skogtun.org
+        ; s=ds201912; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
+        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=KDx+FlTyn73Rfh8BtAIM8TPjZDA+d19GZ+//31gul5Q=; b=EEuQ+q9xcrqkTTt6mSAiraCok3
+        RfFJxZmNILOU0mBOEOhJNcCZkvFQ7K8sDaI/fJPZFA5vd1dy5cjyd7eQAEySc2c1WLXSZ8naKvOzi
+        6CKwwFz+FAltIyejm+jPYqJbKpf5mJs2LxZuwF30+j4MY0XUSGyFokFkKSGctf4Bug/B07kfW4Npb
+        OMmawrtHarbf4zFhBuNDF9h+zcSZLJA00i58RBkCrZrjhEAsSTC+kvzCeSFFlMZdaM5gcYH5pbvxL
+        5U8xLYJAws22X8rKFumnGYHmIzWzMJxhOTZSG8PG0hh1SBokJ0Nqy888RgCGBm+M9Fb/QldiUGrSQ
+        Gk9r6CgQ==;
+Received: from [2a01:79c:cebf:7fb0:d967:6cf9:736f:4613] (port=44740)
+        by smtp.domeneshop.no with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.92)
+        (envelope-from <harald@skogtun.org>)
+        id 1jZ9vX-0002gK-KQ; Thu, 14 May 2020 11:13:15 +0200
+Subject: Re: gcc-10: kernel stack is corrupted and fails to boot
+To:     Kalle Valo <kvalo@codeaurora.org>, Arnd Bergmann <arnd@arndb.de>
+Cc:     linux-wireless <linux-wireless@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <20200509120707.188595-1-arnd@arndb.de>
+ <20200509120707.188595-2-arnd@arndb.de>
+ <87v9l24qz6.fsf@kamboji.qca.qualcomm.com>
+ <87r1vq4qev.fsf@kamboji.qca.qualcomm.com>
+ <87d078tjl0.fsf_-_@kamboji.qca.qualcomm.com>
+ <CAK8P3a1dxJAHCZ19=sPUkDi5wLWeJ6KKtD09Wmjqkz27TQN6Xw@mail.gmail.com>
+ <87zhacrokl.fsf@kamboji.qca.qualcomm.com>
+ <CAK8P3a1mMcpVE5kLv-krjL_ZjqfRXDK4e3fChzuom_QFRtTJqw@mail.gmail.com>
+ <87v9kzsvg8.fsf@kamboji.qca.qualcomm.com>
+From:   Harald Arnesen <harald@skogtun.org>
+Message-ID: <443d4178-f22e-81dd-36ea-d3c7b4b0c933@skogtun.org>
+Date:   Thu, 14 May 2020 11:13:12 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.0
+MIME-Version: 1.0
+In-Reply-To: <87v9kzsvg8.fsf@kamboji.qca.qualcomm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Start Autonomous p2p GO on DFS channel and then trigger remote
-p2p peer to connect to p2p GO. P2P remote device will send
-P2P provision discovery request action frame to P2P GO on GO's
-home channel - DFS. But when P2P GO sends Provision discovery
-response action frame to P2P remote, Kernel rejects the mgmt
-frame sending since Kernel doesn't allow "offchan" tx mgmt when
-AP interface is active on DFS channel.
+Kalle Valo [13.05.2020 17:31]:
 
-Fix by allow "offchan" tx mgmt if the requested channel is same
-or compatible with AP's home channel.
+> Great, so it's not a problem due to my setup.
 
-Signed-off-by: Liangwei Dong <liangwei@codeaurora.org>
----
- net/wireless/nl80211.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
-
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 3d27b24c68b2..f33fd923bb19 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -10807,6 +10807,7 @@ static int nl80211_tx_mgmt(struct sk_buff *skb, struct genl_info *info)
- 	struct cfg80211_registered_device *rdev = info->user_ptr[0];
- 	struct wireless_dev *wdev = info->user_ptr[1];
- 	struct cfg80211_chan_def chandef;
-+	const struct cfg80211_chan_def *compat_chandef;
- 	int err;
- 	void *hdr = NULL;
- 	u64 cookie;
-@@ -10874,9 +10875,15 @@ static int nl80211_tx_mgmt(struct sk_buff *skb, struct genl_info *info)
- 		return -EINVAL;
- 
- 	wdev_lock(wdev);
--	if (params.offchan && !cfg80211_off_channel_oper_allowed(wdev)) {
--		wdev_unlock(wdev);
--		return -EBUSY;
-+	if (params.offchan &&
-+	    !cfg80211_off_channel_oper_allowed(wdev) &&
-+	    !cfg80211_chandef_identical(&wdev->chandef, &chandef)) {
-+		compat_chandef = cfg80211_chandef_compatible(&wdev->chandef,
-+							     &chandef);
-+		if (compat_chandef != &chandef) {
-+			wdev_unlock(wdev);
-+			return -EBUSY;
-+		}
- 	}
- 	wdev_unlock(wdev);
- 
+I see the same thing on two machines, using a self-compiled gcc 10.1.0.
+Glad to hear it's not just me. Switched back to 9.3.0 for the time being.
 -- 
-2.26.2
+Hilsen Harald
