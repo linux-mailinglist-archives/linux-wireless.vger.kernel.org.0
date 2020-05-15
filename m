@@ -2,86 +2,85 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 86D4D1D53E1
-	for <lists+linux-wireless@lfdr.de>; Fri, 15 May 2020 17:12:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 10ADC1D5676
+	for <lists+linux-wireless@lfdr.de>; Fri, 15 May 2020 18:47:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726937AbgEOPLv (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 15 May 2020 11:11:51 -0400
-Received: from mail.kernel.org ([198.145.29.99]:48604 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726717AbgEOPJh (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 15 May 2020 11:09:37 -0400
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 448D1207C3;
-        Fri, 15 May 2020 15:09:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1589555376;
-        bh=ys1V8HWNqH20yXhWtg1p2L+pPQ1fwqd8rYNvrPx95UM=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=lS2YsSuumgPFlql65mzaXT7bI02mBOVqmqPUIPQyGjNbMP5CjS5Yhe8iytrsPHNBA
-         tLSKzTBJMMCHJ6v2uY+1HJrYDJ2cXMayZvliNSfnz/+NIV5gi36XTpsgnxCH9qfbCy
-         cFaTWRXjEkqX+lEvr958G7qHow4nV5GAWGgH7OoI=
-Date:   Fri, 15 May 2020 17:09:34 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     =?iso-8859-1?B?Suly9G1l?= Pouiller <jerome.pouiller@silabs.com>
-Cc:     devel@driverdev.osuosl.org, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        "David S . Miller" <davem@davemloft.net>,
-        Kalle Valo <kvalo@codeaurora.org>
-Subject: Re: [PATCH 05/19] staging: wfx: fix coherency of hif_scan() prototype
-Message-ID: <20200515150934.GA2573363@kroah.com>
-References: <20200515083325.378539-1-Jerome.Pouiller@silabs.com>
- <20200515083325.378539-6-Jerome.Pouiller@silabs.com>
- <20200515135359.GA2162457@kroah.com>
- <15113296.vvBLmrQuJQ@pc-42>
+        id S1726290AbgEOQqt (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 15 May 2020 12:46:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56382 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726171AbgEOQqs (ORCPT
+        <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 15 May 2020 12:46:48 -0400
+Received: from mail-qt1-x843.google.com (mail-qt1-x843.google.com [IPv6:2607:f8b0:4864:20::843])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCB4BC061A0C;
+        Fri, 15 May 2020 09:46:48 -0700 (PDT)
+Received: by mail-qt1-x843.google.com with SMTP id 4so2503837qtb.4;
+        Fri, 15 May 2020 09:46:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=lhyrD7fgcAIDzketu+eiu4fOBdbGHW2Sbb4y7tusfjc=;
+        b=ciiFFIfJa2m5ZMcG1Egga+yCC0p/qlLtMIDWP5VpB+mIrZHz4n6taU/dk2jphDQ81e
+         WCcDaCCgBCWIvvHLuwsQdEFJ8pHS1EOXPM5Lf6VNpf2b224OJ6d23un0Zigl79hN/BUU
+         CpRSCOvP+yZyZ4PCU4xcV8z95vYxJukoRcI6AJVsmxCWhirZtiLVYVnKu8KDQeeC4mgs
+         yuCOQ8dbRZGOdesKQmO7Q6/GKdTUbCw5XTxxJtZ51tU2/RZqGoQPsgiwZp/229BEjZJ2
+         7rIy0CHojmbbJBiPijyme0lplBYyNdlxoqHPW6Lj6EZR4xcHyubFmI3+VxV50mc5hSw/
+         vSGQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=lhyrD7fgcAIDzketu+eiu4fOBdbGHW2Sbb4y7tusfjc=;
+        b=U3g0bVcElHQHkZp3B0yewhs0ycCrQ1V+I6o+RPm7eTiMAWnoZhki/wEwAw2oO71nZu
+         CKdCTET2fqrO39uXl/Yx/Rg4Zu0QAC9EtppAz9V1TqYCNGLclbMABtczmuPH8AwAionJ
+         dabnXmD7Aw0sE7ZX7tsqLLZ3CvCqjQ/oPnGHYXMHYJrWY6cQ6SxFd9tqIoeZ/0vpG2Di
+         P0VVOWaMOfIZujNW37ceGBSxiK8UDFvNSzgXWPdMSP8D9RxTXy4h9ErY8w5zJwUQ+6xp
+         STlLHLSd0/b7gNIeEUZ8inN6jANca/gyXpJ0nM4tQxZIvYZe4sqBwzDG++CHyB42loeE
+         aKqg==
+X-Gm-Message-State: AOAM533fPXYVRyrjo5cNnEYL+ilTJD/AOeLnphRH1+QqfvADzL3BDmjt
+        RPD/YAVoPGjiqXIj/lobGbZBtbM9vwY=
+X-Google-Smtp-Source: ABdhPJwpwHs3AHa06mvPBXiioFkqQ+A/KU8cTdGp2lopcCxfDXqA5koTGvbygFwLoeRwS7qhmrLCCw==
+X-Received: by 2002:ac8:7619:: with SMTP id t25mr4431652qtq.130.1589561207503;
+        Fri, 15 May 2020 09:46:47 -0700 (PDT)
+Received: from alpha-Inspiron-5480.lan ([170.84.225.240])
+        by smtp.gmail.com with ESMTPSA id g20sm1918530qki.75.2020.05.15.09.46.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 15 May 2020 09:46:46 -0700 (PDT)
+From:   Ramon Fontes <ramonreisfontes@gmail.com>
+To:     linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        linux-wireless@vger.kernel.org
+Cc:     johannes@sipsolutions.net, kvalo@codeaurora.org,
+        davem@davemloft.net, Ramon Fontes <ramonreisfontes@gmail.com>
+Subject: [PATCH] mac80211_hwsim: report the WIPHY_FLAG_SUPPORTS_5_10_MHZ capability
+Date:   Fri, 15 May 2020 13:46:40 -0300
+Message-Id: <20200515164640.97276-1-ramonreisfontes@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <15113296.vvBLmrQuJQ@pc-42>
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Fri, May 15, 2020 at 05:03:40PM +0200, Jérôme Pouiller wrote:
-> On Friday 15 May 2020 15:53:59 CEST Greg Kroah-Hartman wrote:
-> > On Fri, May 15, 2020 at 10:33:11AM +0200, Jerome Pouiller wrote:
-> > > From: Jérôme Pouiller <jerome.pouiller@silabs.com>
-> > >
-> > > The function hif_scan() return the timeout for the completion of the
-> > > scan request. It is the only function from hif_tx.c that return another
-> > > thing than just an error code. This behavior is not coherent with the
-> > > rest of file. Worse, if value returned is positive, the caller can't
-> > > make say if it is a timeout or the value returned by the hardware.
-> > >
-> > > Uniformize API with other HIF functions, only return the error code and
-> > > pass timeout with parameters.
-> > >
-> > > Signed-off-by: Jérôme Pouiller <jerome.pouiller@silabs.com>
-> > > ---
-> > >  drivers/staging/wfx/hif_tx.c | 6 ++++--
-> > >  drivers/staging/wfx/hif_tx.h | 2 +-
-> > >  drivers/staging/wfx/scan.c   | 6 +++---
-> > >  3 files changed, 8 insertions(+), 6 deletions(-)
-> > 
-> > This patch fails to apply to my branch, so I've stopped here in the
-> > patch series.
-> 
-> Hello Greg,
-> 
-> Did you applied the patch called "staging: wfx: unlock on error path" from
-> Dan?
+Signed-off-by: Ramon Fontes <ramonreisfontes@gmail.com>
+---
+ drivers/net/wireless/mac80211_hwsim.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-I have no idea :)
+diff --git a/drivers/net/wireless/mac80211_hwsim.c b/drivers/net/wireless/mac80211_hwsim.c
+index 0528d4cb4..67f97ac36 100644
+--- a/drivers/net/wireless/mac80211_hwsim.c
++++ b/drivers/net/wireless/mac80211_hwsim.c
+@@ -2995,6 +2995,7 @@ static int mac80211_hwsim_new_radio(struct genl_info *info,
+ 	hw->wiphy->flags |= WIPHY_FLAG_SUPPORTS_TDLS |
+ 			    WIPHY_FLAG_HAS_REMAIN_ON_CHANNEL |
+ 			    WIPHY_FLAG_AP_UAPSD |
++                            WIPHY_FLAG_SUPPORTS_5_10_MHZ |
+ 			    WIPHY_FLAG_HAS_CHANNEL_SWITCH;
+ 	hw->wiphy->features |= NL80211_FEATURE_ACTIVE_MONITOR |
+ 			       NL80211_FEATURE_AP_MODE_CHAN_WIDTH_CHANGE |
+-- 
+2.25.1
 
-> (I wrote that information in the introduction letter, but maybe I would
-> had include the Dan's patch in my PR?)
-
-I think you should have, as my queue is empty now.
-
-thanks,
-
-greg k-h
