@@ -2,148 +2,72 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B4A11D4DD8
-	for <lists+linux-wireless@lfdr.de>; Fri, 15 May 2020 14:38:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E822D1D4F30
+	for <lists+linux-wireless@lfdr.de>; Fri, 15 May 2020 15:24:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726296AbgEOMiL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 15 May 2020 08:38:11 -0400
-Received: from mx01-sz.bfs.de ([194.94.69.67]:57319 "EHLO mx01-sz.bfs.de"
+        id S1726234AbgEONX4 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 15 May 2020 09:23:56 -0400
+Received: from mail.kernel.org ([198.145.29.99]:35692 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726162AbgEOMiK (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 15 May 2020 08:38:10 -0400
-Received: from SRVEX01-SZ.bfs.intern (exchange-sz.bfs.de [10.129.90.31])
-        by mx01-sz.bfs.de (Postfix) with ESMTPS id CA71220320;
-        Fri, 15 May 2020 14:38:07 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bfs.de; s=dkim201901;
-        t=1589546287;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=ppKbetCczRPxYojNsxLooBtfmJ0vphP053kEHBki1gc=;
-        b=yJV5DF337dYDB94SlXzGeeSFtM+t+kyXBFEewX47UBZfxzEcN/7vzS8ERu/uF+ARN0mir8
-        1Gpd3fCY1Ju0o7q+MYxFvdiw4Mw6oUHflbXBRmo7FYG6VNIEM1JPMBxe74BaatGPQw4TCC
-        UJ85rW2eVH6LNRANJs/AIsBH6Sp0rJdgZpysHOFnLg71RENfRKBb+OfJr3FLksAtbbNWH5
-        isvPevS/Ruk53abXa7SPrNny9cnmxS/HBsWO+7xcOmKMWwWUMvC+qktzD0wYX7lfiy0b/o
-        0DxzpYDHcWZCnvKigElYLN3kyFCWxQukGSFPu3wDmrmhdmf0EBlUVdW/HRiCyA==
-Received: from SRVEX01-SZ.bfs.intern (10.129.90.31) by SRVEX01-SZ.bfs.intern
- (10.129.90.31) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.1913.5; Fri, 15 May
- 2020 14:38:07 +0200
-Received: from SRVEX01-SZ.bfs.intern ([fe80::7d2d:f9cb:2761:d24a]) by
- SRVEX01-SZ.bfs.intern ([fe80::7d2d:f9cb:2761:d24a%6]) with mapi id
- 15.01.1913.005; Fri, 15 May 2020 14:38:07 +0200
-From:   Walter Harms <wharms@bfs.de>
-To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-CC:     "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: AW: [PATCH] rtlwifi: rtl8192ee: remove redundant for-loop
-Thread-Topic: [PATCH] rtlwifi: rtl8192ee: remove redundant for-loop
-Thread-Index: AQHWKqLOi1fXAItzAU2fpWUNjofas6ipEGuf
-Date:   Fri, 15 May 2020 12:38:07 +0000
-Message-ID: <73b8d798ffa048418be8443f90a79377@bfs.de>
-References: <20200515102226.29819-1-colin.king@canonical.com>
-In-Reply-To: <20200515102226.29819-1-colin.king@canonical.com>
-Accept-Language: de-DE, en-US
-Content-Language: de-DE
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.137.16.40]
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+        id S1726213AbgEONX4 (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 15 May 2020 09:23:56 -0400
+Received: from pali.im (pali.im [31.31.79.79])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 1C8D12065F;
+        Fri, 15 May 2020 13:23:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1589549036;
+        bh=/0i5GAiE3iEWTH++PER3m05MtECmVly6M7AdsDkEHyA=;
+        h=Date:From:To:Subject:From;
+        b=eUxA01FL7MpcaT18FllxBXLQi5y9mqy236JTywcAJTO8U50scr1ovwBvhXnf5rcCd
+         NmB3ZYqF9blLrTuUnzPPACskQWp11Dk+8WHs4VphSMi/paxMa0PyXFdS6S425XRUnm
+         evmmrflY204CAYpsmKTxynPd9YZaGxIGAYTLKk2U=
+Received: by pali.im (Postfix)
+        id BF6F15F0; Fri, 15 May 2020 15:23:53 +0200 (CEST)
+Date:   Fri, 15 May 2020 15:23:53 +0200
+From:   Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
+To:     Ganapathi Bhat <ganapathi.bhat@nxp.com>,
+        Amitkumar Karwar <amitkarwar@gmail.com>,
+        Xinming Hu <huxinming820@gmail.com>,
+        Marek =?utf-8?B?QmVow7pu?= <marek.behun@nic.cz>,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: mwifiex: Firmware name for W8997 sdio wifi chip
+Message-ID: <20200515132353.vfor7v4buzoddfmb@pali>
 MIME-Version: 1.0
-X-Spam-Status: No, score=-2.89
-Authentication-Results: mx01-sz.bfs.de;
-        none
-X-Spamd-Result: default: False [-2.89 / 7.00];
-         ARC_NA(0.00)[];
-         HAS_XOIP(0.00)[];
-         FROM_HAS_DN(0.00)[];
-         RCPT_COUNT_THREE(0.00)[4];
-         TO_MATCH_ENVRCPT_ALL(0.00)[];
-         MIME_GOOD(-0.10)[text/plain];
-         DKIM_SIGNED(0.00)[];
-         NEURAL_HAM(-0.00)[-0.884];
-         TO_DN_EQ_ADDR_ALL(0.00)[];
-         RCVD_NO_TLS_LAST(0.10)[];
-         FROM_EQ_ENVFROM(0.00)[];
-         MIME_TRACE(0.00)[0:+];
-         RCVD_COUNT_TWO(0.00)[2];
-         MID_RHS_MATCH_FROM(0.00)[];
-         BAYES_HAM(-2.89)[99.53%]
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: NeoMutt/20180716
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-if someone has same spare time,
-this driver need a bit more love ...
+Hello!
 
-SO far i can see in rtl92ee_phy_iq_calibrate:
-* IQK_MATRIX_REG_NUM should be used instead 8 hardcoded.
-* the for-loop in the beginning is obfuscating that it sets  simply final_c=
-andidate
+There is inconsistency in firmware naming for W8997 SDIO wifi chip.
 
-this can be cleaned:
-      reg_e94 =3D result[final_candidate][0];
-      rtlphy->reg_e94 =3D reg_e94;
-      reg_e9c =3D result[final_candidate][1];
-      rtlphy->reg_e9c =3D reg_e9c;
+Firmware for this chip is stored in linux-firmware [1] repository under
+filename sdsd8997_combo_v4.bin.
 
-only reg_e94, reg_ea4 is used later ?
+But mainline linux kernel driver mwifiex_sdio.ko [2] expects and loads
+firmware for this chip from filename sd8997_uapsta.bin.
 
-jm2c,
-wh=20
+So result is that W8997 SDIO wifi chip does not work out of box and
+people are complaining where to get "sd8997_uapsta.bin" firmware file as
+it does not exist [3]. People suggest to rename it.
 
-________________________________________
-Von: kernel-janitors-owner@vger.kernel.org <kernel-janitors-owner@vger.kern=
-el.org> im Auftrag von Colin King <colin.king@canonical.com>
-Gesendet: Freitag, 15. Mai 2020 12:22
-An: Kalle Valo; David S . Miller; linux-wireless@vger.kernel.org; netdev@vg=
-er.kernel.org
-Cc: kernel-janitors@vger.kernel.org; linux-kernel@vger.kernel.org
-Betreff: [PATCH] rtlwifi: rtl8192ee: remove redundant for-loop
+Do you have any opinion how to solve this problem?
 
-From: Colin Ian King <colin.king@canonical.com>
+As Marvell is using sdsd8997_combo_v4.bin name for this firmware I would
+suggest to extend mwifiex_sdio.ko Linux driver to load this firmware
+also from the file sdsd8997_combo_v4.bin.
 
-The for-loop seems to be redundant, the assignments for indexes
-0..2 are being over-written by the last index 3 in the loop. Remove
-the loop and use index 3 instead.
+Also firmware file sdsd8997_combo_v4.bin in linux-firmware git
+repository [1] is in version 16.68.1.p179. But there is already newer
+version available (e.g. 16.68.1.p197) . Are you able to update firmware
+for W8997 SDIO chip in linux-firmware repository to the lasted version?
 
-Addresses-Coverity: ("Unused value")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- .../net/wireless/realtek/rtlwifi/rtl8192ee/phy.c   | 14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
-
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/phy.c b/drivers=
-/net/wireless/realtek/rtlwifi/rtl8192ee/phy.c
-index 6dba576aa81e..bb291b951f4d 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/phy.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/phy.c
-@@ -2866,14 +2866,12 @@ void rtl92ee_phy_iq_calibrate(struct ieee80211_hw *=
-hw, bool b_recovery)
-                }
-        }
-
--       for (i =3D 0; i < 4; i++) {
--               reg_e94 =3D result[i][0];
--               reg_e9c =3D result[i][1];
--               reg_ea4 =3D result[i][2];
--               reg_eb4 =3D result[i][4];
--               reg_ebc =3D result[i][5];
--               reg_ec4 =3D result[i][6];
--       }
-+       reg_e94 =3D result[3][0];
-+       reg_e9c =3D result[3][1];
-+       reg_ea4 =3D result[3][2];
-+       reg_eb4 =3D result[3][4];
-+       reg_ebc =3D result[3][5];
-+       reg_ec4 =3D result[3][6];
-
-        if (final_candidate !=3D 0xff) {
-                reg_e94 =3D result[final_candidate][0];
---
-2.25.1
-
+[1] - https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/tree/mrvl
+[2] - https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/net/wireless/marvell/mwifiex/sdio.h?h=v5.6#n41
+[3] - https://raspberrypi.stackexchange.com/q/93478
