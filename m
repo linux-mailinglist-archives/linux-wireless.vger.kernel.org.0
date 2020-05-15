@@ -2,125 +2,127 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AE9581D478D
-	for <lists+linux-wireless@lfdr.de>; Fri, 15 May 2020 10:00:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3FD831D484B
+	for <lists+linux-wireless@lfdr.de>; Fri, 15 May 2020 10:34:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727792AbgEOIAU (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 15 May 2020 04:00:20 -0400
-Received: from mail.kernel.org ([198.145.29.99]:42428 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726671AbgEOIAT (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 15 May 2020 04:00:19 -0400
-Received: from pali.im (pali.im [31.31.79.79])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B7429205CB;
-        Fri, 15 May 2020 08:00:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1589529618;
-        bh=Lrg29hVRGlCPrHHmbYcVcsFCxxxwqFtQRLOD6b5xnYo=;
-        h=From:To:Cc:Subject:Date:From;
-        b=NVL1ClV+Sf8z/LLTyPfAPgLsrbfvrui0OPb0oiN0r2sFmT2HTGCY9ZL41659B+T+Z
-         g1Mkjy4xPFqndZ2U7GrGhq1Y9IlERJv+KJC8Eq+sMIWnW5nMTdKiLGgIoke92hUkJJ
-         MA7S8k5YVMBd7HLwxBJz/0zxW6YevjCAcu4te5Wk=
-Received: by pali.im (Postfix)
-        id A01805F0; Fri, 15 May 2020 10:00:16 +0200 (CEST)
-From:   =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>
-To:     Amitkumar Karwar <amitkarwar@gmail.com>,
-        Ganapathi Bhat <ganapathi.bhat@nxp.com>,
-        Xinming Hu <huxinming820@gmail.com>,
+        id S1727811AbgEOIdx (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 15 May 2020 04:33:53 -0400
+Received: from mail-dm6nam11on2086.outbound.protection.outlook.com ([40.107.223.86]:6138
+        "EHLO NAM11-DM6-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726694AbgEOIdw (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 15 May 2020 04:33:52 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=GdIOnV5VNtUB1bQ1AT1aeNVIkXMLpDzVY5oun90WeimDGHhbXvjvDOBZpFF7xDUS7NJdRVMfSpEwHVnM9EsWG/8D9kRY79rWTncZ9JhYxcJJLcPszVdBHqiAjKqgGPZJAIgWgHsVIWWCUz/VKwUSY2rXfuYjXIdL8NTpDxK1MaEmIi8bE6h3/bhF7kTiMa8pvQ7TEzmR75dIJdFUOZDes1D6x6H/EmK64NTGDhqeNFMBuS4r8pm4H3DS9y50wJ38o4kT9UmpXBr+qiMmNC69/CELb7wT8THHBPNIHCmA5s4ylRkK0OAugh4mieLI1HZOdSbCV5m+NXD/2wx+nDgDNw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=owEGYhDSPe8g3K0oc3QVvoWe3aGkmULc3RgqcpbwuGY=;
+ b=IXZb7RyvJSkNawg7aiw33XZ0GWpjPo1S3LOIYXG4G6sAvDWzA5pcIaWuRJlXZviTQKKHXs8pyGg1dGz1Kqo/8cdWt5AvjxkhJipONtAO+yj1eWLYNw7T5H+bHf9QSIQmLikBsAg/H7Mq5AHjIIEYJLQ9oORJtyghLaN7CZ1im9JNSDF5qhsYMAo89jJNbH4kSeX/Dw0Xac5yO4XKn3BaWnxXR8aVrK+Wbt25eeAWjrboIPPjanboL+VWorJM6PXm+cJ47fjW+XdYpNCzm5ghVF64oKQ7w1/gxu/P0L67TloszDv8uwRSUeLB8h1fjxYQczIc/gheOuY8Ddlg4uh+KA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=silabs.com; dmarc=pass action=none header.from=silabs.com;
+ dkim=pass header.d=silabs.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=silabs.onmicrosoft.com; s=selector2-silabs-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=owEGYhDSPe8g3K0oc3QVvoWe3aGkmULc3RgqcpbwuGY=;
+ b=nrh0u21klYdHp7mW2pYWvN+rIjsMupKwmW2qrFpKlgMwIjp8gjWd618boFy7vgFGCHfGBZCY3X/OGymscxE0ztMXnzulG7cfl10InHEXbJGd6t99u+n8EPWWn3Om/Pq8m0S3epQryqRDMRI+ZLIQI0SYCT3KdmlutwK8b/mNy4g=
+Authentication-Results: driverdev.osuosl.org; dkim=none (message not signed)
+ header.d=none;driverdev.osuosl.org; dmarc=none action=none
+ header.from=silabs.com;
+Received: from MWHPR11MB1775.namprd11.prod.outlook.com (2603:10b6:300:10e::14)
+ by MWHPR11MB1310.namprd11.prod.outlook.com (2603:10b6:300:28::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2979.26; Fri, 15 May
+ 2020 08:33:49 +0000
+Received: from MWHPR11MB1775.namprd11.prod.outlook.com
+ ([fe80::e055:3e6d:ff4:56da]) by MWHPR11MB1775.namprd11.prod.outlook.com
+ ([fe80::e055:3e6d:ff4:56da%5]) with mapi id 15.20.3000.022; Fri, 15 May 2020
+ 08:33:48 +0000
+From:   Jerome Pouiller <Jerome.Pouiller@silabs.com>
+To:     devel@driverdev.osuosl.org, linux-wireless@vger.kernel.org
+Cc:     netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Cathy Luo <cluo@marvell.com>,
-        Avinash Patil <patila@marvell.com>,
-        =?UTF-8?q?Marek=20Beh=C3=BAn?= <marek.behun@nic.cz>
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] mwifiex: Fix memory corruption in dump_station
-Date:   Fri, 15 May 2020 09:59:24 +0200
-Message-Id: <20200515075924.13841-1-pali@kernel.org>
-X-Mailer: git-send-email 2.20.1
-MIME-Version: 1.0
+        "David S . Miller" <davem@davemloft.net>,
+        =?UTF-8?q?J=C3=A9r=C3=B4me=20Pouiller?= 
+        <jerome.pouiller@silabs.com>
+Subject: [PATCH 00/19] staging: wfx: various fixes
+Date:   Fri, 15 May 2020 10:33:06 +0200
+Message-Id: <20200515083325.378539-1-Jerome.Pouiller@silabs.com>
+X-Mailer: git-send-email 2.26.2
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: base64
+X-ClientProxiedBy: PR0P264CA0076.FRAP264.PROD.OUTLOOK.COM
+ (2603:10a6:100:18::16) To MWHPR11MB1775.namprd11.prod.outlook.com
+ (2603:10b6:300:10e::14)
+MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from pc-42.home (82.67.86.106) by PR0P264CA0076.FRAP264.PROD.OUTLOOK.COM (2603:10a6:100:18::16) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3000.24 via Frontend Transport; Fri, 15 May 2020 08:33:46 +0000
+X-Mailer: git-send-email 2.26.2
+X-Originating-IP: [82.67.86.106]
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: b1e8fdda-aff3-424f-b887-08d7f8aab037
+X-MS-TrafficTypeDiagnostic: MWHPR11MB1310:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <MWHPR11MB13100F1A2F6713341100664393BD0@MWHPR11MB1310.namprd11.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:3826;
+X-Forefront-PRVS: 04041A2886
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: u96AVyk29oa23xL4BstrTo/8lcg9nRjqdMp8EANhYdgNLqqGDmZ3D5O0z7kxcPMmtxta5g7fSxVYnJfAyZ1hE9DdG444CPuJ3fU74VXlK9y8Qk7MYjmEpzZivOPWjcAlXYFy/IwJQEowK7Gopkb5Gf9O/j4HDihFIXpaJ8NbF93v5GB/j3z1IxFTvwTdvHc46+BMVn+3S7TqEoc5UqEnoM1ZTywpi8yFQ9INtgoZDD5e32bG7zFRBw+jmjV68DlGsDNiffhlIR/5f14BCVk/4w9va9FiyNUHt5V+WcbkVLftUpgnGaMaEmDhPsywEA/oNzrDlufZKMKwa5Ntc23DldZ8R02dAd4thmXS0kZvCG2Cu46xHLcFTKz+9nkn3qohOKhbE7c3pUc3kT0VnQjaPLDYy1QiBmGpoM8R62pCoIZVNy7eDcupONh0GZZ7PlYS
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MWHPR11MB1775.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(346002)(136003)(376002)(366004)(39850400004)(396003)(8886007)(66556008)(186003)(6512007)(66946007)(6506007)(36756003)(316002)(66476007)(26005)(52116002)(16526019)(6666004)(54906003)(2906002)(2616005)(478600001)(66574014)(107886003)(956004)(8936002)(86362001)(8676002)(6486002)(5660300002)(4326008)(1076003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData: RenaLXUOcCN+ALqP0q+A10RMwExeovE9hbR3ZUYX9uwuzOI5x4LvPHsf8158DNWTHDqWmkNvPXKl1CGnMmmYbg0xZ9gFfpX54vki88Zy3V9cwnum0xKX1kmVbhTVxqvBAQKZIQNyhjVM+uh3MDn+0JDpZJZwFLkGs3S1L9kbtzFncIiimJj4S2Nj9JWvwIVdXC0LMsQohjqeoPkAkQHV2U1f0LK5LIOx1JYJYNkznma8rIyG2+tobyVQoBACW7/LuY5FproObWg9gij0qB/2zvSojnMggGE7La1d/vPAkq+inj+DS4cEFuu+Fs6SKXxjkCyWVHBNsUY3zDIyAn4hX87S1W+eStlnSt2Nco3wPGMfOhLBKEUVw4XpLE10wFSMVEL9IydXwEKIClyW3hqGma+vs3eYWXUmuPMZVPP0X6c2quxr626chDeiL8AGyQiat4h/cnAL16y05/0vpkBaXjuwZGmTLPZ+gmR5SEyQ8GU=
+X-OriginatorOrg: silabs.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b1e8fdda-aff3-424f-b887-08d7f8aab037
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 May 2020 08:33:48.2914
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 54dbd822-5231-4b20-944d-6f4abcd541fb
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: rJfU9cjhjHN3Z4/IlW04FvJc4W4KHxZXnct+GKWC+xNX6aXMNm+lDQOoLXc85XuukNBFMWLdDCvK8G7NXCuYJA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR11MB1310
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-The mwifiex_cfg80211_dump_station() uses static variable for iterating
-over a linked list of all associated stations (when the driver is in UAP
-role). This has a race condition if .dump_station is called in parallel
-for multiple interfaces. This corruption can be triggered by registering
-multiple SSIDs and calling, in parallel for multiple interfaces
-    iw dev <iface> station dump
-
-[16750.719775] Unable to handle kernel paging request at virtual address dead000000000110
-...
-[16750.899173] Call trace:
-[16750.901696]  mwifiex_cfg80211_dump_station+0x94/0x100 [mwifiex]
-[16750.907824]  nl80211_dump_station+0xbc/0x278 [cfg80211]
-[16750.913160]  netlink_dump+0xe8/0x320
-[16750.916827]  netlink_recvmsg+0x1b4/0x338
-[16750.920861]  ____sys_recvmsg+0x7c/0x2b0
-[16750.924801]  ___sys_recvmsg+0x70/0x98
-[16750.928564]  __sys_recvmsg+0x58/0xa0
-[16750.932238]  __arm64_sys_recvmsg+0x28/0x30
-[16750.936453]  el0_svc_common.constprop.3+0x90/0x158
-[16750.941378]  do_el0_svc+0x74/0x90
-[16750.944784]  el0_sync_handler+0x12c/0x1a8
-[16750.948903]  el0_sync+0x114/0x140
-[16750.952312] Code: f9400003 f907f423 eb02007f 54fffd60 (b9401060)
-[16750.958583] ---[ end trace c8ad181c2f4b8576 ]---
-
-This patch drops the use of the static iterator, and instead every time
-the function is called iterates to the idx-th position of the
-linked-list.
-
-It would be better to convert the code not to use linked list for
-associated stations storage (since the chip has a limited number of
-associated stations anyway - it could just be an array). Such a change
-may be proposed in the future. In the meantime this patch can backported
-into stable kernels in this simple form.
-
-Fixes: 8baca1a34d4c ("mwifiex: dump station support in uap mode")
-Signed-off-by: Pali Rohár <pali@kernel.org>
----
- drivers/net/wireless/marvell/mwifiex/cfg80211.c | 14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
-
-diff --git a/drivers/net/wireless/marvell/mwifiex/cfg80211.c b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-index 1566d2197906..12bfd653a405 100644
---- a/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-+++ b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-@@ -1496,7 +1496,8 @@ mwifiex_cfg80211_dump_station(struct wiphy *wiphy, struct net_device *dev,
- 			      int idx, u8 *mac, struct station_info *sinfo)
- {
- 	struct mwifiex_private *priv = mwifiex_netdev_get_priv(dev);
--	static struct mwifiex_sta_node *node;
-+	struct mwifiex_sta_node *node;
-+	int i;
- 
- 	if ((GET_BSS_ROLE(priv) == MWIFIEX_BSS_ROLE_STA) &&
- 	    priv->media_connected && idx == 0) {
-@@ -1506,13 +1507,10 @@ mwifiex_cfg80211_dump_station(struct wiphy *wiphy, struct net_device *dev,
- 		mwifiex_send_cmd(priv, HOST_CMD_APCMD_STA_LIST,
- 				 HostCmd_ACT_GEN_GET, 0, NULL, true);
- 
--		if (node && (&node->list == &priv->sta_list)) {
--			node = NULL;
--			return -ENOENT;
--		}
--
--		node = list_prepare_entry(node, &priv->sta_list, list);
--		list_for_each_entry_continue(node, &priv->sta_list, list) {
-+		i = 0;
-+		list_for_each_entry(node, &priv->sta_list, list) {
-+			if (i++ != idx)
-+				continue;
- 			ether_addr_copy(mac, node->mac_addr);
- 			return mwifiex_dump_station_info(priv, node, sinfo);
- 		}
--- 
-2.20.1
-
+RnJvbTogSsOpcsO0bWUgUG91aWxsZXIgPGplcm9tZS5wb3VpbGxlckBzaWxhYnMuY29tPgoKSGVs
+bG8sCgpUaGlzIHNlcmllcyBjb250YWlucyB2YXJpb3VzIGNoYW5nZXMuIFRoZSBtb3N0IGltcG9y
+dGFudCBwYXRjaGVzIGFyZSB0aGUKMTMgYW5kIDE0IHNpbmNlIHRoZXkgZml4IHR3byBmdW5jdGlv
+bmFsIGRlZmVjdHMuIFRoZSBvdGhlciBwYXRjaGVzIGZpeApydW50aW1lIHdhcm5pbmdzICgxLCAx
+NywgMTgsIDE5KSwgaW1wcm92ZSByb2J1c3RuZXNzICgzLCA0LCA1LCA3LCAxMCwgMTYpCmFuZCBk
+byBzb21lIGNvc21ldGljcyBpbXByb3ZlbWVudHMgKDIsIDYsIDgsIDksIDExLCAxMiwgMTUpLgoK
+VGhpcyBzZXJpZXMgaGF2ZSB0byBiZSBhcHBsaWVkIG9uIHRvcCBvZiBwYXRjaCBzZW50IGJ5IERh
+bjogInN0YWdpbmc6IHdmeDoKdW5sb2NrIG9uIGVycm9yIHBhdGgiLiBXb3VsZCBJIGhhZCBpbmNs
+dWRlIHRoaXMgcGF0Y2ggaW4gdGhpcyBQUj8KCkrDqXLDtG1lIFBvdWlsbGVyICgxOSk6CiAgc3Rh
+Z2luZzogd2Z4OiBmaXggd2FybmluZyB3aGVuIHVucmVnaXN0ZXIgYSBmcm96ZW4gZGV2aWNlCiAg
+c3RhZ2luZzogd2Z4OiBhcHBseSA4MC1jb2x1bW5zIHJ1bGUgdG8gc3RyaW5ncwogIHN0YWdpbmc6
+IHdmeDogY2hlY2sgcG9pbnRlcnMgcmV0dXJuZWQgYnkgYWxsb2NhdGlvbnMKICBzdGFnaW5nOiB3
+Zng6IGZpeCB2YWx1ZSBvZiBzY2FuIHRpbWVvdXQKICBzdGFnaW5nOiB3Zng6IGZpeCBjb2hlcmVu
+Y3kgb2YgaGlmX3NjYW4oKSBwcm90b3R5cGUKICBzdGFnaW5nOiB3Zng6IGZpeCBpbmRlbnRhdGlv
+bgogIHN0YWdpbmc6IHdmeDogZml4IHN0YXR1cyBvZiBkcm9wcGVkIGZyYW1lcwogIHN0YWdpbmc6
+IHdmeDogc3BsaXQgb3V0IHdmeF90eF9maWxsX3JhdGVzKCkgZnJvbSB3ZnhfdHhfY29uZmlybV9j
+YigpCiAgc3RhZ2luZzogd2Z4OiBjYWxsIHdmeF90eF91cGRhdGVfc3RhKCkgYmVmb3JlIHRvIGRl
+c3Ryb3kgdHhfcHJpdgogIHN0YWdpbmc6IHdmeDogZml4IHBvdGVudGlhbCB1c2UtYWZ0ZXItZnJl
+ZQogIHN0YWdpbmc6IHdmeDogcmVuYW1lIHdmeF9kb191bmpvaW4oKSBpbnRvIHdmeF9yZXNldCgp
+CiAgc3RhZ2luZzogd2Z4OiBtZXJnZSB3Znhfc3RvcF9hcCgpIHdpdGggd2Z4X3Jlc2V0KCkKICBz
+dGFnaW5nOiB3Zng6IGZpeCBwb3RlbnRpYWwgZGVhZCBsb2NrIGJldHdlZW4gam9pbiBhbmQgc2Nh
+bgogIHN0YWdpbmc6IHdmeDogZml4IFBTIHBhcmFtZXRlcnMgd2hlbiBtdWx0aXBsZSB2aWYgYXJl
+IGluIHVzZQogIHN0YWdpbmc6IHdmeDogZHJvcCB1bm5lY2Vzc2FyeSBmaWx0ZXIgY29uZmlndXJh
+dGlvbiB3aGVuIGRpc2FibGluZwogICAgZmlsdGVyCiAgc3RhZ2luZzogd2Z4OiBmaXggZXJyb3Ig
+cmVwb3J0aW5nIGluIHdmeF9zdGFydF9hcCgpCiAgc3RhZ2luZzogd2Z4OiByZW1vdmUgZmFsc2Ut
+cG9zaXRpdmUgV0FSTigpCiAgc3RhZ2luZzogd2Z4OiB0cmFjZSBhY2tub3dsZWRnZXMgbm90IGxp
+bmtlZCB0byBhbnkgc3RhdGlvbnMKICBzdGFnaW5nOiB3Zng6IHJlbW92ZSBmYWxzZSBwb3NpdGl2
+ZSB3YXJuaW5nCgogZHJpdmVycy9zdGFnaW5nL3dmeC9idXNfc2Rpby5jICAgfCAgIDMgKy0KIGRy
+aXZlcnMvc3RhZ2luZy93ZngvZGF0YV90eC5jICAgIHwgMTEwICsrKysrKysrKysrKysrKysrLS0t
+LS0tLS0tLS0tLS0KIGRyaXZlcnMvc3RhZ2luZy93ZngvZndpby5jICAgICAgIHwgICA4ICstLQog
+ZHJpdmVycy9zdGFnaW5nL3dmeC9oaWZfdHguYyAgICAgfCAgNTcgKysrKysrKysrKysrKystLQog
+ZHJpdmVycy9zdGFnaW5nL3dmeC9oaWZfdHguaCAgICAgfCAgIDIgKy0KIGRyaXZlcnMvc3RhZ2lu
+Zy93ZngvaGlmX3R4X21pYi5jIHwgICAyICsKIGRyaXZlcnMvc3RhZ2luZy93ZngvbWFpbi5jICAg
+ICAgIHwgIDE3ICsrKy0tCiBkcml2ZXJzL3N0YWdpbmcvd2Z4L3F1ZXVlLmMgICAgICB8ICAgNyAt
+LQogZHJpdmVycy9zdGFnaW5nL3dmeC9zY2FuLmMgICAgICAgfCAgMTEgKysrLQogZHJpdmVycy9z
+dGFnaW5nL3dmeC9zdGEuYyAgICAgICAgfCAgNjkgKysrKysrKysrKy0tLS0tLS0tLQogZHJpdmVy
+cy9zdGFnaW5nL3dmeC9zdGEuaCAgICAgICAgfCAgIDEgKwogZHJpdmVycy9zdGFnaW5nL3dmeC93
+ZnguaCAgICAgICAgfCAgIDIgKwogMTIgZmlsZXMgY2hhbmdlZCwgMTgyIGluc2VydGlvbnMoKyks
+IDEwNyBkZWxldGlvbnMoLSkKCi0tIAoyLjI2LjIKCg==
