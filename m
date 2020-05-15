@@ -2,84 +2,310 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1DD5C1D4526
-	for <lists+linux-wireless@lfdr.de>; Fri, 15 May 2020 07:23:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 620291D56FE
+	for <lists+linux-wireless@lfdr.de>; Fri, 15 May 2020 19:03:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726313AbgEOFXu (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 15 May 2020 01:23:50 -0400
-Received: from rtits2.realtek.com ([211.75.126.72]:55383 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726179AbgEOFXt (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 15 May 2020 01:23:49 -0400
-Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.69 with qID 04F5NVuxC016823, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexmb06.realtek.com.tw[172.21.6.99])
-        by rtits2.realtek.com.tw (8.15.2/2.66/5.86) with ESMTPS id 04F5NVuxC016823
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Fri, 15 May 2020 13:23:31 +0800
-Received: from RTEXMB04.realtek.com.tw (172.21.6.97) by
- RTEXMB06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Fri, 15 May 2020 13:23:31 +0800
-Received: from localhost.localdomain (172.21.68.128) by
- RTEXMB04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Fri, 15 May 2020 13:23:30 +0800
-From:   <yhchuang@realtek.com>
-To:     <kvalo@codeaurora.org>
-CC:     <linux-wireless@vger.kernel.org>, <pkshih@realtek.com>,
-        <kevin_yang@realtek.com>, <briannorris@chromium.org>,
-        <bigeasy@linutronix.de>
-Subject: [PATCH v4 7/7] rtw88: rename rtw88.ko/rtwpci.ko to rtw88_core.ko/rtw88_pci.ko
-Date:   Fri, 15 May 2020 13:23:27 +0800
-Message-ID: <20200515052327.31874-8-yhchuang@realtek.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200515052327.31874-1-yhchuang@realtek.com>
-References: <20200515052327.31874-1-yhchuang@realtek.com>
+        id S1726183AbgEORDz (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 15 May 2020 13:03:55 -0400
+Received: from 220-134-220-36.HINET-IP.hinet.net ([220.134.220.36]:52599 "EHLO
+        ns.kevlo.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726023AbgEORDz (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Fri, 15 May 2020 13:03:55 -0400
+Received: from ns.kevlo.org (localhost [127.0.0.1])
+        by ns.kevlo.org (8.15.2/8.15.2) with ESMTPS id 04F6Bti6015739
+        (version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+        Fri, 15 May 2020 14:11:55 +0800 (CST)
+        (envelope-from kevlo@ns.kevlo.org)
+Received: (from kevlo@localhost)
+        by ns.kevlo.org (8.15.2/8.15.2/Submit) id 04F6Bt6C015738;
+        Fri, 15 May 2020 14:11:55 +0800 (CST)
+        (envelope-from kevlo)
+Date:   Fri, 15 May 2020 14:11:53 +0800
+From:   Kevin Lo <kevlo@kevlo.org>
+To:     linux-wireless@vger.kernel.org
+Cc:     Yan-Hsuan Chuang <yhchuang@realtek.com>
+Subject: [PATCH] rtw88: no need to set registers for SDIO
+Message-ID: <20200515061153.GA15714@ns.kevlo.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [172.21.68.128]
-X-ClientProxiedBy: RTEXMB02.realtek.com.tw (172.21.6.95) To
- RTEXMB04.realtek.com.tw (172.21.6.97)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.8.0 (2017-02-23)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-From: Yan-Hsuan Chuang <yhchuang@realtek.com>
+There's no need to set SDIO related registers when powering up/down the chip.
 
-Rename the name of the kernel module for rtw88's core and pci.
-Add proper prefix 'rtw88_' to easily recognize them, also can
-avoid confusion with other drivers. (ex. r8822be in staging)
-
-Signed-off-by: Yan-Hsuan Chuang <yhchuang@realtek.com>
+Signed-off-by: Kevin Lo <kevlo@kevlo.org>
 ---
- drivers/net/wireless/realtek/rtw88/Makefile | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/net/wireless/realtek/rtw88/Makefile b/drivers/net/wireless/realtek/rtw88/Makefile
-index 9e3e95360089..f31e78a6f146 100644
---- a/drivers/net/wireless/realtek/rtw88/Makefile
-+++ b/drivers/net/wireless/realtek/rtw88/Makefile
-@@ -1,7 +1,7 @@
- # SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8723d.c b/drivers/net/wireless/realtek/rtw88/rtw8723d.c
+index b517af417e0e..5e0b7999bc8a 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8723d.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8723d.c
+@@ -2092,16 +2092,6 @@ static const struct rtw_pwr_seq_cmd trans_carddis_to_cardemu_8723d[] = {
+ 	 RTW_PWR_INTF_ALL_MSK,
+ 	 RTW_PWR_ADDR_MAC,
+ 	 RTW_PWR_CMD_WRITE, BIT(3) | BIT(7), 0},
+-	{0x0086,
+-	 RTW_PWR_CUT_ALL_MSK,
+-	 RTW_PWR_INTF_SDIO_MSK,
+-	 RTW_PWR_ADDR_SDIO,
+-	 RTW_PWR_CMD_WRITE, BIT(0), 0},
+-	{0x0086,
+-	 RTW_PWR_CUT_ALL_MSK,
+-	 RTW_PWR_INTF_SDIO_MSK,
+-	 RTW_PWR_ADDR_SDIO,
+-	 RTW_PWR_CMD_POLLING, BIT(1), BIT(1)},
+ 	{0x004A,
+ 	 RTW_PWR_CUT_ALL_MSK,
+ 	 RTW_PWR_INTF_USB_MSK,
+@@ -2112,11 +2102,6 @@ static const struct rtw_pwr_seq_cmd trans_carddis_to_cardemu_8723d[] = {
+ 	 RTW_PWR_INTF_ALL_MSK,
+ 	 RTW_PWR_ADDR_MAC,
+ 	 RTW_PWR_CMD_WRITE, BIT(3) | BIT(4), 0},
+-	{0x0023,
+-	 RTW_PWR_CUT_ALL_MSK,
+-	 RTW_PWR_INTF_SDIO_MSK,
+-	 RTW_PWR_ADDR_MAC,
+-	 RTW_PWR_CMD_WRITE, BIT(4), 0},
+ 	{0x0301,
+ 	 RTW_PWR_CUT_ALL_MSK,
+ 	 RTW_PWR_INTF_PCI_MSK,
+@@ -2324,11 +2309,6 @@ static const struct rtw_pwr_seq_cmd trans_act_to_lps_8723d[] = {
+ 	 RTW_PWR_INTF_ALL_MSK,
+ 	 RTW_PWR_ADDR_MAC,
+ 	 RTW_PWR_CMD_WRITE, BIT(1), 0},
+-	{0x0093,
+-	 RTW_PWR_CUT_ALL_MSK,
+-	 RTW_PWR_INTF_SDIO_MSK,
+-	 RTW_PWR_ADDR_MAC,
+-	 RTW_PWR_CMD_WRITE, 0xFF, 0x00},
+ 	{0x0553,
+ 	 RTW_PWR_CUT_ALL_MSK,
+ 	 RTW_PWR_INTF_ALL_MSK,
+@@ -2408,11 +2388,6 @@ static const struct rtw_pwr_seq_cmd trans_act_to_cardemu_8723d[] = {
+ };
  
--obj-$(CONFIG_RTW88_CORE)	+= rtw88.o
--rtw88-y += main.o \
-+obj-$(CONFIG_RTW88_CORE)	+= rtw88_core.o
-+rtw88_core-y += main.o \
- 	   mac80211.o \
- 	   util.o \
- 	   debug.o \
-@@ -37,5 +37,5 @@ rtw88_8723d-objs		:= rtw8723d.o rtw8723d_table.o
- obj-$(CONFIG_RTW88_8723DE)	+= rtw88_8723de.o
- rtw88_8723de-objs		:= rtw8723de.o
+ static const struct rtw_pwr_seq_cmd trans_cardemu_to_carddis_8723d[] = {
+-	{0x0007,
+-	 RTW_PWR_CUT_ALL_MSK,
+-	 RTW_PWR_INTF_SDIO_MSK,
+-	 RTW_PWR_ADDR_MAC,
+-	 RTW_PWR_CMD_WRITE, 0xFF, 0x20},
+ 	{0x0005,
+ 	 RTW_PWR_CUT_ALL_MSK,
+ 	 RTW_PWR_INTF_USB_MSK | RTW_PWR_INTF_SDIO_MSK,
+@@ -2433,21 +2408,6 @@ static const struct rtw_pwr_seq_cmd trans_cardemu_to_carddis_8723d[] = {
+ 	 RTW_PWR_INTF_USB_MSK,
+ 	 RTW_PWR_ADDR_MAC,
+ 	 RTW_PWR_CMD_WRITE, BIT(0), 1},
+-	{0x0023,
+-	 RTW_PWR_CUT_ALL_MSK,
+-	 RTW_PWR_INTF_SDIO_MSK,
+-	 RTW_PWR_ADDR_MAC,
+-	 RTW_PWR_CMD_WRITE, BIT(4), BIT(4)},
+-	{0x0086,
+-	 RTW_PWR_CUT_ALL_MSK,
+-	 RTW_PWR_INTF_SDIO_MSK,
+-	 RTW_PWR_ADDR_SDIO,
+-	 RTW_PWR_CMD_WRITE, BIT(0), BIT(0)},
+-	{0x0086,
+-	 RTW_PWR_CUT_ALL_MSK,
+-	 RTW_PWR_INTF_SDIO_MSK,
+-	 RTW_PWR_ADDR_SDIO,
+-	 RTW_PWR_CMD_POLLING, BIT(1), 0},
+ 	{0xFFFF,
+ 	 RTW_PWR_CUT_ALL_MSK,
+ 	 RTW_PWR_INTF_ALL_MSK,
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822b.c b/drivers/net/wireless/realtek/rtw88/rtw8822b.c
+index 18c5a5a96d90..e0d911bbe534 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8822b.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8822b.c
+@@ -1550,16 +1550,6 @@ static void rtw8822b_bf_config_bfee(struct rtw_dev *rtwdev, struct rtw_vif *vif,
+ }
  
--obj-$(CONFIG_RTW88_PCI)		+= rtwpci.o
--rtwpci-objs			:= pci.o
-+obj-$(CONFIG_RTW88_PCI)		+= rtw88_pci.o
-+rtw88_pci-objs			:= pci.o
--- 
-2.17.1
-
+ static const struct rtw_pwr_seq_cmd trans_carddis_to_cardemu_8822b[] = {
+-	{0x0086,
+-	 RTW_PWR_CUT_ALL_MSK,
+-	 RTW_PWR_INTF_SDIO_MSK,
+-	 RTW_PWR_ADDR_SDIO,
+-	 RTW_PWR_CMD_WRITE, BIT(0), 0},
+-	{0x0086,
+-	 RTW_PWR_CUT_ALL_MSK,
+-	 RTW_PWR_INTF_SDIO_MSK,
+-	 RTW_PWR_ADDR_SDIO,
+-	 RTW_PWR_CMD_POLLING, BIT(1), BIT(1)},
+ 	{0x004A,
+ 	 RTW_PWR_CUT_ALL_MSK,
+ 	 RTW_PWR_INTF_USB_MSK,
+@@ -1688,11 +1678,6 @@ static const struct rtw_pwr_seq_cmd trans_cardemu_to_act_8822b[] = {
+ 	 RTW_PWR_INTF_ALL_MSK,
+ 	 RTW_PWR_ADDR_MAC,
+ 	 RTW_PWR_CMD_WRITE, 0xFF, 0x0c},
+-	{0x0068,
+-	 RTW_PWR_CUT_C_MSK,
+-	 RTW_PWR_INTF_SDIO_MSK,
+-	 RTW_PWR_ADDR_MAC,
+-	 RTW_PWR_CMD_WRITE, BIT(4), BIT(4)},
+ 	{0x0029,
+ 	 RTW_PWR_CUT_ALL_MSK,
+ 	 RTW_PWR_INTF_ALL_MSK,
+@@ -1721,11 +1706,6 @@ static const struct rtw_pwr_seq_cmd trans_cardemu_to_act_8822b[] = {
+ };
+ 
+ static const struct rtw_pwr_seq_cmd trans_act_to_cardemu_8822b[] = {
+-	{0x0003,
+-	 RTW_PWR_CUT_ALL_MSK,
+-	 RTW_PWR_INTF_SDIO_MSK,
+-	 RTW_PWR_ADDR_MAC,
+-	 RTW_PWR_CMD_WRITE, BIT(2), 0},
+ 	{0x0093,
+ 	 RTW_PWR_CUT_ALL_MSK,
+ 	 RTW_PWR_INTF_ALL_MSK,
+@@ -1794,11 +1774,6 @@ static const struct rtw_pwr_seq_cmd trans_act_to_cardemu_8822b[] = {
+ };
+ 
+ static const struct rtw_pwr_seq_cmd trans_cardemu_to_carddis_8822b[] = {
+-	{0x0005,
+-	 RTW_PWR_CUT_ALL_MSK,
+-	 RTW_PWR_INTF_SDIO_MSK,
+-	 RTW_PWR_ADDR_MAC,
+-	 RTW_PWR_CMD_WRITE, BIT(7), BIT(7)},
+ 	{0x0007,
+ 	 RTW_PWR_CUT_ALL_MSK,
+ 	 RTW_PWR_INTF_USB_MSK | RTW_PWR_INTF_SDIO_MSK,
+@@ -1819,46 +1794,6 @@ static const struct rtw_pwr_seq_cmd trans_cardemu_to_carddis_8822b[] = {
+ 	 RTW_PWR_INTF_USB_MSK,
+ 	 RTW_PWR_ADDR_MAC,
+ 	 RTW_PWR_CMD_WRITE, BIT(0), 0},
+-	{0x0067,
+-	 RTW_PWR_CUT_ALL_MSK,
+-	 RTW_PWR_INTF_SDIO_MSK,
+-	 RTW_PWR_ADDR_MAC,
+-	 RTW_PWR_CMD_WRITE, BIT(5), 0},
+-	{0x0067,
+-	 RTW_PWR_CUT_ALL_MSK,
+-	 RTW_PWR_INTF_SDIO_MSK,
+-	 RTW_PWR_ADDR_MAC,
+-	 RTW_PWR_CMD_WRITE, BIT(4), 0},
+-	{0x004F,
+-	 RTW_PWR_CUT_ALL_MSK,
+-	 RTW_PWR_INTF_SDIO_MSK,
+-	 RTW_PWR_ADDR_MAC,
+-	 RTW_PWR_CMD_WRITE, BIT(0), 0},
+-	{0x0067,
+-	 RTW_PWR_CUT_ALL_MSK,
+-	 RTW_PWR_INTF_SDIO_MSK,
+-	 RTW_PWR_ADDR_MAC,
+-	 RTW_PWR_CMD_WRITE, BIT(1), 0},
+-	{0x0046,
+-	 RTW_PWR_CUT_ALL_MSK,
+-	 RTW_PWR_INTF_SDIO_MSK,
+-	 RTW_PWR_ADDR_MAC,
+-	 RTW_PWR_CMD_WRITE, BIT(6), BIT(6)},
+-	{0x0067,
+-	 RTW_PWR_CUT_ALL_MSK,
+-	 RTW_PWR_INTF_SDIO_MSK,
+-	 RTW_PWR_ADDR_MAC,
+-	 RTW_PWR_CMD_WRITE, BIT(2), 0},
+-	{0x0046,
+-	 RTW_PWR_CUT_ALL_MSK,
+-	 RTW_PWR_INTF_SDIO_MSK,
+-	 RTW_PWR_ADDR_MAC,
+-	 RTW_PWR_CMD_WRITE, BIT(7), BIT(7)},
+-	{0x0062,
+-	 RTW_PWR_CUT_ALL_MSK,
+-	 RTW_PWR_INTF_SDIO_MSK,
+-	 RTW_PWR_ADDR_MAC,
+-	 RTW_PWR_CMD_WRITE, BIT(4), BIT(4)},
+ 	{0x0081,
+ 	 RTW_PWR_CUT_ALL_MSK,
+ 	 RTW_PWR_INTF_ALL_MSK,
+@@ -1869,41 +1804,11 @@ static const struct rtw_pwr_seq_cmd trans_cardemu_to_carddis_8822b[] = {
+ 	 RTW_PWR_INTF_USB_MSK | RTW_PWR_INTF_SDIO_MSK,
+ 	 RTW_PWR_ADDR_MAC,
+ 	 RTW_PWR_CMD_WRITE, BIT(3) | BIT(4), BIT(3)},
+-	{0x0086,
+-	 RTW_PWR_CUT_ALL_MSK,
+-	 RTW_PWR_INTF_SDIO_MSK,
+-	 RTW_PWR_ADDR_SDIO,
+-	 RTW_PWR_CMD_WRITE, BIT(0), BIT(0)},
+-	{0x0086,
+-	 RTW_PWR_CUT_ALL_MSK,
+-	 RTW_PWR_INTF_SDIO_MSK,
+-	 RTW_PWR_ADDR_SDIO,
+-	 RTW_PWR_CMD_POLLING, BIT(1), 0},
+ 	{0x0090,
+ 	 RTW_PWR_CUT_ALL_MSK,
+ 	 RTW_PWR_INTF_USB_MSK | RTW_PWR_INTF_PCI_MSK,
+ 	 RTW_PWR_ADDR_MAC,
+ 	 RTW_PWR_CMD_WRITE, BIT(1), 0},
+-	{0x0044,
+-	 RTW_PWR_CUT_ALL_MSK,
+-	 RTW_PWR_INTF_SDIO_MSK,
+-	 RTW_PWR_ADDR_SDIO,
+-	 RTW_PWR_CMD_WRITE, 0xFF, 0},
+-	{0x0040,
+-	 RTW_PWR_CUT_ALL_MSK,
+-	 RTW_PWR_INTF_SDIO_MSK,
+-	 RTW_PWR_ADDR_SDIO,
+-	 RTW_PWR_CMD_WRITE, 0xFF, 0x90},
+-	{0x0041,
+-	 RTW_PWR_CUT_ALL_MSK,
+-	 RTW_PWR_INTF_SDIO_MSK,
+-	 RTW_PWR_ADDR_SDIO,
+-	 RTW_PWR_CMD_WRITE, 0xFF, 0x00},
+-	{0x0042,
+-	 RTW_PWR_CUT_ALL_MSK,
+-	 RTW_PWR_INTF_SDIO_MSK,
+-	 RTW_PWR_ADDR_SDIO,
+-	 RTW_PWR_CMD_WRITE, 0xFF, 0x04},
+ 	{0xFFFF,
+ 	 RTW_PWR_CUT_ALL_MSK,
+ 	 RTW_PWR_INTF_ALL_MSK,
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822c.c b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
+index d697d70170af..4cb85502d8ad 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8822c.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
+@@ -3562,16 +3562,6 @@ static void rtw8822c_pwr_track(struct rtw_dev *rtwdev)
+ }
+ 
+ static const struct rtw_pwr_seq_cmd trans_carddis_to_cardemu_8822c[] = {
+-	{0x0086,
+-	 RTW_PWR_CUT_ALL_MSK,
+-	 RTW_PWR_INTF_SDIO_MSK,
+-	 RTW_PWR_ADDR_SDIO,
+-	 RTW_PWR_CMD_WRITE, BIT(0), 0},
+-	{0x0086,
+-	 RTW_PWR_CUT_ALL_MSK,
+-	 RTW_PWR_INTF_SDIO_MSK,
+-	 RTW_PWR_ADDR_SDIO,
+-	 RTW_PWR_CMD_POLLING, BIT(1), BIT(1)},
+ 	{0x002E,
+ 	 RTW_PWR_CUT_ALL_MSK,
+ 	 RTW_PWR_INTF_ALL_MSK,
+@@ -3782,11 +3772,6 @@ static const struct rtw_pwr_seq_cmd trans_act_to_cardemu_8822c[] = {
+ };
+ 
+ static const struct rtw_pwr_seq_cmd trans_cardemu_to_carddis_8822c[] = {
+-	{0x0005,
+-	 RTW_PWR_CUT_ALL_MSK,
+-	 RTW_PWR_INTF_SDIO_MSK,
+-	 RTW_PWR_ADDR_MAC,
+-	 RTW_PWR_CMD_WRITE, BIT(7), BIT(7)},
+ 	{0x0007,
+ 	 RTW_PWR_CUT_ALL_MSK,
+ 	 RTW_PWR_INTF_USB_MSK | RTW_PWR_INTF_SDIO_MSK,
+@@ -3832,11 +3817,6 @@ static const struct rtw_pwr_seq_cmd trans_cardemu_to_carddis_8822c[] = {
+ 	 RTW_PWR_INTF_PCI_MSK,
+ 	 RTW_PWR_ADDR_MAC,
+ 	 RTW_PWR_CMD_WRITE, BIT(2), BIT(2)},
+-	{0x0086,
+-	 RTW_PWR_CUT_ALL_MSK,
+-	 RTW_PWR_INTF_SDIO_MSK,
+-	 RTW_PWR_ADDR_SDIO,
+-	 RTW_PWR_CMD_WRITE, BIT(0), BIT(0)},
+ 	{0xFFFF,
+ 	 RTW_PWR_CUT_ALL_MSK,
+ 	 RTW_PWR_INTF_ALL_MSK,
