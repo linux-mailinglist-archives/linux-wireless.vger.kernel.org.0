@@ -2,121 +2,135 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 097DD1D5A0E
-	for <lists+linux-wireless@lfdr.de>; Fri, 15 May 2020 21:33:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B911C1D5B82
+	for <lists+linux-wireless@lfdr.de>; Fri, 15 May 2020 23:30:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726204AbgEOTdj (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Fri, 15 May 2020 15:33:39 -0400
-Received: from mailgw01.mediatek.com ([210.61.82.183]:57983 "EHLO
-        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726179AbgEOTdi (ORCPT
+        id S1727933AbgEOV3G (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Fri, 15 May 2020 17:29:06 -0400
+Received: from mail-pf1-f194.google.com ([209.85.210.194]:41786 "EHLO
+        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727922AbgEOV3G (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Fri, 15 May 2020 15:33:38 -0400
-X-UUID: c20e34c1cb3e4c64b97660c5b8c68620-20200516
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Transfer-Encoding:Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=CME4YY1frgPQdT3pDkdrdyWqoLZQ9uQZzZZfXlQscn8=;
-        b=EUoGkRx4/6Bk0z2uZEsbVgb4QyJzDm4ZLoR0zF/G72G6MvECtAkUTEFaJ3bPeIsq5lIb7BRDyzSXvY3zP9bioiXwmKtppS/mpjrZTfNgiXbbGGMpcP76z6xBFCdPZeV7ZMovYiWatki8mychXmvWSUIrSLqgTZ3jKYYYfI7iNdg=;
-X-UUID: c20e34c1cb3e4c64b97660c5b8c68620-20200516
-Received: from mtkcas11.mediatek.inc [(172.21.101.40)] by mailgw01.mediatek.com
-        (envelope-from <ryder.lee@mediatek.com>)
-        (Cellopoint E-mail Firewall v4.1.10 Build 0809 with TLS)
-        with ESMTP id 1904911880; Sat, 16 May 2020 03:33:34 +0800
-Received: from mtkcas08.mediatek.inc (172.21.101.126) by
- mtkmbs08n1.mediatek.inc (172.21.101.55) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Sat, 16 May 2020 03:33:28 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas08.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Sat, 16 May 2020 03:33:28 +0800
-From:   Ryder Lee <ryder.lee@mediatek.com>
-To:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
-CC:     Shayne Chen <shayne.chen@mediatek.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        <linux-wireless@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>,
-        Ryder Lee <ryder.lee@mediatek.com>
-Subject: [PATCH] mt76: mt7915: add spatial reuse support
-Date:   Sat, 16 May 2020 03:33:28 +0800
-Message-ID: <f91515d63f3cab7bb6d766e7d6906a93067e903c.1589570744.git.ryder.lee@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+        Fri, 15 May 2020 17:29:06 -0400
+Received: by mail-pf1-f194.google.com with SMTP id 23so1592660pfy.8;
+        Fri, 15 May 2020 14:29:05 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=+C5HUmb0IVN2XUMtCx+958ASlteYAzKSr3n9xtQKd1o=;
+        b=sjmJt+iGDzcAx/sJoynK2092IRpplkRBFKvE8SzJoTImgURQwF1+95B0lH32YGTQlx
+         Nkxj0LdLaMogM/jD1n716idtha6ExL6H7iFa9vX/Bw639xmKZ4CJBBaHNMIipt3qT9Ue
+         F99d/3wd8fCdZfeNJSIx6tUe/PSsCXxY2Qp+BkDuqX+9Qs4qJYfQl+eM+fyvk+ybOeVU
+         wSIjtT2JQgIWjvjqcFZ2AYT0bBcQj363PxClrk2P3EY20eCf24ZYdkQvfO0lgw7fXrza
+         SLI7FEHFO7Uer02fGPHdSG73D50AEQY24TDXAcMT1QqO/jI7C+qtQ5UEvu01h/Vtd9yD
+         x8mw==
+X-Gm-Message-State: AOAM531+lkF3zUHdQpy7F465dWKz5qwkXKyTRF1smhzUdS2OXu2N3dw7
+        1nwCJXQRHUhdtzB+dENzks0=
+X-Google-Smtp-Source: ABdhPJx5aHzvT/Yod67FCxrd/rYpeLz+YvwfHeXEiG+n38C/BUT1hIQZlmj9K6EmCO5IWEzJJXgtBQ==
+X-Received: by 2002:a63:ef05:: with SMTP id u5mr4866245pgh.237.1589578144777;
+        Fri, 15 May 2020 14:29:04 -0700 (PDT)
+Received: from 42.do-not-panic.com (42.do-not-panic.com. [157.230.128.187])
+        by smtp.gmail.com with ESMTPSA id e18sm2688831pfh.75.2020.05.15.14.28.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 15 May 2020 14:28:56 -0700 (PDT)
+Received: by 42.do-not-panic.com (Postfix, from userid 1000)
+        id 33D1942349; Fri, 15 May 2020 21:28:50 +0000 (UTC)
+From:   Luis Chamberlain <mcgrof@kernel.org>
+To:     jeyu@kernel.org
+Cc:     akpm@linux-foundation.org, arnd@arndb.de, rostedt@goodmis.org,
+        mingo@redhat.com, aquini@redhat.com, cai@lca.pw, dyoung@redhat.com,
+        bhe@redhat.com, peterz@infradead.org, tglx@linutronix.de,
+        gpiccoli@canonical.com, pmladek@suse.com, tiwai@suse.de,
+        schlad@suse.de, andriy.shevchenko@linux.intel.com,
+        keescook@chromium.org, daniel.vetter@ffwll.ch, will@kernel.org,
+        mchehab+samsung@kernel.org, kvalo@codeaurora.org,
+        davem@davemloft.net, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>,
+        linux-wireless@vger.kernel.org, ath10k@lists.infradead.org
+Subject: [PATCH v2 12/15] ath10k: use new module_firmware_crashed()
+Date:   Fri, 15 May 2020 21:28:43 +0000
+Message-Id: <20200515212846.1347-13-mcgrof@kernel.org>
+X-Mailer: git-send-email 2.23.0.rc1
+In-Reply-To: <20200515212846.1347-1-mcgrof@kernel.org>
+References: <20200515212846.1347-1-mcgrof@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: 8bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-RW5hYmxlIG9yIGRpc2FibGUgT0JTUyBQRCB3aGVuIHRoZSBic3MgY29uZmlnIGNoYW5nZXMgb3Ig
-d2UNCmFzc29jIHRvIGFuIEFQIHRoYXQgYnJvYWRjYXN0cyB0aGUgSUUuDQoNCldpdGggdGhpcyBw
-YXRjaCwgd2UgY2FuIGdldCB+MjAlIGdhaW4gaW4gT0JTUyBPVEEgZW52aXJvbm1lbnQuDQoNClRl
-c3RlZC1ieTogRXZlbHluIFRzYWkgPGV2ZWx5bi50c2FpQG1lZGlhdGVrLmNvbT4NClNpZ25lZC1v
-ZmYtYnk6IFJ5ZGVyIExlZSA8cnlkZXIubGVlQG1lZGlhdGVrLmNvbT4NCi0tLQ0KIC4uLi9uZXQv
-d2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvbWFpbi5jICB8ICA3ICsrKysrLQ0KIC4uLi9u
-ZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvbWN1LmMgICB8IDI1ICsrKysrKysrKysr
-KysrKysrKysNCiAuLi4vbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1L21jdS5oICAg
-fCAgMSArDQogLi4uL3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1L210NzkxNS5oICAgIHwg
-IDIgKysNCiA0IGZpbGVzIGNoYW5nZWQsIDM0IGluc2VydGlvbnMoKyksIDEgZGVsZXRpb24oLSkN
-Cg0KZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1
-L21haW4uYyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1L21haW4u
-Yw0KaW5kZXggOTg1NjczNzRjMmM5Li5lMDQ1ZGMyMzQxMDAgMTAwNjQ0DQotLS0gYS9kcml2ZXJz
-L25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzkxNS9tYWluLmMNCisrKyBiL2RyaXZlcnMv
-bmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1L21haW4uYw0KQEAgLTQzNyw4ICs0Mzcs
-MTAgQEAgc3RhdGljIHZvaWQgbXQ3OTE1X2Jzc19pbmZvX2NoYW5nZWQoc3RydWN0IGllZWU4MDIx
-MV9odyAqaHcsDQogCQltdDc5MTVfbWN1X2FkZF9zdGEoZGV2LCB2aWYsIE5VTEwsIGpvaW4pOw0K
-IAl9DQogDQotCWlmIChjaGFuZ2VkICYgQlNTX0NIQU5HRURfQVNTT0MpDQorCWlmIChjaGFuZ2Vk
-ICYgQlNTX0NIQU5HRURfQVNTT0MpIHsNCiAJCW10NzkxNV9tY3VfYWRkX2Jzc19pbmZvKHBoeSwg
-dmlmLCBpbmZvLT5hc3NvYyk7DQorCQltdDc5MTVfbWN1X2FkZF9vYnNzX3NwcihkZXYsIHZpZiwg
-aW5mby0+aGVfb2Jzc19wZC5lbmFibGUpOw0KKwl9DQogDQogCWlmIChjaGFuZ2VkICYgQlNTX0NI
-QU5HRURfRVJQX1NMT1QpIHsNCiAJCWludCBzbG90dGltZSA9IGluZm8tPnVzZV9zaG9ydF9zbG90
-ID8gOSA6IDIwOw0KQEAgLTQ1OCw2ICs0NjAsOSBAQCBzdGF0aWMgdm9pZCBtdDc5MTVfYnNzX2lu
-Zm9fY2hhbmdlZChzdHJ1Y3QgaWVlZTgwMjExX2h3ICpodywNCiAJaWYgKGNoYW5nZWQgJiAoQlNT
-X0NIQU5HRURfUU9TIHwgQlNTX0NIQU5HRURfQkVBQ09OX0VOQUJMRUQpKQ0KIAkJbXQ3OTE1X21j
-dV9zZXRfdHgoZGV2LCB2aWYpOw0KIA0KKwlpZiAoY2hhbmdlZCAmIEJTU19DSEFOR0VEX0hFX09C
-U1NfUEQpDQorCQltdDc5MTVfbWN1X2FkZF9vYnNzX3NwcihkZXYsIHZpZiwgaW5mby0+aGVfb2Jz
-c19wZC5lbmFibGUpOw0KKw0KIAlpZiAoY2hhbmdlZCAmIChCU1NfQ0hBTkdFRF9CRUFDT04gfA0K
-IAkJICAgICAgIEJTU19DSEFOR0VEX0JFQUNPTl9FTkFCTEVEKSkNCiAJCW10NzkxNV9tY3VfYWRk
-X2JlYWNvbihodywgdmlmLCBpbmZvLT5lbmFibGVfYmVhY29uKTsNCmRpZmYgLS1naXQgYS9kcml2
-ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzkxNS9tY3UuYyBiL2RyaXZlcnMvbmV0
-L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1L21jdS5jDQppbmRleCBmMDBhZDJiNjY3NjEu
-LjIyNjBkNjU2YjRiYiAxMDA2NDQNCi0tLSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVr
-L210NzYvbXQ3OTE1L21jdS5jDQorKysgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9t
-dDc2L210NzkxNS9tY3UuYw0KQEAgLTMxNTksMyArMzE1OSwyOCBAQCBpbnQgbXQ3OTE1X21jdV9z
-ZXRfdHhiZl9zb3VuZGluZyhzdHJ1Y3QgbXQ3OTE1X2RldiAqZGV2KQ0KIAlyZXR1cm4gX19tdDc2
-X21jdV9zZW5kX21zZygmZGV2LT5tdDc2LCBNQ1VfRVhUX0NNRF9UWEJGX0FDVElPTiwNCiAJCQkJ
-ICAgJnJlcSwgc2l6ZW9mKHJlcSksIHRydWUpOw0KIH0NCisNCitpbnQgbXQ3OTE1X21jdV9hZGRf
-b2Jzc19zcHIoc3RydWN0IG10NzkxNV9kZXYgKmRldiwgc3RydWN0IGllZWU4MDIxMV92aWYgKnZp
-ZiwNCisJCQkgICAgYm9vbCBlbmFibGUpDQorew0KKyNkZWZpbmUgTVRfU1BSX0VOQUJMRQkJMQ0K
-KwlzdHJ1Y3QgbXQ3OTE1X3ZpZiAqbXZpZiA9IChzdHJ1Y3QgbXQ3OTE1X3ZpZiAqKXZpZi0+ZHJ2
-X3ByaXY7DQorCXN0cnVjdCB7DQorCQl1OCBhY3Rpb247DQorCQl1OCBhcmdfbnVtOw0KKwkJdTgg
-YmFuZF9pZHg7DQorCQl1OCBzdGF0dXM7DQorCQl1OCBkcm9wX3R4X2lkeDsNCisJCXU4IHN0YV9p
-ZHg7CS8qIDI1NiBzdGEgKi8NCisJCXU4IHJzdlsyXTsNCisJCXUzMiB2YWw7DQorCX0gX19wYWNr
-ZWQgcmVxID0gew0KKwkJLmFjdGlvbiA9IE1UX1NQUl9FTkFCTEUsDQorCQkuYXJnX251bSA9IDEs
-DQorCQkuYmFuZF9pZHggPSBtdmlmLT5iYW5kX2lkeCwNCisJCS52YWwgPSBlbmFibGUsDQorCX07
-DQorDQorCXJldHVybiBfX210NzZfbWN1X3NlbmRfbXNnKCZkZXYtPm10NzYsIE1DVV9FWFRfQ01E
-X1NFVF9TUFIsDQorCQkJCSAgICZyZXEsIHNpemVvZihyZXEpLCB0cnVlKTsNCit9DQpkaWZmIC0t
-Z2l0IGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvbWN1LmggYi9k
-cml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzkxNS9tY3UuaA0KaW5kZXggMzRh
-Y2U2ZTY3MmQwLi5jMjQxZGQ3YzRjMzYgMTAwNjQ0DQotLS0gYS9kcml2ZXJzL25ldC93aXJlbGVz
-cy9tZWRpYXRlay9tdDc2L210NzkxNS9tY3UuaA0KKysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3Mv
-bWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvbWN1LmgNCkBAIC0yMTIsNiArMjEyLDcgQEAgZW51bSB7DQog
-CU1DVV9FWFRfQ01EX1JBVEVfQ1RSTCA9IDB4ODcsDQogCU1DVV9FWFRfQ01EX0ZXX0RCR19DVFJM
-ID0gMHg5NSwNCiAJTUNVX0VYVF9DTURfU0VUX1JERF9USCA9IDB4OWQsDQorCU1DVV9FWFRfQ01E
-X1NFVF9TUFIgPSAweGE4LA0KIH07DQogDQogZW51bSB7DQpkaWZmIC0tZ2l0IGEvZHJpdmVycy9u
-ZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvbXQ3OTE1LmggYi9kcml2ZXJzL25ldC93
-aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzkxNS9tdDc5MTUuaA0KaW5kZXggNTM5MjI5MmE4Mzhl
-Li44NWQ3NGVjZDAzNTEgMTAwNjQ0DQotLS0gYS9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRl
-ay9tdDc2L210NzkxNS9tdDc5MTUuaA0KKysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0
-ZWsvbXQ3Ni9tdDc5MTUvbXQ3OTE1LmgNCkBAIC0zMDEsNiArMzAxLDggQEAgaW50IG10NzkxNV9t
-Y3VfYWRkX2tleShzdHJ1Y3QgbXQ3OTE1X2RldiAqZGV2LCBzdHJ1Y3QgaWVlZTgwMjExX3ZpZiAq
-dmlmLA0KIAkJICAgICAgIGVudW0gc2V0X2tleV9jbWQgY21kKTsNCiBpbnQgbXQ3OTE1X21jdV9h
-ZGRfYmVhY29uKHN0cnVjdCBpZWVlODAyMTFfaHcgKmh3LCBzdHJ1Y3QgaWVlZTgwMjExX3ZpZiAq
-dmlmLA0KIAkJCSAgaW50IGVuYWJsZSk7DQoraW50IG10NzkxNV9tY3VfYWRkX29ic3Nfc3ByKHN0
-cnVjdCBtdDc5MTVfZGV2ICpkZXYsIHN0cnVjdCBpZWVlODAyMTFfdmlmICp2aWYsDQorICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgIGJvb2wgZW5hYmxlKTsNCiBpbnQgbXQ3OTE1X21jdV9hZGRf
-cmF0ZV9jdHJsKHN0cnVjdCBtdDc5MTVfZGV2ICpkZXYsIHN0cnVjdCBpZWVlODAyMTFfdmlmICp2
-aWYsDQogCQkJICAgICBzdHJ1Y3QgaWVlZTgwMjExX3N0YSAqc3RhKTsNCiBpbnQgbXQ3OTE1X21j
-dV9hZGRfc21wcyhzdHJ1Y3QgbXQ3OTE1X2RldiAqZGV2LCBzdHJ1Y3QgaWVlZTgwMjExX3ZpZiAq
-dmlmLA0KLS0gDQoyLjE4LjANCg==
+This makes use of the new module_firmware_crashed() to help
+annotate when firmware for device drivers crash. When firmware
+crashes devices can sometimes become unresponsive, and recovery
+sometimes requires a driver unload / reload and in the worst cases
+a reboot.
+
+Using a taint flag allows us to annotate when this happens clearly.
+
+Cc: linux-wireless@vger.kernel.org
+Cc: ath10k@lists.infradead.org
+Cc: Kalle Valo <kvalo@codeaurora.org>
+Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
+---
+ drivers/net/wireless/ath/ath10k/pci.c  | 2 ++
+ drivers/net/wireless/ath/ath10k/sdio.c | 2 ++
+ drivers/net/wireless/ath/ath10k/snoc.c | 1 +
+ 3 files changed, 5 insertions(+)
+
+diff --git a/drivers/net/wireless/ath/ath10k/pci.c b/drivers/net/wireless/ath/ath10k/pci.c
+index 1d941d53fdc9..6bd0f3b518b9 100644
+--- a/drivers/net/wireless/ath/ath10k/pci.c
++++ b/drivers/net/wireless/ath/ath10k/pci.c
+@@ -1767,6 +1767,7 @@ static void ath10k_pci_fw_dump_work(struct work_struct *work)
+ 		scnprintf(guid, sizeof(guid), "n/a");
+ 
+ 	ath10k_err(ar, "firmware crashed! (guid %s)\n", guid);
++	module_firmware_crashed();
+ 	ath10k_print_driver_info(ar);
+ 	ath10k_pci_dump_registers(ar, crash_data);
+ 	ath10k_ce_dump_registers(ar, crash_data);
+@@ -2837,6 +2838,7 @@ static int ath10k_pci_hif_power_up(struct ath10k *ar,
+ 	if (ret) {
+ 		if (ath10k_pci_has_fw_crashed(ar)) {
+ 			ath10k_warn(ar, "firmware crashed during chip reset\n");
++			module_firmware_crashed();
+ 			ath10k_pci_fw_crashed_clear(ar);
+ 			ath10k_pci_fw_crashed_dump(ar);
+ 		}
+diff --git a/drivers/net/wireless/ath/ath10k/sdio.c b/drivers/net/wireless/ath/ath10k/sdio.c
+index e2aff2254a40..d34ad289380f 100644
+--- a/drivers/net/wireless/ath/ath10k/sdio.c
++++ b/drivers/net/wireless/ath/ath10k/sdio.c
+@@ -794,6 +794,7 @@ static int ath10k_sdio_mbox_proc_dbg_intr(struct ath10k *ar)
+ 
+ 	/* TODO: Add firmware crash handling */
+ 	ath10k_warn(ar, "firmware crashed\n");
++	module_firmware_crashed();
+ 
+ 	/* read counter to clear the interrupt, the debug error interrupt is
+ 	 * counter 0.
+@@ -915,6 +916,7 @@ static int ath10k_sdio_mbox_proc_cpu_intr(struct ath10k *ar)
+ 	if (cpu_int_status & MBOX_CPU_STATUS_ENABLE_ASSERT_MASK) {
+ 		ath10k_err(ar, "firmware crashed!\n");
+ 		queue_work(ar->workqueue, &ar->restart_work);
++		module_firmware_crashed();
+ 	}
+ 	return ret;
+ }
+diff --git a/drivers/net/wireless/ath/ath10k/snoc.c b/drivers/net/wireless/ath/ath10k/snoc.c
+index 354d49b1cd45..7cfc123c345c 100644
+--- a/drivers/net/wireless/ath/ath10k/snoc.c
++++ b/drivers/net/wireless/ath/ath10k/snoc.c
+@@ -1451,6 +1451,7 @@ void ath10k_snoc_fw_crashed_dump(struct ath10k *ar)
+ 		scnprintf(guid, sizeof(guid), "n/a");
+ 
+ 	ath10k_err(ar, "firmware crashed! (guid %s)\n", guid);
++	module_firmware_crashed();
+ 	ath10k_print_driver_info(ar);
+ 	ath10k_msa_dump_memory(ar, crash_data);
+ 	mutex_unlock(&ar->dump_mutex);
+-- 
+2.26.2
 
