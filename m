@@ -2,59 +2,60 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A52281D6067
-	for <lists+linux-wireless@lfdr.de>; Sat, 16 May 2020 12:39:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B8C621D606C
+	for <lists+linux-wireless@lfdr.de>; Sat, 16 May 2020 12:45:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726042AbgEPKji (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 16 May 2020 06:39:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55602 "EHLO
+        id S1726170AbgEPKpD (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 16 May 2020 06:45:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56434 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1725792AbgEPKjh (ORCPT
+        by vger.kernel.org with ESMTP id S1725853AbgEPKpC (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 16 May 2020 06:39:37 -0400
-Received: from mail-wm1-x344.google.com (mail-wm1-x344.google.com [IPv6:2a00:1450:4864:20::344])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83A1DC061A0C
-        for <linux-wireless@vger.kernel.org>; Sat, 16 May 2020 03:39:37 -0700 (PDT)
-Received: by mail-wm1-x344.google.com with SMTP id d207so15666574wmd.0
-        for <linux-wireless@vger.kernel.org>; Sat, 16 May 2020 03:39:37 -0700 (PDT)
+        Sat, 16 May 2020 06:45:02 -0400
+Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5384C061A0C
+        for <linux-wireless@vger.kernel.org>; Sat, 16 May 2020 03:45:00 -0700 (PDT)
+Received: by mail-wr1-x443.google.com with SMTP id h17so6272622wrc.8
+        for <linux-wireless@vger.kernel.org>; Sat, 16 May 2020 03:45:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=to:cc:from:subject:message-id:date:user-agent:mime-version
          :content-language:content-transfer-encoding;
-        bh=F/l24gqVi6+zqyOP90zR/e+IEIcM46kA4/Twj4qiqXM=;
-        b=aQ5fEr6NurRoHEV1waDICNTNS3pLGPTVIUq5KOvTnfeoC8ooLa4NnzM00Tw8hnzywK
-         uNyXolm4F+z9r0VMD3zRdyZtzoLVP87BXTDgVhlC+JNDCZTRmP51G2yxun1WYZK/mYoU
-         dqwxWdXZLfczo2KqzDflrhAWSLJhmcTuw1usgw19ygZhj6C06TqtWu4kwcma9Hkqr1C9
-         AW9ETDBVeHDduN7nxXS/XfezJE9ZeL7t783Wk1BgszkYn4yHyrxPzPzObwv0SAEyIk6X
-         7G3cYH2hmNKIqKFdsiMUbTuWAGOGMafl7t5x30R3IlYmNRIoWEAYYNMKRqh7HHbfJNwH
-         zNmA==
+        bh=HBMtOIlLuh0dSxmXZrr/4mcZt+nHKej+x25g85wOizM=;
+        b=MLIXTsyT8CTy2m0XpubsDcvvDcuAxwLuCPZ78AeihNMgaBYJWULU1KpF3h1aH1BTSR
+         QGY76Nk+054FW1BPly5bw1WJ8x4wvaDXzjQBqd8WUl0pFvHqkyUc6Qz5qxsqnaaInuOH
+         LRgPew2VFNfh5DYWh3HeiIGKX7UNH+5mtCJOJOOVNxMCOP9tJUiWb8nHvKTv5BIf+G6f
+         sYDukxEycYSWCLWhVSE+oUSouviotwdfJm43wX3FJ5io2h4b30sDlUTAkVGMyFneRKI9
+         tew2jLvOflj9oTvxDRa73m4AdOMxEwYh5yzyTYoQNJy+jXi0KJ2FrDqwTvQHcQiQgI6P
+         WDMg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:to:cc:from:subject:message-id:date:user-agent
          :mime-version:content-language:content-transfer-encoding;
-        bh=F/l24gqVi6+zqyOP90zR/e+IEIcM46kA4/Twj4qiqXM=;
-        b=CS1/QLlnWHpc2ybi5QFX41J3f2w3HXbDRTF9Z8Zt3cGMqKWUlOgiGD0L5uv+nTp4K6
-         i4ZSJDB9MvqtGFub6oxCXVNOLyn4ucHAWmc59G9mR1+uZAcU8Dy0prnOkMFQVQg5jCoi
-         Boto8eszAuEvbxcXKjlI+pcSmL2hXf2ju5F5q4Zc1jKeEO0KciNN7M8oJFgq2FXYlfj+
-         eCnTFgfms7kacR3PzPPSjYvjm3ZKLWFDeavEC7WJalB+CuHmRJDRvR55xy1Nu7tiYw2U
-         KX+tvT04ZIGq+cObBHIFsxluy1slxdmLek0LF69UFvy5dQCPt2V44V8aMttLJ0YWVaFz
-         KAwQ==
-X-Gm-Message-State: AOAM531m2DCzel9NyeDvwTaqG1wyTrQBkODcKQ4upIspd1Po+PjE+oxU
-        pqqobiCCsVdfpblC2X6Tz1HWBmnR
-X-Google-Smtp-Source: ABdhPJyhSeG4eqrNyARkidbYiQIx0AN/5ZfRbtwpJst8UdsjeDJN3h3QdxVlZ/TCBJ/sLORSPALScg==
-X-Received: by 2002:a1c:7407:: with SMTP id p7mr9319690wmc.114.1589625575923;
-        Sat, 16 May 2020 03:39:35 -0700 (PDT)
+        bh=HBMtOIlLuh0dSxmXZrr/4mcZt+nHKej+x25g85wOizM=;
+        b=er4XLk+b90dSpAjdEebRixHMZYUjB2umkV9khW8zrCpwyKi90oBz15ByQ7YnxkyiNS
+         ztFnNZZR0deVpDSr4W5Odja8ChvTtAWHwgWo8pBgNRFA1hn2wK1pnsbcZvVvSiTLfruC
+         u/Z2CaXitaJ7NosUq2TBkySdLZRAb9IzzmtyXspwaQbzZ45DVLM+NM1I5lz1FojI7LDv
+         uEk9tp6oANzVQEWfojxog93ihqaWhaNMcaXRgQIFDyXBgYYF/gkS3zfj4TfATPfBIlyZ
+         7NZBMstjB2y8xLbclM/quCri/FVwM6fhiUZvLuHDnulIgAe0akPTeQ/9lnoKL82TfKpo
+         yDlA==
+X-Gm-Message-State: AOAM532kpqekhOEmUb6OsGwwhRknQ8kcLmj56qjQxoR+MFtNbkvWkHVo
+        TkWikB0Ez+GABofBYcxAtFnaOxw8
+X-Google-Smtp-Source: ABdhPJzwfrXZ7NmvbG60R4IPwSAhn/Oo92R/5KY9FK7QdptvWa0iKqJBgZDe3FhMHzwhW8O4BG53Ig==
+X-Received: by 2002:adf:f783:: with SMTP id q3mr9032517wrp.348.1589625899101;
+        Sat, 16 May 2020 03:44:59 -0700 (PDT)
 Received: from [192.168.43.18] ([185.69.145.77])
-        by smtp.gmail.com with ESMTPSA id b7sm7207389wmj.29.2020.05.16.03.39.35
+        by smtp.gmail.com with ESMTPSA id a24sm7108957wmb.24.2020.05.16.03.44.58
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 16 May 2020 03:39:35 -0700 (PDT)
+        Sat, 16 May 2020 03:44:58 -0700 (PDT)
 To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc:     "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>,
         linux-wireless@vger.kernel.org
 From:   Malcolm Priestley <tvboxspy@gmail.com>
-Subject: [PATCH 2/4] staging: vt6656: vnt_beacon_xmit use extra_tx_headroom.
-Message-ID: <5f00d319-9242-65b2-d100-dcfe9b0e32be@gmail.com>
-Date:   Sat, 16 May 2020 11:39:34 +0100
+Subject: [PATCH 3/4] staging: vt6656: vnt_usb_send_context remove variable
+ data.
+Message-ID: <9416e1a8-bd72-ffb1-5366-78361d053907@gmail.com>
+Date:   Sat, 16 May 2020 11:44:57 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.8.0
 MIME-Version: 1.0
@@ -66,82 +67,57 @@ Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-Create room for vnt_tx_short_buf_head in sk_buff and vnt_tx_usb_header.
-
-The struct ieee80211_mgmt is not longer in the header and is at
-the initial skb->data point.
+A limit is also placed in vnt_tx_context of MAX_TOTAL_SIZE_WITH_ALL_HEADERS
+limiting size.
 
 Signed-off-by: Malcolm Priestley <tvboxspy@gmail.com>
 ---
- drivers/staging/vt6656/rxtx.c | 22 +++++++++-------------
- drivers/staging/vt6656/rxtx.h |  5 +----
- 2 files changed, 10 insertions(+), 17 deletions(-)
+ drivers/staging/vt6656/device.h  | 1 -
+ drivers/staging/vt6656/rxtx.c    | 3 ---
+ drivers/staging/vt6656/usbpipe.c | 5 +++++
+ 3 files changed, 5 insertions(+), 4 deletions(-)
 
+diff --git a/drivers/staging/vt6656/device.h b/drivers/staging/vt6656/device.h
+index 074b98dfac91..08294b21c4e9 100644
+--- a/drivers/staging/vt6656/device.h
++++ b/drivers/staging/vt6656/device.h
+@@ -250,7 +250,6 @@ struct vnt_usb_send_context {
+ 	u8 pkt_type;
+ 	u8 need_ack;
+ 	bool in_use;
+-	unsigned char data[MAX_TOTAL_SIZE_WITH_ALL_HEADERS];
+ };
+ 
+ /*
 diff --git a/drivers/staging/vt6656/rxtx.c b/drivers/staging/vt6656/rxtx.c
-index 792833f8192a..cf194c95df03 100644
+index cf194c95df03..8f9904c8045c 100644
 --- a/drivers/staging/vt6656/rxtx.c
 +++ b/drivers/staging/vt6656/rxtx.c
-@@ -684,8 +684,9 @@ static int vnt_beacon_xmit(struct vnt_private *priv, struct sk_buff *skb)
+@@ -73,9 +73,6 @@ static struct vnt_usb_send_context
+ 		context = priv->tx_context[ii];
+ 		if (!context->in_use) {
+ 			context->in_use = true;
+-			memset(context->data, 0,
+-			       MAX_TOTAL_SIZE_WITH_ALL_HEADERS);
+-
+ 			context->hdr = NULL;
  
- 	spin_unlock_irqrestore(&priv->lock, flags);
- 
--	beacon_buffer = (struct vnt_beacon_buffer *)&context->data[0];
--	short_head = &beacon_buffer->short_head;
-+	mgmt_hdr = (struct ieee80211_mgmt *)skb->data;
-+	short_head = skb_push(skb, sizeof(*short_head));
-+	count = skb->len;
- 
- 	if (priv->bb_type == BB_TYPE_11A) {
- 		current_rate = RATE_6M;
-@@ -710,10 +711,6 @@ static int vnt_beacon_xmit(struct vnt_private *priv, struct sk_buff *skb)
- 			vnt_time_stamp_off(priv, current_rate);
+ 			return context;
+diff --git a/drivers/staging/vt6656/usbpipe.c b/drivers/staging/vt6656/usbpipe.c
+index 904645fa0eb0..43f1ef32a9ce 100644
+--- a/drivers/staging/vt6656/usbpipe.c
++++ b/drivers/staging/vt6656/usbpipe.c
+@@ -463,6 +463,11 @@ int vnt_tx_context(struct vnt_private *priv,
+ 		return -ENODEV;
  	}
  
--	/* Generate Beacon Header */
--	mgmt_hdr = &beacon_buffer->mgmt_hdr;
--	memcpy(mgmt_hdr, skb->data, skb->len);
--
- 	/* Get Duration */
- 	short_head->duration = mgmt_hdr->duration;
- 
-@@ -732,15 +729,14 @@ static int vnt_beacon_xmit(struct vnt_private *priv, struct sk_buff *skb)
- 	if (priv->seq_counter > 0x0fff)
- 		priv->seq_counter = 0;
- 
--	count = sizeof(struct vnt_tx_short_buf_head) + skb->len;
--
--	beacon_buffer->tx_byte_count = cpu_to_le16(count);
--	beacon_buffer->pkt_no = context->pkt_no;
--	beacon_buffer->type = 0x01;
-+	beacon_buffer = skb_push(skb, sizeof(struct vnt_tx_usb_header));
-+	beacon_buffer->usb.tx_byte_count = cpu_to_le16(count);
-+	beacon_buffer->usb.pkt_no = context->pkt_no;
-+	beacon_buffer->usb.type = 0x01;
- 
- 	context->type = CONTEXT_BEACON_PACKET;
--	context->tx_buffer = &context->data;
--	context->buf_len = count + 4; /* USB header */
-+	context->tx_buffer = beacon_buffer;
-+	context->buf_len = skb->len;
- 
- 	spin_lock_irqsave(&priv->lock, flags);
- 
-diff --git a/drivers/staging/vt6656/rxtx.h b/drivers/staging/vt6656/rxtx.h
-index 819b45394673..fd64d0838e34 100644
---- a/drivers/staging/vt6656/rxtx.h
-+++ b/drivers/staging/vt6656/rxtx.h
-@@ -180,11 +180,8 @@ struct vnt_tx_short_buf_head {
- } __packed;
- 
- struct vnt_beacon_buffer {
--	u8 type;
--	u8 pkt_no;
--	__le16 tx_byte_count;
-+	struct vnt_tx_usb_header usb;
- 	struct vnt_tx_short_buf_head short_head;
--	struct ieee80211_mgmt mgmt_hdr;
- } __packed;
- 
- int vnt_tx_packet(struct vnt_private *priv, struct sk_buff *skb);
++	if (context->buf_len > MAX_TOTAL_SIZE_WITH_ALL_HEADERS) {
++		context->in_use = false;
++		return -E2BIG;
++	}
++
+ 	usb_fill_bulk_urb(urb,
+ 			  priv->usb,
+ 			  usb_sndbulkpipe(priv->usb, 3),
 -- 
 2.25.1
