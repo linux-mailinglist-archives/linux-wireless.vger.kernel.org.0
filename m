@@ -2,79 +2,81 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 77B3B1D616C
-	for <lists+linux-wireless@lfdr.de>; Sat, 16 May 2020 15:52:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EEE3F1D6198
+	for <lists+linux-wireless@lfdr.de>; Sat, 16 May 2020 16:38:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726521AbgEPNvk (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 16 May 2020 09:51:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57122 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726266AbgEPNvj (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 16 May 2020 09:51:39 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6AF98C061A0C;
-        Sat, 16 May 2020 06:51:39 -0700 (PDT)
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.93)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1jZxDN-00ECfk-5c; Sat, 16 May 2020 15:50:57 +0200
-Message-ID: <7306323c35e6f44d7c569e689b48f380f80da5e5.camel@sipsolutions.net>
-Subject: Re: [PATCH v2 12/15] ath10k: use new module_firmware_crashed()
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     Luis Chamberlain <mcgrof@kernel.org>, jeyu@kernel.org
-Cc:     akpm@linux-foundation.org, arnd@arndb.de, rostedt@goodmis.org,
-        mingo@redhat.com, aquini@redhat.com, cai@lca.pw, dyoung@redhat.com,
-        bhe@redhat.com, peterz@infradead.org, tglx@linutronix.de,
-        gpiccoli@canonical.com, pmladek@suse.com, tiwai@suse.de,
-        schlad@suse.de, andriy.shevchenko@linux.intel.com,
-        keescook@chromium.org, daniel.vetter@ffwll.ch, will@kernel.org,
-        mchehab+samsung@kernel.org, kvalo@codeaurora.org,
-        davem@davemloft.net, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        ath10k@lists.infradead.org
-Date:   Sat, 16 May 2020 15:50:55 +0200
-In-Reply-To: <2b74a35c726e451b2fab2b5d0d301e80d1f4cdc7.camel@sipsolutions.net> (sfid-20200516_152518_154267_1B9A55D6)
-References: <20200515212846.1347-1-mcgrof@kernel.org>
-         <20200515212846.1347-13-mcgrof@kernel.org>
-         (sfid-20200515_233205_994687_1F26BDAB) <2b74a35c726e451b2fab2b5d0d301e80d1f4cdc7.camel@sipsolutions.net>
-         (sfid-20200516_152518_154267_1B9A55D6)
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.2 (3.36.2-1.fc32) 
+        id S1726536AbgEPOiL (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 16 May 2020 10:38:11 -0400
+Received: from mail.kevlo.org ([220.134.220.36]:60397 "EHLO ns.kevlo.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726328AbgEPOiL (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Sat, 16 May 2020 10:38:11 -0400
+Received: from ns.kevlo.org (localhost [127.0.0.1])
+        by ns.kevlo.org (8.15.2/8.15.2) with ESMTPS id 04GEIN8V009604
+        (version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+        Sat, 16 May 2020 22:18:23 +0800 (CST)
+        (envelope-from kevlo@ns.kevlo.org)
+Received: (from kevlo@localhost)
+        by ns.kevlo.org (8.15.2/8.15.2/Submit) id 04GEINcF009603;
+        Sat, 16 May 2020 22:18:23 +0800 (CST)
+        (envelope-from kevlo)
+Date:   Sat, 16 May 2020 22:18:22 +0800
+From:   Kevin Lo <kevlo@kevlo.org>
+To:     Tony Chuang <yhchuang@realtek.com>
+Cc:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH] rtw88: no need to set registers for SDIO
+Message-ID: <20200516141822.GA9585@ns.kevlo.org>
+References: <20200515061153.GA15714@ns.kevlo.org>
+ <9ba0e2a24a82436b9fe2595d86afccbc@realtek.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9ba0e2a24a82436b9fe2595d86afccbc@realtek.com>
+User-Agent: Mutt/1.8.0 (2017-02-23)
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Sat, 2020-05-16 at 15:24 +0200, Johannes Berg wrote:
+On Fri, May 15, 2020 at 06:16:55AM +0000, Tony Chuang wrote:
+> 
+> Kevin Lo <kevlo@kevlo.org> writes:
+> > Subject: [PATCH] rtw88: no need to set registers for SDIO
+> > 
+> > There's no need to set SDIO related registers when powering up/down the chip.
+> > 
+> > Signed-off-by: Kevin Lo <kevlo@kevlo.org>
+> > ---
+> > diff --git a/drivers/net/wireless/realtek/rtw88/rtw8723d.c
+> > b/drivers/net/wireless/realtek/rtw88/rtw8723d.c
+> > index b517af417e0e..5e0b7999bc8a 100644
+> > --- a/drivers/net/wireless/realtek/rtw88/rtw8723d.c
+> > +++ b/drivers/net/wireless/realtek/rtw88/rtw8723d.c
+> > @@ -2092,16 +2092,6 @@ static const struct rtw_pwr_seq_cmd
+> > trans_carddis_to_cardemu_8723d[] = {
+> >  	 RTW_PWR_INTF_ALL_MSK,
+> >  	 RTW_PWR_ADDR_MAC,
+> >  	 RTW_PWR_CMD_WRITE, BIT(3) | BIT(7), 0},
+> > -	{0x0086,
+> > -	 RTW_PWR_CUT_ALL_MSK,
+> > -	 RTW_PWR_INTF_SDIO_MSK,
+> > -	 RTW_PWR_ADDR_SDIO,
+> > -	 RTW_PWR_CMD_WRITE, BIT(0), 0},
+> > -	{0x0086,
+> > -	 RTW_PWR_CUT_ALL_MSK,
+> > -	 RTW_PWR_INTF_SDIO_MSK,
+> > -	 RTW_PWR_ADDR_SDIO,
+> > -	 RTW_PWR_CMD_POLLING, BIT(1), BIT(1)},
+> >  	{0x004A,
+> >  	 RTW_PWR_CUT_ALL_MSK,
+> >  	 RTW_PWR_INTF_USB_MSK,
+> 
+> I don't think we should remove SDIO part in the power sequence.
+> The power sequence parse will recognize the HCI interface. So the
+> SDIO settings will not be applied at all. We can keep them here until
+> the SDIO module is added and supported.
 
-> Instead of the kernel taint, IMHO you should provide an annotation in
-> sysfs (or somewhere else) for the *struct device* that had its firmware
-> crash. Or maybe, if it's too complex to walk the entire hierarchy
-> checking for that, have a uevent, or add the ability for the kernel to
-> print out elsewhere in debugfs the list of devices that crashed at some
+Well, I thought only usb devices will be supported by rtw88.
+I'm happy to see rtw88 SDIO support, thanks.
 
-I mean sysfs, oops.
-
-
-In addition, look what we have in iwl_trans_pcie_removal_wk(). If we
-detect that the device is really wedged enough that the only way we can
-still try to recover is by completely unbinding the driver from it, then
-we give userspace a uevent for that. I don't remember exactly how and
-where that gets used (ChromeOS) though, but it'd be nice to have that
-sort of thing as part of the infrastructure, in a sort of two-level
-notification?
-
-Level 1: firmware crashed, but we're recovering, at least mostly, and
-it's more informational
-
-Level 2: device is wedged, going to try to recover by some more forceful
-means (perhaps some devices can be power-cycled? etc.) but (more) state
-would be lost in these cases?
-
-Still don't think a kernel taint is appropriate for either of these.
-
-johannes
-
+> Yen-Hsuan
