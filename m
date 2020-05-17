@@ -2,61 +2,61 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C55E71D6552
-	for <lists+linux-wireless@lfdr.de>; Sun, 17 May 2020 04:26:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3DE721D6553
+	for <lists+linux-wireless@lfdr.de>; Sun, 17 May 2020 04:26:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726982AbgEQC0B (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Sat, 16 May 2020 22:26:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32786 "EHLO
+        id S1726985AbgEQC0I (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Sat, 16 May 2020 22:26:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32802 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726948AbgEQC0B (ORCPT
+        with ESMTP id S1726948AbgEQC0I (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Sat, 16 May 2020 22:26:01 -0400
-Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com [IPv6:2607:f8b0:4864:20::442])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12E2BC061A0C
-        for <linux-wireless@vger.kernel.org>; Sat, 16 May 2020 19:26:01 -0700 (PDT)
-Received: by mail-pf1-x442.google.com with SMTP id x2so3042522pfx.7
-        for <linux-wireless@vger.kernel.org>; Sat, 16 May 2020 19:26:00 -0700 (PDT)
+        Sat, 16 May 2020 22:26:08 -0400
+Received: from mail-pj1-x1042.google.com (mail-pj1-x1042.google.com [IPv6:2607:f8b0:4864:20::1042])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F119C061A0C
+        for <linux-wireless@vger.kernel.org>; Sat, 16 May 2020 19:26:07 -0700 (PDT)
+Received: by mail-pj1-x1042.google.com with SMTP id k7so2982251pjs.5
+        for <linux-wireless@vger.kernel.org>; Sat, 16 May 2020 19:26:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=subject:to:cc:references:from:message-id:date:user-agent
          :mime-version:in-reply-to:content-language:content-transfer-encoding;
         bh=ZwOdLRAvpywpS5KSJQV24hlDOCj/cM29xK3RoHEqVVY=;
-        b=emhST+MX89k9qmf7vkyGfPWjnfUERVxmnQrAXJkoMulGTi3izdD5RMz+O08lv/V4rc
-         3DcyJnkmTwB77yuG6Bgfi8jdU5j8rXVz9iyQgxuyHWcg/FdXeD/FPLRZpcTOUrTvCboR
-         HVeE3XW7O0S9rAk04H2ACSF8cvS0QoHmtmHGZyt9xV3rGFGiEZsCO8BzbG1fJTRdf/i+
-         tF0GF3vVdosrKHONtPnDQi7kh2mNfz5fESIYYBjGLqNU9aqpaPwgp9p9+Bn7jTSa0V72
-         KuT+G1azxyAmBWhc7gLcW9KutX7ZFYC+i+Z1GG8baias4bJMzVBbfIDJ65ciCYDnKN7Q
-         +PiQ==
+        b=QHfVbSEvVEz6DT23mdFerdywNKqNjmjW+DUPMe9eCRBLv5sCICUNznhm1qR14yjVSs
+         OXyQYRPUoKIUhJgTXNeD1cpepWktYLKzQKNyl3/zqZWwzWFtRmXbQXEo8BV10hTVWKCV
+         sxkp5bKk6XGK33k2TGzoc0IbMEsiJ5bc7XWCZb4GCr5k7XHt/DqqHuSzjhPr+J6LksIr
+         0u+7a36Ske87Sv2bmNhypec5xh+VkVySZ7pKI6zrRa+3QRwyzUhJu/tKsI/Ei9UKt4Ft
+         6c2yCpg+QCHM5qHsaPRhQhSSY1neseBGCZMPuWsnNtMtsQ6Rl7gWlKIYf0fVz4OE+Qii
+         4soA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:subject:to:cc:references:from:message-id:date
          :user-agent:mime-version:in-reply-to:content-language
          :content-transfer-encoding;
         bh=ZwOdLRAvpywpS5KSJQV24hlDOCj/cM29xK3RoHEqVVY=;
-        b=lT65WZhA6/vFIoGXiYu6cclJOY5UGqoH3tXL+nU7WBVvlZO0fvFc1dws5UYshN8DpL
-         S+rd4gwIbhBqevEfofNURDL/n2XyYB7J+IVj4Gm2BZ4x4V5kfiZSEE8xljaLabUqtfL3
-         VB/H5qLJoj2S9922qO4HDiHeGDeSy1/ci++xiwbkSvTRW3DG0Ji/kg8z/CEpDJWMrZC6
-         EuvSBTzuIxZGPnL77vpOAbJhFqL1WaPq67Hmomzg7jVOvPMtole7ZgJJNSItwnzeglOX
-         vPROpd8Nz2qhLV3ZzvPtq2aZpqxdNbWj7fw5pKEIgasZHubjZaj9dIpgl6QE6B2328uH
-         T/mw==
-X-Gm-Message-State: AOAM532tlKRi+GI0mlD+IKYv0RlWjCfImAYT74KiYN3a8kskkwulyHBQ
-        7+ENnp0IHpGz1p0+ymGhwyxM3K8Y
-X-Google-Smtp-Source: ABdhPJzabQluLs+prH8Qg4LrI4YiZfIFvmKIwmbo9yMD46wbwp5cKSY5tGxMeYxLMW+GStz77g88yg==
-X-Received: by 2002:a63:3206:: with SMTP id y6mr9407775pgy.68.1589682360058;
-        Sat, 16 May 2020 19:26:00 -0700 (PDT)
+        b=f4HavqNAfCPGMUN+8AoLYYcI4IQLXOS+/ZpHGv9qcBpAuWBbC2df9x2gw19SYKXK48
+         h4j1otjJ2MBbqwaWkM2grZUovULYuQ+vygGNqZa+FkKiklMw3yjNPuVFBFPUNhAljXrE
+         xRVy3nq04GJmmh5TjUsRlMTH/QYdXq0VglC5pWgStmfW65xOIgwOPDWf650voVqMEd4M
+         7OM1M/Jbas3H0UI8qK59EzcsN7TIo8Z7dyn76pdmOiFHEVHSfmmTeaeTf9JHRjmrNLYK
+         xIbuIxgrN7l6FydED14DV6wujczLpmV7qFnX/KwnkOf4irODM8glCC17Gq3u3xssdcAO
+         oofQ==
+X-Gm-Message-State: AOAM532+icSej7tKrqqV2Iz0WSP5aGVCqW5rGjnjrrbcBlRpxUZJjus1
+        ndIGG1ek1iI9Cr98xJ83KdpPoW2k
+X-Google-Smtp-Source: ABdhPJw5rz6JW1vg5rskikvCpfHsEPm/SyVrKCCArYIIjQxYoNV1U+paJ9trzpz1pu2ELsViQmttVQ==
+X-Received: by 2002:a17:90a:7046:: with SMTP id f64mr10651193pjk.205.1589682366517;
+        Sat, 16 May 2020 19:26:06 -0700 (PDT)
 Received: from [10.211.55.7] ([112.209.98.11])
-        by smtp.gmail.com with ESMTPSA id x62sm5159477pfc.46.2020.05.16.19.25.58
+        by smtp.gmail.com with ESMTPSA id n16sm5239127pfq.61.2020.05.16.19.26.05
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 16 May 2020 19:25:59 -0700 (PDT)
+        Sat, 16 May 2020 19:26:06 -0700 (PDT)
 Subject: Re: [PATCHv4] ath10k : Fix channel survey dump
 To:     Venkateswara Naralasetty <vnaralas@codeaurora.org>,
         ath10k@lists.infradead.org
 Cc:     linux-wireless@vger.kernel.org
 References: <1588820612-15884-1-git-send-email-vnaralas@codeaurora.org>
 From:   John Deere <24601deerej@gmail.com>
-Message-ID: <edbb46d6-d7c1-7317-fc1f-cb06bc850c8a@gmail.com>
-Date:   Sun, 17 May 2020 10:25:56 +0800
+Message-ID: <bee1439c-de98-dbf0-ee82-88620ecc560a@gmail.com>
+Date:   Sun, 17 May 2020 10:26:04 +0800
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.7.0
 MIME-Version: 1.0
