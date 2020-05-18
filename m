@@ -2,97 +2,80 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A82661D7924
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 May 2020 15:01:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 53F571D7931
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 May 2020 15:03:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727827AbgERNBe (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 18 May 2020 09:01:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43824 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726726AbgERNBe (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 18 May 2020 09:01:34 -0400
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19D20C061A0C;
-        Mon, 18 May 2020 06:01:34 -0700 (PDT)
+        id S1727890AbgERNDQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 18 May 2020 09:03:16 -0400
+Received: from bilbo.ozlabs.org ([203.11.71.1]:46965 "EHLO ozlabs.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726726AbgERNDP (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 18 May 2020 09:03:15 -0400
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
-        by mail.ozlabs.org (Postfix) with ESMTPSA id 49QfKH5PKQz9sTY;
-        Mon, 18 May 2020 23:01:23 +1000 (AEST)
+        by mail.ozlabs.org (Postfix) with ESMTPSA id 49QfMN6SDLz9sTC;
+        Mon, 18 May 2020 23:03:12 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
-        s=201702; t=1589806885;
-        bh=X87x2O/NgHgg3pQpZtNm9qm3ZbblNwSzNsBmhoy99ww=;
+        s=201702; t=1589806993;
+        bh=2gvcFe7xk5po5g3UlIGKxvdmbLoE3llOYTT0e6mqOJU=;
         h=Date:From:To:Cc:Subject:From;
-        b=cVS7jAFaI3QUD3oMiUjV1oa9TRmDqjdksbhYdPw68gGZHUCID3kP5plttFCMHyPnz
-         GVJ6C430GOrSl0NeVfAXOPVrUUdSDVfN6BgLBQBGpak/QQIZZB4OZ01guSKg3Pz0oi
-         8/WM++ctW1HmwBKuNJ0IXtUoPISZlYV6PXTwtoa1fXOyozeuHapLfi+ha4IoUBh7PO
-         bKfHwIZmEiX2mnMN46SWyI9XauCqoI3DLNFIsR0Y01JHNNu2DLVYTlSILP23+kSyAE
-         6fXyuLGq1zM7kq1lJ4TCNnl3Dt/dNvbMgsxqXEs792FtkQbxVr2jxz4mdp3QdQPdmk
-         RmNHjPOHAVyJA==
-Date:   Mon, 18 May 2020 23:01:20 +1000
+        b=lwFJT7u6BBGGPiufr4Ch9sqxg5yhP9wwR5EvlXf3HMSqrpt98otFcPxkc+5M1vH+d
+         JXEExOqBCA0a5Oc8We+l+DfZVQM3fYELa4Ij4NJpJlcMMrANoE7dLJcDBWkhg0SMgE
+         JJoWkCdDeQLFEf4S/Dh+iIlrdIUqd26PFcTPgGiM6Q8qG/aNb6PyzRbCa8RYqBB+w0
+         bxkTFGGf+i6rkGgY1PFGxLQqmvE1uuHji/0DiqDPuSLUrRe5Kr2XddJ3T61Xs5tqIu
+         oRSC2lPyW99VKaBdJVldE5ZWNvsDJIVov1LUCX1JZcYeeAFFI1GhcGZSAKkHS0PsXh
+         /Atij/bRpXh0g==
+Date:   Mon, 18 May 2020 23:03:11 +1000
 From:   Stephen Rothwell <sfr@canb.auug.org.au>
 To:     Kalle Valo <kvalo@codeaurora.org>,
         Wireless <linux-wireless@vger.kernel.org>
 Cc:     Linux Next Mailing List <linux-next@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Sean Wang <sean.wang@mediatek.com>,
-        Felix Fietkau <nbd@nbd.name>,
-        Soul Huang <Soul.Huang@mediatek.com>,
-        Lorenzo Bianconi <lorenzo@kernel.org>
-Subject: linux-next: Fixes tag needs some work in the wireless-drivers-next
- tree
-Message-ID: <20200518230120.7b4c6074@canb.auug.org.au>
+        Felix Fietkau <nbd@nbd.name>
+Subject: linux-next: Signed-off-by missing for commit in the
+ wireless-drivers-next tree
+Message-ID: <20200518230311.08df60cc@canb.auug.org.au>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/dSih45EDoyKnaSCqCDR/H=S";
+Content-Type: multipart/signed; boundary="Sig_/J5hCWJ/AaAwOFDmtwxZtZ3j";
  protocol="application/pgp-signature"; micalg=pgp-sha256
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
---Sig_/dSih45EDoyKnaSCqCDR/H=S
+--Sig_/J5hCWJ/AaAwOFDmtwxZtZ3j
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: quoted-printable
 
 Hi all,
 
-In commit
+Commits
 
-  f8d6379932dd ("mt76: mt7663: fix the usage WoW with net detect support")
+  89829c9e65ab ("mt76: mt7663: fix DMA unmap length")
+  c0f8055b3986 ("mt76: mt7622: fix DMA unmap length")
 
-Fixes tag
-
-  Fixes: bd39bd2f00c3 ("mt76: mt7663: introduce WoW with net detect support=
-")
-
-has these problem(s):
-
-  - Target SHA1 does not exist
-
-Maybe you meant
-
-Fixes: a72ad451e704 ("mt76: mt7663: introduce WoW with net detect support")
+are missing a Signed-off-by from their committer.
 
 --=20
 Cheers,
 Stephen Rothwell
 
---Sig_/dSih45EDoyKnaSCqCDR/H=S
+--Sig_/J5hCWJ/AaAwOFDmtwxZtZ3j
 Content-Type: application/pgp-signature
 Content-Description: OpenPGP digital signature
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAl7ChyAACgkQAVBC80lX
-0GyYuAf/Q7gNlAhBoIJFTdZtFGN/5W95393jFP7jFdQh6WpjGZGxicr/sVpe+qSQ
-K2Wtj3elCW4rQsuEdTVSfOHCpwbw00niNP8krcc6Ktmv+XSmRiqVie/9Qqf+ATUG
-AfvWK2JYyQxZLUQZ1OsBW5Te2szDyCgewlNE5gl25gpBfTQhOAaY3qCdtSFkPaSI
-LPiXibm9hY8GwshznMH2FF/paZ03p9PGrN1buIuiMHzp/hA2DV/c2QIDwzdLLt5O
-VY/E//yuvfPuwJCe26MVJggv7JqaL7hQwsXGfM0GIVFLq6CaeKAIRDyamIqMv3Ef
-jtcXWkITe8UqFShODEdgKOXp4mGf7Q==
-=5c9u
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAl7Ch48ACgkQAVBC80lX
+0GxZpgf/drRAczBmtdwR2uQoY8jXEzxNb86cc6Xlv5/bkfWvmKoecA1MeP4h+WRG
+dRKrNgOHIZXqZYzlgRPzUOfepwanJHFeMjchyu7e5qa3tA25J31Fqhys/g7Of/Iq
+EDTD6z9fUadfJfpaHCAKEKyNKZ+C2NAUTuofGfJMJVBE77AAKOPCsfJW6+KxdwdK
+pwZ0z1Eod30BRrqoZdg06thioLk8z597FuAaOBCzG6egIhvnh+PS3SiUWDMaG4bf
+i66eVqorK6piiHOCXW+YErv7Nnqi5ASAQ/pcIkjyr0T5d7q8cxR8ASXvT9t/NISm
+80X+yBlvGQzUmq/emPYQuBI99yy0qA==
+=WpY0
 -----END PGP SIGNATURE-----
 
---Sig_/dSih45EDoyKnaSCqCDR/H=S--
+--Sig_/J5hCWJ/AaAwOFDmtwxZtZ3j--
