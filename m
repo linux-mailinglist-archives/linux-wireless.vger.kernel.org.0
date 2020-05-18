@@ -2,107 +2,90 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C4951D897D
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 May 2020 22:44:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 294191D8990
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 May 2020 22:51:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726425AbgERUnC (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 18 May 2020 16:43:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60034 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726270AbgERUnC (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 18 May 2020 16:43:02 -0400
-Received: from mail-wm1-x342.google.com (mail-wm1-x342.google.com [IPv6:2a00:1450:4864:20::342])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 081DDC061A0C
-        for <linux-wireless@vger.kernel.org>; Mon, 18 May 2020 13:43:02 -0700 (PDT)
-Received: by mail-wm1-x342.google.com with SMTP id u188so1008857wmu.1
-        for <linux-wireless@vger.kernel.org>; Mon, 18 May 2020 13:43:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=2+OAMC4f8T8COIY9Oe99/zNWSXXY4klst0LI8Khi3iI=;
-        b=RHmJKo3OWoWHHgmoVSvel9TIKRudNnLvNsL3iFCSiMgjKqKcClkOpHFiys2RWFIfoc
-         fmLiGlrI+Ve5lMtydmPobFtEq5dg32cfi+q3JQljRZLwJolPxFCwOzqfDuLg7FPx3h0t
-         8lCJehwHXF9xRN0e+lKEwS2ScF7oCxGASwjJFCRfO3zi0INDgRurMXdS7ES817zYGDVn
-         DCoaPhxhHCjM7e505GbTljsBWwWcNH8VYH1XkbQ05SQGJvLYQYV/Nch3gdb4+VEKOfyE
-         MWYzFSx04WwF2lkOboROLDhnMfN/7jWNt6kLD+OvYAibH5v7BbCML+JOaCdIBbJa3EWq
-         1CEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=2+OAMC4f8T8COIY9Oe99/zNWSXXY4klst0LI8Khi3iI=;
-        b=Wp+N2KBYjX31ylF/1nK+q5bvDfroya+t2aLSeI2lqSezd2tveLPBuyiFsPHFCr9B4k
-         SA+2Mt4vPoi6pbFvBrokWRbte4vYyrYtAAwBRyTgMA9g2yewBJzXEn4z40KC6ZC4oEDG
-         X+r5evpHh2+HoxYIhURghqNeqkSnUqlx19vsyJTix3T9/USfUAYhGg8Y2wFq42iX1eom
-         vb/+/wv1YPToWNt3idW7/ir4r11c9cYS2YETQ+BCBD3/TpYzsLZiaeqUsodC768aYVRL
-         5/fqoYwitkN5y//mb5exxPc88+2Qxig3zlfdRF5/DtbOANjs51/TWC4Qjin4n9z5trNg
-         ip4A==
-X-Gm-Message-State: AOAM532ux5KS3T6rLYhymZ12qdbTFjfGcxSjENCHVqZ7CElfUJSBaFPF
-        7CTFQ3OjsvuCblB/xITEAm5YO41F
-X-Google-Smtp-Source: ABdhPJxRjmW46dOIk4uevB/ewboU3ixzG1+pTwMZ82VSiCsix8rplOc9LGyHv5HNixW/1N4jyHwwfg==
-X-Received: by 2002:a1c:770e:: with SMTP id t14mr1304150wmi.86.1589834580500;
-        Mon, 18 May 2020 13:43:00 -0700 (PDT)
-Received: from [192.168.43.227] ([185.69.144.134])
-        by smtp.gmail.com with ESMTPSA id y4sm18401718wro.91.2020.05.18.13.42.59
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 18 May 2020 13:42:59 -0700 (PDT)
-Subject: Re: [PATCH 2/4] staging: vt6656: vnt_beacon_xmit use
- extra_tx_headroom.
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>,
-        linux-wireless@vger.kernel.org
-References: <5f00d319-9242-65b2-d100-dcfe9b0e32be@gmail.com>
- <20200518123944.GI2078@kadam>
-From:   Malcolm Priestley <tvboxspy@gmail.com>
-Message-ID: <fb7a7013-5fbc-d69c-dd20-27ba39462100@gmail.com>
-Date:   Mon, 18 May 2020 21:42:58 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+        id S1727823AbgERUqr (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 18 May 2020 16:46:47 -0400
+Received: from mail.kernel.org ([198.145.29.99]:33364 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726763AbgERUqq (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Mon, 18 May 2020 16:46:46 -0400
+Received: from kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com (unknown [163.114.132.5])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id D87B420756;
+        Mon, 18 May 2020 20:46:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1589834806;
+        bh=6/VqxVcF/eBMEiGqW5lrFQdbgd19nfTpUOXb5ymbNhM=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=DsmPLLdF8iyoK3doOUyzI8Q/z79p2b5CVpiLKw71ZAflO+M0fF/EpmqH3+/AmZYmN
+         1MOfOMtfx589oKthcSfovPOYhC+VVIY2ur11x1zWmmNKkqZ0C/V5s6cGI4/FZitYmL
+         PGFbnH2QwjtaaHiu/WatJ4eLvtBA+XtC8KCuWcFY=
+Date:   Mon, 18 May 2020 13:46:43 -0700
+From:   Jakub Kicinski <kuba@kernel.org>
+To:     Johannes Berg <johannes@sipsolutions.net>
+Cc:     Luis Chamberlain <mcgrof@kernel.org>,
+        Steve deRosier <derosier@gmail.com>,
+        Ben Greear <greearb@candelatech.com>, jeyu@kernel.org,
+        akpm@linux-foundation.org, arnd@arndb.de, rostedt@goodmis.org,
+        mingo@redhat.com, aquini@redhat.com, cai@lca.pw, dyoung@redhat.com,
+        bhe@redhat.com, peterz@infradead.org, tglx@linutronix.de,
+        gpiccoli@canonical.com, pmladek@suse.com,
+        Takashi Iwai <tiwai@suse.de>, schlad@suse.de,
+        andriy.shevchenko@linux.intel.com, keescook@chromium.org,
+        daniel.vetter@ffwll.ch, will@kernel.org,
+        mchehab+samsung@kernel.org, Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Network Development <netdev@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        ath10k@lists.infradead.org
+Subject: Re: [PATCH v2 12/15] ath10k: use new module_firmware_crashed()
+Message-ID: <20200518134643.685fcb0e@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+In-Reply-To: <d81601b17065d7dc3b78bf8d68faf0fbfdb8c936.camel@sipsolutions.net>
+References: <20200515212846.1347-1-mcgrof@kernel.org>
+        <20200515212846.1347-13-mcgrof@kernel.org>
+        <2b74a35c726e451b2fab2b5d0d301e80d1f4cdc7.camel@sipsolutions.net>
+        <20200518165154.GH11244@42.do-not-panic.com>
+        <4ad0668d-2de9-11d7-c3a1-ad2aedd0c02d@candelatech.com>
+        <20200518170934.GJ11244@42.do-not-panic.com>
+        <abf22ef3-93cb-61a4-0af2-43feac6d7930@candelatech.com>
+        <20200518171801.GL11244@42.do-not-panic.com>
+        <CALLGbR+ht2V3m5f-aUbdwEMOvbsX8ebmzdWgX4jyWTbpHrXZ0Q@mail.gmail.com>
+        <20200518190930.GO11244@42.do-not-panic.com>
+        <e3d978c8fa6a4075f12e843548d41e2c8ab537d1.camel@sipsolutions.net>
+        <20200518132828.553159d9@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+        <8d7a3bed242ac9d3ec55a4c97e008081230f1f6d.camel@sipsolutions.net>
+        <20200518133521.6052042e@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+        <d81601b17065d7dc3b78bf8d68faf0fbfdb8c936.camel@sipsolutions.net>
 MIME-Version: 1.0
-In-Reply-To: <20200518123944.GI2078@kadam>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-
-
-On 18/05/2020 13:39, Dan Carpenter wrote:
-> On Sat, May 16, 2020 at 11:39:34AM +0100, Malcolm Priestley wrote:
->> Create room for vnt_tx_short_buf_head in sk_buff and vnt_tx_usb_header.
->>
->> The struct ieee80211_mgmt is not longer in the header and is at
->> the initial skb->data point.
+On Mon, 18 May 2020 22:41:48 +0200 Johannes Berg wrote:
+> On Mon, 2020-05-18 at 13:35 -0700, Jakub Kicinski wrote:
+> > It's intended to be a generic netlink channel for configuring devices.
+> > 
+> > All the firmware-related interfaces have no dependencies on netdevs,
+> > in fact that's one of the reasons we moved to devlink - we don't want
+> > to hold rtnl lock just for talking to device firmware.  
 > 
-> I feel like the SubmittingPatches guidelines on verb tenses and not
-> saying "this patch" or "I" has got everyone so worried that it's like
-> playing Taboo.  Do you mean that the struct moved before or after we
-> aply *this patch*?
-The struct has not moved, before skb->data was copied on to the address 
-along with the rest of frame.
-
-So now struct needs to be at skb->data.
-
->>
->> Signed-off-by: Malcolm Priestley <tvboxspy@gmail.com>
+> Sounds good :)
 > 
-> I can't understand the point of this patch at all.  Is it a fix or a
-> clean up?  If I had to guess from the subjec, I would say it's a
-> performance improvement but I don't know.
-Well there is a performance improvement as there is only one buffer 
-instead of two.
+> So I guess Luis just has to add some way in devlink to hook up devlink
+> health in a simple way to drivers, perhaps? I mean, many drivers won't
+> really want to use devlink for anything else, so I guess it should be as
+> simple as the API that Luis proposed ("firmware crashed for this struct
+> device"), if nothing more interesting is done with devlink?
+> 
+> Dunno. But anyway sounds like it should somehow integrate there rather
+> than the way this patchset proposed?
 
-Mainly to bring into line with other drivers in the mac80211 tree there
-is no need for a secondary buffer in driver.
-
-Regards
-
-Malcolm
-
+Right, that'd be great. Simple API to register a devlink instance with
+whatever number of reporters the device would need. I'm happy to help.
