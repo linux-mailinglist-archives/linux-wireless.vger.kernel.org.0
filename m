@@ -2,181 +2,148 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 33AF01D83FB
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 May 2020 20:09:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A00C1D83DF
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 May 2020 20:08:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733251AbgERSHG (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 18 May 2020 14:07:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35528 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1733245AbgERSHF (ORCPT
+        id S1732871AbgERSIQ (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 18 May 2020 14:08:16 -0400
+Received: from mailgw02.mediatek.com ([210.61.82.184]:47794 "EHLO
+        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1732674AbgERSIP (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 18 May 2020 14:07:05 -0400
-Received: from mail-qv1-xf42.google.com (mail-qv1-xf42.google.com [IPv6:2607:f8b0:4864:20::f42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77217C061A0C;
-        Mon, 18 May 2020 11:07:05 -0700 (PDT)
-Received: by mail-qv1-xf42.google.com with SMTP id ee19so5162244qvb.11;
-        Mon, 18 May 2020 11:07:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=FGe0cYU7QRQrBub6kPg7LS2mMokuizGPeM+/vsZpJ0c=;
-        b=DDZsqjev9pPgykILD6UPID2QV3+WLOgbGPXNX7VGKiD5foIMBD6Ig3QA44tRzLmGib
-         1mKKZilQ5ETaljO5EYgpRnJptRjnAUOLxPH4gdu5+sMzcEgSRjVuhvaeSTM9YoycCwCk
-         2A+TY4cjxjhxNxZiLYT2ruZPcxJNu7umH6Vu9aSZIYrrv9XJn+MInwstXFCAlIHw1WUb
-         sCqyfCtYVo5dQrNv3xg086881Zd5saQlxNJu53IiQDzlfrTSmR2Y3bav8kaCWopJzt5B
-         qVeDKeGSnlwZcimXa9kVFJ6abIibigsiCpI3x/x/V3LmORYeovnqdMuYBqB3p76Djc/9
-         VAsg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=FGe0cYU7QRQrBub6kPg7LS2mMokuizGPeM+/vsZpJ0c=;
-        b=N8n9cidacfPNCPKXAuQxcgxY9bNR2V9T+GfNzusWJseoq/sQSZxLxUBH7V86HL46uI
-         SmxLrTQTeTQ8ZBAS3UeboP3um3h7wQBhfViNQISIS4MP/ZxAYDsDBSEGdPETyFYTe+jW
-         g5Zzx/scUnjlb/cg6tn6gcCTYpD7RRMwFjFT2LWxzz731CgkOi6z07KMyrPLUNLjItYm
-         M+//i5ijhClVuAVsOXVTAQUA2xczG6un++lNHpUYrpgA/BFSFCS5WMMrygqWxQpCORrI
-         CfsgXhNHjdobSU1/D6e0zXM0+mLm4sxcBvaneSl8P/uqiOkoOTUeLhkykIDOJ670Ffl2
-         CbJA==
-X-Gm-Message-State: AOAM531q3REZQiPyl2pYxkGVno1EMfmkSh6baP/rN/Q7xMsu85LRoAsK
-        J9IRKwC2q8NWD6LYqYbY1HiEkGoOjJUawOc2AAo=
-X-Google-Smtp-Source: ABdhPJx7gFJZCHG8pAYfJs0PbDVHs9Ww5BXdE3nVr2Ovp/YWIgWIKSJgkqjadmT/fF2jdRU64gjBY21G4Xm8cOd52zo=
-X-Received: by 2002:a0c:e48f:: with SMTP id n15mr15724904qvl.73.1589825224064;
- Mon, 18 May 2020 11:07:04 -0700 (PDT)
+        Mon, 18 May 2020 14:08:15 -0400
+X-UUID: 0523c6f9e2b140f3a3e14b5d3b805287-20200519
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+        h=Content-Transfer-Encoding:Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=QI/loMP2VToOSyHyl11M4kud5QzGX96YAIJFStf1DNc=;
+        b=dOr7V5psWni+BxA76oDJhValHXXEXbnKzsCXcSSs5/wwZR8nN7DlaKcy0h37MBQCdG3r1bqwBy2pFS6mR+NTjqgq4Bs8kW71aw0ZZajPRWP+VzcRCzBfRjbohiWfc+I74SuC9lb4eMorB06SdX+oeUhRnp+aoZX/23J1tDPJLtA=;
+X-UUID: 0523c6f9e2b140f3a3e14b5d3b805287-20200519
+Received: from mtkcas11.mediatek.inc [(172.21.101.40)] by mailgw02.mediatek.com
+        (envelope-from <ryder.lee@mediatek.com>)
+        (Cellopoint E-mail Firewall v4.1.10 Build 0809 with TLS)
+        with ESMTP id 1683445034; Tue, 19 May 2020 02:08:10 +0800
+Received: from mtkcas08.mediatek.inc (172.21.101.126) by
+ mtkmbs08n2.mediatek.inc (172.21.101.56) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Tue, 19 May 2020 02:07:47 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas08.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Tue, 19 May 2020 02:07:47 +0800
+From:   Ryder Lee <ryder.lee@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo.bianconi@redhat.com>
+CC:     Shayne Chen <shayne.chen@mediatek.com>,
+        Sean Wang <sean.wang@mediatek.com>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>,
+        Ryder Lee <ryder.lee@mediatek.com>
+Subject: [PATCH] mt76: mt7915: fix some sparse warnings
+Date:   Tue, 19 May 2020 02:07:38 +0800
+Message-ID: <6efa759a84f6662443fbb52362f0d803796d8cdd.1589824684.git.ryder.lee@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-References: <20200515212846.1347-1-mcgrof@kernel.org> <20200515212846.1347-13-mcgrof@kernel.org>
- <2b74a35c726e451b2fab2b5d0d301e80d1f4cdc7.camel@sipsolutions.net>
- <20200518165154.GH11244@42.do-not-panic.com> <4ad0668d-2de9-11d7-c3a1-ad2aedd0c02d@candelatech.com>
- <20200518170934.GJ11244@42.do-not-panic.com> <abf22ef3-93cb-61a4-0af2-43feac6d7930@candelatech.com>
- <20200518171801.GL11244@42.do-not-panic.com>
-In-Reply-To: <20200518171801.GL11244@42.do-not-panic.com>
-From:   Steve deRosier <derosier@gmail.com>
-Date:   Mon, 18 May 2020 11:06:27 -0700
-Message-ID: <CALLGbR+ht2V3m5f-aUbdwEMOvbsX8ebmzdWgX4jyWTbpHrXZ0Q@mail.gmail.com>
-Subject: Re: [PATCH v2 12/15] ath10k: use new module_firmware_crashed()
-To:     Luis Chamberlain <mcgrof@kernel.org>
-Cc:     Ben Greear <greearb@candelatech.com>,
-        Johannes Berg <johannes@sipsolutions.net>, jeyu@kernel.org,
-        akpm@linux-foundation.org, arnd@arndb.de, rostedt@goodmis.org,
-        mingo@redhat.com, aquini@redhat.com, cai@lca.pw, dyoung@redhat.com,
-        bhe@redhat.com, peterz@infradead.org, tglx@linutronix.de,
-        gpiccoli@canonical.com, pmladek@suse.com,
-        Takashi Iwai <tiwai@suse.de>, schlad@suse.de,
-        andriy.shevchenko@linux.intel.com, keescook@chromium.org,
-        daniel.vetter@ffwll.ch, will@kernel.org,
-        mchehab+samsung@kernel.org, Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Network Development <netdev@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        ath10k@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
+X-TM-SNTS-SMTP: EF4C687C787AE45E9FF14781D1D65BDC6408EDA5EB491AF174DE1B3E532485062000:8
+X-MTK:  N
+Content-Transfer-Encoding: base64
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Mon, May 18, 2020 at 10:19 AM Luis Chamberlain <mcgrof@kernel.org> wrote:
->
-> On Mon, May 18, 2020 at 10:15:45AM -0700, Ben Greear wrote:
-> >
-> >
-> > On 05/18/2020 10:09 AM, Luis Chamberlain wrote:
-> > > On Mon, May 18, 2020 at 09:58:53AM -0700, Ben Greear wrote:
-> > > >
-> > > >
-> > > > On 05/18/2020 09:51 AM, Luis Chamberlain wrote:
-> > > > > On Sat, May 16, 2020 at 03:24:01PM +0200, Johannes Berg wrote:
-> > > > > > On Fri, 2020-05-15 at 21:28 +0000, Luis Chamberlain wrote:> module_firmware_crashed
-> > > > > >
-> > > > > > You didn't CC me or the wireless list on the rest of the patches, so I'm
-> > > > > > replying to a random one, but ...
-> > > > > >
-> > > > > > What is the point here?
-> > > > > >
-> > > > > > This should in no way affect the integrity of the system/kernel, for
-> > > > > > most devices anyway.
-> > > > >
-> > > > > Keyword you used here is "most device". And in the worst case, *who*
-> > > > > knows what other odd things may happen afterwards.
-> > > > >
-> > > > > > So what if ath10k's firmware crashes? If there's a driver bug it will
-> > > > > > not handle it right (and probably crash, WARN_ON, or something else),
-> > > > > > but if the driver is working right then that will not affect the kernel
-> > > > > > at all.
-> > > > >
-> > > > > Sometimes the device can go into a state which requires driver removal
-> > > > > and addition to get things back up.
-> > > >
-> > > > It would be lovely to be able to detect this case in the driver/system
-> > > > somehow!  I haven't seen any such cases recently,
-> > >
-> > > I assure you that I have run into it. Once it does again I'll report
-> > > the crash, but the problem with some of this is that unless you scrape
-> > > the log you won't know. Eventually, a uevent would indeed tell inform
-> > > me.
-> > >
-> > > > but in case there is
-> > > > some common case you see, maybe we can think of a way to detect it?
-> > >
-> > > ath10k is just one case, this patch series addresses a simple way to
-> > > annotate this tree-wide.
-> > >
-> > > > > > So maybe I can understand that maybe you want an easy way to discover -
-> > > > > > per device - that the firmware crashed, but that still doesn't warrant a
-> > > > > > complete kernel taint.
-> > > > >
-> > > > > That is one reason, another is that a taint helps support cases *fast*
-> > > > > easily detect if the issue was a firmware crash, instead of scraping
-> > > > > logs for driver specific ways to say the firmware has crashed.
-> > > >
-> > > > You can listen for udev events (I think that is the right term),
-> > > > and find crashes that way.  You get the actual crash info as well.
-> > >
-> > > My follow up to this was to add uevent to add_taint() as well, this way
-> > > these could generically be processed by userspace.
-> >
-> > I'm not opposed to the taint, though I have not thought much on it.
-> >
-> > But, if you can already get the crash info from uevent, and it automatically
-> > comes without polling or scraping logs, then what benefit beyond that does
-> > the taint give you?
->
-> From a support perspective it is a *crystal* clear sign that the device
-> and / or device driver may be in a very bad state, in a generic way.
->
+ZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvbWFpbi5jOjY5NDoxOiBz
+cGFyc2U6DQpzcGFyc2U6IGNvbnRleHQgaW1iYWxhbmNlIGluICdtdDc5MTVfc3RhX3JjX3VwZGF0
+ZScgLSB3cm9uZyBjb3VudCBhdCBleGl0DQpkcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9t
+dDc2L210NzkxNS9tYWMuYzozMDM6NDM6IHNwYXJzZTogc3BhcnNlOiBjYXN0IHRvIHJlc3RyaWN0
+ZWQgX19sZTMyDQpkcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzkxNS9tYWMu
+YzozMDQ6NDM6IHNwYXJzZTogc3BhcnNlOiBjYXN0IHRvIHJlc3RyaWN0ZWQgX19sZTMyDQpkcml2
+ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzkxNS9tYWMuYzozMDU6NDM6IHNwYXJz
+ZTogc3BhcnNlOiBjYXN0IHRvIHJlc3RyaWN0ZWQgX19sZTMyDQpkcml2ZXJzL25ldC93aXJlbGVz
+cy9tZWRpYXRlay9tdDc2L210NzkxNS9tYWMuYzozMTk6MzU6IHNwYXJzZTogc3BhcnNlOiBjYXN0
+IHRvIHJlc3RyaWN0ZWQgX19sZTMyDQpkcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2
+L210NzkxNS9tYWMuYzozMjc6MzU6IHNwYXJzZTogc3BhcnNlOiBjYXN0IHRvIHJlc3RyaWN0ZWQg
+X19sZTMyDQpkcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzkxNS9tYWMuYzoz
+NDU6NDE6IHNwYXJzZTogc3BhcnNlOiBjYXN0IHRvIHJlc3RyaWN0ZWQgX19sZTMyDQpkcml2ZXJz
+L25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzkxNS9tYWMuYzozNTU6MzM6IHNwYXJzZTog
+c3BhcnNlOiBjYXN0IHRvIHJlc3RyaWN0ZWQgX19sZTMyDQpkcml2ZXJzL25ldC93aXJlbGVzcy9t
+ZWRpYXRlay9tdDc2L210NzkxNS9tYWMuYzo0NTE6MjE6IHNwYXJzZTogc3BhcnNlOiBpbnZhbGlk
+IGFzc2lnbm1lbnQ6IHw9DQpkcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210Nzkx
+NS9tYWMuYzo0NTE6MjE6IHNwYXJzZTogICAgbGVmdCBzaWRlIGhhcyB0eXBlIHVuc2lnbmVkIGlu
+dA0KZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvbWFjLmM6NDUxOjIx
+OiBzcGFyc2U6ICAgIHJpZ2h0IHNpZGUgaGFzIHR5cGUgcmVzdHJpY3RlZCBfX2xlMzINCg0KRml4
+ZXM6IGU1N2I3OTAgKCJtdDc2OiBhZGQgbWFjODAyMTEgZHJpdmVyIGZvciBNVDc5MTUgUENJZS1i
+YXNlZCBjaGlwc2V0cyIpDQpSZXBvcnRlZC1ieToga2J1aWxkIHRlc3Qgcm9ib3QgPGxrcEBpbnRl
+bC5jb20+DQpTaWduZWQtb2ZmLWJ5OiBSeWRlciBMZWUgPHJ5ZGVyLmxlZUBtZWRpYXRlay5jb20+
+DQotLS0NCiAuLi4vbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1L21hYy5jICAgfCAz
+MiArKysrKysrKysrKy0tLS0tLS0tDQogLi4uL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210
+NzkxNS9tYWluLmMgIHwgIDIgKy0NCiAyIGZpbGVzIGNoYW5nZWQsIDIwIGluc2VydGlvbnMoKyks
+IDE0IGRlbGV0aW9ucygtKQ0KDQpkaWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVk
+aWF0ZWsvbXQ3Ni9tdDc5MTUvbWFjLmMgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9t
+dDc2L210NzkxNS9tYWMuYw0KaW5kZXggYmY5NmIzODljODEzLi5hYjIwZGZkZTk0YWYgMTAwNjQ0
+DQotLS0gYS9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzkxNS9tYWMuYw0K
+KysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5MTUvbWFjLmMNCkBA
+IC00MjUsMjAgKzQyNSwyNiBAQCBpbnQgbXQ3OTE1X21hY19maWxsX3J4KHN0cnVjdCBtdDc5MTVf
+ZGV2ICpkZXYsIHN0cnVjdCBza19idWZmICpza2IpDQogDQogCS8qIFJYRCBHcm91cCAzIC0gUC1S
+WFYgKi8NCiAJaWYgKHJ4ZDEgJiBNVF9SWEQxX05PUk1BTF9HUk9VUF8zKSB7DQorCQl1MzIgdjAs
+IHYxLCB2MjsNCisNCiAJCW1lbWNweShyeHYudiwgcnhkLCBzaXplb2Yocnh2LnYpKTsNCiANCiAJ
+CXJ4ZCArPSAyOw0KIAkJaWYgKCh1OCAqKXJ4ZCAtIHNrYi0+ZGF0YSA+PSBza2ItPmxlbikNCiAJ
+CQlyZXR1cm4gLUVJTlZBTDsNCiANCi0JCWlmIChyeHYudlswXSAmIE1UX1BSWFZfSFRfQURfQ09E
+RSkNCisJCXYwID0gbGUzMl90b19jcHUocnh2LnZbMF0pOw0KKwkJdjEgPSBsZTMyX3RvX2NwdShy
+eHYudlsxXSk7DQorCQl2MiA9IGxlMzJfdG9fY3B1KHJ4di52WzJdKTsNCisNCisJCWlmICh2MCAm
+IE1UX1BSWFZfSFRfQURfQ09ERSkNCiAJCQlzdGF0dXMtPmVuY19mbGFncyB8PSBSWF9FTkNfRkxB
+R19MRFBDOw0KIA0KIAkJc3RhdHVzLT5jaGFpbnMgPSBtcGh5LT5hbnRlbm5hX21hc2s7DQotCQlz
+dGF0dXMtPmNoYWluX3NpZ25hbFswXSA9IHRvX3Jzc2koTVRfUFJYVl9SQ1BJMCwgcnh2LnZbMV0p
+Ow0KLQkJc3RhdHVzLT5jaGFpbl9zaWduYWxbMV0gPSB0b19yc3NpKE1UX1BSWFZfUkNQSTEsIHJ4
+di52WzFdKTsNCi0JCXN0YXR1cy0+Y2hhaW5fc2lnbmFsWzJdID0gdG9fcnNzaShNVF9QUlhWX1JD
+UEkyLCByeHYudlsxXSk7DQotCQlzdGF0dXMtPmNoYWluX3NpZ25hbFszXSA9IHRvX3Jzc2koTVRf
+UFJYVl9SQ1BJMywgcnh2LnZbMV0pOw0KKwkJc3RhdHVzLT5jaGFpbl9zaWduYWxbMF0gPSB0b19y
+c3NpKE1UX1BSWFZfUkNQSTAsIHYxKTsNCisJCXN0YXR1cy0+Y2hhaW5fc2lnbmFsWzFdID0gdG9f
+cnNzaShNVF9QUlhWX1JDUEkxLCB2MSk7DQorCQlzdGF0dXMtPmNoYWluX3NpZ25hbFsyXSA9IHRv
+X3Jzc2koTVRfUFJYVl9SQ1BJMiwgdjEpOw0KKwkJc3RhdHVzLT5jaGFpbl9zaWduYWxbM10gPSB0
+b19yc3NpKE1UX1BSWFZfUkNQSTMsIHYxKTsNCiAJCXN0YXR1cy0+c2lnbmFsID0gc3RhdHVzLT5j
+aGFpbl9zaWduYWxbMF07DQogDQogCQlmb3IgKGkgPSAxOyBpIDwgaHdlaWdodDgobXBoeS0+YW50
+ZW5uYV9tYXNrKTsgaSsrKSB7DQpAQCAtNDUxLDE2ICs0NTcsMTYgQEAgaW50IG10NzkxNV9tYWNf
+ZmlsbF9yeChzdHJ1Y3QgbXQ3OTE1X2RldiAqZGV2LCBzdHJ1Y3Qgc2tfYnVmZiAqc2tiKQ0KIA0K
+IAkJLyogUlhEIEdyb3VwIDUgLSBDLVJYViAqLw0KIAkJaWYgKHJ4ZDEgJiBNVF9SWEQxX05PUk1B
+TF9HUk9VUF81KSB7DQotCQkJdTggc3RiYyA9IEZJRUxEX0dFVChNVF9DUlhWX0hUX1NUQkMsIHJ4
+di52WzJdKTsNCi0JCQl1OCBnaSA9IEZJRUxEX0dFVChNVF9DUlhWX0hUX1NIT1JUX0dJLCByeHYu
+dlsyXSk7DQorCQkJdTggc3RiYyA9IEZJRUxEX0dFVChNVF9DUlhWX0hUX1NUQkMsIHYyKTsNCisJ
+CQl1OCBnaSA9IEZJRUxEX0dFVChNVF9DUlhWX0hUX1NIT1JUX0dJLCB2Mik7DQogCQkJYm9vbCBj
+Y2sgPSBmYWxzZTsNCiANCiAJCQlyeGQgKz0gMTg7DQogCQkJaWYgKCh1OCAqKXJ4ZCAtIHNrYi0+
+ZGF0YSA+PSBza2ItPmxlbikNCiAJCQkJcmV0dXJuIC1FSU5WQUw7DQogDQotCQkJaWR4ID0gaSA9
+IEZJRUxEX0dFVChNVF9QUlhWX1RYX1JBVEUsIHJ4di52WzBdKTsNCi0JCQlyeHYucGh5ID0gRklF
+TERfR0VUKE1UX0NSWFZfVFhfTU9ERSwgcnh2LnZbMl0pOw0KKwkJCWlkeCA9IGkgPSBGSUVMRF9H
+RVQoTVRfUFJYVl9UWF9SQVRFLCB2MCk7DQorCQkJcnh2LnBoeSA9IEZJRUxEX0dFVChNVF9DUlhW
+X1RYX01PREUsIHYyKTsNCiANCiAJCQlzd2l0Y2ggKHJ4di5waHkpIHsNCiAJCQljYXNlIE1UX1BI
+WV9UWVBFX0NDSzoNCkBAIC00NzcsNyArNDgzLDcgQEAgaW50IG10NzkxNV9tYWNfZmlsbF9yeChz
+dHJ1Y3QgbXQ3OTE1X2RldiAqZGV2LCBzdHJ1Y3Qgc2tfYnVmZiAqc2tiKQ0KIAkJCQlicmVhazsN
+CiAJCQljYXNlIE1UX1BIWV9UWVBFX1ZIVDoNCiAJCQkJc3RhdHVzLT5uc3MgPQ0KLQkJCQkJRklF
+TERfR0VUKE1UX1BSWFZfTlNUUywgcnh2LnZbMF0pICsgMTsNCisJCQkJCUZJRUxEX0dFVChNVF9Q
+UlhWX05TVFMsIHYwKSArIDE7DQogCQkJCXN0YXR1cy0+ZW5jb2RpbmcgPSBSWF9FTkNfVkhUOw0K
+IAkJCQlpZiAoaSA+IDkpDQogCQkJCQlyZXR1cm4gLUVJTlZBTDsNCkBAIC00ODksNyArNDk1LDcg
+QEAgaW50IG10NzkxNV9tYWNfZmlsbF9yeChzdHJ1Y3QgbXQ3OTE1X2RldiAqZGV2LCBzdHJ1Y3Qg
+c2tfYnVmZiAqc2tiKQ0KIAkJCWNhc2UgTVRfUEhZX1RZUEVfSEVfRVhUX1NVOg0KIAkJCWNhc2Ug
+TVRfUEhZX1RZUEVfSEVfVEI6DQogCQkJCXN0YXR1cy0+bnNzID0NCi0JCQkJCUZJRUxEX0dFVChN
+VF9QUlhWX05TVFMsIHJ4di52WzBdKSArIDE7DQorCQkJCQlGSUVMRF9HRVQoTVRfUFJYVl9OU1RT
+LCB2MCkgKyAxOw0KIAkJCQlzdGF0dXMtPmVuY29kaW5nID0gUlhfRU5DX0hFOw0KIAkJCQlzdGF0
+dXMtPmZsYWcgfD0gUlhfRkxBR19SQURJT1RBUF9IRTsNCiAJCQkJaSAmPSBHRU5NQVNLKDMsIDAp
+Ow0KQEAgLTUwNSw3ICs1MTEsNyBAQCBpbnQgbXQ3OTE1X21hY19maWxsX3J4KHN0cnVjdCBtdDc5
+MTVfZGV2ICpkZXYsIHN0cnVjdCBza19idWZmICpza2IpDQogCQkJfQ0KIAkJCXN0YXR1cy0+cmF0
+ZV9pZHggPSBpOw0KIA0KLQkJCXN3aXRjaCAoRklFTERfR0VUKE1UX0NSWFZfRlJBTUVfTU9ERSwg
+cnh2LnZbMl0pKSB7DQorCQkJc3dpdGNoIChGSUVMRF9HRVQoTVRfQ1JYVl9GUkFNRV9NT0RFLCB2
+MikpIHsNCiAJCQljYXNlIElFRUU4MDIxMV9TVEFfUlhfQldfMjA6DQogCQkJCWJyZWFrOw0KIAkJ
+CWNhc2UgSUVFRTgwMjExX1NUQV9SWF9CV180MDoNCkBAIC02MTEsNyArNjE3LDcgQEAgdm9pZCBt
+dDc5MTVfbWFjX3dyaXRlX3R4d2koc3RydWN0IG10NzkxNV9kZXYgKmRldiwgX19sZTMyICp0eHdp
+LA0KIAkJCSBza2ItPnByaW9yaXR5ICYgSUVFRTgwMjExX1FPU19DVExfVElEX01BU0spIHwNCiAJ
+ICAgICAgRklFTERfUFJFUChNVF9UWEQxX09XTl9NQUMsIG9tYWNfaWR4KTsNCiAJaWYgKGV4dF9w
+aHkgJiYgcV9pZHggPj0gTVRfTE1BQ19BTFRYMCAmJiBxX2lkeCA8PSBNVF9MTUFDX0JDTjApDQot
+CQl2YWwgfD0gY3B1X3RvX2xlMzIoTVRfVFhEMV9UR0lEKTsNCisJCXZhbCB8PSBNVF9UWEQxX1RH
+SUQ7DQogDQogCXR4d2lbMV0gPSBjcHVfdG9fbGUzMih2YWwpOw0KIA0KZGlmZiAtLWdpdCBhL2Ry
+aXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1L21haW4uYyBiL2RyaXZlcnMv
+bmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1L21haW4uYw0KaW5kZXggZTA0NWRjMjM0
+MTAwLi4wNTc1YzI1OWYyNDUgMTAwNjQ0DQotLS0gYS9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRp
+YXRlay9tdDc2L210NzkxNS9tYWluLmMNCisrKyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlh
+dGVrL210NzYvbXQ3OTE1L21haW4uYw0KQEAgLTc5NSw3ICs3OTUsNyBAQCBtdDc5MTVfc3RhX3Jj
+X3VwZGF0ZShzdHJ1Y3QgaWVlZTgwMjExX2h3ICpodywNCiAJCXJjdV9yZWFkX3VubG9jaygpOw0K
+IAkJcmV0dXJuOw0KIAl9DQotCXJjdV9yZWFkX2xvY2soKTsNCisJcmN1X3JlYWRfdW5sb2NrKCk7
+DQogDQogCXNldF9iaXQoY2hhbmdlZCwgJm1zdGEtPnN0YXRzLmNoYW5nZWQpOw0KIAlpZWVlODAy
+MTFfcXVldWVfd29yayhodywgJm1zdGEtPnN0YXRzX3dvcmspOw0KLS0gDQoyLjE4LjANCg==
 
-Unfortunately a "taint" is interpreted by many users as: "your kernel
-is really F#*D up, you better do something about it right now."
-Assuming they're paying attention at all in the first place of course.
-
-The fact is, WiFi chip firmware crashes, and in most cases the driver
-is able to recover seamlessly. At least that is the case with most QCA
-chipsets I work with. And the users or our ability to do anything
-about it is minimal to none as we don't have access to firmware
-source. It's too bad and I wish it weren't the case, but we have
-embraced reality and most drivers have a recovery mechanism built in
-for this case. In short, it's a non-event. I fear that elevating this
-to a kernel taint will significantly increase "support" requests that
-really are nothing but noise; similar to how the firmware load failure
-messages (fail to load fw-2.bin, fail to load fw-1.bin, yay loaded
-fw-0.bin) cause a lot of noise.
-
-Not specifically opposed, but I wonder what it really accomplishes in
-a world where the firmware crashing is pretty much a normal
-occurrence.
-
-If it goes in, I think that the drivers shouldn't trigger the taint if
-they're able to recover normally. Only trigger on failure to come back
-up.  In other words, the ideal place in the ath10k driver isn't where
-you have proposed as at that point operation is normal and we're doing
-a routine recovery.
-
-- Steve
-
-
-
-
-
->   Luis
