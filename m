@@ -2,92 +2,95 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C5EAD1D7889
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 May 2020 14:24:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B257A1D78C4
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 May 2020 14:39:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727803AbgERMY6 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 18 May 2020 08:24:58 -0400
-Received: from mail26.static.mailgun.info ([104.130.122.26]:16305 "EHLO
-        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726739AbgERMY6 (ORCPT
+        id S1727003AbgERMj5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 18 May 2020 08:39:57 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:58520 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726739AbgERMj5 (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 18 May 2020 08:24:58 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1589804697; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=zDfsbimve+95bHN1AMopdOLB7rn7fbjzkFlX7m48gMw=; b=T3kJQjHPeu7C8eOYlE5VOgv3RgqOj+DGJH72f6HpbbMVGpudR5aYbUYm3FPVyJ32Wq74A9sL
- yFg7gL1Oq+Mr6SyeLQPsF1iWi1uHmYdG4V2uNTspFre2PRBandAU3VZnZg2U4FCLpVLZXb8Z
- /PRDY4jvv9DRQZigiYL5LElniO8=
-X-Mailgun-Sending-Ip: 104.130.122.26
-X-Mailgun-Sid: WyI3YTAwOSIsICJsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5ec27e99.7f501e005f10-smtp-out-n03;
- Mon, 18 May 2020 12:24:57 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 1BBCDC43636; Mon, 18 May 2020 12:24:56 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 5EC11C433F2;
-        Mon, 18 May 2020 12:24:54 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 5EC11C433F2
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     kbuild test robot <lkp@intel.com>
-Cc:     Tzu-En Huang <tehuang@realtek.com>, kbuild-all@lists.01.org,
-        Yan-Hsuan Chuang <yhchuang@realtek.com>,
+        Mon, 18 May 2020 08:39:57 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04ICVfYq073811;
+        Mon, 18 May 2020 12:39:53 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2020-01-29;
+ bh=bd0vnwwO0ZWmC6vWHdPtL16W06duYPkWRifCu26fO60=;
+ b=IiIqMtZ+t1lX07BWRk0aJx/RJCywKkEFvJJVBJSjN6eAtXzFZsyYj9i9lUhC7IQzHTIv
+ saoCxewMAE/Vpb5uvnyydvh6Wg9QMdnuBTo9xg9JYjyrMvop0F6jbV1PEXDtA9AhnVH6
+ DnSPCe5v1zoU0Vx/qZv/Sm3Jo0JdIrpeU+JtLcBGpA6VO78lFsivzoQVbPEqmmdOEAjq
+ E5VskLTJ7p8BpLm7yY+m6HuafWLniN1Jzl/k8YB8oGPhLZbgVQH4XRmUG2OQ8BpEqv40
+ jp20tedOgV9vXfDYX3Z0d+ZRDBA/Tyil1DpG1f+l7tps9omb2qQa066K0YM1KZrQAMQX 7A== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by aserp2120.oracle.com with ESMTP id 31284kpg79-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 18 May 2020 12:39:53 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04ICd0sS142559;
+        Mon, 18 May 2020 12:39:53 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by aserp3020.oracle.com with ESMTP id 312t30tbe2-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 18 May 2020 12:39:52 +0000
+Received: from abhmp0008.oracle.com (abhmp0008.oracle.com [141.146.116.14])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 04ICdptI016564;
+        Mon, 18 May 2020 12:39:51 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 18 May 2020 05:39:50 -0700
+Date:   Mon, 18 May 2020 15:39:44 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Malcolm Priestley <tvboxspy@gmail.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>,
         linux-wireless@vger.kernel.org
-Subject: Re: [linux-next:master 2957/8703] drivers/net/wireless/realtek/rtw88/rtw8822c.c:1039:2: warning: missing braces around initializer
-References: <202005141308.j8dUPd66%lkp@intel.com>
-Date:   Mon, 18 May 2020 15:24:52 +0300
-In-Reply-To: <202005141308.j8dUPd66%lkp@intel.com> (kbuild test robot's
-        message of "Thu, 14 May 2020 13:01:12 +0800")
-Message-ID: <87blmljuqz.fsf@kamboji.qca.qualcomm.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+Subject: Re: [PATCH 2/4] staging: vt6656: vnt_beacon_xmit use
+ extra_tx_headroom.
+Message-ID: <20200518123944.GI2078@kadam>
+References: <5f00d319-9242-65b2-d100-dcfe9b0e32be@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5f00d319-9242-65b2-d100-dcfe9b0e32be@gmail.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9624 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 spamscore=0 mlxlogscore=999
+ phishscore=0 mlxscore=0 malwarescore=0 suspectscore=0 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2005180115
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9624 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 mlxscore=0
+ cotscore=-2147483648 impostorscore=0 malwarescore=0 mlxlogscore=999
+ lowpriorityscore=0 phishscore=0 spamscore=0 bulkscore=0 adultscore=0
+ priorityscore=1501 clxscore=1015 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2004280000 definitions=main-2005180114
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-+ linux-wireless
+On Sat, May 16, 2020 at 11:39:34AM +0100, Malcolm Priestley wrote:
+> Create room for vnt_tx_short_buf_head in sk_buff and vnt_tx_usb_header.
+> 
+> The struct ieee80211_mgmt is not longer in the header and is at
+> the initial skb->data point.
 
-kbuild test robot <lkp@intel.com> writes:
+I feel like the SubmittingPatches guidelines on verb tenses and not
+saying "this patch" or "I" has got everyone so worried that it's like
+playing Taboo.  Do you mean that the struct moved before or after we
+aply *this patch*?
 
-> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-> head:   e098d7762d602be640c53565ceca342f81e55ad2
-> commit: 5ad4d8957b69f3ebf95ac02212c388bda75aeb30 [2957/8703] rtw88:
-> set power trim according to efuse PG values
-> config: i386-randconfig-a002-20200514 (attached as .config)
-> compiler: gcc-4.9 (Ubuntu 4.9.3-13ubuntu2) 4.9.3
-> reproduce:
->         git checkout 5ad4d8957b69f3ebf95ac02212c388bda75aeb30
->         # save the attached .config to linux build tree
->         make ARCH=i386 
->
-> If you fix the issue, kindly add following tag as appropriate
-> Reported-by: kbuild test robot <lkp@intel.com>
->
-> All warnings (new ones prefixed by >>, old ones prefixed by <<):
->
-> drivers/net/wireless/realtek/rtw88/rtw8822c.c: In function 'rtw8822c_power_trim':
->>> drivers/net/wireless/realtek/rtw88/rtw8822c.c:1039:2: warning:
->> missing braces around initializer [-Wmissing-braces]
-> s8 bb_gain[2][8] = {0};
-> ^
-> drivers/net/wireless/realtek/rtw88/rtw8822c.c:1039:2: warning: (near
-> initialization for 'bb_gain[0]') [-Wmissing-braces]
+> 
+> Signed-off-by: Malcolm Priestley <tvboxspy@gmail.com>
 
-Tony, please check this and fix it. If it's a false warning please let
-us know.
+I can't understand the point of this patch at all.  Is it a fix or a
+clean up?  If I had to guess from the subjec, I would say it's a
+performance improvement but I don't know.
 
--- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+regards,
+dan carpenter
+
+
