@@ -2,56 +2,78 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A204E1D7746
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 May 2020 13:35:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BB44F1D76BD
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 May 2020 13:21:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727981AbgERLfd (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Mon, 18 May 2020 07:35:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58702 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726739AbgERLfc (ORCPT
+        id S1726813AbgERLVS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Mon, 18 May 2020 07:21:18 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:33210 "EHLO
+        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726499AbgERLVS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Mon, 18 May 2020 07:35:32 -0400
-X-Greylist: delayed 1618 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 18 May 2020 04:35:32 PDT
-Received: from vps.dvp24.com (unknown [IPv6:2a02:348:36:5b8c::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C69CC061A0C;
-        Mon, 18 May 2020 04:35:32 -0700 (PDT)
-Received: from localhost ([127.0.0.1] helo=dvp24.com)
-        by vps.dvp24.com with esmtpa (Exim 4.77)
-        (envelope-from <abhay@dvp24.com>)
-        id 1jadYS-0006r4-97; Mon, 18 May 2020 13:03:32 +0200
+        Mon, 18 May 2020 07:21:18 -0400
+Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=[192.168.100.69])
+        by farmhouse.coelho.fi with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.93)
+        (envelope-from <luca@coelho.fi>)
+        id 1jadpb-000cvW-JP; Mon, 18 May 2020 14:21:16 +0300
+Message-ID: <bc0d0a9155f198f0ae34045932598b237e82d157.camel@coelho.fi>
+From:   Luca Coelho <luca@coelho.fi>
+To:     Zhang Rui <rui.zhang@intel.com>, linux-pm@vger.kernel.org,
+        gil.adam@intel.com
+Cc:     linux-wireless@vger.kernel.org, daniel.lezcano@linaro.org,
+        andrzej.p@collabora.com, b.zolnierkie@samsung.com
+Date:   Mon, 18 May 2020 14:21:13 +0300
+In-Reply-To: <4b6a9dbf43a33354c01d760f7fab3723e5882269.camel@intel.com>
+References: <20200430063229.6182-1-rui.zhang@intel.com>
+         <20200430063229.6182-2-rui.zhang@intel.com>
+         <4b6a9dbf43a33354c01d760f7fab3723e5882269.camel@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.2-1 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-Date:   Mon, 18 May 2020 12:03:32 +0100
-From:   pedro hills <abhay@dvp24.com>
-To:     undisclosed-recipients:;
-Subject: (DONATION) $2 Million Has Been Donated
-Reply-To: <pedrohills@outlook.es>
-Mail-Reply-To: <pedrohills@outlook.es>
-Message-ID: <4f8b251c274cf8e27d8c41dd4ed99b52@dvp24.com>
-X-Sender: abhay@dvp24.com
-User-Agent: Roundcube Webmail/0.7.1
+Content-Transfer-Encoding: 7bit
+X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on farmhouse.coelho.fi
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+        TVD_RCVD_IP autolearn=ham autolearn_force=no version=3.4.4
+Subject: Re: [PATCH 1/6] iwlwifi: use thermal_zone_device_update() for
+ temperature change
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
+On Tue, 2020-05-12 at 09:58 +0800, Zhang Rui wrote:
+> On Thu, 2020-04-30 at 14:32 +0800, Zhang Rui wrote:
+> > thermal_notify_framework() is an obsolete API, and iwlwifi is the
+> > only
+> > user of it.
+> > Convert iwlwifi driver to use thermal_zone_device_update() instead.
+> > 
+> > Note that, thermal_zone_device_update() is able to handle the crossed
+> > threshold by comparing the current temperature with every trip point,
+> > so
+> > ths_crossed variant in iwl_mvm_temp_notif() is probably not needed.
+> > It is still left there in this patch, in case the debug information
+> > is
+> > still needed.
+> > 
+> > Signed-off-by: Zhang Rui <rui.zhang@intel.com>
+> 
+> Hi, Luca,
+> 
+> Any comments about this patch and patch 6/6?
 
+Hi Rui,
 
--- 
-$2 Million Has Been Donated To You,By PEDRO this is Real For More Info
-  Contact PEDRO immediately for your clame This Email:
-  pedrohills@outlook.es
+Sorry for the delay, we have been making some small changes in this
+code to support a new interface with our firmware and I wanted to make
+sure things work together.
 
-  Contact phone number +34632232897
-  Send Your Response To: pedrohills@outlook.es
+I'm adding Gil, who is making the changes, to this thread so he can
+also take a look.
 
-  2 Millionen US-Dollar wurden an Sie gespendet. Von PEDRO ist dies für
-weitere Informationen real
-  Wenden Sie sich umgehend an PEDRO. Diese E-Mail:
-  pedrohills@outlook.es
+--
+Cheers,
+Luca.
 
-  Kontakttelefonnummer +34632232897
-  Senden Sie Ihre Antwort an: pedrohills@outlook.es
