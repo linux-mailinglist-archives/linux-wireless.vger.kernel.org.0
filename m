@@ -2,77 +2,127 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E4701DA53A
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 May 2020 01:13:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 099C11DA5DB
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 May 2020 01:55:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726898AbgESXN5 (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 19 May 2020 19:13:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54556 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726352AbgESXN4 (ORCPT
+        id S1726352AbgESXzS (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 19 May 2020 19:55:18 -0400
+Received: from mailgw02.mediatek.com ([210.61.82.184]:32617 "EHLO
+        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726344AbgESXzS (ORCPT
         <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 19 May 2020 19:13:56 -0400
-Received: from mail-vs1-xe42.google.com (mail-vs1-xe42.google.com [IPv6:2607:f8b0:4864:20::e42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C902EC061A0E
-        for <linux-wireless@vger.kernel.org>; Tue, 19 May 2020 16:13:56 -0700 (PDT)
-Received: by mail-vs1-xe42.google.com with SMTP id g15so735928vsb.5
-        for <linux-wireless@vger.kernel.org>; Tue, 19 May 2020 16:13:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Jb5TrPmyRiGoq4P8G0LO5+ceLeAkI5ybri0s413IZBM=;
-        b=bcIezp7cDg8VBsw+G/u7xnRe90zrbzCHYNSdAZxNrC/2/xC2Rg4fMoFFr/7lK5t0TL
-         Fqs7NAszbrUJY+3BuH0zgXoxUNvRbf6ZMZVvuCsI/wBQdWz0i4f2PmanpsAmS+5N93d7
-         27J9epyGxpHwZZdnLzctw1NglnkkMaILMF5FQieWnsKJrF+t+KI8QEBXYsNrxW4TB7ZS
-         jRNj6pV2W6huz1fHOGRl1IZAon4WEsOqWbgLsvKgIcaZFmKeTTUU9coxLzOFd2B9DeOk
-         Uo78TdHoPxRXjScux+X0Twb3zMEWYygUED2OBDyD0TeeVLQB6x852/AxNrnvxR89fEC4
-         NGbA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Jb5TrPmyRiGoq4P8G0LO5+ceLeAkI5ybri0s413IZBM=;
-        b=udmM6t513vNdUysm2GWkXdTa4SMdoItK5ThMbE/7f7ZvH2wKGnMbdfS5QCykWxOs4F
-         nKhdsjF9+Bsxs0d1zizoRHlN2MZna3u5Mij+ZHpgB/meVjBVG7XE3LdhWkhTNxMHA0+1
-         d4B4JqW40zs1f2jK/Ggdn7skSLxffgs97G/jEts3RzOVYHCey2zwn003jHP1p3T+mOn/
-         OofuHdAE1ceAW16/alsJGsfV+EjfDnC2etsttZQb9pYu2kHm0dWMErLIGuNu5++13DxJ
-         e6eNYVuUhuR4mzqh3Y9PGuLvRDEvY6pbFTkJ8zgP0sgQ1y0CogoE/XIMxlS2cuCT6G9f
-         pPyg==
-X-Gm-Message-State: AOAM533zw7dV6Ws6hI/sGvS43UPOsyl//iLsI9XBmLBCZYI/bcQchTa+
-        KF2o3w02DSxyp6RAtBNy3FqmL0Bre59tWHWaniJAXtecHQFx
-X-Google-Smtp-Source: ABdhPJzDRuZbZKNBs5VEupHCaZavel/AxZk2yTuEtokCQrXPNyNNaDQvzKsIV0ukeGTvDs65N1IDYOd2usKWTeIx4vc=
-X-Received: by 2002:a67:6dc7:: with SMTP id i190mr1284679vsc.75.1589930036051;
- Tue, 19 May 2020 16:13:56 -0700 (PDT)
+        Tue, 19 May 2020 19:55:18 -0400
+X-UUID: 77478fdf2b0849f591c93769e2344aad-20200520
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+        h=Content-Transfer-Encoding:Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=8kqyrElumNsY45waYnpVZ5j6emuNWsp65iuRPF2OPy8=;
+        b=JDk5HyxFmdH+ReudNvicvpDpYWbv17XCpQBUT5J75e0oRc6O0yChhvZc3rKskq+5udZxSEWOW5eWKFNbdYU1pXmOBFcJ6b+dZFcPB0/X5+OClYmvGq5drs+4XPs8uZGaaCC2VhZ3mKC8gcQaUVmkIPzjKlirqNd8Yp/F0DzMHJM=;
+X-UUID: 77478fdf2b0849f591c93769e2344aad-20200520
+Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw02.mediatek.com
+        (envelope-from <ryder.lee@mediatek.com>)
+        (Cellopoint E-mail Firewall v4.1.10 Build 0809 with TLS)
+        with ESMTP id 127197549; Wed, 20 May 2020 07:55:14 +0800
+Received: from mtkcas08.mediatek.inc (172.21.101.126) by
+ mtkmbs08n2.mediatek.inc (172.21.101.56) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Wed, 20 May 2020 07:55:07 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas08.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Wed, 20 May 2020 07:55:07 +0800
+From:   Ryder Lee <ryder.lee@mediatek.com>
+To:     Felix Fietkau <nbd@nbd.name>
+CC:     <linux-wireless@vger.kernel.org>,
+        Ryder Lee <ryder.lee@mediatek.com>
+Subject: [PATCH] mt76: fix kbuild test robot warnings
+Date:   Wed, 20 May 2020 07:55:10 +0800
+Message-ID: <82c0a9e246ea2a4e7344dcd7476f5cf491f7dde5.1589930747.git.ryder.lee@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-References: <CALjTZvbLOr5zAYyp75Cs6Zo8mWNUVq3ZRJu56G1iHdiihFejWQ@mail.gmail.com>
- <3483242e-c2ad-ec83-0c2c-ce952bc9b638@lwfinger.net> <CALjTZvatxQ2BvUeZGcTFijBf1PiLizJuDdENxg2b=tPQL_NAzQ@mail.gmail.com>
-In-Reply-To: <CALjTZvatxQ2BvUeZGcTFijBf1PiLizJuDdENxg2b=tPQL_NAzQ@mail.gmail.com>
-From:   Rui Salvaterra <rsalvaterra@gmail.com>
-Date:   Wed, 20 May 2020 00:13:44 +0100
-Message-ID: <CALjTZvYSJOx0xeMVkN6dHcGTdgW9O9NVbgXPKK4d6-31VX+0JQ@mail.gmail.com>
-Subject: Re: [BUG?] b43: can't connect to WPA3 network (nohwcrypt=1)
-To:     Larry Finger <Larry.Finger@lwfinger.net>
-Cc:     b43-dev@lists.infradead.org, linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
+X-TM-SNTS-SMTP: 2BDF74708F1132860EAD3DBCD56F7204105AA38D027CC823719BD95C482080B62000:8
+X-MTK:  N
+Content-Transfer-Encoding: base64
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-On Tue, 19 May 2020 at 21:36, Rui Salvaterra <rsalvaterra@gmail.com> wrote:
->
-> Hi, Larry,
->
-> On Tue, 19 May 2020 at 21:30, Larry Finger <Larry.Finger@lwfinger.net> wrote:
-> >
-> >  From other drivers, it appears that handling WPA3 might be as simple as setting
-> > MFP_CAPABLE in the hardware capabilities. Please try this patch:
->
-> Fantastic, thanks for the quick reply! I will do it ASAP and get back to you.
+Rml4IHRoZSBmb2xsb3dpbmcgd2FybmluZ3M6DQoNCndhcm5pbmc6IGNvbXBhcmlzb24gaXMgYWx3
+YXlzIGZhbHNlL3RydWUgZHVlIHRvIGxpbWl0ZWQgcmFuZ2Ugb2YgZGF0YSB0eXBlIFstV3R5cGUt
+bGltaXRzXS4NCndhcm5pbmc6IHZhcmlhYmxlICdtc3RhJyBzZXQgYnV0IG5vdCB1c2VkDQoNClJl
+cG9ydGVkLWJ5OiBrYnVpbGQgdGVzdCByb2JvdCA8bGtwQGludGVsLmNvbT4NClNpZ25lZC1vZmYt
+Ynk6IFJ5ZGVyIExlZSA8cnlkZXIubGVlQG1lZGlhdGVrLmNvbT4NCi0tLQ0KQGZlbGl4LCBtYXli
+ZSBmb2xkIHRoaXMgcGF0Y2ggaW50byB0aGUgcHJldmlvdXMgb25lIChpZiBpdCdzIG5vdCB5ZXQg
+bWVyZ2VkKS4NCi0tLQ0KIGRyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3NjAz
+L21hYy5jICB8IDQgKystLQ0KIGRyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3
+NjE1L21hYy5jICB8IDQgKystLQ0KIGRyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYv
+bXQ3NngwMi5oICAgICB8IDIgKy0NCiBkcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2
+L210NzZ4MDJfbWFjLmMgfCAyICstDQogZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3
+Ni9tdDc2eDAyX21hYy5oIHwgMiArLQ0KIGRyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210
+NzYvbXQ3OTE1L21jdS5jICB8IDMgLS0tDQogNiBmaWxlcyBjaGFuZ2VkLCA3IGluc2VydGlvbnMo
+KyksIDEwIGRlbGV0aW9ucygtKQ0KDQpkaWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQvd2lyZWxlc3Mv
+bWVkaWF0ZWsvbXQ3Ni9tdDc2MDMvbWFjLmMgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRl
+ay9tdDc2L210NzYwMy9tYWMuYw0KaW5kZXggZjhjMGM5NTdjYTAxLi5mNDBkYzQzNzRlZWUgMTAw
+NjQ0DQotLS0gYS9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzYwMy9tYWMu
+Yw0KKysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc2MDMvbWFjLmMN
+CkBAIC00NjgsNyArNDY4LDcgQEAgdm9pZCBtdDc2MDNfbWFjX3N0YV9wb2xsKHN0cnVjdCBtdDc2
+MDNfZGV2ICpkZXYpDQogfQ0KIA0KIHN0YXRpYyBzdHJ1Y3QgbXQ3Nl93Y2lkICoNCi1tdDc2MDNf
+cnhfZ2V0X3djaWQoc3RydWN0IG10NzYwM19kZXYgKmRldiwgdTggaWR4LCBib29sIHVuaWNhc3Qp
+DQorbXQ3NjAzX3J4X2dldF93Y2lkKHN0cnVjdCBtdDc2MDNfZGV2ICpkZXYsIHUxNiBpZHgsIGJv
+b2wgdW5pY2FzdCkNCiB7DQogCXN0cnVjdCBtdDc2MDNfc3RhICpzdGE7DQogCXN0cnVjdCBtdDc2
+X3djaWQgKndjaWQ7DQpAQCAtMTIyNyw3ICsxMjI3LDcgQEAgdm9pZCBtdDc2MDNfbWFjX2FkZF90
+eHMoc3RydWN0IG10NzYwM19kZXYgKmRldiwgdm9pZCAqZGF0YSkNCiAJc3RydWN0IG10NzZfd2Np
+ZCAqd2NpZDsNCiAJX19sZTMyICp0eHNfZGF0YSA9IGRhdGE7DQogCXUzMiB0eHM7DQotCXU4IHdj
+aWR4Ow0KKwl1MTYgd2NpZHg7DQogCXU4IHBpZDsNCiANCiAJdHhzID0gbGUzMl90b19jcHUodHhz
+X2RhdGFbNF0pOw0KZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210
+NzYvbXQ3NjE1L21hYy5jIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc2
+MTUvbWFjLmMNCmluZGV4IDdkNjVhM2ZiMGMyMy4uMDhiOTUwMzg2YmM4IDEwMDY0NA0KLS0tIGEv
+ZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc2MTUvbWFjLmMNCisrKyBiL2Ry
+aXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3NjE1L21hYy5jDQpAQCAtNTYsNyAr
+NTYsNyBAQCBzdGF0aWMgY29uc3Qgc3RydWN0IG10NzYxNV9kZnNfcmFkYXJfc3BlYyBqcF9yYWRh
+cl9zcGVjcyA9IHsNCiB9Ow0KIA0KIHN0YXRpYyBzdHJ1Y3QgbXQ3Nl93Y2lkICptdDc2MTVfcnhf
+Z2V0X3djaWQoc3RydWN0IG10NzYxNV9kZXYgKmRldiwNCi0JCQkJCSAgICB1OCBpZHgsIGJvb2wg
+dW5pY2FzdCkNCisJCQkJCSAgICB1MTYgaWR4LCBib29sIHVuaWNhc3QpDQogew0KIAlzdHJ1Y3Qg
+bXQ3NjE1X3N0YSAqc3RhOw0KIAlzdHJ1Y3QgbXQ3Nl93Y2lkICp3Y2lkOw0KQEAgLTEyOTEsNyAr
+MTI5MSw3IEBAIHN0YXRpYyB2b2lkIG10NzYxNV9tYWNfYWRkX3R4cyhzdHJ1Y3QgbXQ3NjE1X2Rl
+diAqZGV2LCB2b2lkICpkYXRhKQ0KIAlzdHJ1Y3QgbXQ3Nl9waHkgKm1waHkgPSAmZGV2LT5tdDc2
+LnBoeTsNCiAJX19sZTMyICp0eHNfZGF0YSA9IGRhdGE7DQogCXUzMiB0eHM7DQotCXU4IHdjaWR4
+Ow0KKwl1MTYgd2NpZHg7DQogCXU4IHBpZDsNCiANCiAJdHhzID0gbGUzMl90b19jcHUodHhzX2Rh
+dGFbMF0pOw0KZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYv
+bXQ3NngwMi5oIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc2eDAyLmgN
+CmluZGV4IDZlYTIxMGJkM2YwNy4uNWFkY2M5ZmE4NDJhIDEwMDY0NA0KLS0tIGEvZHJpdmVycy9u
+ZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc2eDAyLmgNCisrKyBiL2RyaXZlcnMvbmV0L3dp
+cmVsZXNzL21lZGlhdGVrL210NzYvbXQ3NngwMi5oDQpAQCAtMjQyLDcgKzI0Miw3IEBAIG10NzZ4
+MDJfd2FpdF9mb3JfdHhyeF9pZGxlKHN0cnVjdCBtdDc2X2RldiAqZGV2KQ0KIH0NCiANCiBzdGF0
+aWMgaW5saW5lIHN0cnVjdCBtdDc2eDAyX3N0YSAqDQotbXQ3NngwMl9yeF9nZXRfc3RhKHN0cnVj
+dCBtdDc2X2RldiAqZGV2LCB1OCBpZHgpDQorbXQ3NngwMl9yeF9nZXRfc3RhKHN0cnVjdCBtdDc2
+X2RldiAqZGV2LCB1MTYgaWR4KQ0KIHsNCiAJc3RydWN0IG10NzZfd2NpZCAqd2NpZDsNCiANCmRp
+ZmYgLS1naXQgYS9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzZ4MDJfbWFj
+LmMgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzZ4MDJfbWFjLmMNCmlu
+ZGV4IGE1YTNiY2QzMGQ2Zi4uYTgyNDQxMmQxYjhiIDEwMDY0NA0KLS0tIGEvZHJpdmVycy9uZXQv
+d2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc2eDAyX21hYy5jDQorKysgYi9kcml2ZXJzL25ldC93
+aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzZ4MDJfbWFjLmMNCkBAIC03NzgsNyArNzc4LDcgQEAg
+aW50IG10NzZ4MDJfbWFjX3Byb2Nlc3Nfcngoc3RydWN0IG10NzZ4MDJfZGV2ICpkZXYsIHN0cnVj
+dCBza19idWZmICpza2IsDQogCWludCBwYWRfbGVuID0gMCwgbnN0cmVhbXMgPSBkZXYtPmNoYWlu
+bWFzayAmIDB4ZjsNCiAJczggc2lnbmFsOw0KIAl1OCBwbl9sZW47DQotCXU4IHdjaWQ7DQorCXUx
+NiB3Y2lkOw0KIAlpbnQgbGVuOw0KIA0KIAlpZiAoIXRlc3RfYml0KE1UNzZfU1RBVEVfUlVOTklO
+RywgJmRldi0+bXBoeS5zdGF0ZSkpDQpkaWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQvd2lyZWxlc3Mv
+bWVkaWF0ZWsvbXQ3Ni9tdDc2eDAyX21hYy5oIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0
+ZWsvbXQ3Ni9tdDc2eDAyX21hYy5oDQppbmRleCBjNzBkMTdiMjI5MGMuLmU0YzQwNTEzMGU2MCAx
+MDA2NDQNCi0tLSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3NngwMl9t
+YWMuaA0KKysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc2eDAyX21h
+Yy5oDQpAQCAtMTQsNyArMTQsNyBAQCBzdHJ1Y3QgbXQ3NngwMl90eF9zdGF0dXMgew0KIAl1OCBz
+dWNjZXNzOjE7DQogCXU4IGFnZ3I6MTsNCiAJdTggYWNrX3JlcToxOw0KLQl1OCB3Y2lkOw0KKwl1
+MTYgd2NpZDsNCiAJdTggcGt0aWQ7DQogCXU4IHJldHJ5Ow0KIAl1MTYgcmF0ZTsNCmRpZmYgLS1n
+aXQgYS9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzkxNS9tY3UuYyBiL2Ry
+aXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3OTE1L21jdS5jDQppbmRleCA5NWNk
+MjRmNDFmOTguLmY4MWFmY2M1MTgwMSAxMDA2NDQNCi0tLSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNz
+L21lZGlhdGVrL210NzYvbXQ3OTE1L21jdS5jDQorKysgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9t
+ZWRpYXRlay9tdDc2L210NzkxNS9tY3UuYw0KQEAgLTE4MzYsMTUgKzE4MzYsMTIgQEAgc3RhdGlj
+IHU4DQogbXQ3OTE1X21jdV9zdGFfdHhiZl90eXBlKHN0cnVjdCBtdDc5MTVfcGh5ICpwaHksIHN0
+cnVjdCBpZWVlODAyMTFfdmlmICp2aWYsDQogCQkJIHN0cnVjdCBpZWVlODAyMTFfc3RhICpzdGEp
+DQogew0KLQlzdHJ1Y3QgbXQ3OTE1X3N0YSAqbXN0YTsNCiAJdTggdHlwZSA9IDA7DQogDQogCWlm
+ICh2aWYtPnR5cGUgIT0gTkw4MDIxMV9JRlRZUEVfU1RBVElPTiAmJg0KIAkgICAgdmlmLT50eXBl
+ICE9IE5MODAyMTFfSUZUWVBFX0FQKQ0KIAkJcmV0dXJuIDA7DQogDQotCW1zdGEgPSAoc3RydWN0
+IG10NzkxNV9zdGEgKilzdGEtPmRydl9wcml2Ow0KLQ0KIAlpZiAoc3RhLT5oZV9jYXAuaGFzX2hl
+KSB7DQogCQlzdHJ1Y3QgaWVlZTgwMjExX2hlX2NhcF9lbGVtICpwZTsNCiAJCWNvbnN0IHN0cnVj
+dCBpZWVlODAyMTFfaGVfY2FwX2VsZW0gKnZlOw0KLS0gDQoyLjE4LjANCg==
 
-Unfortunately, looks like in this driver it's not so simple, the
-association is still rejected. I looked at the other drivers too and,
-sure enough, they just set the MFP_CAPABLE flag unconditionally with
-software crypto (I would expect mac80211 to magically handle it, but
-with b43 it doesn't seem to be the case).
