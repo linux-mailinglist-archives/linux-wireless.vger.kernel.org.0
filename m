@@ -2,165 +2,116 @@ Return-Path: <linux-wireless-owner@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 03E4A1D93DE
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 May 2020 11:57:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E7CE1D94EE
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 May 2020 13:10:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726504AbgESJ5s (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
-        Tue, 19 May 2020 05:57:48 -0400
-Received: from mail1.protonmail.ch ([185.70.40.18]:29625 "EHLO
-        mail1.protonmail.ch" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726121AbgESJ5r (ORCPT
-        <rfc822;linux-wireless@vger.kernel.org>);
-        Tue, 19 May 2020 05:57:47 -0400
-Date:   Tue, 19 May 2020 09:57:36 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hyperfekt.net;
-        s=protonmail; t=1589882264;
-        bh=T3DJ45U1ZJiPFcVfOMMYCzfb7aBAyWhqRTqAJE0t3YE=;
-        h=Date:To:From:Cc:Reply-To:Subject:From;
-        b=heF5OGj1g7hTXx0ScK10HkNy6yIZ0ypBYMOOhQCfwnZ5S2e5mOCNEX1RWvhX8Ky0y
-         O3RFOaBeE8RgjJ8MHXiM9ytnmZ+e7Y5vWEoDCgglQrF6KC6PHEInSOSionS204H5WM
-         oI0dihgJ274W0O8CqdN9FmObiResz7iVMF53jiac=
-To:     luca@coelho.fi
-From:   linux-wireless@hyperfekt.net
-Cc:     johannes@sipsolutions.net, linux-wireless@vger.kernel.org
-Reply-To: linux-wireless@hyperfekt.net
-Subject: Re: [PATCH 8/8] mac80211: IBSS: send deauth when expiring inactive STAs
-Message-ID: <20200519095732.16268-1-linux-wireless@hyperfekt.net>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+        id S1726508AbgESLKT (ORCPT <rfc822;lists+linux-wireless@lfdr.de>);
+        Tue, 19 May 2020 07:10:19 -0400
+Received: from mail-bn8nam12on2111.outbound.protection.outlook.com ([40.107.237.111]:28801
+        "EHLO NAM12-BN8-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726157AbgESLKT (ORCPT <rfc822;linux-wireless@vger.kernel.org>);
+        Tue, 19 May 2020 07:10:19 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=QJLmWqTEKXe1PzAucjKDgWNb/k0QLUR31pMASZiQwrrQVX0hGWC6AJzxQVOOA8XABg1NNuZ3/X+3uNDIBRiBwLExzqCsyGP00l4zJJvUfOdv35QeSSpK+s82kO4Z0NlLd7iJBFlOF68Y86kADJMnED+Cmc6WR0mPs6TBBstZkuMwlI4urBeu/gjQuidUj3skVOcHUzvWqi1s6gC/P1nlpzGGgb5NADuw6uHRRlNHK1HfZVq9qoHvAqCNkLNsN3yNVkEte8PRg2yolRai9jq5DFZxIgk5sZtDyWUj2UnNYmO/mOc4jGlBpCB55jspDgFkB6KnesKo0T86pw6A6zlqdw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=p8P7gPOkmCOSnqPFOe0rpjvKSb45BDU9WMrGMoqJ/IA=;
+ b=E6RoQsGNVeqwD6DIPeNETevq3VjipiXGIbAp5JQhzVZuM9HQDhEHnMbr8J4ZkDSq7P7YrtaWSIh9wkiE8qjUd7IYKnhV8seBuzRI0sxhKFsso8Nd2ldBr2UOCfDV3H167du8LDtoOe6ixzBpnh2jkyMUHdiRSTHWyOBeWhuBv5WvoKHwr22jzppzp5JEKmEY3mv0UNb+6Nqh3OBw6tzHqRehR+OkR2Fa7Ktrv2BsFxJNq4XItCYNz3uswc/KgYJx2qrTpo07EZ7h4c4lzXU4ENuC2s2JP7oWTRwSaem3p0OQr6GfDuu0U/e46d02Ob0sJJ1+D4vqZxrVaACb2VfNHA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=cypress.com; dmarc=pass action=none header.from=cypress.com;
+ dkim=pass header.d=cypress.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cypress.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=p8P7gPOkmCOSnqPFOe0rpjvKSb45BDU9WMrGMoqJ/IA=;
+ b=lyVhykSxDEmH2Wj8O8mBFLquZSyZHZnKibv1nCX8tBdnSepJeNG0YeGr8p5L8j4NIieCY8rUaciJolqCsaSbovq0kVKGm7RFAdRi/vnWX9OX3YGgyVxLuMXO66vgk9Ij+t3O21BKgkOpN1p8yyje/yViuJF023ItNAjfslJ2QdI=
+Authentication-Results: vger.kernel.org; dkim=none (message not signed)
+ header.d=none;vger.kernel.org; dmarc=none action=none
+ header.from=cypress.com;
+Received: from DM6PR06MB4906.namprd06.prod.outlook.com (2603:10b6:5:56::11) by
+ DM6PR06MB6043.namprd06.prod.outlook.com (2603:10b6:5:10b::17) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.3000.26; Tue, 19 May 2020 11:10:01 +0000
+Received: from DM6PR06MB4906.namprd06.prod.outlook.com
+ ([fe80::c0ed:fb1f:a976:5c3f]) by DM6PR06MB4906.namprd06.prod.outlook.com
+ ([fe80::c0ed:fb1f:a976:5c3f%7]) with mapi id 15.20.3000.034; Tue, 19 May 2020
+ 11:10:01 +0000
+From:   Chi-Hsien Lin <chi-hsien.lin@cypress.com>
+To:     linux-wireless@vger.kernel.org
+Cc:     brcm80211-dev-list@broadcom.com, brcm80211-dev-list@cypress.com,
+        Arend van Spriel <arend.vanspriel@broadcom.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Wright Feng <wright.feng@cypress.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Chi-Hsien Lin <chi-hsien.lin@cypress.com>
+Subject: [PATCH 0/4] brcmfmac: SoftAP creation and dcmd buffer size changes
+Date:   Tue, 19 May 2020 06:09:47 -0500
+Message-Id: <20200519110951.88998-1-chi-hsien.lin@cypress.com>
+X-Mailer: git-send-email 2.25.0
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.2 required=7.0 tests=ALL_TRUSTED,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF shortcircuit=no
-        autolearn=disabled version=3.4.4
-X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on mail.protonmail.ch
+Content-Type: text/plain
+X-ClientProxiedBy: BYAPR06CA0029.namprd06.prod.outlook.com
+ (2603:10b6:a03:d4::42) To DM6PR06MB4906.namprd06.prod.outlook.com
+ (2603:10b6:5:56::11)
+MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from aremote02.aus.cypress.com (12.110.209.245) by BYAPR06CA0029.namprd06.prod.outlook.com (2603:10b6:a03:d4::42) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3000.24 via Frontend Transport; Tue, 19 May 2020 11:09:59 +0000
+X-Mailer: git-send-email 2.25.0
+X-Originating-IP: [12.110.209.245]
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-HT: Tenant
+X-MS-Office365-Filtering-Correlation-Id: 31e2ad21-18ea-44fb-9a04-08d7fbe52c4b
+X-MS-TrafficTypeDiagnostic: DM6PR06MB6043:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <DM6PR06MB6043E69EDEC63F8897E41F59BBB90@DM6PR06MB6043.namprd06.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:2449;
+X-Forefront-PRVS: 040866B734
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: Cn5JCTHINi3V2cYPSQsfvyxkHhxuA2+deyV2vMLHeOy7oSsp3S93RM7ICmhxwSCR+HamnkV7WHAIX6Dv6amBBUXr+XsPzQpStgdqcOSS4gplvHnd1NBAKa4N9QY+/oB9y1wS35HJzYIGdTy1bLW0XMjesOowYIoVtwUCyqnQNauwhMurqhD6JursvmYurp4TAmjULaGwJq8Cwk1e3esgeEta5WnIYLi42IYDP8pycqg9/5lH/ixjjpBRjHjXe3fD45a8w/Sa0KpbvHyIdWQ36IXDOBwe33YVFDnAiQ/allI/R1SK6SBoBdUnWB+wyRIZXjE4jF/E3urV8tQTCj5RVMl4s1PduIRHyUvuwDtJPemxrLcvAQKV1XZsnIRMZvVOqqbaDiqv5cUh2rDzu6u1kpWiZh8y92oOUj+psF6BMCUsR5f+xOF7NfZj2rUfijiC
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR06MB4906.namprd06.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(376002)(39860400002)(366004)(396003)(136003)(346002)(52116002)(66946007)(66556008)(86362001)(36756003)(7696005)(54906003)(66476007)(8936002)(8676002)(6916009)(478600001)(956004)(316002)(2616005)(6486002)(1076003)(5660300002)(6666004)(2906002)(4326008)(186003)(16526019)(107886003)(4744005)(26005);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData: hPaWRUlMySJy4TsbtPAAYwHXlaafqBJruMNa7A81rnj/CDoeysVTXdjMFrmRUA92QQH6cF2BahFCHhR6DU/0367CH36DBNj9zeZ3FssSdPa1rENF8ka7CvdV7YY0Aijiw3DIs1NLfVFe0lHBkFHejFo4k/XBPwxLUd1M8VEobo0nKnZy2FyQAmDYovH6zhVTl2nHbDjlWAQaXb1wZFN95SZVD1pNU8Lz0IRqcbwjD6ljtINWa56GyCpxiJlgGzXfZQQd8pqzw3eGI3EqkU0R2msjAHSn084KBM73PbNw/l96OwlcrU+8sP6PSYVAWITQVmw1Ot74+vWbkuAmcs3yK8aA0EwBTSICA1o/u1AITf0t8td60V3qkq9A2uBWBhxAsvfHhW1IO/Tw3WxH4xmhk1WaKRemGUaBs/kadHt8hEcenzUx+g60brQ+zw4xG9Q/LGoO5iZNH/pa1kpUrCCTXhYKDR1JhxsyDp0ZiJlkXFcUHmAe0ePkZsqGkTjGKYvT
+X-OriginatorOrg: cypress.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 31e2ad21-18ea-44fb-9a04-08d7fbe52c4b
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 May 2020 11:10:00.9696
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 011addfc-2c09-450d-8938-e0bbc2dd2376
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: rwg2w1P3XPTe3fjDcsetsPvOVsOfR35LKfc9zH3J6WgZC5Qg/Z4a4RXDTHXt1wyZciiJH3GwzThgHdNp2RxEtA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR06MB6043
 Sender: linux-wireless-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-wireless.vger.kernel.org>
 X-Mailing-List: linux-wireless@vger.kernel.org
 
-I have good reason to believe that this patch is causing lockups on my mach=
-ine.
+Allow SoftAP creation via ioctl from test tool; also update dcmd buffer siz=
+e
+settings for new firmware. Also fix a sparse check error.
 
-This is because of what I believe to be a very unreliable PCIe connection t=
-o
-my wireless adapter, which means that it has to be reconfigured regularly.
+Chi-Hsien Lin (1):
+  brcmfmac: fix a sparse incorrect type error in p2p.c
 
-On kernels with this patch applied however, the kernel seems to get stuck i=
-n a
-loop doing so, meanwhile spamming the journal with 'Failed
-check-sdata-in-driver check' warnings at an astonishing rate.
+Double Lo (2):
+  brcmfmac: support virtual interface creation from firmware
+  brcmfmac: increase dcmd maximum buffer size
 
-By instructing the kernel to panic when it detects a hung task, I have been
-able to obtain the following stack traces from the persistent store (ignore=
- the
-'Tainted' flag, that's just because I omitted a large number of identical
-'Failed check-sdata-in-driver check' oopses before this final one):
+Kurt Lee (1):
+  brcmfmac: set net carrier on via test tool for AP mode
 
-[ 2227.321477] ------------[ cut here ]------------
-[ 2227.321477] wlan0:  Failed check-sdata-in-driver check, flags: 0x0
-[ 2227.321486] WARNING: CPU: 3 PID: 6972 at net/mac80211/driver-ops.h:17 dr=
-v_sta_state+0x241/0x3e0 [mac80211]
-[ 2227.321486] Modules linked in: rfcomm af_packet ctr ccm algif_aead cbc d=
-es_generic libdes ecb bnep arc4 algif_skcipher cmac sha512_ssse3 sha512_gen=
-eric msr md4 algif_hash af_alg nls_iso8859_1 nls_cp437 vfat fat joydev mous=
-edev uvcvideo videobuf2_vmalloc snd_hda_codec_hdmi videobuf2_memops snd_hda=
-_codec_realtek snd_hda_codec_generic videobuf2_v4l2 videobuf2_common btusb =
-x86_pkg_temp_thermal intel_powerclamp coretemp btrtl btbcm iwlmvm crc32_pcl=
-mul dell_laptop ledtrig_audio ghash_clmulni_intel videodev dell_wmi btintel=
- mc sparse_keymap mac80211 bluetooth i915 intel_wmi_thunderbolt libarc4 mei=
-_hdcp mei_wdt iTCO_wdt lz4 watchdog dell_smm_hwmon dell_smbios dcdbas intel=
-_rapl_msr ecdh_generic ecc crc16 dell_wmi_descriptor wmi_bmof aesni_intel p=
-pdev cec libaes drm_kms_helper crypto_simd iwlwifi cryptd glue_helper drm i=
-ntel_cstate intel_gtt e1000e agpgart deflate intel_uncore evdev input_leds =
-efi_pstore tpm_tis pstore tpm_tis_core intel_rapl_perf i2c_algo_bit i2c_i80=
-1 snd_hda_intel cfg80211
-[ 2227.321497]  fb_sys_fops led_class ptp efivars psmouse mac_hid snd_intel=
-_dspcfg syscopyarea mei_me sysfillrect snd_hda_codec serio_raw sysimgblt sn=
-d_hda_core pps_core mei tpm snd_hwdep i2c_core processor_thermal_device 825=
-0_pci intel_rapl_common intel_pch_thermal thermal battery rng_core wmi inte=
-l_soc_dts_iosf parport_pc parport video dell_smo8800 backlight int3400_ther=
-mal int3403_thermal intel_pmc_core int340x_thermal_zone acpi_thermal_rel ac=
-pi_pad ac dell_rbtn ip6table_nat rfkill button iptable_nat nf_nat zra xt_co=
-nntrack zsmalloc nf_conntrack nf_defrag_ipv4 ip6t_rpfilter ipt_rpfilter ip6=
-table_raw iptable_raw xt_pkttype nf_log_ipv6 nf_log_ipv4 nf_log_common xt_L=
-OG xt_tcpudp ip6table_filter ip6_tables iptable_filter sch_fq_codel snd_pcm=
-_oss snd_mixer_oss snd_pcm snd_timer snd soundcore loop cpufreq_powersave t=
-un tap macvlan bridge stp llc kvm_intel kvm irqbypass efivarfs ip_tables x_=
-tables ipv6 nf_defrag_ipv6 crc_ccitt autofs4 poly1305_generic libpoly1305 p=
-oly1305_x86_64 chacha_generic
-[ 2227.321510]  chacha_x86_64 libchacha bcachefs libcrc32c crc32c_generic z=
-std_compress xor lz4_compress zstd_decompress crc64 raid6_pq sd_mod t10_pi =
-crc_t10dif crct10dif_generic ahci libahci libata rtsx_pci_sdmmc xhci_pci mm=
-c_core scsi_mod xhci_hcd atkbd libps2 usbcore crct10dif_pclmul crct10dif_co=
-mmon rtsx_pci crc32c_intel usb_common rtc_cmos i8042 serio dm_mod
-[ 2227.321516] CPU: 3 PID: 6972 Comm: kworker/3:2 Tainted: G        W      =
-   5.6.13 #1-NixOS
-[ 2227.321517] Hardware name: Dell Inc. Latitude E5470/0C8FKJ, BIOS 1.19.3 =
-08/20/2018
-[ 2227.321520] Workqueue: events_freezable ieee80211_restart_work [mac80211=
-]
-[ 2227.321524] RIP: 0010:drv_sta_state+0x241/0x3e0 [mac80211]
-[ 2227.321525] Code: 00 45 31 e4 e9 70 fe ff ff 48 8b 83 78 04 00 00 48 8d =
-b3 98 04 00 00 48 c7 c7 d8 0c 40 c1 48 85 c0 48 0f 45 f0 e8 c1 08 8e ec <0f=
-> 0b 41 bc fb ff ff ff e9 47 fe ff ff 65 8b 05 7b 4f c7 3e 89 c0
-[ 2227.321526] RSP: 0018:ffffb1255eb43a88 EFLAGS: 00010282
-[ 2227.321526] RAX: 0000000000000000 RBX: ffffa088030b28c0 RCX: 00000000000=
-00007
-[ 2227.321527] RDX: 0000000000000007 RSI: 0000000000000092 RDI: ffffa0886dd=
-99980
-[ 2227.321528] RBP: ffffa0880cdd07c0 R08: 00000000001ce0a4 R09: 00000000000=
-00045
-[ 2227.321528] R10: ffffb1255eb43938 R11: ffffb1255eb4393d R12: ffffa0880cd=
-d07c0
-[ 2227.321529] R13: 0000000000000004 R14: 0000000000000001 R15: 00000000000=
-00003
-[ 2227.321530] FS:  0000000000000000(0000) GS:ffffa0886dd80000(0000) knlGS:=
-0000000000000000
-[ 2227.321531] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[ 2227.321531] CR2: 00007fbf74e2d000 CR3: 000000064abca002 CR4: 00000000003=
-606e0
-[ 2227.321532] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 00000000000=
-00000
-[ 2227.321533] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 00000000000=
-00400
-[ 2227.321533] Call Trace:
-[ 2227.321538]  sta_info_move_state+0x18f/0x2b0 [mac80211]
-[ 2227.321542]  __sta_info_destroy_part2+0x28/0x150 [mac80211]
-[ 2227.321546]  __sta_info_flush+0x123/0x180 [mac80211]
-[ 2227.321552]  ieee80211_set_disassoc+0xba/0x5b0 [mac80211]
-[ 2227.321557]  ieee80211_mgd_deauth.cold+0x4a/0x1c2 [mac80211]
-[ 2227.321562]  cfg80211_mlme_deauth+0xb3/0x1d0 [cfg80211]
-[ 2227.321563]  ? mpihelp_addmul_1+0x23/0xc0
-[ 2227.321568]  cfg80211_disconnect+0x98/0x1e0 [cfg80211]
-[ 2227.321572]  cfg80211_leave+0x27/0x40 [cfg80211]
-[ 2227.321576]  cfg80211_netdev_notifier_call+0x171/0x4e0 [cfg80211]
-[ 2227.321578]  notifier_call_chain+0x4c/0x70
-[ 2227.321579]  __dev_close_many+0x5f/0x110
-[ 2227.321581]  dev_close_many+0x81/0x130
-[ 2227.321581] Kernel panic - not syncing: hung_task: blocked tasks
-[ 2227.321583] CPU: 0 PID: 32 Comm: khungtaskd Tainted: G        W         =
-5.6.13 #1-NixOS
-[ 2227.321583] Hardware name: Dell Inc. Latitude E5470/0C8FKJ, BIOS 1.19.3 =
-08/20/2018
-[ 2227.321584] Call Trace:
-[ 2227.321586]  dump_stack+0x66/0x90
-[ 2227.321587]  panic+0x101/0x2d7
-[ 2227.321589]  watchdog+0x2c4/0x440
-[ 2227.321590]  dev_close.part.0+0x3e/0x70
-[ 2227.321593]  cfg80211_shutdown_all_interfaces+0x71/0xd0 [cfg80211]
-[ 2227.321599]  ieee80211_reconfig+0xa2/0x1480 [mac80211]
-[ 2227.321600]  ? try_to_del_timer_sync+0x4f/0x80
-[ 2227.321602]  kthread+0xfb/0x130
-[ 2227.321603]  ? hungtask_pm_notify+0x40/0x40
-[ 2227.321604]  ? kthread_park+0x90/0x90
-[ 2227.321605]  ret_from_fork+0x35/0x40
-[ 2227.321610]  ieee80211_restart_work+0xb7/0xe0 [mac80211]
-[ 2227.321612]  process_one_work+0x1e4/0x390
-[ 2227.321613]  worker_thread+0x4d/0x3f0
-[ 2227.321615]  kthread+0xfb/0x130
-[ 2227.321616]  ? process_one_work+0x390/0x390
-[ 2227.321617]  ? kthread_park+0x90/0x90
-[ 2227.321619]  ret_from_fork+0x35/0x40
-[ 2227.321620] ---[ end trace f9f5d799afd5a59f ]---
-[ 2227.321623] Kernel Offset: 0x2cc00000 from 0xffffffff81000000 (relocatio=
-n range: 0xffffffff80000000-0xffffffffbfffffff)
+ .../broadcom/brcm80211/brcmfmac/bcdc.c        |  4 +-
+ .../broadcom/brcm80211/brcmfmac/cfg80211.c    | 46 +++++++++++++++++--
+ .../broadcom/brcm80211/brcmfmac/p2p.c         |  3 +-
+ .../broadcom/brcm80211/brcmfmac/vendor.c      |  9 ++++
+ 4 files changed, 56 insertions(+), 6 deletions(-)
+
+--
+2.25.0
+
+
+This message and any attachments may contain confidential information from =
+Cypress or its subsidiaries. If it has been received in error, please advis=
+e the sender and immediately delete this message.
